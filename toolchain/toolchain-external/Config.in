@@ -51,51 +51,6 @@ source "toolchain/toolchain-external/toolchain-external-musl-cross/Config.in"
 # architecture.
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in"
 
-config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
-	bool "Arago ARMv7 2011.09"
-	depends on BR2_arm
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on BR2_ARM_CPU_ARMV7A
-	depends on BR2_ARM_EABI
-	depends on BR2_ARM_CPU_HAS_VFPV3
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_SSP
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
-	# kernel headers: 2.6.31
-	help
-	  Texas Instruments Arago 2011.09 toolchain, with gcc 4.5.3,
-	  binutils 2.20.1, glibc 2.12, gdb 7.2.
-
-	  This toolchain uses -mfloat-abi=softfp (i.e can use FPU
-	  instructions, but passes floating point function arguments
-	  in integer registers), and requires a VFPv3 floating point
-	  unit to work properly. This unit is available on most
-	  Cortex-A ARM processors, but not all.
-
-config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
-	bool "Arago ARMv5 2011.09"
-	depends on BR2_arm
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	depends on !BR2_ARM_CPU_ARMV4
-	depends on BR2_ARM_EABI
-	depends on !BR2_STATIC_LIBS
-	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
-	select BR2_TOOLCHAIN_HAS_SSP
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	select BR2_INSTALL_LIBSTDCPP
-	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
-	# kernel headers: 2.6.31
-	help
-	  Texas Instruments Arago ARMv5 2011.09 toolchain, with gcc
-	  4.5.3, binutils 2.20.1, glibc 2.12, gdb 7.2.
-
-	  This toolchain uses software-floating point.
-
 endchoice
 
 choice
@@ -127,11 +82,6 @@ config BR2_TOOLCHAIN_EXTERNAL_PATH
 	help
 	  Path to where the external toolchain is installed.
 
-config BR2_TOOLCHAIN_EXTERNAL_PREFIX
-	string
-	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
-	default "arm-arago-linux-gnueabi" if BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
-
 config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	bool
 	select BR2_TOOLCHAIN_USES_GLIBC
@@ -152,6 +102,9 @@ config BR2_PACKAGE_HAS_TOOLCHAIN_EXTERNAL
 	default y
 
 config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	string
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 	string
 
 # Kept toolchains sorted as in the choice above

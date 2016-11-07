@@ -145,6 +145,18 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
+	bool "Arago ARMv7 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
+	bool "Arago ARMv5 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
 config BR2_PACKAGE_SNOWBALL_HDMISERVICE
 	bool "snowball-hdmiservice removed"
 	select BR2_LEGACY
