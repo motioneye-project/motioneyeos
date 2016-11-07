@@ -34,7 +34,7 @@ WINE_CONF_OPTS = \
 # wrapper believes what the real gcc is named, and force the tuple of
 # the external toolchain, not the one we compute in GNU_TARGET_NAME.
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
-WINE_CONF_OPTS += TARGETFLAGS="-b $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PREFIX))"
+WINE_CONF_OPTS += TARGETFLAGS="-b $(TOOLCHAIN_EXTERNAL_PREFIX)"
 endif
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_SEQ)$(BR2_PACKAGE_ALSA_LIB_RAWMIDI),yyy)
