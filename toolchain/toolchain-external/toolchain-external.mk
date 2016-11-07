@@ -4,12 +4,31 @@
 #
 ################################################################################
 
+TOOLCHAIN_EXTERNAL_ADD_TOOLCHAIN_DEPENDENCY = NO
+
+# musl does not provide an implementation for sys/queue.h or sys/cdefs.h.
+# So, add the musl-compat-headers package that will install those files,
+# into the staging directory:
+#   sys/queue.h:  header from NetBSD
+#   sys/cdefs.h:  minimalist header bundled in Buildroot
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+TOOLCHAIN_EXTERNAL_DEPENDENCIES += musl-compat-headers
+endif
+
 # All the definition that are common between the toolchain-external
 # generic package and the toolchain-external-package infrastructure
 # can be found in pkg-toolchain-external.mk
 
+# Legacy toolchains that don't use the toolchain-external-package infrastructure
+# yet. We can recognise that because no provider is set.
+ifeq ($(call qstrip,$(BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL)),)
+
+# Now we are the provider. However, we can't set it to ourselves or we'll get a
+# circular dependency. Let's set it to a target that we always depend on
+# instead.
+BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL = skeleton
+
 TOOLCHAIN_EXTERNAL_INSTALL_STAGING = YES
-TOOLCHAIN_EXTERNAL_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 # In fact, we don't need to download the toolchain, since it is already
 # available on the system, so force the site and source to be empty so
@@ -201,18 +220,9 @@ TOOLCHAIN_EXTERNAL_ACTUAL_SOURCE_TARBALL ?= \
 	$(subst -i686-pc-linux-gnu.tar.bz2,.src.tar.bz2,$(subst -i686-pc-linux-gnu-i386-linux.tar.bz2,-i686-pc-linux-gnu.src.tar.bz2,$(TOOLCHAIN_EXTERNAL_SOURCE)))
 endif
 
-# Normal handling of downloaded toolchain tarball extraction.
 ifeq ($(BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD),y)
 TOOLCHAIN_EXTERNAL_EXCLUDES = usr/lib/locale/*
 
-# As a regular package, the toolchain gets extracted in $(@D), but
-# since it's actually a fairly special package, we need it to be moved
-# into TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR.
-define TOOLCHAIN_EXTERNAL_MOVE
-	rm -rf $(TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR)
-	mkdir -p $(TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR)
-	mv $(@D)/* $(TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR)/
-endef
 TOOLCHAIN_EXTERNAL_POST_EXTRACT_HOOKS += \
 	TOOLCHAIN_EXTERNAL_MOVE
 endif
@@ -262,6 +272,10 @@ define TOOLCHAIN_EXTERNAL_INSTALL_STAGING_CMDS
 	$(TOOLCHAIN_EXTERNAL_INSTALL_GDBINIT)
 endef
 
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_MUSL),y)
+TOOLCHAIN_EXTERNAL_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_EXTERNAL_MUSL_LD_LINK
+endif
+
 # Even though we're installing things in both the staging, the host
 # and the target directory, we do everything within the
 # install-staging step, arbitrarily.
@@ -274,5 +288,17 @@ define TOOLCHAIN_EXTERNAL_INSTALL_TARGET_CMDS
 	$(TOOLCHAIN_EXTERNAL_FIXUP_UCLIBCNG_LDSO)
 endef
 
-$(eval $(generic-package))
+endif # BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
 
+
+# Since a virtual package is just a generic package, we can still
+# define commands for the legacy toolchains.
+$(eval $(virtual-package))
+
+# Ensure the external-toolchain package has a prefix defined.
+# This comes after the virtual-package definition, which checks the provider.
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL),y)
+ifeq ($(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PREFIX)),)
+$(error No prefix selected for external toolchain package $(BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL). Configuration error)
+endif
+endif

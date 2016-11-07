@@ -667,6 +667,14 @@ config BR2_TOOLCHAIN_EXTERNAL_MUSL
 	# Compatibility headers: cdefs.h, queue.h
 	select BR2_PACKAGE_MUSL_COMPAT_HEADERS
 
+# Make sure the virtual-package infra checks the provider
+config BR2_PACKAGE_HAS_TOOLCHAIN_EXTERNAL
+	bool
+	default y
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	string
+
 if BR2_TOOLCHAIN_EXTERNAL_CUSTOM
 
 choice
