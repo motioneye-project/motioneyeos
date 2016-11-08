@@ -338,6 +338,7 @@ N:	Cédric Chépied <cedric.chepied@gmail.com>
 F:	package/znc/
 
 N:	Cyril Bur <cyrilbur@gmail.com>
+F:	arch/Config.in.powerpc
 F:	package/kvm-unit-tests
 
 N:	Dagg Stompler <daggs@gmx.com>
