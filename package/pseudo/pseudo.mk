@@ -26,6 +26,12 @@ HOST_PSEUDO_CONF_OPTS = \
 	--libdir=$(HOST_DIR)/usr/lib \
 	--with-sqlite=$(HOST_DIR)/usr
 
+define HOST_PSEUDO_INSTALL_WRAPPER
+	$(INSTALL) -D -m 0755 $(HOST_PSEUDO_PKGDIR)/pseudo-wrapper \
+		$(HOST_DIR)/usr/bin/pseudo-wrapper
+endef
+HOST_PSEUDO_POST_INSTALL_HOOKS += HOST_PSEUDO_INSTALL_WRAPPER
+
 define HOST_PSEUDO_FAKEROOT_SYMLINK
 	ln -sf pseudo $(HOST_DIR)/usr/bin/fakeroot
 endef

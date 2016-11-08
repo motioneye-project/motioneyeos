@@ -1,0 +1,12 @@
+#!/bin/sh
+
+export PSEUDO_PREFIX="$(dirname "${0%/*}")"
+export PSEUDO_OPTS="-t0"
+if [ -n "${TARGET_DIR}" ]; then
+    export PSEUDO_PASSWD="${TARGET_DIR}"
+fi
+if [ -n "${BASE_DIR}" ]; then
+    export PSEUDO_LOCALSTATEDIR="${BASE_DIR}/build/.pseudodb"
+fi
+
+exec "${0%-wrapper}" "${@}"
