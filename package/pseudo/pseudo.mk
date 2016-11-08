@@ -33,7 +33,7 @@ endef
 HOST_PSEUDO_POST_INSTALL_HOOKS += HOST_PSEUDO_INSTALL_WRAPPER
 
 define HOST_PSEUDO_FAKEROOT_SYMLINK
-	ln -sf pseudo $(HOST_DIR)/usr/bin/fakeroot
+	ln -sf pseudo-wrapper $(HOST_DIR)/usr/bin/fakeroot
 endef
 HOST_PSEUDO_POST_INSTALL_HOOKS += HOST_PSEUDO_FAKEROOT_SYMLINK
 
