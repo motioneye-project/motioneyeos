@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-QT5WEBKIT_VERSION = b35917bcb44d7f200af0f4ac68a126fa0aa8d93d
-# Using GitHub since it supports downloading tarballs from random commits.
-# The http://code.qt.io/cgit/qt/qtwebkit.git/ repo doesn't allow to do so.
-QT5WEBKIT_SITE = $(call github,qtproject,qtwebkit,$(QT5WEBKIT_VERSION))
+QT5WEBKIT_VERSION = $(QT5_VERSION)
+QT5WEBKIT_SITE = $(QT5_SNAPSHOTS_SITE)
+QT5WEBKIT_SOURCE = qtwebkit-opensource-src-$(QT5WEBKIT_VERSION).tar.xz
 QT5WEBKIT_DEPENDENCIES = \
 	host-bison host-flex host-gperf host-python host-ruby \
 	qt5base sqlite
@@ -43,14 +42,7 @@ define QT5WEBKIT_PYTHON2_SYMLINK
 endef
 QT5WEBKIT_PRE_CONFIGURE_HOOKS += QT5WEBKIT_PYTHON2_SYMLINK
 
-# Since we get the source from git, generated header files are not included.
-# qmake detects that header file generation (using the syncqt tool) must be
-# done based on the existence of a .git directory (cfr. the git_build config
-# option which is set in qt_build_paths.prf).
-# So, to make sure that qmake detects that header files must be generated,
-# create an empty .git directory.
 define QT5WEBKIT_CONFIGURE_CMDS
-	mkdir -p $(@D)/.git
 	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5WEBKIT_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
