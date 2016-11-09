@@ -140,6 +140,13 @@ PYTHON_CONF_ENV += \
 	ac_cv_prog_HAS_HG=/bin/false \
 	ac_cv_prog_SVNVERSION=/bin/false
 
+# GCC is always compliant with IEEE754
+ifeq ($(BR2_ENDIAN),"LITTLE")
+PYTHON_CONF_ENV += ac_cv_little_endian_double=yes
+else
+PYTHON_CONF_ENV += ac_cv_big_endian_double=yes
+endif
+
 PYTHON_CONF_OPTS += \
 	--without-cxx-main 	\
 	--without-doc-strings	\
