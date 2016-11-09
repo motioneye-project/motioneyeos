@@ -63,6 +63,19 @@ config BR2_mips_p5600
 	bool "P5600"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+config BR2_mips_xburst
+	bool "XBurst"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R2
+	help
+	  The Ingenic XBurst is a MIPS32R2 microprocessor. It has a
+	  bug in the FPU that can generate incorrect results in
+	  certain cases. The problem shows up when you have several
+	  fused madd instructions in sequence with dependant
+	  operands. This requires the -mno-fused-madd compiler option
+	  to be used in order to prevent emitting these instructions.
+
+	  See http://www.ingenic.com/en/?xburst.html
 config BR2_mips_64
 	bool "Generic MIPS64"
 	depends on BR2_ARCH_IS_64
@@ -137,6 +150,7 @@ config BR2_GCC_TARGET_ARCH
 	default "m5101"		if BR2_mips_m5101
 	default "m6201"		if BR2_mips_m6201
 	default "p5600"		if BR2_mips_p5600
+	default "mips32r2"	if BR2_mips_xburst
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
 	default "mips64r5"	if BR2_mips_64r5
