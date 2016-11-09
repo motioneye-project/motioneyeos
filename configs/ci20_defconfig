@@ -1,6 +1,6 @@
 # architecture
 BR2_mipsel=y
-BR2_mips_32r2=y
+BR2_mips_xburst=y
 # BR2_MIPS_SOFT_FLOAT is not set
 
 # Linux headers same as kernel, a 3.18 series
