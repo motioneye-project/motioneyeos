@@ -3,18 +3,18 @@ BR2_arm=y
 BR2_arm1136jf_s=y
 BR2_ARM_EABIHF=y
 
-# Linux headers same as kernel, a 3.15 series
-BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_15=y
+# Linux headers same as kernel, a 4.1 series
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_1=y
 
 # system
 BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
 
 # kernel
 BR2_LINUX_KERNEL=y
-# Note: sadly the Linux kernel will not boot on the i.MX31 PDK, starting with
-# v3.16 and at least up to v4.0-rc4; this is why we use v3.15.y here.
-BR2_LINUX_KERNEL_CUSTOM_VERSION=y
-BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE="3.15.10"
+BR2_LINUX_KERNEL_CUSTOM_GIT=y
+BR2_LINUX_KERNEL_CUSTOM_REPO_URL="git://git.freescale.com/imx/linux-imx.git"
+BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="rel_imx_4.1.15_2.0.0_ga"
 BR2_LINUX_KERNEL_DEFCONFIG="imx_v6_v7"
+BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES="board/freescale/imx31_3stack/linux.fragment"
 BR2_TARGET_ROOTFS_CPIO_GZIP=y
 BR2_TARGET_ROOTFS_INITRAMFS=y
