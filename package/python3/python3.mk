@@ -126,6 +126,13 @@ PYTHON3_CONF_ENV += \
 	ac_cv_working_tzset=yes \
 	ac_cv_prog_HAS_HG=/bin/false
 
+# GCC is always compliant with IEEE754
+ifeq ($(BR2_ENDIAN),"LITTLE")
+PYTHON3_CONF_ENV += ac_cv_little_endian_double=yes
+else
+PYTHON3_CONF_ENV += ac_cv_big_endian_double=yes
+endif
+
 # uClibc is known to have a broken wcsftime() implementation, so tell
 # Python 3 to fall back to strftime() instead.
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
