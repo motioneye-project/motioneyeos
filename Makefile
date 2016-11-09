@@ -641,7 +641,7 @@ target-finalize: $(PACKAGES)
 		$(TARGET_DIR)/usr/lib/pkgconfig $(TARGET_DIR)/usr/share/pkgconfig \
 		$(TARGET_DIR)/usr/lib/cmake $(TARGET_DIR)/usr/share/cmake
 	find $(TARGET_DIR)/usr/{lib,share}/ -name '*.cmake' -print0 | xargs -0 rm -f
-	find $(TARGET_DIR)/lib $(TARGET_DIR)/usr/lib $(TARGET_DIR)/usr/libexec \
+	find $(TARGET_DIR)/lib/ $(TARGET_DIR)/usr/lib/ $(TARGET_DIR)/usr/libexec/ \
 		\( -name '*.a' -o -name '*.la' \) -print0 | xargs -0 rm -f
 ifneq ($(BR2_PACKAGE_GDB),y)
 	rm -rf $(TARGET_DIR)/usr/share/gdb
@@ -663,13 +663,13 @@ endif
 # besides the one in which crash occurred; or SIGTRAP kills my program when
 # I set a breakpoint"
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-	find $(TARGET_DIR)/lib -type f -name 'libpthread*.so*' | \
+	find $(TARGET_DIR)/lib/ -type f -name 'libpthread*.so*' | \
 		xargs -r $(STRIPCMD) $(STRIP_STRIP_DEBUG)
 endif
 
 # Valgrind needs ld.so with enough information, so only strip
 # debugging symbols.
-	find $(TARGET_DIR)/lib -type f -name 'ld-*.so*' | \
+	find $(TARGET_DIR)/lib/ -type f -name 'ld-*.so*' | \
 		xargs -r $(STRIPCMD) $(STRIP_STRIP_DEBUG)
 	test -f $(TARGET_DIR)/etc/ld.so.conf && \
 		{ echo "ERROR: we shouldn't have a /etc/ld.so.conf file"; exit 1; } || true
