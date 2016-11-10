@@ -17,13 +17,16 @@ output/images
 
 === Use of generated SD card image ===========================================
 
-Just write sdcard.img directly to the SD card
+To determine the device associated to the SD card have a look in the
+/proc/partitions file:
 
-***** WARNING: Double check that /dev/sdc is your MicroSD card *****
-*****      It might be /dev/sdb or some other device name      *****
-***** Failure to do so may result in you wiping your hard disk *****
+  cat /proc/partitions
 
-   # dd if=output/images/sdcard.img of=/dev/sdc bs=512
+Then, run the following command as root:
+
+*** WARNING! The command will destroy all the card content. Use with care! ***
+
+ sudo dd if=output/images/sdcard.img of=/dev/<your-microsd-device>
 
 === Manual creation of SD card image =========================================
 
