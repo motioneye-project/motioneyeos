@@ -13,7 +13,6 @@ This guide covers the following configurations:
  - atmel_sama5d3_xplained_dev_defconfig
  - atmel_sama5d3_xplained_mmc_defconfig
  - atmel_sama5d3_xplained_mmc_dev_defconfig
- - atmel_sama5d4ek_defconfig
  - atmel_sama5d4_xplained_defconfig
  - atmel_sama5d4_xplained_dev_defconfig
  - atmel_sama5d4_xplained_mmc_defconfig
