@@ -42,6 +42,7 @@ EFL_CONF_OPTS = \
 	--disable-sdl \
 	--disable-spectre \
 	--disable-xinput22 \
+	--disable-wayland \
 	--with-doxygen=no
 
 # Disable untested configuration warning.
@@ -144,13 +145,6 @@ EFL_CONF_OPTS += --with-crypto=gnutls \
 else
 EFL_CONF_OPTS += --with-crypto=none
 endif # BR2_PACKAGE_OPENSSL
-
-ifeq ($(BR2_PACKAGE_WAYLAND),y)
-EFL_DEPENDENCIES += wayland libxkbcommon
-EFL_CONF_OPTS += --enable-wayland
-else
-EFL_CONF_OPTS += --disable-wayland
-endif
 
 ifeq ($(BR2_PACKAGE_EFL_ELPUT),y)
 EFL_CONF_OPTS += --enable-elput
