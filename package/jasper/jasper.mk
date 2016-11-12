@@ -10,6 +10,7 @@ JASPER_INSTALL_STAGING = YES
 JASPER_DEPENDENCIES = jpeg
 JASPER_LICENSE = JasPer License Version 2.0
 JASPER_LICENSE_FILES = LICENSE
+JASPER_CONF_OPTS = --disable-strict
 
 # Xtensa gcc is unable to generate correct code with -O0 enabled by
 # --enable-debug. Allow package build but disable debug.
