@@ -10,7 +10,7 @@
 	qemu, ser2net, net-tools, ffmpeg, assimp, libmpeg2, ccache, mpv,
 	libxslt, python, python3, php, valgrind, guile, domoticz, efl,
 	jasper, kvmtool, go, wget, sane-backends, weston, tinymembench,
-	strace, openjpeg, lcms2.
+	strace, openjpeg, lcms2, quota.
 
 	Linux kernel: update default to 4.8.7.
 
