@@ -83,8 +83,18 @@ def get_all_versions():
 
 
 def compare_versions(version1, version2):
-    version1 = [int(n) for n in version1.split('.')]
-    version2 = [int(n) for n in version2.split('.')]
+    version1 = re.sub('[^0-9.]', '', version1)
+    version2 = re.sub('[^0-9.]', '', version2)
+    
+    def int_or_0(n):
+        try:
+            return int(n)
+        
+        except:
+            return 0
+
+    version1 = [int_or_0(n) for n in version1.split('.')]
+    version2 = [int_or_0(n) for n in version2.split('.')]
     
     len1 = len(version1)
     len2 = len(version2)

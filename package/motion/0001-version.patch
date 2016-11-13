@@ -1,0 +1,16 @@
+diff -uNr motion/version.sh motion.new/version.sh
+--- motion/version.sh	2016-11-13 12:45:14.143548855 +0200
++++ motion.new/version.sh	2016-11-13 12:45:31.683635991 +0200
+@@ -1,8 +1,9 @@
+ #!/bin/sh
+ BASE_VERSION="4.0.1"
+ if [ -d .git ]; then
+-	GIT_COMMIT=`git show -s --format=%h`
+-	printf "$BASE_VERSION+git$GIT_COMMIT"
++        GIT_COMMIT=`git show -s --format=%h`
++        printf "$BASE_VERSION+git$GIT_COMMIT"
+ else
+-	printf "$BASE_VERSION+gitUNKNOWN"
++        printf "$BASE_VERSION+git$(basename $(pwd) | cut -d '-' -f 2)"
+ fi
++
