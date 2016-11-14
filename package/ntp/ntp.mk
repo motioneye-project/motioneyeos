@@ -28,6 +28,20 @@ else
 NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+NTP_CONF_OPTS += --enable-linuxcaps
+NTP_DEPENDENCIES += libcap
+else
+NTP_CONF_OPTS += --disable-linuxcaps
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEDIT),y)
+NTP_CONF_OPTS += --with-lineeditlibs=edit
+NTP_DEPENDENCIES += libedit
+else
+NTP_CONF_OPTS += --without-lineeditlibs
+endif
+
 ifeq ($(BR2_PACKAGE_NTP_NTPSNMPD),y)
 NTP_CONF_OPTS += \
 	--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
