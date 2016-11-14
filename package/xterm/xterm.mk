@@ -22,4 +22,11 @@ else
 XTERM_CONF_OPTS += --disable-freetype
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
+XTERM_DEPENDENCIES += xlib_libXinerama
+XTERM_CONF_OPTS += --with-xinerama
+else
+XTERM_CONF_OPTS += --without-xinerama
+endif
+
 $(eval $(autotools-package))
