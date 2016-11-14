@@ -17,56 +17,56 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/thirdparty/CMakeLists.txt b/thirdparty/CMakeLists.txt
-index d1e68ca..225f51d 100644
+index cb24b43b58e2..cd6a5e1391b0 100644
 --- a/thirdparty/CMakeLists.txt
 +++ b/thirdparty/CMakeLists.txt
 @@ -1,5 +1,9 @@
  # 3rd party libs
  
-+IF(NOT BUILD_THIRDPARTY)
++if(NOT BUILD_THIRDPARTY)
 +  include(FindPkgConfig)
-+ENDIF(NOT BUILD_THIRDPARTY)
++endif(NOT BUILD_THIRDPARTY)
 +
  #------------
  # Try to find lib Z
- IF(BUILD_THIRDPARTY)
-@@ -35,6 +39,9 @@ IF(BUILD_THIRDPARTY)
-   SET(PNG_INCLUDE_DIRNAME ${OPENJPEG_SOURCE_DIR}/thirdparty/libpng PARENT_SCOPE)
- ELSE (BUILD_THIRDPARTY)
-   IF (ZLIB_FOUND)
+ if(BUILD_THIRDPARTY)
+@@ -36,6 +40,9 @@ if(BUILD_THIRDPARTY)
+ else(BUILD_THIRDPARTY)
+   if(ZLIB_FOUND)
+     find_package(PNG)
 +    # Static only build:
 +    #   it is not necessary to invoke pkg_check_module on libpng, because libpng
 +    #   only depends on zlib, which is already checked.
-     FIND_PACKAGE(PNG)
-     IF(PNG_FOUND)
+     if(PNG_FOUND)
        message(STATUS "Your system seems to have a PNG lib available, we will use it")
-@@ -66,12 +73,24 @@ IF(BUILD_THIRDPARTY)
-   SET(OPJ_HAVE_LIBTIFF 1 PARENT_SCOPE)
- ELSE (BUILD_THIRDPARTY)
-   FIND_PACKAGE(TIFF)
+       set(OPJ_HAVE_PNG_H 1 PARENT_SCOPE)
+@@ -66,12 +73,24 @@ if(BUILD_THIRDPARTY)
+   set(OPJ_HAVE_LIBTIFF 1 PARENT_SCOPE)
+ else(BUILD_THIRDPARTY)
+   find_package(TIFF)
 +  # Static only build:
 +  #   it is necessary to invoke pkg_check_module on libtiff since it may have
 +  #   several other dependencies not declared by its cmake module, but they are
 +  #   in the its pkgconfig module.
-+  IF(PKG_CONFIG_FOUND)
-+    FOREACH(pc_tiff_module tiff tiff3 tiff4 tiff-3 tiff-4 libtiff libtiff3 libtiff4 libtiff-3 libtiff-4)
++  if(PKG_CONFIG_FOUND)
++    foreach(pc_tiff_module tiff tiff3 tiff4 tiff-3 tiff-4 libtiff libtiff3 libtiff4 libtiff-3 libtiff-4)
 +      pkg_check_modules(PC_TIFF QUIET ${pc_tiff_module})
-+      IF(PC_TIFF_FOUND)
++      if(PC_TIFF_FOUND)
 +        break()
-+      ENDIF(PC_TIFF_FOUND)
-+    ENDFOREACH()
-+  ENDIF(PKG_CONFIG_FOUND)
-   IF(TIFF_FOUND)
++      endif(PC_TIFF_FOUND)
++    endforeach()
++  endif(PKG_CONFIG_FOUND)
+   if(TIFF_FOUND)
      message(STATUS "Your system seems to have a TIFF lib available, we will use it")
-     SET(OPJ_HAVE_TIFF_H 1 PARENT_SCOPE)
-     SET(OPJ_HAVE_LIBTIFF 1 PARENT_SCOPE)
--    SET(TIFF_LIBNAME ${TIFF_LIBRARIES} PARENT_SCOPE)
--    SET(TIFF_INCLUDE_DIRNAME ${TIFF_INCLUDE_DIR} PARENT_SCOPE)
-+    SET(TIFF_LIBNAME ${TIFF_LIBRARIES} ${PC_TIFF_STATIC_LIBRARIES} PARENT_SCOPE)
-+    SET(TIFF_INCLUDE_DIRNAME ${TIFF_INCLUDE_DIR} ${PC_TIFF_STATIC_INCLUDE_DIRS} PARENT_SCOPE)
-   ELSE (TIFF_FOUND) # not found
-     SET(OPJ_HAVE_TIFF_H 0 PARENT_SCOPE)
-     SET(OPJ_HAVE_LIBTIFF 0 PARENT_SCOPE)
+     set(OPJ_HAVE_TIFF_H 1 PARENT_SCOPE)
+     set(OPJ_HAVE_LIBTIFF 1 PARENT_SCOPE)
+-    set(TIFF_LIBNAME ${TIFF_LIBRARIES} PARENT_SCOPE)
+-    set(TIFF_INCLUDE_DIRNAME ${TIFF_INCLUDE_DIR} PARENT_SCOPE)
++    set(TIFF_LIBNAME ${TIFF_LIBRARIES} ${PC_TIFF_STATIC_LIBRARIES} PARENT_SCOPE)
++    set(TIFF_INCLUDE_DIRNAME ${TIFF_INCLUDE_DIR} ${PC_TIFF_STATIC_INCLUDE_DIRS} PARENT_SCOPE)
+   else(TIFF_FOUND) # not found
+     set(OPJ_HAVE_TIFF_H 0 PARENT_SCOPE)
+     set(OPJ_HAVE_LIBTIFF 0 PARENT_SCOPE)
 -- 
 2.10.2
 
