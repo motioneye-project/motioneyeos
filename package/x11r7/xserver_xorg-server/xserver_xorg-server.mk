@@ -168,11 +168,11 @@ XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev-kms
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-config-udev-kms
 endif
-else
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-dbus
-endif
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
