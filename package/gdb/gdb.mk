@@ -100,6 +100,13 @@ GDB_CONF_OPTS = \
 	--disable-werror \
 	--enable-static
 
+# When gdb is built as C++ application for ARC it segfaults at runtime
+# So we pass --disable-build-with-cxx config option to force gdb not to
+# be built as C++ app.
+ifeq ($(BR2_arc),y)
+GDB_CONF_OPTS += --disable-build-with-cxx
+endif
+
 ifeq ($(BR2_PACKAGE_GDB_TUI),y)
 GDB_CONF_OPTS += --enable-tui
 else
