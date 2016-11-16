@@ -51,6 +51,12 @@ endif
 # for util/subst.c to build properly.
 E2FSPROGS_CONF_ENV += BUILD_CFLAGS="-DHAVE_SYS_STAT_H"
 
+# Disable use of the host magic.h, as on older hosts (e.g. RHEL 5)
+# it doesn't provide definitions expected by e2fsprogs support lib.
+HOST_E2FSPROGS_CONF_ENV += \
+	ac_cv_header_magic_h=no \
+	ac_cv_lib_magic_magic_file=no
+
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 # util-linux libuuid pulls in libintl if needed, so ensure we also
 # link against it, otherwise static linking fails
