@@ -3,7 +3,7 @@ menuconfig BR2_PACKAGE_TIFF
 	help
 	  Library for handling TIFF (Tag Image File Format) images.
 
-	  http://www.remotesensing.org/libtiff/
+	  http://simplesystems.org/libtiff/
 
 if BR2_PACKAGE_TIFF
 
