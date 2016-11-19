@@ -3,4 +3,4 @@ config BR2_PACKAGE_HOST_DOSFSTOOLS
 	help
 	  Tools for creating and checking DOS FAT filesystems.
 
-	  http://www.daniel-baumann.ch/software/dosfstools/
+	  https://github.com/dosfstools/dosfstools
