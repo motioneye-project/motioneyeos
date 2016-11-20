@@ -10,7 +10,7 @@ Index: qextserialport-ef4af2a2ee3f/qextserialport.pc
 +prefix=/usr
 +exec_prefix=${prefix}
 +libdir=${prefix}/lib
-+includedir=${prefix}/include/QExtSerialPort
++includedir=${prefix}/include/QtExtSerialPort
 +
 +Name: QtExtSerialPort
 +Description: QtExtSerialPort library

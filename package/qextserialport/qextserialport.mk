@@ -27,10 +27,8 @@ define QEXTSERIALPORT_BUILD_CMDS
 endef
 
 define QEXTSERIALPORT_INSTALL_STAGING_CMDS
-	mkdir -p $(STAGING_DIR)/usr/include/QExtSerialPort
-	cp $(@D)/src/*.h $(STAGING_DIR)/usr/include/QExtSerialPort/
-	cp $(@D)/src/QExtSerialPort $(STAGING_DIR)/usr/include/QExtSerialPort/
-	cp -a $(@D)/*.so* $(STAGING_DIR)/usr/lib/
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
+	cp $(@D)/src/QExtSerialPort $(STAGING_DIR)/usr/include/QtExtSerialPort/
 	cp $(@D)/qextserialport.pc $(STAGING_DIR)/usr/lib/pkgconfig/
 endef
 
