@@ -31,6 +31,9 @@ else
 OPENBLAS_MAKE_OPTS += USE_THREAD=0
 endif
 
+# We don't know if OpenMP is available or not, so disable
+OPENBLAS_MAKE_OPTS += USE_OPENMP=0
+
 # Static-only/Shared-only toggle
 ifeq ($(BR2_STATIC_LIBS),y)
 OPENBLAS_MAKE_OPTS += NO_SHARED=1
