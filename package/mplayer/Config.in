@@ -6,6 +6,9 @@ config BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
 		|| BR2_m68k || BR2_microblaze || BR2_nios2)
 	# Broken support for <ARMv5
 	depends on !BR2_ARM_CPU_ARMV4
+	# configure script barfs on the -Wl,-elf2flt we add in the toolchain
+	# wrapper, so just disable completely for FLAT
+	depends on !BR2_BINFMT_FLAT
 
 config BR2_PACKAGE_MPLAYER
 	bool "mplayer"
