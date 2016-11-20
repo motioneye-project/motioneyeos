@@ -217,8 +217,8 @@ illustration, of course):
   |     `----
   |
   |- Config.in
-  |     |source "$BR2_EXTERNAL_BAR_42_DIR/package/pkg-1/Config.in
-  |     |source "$BR2_EXTERNAL_BAR_42_DIR/package/pkg-2/Config.in
+  |     |source "$BR2_EXTERNAL_BAR_42_PATH/package/pkg-1/Config.in"
+  |     |source "$BR2_EXTERNAL_BAR_42_PATH/package/pkg-2/Config.in"
   |     |
   |     |config BAR_42_FLASH_ADDR
   |     |    hex "my-board flash address"
@@ -229,7 +229,7 @@ illustration, of course):
   |     |include $(sort $(wildcard $(BR2_EXTERNAL_BAR_42_PATH)/package/*/*.mk))
   |     |
   |     |flash-my-board:
-  |     |    $(BR2_EXTERNAL_BAR_42_DIR)/board/my-board/flash-image \
+  |     |    $(BR2_EXTERNAL_BAR_42_PATH)/board/my-board/flash-image \
   |     |        --image $(BINARIES_DIR)/image.bin \
   |     |        --address $(BAR_42_FLASH_ADDR)
   |     `----
