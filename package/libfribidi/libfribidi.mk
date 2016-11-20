@@ -15,7 +15,7 @@ LIBFRIBIDI_INSTALL_STAGING = YES
 LIBFRIBIDI_AUTORECONF = YES
 LIBFRIBIDI_DEPENDENCIES = host-pkgconf
 # libglib2 dependency causes a build failure, and this optional
-# dependency is going to be removed usptream, see
+# dependency is going to be removed upstream, see
 # https://github.com/behdad/fribidi/pull/14
 LIBFRIBIDI_CONF_OPTS = --with-glib=no
 
