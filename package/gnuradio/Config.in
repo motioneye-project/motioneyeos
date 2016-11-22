@@ -49,6 +49,7 @@ config BR2_PACKAGE_GNURADIO_CTRLPORT
 config BR2_PACKAGE_GNURADIO_FEC
 	bool "gr-fec support"
 	select BR2_PACKAGE_GNURADIO_BLOCKS
+	select BR2_PACKAGE_GSL
 	help
 	  FEC signal processing blocks
 
