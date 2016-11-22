@@ -36,7 +36,8 @@ HOST_PYTHON3_CONF_OPTS += 	\
 	--enable-unicodedata	\
 	--disable-test-modules	\
 	--disable-idle3		\
-	--disable-ossaudiodev
+	--disable-ossaudiodev	\
+	--disable-openssl
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
