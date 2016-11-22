@@ -18,6 +18,10 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 TROUSERS_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_arc770d)$(BR2_arc750d),y)
+TROUSERS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mno-compact-casesi"
+endif
+
 # The TrouSerS build system attempts to create the tss user and group
 # on the host system. Disable the user checking feature as a
 # workaround.
