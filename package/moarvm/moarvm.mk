@@ -25,6 +25,11 @@ MOARVM_CONF_OPTS = \
 	--has-libtommath \
 	--has-libatomic
 
+ifeq ($(BR2_PACKAGE_LIBFFI),y)
+MOARVM_CONF_OPTS += --has-libffi
+MOARVM_DEPENDENCIES += libffi
+endif
+
 ifeq ($(BR2_ENDIAN),"BIG")
 MOARVM_CONF_OPTS += --big-endian
 endif
