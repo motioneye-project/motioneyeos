@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_PACKAGE_MAKEDEVS
+	bool "makedevs removed"
+	select BR2_LEGACY
+	help
+	  The makedevs tool is part of busybox. The Buildroot fork
+	  should not be used outside of the Buildroot infrastructure.
+
 config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
 	bool "Arago ARMv7 2011.09 removed"
 	select BR2_LEGACY
