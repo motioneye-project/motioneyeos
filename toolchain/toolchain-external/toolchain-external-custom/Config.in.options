@@ -59,6 +59,17 @@ config BR2_TOOLCHAIN_EXTERNAL_GCC_4_3
 	bool "4.3.x"
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
 
+config BR2_TOOLCHAIN_EXTERNAL_GCC_OLD
+	bool "older"
+	help
+	  Use this option if your GCC version is older than any of the
+	  above.
+
+	  Note that the Buildroot community doesn't do any testing with
+	  such old toolchains. Some packages may fail to build in
+	  surprising ways, or the generated root filesystem may not
+	  work at all. Use such old toolchains at your own risk.
+
 endchoice
 
 choice
