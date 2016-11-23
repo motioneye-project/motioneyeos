@@ -107,4 +107,9 @@ comment "FDT support needs a toolchain w/ dynamic library"
 
 endif # BR2_PACKAGE_QEMU_HAS_EMULS
 
+config BR2_PACKAGE_QEMU_TOOLS
+	bool "Enable tools"
+	help
+	  Say 'y' here to include tools packaged with QEMU (e.g. qemu-img).
+
 endif # BR2_PACKAGE_QEMU
