@@ -34,6 +34,8 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       mips64          mips64
 #       mips64el        mips64el
 #       powerpc         ppc
+#       powerpc64       ppc64
+#       powerpc64le     ppc64 (ppc64 supports little-endian)
 #       sh2a            not supported
 #       sh4             sh4
 #       sh4eb           sh4eb
@@ -54,6 +56,12 @@ HOST_QEMU_ARCH = i386
 endif
 ifeq ($(HOST_QEMU_ARCH),powerpc)
 HOST_QEMU_ARCH = ppc
+endif
+ifeq ($(HOST_QEMU_ARCH),powerpc64)
+HOST_QEMU_ARCH = ppc64
+endif
+ifeq ($(HOST_QEMU_ARCH),powerpc64le)
+HOST_QEMU_ARCH = ppc64
 endif
 ifeq ($(HOST_QEMU_ARCH),sh4a)
 HOST_QEMU_ARCH = sh4
