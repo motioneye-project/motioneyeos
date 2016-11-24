@@ -87,6 +87,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_OLA_RDM_TESTS),y)
 OLA_CONF_OPTS += --enable-rdm-tests
+OLA_DEPENDENCIES += python-numpy
+# needed as numpy builds some shared libraries and ola checks for
+# numpy using a host python test program which fails with 'wrong ELF
+# class'.
+OLA_CONF_ENV = ac_cv_have_pymod_numpy=yes
 else
 OLA_CONF_OPTS += --disable-rdm-tests
 endif
