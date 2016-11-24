@@ -81,6 +81,7 @@ start() {
     module=$(basename $(readlink /sys/class/net/$os_wlan/device/driver/module 2>/dev/null) 2>/dev/null)
 
     iwconfig $os_wlan power off &> /dev/null
+    iw $os_wlan set power_save off &> /dev/null
     $prog -i$os_wlan -c$conf -D$driver -B &> $log
     count=0
     while true; do
