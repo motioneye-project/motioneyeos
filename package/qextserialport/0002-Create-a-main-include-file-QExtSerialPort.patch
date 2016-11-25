@@ -28,16 +28,13 @@ diff --git a/src/qextserialport.pri b/src/qextserialport.pri
 index 461d56f..f8a678d 100644
 --- a/src/qextserialport.pri
 +++ b/src/qextserialport.pri
-@@ -3,7 +3,8 @@ DEPENDPATH += $$PWD
+@@ -3,7 +3,8 @@
  
  PUBLIC_HEADERS         += $$PWD/qextserialport.h \
                            $$PWD/qextserialenumerator.h \
 -                          $$PWD/qextserialport_global.h
 +                          $$PWD/qextserialport_global.h \
-+                          $$PWD/QExtSerialPort
++			  $$PWD/QExtSerialPort
  
  HEADERS                += $$PUBLIC_HEADERS \
                            $$PWD/qextserialport_p.h \
--- 
-2.10.2
-
