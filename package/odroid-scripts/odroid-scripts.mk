@@ -29,8 +29,8 @@ define ODROID_SCRIPTS_INSTALL_INIT_SYSTEMD
 endef
 
 define ODROID_SCRIPTS_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 0755 package/odroid-scripts/S50odroidc2_fb \
-		$(TARGET_DIR)/etc/init.d/S50odroidc2_fb
+	$(INSTALL) -D -m 0755 package/odroid-scripts/S02odroidc2_fb \
+		$(TARGET_DIR)/etc/init.d/S02odroidc2_fb
 endef
 
 $(eval $(generic-package))
