@@ -1,12 +1,5 @@
 #!/bin/sh
 
-if [ "${0##*/}" = "fakeroot" ]; then
-    cat >&2 <<-_EOF_
-	WARNING: fakeroot has been replaced with pseudo.
-	WARNING: Update your script(s) to use pseudo or pseudo-wrapper instead.
-	_EOF_
-fi
-
 export PSEUDO_PREFIX="$(dirname "${0%/*}")"
 export PSEUDO_OPTS="-t0"
 if [ -n "${TARGET_DIR}" ]; then
@@ -16,4 +9,4 @@ if [ -n "${BASE_DIR}" ]; then
     export PSEUDO_LOCALSTATEDIR="${BASE_DIR}/build/.pseudodb"
 fi
 
-exec "${0%/*}/pseudo" "${@}"
+exec "${0%-wrapper}" "${@}"
