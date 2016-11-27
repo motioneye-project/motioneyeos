@@ -1,0 +1,39 @@
+From 42e260a7ab630fdfa4664f467dad25e7178ff809 Mon Sep 17 00:00:00 2001
+From: Adam Jackson <ajax@redhat.com>
+Date: Tue, 19 Jul 2016 10:03:56 -0400
+Subject: Adapt Block/WakeupHandler signature for ABI 23
+
+Signed-off-by: Adam Jackson <ajax@redhat.com>
+---
+Downloaded from
+https://cgit.freedesktop.org/xorg/driver/xf86-video-nv/commit/?id=42e260a7ab630fdfa4664f467dad25e7178ff809
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff --git a/src/compat-api.h b/src/compat-api.h
+index 0a87cf5..62d9481 100644
+--- a/src/compat-api.h
++++ b/src/compat-api.h
+@@ -78,11 +78,19 @@
+ 
+ #define SCREEN_INIT_ARGS_DECL ScreenPtr pScreen, int argc, char **argv
+ 
++#if ABI_VIDEODRV_VERSION >= SET_ABI_VERSION(23, 0)
++#define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer pTimeout
++#define BLOCKHANDLER_ARGS arg, pTimeout
++
++#define WAKEUPHANDLER_ARGS_DECL ScreenPtr arg, unsigned long result
++#define WAKEUPHANDLER_ARGS arg, result
++#else
+ #define BLOCKHANDLER_ARGS_DECL ScreenPtr arg, pointer pTimeout, pointer pReadmask
+ #define BLOCKHANDLER_ARGS arg, pTimeout, pReadmask
+ 
+ #define WAKEUPHANDLER_ARGS_DECL ScreenPtr arg, unsigned long result, pointer read_mask
+ #define WAKEUPHANDLER_ARGS arg, result, read_mask
++#endif
+ 
+ #define CLOSE_SCREEN_ARGS_DECL ScreenPtr pScreen
+ #define CLOSE_SCREEN_ARGS pScreen
+-- 
+cgit v0.10.2
+
