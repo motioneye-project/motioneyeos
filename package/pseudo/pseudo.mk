@@ -26,9 +26,4 @@ HOST_PSEUDO_CONF_OPTS = \
 	--libdir=$(HOST_DIR)/usr/lib \
 	--with-sqlite=$(HOST_DIR)/usr
 
-define HOST_PSEUDO_FAKEROOT_SYMLINK
-	ln -sf pseudo $(HOST_DIR)/usr/bin/fakeroot
-endef
-HOST_PSEUDO_POST_INSTALL_HOOKS += HOST_PSEUDO_FAKEROOT_SYMLINK
-
 $(eval $(host-autotools-package))
