@@ -601,7 +601,6 @@ int main(int argc, char **argv)
 			dev_t rdev;
 			unsigned i;
 			char *full_name_inc;
-			struct stat st;
 
 			if (type == 'p') {
 				mode |= S_IFIFO;
@@ -623,23 +622,10 @@ int main(int argc, char **argv)
 			for (i = start; i <= start + count; i++) {
 				sprintf(full_name_inc, count ? "%s%u" : "%s", full_name, i);
 				rdev = makedev(major, minor + (i - start) * increment);
-				if (stat(full_name_inc, &st) == 0) {
-					if ((mode & S_IFMT) != (st.st_mode & S_IFMT)) {
-						bb_error_msg("line %d: node %s exists but is of wrong file type", linenum, full_name_inc);
-						ret = EXIT_FAILURE;
-						continue;
-					}
-					if (st.st_rdev != rdev) {
-						bb_error_msg("line %d: node %s exists but is wrong device number", linenum, full_name_inc);
-						ret = EXIT_FAILURE;
-						continue;
-					}
-				} else if (mknod(full_name_inc, mode, rdev) < 0) {
+				if (mknod(full_name_inc, mode, rdev) < 0) {
 					bb_perror_msg("line %d: can't create node %s", linenum, full_name_inc);
 					ret = EXIT_FAILURE;
-					continue;
-				}
-				if (chown(full_name_inc, uid, gid) < 0) {
+				} else if (chown(full_name_inc, uid, gid) < 0) {
 					bb_perror_msg("line %d: can't chown %s", linenum, full_name_inc);
 					ret = EXIT_FAILURE;
 				} else if (chmod(full_name_inc, mode) < 0) {
