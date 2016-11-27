@@ -1,0 +1,50 @@
+From af7f70e60e364b551c2589dee5fb458a83fa0e7e Mon Sep 17 00:00:00 2001
+From: Matthew Waters <matthew@centricular.com>
+Date: Tue, 22 Nov 2016 23:46:00 +1100
+Subject: [PATCH] flxdec: fix some warnings comparing unsigned < 0
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+bf43f44fcfada5ec4a3ce60cb374340486fe9fac was comparing an unsigned
+expression to be < 0 which was always false.
+
+gstflxdec.c: In function ‘flx_decode_brun’:
+gstflxdec.c:322:33: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
+         if ((glong) row - count < 0) {
+                                 ^
+gstflxdec.c:332:33: warning: comparison of unsigned expression < 0 is always false [-Wtype-limits]
+         if ((glong) row - count < 0) {
+                                 ^
+
+https://bugzilla.gnome.org/show_bug.cgi?id=774834
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst/flx/gstflxdec.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gst/flx/gstflxdec.c b/gst/flx/gstflxdec.c
+index d51a8e6..e675c99 100644
+--- a/gst/flx/gstflxdec.c
++++ b/gst/flx/gstflxdec.c
+@@ -319,7 +319,7 @@ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+       if (count > 0x7f) {
+         /* literal run */
+         count = 0x100 - count;
+-        if ((glong) row - count < 0) {
++        if ((glong) row - (glong) count < 0) {
+           GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
+           return FALSE;
+         }
+@@ -329,7 +329,7 @@ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+           *dest++ = *data++;
+ 
+       } else {
+-        if ((glong) row - count < 0) {
++        if ((glong) row - (glong) count < 0) {
+           GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
+           return FALSE;
+         }
+-- 
+2.10.2
+

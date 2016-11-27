@@ -1,0 +1,1039 @@
+From 7c7a9f8df1b545eec1ef4461b742c3696d4d0e9e Mon Sep 17 00:00:00 2001
+From: Matthew Waters <matthew@centricular.com>
+Date: Wed, 23 Nov 2016 07:09:06 +1100
+Subject: [PATCH] flxdec: rewrite logic based on GstByteReader/Writer
+
+Solves overreading/writing the given arrays and will error out if the
+streams asks to do that.
+
+Also does more error checking that the stream is valid and won't
+overrun any allocated arrays.  Also mitigate integer overflow errors
+calculating allocation sizes.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=774859
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst/flx/flx_color.c |   1 -
+ gst/flx/flx_fmt.h   |  72 -------
+ gst/flx/gstflxdec.c | 610 ++++++++++++++++++++++++++++++++++++----------------
+ gst/flx/gstflxdec.h |   4 +-
+ 4 files changed, 427 insertions(+), 260 deletions(-)
+
+diff --git a/gst/flx/flx_color.c b/gst/flx/flx_color.c
+index 047bfdf..3a58135 100644
+--- a/gst/flx/flx_color.c
++++ b/gst/flx/flx_color.c
+@@ -101,7 +101,6 @@ flx_set_palette_vector (FlxColorSpaceConverter * flxpal, guint start, guint num,
+   } else {
+     memcpy (&flxpal->palvec[start * 3], newpal, grab * 3);
+   }
+-
+ }
+ 
+ void
+diff --git a/gst/flx/flx_fmt.h b/gst/flx/flx_fmt.h
+index 9ab31ba..abff200 100644
+--- a/gst/flx/flx_fmt.h
++++ b/gst/flx/flx_fmt.h
+@@ -123,78 +123,6 @@ typedef struct _FlxFrameType
+ } FlxFrameType;
+ #define FlxFrameTypeSize 10
+ 
+-#if G_BYTE_ORDER == G_BIG_ENDIAN 
+-#define LE_TO_BE_16(i16) ((guint16) (((i16) << 8) | ((i16) >> 8)))
+-#define LE_TO_BE_32(i32) \
+-    (((guint32) (LE_TO_BE_16((guint16) (i32))) << 16) | (LE_TO_BE_16((i32) >> 16)))
+-
+-#define FLX_FRAME_TYPE_FIX_ENDIANNESS(frm_type_p) \
+-    do { \
+-     (frm_type_p)->chunks = LE_TO_BE_16((frm_type_p)->chunks); \
+-     (frm_type_p)->delay = LE_TO_BE_16((frm_type_p)->delay); \
+-    } while(0)
+-
+-#define FLX_HUFFMAN_TABLE_FIX_ENDIANNESS(hffmn_table_p) \
+-    do { \
+-     (hffmn_table_p)->codelength = \
+-	LE_TO_BE_16((hffmn_table_p)->codelength); \
+-     (hffmn_table_p)->numcodes = LE_TO_BE_16((hffmn_table_p)->numcodes); \
+-    } while(0)
+-
+-#define FLX_SEGMENT_TABLE_FIX_ENDIANNESS(sgmnt_table_p) \
+-     ((sgmnt_table_p)->segments = LE_TO_BE_16((sgmnt_table_p)->segments))
+-
+-#define FLX_PREFIX_CHUNK_FIX_ENDIANNESS(prfx_chnk_p) \
+-    do { \
+-     (prfx_chnk_p)->chunks = LE_TO_BE_16((prfx_chnk_p)->chunks); \
+-    } while(0)
+-
+-#define FLX_FRAME_CHUNK_FIX_ENDIANNESS(frm_chnk_p) \
+-    do { \
+-     (frm_chnk_p)->size = LE_TO_BE_32((frm_chnk_p)->size); \
+-     (frm_chnk_p)->id = LE_TO_BE_16((frm_chnk_p)->id); \
+-    } while(0)
+-
+-#define FLX_HDR_FIX_ENDIANNESS(hdr_p) \
+-    do { \
+-     (hdr_p)->size = LE_TO_BE_32((hdr_p)->size); \
+-     (hdr_p)->type = LE_TO_BE_16((hdr_p)->type); \
+-     (hdr_p)->frames = LE_TO_BE_16((hdr_p)->frames); \
+-     (hdr_p)->width = LE_TO_BE_16((hdr_p)->width); \
+-     (hdr_p)->height = LE_TO_BE_16((hdr_p)->height); \
+-     (hdr_p)->depth = LE_TO_BE_16((hdr_p)->depth); \
+-     (hdr_p)->flags = LE_TO_BE_16((hdr_p)->flags); \
+-     (hdr_p)->speed = LE_TO_BE_32((hdr_p)->speed); \
+-     (hdr_p)->reserved1 = LE_TO_BE_16((hdr_p)->reserved1); \
+-     (hdr_p)->created = LE_TO_BE_32((hdr_p)->created); \
+-     (hdr_p)->creator = LE_TO_BE_32((hdr_p)->creator); \
+-     (hdr_p)->updated = LE_TO_BE_32((hdr_p)->updated); \
+-     (hdr_p)->updater = LE_TO_BE_32((hdr_p)->updater); \
+-     (hdr_p)->aspect_dx = LE_TO_BE_16((hdr_p)->aspect_dx); \
+-     (hdr_p)->aspect_dy = LE_TO_BE_16((hdr_p)->aspect_dy); \
+-     (hdr_p)->ext_flags = LE_TO_BE_16((hdr_p)->ext_flags); \
+-     (hdr_p)->keyframes = LE_TO_BE_16((hdr_p)->keyframes); \
+-     (hdr_p)->totalframes = LE_TO_BE_16((hdr_p)->totalframes); \
+-     (hdr_p)->req_memory = LE_TO_BE_32((hdr_p)->req_memory); \
+-     (hdr_p)->max_regions = LE_TO_BE_16((hdr_p)->max_regions); \
+-     (hdr_p)->transp_num = LE_TO_BE_16((hdr_p)->transp_num); \
+-     (hdr_p)->oframe1 = LE_TO_BE_32((hdr_p)->oframe1); \
+-     (hdr_p)->oframe2 = LE_TO_BE_32((hdr_p)->oframe2); \
+-    } while(0)
+-#else
+-
+-#define LE_TO_BE_16(i16) ((i16))
+-#define LE_TO_BE_32(i32) ((i32))
+-
+-#define FLX_FRAME_TYPE_FIX_ENDIANNESS(frm_type_p)
+-#define FLX_HUFFMAN_TABLE_FIX_ENDIANNESS(hffmn_table_p)
+-#define FLX_SEGMENT_TABLE_FIX_ENDIANNESS(sgmnt_table_p)
+-#define FLX_PREFIX_CHUNK_FIX_ENDIANNESS(prfx_chnk_p)
+-#define FLX_FRAME_CHUNK_FIX_ENDIANNESS(frm_chnk_p)
+-#define FLX_HDR_FIX_ENDIANNESS(hdr_p)
+-
+-#endif /* G_BYTE_ORDER == G_BIG_ENDIAN */
+-
+ G_END_DECLS
+ 
+ #endif /* __GST_FLX_FMT_H__ */
+diff --git a/gst/flx/gstflxdec.c b/gst/flx/gstflxdec.c
+index a237976..aa1bed5 100644
+--- a/gst/flx/gstflxdec.c
++++ b/gst/flx/gstflxdec.c
+@@ -1,5 +1,6 @@
+ /* GStreamer
+  * Copyright (C) <1999> Erik Walthinsen <omega@temple-baptist.com>
++ * Copyright (C) <2016> Matthew Waters <matthew@centricular.com>
+  *
+  * This library is free software; you can redistribute it and/or
+  * modify it under the terms of the GNU Library General Public
+@@ -24,6 +25,7 @@
+ /*
+  * http://www.coolutils.com/Formats/FLI
+  * http://woodshole.er.usgs.gov/operations/modeling/flc.html
++ * http://www.compuphase.com/flic.htm
+  */
+ 
+ #ifdef HAVE_CONFIG_H
+@@ -73,10 +75,14 @@ static GstStateChangeReturn gst_flxdec_change_state (GstElement * element,
+ static gboolean gst_flxdec_src_query_handler (GstPad * pad, GstObject * parent,
+     GstQuery * query);
+ 
+-static void flx_decode_color (GstFlxDec *, guchar *, guchar *, gint);
+-static gboolean flx_decode_brun (GstFlxDec *, guchar *, guchar *);
+-static gboolean flx_decode_delta_fli (GstFlxDec *, guchar *, guchar *);
+-static gboolean flx_decode_delta_flc (GstFlxDec *, guchar *, guchar *);
++static gboolean flx_decode_color (GstFlxDec * flxdec, GstByteReader * reader,
++    GstByteWriter * writer, gint scale);
++static gboolean flx_decode_brun (GstFlxDec * flxdec,
++    GstByteReader * reader, GstByteWriter * writer);
++static gboolean flx_decode_delta_fli (GstFlxDec * flxdec,
++    GstByteReader * reader, GstByteWriter * writer);
++static gboolean flx_decode_delta_flc (GstFlxDec * flxdec,
++    GstByteReader * reader, GstByteWriter * writer);
+ 
+ #define rndalign(off) ((off) + ((off) & 1))
+ 
+@@ -204,57 +210,59 @@ gst_flxdec_sink_event_handler (GstPad * pad, GstObject * parent,
+ }
+ 
+ static gboolean
+-flx_decode_chunks (GstFlxDec * flxdec, gulong count, guchar * data,
+-    guchar * dest)
++flx_decode_chunks (GstFlxDec * flxdec, gulong n_chunks, GstByteReader * reader,
++    GstByteWriter * writer)
+ {
+-  FlxFrameChunk *hdr;
+   gboolean ret = TRUE;
+ 
+-  g_return_val_if_fail (data != NULL, FALSE);
+-
+-  while (count--) {
+-    hdr = (FlxFrameChunk *) data;
+-    FLX_FRAME_CHUNK_FIX_ENDIANNESS (hdr);
+-    data += FlxFrameChunkSize;
++  while (n_chunks--) {
++    GstByteReader chunk;
++    guint32 size;
++    guint16 type;
++
++    if (!gst_byte_reader_get_uint32_le (reader, &size))
++      goto parse_error;
++    if (!gst_byte_reader_get_uint16_le (reader, &type))
++      goto parse_error;
++    GST_LOG_OBJECT (flxdec, "chunk has type 0x%02x size %d", type, size);
++
++    if (!gst_byte_reader_get_sub_reader (reader, &chunk,
++            size - FlxFrameChunkSize)) {
++      GST_ERROR_OBJECT (flxdec, "Incorrect size in the chunk header");
++      goto error;
++    }
+ 
+-    switch (hdr->id) {
++    switch (type) {
+       case FLX_COLOR64:
+-        flx_decode_color (flxdec, data, dest, 2);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        ret = flx_decode_color (flxdec, &chunk, writer, 2);
+         break;
+ 
+       case FLX_COLOR256:
+-        flx_decode_color (flxdec, data, dest, 0);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        ret = flx_decode_color (flxdec, &chunk, writer, 0);
+         break;
+ 
+       case FLX_BRUN:
+-        ret = flx_decode_brun (flxdec, data, dest);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        ret = flx_decode_brun (flxdec, &chunk, writer);
+         break;
+ 
+       case FLX_LC:
+-        ret = flx_decode_delta_fli (flxdec, data, dest);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        ret = flx_decode_delta_fli (flxdec, &chunk, writer);
+         break;
+ 
+       case FLX_SS2:
+-        ret = flx_decode_delta_flc (flxdec, data, dest);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        ret = flx_decode_delta_flc (flxdec, &chunk, writer);
+         break;
+ 
+       case FLX_BLACK:
+-        memset (dest, 0, flxdec->size);
++        ret = gst_byte_writer_fill (writer, 0, flxdec->size);
+         break;
+ 
+       case FLX_MINI:
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
+         break;
+ 
+       default:
+-        GST_WARNING ("Unimplented chunk type: 0x%02x size: %d - skipping",
+-            hdr->id, hdr->size);
+-        data += rndalign (hdr->size) - FlxFrameChunkSize;
++        GST_WARNING ("Unimplemented chunk type: 0x%02x size: %d - skipping",
++            type, size);
+         break;
+     }
+ 
+@@ -263,43 +271,60 @@ flx_decode_chunks (GstFlxDec * flxdec, gulong count, guchar * data,
+   }
+ 
+   return ret;
++
++parse_error:
++  GST_ERROR_OBJECT (flxdec, "Failed to decode chunk");
++error:
++  return FALSE;
+ }
+ 
+ 
+-static void
+-flx_decode_color (GstFlxDec * flxdec, guchar * data, guchar * dest, gint scale)
++static gboolean
++flx_decode_color (GstFlxDec * flxdec, GstByteReader * reader,
++    GstByteWriter * writer, gint scale)
+ {
+-  guint packs, count, indx;
++  guint8 count, indx;
++  guint16 packs;
+ 
+-  g_return_if_fail (flxdec != NULL);
+-
+-  packs = (data[0] + (data[1] << 8));
+-
+-  data += 2;
++  if (!gst_byte_reader_get_uint16_le (reader, &packs))
++    goto error;
+   indx = 0;
+ 
+-  GST_LOG ("GstFlxDec: cmap packs: %d", packs);
++  GST_LOG ("GstFlxDec: cmap packs: %d", (guint) packs);
+   while (packs--) {
++    const guint8 *data;
++    guint16 actual_count;
++
+     /* color map index + skip count */
+-    indx += *data++;
++    if (!gst_byte_reader_get_uint8 (reader, &indx))
++      goto error;
+ 
+     /* number of rgb triplets */
+-    count = *data++ & 0xff;
+-    if (count == 0)
+-      count = 256;
++    if (!gst_byte_reader_get_uint8 (reader, &count))
++      goto error;
+ 
+-    GST_LOG ("GstFlxDec: cmap count: %d (indx: %d)", count, indx);
+-    flx_set_palette_vector (flxdec->converter, indx, count, data, scale);
++    actual_count = count == 0 ? 256 : count;
+ 
+-    data += (count * 3);
++    if (!gst_byte_reader_get_data (reader, count * 3, &data))
++      goto error;
++
++    GST_LOG_OBJECT (flxdec, "cmap count: %d (indx: %d)", actual_count, indx);
++    flx_set_palette_vector (flxdec->converter, indx, actual_count,
++        (guchar *) data, scale);
+   }
++
++  return TRUE;
++
++error:
++  GST_ERROR_OBJECT (flxdec, "Error decoding color palette");
++  return FALSE;
+ }
+ 
+ static gboolean
+-flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
++flx_decode_brun (GstFlxDec * flxdec, GstByteReader * reader,
++    GstByteWriter * writer)
+ {
+-  gulong count, lines, row;
+-  guchar x;
++  gulong lines, row;
+ 
+   g_return_val_if_fail (flxdec != NULL, FALSE);
+ 
+@@ -310,82 +335,125 @@ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+      * contain more then 255 RLE packets. we use the frame 
+      * width instead. 
+      */
+-    data++;
++    if (!gst_byte_reader_skip (reader, 1))
++      goto error;
+ 
+     row = flxdec->hdr.width;
+     while (row) {
+-      count = *data++;
++      gint8 count;
++
++      if (!gst_byte_reader_get_int8 (reader, &count))
++        goto error;
++
++      if (count <= 0) {
++        const guint8 *data;
+ 
+-      if (count > 0x7f) {
+         /* literal run */
+-        count = 0x100 - count;
+-        if ((glong) row - (glong) count < 0) {
+-          GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
++        count = ABS (count);
++
++        GST_LOG_OBJECT (flxdec, "have literal run of size %d", count);
++
++        if (count > row) {
++          GST_ERROR_OBJECT (flxdec, "Invalid BRUN line detected. "
++              "bytes to write exceeds the end of the row");
+           return FALSE;
+         }
+         row -= count;
+ 
+-        while (count--)
+-          *dest++ = *data++;
+-
++        if (!gst_byte_reader_get_data (reader, count, &data))
++          goto error;
++        if (!gst_byte_writer_put_data (writer, data, count))
++          goto error;
+       } else {
+-        if ((glong) row - (glong) count < 0) {
+-          GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
++        guint8 x;
++
++        GST_LOG_OBJECT (flxdec, "have replicate run of size %d", count);
++
++        if (count > row) {
++          GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected."
++              "bytes to write exceeds the end of the row");
+           return FALSE;
+         }
+ 
+         /* replicate run */
+         row -= count;
+-        x = *data++;
+ 
+-        while (count--)
+-          *dest++ = x;
++        if (!gst_byte_reader_get_uint8 (reader, &x))
++          goto error;
++        if (!gst_byte_writer_fill (writer, x, count))
++          goto error;
+       }
+     }
+   }
+ 
+   return TRUE;
++
++error:
++  GST_ERROR_OBJECT (flxdec, "Failed to decode BRUN packet");
++  return FALSE;
+ }
+ 
+ static gboolean
+-flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
++flx_decode_delta_fli (GstFlxDec * flxdec, GstByteReader * reader,
++    GstByteWriter * writer)
+ {
+-  gulong count, packets, lines, start_line;
+-  guchar *start_p, x;
++  guint16 start_line, lines;
++  guint line_start_i;
+ 
+   g_return_val_if_fail (flxdec != NULL, FALSE);
+   g_return_val_if_fail (flxdec->delta_data != NULL, FALSE);
+ 
+   /* use last frame for delta */
+-  memcpy (dest, flxdec->delta_data, flxdec->size);
++  if (!gst_byte_writer_put_data (writer, flxdec->delta_data, flxdec->size))
++    goto error;
++
++  if (!gst_byte_reader_get_uint16_le (reader, &start_line))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &lines))
++    goto error;
++  GST_LOG_OBJECT (flxdec, "height %d start line %d line count %d",
++      flxdec->hdr.height, start_line, lines);
+ 
+-  start_line = (data[0] + (data[1] << 8));
+-  lines = (data[2] + (data[3] << 8));
+   if (start_line + lines > flxdec->hdr.height) {
+     GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. too many lines.");
+     return FALSE;
+   }
+-  data += 4;
+ 
+-  /* start position of delta */
+-  dest += (flxdec->hdr.width * start_line);
+-  start_p = dest;
++  line_start_i = flxdec->hdr.width * start_line;
++  if (!gst_byte_writer_set_pos (writer, line_start_i))
++    goto error;
+ 
+   while (lines--) {
++    guint8 packets;
++
+     /* packet count */
+-    packets = *data++;
++    if (!gst_byte_reader_get_uint8 (reader, &packets))
++      goto error;
++    GST_LOG_OBJECT (flxdec, "have %d packets", packets);
+ 
+     while (packets--) {
+       /* skip count */
+-      guchar skip = *data++;
+-      dest += skip;
++      guint8 skip;
++      gint8 count;
++      if (!gst_byte_reader_get_uint8 (reader, &skip))
++        goto error;
++
++      /* skip bytes */
++      if (!gst_byte_writer_set_pos (writer,
++              gst_byte_writer_get_pos (writer) + skip))
++        goto error;
+ 
+       /* RLE count */
+-      count = *data++;
++      if (!gst_byte_reader_get_int8 (reader, &count))
++        goto error;
++
++      if (count < 0) {
++        guint8 x;
+ 
+-      if (count > 0x7f) {
+         /* literal run */
+-        count = 0x100 - count;
++        count = ABS (count);
++        GST_LOG_OBJECT (flxdec, "have literal run of size %d at offset %d",
++            count, skip);
+ 
+         if (skip + count > flxdec->hdr.width) {
+           GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. "
+@@ -393,11 +461,16 @@ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+           return FALSE;
+         }
+ 
+-        x = *data++;
+-        while (count--)
+-          *dest++ = x;
+-
++        if (!gst_byte_reader_get_uint8 (reader, &x))
++          goto error;
++        if (!gst_byte_writer_fill (writer, x, count))
++          goto error;
+       } else {
++        const guint8 *data;
++
++        GST_LOG_OBJECT (flxdec, "have replicate run of size %d at offset %d",
++            count, skip);
++
+         if (skip + count > flxdec->hdr.width) {
+           GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. "
+               "line too long.");
+@@ -405,45 +478,60 @@ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+         }
+ 
+         /* replicate run */
+-        while (count--)
+-          *dest++ = *data++;
++        if (!gst_byte_reader_get_data (reader, count, &data))
++          goto error;
++        if (!gst_byte_writer_put_data (writer, data, count))
++          goto error;
+       }
+     }
+-    start_p += flxdec->hdr.width;
+-    dest = start_p;
++    line_start_i += flxdec->hdr.width;
++    if (!gst_byte_writer_set_pos (writer, line_start_i))
++      goto error;
+   }
+ 
+   return TRUE;
++
++error:
++  GST_ERROR_OBJECT (flxdec, "Failed to decode FLI packet");
++  return FALSE;
+ }
+ 
+ static gboolean
+-flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
++flx_decode_delta_flc (GstFlxDec * flxdec, GstByteReader * reader,
++    GstByteWriter * writer)
+ {
+-  gulong count, lines, start_l, opcode;
+-  guchar *start_p;
++  guint16 lines, start_l;
+ 
+   g_return_val_if_fail (flxdec != NULL, FALSE);
+   g_return_val_if_fail (flxdec->delta_data != NULL, FALSE);
+ 
+   /* use last frame for delta */
+-  memcpy (dest, flxdec->delta_data, flxdec->size);
++  if (!gst_byte_writer_put_data (writer, flxdec->delta_data, flxdec->size))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &lines))
++    goto error;
+ 
+-  lines = (data[0] + (data[1] << 8));
+   if (lines > flxdec->hdr.height) {
+     GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. too many lines.");
+     return FALSE;
+   }
+-  data += 2;
+ 
+-  start_p = dest;
+   start_l = lines;
+ 
+   while (lines) {
+-    dest = start_p + (flxdec->hdr.width * (start_l - lines));
++    guint16 opcode;
++
++    if (!gst_byte_writer_set_pos (writer,
++            flxdec->hdr.width * (start_l - lines)))
++      goto error;
+ 
+     /* process opcode(s) */
+-    while ((opcode = (data[0] + (data[1] << 8))) & 0xc000) {
+-      data += 2;
++    while (TRUE) {
++      if (!gst_byte_reader_get_uint16_le (reader, &opcode))
++        goto error;
++      if ((opcode & 0xc000) == 0)
++        break;
++
+       if ((opcode & 0xc000) == 0xc000) {
+         /* line skip count */
+         gulong skip = (0x10000 - opcode);
+@@ -453,27 +541,44 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+           return FALSE;
+         }
+         start_l += skip;
+-        dest += flxdec->hdr.width * skip;
++        if (!gst_byte_writer_set_pos (writer,
++                gst_byte_writer_get_pos (writer) + flxdec->hdr.width * skip))
++          goto error;
+       } else {
+         /* last pixel */
+-        dest += flxdec->hdr.width;
+-        *dest++ = (opcode & 0xff);
++        if (!gst_byte_writer_set_pos (writer,
++                gst_byte_writer_get_pos (writer) + flxdec->hdr.width))
++          goto error;
++        if (!gst_byte_writer_put_uint8 (writer, opcode & 0xff))
++          goto error;
+       }
+     }
+-    data += 2;
+ 
+     /* last opcode is the packet count */
++    GST_LOG_OBJECT (flxdec, "have %d packets", opcode);
+     while (opcode--) {
+       /* skip count */
+-      guchar skip = *data++;
+-      dest += skip;
++      guint8 skip;
++      gint8 count;
++
++      if (!gst_byte_reader_get_uint8 (reader, &skip))
++        goto error;
++      if (!gst_byte_writer_set_pos (writer,
++              gst_byte_writer_get_pos (writer) + skip))
++        goto error;
+ 
+       /* RLE count */
+-      count = *data++;
++      if (!gst_byte_reader_get_int8 (reader, &count))
++        goto error;
++
++      if (count < 0) {
++        guint16 x;
+ 
+-      if (count > 0x7f) {
+         /* replicate word run */
+-        count = 0x100 - count;
++        count = ABS (count);
++
++        GST_LOG_OBJECT (flxdec, "have replicate run of size %d at offset %d",
++            count, skip);
+ 
+         if (skip + count > flxdec->hdr.width) {
+           GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. "
+@@ -481,22 +586,31 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+           return FALSE;
+         }
+ 
++        if (!gst_byte_reader_get_uint16_le (reader, &x))
++          goto error;
++
+         while (count--) {
+-          *dest++ = data[0];
+-          *dest++ = data[1];
++          if (!gst_byte_writer_put_uint16_le (writer, x)) {
++            goto error;
++          }
+         }
+-        data += 2;
+       } else {
++        GST_LOG_OBJECT (flxdec, "have literal run of size %d at offset %d",
++            count, skip);
++
+         if (skip + count > flxdec->hdr.width) {
+           GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. "
+               "line too long.");
+           return FALSE;
+         }
+ 
+-        /* literal word run */
+         while (count--) {
+-          *dest++ = *data++;
+-          *dest++ = *data++;
++          guint16 x;
++
++          if (!gst_byte_reader_get_uint16_le (reader, &x))
++            goto error;
++          if (!gst_byte_writer_put_uint16_le (writer, x))
++            goto error;
+         }
+       }
+     }
+@@ -504,13 +618,91 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+   }
+ 
+   return TRUE;
++
++error:
++  GST_ERROR_OBJECT (flxdec, "Failed to decode FLI packet");
++  return FALSE;
++}
++
++static gboolean
++_read_flx_header (GstFlxDec * flxdec, GstByteReader * reader, FlxHeader * flxh)
++{
++  memset (flxh, 0, sizeof (*flxh));
++
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->size))
++    goto error;
++  if (flxh->size < FlxHeaderSize) {
++    GST_ERROR_OBJECT (flxdec, "Invalid file size in the header");
++    return FALSE;
++  }
++
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->type))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->frames))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->width))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->height))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->depth))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->flags))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->speed))
++    goto error;
++  if (!gst_byte_reader_skip (reader, 2))        /* reserved */
++    goto error;
++  /* FLC */
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->created))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->creator))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->updated))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->updater))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->aspect_dx))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->aspect_dy))
++    goto error;
++  /* EGI */
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->ext_flags))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->keyframes))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->totalframes))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->req_memory))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->max_regions))
++    goto error;
++  if (!gst_byte_reader_get_uint16_le (reader, &flxh->transp_num))
++    goto error;
++  if (!gst_byte_reader_skip (reader, 24))       /* reserved */
++    goto error;
++  /* FLC */
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->oframe1))
++    goto error;
++  if (!gst_byte_reader_get_uint32_le (reader, &flxh->oframe2))
++    goto error;
++  if (!gst_byte_reader_skip (reader, 40))       /* reserved */
++    goto error;
++
++  return TRUE;
++
++error:
++  GST_ERROR_OBJECT (flxdec, "Error reading file header");
++  return FALSE;
+ }
+ 
+ static GstFlowReturn
+ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+ {
++  GstByteReader reader;
++  GstBuffer *input;
++  GstMapInfo map_info;
+   GstCaps *caps;
+-  guint avail;
++  guint available;
+   GstFlowReturn res = GST_FLOW_OK;
+ 
+   GstFlxDec *flxdec;
+@@ -521,31 +713,50 @@ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+   g_return_val_if_fail (flxdec != NULL, GST_FLOW_ERROR);
+ 
+   gst_adapter_push (flxdec->adapter, buf);
+-  avail = gst_adapter_available (flxdec->adapter);
++  available = gst_adapter_available (flxdec->adapter);
++  input = gst_adapter_get_buffer (flxdec->adapter, available);
++  if (!gst_buffer_map (input, &map_info, GST_MAP_READ)) {
++    GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++        ("%s", "Failed to map buffer"), (NULL));
++    goto error;
++  }
++  gst_byte_reader_init (&reader, map_info.data, map_info.size);
+ 
+   if (flxdec->state == GST_FLXDEC_READ_HEADER) {
+-    if (avail >= FlxHeaderSize) {
+-      const guint8 *data = gst_adapter_map (flxdec->adapter, FlxHeaderSize);
++    if (available >= FlxHeaderSize) {
++      GstByteReader header;
+       GstCaps *templ;
+ 
+-      memcpy ((gchar *) & flxdec->hdr, data, FlxHeaderSize);
+-      FLX_HDR_FIX_ENDIANNESS (&(flxdec->hdr));
+-      gst_adapter_unmap (flxdec->adapter);
++      if (!gst_byte_reader_get_sub_reader (&reader, &header, FlxHeaderSize)) {
++        GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++            ("%s", "Could not read header"), (NULL));
++        goto unmap_input_error;
++      }
+       gst_adapter_flush (flxdec->adapter, FlxHeaderSize);
++      available -= FlxHeaderSize;
++
++      if (!_read_flx_header (flxdec, &header, &flxdec->hdr)) {
++        GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++            ("%s", "Failed to parse header"), (NULL));
++        goto unmap_input_error;
++      }
+ 
+       flxh = &flxdec->hdr;
+ 
+       /* check header */
+       if (flxh->type != FLX_MAGICHDR_FLI &&
+-          flxh->type != FLX_MAGICHDR_FLC && flxh->type != FLX_MAGICHDR_FLX)
+-        goto wrong_type;
++          flxh->type != FLX_MAGICHDR_FLC && flxh->type != FLX_MAGICHDR_FLX) {
++        GST_ELEMENT_ERROR (flxdec, STREAM, WRONG_TYPE, (NULL),
++            ("not a flx file (type %x)", flxh->type));
++        goto unmap_input_error;
++      }
+ 
+-      GST_LOG ("size      :  %d", flxh->size);
+-      GST_LOG ("frames    :  %d", flxh->frames);
+-      GST_LOG ("width     :  %d", flxh->width);
+-      GST_LOG ("height    :  %d", flxh->height);
+-      GST_LOG ("depth     :  %d", flxh->depth);
+-      GST_LOG ("speed     :  %d", flxh->speed);
++      GST_INFO_OBJECT (flxdec, "size      :  %d", flxh->size);
++      GST_INFO_OBJECT (flxdec, "frames    :  %d", flxh->frames);
++      GST_INFO_OBJECT (flxdec, "width     :  %d", flxh->width);
++      GST_INFO_OBJECT (flxdec, "height    :  %d", flxh->height);
++      GST_INFO_OBJECT (flxdec, "depth     :  %d", flxh->depth);
++      GST_INFO_OBJECT (flxdec, "speed     :  %d", flxh->speed);
+ 
+       flxdec->next_time = 0;
+ 
+@@ -573,18 +784,32 @@ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+       gst_pad_set_caps (flxdec->srcpad, caps);
+       gst_caps_unref (caps);
+ 
+-      if (flxh->depth <= 8)
+-        flxdec->converter =
+-            flx_colorspace_converter_new (flxh->width, flxh->height);
++      /* zero means 8 */
++      if (flxh->depth == 0)
++        flxh->depth = 8;
++
++      if (flxh->depth != 8) {
++        GST_ELEMENT_ERROR (flxdec, STREAM, WRONG_TYPE,
++            ("%s", "Don't know how to decode non 8 bit depth streams"), (NULL));
++        goto unmap_input_error;
++      }
++
++      flxdec->converter =
++          flx_colorspace_converter_new (flxh->width, flxh->height);
+ 
+       if (flxh->type == FLX_MAGICHDR_FLC || flxh->type == FLX_MAGICHDR_FLX) {
+-        GST_LOG ("(FLC) aspect_dx :  %d", flxh->aspect_dx);
+-        GST_LOG ("(FLC) aspect_dy :  %d", flxh->aspect_dy);
+-        GST_LOG ("(FLC) oframe1   :  0x%08x", flxh->oframe1);
+-        GST_LOG ("(FLC) oframe2   :  0x%08x", flxh->oframe2);
++        GST_INFO_OBJECT (flxdec, "(FLC) aspect_dx :  %d", flxh->aspect_dx);
++        GST_INFO_OBJECT (flxdec, "(FLC) aspect_dy :  %d", flxh->aspect_dy);
++        GST_INFO_OBJECT (flxdec, "(FLC) oframe1   :  0x%08x", flxh->oframe1);
++        GST_INFO_OBJECT (flxdec, "(FLC) oframe2   :  0x%08x", flxh->oframe2);
+       }
+ 
+       flxdec->size = ((guint) flxh->width * (guint) flxh->height);
++      if (flxdec->size >= G_MAXSIZE / 4) {
++        GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++            ("%s", "Cannot allocate required memory"), (NULL));
++        goto unmap_input_error;
++      }
+ 
+       /* create delta and output frame */
+       flxdec->frame_data = g_malloc (flxdec->size);
+@@ -596,55 +821,66 @@ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+     GstBuffer *out;
+ 
+     /* while we have enough data in the adapter */
+-    while (avail >= FlxFrameChunkSize && res == GST_FLOW_OK) {
+-      FlxFrameChunk flxfh;
+-      guchar *chunk;
+-      const guint8 *data;
+-      GstMapInfo map;
+-
+-      chunk = NULL;
+-      data = gst_adapter_map (flxdec->adapter, FlxFrameChunkSize);
+-      memcpy (&flxfh, data, FlxFrameChunkSize);
+-      FLX_FRAME_CHUNK_FIX_ENDIANNESS (&flxfh);
+-      gst_adapter_unmap (flxdec->adapter);
+-
+-      switch (flxfh.id) {
+-        case FLX_FRAME_TYPE:
+-          /* check if we have the complete frame */
+-          if (avail < flxfh.size)
+-            goto need_more_data;
+-
+-          /* flush header */
+-          gst_adapter_flush (flxdec->adapter, FlxFrameChunkSize);
+-
+-          chunk = gst_adapter_take (flxdec->adapter,
+-              flxfh.size - FlxFrameChunkSize);
+-          FLX_FRAME_TYPE_FIX_ENDIANNESS ((FlxFrameType *) chunk);
+-          if (((FlxFrameType *) chunk)->chunks == 0)
+-            break;
++    while (available >= FlxFrameChunkSize && res == GST_FLOW_OK) {
++      guint32 size;
++      guint16 type;
+ 
+-          /* create 32 bits output frame */
+-//          res = gst_pad_alloc_buffer_and_set_caps (flxdec->srcpad,
+-//              GST_BUFFER_OFFSET_NONE,
+-//              flxdec->size * 4, GST_PAD_CAPS (flxdec->srcpad), &out);
+-//          if (res != GST_FLOW_OK)
+-//            break;
++      if (!gst_byte_reader_get_uint32_le (&reader, &size))
++        goto parse_error;
++      if (available < size)
++        goto need_more_data;
+ 
+-          out = gst_buffer_new_and_alloc (flxdec->size * 4);
++      available -= size;
++      gst_adapter_flush (flxdec->adapter, size);
++
++      if (!gst_byte_reader_get_uint16_le (&reader, &type))
++        goto parse_error;
++
++      switch (type) {
++        case FLX_FRAME_TYPE:{
++          GstByteReader chunks;
++          GstByteWriter writer;
++          guint16 n_chunks;
++          GstMapInfo map;
++
++          GST_LOG_OBJECT (flxdec, "Have frame type 0x%02x of size %d", type,
++              size);
++
++          if (!gst_byte_reader_get_sub_reader (&reader, &chunks,
++                  size - FlxFrameChunkSize))
++            goto parse_error;
++
++          if (!gst_byte_reader_get_uint16_le (&chunks, &n_chunks))
++            goto parse_error;
++          GST_LOG_OBJECT (flxdec, "Have %d chunks", n_chunks);
++
++          if (n_chunks == 0)
++            break;
++          if (!gst_byte_reader_skip (&chunks, 8))       /* reserved */
++            goto parse_error;
++
++          gst_byte_writer_init_with_data (&writer, flxdec->frame_data,
++              flxdec->size, TRUE);
+ 
+           /* decode chunks */
+-          if (!flx_decode_chunks (flxdec,
+-                  ((FlxFrameType *) chunk)->chunks,
+-                  chunk + FlxFrameTypeSize, flxdec->frame_data)) {
++          if (!flx_decode_chunks (flxdec, n_chunks, &chunks, &writer)) {
+             GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
+                 ("%s", "Could not decode chunk"), NULL);
+-            return GST_FLOW_ERROR;
++            goto unmap_input_error;
+           }
++          gst_byte_writer_reset (&writer);
+ 
+           /* save copy of the current frame for possible delta. */
+           memcpy (flxdec->delta_data, flxdec->frame_data, flxdec->size);
+ 
+-          gst_buffer_map (out, &map, GST_MAP_WRITE);
++          out = gst_buffer_new_and_alloc (flxdec->size * 4);
++          if (!gst_buffer_map (out, &map, GST_MAP_WRITE)) {
++            GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++                ("%s", "Could not map output buffer"), NULL);
++            gst_buffer_unref (out);
++            goto unmap_input_error;
++          }
++
+           /* convert current frame. */
+           flx_colorspace_convert (flxdec->converter, flxdec->frame_data,
+               map.data);
+@@ -655,30 +891,32 @@ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+ 
+           res = gst_pad_push (flxdec->srcpad, out);
+           break;
++        }
+         default:
+-          /* check if we have the complete frame */
+-          if (avail < flxfh.size)
+-            goto need_more_data;
+-
+-          gst_adapter_flush (flxdec->adapter, flxfh.size);
++          GST_DEBUG_OBJECT (flxdec, "Unknown frame type 0x%02x, skipping %d",
++              type, size);
++          if (!gst_byte_reader_skip (&reader, size - FlxFrameChunkSize))
++            goto parse_error;
+           break;
+       }
+-
+-      g_free (chunk);
+-
+-      avail = gst_adapter_available (flxdec->adapter);
+     }
+   }
++
++  gst_buffer_unmap (input, &map_info);
++  gst_buffer_unref (input);
++
+ need_more_data:
+   return res;
+ 
+   /* ERRORS */
+-wrong_type:
+-  {
+-    GST_ELEMENT_ERROR (flxdec, STREAM, WRONG_TYPE, (NULL),
+-        ("not a flx file (type %x)", flxh->type));
+-    return GST_FLOW_ERROR;
+-  }
++parse_error:
++  GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++      ("%s", "Failed to parse stream"), (NULL));
++unmap_input_error:
++  gst_buffer_unmap (input, &map_info);
++  gst_buffer_unref (input);
++error:
++  return GST_FLOW_ERROR;
+ }
+ 
+ static GstStateChangeReturn
+diff --git a/gst/flx/gstflxdec.h b/gst/flx/gstflxdec.h
+index 3f9a0aa..4fd8dfd 100644
+--- a/gst/flx/gstflxdec.h
++++ b/gst/flx/gstflxdec.h
+@@ -23,6 +23,8 @@
+ #include <gst/gst.h>
+ 
+ #include <gst/base/gstadapter.h>
++#include <gst/base/gstbytereader.h>
++#include <gst/base/gstbytewriter.h>
+ #include "flx_color.h"
+ 
+ G_BEGIN_DECLS
+@@ -45,7 +47,7 @@ struct _GstFlxDec {
+ 
+   guint8 *delta_data, *frame_data;
+   GstAdapter *adapter;
+-  gulong size;
++  gsize size;
+   GstFlxDecState state;
+   gint64 frame_time;
+   gint64 next_time;
+-- 
+2.10.2
+

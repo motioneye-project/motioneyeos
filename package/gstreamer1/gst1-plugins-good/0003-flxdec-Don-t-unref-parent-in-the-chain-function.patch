@@ -1,0 +1,29 @@
+From 1b574eddf789a59aff11ee0b6eb3fe1af288ff06 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian@centricular.com>
+Date: Wed, 23 Nov 2016 11:20:49 +0200
+Subject: [PATCH] flxdec: Don't unref() parent in the chain function
+
+We don't own the reference here, it is owned by the caller and given to
+us for the scope of this function. Leftover mistake from 0.10 porting.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=774897
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst/flx/gstflxdec.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/gst/flx/gstflxdec.c b/gst/flx/gstflxdec.c
+index e675c99..a237976 100644
+--- a/gst/flx/gstflxdec.c
++++ b/gst/flx/gstflxdec.c
+@@ -677,7 +677,6 @@ wrong_type:
+   {
+     GST_ELEMENT_ERROR (flxdec, STREAM, WRONG_TYPE, (NULL),
+         ("not a flx file (type %x)", flxh->type));
+-    gst_object_unref (flxdec);
+     return GST_FLOW_ERROR;
+   }
+ }
+-- 
+2.10.2
+

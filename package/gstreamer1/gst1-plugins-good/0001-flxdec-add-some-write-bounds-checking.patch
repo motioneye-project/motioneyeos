@@ -1,0 +1,305 @@
+From ec66c7c584f0b41c98e93758d9b53bd6dd582df2 Mon Sep 17 00:00:00 2001
+From: Matthew Waters <matthew@centricular.com>
+Date: Tue, 22 Nov 2016 19:05:00 +1100
+Subject: [PATCH] flxdec: add some write bounds checking
+
+Without checking the bounds of the frame we are writing into, we can
+write off the end of the destination buffer.
+
+https://scarybeastsecurity.blogspot.dk/2016/11/0day-exploit-advancing-exploitation.html
+
+https://bugzilla.gnome.org/show_bug.cgi?id=774834
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst/flx/gstflxdec.c | 116 +++++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 91 insertions(+), 25 deletions(-)
+
+diff --git a/gst/flx/gstflxdec.c b/gst/flx/gstflxdec.c
+index 604be2f..d51a8e6 100644
+--- a/gst/flx/gstflxdec.c
++++ b/gst/flx/gstflxdec.c
+@@ -74,9 +74,9 @@ static gboolean gst_flxdec_src_query_handler (GstPad * pad, GstObject * parent,
+     GstQuery * query);
+ 
+ static void flx_decode_color (GstFlxDec *, guchar *, guchar *, gint);
+-static void flx_decode_brun (GstFlxDec *, guchar *, guchar *);
+-static void flx_decode_delta_fli (GstFlxDec *, guchar *, guchar *);
+-static void flx_decode_delta_flc (GstFlxDec *, guchar *, guchar *);
++static gboolean flx_decode_brun (GstFlxDec *, guchar *, guchar *);
++static gboolean flx_decode_delta_fli (GstFlxDec *, guchar *, guchar *);
++static gboolean flx_decode_delta_flc (GstFlxDec *, guchar *, guchar *);
+ 
+ #define rndalign(off) ((off) + ((off) & 1))
+ 
+@@ -203,13 +203,14 @@ gst_flxdec_sink_event_handler (GstPad * pad, GstObject * parent,
+   return ret;
+ }
+ 
+-static void
++static gboolean
+ flx_decode_chunks (GstFlxDec * flxdec, gulong count, guchar * data,
+     guchar * dest)
+ {
+   FlxFrameChunk *hdr;
++  gboolean ret = TRUE;
+ 
+-  g_return_if_fail (data != NULL);
++  g_return_val_if_fail (data != NULL, FALSE);
+ 
+   while (count--) {
+     hdr = (FlxFrameChunk *) data;
+@@ -228,17 +229,17 @@ flx_decode_chunks (GstFlxDec * flxdec, gulong count, guchar * data,
+         break;
+ 
+       case FLX_BRUN:
+-        flx_decode_brun (flxdec, data, dest);
++        ret = flx_decode_brun (flxdec, data, dest);
+         data += rndalign (hdr->size) - FlxFrameChunkSize;
+         break;
+ 
+       case FLX_LC:
+-        flx_decode_delta_fli (flxdec, data, dest);
++        ret = flx_decode_delta_fli (flxdec, data, dest);
+         data += rndalign (hdr->size) - FlxFrameChunkSize;
+         break;
+ 
+       case FLX_SS2:
+-        flx_decode_delta_flc (flxdec, data, dest);
++        ret = flx_decode_delta_flc (flxdec, data, dest);
+         data += rndalign (hdr->size) - FlxFrameChunkSize;
+         break;
+ 
+@@ -256,7 +257,12 @@ flx_decode_chunks (GstFlxDec * flxdec, gulong count, guchar * data,
+         data += rndalign (hdr->size) - FlxFrameChunkSize;
+         break;
+     }
++
++    if (!ret)
++      break;
+   }
++
++  return ret;
+ }
+ 
+ 
+@@ -289,13 +295,13 @@ flx_decode_color (GstFlxDec * flxdec, guchar * data, guchar * dest, gint scale)
+   }
+ }
+ 
+-static void
++static gboolean
+ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+ {
+   gulong count, lines, row;
+   guchar x;
+ 
+-  g_return_if_fail (flxdec != NULL);
++  g_return_val_if_fail (flxdec != NULL, FALSE);
+ 
+   lines = flxdec->hdr.height;
+   while (lines--) {
+@@ -313,12 +319,21 @@ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+       if (count > 0x7f) {
+         /* literal run */
+         count = 0x100 - count;
++        if ((glong) row - count < 0) {
++          GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
++          return FALSE;
++        }
+         row -= count;
+ 
+         while (count--)
+           *dest++ = *data++;
+ 
+       } else {
++        if ((glong) row - count < 0) {
++          GST_ERROR_OBJECT (flxdec, "Invalid BRUN packet detected.");
++          return FALSE;
++        }
++
+         /* replicate run */
+         row -= count;
+         x = *data++;
+@@ -328,22 +343,28 @@ flx_decode_brun (GstFlxDec * flxdec, guchar * data, guchar * dest)
+       }
+     }
+   }
++
++  return TRUE;
+ }
+ 
+-static void
++static gboolean
+ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+ {
+   gulong count, packets, lines, start_line;
+   guchar *start_p, x;
+ 
+-  g_return_if_fail (flxdec != NULL);
+-  g_return_if_fail (flxdec->delta_data != NULL);
++  g_return_val_if_fail (flxdec != NULL, FALSE);
++  g_return_val_if_fail (flxdec->delta_data != NULL, FALSE);
+ 
+   /* use last frame for delta */
+   memcpy (dest, flxdec->delta_data, flxdec->size);
+ 
+   start_line = (data[0] + (data[1] << 8));
+   lines = (data[2] + (data[3] << 8));
++  if (start_line + lines > flxdec->hdr.height) {
++    GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. too many lines.");
++    return FALSE;
++  }
+   data += 4;
+ 
+   /* start position of delta */
+@@ -356,7 +377,8 @@ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+ 
+     while (packets--) {
+       /* skip count */
+-      dest += *data++;
++      guchar skip = *data++;
++      dest += skip;
+ 
+       /* RLE count */
+       count = *data++;
+@@ -364,12 +386,24 @@ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+       if (count > 0x7f) {
+         /* literal run */
+         count = 0x100 - count;
+-        x = *data++;
+ 
++        if (skip + count > flxdec->hdr.width) {
++          GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. "
++              "line too long.");
++          return FALSE;
++        }
++
++        x = *data++;
+         while (count--)
+           *dest++ = x;
+ 
+       } else {
++        if (skip + count > flxdec->hdr.width) {
++          GST_ERROR_OBJECT (flxdec, "Invalid FLI packet detected. "
++              "line too long.");
++          return FALSE;
++        }
++
+         /* replicate run */
+         while (count--)
+           *dest++ = *data++;
+@@ -378,21 +412,27 @@ flx_decode_delta_fli (GstFlxDec * flxdec, guchar * data, guchar * dest)
+     start_p += flxdec->hdr.width;
+     dest = start_p;
+   }
++
++  return TRUE;
+ }
+ 
+-static void
++static gboolean
+ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+ {
+   gulong count, lines, start_l, opcode;
+   guchar *start_p;
+ 
+-  g_return_if_fail (flxdec != NULL);
+-  g_return_if_fail (flxdec->delta_data != NULL);
++  g_return_val_if_fail (flxdec != NULL, FALSE);
++  g_return_val_if_fail (flxdec->delta_data != NULL, FALSE);
+ 
+   /* use last frame for delta */
+   memcpy (dest, flxdec->delta_data, flxdec->size);
+ 
+   lines = (data[0] + (data[1] << 8));
++  if (lines > flxdec->hdr.height) {
++    GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. too many lines.");
++    return FALSE;
++  }
+   data += 2;
+ 
+   start_p = dest;
+@@ -405,9 +445,15 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+     while ((opcode = (data[0] + (data[1] << 8))) & 0xc000) {
+       data += 2;
+       if ((opcode & 0xc000) == 0xc000) {
+-        /* skip count */
+-        start_l += (0x10000 - opcode);
+-        dest += flxdec->hdr.width * (0x10000 - opcode);
++        /* line skip count */
++        gulong skip = (0x10000 - opcode);
++        if (skip > flxdec->hdr.height) {
++          GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. "
++              "skip line count too big.");
++          return FALSE;
++        }
++        start_l += skip;
++        dest += flxdec->hdr.width * skip;
+       } else {
+         /* last pixel */
+         dest += flxdec->hdr.width;
+@@ -419,7 +465,8 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+     /* last opcode is the packet count */
+     while (opcode--) {
+       /* skip count */
+-      dest += *data++;
++      guchar skip = *data++;
++      dest += skip;
+ 
+       /* RLE count */
+       count = *data++;
+@@ -427,12 +474,25 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+       if (count > 0x7f) {
+         /* replicate word run */
+         count = 0x100 - count;
++
++        if (skip + count > flxdec->hdr.width) {
++          GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. "
++              "line too long.");
++          return FALSE;
++        }
++
+         while (count--) {
+           *dest++ = data[0];
+           *dest++ = data[1];
+         }
+         data += 2;
+       } else {
++        if (skip + count > flxdec->hdr.width) {
++          GST_ERROR_OBJECT (flxdec, "Invalid FLC packet detected. "
++              "line too long.");
++          return FALSE;
++        }
++
+         /* literal word run */
+         while (count--) {
+           *dest++ = *data++;
+@@ -442,6 +502,8 @@ flx_decode_delta_flc (GstFlxDec * flxdec, guchar * data, guchar * dest)
+     }
+     lines--;
+   }
++
++  return TRUE;
+ }
+ 
+ static GstFlowReturn
+@@ -571,9 +633,13 @@ gst_flxdec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
+           out = gst_buffer_new_and_alloc (flxdec->size * 4);
+ 
+           /* decode chunks */
+-          flx_decode_chunks (flxdec,
+-              ((FlxFrameType *) chunk)->chunks,
+-              chunk + FlxFrameTypeSize, flxdec->frame_data);
++          if (!flx_decode_chunks (flxdec,
++                  ((FlxFrameType *) chunk)->chunks,
++                  chunk + FlxFrameTypeSize, flxdec->frame_data)) {
++            GST_ELEMENT_ERROR (flxdec, STREAM, DECODE,
++                ("%s", "Could not decode chunk"), NULL);
++            return GST_FLOW_ERROR;
++          }
+ 
+           /* save copy of the current frame for possible delta. */
+           memcpy (flxdec->delta_data, flxdec->frame_data, flxdec->size);
+-- 
+2.10.2
+
