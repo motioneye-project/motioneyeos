@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GOOGLE_BREAKPAD_VERSION = 7883a8308274cc37847e4ff3b995a327588fe034
+GOOGLE_BREAKPAD_VERSION = 7515ab13768c7edc09f0f2ec2354dc6c928239a6
 GOOGLE_BREAKPAD_SITE = https://chromium.googlesource.com/breakpad/breakpad
 GOOGLE_BREAKPAD_SITE_METHOD = git
 GOOGLE_BREAKPAD_CONF_OPTS = --disable-processor --disable-tools
