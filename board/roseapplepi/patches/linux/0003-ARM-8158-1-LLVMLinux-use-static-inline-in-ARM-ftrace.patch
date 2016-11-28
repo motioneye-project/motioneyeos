@@ -1,0 +1,54 @@
+From 8ac9a3f6dbf00d861134bea3f2c930defed6311a Mon Sep 17 00:00:00 2001
+From: Behan Webster <behanw@converseincode.com>
+Date: Wed, 24 Sep 2014 01:06:46 +0100
+Subject: [PATCH] ARM: 8158/1: LLVMLinux: use static inline in ARM ftrace.h
+
+With compilers which follow the C99 standard (like modern versions of gcc and
+clang), "extern inline" does the wrong thing (emits code for an externally
+linkable version of the inline function). In this case using static inline
+and removing the NULL version of return_address in return_address.c does
+the right thing.
+
+Signed-off-by: Behan Webster <behanw@converseincode.com>
+Reviewed-by: Mark Charlebois <charlebm@gmail.com>
+Acked-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Russell King <rmk+kernel@arm.linux.org.uk>
+(cherry picked from commit aeea3592a13bf12861943e44fc48f1f270941f8d)
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ arch/arm/include/asm/ftrace.h    | 2 +-
+ arch/arm/kernel/return_address.c | 5 -----
+ 2 files changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/arch/arm/include/asm/ftrace.h b/arch/arm/include/asm/ftrace.h
+index f89515a..2bb8cac 100644
+--- a/arch/arm/include/asm/ftrace.h
++++ b/arch/arm/include/asm/ftrace.h
+@@ -45,7 +45,7 @@ void *return_address(unsigned int);
+ 
+ #else
+ 
+-extern inline void *return_address(unsigned int level)
++static inline void *return_address(unsigned int level)
+ {
+ 	return NULL;
+ }
+diff --git a/arch/arm/kernel/return_address.c b/arch/arm/kernel/return_address.c
+index 2f8f523..a3b587f 100755
+--- a/arch/arm/kernel/return_address.c
++++ b/arch/arm/kernel/return_address.c
+@@ -63,11 +63,6 @@ void *return_address(unsigned int level)
+ //#warning "TODO: return_address should use unwind tables"
+ //#endif
+ 
+-void *return_address(unsigned int level)
+-{
+-	return NULL;
+-}
+-
+ #endif /* if defined(CONFIG_FRAME_POINTER) && !defined(CONFIG_ARM_UNWIND) / else */
+ 
+ EXPORT_SYMBOL_GPL(return_address);
+-- 
+2.10.2
+
