@@ -1,3 +1,33 @@
+2016.11-rc3, Released November 28th, 2016
+
+	Fixes all over the tree, including a number of security fixes.
+
+	The move from fakeroot to pseudo unfortunately brought a
+	number of issues.  The SELinux issue described in #9386 which
+	triggered the move to pseudo has been investigated further and
+	a workaround implemented and the pseudo changes reverted.
+
+	Linux kernel: update default to 4.8.11.
+
+	Defconfigs: Updates/fixes for imx28ek, mx6udoo, imx6ulpico,
+	olimex a20 olinuxino lime malo, roseapplepi, synopsis aarch64
+	vdk, axs101, axs103 and hs38 smd vdk.
+
+	Updated/fixed packages: autossh, chrony, dosfstools,
+	dtv-scan-tables, e2fsprogs, gcc, gdb, gnuchess, gnuradio,
+	gpsd, gst1-plugins-bad, gst1-plugins-good, imagemagick,
+	kvm-unit-tests, libfribi, libuv, mesa3d, mpfr, mplayer, mpv,
+	ntp, ola, olsr, openblas, openjpeg, openssh, postgresql,
+	ptpd2python3, qemu, qextserialport, qt5base, quagga, xqwt,
+	taskd, tiff, tremor, trousers, udisks, uclibc, wireshark,
+	xapp_xload, xenomai, xmlstarlet
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9386: ubinize fails with or without custom config
+	#9431: A misspelling
+	#9446: make raspberrypi3_defconfig compilation failure
+
 2016.11-rc2, Released November 13th, 2016
 
 	Fixes all over the tree.
