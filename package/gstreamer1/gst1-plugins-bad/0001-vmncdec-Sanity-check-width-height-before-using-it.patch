@@ -1,0 +1,51 @@
+From 465091253bb3c3198d055b2e9f02d95237204663 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Sebastian=20Dr=C3=B6ge?= <sebastian@centricular.com>
+Date: Wed, 16 Nov 2016 20:41:39 +0200
+Subject: [PATCH] vmncdec: Sanity-check width/height before using it
+
+We will allocate a screen area of width*height*bpp bytes, however this
+calculation can easily overflow if too high width or height are given
+inside the stream. Nonetheless we would just assume that enough memory
+was allocated, try to fill it and overwrite as much memory as wanted.
+
+Also allocate the screen area filled with zeroes to ensure that we start
+with full-black and not any random (or not so random) data.
+
+https://scarybeastsecurity.blogspot.gr/2016/11/0day-poc-risky-design-decisions-in.html
+
+Ideally we should just remove this plugin in favour of the one in
+gst-libav, which generally seems to be of better code quality.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=774533
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst/vmnc/vmncdec.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/gst/vmnc/vmncdec.c b/gst/vmnc/vmncdec.c
+index 5504302..a843136 100644
+--- a/gst/vmnc/vmncdec.c
++++ b/gst/vmnc/vmncdec.c
+@@ -261,7 +261,7 @@ vmnc_handle_wmvi_rectangle (GstVMncDec * dec, struct RfbRectangle *rect,
+   gst_video_codec_state_unref (state);
+ 
+   g_free (dec->imagedata);
+-  dec->imagedata = g_malloc (dec->format.width * dec->format.height *
++  dec->imagedata = g_malloc0 (dec->format.width * dec->format.height *
+       dec->format.bytes_per_pixel);
+   GST_DEBUG_OBJECT (dec, "Allocated image data at %p", dec->imagedata);
+ 
+@@ -791,6 +791,10 @@ vmnc_handle_packet (GstVMncDec * dec, const guint8 * data, int len,
+             GST_WARNING_OBJECT (dec, "Rectangle out of range, type %d", r.type);
+             return ERROR_INVALID;
+           }
++        } else if (r.width > 16384 || r.height > 16384) {
++          GST_WARNING_OBJECT (dec, "Width or height too high: %ux%u", r.width,
++              r.height);
++          return ERROR_INVALID;
+         }
+ 
+         switch (r.type) {
+-- 
+2.10.2
+
