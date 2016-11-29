@@ -10,7 +10,7 @@
 	Linux kernel: update default to 4.8.11.
 
 	Defconfigs: Updates/fixes for imx28ek, mx6udoo, imx6ulpico,
-	olimex a20 olinuxino lime malo, roseapplepi, synopsis aarch64
+	olimex a20 olinuxino lime mali, roseapplepi, synopsis aarch64
 	vdk, axs101, axs103 and hs38 smd vdk.
 
 	Updated/fixed packages: autossh, chrony, dosfstools,
