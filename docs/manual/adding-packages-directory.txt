@@ -384,9 +384,6 @@ openGL libraries.
 
 See xref:virtual-package-tutorial[] for more on the virtual packages.
 
-See xref:virtual-package-list[] for the symbols to depend on if your package
-depends on a feature provided by a virtual package.
-
 === The +.mk+ file
 
 [[adding-packages-mk]]

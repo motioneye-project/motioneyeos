@@ -178,7 +178,7 @@ the br2-external tree. Buildroot will automatically show them in the
 output of +make list-defconfigs+ and allow them to be loaded with the
 normal +make <name>_defconfig+ command. They will be visible in the
 'make list-defconfigs' output, below an +External configs+ label that
-contains the name of the br2-extermnal tree they are defined in.
+contains the name of the br2-external tree they are defined in.
 
 .Note:
 If a defconfig file is present in more than one br2-external tree, then
