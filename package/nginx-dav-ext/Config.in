@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NGINX_DAV_EXT
+	bool "nginx-dav-ext"
+	select BR2_PACKAGE_EXPAT
+	help
+	  NGINX WebDAV missing commands support (PROPFIND & OPTIONS).
+
+	  https://github.com/arut/nginx-dav-ext-module

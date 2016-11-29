@@ -245,6 +245,11 @@ NGINX_CONF_OPTS += $(addprefix --add-module=,$(NGINX_UPLOAD_DIR))
 NGINX_DEPENDENCIES += nginx-upload
 endif
 
+ifeq ($(BR2_PACKAGE_NGINX_DAV_EXT),y)
+NGINX_CONF_OPTS += --add-module=$(NGINX_DAV_EXT_DIR)
+NGINX_DEPENDENCIES += nginx-dav-ext
+endif
+
 # Debug logging
 NGINX_CONF_OPTS += $(if $(BR2_PACKAGE_NGINX_DEBUG),--with-debug)
 
