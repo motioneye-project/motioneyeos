@@ -354,12 +354,8 @@ if BR2_arcle || BR2_arceb
 source "arch/Config.in.arc"
 endif
 
-if BR2_arm || BR2_armeb
+if BR2_arm || BR2_armeb || BR2_aarch64 || BR2_aarch64_be
 source "arch/Config.in.arm"
-endif
-
-if BR2_aarch64 || BR2_aarch64_be
-source "arch/Config.in.aarch64"
 endif
 
 if BR2_bfin

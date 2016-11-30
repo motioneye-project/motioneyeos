@@ -399,6 +399,7 @@ endchoice
 
 choice
 	prompt "ARM instruction set"
+	depends on BR2_arm || BR2_armeb
 
 config BR2_ARM_INSTRUCTIONS_ARM
 	bool "ARM"
@@ -434,12 +435,14 @@ config BR2_ARM_INSTRUCTIONS_THUMB2
 endchoice
 
 config BR2_ARCH
-	default "arm"	if BR2_arm
-	default "armeb"	if BR2_armeb
+	default "arm"		if BR2_arm
+	default "armeb"		if BR2_armeb
+	default "aarch64"	if BR2_aarch64
+	default "aarch64_be"	if BR2_aarch64_be
 
 config BR2_ENDIAN
-	default "LITTLE" if BR2_arm
-	default "BIG"	 if BR2_armeb
+	default "LITTLE" if (BR2_arm || BR2_aarch64)
+	default "BIG"	 if (BR2_armeb || BR2_aarch64_be)
 
 config BR2_GCC_TARGET_CPU
 	default "arm920t"	if BR2_arm920t
@@ -467,9 +470,10 @@ config BR2_GCC_TARGET_CPU
 	default "iwmmxt"	if BR2_iwmmxt
 
 config BR2_GCC_TARGET_ABI
-	default "aapcs-linux"
+	default "aapcs-linux"	if BR2_arm || BR2_armeb
 
 config BR2_GCC_TARGET_FPU
+	depends on BR2_arm || BR2_armeb
 	default "vfp"		if BR2_ARM_FPU_VFPV2
 	default "vfpv3"		if BR2_ARM_FPU_VFPV3
 	default "vfpv3-d16" 	if BR2_ARM_FPU_VFPV3D16
