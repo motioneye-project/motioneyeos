@@ -308,7 +308,6 @@ endchoice
 
 choice
 	prompt "Floating point strategy"
-	depends on BR2_ARM_EABI || BR2_ARM_EABIHF
 	default BR2_ARM_FPU_VFPV4D16 if BR2_ARM_CPU_HAS_VFPV4
 	default BR2_ARM_FPU_VFPV3D16 if BR2_ARM_CPU_HAS_VFPV3
 	default BR2_ARM_FPU_VFPV2 if BR2_ARM_CPU_HAS_VFPV2
