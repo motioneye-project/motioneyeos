@@ -31,6 +31,10 @@ config BR2_ARM_CPU_HAS_VFPV4
 	bool
 	select BR2_ARM_CPU_HAS_VFPV3
 
+config BR2_ARM_CPU_HAS_FP_ARMV8
+	bool
+	select BR2_ARM_CPU_HAS_VFPV4
+
 config BR2_ARM_CPU_HAS_ARM
 	bool
 
@@ -308,6 +312,7 @@ endchoice
 
 choice
 	prompt "Floating point strategy"
+	default BR2_ARM_FPU_FP_ARMV8 if BR2_ARM_CPU_HAS_FP_ARMV8
 	default BR2_ARM_FPU_VFPV4D16 if BR2_ARM_CPU_HAS_VFPV4
 	default BR2_ARM_FPU_VFPV3D16 if BR2_ARM_CPU_HAS_VFPV3
 	default BR2_ARM_FPU_VFPV2 if BR2_ARM_CPU_HAS_VFPV2
@@ -418,6 +423,20 @@ config BR2_ARM_FPU_NEON_VFPV4
 	  example on Cortex-A5 and Cortex-A7, support for VFPv4 and
 	  NEON is optional.
 
+config BR2_ARM_FPU_FP_ARMV8
+	bool "FP-ARMv8"
+	depends on BR2_ARM_CPU_HAS_FP_ARMV8
+	help
+	  This option allows to use the ARMv8 floating point unit.
+
+config BR2_ARM_FPU_NEON_FP_ARMV8
+	bool "NEON/FP-ARMv8"
+	depends on BR2_ARM_CPU_HAS_FP_ARMV8
+	depends on BR2_ARM_CPU_HAS_NEON
+	help
+	  This option allows to use both the ARMv8 floating point unit
+	  and the NEON SIMD unit for floating point operations.
+
 endchoice
 
 choice
@@ -504,6 +523,8 @@ config BR2_GCC_TARGET_FPU
 	default "vfpv4-d16" 	if BR2_ARM_FPU_VFPV4D16
 	default "neon" 		if BR2_ARM_FPU_NEON
 	default "neon-vfpv4" 	if BR2_ARM_FPU_NEON_VFPV4
+	default "fp-armv8"	if BR2_ARM_FPU_FP_ARMV8
+	default "neon-fp-armv8"	if BR2_ARM_FPU_NEON_FP_ARMV8
 
 config BR2_GCC_TARGET_FLOAT_ABI
 	default "soft"		if BR2_ARM_SOFT_FLOAT
