@@ -55,6 +55,9 @@ config BR2_ARM_CPU_ARMV7A
 config BR2_ARM_CPU_ARMV7M
 	bool
 
+config BR2_ARM_CPU_ARMV8
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	default BR2_arm926t
