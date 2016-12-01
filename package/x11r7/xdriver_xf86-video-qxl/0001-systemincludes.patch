@@ -1,0 +1,39 @@
+From 83e00bb5f9b74c0d7059c189d747ec3c24c7798a Mon Sep 17 00:00:00 2001
+From: Christophe Fergeau <cfergeau@redhat.com>
+Date: Tue, 4 Aug 2015 17:36:12 +0200
+Subject: Use <> for system-includes
+
+These headers come from /usr/include/xorg/ so it's clearer if they are
+included using <>. While at it, I've reordered them alphabetically.
+---
+Downloaded from
+https://cgit.freedesktop.org/xorg/driver/xf86-video-qxl/commit/?id=83e00bb5f9b74c0d7059c189d747ec3c24c7798a
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff --git a/src/uxa/uxa-damage.c b/src/uxa/uxa-damage.c
+index 3e4c075..6201712 100644
+--- a/src/uxa/uxa-damage.c
++++ b/src/uxa/uxa-damage.c
+@@ -27,12 +27,13 @@
+ #include <stdlib.h>
+ #include "uxa-priv.h"
+ 
++#include    <dixfontstr.h>
++#include    <gcstruct.h>
++#include    <picturestr.h>
++#include    <scrnintstr.h>
++#include    <windowstr.h>
+ #include    <X11/X.h>
+-#include    "scrnintstr.h"
+-#include    "windowstr.h"
+-#include    "dixfontstr.h"
+-#include    "gcstruct.h"
+-#include    "picturestr.h"
++
+ #include    "uxa-damage.h"
+ 
+ typedef struct _damageGCPriv {
+-- 
+cgit v0.10.2
+

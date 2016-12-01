@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GSTREAMER1_VERSION = 1.8.3
+GSTREAMER1_VERSION = 1.10.2
 GSTREAMER1_SOURCE = gstreamer-$(GSTREAMER1_VERSION).tar.xz
 GSTREAMER1_SITE = https://gstreamer.freedesktop.org/src/gstreamer
 GSTREAMER1_INSTALL_STAGING = YES
@@ -34,16 +34,11 @@ GSTREAMER1_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_GSTREAMER1_PLUGIN_REGISTRY),,--disable-registry) \
 	$(if $(BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS),,--disable-tools)
 
-GSTREAMER1_DEPENDENCIES = libglib2 host-pkgconf host-bison host-flex
-
-# gstreamer-1.6 changed the location of its gstconfig.h file,
-# and unfortunately, not all (by far!) consumers have been
-# updated to look in the correct location.
-# Add a symlink to the legacy location
-define GSTREAMER1_LEGACY_CGSTCONFIG_H
-	cd $(STAGING_DIR)/usr/include/gstreamer-1.0/gst && \
-		ln -sf ../../../lib/gstreamer-1.0/include/gst/gstconfig.h .
-endef
-GSTREAMER1_POST_INSTALL_STAGING_HOOKS += GSTREAMER1_LEGACY_CGSTCONFIG_H
+GSTREAMER1_DEPENDENCIES = \
+	host-bison \
+	host-flex \
+	host-pkgconf \
+	libglib2 \
+	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind)
 
 $(eval $(autotools-package))

@@ -2,7 +2,6 @@ config BR2_PACKAGE_PHP_AMQP
 	bool "php-amqp"
 	depends on BR2_PACKAGE_PHP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # rabbitmq-c
-	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX # rabbitmq-c
 	select BR2_PACKAGE_RABBITMQ_C
 	help
 	  Communicate with any AMQP compliant server.
@@ -11,4 +10,3 @@ config BR2_PACKAGE_PHP_AMQP
 
 comment "php-amqp needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX

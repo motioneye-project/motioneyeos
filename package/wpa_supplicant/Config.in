@@ -45,6 +45,13 @@ config BR2_PACKAGE_WPA_SUPPLICANT_WIFI_DISPLAY
 	help
 	  Enable support for Wi-Fi Display
 
+config BR2_PACKAGE_WPA_SUPPLICANT_MESH_NETWORKING
+	bool "Enable mesh networking"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
+	help
+	  Enable support for open and secured mesh networking
+	  (IEEE 802.11s)
+
 config BR2_PACKAGE_WPA_SUPPLICANT_AUTOSCAN
 	bool "Enable autoscan"
 	help

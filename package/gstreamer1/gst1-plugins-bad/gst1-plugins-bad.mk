@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BAD_VERSION = 1.8.3
+GST1_PLUGINS_BAD_VERSION = 1.10.2
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_INSTALL_STAGING = YES
@@ -44,7 +44,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-ladspa \
 	--disable-lv2 \
 	--disable-libde265 \
-	--disable-srtp \
 	--disable-linsys \
 	--disable-modplug \
 	--disable-mimic \
@@ -517,6 +516,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-stereo
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TIMECODE),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-timecode
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-timecode
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTA),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-tta
 else
@@ -640,6 +645,14 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FBDEV),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-fbdev
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-fbdev
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-fdk_aac
+GST1_PLUGINS_BAD_DEPENDENCIES += fdk-aac
+GST1_PLUGINS_BAD_HAS_UNKNOWN_LICENSE = y
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-fdk_aac
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL),y)
@@ -766,6 +779,13 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-sndfile
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SRTP),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-srtp
+GST1_PLUGINS_BAD_DEPENDENCIES += libsrtp
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-srtp
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-vcd
 else
@@ -784,6 +804,13 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-webp
 GST1_PLUGINS_BAD_DEPENDENCIES += webp
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-webp
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-webrtc
+GST1_PLUGINS_BAD_DEPENDENCIES += webrtc-audio-processing
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-webrtc
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265),y)

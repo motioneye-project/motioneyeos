@@ -1,0 +1,30 @@
+config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
+	bool "Musl 1.1.12 toolchain"
+	depends on (BR2_arm && BR2_ARM_EABI && BR2_USE_MMU) || \
+		(BR2_arm && BR2_ARM_EABIHF && !BR2_ARM_CPU_ARMV4 && BR2_USE_MMU) || \
+		(BR2_armeb && BR2_ARM_EABI && !BR2_ARM_CPU_ARMV7A && BR2_USE_MMU) || \
+		BR2_i386 || (BR2_mips && !BR2_SOFT_FLOAT) || \
+		BR2_mipsel || (BR2_powerpc && BR2_powerpc_CLASSIC) || \
+		BR2_sh4 || BR2_sh4eb || \
+		BR2_x86_64
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	# Unsupported MIPS cores
+	depends on !BR2_mips_interaptiv && !BR2_mips_m5150
+	# Unsupported for MIPS R6
+	depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
+	select BR2_TOOLCHAIN_EXTERNAL_MUSL
+	select BR2_TOOLCHAIN_HAS_SSP
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_HOSTARCH_NEEDS_IA32_LIBS
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	help
+	  Toolchain based on the Musl C library, provided by the
+	  musl-cross project. It uses gcc 5.3, binutils 2.25.1 and
+	  musl 1.1.12. It does not have a cross debugger included.
+
+	  The ARM soft-float toolchain is built for ARMv4t, while the
+	  ARM hard-float toolchain is built for ARMv5t.
+	  The x86 toolchain is built for i486.
+
+	  http://musl.codu.org/

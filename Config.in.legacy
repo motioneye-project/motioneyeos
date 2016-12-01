@@ -143,6 +143,50 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.02"
+
+config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
+	bool "Blackfin.uclinux.org 2014R1 toolchain removed"
+	select BR2_LEGACY
+	help
+	  The ADI Blackfin toolchain has many bugs which are fixed in
+	  more recent gcc and uClibc-ng releases. Use the Buildroot
+	  toolchain instead.
+
+config BR2_PACKAGE_MAKEDEVS
+	bool "makedevs removed"
+	select BR2_LEGACY
+	help
+	  The makedevs tool is part of busybox. The Buildroot fork
+	  should not be used outside of the Buildroot infrastructure.
+
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
+	bool "Arago ARMv7 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
+	bool "Arago ARMv5 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
+config BR2_PACKAGE_SNOWBALL_HDMISERVICE
+	bool "snowball-hdmiservice removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+config BR2_PACKAGE_SNOWBALL_INIT
+	bool "snowball-init removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+###############################################################################
 comment "Legacy options removed in 2016.11"
 
 config BR2_PACKAGE_PHP_SAPI_CLI_CGI

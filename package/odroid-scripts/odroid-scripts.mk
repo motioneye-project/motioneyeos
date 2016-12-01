@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ODROID_SCRIPTS_VERSION = a252de04562dcf8d8a4918a544b45a9e3d46d2fb
+ODROID_SCRIPTS_VERSION = cfd289b1d69136b8bfd725d90cd648da4654f2bd
 ODROID_SCRIPTS_SITE = $(call github,mdrjr,c2_bootini,$(ODROID_SCRIPTS_VERSION))
 ODROID_SCRIPTS_LICENSE = unclear
 
@@ -29,8 +29,8 @@ define ODROID_SCRIPTS_INSTALL_INIT_SYSTEMD
 endef
 
 define ODROID_SCRIPTS_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 0755 package/odroid-scripts/S50odroidc2_fb \
-		$(TARGET_DIR)/etc/init.d/S50odroidc2_fb
+	$(INSTALL) -D -m 0755 package/odroid-scripts/S02odroidc2_fb \
+		$(TARGET_DIR)/etc/init.d/S02odroidc2_fb
 endef
 
 $(eval $(generic-package))

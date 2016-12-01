@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUDO_VERSION = 1.8.15
+SUDO_VERSION = 1.8.18p1
 SUDO_SITE = http://www.sudo.ws/sudo/dist
 SUDO_LICENSE = ISC BSD-3c
 SUDO_LICENSE_FILES = doc/LICENSE
@@ -28,6 +28,13 @@ SUDO_CONF_OPTS += --with-pam
 SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_INSTALL_PAM_CONF
 else
 SUDO_CONF_OPTS += --without-pam
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+SUDO_CONF_OPTS += --enable-zlib
+SUDO_DEPENDENCIES += zlib
+else
+SUDO_CONF_OPTS += --disable-zlib
 endif
 
 # mksigname/mksiglist needs to run on build host to generate source files

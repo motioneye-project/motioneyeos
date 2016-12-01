@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-MOARVM_VERSION = 2016.10
+MOARVM_VERSION = 2016.11
 MOARVM_SITE = http://moarvm.com/releases
 MOARVM_SOURCE = MoarVM-$(MOARVM_VERSION).tar.gz
 MOARVM_LICENSE = Artistic-2.0
 MOARVM_LICENSE_FILES = Artistic2.txt
 MOARVM_INSTALL_STAGING = YES
-MOARVM_DEPENDENCIES = host-luajit libuv libtommath libatomic_ops
+MOARVM_DEPENDENCIES = host-luajit host-pkgconf libuv libtommath libatomic_ops
 
 MOARVM_CONF_OPTS = \
 	--build=$(GNU_HOST_NAME) \
@@ -19,10 +19,16 @@ MOARVM_CONF_OPTS = \
 	--cc="$(TARGET_CC)" \
 	--ld="$(TARGET_CC)" \
 	--prefix="/usr" \
+	--pkgconfig=$(PKG_CONFIG_HOST_BINARY) \
 	--lua=$(HOST_DIR)/usr/bin/luajit \
 	--has-libuv \
 	--has-libtommath \
 	--has-libatomic
+
+ifeq ($(BR2_PACKAGE_LIBFFI),y)
+MOARVM_CONF_OPTS += --has-libffi
+MOARVM_DEPENDENCIES += libffi
+endif
 
 ifeq ($(BR2_ENDIAN),"BIG")
 MOARVM_CONF_OPTS += --big-endian

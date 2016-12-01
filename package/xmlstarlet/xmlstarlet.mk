@@ -13,9 +13,9 @@ XMLSTARLET_DEPENDENCIES += libxml2 libxslt \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 XMLSTARLET_CONF_OPTS += \
-	--with-libxml-prefix=${STAGING_DIR}/usr \
-	--with-libxslt-prefix=${STAGING_DIR}/usr \
-	--with-libiconv-prefix=${STAGING_DIR}/usr
+	--with-libxml-prefix=$(STAGING_DIR)/usr \
+	--with-libxslt-prefix=$(STAGING_DIR)/usr \
+	--with-libiconv-prefix=$(STAGING_DIR)/usr
 
 ifeq ($(BR2_STATIC_LIBS),y)
 XMLSTARLET_CONF_OPTS += --enable-static-libs

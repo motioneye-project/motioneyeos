@@ -11,25 +11,21 @@ for example).
 
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 [Maxime: refresh the patch]
+[Vincent:
+  refresh the patch, move-to-rootlibdir removed by:
+  https://github.com/systemd/systemd/commit/082210c7a837063fd8b520b18c221b42059d7eff
+]
 Signed-off-by: Maxime Hadjinlian <maxime.hadjinlian@gmail.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 ---
- Makefile.am  | 15 +++------------
+ Makefile.am  | 11 ++---------
  configure.ac |  2 --
- 2 files changed, 3 insertions(+), 14 deletions(-)
+ 2 files changed, 2 insertions(+), 11 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
 index 0c27f81..4de1595 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -255,7 +255,7 @@ define move-to-rootlibdir
- 		$(MKDIR_P) $(DESTDIR)$(rootlibdir) && \
- 		so_img_name=$$(readlink $(DESTDIR)$(libdir)/$$libname) && \
- 		rm -f $(DESTDIR)$(libdir)/$$libname && \
--		$(LN_S) --relative -f $(DESTDIR)$(rootlibdir)/$$so_img_name $(DESTDIR)$(libdir)/$$libname && \
-+		$(LN_S) -f $(DESTDIR)$(rootlibdir)/$$so_img_name $(DESTDIR)$(libdir)/$$libname && \
- 		mv $(DESTDIR)$(libdir)/$$libname.* $(DESTDIR)$(rootlibdir); \
- 	fi
- endef
 @@ -312,9 +312,9 @@ install-aliases-hook:
  	set -- $(SYSTEM_UNIT_ALIASES) && \
  		dir=$(systemunitdir) && $(install-aliases)

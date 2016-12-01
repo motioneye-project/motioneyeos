@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "nios2-linux-gnu"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-codesourcery-niosII"
+
+endif

@@ -1,2 +1,2 @@
-# locally computed
-sha256 bdd659573e7e75cd4ad57b7160a7353d98d21a6fef06e4fb9e114a5b1f1e9dab qt5webkit-b35917bcb44d7f200af0f4ac68a126fa0aa8d93d.tar.gz
+# Hash from: http://download.qt.io/snapshots/qt/5.6/5.6.2/latest_src/submodules/qtwebkit-opensource-src-5.6.2.tar.xz.mirrorlist
+sha256 528a6b8b1c5095367b26e8ce4f3a46bb739e2e9913ff4dfc6ef58a04fcd73966 qtwebkit-opensource-src-5.6.2.tar.xz

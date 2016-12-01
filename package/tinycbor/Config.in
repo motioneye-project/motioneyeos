@@ -1,7 +1,5 @@
 config BR2_PACKAGE_TINYCBOR
 	bool "tinycbor"
-	# package uses fopencookie(), not available with this toolchain
-	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
 	help
 	  Concise Binary Object Representation (CBOR) Library
 

@@ -707,6 +707,12 @@ config BR2_REPRODUCIBLE
 	  this allows to generate exactly identical binaries from one
 	  build to the other, including on different machines.
 
+	  The current implementation is restricted to builds with the
+	  same output directory. Many (absolute) paths are recorded in
+	  intermediary files, and it is very likely that some of these
+	  paths leak into the target rootfs. If you build with the
+	  same O=... path, however, the result is identical.
+
 	  This is labeled as an experimental feature, as not all
 	  packages behave properly to ensure reproducibility.
 

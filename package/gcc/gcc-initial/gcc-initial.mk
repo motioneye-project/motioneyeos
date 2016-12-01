@@ -25,19 +25,6 @@ HOST_GCC_INITIAL_SUBDIR = build
 
 HOST_GCC_INITIAL_PRE_CONFIGURE_HOOKS += HOST_GCC_CONFIGURE_SYMLINK
 
-# gcc on ARC has a bug: in its libgcc, even when no C library is
-# available (--with-newlib is passed, and therefore inhibit_libc is
-# defined), it tries to use the C library for the libgmon
-# library. Since it's not needed in gcc-initial, we disabled it here.
-ifeq ($(BR2_GCC_VERSION_ARC),y)
-define HOST_GCC_INITIAL_DISABLE_LIBGMON
-	$(SED) 's/crtbeginS.o libgmon.a crtg.o/crtbeginS.o crtg.o/' \
-		$(@D)/libgcc/config.host
-endef
-HOST_GCC_INITIAL_POST_PATCH_HOOKS += HOST_GCC_INITIAL_DISABLE_LIBGMON
-HOST_GCC_INITIAL_POST_RSYNC_HOOKS += HOST_GCC_INITIAL_DISABLE_LIBGMON
-endif
-
 HOST_GCC_INITIAL_CONF_OPTS = \
 	$(HOST_GCC_COMMON_CONF_OPTS) \
 	--enable-languages=c \

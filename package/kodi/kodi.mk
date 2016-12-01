@@ -96,9 +96,10 @@ endif
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 KODI_DEPENDENCIES += rpi-userland
 KODI_CONF_OPTS += --with-platform=raspberry-pi --enable-player=omxplayer
-KODI_CONF_ENV += INCLUDES="-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
-	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux" \
-	LIBS="-lvcos -lvchostif"
+KODI_INCLUDES += \
+	-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
+	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux
+KODI_LIBS = -lvcos -lvchostif
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
@@ -112,6 +113,16 @@ ifeq ($(BR2_PACKAGE_IMX_VPUWRAP),y)
 KODI_DEPENDENCIES += imx-vpuwrap
 KODI_CONF_OPTS += --enable-codec=imxvpu
 endif
+
+ifeq ($(BR2_PACKAGE_LIBAMCODEC),y)
+KODI_DEPENDENCIES += libamcodec
+KODI_CONF_OPTS += --enable-codec=amcodec
+KODI_INCLUDES += -I$(STAGING_DIR)/usr/include/amcodec
+endif
+
+KODI_CONF_ENV += \
+	INCLUDES="$(KODI_INCLUDES)" \
+	LIBS="$(KODI_LIBS)"
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 KODI_CONF_OPTS += --enable-libcap

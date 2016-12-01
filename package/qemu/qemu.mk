@@ -204,6 +204,12 @@ else
 QEMU_OPTS += --disable-fdt
 endif
 
+ifeq ($(BR2_PACKAGE_QEMU_TOOLS),y)
+QEMU_OPTS += --enable-tools
+else
+QEMU_OPTS += --disable-tools
+endif
+
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define QEMU_CONFIGURE_CMDS
@@ -242,7 +248,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-strip                 \
 			--disable-seccomp               \
 			--disable-sparse                \
-			--disable-tools                 \
 			$(QEMU_OPTS)                    \
 	)
 endef
