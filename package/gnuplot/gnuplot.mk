@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GNUPLOT_VERSION = 4.6.6
+GNUPLOT_VERSION = 5.0.5
 GNUPLOT_SITE = http://downloads.sourceforge.net/project/gnuplot/gnuplot/$(GNUPLOT_VERSION)
 GNUPLOT_LICENSE = gnuplot license (open source)
 GNUPLOT_LICENSE_FILES = Copyright
@@ -19,7 +19,6 @@ GNUPLOT_CONF_OPTS = \
 	--disable-demo \
 	--without-row-help \
 	--disable-history-file \
-	--without-lisp-files \
 	--disable-wxwidgets \
 	--without-lua \
 	--without-latex \
