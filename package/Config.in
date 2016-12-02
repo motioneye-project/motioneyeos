@@ -437,6 +437,7 @@ endmenu
 	source "package/pifmrds/Config.in"
 	source "package/powertop/Config.in"
 	source "package/pps-tools/Config.in"
+	source "package/pru-software-support/Config.in"
 	source "package/pulseview/Config.in"
 	source "package/read-edid/Config.in"
 	source "package/rfkill/Config.in"
