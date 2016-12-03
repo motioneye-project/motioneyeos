@@ -39,7 +39,7 @@ HOST_CMAKE_CXXFLAGS = $(shell echo $(HOST_CXXFLAGS) | sed -r "s%$(HOST_CPPFLAGS)
 
 define HOST_CMAKE_CONFIGURE_CMDS
 	(cd $(@D); \
-		LDFLAGS="$(HOST_LDFLAGS)" \
+		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CMAKE_CFLAGS)" \
 		./bootstrap --prefix=$(HOST_DIR)/usr \
 			--parallel=$(PARALLEL_JOBS) -- \
