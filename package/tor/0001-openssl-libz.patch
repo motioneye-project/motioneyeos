@@ -3,7 +3,7 @@ and remove host paths when looking for openssl.
 
 [Vincent:
  - Adapt the patch to make it apply on the new version.]
-[Bernd: rebased for tor-0.2.7.6]
+[Bernd: rebased for tor-0.2.7.6 & 0.2.8.10]
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
@@ -19,7 +19,7 @@ diff -uNr tor-0.2.7.6.org/configure.ac tor-0.2.7.6/configure.ac
 +TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto -lz $TOR_LIB_GDI],
      [#include <openssl/rand.h>],
      [void RAND_add(const void *buf, int num, double entropy);],
-     [RAND_add((void*)0,0,0); exit(0);], [],
+     [RAND_add((void*)0,0,0);], [],
 -    [/usr/local/openssl /usr/lib/openssl /usr/local/ssl /usr/lib/ssl /usr/local /usr/athena /opt/openssl])
 +    [])
  
@@ -41,9 +41,9 @@ diff -uNr tor-0.2.7.6.org/src/test/include.am tor-0.2.7.6/src/test/include.am
 --- tor-0.2.7.6.org/src/test/include.am	2015-12-08 18:35:17.000000000 +0100
 +++ tor-0.2.7.6/src/test/include.am	2016-01-31 20:25:59.673127854 +0100
 @@ -127,8 +127,8 @@
- src_test_test_LDADD = src/or/libtor-testing.a src/common/libor-testing.a \
- 	src/common/libor-crypto-testing.a $(LIBDONNA) src/common/libor.a \
- 	src/common/libor-event-testing.a src/trunnel/libor-trunnel-testing.a \
+ 	src/common/libor-testing.a \
+ 	src/common/libor-event-testing.a \
+ 	src/trunnel/libor-trunnel-testing.a \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
 -	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
 +	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
@@ -76,7 +76,7 @@ diff -uNr tor-0.2.7.6.org/src/test/include.am tor-0.2.7.6/src/test/include.am
 @@ -174,8 +174,8 @@
  src_test_test_ntor_cl_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@
  src_test_test_ntor_cl_LDADD = src/or/libtor.a src/common/libor.a \
- 	src/common/libor-crypto.a $(LIBDONNA) \
+ 	src/common/libor-crypto.a $(LIBKECCAK_TINY) $(LIBDONNA) \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ \
 -	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
 +	@TOR_LIB_MATH@ \
