@@ -828,6 +828,7 @@ menu "Libraries"
 
 menu "Audio/Sound"
 	source "package/alsa-lib/Config.in"
+	source "package/aubio/Config.in"
 	source "package/audiofile/Config.in"
 	source "package/celt051/Config.in"
 	source "package/fdk-aac/Config.in"
