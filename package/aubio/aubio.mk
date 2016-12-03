@@ -14,7 +14,6 @@ AUBIO_INSTALL_STAGING = YES
 AUBIO_CONF_OPTS = \
 	--disable-docs \
 	--disable-atlas \
-	--disable-samplerate \
 	--disable-avcodec \
 	--disable-jack \
 	--disable-fftw3 \
@@ -25,6 +24,13 @@ AUBIO_DEPENDENCIES += libsndfile
 AUBIO_CONF_OPTS += --enable-sndfile
 else
 AUBIO_CONF_OPTS += --disable-sndfile
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
+AUBIO_DEPENDENCIES += libsamplerate
+AUBIO_CONF_OPTS += --enable-samplerate
+else
+AUBIO_CONF_OPTS += --disable-samplerate
 endif
 
 $(eval $(waf-package))
