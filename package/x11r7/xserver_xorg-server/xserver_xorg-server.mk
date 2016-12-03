@@ -15,7 +15,6 @@ XSERVER_XORG_SERVER_AUTORECONF = YES
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xfont_font-util			\
 	xutil_util-macros 		\
-	xlib_libXfont 			\
 	xlib_libX11 			\
 	xlib_libXau 			\
 	xlib_libXdmcp 			\
@@ -192,6 +191,14 @@ XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-record
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-record
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFONT2),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXfont2
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFONT),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXfont
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
