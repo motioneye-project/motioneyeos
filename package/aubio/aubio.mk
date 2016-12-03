@@ -14,9 +14,7 @@ AUBIO_INSTALL_STAGING = YES
 AUBIO_CONF_OPTS = \
 	--disable-docs \
 	--disable-atlas \
-	--disable-avcodec \
-	--disable-fftw3 \
-	--disable-fftw3f
+	--disable-avcodec
 
 ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 AUBIO_DEPENDENCIES += libsndfile
@@ -37,6 +35,18 @@ AUBIO_DEPENDENCIES += jack2
 AUBIO_CONF_OPTS += --enable-jack
 else
 AUBIO_CONF_OPTS += --disable-jack
+endif
+
+ifeq ($(BR2_PACKAGE_FFTW),y)
+AUBIO_DEPENDENCIES += fftw
+# fftw3 require double otherwise it will look for fftw3f
+ifeq ($(BR2_PACKAGE_FFTW_PRECISION_DOUBLE),y)
+AUBIO_CONF_OPTS += --enable-fftw3 --enable-double
+else ifeq ($(BR2_PACKAGE_FFTW_PRECISION_SINGLE),y)
+AUBIO_CONF_OPTS += --enable-fftw3f --disable-double
+endif
+else  # !BR2_PACKAGE_FFTW
+AUBIO_CONF_OPTS += --disable-fftw3
 endif
 
 $(eval $(waf-package))
