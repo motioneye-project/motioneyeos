@@ -16,9 +16,15 @@ AUBIO_CONF_OPTS = \
 	--disable-atlas \
 	--disable-samplerate \
 	--disable-avcodec \
-	--disable-sndfile \
 	--disable-jack \
 	--disable-fftw3 \
 	--disable-fftw3f
+
+ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
+AUBIO_DEPENDENCIES += libsndfile
+AUBIO_CONF_OPTS += --enable-sndfile
+else
+AUBIO_CONF_OPTS += --disable-sndfile
+endif
 
 $(eval $(waf-package))
