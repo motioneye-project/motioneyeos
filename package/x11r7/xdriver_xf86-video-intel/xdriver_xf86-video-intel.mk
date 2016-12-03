@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XDRIVER_XF86_VIDEO_INTEL_VERSION = 6988b873b041130d88dd0aae70c10f86550ee2b3
+XDRIVER_XF86_VIDEO_INTEL_VERSION = 9ac7a3370ab265d4cbdbbf3dc588af88c37048e1
 XDRIVER_XF86_VIDEO_INTEL_SITE = git://anongit.freedesktop.org/xorg/driver/xf86-video-intel
 XDRIVER_XF86_VIDEO_INTEL_LICENSE = MIT
 XDRIVER_XF86_VIDEO_INTEL_LICENSE_FILES = COPYING
