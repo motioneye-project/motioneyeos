@@ -13,8 +13,7 @@ AUBIO_INSTALL_STAGING = YES
 
 AUBIO_CONF_OPTS = \
 	--disable-docs \
-	--disable-atlas \
-	--disable-avcodec
+	--disable-atlas
 
 ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 AUBIO_DEPENDENCIES += libsndfile
@@ -47,6 +46,13 @@ AUBIO_CONF_OPTS += --enable-fftw3f --disable-double
 endif
 else  # !BR2_PACKAGE_FFTW
 AUBIO_CONF_OPTS += --disable-fftw3
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_AVRESAMPLE),y)
+AUBIO_DEPENDENCIES += ffmpeg
+AUBIO_CONF_OPTS += --enable-avcodec
+else
+AUBIO_CONF_OPTS += --disable-avcodec
 endif
 
 $(eval $(waf-package))
