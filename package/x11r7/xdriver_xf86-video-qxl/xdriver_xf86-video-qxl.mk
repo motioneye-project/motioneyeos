@@ -18,7 +18,6 @@ XDRIVER_XF86_VIDEO_QXL_CONF_OPTS = \
 XDRIVER_XF86_VIDEO_QXL_DEPENDENCIES = \
 	libpciaccess \
 	spice-protocol \
-	xlib_libXfont \
 	xproto_fontsproto \
 	xproto_xproto \
 	xserver_xorg-server
@@ -30,6 +29,12 @@ XDRIVER_XF86_VIDEO_QXL_CONF_ENV += REQUIRED_MODULES=libdrm
 XDRIVER_XF86_VIDEO_QXL_DEPENDENCIES += libdrm
 else
 XDRIVER_XF86_VIDEO_QXL_CONF_OPTS += --disable-kms
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFONT2),y)
+XDRIVER_XF86_VIDEO_QXL_DEPENDENCIES += xlib_libXfont2
+else
+XDRIVER_XF86_VIDEO_QXL_DEPENDENCIES += xlib_libXfont
 endif
 
 $(eval $(autotools-package))
