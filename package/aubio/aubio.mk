@@ -15,7 +15,6 @@ AUBIO_CONF_OPTS = \
 	--disable-docs \
 	--disable-atlas \
 	--disable-avcodec \
-	--disable-jack \
 	--disable-fftw3 \
 	--disable-fftw3f
 
@@ -31,6 +30,13 @@ AUBIO_DEPENDENCIES += libsamplerate
 AUBIO_CONF_OPTS += --enable-samplerate
 else
 AUBIO_CONF_OPTS += --disable-samplerate
+endif
+
+ifeq ($(BR2_PACKAGE_JACK2),y)
+AUBIO_DEPENDENCIES += jack2
+AUBIO_CONF_OPTS += --enable-jack
+else
+AUBIO_CONF_OPTS += --disable-jack
 endif
 
 $(eval $(waf-package))
