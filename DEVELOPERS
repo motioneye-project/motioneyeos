@@ -804,6 +804,7 @@ F:	package/erlang-p1-utils/
 F:	package/erlang-p1-xml/
 F:	package/erlang-p1-yaml/
 F:	package/erlang-p1-zlib/
+F:	package/nginx-dav-ext/
 
 N:	John Stile <johns@msli.com>
 F:	package/dhcpcd/
