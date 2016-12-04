@@ -178,8 +178,7 @@ if test "${missing_progs}" = "yes" ; then
 	exit 1
 fi
 
-if grep ^BR2_TOOLCHAIN_BUILDROOT=y $BR2_CONFIG > /dev/null && \
-	grep ^BR2_ENABLE_LOCALE=y       $BR2_CONFIG > /dev/null ; then
+if grep ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG > /dev/null; then
 	if ! which locale > /dev/null ; then
 		echo
 		echo "You need locale support on your build machine to build a toolchain supporting locales"
