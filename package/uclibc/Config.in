@@ -41,6 +41,7 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 	bool "Enable toolchain locale/i18n support"
 	select BR2_TOOLCHAIN_BUILDROOT_WCHAR
 	select BR2_ENABLE_LOCALE
+	select BR2_NEEDS_HOST_UTF8_LOCALE
 	help
 	  Enable this option if you want your toolchain to support
 	  localization and internationalization.
