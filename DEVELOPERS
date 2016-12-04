@@ -1251,6 +1251,7 @@ F:	package/irssi/
 F:	package/vnstat/
 
 N:	Romain Naour <romain.naour@gmail.com>
+F:	package/aubio/
 F:	package/bullet/
 F:	package/efl/
 F:	package/enlightenment/
