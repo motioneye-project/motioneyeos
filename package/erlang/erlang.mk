@@ -55,8 +55,12 @@ else
 ERLANG_CONF_OPTS += --without-ssl
 endif
 
-ifeq ($(BR2_PACKAGE_UNIXODBC),y)
+# ODBC support in erlang requires threads
+ifeq ($(BR2_PACKAGE_UNIXODBC)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
 ERLANG_DEPENDENCIES += unixodbc
+ERLANG_CONF_OPTS += --with-odbc
+else
+ERLANG_CONF_OPTS += --without-odbc
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
