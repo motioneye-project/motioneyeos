@@ -16,6 +16,7 @@ config BR2_PACKAGE_EFL
 	select BR2_PACKAGE_LIBCURL # Ecore_con_url, runtime dependency
 	# https://phab.enlightenment.org/T2728
 	select BR2_PACKAGE_LUAJIT # Lua support broken
+	select BR2_PACKAGE_LZ4
 	select BR2_PACKAGE_UTIL_LINUX
 	# libblkid is part of required tools, see EFL's README.
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID

@@ -20,7 +20,7 @@ EFL_LICENSE_FILES = \
 EFL_INSTALL_STAGING = YES
 
 EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
-	jpeg luajit udev util-linux zlib
+	jpeg luajit lz4 udev util-linux zlib
 
 # Configure options:
 # --disable-lua-old: build elua for the target.
@@ -28,6 +28,7 @@ EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
 # --disable-sdl: disable sdl2 support.
 # --disable-spectre: disable spectre image loader.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
+# --enable-liblz4: use liblz4 from lz4 package.
 # --with-doxygen: disable doxygen documentation
 EFL_CONF_OPTS = \
 	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
@@ -43,6 +44,7 @@ EFL_CONF_OPTS = \
 	--disable-spectre \
 	--disable-xinput22 \
 	--disable-wayland \
+	--enable-liblz4 \
 	--with-doxygen=no
 
 # Disable untested configuration warning.
