@@ -95,22 +95,6 @@ config BR2_UCLIBC_INSTALL_UTILS
 	  You can save ~32 KiB in target space by disabling them since
 	  they're normally not needed.
 
-config BR2_UCLIBC_INSTALL_TEST_SUITE
-	bool "Compile and install uClibc tests"
-	help
-	  Enabling this option will compile and install the uClibc test suite.
-	  This is useful if you want to check if the uClibc library is working
-	  for your architecture and/or help developing uClibc.
-
-	  The test suite will be installed into /root/uClibc directory. To run
-	  the test suite enter the /root/uClibc/test directory and type
-	  "sh uclibcng-testrunner.sh".
-
-	  See the /root/uClibc/test/README for additional information.
-
-	  This is not needed at all for normal builds, so you can safely say no
-	  if you do not plan to dig into your C library.
-
 # Mapping from the Buildroot architecture configuration options to the
 # uClibc architecture names.
 config BR2_UCLIBC_TARGET_ARCH

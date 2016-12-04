@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_UCLIBC_INSTALL_TEST_SUITE
+	bool "uClibc tests now in uclibc-ng-test"
+	select BR2_LEGACY
+	select BR2_PACKAGE_UCLIBC_NG_TEST
+	help
+	  The test suite of the uClibc C library has been moved into a
+	  separate package, uclibc-ng-test.
+
 config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
 	bool "Blackfin.uclinux.org 2014R1 toolchain removed"
 	select BR2_LEGACY
