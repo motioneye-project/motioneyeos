@@ -12,8 +12,8 @@ EFIVAR_DEPENDENCIES = popt
 EFIVAR_INSTALL_STAGING = YES
 
 # BINTARGETS is set to skip efivar-static which requires static popt,
-# and since we depend on glibc, we will never be built in a
-# static-only environment.
+# and since we depend on dynamic libraries, efivar will never be built
+# in a static-only environment.
 # -fPIC is needed at least on MIPS, otherwise fails to build shared
 # -library.
 EFIVAR_MAKE_OPTS = \
