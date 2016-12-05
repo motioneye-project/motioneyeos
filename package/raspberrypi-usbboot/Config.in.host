@@ -1,0 +1,12 @@
+config BR2_PACKAGE_HOST_RASPBERRYPI_USBBOOT
+	bool "host raspberrypi-usbboot"
+	depends on BR2_arm
+	help
+	  This package builds and install the "rpiboot" tool for the
+	  host machine. This tool allows to boot the Broadcom BCM
+	  processor used in the RaspberryPi to boot over USB, and have
+	  it expose a USB mass storage device in order to reflash the
+	  built-in storage of the RaspberryPi (useful for the eMMC
+	  built into the Compute module).
+
+	  https://github.com/raspberrypi/usbboot

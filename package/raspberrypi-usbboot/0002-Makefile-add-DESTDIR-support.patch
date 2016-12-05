@@ -1,0 +1,49 @@
+From 905bc741b189d67160b27551b8ad01459c2707a0 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 2 Dec 2016 23:10:37 +0100
+Subject: [PATCH] Makefile: add DESTDIR support
+
+This allows installing rpiboot outside of /usr if needed.
+
+Submitted-upstream: https://github.com/raspberrypi/usbboot/pull/2
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index d9a7220..7835b7f 100755
+--- a/Makefile
++++ b/Makefile
+@@ -2,18 +2,18 @@ rpiboot: main.c
+ 	$(CC) -g $(CFLAGS) -o $@ $< -lusb-1.0 $(LDFLAGS)
+ 
+ install: rpiboot
+-	cp rpiboot /usr/bin
+-	mkdir -p /usr/share/rpiboot
+-	cp usbbootcode.bin /usr/share/rpiboot
+-	cp msd.elf /usr/share/rpiboot
+-	cp buildroot.elf /usr/share/rpiboot
++	cp rpiboot $(DESTDIR)/usr/bin
++	mkdir -p $(DESTDIR)//usr/share/rpiboot
++	cp usbbootcode.bin $(DESTDIR)/usr/share/rpiboot
++	cp msd.elf $(DESTDIR)/usr/share/rpiboot
++	cp buildroot.elf $(DESTDIR)/usr/share/rpiboot
+ 
+ uninstall:
+-	rm -f /usr/bin/rpiboot
+-	rm -f /usr/share/rpiboot/usbbootcode.bin
+-	rm -f /usr/share/rpiboot/msd.elf
+-	rm -f /usr/share/rpiboot/buildroot.elf
+-	rmdir --ignore-fail-on-non-empty /usr/share/rpiboot/
++	rm -f $(DESTDIR)/usr/bin/rpiboot
++	rm -f $(DESTDIR)/usr/share/rpiboot/usbbootcode.bin
++	rm -f $(DESTDIR)/usr/share/rpiboot/msd.elf
++	rm -f $(DESTDIR)/usr/share/rpiboot/buildroot.elf
++	rmdir --ignore-fail-on-non-empty $(DESTDIR)/usr/share/rpiboot/
+ 
+ clean: 
+ 	rm rpiboot
+-- 
+2.7.4
+
