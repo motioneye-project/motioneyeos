@@ -61,7 +61,7 @@ define VIM_INSTALL_RUNTIME_CMDS
 endef
 
 define VIM_REMOVE_DOCS
-	find $(TARGET_DIR)/usr/share/vim -type f -name "*.txt" -delete
+	$(RM) -rf $(TARGET_DIR)/usr/share/vim/vim*/doc/
 endef
 
 # Avoid oopses with vipw/vigr, lack of $EDITOR and 'vi' command expectation
