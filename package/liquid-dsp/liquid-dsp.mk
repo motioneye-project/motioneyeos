@@ -35,7 +35,7 @@ LIQUID_DSP_LDFLAGS += -lfftw3f
 endif
 
 # disable altivec, it has build issues
-ifeq ($(BR2_powerpc)$(BR2_powerpc64),y)
+ifeq ($(BR2_powerpc)$(BR2_powerpc64)$(BR2_powerpc64le),y)
 LIQUID_DSP_CONF_OPTS += --enable-simdoverride
 endif
 
