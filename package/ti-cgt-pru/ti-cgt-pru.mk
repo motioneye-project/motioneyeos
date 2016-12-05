@@ -21,7 +21,7 @@ define HOST_TI_CGT_PRU_EXTRACT_CMDS
 endef
 
 # Since this is largely prebuilt toolchain and likes to live in its
-# own directory, put is in $(HOST_DIR)/usr/share/ti-cgt-pru/.
+# own directory, put it in $(HOST_DIR)/usr/share/ti-cgt-pru/.
 # Packages wanting to use this toolchain need to use this path as TI's
 # standard PRU_CGT path e.g. make PRU_CGT=$(TI_CGT_PRU_INSTALLDIR)...
 TI_CGT_PRU_INSTALLDIR = $(HOST_DIR)/usr/share/ti-cgt-pru
