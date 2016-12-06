@@ -49,6 +49,9 @@ else
 $(2)_WAF = ./waf
 endif
 
+$(2)_INSTALL_STAGING_OPTS 		?=
+$(2)_INSTALL_TARGET_OPTS 		?=
+
 #
 # Configure step. Only define it if not already defined by the package
 # .mk file.
@@ -84,7 +87,8 @@ ifndef $(2)_INSTALL_STAGING_CMDS
 define $(2)_INSTALL_STAGING_CMDS
 	cd $$(@D) && \
 	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
-		install --destdir=$$(STAGING_DIR)
+		install --destdir=$$(STAGING_DIR) \
+		$$($(2)_INSTALL_STAGING_OPTS)
 endef
 endif
 
@@ -96,7 +100,8 @@ ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	cd $$(@D) && \
 	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
-		install --destdir=$$(TARGET_DIR)
+		install --destdir=$$(TARGET_DIR) \
+		$$($(2)_INSTALL_TARGET_OPTS)
 endef
 endif
 
