@@ -52,6 +52,7 @@ endif
 $(2)_BUILD_OPTS 			?=
 $(2)_INSTALL_STAGING_OPTS 		?=
 $(2)_INSTALL_TARGET_OPTS 		?=
+$(2)_WAF_OPTS				?=
 
 #
 # Configure step. Only define it if not already defined by the package
@@ -65,7 +66,8 @@ define $(2)_CONFIGURE_CMDS
 	$$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) configure \
 		--prefix=/usr \
 		--libdir=/usr/lib \
-		$$($(2)_CONF_OPTS)
+		$$($(2)_CONF_OPTS) \
+		$$($(2)_WAF_OPTS)
 endef
 endif
 
@@ -77,7 +79,8 @@ ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	cd $$(@D) && \
 	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
-		build -j $$(PARALLEL_JOBS) $$($(2)_BUILD_OPTS)
+		build -j $$(PARALLEL_JOBS) $$($(2)_BUILD_OPTS) \
+		$$($(2)_WAF_OPTS)
 endef
 endif
 
@@ -90,7 +93,8 @@ define $(2)_INSTALL_STAGING_CMDS
 	cd $$(@D) && \
 	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
 		install --destdir=$$(STAGING_DIR) \
-		$$($(2)_INSTALL_STAGING_OPTS)
+		$$($(2)_INSTALL_STAGING_OPTS) \
+		$$($(2)_WAF_OPTS)
 endef
 endif
 
@@ -103,7 +107,8 @@ define $(2)_INSTALL_TARGET_CMDS
 	cd $$(@D) && \
 	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
 		install --destdir=$$(TARGET_DIR) \
-		$$($(2)_INSTALL_TARGET_OPTS)
+		$$($(2)_INSTALL_TARGET_OPTS) \
+		$$($(2)_WAF_OPTS)
 endef
 endif
 
