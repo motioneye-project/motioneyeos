@@ -15,6 +15,10 @@ AUBIO_CONF_OPTS = \
 	--disable-docs \
 	--disable-atlas
 
+# Add --notests for each build step to avoid running unit tests on the
+# build machine.
+AUBIO_WAF_OPTS = --notests
+
 ifeq ($(BR2_PACKAGE_LIBSNDFILE),y)
 AUBIO_DEPENDENCIES += libsndfile
 AUBIO_CONF_OPTS += --enable-sndfile
