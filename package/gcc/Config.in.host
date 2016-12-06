@@ -41,7 +41,7 @@ choice
 		# Broken or unsupported architectures
 		depends on !BR2_arc && !BR2_bfin
 		# Broken or unsupported ARM cores
-		depends on !BR2_cortex_a17
+		depends on !BR2_cortex_a17 && !BR2_cortex_a72
 		# Unsupported MIPS cores
 		depends on !BR2_mips_interaptiv
 		# Unsupported for MIPS R5
