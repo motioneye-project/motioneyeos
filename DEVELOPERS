@@ -1512,12 +1512,6 @@ F:	toolchain/
 N:	Tiago Brusamarello <tiago.brusamarello@datacom.ind.br>
 F:	package/aer-inject/
 
-N:	Tom Sparks <tom_a_sparks@yahoo.com.au>
-F:	package/ibrcommon/
-F:	package/ibrdtn/
-F:	package/ibrdtn-tools/
-F:	package/ibrdtnd/
-
 N:	Tzu-Jung Lee <roylee17@gmail.com>
 F:	package/dropwatch/
 F:	package/tstools/
