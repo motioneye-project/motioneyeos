@@ -13,7 +13,7 @@ choice
 		depends on !BR2_microblaze && !BR2_arc \
 			&& !BR2_powerpc64le && !BR2_nios2 && !BR2_bfin
 		# Broken or unsupported ARM cores
-		depends on !BR2_cortex_a12 && !BR2_cortex_a17
+		depends on !BR2_cortex_a12 && !BR2_cortex_a17 && !BR2_ARM_CPU_ARMV8
 		# Broken or unsupported PPC cores
 		depends on !BR2_powerpc_power8
 		# Unsupported MIPS cores
