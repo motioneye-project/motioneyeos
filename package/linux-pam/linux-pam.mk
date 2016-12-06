@@ -29,6 +29,10 @@ endif
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 LINUX_PAM_CONF_OPTS += --enable-selinux
 LINUX_PAM_DEPENDENCIES += libselinux
+define LINUX_PAM_SELINUX_PAMFILE_TWEAK
+	$(SED) 's/^# \(.*pam_selinux.so.*\)$$/\1/' \
+		$(TARGET_DIR)/etc/pam.d/login
+endef
 else
 LINUX_PAM_CONF_OPTS += --disable-selinux
 endif
@@ -46,6 +50,7 @@ define LINUX_PAM_INSTALL_CONFIG
 		$(TARGET_DIR)/etc/pam.d/login
 	$(INSTALL) -m 0644 -D package/linux-pam/other.pam \
 		$(TARGET_DIR)/etc/pam.d/other
+	$(LINUX_PAM_SELINUX_PAMFILE_TWEAK)
 endef
 
 LINUX_PAM_POST_INSTALL_TARGET_HOOKS += LINUX_PAM_INSTALL_CONFIG
