@@ -49,6 +49,7 @@ else
 $(2)_WAF = ./waf
 endif
 
+$(2)_BUILD_OPTS 			?=
 $(2)_INSTALL_STAGING_OPTS 		?=
 $(2)_INSTALL_TARGET_OPTS 		?=
 
@@ -75,7 +76,8 @@ endif
 ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	cd $$(@D) && \
-	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) build -j $$(PARALLEL_JOBS)
+	$$(TARGET_MAKE_ENV) $$(HOST_DIR)/usr/bin/python2 $$($(2)_WAF) \
+		build -j $$(PARALLEL_JOBS) $$($(2)_BUILD_OPTS)
 endef
 endif
 
