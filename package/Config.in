@@ -1074,6 +1074,11 @@ endmenu
 
 menu "Javascript"
 	source "package/angularjs/Config.in"
+if BR2_PACKAGE_ANGULARJS
+menu "External AngularJS plugins"
+	source "package/angular-websocket/Config.in"
+endmenu
+endif
 	source "package/bootstrap/Config.in"
 	source "package/explorercanvas/Config.in"
 	source "package/flot/Config.in"
