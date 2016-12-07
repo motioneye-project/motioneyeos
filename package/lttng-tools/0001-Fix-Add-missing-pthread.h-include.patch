@@ -1,0 +1,29 @@
+From c948391121f2eb411bc7d2049d96f267bfa643d8 Mon Sep 17 00:00:00 2001
+From: Michael Jeanson <mjeanson@efficios.com>
+Date: Mon, 5 Dec 2016 15:39:26 -0500
+Subject: [PATCH] Fix: Add missing pthread.h include
+
+Some libc like musl and uClibc requires explicit includes of pthread.h
+
+Signed-off-by: Michael Jeanson <mjeanson@efficios.com>
+[Thomas: taken from lttng mailing list.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/common/defaults.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/common/defaults.h b/src/common/defaults.h
+index 27f1ddc..37d222a 100644
+--- a/src/common/defaults.h
++++ b/src/common/defaults.h
+@@ -20,6 +20,7 @@
+ #ifndef _DEFAULTS_H
+ #define _DEFAULTS_H
+ 
++#include <pthread.h>
+ #include <src/common/macros.h>
+ 
+ /* Default unix group name for tracing. */
+-- 
+2.7.4
+
