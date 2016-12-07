@@ -193,21 +193,21 @@ config BR2_cortex_a17
 	depends on !BR2_ARCH_IS_64
 config BR2_cortex_a53
 	bool "cortex-A53"
-	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a57
 	bool "cortex-A57"
-	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a72
 	bool "cortex-A72"
-	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8
