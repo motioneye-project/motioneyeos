@@ -150,7 +150,7 @@ endif # BR2_PACKAGE_OPENSSL
 
 ifeq ($(BR2_PACKAGE_EFL_ELPUT),y)
 EFL_CONF_OPTS += --enable-elput
-EFL_DEPENDENCIES += libinput libxkbcommon
+EFL_DEPENDENCIES += libinput
 else
 EFL_CONF_OPTS += --disable-elput
 endif
@@ -193,6 +193,15 @@ EFL_DEPENDENCIES += libegl libgles
 else ifeq ($(BR2_PACKAGE_EFL_OPENGL_NONE),y)
 EFL_CONF_OPTS += --with-opengl=none
 endif
+
+ifeq ($(BR2_PACKAGE_EFL_DRM),y)
+EFL_CONF_OPTS += --enable-drm
+EFL_DEPENDENCIES += libdrm libegl mesa3d
+else
+EFL_CONF_OPTS += --disable-drm
+endif
+
+EFL_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBXKBCOMMON),libxkbcommon)
 
 # Loaders that need external dependencies needs to be --enable-XXX=yes
 # otherwise the default is '=static'.
