@@ -32,9 +32,20 @@ define QT5XMLPATTERNS_INSTALL_STAGING_CMDS
 endef
 
 ifeq ($(BR2_STATIC_LIBS),)
-define QT5XMLPATTERNS_INSTALL_TARGET_CMDS
+define QT5XMLPATTERNS_INSTALL_TARGET_LIBS
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5XmlPatterns*.so.* $(TARGET_DIR)/usr/lib
 endef
 endif
+
+ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
+define QT5XMLPATTERNS_INSTALL_TARGET_EXAMPLES
+	cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/xmlpatterns $(TARGET_DIR)/usr/lib/qt/examples/
+endef
+endif
+
+define QT5XMLPATTERNS_INSTALL_TARGET_CMDS
+	$(QT5XMLPATTERNS_INSTALL_TARGET_LIBS)
+	$(QT5XMLPATTERNS_INSTALL_TARGET_EXAMPLES)
+endef
 
 $(eval $(generic-package))
