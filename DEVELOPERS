@@ -952,7 +952,10 @@ F:	package/cc-tool/
 F:	package/ecryptfs-utils/
 
 N:	Marcin Niestroj <m.niestroj@grinn-global.com>
+F:	board/grinn/liteboard/
+F:	configs/grinn_liteboard_defconfig
 F:	package/argparse/
+F:	package/easydbus/
 F:	package/rs485conf/
 F:	package/turbolua/
 
