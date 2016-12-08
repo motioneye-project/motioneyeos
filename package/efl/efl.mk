@@ -201,6 +201,16 @@ else
 EFL_CONF_OPTS += --disable-drm
 endif
 
+# The EFL Wayland support requires Evas GLES DRM engine support
+# which depends on wayland-client to build.
+# So enable gl_drm only when wayland support is selected.
+ifeq ($(BR2_PACKAGE_EFL_WAYLAND),y)
+EFL_DEPENDENCIES += wayland
+EFL_CONF_OPTS += --enable-wayland --enable-gl-drm
+else
+EFL_CONF_OPTS += --disable-wayland --disable-gl-drm
+endif
+
 EFL_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBXKBCOMMON),libxkbcommon)
 
 # Loaders that need external dependencies needs to be --enable-XXX=yes

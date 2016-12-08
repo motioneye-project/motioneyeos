@@ -155,6 +155,18 @@ config BR2_PACKAGE_EFL_X_XLIB
 	select BR2_PACKAGE_XLIB_LIBXTST
 	select BR2_PACKAGE_XPROTO_GLPROTO
 
+config BR2_PACKAGE_EFL_WAYLAND
+	bool "Wayland support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # Evas DRM Engine -> libdrm
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # Evas DRM Engine
+	depends on BR2_PACKAGE_EFL_OPENGLES # OpenGL ES with EGL support only
+	select BR2_PACKAGE_EFL_DRM
+	select BR2_PACKAGE_WAYLAND
+
+comment "Wayland support needs OpenGL ES w/ EGL, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
+		|| !BR2_PACKAGE_EFL_OPENGLES
+
 choice
 	bool "OpenGL support"
 	help
