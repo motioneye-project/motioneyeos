@@ -65,6 +65,16 @@ else
 RPM_CONF_OPTS += --without-selinux
 endif
 
+# For the elfutils and binutils dependencies, there are no
+# configuration options to explicitly enable/disable them.
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+RPM_DEPENDENCIES += elfutils
+endif
+
+ifeq ($(BR2_PACKAGE_BINUTILS),y)
+RPM_DEPENDENCIES += binutils
+endif
+
 # RPM, when using NLS, requires GNU gettext's _nl_msg_cat_cntr, which is not
 # provided in musl.
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
