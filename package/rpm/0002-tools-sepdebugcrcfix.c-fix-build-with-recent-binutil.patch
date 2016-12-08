@@ -1,0 +1,43 @@
+From 65afab91444d4996a8e61d1e2d27d52e18417ef5 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 8 Dec 2016 23:45:55 +0100
+Subject: [PATCH 2/2] tools/sepdebugcrcfix.c: fix build with recent binutils
+
+Moderately recent binutils versions install a <bfd.h> header that
+checks if config.h is included. While this makes sense in binutils
+itself, it does not outside. So the binutils developers have added a
+check: if PACKAGE or PACKAGE_VERSION are defined, they assume you're
+re-using bfd.h outside of binutils, and therefore including it without
+including config.h is legit.
+
+So we take the same approch as numerous users of bfd.h: fake a PACKAGE
+definition. See for example tools/perf/util/srcline.c in the Linux
+kernel source tree.
+
+This fixes the following build error:
+
+In file included from tools/sepdebugcrcfix.c:31:0:
+/home/test/autobuild/run/instance-0/output/host/usr/arc-buildroot-linux-uclibc/sysroot/usr/include/bfd.h:35:2: error: #error config.h must be included before this header
+ #error config.h must be included before this header
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tools/sepdebugcrcfix.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/tools/sepdebugcrcfix.c b/tools/sepdebugcrcfix.c
+index cd7fa02..e7b480f 100644
+--- a/tools/sepdebugcrcfix.c
++++ b/tools/sepdebugcrcfix.c
+@@ -28,6 +28,8 @@
+ #include <error.h>
+ #include <libelf.h>
+ #include <gelf.h>
++/* Needed to please <bfd.h> */
++#define PACKAGE "rpm"
+ #include <bfd.h>
+ 
+ #define _(x) x
+-- 
+2.7.4
+
