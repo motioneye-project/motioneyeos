@@ -4,11 +4,19 @@
 #
 ################################################################################
 
-UCLIBC_NG_TEST_VERSION = 4ad1c23ae2eb30888cda520c739cc26150512487
+UCLIBC_NG_TEST_VERSION = 189b47080068d431302beec0e627dcaa5358eae8
 UCLIBC_NG_TEST_SITE = git://uclibc-ng.org/git/uclibc-ng-test
 UCLIBC_NG_TEST_LICENSE = LGPLv2.1+
 UCLIBC_NG_TEST_LICENSE_FILES = COPYING.LIB
 
+# the math tests are recently synced from glibc and need more adaption before
+# regular testing is possible
+UCLIBC_NG_TEST_MAKE_ENV += NO_MATH=1
+
+# locale tests are not compatible with musl, yet
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+UCLIBC_NG_TEST_MAKE_ENV += NO_LOCALE=1
+endif
 ifeq ($(BR2_USE_WCHAR),)
 UCLIBC_NG_TEST_MAKE_ENV += NO_WCHAR=1
 endif
