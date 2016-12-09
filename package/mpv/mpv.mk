@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.20.0
+MPV_VERSION = 0.22.0
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
