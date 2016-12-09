@@ -109,6 +109,10 @@ F:	package/python-bottle/
 F:	package/sqlcipher/
 F:	package/stress/
 
+N:	Ash Charles <ash.charles@savoirfairelinux.com>
+F:	package/pru-software-support/
+F:	package/ti-cgt-pru/
+
 N:	Assaf Inbal <shmuelzon@gmail.com>
 F:	package/lbase64/
 F:	package/luabitop/
