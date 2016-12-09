@@ -1,2 +1,2 @@
-# Locally computed
-sha256	c99ace6ead310c6c3b639922da618f90d846307da4fe252d994e5e51bf8a3de3	dovecot-2.2-pigeonhole-0.4.15.tar.gz
+# Locally computed after checking signature
+sha256 8f0b98f18062d6e241eef74ebe16cc167cd246361cbe6657d94f0ecc5d7d3234  dovecot-2.2-pigeonhole-0.4.16.tar.gz
