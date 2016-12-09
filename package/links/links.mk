@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINKS_VERSION = 2.12
+LINKS_VERSION = 2.14
 LINKS_SOURCE = links-$(LINKS_VERSION).tar.bz2
 LINKS_SITE = http://links.twibright.com/download
 LINKS_DEPENDENCIES = host-pkgconf
