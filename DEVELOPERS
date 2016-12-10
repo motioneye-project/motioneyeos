@@ -333,6 +333,7 @@ F:	package/liblogging/
 F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
+F:	package/policycoreutils/
 F:	package/sepolgen/
 F:	package/ustr/
 
