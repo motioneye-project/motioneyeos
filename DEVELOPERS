@@ -454,6 +454,7 @@ F:	arch/Config.in.nios2
 F:	package/fio/
 F:	package/iptraf-ng/
 F:	package/jimtcl/
+F:	package/mimic/
 F:	package/nodm/
 F:	package/openbox/
 F:	package/supertuxkart/
