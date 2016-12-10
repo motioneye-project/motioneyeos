@@ -1,0 +1,25 @@
+From 1f79f41508d0f9c30be812bea9b84fd7900a273e Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Thu, 8 Dec 2016 04:07:47 +0100
+Subject: [PATCH] bfin: fix a gcc warning
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ ldso/ldso/bfin/dl-sysdep.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ldso/ldso/bfin/dl-sysdep.h b/ldso/ldso/bfin/dl-sysdep.h
+index 5758117..4262a26 100644
+--- a/ldso/ldso/bfin/dl-sysdep.h
++++ b/ldso/ldso/bfin/dl-sysdep.h
+@@ -93,6 +93,6 @@ static __always_inline void
+ elf_machine_relative (DL_LOADADDR_TYPE load_off, const Elf32_Addr rel_addr,
+ 		      Elf32_Word relative_count)
+ {
+-	return 0;
++	return;
+ }
+ #endif
+-- 
+2.1.4
+

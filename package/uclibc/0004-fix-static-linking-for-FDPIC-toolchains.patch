@@ -1,0 +1,49 @@
+From 569914be2e968a1bda8b4982ca97c1524635174e Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Thu, 8 Dec 2016 04:36:10 +0100
+Subject: [PATCH] fix static linking for FDPIC toolchains
+
+Fixes following problem, when trying to compile a simple
+C application statically with a FDPIC toolchain (for example
+with Blackfin architecture):
+lib/libc.a(libdl.os): In function `do_dlclose':
+(.text+0x6be): undefined reference to `_dl_free'
+..
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ ldso/libdl/libdl.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
+
+diff --git a/ldso/libdl/libdl.c b/ldso/libdl/libdl.c
+index 0cf3b70..04d7c43 100644
+--- a/ldso/libdl/libdl.c
++++ b/ldso/libdl/libdl.c
+@@ -30,6 +30,14 @@
+  */
+ 
+ 
++/* When libdl is linked in statically into libc.a, we need to replace
++ * these symbols that otherwise would have been loaded in from ldso.
++ * This must be before including ldso.h */
++#ifndef SHARED
++#define _dl_malloc malloc
++#define _dl_free free
++#endif
++
+ #include <ldso.h>
+ #include <stdio.h>
+ #include <string.h>
+@@ -86,9 +94,6 @@ extern char *_dl_debug;
+ 
+ #else /* !SHARED */
+ 
+-#define _dl_malloc malloc
+-#define _dl_free free
+-
+ /* When libdl is linked as a static library, we need to replace all
+  * the symbols that otherwise would have been loaded in from ldso... */
+ 
+-- 
+2.1.4
+

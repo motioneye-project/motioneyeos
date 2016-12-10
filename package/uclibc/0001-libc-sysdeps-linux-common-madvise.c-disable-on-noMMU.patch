@@ -1,0 +1,31 @@
+From bf7a84dc1fd8c9c340222260cb3e53019715088c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 7 Dec 2016 23:18:49 +0100
+Subject: [PATCH] libc/sysdeps/linux/common/madvise.c: disable on noMMU
+ architectures
+
+Similar to what was done in commit
+9945c6d21797553e78cbef8034f6dd16b3824df5 for posix_madvise().
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ libc/sysdeps/linux/common/madvise.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/libc/sysdeps/linux/common/madvise.c b/libc/sysdeps/linux/common/madvise.c
+index e953d7b..bb486d2 100644
+--- a/libc/sysdeps/linux/common/madvise.c
++++ b/libc/sysdeps/linux/common/madvise.c
+@@ -9,6 +9,8 @@
+ 
+ #include <sys/syscall.h>
+ #include <sys/mman.h>
++#ifdef __ARCH_USE_MMU__
+ #if defined __NR_madvise && defined __USE_BSD
+ _syscall3(int, madvise, void *, __addr, size_t, __len, int, __advice)
++#endif /* __ARCH_USE_MMU__ */
+ #endif
+-- 
+2.1.4
+

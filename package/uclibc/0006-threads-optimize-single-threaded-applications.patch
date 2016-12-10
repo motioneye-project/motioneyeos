@@ -1,0 +1,83 @@
+From 5ca03df6978345c297225212cc0ca33d476b0272 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Wed, 7 Dec 2016 07:56:44 +0100
+Subject: [PATCH] threads: optimize single threaded applications
+
+Revert the removal of the weak pthread functions and
+guarantee a link order so that single threaded applications
+doesn't link in all the pthread functions they don't use.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Tested-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ libc/misc/internals/Makefile.in     |  4 +++-
+ libc/misc/internals/__uClibc_main.c | 37 +++++++++++++++++++++++++++++++++++++
+ 2 files changed, 40 insertions(+), 1 deletion(-)
+
+diff --git a/libc/misc/internals/Makefile.in b/libc/misc/internals/Makefile.in
+index ae094ee..ce7f75a 100644
+--- a/libc/misc/internals/Makefile.in
++++ b/libc/misc/internals/Makefile.in
+@@ -25,7 +25,9 @@ libc-shared-y += $(MISC_INTERNALS_OUT)/__uClibc_main.oS
+ else
+ libc-shared-y += $(MISC_INTERNALS_OUT)/__uClibc_main.os
+ endif
+-libc-static-y += $(MISC_INTERNALS_OUT)/__uClibc_main.o
++# link order is important to not pull in pthread functions, when
++# a single threaded application is statically linked
++libc-static-y := $(MISC_INTERNALS_OUT)/__uClibc_main.o $(libc-static-y)
+ libc-static-$(UCLIBC_FORMAT_FLAT_SEP_DATA) += \
+   $(MISC_INTERNALS_OUT)/shared_flat_initfini.o \
+   $(MISC_INTERNALS_OUT)/shared_flat_add_library.o
+diff --git a/libc/misc/internals/__uClibc_main.c b/libc/misc/internals/__uClibc_main.c
+index 46e24d8..d80565e 100644
+--- a/libc/misc/internals/__uClibc_main.c
++++ b/libc/misc/internals/__uClibc_main.c
+@@ -68,6 +68,43 @@ uintptr_t __stack_chk_guard attribute_relro;
+ 
+ void internal_function _dl_aux_init (ElfW(auxv_t) *av);
+ 
++#ifdef __UCLIBC_HAS_THREADS__
++/*
++ * uClibc internal locking requires that we have weak aliases
++ * for dummy functions in case a single threaded application is linked.
++ * This needs to be in compilation unit that is pulled always
++ * in or linker will disregard these weaks.
++ */
++
++static int __pthread_return_0 (pthread_mutex_t *unused) { return 0; }
++weak_alias (__pthread_return_0, __pthread_mutex_lock)
++weak_alias (__pthread_return_0, __pthread_mutex_trylock)
++weak_alias (__pthread_return_0, __pthread_mutex_unlock)
++
++int weak_function
++__pthread_mutex_init(pthread_mutex_t *mutex, const pthread_mutexattr_t *attr)
++{
++        return 0;
++}
++
++void weak_function
++_pthread_cleanup_push_defer(struct _pthread_cleanup_buffer *__buffer,
++                            void (*__routine) (void *), void *__arg)
++{
++        __buffer->__routine = __routine;
++        __buffer->__arg = __arg;
++}
++
++void weak_function
++_pthread_cleanup_pop_restore(struct _pthread_cleanup_buffer *__buffer,
++                             int __execute)
++{
++        if (__execute)
++                __buffer->__routine(__buffer->__arg);
++}
++
++#endif /* __UCLIBC_HAS_THREADS__ */
++
+ #endif /* !SHARED */
+ 
+ /* Defeat compiler optimization which assumes function addresses are never NULL */
+-- 
+2.1.4
+
