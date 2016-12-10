@@ -324,10 +324,8 @@ F:	package/targetcli-fb/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
-F:	package/cpio/
-
-N:	Clayton Shotwell <clshotwe@rockwellcollins.com>
 F:	package/checkpolicy/
+F:	package/cpio/
 F:	package/libcgroup/
 F:	package/libee/
 F:	package/libestr/
