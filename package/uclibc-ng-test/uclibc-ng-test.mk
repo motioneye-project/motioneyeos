@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UCLIBC_NG_TEST_VERSION = 189b47080068d431302beec0e627dcaa5358eae8
+UCLIBC_NG_TEST_VERSION = c9b9876cefc142a23aa622b821290ed16af80058
 UCLIBC_NG_TEST_SITE = git://uclibc-ng.org/git/uclibc-ng-test
 UCLIBC_NG_TEST_LICENSE = LGPLv2.1+
 UCLIBC_NG_TEST_LICENSE_FILES = COPYING.LIB
