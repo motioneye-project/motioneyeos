@@ -15,7 +15,7 @@ JPEG_TURBO_DEPENDENCIES = host-pkgconf
 
 JPEG_TURBO_CONF_OPTS = --with-jpeg8
 
-ifeq ($(BR2_X86_CPU_HAS_MMX)$(BR2_ARM_CPU_HAS_NEON),y)
+ifeq ($(BR2_PACKAGE_JPEG_SIMD_SUPPORT),y)
 JPEG_TURBO_CONF_OPTS += --with-simd
 # x86 simd support needs nasm
 JPEG_TURBO_DEPENDENCIES += $(if $(BR2_X86_CPU_HAS_MMX),host-nasm)
