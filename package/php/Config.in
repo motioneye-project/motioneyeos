@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PHP
 	bool "php"
 	select BR2_PACKAGE_PHP_SAPI_CGI if \
+	       !BR2_PACKAGE_PHP_SAPI_APACHE && \
 	       !BR2_PACKAGE_PHP_SAPI_CLI && \
 	       !BR2_PACKAGE_PHP_SAPI_FPM &&  \
 	       BR2_USE_MMU
@@ -13,6 +14,12 @@ config BR2_PACKAGE_PHP
 	  http://www.php.net
 
 if BR2_PACKAGE_PHP
+
+config BR2_PACKAGE_PHP_SAPI_APACHE
+	bool "Apache interface"
+	depends on BR2_PACKAGE_APACHE
+	help
+	  Apache module
 
 config BR2_PACKAGE_PHP_SAPI_CGI
 	bool "CGI interface"
