@@ -25,6 +25,11 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 ICU_CONF_ENV += LIBS="-latomic"
 endif
 
+# strtod_l() is not supported by musl; also xlocale.h is missing
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+ICU_CONF_ENV += ac_cv_func_strtod_l=no
+endif
+
 HOST_ICU_CONF_OPTS = \
 	--disable-samples \
 	--disable-tests \
