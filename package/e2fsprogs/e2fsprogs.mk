@@ -10,7 +10,6 @@ E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2F
 E2FSPROGS_LICENSE = GPLv2, libuuid BSD-3c, libss and libet MIT-like with advertising clause
 E2FSPROGS_LICENSE_FILES = NOTICE lib/uuid/COPYING lib/ss/mit-sipb-copyright.h lib/et/internal.h
 E2FSPROGS_INSTALL_STAGING = YES
-E2FSPROGS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-libs
 E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
 # we don't have a host-util-linux
 HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf
@@ -64,8 +63,14 @@ E2FSPROGS_CONF_ENV += LIBS=-lintl
 endif
 
 E2FSPROGS_MAKE_OPTS = LDCONFIG=true
-E2FSPROGS_INSTALL_STAGING_OPTS = LDCONFIG=true
-E2FSPROGS_INSTALL_TARGET_OPTS = LDCONFIG=true
+E2FSPROGS_INSTALL_STAGING_OPTS = \
+	DESTDIR=$(STAGING_DIR) \
+	LDCONFIG=true \
+	install-libs
+E2FSPROGS_INSTALL_TARGET_OPTS = \
+	DESTDIR=$(TARGET_DIR) \
+	LDCONFIG=true \
+	install
 
 define HOST_E2FSPROGS_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
