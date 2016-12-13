@@ -12,7 +12,7 @@ How to build it
 
 Configure Buildroot:
 
-    $ make orangepipc_defconfig
+    $ make orangepi_pc_defconfig
 
 Compile everything and build the SD card image:
 

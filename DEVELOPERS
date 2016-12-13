@@ -1151,7 +1151,7 @@ F:	package/libunistring/
 
 N:	Peter Korsgaard <peter@korsgaard.com>
 F:	board/orangepi/
-F:	configs/orangepipc_defconfig
+F:	configs/orangepi_pc_defconfig
 F:	package/flickcurl/
 F:	package/libfastjson/
 F:	package/lzop/
