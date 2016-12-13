@@ -48,6 +48,7 @@ POLICYCOREUTILS_MAKE_DIRS = \
 
 ifeq ($(BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND),y)
 POLICYCOREUTILS_MAKE_DIRS += restorecond
+POLICYCOREUTILS_DEPENDENCIES += libglib2
 endif
 # We need to pass DESTDIR at build time because it's used by
 # policycoreutils build system to find headers and libraries.
