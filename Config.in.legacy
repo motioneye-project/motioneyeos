@@ -194,6 +194,13 @@ config BR2_PACKAGE_SNOWBALL_INIT
 	  We no longer have support for the Snowball platform in
 	  Buildroot, so this package was no longer useful.
 
+config BR2_GDB_VERSION_7_9
+	bool "gdb 7.9 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.9 version of gdb has been removed. Use a newer version
+	  instead.
+
 ###############################################################################
 comment "Legacy options removed in 2016.11"
 
