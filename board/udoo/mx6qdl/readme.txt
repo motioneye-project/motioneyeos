@@ -14,4 +14,4 @@ directory, ready to be dumped on a micro SD card:
 dd if=output/images/sdcard.img of=/dev/<your-microsd-device>
 
 For details about the medium image layout, see the definition in
-board/udoo/genimage.cfg.
+board/udoo/mx6qdl/genimage.cfg.
