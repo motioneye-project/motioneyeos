@@ -48,6 +48,9 @@ choice
 	config BR2_GDB_VERSION_7_11
 		bool "gdb 7.11.x"
 
+	config BR2_GDB_VERSION_7_12
+		bool "gdb 7.12.x"
+
 endchoice
 
 endif
@@ -61,3 +64,4 @@ config BR2_GDB_VERSION
 	default "7.9.1"    if BR2_GDB_VERSION_7_9
 	default "7.10.1"   if BR2_GDB_VERSION_7_10 || !BR2_PACKAGE_HOST_GDB
 	default "7.11.1"   if BR2_GDB_VERSION_7_11
+	default "7.12"     if BR2_GDB_VERSION_7_12
