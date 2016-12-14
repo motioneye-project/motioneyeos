@@ -2,7 +2,6 @@ BR2_arm=y
 BR2_cortex_a9=y
 # Linux headers same as kernel, a 4.9 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_9=y
-BR2_TARGET_GENERIC_GETTY_PORT="ttymxc0"
 BR2_ROOTFS_POST_BUILD_SCRIPT="board/udoo/neo/post-build.sh"
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/udoo/neo/post-image.sh"
 BR2_GLOBAL_PATCH_DIR="board/udoo/neo/patches"
