@@ -35,7 +35,7 @@ choice
 	prompt "GDB debugger Version"
 	depends on !BR2_arc
 	depends on !BR2_microblaze
-	default BR2_GDB_VERSION_7_10
+	default BR2_GDB_VERSION_7_11
 	help
 	  Select the version of gdb you wish to use.
 
@@ -62,6 +62,6 @@ config BR2_GDB_VERSION
 	default "arc-2016.09-rc2-gdb" if BR2_arc
 	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
 	default "7.9.1"    if BR2_GDB_VERSION_7_9
-	default "7.10.1"   if BR2_GDB_VERSION_7_10 || !BR2_PACKAGE_HOST_GDB
-	default "7.11.1"   if BR2_GDB_VERSION_7_11
+	default "7.10.1"   if BR2_GDB_VERSION_7_10
+	default "7.11.1"   if BR2_GDB_VERSION_7_11 || !BR2_PACKAGE_HOST_GDB
 	default "7.12"     if BR2_GDB_VERSION_7_12
