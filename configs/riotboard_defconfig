@@ -1,7 +1,9 @@
 # architecture
 BR2_arm=y
 BR2_cortex_a9=y
+BR2_ARM_ENABLE_NEON=y
 BR2_ARM_ENABLE_VFP=y
+BR2_ARM_FPU_VFPV3=y
 
 # system
 BR2_TARGET_GENERIC_GETTY=y
