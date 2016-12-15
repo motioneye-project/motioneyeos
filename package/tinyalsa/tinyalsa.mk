@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TINYALSA_VERSION = v1.0.2
+TINYALSA_VERSION = 1.1.0
 TINYALSA_SITE = $(call github,tinyalsa,tinyalsa,$(TINYALSA_VERSION))
 TINYALSA_LICENSE = BSD-3c
 TINYALSA_INSTALL_STAGING = YES
