@@ -1289,6 +1289,7 @@ F:	package/python-tornado/
 N:	Ryan Coe <bluemrp9@gmail.com>
 F:	package/inadyn/
 F:	package/libite/
+F:	package/mariadb/
 
 N:	Ryan Wilkins <ryan@deadfrog.net>
 F:	package/biosdevname/
