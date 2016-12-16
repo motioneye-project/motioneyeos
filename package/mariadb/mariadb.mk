@@ -10,6 +10,7 @@ MARIADB_SITE = https://downloads.mariadb.org/interstitial/mariadb-$(MARIADB_VERS
 MARIADB_LICENSE = GPLv2 (server), GPLv2 with FLOSS exception (GPL client library), LGPLv2 (LGPL client library)
 MARIADB_LICENSE_FILES = README COPYING COPYING.LESSER
 MARIADB_INSTALL_STAGING = YES
+MARIADB_PROVIDES = mysql
 
 MARIADB_DEPENDENCIES = \
 	host-mariadb \
