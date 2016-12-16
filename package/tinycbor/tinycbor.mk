@@ -18,8 +18,10 @@ endif
 
 TINYCBOR_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) V=1
 
+# disabled parallel build because of build failures while
+# producing the .config file
 define TINYCBOR_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) $(TINYCBOR_MAKE_OPTS) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE1) $(TINYCBOR_MAKE_OPTS) -C $(@D)
 endef
 
 define TINYCBOR_INSTALL_STAGING_CMDS
