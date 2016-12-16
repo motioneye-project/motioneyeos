@@ -40,9 +40,6 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.i
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in"
 
-# Musl based toolchains (after all the others)
-source "toolchain/toolchain-external/toolchain-external-musl-cross/Config.in"
-
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
 # architecture.
@@ -136,9 +133,6 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.i
 # x86/x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in.options"
-
-# Musl based toolchains
-source "toolchain/toolchain-external/toolchain-external-musl-cross/Config.in.options"
 
 # Custom toolchains
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in.options"

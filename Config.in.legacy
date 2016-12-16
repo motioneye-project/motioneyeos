@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
+	bool "musl-cross 1.1.12 toolchain removed"
+	select BR2_LEGACY
+	help
+	  The support for the prebuilt toolchain based on the Musl C
+	  library provided by the musl-cross project has been removed.
+	  Upstream doesn't provide any prebuilt toolchain anymore, use the
+	  Buildroot toolchain instead.
+
 config BR2_UCLIBC_INSTALL_TEST_SUITE
 	bool "uClibc tests now in uclibc-ng-test"
 	select BR2_LEGACY
