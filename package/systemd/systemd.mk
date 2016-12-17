@@ -30,7 +30,6 @@ SYSTEMD_CONF_OPTS += \
 	--enable-blkid \
 	--enable-static=no \
 	--disable-manpages \
-	--disable-selinux \
 	--disable-pam \
 	--disable-ima \
 	--disable-libcryptsetup \
@@ -151,6 +150,13 @@ SYSTEMD_CONF_OPTS += --disable-qrencode
 endif
 else
 SYSTEMD_CONF_OPTS += --disable-microhttpd --disable-qrencode
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+SYSTEMD_DEPENDENCIES += libselinux
+SYSTEMD_CONF_OPTS += --enable-selinux
+else
+SYSTEMD_CONF_OPTS += --disable-selinux
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
