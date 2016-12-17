@@ -224,6 +224,8 @@ XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri3
 ifeq ($(BR2_PACKAGE_HAS_LIBGL)$(BR2_PACKAGE_LIBEPOXY),yy)
 XSERVER_XORG_SERVER_DEPENDENCIES += libepoxy
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-glamor
+else
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-glamor
 endif
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri3 --disable-glamor
