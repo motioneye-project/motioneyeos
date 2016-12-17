@@ -1267,6 +1267,7 @@ F:	package/enlightenment/
 F:	package/expedite/
 F:	package/iqvlinux/
 F:	package/liblinear/
+F:	package/linux-syscall-support/
 F:	package/mcelog/
 F:	package/openpowerlink/
 F:	package/stress-ng/
