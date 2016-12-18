@@ -1634,6 +1634,7 @@ F:	package/bluez_utils/
 F:	package/boost/
 F:	package/bootstrap/
 F:	package/cannelloni/
+F:	package/can-utils/
 F:	package/circus/
 F:	package/feh/
 F:	package/giblib/
