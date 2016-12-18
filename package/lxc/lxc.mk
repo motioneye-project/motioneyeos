@@ -9,6 +9,7 @@ LXC_SITE = https://linuxcontainers.org/downloads/lxc
 LXC_LICENSE = LGPLv2.1+
 LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = libcap host-pkgconf
+LXC_INSTALL_STAGING = YES
 # we're patching configure.ac
 LXC_AUTORECONF = YES
 
