@@ -1,4 +1,7 @@
-libxfs: do not try to run the crc32selftest
+From e10089b31afab3ba86904e89c740cd7051dd5066 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 18 Dec 2016 15:37:27 +0100
+Subject: [PATCH] libxfs: do not try to run the crc32selftest
 
 Even though the crc32selftest is natively compiled (because it is to be
 executed), it fails in cross-compilation as the host may lack the
@@ -14,11 +17,15 @@ Note that there's a remaining bug-in-hiding, because the crc32 table
 generator is natively built, but with the target CFLAGS.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ libxfs/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff -durN xfsprogs-4.3.0.orig/libxfs/Makefile xfsprogs-4.3.0/libxfs/Makefile
---- xfsprogs-4.3.0.orig/libxfs/Makefile	2015-09-22 03:42:41.000000000 +0200
-+++ xfsprogs-4.3.0/libxfs/Makefile	2015-12-07 18:45:27.190082913 +0100
-@@ -105,9 +105,9 @@
+diff --git a/libxfs/Makefile b/libxfs/Makefile
+index 6499731..5a07723 100644
+--- a/libxfs/Makefile
++++ b/libxfs/Makefile
+@@ -118,9 +118,9 @@ LTLIBS = $(LIBPTHREAD) $(LIBRT)
  # don't try linking xfs_repair with a debug libxfs.
  DEBUG = -DNDEBUG
  
@@ -30,3 +37,6 @@ diff -durN xfsprogs-4.3.0.orig/libxfs/Makefile xfsprogs-4.3.0/libxfs/Makefile
  
  crc32table.h: gen_crc32table.c
  	@echo "    [CC]     gen_crc32table"
+-- 
+2.7.4
+
