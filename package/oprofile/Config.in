@@ -8,17 +8,21 @@ config BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
 		BR2_powerpc64 || BR2_powerpc64le || BR2_sh || \
 		BR2_sparc || BR2_sparc64 || BR2_x86_64
 
+config BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	bool
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+
 config BR2_PACKAGE_OPROFILE
 	bool "oprofile"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_BINUTILS
-	select BR2_PACKAGE_LIBPFM4 if BR2_powerpc
+	select BR2_PACKAGE_LIBPFM4 if BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR # binutils
 	depends on BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
 	# libpfm4 is needed on PowerPC, and requires thread support
-	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_powerpc
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 	help
 	  OProfile is a system-wide profiler for Linux systems,
 	  capable of profiling all running code at low overhead.
@@ -40,6 +44,6 @@ comment "oprofile needs a toolchain w/ C++, wchar"
 	depends on BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
 
-comment "oprofile needs a toolchain w/ NPTL on PPC"
-	depends on BR2_USE_MMU && BR2_powerpc
+comment "oprofile needs a toolchain w/ NPTL on PowerPC(64)"
+	depends on BR2_USE_MMU && BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
