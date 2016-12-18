@@ -1,4 +1,4 @@
-From 0031d25e858ef6336d6b14713edf1695d74cd97a Mon Sep 17 00:00:00 2001
+From 770902a0a29fb4ac62358f7eacb3a83d0d9af1c7 Mon Sep 17 00:00:00 2001
 From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 Date: Wed, 25 Nov 2015 10:50:00 +0000
 Subject: [PATCH] mdrestore: do not do dynamic linking of libtool libraries

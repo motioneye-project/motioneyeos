@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-XFSPROGS_VERSION = 4.7.0
-XFSPROGS_SITE = ftp://oss.sgi.com/projects/xfs/cmd_tars
+XFSPROGS_VERSION = 4.8.0
+XFSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/fs/xfs/xfsprogs
+XFSPROGS_SOURCE = xfsprogs-$(XFSPROGS_VERSION).tar.xz
 
 XFSPROGS_DEPENDENCIES = util-linux
 

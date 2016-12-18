@@ -1,4 +1,4 @@
-From e10089b31afab3ba86904e89c740cd7051dd5066 Mon Sep 17 00:00:00 2001
+From 3a77dfc54271059dcac305384bf6ace34fe1f3d3 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Date: Sun, 18 Dec 2016 15:37:27 +0100
 Subject: [PATCH] libxfs: do not try to run the crc32selftest
@@ -22,10 +22,10 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libxfs/Makefile b/libxfs/Makefile
-index 6499731..5a07723 100644
+index 62608bd..e021625 100644
 --- a/libxfs/Makefile
 +++ b/libxfs/Makefile
-@@ -118,9 +118,9 @@ LTLIBS = $(LIBPTHREAD) $(LIBRT)
+@@ -112,9 +112,9 @@ LTLIBS = $(LIBPTHREAD) $(LIBRT)
  # don't try linking xfs_repair with a debug libxfs.
  DEBUG = -DNDEBUG
  
