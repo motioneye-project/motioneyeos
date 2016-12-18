@@ -162,6 +162,7 @@ F:	package/exim/
 F:	package/fetchmail/
 F:	package/freeswitch/
 F:	package/ffmpeg/
+F:	package/ghostscript/
 F:	package/giflib/
 F:	package/glmark2/
 F:	package/jsoncpp/

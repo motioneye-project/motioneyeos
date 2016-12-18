@@ -1,0 +1,14 @@
+config BR2_PACKAGE_GHOSTSCRIPT
+	bool "ghostscript"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_GHOSTSCRIPT_FONTS
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LCMS2
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_TIFF
+	help
+	  Ghostscript is an interpreter for PostScript and Portable
+	  Document Format (PDF) files.
+
+	  http://ghostscript.com
