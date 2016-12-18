@@ -1,7 +1,3 @@
-
-comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED and UCLIBC_HAS_OBSOLETE_BSD_SIGNAL enabled"
-	depends on BR2_PACKAGE_XFSPROGS
-
 comment "xfsprogs needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR
