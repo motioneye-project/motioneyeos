@@ -1,0 +1,32 @@
+Subject: [PATCH] Work around bool type redefinition by altivec
+
+On powerpc64le, the SDL header may include altivec.h and this
+(combined with -std=c99) will cause a compile failure due to bool
+being redefined as a vector type.
+
+Adjust the compiler flags to add -std=gnu99 (which is compatible with
+altivec) when using gcc. The generic flag '-std=c99' is left in place for other
+compilers (in the gcc case it is overridden by the (later) gnu flag).
+
+Signed-off-by: Sam Bobroff <sam.bobroff@au1.ibm.com>
+---
+ waftools/detections/compiler.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/waftools/detections/compiler.py b/waftools/detections/compiler.py
+index 5bbba87..50836a2 100644
+--- a/waftools/detections/compiler.py
++++ b/waftools/detections/compiler.py
+@@ -43,7 +43,8 @@ def __add_gcc_flags__(ctx):
+                        "-Wno-switch", "-Wparentheses", "-Wpointer-arith",
+                        "-Wno-pointer-sign",
+                        # GCC bug 66425
+-                       "-Wno-unused-result"]
++                       "-Wno-unused-result",
++                       "-std=gnu99"]
+ 
+ def __add_clang_flags__(ctx):
+     ctx.env.CFLAGS += ["-Wno-logical-op-parentheses", "-fcolor-diagnostics",
+-- 
+2.10.0.297.gf6727b0
+
