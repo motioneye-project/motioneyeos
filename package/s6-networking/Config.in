@@ -1,0 +1,13 @@
+config BR2_PACKAGE_S6_NETWORKING
+	bool "s6-networking"
+	select BR2_PACKAGE_S6_DNS
+	select BR2_PACKAGE_S6
+	depends on BR2_USE_MMU # s6
+	help
+	  s6-networking is a suite of small networking utilities for
+	  Unix systems. It includes command-line client and server
+	  management, TCP access control, privilege escalation across
+	  UNIX domain sockets, IDENT protocol management and clock
+	  synchronization.
+
+	  http://skarnet.org/software/s6-networking/
