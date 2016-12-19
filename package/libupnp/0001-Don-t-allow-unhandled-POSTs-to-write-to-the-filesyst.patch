@@ -1,0 +1,73 @@
+From c91a8a3903367e1163765b73eb4d43be7d7927fa Mon Sep 17 00:00:00 2001
+From: Matthew Garrett <mjg59@srcf.ucam.org>
+Date: Tue, 23 Feb 2016 13:53:20 -0800
+Subject: [PATCH] Don't allow unhandled POSTs to write to the filesystem by
+ default
+
+Fixes CVE-2016-6255: write files via POST
+
+If there's no registered handler for a POST request, the default behaviour
+is to write it to the filesystem. Several million deployed devices appear
+to have this behaviour, making it possible to (at least) store arbitrary
+data on them. Add a configure option that enables this behaviour, and change
+the default to just drop POSTs that aren't directly handled.
+
+Signed-off-by: Marcelo Roberto Jimenez <mroberto@users.sourceforge.net>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure.ac                         | 4 ++++
+ upnp/inc/upnpconfig.h.in             | 5 +++++
+ upnp/src/genlib/net/http/webserver.c | 4 ++++
+ 3 files changed, 13 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index dd88734..ea2bc09 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -482,6 +482,10 @@ if test "x$enable_scriptsupport" = xyes ; then
+         AC_DEFINE(IXML_HAVE_SCRIPTSUPPORT, 1, [see upnpconfig.h])
+ fi
+ 
++RT_BOOL_ARG_ENABLE([postwrite], [no], [write to the filesystem on otherwise unhandled POST requests])
++if test "x$enable_postwrite" = xyes ; then
++        AC_DEFINE(UPNP_ENABLE_POST_WRITE, 1, [see upnpconfig.h])
++fi
+ 
+ RT_BOOL_ARG_ENABLE([samples], [yes], [compilation of upnp/sample/ code])
+ 
+diff --git a/upnp/inc/upnpconfig.h.in b/upnp/inc/upnpconfig.h.in
+index 46ddc6e..5df8c5a 100644
+--- a/upnp/inc/upnpconfig.h.in
++++ b/upnp/inc/upnpconfig.h.in
+@@ -135,5 +135,10 @@
+  *  (i.e. configure --enable-open_ssl) */
+ #undef UPNP_ENABLE_OPEN_SSL
+ 
++/** Defined to 1 if the library has been compiled to support filesystem writes on POST
++ *  (i.e. configure --enable-postwrite) */
++#undef UPNP_ENABLE_POST_WRITE
++
++
+ #endif /* UPNP_CONFIG_H */
+ 
+diff --git a/upnp/src/genlib/net/http/webserver.c b/upnp/src/genlib/net/http/webserver.c
+index 8991c16..8b2ecf2 100644
+--- a/upnp/src/genlib/net/http/webserver.c
++++ b/upnp/src/genlib/net/http/webserver.c
+@@ -1369,9 +1369,13 @@ static int http_RecvPostMessage(
+ 		if (Fp == NULL)
+ 			return HTTP_INTERNAL_SERVER_ERROR;
+ 	} else {
++#ifdef UPNP_ENABLE_POST_WRITE
+ 		Fp = fopen(filename, "wb");
+ 		if (Fp == NULL)
+ 			return HTTP_UNAUTHORIZED;
++#else
++		return HTTP_NOT_FOUND;
++#endif
+ 	}
+ 	parser->position = POS_ENTITY;
+ 	do {
+-- 
+2.10.2
+
