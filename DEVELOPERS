@@ -441,6 +441,7 @@ F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
 F:	package/ninja/
 F:	package/s6/
+F:	package/s6-dns/
 F:	package/skalibs/
 F:	package/smack/
 F:	package/xvisor/
