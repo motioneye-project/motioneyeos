@@ -1,0 +1,42 @@
+From dfcc950af1af003ee9e6fc985b5d6b3eb7d408af Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 19 Dec 2016 22:56:30 +0100
+Subject: [PATCH] sys/cdefs.h: add definition of __attribute_alloc_size__
+
+Commit cee0b058fa0b4501b289a2da365182d60314d746 ("add aligned_alloc
+required for latest gcc libstdc++") added the prototype of
+aligned_alloc() to <stdlib.h>. This prototype contains
+'__attribute_alloc_size__ ((2))', but this is not defined anywhere in
+uClibc-ng.
+
+This commit addresses that by adding the relevant definition in
+<sys/cdefs.h>, borrowed from glibc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/sys/cdefs.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/include/sys/cdefs.h b/include/sys/cdefs.h
+index f725ce9..6cd3811 100644
+--- a/include/sys/cdefs.h
++++ b/include/sys/cdefs.h
+@@ -222,6 +222,15 @@
+ # define __attribute_malloc__ /* Ignore */
+ #endif
+ 
++/* Tell the compiler which arguments to an allocation function
++   indicate the size of the allocation.  */
++#if __GNUC_PREREQ (4, 3)
++# define __attribute_alloc_size__(params) \
++  __attribute__ ((__alloc_size__ params))
++#else
++# define __attribute_alloc_size__(params) /* Ignore.  */
++#endif
++
+ /* At some point during the gcc 2.96 development the `pure' attribute
+    for functions was introduced.  We don't want to use it unconditionally
+    (although this would be possible) since it generates warnings.  */
+-- 
+2.7.4
+
