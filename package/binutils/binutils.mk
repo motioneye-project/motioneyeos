@@ -9,7 +9,7 @@
 BINUTILS_VERSION = $(call qstrip,$(BR2_BINUTILS_VERSION))
 ifeq ($(BINUTILS_VERSION),)
 ifeq ($(BR2_arc),y)
-BINUTILS_VERSION = arc-2016.09-rc2
+BINUTILS_VERSION = arc-2016.09-release
 else
 BINUTILS_VERSION = 2.25.1
 endif
