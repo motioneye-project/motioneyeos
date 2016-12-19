@@ -1,0 +1,9 @@
+config BR2_PACKAGE_CBOOTIMAGE
+	bool "cbootimage"
+	depends on BR2_arm || BR2_armeb
+	help
+	  This project provides a tool which compiles BCT (Boot
+	  Configuration Table) images to place into the boot flash of
+	  a Tegra-based device.
+
+	  https://github.com/NVIDIA/cbootimage
