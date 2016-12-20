@@ -1,5 +1,5 @@
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64
-	bool "Sourcery CodeBench AMD64 2015.11"
+	bool "Sourcery CodeBench AMD64 2016.11"
 	depends on BR2_x86_64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
@@ -9,13 +9,13 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AMD64
 	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	help
 	  Sourcery CodeBench toolchain for the amd64 (x86_64)
-	  architectures, from Mentor Graphics. It uses gcc 5.2,
-	  binutils 2.25.51, glibc 2.22, gdb 7.10.50 and kernel headers
-	  4.2. It has support for the following variants:
+	  architectures, from Mentor Graphics. It uses gcc 6.2,
+	  binutils 2.26, glibc 2.24, gdb 7.11 and kernel headers
+	  4.7. It has support for the following variants:
 	    - AMD Puma/Jaguar (family 16h), glibc
 	    Default for x86_64, nothing special to do.
 	    - AMD Steamroller (family 15h), glibc
