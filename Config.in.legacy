@@ -567,11 +567,18 @@ config BR2_PACKAGE_QT5QUICK1
 	  from upstream starting from Qt 5.6.
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
-	bool "uboot custom patch dir removed"
-	select BR2_LEGACY
+	string "uboot custom patch dir has been removed"
 	help
 	  The uboot custom patch directory option has been removed. Use
 	  the improved BR2_TARGET_UBOOT_PATCH option instead.
+
+config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR_WRAP
+	bool
+	default y if BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR != ""
+	select BR2_LEGACY
+
+# Note: BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR is still referenced from
+# boot/uboot/Config.in
 
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
 	bool "xf86-input-void removed"

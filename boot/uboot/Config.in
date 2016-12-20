@@ -95,6 +95,7 @@ config BR2_TARGET_UBOOT_VERSION
 
 config BR2_TARGET_UBOOT_PATCH
 	string "Custom U-Boot patches"
+	default BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR if BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR != ""  # legacy
 	help
 	  A space-separated list of patches to apply to U-Boot.
 	  Each patch can be described as an URL, a local file path,
