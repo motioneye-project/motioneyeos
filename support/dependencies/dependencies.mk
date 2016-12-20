@@ -5,8 +5,6 @@
 #
 ################################################################################
 
-DEPENDENCIES_HOST_PREREQ :=
-
 # suitable-host-pkg: calls check-host-$(1).sh shell script. Parameter (2)
 # can be the candidate to be checked. If not present, the check-host-$(1).sh
 # script should use 'which' to find a candidate. The script should return
