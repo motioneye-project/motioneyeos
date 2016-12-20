@@ -1,6 +1,10 @@
+comment "mimic needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
 config BR2_PACKAGE_MIMIC
 	bool "mimic"
-        help
+	depends on BR2_USE_WCHAR
+	help
           Mimic is a fast, lightweight Text-to-speech engine developed
           by Mycroft A.I. and VocaliD, based on Carnegie Mellon
           University's Flite (Festival-Lite) software. Mimic takes in
