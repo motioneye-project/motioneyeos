@@ -10,6 +10,7 @@ from __future__ import print_function
 import sys
 import py_compile
 import compileall
+import argparse
 
 def check_for_errors(comparison):
     '''Wrap comparison operator with code checking for PyCompileError.
@@ -54,4 +55,12 @@ class ReportProblem(int):
     def __ne__(self, other):
         return not self == other
 
-compileall.compile_dir(sys.argv[1], quiet=ReportProblem())
+parser = argparse.ArgumentParser(description='Compile Python source files in a directory tree.')
+parser.add_argument("target", metavar='DIRECTORY',
+                    help='Directory to scan')
+parser.add_argument("--force", action='store_true',
+                    help="Force compilation even if alread compiled")
+
+args = parser.parse_args()
+
+compileall.compile_dir(args.target, force=args.force, quiet=ReportProblem())
