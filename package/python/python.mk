@@ -244,10 +244,18 @@ PYTHON_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/sysconfigdata/
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+ifeq ($(BR2_REPRODUCIBLE),y)
+define PYTHON_FIX_TIME
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.py' -print0 | \
+		xargs -0 --no-run-if-empty touch -d @$(SOURCE_DATE_EPOCH)
+endef
+endif
+
 define PYTHON_CREATE_PYC_FILES
+	$(PYTHON_FIX_TIME)
 	PYTHONPATH="$(PYTHON_PATH)" \
 	$(HOST_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR) \
-		support/scripts/pycompile.py \
+		support/scripts/pycompile.py $(if $(BR2_REPRODUCIBLE),--force) \
 		$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)
 endef
 
