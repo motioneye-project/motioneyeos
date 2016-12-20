@@ -66,8 +66,14 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 RSYSLOG_CONF_OPTS += \
+	--enable-imjournal \
+	--enable-omjournal \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
 RSYSLOG_DEPENDENCIES += systemd
+else
+RSYSLOG_CONF_OPTS += \
+	--disable-imjournal \
+	--disable-omjournal
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
