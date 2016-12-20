@@ -649,7 +649,7 @@ config BR2_GCC_VERSION_4_5_X
 	  version instead.
 
 config BR2_PACKAGE_SQLITE_READLINE
-	bool "command-line editing support was updated"
+	bool "sqlite command-line editing support was updated"
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	select BR2_LEGACY
