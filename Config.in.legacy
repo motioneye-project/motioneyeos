@@ -145,6 +145,46 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_KERNEL_HEADERS_4_7
+	bool "kernel headers version 4.7.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.7.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.4.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_6
+	bool "kernel headers version 4.6.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.6.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.4.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_5
+	bool "kernel headers version 4.5.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.5.x of the Linux kernel headers are no longer
+	   maintained upstream and are now removed. As an alternative,
+	   version 4.4.x of the headers have been automatically
+	   selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_14
+	bool "kernel headers version 3.14.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_12
+	select BR2_LEGACY
+	  help
+	  Version 3.14.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 3.12.x of the headers have been automatically
+	  selected in your configuration.
+
 config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
 	bool "musl-cross 1.1.12 toolchain removed"
 	select BR2_LEGACY
@@ -589,12 +629,12 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
 
 config BR2_KERNEL_HEADERS_3_17
 	bool "kernel headers version 3.17.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_14
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	  Version 3.17.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.14.x of the headers have been
+	  As an alternative, version 3.12.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_GDB_VERSION_7_7
@@ -735,12 +775,12 @@ config BR2_PACKAGE_CUPS_PDFTOPS
 
 config BR2_KERNEL_HEADERS_3_16
 	bool "kernel headers version 3.16.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_14
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	Version 3.16.x of the Linux kernel headers have been deprecated
 	for more than four buildroot releases and are now removed.
-	As an alternative, version 3.14.x of the headers have been
+	As an alternative, version 3.12.x of the headers have been
 	automatically selected in your configuration.
 
 config BR2_PACKAGE_PYTHON_PYXML
@@ -971,12 +1011,12 @@ config BR2_KERNEL_HEADERS_3_13
 
 config BR2_KERNEL_HEADERS_3_15
 	bool "kernel headers version 3.15.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_14
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	  Version 3.15.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.14.x of the headers have been
+	  As an alternative, version 3.12.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI
