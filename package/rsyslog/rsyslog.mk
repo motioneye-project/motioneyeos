@@ -66,11 +66,8 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 RSYSLOG_CONF_OPTS += \
-	--enable-systemd \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
 RSYSLOG_DEPENDENCIES += systemd
-else
-RSYSLOG_CONF_OPTS += --disable-systemd
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV
