@@ -764,6 +764,7 @@ F:	package/glibmm/
 F:	package/gtkmm3/
 F:	package/libpqxx/
 F:	package/pangomm/
+F:	package/rpm/
 F:	package/yad/
 
 N:	Jan Pedersen <jp@jp-embedded.com>
