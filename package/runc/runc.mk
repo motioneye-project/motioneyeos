@@ -22,7 +22,7 @@ RUNC_GLDFLAGS = \
 	-X main.gitCommit=$(RUNC_VERSION)
 
 ifeq ($(BR2_STATIC_LIBS),y)
-FLANNEL_GLDFLAGS += -extldflags '-static'
+RUNC_GLDFLAGS += -extldflags '-static'
 endif
 
 RUNC_GOTAGS = cgo static_build
