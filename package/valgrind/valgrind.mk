@@ -17,6 +17,13 @@ VALGRIND_INSTALL_STAGING = YES
 # patch 0004-Fixes-for-musl-libc.patch touching configure.ac
 VALGRIND_AUTORECONF = YES
 
+# Valgrind must be compiled with no stack protection, so forcefully
+# pass -fno-stack-protector to override what Buildroot may have in
+# TARGET_CFLAGS if BR2_SSP_* support is enabled.
+VALGRIND_CFLAGS = \
+	$(TARGET_CFLAGS) \
+	-fno-stack-protector
+
 # When Valgrind detects a 32-bit MIPS architecture, it forcibly adds
 # -march=mips32 to CFLAGS; when it detects a 64-bit MIPS architecture,
 # it forcibly adds -march=mips64. This causes Valgrind to be built
@@ -27,8 +34,10 @@ VALGRIND_AUTORECONF = YES
 # and pass the right -march option, so they take precedence over
 # Valgrind's wrongfully detected value.
 ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
-VALGRIND_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -march=$(BR2_GCC_TARGET_ARCH)"
+VALGRIND_CFLAGS += -march=$(BR2_GCC_TARGET_ARCH)
 endif
+
+VALGRIND_CONF_ENV = CFLAGS="$(VALGRIND_CFLAGS)"
 
 # On ARM, Valgrind only supports ARMv7, and uses the arch part of the
 # host tuple to determine whether it's being built for ARMv7 or
