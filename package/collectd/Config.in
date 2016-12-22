@@ -157,6 +157,11 @@ config BR2_PACKAGE_COLLECTD_CPUFREQ
 	help
 	  Collects the current CPU's frequency.
 
+config BR2_PACKAGE_COLLECTD_CPUSLEEP
+	bool "cpusleep"
+	help
+	  Measures time spent by CPU in deep sleep mode.
+
 config BR2_PACKAGE_COLLECTD_CURL
 	bool "curl"
 	select BR2_PACKAGE_LIBCURL
