@@ -20,7 +20,7 @@ COLLECTD_PLUGINS_DISABLE = \
 	nut onewire oracle perl pf pinba powerdns python redis routeros \
 	rrdcached sigrok tape target_v5upgrade teamspeak2 ted \
 	tokyotyrant turbostat uuid varnish virt vserver write_kafka \
-	write_mongodb write_redis xmms zfs_arc zone
+	write_mongodb write_redis xencpu xmms zfs_arc zone
 
 COLLECTD_CONF_ENV += LIBS="-lm"
 
