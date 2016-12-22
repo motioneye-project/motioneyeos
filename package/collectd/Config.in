@@ -237,6 +237,11 @@ config BR2_PACKAGE_COLLECTD_FSCACHE
 	  Collects information about the file-system based caching
 	  infrastructure for network file-systems and other slow media.
 
+config BR2_PACKAGE_COLLECTD_HUGEPAGES
+	bool "hugepages"
+	help
+	  Reports the number of used and free hugepages on Linux.
+
 config BR2_PACKAGE_COLLECTD_INTERFACE
 	bool "interface"
 	help
