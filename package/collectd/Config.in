@@ -127,6 +127,11 @@ config BR2_PACKAGE_COLLECTD_CEPH
 	help
 	  Statistics from the Ceph distributed storage system.
 
+config BR2_PACKAGE_COLLECTD_CHRONY
+	bool "chrony"
+	help
+	  Collects NTP data from the chrony NTP server.
+
 config BR2_PACKAGE_COLLECTD_CGROUPS
 	bool "cgroups"
 	help
