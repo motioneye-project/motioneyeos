@@ -1,0 +1,76 @@
+From 3f7429fd2d539c7f948f72bd829404b55ac19d9f Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Mon, 12 Dec 2016 15:23:53 +0100
+Subject: [PATCH] build-sys: prefer pkg-config for ncurses
+
+and use ncurses{5,6}-config as fallback only.
+
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ m4/ul.m4 | 48 ++++++++++++++++++++++++++++--------------------
+ 1 file changed, 28 insertions(+), 20 deletions(-)
+
+diff --git a/m4/ul.m4 b/m4/ul.m4
+index c569c36..44c721e 100644
+--- a/m4/ul.m4
++++ b/m4/ul.m4
+@@ -438,28 +438,36 @@ dnl The expected <name> is ncurses or ncursesw.
+ dnl
+ AC_DEFUN([UL_NCURSES_CHECK], [
+   m4_define([suffix], $1)
++  m4_define([suffixup], m4_toupper($1))
++
++  # pkg-config
++  PKG_CHECK_MODULES(suffixup, [$1], [
++    have_[]suffix=yes
++    NCURSES_LIBS=${suffixup[]_LIBS}
++    NCURSES_CFLAGS=${suffixup[]_CFLAGS}
++  ],[have_[]suffix=no])
+ 
+   # ncurses-config should be everywhere, pkg-config is not supported by default
+   # by ncurses upstream
+   #
+-  AC_MSG_CHECKING([$1])
+-  if AC_RUN_LOG([suffix[]6-config --version >/dev/null]); then
+-    have_[]suffix=yes
+-    NCURSES_LIBS=`suffix[]6-config --libs`
+-    NCURSES_CFLAGS=`suffix[]6-config --cflags`
+-    AC_MSG_RESULT([(v6) yes])
+-  elif AC_RUN_LOG([suffix[]5-config --version >/dev/null]); then
+-    have_[]suffix=yes
+-    NCURSES_LIBS=`suffix[]5-config --libs`
+-    NCURSES_CFLAGS=`suffix[]5-config --cflags`
+-    AC_MSG_RESULT([(v5) yes])
+-  else
+-    AC_MSG_RESULT([no])
+-
+-    # fallback
+-    AC_CHECK_LIB([$1], [initscr], [have_[]suffix=yes], [have_[]suffix=no])
+-    AS_IF([test "x$have_[]suffix" = xyes], [
+-      NCURSES_LIBS="-l[]suffix"
+-    ])
+-  fi
++  AS_IF([test "x$have_[]suffix" = xno], [
++    AC_MSG_CHECKING([$1 config])
++    if AC_RUN_LOG([suffix[]6-config --version >/dev/null]); then
++      have_[]suffix=yes
++      NCURSES_LIBS=`suffix[]6-config --libs`
++      NCURSES_CFLAGS=`suffix[]6-config --cflags`
++      AC_MSG_RESULT([(v6) yes])
++    elif AC_RUN_LOG([suffix[]5-config --version >/dev/null]); then
++      have_[]suffix=yes
++      NCURSES_LIBS=`suffix[]5-config --libs`
++      NCURSES_CFLAGS=`suffix[]5-config --cflags`
++      AC_MSG_RESULT([(v5) yes])
++    else
++      AC_MSG_RESULT([no])
++      AS_IF([test "x$have_[]suffix" = xno], [
++        AC_CHECK_LIB([$1], [initscr], [have_[]suffix=yes], [have_[]suffix=no])
++        AS_IF([test "x$have_[]suffix" = xyes], [NCURSES_LIBS="-l[]suffix"])
++      ])
++    fi
++  ])
+ ])
+-- 
+2.6.2
+
