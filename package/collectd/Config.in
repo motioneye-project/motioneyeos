@@ -572,6 +572,20 @@ config BR2_PACKAGE_COLLECTD_WRITELOG
 	help
 	  Writes data to the log.
 
+config BR2_PACKAGE_COLLECTD_WRITEPROMETHEUS
+	bool "write_prometheus"
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf-c
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" # protobuf-c
+	select BR2_PACKAGE_LIBMICROHTTPD
+	select BR2_PACKAGE_PROTOBUF_C
+	help
+	  Publishes values using an embedded HTTP server, in a format
+	  compatible with Prometheus' collectd_exporter.
+
+comment "write_prometheus needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+
 config BR2_PACKAGE_COLLECTD_WRITESENSU
 	bool "write_sensu"
 	help
