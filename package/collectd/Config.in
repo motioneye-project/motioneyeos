@@ -75,6 +75,11 @@ config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 comment "notify_email needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 
+config BR2_PACKAGE_COLLECTD_NOTIFY_NAGIOS
+	bool "notify_nagios"
+	help
+	  Sends notifications to Nagios as a passive check result.
+
 config BR2_PACKAGE_COLLECTD_SYSLOG
 	bool "syslog"
 	default y
