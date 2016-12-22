@@ -1,4 +1,4 @@
-# From https://www.python.org/downloads/release/python-2712/
-md5	57dffcee9cee8bb2ab5f82af1d8e9a69	Python-2.7.12.tar.xz
+# From https://www.python.org/downloads/release/python-2713/
+md5 53b43534153bb2a0363f08bae8b9d990  Python-2.7.13.tar.xz
 # Locally calculated
-sha256 d7837121dd5652a05fef807c361909d255d173280c4e1a4ded94d73d80a1f978  Python-2.7.12.tar.xz
+sha256 35d543986882f78261f97787fd3e06274bfa6df29fac9b4a94f73930ff98f731  Python-2.7.13.tar.xz
