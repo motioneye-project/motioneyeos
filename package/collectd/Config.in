@@ -512,6 +512,12 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 	  Writes data collected to Carbon (Graphite's) storage API.
 	  http://graphite.wikidot.com/start
 
+config BR2_PACKAGE_COLLECTD_MQTT
+	bool "mqtt"
+	select BR2_PACKAGE_MOSQUITTO
+	help
+	  Sends metrics to and/or receives metrics from an MQTT broker.
+
 config BR2_PACKAGE_COLLECTD_NETWORK
 	bool "network"
 	help

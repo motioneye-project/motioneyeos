@@ -72,6 +72,7 @@ COLLECTD_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_COLLECTD_MEMCACHED),--enable-memcached,--disable-memcached) \
 	$(if $(BR2_PACKAGE_COLLECTD_MEMORY),--enable-memory,--disable-memory) \
 	$(if $(BR2_PACKAGE_COLLECTD_MODBUS),--enable-modbus,--disable-modbus) \
+	$(if $(BR2_PACKAGE_COLLECTD_MQTT),--enable-mqtt,--disable-mqtt) \
 	$(if $(BR2_PACKAGE_COLLECTD_MYSQL),--enable-mysql,--disable-mysql) \
 	$(if $(BR2_PACKAGE_COLLECTD_NETLINK),--enable-netlink,--disable-netlink) \
 	$(if $(BR2_PACKAGE_COLLECTD_NETWORK),--enable-network,--disable-network) \
@@ -133,6 +134,7 @@ COLLECTD_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_COLLECTD_LOGSTASH),yajl) \
 	$(if $(BR2_PACKAGE_COLLECTD_MEMCACHEC),libmemcached) \
 	$(if $(BR2_PACKAGE_COLLECTD_MODBUS),libmodbus) \
+	$(if $(BR2_PACKAGE_COLLECTD_MQTT),mosquitto) \
 	$(if $(BR2_PACKAGE_COLLECTD_MYSQL),mysql) \
 	$(if $(BR2_PACKAGE_COLLECTD_NETLINK),libmnl) \
 	$(if $(BR2_PACKAGE_COLLECTD_NGINX),libcurl) \
