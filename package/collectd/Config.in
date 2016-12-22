@@ -237,6 +237,13 @@ config BR2_PACKAGE_COLLECTD_FSCACHE
 	  Collects information about the file-system based caching
 	  infrastructure for network file-systems and other slow media.
 
+config BR2_PACKAGE_COLLECTD_GPS
+	bool "gps"
+	select BR2_PACKAGE_GPSD
+	help
+	  Reports the number of sattelites seen by and precision
+	  of a GPS receiver.
+
 config BR2_PACKAGE_COLLECTD_HUGEPAGES
 	bool "hugepages"
 	help
