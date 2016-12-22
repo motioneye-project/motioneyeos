@@ -14,7 +14,7 @@ COLLECTD_LICENSE_FILES = COPYING
 
 # These require unmet dependencies, are fringe, pointless or deprecated
 COLLECTD_PLUGINS_DISABLE = \
-	amqp apple_sensors aquaero ascent barometer dbi email \
+	amqp apple_sensors aquaero ascent barometer dbi dpdkstat email \
 	gmond grpc hddtemp ipmi java libvirt lpar lvm madwifi mbmon \
 	mic multimeter netapp notify_desktop numa \
 	nut onewire oracle perl pf pinba powerdns python redis routeros \
