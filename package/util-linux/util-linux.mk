@@ -45,21 +45,21 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 UTIL_LINUX_DEPENDENCIES += busybox
 endif
 
-ifeq ($(BR2_PACKAGE_NCURSES),y)
-UTIL_LINUX_DEPENDENCIES += ncurses
-ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
-UTIL_LINUX_CONF_OPTS += --with-ncursesw
-UTIL_LINUX_CONF_ENV += NCURSESW5_CONFIG=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
-else
-UTIL_LINUX_CONF_OPTS += --without-ncursesw --with-ncurses --disable-widechar
-UTIL_LINUX_CONF_ENV += NCURSES5_CONFIG=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
-endif
-else
 ifeq ($(BR2_USE_WCHAR),y)
 UTIL_LINUX_CONF_OPTS += --enable-widechar
 else
 UTIL_LINUX_CONF_OPTS += --disable-widechar
 endif
+
+ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
+UTIL_LINUX_DEPENDENCIES += ncurses
+UTIL_LINUX_CONF_OPTS += --with-ncursesw
+UTIL_LINUX_CONF_ENV += NCURSESW5_CONFIG=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
+else ifeq ($(BR2_PACKAGE_NCURSES):$(BR2_USE_WCHAR),y:)
+UTIL_LINUX_DEPENDENCIES += ncurses
+UTIL_LINUX_CONF_OPTS += --without-ncursesw --with-ncurses
+UTIL_LINUX_CONF_ENV += NCURSES5_CONFIG=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
+else
 UTIL_LINUX_CONF_OPTS += --without-ncursesw --without-ncurses
 endif
 

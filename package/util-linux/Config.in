@@ -207,6 +207,7 @@ config BR2_PACKAGE_UTIL_LINUX_MORE
 	bool "more"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR if BR2_USE_WCHAR
 	help
 	  File perusal filter for crt viewing
 
@@ -252,6 +253,7 @@ config BR2_PACKAGE_UTIL_LINUX_PG
 	bool "pg"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR if BR2_USE_WCHAR
 	help
 	  Browse pagewise through text files
 
@@ -298,6 +300,7 @@ config BR2_PACKAGE_UTIL_LINUX_SETPRIV
 config BR2_PACKAGE_UTIL_LINUX_SETTERM
 	bool "setterm"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR if BR2_USE_WCHAR
 	help
 	  Set terminal attributes
 
@@ -310,12 +313,14 @@ config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 config BR2_PACKAGE_UTIL_LINUX_TUNELP
 	bool "tunelp"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR if BR2_USE_WCHAR
 	help
 	  Set various parameters for the lp device
 
 config BR2_PACKAGE_UTIL_LINUX_UL
 	bool "ul"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR if BR2_USE_WCHAR
 	help
 	  Do underlining
 
