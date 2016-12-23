@@ -428,6 +428,7 @@ F:	package/eudev/
 F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
 F:	package/ninja/
+F:	package/skalibs/
 F:	package/smack/
 F:	package/xvisor/
 
