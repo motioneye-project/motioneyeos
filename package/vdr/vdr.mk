@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VDR_VERSION = 2.3.1
+VDR_VERSION = 2.3.2
 VDR_SOURCE = vdr-$(VDR_VERSION).tar.bz2
 VDR_SITE = ftp://ftp.tvdr.de/vdr/Developer
 VDR_LICENSE = GPLv2+
