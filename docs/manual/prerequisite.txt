@@ -35,6 +35,7 @@ between distributions).
 ** +python+ (version 2.6 or any later)
 ** +unzip+
 ** +rsync+
+** +file+ (must be in +/usr/bin/file+)
 
 * Source fetching tools:
 ** +wget+
