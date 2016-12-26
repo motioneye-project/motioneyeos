@@ -7,10 +7,10 @@ config BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
 	default y if BR2_TOOLCHAIN_USES_UCLIBC && \
 		(BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || BR2_sparc || BR2_x86_64)
 
-comment "mongrel2 needs a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library"
+comment "mongrel2 needs a uClibc or glibc toolchain w/ C++, threads, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || \
-		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
-		BR2_STATIC_LIBS || !BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+		!BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
 
 config BR2_PACKAGE_MONGREL2
 	bool "mongrel2"
@@ -18,7 +18,6 @@ config BR2_PACKAGE_MONGREL2
 	select BR2_PACKAGE_ZEROMQ
 	depends on BR2_INSTALL_LIBSTDCPP # zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
-	depends on BR2_USE_WCHAR # zeromq -> util-linux
 	depends on !BR2_STATIC_LIBS # uses dlopen()
 	depends on BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
 	help

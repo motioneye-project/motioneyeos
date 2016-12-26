@@ -62,10 +62,6 @@ config BR2_PACKAGE_MTD_MKFSUBIFS
 	select BR2_PACKAGE_LZO
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	depends on BR2_USE_WCHAR # util-linux
-
-comment "mkfs.ubifs needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
