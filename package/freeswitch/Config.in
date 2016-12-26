@@ -4,7 +4,7 @@ config BR2_PACKAGE_FREESWITCH
 	depends on !BR2_STATIC_LIBS # apr, included in freeswitch source
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # apr, included in freeswitch source
-	depends on BR2_USE_WCHAR # libuuid
+	depends on BR2_USE_WCHAR # uses wchar_t
 	select BR2_PACKAGE_FFMPEG_AVRESAMPLE if BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_FFMPEG_SWSCALE if BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_LIBCURL

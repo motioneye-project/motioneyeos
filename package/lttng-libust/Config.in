@@ -3,7 +3,7 @@ config BR2_PACKAGE_LTTNG_LIBUST
 	select BR2_PACKAGE_LIBURCU
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_USE_WCHAR # uses wchar_t
 	# liburcu only works on some architectures and requires threads support"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
