@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.02"
 
+config BR2_PACKAGE_PERL_DB_FILE
+	bool "perl-db-file removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BERKELEYDB
+	select BR2_PACKAGE_PERL
+	help
+	  DB_File can be built as a core Perl module, so the separate
+	  perl-db-file package has been removed.
+
 config BR2_KERNEL_HEADERS_4_7
 	bool "kernel headers version 4.7.x are no longer supported"
 	select BR2_KERNEL_HEADERS_4_4
