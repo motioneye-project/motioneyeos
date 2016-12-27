@@ -361,11 +361,13 @@ comment "taglib needs a toolchain w/ C++, wchar"
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
 	bool "vpx (webm)"
 	select BR2_PACKAGE_LIBVPX
+	depends on !BR2_bfin # libvpx
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libvpx
 	help
 	  VP8 plugin
 
 comment "libvpx needs a toolchain w/ threads"
+	depends on !BR2_bfin
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_WAVPACK
