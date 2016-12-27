@@ -212,7 +212,6 @@ F:	package/mjpg-streamer/
 F:	package/mplayer/
 F:	package/perl-crypt-openssl-random/
 F:	package/perl-crypt-openssl-rsa/
-F:	package/perl-db-file/
 F:	package/perl-digest-sha1/
 F:	package/perl-encode-detect/
 F:	package/perl-encode-locale/
