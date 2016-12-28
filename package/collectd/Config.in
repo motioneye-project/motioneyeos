@@ -550,7 +550,7 @@ config BR2_PACKAGE_COLLECTD_RIEMANN
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	# protobuf-c -> host-protobuf
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	select BR2_PACKAGE_PROTOBUF_C
+	select BR2_PACKAGE_RIEMANN_C_CLIENT
 	select BR2_PACKAGE_LIBTOOL
 	help
 	  Sends data to Riemann, a stream processing and monitoring system.
