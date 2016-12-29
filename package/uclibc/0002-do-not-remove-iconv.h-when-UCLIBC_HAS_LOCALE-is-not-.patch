@@ -1,0 +1,26 @@
+From 0d80d5a235af1a12b606dea6380dc91f755546fe Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Wed, 28 Dec 2016 19:08:15 +0100
+Subject: [PATCH] do not remove iconv.h when UCLIBC_HAS_LOCALE is not set
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 9acf76c..c8afe1c 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -282,7 +282,7 @@ HEADERS_RM-$(UCLIBC_HAS_IPV6)                += netinet/ip6.h netinet/icmp6.h
+ HEADERS_RM-$(UCLIBC_HAS_BACKTRACE)           += execinfo.h
+ HEADERS_RM-$(UCLIBC_HAS_LIBICONV)            += iconv.h
+ HEADERS_RM-$(UCLIBC_HAS_LIBINTL)             += intl.h
+-HEADERS_RM-$(UCLIBC_HAS_LOCALE)              += iconv.h bits/uClibc_ctype.h
++HEADERS_RM-$(UCLIBC_HAS_LOCALE)              += bits/uClibc_ctype.h
+ HEADERS_RM-$(UCLIBC_HAS_PTY)                 += pty.h
+ HEADERS_RM-$(UCLIBC_HAS_REALTIME)            += mqueue.h bits/mqueue.h sched.h \
+ 	bits/sched.h \
+-- 
+2.1.4
+

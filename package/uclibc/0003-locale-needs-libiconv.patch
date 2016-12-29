@@ -1,0 +1,25 @@
+From a2c56ee4fbff7af9128d630299d81fb46582673d Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Thu, 29 Dec 2016 13:38:09 +0100
+Subject: [PATCH] locale: needs libiconv
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ extra/Configs/Config.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/extra/Configs/Config.in b/extra/Configs/Config.in
+index 6b0985e..b02054c 100644
+--- a/extra/Configs/Config.in
++++ b/extra/Configs/Config.in
+@@ -1442,6 +1442,7 @@ config UCLIBC_HAS_LOCALE
+ 	bool "Locale Support"
+ 	select UCLIBC_HAS_WCHAR
+ 	select UCLIBC_HAS_CTYPE_TABLES
++	select UCLIBC_HAS_LIBICONV
+ 	help
+ 	  uClibc now has full ANSI/ISO C99 locale support (except for
+ 	  wcsftime() and collating items in regex).  Be aware that enabling
+-- 
+2.1.4
+
