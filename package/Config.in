@@ -474,6 +474,7 @@ endmenu
 	source "package/ubus/Config.in"
 	source "package/udev/Config.in"
 	source "package/udisks/Config.in"
+	source "package/upower/Config.in"
 	source "package/usb_modeswitch/Config.in"
 	source "package/usb_modeswitch_data/Config.in"
 	source "package/usbmount/Config.in"
