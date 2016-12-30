@@ -272,6 +272,18 @@ else
 EFL_CONF_OPTS += --disable-librsvg
 endif
 
+ifeq ($(BR2_PACKAGE_UPOWER),)
+# upower ecore system module is only useful if upower
+# dbus service is available.
+# It's not essential, only used to notify applications
+# of power state, such as low battery or AC power, so
+# they can adapt their power consumption.
+define EFL_HOOK_REMOVE_UPOWER
+	rm -fr $(TARGET_DIR)/usr/lib/ecore/system/upower
+endef
+EFL_POST_INSTALL_TARGET_HOOKS = EFL_HOOK_REMOVE_UPOWER
+endif
+
 $(eval $(autotools-package))
 
 ################################################################################
@@ -351,5 +363,14 @@ HOST_EFL_CONF_OPTS += --enable-cxx-bindings
 else
 HOST_EFL_CONF_OPTS += --disable-cxx-bindings
 endif
+
+# Always disable upower system module from host as it's
+# not useful and would try to use the output/host/var
+# system bus which is non-existent and does not contain
+# any upower service in it.
+define HOST_EFL_HOOK_REMOVE_UPOWER
+	rm -fr $(HOST_DIR)/usr/lib/ecore/system/upower
+endef
+HOST_EFL_POST_INSTALL_HOOKS = HOST_EFL_HOOK_REMOVE_UPOWER
 
 $(eval $(host-autotools-package))
