@@ -1,4 +1,4 @@
-# From https://lists.gnu.org/archive/html/info-gnu/2016-08/msg00008.html
-sha1 5a034291e7248592605db448481478e6c963aa9c  libgcrypt-1.7.3.tar.bz2
+# From https://lists.gnu.org/archive/html/info-gnu/2016-12/msg00007.html
+sha1 fa485d854748fc06ea041b3057b2de2f12fbc17f  libgcrypt-1.7.5.tar.bz2
 # Calculated based on the hash above
-sha256 ddac6111077d0a1612247587be238c5294dd0ee4d76dc7ba783cc55fb0337071  libgcrypt-1.7.3.tar.bz2
+sha256 d1fea4128beef2bb30a470af6bafabccc503ced350534fb9dd8f5a53ffbae800  libgcrypt-1.7.5.tar.bz2
