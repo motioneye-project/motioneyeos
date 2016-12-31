@@ -132,6 +132,8 @@ endchoice
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
 	bool "Enable AIGLX Extension"
+	# AIGLX Extension removed in 1.19.0
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_14 || BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_17
 	help
 	  Enable/Use AIGLX extension.
 
