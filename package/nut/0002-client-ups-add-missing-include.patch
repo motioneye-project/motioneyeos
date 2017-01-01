@@ -7,7 +7,7 @@ struct timeval is declared in sys/time.h, so we need to #include it.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
-Backported from upstream.
+Backported from upstream commit da0969b26ad4bb839bcb88362c8f41aaf0eb8363
 ---
  clients/upsclient.c | 1 +
  1 file changed, 1 insertion(+)

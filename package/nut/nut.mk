@@ -5,7 +5,7 @@
 ################################################################################
 
 NUT_VERSION_MAJOR = 2.7
-NUT_VERSION = $(NUT_VERSION_MAJOR).2
+NUT_VERSION = $(NUT_VERSION_MAJOR).4
 NUT_SITE = http://www.networkupstools.org/source/$(NUT_VERSION_MAJOR)
 NUT_LICENSE = GPLv2+, GPLv3+ (python scripts), GPL/Artistic (perl client)
 NUT_LICENSE_FILES = COPYING LICENSE-GPL2 LICENSE-GPL3
@@ -19,10 +19,6 @@ NUT_AUTORECONF = YES
 NUT_CONF_OPTS = \
 	--with-altpidpath=/var/run/upsd \
 	--without-hal
-
-NUT_CONF_ENV = \
-	GDLIB_CONFIG=$(STAGING_DIR)/usr/bin/gdlib-config \
-	NET_SNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
 
 # For uClibc-based toolchains, nut forgets to link with -lm
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
@@ -45,7 +41,9 @@ endif
 # gd with support for png is required for the CGI
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 NUT_DEPENDENCIES += gd libpng
-NUT_CONF_OPTS += --with-cgi
+NUT_CONF_OPTS += \
+	--with-cgi \
+	--with-gdlib-config=$(STAGING_DIR)/usr/bin/gdlib-config
 else
 NUT_CONF_OPTS += --without-cgi
 endif
@@ -77,7 +75,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
 NUT_DEPENDENCIES += netsnmp
-NUT_CONF_OPTS += --with-snmp
+NUT_CONF_OPTS += \
+	--with-snmp \
+	--with-net-snmp-config=$(STAGING_DIR)/usr/bin/net-snmp-config
 else
 NUT_CONF_OPTS += --without-snmp
 endif
