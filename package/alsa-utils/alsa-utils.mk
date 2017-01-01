@@ -23,6 +23,7 @@ ALSA_UTILS_CONF_ENV = \
 
 ALSA_UTILS_CONF_OPTS = \
 	--disable-xmlto \
+	--disable-rst2man \
 	--with-curses=$(if $(BR2_PACKAGE_NCURSES_WCHAR),ncursesw,ncurses)
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
