@@ -45,7 +45,7 @@ endif
 # GBM support is provided by mesa3d when EGL=y
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 MPV_CONF_OPTS += --enable-gbm
-MPV_DEPENDENIES += mesa3d
+MPV_DEPENDENCIES += mesa3d
 else
 MPV_CONF_OPTS += --disable-gbm
 endif
