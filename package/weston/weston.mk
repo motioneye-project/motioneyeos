@@ -109,7 +109,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBVA),y)
 WESTON_CONF_OPTS += --enable-vaapi-recorder
-WESTON_DEPENDENIES += libva
+WESTON_DEPENDENCIES += libva
 else
 WESTON_CONF_OPTS += --disable-vaapi-recorder
 endif
