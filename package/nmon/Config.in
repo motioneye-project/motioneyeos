@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NMON
+	bool "nmon"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Nmon is short for Nigel's performance Monitor for Linux
+
+	  http://nmon.sourceforge.net/pmwiki.php
