@@ -5,7 +5,6 @@
 ################################################################################
 
 OLA_VERSION = 0.10.2
-OLA_SOURCE = ola-$(OLA_VERSION).tar.gz
 OLA_SITE = https://github.com/OpenLightingProject/ola/releases/download/$(OLA_VERSION)
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
 OLA_LICENSE_FILES = LICENCE GPL LGPL

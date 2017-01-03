@@ -6,7 +6,6 @@
 
 LOG4CPP_VERSION_MAJOR = 1.1
 LOG4CPP_VERSION = $(LOG4CPP_VERSION_MAJOR).1
-LOG4CPP_SOURCE = log4cpp-$(LOG4CPP_VERSION).tar.gz
 LOG4CPP_SITE = http://downloads.sourceforge.net/project/log4cpp/log4cpp-1.1.x%20%28new%29/log4cpp-$(LOG4CPP_VERSION_MAJOR)
 LOG4CPP_SUBDIR = log4cpp
 # The "or later" is indicated in the HTML documentation

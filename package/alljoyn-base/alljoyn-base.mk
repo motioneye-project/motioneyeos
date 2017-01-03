@@ -6,7 +6,6 @@
 
 ALLJOYN_BASE_REV = 16.04
 ALLJOYN_BASE_VERSION = $(ALLJOYN_BASE_REV).00
-ALLJOYN_BASE_SOURCE = alljoyn-base-$(ALLJOYN_BASE_VERSION).tar.gz
 ALLJOYN_BASE_SITE = \
 	https://mirrors.kernel.org/allseenalliance/alljoyn/$(ALLJOYN_BASE_REV)
 # See https://allseenalliance.org/alliance/ip-policy
