@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-GD_VERSION = 2.2.2
+GD_VERSION = 2.2.3
 GD_SOURCE = libgd-$(GD_VERSION).tar.xz
 GD_SITE = https://github.com/libgd/libgd/releases/download/gd-$(GD_VERSION)
 GD_INSTALL_STAGING = YES
 GD_LICENSE = GD license
 GD_LICENSE_FILES = COPYING
 GD_CONFIG_SCRIPTS = gdlib-config
-GD_CONF_OPTS = --without-x --disable-rpath
+GD_CONF_OPTS = --without-x --disable-rpath --disable-werror
 GD_DEPENDENCIES = host-pkgconf
 
 # gd forgets to link utilities with -pthread even though it uses
