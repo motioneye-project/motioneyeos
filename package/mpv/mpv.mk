@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.22.0
+MPV_VERSION = 0.23.0
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
@@ -23,7 +23,6 @@ MPV_CONF_OPTS = \
 	--disable-cdda \
 	--disable-cocoa \
 	--disable-coreaudio \
-	--disable-libguess \
 	--disable-libv4l2 \
 	--disable-opensles \
 	--disable-rpi \
@@ -121,14 +120,6 @@ MPV_CONF_OPTS += --enable-drm
 MPV_DEPENDENCIES += libdrm
 else
 MPV_CONF_OPTS += --disable-drm
-endif
-
-# libenca support
-ifeq ($(BR2_PACKAGE_LIBENCA),y)
-MPV_CONF_OPTS += --enable-enca
-MPV_DEPENDENCIES += libenca
-else
-MPV_CONF_OPTS += --disable-enca
 endif
 
 # LUA support, only for lua51/lua52/luajit
