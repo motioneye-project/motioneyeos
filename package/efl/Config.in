@@ -17,9 +17,6 @@ config BR2_PACKAGE_EFL
 	# https://phab.enlightenment.org/T2728
 	select BR2_PACKAGE_LUAJIT # Lua support broken
 	select BR2_PACKAGE_LZ4
-	select BR2_PACKAGE_UTIL_LINUX
-	# libblkid is part of required tools, see EFL's README.
-	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_ZLIB
 	help
 	  Enlightenment Foundation Libraries
@@ -101,7 +98,10 @@ config BR2_PACKAGE_EFL_PULSEAUDIO
 
 config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 	bool "Enable libmount support (recommended)"
+	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	# libblkid is part of required tools, see EFL's README.
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	default y
 	help
 	  Libmount is used heavily inside Eeze for support of removable
