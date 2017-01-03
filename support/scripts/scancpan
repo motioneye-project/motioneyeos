@@ -484,9 +484,9 @@ use HTTP::Tiny;
 use Safe;
 use MetaCPAN::API::Tiny;
 
-# Below, 5.022 should be aligned with the version of perl actually
+# Below, 5.024 should be aligned with the version of perl actually
 # bundled in Buildroot:
-die <<"MSG" if $] < 5.022;
+die <<"MSG" if $] < 5.024;
 This script needs a host perl with the same major version as Buildroot target perl.
 
 Your current host perl is:
@@ -494,7 +494,7 @@ Your current host perl is:
     version $]
 
 You may install a local one by running:
-    perlbrew install perl-5.22.2
+    perlbrew install perl-5.24.0
 MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);

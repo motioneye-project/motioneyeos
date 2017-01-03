@@ -5,23 +5,20 @@
 ################################################################################
 
 # When updating the version here, also update support/scripts/scancpan
-PERL_VERSION_MAJOR = 22
-PERL_VERSION = 5.$(PERL_VERSION_MAJOR).2
+PERL_VERSION_MAJOR = 24
+PERL_VERSION = 5.$(PERL_VERSION_MAJOR).0
 PERL_SITE = http://www.cpan.org/src/5.0
 PERL_SOURCE = perl-$(PERL_VERSION).tar.bz2
 PERL_LICENSE = Artistic or GPLv1+
 PERL_LICENSE_FILES = Artistic Copying README
 PERL_INSTALL_STAGING = YES
 
-PERL_CROSS_VERSION = 1.0.2
-PERL_CROSS_BASE_VERSION = 5.$(PERL_VERSION_MAJOR).1
+PERL_CROSS_VERSION = 1.0.3
+PERL_CROSS_BASE_VERSION = 5.$(PERL_VERSION_MAJOR).0
 # DO NOT refactor with the github helper (the result is not the same)
 PERL_CROSS_SITE = https://github.com/arsv/perl-cross/releases/download/$(PERL_CROSS_VERSION)
 PERL_CROSS_SOURCE = perl-$(PERL_CROSS_BASE_VERSION)-cross-$(PERL_CROSS_VERSION).tar.gz
 PERL_EXTRA_DOWNLOADS = $(PERL_CROSS_SITE)/$(PERL_CROSS_SOURCE)
-
-PERL_CROSS_OLD_POD = perl$(subst .,,$(PERL_CROSS_BASE_VERSION))delta.pod
-PERL_CROSS_NEW_POD = perl$(subst .,,$(PERL_VERSION))delta.pod
 
 # We use the perlcross hack to cross-compile perl. It should
 # be extracted over the perl sources, so we don't define that
@@ -38,11 +35,6 @@ PERL_POST_EXTRACT_HOOKS += PERL_CROSS_EXTRACT
 # on newer host architectures, so we borrow the hook which updates them from the
 # autotools infrastructure.
 PERL_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
-
-define PERL_CROSS_SET_POD
-	$(SED) s/$(PERL_CROSS_OLD_POD)/$(PERL_CROSS_NEW_POD)/g $(@D)/Makefile
-endef
-PERL_POST_PATCH_HOOKS += PERL_CROSS_SET_POD
 
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
 PERL_DEPENDENCIES += berkeleydb
