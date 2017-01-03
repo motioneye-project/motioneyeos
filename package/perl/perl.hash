@@ -3,5 +3,5 @@ md5    99f39abe614b50719d9915431e54fc1e                                 perl-5.2
 sha1   298fa605138c1a00dab95643130ae0edab369b4d                         perl-5.24.0.tar.bz2
 sha256 62328a53d157e8153b33e137594155f6f8b64418f7f9238210feb809585290e0 perl-5.24.0.tar.bz2
 
-# No upstream hashes for the following
-sha256 cac4616274edaef81f48d8880d4224e05b81d0033ebad45d42a3a18664c3409c perl-5.24.0-cross-1.0.3.tar.gz
+# Hashes from: http://github.com/arsv/perl-cross/releases/download/1.1.2/perl-cross-1.1.2.hash
+sha256 2a1b0a3ffe866bc3fd32c947c0a866360d2f26576c8f1c5c0b521d3a6e9d643d perl-cross-1.1.2.tar.gz
