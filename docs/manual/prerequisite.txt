@@ -36,6 +36,7 @@ between distributions).
 ** +unzip+
 ** +rsync+
 ** +file+ (must be in +/usr/bin/file+)
+** +bc+
 
 * Source fetching tools:
 ** +wget+
