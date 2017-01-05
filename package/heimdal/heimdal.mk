@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HEIMDAL_VERSION = 1.6rc2
+HEIMDAL_VERSION = 7.1.0
 HEIMDAL_SITE = http://www.h5l.org/dist/src
 HOST_HEIMDAL_DEPENDENCIES = host-e2fsprogs host-ncurses host-pkgconf
 HEIMDAL_INSTALL_STAGING = YES
@@ -24,11 +24,8 @@ HOST_HEIMDAL_CONF_OPTS = \
 	--without-x \
 	--disable-heimdal-documentation
 HOST_HEIMDAL_CONF_ENV = MAKEINFO=true
-HEIMDAL_MAKE = $(MAKE1)
 HEIMDAL_LICENSE = BSD-3c
 HEIMDAL_LICENSE_FILES = LICENSE
-# 0002-kadm5-fix-race-in-Makefile-with-kadm5_err.h.patch
-HEIMDAL_AUTORECONF = YES
 
 # We need asn1_compile in the PATH for samba4
 define HOST_HEIMDAL_MAKE_SYMLINK
