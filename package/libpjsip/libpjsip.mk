@@ -36,7 +36,28 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-ilbc-codec \
 	--disable-webrtc \
 	--disable-opus \
+	--disable-oss \
+	--disable-ext-sound \
+	--disable-small-filter \
+	--disable-large-filter \
+	--disable-g711-codec \
+	--disable-l16-codec \
+	--disable-g722-codec \
+	--disable-libsamplerate \
+	--disable-sdl \
+	--disable-ffmpeg \
+	--disable-v4l2 \
+	--disable-openh264 \
+	--disable-libyuv \
+	--disable-ipp \
+	--disable-ssl \
+	--disable-silk \
 	--with-external-srtp=$(STAGING_DIR)/usr
+
+# Note: aconfigure.ac is broken: --enable-epoll or --disable-epoll will
+# both enable it. But that's OK, epoll is better than the alternative,
+# so we want to use it.
+LIBPJSIP_CONF_OPTS += --enable-epoll
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBPJSIP_DEPENDENCIES += openssl
