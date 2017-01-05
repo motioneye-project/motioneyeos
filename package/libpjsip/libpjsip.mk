@@ -52,7 +52,7 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-ipp \
 	--disable-ssl \
 	--disable-silk \
-	--with-external-srtp=$(STAGING_DIR)/usr
+	--with-external-srtp
 
 # Note: aconfigure.ac is broken: --enable-epoll or --disable-epoll will
 # both enable it. But that's OK, epoll is better than the alternative,
