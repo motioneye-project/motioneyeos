@@ -1,4 +1,4 @@
-# From http://sourceforge.net/projects/libpng/files/libpng16/1.6.27/
-sha1 af5d742f5d0a6492133aed7790bb43e8854cca64 libpng-1.6.27.tar.xz
+# From http://sourceforge.net/projects/libpng/files/libpng16/1.6.28/
+sha1 ff4dceadb15e2c929ad26283118d56f66f4a6cff libpng-1.6.28.tar.xz
 # Locally computed:
-sha256 fca2ffd97336356cdab9bfa8936b9d6dfd580a70205e5dfead3ac42cb054b57b  libpng-1.6.27.tar.xz
+sha256 d8d3ec9de6b5db740fefac702c37ffcf96ae46cb17c18c1544635a3852f78f7a  libpng-1.6.28.tar.xz
