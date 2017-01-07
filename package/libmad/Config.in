@@ -37,6 +37,8 @@ config BR2_PACKAGE_LIBMAD_SSO
 
 config BR2_PACKAGE_LIBMAD_ASO
 	bool "Architecture-specific optimizations"
+	# arm optimization needs classic arm instructions support
+	depends on !(BR2_arm && !BR2_ARM_CPU_HAS_ARM)
 	default y
 	help
 	  Use certain architecture-specific optimizations.
