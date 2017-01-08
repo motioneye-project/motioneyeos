@@ -1275,6 +1275,7 @@ F:	package/mcelog/
 F:	package/openpowerlink/
 F:	package/stress-ng/
 F:	package/terminology/
+F:	package/upower/
 F:	package/xenomai/
 
 N:	Romain Perier <romain.perier@free-electrons.com>
