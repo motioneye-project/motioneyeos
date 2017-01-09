@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-POLICYCOREUTILS_VERSION = 2.5
-POLICYCOREUTILS_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20160223
+POLICYCOREUTILS_VERSION = 2.6
+POLICYCOREUTILS_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014
 POLICYCOREUTILS_LICENSE = GPLv2
 POLICYCOREUTILS_LICENSE_FILES = COPYING
 
