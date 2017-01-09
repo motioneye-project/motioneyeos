@@ -28,10 +28,4 @@ config BR2_PACKAGE_OPENVPN_SMALL
 	  You loose eurephia, debugging info, help messages and more.
 	  It saves around 100 KiB in binary file size.
 
-config BR2_PACKAGE_OPENVPN_PWSAVE
-	bool "Allow passwords in files"
-	help
-	  Allow --askpass and --auth-user-pass passwords to be read
-	  from a file.
-
 endif

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENVPN_VERSION = 2.3.14
+OPENVPN_VERSION = 2.4.0
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.xz
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_DEPENDENCIES = host-pkgconf openssl
@@ -40,12 +40,6 @@ ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
 OPENVPN_DEPENDENCIES += lzo
 else
 OPENVPN_CONF_OPTS += --disable-lzo
-endif
-
-ifeq ($(BR2_PACKAGE_OPENVPN_PWSAVE),y)
-OPENVPN_CONF_OPTS += --enable-password-save
-else
-OPENVPN_CONF_OPTS += --disable-password-save
 endif
 
 define OPENVPN_INSTALL_TARGET_CMDS
