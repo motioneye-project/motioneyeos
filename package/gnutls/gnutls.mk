@@ -4,17 +4,13 @@
 #
 ################################################################################
 
-GNUTLS_VERSION_MAJOR = 3.4
-GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).17
+GNUTLS_VERSION_MAJOR = 3.5
+GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).8
 GNUTLS_SOURCE = gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_SITE = ftp://ftp.gnutls.org/gcrypt/gnutls/v$(GNUTLS_VERSION_MAJOR)
-# README says that the core library is under LGPLv2.1+, but a few
-# files in libdane specify LGPLv3+. It seems to be a mistake, and we
-# therefore trust the README file here. A bug was reported upstream at
-# https://gitlab.com/gnutls/gnutls/issues/109.
 GNUTLS_LICENSE = LGPLv2.1+ (core library), GPLv3+ (gnutls-openssl library)
-GNUTLS_LICENSE_FILES = COPYING COPYING.LESSER README
-GNUTLS_DEPENDENCIES = host-pkgconf libtasn1 nettle pcre
+GNUTLS_LICENSE_FILES = doc/COPYING doc/COPYING.LESSER
+GNUTLS_DEPENDENCIES = host-pkgconf libunistring libtasn1 nettle pcre
 GNUTLS_CONF_OPTS = \
 	--disable-doc \
 	--disable-guile \
@@ -23,6 +19,7 @@ GNUTLS_CONF_OPTS = \
 	--enable-local-libopts \
 	--enable-openssl-compatibility \
 	--with-libnettle-prefix=$(STAGING_DIR)/usr \
+	--with-libunistring-prefix=$(STAGING_DIR)/usr \
 	--with-librt-prefix=$(STAGING_DIR) \
 	--without-tpm \
 	$(if $(BR2_PACKAGE_GNUTLS_TOOLS),--enable-tools,--disable-tools)
