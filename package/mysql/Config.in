@@ -1,5 +1,8 @@
 config BR2_PACKAGE_MYSQL
 	bool "mysql support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Select the desired mysql provider.
 
@@ -13,9 +16,6 @@ choice
 
 config BR2_PACKAGE_MARIADB
 	bool "mariadb"
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_USE_MMU # fork()
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBAIO
 	select BR2_PACKAGE_LIBXML2
@@ -32,9 +32,6 @@ config BR2_PACKAGE_MARIADB
 
 config BR2_PACKAGE_ORACLE_MYSQL
 	bool "oracle mysql"
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_USE_MMU # fork()
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_HAS_MYSQL
@@ -44,15 +41,6 @@ config BR2_PACKAGE_ORACLE_MYSQL
 	  http://www.mysql.com/
 
 endchoice
-
-comment "mariadb needs a toolchain w/ C++, threads"
-	depends on BR2_USE_MMU
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
-
-comment "oracle mysql needs a toolchain w/ C++, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_MARIADB
 
@@ -81,3 +69,7 @@ config BR2_PACKAGE_PROVIDES_MYSQL
 	default "oracle-mysql" if BR2_PACKAGE_ORACLE_MYSQL
 
 endif
+
+comment "mysql needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
