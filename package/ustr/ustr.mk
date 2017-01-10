@@ -26,6 +26,7 @@ USTR_INSTALL_STAGING = YES
 USTR_MAKE_OPTS = all all-shared
 
 USTR_CONF_OPTS += LDCONFIG=/bin/true
+HOST_USTR_CONF_OPTS += LDCONFIG=/bin/true
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
