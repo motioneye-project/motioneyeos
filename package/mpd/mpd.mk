@@ -222,7 +222,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_MPD_TREMOR),y)
 MPD_DEPENDENCIES += tremor
-MPD_CONF_OPTS += --with-tremor
+# Help mpd to find tremor in static linking scenarios
+MPD_CONF_ENV += \
+	TREMOR_LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs vorbisidec`"
+MPD_CONF_OPTS += --with-tremor=$(STAGING_DIR)/usr
 endif
 
 ifeq ($(BR2_PACKAGE_MPD_TWOLAME),y)
