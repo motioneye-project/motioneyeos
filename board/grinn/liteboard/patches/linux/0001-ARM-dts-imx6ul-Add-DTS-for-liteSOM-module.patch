@@ -1,6 +1,6 @@
-From 35d7c23bde44d18205a2730df9acf75d83220c3a Mon Sep 17 00:00:00 2001
+From 8cbabc57257bdbf5f1cf039a265c875da8ddc2e9 Mon Sep 17 00:00:00 2001
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Wed, 7 Sep 2016 15:10:45 +0200
+Date: Fri, 21 Oct 2016 17:07:16 +0200
 Subject: [PATCH 1/2] ARM: dts: imx6ul: Add DTS for liteSOM module
 
 This is a SOM (System on Module), so it will be part of another boards.
@@ -14,6 +14,7 @@ Hardware specification:
 
 Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 ---
  arch/arm/boot/dts/imx6ul-litesom.dtsi | 82 +++++++++++++++++++++++++++++++++++
  1 file changed, 82 insertions(+)
@@ -21,7 +22,7 @@ Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
 
 diff --git a/arch/arm/boot/dts/imx6ul-litesom.dtsi b/arch/arm/boot/dts/imx6ul-litesom.dtsi
 new file mode 100644
-index 0000000..461292d
+index 000000000000..461292d33417
 --- /dev/null
 +++ b/arch/arm/boot/dts/imx6ul-litesom.dtsi
 @@ -0,0 +1,82 @@
@@ -108,5 +109,5 @@ index 0000000..461292d
 +	status = "okay";
 +};
 -- 
-2.10.0
+2.11.0
 

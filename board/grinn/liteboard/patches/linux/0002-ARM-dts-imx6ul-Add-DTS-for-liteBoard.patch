@@ -1,6 +1,6 @@
-From 58669b4a74343673c6e75c5312e87b24634773fb Mon Sep 17 00:00:00 2001
+From 35a8bca870bedebb9d37ad58b905863cba780f9f Mon Sep 17 00:00:00 2001
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
-Date: Wed, 7 Sep 2016 15:10:53 +0200
+Date: Fri, 21 Oct 2016 17:07:17 +0200
 Subject: [PATCH 2/2] ARM: dts: imx6ul: Add DTS for liteBoard
 
 liteBoard is a development board which uses liteSOM as its base.
@@ -13,30 +13,31 @@ Hardware specification:
 
 Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 Reviewed-by: Fabio Estevam <fabio.estevam@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 ---
  arch/arm/boot/dts/Makefile             |   1 +
- arch/arm/boot/dts/imx6ul-liteboard.dts | 153 +++++++++++++++++++++++++++++++++
- 2 files changed, 154 insertions(+)
+ arch/arm/boot/dts/imx6ul-liteboard.dts | 147 +++++++++++++++++++++++++++++++++
+ 2 files changed, 148 insertions(+)
  create mode 100644 arch/arm/boot/dts/imx6ul-liteboard.dts
 
 diff --git a/arch/arm/boot/dts/Makefile b/arch/arm/boot/dts/Makefile
-index faacd52..b149313 100644
+index c558ba75cbcc..a587ce231f83 100644
 --- a/arch/arm/boot/dts/Makefile
 +++ b/arch/arm/boot/dts/Makefile
-@@ -407,6 +407,7 @@ dtb-$(CONFIG_SOC_IMX6SX) += \
- 	imx6sx-sdb.dtb
+@@ -420,6 +420,7 @@ dtb-$(CONFIG_SOC_IMX6SX) += \
  dtb-$(CONFIG_SOC_IMX6UL) += \
  	imx6ul-14x14-evk.dtb \
+ 	imx6ul-geam-kit.dtb \
 +	imx6ul-liteboard.dtb \
  	imx6ul-pico-hobbit.dtb \
  	imx6ul-tx6ul-0010.dtb \
  	imx6ul-tx6ul-0011.dtb \
 diff --git a/arch/arm/boot/dts/imx6ul-liteboard.dts b/arch/arm/boot/dts/imx6ul-liteboard.dts
 new file mode 100644
-index 0000000..f2e04f2
+index 000000000000..6e04cb9202f4
 --- /dev/null
 +++ b/arch/arm/boot/dts/imx6ul-liteboard.dts
-@@ -0,0 +1,153 @@
+@@ -0,0 +1,147 @@
 +/*
 + * Copyright 2016 Grinn
 + *
@@ -93,20 +94,14 @@ index 0000000..f2e04f2
 +		stdout-path = &uart1;
 +	};
 +
-+	regulators {
-+		compatible = "simple-bus";
-+		#address-cells = <1>;
-+		#size-cells = <0>;
-+
-+		reg_usb_otg1_vbus: usb_otg1_regulator {
-+			compatible = "regulator-fixed";
-+			pinctrl-names = "default";
-+			pinctrl-0 = <&pinctrl_usb_otg1_vbus>;
-+			regulator-name = "usb_otg1_vbus";
-+			regulator-min-microvolt = <5000000>;
-+			regulator-max-microvolt = <5000000>;
-+			gpio = <&gpio2 8 GPIO_ACTIVE_LOW>;
-+		};
++	reg_usb_otg1_vbus: regulator-usb-otg1-vbus {
++		compatible = "regulator-fixed";
++		pinctrl-names = "default";
++		pinctrl-0 = <&pinctrl_usb_otg1_vbus>;
++		regulator-name = "usb_otg1_vbus";
++		regulator-min-microvolt = <5000000>;
++		regulator-max-microvolt = <5000000>;
++		gpio = <&gpio2 8 GPIO_ACTIVE_LOW>;
 +	};
 +};
 +
@@ -145,7 +140,7 @@ index 0000000..f2e04f2
 +		>;
 +	};
 +
-+	pinctrl_usb_otg1_vbus: usb_otg1_vbus {
++	pinctrl_usb_otg1_vbus: usb-otg1-vbus {
 +		fsl,pins = <
 +			MX6UL_PAD_ENET2_RX_DATA0__GPIO2_IO08	0x79
 +		>;
@@ -191,5 +186,5 @@ index 0000000..f2e04f2
 +	status = "okay";
 +};
 -- 
-2.10.0
+2.11.0
 
