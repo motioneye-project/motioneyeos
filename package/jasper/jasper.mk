@@ -4,16 +4,22 @@
 #
 ################################################################################
 
-JASPER_VERSION = version-1.900.31
-JASPER_SITE = $(call github,mdadams,jasper,$(JASPER_VERSION))
+JASPER_VERSION = 2.0.10
+JASPER_SITE = http://www.ece.uvic.ca/~frodo/jasper/software
 JASPER_INSTALL_STAGING = YES
-JASPER_DEPENDENCIES = jpeg
 JASPER_LICENSE = JasPer License Version 2.0
 JASPER_LICENSE_FILES = LICENSE
+JASPER_SUPPORTS_IN_SOURCE_BUILD = NO
 
-# No configure script included. We need to generate it.
-JASPER_AUTORECONF = YES
+ifeq ($(BR2_STATIC_LIBS),y)
+JASPER_CONF_OPTS += -DJAS_ENABLE_SHARED=OFF
+endif
 
-JASPER_CONF_OPTS = --disable-strict
+ifeq ($(BR2_PACKAGE_JPEG),y)
+JASPER_CONF_OPTS += -DJAS_ENABLE_LIBJPEG=ON
+JASPER_DEPENDENCIES += jpeg
+else
+JASPER_CONF_OPTS += -DJAS_ENABLE_LIBJPEG=OFF
+endif
 
-$(eval $(autotools-package))
+$(eval $(cmake-package))
