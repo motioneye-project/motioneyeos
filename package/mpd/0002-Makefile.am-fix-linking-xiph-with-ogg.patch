@@ -1,0 +1,41 @@
+From 6ef588b2c230eae15f7f2563eca9d5f40c78d1d0 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Wed, 11 Jan 2017 21:06:37 +0100
+Subject: [PATCH] Makefile.am: fix linking xiph with ogg
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The internal static xiph library needs to link with libogg. Otherwise
+building mpd will fail:
+
+```
+/mips-linux-gnu/bin/ld: libxiph.a(libxiph_a-OggVisitor.o): undefined
+reference to symbol 'ogg_stream_packetout'
+```
+
+Upstream status: Pending
+http://mailman.blarg.de/pipermail/mpd-devel/2017-January/000594.html
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ Makefile.am | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index e0202b0cc..9030e68fb 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -614,7 +614,8 @@ libxiph_a_SOURCES += \
+ 	src/lib/xiph/OggStreamState.hxx
+ endif
+ 
+-XIPH_LIBS = libxiph.a
++XIPH_LIBS = libxiph.a \
++	$(OGG_LIBS)
+ 
+ endif
+ 
+-- 
+2.11.0
+
