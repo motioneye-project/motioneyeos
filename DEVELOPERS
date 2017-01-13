@@ -901,6 +901,8 @@ F:	package/x11r7/xdriver_xf86-video-imx/
 F:	package/x11r7/xdriver_xf86-video-imx-viv/
 
 N:	Jörg Krause <joerg.krause@embedded.rocks>
+F:	board/lemaker/bananapro/
+F:	configs/bananapro_defconfig
 F:	package/bctoolbox/
 F:	package/libshout/
 F:	package/libupnpp/

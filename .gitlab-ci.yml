@@ -77,6 +77,7 @@ atmel_sama5d4_xplained_defconfig: *defconfig
 atmel_sama5d4_xplained_dev_defconfig: *defconfig
 atmel_sama5d4_xplained_mmc_defconfig: *defconfig
 atmel_sama5d4_xplained_mmc_dev_defconfig: *defconfig
+bananapro_defconfig: *defconfig
 beagleboardx15_defconfig: *defconfig
 beaglebone_defconfig: *defconfig
 beaglebone_qt5_defconfig: *defconfig

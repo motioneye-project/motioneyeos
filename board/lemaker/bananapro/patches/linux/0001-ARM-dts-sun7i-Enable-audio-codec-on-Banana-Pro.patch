@@ -1,0 +1,35 @@
+From 1647fe31882a105cef4c99770e4ec8ea47c5c653 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Wed, 4 Jan 2017 15:22:50 +0100
+Subject: [PATCH 1/1] ARM: dts: sun7i: Enable audio codec on Banana Pro
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This commit enables the on-chip audio codec present on the A20 SoC
+on the Banana Pro board.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm/boot/dts/sun7i-a20-bananapro.dts | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun7i-a20-bananapro.dts b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+index 19d63d4049de..03799c647e13 100644
+--- a/arch/arm/boot/dts/sun7i-a20-bananapro.dts
++++ b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+@@ -104,6 +104,10 @@
+ 	status = "okay";
+ };
+ 
++&codec {
++	status = "okay";
++};
++
+ &ehci0 {
+ 	status = "okay";
+ };
+-- 
+2.11.0
+

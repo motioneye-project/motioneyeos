@@ -1,0 +1,85 @@
+From f2cb904f074bc7e90be475488872a82270e9bae7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 9 Jan 2017 21:36:38 +0100
+Subject: [PATCH 2/2] ARM: dts: sun7i: Add wifi dt node on Banana Pro
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The Banana Pro has an AMPAK AP6181 WiFi+Bluetooth module. The WiFi part
+is a BCM43362 IC connected to MMC3 of the A20 SoC via SDIO. The IC also
+takes a power enable signal via GPIO.
+
+This commit adds a device-tree node to power it up, so the mmc subsys
+can scan it, and enables the mmc controller which is connected to it.
+
+As the wifi enable pin of the AP6181 module is not really a regulator,
+switch the mmc3 node to the mmc-pwrseq framework for controlling it.
+This more accurately reflectes how the hardware actually works.
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm/boot/dts/sun7i-a20-bananapro.dts | 29 +++++++++++++++++------------
+ 1 file changed, 17 insertions(+), 12 deletions(-)
+
+diff --git a/arch/arm/boot/dts/sun7i-a20-bananapro.dts b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+index 03799c647e13..83516bc81225 100644
+--- a/arch/arm/boot/dts/sun7i-a20-bananapro.dts
++++ b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+@@ -76,6 +76,13 @@
+ 		};
+ 	};
+ 
++	wifi_pwrseq: wifi-pwrseq {
++		compatible = "mmc-pwrseq-simple";
++		pinctrl-names = "default";
++		pinctrl-0 = <&vmmc3_pin_bananapro>;
++		reset-gpios = <&pio 7 22 GPIO_ACTIVE_LOW>;
++	};
++
+ 	reg_gmac_3v3: gmac-3v3 {
+ 		compatible = "regulator-fixed";
+ 		pinctrl-names = "default";
+@@ -87,17 +94,6 @@
+ 		enable-active-high;
+ 		gpio = <&pio 7 23 GPIO_ACTIVE_HIGH>;
+ 	};
+-
+-	reg_vmmc3: vmmc3 {
+-		compatible = "regulator-fixed";
+-		pinctrl-names = "default";
+-		pinctrl-0 = <&vmmc3_pin_bananapro>;
+-		regulator-name = "vmmc3";
+-		regulator-min-microvolt = <3300000>;
+-		regulator-max-microvolt = <3300000>;
+-		enable-active-high;
+-		gpio = <&pio 7 22 GPIO_ACTIVE_HIGH>;
+-	};
+ };
+ 
+ &ahci {
+@@ -170,10 +166,19 @@
+ &mmc3 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&mmc3_pins_a>;
+-	vmmc-supply = <&reg_vmmc3>;
++	vmmc-supply = <&reg_vcc3v3>;
++	mmc-pwrseq = <&wifi_pwrseq>;
+ 	bus-width = <4>;
+ 	non-removable;
+ 	status = "okay";
++
++	brcmf: bcrmf@1 {
++		reg = <1>;
++		compatible = "brcm,bcm4329-fmac";
++		interrupt-parent = <&pio>;
++		interrupts = <7 15 IRQ_TYPE_LEVEL_LOW>;
++		interrupt-names = "host-wake";
++	};
+ };
+ 
+ &ohci0 {
+-- 
+2.11.0
+
