@@ -106,7 +106,8 @@ do_validate_one() {
         error "'%s/Config.in': no such file or directory\n" "${br2_ext}"
     fi
 
-    # Register this br2-external tree
+    # Register this br2-external tree, use an absolute canonical path
+    br2_ext="$( cd "${br2_ext}"; pwd )"
     BR2_EXT_NAMES+=( "${br2_name}" )
     eval BR2_EXT_PATHS_${br2_name}="\"\${br2_ext}\""
     eval BR2_EXT_DESCS_${br2_name}="\"\${br2_desc:-\${br2_name}}\""
