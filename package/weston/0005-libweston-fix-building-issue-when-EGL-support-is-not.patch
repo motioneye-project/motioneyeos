@@ -1,0 +1,47 @@
+From 7327d5a7a29ad31af871e144ebe053cb1ab478f7 Mon Sep 17 00:00:00 2001
+From: Vincent Abriou <vincent.abriou@st.com>
+Date: Tue, 11 Oct 2016 13:47:03 +0200
+Subject: [PATCH] libweston: fix building issue when EGL support is not enabled
+
+weston-egl-ext.h has been include in compositor-xx.c file in order to
+define EGL_PLATFORM_xxx_KHR extensions used by the compositors.
+But in case EGL support is not enabled, all EGL related definition must
+be skipped except EGL_PLATFORM_xxx_KHR that must be still defined to
+allow compositor-xx.c to build.
+
+Signed-off-by: Vincent Abriou <vincent.abriou@st.com>
+Reviewed-by: Giulio Camuffo <giuliocamuffo@gmail.com>
+---
+ libweston/weston-egl-ext.h | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/libweston/weston-egl-ext.h b/libweston/weston-egl-ext.h
+index 6e36996..70556fd 100644
+--- a/libweston/weston-egl-ext.h
++++ b/libweston/weston-egl-ext.h
+@@ -28,6 +28,8 @@
+ #ifndef WESTON_EGL_EXT_H
+ #define WESTON_EGL_EXT_H
+ 
++#ifdef ENABLE_EGL
++
+ #ifndef EGL_WL_bind_wayland_display
+ #define EGL_WL_bind_wayland_display 1
+ 
+@@ -152,5 +154,13 @@ typedef EGLSurface (EGLAPIENTRYP PFNEGLCREATEPLATFORMPIXMAPSURFACEEXTPROC) (EGLD
+ #define EGL_PLATFORM_X11_KHR 0x31D5
+ #endif
+ 
++#else /* ENABLE_EGL */
++
++/* EGL platform definition are keept to allow compositor-xx.c to build */
++#define EGL_PLATFORM_GBM_KHR     0x31D7
++#define EGL_PLATFORM_WAYLAND_KHR 0x31D8
++#define EGL_PLATFORM_X11_KHR     0x31D5
++
++#endif /* ENABLE_EGL */
+ 
+ #endif
+-- 
+2.7.4
+
