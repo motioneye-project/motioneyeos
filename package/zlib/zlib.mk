@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZLIB_VERSION = 1.2.10
+ZLIB_VERSION = 1.2.11
 ZLIB_SOURCE = zlib-$(ZLIB_VERSION).tar.xz
 ZLIB_SITE = http://www.zlib.net
 ZLIB_LICENSE = zlib license
