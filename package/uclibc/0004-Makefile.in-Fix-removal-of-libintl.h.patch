@@ -1,0 +1,33 @@
+From 5f7b66fe28a785330a874a11001d7758dd5a59d7 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 16 Jan 2017 21:01:43 +0100
+Subject: [PATCH 1/1] Makefile.in: Fix removal of libintl.h
+
+A wrong filename was present in Makefile.in leaving libintl.h installed
+even if libintl support is disabled leading to wrong configure checks
+by other packages.
+
+Patch sent upstream:
+http://mailman.uclibc-ng.org/pipermail/devel/2017-January/001360.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index c8afe1cd0..bb3549c19 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -281,7 +281,7 @@ HEADERS_RM-$(UCLIBC_HAS_GETOPT_LONG)         += getopt.h
+ HEADERS_RM-$(UCLIBC_HAS_IPV6)                += netinet/ip6.h netinet/icmp6.h
+ HEADERS_RM-$(UCLIBC_HAS_BACKTRACE)           += execinfo.h
+ HEADERS_RM-$(UCLIBC_HAS_LIBICONV)            += iconv.h
+-HEADERS_RM-$(UCLIBC_HAS_LIBINTL)             += intl.h
++HEADERS_RM-$(UCLIBC_HAS_LIBINTL)             += libintl.h
+ HEADERS_RM-$(UCLIBC_HAS_LOCALE)              += bits/uClibc_ctype.h
+ HEADERS_RM-$(UCLIBC_HAS_PTY)                 += pty.h
+ HEADERS_RM-$(UCLIBC_HAS_REALTIME)            += mqueue.h bits/mqueue.h sched.h \
+-- 
+2.11.0
+
