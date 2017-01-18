@@ -1,4 +1,2 @@
-# From: https://github.com/linux-test-project/ltp/releases/download/20160920/ltp-full-20160920.tar.xz.md5
-md5 d1d5b7389d209fe0afca16d8d73a8357  ltp-full-20160920.tar.xz
-# From: https://github.com/linux-test-project/ltp/releases/download/20160920/ltp-full-20160920.tar.xz.sha1
-sha1 79f3311ecbcf02f070e601745243c9757638c4ef  ltp-full-20160920.tar.xz
+# From: https://github.com/linux-test-project/ltp/releases/download/20170116/ltp-full-20170116.tar.xz.sha1
+sha1 b42047fe0d30db9b2c760bd1ab901ecb133835fc  ltp-full-20170116.tar.xz
