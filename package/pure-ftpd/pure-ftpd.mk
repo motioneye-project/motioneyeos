@@ -49,4 +49,8 @@ ifeq ($(BR2_PACKAGE_PURE_FTPD_FTPWHO),y)
 PURE_FTPD_CONF_OPTS += --with-ftpwho
 endif
 
+ifeq ($(BR2_PACKAGE_PURE_FTPD_QUOTAS),y)
+PURE_FTPD_CONF_OPTS += --with-quotas
+endif
+
 $(eval $(autotools-package))
