@@ -1193,6 +1193,7 @@ F:	package/sdl2_ttf/
 
 N:	Petr Vorel <petr.vorel@gmail.com>
 F:	package/linux-backports/
+F:	package/ltp-testsuite/
 
 N:	Phil Eichinger <phil.eichinger@gmail.com>
 F:	package/libqrencode/
