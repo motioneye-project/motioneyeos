@@ -161,6 +161,13 @@ else
 QT5BASE_CONFIGURE_OPTS += -no-gstreamer
 endif
 
+ifeq ($(BR2_PACKAGE_LIBINPUT),y)
+QT5BASE_CONFIGURE_OPTS += -libinput
+QT5BASE_DEPENDENCIES += libinput
+else
+QT5BASE_CONFIGURE_OPTS += -no-libinput
+endif
+
 # Build the list of libraries to be installed on the target
 QT5BASE_INSTALL_LIBS_y                                 += Qt5Core
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XCB)        += Qt5XcbQpa
