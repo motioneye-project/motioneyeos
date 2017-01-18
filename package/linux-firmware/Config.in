@@ -19,6 +19,11 @@ endmenu # Audio
 
 menu "Video firmware"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_I915
+	bool "Intel i915 video card firmware"
+	help
+	  Firmware files for the Intel i915 video cards.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	bool "AMD Radeon video card firmware"
 	help
