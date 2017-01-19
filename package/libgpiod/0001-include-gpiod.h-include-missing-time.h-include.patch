@@ -1,0 +1,36 @@
+From 93fd4a02233d29f78b261d99d9ce6b14869b19c7 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 23 Jan 2017 21:17:15 +1300
+Subject: [PATCH] include/gpiod.h: include missing <time.h> include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+gpiod.h uses "struct timespec", but forgets to include the <time.h>
+header which defines "struct timespec". This causes a build error with
+the musl C library:
+
+In file included from core.c:11:0:
+../../include/gpiod.h:232:49: warning: ‘struct timespec’ declared inside parameter list
+ typedef int (*gpiod_event_cb)(int, const struct timespec *, void *);
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/gpiod.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/gpiod.h b/include/gpiod.h
+index 8c5858e..c1f252d 100644
+--- a/include/gpiod.h
++++ b/include/gpiod.h
+@@ -22,6 +22,7 @@
+ 
+ #include <stdlib.h>
+ #include <stdbool.h>
++#include <time.h>
+ 
+ #ifdef __cplusplus
+ extern "C" {
+-- 
+2.7.4
+
