@@ -113,11 +113,12 @@ config BR2_PACKAGE_DIRECTFB_SERIALMOUSE
 config BR2_PACKAGE_DIRECTFB_TSLIB
 	bool "enable touchscreen support"
 	depends on !BR2_STATIC_LIBS # tslib
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # tslib
 	default y
 	select BR2_PACKAGE_TSLIB
 
-comment "touchscreen support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
+comment "touchscreen support needs a toolchain w/ dynamic library, headers >= 3.12"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
 config BR2_PACKAGE_DIRECTFB_GIF
 	bool "enable GIF support"

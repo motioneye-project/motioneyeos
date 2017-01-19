@@ -1,6 +1,7 @@
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_TSLIB
 	bool "xf86-input-tslib"
 	depends on !BR2_STATIC_LIBS # tslib
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # tslib
 	select BR2_PACKAGE_XPROTO_INPUTPROTO
 	select BR2_PACKAGE_XPROTO_RANDRPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
@@ -10,5 +11,5 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_TSLIB
 
 	  http://www.ptxdist.org/software/xf86-input-tslib/index_en.html
 
-comment "xf86-input-tslib needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
+comment "xf86-input-tslib needs a toolchain w/ dynamic library, headers >= 3.12"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
