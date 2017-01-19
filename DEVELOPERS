@@ -126,6 +126,7 @@ F:	package/orbit/
 N:	Bartosz Golaszewski <bgolaszewski@baylibre.com>
 F:	package/autoconf-archive/
 F:	package/doxygen/
+F:	package/libgpiod/
 F:	package/libserialport/
 F:	package/libsigrok/
 F:	package/libsigrokdecode/
