@@ -59,9 +59,16 @@ define QT5MULTIMEDIA_INSTALL_TARGET_QMLS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
+define QT5MULTIMEDIA_INSTALL_TARGET_EXAMPLES
+       cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/multimedia* $(TARGET_DIR)/usr/lib/qt/examples/
+endef
+endif
+
 define QT5MULTIMEDIA_INSTALL_TARGET_CMDS
 	$(QT5MULTIMEDIA_INSTALL_TARGET_LIBS)
 	$(QT5MULTIMEDIA_INSTALL_TARGET_QMLS)
+	$(QT5MULTIMEDIA_INSTALL_TARGET_EXAMPLES)
 endef
 
 $(eval $(generic-package))
