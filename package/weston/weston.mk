@@ -20,6 +20,7 @@ WESTON_CONF_OPTS = \
 	--with-dtddir=$(STAGING_DIR)/usr/share/wayland \
 	--disable-headless-compositor \
 	--disable-colord \
+	--disable-devdocs \
 	--disable-setuid-install
 
 WESTON_MAKE_OPTS = \
