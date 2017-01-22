@@ -107,6 +107,12 @@ ifeq ($(BR2_arc),y)
 GDB_CONF_OPTS += --disable-build-with-cxx
 endif
 
+# gdb 7.12+ by default builds with a C++ compiler, which doesn't work
+# when we don't have C++ support in the toolchain
+ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
+GDB_CONF_OPTS += --disable-build-with-cxx
+endif
+
 ifeq ($(BR2_PACKAGE_GDB_TUI),y)
 GDB_CONF_OPTS += --enable-tui
 else
