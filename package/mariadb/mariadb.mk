@@ -43,6 +43,9 @@ MARIADB_CONF_OPTS += -DWITH_JEMALLOC=no -DWITHOUT_TOKUDB=1
 # Make it explicit that we are cross-compiling
 MARIADB_CONF_OPTS += -DCMAKE_CROSSCOMPILING=1
 
+# Explicitly disable dtrace to avoid detection of a host version
+MARIADB_CONF_OPTS += -DENABLE_DTRACE=0
+
 ifeq ($(BR2_PACKAGE_MARIADB_SERVER),y)
 MARIADB_CONF_OPTS += -DWITH_EMBEDDED_SERVER=ON
 else
