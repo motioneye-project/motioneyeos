@@ -5,13 +5,9 @@
 ################################################################################
 
 UTIL_LINUX_VERSION_MAJOR = 2.29
-UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR)
+UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR).1
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VERSION).tar.xz
 UTIL_LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/util-linux/v$(UTIL_LINUX_VERSION_MAJOR)
-
-# For 0001-build-sys-prefer-pkg-config-for-ncurses.patch and
-# 0002-build-sys-cleanup-UL_NCURSES_CHECK.patch
-UTIL_LINUX_AUTORECONF = YES
 
 # README.licensing claims that some files are GPLv2-only, but this is not true.
 # Some files are GPLv3+ but only in tests.
@@ -222,9 +218,3 @@ endif
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-
-# MKINSTALLDIRS comes from tweaked m4/nls.m4, but autoreconf uses staging
-# one, so it disappears
-UTIL_LINUX_INSTALL_STAGING_OPTS += MKINSTALLDIRS=$(@D)/config/mkinstalldirs
-UTIL_LINUX_INSTALL_TARGET_OPTS += MKINSTALLDIRS=$(@D)/config/mkinstalldirs
-HOST_UTIL_LINUX_INSTALL_OPTS += MKINSTALLDIRS=$(@D)/config/mkinstalldirs
