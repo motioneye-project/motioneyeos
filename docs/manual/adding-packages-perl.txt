@@ -68,8 +68,8 @@ As a policy, packages that provide Perl/CPAN modules should all be
 named +perl-<something>+ in Buildroot.
 
 This infrastructure handles various Perl build systems :
-+ExtUtils-MakeMaker+, +Module-Build+ and +Module-Build-Tiny+.
-+Build.PL+ is always preferred when a package provides a +Makefile.PL+
++ExtUtils-MakeMaker+ (EUMM), +Module-Build+ (MB) and +Module-Build-Tiny+.
++Build.PL+ is preferred by default when a package provides a +Makefile.PL+
 and a +Build.PL+.
 
 The main macro of the Perl/CPAN package infrastructure is
@@ -96,6 +96,13 @@ don't need to be installed to the +staging+ directory.
 A few additional variables, specific to the Perl/CPAN infrastructure,
 can also be defined. Many of them are only useful in very specific
 cases, typical packages will therefore only use a few of them.
+
+* +PERL_FOO_PREFER_INSTALLER+/+HOST_PERL_FOO_PREFER_INSTALLER+,
+  specifies the preferred installation method. Possible values are
+  +EUMM+ (for +Makefile.PL+ based installation using
+  +ExtUtils-MakeMaker+) and +MB+ (for +Build.PL+ based installation
+  using +Module-Build+). This variable is only used when the package
+  provides both installation methods.
 
 * +PERL_FOO_CONF_ENV+/+HOST_PERL_FOO_CONF_ENV+, to specify additional
   environment variables to pass to the +perl Makefile.PL+ or +perl Build.PL+.
