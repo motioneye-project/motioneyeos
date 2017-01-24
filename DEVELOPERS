@@ -914,6 +914,10 @@ F:	package/aircrack-ng/
 N:	Lee Jones <lee.jones@linaro.org>
 F:	boot/afboot-stm32/
 
+N:	Lionel Flandrin <lionel@svkt.org>
+F:	package/python-babel/
+F:	package/python-flask-babel/
+
 N:	Lionel Orry <lionel.orry@gmail.com>
 F:	package/mongrel2/
 
