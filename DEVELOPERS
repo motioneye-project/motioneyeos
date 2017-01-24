@@ -887,6 +887,7 @@ F:	package/x11r7/xdriver_xf86-video-imx/
 F:	package/x11r7/xdriver_xf86-video-imx-viv/
 
 N:	Jörg Krause <joerg.krause@embedded.rocks>
+F:	package/bctoolbox/
 F:	package/libshout/
 F:	package/libupnpp/
 F:	package/luv/
