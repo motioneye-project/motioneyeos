@@ -23,6 +23,9 @@ config BR2_PACKAGE_JANUS_AUDIO_BRIDGE
 	bool "audio bridge"
 	select BR2_PACKAGE_OPUS
 
+config BR2_PACKAGE_JANUS_ECHO_TEST
+	bool "echo test"
+
 config BR2_PACKAGE_JANUS_SIP_GATEWAY
 	bool "sip gateway"
 	select BR2_PACKAGE_SOFIA_SIP
