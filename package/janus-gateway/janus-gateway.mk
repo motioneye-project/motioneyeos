@@ -10,8 +10,8 @@ JANUS_GATEWAY_LICENSE = GPLv3
 JANUS_GATEWAY_LICENSE_FILES = COPYING
 
 # ding-libs provides the ini_config library
-JANUS_GATEWAY_DEPENDENCIES = host-pkgconf libmicrohttpd jansson \
-	libnice sofia-sip libsrtp host-gengetopt openssl ding-libs
+JANUS_GATEWAY_DEPENDENCIES = host-pkgconf jansson libnice \
+	libsrtp host-gengetopt libglib2 openssl 
 
 # Straight out of the repository, no ./configure, and we also patch
 # configure.ac.
