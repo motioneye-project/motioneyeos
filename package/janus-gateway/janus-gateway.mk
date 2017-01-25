@@ -26,6 +26,13 @@ JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
 	--disable-rabbitmq
 
+ifeq ($(BR2_PACKAGE_JANUS_AUDIO_BRIDGE),y)
+JANUS_GATEWAY_DEPENDENCIES += opus
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-audiobridge
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-audiobridge
+endif
+
 ifeq ($(BR2_PACKAGE_JANUS_SIP_GATEWAY),y)
 JANUS_GATEWAY_DEPENDENCIES += sofia-sip
 JANUS_GATEWAY_CONF_OPTS += --enable-plugin-sip
@@ -38,13 +45,6 @@ JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
-endif
-
-ifeq ($(BR2_PACKAGE_OPUS),y)
-JANUS_GATEWAY_DEPENDENCIES += opus
-JANUS_GATEWAY_CONF_OPTS += --enable-plugin-audiobridge
-else
-JANUS_GATEWAY_CONF_OPTS += --disable-plugin-audiobridge
 endif
 
 ifeq ($(BR2_PACKAGE_LIBOGG),y)
