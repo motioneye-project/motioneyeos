@@ -1,0 +1,16 @@
+OpenRISC arch name was in the beginning or32
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur linux-4.4.5.orig/arch/openrisc/kernel/vmlinux.lds.S linux-4.4.5/arch/openrisc/kernel/vmlinux.lds.S
+--- linux-4.4.5.orig/arch/openrisc/kernel/vmlinux.lds.S	2016-03-10 00:35:58.000000000 +0100
++++ linux-4.4.5/arch/openrisc/kernel/vmlinux.lds.S	2016-03-16 09:21:07.933535532 +0100
+@@ -30,7 +30,7 @@
+ #include <asm/cache.h>
+ #include <asm-generic/vmlinux.lds.h>
+ 
+-OUTPUT_FORMAT("elf32-or32", "elf32-or32", "elf32-or32")
++OUTPUT_FORMAT("elf32-or1k", "elf32-or1k", "elf32-or1k")
+ jiffies = jiffies_64 + 4;
+ 
+ SECTIONS

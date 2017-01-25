@@ -1,0 +1,25 @@
+From: https://lkml.org/lkml/2016/12/31/13
+
+The build robot reports:
+
+   .tmp_kallsyms1.o: In function `kallsyms_relative_base':
+>> (.rodata+0x8a18): undefined reference to `_text'
+
+This is when using 'make alldefconfig'. Adding this _text symbol to mark
+the start of the kernel as in other architecture fixes this.
+
+Signed-off-by: Stafford Horne <shorne@gmail.com>
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur linux-4.9.orig/arch/openrisc/kernel/vmlinux.lds.S linux-4.9/arch/openrisc/kernel/vmlinux.lds.S
+--- linux-4.9.orig/arch/openrisc/kernel/vmlinux.lds.S	2016-12-11 20:17:54.000000000 +0100
++++ linux-4.9/arch/openrisc/kernel/vmlinux.lds.S	2017-01-01 12:13:43.039107518 +0100
+@@ -38,6 +38,8 @@
+         /* Read-only sections, merged into text segment: */
+         . = LOAD_BASE ;
+ 
++	_text = .;
++
+ 	/* _s_kernel_ro must be page aligned */
+ 	. = ALIGN(PAGE_SIZE);
+ 	_s_kernel_ro = .;
