@@ -920,6 +920,7 @@ F:	boot/afboot-stm32/
 N:	Lionel Flandrin <lionel@svkt.org>
 F:	package/python-babel/
 F:	package/python-flask-babel/
+F:	package/python-flask/
 
 N:	Lionel Orry <lionel.orry@gmail.com>
 F:	package/mongrel2/
