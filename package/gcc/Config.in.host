@@ -3,6 +3,7 @@ comment "GCC Options"
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_ARC if BR2_arc
+	default BR2_GCC_VERSION_OR1K if BR2_or1k
 	default BR2_GCC_VERSION_5_X
 	help
 	  Select the version of gcc you wish to use.
@@ -10,7 +11,7 @@ choice
 	config BR2_GCC_VERSION_4_8_X
 		bool "gcc 4.8.x"
 		# Broken or unsupported architectures
-		depends on !BR2_microblaze && !BR2_arc \
+		depends on !BR2_microblaze && !BR2_arc && !BR2_or1k \
 			&& !BR2_powerpc64le && !BR2_nios2 && !BR2_bfin
 		# Broken or unsupported ARM cores
 		depends on !BR2_cortex_a12 && !BR2_cortex_a17 && !BR2_ARM_CPU_ARMV8
@@ -36,10 +37,16 @@ choice
 		depends on BR2_arc
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
+	config BR2_GCC_VERSION_OR1K
+		bool "gcc or1k (5.x)"
+		# Only supported architecture
+		depends on BR2_or1k
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
 	config BR2_GCC_VERSION_4_9_X
 		bool "gcc 4.9.x"
 		# Broken or unsupported architectures
-		depends on !BR2_arc && !BR2_bfin
+		depends on !BR2_arc && !BR2_bfin && !BR2_or1k
 		# Broken or unsupported ARM cores
 		depends on !BR2_cortex_a17 && !BR2_cortex_a72
 		# Unsupported MIPS cores
@@ -60,7 +67,7 @@ choice
 	config BR2_GCC_VERSION_5_X
 		bool "gcc 5.x"
 		# Broken or unsupported architectures
-		depends on !BR2_arc && !BR2_bfin
+		depends on !BR2_arc && !BR2_bfin && !BR2_or1k
 		# musl ppc64 unsupported
 		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
 		# Unsupported MIPS cores
@@ -75,6 +82,7 @@ choice
 		# Broken or unsupported architectures
 		depends on !BR2_arc
 		depends on !BR2_microblaze
+		depends on !BR2_or1k
 		# Unsupported MIPS cores
 		depends on !BR2_mips_m6250 && !BR2_mips_p6600
 		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
@@ -99,6 +107,7 @@ config BR2_GCC_VERSION
 	default "5.4.0"     if BR2_GCC_VERSION_5_X
 	default "6.3.0"     if BR2_GCC_VERSION_6_X
 	default "arc-2016.09-release" if BR2_GCC_VERSION_ARC
+	default "musl-5.4.0" if BR2_GCC_VERSION_OR1K
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"

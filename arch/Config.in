@@ -159,6 +159,13 @@ config BR2_nios2
 	  http://www.altera.com/
 	  http://en.wikipedia.org/wiki/Nios_II
 
+config BR2_or1k
+	bool "OpenRISC"
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	help
+	  OpenRISC is a free and open processor for embedded system.
+	  http://openrisc.io
+
 config BR2_powerpc
 	bool "PowerPC"
 	select BR2_ARCH_HAS_MMU_MANDATORY
@@ -376,6 +383,10 @@ endif
 
 if BR2_nios2
 source "arch/Config.in.nios2"
+endif
+
+if BR2_or1k
+source "arch/Config.in.or1k"
 endif
 
 if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
