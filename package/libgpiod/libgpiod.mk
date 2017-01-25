@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGPIOD_VERSION = v0.1
+LIBGPIOD_VERSION = v0.1.1
 LIBGPIOD_SITE = $(call github,brgl,libgpiod,$(LIBGPIOD_VERSION))
 LIBGPIOD_LICENSE = GPLv3+
 LIBGPIOD_LICENSE_FILES = COPYING
