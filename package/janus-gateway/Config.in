@@ -36,6 +36,9 @@ config BR2_PACKAGE_JANUS_SIP_GATEWAY
 config  BR2_PACKAGE_JANUS_STREAMING
 	bool "streaming"
 
+config BR2_PACKAGE_JANUS_TEXT_ROOM
+	bool "text room"
+
 endif
 
 comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"

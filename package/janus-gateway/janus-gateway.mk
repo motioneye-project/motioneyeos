@@ -58,6 +58,12 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-streaming
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_TEXT_ROOM),y)
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-textroom
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-textroom
+endif
+
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
