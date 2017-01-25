@@ -64,6 +64,12 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-textroom
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_VIDEO_CALL),y)
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-videocall
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-videocall
+endif
+
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets

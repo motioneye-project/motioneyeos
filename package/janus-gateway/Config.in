@@ -39,6 +39,9 @@ config  BR2_PACKAGE_JANUS_STREAMING
 config BR2_PACKAGE_JANUS_TEXT_ROOM
 	bool "text room"
 
+config BR2_PACKAGE_JANUS_VIDEO_CALL
+	bool "video call"
+
 endif
 
 comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"
