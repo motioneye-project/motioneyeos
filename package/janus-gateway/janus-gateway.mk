@@ -76,18 +76,18 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-videoroom
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_VOICE_MAIL),y)
+JANUS_GATEWAY_DEPENDENCIES += libogg
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-voicemail
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
+endif
+
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
-endif
-
-ifeq ($(BR2_PACKAGE_LIBOGG),y)
-JANUS_GATEWAY_DEPENDENCIES += libogg
-JANUS_GATEWAY_CONF_OPTS += --enable-plugin-voicemail
-else
-JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
 endif
 
 # Parallel build broken
