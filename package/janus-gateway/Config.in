@@ -1,4 +1,4 @@
-config BR2_PACKAGE_JANUS_GATEWAY
+menuconfig BR2_PACKAGE_JANUS_GATEWAY
 	bool "janus-gateway"
 	select BR2_PACKAGE_JANSSON
 	select BR2_PACKAGE_LIBGLIB2
@@ -14,6 +14,16 @@ config BR2_PACKAGE_JANUS_GATEWAY
 	  designed and developed by Meetecho.
 
 	  https://github.com/meetecho/janus-gateway
+
+if BR2_PACKAGE_JANUS_GATEWAY
+
+comment "plugins"
+
+config BR2_PACKAGE_JANUS_SIP_GATEWAY
+	bool "sip gateway"
+	select BR2_PACKAGE_SOFIA_SIP
+
+endif
 
 comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"
 	depends on BR2_USE_MMU

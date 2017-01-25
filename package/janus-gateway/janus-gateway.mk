@@ -26,6 +26,13 @@ JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
 	--disable-rabbitmq
 
+ifeq ($(BR2_PACKAGE_JANUS_SIP_GATEWAY),y)
+JANUS_GATEWAY_DEPENDENCIES += sofia-sip
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-sip
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-sip
+endif
+
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
