@@ -10,6 +10,6 @@ UCL_LICENSE = GPLv2+
 UCL_LICENSE_FILES = COPYING
 
 # Fix ACC conformance test failure for host gcc 6.x
-HOST_UCL_CONF_ENV += CPPFLAGS="$(HOST_CPPFLAGS) -std=c90"
+HOST_UCL_CONF_ENV += CPPFLAGS="$(HOST_CPPFLAGS) -std=iso9899:1990"
 
 $(eval $(host-autotools-package))
