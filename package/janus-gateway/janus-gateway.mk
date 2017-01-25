@@ -39,6 +39,12 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-echotest
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_RECORDPLAY),y)
+JANUS_GATEWAY_CONF_OPTS += --enable-plugin-recordplay
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-plugin-recordplay
+endif
+
 ifeq ($(BR2_PACKAGE_JANUS_SIP_GATEWAY),y)
 JANUS_GATEWAY_DEPENDENCIES += sofia-sip
 JANUS_GATEWAY_CONF_OPTS += --enable-plugin-sip

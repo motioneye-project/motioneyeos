@@ -26,6 +26,9 @@ config BR2_PACKAGE_JANUS_AUDIO_BRIDGE
 config BR2_PACKAGE_JANUS_ECHO_TEST
 	bool "echo test"
 
+config BR2_PACKAGE_JANUS_RECORDPLAY
+	bool "record and play"
+
 config BR2_PACKAGE_JANUS_SIP_GATEWAY
 	bool "sip gateway"
 	select BR2_PACKAGE_SOFIA_SIP
