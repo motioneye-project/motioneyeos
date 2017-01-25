@@ -17,7 +17,6 @@ EUDEV_CONF_OPTS = \
 	--disable-manpages \
 	--sbindir=/sbin \
 	--libexecdir=/lib \
-	--with-firmware-path=/lib/firmware \
 	--disable-introspection \
 	--enable-kmod \
 	--enable-blkid
