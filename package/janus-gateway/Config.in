@@ -33,6 +33,9 @@ config BR2_PACKAGE_JANUS_SIP_GATEWAY
 	bool "sip gateway"
 	select BR2_PACKAGE_SOFIA_SIP
 
+config  BR2_PACKAGE_JANUS_STREAMING
+	bool "streaming"
+
 endif
 
 comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"
