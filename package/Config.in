@@ -1636,6 +1636,7 @@ endif
 	source "package/spice-protocol/Config.in"
 	source "package/squid/Config.in"
 	source "package/sshpass/Config.in"
+	source "package/sslh/Config.in"
 	source "package/strongswan/Config.in"
 	source "package/stunnel/Config.in"
 	source "package/tcpdump/Config.in"
