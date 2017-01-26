@@ -22,6 +22,10 @@ For models A, B, A+ or B+:
 
   $ make raspberrypi_defconfig
 
+For model Zero (model A+ in smaller form factor):
+
+  $ make raspberrypi0_defconfig
+
 For model 2 B:
 
   $ make raspberrypi2_defconfig
