@@ -18,11 +18,6 @@ __EOF__
 	;;
 esac
 
-# Mark the kernel as DT-enabled
-mkdir -p "${BINARIES_DIR}/kernel-marked"
-${HOST_DIR}/usr/bin/mkknlimg "${BINARIES_DIR}/zImage" \
-	"${BINARIES_DIR}/kernel-marked/zImage"
-
 rm -rf "${GENIMAGE_TMP}"
 
 genimage                           \

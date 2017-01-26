@@ -53,7 +53,6 @@ After building, you should obtain this tree:
     +-- bcm2709-rpi-2-b.dtb         [1]
     +-- bcm2710-rpi-3-b.dtb         [1]
     +-- boot.vfat
-    +-- kernel-marked/zImage        [2]
     +-- rootfs.ext4
     +-- rpi-firmware/
     |   +-- bootcode.bin
@@ -61,16 +60,14 @@ After building, you should obtain this tree:
     |   +-- config.txt
     |   +-- fixup.dat
     |   +-- start.elf
-    |   `-- overlays/               [3]
+    |   `-- overlays/               [2]
     +-- sdcard.img
     `-- zImage
 
 [1] Not all of them will be present, depending on the RaspberryPi
     model you are using.
 
-[2] This is the mkknlimg DT-marked kernel.
-
-[3] Only for the Raspberry Pi 3 Model (overlay pi3-miniuart-bt is needed
+[2] Only for the Raspberry Pi 3 Model (overlay pi3-miniuart-bt is needed
     to enable the RPi3 serial console otherwise occupied by the bluetooth
     chip). Alternative would be to disable the serial console in cmdline.txt
     and /etc/inittab.
