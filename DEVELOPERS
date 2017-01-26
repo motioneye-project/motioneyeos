@@ -31,6 +31,8 @@ F:	package/gstreamer1/gst1-rtsp-server/
 
 N:	Adam Duskett <aduskett@gmail.com>
 F:	package/nginx-naxsi/
+F:	package/python-mutagen/
+F:	package/sngrep/
 
 N:	Alex Suykov <alex.suykov@gmail.com>
 F:	package/vboot-utils/
