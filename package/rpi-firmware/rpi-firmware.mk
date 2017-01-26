@@ -10,8 +10,6 @@ RPI_FIRMWARE_LICENSE = BSD-3c
 RPI_FIRMWARE_LICENSE_FILES = boot/LICENCE.broadcom
 RPI_FIRMWARE_INSTALL_IMAGES = YES
 
-RPI_FIRMWARE_DEPENDENCIES += host-rpi-firmware
-
 ifeq ($(BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS),y)
 define RPI_FIRMWARE_INSTALL_DTB
 	$(INSTALL) -D -m 0644 $(@D)/boot/bcm2708-rpi-b.dtb $(BINARIES_DIR)/rpi-firmware/bcm2708-rpi-b.dtb
@@ -46,13 +44,4 @@ define RPI_FIRMWARE_INSTALL_IMAGES_CMDS
 	$(RPI_FIRMWARE_INSTALL_DTB_OVERLAYS)
 endef
 
-# We have no host sources to get, since we already
-# bundle the script we want to install.
-HOST_RPI_FIRMWARE_SOURCE =
-
-define HOST_RPI_FIRMWARE_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 package/rpi-firmware/mkknlimg $(HOST_DIR)/usr/bin/mkknlimg
-endef
-
 $(eval $(generic-package))
-$(eval $(host-generic-package))
