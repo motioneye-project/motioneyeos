@@ -14,18 +14,15 @@ SNGREP_DEPENDENCIES = libpcap ncurses
 # our ncurses wchar support is not properly detected
 SNGREP_CONF_OPTS += --disable-unicode
 
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
-SNGREP_DEPENDENCIES += gnutls
-SNGREP_CONF_OPTS += --with-gnutls
-else
-SNGREP_CONF_OPTS += --without-gnutls
-endif
-
+# openssl and gnutls can't be enabled at the same time.
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 SNGREP_DEPENDENCIES += openssl
-SNGREP_CONF_OPTS += --with-openssl
+SNGREP_CONF_OPTS += --with-openssl --without-gnutls
+else ifeq ($(BR2_PACKAGE_GNUTLS),y)
+SNGREP_DEPENDENCIES += gnutls
+SNGREP_CONF_OPTS += --with-gnutls --without-openssl
 else
-SNGREP_CONF_OPTS += --without-openssl
+SNGREP_CONF_OPTS += --without-gnutls --without-openssl
 endif
 
 ifeq ($(BR2_PACKAGE_PCRE),y)
