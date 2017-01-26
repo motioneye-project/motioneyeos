@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WINE_VERSION = 1.8.6
+WINE_VERSION = 2.0
 WINE_SOURCE = wine-$(WINE_VERSION).tar.bz2
-WINE_SITE = https://dl.winehq.org/wine/source/1.8
+WINE_SITE = https://dl.winehq.org/wine/source/2.0
 WINE_LICENSE = LGPLv2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
@@ -85,9 +85,9 @@ else
 WINE_CONF_OPTS += --without-gnutls
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE),y)
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE),y)
 WINE_CONF_OPTS += --with-gstreamer
-WINE_DEPENDENCIES += gst-plugins-base
+WINE_DEPENDENCIES += gst1-plugins-base
 else
 WINE_CONF_OPTS += --without-gstreamer
 endif
@@ -219,6 +219,13 @@ WINE_CONF_OPTS += --with-tiff
 WINE_DEPENDENCIES += tiff
 else
 WINE_CONF_OPTS += --without-tiff
+endif
+
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+WINE_CONF_OPTS += --with-udev
+WINE_DEPENDENCIES += udev
+else
+WINE_CONF_OPTS += --without-udev
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
