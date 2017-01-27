@@ -18,7 +18,8 @@ SNGREP_CONF_OPTS += --disable-unicode
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 SNGREP_DEPENDENCIES += openssl
 SNGREP_CONF_OPTS += --with-openssl --without-gnutls
-else ifeq ($(BR2_PACKAGE_GNUTLS),y)
+# gnutls support also requires libgcrypt
+else ifeq ($(BR2_PACKAGE_GNUTLS)$(BR2_PACKAGE_LIBGCRYPT),yy)
 SNGREP_DEPENDENCIES += gnutls
 SNGREP_CONF_OPTS += --with-gnutls --without-openssl
 else
