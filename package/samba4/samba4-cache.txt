@@ -23,6 +23,7 @@ Checking whether setreuid is available: OK
 Checking whether setresuid is available: OK
 Checking whether seteuid is available: OK
 Checking whether fcntl locking is available: OK
+Checking whether fcntl lock supports open file description locks: OK
 Checking for the maximum value of the 'time_t' type: OK
 Checking whether the realpath function allows a NULL argument: OK
 Checking whether POSIX capabilities are available: OK
