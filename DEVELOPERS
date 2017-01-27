@@ -1616,6 +1616,7 @@ F:	package/dvb-apps/
 F:	package/keyutils/
 F:	package/libbsd/
 F:	package/libedit/
+F:	package/libgsm/
 F:	package/libinput/
 F:	package/libiscsi/
 F:	package/libseccomp/
