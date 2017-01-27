@@ -383,6 +383,7 @@ F:	package/ccrypt/
 F:	package/dos2unix/
 F:	package/ipmiutil/
 F:	package/python-daemon/
+F:	package/sslh/
 F:	package/udpxy/
 
 N:	David Bender <codehero@gmail.com>
