@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBPJSIP_VERSION = 2.5.5
+LIBPJSIP_VERSION = 2.6
 LIBPJSIP_SOURCE = pjproject-$(LIBPJSIP_VERSION).tar.bz2
 LIBPJSIP_SITE = http://www.pjsip.org/release/$(LIBPJSIP_VERSION)
 LIBPJSIP_DEPENDENCIES = libsrtp
@@ -34,7 +34,7 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-opencore-amr \
 	--disable-g7221-codec \
 	--disable-ilbc-codec \
-	--disable-webrtc \
+	--disable-libwebrtc \
 	--disable-opus \
 	--disable-oss \
 	--disable-ext-sound \
