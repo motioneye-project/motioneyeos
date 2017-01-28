@@ -382,6 +382,7 @@ N:	David Bachelart <david.bachelart@bbright.com>
 F:	package/ccrypt/
 F:	package/dos2unix/
 F:	package/ipmiutil/
+F:	package/jsmn/
 F:	package/python-daemon/
 F:	package/sslh/
 F:	package/udpxy/
