@@ -40,6 +40,9 @@ main() {
 
     exec >"${ofile}"
 
+    # Trap any unexpected error to generate a meaningful error message
+    trap "error 'unexpected error while generating ${ofile}\n'" ERR
+
     do_validate ${@//:/ }
 
     do_${ofmt}
