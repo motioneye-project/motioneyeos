@@ -11,6 +11,10 @@ SDL2_TTF_LICENSE = zlib
 SDL2_TTF_LICENSE_FILES = COPYING.txt
 SDL2_TTF_INSTALL_STAGING = YES
 SDL2_TTF_DEPENDENCIES = sdl2 freetype host-pkgconf
+
+# Two patches touching configure.in
+SDL2_TTF_AUTORECONF = YES
+
 SDL2_TTF_CONF_ENV = \
 	FREETYPE_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
