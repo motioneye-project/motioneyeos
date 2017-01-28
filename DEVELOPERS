@@ -1575,8 +1575,9 @@ F:	package/ngrep/
 
 N:	Waldemar Brodkorb <wbx@openadk.org>
 F:	arch/Config.in.bfin
-F:	arch/Config.in.sparc
 F:	arch/Config.in.m68k
+F:	arch/Config.in.or1k
+F:	arch/Config.in.sparc
 F:	package/uclibc/
 F:	package/uclibc-ng-test/
 F:	package/mksh/
