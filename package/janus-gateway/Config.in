@@ -35,6 +35,11 @@ config BR2_PACKAGE_JANUS_SIP_GATEWAY
 
 config  BR2_PACKAGE_JANUS_STREAMING
 	bool "streaming"
+	# SO_REUSEPORT
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+
+comment "streaming plugin needs a toolchain w/ headers >= 3.9"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
 
 config BR2_PACKAGE_JANUS_TEXT_ROOM
 	bool "text room"
