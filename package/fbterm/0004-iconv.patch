@@ -1,0 +1,41 @@
+Fix building against libiconv
+
+Downloaded from
+https://github.com/kyak/openwrt-packages/blob/master/fbterm/patches/001-iconv.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- a/src/lib/io.cpp
++++ b/src/lib/io.cpp
+@@ -119,10 +119,10 @@ void IoPipe::setCodec(const s8 *up, cons
+ 	if (!strcasecmp(up, down)) return;
+ 
+ 	mCodecRead = iconv_open(up, down);
+-	if (mCodecRead == (void*)-1) mCodecRead = 0;
++	if (mCodecRead == (iconv_t)(-1)) mCodecRead = 0;
+ 
+ 	mCodecWrite = iconv_open(down, up);
+-	if (mCodecWrite == (void*)-1) mCodecWrite = 0;
++	if (mCodecWrite == (iconv_t)(-1)) mCodecWrite = 0;
+ }
+ 
+ #define BUF_SIZE 10240
+--- a/src/lib/io.h
++++ b/src/lib/io.h
+@@ -23,6 +23,7 @@
+ 
+ #include "type.h"
+ #include "instance.h"
++#include <iconv.h>
+ 
+ class IoPipe {
+ public:
+@@ -47,7 +48,7 @@ private:
+ 	void writeIo(s8 *buf, u32 len);
+ 
+ 	s32 mFd;
+-	void *mCodecRead, *mCodecWrite;
++	iconv_t mCodecRead, mCodecWrite;
+ 	s8 mBufRead[16], mBufWrite[16];
+ 	u32 mBufLenRead, mBufLenWrite;
+ };
