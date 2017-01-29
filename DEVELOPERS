@@ -467,6 +467,7 @@ F:	package/jimtcl/
 F:	package/mimic/
 F:	package/nodm/
 F:	package/openbox/
+F:	package/rtl8723bs/
 F:	package/supertuxkart/
 
 N:	Fabio Estevam <festevam@gmail.com>
