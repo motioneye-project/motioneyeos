@@ -1,0 +1,27 @@
+From 5ca71a7bc18b6897ab21d815d15e218e204581e2 Mon Sep 17 00:00:00 2001
+From: Marti <marti.maria@tktbrainpower.com>
+Date: Mon, 15 Aug 2016 23:31:39 +0200
+Subject: [PATCH] Added an extra check to MLU bounds
+
+Thanks to Ibrahim el-sayed for spotting the bug
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/cmstypes.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/cmstypes.c b/src/cmstypes.c
+index cb61860..c7328b9 100644
+--- a/src/cmstypes.c
++++ b/src/cmstypes.c
+@@ -1460,6 +1460,7 @@ void *Type_MLU_Read(struct _cms_typehandler_struct* self, cmsIOHANDLER* io, cmsU
+ 
+         // Check for overflow
+         if (Offset < (SizeOfHeader + 8)) goto Error;
++        if ((Offset + Len) > SizeOfTag + 8) goto Error;
+ 
+         // True begin of the string
+         BeginOfThisString = Offset - SizeOfHeader - 8;
+-- 
+2.11.0
+
