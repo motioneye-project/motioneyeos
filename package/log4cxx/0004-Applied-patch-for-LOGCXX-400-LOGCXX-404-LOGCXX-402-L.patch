@@ -1,0 +1,180 @@
+From 5b75dfa78b2c5e95296cee0201bc045ef7264ed0 Mon Sep 17 00:00:00 2001
+From: Christian Grobmeier <grobmeier@apache.org>
+Date: Tue, 27 Nov 2012 09:39:18 +0000
+Subject: [PATCH] Applied patch for LOGCXX-400 LOGCXX-404 LOGCXX-402 LOGCXX-403
+ LOGCXX-401 thanks to Andrew Lazarus
+
+git-svn-id: https://svn.apache.org/repos/asf/logging/log4cxx/trunk@1414037 13f79535-47bb-0310-9956-ffa450edef68
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ pom.xml                                             | 2 ++
+ src/main/cpp/locationinfo.cpp                       | 4 ++--
+ src/main/cpp/loggingevent.cpp                       | 2 +-
+ src/main/cpp/ndc.cpp                                | 4 ++--
+ src/main/cpp/objectoutputstream.cpp                 | 4 ++--
+ src/main/cpp/transcoder.cpp                         | 2 +-
+ src/main/include/log4cxx/helpers/object.h           | 6 +++---
+ src/main/include/log4cxx/helpers/simpledateformat.h | 4 +++-
+ src/main/include/log4cxx/logstring.h                | 2 +-
+ 9 files changed, 17 insertions(+), 13 deletions(-)
+
+diff --git a/pom.xml b/pom.xml
+index 3504c8a3..255907bd 100644
+--- a/pom.xml
++++ b/pom.xml
+@@ -55,6 +55,7 @@
+ </organization>
+ <build>
+     <plugins>
++    <!--
+       <plugin>
+         <artifactId>maven-antrun-plugin</artifactId>
+         <executions>
+@@ -166,6 +167,7 @@
+           </dependency>
+         </dependencies>
+       </plugin>  
++      -->
+           <plugin>
+          <artifactId>maven-assembly-plugin</artifactId>
+          <configuration>
+diff --git a/src/main/cpp/locationinfo.cpp b/src/main/cpp/locationinfo.cpp
+index e76ea29c..1daa3a5f 100644
+--- a/src/main/cpp/locationinfo.cpp
++++ b/src/main/cpp/locationinfo.cpp
+@@ -153,8 +153,8 @@ void LocationInfo::write(ObjectOutputStream& os, Pool& p) const {
+          0x61, 0x70, 0x61, 0x63, 0x68, 0x65, 0x2E, 0x6C, 
+          0x6F, 0x67, 0x34, 0x6A, 0x2E, 0x73, 0x70, 0x69, 
+          0x2E, 0x4C, 0x6F, 0x63, 0x61, 0x74, 0x69, 0x6F, 
+-         0x6E, 0x49, 0x6E, 0x66, 0x6F, 0xED, 0x99, 0xBB, 
+-         0xE1, 0x4A, 0x91, 0xA5, 0x7C, 0x02, 0x00, 0x01, 
++         0x6E, 0x49, 0x6E, 0x66, 0x6F, static_cast<char>(0xED), static_cast<char>(0x99), static_cast<char>(0xBB), 
++         static_cast<char>(0xE1), 0x4A, static_cast<char>(0x91), static_cast<char>(0xA5), 0x7C, 0x02, 0x00, 0x01, 
+          0x4C, 0x00, 0x08, 0x66, 0x75, 0x6C, 0x6C, 0x49, 
+          0x6E, 0x66, 0x6F, 
+             0x74, 0x00, 0x12, 0x4C, 0x6A, 
+diff --git a/src/main/cpp/loggingevent.cpp b/src/main/cpp/loggingevent.cpp
+index 1c0d4be7..edbf40b6 100644
+--- a/src/main/cpp/loggingevent.cpp
++++ b/src/main/cpp/loggingevent.cpp
+@@ -242,7 +242,7 @@ void LoggingEvent::writeProlog(ObjectOutputStream& os, Pool& p)  {
+         0x68, 0x65, 0x2E, 0x6C, 0x6F, 0x67, 0x34, 0x6A, 
+         0x2E, 0x73, 0x70, 0x69, 0x2E, 0x4C, 0x6F, 0x67, 
+         0x67, 0x69, 0x6E, 0x67, 0x45, 0x76, 0x65, 0x6E, 
+-        0x74, 0xF3, 0xF2, 0xB9, 0x23, 0x74, 0x0B, 0xB5, 
++        0x74, static_cast<char>(0xF3), static_cast<char>(0xF2), static_cast<char>(0xB9), 0x23, 0x74, 0x0B, static_cast<char>(0xB5), 
+         0x3F, 0x03, 0x00, 0x0A, 0x5A, 0x00, 0x15, 0x6D, 
+         0x64, 0x63, 0x43, 0x6F, 0x70, 0x79, 0x4C, 0x6F, 
+         0x6F, 0x6B, 0x75, 0x70, 0x52, 0x65, 0x71, 0x75, 
+diff --git a/src/main/cpp/ndc.cpp b/src/main/cpp/ndc.cpp
+index 4ab612dd..89788c16 100644
+--- a/src/main/cpp/ndc.cpp
++++ b/src/main/cpp/ndc.cpp
+@@ -309,7 +309,7 @@ bool NDC::pop(CFStringRef& dst)
+         Stack& stack = data->getStack();
+         if(!stack.empty())
+         {
+-                dst = Transcoder::encode(stack.top().message);
++                dst = Transcoder::encode(getMessage(stack.top()));
+                 stack.pop();
+                 data->recycle();
+                 return true;
+@@ -326,7 +326,7 @@ bool NDC::peek(CFStringRef& dst)
+         Stack& stack = data->getStack();
+         if(!stack.empty())
+         {
+-                dst = Transcoder::encode(stack.top().message);
++                dst = Transcoder::encode(getMessage(stack.top()));
+                 return true;
+         }
+         data->recycle();
+diff --git a/src/main/cpp/objectoutputstream.cpp b/src/main/cpp/objectoutputstream.cpp
+index 7cd696b8..9567a856 100644
+--- a/src/main/cpp/objectoutputstream.cpp
++++ b/src/main/cpp/objectoutputstream.cpp
+@@ -36,7 +36,7 @@ ObjectOutputStream::ObjectOutputStream(OutputStreamPtr outputStream, Pool& p)
+        objectHandle(0x7E0000),
+        classDescriptions(new ClassDescriptionMap())
+ {
+-   char start[] = { 0xAC, 0xED, 0x00, 0x05 };
++   char start[] = { static_cast<char>(0xAC), static_cast<char>(0xED), 0x00, 0x05 };
+    ByteBuffer buf(start, sizeof(start));
+    os->write(buf, p);
+ }
+@@ -85,7 +85,7 @@ void ObjectOutputStream::writeObject(const MDC::Map& val, Pool& p) {
+         0x72, 0x00, 0x13, 0x6A, 0x61, 0x76, 0x61, 
+         0x2E, 0x75, 0x74, 0x69, 0x6C, 0x2E, 0x48, 0x61, 
+         0x73, 0x68, 0x74, 0x61, 0x62, 0x6C, 0x65, 0x13, 
+-        0xBB, 0x0F, 0x25, 0x21, 0x4A, 0xE4, 0xB8, 0x03, 
++        static_cast<char>(0xBB), 0x0F, 0x25, 0x21, 0x4A, static_cast<char>(0xE4), static_cast<char>(0xB8), 0x03,
+         0x00, 0x02, 0x46, 0x00, 0x0A, 0x6C, 0x6F, 0x61, 
+         0x64, 0x46, 0x61, 0x63, 0x74, 0x6F, 0x72, 0x49, 
+         0x00, 0x09, 0x74, 0x68, 0x72, 0x65, 0x73, 0x68, 
+diff --git a/src/main/cpp/transcoder.cpp b/src/main/cpp/transcoder.cpp
+index d572ffce..32bed844 100644
+--- a/src/main/cpp/transcoder.cpp
++++ b/src/main/cpp/transcoder.cpp
+@@ -356,7 +356,7 @@ static void encodeUTF16(unsigned int sv, String& dst) {
+         unsigned char u = (unsigned char) (sv >> 16);
+         unsigned char w = (unsigned char) (u - 1);
+         unsigned short hs = (0xD800 + ((w & 0xF) << 6) + ((sv & 0xFFFF) >> 10));
+-        unsigned short ls = (0xDC00 + (sv && 0x3FF));
++        unsigned short ls = (0xDC00 + (sv & 0x3FF));
+         dst.append(1, hs);
+         dst.append(1, ls);
+     }
+diff --git a/src/main/include/log4cxx/helpers/object.h b/src/main/include/log4cxx/helpers/object.h
+index 92d44c55..b9386c47 100644
+--- a/src/main/include/log4cxx/helpers/object.h
++++ b/src/main/include/log4cxx/helpers/object.h
+@@ -61,8 +61,8 @@ static const helpers::Class& getStaticClass();\
+ static const log4cxx::helpers::ClassRegistration&  registerClass();
+ 
+ #define IMPLEMENT_LOG4CXX_OBJECT(object)\
+-const log4cxx::helpers::Class& object::getClass() const { return getStaticClass(); }\
+-const log4cxx::helpers::Class& object::getStaticClass() { \
++const ::log4cxx::helpers::Class& object::getClass() const { return getStaticClass(); }\
++const ::log4cxx::helpers::Class& object::getStaticClass() { \
+    static Clazz##object theClass;                         \
+    return theClass;                                       \
+ }                                                                      \
+@@ -71,7 +71,7 @@ const log4cxx::helpers::ClassRegistration& object::registerClass() {   \
+     return classReg; \
+ }\
+ namespace log4cxx { namespace classes { \
+-const log4cxx::helpers::ClassRegistration& object##Registration = object::registerClass(); \
++const ::log4cxx::helpers::ClassRegistration& object##Registration = object::registerClass(); \
+ } }
+ 
+ 
+diff --git a/src/main/include/log4cxx/helpers/simpledateformat.h b/src/main/include/log4cxx/helpers/simpledateformat.h
+index 9c27f685..76fb784c 100644
+--- a/src/main/include/log4cxx/helpers/simpledateformat.h
++++ b/src/main/include/log4cxx/helpers/simpledateformat.h
+@@ -29,7 +29,9 @@
+ #include <vector>
+ #include <time.h>
+ 
+-namespace std { class locale; }
++#include <locale>
++
++using std::locale;
+ 
+ namespace log4cxx
+ {
+diff --git a/src/main/include/log4cxx/logstring.h b/src/main/include/log4cxx/logstring.h
+index 3bbcdf2d..19e8aec7 100644
+--- a/src/main/include/log4cxx/logstring.h
++++ b/src/main/include/log4cxx/logstring.h
+@@ -27,7 +27,7 @@
+ #include <string>
+ #include <log4cxx/log4cxx.h>
+ 
+-#if LOG4CXX_LOGCHAR_IS_WCHAR && LOG4CXX_LOGCHAR_IS_UTF8 && LOG4CXX_LOGCHAR_IS_UNICHAR
++#if (LOG4CXX_LOGCHAR_IS_WCHAR + LOG4CXX_LOGCHAR_IS_UTF8 + LOG4CXX_LOGCHAR_IS_UNICHAR)>1
+ #error only one of LOG4CXX_LOGCHAR_IS_WCHAR, LOG4CXX_LOGCHAR_IS_UTF8 or LOG4CXX_LOGCHAR_IS_UNICHAR may be true
+ #endif
+ 
+-- 
+2.11.0
+
