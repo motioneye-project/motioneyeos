@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XPROTO_PRESENTPROTO_VERSION = 1.0
+XPROTO_PRESENTPROTO_VERSION = 1.1
 XPROTO_PRESENTPROTO_SOURCE = presentproto-$(XPROTO_PRESENTPROTO_VERSION).tar.bz2
 XPROTO_PRESENTPROTO_SITE = http://xorg.freedesktop.org/releases/individual/proto
 XPROTO_PRESENTPROTO_LICENSE = MIT
