@@ -347,35 +347,27 @@ endef
 #
 # Variables are defined as follows:
 #
-#  LIBC_A_LOCATION:     location of the libc.a file in the default
-#                       multilib variant (allows to find the main
-#                       sysroot directory)
-#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/usr/lib/libc.a
-#
-#  SYSROOT_DIR:         the main sysroot directory, deduced from
-#                       LIBC_A_LOCATION by removing the
-#                       usr/lib[32|64]/libc.a part of the path.
+# SYSROOT_DIR:          the main sysroot directory, deduced from the location of
+#                       the libc.a file in the default multilib variant, by
+#                       removing the usr/lib[32|64]/libc.a part of the path.
 #                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/
 #
-# ARCH_LIBC_A_LOCATION: location of the libc.a file in the selected
-#                       multilib variant (taking into account the
-#                       CFLAGS). Allows to find the sysroot of the
-#                       selected multilib variant.
-#                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/mips16/soft-float/el/usr/lib/libc.a
-#
 # ARCH_SYSROOT_DIR:     the sysroot of the selected multilib variant,
-#                       deduced from ARCH_LIBC_A_LOCATION by removing
-#                       usr/lib[32|64]/libc.a at the end of the path.
+#                       deduced from the location of the libc.a file in the
+#                       selected multilib variant (taking into account the
+#                       CFLAGS), by removing usr/lib[32|64]/libc.a at the end
+#                       of the path.
 #                       Ex: /x-tools/mips-2011.03/mips-linux-gnu/libc/mips16/soft-float/el/
 #
 # ARCH_LIB_DIR:         'lib', 'lib32' or 'lib64' depending on where libraries
-#                       are stored. Deduced from ARCH_LIBC_A_LOCATION by
-#                       looking at usr/lib??/libc.a.
+#                       are stored. Deduced from the location of the libc.a file
+#                       in the selected multilib variant, by looking at
+#                       usr/lib??/libc.a.
 #                       Ex: lib
 #
 # ARCH_SUBDIR:          the relative location of the sysroot of the selected
 #                       multilib variant compared to the main sysroot.
-#			Ex: mips16/soft-float/el
+#                       Ex: mips16/soft-float/el
 #
 # SUPPORT_LIB_DIR:      some toolchains, such as recent Linaro toolchains,
 #                       store GCC support libraries (libstdc++,
