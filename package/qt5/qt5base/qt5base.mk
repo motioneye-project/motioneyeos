@@ -262,12 +262,14 @@ define QT5BASE_INSTALL_TARGET_PLUGINS
 	fi
 endef
 
+ifeq ($(BR2_QT5_VERSION_5_6),y)
 define QT5BASE_INSTALL_TARGET_FONTS
 	if [ -d $(STAGING_DIR)/usr/lib/fonts/ ] ; then \
 		mkdir -p $(TARGET_DIR)/usr/lib/fonts ; \
 		cp -dpfr $(STAGING_DIR)/usr/lib/fonts/* $(TARGET_DIR)/usr/lib/fonts ; \
 	fi
 endef
+endif
 
 define QT5BASE_INSTALL_TARGET_EXAMPLES
 	if [ -d $(STAGING_DIR)/usr/lib/qt/examples/ ] ; then \
