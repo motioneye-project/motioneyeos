@@ -1476,10 +1476,11 @@ F:	package/fcgiwrap/
 N:	Thomas Davis <sunsetbrew@sunsetbrew.com>
 F:	package/civetweb/
 
-N:	Thomas De Schampheleire <patrickdepinguin+buildroot@gmail.com>
-F:	package/libpfm4/
-F:	package/mkpasswd/
-F:	package/zeromq/
+N:	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+F:	docs/manual/
+F:	support/scripts/size-stats
+F:	support/scripts/size-stats-compare
+F:	toolchain/
 
 N:	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 F:	arch/Config.in.arm
