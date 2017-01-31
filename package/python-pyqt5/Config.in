@@ -1,16 +1,9 @@
-comment "python-pyqt5 needs a toolchain w/ wchar, NPTL, C++, dynamic library"
-	depends on !BR2_PACKAGE_QT
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+comment "python-pyqt5 needs Qt5"
+	depends on !BR2_PACKAGE_QT5
 
 config BR2_PACKAGE_PYTHON_PYQT5
 	bool "python-pyqt5"
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_USE_WCHAR # qt5
-	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # qt5
-	depends on !BR2_STATIC_LIBS # qt5
-	depends on !BR2_PACKAGE_QT # qt5
-	select BR2_PACKAGE_QT5
+	depends on BR2_PACKAGE_QT5
 	select BR2_PACKAGE_PYTHON_SIP
 	help
 	  Python bindings for Qt 5
