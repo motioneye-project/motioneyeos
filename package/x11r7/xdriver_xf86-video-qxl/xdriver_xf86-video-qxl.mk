@@ -4,11 +4,9 @@
 #
 ################################################################################
 
-XDRIVER_XF86_VIDEO_QXL_VERSION = 0.1.4
+XDRIVER_XF86_VIDEO_QXL_VERSION = 0.1.5
 XDRIVER_XF86_VIDEO_QXL_SOURCE = xf86-video-qxl-$(XDRIVER_XF86_VIDEO_QXL_VERSION).tar.bz2
 XDRIVER_XF86_VIDEO_QXL_SITE = http://xorg.freedesktop.org/releases/individual/driver
-# 0002-xserverfix.patch
-XDRIVER_XF86_VIDEO_QXL_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_QXL_LICENSE = MIT
 XDRIVER_XF86_VIDEO_QXL_LICENSE_FILES = COPYING
 
