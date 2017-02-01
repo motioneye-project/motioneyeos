@@ -215,7 +215,7 @@ FLEX := $(shell which flex || type -p flex)
 BISON := $(shell which bison || type -p bison)
 UNZIP := $(shell which unzip || type -p unzip) -q
 
-APPLY_PATCHES = support/scripts/apply-patches.sh $(if $(QUIET),-s)
+APPLY_PATCHES = PATH=$(HOST_DIR)/usr/bin:$$PATH support/scripts/apply-patches.sh $(if $(QUIET),-s)
 
 HOST_CPPFLAGS  = -I$(HOST_DIR)/usr/include
 HOST_CFLAGS   ?= -O2
