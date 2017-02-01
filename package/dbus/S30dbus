@@ -53,10 +53,6 @@ case "$1" in
     stop)
         stop
         ;;
-    status)
-        status $processname
-        RETVAL=$?
-        ;;
     restart)
         stop
         start
@@ -72,7 +68,7 @@ case "$1" in
         RETVAL=$?
         ;;
     *)
-        echo "Usage: $0 {start|stop|status|restart|condrestart|reload}"
+        echo "Usage: $0 {start|stop|restart|condrestart|reload}"
         ;;
 esac
 exit $RETVAL
