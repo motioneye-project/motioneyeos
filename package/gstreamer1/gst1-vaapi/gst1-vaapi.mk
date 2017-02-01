@@ -18,11 +18,16 @@ GST1_VAAPI_DEPENDENCIES += \
 	libdrm
 
 GST1_VAAPI_CONF_OPTS += \
-	--disable-encoders \
 	--disable-x11 \
 	--disable-glx \
 	--disable-wayland \
 	--disable-egl \
 	--disable-gtk-doc-html
+
+ifeq ($(BR2_PACKAGE_GST1_VAAPI_ENCODERS),y)
+GST1_VAAPI_CONF_OPTS += --enable-encoders
+else
+GST1_VAAPI_CONF_OPTS += --disable-encoders
+endif
 
 $(eval $(autotools-package))

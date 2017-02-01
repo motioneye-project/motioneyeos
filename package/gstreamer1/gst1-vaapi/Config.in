@@ -38,6 +38,13 @@ config BR2_PACKAGE_GST1_VAAPI
 
 	  https://cgit.freedesktop.org/gstreamer/gstreamer-vaapi
 
+if BR2_PACKAGE_GST1_VAAPI
+
+config BR2_PACKAGE_GST1_VAAPI_ENCODERS
+	bool "enable encoders"
+
+endif
+
 comment "gst1-vaapi needs udev /dev management and a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
 		!BR2_PACKAGE_HAS_UDEV
