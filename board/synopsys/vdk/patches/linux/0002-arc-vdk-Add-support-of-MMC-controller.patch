@@ -1,0 +1,70 @@
+From c9d5ba0157fcfe48c0ec3448bdaecbabb8cefbca Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Tue, 31 Jan 2017 19:02:44 +0300
+Subject: [PATCH 2/3] arc: vdk: Add support of MMC controller
+
+ARC VDK virtual platform emulates host MMC controller (DW Mobile Storage)
+and moreover rootfs is situated on that virtual card.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ arch/arc/boot/dts/vdk_axs10x_mb.dtsi    | 18 ++++++++++++++++++
+ arch/arc/configs/vdk_hs38_smp_defconfig |  5 ++++-
+ 2 files changed, 22 insertions(+), 1 deletion(-)
+
+diff --git a/arch/arc/boot/dts/vdk_axs10x_mb.dtsi b/arch/arc/boot/dts/vdk_axs10x_mb.dtsi
+index 99498a4b4216..1953914b9f4f 100644
+--- a/arch/arc/boot/dts/vdk_axs10x_mb.dtsi
++++ b/arch/arc/boot/dts/vdk_axs10x_mb.dtsi
+@@ -23,6 +23,12 @@
+ 				#clock-cells = <0>;
+ 			};
+ 
++			mmcclk: mmcclk {
++				compatible = "fixed-clock";
++				clock-frequency = <50000000>;
++				#clock-cells = <0>;
++			};
++
+ 			pguclk: pguclk {
+ 				#clock-cells = <0>;
+ 				compatible = "fixed-clock";
+@@ -94,5 +100,17 @@
+ 			interrupts = <5>;
+ 			interrupt-names = "arc_ps2_irq";
+ 		};
++
++		mmc@0x15000 {
++			compatible = "snps,dw-mshc";
++			reg = <0x15000 0x400>;
++			num-slots = <1>;
++			fifo-depth = <1024>;
++			card-detect-delay = <200>;
++			clocks = <&apbclk>, <&mmcclk>;
++			clock-names = "biu", "ciu";
++			interrupts = <7>;
++			bus-width = <4>;
++		};
+ 	};
+ };
+diff --git a/arch/arc/configs/vdk_hs38_smp_defconfig b/arch/arc/configs/vdk_hs38_smp_defconfig
+index 00036e814dc1..85c697a7ef1c 100644
+--- a/arch/arc/configs/vdk_hs38_smp_defconfig
++++ b/arch/arc/configs/vdk_hs38_smp_defconfig
+@@ -79,9 +79,12 @@ CONFIG_USB_OHCI_HCD=y
+ CONFIG_USB_OHCI_HCD_PLATFORM=y
+ CONFIG_USB_STORAGE=y
+ CONFIG_USB_SERIAL=y
++CONFIG_MMC=y
++CONFIG_MMC_SDHCI=y
++CONFIG_MMC_SDHCI_PLTFM=y
++CONFIG_MMC_DW=y
+ # CONFIG_IOMMU_SUPPORT is not set
+ CONFIG_EXT3_FS=y
+-CONFIG_EXT4_FS=y
+ CONFIG_MSDOS_FS=y
+ CONFIG_VFAT_FS=y
+ CONFIG_NTFS_FS=y
+-- 
+2.7.4
+
