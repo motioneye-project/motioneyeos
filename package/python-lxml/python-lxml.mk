@@ -21,11 +21,16 @@ PYTHON_LXML_LICENSE_FILES = \
 PYTHON_LXML_SETUP_TYPE = setuptools
 
 PYTHON_LXML_DEPENDENCIES = libxml2 libxslt zlib
+HOST_PYTHON_LXML_DEPENDENCIES = host-libxml2 host-libxslt host-zlib
 
 # python-lxml needs these scripts in order to properly detect libxml2 and
 # libxslt compiler and linker flags
 PYTHON_LXML_BUILD_OPTS = \
 	--with-xslt-config=$(STAGING_DIR)/usr/bin/xslt-config \
 	--with-xml2-config=$(STAGING_DIR)/usr/bin/xml2-config
+HOST_PYTHON_LXML_BUILD_OPTS = \
+	--with-xslt-config=$(HOST_DIR)/usr/bin/xslt-config \
+	--with-xml2-config=$(HOST_DIR)/usr/bin/xml2-config
 
 $(eval $(python-package))
+$(eval $(host-python-package))
