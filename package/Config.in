@@ -1739,6 +1739,7 @@ endmenu
 
 menu "Security"
 	source "package/policycoreutils/Config.in"
+	source "package/sepolgen/Config.in"
 	source "package/setools/Config.in"
 endmenu
 
