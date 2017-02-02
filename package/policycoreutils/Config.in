@@ -45,6 +45,26 @@ config BR2_PACKAGE_POLICYCOREUTILS
 
 if BR2_PACKAGE_POLICYCOREUTILS
 
+config BR2_PACKAGE_POLICYCOREUTILS_AUDIT2ALLOW
+	bool "audit2allow"
+	depends on BR2_USE_WCHAR # python3, sepolgen
+	depends on BR2_USE_MMU # python3, sepolgen
+	depends on BR2_TOOLCHAIN_HAS_THREADS # python3, sepolgen, checkpolicy
+	depends on !BR2_STATIC_LIBS # python3, sepolgen
+	depends on BR2_TOOLCHAIN_USES_GLIBC # checkpolicy
+	depends on !BR2_arc # checkpolicy
+	select BR2_PACKAGE_SEPOLGEN
+	select BR2_PACKAGE_CHECKPOLICY
+	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
+	help
+	  Enable audit2allow to be built
+
+comment "audit2allow needs a glibc toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_arc
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+
 config BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND
 	bool "restorecond"
 	select BR2_PACKAGE_LIBGLIB2
