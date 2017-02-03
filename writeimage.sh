@@ -1,6 +1,5 @@
 #!/bin/bash -e
 
-
 function usage() {
     echo "Usage: $0 [options...]" 1>&2
     echo ""
@@ -13,15 +12,51 @@ function usage() {
     exit 1
 }
 
+function msg() {
+    echo "$(date) $1"
+}
+
+# use this function to unmount regardless of MAC OS or not
+function smartUnmount() {
+	msg "Unmounting $1"
+
+	# if MAC OS
+	if [ `uname` == "Darwin" ]; then
+	    diskutil unmountDisk $1
+	else # assuming Linux
+		# unmount sdcard
+    	umount $1* >/dev/null 2>&1
+	fi
+}
+
+# use this function to mount regardless of MAC OS or not
+function smartMount() {
+	msg "UMounting $1"
+
+	# if MAC OS
+	if [ `uname` == "Darwin" ]; then
+	    diskutil mountDisk $1
+	else # assuming Linux
+		# unmount sdcard
+    	umount $1* >/dev/null 2>&1
+	fi
+}
+
+# This function will be ran upon script EXIT (using trap)
+function cleanup {
+	msg "Performing cleanup"
+
+    set +e
+
+    # unmount sdcard
+    smartUnmount ${SDCARD_DEV}
+}
+
 if [ -z "$1" ]; then
     usage
 fi
 
 if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
-
-function msg() {
-    echo ":: $1"
-}
 
 while getopts "a:d:f:h:i:lm:n:o:p:s:w" o; do
     case "$o" in
@@ -60,13 +95,6 @@ if [ -z "$SDCARD_DEV" ] || [ -z "$DISK_IMG" ]; then
     usage
 fi
 
-function cleanup {
-    set +e
-
-    # unmount sdcard
-    umount ${SDCARD_DEV}* >/dev/null 2>&1
-}
-
 trap cleanup EXIT
 
 BOOT=$(dirname $0)/.boot
@@ -84,7 +112,7 @@ if [[ $DISK_IMG == *.gz ]]; then
     DISK_IMG=${DISK_IMG::-3}
 fi
 
-umount ${SDCARD_DEV}* 2>/dev/null || true
+smartUnmount ${SDCARD_DEV}
 msg "writing disk image to sdcard"
 dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576
 sync
@@ -94,13 +122,17 @@ if which partprobe > /dev/null 2>&1; then
     partprobe ${SDCARD_DEV}
 fi
 
-msg "mounting sdcard"
 mkdir -p $BOOT
 
 if [ `uname` == "Darwin" ]; then
     BOOT_DEV=${SDCARD_DEV}s1 # e.g. /dev/disk4s1
-    diskutil unmountDisk ${SDCARD_DEV}
-    mount -ft msdos $BOOT_DEV $BOOT
+
+    # mount the disk
+    hdiutil attach ${BOOT_DEV}
+
+    BOOT=$(pwd)/.boot
+
+    echo "set BOOT for MAC to $BOOT"
 else # assuming Linux
     BOOT_DEV=${SDCARD_DEV}p1 # e.g. /dev/mmcblk0p1
     if ! [ -e ${SDCARD_DEV}p1 ]; then
@@ -152,9 +184,22 @@ if [ -n "$IP" ] && [ -n "$GW" ] && [ -n "$DNS" ]; then
     echo "static_dns=\"$DNS\"" >> $conf
 fi
 
-msg "unmounting sdcard"
-sync
-umount $BOOT
-rmdir $BOOT
+if [ `uname` == "Darwin" ]; then
+	# copy created files over to the disk
+	DISK_PARTITION=`diskutil info $BOOT_DEV | grep "Mount Point:" | sed 's/^[^/]*//' | sed 's/ /\\ /g'`
 
-msg "you can now remove the sdcard"
+	echo "moving $BOOT/* to $DISK_PARTITION"
+
+	mv -v "$BOOT"/* "$DISK_PARTITION"
+
+	sync
+	smartUnmount ${SDCARD_DEV}
+	rmdir $BOOT
+	diskutil eject ${SDCARD_DEV}
+else
+	sync
+	smartUnmount $BOOT
+	rmdir $BOOT
+fi
+
+msg "***you can now remove the sdcard***"
