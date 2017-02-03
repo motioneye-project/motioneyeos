@@ -161,7 +161,7 @@ def get_targets():
 # Execute the "make <pkg>-show-depends" command to get the list of
 # dependencies of a given list of packages, and return the list of
 # dependencies formatted as a Python dictionary.
-def get_depends(pkgs):
+def get_depends(pkgs, rule):
     sys.stderr.write("Getting dependencies for %s\n" % pkgs)
     cmd = ["make", "-s", "--no-print-directory" ]
     for pkg in pkgs:
@@ -204,7 +204,7 @@ def get_all_depends(pkgs):
     if len(filtered_pkgs) == 0:
         return []
 
-    depends = get_depends(filtered_pkgs)
+    depends = get_depends(filtered_pkgs, rule)
 
     deps = set()
     for pkg in filtered_pkgs:
