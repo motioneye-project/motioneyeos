@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBAMCODEC_VERSION = 6f9b99182f94be14fce785c75aa1e9bce868e229
+LIBAMCODEC_VERSION = 296f39bc6fc47ddf5d88b9fd3cfb82a5b39048ca
 LIBAMCODEC_SITE = $(call github,mdrjr,c2_aml_libs,$(LIBAMCODEC_VERSION))
 LIBAMCODEC_DEPENDENCIES = alsa-lib
 LIBAMCODEC_LICENSE = Unclear
