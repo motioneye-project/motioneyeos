@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PORTAUDIO_VERSION = v19_20140130
+PORTAUDIO_VERSION = v190600_20161030
 PORTAUDIO_SITE = http://www.portaudio.com/archives
 PORTAUDIO_SOURCE = pa_stable_$(PORTAUDIO_VERSION).tgz
 PORTAUDIO_INSTALL_STAGING = YES
