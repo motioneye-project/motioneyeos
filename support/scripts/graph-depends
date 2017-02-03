@@ -102,13 +102,13 @@ else:
 transitive = args.transitive
 
 if args.direct:
-    rule = "show-depends"
+    get_depends_func = pkgutil.get_depends
     arrow_dir = "forward"
 else:
     if mode == MODE_FULL:
         sys.stderr.write("--reverse needs a package\n")
         sys.exit(1)
-    rule = "show-rdepends"
+    get_depends_func = pkgutil.get_rdepends
     arrow_dir = "back"
 
 # Get the colours: we need exactly three colours,
@@ -157,7 +157,7 @@ def get_all_depends(pkgs):
     if len(filtered_pkgs) == 0:
         return []
 
-    depends = pkgutil.get_depends(filtered_pkgs, rule)
+    depends = get_depends_func(filtered_pkgs)
 
     deps = set()
     for pkg in filtered_pkgs:

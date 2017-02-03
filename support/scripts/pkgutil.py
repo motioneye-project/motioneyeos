@@ -25,10 +25,7 @@ def get_version(pkgs):
         version[pkg] = output[i]
     return version
 
-# Execute the "make <pkg>-show-depends" command to get the list of
-# dependencies of a given list of packages, and return the list of
-# dependencies formatted as a Python dictionary.
-def get_depends(pkgs, rule):
+def _get_depends(pkgs, rule):
     sys.stderr.write("Getting dependencies for %s\n" % pkgs)
     cmd = ["make", "-s", "--no-print-directory" ]
     for pkg in pkgs:
@@ -51,3 +48,15 @@ def get_depends(pkgs, rule):
         else:
             deps[pkg] = pkg_deps
     return deps
+
+# Execute the "make <pkg>-show-depends" command to get the list of
+# dependencies of a given list of packages, and return the list of
+# dependencies formatted as a Python dictionary.
+def get_depends(pkgs):
+    return _get_depends(pkgs, 'show-depends')
+
+# Execute the "make <pkg>-show-rdepends" command to get the list of
+# reverse dependencies of a given list of packages, and return the
+# list of dependencies formatted as a Python dictionary.
+def get_rdepends(pkgs):
+    return _get_depends(pkgs, 'show-rdepends')
