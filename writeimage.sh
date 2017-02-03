@@ -31,7 +31,7 @@ function smartUnmount() {
 
 # use this function to mount regardless of MAC OS or not
 function smartMount() {
-	msg "UMounting $1"
+	msg "Mounting $1"
 
 	# if MAC OS
 	if [ `uname` == "Darwin" ]; then
