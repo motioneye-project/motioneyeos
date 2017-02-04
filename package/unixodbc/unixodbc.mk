@@ -20,6 +20,13 @@ else
 UNIXODBC_CONF_OPTS += --disable-iconv
 endif
 
+ifeq ($(BR2_PACKAGE_LIBTOOL),y)
+UNIXODBC_CONF_OPTS += --without-included-ltdl
+UNIXODBC_DEPENDENCIES += libtool
+else
+UNIXODBC_CONF_OPTS += --with-included-ltdl
+endif
+
 ifeq ($(BR2_PACKAGE_READLINE),y)
 UNIXODBC_CONF_OPTS += --enable-readline
 UNIXODBC_DEPENDENCIES += readline
