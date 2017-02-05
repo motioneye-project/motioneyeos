@@ -1,15 +1,17 @@
 function load_activity(feedurl, divid) {
-    var feed = new google.feeds.Feed(feedurl);
+    var yqlURL = "https://query.yahooapis.com/v1/public/yql";
+    var yqlQS = "?q=select%20*%20from%20xml%20where%20url%20%3D%20'";
+    var yqlOPTS = "'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
     var container = document.getElementById(divid);
-    var loaded = 0;
-    var nb_display = 8;
-    feed.setNumEntries(30);
-    feed.load(function(result) {
-        if (result.error) {
-        	return;
-        }
-        for (var i = 0; i < result.feed.entries.length; i++) {
-            var entry = result.feed.entries[i];
+    var url = yqlURL + yqlQS + encodeURIComponent(feedurl) + yqlOPTS;
+
+    $.getJSON(url, function(data){
+        var result = data.query.results;
+        var loaded = 0;
+        var nb_display = 8;
+        if (result==null) return;
+        for (var i = 0; i < result.feed.entry.length; i++) {
+            var entry = result.feed.entry[i];
             if (entry.title.indexOf("git commit") != -1)
                 continue;
             loaded += 1;
@@ -17,12 +19,12 @@ function load_activity(feedurl, divid) {
                 break;
             var div = document.createElement("p");
             var link = document.createElement("a");
-            var d = new Date(entry.publishedDate);
+            var d = new Date(entry.published);
             var data = '[' + d.toLocaleDateString() + '] ' + entry.title
             var text = document.createTextNode(data);
             link.appendChild(text);
             link.title = entry.title;
-            link.href = entry.link
+            link.href = entry.link.href;
             div.appendChild(link);
             container.appendChild(div);
         }
@@ -31,11 +33,6 @@ function load_activity(feedurl, divid) {
             container.appendChild(document.createElement("p"));
         }
     });
-}
-
-function initialize() {
-    load_activity("http://rss.gmane.org/topics/excerpts/gmane.comp.lib.uclibc.buildroot", "mailing-list-activity");
-    load_activity("http://git.buildroot.org/buildroot/atom/?h=master", "commit-activity");
 }
 
 function google_analytics() {
@@ -52,34 +49,6 @@ function google_analytics() {
     var s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ga, s);
 }
-
-$(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-      var target = $(this.hash);
-      target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
-      if (target.length) {
-        $('html,body').animate({
-          scrollTop: target.offset().top
-        }, 1000);
-        return false;
-      }
-    }
-  });
-});
-
-google.load("feeds", "1");
-google.setOnLoadCallback(initialize);
-google_analytics();
-
-jQuery(document).ready(function($) {
-    var url = window.location.href;
-    // Get the basename of the URL
-    url = url.split(/[\\/]/).pop()
-    $('.nav a[href="/' + url + '"]').parent().addClass('active');
-
-    $('#slides').html('<iframe src="https://docs.google.com/gview?url=http://free-electrons.com/doc/training/buildroot/buildroot-slides.pdf&embedded=true" style="position:absolute; width:100%; height:100%; top:0; left:0;" frameborder="0"></iframe>')
-});
 
 function showTooltip(elem, msg) {
     elem.setAttribute('class', 'btn tooltipped tooltipped-s');
@@ -98,7 +67,7 @@ clipboard.on('success', function(e) {
 });
 
 $(function() {
-  $('a[href*=#]:not([href=#])').click(function() {
+  $('a[href*=\\#]:not([href=\\#])').click(function() {
     if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
       var target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
@@ -110,4 +79,16 @@ $(function() {
       }
     }
   });
+});
+
+jQuery(document).ready(function($) {
+    var url = window.location.href;
+    // Get the basename of the URL
+    url = url.split(/[\\/]/).pop()
+    $('.nav a[href="/' + url + '"]').parent().addClass('active');
+
+    load_activity("http://rss.gmane.org/topics/excerpts/gmane.comp.lib.uclibc.buildroot", "mailing-list-activity");
+    load_activity("http://git.buildroot.org/buildroot/atom/?h=master", "commit-activity");
+
+    $('#slides').html('<iframe src="https://docs.google.com/gview?url=http://free-electrons.com/doc/training/buildroot/buildroot-slides.pdf&embedded=true" style="position:absolute; width:100%; height:100%; top:0; left:0;" frameborder="0"></iframe>')
 });
