@@ -58,8 +58,12 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_time
 # Hooks to collect statistics about installed files
 
 define _step_pkg_size_get_file_list
-	(cd $(TARGET_DIR) ; find . -type f -print0 | xargs -0 md5sum) | sort > \
-		$1
+	(cd $(TARGET_DIR) ; \
+		( \
+			find . -xtype f -print0 | xargs -0 md5sum ; \
+			find . -xtype d -print0 | xargs -0 -I{} printf 'directory  {}\n'; \
+		) \
+	) | sort > $1
 endef
 
 # This hook will be called before the target installation of a
