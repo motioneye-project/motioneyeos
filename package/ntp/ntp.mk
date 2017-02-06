@@ -5,9 +5,9 @@
 ################################################################################
 
 NTP_VERSION_MAJOR = 4.2
-NTP_VERSION = $(NTP_VERSION_MAJOR).8p8
+NTP_VERSION = $(NTP_VERSION_MAJOR).8p9
 NTP_SITE = http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
-NTP_DEPENDENCIES = host-pkgconf libevent $(if $(BR2_PACKAGE_BUSYBOX),busybox)
+NTP_DEPENDENCIES = host-pkgconf libevent openssl $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 NTP_LICENSE = ntp license
 NTP_LICENSE_FILES = COPYRIGHT
 NTP_CONF_ENV = ac_cv_lib_md5_MD5Init=no
@@ -17,16 +17,11 @@ NTP_CONF_OPTS = \
 	--disable-tickadj \
 	--disable-debugging \
 	--with-yielding-select=yes \
-	--disable-local-libevent
+	--disable-local-libevent \
+	--with-crypto
+
 # 0002-ntp-syscalls-fallback.patch
 NTP_AUTORECONF = YES
-
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-NTP_CONF_OPTS += --with-crypto
-NTP_DEPENDENCIES += openssl
-else
-NTP_CONF_OPTS += --without-crypto --disable-openssl-random
-endif
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 NTP_CONF_OPTS += --enable-linuxcaps
