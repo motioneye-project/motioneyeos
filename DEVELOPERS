@@ -1479,6 +1479,7 @@ F:	package/civetweb/
 
 N:	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
 F:	docs/manual/
+F:	package/opkg-utils/
 F:	support/scripts/size-stats
 F:	support/scripts/size-stats-compare
 F:	toolchain/
