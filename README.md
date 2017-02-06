@@ -1,5 +1,7 @@
 **motionEyeOS** is a Linux distribution that turns your single board computer into a video surveillance system. Check out the [wiki](https://github.com/ccrisan/motioneyeos/wiki) for more details.
 
+[<img src="https://img.shields.io/badge/rating-4%2B%20stars-brightgreen.svg">](https://recordnotfound.com/motioneyeos-ccrisan-2430)
+
 Follow us on facebook: [https://www.facebook.com/motioneyeos](https://www.facebook.com/motioneyeos).
 
 You can support the development of motionEyeOS by making a small donation.
