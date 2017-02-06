@@ -13,4 +13,5 @@ config BR2_PACKAGE_OPENNTPD
 
 comment "openntpd needs a toolchain w/ NPTL"
 	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_NTP
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
