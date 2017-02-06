@@ -4,7 +4,6 @@ config BR2_PACKAGE_EFL
 	depends on BR2_HOST_GCC_AT_LEAST_4_7
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_PACKAGE_HAS_UDEV # libudev
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS # luajit
 	depends on BR2_TOOLCHAIN_HAS_THREADS # untested without threads
 	depends on BR2_USE_MMU
@@ -36,6 +35,19 @@ config BR2_PACKAGE_EFL_BULLET
 	  work and as a result cause a series of breakages. This is
 	  simply not tested so you are on your own in terms of
 	  ensuring everything works if you do this.
+
+config BR2_PACKAGE_EFL_EEZE
+	bool "Enable eeze (udev) support (recommended)"
+	depends on BR2_PACKAGE_HAS_UDEV # libudev
+	default y
+	help
+	  Eeze is EFL's hardware abstraction layer on top of udev.
+	  Having it off will disable some hardware detection, such as
+	  'drm' graphics engine or 'elput', as well as mounting
+	  removable media.
+
+comment "eeze needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
 
 config BR2_PACKAGE_EFL_FONTCONFIG
 	bool "Enable fontconfig support (recommended)"
@@ -98,6 +110,7 @@ config BR2_PACKAGE_EFL_PULSEAUDIO
 
 config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 	bool "Enable libmount support (recommended)"
+	depends on BR2_PACKAGE_EFL_EEZE
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	# libblkid is part of required tools, see EFL's README.
@@ -108,9 +121,13 @@ config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 	  devices etc... and disabling this will hurt support for
 	  Enlightenment and its filemanager.
 
+comment "efl's libmount support needs udev /dev management (eeze)"
+	depends on !BR2_PACKAGE_EFL_EEZE
+
 config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 	bool
 	default y if BR2_PACKAGE_EFL_BULLET && \
+		BR2_PACKAGE_EFL_EEZE && \
 		BR2_PACKAGE_EFL_FONTCONFIG && \
 		BR2_PACKAGE_EFL_GSTREAMER1 && \
 		BR2_PACKAGE_EFL_LIBFRIBIDI && \
@@ -160,13 +177,14 @@ config BR2_PACKAGE_EFL_WAYLAND
 	depends on BR2_PACKAGE_WAYLAND
 	depends on BR2_TOOLCHAIN_HAS_THREADS # Evas DRM Engine -> libdrm
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # Evas DRM Engine
+	depends on BR2_PACKAGE_EFL_EEZE # efl drm
 	depends on BR2_PACKAGE_EFL_OPENGLES # OpenGL ES with EGL support only
 	select BR2_PACKAGE_EFL_DRM
 
-comment "Wayland support needs OpenGL ES w/ EGL, threads"
+comment "Wayland support needs udev /dev management (eeze) and OpenGL ES w/ EGL, threads"
 	depends on BR2_PACKAGE_WAYLAND
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
-		|| !BR2_PACKAGE_EFL_OPENGLES
+		|| !BR2_PACKAGE_EFL_OPENGLES || !BR2_PACKAGE_EFL_EEZE
 
 choice
 	bool "OpenGL support"
@@ -198,6 +216,7 @@ endchoice # OpenGL support
 
 config BR2_PACKAGE_EFL_ELPUT
 	bool "Elput"
+	depends on BR2_PACKAGE_EFL_EEZE
 	select BR2_PACKAGE_LIBINPUT
 	select BR2_PACKAGE_LIBXKBCOMMON
 	help
@@ -206,8 +225,12 @@ config BR2_PACKAGE_EFL_ELPUT
 	  ecore_drm, etc) to handle interfacing with libinput without
 	  having to duplicate the code in each subsystem.
 
+comment "Elput support needs udev /dev management (eeze)"
+	depends on !BR2_PACKAGE_EFL_EEZE
+
 config BR2_PACKAGE_EFL_DRM
 	bool "Evas DRM Engine"
+	depends on BR2_PACKAGE_EFL_EEZE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # require libgbm from mesa3d
 	select BR2_PACKAGE_EFL_ELPUT
@@ -216,8 +239,9 @@ config BR2_PACKAGE_EFL_DRM
 	help
 	  This option enable building support for the Evas DRM Engine.
 
-comment "Evas DRM Engine needs mesa3d w/ EGL support, threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL
+comment "Evas DRM Engine needs udev /dev management (eeze) and mesa3d w/ EGL support, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
+		|| !BR2_PACKAGE_EFL_EEZE
 
 comment "libevas loaders"
 
@@ -279,8 +303,8 @@ config BR2_PACKAGE_EFL_SVG
 
 endif # BR2_PACKAGE_EFL
 
-comment "efl needs udev /dev management and a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
-	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_INSTALL_LIBSTDCPP \
+comment "efl needs a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP \
 		|| !BR2_HOST_GCC_AT_LEAST_4_7 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
 		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
