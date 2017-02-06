@@ -1,6 +1,8 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
+[[download-location]]
+
 ==== Location of downloaded packages
 
 The various tarballs that are downloaded by Buildroot are all stored

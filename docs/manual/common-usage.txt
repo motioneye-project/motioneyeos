@@ -91,8 +91,9 @@ to +make+ or set in the environment:
   Buildroot stores/retrieves downloaded files
   +
   Note that the Buildroot download directory can also be set from the
-  configuration interface, so through the Buildroot +.config+ file; this
-  is the recommended way of setting it.
+  configuration interface, so through the Buildroot +.config+ file. See
+  xref:download-location[] for more details on how you can set the download
+  directory.
 * +BR2_GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
   build-time graphs
 * +BR2_GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
