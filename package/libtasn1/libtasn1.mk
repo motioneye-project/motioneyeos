@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBTASN1_VERSION = 4.9
-LIBTASN1_SITE = http://ftp.gnu.org/gnu/libtasn1
+LIBTASN1_SITE = $(BR2_GNU_MIRROR)/libtasn1
 LIBTASN1_DEPENDENCIES = host-bison
 LIBTASN1_LICENSE = GPLv3+ (tests, tools), LGPLv2.1+ (library)
 LIBTASN1_LICENSE_FILES = COPYING COPYING.LIB
