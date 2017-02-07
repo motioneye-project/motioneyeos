@@ -92,7 +92,7 @@ copy_toolchain_sysroot = \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
 			continue ; \
 		fi ; \
-		rsync -au --chmod=u=rwX,go=rX --exclude 'usr/lib/locale' \
+		rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
 			--include '/libexec*/' --exclude '/lib*/' \
 			$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 	done ; \
