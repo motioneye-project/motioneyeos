@@ -55,6 +55,11 @@ copy_toolchain_lib_root = \
 # corresponding architecture variants), and we don't want to import
 # them.
 #
+# It is possible that ARCH_LIB_DIR does not contain the dynamic loader
+# (ld*.so or similar) because it (or the main symlink to it) normally
+# resides in /lib while ARCH_LIB_DIR may be something else (e.g. lib64).
+# Therefore, copy the dynamic loader separately.
+#
 # Then, if the selected architecture variant is not the default one
 # (i.e, if SYSROOT_DIR != ARCH_SYSROOT_DIR), then we :
 #
@@ -106,6 +111,12 @@ copy_toolchain_sysroot = \
 				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
+	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so ]; then \
+		cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so $(STAGING_DIR)/lib/ ; \
+	fi ; \
+	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so.* ]; then \
+		cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so.* $(STAGING_DIR)/lib/ ; \
+	fi ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
 			cp -a $${SYSROOT_DIR}/usr/include $(STAGING_DIR)/usr ; \
