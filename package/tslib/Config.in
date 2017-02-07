@@ -3,7 +3,7 @@ config BR2_PACKAGE_TSLIB
 	depends on !BR2_STATIC_LIBS # dlopen
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	help
-	  Tslib is an abstraction layer for touchscreen panel events.
+	  Tslib is a filtering layer for touchscreen panel events.
 
 	  https://github.com/kergoth/tslib
 
