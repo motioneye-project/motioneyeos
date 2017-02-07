@@ -89,11 +89,12 @@ copy_toolchain_sysroot = \
 	ARCH_LIB_DIR="$(strip $4)" ; \
 	SUPPORT_LIB_DIR="$(strip $5)" ; \
 	for i in etc $${ARCH_LIB_DIR} sbin usr usr/$${ARCH_LIB_DIR}; do \
-		if [ -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
-			rsync -au --chmod=u=rwX,go=rX --exclude 'usr/lib/locale' \
-				--include '/libexec*/' --exclude '/lib*/' \
-				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
+		if [ ! -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
+			continue ; \
 		fi ; \
+		rsync -au --chmod=u=rwX,go=rX --exclude 'usr/lib/locale' \
+			--include '/libexec*/' --exclude '/lib*/' \
+			$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 	done ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
