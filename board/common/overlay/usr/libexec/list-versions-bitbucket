@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <account/project>" 1>&2
+    exit -1
+fi
+
+opts="-s -S -f"
+test -n "$BITBUCKET_USERNAME" && opts+=" --user $BITBUCKET_USERNAME:$BITBUCKET_PASSWORD"
+url=https://api.bitbucket.org/2.0/repositories/$1/downloads?pagelen=100
+jq_expr='.values[] | [{a: .name | capture("[^-]+-(?<b>[^-]+)-(?<c>[^-]+)\\.img\\.?.*"), url: .links.self.href}] | map(.a.c, "false", .a.b, .url) | join("|")'
+
+curl $opts $url | jq --raw-output "$jq_expr"
+exit ${PIPESTATUS[0]}
+

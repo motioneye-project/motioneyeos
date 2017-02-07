@@ -1,0 +1,54 @@
+#!/bin/bash
+
+function exit_usage() {
+    echo "Usage: $0 latest"
+    echo "       $0 current"
+    echo "       $0 upgrade <version|url>"
+    echo "       $0 progress"
+    
+    exit -1
+}
+
+if [ -z "$1" ]; then
+    exit_usage
+fi
+
+function show_latest() {
+}
+
+function show_current() {
+}
+
+function do_upgrade() {
+}
+
+function show_progress() {
+}
+
+
+case "$1" in
+    latest)
+        show_latest
+        ;;
+
+    current)
+        show_current
+        ;;
+
+    upgrade)
+        if [ -z "$2" ];
+            exit_usage
+        fi
+
+        do_upgrade $2
+        ;;
+
+    progress)
+        show_progress
+        ;;
+
+    *)
+        exit_usage
+        ;;
+esac
+
