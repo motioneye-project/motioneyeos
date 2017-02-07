@@ -17,19 +17,17 @@ copy_toolchain_lib_root = \
 		mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 		while true ; do \
 			LIBNAME=`basename $${LIBPATH}`; \
-			LINKTARGET=`readlink $${LIBPATH}` ; \
 			rm -fr $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
 			if test -h $${LIBPATH} ; then \
+				LINKTARGET=`readlink $${LIBPATH}` ; \
 				ln -sf `basename $${LINKTARGET}` $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME} ; \
+				LIBPATH="`readlink -f $${LIBPATH}`"; \
 			elif test -f $${LIBPATH}; then \
 				$(INSTALL) -D -m0755 $${LIBPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
+				break ; \
 			else \
 				exit -1; \
 			fi; \
-			if test -z "$${LINKTARGET}" ; then \
-				break ; \
-			fi ; \
-			LIBPATH="`readlink -f $${LIBPATH}`"; \
 		done; \
 	done
 
