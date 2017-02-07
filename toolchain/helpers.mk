@@ -39,11 +39,16 @@ copy_toolchain_lib_root = \
 # dir. The operation of this function is rendered a little bit
 # complicated by the support for multilib toolchains.
 #
-# We start by copying etc, lib, sbin and usr from the sysroot of the
-# selected architecture variant (as pointed by ARCH_SYSROOT_DIR). This
-# allows to import into the staging directory the C library and
-# companion libraries for the correct architecture variant. We
-# explictly only copy etc, lib, sbin and usr since other directories
+# We start by copying etc, 'lib', sbin, usr and usr/'lib' from the
+# sysroot of the selected architecture variant (as pointed to by
+# ARCH_SYSROOT_DIR). This allows to import into the staging directory
+# the C library and companion libraries for the correct architecture
+# variant. 'lib' may not be literally 'lib' but could be something else,
+# e.g. lib32-fp (as determined by ARCH_LIB_DIR) and we only want to copy
+# that lib directory and no other. When copying usr, we therefore need
+# to be extra careful not to include usr/lib* but we _do_ want to
+# include usr/libexec.
+# We are selective in the directories we copy since other directories
 # might exist for other architecture variants (on Codesourcery
 # toolchain, the sysroot for the default architecture variant contains
 # the armv4t and thumb2 subdirectories, which are the sysroot for the
@@ -92,9 +97,14 @@ copy_toolchain_sysroot = \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
 			continue ; \
 		fi ; \
-		rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
-			--include '/libexec*/' --exclude '/lib*/' \
-			$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
+		if [ "$$i" = "usr" ]; then \
+			rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
+				--include '/libexec*/' --exclude '/lib*/' \
+				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
+		else \
+			rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
+				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
+		fi ; \
 	done ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
