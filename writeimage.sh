@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+
 function usage() {
     echo "Usage: $0 [options...]" 1>&2
     echo ""
@@ -16,40 +17,33 @@ function msg() {
     echo "$(date) $1"
 }
 
-# use this function to unmount regardless of MAC OS or not
-function smartUnmount() {
-	msg "Unmounting $1"
+function smart_unmount() {
+    msg "Unmounting $1"
 
-	# if MAC OS
-	if [ `uname` == "Darwin" ]; then
-	    diskutil unmountDisk $1
-	else # assuming Linux
-		# unmount sdcard
-    	umount $1* >/dev/null 2>&1
-	fi
+    if [ `uname` == "Darwin" ]; then  # if macOS
+        diskutil unmountDisk $1
+    else  # assuming Linux
+        umount $1* >/dev/null 2>&1
+    fi
 }
 
-# use this function to mount regardless of MAC OS or not
-function smartMount() {
-	msg "Mounting $1"
+function smart_mount() {
+    msg "Mounting $1"
 
-	# if MAC OS
-	if [ `uname` == "Darwin" ]; then
-	    diskutil mountDisk $1
-	else # assuming Linux
-		# unmount sdcard
-    	umount $1* >/dev/null 2>&1
-	fi
+    if [ `uname` == "Darwin" ]; then  # if macOS
+        diskutil mountDisk $1
+    else  # assuming Linux
+        mount $1* >/dev/null 2>&1
+    fi
 }
 
-# This function will be ran upon script EXIT (using trap)
+# this function will be run upon script exit (using trap)
 function cleanup {
-	msg "Performing cleanup"
+    msg "Performing cleanup"
 
     set +e
 
-    # unmount sdcard
-    smartUnmount ${SDCARD_DEV}
+    smart_unmount ${SDCARD_DEV}
 }
 
 if [ -z "$1" ]; then
@@ -112,7 +106,7 @@ if [[ $DISK_IMG == *.gz ]]; then
     DISK_IMG=${DISK_IMG::-3}
 fi
 
-smartUnmount ${SDCARD_DEV}
+smart_unmount ${SDCARD_DEV}
 msg "writing disk image to sdcard"
 dd if=$DISK_IMG of=$SDCARD_DEV bs=1048576
 sync
@@ -124,19 +118,15 @@ fi
 
 mkdir -p $BOOT
 
-if [ `uname` == "Darwin" ]; then
-    BOOT_DEV=${SDCARD_DEV}s1 # e.g. /dev/disk4s1
+if [ `uname` == "Darwin" ]; then  # if macOS
+    BOOT_DEV=${SDCARD_DEV}s1  # e.g. /dev/disk4s1
 
     # mount the disk
     hdiutil attach ${BOOT_DEV}
-
-    BOOT=$(pwd)/.boot
-
-    echo "set BOOT for MAC to $BOOT"
-else # assuming Linux
-    BOOT_DEV=${SDCARD_DEV}p1 # e.g. /dev/mmcblk0p1
+else  # assuming Linux
+    BOOT_DEV=${SDCARD_DEV}p1  # e.g. /dev/mmcblk0p1
     if ! [ -e ${SDCARD_DEV}p1 ]; then
-        BOOT_DEV=${SDCARD_DEV}1 # e.g. /dev/sdc1
+        BOOT_DEV=${SDCARD_DEV}1  # e.g. /dev/sdc1
     fi
     mount $BOOT_DEV $BOOT
 fi
@@ -184,22 +174,22 @@ if [ -n "$IP" ] && [ -n "$GW" ] && [ -n "$DNS" ]; then
     echo "static_dns=\"$DNS\"" >> $conf
 fi
 
-if [ `uname` == "Darwin" ]; then
-	# copy created files over to the disk
-	DISK_PARTITION=`diskutil info $BOOT_DEV | grep "Mount Point:" | sed 's/^[^/]*//' | sed 's/ /\\ /g'`
+if [ `uname` == "Darwin" ]; then  # if macOS
+    # copy created files over to the disk
+    DISK_PARTITION=`diskutil info $BOOT_DEV | grep "Mount Point:" | sed 's/^[^/]*//' | sed 's/ /\\ /g'`
 
-	echo "moving $BOOT/* to $DISK_PARTITION"
+    echo "moving $BOOT/* to $DISK_PARTITION"
+    mv -v "$BOOT"/* "$DISK_PARTITION"
 
-	mv -v "$BOOT"/* "$DISK_PARTITION"
+    sync
+    smart_unmount ${SDCARD_DEV}
+    rmdir $BOOT
+    diskutil eject ${SDCARD_DEV}
 
-	sync
-	smartUnmount ${SDCARD_DEV}
-	rmdir $BOOT
-	diskutil eject ${SDCARD_DEV}
-else
-	sync
-	smartUnmount $BOOT
-	rmdir $BOOT
+else  # assuming Linux
+    sync
+    smart_unmount $BOOT
+    rmdir $BOOT
 fi
 
 msg "***you can now remove the sdcard***"
