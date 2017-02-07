@@ -451,3 +451,30 @@ $$( \
 	printf "$$prefix" ; \
 )
 endef
+
+# Replace the destination of a symbolic link with a simpler version
+# For example,
+#     usr/lib/libfoo.so -> ../../lib32/libfoo.so.1
+# becomes
+#     usr/lib/libfoo.so -> ../../lib/libfoo.so.1
+# since 'lib32' is a symlink to 'lib'.
+#
+# Likewise,
+#     usr/lib/octeon2/libbar.so -> ../../../lib32/octeon2/libbar.so.1
+# becomes
+#     usr/lib/octeon2/libbar.so -> ../../lib/libbar.so.1
+# assuming lib32->lib and lib/octeon2->lib.
+#
+# $1: symlink
+# $2: base path
+define simplify_symlink
+( \
+	FULL_SRC="$$(readlink -f $$(dirname $1))/$$(basename $1)" ; \
+	FULL_DEST="$$(readlink -f $1)" ; \
+	FULL_BASE="$$(readlink -f $2)" ; \
+	REL_SRC="$${FULL_SRC#$${FULL_BASE}/}" ; \
+	REL_DEST="$${FULL_DEST#$${FULL_BASE}/}" ; \
+	DOTS="$(call relpath_prefix,$${REL_SRC})" ; \
+	ln -sf "$${DOTS}$${REL_DEST}" "$${FULL_SRC}" ; \
+)
+endef
