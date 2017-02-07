@@ -12,7 +12,13 @@ LOGROTATE_DEPENDENCIES = popt host-pkgconf
 # tarball does not have a generated configure script
 LOGROTATE_AUTORECONF = YES
 LOGROTATE_CONF_ENV = LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs popt`"
-LOGROTATE_CONF_OPTS = --without-selinux
+
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+LOGROTATE_CONF_OPTS += --with-selinux
+LOGROTATE_DEPENDENCIES += libselinux
+else
+LOGROTATE_CONF_OPTS += --without-selinux
+endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 LOGROTATE_DEPENDENCIES += acl
