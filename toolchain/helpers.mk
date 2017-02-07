@@ -55,10 +55,19 @@ copy_toolchain_lib_root = \
 # corresponding architecture variants), and we don't want to import
 # them.
 #
+# If ARCH_LIB_DIR is not a singular directory component, e.g.
+# 'lib32/octeon2', then symbolic links in ARCH_LIB_DIR and
+# usr/ARCH_LIB_DIR may be broken because Buildroot will flatten the
+# directory structure (e.g. lib32/octeon2/foo is actually stored in
+# lib/foo). This is only relevant for links that contain one or more ../
+# components, as links to the current directory are always fine.
+# We need to fix the broken links by removing the right amount of ../
+# dots from the link destination.
+#
 # It is possible that ARCH_LIB_DIR does not contain the dynamic loader
 # (ld*.so or similar) because it (or the main symlink to it) normally
-# resides in /lib while ARCH_LIB_DIR may be something else (e.g. lib64).
-# Therefore, copy the dynamic loader separately.
+# resides in /lib while ARCH_LIB_DIR may be something else (e.g. lib64,
+# lib/<tuple>, ...). Therefore, copy the dynamic loader separately.
 #
 # Then, if the selected architecture variant is not the default one
 # (i.e, if SYSROOT_DIR != ARCH_SYSROOT_DIR), then we :
@@ -111,6 +120,14 @@ copy_toolchain_sysroot = \
 				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
+	relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
+	if [ "$${relpath}" != "" ]; then \
+		for i in $$(find -H $(STAGING_DIR)/$${ARCH_LIB_DIR} $(STAGING_DIR)/usr/$${ARCH_LIB_DIR} -type l -xtype l); do \
+			LINKTARGET=`readlink $$i` ; \
+			NEWLINKTARGET=$${LINKTARGET\#$$relpath} ; \
+			ln -sf $${NEWLINKTARGET} $$i ; \
+		done ; \
+	fi ; \
 	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so ]; then \
 		cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so $(STAGING_DIR)/lib/ ; \
 	fi ; \

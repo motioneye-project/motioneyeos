@@ -332,7 +332,7 @@ endef
 # Returns the lib subdirectory for the given compiler + flags (i.e
 # typically lib32 or lib64 for some toolchains)
 define toolchain_find_libdir
-$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64)?([^/]*)?)/([^/]*/)?libc.a:\2:')
+$$(printf $(call toolchain_find_libc_a,$(1)) | sed -r -e 's:.*/(usr/)?(lib(32|64)?([^/]*)?(/[^/]*)?)/libc.a:\2:')
 endef
 
 # Returns the location of the libc.a file for the given compiler + flags
@@ -448,8 +448,9 @@ create_lib_symlinks = \
 	$(Q)DESTDIR="$(strip $1)" ; \
 	ARCH_LIB_DIR="$(call toolchain_find_libdir,$(TOOLCHAIN_EXTERNAL_CC) $(TOOLCHAIN_EXTERNAL_CFLAGS))" ; \
 	if [ ! -e "$${DESTDIR}/$${ARCH_LIB_DIR}" -a ! -e "$${DESTDIR}/usr/$${ARCH_LIB_DIR}" ]; then \
-		ln -snf lib "$${DESTDIR}/$${ARCH_LIB_DIR}" ; \
-		ln -snf lib "$${DESTDIR}/usr/$${ARCH_LIB_DIR}" ; \
+		relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
+		ln -snf $${relpath}lib "$${DESTDIR}/$${ARCH_LIB_DIR}" ; \
+		ln -snf $${relpath}lib "$${DESTDIR}/usr/$${ARCH_LIB_DIR}" ; \
 	fi
 
 define TOOLCHAIN_EXTERNAL_CREATE_STAGING_LIB_SYMLINK
