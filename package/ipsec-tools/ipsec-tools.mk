@@ -57,7 +57,7 @@ endif
 ifneq ($(BR2_PACKAGE_IPSEC_TOOLS_READLINE),y)
 IPSEC_TOOLS_CONF_OPTS += --without-readline
 else
-IPSEC_DEPENDENCIES += readline
+IPSEC_TOOLS_DEPENDENCIES += readline
 endif
 
 ifeq ($(BR2_PACKAGE_IPSEC_TOOLS_HYBRID),y)
