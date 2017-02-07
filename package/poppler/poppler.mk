@@ -18,7 +18,7 @@ ifeq ($(BR2_PACKAGE_CAIRO),y)
 POPPLER_CONF_OPTS += --enable-cairo-output
 POPPLER_DEPENDENCIES += cairo
 else
-POPLER_CONF_OPTS += --disable-cairo-output
+POPPLER_CONF_OPTS += --disable-cairo-output
 endif
 
 ifeq ($(BR2_PACKAGE_LCMS2),y)
