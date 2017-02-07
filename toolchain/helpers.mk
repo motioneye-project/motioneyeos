@@ -63,6 +63,8 @@ copy_toolchain_lib_root = \
 # components, as links to the current directory are always fine.
 # We need to fix the broken links by removing the right amount of ../
 # dots from the link destination.
+# Once the link destination is valid again, it can be simplified to
+# remove the dependency on intermediate directory symlinks.
 #
 # It is possible that ARCH_LIB_DIR does not contain the dynamic loader
 # (ld*.so or similar) because it (or the main symlink to it) normally
@@ -126,6 +128,7 @@ copy_toolchain_sysroot = \
 			LINKTARGET=`readlink $$i` ; \
 			NEWLINKTARGET=$${LINKTARGET\#$$relpath} ; \
 			ln -sf $${NEWLINKTARGET} $$i ; \
+			$(call simplify_symlink,$$i,$(STAGING_DIR)) ; \
 		done ; \
 	fi ; \
 	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so ]; then \
