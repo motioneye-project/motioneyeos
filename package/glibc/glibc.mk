@@ -110,8 +110,8 @@ GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
 define GLIBC_INSTALL_TARGET_CMDS
-	for libs in $(GLIBC_LIBS_LIB); do \
-		$(call copy_toolchain_lib_root,$$libs) ; \
+	for libpattern in $(GLIBC_LIBS_LIB); do \
+		$(call copy_toolchain_lib_root,$$libpattern) ; \
 	done
 endef
 

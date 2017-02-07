@@ -6,12 +6,12 @@
 # toolchain logic, and the glibc package, so care must be taken when
 # changing this function.
 #
-# $1: library name
+# $1: library name pattern (can include glob wildcards)
 #
 copy_toolchain_lib_root = \
-	LIB="$(strip $1)"; \
+	LIBPATTERN="$(strip $1)"; \
 \
-	LIBPATHS=`find $(STAGING_DIR)/ -name "$${LIB}" 2>/dev/null` ; \
+	LIBPATHS=`find $(STAGING_DIR)/ -name "$${LIBPATTERN}" 2>/dev/null` ; \
 	for LIBPATH in $${LIBPATHS} ; do \
 		DESTDIR=`echo $${LIBPATH} | sed "s,^$(STAGING_DIR)/,," | xargs dirname` ; \
 		mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
