@@ -10,4 +10,7 @@ config BR2_PACKAGE_QT5ENGINIO
 
 	  This package corresponds to the qt5enginio module.
 
+	  This package has been tagged as deprecated since version
+	  5.6 and not recommended for new design.
+
 	  http://qt.io
