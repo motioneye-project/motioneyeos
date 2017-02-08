@@ -1,0 +1,37 @@
+From 064a0445f33a67e5498d492dabe0dfc687859756 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.ind.br>
+Date: Wed, 8 Feb 2017 09:29:30 -0200
+Subject: [PATCH] build-sys: improve detection of the "isnan" function in
+ uClibc
+
+Since commit beceb14b450ded6560ed743634a5e80604a8edf3, MATH_LIBS is set
+to "-lm" when the isnan function is detected. In uClibc, however, isnan
+is a macro that calls __isnan, __isnanf, or __isnanl, depending on the
+size of the argument (double, float or long double).
+
+Fixes:
+  http://autobuild.buildroot.net/results/2c2/2c29a78ed81ca844a87dcd076ab3e14ea080296d/
+  http://autobuild.buildroot.net/results/404/404b10f359b2ae8a7216729fa1bab37fed2d3d4c/
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ configure.ac | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index cc0563b..d03469c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -428,7 +428,8 @@ AC_CHECK_FUNCS([reboot], [have_reboot=yes],[have_reboot=no])
+ AM_CONDITIONAL([HAVE_OPENAT], [test "x$have_openat" = xyes])
+ 
+ AC_CHECK_FUNCS([isnan], [],
+-       [AC_CHECK_LIB([m], [isnan], [MATH_LIBS="-lm"])]
++	[AC_CHECK_LIB([m], [isnan], [MATH_LIBS="-lm"])]
++	[AC_CHECK_LIB([m], [__isnan], [MATH_LIBS="-lm"])]
+ )
+ AC_SUBST([MATH_LIBS])
+ 
+-- 
+2.7.4
+
