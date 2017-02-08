@@ -907,6 +907,9 @@ F:	package/qt5/
 N:	Julien Floret <julien.floret@6wind.com>
 F:	package/lldpd/
 
+N:	Julien Viard de Galbert <julien@vdg.name>
+F:	package/dieharder/
+
 N:	Justin Maggard <jmaggard@netgear.com>
 F:	package/dtach/
 
