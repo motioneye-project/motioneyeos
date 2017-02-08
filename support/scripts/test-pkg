@@ -61,7 +61,7 @@ build_one() {
     local url="${2}"
     local cfg="${3}"
     local pkg="${4}"
-    local toolchain line
+    local toolchain line skip
 
     # Using basename(1) on a URL works nicely
     toolchain="$( basename "${url}" .config )"
@@ -94,12 +94,19 @@ build_one() {
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
     # which case this config is untestable and we skip it.
+    skip=false
     while read line; do
         if ! grep "^${line}\$" "${dir}/.config" >/dev/null 2>&1; then
-            printf ", SKIPPED\n"
-            return
+            printf "%s\n" "${line}"
+            skip=true
         fi
-    done <"${cfg}"
+    done <"${cfg}" >"${dir}/missing.config"
+    if ${skip}; then
+        printf ", SKIPPED\n"
+        return
+    fi
+    # Remove file, it's empty anyway.
+    rm -f "${dir}/missing.config"
 
     if [ -n "${pkg}" ]; then
         printf ", dirclean"
