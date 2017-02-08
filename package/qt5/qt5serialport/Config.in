@@ -5,6 +5,8 @@ config BR2_PACKAGE_QT5SERIALPORT
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5serialport module.
+	  Qt Serial Port provides the basic functionality, which
+	  includes configuring, I/O operations, getting and setting
+	  the control signals of the RS-232 pinouts.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtserialport-index.html

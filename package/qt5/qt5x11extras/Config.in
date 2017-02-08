@@ -6,6 +6,7 @@ config BR2_PACKAGE_QT5X11EXTRAS
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5x11extras module.
+	  Qt X11 Extras enables the Qt programmer to write
+	  applications for the Linux/X11 platform.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtx11extras-index.html

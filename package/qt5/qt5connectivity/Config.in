@@ -8,9 +8,11 @@ config BR2_PACKAGE_QT5CONNECTIVITY
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5connectivity module.
+	  Qt Connectivity module provides support for Bluetooth/NFC
+	  peripherials.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtbluetooth-index.html
+	  http://doc.qt.io/qt-5/qtnfc-index.html
 
 comment "qt5connectivity needs neard and/or bluez(5)_utils"
 	depends on !BR2_PACKAGE_NEARD && !BR2_PACKAGE_BLUEZ_UTILS && \
