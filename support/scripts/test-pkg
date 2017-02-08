@@ -5,14 +5,15 @@ TOOLCHAINS_URL='http://autobuild.buildroot.org/toolchains/configs/toolchain-conf
 
 main() {
     local o O opts
-    local cfg dir pkg toolchain
+    local cfg dir pkg random toolchain
     local -a toolchains
 
-    o='hc:d:p:'
-    O='help,config-snippet:build-dir:package:'
+    o='hc:d:p:r:'
+    O='help,config-snippet:build-dir:package:,random:'
     opts="$( getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}"  )"
     eval set -- "${opts}"
 
+    random=0
     while [ ${#} -gt 0 ]; do
         case "${1}" in
         (-h|--help)
@@ -26,6 +27,9 @@ main() {
             ;;
         (-p|--package)
             pkg="${2}"; shift 2
+            ;;
+        (-r|--random)
+            random="${2}"; shift 2
             ;;
         (--)
             shift; break
@@ -43,7 +47,12 @@ main() {
     # E.g.: http://server/path/to/name.config,arch,libc
     #  -->  http://server/path/to/name.config
     toolchains=( $( curl -s "${TOOLCHAINS_URL}" \
-                    |sed -r -e 's/,.*//; /internal/d;'
+                    |sed -r -e 's/,.*//; /internal/d;' \
+                    |if [ ${random} -gt 0 ]; then \
+                        sort -R |head -n ${random}
+                     else
+                        cat
+                     fi |sort
                   )
                )
 
@@ -158,6 +167,10 @@ Options:
     -p PKG, --package PKG
         Test-build the package PKG, by running 'make PKG'; if not specified,
         just runs 'make'.
+
+    -r N, --random N
+        Limit the tests to the N randomly selected toolchains, instead of
+        building with all toolchains.
 
 Example:
 
