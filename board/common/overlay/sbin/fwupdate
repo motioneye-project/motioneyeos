@@ -1,10 +1,14 @@
 #!/bin/bash
 
 function exit_usage() {
-    echo "Usage: $0 latest"
+    echo "Usage: $0 versions"
     echo "       $0 current"
-    echo "       $0 upgrade <version|url>"
-    echo "       $0 progress"
+    echo "       $0 download <version|url>"
+    echo "       $0 extract"
+    echo "       $0 flashboot"
+    echo "       $0 flashreboot"
+    echo "       $0 status"
+    
     
     exit -1
 }
@@ -13,38 +17,110 @@ if [ -z "$1" ]; then
     exit_usage
 fi
 
-function show_latest() {
+
+SYS_VERSION_FILE=/etc/version
+SYS_BOARD_FILE=/etc/board
+OS_CONF=/data/etc/os.conf
+
+
+function show_versions() {
+    source $OS_CONF
+    board=$(cat $SYS_BOARD_FILE)
+  
+    # the /usr/libexec/list-versions-* helpers return a table with the following format:
+    #     <version>|<prerelease>|<board>|<url>
+    versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
+               /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
+
+    for version in $versions:
+        $IFS="|" varr=($version)
+        if [ "$os_prereleases" == "false" ] && [ "${varr[1]}" == "true" ]; then
+            continue  # skip prereleases
+        fi
+        if [ "$board" != "${varr[2]}" ]; then
+            continue  # skip other boards
+        fi
+
+        echo "${varr[0]}"
+    done
 }
 
 function show_current() {
+    source $SYS_VERSION_FILE
+    
+    echo "Name:       $os_name"
+    echo "Short Name: $os_short_name"
+    echo "Prefix:     $os_prefix"
+    echo "Version:    $os_version"
 }
 
-function do_upgrade() {
+function do_download() {
+    # TODO check space
+    # TODO cleanup download dir
+    # TODO prepare download dir
+    # TODO wget --no-check-certificate
 }
 
-function show_progress() {
+function do_extract() {
+    # TODO gunzip
+    # TODO verify hash
+}
+
+function flash_boot() {
+    # TODO backup /boot/config.txt
+    # TODO umount /boot
+    # TODO set trap exit cleanup routine
+    # TODO disable rebooting (/sbin/reboot)
+    # TODO remount rw /
+    # TODO read partition table
+    # TODO dd boot.img
+    # TODO mount r/w /boot
+    # TODO restore /boot/config.txt
+    # TODO call cleanup routine
+}
+
+function flash_reboot() {
+    # TODO sed /boot/config.txt initramfs
+    # TODO sync
+    # TODO umount
+    # TODO busybox reboot || b > sysrq
+}
+
+function show_status() {
 }
 
 
 case "$1" in
-    latest)
-        show_latest
+    versions)
+        show_versions
         ;;
 
     current)
         show_current
         ;;
 
-    upgrade)
+    download)
         if [ -z "$2" ];
             exit_usage
         fi
 
-        do_upgrade $2
+        do_download $2
         ;;
 
-    progress)
-        show_progress
+    extract)
+        do_extract
+        ;;
+
+    flashboot)
+        flash_boot
+        ;;
+
+    flashreboot)
+        flash_reboot
+        ;;
+
+    status)
+        show_status
         ;;
 
     *)
