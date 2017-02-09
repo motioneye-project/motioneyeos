@@ -4,18 +4,12 @@
 #
 ################################################################################
 
-LXC_VERSION = 2.0.6
+LXC_VERSION = 2.0.7
 LXC_SITE = https://linuxcontainers.org/downloads/lxc
 LXC_LICENSE = LGPLv2.1+
 LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = libcap host-pkgconf
 LXC_INSTALL_STAGING = YES
-# we're patching configure.ac
-LXC_AUTORECONF = YES
-
-# This patch adds --enable-gnutls option
-LXC_PATCH = \
-	https://github.com/lxc/lxc/commit/64fa248372c90c9d98fc9d67f80327d865c11a48.patch
 
 LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-python --disable-werror \
