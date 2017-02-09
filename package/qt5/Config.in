@@ -37,12 +37,13 @@ choice
 config BR2_QT5_VERSION_LATEST
 	bool "Latest (5.8)"
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	help
 	  This option builds Qt 5.8, which is licensed under
 	  (L)GPLv3+.
 
-comment "Latest Qt version needs toolchain w/ gcc >= 4.8"
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+comment "Latest Qt version needs host/toolchain w/ gcc >= 4.8"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_HOST_GCC_AT_LEAST_4_8
 
 config BR2_QT5_VERSION_5_6
 	bool "LTS (5.6)"
