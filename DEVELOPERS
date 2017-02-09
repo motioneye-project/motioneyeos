@@ -156,6 +156,7 @@ N:	Bernd Kuhls <bernd.kuhls@t-online.de>
 F:	package/apache/
 F:	package/apr/
 F:	package/apr-util/
+F:	package/bluez-tools/
 F:	package/clamav/
 F:	package/dovecot/
 F:	package/dovecot-pigeonhole/
