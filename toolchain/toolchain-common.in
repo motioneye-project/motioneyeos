@@ -13,11 +13,10 @@ comment "Toolchain Generic Options"
 # ints before GCC 7
 config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 	bool
-	default y
-	depends on !BR2_nios2
-	depends on !BR2_ARM_CPU_ARMV4
-	depends on !BR2_ARM_CPU_ARMV5
-	depends on !BR2_sparc_v8
+	default y if BR2_nios2
+	default y if BR2_ARM_CPU_ARMV4
+	default y if BR2_ARM_CPU_ARMV5
+	default y if BR2_sparc_v8
 
 # https://sourceware.org/bugzilla/show_bug.cgi?id=19405
 config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
