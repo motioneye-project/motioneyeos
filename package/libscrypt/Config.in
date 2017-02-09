@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBSCRYPT
+	bool "libscrypt"
+	# Unconditionally builds a shared library
+	depends on !BR2_STATIC_LIBS
+	help
+	  This is a library that implements the secure password
+	  hashing function "scrypt".
+
+	  http://www.lolware.net/libscrypt.html
+
+comment "libscrypt needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

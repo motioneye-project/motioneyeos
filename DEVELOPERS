@@ -1440,6 +1440,9 @@ F:	package/libtasn1/
 F:	package/proxychains-ng/
 F:	package/yasm/
 
+N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
+F:	package/libscrypt/
+
 N:	Stephan Hoffmann <sho@relinux.de>
 F:	package/cache-calibrator/
 F:	package/gtest/
