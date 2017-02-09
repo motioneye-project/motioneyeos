@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LZIP_VERSION = 1.15
+LZIP_VERSION = 1.18
 LZIP_SITE = http://download.savannah.gnu.org/releases/lzip
-LZIP_LICENSE = GPLv3+
+LZIP_LICENSE = GPLv2+
 LZIP_LICENSE_FILES = COPYING
 
 define LZIP_CONFIGURE_CMDS
