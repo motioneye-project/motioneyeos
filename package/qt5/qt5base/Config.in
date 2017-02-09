@@ -278,12 +278,11 @@ config BR2_PACKAGE_QT5BASE_ICU
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"
 	depends on !BR2_STATIC_LIBS # dlopen
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # tslib
 	select BR2_PACKAGE_TSLIB
 	help
 	  This options enables the Tslib plugin
 
-comment "tslib support needs a toolchain w/ dynamic library, headers >= 3.12"
-	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+comment "tslib support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif

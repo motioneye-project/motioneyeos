@@ -1,2 +1,4 @@
 # taken from https://github.com/kergoth/tslib/releases/tag/1.4
 sha256  ad0373f1dbfda27caec92cb10421227f226c79d160488f1ac915585ba947741f  tslib-1.4.tar.xz
+# Locally computed
+sha256	b76d25358d1e2bbcc88b0b225e8d71cd00a4795f6d17020bae270940b17d0825  02795c4fa8b842c6fc017e86b5e036466bd4d3ef.patch
