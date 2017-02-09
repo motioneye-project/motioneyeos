@@ -7,6 +7,18 @@ source "package/gdb/Config.in.host"
 
 comment "Toolchain Generic Options"
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64735
+# exception_ptr, nested_exception, and future from libstdc++ are not
+# available for architectures not supporting always lock-free atomic
+# ints before GCC 7
+config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
+	bool
+	default y
+	depends on !BR2_nios2
+	depends on !BR2_ARM_CPU_ARMV4
+	depends on !BR2_ARM_CPU_ARMV5
+	depends on !BR2_sparc_v8
+
 # https://sourceware.org/bugzilla/show_bug.cgi?id=19405
 config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
 	bool
