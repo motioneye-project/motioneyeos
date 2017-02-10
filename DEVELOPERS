@@ -744,6 +744,7 @@ F:	package/zd1211-firmware/
 
 N:	Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 F:	package/gnuradio/
+F:	package/gqrx/
 F:	package/gr-osmosdr/
 F:	package/libusbgx/
 F:	package/python-cheetah/
