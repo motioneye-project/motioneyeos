@@ -11,6 +11,9 @@ WGET_DEPENDENCIES = host-pkgconf
 WGET_LICENSE = GPLv3+
 WGET_LICENSE_FILES = COPYING
 
+# For 0002-Remove-skipping-libunistring-with-disable-iri.patch
+WGET_AUTORECONF = YES
+
 # Prefer full-blown wget over busybox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 WGET_DEPENDENCIES += busybox
