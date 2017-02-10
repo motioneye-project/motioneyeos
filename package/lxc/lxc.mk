@@ -29,6 +29,13 @@ else
 LXC_CONF_OPTS += --disable-seccomp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+LXC_CONF_OPTS += --enable-selinux
+LXC_DEPENDENCIES += libselinux
+else
+LXC_CONF_OPTS += --disable-selinux
+endif
+
 ifeq ($(BR2_PACKAGE_HAS_LUAINTERPRETER),y)
 LXC_CONF_OPTS += --enable-lua
 LXC_DEPENDENCIES += luainterpreter
