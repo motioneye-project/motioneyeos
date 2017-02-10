@@ -14,7 +14,7 @@ MOTION_AUTORECONF = YES
 
 # motion does not use any specific function of jpeg-turbo, so just relies on
 # jpeg selection
-MOTION_CONF_OPTS += --without-jpeg-turbo
+MOTION_CONF_OPTS += --without-jpeg-turbo --without-optimizecpu
 
 ifeq ($(BR2_PACKAGE_FFMPEG_SWSCALE),y)
 MOTION_DEPENDENCIES += ffmpeg
