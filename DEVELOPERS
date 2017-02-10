@@ -1195,9 +1195,7 @@ F:	package/gstreamer1/gst1-validate/
 F:	package/libevdev/
 F:	package/log4cplus/
 F:	package/postgresql/
-F:	package/qt5/qt53d/
-F:	package/qt5/qt5quickcontrols2/
-F:	package/qt5/qt5tools/
+F:	package/qt5/
 F:	package/racehound/
 F:	package/wiringpi/
 
