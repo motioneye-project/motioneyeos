@@ -87,6 +87,13 @@ else
 POPPLER_CONF_OPTS += --disable-poppler-qt4
 endif
 
+ifeq ($(BR2_PACKAGE_POPPLER_QT5),y)
+POPPLER_DEPENDENCIES += qt5base
+POPPLER_CONF_OPTS += --enable-poppler-qt5
+else
+POPPLER_CONF_OPTS += --disable-poppler-qt5
+endif
+
 ifeq ($(BR2_PACKAGE_OPENJPEG),y)
 POPPLER_DEPENDENCIES += openjpeg
 POPPLER_CONF_OPTS += --enable-libopenjpeg
