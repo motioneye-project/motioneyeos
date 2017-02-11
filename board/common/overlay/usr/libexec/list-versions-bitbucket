@@ -6,9 +6,9 @@ if [ -z "$1" ]; then
 fi
 
 opts="-s -S -f"
-test -n "$BITBUCKET_USERNAME" && opts+=" --user $BITBUCKET_USERNAME:$BITBUCKET_PASSWORD"
+test -n "$FW_USERNAME" && opts+=" --user $FW_USERNAME:$FW_PASSWORD"
 url=https://api.bitbucket.org/2.0/repositories/$1/downloads?pagelen=100
-jq_expr='.values[] | [{a: .name | capture("[^-]+-(?<b>[^-]+)-(?<c>[^-]+)\\.img\\.?.*"), url: .links.self.href}] | map(.a.c, "false", .a.b, .url) | join("|")'
+jq_expr='.values[] | [{a: .name | split("-"), url: .links.self.href}] | map((.a[2] | rtrimstr(".img.gz") | rtrimstr(".img")), "false", .a[1], .url) | join("|")'
 
 curl $opts $url | jq --raw-output "$jq_expr"
 exit ${PIPESTATUS[0]}

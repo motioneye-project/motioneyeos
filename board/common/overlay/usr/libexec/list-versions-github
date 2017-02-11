@@ -6,9 +6,9 @@ if [ -z "$1" ]; then
 fi
 
 opts="-s -S -f"
-test -n "$GITHUB_USERNAME" && opts+=" --user $GITHUB_USERNAME:$GITHUB_PASSWORD"
+test -n "$FW_USERNAME" && opts+=" --user $FW_USERNAME:$FW_PASSWORD"
 url=https://api.github.com/repos/$1/releases
-jq_expr='.[] | {version: .name, prerelease: .prerelease | tostring, name: .assets[].name | capture("[^-]+-(?<b>[^-]+)") | flatten, asset: .assets[].browser_download_url} | flatten | join("|")'
+jq_expr='.[] | {version: .name, prerelease: .prerelease | tostring} + (.assets[] | {name: .name | split("-")[1], url: .browser_download_url}) | flatten | join("|")'
 
 curl $opts $url | jq --raw-output "$jq_expr"
 exit ${PIPESTATUS[0]}
