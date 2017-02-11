@@ -1,8 +1,7 @@
 #!/bin/sh
 
-set -e
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
-PATH=/bin
 BOOT_DEV=/dev/mmcblk0p1
 ROOT_DEV=/dev/mmcblk0p2
 DATA_DEV=/dev/mmcblk0p3
@@ -19,16 +18,16 @@ msg() {
 
 on_exit() {
     msg "Switching to normal boot"
-    /normal_boot
+    /remove_initramfs
 
-    msg "Syncing"
-    sync
-    
     msg "Unmounting data partition"
     umount /data
-
+    
     msg "Unmounting boot partition"
     umount /boot
+    
+    msg "Syncing"
+    sync
     
     msg "Rebooting"
     echo 'b' > /proc/sysrq-trigger
@@ -44,27 +43,26 @@ mount -t devtmpfs devtmpfs /dev
 mount -t proc proc /proc
 
 msg "Mounting boot partition"
-mount $BOOT_DEV $BOOT
+mount $BOOT_DEV /boot
 
 msg "Mounting data partition"
-mount $DATA_DEV $DATA
+mount $DATA_DEV /data
 
 if ! [ -r $FW_DIR/$FW_FILE_EXTR ]; then
     msg "No firmware found, aborting"
-    normal_boot
+    exit 1
 fi
 
-if ! [ -r $FW_DIR/$ROOT_INFO ]; then
+if ! [ -r $FW_DIR/$ROOT_INFO_FILE ]; then
     msg "No root partition info, aborting"
-    normal_boot
+    exit 1
 fi
 
 msg "Copying root image"
-root_info=($(cat $FW_DIR/$ROOT_INFO))
-root_start=${root_info[0]}
-root_size=${root_info[1]}
+root_start=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 1)
+root_size=$(cat $FW_DIR/$ROOT_INFOO_FILE | cut -d ' ' -f 2)
 
-dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size
+dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size || exit 1
 
 msg "Cleaning up"
 rm -rf $FW_DIR
