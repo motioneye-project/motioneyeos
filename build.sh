@@ -51,6 +51,6 @@ elif [ -n "$target" ]; then
     make O=$outputdir $target
 else
     make O=$outputdir
-    $boarddir/mkimage.sh
+    test -x $boarddir/mkimage.sh && $boarddir/mkimage.sh
 fi
 

@@ -1,0 +1,71 @@
+#!/bin/sh
+
+set -e
+
+PATH=/bin
+BOOT_DEV=/dev/mmcblk0p1
+ROOT_DEV=/dev/mmcblk0p2
+DATA_DEV=/dev/mmcblk0p3
+
+FW_DIR=/data/.fwupdate
+FW_FILE=firmware.img.gz
+FW_FILE_EXTR=firmware.img
+
+ROOT_INFO_FILE=root_info
+
+msg() {
+    echo "* $1"
+}
+
+on_exit() {
+    msg "Switching to normal boot"
+    /normal_boot
+
+    msg "Syncing"
+    sync
+    
+    msg "Unmounting data partition"
+    umount /data
+
+    msg "Unmounting boot partition"
+    umount /boot
+    
+    msg "Rebooting"
+    echo 'b' > /proc/sysrq-trigger
+}
+
+trap on_exit EXIT
+
+msg "Waiting for sdcard"
+sleep 2
+
+msg "Mounting pseudo filesystems"
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+
+msg "Mounting boot partition"
+mount $BOOT_DEV $BOOT
+
+msg "Mounting data partition"
+mount $DATA_DEV $DATA
+
+if ! [ -r $FW_DIR/$FW_FILE_EXTR ]; then
+    msg "No firmware found, aborting"
+    normal_boot
+fi
+
+if ! [ -r $FW_DIR/$ROOT_INFO ]; then
+    msg "No root partition info, aborting"
+    normal_boot
+fi
+
+msg "Copying root image"
+root_info=($(cat $FW_DIR/$ROOT_INFO))
+root_start=${root_info[0]}
+root_size=${root_info[1]}
+
+dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size
+
+msg "Cleaning up"
+rm -rf $FW_DIR
+
