@@ -90,6 +90,10 @@ endif
 ifeq ($(BR2_PACKAGE_POPPLER_QT5),y)
 POPPLER_DEPENDENCIES += qt5base
 POPPLER_CONF_OPTS += --enable-poppler-qt5
+# since Qt5.7.x c++11 is needed (LTS Qt5.6.x is the last one without this requirement)
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+POPPLER_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
+endif
 else
 POPPLER_CONF_OPTS += --disable-poppler-qt5
 endif
