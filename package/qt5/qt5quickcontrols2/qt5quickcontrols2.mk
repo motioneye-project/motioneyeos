@@ -36,7 +36,7 @@ define QT5QUICKCONTROLS2_INSTALL_TARGET_EXAMPLES
 endef
 endif
 
-ifeq ($(BR2_QT5_VERSION_LATEST),y)
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 define QT5QUICKCONTROLS2_INSTALL_TARGET_CMDS
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5QuickTemplates2.so.* $(TARGET_DIR)/usr/lib
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5QuickControls2.so.* $(TARGET_DIR)/usr/lib
