@@ -11,7 +11,7 @@ CLASSPATH_CONF_OPTS = \
 	--disable-rpath \
 	--disable-Werror \
 	--disable-gconf-peer \
-	--disable-gjdoc
+	--disable-gjdoc \
 	--enable-tools
 
 # classpath assumes qt runs on top of X11, but we
