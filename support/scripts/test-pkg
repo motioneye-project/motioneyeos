@@ -73,7 +73,7 @@ build_one() {
     local url="${2}"
     local cfg="${3}"
     local pkg="${4}"
-    local toolchain line skip
+    local toolchain
 
     # Using basename(1) on a URL works nicely
     toolchain="$(basename "${url}" .config)"
@@ -106,14 +106,10 @@ build_one() {
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
     # which case this config is untestable and we skip it.
-    skip=false
-    while read line; do
-        if ! grep "^${line}\$" "${dir}/.config" >/dev/null 2>&1; then
-            printf "%s\n" "${line}"
-            skip=true
-        fi
-    done <"${cfg}" >"${dir}/missing.config"
-    if ${skip}; then
+    # We don't care about the locale to sort in, as long as both sort are
+    # done in the same locale.
+    comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
+    if [ -s "${dir}/missing.config" ]; then
         printf ", SKIPPED\n"
         return
     fi
