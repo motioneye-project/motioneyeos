@@ -10,7 +10,7 @@ main() {
 
     o='hc:d:p:r:'
     O='help,config-snippet:build-dir:package:,random:'
-    opts="$( getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}"  )"
+    opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
     eval set -- "${opts}"
 
     random=0
@@ -46,14 +46,14 @@ main() {
     # Extract the URLs of the toolchains; drop internal toolchains
     # E.g.: http://server/path/to/name.config,arch,libc
     #  -->  http://server/path/to/name.config
-    toolchains=( $( curl -s "${TOOLCHAINS_URL}" \
-                    |sed -r -e 's/,.*//; /internal/d;' \
-                    |if [ ${random} -gt 0 ]; then \
-                        sort -R |head -n ${random}
-                     else
-                        cat
-                     fi |sort
-                  )
+    toolchains=($(curl -s "${TOOLCHAINS_URL}" \
+                  |sed -r -e 's/,.*//; /internal/d;' \
+                  |if [ ${random} -gt 0 ]; then \
+                      sort -R |head -n ${random}
+                   else
+                      cat
+                   fi |sort
+                 )
                )
 
     if [ ${#toolchains[@]} -eq 0 ]; then
@@ -73,7 +73,7 @@ build_one() {
     local toolchain line skip
 
     # Using basename(1) on a URL works nicely
-    toolchain="$( basename "${url}" .config )"
+    toolchain="$(basename "${url}" .config)"
 
     printf "%40s: " "${toolchain}"
 
