@@ -83,9 +83,8 @@ build_one() {
     dir="${dir}/${toolchain}"
     mkdir -p "${dir}"
 
-    printf "download config"
     if ! curl -s "${url}" >"${dir}/.config"; then
-        printf ": FAILED\n"
+        printf "FAILED\n"
         return
     fi
 
@@ -97,9 +96,8 @@ build_one() {
 	_EOF_
     cat "${cfg}" >>"${dir}/.config"
 
-    printf ", olddefconfig"
     if ! make O="${dir}" olddefconfig >/dev/null 2>&1; then
-        printf ": FAILED\n"
+        printf "FAILED\n"
         return
     fi
     # We want all the options from the snippet to be present as-is (set
@@ -110,28 +108,26 @@ build_one() {
     # done in the same locale.
     comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
     if [ -s "${dir}/missing.config" ]; then
-        printf ", SKIPPED\n"
+        printf "SKIPPED\n"
         return
     fi
     # Remove file, it's empty anyway.
     rm -f "${dir}/missing.config"
 
     if [ -n "${pkg}" ]; then
-        printf ", dirclean"
         if ! make O="${dir}" "${pkg}-dirclean" >> "${dir}/logfile" 2>&1; then
-            printf ": FAILED\n"
+            printf "FAILED\n"
             return
         fi
     fi
 
-    printf ", build"
     # shellcheck disable=SC2086
     if ! make O="${dir}" ${pkg} >> "${dir}/logfile" 2>&1; then
-        printf ": FAILED\n"
+        printf "FAILED\n"
         return
     fi
 
-    printf ": OK\n"
+    printf "OK\n"
 }
 
 help() {
