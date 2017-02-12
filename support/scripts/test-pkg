@@ -39,6 +39,9 @@ main() {
     if [ -z "${cfg}" ]; then
         printf "error: no config snippet specified\n" >&2; exit 1
     fi
+    if [ ! -e "${cfg}" ]; then
+        printf "error: %s: no such file\n" "${cfg}" >&2; exit 1
+    fi
     if [ -z "${dir}" ]; then
         dir="${HOME}/br-test-pkg"
     fi
