@@ -4,21 +4,20 @@
 #
 ################################################################################
 
-CLASSPATH_VERSION = 0.98
+CLASSPATH_VERSION = 0.99
 CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_CONF_OPTS = \
 	--disable-examples \
-	--disable-plugin \
 	--disable-rpath \
 	--disable-Werror \
 	--disable-gconf-peer \
-	--disable-tools
+	--disable-gjdoc
+	--enable-tools
 
 # classpath assumes qt runs on top of X11, but we
 # don't support qt4 on X11
 CLASSPATH_CONF_OPTS += --disable-qt-peer
 CLASSPATH_DEPENDENCIES = host-pkgconf
-CLASSPATH_AUTORECONF = YES
 CLASSPATH_LICENSE = GPLv2+ with exception
 CLASSPATH_LICENSE_FILES = COPYING
 
