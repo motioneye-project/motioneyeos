@@ -509,6 +509,7 @@ F:	package/netsurf-buildsystem/
 N:	Fabrice Fontaine <fabrice.fontaine@orange.com>
 F:	package/domoticz/
 F:	package/libmediaart/
+F:	package/libmaxminddb/
 F:	package/openzwave/
 
 N:	Fabrice Fontaine <fontaine.fabrice@gmail.com>
