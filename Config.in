@@ -158,6 +158,13 @@ config BR2_XZCAT
 	  Command to be used to extract a xz'ed file to stdout.
 	  Default is "xzcat"
 
+config BR2_LZCAT
+	string "lzcat command"
+	default "lzip -d -c"
+	help
+	  Command to be used to extract a lzip'ed file to stdout.
+	  Default is "lzip -d -c"
+
 config BR2_TAR_OPTIONS
 	string "Tar options"
 	default ""
