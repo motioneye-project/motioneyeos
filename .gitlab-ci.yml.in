@@ -1,0 +1,52 @@
+# Configuration for Gitlab-CI.
+# Builds appear on https://gitlab.com/buildroot.org/buildroot/pipelines
+# The .gitlab-ci.yml file is generated from .gitlab-ci.yml.in.
+# It needs to be regenerated every time a defconfig is added, using
+# "make .gitlab-ci.yml".
+
+image: debian:stable
+
+before_script:
+    - dpkg --add-architecture i386
+    # The container has no package lists, so need to update first
+    - apt-get update -qq
+    - apt-get install -y -qq --no-install-recommends
+        build-essential locales bc ca-certificates file rsync
+        git bzr cvs mercurial subversion libc6:i386 unzip wget cpio
+    # To be able to generate a toolchain with locales, enable one UTF-8 locale
+    - sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
+    - /usr/sbin/locale-gen
+
+.defconfig_script: &defconfig_script
+    - echo 'Configure Buildroot'
+    - make ${CI_BUILD_NAME}
+    - echo 'Build buildroot'
+    - |
+        make > >(tee build.log |grep '>>>') 2>&1 || {
+            echo 'Failed build last output'
+            tail -200 build.log
+            exit 1
+        }
+
+check-gitlab-ci.yml:
+    script:
+        - mv .gitlab-ci.yml .gitlab-ci.yml.orig
+        - make .gitlab-ci.yml
+        - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
+
+.defconfig: &defconfig
+    # Running the defconfigs for every push is too much, so limit to
+    # explicit triggers through the API.
+    only:
+        - triggers
+        - tags
+    script: *defconfig_script
+    artifacts:
+        when: always
+        expire_in: 2 weeks
+        paths:
+            - build.log
+            - output/images/
+            - output/build/build-time.log
+            - output/build/packages-file-list.txt
+

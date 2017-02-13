@@ -1068,6 +1068,9 @@ release:
 print-version:
 	@echo $(BR2_VERSION_FULL)
 
+.gitlab-ci.yml: .gitlab-ci.yml.in configs/*_defconfig
+	(cd configs; LC_ALL=C ls -1 *_defconfig) | sed 's/$$/: *defconfig/' | cat $< - > $@
+
 include docs/manual/manual.mk
 -include $(foreach dir,$(BR2_EXTERNAL_DIRS),$(dir)/docs/*/*.mk)
 
