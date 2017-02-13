@@ -343,12 +343,28 @@ config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	  to be set.
 
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
-	bool "CRC SPL image for Altera SoC FPGA"
+	bool "CRC image for Altera SoC FPGA (mkpimage)"
 	depends on BR2_arm
-	depends on BR2_TARGET_UBOOT_SPL
+	depends on BR2_TARGET_UBOOT_SPL || BR2_TARGET_UBOOT_FORMAT_DTB_BIN
 	help
-	  Generate SPL image fixed by the mkpimage tool to enable
+	  Pass the U-Boot image through the mkpimage tool to enable
 	  booting on the Altera SoC FPGA based platforms.
+
+	  On some platforms, it's the SPL that needs to be passed
+	  through mkpimage. On some other platforms there is no SPL
+	  because the internal SRAM is big enough to store the full
+	  U-Boot. In this case, it's directly the full U-Boot image
+	  that is passed through mkpimage.
+
+	  If BR2_TARGET_UBOOT_SPL is enabled then
+	  BR2_TARGET_UBOOT_SPL_NAME is converted by mkpimage using
+	  header version 0.
+
+	  Otherwise the full u-boot-dtb.bin is converted using
+	  mkpimage header version 1.
+
+	  In either case the resulting file will be given a .crc
+	  extension.
 
 menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 	bool "Environment image"
