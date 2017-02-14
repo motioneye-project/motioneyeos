@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_GMOCK
+	bool "gmock merged into gtest package"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GTEST
+	select BR2_PACKAGE_GTEST_GMOCK
+	help
+	  GMock is now a suboption of the GTest package.
+
 config BR2_GLIBC_VERSION_2_22
 	bool "glibc 2.22 removed"
 	select BR2_LEGACY

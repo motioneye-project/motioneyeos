@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 Name: gmock
 Description: Google C++ Mocking Framework
-Version: 1.7.0
+Version: 1.8.0
 Libs: -L${libdir} -lgmock
 Libs.private: -lpthread
 Cflags: -I${includedir}

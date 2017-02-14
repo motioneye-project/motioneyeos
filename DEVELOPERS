@@ -287,7 +287,6 @@ N:	Carlo Caione <carlo.caione@gmail.com>
 F:	package/sunxi-boards/
 
 N:	Carlos Santos <casantos@datacom.ind.br>
-F:	package/gmock/
 F:	package/gtest/
 F:	package/libpam-radius-auth/
 F:	package/libpam-tacplus/
