@@ -1,0 +1,18 @@
+Fix a typo in the variable name. Only check path for a single library name.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org> 
+
+diff -Nur bctoolbox-0.4.0.orig/CMakeLists.txt bctoolbox-0.4.0/CMakeLists.txt
+--- bctoolbox-0.4.0.orig/CMakeLists.txt	2016-10-06 17:30:41.000000000 +0200
++++ bctoolbox-0.4.0/CMakeLists.txt	2017-02-13 23:30:38.641288032 +0100
+@@ -103,8 +103,8 @@
+ endif()
+ 
+ if(MBEDTLS_FOUND)
+-	get_filename_component(mbedtls_library_path "${MBEDTLS_LIBRARIES}" PATH)
+-	set(LIBS_PRIVATE "${LIBS_PRIVATE} -L${mbedlts_library_path}")
++	get_filename_component(mbedtls_library_path "${MBEDTLS_LIBRARY}" PATH)
++	set(LIBS_PRIVATE "${LIBS_PRIVATE} -L${mbedtls_library_path}")
+ endif()
+ if(POLARSSL_FOUND)
+ 	get_filename_component(polarssl_library_path "${POLARSSL_LIBRARIES}" PATH)
