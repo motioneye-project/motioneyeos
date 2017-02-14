@@ -11,11 +11,14 @@ BCTOOLBOX_LICENSE_FILES = COPYING
 BCTOOLBOX_DEPENDENCIES = mbedtls
 BCTOOLBOX_INSTALL_STAGING = YES
 
+# Set CMAKE_SKIP_RPATH to prevent bctoolbox from adding the rpath to
+# shared library.
 BCTOOLBOX_CONF_OPTS = \
 	-DENABLE_STRICT=OFF \
 	-DENABLE_TESTS_COMPONENT=OFF \
 	-DENABLE_TESTS=OFF \
-	-DGIT_EXECUTABLE=OFF
+	-DGIT_EXECUTABLE=OFF \
+	-DCMAKE_SKIP_RPATH=ON
 
 # bctoolbox can be build with mbedTLS or PolarSSL support. If both
 # libraries are present, mbedTLS is preferred over PolarSSL.
