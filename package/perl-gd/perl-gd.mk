@@ -12,6 +12,11 @@ PERL_GD_LICENSE = Artistic or GPLv1+
 PERL_GD_LICENSE_FILES = LICENSE
 PERL_GD_PREFER_INSTALLER = EUMM
 
+define PERL_GD_MOVE_XS
+	mv $(@D)/lib/GD.xs $(@D)/GD.xs
+endef
+PERL_GD_POST_PATCH_HOOKS += PERL_GD_MOVE_XS
+
 PERL_GD_CONF_OPTS = \
 	-options=FT,PNG \
 	-lib_gd_path=$(STAGING_DIR)/usr \
