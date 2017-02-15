@@ -766,6 +766,9 @@ F:	package/python-rpi-gpio/
 N:	Ignacy Gawędzki <ignacy.gawedzki@green-communications.fr>
 F:	package/angularjs/
 
+N:	Ilias Apalodimas <apalos@gmail.com>
+F:	package/keepalived/
+
 N:	James Knight <james.knight@rockwellcollins.com>
 F:	package/atkmm/
 F:	package/cairomm/
