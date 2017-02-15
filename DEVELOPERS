@@ -483,6 +483,7 @@ F:	configs/mx6sx_udoo_neo_defconfig
 F:	configs/mx6udoo_defconfig
 F:	configs/wandboard_defconfig
 F:	configs/warp7_defconfig
+F:	package/kmscube/
 
 N:	Fabio Porcedda <fabio.porcedda@gmail.com>
 F:	package/netsurf-buildsystem/

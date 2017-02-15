@@ -1,0 +1,27 @@
+From 23186149100dd9c871f65132edce67db0b1ce3c3 Mon Sep 17 00:00:00 2001
+From: XoD <xoddark@gmail.com>
+Date: Mon, 13 Feb 2017 16:43:35 -0200
+Subject: [PATCH] Add imx-drm management
+
+Add imx-drm in the list of kms modules.
+
+Signed-off-by: XoD <xoddark@gmail.com>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ kmscube.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/kmscube.c b/kmscube.c
+index ca2c266..95bd77f 100644
+--- a/kmscube.c
++++ b/kmscube.c
+@@ -122,6 +122,7 @@ static int init_drm(void)
+	static const char *modules[] = {
+		"exynos",
+		"i915",
++		"imx-drm",
+		"msm",
+		"nouveau",
+		"omapdrm",
+--
+2.7.4
