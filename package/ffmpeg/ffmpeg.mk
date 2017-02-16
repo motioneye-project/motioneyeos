@@ -496,4 +496,9 @@ define FFMPEG_CONFIGURE_CMDS
 	)
 endef
 
+define FFMPEG_REMOVE_EXAMPLE_SRC_FILES
+	rm -rf $(TARGET_DIR)/usr/share/ffmpeg/examples
+endef
+FFMPEG_POST_INSTALL_TARGET_HOOKS += FFMPEG_REMOVE_EXAMPLE_SRC_FILES
+
 $(eval $(autotools-package))
