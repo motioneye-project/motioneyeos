@@ -2,7 +2,7 @@ Intro
 =====
 
 The instructions herein are valid for the FriendlyARM NanoPi NEO,
-both the 256MiB and 512MiB versions. They should also work the the
+both the 256MiB and 512MiB versions. They should also work for the
 NanoPi NEO Air, but this is untested so far.
 
 The FriendlyARM Nanopi NEO is a 4x4cm² board with an Allwiner H3 SoC:
@@ -14,9 +14,8 @@ The FriendlyARM Nanopi NEO is a 4x4cm² board with an Allwiner H3 SoC:
   - 10/100 ethernet MAC
   - GPIOs, SPI, I2c...
 
-Support for the Nanopi NEO in U-Boot and Linux is very recent, so
-much so that we have to use an -rc tag for U-Boot and a special
-Linux tree.
+Support for the Nanopi NEO in U-Boot and Linux is very recent, so only
+core, basic features are available.
 
 Unfortunately, support for the ethernet MAC and the USB OTG are not
 yet upstream, but are being actively worked on.
