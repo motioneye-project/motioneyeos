@@ -1,0 +1,26 @@
+comment "Linaro toolchains available for Cortex-A + EABIhf"
+	depends on BR2_armeb
+	depends on !BR2_ARM_CPU_ARMV7A || !BR2_ARM_EABIHF
+	depends on !BR2_STATIC_LIBS
+
+config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
+	bool "Linaro armeb 2016.11"
+	depends on BR2_armeb
+	depends on BR2_ARM_CPU_ARMV7A || BR2_ARM_CPU_ARMV8
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on BR2_ARM_EABIHF
+	depends on !BR2_STATIC_LIBS
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_6
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+	help
+	  Linaro toolchain for the ARM big endian architecture. It
+	  uses Linaro GCC 2016.11 (based on gcc 6.2.1), Linaro GDB
+	  2016.11 (based on GDB 7.12), glibc 2.23, Binutils 2016.11
+	  (based on 2.27). It generates code that runs on all Cortex-A
+	  profile devices, but tuned for the Cortex-A9. The code
+	  generated is Thumb 2, with the hard floating point calling
+	  convention, and uses the VFPv3-D16 FPU instructions.

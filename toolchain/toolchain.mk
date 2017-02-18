@@ -10,7 +10,7 @@ define GLIBC_COPY_NSSWITCH_FILE
 		$(INSTALL) -D -m 0644 package/glibc/nsswitch.conf $(TARGET_DIR)/etc/nsswitch.conf ; \
 	fi
 endef
-TARGET_FINALIZE_HOOKS += GLIBC_COPY_NSSWITCH_FILE
+TOOLCHAIN_TARGET_FINALIZE_HOOKS += GLIBC_COPY_NSSWITCH_FILE
 endif
 
 # Install the gconv modules
@@ -52,5 +52,5 @@ define COPY_GCONV_LIBS
 			>$(TARGET_DIR)/usr/lib/gconv/gconv-modules; \
 	fi
 endef
-TARGET_FINALIZE_HOOKS += COPY_GCONV_LIBS
+TOOLCHAIN_TARGET_FINALIZE_HOOKS += COPY_GCONV_LIBS
 endif

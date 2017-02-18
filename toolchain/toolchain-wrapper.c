@@ -22,12 +22,15 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
 
 #ifdef BR_CCACHE
 static char ccache_path[PATH_MAX];
 #endif
 static char path[PATH_MAX];
 static char sysroot[PATH_MAX];
+static char source_time[sizeof("-D__TIME__=\"HH:MM:SS\"")];
+static char source_date[sizeof("-D__DATE__=\"MMM DD YYYY\"")];
 
 /**
  * GCC errors out with certain combinations of arguments (examples are
@@ -39,8 +42,11 @@ static char sysroot[PATH_MAX];
  * 	-mfloat-abi=
  * 	-march=
  * 	-mcpu=
+ * 	-D__TIME__=
+ * 	-D__DATE__=
+ * 	-Wno-builtin-macro-redefined
  */
-#define EXCLUSIVE_ARGS	3
+#define EXCLUSIVE_ARGS	6
 
 static char *predef_args[] = {
 #ifdef BR_CCACHE
@@ -66,6 +72,9 @@ static char *predef_args[] = {
 #ifdef BR_OMIT_LOCK_PREFIX
 	"-Wa,-momit-lock-prefix=yes",
 #endif
+#ifdef BR_NO_FUSED_MADD
+	"-mno-fused-madd",
+#endif
 #ifdef BR_BINFMT_FLAT
 	"-Wl,-elf2flt",
 #endif
@@ -80,23 +89,119 @@ static char *predef_args[] = {
 #endif
 };
 
-static void check_unsafe_path(const char *path, int paranoid)
-{
-	char **c;
-	static char *unsafe_paths[] = {
-		"/lib", "/usr/include", "/usr/lib", "/usr/local/include", "/usr/local/lib", NULL,
-	};
+/* A {string,length} tuple, to avoid computing strlen() on constants.
+ *  - str must be a \0-terminated string
+ *  - len does not account for the terminating '\0'
+ */
+struct str_len_s {
+	const char *str;
+	size_t     len;
+};
 
-	for (c = unsafe_paths; *c != NULL; c++) {
-		if (!strncmp(path, *c, strlen(*c))) {
-			fprintf(stderr, "%s: %s: unsafe header/library path used in cross-compilation: '%s'\n",
-				program_invocation_short_name,
-				paranoid ? "ERROR" : "WARNING", path);
-			if (paranoid)
-				exit(1);
+/* Define a {string,length} tuple. Takes an unquoted constant string as
+ * parameter. sizeof() on a string literal includes the terminating \0,
+ * but we don't want to count it.
+ */
+#define STR_LEN(s) { #s, sizeof(#s)-1 }
+
+/* List of paths considered unsafe for cross-compilation.
+ *
+ * An unsafe path is one that points to a directory with libraries or
+ * headers for the build machine, which are not suitable for the target.
+ */
+static const struct str_len_s unsafe_paths[] = {
+	STR_LEN(/lib),
+	STR_LEN(/usr/include),
+	STR_LEN(/usr/lib),
+	STR_LEN(/usr/local/include),
+	STR_LEN(/usr/local/lib),
+	{ NULL, 0 },
+};
+
+/* Unsafe options are options that specify a potentialy unsafe path,
+ * that will be checked by check_unsafe_path(), below.
+ */
+static const struct str_len_s unsafe_opts[] = {
+	STR_LEN(-I),
+	STR_LEN(-idirafter),
+	STR_LEN(-iquote),
+	STR_LEN(-isystem),
+	STR_LEN(-L),
+	{ NULL, 0 },
+};
+
+/* Check if path is unsafe for cross-compilation. Unsafe paths are those
+ * pointing to the standard native include or library paths.
+ *
+ * We print the arguments leading to the failure. For some options, gcc
+ * accepts the path to be concatenated to the argument (e.g. -I/foo/bar)
+ * or separated (e.g. -I /foo/bar). In the first case, we need only print
+ * the argument as it already contains the path (arg_has_path), while in
+ * the second case we need to print both (!arg_has_path).
+ *
+ * If paranoid, exit in error instead of just printing a warning.
+ */
+static void check_unsafe_path(const char *arg,
+			      const char *path,
+			      int paranoid,
+			      int arg_has_path)
+{
+	const struct str_len_s *p;
+
+	for (p=unsafe_paths; p->str; p++) {
+		if (strncmp(path, p->str, p->len))
 			continue;
-		}
+		fprintf(stderr,
+			"%s: %s: unsafe header/library path used in cross-compilation: '%s%s%s'\n",
+			program_invocation_short_name,
+			paranoid ? "ERROR" : "WARNING",
+			arg,
+			arg_has_path ? "" : "' '", /* close single-quote, space, open single-quote */
+			arg_has_path ? "" : path); /* so that arg and path are properly quoted. */
+		if (paranoid)
+			exit(1);
 	}
+}
+
+/* Read SOURCE_DATE_EPOCH from environment to have a deterministic
+ * timestamp to replace embedded current dates to get reproducible
+ * results.  Returns -1 if SOURCE_DATE_EPOCH is not defined.
+ */
+static time_t get_source_date_epoch()
+{
+	char *source_date_epoch;
+	long long epoch;
+	char *endptr;
+
+	source_date_epoch = getenv("SOURCE_DATE_EPOCH");
+	if (!source_date_epoch)
+		return (time_t) -1;
+
+	errno = 0;
+	epoch = strtoll(source_date_epoch, &endptr, 10);
+	if ((errno == ERANGE && (epoch == LLONG_MAX || epoch == LLONG_MIN))
+			|| (errno != 0 && epoch == 0)) {
+		fprintf(stderr, "environment variable $SOURCE_DATE_EPOCH: "
+				"strtoll: %s\n", strerror(errno));
+		exit(2);
+	}
+	if (endptr == source_date_epoch) {
+		fprintf(stderr, "environment variable $SOURCE_DATE_EPOCH: "
+				"no digits were found: %s\n", endptr);
+		exit(2);
+	}
+	if (*endptr != '\0') {
+		fprintf(stderr, "environment variable $SOURCE_DATE_EPOCH: "
+				"trailing garbage: %s\n", endptr);
+		exit(2);
+	}
+	if (epoch < 0) {
+		fprintf(stderr, "environment variable $SOURCE_DATE_EPOCH: "
+				"value must be nonnegative: %lld \n", epoch);
+		exit(2);
+	}
+
+	return (time_t) epoch;
 }
 
 int main(int argc, char **argv)
@@ -109,6 +214,7 @@ int main(int argc, char **argv)
 	char *paranoid_wrapper;
 	int paranoid;
 	int ret, i, count = 0, debug;
+	time_t source_date_epoch;
 
 	/* Calculate the relative paths */
 	basename = strrchr(progpath, '/');
@@ -214,6 +320,28 @@ int main(int argc, char **argv)
 	}
 #endif /* ARCH || CPU */
 
+	source_date_epoch = get_source_date_epoch();
+	if (source_date_epoch != -1) {
+		struct tm *tm = localtime(&source_date_epoch);
+		if (!tm) {
+			perror("__FILE__: localtime");
+			return 3;
+		}
+		ret = strftime(source_time, sizeof(source_time), "-D__TIME__=\"%T\"", tm);
+		if (!ret) {
+			perror("__FILE__: overflow");
+			return 3;
+		}
+		*cur++ = source_time;
+		ret = strftime(source_date, sizeof(source_date), "-D__DATE__=\"%b %e %Y\"", tm);
+		if (!ret) {
+			perror("__FILE__: overflow");
+			return 3;
+		}
+		*cur++ = source_date;
+		*cur++ = "-Wno-builtin-macro-redefined";
+	}
+
 	paranoid_wrapper = getenv("BR_COMPILER_PARANOID_UNSAFE_PATH");
 	if (paranoid_wrapper && strlen(paranoid_wrapper) > 0)
 		paranoid = 1;
@@ -222,24 +350,23 @@ int main(int argc, char **argv)
 
 	/* Check for unsafe library and header paths */
 	for (i = 1; i < argc; i++) {
-
-		/* Skip options that do not start with -I and -L */
-		if (strncmp(argv[i], "-I", 2) && strncmp(argv[i], "-L", 2))
-			continue;
-
-		/* We handle two cases: first the case where -I/-L and
-		 * the path are separated by one space and therefore
-		 * visible as two separate options, and then the case
-		 * where they are stuck together forming one single
-		 * option.
-		 */
-		if (argv[i][2] == '\0') {
-			i++;
-			if (i == argc)
+		const struct str_len_s *opt;
+		for (opt=unsafe_opts; opt->str; opt++ ) {
+			/* Skip any non-unsafe option. */
+			if (strncmp(argv[i], opt->str, opt->len))
 				continue;
-			check_unsafe_path(argv[i], paranoid);
-		} else {
-			check_unsafe_path(argv[i] + 2, paranoid);
+
+			/* Handle both cases:
+			 *  - path is a separate argument,
+			 *  - path is concatenated with option.
+			 */
+			if (argv[i][opt->len] == '\0') {
+				i++;
+				if (i == argc)
+					break;
+				check_unsafe_path(argv[i-1], argv[i], paranoid, 0);
+			} else
+				check_unsafe_path(argv[i], argv[i] + opt->len, paranoid, 1);
 		}
 	}
 

@@ -18,16 +18,15 @@ config BR2_LINUX_NEEDS_MODULES
 # Version selection. We provide the choice between:
 #
 #  1. A single fairly recent stable kernel version
-#  2. In case an internal toolchain has been built, the same kernel
-#     version as the kernel headers
-#  3. A custom stable version
-#  4. A custom tarball
+#  2. A custom stable version
+#  3. A custom tarball
+#  4. A set of custom repository locations
 #
 choice
 	prompt "Kernel version"
 
 config BR2_LINUX_KERNEL_LATEST_VERSION
-	bool "4.4.3"
+	bool "Latest version (4.9.9)"
 
 config BR2_LINUX_KERNEL_CUSTOM_VERSION
 	bool "Custom version"
@@ -63,11 +62,11 @@ config BR2_LINUX_KERNEL_CUSTOM_HG
 	  This option allows Buildroot to get the Linux kernel source
 	  code from a Mercurial repository.
 
-config BR2_LINUX_KERNEL_CUSTOM_LOCAL
-	bool "Local directory"
+config BR2_LINUX_KERNEL_CUSTOM_SVN
+	bool "Custom Subversion repository"
 	help
 	  This option allows Buildroot to get the Linux kernel source
-	  code from a local directory.
+	  code from a Subversion repository.
 
 endchoice
 
@@ -79,7 +78,7 @@ config BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION
 	string "URL of custom kernel tarball"
 	depends on BR2_LINUX_KERNEL_CUSTOM_TARBALL
 
-if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG
+if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG || BR2_LINUX_KERNEL_CUSTOM_SVN
 
 config BR2_LINUX_KERNEL_CUSTOM_REPO_URL
 	string "URL of custom repository"
@@ -91,26 +90,19 @@ config BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION \
 		if BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION != ""  # legacy
 	help
-	  Revision to use in the typical format used by Git/Mercurial
+	  Revision to use in the typical format used by Git/Mercurial/Subversion
 	  E.G. a sha id, a tag, branch, ..
 
 endif
 
-config BR2_LINUX_KERNEL_CUSTOM_LOCAL_PATH
-	string "Path to the local directory"
-	depends on BR2_LINUX_KERNEL_CUSTOM_LOCAL
-	help
-	  Path to the local directory with the Linux kernel source code.
-
 config BR2_LINUX_KERNEL_VERSION
 	string
-	default "4.4.3" if BR2_LINUX_KERNEL_LATEST_VERSION
+	default "4.9.9" if BR2_LINUX_KERNEL_LATEST_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE \
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_TARBALL
 	default BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION \
-		if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG
-	default "custom" if BR2_LINUX_KERNEL_CUSTOM_LOCAL
+		if BR2_LINUX_KERNEL_CUSTOM_GIT || BR2_LINUX_KERNEL_CUSTOM_HG || BR2_LINUX_KERNEL_CUSTOM_SVN
 
 #
 # Patch selection
@@ -118,7 +110,6 @@ config BR2_LINUX_KERNEL_VERSION
 
 config BR2_LINUX_KERNEL_PATCH
 	string "Custom kernel patches"
-	depends on !BR2_LINUX_KERNEL_CUSTOM_LOCAL
 	help
 	  A space-separated list of patches to apply to the
 	  kernel. Each patch can be described as an URL, a local file
@@ -135,6 +126,14 @@ choice
 
 config BR2_LINUX_KERNEL_USE_DEFCONFIG
 	bool "Using an in-tree defconfig file"
+
+config BR2_LINUX_KERNEL_USE_ARCH_DEFAULT_CONFIG
+	bool "Use the architecture default configuration"
+	help
+	  This option will use the default configuration for the
+	  selected architecture. I.e, it is equivalent to running
+	  "make ARCH=<foo> defconfig". This is useful on architectures
+	  that have a single defconfig file, such as ARM64.
 
 config BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG
 	bool "Using a custom (def)config file"
@@ -173,12 +172,13 @@ config BR2_LINUX_KERNEL_UBOOT_IMAGE
 
 choice
 	prompt "Kernel binary format"
+	default BR2_LINUX_KERNEL_ZIMAGE if BR2_arm || BR2_armeb
 
 config BR2_LINUX_KERNEL_UIMAGE
 	bool "uImage"
 	depends on BR2_arc || BR2_arm || BR2_armeb || BR2_bfin || \
 		   BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le || \
-		   BR2_sh || BR2_sh64 || BR2_mips || BR2_mipsel || \
+		   BR2_sh || BR2_mips || BR2_mipsel || \
 		   BR2_mips64 || BR2_mips64el
 	select BR2_LINUX_KERNEL_UBOOT_IMAGE
 
@@ -197,7 +197,7 @@ config BR2_LINUX_KERNEL_ZIMAGE
 	bool "zImage"
 	depends on BR2_arm || BR2_armeb || BR2_powerpc || \
 		   BR2_powerpc64 || BR2_powerpc64le || BR2_sparc || \
-		   BR2_sh || BR2_sh64 || BR2_xtensa
+		   BR2_sh || BR2_xtensa
 
 config BR2_LINUX_KERNEL_ZIMAGE_EPAPR
 	bool "zImage.epapr"
@@ -234,7 +234,7 @@ config BR2_LINUX_KERNEL_LINUX_BIN
 
 config BR2_LINUX_KERNEL_VMLINUX_BIN
 	bool "vmlinux.bin"
-	depends on BR2_mips || BR2_mipsel || BR2_sh || BR2_sh64
+	depends on BR2_mips || BR2_mipsel || BR2_sh
 
 config BR2_LINUX_KERNEL_VMLINUX
 	bool "vmlinux"
@@ -399,7 +399,7 @@ config BR2_LINUX_KERNEL_INSTALL_TARGET
 source "linux/Config.ext.in"
 
 # Linux tools
-source "linux/Config.tools.in"
+source "package/linux-tools/Config.in"
 
 endif # BR2_LINUX_KERNEL
 
