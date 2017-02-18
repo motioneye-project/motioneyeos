@@ -229,6 +229,14 @@ config BR2_PACKAGE_QT5BASE_FONTCONFIG
 	  This option enables Fontconfig and Freetype support using
 	  the system fontconfig and freetype2 libraries.
 
+config BR2_PACKAGE_QT5BASE_HARFBUZZ
+	bool "harfbuzz support"
+	select BR2_PACKAGE_HARFBUZZ if BR2_TOOLCHAIN_HAS_SYNC_4
+	help
+	  This option enables HarfBuzz support (either system harfbuzz
+	  if the toolchain supports __sync for 4 bytes, or the qt
+	  provided one which avoids this dependency by using QAtomic).
+
 config BR2_PACKAGE_QT5BASE_GIF
 	bool "GIF support"
 	help
