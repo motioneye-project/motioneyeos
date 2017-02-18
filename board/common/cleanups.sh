@@ -176,7 +176,7 @@ rm -f $TARGET/usr/share/perl5
 rm -rf $TARGET/usr/lib/python2.7/site-packages/samba/
 rm -rf $TARGET/usr/lib/python2.7/ensurepip/
 
-# startup scripts
+# buildroot default startup scripts
 rm -f $TARGET/etc/init.d/S01logging
 rm -f $TARGET/etc/init.d/S10udev
 rm -f $TARGET/etc/init.d/S15watchdog

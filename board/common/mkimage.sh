@@ -34,6 +34,7 @@ ROOT_IMG=$IMG_DIR/root.img
 ROOT_SIZE="180" # MB
 
 DISK_SIZE="220" # MB
+OS_NAME=$(source $IMG_DIR/../../../board/common/overlay/etc/version && echo $os_short_name)
 
 # boot filesystem
 msg "creating boot loop device"
@@ -163,8 +164,8 @@ msg "destroying root loop device"
 losetup -d $loop_dev
 sync
 
-mv $DISK_IMG $(dirname $DISK_IMG)/motioneyeos-$BOARD.img
-DISK_IMG=$(dirname $DISK_IMG)/motioneyeos-$BOARD.img
+mv $DISK_IMG $(dirname $DISK_IMG)/$OS_NAME-$BOARD.img
+DISK_IMG=$(dirname $DISK_IMG)/$OS_NAME-$BOARD.img
 
 msg "$(realpath "$DISK_IMG") is ready"
 
