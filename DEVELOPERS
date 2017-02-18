@@ -848,9 +848,6 @@ F:	package/rabbitmq-c/
 N:	Juha Rantanen <juha@codercoded.com>
 F:	package/acsccid/
 
-N:	Julian Lunz <git@jlunz.de>
-F:	package/freerdp/
-
 N:	Julian Scheel <julian@jusst.de>
 F:	package/bitstream/
 F:	package/cbootimage/
@@ -1618,6 +1615,7 @@ F:	package/celt051/
 F:	package/dtc/
 F:	package/dtv-scan-tables/
 F:	package/dvb-apps/
+F:	package/freerdp/
 F:	package/keyutils/
 F:	package/libbsd/
 F:	package/libedit/
