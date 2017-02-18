@@ -1,3 +1,0 @@
-config BR2_PACKAGE_LIBWEBCAM
-	bool "libwebcam"
-

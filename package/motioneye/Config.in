@@ -1,2 +1,0 @@
-config BR2_PACKAGE_MOTIONEYE
-	bool "motioneye"
