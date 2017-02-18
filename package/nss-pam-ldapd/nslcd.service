@@ -1,0 +1,11 @@
+[Unit]
+Description=Naming services LDAP client daemon.
+After=syslog.target network.target
+
+[Service]
+Type=forking
+PIDFile=/var/run/nslcd/nslcd.pid
+ExecStart=/usr/sbin/nslcd
+
+[Install]
+WantedBy=multi-user.target

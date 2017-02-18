@@ -1,0 +1,12 @@
+#!/bin/sh
+
+resolv_conf=/etc/resolv.conf
+
+echo -n > $resolv_conf
+if [ -n "$DNS1" ]; then
+    echo "nameserver $DNS1" >> $resolv_conf
+fi
+if [ -n "$DNS2" ]; then
+    echo "nameserver $DNS2" >> $resolv_conf
+fi
+

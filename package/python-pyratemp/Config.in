@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PYRATEMP
+	bool "python-pyratemp"
+	help
+	  python-pyratemp is a Python library for doing html
+	  templates.  written entirely in Python, that is designed to
+	  be very easy to use and very like writing Python.
+
+	  https://pypi.python.org/pypi/pyratemp/

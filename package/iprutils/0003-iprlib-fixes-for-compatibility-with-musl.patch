@@ -1,0 +1,34 @@
+From df3b2b74ed7b49d74f5a5ec5687bcc3188d3b319 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 Feb 2016 14:10:44 +0100
+Subject: [PATCH] iprlib: fixes for compatibility with musl
+
+<bits/sockaddr.h> is an internal C library header, which is not
+guaranteed to be available in all C libraries, so it shouldn't be
+included, otherwise iprutils cannot be built with musl.
+
+<limits.h> is needed to get the definition of PATH_MAX.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ iprlib.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/iprlib.h b/iprlib.h
+index 16fe1e1..73aa1ce 100644
+--- a/iprlib.h
++++ b/iprlib.h
+@@ -46,9 +46,9 @@
+ #include <asm/byteorder.h>
+ #include <sys/mman.h>
+ #include <paths.h>
+-#include <bits/sockaddr.h>
+ #include <linux/netlink.h>
+ #include <time.h>
++#include <limits.h>
+ 
+ typedef uint8_t u8;
+ typedef uint16_t u16;
+-- 
+2.6.4
+

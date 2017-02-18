@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PERL_HTML_PARSER
+	bool "perl-html-parser"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_HTML_TAGSET
+	help
+	  The HTML-Parser distribution is is a collection of modules that parse
+	  and extract information from HTML documents
+
+	  http://github.com/gisle/html-parser
+
+comment "perl-html-parser needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

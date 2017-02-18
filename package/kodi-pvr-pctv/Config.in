@@ -1,0 +1,8 @@
+config BR2_PACKAGE_KODI_PVR_PCTV
+	bool "kodi-pvr-pctv"
+	select BR2_PACKAGE_JSONCPP
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  PCTV PVR client addon for Kodi
+
+	  https://github.com/kodi-pvr/pvr.vdr.vnsi

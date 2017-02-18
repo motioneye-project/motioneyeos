@@ -1,0 +1,40 @@
+If exim had already been installed, the install script makes backup
+copies of the pre-existing executables with a ".0" suffix.
+
+This leads to useless duplicated files on the target, so disable this
+piece of code.
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+---
+ scripts/exim_install |   18 +++++++++---------
+ 1 files changed, 9 insertions(+), 9 deletions(-)
+
+diff --git a/scripts/exim_install b/scripts/exim_install
+index 616ab3c..e68e7d5 100755
+--- a/scripts/exim_install
++++ b/scripts/exim_install
+@@ -344,15 +344,15 @@ while [ $# -gt 0 ]; do
+ 
+   else
+     if ../scripts/newer ${name} ${BIN_DIRECTORY}/${name}; then
+-      if [ -f ${BIN_DIRECTORY}/${name} ]; then
+-        echo ${CP} ${BIN_DIRECTORY}/${name} ${BIN_DIRECTORY}/${name}.O
+-        ${real} ${CP} ${BIN_DIRECTORY}/${name} ${BIN_DIRECTORY}/${name}.O
+-        if [ $? -ne 0 ]; then
+-          echo $com ""
+-          echo $com "*** Exim installation ${ver}failed ***"
+-          exit 1
+-        fi
+-      fi
++#      if [ -f ${BIN_DIRECTORY}/${name} ]; then
++#        echo ${CP} ${BIN_DIRECTORY}/${name} ${BIN_DIRECTORY}/${name}.O
++#        ${real} ${CP} ${BIN_DIRECTORY}/${name} ${BIN_DIRECTORY}/${name}.O
++#        if [ $? -ne 0 ]; then
++#          echo $com ""
++#          echo $com "*** Exim installation ${ver}failed ***"
++#          exit 1
++#        fi
++#      fi
+       echo ${CP} ${name} ${BIN_DIRECTORY}
+       ${real} ${CP} ${name} ${BIN_DIRECTORY}
+       if [ $? -ne 0 ]; then

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_KODI_AUDIODECODER_SIDPLAY
+	bool "kodi-audiodecoder-sidplay"
+	select BR2_PACKAGE_KODI_PLATFORM
+	select BR2_PACKAGE_LIBSIDPLAY2
+	help
+	  Sidplay decoder addon for Kodi
+
+	  https://github.com/notspiff/audiodecoder.sidplay

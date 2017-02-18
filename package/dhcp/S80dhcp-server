@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# $Id: dhcp3-server.init.d,v 1.4 2003/07/13 19:12:41 mdz Exp $
+#
+
+# On what interfaces should the DHCP server (dhcpd) serve DHCP requests?
+#       Separate multiple interfaces with spaces, e.g. "eth0 eth1".
+INTERFACES=""
+
+# Additional options that are passed to the DHCP server daemon?
+OPTIONS=""
+
+NAME="dhcpd"
+DAEMON="/usr/sbin/${NAME}"
+CFG_FILE="/etc/default/${NAME}"
+
+# Read configuration variable file if it is present
+[ -r "${CFG_FILE}" ] && . "${CFG_FILE}"
+
+# Sanity checks
+test -f /usr/sbin/dhcpd || exit 0
+test -f /etc/dhcp/dhcpd.conf || exit 0
+
+case "$1" in
+	start)
+		printf "Starting DHCP server: "
+		test -d /var/lib/dhcp/ || mkdir -p /var/lib/dhcp/
+		test -f /var/lib/dhcp/dhcpd.leases || touch /var/lib/dhcp/dhcpd.leases
+		start-stop-daemon -S -q -x ${DAEMON} -- -q $OPTIONS $INTERFACES
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		printf "Stopping DHCP server: "
+		start-stop-daemon -K -q -x ${DAEMON}
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	restart | force-reload)
+		$0 stop
+		$0 start
+		if [ "$?" != "0" ]; then
+			exit 1
+		fi
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|force-reload}"
+		exit 1
+esac
+
+exit 0

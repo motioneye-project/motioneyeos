@@ -1,0 +1,25 @@
+config BR2_PACKAGE_B43_FIRMWARE
+	bool "b43-firmware"
+	help
+	  Firmware for the Broadcom Wifi devices supported by the b43
+	  kernel driver.
+
+if BR2_PACKAGE_B43_FIRMWARE
+
+choice
+	prompt "Kernel version"
+	default BR2_PACKAGE_B43_FIRMWARE_KERNEL_AFTER_3_2
+	help
+	  Select the kernel version you're using. The b43 driver in
+	  kernel >= 3.2 need a different firmware than the b43 drivers
+	  from kernel < 3.2.
+
+	config BR2_PACKAGE_B43_FIRMWARE_KERNEL_AFTER_3_2
+		bool ">= 3.2"
+
+	config BR2_PACKAGE_B43_FIRMWARE_KERNEL_BEFORE_3_2
+		bool "< 3.2"
+
+endchoice
+
+endif

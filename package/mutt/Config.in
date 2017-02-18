@@ -1,0 +1,27 @@
+config BR2_PACKAGE_MUTT
+	bool "mutt"
+	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
+	help
+	  Mutt is a sophisticated text-based Mail User Agent (MUA)
+
+	  http://www.mutt.org/
+
+if BR2_PACKAGE_MUTT
+
+config BR2_PACKAGE_MUTT_IMAP
+	bool "imap"
+	help
+	  IMAP support
+
+config BR2_PACKAGE_MUTT_POP3
+	bool "pop3"
+	help
+	  POP3 support
+
+endif # BR2_PACKAGE_MUTT
+
+comment "mutt needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR

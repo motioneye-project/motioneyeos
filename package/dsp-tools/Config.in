@@ -1,0 +1,8 @@
+config BR2_PACKAGE_DSP_TOOLS
+	bool "dsp-tools"
+	depends on BR2_cortex_a8
+	select BR2_PACKAGE_TIDSP_BINARIES
+	help
+	  Utilities for TI OMAP3 DSP.
+
+	  http://github.com/felipec/dsp-tools

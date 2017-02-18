@@ -1,0 +1,41 @@
+From 48bc37fabbc685b1e3293055bd33ca66c619305e Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Wed, 13 Jan 2016 14:49:59 +0000
+Subject: [PATCH] libffi: enable hardfloat in the MIPS assembly code
+
+This way it will be possible to build it for soft-float. This is only a
+temporary fix. The package needs to be fixed properly.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ src/mips/n32.S | 1 +
+ src/mips/o32.S | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/mips/n32.S b/src/mips/n32.S
+index c6985d3..dc842d5 100644
+--- a/src/mips/n32.S
++++ b/src/mips/n32.S
+@@ -44,6 +44,7 @@
+ 	.abicalls
+ #endif
+ 	.set mips4
++	.set hardfloat
+ 	.text
+ 	.align	2
+ 	.globl	ffi_call_N32
+diff --git a/src/mips/o32.S b/src/mips/o32.S
+index eb27981..b653daf 100644
+--- a/src/mips/o32.S
++++ b/src/mips/o32.S
+@@ -42,6 +42,7 @@
+ #define RA_OFF		(SIZEOF_FRAME - 1 * FFI_SIZEOF_ARG)
+ 
+ 	.abicalls
++	.set hardfloat
+ 	.text
+ 	.align	2
+ 	.globl	ffi_call_O32
+-- 
+2.4.10
+

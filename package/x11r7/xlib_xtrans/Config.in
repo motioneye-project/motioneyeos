@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XLIB_XTRANS
+	bool "xtrans"
+	help
+	  X.Org xtrans library

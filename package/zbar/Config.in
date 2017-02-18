@@ -1,0 +1,18 @@
+config BR2_PACKAGE_ZBAR
+	bool "zbar"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libv4l
+	depends on BR2_USE_MMU # libv4l
+	depends on !BR2_STATIC_LIBS # libv4l
+	depends on BR2_INSTALL_LIBSTDCPP # libv4l
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # libv4l
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBV4L
+	help
+	  QR and barcode scanner
+
+	  http://zbar.sourceforge.net/
+
+comment "zbar needs a toolchain w/ threads, dynamic library, C++ and headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_EMPTY
+	bool "empty"
+	depends on BR2_USE_MMU # uses fork()
+	help
+	  Run processes and applications under pseudo-terminal (PTY) sessions.
+
+	  http://empty.sourceforge.net/

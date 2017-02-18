@@ -1,0 +1,64 @@
+From 05b6a7550756ffdced25a6c51cf2222bad9e59e7 Mon Sep 17 00:00:00 2001
+Message-Id: <05b6a7550756ffdced25a6c51cf2222bad9e59e7.1399285491.git.baruch@tkos.co.il>
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 5 May 2014 09:32:23 +0300
+Subject: [PATCH] Fix build against older pthreads implementations
+
+Older pthreads implementations like glibc NPTL prior to version 2.12, and
+uClibc linuxthreads (both), need _XOPEN_SOURCE to expose
+pthread_mutexattr_settype() and THREAD_MUTEX_DEFAULT. The value 600 (SuSv3,
+POSIX.1-2001) is equivalent to _POSIX_C_SOURCE 200112L.
+
+Fixes the following build error:
+
+  CC       compat.lo
+compat.c: In function 'p11_mutex_init':
+compat.c:164:2: warning: implicit declaration of function 'pthread_mutexattr_settype' [-Wimplicit-function-declaration]
+compat.c:164:2: warning: nested extern declaration of 'pthread_mutexattr_settype' [-Wnested-externs]
+compat.c:164:36: error: 'PTHREAD_MUTEX_DEFAULT' undeclared (first use in this function)
+
+Patch status: sent upstream
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ common/compat.h  | 6 ++++++
+ common/message.c | 6 ------
+ 2 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/common/compat.h b/common/compat.h
+index d7fe414a46bf..fbc1dc1d4f0f 100644
+--- a/common/compat.h
++++ b/common/compat.h
+@@ -37,6 +37,12 @@
+ 
+ #include "config.h"
+ 
++/*
++ * Oh god. glibc is nasty. Changes behavior and definitions of POSIX
++ * functions to completely different signatures depending on defines
++ */
++#define _XOPEN_SOURCE 600
++
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ 
+diff --git a/common/message.c b/common/message.c
+index 35f2764487a9..e68dfac561c8 100644
+--- a/common/message.c
++++ b/common/message.c
+@@ -37,12 +37,6 @@
+ 
+ #include "config.h"
+ 
+-/*
+- * Oh god. glibc is nasty. Changes behavior and definitions of POSIX
+- * functions to completely different signatures depending on defines
+- */
+-#define _POSIX_C_SOURCE 200112L
+-
+ #include "compat.h"
+ #define P11_DEBUG_FLAG P11_DEBUG_LIB
+ #include "debug.h"
+-- 
+2.0.0.rc0
+

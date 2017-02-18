@@ -1,0 +1,59 @@
+if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+
+config BR2_PACKAGE_EGLIBC
+	bool
+	default y
+	select BR2_PACKAGE_LINUX_HEADERS
+
+choice
+	prompt "eglibc version"
+	default BR2_EGLIBC_VERSION_2_18
+
+config BR2_EGLIBC_VERSION_2_18
+	bool "2.18-svnr23787"
+	# Build breakage
+	depends on !BR2_sparc
+
+config BR2_EGLIBC_VERSION_2_19
+	bool "2.19-svnr25243"
+	# Build breakage
+	depends on !BR2_powerpc_SPE
+
+endchoice
+
+endif
+
+if BR2_TOOLCHAIN_BUILDROOT_GLIBC
+
+config BR2_PACKAGE_GLIBC
+	bool
+	default y
+	select BR2_PACKAGE_LINUX_HEADERS
+	select BR2_TOOLCHAIN_HAS_SSP
+
+choice
+	prompt "glibc version"
+	default BR2_GLIBC_VERSION_2_22
+
+config BR2_GLIBC_VERSION_2_22
+	bool "2.22"
+	# No support for pthread barriers on < v9 ISA
+	depends on !BR2_sparc
+	# Too old to build with gcc >= 6.x
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
+config BR2_GLIBC_VERSION_2_23
+	bool "2.23"
+	# No support for pthread barriers on < v9 ISA
+	depends on !BR2_sparc
+
+endchoice
+
+endif
+
+config BR2_GLIBC_VERSION_STRING
+	string
+	default "2.18-svnr23787" if BR2_EGLIBC_VERSION_2_18
+	default "2.19-svnr25243" if BR2_EGLIBC_VERSION_2_19
+	default "2.22" if BR2_GLIBC_VERSION_2_22
+	default "2.23" if BR2_GLIBC_VERSION_2_23

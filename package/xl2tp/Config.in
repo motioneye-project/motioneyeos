@@ -1,0 +1,13 @@
+config BR2_PACKAGE_XL2TP
+	bool "xl2tp"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Layer 2 Tunnelling Protocol (RFC2661).
+
+	  xl2tpd is an open source implementation of the L2TP tunneling
+	  protocol. xl2tpd is forked from l2tpd and is maintained by
+	  Xelerance Corporation.
+
+	  http://www.xelerance.com/software/xl2tpd/

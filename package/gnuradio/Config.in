@@ -1,0 +1,109 @@
+comment "gnuradio needs a toolchain w/ C++, NPTL, wchar, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_GNURADIO
+	bool "gnuradio"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_USE_MMU # use fork()
+	depends on BR2_USE_WCHAR # boost
+	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_DATE_TIME
+	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
+	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_BOOST_THREAD
+	help
+	  GNU Radio is a free & open-source software development
+	  toolkit that provides signal processing blocks to implement
+	  software radios. It can be used with readily-available
+	  low-cost external RF hardware to create software-defined
+	  radios, or without hardware in a simulation-like
+	  environment. It is widely used in hobbyist, academic and
+	  commercial environments to support both wireless
+	  communications research and real-world radio systems.
+
+	  http://gnuradio.org/
+
+if BR2_PACKAGE_GNURADIO
+
+config BR2_PACKAGE_GNURADIO_BLOCKS
+	bool "blocks support"
+	help
+	  GNU Radio basic block library
+
+config BR2_PACKAGE_GNURADIO_FEC
+	bool "gr-fec support"
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	help
+	  FEC signal processing blocks
+
+config BR2_PACKAGE_GNURADIO_PYTHON
+	bool "python support"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	select BR2_PACKAGE_BOOST_PYTHON
+	select BR2_PACKAGE_PYTHON_NUMPY # runtime
+	help
+	  Enable python component
+
+config BR2_PACKAGE_GNURADIO_UTILS
+	bool "gr-utils support"
+	depends on BR2_PACKAGE_GNURADIO_PYTHON
+	help
+	  Misc python utilities
+
+comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager depends fftw's single precision"
+	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
+
+if BR2_PACKAGE_FFTW_PRECISION_SINGLE
+
+config BR2_PACKAGE_GNURADIO_ANALOG
+	bool "gr-analog support"
+	select BR2_PACKAGE_GNURADIO_FILTER
+	help
+	  Analog communications blocks
+
+config BR2_PACKAGE_GNURADIO_CHANNELS
+	bool "gr-channels support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  Channel model blocks
+
+config BR2_PACKAGE_GNURADIO_DIGITAL
+	bool "gr-digital support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  Digital communications blocks
+
+config BR2_PACKAGE_GNURADIO_FFT
+	bool "gr-fft support"
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	help
+	  FFT signal processing blocks
+
+config BR2_PACKAGE_GNURADIO_FILTER
+	bool "gr-filter support"
+	select BR2_PACKAGE_GNURADIO_FFT
+	help
+	  Filter signal processing blocks
+
+config BR2_PACKAGE_GNURADIO_PAGER
+	bool "gr-flex support"
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	help
+	  FLEX pager decoder implementation blocks
+
+config BR2_PACKAGE_GNURADIO_TRELLIS
+	bool "gr-trellis support"
+	select BR2_PACKAGE_GNURADIO_DIGITAL
+	help
+	  Trellis coded modulation blocks
+
+endif
+endif

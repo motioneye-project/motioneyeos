@@ -1,0 +1,39 @@
+From: Maarten ter Huurne <maarten@treewalker.org>
+Date: Sun, 14 Sep 2014 23:58:34 +0200
+Subject: Do not create backup of old installed binary
+
+This is a rather unusual feature that packagers will not expect.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+---
+ Makefile.in | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 187a69b..65549e9 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -83,12 +83,9 @@ screen: $(OFILES)
+ 	    $(OPTIONS) $(CFLAGS) $<
+ 
+ install_bin: .version screen
+-	-if [ -f $(DESTDIR)$(bindir)/$(SCREEN) ] && [ ! -f $(DESTDIR)$(bindir)/$(SCREEN).old ]; \
+-		then mv $(DESTDIR)$(bindir)/$(SCREEN) $(DESTDIR)$(bindir)/$(SCREEN).old; fi
+ 	$(INSTALL_PROGRAM) screen $(DESTDIR)$(bindir)/$(SCREEN)
+ 	-chown root $(DESTDIR)$(bindir)/$(SCREEN) && chmod 4755 $(DESTDIR)$(bindir)/$(SCREEN)
+ # This doesn't work if $(bindir)/screen is a symlink
+-	-if [ -f $(DESTDIR)$(bindir)/screen ] && [ ! -f $(DESTDIR)$(bindir)/screen.old ]; then mv $(DESTDIR)$(bindir)/screen $(DESTDIR)$(bindir)/screen.old; fi
+ 	rm -f $(DESTDIR)$(bindir)/screen
+ 	(cd $(DESTDIR)$(bindir) && ln -f -s $(SCREEN) screen)
+ 	cp $(srcdir)/utf8encodings/?? $(DESTDIR)$(SCREENENCODINGS)
+@@ -113,7 +110,6 @@ installdirs:
+ uninstall: .version
+ 	rm -f $(DESTDIR)$(bindir)/$(SCREEN)
+ 	rm -f $(DESTDIR)$(bindir)/screen
+-	-mv $(DESTDIR)$(bindir)/screen.old $(DESTDIR)$(bindir)/screen
+ 	rm -f $(DESTDIR)$(ETCSCREENRC)
+ 	cd doc; $(MAKE) uninstall
+ 
+-- 
+1.8.4.5
+

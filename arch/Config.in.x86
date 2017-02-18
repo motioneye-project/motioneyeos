@@ -1,0 +1,277 @@
+# i386/x86_64 cpu features
+config BR2_X86_CPU_HAS_MMX
+	bool
+config BR2_X86_CPU_HAS_SSE
+	bool
+config BR2_X86_CPU_HAS_SSE2
+	bool
+config BR2_X86_CPU_HAS_SSE3
+	bool
+config BR2_X86_CPU_HAS_SSSE3
+	bool
+config BR2_X86_CPU_HAS_SSE4
+	bool
+config BR2_X86_CPU_HAS_SSE42
+	bool
+config BR2_X86_CPU_HAS_AVX
+	bool
+config BR2_X86_CPU_HAS_AVX2
+	bool
+
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_i386 || BR2_x86_64
+	default BR2_x86_i586 if BR2_i386
+	help
+	  Specific CPU variant to use
+
+config BR2_x86_i486
+	bool "i486"
+	depends on !BR2_x86_64
+config BR2_x86_i586
+	bool "i586"
+	depends on !BR2_x86_64
+config BR2_x86_x1000
+	bool "x1000"
+	depends on !BR2_x86_64
+	help
+	  The Intel X1000 is a Pentium class microprocessor in the
+	  Quark (sub-Atom) Product Line. The X1000 has a bug on the
+	  lock prefix requiring that prefix must be stripped at build
+	  time.
+
+	  See https://en.wikipedia.org/wiki/Intel_Quark
+
+config BR2_x86_i686
+	bool "i686"
+	depends on !BR2_x86_64
+config BR2_x86_pentiumpro
+	bool "pentium pro"
+	depends on !BR2_x86_64
+config BR2_x86_pentium_mmx
+	bool "pentium MMX"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_pentium_m
+	bool "pentium mobile"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_pentium2
+	bool "pentium2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_pentium3
+	bool "pentium3"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_pentium4
+	bool "pentium4"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	depends on !BR2_x86_64
+config BR2_x86_prescott
+	bool "prescott"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	depends on !BR2_x86_64
+config BR2_x86_nocona
+	bool "nocona"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_core2
+	bool "core2"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_corei7
+	bool "corei7"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
+config BR2_x86_corei7_avx
+	bool "corei7-avx"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
+	select BR2_X86_CPU_HAS_AVX
+config BR2_x86_core_avx2
+	bool "core-avx2"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
+	select BR2_X86_CPU_HAS_AVX
+	select BR2_X86_CPU_HAS_AVX2
+config BR2_x86_atom
+	bool "atom"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_k6
+	bool "k6"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_k6_2
+	bool "k6-2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_athlon
+	bool "athlon"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_athlon_4
+	bool "athlon-4"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_opteron
+	bool "opteron"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+config BR2_x86_opteron_sse3
+	bool "opteron w/ SSE3"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_barcelona
+	bool "barcelona"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+config BR2_x86_jaguar
+	bool "jaguar"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
+config BR2_x86_steamroller
+	bool "steamroller"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
+config BR2_x86_geode
+	bool "geode"
+	# Don't include MMX support because there several variant of geode
+	# processor, some with MMX support, some without.
+	# See: http://en.wikipedia.org/wiki/Geode_%28processor%29
+	depends on !BR2_x86_64
+config BR2_x86_c3
+	bool "Via/Cyrix C3 (Samuel/Ezra cores)"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_c32
+	bool "Via C3-2 (Nehemiah cores)"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	depends on !BR2_x86_64
+config BR2_x86_winchip_c6
+	bool "IDT Winchip C6"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+config BR2_x86_winchip2
+	bool "IDT Winchip 2"
+	select BR2_X86_CPU_HAS_MMX
+	depends on !BR2_x86_64
+endchoice
+
+config BR2_ARCH
+	default "i486"		if BR2_x86_i486
+	default "i586"		if BR2_x86_i586
+	default "i586"		if BR2_x86_x1000
+	default "i586"		if BR2_x86_pentium_mmx
+	default "i586"		if BR2_x86_geode
+	default "i586"		if BR2_x86_c3
+	default "i686"		if BR2_x86_c32
+	default "i586"		if BR2_x86_winchip_c6
+	default "i586"		if BR2_x86_winchip2
+	default "i686"		if BR2_x86_i686
+	default "i686"		if BR2_x86_pentium2
+	default "i686"		if BR2_x86_pentium3
+	default "i686"		if BR2_x86_pentium4
+	default "i686"		if BR2_x86_pentium_m
+	default "i686"		if BR2_x86_pentiumpro
+	default "i686"		if BR2_x86_prescott
+	default "i686"		if BR2_x86_nocona && BR2_i386
+	default "i686"		if BR2_x86_core2 && BR2_i386
+	default "i686"		if BR2_x86_corei7 && BR2_i386
+	default "i686"		if BR2_x86_corei7_avx && BR2_i386
+	default "i686"		if BR2_x86_corei7_avx2 && BR2_i386
+	default "i686"		if BR2_x86_atom && BR2_i386
+	default "i686"		if BR2_x86_opteron && BR2_i386
+	default "i686"		if BR2_x86_opteron_sse3 && BR2_i386
+	default "i686"		if BR2_x86_barcelona && BR2_i386
+	default "i686"		if BR2_x86_jaguar && BR2_i386
+	default "i686"		if BR2_x86_steamroller && BR2_i386
+	default "i686"		if BR2_x86_k6
+	default "i686"		if BR2_x86_k6_2
+	default "i686"		if BR2_x86_athlon
+	default "i686"		if BR2_x86_athlon_4
+	default "x86_64"	if BR2_x86_64
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_GCC_TARGET_ARCH
+	default "i486"		if BR2_x86_i486
+	default "i586"		if BR2_x86_i586
+	default "i586"		if BR2_x86_x1000
+	default "pentium-mmx"	if BR2_x86_pentium_mmx
+	default "i686"		if BR2_x86_i686
+	default "pentiumpro"	if BR2_x86_pentiumpro
+	default "pentium-m"	if BR2_x86_pentium_m
+	default "pentium2"	if BR2_x86_pentium2
+	default "pentium3"	if BR2_x86_pentium3
+	default "pentium4"	if BR2_x86_pentium4
+	default "prescott"	if BR2_x86_prescott
+	default "nocona"	if BR2_x86_nocona
+	default "core2"		if BR2_x86_core2
+	default "corei7"	if BR2_x86_corei7
+	default "corei7-avx"	if BR2_x86_corei7_avx
+	default "core-avx2"	if BR2_x86_core_avx2
+	default "atom"		if BR2_x86_atom
+	default "k8"		if BR2_x86_opteron
+	default "k8-sse3"	if BR2_x86_opteron_sse3
+	default "barcelona"	if BR2_x86_barcelona
+	default "btver2"	if BR2_x86_jaguar
+	default "bdver3"	if BR2_x86_steamroller
+	default "k6"		if BR2_x86_k6
+	default "k6-2"		if BR2_x86_k6_2
+	default "athlon"	if BR2_x86_athlon
+	default "athlon-4"	if BR2_x86_athlon_4
+	default "winchip-c6"	if BR2_x86_winchip_c6
+	default "winchip2"	if BR2_x86_winchip2
+	default "c3"		if BR2_x86_c3
+	default "c3-2"		if BR2_x86_c32
+	default "geode"		if BR2_x86_geode

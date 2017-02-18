@@ -1,0 +1,53 @@
+From 73e4abb24a936014727924d8b0b2965edfc117dd Mon Sep 17 00:00:00 2001
+From: Jouni Malinen <jouni@qca.qualcomm.com>
+Date: Fri, 4 Mar 2016 18:46:41 +0200
+Subject: [PATCH] Reject psk parameter set with invalid passphrase character
+
+WPA/WPA2-Personal passphrase is not allowed to include control
+characters. Reject a passphrase configuration attempt if that passphrase
+includes an invalid passphrase.
+
+This fixes an issue where wpa_supplicant could have updated the
+configuration file psk parameter with arbitrary data from the control
+interface or D-Bus interface. While those interfaces are supposed to be
+accessible only for trusted users/applications, it may be possible that
+an untrusted user has access to a management software component that
+does not validate the passphrase value before passing it to
+wpa_supplicant.
+
+This could allow such an untrusted user to inject up to 63 characters of
+almost arbitrary data into the configuration file. Such configuration
+file could result in wpa_supplicant trying to load a library (e.g.,
+opensc_engine_path, pkcs11_engine_path, pkcs11_module_path,
+load_dynamic_eap) from user controlled location when starting again.
+This would allow code from that library to be executed under the
+wpa_supplicant process privileges.
+
+Signed-off-by: Jouni Malinen <jouni@qca.qualcomm.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream (73e4abb24a936014727924d8b0b2965edfc117dd)
+
+ wpa_supplicant/config.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/wpa_supplicant/config.c b/wpa_supplicant/config.c
+index b1c7870dafe0..fdd964356afa 100644
+--- a/wpa_supplicant/config.c
++++ b/wpa_supplicant/config.c
+@@ -478,6 +478,12 @@ static int wpa_config_parse_psk(const struct parse_data *data,
+ 		}
+ 		wpa_hexdump_ascii_key(MSG_MSGDUMP, "PSK (ASCII passphrase)",
+ 				      (u8 *) value, len);
++		if (has_ctrl_char((u8 *) value, len)) {
++			wpa_printf(MSG_ERROR,
++				   "Line %d: Invalid passphrase character",
++				   line);
++			return -1;
++		}
+ 		if (ssid->passphrase && os_strlen(ssid->passphrase) == len &&
+ 		    os_memcmp(ssid->passphrase, value, len) == 0) {
+ 			/* No change to the previously configured value */
+-- 
+2.8.1
+

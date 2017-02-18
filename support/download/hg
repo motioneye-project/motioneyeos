@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for hg, to be called from the download wrapper script
+#
+# Call it as:
+#   .../hg [-q] OUT_FILE REPO_URL CSET BASENAME
+#
+# Environment:
+#   HG       : the hg command to call
+
+verbose=
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=-q;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+repo="${2}"
+cset="${3}"
+basename="${4}"
+
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_hg() {
+    eval ${HG} "${@}"
+}
+
+_hg clone ${verbose} --noupdate "'${repo}'" "'${basename}'"
+
+_hg archive ${verbose} --repository "'${basename}'" --type tgz \
+            --prefix "'${basename}'" --rev "'${cset}'" \
+            - >"${output}"

@@ -1,0 +1,30 @@
+menu "Mouse drivers"
+
+config BR2_PACKAGE_QT_MOUSE_PC
+	bool "pc"
+
+config BR2_PACKAGE_QT_MOUSE_LINUXTP
+	bool "linuxtp"
+
+config BR2_PACKAGE_QT_MOUSE_LINUXINPUT
+	bool "linux input"
+
+config BR2_PACKAGE_QT_MOUSE_TSLIB
+	bool "tslib"
+	select BR2_PACKAGE_TSLIB
+	depends on !BR2_STATIC_LIBS # tslib
+
+comment "tslib support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_QT_MOUSE_QVFB
+	bool "qvfb"
+
+comment "Mouse Options"
+
+config BR2_PACKAGE_QT_MOUSE_NO_QWS_CURSOR
+	bool "Hide the mouse cursor"
+	help
+	  Do not show the mouse cursor in QWS.
+
+endmenu

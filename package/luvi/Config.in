@@ -1,0 +1,30 @@
+config BR2_PACKAGE_LUVI
+	bool "luvi"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	depends on BR2_PACKAGE_LUAJIT
+	select BR2_PACKAGE_LIBUV
+	select BR2_PACKAGE_LUV
+	help
+	  A project in-between luv and luvit. The goal of this is to make
+	  building luvit and derivatives much easier.
+
+	  luvi extends LuaJIT with asynchronous I/O and several optional
+	  modules to run Lua applications and build self-contained binaries
+	  on systems that don't have a compiler.
+
+	  The luvi core can be extended with several Lua modules by adding its
+	  bundled Lua binding libraries. To get the Lua module...
+	    * 'rex' select PCRE (BR2_PACKAGE_PCRE)
+	    * 'ssl' select OpenSSL (BR2_PACKAGE_OPENSSL)
+	    * 'zlib' select zlib (BR2_PACKAGE_ZLIB)
+
+	  https://github.com/luvit/luvi
+
+comment "luvi needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+
+comment "luvi needs LuaJIT"
+	depends on !BR2_PACKAGE_LUAJIT

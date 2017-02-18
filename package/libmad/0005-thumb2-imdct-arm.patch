@@ -1,0 +1,20 @@
+Fixes Thumb2 related build failure
+
+Patch below comes from the Debian libmad package.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+From: Konstantinos Margaritis <markos@debian.org>
+Subject: use "adr" instead of "add" to make code ready for thumb2
+
+--- ./imdct_l_arm.S.orig	2010-02-25 13:25:23.000000000 +0100
++++ ./imdct_l_arm.S	2010-02-25 13:27:26.000000000 +0100
+@@ -468,7 +468,7 @@
+ 
+     @----
+ 
+-    add     r2, pc, #(imdct36_long_karray-.-8)  @ r2 = base address of Knn array (PIC safe ?)
++    adr     r2, imdct36_long_karray
+ 
+ 
+ loop:

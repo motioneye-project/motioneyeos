@@ -1,0 +1,4 @@
+# From http://sourceforge.net/projects/openipmi/files/OpenIPMI%202.0%20Library/
+sha1 54f63ab7fe09f6a4b0b718601fe9c61014aa220b OpenIPMI-2.0.21.tar.gz
+# Locally computed
+sha256	0eafaa502ccf752899c5089159574081067d0c4ac53ea0ace33a5087f33ea32a	0001-ui-use-standard-uint32_t.patch

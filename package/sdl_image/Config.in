@@ -1,0 +1,61 @@
+config BR2_PACKAGE_SDL_IMAGE
+	bool "SDL_image"
+	depends on BR2_PACKAGE_SDL
+	help
+	  SDL_image is an image file loading library. It loads images
+	  as SDL surfaces, and supports the following formats:
+	  BMP, GIF, JPEG, LBM, PCX, PNG, PNM, TGA, TIFF, XCF, XPM, XV.
+
+	  http://www.libsdl.org/projects/SDL_image/
+
+if BR2_PACKAGE_SDL_IMAGE
+
+menu "SDL_image file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_BMP
+	bool "enable BMP file format support"
+	default y
+
+config BR2_PACKAGE_SDL_IMAGE_GIF
+	bool "enable GIF file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_JPEG
+	bool "enable JPEG file format support"
+	select BR2_PACKAGE_JPEG
+
+config BR2_PACKAGE_SDL_IMAGE_LBM
+	bool "enable LBM file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_PCX
+	bool "enable PCX file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_PNG
+	bool "enable PNG file format support"
+	select BR2_PACKAGE_LIBPNG
+
+config BR2_PACKAGE_SDL_IMAGE_PNM
+	bool "enable PNM file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_TARGA
+	bool "enable TARGA format support"
+
+config BR2_PACKAGE_SDL_IMAGE_TIFF
+	bool "enable TIFF file format support"
+	select BR2_PACKAGE_TIFF
+
+config BR2_PACKAGE_SDL_IMAGE_WEBP
+	bool "enable WEBP file format support"
+	select BR2_PACKAGE_WEBP
+
+config BR2_PACKAGE_SDL_IMAGE_XCF
+	bool "enable XCF file format support"
+
+config BR2_PACKAGE_SDL_IMAGE_XPM
+	bool "enable XPM format support"
+
+config BR2_PACKAGE_SDL_IMAGE_XV
+	bool "enable XV file format support"
+
+endmenu
+
+endif

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XBACKLIGHT
+	bool "xbacklight"
+	select BR2_PACKAGE_XCB_UTIL
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	help
+	  xbacklight

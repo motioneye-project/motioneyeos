@@ -1,0 +1,6 @@
+config BR2_PACKAGE_NETSTAT_NAT
+	bool "netstat-nat"
+	help
+	  Displays NAT connections
+
+	  http://tweegy.nl/projects/netstat-nat/

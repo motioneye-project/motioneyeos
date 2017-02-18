@@ -1,0 +1,22 @@
+comment "httping needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_HTTPING
+	bool "httping"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  Httping is like 'ping' but for http-requests.
+	  Give it an url, and it'll show you how long it takes to connect,
+	  send a request and retrieve the reply (only the headers).
+	  Be aware that the transmission across the network also takes time!
+	  So it measures the latency of the webserver + network.
+
+	  http://www.vanheusden.com/httping/
+
+if BR2_PACKAGE_HTTPING
+
+config BR2_PACKAGE_HTTPING_TFO
+	bool "TCP Fast Open (TFO) support"
+
+endif

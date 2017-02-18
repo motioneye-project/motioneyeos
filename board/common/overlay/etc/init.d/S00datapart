@@ -1,0 +1,55 @@
+#!/bin/bash
+
+disk_dev="/dev/mmcblk0"
+data_dev="${disk_dev}p3"
+
+test -b $data_dev && exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Creating data partition"
+        echo -e "n
+            p
+            3
+            \n
+            \n
+            w" | /sbin/fdisk $disk_dev 2>&1 >/dev/null | grep -v "Device or resource busy" | grep -v '^$'
+        partx -a $disk_dev &>/dev/null
+        test -b $data_dev && msg_done || msg_fail
+
+        msg_begin "Formatting data partition"
+        mkfs.ext4 -q $data_dev
+        test $? == 0 && msg_done || msg_fail
+
+        msg_begin "Mounting data partition"
+        mount /data
+        test $? == 0 && msg_done || msg_fail
+
+        msg_begin "Creating required data files"
+        mkdir /data/etc
+        mkdir /data/log
+        mkdir -m 775 /data/output
+        mkdir -m 775 /data/media
+        cp /etc/version /data/etc/version
+        ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
+        touch /data/etc/adjtime
+        sync
+        msg_done
+
+        # mount other partitions depending on data
+        mount -a
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

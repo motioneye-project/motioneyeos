@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PYTHON_COHERENCE
+	bool "python-coherence"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyasn
+	select BR2_PACKAGE_PYTHON_TWISTED
+	select BR2_PACKAGE_PYTHON_ZOPE_INTERFACE
+	select BR2_PACKAGE_PYTHON_PYASN
+	help
+	  A DLNA/UPnP Media Server and Framework for the Digital Living.
+
+	  http://coherence-project.org/
+
+comment "python-coherence needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_PYTHON
+	depends on !BR2_INSTALL_LIBSTDCPP

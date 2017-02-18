@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XMLSTARLET
+	bool "xmlstarlet"
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  Command Line XML Toolkit
+
+	  http://xmlstar.sourceforge.net/

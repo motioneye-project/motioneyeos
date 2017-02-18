@@ -1,0 +1,7 @@
+# From ftp://gcc.gnu.org/pub/gdb/releases/sha512.sum
+sha512	face5bf1b4ce144fc8604fc84620beed956177a11fd632b4e41906fc7f632910b2b43a50e6cfdfd6cbd876ee527c813bddab8df29dc560a6c36694cdb8edc4e4	gdb-7.8.2.tar.xz
+sha512	eebdf88b24e52e792b8a4b89ea85790de72b462a7810b44975fdf4232c068f353b15506071f450102a9d4bcecdde8e93dc3748a10699b7f73f3e04fb2d9d8414	gdb-7.9.1.tar.xz
+sha512	17a5138277a31685a5c2a841cb47ed9bc4626ea617b8ca77750513b300299f4fbbffe504958b5372de610dcb952c679cf8fa9c1bdadd380294fbf59b6e366010	gdb-7.10.1.tar.xz
+# No hash for the ARC & microblaze variants, comes from the github-helper:
+none	xxx	gdb-arc-2015.12-gdb.tar.gz
+none	xxx	gdb-6be65fb56ea6694a9260733a536a023a1e2d4d57.tar.gz

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_PYTHON_MSGPACK
+	bool "python-msgpack"
+	select BR2_PACKAGE_MSGPACK
+	depends on BR2_INSTALL_LIBSTDCPP # msgpack
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # msgpack
+	help
+	  MessagePack (http://msgpack.org/) is a fast, compact binary
+	  serialization format, suitable for similar data to JSON.
+	  This package provides CPython bindings for reading and
+	  writing MessagePack data.
+
+	  https://pypi.python.org/pypi/msgpack-python/
+
+comment "python-msgpack needs a toolchain w/ C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP

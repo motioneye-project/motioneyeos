@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBKSBA
+	bool "libksba"
+	select BR2_PACKAGE_LIBGPG_ERROR
+	help
+	  CMS and X.509 library
+
+	  https://www.gnupg.org/related_software/libksba/

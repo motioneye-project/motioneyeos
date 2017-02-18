@@ -1,0 +1,34 @@
+From: Andrew Ruder <andrew.ruder@elecsyscorp.com>
+Subject: [PATCH] Allow tcl build directory for linking
+
+Some small changes to use TCL_BUILD_LIB_SPEC instead of TCL_LIB_SPEC for
+linking against tcl directly out of its build directory.
+
+Signed-off-by: Andrew Ruder <andrew.ruder@elecsyscorp.com>
+---
+
+Index: expect-5.45/Makefile.in
+===================================================================
+--- expect-5.45.orig/Makefile.in	2013-11-14 07:59:58.732100595 -0600
++++ expect-5.45/Makefile.in	2013-11-14 07:59:58.732100595 -0600
+@@ -393,7 +393,7 @@
+ 		@LDFLAGS_DEFAULT@ \
+ 		-o expect exp_main_exp.o \
+ 		@EXP_BUILD_LIB_SPEC@ \
+-		@TCL_LIB_SPEC@ \
++		@TCL_BUILD_LIB_SPEC@ \
+ 		@TCL_DL_LIBS@ @PKG_LIBS@ @MATH_LIBS@ \
+ 		@TCL_CC_SEARCH_FLAGS@ \
+ 		@EXP_CC_SEARCH_FLAGS@
+Index: expect-5.45/tclconfig/tcl.m4
+===================================================================
+--- expect-5.45.orig/tclconfig/tcl.m4	2010-11-09 13:42:10.000000000 -0600
++++ expect-5.45/tclconfig/tcl.m4	2013-11-14 08:02:08.424100580 -0600
+@@ -412,6 +412,7 @@
+     AC_SUBST(TCL_LIB_FILE)
+     AC_SUBST(TCL_LIB_FLAG)
+     AC_SUBST(TCL_LIB_SPEC)
++    AC_SUBST(TCL_BUILD_LIB_SPEC)
+ 
+     AC_SUBST(TCL_STUB_LIB_FILE)
+     AC_SUBST(TCL_STUB_LIB_FLAG)

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_ENUM34
+	bool "python-enum34"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Python 3.4 Enum backported to 2.x.
+
+	  An enumeration is a set of symbolic names (members) bound to
+	  unique, constant values. Within an enumeration, the members
+	  can be compared by identity, and the enumeration itself can
+	  be iterated over.
+
+	  https://pypi.python.org/pypi/enum34

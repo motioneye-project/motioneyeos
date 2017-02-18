@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBQRENCODE
+	bool "libqrencode"
+	help
+	  libqrencode is a C library for encoding data in a QR Code
+	  symbol, a kind of 2D symbology that can be scanned by handy
+	  terminals such as a mobile phone with CCD. The capacity of
+	  QR Code is up to 7000 digits or 4000 characters, and is
+	  highly robust.
+
+	  http://fukuchi.org/works/qrencode/index.html
+
+if BR2_PACKAGE_LIBQRENCODE
+
+config BR2_PACKAGE_LIBQRENCODE_TOOLS
+	bool "libqrencode tools"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Build command-line tools
+
+endif #BR2_PACKAGE_LIBQRENCODE

@@ -1,0 +1,18 @@
+[Unit]
+Description=Scanner Service
+Requires=saned.socket
+
+[Service]
+ExecStart=/usr/sbin/saned
+User=saned
+Group=saned
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+Environment=SANE_CONFIG_DIR=/etc/sane.d
+# If you need to debug your configuration uncomment the next line and
+# change it as appropriate to set the desired debug options
+# Environment=SANE_DEBUG_DLL=255 SANE_DEBUG_BJNP=5
+
+[Install]
+Also=saned.socket

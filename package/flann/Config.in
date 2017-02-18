@@ -1,0 +1,29 @@
+config BR2_PACKAGE_FLANN
+	bool "flann"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	# all gcc versions fail to build flann on Microblaze due to
+	# gcc bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=69401
+	depends on !BR2_microblaze
+	help
+	  FLANN is a library for performing fast approximate nearest
+	  neighbor searches in high dimensional spaces. It contains a
+	  collection of algorithms we found to work best for nearest
+	  neighbor search and a system for automatically choosing the
+	  best algorithm and optimum parameters depending on the
+	  dataset.
+
+	  http://www.cs.ubc.ca/research/flann/
+
+if BR2_PACKAGE_FLANN
+
+config BR2_PACKAGE_FLANN_EXAMPLES
+	bool "flann examples"
+	help
+	  Build and install flann example applications.
+
+endif
+
+comment "flann needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_microblaze
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS

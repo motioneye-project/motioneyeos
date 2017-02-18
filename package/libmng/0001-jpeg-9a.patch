@@ -1,0 +1,22 @@
+Adaptation from gentoo patch for libmng 2.0.3
+See https://bugs.gentoo.org/show_bug.cgi?id=520906
+
+Signed-off-by: Gustavo Zacarias <gustavo.zacarias@free-electrons.com>
+
+diff -Nura libmng-2.0.3.orig/libmng_types.h libmng-2.0.3/libmng_types.h
+--- libmng-2.0.3.orig/libmng_types.h	2015-09-24 10:32:05.500984924 -0300
++++ libmng-2.0.3/libmng_types.h	2015-09-24 10:33:11.145254771 -0300
+@@ -200,13 +200,6 @@
+ #undef FAR                             /* possibly defined by zlib or lcms */
+ #endif
+ #define JPEG_INTERNAL_OPTIONS          /* for RGB_PIXELSIZE */
+-/* There has been a change in jpeg-9 : */
+-#if !defined(HAVE_BOOLEAN) && !defined(_WIN32)
+-#define HAVE_BOOLEAN
+-#endif
+-#ifndef _WIN32
+-typedef int boolean;
+-#endif
+ /* For jpegsrc.v09a: */
+ #include <stdio.h>
+ #include <jpeglib.h>

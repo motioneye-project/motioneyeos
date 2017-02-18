@@ -1,0 +1,9 @@
+config BR2_PACKAGE_GTKPERF
+	bool "gtkperf (performance test for GTK2)"
+	depends on BR2_PACKAGE_LIBGTK2
+	help
+	  GtkPerf is an application designed to test GTK+ performance.
+	  The point is to create common testing platform to run
+	  predefined GTK+ widgets
+	  e.g. (opening comboboxes, toggling buttons, scrolling text yms.)
+	  and this way define the speed of device/platform.

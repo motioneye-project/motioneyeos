@@ -1,0 +1,34 @@
+From 0a654c20e1b9324c57ba4116b52fb6ab33847e1d Mon Sep 17 00:00:00 2001
+From: Jeremy Kerr <jk@ozlabs.org>
+Date: Thu, 8 Aug 2013 17:16:31 +0800
+Subject: [PATCH] kexec: Implement clean restart for busybox init
+
+Signed-off-by: Jeremy Kerr <jk@ozlabs.org>
+---
+ kexec.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/kexec.c b/kexec.c
+index 2edb7df..b2a0c42 100644
+--- a/kexec.c
++++ b/kexec.c
+@@ -27,6 +27,7 @@
+ #include <fcntl.h>
+ #include <errno.h>
+ #include <syscall.h>
++#include <signal.h>
+ #include <libfdt.h>
+ #include <getopt.h>
+ #include <sys/types.h>
+@@ -818,7 +819,7 @@ int main(int argc, char *argv[])
+ 			sync();
+ 			exec_kexec();
+ 		} else {
+-			execlp("shutdown", "shutdown", "-r", "now", NULL);
++			kill(1, SIGQUIT);
+ 		}
+ 
+ 		return -1;
+-- 
+1.7.10.4
+

@@ -1,0 +1,66 @@
+menuconfig BR2_PACKAGE_FREESCALE_IMX
+	bool "Freescale i.MX libraries"
+	depends on BR2_arm
+	help
+	  Those packages provide hardware acceleration for GPU or VPU, hardware
+	  optimization or some hardware tools for Freescale i.MX platforms.
+
+if BR2_PACKAGE_FREESCALE_IMX
+choice
+	prompt "i.MX platform"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX25_3STACK
+	bool "imx25-3stack"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX27ADS
+	bool "imx27ads"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX37_3STACK
+	bool "imx37-3stack"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX50
+	bool "imx50"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51
+	bool "imx51"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
+	bool "imx53"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+	bool "imx6q"
+
+endchoice
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM
+	string
+	default "IMX25_3STACK" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX25_3STACK
+	default "IMX27ADS" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX27ADS
+	default "IMX37_3STACK" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX37_3STACK
+	default "IMX50" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX50
+	default "IMX51" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51
+	default "IMX53" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
+	default "IMX6Q" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+
+config BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
+	bool
+	default y if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX27ADS || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51 || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53 || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+
+source "package/freescale-imx/imx-kobs/Config.in"
+source "package/freescale-imx/imx-lib/Config.in"
+source "package/freescale-imx/imx-uuc/Config.in"
+source "package/freescale-imx/imx-vpu/Config.in"
+source "package/freescale-imx/firmware-imx/Config.in"
+if (BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51 || BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53)
+source "package/freescale-imx/gpu-amd-bin-mx51/Config.in"
+source "package/freescale-imx/libz160/Config.in"
+endif
+if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+source "package/freescale-imx/imx-gpu-viv/Config.in"
+source "package/freescale-imx/kernel-module-imx-gpu-viv/Config.in"
+endif
+
+endif

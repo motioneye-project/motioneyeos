@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# Starts lighttpd.
+#
+
+start() {
+	printf "Starting lighttpd: "
+	start-stop-daemon -S -q -p /var/run/lighttpd.pid --exec /usr/sbin/lighttpd -- -f /etc/lighttpd/lighttpd.conf
+	echo "OK"
+}
+stop() {
+	printf "Stopping lighttpd: "
+	start-stop-daemon -K -q -p /var/run/lighttpd.pid
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,14 @@
+comment "kernel-module-imx-gpu-viv needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_KERNEL_MODULE_IMX_GPU_VIV
+	bool "kernel-module-imx-gpu-viv"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Kernel loadable module for Vivante GPU.
+
+	  This package uses an exact copy of the GPU kernel driver source code
+	  of the same version as base and include fixes and improvements
+	  developed by FSL Community
+
+	  https://github.com/Freescale/kernel-module-imx-gpu-viv

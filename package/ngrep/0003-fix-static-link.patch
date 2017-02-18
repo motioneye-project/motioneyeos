@@ -1,0 +1,25 @@
+ngrep: fix static link with pcre
+
+Libraries must be placed after object files.
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 2ae4506..761d7d9 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -11,7 +11,7 @@ CFLAGS=@CFLAGS@ -D@OS@ @DEFS@ @EXTRA_DEFINES@
+ INCLUDES=-I@srcdir@ @PCAP_INCLUDE@ @EXTRA_INCLUDES@
+ 
+ LDFLAGS=@LDFLAGS@ @PCAP_LINK@
+-LIBS=-lpcap @EXTRA_LIBS@ 
++LIBS=@LIBS@ @EXTRA_LIBS@
+ 
+ STRIPFLAG=@STRIPFLAG@
+ 
+-- 
+1.8.1.4
+

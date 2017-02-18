@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBPCAP
+	bool "libpcap"
+	select BR2_PACKAGE_ZLIB
+	help
+	  A system-independent library for user-level network packet capture.
+
+	  http://www.tcpdump.org/

@@ -1,0 +1,27 @@
+inline ntp syscalls fallback
+
+Reference:
+ https://bugs.ntp.org/show_bug.cgi?id=769
+
+Signed-off-by: James Knight <james.knight@rockwellcollins.com>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+--- a/configure.ac
++++ b/configure.ac
+@@ -1523,11 +1523,11 @@ AC_CACHE_CHECK(
+     [ntp_cv_var_ntp_syscalls],
+     [
+ 	ntp_cv_var_ntp_syscalls=no
+-	case "$ac_cv_func_ntp_adjtime$ac_cv_func_ntp_gettime$ac_cv_func___adjtimex" in
++	case "$ac_cv_func_ntp_adjtime$ac_cv_func_ntp_gettime$ac_cv_func___adjtimex$ac_cv_func_adjtimex" in
+ 	 yesyes*)
+ 	    ntp_cv_var_ntp_syscalls=libc
+ 	    ;;
+-	 *yes)
++	 *yesyes | *yesno | *noyes)
+ 	    ntp_cv_var_ntp_syscalls=inline
+ 	    ;;
+ 	 *)

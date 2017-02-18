@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XKEYBOARD_CONFIG
+	bool "xkeyboard-config"
+	# Runtime dependencies
+	select BR2_PACKAGE_XAPP_XKBCOMP if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XPROTO_XPROTO if BR2_PACKAGE_XORG7
+	help
+	  keyboard configuration database for X
+
+	  http://xlibs.freedesktop.org/xkbdesc

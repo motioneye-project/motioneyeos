@@ -1,0 +1,27 @@
+From 42de9f800056601443ac12edbba7bd5802740db2 Mon Sep 17 00:00:00 2001
+From: Thomas d'Otreppe <tdotreppe@aircrack-ng.org>
+Date: Wed, 8 Apr 2015 01:25:07 +0000
+Subject: [PATCH] Wesside-ng: Use termios instead of sys/termios.
+
+git-svn-id: http://svn.aircrack-ng.org/trunk@2533 28c6078b-6c39-48e3-add9-af49d547ecab
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ src/wesside-ng.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/wesside-ng.c b/src/wesside-ng.c
+index 711d8b7..f44438a 100644
+--- a/src/wesside-ng.c
++++ b/src/wesside-ng.c
+@@ -33,7 +33,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/socket.h>
+-#include <sys/termios.h>
++#include <termios.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ #include <sys/wait.h>
+-- 
+2.4.3
+

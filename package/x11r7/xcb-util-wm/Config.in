@@ -1,0 +1,16 @@
+config BR2_PACKAGE_XCB_UTIL_WM
+	bool "xcb-util-wm"
+	select BR2_PACKAGE_LIBXCB
+	help
+	  The XCB util modules provides a number of libraries which sit on top
+	  of libxcb, the core X protocol library, and some of the extension
+	  libraries. These experimental libraries provide convenience functions
+	  and interfaces which make the raw X protocol more usable. Some of the
+	  libraries also provide client-side code which is not strictly part of
+	  the X protocol but which have traditionally been provided by Xlib.
+
+	  XCB util-wm module provides the following libraries:
+	    - ewmh: Both client and window-manager helpers for EWMH.
+	    - icccm: Both client and window-manager helpers for ICCCM.
+
+	  http://xcb.freedesktop.org/

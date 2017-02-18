@@ -1,0 +1,3 @@
+# Locally computed hashes, not provided by upstream
+sha1   a926961d6adb673aed062683ab8b80e6418523ea  biosdevname-0.6.0.tar.gz
+sha256 c75bf92d3184f7dd1973af002de152498145021efdd5de46d6bf796acef43914 biosdevname-0.6.0.tar.gz

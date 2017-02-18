@@ -1,0 +1,46 @@
+From 1ca4251d1284f2cb56e31aaec4d369809e2139c9 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 24 Feb 2014 16:30:39 +0100
+Subject: [PATCH] Fix libgstfsl linkage (add -lrt for shared memory functions).
+
+Fixes runtime failure of gst-fsl-plugins, e.g.:
+(gst-plugin-scanner:1700): GStreamer-WARNING **: Failed to load
+	plugin '/usr/lib/gstreamer-0.10/libmfw_vpu.so':
+	/usr/lib/libgstfsl-0.10.so.0: undefined symbol: shm_open)
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac     | 3 +++
+ libs/Makefile.am | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index a5d1655..7b5a7a6 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -170,6 +170,9 @@ AC_CHECK_LIB(ipu, mxc_ipu_lib_task_init, [IPU_LIBS=-lipu], [echo "No libipu arou
+ AC_SUBST(IPU_CFLAGS)
+ AC_SUBST(IPU_LIBS)
+ 
++AC_SEARCH_LIBS([shm_open], [rt], [SHM_LIBS="-lrt"])
++AC_SUBST(SHM_LIBS)
++
+ dnl of the POSIX Real-Time Extensions.
+ AC_CHECK_LIB(rt, clock_gettime)
+ AC_SUBST(RT_CFLAGS)
+diff --git a/libs/Makefile.am b/libs/Makefile.am
+index 2f56bba..5b30657 100755
+--- a/libs/Makefile.am
++++ b/libs/Makefile.am
+@@ -42,7 +42,7 @@ libgstfsl_@GST_MAJORMINOR@_la_CFLAGS  += -DIPULIB
+ endif
+ 
+ libgstfsl_@GST_MAJORMINOR@_la_LDFLAGS = -version-info @GSTMXLIBS_VERSION@
+-libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS) $(RT_LIBS)
++libgstfsl_@GST_MAJORMINOR@_la_LIBADD = $(GST_BASE_LIBS) -lgstvideo-@GST_MAJORMINOR@ -lgstinterfaces-$(GST_MAJORMINOR) $(IPU_LIBS) $(RT_LIBS) $(SHM_LIBS)
+ 
+ libgstfsl_@GST_MAJORMINOR@includedir = $(includedir)/gstreamer-@GST_MAJORMINOR@/gst/imx-mm
+ libgstfsl_@GST_MAJORMINOR@include_HEADERS = \
+-- 
+1.8.1.4
+

@@ -1,0 +1,13 @@
+config BR2_PACKAGE_GNUCHESS
+	bool "gnuchess"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_FLEX
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  GNU Chess lets most modern computers play a full game of chess.
+
+	  http://ftp.gnu.org/pub/gnu/chess
+
+comment "gnuchess needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

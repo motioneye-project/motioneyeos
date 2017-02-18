@@ -1,0 +1,21 @@
+Use NAME_MAX instead of MAXNAMLEN
+
+NAME_MAX is POSIX, and available in all C libraries, generally in
+<limits.h>, while MAXNAMLEN is BSD-specific, and only available in
+musl in <sys/param.h>. So let's use NAME_MAX instead of MAXNAMLEN.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/index_dir.c
+===================================================================
+--- a/src/index_dir.c
++++ b/src/index_dir.c
+@@ -29,7 +29,7 @@
+ #include <fcntl.h>
+ #include "compat.h"
+ 
+-#define MAX_FILE_LENGTH                         MAXNAMLEN
++#define MAX_FILE_LENGTH                         NAME_MAX
+ #define MAX_PATH_LENGTH                         PATH_MAX
+ 
+ #define INT_TO_HEX(x) \

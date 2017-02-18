@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+
+# We want to catch any unexpected failure, and exit immediately
+set -e
+
+# Download helper for cp, to be called from the download wrapper script
+#
+# Call it as:
+#   .../cp [-q] OUT_FILE SRC_FILE
+#
+# Environment:
+#   LOCALFILES: the cp command to call
+
+# 'cp' usually does not print anything on its stdout, whereas the
+# other download backends, even if not verbose, at least print some
+# progress information.
+# Make 'cp' verbose by default, so it behaves a bit like the others.
+verbose=-v
+
+while getopts :q OPT; do
+    case "${OPT}" in
+    q)  verbose=;;
+    \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
+    esac
+done
+shift $((OPTIND-1))
+
+output="${1}"
+source="${2}"
+
+# Caller needs to single-quote its arguments to prevent them from
+# being expanded a second time (in case there are spaces in them)
+_localfiles() {
+    eval ${LOCALFILES} "${@}"
+}
+
+_localfiles ${verbose} "'${source}'" "'${output}'"

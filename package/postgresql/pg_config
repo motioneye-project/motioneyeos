@@ -1,0 +1,19 @@
+#!/bin/sh
+
+#
+# Minimal pg_config implementation as replacement for the native pg_config application
+# Only implements --includedir and --libdir
+#
+
+prefix=/usr
+
+case "$1" in
+  --includedir)
+	echo "$prefix/include"
+	;;
+  --libdir)
+	echo "$prefix/lib"
+	;;
+  *)
+	echo "Usage: $0 {--includedir|--libdir}"
+esac

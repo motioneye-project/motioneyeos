@@ -1,0 +1,9 @@
+config BR2_PACKAGE_STUNNEL
+	bool "stunnel"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Stunnel is a program that wraps any TCP connection with an SSL
+	  connection.
+
+	  http://www.stunnel.org/

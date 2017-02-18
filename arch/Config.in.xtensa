@@ -1,0 +1,56 @@
+choice
+	prompt "Target Architecture Variant"
+	depends on BR2_xtensa
+	default BR2_xtensa_fsf
+config BR2_XTENSA_CUSTOM
+	select BR2_ARCH_HAS_MMU_OPTIONAL
+	bool "Custom Xtensa processor configuration"
+config BR2_xtensa_fsf
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	bool "fsf - Default configuration"
+endchoice
+
+config BR2_XTENSA_CUSTOM_NAME
+	string "Custom Xtensa processor configuration name"
+	depends on BR2_XTENSA_CUSTOM
+	default ""
+	help
+	  Name given to a custom Xtensa processor configuration.
+
+config BR2_XTENSA_CORE_NAME
+	string
+	default BR2_XTENSA_CUSTOM_NAME	if BR2_XTENSA_CUSTOM
+	default ""			if BR2_xtensa_fsf
+
+config BR2_XTENSA_OVERLAY_DIR
+	string "Overlay directory for custom configuration"
+	depends on BR2_XTENSA_CUSTOM
+	default ""
+	help
+	  Provide the directory path that contains the overlay file
+	  for a custom processor configuration. The path is relative
+	  to the top directory of buildroot.
+	  These overlay files are tar packages with updated configuration
+	  files for various toolchain packages and Xtensa processor
+	  configurations. They are provided by the processor vendor or
+	  directly from Tensilica.
+
+choice
+	prompt "Target Architecture Endianness"
+	depends on BR2_XTENSA_CUSTOM
+	default BR2_XTENSA_LITTLE_ENDIAN
+
+config BR2_XTENSA_LITTLE_ENDIAN
+	bool "Little endian"
+
+config BR2_XTENSA_BIG_ENDIAN
+	bool "Big endian"
+
+endchoice
+
+config BR2_ENDIAN
+	default "LITTLE"	if BR2_XTENSA_LITTLE_ENDIAN
+	default "BIG"		if BR2_xtensa_fsf || BR2_XTENSA_BIG_ENDIAN
+
+config BR2_ARCH
+	default "xtensa"	if BR2_xtensa

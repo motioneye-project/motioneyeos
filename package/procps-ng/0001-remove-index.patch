@@ -1,0 +1,16 @@
+sysctl: remove use of legacy index()
+
+[yann.morin.1998@free.fr: adapt to procps-ng]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+diff -durN procps-v3.3.9.orig/sysctl.c procps-v3.3.9/sysctl.c
+--- procps-v3.3.9.orig/sysctl.c	2013-12-03 12:16:18.000000000 +0100
++++ procps-v3.3.9/sysctl.c	2014-05-31 00:45:00.869748741 +0200
+@@ -794,7 +794,7 @@
+ 		      program_invocation_short_name);
+ 
+ 	for ( ; *argv; argv++) {
+-		if (WriteMode || index(*argv, '='))
++		if (WriteMode || strchr(*argv, '='))
+ 			ReturnCode += WriteSetting(*argv);
+ 		else
+ 			ReturnCode += ReadSetting(*argv);

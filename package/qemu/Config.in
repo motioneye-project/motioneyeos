@@ -1,0 +1,109 @@
+config BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
+	bool
+	# Only tested on these architectures
+	default y if BR2_aarch64 || BR2_i386 || BR2_mips || BR2_mipsel \
+		|| BR2_x86_64 || BR2_arm
+
+comment "QEMU requires a toolchain with wchar, threads"
+	depends on BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
+	depends on BR2_USE_MMU
+	depends on !(BR2_TOOLCHAIN_HAS_THREADS && BR2_USE_WCHAR)
+
+config BR2_PACKAGE_QEMU
+	bool "QEMU"
+	depends on BR2_PACKAGE_QEMU_ARCH_SUPPORTS_TARGET
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR # gettext
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_ZLIB
+	help
+	  QEMU is a generic and open source machine emulator and virtualizer.
+
+	  When used as a machine emulator, QEMU can run OSes and programs made
+	  for one machine (e.g. an ARM board) on a different machine (e.g.
+	  your own PC). By using dynamic translation, it achieves very good
+	  performance.
+
+	  When used as a virtualizer, QEMU achieves near native performances
+	  by executing the guest code directly on the host CPU. QEMU supports
+	  virtualization when executing under the Xen hypervisor or using the
+	  KVM kernel module in Linux. When using KVM, QEMU can virtualize x86,
+	  server and embedded PowerPC, and S390 guests.
+
+	  http://qemu.org/
+
+if BR2_PACKAGE_QEMU
+
+comment "Emulators selection"
+
+config BR2_PACKAGE_QEMU_CUSTOM_TARGETS
+	string "Enable specific targets"
+	help
+	  Enter here the list of QEMU targets you want to build. For example:
+
+	    System emulation      | User-land emulation
+	    ----------------------+-----------------------
+	    i386-softmmu          | i386-linux-user
+	    arm-softmmu           | ppc-linux-user
+	    x86_64-softmmu        | sparc-bsd-user
+	    ...                   | ...
+
+config QEMU_FOO
+	bool # To break the indentation
+
+if BR2_PACKAGE_QEMU_CUSTOM_TARGETS = ""
+
+comment "... or you can select emulator families to enable, below:"
+
+config BR2_PACKAGE_QEMU_SYSTEM
+	bool "Enable all systems emulation"
+	depends on !BR2_STATIC_LIBS # dtc
+	select BR2_PACKAGE_QEMU_FDT
+	help
+	  Say 'y' to build all system emulators/virtualisers that QEMU supports.
+
+comment "systems emulation needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_QEMU_LINUX_USER
+	bool "Enable all Linux user-land emulation"
+	help
+	  Say 'y' to build all Linux user-land emulators that QEMU supports.
+
+# Note: bsd-user can not be build on Linux
+
+endif # BR2_PACKAGE_QEMU_CUSTOM_TARGETS == ""
+
+config BR2_PACKAGE_QEMU_HAS_EMULS
+	def_bool y
+	depends on BR2_PACKAGE_QEMU_SYSTEM || BR2_PACKAGE_QEMU_LINUX_USER || BR2_PACKAGE_QEMU_CUSTOM_TARGETS != ""
+
+if BR2_PACKAGE_QEMU_HAS_EMULS
+
+comment "Frontends"
+
+config BR2_PACKAGE_QEMU_SDL
+	bool "Enable SDL frontend"
+	select BR2_PACKAGE_SDL
+	help
+	  Say 'y' to enable the SDL frontend, that is, a graphical window
+	  presenting the VM's display.
+
+comment "Misc. features"
+
+config BR2_PACKAGE_QEMU_FDT
+	bool "Enable FDT"
+	depends on !BR2_STATIC_LIBS # dtc
+	select BR2_PACKAGE_DTC
+	help
+	  Say 'y' here to have QEMU capable of constructing Device Trees,
+	  and passing them to the VMs.
+
+comment "FDT support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+endif # BR2_PACKAGE_QEMU_HAS_EMULS
+
+endif # BR2_PACKAGE_QEMU

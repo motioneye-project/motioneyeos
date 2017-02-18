@@ -1,0 +1,40 @@
+From 8eaf14a17244aaf000b4d19e4fde4a637576939f Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 Feb 2016 21:40:47 +0100
+Subject: [PATCH] configure.ac: check if libatomic is needed
+
+The mpd source code uses the C++11 <atomic> functionality, which
+internally is implemented using the __atomic_*() gcc built-ins. On
+certain architectures, the __atomic_*() built-ins are implemented in
+the libatomic library that comes with the rest of the gcc runtime. Due
+to this, code using <atomic> might need to link against libatomic,
+otherwise one hits build issues such as:
+
+GlobalEvents.cxx:(.text._ZN12GlobalEvents4EmitENS_5EventE+0x14): undefined reference to `__atomic_fetch_or_4'
+
+on an architecture like SPARC.
+
+To solve this, a configure.ac check is added to know if we need to
+link against libatomic or not.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 107b45a..8e6fab7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -233,6 +233,8 @@ if test x$have_pthread_setname_np = xyes; then
+ 	AC_DEFINE(HAVE_PTHREAD_SETNAME_NP, 1, [Is pthread_setname_np() available?])
+ fi
+ 
++AC_SEARCH_LIBS([__atomic_load_4], [atomic])
++
+ dnl ---------------------------------------------------------------------------
+ dnl Event loop selection
+ dnl ---------------------------------------------------------------------------
+-- 
+2.6.4
+

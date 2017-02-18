@@ -1,0 +1,8 @@
+config BR2_PACKAGE_RUBIX
+	bool "rubix"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  A 3D rubiks cube game for X
+
+	  http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/Rubix

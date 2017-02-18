@@ -1,0 +1,10 @@
+config BR2_PACKAGE_QT5SERIALPORT
+	bool "qt5serialport"
+	select BR2_PACKAGE_QT5BASE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5serialport module.
+
+	  http://qt.io

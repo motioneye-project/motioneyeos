@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_BH_LUCIDATYPEWRITER_75DPI
+	bool "font-bh-lucidatypewriter-75dpi"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

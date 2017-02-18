@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_DIGEST_SHA1
+	bool "perl-digest-sha1"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Perl interface to the SHA-1 algorithm
+
+	  https://metacpan.org/release/Digest-SHA1
+
+comment "perl-digest-sha1 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

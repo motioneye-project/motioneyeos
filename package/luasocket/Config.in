@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LUASOCKET
+	bool "luasocket"
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	help
+	  LuaSocket is the most comprehensive networking support library
+	  for the Lua language.
+	  It provides easy access to TCP, UDP, DNS, SMTP,
+	  FTP, HTTP, MIME and much more.
+
+	  http://luaforge.net/projects/luasocket/

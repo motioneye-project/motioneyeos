@@ -1,0 +1,24 @@
+comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
+		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+
+config BR2_PACKAGE_MOSH
+	bool "mosh"
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf
+	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
+	depends on !BR2_STATIC_LIBS # protobuf
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_PROTOBUF
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	# runtime dependency
+	select BR2_PACKAGE_OPENSSH if !BR2_PACKAGE_DROPBEAR_CLIENT
+	help
+	  Remote terminal application that supports intermittent connectivity,
+	  allows roaming, and provides speculative local echo and line editing
+	  of user keystrokes.
+
+	  https://mosh.mit.edu

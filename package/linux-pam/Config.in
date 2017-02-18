@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LINUX_PAM
+	bool "linux-pam"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_FLEX
+	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR)
+	# While linux-pam does have some support for statically linked
+	# modules (through --enable-static-modules), it doesn't work
+	# properly due to a build cycle between libpam and
+	# modules. See
+	# https://lists.fedorahosted.org/pipermail/linux-pam-commits/2012-February/000105.html
+	# for details.
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	help
+	  A Security Framework that Provides Authentication for Applications
+
+	  http://linux-pam.org
+
+comment "linux-pam needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL

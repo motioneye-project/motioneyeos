@@ -1,0 +1,30 @@
+Prevent Pango to build tests.
+
+Updated to Pango 1.36.3 by Hadrien Boutteville.
+
+Signed-off-by: Hadrien Boutteville <hadrien.boutteville@gmail.com>
+[Gustavo: update for 1.38.1]
+
+diff -Nura pango-1.38.1.orig/Makefile.am pango-1.38.1/Makefile.am
+--- pango-1.38.1.orig/Makefile.am	2015-10-14 15:41:27.620016974 +0000
++++ pango-1.38.1/Makefile.am	2015-10-14 15:41:54.431240793 +0000
+@@ -1,6 +1,6 @@
+ ## Process this file with automake to create Makefile.in.
+ 
+-SUBDIRS= pango pango-view examples docs tools tests build
++SUBDIRS= pango pango-view examples docs tools build
+ 
+ EXTRA_DIST = 			\
+ 	autogen.sh		\
+diff -Nura pango-1.38.1.orig/Makefile.in pango-1.38.1/Makefile.in
+--- pango-1.38.1.orig/Makefile.in	2015-10-14 15:41:27.630016685 +0000
++++ pango-1.38.1/Makefile.in	2015-10-14 15:41:58.753115676 +0000
+@@ -417,7 +417,7 @@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = pango pango-view examples docs tools tests build
++SUBDIRS = pango pango-view examples docs tools build
+ EXTRA_DIST = \
+ 	autogen.sh		\
+ 	pango.pc.in		\

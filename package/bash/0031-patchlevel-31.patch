@@ -1,0 +1,116 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-031
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-031
+
+Bug-Reported-by:	lolilolicon <lolilolicon@gmail.com>
+Bug-Reference-ID:	<CAMtVo_Nz=32Oq=zWTb6=+8gUNXOo2rRvud1W4oPnA-cgVk_ZqQ@mail.gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2014-08/msg00139.html
+
+Bug-Description:
+
+The new nameref assignment functionality introduced in bash-4.3 did not perform
+enough validation on the variable value and would create variables with
+invalid names.
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.3-patched/subst.h	2014-01-11 21:02:27.000000000 -0500
+--- b/subst.h	2014-09-01 12:16:56.000000000 -0400
+***************
+*** 48,51 ****
+--- 48,52 ----
+  #define ASS_MKGLOBAL	0x0008	/* force global assignment */
+  #define ASS_NAMEREF	0x0010	/* assigning to nameref variable */
++ #define ASS_FROMREF	0x0020	/* assigning from value of nameref variable */
+  
+  /* Flags for the string extraction functions. */
+*** a/bash-4.3-patched/variables.c	2014-05-15 08:26:50.000000000 -0400
+--- b/variables.c	2014-09-01 14:37:44.000000000 -0400
+***************
+*** 2504,2511 ****
+       int hflags, aflags;
+  {
+!   char *newval;
+    SHELL_VAR *entry;
+  
+    entry = (hflags & HASH_NOSRCH) ? (SHELL_VAR *)NULL : hash_lookup (name, table);
+    /* Follow the nameref chain here if this is the global variables table */
+    if (entry && nameref_p (entry) && (invisible_p (entry) == 0) && table == global_variables->table)
+--- 2566,2590 ----
+       int hflags, aflags;
+  {
+!   char *newname, *newval;
+    SHELL_VAR *entry;
++ #if defined (ARRAY_VARS)
++   arrayind_t ind;
++   char *subp;
++   int sublen;
++ #endif
+  
++   newname = 0;
++ #if defined (ARRAY_VARS)
++   if ((aflags & ASS_FROMREF) && (hflags & HASH_NOSRCH) == 0 && valid_array_reference (name))
++     {
++       newname = array_variable_name (name, &subp, &sublen);
++       if (newname == 0)
++ 	return (SHELL_VAR *)NULL;	/* XXX */
++       entry = hash_lookup (newname, table);
++     }
++   else
++ #endif
+    entry = (hflags & HASH_NOSRCH) ? (SHELL_VAR *)NULL : hash_lookup (name, table);
++ 
+    /* Follow the nameref chain here if this is the global variables table */
+    if (entry && nameref_p (entry) && (invisible_p (entry) == 0) && table == global_variables->table)
+***************
+*** 2538,2541 ****
+--- 2617,2630 ----
+        }
+      }
++ #if defined (ARRAY_VARS)
++   else if (entry == 0 && newname)
++     {
++       entry = make_new_array_variable (newname);	/* indexed array by default */
++       if (entry == 0)
++ 	return entry;
++       ind = array_expand_index (name, subp, sublen);
++       bind_array_element (entry, ind, value, aflags);
++     }
++ #endif
+    else if (entry == 0)
+      {
+***************
+*** 2658,2662 ****
+  		      if (nameref_cell (nv) == 0)
+  			return (bind_variable_internal (nv->name, value, nvc->table, 0, flags));
+! 		      return (bind_variable_internal (nameref_cell (nv), value, nvc->table, 0, flags));
+  		    }
+  		  else
+--- 2747,2752 ----
+  		      if (nameref_cell (nv) == 0)
+  			return (bind_variable_internal (nv->name, value, nvc->table, 0, flags));
+! 		      /* XXX - bug here with ref=array[index] */
+! 		      return (bind_variable_internal (nameref_cell (nv), value, nvc->table, 0, flags|ASS_FROMREF));
+  		    }
+  		  else
+*** a/bash-4.3/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 30
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 31
+  
+  #endif /* _PATCHLEVEL_H_ */

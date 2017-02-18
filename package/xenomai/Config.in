@@ -1,0 +1,101 @@
+comment "xenomai needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
+		   BR2_bfin || BR2_powerpc || BR2_sh4
+
+config BR2_PACKAGE_XENOMAI
+	bool "Xenomai Userspace"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
+		BR2_bfin || BR2_powerpc || BR2_sh4
+	help
+	  Real-Time Framework for Linux
+	  http://www.xenomai.org
+
+	  Xenomai is split in two parts: a kernel part and an
+	  userspace part.
+
+	  This package contains the userspace part, which consists
+	  mainly in libraries to write userspace real-time programs
+	  that interact with the in-kernel Xenomai real-time core.
+
+	  For those libraries to work, you need a Xenomai-enabled
+	  kernel. This is possible in two ways:
+	   - if you compile your kernel with Buildroot, you need to go
+	     to Linux Kernel -> Linux Kernel Extensions to enable the
+	     Xenomai extension.
+	   - if you compile your kernel outside of Buildroot, you need
+	     to make sure that it is Xenomai-enabled.
+
+	  Finally, if you are using a static /dev, make sure to
+	  uncomment the Xenomai entries listed in
+	  target/generic/device_table_dev.txt.
+
+if BR2_PACKAGE_XENOMAI
+
+config BR2_PACKAGE_XENOMAI_VERSION
+	string "Custom Xenomai version"
+	help
+	  Manually select Xenomai version. If left empty, the default
+	  version will be used.
+
+	  Make sure that the selected version has a patch for your
+	  selected Linux kernel. If it does not, download and select
+	  a patch manually with
+	  BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH, in the Linux
+	  Kernel -> Linux Kernel Extensions menu.
+
+config BR2_PACKAGE_XENOMAI_TESTSUITE
+	bool "Install testsuite"
+	help
+	  This option allows to install the Xenomai test programs.
+
+config BR2_PACKAGE_XENOMAI_RTCAN
+	bool "RTCan utilities"
+	help
+	  This option allows to install the Xenomai RT-CAN utilities.
+
+config BR2_PACKAGE_XENOMAI_ANALOGY
+	bool "Analogy libs and utils"
+	help
+	  This option allows to install the Xenomai Analogy utilities
+	  and libraries
+
+config BR2_PACKAGE_XENOMAI_NATIVE_SKIN
+	bool "Native skin library"
+	default y
+	help
+	  This option allows to install the Native Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_POSIX_SKIN
+	bool "POSIX skin library"
+	default y
+	help
+	  This option allows to install the POSIX Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_VXWORKS_SKIN
+	bool "VX-Works skin library"
+	help
+	  This option allows to install the VX-Works Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_PSOS_SKIN
+	bool "PSOS skin library"
+	help
+	  This option allows to install the PSOS Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_RTAI_SKIN
+	bool "RTAI skin library"
+	help
+	  This option allows to install the RTAI Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_UITRON_SKIN
+	bool "uiTron skin library"
+	help
+	  This option allows to install the uiTron Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_VRTX_SKIN
+	bool "VRTX skin library"
+	help
+	  This option allows to install the VRTX Xenomai skin
+
+endif

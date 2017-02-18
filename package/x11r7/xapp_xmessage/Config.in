@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_XMESSAGE
+	bool "xmessage"
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  display a message or query in a window (X-based /bin/echo)

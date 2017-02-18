@@ -1,0 +1,35 @@
+When building a target filesystem, it is desirable to not have to
+become root and then run 'mknod' a thousand times.  Using a device
+table you can create device nodes and directories "on the fly".
+
+You can do all sorts of interesting things with a device table file.
+For example, if you want to adjust the permissions on a particular
+file you can just add an entry like:
+
+  /sbin/foobar f 2755 0 0 - - - - -
+
+and (assuming the file /sbin/foobar exists) it will be made setuid
+root (regardless of what its permissions are on the host filesystem.
+
+Furthermore, you can use a single table entry to create a many device
+minors.  For example, if I wanted to create /dev/hda and
+/dev/hda[0-15] I could just use the following two table entries:
+
+  /dev/hda b 640 0 0 3 0 0 0 -
+  /dev/hda b 640 0 0 3 1 1 1 15
+
+Device table entries take the form of:
+
+<name> <type> <mode> <uid> <gid> <major> <minor> <start> <inc> <count>
+
+where name is the file name,  type can be one of:
+
+      f: A regular file
+      d: Directory
+      c: Character special device file
+      b: Block special device file
+      p: Fifo (named pipe)
+
+uid is the user id for the target file, gid is the group id for the
+target file.  The rest of the entries (major, minor, etc) apply only
+to device special files.

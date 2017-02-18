@@ -1,0 +1,31 @@
+config BR2_TARGET_ROOTFS_SQUASHFS
+	bool "squashfs root filesystem"
+	help
+	  Build a squashfs root filesystem
+
+if BR2_TARGET_ROOTFS_SQUASHFS
+
+choice
+	prompt "Compression algorithm"
+	default BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
+	help
+	  Select the squashfs compression algorithm to use when
+	  generating the filesystem.
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_GZIP
+	bool "gzip"
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_LZ4
+	bool "lz4"
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_LZMA
+	bool "lzma"
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_LZO
+	bool "lzo"
+
+config BR2_TARGET_ROOTFS_SQUASHFS4_XZ
+	bool "xz"
+
+endchoice
+endif

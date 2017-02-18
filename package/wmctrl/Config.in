@@ -1,0 +1,24 @@
+config BR2_PACKAGE_WMCTRL
+	bool "wmctrl"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	help
+	  Provides command line access to almost all the features
+	  defined in the EWMH specification. It can be used, for
+	  example, to get information about the window manager, to get
+	  a detailed list of desktops and managed windows, to switch
+	  and resize desktops, to make windows full-screen,
+	  always-above or sticky, and to activate, close, move,
+	  resize, maximize and minimize them.
+
+	  https://sites.google.com/site/tstyblo/wmctrl/
+
+comment "wmctrl needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

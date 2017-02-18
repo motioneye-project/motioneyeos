@@ -1,0 +1,10 @@
+[Unit]
+Description=DDNS client
+After=syslog.target network.target
+
+[Service]
+ExecStart=/usr/bin/inadyn
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,46 @@
+From 03a4c313f42ea1bbdfc4c64a285b3930766c2b23 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:28:34 +0100
+Subject: [PATCH] setup.py: do not add invalid header locations
+
+This piece of code incorrectly adds /usr/include to
+self.compiler.include_dirs, and results in the following invalid
+compilation line:
+
+/home/thomas/projets/buildroot/output/host/usr/bin/arm-none-linux-gnueabi-gcc
+  -fPIC -Wno-unused-result -Werror=declaration-after-statement -DNDEBUG -g
+  -O3 -Wall -Wstrict-prototypes -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+  -D_FILE_OFFSET_BITS=64 -pipe -Os
+  -I./Include -I/usr/include -I. -IInclude
+  -I/home/thomas/projets/buildroot/output/host/usr/arm-buildroot-linux-gnueabi/sysroot/usr/include
+  -I/home/thomas/projets/buildroot/output/build/python3-3.4.0b1/Include
+  -I/home/thomas/projets/buildroot/output/build/python3-3.4.0b1
+  -c /home/thomas/projets/buildroot/output/build/python3-3.4.0b1/Modules/_struct.c
+  -o build/temp.linux-arm-3.4/home/thomas/projets/buildroot/output/build/python3-3.4.0b1/Modules/_struct.o
+cc1: warning: include location "/usr/include" is unsafe for cross-compilation [-Wpoison-system-directories]
+
+The -I/usr/include is wrong when cross compiling, so we disable adding
+INCLUDEDIR and LIBDIR from the host when cross compiling.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ setup.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 2779658..d3bf8e5 100644
+--- a/setup.py
++++ b/setup.py
+@@ -493,7 +493,8 @@ class PyBuildExt(build_ext):
+                         add_dir_to_list(dir_list, directory)
+ 
+         if os.path.normpath(sys.base_prefix) != '/usr' \
+-                and not sysconfig.get_config_var('PYTHONFRAMEWORK'):
++                and not sysconfig.get_config_var('PYTHONFRAMEWORK') \
++                and not cross_compiling:
+             # OSX note: Don't add LIBDIR and INCLUDEDIR to building a framework
+             # (PYTHONFRAMEWORK is set) to avoid # linking problems when
+             # building a framework with different architectures than
+-- 
+2.6.4
+

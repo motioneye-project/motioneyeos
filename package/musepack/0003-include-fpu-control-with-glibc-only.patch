@@ -1,0 +1,26 @@
+Include <fpu_control.h> only on glibc systems
+
+The <fpu_control.h> header provides _FPU_*() macros, which the
+Init_FPU() function uses only on i386, and only when they are
+defined. Since <fpu_control.h> is not available, this causes a build
+failure with C libraries such as musl. By simply including
+<fpu_control.h> explicitly on glibc systems, we avoid the build
+failure, since mpcenc.c already conditionally uses the <fpu_control.h>
+macros only if they are defined.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Thomas: better commit log.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+diff -uNr musepack_src_r475.org/mpcenc/mpcenc.h musepack_src_r475/mpcenc/mpcenc.h
+--- musepack_src_r475.org/mpcenc/mpcenc.h	2009-02-23 19:15:46.000000000 +0100
++++ musepack_src_r475/mpcenc/mpcenc.h	2016-01-30 09:29:08.000000000 +0100
+@@ -50,7 +51,7 @@
+ # include <unistd.h>
+ #endif
+ 
+-#if   defined __linux__
++#if   defined __GLIBC__
+ #  include <fpu_control.h>
+ #elif defined __FreeBSD__
+ # include <machine/floatingpoint.h>

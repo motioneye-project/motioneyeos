@@ -1,0 +1,19 @@
+
+comment "Note that xfsprogs needs a toolchain with UCLIBC_SV4_DEPRECATED and UCLIBC_HAS_OBSOLETE_BSD_SIGNAL enabled"
+	depends on BR2_PACKAGE_XFSPROGS
+
+comment "xfsprogs needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_XFSPROGS
+	bool "xfsprogs"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	help
+	  The XFS file system utilities and libraries
+
+	  http://oss.sgi.com/projects/xfs/

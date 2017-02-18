@@ -1,0 +1,54 @@
+#!/bin/sh
+#
+# Start/stop ejabberd
+#
+
+CTL=/usr/sbin/ejabberdctl
+DEFAULT=/etc/default/ejabberd
+INSTALLUSER=ejabberd
+RUNDIR=/var/run/ejabberd
+
+# Read default configuration file if present.
+[ -r "$DEFAULT" ] && . "$DEFAULT"
+
+# Create RUNDIR.
+mkrundir() {
+    install -d -o "$INSTALLUSER" -g "$INSTALLUSER" "$RUNDIR"
+}
+
+case "$1" in
+    start)
+        mkrundir || exit 1
+        printf "Starting ejabberd... "
+        "$CTL" start
+        # Wait until ejabberd is up and running.
+        if "$CTL" started; then
+            echo "done"
+        else
+            echo "failed"
+        fi
+        ;;
+    stop)
+        printf "Stopping ejabberd... "
+        "$CTL" stop > /dev/null
+        if [ $? -eq 3 ] || "$CTL" stopped; then
+            echo "OK"
+        else
+            echo "failed"
+        fi
+        ;;
+    status)
+        "$CTL" status
+        ;;
+    restart|force-reload)
+        "$0" stop || true
+        "$0" start
+        ;;
+    live)
+        mkrundir || exit 1
+        "$CTL" live
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|status|restart|force-reload|live}"
+        exit 1
+esac

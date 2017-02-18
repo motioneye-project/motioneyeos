@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PPS_TOOLS
+	bool "pps-tools"
+	help
+	  Pulse per second tools. Provides timepps.h and other PPS utilities.
+
+	  https://github.com/ago/pps-tools/

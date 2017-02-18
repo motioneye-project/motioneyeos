@@ -1,0 +1,4 @@
+# From http://www.dest-unreach.org/socat/download.md5sum
+md5	553b1593d0a192cb09cbdc687ef1baac	socat-2.0.0-b9.tar.bz2
+# Calculated based on the hash above
+sha256	49efb0a5c66b94b279014addc2851faf8ebbd1ec4b7e31c1de7e912d7b4983d2	socat-2.0.0-b9.tar.bz2

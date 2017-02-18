@@ -1,0 +1,18 @@
+Fix parallel build issue
+
+Missing dmallocc.o <- dmalloc.h dependency may break parallel builds.
+dmalloc.h is generated,and may not be around by the time gcc starts
+parsing dmallocc.cc.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -401,6 +401,7 @@
+ compat.o: compat.c conf.h settings.h dmalloc.h compat.h dmalloc_loc.h
+ dmalloc.o: dmalloc.c conf.h settings.h dmalloc_argv.h dmalloc.h compat.h \
+   debug_tok.h dmalloc_loc.h env.h error_val.h version.h
++dmallocc.o: dmallocc.cc dmalloc.h return.h conf.h settings.h
+ dmalloc_argv.o: dmalloc_argv.c conf.h settings.h dmalloc_argv.h \
+   dmalloc_argv_loc.h compat.h
+ dmalloc_fc_t.o: dmalloc_fc_t.c conf.h settings.h dmalloc.h dmalloc_argv.h \

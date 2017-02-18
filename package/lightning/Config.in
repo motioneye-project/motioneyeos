@@ -1,0 +1,32 @@
+comment "lightning needs a toolchain w/ dynamic library"
+	depends on BR2_sparc || BR2_i386 || BR2_x86_64 || BR2_mips || \
+		BR2_mipsel || BR2_arm || BR2_powerpc
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_LIGHTNING
+	bool "lightning"
+	depends on BR2_sparc || BR2_i386 || BR2_x86_64 || BR2_mips || \
+		BR2_mipsel || BR2_arm || BR2_powerpc
+	depends on !BR2_STATIC_LIBS
+	help
+	  GNU lightning is a library that generates
+	  assembly language code at run-time.
+
+	  https://www.gnu.org/software/lightning/
+
+if BR2_PACKAGE_LIGHTNING
+
+config BR2_PACKAGE_LIGHTNING_DISASSEMBLER
+	bool "enable disassembler"
+	select BR2_PACKAGE_BINUTILS
+	select BR2_PACKAGE_ZLIB
+	depends on !BR2_aarch64 && !BR2_nios2 # binutils
+	depends on BR2_USE_WCHAR # binutils
+	help
+	  Enable the GNU lightning disassembler.
+
+comment "lightning disassembler needs a toolchain w/ wchar"
+	depends on !BR2_aarch64 && !BR2_nios2
+	depends on !BR2_USE_WCHAR
+
+endif

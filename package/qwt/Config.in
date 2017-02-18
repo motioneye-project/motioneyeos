@@ -1,0 +1,35 @@
+comment "qwt needs a toolchain not affected by Binutils bug 19405"
+	depends on BR2_PACKAGE_QT && BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+
+config BR2_PACKAGE_QWT
+	bool "qwt"
+	depends on (BR2_PACKAGE_QT && !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405) || \
+		BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT_GUI_MODULE if BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT5BASE_GUI if BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE_WIDGETS if BR2_PACKAGE_QT5 # printsupport
+	select BR2_PACKAGE_QT5BASE_CONCURRENT if BR2_PACKAGE_QT5
+	help
+	  Qwt is a graphics extension to the Qt GUI application
+	  framework. It provides a 2D plotting widget and more.
+
+	  http://qwt.sourceforge.net/
+
+if BR2_PACKAGE_QWT
+
+config BR2_PACKAGE_QWT_SVG
+	bool "SVG support"
+	select BR2_PACKAGE_QT_SVG if BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT5SVG if BR2_PACKAGE_QT5
+
+config BR2_PACKAGE_QWT_MATHML
+	bool "MathML support"
+
+config BR2_PACKAGE_QWT_OPENGL
+	bool "OpenGL support"
+	depends on (BR2_PACKAGE_HAS_LIBGLES && BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_QT) || \
+		(BR2_PACKAGE_QT5_GL_AVAILABLE && BR2_PACKAGE_QT5)
+	select BR2_PACKAGE_QT_OPENGL_ES if BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT5BASE_OPENGL_LIB if BR2_PACKAGE_QT5
+
+endif

@@ -1,0 +1,36 @@
+#!/bin/sh
+#
+# Start telnet....
+#
+
+start() {
+      printf "Starting telnetd: "
+      start-stop-daemon -S -q -m -b -p /var/run/telnetd.pid \
+			-x /usr/sbin/telnetd -- -F
+      [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+	printf "Stopping telnetd: "
+	start-stop-daemon -K -q -p /var/run/telnetd.pid \
+			  -x /usr/sbin/telnetd
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+    start)
+	start
+	;;
+    stop)
+	stop
+	;;
+    restart|reload)
+	stop
+	start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

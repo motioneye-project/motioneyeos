@@ -1,0 +1,6 @@
+config BR2_PACKAGE_CGIC
+	bool "cgic"
+	help
+	  C CGI library
+
+	  http://www.boutell.com/cgic/

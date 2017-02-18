@@ -1,0 +1,40 @@
+From 51ab69d76aa708c79aed971ee4083abb8cc07201 Mon Sep 17 00:00:00 2001
+From: Stefan Schmidt <stefan@osg.samsung.com>
+Date: Mon, 9 Nov 2015 19:06:25 +0100
+Subject: [PATCH] build: avoid redefinition errors with libnl >= 3.2.27
+
+From 3.2.17 onwards we have nla for s8, s16, etc defined directly in libnl.
+If we keep including this file anyway we run into redefinition errors. Better
+include use our own only for earlier versions.
+
+Happened to me on Fedora 22 after my last update.
+
+Signed-off-by: Stefan Schmidt <stefan@osg.samsung.com>
+Acked-by: Alexander Aring <alex.aring@gmail.com>
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Patch status: upstream
+
+ src/nl_extras.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/nl_extras.h b/src/nl_extras.h
+index 9d841aa..c4d1d14 100644
+--- a/src/nl_extras.h
++++ b/src/nl_extras.h
+@@ -1,6 +1,8 @@
+ #ifndef __NL_EXTRAS_H
+ #define __NL_EXTRAS_H
+ 
++#if LIBNL_VER_MIC <= 26
++
+ #ifndef NLA_S8
+ 
+ #define NLA_S8	13
+@@ -43,4 +45,6 @@ static inline int32_t nla_get_s32(struct nlattr *nla)
+ 
+ #endif /* NLA_S64 */
+ 
++#endif /* LIBNL_VER_MIC */
++
+ #endif /* __NL_EXTRAS_H */

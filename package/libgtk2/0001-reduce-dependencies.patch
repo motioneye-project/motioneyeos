@@ -1,0 +1,117 @@
+Hack the configure.in file to add a "none" gdktarget which removes
+dependencies on graphic backends such as X.org or DirectFB. Gtk does
+not fully build in this mode, but it builds sufficiently to build the
+host tools that are needed to build the target Gtk.
+
+Changes:
+	Ported to 2.24.18
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+---
+Index: libgtk2-2.24.18/configure.ac
+===================================================================
+--- libgtk2-2.24.18.orig/configure.ac	2013-05-13 07:02:44.000000000 -0500
++++ libgtk2-2.24.18/configure.ac	2013-05-27 02:12:09.947030335 -0500
+@@ -258,12 +258,12 @@
+   gdktarget=x11
+ fi
+ 
+-AC_ARG_WITH(gdktarget, [  --with-gdktarget=[[x11/win32/quartz/directfb]] select non-default GDK target],
++AC_ARG_WITH(gdktarget, [  --with-gdktarget=[[x11/win32/quartz/directfb/none]] select non-default GDK target],
+ 	gdktarget=$with_gdktarget)
+ 
+ AC_SUBST(gdktarget)
+ case $gdktarget in
+-  x11|win32|quartz|directfb) ;;
++  x11|win32|quartz|directfb|none) ;;
+   *) AC_MSG_ERROR([Invalid target for GDK: use x11, quartz, directfb or win32.]);;
+ esac
+ 
+@@ -372,11 +373,15 @@
+ ## annoying to construct
+ PKG_CHECK_MODULES(BASE_DEPENDENCIES,
+   [glib-2.0 >= glib_required_version dnl
+-   atk >= atk_required_version dnl
+-   pango >= pango_required_version dnl
+-   cairo >= cairo_required_version dnl
+    gdk-pixbuf-2.0 >= gdk_pixbuf_required_version])
+ 
++if test "x$gdktarget" != "xnone"; then
++   PKG_CHECK_MODULES(BASE_DEPENDENCIES,
++	[atk >= atk_required_version dnl
++	 pango >= pango_required_version dnl
++	 cairo >= cairo_required_version])
++fi
++
+ ## In addition to checking that cairo is present, we also need to
+ ## check that the correct cairo backend is there. E.g. if the GDK
+ ## target is win32 we need the cairo-win32 backend and so on.
+@@ -387,8 +392,11 @@
+ if test "x$cairo_backend" = "xx11"; then
+    cairo_backend=xlib
+ fi
+-PKG_CHECK_MODULES(CAIRO_BACKEND,
+-  [cairo-$cairo_backend >= cairo_required_version])
++
++if test "x$gdktarget" != "xnone"; then
++   PKG_CHECK_MODULES(CAIRO_BACKEND,
++	[cairo-$cairo_backend >= cairo_required_version])
++fi
+ 
+ PKG_CHECK_MODULES(GMODULE, [gmodule-2.0])
+ 
+@@ -1279,6 +1287,7 @@
+   AM_CONDITIONAL(USE_DIRECTFB, false)
+ fi
+ 
++if test "x$gdktarget" != "xnone"; then
+ 
+ # Check for Pango flags
+ 
+@@ -1324,6 +1333,8 @@
+   GDK_PACKAGES="$PANGO_PACKAGES gio-2.0 gdk-pixbuf-2.0 cairo-$cairo_backend"
+ fi
+ 
++fi # gdktarget != none
++
+ GDK_DEP_LIBS="$GDK_EXTRA_LIBS `$PKG_CONFIG --libs $GDK_PACKAGES` $MATH_LIB"
+ GDK_DEP_CFLAGS="`$PKG_CONFIG --cflags  gthread-2.0 $GDK_PACKAGES` $GDK_EXTRA_CFLAGS"
+ #
+@@ -1341,6 +1352,7 @@
+ AC_SUBST(GDK_DEP_LIBS)
+ AC_SUBST(GDK_DEP_CFLAGS)
+ 
++if test "x$gdktarget" != "xnone"; then
+ 
+ ########################################
+ # Check for Accessibility Toolkit flags
+@@ -1372,6 +1384,10 @@
+ fi
+ 
+ GTK_PACKAGES="atk cairo gdk-pixbuf-2.0 gio-2.0"
++else # gdktarget != none
++GTK_PACKAGES="gdk-pixbuf-2.0"
++fi # gdktarget != none
++
+ if test "x$gdktarget" = "xx11"; then
+   GTK_PACKAGES="$GTK_PACKAGES pangoft2"
+ fi
+@@ -1533,6 +1549,8 @@
+ gtk_save_cppflags="$CPPFLAGS"
+ CPPFLAGS="$CPPFLAGS $GTK_DEP_CFLAGS $GDK_DEP_CFLAGS"
+ 
++if test "x$gdktarget" != "xnone"; then
++
+ AC_CHECK_HEADER(cairo-pdf.h,,AC_MSG_ERROR([
+ *** Can't find cairo-pdf.h. You must build Cairo with the pdf
+ *** backend enabled.]))
+@@ -1547,6 +1565,8 @@
+ *** svg backend enabled.]))
+ fi   
+ 
++fi # gdktarget != none
++
+ CPPFLAGS="$gtk_save_cppflags"
+      
+ 			  	

@@ -1,0 +1,18 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_NOUVEAU
+	bool "xf86-video-nouveau"
+	depends on BR2_PACKAGE_MESA3D
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER_NOUVEAU
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	select BR2_PACKAGE_XPROTO_DRI2PROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_VIDEOPROTO
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	help
+	  Nouveau video driver
+
+	  http://nouveau.freedesktop.org
+
+comment "xf86-video-nouveau needs mesa3d"
+	depends on !BR2_PACKAGE_MESA3D

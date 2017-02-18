@@ -1,0 +1,8 @@
+config BR2_PACKAGE_NGREP
+	bool "ngrep"
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_PCRE
+	help
+	  Network grep.
+
+	  http://ngrep.sourceforge.net/

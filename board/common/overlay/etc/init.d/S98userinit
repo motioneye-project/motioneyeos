@@ -1,0 +1,26 @@
+#!/bin/bash
+
+userinit_sh="/data/etc/userinit.sh"
+
+test -f $userinit_sh || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Executing user init script"
+        /bin/bash $userinit_sh
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

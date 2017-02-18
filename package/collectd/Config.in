@@ -1,0 +1,559 @@
+config BR2_PACKAGE_COLLECTD
+	bool "collectd"
+	# Uses fork()
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  collectd is a daemon which collects system performance
+	  statistics periodically and provides mechanisms to store
+	  the values in a variety of ways, for example in RRD files.
+
+	  http://collectd.org/
+
+if BR2_PACKAGE_COLLECTD
+
+menu "match plugins"
+
+config BR2_PACKAGE_COLLECTD_EMPTY_COUNTER
+	bool "empty counter"
+	help
+	  Match counter values which are currently zero.
+
+config BR2_PACKAGE_COLLECTD_HASHED
+	bool "hashed"
+	help
+	  Match values using a hash function of the hostname.
+
+config BR2_PACKAGE_COLLECTD_REGEX
+	bool "regex"
+	help
+	  Match values by their identifier based on regular expressions.
+
+config BR2_PACKAGE_COLLECTD_TIMEDIFF
+	bool "timediff"
+	help
+	  Match values with an invalid timestamp.
+
+config BR2_PACKAGE_COLLECTD_VALUE
+	bool "value"
+	help
+	  Select values by their data sources' values.
+endmenu
+
+menu "misc plugins"
+
+config BR2_PACKAGE_COLLECTD_AGGREGATION
+	bool "aggregation"
+	help
+	  The Aggregate plugin allows to aggregate multiple values into
+	  a single value using one or several consolidation functions,
+	  e.g. summation and average.
+
+config BR2_PACKAGE_COLLECTD_LOGFILE
+	bool "logfile"
+	default y
+	help
+	  Writes log messages to a file or STDOUT/STDERR.
+
+config BR2_PACKAGE_COLLECTD_LOGSTASH
+	bool "logstash"
+	select BR2_PACKAGE_YAJL
+	help
+	  Writes log messages formatted as logstash JSON events.
+
+config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
+	bool "notify_email"
+	depends on !BR2_STATIC_LIBS # libesmtp
+	select BR2_PACKAGE_LIBESMTP
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Send an E-mail with the notification message to the
+	  configured recipients.
+
+comment "notify_email needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_COLLECTD_SYSLOG
+	bool "syslog"
+	default y
+	help
+	  Logs to the standard UNIX logging mechanism.
+
+config BR2_PACKAGE_COLLECTD_THRESHOLD
+	bool "threshold"
+	help
+	  Checks values against configured thresholds and creates notifications
+	  if values are out of bounds.
+
+endmenu
+
+menu "read plugins"
+
+comment "Select at least one for collectd to be useful"
+
+config BR2_PACKAGE_COLLECTD_APACHE
+	bool "apache"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Collects Apache's mod_status information.
+
+config BR2_PACKAGE_COLLECTD_APCUPS
+	bool "apcups"
+	help
+	  Collects UPS statistics from apcupsd.
+
+config BR2_PACKAGE_COLLECTD_BATTERY
+	bool "battery"
+	help
+	  Collects the battery's charge, the drawn current and voltage.
+
+config BR2_PACKAGE_COLLECTD_BIND
+	bool "bind"
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBXML2
+	help
+	  Collects BIND DNS statistics.
+
+config BR2_PACKAGE_COLLECTD_CEPH
+	bool "ceph"
+	select BR2_PACKAGE_YAJL
+	help
+	  Statistics from the Ceph distributed storage system.
+
+config BR2_PACKAGE_COLLECTD_CGROUPS
+	bool "cgroups"
+	help
+	  Collects CGroups CPU usage accounting.
+
+config BR2_PACKAGE_COLLECTD_CONNTRACK
+	bool "conntrack"
+	help
+	  Collects the number of entries in Linux's connection tracking table.
+
+config BR2_PACKAGE_COLLECTD_CONTEXTSWITCH
+	bool "contextswitch"
+	help
+	  Collects the number of context switches done by the operating system.
+
+config BR2_PACKAGE_COLLECTD_CPU
+	bool "cpu"
+	help
+	  Collects the amount of time spent by the CPU in various states.
+
+config BR2_PACKAGE_COLLECTD_CPUFREQ
+	bool "cpufreq"
+	help
+	  Collects the current CPU's frequency.
+
+config BR2_PACKAGE_COLLECTD_CURL
+	bool "curl"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Uses libcurl to read files and then parses them according
+	  to the configuration.
+
+config BR2_PACKAGE_COLLECTD_CURL_JSON
+	bool "curl-json"
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_YAJL
+	help
+	  Queries JSON data using the cURL library and parses it
+	  according to the user's configuration using YAJL.
+
+config BR2_PACKAGE_COLLECTD_CURL_XML
+	bool "curl-xml"
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBXML2
+	help
+	  Reads files using libcurl and parses it as XML.
+
+config BR2_PACKAGE_COLLECTD_DF
+	bool "df"
+	help
+	  Collects file system usage information.
+
+config BR2_PACKAGE_COLLECTD_DISK
+	bool "disk"
+	help
+	  Collects performance statistics of hard-disks and partitions.
+
+config BR2_PACKAGE_COLLECTD_DNS
+	bool "dns"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  Collects statistics of DNS traffic using libpcap.
+
+config BR2_PACKAGE_COLLECTD_DRBD
+	bool "drbd"
+	help
+	  Collect individual drbd resource statistics.
+
+config BR2_PACKAGE_COLLECTD_ENTROPY
+	bool "entropy"
+	help
+	  Collects the available entropy on a system.
+
+config BR2_PACKAGE_COLLECTD_ETHSTAT
+	bool "ethstat"
+	help
+	  Collects network interface card statistics.
+
+config BR2_PACKAGE_COLLECTD_EXEC
+	bool "exec"
+	help
+	  Executes scripts and reads values back that are printed
+	  to STDOUT by that program.
+
+config BR2_PACKAGE_COLLECTD_FHCOUNT
+	bool "fhcount"
+	help
+	  File handles statistics.
+
+config BR2_PACKAGE_COLLECTD_FILECOUNT
+	bool "filecount"
+	help
+	  Counts the number of files in a directory and all its subdirectories.
+
+config BR2_PACKAGE_COLLECTD_FSCACHE
+	bool "fscache"
+	help
+	  Collects information about the file-system based caching
+	  infrastructure for network file-systems and other slow media.
+
+config BR2_PACKAGE_COLLECTD_INTERFACE
+	bool "interface"
+	help
+	  Collects information about the traffic of network interfaces.
+
+config BR2_PACKAGE_COLLECTD_IPC
+	bool "ipc"
+	help
+	  IPC counters: semaphores used, number of allocated segments
+	  in shared memory and more.
+
+config BR2_PACKAGE_COLLECTD_IPTABLES
+	bool "iptables"
+	select BR2_PACKAGE_IPTABLES
+	help
+	  Gather statistics from iptables packet filter.
+
+config BR2_PACKAGE_COLLECTD_IPVS
+	bool "ipvs"
+	help
+	  Extracts statistics from IP Virtual Server (IPVS), the
+	  transport-layer load-balancer of the LVS project.
+	  It stores traffic and connections history for each of the
+	  Real Servers (RS) behind a local Virtual Server (VS).
+	  Collectd must be run on Directors (in LVS jargon).
+
+config BR2_PACKAGE_COLLECTD_IRQ
+	bool "irq"
+	help
+	  Collects the number of interrupts.
+
+config BR2_PACKAGE_COLLECTD_LOAD
+	bool "load"
+	help
+	  Collects the system load.
+
+config BR2_PACKAGE_COLLECTD_MD
+	bool "md"
+	help
+	  Collects software-RAID device information.
+
+config BR2_PACKAGE_COLLECTD_MEMCACHEC
+	bool "memcachec"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBMEMCACHED
+	help
+	  Query and parse data from a memcache daemon.
+
+comment "memcachec needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_COLLECTD_MEMCACHED
+	bool "memcached"
+	help
+	  Collects statistics from a memcached daemon.
+
+config BR2_PACKAGE_COLLECTD_MEMORY
+	bool "memory"
+	help
+	  Collects physical memory utilization.
+
+config BR2_PACKAGE_COLLECTD_MODBUS
+	bool "modbus"
+	select BR2_PACKAGE_LIBMODBUS
+	help
+	  Reads register values from a modbus "slave" via Modbus/TCP.
+
+config BR2_PACKAGE_COLLECTD_MYSQL
+	bool "mysql"
+	depends on BR2_INSTALL_LIBSTDCPP # mysql
+	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
+	help
+	  Connects to a MySQL database and issues a "show status" command.
+
+config BR2_PACKAGE_COLLECTD_NETLINK
+	bool "netlink"
+	select BR2_PACKAGE_LIBMNL
+	help
+	  Get statistics for interfaces, qdiscs, classes, and filters.
+
+config BR2_PACKAGE_COLLECTD_NFS
+	bool "nfs"
+	help
+	  Collects information about the usage of the Network File System.
+
+config BR2_PACKAGE_COLLECTD_NGINX
+	bool "nginx"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Collects the number of requests handled by the nginx daemon
+	  since startup and the number of current connections by state.
+
+config BR2_PACKAGE_COLLECTD_NTPD
+	bool "ntpd"
+	help
+	  Queries an NTP server and extracts parameters.
+
+config BR2_PACKAGE_COLLECTD_OLSRD
+	bool "olsrd"
+	help
+	  Reads information about meshed networks from olsrd.
+
+config BR2_PACKAGE_COLLECTD_OPENLDAP
+	bool "openldap"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_OPENLDAP
+	help
+	  Read monitoring information from OpenLDAP's cn=Monitor subtree.
+
+comment "openldap support needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_COLLECTD_OPENVPN
+	bool "openvpn"
+	help
+	  Reads the status file of OpenVPN to collect statistics.
+
+config BR2_PACKAGE_COLLECTD_PING
+	bool "ping"
+	select BR2_PACKAGE_LIBOPING
+	help
+	  Mesures network latency using ICMP "echo requests".
+
+config BR2_PACKAGE_COLLECTD_POSTGRESQL
+	bool "postgresql"
+	select BR2_PACKAGE_POSTGRESQL
+	help
+	  Connects to and executes SQL statements on a PostgreSQL
+	  database. It then reads back the results and, depending on the
+	  configuration, the returned values are then converted into
+	  collectd “value lists”.
+
+config BR2_PACKAGE_COLLECTD_PROCESSES
+	bool "processes"
+	help
+	  Collects the number of processes gruped by state.
+
+config BR2_PACKAGE_COLLECTD_PROTOCOLS
+	bool "protocols"
+	help
+	  Collects information about the network protocols.
+
+config BR2_PACKAGE_COLLECTD_SENSORS
+	bool "sensors"
+	select BR2_PACKAGE_LM_SENSORS
+	help
+	  Collects data from lm-sensors.
+
+config BR2_PACKAGE_COLLECTD_SERIAL
+	bool "serial"
+	help
+	  Collects the traffic on serial interfaces.
+
+config BR2_PACKAGE_COLLECTD_SMART
+	bool "SMART"
+	depends on BR2_PACKAGE_HAS_UDEV # libatasmart
+	select BR2_PACKAGE_LIBATASMART
+	help
+	  Collect SMART statistics, notably load cycle count, temperature
+	  and bad sectors.
+
+comment "SMART requires udev to be enabled"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_COLLECTD_STATSD
+	bool "StatsD"
+	help
+	  StatsD network protocol to allow clients to report "events".
+
+config BR2_PACKAGE_COLLECTD_SNMP
+	bool "snmp"
+	select BR2_PACKAGE_NETSNMP
+	help
+	  Reads values from SNMP devices.
+
+config BR2_PACKAGE_COLLECTD_SWAP
+	bool "swap"
+	help
+	  Collects the amount of memory currently written to disk.
+
+config BR2_PACKAGE_COLLECTD_TABLE
+	bool "table"
+	help
+	  Parses table-like structured plain-text files.
+
+config BR2_PACKAGE_COLLECTD_TAIL
+	bool "tail"
+	help
+	  Tails log files and each line is given to one or more matches
+	  which test if the line is relevant for any statistics.
+
+config BR2_PACKAGE_COLLECTD_TAIL_CSV
+	bool "tail csv"
+	help
+	  Follows (tails) files in CSV format, parses each line and submits
+	  extracted values.
+
+config BR2_PACKAGE_COLLECTD_TCPCONNS
+	bool "tcpconns"
+	help
+	  Counts the number of TCP connections to/from a specified port.
+
+config BR2_PACKAGE_COLLECTD_THERMAL
+	bool "thermal"
+	help
+	  Reads ACPI thermal zone information.
+
+config BR2_PACKAGE_COLLECTD_UPTIME
+	bool "uptime"
+	help
+	  Keeps track of the system uptime.
+
+config BR2_PACKAGE_COLLECTD_USERS
+	bool "users"
+	help
+	  Counts the number of users currently logged in.
+
+config BR2_PACKAGE_COLLECTD_VMEM
+	bool "vmem"
+	help
+	  Collects information about the virtual memory subsystem.
+
+config BR2_PACKAGE_COLLECTD_WIRELESS
+	bool "wireless"
+	help
+	  Collects signal quality, power and noise ratio for WLAN cards.
+
+config BR2_PACKAGE_COLLECTD_ZOOKEEPER
+	bool "zookeeper"
+	help
+	  Read data from Zookeeper's MNTR command.
+
+endmenu
+
+menu "target plugins"
+
+config BR2_PACKAGE_COLLECTD_NOTIFICATION
+	bool "notification"
+	help
+	  Create and dispatch a notification.
+
+config BR2_PACKAGE_COLLECTD_REPLACE
+	bool "replace"
+	help
+	  Replace parts of an identifier using regular expressions.
+
+config BR2_PACKAGE_COLLECTD_SCALE
+	bool "scale"
+	help
+	  Scale (multiply) values by an arbitrary number.
+
+config BR2_PACKAGE_COLLECTD_SET
+	bool "set"
+	help
+	  Set (overwrite) entire parts of an identifier.
+
+endmenu
+
+menu "write plugins"
+
+comment "Select at least one for collectd to be useful"
+
+config BR2_PACKAGE_COLLECTD_CSV
+	bool "csv"
+	help
+	  Writes values to a plain-text file in Comma Separated Values format.
+
+config BR2_PACKAGE_COLLECTD_GRAPHITE
+	bool "graphite"
+	help
+	  Writes data collected to Carbon (Graphite's) storage API.
+	  http://graphite.wikidot.com/start
+
+config BR2_PACKAGE_COLLECTD_NETWORK
+	bool "network"
+	help
+	  Send/receive values from other instances of collectd.
+
+config BR2_PACKAGE_COLLECTD_RRDTOOL
+	bool "rrdtool"
+	depends on BR2_USE_WCHAR # rrdtool
+	select BR2_PACKAGE_RRDTOOL
+	help
+	  Writes values to RRD-files.
+
+comment "rrdtool support needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_COLLECTD_RIEMANN
+	bool "riemann"
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf
+	# protobuf-c -> host-protobuf
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	select BR2_PACKAGE_PROTOBUF_C
+	select BR2_PACKAGE_LIBTOOL
+	help
+	  Sends data to Riemann, a stream processing and monitoring system.
+
+config BR2_PACKAGE_COLLECTD_UNIXSOCK
+	bool "unixsock"
+	help
+	  Opens a UNIX domain socket and accepts connections.
+	  One can send commands to the daemon and receive information.
+
+config BR2_PACKAGE_COLLECTD_WRITEHTTP
+	bool "write_http"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Sends values collected to a web-server using HTTP POST and PUTVAL.
+
+config BR2_PACKAGE_COLLECTD_WRITELOG
+	bool "write_log"
+	help
+	  Writes data to the log.
+
+config BR2_PACKAGE_COLLECTD_WRITESENSU
+	bool "write_sensu"
+	help
+	  Sends data to Sensu, a stream processing and monitoring system,
+	  via the Sensu client local TCP socket.
+
+config BR2_PACKAGE_COLLECTD_WRITETSDB
+	bool "write_tsdb"
+	help
+	  Sends data OpenTSDB, a scalable no master, no shared state time
+	  series database.
+
+endmenu
+
+endif
+
+comment "collectd needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU

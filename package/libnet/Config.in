@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBNET
+	bool "libnet"
+	# Build with musl fails due to header issues
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	help
+	  libnet provides a portable framework for low-level network
+	  packet construction.
+
+	  http://sourceforge.net/projects/libnet-dev
+
+comment "libnet needs a (e)glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL

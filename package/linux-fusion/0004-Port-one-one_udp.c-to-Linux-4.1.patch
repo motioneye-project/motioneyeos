@@ -1,0 +1,99 @@
+From be288b60278c78eccfd347aacf4d3dd8771215a9 Mon Sep 17 00:00:00 2001
+From: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+Date: Tue, 12 Jan 2016 14:01:42 +0100
+Subject: [PATCH] Port one/one_udp.c to Linux 4.1
+
+Kernel commit c0371da6047a replaced msg_iov and msg_iovlen with msg_iter
+in struct msghdr since 3.19
+
+one/one_udp.c: In function 'ksocket_send_iov':
+one/one_udp.c:186:9: error: 'struct msghdr' has no member named 'msg_iov'
+one/one_udp.c:187:9: error: 'struct msghdr' has no member named 'msg_iovlen'
+
+one/one_udp.c: In function 'ksocket_receive':
+one/one_udp.c:221:9: error: 'struct msghdr' has no member named 'msg_iov'
+one/one_udp.c:222:9: error: 'struct msghdr' has no member named 'msg_iovlen'
+
+The iov_iter interface
+https://lwn.net/Articles/625077/
+
+Kernel commit d8725c86aeba dropped the len parameter in sock_sendmsg
+since 4.1
+
+one/one_udp.c: In function 'ksocket_send_iov':
+one/one_udp.c:192:13: error: too many arguments to function 'sock_sendmsg'
+
+Signed-off-by: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+---
+ one/one_udp.c | 30 +++++++++++++++---------------
+ 1 file changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/one/one_udp.c b/one/one_udp.c
+index 26b9e6a1f729..b1daae164cdf 100644
+--- a/one/one_udp.c
++++ b/one/one_udp.c
+@@ -161,7 +161,7 @@ ksocket_send_iov( struct socket      *sock,
+                   const struct iovec *iov,
+                   size_t              iov_count )
+ {
+-     struct msghdr msg;
++     struct msghdr msg = { addr, sizeof *addr };
+      mm_segment_t oldfs;
+      int size = 0;
+      size_t len = 0;
+@@ -178,18 +178,20 @@ ksocket_send_iov( struct socket      *sock,
+      for (i=0; i<iov_count; i++)
+           len += iov[i].iov_len;
+ 
+-     msg.msg_flags = 0;
+-     msg.msg_name = addr;
+-     msg.msg_namelen  = sizeof(struct sockaddr_in);
+-     msg.msg_control = NULL;
+-     msg.msg_controllen = 0;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3,19,0) // commit c0371da6047a
+      msg.msg_iov = (struct iovec*) iov;
+      msg.msg_iovlen = iov_count;
+-     msg.msg_control = NULL;
++#else
++     iov_iter_init(&msg.msg_iter, WRITE, iov, iov_count, len);
++#endif
+ 
+      oldfs = get_fs();
+      set_fs(KERNEL_DS);
+-     size = sock_sendmsg(sock,&msg,len);
++#if LINUX_VERSION_CODE < KERNEL_VERSION(4,1,0) // commit d8725c86aeba
++     size = sock_sendmsg(sock, &msg, len);
++#else
++     size = sock_sendmsg(sock, &msg);
++#endif
+      set_fs(oldfs);
+ 
+      return size;
+@@ -198,7 +200,7 @@ ksocket_send_iov( struct socket      *sock,
+ static int
+ ksocket_receive(struct socket* sock, struct sockaddr_in* addr, void *buf, int len)
+ {
+-     struct msghdr msg;
++     struct msghdr msg = { addr, sizeof *addr };
+      struct iovec iov;
+      mm_segment_t oldfs;
+      int size = 0;
+@@ -213,14 +215,12 @@ ksocket_receive(struct socket* sock, struct sockaddr_in* addr, void *buf, int le
+      iov.iov_base = buf;
+      iov.iov_len = len;
+ 
+-     msg.msg_flags = 0;
+-     msg.msg_name = addr;
+-     msg.msg_namelen  = sizeof(struct sockaddr_in);
+-     msg.msg_control = NULL;
+-     msg.msg_controllen = 0;
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3,19,0) // commit c0371da6047a
+      msg.msg_iov = &iov;
+      msg.msg_iovlen = 1;
+-     msg.msg_control = NULL;
++#else
++     iov_iter_init(&msg.msg_iter, READ, &iov, 1, len);
++#endif
+ 
+      oldfs = get_fs();
+      set_fs(KERNEL_DS);

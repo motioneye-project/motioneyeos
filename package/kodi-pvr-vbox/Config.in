@@ -1,0 +1,7 @@
+config BR2_PACKAGE_KODI_PVR_VBOX
+	bool "kodi-pvr-vbox"
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  Kodi PVR addon for interfacing with VBox Communications XTi TV Gateway
+
+	  https://github.com/kodi-pvr/pvr.vbox

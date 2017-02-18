@@ -1,0 +1,177 @@
+menuconfig BR2_PACKAGE_MESA3D
+	bool "mesa3d"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_XPROTO_DRI2PROTO if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XPROTO_GLPROTO if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XPROTO_XF86DRIPROTO if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXFIXES if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB if BR2_PACKAGE_XORG7
+	help
+	  Mesa 3D, an open-source implementation of the OpenGL specification.
+
+	  http://mesa3d.org
+
+if BR2_PACKAGE_MESA3D
+
+# inform the .mk file of gallium or dri driver selection
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_MESA3D_DRIVER
+	bool
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_MESA3D_DRIVER
+	select BR2_PACKAGE_HAS_LIBGL if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXSHMFENCE if BR2_PACKAGE_XPROTO_DRI3PROTO
+	select BR2_PACKAGE_XPROTO_PRESENTPROTO if BR2_PACKAGE_XPROTO_DRI3PROTO
+	bool
+
+config BR2_PACKAGE_PROVIDES_LIBGL
+	default "mesa3d" if BR2_PACKAGE_MESA3D_DRI_DRIVER && \
+		BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_MESA3D_DRIVER
+	bool
+
+config BR2_PACKAGE_MESA3D_NEEDS_XA
+	bool
+
+comment "Gallium drivers"
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
+	bool "Gallium nouveau driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  Supports all Nvidia GPUs.
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_R600
+	bool "Gallium Radeon R600 driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_LIBDRM_RADEON
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  Driver for ATI/AMD Radeon R600/R700/HD5000/HD6000 GPUs.
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SVGA
+	bool "Gallium vmware svga driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_LIBDRM_VMWGFX
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  This is a virtual GPU driver for VMWare virtual machines.
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
+	bool "Gallium swrast driver"
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	help
+	  This is a software opengl implementation using the Gallium3D
+	  infrastructure.
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4
+	bool "Gallium vc4 driver"
+	depends on BR2_arm
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_LIBDRM_VC4
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  Driver for Broadcom VC4 (rpi2/3) GPUs.
+	  It requires a vanilla 4.5+ kernel with drm vc4 (open) support.
+
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL
+	bool "Gallium virgl driver"
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_MESA3D_OPENGL_EGL
+	help
+	  virgl is the 3D acceleration backend for the virtio-gpu
+	  shipping with qemu.
+
+comment "DRI drivers"
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST
+	bool "DRI swrast driver"
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	help
+	  This is a software opengl implementation using the DRI
+	  infrastructure.
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_I915
+	bool "DRI i915 driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_INTEL
+	help
+	  Support for i915-based Intel GPUs.
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
+	bool "DRI i965 driver"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_INTEL
+	help
+	  Support for i965-based Intel GPUs.
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_NOUVEAU
+	bool "DRI nouveau driver"
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	help
+	  Support for Nvidia-based GPUs.
+
+config BR2_PACKAGE_MESA3D_DRI_DRIVER_RADEON
+	bool "DRI radeon driver"
+	select BR2_PACKAGE_MESA3D_DRI_DRIVER
+	select BR2_PACKAGE_LIBDRM_RADEON
+	help
+	  Legacy Radeon driver for R100 series GPUs.
+
+comment "Off-screen Rendering"
+
+config BR2_PACKAGE_MESA3D_OSMESA
+	bool "OSMesa library"
+	help
+	  The OSMesa API provides functions for making off-screen renderings.
+
+if BR2_PACKAGE_MESA3D_DRIVER
+
+comment "Additional API Support"
+
+config BR2_PACKAGE_MESA3D_OPENGL_EGL
+	bool "OpenGL EGL"
+	select BR2_PACKAGE_HAS_LIBEGL
+	help
+	  Use the Khronos EGL APIs. EGL is a window manager for OpenGL applications
+	  similar to GLX, for X, and WGL, for Windows.
+
+config BR2_PACKAGE_MESA3D_OPENGL_ES
+	bool "OpenGL ES"
+	select BR2_PACKAGE_HAS_LIBGLES
+	help
+	  Use the Khronos OpenGL ES APIs. This is commonly used on embedded
+	  systems and represents a subset of the OpenGL API.
+
+endif # BR2_PACKAGE_MESA3D_DRIVER
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_EGL
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "mesa3d" if BR2_PACKAGE_MESA3D_OPENGL_ES
+
+endif # BR2_PACKAGE_MESA3D
+
+comment "mesa3d needs a toolchain w/ C++, NPTL, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1

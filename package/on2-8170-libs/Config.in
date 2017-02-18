@@ -1,0 +1,15 @@
+config BR2_PACKAGE_ON2_8170_LIBS
+	#This is a binary only package which has been compiled for glibc
+	depends on BR2_arm926t
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_LINUX_KERNEL # on2-8170-modules
+	select BR2_PACKAGE_ON2_8170_MODULES # runtime
+	bool "on2-8170-libs"
+	help
+	  Libraries for Hantro X170 video decoder
+
+	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
+
+comment "on2-8170-libs needs an (e)glibc toolchain and a Linux kernel to be built"
+	depends on BR2_arm926t
+	depends on !BR2_LINUX_KERNEL || !BR2_TOOLCHAIN_USES_GLIBC

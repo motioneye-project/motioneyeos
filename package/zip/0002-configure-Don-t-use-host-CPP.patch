@@ -1,0 +1,37 @@
+From fc5c889131ff6270e1028cc7edd87e7f10a7da6d Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Thu, 22 Jan 2015 15:21:31 +0100
+Subject: [PATCH 2/6] configure: Don't use host CPP
+
+CPP is redefined if a cpp binary (/lib/cpp) is found on the host.
+
+Use the CPP="${CC} -E" allows to pass the following checks:
+Check if we can use asm code (for -DASMV)
+Check if compiler generates underlines (for -DASM_CRC)
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ unix/configure | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/unix/configure b/unix/configure
+index 4185fee..489009f 100644
+--- a/unix/configure
++++ b/unix/configure
+@@ -122,13 +122,6 @@ fi
+ echo Check for the C preprocessor
+ # on SVR4, cc -E does not produce correct assembler files. Need /lib/cpp.
+ CPP="${CC} -E"
+-# solaris as(1) needs -P, maybe others as well ?
+-[ -f /usr/ccs/lib/cpp ] && CPP="/usr/ccs/lib/cpp -P"
+-[ -f /usr/lib/cpp ] && CPP=/usr/lib/cpp
+-[ -f /lib/cpp ] && CPP=/lib/cpp
+-[ -f /usr/bin/cpp ] && CPP=/usr/bin/cpp
+-[ -f /xenix ] && CPP="${CC} -E"
+-[ -f /lynx.os ] && CPP="${CC} -E"
+ 
+ echo "#include <stdio.h>" > conftest.c
+ $CPP conftest.c >/dev/null 2>/dev/null || CPP="${CC} -E"
+-- 
+1.9.3
+

@@ -1,0 +1,39 @@
+Use off_t instead of __off_t
+
+__off_t is an internal C library type, which shouldn't be used by
+applications. It is not defined by the musl C library, so use the
+public off_t type instead.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/ftpfs.c
+===================================================================
+--- a/ftpfs.c
++++ b/ftpfs.c
+@@ -687,7 +687,7 @@
+ 	return ftpfs_getattr(path, &sbuf);
+ }
+ 
+-static __off_t test_size(const char* path)
++static off_t test_size(const char* path)
+ {
+ 	struct stat sbuf;
+ 	int err = ftpfs_getattr(path, &sbuf);
+@@ -950,7 +950,7 @@
+ 
+   /* fix openoffice problem, truncating exactly to file length */
+   
+-  __off_t size = (long long int)test_size(path); 
++  off_t size = (long long int)test_size(path); 
+   DEBUG(1, "ftpfs_truncate: %s check filesize=%lld\n", path, (long long int)size);
+   
+   if (offset == size)  
+@@ -978,7 +978,7 @@
+   }
+   /* fix openoffice problem, truncating exactly to file length */
+   
+-  __off_t size = test_size(path); 
++  off_t size = test_size(path); 
+   DEBUG(1, "ftpfs_ftruncate: %s check filesize=%lld\n", path, (long long int)size);
+   
+   if (offset == size)  

@@ -1,0 +1,48 @@
+#!/bin/bash
+
+sys_conf="/etc/crontabs"
+conf="/data/etc/crontabs"
+
+test -n "$os_version" || source /etc/init.d/base
+
+start() {
+    msg_begin "Starting crond"
+    
+    if [ -d $sys_conf ];  then
+        /usr/sbin/crond -c $sys_conf
+    fi
+
+    mkdir -p $conf
+    /usr/sbin/crond -c $conf
+
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping crond"
+    killall crond &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

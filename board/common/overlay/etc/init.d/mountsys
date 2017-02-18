@@ -1,0 +1,10 @@
+#!/bin/bash
+
+/bin/mkdir -p /dev/pts
+/bin/mkdir -p /dev/shm
+/bin/mount --make-shared /
+/bin/mount -a -t proc
+/bin/mount -a -t devpts
+/bin/mount -a -t tmpfs
+/bin/mount -a -t sysfs
+

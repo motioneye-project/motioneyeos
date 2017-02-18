@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBYAML
+	bool "libyaml"
+	help
+	  LibYAML is a YAML 1.1 parser and emitter written in C.
+
+	  http://pyyaml.org/wiki/LibYAML

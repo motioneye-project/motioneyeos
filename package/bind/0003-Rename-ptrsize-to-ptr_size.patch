@@ -1,0 +1,74 @@
+From 254dc19788ba2a03504fc6d1036fef477a60035f Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Fri, 22 Jan 2016 08:31:02 -0300
+Subject: [PATCH] Rename ptrsize to ptr_size
+
+This is to compensate for a uClibc mess caused by commit
+70a04a287a2875c82e6822c36e071afba5b63a62 where ptrsize is defined for
+mips, hence causing build breakage under certain conditions for programs
+that use this variable name.
+
+Status: definitely not upstreamable.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ lib/dns/rbt.c   | 6 +++---
+ lib/dns/rbtdb.c | 4 ++--
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/lib/dns/rbt.c b/lib/dns/rbt.c
+index 86b5183..5fd55de 100644
+--- a/lib/dns/rbt.c
++++ b/lib/dns/rbt.c
+@@ -113,7 +113,7 @@ struct file_header {
+ 	 * information about the system on which the map file was generated
+ 	 * will be used to tell if we can load the map file or not
+ 	 */
+-	isc_uint32_t ptrsize;
++	isc_uint32_t ptr_size;
+ 	unsigned int bigendian:1;	/* big or little endian system */
+ 	unsigned int rdataset_fixed:1;	/* compiled with --enable-rrset-fixed */
+ 	unsigned int nodecount;		/* shadow from rbt structure */
+@@ -517,7 +517,7 @@ write_header(FILE *file, dns_rbt_t *rbt, isc_uint64_t first_node_offset,
+ 	memmove(header.version1, FILE_VERSION, sizeof(header.version1));
+ 	memmove(header.version2, FILE_VERSION, sizeof(header.version2));
+ 	header.first_node_offset = first_node_offset;
+-	header.ptrsize = (isc_uint32_t) sizeof(void *);
++	header.ptr_size = (isc_uint32_t) sizeof(void *);
+ 	header.bigendian = (1 == htonl(1)) ? 1 : 0;
+ 
+ #ifdef DNS_RDATASET_FIXED
+@@ -902,7 +902,7 @@ dns_rbt_deserialize_tree(void *base_address, size_t filesize,
+ 	}
+ #endif
+ 
+-	if (header->ptrsize != (isc_uint32_t) sizeof(void *)) {
++	if (header->ptr_size != (isc_uint32_t) sizeof(void *)) {
+ 		result = ISC_R_INVALIDFILE;
+ 		goto cleanup;
+ 	}
+diff --git a/lib/dns/rbtdb.c b/lib/dns/rbtdb.c
+index c7168cb..dbcf944 100644
+--- a/lib/dns/rbtdb.c
++++ b/lib/dns/rbtdb.c
+@@ -114,7 +114,7 @@ typedef struct rbtdb_file_header rbtdb_file_header_t;
+ 
+ struct rbtdb_file_header {
+ 	char version1[32];
+-	isc_uint32_t ptrsize;
++	isc_uint32_t ptr_size;
+ 	unsigned int bigendian:1;
+ 	isc_uint64_t tree;
+ 	isc_uint64_t nsec;
+@@ -7593,7 +7593,7 @@ rbtdb_write_header(FILE *rbtfile, off_t tree_location, off_t nsec_location,
+ 	memset(&header, 0, sizeof(rbtdb_file_header_t));
+ 	memmove(header.version1, FILE_VERSION, sizeof(header.version1));
+ 	memmove(header.version2, FILE_VERSION, sizeof(header.version2));
+-	header.ptrsize = (isc_uint32_t) sizeof(void *);
++	header.ptr_size = (isc_uint32_t) sizeof(void *);
+ 	header.bigendian = (1 == htonl(1)) ? 1 : 0;
+ 	header.tree = (isc_uint64_t) tree_location;
+ 	header.nsec = (isc_uint64_t) nsec_location;
+-- 
+2.4.10
+

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LZOP
+	bool "lzop"
+	select BR2_PACKAGE_LZO
+	help
+	  lzop is a file compressor which is very similar to gzip.
+	  lzop uses the LZO data compression library for compression services.
+
+	  http://www.lzop.org/

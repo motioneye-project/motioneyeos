@@ -1,0 +1,6 @@
+config BR2_PACKAGE_DTV_SCAN_TABLES
+	bool "dtv-scan-tables"
+	help
+	  The Digital TV scan tables.
+
+	  http://git.linuxtv.org/dtv-scan-tables.git

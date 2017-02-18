@@ -1,0 +1,8 @@
+config BR2_PACKAGE_WAVPACK
+	bool "wavpack"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  WavPack is a completely open audio compression format providing
+	  lossless, high-quality lossy, and a unique hybrid compression mode.
+
+	  http://www.wavpack.com/

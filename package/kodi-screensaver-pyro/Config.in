@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_PYRO
+	bool "kodi-screensaver-pyro"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	help
+	  Pyro screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.pyro
+
+comment "kodi-screensaver-pyro needs OpenGL"
+	depends on !BR2_PACKAGE_HAS_LIBGL

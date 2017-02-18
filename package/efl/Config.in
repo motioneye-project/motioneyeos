@@ -1,0 +1,191 @@
+config BR2_PACKAGE_EFL
+	bool "efl"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_HAS_UDEV # libudev
+	# https://phab.enlightenment.org/T2728
+	depends on BR2_PACKAGE_LUA_5_1 # needs lua 5.1, broken with 5.2+
+	depends on BR2_TOOLCHAIN_HAS_THREADS # untested without threads
+	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR # use wchar_t
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_JPEG # Emile needs libjpeg
+	select BR2_PACKAGE_LIBCURL # Ecore_con_url, runtime dependency
+	select BR2_PACKAGE_LIBXKBCOMMON if BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_UTIL_LINUX
+	# libblkid is part of required tools, see EFL's README.
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	help
+	  Enlightenment Foundation Libraries
+
+	  https://enlightenment.org
+
+if BR2_PACKAGE_EFL
+
+config BR2_PACKAGE_EFL_BULLET
+	bool "Enable bullet support (recommended)"
+	select BR2_PACKAGE_BULLET
+	default y
+	help
+	  If you have chosen to disable physics support, this disables
+	  lots of core functionality and is effectively never
+	  tested. You are going to find features that suddenly don't
+	  work and as a result cause a series of breakages. This is
+	  simply not tested so you are on your own in terms of
+	  ensuring everything works if you do this.
+
+config BR2_PACKAGE_EFL_FONTCONFIG
+	bool "Enable fontconfig support (recommended)"
+	select BR2_PACKAGE_FONTCONFIG
+	default y
+	help
+	  If fontconfig is disabled, this is going to make general
+	  font searching not work, and only some very direct 'load
+	  /path/file.ttf' will work alongside some old-school ttf file
+	  path searching. This is very likely not what you want, so
+	  highly reconsider turning fontconfig off. Having it off will
+	  lead to visual problems like missing text in many UI areas
+	  etc...
+
+config BR2_PACKAGE_EFL_GSTREAMER1
+	bool "Enable gstreamer1 support (recommended)"
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	default y
+	help
+	  If Gstreamer 1.x support is disabled, it will heavily limit
+	  your media support options and render some functionality as
+	  useless, leading to visible application bugs.
+
+config BR2_PACKAGE_EFL_LIBFRIBIDI
+	bool "Enable libfribidi support (recommended)"
+	select BR2_PACKAGE_LIBFRIBIDI
+	default y
+	help
+	  Fribidi is used for handling right-to-left text (like
+	  Arabic, Hebrew, Farsi, Persian etc.) and is very likely not
+	  a feature you want to disable unless you know for absolute
+	  certain you will never encounter and have to display such
+	  scripts. Also note that we don't test with fribidi disabled
+	  so you may also trigger code paths with bugs that are never
+	  normally used.
+
+config BR2_PACKAGE_EFL_LIBSNDFILE
+	bool "Enable libsndfile support (recommended)"
+	select BR2_PACKAGE_LIBSNDFILE
+	default y
+	help
+	  If you disabled audio support in Ecore, this is not tested
+	  and may create bugs for you due to it creating untested code
+	  paths.  Reconsider disabling audio.
+
+config BR2_PACKAGE_EFL_PULSEAUDIO
+	bool "Enable pulseaudio support (recommended)"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
+	select BR2_PACKAGE_PULSEAUDIO
+	default y
+	help
+	  The only audio output method supported by Ecore right now is
+	  via Pulseaudio. You have disabled that and likely have
+	  broken a whole bunch of things in the process. Reconsider
+	  your configure options.
+
+	  NOTE: multisense support is automatically enabled with
+	  pulseaudio.
+
+config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
+	bool "Enable libmount support (recommended)"
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	default y
+	help
+	  Libmount is used heavily inside Eeze for support of removable
+	  devices etc... and disabling this will hurt support for
+	  Enlightenment and its filemanager.
+
+config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
+	bool
+	default y if BR2_PACKAGE_EFL_BULLET && \
+		BR2_PACKAGE_EFL_FONTCONFIG && \
+		BR2_PACKAGE_EFL_GSTREAMER1 && \
+		BR2_PACKAGE_EFL_LIBFRIBIDI && \
+		BR2_PACKAGE_EFL_LIBSNDFILE && \
+		BR2_PACKAGE_EFL_PULSEAUDIO && \
+		BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
+
+
+comment "Warning: one of the recommended option for EFL is not enabled"
+	depends on !BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
+
+comment "libecore video support"
+
+config BR2_PACKAGE_EFL_FB
+	bool "FB support"
+
+config BR2_PACKAGE_EFL_X_XLIB
+	bool "X11 support (xlib)"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXP
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER
+	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_XPROTO_GLPROTO
+
+comment "libevas loaders"
+
+config BR2_PACKAGE_EFL_PNG
+	bool "libevas png loader"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  This enables the loader code that loads png files using
+	  libpng.
+
+config BR2_PACKAGE_EFL_JP2K
+	bool "libevas jp2k loader"
+	select BR2_PACKAGE_OPENJPEG
+	help
+	  This enables the loader code that loads jp2k files using
+	  openjpeg.
+
+config BR2_PACKAGE_EFL_JPEG
+	bool "libevas jpeg loader"
+	help
+	  This enables the loader code that loads jpeg files using
+	  libjpeg.
+
+config BR2_PACKAGE_EFL_GIF
+	bool "libevas gif loader"
+	select BR2_PACKAGE_GIFLIB
+	help
+	  This enables the loader code that loads gif files using
+	  giflib.
+
+config BR2_PACKAGE_EFL_TIFF
+	bool "libevas tiff loader"
+	select BR2_PACKAGE_TIFF
+	help
+	  This enables the loader code that loads tiff files.
+
+config BR2_PACKAGE_EFL_WEBP
+	bool "libevas webp image loader"
+	select BR2_PACKAGE_WEBP
+	help
+	  This enables the loader code that loads images using WebP.
+
+endif # BR2_PACKAGE_EFL
+
+comment "efl needs udev /dev management and a toolchain w/ C++, dynamic library, threads, wchar"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_INSTALL_LIBSTDCPP \
+		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+
+comment "efl needs lua 5.1"
+	depends on !BR2_PACKAGE_LUA_5_1
+	depends on BR2_USE_MMU

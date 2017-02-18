@@ -1,0 +1,32 @@
+config BR2_PACKAGE_RT_TESTS
+	bool "rt-tests"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # dlopen
+	help
+	  Set of utilities for testing the real-time behaviour of a
+	  Linux system.
+
+	  All tools are simple C programs with no dependencies, except
+	  the hwlatdetect utility, which is a Python script and
+	  therefore requires the Python interpreter. It will only be
+	  installed if a Python interpreter has been selected in the
+	  Buildroot configuration.
+
+	  Note that this package requires a toolchain built with the
+	  NPTL implementation of the pthread API (this is always the
+	  case with glibc/eglibc toolchains, but may not necessarily
+	  be the case with uClibc toolchains, since the thread
+	  implementation is configurable).
+
+	  http://rt.wiki.kernel.org
+
+
+comment "rt-tests may not work on MIPS with an external uClibc toolchain"
+	depends on BR2_PACKAGE_RT_TESTS
+	depends on BR2_TOOLCHAIN_EXTERNAL_UCLIBC
+	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+
+comment "rt-tests needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU

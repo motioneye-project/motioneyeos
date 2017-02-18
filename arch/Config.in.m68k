@@ -1,0 +1,41 @@
+config BR2_ARCH
+	default "m68k"		if BR2_m68k
+
+config BR2_ENDIAN
+	default "BIG"
+
+# symbols used to distinguish between m68k and coldfire
+# for gcc multilib
+config BR2_m68k_m68k
+	bool
+
+config BR2_m68k_cf
+	bool
+
+# coldfire variants will be added later
+choice
+	prompt "Target CPU"
+	depends on BR2_m68k
+	default BR2_m68k_68040
+	help
+	  Specific CPU variant to use
+
+config BR2_m68k_68040
+	bool "68040"
+	select BR2_m68k_m68k
+	select BR2_ARCH_HAS_MMU_MANDATORY
+
+config BR2_m68k_cf5208
+	bool "5208"
+	select BR2_m68k_cf
+	select BR2_SOFT_FLOAT
+
+endchoice
+
+config BR2_GCC_TARGET_CPU
+	default "68040"		if BR2_m68k_68040
+	default "5208"		if BR2_m68k_cf5208
+
+config BR2_GCC_TARGET_ARCH
+	default "m68k"		if BR2_m68k_m68k
+	default "cf"		if BR2_m68k_cf

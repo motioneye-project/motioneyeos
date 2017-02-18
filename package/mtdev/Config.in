@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MTDEV
+	bool "mtdev"
+	help
+	  The mtdev is a stand-alone library which transforms all
+	  variants of kernel MT events to the slotted type B protocol.
+
+	  http://bitmath.org/code/mtdev/

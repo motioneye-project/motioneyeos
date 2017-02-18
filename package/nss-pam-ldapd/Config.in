@@ -1,0 +1,25 @@
+config BR2_PACKAGE_NSS_PAM_LDAPD
+	bool "nss-pam-ldapd"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_OPENLDAP
+	help
+	  Name Service Switch (NSS) module that allows your LDAP
+	  server to provide user account, group, host name, alias,
+	  netgroup, and basically any other information that you would
+	  normally get from /etc flat files or NIS. It also provides a
+	  Pluggable Authentication Module (PAM) to do authentication
+	  to an LDAP server.
+
+	  http://arthurdejong.org/nss-pam-ldapd/
+
+if BR2_PACKAGE_NSS_PAM_LDAPD
+
+config BR2_PACKAGE_NSS_PAM_LDAPD_UTILITIES
+	bool "nss-pam-ldapd utilities"
+	help
+	  Build/Install command-line utilities.
+
+endif
+
+comment "nss-pam-ldapd needs an (e)glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

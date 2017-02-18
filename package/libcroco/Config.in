@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBCROCO
+	bool "libcroco"
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	help
+	  Libcroco is a standalone css2 parsing and manipulation
+	  library. The parser provides a low level event driven SAC
+	  like api and a css object model like api.
+
+	  Libcroco provides a CSS2 selection engine and an
+	  experimental xml/css rendering engine.
+
+	  https://github.com/GNOME/libcroco
+
+comment "libcroco needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

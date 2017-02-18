@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBMCRYPT
+	bool "libmcrypt"
+	help
+	  libmcrypt is a library that provides uniform interface to access
+	  several encryption algorithms.
+
+	  http://mcrypt.sourceforge.net/

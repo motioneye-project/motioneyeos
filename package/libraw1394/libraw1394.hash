@@ -1,0 +1,4 @@
+# From https://www.kernel.org/pub/linux/libs/ieee1394/sha256sums.asc
+sha256	1bab9780189f9d1eb4e973df12679c04f979c21e024240fc98e536ff5b680ee9	libraw1394-2.1.1.tar.xz
+# Locally computed
+sha256	39369c65fbed7fccc2e6d8e645f258f101c414107d67238f10996e6c2009f20d	fix-types.patch

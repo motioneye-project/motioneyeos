@@ -1,0 +1,22 @@
+config BR2_PACKAGE_LTRIS
+	bool "LTris"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_SDL
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  LTris is a tetris clone, using SDL. It optionally requires
+	  SDL_mixer for audio support. A display with minimum 640x480
+	  resolution and a keyboard are recommended.
+
+	  http://lgames.sourceforge.net/index.php?project=LTris
+
+if BR2_PACKAGE_LTRIS
+
+config BR2_PACKAGE_LTRIS_AUDIO
+	bool "audio support"
+	default y
+	select BR2_PACKAGE_SDL_MIXER
+	help
+	  Activates audio support in LTris. Will add SDL_mixer.
+
+endif

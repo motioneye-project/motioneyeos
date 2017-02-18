@@ -1,0 +1,25 @@
+Fix build of host tool
+
+genmtab is a tool that needs to be built for the host as it is used
+during the compilation process of libxmlrpc. Its Makefile needs a bit
+of tuning to use the conventional CC_FOR_BUILD, CFLAGS_FOR_BUILD and
+LDFLAGS_FOR_BUILD variables.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/lib/expat/gennmtab/Makefile
+===================================================================
+--- a/lib/expat/gennmtab/Makefile
++++ b/lib/expat/gennmtab/Makefile
+@@ -40,9 +40,9 @@
+ dep: dep-common
+ 
+ gennmtab.o:%.o:%.c
+-	$(BUILDTOOL_CC) -c $< -o $@ $(CFLAGS_ALL) $(INCLUDES)
++	$(CC_FOR_BUILD) -c $< -o $@ $(CFLAGS_FOR_BUILD) $(INCLUDES)
+ 
+ gennmtab:%:%.o
+-	$(BUILDTOOL_CCLD) -o $@ $(LDFLAGS) $^
++	$(CC_FOR_BUILD) -o $@ $(LDFLAGS_FOR_BUILD) $^
+ 
+ include depend.mk

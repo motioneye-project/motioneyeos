@@ -1,0 +1,123 @@
+# Config entries for internal toolchain backend
+
+if BR2_TOOLCHAIN_BUILDROOT
+
+config BR2_TOOLCHAIN_BUILDROOT_VENDOR
+	string "custom toolchain vendor name"
+	default "buildroot"
+	help
+	  This option allows to customize the "vendor" part of the
+	  toolchain tuple, where the toolchain tuple has the form
+	  <arch>-<vendor>-<os>-<libc>. The default value, "buildroot",
+	  is fine for most cases, except in very specific situations
+	  where gcc might make different decisions based on the vendor
+	  part of the tuple. The value "unknown" is not allowed, as the
+	  cross-compiling toolchain might then be confused with the
+	  native toolchain when the target and host architecture are
+	  identical. The value can not be empty either.
+
+	  If you're not sure, just leave the default "buildroot" value.
+
+source "package/linux-headers/Config.in.host"
+
+choice
+	prompt "C library"
+	default BR2_TOOLCHAIN_UCLIBC
+	default BR2_TOOLCHAIN_BUILDROOT_GLIBC if BR2_aarch64 || BR2_aarch64_be \
+		|| BR2_microblaze || BR2_powerpc64
+
+config BR2_TOOLCHAIN_BUILDROOT_UCLIBC
+	bool "uClibc"
+	select BR2_TOOLCHAIN_USES_UCLIBC
+	depends on BR2_arcle   || BR2_arceb  || BR2_arm    || BR2_armeb    || \
+		   BR2_bfin    || BR2_i386   || BR2_m68k   || \
+		   BR2_mips    || BR2_mipsel || BR2_mips64 || BR2_mips64el || \
+		   BR2_powerpc || BR2_sh2a   || BR2_sh4	   || BR2_sh4eb    || \
+		   BR2_sparc   || BR2_xtensa || BR2_x86_64
+	# Unsupported for MIPS R6
+	depends on !BR2_mips_32r6 && !BR2_mips_64r6
+	help
+	  This option selects uClibc as the C library for the
+	  cross-compilation toolchain.
+
+	  http://uclibc.org
+
+config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	bool "eglibc"
+	depends on BR2_arm        || BR2_armeb    || BR2_aarch64    || \
+		   BR2_aarch64_be || BR2_i386     || BR2_mips       || \
+		   BR2_mipsel     || BR2_mips64   || BR2_mips64el   || \
+		   BR2_powerpc    || BR2_sh       || BR2_sh64       || \
+		   BR2_sparc      || BR2_x86_64   || BR2_microblaze || \
+		   BR2_powerpc64
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_DEPRECATED_SINCE_2015_08
+	select BR2_TOOLCHAIN_USES_GLIBC
+	# our eglibc.mk enables RPC support
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  This option selects eglibc as the C library for the
+	  cross-compilation toolchain.
+
+	  http://eglibc.org
+
+config BR2_TOOLCHAIN_BUILDROOT_GLIBC
+	bool "glibc"
+	depends on BR2_arm         || BR2_armeb      || BR2_aarch64 || \
+		   BR2_aarch64_be  || BR2_i386       || BR2_mips    || \
+		   BR2_mipsel      || BR2_mips64     || BR2_mips64el|| \
+		   BR2_powerpc     || BR2_powerpc64  || BR2_powerpc64le || \
+		   BR2_sh          || BR2_sh64       || BR2_sparc64 || \
+		   BR2_x86_64      || BR2_microblaze || BR2_nios2
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_powerpc_SPE
+	select BR2_TOOLCHAIN_USES_GLIBC
+	# our glibc.mk enables RPC support
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  This option selects glibc as the C library for the
+	  cross-compilation toolchain.
+
+	  http://www.gnu.org/software/libc/
+
+comment "(e)glibc only available with shared lib support"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
+
+config BR2_TOOLCHAIN_BUILDROOT_MUSL
+	bool "musl (experimental)"
+	depends on BR2_aarch64 || BR2_arm || BR2_armeb || BR2_i386 || \
+		BR2_microblaze || BR2_mips || BR2_mipsel || BR2_powerpc || \
+		BR2_sh || BR2_x86_64
+	depends on !BR2_powerpc_SPE # not supported, build breaks
+	# Unsupported for MIPS R6
+	depends on !BR2_mips_32r6 && !BR2_mips_64r6
+	# sh2 nommu is supported by musl, but we don't have support
+	# for it in Buildroot.
+	depends on BR2_USE_MMU
+	select BR2_TOOLCHAIN_USES_MUSL
+	help
+	  This option selects musl as the C library for the
+	  cross-compilation toolchain.
+
+endchoice
+
+config BR2_TOOLCHAIN_BUILDROOT_LIBC
+	string
+	default "uclibc" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
+	# Both glibc and eglibc are handled by the package called
+	# 'glibc'
+	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	default "glibc"  if BR2_TOOLCHAIN_BUILDROOT_GLIBC
+	default "musl"	 if BR2_TOOLCHAIN_BUILDROOT_MUSL
+
+source "package/linux-headers/Config.in"
+source "package/musl/Config.in"
+source "package/uclibc/Config.in"
+source "package/glibc/Config.in"
+source "package/binutils/Config.in.host"
+source "package/gcc/Config.in.host"
+source "package/elf2flt/Config.in.host"
+endif

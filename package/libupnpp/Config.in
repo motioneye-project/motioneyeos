@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBUPNPP
+	bool "libupnpp"
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBUPNP
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	help
+	  The libupnpp C++ library wraps libupnp for easier use by upmpdcli and
+	  upplay.
+
+	  http://www.lesbonscomptes.com/upmpdcli/
+
+comment "libupnpp needs a toolchain w/ C++, threads, gcc >= 4.6"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_6

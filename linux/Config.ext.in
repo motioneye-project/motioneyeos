@@ -1,0 +1,67 @@
+menu "Linux Kernel Extensions"
+
+# Xenomai
+config BR2_LINUX_KERNEL_EXT_XENOMAI
+	bool "Adeos/Xenomai Real-time patch"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
+		   BR2_bfin || BR2_powerpc || BR2_sh4
+	select BR2_PACKAGE_XENOMAI
+	help
+	  Xenomai is split in two parts: a kernel part and a userspace
+	  part. Enabling this option automatically selects the Xenomai
+	  package and helps in patching the Linux kernel built by
+	  Buildroot with the Xenomai kernel part (ie Adeos/Ipipe).
+
+	  You can find the currently supported kernel versions by
+	  looking at the available patches in the Xenomai sources
+	  tree: ksrc/arch/$(ARCH)/patches
+
+	  However, it is recommended to use the latest version of the
+	  Adeos/Ipipe patch available at
+	  http://download.gna.org/adeos/patches
+
+	  Xenomai is know to support Blackfin, SH4, x86, ARM, NIOS2
+	  and PowerPC architectures.
+
+comment "xenomai needs a toolchain w/ threads"
+	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
+		   BR2_bfin || BR2_powerpc || BR2_sh4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
+	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
+	string "Path for Adeos patch file"
+	help
+	  Optionally, explicitly specify the Adeos patch to use.
+	  Download it at http://download.gna.org/adeos/patches
+	  and verify that your kernel version in buildroot matches.
+
+# RTAI
+config BR2_LINUX_KERNEL_EXT_RTAI
+	bool "RTAI Real-time patch"
+	select BR2_PACKAGE_RTAI
+	help
+	  RTAI Kernel part.
+
+# fbtft
+config BR2_LINUX_KERNEL_EXT_FBTFT
+	bool "FB TFT drivers"
+	select BR2_PACKAGE_FBTFT
+	help
+	  Linux Framebuffer drivers for small TFT LCD display modules,
+	  e.g. Adafruit PiTFT displays for Raspberry Pi (this extra
+	  package is only needed for linux kernels until v3.19, since
+	  v4.0 the drivers are included in the staging area).
+
+	  To enable fbtft, e.g. for Adafruit 2.8 PiTFT, enable the
+	  following kernel configurations:
+	  - CONFIG_SPI
+	  - CONFIG_GPIOLIB
+	  - CONFIG_FB
+	  - CONFIG_FB_TFT
+	  - CONFIG_FB_TFT_ILI9341
+
+	  https://github.com/notro/fbtft
+
+endmenu

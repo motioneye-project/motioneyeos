@@ -1,0 +1,486 @@
+menu "System configuration"
+
+config BR2_TARGET_GENERIC_HOSTNAME
+	string "System hostname"
+	default "buildroot"
+	help
+	  Select system hostname to be stored in /etc/hostname.
+
+	  Leave empty to not create /etc/hostname, or to keep the
+	  one from a custom skeleton.
+
+config BR2_TARGET_GENERIC_ISSUE
+	string "System banner"
+	default "Welcome to Buildroot"
+	help
+	  Select system banner (/etc/issue) to be displayed at login.
+
+	  Leave empty to not create /etc/issue, or to keep the
+	  one from a custom skeleton.
+
+choice
+	bool "Passwords encoding"
+	default BR2_TARGET_GENERIC_PASSWD_MD5
+	help
+	  Choose the password encoding scheme to use when Buildroot
+	  needs to encode a password (eg. the root password, below).
+
+	  Note: this is used at build-time, and *not* at runtime.
+
+config BR2_TARGET_GENERIC_PASSWD_MD5
+	bool "md5"
+	help
+	  Use MD5 to encode passwords.
+
+	  The default. Wildly available, and pretty good.
+	  Although pretty strong, MD5 is now an old hash function, and
+	  suffers from some weaknesses, which makes it susceptible to
+	  brute-force attacks.
+
+config BR2_TARGET_GENERIC_PASSWD_SHA256
+	bool "sha-256"
+	help
+	  Use SHA256 to encode passwords.
+
+	  Very strong, but not ubiquitous, although available in glibc
+	  for some time now. Choose only if you are sure your C library
+	  understands SHA256 passwords.
+
+config BR2_TARGET_GENERIC_PASSWD_SHA512
+	bool "sha-512"
+	help
+	  Use SHA512 to encode passwords.
+
+	  Extremely strong, but not ubiquitous, although available in glibc
+	  for some time now. Choose only if you are sure your C library
+	  understands SHA512 passwords.
+
+endchoice # Passwd encoding
+
+config BR2_TARGET_GENERIC_PASSWD_METHOD
+	string
+	default "md5"       if BR2_TARGET_GENERIC_PASSWD_MD5
+	default "sha-256"   if BR2_TARGET_GENERIC_PASSWD_SHA256
+	default "sha-512"   if BR2_TARGET_GENERIC_PASSWD_SHA512
+
+choice
+	prompt "Init system"
+	default BR2_INIT_BUSYBOX
+
+config BR2_INIT_BUSYBOX
+	bool "BusyBox"
+	select BR2_PACKAGE_BUSYBOX
+	select BR2_PACKAGE_INITSCRIPTS
+
+config BR2_INIT_SYSV
+	bool "systemV"
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # sysvinit
+	select BR2_PACKAGE_INITSCRIPTS
+	select BR2_PACKAGE_SYSVINIT
+
+# In Buildroot, we decided not to support a split-usr when systemd is
+# used as an init system. This is a design decision, not a systemd
+# issue. Thus the select is with BR2_INIT_SYSTEMD (below) rather than
+# with BR2_PACKAGE_SYSTEMD.
+config BR2_INIT_SYSTEMD
+	bool "systemd"
+	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	select BR2_ROOTFS_MERGED_USR
+	select BR2_PACKAGE_SYSTEMD
+
+comment "systemd needs (e)glibc toolchain, headers >= 3.10"
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC \
+		&& BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10)
+
+config BR2_INIT_NONE
+	bool "None"
+	help
+	  Buildroot will not install any init system. You will
+	  have to provide your own, either with a new package
+	  or with a rootfs-overlay.
+
+endchoice
+
+choice
+	prompt "/dev management" if !BR2_INIT_SYSTEMD
+	default BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
+
+config BR2_ROOTFS_DEVICE_CREATION_STATIC
+	bool "Static using device table"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_DEVTMPFS
+	bool "Dynamic using devtmpfs only"
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV
+	bool "Dynamic using devtmpfs + mdev"
+	select BR2_PACKAGE_BUSYBOX
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
+	bool "Dynamic using devtmpfs + eudev"
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU # eudev
+	select BR2_PACKAGE_EUDEV
+
+comment "eudev needs a toolchain w/ wchar, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+
+endchoice
+
+comment "/dev management using udev (from systemd)"
+	depends on BR2_INIT_SYSTEMD
+
+config BR2_ROOTFS_DEVICE_TABLE
+	string "Path to the permission tables"
+	default "system/device_table.txt"
+	help
+	  Specify a space-separated list of permission table locations,
+	  that will be passed to the makedevs utility to assign
+	  correct owners and permissions on various files in the
+	  target filesystem.
+
+	  See package/makedevs/README for details on the usage and
+	  syntax of these files.
+
+config BR2_ROOTFS_STATIC_DEVICE_TABLE
+	string "Path to the device tables"
+	default "system/device_table_dev.txt"
+	depends on BR2_ROOTFS_DEVICE_CREATION_STATIC
+	help
+	  Specify a space-separated list of device table locations,
+	  that will be passed to the makedevs utility to create all
+	  the special device files under /dev.
+
+	  See package/makedevs/README for details on the usage and
+	  syntax of these files.
+
+choice
+	prompt "Root FS skeleton"
+
+config BR2_ROOTFS_SKELETON_DEFAULT
+	bool "default target skeleton"
+	help
+	  Use default target skeleton
+
+config BR2_ROOTFS_SKELETON_CUSTOM
+	bool "custom target skeleton"
+	help
+	  Use custom target skeleton.
+
+endchoice
+
+if BR2_ROOTFS_SKELETON_CUSTOM
+config BR2_ROOTFS_SKELETON_CUSTOM_PATH
+	string "custom target skeleton path"
+	default "system/skeleton"
+	help
+	  Path to custom target skeleton.
+
+# dummy config so merged /usr workarounds can also be activated for
+# custom rootfs skeleton
+config BR2_ROOTFS_MERGED_USR
+
+endif
+
+if BR2_ROOTFS_SKELETON_DEFAULT
+
+config BR2_ROOTFS_MERGED_USR
+	bool "Use symlinks to /usr for /bin, /sbin and /lib"
+	help
+	  If you say 'n' here, then /bin, /sbin and /lib and their
+	  counterparts in /usr will be separate directories. This
+	  is the historical UNIX way. In this case, /usr can be a
+	  filesystem on a partition separate from / .
+
+	  If you say 'y' here, then /bin, /sbin and /lib will be symlinks
+	  to their counterparts in /usr. In this case, /usr can not be a
+	  separate filesystem.
+
+config BR2_TARGET_ENABLE_ROOT_LOGIN
+	bool "Enable root login with password"
+	default y
+	help
+	  Allow root to log in with a password.
+
+	  If not enabled, root will not be able to log in with a password.
+	  However, if you have an ssh server and you add an ssh key, you
+	  can still allow root to log in. Alternatively, you can use sudo
+	  to become root.
+
+config BR2_TARGET_GENERIC_ROOT_PASSWD
+	string "Root password"
+	default ""
+	depends on BR2_TARGET_ENABLE_ROOT_LOGIN
+	help
+	  Set the initial root password.
+
+	  If set to empty (the default), then no root password will be set,
+	  and root will need no password to log in.
+
+	  If the password starts with any of $1$, $5$ or $6$, it is considered
+	  to be already crypt-encoded with respectively md5, sha256 or sha512.
+	  Any other value is taken to be a clear-text value, and is crypt-encoded
+	  as per the "Passwords encoding" scheme, above.
+
+	  Note: "$" signs in the hashed password must be doubled. For example,
+	  if the hashed password is "$1$longsalt$v35DIIeMo4yUfI23yditq0",
+	  then you must enter it as "$$1$$longsalt$$v35DIIeMo4yUfI23yditq0"
+	  (this is necessary otherwise make would attempt to interpret the $
+	  as a variable expansion).
+
+	  WARNING! WARNING!
+	  The password appears as-is in the .config file, and may appear
+	  in the build log! Avoid using a valuable password if either the
+	  .config file or the build log may be distributed, or at the
+	  very least use a strong cryptographic hash for your password!
+
+choice
+	bool "/bin/sh"
+	default BR2_SYSTEM_BIN_SH_DASH if !BR2_PACKAGE_BUSYBOX
+	help
+	  Select which shell will provide /bin/sh.
+
+# busybox has shells that work on noMMU
+config BR2_SYSTEM_BIN_SH_BUSYBOX
+	bool "busybox' default shell"
+	depends on BR2_PACKAGE_BUSYBOX
+
+config BR2_SYSTEM_BIN_SH_BASH
+	bool "bash"
+	depends on BR2_USE_MMU # bash
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_BASH
+
+config BR2_SYSTEM_BIN_SH_DASH
+	bool "dash"
+	depends on BR2_USE_MMU # dash
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_DASH
+
+config BR2_SYSTEM_BIN_SH_ZSH
+	bool "zsh"
+	depends on BR2_USE_MMU # zsh
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_ZSH
+
+comment "bash, dash, zsh need BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS && BR2_PACKAGE_BUSYBOX
+
+config BR2_SYSTEM_BIN_SH_NONE
+	bool "none"
+
+endchoice # /bin/sh
+
+config BR2_SYSTEM_BIN_SH
+	string
+	default "busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
+	default "bash"    if BR2_SYSTEM_BIN_SH_BASH
+	default "dash"    if BR2_SYSTEM_BIN_SH_DASH
+	default "zsh"     if BR2_SYSTEM_BIN_SH_ZSH
+
+menuconfig BR2_TARGET_GENERIC_GETTY
+	bool "Run a getty (login prompt) after boot"
+	default y
+
+if BR2_TARGET_GENERIC_GETTY
+config BR2_TARGET_GENERIC_GETTY_PORT
+	string "TTY port"
+	default "console"
+	help
+	  Specify a port to run a getty on.
+
+choice
+	prompt "Baudrate"
+	default BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP
+	help
+	  Select a baudrate to use.
+
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP
+	bool "keep kernel default"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_9600
+	bool "9600"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_19200
+	bool "19200"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_38400
+	bool "38400"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
+	bool "57600"
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+	bool "115200"
+endchoice
+
+config BR2_TARGET_GENERIC_GETTY_BAUDRATE
+	string
+	default "0"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_KEEP
+	default "9600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_9600
+	default "19200"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_19200
+	default "38400"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_38400
+	default "57600"		if BR2_TARGET_GENERIC_GETTY_BAUDRATE_57600
+	default "115200"	if BR2_TARGET_GENERIC_GETTY_BAUDRATE_115200
+
+config BR2_TARGET_GENERIC_GETTY_TERM
+	string "TERM environment variable"
+	default "vt100"
+	help
+	  Specify a TERM type.
+
+config BR2_TARGET_GENERIC_GETTY_OPTIONS
+	string "other options to pass to getty"
+	default ""
+	help
+	  Any other flags you want to pass to getty,
+	  Refer to getty --help for details.
+endif
+
+config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
+	bool "remount root filesystem read-write during boot"
+	default y
+	help
+	  The root filesystem is typically mounted read-only at boot.
+	  By default, buildroot remounts it in read-write mode early during the
+	  boot process.
+	  Say no here if you would rather like your root filesystem to remain
+	  read-only.
+	  If unsure, say Y.
+
+endif # BR2_ROOTFS_SKELETON_DEFAULT
+
+
+config BR2_SYSTEM_DHCP
+	string "Network interface to configure through DHCP"
+	default ""
+	depends on !BR2_PACKAGE_SYSTEMD_NETWORKD && (BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+	help
+	  Enter here the name of the network interface (E.G. eth0) to
+	  automatically configure through DHCP at bootup.
+
+	  If left empty, no automatic DHCP requests will take place.
+
+	  For more complicated network setups use an overlay to overwrite
+	  /etc/network/interfaces or add a networkd configuration file.
+
+comment "automatic network configuration via DHCP is not compatible with networkd"
+	depends on BR2_PACKAGE_SYSTEMD_NETWORKD
+
+comment "automatic network configuration via DHCP needs ifupdown or busybox"
+	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+
+config BR2_TARGET_TZ_INFO
+	bool "Install timezone info"
+	# No timezone for musl; only for uClibc or (e)glibc.
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_TZ if BR2_TOOLCHAIN_USES_UCLIBC
+	help
+	  Say 'y' here to install timezone info.
+
+if BR2_TARGET_TZ_INFO
+
+config BR2_TARGET_TZ_ZONELIST
+	string "timezone list"
+	default "default"
+	help
+	  Space-separated list of time zones to compile.
+
+	  The value "default" includes all commonly used time zones. Note
+	  that this set consumes around 5.5M for (e)glibc and 2.1M for uClibc.
+
+	  The full list is the list of files in the time zone database source,
+	  not including the build and .tab files.
+
+config BR2_TARGET_LOCALTIME
+	string "default local time"
+	default "Etc/UTC"
+	help
+	  The time zone to install as the default local time, expressed as a
+	  tzdata location, such as:
+	    GMT
+	    Europe/Paris
+	    America/New_York
+	    Pacific/Wallis
+	    ...
+
+	  If empty, no local time will be set, and the dates will be
+	  expressed in UTC.
+
+endif # BR2_TARGET_TZ_INFO
+
+config BR2_ROOTFS_USERS_TABLES
+	string "Path to the users tables"
+	help
+	  Specify a space-separated list of users table locations,
+	  that will be passed to the mkusers utility to create
+	  users on the system, with home directory, password, etc.
+
+	  See manual for details on the usage and syntax of these files.
+
+config BR2_ROOTFS_OVERLAY
+	string "Root filesystem overlay directories"
+	default ""
+	help
+	  Specify a list of directories that are copied over the target
+	  root filesystem after the build has finished and before it is
+	  packed into the selected filesystem images.
+
+	  They are copied as-is into the rootfs, excluding files ending with
+	  ~ and .git, .svn and .hg directories.
+
+config BR2_ROOTFS_POST_BUILD_SCRIPT
+	string "Custom scripts to run before creating filesystem images"
+	default ""
+	help
+	  Specify a space-separated list of scripts to be run after the build
+	  has finished and before Buildroot starts packing the files into
+	  selected filesystem images.
+
+	  This gives users the opportunity to do board-specific cleanups,
+	  add-ons and the like, so the generated files can be used directly
+	  without further processing.
+
+	  These scripts are called with the target directory name as first
+	  argument. Make sure the exit code of those scripts are 0, otherwise
+	  make will stop after calling them.
+
+config BR2_ROOTFS_POST_IMAGE_SCRIPT
+	string "Custom scripts to run after creating filesystem images"
+	default ""
+	help
+	  Specify a space-separated list of scripts to be run after
+	  the build has finished and after Buildroot has packed the
+	  files into selected filesystem images.
+
+	  This can for example be used to call a tool building a
+	  firmware image from different images generated by Buildroot,
+	  or automatically extract the tarball root filesystem image
+	  into some location exported by NFS, or any other custom
+	  action.
+
+	  These scripts are called with the images directory name as
+	  first argument. The script is executed from the main Buildroot
+	  source directory as the current directory.
+
+config BR2_ROOTFS_POST_SCRIPT_ARGS
+	string "Extra post-{build,image} arguments"
+	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" || BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
+	help
+	  Pass these additional arguments to each post-build or post-image
+	  scripts.
+
+	  Note that all the post-build and post-image scripts will be passed
+	  the same set of arguments, you can not pass different arguments to
+	  each script.
+
+	  Note also, as stated in their respective help text, that the first
+	  argument to each post-build or post-image script is the target
+	  directory / images directory. The arguments in this option will be
+	  passed *after* those.
+
+endmenu

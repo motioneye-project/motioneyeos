@@ -1,0 +1,34 @@
+Fetch from: https://launchpad.net/ubuntu/+archive/primary/+files/xf86-input-tslib_0.0.6-7build3.debian.tar.gz
+
+Signed-off-by: Jesper Baekdahl <jbb@gamblify.com>
+---
+--- xf86-input-tslib-0.0.6/src/tslib.c	2009-10-19 18:07:18.000000000 +0300
++++ xf86-input-tslib-0.0.6.new/src/tslib.c	2010-02-12 16:15:05.000000000 +0200
+@@ -103,8 +103,6 @@
+ static void
+ PointerControlProc(DeviceIntPtr dev, PtrCtrl * ctrl)
+ {
+-	ErrorF("%s\n", __FUNCTION__);
+-	return;
+ }
+ 
+ static Bool
+@@ -406,7 +404,9 @@
+ 		xf86MotionHistoryAllocate(pInfo);
+ #endif
+ 
+-		break;
++		if (!InitPtrFeedbackClassDeviceStruct(device, PointerControlProc))
++			return !Success;
++		break;
+ 
+ 	case DEVICE_ON:
+ 		AddEnabledDevice(pInfo->fd);
+@@ -435,6 +435,7 @@
+ 	xf86TslibControlProc(pInfo->dev, DEVICE_OFF);
+ 	ts_close(priv->ts);
+ 	xfree(pInfo->private);
++	pInfo->private = NULL;
+ 	xf86DeleteInput(pInfo, 0);
+ }
+ 

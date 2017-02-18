@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBMNG
+	bool "libmng"
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_ZLIB
+	help
+	  The reference library for reading, displaying, writing and
+	  examining Multiple-Image Network Graphics.
+
+	  http://sourceforge.net/projects/libmng/

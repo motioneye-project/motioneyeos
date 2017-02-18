@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_XDITVIEW
+	bool "xditview"
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  display ditroff output

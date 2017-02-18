@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBWEBSOCK
+	bool "libwebsock"
+	select BR2_PACKAGE_LIBEVENT
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  C library for easy WebSockets servers.
+
+	  This library allows a developer to quickly develop WebSocket
+	  servers by focusing on the actual logic of your WebSocket
+	  implementation instead of the details of the WebSocket
+	  protocol or even specifics of C sockets.
+
+	  https://github.com/payden/libwebsock
+
+comment "libwebsock needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

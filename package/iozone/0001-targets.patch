@@ -1,0 +1,92 @@
+Add new targets for iozone:
+
+linux-noaio is for linux targets without AIO (use case: uClibc)
+linux-noth is for linux target without threads or AIO
+
+And make largefile support optional via CFLAGS.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura iozone3_414.orig/src/current/makefile iozone3_414/src/current/makefile
+--- iozone3_414.orig/src/current/makefile	2013-06-11 09:48:18.257837091 -0300
++++ iozone3_414/src/current/makefile	2013-06-11 13:05:56.338162144 -0300
+@@ -166,10 +166,28 @@
+ # GNU 'C' compiler Linux build with threads, largefiles, async I/O 
+ #
+ linux:	iozone_linux.o libasync.o libbif.o fileop_linux.o pit_server.o
+-	$(CC)  -O3 $(LDFLAGS) iozone_linux.o libasync.o libbif.o -lpthread \
++	$(CC)  $(CFLAGS) $(LDFLAGS) iozone_linux.o libasync.o libbif.o \
++		-lpthread -lrt -o iozone
++	$(CC)  $(CFLAGS) -Dlinux fileop_linux.o -o fileop
++	$(CC)  $(CFLAGS) -Dlinux pit_server.o -o pit_server
++
++#
++# GNU 'C' compiler Linux build with threads, largefiles
++#
++linux-noaio: iozone_linux-noaio.o libbif.o fileop_linux.o pit_server.o
++	$(CC)  $(CFLAGS) $(LDFLAGS) iozone_linux-noaio.o libbif.o \
++		-lpthread -lrt -o iozone
++	$(CC)  $(CFLAGS) -Dlinux fileop_linux.o -o fileop
++	$(CC)  $(CFLAGS) -Dlinux pit_server.o -o pit_server
++
++#
++# GNU 'C' compiler Linux build with largefiles
++#
++linux-noth: iozone_linux-noth.o libbif.o fileop_linux.o pit_server.o
++	$(CC)  $(CFLAGS) $(LDFLAGS) iozone_linux-noth.o libbif.o \
+ 		-lrt -o iozone
+-	$(CC)  -O3 -Dlinux fileop_linux.o -o fileop
+-	$(CC)  -O3 -Dlinux pit_server.o -o pit_server
++	$(CC)  $(CFLAGS) -Dlinux fileop_linux.o -o fileop
++	$(CC)  $(CFLAGS) -Dlinux pit_server.o -o pit_server
+ 
+ #
+ # GNU 'C' compiler Linux build for powerpc chip with threads, largefiles, async I/O 
+@@ -795,13 +813,33 @@
+ 	@echo ""
+ 	@echo "Building iozone for Linux"
+ 	@echo ""
+-	$(CC) -Wall -c -O3 -Dunix -DHAVE_ANSIC_C -DASYNC_IO -DHAVE_PREAD \
+-		-DSHARED_MEM -Dlinux -D_LARGEFILE64_SOURCE $(CFLAGS) iozone.c \
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C -DASYNC_IO -DHAVE_PREAD \
++		-DSHARED_MEM -Dlinux $(CFLAGS) iozone.c \
+ 		-DNAME='"linux"' -o iozone_linux.o
+-	$(CC) -Wall -c -O3 -Dunix -DHAVE_ANSIC_C -DASYNC_IO -D_LARGEFILE64_SOURCE \
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C -DASYNC_IO \
++		-DSHARED_MEM -Dlinux $(CFLAGS) libbif.c -o libbif.o
++	$(CC) -Wall -c -Dunix -Dlinux -DHAVE_ANSIC_C -DASYNC_IO \
++		$(CFLAGS) libasync.c  -o libasync.o 
++
++iozone_linux-noaio.o: iozone.c libbif.c
++	@echo ""
++	@echo "Building iozone for Linux no AIO"
++	@echo ""
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C -DHAVE_PREAD \
++		-DSHARED_MEM -Dlinux $(CFLAGS) iozone.c \
++		-DNAME='"linux"' -o iozone_linux-noaio.o
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C \
++		-DSHARED_MEM -Dlinux $(CFLAGS) libbif.c -o libbif.o
++
++iozone_linux-noth.o: iozone.c libbif.c
++	@echo ""
++	@echo "Building iozone for Linux with no threads"
++	@echo ""
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C -DNO_THREADS -DHAVE_PREAD \
++		-DSHARED_MEM -Dlinux $(CFLAGS) iozone.c \
++		-DNAME='"linux"' -o iozone_linux-noth.o
++	$(CC) -Wall -c -Dunix -DHAVE_ANSIC_C -DNO_THREADS \
+ 		-DSHARED_MEM -Dlinux $(CFLAGS) libbif.c -o libbif.o
+-	$(CC) -Wall -c -O3 -Dunix -Dlinux -DHAVE_ANSIC_C -DASYNC_IO \
+-		-D_LARGEFILE64_SOURCE $(CFLAGS) libasync.c  -o libasync.o 
+ 
+ fileop_AIX.o:	fileop.c
+ 	@echo ""
+@@ -893,7 +931,7 @@
+ 	@echo ""
+ 	@echo "Building fileop for Linux"
+ 	@echo ""
+-	$(CC) -Wall -c -O3 $(CFLAGS) fileop.c -o fileop_linux.o
++	$(CC) -Wall -c $(CFLAGS) fileop.c -o fileop_linux.o
+ 
+ fileop_openbsd.o:	fileop.c
+ 	@echo ""

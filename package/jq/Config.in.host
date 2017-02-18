@@ -1,0 +1,11 @@
+config BR2_PACKAGE_HOST_JQ
+	bool "host jq"
+	help
+	  jq is like sed for JSON data - you can use it to slice and filter
+	  and map and transform structured data with the same ease that sed,
+	  awk, grep and friends let you play with text.
+
+	  As a host tool, jq can be useful to create/edit/merge/check JSON
+	  files from a post-build script.
+
+	  http://stedolan.github.io/jq/

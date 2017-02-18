@@ -1,0 +1,5 @@
+# From http://dfu-util.sourceforge.net/releases/dfu-util-0.9.tar.gz.md5
+md5	233bb1e08ef4b405062445d84e28fde6	dfu-util-0.9.tar.gz
+
+# Locally computed
+sha256	36428c6a6cb3088cad5a3592933385253da5f29f2effa61518ee5991ea38f833	dfu-util-0.9.tar.gz

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XAPP_SMPROXY
+	bool "smproxy"
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XLIB_LIBXT
+	help
+	  Session Manager Proxy

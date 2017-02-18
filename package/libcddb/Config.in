@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBCDDB
+	bool "libcddb"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  Libcddb is a C library to access data on a CDDB server
+	  (freedb.org). It allows you to:
+	    * search the database for possible CD matches;
+	    * retrieve detailed information about a specific CD;
+	    * submit new CD entries to the database.
+
+	  http://libcddb.sourceforge.net/index.html
+
+if BR2_PACKAGE_LIBCDDB
+
+config BR2_PACKAGE_LIBCDDB_INSTALL_CDDB_QUERY
+	bool "install cddb_query"
+	help
+	  cddb_query is an optionnal libcddb test program.
+
+endif

@@ -1,0 +1,11 @@
+[Unit]
+Description=Chrony Network Time Daemon
+After=syslog.target network.target
+Conflicts=systemd-timesyncd.service
+
+[Service]
+ExecStart=/usr/bin/chronyd -n
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

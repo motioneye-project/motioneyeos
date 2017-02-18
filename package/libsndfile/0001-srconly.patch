@@ -1,0 +1,17 @@
+---
+ Makefile.in |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libsndfile-1.0.18/Makefile.in
+===================================================================
+--- libsndfile-1.0.18.orig/Makefile.in
++++ libsndfile-1.0.18/Makefile.in
+@@ -260,7 +260,7 @@
+ top_srcdir = @top_srcdir@
+ DISTCHECK_CONFIGURE_FLAGS = --enable-gcc-werror
+ @BUILD_OCTAVE_MOD_TRUE@octave_dir = Octave
+-SUBDIRS = M4 man doc Win32 src $(octave_dir) examples regtest tests programs
++SUBDIRS = src
+ DIST_SUBDIRS = M4 man doc Win32 src Octave examples regtest tests programs
+ EXTRA_DIST = libsndfile.spec.in sndfile.pc.in Mingw-make-dist.sh
+ pkgconfigdir = $(libdir)/pkgconfig

@@ -1,0 +1,67 @@
+From 3197a4b058615d81aa4623fb5a52e57d7fbc3af2 Mon Sep 17 00:00:00 2001
+From: Brendan Heading <brendanheading@gmail.com>
+Date: Thu, 30 Jul 2015 15:47:16 +0100
+Subject: [PATCH 3/3] compile: fix undefined PATH_MAX under musl
+
+musl's strict implementation requires #include <limits.h> for PATH_MAX.
+
+Upstream-status: submitted
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ cmds-inspect.c | 1 +
+ cmds-receive.c | 1 +
+ cmds-scrub.c   | 1 +
+ cmds-send.c    | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/cmds-inspect.c b/cmds-inspect.c
+index 71451fe..9712581 100644
+--- a/cmds-inspect.c
++++ b/cmds-inspect.c
+@@ -20,6 +20,7 @@
+ #include <stdint.h>
+ #include <sys/ioctl.h>
+ #include <errno.h>
++#include <limits.h>
+ 
+ #include "kerncompat.h"
+ #include "ioctl.h"
+diff --git a/cmds-receive.c b/cmds-receive.c
+index 071bea9..d4b3103 100644
+--- a/cmds-receive.c
++++ b/cmds-receive.c
+@@ -28,6 +28,7 @@
+ #include <wait.h>
+ #include <assert.h>
+ #include <getopt.h>
++#include <limits.h>
+ 
+ #include <sys/stat.h>
+ #include <sys/types.h>
+diff --git a/cmds-scrub.c b/cmds-scrub.c
+index b7aa809..5a85dc4 100644
+--- a/cmds-scrub.c
++++ b/cmds-scrub.c
+@@ -34,6 +34,7 @@
+ #include <ctype.h>
+ #include <signal.h>
+ #include <stdarg.h>
++#include <limits.h>
+ 
+ #include "ctree.h"
+ #include "ioctl.h"
+diff --git a/cmds-send.c b/cmds-send.c
+index 20bba18..a0b7f95 100644
+--- a/cmds-send.c
++++ b/cmds-send.c
+@@ -33,6 +33,7 @@
+ #include <assert.h>
+ #include <getopt.h>
+ #include <uuid/uuid.h>
++#include <limits.h>
+ 
+ #include "ctree.h"
+ #include "ioctl.h"
+-- 
+2.4.3
+

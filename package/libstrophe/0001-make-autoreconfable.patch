@@ -1,0 +1,20 @@
+Make the package autoreconfigurable
+
+Signed-off-by: Denis Bodor <lefinnois@lefinnois.net>
+[Gustavo: update for 0.8.8]
+
+diff -Nura libstrophe-0.8.8.orig/m4/.empty libstrophe-0.8.8/m4/.empty
+--- libstrophe-0.8.8.orig/m4/.empty	1969-12-31 21:00:00.000000000 -0300
++++ libstrophe-0.8.8/m4/.empty	2015-09-23 19:29:37.893688227 -0300
+@@ -0,0 +1,2 @@
++
++
+diff -Nura libstrophe-0.8.8.orig/Makefile.am libstrophe-0.8.8/Makefile.am
+--- libstrophe-0.8.8.orig/Makefile.am	2015-09-23 19:26:10.960492781 -0300
++++ libstrophe-0.8.8/Makefile.am	2015-09-23 19:29:17.265970964 -0300
+@@ -1,4 +1,4 @@
+-AUTOMAKE_OPTIONS = subdir-objects
++AUTOMAKE_OPTIONS = subdir-objects foreign
+ 
+ ACLOCAL_AMFLAGS = -I m4
+ AM_CFLAGS = -g -Wall

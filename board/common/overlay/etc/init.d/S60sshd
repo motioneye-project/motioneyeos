@@ -1,0 +1,54 @@
+#!/bin/bash
+
+conf="/etc/sshd_config"
+
+test -f $conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
+
+start() {
+    msg_begin "Starting sshd"
+    
+    # create any missing keys
+    if ! /usr/bin/ssh-keygen -A >/dev/null; then
+        msg_fail
+        return 1
+    fi
+
+    umask 077
+    hostname=$(hostname)
+    echo "Welcome to $hostname!" > /var/cache/sshd_banner
+    sync
+
+    /usr/sbin/sshd -f $conf
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping sshd"
+    killall sshd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+

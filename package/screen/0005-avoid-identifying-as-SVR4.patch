@@ -1,0 +1,54 @@
+From: Maarten ter Huurne <maarten@treewalker.org>
+Date: Sun, 14 Sep 2014 11:16:58 +0200
+Subject: Avoid mis-identifying systems as SVR4
+
+My openSUSE 13.1 Linux system was detected as SVR4 because it had
+libelf installed. This leads to linking with libelf, even though no
+symbols from that library were actually used, and to a workaround for
+a buggy getlogin() being enabled.
+
+It is not documented which exact SVR4 system had the bug that the
+workaround was added for, so all I could do is make an educated guess
+at the #defines its compiler would be likely to set.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+---
+ configure.ac | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 9cf7cee..e09e4cf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -179,14 +179,24 @@ AC_EGREP_CPP(yes,
+ #endif
+ ], LIBS="$LIBS -lsocket -linet";seqptx=1)
+ 
++AC_CHECKING(SVR4)
++AC_EGREP_CPP(yes,
++[main () {
++#if defined(SVR4) || defined(__SVR4)
++  yes;
++#endif
++], AC_NOTE(- you have a SVR4 system) AC_DEFINE(SVR4) svr4=1)
++if test -n "$svr4" ; then
+ oldlibs="$LIBS"
+ LIBS="$LIBS -lelf"
+ AC_CHECKING(SVR4)
+ AC_TRY_LINK([#include <utmpx.h>
+ ],,
+-[AC_CHECK_HEADER(dwarf.h, AC_DEFINE(SVR4) AC_DEFINE(BUGGYGETLOGIN),
+-[AC_CHECK_HEADER(elf.h, AC_DEFINE(SVR4) AC_DEFINE(BUGGYGETLOGIN))])]
++[AC_CHECK_HEADER(dwarf.h, AC_DEFINE(BUGGYGETLOGIN),
++[AC_CHECK_HEADER(elf.h, AC_DEFINE(BUGGYGETLOGIN))])]
+ ,LIBS="$oldlibs")
++fi
++
+ AC_CHECK_HEADERS([stropts.h string.h strings.h])
+ 
+ AC_CHECKING(for Solaris 2.x)
+-- 
+1.8.4.5
+

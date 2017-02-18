@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_REQUESTS
+	bool "python-requests"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Requests is an Apache2 Licensed HTTP library, written in
+	  Python, for human beings.
+
+	  http://www.python-requests.org/

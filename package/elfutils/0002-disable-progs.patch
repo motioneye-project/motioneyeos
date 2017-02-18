@@ -1,0 +1,48 @@
+Add a --{enable,disable}-progs configure option
+
+Add a --{enable,disable}-progs configuration option to elfutils. This
+allows to selectively disable the compilation of the elfutils programs
+(in which case only the libraries are built and installed). This is
+useful because the programs are often not needed, and also because
+building the programs against uClibc causes several issues (lack of
+obstack_printf() in uClibc for example).
+
+Based on the former patch by Thomas Petazzoni.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/configure.ac b/configure.ac
+--- a/configure.ac	2015-01-06 11:31:10.122219826 +0000
++++ b/configure.ac	2015-01-06 11:37:38.397891424 +0000
+@@ -260,6 +260,12 @@ if test "$ac_cv_func_argp_parse" != yes;
+ fi
+ AC_SUBST(ARGP_LIBS)
+ 
++AC_ARG_ENABLE([progs],
++	AS_HELP_STRING([--enable-progs], [enable progs]),
++	enable_progs=$enableval,
++	enable_progs=yes)
++AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
++
+ dnl Test for zlib and bzlib, gives ZLIB/BZLIB .am
+ dnl conditional and config.h USE_ZLIB/USE_BZLIB #define.
+ save_LIBS="$LIBS"
+diff -rup a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2014-06-17 19:51:09.000000000 +0100
++++ b/Makefile.am	2015-01-06 11:38:42.846999410 +0000
+@@ -22,9 +22,13 @@ ACLOCAL_AMFLAGS = -I m4
+ 
+ pkginclude_HEADERS = version.h
+ 
++if ENABLE_PROGS
++PROGS_SUBDIR = src
++endif
++
+ # Add doc back when we have some real content.
+ SUBDIRS = config m4 lib libelf libebl libdwelf libdwfl libdw libcpu libasm \
+-	  backends src po tests
++	  backends $(PROGS_SUBDIR) po tests
+ 
+ EXTRA_DIST = elfutils.spec GPG-KEY NOTES CONTRIBUTING \
+ 	     COPYING COPYING-GPLV2 COPYING-LGPLV3

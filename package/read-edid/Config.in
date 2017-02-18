@@ -1,0 +1,13 @@
+config BR2_PACKAGE_READ_EDID
+	bool "read-edid"
+	help
+	  Read-edid is a pair of tools for reading the EDID from a
+	  monitor. It should work with most monitors made since 1996
+	  (except for newer ones with 256-byte EDID's - WiP), assuming
+	  the video card supports the standard read commands (most
+	  do). Read-edid is a set of two tools - get-edid, which gets
+	  the raw edid information from the monitor, and parse-edid,
+	  which turns the raw binary information into an
+	  XF86Config-compatible monitor section.
+
+	  http://polypux.org/projects/read-edid/

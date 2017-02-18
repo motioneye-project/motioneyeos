@@ -1,0 +1,22 @@
+ANGLE doesn't build with bison 3.0
+
+Author: allan.jensen@digia.com
+​https://bugs.webkit.org/show_bug.cgi?id=119798
+Reviewed by Antti Koivisto.
+Make glslang.y compatible with bison 3.0, by using %lex-param
+to set YYLEX_PARAM and getting rid of useless YYID macro.
+
+From upstream: http://trac.webkit.org/changeset/154109
+[Arnout: adapted to our older webkit version]
+Signed-off-by: Arnout Vandecaeppelle (Essensium/Mind) <arnout@mind.be>
+---
+Index: trunk/Source/ThirdParty/ANGLE/src/compiler/glslang.y
+===================================================================
+--- trunk/Source/ThirdParty/ANGLE/src/compiler/glslang.y	(revision 154108)
++++ trunk/Source/ThirdParty/ANGLE/src/compiler/glslang.y	(revision 154109)
+@@ -48,4 +48,5 @@
+ %pure-parser
+ %parse-param {TParseContext* context}
++%lex-param {YYLEX_PARAM}
+ 
+ %union {

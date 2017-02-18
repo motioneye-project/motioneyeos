@@ -1,0 +1,25 @@
+config BR2_PACKAGE_UNSCD
+	bool "unscd"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  Micro Name Service Caching Daemon
+
+	  A daemon which handles passwd, group and host lookups for
+	  running programs and caches the results for the next query.
+	  You only need this package if you are using slow Name Services
+	  like LDAP, NIS or NIS+.
+
+	  This particular NSCD is a complete rewrite of the GNU glibc
+	  nscd which is a single threaded server process which offloads
+	  all NSS lookups to worker children; cache hits are handled by
+	  the parent, and only cache misses start worker children,
+	  making the parent immune to resource leaks, hangs, and crashes
+	  in NSS libraries.
+
+	  It should mostly be a drop-in replacement for existing
+	  installs using nscd.
+
+	  http://busybox.net/~vda/unscd
+
+comment "unscd needs an (e)glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

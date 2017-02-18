@@ -1,0 +1,19 @@
+config BR2_PACKAGE_MONO_ARCH_SUPPORTS
+	bool
+	default y if (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || \
+		      BR2_mipsel || BR2_powerpc || BR2_x86_64)
+
+config BR2_PACKAGE_MONO
+	bool "mono"
+	depends on BR2_PACKAGE_MONO_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  An open source, cross-platform, implementation of C#
+	  and the CLR that is binary compatible with Microsoft.NET.
+
+	  http://download.mono-project.com/sources/mono/
+
+comment "mono needs a toolchain w/ threads, dynamic library"
+	depends on BR2_PACKAGE_MONO_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

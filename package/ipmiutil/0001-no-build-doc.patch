@@ -1,0 +1,31 @@
+configure: do not build doc
+
+Fixes:
+    http://autobuild.buildroot.org/results/2ec/2ecfb1143ba89ffa5cdc8096bb175b2c396c4670/
+    http://autobuild.buildroot.org/results/c49/c497fc446140694084922d51fe6be308ce5c1c1a/
+    http://autobuild.buildroot.org/results/434/434b156b5c9b5c7b65ffe6174cf4e029e7e3ffd8/
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/configure.ac b/configure.ac
+index 344b27a71a35..41b6ea89167a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -56,7 +56,7 @@ LIB_DIR="/usr/lib"
+ isredhat=0
+ init_scripts="scripts/ipmi_port.sh scripts/ipmiutil_evt scripts/ipmiutil_asy scripts/ipmiutil_wdt"
+ projdir=`pwd`
+-SUBDIR_S="doc scripts lib util"
++SUBDIR_S="scripts lib util"
+ os=Linux
+ 
+ # ltmain.sh, config.sub, et al should have been created, but check to be sure.
+@@ -162,7 +162,7 @@ AC_ARG_ENABLE([standalone],
+ 	LANPLUS_SAM="no"
+ 	LD_SAMX=""
+ 	CFLAGS="-O2"
+-        SUBDIR_S="doc scripts util"
++        SUBDIR_S="scripts util"
+ 	if test "x$cross_compiling" = "xyes"; then
+ 	   # cross-compiling, so link with -static (e.g. Android ARM)
+ 	   CROSS_LFLAGS="-static"

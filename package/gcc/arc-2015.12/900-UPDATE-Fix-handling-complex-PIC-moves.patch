@@ -1,0 +1,103 @@
+From b55922d45fd16f5e8fc7c3885da42b2b9b37754d Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@synopsys.com>
+Date: Mon, 18 Jan 2016 16:43:18 +0100
+Subject: [PATCH] UPDATE: Fix handling complex PIC moves.
+
+fwprop is putting in the REG_EQUIV notes which are involving the
+constant pic unspecs.  Then, loop may use those notes for
+optimizations rezulting in complex patterns that are not supported by
+the current implementation. The following piece of code tries to
+convert the complex instruction in simpler ones.
+
+The fix is done in development tree: [arc-4.8-dev b55922d] 
+and will be a part of the next release of ARC GNU tools.
+Once that new release happens this patch must be removed.
+
+
+gcc/
+2016-01-18  Claudiu Zissulescu  <claziss@synopsys.com>
+
+	* config/arc/arc.c (arc_legitimize_pic_address): Handle MINUS
+	operations when doing PIC moves. Make this function static.
+	(arc_legitimate_pc_offset_p): Use
+	arc_raw_symbolic_reference_mentioned_p.
+	* config/arc/arc-protos.h (arc_legitimize_pic_address): Remove.
+
+ gcc/config/arc/arc-protos.h |  1 -
+ gcc/config/arc/arc.c        | 33 +++++++++++++++++++--------------
+ 2 files changed, 19 insertions(+), 15 deletions(-)
+
+ 	* config/arc/arc.c (arc_legitimize_pic_address): Handle complex
+diff --git a/gcc/config/arc/arc-protos.h b/gcc/config/arc/arc-protos.h
+index 464e0ab..5986e06 100644
+--- a/gcc/config/arc/arc-protos.h
++++ b/gcc/config/arc/arc-protos.h
+@@ -53,7 +53,6 @@ extern unsigned int arc_compute_frame_size ();
+ extern bool arc_ccfsm_branch_deleted_p (void);
+ extern void arc_ccfsm_record_branch_deleted (void);
+ 
+-extern rtx arc_legitimize_pic_address (rtx, rtx);
+ void arc_asm_output_aligned_decl_local (FILE *, tree, const char *,
+ 					unsigned HOST_WIDE_INT,
+ 					unsigned HOST_WIDE_INT,
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index a89c8ee..f7cae9f 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -5243,19 +5243,7 @@ arc_legitimate_pc_offset_p (rtx addr)
+   if (GET_CODE (addr) != CONST)
+     return false;
+   addr = XEXP (addr, 0);
+-  if (GET_CODE (addr) == PLUS)
+-    {
+-      if (GET_CODE (XEXP (addr, 1)) != CONST_INT)
+-	return false;
+-      addr = XEXP (addr, 0);
+-    }
+-  return (GET_CODE (addr) == UNSPEC
+-	  && XVECLEN (addr, 0) == 1
+-	  && (XINT (addr, 1) == ARC_UNSPEC_GOT
+-	      || XINT (addr, 1) == ARC_UNSPEC_GOTOFFPC
+-	      || XINT (addr, 1) == UNSPEC_TLS_GD
+-	      || XINT (addr, 1) == UNSPEC_TLS_IE)
+-	  && GET_CODE (XVECEXP (addr, 0, 0)) == SYMBOL_REF);
++  return flag_pic && !arc_raw_symbolic_reference_mentioned_p (addr, false);
+ }
+ 
+ /* Return true if ADDR is a valid pic address.
+@@ -5522,7 +5510,7 @@ arc_legitimize_tls_address (rtx addr, enum tls_model model)
+    The return value is the legitimated address.
+    If OLDX is non-zero, it is the target to assign the address to first.  */
+ 
+-rtx
++static rtx
+ arc_legitimize_pic_address (rtx orig, rtx oldx)
+ {
+   rtx addr = orig;
+@@ -5569,6 +5557,23 @@ arc_legitimize_pic_address (rtx orig, rtx oldx)
+ 	      /* Check that the unspec is one of the ones we generate?  */
+ 	      return orig;
+ 	    }
++	  else if (GET_CODE (addr) == MINUS)
++	    {
++	      /* The same story with fwprop.  */
++	      rtx op0 = XEXP (addr, 0);
++	      rtx op1 = XEXP (addr, 1);
++	      gcc_assert (oldx);
++	      gcc_assert (GET_CODE (op1) == UNSPEC);
++
++	      emit_move_insn (oldx,
++			      gen_rtx_CONST (SImode,
++					     arc_legitimize_pic_address (op1,
++									 NULL_RTX)));
++	      emit_insn (gen_rtx_SET (VOIDmode, oldx,
++				      gen_rtx_MINUS (SImode, op0, oldx)));
++	      return oldx;
++
++	    }
+ 	  else if (GET_CODE (addr) != PLUS)
+ 	    {
+ 	      /* fwprop is putting in the REG_EQUIV notes which are
+-- 
+2.5.0
+

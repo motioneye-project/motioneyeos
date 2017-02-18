@@ -1,0 +1,20 @@
+Makefile: disable testsuite and example
+
+We do not need them in the context of Buildroot.
+
+Also, they break for a shared-only build (but it's fixed in patch 0001).
+
+Signed-off-by:  "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN nettle-2.7.1.orig/Makefile.in nettle-2.7.1/Makefile.in
+--- nettle-2.7.1.orig/Makefile.in	2013-05-28 16:21:54.000000000 +0200
++++ nettle-2.7.1/Makefile.in	2014-12-12 19:57:12.499805574 +0100
+@@ -16,7 +16,7 @@
+ 
+ OPT_ASM_SOURCES = @OPT_ASM_SOURCES@
+ 
+-SUBDIRS = tools testsuite examples
++SUBDIRS = tools
+ 
+ include config.make
+ 

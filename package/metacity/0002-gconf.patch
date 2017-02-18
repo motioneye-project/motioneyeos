@@ -1,0 +1,30 @@
+[PATCH] fix build with --disable-gconf
+
+src/core/prefs.c still contain a call to gconf_client_set_bool() when
+built with --disable-gconf, breaking the build.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ src/core/prefs.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: metacity-2.25.1/src/core/prefs.c
+===================================================================
+--- metacity-2.25.1.orig/src/core/prefs.c
++++ metacity-2.25.1/src/core/prefs.c
+@@ -2949,6 +2949,7 @@
+ void
+ meta_prefs_set_compositing_manager (gboolean whether)
+ {
++#if HAVE_GCONF
+   GError *err = NULL;
+ 
+   gconf_client_set_bool (default_client,
+@@ -2962,6 +2963,7 @@
+                     err->message);
+       g_error_free (err);
+     }
++#endif
+ }
+ 
+ #ifndef HAVE_GCONF

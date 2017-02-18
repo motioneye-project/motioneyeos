@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_PYASN_MODULES
+	bool "python-pyasn-modules"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_PYASN # runtime
+	help
+	  A collection of ASN.1-based protocols modules.
+
+	  https://pypi.python.org/pypi/pyasn1-modules
+
+comment "python-pyasn-modules needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

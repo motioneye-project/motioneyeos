@@ -1,0 +1,13 @@
+--- lsof_4.84/Configure	2008-10-21 18:21:45.000000000 +0200
++++ lsof_4.84/Configure	2010-11-03 14:00:00.000000000 +0100
+@@ -5206,6 +5206,10 @@
+   cp $LSOF_MKFC ${LSOF_LIB}/$LSOF_LIBMKF
+ fi	# }
+ cat ./dialects/$LSOF_DIALECT_DIR/$LSOF_REST >> $LSOF_MKFC
++if test "X$LSOF_CFLAGS_OVERRIDE" != "X"	# {
++then
++  sed -i -e 's/^CFLAGS=/override CFLAGS=/' $LSOF_MKFC
++fi	# }
+ if test "X$LSOF_LIB_NO" = "X"	# {
+ then
+ 

@@ -1,0 +1,4 @@
+config BR2_TARGET_ROOTFS_YAFFS2
+	bool "yaffs2 root filesystem"
+	help
+	  Build a yaffs2 root filesystem

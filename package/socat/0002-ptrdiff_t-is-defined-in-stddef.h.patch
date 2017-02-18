@@ -1,0 +1,28 @@
+From 99c55f2694fe8621ca2344eb002610dac7f9c969 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 2 Feb 2016 09:34:24 -0300
+Subject: [PATCH] ptrdiff_t is defined in stddef.h
+
+Status: sent upstream via email.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ nestlex.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/nestlex.c b/nestlex.c
+index f7950f0..f49482d 100644
+--- a/nestlex.c
++++ b/nestlex.c
+@@ -4,6 +4,8 @@
+ 
+ /* a function for lexical scanning of nested character patterns */
+ 
++#include <stddef.h>	/* ptrdiff_t */
++
+ #include "config.h"
+ #include "mytypes.h"
+ 
+-- 
+2.4.10
+

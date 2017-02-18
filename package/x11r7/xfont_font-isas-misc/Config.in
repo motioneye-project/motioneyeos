@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_ISAS_MISC
+	bool "font-isas-misc"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

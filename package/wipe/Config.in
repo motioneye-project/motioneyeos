@@ -1,0 +1,7 @@
+config BR2_PACKAGE_WIPE
+	bool "wipe"
+	help
+	  Wipe is a little command for securely erasing files
+	  from magnetic media. It compiles under various unix platforms.
+
+	  http://wipe.sourceforge.net

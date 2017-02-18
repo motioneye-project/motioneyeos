@@ -1,0 +1,12 @@
+config BR2_PACKAGE_SMCROUTE
+	bool "smcroute"
+	depends on BR2_USE_MMU # fork()
+	help
+	  SMCRoute is a command line tool to manipulate the multicast
+	  routes of a UNIX kernel. It supports both IPv4 and IPv6 multicast
+	  routing. SMCRoute can be used as an alternative to dynamic
+	  multicast routers like mrouted or pimd in setups where static
+	  multicast routes should be maintained and/or no proper IGMP or
+	  MLD signaling exists.
+
+	  https://github.com/troglobit/smcroute

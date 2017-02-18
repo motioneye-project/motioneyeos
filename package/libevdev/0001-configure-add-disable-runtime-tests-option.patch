@@ -1,0 +1,42 @@
+From 95527e43845a5063a6125d7779a30d44c3b437ac Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 11 Oct 2015 13:33:19 +0200
+Subject: [PATCH] configure: add '--disable-runtime-tests' option
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 54a2510..286737b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -74,7 +74,14 @@ else
+ 	AC_MSG_WARN([check not found - skipping building unit tests])
+ fi
+ AM_CONDITIONAL(HAVE_VALGRIND, [test "x$VALGRIND" != "x"])
+-AM_CONDITIONAL(ENABLE_RUNTIME_TESTS, [test "x$HAVE_CHECK" = "xyes"])
++
++AC_ARG_ENABLE([runtime-tests],
++	AS_HELP_STRING([--disable-runtime-tests], [Disable runtime tests]))
++AS_IF([test "x$enable_runtime_tests" != "xno"],
++	[enable_runtime_tests=yes],
++	[enable_runtime_tests=no])
++
++AM_CONDITIONAL(ENABLE_RUNTIME_TESTS, [test "x${enable_runtime_tests}x$HAVE_CHECK" = "xyesxyes"])
+ AM_CONDITIONAL(ENABLE_STATIC_LINK_TEST, [test "x$enable_static" = "xyes"])
+ 
+ with_cflags=""
+@@ -159,7 +166,7 @@ AC_MSG_RESULT([
+ 	       Libdir				${libdir}
+ 
+ 	       Build documentation		${have_doxygen}
+-	       Enable unit-tests		${HAVE_CHECK}
++	       Enable unit-tests		${HAVE_CHECK} (runtime-tests: ${enable_runtime_tests})
+ 	       Enable profiling			${enable_gcov}
+ 	       Static library symbol check	${static_symbol_leaks_test}
+ 	       ])
+-- 
+2.1.4
+

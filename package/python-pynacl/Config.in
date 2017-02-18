@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_PYNACL
+	bool "python-pynacl"
+	select BR2_PACKAGE_LIBSODIUM
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_CFFI # runtime
+	help
+	  Python binding to the Networking and Cryptography (NaCl) library.
+
+	  https://pypi.python.org/pypi/PyNaCl

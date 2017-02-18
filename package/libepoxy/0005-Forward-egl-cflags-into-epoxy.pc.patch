@@ -1,0 +1,45 @@
+From 68e5f1574758240aedfe8653d7aaae62cdb08bf5 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Sun, 20 Dec 2015 10:07:06 -0300
+Subject: [PATCH] Forward egl cflags into epoxy.pc
+
+When building mesa egl without x11 and gles2 the headers need a
+MESA_EGL_NO_X11_HEADERS define, so put them in epoxy.pc as well since
+otherwise builds will fail.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Status: pull request https://github.com/anholt/libepoxy/pull/80
+
+ configure.ac | 2 ++
+ epoxy.pc.in  | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index c7cffb2..7b599de 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -102,6 +102,8 @@ if test x$build_egl = xyes; then
+     AC_DEFINE([BUILD_EGL], [1], [build EGL tests])
+ fi
+ 
++AC_SUBST(EGL_CFLAGS)
++
+ PKG_CHECK_MODULES(GL, [gl], [gl=yes], [gl=no])
+ if test x$gl = xno; then
+     build_glx=no
+diff --git a/epoxy.pc.in b/epoxy.pc.in
+index 8c85a33..f377da5 100644
+--- a/epoxy.pc.in
++++ b/epoxy.pc.in
+@@ -6,6 +6,6 @@ includedir=@includedir@
+ Name: epoxy
+ Description: epoxy GL dispatch Library
+ Version: @PACKAGE_VERSION@
+-Cflags: -I${includedir}
++Cflags: -I${includedir} @EGL_CFLAGS@
+ Libs: -L${libdir} -lepoxy
+ Libs.private: @DLOPEN_LIBS@
+-- 
+2.4.10
+

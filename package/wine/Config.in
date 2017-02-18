@@ -1,0 +1,23 @@
+config BR2_PACKAGE_WINE
+	bool "wine"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	# Wine only builds on certain architectures
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" || \
+	           BR2_HOSTARCH = "powerpc" || BR2_HOSTARCH = "arm" || \
+	           BR2_HOSTARCH = "aarch64"
+	# Wine has much CPU specific code and mostly makes sense on x86
+	depends on BR2_i386
+	help
+	  Wine is a compatibility layer capable of running Windows
+	  applications on Linux. Instead of simulating internal
+	  Windows logic like a virtual machine or emulator, Wine
+	  translates Windows API calls into POSIX calls on-the-fly,
+	  eliminating the performance and memory penalties of other
+	  methods.
+
+	  http://www.winehq.org
+
+comment "wine needs a (e)glibc toolchain"
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on BR2_i386
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

@@ -1,0 +1,55 @@
+comment "gstreamer 1.x needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_GSTREAMER1
+	bool "gstreamer 1.x"
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  GStreamer is an open source multimedia framework. This 1.x version of
+	  Gstreamer is incompatible with Gstreamer 0.10.x.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GSTREAMER1
+
+config BR2_PACKAGE_GSTREAMER1_PARSE
+	bool "enable command-line parser"
+	default y
+	help
+	  Enable command line parser for gstreamer. This may increase the CPU
+	  overhead by a small amount.
+
+config BR2_PACKAGE_GSTREAMER1_TRACE
+	bool "enable tracing subsystem"
+	default y
+	help
+	  Enable the tracing subsystem within gstreamer. This may increase CPU
+	  overhead by a small amount.
+
+config BR2_PACKAGE_GSTREAMER1_GST_DEBUG
+	bool "enable gst-debug trace support"
+	default y
+	help
+	  Enable support for the gst-debug tracing functionality in gstreamer.
+	  This has limited CPU overhead, but does increase the rootfs size
+	  somewhat.
+
+config BR2_PACKAGE_GSTREAMER1_PLUGIN_REGISTRY
+	bool "enable plugin registry"
+	default y
+	help
+	  Enable support for the GStreamer plugin registry. This may increase
+	  the launch-time for a GStreamer application.
+
+config BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS
+	bool "install gst-launch & gst-inspect"
+	default y
+	help
+	  Install the gst-launch and gst-inspect tools. This will take up
+	  additional space on the target.
+
+endif

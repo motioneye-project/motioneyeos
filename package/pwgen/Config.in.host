@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_PWGEN
+	bool "host pwgen"
+	help
+	  Pwgen is a small, GPL'ed password generator which creates passwords
+	  which can be easily memorized by a human.
+
+	  http://sourceforge.net/projects/pwgen/

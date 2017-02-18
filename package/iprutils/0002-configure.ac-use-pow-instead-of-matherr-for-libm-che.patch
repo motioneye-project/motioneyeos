@@ -1,0 +1,36 @@
+From 62a41abffa028a3a4c4ae0803d48c559a14e97f1 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 7 Feb 2016 13:54:10 +0100
+Subject: [PATCH] configure.ac: use pow() instead of matherr() for libm check
+
+In certain configurations of uClibc, the matherr() function may not be
+provided by the C library, which makes the current configure.ac check
+for libm fail. However, iprutils does not use matherr(), so using this
+function for the test makes little sense.
+
+This patch adjusts configure.ac to test for pow() instead, which is
+actually used by iprutils, and more commonly available, including in
+uClibc.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index c1a4f70..e430554 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -129,7 +129,7 @@ save_LIBS="$LIBS"
+ AC_CHECK_LIB([ncurses], [curses_version], [],
+ 	     [AC_ERROR("libncurses not found.")])
+ AC_CHECK_LIB([form], [free_form], [], [AC_ERROR("libform not found.")])
+-AC_CHECK_LIB([m], [matherr], [], [AC_ERROR("libm not found.")])
++AC_CHECK_LIB([m], [pow], [], [AC_ERROR("libm not found.")])
+ AC_CHECK_LIB([menu], [new_menu], [], [AC_ERROR("libmenu not found.")])
+ AC_CHECK_LIB([panel], [show_panel], [], [AC_ERROR("libpanel not found.")])
+ IPRCONFIG_LIBS="$LIBS"
+-- 
+2.6.4
+

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBG7221
+	bool "libg7221"
+	help
+	  libg722_1 is a library for the ITU G.722.1 and Annex C
+	  wideband speech codecs.
+
+	  http://www.soft-switch.org

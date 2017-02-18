@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBSOCKETCAN
+	bool "libsocketcan"
+	help
+	  SocketCAN library to control CAN devices from C code.
+
+	  http://git.pengutronix.de/?p=tools/libsocketcan.git;a=summary

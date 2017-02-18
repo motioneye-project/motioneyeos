@@ -1,0 +1,16 @@
+config BR2_PACKAGE_MONIT
+	bool "monit"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  Monit is a free open source utility for managing and
+	  monitoring, processes, programs, files, directories and
+	  filesystems on a UNIX system. Monit conducts automatic
+	  maintenance and repair and can execute meaningful causal
+	  actions in error situations.
+
+	  http://mmonit.com/monit/
+
+comment "monit needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

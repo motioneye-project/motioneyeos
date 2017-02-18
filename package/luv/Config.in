@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LUV
+	bool "luv"
+	select BR2_PACKAGE_LIBUV
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	help
+	  libuv bindings for LuaJIT and Lua.
+
+	  https://github.com/luvit/luv
+
+comment "luv needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU

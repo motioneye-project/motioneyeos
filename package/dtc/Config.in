@@ -1,0 +1,37 @@
+config BR2_PACKAGE_DTC
+	bool "dtc (libfdt)"
+	depends on !BR2_STATIC_LIBS
+	help
+	  The Device Tree Compiler, dtc, takes as input a device-tree in
+	  a given format and outputs a device-tree in another format.
+
+	  Note that only the library is installed.
+	  If you want the programs, say 'y' here, and to "dtc programs", below.
+
+	  https://git.kernel.org/cgit/utils/dtc/dtc.git
+
+if BR2_PACKAGE_DTC
+
+config BR2_PACKAGE_DTC_PROGRAMS
+	bool "dtc programs"
+	help
+	  Say 'y' here if you also want the programs on the target:
+	    - convert-dtsv0     convert from version 0 to version 1
+	    - dtc               the device tree compiler
+	    - dtdiff            compare two device trees (needs bash)
+	    - fdtdump           print a readable version of a flat device tree
+	    - fdtget            read values from device tree
+	    - fdtput            write a property value to a device tree
+
+	  Note: dtdiff requires bash, so if bash is not selected, dtdiff will
+	        be removed from the target file system. Enable bash if you
+	        need dtdiff on the target.
+
+comment "dtdiff will not be installed: it requires bash"
+	depends on BR2_PACKAGE_DTC_PROGRAMS
+	depends on !BR2_PACKAGE_BASH
+
+endif
+
+comment "dtc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

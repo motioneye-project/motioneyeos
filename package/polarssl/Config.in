@@ -1,0 +1,32 @@
+config BR2_PACKAGE_POLARSSL
+	bool "polarssl"
+	help
+	  PolarSSL is an SSL library written in ANSI C. PolarSSL makes
+	  it easy for developers to include cryptographic and SSL/TLS
+	  capabilities in their (embedded) products with as little
+	  hassle as possible. It is designed to be readable,
+	  documented, tested, loosely coupled and portable.
+
+	  Warning: PolarSSL is licensed under the GPL. If you want to
+	  use it in your own proprietary applications, you have to
+	  purchase a commercial license.
+
+	  https://tls.mbed.org/
+
+if BR2_PACKAGE_POLARSSL
+
+config BR2_PACKAGE_POLARSSL_PROGRAMS
+	bool "polarssl programs"
+	depends on BR2_USE_MMU # fork()
+	help
+	  This option enables the installation and the build of
+	  PolarSSL companion programs: aescrypt2, benchmark, cert_app,
+	  crl_app, crypt_and_hash, dh_client, dh_genprime, dh_server,
+	  gen_entropy, generic_sum, gen_random_ctr_drbg,
+	  gen_random_havege, hello, key_app, md5sum, mpi_demo,
+	  rsa_decrypt, rsa_encrypt, rsa_genkey, rsa_sign, rsa_verify,
+	  selftest, sha1sum, sha2sum, ssi-cgi, ssl_cert_test,
+	  ssl_client1, ssl_client2, ssl_fork_server, ssl_mail_client,
+	  ssl_server, ssl_test
+
+endif

@@ -1,0 +1,18 @@
+Disable strip in Makefile.
+
+Patch downloaded from Gentoo:
+https://gitweb.gentoo.org/repo/gentoo.git/tree/media-libs/libhdhomerun/files/dont-strip.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -Nur libhdhomerun/Makefile libhdhomerun.fix/Makefile
+--- libhdhomerun/Makefile	2012-08-30 15:46:27.000000000 -0500
++++ libhdhomerun.fix/Makefile	2013-03-24 14:47:08.740937164 -0500
+@@ -42,7 +42,6 @@
+ 
+ hdhomerun_config$(BINEXT) : hdhomerun_config.c $(LIBSRCS)
+ 	$(CC) $(CFLAGS) $+ $(LDFLAGS) -o $@
+-	$(STRIP) $@
+ 
+ libhdhomerun$(LIBEXT) : $(LIBSRCS)
+ 	$(CC) $(CFLAGS) -fPIC -DDLL_EXPORT $(SHARED) $+ $(LDFLAGS) -o $@

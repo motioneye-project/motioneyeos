@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_WINDOWSWMPROTO
+	bool "windowswmproto"
+	help
+	  No description available

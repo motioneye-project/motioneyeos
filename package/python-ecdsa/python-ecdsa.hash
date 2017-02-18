@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/ecdsa/json
+md5	1f60eda9cb5c46722856db41a3ae6670  ecdsa-0.13.tar.gz
+# sha256 calculated by scanpypi
+sha256	64cf1ee26d1cde3c73c6d7d107f835fed7c6a2904aef9eac223d57ad800c43fa  ecdsa-0.13.tar.gz

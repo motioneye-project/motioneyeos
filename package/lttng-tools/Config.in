@@ -1,0 +1,33 @@
+config BR2_PACKAGE_LTTNG_TOOLS
+	bool "lttng-tools"
+	# liburcu only works on some architectures and requires thread support
+	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # uses dlfcn
+	select BR2_PACKAGE_LIBURCU
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Userspace utilities for the LTTng 2.x tracing
+	  infrastructure.
+
+	  Those utilities are required on the target system to start
+	  and stop tracing sessions. Analysis of the trace can be done
+	  on the host machine using the babeltrace utility. This
+	  utility is automatically built by Buildroot in
+	  $(O)/host/usr/bin/babeltrace, as a dependency of
+	  lttng-tools. However, there is also a lttng-babeltrace
+	  package for the target, if babeltrace on the target is
+	  interesting.
+
+	  If userspace tracing is desired, you need to enable
+	  lttng-libust.
+
+	  http://lttng.org
+
+comment "lttng-tools needs a toolchain w/ threads, wchar, dynamic library"
+	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || BR2_STATIC_LIBS

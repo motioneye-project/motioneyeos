@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBILBC
+	bool "libilbc"
+	help
+	  iLBC (internet Low Bitrate Codec) is a FREE speech codec
+	  suitable for robust voice communication over IP.
+
+	  http://www.webrtc.org/license-rights/ilbc-freeware

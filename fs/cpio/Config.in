@@ -1,0 +1,60 @@
+config BR2_TARGET_ROOTFS_CPIO
+	bool "cpio the root filesystem (for use as an initial RAM filesystem)"
+	help
+	  Build a cpio archive of the root filesystem.  This is typically
+	  used for an initial RAM filesystem that is passed to the kernel
+	  by the bootloader.
+
+if BR2_TARGET_ROOTFS_CPIO
+
+choice
+	prompt "Compression method"
+	default BR2_TARGET_ROOTFS_CPIO_NONE
+	help
+	  Select compressor for cpio filesystem of the root filesystem.
+	  If you use the cpio archive as an initial RAM filesystem, make
+	  sure the kernel contains the decompression algorithm selected
+	  here.
+
+config BR2_TARGET_ROOTFS_CPIO_NONE
+	bool "no compression"
+	help
+	  Do not compress the cpio filesystem.
+
+config BR2_TARGET_ROOTFS_CPIO_GZIP
+	bool "gzip"
+	help
+	  Do compress the cpio filesystem with gzip.
+
+config BR2_TARGET_ROOTFS_CPIO_BZIP2
+	bool "bzip2"
+	help
+	  Do compress the cpio filesystem with bzip2.
+
+config BR2_TARGET_ROOTFS_CPIO_LZMA
+	bool "lzma"
+	help
+	  Do compress the cpio filesystem with lzma.
+
+config BR2_TARGET_ROOTFS_CPIO_LZO
+	bool "lzo"
+	help
+	  Do compress the cpio filesystem with lzop.
+
+config BR2_TARGET_ROOTFS_CPIO_XZ
+	bool "xz"
+	help
+	  Do compress the cpio filesystem with xz.
+
+endchoice
+
+config BR2_TARGET_ROOTFS_CPIO_UIMAGE
+	bool "Create U-Boot image of the root filesystem"
+	select BR2_PACKAGE_HOST_UBOOT_TOOLS
+	help
+	  Add a U-Boot header to the cpio root filesystem. This allows
+	  the initramfs to be loaded with the bootm command in U-Boot.
+
+	  The U-Boot image will be called rootfs.cpio.uboot
+
+endif # BR2_TARGET_ROOTFS_CPIO

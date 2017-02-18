@@ -1,0 +1,51 @@
+config BR2_PACKAGE_DNSMASQ
+	bool "dnsmasq"
+	help
+	  A lightweight DNS and DHCP server. It is intended to provide
+	  coupled DNS and DHCP service to a LAN.
+
+	  http://www.thekelleys.org.uk/dnsmasq/
+
+if BR2_PACKAGE_DNSMASQ
+
+config BR2_PACKAGE_DNSMASQ_TFTP
+	bool "tftp support"
+	default y
+	help
+	  Enable TFTP support in dnsmasq.
+
+config BR2_PACKAGE_DNSMASQ_DHCP
+	bool "dhcp support"
+	default y
+	help
+	  Enable DHCP server support in dnsmasq.
+
+config BR2_PACKAGE_DNSMASQ_DNSSEC
+	bool "DNSSEC support"
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_NETTLE
+	help
+	  Enable DNSSEC validation and caching support.
+
+config BR2_PACKAGE_DNSMASQ_IDN
+	bool "IDN support"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBIDN
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  Enable IDN support in dnsmasq.
+	  This option is a big space taker since it pulls in many libraries.
+
+config BR2_PACKAGE_DNSMASQ_LUA
+	bool "Lua scripting support"
+	depends on BR2_PACKAGE_LUA
+	help
+	  Enable Lua scripting for dnsmasq
+
+config BR2_PACKAGE_DNSMASQ_CONNTRACK
+	bool "conntrack marking support"
+	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
+	help
+	  Enable DNS query connection marking in netfilter.
+
+endif

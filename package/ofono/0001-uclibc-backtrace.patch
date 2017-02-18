@@ -1,0 +1,49 @@
+[PATCH] fix build on uClibc without UCLIBC_HAS_BACKTRACE
+
+Backtrace support is only used for logging on signal errors, which
+isn't really critical, so simply remove backtrace info if not
+available in uClibc.
+
+NOTE: based on patch from Peter Korsgaard <jacmet@sunsite.dk>
+
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+--- ofono-1.7.orig/src/log.c
++++ ofono-1.7/src/log.c
+@@ -30,7 +30,8 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <syslog.h>
+-#ifdef __GLIBC__
++#if defined(__GLIBC__) && !(defined(__UCLIBC__) && !defined (__UCLIBC_HAS_BACKTRACE__))
++#define HAVE_BACKTRACE
+ #include <execinfo.h>
+ #endif
+ #include <dlfcn.h>
+@@ -115,7 +116,7 @@
+	va_end(ap);
+ }
+ 
+-#ifdef __GLIBC__
++#ifdef HAVE_BACKTRACE
+ static void print_backtrace(unsigned int offset)
+ {
+ 	void *frames[99];
+@@ -309,7 +310,7 @@
+	if (detach == FALSE)
+		option |= LOG_PERROR;
+ 
+-#ifdef __GLIBC__
++#ifdef HAVE_BACKTRACE
+	signal_setup(signal_handler);
+ #endif
+
+@@ -326,7 +327,7 @@
+
+	closelog();
+
+-#ifdef __GLIBC__
++#ifdef HAVE_BACKTRACE
+	signal_setup(SIG_DFL);
+ #endif
+ 

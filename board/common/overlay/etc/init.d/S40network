@@ -1,0 +1,233 @@
+#!/bin/bash
+
+mkdir -p /var/lib/dhcp
+dh_conf="/var/cache/dhclient.conf"
+sys_static_conf="/etc/static_ip.conf"
+boot_static_conf="/boot/static_ip.conf"
+static_conf="/data/etc/static_ip.conf"
+watch_conf="/data/etc/watch.conf"
+
+link_nego_timeout=10
+
+source $watch_conf
+
+if ! [ -f $static_conf ]; then
+    if [ -f $boot_static_conf ]; then
+        cp $boot_static_conf $static_conf
+    elif [ -f $sys_static_conf ]; then
+        cp $sys_static_conf $static_conf
+    fi
+fi
+
+test -r $static_conf && source $static_conf
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+watch_eth() {
+    count=0
+    while true; do
+        sleep 5
+        if [ "$(cat /sys/class/net/$os_eth/operstate 2>/dev/null)" == "up" ]; then
+            count=0
+        else
+            if [ $count -lt $link_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t ethernet -s "disconnected"
+            else
+                logger -t ethernet -s "disconnected for $link_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+watch_ip() {
+    iface=$1
+    count=0
+    while true; do
+        sleep 5
+        if ip addr show dev $iface | grep inet &>/dev/null; then
+            count=0
+        else
+            if [ $count -lt $ip_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t network -s "$iface has no IP address"
+            else
+                logger -t network -s "$iface had no IP address for $ip_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+start_lo() {
+    ifconfig lo up
+}
+
+start_wlan() {
+    msg_begin "Configuring wireless network"
+    if ! ifconfig $os_wlan &>/dev/null; then
+        msg_fail "no device"
+        return 1
+    fi
+
+    if [ "$(cat /sys/class/net/$os_wlan/carrier 2>/dev/null)" != "1" ]; then
+        msg_fail "no link"
+        return 1
+    fi
+
+    if [ -n "$mtu" ]; then
+        ip link set mtu $mtu dev $os_wlan
+    fi
+
+    if [ -n "$static_ip" ]; then
+        msg_done $static_ip
+        ifconfig $os_wlan $static_ip up
+        static_ip="" # won't be used again
+    else
+        msg_done dhcp
+        dhclient -cf "$dh_conf" $os_wlan
+    fi
+
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
+        watch_ip $os_wlan &
+    fi
+}
+
+start_eth() {
+    msg_begin "Configuring wired network"
+
+    # wait for driver
+    w=3
+    count=0
+    while ! ifconfig $os_eth >/dev/null 2>&1; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge $w ]; then
+            msg_done "no device"
+            return 1
+        fi
+    done
+
+    # bring it up
+    ifconfig $os_eth up
+
+    # wait for operstate
+    w=3
+    count=0
+    while [ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge $w ]; then
+            msg_done "no link"
+            return 1
+        fi
+    done
+
+    # wait for link
+    test "$link_watch" == "true" || link_nego_timeout=5
+    count=0
+    while [ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge $link_nego_timeout ]; then
+            msg_done "no link"
+            return 1
+        fi
+    done
+    
+    if [ -n "$mtu" ]; then
+        ip link set mtu $mtu dev $os_eth
+    fi
+
+    if [ -n "$static_ip" ]; then
+        msg_done $static_ip
+        ifconfig $os_eth $static_ip up
+        static_ip="" # won't be used again
+    else
+        msg_done dhcp
+        dhclient -cf "$dh_conf" $os_eth
+    fi
+
+    if [ "$link_watch" == "true" ]; then
+        watch_eth &
+    fi
+
+    if [ "$ip_watch" == "true" ] && ip addr show dev $os_eth | grep inet &>/dev/null; then
+        watch_ip $os_eth &
+    fi
+}
+
+start() {
+    hostname=$(hostname)
+    echo "send host-name = \"$hostname\";" > /var/cache/dhclient.conf
+
+    start_lo
+
+    test "$os_networkless" == "true" && return 0
+
+    ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+    test -n "$ssid" && start_wlan && wlan_ok="ok"
+    
+    test -r /data/etc/ppp/modem && ppp_ok="ok" # TODO actually test the ppp link
+    
+    # if wifi or ppp link ok, start eth in background
+    if [ "$wlan_ok" == "ok" ] || [ "$ppp_ok" == "ok" ]; then
+        start_eth &>/dev/null &
+    else
+        start_eth && eth_ok="ok"
+    fi
+    
+    if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
+        if [ "$link_watch" == "true" ]; then
+            logger -t ethernet -s "no network connection available, rebooting"
+            reboot
+            return 1
+        else
+            logger -t ethernet -s "no network connection available"
+            return 0
+        fi
+    fi
+
+    if [ -n "$static_gw" ]; then
+        msg_begin "Setting static gateway to $static_gw"
+        ip route add default via $static_gw
+        test $? == 0 && msg_done || msg_fail
+    fi
+
+    if [ -n "$static_dns" ]; then
+        msg_begin "Setting static DNS server to $static_dns"
+        echo "nameserver $static_dns" > /etc/resolv.conf
+        test $? == 0 && msg_done || msg_fail
+    fi
+}
+
+stop() {
+    msg_begin "Stopping network"
+    killall dhclient &>/dev/null
+    ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    msg_done
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

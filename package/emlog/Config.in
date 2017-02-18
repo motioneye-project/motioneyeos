@@ -1,0 +1,17 @@
+config BR2_PACKAGE_EMLOG
+	bool "emlog"
+	depends on BR2_LINUX_KERNEL
+	help
+	  emlog is a Linux kernel module that makes it easy to access
+	  the most recent (and only the most recent) output from a
+	  process. It works just like "tail -f" on a log file, except
+	  that the storage required never grows. This can be useful in
+	  embedded systems where there isn't enough memory or disk
+	  space for keeping complete log files, but the most recent
+	  debugging messages are sometimes needed (e.g., after an
+	  error is observed).
+
+	  https://github.com/nicupavel/emlog
+
+comment "emlog needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL

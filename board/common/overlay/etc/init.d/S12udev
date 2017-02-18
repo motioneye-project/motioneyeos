@@ -1,0 +1,48 @@
+#!/bin/bash
+
+test -f /etc/udev/udev.conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+source /etc/udev/udev.conf
+
+start() {
+    msg_begin "Starting eudev"
+    echo '\000\000\000\000' > /proc/sys/kernel/hotplug
+    /sbin/udevd --daemon --resolve-names=never
+    test $? == 0 && msg_done || msg_fail
+
+    /sbin/udevadm trigger --type=subsystems --action=add
+    /sbin/udevadm trigger --type=devices --action=add
+    /sbin/udevadm settle --timeout=30
+}
+
+stop() {
+    msg_begin "Stopping eudev"
+    udevadm control --stop-exec-queue
+    killall udevd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit $?
+

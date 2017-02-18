@@ -1,0 +1,61 @@
+From bdccec4c374a93480a7fd303d15e20810a5d5b7e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 25 Oct 2014 21:22:40 +0200
+Subject: [PATCH 5/5] Fix C++ support
+
+Autoreconf fails with the following message:
+
+tests/log4c/Makefile.am: error: C++ source seen but 'CXX' is undefined
+
+So this commit adds the AC_PROG_CXX macro to configure.in, and ensures
+that the C++ test is only built if a C++ compiler is available.
+
+Submitted upstream: https://github.com/rcmadruga/log4c-localtime/pull/1
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.in            | 3 +++
+ tests/log4c/Makefile.am | 6 +++++-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 769b204..ce75800 100644
+--- a/configure.in
++++ b/configure.in
+@@ -38,6 +38,7 @@ AC_DEFINE(_GNU_SOURCE,1,"POSIXandGNU extensions")
+ #.
+ AC_PROG_YACC
+ AC_PROG_CC
++AC_PROG_CXX
+ AC_PROG_CPP
+ AM_PROG_LEX
+ AC_PROG_AWK
+@@ -47,6 +48,8 @@ AC_PROG_MAKE_SET
+ AC_PROG_RANLIB
+ AC_PROG_LIBTOOL
+ 
++AM_CONDITIONAL([USE_CXX], [test "$ac_cv_prog_CXX" != "no"])
++
+ # platform idioms
+ case "$host" in
+     *-hp-hpux*)
+diff --git a/tests/log4c/Makefile.am b/tests/log4c/Makefile.am
+index f647f27..b1b4ed6 100644
+--- a/tests/log4c/Makefile.am
++++ b/tests/log4c/Makefile.am
+@@ -3,7 +3,11 @@ INCLUDES = \
+ 	-DSRCDIR="\"$(srcdir)\""
+ 
+ noinst_PROGRAMS = test_category test_rc bench bench_fwrite \
+-	test_stream2 test_layout_r cpp_compile_test
++	test_stream2 test_layout_r
++
++if USE_CXX
++noinst_PROGRAMS += cpp_compile_test
++endif
+ 
+ if WITH_ROLLINGFILE
+ noinst_PROGRAMS += test_rollingfile_appender test_rollingfile_appender_mt
+-- 
+2.0.0
+

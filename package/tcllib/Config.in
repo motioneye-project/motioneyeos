@@ -1,0 +1,11 @@
+config BR2_PACKAGE_TCLLIB
+	bool "tcllib"
+	help
+	  Tcllib is a collection of utility modules for Tcl. These
+	  modules provide a wide variety of functionality, from
+	  implementations of standard data structures to
+	  implementations of common networking protocols. The intent
+	  is to collect commonly used function into a single library,
+	  which users can rely on to be available and stable
+
+	  http://tcl.activestate.com/software/tcllib/

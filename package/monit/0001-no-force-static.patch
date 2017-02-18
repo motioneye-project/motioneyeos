@@ -1,0 +1,20 @@
+Do not force building a statically-linked binary
+
+Statically-linked binary do not work well with glibc, because it
+still dlopen()s the NSS libraries.
+
+Reported-by: Peter Kümmel <syntheticpp@gmx.net>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN monit-5.7.orig/Makefile.am monit-5.7/Makefile.am
+--- monit-5.7.orig/Makefile.am	2014-02-20 09:00:42.000000000 +0100
++++ monit-5.7/Makefile.am	2014-09-05 12:49:43.711104001 +0200
+@@ -85,7 +85,7 @@
+ 		  src/process/sysdep_@ARCH@.c
+  
+ monit_LDADD 	= libmonit/libmonit.la
+-monit_LDFLAGS 	= -static $(EXTLDFLAGS)
++monit_LDFLAGS 	= $(EXTLDFLAGS)
+ 
+ man_MANS 	= monit.1
+ 

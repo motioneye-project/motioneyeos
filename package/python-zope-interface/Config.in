@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_ZOPE_INTERFACE
+	bool "python-zope-interface"
+	help
+	  This package provides an implementation of "object interfaces" for
+	  Python. Interfaces are a mechanism for labeling objects as conforming
+	  to a given API or contract. So, this package can be considered as
+	  implementation of the Design By Contract methodology support in Python.
+
+	  http://docs.zope.org/zope.interface/

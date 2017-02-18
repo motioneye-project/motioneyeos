@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# This allows NFS booting to work while also being able to configure
+# the network interface via DHCP when not NFS booting.  Otherwise, a
+# NFS booted system will likely hang during DHCP configuration.
+
+# Attempting to configure the network interface used for NFS will
+# initially bring that network down.  Since the root filesystem is
+# accessed over this network, the system hangs.
+
+# This script is run by ifup and will attempt to detect if a NFS root
+# mount uses the interface to be configured (IFACE), and if so does
+# not configure it.  This should allow the same build to be disk/flash
+# booted or NFS booted.
+
+nfsip=`sed -n '/^[^ ]*:.* \/ nfs.*[ ,]addr=\([0-9.]\+\).*/s//\1/p' /proc/mounts`
+if [ -n "$nfsip" ] && ip route get to "$nfsip" | grep -q "dev $IFACE"; then
+	echo Skipping $IFACE, used for NFS from $nfsip
+	exit 1
+fi

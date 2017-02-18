@@ -1,0 +1,8 @@
+config BR2_PACKAGE_KODI_AUDIOENCODER_LAME
+	bool "kodi-audioencoder-lame"
+	select BR2_PACKAGE_KODI_OPTICALDRIVE
+	select BR2_PACKAGE_LAME
+	help
+	  An audioencoder addon for Kodi
+
+	  https://github.com/xbmc/audioencoder.lame

@@ -1,0 +1,337 @@
+menuconfig BR2_PACKAGE_GST_PLUGINS_BAD
+	bool "gst-plugins-bad"
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	help
+	  A set of plug-ins for GStreamer that may be of poor quality or
+	  lacking some features.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST_PLUGINS_BAD
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ADPCMDEC
+	bool "adpcmdec"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ADPCMENC
+	bool "adpcmenc"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AIFF
+	bool "aiff"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ASFMUX
+	bool "asfmux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUTOCONVERT
+	bool "autoconvert"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS
+	bool "audiovisualizers"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_BAYER
+	bool "bayer"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CAMERABIN
+	bool "camerabin"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CAMERABIN2
+	bool "camerabin2"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CDXAPARSE
+	bool "cdxaparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_COLOREFFECTS
+	bool "coloreffects"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_COLORSPACE
+	bool "colorspace"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DATAURISRC
+	bool "dataurisrc"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DCCP
+	bool "dccp"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DEBUGUTILS
+	bool "debugutils"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DECKLINK
+	depends on BR2_INSTALL_LIBSTDCPP
+	bool "decklink"
+
+comment "decklink needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DTMF
+	bool "dtmf"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY
+	bool "dvdsuboverlay"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVDSPU
+	bool "dvdspu"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FACEOVERLAY
+	bool "faceoverlay"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FESTIVAL
+	bool "festival"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FIELDANALYSIS
+	bool "fieldanalysis"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREEVERB
+	bool "freeverb"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREEZE
+	bool "freeze"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FREI0R
+	bool "frei0r"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_GAUDIEFFECTS
+	bool "gaudieffects"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_GEOMETRICTRANSFORM
+	bool "geometrictransform"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_GSETTINGS
+	bool "gsettings"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_H264PARSE
+	bool "h264parse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_HDVPARSE
+	bool "hdvparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_HLS
+	bool "hls"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_ID3TAG
+	bool "id3tag"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INTER
+	bool "inter"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_INTERLACE
+	bool "interlace"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_IVFPARSE
+	bool "ivfparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_JP2KDECIMATOR
+	bool "jp2kdecimator"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_JPEGFORMAT
+	bool "jpegformat"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LEGACYRESAMPLE
+	bool "legacyresample"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBRFB
+	bool "librfb"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LINSYS
+	bool "linsys"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIVEADDER
+	bool "liveadder"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGDEMUX
+	bool "mpegdemux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGPSMUX
+	bool "mpegpsmux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGTSDEMUX
+	bool "mpegtsdemux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGTSMUX
+	bool "mpegtsmux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MPEGVIDEOPARSE
+	bool "mpegvideoparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MVE
+	bool "mve"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MXF
+	bool "mxf"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_NSF
+	bool "nsf"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_NUVDEMUX
+	bool "nuvdemux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_PATCHDETECT
+	bool "patchdetect"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_PCAPPARSE
+	bool "pcapparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_PNM
+	bool "pnm"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RAWPARSE
+	bool "rawparse"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_REAL
+	bool "real"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_REMOVESILENCE
+	bool "removesilence"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RTPMUX
+	bool "rtpmux"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RTPVP8
+	bool "rtpvp8"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SCALETEMPO
+	bool "scaletempo"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SDI
+	bool "sdi"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SDP
+	bool "sdp"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SEGMENTCLIP
+	bool "segmentclip"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SIREN
+	bool "siren"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SMOOTH
+	bool "smooth"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SPEED
+	bool "speed"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_STEREO
+	bool "stereo"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SUBENC
+	bool "subenc"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_TTA
+	bool "tta"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VIDEOFILTERS
+	bool "videofilters"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VIDEOMAXRATE
+	bool "videomaxrate"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VIDEOMEASURE
+	bool "videomeasure"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VIDEOPARSERS
+	bool "videoparsers"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VIDEOSIGNAL
+	bool "videosignal"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VMNC
+	bool "vmnc"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_Y4M
+	bool "y4m"
+
+comment "plugins with external dependencies (there may be more available)"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_APEXSINK
+	bool "apexsink"
+	select BR2_PACKAGE_OPENSSL
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_BZ2
+	bool "bz2"
+	select BR2_PACKAGE_BZIP2
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CDAUDIO
+	bool "cdaudio"
+	depends on !BR2_nios2 # libcdaudio
+	select BR2_PACKAGE_LIBCDAUDIO
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CURL
+	bool "curl"
+	select BR2_PACKAGE_LIBCURL
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DIRECTFB
+	bool "directfb"
+	depends on BR2_PACKAGE_DIRECTFB
+	default y
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVB
+	bool "dvb"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FBDEV
+	bool "fbdev"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_FAAD
+	bool "faad"
+	select BR2_PACKAGE_FAAD2
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_LIBMMS
+	bool "libmms"
+	depends on BR2_USE_WCHAR # libmms -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libmms -> libglib2
+	select BR2_PACKAGE_LIBMMS
+
+comment "libmms needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_MUSEPACK
+	bool "musepack"
+	select BR2_PACKAGE_MUSEPACK
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_NEON
+	bool "neon"
+	select BR2_PACKAGE_NEON
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_OPUS
+	bool "opus"
+	select BR2_PACKAGE_OPUS
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_RSVG
+	bool "rsvg"
+	depends on BR2_INSTALL_LIBSTDCPP # librsvg -> pango
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	select BR2_PACKAGE_LIBRSVG
+
+comment "rsvg plugin needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SDL
+	bool "sdl"
+	select BR2_PACKAGE_SDL
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_SNDFILE
+	bool "sndfile"
+	select BR2_PACKAGE_LIBSNDFILE
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VCD
+	bool "vcd"
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_VP8
+	bool "vp8"
+	select BR2_PACKAGE_LIBVPX
+
+config BR2_PACKAGE_GST_PLUGINS_BAD_ZBAR
+	bool "zbar"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zbar-> libv4l
+	depends on BR2_USE_MMU # zbar-> libv4l
+	depends on !BR2_STATIC_LIBS # zbar-> libv4l
+	depends on BR2_INSTALL_LIBSTDCPP # zbar-> libv4l
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # zbar-> libv4l
+	select BR2_PACKAGE_ZBAR
+
+comment "zbar plugin needs a toolchain w/ threads, dynamic library, C++ and headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+endif

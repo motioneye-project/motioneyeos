@@ -1,0 +1,2258 @@
+#
+# Config.in.legacy - support for backward compatibility
+#
+# When an existing Config.in symbol is removed, it should be added again in
+# this file, and take appropriate action to approximate backward compatibility.
+# This will make the transition for the user more convenient.
+#
+# When adding legacy symbols to this file, add them to the front. The oldest
+# symbols will be removed again after about two years.
+#
+# The symbol should be copied as-is from the place where it was previously
+# defined, but the help text should be removed or replaced with something that
+# explains how to fix it.
+#
+# For bool options, the old symbol should select BR2_LEGACY, so that the user
+# is informed at build-time about selected legacy options.
+# If there is an equivalent (set of) new symbols, these should be select'ed by
+# the old symbol for backwards compatibility.
+# It is not possible to select an option that is part of a choice. In that
+# case, the new option should use the old symbol as default. This requires a
+# change outside of Config.in.legacy, and this should be clearly marked as such
+# in a comment, so that removal of legacy options also include the removal of
+# these external references.
+#
+# [Example: renaming a bool option that is part of a choice from FOO to BAR]
+# original choice:
+# 	choice
+# 		prompt "Choose foobar"
+# 	config BR2_FOO_1
+#		bool "foobar 1"
+# 	config BR2_FOO_2
+# 		bool "foobar 2"
+# 	endchoice
+#
+# becomes:
+#   choice
+#   	prompt "Choose foobar"
+#   	default BR2_BAR_1 if BR2_FOO_1 # legacy
+#   	default BR2_BAR_2 if BR2_FOO_2 # legacy
+#   config BR2_BAR_1
+#		bool "foobar 1"
+#   config BR2_BAR_2
+#   	bool "foobar 2"
+#   endchoice
+#
+# and in Config.in.legacy:
+#   config BR2_FOO_1
+#   	bool "foobar 1 has been renamed"
+#   	help
+#   	  <suitable help text>
+#   # Note: BR2_FOO_1 is still referenced from package/foo/Config.in
+#   config BR2_FOO_2
+#   	bool "foobar 2 has been renamed"
+#   	help
+#   	  <suitable help text>
+#   # Note: BR2_FOO_2 is still referenced from package/foo/Config.in
+#
+# [End of example]
+#
+# For string options, it is not possible to directly select another symbol. In
+# this case, a hidden wrap bool option has to be added, that defaults to y if
+# the old string is not set at its default value. The wrap symbol should select
+# BR2_LEGACY.
+# If the original symbol has been renamed, the new symbol should use the value
+# of the old symbol as default. Like for choice options, a comment should be
+# added to flag that the symbol is still used in another file.
+#
+# [Example: renaming a string option from FOO to BAR]
+# original symbol:
+#   config BR2_FOO_STRING
+#   	string "Some foo string"
+#
+# becomes:
+#   config BR2_BAR_STRING
+#   	string "Some bar string"
+#   	default BR2_FOO_STRING if BR2_FOO_STRING != ""  # legacy
+#
+# and in Config.in.legacy:
+#   config BR2_FOO_STRING
+#   	string "The foo string has been renamed"
+#   	help
+#   	  <suitable help text>
+#
+#   config BR2_FOO_STRING_WRAP
+#   	bool
+#   	default y if BR2_FOO_STRING != ""
+#   	select BR2_LEGACY
+#
+#   # Note: BR2_FOO_STRING is still referenced from package/foo/Config.in
+#
+# [End of example]
+
+config BR2_SKIP_LEGACY
+	bool
+	option env="SKIP_LEGACY"
+
+if !BR2_SKIP_LEGACY
+
+config BR2_LEGACY
+	bool
+	help
+	  This option is selected automatically when your old .config uses an
+	  option that no longer exists in current buildroot. In that case, the
+	  build will fail. Look for config options which are selected in the
+	  menu below: they no longer exist and should be replaced by something
+	  else.
+
+# This comment fits exactly in a 80-column display
+comment "Legacy detected: check the content of the menu below"
+	depends on BR2_LEGACY
+
+menu "Legacy config options"
+
+if BR2_LEGACY
+comment "----------------------------------------------------"
+comment "Your old configuration uses legacy options that no  "
+comment "longer exist in buildroot, as indicated in the menu "
+comment "below. As long as these options stay selected, or in"
+comment "case of string options are non-empty, the build     "
+comment "will fail.                                          "
+comment "*                                                   "
+comment "Where possible, an automatic conversion from old to "
+comment "new symbols has been performed. Before making any   "
+comment "change in this legacy menu, make sure to exit the   "
+comment "configuration editor a first time and save the      "
+comment "configuration. Otherwise, the automatic conversion  "
+comment "of symbols will be lost.                            "
+comment "*                                                   "
+comment "After this initial save, reopen the configuration   "
+comment "editor, inspect the options selected below, read    "
+comment "their help texts, and verify/update the new         "
+comment "configuration in the corresponding configuration    "
+comment "menus. When everything is ok, you can disable the   "
+comment "legacy options in the menu below. Once you have     "
+comment "disabled all legacy options, this text will         "
+comment "disappear and you will be able to start the build.  "
+comment "*                                                   "
+comment "Note: at some point in the future, the oldest legacy"
+comment "options will be removed, and configuration files    "
+comment "that still have those options set, will fail to     "
+comment "build, or run, in unpredictable ways.               "
+comment "----------------------------------------------------"
+endif
+
+###############################################################################
+comment "Legacy options removed in 2016.05"
+
+config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
+	bool "openvpn polarssl crypto backend removed"
+	select BR2_LEGACY
+	help
+	  The OpenVPN polarssl crypto backend option has been removed.
+	  Version from 2.3.10 onwards need polarssl >= 1.3.8 but aren't
+	  compatible with mbedtls (polarssl) series 2.x which is the
+	  version provided in buildroot. And both can't coexist.
+	  It now uses OpenSSL as the only option.
+
+
+config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
+	bool "nginx http spdy module removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NGINX_HTTP_V2_MODULE
+	help
+	  The ngx_http_spdy_module has been superseded by the
+	  ngx_http_v2_module since nginx v1.9.5.  The
+	  ngx_http_v2_module modules has been automatically selected
+	  in your configuration.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RTP
+	bool "gst1-plugins-bad rtp plugin moved to good"
+	select BR2_LEGACY
+	help
+	  The rtp plugin has been moved from gst1-plugins-base to
+	  gst1-plugins-good.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MPG123
+	bool "gst1-plugins-bad mpg123 plugin moved to ugly"
+	select BR2_LEGACY
+	help
+	  The mpg123 plugin has been moved from gst1-plugins-bad to
+	  gst1-plugins-ugly.
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC
+	bool "PowerPC Sourcery toolchain has been removed"
+	select BR2_LEGACY
+	help
+	  The Sourcery CodeBench toolchain for the PowerPC
+	  architecture has been removed, as it was very old, not
+	  maintained, and causing numerous build failures with modern
+	  userspace packages.
+
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_POWERPC_E500V2
+	bool "PowerPC Sourcery E500v2 toolchain has been removed"
+	select BR2_LEGACY
+	help
+	  The Sourcery CodeBench toolchain for the PowerPC E500v2
+	  architecture has been removed, as it was very old, not
+	  maintained, and causing numerous build failures with modern
+	  userspace packages.
+
+config BR2_x86_i386
+	bool "x86 i386 support removed"
+	select BR2_LEGACY
+	help
+	  The support for the i386 processors of the x86 architecture
+	  has been removed.
+
+config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
+	bool "qt5webkit-examples package removed"
+	select BR2_LEGACY
+	help
+	  The qt5webkit-examples package has been removed, since it
+	  was removed from upstream starting from Qt 5.6.
+
+config BR2_PACKAGE_QT5QUICK1
+	bool "qt5quick1 package removed"
+	select BR2_LEGACY
+	help
+	  The qt5quick1 package has been removed, since it was removed
+	  from upstream starting from Qt 5.6.
+
+config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
+	bool "uboot custom patch dir removed"
+	select BR2_LEGACY
+	help
+	  The uboot custom patch directory option has been removed. Use
+	  the improved BR2_TARGET_UBOOT_PATCH option instead.
+
+config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
+	bool "xf86-input-void removed"
+	select BR2_LEGACY
+	help
+	  The xf86-input-void package has been removed, there's no need
+	  for it in any modern (post-2007) xorg server.
+
+config BR2_KERNEL_HEADERS_3_17
+	bool "kernel headers version 3.17.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	  Version 3.17.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.18.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_GDB_VERSION_7_7
+	bool "gdb 7.7 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.7 version of gdb has been removed. Use a newer version
+	  instead.
+
+config BR2_PACKAGE_FOOMATIC_FILTERS
+	bool "foomatic-filters"
+	select BR2_LEGACY
+	help
+	  The foomatic-filters package was removed.
+
+config BR2_PACKAGE_SAMBA
+	bool "samba"
+	select BR2_LEGACY
+	help
+	  The samba package was removed in favour of samba4 since the
+	  3.x series isn't supported by upstream any longer.
+
+config BR2_PACKAGE_KODI_WAVPACK
+	bool "wavpack"
+	select BR2_LEGACY
+	help
+	  wavpack support was removed in favour of ffmpeg:
+	  https://github.com/xbmc/xbmc/commit/7916902c9e6f7a523265594f3ad7f921f93f1cd4
+
+config BR2_PACKAGE_KODI_RSXS
+	bool "rsxs support in Kodi was moved to an addon"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_SCREENSAVER_RSXS
+	help
+	  rsxs support in Kodi was moved to an addon
+
+config BR2_PACKAGE_KODI_GOOM
+	bool "Goom support in Kodi was moved to an addon"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_VISUALISATION_GOOM
+	help
+	  Goom support in Kodi was moved to an addon
+
+config BR2_PACKAGE_SYSTEMD_ALL_EXTRAS
+	bool "systemd all extras option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XZ
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  The systemd option to enable "all extras" has been
+	  removed. To get the same features, the libgcrypt and xz
+	  package should now be enabled.
+
+config BR2_GCC_VERSION_4_5_X
+	bool "gcc 4.5.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.5.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_PACKAGE_SQLITE_READLINE
+	bool "command-line editing support was updated"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	select BR2_LEGACY
+	help
+	  This option was removed in favour of the sqlite package
+	  deciding itself depending on the enabled packages whether
+	  command-line editing should be enabled, it also also takes
+	  libedit into account.
+
+###############################################################################
+comment "Legacy options removed in 2016.02"
+
+config BR2_PACKAGE_DOVECOT_BZIP2
+	bool "bzip2 support option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BZIP2
+	help
+	  Bzip2 support is built if the bzip2 package is selected.
+
+config BR2_PACKAGE_DOVECOT_ZLIB
+	bool "zlib support option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ZLIB
+	help
+	  Zlib support is built if the zlib package is selected.
+
+config BR2_PACKAGE_E2FSPROGS_FINDFS
+	bool "e2fsprogs findfs option has been removed"
+	select BR2_LEGACY
+	help
+	  This option attempted to enable findfs capabilities from
+	  e2fsprogs but has not worked since July 2015 (due to
+	  packaging changes). One can use BusyBox's findfs support or
+	  enable the BR2_PACKAGE_UTIL_LINUX_FINDFS option.
+
+config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
+	bool "openpowerlink debug option has been removed"
+	select BR2_LEGACY
+	help
+	  This option depends on BR2_ENABLE_DEBUG which should not be used
+	  by packages anymore.
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_MODULE
+	bool "openpowerlink package has been updated"
+	select BR2_LEGACY
+	select BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+	help
+	  openpowerlink kernel modules are built if the
+	  kernel stack library is selected.
+
+config BR2_PACKAGE_OPENPOWERLINK_LIBPCAP
+	bool "openpowerlink package has been updated"
+	select BR2_LEGACY
+	select BR2_PACKAGE_OPENPOWERLINK_STACK_USERSPACE_DAEMON_LIB
+	help
+	  The user space support has been split in two part:
+	  - a monolitic user space library
+	  - a user spae deamon driver
+
+config BR2_LINUX_KERNEL_SAME_AS_HEADERS
+	bool "using the linux headers version for the kernel has been removed"
+	select BR2_LEGACY
+	help
+	  The option to use the version of the kernel headers for the
+	  kernel to build has been removed.
+
+	  There is now the converse, better-suited and more versatile
+	  option to use the kernel version for the linux headers.
+
+config BR2_PACKAGE_CUPS_PDFTOPS
+	bool "Pdftops support has been removed from Cups"
+	select BR2_LEGACY
+	help
+	  Pdftops support has been removed from the cups package
+	  It is now part of the cups-filters package.
+
+config BR2_KERNEL_HEADERS_3_16
+	bool "kernel headers version 3.16.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	Version 3.16.x of the Linux kernel headers have been deprecated
+	for more than four buildroot releases and are now removed.
+	As an alternative, version 3.18.x of the headers have been
+	automatically selected in your configuration.
+
+config BR2_PACKAGE_PYTHON_PYXML
+	bool "python-pyxml package has been removed"
+	select BR2_LEGACY
+	help
+	  PyXML is obsolete and its functionality is covered either via
+	  native Python XML support or python-lxml package.
+
+# BR2_ENABLE_SSP is still referenced in Config.in (default in choice)
+config BR2_ENABLE_SSP
+	bool "Stack Smashing protection now has different levels"
+	help
+	  The protection offered by SSP can now be selected from different
+	  protection levels. Be sure to review the SSP level in the build
+	  options menu.
+
+config BR2_PACKAGE_DIRECTFB_CLE266
+	bool "cle266 driver for directfb removed"
+	select BR2_LEGACY
+	help
+	  The cle266 directfb driver support has been removed.
+	  It doesn't build in the latest version and it's unlikely
+	  anyone has any use for it.
+
+config BR2_PACKAGE_DIRECTFB_UNICHROME
+	bool "unichrome driver for directfb removed"
+	select BR2_LEGACY
+	help
+	  The unichrome directfb driver support has been removed.
+	  It doesn't build in the latest version and it's unlikely
+	  anyone has any use for it.
+
+config BR2_PACKAGE_LIBELEMENTARY
+	bool "libelementary has been renamed to elementary"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ELEMENTARY
+	help
+	  The libelementary package has been renamed to match the upstream
+	  name.
+
+config BR2_PACKAGE_LIBEINA
+	bool "libeina package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libeina is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEET
+	bool "libeet package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libeet is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEVAS
+	bool "libevas package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libevas is now provided by the efl package.
+
+config BR2_PACKAGE_LIBECORE
+	bool "libecore package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libecore is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEDBUS
+	bool "libedbus package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libedbus is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEFREET
+	bool "libefreet package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libefreet is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEIO
+	bool "libeio package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libeio is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEMBRYO
+	bool "libembryo package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libembryo is now provided by the efl package.
+
+config BR2_PACKAGE_LIBEDJE
+	bool "libedje package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libedje is now provided by the efl package.
+
+config BR2_PACKAGE_LIBETHUMB
+	bool "libethumb package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.15, libethumb is now provided by the efl package.
+
+config BR2_PACKAGE_INFOZIP
+	bool "infozip option has been renamed to zip"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ZIP
+	help
+	  Info-Zip's Zip package has been renamed from infozip to zip,
+	  to avoid ambiguities with Info-Zip's UnZip which has been added
+	  in the unzip package.
+
+config BR2_BR2_PACKAGE_NODEJS_0_10_X
+	bool "nodejs 0.10.x option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NODEJS
+	help
+	  nodejs 0.10.x option has been removed.  0.10.x is now
+	  automatically chosen for ARMv5 architectures only and the latest
+	  nodejs for all other supported architectures. The correct nodejs
+	  version has been automatically selected in your configuration.
+
+config BR2_BR2_PACKAGE_NODEJS_0_12_X
+	bool "nodejs version 0.12.x has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NODEJS
+	help
+	  nodejs version 0.12.x has been removed.  As an alternative,
+	  the latest nodejs version has been automatically selected in
+	  your configuration.
+
+config BR2_BR2_PACKAGE_NODEJS_4_X
+	bool "nodejs version 4.x has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NODEJS
+	help
+	  nodejs version 4.x has been removed.  As an alternative,
+	  the latest nodejs version has been automatically selected in
+	  your configuration.
+
+###############################################################################
+comment "Legacy options removed in 2015.11"
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_REAL
+	bool "gst1-plugins-bad real plugin has been removed"
+	select BR2_LEGACY
+	help
+	  The real plugin from GStreamer 1 bad plugins has been
+	  removed.
+
+config BR2_PACKAGE_MEDIA_CTL
+	bool "media-ctl package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBV4L
+	select BR2_PACKAGE_LIBV4L_UTILS
+	help
+	  media-ctl source and developement have been moved to
+	  v4l-utils since June 2014. For an up-to-date media-ctl
+	  version select BR2_PACKAGE_LIBV4L and BR2_PACKAGE_LIBV4L_UTILS.
+
+config BR2_PACKAGE_SCHIFRA
+	bool "schifra package has been removed"
+	select BR2_LEGACY
+	help
+	  Schifra package has been maked broken since 2014.11 release and
+	  haven't been fixed since then.
+
+config BR2_PACKAGE_ZXING
+	bool "zxing option has been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_ZXING_CPP
+	help
+	  ZXing no longer provides the cpp bindings, it has been renamed to
+	  BR2_PACKAGE_ZXING_CPP which uses a new upstream.
+
+# Since FreeRDP has new dependencies, protect this legacy to avoid the
+# infamous "unmet direct dependencies" kconfig error.
+config BR2_PACKAGE_FREERDP_CLIENT
+	bool "freerdp client option renamed"
+	depends on BR2_PACKAGE_FREERDP
+	select BR2_LEGACY
+	select BR2_PACKAGE_FREERDP_CLIENT_X11
+
+config BR2_PACKAGE_BLACKBOX
+	bool "blackbox package has been removed"
+	select BR2_LEGACY
+	help
+	  Upstream is dead and the package has been deprecated for
+	  some time. There are other alternative maintained WMs.
+
+config BR2_KERNEL_HEADERS_3_0
+	bool "kernel headers version 3.0.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_2
+	select BR2_LEGACY
+	help
+	  Version 3.0.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.2.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_11
+	bool "kernel headers version 3.11.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_12
+	select BR2_LEGACY
+	help
+	  Version 3.11.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.12.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_13
+	bool "kernel headers version 3.13.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_14
+	select BR2_LEGACY
+	help
+	  Version 3.13.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.14.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_15
+	bool "kernel headers version 3.15.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	  Version 3.15.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.18.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI
+	bool "DirectFB example df_andi has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_BLTLOAD
+	bool "DirectFB example df_bltload has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_CPULOAD
+	bool "DirectFB example df_cpuload has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DATABUFFER
+	bool "DirectFB example df_databuffer has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DIOLOAD
+	bool "DirectFB example df_dioload has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DOK
+	bool "DirectFB example df_dok has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_DRIVERTEST
+	bool "DirectFB example df_drivertest has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FIRE
+	bool "DirectFB example df_fire has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FLIP
+	bool "DirectFB example df_flip has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_FONTS
+	bool "DirectFB example df_fonts has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_INPUT
+	bool "DirectFB example df_input has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_JOYSTICK
+	bool "DirectFB example df_joystick has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_KNUCKLES
+	bool "DirectFB example df_knuckles has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_LAYER
+	bool "DirectFB example df_layer has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX
+	bool "DirectFB example df_matrix has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_MATRIX_WATER
+	bool "DirectFB example df_matrix_water has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NEO
+	bool "DirectFB example df_neo has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_NETLOAD
+	bool "DirectFB example df_netload has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PALETTE
+	bool "DirectFB example df_palette has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PARTICLE
+	bool "DirectFB example df_particle has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_PORTER
+	bool "DirectFB example df_porter has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_STRESS
+	bool "DirectFB example df_stress has been removed"
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_TEXTURE
+	bool "DirectFB example df_texture has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO
+	bool "DirectFB example df_video has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_VIDEO_PARTICLE
+	bool "DirectFB example df_video_particle has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_DIRECTFB_EXAMPLES_WINDOW
+	bool "DirectFB example df_window has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_EXAMPLES
+	help
+	  The per-DirectFB example options have been removed. The
+	  BR2_PACKAGE_DIRECTFB_EXAMPLES option now installs all
+	  examples.
+
+config BR2_PACKAGE_KOBS_NG
+	bool "kobs-ng was replaced by imx-kobs"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_KOBS
+	help
+	  The outdated kobs-ng has been replaced by the Freescale-
+	  maintained imx-kobs package.
+
+config BR2_PACKAGE_SAWMAN
+	bool "sawman package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_SAWMAN
+	help
+	  This option has been removed because the sawman package no
+	  longer exists: it was merged inside DirectFB itself. This
+	  feature can now be enabled using the
+	  BR2_PACKAGE_DIRECTFB_SAWMAN option.
+
+config BR2_PACKAGE_DIVINE
+	bool "divine package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DIRECTFB_DIVINE
+	help
+	  This option has been removed because the divine package no
+	  longer exists: it was merged inside DirectFB itself. This
+	  feature can now be enabled using the
+	  BR2_PACKAGE_DIRECTFB_DIVINE option.
+
+###############################################################################
+comment "Legacy options removed in 2015.08"
+
+config BR2_PACKAGE_KODI_PVR_ADDONS
+	bool "Kodi PVR addon was split"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_PVR_ARGUSTV
+	select BR2_PACKAGE_KODI_PVR_DVBLINK
+	select BR2_PACKAGE_KODI_PVR_DVBVIEWER
+	select BR2_PACKAGE_KODI_PVR_FILMON
+	select BR2_PACKAGE_KODI_PVR_HTS
+	select BR2_PACKAGE_KODI_PVR_IPTVSIMPLE
+	select BR2_PACKAGE_KODI_PVR_MEDIAPORTAL_TVSERVER
+	select BR2_PACKAGE_KODI_PVR_MYTHTV
+	select BR2_PACKAGE_KODI_PVR_NEXTPVR
+	select BR2_PACKAGE_KODI_PVR_NJOY
+	select BR2_PACKAGE_KODI_PVR_PCTV
+	select BR2_PACKAGE_KODI_PVR_STALKER
+	select BR2_PACKAGE_KODI_PVR_VBOX
+	select BR2_PACKAGE_KODI_PVR_VDR_VNSI
+	select BR2_PACKAGE_KODI_PVR_VUPLUS
+	select BR2_PACKAGE_KODI_PVR_WMC
+	help
+	  Kodi PVR addon was split into seperate modules
+
+config BR2_BINUTILS_VERSION_2_23_2
+	bool "binutils 2.23 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_23_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_23_X.
+
+config BR2_BINUTILS_VERSION_2_24
+	bool "binutils 2.24 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_24_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_24_X.
+
+config BR2_BINUTILS_VERSION_2_25
+	bool "binutils 2.25 option renamed"
+	select BR2_LEGACY
+	select BR2_BINUTILS_VERSION_2_25_X
+	help
+	  The binutils version option has been renamed to match the
+	  same patchlevel logic used by gcc. The new option is now
+	  BR2_BINUTILS_VERSION_2_25_X.
+
+config BR2_PACKAGE_PERF
+	bool "perf option has been renamed"
+	select BR2_LEGACY
+	select BR2_LINUX_KERNEL_TOOL_PERF
+	help
+	  The perf package has been moved as a Linux tools package,
+	  and the option to enable it is now
+	  BR2_LINUX_KERNEL_TOOL_PERF.
+
+config BR2_BINUTILS_VERSION_2_22
+	bool "binutils 2.22 removed"
+	select BR2_LEGACY
+	help
+	  Binutils 2.22 has been removed, using a newer version is
+	  recommended.
+
+config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
+	bool "gpu-viv-bin-mx6q"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_GPU_VIV
+	help
+	  Vivante graphics libraries have been renamed to
+	  BR2_PACKAGE_IMX_GPU_VIV to be aligned with upstream package
+	  name.
+
+config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
+	depends on BR2_PACKAGE_PYTHON
+	bool "libsemanage python bindings removed"
+	select BR2_LEGACY
+	help
+	  This option has been removed, since the libsemanage Python
+	  bindings on the target were not useful.
+
+config BR2_TARGET_UBOOT_NETWORK
+	bool "U-Boot custom network settings removed"
+	select BR2_LEGACY
+	help
+	  U-Boot's custom network settings options have been removed.
+
+###############################################################################
+comment "Legacy options removed in 2015.05"
+
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_512_16K
+	bool "jffs2 16kB erasesize NAND flash option renamed"
+	select BR2_LEGACY
+	select BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_16K
+	help
+	  The JFFS2 NAND flash options now longer include the page
+	  size.
+
+config BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_2K_128K
+	bool "jffs2 128kB erasesize NAND flash option renamed"
+	select BR2_LEGACY
+	select BR2_TARGET_ROOTFS_JFFS2_NANDFLASH_128K
+	help
+	  The JFFS2 NAND flash options now longer include the page
+	  size.
+
+config BR2_PACKAGE_MONO_20
+	bool "2.0/3.5 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
+config BR2_PACKAGE_MONO_40
+	bool "4.0 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
+config BR2_PACKAGE_MONO_45
+	bool "4.5 .Net Runtime"
+	select BR2_LEGACY
+	help
+	  This option no longer exists, all versions of the .Net
+	  runtime are now installed.
+
+config BR2_CIVETWEB_WITH_LUA
+	bool "civetweb lua option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_CIVETWEB_WITH_LUA
+	help
+	  civetweb's lua option has been renamed to
+	  BR2_PACKAGE_CIVETWEB_WITH_LUA to be aligned with how other
+	  packages name options.
+
+config BR2_PACKAGE_TIFF_TIFF2PDF
+	bool "tiff utility-specific option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_TIFF_UTILITIES
+	help
+	  utility-specific options have been removed in favour of
+	  the new option BR2_PACKAGE_TIFF_UTILITIES.
+
+config BR2_PACKAGE_TIFF_TIFFCP
+	bool "tiff utility-specific option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_TIFF_UTILITIES
+	help
+	  utility-specific options have been removed in favour of
+	  the new option BR2_PACKAGE_TIFF_UTILITIES.
+
+config BR2_LINUX_KERNEL_EXT_RTAI_PATCH
+	bool "RTAI patch file path has been removed"
+	select BR2_LEGACY
+	help
+	  This option has never worked, so it has been removed.
+
+config BR2_TARGET_GENERIC_PASSWD_DES
+	bool "Encoding passwords with DES has been removed"
+	select BR2_LEGACY
+	help
+	  Paswords can now only be encoded with either of md5, sha256 or sha512.
+	  The default is md5, which is stronger that DES (but still pretty weak).
+
+config BR2_PACKAGE_GTK2_THEME_HICOLOR
+	bool "hicolor (default theme) is a duplicate"
+	select BR2_LEGACY
+	select BR2_PACKAGE_HICOLOR_ICON_THEME
+	help
+	  The option was just a duplicate of hicolor icon theme.
+
+config BR2_PACKAGE_VALGRIND_PTRCHECK
+	bool "valgrind's PTRCheck was renamed to SGCheck"
+	select BR2_LEGACY
+	select BR2_PACKAGE_VALGRIND_SGCHECK
+	help
+	  PTRCheck was renamed to SGCheck in valgrind
+
+###############################################################################
+comment "Legacy options removed in 2015.02"
+
+config BR2_PACKAGE_LIBGC
+	bool "libgc package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BDWGC
+	help
+	  libgc has been removed because we have the same package under a
+	  different name, bdwgc.
+
+config BR2_PACKAGE_WDCTL
+	bool "util-linux' wdctl option has been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_UTIL_LINUX_WDCTL
+	help
+	  util-linux' wdctl option has been renamed to BR2_PACKAGE_UTIL_LINUX_WDCTL
+	  to be aligned with how the other options are named.
+
+config BR2_PACKAGE_UTIL_LINUX_ARCH
+	bool "util-linux' arch option has been removed"
+	select BR2_LEGACY
+	help
+	  util-linux' arch was dropped in util-linux 2.23, in favor of
+	  the coreutils version.
+
+config BR2_PACKAGE_UTIL_LINUX_DDATE
+	bool "util-linux' ddate option has been removed"
+	select BR2_LEGACY
+	help
+	  util-linux' ddate was dropped in util-linux 2.23.
+
+config BR2_PACKAGE_RPM_BZIP2_PAYLOADS
+	bool "rpm's bzip2 payloads option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BZIP2
+	help
+	  The bzip2 payloads option rely entirely on the dependant package bzip2.
+	  So, you need to select it to enable this feature.
+
+config BR2_PACKAGE_RPM_XZ_PAYLOADS
+	bool "rpm's xz payloads option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XZ
+	help
+	  The xz payloads option rely entirely on the dependant package xz.
+	  So, you need to select it to enable this feature.
+
+config BR2_PACKAGE_M4
+	bool "m4 target package removed"
+	select BR2_LEGACY
+	help
+	  The m4 target package has been removed, it's been
+	  deprecated for some time now.
+
+config BR2_PACKAGE_FLEX_BINARY
+	bool "flex binary in target option removed"
+	select BR2_LEGACY
+	help
+	  The flex binary in the target option has been removed.
+	  It's been deprecated for some time now and is essentially a
+	  development tool which isn't very useful in the target.
+
+config BR2_PACKAGE_BISON
+	bool "bison target package removed"
+	select BR2_LEGACY
+	help
+	  The bison target package has been removed, it's been
+	  deprecated for some time now and is essentially a development
+	  tool which isn't very useful in the target.
+
+config BR2_PACKAGE_GOB2
+	bool "gob2 target package removed"
+	select BR2_LEGACY
+	help
+	  The gob2 target package has been removed, it's been
+	  deprecated for some time now and was essentially useless
+	  without a target toolchain.
+
+config BR2_PACKAGE_DISTCC
+	bool "distcc target package removed"
+	select BR2_LEGACY
+	help
+	  The distcc target package has been removed, it's been
+	  deprecated for some time now and was essentially useless
+	  without a target toolchain.
+
+config BR2_PACKAGE_HASERL_VERSION_0_8_X
+	bool "haserl 0.8.x version removed"
+	select BR2_LEGACY
+	help
+	  The 0.8.x version option for haserl has been removed since it
+	  has been deprecated for some time now.
+	  You should be able to use the 0.9.x version without issues.
+
+config BR2_PACKAGE_STRONGSWAN_TOOLS
+	bool "strongswan option has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_STRONGSWAN_PKI
+	select BR2_PACKAGE_STRONGSWAN_SCEP
+	help
+	  The tools option has been removed upstream and the different tools
+	  have been split between the pki and scep options, with others
+	  deprecated.
+
+config BR2_PACKAGE_XBMC_ADDON_XVDR
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_ADDON_XVDR
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_PVR_ADDONS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_PVR_ADDONS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_ALSA_LIB
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_ALSA_LIB
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_AVAHI
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_AVAHI
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_DBUS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_DBUS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBBLURAY
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBBLURAY
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_GOOM
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_GOOM
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_RSXS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_RSXS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBCEC
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBCEC
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBMICROHTTPD
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBMICROHTTPD
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBNFS
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBNFS
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_RTMPDUMP
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_RTMPDUMP
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBSHAIRPLAY
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBSHAIRPLAY
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBSMBCLIENT
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBSMBCLIENT
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBTHEORA
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBTHEORA
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBUSB
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBUSB
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_LIBVA
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_LIBVA
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PACKAGE_XBMC_WAVPACK
+	bool "xbmc options have been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_WAVPACK
+	help
+	  The XBMC media center project was renamed to Kodi entertainment center
+
+config BR2_PREFER_STATIC_LIB
+	bool "static library option renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PREFER_STATIC_LIB was renamed to BR2_STATIC_LIBS. It
+	  highlights the fact that the option no longer "prefers"
+	  static libraries, but "enforces" static libraries (i.e
+	  shared libraries are completely unused).
+
+	  Take care of updating the type of libraries you want under the
+	  "Build options" menu.
+
+###############################################################################
+comment "Legacy options removed in 2014.11"
+
+config BR2_x86_generic
+	bool "x86 generic variant has been removed"
+	select BR2_LEGACY
+	help
+	  The generic x86 CPU variant has been removed. Use another
+	  CPU variant instead.
+
+config BR2_GCC_VERSION_4_4_X
+	bool "gcc 4.4.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.4.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_sparc_sparchfleon
+	bool "sparchfleon CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparchfleon CPU was only supported in a patched gcc 4.4
+	  version. Its support has been removed in favor of the leon3
+	  CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparchfleonv8
+	bool "sparchfleonv8 CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparchfleonv8 CPU was only supported in a patched gcc
+	  4.4 version. Its support has been removed in favor of the
+	  leon3 CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparcsfleon
+	bool "sparcsfleon CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparcsfleon CPU was only supported in a patched gcc 4.4
+	  version. Its support has been removed in favor of the leon3
+	  CPU starting from gcc 4.8.x.
+
+config BR2_sparc_sparcsfleonv8
+	bool "sparcsfleonv8 CPU has been removed"
+	select BR2_LEGACY
+	help
+	  The sparcsfleonv8 CPU was only supported in a patched gcc
+	  4.4 version. Its support has been removed in favor of the
+	  leon3 CPU starting from gcc 4.8.x.
+
+config BR2_PACKAGE_XLIB_LIBPCIACCESS
+	bool "xlib-libpciaccess option has been renamed"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBPCIACCESS
+	help
+	  libpciaccess neither depends on X11 nor Xlib. Thus the
+	  package has been renamed BR2_PACKAGE_LIBPCIACCESS
+
+config BR2_PACKAGE_LINUX_FIRMWARE_XC5000
+	bool "Xceive xc5000 option has been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_FIRMWARE_XCx000
+	help
+	  The Xceive xc5000 option now also handles older firmwares from
+	  Xceive (the xc4000 series), as well as new firmwares (the xc5000c)
+	  from Cresta, who bought Xceive.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4
+	bool "Chelsio T4 option has been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
+	help
+	  The Chelsio T4 option BR2_PACKAGE_LINUX_FIRMWARE_CXGB4
+	  has been renamed to BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
+	  to better account for the fact that a T5 variant exists.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_7
+	bool "BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_7 has been renamed"
+	select BR2_LEGACY
+	help
+	  The option BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_7 was
+	  renamed to BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_7. You must
+	  select it in:
+	      Target packages -> Hardware handling ->
+	      Firmware -> linux-firmware -> WiFi firmware ->
+	      iwlwifi 3160/726x revision to use (revision 7)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_8
+	bool "BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_8 has been renamed"
+	select BR2_LEGACY
+	help
+	  The option BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_3160_7260_8 was
+	  renamed to BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_REV_8. You must
+	  select it in:
+	      Target packages -> Hardware handling ->
+	      Firmware -> linux-firmware -> WiFi firmware ->
+	      iwlwifi 3160/726x revision to use (revision 8)
+
+###############################################################################
+comment "Legacy options removed in 2014.08"
+
+config BR2_PACKAGE_LIBELF
+	bool "libelf has been removed"
+	select BR2_PACKAGE_ELFUTILS
+	select BR2_LEGACY
+	help
+	  The libelf package provided an old version of the libelf library
+	  and is deprecated. The libelf library is now provided by the
+	  elfutils package.
+
+config BR2_KERNEL_HEADERS_3_8
+	bool "kernel headers version 3.8.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_10
+	select BR2_LEGACY
+	help
+	  Version 3.8.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.10.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_PACKAGE_GETTEXT_TOOLS
+	bool "support for gettext-tools on target has been removed"
+	select BR2_LEGACY
+	help
+	  The option to install the gettext utilities on the target
+	  has been removed. This is not necessary as Buildroot is not
+	  designed to provide a full development environment on the
+	  target. gettext tools should be used on the build machine
+	  instead.
+
+config BR2_PACKAGE_PROCPS
+	bool "procps has been replaced by procps-ng"
+	select BR2_PACKAGE_PROCPS_NG
+	select BR2_LEGACY
+	help
+	  The procps package has been replaced by the equivalent procps-ng.
+
+config BR2_BINUTILS_VERSION_2_20_1
+	bool "binutils 2.20.1 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.20.1 version of binutils has been removed. Use a newer
+	  version instead.
+
+config BR2_BINUTILS_VERSION_2_21
+	bool "binutils 2.21 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.21 version of binutils has been removed. Use a newer
+	  version instead.
+
+config BR2_BINUTILS_VERSION_2_23_1
+	bool "binutils 2.23.1 has been removed"
+	select BR2_LEGACY
+	help
+	  The 2.23.1 version of binutils has been removed. Use a newer
+	  version instead.
+
+config BR2_UCLIBC_VERSION_0_9_32
+	bool "uclibc 0.9.32 has been removed"
+	select BR2_LEGACY
+	help
+	  The 0.9.32 version of uClibc has been removed. Use a newer
+	  version instead.
+
+config BR2_GCC_VERSION_4_3_X
+	bool "gcc 4.3.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.3.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_GCC_VERSION_4_6_X
+	bool "gcc 4.6.x has been removed"
+	select BR2_LEGACY
+	help
+	  The 4.6.x version of gcc has been removed. Use a newer
+	  version instead.
+
+config BR2_GDB_VERSION_7_4
+	bool "gdb 7.4 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.4 version of gdb has been removed. Use a newer version
+	  instead.
+
+config BR2_GDB_VERSION_7_5
+	bool "gdb 7.5 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.5 version of gdb has been removed. Use a newer version
+	  instead.
+
+config BR2_BUSYBOX_VERSION_1_19_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
+config BR2_BUSYBOX_VERSION_1_20_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
+config BR2_BUSYBOX_VERSION_1_21_X
+	bool "busybox version selection has been removed"
+	select BR2_LEGACY
+	help
+	  The possibility of selecting the Busybox version has been
+	  removed. Use the latest version provided by the Busybox
+	  package instead.
+
+config BR2_PACKAGE_LIBV4L_DECODE_TM6000
+	bool "decode_tm6000"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_IR_KEYTABLE
+	bool "ir-keytable"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_COMPLIANCE
+	bool "v4l2-compliance"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_CTL
+	bool "v4l2-ctl"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+config BR2_PACKAGE_LIBV4L_V4L2_DBG
+	bool "v4l2-dbg"
+	select BR2_PACKAGE_LIBV4L_UTILS
+	select BR2_LEGACY
+	help
+	  This libv4l option has been deprecated and replaced by a single
+	  option to build all the libv4l utilities.
+
+###############################################################################
+comment "Legacy options removed in 2014.05"
+
+config BR2_PACKAGE_EVTEST_CAPTURE
+	bool "evtest-capture support removed (dropped since evtest 1.31)"
+	select BR2_LEGACY
+	help
+	  Support for evtest-capture has been removed (dropped from
+	  evtest package since version 1.31), use evemu package
+	  instead.
+
+config BR2_KERNEL_HEADERS_3_6
+	bool "kernel headers version 3.6.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_10
+	select BR2_LEGACY
+	help
+	  Version 3.6.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.10.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_7
+	bool "kernel headers version 3.7.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_10
+	select BR2_LEGACY
+	help
+	  Version 3.7.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.10.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_PACKAGE_VALA
+	bool "vala target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'vala' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: the host vala package still exists.
+
+config BR2_TARGET_TZ_ZONELIST
+	default BR2_PACKAGE_TZDATA_ZONELIST if BR2_PACKAGE_TZDATA_ZONELIST != ""
+
+config BR2_PACKAGE_TZDATA_ZONELIST
+	string "tzdata: the timezone list option has been renamed"
+	help
+	  The option BR2_PACKAGE_TZDATA_ZONELIST has been renamed to
+	  BR2_TARGET_TZ_ZONELIST, and moved to the "System configuration"
+	  menu. You'll need to select BR2_TARGET_TZ_INFO.
+
+config BR2_PACKAGE_TZDATA_ZONELIST_WRAP
+	bool
+	default y if BR2_PACKAGE_TZDATA_ZONELIST != ""
+	select BR2_LEGACY
+
+config BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE
+	bool "Lua command-line editing none has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_EDITING_NONE option has been
+	  renamed to BR2_PACKAGE_LUA_EDITING_NONE. You will have to select
+	  it in the corresponding choice.
+
+config BR2_PACKAGE_LUA_INTERPRETER_READLINE
+	bool "Lua command-line editing using readline has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_READLINE option has been
+	  renamed to BR2_PACKAGE_LUA_READLINE. You will have to select
+	  it in the corresponding choice.
+
+config BR2_PACKAGE_LUA_INTERPRETER_LINENOISE
+	bool "Lua command-line editing using linenoise has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LUA_INTERPRETER_LINENOISE option has been
+	  renamed to BR2_PACKAGE_LUA_LINENOISE. You will have to select
+	  it in the corresponding choice.
+
+config BR2_PACKAGE_DVB_APPS_UTILS
+	bool "dvb-apps utilities now built by default"
+	select BR2_LEGACY
+	help
+	  The dvb-apps utilities are now always built when the dvb-apps
+	  package is selected.
+
+config BR2_KERNEL_HEADERS_SNAP
+	bool "Local Linux snapshot support removed"
+	select BR2_LEGACY
+	help
+	  Support for using a custom snapshot to install the Linux
+	  kernel headers has been removed.
+
+config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_UDEV
+	bool "/dev management by udev removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  Therefore, if you are not using 'systemd' as init system, you
+	  must choose 'Dynamic using eudev' in the '/dev management'
+	  menu to get the same behaviour as in your old configuration.
+
+	  If you are using 'systemd', its internal implementation of
+	  'udev' will be used automatically.
+
+	  You must also check the packages depending on 'udev' are still
+	  selected.
+
+config BR2_PACKAGE_UDEV
+	bool "udev is now a virtual package"
+	select BR2_LEGACY
+	select BR2_PACKAGE_HAS_UDEV
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  Your old configuration refers to packages depending on 'udev',
+	  either for build or at runtime.
+
+	  Check that a 'udev' provider is selected. If you are not using
+	  'systemd' as init system, 'eudev' should be selected, which is
+	  the case if '/dev management' is set to 'Dynamic using eudev'.
+
+	  If you are using 'systemd', its internal implementation of 'udev'
+	  is used.
+
+config BR2_PACKAGE_UDEV_RULES_GEN
+	bool "udev rules generation handled by provider"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EUDEV if !BR2_INIT_SYSTEMD
+	select BR2_PACKAGE_EUDEV_RULES_GEN if !BR2_INIT_SYSTEMD
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  If you are not using 'systemd' as init system, udev rules
+	  generation will be handled by 'eudev'. Check that
+	  '/dev management' is set to 'Dynamic using eudev' to get
+	  the same behaviour as in your old configuration.
+
+	  If you are using 'systemd', it internal implementation of 'udev'
+	  will generate the rules.
+
+config BR2_PACKAGE_UDEV_ALL_EXTRAS
+	bool "udev extras removed"
+	select BR2_LEGACY
+	help
+	  The 'udev' package has been converted to a virtual package.
+	  The providers for this feature are: 'eudev', 'systemd'.
+
+	  The option to enable the extra features of 'udev' (gudev, ...)
+	  has been removed. These features are automatically enabled in
+	  the 'udev' providers if the dependencies are selected. For
+	  example, selecting 'libglib2' will trigger the build of gudev.
+
+config BR2_PACKAGE_XLIB_LIBPTHREAD_STUBS
+	bool "xlib-libpthread-stubs option has been renamed"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBPTHREAD_STUBS
+	help
+	  The pthread stubs neither depend on X11 nor Xlib. Thus the
+	  package has been renamed BR2_PACKAGE_LIBPTHREAD_STUBS
+
+###############################################################################
+comment "Legacy options removed in 2014.02"
+
+config BR2_sh2
+	bool "sh2 support removed"
+	select BR2_LEGACY
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH2 architecture was removed.
+
+config BR2_sh3
+	bool "sh3 support removed"
+	select BR2_LEGACY
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH3 architecture was removed.
+
+config BR2_sh3eb
+	bool "sh3eb support removed"
+	select BR2_LEGACY
+	help
+	  Due to an inexistent user base and generally poor Linux
+	  support, the support for the SH3eb architecture was removed.
+
+config BR2_KERNEL_HEADERS_3_1
+	bool "kernel headers version 3.1.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_2
+	select BR2_LEGACY
+	help
+	  Version 3.1.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.2.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_3
+	bool "kernel headers version 3.3.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_4
+	select BR2_LEGACY
+	help
+	  Version 3.3.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.4.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_5
+	bool "kernel headers version 3.5.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_10
+	select BR2_LEGACY
+	help
+	  Version 3.5.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.10.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_GDB_VERSION_7_2
+	bool "gdb 7.2.x is no longer supported"
+	select BR2_GDB_VERSION_7_6
+	select BR2_LEGACY
+	help
+	  Version 7.2.x of gdb has been deprecated for more than four
+	  buildroot releases and is now removed. As an alternative, gdb
+	  7.5.x has been automatically selected in your configuration.
+
+config BR2_GDB_VERSION_7_3
+	bool "gdb 7.3.x is no longer supported"
+	select BR2_GDB_VERSION_7_6
+	select BR2_LEGACY
+	help
+	  Version 7.3.x of gdb has been deprecated for more than four
+	  buildroot releases and is now removed. As an alternative, gdb
+	  7.5.x has been automatically selected in your configuration.
+
+config BR2_PACKAGE_CCACHE
+	bool "ccache target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'ccache' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: using ccache for speeding up builds is still supported.
+
+config BR2_HAVE_DOCUMENTATION
+	bool "support for documentation on target has been removed"
+	select BR2_LEGACY
+	help
+	  Support for documentation on target has been removed since it has
+	  been deprecated for more than four buildroot releases.
+
+config BR2_PACKAGE_AUTOMAKE
+	bool "automake target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'automake' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: the host automake still exists.
+
+config BR2_PACKAGE_AUTOCONF
+	bool "autoconf target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'autoconf' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: the host autoconf still exists.
+
+config BR2_PACKAGE_XSTROKE
+	bool "xstroke has been removed"
+	select BR2_LEGACY
+	help
+	  The 'xstroke' package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+
+config BR2_PACKAGE_LZMA
+	bool "lzma target package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'lzma' target package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+	  Note: generating lzma-compressed rootfs images is still supported.
+
+config BR2_PACKAGE_TTCP
+	bool "ttcp has been removed"
+	select BR2_LEGACY
+	help
+	  The 'ttcp' package has been removed since it has been
+	  deprecated for more than four buildroot releases.
+
+config BR2_PACKAGE_LIBNFC_LLCP
+	bool "libnfc-llcp has been replaced by libllcp"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBLLCP
+	help
+	  The 'libnfc-llcp' package has been removed since upstream renamed
+	  to 'libllcp'. We have added a new package for 'libllcp' and bumped
+	  the version at the same time.
+
+config BR2_PACKAGE_MYSQL_CLIENT
+	bool "MySQL client renamed to MySQL"
+	select BR2_LEGACY
+	select BR2_PACKAGE_MYSQL
+	help
+	  The option has been renamed BR2_PACKAGE_MYSQL
+
+config BR2_PACKAGE_SQUASHFS3
+	bool "squashfs3 has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SQUASHFS
+	help
+	  The 'squashfs3' package has been removed since it has been
+	  deprecated for more than four buildroot releases. Package
+	  'squashfs' (4) has been selected automatically as replacement.
+
+config BR2_TARGET_ROOTFS_SQUASHFS3
+	bool "squashfs3 rootfs support has been removed"
+	select BR2_LEGACY
+	help
+	  Together with the removal of the squashfs3 package, support
+	  for squashfs3 root filesystems has been removed too. Squashfs
+	  root filesystems will automatically use squashfs4 now.
+
+config BR2_PACKAGE_NETKITBASE
+	bool "netkitbase has been removed"
+	select BR2_LEGACY
+	help
+	  The 'netkitbase' package has been removed since it has been
+	  deprecated since 2012.11. This package provided 'inetd'
+	  which is replaced by 'xinet' and 'ping' which is replaced by
+	  'busybox' or 'fping'.
+
+config BR2_PACKAGE_NETKITTELNET
+	bool "netkittelnet has been removed"
+	select BR2_LEGACY
+	help
+	  The 'netkittelnet' package has been removed since it has
+	  been deprecated since 2012.11. 'busybox' provides a telnet
+	  client and should be used instead.
+
+config BR2_PACKAGE_LUASQL
+	bool "luasql has been replaced by luasql-sqlite3"
+	select BR2_PACKAGE_LUASQL_SQLITE3
+	select BR2_LEGACY
+	help
+	  The option has been renamed BR2_PACKAGE_LUASQL_SQLITE3.
+
+config BR2_PACKAGE_LUACJSON
+	bool "luacjson has been replaced by lua-cjson"
+	select BR2_PACKAGE_LUA_CJSON
+	select BR2_LEGACY
+	help
+	  The option has been renamed BR2_PACKAGE_LUA_CJSON.
+
+###############################################################################
+comment "Legacy options removed in 2013.11"
+
+config BR2_PACKAGE_LVM2_DMSETUP_ONLY
+	bool "lvm2's 'dmsetup only' option removed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_LVM2_DMSETUP_ONLY was a negative option, which
+	  led to problems with other packages that need the full lvm2
+	  suite. Therefore, the option has been replaced with the positive
+	  BR2_PACKAGE_LVM2_STANDARD_INSTALL option.
+
+# Note: BR2_PACKAGE_LVM2_DMSETUP_ONLY is still referenced in package/lvm2/Config.in
+# in order to automatically propagate old configs
+
+config BR2_PACKAGE_QT_JAVASCRIPTCORE
+	bool "qt javascriptcore option removed"
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_QT_JAVASCRIPTCORE option was available to
+	  force the activation or disabling of the JIT compiler in the
+	  Qt Javascript interpreter. However, the JIT compiler is not
+	  available for all architectures, so forcing its activation
+	  does not always work. Moreover, Qt knows by itself for which
+	  architectures JIT support is possible, and will
+	  automatically enable it if possible.
+
+	  Therefore, this option was in fact useless, and causing
+	  build problems when enabled on architectures for which the
+	  JIT support was not available. It has been removed, and
+	  there is no replacement: Qt will enable JIT at compile time
+	  when possible.
+
+config BR2_PACKAGE_MODULE_INIT_TOOLS
+	bool "module-init-tools replaced by kmod"
+	select BR2_PACKAGE_KMOD
+	select BR2_PACKAGE_KMOD_TOOLS
+	select BR2_LEGACY
+	help
+	  The 'module-init-tools' package has been removed, since it
+	  has been depracated upstream and replaced by 'kmod'.
+
+config BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL
+	string "u-boot: the git repository URL option has been renamed"
+	help
+	  The option BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL has
+	  been renamed to BR2_TARGET_UBOOT_CUSTOM_REPO_URL.
+
+config BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL_WRAP
+	bool
+	default y if BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL != ""
+	select BR2_LEGACY
+
+# Note: BR2_TARGET_UBOOT_CUSTOM_GIT_REPO_URL is still referenced from
+# boot/uboot/Config.in
+
+config BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION
+	string "u-boot: the git repository version option has been renamed"
+	help
+	  The option BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION has
+	  been renamed to BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION.
+
+config BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION_WRAP
+	bool
+	default y if BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION != ""
+	select BR2_LEGACY
+
+# Note: BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION is still referenced from
+# boot/uboot/Config.in
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL
+	string "linux: the git repository URL option has been renamed"
+	help
+	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL has
+	  been renamed to
+	  BR2_LINUX_KERNEL_CUSTOM_REPO_URL.
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL_WRAP
+	bool
+	default y if BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL != ""
+	select BR2_LEGACY
+
+# Note: BR2_LINUX_KERNEL_CUSTOM_GIT_REPO_URL is still referenced from
+# linux/Config.in
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION
+	string "linux: the git repository version option has been renamed"
+	help
+	  The option BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION has
+	  been renamed to
+	  BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION.
+
+config BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION_WRAP
+	bool
+	default y if BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION != ""
+	select BR2_LEGACY
+
+# Note: BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION is still referenced from
+# linux/Config.in
+
+###############################################################################
+comment "Legacy options removed in 2013.08"
+
+config BR2_ARM_OABI
+	bool "ARM OABI support has been removed"
+	select BR2_LEGACY
+	help
+	  The support for the ARM OABI was deprecated since a while,
+	  and has been removed completely from Buildroot. It is also
+	  deprecated in upstream gcc, since gcc 4.7. People should
+	  switch to EABI instead, which should not be a problem as
+	  long as you don't have pre-built OABI binaries in your
+	  system that you can't recompile.
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSCK
+	bool "dosfstools dosfsck renamed to fsck.fat"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT
+	help
+	  dosfsck was renamed upstream to fsck.fat for consistency.
+
+config BR2_PACKAGE_DOSFSTOOLS_DOSFSLABEL
+	bool "dosfstools dosfslabel renamed to fatlabel"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_FATLABEL
+	help
+	  doslabel was renamed upstream to fatlabel for consistency.
+
+config BR2_PACKAGE_DOSFSTOOLS_MKDOSFS
+	bool "dosfstools mkdosfs renamed to mkfs.fat"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT
+	help
+	  mkdosfs was renamed upstream to mkfs.fat for consistency.
+
+config BR2_ELF2FLT
+	bool "the elf2flt option has been renamed"
+	select BR2_LEGACY
+	help
+	  The BR2_ELF2FLT option has been renamed to
+	  BR2_PACKAGE_HOST_ELF2FLT due to the conversion of elf2flt to
+	  the package infrastructure.
+
+config BR2_VFP_FLOAT
+	bool "the ARM VFP floating point option has been renamed"
+	select BR2_LEGACY
+	help
+	  Due to a major refactoring of the floating-point handling of
+	  the ARM architecture support, the BR2_VFP_FLOAT option has
+	  been replaced with a choice of options that allows to select
+	  between various VFP versions/capabilities.
+
+config BR2_PACKAGE_GCC_TARGET
+	bool "gcc on the target filesystem has been removed"
+	select BR2_LEGACY
+	help
+	  The support for gcc in the target filesystem was deprecated
+	  since a while, and has been removed completely from Buildroot.
+	  See Buildroot's documentation for more explanations.
+
+config BR2_HAVE_DEVFILES
+	bool "development files in target filesystem has been removed"
+	select BR2_LEGACY
+	help
+	  The installation of the development files in the target
+	  filesystem was deprecated since a while, and has been removed
+	  completely from Buildroot.
+	  See Buildroot's documentation for more explanations.
+
+###############################################################################
+comment "Legacy options removed in 2013.05"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192
+	bool "Realtek 8192 replaced by Realtek 81xx"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX
+	help
+	  Now covers the whole Realtek 81xx familly: 8188/8192.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8712
+	bool "Realtek 8712 replaced by Realtek 87xx"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_FIRMWARE_RTL_87XX
+	help
+	  Now covers the whole Realtek 87xx familly: 8712/8723.
+
+###############################################################################
+comment "Legacy options removed in 2013.02"
+
+config BR2_sa110
+	bool "sa110 ARM target switched to strongarm"
+	select BR2_LEGACY
+	select BR2_strongarm
+	help
+	  The SA110 is the same as a generic StrongARM, it just differs
+	  in speed, peripherals and cache.
+
+config BR2_sa1100
+	bool "sa1100 ARM target switched to strongarm"
+	select BR2_LEGACY
+	select BR2_strongarm
+	help
+	  The SA1100 is the same as a generic StrongARM, it just differs
+	  in speed, peripherals and cache.
+
+config BR2_PACKAGE_GDISK
+	bool "gdisk has been replaced by gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK.
+
+config BR2_PACKAGE_GDISK_GDISK
+	bool "gdisk tool from gdisk has been replaced by gdisk in gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	select BR2_PACKAGE_GPTFDISK_GDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK_GDISK.
+
+config BR2_PACKAGE_GDISK_SGDISK
+	bool "sgdisk tool from gdisk has been replaced by sgdisk in gptfdisk"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GPTFDISK
+	select BR2_PACKAGE_GPTFDISK_SGDISK
+	help
+	  The option has been renamed BR2_PACKAGE_GPTFDISK_SGDISK.
+
+config BR2_PACKAGE_GDB_HOST
+	bool "gdb for the host option has been renamed"
+	select BR2_PACKAGE_HOST_GDB
+	select BR2_LEGACY
+	help
+	  Due to the conversion of gdb to the package infrastructure,
+	  the BR2_PACKAGE_GDB_HOST option has been renamed
+	  BR2_PACKAGE_HOST_GDB.
+
+config BR2_PACKAGE_DIRECTB_DITHER_RGB16
+	bool "DirectFB RGB16 dithering option has been renamed"
+	select BR2_PACKAGE_DIRECTFB_DITHER_RGB16
+	select BR2_LEGACY
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_DIRECTFB_DITHER_RGB16.
+
+config BR2_PACKAGE_DIRECTB_TESTS
+	bool "DirectFB Tests option has been renamed"
+	select BR2_PACKAGE_DIRECTFB_TESTS
+	select BR2_LEGACY
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_DIRECTFB_TESTS.
+
+###############################################################################
+comment "Legacy options removed in 2012.11"
+
+config BR2_PACKAGE_CUSTOMIZE
+	bool "customize package has been removed"
+	select BR2_LEGACY
+	help
+	  The 'customize' special package has been removed. Instead,
+	  we recommend to create either your own packages, or use a
+	  post-build script to customize your root filesystem. See
+	  Buildroot's documentation for more details.
+
+config BR2_PACKAGE_XSERVER_xorg
+	bool "X.org modular server"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR.
+
+config BR2_PACKAGE_XSERVER_tinyx
+	bool "KDrive / TinyX server"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
+	help
+	  The option has been renamed
+	  BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE.
+
+config BR2_PACKAGE_PTHREAD_STUBS
+	bool "pthread-stubs option has been renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBPTHREAD_STUBS
+	help
+	  For consistency reason, the pthread-stubs package has been
+	  renamed to libpthread-stubs.
+
+###############################################################################
+comment "Legacy options removed in 2012.08"
+
+config BR2_PACKAGE_GETTEXT_STATIC
+	bool "libgettext.a is now selected by BR2_PREFER_STATIC_LIB"
+	select BR2_LEGACY
+	help
+	  To build a static gettext library, select BR2_PREFER_STATIC_LIB.
+
+
+config BR2_PACKAGE_LIBINTL
+	bool "libintl"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GETTEXT
+	help
+	  libintl is now installed by selecting BR2_PACKAGE_GETTEXT. This now
+	  only installs the library, not the executables.
+
+config BR2_PACKAGE_INPUT_TOOLS_EVTEST
+	bool "input-tools evtest is now a separate package evtest"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EVTEST
+	help
+	  The evtest program from input-tools is now a separate package.
+
+config BR2_BFIN_FDPIC
+	bool "BR2_BFIN_FDPIC is now BR2_BINFMT_FDPIC"
+	select BR2_BINFMT_FDPIC
+	select BR2_LEGACY
+
+config BR2_BFIN_FLAT
+	bool "BR2_BFIN_FLAT is now BR2_BINFMT_FLAT"
+	select BR2_BINFMT_FLAT
+	select BR2_LEGACY
+
+endmenu
+
+endif # !SKIP_LEGACY

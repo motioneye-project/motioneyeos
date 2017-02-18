@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MSMTP
+	bool "msmtp"
+	help
+	  msmtp is an SMTP client. In the default mode, it transmits a
+	  mail to an SMTP server (for example at a free mail provider)
+	  which takes care of further delivery.
+
+	  http://msmtp.sourceforge.net/

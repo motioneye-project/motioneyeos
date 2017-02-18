@@ -1,0 +1,35 @@
+From 30a2ecc7939449f235282eb6de42e367fc5b1867 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 14 Jan 2016 22:13:15 +0100
+Subject: [PATCH] Fix FBXConverter: use proper 64-bit constant
+
+Use proper 64-bit constant for CONVERT_FBX_TIME(time) conversion, fixes:
+
+  code/FBXConverter.cpp:2025: error: integer constant is too large for 'long' type
+  code/FBXConverter.cpp:2026: error: integer constant is too large for 'long' type
+  code/FBXConverter.cpp:2794: error: integer constant is too large for 'long' type
+  code/FBXConverter.cpp:2868: error: integer constant is too large for 'long' type
+  code/FBXConverter.cpp:2878: error: integer constant is too large for 'long' type
+  code/FBXConverter.cpp:2888: error: integer constant is too large for 'long' type
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ code/FBXConverter.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/code/FBXConverter.cpp b/code/FBXConverter.cpp
+index e0c6b9c..b1e9a71 100644
+--- a/code/FBXConverter.cpp
++++ b/code/FBXConverter.cpp
+@@ -67,7 +67,7 @@ namespace FBX {
+ 
+ #define MAGIC_NODE_TAG "_$AssimpFbx$"
+ 
+-#define CONVERT_FBX_TIME(time) static_cast<double>(time) / 46186158000L
++#define CONVERT_FBX_TIME(time) static_cast<double>(time) / 46186158000LL
+ 
+     // XXX vc9's debugger won't step into anonymous namespaces
+ //namespace {
+-- 
+2.1.4
+

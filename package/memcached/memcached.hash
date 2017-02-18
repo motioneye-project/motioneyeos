@@ -1,0 +1,4 @@
+# From http://www.memcached.org/files/memcached-1.4.25.tar.gz.sha1
+sha1	7fd0ba9283c61204f196638ecf2e9295688b2314	memcached-1.4.25.tar.gz
+# Calculated based on the hash above
+sha256	f058437b3c224d321919a9a6bb4e3eedb2312ed718c0caf087ff2f04ab795dda	memcached-1.4.25.tar.gz

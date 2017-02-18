@@ -1,0 +1,8 @@
+config BR2_PACKAGE_BOA
+	bool "boa"
+	depends on BR2_USE_MMU # uses fork()
+	help
+	  A very small and very fast http daemon. Not intended as
+	  a feature-packed server.
+
+	  http://www.boa.org/

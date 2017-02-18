@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LRZSZ
+	bool "lrzsz"
+	# It could technically build in a static-only environment, but
+	# it unconditionally redefines the error() and error_at_line()
+	# functions, which clashes with the definition from
+	# uClibc. Since the autotools packaging dates back from 1998,
+	# lots of work is needed to fix it, and do some proper tests
+	# on the availability of such functions.
+	depends on !BR2_STATIC_LIBS
+	help
+	  Portable and fast implementation of the X/Y/Zmodem protocols.
+
+	  http://www.ohse.de/uwe/software/lrzsz.html
+
+comment "lrzsz needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

@@ -1,0 +1,87 @@
+From 9336cf4eb4ded1eaa83da5549e4aba62b34ef888 Mon Sep 17 00:00:00 2001
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:50:42 +0100
+Subject: [PATCH] Add an option to disable IDLE
+
+IDLE is an IDE embedded into python, written using Tk, so it doesn't make
+much sense to have it into our build.
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ Makefile.pre.in | 7 ++++++-
+ configure.ac    | 6 ++++++
+ setup.py        | 4 +++-
+ 3 files changed, 15 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 884d5aa..48b4812 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1098,7 +1098,9 @@ bininstall: altbininstall
+ 	-rm -f $(DESTDIR)$(LIBPC)/python3.pc
+ 	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python3.pc)
+ 	-rm -f $(DESTDIR)$(BINDIR)/idle3
++ifeq (@IDLE@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
++endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
+ ifeq (@PYDOC@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
+@@ -1146,7 +1148,6 @@ LIBSUBDIRS=	\
+ 		html json http dbm xmlrpc \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib \
+-		idlelib idlelib/Icons \
+ 		distutils distutils/command \
+ 		importlib \
+ 		turtledemo \
+@@ -1223,6 +1224,10 @@ ifeq (@EXPAT@,yes)
+ LIBSUBDIRS += $(XMLLIBSUBDIRS)
+ endif
+ 
++ifeq (@IDLE@,yes)
++LIBSUBDIRS += idlelib idlelib/Icons
++endif
++
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+diff --git a/configure.ac b/configure.ac
+index 58f2dd9..0ba25e4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2729,6 +2729,12 @@ AC_ARG_ENABLE(lib2to3,
+ 	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
+ 	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
+ 
++AC_SUBST(IDLE)
++
++AC_ARG_ENABLE(idle3,
++	AS_HELP_STRING([--disable-idle3], [disable idle3 IDE]),
++	[ IDLE="${enableval}" ], [ IDLE=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])
+diff --git a/setup.py b/setup.py
+index fd3ac65..3655e57 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2201,11 +2201,13 @@ def main():
+     import warnings
+     warnings.filterwarnings("ignore",category=DeprecationWarning)
+ 
+-    scripts = ['Tools/scripts/idle3', 'Lib/smtpd.py']
++    scripts = ['Lib/smtpd.py']
+     if not '--disable-pydoc' in sysconfig.get_config_var("CONFIG_ARGS"):
+         scripts += [ 'Tools/scripts/pydoc3' ]
+     if not '--disable-lib2to3' in sysconfig.get_config_var("CONFIG_ARGS"):
+         scripts += [ 'Tools/scripts/2to3' ]
++    if not '--disable-idle3' in sysconfig.get_config_var("CONFIG_ARGS"):
++        scripts += [ 'Tools/scripts/idle3' ]
+ 
+     setup(# PyPI Metadata (PEP 301)
+           name = "Python",
+-- 
+2.6.4
+

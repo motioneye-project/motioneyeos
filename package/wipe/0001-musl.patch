@@ -1,0 +1,28 @@
+Fix musl build
+
+In file included from main.c:46:0:
+rand.h:31:9: error: unknown type name ‘u_int32_t’
+ typedef u_int32_t u_rand_t;
+         ^
+<builtin>: recipe for target 'main.o' failed
+
+Patch sent upstream: https://sourceforge.net/p/wipe/patches/4/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr wipe-2.3.1.org/rand.h wipe-2.3.1/rand.h
+--- wipe-2.3.1.org/rand.h	2003-12-03 04:01:02.000000000 +0100
++++ wipe-2.3.1/rand.h	2016-01-31 21:39:54.000000000 +0100
+@@ -22,10 +22,9 @@
+ 
+ #ifdef HAVE_STDINT_H
+ # include "stdint.h"
+-#else
+-# ifndef LINUX
++#endif
++#if !defined(u_int32_t)
+ #  define u_int32_t uint32_t
+-# endif
+ #endif
+ 
+ typedef u_int32_t u_rand_t;

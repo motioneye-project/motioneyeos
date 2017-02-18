@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ERLANG_GOLDRUSH
+	bool "erlang-goldrush"
+	help
+	  Goldrush is a small Erlang app that provides fast event
+	  stream processing.
+
+	  https://github.com/DeadZen/goldrush

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_SDL_GFX
+	bool "SDL_gfx"
+	depends on BR2_PACKAGE_SDL
+	help
+	  The SDL_gfx library is an extension to the SDL library which
+	  provides basic antialiased drawing routines such as lines,
+	  circles or polygons, an interpolating rotozoomer for SDL
+	  surfaces, framerate control and MMX image filters.
+
+	  http://cms.ferzkopp.net/index.php/software/13-sdl-gfx

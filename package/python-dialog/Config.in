@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_DIALOG
+	bool "python-dialog"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_USE_MMU # dialog
+	select BR2_PACKAGE_DIALOG
+	help
+	  A Python interface to the UNIX dialog utility and
+	  mostly-compatible programs.
+
+	  http://pythondialog.sourceforge.net/

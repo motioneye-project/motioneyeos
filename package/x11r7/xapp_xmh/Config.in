@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XAPP_XMH
+	bool "xmh"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XDATA_XBITMAPS
+	help
+	  send and read mail with an X interface to MH

@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_XMAN
+	bool "xman"
+	select BR2_PACKAGE_XLIB_LIBXAW
+	help
+	  Manual page display program for the X Window System

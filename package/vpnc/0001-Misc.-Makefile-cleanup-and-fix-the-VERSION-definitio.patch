@@ -1,0 +1,59 @@
+From 40b35a82ea581f5dfb1b0b20c4ba3e9f01f35107 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Mon, 8 Feb 2016 23:02:45 +0100
+Subject: [PATCH] Misc. Makefile cleanup and fix the VERSION definition.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 9b96d83..62742d0 100644
+--- a/Makefile
++++ b/Makefile
+@@ -20,7 +20,7 @@
+ # $Id$
+ 
+ DESTDIR=
+-PREFIX=/usr/local
++PREFIX?=/usr/local
+ ETCDIR=/etc/vpnc
+ BINDIR=$(PREFIX)/bin
+ SBINDIR=$(PREFIX)/sbin
+@@ -32,8 +32,6 @@ BINS = vpnc cisco-decrypt
+ OBJS = $(addsuffix .o,$(basename $(SRCS)))
+ BINOBJS = $(addsuffix .o,$(BINS))
+ BINSRCS = $(addsuffix .c,$(BINS))
+-VERSION := $(shell sh mk-version)
+-RELEASE_VERSION := $(shell cat VERSION)
+ 
+ # The license of vpnc (Gpl >= 2) is quite likely incompatible with the
+ # openssl license. Openssl is currently used to provide certificate
+@@ -50,11 +48,11 @@ RELEASE_VERSION := $(shell cat VERSION)
+ #OPENSSL_GPL_VIOLATION = -DOPENSSL_GPL_VIOLATION
+ #OPENSSLLIBS = -lcrypto
+ 
+-CC=gcc
++CC ?= gcc
+ CFLAGS ?= -O3 -g
+ CFLAGS += -W -Wall -Wmissing-declarations -Wwrite-strings
+ CFLAGS +=  $(shell libgcrypt-config --cflags)
+-CPPFLAGS += -DVERSION=\"$(VERSION)\" $(OPENSSL_GPL_VIOLATION)
++CPPFLAGS += $(OPENSSL_GPL_VIOLATION)
+ LDFLAGS ?= -g
+ LDFLAGS += $(shell libgcrypt-config --libs) $(OPENSSLLIBS)
+ 
+@@ -81,7 +79,7 @@ cisco-decrypt : cisco-decrypt.o decrypt-utils.o
+ 	$(CC) -o $@ $^ $(LDFLAGS)
+ 
+ .depend: $(SRCS) $(BINSRCS)
+-	$(CC) -MM $(SRCS) $(BINSRCS) $(CFLAGS) $(CPPFLAGS) > $@
++	$(CC) -MM $(SRCS) $(BINSRCS) $(CPPFLAGS) $(CFLAGS) > $@
+ 
+ vpnc-debug.c vpnc-debug.h : isakmp.h enum2debug.pl
+ 	LC_ALL=C perl -w ./enum2debug.pl isakmp.h >vpnc-debug.c 2>vpnc-debug.h
+-- 
+2.6.4
+

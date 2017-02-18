@@ -1,0 +1,28 @@
+From 128aeb54593d4dd8ff2403eb2dd7d6cd596717d2 Mon Sep 17 00:00:00 2001
+From: Willem Toorop <willem@nlnetlabs.nl>
+Date: Tue, 28 Jan 2014 11:06:38 +0100
+Subject: [PATCH] bugfix #548: Double free for answers > 4096
+
+in ldns_resolver_send_pkt.  Thank you sunthought@gmail.com
+
+[Backport from upstream commit 2853eb352b4461e98f2926ace4ea3810cedf4167]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ resolver.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/resolver.c b/resolver.c
+index 16efc90..1474dc8 100644
+--- a/resolver.c
++++ b/resolver.c
+@@ -1117,6 +1117,7 @@ ldns_resolver_send_pkt(ldns_pkt **answer, ldns_resolver *r,
+ 					ldns_pkt_set_edns_udp_size(query_pkt
+ 							, 4096);
+ 					ldns_pkt_free(answer_pkt);
++					answer_pkt = NULL;
+ 					/* Nameservers should not become 
+ 					 * unreachable because fragments are
+ 					 * dropped (network error). We might
+-- 
+2.6.4
+

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_GLOG
+	bool "glog"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	# build issues with this external toolchain
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
+	help
+	  C++ implementation of the Google logging module
+
+	  https://github.com/google/glog
+
+comment "glog needs a toolchain w/ C++, threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS

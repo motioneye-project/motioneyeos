@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PYTHON_NFC
+	bool "python-nfc"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Python module for near field communication.
+
+	  https://launchpad.net/nfcpy
+
+comment "python-nfc needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_PYTHON
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

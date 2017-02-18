@@ -1,0 +1,81 @@
+config BR2_PACKAGE_BUSYBOX
+	bool "BusyBox"
+	default y
+	help
+	  The Swiss Army Knife of embedded Linux. It slices, it dices, it
+	  makes Julian Fries.
+
+	  http://busybox.net/
+
+	  Most people will answer Y.
+
+if BR2_PACKAGE_BUSYBOX
+
+config BR2_PACKAGE_BUSYBOX_CONFIG
+	string "BusyBox configuration file to use?"
+	default "package/busybox/busybox.config"
+	help
+	  Some people may wish to use their own modified BusyBox configuration
+	  file, and will specify their config file location with this option.
+
+	  Most people will just use the default BusyBox configuration file.
+
+config BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES
+	string "Additional BusyBox configuration fragment files"
+	help
+	  A space-separated list of configuration fragment files,
+	  that will be merged to the main BusyBox configuration file.
+
+config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	bool "Show packages that are also provided by busybox"
+	help
+	  Show packages in menuconfig that are potentially also provided
+	  by busybox.
+
+config BR2_PACKAGE_BUSYBOX_SELINUX
+	select BR2_PACKAGE_LIBSELINUX
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_arc
+	bool "Enable SELinux support"
+	help
+	  Enable SELinux support in BusyBox. Please note that
+	  depending on your BusyBox configuration and the SELinux
+	  policy implementation, you may want to also enable
+	  BR2_PACKAGE_BUSYBOX_INDIVIDUAL_BINARIES.
+
+	  For instance, if your BusyBox configuration only uses a
+	  couple of minor BusyBox features, such as simple command
+	  line utilities, the symlinked version of BusyBox can be used
+	  to save space. If BusyBox provides more features, such as
+	  crond, then individual binaries have to be enabled for the
+	  SELinux type transitions to occur properly.
+
+config BR2_PACKAGE_BUSYBOX_WATCHDOG
+	bool "Install the watchdog daemon startup script"
+	help
+	  Install the watchdog daemon startup script,
+	  that just start at the boot the busybox watchdog daemon.
+
+if BR2_PACKAGE_BUSYBOX_WATCHDOG
+
+config BR2_PACKAGE_BUSYBOX_WATCHDOG_PERIOD
+	string "Delay between reset"
+	default "5"
+	help
+	  Select the number of seconds between each
+	  reset of the watchdog (default 5)
+
+	  Use ms suffix to specify milliseconds (e.g. 500ms)
+
+endif
+
+endif
+
+if !BR2_PACKAGE_BUSYBOX # kconfig doesn't support else
+
+# add dummy config so the stuff with busybox alternatives are shown
+# when busybox is disabled
+config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	default y
+endif

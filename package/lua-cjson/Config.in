@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LUA_CJSON
+	bool "lua-cjson"
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	help
+	  The Lua CJSON module provides JSON support for Lua. It features:
+	  - Fast, standards compliant encoding/parsing routines
+	  - Full support for JSON with UTF-8, including decoding surrogate pairs
+	  - Optional run-time support for common exceptions to the JSON
+	    specification (infinity, NaN, ...)
+	  - No dependencies on other libraries
+
+	  (C-module)
+
+	  http://www.kyne.com.au/~mark/software/lua-cjson.php

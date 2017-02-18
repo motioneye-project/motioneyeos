@@ -1,0 +1,44 @@
+diff -Nura kismet-2009-06-R1/ifcontrol.cc kismet-2009-06-R1-nobsd/ifcontrol.cc
+--- kismet-2009-06-R1/ifcontrol.cc	2009-04-08 16:57:44.000000000 -0300
++++ kismet-2009-06-R1-nobsd/ifcontrol.cc	2009-09-01 12:54:44.000000000 -0300
+@@ -148,7 +148,7 @@
+ 	devlinklen = readlink(devlink.c_str(), devlinktarget, 511);
+ 	if (devlinklen > 0) {
+ 		devlinktarget[devlinklen] = '\0';
+-		rind = rindex(devlinktarget, '/');
++		rind = strrchr(devlinktarget, '/');
+ 		// If we found it and not at the end of the line
+ 		if (rind != NULL && (rind - devlinktarget) + 1 < devlinklen)
+ 			return string(rind + 1);
+diff -Nura kismet-2009-06-R1/iwcontrol.cc kismet-2009-06-R1-nobsd/iwcontrol.cc
+--- kismet-2009-06-R1/iwcontrol.cc	2009-04-20 00:22:55.000000000 -0300
++++ kismet-2009-06-R1-nobsd/iwcontrol.cc	2009-09-01 12:54:44.000000000 -0300
+@@ -697,7 +697,7 @@
+ 		return -1;
+ 	}
+ 
+-	bzero(buffer, sizeof(buffer));
++	memset(buffer, 0, sizeof(buffer));
+ 
+ 	memset(&wrq, 0, sizeof(struct iwreq));
+ 
+@@ -732,7 +732,7 @@
+ 		memcpy((char *) &range, buffer, sizeof(iw_range));
+ 	} else {
+ 		/* Zero unknown fields */
+-		bzero((char *) &range, sizeof(struct iw_range));
++		memset((char *) &range, 0, sizeof(struct iw_range));
+ 
+ 		/* Initial part unmoved */
+ 		memcpy((char *) &range, buffer, iwr15_off(num_channels));
+diff -Nura kismet-2009-06-R1/madwifing_control.cc kismet-2009-06-R1-nobsd/madwifing_control.cc
+--- kismet-2009-06-R1/madwifing_control.cc	2009-03-22 23:19:19.000000000 -0300
++++ kismet-2009-06-R1-nobsd/madwifing_control.cc	2009-09-01 12:54:42.000000000 -0300
+@@ -34,7 +34,6 @@
+ #include <stdint.h>
+ #include <ctype.h>
+ #include <getopt.h>
+-#include <err.h>
+ #include <dirent.h>
+ #include <fcntl.h>
+ #include <errno.h>

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_FLASHBENCH
+	bool "flashbench"
+	help
+	  Flashbench - Identify characteristics of flash media.
+
+	  This is the tool used to identify the properties of
+	  SD cards and other media for the Linaro flash memory
+	  survey.
+
+	  https://wiki.linaro.org/WorkingGroups/KernelConsolidation/Projects/FlashCardSurvey

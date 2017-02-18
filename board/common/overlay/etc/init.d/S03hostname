@@ -1,0 +1,43 @@
+#!/bin/bash
+
+sys_hostname_file="/etc/hostname"
+boot_hostname_file="/boot/hostname"
+hostname_file="/data/etc/hostname"
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Setting hostname"
+
+        if ! [ -f $hostname_file ]; then
+            if [ -f $boot_hostname_file ]; then
+                cp $boot_hostname_file $hostname_file
+            elif [ -f $sys_hostname_file ]; then
+                cp $sys_hostname_file $hostname_file
+            fi
+        fi
+
+        if [ -f $hostname_file ]; then
+            hostname=$(cat $hostname_file)
+        else
+            hostname="$os_prefix-$board_sn"
+        fi
+
+        /bin/hostname $hostname
+        echo "127.0.0.1 localhost $hostname" > /etc/hosts
+
+        msg_done
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

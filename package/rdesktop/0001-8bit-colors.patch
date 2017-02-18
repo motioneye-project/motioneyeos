@@ -1,0 +1,21 @@
+diff -urpN rdesktop-1.5.0-orig/xwin.c rdesktop-1.5.0/xwin.c
+--- rdesktop-1.5.0-orig/xwin.c	2007-01-17 12:01:18.000000000 +0100
++++ rdesktop-1.5.0/xwin.c	2007-01-17 12:05:02.000000000 +0100
+@@ -1461,7 +1461,7 @@ select_visual(int screen_num)
+ 		}
+ 
+ 		/* we use a colourmap, so the default visual should do */
+-		g_owncolmap = True;
++//		g_owncolmap = True;
+ 		g_visual = vmatches[0].visual;
+ 		g_depth = vmatches[0].depth;
+ 	}
+@@ -1568,7 +1568,7 @@ ui_init(void)
+ 	{
+ 		g_xcolmap =
+ 			XCreateColormap(g_display, RootWindowOfScreen(g_screen), g_visual,
+-					AllocNone);
++					(g_depth <= 8) ? AllocAll : AllocNone);
+ 		if (g_depth <= 8)
+ 			warning("Display colour depth is %d bit: you may want to use -C for a private colourmap.\n", g_depth);
+ 	}

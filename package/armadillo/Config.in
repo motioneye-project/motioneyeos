@@ -1,0 +1,22 @@
+comment "armadillo needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
+	depends on !BR2_powerpc
+	depends on !BR2_bfin
+
+comment "armadillo needs an (e)glibc toolchain w/ C++"
+	depends on BR2_powerpc
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_TOOLCHAIN_USES_UCLIBC
+
+config BR2_PACKAGE_ARMADILLO
+	bool "armadillo"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) # clapack
+	depends on !BR2_powerpc || BR2_TOOLCHAIN_USES_GLIBC # clapack
+	depends on !BR2_bfin # clapack
+	select BR2_PACKAGE_CLAPACK
+	help
+	  Armadillo: An Open Source C++ Linear Algebra Library for
+	  Fast Prototyping and Computationally Intensive Experiments.
+
+	  http://arma.sourceforge.net/

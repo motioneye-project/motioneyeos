@@ -1,0 +1,71 @@
+#!/usr/bin/env bash
+
+# This script scans $(HOST_DIR)/{bin,sbin} for all ELF files, and checks
+# they have an RPATH to $(HOST_DIR)/usr/lib if they need libraries from
+# there.
+
+# Override the user's locale so we are sure we can parse the output of
+# readelf(1) and file(1)
+export LC_ALL=C
+
+main() {
+    local pkg="${1}"
+    local hostdir="${2}"
+    local file ret
+
+    # Remove duplicate and trailing '/' for proper match
+    hostdir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${hostdir}" )"
+
+    ret=0
+    while read file; do
+        elf_needs_rpath "${file}" "${hostdir}" || continue
+        check_elf_has_rpath "${file}" "${hostdir}" && continue
+        if [ ${ret} -eq 0 ]; then
+            ret=1
+            printf "***\n"
+            printf "*** ERROR: package %s installs executables without proper RPATH:\n" "${pkg}"
+        fi
+        printf "***   %s\n" "${file}"
+    done < <( find "${hostdir}"/usr/{bin,sbin} -type f -exec file {} + 2>/dev/null \
+              |sed -r -e '/^([^:]+):.*\<ELF\>.*\<executable\>.*/!d'                \
+                      -e 's//\1/'                                                  \
+            )
+
+    return ${ret}
+}
+
+elf_needs_rpath() {
+    local file="${1}"
+    local hostdir="${2}"
+    local lib
+
+    while read lib; do
+        [ -e "${hostdir}/usr/lib/${lib}" ] && return 0
+    done < <( readelf -d "${file}"                                         \
+              |sed -r -e '/^.* \(NEEDED\) .*Shared library: \[(.+)\]$/!d;' \
+                     -e 's//\1/;'                                          \
+            )
+
+    return 1
+}
+
+check_elf_has_rpath() {
+    local file="${1}"
+    local hostdir="${2}"
+    local rpath dir
+
+    while read rpath; do
+        for dir in ${rpath//:/ }; do
+            # Remove duplicate and trailing '/' for proper match
+            dir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${dir}" )"
+            [ "${dir}" = "${hostdir}/usr/lib" ] && return 0
+        done
+    done < <( readelf -d "${file}"                                              \
+              |sed -r -e '/.* \(R(UN)?PATH\) +Library r(un)?path: \[(.+)\]$/!d' \
+                      -e 's//\3/;'                                              \
+            )
+
+    return 1
+}
+
+main "${@}"

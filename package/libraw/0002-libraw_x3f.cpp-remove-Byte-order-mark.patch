@@ -1,0 +1,39 @@
+From 0f2507bfe30f2df10dfc38b94cdfde5594902b8e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 12 Feb 2016 10:00:12 +0100
+Subject: [PATCH] libraw_x3f.cpp: remove Byte order mark
+
+The U+FEFF character, which is a Byte order mark, at the beginning of
+libraw_x3f.cpp, prevents gcc 4.3.x from building this file:
+
+src/../internal/libraw_x3f.cpp:1: error: stray '\357' in program
+src/../internal/libraw_x3f.cpp:1: error: stray '\273' in program
+src/../internal/libraw_x3f.cpp:1: error: stray '\277' in program
+
+Support in gcc for the Byte order mark has been added in gcc
+4.4.x. Since anyway this Byte order mark is not useful, we simply
+remove it.
+
+See https://en.wikipedia.org/wiki/Byte_order_mark for more details.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+Submitted upstream at:
+https://github.com/LibRaw/LibRaw/pull/61
+
+ internal/libraw_x3f.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/internal/libraw_x3f.cpp b/internal/libraw_x3f.cpp
+index dbf28c1..67047ab 100644
+--- a/internal/libraw_x3f.cpp
++++ b/internal/libraw_x3f.cpp
+@@ -1,4 +1,4 @@
+-﻿/* Library for accessing X3F Files 
++/* Library for accessing X3F Files 
+ ----------------------------------------------------------------
+ BSD-style License
+ ----------------------------------------------------------------
+-- 
+2.6.4
+

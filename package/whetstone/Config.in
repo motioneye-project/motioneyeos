@@ -1,0 +1,6 @@
+config BR2_PACKAGE_WHETSTONE
+	bool "whetstone"
+	help
+	  C Converted Whetstone Double Precision Benchmark
+
+	  http://www.netlib.org/benchmark/

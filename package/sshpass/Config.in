@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SSHPASS
+	bool "sshpass"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Sshpass is a tool for non-interactivly performing
+	  password authentication with SSH's so called
+	  "interactive keyboard password authentication".
+
+	  http://sshpass.sourceforge.net

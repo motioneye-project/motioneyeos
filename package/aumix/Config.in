@@ -1,0 +1,12 @@
+config BR2_PACKAGE_AUMIX
+	bool "aumix"
+	select BR2_PACKAGE_NCURSES
+	help
+	  aumix is a small, easy-to-use program to control the mixer
+	  of your sound card. It runs in text mode using the ncurses
+	  library, or from the command line (non-interactively).
+	  It can read default settings from a file, and it can also
+	  automatically save and restore the mixer settings at shutdown
+	  and boot.
+
+	  http://jpj.net/~trevor/aumix.html

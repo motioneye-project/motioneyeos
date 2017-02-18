@@ -1,0 +1,15 @@
+svgtiny: create BUILDDIR before $(BUILDDIR)/src_colors.c
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+--- libsvgtiny-12121/src/Makefile.orig	2014-06-17 15:30:21.765311434 +0400
++++ libsvgtiny-12121/src/Makefile	2014-06-17 15:29:56.569909931 +0400
+@@ -3,7 +3,7 @@
+ 
+ SOURCES := $(SOURCES) $(BUILDDIR)/src_colors.c
+ 
+-$(BUILDDIR)/src_colors.c: src/colors.gperf
++$(BUILDDIR)/src_colors.c: src/colors.gperf $(BUILDDIR)/stamp
+ 	$(VQ)$(ECHO) "   GPERF: $<"
+ 	$(Q)gperf --output-file=$@.tmp $<
+ # Hack for GCC 4.2 compatibility (gperf 3.0.4 solves this properly)

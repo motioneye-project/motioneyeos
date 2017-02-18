@@ -1,0 +1,18 @@
+config BR2_PACKAGE_TROUSERS
+	bool "trousers"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# doesn't build properly in static only configurations
+	depends on !BR2_STATIC_LIBS
+	help
+	  The open-source TCG Software Stack (TSS).
+
+	  This library enables the use of a Trusted Platform Module that
+	  complies with the TPM specification, version 1.2. It implements the
+	  TSS specification, version 1.2.
+
+	  http://trousers.sourceforge.net/
+
+comment "trousers needs a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

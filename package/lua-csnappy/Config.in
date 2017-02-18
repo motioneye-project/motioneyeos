@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LUA_CSNAPPY
+	bool "lua-csnappy"
+	help
+	  lua-csnappy is a binding of the csnappy library
+	  which implements the Google's Snappy (de)compressor.
+
+	  http://fperrad.github.io/lua-csnappy/
+

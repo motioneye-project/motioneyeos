@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PHP_SSH2
+	bool "php-ssh2"
+	depends on BR2_PACKAGE_PHP
+	select BR2_PACKAGE_LIBSSH2
+	help
+	  PHP bindings for the libssh2 library.
+
+	  http://pecl.php.net/package/ssh2

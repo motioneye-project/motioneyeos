@@ -1,0 +1,15 @@
+config BR2_PACKAGE_QT5SCRIPT
+	bool "qt5script"
+	select BR2_PACKAGE_QT5BASE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5script module.
+
+	  This package has been tagged as deprecated since version
+	  5.5.0 and should be replaced by Qt QML module in new
+	  design.
+
+	  http://qt.io

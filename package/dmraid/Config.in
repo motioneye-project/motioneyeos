@@ -1,0 +1,16 @@
+config BR2_PACKAGE_DMRAID
+	bool "dmraid"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
+	depends on BR2_USE_MMU # lvm2
+	depends on !BR2_STATIC_LIBS # lvm2
+	select BR2_PACKAGE_LVM2
+	help
+	  dmraid discovers, activates, deactivates and displays properties
+	  of software RAID sets (eg, ATARAID) and contained DOS partitions.
+
+	  dmraid uses the Linux device-mapper to create devices with
+	  respective mappings for the ATARAID sets discovered.
+
+comment "dmraid needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,37 @@
+config BR2_PACKAGE_NCFTP
+	bool "ncftp"
+	# fork()
+	depends on BR2_USE_MMU
+	help
+	  NcFTP Client (also known as just NcFTP) is a set of FREE application
+	  programs implementing the File Transfer Protocol (FTP).
+
+	  http://www.ncftp.com/ncftp/
+
+if BR2_PACKAGE_NCFTP
+
+menu "ncFTP tools selection"
+
+config BR2_PACKAGE_NCFTP_GET
+	bool "NcFTPGet - command-line utility program"
+	default y
+
+config BR2_PACKAGE_NCFTP_PUT
+	bool "NcFTPPut - command-line utility program"
+	default y
+
+config BR2_PACKAGE_NCFTP_LS
+	bool "NcFTPLs - command-line utility program"
+	default y
+
+config BR2_PACKAGE_NCFTP_BATCH
+	bool "NcFTPBatch & NcFTPSpooler - background FTP program for individual users"
+	default y
+
+config BR2_PACKAGE_NCFTP_BOOKMARKS
+	bool "NcFTPBookmarks - ncurses based Bookmark Editor"
+	select BR2_PACKAGE_NCURSES
+
+endmenu
+
+endif

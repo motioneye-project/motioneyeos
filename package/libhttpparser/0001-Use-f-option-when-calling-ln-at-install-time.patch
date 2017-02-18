@@ -1,0 +1,35 @@
+From 384917321c45e492b0ca7aaa94d4b15324aef95d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 28 Aug 2015 19:02:11 +0200
+Subject: [PATCH] Use -f option when calling ln at install time
+
+This allows "make install; make install" to work properly.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Renaud AUBIN <root@renaud.io>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 33c8ba0..b36d95a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -125,12 +125,12 @@ tags: http_parser.c http_parser.h test.c
+ install: library
+ 	$(INSTALL) -D  http_parser.h $(INCLUDEDIR)/http_parser.h
+ 	$(INSTALL) -D $(SONAME) $(LIBDIR)/$(SONAME)
+-	ln -s $(LIBDIR)/$(SONAME) $(LIBDIR)/libhttp_parser.$(SOEXT)
++	ln -sf $(LIBDIR)/$(SONAME) $(LIBDIR)/libhttp_parser.$(SOEXT)
+ 
+ install-strip: library
+ 	$(INSTALL) -D  http_parser.h $(INCLUDEDIR)/http_parser.h
+ 	$(INSTALL) -D -s $(SONAME) $(LIBDIR)/$(SONAME)
+-	ln -s $(LIBDIR)/$(SONAME) $(LIBDIR)/libhttp_parser.$(SOEXT)
++	ln -sf $(LIBDIR)/$(SONAME) $(LIBDIR)/libhttp_parser.$(SOEXT)
+ 
+ uninstall:
+ 	rm $(INCLUDEDIR)/http_parser.h
+-- 
+2.6.2
+

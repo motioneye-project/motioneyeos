@@ -1,0 +1,54 @@
+From dcfe0a01f72021aab961245d0ebcc9f8d4504b40 Mon Sep 17 00:00:00 2001
+From: Soeren Apel <soeren@apelpie.net>
+Date: Sun, 31 Jan 2016 14:12:44 +0100
+Subject: [PATCH] View: Honor ENABLE_DECODE compiler switch
+
+Signed-off-by: Soeren Apel <soeren@apelpie.net>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+Patch downloaded from upstream git:
+http://sigrok.org/gitweb/?p=pulseview.git;a=commitdiff;h=dcfe0a01f72021aab961245d0ebcc9f8d4504b40
+as suggested by upstream:
+http://article.gmane.org/gmane.comp.debugging.sigrok.devel/1954
+
+ pv/view/view.cpp | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/pv/view/view.cpp b/pv/view/view.cpp
+index c9b08bf..6ad7dea 100644
+--- a/pv/view/view.cpp
++++ b/pv/view/view.cpp
+@@ -43,7 +43,6 @@
+ #include <libsigrokcxx/libsigrokcxx.hpp>
+ 
+ #include "analogsignal.hpp"
+-#include "decodetrace.hpp"
+ #include "header.hpp"
+ #include "logicsignal.hpp"
+ #include "ruler.hpp"
+@@ -59,6 +58,10 @@
+ #include "pv/data/logicsegment.hpp"
+ #include "pv/util.hpp"
+ 
++#ifdef ENABLE_DECODE
++#include "decodetrace.hpp"
++#endif
++
+ using boost::shared_lock;
+ using boost::shared_mutex;
+ 
+@@ -455,9 +458,11 @@ void View::enable_coloured_bg(bool state)
+ 		if (l)
+ 			l->set_coloured_bg(state);
+ 
++#ifdef ENABLE_DECODE
+ 		shared_ptr<DecodeTrace> d = dynamic_pointer_cast<DecodeTrace>(i);
+ 		if (d)
+ 			d->set_coloured_bg(state);
++#endif
+ 	}
+ 
+ 	viewport_->update();
+-- 
+2.6.2
+

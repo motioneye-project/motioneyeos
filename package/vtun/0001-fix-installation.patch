@@ -1,0 +1,44 @@
+Makefile.in: fix installation steps
+
+Not sure what the reason for that patch is, but originally added by Ulf
+Samuelsson <ulf.samuelsson@atmel.com>, when upgrading from 2.6.x to 3.0.2.
+
+yann.morin.1998@free.fr: the initial commit in the Buildroot tree had the
+SoB by Ulf, but it was not explicitly reproduced here in the patch; so I
+added it here directly in the patch.
+
+Somewhat-signed-off-by: Ulf Samuelsson <ulf.samuelsson@atmel.com>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+diff -durN vtun-3.0.3.orig/Makefile.in vtun-3.0.3/Makefile.in
+--- vtun-3.0.3.orig/Makefile.in	2012-07-09 06:55:38.000000000 +0200
++++ vtun-3.0.3/Makefile.in	2013-02-16 23:28:47.034036869 +0100
+@@ -28,7 +28,7 @@
+ LEXFLAGS = -t 
+ 
+ INSTALL = @INSTALL@
+-INSTALL_OWNER = -o root -g 0
++INSTALL_OWNER =
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+@@ -89,16 +89,15 @@
+ 
+ install_config: 
+ 	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(ETC_DIR)
+-	if [ ! -f $(ETC_DIR)/vtund.conf ]; then \
+-	  $(INSTALL) -m 600 $(INSTALL_OWNER) vtund.conf $(DESTDIR)$(ETC_DIR); \
+-	fi
++	$(INSTALL) -m 600 $(INSTALL_OWNER) vtund.conf $(DESTDIR)$(ETC_DIR);
++	$(INSTALL) -m 600 $(INSTALL_OWNER) scripts/vtund-start.conf $(DESTDIR)$(ETC_DIR);
+ 
+ install: vtund install_config install_man
+-	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(VAR_DIR)/run
+ 	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(STAT_DIR)
+ 	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(LOCK_DIR)
+ 	$(INSTALL) -d -m 755 $(INSTALL_OWNER) $(DESTDIR)$(SBIN_DIR)
+ 	$(INSTALL) -m 755 $(INSTALL_OWNER) vtund $(DESTDIR)$(SBIN_DIR)
+-	$(BIN_DIR)/strip $(DESTDIR)$(SBIN_DIR)/vtund
++	$(INSTALL) -m 755 -D $(INSTALL_OWNER) scripts/vtund.rc.debian \
++		$(DESTDIR)$(ETC_DIR)/init.d/S90vtun
+ 
+ # DO NOT DELETE THIS LINE -- make depend depends on it.

@@ -1,0 +1,138 @@
+#!/bin/bash
+
+sys_conf="/etc/ppp/default"
+boot_conf="/boot/ppp"
+conf="/data/etc/ppp"
+
+prog="/usr/sbin/pppd"
+provider="mobile"
+
+watch_conf="/data/etc/watch.conf"
+
+source $watch_conf
+
+if ! [ -d $conf ]; then
+    if [ -d $boot_conf ]; then
+        cp -r $boot_conf $conf
+    elif [ -d $sys_conf ]; then
+        cp -r $sys_conf $conf
+    fi
+fi
+
+test -e $conf/modem || exit 0
+test -e $conf/apn || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
+
+connected() {
+    ifconfig | grep $os_ppp &>/dev/null 2>&1 && return 0 || return 1
+}
+
+watch() {
+    count=0
+    while true; do
+        sleep 5
+        if connected; then
+            count=0
+        else
+            if [ $count -lt $link_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t ppp -s "disconnected"
+            else
+                logger -t ppp -s "disconnected for $link_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+udev_trigger_add() {
+    for ((i = 0; i < $1; i++)); do
+        /sbin/udevadm trigger --type=devices --action=add
+    done
+}
+
+start() {
+    test -e $conf/auth || touch $conf/auth
+    test -e $conf/extra || touch $conf/extra
+    test -e $conf/pin || touch $conf/pin
+    mknod /dev/ppp c 108 0 &>/dev/null
+
+    msg_begin "Starting pppd"
+
+    # wait for modem
+    modem=$(head -n 1 $conf/modem)
+    if ! [ -e /dev/$modem ]; then
+        udev_trigger_add 4 &
+    fi
+
+    count=0
+    while true; do
+        if [ -e /dev/$modem ] || [ $count -gt $link_watch_timeout ]; then
+            break
+        fi
+
+        count=$(($count + 1))
+        sleep 1
+    done
+
+    if ! [ -e /dev/$modem ]; then
+        msg_fail "modem /dev/$modem not present"
+        return
+    fi
+
+    $prog call $provider
+    count=0
+    while true; do
+        sleep 1
+
+        if connected; then
+            break
+        fi
+
+        if [ $count -gt $link_watch_timeout ] || ! pidof pppd > /dev/null; then
+            msg_fail
+            return
+        fi
+
+        count=$(($count + 1))
+    done
+
+    if [ "$link_watch" == "true" ]; then
+        watch &
+    fi
+
+    msg_done
+}
+
+stop() {
+    msg_begin "Stopping pppd"
+    killall pppd &>/dev/null
+    ps | grep ppp | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    msg_done
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

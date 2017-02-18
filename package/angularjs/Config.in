@@ -1,0 +1,79 @@
+menuconfig BR2_PACKAGE_ANGULARJS
+	bool "angularjs"
+	help
+	  AngularJS web application framework.
+
+	  http://angularjs.org
+
+if BR2_PACKAGE_ANGULARJS
+
+config BR2_ANGULARJS_MODULES
+	bool "angularjs modules"
+	help
+	  Select which modules to install. If disabled, all modules
+	  will be installed.
+
+if BR2_ANGULARJS_MODULES
+
+config BR2_ANGULARJS_MODULE_ANIMATE
+	bool "animate"
+	help
+	  The ngAnimate module provides support for CSS-based animations
+	  (keyframes and transitions) as well as JavaScript-based animations
+	  via callback hooks. Animations are not enabled by default, however,
+	  by including ngAnimate then the animation hooks are enabled for an
+	  Angular app.
+
+config BR2_ANGULARJS_MODULE_ARIA
+	bool "aria"
+	help
+	  The ngAria module provides support for common ARIA attributes that
+	  convey state or semantic information about the application for users
+	  of assistive technologies, such as screen readers.
+
+config BR2_ANGULARJS_MODULE_COOKIES
+	bool "cookies"
+	help
+	  The ngCookies module provides a convenient wrapper for reading and
+	  writing browser cookies.
+
+config BR2_ANGULARJS_MODULE_MESSAGE_FORMAT
+	bool "message-format"
+	help
+	  The ngMessageFormat module is used recognize MessageFormat extensions
+	  in interpolation expressions.
+
+config BR2_ANGULARJS_MODULE_MESSAGES
+	bool "messages"
+	help
+	  The ngMessages module provides enhanced support for displaying
+	  messages within templates (typically within forms or when rendering
+	  message objects that return key/value data).
+
+config BR2_ANGULARJS_MODULE_RESOURCE
+	bool "resource"
+	help
+	  The ngResource module provides interaction support with RESTful
+	  services via the $resource service.
+
+config BR2_ANGULARJS_MODULE_ROUTE
+	bool "route"
+	help
+	  The ngRoute module provides routing and deeplinking services and
+	  directives for angular apps.
+
+config BR2_ANGULARJS_MODULE_SANITIZE
+	bool "sanitize"
+	help
+	  The ngSanitize module provides functionality to sanitize HTML.
+
+config BR2_ANGULARJS_MODULE_TOUCH
+	bool "touch"
+	help
+	  The ngTouch module provides touch events and other helpers for
+	  touch-enabled devices. The implementation is based on jQuery Mobile
+	  touch event handling (jquerymobile.com).
+
+endif
+
+endif

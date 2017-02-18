@@ -1,0 +1,17 @@
+/output
+/.auto.deps
+/.config.cmd
+/.config.old
+/..config.tmp
+/.config
+*.depend
+*.o
+/*.patch
+/*.diff
+*.orig
+*.rej
+*~
+*.pyc
+/.download
+/.buildroot-ccache-*
+*.img.gz

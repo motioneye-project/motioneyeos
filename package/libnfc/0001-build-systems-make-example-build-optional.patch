@@ -1,0 +1,82 @@
+From 40a4871b171293d98acb40cf54be9ee9b78a3244 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Wed, 6 Jun 2012 00:49:25 +0200
+Subject: [PATCH 1/1] build systems: make example build optional
+
+This patch makes example build optional for both cmake and autotools build
+systems.
+
+In order to keep the former behavior, example build is enabled by default.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+diff -Nurp a/CMakeLists.txt b/CMakeLists.txt
+--- a/CMakeLists.txt	2013-12-08 18:51:01.000000000 +0000
++++ b/CMakeLists.txt	2014-01-08 12:51:42.435096403 +0000
+@@ -39,6 +39,7 @@ IF(LIBNFC_ENVVARS)
+   ADD_DEFINITIONS(-DENVVARS)
+ ENDIF(LIBNFC_ENVVARS)
+ 
++SET(BUILD_EXAMPLES ON CACHE BOOL "Build examples")
+ SET(LIBNFC_DEBUG_MODE OFF CACHE BOOL "Debug mode")
+ IF(LIBNFC_DEBUG_MODE)
+   ADD_DEFINITIONS(-DDEBUG)
+@@ -155,7 +156,10 @@ ENDIF(WIN32)
+ ADD_SUBDIRECTORY(libnfc)
+ ADD_SUBDIRECTORY(include)
+ ADD_SUBDIRECTORY(utils)
+-ADD_SUBDIRECTORY(examples)
++
++IF(BUILD_EXAMPLES)
++  ADD_SUBDIRECTORY(examples)
++ENDIF(BUILD_EXAMPLES)
+ 
+ # Binary Package
+ IF(WIN32)
+diff -Nurp a/Makefile.am b/Makefile.am
+--- a/Makefile.am	2013-12-08 18:51:01.000000000 +0000
++++ b/Makefile.am	2014-01-08 12:52:12.807018593 +0000
+@@ -2,7 +2,13 @@ ACLOCAL_AMFLAGS = -I m4
+ 
+ AM_CFLAGS = $(LIBNFC_CFLAGS)
+ 
+-SUBDIRS = libnfc utils examples include contrib cmake test
++SUBDIRS = libnfc utils
++
++if EXAMPLE_ENABLED
++SUBDIRS += examples
++endif
++
++SUBDIRS += include contrib cmake test
+ 
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libnfc.pc
+diff -Nurp a/configure.ac b/configure.ac
+--- a/configure.ac	2013-12-08 18:51:01.000000000 +0000
++++ b/configure.ac	2014-01-08 12:53:02.054872564 +0000
+@@ -142,6 +142,14 @@ then
+ fi
+ AM_CONDITIONAL(DOC_ENABLED, [test x"$enable_doc" = xyes])
+ 
++# Example build (default: yes)
++AC_ARG_ENABLE([example],AS_HELP_STRING([--enable-example],[Enable example build.]),[enable_example=$enableval],[enable_example="yes"])
++
++AC_MSG_CHECKING(for example build)
++AC_MSG_RESULT($enable_example)
++
++AM_CONDITIONAL(EXAMPLE_ENABLED, [test x"$enable_example" = xyes])
++
+ # Dependencies
+ PKG_CONFIG_REQUIRES=""
+ 
+@@ -160,7 +168,10 @@ if test x$ac_cv_with_cutter = xyes -a x$
+ fi
+ AM_CONDITIONAL([WITH_CUTTER], [test "$ac_cv_use_cutter" != "no"])
+ 
++if test x"$enable_example" = "xyes"
++then
+ AC_CHECK_READLINE
++fi
+ 
+ # Help us to write great code ;-)
+ CFLAGS="$CFLAGS -Wall -pedantic -Wextra"

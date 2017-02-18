@@ -1,0 +1,49 @@
+sqlite3: fix build when threads are not used/available
+
+When threads are not used/available, a function in the sqlite3 extension
+ends up with a label at the end:
+
+    void _pysqlite_final_callback(sqlite3_context* context)
+    {
+        PyObject* function_result;
+        PyObject** aggregate_instance;
+        int ok;
+
+    #ifdef WITH_THREAD
+        PyGILState_STATE threadstate;
+
+        threadstate = PyGILState_Ensure();
+    #endif
+
+        aggregate_instance = (PyObject**)sqlite3_aggregate_context(context, sizeof(PyObject*));
+        if (!*aggregate_instance) {
+            goto error;
+        }
+
+        [......]
+
+    error:
+    #ifdef WITH_THREAD
+        PyGILState_Release(threadstate);
+    #endif
+    }
+
+This is not valid, and gcc complains.
+
+Fix that by adding a dummy statement after the label, so that the label
+is never the last statement of the function.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+Index: b/Modules/_sqlite/connection.c
+===================================================================
+--- a/Modules/_sqlite/connection.c
++++ b/Modules/_sqlite/connection.c
+@@ -786,6 +786,7 @@
+ #ifdef WITH_THREAD
+     PyGILState_Release(threadstate);
+ #endif
++    ;   /* Make gcc happy: a label can't be at the end of a function */
+ }
+ 
+ static void _pysqlite_drop_unused_statement_references(pysqlite_Connection* self)

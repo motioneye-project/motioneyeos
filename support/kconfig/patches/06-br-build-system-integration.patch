@@ -1,0 +1,35 @@
+---
+ Makefile |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -159,11 +159,11 @@
+ 
+ hostprogs-y := conf
+ 
+-ifeq ($(MAKECMDGOALS),nconfig)
++ifeq ($(MAKECMDGOALS),nconf)
+ 	hostprogs-y += nconf
+ endif
+ 
+-ifeq ($(MAKECMDGOALS),menuconfig)
++ifeq ($(MAKECMDGOALS),mconf)
+ 	hostprogs-y += mconf
+ endif
+ 
+@@ -171,10 +171,10 @@
+ 	hostprogs-y += kxgettext
+ endif
+ 
+-ifeq ($(MAKECMDGOALS),xconfig)
++ifeq ($(MAKECMDGOALS),qconf)
+ 	qconf-target := 1
+ endif
+-ifeq ($(MAKECMDGOALS),gconfig)
++ifeq ($(MAKECMDGOALS),gconf)
+ 	gconf-target := 1
+ endif
+ 

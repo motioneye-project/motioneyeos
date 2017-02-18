@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MISTUNE
+	bool "python-mistune"
+	help
+	  The fastest markdown parser in pure Python with renderer
+	  features, inspired by marked.
+
+	  https://pypi.python.org/pypi/mistune

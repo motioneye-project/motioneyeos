@@ -1,0 +1,30 @@
+From a34dba99aff2994269ee347da67feb7ede9b1a67 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 18 Feb 2016 22:32:38 +0100
+Subject: [PATCH] mouse.cpp: fix musl compile
+
+Add missing include, fixes:
+
+  mouse.cpp:58:37: error: 'memset' was not declared in this scope
+  mouse.cpp:60:64: error: 'strncpy' was not declared in this scope
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/mouse.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mouse.cpp b/src/mouse.cpp
+index 0435dd9..f173137 100644
+--- a/src/mouse.cpp
++++ b/src/mouse.cpp
+@@ -27,6 +27,7 @@ DEFINE_INSTANCE(Mouse)
+ #include <stddef.h>
+ #include <unistd.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include <gpm.h>
+ #include <sys/ioctl.h>
+ #include <sys/types.h>
+-- 
+2.1.4
+

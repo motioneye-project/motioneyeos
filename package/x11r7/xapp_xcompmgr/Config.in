@@ -1,0 +1,10 @@
+config BR2_PACKAGE_XAPP_XCOMPMGR
+	bool "xcompmgr"
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	help
+	  xcompmgr is a sample compositing manager that enables basic
+	  eye-candy effects.

@@ -1,0 +1,42 @@
+config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES
+	bool "nvidia-tegra23 binaries"
+	select BR2_PACKAGE_MESA3D_HEADERS
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	select BR2_PACKAGE_HAS_LIBOPENMAX
+	help
+	  Those packages provide libraries, drivers and firmware that comes from
+	  NVIDIA Linux For Tegra.
+
+	  https://developer.nvidia.com/linux-tegra
+
+if BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "nvidia-tegra23-binaries"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "nvidia-tegra23-binaries"
+
+config BR2_PACKAGE_PROVIDES_LIBOPENMAX
+	default "nvidia-tegra23-binaries"
+
+config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
+	bool "GStreamer 0.10.x plugins"
+	depends on BR2_PACKAGE_GSTREAMER # Run-time only
+	select BR2_PACKAGE_XLIB_LIBXV
+	help
+	  GStreamer 0.10.x plugins
+
+config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_NV_SAMPLE_APPS
+	bool "NVIDIA multimedia sample apps"
+	depends on BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
+	help
+	  nvgstplayer and nvgstcapture multimedia test applications.
+
+comment "GStreamer 0.10.x plugins need GStreamer 0.10"
+	depends on !BR2_PACKAGE_GSTREAMER
+
+endif

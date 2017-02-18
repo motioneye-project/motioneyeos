@@ -1,0 +1,35 @@
+From 283cab667a9ac3ae3a675b5e5d1a42191188699f Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 8 Aug 2015 18:24:48 +0200
+Subject: [PATCH] add missing sys/time.h header
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+struct timeval is defined in sys/time.h with a musl toolchain.
+
+Fixes:
+In file included from devices/devfreq.cpp:35:0:
+devices/devfreq.h:35:18: error: field ‘stamp_before’ has incomplete type ‘timeval’
+  struct timeval  stamp_before, stamp_after;
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ src/devices/devfreq.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/devices/devfreq.h b/src/devices/devfreq.h
+index 16a60fb..4a8983b 100644
+--- a/src/devices/devfreq.h
++++ b/src/devices/devfreq.h
+@@ -27,6 +27,7 @@
+ 
+ #include "device.h"
+ #include "../parameters/parameters.h"
++#include <sys/time.h>
+ 
+ struct frequency;
+ 
+-- 
+2.4.3
+

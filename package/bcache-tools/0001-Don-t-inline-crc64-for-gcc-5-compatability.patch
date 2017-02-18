@@ -1,0 +1,35 @@
+Don't inline crc64 for gcc-5 compatability
+
+This patch is backported from Debian and it fixes the following error:
+
+bcache.c:125:9: warning: 'crc_table' is static but used in inline
+function 'crc64' which is not static
+...
+make-bcache.c:277: undefined reference to `crc64'
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+From: David Mohr <david@mcbf.net>
+Date: Tue, 26 May 2015 20:34:31 -0600
+Subject: Don't inline crc64 for gcc-5 compatability
+
+Forwarded: http://article.gmane.org/gmane.linux.kernel.bcache.devel/2919
+
+By James Cowgill, see Debian bug #777798
+---
+ bcache.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/bcache.c b/bcache.c
+index 8f37445..8b4b986 100644
+--- a/bcache.c
++++ b/bcache.c
+@@ -115,7 +115,7 @@ static const uint64_t crc_table[256] = {
+ 	0x9AFCE626CE85B507ULL
+ };
+ 
+-inline uint64_t crc64(const void *_data, size_t len)
++uint64_t crc64(const void *_data, size_t len)
+ {
+ 	uint64_t crc = 0xFFFFFFFFFFFFFFFFULL;
+ 	const unsigned char *data = _data;

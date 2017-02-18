@@ -1,0 +1,22 @@
+config BR2_PACKAGE_MP4V2
+	bool "mp4v2"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  The MP4v2 library provides functions to read, create, and
+	  modify mp4 files.
+
+	  https://code.google.com/p/mp4v2/
+
+if BR2_PACKAGE_MP4V2
+
+config BR2_PACKAGE_MP4V2_UTIL
+	bool "Install mp4 command line tools"
+	help
+	  Enable to install the mp4 command line tools mp4art,
+	  mp4chaps, mp4extract, mp4info, mp4subtitle, mp4tags, and
+	  mp4trackdump.
+
+endif
+
+comment "mp4v2 needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

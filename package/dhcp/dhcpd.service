@@ -1,0 +1,13 @@
+[Unit]
+Description=DHCP server
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/run/dhcpd.pid
+ExecStart=/usr/sbin/dhcpd -q -pf /run/dhcpd.pid $OPTIONS $INTERFACES
+KillSignal=SIGINT
+EnvironmentFile=-/etc/default/dhcpd
+
+[Install]
+WantedBy=multi-user.target

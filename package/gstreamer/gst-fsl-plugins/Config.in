@@ -1,0 +1,104 @@
+comment "gst-fsl-plugins needs an imx-specific Linux kernel to be built"
+	depends on BR2_arm && !BR2_LINUX_KERNEL
+
+comment "gst-fsl-plugins needs an (e)glibc toolchain"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
+config BR2_PACKAGE_GST_FSL_PLUGINS
+	bool "gst-fsl-plugins"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_arm # Only relevant for i.MX
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libfslcodec
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_LIBFSLVPUWRAP if BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
+	select BR2_PACKAGE_IMX_LIB
+	select BR2_PACKAGE_LIBFSLPARSER
+	select BR2_PACKAGE_LIBFSLCODEC
+	select BR2_PACKAGE_FREESCALE_IMX
+	help
+	  GStreamer plugins for hardware-accelerated audio and video
+	  parsers and codecs on i.MX platforms. It requires a kernel that
+	  includes the i.MX specific headers to be built.
+
+	  To use the VPU, its firmware blob must be installed as well. This
+	  can be found in the firmware-imx package in the "Hardware handling"
+	  menu.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream. Pengutronix maintains gst-fsl-plugins at
+	  git://git.pengutronix.de/git/imx/gst-plugins-fsl-vpu.git
+	  but it diverges heavily from Freescale's original implementation.
+
+if BR2_PACKAGE_GST_FSL_PLUGINS
+choice
+	prompt "i.MX platform"
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX25 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX25_3STACK
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX27 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX27ADS
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX37 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX37_3STACK
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX50 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX50
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX51 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX53 if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
+	default BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX6  if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX233
+	bool "imx233"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX25
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX25_3STACK
+	bool "imx25"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX27
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX27ADS
+	bool "imx27"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX28
+	bool "imx28"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX31
+	bool "imx31"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX35
+	bool "imx35"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX37
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX37_3STACK
+	bool "imx37"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX50
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX50
+	bool "imx50"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX51
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX51
+	bool "imx51"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX53
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX53
+	bool "imx53"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX5X
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX5X
+	bool "imx5X"
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX6
+	select BR2_PACKAGE_IMX_LIB_PLATFORM_IMX6Q
+	bool "imx6"
+
+endchoice
+
+config BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM
+	string
+	default "MX233" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX233
+	default "MX25" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX25
+	default "MX27" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX27
+	default "MX28" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX28
+	default "MX31" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX31
+	default "MX35" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX35
+	default "MX37" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX37
+	default "MX50" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX50
+	default "MX51" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX51
+	default "MX53" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX53
+	default "MX5X" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX5X
+	default "MX6" if BR2_PACKAGE_GST_FSL_PLUGINS_PLATFORM_MX6
+endif

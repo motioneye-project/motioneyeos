@@ -1,0 +1,84 @@
+From 0fe5a234240a108b294a87174ad197f6b5cb38e9 Mon Sep 17 00:00:00 2001
+From: Paul Stewart <pstew@google.com>
+Date: Thu, 3 Mar 2016 15:40:19 -0800
+Subject: [PATCH] Remove newlines from wpa_supplicant config network output
+
+Spurious newlines output while writing the config file can corrupt the
+wpa_supplicant configuration. Avoid writing these for the network block
+parameters. This is a generic filter that cover cases that may not have
+been explicitly addressed with a more specific commit to avoid control
+characters in the psk parameter.
+
+Signed-off-by: Paul Stewart <pstew@google.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream (0fe5a234240a108b294a87174ad197f6b5cb38e9)
+
+ src/utils/common.c      | 11 +++++++++++
+ src/utils/common.h      |  1 +
+ wpa_supplicant/config.c | 15 +++++++++++++--
+ 3 files changed, 25 insertions(+), 2 deletions(-)
+
+diff --git a/src/utils/common.c b/src/utils/common.c
+index 27b7c02de10b..9856463242c7 100644
+--- a/src/utils/common.c
++++ b/src/utils/common.c
+@@ -709,6 +709,17 @@ int has_ctrl_char(const u8 *data, size_t len)
+ }
+ 
+ 
++int has_newline(const char *str)
++{
++	while (*str) {
++		if (*str == '\n' || *str == '\r')
++			return 1;
++		str++;
++	}
++	return 0;
++}
++
++
+ size_t merge_byte_arrays(u8 *res, size_t res_len,
+ 			 const u8 *src1, size_t src1_len,
+ 			 const u8 *src2, size_t src2_len)
+diff --git a/src/utils/common.h b/src/utils/common.h
+index a97224070385..d19927b375bf 100644
+--- a/src/utils/common.h
++++ b/src/utils/common.h
+@@ -489,6 +489,7 @@ const char * wpa_ssid_txt(const u8 *ssid, size_t ssid_len);
+ char * wpa_config_parse_string(const char *value, size_t *len);
+ int is_hex(const u8 *data, size_t len);
+ int has_ctrl_char(const u8 *data, size_t len);
++int has_newline(const char *str);
+ size_t merge_byte_arrays(u8 *res, size_t res_len,
+ 			 const u8 *src1, size_t src1_len,
+ 			 const u8 *src2, size_t src2_len);
+diff --git a/wpa_supplicant/config.c b/wpa_supplicant/config.c
+index fdd964356afa..eb97cd5e4e6e 100644
+--- a/wpa_supplicant/config.c
++++ b/wpa_supplicant/config.c
+@@ -2699,8 +2699,19 @@ char * wpa_config_get(struct wpa_ssid *ssid, const char *var)
+ 
+ 	for (i = 0; i < NUM_SSID_FIELDS; i++) {
+ 		const struct parse_data *field = &ssid_fields[i];
+-		if (os_strcmp(var, field->name) == 0)
+-			return field->writer(field, ssid);
++		if (os_strcmp(var, field->name) == 0) {
++			char *ret = field->writer(field, ssid);
++
++			if (ret && has_newline(ret)) {
++				wpa_printf(MSG_ERROR,
++					   "Found newline in value for %s; not returning it",
++					   var);
++				os_free(ret);
++				ret = NULL;
++			}
++
++			return ret;
++		}
+ 	}
+ 
+ 	return NULL;
+-- 
+2.8.1
+

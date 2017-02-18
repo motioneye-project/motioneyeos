@@ -1,0 +1,20 @@
+config BR2_PACKAGE_ATKMM
+	bool "atkmm"
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_GLIBMM
+	select BR2_PACKAGE_LIBSIGC
+	depends on BR2_INSTALL_LIBSTDCPP # glibmm
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on BR2_TOOLCHAIN_HAS_THREADS # atk/glibmm -> libglib2
+	depends on BR2_USE_MMU # atk/glibmm -> libglib2
+	depends on BR2_USE_WCHAR # atk/glibmm -> libglib2
+
+	help
+	  The atkmm package is a set of C++ bindings for Atk.
+
+	  http://www.gtkmm.org/
+
+comment "atkmm needs a toolchain w/ C++, wchar, threads, gcc >= 4.8"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

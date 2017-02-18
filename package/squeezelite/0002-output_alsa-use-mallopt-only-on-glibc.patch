@@ -1,0 +1,34 @@
+From 903922a7bcf06e04d9830b47bba6d65ed37304c1 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 Feb 2016 18:05:56 +0100
+Subject: [PATCH] output_alsa: use mallopt() only on glibc
+
+The musl C library does not provide the glibc specific mallopt()
+functionality, so use it only when __GLIBC__ is defined.
+
+uClibc pretends to be glibc by defining __GLIBC__, but it implements
+mallopt(), so it works fine.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ output_alsa.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/output_alsa.c b/output_alsa.c
+index aa01560..44c9fc7 100644
+--- a/output_alsa.c
++++ b/output_alsa.c
+@@ -862,8 +862,10 @@ void output_init_alsa(log_level level, const char *device, unsigned output_buf_s
+ 		LOG_INFO("memory locked");
+ 	}
+ 
++#ifdef __GLIBC__
+ 	mallopt(M_TRIM_THRESHOLD, -1);
+ 	mallopt(M_MMAP_MAX, 0);
++#endif
+ 
+ 	touch_memory(silencebuf, MAX_SILENCE_FRAMES * BYTES_PER_FRAME);
+ 	touch_memory(outputbuf->buf, outputbuf->size);
+-- 
+2.6.4
+

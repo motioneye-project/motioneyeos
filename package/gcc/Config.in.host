@@ -1,0 +1,172 @@
+comment "GCC Options"
+
+config BR2_GCC_NEEDS_MPC
+	bool
+
+config BR2_GCC_SUPPORTS_GRAPHITE
+	bool
+
+choice
+	prompt "GCC compiler Version"
+	default BR2_GCC_VERSION_4_8_ARC if BR2_arc
+	default BR2_GCC_VERSION_4_9_X
+	help
+	  Select the version of gcc you wish to use.
+
+	config BR2_GCC_VERSION_4_7_X
+		bool "gcc 4.7.x"
+		depends on BR2_DEPRECATED_SINCE_2016_05
+		# Broken or unsupported architectures
+		depends on !BR2_microblaze && !BR2_aarch64 && !BR2_arc \
+			&& !BR2_powerpc64le && !BR2_nios2
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a12 && !BR2_pj4 && !BR2_cortex_a17
+		# Broken or unsupported PPC cores
+		depends on !BR2_powerpc_e5500 && !BR2_powerpc_e6500 && \
+			!BR2_powerpc_power8
+		# SPARC -mcpu=leon3 appeared in gcc 4.8.x
+		depends on !BR2_sparc_leon3
+		# Broken or unsupported x86 cores
+		depends on !BR2_x86_jaguar && !BR2_x86_steamroller
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		select BR2_GCC_NEEDS_MPC
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+
+	config BR2_GCC_VERSION_4_8_X
+		bool "gcc 4.8.x"
+		# Broken or unsupported architectures
+		depends on !BR2_microblaze && !BR2_arc \
+			&& !BR2_powerpc64le && !BR2_nios2
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a12 && !BR2_cortex_a17
+		# Broken or unsupported PPC cores
+		depends on !BR2_powerpc_power8
+		# gcc-4.8.x + binutils-2.25 is broken for MIPS
+		depends on !((BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) && BR2_BINUTILS_VERSION_2_25_X)
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+	config BR2_GCC_VERSION_4_8_ARC
+		bool "gcc 4.8-arc"
+		# Only supported architecture
+		depends on BR2_arc
+		select BR2_GCC_NEEDS_MPC
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+
+	config BR2_GCC_VERSION_4_9_X
+		bool "gcc 4.9.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a17
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		# PR60102 https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60102
+		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+	config BR2_GCC_VERSION_5_X
+		bool "gcc 5.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc
+		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
+	config BR2_GCC_VERSION_6_X
+		bool "gcc 6.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc
+		select BR2_GCC_NEEDS_MPC
+		select BR2_GCC_SUPPORTS_GRAPHITE
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
+endchoice
+
+config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
+	bool
+	default y
+
+config BR2_GCC_VERSION
+	string
+	default "4.7.4"     if BR2_GCC_VERSION_4_7_X
+	default "4.8.5"     if BR2_GCC_VERSION_4_8_X
+	default "4.9.3"     if BR2_GCC_VERSION_4_9_X
+	default "5.3.0"     if BR2_GCC_VERSION_5_X
+	default "6.1.0" if BR2_GCC_VERSION_6_X
+	default "arc-2015.12" if BR2_GCC_VERSION_4_8_ARC
+
+config BR2_EXTRA_GCC_CONFIG_OPTIONS
+	string "Additional gcc options"
+	default ""
+	help
+	  Any additional gcc configure options you may want to
+	  include. Those options are applied for all of the gcc
+	  initial, gcc intermediate and gcc final passes.
+
+config BR2_TOOLCHAIN_BUILDROOT_CXX
+	bool "Enable C++ support"
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Enable this option if you want your toolchain to support the
+	  C++ language and you want C++ libraries to be installed on
+	  your target system.
+
+config BR2_TOOLCHAIN_BUILDROOT_FORTRAN
+	bool "Enable Fortran support"
+	help
+	  Enable this option if you want your toolchain to support the
+	  Fortran language and you want Fortran libraries to be
+	  installed on your target system.
+
+config BR2_GCC_ENABLE_TLS
+	bool "Enable compiler tls support" if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
+	default y
+	depends on BR2_PTHREADS_NATIVE || BR2_TOOLCHAIN_BUILDROOT_EGLIBC || BR2_TOOLCHAIN_BUILDROOT_GLIBC
+	help
+	  Enable the compiler to generate code for accessing
+	  thread local storage variables
+
+config BR2_GCC_ENABLE_LTO
+	bool "Enable compiler link-time-optimization support"
+	select BR2_BINUTILS_ENABLE_LTO
+	help
+	  This option enables link-time optimization (LTO) support in
+	  gcc.
+
+config BR2_GCC_ENABLE_OPENMP
+	bool "Enable compiler OpenMP support"
+	depends on !BR2_PTHREADS_NONE && !BR2_arc && !BR2_microblaze
+	help
+	  Enable OpenMP support for the compiler
+
+config BR2_GCC_ENABLE_LIBMUDFLAP
+	bool "Enable libmudflap support"
+	# There are architectures, or specific configurations for
+	# which mudflap is not supported.
+	depends on !BR2_ARM_INSTRUCTIONS_THUMB && !BR2_powerpc_SPE
+	depends on !BR2_GCC_VERSION_4_9_X
+	depends on !BR2_GCC_VERSION_5_X
+	depends on !BR2_GCC_VERSION_6_X
+	help
+	  libmudflap is a gcc library used for the mudflap pointer
+	  debugging functionality. It is only needed if you intend to
+	  use the -fmudflap gcc flag.
+
+	  See http://gcc.gnu.org/wiki/Mudflap_Pointer_Debugging and
+	  the help of the gcc -fmudflap option for more details.
+
+	  If you're unsure, leave this option disabled.
+
+config BR2_GCC_ENABLE_GRAPHITE
+	bool "Enable graphite support"
+	depends on BR2_GCC_SUPPORTS_GRAPHITE
+	help
+	  This option enables the graphite optimizations in the
+	  compiler.

@@ -1,0 +1,23 @@
+config BR2_PACKAGE_SDL_SOUND
+	bool "SDL_sound"
+	depends on BR2_PACKAGE_SDL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	help
+	  SDL_sound is a library that handles the decoding of several
+	  popular sound file formats, such as .WAV and .MP3.
+	  It is meant to make the programmer's sound playback tasks
+	  simpler. The programmer gives SDL_sound a filename, or feeds
+	  it data directly from one of many sources, and then reads the
+	  decoded waveform data back at her leisure.
+
+	  http://icculus.org/SDL_sound/
+
+if BR2_PACKAGE_SDL_SOUND
+
+config BR2_PACKAGE_SDL_SOUND_PLAYSOUND
+	bool "install playsound tool"
+	help
+	  Enable this option to install the playsound/playsound_simple
+	  tools to target.
+
+endif

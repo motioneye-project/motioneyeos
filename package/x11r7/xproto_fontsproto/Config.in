@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_FONTSPROTO
+	bool "fontsproto"
+	help
+	  X.Org Fonts protocol headers

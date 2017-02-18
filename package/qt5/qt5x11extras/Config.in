@@ -1,0 +1,11 @@
+config BR2_PACKAGE_QT5X11EXTRAS
+	bool "qt5x11extras"
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	depends on BR2_PACKAGE_QT5BASE_XCB
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5x11extras module.
+
+	  http://qt.io

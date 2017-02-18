@@ -1,0 +1,10 @@
+config BR2_PACKAGE_MPDECIMAL
+	bool "mpdecimal"
+	help
+	  mpdecimal is a package for correctly-rounded arbitrary
+	  precision decimal floating point arithmetic. Starting from
+	  version 2.4, mpdecimal includes only the libmpdec
+	  library. Further mpdecimal development will focus
+	  exclusively on libmpdec.
+
+	  http://www.bytereef.org/mpdecimal/

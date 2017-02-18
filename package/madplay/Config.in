@@ -1,0 +1,22 @@
+config BR2_PACKAGE_MADPLAY
+	bool "madplay"
+	select BR2_PACKAGE_LIBMAD
+	select BR2_PACKAGE_LIBID3TAG
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  Command-line front-end to libmad, a high-quality MPEG audio decoder.
+	  It currently supports MPEG-1 and the MPEG-2 extension to lower
+	  sampling frequencies, as well as the de facto MPEG 2.5 format. All
+	  three audio layers — Layer I, Layer II, and Layer III (i.e. MP3) —
+	  are fully implemented.
+
+	  http://www.underbit.com/products/mad/
+
+if BR2_PACKAGE_MADPLAY
+
+config BR2_PACKAGE_MADPLAY_ALSA
+	bool
+	default y
+	depends on BR2_PACKAGE_ALSA_LIB
+
+endif

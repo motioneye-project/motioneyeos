@@ -1,0 +1,7 @@
+config BR2_PACKAGE_INCONSOLATA
+	bool "inconsolata"
+	help
+	  Inconsolata is a monospace font, designed for code listings
+	  and the like.
+
+	  http://www.google.com/fonts/specimen/Inconsolata

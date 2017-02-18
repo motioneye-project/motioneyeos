@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_NET_DNS
+	bool "perl-net-dns"
+	select BR2_PACKAGE_PERL_DIGEST_HMAC
+	help
+	  Net::DNS is a DNS resolver implemented in Perl.
+
+	  http://www.net-dns.org

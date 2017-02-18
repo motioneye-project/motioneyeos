@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBGCRYPT
+	bool "libgcrypt"
+	select BR2_PACKAGE_LIBGPG_ERROR
+	help
+	  LibGCrypt is GNU's basic cryptographic library.
+
+	  http://www.gnu.org/software/libgcrypt/

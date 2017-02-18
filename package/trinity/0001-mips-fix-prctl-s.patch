@@ -1,0 +1,39 @@
+From d61dd102b95b9791e45d6bbf1e34814b8c6c1731 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Mon, 14 Dec 2015 14:46:37 +0000
+Subject: [PATCH] mips: fix prctl's
+
+It looks like a typo in the syscalls/prctl.c file. It's lacking the PR_
+preffix, and due to that is causing build failures like this one:
+
+  CC	syscalls/prctl.o
+syscalls/prctl.c:37:2: error: 'GET_FP_MODE' undeclared here (not in a
+function)
+  GET_FP_MODE, SET_FP_MODE,
+  ^
+syscalls/prctl.c:37:15: error: 'SET_FP_MODE' undeclared here (not
+in a function)
+  GET_FP_MODE, SET_FP_MODE,
+               ^
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ syscalls/prctl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/syscalls/prctl.c b/syscalls/prctl.c
+index 523f03e..5a64fb3 100644
+--- a/syscalls/prctl.c
++++ b/syscalls/prctl.c
+@@ -34,7 +34,7 @@ static int prctl_opts[] = {
+ 	PR_GET_NO_NEW_PRIVS, PR_GET_TID_ADDRESS, PR_SET_THP_DISABLE, PR_GET_THP_DISABLE,
+ 	PR_MPX_ENABLE_MANAGEMENT, PR_MPX_DISABLE_MANAGEMENT,
+ #ifdef __mips__
+-	GET_FP_MODE, SET_FP_MODE,
++	PR_GET_FP_MODE, PR_SET_FP_MODE,
+ #endif
+ 	PR_CAP_AMBIENT,
+ };
+-- 
+2.4.10
+

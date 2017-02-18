@@ -1,0 +1,45 @@
+From 5348da83403383a60831f4c297841afb98692887 Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 16 May 2015 14:45:46 +0200
+Subject: [PATCH] extra: Define _GNU_SOURCE to get members of tcphdr&ucphdr
+
+The source uses linux names for members of tcphdr. For example
+"source" instead of "th_sport", ... musl libc's headers need
+_GNU_SOURCE defined in order to expose these.
+
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[yann.morin.1998@free.fr: backported from upstream]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ src/extra/tcp.c | 1 +
+ src/extra/udp.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/src/extra/tcp.c b/src/extra/tcp.c
+index bf161aa..d1cd79d 100644
+--- a/src/extra/tcp.c
++++ b/src/extra/tcp.c
+@@ -15,6 +15,7 @@
+ #include <arpa/inet.h>
+ #include <netinet/ip.h>
+ #include <netinet/ip6.h>
++#define _GNU_SOURCE
+ #include <netinet/tcp.h>
+ 
+ #include <libnetfilter_queue/libnetfilter_queue.h>
+diff --git a/src/extra/udp.c b/src/extra/udp.c
+index 6e6baed..8c44a66 100644
+--- a/src/extra/udp.c
++++ b/src/extra/udp.c
+@@ -14,6 +14,7 @@
+ #include <arpa/inet.h>
+ #include <netinet/ip.h>
+ #include <netinet/ip6.h>
++#define _GNU_SOURCE
+ #include <netinet/udp.h>
+ 
+ #include <libnetfilter_queue/libnetfilter_queue.h>
+-- 
+1.9.1
+

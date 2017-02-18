@@ -1,0 +1,33 @@
+From 1abf7a6aad3d7931de2c01b578f62986b75de2f5 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 11 Nov 2014 16:23:42 -0300
+Subject: [PATCH] Optionally use LIBPCAP for required libpcap libraries
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+Status: Reported http://trac.aircrack-ng.org/ticket/1528
+
+diff --git a/src/Makefile b/src/Makefile
+index 14350b6..7bd4271 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -23,6 +23,7 @@ ifneq ($(OSNAME), cygwin) #There is yet no libpcap support for windows, so we sk
+ 	HAVE_PCAP	= $(shell ld -lpcap 2> /dev/null && echo yes)
+ 	ifeq ($(HAVE_PCAP), yes) #cannot link with -lpcap, skip crawler
+ 		BINFILES	+= besside-ng-crawler$(EXE)
++		LIBPCAP		= -lpcap
+ 	endif
+ endif
+ 
+@@ -168,7 +169,7 @@ besside-ng$(EXE): $(OBJS_BS) $(LIBOSD)
+ 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_BS) -o $(@) $(LIBS) $(LIBSSL) -lz $(LIBPCRE)
+ 
+ besside-ng-crawler$(EXE): $(OBJS_BC)
+-	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_BC) -o $(@) -lpcap
++	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_BC) -o $(@) $(LIBPCAP)
+ 
+ makeivs-ng$(EXE): $(OBJS_MI)
+ 	$(CC) $(CFLAGS) $(LDFLAGS) $(OBJS_MI) -o $(@) $(LDFLAGS)
+-- 
+2.0.4
+

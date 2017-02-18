@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Starts ModemManager
+#
+
+PIDFILE=/var/run/ModemManager.pid
+
+[ -x $MODEMMANAGER_BIN ] || exit 0
+
+start() {
+	printf "Starting ModemManager: "
+	umask 077
+	start-stop-daemon -S -q -b -m -p $PIDFILE \
+		--exec /usr/sbin/ModemManager
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	printf "Stopping ModemManager: "
+	start-stop-daemon -K -q -p $PIDFILE
+	[ $? = 0 ] && { echo "OK"; rm -f $PIDFILE; } || echo "FAIL"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $ret

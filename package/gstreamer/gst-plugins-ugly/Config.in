@@ -1,0 +1,53 @@
+menuconfig BR2_PACKAGE_GST_PLUGINS_UGLY
+	bool "gst-plugins-ugly"
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	help
+	  A set of well-supported plug-ins for GStreamer, but might pose
+	  problems for distributors.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST_PLUGINS_UGLY
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_ASFDEMUX
+	bool "asfdemux"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_DVDLPCMDEC
+	bool "dvdlpcmdec"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_DVDSUB
+	bool "dvdsub"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_IEC958
+	bool "iec958"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MPEGAUDIOPARSE
+	bool "mpegaudioparse"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MPEGSTREAM
+	bool "mpegstream"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_REALMEDIA
+	bool "realmedia"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_SYNAESTHESIA
+	bool "synaesthesia"
+
+comment "plugins with external dependencies (there may be more available)"
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_LAME
+	bool "lame (*.mp3 audio encoder)"
+	select BR2_PACKAGE_LAME
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MAD
+	bool "mad (*.mp3 audio)"
+	select BR2_PACKAGE_LIBID3TAG
+	select BR2_PACKAGE_LIBMAD
+
+config BR2_PACKAGE_GST_PLUGINS_UGLY_PLUGIN_MPEG2DEC
+	bool "mpeg2dec"
+	select BR2_PACKAGE_LIBMPEG2
+
+endif

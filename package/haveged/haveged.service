@@ -1,0 +1,10 @@
+[Unit]
+Description=Entropy Harvesting Daemon
+Documentation=man:haveged(8)
+
+[Service]
+ExecStart=/usr/sbin/haveged -F -w 1024 -v 1
+SuccessExitStatus=143
+
+[Install]
+WantedBy=multi-user.target

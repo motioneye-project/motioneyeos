@@ -1,0 +1,33 @@
+# mongrel2 uses {get,make,swap}context() functions, which are
+# available in glibc for all architectures and in uClibc only for a
+# subset of the architectures
+config BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+	bool
+	default y if BR2_TOOLCHAIN_USES_GLIBC
+	default y if BR2_TOOLCHAIN_USES_UCLIBC && \
+		(BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || BR2_x86_64)
+
+comment "mongrel2 needs a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS || !BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+
+config BR2_PACKAGE_MONGREL2
+	bool "mongrel2"
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZEROMQ
+	depends on BR2_INSTALL_LIBSTDCPP # zeromq
+	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	depends on BR2_USE_WCHAR # zeromq -> util-linux
+	depends on !BR2_STATIC_LIBS # uses dlopen()
+	depends on BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+	help
+	  Mongrel2 is an application, language, and network architecture
+	  agnostic web server that focuses on web applications using
+	  modern browser technologies.
+
+	  Mongrel2 supports 17 languages and platforms, HTTP, Flash
+	  sockets, WebSockets, Long Polling, and many ways to deploy
+	  and hack on it.
+
+	  http://www.mongrel2.org

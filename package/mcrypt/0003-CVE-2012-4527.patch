@@ -1,0 +1,99 @@
+Fix for CVE-2012-4527.
+Authored by Attila Bogar and Jean-Michel Vourgère <jmv_deb@nirgal.com>
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura mcrypt-2.6.8.orig/src/mcrypt.c mcrypt-2.6.8/src/mcrypt.c
+--- mcrypt-2.6.8.orig/src/mcrypt.c	2013-01-14 19:15:49.465925072 -0300
++++ mcrypt-2.6.8/src/mcrypt.c	2013-01-14 19:28:13.711478000 -0300
+@@ -44,7 +44,9 @@
+ static char rcsid[] =
+     "$Id: mcrypt.c,v 1.2 2007/11/07 17:10:21 nmav Exp $";
+ 
+-char tmperr[128];
++/* Temporary error message can contain one file name and 1k of text */
++#define ERRWIDTH ((PATH_MAX)+1024)
++char tmperr[ERRWIDTH];
+ unsigned int stream_flag = FALSE;
+ char *keymode = NULL;
+ char *mode = NULL;
+@@ -482,7 +484,7 @@
+ #ifdef HAVE_STAT
+       if (stream_flag == FALSE) {
+ 	 if (is_normal_file(file[i]) == FALSE) {
+-	    sprintf(tmperr,
++	    snprintf(tmperr, ERRWIDTH,
+ 		    _
+ 		    ("%s: %s is not a regular file. Skipping...\n"),
+ 		    program_name, file[i]);
+@@ -501,7 +503,7 @@
+ 	    dinfile = file[i];
+ 	 if ((isatty(fileno((FILE *) (stdin))) == 1)
+ 	     && (stream_flag == TRUE) && (force == 0)) {	/* not a tty */
+-	    sprintf(tmperr,
++	    snprintf(tmperr, ERRWIDTH,
+ 		    _
+ 		    ("%s: Encrypted data will not be read from a terminal.\n"),
+ 		    program_name);
+@@ -520,7 +522,7 @@
+ 	    einfile = file[i];
+ 	 if ((isatty(fileno((FILE *) (stdout))) == 1)
+ 	     && (stream_flag == TRUE) && (force == 0)) {	/* not a tty */
+-	    sprintf(tmperr,
++	    snprintf(tmperr, ERRWIDTH,
+ 		    _
+ 		    ("%s: Encrypted data will not be written to a terminal.\n"),
+ 		    program_name);
+@@ -544,7 +546,7 @@
+ 	    strcpy(outfile, einfile);
+ 	    /* if file has already the .nc ignore it */
+ 	    if (strstr(outfile, ".nc") != NULL) {
+-	       sprintf(tmperr,
++	       snprintf(tmperr, ERRWIDTH,
+ 		       _
+ 		       ("%s: file %s has the .nc suffix... skipping...\n"),
+ 		       program_name, outfile);
+@@ -590,10 +592,10 @@
+ 
+ 	 if (x == 0) {
+ 	    if (stream_flag == FALSE) {
+-	       sprintf(tmperr, _("File %s was decrypted.\n"), dinfile);
++	       snprintf(tmperr, ERRWIDTH, _("File %s was decrypted.\n"), dinfile);
+ 	       err_warn(tmperr);
+ 	    } else {
+-	       sprintf(tmperr, _("Stdin was decrypted.\n"));
++	       snprintf(tmperr, ERRWIDTH, _("Stdin was decrypted.\n"));
+ 	       err_warn(tmperr);
+ 	    }
+ #ifdef HAVE_STAT
+@@ -610,7 +612,7 @@
+ 
+ 	 } else {
+ 	    if (stream_flag == FALSE) {
+-	       sprintf(tmperr,
++	       snprintf(tmperr, ERRWIDTH,
+ 		       _
+ 		       ("File %s was NOT decrypted successfully.\n"),
+ 		       dinfile);
+@@ -636,10 +638,10 @@
+ 
+ 	 if (x == 0) {
+ 	    if (stream_flag == FALSE) {
+-	       sprintf(tmperr, _("File %s was encrypted.\n"), einfile);
++	       snprintf(tmperr, ERRWIDTH, _("File %s was encrypted.\n"), einfile);
+ 	       err_warn(tmperr);
+ 	    } else {
+-	       sprintf(tmperr, _("Stdin was encrypted.\n"));
++	       snprintf(tmperr, ERRWIDTH, _("Stdin was encrypted.\n"));
+ 	       err_warn(tmperr);
+ 	    }
+ #ifdef HAVE_STAT
+@@ -655,7 +657,7 @@
+ 
+ 	 } else {
+ 	    if (stream_flag == FALSE) {
+-	       sprintf(tmperr,
++	       snprintf(tmperr, ERRWIDTH,
+ 		       _
+ 		       ("File %s was NOT encrypted successfully.\n"),
+ 		       einfile);

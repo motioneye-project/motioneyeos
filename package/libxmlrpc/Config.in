@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBXMLRPC
+	bool "libxmlrpc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBCURL
+	help
+	  XML-RPC is a quick-and-easy way to make procedure calls over
+	  the Internet. It converts the procedure call into an XML
+	  document, sends it to a remote server using HTTP, and gets
+	  back the response as XML.
+
+	  http://xmlrpc-c.sourceforge.net/
+
+comment "libxmlrpc needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,40 @@
+comment "espeak needs a toolchain w/ C++, wchar, threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+
+config BR2_PACKAGE_ESPEAK
+	bool "espeak"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	# does not properly support building only a static version
+	depends on !BR2_STATIC_LIBS
+	help
+	  espeak is a speech synthesizer software for English and
+	  other languages.
+
+	  http://espeak.sourceforge.net/
+
+if BR2_PACKAGE_ESPEAK
+
+choice
+	prompt "choose audio backend"
+	default BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_NONE
+
+config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_NONE
+	bool "No sound backend, only produce wav files"
+
+config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_ALSA
+	bool "alsa via portaudio"
+	select BR2_PACKAGE_PORTAUDIO
+	select BR2_PACKAGE_PORTAUDIO_CXX
+
+config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_PULSEAUDIO
+	bool "pulseaudio"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
+	select BR2_PACKAGE_PULSEAUDIO
+
+endchoice
+
+endif # BR2_PACKAGE_ESPEAK

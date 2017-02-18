@@ -1,0 +1,7 @@
+config BR2_PACKAGE_GST_OMAPFB
+	bool "gst-omapfb"
+	depends on BR2_cortex_a8
+	help
+	  GStreamer plug-in to use OMAP framebuffer.
+
+	  http://github.com/felipec/gst-omapfb

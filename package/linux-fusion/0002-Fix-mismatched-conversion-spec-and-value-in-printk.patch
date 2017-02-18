@@ -1,0 +1,29 @@
+From debb9cafe9b7cc2b286399ecc8e3210480061c70 Mon Sep 17 00:00:00 2001
+From: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+Date: Mon, 11 Jan 2016 15:42:16 +0100
+Subject: [PATCH] Fix mismatched conversion spec and value in printk
+
+linux/drivers/char/fusion/fusiondev.c:775:38: warning:
+format '%ld' expects argument of type 'long int', but argument 7 has type 'int'
+
+Subtracting two pointers yields a ptrdiff_t value, and ptrdiff_t is not
+necessarily an alias for long int. Cast the value to long int.
+
+Signed-off-by: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+---
+ linux/drivers/char/fusion/fusiondev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/linux/drivers/char/fusion/fusiondev.c b/linux/drivers/char/fusion/fusiondev.c
+index 7003407f7e1e..dfb5f8ecb81a 100644
+--- a/linux/drivers/char/fusion/fusiondev.c
++++ b/linux/drivers/char/fusion/fusiondev.c
+@@ -775,7 +775,7 @@ call_ioctl(FusionDev * dev, Fusionee * fusionee,
+                               printk( KERN_ERR "fusion: FUSION_CALL_EXECUTE3 with errorneous call (failed on previous ioctl call), "
+                                                "call id %d, flags 0x%08x, arg %d, length %u, serial %u,  %ld\n",
+                                       execute3.call_id, execute3.flags, execute3.call_arg, execute3.length, execute3.ret_length,
+-                                      (execute3_bin - (FusionCallExecute3 *) arg) );
++                                      (long int)(execute3_bin - (FusionCallExecute3 *) arg) );
+                               return -EIO;
+                          }
+ 

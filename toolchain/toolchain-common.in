@@ -1,0 +1,414 @@
+# Generic toolchain options
+
+# we want gdb config in the middle of both source and external
+# toolchains, but mconf won't let us source the same file twice,
+# so put it here instead
+source "package/gdb/Config.in.host"
+
+# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+	bool
+
+config BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	bool
+
+config BR2_USE_WCHAR
+	bool
+
+config BR2_ENABLE_LOCALE
+	bool
+
+config BR2_INSTALL_LIBSTDCPP
+	bool
+
+config BR2_TOOLCHAIN_HAS_THREADS
+	bool
+
+config BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	bool
+
+config BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	bool
+
+config BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
+	bool
+
+config BR2_TOOLCHAIN_HAS_SSP
+	bool
+
+config BR2_ENABLE_LOCALE_PURGE
+	bool "Purge unwanted locales"
+	help
+	  Explicitly specify what locales to install on target. If N
+	  then all locales supported by packages are installed.
+
+config BR2_ENABLE_LOCALE_WHITELIST
+	string "Locales to keep"
+	default "C en_US de fr"
+	depends on BR2_ENABLE_LOCALE_PURGE
+	help
+	  Whitespace seperated list of locales to allow on target.
+	  Locales not listed here will be removed from the target.
+	  See 'locale -a' on your host for a list of locales available
+	  on your build host, or have a look in /usr/share/locale in
+	  the target file system for available locales.
+
+	  Notice that listing a locale here doesn't guarantee that it
+	  will be available on the target - That purely depends on the
+	  support for that locale in the selected packages.
+
+config BR2_GENERATE_LOCALE
+	string "Generate locale data"
+	default ""
+	depends on \
+		(BR2_TOOLCHAIN_BUILDROOT_UCLIBC && BR2_ENABLE_LOCALE) || \
+		BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  Generate support for a list of locales. Locales can be
+	  specified with or without encoding, when no encoding is
+	  specified, UTF-8 is assumed. Examples of locales: en_US,
+	  fr_FR.UTF-8.
+
+config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
+	bool "Copy gconv libraries"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  The gconv libraries are used to convert between different
+	  character sets (charsets).
+
+	  Say 'y' if you need to store and/or display different charsets.
+
+config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
+	string "Gconv libraries to copy"
+	depends on BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
+	help
+	  Set to the list of gconv libraries to copy.
+	  Leave empty to copy all gconv libraries.
+
+	  Specify only the basename of the libraries, leave
+	  out the .so extension. Eg.:
+	    IBM850 ISO8859-15 UNICODE
+
+	  Note: the full set of gconv libs are ~8MiB (on ARM).
+
+# glibc and eglibc directly include gettext, so a separatly compiled
+# gettext isn't needed and shouldn't be built to avoid conflicts. Some
+# packages always need gettext, other packages only need gettext when
+# locale support is enabled. See the documentation for how packages
+# should rely on the following two options.
+
+config BR2_NEEDS_GETTEXT
+	bool
+	default y if BR2_TOOLCHAIN_USES_UCLIBC
+
+config BR2_NEEDS_GETTEXT_IF_LOCALE
+	bool
+	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
+
+config BR2_USE_MMU
+	bool "Enable MMU support" if BR2_ARCH_HAS_MMU_OPTIONAL
+	default y if BR2_ARCH_HAS_MMU_OPTIONAL || BR2_ARCH_HAS_MMU_MANDATORY
+	help
+	  If your target has a MMU, you should say Y here.  If you
+	  are unsure, just say Y.
+
+config BR2_TARGET_OPTIMIZATION
+	string "Target Optimizations"
+	default ""
+	help
+	  Optimizations to use when building for the target host.
+	  NOTE: gcc optimization level is defined in build options.
+
+config BR2_TARGET_LDFLAGS
+	string "Target linker options"
+	help
+	  Extra options to pass to the linker when building for the target.
+
+	  Note that options with a '$' sign (eg. -Wl,-rpath='$ORIGIN/../lib')
+	  are not supported.
+
+config BR2_ECLIPSE_REGISTER
+	bool "Register toolchain within Eclipse Buildroot plug-in"
+	help
+	  This options tells Buildroot to generate the necessary
+	  configuration files to make your toolchain appear within
+	  Eclipse, through the Eclipse Buildroot plugin.
+
+# Options for packages to depend on, if they require at least a
+# specific version of the kernel headers.
+# Toolchains should choose the adequate option (ie. the highest
+# version, not all of them).
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	bool
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+
+# This order guarantees that the highest version is set, as kconfig
+# stops affecting a value on the first matching default.
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST
+	string
+	default "4.5"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+	default "4.4"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+	default "4.3"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+	default "4.2"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+	default "4.1"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+	default "4.0"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
+	default "3.19" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
+	default "3.18" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+	default "3.17" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+	default "3.16" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+	default "3.15" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
+	default "3.14" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
+	default "3.13" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+	default "3.12" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	default "3.11" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+	default "3.10" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	default "3.9"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+	default "3.8"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+	default "3.7"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	default "3.6"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+	default "3.5"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+	default "3.4"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	default "3.3"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+	default "3.2"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	default "3.1"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+	default "3.0"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	default "2.6"
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+	bool
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+config BR2_TOOLCHAIN_GCC_AT_LEAST_6
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
+# This order guarantees that the highest version is set, as kconfig
+# stops affecting a value on the first matching default.
+config BR2_TOOLCHAIN_GCC_AT_LEAST
+	string
+	default "6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_6
+	default "5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_5
+	default "4.9"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	default "4.8"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	default "4.7"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	default "4.6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	default "4.5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
+	default "4.4"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+	default "4.3"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_HAS_SYNC_1
+	bool
+	default y
+	depends on !BR2_bfin
+	depends on !BR2_microblaze
+	depends on !BR2_sparc
+	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
+
+config BR2_TOOLCHAIN_HAS_SYNC_2
+	bool
+	default y if BR2_TOOLCHAIN_HAS_SYNC_1
+
+config BR2_TOOLCHAIN_HAS_SYNC_4
+	bool
+	default y
+	depends on !BR2_sparc
+	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
+
+# The availability of __sync for 8-byte types on ARM is somewhat
+# complicated:
+#
+#  - It appeared in gcc starting with gcc 4.7.
+#
+#  - On ARMv7, there is no problem, it can be directly implemented in
+#    userspace.
+#
+#  - On < ARMv7, it requires help from the kernel. Unfortunately, the
+#    libgcc code implementing 8-byte __sync with the help from the
+#    kernel calls __write() when a failure occurs, which is a function
+#    internal to glibc, not available in uClibc and musl. This means
+#    that the 8-byte __sync operations are not available on < ARMv7
+#    with uClibc and musl. This problem was fixed as part of gcc
+#    PR68059, which was backported to the gcc 5 branch, but isn't yet
+#    part of any gcc 5.x release.
+#
+config BR2_TOOLCHAIN_ARM_HAS_SYNC_8
+	bool
+	default y
+	depends on BR2_arm || BR2_armeb
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_ARM_CPU_ARMV7A
+
+# 8-byte intrinsics available on most x86 CPUs, except a few old ones
+config BR2_TOOLCHAIN_X86_HAS_SYNC_8
+	bool
+	default y
+	depends on BR2_i386
+	depends on !BR2_x86_i486
+	depends on !BR2_x86_c3
+	depends on !BR2_x86_winchip_c6
+	depends on !BR2_x86_winchip2
+
+# 8-byte intrinsics available:
+#  - On all 64 bits architecture
+#  - On a certain combinations of ARM platforms
+#  - On certain x86 32 bits CPUs
+config BR2_TOOLCHAIN_HAS_SYNC_8
+	bool
+	default y if BR2_ARCH_IS_64
+	default y if BR2_TOOLCHAIN_ARM_HAS_SYNC_8
+	default y if BR2_TOOLCHAIN_X86_HAS_SYNC_8
+
+# libatomic is available since gcc 4.8, when thread support is
+# enabled.
+config BR2_TOOLCHAIN_HAS_LIBATOMIC
+	bool
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 && \
+		BR2_TOOLCHAIN_HAS_THREADS
+
+# __atomic intrinsics are available:
+# - with gcc 4.8, either through built-ins or libatomic, on all
+#   architectures. Since we don't want to separate the cases where
+#   libatomic is needed vs. not needed, we simplify thing and only
+#   support situations where libatomic is available, even if on some
+#   architectures libatomic is not strictly needed as all __atomic
+#   intrinsics might be built-in. The only case where libatomic is
+#   missing entirely is when the toolchain does not have support for
+#   threads. However, a package that does not need threads but still
+#   uses atomics is quite a corner case, which does not warrant the
+#   added complexity.
+# - with gcc 4.7, libatomic did not exist, so only built-ins are
+#   available. This means that __atomic can only be used in a subset
+#   of the architectures
+config BR2_TOOLCHAIN_HAS_ATOMIC
+	bool
+	default y if BR2_TOOLCHAIN_HAS_LIBATOMIC
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_arm
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_armeb
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_xtensa
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_ARCH_IS_64

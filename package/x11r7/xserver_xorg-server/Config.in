@@ -1,0 +1,161 @@
+config BR2_PACKAGE_XSERVER_XORG_SERVER
+	bool "xorg-server"
+	depends on BR2_USE_MMU # fork()
+	# We need a SHA1 implementation. If either openssl or
+	# libgcrypt are already part of the build, we'll use one of
+	# them, otherwise, use the small libsha1 library.
+	select BR2_PACKAGE_LIBSHA1 if (!BR2_PACKAGE_OPENSSL && !BR2_PACKAGE_LIBGCRYPT)
+	select BR2_PACKAGE_MCOOKIE
+	select BR2_PACKAGE_PIXMAN
+	select BR2_PACKAGE_XFONT_FONT_ALIAS if !BR2_PACKAGE_XSERVER_XORG_SERVER_BUILTIN_FONTS
+	select BR2_PACKAGE_XFONT_FONT_MISC_MISC if !BR2_PACKAGE_XSERVER_XORG_SERVER_BUILTIN_FONTS
+	select BR2_PACKAGE_XFONT_FONT_CURSOR_MISC if !BR2_PACKAGE_XSERVER_XORG_SERVER_BUILTIN_FONTS
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAU
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXDMCP
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+	select BR2_PACKAGE_XLIB_LIBXFONT
+	select BR2_PACKAGE_XLIB_LIBXFT
+	select BR2_PACKAGE_XLIB_LIBXI
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXRES
+	select BR2_PACKAGE_XLIB_LIBXXF86VM
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	select BR2_PACKAGE_XLIB_XTRANS
+	select BR2_PACKAGE_XDATA_XBITMAPS
+	select BR2_PACKAGE_XPROTO_BIGREQSPROTO
+	select BR2_PACKAGE_XPROTO_COMPOSITEPROTO
+	select BR2_PACKAGE_XPROTO_DAMAGEPROTO
+	select BR2_PACKAGE_XPROTO_FIXESPROTO
+	select BR2_PACKAGE_XPROTO_FONTSPROTO
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	select BR2_PACKAGE_XPROTO_INPUTPROTO
+	select BR2_PACKAGE_XPROTO_KBPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_RESOURCEPROTO
+	select BR2_PACKAGE_XPROTO_VIDEOPROTO
+	select BR2_PACKAGE_XPROTO_XCMISCPROTO
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	select BR2_PACKAGE_XPROTO_XF86BIGFONTPROTO
+	select BR2_PACKAGE_XPROTO_XF86DGAPROTO
+	select BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XUTIL_UTIL_MACROS
+	select BR2_PACKAGE_XKEYBOARD_CONFIG
+	help
+	  X.Org X server
+
+	  http://xorg.freedesktop.org
+
+if BR2_PACKAGE_XSERVER_XORG_SERVER
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14
+	bool
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_20
+	bool
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI
+	int
+	default 14 if BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14
+	default 20 if BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_20
+
+choice
+	bool "X Window System server version"
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_18
+	bool "1.18.3"
+	select BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_20
+	select BR2_PACKAGE_XPROTO_PRESENTPROTO
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_14
+	bool "1.14.7"
+	select BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14
+
+endchoice
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_VERSION
+	string
+	default "1.18.3" if BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_18
+	default "1.14.7" if BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_14
+
+choice
+	prompt "X Window System server type"
+	help
+	  Select the X Window System server to use
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	bool "Modular X.org"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBDRM if (BR2_PACKAGE_XPROTO_XF86DRIPROTO || \
+		BR2_PACKAGE_XPROTO_DRI2PROTO)
+	select BR2_PACKAGE_LIBPCIACCESS
+	select BR2_PACKAGE_XLIB_LIBXSHMFENCE if BR2_PACKAGE_XPROTO_DRI3PROTO
+	help
+	  This variant of the X.org server is the full-blown variant,
+	  as used by desktop GNU/Linux distributions. The drivers (for
+	  input and graphics) are built separately from the X.org
+	  server (see the xdriver* packages).
+
+comment "Modular X.org needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
+	bool "KDrive / TinyX"
+	help
+	  This variant of the X.org server is a lightweight version
+	  intended for embedded systems. The drivers (for input and
+	  graphics) are built into the server. It is generally used
+	  directly on top of the Linux framebuffer without DRM or
+	  video card specific drivers.
+
+endchoice
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_AIGLX
+	bool "Enable AIGLX Extension"
+	help
+	  Enable/Use AIGLX extension.
+
+if BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_EVDEV
+	bool "Enable KDrive/TinyX evdev input driver"
+	help
+	  Enable evdev input driver in KDrive. This allows KDrive to
+	  use input devices that are integrated in the Linux input
+	  subsystem, i.e have a /dev/input/eventX device file. This is
+	  most likely the input driver you want to use.
+
+	  This driver can then be enabled by running the X server
+	  using:
+
+	  Xfbdev -keybd evdev,,device=/dev/input/eventX -mouse evdev,,device=/dev/input/eventY.
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_KBD
+	bool "Enable KDrive/TinyX kbd input driver"
+	help
+	  Enable kbd input driver in KDrive. It uses the console
+	  keyboard as input device.
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_MOUSE
+	bool "Enable KDrive/TinyX mouse input driver"
+	help
+	  Enable mouse input driver in KDrive. It supports PS/2 mice
+	  and serial port mice.
+
+endif
+
+comment "Optional Servers"
+
+config BR2_PACKAGE_XSERVER_XORG_SERVER_XVFB
+	bool "Xvfb server"
+	help
+	  Virtual frame buffer X server.
+
+endif

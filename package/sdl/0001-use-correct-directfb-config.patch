@@ -1,0 +1,25 @@
+[PATCH] configure.in: use correct directfb-config in version check
+
+The configure script has just checked for the correct directfb-config
+script, so also use it for the version check instead of whatever
+might be in the path.
+
+Signed-off-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.in |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: SDL-1.2.15/configure.in
+===================================================================
+--- SDL-1.2.15.orig/configure.in
++++ SDL-1.2.15/configure.in
+@@ -1276,7 +1276,7 @@
+         else
+             set -- `echo $DIRECTFB_REQUIRED_VERSION | sed 's/\./ /g'`
+             NEED_VERSION=`expr $1 \* 10000 + $2 \* 100 + $3`
+-            set -- `directfb-config --version | sed 's/\./ /g'`
++            set -- `$DIRECTFBCONFIG --version | sed 's/\./ /g'`
+             HAVE_VERSION=`expr $1 \* 10000 + $2 \* 100 + $3`
+             if test $HAVE_VERSION -ge $NEED_VERSION; then
+                 DIRECTFB_CFLAGS=`$DIRECTFBCONFIG --cflags`
+

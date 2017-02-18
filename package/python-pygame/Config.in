@@ -1,0 +1,54 @@
+config BR2_PACKAGE_PYTHON_PYGAME
+	bool "python-pygame"
+	select BR2_PACKAGE_SDL
+	help
+	  Pygame is a cross-platfrom library designed to make it easy to write
+	  multimedia software, such as games, in Python. Pygame requires the
+	  Python language and SDL multimedia library.
+	  It can also make use of several other popular libraries.
+
+	  http://www.pygame.org/
+
+if BR2_PACKAGE_PYTHON_PYGAME
+config BR2_PACKAGE_PYTHON_PYGAME_IMAGE
+	bool "pygame.image"
+	select BR2_PACKAGE_SDL_IMAGE
+	select BR2_PACKAGE_SDL_IMAGE_PNG
+	select BR2_PACKAGE_SDL_IMAGE_JPEG
+	help
+	  pygame module for loading, saving and transfering images.
+	  Will autoselect sdl_image with png and jpeg support.
+
+config BR2_PACKAGE_PYTHON_PYGAME_EXAMPLES
+	bool "pygame.examples"
+	help
+	  Include examples.
+	  Selecting this option adds about 1.5 MB to the target file system.
+
+config BR2_PACKAGE_PYTHON_PYGAME_FONT
+	bool "pygame.font"
+	select BR2_PACKAGE_SDL_TTF
+	help
+	  pygame module for loading and rendering fonts.
+	  Will autoselect sdl_ttf.
+
+config BR2_PACKAGE_PYTHON_PYGAME_MIXER
+	bool "pygame.mixer"
+	select BR2_PACKAGE_SDL_MIXER
+	help
+	  pygame module for loading and playing sounds.
+	  Will autoselect sdl_mixer.
+
+config BR2_PACKAGE_PYTHON_PYGAME_MIXER_MUSIC
+	bool "pygame.mixer.music"
+	depends on BR2_PACKAGE_PYTHON_PYGAME_MIXER
+	help
+	  pygame module for controlling streamed audio
+
+config BR2_PACKAGE_PYTHON_PYGAME_SCRAP
+	bool "pygame.scrap"
+	depends on BR2_PACKAGE_SDL_X11
+	help
+	  pygame module for clipboard support (X11 needed)
+
+endif

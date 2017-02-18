@@ -1,0 +1,58 @@
+From 682b25469e66ea45b214e95962671373983c118f Mon Sep 17 00:00:00 2001
+From: Doug Evans <dje@google.com>
+Date: Mon, 26 Oct 2015 13:30:57 -0700
+Subject: [PATCH] Move __SIGRTMIN.
+
+gdb/ChangeLog:
+
+	* nat/linux-nat.h (__SIGRTMIN): Move here from gdbserver/linux-low.c.
+
+gdb/gdbserver/ChangeLog:
+
+	* linux-low.c (__SIGRTMIN): Move to nat/linux-nat.h.
+
+[Arnout: removed the parts that don't apply, including ChangeLog]
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ gdb/ChangeLog             | 4 ++++
+ gdb/gdbserver/ChangeLog   | 4 ++++
+ gdb/gdbserver/linux-low.c | 6 ------
+ gdb/nat/linux-nat.h       | 5 +++++
+ 4 files changed, 13 insertions(+), 6 deletions(-)
+
+diff --git a/gdb/gdbserver/linux-low.c b/gdb/gdbserver/linux-low.c
+index 7ed67c7..e778c4c 100644
+--- a/gdb/gdbserver/linux-low.c
++++ b/gdb/gdbserver/linux-low.c
+@@ -70,12 +70,6 @@
+ #define O_LARGEFILE 0
+ #endif
+ 
+-/* This is the kernel's hard limit.  Not to be confused with
+-   SIGRTMIN.  */
+-#ifndef __SIGRTMIN
+-#define __SIGRTMIN 32
+-#endif
+-
+ /* Some targets did not define these ptrace constants from the start,
+    so gdbserver defines them locally here.  In the future, these may
+    be removed after they are added to asm/ptrace.h.  */
+diff --git a/gdb/nat/linux-nat.h b/gdb/nat/linux-nat.h
+index 0633fa9..70e6274 100644
+--- a/gdb/nat/linux-nat.h
++++ b/gdb/nat/linux-nat.h
+@@ -25,6 +25,11 @@
+ struct lwp_info;
+ struct arch_lwp_info;
+ 
++/* This is the kernel's hard limit.  Not to be confused with SIGRTMIN.  */
++#ifndef __SIGRTMIN
++#define __SIGRTMIN 32
++#endif
++
+ /* Unlike other extended result codes, WSTOPSIG (status) on
+    PTRACE_O_TRACESYSGOOD syscall events doesn't return SIGTRAP, but
+    instead SIGTRAP with bit 7 set.  */
+-- 
+1.9.4
+

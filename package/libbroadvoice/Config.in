@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBBROADVOICE
+	bool "libbroadvoice"
+	# broken with gcc <= 4.8 on arc
+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=59049
+	depends on !BR2_arc || BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  broadvoice - a library for the BroadVoice 16 and 32 speech
+	  codecs
+
+	  https://www.broadcom.com/support/broadvoice

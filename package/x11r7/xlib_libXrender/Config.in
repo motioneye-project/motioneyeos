@@ -1,0 +1,7 @@
+config BR2_PACKAGE_XLIB_LIBXRENDER
+	bool "libXrender"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  X.Org Xrender library

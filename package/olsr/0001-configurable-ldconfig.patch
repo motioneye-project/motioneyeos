@@ -1,0 +1,33 @@
+Make ldconfig configurable
+
+In a cross-compilation set up, running /sbin/ldconfig is useless, so
+we make the path to ldconfig configurable through the environment/make
+command line. This allows to pass LDCONFIG=/bin/true when doing
+cross-compilation.
+
+[Gustavo: update patch for olsr 0.6.4]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+diff -Nura olsrd-0.6.4.orig/make/Makefile.linux olsrd-0.6.4/make/Makefile.linux
+--- olsrd-0.6.4.orig/make/Makefile.linux	2013-01-29 09:00:18.041356389 -0300
++++ olsrd-0.6.4/make/Makefile.linux	2013-01-29 09:01:51.598226624 -0300
+@@ -3,6 +3,7 @@
+ #
+ 
+ ARCH := $(shell uname -m)
++LDCONFIG ?= /sbin/ldconfig
+ 
+ DESTDIR ?=
+ prefix ?= /usr/local
+@@ -26,9 +27,9 @@
+ PLUGIN_SONAME ?= lib$(PLUGIN_NAME).so
+ PLUGIN_FULLNAME ?= $(PLUGIN_NAME).so.$(PLUGIN_VER)
+ INSTALL_LIB =	install -D -m 755 $(PLUGIN_FULLNAME) $(LIBDIR)/$(PLUGIN_FULLNAME); \
+-		/sbin/ldconfig -n $(LIBDIR)
++		$(LDCONFIG) -n $(LIBDIR)
+ UNINSTALL_LIB =	rm -f $(LIBDIR)/$(PLUGIN_FULLNAME); \
+-		/sbin/ldconfig -n $(LIBDIR)
++		$(LDCONFIG) -n $(LIBDIR)
+ 
+ ifdef OLSRD_PLUGIN
+ GENERATE_PIC = true

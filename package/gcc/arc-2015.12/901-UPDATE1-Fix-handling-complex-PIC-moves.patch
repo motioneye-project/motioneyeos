@@ -1,0 +1,83 @@
+From f00b0f17d6889d811468c2c77508fbea8bfc377d Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@synopsys.com>
+Date: Tue, 19 Jan 2016 14:40:16 +0100
+Subject: [PATCH] UPDATE1: Fix handling complex PIC moves.
+
+The arc_legitimate_pc_offset_p condition is too lax. Updated it.
+
+The fix is done in development tree: [arc-4.8-dev f00b0f1] 
+and will be a part of the next release of ARC GNU tools.
+Once that new release happens this patch must be removed.
+
+gcc/
+2016-01-18  Claudiu Zissulescu  <claziss@synopsys.com>
+
+	* config/arc/arc.c (arc_needs_pcl_p ): New function
+	(arc_legitimate_pc_offset_p): Use arc_needs_pcl_p.
+---
+ gcc/config/arc/arc.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 40 insertions(+), 2 deletions(-)
+
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index f7cae9f..18d88a3 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -5234,6 +5234,45 @@ arc_rtx_costs (rtx x, int code, int outer_code, int opno ATTRIBUTE_UNUSED,
+     }
+ }
+ 
++/* Helper used by arc_legitimate_pc_offset_p.  */
++
++static bool
++arc_needs_pcl_p (rtx x)
++{
++  register const char *fmt;
++  register int i, j;
++
++  if ((GET_CODE (x) == UNSPEC)
++      && (XVECLEN (x, 0) == 1)
++      && (GET_CODE (XVECEXP (x, 0, 0)) == SYMBOL_REF))
++    switch (XINT (x, 1))
++      {
++      case ARC_UNSPEC_GOT:
++      case ARC_UNSPEC_GOTOFFPC:
++      case UNSPEC_TLS_GD:
++      case UNSPEC_TLS_IE:
++	return true;
++      default:
++	break;
++      }
++
++  fmt = GET_RTX_FORMAT (GET_CODE (x));
++  for (i = GET_RTX_LENGTH (GET_CODE (x)) - 1; i >= 0; i--)
++    {
++      if (fmt[i] == 'e')
++	{
++	  if (arc_needs_pcl_p (XEXP (x, i)))
++	    return true;
++	}
++      else if (fmt[i] == 'E')
++	for (j = XVECLEN (x, i) - 1; j >= 0; j--)
++	  if (arc_needs_pcl_p (XVECEXP (x, i, j)))
++	    return true;
++    }
++
++  return false;
++}
++
+ /* Return true if ADDR is an address that needs to be expressed as an
+    explicit sum of pcl + offset.  */
+ 
+@@ -5242,8 +5281,7 @@ arc_legitimate_pc_offset_p (rtx addr)
+ {
+   if (GET_CODE (addr) != CONST)
+     return false;
+-  addr = XEXP (addr, 0);
+-  return flag_pic && !arc_raw_symbolic_reference_mentioned_p (addr, false);
++  return arc_needs_pcl_p (addr);
+ }
+ 
+ /* Return true if ADDR is a valid pic address.
+-- 
+2.5.0
+

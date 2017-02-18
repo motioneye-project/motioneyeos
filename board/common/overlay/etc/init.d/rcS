@@ -1,0 +1,25 @@
+#!/bin/sh
+
+boot_log=/var/log/boot.log
+tmp_boot_log=/tmp/boot.log
+pid_file=/tmp/rc.pid
+
+source /etc/init.d/base
+
+echo "---- booting $os_name $os_version----" >> $tmp_boot_log
+
+# start all init scripts in /etc/init.d,
+# executing them in numerical order.
+(for i in /etc/init.d/S??*; do
+    [ ! -x "$i" ] && continue
+    [ -f /data/etc/no_$(basename $i) ] && continue
+    $i start || break
+done& echo $! > $pid_file) | tee -a $tmp_boot_log &
+
+pid=$(cat $pid_file)
+while kill -0 $pid 2>/dev/null; do
+    sleep 1
+done
+
+test -d $(dirname $boot_log) && cat $tmp_boot_log >> $boot_log
+

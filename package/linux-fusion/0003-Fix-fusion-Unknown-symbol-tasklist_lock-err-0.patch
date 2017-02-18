@@ -1,0 +1,38 @@
+From 9fcd5003c0363af140a06aba94e62c9e1ea0381e Mon Sep 17 00:00:00 2001
+From: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+Date: Mon, 11 Jan 2016 16:45:30 +0100
+Subject: [PATCH] Fix fusion: Unknown symbol tasklist_lock (err 0)
+
+Commit 28f6569ab7d0 renamed TREE_PREEMPT_RCU to PREEMPT_RCU in 3.19
+As a result, the code incorrectly falls back to using tasklist_lock
+(which was made private in 2.6.18)
+
+Always use rcu_read_lock on modern kernels.
+
+Signed-off-by: Marc Gonzalez <marc_gonzalez@sigmadesigns.com>
+---
+ linux/drivers/char/fusion/fusionee.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/linux/drivers/char/fusion/fusionee.c b/linux/drivers/char/fusion/fusionee.c
+index ef067f5bc831..70cd0a665f98 100644
+--- a/linux/drivers/char/fusion/fusionee.c
++++ b/linux/drivers/char/fusion/fusionee.c
+@@ -925,7 +925,7 @@ fusionee_kill(FusionDev * dev,
+                if (f != fusionee && (!target || target == f->id)) {
+                     struct task_struct *p;
+ 
+-#if defined(CONFIG_TREE_RCU) || defined(CONFIG_TREE_PREEMPT_RCU) || defined(CONFIG_TINY_RCU) || defined(rcu_read_lock)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0)
+                     rcu_read_lock();
+ #else
+                     read_lock(&tasklist_lock);
+@@ -946,7 +946,7 @@ fusionee_kill(FusionDev * dev,
+                          }
+                     }
+ 
+-#if defined(CONFIG_TREE_RCU) || defined(CONFIG_TREE_PREEMPT_RCU) || defined(CONFIG_TINY_RCU) || defined(rcu_read_unlock)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,0)
+                     rcu_read_unlock();
+ #else
+                     read_unlock(&tasklist_lock);

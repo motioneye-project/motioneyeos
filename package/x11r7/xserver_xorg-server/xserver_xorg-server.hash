@@ -1,0 +1,5 @@
+# From http://lists.x.org/archives/xorg-announce/2014-June/002440.html
+sha1   7a95765e56b124758fcd7b609589e65b8870880b                                xorg-server-1.14.7.tar.bz2
+sha256 fcf66fa6ad86227613d2d3e8ae13ded297e2a1e947e9060a083eaf80d323451f        xorg-server-1.14.7.tar.bz2
+# From https://lists.freedesktop.org/archives/xorg-announce/2016-April/002683.html
+sha256	ea739c22517cdbe2b5f7c0a5fd05fe8a10ac0629003e71c0c7862f4bb60142cd	xorg-server-1.18.3.tar.bz2

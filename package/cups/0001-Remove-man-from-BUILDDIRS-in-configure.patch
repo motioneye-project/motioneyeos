@@ -1,0 +1,29 @@
+From a77bb18a5584bb23687ed3c522dbd91a9987d5a7 Mon Sep 17 00:00:00 2001
+From: Olivier Schonken <olivier.schonken@gmail.com>
+Date: Wed, 20 Jan 2016 22:13:11 +0200
+Subject: [PATCH] Remove man from BUILDDIRS in configure
+
+Since cups doesn't autoreconf properly, we directly patch the
+configure script.
+
+Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
+---
+ configure | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure b/configure
+index 4170ff3..3879a75 100755
+--- a/configure
++++ b/configure
+@@ -5921,7 +5921,7 @@ fi
+ 
+ case "$COMPONENTS" in
+ 	all)
+-		BUILDDIRS="filter backend berkeley cgi-bin monitor notifier ppdc scheduler systemv conf data desktop locale man doc examples templates"
++		BUILDDIRS="filter backend berkeley cgi-bin monitor notifier ppdc scheduler systemv conf data desktop locale doc examples templates"
+ 		;;
+ 
+ 	core)
+-- 
+2.5.0
+

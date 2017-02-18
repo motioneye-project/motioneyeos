@@ -1,0 +1,32 @@
+From a0657feeb2b349ffda895a53e36ea5c992d871cf Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 31 Oct 2015 22:38:48 +0100
+Subject: [PATCH] configure: do not assume broken inet_pton in case of cross
+ compiling
+
+Patch configure.ac to not assume broken inet_pton in case of cross
+compiling.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index aec0548..d640e0c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2646,8 +2646,8 @@ int main()
+ #endif
+ }], [AC_MSG_RESULT(ok);
+ have_inet_pton=yes], [AC_MSG_RESULT(broken);
+-have_inet_pton=no], [AC_MSG_RESULT(cross compiling, assume it is broken);
+-have_inet_pton=no])],
++have_inet_pton=no], [AC_MSG_RESULT([cross compiling, assume it is broken... not here]);
++have_inet_pton=yes])],
+ have_inet_pton=no)
+ if test "$have_inet_pton" = no; then
+   INET_PTON_LO="inet_pton.lo"
+-- 
+2.1.4
+

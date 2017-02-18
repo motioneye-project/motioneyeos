@@ -1,0 +1,34 @@
+comment "qt5cinex needs an Open(E)GL-capable backend"
+	depends on BR2_PACKAGE_QT5
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
+
+config BR2_PACKAGE_QT5CINEX
+	bool "qt5cinex"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE_NETWORK
+	select BR2_PACKAGE_QT5BASE_PNG
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5BASE_EGLFS
+	select BR2_PACKAGE_QT5GRAPHICALEFFECTS
+	depends on BR2_PACKAGE_HAS_LIBEGL # qt5base-eglfs
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	# No comment needed for this option, it's an architecture
+	# dependency.
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	help
+	  This application demonstrates the power of Qt5 and few of the new
+	  additions available in QtQuick 2.0.
+
+	  http://quitcoding.com/?page=work#cinex
+
+if BR2_PACKAGE_QT5CINEX
+
+config BR2_PACKAGE_QT5CINEX_HD
+	bool "High-definition version (aka RPi Edition)"
+	help
+	  High definition version (1920x1080 resolution) of the
+	  application, optimised for Raspberry PI cards. This version
+	  can also be run on any platform supported by Qt5.
+
+endif

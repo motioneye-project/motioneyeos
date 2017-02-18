@@ -1,0 +1,44 @@
+commit bcaf1f8a682d641cee325142099c371464fd5946
+Author: Curtis William Arnold <carnold@apache.org>
+Date:   Tue May 20 16:05:37 2008 +0000
+
+    LOGCXX-286: gcc 4.3 requires #include <cstring>
+    
+    git-svn-id: https://svn.apache.org/repos/asf/logging/log4cxx/trunk@658304 13f79535-47bb-0310-9956-ffa450edef68
+
+diff --git a/src/examples/cpp/console.cpp b/src/examples/cpp/console.cpp
+index 6a01d8a..a673a10 100755
+--- a/src/examples/cpp/console.cpp
++++ b/src/examples/cpp/console.cpp
+@@ -22,6 +22,7 @@
+ #include <log4cxx/logmanager.h>
+ #include <iostream>
+ #include <locale.h>
++#include <cstring>
+ 
+ using namespace log4cxx;
+ using namespace log4cxx::helpers;
+diff --git a/src/main/cpp/inputstreamreader.cpp b/src/main/cpp/inputstreamreader.cpp
+index 52b1c0a..cb45181 100644
+--- a/src/main/cpp/inputstreamreader.cpp
++++ b/src/main/cpp/inputstreamreader.cpp
+@@ -20,6 +20,7 @@
+ #include <log4cxx/helpers/exception.h>
+ #include <log4cxx/helpers/pool.h>
+ #include <log4cxx/helpers/bytebuffer.h>
++#include <cstring>
+ 
+ using namespace log4cxx;
+ using namespace log4cxx::helpers;
+diff --git a/src/main/cpp/socketoutputstream.cpp b/src/main/cpp/socketoutputstream.cpp
+index 185f835..c61eb11 100644
+--- a/src/main/cpp/socketoutputstream.cpp
++++ b/src/main/cpp/socketoutputstream.cpp
+@@ -19,6 +19,7 @@
+ #include <log4cxx/helpers/socketoutputstream.h>
+ #include <log4cxx/helpers/socket.h>
+ #include <log4cxx/helpers/bytebuffer.h>
++#include <cstring>
+ 
+ using namespace log4cxx;
+ using namespace log4cxx::helpers;

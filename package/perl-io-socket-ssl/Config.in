@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_IO_SOCKET_SSL
+	bool "perl-io-socket-ssl"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_NET_SSLEAY
+	help
+	  Nearly transparent SSL encapsulation for IO::Socket::INET.
+
+	  https://github.com/noxxi/p5-io-socket-ssl
+
+comment "perl-io-socket-ssl needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

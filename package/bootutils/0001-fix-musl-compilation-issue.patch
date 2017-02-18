@@ -1,0 +1,31 @@
+From e4c2c18b9d1d7a6dc17d8f7705b26fc2e2efc5a9 Mon Sep 17 00:00:00 2001
+From: Brendan Heading <brendanheading@gmail.com>
+Date: Sun, 30 Aug 2015 20:12:40 +0100
+Subject: [PATCH 1/1] fix musl compilation issue
+
+makedev(3) requires sys/types.h to be included.
+
+Note upstream has not issued releases since 2009. No mailing list activity
+since January 2010, and even before then it seems to be mostly spam.
+
+Upstream-Status: dormant
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ raidscan.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/raidscan.c b/raidscan.c
+index fab3b02..3cb1a0d 100644
+--- a/raidscan.c
++++ b/raidscan.c
+@@ -22,6 +22,7 @@
+ #include "config.h"
+ 
+ #include <sys/stat.h>
++#include <sys/types.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <linux/major.h>
+-- 
+2.4.3
+

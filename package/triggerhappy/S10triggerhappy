@@ -1,0 +1,40 @@
+#!/bin/sh
+
+NAME=thd
+DAEMON=/usr/sbin/$NAME
+PIDFILE=/var/run/$NAME.pid
+DAEMON_ARGS="--daemon --triggers /etc/triggerhappy/triggers.d --socket /var/run/thd.socket --pidfile $PIDFILE --user nobody /dev/input/event*"
+
+# Sanity checks
+test -x $DAEMON || exit 0
+
+[ -r /etc/default/triggerhappy ] && . /etc/default/triggerhappy
+
+start() {
+        printf "Starting $NAME: "
+        start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- $DAEMON_ARGS \
+                && echo "OK" || echo "FAIL"
+}
+
+stop() {
+        printf "Stopping $NAME: "
+        start-stop-daemon --stop --quiet --pidfile $PIDFILE \
+                && echo "OK" || echo "FAIL"
+}
+
+case "$1" in
+        start)
+                start
+                ;;
+        stop)
+                stop
+                ;;
+        restart)
+                stop
+                sleep 1
+                start
+                ;;
+        *)
+                echo "Usage: $0 {start|stop|restart}"
+                exit 1
+esac

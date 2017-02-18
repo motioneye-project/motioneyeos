@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_XPROTO
+	bool "xproto"
+	help
+	  X.Org xproto protocol headers

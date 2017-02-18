@@ -1,0 +1,25 @@
+valac: don't append -dirty to version
+
+Don't append -dirty to the valac version number if the Buildroot Git
+tree has uncommited changes.
+
+The patched script is meant for the valac developers, but it also
+activates if you build valac in a subdirectory of a Git tree (e.g.
+as is commonly done in Buildroot).
+
+The effect is that valac gets built as being version x.y.z-dirty, which
+breaks programs (such as Midori) that explicitly check for valac-x.y.z.
+
+Signed-off-by: Simon Dawson <spdawson@gmail.com>
+diff -Nur a/build-aux/git-version-gen b/build-aux/git-version-gen
+--- a/build-aux/git-version-gen	2010-08-15 12:49:03.000000000 +0100
++++ b/build-aux/git-version-gen	2012-05-14 10:17:19.977204570 +0100
+@@ -135,7 +135,7 @@
+     *) # Append the suffix only if there isn't one already.
+ 	case $v in
+ 	  *-dirty) ;;
+-	  *) v="$v-dirty" ;;
++	  #*) v="$v-dirty" ;;
+ 	esac ;;
+ esac
+ 

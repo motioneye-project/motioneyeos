@@ -1,0 +1,4 @@
+config BR2_TARGET_ROOTFS_ROMFS
+	bool "romfs root filesystem"
+	help
+	  Build a romfs image of the root filesystem.

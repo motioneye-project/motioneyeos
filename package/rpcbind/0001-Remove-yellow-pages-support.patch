@@ -1,0 +1,56 @@
+From 226b9c57ff403b407dbf1ff8a615da455a4cbd23 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Nov 2012 22:03:43 +0100
+Subject: [PATCH] Remove yellow pages support
+
+This support requires yellow pages support in libtirpc, which isn't
+available. As most Buildroot users are most likely never going to need
+such feature, get rid of it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/security.c | 18 ------------------
+ 1 file changed, 18 deletions(-)
+
+diff --git a/src/security.c b/src/security.c
+index 0c9453f..abc81bb 100644
+--- a/src/security.c
++++ b/src/security.c
+@@ -24,9 +24,6 @@
+ #include <rpcsvc/mount.h>
+ #include <rpcsvc/rquota.h>
+ #include <rpcsvc/nfs_prot.h>
+-#include <rpcsvc/yp.h>
+-#include <rpcsvc/ypclnt.h>
+-#include <rpcsvc/yppasswd.h>
+ #else
+ # define MOUNTPROC_MNT	1
+ # define MOUNTPROC_UMNT	3
+@@ -325,24 +322,9 @@ check_callit(SVCXPRT *xprt, struct r_rmtcall_args *args, int versnum /*__unused*
+ 		    args->rmt_proc != MOUNTPROC_UMNT)
+ 			break;
+ 		goto deny;
+-	case YPBINDPROG:
+-		if (args->rmt_proc != YPBINDPROC_SETDOM)
+-			break;
+-		/* FALLTHROUGH */
+-	case YPPASSWDPROG:
+ 	case NFS_PROGRAM:
+ 	case RQUOTAPROG:
+ 		goto deny;
+-	case YPPROG:
+-		switch (args->rmt_proc) {
+-		case YPPROC_ALL:
+-		case YPPROC_MATCH:
+-		case YPPROC_FIRST:
+-		case YPPROC_NEXT:
+-			goto deny;
+-		default:
+-			break;
+-		}
+ 	default:
+ 		break;
+ 	}
+-- 
+2.4.5
+

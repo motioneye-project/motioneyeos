@@ -1,0 +1,16 @@
+comment "nload needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_NLOAD
+	bool "nload"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_TARGET_FORM
+	help
+	  nload is a console application which monitors network traffic
+	  and bandwidth usage in real time. It visualizes the in- and
+	  outgoing traffic using two graphs and provides additional info
+	  like total amount of transfered data and min/max network
+	  usage.
+
+	  http://www.roland-riegel.de/nload/

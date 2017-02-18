@@ -1,0 +1,37 @@
+From 92247401984dd9a80d9d0c8c030692323f980678 Mon Sep 17 00:00:00 2001
+From: Emmanuel Dreyfus <manu@netbsd.org>
+Date: Mon, 30 Jun 2014 13:06:05 +0000
+Subject: Portability fixes
+
+- <features.h>  is Linux specific
+- Define __THROW for non glibc based systems
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+(limited to 'include/xattr.h')
+
+diff --git a/include/xattr.h b/include/xattr.h
+index 070d7c5..fd1f268 100644
+--- a/include/xattr.h
++++ b/include/xattr.h
+@@ -20,7 +20,18 @@
+ #ifndef __XATTR_H__
+ #define __XATTR_H__
+ 
++#if defined(linux)
+ #include <features.h>
++#endif
++
++/* Portability non glibc c++ build systems */
++#ifndef __THROW
++# if defined __cplusplus
++#  define __THROW       throw ()
++# else
++#  define __THROW
++# endif
++#endif
+ 
+ #include <errno.h>
+ #ifndef ENOATTR
+--
+cgit v0.9.0.2

@@ -1,0 +1,88 @@
+config BR2_PACKAGE_BLUEZ5_UTILS
+	bool "bluez-utils 5.x"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
+	depends on BR2_USE_MMU # dbus
+	depends on !BR2_STATIC_LIBS # uses dlfcn
+	depends on !BR2_PACKAGE_BLUEZ_UTILS # conflicts with 4.x version
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	# wordexp support not in our uClibc configuration
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  bluez utils version 5.x
+
+	  With this release BlueZ only supports the new Bluetooth
+	  Management kernel interface (introduced in Linux 3.4).
+
+	  For Low Energy support at least kernel version 3.5 is
+	  needed.
+
+	  The API is not backward compatible with BlueZ 4.
+
+	  Bluez utils will use systemd and/or udev if enabled.
+
+	  http://www.bluez.org
+	  http://www.kernel.org/pub/linux/bluetooth
+
+if BR2_PACKAGE_BLUEZ5_UTILS
+
+config BR2_PACKAGE_BLUEZ5_UTILS_OBEX
+	bool "build OBEX support"
+	select BR2_PACKAGE_LIBICAL
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Enable the OBEX support in Bluez 5.x.
+
+comment "OBEX support needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
+	bool "build CLI client"
+	select BR2_PACKAGE_READLINE
+	help
+	  Enable the Bluez 5.x command line client.
+
+config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
+	bool "install GATT tool"
+	depends on BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
+	help
+	  Generic Attribute Profile (GATT) support. This provides
+	  profile discovery and description services for Bluetooth Low
+	  Energy. This will install the gatttool utility.
+
+	  It is always built with BlueZ 5.x, but upstream choose not
+	  to install it by default.
+
+config BR2_PACKAGE_BLUEZ5_UTILS_EXPERIMENTAL
+	bool "build experimental plugins"
+	help
+	  Build BlueZ 5.x experimental plugins (SAP, NFC, ...).
+
+config BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS
+	bool "build sixaxis plugin"
+	depends on BR2_PACKAGE_HAS_UDEV
+	help
+	  Build BlueZ 5.x sixaxis plugin (support Sony Dualshock controller)
+
+comment "sixaxis plugin needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_BLUEZ5_UTILS_TEST
+	bool "build tests"
+	help
+	  Build BlueZ 5.x tests
+
+endif
+
+comment "bluez5-utils needs a glibc or musl toolchain w/ wchar, threads, headers >= 3.4, dynamic library"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || BR2_STATIC_LIBS || \
+		!(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU
+
+comment "bluez5-utils conflicts with older bluez-utils version"
+	depends on BR2_PACKAGE_BLUEZ_UTILS

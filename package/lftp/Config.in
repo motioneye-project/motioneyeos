@@ -1,0 +1,66 @@
+config BR2_PACKAGE_LFTP
+	bool "lftp"
+	depends on BR2_USE_WCHAR
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_GNUTLS
+	help
+	  LFTP is a sophisticated ftp/http client, and a file transfer program
+	  supporting a number of network protocols. Like BASH, it has job
+	  control and uses the readline library for input. It has bookmarks,
+	  a built-in mirror command, and can transfer several files in parallel.
+	  It was designed with reliability in mind.
+
+	  http://lftp.yar.ru/
+
+if BR2_PACKAGE_LFTP
+
+comment "Commands"
+
+config BR2_PACKAGE_LFTP_CMD_MIRROR
+	bool "Mirror command"
+	default y
+	help
+	  Enable mirror command
+
+config BR2_PACKAGE_LFTP_CMD_SLEEP
+	bool "Sleep command"
+	default y
+	help
+	  Enable sleep command
+
+config BR2_PACKAGE_LFTP_CMD_TORRENT
+	bool "Torrent command"
+	help
+	  Enable torrent command
+
+comment "Protocols"
+
+config BR2_PACKAGE_LFTP_PROTO_FISH
+	bool "FISH protocol"
+	help
+	  Enable FISH protocol
+
+config BR2_PACKAGE_LFTP_PROTO_FTP
+	bool "FTP protocol"
+	default y
+	help
+	  Enable FTP protocol
+
+config BR2_PACKAGE_LFTP_PROTO_HTTP
+	bool "HTTP protocol"
+	help
+	  Enable HTTP protocol
+
+config BR2_PACKAGE_LFTP_PROTO_SFTP
+	bool "SFTP protocol"
+	help
+	  Enable SFTP protocol
+
+endif  # BR2_PACKAGE_LFTP
+
+comment "lftp requires a toolchain w/ C++, wchar"
+	depends on BR2_USE_MMU
+	depends on !(BR2_USE_WCHAR && BR2_INSTALL_LIBSTDCPP)

@@ -1,0 +1,36 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+gov="ondemand"
+cpufreqdir="/sys/devices/system/cpu/cpu0/cpufreq"
+govdir="/sys/devices/system/cpu/cpufreq/$gov"
+
+configure() {
+    echo $gov > $cpufreqdir/scaling_governor
+    if [ $gov == "ondemand" ]; then
+        echo 50 > $govdir/up_threshold
+        echo 100000 > $govdir/sampling_rate
+        echo 50 > $govdir/sampling_down_factor
+        echo 1 > $govdir/io_is_busy
+    fi
+}
+
+case "$1" in
+    start)
+        msg_begin "Configuring CPU frequency"
+        configure
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo $"Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

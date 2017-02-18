@@ -1,0 +1,18 @@
+config BR2_PACKAGE_IQVLINUX
+	bool "iqvlinux"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Intel Ethernet Adapter Debug Driver for Linux (iqvlinux),
+	  which supports kernel versions 2.6.x up through 4.0.x.
+
+	  This debug driver supports all Intel's networking Tools based
+	  on the SDK version 2.19.36.0 or higher which support Intel
+	  Ethernet chip including e1000, e1000e, i210...
+
+	  Note: This driver requires PCI support to be enabled
+	  (i.e. CONFIG_PCI).
+
+	  http://sourceforge.net/projects/e1000/files/iqvlinux/
+
+comment "iqvlinux needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL

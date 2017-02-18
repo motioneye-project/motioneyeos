@@ -1,0 +1,10 @@
+config BR2_PACKAGE_EXPLORERCANVAS
+	bool "explorercanvas"
+	help
+	  Modern browsers like Firefox, Safari, Chrome and Opera
+	  support the HTML5 canvas tag to allow 2D command-based
+	  drawing. ExplorerCanvas brings the same functionality to
+	  Internet Explorer (<v9). To use, web developers only need to
+	  include a single script tag in their existing web pages.
+
+	  http://excanvas.sf.net/

@@ -1,0 +1,53 @@
+From 10fee6d71a1f7d6e6319005196562b4a30b4e8ff Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 2 Feb 2016 14:58:52 +0100
+Subject: [PATCH] Fix detection of C11 atomics
+
+Currently, the CMakeLists.txt logic to detect the availability of C11
+atomics is based on building a small program that uses the
+atomic_load().
+
+However, atomic_load() does not need to use any function from
+libatomic (part of the gcc runtime). So even if libatomic is missing,
+this test concludes that C11 atomic support is available. For example
+on SPARC, the example program builds fine without linking to
+libatomic, but calling other functions of the atomic_*() APIs fail
+without linking to libatomic.
+
+So, this patch adjusts the CMakeLists.txt test to use a function that
+is known to require the libatomic run-time library (on architectures
+where it is needed). This way, openal will only use the __atomic_*()
+built-ins when they are actually functional.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ CMakeLists.txt | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5784d35..a53f996 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -209,14 +209,17 @@ CHECK_C_SOURCE_COMPILES(
+ HAVE_C11_ALIGNAS)
+ 
+ # Check if we have C11 _Atomic
++set(OLD_REQUIRED_LIBRARIES ${CMAKE_REQUIRED_LIBRARIES})
++set(CMAKE_REQUIRED_LIBRARIES ${EXTRA_LIBS})
+ CHECK_C_SOURCE_COMPILES(
+ "#include <stdatomic.h>
+- const int _Atomic foo = ATOMIC_VAR_INIT(~0);
++ int _Atomic foo = ATOMIC_VAR_INIT(~0);
+  int main()
+  {
+-     return atomic_load(&foo);
++     return atomic_fetch_add(&foo, 2);
+  }"
+ HAVE_C11_ATOMIC)
++set(CMAKE_REQUIRED_LIBRARIES ${OLD_REQUIRED_LIBRARIES})
+ 
+ # Add definitions, compiler switches, etc.
+ INCLUDE_DIRECTORIES("${OpenAL_SOURCE_DIR}/include" "${OpenAL_BINARY_DIR}")
+-- 
+2.6.4
+

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYYAML
+	bool "python-pyyaml"
+	select BR2_PACKAGE_LIBYAML
+	help
+	  The PyYAML package contains binding to the libyaml API.
+
+	  http://pyyaml.org/

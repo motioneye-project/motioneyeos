@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBOGG
+	bool "libogg"
+	help
+	  Ogg is a multimedia container format, and the native file
+	  and stream format for the Xiph.org multimedia codecs. As
+	  with all Xiph.org technology is it an open format free for
+	  anyone to use.
+
+	  http://xiph.org/ogg/

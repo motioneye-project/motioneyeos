@@ -1,0 +1,50 @@
+From 19db6244200b870317382294f14b7d561d55a64e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 29 Aug 2015 12:05:53 +0200
+Subject: [PATCH] Add option to disable unit tests
+
+The unittests require C++, while the rest of the library does not, so
+this commit implements a --{enable,disable}-unittests option to
+selectively enable the build of the unit tests. When not provided, the
+option defaults to yes so that the existing behavior is preserved.
+
+Based on initial work by Bernd Kuhls.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am  | 6 +++++-
+ configure.ac | 5 +++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index bd3ce01..1da250b 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -95,4 +95,8 @@ src/codebook/lsp8.txt \
+ src/codebook/lsp9.txt \
+ src/codebook/lsp10.txt
+ 
+-SUBDIRS = src unittest
++SUBDIRS = src
++
++if UNITTESTS
++SUBDIRS += unittest
++endif
+diff --git a/configure.ac b/configure.ac
+index 7520af6..55b7215 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -24,5 +24,10 @@ AC_CHECK_HEADERS([stdlib.h string.h])
+ AC_FUNC_MALLOC
+ AC_CHECK_FUNCS([floor pow sqrt])
+ 
++AC_ARG_ENABLE([unittests],
++	AS_HELP_STRING([--disable-unittests], [Disable unittests]),
++	[], [enable_unittests=yes])
++AM_CONDITIONAL([UNITTESTS], [test "${enable_unittests}" = "yes"])
++
+ AC_CONFIG_FILES([Makefile src/Makefile unittest/Makefile codec2.pc])
+ AC_OUTPUT
+-- 
+2.5.0
+

@@ -1,0 +1,30 @@
+#!/bin/bash
+
+test -c /dev/watchdog || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Starting watchdog"
+        watchdog -t 5 /dev/watchdog
+        test $? == 0 && msg_done || msg_fail
+        ;;
+    
+    stop)
+        true
+        ;;
+
+    reallystop)
+        msg_begin "Stopping watchdog"
+        killall watchdog &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|reallystop}"
+        exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,3 @@
+# Locally calculated after checking pgp signature
+# Also from http://www.openssh.com/txt/release-7.2
+sha256	a72781d1a043876a224ff1b0032daa4094d87565a68528759c1c2cab5482548c	openssh-7.2p2.tar.gz

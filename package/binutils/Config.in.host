@@ -1,0 +1,51 @@
+comment "Binutils Options"
+
+choice
+	prompt "Binutils Version"
+	depends on !BR2_arc
+	default BR2_BINUTILS_VERSION_2_25_X
+	help
+	  Select the version of binutils you wish to use.
+
+	config BR2_BINUTILS_VERSION_2_23_X
+		depends on !BR2_aarch64 && !BR2_microblaze && \
+			   !BR2_powerpc64le && !BR2_nios2
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		# Unsupported ARM cores
+		depends on !BR2_cortex_a17
+		bool "binutils 2.23.2"
+
+	config BR2_BINUTILS_VERSION_2_24_X
+		# supported, but broken on Nios-II and powerpc64le
+		depends on !BR2_nios2 && !BR2_powerpc64le
+		# Unsupported for MIPS R6
+		depends on !BR2_mips_32r6 && !BR2_mips_64r6
+		# Unsupported ARM cores
+		depends on !BR2_cortex_a17
+		bool "binutils 2.24"
+
+	config BR2_BINUTILS_VERSION_2_25_X
+		bool "binutils 2.25.1"
+
+	config BR2_BINUTILS_VERSION_2_26_X
+		bool "binutils 2.26"
+
+endchoice
+
+config BR2_BINUTILS_VERSION
+	string
+	default "arc-2015.12"	if BR2_arc
+	default "2.23.2"	if BR2_BINUTILS_VERSION_2_23_X
+	default "2.24"		if BR2_BINUTILS_VERSION_2_24_X
+	default "2.25.1"	if BR2_BINUTILS_VERSION_2_25_X
+	default "2.26"		if BR2_BINUTILS_VERSION_2_26_X
+
+config BR2_BINUTILS_ENABLE_LTO
+	bool
+
+config BR2_BINUTILS_EXTRA_CONFIG_OPTIONS
+	string "Additional binutils options"
+	default ""
+	help
+	  Any additional binutils options you may want to include.

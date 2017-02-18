@@ -1,0 +1,18 @@
+$(mkdir_p) is obsolete for newer automake, use $(MKDIR_P) instead.
+Upstream should really gettextize with a newer version before packing up.
+
+[base on a similar patch from Gustavo Zacarias for Linux-PAM-1.1.7]
+Signed-off-by: Axel Lin <axel.lin@ingics.com>
+
+diff -Nura cryptsetup-1.6.3.ori/po/Makefile.in.in cryptsetup-1.6.3/po/Makefile.in.in
+--- cryptsetup-1.6.3.ori/po/Makefile.in.in	2013-12-30 11:53:22.731942516 +0800
++++ cryptsetup-1.6.3/po/Makefile.in.in	2014-01-09 09:46:13.594071188 +0800
+@@ -31,7 +31,7 @@
+ INSTALL = @INSTALL@
+ INSTALL_DATA = @INSTALL_DATA@
+ mkinstalldirs = $(SHELL) @install_sh@ -d
+-mkdir_p = @mkdir_p@
++mkdir_p = @MKDIR_P@
+ 
+ GMSGFMT_ = @GMSGFMT@
+ GMSGFMT_no = @GMSGFMT@

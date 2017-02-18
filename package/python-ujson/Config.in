@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_UJSON
+	bool "python-ujson"
+	help
+	  UltraJSON is an ultra fast JSON encoder and decoder written
+	  in pure C with bindings for Python 2.5+ and 3.
+
+	  https://pypi.python.org/pypi/ujson

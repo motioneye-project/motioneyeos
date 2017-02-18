@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBMBUS
+	bool "libmbus"
+	help
+	  libmbus is a library for communicating with energy metering devices.
+	  It supports TCP and RS232 M-bus gateways.
+	  (M-bus standard: http://www.m-bus.com/)
+
+	  http://www.rscada.se/libmbus/

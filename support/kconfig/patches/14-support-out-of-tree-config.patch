@@ -1,0 +1,207 @@
+---
+ conf.c     |    1 
+ confdata.c |   62 ++++++++++++++++++++++++++++++++++++++++++++++---------------
+ util.c     |   16 +++++++++++++--
+ 3 files changed, 61 insertions(+), 18 deletions(-)
+
+Index: b/conf.c
+===================================================================
+--- a/conf.c
++++ b/conf.c
+@@ -558,7 +558,6 @@
+ 	}
+ 	name = av[optind];
+ 	conf_parse(name);
+-	//zconfdump(stdout);
+ 	if (sync_kconfig) {
+ 		name = conf_get_configname();
+ 		if (stat(name, &tmpstat)) {
+Index: b/confdata.c
+===================================================================
+--- a/confdata.c
++++ b/confdata.c
+@@ -13,6 +13,7 @@
+ #include <string.h>
+ #include <time.h>
+ #include <unistd.h>
++#include <libgen.h>
+ 
+ #include "lkc.h"
+ 
+@@ -70,9 +71,7 @@
+ 
+ const char *conf_get_autoconfig_name(void)
+ {
+-	char *name = getenv("KCONFIG_AUTOCONFIG");
+-
+-	return name ? name : "include/config/auto.conf";
++	return getenv("KCONFIG_AUTOCONFIG");
+ }
+ 
+ static char *conf_expand_value(const char *in)
+@@ -742,6 +741,9 @@
+ 	char dirname[PATH_MAX+1], tmpname[PATH_MAX+1], newname[PATH_MAX+1];
+ 	char *env;
+ 
++	if (!name)
++		name = conf_get_configname();
++
+ 	dirname[0] = 0;
+ 	if (name && name[0]) {
+ 		struct stat st;
+@@ -836,6 +838,7 @@
+ {
+ 	const char *name;
+ 	char path[PATH_MAX+1];
++	char *opwd, *dir, *_name;
+ 	char *s, *d, c;
+ 	struct symbol *sym;
+ 	struct stat sb;
+@@ -844,8 +847,20 @@
+ 	name = conf_get_autoconfig_name();
+ 	conf_read_simple(name, S_DEF_AUTO);
+ 
+-	if (chdir("include/config"))
+-		return 1;
++	opwd = malloc(256);
++	_name = strdup(name);
++	if (opwd == NULL || _name == NULL)
++ 		return 1;
++	opwd = getcwd(opwd, 256);
++	dir = dirname(_name);
++	if (dir == NULL) {
++		res = 1;
++		goto err;
++	}
++	if (chdir(dir)) {
++		res = 1;
++		goto err;
++	}
+ 
+ 	res = 0;
+ 	for_all_symbols(i, sym) {
+@@ -938,9 +953,11 @@
+ 		close(fd);
+ 	}
+ out:
+-	if (chdir("../.."))
+-		return 1;
+-
++	if (chdir(opwd))
++		res = 1;
++err:
++	free(opwd);
++	free(_name);
+ 	return res;
+ }
+ 
+@@ -950,25 +967,38 @@
+ 	const char *name;
+ 	FILE *out, *tristate, *out_h;
+ 	int i;
++	char dir[PATH_MAX+1], buf[PATH_MAX+1];
++	char *s;
++
++	strcpy(dir, conf_get_configname());
++	s = strrchr(dir, '/');
++	if (s)
++		s[1] = 0;
++	else
++		dir[0] = 0;
+ 
+ 	sym_clear_all_valid();
+ 
+-	file_write_dep("include/config/auto.conf.cmd");
++	sprintf(buf, "%s.config.cmd", dir);
++	file_write_dep(buf);
+ 
+ 	if (conf_split_config())
+ 		return 1;
+ 
+-	out = fopen(".tmpconfig", "w");
++	sprintf(buf, "%s.tmpconfig", dir);
++	out = fopen(buf, "w");
+ 	if (!out)
+ 		return 1;
+ 
+-	tristate = fopen(".tmpconfig_tristate", "w");
++	sprintf(buf, "%s.tmpconfig_tristate", dir);
++	tristate = fopen(buf, "w");
+ 	if (!tristate) {
+ 		fclose(out);
+ 		return 1;
+ 	}
+ 
+-	out_h = fopen(".tmpconfig.h", "w");
++	sprintf(buf, "%s.tmpconfig.h", dir);
++	out_h = fopen(buf, "w");
+ 	if (!out_h) {
+ 		fclose(out);
+ 		fclose(tristate);
+@@ -1000,19 +1030,22 @@
+ 	name = getenv("KCONFIG_AUTOHEADER");
+ 	if (!name)
+ 		name = "include/generated/autoconf.h";
+-	if (rename(".tmpconfig.h", name))
++	sprintf(buf, "%s.tmpconfig.h", dir);
++	if (rename(buf, name))
+ 		return 1;
+ 	name = getenv("KCONFIG_TRISTATE");
+ 	if (!name)
+ 		name = "include/config/tristate.conf";
+-	if (rename(".tmpconfig_tristate", name))
++	sprintf(buf, "%s.tmpconfig_tristate", dir);
++	if (rename(buf, name))
+ 		return 1;
+ 	name = conf_get_autoconfig_name();
+ 	/*
+ 	 * This must be the last step, kbuild has a dependency on auto.conf
+ 	 * and this marks the successful completion of the previous steps.
+ 	 */
+-	if (rename(".tmpconfig", name))
++	sprintf(buf, "%s.tmpconfig", dir);
++	if (rename(buf, name))
+ 		return 1;
+ 
+ 	return 0;
+Index: b/util.c
+===================================================================
+--- a/util.c
++++ b/util.c
+@@ -34,6 +34,8 @@
+ /* write a dependency file as used by kbuild to track dependencies */
+ int file_write_dep(const char *name)
+ {
++	char *str;
++	char buf[PATH_MAX+1], buf2[PATH_MAX+1], dir[PATH_MAX+1];
+ 	struct symbol *sym, *env_sym;
+ 	struct expr *e;
+ 	struct file *file;
+@@ -41,7 +43,16 @@
+ 
+ 	if (!name)
+ 		name = ".kconfig.d";
+-	out = fopen("..config.tmp", "w");
++
++	strcpy(dir, conf_get_configname());
++	str = strrchr(dir, '/');
++	if (str)
++		str[1] = 0;
++	else
++		dir[0] = 0;
++
++	sprintf(buf, "%s..config.tmp", dir);
++	out = fopen(buf, "w");
+ 	if (!out)
+ 		return 1;
+ 	fprintf(out, "deps_config := \\\n");
+@@ -72,7 +83,8 @@
+ 
+ 	fprintf(out, "\n$(deps_config): ;\n");
+ 	fclose(out);
+-	rename("..config.tmp", name);
++	sprintf(buf2, "%s%s", dir, name);
++	rename(buf, buf2);
+ 	return 0;
+ }
+ 

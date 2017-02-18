@@ -1,0 +1,29 @@
+#!/bin/sh
+#
+# Start ptpd2
+#
+
+case "$1" in
+  start)
+	printf "Starting ptpd2: "
+	start-stop-daemon -S -q -x /usr/sbin/ptpd2 -- -g
+	if [ $? != 0 ]; then
+		echo "FAILED"
+		exit 1
+	else
+		echo "OK"
+	fi
+	;;
+  stop)
+	printf "Stopping ptpd2: "
+	start-stop-daemon -K -q -x /usr/sbin/ptpd2
+	echo "OK"
+	;;
+  restart|reload)
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

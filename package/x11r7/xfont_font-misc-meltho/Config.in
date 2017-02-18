@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_MISC_MELTHO
+	bool "font-misc-meltho"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

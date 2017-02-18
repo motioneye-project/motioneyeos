@@ -1,0 +1,44 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        # make sure root and admin users exist in shadow file
+        touch /data/etc/shadow
+        chmod go-rwx /data/etc/shadow
+        if ! grep root /data/etc/shadow &>/dev/null; then
+            echo 'root::::::::' >> /data/etc/shadow
+        fi
+        if ! grep admin /data/etc/shadow &>/dev/null; then
+            echo 'admin::::::::' >> /data/etc/shadow
+        fi
+
+        # set root and admin passwords
+        password=$(/etc/init.d/adminpw)
+        msg_begin "Setting root password"
+
+        rm -f /data/etc/shadow+
+        rm -f /data/etc/shadow-
+
+        echo -en "$password\n$password\n" | passwd &>/dev/null # root
+        echo -en "$password\n$password\n" | passwd admin &>/dev/null # admin
+        
+        sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
+        sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
+        sync
+
+        msg_done
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

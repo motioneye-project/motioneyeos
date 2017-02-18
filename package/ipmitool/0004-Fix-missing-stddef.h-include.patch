@@ -1,0 +1,37 @@
+From 2b149f7723fbd6153e6605ea8efb2c9f2940c8e5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 18 Apr 2016 21:17:26 +0200
+Subject: [PATCH] Fix missing stddef.h include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Needed for wchar_t. Fixes build error:
+
+imbapi.h:140:9: error: unknown type name 'wchar_t'
+ typedef wchar_t      WCHAR;
+
+Upstream status: Pending
+https://sourceforge.net/p/ipmitool/mailman/message/35022779/
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/plugins/imb/imbapi.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/plugins/imb/imbapi.h b/src/plugins/imb/imbapi.h
+index ead8956..8d0c7ae 100644
+--- a/src/plugins/imb/imbapi.h
++++ b/src/plugins/imb/imbapi.h
+@@ -40,6 +40,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ # include <config.h>
+ #endif
+ 
++#include <stddef.h>
++
+ #ifndef FALSE
+ #define FALSE   0
+ #endif
+-- 
+2.8.0
+

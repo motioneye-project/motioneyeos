@@ -1,0 +1,16 @@
+Fix compilation on non-sse2 platforms
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libyuv-1411.org/include/libyuv/scale_row.h libyuv-1411/include/libyuv/scale_row.h
+--- libyuv-1411.org/include/libyuv/scale_row.h	2015-05-22 23:39:21.000000000 +0200
++++ libyuv-1411/include/libyuv/scale_row.h	2015-05-25 12:35:17.000000000 +0200
+@@ -33,7 +33,7 @@
+ 
+ // The following are available on all x86 platforms:
+ #if !defined(LIBYUV_DISABLE_X86) && \
+-    (defined(_M_IX86) || defined(__x86_64__) || defined(__i386__))
++    (defined(_M_IX86) || defined(__x86_64__) || (defined(__i386__) && defined(__SSE2__)))
+ #define HAS_FIXEDDIV1_X86
+ #define HAS_FIXEDDIV_X86
+ #define HAS_SCALEADDROWS_SSE2

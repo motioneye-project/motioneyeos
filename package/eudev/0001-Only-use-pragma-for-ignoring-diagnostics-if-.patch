@@ -1,0 +1,39 @@
+From dc8aa43b7b6d0cead7d8a0c1a151d289a5233a10 Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Wed, 2 Apr 2014 12:36:52 +0200
+Subject: [PATCH] libudev: Only use #pragma for ignoring diagnostics if GCC
+ version supports it.
+
+[Peter: update for 2.1.1, fix shared_assert issue]
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ src/shared/macro.h |    8 +++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/shared/macro.h b/src/shared/macro.h
+--- a/src/shared/macro.h
++++ b/src/shared/macro.h
+@@ -38,6 +38,7 @@
+ #define _cleanup_(x) __attribute__((cleanup(x)))
+ 
+ /* Temporarily disable some warnings */
++#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 6)
+ #define DISABLE_WARNING_DECLARATION_AFTER_STATEMENT                     \
+         _Pragma("GCC diagnostic push");                                 \
+         _Pragma("GCC diagnostic ignored \"-Wdeclaration-after-statement\"")
+@@ -48,6 +49,13 @@
+ 
+ #define REENABLE_WARNING                                                \
+         _Pragma("GCC diagnostic pop")
++#else
++#define DISABLE_WARNING_DECLARATION_AFTER_STATEMENT
++#define DISABLE_WARNING_FORMAT_NONLITERAL
++#define REENABLE_WARNING
++/* glibc unconditionally defines this, but it needs GCC 4.6+ */
++#undef static_assert
++#endif
+ 
+ #define XCONCATENATE(x, y) x ## y
+ #define CONCATENATE(x, y) XCONCATENATE(x, y)
+-- 
+1.7.9.5

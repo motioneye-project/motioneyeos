@@ -1,0 +1,16 @@
+config BR2_PACKAGE_TCPDUMP
+	bool "tcpdump"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  A tool for network monitoring and data acquisition.
+
+	  http://www.tcpdump.org/
+
+if BR2_PACKAGE_TCPDUMP
+
+config BR2_PACKAGE_TCPDUMP_SMB
+	bool "smb dump support"
+	help
+	  enable possibly-buggy SMB printer
+
+endif

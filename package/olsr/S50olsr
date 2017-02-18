@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+    printf "Starting oslrd daemon: "
+    start-stop-daemon -S -q -x /usr/sbin/olsrd -- -d 0 -pidfile /run/olsrd.pid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  stop)
+    printf "Stopping olsrd daemon: "
+    start-stop-daemon -K -q -p /run/olsrd.pid
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    ;;
+  restart)
+    $0 stop
+    $0 start
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?

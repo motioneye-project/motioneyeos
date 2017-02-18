@@ -1,0 +1,11 @@
+config BR2_PACKAGE_XAPP_XINIT
+	bool "xinit"
+	depends on BR2_USE_MMU # fork()
+	# Runtime dependency: can't start an X server unless there is one
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER
+	# Runtime dependency; mcookie is also in util-linux
+	select BR2_PACKAGE_MCOOKIE if !BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_XAPP_XAUTH
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  X Window System initializer

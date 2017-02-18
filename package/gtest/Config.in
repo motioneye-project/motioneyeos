@@ -1,0 +1,26 @@
+config BR2_PACKAGE_GTEST
+	bool "gtest"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
+	help
+	  Google's framework for writing C++ tests on a variety of
+	  platforms (Linux, Mac OS X, Windows, Cygwin, Windows CE, and
+	  Symbian). Based on the xUnit architecture. Supports
+	  automatic test discovery, a rich set of assertions,
+	  user-defined assertions, death tests, fatal and non-fatal
+	  failures, value- and type-parameterized tests, various
+	  options for running the tests, and XML test report
+	  generation.
+
+	  Gtest also allows to easily build testsuites for C programs.
+
+	  This package allows running testsuites on the target which
+	  might be advantageous in certain cases.
+
+	  http://code.google.com/p/googletest/
+
+comment "gtest needs a toolchain w/ C++, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP

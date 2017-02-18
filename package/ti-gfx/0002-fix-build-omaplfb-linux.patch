@@ -1,0 +1,21 @@
+Since commit a73fdc647417699833f22d0f239affe22e062827 in the kernel,
+omap_dss_device's 'output' is renamed 'src'.
+
+Fix build with at least es5.x selected (AM35xx).
+
+Signed-off-by: Hadrien Boutteville <hadrien.boutteville@gmail.com>
+
+--- a/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c
++++ b/GFX_Linux_KM/services4/3rdparty/dc_omapfb3_linux/omaplfb_linux.c
+@@ -176,8 +176,10 @@
+ #define OMAP_DSS_DRIVER(drv, dev) struct omap_dss_driver *drv = (dev) != NULL ? (dev)->driver : NULL
+ #if (LINUX_VERSION_CODE < KERNEL_VERSION(3,7,0))
+ #define OMAP_DSS_MANAGER(man, dev) struct omap_overlay_manager *man = (dev) != NULL ? (dev)->manager : NULL
+-#else
++#elif (LINUX_VERSION_CODE < KERNEL_VERSION(3,12,0))
+ #define OMAP_DSS_MANAGER(man, dev) struct omap_overlay_manager *man = (dev) != NULL ? (dev)->output->manager : NULL
++#else
++#define OMAP_DSS_MANAGER(man, dev) struct omap_overlay_manager *man = (dev) != NULL ? (dev)->src->manager : NULL
+ #endif
+ 
+ #define	WAIT_FOR_VSYNC(man)	((man)->wait_for_vsync)

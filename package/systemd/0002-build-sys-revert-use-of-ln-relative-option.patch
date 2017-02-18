@@ -1,0 +1,84 @@
+From 582c9a734a0e976592946ff5b577f98551170a38 Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Mon, 21 Jul 2014 11:34:38 +0200
+Subject: [PATCH 1/1] build-sys: revert use of ln relative option.
+
+Systemd build system now uses the `--relative` option from `ln(1)`.
+This option was added to GNU coreutils 8.16, which is not widely
+deployed yet by GNU/Linux distributions (not available in Debian Wheezy
+for example).
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ Makefile.am  |   19 +++++--------------
+ configure.ac |    2 --
+ 2 files changed, 5 insertions(+), 16 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index e238cde..02b39ea 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -219,8 +219,8 @@ define move-to-rootlibdir
+ 	if test "$(libdir)" != "$(rootlibdir)"; then \
+ 		$(MKDIR_P) $(DESTDIR)$(rootlibdir) && \
+ 		so_img_name=$$(readlink $(DESTDIR)$(libdir)/$$libname) && \
+-		rm -f $(DESTDIR)$(libdir)/$$libname && \
+-		$(LN_S) --relative -f $(DESTDIR)$(rootlibdir)/$$so_img_name $(DESTDIR)$(libdir)/$$libname && \
++		so_img_rel_target_prefix=$$(echo $(libdir) | sed 's,\(^/\|\)[^/][^/]*,..,g') && \
++		$(LN_S) -f $$so_img_rel_target_prefix$(rootlibdir)/$$so_img_name $(DESTDIR)$(libdir)/$$libname && \
+ 		mv $(DESTDIR)$(libdir)/$$libname.* $(DESTDIR)$(rootlibdir); \
+ 	fi
+ endef
+@@ -279,9 +279,9 @@ install-aliases-hook:
+ 	set -- $(SYSTEM_UNIT_ALIASES) && \
+ 		dir=$(systemunitdir) && $(install-aliases)
+ 	set -- $(USER_UNIT_ALIASES) && \
+-		dir=$(userunitdir) && $(install-relative-aliases)
++		dir=$(userunitdir) && $(install-aliases)
+ 	set -- $(GENERAL_ALIASES) && \
+-		dir= && $(install-relative-aliases)
++		dir= && $(install-aliases)
+ 
+ define install-aliases
+ 	while [ -n "$$1" ]; do \
+@@ -292,15 +292,6 @@ define install-aliases
+ 	done
+ endef
+ 
+-define install-relative-aliases
+-	while [ -n "$$1" ]; do \
+-		$(MKDIR_P) `dirname $(DESTDIR)$$dir/$$2` && \
+-		rm -f $(DESTDIR)$$dir/$$2 && \
+-		$(LN_S) --relative $(DESTDIR)$$1 $(DESTDIR)$$dir/$$2 && \
+-		shift 2 || exit $$?; \
+-	done
+-endef
+-
+ install-touch-usr-hook:
+ 	touch -c $(DESTDIR)/$(prefix)
+ 
+@@ -2034,7 +2025,7 @@ systemd_dbus1_generator_LDADD = \
+ dbus1-generator-install-hook:
+ 	$(AM_V_at)$(MKDIR_P) $(DESTDIR)$(usergeneratordir)
+ 	$(AM_V_RM)rm -f $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
+-	$(AM_V_LN)$(LN_S) --relative -f $(DESTDIR)$(systemgeneratordir)/systemd-dbus1-generator $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
++	$(AM_V_LN)$(LN_S) -f $(systemgeneratordir)/systemd-dbus1-generator $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
+ 
+ dbus1-generator-uninstall-hook:
+ 	rm -f $(DESTDIR)$(usergeneratordir)/systemd-dbus1-generator
+diff --git a/configure.ac b/configure.ac
+index ae88382..ec220af 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -96,8 +96,6 @@ AC_PATH_PROG([KMOD], [kmod], [/usr/bin/kmod], [$PATH:/usr/sbin:/sbin])
+ 
+ AC_PATH_PROG([KEXEC], [kexec], [/usr/sbin/kexec], [$PATH:/usr/sbin:/sbin])
+ 
+-AS_IF([! ln --relative --help > /dev/null 2>&1], [AC_MSG_ERROR([*** ln doesn't support --relative ***])])
+-
+ M4_DEFINES=
+ 
+ # gtkdocize greps for '^GTK_DOC_CHECK', so it needs to be on its own line
+-- 
+1.7.10.4
+

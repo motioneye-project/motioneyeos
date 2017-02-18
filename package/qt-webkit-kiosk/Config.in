@@ -1,0 +1,22 @@
+config BR2_PACKAGE_QT_WEBKIT_KIOSK
+	bool "qt-webkit-kiosk"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5WEBKIT
+	select BR2_PACKAGE_QT5MULTIMEDIA
+	depends on !BR2_STATIC_LIBS # qt5webkit
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5webkit
+	depends on !BR2_BINFMT_FLAT # qt5webkit
+	help
+	  Simple kiosk-mode browser powered by Qt5Webkit
+
+if BR2_PACKAGE_QT_WEBKIT_KIOSK
+
+config BR2_PACKAGE_QT_WEBKIT_KIOSK_SOUNDS
+	bool "Install browser sound files"
+	help
+	  Deploy browser sound files on target
+
+endif

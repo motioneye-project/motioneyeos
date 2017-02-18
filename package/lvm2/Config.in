@@ -1,0 +1,39 @@
+config BR2_PACKAGE_LVM2
+	bool "lvm2 & device mapper"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # needs fork()
+	depends on !BR2_STATIC_LIBS # It fails to build statically
+	help
+	  This is LVM2, the rewrite of The Linux Logical Volume Manager.
+	  LVM supports enterprise level volume management of disk and disk
+	  subsystems by grouping arbitrary disks into volume groups. The total
+	  capacity of volume groups can be allocated to logical volumes, which
+	  are accessed as regular block devices.
+
+	  The Linux Kernel Device Mapper is the LVM
+	  (Linux Logical Volume Management) Team's implementation of a
+	  minimalistic kernel-space driver that handles volume management,
+	  while keeping knowledge of the underlying device layout in
+	  user-space. This makes it useful for not only LVM, but EVMS,
+	  software raid, and other drivers that create "virtual" block devices.
+
+if BR2_PACKAGE_LVM2
+
+config BR2_PACKAGE_LVM2_STANDARD_INSTALL
+	bool "standard install instead of only dmsetup"
+	default y if !BR2_PACKAGE_LVM2_DMSETUP_ONLY # legacy 2013.11
+	help
+	  Install the standard suite of lvm2 programs. When this option is not
+	  set, only dmsetup is installed.
+
+config BR2_PACKAGE_LVM2_APP_LIBRARY
+	bool "install application library"
+	select BR2_PACKAGE_LVM2_STANDARD_INSTALL
+	help
+	  Install application library (liblvm2app).
+
+endif
+
+comment "lvm2 needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

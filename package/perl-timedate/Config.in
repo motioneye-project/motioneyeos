@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_TIMEDATE
+	bool "perl-timedate"
+	help
+	  Date formating subroutines
+
+	  https://metacpan.org/release/TimeDate

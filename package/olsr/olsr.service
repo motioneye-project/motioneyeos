@@ -1,0 +1,10 @@
+[Unit]
+Description=Ad-hoc wireless mesh routing daemon
+After=network.target
+
+[Service]
+ExecStart=/usr/sbin/olsrd -nofork
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

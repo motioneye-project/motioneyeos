@@ -1,0 +1,20 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        sleep 2
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,49 @@
+From 6abc52190accc8d8b17455420e234a1d7dc7ba55 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 16 Nov 2015 23:15:27 +0100
+Subject: [PATCH] ushare: fix building with gcc 5.x
+
+GCC5 defaults to -std=gnu11, which has different semantics for inline than
+previous versions:
+
+https://gcc.gnu.org/gcc-5/porting_to.html
+
+Which causes linker issues when display_headers() and start_log() are
+referenced from other files.  There's no real reason why these needs to be
+inline, so just drop the keyword.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/trace.c  | 2 +-
+ src/ushare.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/trace.c b/src/trace.c
+index 50729ef..4e314ef 100644
+--- a/src/trace.c
++++ b/src/trace.c
+@@ -57,7 +57,7 @@ print_log (log_level level, const char *format, ...)
+   va_end (va);
+ }
+ 
+-inline void
++void
+ start_log (void)
+ {
+   openlog (PACKAGE_NAME, LOG_PID, LOG_DAEMON);
+diff --git a/src/ushare.c b/src/ushare.c
+index b64451e..af46e78 100644
+--- a/src/ushare.c
++++ b/src/ushare.c
+@@ -496,7 +496,7 @@ reload_config (int s __attribute__ ((unused)))
+   }
+ }
+ 
+-inline void
++void
+ display_headers (void)
+ {
+   printf (_("%s (version %s), a lightweight UPnP A/V and DLNA Media Server.\n"),
+-- 
+2.1.4
+

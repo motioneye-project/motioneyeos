@@ -1,0 +1,44 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+mount_fs() {
+    msg_begin "Mounting filesystems"
+    /bin/mount -a
+    test $? == 0 && msg_done || msg_fail
+}
+
+remount_rw() {
+    msg_begin "Remounting boot partition read-write"
+    mount -o remount,rw /boot
+    test $? == 0 && msg_done || msg_fail
+
+    msg_begin "Remounting root partition read-write"
+    mount -o remount,rw /
+    test $? == 0 && msg_done || msg_fail
+}
+
+mk_tty_login() {
+    test -z "$os_tty_login" && os_tty_login=tty1
+    ln -sf /dev/$os_tty_login /dev/ttylogin
+}
+
+case "$1" in
+    start)
+        mount_fs
+        test -n "$os_debug" || source /etc/init.d/conf
+        test "$os_debug" == "true" && remount_rw
+        mk_tty_login
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

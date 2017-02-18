@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBFSLPARSER
+	bool "libfslparser"
+	depends on BR2_arm # Only relevant for i.MX
+	help
+	  Binary parser libraries for the Freescale i.MX SoCs.
+
+	  This library is provided by Freescale as-is and doesn't have
+	  an upstream.

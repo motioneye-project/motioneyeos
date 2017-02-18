@@ -1,0 +1,99 @@
+config BR2_PACKAGE_WPA_SUPPLICANT
+	bool "wpa_supplicant"
+	depends on BR2_USE_MMU # fork()
+	help
+	  WPA supplicant for secure wireless networks
+
+	  http://hostap.epitest.fi/wpa_supplicant/
+
+if BR2_PACKAGE_WPA_SUPPLICANT
+
+config BR2_PACKAGE_WPA_SUPPLICANT_NL80211
+	bool "Enable nl80211 support"
+	default y
+	select BR2_PACKAGE_LIBNL
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	help
+	  Enable support for nl80211.  This is the current wireless
+	  API for Linux, supported by all wireless drivers in vanilla
+	  Linux, but may not be supported by some out-of-tree Linux
+	  wireless drivers.  wpa_supplicant will still fall back to
+	  using the Wireless Extensions (wext) API with these drivers.
+
+	  If this option is disabled, then only the deprecated wext
+	  API will be supported, with far less features.  Linux may
+	  supports using wext with modern drivers using a
+	  compatibility layer, but it must be enabled in the kernel
+	  configuration.
+
+comment "nl80211 support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
+	bool "Enable AP mode"
+	help
+	  With this option enabled, wpa_supplicant can act as an
+	  access point much like hostapd does with a limited feature set.
+	  This links in parts of hostapd functionality into wpa_supplicant,
+	  making it bigger but dispensing the need for a separate hostapd
+	  binary in some applications hence being smaller overall.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_EAP
+	bool "Enable EAP"
+	help
+	  Enable support for EAP.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_HOTSPOT
+	bool "Enable HS20"
+	help
+	  Enable Hotspot 2.0 and IEEE 802.11u interworking functionality.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DEBUG_SYSLOG
+	bool "Enable syslog support"
+	help
+	  Enable support for sending debug messages to syslog.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_WPS
+	bool "Enable WPS"
+	help
+	  Enable support for Wi-Fi Protected Setup (WPS).
+
+config BR2_PACKAGE_WPA_SUPPLICANT_CLI
+	bool "Install wpa_cli binary"
+	help
+	  Install wpa_cli command line utility
+
+config BR2_PACKAGE_WPA_SUPPLICANT_WPA_CLIENT_SO
+	depends on !BR2_STATIC_LIBS
+	bool "Install wpa_client shared library"
+	help
+	  Install libwpa_client.so.
+
+comment "wpa_client library needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_WPA_SUPPLICANT_PASSPHRASE
+	bool "Install wpa_passphrase binary"
+	help
+	  Install wpa_passphrase command line utility.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_OLD
+	bool "Enable support for old DBus control interface"
+	depends on BR2_PACKAGE_DBUS
+	help
+	  Enable support for old DBus control interface
+	  (fi.epitest.hostap.WPASupplicant).
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
+	bool "Enable support for new DBus control interface"
+	depends on BR2_PACKAGE_DBUS
+	help
+	  Enable support for new DBus control interface (fi.w1.wpa_supplicant1).
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_INTROSPECTION
+	bool "Introspection support"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
+	help
+	  Add introspection support for new DBus control interface.
+
+endif

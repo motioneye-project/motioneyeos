@@ -1,0 +1,67 @@
+Patch sent upstream:
+
+https://github.com/xbmc/xbmc/pull/7551
+
+
+From a6d6a1a36ff2dff2586fbad2a068e7df14b55fdc Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 19 Jul 2015 14:12:03 +0200
+Subject: [PATCH 1/1] ALSA: fix device change event support
+
+Current uClibc version 0.9.33.2 does not support eventfd_read/write.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac                  |    5 ++++-
+ xbmc/linux/FDEventMonitor.cpp |   12 ++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index d321f7d..4c6c750 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -911,7 +911,7 @@ AC_FUNC_STRFTIME
+ AC_FUNC_STRTOD
+ AC_FUNC_UTIME_NULL
+ AC_FUNC_VPRINTF
+-AC_CHECK_FUNCS([atexit dup2 fdatasync floor fs_stat_dev ftime ftruncate getcwd gethostbyaddr gethostbyname gethostname getpagesize getpass gettimeofday inet_ntoa lchown localeconv memchr memmove memset mkdir modf munmap pow rmdir select setenv setlocale socket sqrt strcasecmp strchr strcspn strdup strerror strncasecmp strpbrk strrchr strspn strstr strtol strtoul sysinfo tzset utime posix_fadvise localtime_r])
++AC_CHECK_FUNCS([atexit dup2 fdatasync floor fs_stat_dev ftime ftruncate getcwd gethostbyaddr gethostbyname gethostname getpagesize getpass gettimeofday inet_ntoa lchown localeconv memchr memmove memset mkdir modf munmap pow rmdir select setenv setlocale socket sqrt strcasecmp strchr strcspn strdup strerror strncasecmp strpbrk strrchr strspn strstr strtol strtoul sysinfo tzset utime posix_fadvise localtime_r eventfd_read eventfd_write])
+ 
+ # Check for various sizes
+ AC_CHECK_SIZEOF([int])
+@@ -2064,6 +2064,9 @@ fi
+ if test "$use_alsa" = "yes"; then
+   USE_ALSA=1
+   AC_DEFINE([USE_ALSA],[1],["Define to 1 if alsa is installed"])
++  if test "$ac_cv_func_eventfd_read" = "yes" -a "$ac_cv_func_eventfd_write" = "yes"; then
++      AC_DEFINE([HAVE_EVENTFD],[1],["Define to 1 if eventfd is installed"])
++  fi
+   final_message="$final_message\n  ALSA:\t\tYes"
+ else
+   USE_ALSA=0
+diff --git a/xbmc/linux/FDEventMonitor.cpp b/xbmc/linux/FDEventMonitor.cpp
+index 4a41477..84efeb9 100644
+--- a/xbmc/linux/FDEventMonitor.cpp
++++ b/xbmc/linux/FDEventMonitor.cpp
+@@ -28,6 +28,18 @@
+ 
+ #include "FDEventMonitor.h"
+ 
++#ifndef HAVE_EVENTFD
++static int eventfd_read(int __fd, eventfd_t *__value)
++{
++  return read(__fd, __value, sizeof(eventfd_t)) == sizeof(eventfd_t) ? 0 : -1;
++}
++
++static int eventfd_write(int __fd, eventfd_t __value)
++{
++  return write(__fd, &__value, sizeof(eventfd_t)) == sizeof(eventfd_t) ? 0 : -1;
++}
++#endif
++
+ CFDEventMonitor::CFDEventMonitor() :
+   CThread("FDEventMonitor"),
+   m_nextID(0),
+-- 
+1.7.10.4
+

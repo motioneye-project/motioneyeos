@@ -1,0 +1,17 @@
+config BR2_PACKAGE_QPDF
+	bool "qpdf"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_ZLIB
+	help
+	  QPDF is a command-line program that does structural, content-
+	  preserving transformations on PDF files. It could have been called
+	  something like pdf-to-pdf. It also provides many useful capabilities
+	  to developers of PDF-producing software or for people who just want
+	  to look at the innards of a PDF file to learn more about how they
+	  work.
+
+	  http://qpdf.sourceforge.net/
+
+comment "qpdf needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

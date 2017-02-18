@@ -1,0 +1,53 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+sys_version_file="/etc/version"
+version_file="/data/etc/version"
+post_upgrade_dir="/usr/share/post-upgrade"
+
+hash=$(md5sum $version_file 2>/dev/null | cut -d ' ' -f 1)
+sys_hash=$(md5sum $sys_version_file 2>/dev/null | cut -d ' ' -f 1)
+
+test "$hash" == "$sys_hash" && exit 0
+
+function version_gt() {
+    if [ "$1" != "$2" ] && [ $(echo -e "$2\n$1" | sort -t . | head -n 1) == "$2" ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
+function run_post_upgrade() {
+    version="$(source $version_file 2>/dev/null && echo $os_version)"
+    sys_version="$(source $sys_version_file 2>/dev/null && echo $os_version)"
+
+    versions=$(ls -1 $post_upgrade_dir | cut -d '.' -f 1)
+    for v in $versions; do
+        if [ -z "$version" ] || version_gt $v $version; then
+            msg_begin "Post-upgrading to version $v"
+            out=$($post_upgrade_dir/$v.sh 2>&1)
+            test $? == 0 && msg_done || msg_fail
+            echo "$out" | logger -t post-upgrade
+        fi
+    done
+}
+
+case "$1" in
+    start)
+        run_post_upgrade
+        cp $sys_version_file $version_file
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

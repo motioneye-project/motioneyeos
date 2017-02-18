@@ -1,0 +1,42 @@
+From 1d99ae25bb1bd4879c6f20f607faf3040018ee84 Mon Sep 17 00:00:00 2001
+From: Brendan Heading <brendanheading@gmail.com>
+Date: Thu, 30 Jul 2015 15:44:52 +0100
+Subject: [PATCH 2/3] configure: refactor always_inline detection
+
+Use configure.ac to detect the availability of the always_inline glibc
+macro, and define it only if it does not exist.
+
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+---
+ configure.ac | 1 +
+ kerncompat.h | 2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index e936a10..d3d81a1 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -41,6 +41,7 @@ AC_PATH_PROG([RMDIR], [rmdir], [rmdir])
+ 
+ AC_CHECK_FUNCS([openat], [],
+ 	[AC_MSG_ERROR([cannot find openat() function])])
++AC_CHECK_DECLS([__always_inline])
+ 
+ m4_ifndef([PKG_PROG_PKG_CONFIG],
+   [m4_fatal([Could not locate the pkg-config autoconf
+diff --git a/kerncompat.h b/kerncompat.h
+index 8318665..757b9b4 100644
+--- a/kerncompat.h
++++ b/kerncompat.h
+@@ -32,7 +32,7 @@
+ 
+ #include <features.h>
+ 
+-#ifndef __GLIBC__
++#ifndef HAVE_DECL___ALWAYS_INLINE
+ #define __always_inline __inline __attribute__ ((__always_inline__))
+ #endif
+ 
+-- 
+2.4.3
+

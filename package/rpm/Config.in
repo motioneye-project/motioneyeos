@@ -1,0 +1,26 @@
+comment "rpm needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+
+comment "rpm needs a toolchain w/ gcc >= 5"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_5 && BR2_sh
+
+config BR2_PACKAGE_RPM
+	bool "rpm"
+	# triggers internal compiler error
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_sh
+	depends on BR2_TOOLCHAIN_HAS_THREADS # beecrypt
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_BEECRYPT
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_NEON
+	select BR2_PACKAGE_NEON_SSL
+	select BR2_PACKAGE_NEON_XML
+	select BR2_PACKAGE_NEON_ZLIB
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_ZLIB
+	help
+	  The RPM package management system.
+
+	  http://rpm5.org

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_XAPP_XCLOCK
+	bool "xclock"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXFT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXKBFILE
+	help
+	  analog / digital clock for X

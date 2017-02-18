@@ -1,0 +1,9 @@
+gpu_mem=128
+gpu_mem_256=128
+gpu_mem_512=128
+
+dtparam=i2c_arm=on
+dtparam=i2s=on
+dtparam=spi=on
+dtparam=audio=on
+

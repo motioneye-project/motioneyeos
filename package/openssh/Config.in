@@ -1,0 +1,10 @@
+config BR2_PACKAGE_OPENSSH
+	bool "openssh"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	help
+	  A free version of the SSH protocol suite of network connectivity
+	  tools. The standard 'ssh', 'sshd', 'scp', and friends.
+
+	  http://www.openssh.com/

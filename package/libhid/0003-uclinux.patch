@@ -1,0 +1,27 @@
+Good old 'uclinux is also linux'
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libhid-0.2.16.orig/configure.ac libhid-0.2.16/configure.ac
+--- libhid-0.2.16.orig/configure.ac	2014-06-22 09:35:50.277261742 -0300
++++ libhid-0.2.16/configure.ac	2014-06-22 09:36:10.688951947 -0300
+@@ -80,6 +80,7 @@
+ 
+ MD_CONF_DEBUGGING
+ MD_CONF_COMPILER
++AM_CONDITIONAL(OS_LINUX, test "$MD_OS" = "uclinux")
+ AM_CONDITIONAL(OS_LINUX, test "$MD_OS" = "linux")
+ AM_CONDITIONAL(OS_BSD, test "$MD_OS" = "bsd")
+ AM_CONDITIONAL(OS_SOLARIS, test "$MD_OS" = "solaris")
+diff -Nura libhid-0.2.16.orig/m4/md_check_os.m4 libhid-0.2.16/m4/md_check_os.m4
+--- libhid-0.2.16.orig/m4/md_check_os.m4	2014-06-22 09:35:50.275261675 -0300
++++ libhid-0.2.16/m4/md_check_os.m4	2014-06-22 09:46:17.651475891 -0300
+@@ -3,7 +3,7 @@
+     AC_CANONICAL_HOST
+     AC_MSG_CHECKING(for target OS)
+     case $host in
+-      *-linux*)
++      *-linux*|*-uclinux*)
+         AC_DEFINE(OS_LINUX, [], [define to 1 if building for Linux])
+         AC_SUBST(OS_LINUX)
+         MD_OS=linux

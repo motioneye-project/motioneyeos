@@ -1,0 +1,7 @@
+config BR2_PACKAGE_AM335X_PRU_PACKAGE
+	bool "am335x-pru-package"
+	depends on BR2_arm # only relevant for TI am335x
+	help
+	  TI AM335X PRU program loader
+
+	  https://github.com/beagleboard/am335x_pru_package

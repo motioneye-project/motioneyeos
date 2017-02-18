@@ -1,0 +1,33 @@
+consolidate use of stdint types
+
+Change u_int*_t to uint*_t for compatibility with a larger number of C
+libraries.
+
+Signed-off-by: Doug Kehn <rdkehn@yahoo.com>
+
+Index: sp-oops-extract-0.0.7-1/src/oopslog.c
+===================================================================
+--- sp-oops-extract-0.0.7-1.orig/src/oopslog.c
++++ sp-oops-extract-0.0.7-1/src/oopslog.c
+@@ -64,8 +64,8 @@ static int try_to_check_for_bad_blocks(v
+ 
+ int main(const int argc, const char *argv[])
+ {
+-	u_int32_t *count, maxcount = 0xffffffff;
+-	u_int32_t *magic_ptr, magic_value = 0x5d005d00;
++	uint32_t *count, maxcount = 0xffffffff;
++	uint32_t *magic_ptr, magic_value = 0x5d005d00;
+ 	
+ 	unsigned char *charbuf;
+ 	unsigned long size;
+@@ -137,8 +137,8 @@ int main(const int argc, const char *arg
+ 		errx(-1, "%s is something weird", device);
+ 
+ 	charbuf = buf;	
+-	count = (u_int32_t *) buf;
+-	magic_ptr = (u_int32_t *) (buf + sizeof(u_int32_t));
++	count = (uint32_t *) buf;
++	magic_ptr = (uint32_t *) (buf + sizeof(uint32_t));
+ 
+ 	for (i = 0; i < (size / OOPS_PAGE_SIZE); i++) {
+ 		pread(fd, buf, OOPS_PAGE_SIZE, i * OOPS_PAGE_SIZE);

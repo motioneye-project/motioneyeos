@@ -1,0 +1,84 @@
+innetgr is not available/functional in uclibc, provide conditions for
+compilation.
+
+Patch originally by Dmitry Golubovsky <golubovsky@gmail.com> - porting
+to linux-pam 1.2.1.
+
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+
+Upstream-status: pending
+
+---
+ modules/pam_group/pam_group.c           | 8 +++++++-
+ modules/pam_succeed_if/pam_succeed_if.c | 4 ++++
+ modules/pam_time/pam_time.c             | 8 +++++++-
+ 3 files changed, 18 insertions(+), 2 deletions(-)
+
+diff --git a/modules/pam_group/pam_group.c b/modules/pam_group/pam_group.c
+index be5f20f..0982de8 100644
+--- a/modules/pam_group/pam_group.c
++++ b/modules/pam_group/pam_group.c
+@@ -655,8 +655,14 @@ static int check_account(pam_handle_t *pamh, const char *service,
+ 	    continue;
+ 	}
+ 	/* If buffer starts with @, we are using netgroups */
+-	if (buffer[0] == '@')
++	if (buffer[0] == '@') {
++#ifdef HAVE_INNETGR
+ 	  good &= innetgr (&buffer[1], NULL, user, NULL);
++#else
++	  good = 0;
++	  pam_syslog (pamh, LOG_ERR, "pam_group does not have netgroup support");
++#endif  /* HAVE_INNETGR */
++	}
+ 	/* otherwise, if the buffer starts with %, it's a UNIX group */
+ 	else if (buffer[0] == '%')
+           good &= pam_modutil_user_in_group_nam_nam(pamh, user, &buffer[1]);
+diff --git a/modules/pam_succeed_if/pam_succeed_if.c b/modules/pam_succeed_if/pam_succeed_if.c
+index aa828fc..c09d669 100644
+--- a/modules/pam_succeed_if/pam_succeed_if.c
++++ b/modules/pam_succeed_if/pam_succeed_if.c
+@@ -233,16 +233,20 @@ evaluate_notingroup(pam_handle_t *pamh, const char *user, const char *group)
+ static int
+ evaluate_innetgr(const char *host, const char *user, const char *group)
+ {
++#ifdef HAVE_INNETGR
+ 	if (innetgr(group, host, user, NULL) == 1)
+ 		return PAM_SUCCESS;
++#endif /* HAVE_INNETGR */
+ 	return PAM_AUTH_ERR;
+ }
+ /* Return PAM_SUCCESS if the (host,user) is NOT in the netgroup. */
+ static int
+ evaluate_notinnetgr(const char *host, const char *user, const char *group)
+ {
++#ifdef HAVE_INNETGR
+ 	if (innetgr(group, host, user, NULL) == 0)
+ 		return PAM_SUCCESS;
++#endif /* HAVE_INNETGR */
+ 	return PAM_AUTH_ERR;
+ }
+ 
+diff --git a/modules/pam_time/pam_time.c b/modules/pam_time/pam_time.c
+index c94737c..4898fd2 100644
+--- a/modules/pam_time/pam_time.c
++++ b/modules/pam_time/pam_time.c
+@@ -554,8 +554,14 @@ check_account(pam_handle_t *pamh, const char *service,
+ 	       continue;
+ 	  }
+ 	  /* If buffer starts with @, we are using netgroups */
+-	  if (buffer[0] == '@')
++	  if (buffer[0] == '@') {
++#ifdef HAVE_INNETGR
+ 	    good &= innetgr (&buffer[1], NULL, user, NULL);
++#else
++	    good = 0;
++	    pam_syslog (pamh, LOG_ERR, "pam_time does not have netgroup support");
++#endif /* HAVE_INNETGR */
++	  }
+ 	  else
+ 	    good &= logic_field(pamh, user, buffer, count, is_same);
+ 	  D(("with user: %s", good ? "passes":"fails" ));
+-- 
+2.4.3
+

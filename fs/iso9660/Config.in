@@ -1,0 +1,88 @@
+config BR2_TARGET_ROOTFS_ISO9660
+	bool "iso image"
+	depends on (BR2_i386 || BR2_x86_64)
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TARGET_GRUB || \
+		BR2_TARGET_GRUB2 || \
+		BR2_TARGET_SYSLINUX_ISOLINUX
+	select BR2_LINUX_KERNEL_INSTALL_TARGET \
+	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
+	help
+	  Build a bootable ISO9660 image. By default, the root
+	  filesystem is directly packed as the ISO9660 filesystem,
+	  which means the root filesystem will be read-only. It
+	  requires ISO9660 filesystem support and CDROM support in the
+	  kernel.
+
+	  However, if BR2_TARGET_ROOTFS_INITRAMFS or
+	  BR2_TARGET_ROOTFS_ISO9660_INITRD have been enabled, the
+	  ISO9660 filesystem will only contain a kernel image and
+	  optionally an external initrd image. In this case, the
+	  filesystem being in RAM, it will be read/write. No ISO9660
+	  or CDROM support is needed in the kernel.
+
+if BR2_TARGET_ROOTFS_ISO9660
+
+choice
+	prompt "Bootloader"
+
+config BR2_TARGET_ROOTFS_ISO9660_GRUB
+	bool "grub"
+	depends on BR2_TARGET_GRUB
+	select BR2_TARGET_GRUB_FS_ISO9660
+
+config BR2_TARGET_ROOTFS_ISO9660_GRUB2
+	bool "grub2"
+	depends on BR2_TARGET_GRUB2
+	help
+	  Use Grub 2 as the bootloader for the ISO9660 image. Make
+	  sure to enable the 'iso9660' module in
+	  BR2_TARGET_GRUB2_BUILTIN_MODULES and to use 'cd' as the boot
+	  partition in BR2_TARGET_GRUB2_BOOT_PARTITION=.
+
+config BR2_TARGET_ROOTFS_ISO9660_ISOLINUX
+	bool "isolinux"
+	depends on BR2_TARGET_SYSLINUX_ISOLINUX
+
+endchoice
+
+config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
+	string "Boot menu config file"
+	default "fs/iso9660/menu.lst" if BR2_TARGET_ROOTFS_ISO9660_GRUB
+	default "fs/iso9660/grub.cfg" if BR2_TARGET_ROOTFS_ISO9660_GRUB2
+	default "fs/iso9660/isolinux.cfg" if BR2_TARGET_ROOTFS_ISO9660_ISOLINUX
+	help
+	  Use this option to provide a custom bootloader configuration
+	  file (menu.lst for Grub, grub.cfg for Grub 2, isolinux.cfg for
+	  isolinux).
+
+	  Note that the strings __KERNEL_PATH__ and __INITRD_PATH__
+	  will automatically be replaced by the path to the kernel and
+	  initrd images respectively.
+
+config BR2_TARGET_ROOTFS_ISO9660_INITRD
+	bool "Use initrd"
+	default y
+	select BR2_TARGET_ROOTFS_CPIO
+	help
+	  Enable this option to have the root filesystem bundled as an
+	  initrd/initramfs rather than directly as the ISO9660
+	  filesystem. With this option enabled, the ISO9660 will only
+	  contain a kernel image, an initrd image (unless an initramfs
+	  linked into the kernel is used) and the bootloader.
+
+config BR2_TARGET_ROOTFS_ISO9660_HYBRID
+	bool "Build hybrid image"
+	depends on BR2_TARGET_ROOTFS_ISO9660_ISOLINUX
+	help
+	  Enable this option to build an hybrid image, i.e an image
+	  which can either be booted from a CD-ROM or from a device
+	  which BIOS considers a hard disk or ZIP disk, e.g. a USB key
+	  or similar.
+
+endif
+
+comment "iso image needs a Linux kernel and one of grub, grub2 or isolinux to be built"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_LINUX_KERNEL || \
+		!(BR2_TARGET_GRUB || BR2_TARGET_GRUB2 || BR2_TARGET_SYSLINUX_ISOLINUX)

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBXCB
+	bool "libxcb"
+	select BR2_PACKAGE_LIBPTHREAD_STUBS
+	select BR2_PACKAGE_XCB_PROTO
+	select BR2_PACKAGE_XLIB_LIBXDMCP
+	select BR2_PACKAGE_XLIB_LIBXAU
+	help
+	  The X protocol C-language Binding (XCB) is a replacement for
+	  Xlib featuring a small footprint, latency hiding, direct access
+	  to the protocol, improved threading support, and extensibility.
+
+	  http://xcb.freedesktop.org/

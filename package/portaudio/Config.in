@@ -1,0 +1,33 @@
+comment "portaudio needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_PORTAUDIO
+	bool "portaudio"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  PortAudio is a free, cross-platform, open-source,
+	  audio I/O library.
+
+	  http://www.portaudio.com/
+
+if BR2_PACKAGE_PORTAUDIO
+
+config BR2_PACKAGE_PORTAUDIO_ALSA
+	bool "alsa support"
+	select BR2_PACKAGE_ALSA_LIB
+	default y
+	help
+	  Compile with ALSA support.
+
+config BR2_PACKAGE_PORTAUDIO_OSS
+	bool "oss support"
+	help
+	  Compile with OSS support.
+
+config BR2_PACKAGE_PORTAUDIO_CXX
+	bool "C++ bindings"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Enables C++ bindings.
+
+endif # BR2_PACKAGE_PORTAUDIO

@@ -1,0 +1,76 @@
+From http://ftp.gnu.org/pub/gnu/bash/bash-4.3-patches/bash43-041
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.3
+Patch-ID:	bash43-041
+
+Bug-Reported-by:	Hanno Böck <hanno@hboeck.de>
+Bug-Reference-ID:	<20150623131106.6f111da9@pc1>, <20150707004640.0e61d2f9@pc1>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2015-06/msg00089.html,
+			http://lists.gnu.org/archive/html/bug-bash/2015-07/msg00018.html
+
+Bug-Description:
+
+There are several out-of-bounds read errors that occur when completing command
+lines where assignment statements appear before the command name.  The first
+two appear only when programmable completion is enabled; the last one only
+happens when listing possible completions.
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.3.40/bashline.c	2014-12-29 14:39:43.000000000 -0500
+--- b/bashline.c	2015-08-12 10:21:58.000000000 -0400
+***************
+*** 1469,1476 ****
+--- 1469,1489 ----
+        os = start;
+        n = 0;
++       was_assignment = 0;
+        s = find_cmd_start (os);
+        e = find_cmd_end (end);
+        do
+  	{
++ 	  /* Don't read past the end of rl_line_buffer */
++ 	  if (s > rl_end)
++ 	    {
++ 	      s1 = s = e1;
++ 	      break;
++ 	    }
++ 	  /* Or past point if point is within an assignment statement */
++ 	  else if (was_assignment && s > rl_point)
++ 	    {
++ 	      s1 = s = e1;
++ 	      break;
++ 	    }
+  	  /* Skip over assignment statements preceding a command name.  If we
+  	     don't find a command name at all, we can perform command name
+*** a/bash-4.3.40/lib/readline/complete.c	2013-10-14 09:27:10.000000000 -0400
+--- b/lib/readline/complete.c	2015-07-31 09:34:39.000000000 -0400
+***************
+*** 690,693 ****
+--- 690,695 ----
+    if (temp == 0 || *temp == '\0')
+      return (pathname);
++   else if (temp[1] == 0 && temp == pathname)
++     return (pathname);
+    /* If the basename is NULL, we might have a pathname like '/usr/src/'.
+       Look for a previous slash and, if one is found, return the portion
+*** a/bash-4.3/patchlevel.h	2012-12-29 10:47:57.000000000 -0500
+--- b/patchlevel.h	2014-03-20 20:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 40
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 41
+  
+  #endif /* _PATCHLEVEL_H_ */

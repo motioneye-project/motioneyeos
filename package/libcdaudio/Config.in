@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBCDAUDIO
+	bool "libcdaudio"
+	# binutils assertion failure
+	depends on !BR2_nios2
+	help
+	  libcdaudio is a library designed to provide functions to
+	  control operation of a CD-ROM when playing audio CDs. It
+	  also contains functions for CDDB and CD Index lookup.
+
+	  http://libcdaudio.sourceforge.net/

@@ -1,0 +1,14 @@
+config BR2_PACKAGE_MRAA
+	bool "mraa"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_arm || BR2_i386 || BR2_x86_64
+	help
+	  mraa is a C/C++ library with bindings to javascript & python
+	  to interface with the IO on Galileo, Edison & other platforms,
+	  with a structured and sane API where port names/numbering matches
+	  the board that you are on.
+
+	  http://iotdk.intel.com/docs/master/mraa
+
+comment "mraa needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

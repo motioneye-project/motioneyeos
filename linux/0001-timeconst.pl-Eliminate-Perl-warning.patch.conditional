@@ -1,0 +1,45 @@
+From 63a3f603413ffe82ad775f2d62a5afff87fd94a0 Mon Sep 17 00:00:00 2001
+From: "H. Peter Anvin" <hpa@linux.intel.com>
+Date: Thu, 7 Feb 2013 17:14:08 -0800
+Subject: [PATCH] timeconst.pl: Eliminate Perl warning
+
+defined(@array) is deprecated in Perl and gives off a warning.
+Restructure the code to remove that warning.
+
+[ hpa: it would be interesting to revert to the timeconst.bc script.
+  It appears that the failures reported by akpm during testing of
+  that script was due to a known broken version of make, not a problem
+  with bc.  The Makefile rules could probably be restructured to avoid
+  the make bug, or it is probably old enough that it doesn't matter. ]
+
+Reported-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: H. Peter Anvin <hpa@linux.intel.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Gustavo Zacarias <gustavo.zacarias@free-electrons.com>
+---
+Patch status: upstream
+
+ kernel/timeconst.pl | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/kernel/timeconst.pl b/kernel/timeconst.pl
+index eb51d76..3f42652 100644
+--- a/kernel/timeconst.pl
++++ b/kernel/timeconst.pl
+@@ -369,10 +369,8 @@ if ($hz eq '--can') {
+ 		die "Usage: $0 HZ\n";
+ 	}
+ 
+-	@val = @{$canned_values{$hz}};
+-	if (!defined(@val)) {
+-		@val = compute_values($hz);
+-	}
++	$cv = $canned_values{$hz};
++	@val = defined($cv) ? @$cv : compute_values($hz);
+ 	output($hz, @val);
+ }
+ exit 0;
+-- 
+2.4.10
+

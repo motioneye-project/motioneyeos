@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBNICE
+	bool "libnice"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # fork()
+	help
+	  Libnice is an implementation of the IETF's Interactive
+	  Connectivity Establishment (ICE) standard (RFC 5245) and the
+	  Session Traversal Utilities for NAT (STUN) standard (RFC
+	  5389).
+
+	  It provides a GLib-based library, libnice and a Glib-free
+	  library, libstun as well as GStreamer elements.
+
+	  http://nice.freedesktop.org/wiki/
+
+comment "libnice needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

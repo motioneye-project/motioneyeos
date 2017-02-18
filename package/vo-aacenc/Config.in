@@ -1,0 +1,9 @@
+config BR2_PACKAGE_VO_AACENC
+	bool "vo-aacenc"
+	help
+	  This library contains an encoder implementation of the
+	  Advanced Audio Coding (AAC) audio codec. The library is
+	  based on a codec implementation by VisualOn as part of the
+	  Stagefright framework from the Google Android project.
+
+	  http://sourceforge.net/projects/opencore-amr/

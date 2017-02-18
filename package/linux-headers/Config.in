@@ -1,0 +1,2 @@
+config BR2_PACKAGE_LINUX_HEADERS
+	bool

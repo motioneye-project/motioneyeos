@@ -1,0 +1,11 @@
+comment "erlang-p1-stringprep needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_ERLANG_P1_STRINGPREP
+	bool "erlang-p1-stringprep"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ERLANG_P1_UTILS
+	help
+	  Erlang interface to stringprep
+
+	  https://github.com/processone/stringprep

@@ -1,0 +1,4 @@
+# From http://download.zeromq.org/SHA1SUMS:
+sha1	b632a4b6f8a14390dc17824e37ff7b10831ce2b4	zeromq-4.1.4.tar.gz
+# Calculated based on the hash above
+sha256	e99f44fde25c2e4cb84ce440f87ca7d3fe3271c2b8cfbc67d55e4de25e6fe378	zeromq-4.1.4.tar.gz

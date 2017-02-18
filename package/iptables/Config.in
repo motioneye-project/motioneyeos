@@ -1,0 +1,35 @@
+config BR2_PACKAGE_IPTABLES
+	bool "iptables"
+	help
+	  Linux kernel firewall, NAT, and packet mangling tools.
+
+	  http://www.netfilter.org/projects/iptables/index.html
+
+if BR2_PACKAGE_IPTABLES
+
+config BR2_PACKAGE_IPTABLES_BPF_NFSYNPROXY
+	bool "bpfc and nfsynproxy"
+	# this dependency can be removed when using a musl version
+	# containing this commit:
+	# http://git.musl-libc.org/cgit/musl/commit/?id=53f41fb568ae43034c9876cc9bd3961fd6d13671
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  Build bpf compiler and nfsynproxy configuration tool.
+
+config BR2_PACKAGE_IPTABLES_NFTABLES
+	bool "nftables compat"
+	# uses dlfcn
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	select BR2_PACKAGE_LIBMNL
+	select BR2_PACKAGE_LIBNFTNL
+	help
+	  Build nftables compat utilities.
+
+comment "nftables compat needs a toolchain w/ wchar, dynamic library, headers >= 3.4"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || \
+		!BR2_USE_WCHAR || BR2_STATIC_LIBS
+
+endif

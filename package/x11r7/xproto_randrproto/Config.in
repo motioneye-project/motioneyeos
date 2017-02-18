@@ -1,0 +1,4 @@
+config BR2_PACKAGE_XPROTO_RANDRPROTO
+	bool "randrproto"
+	help
+	  X.Org Randr protocol headers

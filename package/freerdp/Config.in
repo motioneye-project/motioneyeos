@@ -1,0 +1,90 @@
+config BR2_PACKAGE_FREERDP
+	bool "freerdp"
+	# FreeRDP does not have a single C++ source file, however it
+	# insists on having a C++ compiler. Removing that requirement
+	# is a bit too much involving, so we just depend on it...
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # uses dlfcn.h
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  FreeRDP is a free implementation of the Remote Desktop
+	  Protocol (RDP), released under the Apache license
+
+	  This only installs the freerdp libraries.
+
+	  http://www.freerdp.com/
+
+	  Note: this also installs a key and certificate in
+	  /etc/freerdp/keys/ . These are publicly-known, as they
+	  are present in FreeRDP's source tree. It is strongly
+	  suggested that you overwrite them with your own set,
+	  either in an overlay rootfs or in a post-build script.
+
+if BR2_PACKAGE_FREERDP
+
+choice
+	bool "gstreamer support"
+	depends on BR2_PACKAGE_XORG7 # xlib-libxrandr
+	depends on BR2_PACKAGE_GSTREAMER || BR2_PACKAGE_GSTREAMER1
+
+config BR2_PACKAGE_FREERDP_GSTREAMER1
+	bool "gstreamer-1.x"
+	depends on BR2_PACKAGE_GSTREAMER1
+	# gstreamer-1.x dependencies already dependencies of FreeRDP
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+
+config BR2_PACKAGE_FREERDP_GSTREAMER
+	bool "gstreamer-0.x"
+	depends on BR2_PACKAGE_GSTREAMER
+	# gstreamer-0.x dependencies already dependencies of FreeRDP
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_LIBXML2
+
+config BR2_PACKAGE_FREERDP_GSTREAMER_NO
+	bool "none"
+
+endchoice
+
+comment "gstreamer support needs X.Org"
+	depends on !BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_GSTREAMER || BR2_PACKAGE_GSTREAMER1
+
+config BR2_PACKAGE_FREERDP_SERVER
+	bool "server"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXFIXES
+
+config BR2_PACKAGE_FREERDP_CLIENT_X11
+	bool "X11 client"
+	default y
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+
+comment "server and X11 client need X.Org"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_FREERDP_CLIENT_WL
+	bool "wayland client"
+	default y
+	depends on BR2_PACKAGE_WAYLAND
+
+endif
+
+comment "freerdp needs a toolchain w/ wchar, dynamic library, threads, C++"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP

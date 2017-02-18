@@ -1,0 +1,11 @@
+libdnet: always build a static library
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/libdnet-stripped/configure.gnu b/libdnet-stripped/configure.gnu
+--- /dev/null
++++ b/libdnet-stripped/configure.gnu
+@@ -0,0 +1,3 @@
++#!/bin/sh
++
++exec "${0%.gnu}" "${@}" --enable-static --disable-shared

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LIBEVDEV
+	bool "libevdev"
+	help
+	  libevdev is a wrapper library for evdev devices
+
+	  http://freedesktop.org/wiki/Software/libevdev/

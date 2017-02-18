@@ -1,0 +1,107 @@
+From 4824be8986c2b6ef0b0bd2b32bc99c4ba6406640 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 24 Jan 2015 19:44:14 +0100
+Subject: [PATCH] Add .pc files for the OpenGLESv2, EGL and bcm_host libraries
+
+Those pkg-config files make it easier for Qt5 to find those libraries
+and the appropriate link flags.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+[Rebased for rpi-userland-a1b89e91f393c7134b4cdc36431f863bb3333163]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ host_applications/linux/libs/bcm_host/CMakeLists.txt |  4 ++++
+ host_applications/linux/libs/bcm_host/bcm_host.pc.in | 10 ++++++++++
+ interface/khronos/CMakeLists.txt                     |  8 ++++++++
+ interface/khronos/egl/egl.pc.in                      | 11 +++++++++++
+ interface/khronos/glxx/glesv2.pc.in                  | 10 ++++++++++
+ 5 files changed, 43 insertions(+)
+ create mode 100644 host_applications/linux/libs/bcm_host/bcm_host.pc.in
+ create mode 100644 interface/khronos/egl/egl.pc.in
+ create mode 100644 interface/khronos/glxx/glesv2.pc.in
+
+diff --git a/host_applications/linux/libs/bcm_host/CMakeLists.txt b/host_applications/linux/libs/bcm_host/CMakeLists.txt
+index 1edf50a..1f29ead 100644
+--- a/host_applications/linux/libs/bcm_host/CMakeLists.txt
++++ b/host_applications/linux/libs/bcm_host/CMakeLists.txt
+@@ -20,3 +20,7 @@ target_link_libraries(bcm_host vcos vchostif)
+ 
+ install(TARGETS bcm_host DESTINATION lib)
+ 
++configure_file("${CMAKE_CURRENT_SOURCE_DIR}/bcm_host.pc.in"
++  "${CMAKE_CURRENT_BINARY_DIR}/bcm_host.pc" @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/bcm_host.pc"
++  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+diff --git a/host_applications/linux/libs/bcm_host/bcm_host.pc.in b/host_applications/linux/libs/bcm_host/bcm_host.pc.in
+new file mode 100644
+index 0000000..d40d350
+--- /dev/null
++++ b/host_applications/linux/libs/bcm_host/bcm_host.pc.in
+@@ -0,0 +1,10 @@
++prefix=/usr
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: bcm_host
++Description: Broadcom VideoCore host API library
++Version: 1
++Libs: -L${libdir} -lbcm_host -lvcos -lvchiq_arm
++Cflags: -I${includedir} -I${includedir}/interface/vmcs_host/linux -I${includedir}/interface/vcos/pthreads -DUSE_VCHIQ_ARM
+diff --git a/interface/khronos/CMakeLists.txt b/interface/khronos/CMakeLists.txt
+index 4231af4..2844ebd 100644
+--- a/interface/khronos/CMakeLists.txt
++++ b/interface/khronos/CMakeLists.txt
+@@ -74,6 +74,14 @@ target_link_libraries(OpenVG EGL)
+ 
+ install(TARGETS EGL GLESv2 OpenVG WFC khrn_client DESTINATION lib)
+ install(TARGETS EGL_static GLESv2_static khrn_static DESTINATION lib)
++configure_file("${CMAKE_CURRENT_SOURCE_DIR}/egl/egl.pc.in"
++  "${CMAKE_CURRENT_BINARY_DIR}/egl/egl.pc" @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/egl/egl.pc"
++  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
++configure_file("${CMAKE_CURRENT_SOURCE_DIR}/glxx/glesv2.pc.in"
++  "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc" @ONLY)
++install(FILES "${CMAKE_CURRENT_BINARY_DIR}/glxx/glesv2.pc"
++  DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig")
+ 
+ # recommended names to use to avoid conflicts with mesa libs
+ add_library(brcmEGL ${SHARED} ${EGL_SOURCE})
+diff --git a/interface/khronos/egl/egl.pc.in b/interface/khronos/egl/egl.pc.in
+new file mode 100644
+index 0000000..5868706
+--- /dev/null
++++ b/interface/khronos/egl/egl.pc.in
+@@ -0,0 +1,11 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: egl
++Description: RasberryPi implementation of EGL
++Version: 10
++Libs: -L${libdir} -lEGL -lGLESv2 -lbcm_host -lvchostif
++Cflags: -I${includedir}/ -I${includedir}/interface/vcos/pthreads/ \
++        -I${includedir}/interface/vmcs_host/linux/
+diff --git a/interface/khronos/glxx/glesv2.pc.in b/interface/khronos/glxx/glesv2.pc.in
+new file mode 100644
+index 0000000..2f58eed
+--- /dev/null
++++ b/interface/khronos/glxx/glesv2.pc.in
+@@ -0,0 +1,10 @@
++prefix=@CMAKE_INSTALL_PREFIX@
++exec_prefix=${prefix}
++libdir=${exec_prefix}/lib
++includedir=${prefix}/include
++
++Name: glesv2
++Description: RasberryPi implementation of OpenGL ESv2
++Version: 2.0
++Libs: -L${libdir} -lGLESv2
++Cflags: -I${includedir}/
+-- 
+2.8.1
+

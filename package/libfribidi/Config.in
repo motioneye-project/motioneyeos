@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBFRIBIDI
+	bool "libfribidi"
+	help
+	  GNU FriBidi is an implementation of the Unicode
+	  Bidirectional Algorithm (bidi).
+
+	  http://www.fribidi.org/

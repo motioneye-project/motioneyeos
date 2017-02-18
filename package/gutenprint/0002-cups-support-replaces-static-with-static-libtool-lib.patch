@@ -1,0 +1,39 @@
+From 08a5d355160eb2ac8346ae1b94591418343217f9 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sun, 17 Aug 2014 23:43:20 +0200
+Subject: [PATCH 1/1] cups support: replaces -static with -static-libtool-libs
+
+gutenprint rely on the original behaviour of -static, but since commit
+in buildroot "support/libtool: make -static behave like -all-static" [1],
+the build of genppd is broken.
+
+genppd need to be build statically otherwise the following warning appears:
+***WARNING: Use of --disable-static-genppd or --disable-static
+            when building CUPS is very dangerous.  The build may
+            fail when building the PPD files, or may *SILENTLY*
+            build incorrect PPD files or cause other problems.
+            Please review the README and release notes carefully!
+
+[1] http://git.buildroot.net/buildroot/commit/?id=97703978ac870ce2b14ad144f8e082de82aa2c64
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ src/cups/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/cups/Makefile.am b/src/cups/Makefile.am
+index 1e27ae0..d711b70 100644
+--- a/src/cups/Makefile.am
++++ b/src/cups/Makefile.am
+@@ -84,7 +84,7 @@ noinst_SCRIPTS=test-rastertogutenprint
+ endif
+ 
+ if BUILD_GENPPD_STATIC
+-STATIC_LDOPTS=-static -export-dynamic
++STATIC_LDOPTS=-static-libtool-libs -export-dynamic
+ endif
+ 
+ cups_calibrate_SOURCES = cups-calibrate.c
+-- 
+1.9.3
+

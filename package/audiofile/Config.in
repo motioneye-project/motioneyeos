@@ -1,0 +1,11 @@
+config BR2_PACKAGE_AUDIOFILE
+	bool "audiofile"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  The Audio File Library handles reading and writing audio files
+	  in many common formats.
+
+	  http://www.68k.org/~michael/audiofile/
+
+comment "audiofile needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

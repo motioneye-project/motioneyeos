@@ -1,0 +1,15 @@
+config BR2_PACKAGE_RABBITMQ_C
+	bool "rabbitmq-c"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# too old uClibc, not providing posix_spawn functions
+	# http://autobuild.buildroot.net/results/a6c3e79c61c5a535970d03bf37b068349f766a7f/
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
+	help
+	  This is a C-language AMQP client library for use with v2.0+
+	  of the RabbitMQ broker.
+
+	  https://github.com/alanxz/rabbitmq-c
+
+comment "rabbitmq-c needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX

@@ -1,0 +1,9 @@
+# This package is not meant to be user-visible.
+# It gets selected by BR2_TARGET_TZ in system/Config.in
+
+config BR2_PACKAGE_TZDATA
+	bool
+	help
+	  Time zone database
+
+	  http://www.iana.org/time-zones/repository/tz-link.html

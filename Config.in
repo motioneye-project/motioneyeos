@@ -1,0 +1,725 @@
+#
+
+mainmenu "Buildroot $BR2_VERSION Configuration"
+
+config BR2_HAVE_DOT_CONFIG
+	bool
+	default y
+
+config BR2_VERSION
+	string
+	option env="BR2_VERSION_FULL"
+
+config BR2_HOSTARCH
+	string
+	option env="HOSTARCH"
+
+config BR2_EXTERNAL
+	string
+	option env="BR2_EXTERNAL"
+
+# Hidden config symbols for packages to check system gcc version
+config BR2_HOST_GCC_VERSION
+	string
+	option env="HOST_GCC_VERSION"
+
+config BR2_HOST_GCC_AT_LEAST_4_6
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 6"
+
+config BR2_HOST_GCC_AT_LEAST_4_7
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 7"
+	select BR2_HOST_GCC_AT_LEAST_4_6
+
+config BR2_HOST_GCC_AT_LEAST_4_8
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 8"
+	select BR2_HOST_GCC_AT_LEAST_4_7
+
+config BR2_HOST_GCC_AT_LEAST_4_9
+	bool
+	default y if BR2_HOST_GCC_VERSION = "4 9"
+	select BR2_HOST_GCC_AT_LEAST_4_8
+
+config BR2_HOST_GCC_AT_LEAST_5
+	bool
+	default y if BR2_HOST_GCC_VERSION = "5"
+	select BR2_HOST_GCC_AT_LEAST_4_9
+
+# Hidden boolean selected by packages in need of Java in order to build
+# (example: xbmc)
+config BR2_NEEDS_HOST_JAVA
+	bool
+
+# Hidden boolean selected by packages in need of javac in order to build
+# (example: classpath)
+config BR2_NEEDS_HOST_JAVAC
+	bool
+
+# Hidden boolean selected by packages in need of jar in order to build
+# (example: classpath)
+config BR2_NEEDS_HOST_JAR
+	bool
+
+# Hidden boolean selected by pre-built packages for x86, when they
+# need to run on x86-64 machines (example: pre-built external
+# toolchains, binary tools like SAM-BA, etc.).
+config BR2_HOSTARCH_NEEDS_IA32_LIBS
+	bool
+
+# Hidden boolean selected by packages that need to build 32 bits
+# binaries with the host compiler, even on 64 bits build machines (e.g
+# bootloaders).
+config BR2_HOSTARCH_NEEDS_IA32_COMPILER
+	bool
+
+source "arch/Config.in"
+
+menu "Build options"
+
+menu "Commands"
+
+config BR2_WGET
+	string "Wget command"
+	default "wget --passive-ftp -nd -t 3"
+
+config BR2_SVN
+	string "Subversion (svn) command"
+	default "svn"
+
+config BR2_BZR
+	string "Bazaar (bzr) command"
+	default "bzr"
+
+config BR2_GIT
+	string "Git command"
+	default "git"
+
+config BR2_CVS
+	string "CVS command"
+	default "cvs"
+
+config BR2_LOCALFILES
+	string "Local files retrieval command"
+	default "cp"
+
+config BR2_SCP
+	string "Secure copy (scp) command"
+	default "scp"
+
+config BR2_SSH
+	string "Secure shell (ssh) command"
+	default "ssh"
+
+config BR2_HG
+	string "Mercurial (hg) command"
+	default "hg"
+
+config BR2_ZCAT
+	string "zcat command"
+	default "gzip -d -c"
+	help
+	  Command to be used to extract a gzip'ed file to stdout.
+	  zcat is identical to gunzip -c except that the former may
+	  not be available on your system.
+	  Default is "gzip -d -c"
+	  Other possible values include "gunzip -c" or "zcat".
+
+config BR2_BZCAT
+	string "bzcat command"
+	default "bzcat"
+	help
+	  Command to be used to extract a bzip2'ed file to stdout.
+	  bzcat is identical to bunzip2 -c except that the former may
+	  not be available on your system.
+	  Default is "bzcat"
+	  Other possible values include "bunzip2 -c" or "bzip2 -d -c".
+
+config BR2_XZCAT
+	string "xzcat command"
+	default "xzcat"
+	help
+	  Command to be used to extract a xz'ed file to stdout.
+	  Default is "xzcat"
+
+config BR2_TAR_OPTIONS
+	string "Tar options"
+	default ""
+	help
+	  Options to pass to tar when extracting the sources.
+	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
+	  and to be verbose.
+
+endmenu
+
+config BR2_DEFCONFIG_FROM_ENV
+	string
+	option env="BR2_DEFCONFIG"
+
+config BR2_DEFCONFIG
+	string "Location to save buildroot config"
+	default BR2_DEFCONFIG_FROM_ENV if BR2_DEFCONFIG_FROM_ENV != ""
+	default "$(CONFIG_DIR)/defconfig"
+	help
+	  When running 'make savedefconfig', the defconfig file will be saved
+	  in this location.
+
+config BR2_DL_DIR
+	string "Download dir"
+	default "$(TOPDIR)/dl"
+	help
+	  Directory to store all the source files that we need to fetch.
+	  If the Linux shell environment has defined the BR2_DL_DIR
+	  environment variable, then this overrides this configuration item.
+
+	  The default is $(TOPDIR)/dl
+
+config BR2_HOST_DIR
+	string "Host dir"
+	default "$(BASE_DIR)/host"
+	help
+	  Directory to store all the binary files that are built for the host.
+	  This includes the cross compilation toolchain when building the
+	  internal buildroot toolchain.
+
+	  The default is $(BASE_DIR)/host
+
+menu "Mirrors and Download locations"
+
+config BR2_PRIMARY_SITE
+	string "Primary download site"
+	default ""
+	help
+	  Primary site to download from. If this option is set then buildroot
+	  will try to download package source first from this site and try the
+	  default if the file is not found.
+	  Valid URIs are:
+	    - URIs recognized by $(WGET)
+	    - local URIs of the form file://absolutepath
+	    - scp URIs of the form scp://[user@]host:path.
+
+config BR2_PRIMARY_SITE_ONLY
+	bool "Only allow downloads from primary download site"
+	depends on BR2_PRIMARY_SITE != ""
+	help
+	  If this option is enabled, downloads will only be attempted
+	  from the primary download site. Other locations, like the
+	  package's official download location or the backup download
+	  site, will not be considered. Therefore, if the package is
+	  not present on the primary site, the download fails.
+
+	  This is useful for project developers who want to ensure
+	  that the project can be built even if the upstream tarball
+	  locations disappear.
+
+if !BR2_PRIMARY_SITE_ONLY
+
+config BR2_BACKUP_SITE
+	string "Backup download site"
+	default "http://sources.buildroot.net"
+	help
+	  Backup site to download from. If this option is set then buildroot
+	  will fall back to download package sources from here if the
+	  normal location fails.
+
+config BR2_KERNEL_MIRROR
+	string "Kernel.org mirror"
+	default "https://www.kernel.org/pub"
+	help
+	  kernel.org is mirrored on a number of servers around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the kernel.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://www.XX.kernel.org/pub (XX = country code)
+	     http://mirror.aarnet.edu.au/pub/ftp.kernel.org
+
+config BR2_GNU_MIRROR
+	string "GNU Software mirror"
+	default "http://ftp.gnu.org/pub/gnu"
+	help
+	  GNU has multiple software mirrors scattered around the world.
+	  The following allows you to select your preferred mirror.
+
+	  Have a look on the gnu.org site for a list of mirrors, then enter
+	  the URL to the base directory.  Examples:
+
+	     http://ftp.gnu.org/pub/gnu
+	     http://mirror.aarnet.edu.au/pub/gnu
+
+config BR2_LUAROCKS_MIRROR
+	string "LuaRocks mirror"
+	default "http://rocks.moonscript.org"
+	help
+	  LuaRocks repository.
+
+	  See http://luarocks.org
+
+config BR2_CPAN_MIRROR
+	string "CPAN mirror (Perl packages)"
+	default "http://cpan.metacpan.org"
+	help
+	  CPAN (Comprehensive Perl Archive Network) is a repository
+	  of Perl packages. It has multiple software mirrors scattered
+	  around the world. This option allows you to select a mirror.
+
+	  The list of mirrors is available at:
+	  http://search.cpan.org/mirror
+
+endif
+
+endmenu
+
+config BR2_JLEVEL
+	int "Number of jobs to run simultaneously (0 for auto)"
+	default "0"
+	help
+	  Number of jobs to run simultaneously.  If 0, determine
+	  automatically according to number of CPUs on the host
+	  system.
+
+config BR2_CCACHE
+	bool "Enable compiler cache"
+	help
+	  This option will enable the use of ccache, a compiler
+	  cache. It will cache the result of previous builds to speed
+	  up future builds. By default, the cache is stored in
+	  $HOME/.buildroot-ccache.
+
+	  Note that Buildroot does not try to invalidate the cache
+	  contents when the compiler changes in an incompatible
+	  way. Therefore, if you make a change to the compiler version
+	  and/or configuration, you are responsible for purging the
+	  ccache cache by removing the $HOME/.buildroot-ccache
+	  directory.
+
+if BR2_CCACHE
+
+config BR2_CCACHE_DIR
+	string "Compiler cache location"
+	default "$(HOME)/.buildroot-ccache"
+	help
+	  Where ccache should store cached files.
+
+config BR2_CCACHE_INITIAL_SETUP
+	string "Compiler cache initial setup"
+	help
+	  Initial ccache settings to apply, such as --max-files or --max-size.
+
+	  For example, if your project is known to require more space than the
+	  default max cache size, then you might want to increase the cache size
+	  to a suitable amount using the -M (--max-size) option.
+
+	  The string you specify here is passed verbatim to ccache.  Refer to
+	  ccache documentation for more details.
+
+	  These initial settings are applied after ccache has been compiled.
+
+config BR2_CCACHE_USE_BASEDIR
+	bool "Use relative paths"
+	default y
+	help
+	  Allow ccache to convert absolute paths within the output
+	  directory into relative paths.
+
+	  During the build, many -I include directives are given with
+	  an absolute path. These absolute paths end up in the hashes
+	  that are computed by ccache. Therefore, when you build from a
+	  different directory, the hash will be different and the
+	  cached object will not be used.
+
+	  To improve cache performance, set this option to y. This
+	  allows ccache to rewrite absolute paths within the output
+	  directory into relative paths. Note that only paths within
+	  the output directory will be rewritten; therefore, if you
+	  change BR2_HOST_DIR to point outside the output directory and
+	  subsequently move it to a different location, this will lead
+	  to cache misses.
+
+	  This option has as a result that the debug information in the
+	  object files also has only relative paths. Therefore, make
+	  sure you cd to the build directory before starting gdb. See
+	  the section "COMPILING IN DIFFERENT DIRECTORIES" in the
+	  ccache manual for more information.
+
+endif
+
+config BR2_DEPRECATED
+	bool "Show options and packages that are deprecated or obsolete"
+	help
+	  This option shows outdated/obsolete versions of packages and
+	  options that are otherwise hidden.
+
+if BR2_DEPRECATED
+
+config BR2_DEPRECATED_SINCE_2015_05
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2015_08
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2015_11
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2016_02
+	bool
+	default y
+
+config BR2_DEPRECATED_SINCE_2016_05
+	bool
+	default y
+
+endif
+
+config BR2_ENABLE_DEBUG
+	bool "build packages with debugging symbols"
+	help
+	  Build packages with debugging symbols enabled. All libraries
+	  and binaries in the 'staging' directory will have debugging
+	  symbols, which allows remote debugging even if libraries and
+	  binaries are stripped on the target. Whether libraries and
+	  binaries are stripped on the target is controlled by the
+	  BR2_STRIP_* options below.
+
+if BR2_ENABLE_DEBUG
+choice
+	prompt "gcc debug level"
+	default BR2_DEBUG_2
+	help
+	  Set the debug level for gcc
+
+config BR2_DEBUG_1
+	bool "debug level 1"
+	help
+	  Debug level 1 produces minimal information, enough
+	  for making backtraces in parts of the program that
+	  you don't plan to debug. This includes descriptions
+	  of functions and external variables, but no information
+	  about local variables and no line numbers.
+
+config BR2_DEBUG_2
+	bool "debug level 2"
+	help
+	  The default gcc debug level is 2
+
+config BR2_DEBUG_3
+	bool "debug level 3"
+	help
+	  Level 3 includes extra information, such as all the
+	  macro definitions present in the program. Some debuggers
+	  support macro expansion when you use -g3.
+endchoice
+endif
+
+choice
+	prompt "strip command for binaries on target"
+	default BR2_STRIP_strip
+
+config BR2_STRIP_strip
+	bool "strip"
+	depends on !BR2_PACKAGE_HOST_ELF2FLT
+	help
+	  Binaries and libraries in the target filesystem will be
+	  stripped using the normal 'strip' command. This allows to
+	  save space, mainly by removing debugging symbols. Debugging
+	  symbols on the target are needed for native debugging, but
+	  not when remote debugging is used.
+
+config BR2_STRIP_none
+	bool "none"
+	help
+	  Do not strip binaries and libraries in the target
+	  filesystem.
+endchoice
+
+config BR2_STRIP_EXCLUDE_FILES
+	string "executables that should not be stripped"
+	depends on !BR2_STRIP_none
+	default ""
+	help
+	  You may specify a space-separated list of binaries and libraries
+	  here that should not be stripped on the target.
+
+config BR2_STRIP_EXCLUDE_DIRS
+	string "directories that should be skipped when stripping"
+	depends on !BR2_STRIP_none
+	default ""
+	help
+	  You may specify a space-separated list of directories that should
+	  be skipped when stripping. Binaries and libraries in these
+	  directories will not be touched.
+	  The directories should be specified relative to the target directory,
+	  without leading slash.
+
+choice
+	prompt "gcc optimization level"
+	default BR2_OPTIMIZE_S
+	help
+	  Set the optimization level for gcc
+
+config BR2_OPTIMIZE_0
+	bool "optimization level 0"
+	help
+	  Do not optimize. This is the default.
+
+config BR2_OPTIMIZE_1
+	bool "optimization level 1"
+	help
+	  Optimize. Optimizing compilation takes somewhat more time,
+	  and a lot more memory for a large function. With -O, the
+	  compiler tries to reduce code size and execution time,
+	  without performing any optimizations that take a great deal
+	  of compilation time. -O turns on the following optimization
+	  flags: -fdefer-pop -fdelayed-branch -fguess-branch-probability
+	  -fcprop-registers -floop-optimize -fif-conversion
+	  -fif-conversion2 -ftree-ccp -ftree-dce -ftree-dominator-opts
+	  -ftree-dse -ftree-ter -ftree-lrs -ftree-sra -ftree-copyrename
+	  -ftree-fre -ftree-ch -funit-at-a-time -fmerge-constants
+	  -O also turns on -fomit-frame-pointer on machines where doing
+	  so does not interfere with debugging.
+
+config BR2_OPTIMIZE_2
+	bool "optimization level 2"
+	help
+	  Optimize even more. GCC performs nearly all supported optimizations
+	  that do not involve a space-speed tradeoff. The compiler does not
+	  perform loop unrolling or function inlining when you specify -O2.
+	  As compared to -O, this option increases both compilation time and
+	  the performance of the generated code. -O2 turns on all optimization
+	  flags specified by -O. It also turns on the following optimization
+	  flags: -fthread-jumps -fcrossjumping -foptimize-sibling-calls
+	  -fcse-follow-jumps -fcse-skip-blocks -fgcse  -fgcse-lm
+	  -fexpensive-optimizations -fstrength-reduce -frerun-cse-after-loop
+	  -frerun-loop-opt -fcaller-saves -fpeephole2 -fschedule-insns
+	  -fschedule-insns2 -fsched-interblock -fsched-spec -fregmove
+	  -fstrict-aliasing -fdelete-null-pointer-checks -freorder-blocks
+	  -freorder-functions -falign-functions -falign-jumps -falign-loops
+	  -falign-labels -ftree-vrp -ftree-pre
+	  Please note the warning under -fgcse about invoking -O2 on programs
+	  that use computed gotos.
+
+config BR2_OPTIMIZE_3
+	bool "optimization level 3"
+	help
+	  Optimize yet more. -O3 turns on all optimizations specified by -O2
+	  and also turns on the -finline-functions, -funswitch-loops and
+	  -fgcse-after-reload options.
+
+config BR2_OPTIMIZE_S
+	bool "optimize for size"
+	help
+	  Optimize for size. -Os enables all -O2 optimizations that do not
+	  typically increase code size. It also performs further optimizations
+	  designed to reduce code size. -Os disables the following optimization
+	  flags: -falign-functions -falign-jumps -falign-loops -falign-labels
+	  -freorder-blocks -freorder-blocks-and-partition -fprefetch-loop-arrays
+	  -ftree-vect-loop-version
+
+endchoice
+
+config BR2_GOOGLE_BREAKPAD_ENABLE
+	bool "Enable google-breakpad support"
+	select BR2_PACKAGE_GOOGLE_BREAKPAD
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	help
+	  This option will enable the use of google breakpad, a
+	  library and tool suite that allows you to distribute an
+	  application to users with compiler-provided debugging
+	  information removed, record crashes in compact "minidump"
+	  files, send them back to your server and produce C and C++
+	  stack traces from these minidumps.  Breakpad can also write
+	  minidumps on request for programs that have not crashed.
+
+if BR2_GOOGLE_BREAKPAD_ENABLE
+
+config BR2_GOOGLE_BREAKPAD_INCLUDE_FILES
+	string "List of executables and libraries to extract symbols from"
+	default ""
+	help
+	  You may specify a space-separated list of binaries and
+	  libraries with full paths relative to $(TARGET_DIR) of which
+	  debug symbols will be dumped for further use with google
+	  breakpad.
+
+	  A directory structure that can be used by minidump-stackwalk
+	  will be created at:
+
+	  $(STAGING_DIR)/usr/share/google-breakpad-symbols
+
+endif
+
+choice
+	bool "build code with Stack Smashing Protection"
+	default BR2_SSP_ALL if BR2_ENABLE_SSP # legacy
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	help
+	  Enable stack smashing protection support using GCC's
+	  -fstack-protector option family.
+
+	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
+	  for details.
+
+	  Note that this requires the toolchain to have SSP
+	  support. This is always the case for glibc and eglibc
+	  toolchain, but is optional in uClibc toolchains.
+
+config BR2_SSP_NONE
+	bool "None"
+	help
+	  Disable stack-smashing protection.
+
+config BR2_SSP_REGULAR
+	bool "-fstack-protector"
+	help
+	  Emit extra code to check for buffer overflows, such as stack
+	  smashing attacks. This is done by adding a guard variable to
+	  functions with vulnerable objects. This includes functions
+	  that call alloca, and functions with buffers larger than 8
+	  bytes. The guards are initialized when a function is entered
+	  and then checked when the function exits. If a guard check
+	  fails, an error message is printed and the program exits.
+
+config BR2_SSP_STRONG
+	bool "-fstack-protector-strong"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  Like -fstack-protector but includes additional functions to be
+	  protected - those that have local array definitions, or have
+	  references to local frame addresses.
+
+comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+config BR2_SSP_ALL
+	bool "-fstack-protector-all"
+	help
+	  Like -fstack-protector except that all functions are
+	  protected. This option might have a significant performance
+	  impact on the compiled binaries.
+
+endchoice
+
+comment "Stack Smashing Protection needs a toolchain w/ SSP"
+	depends on !BR2_TOOLCHAIN_HAS_SSP
+
+choice
+	bool "libraries"
+	default BR2_SHARED_LIBS if BR2_BINFMT_SUPPORTS_SHARED
+	default BR2_STATIC_LIBS if !BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Select the type of libraries you want to use on the target.
+
+	  The default is to build dynamic libraries and use those on
+	  the target filesystem, except when the architecture and/or
+	  the selected binary format does not support shared
+	  libraries.
+
+config BR2_STATIC_LIBS
+	bool "static only"
+	help
+	  Build and use only static libraries. No shared libraries
+	  will be instaled on the target. This potentially increases
+	  your code size and should only be used if you know what you
+	  are doing. Note that some packages may not be available when
+	  this option is enabled, due to their need for dynamic
+	  library support.
+
+config BR2_SHARED_LIBS
+	bool "shared only"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build and use only shared libraries. This is the recommended
+	  solution as it saves space and build time.
+
+config BR2_SHARED_STATIC_LIBS
+	bool "both static and shared"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build both shared and static libraries, but link executables
+	  dynamically. While building both shared and static libraries
+	  take more time and more disk space, having static libraries
+	  may be useful to link some of the applications statically.
+
+endchoice
+
+
+config BR2_PACKAGE_OVERRIDE_FILE
+	string "location of a package override file"
+	default "$(CONFIG_DIR)/local.mk"
+	help
+	  A package override file is a short makefile that contains
+	  variable definitions of the form <pkg>_OVERRIDE_SRCDIR,
+	  which allows to tell Buildroot to use an existing directory
+	  as the source directory for a particular package. See the
+	  Buildroot documentation for more details on this feature.
+
+config BR2_GLOBAL_PATCH_DIR
+	string "global patch directories"
+	help
+	  You may specify a space separated list of one or more directories
+	  containing global package patches. For a specific version
+	  <packageversion> of a specific package <packagename>, patches are
+	  applied as follows:
+
+	  First, the default Buildroot patch set for the package is applied
+	  from the package's directory in Buildroot.
+
+	  Then for every directory - <global-patch-dir> - that exists in
+	  BR2_GLOBAL_PATCH_DIR, if the directory
+	  <global-patch-dir>/<packagename>/<packageversion>/ exists, then all
+	  *.patch files in this directory will be applied.
+
+	  Otherwise, if the directory <global-patch-dir>/<packagename> exists,
+	  then all *.patch files in the directory will be applied.
+
+menu "Advanced"
+
+config BR2_COMPILER_PARANOID_UNSAFE_PATH
+	bool "paranoid check of library/header paths"
+	help
+	  By default, when this option is disabled, when the Buildroot
+	  cross-compiler will encounter an unsafe library or header
+	  path (such as /usr/include, or /usr/lib), the compiler will
+	  display a warning.
+
+	  By enabling this option, this warning is turned into an
+	  error, which will completely abort the build when such
+	  unsafe paths are encountered.
+
+	  Note that this mechanism is available for both the internal
+	  toolchain (through the toolchain wrapper and binutils patches)
+	  and external toolchain backends (through the toolchain wrapper).
+
+endmenu
+
+endmenu
+
+source "toolchain/Config.in"
+
+source "system/Config.in"
+
+source "linux/Config.in"
+
+source "package/Config.in"
+
+source "fs/Config.in"
+
+source "boot/Config.in"
+
+source "package/Config.in.host"
+
+source "Config.in.legacy"
+
+menu "User-provided options"
+	depends on BR2_EXTERNAL != "support/dummy-external"
+
+source "$BR2_EXTERNAL/Config.in"
+
+endmenu

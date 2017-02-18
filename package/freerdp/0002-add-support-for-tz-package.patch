@@ -1,0 +1,30 @@
+From 605d0a85183d2f9d5b0da5629cbadf01173bbb2f Mon Sep 17 00:00:00 2001
+From: Scott Fan <fancp2007@gmail.com>
+Date: Mon, 13 Jul 2015 15:01:17 +0800
+Subject: [PATCH] Add support for tz package
+
+Fixes error message while freerdp connected the remote desktop:
+Unable to detect time zone
+
+Signed-off-by: Scott Fan <fancp2007@gmail.com>
+---
+ libfreerdp/locale/timezone.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/libfreerdp/locale/timezone.c b/libfreerdp/locale/timezone.c
+index 3070f1f..4a06786 100644
+--- a/libfreerdp/locale/timezone.c
++++ b/libfreerdp/locale/timezone.c
+@@ -1539,7 +1539,8 @@ char* freerdp_get_unix_timezone_identifier()
+ 	 * America/Montreal for example.
+ 	 */
+ 	
+-	if ((len = readlink("/etc/localtime", buf, sizeof(buf) - 1)) != -1)
++	if ((len = readlink("/etc/localtime", buf, sizeof(buf) - 1)) != -1 ||
++	    (len = readlink("/etc/TZ", buf, sizeof(buf) - 1)) != -1)
+ 	{
+ 		int num = 0;
+ 		int pos = len;
+-- 
+2.4.5
+

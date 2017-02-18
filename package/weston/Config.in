@@ -1,0 +1,85 @@
+comment "weston needs udev and a toolchain w/ locale, threads, dynamic library, headers >= 3.0"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || BR2_STATIC_LIBS || \
+		!BR2_ENABLE_LOCALE
+
+config BR2_PACKAGE_WESTON
+	bool "weston"
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
+	select BR2_PACKAGE_LIBXKBCOMMON
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_MTDEV
+	select BR2_PACKAGE_LIBINPUT
+	depends on BR2_ENABLE_LOCALE # libinput
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on !BR2_STATIC_LIBS # wayland
+	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	# Runtime dependency
+	select BR2_PACKAGE_XKEYBOARD_CONFIG
+	# Make sure at least one compositor is selected.
+	select BR2_PACKAGE_WESTON_FBDEV if !BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+	help
+	  Weston is the reference implementation of a Wayland
+	  compositor, and a useful compositor in its own right.
+	  Weston has various backends that lets it run on Linux kernel
+	  modesetting and evdev input as well as under X11.
+
+	  http://wayland.freedesktop.org/
+
+if BR2_PACKAGE_WESTON
+
+# Helper to make sure at least one compositor is selected.
+config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+	bool
+
+config BR2_PACKAGE_WESTON_DRM
+	bool "DRM compositor"
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+
+# Uses libgbm from mesa3d
+comment "DRM compositor needs an OpenGL EGL backend provided by mesa3d"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL
+
+config BR2_PACKAGE_WESTON_FBDEV
+	bool "fbdev compositor"
+
+# FreeRDP needs threads and !static, already the case for weston
+config BR2_PACKAGE_WESTON_RDP
+	bool "RDP compositor"
+	depends on BR2_USE_WCHAR # freerdp
+	depends on BR2_USE_MMU # freerdp, libglib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_FREERDP
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+	help
+	  This enables the RDP backend, which allows accessing weston
+	  through the network with any RDP-compliant client.
+
+	  Please note that one must pass those options to weston for RDP
+	  to be functional:
+	    --rdp-tls-cert=/path/to/server.crt
+	    --rdp-tls-key=/path/to/server.key
+
+	  By default, Buildroot installs such files in /etc/freerdp/server/
+	  so you may want to change them in a post-build script or a rootfs
+	  overlay.
+
+comment "RDP compositor needs a toolchain w/ wchar"
+	depends on BROKEN # needs FreeRDP master
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR
+
+# rpi-userland is an EGL/GLES provider, so we can't select it
+config BR2_PACKAGE_WESTON_RPI
+	bool "RPi compositor"
+	depends on BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+
+endif

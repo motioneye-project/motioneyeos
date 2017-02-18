@@ -1,0 +1,9 @@
+config BR2_PACKAGE_RNG_TOOLS
+	bool "rng-tools"
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
+	# For rdrand ligcrypt is required and it's not obvious to users
+	select BR2_PACKAGE_LIBGCRYPT if BR2_i386 || BR2_x86_64
+	help
+	  Daemon to use hardware random number generators.
+
+	  http://sourceforge.net/projects/gkernel/

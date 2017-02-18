@@ -1,0 +1,35 @@
+From e6cfd977c81b335664db1d5d3d6b5488c245e30f Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Sat, 8 Aug 2015 18:26:15 +0200
+Subject: [PATCH] add missing stdio.h header
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+snprinf is defined in stdio.h.
+
+Fixes:
+perf/perf_bundle.cpp: In function ‘void parse_event_format(const char*)’:
+perf/perf_bundle.cpp:141:75: error: ‘sprintf’ was not declared in this scope
+  sprintf(file, "/sys/kernel/debug/tracing/events/%s/%s/format", sys, event);
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ src/perf/perf_bundle.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/perf/perf_bundle.cpp b/src/perf/perf_bundle.cpp
+index cf1ae11..3d216ff 100644
+--- a/src/perf/perf_bundle.cpp
++++ b/src/perf/perf_bundle.cpp
+@@ -31,6 +31,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
++#include <stdio.h>
+ 
+ #include "perf_bundle.h"
+ #include "perf_event.h"
+-- 
+2.4.3
+

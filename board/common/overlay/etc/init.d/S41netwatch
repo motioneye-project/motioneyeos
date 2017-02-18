@@ -1,0 +1,60 @@
+#!/bin/bash
+
+watch_conf="/data/etc/watch.conf"
+netwatch_retries=3
+netwatch_timeout=5
+netwatch_interval=20
+
+test -f $watch_conf && source $watch_conf || exit 0
+
+test -z "$netwatch_host" || -z "$netwatch_port" && exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
+
+watch() {
+    count=0
+    netwatch_retries=$(($netwatch_retries - 1))
+    while true; do
+        if nc -z -w $netwatch_timeout $netwatch_host $netwatch_port </dev/null >/dev/null 2>&1; then
+            count=0
+        else
+            if [ $count -lt $netwatch_retries ]; then
+                count=$(($count + 1))
+                continue
+            else
+                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, rebooting"
+                reboot
+            fi
+        fi
+        sleep $netwatch_interval
+    done
+}
+
+case "$1" in
+    start)
+        msg_begin "Starting netwatch"
+        watch &
+        msg_done
+        ;;
+
+    stop)
+        msg_begin "Stopping netwatch"
+        ps | grep netwatch | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+        msg_done
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+        
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

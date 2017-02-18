@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_VERSIONTOOLS
+	bool "python-versiontools"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Smart replacement for plain tuple used in __version__.
+
+	  https://pypi.python.org/pypi/versiontools

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LESSTIF
+	bool "lesstif"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_FREETYPE
+	depends on BR2_USE_MMU # fork()
+	help
+	  lesstif is the Hungry Programmers' version of OSF/Motif
+
+	  http://lesstif.sourceforge.net/

@@ -1,0 +1,40 @@
+config BR2_PACKAGE_RSH_REDONE
+	bool "rsh-redone"
+	help
+	  Rsh-redone is a reimplementation of the remote shell clients and
+	  servers. It is written from the ground up to avoid the bugs found
+	  in the standard clients and servers. It also fully supports IPv6.
+
+	  http://packages.debian.org/source/sid/rsh-redone
+
+if BR2_PACKAGE_RSH_REDONE
+
+config BR2_PACKAGE_RSH_REDONE_RLOGIN
+	bool "rlogin"
+
+config BR2_PACKAGE_RSH_REDONE_RLOGIND
+	bool "rlogind"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_ENABLE_LOCALE && BR2_USE_WCHAR
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+
+comment "rlogind needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+
+config BR2_PACKAGE_RSH_REDONE_RSH
+	bool "rsh"
+
+config BR2_PACKAGE_RSH_REDONE_RSHD
+	bool "rshd"
+	depends on BR2_ENABLE_LOCALE && BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+
+comment "rshd needs a uClibc or (e)glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+
+endif

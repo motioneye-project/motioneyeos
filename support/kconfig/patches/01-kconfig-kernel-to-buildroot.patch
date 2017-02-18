@@ -1,0 +1,107 @@
+---
+ confdata.c          |    4 ++--
+ gconf.glade         |    2 +-
+ mconf.c             |    4 ++--
+ zconf.tab.c_shipped |    2 +-
+ zconf.y             |    2 +-
+ 5 files changed, 7 insertions(+), 7 deletions(-)
+
+Index: kconfig/gconf.glade
+===================================================================
+--- kconfig.orig/gconf.glade	2013-12-27 22:14:32.395629843 +0100
++++ kconfig/gconf.glade	2013-12-27 22:14:32.387630158 +0100
+@@ -4,7 +4,7 @@
+ 
+ <widget class="GtkWindow" id="window1">
+   <property name="visible">True</property>
+-  <property name="title" translatable="yes">Gtk Kernel Configurator</property>
++  <property name="title" translatable="yes">Gtk Buildroot Configurator</property>
+   <property name="type">GTK_WINDOW_TOPLEVEL</property>
+   <property name="window_position">GTK_WIN_POS_NONE</property>
+   <property name="modal">False</property>
+Index: kconfig/mconf.c
+===================================================================
+--- kconfig.orig/mconf.c	2013-12-27 22:14:32.395629843 +0100
++++ kconfig/mconf.c	2013-12-27 22:14:42.179244153 +0100
+@@ -176,9 +176,9 @@
+ 	"Arrow keys navigate the menu.  "
+ 	"<Enter> selects submenus ---> (or empty submenus ----).  "
+ 	"Highlighted letters are hotkeys.  "
+-	"Pressing <Y> includes, <N> excludes, <M> modularizes features.  "
++	"Pressing <Y> selectes a feature, while <N> will exclude a feature.  "
+ 	"Press <Esc><Esc> to exit, <?> for Help, </> for Search.  "
+-	"Legend: [*] built-in  [ ] excluded  <M> module  < > module capable"),
++	"Legend: [*] feature is selected  [ ] feature is excluded"),
+ radiolist_instructions[] = N_(
+ 	"Use the arrow keys to navigate this window or "
+ 	"press the hotkey of the item you wish to select "
+@@ -959,7 +959,7 @@
+ 	if (conf_get_changed())
+ 		res = dialog_yesno(NULL,
+ 				   _("Do you wish to save your new configuration?\n"
+-				     "(Press <ESC><ESC> to continue kernel configuration.)"),
++				     "(Press <ESC><ESC> to continue Buildroot configuration.)"),
+ 				   6, 60);
+ 	else
+ 		res = -1;
+Index: kconfig/zconf.tab.c_shipped
+===================================================================
+--- kconfig.orig/zconf.tab.c_shipped	2013-12-27 22:14:32.395629843 +0100
++++ kconfig/zconf.tab.c_shipped	2013-12-27 22:14:32.391630000 +0100
+@@ -2297,7 +2297,7 @@
+ 
+ 	sym_init();
+ 	_menu_init();
+-	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
++	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
+ 
+ 	if (getenv("ZCONF_DEBUG"))
+ 		zconfdebug = 1;
+Index: kconfig/zconf.y
+===================================================================
+--- kconfig.orig/zconf.y	2013-12-27 22:14:32.395629843 +0100
++++ kconfig/zconf.y	2013-12-27 22:14:32.391630000 +0100
+@@ -493,7 +493,7 @@
+ 
+ 	sym_init();
+ 	_menu_init();
+-	rootmenu.prompt = menu_add_prompt(P_MENU, "Linux Kernel Configuration", NULL);
++	rootmenu.prompt = menu_add_prompt(P_MENU, "Buildroot Configuration", NULL);
+ 
+ 	if (getenv("ZCONF_DEBUG"))
+ 		zconfdebug = 1;
+Index: kconfig/confdata.c
+===================================================================
+--- kconfig.orig/confdata.c	2013-12-27 22:14:32.395629843 +0100
++++ kconfig/confdata.c	2013-12-27 22:14:32.391630000 +0100
+@@ -25,7 +25,7 @@
+ static const char *conf_filename;
+ static int conf_lineno, conf_warnings, conf_unsaved;
+ 
+-const char conf_defname[] = "arch/$ARCH/defconfig";
++const char conf_defname[] = ".defconfig";
+ 
+ static void conf_warning(const char *fmt, ...)
+ {
+@@ -63,7 +63,7 @@
+ 
+ const char *conf_get_configname(void)
+ {
+-	char *name = getenv("KCONFIG_CONFIG");
++	char *name = getenv("BR2_CONFIG");
+ 
+ 	return name ? name : ".config";
+ }
+Index: kconfig/qconf.cc
+===================================================================
+--- kconfig.orig/qconf.cc	2013-12-27 22:12:15.825013567 +0100
++++ kconfig/qconf.cc	2013-12-27 22:14:57.826627300 +0100
+@@ -70,7 +70,7 @@
+ }
+ 
+ ConfigSettings::ConfigSettings()
+-	: QSettings("kernel.org", "qconf")
++	: QSettings("buildroot.org", "qconf")
+ {
+ }
+ 

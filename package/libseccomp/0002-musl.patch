@@ -1,0 +1,28 @@
+From eb5382287cd25235e760b5da4939510b11bbf2a1 Mon Sep 17 00:00:00 2001
+From: Kylie McClain <somasis@exherbo.org>
+Date: Fri, 1 Jan 2016 13:12:59 -0500
+Subject: [PATCH] system.h: Remove conflicting kernel header include
+
+This fixes building on musl libc, since musl does not include kernel
+headers. I've tested this as working on both glibc and musl.
+
+Signed-off-by: Kylie McClain <somasis@exherbo.org>
+[Bernd: downloaded from upstream PR:
+ https://github.com/seccomp/libseccomp/pull/23]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/system.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/system.h b/src/system.h
+index 4660679..e84b0a0 100644
+--- a/src/system.h
++++ b/src/system.h
+@@ -23,7 +23,6 @@
+ #define _SYSTEM_H
+ 
+ #include <linux/filter.h>
+-#include <linux/prctl.h>
+ 
+ #include "configure.h"
+ 

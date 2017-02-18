@@ -1,0 +1,76 @@
+#!/bin/sh
+
+# This script registers the toolchain of a Buildroot project into the
+# Eclipse plugin. To do so, it adds a new line for the Buildroot
+# toolchain into the $HOME/.buildroot-eclipse.toolchains file, which
+# the Eclipse Buildroot plugin reads to discover automatically the
+# available Buildroot toolchains on the system.
+#
+# This script should typically not be called manually. Instead, one
+# should enable the BR2_ECLIPSE_REGISTER configuration option, which
+# will lead Buildroot to automatically call this script with the
+# appropriate arguments.
+#
+# Usage:
+#  eclipse-register-toolchain project-directory toolchain-prefix architecture
+#
+#   project-directory is the absolute path to the Buildroot project
+#   output directory (which contains the host/, target/, build/,
+#   images/, etc. subdirectories). It should be an absolute and
+#   canonical path.
+#
+#   toolchain-prefix is the prefix of the cross-compilation tools, i.e
+#   'arm-linux-' if the cross-compiler executable is 'arm-linux-gcc'.
+#
+#   architecture is the lower-cased name of the architecture targetted
+#   by the Buildroot project.
+
+if test $# -ne 3; then
+    echo "Invalid number of arguments."
+    echo "Usage: $0 project-directory toolchain-prefix architecture"
+    exit 1
+fi
+
+project_directory=$1
+toolchain_prefix=$2
+architecture=$3
+
+if test ! -d ${project_directory} ; then
+    echo "Non-existing project directory ${project_directory}"
+    exit 1
+fi
+
+if test ! -d ${project_directory}/host ; then
+    echo "Your project directory does not look like a Buildroot output"
+    exit 1
+fi
+
+if test ! -e ${project_directory}/host/usr/bin/${toolchain_prefix}gcc ; then
+    echo "Cannot find the cross-compiler in the project directory"
+    exit 1
+fi
+
+TOOLCHAIN_ECLIPSE_FILE=${HOME}/.buildroot-eclipse.toolchains
+
+# First, we remove all lines from the ${TOOLCHAIN_ECLISPE_FILE} that
+# correspond to toolchains that no longer exist.
+if test -f ${TOOLCHAIN_ECLIPSE_FILE} ; then
+    mv ${TOOLCHAIN_ECLIPSE_FILE} ${TOOLCHAIN_ECLIPSE_FILE}.tmp
+    cat ${TOOLCHAIN_ECLIPSE_FILE}.tmp | while read toolchain ; do
+	path=$(echo ${toolchain} | cut -f1 -d ':')
+        # Filter lines corresponding to still existing projects
+	echo "Testing ${path} ..."
+	if ! test -d ${path} ; then
+	    continue
+	fi
+	# .. and the current project
+	if test ${path} = ${project_directory} ; then
+	    continue
+	fi
+	echo ${toolchain} >> ${TOOLCHAIN_ECLIPSE_FILE}
+    done
+    rm ${TOOLCHAIN_ECLIPSE_FILE}.tmp
+fi
+
+# Add the toolchain
+echo "${project_directory}:${toolchain_prefix}:${architecture}" >> ${TOOLCHAIN_ECLIPSE_FILE}

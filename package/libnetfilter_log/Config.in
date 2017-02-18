@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBNETFILTER_LOG
+	bool "libnetfilter_log"
+	select BR2_PACKAGE_LIBNFNETLINK
+	help
+	  libnetfilter_log is a userspace library providing interface
+	  to packets that have been logged by the kernel packet filter.
+
+	  http://www.netfilter.org/projects/libnetfilter_log/

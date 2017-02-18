@@ -1,0 +1,9 @@
+config BR2_PACKAGE_FXLOAD
+	bool "fxload"
+	help
+	  This program is conveniently able to download firmware into FX, FX2,
+	  and FX2LP EZ-USB devices, as well as the original AnchorChips EZ-USB.
+	  It is intended to be invoked by hotplug scripts when the unprogrammed
+	  device appears on the bus.
+
+	  http://sourceforge.net/projects/linux-hotplug/

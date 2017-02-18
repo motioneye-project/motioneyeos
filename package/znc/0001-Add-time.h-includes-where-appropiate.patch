@@ -1,0 +1,194 @@
+From 9a51195e916f14a36c2a2a809f2393e5ed2424a3 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 6 Aug 2015 11:20:54 -0300
+Subject: [PATCH] Add <time.h> includes where appropiate
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ modules/adminlog.cpp    | 1 +
+ modules/ctcpflood.cpp   | 1 +
+ modules/flooddetach.cpp | 1 +
+ modules/lastseen.cpp    | 1 +
+ modules/log.cpp         | 1 +
+ modules/simple_away.cpp | 1 +
+ src/Buffer.cpp          | 1 +
+ src/FileUtils.cpp       | 1 +
+ src/IRCSock.cpp         | 1 +
+ src/User.cpp            | 1 +
+ src/WebModules.cpp      | 1 +
+ src/ZNCDebug.cpp        | 1 +
+ src/main.cpp            | 1 +
+ src/znc.cpp             | 1 +
+ 14 files changed, 14 insertions(+)
+
+diff --git a/modules/adminlog.cpp b/modules/adminlog.cpp
+index d08369e..1636799 100644
+--- a/modules/adminlog.cpp
++++ b/modules/adminlog.cpp
+@@ -20,6 +20,7 @@
+ #include <znc/User.h>
+ 
+ #include <syslog.h>
++#include <time.h>
+ 
+ class CAdminLogMod : public CModule {
+ public:
+diff --git a/modules/ctcpflood.cpp b/modules/ctcpflood.cpp
+index 7697ef8..c105ef7 100644
+--- a/modules/ctcpflood.cpp
++++ b/modules/ctcpflood.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <znc/Modules.h>
+ #include <znc/Chan.h>
++#include <time.h>
+ 
+ class CCtcpFloodMod : public CModule {
+ public:
+diff --git a/modules/flooddetach.cpp b/modules/flooddetach.cpp
+index 9c41734..cd88bd2 100644
+--- a/modules/flooddetach.cpp
++++ b/modules/flooddetach.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <znc/Chan.h>
+ #include <znc/IRCNetwork.h>
++#include <time.h>
+ 
+ using std::map;
+ 
+diff --git a/modules/lastseen.cpp b/modules/lastseen.cpp
+index 416a111..414310f 100644
+--- a/modules/lastseen.cpp
++++ b/modules/lastseen.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <znc/User.h>
+ #include <znc/znc.h>
++#include <time.h>
+ 
+ using std::map;
+ using std::pair;
+diff --git a/modules/log.cpp b/modules/log.cpp
+index 2f3124a..e238bb1 100644
+--- a/modules/log.cpp
++++ b/modules/log.cpp
+@@ -20,6 +20,7 @@
+ #include <znc/IRCNetwork.h>
+ #include <znc/Chan.h>
+ #include <znc/Server.h>
++#include <time.h>
+ #include <algorithm>
+ 
+ using std::vector;
+diff --git a/modules/simple_away.cpp b/modules/simple_away.cpp
+index 57d6e7a..2f73b0a 100644
+--- a/modules/simple_away.cpp
++++ b/modules/simple_away.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <znc/User.h>
+ #include <znc/IRCNetwork.h>
++#include <time.h>
+ 
+ #define SIMPLE_AWAY_DEFAULT_REASON "Auto away at %s"
+ #define SIMPLE_AWAY_DEFAULT_TIME   60
+diff --git a/src/Buffer.cpp b/src/Buffer.cpp
+index 4715f76..dc14642 100644
+--- a/src/Buffer.cpp
++++ b/src/Buffer.cpp
+@@ -17,6 +17,7 @@
+ #include <znc/Buffer.h>
+ #include <znc/znc.h>
+ #include <znc/User.h>
++#include <time.h>
+ 
+ CBufLine::CBufLine(const CString& sFormat, const CString& sText, const timeval* ts) : m_sFormat(sFormat), m_sText(sText), m_time() {
+ 	if (ts == nullptr)
+diff --git a/src/FileUtils.cpp b/src/FileUtils.cpp
+index d358aa4..92218f3 100644
+--- a/src/FileUtils.cpp
++++ b/src/FileUtils.cpp
+@@ -22,6 +22,7 @@
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
++#include <time.h>
+ 
+ #ifndef HAVE_LSTAT
+ #  define lstat(a, b)	stat(a, b)
+diff --git a/src/IRCSock.cpp b/src/IRCSock.cpp
+index 738b5bf..c97b8fe 100644
+--- a/src/IRCSock.cpp
++++ b/src/IRCSock.cpp
+@@ -20,6 +20,7 @@
+ #include <znc/IRCNetwork.h>
+ #include <znc/Server.h>
+ #include <znc/Query.h>
++#include <time.h>
+ 
+ using std::set;
+ using std::vector;
+diff --git a/src/User.cpp b/src/User.cpp
+index f3b5b91..580b52d 100644
+--- a/src/User.cpp
++++ b/src/User.cpp
+@@ -22,6 +22,7 @@
+ #include <znc/Chan.h>
+ #include <znc/Query.h>
+ #include <math.h>
++#include <time.h>
+ #include <algorithm>
+ 
+ using std::vector;
+diff --git a/src/WebModules.cpp b/src/WebModules.cpp
+index 832a2e1..74e56de 100644
+--- a/src/WebModules.cpp
++++ b/src/WebModules.cpp
+@@ -19,6 +19,7 @@
+ #include <znc/User.h>
+ #include <znc/IRCNetwork.h>
+ #include <znc/znc.h>
++#include <time.h>
+ #include <algorithm>
+ #include <sstream>
+ 
+diff --git a/src/ZNCDebug.cpp b/src/ZNCDebug.cpp
+index 6e36b57..be2f77f 100644
+--- a/src/ZNCDebug.cpp
++++ b/src/ZNCDebug.cpp
+@@ -18,6 +18,7 @@
+ #include <iostream>
+ #include <sys/time.h>
+ #include <stdio.h>
++#include <time.h>
+ 
+ bool CDebug::stdoutIsTTY = true;
+ bool CDebug::debug =
+diff --git a/src/main.cpp b/src/main.cpp
+index 465e1a0..cbe72bf 100644
+--- a/src/main.cpp
++++ b/src/main.cpp
+@@ -16,6 +16,7 @@
+ 
+ #include <znc/znc.h>
+ #include <signal.h>
++#include <time.h>
+ 
+ #if defined(HAVE_LIBSSL) && defined(HAVE_PTHREAD)
+ #include <znc/Threads.h>
+diff --git a/src/znc.cpp b/src/znc.cpp
+index 624b92c..4c1ffcd 100644
+--- a/src/znc.cpp
++++ b/src/znc.cpp
+@@ -21,6 +21,7 @@
+ #include <znc/User.h>
+ #include <znc/IRCNetwork.h>
+ #include <znc/Config.h>
++#include <time.h>
+ #include <tuple>
+ #include <algorithm>
+ 
+-- 
+2.4.6
+

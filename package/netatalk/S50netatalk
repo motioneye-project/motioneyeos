@@ -1,0 +1,33 @@
+#!/bin/sh
+#
+# Start netatalk
+#
+
+start() {
+    echo "Starting Netatalk"
+    start-stop-daemon -S -q -p /var/run/netatalk.pid --exec /usr/sbin/netatalk
+}
+
+stop(){
+    echo "Stopping Netatalk"
+    start-stop-daemon -K -q -p /var/run/netatalk.pid
+}
+
+case "$1" in
+    start)
+        start
+    ;;
+    stop)
+        stop
+    ;;
+    restart)
+        start
+        stop
+    ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

@@ -1,0 +1,20 @@
+Fix missing PTHREAD_MUTEX_RECURSIVE_NP
+
+The musl C library does not provide the non portable
+PTHREAD_MUTEX_RECURSIVE_NP. Test for PTHREAD_MUTEX_RECURSIVE_NP only.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+diff -Nuar gamin-0.1.10-orig/libgamin/gam_data.c gamin-0.1.10/libgamin/gam_data.c
+--- gamin-0.1.10-orig/libgamin/gam_data.c	2007-07-04 16:36:48.000000000 +0300
++++ gamin-0.1.10/libgamin/gam_data.c	2016-03-01 14:50:18.931696959 +0200
+@@ -470,7 +470,7 @@
+     }
+     if (is_threaded > 0) {
+ 	pthread_mutexattr_init(&attr);
+-#if defined(linux) || defined(PTHREAD_MUTEX_RECURSIVE_NP)
++#if defined(PTHREAD_MUTEX_RECURSIVE_NP)
+ 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+ #else
+ 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);

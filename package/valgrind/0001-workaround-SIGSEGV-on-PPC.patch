@@ -1,0 +1,32 @@
+From ff29b837f21a69c79289c3a87b03f8c23e05616e Mon Sep 17 00:00:00 2001
+From: Pierre Habouzit <madcoder@debian.org>
+Date: Tue, 10 May 2011 23:11:45 +0200
+Subject: [PATCH] workaround SIGSEGV on PPC.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Pierre Habouzit <madcoder@debian.org>
+Signed-off-by: Jérôme Pouiller <jezz@sysmic.org>
+---
+ coregrind/m_machine.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/coregrind/m_machine.c b/coregrind/m_machine.c
+index 6110c93..298a00e 100644
+--- a/coregrind/m_machine.c
++++ b/coregrind/m_machine.c
+@@ -27,6 +27,10 @@
+    The GNU General Public License is contained in the file COPYING.
+ */
+ 
++#ifdef __powerpc__
++#  pragma GCC optimize ("-O0")
++#endif
++
+ #include "pub_core_basics.h"
+ #include "pub_core_vki.h"
+ #include "pub_core_threadstate.h"
+-- 
+2.1.4
+

@@ -1,0 +1,22 @@
+Add missing include <sys/types.h>
+
+This include is needed to get the pid_t definition, at least with the
+musl C library.
+
+Patch inspired from Alpine Linux patch
+http://git.alpinelinux.org/cgit/aports/tree/main/libcap-ng/fix-includes.patch.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/utils/proc-llist.h
+===================================================================
+--- a/utils/proc-llist.h
++++ b/utils/proc-llist.h
+@@ -26,6 +26,7 @@
+ 
+ #include "config.h"
+ 
++#include <sys/types.h>
+ 
+ /* This is the node of the linked list. Any data elements that are per
+  *  record goes here. */

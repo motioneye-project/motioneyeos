@@ -1,0 +1,33 @@
+From b0a1b9628d17251bb417a063ec6c6e09f32393c2 Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Tue, 6 Oct 2015 01:20:48 +0100
+Subject: [PATCH] Don't blindly enable frexpl and ldexpl for uClibc
+
+When the size of double and long double are equal, numpy blindly
+assumes that frexpl and ldexpl will be available as well. But for
+uClibc, that's not true: it only defines the long double functions
+when long double "exists" on the architecture.
+
+So make an exception for uClibc.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ numpy/core/src/private/npy_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/numpy/core/src/private/npy_config.h b/numpy/core/src/private/npy_config.h
+index 453dbd0..7ecf72c 100644
+--- a/numpy/core/src/private/npy_config.h
++++ b/numpy/core/src/private/npy_config.h
+@@ -11,7 +11,7 @@
+ #endif
+ 
+ /* Safe to use ldexp and frexp for long double for MSVC builds */
+-#if (NPY_SIZEOF_LONGDOUBLE == NPY_SIZEOF_DOUBLE) || defined(_MSC_VER)
++#if ((NPY_SIZEOF_LONGDOUBLE == NPY_SIZEOF_DOUBLE) && !defined(__UCLIBC__)) || defined(_MSC_VER)
+     #ifdef HAVE_LDEXP
+         #define HAVE_LDEXPL 1
+     #endif
+-- 
+2.5.3
+

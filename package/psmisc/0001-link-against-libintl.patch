@@ -1,0 +1,33 @@
+Link against libintl if needed
+
+When built against a C library that has locale support, but for which
+intl support is provided by an external libintl library, psmisc
+forgets to link against this library, even though the configure script
+properly checks that.
+
+This patch therefore ensure that we link against libintl when needed,
+thanks to the @INTLLIBS@ variable provided by the configure script.
+
+We do not modify the Makefile.am file, because autoreconfiguring this
+package doesn't work: because of its usage of gettext, it wants to run
+the "autopoint" program, which itself depends on CVS being installed,
+for some strange reasons. That's the reason why we fall back to the
+hacky solution of modifying the Makefile.in file.
+
+Forward-ported Thomas's patch to psmisc 22.16
+from commit f066ed70cd6939838d4057f66798cbc1d972cc73
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura psmisc-22.16.orig/src/Makefile.in psmisc-22.16/src/Makefile.in
+--- psmisc-22.16.orig/src/Makefile.in	2012-03-28 22:27:33.106660358 -0300
++++ psmisc-22.16/src/Makefile.in	2012-03-28 22:28:55.752219349 -0300
+@@ -76,7 +76,7 @@
+ killall_DEPENDENCIES =
+ am_peekfd_OBJECTS = peekfd.$(OBJEXT)
+ peekfd_OBJECTS = $(am_peekfd_OBJECTS)
+-peekfd_LDADD = $(LDADD)
++peekfd_LDADD = $(LDADD) @LIBINTL@
+ am_prtstat_OBJECTS = prtstat.$(OBJEXT)
+ prtstat_OBJECTS = $(am_prtstat_OBJECTS)
+ prtstat_DEPENDENCIES =

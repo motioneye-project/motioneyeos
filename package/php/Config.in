@@ -1,0 +1,69 @@
+config BR2_PACKAGE_PHP
+	bool "php"
+	help
+	  PHP  is a widely-used general-purpose scripting
+	  language that is especially suited for Web development
+	  and can be embedded into HTML.
+
+	  http://www.php.net
+
+if BR2_PACKAGE_PHP
+
+source "package/php/Config.ext"
+
+config BR2_PACKAGE_PHP_CLI
+	bool
+
+config BR2_PACKAGE_PHP_CGI
+	bool
+
+config BR2_PACKAGE_PHP_FPM
+	bool
+
+choice
+	prompt "Interface"
+	default BR2_PACKAGE_PHP_SAPI_CGI
+	help
+	  Select the PHP interface(s).
+
+config BR2_PACKAGE_PHP_SAPI_CGI
+	bool "CGI"
+	# CGI uses fork()
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_CGI
+	help
+	  Common Gateway Interface
+
+config BR2_PACKAGE_PHP_SAPI_CLI
+	bool "CLI"
+	select BR2_PACKAGE_PHP_CLI
+	help
+	  Command Line Interface
+
+config BR2_PACKAGE_PHP_SAPI_FPM
+	bool "FPM"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_FPM
+	help
+	  PHP-FPM (FastCGI Process Manager)
+
+config BR2_PACKAGE_PHP_SAPI_CLI_CGI
+	bool "CGI and CLI"
+	# CGI uses fork()
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_CLI
+	select BR2_PACKAGE_PHP_CGI
+	help
+	  Command line and Common gateway interfaces
+
+config BR2_PACKAGE_PHP_SAPI_CLI_FPM
+	bool "FPM and CLI"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_PHP_CLI
+	select BR2_PACKAGE_PHP_FPM
+	help
+	  Command line and PHP-FPM (FastCGI Process Manager)
+
+endchoice
+
+endif

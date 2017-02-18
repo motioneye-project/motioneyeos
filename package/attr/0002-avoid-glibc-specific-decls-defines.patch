@@ -1,0 +1,37 @@
+From 667137acaffb8d0cc62b47821a67a52ba0637d5c Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Fri, 10 Jan 2014 13:56:37 +0000
+Subject: avoid glibc-specific DECLS defines
+
+This matches what we do in all the other headers.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+diff --git a/include/xattr.h b/include/xattr.h
+index 70a84be..070d7c5 100644
+--- a/include/xattr.h
++++ b/include/xattr.h
+@@ -30,8 +30,9 @@
+ #define XATTR_CREATE  0x1       /* set value, fail if attr already exists */
+ #define XATTR_REPLACE 0x2       /* set value, fail if attr does not exist */
+ 
+-
+-__BEGIN_DECLS
++#ifdef __cplusplus
++extern "C" {
++#endif
+ 
+ extern int setxattr (const char *__path, const char *__name,
+ 		      const void *__value, size_t __size, int __flags) __THROW;
+@@ -58,6 +59,8 @@ extern int removexattr (const char *__path, const char *__name) __THROW;
+ extern int lremovexattr (const char *__path, const char *__name) __THROW;
+ extern int fremovexattr (int __filedes,   const char *__name) __THROW;
+ 
+-__END_DECLS
++#ifdef __cplusplus
++}
++#endif
+ 
+ #endif	/* __XATTR_H__ */
+--
+cgit v0.9.0.2

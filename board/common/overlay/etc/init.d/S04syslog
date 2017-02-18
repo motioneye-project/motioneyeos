@@ -1,0 +1,29 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+dmesg_log="/var/log/dmesg.log"
+
+case "$1" in
+    start)
+        msg_begin "Starting syslogd"
+        syslogd
+        test $? == 0 && msg_done || msg_fail
+        echo "---- booting $os_name $os_version----" >> $dmesg_log
+        dmesg -T -w >> $dmesg_log &
+        ;;
+
+    stop)
+        msg_begin "Stopping syslogd"
+        killall syslogd &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        killall dmesg &>/dev/null
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
+

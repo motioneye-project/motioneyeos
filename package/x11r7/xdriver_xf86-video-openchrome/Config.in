@@ -1,0 +1,21 @@
+config BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
+	bool "xf86-video-openchrome"
+	depends on BR2_PACKAGE_MESA3D
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	select BR2_PACKAGE_XLIB_LIBXVMC
+	select BR2_PACKAGE_XPROTO_GLPROTO
+	select BR2_PACKAGE_XPROTO_RANDRPROTO
+	select BR2_PACKAGE_XPROTO_RENDERPROTO
+	select BR2_PACKAGE_XPROTO_XEXTPROTO
+	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  Openchrome, A free and Open Source video driver for the VIA/S3G
+	  UniChrome and UniChrome Pro graphics chipsets.
+
+	  https://www.freedesktop.org/wiki/Openchrome/
+
+comment "xf86-video-openchrome needs mesa3d"
+	depends on !BR2_PACKAGE_MESA3D

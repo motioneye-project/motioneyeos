@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_SHOWFONT
+	bool "showfont"
+	select BR2_PACKAGE_XLIB_LIBFS
+	help
+	  font dumper for X font server

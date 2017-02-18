@@ -1,0 +1,125 @@
+From 7eff2bf8e27599c1c94217b2bb1b73d4b7d18e59 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andreas=20M=C3=BCller?= <schnitzeltony@googlemail.com>
+Date: Wed, 6 May 2015 10:45:22 +0200
+Subject: [PATCH 1/4] select platforms based on configuration results
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Andreas Müller <schnitzeltony@googlemail.com>
+Fetched from pull #81 on github for libepoxy:
+https://github.com/anholt/libepoxy/pull/81/commits
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ configure.ac          | 13 +++++--------
+ src/dispatch_common.c |  9 ++++++---
+ src/dispatch_common.h |  9 +++++----
+ 3 files changed, 16 insertions(+), 15 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 2d67726..225ab73 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -58,6 +58,10 @@ AC_CHECK_HEADER([KHR/khrplatform.h],
+ # uintptr_t to a void *") by default.  Kill that.
+ XORG_TESTSET_CFLAG(CWARNFLAGS, [-Wno-int-conversion])
+ 
++PKG_CHECK_MODULES(X11, [x11], [x11=yes], [x11=no])
++
++AM_CONDITIONAL(HAVE_X11, test x$x11 = xyes)
++
+ has_znow=yes
+ 
+ case $host_os in
+@@ -86,7 +90,7 @@ case $host_os in
+         ;;
+     *)
+         build_egl=yes
+-        build_glx=yes
++        build_glx=$x11
+         build_wgl=no
+         # On platforms with dlopen, we load everything dynamically and
+         # don't link against a specific window system or GL implementation.
+@@ -144,13 +148,6 @@ esac
+ 
+ AC_SUBST([VISIBILITY_CFLAGS])
+ 
+-PKG_CHECK_MODULES(X11, [x11], [x11=yes], [x11=no])
+-if test x$x11 = xno -a x$build_glx = xyes; then
+-    AC_MSG_ERROR([libX11 headers (libx11-dev) required to build with GLX support])
+-fi
+-
+-AM_CONDITIONAL(HAVE_X11, test x$x11 = xyes)
+-
+ PKG_CHECK_MODULES(GL, [gl], [gl=yes], [gl=no])
+ 
+ AC_CONFIG_FILES([
+diff --git a/src/dispatch_common.c b/src/dispatch_common.c
+index 013027f..163d348 100644
+--- a/src/dispatch_common.c
++++ b/src/dispatch_common.c
+@@ -656,10 +656,13 @@ epoxy_get_proc_address(const char *name)
+ #elif defined(__APPLE__)
+     return epoxy_gl_dlsym(name);
+ #else
++#if PLATFORM_HAS_GLX
+     if (epoxy_current_context_is_glx()) {
+         return glXGetProcAddressARB((const GLubyte *)name);
+-    } else {
++    } else
++#endif /* PLATFORM_HAS_GLX */
+ #if PLATFORM_HAS_EGL
++    {
+         GLenum egl_api = epoxy_egl_get_current_gl_context_api();
+ 
+         switch (egl_api) {
+@@ -669,10 +672,10 @@ epoxy_get_proc_address(const char *name)
+         case EGL_NONE:
+             break;
+         }
+-#endif
+     }
++#endif /* PLATFORM_HAS_EGL */
+     errx(1, "Couldn't find current GLX or EGL context.\n");
+-#endif
++#endif /* _WIN32 | __APPLE__*/
+ }
+ 
+ WRAPPER_VISIBILITY (void)
+diff --git a/src/dispatch_common.h b/src/dispatch_common.h
+index 676a4d5..2728b45 100644
+--- a/src/dispatch_common.h
++++ b/src/dispatch_common.h
+@@ -21,12 +21,13 @@
+  * IN THE SOFTWARE.
+  */
+ 
++#include <config.h>
+ #include <stdbool.h>
+ 
+ #ifdef _WIN32
+ #define PLATFORM_HAS_EGL 0
+ #define PLATFORM_HAS_GLX 0
+-#define PLATFORM_HAS_WGL 1
++#define PLATFORM_HAS_WGL BUILD_WGL
+ #define EPOXY_IMPORTEXPORT __declspec(dllexport)
+ #elif defined(__APPLE__)
+ #define PLATFORM_HAS_EGL 0
+@@ -34,13 +35,13 @@
+ #define PLATFORM_HAS_WGL 0
+ #define EPOXY_IMPORTEXPORT
+ #elif defined(ANDROID)
+-#define PLATFORM_HAS_EGL 1
++#define PLATFORM_HAS_EGL BUILD_EGL
+ #define PLATFORM_HAS_GLX 0
+ #define PLATFORM_HAS_WGL 0
+ #define EPOXY_IMPORTEXPORT
+ #else
+-#define PLATFORM_HAS_EGL 1
+-#define PLATFORM_HAS_GLX 1
++#define PLATFORM_HAS_EGL BUILD_EGL
++#define PLATFORM_HAS_GLX BUILD_GLX
+ #define PLATFORM_HAS_WGL 0
+ #define EPOXY_IMPORTEXPORT
+ #endif
+

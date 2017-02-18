@@ -1,0 +1,20 @@
+Makefile: link with pthread
+
+Otherwise building multicat in a static context fails:
+  aggregartp.c:381: undefined reference to `pthread_self'
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Sent upstream: https://mailman.videolan.org/pipermail/multicat-devel/2016-March/000125.html
+
+diff -purN multicat-2.1.orig/Makefile multicat-2.1/Makefile
+--- multicat-2.1.orig/Makefile	2015-10-05 18:36:29.000000000 +0200
++++ multicat-2.1/Makefile	2016-03-19 21:47:59.467745127 +0100
+@@ -4,7 +4,7 @@ VERSION = 2.1
+ CFLAGS += -Wall -Wformat-security -O3 -fomit-frame-pointer -D_FILE_OFFSET_BITS=64 -D_ISOC99_SOURCE -D_BSD_SOURCE
+ CFLAGS += -g
+ # Comment out the following line for Mac OS X build
+-LDLIBS += -lrt
++LDLIBS += -lrt -pthread
+ 
+ OBJ_MULTICAT = multicat.o util.o
+ OBJ_INGESTS = ingests.o util.o

@@ -1,0 +1,43 @@
+Add support for several Qt flavors
+
+Qt has two flavors: X11 and embedded (QWS). QWS has some limitations
+compared to X11. This patch adds an option to select which version to
+use.
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+---
+Index: PyQt-x11-gpl-4.11.3/configure-ng.py
+===================================================================
+--- PyQt-x11-gpl-4.11.3.orig/configure-ng.py
++++ PyQt-x11-gpl-4.11.3/configure-ng.py
+@@ -960,6 +960,9 @@ int main(int argc, char **argv)
+         if opts.vendlibdir is not None:
+             self.vend_lib_dir = opts.vendlibdir
+ 
++        if opts.qtflavor is not None:
++            self.qt_flavor = opts.qtflavor
++
+         # Handle any conflicts.
+         if self.qt_shared:
+             if len(self.static_plugins) != 0:
+@@ -1177,6 +1180,11 @@ def create_optparser(target_config):
+             dest="notools",
+             help="disable the building of pyuic5, pyrcc5 and pylupdate5 "
+                     "[default: enabled]")
++    g.add_option("--qt-flavor", dest='qtflavor', type='string',
++            default="WS_X11", metavar='QTFLAVOR', action='store',
++            help="select Qt flavor beetween WS_X11 and WS_QWS "
++                    "only available on Linux)"
++                    "[default: WS_X11]")
+     p.add_option_group(g)
+ 
+     # Vendor ID.
+@@ -2088,7 +2096,7 @@ def get_sip_flags(target_config):
+     elif target_config.py_platform == 'darwin':
+         plattag = 'WS_MACX'
+     else:
+-        plattag = 'WS_X11'
++        plattag = target_config.qt_flavor
+ 
+     sip_flags.append('-t')
+     sip_flags.append(plattag)

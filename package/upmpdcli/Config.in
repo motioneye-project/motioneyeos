@@ -1,0 +1,16 @@
+config BR2_PACKAGE_UPMPDCLI
+	bool "upmpdcli"
+	select BR2_PACKAGE_LIBMPDCLIENT
+	select BR2_PACKAGE_LIBUPNPP
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnpp -> libupnp
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	help
+	  upmpdcli is a UPnP Media Renderer front-end for MPD, the Music
+	  Player Daemon. It supports UPnP gapless track transitions and
+	  the OpenHome ohMedia services.
+
+	  http://www.lesbonscomptes.com/upmpdcli/
+
+comment "upmpdcli needs a toolchain w/ C++, threads, gcc >= 4.6"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_6

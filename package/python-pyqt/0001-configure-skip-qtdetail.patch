@@ -1,0 +1,29 @@
+Do not run qtdetail
+
+qtdetail is a tool that generates qtdetail.out. Since this program is
+cross-compiled, it's not possible to run it on the host.
+
+Consequently, python-pyqt.mk generates the qtdetail.out file before
+calling configure-ng.py.
+
+Therefore, this patch makes sure that the pre-generated qtdetail.out
+file is kept, and that qtdetail is not executed.
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Signed-off-by: Sergey Kostanbaev <sergey.kostanbaev@gmail.com>
+---
+Index: PyQt-x11-gpl-4.11.3/configure-ng.py
+===================================================================
+--- PyQt-x11-gpl-4.11.3.orig/configure-ng.py
++++ PyQt-x11-gpl-4.11.3/configure-ng.py
+@@ -672,10 +672,6 @@ int main(int argc, char **argv)
+         if cmd is None:
+             error("Failed to determine the detail of your Qt installation. Try again using the --verbose flag to see more detail about the problem.")
+ 
+-        # Create the output file, first making sure it doesn't exist.
+-        remove_file(out_file)
+-        run_command(cmd, verbose)
+-
+         if not os.access(out_file, os.F_OK):
+             error("%s failed to create %s. Make sure your Qt installation is correct." % (cmd, out_file))
+ 

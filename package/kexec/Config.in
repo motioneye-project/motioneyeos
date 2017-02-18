@@ -1,0 +1,20 @@
+config BR2_PACKAGE_KEXEC
+	bool "kexec"
+	depends on BR2_i386 || BR2_x86_64 || BR2_arm || BR2_armeb || \
+		BR2_mips || BR2_mips64 || BR2_mipsel || BR2_mips64el || \
+		BR2_powerpc || BR2_sh4 || BR2_sh4a
+	help
+	  Kexec is a user space utility for loading another kernel
+	  and asking the currently running kernel to do something with it.
+
+	  https://www.kernel.org/pub/linux/utils/kernel/kexec/
+
+if BR2_PACKAGE_KEXEC
+
+config BR2_PACKAGE_KEXEC_ZLIB
+	bool "zlib support"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Support for compressed kernel images
+
+endif

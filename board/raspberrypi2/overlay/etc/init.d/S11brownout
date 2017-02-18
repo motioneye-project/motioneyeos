@@ -1,0 +1,38 @@
+#!/bin/bash
+
+check_interval=30
+readv=/sys/class/leds/led1/brightness
+
+test -e "$readv" || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+watch() {
+    while true; do
+        if [ "$(cat $readv)" == "0" ]; then
+            logger -t brownout -s "low power supply voltage detected"
+        fi
+        sleep $check_interval
+    done
+}
+
+case "$1" in
+    start)
+        msg_begin "Starting brownout detector"
+        watch &
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        msg_begin "Stopping brownout detector"
+        ps | grep brownout | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
+

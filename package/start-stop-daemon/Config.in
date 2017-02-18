@@ -1,0 +1,8 @@
+config BR2_PACKAGE_START_STOP_DAEMON
+	bool "start-stop-daemon"
+	depends on BR2_USE_MMU # fork()
+	help
+	  start-stop-daemon is used to control the creation and termination
+	  of system-level processes.
+
+	  https://tracker.debian.org/pkg/dpkg

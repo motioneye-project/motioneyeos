@@ -1,0 +1,12 @@
+config BR2_PACKAGE_EBTABLES
+	bool "ebtables"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # mixes userspace and kernel headers
+	depends on BR2_USE_MMU # fork()
+	help
+	  Ethernet bridge frame table administration
+
+	  http://ebtables.netfilter.org/
+
+comment "ebtables needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_USE_MMU

@@ -1,0 +1,37 @@
+config BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
+	bool
+	default y
+	# Those architectures are not supported by MPlayer
+	depends on !(BR2_bfin || BR2_sh2a || BR2_sh4a || BR2_sh4aeb \
+		|| BR2_microblaze || BR2_nios2)
+	# Broken support for <ARMv5
+	depends on !BR2_ARM_CPU_ARMV4
+
+config BR2_PACKAGE_MPLAYER
+	bool "mplayer"
+	depends on BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  MPlayer is a movie player which runs on many systems and supports
+	  many different file formats.
+
+	  http://www.mplayerhq.hu/
+
+comment "mplayer needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_MPLAYER_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+if BR2_PACKAGE_MPLAYER
+
+config BR2_PACKAGE_MPLAYER_MPLAYER
+	bool "Build and install mplayer"
+	default y
+	help
+	  This will install the video player.
+
+config BR2_PACKAGE_MPLAYER_MENCODER
+	bool "Build and install mencoder"
+	help
+	  This will install the video encoder.
+
+endif

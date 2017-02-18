@@ -1,0 +1,7 @@
+config BR2_PACKAGE_ETHTOOL
+	bool "ethtool"
+	help
+	  ethtool is a small utility for examining and tuning your
+	  ethernet-based network interface.
+
+	  http://sourceforge.net/projects/gkernel/

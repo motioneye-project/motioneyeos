@@ -1,0 +1,433 @@
+#!/usr/bin/env bash
+set -e
+myname="${0##*/}"
+
+#----------------------------------------------------------------------------
+# Configurable items
+MIN_UID=1000
+MAX_UID=1999
+MIN_GID=1000
+MAX_GID=1999
+# No more is configurable below this point
+#----------------------------------------------------------------------------
+
+#----------------------------------------------------------------------------
+error() {
+    local fmt="${1}"
+    shift
+
+    printf "%s: " "${myname}" >&2
+    printf "${fmt}" "${@}" >&2
+}
+fail() {
+    error "$@"
+    exit 1
+}
+
+#----------------------------------------------------------------------------
+if [ ${#} -ne 2 ]; then
+    fail "usage: %s USERS_TABLE TARGET_DIR\n"
+fi
+USERS_TABLE="${1}"
+TARGET_DIR="${2}"
+shift 2
+PASSWD="${TARGET_DIR}/etc/passwd"
+SHADOW="${TARGET_DIR}/etc/shadow"
+GROUP="${TARGET_DIR}/etc/group"
+# /etc/gshadow is not part of the standard skeleton, so not everybody
+# will have it, but some may hav it, and its content must be in sync
+# with /etc/group, so any use of gshadow must be conditional.
+GSHADOW="${TARGET_DIR}/etc/gshadow"
+
+# We can't simply source ${BR2_CONFIG} as it may contains constructs
+# such as:
+#    BR2_DEFCONFIG="$(CONFIG_DIR)/defconfig"
+# which when sourced from a shell script will eventually try to execute
+# a command name 'CONFIG_DIR', which is plain wrong for virtually every
+# systems out there.
+# So, we have to scan that file instead. Sigh... :-(
+PASSWD_METHOD="$( sed -r -e '/^BR2_TARGET_GENERIC_PASSWD_METHOD="(.*)"$/!d;'    \
+                         -e 's//\1/;'                                           \
+                         "${BR2_CONFIG}"                                        \
+                )"
+
+#----------------------------------------------------------------------------
+get_uid() {
+    local username="${1}"
+
+    awk -F: -v username="${username}"                           \
+        '$1 == username { printf( "%d\n", $3 ); }' "${PASSWD}"
+}
+
+#----------------------------------------------------------------------------
+get_ugid() {
+    local username="${1}"
+
+    awk -F: -v username="${username}"                          \
+        '$1 == username { printf( "%d\n", $4 ); }' "${PASSWD}"
+}
+
+#----------------------------------------------------------------------------
+get_gid() {
+    local group="${1}"
+
+    awk -F: -v group="${group}"                             \
+        '$1 == group { printf( "%d\n", $3 ); }' "${GROUP}"
+}
+
+#----------------------------------------------------------------------------
+get_username() {
+    local uid="${1}"
+
+    awk -F: -v uid="${uid}"                                 \
+        '$3 == uid { printf( "%s\n", $1 ); }' "${PASSWD}"
+}
+
+#----------------------------------------------------------------------------
+get_group() {
+    local gid="${1}"
+
+    awk -F: -v gid="${gid}"                             \
+        '$3 == gid { printf( "%s\n", $1 ); }' "${GROUP}"
+}
+
+#----------------------------------------------------------------------------
+get_ugroup() {
+    local username="${1}"
+    local ugid
+
+    ugid="$( get_ugid "${username}" )"
+    if [ -n "${ugid}" ]; then
+        get_group "${ugid}"
+    fi
+}
+
+#----------------------------------------------------------------------------
+# Sanity-check the new user/group:
+#   - check the gid is not already used for another group
+#   - check the group does not already exist with another gid
+#   - check the user does not already exist with another gid
+#   - check the uid is not already used for another user
+#   - check the user does not already exist with another uid
+#   - check the user does not already exist in another group
+check_user_validity() {
+    local username="${1}"
+    local uid="${2}"
+    local group="${3}"
+    local gid="${4}"
+    local _uid _ugid _gid _username _group _ugroup
+
+    _group="$( get_group "${gid}" )"
+    _gid="$( get_gid "${group}" )"
+    _ugid="$( get_ugid "${username}" )"
+    _username="$( get_username "${uid}" )"
+    _uid="$( get_uid "${username}" )"
+    _ugroup="$( get_ugroup "${username}" )"
+
+    if [ "${username}" = "root" ]; then
+        fail "invalid username '%s\n'" "${username}"
+    fi
+
+    if [ ${gid} -lt -1 -o ${gid} -eq 0 ]; then
+        fail "invalid gid '%d' for '%s'\n" ${gid} "${username}"
+    elif [ ${gid} -ne -1 ]; then
+        # check the gid is not already used for another group
+        if [ -n "${_group}" -a "${_group}" != "${group}" ]; then
+            fail "gid '%d' for '%s' is already used by group '%s'\n" \
+                 ${gid} "${username}" "${_group}"
+        fi
+
+        # check the group does not already exists with another gid
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _gid is empty
+        if [ -n "${_gid}" ] && [ ${_gid} -ne ${gid} ]; then
+            fail "group '%s' for '%s' already exists with gid '%d' (wants '%d')\n" \
+                 "${group}" "${username}" ${_gid} ${gid}
+        fi
+
+        # check the user does not already exists with another gid
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _ugid is empty
+        if [ -n "${_ugid}" ] && [ ${_ugid} -ne ${gid} ]; then
+            fail "user '%s' already exists with gid '%d' (wants '%d')\n" \
+                 "${username}" ${_ugid} ${gid}
+        fi
+    fi
+
+    if [ ${uid} -lt -1 -o ${uid} -eq 0 ]; then
+        fail "invalid uid '%d' for '%s'\n" ${uid} "${username}"
+    elif [ ${uid} -ne -1 ]; then
+        # check the uid is not already used for another user
+        if [ -n "${_username}" -a "${_username}" != "${username}" ]; then
+            fail "uid '%d' for '%s' already used by user '%s'\n" \
+                 ${uid} "${username}" "${_username}"
+        fi
+
+        # check the user does not already exists with another uid
+        # Need to split the check in two, otherwise '[' complains it
+        # is missing arguments when _uid is empty
+        if [ -n "${_uid}" ] && [ ${_uid} -ne ${uid} ]; then
+            fail "user '%s' already exists with uid '%d' (wants '%d')\n" \
+                 "${username}" ${_uid} ${uid}
+        fi
+    fi
+
+    # check the user does not already exist in another group
+    if [ -n "${_ugroup}" -a "${_ugroup}" != "${group}" ]; then
+        fail "user '%s' already exists with group '%s' (wants '%s')\n" \
+             "${username}" "${_ugroup}" "${group}"
+    fi
+
+    return 0
+}
+
+#----------------------------------------------------------------------------
+# Generate a unique GID for given group. If the group already exists,
+# then simply report its current GID. Otherwise, generate the lowest GID
+# that is:
+#   - not 0
+#   - comprised in [MIN_GID..MAX_GID]
+#   - not already used by a group
+generate_gid() {
+    local group="${1}"
+    local gid
+
+    gid="$( get_gid "${group}" )"
+    if [ -z "${gid}" ]; then
+        for(( gid=MIN_GID; gid<=MAX_GID; gid++ )); do
+            if [ -z "$( get_group "${gid}" )" ]; then
+                break
+            fi
+        done
+        if [ ${gid} -gt ${MAX_GID} ]; then
+            fail "can not allocate a GID for group '%s'\n" "${group}"
+        fi
+    fi
+    printf "%d\n" "${gid}"
+}
+
+#----------------------------------------------------------------------------
+# Add a group; if it does already exist, remove it first
+add_one_group() {
+    local group="${1}"
+    local gid="${2}"
+    local _f
+
+    # Generate a new GID if needed
+    if [ ${gid} -eq -1 ]; then
+        gid="$( generate_gid "${group}" )"
+    fi
+
+    # Remove any previous instance of this group, and re-add the new one
+    sed -i -e '/^'"${group}"':.*/d;' "${GROUP}"
+    printf "%s:x:%d:\n" "${group}" "${gid}" >>"${GROUP}"
+
+    # Ditto for /etc/gshadow if it exists
+    if [ -f "${GSHADOW}" ]; then
+        sed -i -e '/^'"${group}"':.*/d;' "${GSHADOW}"
+        printf "%s:*::\n" "${group}" >>"${GSHADOW}"
+    fi
+}
+
+#----------------------------------------------------------------------------
+# Generate a unique UID for given username. If the username already exists,
+# then simply report its current UID. Otherwise, generate the lowest UID
+# that is:
+#   - not 0
+#   - comprised in [MIN_UID..MAX_UID]
+#   - not already used by a user
+generate_uid() {
+    local username="${1}"
+    local uid
+
+    uid="$( get_uid "${username}" )"
+    if [ -z "${uid}" ]; then
+        for(( uid=MIN_UID; uid<=MAX_UID; uid++ )); do
+            if [ -z "$( get_username "${uid}" )" ]; then
+                break
+            fi
+        done
+        if [ ${uid} -gt ${MAX_UID} ]; then
+            fail "can not allocate a UID for user '%s'\n" "${username}"
+        fi
+    fi
+    printf "%d\n" "${uid}"
+}
+
+#----------------------------------------------------------------------------
+# Add given user to given group, if not already the case
+add_user_to_group() {
+    local username="${1}"
+    local group="${2}"
+    local _f
+
+    for _f in "${GROUP}" "${GSHADOW}"; do
+        [ -f "${_f}" ] || continue
+        sed -r -i -e 's/^('"${group}"':.*:)(([^:]+,)?)'"${username}"'(,[^:]+*)?$/\1\2\4/;'  \
+                  -e 's/^('"${group}"':.*)$/\1,'"${username}"'/;'                           \
+                  -e 's/,+/,/'                                                              \
+                  -e 's/:,/:/'                                                              \
+                  "${_f}"
+    done
+}
+
+#----------------------------------------------------------------------------
+# Encode a password
+encode_password() {
+    local passwd="${1}"
+
+    mkpasswd -m "${PASSWD_METHOD}" "${passwd}"
+}
+
+#----------------------------------------------------------------------------
+# Add a user; if it does already exist, remove it first
+add_one_user() {
+    local username="${1}"
+    local uid="${2}"
+    local group="${3}"
+    local gid="${4}"
+    local passwd="${5}"
+    local home="${6}"
+    local shell="${7}"
+    local groups="${8}"
+    local comment="${9}"
+    local _f _group _home _shell _gid _passwd
+
+    # First, sanity-check the user
+    check_user_validity "${username}" "${uid}" "${group}" "${gid}"
+
+    # Generate a new UID if needed
+    if [ ${uid} -eq -1 ]; then
+        uid="$( generate_uid "${username}" )"
+    fi
+
+    # Remove any previous instance of this user
+    for _f in "${PASSWD}" "${SHADOW}"; do
+        sed -r -i -e '/^'"${username}"':.*/d;' "${_f}"
+    done
+
+    _gid="$( get_gid "${group}" )"
+    _shell="${shell}"
+    if [ "${shell}" = "-" ]; then
+        _shell="/bin/false"
+    fi
+    case "${home}" in
+        -)  _home="/";;
+        /)  fail "home can not explicitly be '/'\n";;
+        /*) _home="${home}";;
+        *)  fail "home must be an absolute path\n";;
+    esac
+    case "${passwd}" in
+        -)
+            _passwd=""
+            ;;
+        !=*)
+            _passwd='!'"$( encode_password "${passwd#!=}" )"
+            ;;
+        =*)
+            _passwd="$( encode_password "${passwd#=}" )"
+            ;;
+        *)
+            _passwd="${passwd}"
+            ;;
+    esac
+
+    printf "%s:x:%d:%d:%s:%s:%s\n"              \
+           "${username}" "${uid}" "${_gid}"     \
+           "${comment}" "${_home}" "${_shell}"  \
+           >>"${PASSWD}"
+    printf "%s:%s:::::::\n"      \
+           "${username}" "${_passwd}"   \
+           >>"${SHADOW}"
+
+    # Add the user to its additional groups
+    if [ "${groups}" != "-" ]; then
+        for _group in ${groups//,/ }; do
+            add_user_to_group "${username}" "${_group}"
+        done
+    fi
+
+    # If the user has a home, chown it
+    # (Note: stdout goes to the fakeroot-script)
+    if [ "${home}" != "-" ]; then
+        mkdir -p "${TARGET_DIR}/${home}"
+        printf "chown -h -R %d:%d '%s'\n" "${uid}" "${_gid}" "${TARGET_DIR}/${home}"
+    fi
+}
+
+#----------------------------------------------------------------------------
+main() {
+    local username uid group gid passwd home shell groups comment
+    local line
+    local -a LINES
+
+    # Some sanity checks
+    if [ ${MIN_UID} -le 0 ]; then
+        fail "MIN_UID must be >0 (currently %d)\n" ${MIN_UID}
+    fi
+    if [ ${MIN_GID} -le 0 ]; then
+        fail "MIN_GID must be >0 (currently %d)\n" ${MIN_GID}
+    fi
+
+    # Read in all the file in memory, exclude empty lines and comments
+    while read line; do
+        LINES+=( "${line}" )
+    done < <( sed -r -e 's/#.*//; /^[[:space:]]*$/d;' "${USERS_TABLE}" )
+
+    # We first create groups whose gid is not -1, and then we create groups
+    # whose gid is -1 (automatic), so that, if a group is defined both with
+    # a specified gid and an automatic gid, we ensure the specified gid is
+    # used, rather than a different automatic gid is computed.
+
+    # First, create all the main groups which gid is *not* automatic
+    for line in "${LINES[@]}"; do
+        read username uid group gid passwd home shell groups comment <<<"${line}"
+        [ ${gid} -ge 0 ] || continue    # Automatic gid
+        add_one_group "${group}" "${gid}"
+    done
+
+    # Then, create all the main groups which gid *is* automatic
+    for line in "${LINES[@]}"; do
+        read username uid group gid passwd home shell groups comment <<<"${line}"
+        [ ${gid} -eq -1 ] || continue    # Non-automatic gid
+        add_one_group "${group}" "${gid}"
+    done
+
+    # Then, create all the additional groups
+    # If any additional group is already a main group, we should use
+    # the gid of that main group; otherwise, we can use any gid
+    for line in "${LINES[@]}"; do
+        read username uid group gid passwd home shell groups comment <<<"${line}"
+        if [ "${groups}" != "-" ]; then
+            for g in ${groups//,/ }; do
+                add_one_group "${g}" -1
+            done
+        fi
+    done
+
+    # When adding users, we do as for groups, in case two packages create
+    # the same user, one with an automatic uid, the other with a specified
+    # uid, to ensure the specified uid is used, rather than an incompatible
+    # uid be generated.
+
+    # Now, add users whose uid is *not* automatic
+    for line in "${LINES[@]}"; do
+        read username uid group gid passwd home shell groups comment <<<"${line}"
+        [ "${username}" != "-" ] || continue # Magic string to skip user creation
+        [ ${uid} -ge 0         ] || continue # Automatic uid
+        add_one_user "${username}" "${uid}" "${group}" "${gid}" "${passwd}" \
+                     "${home}" "${shell}" "${groups}" "${comment}"
+    done
+
+    # Finally, add users whose uid *is* automatic
+    for line in "${LINES[@]}"; do
+        read username uid group gid passwd home shell groups comment <<<"${line}"
+        [ "${username}" != "-" ] || continue # Magic string to skip user creation
+        [ ${uid} -eq -1        ] || continue # Non-automatic uid
+        add_one_user "${username}" "${uid}" "${group}" "${gid}" "${passwd}" \
+                     "${home}" "${shell}" "${groups}" "${comment}"
+    done
+}
+
+#----------------------------------------------------------------------------
+main "${@}"

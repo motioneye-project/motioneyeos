@@ -1,0 +1,24 @@
+Fix build issue in QWS flavor
+
+Change HANDLE to void* to get rid of :
+buildroot/output/build/python-pyqt-4.11.3/QtCore/sipQtCoreQThread.cpp:318:50:
+error: invalid conversion from 'Qt::HANDLE {aka void*}' to 'long
+unsigned int' [-fpermissive] error during compilation.
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+Signed-off-by: Sergey Kostanbaev <sergey.kostanbaev@gmail.com>
+---
+Index: PyQt-x11-gpl-4.11.3/sip/QtCore/qnamespace.sip
+===================================================================
+--- PyQt-x11-gpl-4.11.3.orig/sip/QtCore/qnamespace.sip
++++ PyQt-x11-gpl-4.11.3/sip/QtCore/qnamespace.sip
+@@ -1673,6 +1673,9 @@ namespace Qt
+ %If (WS_X11)
+     typedef unsigned long HANDLE;
+ %End
++%If (WS_QWS)
++    typedef void* HANDLE;
++%End
+ %End
+ %If (PyQt_Deprecated_5_0)
+     typedef Qt::WindowFlags WFlags;

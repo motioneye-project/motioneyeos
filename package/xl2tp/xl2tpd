@@ -1,0 +1,27 @@
+#!/bin/sh
+#
+PATH=/bin:/usr/bin:/sbin:/usr/sbin
+DAEMON=/usr/sbin/xl2tpd
+PIDFILE=/var/run/xl2tpd.pid
+
+test -f $DAEMON || exit 0
+
+case "$1" in
+  start)
+    start-stop-daemon -S  -p $PIDFILE -x $DAEMON -- -D &
+    ;;
+  stop)
+    start-stop-daemon -K  -p $PIDFILE -x $DAEMON
+    ;;
+  restart|force-reload)
+    start-stop-daemon -K  -p $PIDFILE -x $DAEMON 
+    sleep 1
+    start-stop-daemon -S  -p $PIDFILE -x $DAEMON
+    ;;
+  *)
+    echo "Usage: /etc/init.d/xl2tdp {start|stop|restart|force-reload}"
+    exit 1
+    ;;
+esac
+
+exit 0

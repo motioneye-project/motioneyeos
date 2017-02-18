@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBXKBCOMMON
+	bool "libxkbcommon"
+	select BR2_PACKAGE_LIBXCB if BR2_PACKAGE_XORG7
+	help
+	  xkbcommon is a keymap compiler and support library which
+	  processes a reduced subset of keymaps as defined by the XKB
+	  specification.
+
+	  http://xkbcommon.org/

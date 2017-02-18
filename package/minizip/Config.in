@@ -1,0 +1,15 @@
+config BR2_PACKAGE_MINIZIP
+	bool "minizip"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enables to extract files from a .zip archive file.
+	  It is compatible with PKZip 2.04g, WinZip, InfoZip,
+	  MimarSinan Codex Suite 2002 tools, and compatible sofware.
+
+	  https://github.com/nmoinvaz/minizip
+
+config BR2_PACKAGE_MINIZIP_DEMOS
+	bool "miniunzip/minizip"
+	depends on BR2_PACKAGE_MINIZIP
+	help
+	  Enable miniunzip/minizip binary tools.

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LITE
+	bool "LiTE (toolbox engine)"
+	depends on BR2_PACKAGE_DIRECTFB
+	help
+	  LiTE stands for LiTE is a Toolbox Engine.
+	  Its role is to facilitate the functions of DirectFB so that a
+	  toolbox could be written on top of DirectFB with less effort.
+	  As such LiTE has abstractions for the underlying graphics and
+	  event systems.
+
+	  See http://www.directfb.org/wiki/index.php/LiTE:Architecture

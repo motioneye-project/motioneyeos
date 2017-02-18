@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBUSB_COMPAT
+	bool "libusb-compat"
+	depends on BR2_PACKAGE_LIBUSB
+	help
+	  libusb-0.1 compatibility layer for libusb-1.0.
+
+	  http://libusb.info/

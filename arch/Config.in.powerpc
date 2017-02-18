@@ -1,0 +1,214 @@
+config BR2_POWERPC_CPU_HAS_ALTIVEC
+	bool
+
+config BR2_POWERPC_CPU_HAS_SPE
+	bool
+
+choice
+	prompt "Target Architecture Variant"
+	default BR2_generic_powerpc
+	help
+	  Specific CPU variant to use
+config BR2_generic_powerpc
+	bool "generic"
+config BR2_powerpc_401
+	bool "401"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_403
+	bool "403"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_405
+	bool "405"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_405fp
+	bool "405 with FPU"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_440
+	bool "440"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_440fp
+	bool "440 with FPU"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_464
+	bool "464"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_464fp
+	bool "464 with FPU"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_476
+	bool "476"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_476fp
+	bool "476 with FPU"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_505
+	bool "505"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_601
+	bool "601"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_602
+	bool "602"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_603
+	bool "603"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_603e
+	bool "603e"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_604
+	bool "604"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_604e
+	bool "604e"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_620
+	bool "620"
+config BR2_powerpc_630
+	bool "630"
+config BR2_powerpc_740
+	bool "740"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_7400
+	bool "7400"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_7450
+	bool "7450"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_750
+	bool "750"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_821
+	bool "821"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_823
+	bool "823"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_860
+	bool "860"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_970
+	bool "970"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_8540
+	bool "8540 / e500v1"
+	depends on !BR2_ARCH_IS_64
+	select BR2_POWERPC_CPU_HAS_SPE
+config BR2_powerpc_8548
+	bool "8548 / e500v2"
+	depends on !BR2_ARCH_IS_64
+	select BR2_POWERPC_CPU_HAS_SPE
+config BR2_powerpc_e300c2
+	bool "e300c2"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_e300c3
+	bool "e300c3"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_e500mc
+	bool "e500mc"
+	depends on !BR2_ARCH_IS_64
+config BR2_powerpc_e5500
+	bool "e5500"
+	depends on !BR2_powerpc64le
+config BR2_powerpc_e6500
+	bool "e6500"
+	depends on !BR2_powerpc64le
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_power4
+	bool "power4"
+config BR2_powerpc_power5
+	bool "power5"
+config BR2_powerpc_power6
+	bool "power6"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_power7
+	bool "power7"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+config BR2_powerpc_power8
+	bool "power8"
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
+endchoice
+
+choice
+	prompt "Target ABI"
+	default BR2_powerpc_SPE if BR2_POWERPC_CPU_HAS_SPE
+	default BR2_powerpc_CLASSIC
+	help
+	  Application Binary Interface to use
+
+config BR2_powerpc_CLASSIC
+	bool "Classic"
+	depends on !BR2_POWERPC_CPU_HAS_SPE
+config BR2_powerpc_SPE
+	bool "SPE"
+	depends on BR2_POWERPC_CPU_HAS_SPE
+endchoice
+
+config BR2_POWERPC_SOFT_FLOAT
+	bool "Use soft-float"
+	select BR2_SOFT_FLOAT
+	help
+	  If your target CPU does not have a Floating Point Unit (FPU)
+	  or a kernel FPU emulator, but you still wish to support
+	  floating point functions, then everything will need to be
+	  compiled with soft floating point support (-msoft-float).
+
+config BR2_ARCH
+	default "powerpc"	if BR2_powerpc
+	default "powerpc64"	if BR2_powerpc64
+	default "powerpc64le"	if BR2_powerpc64le
+
+config BR2_ENDIAN
+	default "BIG"    if BR2_powerpc || BR2_powerpc64
+	default "LITTLE" if BR2_powerpc64le
+
+config BR2_GCC_TARGET_CPU
+	default "401"		if BR2_powerpc_401
+	default "403"		if BR2_powerpc_403
+	default "405"		if BR2_powerpc_405
+	default "405fp"		if BR2_powerpc_405fp
+	default "440"		if BR2_powerpc_440
+	default "440fp"		if BR2_powerpc_440fp
+	default "464"		if BR2_powerpc_464
+	default "464fp"		if BR2_powerpc_464fp
+	default "476"		if BR2_powerpc_476
+	default "476fp"		if BR2_powerpc_476fp
+	default "505"		if BR2_powerpc_505
+	default "601"		if BR2_powerpc_601
+	default "602"		if BR2_powerpc_602
+	default "603"		if BR2_powerpc_603
+	default "603e"		if BR2_powerpc_603e
+	default "604"		if BR2_powerpc_604
+	default "604e"		if BR2_powerpc_604e
+	default "620"		if BR2_powerpc_620
+	default "630"		if BR2_powerpc_630
+	default "740"		if BR2_powerpc_740
+	default "7400"		if BR2_powerpc_7400
+	default "7450"		if BR2_powerpc_7450
+	default "750"		if BR2_powerpc_750
+	default "821"		if BR2_powerpc_821
+	default "823"		if BR2_powerpc_823
+	default "860"		if BR2_powerpc_860
+	default "970"		if BR2_powerpc_970
+	default "8540"		if BR2_powerpc_8540
+	default	"8548"		if BR2_powerpc_8548
+	default "e300c2"	if BR2_powerpc_e300c2
+	default "e300c3"	if BR2_powerpc_e300c3
+	default "e500mc"	if BR2_powerpc_e500mc
+	default "e5500"		if BR2_powerpc_e5500
+	default "e6500"		if BR2_powerpc_e6500
+	default "power4"	if BR2_powerpc_power4
+	default "power5"	if BR2_powerpc_power5
+	default "power6"	if BR2_powerpc_power6
+	default "power7"	if BR2_powerpc_power7
+	default "power8"	if BR2_powerpc_power8
+
+config BR2_GCC_TARGET_ABI
+	default "altivec"		if BR2_PPC_ABI_altivec
+	default "no-altivec"		if BR2_PPC_ABI_no-altivec
+	default "spe"			if BR2_PPC_ABI_spe
+	default "no-spe"		if BR2_PPC_ABI_no-spe
+	default "ibmlongdouble"		if BR2_PPC_ABI_ibmlongdouble
+	default "ieeelongdouble"	if BR2_PPC_ABI_ieeelongdouble

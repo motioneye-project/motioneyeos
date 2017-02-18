@@ -1,0 +1,17 @@
+config BR2_PACKAGE_SPIDEV_TEST
+	bool "spidev_test"
+	help
+	  SPI testing utility (using spidev driver).
+
+	  This package builds and installs the userspace 'spidev_test'
+	  command. It is up to the user to ensure that the kernel
+	  configuration has all suitable options enabled to allow a
+	  proper operation of 'spidev_test'.
+
+	  The version used is based on your toolchain headers version,
+	  if it's older than 3.15 then 3.0 is used, otherwise 3.15
+	  is used.
+	  This means you won't have quad-pumped SPI support if your
+	  toolchain is too old.
+
+	  https://www.kernel.org/doc/Documentation/spi/spidev_test.c

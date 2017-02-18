@@ -1,0 +1,16 @@
+config BR2_PACKAGE_PYTHON_DJANGO
+	bool "python-django"
+	select BR2_PACKAGE_PYTHON_UNICODEDATA if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_UNICODEDATA if BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3
+	help
+	  Django is a high-level Python Web framework that encourages
+	  rapid development and clean, pragmatic design. It takes your
+	  Web applications from concept to launch in a matter of hours.
+	  Django takes care of user authentication, content administration,
+	  site maps, RSS feeds, user comments and many more tasks.
+	  Django takes security seriously and helps developers avoid
+	  many common security mistakes
+
+	  https://www.djangoproject.com/

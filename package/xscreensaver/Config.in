@@ -1,0 +1,30 @@
+config BR2_PACKAGE_XSCREENSAVER
+	bool "xscreensaver"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_INSTALL_LIBSTDCPP # libgtk2 -> pango
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libgtk2 -> glib2
+	depends on BR2_USE_WCHAR # libgtk2 -> glib2
+	depends on BR2_USE_MMU # libgtk2 -> glib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libgtk2 -> pango -> harfbuzz
+	select BR2_PACKAGE_LIBGTK2
+	select BR2_PACKAGE_LIBGLADE
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  XScreenSaver is the standard screen saver collection shipped on most
+	  Linux and Unix systems running the X11 Window System.
+
+	  On X11 systems, XScreenSaver is two things: it is both a large
+	  collection of screen savers; and it is also the framework for
+	  blanking and locking the screen.
+
+	  http://www.jwz.org/xscreensaver/
+
+comment "xscreensaver needs a toolchain w/ wchar, C++, threads"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR

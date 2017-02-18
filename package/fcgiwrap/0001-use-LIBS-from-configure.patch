@@ -1,0 +1,22 @@
+Makefile.in: Use LIBS from configure rather than specifying -lfcgi manually.
+
+libfcgi needs libm and fcgiwrap does not use libtool or pkgconf to
+detect libfcgi, so we need to add -lm explicitely when using static
+libs.  Buildroot does this by providing LIBS=-lm to configure when
+needed.  However fcgiwrap does not use Automake and its Makefile.in
+ignores LIBS from configure.  Fix it with this patch.
+
+Signed-off-by: Thomas Claveirole <thomas.claveirole@green-communications.fr>
+
+diff -ur a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2013-02-03 14:25:17.000000000 +0100
++++ b/Makefile.in	2015-05-29 16:33:23.895280138 +0200
+@@ -16,7 +16,7 @@
+ 	install -m 644 systemd/fcgiwrap.service $(DESTDIR)@systemdsystemunitdir@
+ endif
+
+-LDLIBS = -lfcgi @systemd_LIBS@
++LDLIBS = @LIBS@ @systemd_LIBS@
+ CFLAGS = @AM_CFLAGS@
+
+ fcgiwrap: fcgiwrap.c

@@ -1,0 +1,24 @@
+config BR2_PACKAGE_MYSQL
+	bool "MySQL"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	help
+	  The MySQL Open Source Database System
+
+	  http://www.mysql.com/
+
+if BR2_PACKAGE_MYSQL
+
+config BR2_PACKAGE_MYSQL_SERVER
+	bool "MySQL server"
+	help
+	  Install the MySQL server on the target.
+
+endif
+
+comment "MySQL needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

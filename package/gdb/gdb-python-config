@@ -1,0 +1,36 @@
+#!/bin/sh
+
+# This shell script is used to fake Python. Gdb wants to be passed a
+# Python interpreter, to run its own python-config.py program, which
+# uses sysconfig. However, when cross-compiling, this doesn't work
+# well since we would have to use the host Python, whose sysconfig
+# module would return host values.
+#
+# As recommended at
+# https://sourceware.org/gdb/wiki/CrossCompilingWithPythonSupport,
+# this wrapper shell script can be used as a replacement. It ignores
+# the python-config.py script passed as first arguments, and
+# "emulates" its behavior.
+
+if [ $# -ne 2 ] ; then
+    echo "Bad # args." >&2
+    exit 1
+fi
+
+# The first argument is the path to python-config.py, ignore it.
+
+case "$2" in
+    --includes)
+	echo "-I${STAGING_DIR}/usr/include/python2.7"
+	;;
+    --ldflags)
+	echo "-lpthread -ldl -lutil -lm -lpython2.7"
+	;;
+    --exec-prefix)
+	echo "/usr"
+	;;
+    *)
+	echo "Bad arg $2." >&2
+	exit 1
+	;;
+esac

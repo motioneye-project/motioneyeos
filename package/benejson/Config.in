@@ -1,0 +1,15 @@
+config BR2_PACKAGE_BENEJSON
+	bool "benejson"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  benejson is a buffering SAX-style JSON parser library.
+	  The library package contains 3 major components:
+
+	  - benejson.js: SAX-style parser written in Javascript
+	  - PullParser: A C++ class for JSON pull parsing
+	  - Core: The parsing core with minimal dependencies
+
+	  https://codehero.github.io/benejson/
+
+comment "benejson needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

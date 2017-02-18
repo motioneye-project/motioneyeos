@@ -1,0 +1,196 @@
+#!/usr/bin/env bash
+
+# This script is a wrapper to the other download backends.
+# Its role is to ensure atomicity when saving downloaded files
+# back to BR2_DL_DIR, and not clutter BR2_DL_DIR with partial,
+# failed downloads.
+#
+# Call it with -h to see some help.
+
+# To avoid cluttering BR2_DL_DIR, we download to a trashable
+# location, namely in $(BUILD_DIR).
+# Then, we move the downloaded file to a temporary file in the
+# same directory as the final output file.
+# This allows us to finally atomically rename it to its final
+# name.
+# If anything goes wrong, we just remove all the temporaries
+# created so far.
+
+# We want to catch any unexpected failure, and exit immediately.
+set -e
+
+main() {
+    local OPT OPTARG
+    local backend output hfile quiet
+
+    # Parse our options; anything after '--' is for the backend
+    while getopts :hb:o:H:q OPT; do
+        case "${OPT}" in
+        h)  help; exit 0;;
+        b)  backend="${OPTARG}";;
+        o)  output="${OPTARG}";;
+        H)  hfile="${OPTARG}";;
+        q)  quiet="-q";;
+        :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
+        \?) error "unknown option '%s'\n" "${OPTARG}";;
+        esac
+    done
+    # Forget our options, and keep only those for the backend
+    shift $((OPTIND-1))
+
+    if [ -z "${backend}" ]; then
+        error "no backend specified, use -b\n"
+    fi
+    if [ -z "${output}" ]; then
+        error "no output specified, use -o\n"
+    fi
+
+    # If the output file already exists and:
+    # - there's no .hash file: do not download it again and exit promptly
+    # - matches all its hashes: do not download it again and exit promptly
+    # - fails at least one of its hashes: force a re-download
+    # - there's no hash (but a .hash file): consider it a hard error
+    if [ -e "${output}" ]; then
+        if support/download/check-hash ${quiet} "${hfile}" "${output}" "${output##*/}"; then
+            exit 0
+        elif [ ${?} -ne 2 ]; then
+            # Do not remove the file, otherwise it might get re-downloaded
+            # from a later location (i.e. primary -> upstream -> mirror).
+            # Do not print a message, check-hash already did.
+            exit 1
+        fi
+        rm -f "${output}"
+        warn "Re-downloading '%s'...\n" "${output##*/}"
+    fi
+
+    # tmpd is a temporary directory in which backends may store intermediate
+    # by-products of the download.
+    # tmpf is the file in which the backends should put the downloaded content.
+    # tmpd is located in $(BUILD_DIR), so as not to clutter the (precious)
+    # $(BR2_DL_DIR)
+    # We let the backends create tmpf, so they are able to set whatever
+    # permission bits they want (although we're only really interested in
+    # the executable bit.)
+    tmpd="$(mktemp -d "${BUILD_DIR}/.${output##*/}.XXXXXX")"
+    tmpf="${tmpd}/output"
+
+    # Helpers expect to run in a directory that is *really* trashable, so
+    # they are free to create whatever files and/or sub-dirs they might need.
+    # Doing the 'cd' here rather than in all backends is easier.
+    cd "${tmpd}"
+
+    # If the backend fails, we can just remove the temporary directory to
+    # remove all the cruft it may have left behind. Then we just exit in
+    # error too.
+    if ! "${OLDPWD}/support/download/${backend}" ${quiet} "${tmpf}" "${@}"; then
+        rm -rf "${tmpd}"
+        exit 1
+    fi
+
+    # cd back to free the temp-dir, so we can remove it later
+    cd "${OLDPWD}"
+
+    # Check if the downloaded file is sane, and matches the stored hashes
+    # for that file
+    if ! support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
+        rm -rf "${tmpd}"
+        exit 1
+    fi
+
+    # tmp_output is in the same directory as the final output, so we can
+    # later move it atomically.
+    tmp_output="$(mktemp "${output}.XXXXXX")"
+
+    # 'mktemp' creates files with 'go=-rwx', so the files are not accessible
+    # to users other than the one doing the download (and root, of course).
+    # This can be problematic when a shared BR2_DL_DIR is used by different
+    # users (e.g. on a build server), where all users may write to the shared
+    # location, since other users would not be allowed to read the files
+    # another user downloaded.
+    # So, we restore the 'go' access rights to a more sensible value, while
+    # still abiding by the current user's umask. We must do that before the
+    # final 'mv', so just do it now.
+    # Some backends (cp and scp) may create executable files, so we need to
+    # carry the executable bit if needed.
+    [ -x "${tmpf}" ] && new_mode=755 || new_mode=644
+    new_mode=$(printf "%04o" $((0${new_mode} & ~0$(umask))))
+    chmod ${new_mode} "${tmp_output}"
+
+    # We must *not* unlink tmp_output, otherwise there is a small window
+    # during which another download process may create the same tmp_output
+    # name (very, very unlikely; but not impossible.)
+    # Using 'cp' is not reliable, since 'cp' may unlink the destination file
+    # if it is unable to open it with O_WRONLY|O_TRUNC; see:
+    #   http://pubs.opengroup.org/onlinepubs/9699919799/utilities/cp.html
+    # Since the destination filesystem can be anything, it might not support
+    # O_TRUNC, so 'cp' would unlink it first.
+    # Use 'cat' and append-redirection '>>' to save to the final location,
+    # since that is the only way we can be 100% sure of the behaviour.
+    if ! cat "${tmpf}" >>"${tmp_output}"; then
+        rm -rf "${tmpd}" "${tmp_output}"
+        exit 1
+    fi
+    rm -rf "${tmpd}"
+
+    # tmp_output and output are on the same filesystem, so POSIX guarantees
+    # that 'mv' is atomic, because it then uses rename() that POSIX mandates
+    # to be atomic, see:
+    #   http://pubs.opengroup.org/onlinepubs/9699919799/functions/rename.html
+    if ! mv -f "${tmp_output}" "${output}"; then
+        rm -f "${tmp_output}"
+        exit 1
+    fi
+}
+
+help() {
+    cat <<_EOF_
+NAME
+    ${my_name} - download wrapper for Buildroot
+
+SYNOPSIS
+    ${my_name} [OPTION]... -- [BACKEND OPTION]...
+
+DESCRIPTION
+    Wrapper script around different download mechanisms. Ensures that
+    concurrent downloads do not conflict, that partial downloads are
+    properly evicted without leaving temporary files, and that access
+    rights are maintained.
+
+    -h  This help text.
+
+    -b BACKEND
+        Wrap the specified BACKEND. Known backends are:
+            bzr     Bazaar
+            cp      Local files
+            cvs     Concurrent Versions System
+            git     Git
+            hg      Mercurial
+            scp     Secure copy
+            svn     Subversion
+            wget    HTTP download
+
+    -o FILE
+        Store the downloaded archive in FILE.
+
+    -H FILE
+        Use FILE to read hashes from, and check them against the downloaded
+        archive.
+
+  Exit status:
+    0   if OK
+    !0  in case of error
+
+ENVIRONMENT
+
+    BUILD_DIR
+        The path to Buildroot's build dir
+_EOF_
+}
+
+trace()  { local msg="${1}"; shift; printf "%s: ${msg}" "${my_name}" "${@}"; }
+warn()   { trace "${@}" >&2; }
+errorN() { local ret="${1}"; shift; warn "${@}"; exit ${ret}; }
+error()  { errorN 1 "${@}"; }
+
+my_name="${0##*/}"
+main "${@}"

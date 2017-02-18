@@ -1,0 +1,96 @@
+From 99ef88cb47a396e2c7005e59e50d34e0a60dd3cb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:47:11 +0100
+Subject: [PATCH] Add an option to disable pydoc
+
+It removes 0.5 MB of data from the target plus the pydoc script
+itself.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile.pre.in | 8 +++++++-
+ configure.ac    | 5 +++++
+ setup.py        | 9 +++++++--
+ 3 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 12fae84..5e2333e 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1100,7 +1100,9 @@ bininstall: altbininstall
+ 	-rm -f $(DESTDIR)$(BINDIR)/idle3
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
+ 	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
++ifeq (@PYDOC@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
++endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/2to3
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
+ 	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
+@@ -1151,7 +1153,7 @@ LIBSUBDIRS=	tkinter \
+ 		multiprocessing multiprocessing/dummy \
+ 		unittest \
+ 		venv venv/scripts venv/scripts/posix \
+-		curses pydoc_data $(MACHDEPS)
++		curses $(MACHDEPS)
+ 
+ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+ 		test test/test_asyncio \
+@@ -1195,6 +1197,10 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+ 		test/test_importlib/import_ test/test_importlib/source \
+ 		unittest/test unittest/test/testmock
+ 
++ifeq (@PYDOC@,yes)
++LIBSUBDIRS += pydoc_data
++endif
++
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+diff --git a/configure.ac b/configure.ac
+index b7a8836..2e75345 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2658,6 +2658,11 @@ if test "$posix_threads" = "yes"; then
+       AC_CHECK_FUNCS(pthread_atfork)
+ fi
+ 
++AC_SUBST(PYDOC)
++
++AC_ARG_ENABLE(pydoc,
++	AS_HELP_STRING([--disable-pydoc], [disable pydoc]),
++	[ PYDOC="${enableval}" ], [ PYDOC=yes ])
+ 
+ AC_SUBST(TEST_MODULES)
+ 
+diff --git a/setup.py b/setup.py
+index 8966779..69198db 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2200,6 +2200,12 @@ def main():
+     # turn off warnings when deprecated modules are imported
+     import warnings
+     warnings.filterwarnings("ignore",category=DeprecationWarning)
++
++    scripts = ['Tools/scripts/idle3', 'Tools/scripts/2to3',
++               'Lib/smtpd.py']
++    if not '--disable-pydoc' in sysconfig.get_config_var("CONFIG_ARGS"):
++        scripts += [ 'Tools/scripts/pydoc3' ]
++
+     setup(# PyPI Metadata (PEP 301)
+           name = "Python",
+           version = sys.version.split()[0],
+@@ -2224,8 +2230,7 @@ def main():
+           # If you change the scripts installed here, you also need to
+           # check the PyBuildScripts command above, and change the links
+           # created by the bininstall target in Makefile.pre.in
+-          scripts = ["Tools/scripts/pydoc3", "Tools/scripts/idle3",
+-                     "Tools/scripts/2to3", "Tools/scripts/pyvenv"]
++          scripts = scripts,
+         )
+ 
+ # --install-platlib
+-- 
+2.6.4
+

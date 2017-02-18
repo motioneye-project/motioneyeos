@@ -1,0 +1,34 @@
+From 1ffed0e8601afb7e65545bd545772edd0fccc404 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 23 Apr 2016 17:48:13 +0200
+Subject: [PATCH] dtmerge: add missing include for va_list
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes compile error with uclibc-1.0.14:
+
+  In file included from rpi-userland-52eca998aa43f278314579dba4798a3fe1da46c3/host_applications/linux/apps/dtmerge/dtmerge.c:32:0:
+  rpi-userland-52eca998aa43f278314579dba4798a3fe1da46c3/helpers/dtoverlay/dtoverlay.h:65:54: error: unknown type name ‘va_list’
+                                     const char *fmt, va_list args);
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ host_applications/linux/apps/dtmerge/dtmerge.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/host_applications/linux/apps/dtmerge/dtmerge.c b/host_applications/linux/apps/dtmerge/dtmerge.c
+index 9243da1..2ac8d39 100644
+--- a/host_applications/linux/apps/dtmerge/dtmerge.c
++++ b/host_applications/linux/apps/dtmerge/dtmerge.c
+@@ -28,6 +28,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <libfdt.h>
++#include <stdarg.h>
+ 
+ #include "dtoverlay.h"
+ 
+-- 
+2.8.1
+

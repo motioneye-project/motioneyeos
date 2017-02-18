@@ -1,0 +1,97 @@
+config BR2_PACKAGE_E2FSPROGS
+	bool "e2fsprogs"
+	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_USE_MMU # util-linux/libblkid
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  The EXT2 file system utilities.
+
+	  http://e2fsprogs.sf.net
+
+if BR2_PACKAGE_E2FSPROGS
+
+config BR2_PACKAGE_E2FSPROGS_BADBLOCKS
+	bool "badblocks"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_CHATTR
+	bool "chattr"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_DEBUGFS
+	bool "debugfs"
+
+config BR2_PACKAGE_E2FSPROGS_DUMPE2FS
+	bool "dumpe2fs"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_E2FREEFRAG
+	bool "e2freefrag"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_E2FSCK
+	bool "e2fsck"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_E2IMAGE
+	bool "e2image"
+
+config BR2_PACKAGE_E2FSPROGS_E2LABEL
+	bool "e2label"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_E2UNDO
+	bool "e2undo"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_E4DEFRAG
+	bool "e4defrag"
+	depends on !BR2_nios2 # fallocate not implemented
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # sync_file_range not impl
+
+comment "e4defrag needs an (e)glibc or musl toolchain"
+	depends on BR2_TOOLCHAIN_USES_UCLIBC
+
+config BR2_PACKAGE_E2FSPROGS_FILEFRAG
+	bool "filefrag"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_FSCK
+	bool "fsck"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_LOGSAVE
+	bool "logsave"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_LSATTR
+	bool "lsattr"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_MKE2FS
+	bool "mke2fs"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
+	bool "mklost+found"
+	default y
+
+config BR2_PACKAGE_E2FSPROGS_RESIZE2FS
+	bool "resize2fs"
+
+config BR2_PACKAGE_E2FSPROGS_TUNE2FS
+	bool "tune2fs"
+	default y
+	select BR2_PACKAGE_E2FSPROGS_E2LABEL
+
+config BR2_PACKAGE_E2FSPROGS_UUIDGEN
+	bool "uuidgen"
+	default y
+
+endif
+
+comment "e2fsprogs needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR

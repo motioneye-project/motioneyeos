@@ -1,0 +1,22 @@
+Fix improper usage of macro that introduces a wrong newline
+
+The MD_CONF_FLAGS() macro was used with a final newline that
+introduces an invalid newline in the middle of the macro expansion
+when defining LDFLAGS.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: libhid-0.2.16/configure.ac
+===================================================================
+--- libhid-0.2.16.orig/configure.ac	2007-04-01 22:32:10.000000000 +0200
++++ libhid-0.2.16/configure.ac	2012-12-12 20:24:03.000000000 +0100
+@@ -102,8 +102,7 @@
+   [],
+   [$OS_CFLAGS $LIBUSB_CFLAGS],
+   [],
+-  [$OS_LDFLAGS $LIBUSB_LIBS]
+-)
++  [$OS_LDFLAGS $LIBUSB_LIBS])
+ 
+ MD_CONF_DB2MAN
+ 

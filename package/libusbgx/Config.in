@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBUSBGX
+	bool "libusbgx"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBCONFIG
+	help
+	  libusbgx is a C library encapsulating the kernel USB
+	  gadget-configfs userspace API functionality.
+
+	  https://github.com/libusbgx/libusbgx
+
+comment "libusbgx needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

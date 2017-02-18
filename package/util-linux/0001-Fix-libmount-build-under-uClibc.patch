@@ -1,0 +1,153 @@
+From 44d733203637666926964957af7af23429ddcecf Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Mon, 18 Apr 2016 09:58:56 -0300
+Subject: [PATCH] Fix libmount build under uClibc
+
+See https://bugs.gentoo.org/show_bug.cgi?id=406303
+http://sources.gentoo.org/cgi-bin/viewvc.cgi/gentoo-x86/sys-apps/util-linux/files/util-linux-2.21.1-no-printf-alloc.patch?revision=1.2
+
+[Gustavo: converted to git format for 2.28]
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ configure.ac             |  1 -
+ libmount/src/tab_parse.c | 52 ++++++++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 52 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5a00403..3422f11 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -948,7 +948,6 @@ AC_ARG_ENABLE([libmount],
+ )
+ UL_BUILD_INIT([libmount])
+ UL_REQUIRES_BUILD([libmount], [libblkid])
+-UL_REQUIRES_HAVE([libmount], [scanf_alloc_modifier], [scanf string alloc modifier])
+ AM_CONDITIONAL([BUILD_LIBMOUNT], [test "x$build_libmount" = xyes])
+ AM_CONDITIONAL([BUILD_LIBMOUNT_TESTS], [test "x$build_libmount" = xyes -a "x$enable_static" = xyes])
+ AS_IF([test "x$build_libmount" = xyes], [
+diff --git a/libmount/src/tab_parse.c b/libmount/src/tab_parse.c
+index 3f5e14a..2ff1795 100644
+--- a/libmount/src/tab_parse.c
++++ b/libmount/src/tab_parse.c
+@@ -39,6 +39,10 @@ static void parser_cleanup(struct libmnt_parser *pa)
+ 	memset(pa, 0, sizeof(*pa));
+ }
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++# define UL_SCNsA "%s"
++#endif
++
+ static int next_number(char **s, int *num)
+ {
+ 	char *end = NULL;
+@@ -69,16 +73,31 @@ static int mnt_parse_table_line(struct libmnt_fs *fs, char *s)
+ 	int rc, n = 0, xrc;
+ 	char *src = NULL, *fstype = NULL, *optstr = NULL;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	src = malloc(len);
++	fstype = malloc(len);
++	fs->target = malloc(len);
++	optstr = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	UL_SCNsA" "	/* (1) source */
+ 			UL_SCNsA" "	/* (2) target */
+ 			UL_SCNsA" "	/* (3) FS type */
+ 			UL_SCNsA" "	/* (4) options */
+ 			"%n",		/* byte count */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&src,
+ 			&fs->target,
+ 			&fstype,
+ 			&optstr,
++#else
++			src,
++			fs->target,
++			fstype,
++			optstr,
++#endif
+ 			&n);
+ 	xrc = rc;
+ 
+@@ -144,6 +163,16 @@ static int mnt_parse_mountinfo_line(struct libmnt_fs *fs, char *s)
+ 	unsigned int maj, min;
+ 	char *fstype = NULL, *src = NULL, *p;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	fs->root = malloc(len);
++	fs->target = malloc(len);
++	fs->vfs_optstr = malloc(len);
++	fs->fs_optstr = malloc(len);
++	fstype = malloc(len);
++	src = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	"%d "		/* (1) id */
+ 			"%d "		/* (2) parent */
+ 			"%u:%u "	/* (3) maj:min */
+@@ -155,9 +184,15 @@ static int mnt_parse_mountinfo_line(struct libmnt_fs *fs, char *s)
+ 			&fs->id,
+ 			&fs->parent,
+ 			&maj, &min,
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&fs->root,
+ 			&fs->target,
+ 			&fs->vfs_optstr,
++#else
++			fs->root,
++			fs->target,
++			fs->vfs_optstr,
++#endif
+ 			&end);
+ 
+ 	if (rc >= 7 && end > 0)
+@@ -177,9 +212,15 @@ static int mnt_parse_mountinfo_line(struct libmnt_fs *fs, char *s)
+ 			UL_SCNsA" "	/* (9) source */
+ 			UL_SCNsA,	/* (10) fs options (fs specific) */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&fstype,
+ 			&src,
+ 			&fs->fs_optstr);
++#else
++			fstype,
++			src,
++			fs->fs_optstr);
++#endif
+ 
+ 	if (rc >= 10) {
+ 		size_t sz;
+@@ -298,14 +339,25 @@ static int mnt_parse_swaps_line(struct libmnt_fs *fs, char *s)
+ 	int rc;
+ 	char *src = NULL;
+ 
++#ifndef HAVE_SCANF_MS_MODIFIER
++	size_t len = strlen(s) + 1;
++	src = malloc(len);
++	fs->swaptype = malloc(len);
++#endif
++
+ 	rc = sscanf(s,	UL_SCNsA" "	/* (1) source */
+ 			UL_SCNsA" "	/* (2) type */
+ 			"%ju"		/* (3) size */
+ 			"%ju"		/* (4) used */
+ 			"%d",		/* priority */
+ 
++#ifdef HAVE_SCANF_MS_MODIFIER
+ 			&src,
+ 			&fs->swaptype,
++#else
++			src,
++			fs->swaptype,
++#endif
+ 			&fsz,
+ 			&usz,
+ 			&fs->priority);
+-- 
+2.7.3
+

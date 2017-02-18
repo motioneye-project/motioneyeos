@@ -1,0 +1,29 @@
+config BR2_PACKAGE_DVDAUTHOR
+	bool "dvdauthor"
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LIBPNG
+	help
+	  DVDAuthor is a set of tools to help you author the file and directory
+	  structure of a DVD-Video disc, including programmatic commands for
+	  implementing interactive behaviour. It is driven by command lines and
+	  XML control files, though there are other programs that provide
+	  GUI-based front ends if you prefer
+
+	  http://dvdauthor.sourceforge.net
+
+if BR2_PACKAGE_DVDAUTHOR
+
+config BR2_PACKAGE_DVDAUTHOR_DVDUNAUTHOR
+	bool "dvdunauthor"
+	select BR2_PACKAGE_LIBDVDREAD
+	depends on !BR2_STATIC_LIBS # libdvdread
+	help
+	  This option enables the dvdunauthor program, which requires
+	  libdvdread.
+
+comment "dvdunauthor needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+endif
+

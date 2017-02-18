@@ -1,0 +1,11 @@
+config BR2_PACKAGE_JHEAD
+	bool "jhead"
+	depends on BR2_USE_WCHAR
+	help
+	  Jhead is a program for manipulating settings and thumbnails
+	  in Exif jpeg headers used by most Digital Cameras.
+
+	  http://www.sentex.net/~mwandel/jhead/
+
+comment "jhead needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

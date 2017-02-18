@@ -1,0 +1,45 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+msg_info() {
+    echo " # $1"
+}
+
+show_iface_ip_addr() {
+    addr=$(ip addr show dev $1 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
+    test -n "$addr" && msg_info "Interface $1 has IP address $addr"
+}
+
+show_gateway() {
+    gateway=$(ip route | grep default | cut -d ' ' -f 3)
+    test -n "$gateway" && msg_info "Default gateway is $gateway"
+}
+
+show_dns() {
+    test -r /etc/resolv.conf || return
+    dns=$(cat /etc/resolv.conf | grep nameserver | head -n 1 | cut -d ' ' -f 2)
+    test -n "$dns" && msg_info "DNS server address is $dns"
+}
+
+case "$1" in
+    start)
+        show_iface_ip_addr $os_eth
+        show_iface_ip_addr $os_wlan
+        show_iface_ip_addr $os_ppp
+        show_gateway
+        show_dns
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

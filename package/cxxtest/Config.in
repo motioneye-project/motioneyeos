@@ -1,0 +1,10 @@
+config BR2_PACKAGE_CXXTEST
+	bool "cxxtest"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  CxxTest is a unit testing framework for C++
+
+	  http://cxxtest.com/
+
+comment "cxxtest needs a toolchain w/ C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP

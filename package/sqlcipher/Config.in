@@ -1,0 +1,36 @@
+config BR2_PACKAGE_SQLCIPHER
+	bool "sqlcipher"
+	depends on !BR2_PACKAGE_SQLITE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_OPENSSL
+	help
+	  SQLCipher is an SQLite extension that provides 256 bits AES
+	  encryption of database files. Note that it is a fork of SQLite
+	  and they cannot be installed side-by-side.
+
+	  http://sqlcipher.net
+
+if BR2_PACKAGE_SQLCIPHER
+
+config BR2_PACKAGE_SQLCIPHER_READLINE
+	bool "Command-line editing"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	help
+	  Enable command-line editing. This requires ncurses and readline.
+
+config BR2_PACKAGE_SQLCIPHER_STAT3
+	bool "Additional query optimizations (stat3)"
+	help
+	  Adds additional logic to the ANALYZE command and to the query
+	  planner that can help SQLite to choose a better query plan under
+	  certain situations.
+
+endif
+
+comment "sqlcipher conflicts with sqlite"
+	depends on BR2_PACKAGE_SQLITE
+
+comment "sqlcipher needs a toolchain w/ threads"
+	depends on !BR2_PACKAGE_SQLITE
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

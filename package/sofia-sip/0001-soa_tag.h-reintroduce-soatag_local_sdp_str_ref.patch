@@ -1,0 +1,26 @@
+From bcd0f17fd83f2dfe570a3ab17249a5c7290b27f2 Mon Sep 17 00:00:00 2001
+From: Pekka Pessi <Pekka.Pessi at nokia.com>
+Date: Thu, 24 Mar 2011 14:45:21 +0200
+Subject: [PATCH] soa_tag.h: reintroduce soatag_local_sdp_str_ref
+
+Thanks to Erik Habicht <e.habicht at thiesen.com> for spotting it
+---
+ libsofia-sip-ua/soa/sofia-sip/soa_tag.h |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/libsofia-sip-ua/soa/sofia-sip/soa_tag.h b/libsofia-sip-ua/soa/sofia-sip/soa_tag.h
+index 723ca02..d9448d6 100644
+--- a/libsofia-sip-ua/soa/sofia-sip/soa_tag.h
++++ b/libsofia-sip-ua/soa/sofia-sip/soa_tag.h
+@@ -118,7 +118,7 @@ SOFIAPUBVAR tag_typedef_t soatag_local_sdp_ref;
+ SOFIAPUBVAR tag_typedef_t soatag_local_sdp_str;
+ #define SOATAG_LOCAL_SDP_STR_REF(x) \
+   soatag_local_sdp_str_ref, tag_str_vr(&(x))
+-SOFIAPUBVAR tag_typedef_t soatag_session_sdp_str_ref;
++SOFIAPUBVAR tag_typedef_t soatag_local_sdp_str_ref;
+ 
+ #define SOATAG_AF(x)             soatag_af, tag_int_v((x))
+ SOFIAPUBVAR tag_typedef_t soatag_af;
+-- 
+1.7.7
+

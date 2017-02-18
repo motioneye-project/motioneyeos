@@ -1,0 +1,71 @@
+Fix musl build
+
+Downloaded from
+http://cgit.openembedded.org/openembedded-core/tree/meta/recipes-devtools/squashfs-tools/squashfs-tools/fix-compat.patch
+and adjusted paths.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+Define FNM_EXTMATCH if not defined its glibc specific define
+include missing sys/stat.h for stat* function declarations
+
+Upstream-Status: Pending
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+
+Index: squashfs-tools/action.c
+===================================================================
+--- a/squashfs-tools.orig/action.c
++++ b/squashfs-tools/action.c
+@@ -44,6 +44,10 @@
+ #include "action.h"
+ #include "error.h"
+ 
++#if !defined(FNM_EXTMATCH)
++#define FNM_EXTMATCH 0
++#endif
++
+ /*
+  * code to parse actions
+  */
+Index: squashfs-tools/mksquashfs.c
+===================================================================
+--- a/squashfs-tools.orig/mksquashfs.c
++++ b/squashfs-tools/mksquashfs.c
+@@ -1286,6 +1286,10 @@ void write_dir(squashfs_inode *inode, st
+ 		dir_size + 3, directory_block, directory_offset, NULL, NULL,
+ 		dir, 0);
+ 
++#if !defined(FNM_EXTMATCH)
++#define FNM_EXTMATCH 0
++#endif
++
+ #ifdef SQUASHFS_TRACE
+ 	{
+ 		unsigned char *dirp;
+Index: squashfs-tools/pseudo.c
+===================================================================
+--- a/squashfs-tools.orig/pseudo.c
++++ b/squashfs-tools/pseudo.c
+@@ -32,6 +32,7 @@
+ #include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/wait.h>
++#include <sys/stat.h>
+ #include <ctype.h>
+ 
+ #include "pseudo.h"
+Index: squashfs-tools/unsquashfs.c
+===================================================================
+--- a/squashfs-tools.orig/unsquashfs.c
++++ b/squashfs-tools/unsquashfs.c
+@@ -38,6 +38,10 @@
+ #include <limits.h>
+ #include <ctype.h>
+ 
++#ifndef FNM_EXTMATCH
++#define FNM_EXTMATCH 0
++#endif
++
+ struct cache *fragment_cache, *data_cache;
+ struct queue *to_reader, *to_inflate, *to_writer, *from_writer;
+ pthread_t *thread, *inflator_thread;

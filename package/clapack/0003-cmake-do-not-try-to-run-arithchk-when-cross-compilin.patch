@@ -1,0 +1,70 @@
+From a2f0669fac1f8e7183b15cf7d14f0e99a2d8b012 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 11 Jan 2014 21:47:39 +0100
+Subject: [PATCH 3/6] cmake: do not try to run arithchk when cross-compiling to
+ generate sources
+
+Instead, use a predefined arith.h if provided, or generate a default one.
+
+The arithchk binary is still built (but not installed) to allow the user to
+run it on its target and use it; so then allowing to build an optimized
+blas library.
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ F2CLIBS/libf2c/CMakeLists.txt | 38 ++++++++++++++++++++++++++++----------
+ 1 file changed, 28 insertions(+), 10 deletions(-)
+
+diff --git a/F2CLIBS/libf2c/CMakeLists.txt b/F2CLIBS/libf2c/CMakeLists.txt
+index f98d66a..45a0804 100644
+--- a/F2CLIBS/libf2c/CMakeLists.txt
++++ b/F2CLIBS/libf2c/CMakeLists.txt
+@@ -38,17 +38,35 @@ set(TIME dtime_.c etime_.c)
+ 
+ # For INTEGER*8 support (which requires system-dependent adjustments to
+ # f2c.h), add ${QINT} to the OFILES  assignment below...
+-add_executable(arithchk arithchk.c)
+-if(UNIX)
+-  target_link_libraries(arithchk m)
++if(CMAKE_CROSSCOMPILING)
++  if(ARITH_H)
++    message(STATUS "Using the user-defined '${ARITH_H}' as arith.h header.")
++    configure_file("${ARITH_H}" "${CMAKE_CURRENT_BINARY_DIR}/arith.h" COPYONLY)
++  else()
++    message(STATUS "No user-defined arith.h header.")
++    if(NOT EXISTS "${CMAKE_CURRENT_BINARY_DIR}/arith.h")
++      message(WARNING "Generating the default non-optimized 'arith.h' header.
++
++To generate and provide a custom arith.h header:
++run the cross-compiled arithchk binary on your target,
++and use its output to fill your custom arith.h header.")
++      file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/arith.h"
++        "/* default, not optimized arith.h */")
++    endif()
++  endif()
++else()
++  add_executable(arithchk arithchk.c)
++  if(UNIX)
++    target_link_libraries(arithchk m)
++  endif()
++  set_target_properties(arithchk PROPERTIES COMPILE_DEFINITIONS
++    "NO_FPINIT;NO_LONG_LONG")
++  ADD_CUSTOM_COMMAND(
++     OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/arith.h
++     COMMAND arithchk > ${CMAKE_CURRENT_BINARY_DIR}/arith.h
++     DEPENDS arithchk
++     )
+ endif()
+-set_target_properties(arithchk PROPERTIES COMPILE_DEFINITIONS 
+-  "NO_FPINIT;NO_LONG_LONG")
+-ADD_CUSTOM_COMMAND(
+-   OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/arith.h
+-   COMMAND arithchk > ${CMAKE_CURRENT_BINARY_DIR}/arith.h
+-   DEPENDS arithchk
+-   )
+ 
+ 
+ set(OFILES  ${MISC} ${POW} ${CX} ${DCX} ${REAL} ${DBL} ${INT} 
+-- 
+1.8.5.3
+

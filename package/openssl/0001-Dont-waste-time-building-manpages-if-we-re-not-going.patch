@@ -1,0 +1,27 @@
+From 389efb564fa1453a9da835393eec9006bfae2a52 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Sat, 16 May 2015 18:53:51 +0200
+Subject: Dont waste time building manpages if we're not going to use em.
+
+Signed-off-by: Ryan Barnett <ryanbarnett3@gmail.com>
+[Gustavo: update for parallel-build]
+---
+ Makefile.org | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.org b/Makefile.org
+index 60f07cc..976ceaf 100644
+--- a/Makefile.org
++++ b/Makefile.org
+@@ -527,7 +527,7 @@ dist:
+ dist_pem_h:
+ 	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
+ 
+-install: install_docs install_sw
++install: install_sw
+ 
+ install_sw:
+ 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
+-- 
+1.9.1
+

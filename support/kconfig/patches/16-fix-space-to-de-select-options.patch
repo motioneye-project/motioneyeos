@@ -1,0 +1,41 @@
+commit 6faa447282fe90d42e0513af46c13f20b4b327d4
+Author: Yann E. MORIN <yann.morin.1998@free.fr>
+Date:   Wed Nov 13 22:45:02 2013 +0100
+
+    support/kconfig: fix 'space' to (de)select options
+    
+    In case a menu has comment without letters/numbers (eg. characters
+    matching the regexp '^[^[:alpha:][:digit:]]+$', for example - or *),
+    hitting space will cycle through those comments, rather than
+    selecting/deselecting the currently-highlighted option.
+    
+    This is the behaviour of hitting any letter/digit: jump to the next
+    option which prompt starts with that letter. The only letters that
+    do not behave as such are 'y' 'm' and 'n'. Prompts that start with
+    one of those three letters are instead matched on the first letter
+    that is not 'y', 'm' or 'n'.
+    
+    Fix that by treating 'space' as we treat y/m/n, ie. as an action key,
+    not as shortcut to jump to  prompt.
+    
+    Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+    Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+    Cc: Peter Korsgaard <jacmet@uclibc.org>
+    Cc: Samuel Martin <s.martin49@gmail.com>
+    Cc: Thomas De Schampheleire <patrickdepinguin@gmail.com>
+    ---
+    Note: I'll be running this upstream soonish.
+
+diff --git a/support/kconfig/lxdialog/menubox.c b/support/kconfig/lxdialog/menubox.c
+index 48d382e..6fc7e78 100644
+--- a/lxdialog/menubox.c
++++ b/lxdialog/menubox.c
+@@ -285,7 +285,7 @@ do_resize:
+ 		if (key < 256 && isalpha(key))
+ 			key = tolower(key);
+ 
+-		if (strchr("ynmh", key))
++		if (strchr("ynmh ", key))
+ 			i = max_choice;
+ 		else {
+ 			for (i = choice + 1; i < max_choice; i++) {

@@ -1,0 +1,49 @@
+Add build option to disable utmpx update code
+
+On some embedded systems the libc may have utmpx support, but the
+feature would be redundant. So add a build switch to disable utmpx
+updating, similar to compiling on systems without utmpx support.
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+
+diff -ru vsftpd-3.0.2.orig/builddefs.h vsftpd-3.0.2/builddefs.h
+--- vsftpd-3.0.2.orig/builddefs.h	2012-04-05 05:24:56.000000000 +0200
++++ vsftpd-3.0.2/builddefs.h	2014-09-16 14:23:36.128003245 +0200
+@@ -4,6 +4,7 @@
+ #undef VSF_BUILD_TCPWRAPPERS
+ #define VSF_BUILD_PAM
+ #undef VSF_BUILD_SSL
++#define VSF_BUILD_UTMPX
+ 
+ #endif /* VSF_BUILDDEFS_H */
+ 
+diff -ru vsftpd-3.0.2.orig/sysdeputil.c vsftpd-3.0.2/sysdeputil.c
+--- vsftpd-3.0.2.orig/sysdeputil.c	2012-09-16 06:18:04.000000000 +0200
++++ vsftpd-3.0.2/sysdeputil.c	2014-09-16 14:26:42.686887724 +0200
+@@ -1158,7 +1158,7 @@
+ 
+ #endif /* !VSF_SYSDEP_NEED_OLD_FD_PASSING */
+ 
+-#ifndef VSF_SYSDEP_HAVE_UTMPX
++#if !defined(VSF_BUILD_UTMPX) || !defined(VSF_SYSDEP_HAVE_UTMPX)
+ 
+ void
+ vsf_insert_uwtmp(const struct mystr* p_user_str,
+@@ -1173,7 +1173,7 @@
+ {
+ }
+ 
+-#else /* !VSF_SYSDEP_HAVE_UTMPX */
++#else /* !VSF_BUILD_UTMPX || !VSF_SYSDEP_HAVE_UTMPX */
+ 
+ /* IMHO, the pam_unix module REALLY should be doing this in its SM component */
+ /* Statics */
+@@ -1238,7 +1238,7 @@
+   updwtmpx(WTMPX_FILE, &s_utent);
+ }
+ 
+-#endif /* !VSF_SYSDEP_HAVE_UTMPX */
++#endif /* !VSF_BUILD_UTMPX || !VSF_SYSDEP_HAVE_UTMPX */
+ 
+ void
+ vsf_set_die_if_parent_dies()

@@ -1,0 +1,59 @@
+Borrowed from the curlftpfs_0.9.2-5 Debian package.
+
+Fix a memory leak when cache is disabled. Closes: #614347.
+diff -ur curlftpfs-0.9.2/cache.c curlftpfs-0.9.2-olexat/cache.c
+--- curlftpfs-0.9.2/cache.c	2008-04-30 01:03:09.000000000 +0200
++++ curlftpfs-0.9.2-olexat/cache.c	2011-02-04 16:43:05.000000000 +0100
+@@ -25,7 +25,7 @@
+     time_t last_cleaned;
+ };
+ 
+-static struct cache cache;
++struct cache cache;
+ 
+ struct node {
+     struct stat stat;
+diff -ur curlftpfs-0.9.2/ftpfs-ls.c curlftpfs-0.9.2-olexat/ftpfs-ls.c
+--- curlftpfs-0.9.2/ftpfs-ls.c	2008-04-23 12:55:41.000000000 +0200
++++ curlftpfs-0.9.2-olexat/ftpfs-ls.c	2011-02-07 17:23:37.000000000 +0100
+@@ -25,6 +25,13 @@
+ #include "charset_utils.h"
+ #include "ftpfs-ls.h"
+ 
++struct cache {
++    int on;
++    char incomplete[];
++};
++
++extern struct cache cache;
++
+ static int parse_dir_unix(const char *line,
+                           struct stat *sbuf,
+                           char *file,
+@@ -243,8 +256,10 @@
+           reallink = g_strdup(link);
+         }
+         int linksize = strlen(reallink);
+-        cache_add_link(full_path, reallink, linksize+1);
+-        DEBUG(1, "cache_add_link: %s %s\n", full_path, reallink);
++        if (cache.on) {
++          cache_add_link(full_path, reallink, linksize+1);
++          DEBUG(1, "cache_add_link: %s %s\n", full_path, reallink);
++        }
+         if (linkbuf && linklen) {
+           if (linksize > linklen) linksize = linklen - 1;
+           strncpy(linkbuf, reallink, linksize);
+@@ -257,8 +272,10 @@
+         DEBUG(1, "filler: %s\n", file);
+         filler(h, file, &stat_buf);
+       } else {
+-        DEBUG(1, "cache_add_attr: %s\n", full_path);
+-        cache_add_attr(full_path, &stat_buf);
++        if (cache.on) {
++          DEBUG(1, "cache_add_attr: %s\n", full_path);
++          cache_add_attr(full_path, &stat_buf);
++        }
+       }
+ 
+       DEBUG(2, "comparing %s %s\n", name, file);
+

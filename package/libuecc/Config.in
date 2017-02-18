@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBUECC
+	bool "libuecc"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Very small Elliptic Curve Cryptography library
+
+	  http://git.universe-factory.net/libuecc
+
+comment "libuecc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

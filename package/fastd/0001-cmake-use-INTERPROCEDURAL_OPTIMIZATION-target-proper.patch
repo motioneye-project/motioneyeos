@@ -1,0 +1,69 @@
+From: Alexander Dahl <alex@netz39.de>
+Date: Wed, 28 Oct 2015 16:04:13 +0100
+Subject: [PATCH] cmake: use INTERPROCEDURAL_OPTIMIZATION target property
+
+Instead of hacking on compiler flags use the cmake way for handling
+interprocedural optimization. Tests showed cmake currently ignores this
+for gcc and clang, at least on Debian Wheezy and Jessie. This actually
+results in no interprocedural optimization for the moment. However it
+allows to compile fastd against a toolchain without LTO support, which
+was broken because of a hack included here for finding binutils.
+
+According to the upstream author of fastd the main reason for enabling
+LTO was binary size on an OpenWRT target for Freifunk Gluon, where they
+have very few space left on devices with only 4 MB flash memory.
+
+Signed-off-by: Alexander Dahl <post@lespocky.de>
+---
+ cmake/checks.cmake | 14 --------------
+ src/CMakeLists.txt |  9 +++++++++
+ 2 files changed, 9 insertions(+), 14 deletions(-)
+
+diff --git a/cmake/checks.cmake b/cmake/checks.cmake
+index 27c073f..8a671a1 100644
+--- a/cmake/checks.cmake
++++ b/cmake/checks.cmake
+@@ -10,20 +10,6 @@ if(ARCH_X86 OR ARCH_X86_64)
+ endif(ARCH_X86 OR ARCH_X86_64)
+ 
+ 
+-
+-if(ENABLE_LTO)
+-  set(CFLAGS_LTO "-flto")
+-  set(CFLAGS_NO_LTO "-fno-lto")
+-
+-  check_c_compiler_flag("-fwhole-program" HAVE_FLAG_WHOLE_PROGRAM)
+-  if(HAVE_FLAG_WHOLE_PROGRAM)
+-    set(LDFLAGS_LTO "-flto -fwhole-program")
+-  else(HAVE_FLAG_WHOLE_PROGRAM)
+-    set(LDFLAGS_LTO "-flto")
+-  endif(HAVE_FLAG_WHOLE_PROGRAM)
+-endif(ENABLE_LTO)
+-
+-
+ check_c_source_compiles("
+ #include <sys/types.h>
+ #include <sys/socket.h>
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 829b3ab..7612b40 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -48,6 +48,15 @@ add_executable(fastd
+ set_property(TARGET fastd PROPERTY COMPILE_FLAGS "${FASTD_CFLAGS}")
+ set_property(TARGET fastd PROPERTY LINK_FLAGS "${PTHREAD_LDFLAGS} ${LIBUECC_LDFLAGS_OTHER} ${NACL_LDFLAGS_OTHER} ${JSON_C_LDFLAGS_OTHER} ${LDFLAGS_LTO}")
+ set_property(TARGET fastd APPEND PROPERTY INCLUDE_DIRECTORIES ${LIBCAP_INCLUDE_DIR} ${NACL_INCLUDE_DIRS} ${JSON_C_INCLUDE_DIR})
++if(ENABLE_LTO)
++	set_target_properties(fastd PROPERTIES
++		INTERPROCEDURAL_OPTIMIZATION ON
++	)
++else(ENABLE_LTO)
++	set_target_properties(fastd PROPERTIES
++		INTERPROCEDURAL_OPTIMIZATION OFF
++	)
++endif(ENABLE_LTO)
+ target_link_libraries(fastd protocols methods ciphers macs ${RT_LIBRARY} ${LIBCAP_LIBRARY} ${LIBUECC_LIBRARIES} ${NACL_LIBRARIES} ${OPENSSL_CRYPTO_LIBRARY} ${JSON_C_LIBRARIES})
+ 
+ add_dependencies(fastd version)
+-- 
+2.1.4
+

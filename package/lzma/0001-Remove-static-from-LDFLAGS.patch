@@ -1,0 +1,68 @@
+From 1b33f6d13e5c25a2500ee312068c08a3d3811a5f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Vincent=20Stehl=C3=A9?= <vincent.stehle@laposte.net>
+Date: Wed, 3 Dec 2014 21:32:02 +0100
+Subject: [PATCH] Remove -static from LDFLAGS
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Buildroot does not enable static libraries by default for host builds. Having
+-static hardcoded in the LDFLAGS breaks the build, so remove it.
+
+Signed-off-by: Vincent Stehlé <vincent.stehle@laposte.net>
+---
+ src/lzmadec/Makefile.am  | 1 -
+ src/lzmadec/Makefile.in  | 1 -
+ src/lzmainfo/Makefile.am | 1 -
+ src/lzmainfo/Makefile.in | 1 -
+ 4 files changed, 4 deletions(-)
+
+diff --git a/src/lzmadec/Makefile.am b/src/lzmadec/Makefile.am
+index 7322b2a..13edec8 100644
+--- a/src/lzmadec/Makefile.am
++++ b/src/lzmadec/Makefile.am
+@@ -2,6 +2,5 @@ bin_PROGRAMS = lzmadec
+ lzmadec_SOURCES = lzmadec.c
+ lzmadec_LDADD = @top_builddir@/src/liblzmadec/liblzmadec.la
+ AM_CPPFLAGS = -I@top_srcdir@/src/liblzmadec
+-AM_LDFLAGS = -static
+ 
+ dist_man_MANS = lzmadec.1
+diff --git a/src/lzmadec/Makefile.in b/src/lzmadec/Makefile.in
+index 5af9240..4ed1de1 100644
+--- a/src/lzmadec/Makefile.in
++++ b/src/lzmadec/Makefile.in
+@@ -185,7 +185,6 @@ top_srcdir = @top_srcdir@
+ lzmadec_SOURCES = lzmadec.c
+ lzmadec_LDADD = @top_builddir@/src/liblzmadec/liblzmadec.la
+ AM_CPPFLAGS = -I@top_srcdir@/src/liblzmadec
+-AM_LDFLAGS = -static
+ dist_man_MANS = lzmadec.1
+ all: all-am
+ 
+diff --git a/src/lzmainfo/Makefile.am b/src/lzmainfo/Makefile.am
+index b5b01ec..e280bff 100644
+--- a/src/lzmainfo/Makefile.am
++++ b/src/lzmainfo/Makefile.am
+@@ -2,6 +2,5 @@ bin_PROGRAMS = lzmainfo
+ lzmainfo_SOURCES = lzmainfo.c
+ lzmainfo_LDADD = @top_builddir@/src/liblzmadec/liblzmadec.la
+ AM_CPPFLAGS = -I@top_srcdir@/src/liblzmadec
+-AM_LDFLAGS = -static
+ 
+ dist_man_MANS = lzmainfo.1
+diff --git a/src/lzmainfo/Makefile.in b/src/lzmainfo/Makefile.in
+index 6a2127a..f1f3441 100644
+--- a/src/lzmainfo/Makefile.in
++++ b/src/lzmainfo/Makefile.in
+@@ -185,7 +185,6 @@ top_srcdir = @top_srcdir@
+ lzmainfo_SOURCES = lzmainfo.c
+ lzmainfo_LDADD = @top_builddir@/src/liblzmadec/liblzmadec.la
+ AM_CPPFLAGS = -I@top_srcdir@/src/liblzmadec
+-AM_LDFLAGS = -static
+ dist_man_MANS = lzmainfo.1
+ all: all-am
+ 
+-- 
+2.1.3
+

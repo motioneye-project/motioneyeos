@@ -1,0 +1,76 @@
+From 21d1f05a8882657c151397d0e4723535402f1757 Mon Sep 17 00:00:00 2001
+From: Philipp Huebner <debalance@debian.org>
+Date: Wed, 20 Jan 2016 10:22:57 -0500
+Subject: [PATCH] remove make targets for deps
+
+Without this patch, dependencies would be downloaded and compiled
+using rebar at build time.
+
+Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
+---
+ Makefile.in | 26 +++-----------------------
+ 1 file changed, 3 insertions(+), 23 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 08cd837..2a6457c 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -77,26 +77,11 @@ else
+   INIT_USER=$(INSTALLUSER)
+ endif
+ 
+-all: deps src
++all: src
+ 
+-deps: deps/.got
+-
+-deps/.got:
+-	rm -rf deps/.got
+-	rm -rf deps/.built
+-	$(REBAR) get-deps && :> deps/.got
+-
+-deps/.built: deps/.got
+-	$(REBAR) compile && :> deps/.built
+-
+-src: deps/.built
++src:
+ 	$(REBAR) skip_deps=true compile
+ 
+-update:
+-	rm -rf deps/.got
+-	rm -rf deps/.built
+-	$(REBAR) update-deps && :> deps/.got
+-
+ xref: all
+ 	$(REBAR) skip_deps=true xref
+ 
+@@ -152,16 +137,13 @@ $(foreach file,$(DEPS_FILES_FILTERED) $(MAIN_FILES),$(eval $(call COPY_template,
+ $(sort $(call TO_DEST,$(MAIN_DIRS) $(DEPS_DIRS))):
+ 	$(INSTALL) -d $@
+ 
+-$(call TO_DEST,deps/p1_pam/priv/bin/epam): $(LIBDIR)/%: deps/p1_pam/priv/bin/epam $(call TO_DEST,deps/p1_pam/priv/bin/)
+-	$(INSTALL) -m 750 $(O_USER) $< $@
+-
+ $(call TO_DEST,priv/sql/lite.sql): sql/lite.sql $(call TO_DEST,priv/sql)
+ 	$(INSTALL) -m 644 $< $@
+ 
+ $(call TO_DEST,priv/bin/captcha.sh): tools/captcha.sh $(call TO_DEST,priv/bin)
+ 	$(INSTALL) -m 750 $(O_USER) $< $@
+ 
+-copy-files-sub2: $(call TO_DEST,$(DEPS_FILES) $(MAIN_FILES) priv/bin/captcha.sh priv/sql/lite.sql)
++copy-files-sub2: $(call TO_DEST,$(MAIN_FILES) priv/bin/captcha.sh priv/sql/lite.sql)
+ 
+ endif
+ 
+@@ -287,8 +269,6 @@ TAGS:
+ 
+ Makefile: Makefile.in
+ 
+-deps := $(wildcard deps/*/ebin)
+-
+ dialyzer/erlang.plt:
+ 	@mkdir -p dialyzer
+ 	@dialyzer --build_plt --output_plt dialyzer/erlang.plt \
+-- 
+2.5.0
+

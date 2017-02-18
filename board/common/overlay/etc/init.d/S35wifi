@@ -1,0 +1,138 @@
+#!/bin/bash
+
+sys_conf="/etc/wpa_supplicant.conf"
+boot_conf="/boot/wpa_supplicant.conf"
+conf="/data/etc/wpa_supplicant.conf"
+
+log="/var/log/wpa_supplicant.log"
+prog="/usr/sbin/wpa_supplicant"
+driver=wext
+
+sys_watch_conf="/etc/watch.conf"
+boot_watch_conf="/boot/watch.conf"
+watch_conf="/data/etc/watch.conf"
+
+if ! [ -f $watch_conf ]; then
+    if [ -f $boot_watch_conf ]; then
+        cp $boot_watch_conf $watch_conf
+    elif [ -f $sys_watch_conf ]; then
+        cp $sys_watch_conf $watch_conf
+    fi
+fi
+
+source $watch_conf
+
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
+fi
+
+test -f $conf || exit 0
+
+ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+test -n "$ssid" || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
+
+connected() {
+    ip link show dev $os_wlan 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
+}
+
+watch() {
+    count=0
+    while true; do
+        sleep 5
+        if connected; then
+            count=0
+        else
+            if [ $count -lt $link_watch_timeout ]; then
+                count=$(($count + 5))
+                logger -t wifi -s "disconnected"
+            else
+                logger -t wifi -s "disconnected for $link_watch_timeout seconds, rebooting"
+                reboot
+            fi
+        fi
+    done
+}
+
+start() {
+    test -n "$os_country" && iw reg set $os_country
+
+    msg_begin "Starting wpa_supplicant"
+
+    # wait up to 5 seconds for interface
+    count=0
+    while ! ifconfig $os_wlan >/dev/null 2>&1; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge 5 ]; then
+            msg_fail "no device"
+            return 1
+        fi
+    done
+    
+    module=$(basename $(readlink /sys/class/net/$os_wlan/device/driver/module 2>/dev/null) 2>/dev/null)
+
+    iwconfig $os_wlan power off &> /dev/null
+    iw $os_wlan set power_save off &> /dev/null
+    $prog -i$os_wlan -c$conf -D$driver -B &> $log
+    count=0
+    while true; do
+        sleep 1
+
+        if connected; then
+            break
+        fi
+
+        if [ $count -gt $link_watch_timeout ] || ! pidof wpa_supplicant > /dev/null; then
+            test -n "$module" && msg_fail "failed ($module)"|| msg_fail
+            return 1
+        fi
+
+        count=$(($count + 1))
+    done
+
+    if [ "$link_watch" == "true" ]; then
+        watch &
+    fi
+
+    test -n "$module" && msg_done "done ($module)"|| msg_done
+}
+
+stop() {
+    msg_begin "Stopping wpa_supplicant"
+    killall wpa_supplicant &>/dev/null
+    ps | grep wifi | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    msg_done
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+        
+    stop)
+        stop
+        ;;
+        
+    restart)
+        stop
+        start
+        ;;
+    
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+# continue after an unsuccessfull wifi start
+# as we may still have an ethernet connection available
+exit 0
+

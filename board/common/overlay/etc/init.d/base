@@ -1,0 +1,18 @@
+#!/bin/bash
+
+source /etc/version
+board_sn=$(/etc/init.d/boardsn)
+board_name=$(cat /etc/board)
+
+msg_begin() {
+    echo -n " * $1: "
+}
+
+msg_done() {
+    test -n "$1" && echo $1 || echo "done"
+}
+
+msg_fail() {
+    test -n "$1" && echo $1 || echo "failed"
+}
+

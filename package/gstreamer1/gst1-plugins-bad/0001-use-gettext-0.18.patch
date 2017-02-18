@@ -1,0 +1,17 @@
+Use newer version of gettext to match current buildroot gettext.
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+----
+Index: gst1-plugins-bad-1.1.1/po/Makefile.in.in
+===================================================================
+--- gst1-plugins-bad-1.1.1.orig/po/Makefile.in.in
++++ gst1-plugins-bad-1.1.1/po/Makefile.in.in
+@@ -9,7 +9,7 @@
+ # General Public License and is *not* in the public domain.
+ #
+ # Origin: gettext-0.17
+-GETTEXT_MACRO_VERSION = 0.17
++GETTEXT_MACRO_VERSION = 0.18
+ 
+ PACKAGE = @PACKAGE@
+ VERSION = @VERSION@

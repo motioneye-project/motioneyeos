@@ -1,0 +1,9 @@
+config BR2_PACKAGE_AUTOSSH
+	bool "autossh"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_DROPBEAR || BR2_PACKAGE_OPENSSH
+	help
+	  autossh is a program to start a copy of ssh and monitor it,
+	  restarting it as necessary should it die or stop passing traffic.
+
+	  http://www.harding.motd.ca/autossh/

@@ -1,0 +1,15 @@
+Patch vampirised from Debian's packaging of keyutils-1.4
+
+Author: Marcus Meissner <meissner@suse.de>
+Description: Added 2 cifs helpers to request-key.conf (for CIFS DFS support)
+
+diff -Naurp keyutils.orig/request-key.conf keyutils/request-key.conf
+--- keyutils.orig/request-key.conf	2008-09-07 23:53:10.000000000 +0000
++++ keyutils/request-key.conf	2009-02-05 00:53:00.000000000 +0000
+@@ -34,4 +34,6 @@
+ create	user	debug:*		negate		/bin/keyctl negate %k 30 %S
+ create	user	debug:loop:*	*		|/bin/cat
+ create	user	debug:*		*		/usr/share/keyutils/request-key-debug.sh %k %d %c %S
++create	cifs.spnego	*	*		/usr/sbin/cifs.upcall -c %k
++create	dns_resolver	*	*		/usr/sbin/cifs.upcall %k
+ negate	*	*		*		/bin/keyctl negate %k 30 %S

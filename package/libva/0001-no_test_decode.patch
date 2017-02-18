@@ -1,0 +1,17 @@
+mpeg2vldemo is the only file requiring cxx support. It is not needed for
+buildroot, so disable its compilation to avoid depending on cxx.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libva-1.3.0.org/test/Makefile.am libva-1.3.0/test/Makefile.am
+--- libva-1.3.0.org/test/Makefile.am	2014-03-24 05:49:46.000000000 +0100
++++ libva-1.3.0/test/Makefile.am	2014-04-26 18:12:25.644390292 +0200
+@@ -20,7 +20,7 @@
+ # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+-SUBDIRS = common decode encode vainfo
++SUBDIRS = common encode vainfo
+ 
+ if USE_X11
+ SUBDIRS += basic putsurface
