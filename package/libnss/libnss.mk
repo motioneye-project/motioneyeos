@@ -13,6 +13,16 @@ LIBNSS_DEPENDENCIES = libnspr sqlite zlib
 LIBNSS_LICENSE = MPLv2.0
 LIBNSS_LICENSE_FILES = nss/COPYING
 
+# --gc-sections triggers binutils ld segfault
+# https://sourceware.org/bugzilla/show_bug.cgi?id=21180
+ifeq ($(BR2_microblaze),y)
+define LIBNSS_DROP_GC_SECTIONS
+	sed -i 's:-Wl,--gc-sections::g' $(@D)/nss/coreconf/Linux.mk
+endef
+
+LIBNSS_PRE_CONFIGURE_HOOKS += LIBNSS_DROP_GC_SECTIONS
+endif
+
 LIBNSS_BUILD_VARS = \
 	MOZILLA_CLIENT=1 \
 	NSPR_INCLUDE_DIR=$(STAGING_DIR)/usr/include/nspr \
