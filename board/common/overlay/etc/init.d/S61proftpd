@@ -1,0 +1,45 @@
+#!/bin/bash
+
+test -f /etc/proftpd.conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+test -n "$os_debug" || source /etc/init.d/conf
+
+test "$os_networkless" == "true" && exit 0
+
+start() {
+    msg_begin "Starting proftpd"
+    mkdir -p /var/run/proftpd
+    touch /var/log/wtmp
+    /usr/sbin/proftpd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping proftpd"
+    killall proftpd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit 0
+

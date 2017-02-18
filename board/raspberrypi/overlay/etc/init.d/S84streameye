@@ -1,0 +1,51 @@
+#!/bin/sh
+
+motioneye_conf_dir="/data/etc/"
+
+test -n "$os_version" || source /etc/init.d/base
+
+enabled() {
+    test $(ls -1 $motioneye_conf_dir/thread-*.conf 2>/dev/null| wc -l) == 1 || return 1
+    
+    grep '# @proto mjpeg' $motioneye_conf_dir/thread-1.conf &>/dev/null || return 1
+    
+    grep -E '# @url http://(.*)127.0.0.1:' $motioneye_conf_dir/thread-1.conf &>/dev/null || return 1
+
+    return 0
+}
+
+enabled || exit 0
+
+start() {
+    msg_begin "Starting streameye"
+    streameye.sh start
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping streameye"
+    streameye.sh stop
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+
