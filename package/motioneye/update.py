@@ -50,7 +50,7 @@ def get_all_versions():
     url = _LIST_VERSIONS_URL
     url += '?_=' + str(int(time.time())) # prevents caching
 
-        want_prereleases = subprocess.check_output('source /data/etc/os.conf && echo $os_prereleases', shell=True, stderr=subprocess.STDOUT).strip() == 'true'
+    want_prereleases = subprocess.check_output('source /data/etc/os.conf && echo $os_prereleases', shell=True, stderr=subprocess.STDOUT).strip() == 'true'
 
     try:
         logging.debug('board is %s' % _BOARD)
