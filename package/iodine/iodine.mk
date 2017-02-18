@@ -26,7 +26,7 @@ define IODINE_BUILD_CMDS
 endef
 
 define IODINE_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) install DESTDIR="$(TARGET_DIR)" prefix=/usr
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) install DESTDIR="$(TARGET_DIR)" prefix=/usr
 endef
 
 $(eval $(generic-package))

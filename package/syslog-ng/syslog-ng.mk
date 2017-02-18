@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-SYSLOG_NG_VERSION = 3.7.2
-SYSLOG_NG_SOURCE = syslog-ng-$(SYSLOG_NG_VERSION).tar.gz
+SYSLOG_NG_VERSION = 3.9.1
 SYSLOG_NG_SITE = https://github.com/balabit/syslog-ng/releases/download/syslog-ng-$(SYSLOG_NG_VERSION)
 SYSLOG_NG_LICENSE = LGPLv2.1+ (syslog-ng core), GPLv2+ (modules)
 SYSLOG_NG_LICENSE_FILES = COPYING
@@ -13,7 +12,8 @@ SYSLOG_NG_DEPENDENCIES = host-bison host-flex host-pkgconf \
 	eventlog libglib2 openssl pcre
 # rabbit-mq needs -lrt
 SYSLOG_NG_CONF_ENV = LIBS=-lrt
-SYSLOG_NG_CONF_OPTS = --disable-manpages
+SYSLOG_NG_CONF_OPTS = --disable-manpages --localstatedir=/var/run \
+	--disable-java --disable-java-modules
 
 # We override busybox's S01logging init script
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
@@ -67,6 +67,21 @@ endif
 
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
 SYSLOG_NG_DEPENDENCIES += util-linux
+endif
+
+ifeq ($(BR2_PACKAGE_LIBNET),y)
+SYSLOG_NG_DEPENDENCIES += libnet
+SYSLOG_NG_CONF_OPTS += --enable-spoof-source
+else
+SYSLOG_NG_CONF_OPTS += --disable-spoof-source
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+SYSLOG_NG_DEPENDENCIES += libcurl
+SYSLOG_NG_CONF_OPTS += --enable-http
+SYSLOG_NG_CONF_OPTS += --with-libcurl="$(STAGING_DIR)/usr"
+else
+SYSLOG_NG_CONF_OPTS += --disable-http
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)

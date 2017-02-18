@@ -4,16 +4,17 @@
 #
 ################################################################################
 
-POSTGRESQL_VERSION = 9.5.2
+POSTGRESQL_VERSION = 9.6.1
 POSTGRESQL_SOURCE = postgresql-$(POSTGRESQL_VERSION).tar.bz2
 POSTGRESQL_SITE = http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_LICENSE = PostgreSQL
 POSTGRESQL_LICENSE_FILES = COPYRIGHT
 POSTGRESQL_INSTALL_STAGING = YES
 POSTGRESQL_CONFIG_SCRIPTS = pg_config
-POSTGRESQL_CONF_ENV = ac_cv_type_struct_sockaddr_in6=yes \
-		      pgac_cv_snprintf_long_long_int_modifier="%lld" \
-		      pgac_cv_snprintf_size_t_support=yes
+POSTGRESQL_CONF_ENV = \
+	ac_cv_type_struct_sockaddr_in6=yes \
+	pgac_cv_snprintf_long_long_int_modifier="ll" \
+	pgac_cv_snprintf_size_t_support=yes
 POSTGRESQL_CONF_OPTS = --disable-rpath
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
@@ -55,6 +56,13 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 POSTGRESQL_DEPENDENCIES += openssl
 POSTGRESQL_CONF_OPTS += --with-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+POSTGRESQL_DEPENDENCIES += openldap
+POSTGRESQL_CONF_OPTS += --with-ldap
+else
+POSTGRESQL_CONF_OPTS += --without-ldap
 endif
 
 define POSTGRESQL_USERS

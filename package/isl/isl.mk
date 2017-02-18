@@ -12,7 +12,7 @@ ISL_SOURCE = isl-$(ISL_VERSION).tar.xz
 ISL_SITE = http://isl.gforge.inria.fr
 ISL_LICENSE = MIT
 ISL_LICENSE_FILES = LICENSE
-ISL_DEPENDENCIES = gmp
+HOST_ISL_DEPENDENCIES = host-gmp
 
 # Our libtool patch doesn't apply, and since this package is only
 # built for the host, we don't really care about it.

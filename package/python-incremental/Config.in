@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_INCREMENTAL
+	bool "python-incremental"
+	help
+	  A library for versioning your Python projects.
+
+	  https://github.com/hawkowl/incremental

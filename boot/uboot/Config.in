@@ -38,7 +38,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2016.03"
+	bool "2017.01"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -86,7 +86,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2016.03"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2017.01"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -95,6 +95,7 @@ config BR2_TARGET_UBOOT_VERSION
 
 config BR2_TARGET_UBOOT_PATCH
 	string "Custom U-Boot patches"
+	default BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR if BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR != ""  # legacy
 	help
 	  A space-separated list of patches to apply to U-Boot.
 	  Each patch can be described as an URL, a local file path,
@@ -137,9 +138,15 @@ config BR2_TARGET_UBOOT_NEEDS_DTC
 	  Select this option if your U-Boot board configuration
 	  requires the Device Tree compiler to be available.
 
-choice
-	prompt "U-Boot binary format"
-	default BR2_TARGET_UBOOT_FORMAT_BIN
+config BR2_TARGET_UBOOT_NEEDS_OPENSSL
+	bool "U-Boot needs OpenSSL"
+	help
+	  Select this option if your U-Boot board configuration
+	  requires OpenSSL to be available on the host. This is
+	  typically the case when the board configuration has
+	  CONFIG_FIT_SIGNATURE enabled.
+
+menu "U-Boot binary format"
 
 config BR2_TARGET_UBOOT_FORMAT_AIS
 	bool "u-boot.ais"
@@ -150,6 +157,7 @@ config BR2_TARGET_UBOOT_FORMAT_AIS
 
 config BR2_TARGET_UBOOT_FORMAT_BIN
 	bool "u-boot.bin"
+	default y
 
 config BR2_TARGET_UBOOT_FORMAT_DTB_IMG
 	bool "u-boot-dtb.img"
@@ -252,18 +260,20 @@ config BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	help
 	  On some platforms, the standard U-Boot binary is not called
 	  u-boot.bin, but u-boot<something>.bin. If this is your case,
-	  you should select this option and specify the correct name
+	  you should select this option and specify the correct name(s)
 	  in BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME.
 
-endchoice
-
 config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
-	string "U-Boot binary format: custom name"
+	string "U-Boot binary format: custom names"
 	depends on BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	help
-	  Specify the correct name of the output binary created by
-	  U-Boot, if it is not one of the default names. For example:
+	  In case the U-Boot binary for the target platform is not among
+	  the default names, one or more custom names can be listed here.
+	  Use space to separate multiple names.
+	  Example:
 	  u-boot_magic.bin
+
+endmenu
 
 config BR2_TARGET_UBOOT_OMAP_IFT
 	depends on BR2_TARGET_UBOOT_FORMAT_BIN
@@ -313,7 +323,7 @@ config BR2_TARGET_UBOOT_SPL_NAME
 	default "spl/u-boot-spl.bin"
 	depends on BR2_TARGET_UBOOT_SPL
 	help
-	  This is the name of the SPL binary, generated during
+	  A space-separated list of SPL binaries, generated during
 	  u-boot build. For most platform it is spl/u-boot-spl.bin
 	  but not always. It is MLO on OMAP for example.
 
@@ -348,9 +358,13 @@ menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 if BR2_TARGET_UBOOT_ENVIMAGE
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SOURCE
-	string "Source file for environment"
+	string "Source files for environment"
 	help
-	  Text file describing the environment.
+	  Text files describing the environment. Files should have
+	  lines of the form var=value, one per line. Blank lines and
+	  lines starting with a # are ignored.
+
+	  Multiple source files are concatenated in the order listed.
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SIZE
 	string "Size of environment"

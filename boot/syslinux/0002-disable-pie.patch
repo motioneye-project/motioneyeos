@@ -1,0 +1,22 @@
+Description: Disable PIE to avoid FTBFS on amd64
+Bug-Ubuntu: https://bugs.launchpad.net/bugs/1579023
+Author: Graham Inggs <ginggs@ubuntu.com>
+Last-Update: 2016-05-06
+
+gcc 6.x has PIE support enabled by default, which causes a build issue
+with syslinux. This patch disables PIE support in the relevant
+syslinux Makefile.
+
+Signed-off-by: Ryan Coe <bluemrp9@gmail.com>
+
+--- a/gpxe/src/Makefile
++++ b/gpxe/src/Makefile
+@@ -4,7 +4,7 @@
+ #
+
+ CLEANUP		:=
+-CFLAGS		:=
++CFLAGS		:= -fno-PIE
+ ASFLAGS		:=
+ LDFLAGS		:=
+ MAKEDEPS	:= Makefile

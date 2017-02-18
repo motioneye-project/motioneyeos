@@ -1,0 +1,35 @@
+comment "aufs-util needs a linux kernel and a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_LINUX_KERNEL || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_AUFS_UTIL
+	bool "aufs-util"
+	depends on BR2_USE_MMU
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Aufs command line utilities.
+
+	  Needs a kernel with aufs support. A kernel
+	  extension package is available.
+
+	  http://sourceforge.net/p/aufs/aufs-util/
+
+if BR2_PACKAGE_AUFS_UTIL
+
+config BR2_PACKAGE_AUFS_UTIL_VERSION
+	string "aufs-util version"
+	default ""
+	help
+	  The version you choose must match that of the aufs support
+	  in your kernel. Usually, this is aufs3.x for 3.x kernels and
+	  aufs4.x for 4.x kernels.
+
+	  Usually, the sha1 of the cset you want to use; avoid using a
+	  branch name as this yields non-reproducible builds.
+
+	  See the following resources to see what versions are available:
+
+	  https://sourceforge.net/p/aufs/aufs-util/ci/master/tree/
+
+endif

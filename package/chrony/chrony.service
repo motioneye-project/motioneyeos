@@ -4,7 +4,7 @@ After=syslog.target network.target
 Conflicts=systemd-timesyncd.service
 
 [Service]
-ExecStart=/usr/bin/chronyd -n
+ExecStart=/usr/sbin/chronyd -n
 Restart=always
 
 [Install]

@@ -21,7 +21,8 @@ NGREP_CONF_OPTS =  \
 	--with-pcap-includes=$(STAGING_DIR)/usr/include/pcap \
 	--enable-pcre \
 	--with-pcre=$(STAGING_DIR)/usr \
-	--disable-dropprivs
+	--disable-dropprivs \
+	--disable-pcap-restart
 
 NGREP_DEPENDENCIES = libpcap pcre
 

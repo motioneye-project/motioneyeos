@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-FILEMQ_VERSION = acf6c0e003fee938994ad803aa7b78245dca57ba
+FILEMQ_VERSION = e59951489045825d6fc5bdc6a5a5ecf1abf51943
 FILEMQ_SITE = $(call github,zeromq,filemq,$(FILEMQ_VERSION))
 
 FILEMQ_AUTORECONF = YES
-FILEMQ_CONF_ENV = fmq_have_asciidoc=no
+FILEMQ_CONF_ENV = filemq_have_asciidoc=no
 FILEMQ_INSTALL_STAGING = YES
 FILEMQ_DEPENDENCIES = czmq openssl zeromq
 FILEMQ_LICENSE = LGPLv3+ with exceptions

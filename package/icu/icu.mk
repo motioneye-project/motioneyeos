@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ICU_VERSION = 57.1
+ICU_VERSION = 58.2
 ICU_SOURCE = icu4c-$(subst .,_,$(ICU_VERSION))-src.tgz
 ICU_SITE = http://download.icu-project.org/files/icu4c/$(ICU_VERSION)
 ICU_LICENSE = ICU License
@@ -23,6 +23,11 @@ ICU_CONF_OPTS = \
 # with libatomic starting from gcc 4.8.
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 ICU_CONF_ENV += LIBS="-latomic"
+endif
+
+# strtod_l() is not supported by musl; also xlocale.h is missing
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+ICU_CONF_ENV += ac_cv_func_strtod_l=no
 endif
 
 HOST_ICU_CONF_OPTS = \

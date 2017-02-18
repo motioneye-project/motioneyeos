@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-AUDIT_VERSION = 2.4.4
+AUDIT_VERSION = 2.7.1
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
-AUDIT_LICENSE = GPLv2
+AUDIT_LICENSE = GPLv2+ (programs), unclear (libraries)
 AUDIT_LICENSE_FILES = COPYING
 
 AUDIT_INSTALL_STAGING = YES
@@ -46,7 +46,6 @@ define AUDIT_INSTALL_INIT_SYSTEMD
 	ln -fs ../../../../usr/lib/systemd/system/auditd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/auditd.service
 
-	mkdir -p $(TARGET_DIR)/usr/lib/tmpfiles.d
 	$(INSTALL) -D -m 644 package/audit/audit_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/audit.conf
 endef
@@ -57,4 +56,11 @@ define AUDIT_INSTALL_CLEANUP
 endef
 AUDIT_POST_INSTALL_TARGET_HOOKS += AUDIT_INSTALL_CLEANUP
 
+HOST_AUDIT_CONF_OPTS = \
+	--without-python \
+	--without-python3 \
+	--disable-zos-remote \
+	--without-libcap-ng
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

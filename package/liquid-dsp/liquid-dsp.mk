@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIQUID_DSP_VERSION = df5a459fa05dba4199c1299555891104cc1fdca7
+LIQUID_DSP_VERSION = 1191179b786703b3af20abf7e1404d91099b335d
 LIQUID_DSP_SITE = $(call github,jgaeddert,liquid-dsp,$(LIQUID_DSP_VERSION))
 LIQUID_DSP_LICENSE = MIT
 LIQUID_DSP_LICENSE_FILES = LICENSE
@@ -35,7 +35,7 @@ LIQUID_DSP_LDFLAGS += -lfftw3f
 endif
 
 # disable altivec, it has build issues
-ifeq ($(BR2_powerpc)$(BR2_powerpc64),y)
+ifeq ($(BR2_powerpc)$(BR2_powerpc64)$(BR2_powerpc64le),y)
 LIQUID_DSP_CONF_OPTS += --enable-simdoverride
 endif
 

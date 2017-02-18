@@ -1,0 +1,58 @@
+From 6b49c1dbe0ac43e39eec97a7e79cf5fb995747dc Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Mon, 12 Sep 2016 21:49:55 +0530
+Subject: [PATCH] openconf: do not check stdin
+
+Do not check if stdin is redirected when ask_silent is true, so the
+`yes` program can be used to answer the questions about new values.
+
+Example:
+
+  yes "" | make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf- oldconfig
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Signed-off-by: Anup Patel <anup@brainfault.org>
+---
+ tools/openconf/conf.c | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/tools/openconf/conf.c b/tools/openconf/conf.c
+index a428058..711cf0b 100644
+--- a/tools/openconf/conf.c
++++ b/tools/openconf/conf.c
+@@ -65,16 +65,6 @@ static void strip(char *str)
+ 		*p-- = 0;
+ }
+ 
+-static void check_stdin(void)
+-{
+-	if (!valid_stdin) {
+-		printf("aborted!\n\n");
+-		printf("Console input/output is redirected. ");
+-		printf("Run 'make oldconfig' to update configuration.\n\n");
+-		exit(1);
+-	}
+-}
+-
+ static int conf_askvalue(struct symbol *sym, const char *def)
+ {
+ 	char *ret;
+@@ -100,7 +90,6 @@ static int conf_askvalue(struct symbol *sym, const char *def)
+ 			printf("%s\n", def);
+ 			return 0;
+ 		}
+-		check_stdin();
+ 	case ask_all:
+ 		fflush(stdout);
+ 		ret = fgets(line, 128, stdin);
+@@ -306,7 +295,6 @@ static int conf_choice(struct menu *menu)
+ 				printf("%d\n", cnt);
+ 				break;
+ 			}
+-			check_stdin();
+ 		case ask_all:
+ 			fflush(stdout);
+ 			ret = fgets(line, 128, stdin);
+-- 
+2.4.11
+

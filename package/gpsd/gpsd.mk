@@ -33,6 +33,8 @@ endif
 # Build libgpsmm if we've got C++
 ifeq ($(BR2_INSTALL_LIBSTDCPP),y)
 GPSD_LDFLAGS += -lstdc++
+GPSD_CFLAGS += -std=gnu++98
+GPSD_CXXFLAGS += -std=gnu++98
 GPSD_SCONS_OPTS += libgpsmm=yes
 else
 GPSD_SCONS_OPTS += libgpsmm=no

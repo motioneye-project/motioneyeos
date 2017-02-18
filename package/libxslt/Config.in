@@ -13,4 +13,4 @@ config BR2_PACKAGE_LIBXSLT
 	  to describe how the document is transformed into another
 	  XML document that uses the formatting vocabulary.
 
-	  http://www.w3.org/TR/xslt
+	  http://xmlsoft.org/xslt/

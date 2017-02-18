@@ -20,7 +20,7 @@
 ################################################################################
 
 PERL_ARCHNAME = $(ARCH)-linux
-PERL_RUN = PERL5LIB= $(HOST_DIR)/usr/bin/perl
+PERL_RUN = PERL5LIB= PERL_USE_UNSAFE_INC=1 $(HOST_DIR)/usr/bin/perl
 
 ################################################################################
 # inner-perl-package -- defines how the configuration, compilation and
@@ -49,6 +49,14 @@ else
 $(2)_DEPENDENCIES += host-perl
 endif
 
+# From http://perldoc.perl.org/CPAN.html#Config-Variables - prefer_installer
+#       legal values are MB and EUMM: if a module comes
+#       with both a Makefile.PL and a Build.PL, use the
+#       former (EUMM) or the latter (MB); if the module
+#       comes with only one of the two, that one will be
+#       used no matter the setting
+$(2)_PREFER_INSTALLER ?= MB
+
 #
 # Configure step. Only define it if not already defined by the package
 # .mk file. And take care of the differences between host and target
@@ -59,7 +67,7 @@ ifeq ($(4),target)
 
 # Configure package for target
 define $(2)_CONFIGURE_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$($(2)_CONF_ENV) \
 		PERL_MM_USE_DEFAULT=1 \
 		$$(PERL_RUN) Build.PL \
@@ -109,7 +117,7 @@ else
 
 # Configure package for host
 define $(2)_CONFIGURE_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$($(2)_CONF_ENV) \
 		PERL_MM_USE_DEFAULT=1 \
 		$$(PERL_RUN) Build.PL \
@@ -135,7 +143,7 @@ ifeq ($(4),target)
 
 # Build package for target
 define $(2)_BUILD_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$(PERL_RUN) Build $$($(2)_BUILD_OPTS) build; \
 	else \
 		$$(MAKE1) \
@@ -148,7 +156,7 @@ else
 
 # Build package for host
 define $(2)_BUILD_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$(PERL_RUN) Build $$($(2)_BUILD_OPTS) build; \
 	else \
 		$$(MAKE1) $$($(2)_BUILD_OPTS) pure_all; \
@@ -163,7 +171,7 @@ endif
 #
 ifndef $(2)_INSTALL_CMDS
 define $(2)_INSTALL_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$(PERL_RUN) Build $$($(2)_INSTALL_TARGET_OPTS) install; \
 	else \
 		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPTS) pure_install; \
@@ -177,7 +185,7 @@ endif
 #
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
-	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] ; then \
+	cd $$($$(PKG)_SRCDIR) && if [ -f Build.PL ] && [ $$($(2)_PREFER_INSTALLER) != "EUMM" ] ; then \
 		$$(PERL_RUN) Build $$($(2)_INSTALL_TARGET_OPTS) install; \
 	else \
 		$$(MAKE1) $$($(2)_INSTALL_TARGET_OPTS) pure_install; \

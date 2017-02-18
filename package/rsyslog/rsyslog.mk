@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-RSYSLOG_VERSION = 8.9.0
+RSYSLOG_VERSION = 8.22.0
 RSYSLOG_SITE = http://rsyslog.com/files/download/rsyslog
 RSYSLOG_LICENSE = GPLv3, LGPLv3, Apache-2.0
 RSYSLOG_LICENSE_FILES = COPYING COPYING.LESSER COPYING.ASL20
-RSYSLOG_DEPENDENCIES = zlib libestr liblogging json-c host-pkgconf
+RSYSLOG_DEPENDENCIES = zlib libestr liblogging libfastjson host-pkgconf
 RSYSLOG_CONF_ENV = ac_cv_prog_cc_c99='-std=c99'
 RSYSLOG_PLUGINS = imdiag imfile impstats imptcp \
 	mmanon mmaudit mmfields mmjsonparse mmpstrucdata mmsequence mmutf8fix \
@@ -20,6 +20,13 @@ RSYSLOG_CONF_OPTS = --disable-generate-man-pages \
 # Build after BusyBox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 RSYSLOG_DEPENDENCIES += busybox
+endif
+
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+RSYSLOG_DEPENDENCIES += gnutls
+RSYSLOG_CONF_OPTS += --enable-gnutls
+else
+RSYSLOG_CONF_OPTS += --disable-gnutls
 endif
 
 ifeq ($(BR2_PACKAGE_LIBEE),y)
@@ -59,11 +66,14 @@ endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
 RSYSLOG_CONF_OPTS += \
-	--enable-systemd \
+	--enable-imjournal \
+	--enable-omjournal \
 	--with-systemdsystemunitdir=/usr/lib/systemd/system
 RSYSLOG_DEPENDENCIES += systemd
 else
-RSYSLOG_CONF_OPTS += --disable-systemd
+RSYSLOG_CONF_OPTS += \
+	--disable-imjournal \
+	--disable-omjournal
 endif
 
 define RSYSLOG_INSTALL_INIT_SYSV

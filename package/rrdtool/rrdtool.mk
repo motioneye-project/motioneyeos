@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-RRDTOOL_VERSION = 1.5.6
+RRDTOOL_VERSION = 1.6.0
 RRDTOOL_SITE = http://oss.oetiker.ch/rrdtool/pub
 RRDTOOL_LICENSE = GPLv2+ with FLOSS license exceptions as explained in COPYRIGHT
 RRDTOOL_LICENSE_FILES = COPYRIGHT LICENSE
 RRDTOOL_DEPENDENCIES = host-pkgconf libglib2
-# For 0001-Add-configure-option-to-disable-documentation.patch
+# autoreconf needed to avoid link failure due to missing -lintl,
+# gettextize needed as a consequence of autoreconf
 RRDTOOL_AUTORECONF = YES
 RRDTOOL_GETTEXTIZE = YES
 RRDTOOL_INSTALL_STAGING = YES
@@ -23,6 +24,11 @@ RRDTOOL_CONF_OPTS = \
 	--disable-python \
 	--disable-ruby \
 	--disable-tcl
+
+
+ifeq ($(BR2_NEEDS_GETTEXT),y)
+RRDTOOL_DEPENDENCIES += gettext
+endif
 
 ifeq ($(BR2_PACKAGE_RRDTOOL_RRDGRAPH),y)
 RRDTOOL_DEPENDENCIES += cairo pango

@@ -14,8 +14,6 @@ config BR2_PACKAGE_UDPCAST
 
 if BR2_PACKAGE_UDPCAST
 
-menu "udpcast tools selection"
-
 config BR2_PACKAGE_UDPCAST_SENDER
 	bool "sender"
 	help
@@ -25,7 +23,5 @@ config BR2_PACKAGE_UDPCAST_RECEIVER
 	bool "receiver"
 	help
 	  The udpcast receiver.
-
-endmenu
 
 endif

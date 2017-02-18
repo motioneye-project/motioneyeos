@@ -1,0 +1,35 @@
+From 25d313275e87dc236e86c0e713cad08ea64253f8 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Thu, 8 Sep 2016 10:58:34 +0100
+Subject: [PATCH] configure.ac: do not assume broken inet_pton in case of cross
+ compiling
+
+Patch configure.ac to not assume broken inet_pton in case of cross
+compiling.
+
+[Vincent: adapt the patch for 2.2.0]
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c43e366..9672831 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2373,8 +2373,8 @@ int main()
+ #endif
+ }], [AC_MSG_RESULT(ok);
+ have_inet_pton=yes], [AC_MSG_RESULT(broken);
+-have_inet_pton=no], [AC_MSG_RESULT([cross compiling, assume it is broken]);
+-have_inet_pton=no])],
++have_inet_pton=no], [AC_MSG_RESULT([cross compiling, assume it is broken... not here]);
++have_inet_pton=yes])],
+ have_inet_pton=no)
+ if test "$have_inet_pton" = no; then
+   AC_LIBOBJ(inet_pton)
+-- 
+2.7.3
+

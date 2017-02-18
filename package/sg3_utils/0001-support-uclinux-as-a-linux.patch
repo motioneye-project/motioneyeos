@@ -1,0 +1,16 @@
+Recognise uclinux as a linux
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN sg3_utils-1.42.orig/configure.ac sg3_utils-1.42/configure.ac
+--- sg3_utils-1.42.orig/configure.ac	2015-10-21 01:10:59.000000000 +0200
++++ sg3_utils-1.42/configure.ac	2016-08-14 19:30:37.841766149 +0200
+@@ -71,7 +71,7 @@
+ 
+ # Define platform-specific symbol.
+ AM_CONDITIONAL(OS_FREEBSD, [echo $host_os | grep 'freebsd' > /dev/null])
+-AM_CONDITIONAL(OS_LINUX, [echo $host_os | grep '^linux' > /dev/null])
++AM_CONDITIONAL(OS_LINUX, [echo $host_os | grep -E '^(uc)?linux' > /dev/null])
+ AM_CONDITIONAL(OS_OSF, [echo $host_os | grep '^osf' > /dev/null])
+ AM_CONDITIONAL(OS_SOLARIS, [echo $host_os | grep '^solaris' > /dev/null])
+ AM_CONDITIONAL(OS_WIN32_MINGW, [echo $host_os | grep '^mingw' > /dev/null])

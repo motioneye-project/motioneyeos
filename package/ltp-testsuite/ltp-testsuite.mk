@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-LTP_TESTSUITE_VERSION = 20160126
+LTP_TESTSUITE_VERSION = 20170116
 LTP_TESTSUITE_SOURCE = ltp-full-$(LTP_TESTSUITE_VERSION).tar.xz
 LTP_TESTSUITE_SITE = https://github.com/linux-test-project/ltp/releases/download/$(LTP_TESTSUITE_VERSION)
 LTP_TESTSUITE_LICENSE = GPLv2, GPLv2+
 LTP_TESTSUITE_LICENSE_FILES = COPYING
 LTP_TESTSUITE_CONF_OPTS += \
-	--with-power-management-testsuite \
+	--with-open-posix-testsuite \
 	--with-realtime-testsuite
 
 ifeq ($(BR2_LINUX_KERNEL),y)
@@ -20,6 +20,10 @@ LTP_TESTSUITE_CONF_OPTS += --with-linux-dir=$(LINUX_DIR)
 else
 LTP_TESTSUITE_CONF_OPTS += --without-modules
 endif
+
+# We change the prefix to a custom one, otherwise we get scripts and
+# directories directly in /usr, such as /usr/runalltests.sh
+LTP_TESTSUITE_CONF_OPTS += --prefix=/usr/lib/ltp-testsuite
 
 # Needs libcap with file attrs which needs attr, so both required
 ifeq ($(BR2_PACKAGE_LIBCAP)$(BR2_PACKAGE_ATTR),yy)

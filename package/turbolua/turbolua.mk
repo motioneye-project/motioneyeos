@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TURBOLUA_VERSION = 91db237a6690f4a659cbdee2ebbbbc9741d8ea4c
+TURBOLUA_VERSION = 6fbc5cbfed1cc8c3820d4c1bfb55258c764040f0
 TURBOLUA_SITE = $(call github,kernelsauce,turbo,$(TURBOLUA_VERSION))
 TURBOLUA_DEPENDENCIES = luajit
 TURBOLUA_LICENSE = Apache-2.0
@@ -22,11 +22,11 @@ TURBOLUA_MAKE_OPTS += SSL=none
 endif
 
 define TURBOLUA_BUILD_CMDS
-	$(MAKE) $(TURBOLUA_MAKE_OPTS) -C $(@D) all
+	$(TARGET_MAKE_ENV) $(MAKE) $(TURBOLUA_MAKE_OPTS) -C $(@D) all
 endef
 
 define TURBOLUA_INSTALL_TARGET_CMDS
-	$(MAKE) $(TURBOLUA_MAKE_OPTS) LDCONFIG=true \
+	$(TARGET_MAKE_ENV) $(MAKE) $(TURBOLUA_MAKE_OPTS) LDCONFIG=true \
 		PREFIX="$(TARGET_DIR)/usr" -C $(@D) install
 endef
 

@@ -22,7 +22,7 @@ config BR2_PACKAGE_MONGODB
 
 	  https://www.mongodb.org/
 
-comment "mongodb needs a (e)glibc toolchain w/ wchar, threads, C++, gcc >= 4.8"
+comment "mongodb needs a glibc toolchain w/ wchar, threads, C++, gcc >= 4.8"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC || \
 		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8

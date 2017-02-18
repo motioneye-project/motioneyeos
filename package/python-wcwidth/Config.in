@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_WCWIDTH
+	bool "python-wcwidth"
+	help
+	  This library measures number of Terminal column cells of
+	  wide-character codes.
+
+	  https://github.com/jquast/wcwidth

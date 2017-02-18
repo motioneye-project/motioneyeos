@@ -8,6 +8,8 @@ Moreover, these programs use fork() function that is
 not available on MMU-less architectures.
 
 Signed-off-by: Gilles Talis <gilles.talis@gmail.com>
+[aduskett@gmail.com: Updated for 2.1.8]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  Makefile.am | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -16,12 +18,11 @@ diff --git a/Makefile.am b/Makefile.am
 index 42879a3..dc90359 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -126,7 +126,7 @@ else
- noinst_LTLIBRARIES =  $(LIBEVENT_LIBS_LA)
- endif
- 
--SUBDIRS = . include sample test
-+SUBDIRS = . include sample
+@@ -144,7 +144,6 @@
+ BUILT_SOURCES =
+ include include/include.am
+ include sample/include.am
+-include test/include.am
  
  if BUILD_WIN32
  

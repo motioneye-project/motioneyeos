@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-IGMPPROXY_VERSION = 0.1
-IGMPPROXY_SITE = http://downloads.sourceforge.net/project/igmpproxy/igmpproxy/$(IGMPPROXY_VERSION)
-# igmpproxy-01-uclinux.patch
+IGMPPROXY_VERSION = a731683d1a65956fa05024b0597b105fe6a3a122
+IGMPPROXY_SITE = $(call github,pali,igmpproxy,$(IGMPPROXY_VERSION))
 IGMPPROXY_AUTORECONF = YES
 IGMPPROXY_LICENSE = GPLv2+
 IGMPPROXY_LICENSE_FILES = COPYING

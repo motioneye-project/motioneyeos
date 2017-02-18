@@ -1,4 +1,4 @@
-# From http://sourceforge.net/projects/pyqt/files/sip/sip-4.16.7/
-md5 32abc003980599d33ffd789734de4c36	sip-4.16.7.tar.gz
+# From https://sourceforge.net/projects/pyqt/files/sip/sip-4.18/
+md5 78724bf2a79878201c3bc81a1d8248ea	sip-4.18.tar.gz
 # Locally calculated:
-sha256 4caa8d52e4403bae5c4c64f44de03a2cfd0bb10b6d96c5fb771133516df9abbd	sip-4.16.7.tar.gz
+sha256 f1dc5c81c07a9ad97edcd4a0af964a41e420024ba7ca165afd2b351efd249cb6	sip-4.18.tar.gz

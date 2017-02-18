@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SEPOLGEN_VERSION = 1.1.9
-SEPOLGEN_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20130423
+SEPOLGEN_VERSION = 2.6
+SEPOLGEN_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014
 SEPOLGEN_LICENSE = GPLv2
 SEPOLGEN_LICENSE_FILES = COPYING
 
@@ -20,11 +20,11 @@ HOST_SEPOLGEN_MAKE_CMDS = $(HOST_CONFIGURE_OPTS) \
 endif
 
 define HOST_SEPOLGEN_BUILD_CMDS
-	$(MAKE) -C $(@D) $(HOST_SEPOLGEN_MAKE_CMDS) DESTDIR=$(HOST_DIR)
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) $(HOST_SEPOLGEN_MAKE_CMDS) DESTDIR=$(HOST_DIR)
 endef
 
 define HOST_SEPOLGEN_INSTALL_CMDS
-	$(MAKE) -C $(@D) $(HOST_SEPOLGEN_MAKE_CMDS) DESTDIR=$(HOST_DIR) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) $(HOST_SEPOLGEN_MAKE_CMDS) DESTDIR=$(HOST_DIR) install
 endef
 
 $(eval $(host-generic-package))

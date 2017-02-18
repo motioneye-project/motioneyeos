@@ -5,6 +5,8 @@ the package user pass the appropriate CFLAGS to enable SSP if needed.
 
 Signed-off-by: Gregory Dymarek <gregd72002@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+(rebased against v0.1.0)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff -rupN janus-gateway-master.orig/Makefile.am janus-gateway-master/Makefile.am
 --- janus-gateway-master.orig/Makefile.am	2014-11-27 14:36:31.000000000 +0000
@@ -13,8 +15,8 @@ diff -rupN janus-gateway-master.orig/Makefile.am janus-gateway-master/Makefile.a
  # some fairly big refactoring though, which can wait.
  # AM_CFLAGS += -Wshadow -Wstrict-aliasing=2
  
--AM_CFLAGS += -fstack-protector-all -g -ggdb -fPIC -rdynamic
-+AM_CFLAGS += -g -ggdb -fPIC -rdynamic
+-AM_CFLAGS += -fstack-protector-all -g -ggdb -fPIC -rdynamic -pthread
++AM_CFLAGS += -g -ggdb -fPIC -rdynamic -pthread
  
  # FIXME: make docs work with distcheck
  DISTCHECK_CONFIGURE_FLAGS = --disable-docs --enable-post-processing

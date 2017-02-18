@@ -8,5 +8,4 @@ config BR2_PACKAGE_LIBBLURAY
 	  http://www.videolan.org/developers/libbluray.html
 
 comment "libbluray needs a toolchain w/ threads, dynamic library"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

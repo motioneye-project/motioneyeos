@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_TOMAKO
+	bool "python-tomako"
+	select BR2_PACKAGE_PYTHON_TORNADO # runtime
+	select BR2_PACKAGE_PYTHON_MAKO # runtime
+	help
+	  Tomako is the easiest way to use Mako as a template engine for
+	  Tornado.
+
+	  https://github.com/rcmachado/tomako

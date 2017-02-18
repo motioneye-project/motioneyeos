@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.10.8
+DBUS_VERSION = 1.10.14
 DBUS_SITE = http://dbus.freedesktop.org/releases/dbus
-DBUS_LICENSE = AFLv2.1, GPLv2+
+DBUS_LICENSE = AFLv2.1 or GPLv2+ (library, tools), GPLv2+ (tools)
 DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
 
@@ -32,7 +32,8 @@ DBUS_CONF_OPTS = \
 	--disable-dnotify \
 	--with-xml=expat \
 	--with-system-socket=/var/run/dbus/system_bus_socket \
-	--with-system-pid-file=/var/run/messagebus.pid
+	--with-system-pid-file=/var/run/messagebus.pid \
+	--with-init-scripts=none
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DBUS_CONF_OPTS += LIBS='-pthread'

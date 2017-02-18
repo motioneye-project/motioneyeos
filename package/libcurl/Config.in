@@ -13,4 +13,9 @@ config BR2_PACKAGE_CURL
 	help
 	  Install curl binary as well
 
+config BR2_PACKAGE_LIBCURL_VERBOSE
+	bool "enable verbose strings"
+	help
+	  Enable verbose text strings
+
 endif

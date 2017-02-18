@@ -1,6 +1,5 @@
 config BR2_PACKAGE_JASPER
 	bool "jasper"
-	select BR2_PACKAGE_JPEG
 	help
 	  JPEG-2000 decoder
 

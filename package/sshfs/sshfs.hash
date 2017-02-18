@@ -1,2 +1,2 @@
-# Locally computed
-sha256	ce5f9d390934fc88c287dd937a39d15c2b40cbea6967ba24ad93ed90e0027128	sshfs-2.7.tar.gz
+# Locally calculated after checking pgp signature
+sha256	7f689174d02e6b7e2631306fda4fb8e6b4483102d1bce82b3cdafba33369ad22	sshfs-2.8.tar.gz

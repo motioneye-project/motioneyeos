@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MMC_UTILS_VERSION = d0b46442b50794217e53b2455c1344c548d9d088
+MMC_UTILS_VERSION = 2cb6695e8dec00d887bdd5309d1b57d836fcd214
 MMC_UTILS_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/cjb/mmc-utils.git
 MMC_UTILS_LICENSE = GPLv2
 

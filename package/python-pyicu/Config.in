@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_PYICU
+	bool "python-pyicu"
+	depends on !BR2_BINFMT_FLAT # icu
+	depends on BR2_INSTALL_LIBSTDCPP # icu
+	select BR2_PACKAGE_ICU
+	help
+	  Python extension wrapping the ICU C++ API.
+
+	  http://pyicu.osafoundation.org/
+
+comment "python-pyicu needs a toolchain w/ C++"
+	depends on !BR2_BINFMT_FLAT
+	depends on !BR2_INSTALL_LIBSTDCPP

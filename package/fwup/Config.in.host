@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_FWUP
+	bool "host fwup"
+	help
+	  Fwup is a scriptable embedded Linux firmware update creator
+	  and runner.
+
+	  https://github.com/fhunleth/fwup

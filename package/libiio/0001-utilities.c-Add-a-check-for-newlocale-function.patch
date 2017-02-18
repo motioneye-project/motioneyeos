@@ -1,0 +1,55 @@
+From 913c2cc740d60450e91e066cf38f5654936a6015 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul.cercueil@analog.com>
+Date: Mon, 6 Feb 2017 14:04:47 +0100
+Subject: [PATCH] utilities.c: Add a check for newlocale() function
+
+uClibc might define __UCLIBC_HAS_LOCALE__, without actually providing
+the locale_t type or the setlocale() function.
+
+Signed-off-by: Paul Cercueil <paul.cercueil@analog.com>
+---
+ CMakeLists.txt       | 1 +
+ iio-config.h.cmakein | 1 +
+ utilities.c          | 2 +-
+ 3 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index cb3a48f..b24eff3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -66,6 +66,7 @@ endif()
+ include(CheckSymbolExists)
+ check_symbol_exists(strdup "string.h" HAS_STRDUP)
+ check_symbol_exists(strerror_r "string.h" HAS_STRERROR_R)
++check_symbol_exists(newlocale "locale.h" HAS_NEWLOCALE)
+ 
+ IF(${CMAKE_SYSTEM_NAME} MATCHES "Linux")
+ 	option(WITH_IIOD "Build the IIO Daemon" ON)
+diff --git a/iio-config.h.cmakein b/iio-config.h.cmakein
+index 1b8608e..6700326 100644
+--- a/iio-config.h.cmakein
++++ b/iio-config.h.cmakein
+@@ -21,6 +21,7 @@
+ #cmakedefine HAS_PIPE2
+ #cmakedefine HAS_STRDUP
+ #cmakedefine HAS_STRERROR_R
++#cmakedefine HAS_NEWLOCALE
+ #cmakedefine HAS_PTHREAD_SETNAME_NP
+ #cmakedefine HAVE_IPV6
+ #cmakedefine HAVE_AVAHI
+diff --git a/utilities.c b/utilities.c
+index 88b8257..21dbd10 100644
+--- a/utilities.c
++++ b/utilities.c
+@@ -34,7 +34,7 @@
+ #endif
+ 
+ #ifdef LOCALE_SUPPORT
+-#if defined(__MINGW32__)
++#if defined(__MINGW32__) || (!defined(_WIN32) && !defined(HAS_NEWLOCALE))
+ static int read_double_locale(const char *str, double *val)
+ {
+ 	char *end, *old_locale;
+-- 
+2.11.0
+

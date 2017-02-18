@@ -1,4 +1,4 @@
-From 5b3dd8eb1f7720c68dab032c3d89d4e3102d6347 Mon Sep 17 00:00:00 2001
+From b981adb6769f6b7d80f6c98627391398a007a25b Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Tue, 15 Dec 2015 20:51:35 -0300
 Subject: [PATCH] xfsprogs: don't use CFLAGS with BUILD_CC
@@ -8,16 +8,14 @@ When cross-compiling CFLAGS might not be suitable for the host
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
-Status: reported http://oss.sgi.com/bugzilla/show_bug.cgi?id=1132
-
  libxfs/Makefile | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/libxfs/Makefile b/libxfs/Makefile
-index ecf1921..3979077 100644
+index e021625..ad76a04 100644
 --- a/libxfs/Makefile
 +++ b/libxfs/Makefile
-@@ -111,7 +111,7 @@ default: crc32selftest ltdepend $(LTLIBRARY)
+@@ -118,7 +118,7 @@ default: ltdepend $(LTLIBRARY)
  
  crc32table.h: gen_crc32table.c
  	@echo "    [CC]     gen_crc32table"
@@ -26,7 +24,7 @@ index ecf1921..3979077 100644
  	@echo "    [GENERATE] $@"
  	$(Q) ./gen_crc32table > crc32table.h
  
-@@ -122,7 +122,7 @@ crc32table.h: gen_crc32table.c
+@@ -129,7 +129,7 @@ crc32table.h: gen_crc32table.c
  # disk.
  crc32selftest: gen_crc32table.c crc32table.h crc32.c
  	@echo "    [TEST]    CRC32"
@@ -36,5 +34,5 @@ index ecf1921..3979077 100644
  
  # set up include/xfs header directory
 -- 
-2.4.10
+2.7.4
 

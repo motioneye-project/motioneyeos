@@ -6,4 +6,4 @@ config BR2_PACKAGE_BZIP2
 	  available techniques, while being around twice as fast at
 	  compression and six times faster at decompression.
 
-	  http://sources.redhat.com/bzip2/
+	  http://www.bzip.org

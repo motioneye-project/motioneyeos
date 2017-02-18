@@ -1,0 +1,14 @@
+#!/bin/sh
+case "$1" in
+  start)
+	printf "Initializing SGX graphics driver "
+	/usr/bin/pvrsrvinit
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+  ;;
+  stop)
+  ;;
+  *)
+    echo "Usage: $0 {start|stop}"
+    exit 1
+  ;;
+esac

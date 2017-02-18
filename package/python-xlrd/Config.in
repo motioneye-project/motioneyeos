@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_XLRD
+	bool "python-xlrd"
+	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
+	help
+	  Library for developers to extract data from Microsoft Excel (tm)
+	  spreadsheet files.
+
+	  http://www.python-excel.org/

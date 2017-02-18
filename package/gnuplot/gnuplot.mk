@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GNUPLOT_VERSION = 4.6.6
+GNUPLOT_VERSION = 5.0.5
 GNUPLOT_SITE = http://downloads.sourceforge.net/project/gnuplot/gnuplot/$(GNUPLOT_VERSION)
 GNUPLOT_LICENSE = gnuplot license (open source)
 GNUPLOT_LICENSE_FILES = Copyright
@@ -19,11 +19,15 @@ GNUPLOT_CONF_OPTS = \
 	--disable-demo \
 	--without-row-help \
 	--disable-history-file \
-	--without-lisp-files \
 	--disable-wxwidgets \
 	--without-lua \
 	--without-latex \
 	--without-cairo
+
+# relocation truncated to fit: R_68K_GOT16O
+ifeq ($(BR2_m68k_cf),y)
+GNUPLOT_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mxgot"
+endif
 
 ifeq ($(BR2_PACKAGE_GD)$(BR2_PACKAGE_LIBPNG),yy)
 GNUPLOT_CONF_OPTS += --with-gd

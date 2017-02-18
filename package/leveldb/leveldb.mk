@@ -4,24 +4,16 @@
 #
 ################################################################################
 
-LEVELDB_VERSION = v1.18
+LEVELDB_VERSION = v1.19
 LEVELDB_SITE = $(call github,google,leveldb,$(LEVELDB_VERSION))
 LEVELDB_LICENSE = BSD-3c
 LEVELDB_LICENSE_FILES = LICENSE
 LEVELDB_INSTALL_STAGING = YES
 LEVELDB_DEPENDENCIES = snappy
 
-# We will pass optimisation level via CFLAGS so remove leveldb default
-LEVELDB_MAKE_ARGS += OPTIM=
-
-# Disable the static library for shared only build
-ifeq ($(BR2_SHARED_LIBS),y)
-LEVELDB_MAKE_ARGS += LIBRARY=
-endif
-
 # Disable the shared library for static only build
 ifeq ($(BR2_STATIC_LIBS),y)
-LEVELDB_MAKE_ARGS += SHARED=
+LEVELDB_MAKE_ARGS += SHARED_LIBS= SHARED_PROGRAMS=
 endif
 
 define LEVELDB_BUILD_CMDS

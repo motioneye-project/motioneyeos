@@ -10,6 +10,7 @@ XAPP_MKFONTDIR_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_MKFONTDIR_LICENSE = MIT
 XAPP_MKFONTDIR_LICENSE_FILES = COPYING
 XAPP_MKFONTDIR_DEPENDENCIES = xapp_mkfontscale
+HOST_XAPP_MKFONTDIR_DEPENDENCIES = host-xapp_mkfontscale
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

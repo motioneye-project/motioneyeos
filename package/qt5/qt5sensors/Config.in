@@ -5,6 +5,7 @@ config BR2_PACKAGE_QT5SENSORS
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5sensors module.
+	  The Qt Sensors API provides access to sensor hardware
+	  via QML and C++ interfaces.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtsensors-index.html

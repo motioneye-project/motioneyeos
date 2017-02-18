@@ -1,2 +1,2 @@
-# Locally calculated
-sha256	af9b98f049580a6521d56c978b736d3d609562dd12955e11d50e26d97542dcd4	libdvdread-4.2.1.tar.xz
+# From http://download.videolan.org/pub/videolan/libdvdread/5.0.0/libdvdread-5.0.3.tar.bz2.sha256
+sha256	321cdf2dbdc83c96572bc583cd27d8c660ddb540ff16672ecb28607d018ed82b	libdvdread-5.0.3.tar.bz2

@@ -1,4 +1,4 @@
-comment "liquid-dsp requires a (e)glibc/musl toolchain w/ dynamic library"
+comment "liquid-dsp requires a glibc or musl toolchain w/ dynamic library"
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL) || BR2_STATIC_LIBS
 
 config BR2_PACKAGE_LIQUID_DSP

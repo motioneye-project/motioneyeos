@@ -21,11 +21,13 @@ comment "DirectFB video driver needs directfb"
 config BR2_PACKAGE_SDL2_X11
 	bool "X11 video driver"
 	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
 
 comment "X11 video driver needs X.org"
 	depends on !BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU
 
 endif
 

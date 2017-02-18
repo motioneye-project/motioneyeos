@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_PUDB
+	bool "python-pudb"
+	select BR2_PACKAGE_PYTHON_URWID # runtime
+	select BR2_PACKAGE_PYTHON_PYGMENTS # runtime
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_CURSES if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_CURSES if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  A full-screen, console-based Python debugger.
+
+	  https://github.com/inducer/pudb

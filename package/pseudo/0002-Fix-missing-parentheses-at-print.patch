@@ -1,0 +1,190 @@
+From 6488a68ca715d8e18f899e536effceb548ed136e Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Date: Fri, 4 Nov 2016 12:23:25 -0400
+Subject: [PATCH 2/3] Fix missing parentheses at print
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+CC="cc  -pipe -std=gnu99 -Wall -W -Wextra -fPIC -D_LARGEFILE64_SOURCE -D_ATFILE_SOURCE  -DPSEUDO_PREFIX='"/usr/local"' -DPSEUDO_SUFFIX='""' -DPSEUDO_BINDIR='"bin"' -DPSEUDO_LIBDIR='"lib64"' -DPSEUDO_LOCALSTATEDIR='"var/pseudo"' -DPSEUDO_VERSION='"1.8.1"' -DUSE_MEMORY_DB  -DPSEUDO_PASSWD_FALLBACK='""'   -DPSEUDO_XATTR_SUPPORT       -O2 -g " ./makewrappers "xattr=true"
+  File "./makewrappers", line 459
+    print port
+             ^
+SyntaxError: Missing parentheses in call to 'print'
+
+Signed-off-by: Gaël PORTAY <gael.portay@savoirfairelinux.com>
+---
+ maketables      | 12 ++++++------
+ makewrappers    | 32 ++++++++++++++++----------------
+ templatefile.py |  8 ++++----
+ 3 files changed, 26 insertions(+), 26 deletions(-)
+
+diff --git a/maketables b/maketables
+index b32312e..0726485 100755
+--- a/maketables
++++ b/maketables
+@@ -73,7 +73,7 @@ class DataType:
+             for col in columns:
+                 indexed = False
+                 if col.startswith("FLAGS"):
+-                    print "Flags: set for %s" % self.name
++                    print("Flags: set for %s" % self.name)
+                     self.flags = True
+                     continue
+                 if col.startswith("INDEXED "):
+@@ -248,7 +248,7 @@ def main():
+             template_file.emit('header')
+             templates.append(template_file)
+         except IOError:
+-            print "Invalid or malformed template %s.  Aborting." % path
++            print("Invalid or malformed template %s.  Aborting." % path)
+             exit(1)
+ 
+     for filename in sys.argv[1:]:
+@@ -256,15 +256,15 @@ def main():
+         sys.stdout.write("%s: " % filename)
+         datatype = DataType(filename)
+         datatypes.append(datatype)
+-        print datatype.__repr__()
+-        print ""
++        print(datatype.__repr__())
++        print("")
+ 
+-    print "Writing datatypes...",
++    print("Writing datatypes...")
+     for datatype in datatypes:
+         # populate various tables and files with each datatype
+         for template_file in templates:
+             template_file.emit('body', datatype)
+-    print "done.  Cleaning up."
++    print("done.  Cleaning up.")
+     
+     for template_file in templates:
+         # clean up files
+diff --git a/makewrappers b/makewrappers
+index 303e2cc..bac856b 100755
+--- a/makewrappers
++++ b/makewrappers
+@@ -456,7 +456,7 @@ additional ports to include.
+         self.name = port
+         self.subports = []
+         self.preports = []
+-        print port
++        print(port)
+ 
+         if os.path.exists(self.portfile("pseudo_wrappers.c")):
+             self.wrappers = self.portfile("pseudo_wrappers.c")
+@@ -504,17 +504,17 @@ additional ports to include.
+             prefuncs = pre.functions()
+             for name in prefuncs.keys():
+                 if name in mergedfuncs:
+-                    print "Warning: %s from %s overriding %s" % (name, pre.name, mergedfuncs[name].port)
++                    print("Warning: %s from %s overriding %s" % (name, pre.name, mergedfuncs[name].port))
+                 mergedfuncs[name] = prefuncs[name]
+         for name in self.funcs.keys():
+             if name in mergedfuncs:
+-                print "Warning: %s from %s overriding %s" % (name, self.name, mergedfuncs[name].port)
++                print("Warning: %s from %s overriding %s" % (name, self.name, mergedfuncs[name].port))
+             mergedfuncs[name] = self.funcs[name]
+         for sub in self.subports:
+             subfuncs = sub.functions()
+             for name in subfuncs.keys():
+                 if name in mergedfuncs:
+-                    print "Warning: %s from %s overriding %s" % (name, sub.name, mergedfuncs[name].port)
++                    print("Warning: %s from %s overriding %s" % (name, sub.name, mergedfuncs[name].port))
+                 mergedfuncs[name] = subfuncs[name]
+         return mergedfuncs
+ 
+@@ -576,11 +576,11 @@ def process_wrapfuncs(port):
+             func.directory = directory
+             funcs[func.name] = func
+             sys.stdout.write(".")
+-        except Exception, e:
+-            print "Parsing failed:", e
++        except Exception(e):
++            print("Parsing failed:", e)
+             exit(1)
+     funclist.close()
+-    print ""
++    print("")
+     return funcs
+ 
+ def main(argv):
+@@ -599,35 +599,35 @@ def main(argv):
+ 
+     for path in glob.glob('templates/*'):
+         try:
+-            print "Considering template: " + path
++            print("Considering template: " + path)
+             source = TemplateFile(path)
+             if source.name.endswith('.c') or source.name.endswith('.h'):
+                 source.emit('copyright')
+             source.emit('header')
+             sources.append(source)
+         except IOError:
+-            print "Invalid or malformed template %s.  Aborting." % path
++            print("Invalid or malformed template %s.  Aborting." % path)
+             exit(1)
+ 
+     try:
+         port = Port('common', sources)
+ 
+     except KeyError:
+-        print "Unknown uname -s result: '%s'." % uname_s
+-        print "Known system types are:"
+-        print "%-20s %-10s %s" % ("uname -s", "port name", "description")
++        print("Unknown uname -s result: '%s'." % uname_s)
++        print("Known system types are:")
++        print("%-20s %-10s %s" % ("uname -s", "port name", "description"))
+         for key in host_ports:
+-            print "%-20s %-10s %s" % (key, host_ports[key],
+-                                      host_descrs[host_ports[key]])
++            print("%-20s %-10s %s" % (key, host_ports[key],
++                                      host_descrs[host_ports[key]]))
+ 
+     # the per-function stuff
+-    print "Writing functions...",
++    print("Writing functions...")
+     all_funcs = port.functions()
+     for name in sorted(all_funcs.keys()):
+         # populate various tables and files with each function
+         for source in sources:
+             source.emit('body', all_funcs[name])
+-    print "done.  Cleaning up."
++    print("done.  Cleaning up.")
+     
+     for source in sources:
+         # clean up files
+diff --git a/templatefile.py b/templatefile.py
+index 2789b22..abf9a2c 100644
+--- a/templatefile.py
++++ b/templatefile.py
+@@ -79,13 +79,13 @@ class TemplateFile:
+                 return
+             path = Template(self.path).safe_substitute(item)
+             if os.path.exists(path):
+-                # print "We don't overwrite existing files."
++                # print("We don't overwrite existing files.")
+                 return
+             self.file = open(path, 'w')
+             if not self.file:
+-                print "Couldn't open '%s' (expanded from %s), " \
++                print("Couldn't open '%s' (expanded from %s), " \
+                       "not emitting '%s'." % \
+-                      (path, self.path, template)
++                      (path, self.path, template))
+                 return
+ 
+     def emit(self, template, item=None):
+@@ -103,7 +103,7 @@ class TemplateFile:
+                     self.file.write(templ.safe_substitute(item))
+                     self.file.write("\n")
+         else:
+-            print "Warning: Unknown template '%s'." % template
++            print("Warning: Unknown template '%s'." % template)
+ 
+         if self.file_per_item:
+             if self.file:
+-- 
+2.10.1
+

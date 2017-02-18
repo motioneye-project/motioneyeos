@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHRONY_VERSION = 2.3
+CHRONY_VERSION = 2.4.1
 CHRONY_SITE = http://download.tuxfamily.org/chrony
 CHRONY_LICENSE = GPLv2
 CHRONY_LICENSE_FILES = COPYING
@@ -32,6 +32,12 @@ ifeq ($(BR2_PACKAGE_READLINE),y)
 CHRONY_DEPENDENCIES += readline
 else
 CHRONY_CONF_OPTS += --disable-readline
+endif
+
+# If pps-tools is available, build it before so the package can use it
+# (HAVE_SYS_TIMEPPS_H).
+ifeq ($(BR2_PACKAGE_PPS_TOOLS),y)
+CHRONY_DEPENDENCIES += pps-tools
 endif
 
 define CHRONY_CONFIGURE_CMDS

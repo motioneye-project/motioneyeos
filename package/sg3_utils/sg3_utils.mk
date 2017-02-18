@@ -14,6 +14,9 @@ SG3_UTILS_LICENSE += GPLv2+
 endif
 SG3_UTILS_LICENSE_FILES = COPYING BSD_LICENSE
 
+# Patching configure.ac
+SG3_UTILS_AUTORECONF = YES
+
 # install the libsgutils2 library
 SG3_UTILS_INSTALL_STAGING = YES
 

@@ -1,10 +1,11 @@
-comment "elfutils needs a uClibc or (e)glibc toolchain w/ wchar, dynamic library"
+comment "elfutils needs a uClibc or glibc toolchain w/ wchar, dynamic library"
 	depends on !BR2_bfin
 	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS \
 		|| !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)
 
 config BR2_PACKAGE_ELFUTILS
 	bool "elfutils"
+	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_USE_WCHAR

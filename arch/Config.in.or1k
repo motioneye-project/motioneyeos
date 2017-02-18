@@ -1,0 +1,5 @@
+config BR2_ARCH
+	default "or1k"
+
+config BR2_ENDIAN
+	default "BIG"

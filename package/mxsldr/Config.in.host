@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HOST_MXSLDR
+	bool "host mxsldr"
+	depends on BR2_arm || BR2_armeb
+	help
+	  This package contains tools to download and execute code on
+	  Freescale i.MX23 and i.MX28 SoC's through the Serial
+	  Download Protocol.
+
+	  git://git.denx.de/mxsldr.git

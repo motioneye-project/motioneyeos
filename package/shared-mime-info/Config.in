@@ -10,7 +10,7 @@ config BR2_PACKAGE_SHARED_MIME_INFO
 	  database of common types and the update-mime-database
 	  command used to extend it.
 
-	  http://freedesktop.org/wiki/Software/shared-mime-info
+	  https://freedesktop.org/wiki/Software/shared-mime-info/
 
 comment "shared-mime-info needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU

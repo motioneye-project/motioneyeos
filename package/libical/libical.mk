@@ -13,5 +13,7 @@ LIBICAL_LICENSE_FILES = LICENSE
 # building without this option is broken, it is used by
 # Gentoo/alpinelinux as well
 LIBICAL_CONF_OPTS = -DSHARED_ONLY=true
+# never build time zone info, always use system's tzinfo
+LIBICAL_CONF_OPTS += -DUSE_BUILTIN_TZDATA=false
 
 $(eval $(cmake-package))

@@ -9,4 +9,4 @@ config BR2_PACKAGE_PYTHON_CONFIGSHELL_FB
 	  configshell-fb is a Python library that provides a framework
 	  for building simple but nice CLI-based applications.
 
-	  https://github.com/agrover/configshell-fb
+	  https://github.com/open-iscsi/configshell-fb

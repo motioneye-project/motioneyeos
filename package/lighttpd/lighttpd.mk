@@ -5,7 +5,7 @@
 ################################################################################
 
 LIGHTTPD_VERSION_MAJOR = 1.4
-LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).39
+LIGHTTPD_VERSION = $(LIGHTTPD_VERSION_MAJOR).45
 LIGHTTPD_SOURCE = lighttpd-$(LIGHTTPD_VERSION).tar.xz
 LIGHTTPD_SITE = http://download.lighttpd.net/lighttpd/releases-$(LIGHTTPD_VERSION_MAJOR).x
 LIGHTTPD_LICENSE = BSD-3c
@@ -46,7 +46,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_WEBDAV),y)
 LIGHTTPD_DEPENDENCIES += libxml2 sqlite
-LIGHTTPD_CONF_OPTS += --with-webdav-props --with-webdav-locks
+LIGHTTPD_CONF_OPTS += --with-webdav-props
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
+LIGHTTPD_CONF_OPTS += --with-webdav-locks
+LIGHTTPD_DEPENDENCIES += util-linux
+else
+LIGHTTPD_CONF_OPTS += --without-webdav-locks
+endif
 else
 LIGHTTPD_CONF_OPTS += --without-webdav-props --without-webdav-locks
 endif

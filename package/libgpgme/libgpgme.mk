@@ -4,13 +4,14 @@
 #
 ################################################################################
 
-LIBGPGME_VERSION = 1.5.5
+LIBGPGME_VERSION = 1.7.1
 LIBGPGME_SITE = ftp://ftp.gnupg.org/gcrypt/gpgme
 LIBGPGME_SOURCE = gpgme-$(LIBGPGME_VERSION).tar.bz2
 LIBGPGME_LICENSE = LGPLv2.1+
 LIBGPGME_LICENSE_FILES = COPYING.LESSER
 LIBGPGME_INSTALL_STAGING = YES
 LIBGPGME_DEPENDENCIES = libassuan libgpg-error
+LIBGPGME_LANGUAGE_BINDINGS = cl
 
 # libgpgme, needs to know the gpg binary path on the target.
 LIBGPGME_CONF_OPTS = --with-gpg=/usr/bin/gpg \
@@ -19,7 +20,13 @@ LIBGPGME_CONF_OPTS = --with-gpg=/usr/bin/gpg \
 	--disable-gpgsm-test \
 	--disable-gpgconf-test \
 	--disable-g13-test \
-	--disable-gpg-test
+	--disable-gpg-test \
+	--enable-languages=$(LIBGPGME_LANGUAGE_BINDINGS)
+
+# C++ bindings require a C++11 capable gcc
+ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),yy)
+LIBGPGME_LANGUAGE_BINDINGS := $(LIBGPGME_LANGUAGE_BINDINGS),cpp
+endif
 
 # Handle argp-standalone or it errors out during build
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)

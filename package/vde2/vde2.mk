@@ -26,15 +26,27 @@ VDE2_AUTORECONF = YES
 # Note: disabled features can be added with corresponding dependencies
 #       in future commits.
 VDE2_CONF_OPTS = \
-	--disable-experimental  \
-	--disable-cryptcab      \
-	--disable-pcap          \
-	--disable-python        \
-	--disable-profile       \
+	--disable-cryptcab \
+	--disable-experimental \
 	--disable-kernel-switch \
-	--enable-tuntap         \
+	--disable-pcap \
+	--disable-profile \
+	--disable-python \
+	--enable-tuntap
 
 # Package does not build in parallel due to improper make rules
 VDE2_MAKE = $(MAKE1)
 
+HOST_VDE2_CONF_OPTS = \
+	--disable-cryptcab \
+	--disable-experimental \
+	--disable-kernel-switch \
+	--disable-pcap \
+	--disable-profile \
+	--disable-python \
+	--enable-tuntap
+
+HOST_VDE2_MAKE = $(MAKE1)
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

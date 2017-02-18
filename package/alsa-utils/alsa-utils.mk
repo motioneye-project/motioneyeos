@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ALSA_UTILS_VERSION = 1.1.1
+ALSA_UTILS_VERSION = 1.1.3
 ALSA_UTILS_SOURCE = alsa-utils-$(ALSA_UTILS_VERSION).tar.bz2
 ALSA_UTILS_SITE = ftp://ftp.alsa-project.org/pub/utils
 ALSA_UTILS_LICENSE = GPLv2
@@ -23,6 +23,7 @@ ALSA_UTILS_CONF_ENV = \
 
 ALSA_UTILS_CONF_OPTS = \
 	--disable-xmlto \
+	--disable-rst2man \
 	--with-curses=$(if $(BR2_PACKAGE_NCURSES_WCHAR),ncursesw,ncurses)
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)

@@ -14,6 +14,34 @@ config BR2_PACKAGE_APACHE
 
 	  http://httpd.apache.org
 
+if BR2_PACKAGE_APACHE
+
+choice
+	prompt "Multi-Processing Module (MPM)"
+	default BR2_PACKAGE_APACHE_MPM_WORKER
+	help
+	  Select the Multi-Processing Module (MPM).
+
+config BR2_PACKAGE_APACHE_MPM_EVENT
+	bool "event"
+	help
+	  A variant of the worker MPM with the goal of consuming threads
+	  only for connections with active processing
+
+config BR2_PACKAGE_APACHE_MPM_PREFORK
+	bool "prefork"
+	help
+	  Implements a non-threaded, pre-forking web server
+
+config BR2_PACKAGE_APACHE_MPM_WORKER
+	bool "worker"
+	help
+	  Implements a hybrid multi-threaded multi-process web server
+
+endchoice
+
+endif
+
 comment "apache needs a toolchain w/ dynamic library, threads"
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

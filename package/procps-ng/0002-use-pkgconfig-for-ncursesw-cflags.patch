@@ -35,7 +35,7 @@ diff -Nura procps-ng-3.3.10.orig/Makefile.am procps-ng-3.3.10/Makefile.am
 @@ -97,6 +97,7 @@
  slabtop_LDADD = $(LDADD) @NCURSES_LIBS@
  watch_SOURCES = watch.c lib/strutils.c lib/fileutils.c
- watch_LDADD = $(LDADD) @WATCH_NCURSES_LIBS@
+ watch_LDADD = @WATCH_NCURSES_LIBS@ $(CYGWINFLAGS)
 +watch_CFLAGS = @WATCH_NCURSES_CFLAGS@
  top_top_SOURCES = \
  	top/top.h \

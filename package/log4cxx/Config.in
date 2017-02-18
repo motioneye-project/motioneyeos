@@ -11,7 +11,7 @@ config BR2_PACKAGE_LOG4CXX
 	  Apache log4cxx is a logging framework for C++ patterned
 	  after Apache log4j.
 
-	  http://apache.linux-mirror.org/logging/log4cxx/0.10.0
+	  https://logging.apache.org/log4cxx/
 
 comment "log4cxx needs a toolchain w/ C++, threads, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \

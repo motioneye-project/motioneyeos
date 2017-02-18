@@ -8,6 +8,10 @@ config BR2_PACKAGE_QT5ENGINIO
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5enginio module.
+	  Enginio is a Backend-as-a-Service solution for simplifying
+	  backend development of connected and data-driven applications.
 
-	  http://qt.io
+	  This package has been tagged as deprecated since version
+	  5.6 and not recommended for new design.
+
+	  http://doc.qt.io/archives/qt-5.5/enginio-index.html

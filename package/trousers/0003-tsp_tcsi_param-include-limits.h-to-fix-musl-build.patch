@@ -1,0 +1,29 @@
+From 66bbe0a87818a1e3c721780dc33b2d81fdf4a774 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 21 Aug 2016 23:32:10 +0200
+Subject: [PATCH] tsp_tcsi_param: include limits.h to fix musl build
+
+The musl libc doesn't provide <bits/local_lim.h>, use <limits.h>
+instead.
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/tspi/tsp_tcsi_param.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/tspi/tsp_tcsi_param.c b/src/tspi/tsp_tcsi_param.c
+index 670f86f..8f2b4e4 100644
+--- a/src/tspi/tsp_tcsi_param.c
++++ b/src/tspi/tsp_tcsi_param.c
+@@ -11,7 +11,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdio.h>
+-#include <bits/local_lim.h>
++#include <limits.h>
+ #include "trousers/tss.h"
+ #include "trousers/trousers.h"
+ #include "trousers_types.h"
+-- 
+2.5.5
+

@@ -1,0 +1,17 @@
+config BR2_PACKAGE_GUPNP_DLNA
+	bool "gupnp-dlna"
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBXML2
+	help
+	  GUPnP DLNA is a small utility library that aims to ease the
+	  DLNA-related tasks such as media profile guessing, transcoding
+	  to a given profile, etc.
+
+	  http://www.gupnp.org/
+
+comment "gupnp-dlna needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

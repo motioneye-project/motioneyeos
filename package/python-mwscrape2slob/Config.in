@@ -1,0 +1,19 @@
+config BR2_PACKAGE_PYTHON_MWSCRAPE2SLOB
+	bool "python-mwscrape2slob"
+	depends on !BR2_BINFMT_FLAT # python-slob -> python-pyicu -> icu
+	depends on BR2_INSTALL_LIBSTDCPP # python-slob -> python-pyicu -> icu
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_COUCHDB # runtime
+	select BR2_PACKAGE_PYTHON_CSSSELECT # runtime
+	select BR2_PACKAGE_PYTHON_CSSUTILS # runtime
+	select BR2_PACKAGE_PYTHON_LXML # runtime
+	select BR2_PACKAGE_PYTHON_SLOB # runtime
+	help
+	  A tool to create slob with content from a MediaWiki CouchDB
+	  created by mwscrape.
+
+	  https://github.com/itkach/mwscrape2slob
+
+comment "python-mwscrape2slob needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_PYTHON3 && !BR2_BINFMT_FLAT
+	depends on !BR2_INSTALL_LIBSTDCPP

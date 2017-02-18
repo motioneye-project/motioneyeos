@@ -12,14 +12,14 @@ PIDFILE="/var/run/$NAME.pid"
 
 start()
 {
-	echo -n "Starting $DESC: "
+	printf "Starting $DESC: "
 	start-stop-daemon -S -q -p "$PIDFILE" -x "$DAEMON" -- $DAEMON_ARGS &&
 			echo "done" || echo "failed"
 }
 
 stop()
 {
-	echo -n "Stopping $DESC: "
+	printf "Stopping $DESC: "
 	if start-stop-daemon -K -q -R TERM/30/KILL/5 -p "$PIDFILE" -n "$NAME"; then
 		# This daemon does not remove its PID file when it exits.
 		rm -f "$PIDFILE"

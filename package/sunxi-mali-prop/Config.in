@@ -1,4 +1,0 @@
-# Sunxi-mali-prop is a git submodule of sunxi-mali. To use this package
-# select the sunxi-mali option.
-config BR2_PACKAGE_SUNXI_MALI_PROP
-	bool

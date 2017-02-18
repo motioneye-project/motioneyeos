@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSIGROKDECODE_VERSION = 0.4.0
+LIBSIGROKDECODE_VERSION = 0.4.1
 LIBSIGROKDECODE_SITE = http://sigrok.org/download/source/libsigrokdecode
 LIBSIGROKDECODE_LICENSE = GPLv3+
 LIBSIGROKDECODE_LICENSE_FILES = COPYING

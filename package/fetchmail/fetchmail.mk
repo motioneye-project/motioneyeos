@@ -23,4 +23,14 @@ FETCHMAIL_DEPENDENCIES = \
 	openssl \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 
+# fetchmailconf.py script is not (yet) python3-compliant.
+# Prevent the pyc-compilation with python-3 from failing by removing this
+# non-critical script.
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+define FETCHMAIL_REMOVE_FETCHMAILCONF_PY
+	$(RM) -f $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages/fetchmailconf.py
+endef
+FETCHMAIL_POST_INSTALL_TARGET_HOOKS += FETCHMAIL_REMOVE_FETCHMAILCONF_PY
+endif
+
 $(eval $(autotools-package))

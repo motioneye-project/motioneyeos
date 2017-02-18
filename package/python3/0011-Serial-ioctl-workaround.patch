@@ -1,4 +1,4 @@
-From f67b0073a30eb83d42a2ead0a62020dfe5db8d1e Mon Sep 17 00:00:00 2001
+From ace3ebd517ea0ac42208b6a06c7e8f82da3b9c1b Mon Sep 17 00:00:00 2001
 From: Baruch Siach <baruch@tkos.co.il>
 Date: Wed, 23 Dec 2015 11:44:02 +0100
 Subject: [PATCH] Serial ioctl() workaround

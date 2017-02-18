@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_TOML
+	bool "python-toml"
+	help
+	  Python Library for Tom's Obvious, Minimal Language.
+
+	  https://github.com/uiri/toml

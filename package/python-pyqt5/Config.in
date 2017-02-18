@@ -1,0 +1,11 @@
+comment "python-pyqt5 needs Qt5"
+	depends on !BR2_PACKAGE_QT5
+
+config BR2_PACKAGE_PYTHON_PYQT5
+	bool "python-pyqt5"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_PYTHON_SIP
+	help
+	  Python bindings for Qt 5
+
+	  http://www.riverbankcomputing.com/software/pyqt/

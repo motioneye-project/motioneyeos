@@ -1,6 +1,6 @@
 config BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
 	bool "xf86-video-openchrome"
-	depends on BR2_PACKAGE_MESA3D
+	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
@@ -17,5 +17,5 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
 
 	  https://www.freedesktop.org/wiki/Openchrome/
 
-comment "xf86-video-openchrome needs mesa3d"
-	depends on !BR2_PACKAGE_MESA3D
+comment "xf86-video-openchrome needs a DRI driver from mesa3d"
+	depends on !BR2_PACKAGE_MESA3D_DRI_DRIVER

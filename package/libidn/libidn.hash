@@ -1,2 +1,4 @@
-# From http://lists.nongnu.org/archive/html/help-libidn/2015-08/msg00001.html
-sha1	ddd018611b98af7c67d434aa42d15d39f45129f5	libidn-1.32.tar.gz
+# From http://lists.nongnu.org/archive/html/help-libidn/2016-07/msg00009.html
+sha1	57872fdc665dcc585e16f4ac0bb35374b1103f7e	libidn-1.33.tar.gz
+# Calculated based on the hash above
+sha256	44a7aab635bb721ceef6beecc4d49dfd19478325e1b47f3196f7d2acc4930e19	libidn-1.33.tar.gz

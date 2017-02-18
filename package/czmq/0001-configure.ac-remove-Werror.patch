@@ -1,0 +1,30 @@
+From 9a195dc573f4eed130773e6ef67efd5f71693e97 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 5 Nov 2016 15:33:57 +0100
+Subject: [PATCH] configure.ac: remove -Werror
+
+-Werror shouldn't be used in releases, as it can break the build with
+newer versions of the compiler or the C library, when new warnings
+are introduced.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index e92970a..2fd551a 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -344,7 +344,7 @@ AC_C_BIGENDIAN
+ 
+ # These options are GNU compiler specific.
+ if test "x$GCC" = "xyes"; then
+-    CPPFLAGS="-pedantic -Werror -Wall -Wc++-compat ${CPPFLAGS}"
++    CPPFLAGS="-pedantic -Wall -Wc++-compat ${CPPFLAGS}"
+ fi
+ 
+ AM_CONDITIONAL(ENABLE_SHARED, test "x$enable_shared" = "xyes")
+-- 
+2.7.4
+

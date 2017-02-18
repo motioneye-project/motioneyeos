@@ -15,6 +15,7 @@ VO_AACENC_CFLAGS = $(TARGET_CFLAGS)
 # arm specific asm optimizations
 ifeq ($(BR2_arm),y)
 
+ifeq ($(BR2_ARM_CPU_HAS_ARM),y)
 # vo-aacenc has ARM assembly code that cannot be compiled in Thumb2
 # mode, so we must force the traditional ARM mode.
 VO_AACENC_CFLAGS += -marm
@@ -33,6 +34,10 @@ VO_AACENC_CONF_OPTS += --disable-armv5e
 endif
 
 endif # !neon
+
+else
+VO_AACENC_CONF_OPTS += --disable-armv7neon --disable-armv5e
+endif # has-arm
 endif # arm
 
 VO_AACENC_CONF_ENV = \

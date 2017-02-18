@@ -11,9 +11,6 @@ config BR2_PACKAGE_LIBGUDEV
 	  It's now a project on its own. Required for building some
 	  programs that use udev, when using systemd.
 
-	  When systemd is not used, libgudev is directly provided by
-	  eudev.
-
 	  https://wiki.gnome.org/Projects/libgudev
 
 comment "libgudev needs udev /dev handling and a toolchain w/ wchar, threads"

@@ -1,4 +1,4 @@
-From a87f08318cf40a27d41957dcc7312c3b3083ba86 Mon Sep 17 00:00:00 2001
+From be44636b36086ca1b6de24265b7c3cc0c2bae913 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:45:13 +0100
 Subject: [PATCH] Do not harcode invalid path to ncursesw headers
@@ -14,10 +14,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 86758ce..565c304 100644
+index 15b39f5..9e08e7e 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1276,7 +1276,6 @@ class PyBuildExt(build_ext):
+@@ -1296,7 +1296,6 @@ class PyBuildExt(build_ext):
          panel_library = 'panel'
          if curses_library == 'ncursesw':
              curses_defines.append(('HAVE_NCURSESW', '1'))

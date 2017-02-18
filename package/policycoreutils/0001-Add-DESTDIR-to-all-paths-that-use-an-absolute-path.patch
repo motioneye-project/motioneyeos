@@ -1,0 +1,131 @@
+The addition of this patch makes the use of DESTDIR
+mandatory as there are conditional checks which would fail if it's not
+defined.
+
+This patch was updated from the patch provided by Niranjan Reddy to
+accomodate version 2.5
+
+Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
+Signed-off-by: Niranjan Reddy <niranjan.reddy@rockwellcollins.com>
+Signed-off-by: Adam Duskett <AdamDuskett@outlook.com>
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ policycoreutils/Makefile             | 2 +-
+ policycoreutils/newrole/Makefile     | 4 ++--
+ policycoreutils/restorecond/Makefile | 5 +++--
+ policycoreutils/run_init/Makefile    | 4 ++--
+ policycoreutils/sepolicy/Makefile    | 2 +-
+ policycoreutils/sestatus/Makefile    | 2 +-
+ policycoreutils/setfiles/Makefile    | 4 ++--
+ 7 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 962ac12..0634a2a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,6 +1,6 @@
+ SUBDIRS = sepolicy setfiles semanage load_policy newrole run_init sandbox secon audit2allow sestatus semodule_package semodule semodule_link semodule_expand semodule_deps sepolgen-ifgen setsebool scripts po man gui hll
+ 
+-INOTIFYH = $(shell ls /usr/include/sys/inotify.h 2>/dev/null)
++INOTIFYH = $(shell ls $(DESTDIR)/usr/include/sys/inotify.h 2>/dev/null)
+ 
+ ifeq (${INOTIFYH}, /usr/include/sys/inotify.h)
+ 	SUBDIRS += restorecond
+diff --git a/newrole/Makefile b/newrole/Makefile
+index 646cd4d..f124a6a 100644
+--- a/newrole/Makefile
++++ b/newrole/Makefile
+@@ -4,8 +4,8 @@ BINDIR ?= $(PREFIX)/bin
+ MANDIR ?= $(PREFIX)/share/man
+ ETCDIR ?= $(DESTDIR)/etc
+ LOCALEDIR = /usr/share/locale
+-PAMH = $(shell ls /usr/include/security/pam_appl.h 2>/dev/null)
+-AUDITH = $(shell ls /usr/include/libaudit.h 2>/dev/null)
++PAMH = $(shell ls $(DESTDIR)/usr/include/security/pam_appl.h 2>/dev/null)
++AUDITH = $(shell ls $(DESTDIR)/usr/include/libaudit.h 2>/dev/null)
+ # Enable capabilities to permit newrole to generate audit records.
+ # This will make newrole a setuid root program.
+ # The capabilities used are: CAP_AUDIT_WRITE.
+diff --git a/restorecond/Makefile b/restorecond/Makefile
+index f99e1e7..92a4a4d 100644
+--- a/restorecond/Makefile
++++ b/restorecond/Makefile
+@@ -11,11 +11,12 @@ autostart_DATA = sealertauto.desktop
+ INITDIR ?= $(DESTDIR)/etc/rc.d/init.d
+ SELINUXDIR = $(DESTDIR)/etc/selinux
+ 
+-DBUSFLAGS = -DHAVE_DBUS -I/usr/include/dbus-1.0 -I/usr/lib64/dbus-1.0/include -I/usr/lib/dbus-1.0/include
++DBUSFLAGS = -DHAVE_DBUS -I$(DESTDIR)/usr/include/dbus-1.0 -I$(DESTDIR)/usr/lib64/dbus-1.0/include -I$(DESTDIR)/usr/lib/dbus-1.0/include
+ DBUSLIB = -ldbus-glib-1 -ldbus-1
+ 
+ CFLAGS ?= -g -Werror -Wall -W
+-override CFLAGS += -I$(PREFIX)/include $(DBUSFLAGS) -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include -I/usr/lib/glib-2.0/include
++override CFLAGS += -I$(DESTDIR)/usr/include $(DBUSFLAGS) -I$(DESTDIR)/usr/include/glib-2.0 \
++-I$(DESTDIR)/usr/lib64/glib-2.0/include -I$(DESTDIR)/usr/lib/glib-2.0/include
+ 
+ LDLIBS += -lselinux $(DBUSLIB) -lglib-2.0 -L$(LIBDIR)
+ 
+diff --git a/run_init/Makefile b/run_init/Makefile
+index 5815a08..c81179b 100644
+--- a/run_init/Makefile
++++ b/run_init/Makefile
+@@ -5,8 +5,8 @@ SBINDIR ?= $(PREFIX)/sbin
+ MANDIR ?= $(PREFIX)/share/man
+ ETCDIR ?= $(DESTDIR)/etc
+ LOCALEDIR ?= /usr/share/locale
+-PAMH = $(shell ls /usr/include/security/pam_appl.h 2>/dev/null)
+-AUDITH = $(shell ls /usr/include/libaudit.h 2>/dev/null)
++PAMH = $(shell ls $(DESTDIR)/usr/include/security/pam_appl.h 2>/dev/null)
++AUDITH = $(shell ls $(DESTDIR)/usr/include/libaudit.h 2>/dev/null)
+ 
+ CFLAGS ?= -Werror -Wall -W
+ override CFLAGS += -I$(PREFIX)/include -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
+diff --git a/sepolicy/Makefile b/sepolicy/Makefile
+index 39d46e8..6624373 100644
+--- a/sepolicy/Makefile
++++ b/sepolicy/Makefile
+@@ -12,7 +12,7 @@ LOCALEDIR ?= /usr/share/locale
+ BASHCOMPLETIONDIR ?= $(DESTDIR)/usr/share/bash-completion/completions
+ SHAREDIR ?= $(PREFIX)/share/sandbox
+ CFLAGS ?= -Wall -Werror -Wextra -W
+-override CFLAGS += -I$(PREFIX)/include -DPACKAGE="policycoreutils" -DSHARED -shared
++override CFLAGS = $(LDFLAGS) -I$(DESTDIR)/usr/include -DPACKAGE="policycoreutils" -Wall -Werror -Wextra -W  -DSHARED -shared
+ 
+ BASHCOMPLETIONS=sepolicy-bash-completion.sh
+ 
+diff --git a/sestatus/Makefile b/sestatus/Makefile
+index c04ff00..e10c32c 100644
+--- a/sestatus/Makefile
++++ b/sestatus/Makefile
+@@ -6,7 +6,7 @@ ETCDIR ?= $(DESTDIR)/etc
+ LIBDIR ?= $(PREFIX)/lib
+ 
+ CFLAGS ?= -Werror -Wall -W
+-override CFLAGS += -I$(PREFIX)/include -D_FILE_OFFSET_BITS=64
++override CFLAGS += -I$(DESTDIR)/usr/include -D_FILE_OFFSET_BITS=64
+ LDLIBS = -lselinux -L$(LIBDIR)
+ 
+ all: sestatus
+diff --git a/setfiles/Makefile b/setfiles/Makefile
+index 98f4f7d..eb26ed0 100644
+--- a/setfiles/Makefile
++++ b/setfiles/Makefile
+@@ -3,13 +3,13 @@ PREFIX ?= $(DESTDIR)/usr
+ SBINDIR ?= $(DESTDIR)/sbin
+ MANDIR = $(PREFIX)/share/man
+ LIBDIR ?= $(PREFIX)/lib
+-AUDITH = $(shell ls /usr/include/libaudit.h 2>/dev/null)
++AUDITH = $(shell ls  $(DESTDIR)/usr/include/libaudit.h 2>/dev/null)
+ 
+ PROGRESS_STEP=$(shell grep "^\#define STAR_COUNT" restore.h | awk -S '{ print $$3 }')
+ ABORT_ON_ERRORS=$(shell grep "^\#define ABORT_ON_ERRORS" setfiles.c | awk -S '{ print $$3 }')
+ 
+ CFLAGS ?= -g -Werror -Wall -W
+-override CFLAGS += -I$(PREFIX)/include
++override CFLAGS += -I$(DESTDIR)/usr/include
+ LDLIBS = -lselinux -lsepol -L$(LIBDIR)
+ 
+ ifeq ($(AUDITH), /usr/include/libaudit.h)
+-- 
+2.7.4
+

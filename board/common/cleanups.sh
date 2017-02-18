@@ -187,6 +187,7 @@ rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S80dhcp-relay
 rm -f $TARGET/etc/init.d/S80dhcp-server
 rm -f $TARGET/etc/init.d/S91smb
+rm -f $TARGET/etc/init.d/S99motion
 
 # other unwanted dirs
 rm -rf $TARGET/data/*

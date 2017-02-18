@@ -1,0 +1,46 @@
+From 0dff338a704f4ad11a2b78871e1f2a0b8030b4d2 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 28 Nov 2016 23:12:37 +0100
+Subject: [PATCH] Add missing headers for open() flags
+
+Both pidfile.c and syslog.c use open() and its flags, but forgets to
+include all relevant headers, causing build failures with the musl C
+library.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ pidfile.c | 2 ++
+ syslog.c  | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/pidfile.c b/pidfile.c
+index e0959a0..14de56f 100644
+--- a/pidfile.c
++++ b/pidfile.c
+@@ -26,8 +26,10 @@
+ 
+ #include <stdio.h>
+ #include <unistd.h>
++#include <sys/types.h>
+ #include <sys/stat.h>
+ #include <sys/file.h>
++#include <fcntl.h>
+ #include <string.h>
+ #include <errno.h>
+ #include <signal.h>
+diff --git a/syslog.c b/syslog.c
+index f96b43c..d09e7aa 100644
+--- a/syslog.c
++++ b/syslog.c
+@@ -57,6 +57,8 @@ static char sccsid[] = "@(#)syslog.c	5.28 (Berkeley) 6/27/90";
+ #include <sys/file.h>
+ #include <signal.h>
+ #include <sys/syslog.h>
++#include <sys/stat.h>
++#include <fcntl.h>
+ #if 0
+ #include "syslog.h"
+ #include "pathnames.h"
+-- 
+2.7.4
+

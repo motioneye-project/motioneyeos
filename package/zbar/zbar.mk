@@ -12,6 +12,8 @@ ZBAR_LICENSE_FILES = LICENSE
 ZBAR_INSTALL_STAGING = YES
 ZBAR_AUTORECONF = YES
 ZBAR_DEPENDENCIES = libv4l jpeg
+# add host-gettext for AM_ICONV macro
+ZBAR_DEPENDENCIES += host-gettext
 ZBAR_CONF_OPTS = \
 	--without-imagemagick \
 	--without-qt \

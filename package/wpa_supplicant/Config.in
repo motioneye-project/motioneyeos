@@ -31,12 +31,31 @@ comment "nl80211 support needs a toolchain w/ threads"
 
 config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	bool "Enable AP mode"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_NL80211
 	help
 	  With this option enabled, wpa_supplicant can act as an
 	  access point much like hostapd does with a limited feature set.
 	  This links in parts of hostapd functionality into wpa_supplicant,
 	  making it bigger but dispensing the need for a separate hostapd
 	  binary in some applications hence being smaller overall.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_WIFI_DISPLAY
+	bool "Enable Wi-Fi Display"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
+	help
+	  Enable support for Wi-Fi Display
+
+config BR2_PACKAGE_WPA_SUPPLICANT_MESH_NETWORKING
+	bool "Enable mesh networking"
+	depends on BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
+	help
+	  Enable support for open and secured mesh networking
+	  (IEEE 802.11s)
+
+config BR2_PACKAGE_WPA_SUPPLICANT_AUTOSCAN
+	bool "Enable autoscan"
+	help
+	  Enable support for the autoscan feature (allow periodic scan)
 
 config BR2_PACKAGE_WPA_SUPPLICANT_EAP
 	bool "Enable EAP"

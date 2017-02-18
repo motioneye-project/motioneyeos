@@ -1,0 +1,42 @@
+From 27fd1c85ca95b5d66ab0241a08242a75b60b375c Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Thu, 14 Jul 2016 13:22:57 -0400
+Subject: [PATCH] Change sepolicy python install arguments to be a variable
+
+To allow the python install arguments to be overwritten, change the
+arguments to be a variable. This also cleans up the DESTDIR detection a
+little bit.
+
+Updated to work with version 2.5
+
+Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
+Signed-off-by: Adam Duskett <AdamDuskett@outlook.com>
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ policycoreutils/sepolicy/Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/sepolicy/Makefile b/sepolicy/Makefile
+index a16f8de..2013301 100644
+--- a/sepolicy/Makefile
++++ b/sepolicy/Makefile
+@@ -1,4 +1,7 @@
+ PYTHON ?= python
++ifneq ($(DESTDIR),)
++PYTHON_INSTALL_ARGS ?= --root $(DESTDIR)
++endif
+ 
+ # Installation directories.
+ PREFIX ?= $(DESTDIR)/usr
+@@ -32,7 +35,7 @@ test:
+ 	@$(PYTHON) test_sepolicy.py -v
+ 
+ install:
+-	$(PYTHON) setup.py install `test -n "$(DESTDIR)" && echo --root $(DESTDIR)`
++	$(PYTHON) setup.py install $(PYTHON_INSTALL_ARGS)
+ 	[ -d $(BINDIR) ] || mkdir -p $(BINDIR)
+ 	install -m 755 sepolicy.py $(BINDIR)/sepolicy
+ 	(cd $(BINDIR); ln -sf sepolicy sepolgen)
+-- 
+2.7.4
+

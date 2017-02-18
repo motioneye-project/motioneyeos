@@ -1,0 +1,37 @@
+# HG changeset patch
+# User Sam Lantinga <slouken@libsdl.org>
+# Date 1485568474 28800
+# Node ID 3b93536d291a34183592fd29ef1df9cf1416ac09
+# Parent  184c34c673d479477d34194e3c0b1abe7ca5d828
+Make sure we can link with OpenGL libraries in the OpenGL configure test
+
+[yann.morin.1998@free.fr:
+  - backported from upstream
+  - drop the configure hunk for autoreconf
+]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -r 184c34c673d4 -r 3b93536d291a configure.in
+--- a/configure.in	Sun Jan 01 18:46:38 2017 -0800
++++ b/configure.in	Fri Jan 27 17:54:34 2017 -0800
+@@ -164,14 +164,17 @@
+ esac
+ AC_MSG_CHECKING(for OpenGL support)
+ have_opengl=no
+-AC_TRY_COMPILE([
++save_LIBS="$LIBS"
++LIBS="$LIBS $SYS_GL_LIBS"
++AC_TRY_LINK([
+  #include "SDL_opengl.h"
+ ],[
+- GLuint texture;
++ glOrtho( -2.0, 2.0, -2.0, 2.0, -20.0, 20.0 );
+ ],[
+ have_opengl=yes
+ ])
+ AC_MSG_RESULT($have_opengl)
++LIBS="$save_LIBS"
+ if test x$have_opengl = xyes; then
+     CFLAGS="$CFLAGS -DHAVE_OPENGL"
+     GL_LIBS="$SYS_GL_LIBS"
+

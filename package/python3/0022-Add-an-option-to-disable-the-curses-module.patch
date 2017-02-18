@@ -1,4 +1,4 @@
-From 42725aef353df06f760f0a47b80001187d04d8b4 Mon Sep 17 00:00:00 2001
+From d04ec780bf7c0825ab260bd1d6b7292141b2dcde Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:49:30 +0100
 Subject: [PATCH] Add an option to disable the curses module
@@ -11,10 +11,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  2 files changed, 14 insertions(+), 1 deletion(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index e492d7b..66b2c45 100644
+index 0a93c27..b97c21e 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1153,7 +1153,7 @@ LIBSUBDIRS=	\
+@@ -1186,7 +1186,7 @@ LIBSUBDIRS=	\
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/posix \
@@ -23,7 +23,7 @@ index e492d7b..66b2c45 100644
  
  TESTSUBDIRS = 	test test/test_asyncio \
  		test/test_email test/test_email/data \
-@@ -1215,6 +1215,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
+@@ -1253,6 +1253,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
  	tkinter/test/test_ttk
  endif
  
@@ -35,10 +35,10 @@ index e492d7b..66b2c45 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index 7efd54f..e48f38e 100644
+index 787b185..0be47b2 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2676,6 +2676,15 @@ if test "$TK" = "no"; then
+@@ -2912,6 +2912,15 @@ if test "$TK" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

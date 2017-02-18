@@ -18,13 +18,16 @@ cross-compiling:
    prevent overwriting those files/directories, which meant calling
    "make install" twice was failing.
 
+[Vincent: tweak the patch for 2.2.2 release]
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 ---
  Makedefs.in        | 12 ++++++------
  conf/Makefile      |  6 +++---
  notifier/Makefile  |  2 +-
- scheduler/Makefile | 17 ++++++++---------
- 4 files changed, 18 insertions(+), 19 deletions(-)
+ scheduler/Makefile | 15 +++++++--------
+ 4 files changed, 17 insertions(+), 18 deletions(-)
 
 diff --git a/Makedefs.in b/Makedefs.in
 index 3afef0a..3e4f1bd 100644
@@ -84,18 +87,15 @@ index 3206dd0..c34a4d7 100644
  
  #
 diff --git a/scheduler/Makefile b/scheduler/Makefile
-index c7d244d..a96a528 100644
+index 251f017..25f2f5f 100644
 --- a/scheduler/Makefile
 +++ b/scheduler/Makefile
-@@ -148,30 +148,29 @@ install-data:
+@@ -146,28 +146,27 @@ install-data:
  	echo Creating $(SERVERBIN)/driver...
  	$(INSTALL_DIR) -m 755 $(SERVERBIN)/driver
  	echo Creating $(SERVERROOT)...
 -	$(INSTALL_DIR) -m 755 -g $(CUPS_GROUP) $(SERVERROOT)
 +	$(INSTALL_DIR) -m 755 $(SERVERROOT)
- 	echo Creating $(SERVERROOT)/interfaces...
--	$(INSTALL_DIR) -m 755 -g $(CUPS_GROUP) $(SERVERROOT)/interfaces
-+	$(INSTALL_DIR) -m 755 $(SERVERROOT)/interfaces
  	echo Creating $(SERVERROOT)/ppd...
 -	$(INSTALL_DIR) -m 755 -g $(CUPS_GROUP) $(SERVERROOT)/ppd
 +	$(INSTALL_DIR) -m 755 $(SERVERROOT)/ppd

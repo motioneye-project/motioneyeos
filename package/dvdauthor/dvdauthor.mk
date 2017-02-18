@@ -40,6 +40,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_DVDAUTHOR_DVDUNAUTHOR),y)
 DVDAUTHOR_DEPENDENCIES += libdvdread
+# dvdauthor configure does not use pkg-config to detect libdvdread
+ifeq ($(BR2_PACKAGE_LIBDVDCSS)$(BR2_STATIC_LIBS),yy)
+DVDAUTHOR_CONF_ENV += LIBS="-ldvdcss"
+endif
 DVDAUTHOR_CONF_OPTS += --enable-dvdunauthor
 else
 DVDAUTHOR_CONF_OPTS += --disable-dvdunauthor

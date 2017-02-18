@@ -7,4 +7,4 @@ config BR2_PACKAGE_FCGIWRAP
 	  over FastCGI. It hopes to provide clean CGI support to Nginx
 	  (and other web servers that may need it).
 
-	  https://nginx.localdomain.pl/wiki/FcgiWrap
+	  https://github.com/gnosek/fcgiwrap

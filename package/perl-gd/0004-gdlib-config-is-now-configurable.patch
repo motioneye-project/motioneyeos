@@ -53,7 +53,7 @@ index dfe8ad7..0fa6ef3 100644
  #############################################################################################
  
  if ($^O eq 'VMS'){
-@@ -275,7 +286,7 @@ exit 0;
+@@ -278,7 +289,7 @@ exit 0;
  
  sub try_to_autoconfigure {
    my ($options,$lib_gd_path,$INC,$LIBPATH,$LIBS) = @_;

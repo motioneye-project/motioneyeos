@@ -11,4 +11,4 @@ config BR2_PACKAGE_LZIP
 	  bzip2, and is better than both from a data recovery perspective.
 	  Lzip is a clean implementation of the LZMA algorithm.
 
-	  http://savannah.nongnu.org/projects/lzip
+	  http://www.nongnu.org/lzip/lzip.html

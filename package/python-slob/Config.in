@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PYTHON_SLOB
+	bool "python-slob"
+	depends on !BR2_BINFMT_FLAT # python-pyicu -> icu
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyicu -> icu
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_PYICU # runtime
+	# although optional, it is used as default compression
+	select BR2_PACKAGE_PYTHON3_XZ # runtime
+	help
+	  slob.py is a reference implementation of slob format reader
+	  and writer.
+
+	  https://github.com/itkach/slob
+
+comment "python-slob needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_PYTHON3 && !BR2_BINFMT_FLAT
+	depends on !BR2_INSTALL_LIBSTDCPP

@@ -1,0 +1,20 @@
+comment "openmpi needs a toolchain w/ dynamic library, NPTL, wchar, C++"
+	depends on BR2_USE_MMU
+	depends on !BR2_sparc
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
+		|| !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_OPENMPI
+	bool "openmpi"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	# from the configure script: "Sparc v8 target is not supported
+	# in this release of Open MPI"
+	depends on !BR2_sparc
+	help
+	  A High Performance Message Passing Library.
+
+	  https://www.open-mpi.org/

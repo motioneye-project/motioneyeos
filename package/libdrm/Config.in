@@ -1,4 +1,4 @@
-config BR2_PACKAGE_LIBDRM
+menuconfig BR2_PACKAGE_LIBDRM
 	bool "libdrm"
 	select BR2_PACKAGE_LIBPTHREAD_STUBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libpthread-stubs
@@ -17,13 +17,6 @@ config BR2_PACKAGE_LIBDRM_HAS_ATOMIC
 config BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
 	bool
 	select BR2_PACKAGE_LIBATOMIC_OPS if !BR2_TOOLCHAIN_HAS_SYNC_4
-
-config BR2_PACKAGE_LIBDRM_INSTALL_TESTS
-	bool "Install test programs"
-	help
-	  This option allows to install the libdrm test programs.
-
-menu "DRM Drivers"
 
 config BR2_PACKAGE_LIBDRM_INTEL
 	bool "intel"
@@ -69,6 +62,14 @@ config BR2_PACKAGE_LIBDRM_OMAP
 	help
 	  Install the TI OMAP driver using an experimental API.
 
+config BR2_PACKAGE_LIBDRM_ETNAVIV
+	bool "etnaviv (experimental)"
+	depends on BR2_arm
+	depends on BR2_PACKAGE_LIBDRM_HAS_ATOMIC
+	select BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
+	help
+	  Install the Etnaviv/Vivante driver using an experimental API.
+
 config BR2_PACKAGE_LIBDRM_EXYNOS
 	bool "exynos (experimental)"
 	depends on BR2_arm
@@ -97,7 +98,10 @@ config BR2_PACKAGE_LIBDRM_VC4
 	help
 	  Install vc4 (Raspberry Pi) driver.
 
-endmenu
+config BR2_PACKAGE_LIBDRM_INSTALL_TESTS
+	bool "Install test programs"
+	help
+	  This option allows to install the libdrm test programs.
 
 endif
 

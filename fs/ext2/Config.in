@@ -11,7 +11,7 @@ config BR2_TARGET_ROOTFS_EXT2_2
 
 choice
 	bool "ext2/3/4 variant"
-	default BR2_TARGET_ROOTFS_EXT2_2r0
+	default BR2_TARGET_ROOTFS_EXT2_2r1
 
 config BR2_TARGET_ROOTFS_EXT2_2r0
 	bool "ext2 (rev0)"

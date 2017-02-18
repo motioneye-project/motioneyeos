@@ -24,6 +24,7 @@ endif
 
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 LIBDVBCSA_CONF_OPTS += --enable-altivec
+LIBDVBCSA_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -flax-vector-conversions"
 else
 LIBDVBCSA_CONF_OPTS += --disable-altivec
 endif
