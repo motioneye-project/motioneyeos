@@ -1,10 +1,10 @@
 config BR2_PACKAGE_SUNXI_MALI
 	bool "sunxi-mali"
+	depends on BR2_arm
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_LIBUMP
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_arm
 	help
 	  Install the ARM Mali drivers for sunxi based systems (i.e
 	  systems based on ARM Allwinner SoCs). This driver requires
