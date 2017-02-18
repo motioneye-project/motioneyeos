@@ -60,7 +60,7 @@ fi
 
 msg "Copying root image"
 root_start=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 1)
-root_size=$(cat $FW_DIR/$ROOT_INFOO_FILE | cut -d ' ' -f 2)
+root_size=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 2)
 
 dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size || exit 1
 

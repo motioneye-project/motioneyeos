@@ -4,20 +4,13 @@
 #### usage ####
 
 function exit_usage() {
-    echo "Usage: fwupdate versions"
-    echo "           - lists available versions"
-    echo "       fwupdate current"
-    echo "           - shows the current version"
-    echo "       fwupdate download <version|url>"
-    echo "           - downloads a firmware version"
-    echo "       fwupdate extract"
-    echo "           - extracts the downloaded firmware archive"
-    echo "       fwupdate flashboot"
-    echo "           - flashes the extracted boot partition"
-    echo "       fwupdate flashreboot"
-    echo "           - prepares for reboot + root partititon flash"
-    echo "       fwupdate status"
-    echo "           - shows the current firmware updating status (see below)"
+    echo "Usage: fwupdate versions                  (lists available versions)"
+    echo "       fwupdate current                   (shows the current version"
+    echo "       fwupdate download <version|url>    (downloads a firmware version)"
+    echo "       fwupdate extract                   (extracts the downloaded firmware archive)"
+    echo "       fwupdate flashboot                 (flashes the boot partition from extracted image)"
+    echo "       fwupdate flashreboot               (prepares for reboot + root partititon flash)"
+    echo "       fwupdate status                    (shows the current firmware updating status; see below)"
     echo ""
     echo "Statuses:"
     echo "       idle"
@@ -47,6 +40,7 @@ BOOT_DEV=/dev/mmcblk0p1
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
 ROOT_INFO_FILE=root_info
+BOOT_READY_FILE=boot_flash_ready
 
 FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
@@ -106,6 +100,10 @@ function show_current() {
 function do_download() {
     echo "downloading..."
 
+    rm -f $FW_DIR/$FW_FILE 
+    rm -f $FW_DIR/$FW_FILE_EXTR
+    rm -f $FW_DIR/$BOOT_READY_FILE
+
     source $OS_CONF
     board=$(cat $SYS_BOARD_FILE)
     url=$1
@@ -164,6 +162,9 @@ function download_status() {
 
 function do_extract() {
     echo "extracting..."
+    
+    rm -f $FW_DIR/$FW_FILE_EXTR
+    rm -f $FW_DIR/$BOOT_READY_FILE
 
     if ! [ -f $FW_DIR/$FW_FILE ]; then
         echo "firmware file not downloaded" 1>&2
@@ -185,6 +186,7 @@ function extract_status() {
         pid=$(cat $FW_DIR/$GUNZIP_PID_FILE)
         if kill -0 $pid &>/dev/null; then
             echo "running"
+            return
         fi
     fi
 
@@ -198,6 +200,8 @@ function extract_status() {
 
 function flash_boot() {
     echo "flashing boot..."
+    
+    rm -f $FW_DIR/$BOOT_READY_FILE
 
     set +e
     board=$(cat $SYS_BOARD_FILE)
@@ -212,15 +216,15 @@ function flash_boot() {
     
     boot_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}1")
     boot_info=($boot_info)
-    boot_start=$((${boot_info[1]} * 512))  # in bytes
+    boot_start=$((${boot_info[1]} / 2048))  # in MB
     boot_size=$((${boot_info[3]} / 1048576))  # in MB
 
     root_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}2")
     root_info=($root_info)
-    root_start=$((${root_info[1]} * 512))  # in bytes
+    root_start=$((${root_info[1]} / 2048))  # in MB
     root_size=$((${root_info[3]} / 1048576))  # in MB
     
-    echo $root_start $root_size > $FW_DIR/$ROOT_INFO
+    echo $root_start $root_size > $FW_DIR/$ROOT_INFO_FILE
 
     dd if=$FW_DIR/$FW_FILE_EXTR skip=$boot_start of=$BOOT_DEV bs=1048576 count=$boot_size &>$FW_DIR/$DD_LOG_FILE &
     pid=$!
@@ -229,7 +233,7 @@ function flash_boot() {
 
     mount -o rw /boot
     restore_boot_$board $FW_DIR/old_boot 2>/dev/null || true
-    touch $FW_DIR/boot_flash_ready
+    touch $FW_DIR/$BOOT_READY_FILE
 }
 
 function flash_boot_status() {
@@ -241,7 +245,7 @@ function flash_boot_status() {
         fi
     fi
 
-    if [ -f $FW_DIR/boot_flash_ready ]; then
+    if [ -f $FW_DIR/$BOOT_READY_FILE ]; then
         echo "done"
     fi
 }
