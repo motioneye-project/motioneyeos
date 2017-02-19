@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/cryptography/json, sha256 locally computed
-md5	2f63dee6ace602d1d20d1995f8538015  cryptography-1.7.1.tar.gz
-sha256	953fef7d40a49a795f4d955c5ce4338abcec5dea822ed0414ed30348303fdb4c  cryptography-1.7.1.tar.gz
+md5 fade66de437392ed1ba6980768626204 cryptography-1.7.2.tar.gz
+sha256 878cb68b3da3d493ffd68f36db11c29deee623671d3287c3f8d685117ffda9a9 cryptography-1.7.2.tar.gz
