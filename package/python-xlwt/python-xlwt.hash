@@ -1,4 +1,3 @@
-# md5 from https://pypi.python.org/pypi/xlwt/json
-md5	fadf8d1be8c5f071561c4145ed5f5b89  xlwt-1.1.2.tar.gz
-# sha256 calculated by scanpypi
-sha256	aed648c17731f40f84550dd2a1aaa53569f0cbcaf5610ba895cd2632587b723c  xlwt-1.1.2.tar.gz
+# md5 from https://pypi.python.org/pypi/xlwt/json, sha256 locally computed
+md5 1f2673a93c221f0195f342c578f04968 xlwt-1.2.0.tar.gz
+sha256 505669c1eb6a60823fd3e2e723b60eea95f2c56254113bf163091ed2bedb4ac9 xlwt-1.2.0.tar.gz
