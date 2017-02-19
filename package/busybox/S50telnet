@@ -3,10 +3,13 @@
 # Start telnet....
 #
 
+TELNETD_ARGS=-F
+[ -r /etc/default/telnet ] && . /etc/default/telnet
+
 start() {
       printf "Starting telnetd: "
       start-stop-daemon -S -q -m -b -p /var/run/telnetd.pid \
-			-x /usr/sbin/telnetd -- -F
+			-x /usr/sbin/telnetd -- $TELNETD_ARGS
       [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 

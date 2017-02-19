@@ -111,6 +111,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_SUBPARSE),y)
 GST_PLUGINS_BASE_CONF_OPTS += --enable-subparse
+GST_PLUGINS_BASE_DEPENDENCIES += libxml2
 else
 GST_PLUGINS_BASE_CONF_OPTS += --disable-subparse
 endif

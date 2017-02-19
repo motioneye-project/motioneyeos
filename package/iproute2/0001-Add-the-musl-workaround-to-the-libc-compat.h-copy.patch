@@ -1,0 +1,38 @@
+From b4edb4eebbfd35934b8bc6d7ee0e00e76a01596c Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 22 Dec 2016 15:26:30 +0200
+Subject: [PATCH] Add the musl workaround to the libc-compat.h copy
+
+The libc-compat.h kernel header uses glibc specific macros (__GLIBC__ and
+__USE_MISC) to solve conflicts with libc provided headers. This patch makes
+libc-compat.h work also for musl libc.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: libc-compat.h is a local copy of a kernel headers. A proper
+musl fix must go to the kernel first.
+---
+ include/linux/libc-compat.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/linux/libc-compat.h b/include/linux/libc-compat.h
+index f38571dabd8d..30f0b67c7a12 100644
+--- a/include/linux/libc-compat.h
++++ b/include/linux/libc-compat.h
+@@ -49,10 +49,12 @@
+ #define _LIBC_COMPAT_H
+ 
+ /* We have included glibc headers... */
+-#if defined(__GLIBC__)
++#if 1
++#define __USE_MISC
+ 
+ /* Coordinate with glibc net/if.h header. */
+ #if defined(_NET_IF_H) && defined(__USE_MISC)
++#define __UAPI_DEF_IF_NET_DEVICE_FLAGS_LOWER_UP_DORMANT_ECHO 0
+ 
+ /* GLIBC headers included first so don't define anything
+  * that would already be defined. */
+-- 
+2.11.0
+

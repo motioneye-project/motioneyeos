@@ -9,7 +9,7 @@ DOXYGEN_SOURCE = doxygen-$(DOXYGEN_VERSION).src.tar.gz
 DOXYGEN_SITE = http://ftp.stack.nl/pub/users/dimitri
 DOXYGEN_LICENSE = GPLv2
 DOXYGEN_LICENSE_FILES = LICENSE
-DOXYGEN_DEPENDENCIES = host-flex host-bison
+HOST_DOXYGEN_DEPENDENCIES = host-flex host-bison
 
 define HOST_DOXYGEN_CONFIGURE_CMDS
 	(cd $(@D); $(HOST_MAKE_ENV) ./configure --shared --prefix=$(HOST_DIR)/usr)

@@ -4,7 +4,7 @@ config BR2_PACKAGE_URG
 	help
 	  Library to control Hokuyo's URG series sensors.
 
-	  http://www.hokuyo-aut.jp/02sensor/07scanner/download/urg_programs_en/
+	  https://sourceforge.net/p/urgnetwork/wiki/Home/
 
 comment "urg needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

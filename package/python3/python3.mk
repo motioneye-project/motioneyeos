@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PYTHON3_VERSION_MAJOR = 3.4
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).3
+PYTHON3_VERSION_MAJOR = 3.5
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).2
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_LICENSE = Python software foundation license v2, others
@@ -37,13 +37,16 @@ HOST_PYTHON3_CONF_OPTS += 	\
 	--disable-test-modules	\
 	--disable-idle3		\
 	--disable-ossaudiodev	\
-	--disable-pyo-build
+	--disable-openssl
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
 # python is called.
+# Make python believe we don't have 'hg', so that it doesn't try to
+# communicate over the network during the build.
 HOST_PYTHON3_CONF_ENV += \
-	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags"
+	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags" \
+	ac_cv_prog_HAS_HG=/bin/false
 
 PYTHON3_DEPENDENCIES = host-python3 libffi
 
@@ -79,10 +82,6 @@ ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
 PYTHON3_CONF_OPTS += --enable-old-stdlib-cache
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
-PYTHON3_CONF_OPTS += --disable-pyc-build
-endif
-
 ifeq ($(BR2_PACKAGE_PYTHON3_SQLITE),y)
 PYTHON3_DEPENDENCIES += sqlite
 else
@@ -105,6 +104,10 @@ ifeq ($(BR2_PACKAGE_PYTHON3_BZIP2),y)
 PYTHON3_DEPENDENCIES += bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_PYTHON3_XZ),y)
+PYTHON3_DEPENDENCIES += xz
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON3_ZLIB),y)
 PYTHON3_DEPENDENCIES += zlib
 endif
@@ -115,11 +118,21 @@ else
 PYTHON3_CONF_OPTS += --disable-ossaudiodev
 endif
 
+# Make python believe we don't have 'hg', so that it doesn't try to
+# communicate over the network during the build.
 PYTHON3_CONF_ENV += \
 	ac_cv_have_long_long_format=yes \
 	ac_cv_file__dev_ptmx=yes \
 	ac_cv_file__dev_ptc=yes \
-	ac_cv_working_tzset=yes
+	ac_cv_working_tzset=yes \
+	ac_cv_prog_HAS_HG=/bin/false
+
+# GCC is always compliant with IEEE754
+ifeq ($(BR2_ENDIAN),"LITTLE")
+PYTHON3_CONF_ENV += ac_cv_little_endian_double=yes
+else
+PYTHON3_CONF_ENV += ac_cv_big_endian_double=yes
+endif
 
 # uClibc is known to have a broken wcsftime() implementation, so tell
 # Python 3 to fall back to strftime() instead.
@@ -137,27 +150,23 @@ PYTHON3_CONF_OPTS += \
 	--disable-tk		\
 	--disable-nis		\
 	--disable-idle3		\
-	--disable-pyo-build
+	--disable-pyc-build
 
-# This is needed to make sure the Python build process doesn't try to
-# regenerate those files with the pgen program. Otherwise, it builds
-# pgen for the target, and tries to run it on the host.
-
-define PYTHON3_TOUCH_GRAMMAR_FILES
-	touch $(@D)/Include/graminit.h $(@D)/Python/graminit.c
+# Python builds two tools to generate code: 'pgen' and
+# '_freeze_importlib'. Unfortunately, for the target Python, they are
+# built for the target, while we need to run them at build time. So
+# when installing host-python, we copy them to
+# $(HOST_DIR)/usr/bin. And then, when building the target python
+# package, we tell the configure script where they are located.
+define HOST_PYTHON3_INSTALL_TOOLS
+	cp $(@D)/Parser/pgen $(HOST_DIR)/usr/bin/python-pgen
+	cp $(@D)/Programs/_freeze_importlib $(HOST_DIR)/usr/bin/python-freeze-importlib
 endef
+HOST_PYTHON3_POST_INSTALL_HOOKS += HOST_PYTHON3_INSTALL_TOOLS
 
-# This prevents the Python Makefile from regenerating the
-# Python/importlib.h header if Lib/importlib/_bootstrap.py has changed
-# because its generation is broken in a cross-compilation environment
-# and importlib.h is not used.
-
-define PYTHON3_TOUCH_IMPORTLIB_H
-	touch $(@D)/Python/importlib.h
-endef
-
-PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_GRAMMAR_FILES
-PYTHON3_POST_PATCH_HOOKS += PYTHON3_TOUCH_IMPORTLIB_H
+PYTHON3_CONF_ENV += \
+	PGEN_FOR_BUILD=$(HOST_DIR)/usr/bin/python-pgen \
+	FREEZE_IMPORTLIB_FOR_BUILD=$(HOST_DIR)/usr/bin/python-freeze-importlib
 
 #
 # Remove useless files. In the config/ directory, only the Makefile
@@ -218,16 +227,40 @@ PYTHON3_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/sysconfigdat
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+define PYTHON3_CREATE_PYC_FILES
+	PYTHONPATH="$(PYTHON3_PATH)" \
+	$(HOST_DIR)/usr/bin/python$(PYTHON3_VERSION_MAJOR) \
+		support/scripts/pycompile.py \
+		$(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)
+endef
+
+ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY)$(BR2_PACKAGE_PYTHON3_PY_PYC),y)
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_CREATE_PYC_FILES
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
-define PYTHON3_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | xargs -0 rm -f
+define PYTHON3_REMOVE_PY_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PY_FILES
 endif
 
+# Normally, *.pyc files should not have been compiled, but just in
+# case, we make sure we remove all of them.
 ifeq ($(BR2_PACKAGE_PYTHON3_PY_ONLY),y)
-define PYTHON3_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.pyc' -print0 | xargs -0 rm -f
+define PYTHON3_REMOVE_PYC_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.pyc' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_PYC_FILES
 endif
 
-TARGET_FINALIZE_HOOKS += PYTHON3_FINALIZE_TARGET
+# In all cases, we don't want to keep the optimized .opt-1.pyc and
+# .opt-2.pyc files, since they can't work without their non-optimized
+# variant.
+define PYTHON3_REMOVE_OPTIMIZED_PYC_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.opt-1.pyc' -print0 -o -name '*.opt-2.pyc' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
+endef
+PYTHON3_TARGET_FINALIZE_HOOKS += PYTHON3_REMOVE_OPTIMIZED_PYC_FILES

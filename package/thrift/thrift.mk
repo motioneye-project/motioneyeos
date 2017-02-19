@@ -25,6 +25,11 @@ THRIFT_AUTORECONF_OPTS = -I $(HOST_DIR)/usr/share/autoconf-archive
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
 
+# relocation truncated to fit: R_68K_GOT16O
+ifeq ($(BR2_m68k_cf),y)
+THRIFT_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -mxgot"
+endif
+
 ifeq ($(BR2_STATIC_LIBS),y)
 # openssl uses zlib, so we need to explicitly link with it when static
 THRIFT_CONF_ENV += LIBS=-lz

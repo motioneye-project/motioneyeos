@@ -1,2 +1,3 @@
-# sha256 from https://www.djangoproject.com/m/pgp/Django-1.7.3.checksum.txt
-sha256 f226fb8aa438456968d403f6739de1cf2dad128db86f66ee2b41dfebe3645c5b	Django-1.7.3.tar.gz
+# md5 from https://pypi.python.org/pypi/django/json, sha256 locally computed
+md5	5342e77374b2acd2eafa86d2bb68f8c9  Django-1.10.2.tar.gz
+sha256	e127f12a0bfb34843b6e8c82f91e26fff6445a7ca91d222c0794174cf97cbce1  Django-1.10.2.tar.gz

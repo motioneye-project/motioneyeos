@@ -11,6 +11,7 @@ config BR2_PACKAGE_LINKNX
 	  to EIB/KNX installation.
 
 	  http://linknx.sourceforge.net/
+	  https://github.com/linknx/linknx
 
 comment "linknx needs a toolchain w/ C++"
 	depends on BR2_USE_MMU

@@ -1,0 +1,44 @@
+From 28f0c20302e5c64712899848cae3d0a48a9dc952 Mon Sep 17 00:00:00 2001
+From: Vlad Zakharov <vzakhar@synopsys.com>
+Date: Wed, 10 Aug 2016 18:02:59 +0300
+Subject: [PATCH] configure: Add $CXXFLAGS for test compilations
+
+Why we are passing only linker flags when compiling test code?
+Loosing compiler flags leads to errors.
+
+Signed-off-by: Vlad Zakharov <vzakhar@synopsys.com>
+---
+ configure | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure b/configure
+index 0d90a4f..618fe78 100755
+--- a/configure
++++ b/configure
+@@ -63,9 +63,9 @@ cc_check() {
+ 	echo >> "$TMPLOG"
+ 	cat "$TMPC" >> "$TMPLOG"
+ 	echo >> "$TMPLOG"
+-	echo "$CXX $TMPC $LDFLAGS -o $TMPO$EXEEXT $@" >> "$TMPLOG"
++	echo "$CXX $TMPC $CXXFLAGS $LDFLAGS -o $TMPO$EXEEXT $@" >> "$TMPLOG"
+ 	rm -f "$TMPO$EXEEXT"
+-	( $CXX "$TMPC" $LDFLAGS -o "$TMPO$EXEEXT" "$@" ) >> "$TMPLOG" 2>&1
++	( $CXX "$TMPC" $CXXFLAGS $LDFLAGS -o "$TMPO$EXEEXT" "$@" ) >> "$TMPLOG" 2>&1
+ 	TMP="$?"
+ 	echo >> "$TMPLOG"
+ 	return "$TMP"
+@@ -107,9 +107,9 @@ EOF
+ 
+ if test -n "$_host"; then
+ 	# In cross-compiling mode, we cannot run the result
+-	eval "$1 $LDFLAGS -o tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp 2> /dev/null" && rm -f tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp
++	eval "$1 $CXXFLAGS $LDFLAGS -o tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp 2> /dev/null" && rm -f tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp
+ else
+-	eval "$1 $LDFLAGS -o tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp 2> /dev/null" && eval "./tmp_cxx_compiler 2> /dev/null" && rm -f tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp
++	eval "$1 $CXXFLAGS $LDFLAGS -o tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp 2> /dev/null" && eval "./tmp_cxx_compiler 2> /dev/null" && rm -f tmp_cxx_compiler$EXEEXT tmp_cxx_compiler.cpp
+ fi
+ }
+ 
+-- 
+2.5.5
+

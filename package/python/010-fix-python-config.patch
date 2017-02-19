@@ -61,7 +61,7 @@ Index: b/Makefile.pre.in
 @@ -410,7 +410,7 @@
  
  # Default target
- all:		build_all
+ all:		@DEF_MAKE_ALL_RULE@
 -build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
 +build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks python-config
  

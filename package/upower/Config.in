@@ -1,0 +1,26 @@
+config BR2_PACKAGE_UPOWER
+	bool "upower"
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libgudev, libusb
+	depends on BR2_USE_MMU # libgudev
+	depends on BR2_USE_WCHAR # libgudev
+	select BR2_PACKAGE_LIBGUDEV
+	select BR2_PACKAGE_LIBUSB
+	help
+	  UPower is an abstraction for enumerating power devices, listening
+	  to device events and querying history and statistics. Any
+	  application or service on the system can access the
+	  org.freedesktop.UPower service via the system message bus.
+
+	  Note: upowerd require CONFIG_TIMER_STATS enabled in the Linux
+	  kernel.
+
+	  https://upower.freedesktop.org/
+
+comment "upower needs udev /dev management"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+comment "upower needs a toolchain w/ threads, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

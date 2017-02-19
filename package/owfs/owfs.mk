@@ -17,6 +17,10 @@ OWFS_LICENSE = GPLv2+, LGPLv2 (owtcl)
 OWFS_LICENSE_FILES = COPYING COPYING.LIB
 OWFS_INSTALL_STAGING = YES
 
+# owfs PHP support is not PHP 7 compliant
+# https://sourceforge.net/p/owfs/support-requests/32/
+OWFS_CONF_OPTS += --disable-owphp --without-php
+
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 OWFS_DEPENDENCIES += libfuse
 OWFS_CONF_OPTS += \
@@ -49,13 +53,6 @@ else
 OWFS_CONF_OPTS += --disable-avahi
 endif
 
-ifeq ($(BR2_PACKAGE_PHP),y)
-OWFS_CONF_OPTS += --enable-owphp --with-php --with-phpconfig=$(STAGING_DIR)/usr/bin/php-config
-OWFS_DEPENDENCIES += php host-swig
-else
-OWFS_CONF_OPTS += --disable-owphp --without-php
-endif
-
 # setup.py isn't python3 compliant
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 OWFS_CONF_OPTS += \
@@ -69,6 +66,13 @@ OWFS_MAKE_ENV += \
 	_python_prefix=/usr \
 	_python_exec_prefix=/usr
 OWFS_DEPENDENCIES += python host-swig
+# The configure scripts finds PYSITEDIR as the python_lib directory of
+# host-python, and then prepends DESTDIR in front of it. So we end up
+# installing things in $(TARGET_DIR)/$(HOST_DIR)/usr/lib/python which is
+# clearly wrong.
+# Patching owfs to do the right thing is not trivial, it's much easier to
+# override the PYSITEDIR variable in make.
+OWFS_EXTRA_MAKE_OPTS += PYSITEDIR=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 else
 OWFS_CONF_OPTS += --disable-owpython --without-python
 endif
@@ -77,6 +81,8 @@ ifeq ($(BR2_STATIC_LIBS),y)
 # zeroconf support uses dlopen()
 OWFS_CONF_OPTS += --disable-zero
 endif
+
+OWFS_MAKE = $(MAKE) $(OWFS_EXTRA_MAKE_OPTS)
 
 define OWFS_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 $(OWFS_PKGDIR)S25owserver \

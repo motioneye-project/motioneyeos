@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "arm-none-linux-gnueabi"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-codesourcery-arm"
+
+endif

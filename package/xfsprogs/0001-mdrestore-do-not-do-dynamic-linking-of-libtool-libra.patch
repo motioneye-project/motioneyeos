@@ -1,12 +1,4 @@
-mdrestore: do not do dynamic linking of libtool libraries
-
-This patch has been sent upstream:
-
-  http://oss.sgi.com/pipermail/xfs/2015-November/045136.html
-
-Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
-
-From a406326f724006d62085a0aeae1072b4145caa9d Mon Sep 17 00:00:00 2001
+From 770902a0a29fb4ac62358f7eacb3a83d0d9af1c7 Mon Sep 17 00:00:00 2001
 From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 Date: Wed, 25 Nov 2015 10:50:00 +0000
 Subject: [PATCH] mdrestore: do not do dynamic linking of libtool libraries
@@ -18,6 +10,7 @@ linking for libuuid only. Otherwise the build will fail like this:
 ld: attempted static link of dynamic object `/usr/lib/libuuid.so'
 
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[Sent upstream: http://oss.sgi.com/pipermail/xfs/2015-November/045136.html]
 ---
  mdrestore/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -36,5 +29,5 @@ index 5171306..1b34a0e 100644
  default: depend $(LTCOMMAND)
  
 -- 
-2.4.10
+2.7.4
 

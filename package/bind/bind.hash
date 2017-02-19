@@ -1,2 +1,2 @@
-# Verified from ftp://ftp.isc.org/isc/bind9/9.10.4/bind-9.10.4.tar.gz.sha256.asc
-sha256	f8d412b38d5ac390275b943bde69f4608f67862a45487ec854b30e4448fcb056	bind-9.10.4.tar.gz
+# Verified from http://ftp.isc.org/isc/bind9/9.11.0-P2/bind-9.11.0-P2.tar.gz.sha256.asc
+sha256 d651f83ce1c08c83d6ac8201685c4f2b5fdb79794f3a4f93c3948e0ef439c1e5  bind-9.11.0-P2.tar.gz

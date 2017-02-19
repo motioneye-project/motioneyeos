@@ -1,0 +1,9 @@
+config BR2_PACKAGE_NGINX_UPLOAD
+	bool "nginx-upload"
+	depends on BR2_PACKAGE_NGINX_HTTP
+	select BR2_PACKAGE_OPENSSL
+	help
+	  A module for nginx web server for handling file uploads
+	  using multipart/form-data encoding (RFC 1867).
+
+	  https://github.com/vkholodkov/nginx-upload-module

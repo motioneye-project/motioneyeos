@@ -21,5 +21,5 @@ config BR2_PACKAGE_NSS_PAM_LDAPD_UTILITIES
 
 endif
 
-comment "nss-pam-ldapd needs an (e)glibc toolchain"
+comment "nss-pam-ldapd needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

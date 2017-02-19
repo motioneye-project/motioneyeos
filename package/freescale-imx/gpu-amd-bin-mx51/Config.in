@@ -1,4 +1,4 @@
-comment "gpu-amd-bin-mx51 needs an (e)glibc EABI toolchain w/ C++"
+comment "gpu-amd-bin-mx51 needs a glibc EABI toolchain w/ C++"
 	depends on BR2_arm
 	depends on !BR2_ARM_EABI || !BR2_TOOLCHAIN_USES_GLIBC || \
 		!BR2_INSTALL_LIBSTDCPP

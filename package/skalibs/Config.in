@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SKALIBS
+	bool "skalibs"
+	depends on BR2_USE_MMU # fork()
+	help
+	  skalibs is a package centralizing the FOSS C development
+	  files used for building all software at skarnet.org:
+	  it contains essentially general-purpose libraries.
+
+	  http://skarnet.org/software/skalibs/

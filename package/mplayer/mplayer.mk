@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPLAYER_VERSION = 1.2
+MPLAYER_VERSION = 1.3.0
 MPLAYER_SOURCE = MPlayer-$(MPLAYER_VERSION).tar.xz
 MPLAYER_SITE = http://www.mplayerhq.hu/MPlayer/releases
 MPLAYER_DEPENDENCIES = host-pkgconf
@@ -12,6 +12,12 @@ MPLAYER_LICENSE = GPLv2
 MPLAYER_LICENSE_FILES = LICENSE Copyright
 MPLAYER_CFLAGS = $(TARGET_CFLAGS)
 MPLAYER_LDFLAGS = $(TARGET_LDFLAGS)
+
+# Adding $(STAGING_DIR)/usr/include in the header path is normally not
+# needed. Except that mplayer's configure script has a completely
+# brain-damaged way of looking for X11/Xlib.h (it parses extra-cflags
+# for -I options).
+MPLAYER_CFLAGS += -I$(STAGING_DIR)/usr/include
 
 # mplayer needs pcm+mixer support, but configure fails to check for it
 ifeq ($(BR2_PACKAGE_ALSA_LIB)$(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yyy)
@@ -123,7 +129,7 @@ MPLAYER_CONF_OPTS += --disable-libcdio
 # autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
 MPLAYER_CONF_OPTS +=  \
-	--with-dvdread-config=$(STAGING_DIR)/usr/bin/dvdread-config
+	--with-dvdread-config="$(PKG_CONFIG_HOST_BINARY) dvdread"
 MPLAYER_DEPENDENCIES += libdvdread
 endif
 
@@ -131,7 +137,7 @@ endif
 # find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
 MPLAYER_CONF_OPTS +=  \
-	--with-dvdnav-config=$(STAGING_DIR)/usr/bin/dvdnav-config
+	--with-dvdnav-config="$(PKG_CONFIG_HOST_BINARY) dvdnav"
 MPLAYER_DEPENDENCIES += libdvdnav
 endif
 
@@ -172,6 +178,14 @@ endif
 ifeq ($(BR2_PACKAGE_LIBMPEG2),y)
 MPLAYER_DEPENDENCIES += libmpeg2
 MPLAYER_CONF_OPTS += --disable-libmpeg2-internal
+endif
+
+# We intentionally don't pass --enable-mpg123, to let the
+# autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_MPG123),y)
+MPLAYER_DEPENDENCIES += mpg123
+else
+MPLAYER_CONF_OPTS += --disable-mpg123
 endif
 
 ifeq ($(BR2_PACKAGE_TREMOR),y)
@@ -354,11 +368,11 @@ define MPLAYER_CONFIGURE_CMDS
 endef
 
 define MPLAYER_BUILD_CMDS
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define MPLAYER_INSTALL_TARGET_CMDS
-	$(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+	$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
 $(eval $(generic-package))

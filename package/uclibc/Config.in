@@ -1,11 +1,11 @@
 if BR2_TOOLCHAIN_BUILDROOT_UCLIBC
 
+comment "uClibc Options"
+
 config BR2_PACKAGE_UCLIBC
 	bool
 	default y
 	select BR2_PACKAGE_LINUX_HEADERS
-
-comment "uClibc Options"
 
 config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
@@ -41,42 +41,37 @@ config BR2_TOOLCHAIN_BUILDROOT_LOCALE
 	bool "Enable toolchain locale/i18n support"
 	select BR2_TOOLCHAIN_BUILDROOT_WCHAR
 	select BR2_ENABLE_LOCALE
+	select BR2_NEEDS_HOST_UTF8_LOCALE
 	help
 	  Enable this option if you want your toolchain to support
 	  localization and internationalization.
 
 choice
 	prompt "Thread library implementation"
-	default BR2_PTHREADS_NATIVE
-	default BR2_PTHREADS_OLD if !BR2_USE_MMU
 	help
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain.
-
-	config BR2_PTHREADS_NONE
-		bool "none"
-
-	config BR2_PTHREADS
-		bool "linuxthreads"
-		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_m68k
-
-	config BR2_PTHREADS_OLD
-		bool "linuxthreads (stable/old)"
-		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_m68k || BR2_arm || BR2_armeb || BR2_xtensa
 
 	config BR2_PTHREADS_NATIVE
 		bool "Native POSIX Threading (NPTL)"
 		select BR2_TOOLCHAIN_HAS_THREADS
 		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 		depends on BR2_USE_MMU
-		depends on !BR2_m68k
+		depends on !BR2_m68k && !BR2_microblaze && !BR2_or1k
+
+	config BR2_PTHREADS
+		bool "linuxthreads"
+		select BR2_TOOLCHAIN_HAS_THREADS
+		depends on BR2_bfin || BR2_m68k || BR2_microblaze || BR2_or1k || BR2_arm || BR2_armeb || BR2_xtensa
+
+	config BR2_PTHREADS_NONE
+		bool "none"
+
 endchoice
 
 config BR2_PTHREAD_DEBUG
 	bool "Thread library debugging"
-	depends on BR2_PTHREADS || BR2_PTHREADS_OLD || BR2_PTHREADS_NATIVE
+	depends on BR2_PTHREADS || BR2_PTHREADS_NATIVE
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	help
 	  Build the thread library with debugging enabled.
@@ -101,32 +96,17 @@ config BR2_UCLIBC_INSTALL_UTILS
 	  You can save ~32 KiB in target space by disabling them since
 	  they're normally not needed.
 
-config BR2_UCLIBC_INSTALL_TEST_SUITE
-	bool "Compile and install uClibc tests"
-	select BR2_PACKAGE_MAKE
-	depends on BR2_USE_MMU # make
-	help
-	  Enabling this option will compile and install the uClibc test suite.
-	  This is useful if you want to check if the uClibc library is working
-	  for your architecture and/or help developing uClibc.
-
-	  The test suite will be installed into /root/uClibc directory. To run
-	  the test suite enter the /root/uClibc/test directory and type
-	  "make UCLIBC_ONLY=1 CC=/bin/true check".
-
-	  See the /root/uClibc/test/README for additional information.
-
-	  This is not needed at all for normal builds, so you can safely say no
-	  if you do not plan to dig into your C library.
-
 # Mapping from the Buildroot architecture configuration options to the
 # uClibc architecture names.
 config BR2_UCLIBC_TARGET_ARCH
 	string
 	default "arc"	   if BR2_arcle || BR2_arceb
 	default "arm"	   if BR2_arm	|| BR2_armeb
+	default "bfin"	   if BR2_bfin
 	default "m68k"	   if BR2_m68k
+	default "microblaze"   if BR2_microblaze
 	default "mips"	   if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	default "or1k"     if BR2_or1k
 	default "powerpc"  if BR2_powerpc
 	default "sh"	   if BR2_sh
 	default "sparc"	   if BR2_sparc
@@ -148,12 +128,11 @@ config BR2_UCLIBC_MIPS_ABI
 	default "N32" if BR2_MIPS_NABI32
 	default "N64" if BR2_MIPS_NABI64
 
-config BR2_UCLIBC_MIPS_ISA
+config BR2_UCLIBC_MIPS_NAN
 	string
 	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
-	default "MIPS32" if BR2_mips_32
-	default "MIPS32R2" if BR2_mips_32r2
-	default "MIPS64" if BR2_mips_64
+	default "LEGACY" if BR2_MIPS_CPU_MIPS32 || BR2_MIPS_CPU_MIPS64
+	default "2008" if BR2_MIPS_CPU_MIPS32R6 || BR2_MIPS_CPU_MIPS64R6
 
 config BR2_UCLIBC_SH_TYPE
 	string

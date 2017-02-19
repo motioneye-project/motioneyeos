@@ -1,0 +1,11 @@
+config BR2_PACKAGE_NMON
+	bool "nmon"
+	depends on BR2_TOOLCHAIN_USES_GLIBC # fstab.h
+	select BR2_PACKAGE_NCURSES
+	help
+	  Nmon is short for Nigel's performance Monitor for Linux
+
+	  http://nmon.sourceforge.net/pmwiki.php
+
+comment "nmon needs a glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

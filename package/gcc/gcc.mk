@@ -13,11 +13,13 @@ GCC_VERSION = $(call qstrip,$(BR2_GCC_VERSION))
 ifeq ($(BR2_arc),y)
 GCC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,gcc,$(GCC_VERSION))
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.gz
+else ifeq ($(BR2_or1k),y)
+GCC_SITE = $(call github,openrisc,or1k-gcc,$(GCC_VERSION))
+GCC_SOURCE = gcc-$(GCC_VERSION).tar.gz
 else
 GCC_SITE = $(BR2_GNU_MIRROR:/=)/gcc/gcc-$(GCC_VERSION)
+GCC_SOURCE = gcc-$(GCC_VERSION).tar.bz2
 endif
-
-GCC_SOURCE ?= gcc-$(GCC_VERSION).tar.bz2
 
 #
 # Xtensa special hook
@@ -41,10 +43,18 @@ endef
 endif
 endif
 
+# gcc is a special package, not named gcc, but gcc-initial and
+# gcc-final, but patches are nonetheless stored in package/gcc in the
+# tree, and potentially in BR2_GLOBAL_PATCH_DIR directories as well.
 define HOST_GCC_APPLY_PATCHES
-	if test -d package/gcc/$(GCC_VERSION); then \
-	  $(APPLY_PATCHES) $(@D) package/gcc/$(GCC_VERSION) \*.patch ; \
-	fi;
+	for patchdir in \
+	    package/gcc/$(GCC_VERSION) \
+	    $(addsuffix /gcc/$(GCC_VERSION),$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
+	    $(addsuffix /gcc,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) ; do \
+		if test -d $${patchdir}; then \
+			$(APPLY_PATCHES) $(@D) $${patchdir} \*.patch || exit 1; \
+		fi; \
+	done
 	$(HOST_GCC_APPLY_POWERPC_PATCH)
 endef
 
@@ -74,6 +84,7 @@ endef
 HOST_GCC_COMMON_DEPENDENCIES = \
 	host-binutils \
 	host-gmp \
+	host-mpc \
 	host-mpfr \
 	$(if $(BR2_BINFMT_FLAT),host-elf2flt)
 
@@ -85,6 +96,7 @@ HOST_GCC_COMMON_CONF_OPTS = \
 	--disable-libssp \
 	--disable-multilib \
 	--with-gmp=$(HOST_DIR)/usr \
+	--with-mpc=$(HOST_DIR)/usr \
 	--with-mpfr=$(HOST_DIR)/usr \
 	--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="http://bugs.buildroot.net/"
@@ -106,8 +118,15 @@ ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libitm
 endif
 
-# gcc 4.6.x quadmath requires wchar
-ifneq ($(BR2_TOOLCHAIN_BUILDROOT_WCHAR),y)
+# libmpx uses secure_getenv and struct _libc_fpstate not present in musl
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_MUSL)$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),yy)
+HOST_GCC_COMMON_CONF_OPTS += --disable-libmpx
+endif
+
+# quadmath support requires wchar
+ifeq ($(BR2_USE_WCHAR)$(BR2_TOOLCHAIN_HAS_LIBQUADMATH),yy)
+HOST_GCC_COMMON_CONF_OPTS += --enable-libquadmath
+else
 HOST_GCC_COMMON_CONF_OPTS += --disable-libquadmath
 endif
 
@@ -123,10 +142,13 @@ ifeq ($(BR2_sparc)$(BR2_sparc64),y)
 HOST_GCC_COMMON_CONF_OPTS += --disable-libsanitizer
 endif
 
-ifeq ($(BR2_GCC_ENABLE_TLS),y)
-HOST_GCC_COMMON_CONF_OPTS += --enable-tls
-else
+# TLS support is not needed on uClibc/no-thread and
+# uClibc/linux-threads, otherwise, for all other situations (glibc,
+# musl and uClibc/NPTL), we need it.
+ifeq ($(BR2_TOOLCHAIN_BUILDROOT_UCLIBC)$(BR2_PTHREADS)$(BR2_PTHREADS_NONE),yy)
 HOST_GCC_COMMON_CONF_OPTS += --disable-tls
+else
+HOST_GCC_COMMON_CONF_OPTS += --enable-tls
 endif
 
 ifeq ($(BR2_GCC_ENABLE_LTO),y)
@@ -148,11 +170,6 @@ else
 HOST_GCC_COMMON_CONF_OPTS += --enable-threads
 endif
 
-ifeq ($(BR2_GCC_NEEDS_MPC),y)
-HOST_GCC_COMMON_DEPENDENCIES += host-mpc
-HOST_GCC_COMMON_CONF_OPTS += --with-mpc=$(HOST_DIR)/usr
-endif
-
 ifeq ($(BR2_GCC_ENABLE_GRAPHITE),y)
 HOST_GCC_COMMON_DEPENDENCIES += host-isl
 HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)/usr
@@ -166,7 +183,7 @@ else
 HOST_GCC_COMMON_CONF_OPTS += --without-isl --without-cloog
 endif
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_arc)$(BR2_or1k),y)
 HOST_GCC_COMMON_DEPENDENCIES += host-flex host-bison
 endif
 
@@ -183,6 +200,7 @@ HOST_GCC_COMMON_CONF_OPTS += --disable-decimal-float
 endif
 
 # Determine arch/tune/abi/cpu options
+ifeq ($(BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS),y)
 ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 HOST_GCC_COMMON_CONF_OPTS += --with-arch=$(BR2_GCC_TARGET_ARCH)
 endif
@@ -211,6 +229,7 @@ GCC_TARGET_MODE = $(call qstrip,$(BR2_GCC_TARGET_MODE))
 ifneq ($(GCC_TARGET_MODE),)
 HOST_GCC_COMMON_CONF_OPTS += --with-mode=$(GCC_TARGET_MODE)
 endif
+endif # BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS
 
 # Enable proper double/long double for SPE ABI
 ifeq ($(BR2_powerpc_SPE),y)
@@ -219,7 +238,48 @@ HOST_GCC_COMMON_CONF_OPTS += \
 	--with-long-double-128
 endif
 
+# PowerPC64 big endian by default uses the elfv1 ABI, and PowerPC 64
+# little endian by default uses the elfv2 ABI. However, musl has
+# decided to use the elfv2 ABI for both, so we force the elfv2 ABI for
+# Power64 big endian when the selected C library is musl.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL)$(BR2_powerpc64),yy)
+HOST_GCC_COMMON_CONF_OPTS += \
+	--with-abi=elfv2 \
+	--without-long-double-128
+endif
+
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".br_real"'
+ifeq ($(BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS),)
+ifeq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
+HOST_GCC_COMMON_WRAPPER_TARGET_CPU := $(call qstrip,$(BR2_GCC_TARGET_CPU))
+else
+HOST_GCC_COMMON_WRAPPER_TARGET_CPU := $(call qstrip,$(BR2_GCC_TARGET_CPU)-$(BR2_GCC_TARGET_CPU_REVISION))
+endif
+HOST_GCC_COMMON_WRAPPER_TARGET_ARCH := $(call qstrip,$(BR2_GCC_TARGET_ARCH))
+HOST_GCC_COMMON_WRAPPER_TARGET_ABI := $(call qstrip,$(BR2_GCC_TARGET_ABI))
+HOST_GCC_COMMON_WRAPPER_TARGET_FPU := $(call qstrip,$(BR2_GCC_TARGET_FPU))
+HOST_GCC_COMMON_WRAPPER_TARGET_FLOAT_ABI := $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
+HOST_GCC_COMMON_WRAPPER_TARGET_MODE := $(call qstrip,$(BR2_GCC_TARGET_MODE))
+
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_ARCH),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_ARCH='"$(HOST_GCC_COMMON_WRAPPER_TARGET_ARCH)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_CPU),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CPU='"$(HOST_GCC_COMMON_WRAPPER_TARGET_CPU)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_ABI),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_ABI='"$(HOST_GCC_COMMON_WRAPPER_TARGET_ABI)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_FPU),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_FPU='"$(HOST_GCC_COMMON_WRAPPER_TARGET_FPU)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_FLOATABI_),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_FLOAT_ABI='"$(HOST_GCC_COMMON_WRAPPER_TARGET_FLOATABI_)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_MODE),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_MODE='"$(HOST_GCC_COMMON_WRAPPER_TARGET_MODE)"'
+endif
+endif # !BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS
 
 # For gcc-initial, we need to tell gcc that the C library will be
 # providing the ssp support, as it can't guess it since the C library
@@ -233,13 +293,19 @@ HOST_GCC_COMMON_MAKE_OPTS = \
 
 ifeq ($(BR2_CCACHE),y)
 HOST_GCC_COMMON_CCACHE_HASH_FILES += $(DL_DIR)/$(GCC_SOURCE)
-# Cfr. PATCH_BASE_DIRS in .stamp_patched, but we catch both versioned and
-# unversioned patches unconditionally
+
+# Cfr. PATCH_BASE_DIRS in .stamp_patched, but we catch both versioned
+# and unversioned patches unconditionally. Moreover, to facilitate the
+# addition of gcc patches in BR2_GLOBAL_PATCH_DIR, we allow them to be
+# stored in a sub-directory called 'gcc' even if it's not technically
+# the name of the package.
 HOST_GCC_COMMON_CCACHE_HASH_FILES += \
 	$(sort $(wildcard \
 		package/gcc/$(GCC_VERSION)/*.patch \
-		$(addsuffix /$((PKG)_RAWNAME)/$(GCC_VERSION)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
-		$(addsuffix /$((PKG)_RAWNAME)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR)))))
+		$(addsuffix /$($(PKG)_RAWNAME)/$(GCC_VERSION)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
+		$(addsuffix /$($(PKG)_RAWNAME)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
+		$(addsuffix /gcc/$(GCC_VERSION)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
+		$(addsuffix /gcc/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR)))))
 ifeq ($(BR2_xtensa),y)
 HOST_GCC_COMMON_CCACHE_HASH_FILES += $(HOST_GCC_XTENSA_OVERLAY_TAR)
 endif
@@ -265,6 +331,8 @@ endif # BR2_CCACHE
 # used. However, we should not add the toolchain wrapper for them, and they
 # match the *cc-* pattern. Therefore, an additional case is added for *-ar,
 # *-ranlib and *-nm.
+# According to gfortran manpage, it supports all options supported by gcc, so
+# add gfortran to the list of the program called via the Buildroot wrapper.
 # Avoid that a .br_real is symlinked a second time.
 # Also create <arch>-linux-<tool> symlinks.
 define HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
@@ -276,7 +344,7 @@ define HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
 		*-ar|*-ranlib|*-nm) \
 			ln -snf $$i $(ARCH)-linux$${i##$(GNU_TARGET_NAME)}; \
 			;; \
-		*cc|*cc-*|*++|*++-*|*cpp) \
+		*cc|*cc-*|*++|*++-*|*cpp|*-gfortran) \
 			rm -f $$i.br_real; \
 			mv $$i $$i.br_real; \
 			ln -sf toolchain-wrapper $$i; \

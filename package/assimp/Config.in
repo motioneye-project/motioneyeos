@@ -4,6 +4,11 @@ config BR2_PACKAGE_ASSIMP
 	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=71124, that
 	# cause an infinite loop in gcc when building this package.
 	depends on !BR2_microblaze
+	# The ADI Blackfin toolchain does not build assimp properly,
+	# fails with "internal compiler error: in simplify_subreg, at
+	# simplify-rtx.c:5001". It builds fine with a mainline gcc for
+	# Blackfin.
+	depends on !BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_ZLIB
 	help

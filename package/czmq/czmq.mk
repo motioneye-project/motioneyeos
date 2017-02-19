@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-CZMQ_VERSION = v3.0.2
+CZMQ_VERSION = 5205ec201e97c3a652c17eb86b18b70350b54512
 CZMQ_SITE = $(call github,zeromq,czmq,$(CZMQ_VERSION))
-CZMQ_PATCH = https://github.com/zeromq/czmq/commit/bcf583633e8b27a9bfbed1e4a717b9373f7446be.patch
 
 # Autoreconf required as we use the git tree
 CZMQ_AUTORECONF = YES

@@ -20,7 +20,7 @@ define PROXYCHAINS_NG_BUILD_CMDS
 endef
 
 define PROXYCHAINS_NG_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install install-config
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install install-config
 endef
 
 $(eval $(generic-package))

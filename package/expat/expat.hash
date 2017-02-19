@@ -1,5 +1,5 @@
-# From https://sourceforge.net/projects/expat/files/expat/2.1.1/
-md5	7380a64a8e3a9d66a9887b01d0d7ea81	expat-2.1.1.tar.bz2
-sha1	ff91419882ac52151050dad0ee8190645fbeee08	expat-2.1.1.tar.bz2
+# From https://sourceforge.net/projects/expat/files/expat/2.2.0/
+md5	2f47841c829facb346eb6e3fab5212e2	expat-2.2.0.tar.bz2
+sha1	8453bc52324be4c796fd38742ec48470eef358b3	expat-2.2.0.tar.bz2
 # Calculated based on the hashes above
-sha256	aff584e5a2f759dcfc6d48671e9529f6afe1e30b0cd6a4cec200cbe3f793de67	expat-2.1.1.tar.bz2
+sha256	d9e50ff2d19b3538bd2127902a89987474e1a4db8e43a66a4d1a712ab9a504ff	expat-2.2.0.tar.bz2

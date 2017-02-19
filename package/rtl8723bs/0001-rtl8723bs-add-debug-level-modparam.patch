@@ -1,0 +1,41 @@
+From 9f70428f506ac9d5af325004c01c59c62669d7eb Mon Sep 17 00:00:00 2001
+From: Jason Abele <jason@jasonabeleconsulting.com>
+Date: Sat, 15 Aug 2015 18:20:54 -0700
+Subject: [PATCH] rtl8723bs: add debug level modparam
+
+For ease of controlling debug printk verbosity, add a module parameter
+which sets debug level at module load.
+
+Signed-off-by: Jason Abele <jason@jasonabeleconsulting.com>
+[Fixed to apply on current version]
+Signed-off-by: Ariel D'Alessandro <ariel@vanguardiasur.com.ar>
+---
+ os_dep/os_intfs.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/os_dep/os_intfs.c b/os_dep/os_intfs.c
+index b30c2a0..eeb8946 100644
+--- a/os_dep/os_intfs.c
++++ b/os_dep/os_intfs.c
+@@ -231,6 +231,10 @@ module_param(rtw_decrypt_phy_file, int, 0644);
+ MODULE_PARM_DESC(rtw_decrypt_phy_file,"Enable Decrypt PHY File");
+ #endif
+
++int rtw_debug_level = _drv_err_;
++module_param(rtw_debug_level, int, 0644);
++MODULE_PARM_DESC(rtw_debug_level,"Set Driver Debug Verbosity");
++
+ int _netdev_open(struct net_device *pnetdev);
+ int netdev_open (struct net_device *pnetdev);
+ static int netdev_close (struct net_device *pnetdev);
+@@ -347,6 +351,7 @@ static uint loadparam(struct adapter *padapter, _nic_hdl pnetdev)
+ 	registry_par->qos_opt_enable = (u8)rtw_qos_opt_enable;
+
+ 	registry_par->hiq_filter = (u8)rtw_hiq_filter;
++	GlobalDebugLevel = rtw_debug_level;
+ 	return status;
+ }
+
+--
+2.8.3
+

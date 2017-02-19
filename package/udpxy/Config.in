@@ -1,0 +1,9 @@
+config BR2_PACKAGE_UDPXY
+	bool "udpxy"
+	depends on BR2_USE_MMU
+	help
+	  udpxy is a UDP-to-HTTP multicast traffic relay daemon: it
+	  forwards UDP traffic from a given multicast subscription to
+	  the requesting HTTP client.
+
+	  http://www.udpxy.com/

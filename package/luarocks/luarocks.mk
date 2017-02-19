@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUAROCKS_VERSION = 2.3.0
+LUAROCKS_VERSION = 2.4.2
 LUAROCKS_SITE = http://luarocks.org/releases
 LUAROCKS_LICENSE = MIT
 LUAROCKS_LICENSE_FILES = COPYING
@@ -60,5 +60,7 @@ define LUAROCKS_FINALIZE_TARGET
 	rm -rf $(TARGET_DIR)/usr/lib/luarocks
 endef
 
+# Apply to global variable directly, as pkg-generic does not
+ifneq ($(BR2_PACKAGE_LUAJIT)$(BR2_PACKAGE_LUA),)
 TARGET_FINALIZE_HOOKS += LUAROCKS_FINALIZE_TARGET
-
+endif

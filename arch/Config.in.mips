@@ -1,3 +1,21 @@
+# mips default CPU ISAs
+config BR2_MIPS_CPU_MIPS32
+	bool
+config BR2_MIPS_CPU_MIPS32R2
+	bool
+config BR2_MIPS_CPU_MIPS32R5
+	bool
+config BR2_MIPS_CPU_MIPS32R6
+	bool
+config BR2_MIPS_CPU_MIPS64
+	bool
+config BR2_MIPS_CPU_MIPS64R2
+	bool
+config BR2_MIPS_CPU_MIPS64R5
+	bool
+config BR2_MIPS_CPU_MIPS64R6
+	bool
+
 choice
 	prompt "Target Architecture Variant"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
@@ -6,27 +24,78 @@ choice
 	help
 	  Specific CPU variant to use
 
-	  64bit cabable: 64, 64r2, 64r6
-	  non-64bit capable: 32, 32r2, 32r6
+	  64bit cabable: 64, 64r2, 64r5, 64r6
+	  non-64bit capable: 32, 32r2, 32r5, 32r6
 
 config BR2_mips_32
-	bool "mips 32"
+	bool "Generic MIPS32"
 	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32
 config BR2_mips_32r2
-	bool "mips 32r2"
+	bool "Generic MIPS32R2"
 	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R2
+config BR2_mips_32r5
+	bool "Generic MIPS32R5"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R5
 config BR2_mips_32r6
-	bool "mips 32r6"
+	bool "Generic MIPS32R6"
 	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R6
+config BR2_mips_interaptiv
+	bool "interAptiv"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R2
+config BR2_mips_m5150
+	bool "M5150"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R5
+config BR2_mips_m6250
+	bool "M6250"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R6
+config BR2_mips_p5600
+	bool "P5600"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R5
+config BR2_mips_xburst
+	bool "XBurst"
+	depends on !BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS32R2
+	help
+	  The Ingenic XBurst is a MIPS32R2 microprocessor. It has a
+	  bug in the FPU that can generate incorrect results in
+	  certain cases. The problem shows up when you have several
+	  fused madd instructions in sequence with dependant
+	  operands. This requires the -mno-fused-madd compiler option
+	  to be used in order to prevent emitting these instructions.
+
+	  See http://www.ingenic.com/en/?xburst.html
 config BR2_mips_64
-	bool "mips 64"
+	bool "Generic MIPS64"
 	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64
 config BR2_mips_64r2
-	bool "mips 64r2"
+	bool "Generic MIPS64R2"
 	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R2
+config BR2_mips_64r5
+	bool "Generic MIPS64R5"
+	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R5
 config BR2_mips_64r6
-	bool "mips 64r6"
+	bool "Generic MIPS64R6"
 	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R6
+config BR2_mips_i6400
+	bool "I6400"
+	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R6
+config BR2_mips_p6600
+	bool "P6600"
+	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
 
@@ -70,10 +139,19 @@ config BR2_ENDIAN
 config BR2_GCC_TARGET_ARCH
 	default "mips32"	if BR2_mips_32
 	default "mips32r2"	if BR2_mips_32r2
+	default "mips32r5"	if BR2_mips_32r5
 	default "mips32r6"	if BR2_mips_32r6
+	default "interaptiv"	if BR2_mips_interaptiv
+	default "m5101"		if BR2_mips_m5150
+	default "m6201"		if BR2_mips_m6250
+	default "p5600"		if BR2_mips_p5600
+	default "mips32r2"	if BR2_mips_xburst
 	default "mips64"	if BR2_mips_64
 	default "mips64r2"	if BR2_mips_64r2
+	default "mips64r5"	if BR2_mips_64r5
 	default "mips64r6"	if BR2_mips_64r6
+	default "i6400"		if BR2_mips_i6400
+	default "p6600"		if BR2_mips_p6600
 
 config BR2_MIPS_OABI32
 	bool

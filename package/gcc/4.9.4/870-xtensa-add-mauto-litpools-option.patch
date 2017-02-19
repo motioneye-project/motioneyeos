@@ -1,0 +1,287 @@
+From 6d852ffb43b111a39162135c95249e749c4e285b Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Thu, 6 Aug 2015 01:16:02 +0300
+Subject: [PATCH] xtensa: add -mauto-litpools option
+
+With support from assembler this option allows compiling huge functions,
+where single literal pool at the beginning of a function may not be
+reachable by L32R instructions at its end.
+
+Currently assembler --auto-litpools option cannot deal with literals
+used from multiple locations separated by more than 256 KBytes of code.
+Don't turn constants into literals, instead use MOVI instruction to load
+them into registers and let the assembler turn them into literals as
+necessary.
+
+2015-08-12  Max Filippov  <jcmvbkbc@gmail.com>
+gcc/
+	* config/xtensa/constraints.md (define_constraint "Y"): New
+	constraint.
+	* config/xtensa/elf.h (ASM_SPEC): Add m(no-)auto-litpools.
+	* config/xtensa/linux.h (ASM_SPEC): Likewise.
+	* config/xtensa/predicates.md (move_operand): Match constants
+	and symbols in the presence of TARGET_AUTO_LITPOOLS.
+	* config/xtensa/xtensa.c (xtensa_valid_move): Don't allow
+	immediate references to TLS data.
+	(xtensa_emit_move_sequence): Don't force constants to memory in
+	the presence of TARGET_AUTO_LITPOOLS.
+	(print_operand): Add 'y' format, same as default, but capable of
+	printing SF mode constants as well.
+	* config/xtensa/xtensa.md (movsi_internal, movhi_internal)
+	(movsf_internal): Add movi pattern that loads literal.
+	(movsf, movdf): Don't force constants to memory in the presence
+	of TARGET_AUTO_LITPOOLS.
+	(movdf_internal): Add 'Y' constraint.
+	* config/xtensa/xtensa.opt (mauto-litpools): New option.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+---
+Backported from: r226828
+Changes to ChangeLogs and documentation are dropped.
+
+ gcc/config/xtensa/constraints.md |  5 +++++
+ gcc/config/xtensa/elf.h          |  4 +++-
+ gcc/config/xtensa/linux.h        |  4 +++-
+ gcc/config/xtensa/predicates.md  |  3 ++-
+ gcc/config/xtensa/xtensa.c       | 19 ++++++++++++++++++-
+ gcc/config/xtensa/xtensa.md      | 35 +++++++++++++++++++----------------
+ gcc/config/xtensa/xtensa.opt     |  4 ++++
+ 7 files changed, 54 insertions(+), 20 deletions(-)
+
+Index: b/gcc/config/xtensa/constraints.md
+===================================================================
+--- a/gcc/config/xtensa/constraints.md
++++ b/gcc/config/xtensa/constraints.md
+@@ -111,6 +111,11 @@
+  (and (match_code "const_int")
+       (match_test "xtensa_mask_immediate (ival)")))
+ 
++(define_constraint "Y"
++ "A constant that can be used in relaxed MOVI instructions."
++ (and (match_code "const_int,const_double,const,symbol_ref,label_ref")
++      (match_test "TARGET_AUTO_LITPOOLS")))
++
+ ;; Memory constraints.  Do not use define_memory_constraint here.  Doing so
+ ;; causes reload to force some constants into the constant pool, but since
+ ;; the Xtensa constant pool can only be accessed with L32R instructions, it
+Index: b/gcc/config/xtensa/elf.h
+===================================================================
+--- a/gcc/config/xtensa/elf.h
++++ b/gcc/config/xtensa/elf.h
+@@ -48,7 +48,9 @@
+   %{mtarget-align:--target-align} \
+   %{mno-target-align:--no-target-align} \
+   %{mlongcalls:--longcalls} \
+-  %{mno-longcalls:--no-longcalls}"
++  %{mno-longcalls:--no-longcalls} \
++  %{mauto-litpools:--auto-litpools} \
++  %{mno-auto-litpools:--no-auto-litpools}"
+ 
+ #undef LIB_SPEC
+ #define LIB_SPEC "-lc -lsim -lc -lhandlers-sim -lhal"
+Index: b/gcc/config/xtensa/linux.h
+===================================================================
+--- a/gcc/config/xtensa/linux.h
++++ b/gcc/config/xtensa/linux.h
+@@ -42,7 +42,9 @@
+   %{mtarget-align:--target-align} \
+   %{mno-target-align:--no-target-align} \
+   %{mlongcalls:--longcalls} \
+-  %{mno-longcalls:--no-longcalls}"
++  %{mno-longcalls:--no-longcalls} \
++  %{mauto-litpools:--auto-litpools} \
++  %{mno-auto-litpools:--no-auto-litpools}"
+ 
+ #define GLIBC_DYNAMIC_LINKER "/lib/ld.so.1"
+ 
+Index: b/gcc/config/xtensa/predicates.md
+===================================================================
+--- a/gcc/config/xtensa/predicates.md
++++ b/gcc/config/xtensa/predicates.md
+@@ -142,7 +142,8 @@
+ 	       (match_test "GET_MODE_CLASS (mode) == MODE_INT
+ 			    && xtensa_simm12b (INTVAL (op))"))
+ 	  (and (match_code "const_int,const_double,const,symbol_ref,label_ref")
+-	       (match_test "TARGET_CONST16 && CONSTANT_P (op)
++	       (match_test "(TARGET_CONST16 || TARGET_AUTO_LITPOOLS)
++			    && CONSTANT_P (op)
+ 			    && GET_MODE_SIZE (mode) % UNITS_PER_WORD == 0")))))
+ 
+ ;; Accept the floating point constant 1 in the appropriate mode.
+Index: b/gcc/config/xtensa/xtensa.c
+===================================================================
+--- a/gcc/config/xtensa/xtensa.c
++++ b/gcc/config/xtensa/xtensa.c
+@@ -477,6 +477,9 @@
+     {
+       int dst_regnum = xt_true_regnum (operands[0]);
+ 
++      if (xtensa_tls_referenced_p (operands[1]))
++	return FALSE;
++
+       /* The stack pointer can only be assigned with a MOVSP opcode.  */
+       if (dst_regnum == STACK_POINTER_REGNUM)
+ 	return (mode == SImode
+@@ -1044,7 +1047,7 @@
+ 	  return 1;
+ 	}
+ 
+-      if (! TARGET_CONST16)
++      if (! TARGET_AUTO_LITPOOLS && ! TARGET_CONST16)
+ 	{
+ 	  src = force_const_mem (SImode, src);
+ 	  operands[1] = src;
+@@ -2428,6 +2431,20 @@
+ 	}
+       break;
+ 
++    case 'y':
++      if (GET_CODE (x) == CONST_DOUBLE &&
++	  GET_MODE (x) == SFmode)
++	{
++	  REAL_VALUE_TYPE r;
++	  long l;
++	  REAL_VALUE_FROM_CONST_DOUBLE (r, x);
++	  REAL_VALUE_TO_TARGET_SINGLE (r, l);
++	  fprintf (file, "0x%08lx", l);
++	  break;
++	}
++
++      /* fall through */
++
+     default:
+       if (GET_CODE (x) == REG || GET_CODE (x) == SUBREG)
+ 	fprintf (file, "%s", reg_names[xt_true_regnum (x)]);
+Index: b/gcc/config/xtensa/xtensa.md
+===================================================================
+--- a/gcc/config/xtensa/xtensa.md
++++ b/gcc/config/xtensa/xtensa.md
+@@ -799,8 +799,8 @@
+ })
+ 
+ (define_insn "movsi_internal"
+-  [(set (match_operand:SI 0 "nonimmed_operand" "=D,D,D,D,R,R,a,q,a,W,a,a,U,*a,*A")
+-	(match_operand:SI 1 "move_operand" "M,D,d,R,D,d,r,r,I,i,T,U,r,*A,*r"))]
++  [(set (match_operand:SI 0 "nonimmed_operand" "=D,D,D,D,R,R,a,q,a,a,W,a,a,U,*a,*A")
++	(match_operand:SI 1 "move_operand" "M,D,d,R,D,d,r,r,I,Y,i,T,U,r,*A,*r"))]
+   "xtensa_valid_move (SImode, operands)"
+   "@
+    movi.n\t%0, %x1
+@@ -812,15 +812,16 @@
+    mov\t%0, %1
+    movsp\t%0, %1
+    movi\t%0, %x1
++   movi\t%0, %1
+    const16\t%0, %t1\;const16\t%0, %b1
+    %v1l32r\t%0, %1
+    %v1l32i\t%0, %1
+    %v0s32i\t%1, %0
+    rsr\t%0, ACCLO
+    wsr\t%1, ACCLO"
+-  [(set_attr "type" "move,move,move,load,store,store,move,move,move,move,load,load,store,rsr,wsr")
++  [(set_attr "type" "move,move,move,load,store,store,move,move,move,move,move,load,load,store,rsr,wsr")
+    (set_attr "mode"	"SI")
+-   (set_attr "length"	"2,2,2,2,2,2,3,3,3,6,3,3,3,3,3")])
++   (set_attr "length"	"2,2,2,2,2,2,3,3,3,3,6,3,3,3,3,3")])
+ 
+ ;; 16-bit Integer moves
+ 
+@@ -834,21 +835,22 @@
+ })
+ 
+ (define_insn "movhi_internal"
+-  [(set (match_operand:HI 0 "nonimmed_operand" "=D,D,a,a,a,U,*a,*A")
+-	(match_operand:HI 1 "move_operand" "M,d,r,I,U,r,*A,*r"))]
++  [(set (match_operand:HI 0 "nonimmed_operand" "=D,D,a,a,a,a,U,*a,*A")
++	(match_operand:HI 1 "move_operand" "M,d,r,I,Y,U,r,*A,*r"))]
+   "xtensa_valid_move (HImode, operands)"
+   "@
+    movi.n\t%0, %x1
+    mov.n\t%0, %1
+    mov\t%0, %1
+    movi\t%0, %x1
++   movi\t%0, %1
+    %v1l16ui\t%0, %1
+    %v0s16i\t%1, %0
+    rsr\t%0, ACCLO
+    wsr\t%1, ACCLO"
+-  [(set_attr "type"	"move,move,move,move,load,store,rsr,wsr")
++  [(set_attr "type"	"move,move,move,move,move,load,store,rsr,wsr")
+    (set_attr "mode"	"HI")
+-   (set_attr "length"	"2,2,3,3,3,3,3,3")])
++   (set_attr "length"	"2,2,3,3,3,3,3,3,3")])
+ 
+ ;; 8-bit Integer moves
+ 
+@@ -919,7 +921,7 @@
+ 	(match_operand:SF 1 "general_operand" ""))]
+   ""
+ {
+-  if (!TARGET_CONST16 && CONSTANT_P (operands[1]))
++  if (!TARGET_CONST16 && !TARGET_AUTO_LITPOOLS && CONSTANT_P (operands[1]))
+     operands[1] = force_const_mem (SFmode, operands[1]);
+ 
+   if ((!register_operand (operands[0], SFmode)
+@@ -934,8 +936,8 @@
+ })
+ 
+ (define_insn "movsf_internal"
+-  [(set (match_operand:SF 0 "nonimmed_operand" "=f,f,U,D,D,R,a,f,a,W,a,a,U")
+-	(match_operand:SF 1 "move_operand" "f,U,f,d,R,d,r,r,f,iF,T,U,r"))]
++  [(set (match_operand:SF 0 "nonimmed_operand" "=f,f,U,D,D,R,a,f,a,a,W,a,a,U")
++	(match_operand:SF 1 "move_operand" "f,U,f,d,R,d,r,r,f,Y,iF,T,U,r"))]
+   "((register_operand (operands[0], SFmode)
+      || register_operand (operands[1], SFmode))
+     && !(FP_REG_P (xt_true_regnum (operands[0]))
+@@ -950,13 +952,14 @@
+    mov\t%0, %1
+    wfr\t%0, %1
+    rfr\t%0, %1
++   movi\t%0, %y1
+    const16\t%0, %t1\;const16\t%0, %b1
+    %v1l32r\t%0, %1
+    %v1l32i\t%0, %1
+    %v0s32i\t%1, %0"
+-  [(set_attr "type"	"farith,fload,fstore,move,load,store,move,farith,farith,move,load,load,store")
++  [(set_attr "type"	"farith,fload,fstore,move,load,store,move,farith,farith,move,move,load,load,store")
+    (set_attr "mode"	"SF")
+-   (set_attr "length"	"3,3,3,2,2,2,3,3,3,6,3,3,3")])
++   (set_attr "length"	"3,3,3,2,2,2,3,3,3,3,6,3,3,3")])
+ 
+ (define_insn "*lsiu"
+   [(set (match_operand:SF 0 "register_operand" "=f")
+@@ -997,7 +1000,7 @@
+ 	(match_operand:DF 1 "general_operand" ""))]
+   ""
+ {
+-  if (CONSTANT_P (operands[1]) && !TARGET_CONST16)
++  if (CONSTANT_P (operands[1]) && !TARGET_CONST16 && !TARGET_AUTO_LITPOOLS)
+     operands[1] = force_const_mem (DFmode, operands[1]);
+ 
+   if (!register_operand (operands[0], DFmode)
+@@ -1008,8 +1011,8 @@
+ })
+ 
+ (define_insn_and_split "movdf_internal"
+-  [(set (match_operand:DF 0 "nonimmed_operand" "=a,W,a,a,U")
+-	(match_operand:DF 1 "move_operand" "r,iF,T,U,r"))]
++  [(set (match_operand:DF 0 "nonimmed_operand" "=a,a,W,a,a,U")
++	(match_operand:DF 1 "move_operand" "r,Y,iF,T,U,r"))]
+   "register_operand (operands[0], DFmode)
+    || register_operand (operands[1], DFmode)"
+   "#"
+Index: b/gcc/config/xtensa/xtensa.opt
+===================================================================
+--- a/gcc/config/xtensa/xtensa.opt
++++ b/gcc/config/xtensa/xtensa.opt
+@@ -38,6 +38,10 @@
+ Target
+ Intersperse literal pools with code in the text section
+ 
++mauto-litpools
++Target Report Mask(AUTO_LITPOOLS)
++Relax literals in assembler and place them automatically in the text section
++
+ mserialize-volatile
+ Target Report Mask(SERIALIZE_VOLATILE)
+ -mno-serialize-volatile	Do not serialize volatile memory references with MEMW instructions

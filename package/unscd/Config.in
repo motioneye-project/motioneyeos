@@ -21,5 +21,5 @@ config BR2_PACKAGE_UNSCD
 
 	  http://busybox.net/~vda/unscd
 
-comment "unscd needs an (e)glibc toolchain"
+comment "unscd needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

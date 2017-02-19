@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NCFTP_VERSION = 3.2.5
-NCFTP_SOURCE = ncftp-$(NCFTP_VERSION)-src.tar.bz2
+NCFTP_VERSION = 3.2.6
+NCFTP_SOURCE = ncftp-$(NCFTP_VERSION)-src.tar.xz
 NCFTP_SITE = ftp://ftp.ncftp.com/ncftp
 NCFTP_TARGET_BINS = ncftp
 NCFTP_LICENSE = Clarified Artistic License

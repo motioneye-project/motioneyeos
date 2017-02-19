@@ -23,7 +23,7 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX
 	    Option "fbdev" "/dev/fb0"
 	  EndSection
 
-comment "xf86-video-imx needs an EABI toolchain w/ (e)glibc"
+comment "xf86-video-imx needs an EABI toolchain w/ glibc"
 	depends on BR2_arm
 	depends on !BR2_ARM_EABI || !BR2_TOOLCHAIN_USES_GLIBC
 

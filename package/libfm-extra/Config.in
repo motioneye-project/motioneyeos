@@ -6,7 +6,7 @@ config BR2_PACKAGE_LIBFM_EXTRA
 	depends on BR2_USE_MMU # libglib2
 	help
 	  The libfm-extra package contains a library and other files
-	  required by menu-cache-gen libexec of menu-cache-1.0.0
+	  required by menu-cache-gen libexec of menu-cache
 
 	  http://wiki.lxde.org/en/Libfm
 

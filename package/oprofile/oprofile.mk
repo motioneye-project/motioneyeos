@@ -17,7 +17,7 @@ OPROFILE_BINARIES = \
 	utils/ophelp pp/opannotate pp/oparchive pp/opgprof \
 	pp/opreport opjitconv/opjitconv \
 	utils/op-check-perfevents libabi/opimport \
-	pe_counting/ocount
+	pe_counting/ocount pe_profiling/operf
 
 ifeq ($(BR2_i386),y)
 OPROFILE_ARCH = i386

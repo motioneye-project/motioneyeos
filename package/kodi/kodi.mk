@@ -10,13 +10,54 @@ KODI_LICENSE = GPLv2
 KODI_LICENSE_FILES = LICENSE.GPL
 # needed for binary addons
 KODI_INSTALL_STAGING = YES
-KODI_DEPENDENCIES = host-gawk host-gettext host-gperf host-zip host-giflib \
-	host-libjpeg host-lzo host-nasm host-libpng host-swig
-KODI_DEPENDENCIES += boost bzip2 expat ffmpeg fontconfig freetype giflib jasper jpeg \
-	libass libcdio libcrossguid libcurl libdcadec libfribidi libgcrypt libmpeg2 \
-	libogg libplist libpng libsamplerate libsquish libvorbis libxml2 \
-	libxslt lzo ncurses openssl pcre python readline sqlite taglib tiff \
-	tinyxml yajl zlib
+KODI_DEPENDENCIES = \
+	boost \
+	bzip2 \
+	expat \
+	ffmpeg \
+	fontconfig \
+	freetype \
+	giflib \
+	host-gawk \
+	host-gettext \
+	host-giflib \
+	host-gperf \
+	host-libjpeg \
+	host-libpng \
+	host-lzo \
+	host-nasm \
+	host-swig \
+	host-zip \
+	jasper \
+	jpeg \
+	libass \
+	libcdio \
+	libcrossguid \
+	libcurl \
+	libdcadec \
+	libfribidi \
+	libgcrypt \
+	libmpeg2 \
+	libogg \
+	libplist \
+	libpng \
+	libsamplerate \
+	libsquish \
+	libvorbis \
+	libxml2 \
+	libxslt \
+	lzo \
+	ncurses \
+	openssl \
+	pcre \
+	python \
+	readline \
+	sqlite \
+	taglib \
+	tiff \
+	tinyxml \
+	yajl \
+	zlib
 
 KODI_CONF_ENV = \
 	PYTHON_VERSION="$(PYTHON_VERSION_MAJOR)" \
@@ -33,11 +74,10 @@ KODI_CONF_OPTS +=  \
 	--disable-joystick \
 	--disable-openmax \
 	--disable-pulse \
-	--disable-vdpau \
 	--disable-vtbdecoder \
 	--enable-optimizations
 
-ifeq ($(BR2_PACKAGE_MYSQL),y)
+ifeq ($(BR2_PACKAGE_KODI_MYSQL),y)
 KODI_CONF_OPTS += --enable-mysql
 KODI_CONF_ENV += ac_cv_path_MYSQL_CONFIG="$(STAGING_DIR)/usr/bin/mysql_config"
 KODI_DEPENDENCIES += mysql
@@ -45,18 +85,44 @@ else
 KODI_CONF_OPTS += --disable-mysql
 endif
 
+ifeq ($(BR2_PACKAGE_KODI_NONFREE),y)
+KODI_CONF_OPTS += --enable-non-free
+KODI_LICENSE := $(KODI_LICENSE), unrar
+KODI_LICENSE_FILES += lib/UnrarXLib/license.txt
+else
+KODI_CONF_OPTS += --disable-non-free
+endif
+
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 KODI_DEPENDENCIES += rpi-userland
 KODI_CONF_OPTS += --with-platform=raspberry-pi --enable-player=omxplayer
-KODI_CONF_ENV += INCLUDES="-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
-	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux" \
-	LIBS="-lvcos -lvchostif"
+KODI_INCLUDES += \
+	-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
+	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux
+KODI_LIBS = -lvcos -lvchostif
 endif
 
-ifeq ($(BR2_PACKAGE_LIBFSLVPUWRAP),y)
-KODI_DEPENDENCIES += libfslvpuwrap
+ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
+KODI_DEPENDENCIES += udev
+KODI_CONF_OPTS += --enable-udev
+else
+KODI_CONF_OPTS += --disable-udev
+endif
+
+ifeq ($(BR2_PACKAGE_IMX_VPUWRAP),y)
+KODI_DEPENDENCIES += imx-vpuwrap
 KODI_CONF_OPTS += --enable-codec=imxvpu
 endif
+
+ifeq ($(BR2_PACKAGE_LIBAMCODEC),y)
+KODI_DEPENDENCIES += libamcodec
+KODI_CONF_OPTS += --enable-codec=amcodec
+KODI_INCLUDES += -I$(STAGING_DIR)/usr/include/amcodec
+endif
+
+KODI_CONF_ENV += \
+	INCLUDES="$(KODI_INCLUDES)" \
+	LIBS="$(KODI_LIBS)"
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 KODI_CONF_OPTS += --enable-libcap
@@ -185,6 +251,19 @@ KODI_DEPENDENCIES += mesa3d libva
 KODI_CONF_OPTS += --enable-vaapi
 else
 KODI_CONF_OPTS += --disable-vaapi
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_LIBVDPAU),y)
+KODI_DEPENDENCIES += libvdpau
+KODI_CONF_OPTS += --enable-vdpau
+else
+KODI_CONF_OPTS += --disable-vdpau
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_UPNP),y)
+KODI_CONF_OPTS += --enable-upnp
+else
+KODI_CONF_OPTS += --disable-upnp
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_OPTICALDRIVE),y)

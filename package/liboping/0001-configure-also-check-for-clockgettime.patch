@@ -1,0 +1,39 @@
+From a45f3610beba1f7e6e1a038e3a1fe4150057c262 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 5 Jul 2016 15:31:28 +0200
+Subject: [PATCH] configure: also check for clockgettime()
+
+clock_gettime() is also in -lrt so we also need to check for it.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure.ac | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index f83f5ab..3b6ae09 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -199,12 +199,16 @@ fi
+ 
+ AC_SUBST(LIBOPING_PC_LIBS_PRIVATE)
+ 
+-nanosleep_needs_rt="no"
++needs_rt="no"
+ AC_CHECK_FUNCS(nanosleep, [],
+ 	AC_CHECK_LIB(rt, nanosleep,
+-		[nanosleep_needs_rt="yes"],
++		[needs_rt="yes"],
+ 		AC_MSG_ERROR(cannot find nanosleep)))
+-AM_CONDITIONAL(BUILD_WITH_LIBRT, test "x$nanosleep_needs_rt" = "xyes")
++AC_CHECK_FUNCS(clock_gettime, [],
++	AC_CHECK_LIB(rt, clock_gettime,
++		[needs_rt="yes"],
++		AC_MSG_ERROR(cannot find clock_gettime)))
++AM_CONDITIONAL(BUILD_WITH_LIBRT, test "x$needs_rt" = "xyes")
+ 
+ with_ncurses="no"
+ AC_CHECK_HEADERS(ncursesw/ncurses.h ncurses.h, [with_ncurses="yes"], [])
+-- 
+2.7.4
+

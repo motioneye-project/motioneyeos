@@ -39,6 +39,8 @@ define GMOCK_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/lib/.libs/libgmock_main.a $(STAGING_DIR)/usr/lib/libgmock_main.a
 	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include/gmock/
 	cp -rp $(@D)/include/gmock/* $(STAGING_DIR)/usr/include/gmock/
+	$(INSTALL) -D -m 0755 package/gmock/gmock.pc \
+		$(STAGING_DIR)/usr/lib/pkgconfig/gmock.pc
 endef
 
 # Unzipping inside $(@D) and moving everything from the created subdirectory is

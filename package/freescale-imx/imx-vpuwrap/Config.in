@@ -1,0 +1,19 @@
+comment "imx-vpuwrap needs an imx-specific Linux kernel to be built"
+	depends on BR2_arm
+	depends on !BR2_LINUX_KERNEL
+
+comment "imx-vpuwrap needs an i.MX platform with VPU support"
+	depends on BR2_arm
+	depends on BR2_LINUX_KERNEL && !BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
+
+config BR2_PACKAGE_IMX_VPUWRAP
+	bool "imx-vpuwrap"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_arm # Only relevant for i.MX
+	depends on BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
+	select BR2_PACKAGE_IMX_VPU
+	help
+	  Wrapper library for the vpu library, giving it a different API.
+
+	  This library is provided by NXP as-is and doesn't have
+	  an upstream.

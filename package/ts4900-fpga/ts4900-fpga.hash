@@ -1,0 +1,5 @@
+# From ftp://ftp.embeddedarm.com/ts-socket-macrocontrollers/ts-4900-linux/fpga/ts4900-fpga-20150930.bin.md5
+md5 bf93c03ef914cf008287c8cd60781cc8  ts4900-fpga-20150930.bin
+
+# Locally calculated
+sha256 242ac6a90bea9a95c937ea8952cdc9b02f543cea24a0359bed66a408a6dd8bf9 ts4900-fpga-20150930.bin

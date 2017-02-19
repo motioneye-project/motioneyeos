@@ -1,0 +1,13 @@
+config BR2_PACKAGE_RABBITMQ_SERVER
+	bool "rabbitmq-server"
+	depends on BR2_PACKAGE_ERLANG
+	select BR2_PACKAGE_LIBXSLT
+	select BR2_PACKAGE_OPENSSL # Required to build Erlang's crypto and ssl
+	                           # applications
+	help
+	  High-performance AMQP-compliant message broker written in Erlang.
+
+	  http://www.rabbitmq.com
+
+comment "rabbitmq-server needs erlang"
+	depends on !BR2_PACKAGE_ERLANG

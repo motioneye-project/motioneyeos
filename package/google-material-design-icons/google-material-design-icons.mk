@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GOOGLE_MATERIAL_DESIGN_ICONS_VERSION = 2.0.0
+GOOGLE_MATERIAL_DESIGN_ICONS_VERSION = 2.2.3
 GOOGLE_MATERIAL_DESIGN_ICONS_SOURCE = \
 	$(GOOGLE_MATERIAL_DESIGN_ICONS_VERSION).tar.gz
 GOOGLE_MATERIAL_DESIGN_ICONS_SITE = \
@@ -14,7 +14,7 @@ GOOGLE_MATERIAL_DESIGN_ICONS_LICENSE_FILES = LICENSE
 
 GOOGLE_MATERIAL_DESIGN_ICONS_LIST = \
 	action alert av communication content device editor file \
-	hardware image maps navigation notification social toggle
+	hardware image maps navigation notification places social toggle
 
 ifneq ($(BR2_PACKAGE_GOOGLE_MATERIAL_DESIGN_ICONS_TYPE_PNG)$(BR2_PACKAGE_GOOGLE_MATERIAL_DESIGN_ICONS_TYPE_SVG),)
 define GOOGLE_MATERIAL_DESIGN_ICONS_INSTALL_ICONS_IMAGES

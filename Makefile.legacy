@@ -4,9 +4,6 @@
 # This file contains placeholders to detect backward-compatibility problems.
 # When a buildroot "API" feature is being deprecated, a rule should be added
 # here that issues an error when the old feature is used.
-#
-# This file is not included if BR2_DEPRECATED is selected, so it is possible
-# to bypass the errors (although that's usually a bad idea).
 
 ifeq ($(BR2_LEGACY),y)
 $(error "You have legacy configuration in your .config! Please check your configuration.")

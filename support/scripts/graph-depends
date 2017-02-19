@@ -26,6 +26,8 @@ import subprocess
 import argparse
 from fnmatch import fnmatch
 
+import pkgutil
+
 # Modes of operation:
 MODE_FULL = 1   # draw full dependency graph for all selected packages
 MODE_PKG  = 2   # draw dependency graph for a given package
@@ -63,6 +65,10 @@ parser.add_argument("--transitive", dest="transitive", action='store_true',
                     default=False)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
                     help="Draw (do not draw) transitive dependencies")
+parser.add_argument("--direct", dest="direct", action='store_true', default=True,
+                    help="Draw direct dependencies (the default)")
+parser.add_argument("--reverse", dest="direct", action='store_false',
+                    help="Draw reverse dependencies")
 args = parser.parse_args()
 
 check_only = args.check_only
@@ -73,7 +79,7 @@ else:
     if check_only:
         sys.stderr.write("don't specify outfile and check-only at the same time\n")
         sys.exit(1)
-    outfile = open(args.outfile, "wb")
+    outfile = open(args.outfile, "w")
 
 if args.package is None:
     mode = MODE_FULL
@@ -95,6 +101,16 @@ else:
 
 transitive = args.transitive
 
+if args.direct:
+    get_depends_func = pkgutil.get_depends
+    arrow_dir = "forward"
+else:
+    if mode == MODE_FULL:
+        sys.stderr.write("--reverse needs a package\n")
+        sys.exit(1)
+    get_depends_func = pkgutil.get_rdepends
+    arrow_dir = "back"
+
 # Get the colours: we need exactly three colours,
 # so no need not split more than 4
 # We'll let 'dot' validate the colours...
@@ -107,28 +123,6 @@ target_colour = colours[1]
 host_colour = colours[2]
 
 allpkgs = []
-
-# Execute the "make <pkg>-show-version" command to get the version of a given
-# list of packages, and return the version formatted as a Python dictionary.
-def get_version(pkgs):
-    sys.stderr.write("Getting version for %s\n" % pkgs)
-    cmd = ["make", "-s", "--no-print-directory" ]
-    for pkg in pkgs:
-        cmd.append("%s-show-version" % pkg)
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
-    output = p.communicate()[0]
-    if p.returncode != 0:
-        sys.stderr.write("Error getting version %s\n" % pkgs)
-        sys.exit(1)
-    output = output.split("\n")
-    if len(output) != len(pkgs) + 1:
-        sys.stderr.write("Error getting version\n")
-        sys.exit(1)
-    version = {}
-    for i in range(0, len(pkgs)):
-        pkg = pkgs[i]
-        version[pkg] = output[i]
-    return version
 
 # Execute the "make show-targets" command to get the list of the main
 # Buildroot PACKAGES and return it formatted as a Python list. This
@@ -143,33 +137,6 @@ def get_targets():
     if output == '':
         return []
     return output.split(' ')
-
-# Execute the "make <pkg>-show-depends" command to get the list of
-# dependencies of a given list of packages, and return the list of
-# dependencies formatted as a Python dictionary.
-def get_depends(pkgs):
-    sys.stderr.write("Getting dependencies for %s\n" % pkgs)
-    cmd = ["make", "-s", "--no-print-directory" ]
-    for pkg in pkgs:
-        cmd.append("%s-show-depends" % pkg)
-    p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
-    output = p.communicate()[0]
-    if p.returncode != 0:
-        sys.stderr.write("Error getting dependencies %s\n" % pkgs)
-        sys.exit(1)
-    output = output.split("\n")
-    if len(output) != len(pkgs) + 1:
-        sys.stderr.write("Error getting dependencies\n")
-        sys.exit(1)
-    deps = {}
-    for i in range(0, len(pkgs)):
-        pkg = pkgs[i]
-        pkg_deps = output[i].split(" ")
-        if pkg_deps == ['']:
-            deps[pkg] = []
-        else:
-            deps[pkg] = pkg_deps
-    return deps
 
 # Recursive function that builds the tree of dependencies for a given
 # list of packages. The dependencies are built in a list called
@@ -190,7 +157,7 @@ def get_all_depends(pkgs):
     if len(filtered_pkgs) == 0:
         return []
 
-    depends = get_depends(filtered_pkgs)
+    depends = get_depends_func(filtered_pkgs)
 
     deps = set()
     for pkg in filtered_pkgs:
@@ -363,7 +330,7 @@ if check_only:
     sys.exit(0)
 
 dict_deps = remove_extra_deps(dict_deps)
-dict_version = get_version([pkg for pkg in allpkgs
+dict_version = pkgutil.get_version([pkg for pkg in allpkgs
                                 if pkg != "all" and not pkg.startswith("root")])
 
 # Print the attributes of a node: label and fill-color
@@ -418,7 +385,7 @@ def print_pkg_deps(depth, pkg):
                     add = False
                     break
             if add:
-                outfile.write("%s -> %s\n" % (pkg_node_name(pkg), pkg_node_name(d)))
+                outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
                 print_pkg_deps(depth+1, d)
 
 # Start printing the graph data

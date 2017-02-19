@@ -5,6 +5,19 @@
 # so put it here instead
 source "package/gdb/Config.in.host"
 
+comment "Toolchain Generic Options"
+
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64735
+# exception_ptr, nested_exception, and future from libstdc++ are not
+# available for architectures not supporting always lock-free atomic
+# ints before GCC 7
+config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
+	bool
+	default y if BR2_nios2
+	default y if BR2_ARM_CPU_ARMV4
+	default y if BR2_ARM_CPU_ARMV5
+	default y if BR2_sparc_v8
+
 # https://sourceware.org/bugzilla/show_bug.cgi?id=19405
 config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
 	bool
@@ -19,6 +32,9 @@ config BR2_ENABLE_LOCALE
 	bool
 
 config BR2_INSTALL_LIBSTDCPP
+	bool
+
+config BR2_TOOLCHAIN_HAS_FORTRAN
 	bool
 
 config BR2_TOOLCHAIN_HAS_THREADS
@@ -36,38 +52,8 @@ config BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 config BR2_TOOLCHAIN_HAS_SSP
 	bool
 
-config BR2_ENABLE_LOCALE_PURGE
-	bool "Purge unwanted locales"
-	help
-	  Explicitly specify what locales to install on target. If N
-	  then all locales supported by packages are installed.
-
-config BR2_ENABLE_LOCALE_WHITELIST
-	string "Locales to keep"
-	default "C en_US de fr"
-	depends on BR2_ENABLE_LOCALE_PURGE
-	help
-	  Whitespace seperated list of locales to allow on target.
-	  Locales not listed here will be removed from the target.
-	  See 'locale -a' on your host for a list of locales available
-	  on your build host, or have a look in /usr/share/locale in
-	  the target file system for available locales.
-
-	  Notice that listing a locale here doesn't guarantee that it
-	  will be available on the target - That purely depends on the
-	  support for that locale in the selected packages.
-
-config BR2_GENERATE_LOCALE
-	string "Generate locale data"
-	default ""
-	depends on \
-		(BR2_TOOLCHAIN_BUILDROOT_UCLIBC && BR2_ENABLE_LOCALE) || \
-		BR2_TOOLCHAIN_USES_GLIBC
-	help
-	  Generate support for a list of locales. Locales can be
-	  specified with or without encoding, when no encoding is
-	  specified, UTF-8 is assumed. Examples of locales: en_US,
-	  fr_FR.UTF-8.
+config BR2_TOOLCHAIN_SUPPORTS_PIE
+	bool
 
 config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
 	bool "Copy gconv libraries"
@@ -241,10 +227,30 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_6
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_6
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "4.9"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+	default "4.8"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+	default "4.7"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+	default "4.6"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_6
 	default "4.5"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
 	default "4.4"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 	default "4.3"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
@@ -326,6 +332,7 @@ config BR2_TOOLCHAIN_HAS_SYNC_1
 	bool
 	default y
 	depends on !BR2_bfin
+	depends on !BR2_m68k_cf
 	depends on !BR2_microblaze
 	depends on !BR2_sparc
 	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
@@ -337,6 +344,7 @@ config BR2_TOOLCHAIN_HAS_SYNC_2
 config BR2_TOOLCHAIN_HAS_SYNC_4
 	bool
 	default y
+	depends on !BR2_m68k_cf
 	depends on !BR2_sparc
 	depends on !(BR2_arc && !BR2_ARC_ATOMIC_EXT)
 
@@ -385,11 +393,14 @@ config BR2_TOOLCHAIN_HAS_SYNC_8
 	default y if BR2_TOOLCHAIN_X86_HAS_SYNC_8
 
 # libatomic is available since gcc 4.8, when thread support is
-# enabled.
+# enabled. Also, libatomic doesn't recognize "uclinux" as a valid OS
+# part of the tuple, and is therefore not build on uclinux targets,
+# which is why BR2_BINFMT_FLAT configurations are excluded.
 config BR2_TOOLCHAIN_HAS_LIBATOMIC
 	bool
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 && \
-		BR2_TOOLCHAIN_HAS_THREADS
+		BR2_TOOLCHAIN_HAS_THREADS && \
+		!BR2_BINFMT_FLAT
 
 # __atomic intrinsics are available:
 # - with gcc 4.8, either through built-ins or libatomic, on all
@@ -412,3 +423,13 @@ config BR2_TOOLCHAIN_HAS_ATOMIC
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_armeb
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_xtensa
 	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 && BR2_ARCH_IS_64
+
+# - libquadmath is not needed/available on all architectures (but gcc
+#   correctly handles this already).
+# - At least, libquadmath is available on:
+#   - i*86
+#   - x86_64
+# - When available, libquadmath requires wchar support.
+config BR2_TOOLCHAIN_HAS_LIBQUADMATH
+	bool
+	default y if BR2_i386 || BR2_x86_64

@@ -1,0 +1,61 @@
+comment "policycoreutils needs a glibc toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_POLICYCOREUTILS
+	bool "policycoreutils"
+	select BR2_PACKAGE_LIBSEMANAGE
+	select BR2_PACKAGE_LIBCAP_NG
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS # libsemanage
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libsemanage
+	depends on !BR2_STATIC_LIBS #libsemanage
+	depends on !BR2_arc # libsemanage
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libsemanage
+	help
+	  Policycoreutils is a collection of policy utilities (originally
+	  the "core" set of utilities needed to use SELinux, although it
+	  has grown a bit over time), which have different dependencies.
+	  sestatus, secon, run_init, and newrole only use libselinux.
+	  load_policy and setfiles only use libselinux and libsepol.
+	  semodule and semanage use libsemanage (and thus bring in
+	  dependencies on libsepol and libselinux as well). setsebool
+	  uses libselinux to make non-persistent boolean changes (via
+	  the kernel interface) and uses libsemanage to make persistent
+	  boolean changes.
+
+	  The base package will install the following utilities:
+	      load_policy
+	      newrole
+	      restorecond
+	      run_init
+	      secon
+	      semodule
+	      semodule_deps
+	      semodule_expand
+	      semodule_link
+	      semodule_package
+	      sepolgen-ifgen
+	      sestatus
+	      setfiles
+	      setsebool
+
+	  http://selinuxproject.org/page/Main_Page
+
+if BR2_PACKAGE_POLICYCOREUTILS
+
+config BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND
+	bool "restorecond"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	help
+	  Enable restorecond to be built
+
+comment "restorecond needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+endif

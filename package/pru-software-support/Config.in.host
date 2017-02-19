@@ -1,0 +1,11 @@
+config BR2_PACKAGE_HOST_PRU_SOFTWARE_SUPPORT
+	bool "host pru-software-support"
+	depends on BR2_PACKAGE_HOST_TI_CGT_PRU_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_TI_CGT_PRU
+	help
+	  This package provides useful headers and libraries for the
+	  PRU unit found on some TI processors e.g. AM3358. Note that
+	  the included labs and examples aren't built, they can be
+	  built using the corresponding target package.
+
+	  https://git.ti.com/pru-software-support-package/pru-software-support-package

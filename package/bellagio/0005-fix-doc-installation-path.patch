@@ -1,0 +1,24 @@
+Makefile.am: fix bogus docdir definition
+
+The definition of the docdir variable uses $(DESTDIR). However,
+automake already prefixes all *dir variables automatically with
+DESTDIR, which causes the documentation to be installed in
+$(DESTDIR)/$(DESTDIR)/usr/share/doc/...
+
+Fix this by removing the $(DESTDIR) part of the docdir definition.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile.am
+===================================================================
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -7,7 +7,7 @@
+ pkgconfigdir = $(libdir)/pkgconfig
+ pkgconfig_DATA = libomxil-bellagio.pc
+ 
+-docdir = $(DESTDIR)$(prefix)/share/doc/@PACKAGE@
++docdir = $(prefix)/share/doc/@PACKAGE@
+ doc_DATA = README \
+ 	   ChangeLog \
+ 	   TODO

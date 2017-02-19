@@ -1,0 +1,29 @@
+From: Rico Tzschichholz <ricotz@ubuntu.com>
+Date: Tue, 1 Sep 2015 10:45:11 +0200
+Subject: mesa_dri2: Add missing include of config.h to define _GNU_SOURCE
+
+Fix build with -Wimplicit-function-declaration while secure_getenv() is
+guarded by __USE_GNU.
+
+Reviewed-by: Aaron Plattner <aplattner@nvidia.com>
+Tested-by: Stefan Dirsch <sndirsch@suse.de>
+(cherry picked from commit 1cda354bdfd0c9ca107293b84b52f4464fdbedcc)
+Signed-off-by: Damien Lanson <damien@kal-host.com>
+---
+ src/mesa_dri2.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/src/mesa_dri2.c b/src/mesa_dri2.c
+index 51e8794..420ccee 100644
+--- a/src/mesa_dri2.c
++++ b/src/mesa_dri2.c
+@@ -33,6 +33,9 @@
+  *   and José Hiram Soltren (jsoltren@nvidia.com)
+  */
+ 
++#ifdef HAVE_CONFIG_H
++#include "config.h"
++#endif
+ 
+ #define NEED_REPLIES
+ #include <X11/Xlibint.h>

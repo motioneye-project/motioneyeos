@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TOR_VERSION = 0.2.7.6
+TOR_VERSION = 0.2.9.9
 TOR_SITE = https://dist.torproject.org
 TOR_LICENSE = BSD-3c
 TOR_LICENSE_FILES = LICENSE
@@ -24,6 +24,10 @@ TOR_CONF_OPTS += \
 	--enable-static-openssl \
 	--enable-static-tor \
 	--enable-static-zlib
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+TOR_DEPENDENCIES += libcap
 endif
 
 ifeq ($(BR2_arm)$(BR2_armeb)$(BR2_i386)$(BR2_x86_64)$(BR2_PACKAGE_LIBSECCOMP),yy)

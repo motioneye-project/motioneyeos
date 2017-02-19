@@ -1,0 +1,13 @@
+[Unit]
+Description=MySQL database server
+
+[Service]
+ExecStartPre=/bin/sh -c 'test -d /var/mysql/mysql || mysql_install_db --user=mysql --ldata=/var/mysql'
+ExecStart=/usr/bin/mysqld_safe
+Restart=always
+User=mysql
+RuntimeDirectory=mysql
+RuntimeDirectoryMode=0755
+
+[Install]
+WantedBy=multi-user.target

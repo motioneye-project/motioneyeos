@@ -40,8 +40,8 @@ menu "core python3 modules"
 comment "The following modules are unusual or require extra libraries"
 
 config BR2_PACKAGE_PYTHON3_BZIP2
-	select BR2_PACKAGE_BZIP2
 	bool "bz2 module"
+	select BR2_PACKAGE_BZIP2
 	help
 	  bzip2 module for Python3
 
@@ -51,14 +51,14 @@ config BR2_PACKAGE_PYTHON3_CODECSCJK
 	  Chinese/Japanese/Korean codecs module for Python (large).
 
 config BR2_PACKAGE_PYTHON3_CURSES
-	select BR2_PACKAGE_NCURSES
 	bool "curses module"
+	select BR2_PACKAGE_NCURSES
 	help
 	  curses module for Python3.
 
 config BR2_PACKAGE_PYTHON3_DECIMAL
-	select BR2_PACKAGE_MPDECIMAL
 	bool "decimal module"
+	select BR2_PACKAGE_MPDECIMAL
 	help
 	  decimal module for Python3.
 
@@ -68,15 +68,15 @@ config BR2_PACKAGE_PYTHON3_OSSAUDIODEV
 	  ossaudiodev module for Python3.
 
 config BR2_PACKAGE_PYTHON3_READLINE
-	select BR2_PACKAGE_READLINE
 	bool "readline"
+	select BR2_PACKAGE_READLINE
 	help
 	  readline module for Python3 (required for command-line
 	  editing in the Python shell).
 
 config BR2_PACKAGE_PYTHON3_SSL
-	select BR2_PACKAGE_OPENSSL
 	bool "ssl"
+	select BR2_PACKAGE_OPENSSL
 	help
 	  _ssl module for Python3 (required for https in urllib etc).
 
@@ -93,10 +93,16 @@ config BR2_PACKAGE_PYTHON3_SQLITE
 	  SQLite database support
 
 config BR2_PACKAGE_PYTHON3_PYEXPAT
-	select BR2_PACKAGE_EXPAT
 	bool "xml module"
+	select BR2_PACKAGE_EXPAT
 	help
 	  pyexpat and xml libraries for Python3.
+
+config BR2_PACKAGE_PYTHON3_XZ
+	bool "xz module"
+	select BR2_PACKAGE_XZ
+	help
+	  xz (a.k.a lzma) module for Python3
 
 config BR2_PACKAGE_PYTHON3_ZLIB
 	bool "zlib module"

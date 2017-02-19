@@ -6,7 +6,7 @@ config BR2_PACKAGE_LM_SENSORS
 	  temperature, voltage, and fan speed sensors. It
 	  works with most newer systems.
 
-	  http://www.lm-sensors.org/
+	  https://hwmon.wiki.kernel.org
 
 if BR2_PACKAGE_LM_SENSORS
 comment "lm-sensors tools"

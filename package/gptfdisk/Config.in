@@ -1,10 +1,9 @@
-comment "gptfdisk needs a toolchain w/ wchar, C++"
-	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)
+comment "gptfdisk needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
 
 config BR2_PACKAGE_GPTFDISK
 	bool "gptfdisk"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_USE_WCHAR # util-linux
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_GPTFDISK_GDISK if \
@@ -38,6 +37,7 @@ config BR2_PACKAGE_GPTFDISK_CGDISK
 	bool "ncurses cgdisk"
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_NCURSES_WCHAR # needed because of UTF-16
+	depends on BR2_USE_WCHAR # ncurses wchar
 	depends on !(BR2_bfin && BR2_BINFMT_FLAT) # ncurses wchar support
 	help
 	  Install the ncurses-based GUID partition table (GPT)

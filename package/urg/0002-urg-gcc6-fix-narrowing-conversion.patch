@@ -1,0 +1,99 @@
+urg: fix 'narrowing conversion' with gcc6
+
+Fixes:
+  http://autobuild.buildroot.net/results/d0c/d0cd11163753db69a14c02e941dbda40e5f98bba/
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+
+--- a/src/cpp/urg/ScipHandler.cpp	2016-09-11 16:11:16.083995214 +0200
++++ b/src/cpp/urg/ScipHandler.cpp	2016-09-11 16:11:24.380832543 +0200
+@@ -120,7 +120,7 @@ struct ScipHandler::pImpl
+ 
+       // QT の発行
+       int return_code = -1;
+-      char qt_expected_response[] = { 0, -1 };
++      char qt_expected_response[] = { 0, (char)-1 };
+       // return_code を使いたいため、setLaserOutput() を用いずに QT を送信する
+       if (response(return_code, "QT\n", qt_expected_response)) {
+         laser_state_ = LaserOff;
+@@ -139,7 +139,7 @@ struct ScipHandler::pImpl
+ 
+       } else if (return_code == Scip11Response) {
+         // SCIP1.1 プロトコルの場合のみ、SCIP2.0 を送信する
+-        char scip20_expected_response[] = { 0, -1 };
++        char scip20_expected_response[] = { 0, (char)-1 };
+         if (! response(return_code, "SCIP2.0\n", scip20_expected_response)) {
+           error_message_ =
+             "SCIP1.1 protocol is not supported. Please update URG firmware, or reconnect after a few seconds because sensor is booting.";
+@@ -150,7 +150,7 @@ struct ScipHandler::pImpl
+ 
+       } else if (return_code == 0xE) {
+         // TM モードとみなし、TM2 を発行する
+-        char tm2_expected_response[] = { 0, -1 };
++        char tm2_expected_response[] = { 0, (char)-1 };
+         if (response(return_code, "TM2\n", tm2_expected_response)) {
+           laser_state_ = LaserOff;
+           return changeBothBaudrate(baudrate);
+@@ -202,7 +202,7 @@ struct ScipHandler::pImpl
+     snprintf(send_buffer, 10, "SS%06ld\n", baudrate);
+     int return_code = -1;
+     // !!! 既に設定対象のボーレート、の場合の戻り値を ss_expected... に追加する
+-    char ss_expected_response[] = { 0, 0x3, 0x4, 0xf, -1 };
++    char ss_expected_response[] = { 0, 0x3, 0x4, 0xf, (char)-1 };
+     if (! response(return_code, send_buffer, ss_expected_response)) {
+       error_message_ = "Baudrate change fail.";
+       return false;
+@@ -216,7 +216,7 @@ struct ScipHandler::pImpl
+   {
+     // PP の送信とデータの受信
+     int return_code = -1;
+-    char pp_expected_response[] = { 0, -1 };
++    char pp_expected_response[] = { 0, (char)-1 };
+     vector<string> lines;
+     if (! response(return_code, "PP\n", pp_expected_response, &lines)) {
+       error_message_ = "PP fail.";
+@@ -356,7 +356,7 @@ struct ScipHandler::pImpl
+ 
+     if (on) {
+       int return_code = -1;
+-      char expected_response[] = { 0, -1 };
++      char expected_response[] = { 0, (char)-1 };
+       if (! response(return_code, "BM\n", expected_response)) {
+         error_message_ = "BM fail.";
+         return false;
+@@ -369,7 +369,7 @@ struct ScipHandler::pImpl
+       if (! mx_capturing_) {
+         // 消灯するための QT では、応答を待つべき
+         int return_code = -1;
+-        char qt_expected_response[] = { 0, -1 };
++        char qt_expected_response[] = { 0, (char)-1 };
+         if (! response(return_code, "QT\n", qt_expected_response)) {
+           return false;
+         }
+@@ -777,7 +777,7 @@ bool ScipHandler::loadParameter(RangeSen
+ bool ScipHandler::versionLines(vector<string>& lines)
+ {
+   int return_code = -1;
+-  char expected_response[] = { 0, -1 };
++  char expected_response[] = { 0, (char)-1 };
+   if (! pimpl->response(return_code, "VV\n", expected_response, &lines)) {
+     return false;
+   }
+@@ -792,7 +792,7 @@ bool ScipHandler::setRawTimestampMode(bo
+ 
+   // TM0 or TM2 の送信
+   int return_code = -1;
+-  char expected_response[] = { 0, -1 };
++  char expected_response[] = { 0, (char)-1 };
+   if (! pimpl->response(return_code, send_command, expected_response)) {
+     pimpl->error_message_ = (on) ? "TM0 fail." : "TM2 fail.";
+     return false;
+@@ -809,7 +809,7 @@ bool ScipHandler::rawTimestamp(int* time
+ {
+   // TM1 の値を返す
+   int return_code = -1;
+-  char expected_response[] = { 0, -1 };
++  char expected_response[] = { 0, (char)-1 };
+   vector<string> lines;
+   if (! pimpl->response(return_code, "TM1\n", expected_response, &lines)) {
+     pimpl->error_message_ = "TM1 fail.";

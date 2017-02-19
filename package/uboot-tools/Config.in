@@ -7,15 +7,26 @@ config BR2_PACKAGE_UBOOT_TOOLS
 
 if BR2_PACKAGE_UBOOT_TOOLS
 
-config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
-	bool "mkimage"
+config BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
+	bool "Flattened Image Tree (FIT) support"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_DTC
+	select BR2_PACKAGE_DTC_PROGRAMS
 	help
-	  The mkimage tool from Das U-Boot bootloader, which allows
-	  generation of U-Boot images in various formats.
+	  Enables support for Flattened Image Tree (FIT).
 
-if BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	  This option allows to boot the new uImage structure,
+	  Flattened Image Tree. FIT is formally a FDT, which can include
+	  images of various types (kernel, FDT blob, ramdisk, etc.)
+	  in a single blob. To boot this new uImage structure,
+	  pass the address of the blob to the "bootm" command.
 
-config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
+comment "u-boot tools FIT support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+if BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
+
+config BR2_PACKAGE_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
 	bool "FIT signature verification support"
 	select BR2_PACKAGE_OPENSSL
 	help
@@ -38,9 +49,19 @@ config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
 
 endif
 
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	bool "mkimage"
+	help
+	  Install the mkimage tool on the target system
+
+	  The mkimage tool from Das U-Boot bootloader, which allows
+	  generation of U-Boot images in various formats.
+
 config BR2_PACKAGE_UBOOT_TOOLS_MKENVIMAGE
 	bool "mkenvimage"
 	help
+	  Install the mkenvimage tool on the target system
+
 	  The mkenvimage tool from Das U-Boot bootloader, which allows
 	  generation of a valid binary environment image from a text file
 	  describing the key=value pairs of the environment.
@@ -49,13 +70,17 @@ config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
 	bool "fw_printenv"
 	default y
 	help
-	  The fw_printenv / fw_setenv tools from Das U-Boot
+	  Install the fw_printenv / fw_setenv tools on the target system
+
+	  The fw_printenv and fw_setenv tools from Das U-Boot
 	  bootloader, which allows access to the U-Boot environment
 	  from Linux.
 
 config BR2_PACKAGE_UBOOT_TOOLS_DUMPIMAGE
 	bool "dumpimage"
 	help
+	  Install the dumpimage tool on the target system
+
 	  The dumpimage tool from Das U-Boot bootloader, which allows
 	  extraction of data from U-Boot images.
 

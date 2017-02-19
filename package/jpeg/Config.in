@@ -3,13 +3,21 @@ config BR2_PACKAGE_JPEG
 	help
 	  Select the desired JPEG library provider.
 
+# jpeg-turbo has simd support for some architectures
+config BR2_PACKAGE_JPEG_SIMD_SUPPORT
+	bool
+	default y if BR2_X86_CPU_HAS_MMX
+	default y if BR2_ARM_CPU_HAS_NEON
+	default y if BR2_POWERPC_CPU_HAS_ALTIVEC
+	default y if BR2_aarch64 || BR2_aarch64_be
+
 if BR2_PACKAGE_JPEG
 
 choice
 	prompt "jpeg variant"
-	default BR2_PACKAGE_JPEG_TURBO if (BR2_X86_CPU_HAS_MMX || BR2_ARM_CPU_HAS_NEON)
+	default BR2_PACKAGE_JPEG_TURBO if BR2_PACKAGE_JPEG_SIMD_SUPPORT
 	help
-	  Select the older stable version, or the newer developer version
+	  Select the normal libjpeg or libjpeg-turbo.
 
 config BR2_PACKAGE_LIBJPEG
 	bool "jpeg"

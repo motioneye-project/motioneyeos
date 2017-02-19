@@ -1,0 +1,64 @@
+
+# HG changeset patch
+# User Sam Lantinga <slouken@libsdl.org>
+# Date 1479201270 28800
+# Node ID ea44906e19b837f4d5b309525ca79ed9d00b1897
+# Parent  6b2307dbec54f0bf4d5d8abf86241e29f3a03562
+Fixed bug 3490 - Build failure with --enable-video-directfb
+
+felix
+
+Building SDL 2.0.5, or even the Mercurial snapshot (r10608) with GCC 6.2.1 and --enable-video-directfb generates a number of compiler diagnostics and fails.
+
+Downloaded from upstream repo
+https://hg.libsdl.org/SDL/rev/ea44906e19b8
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -r 6b2307dbec54 -r ea44906e19b8 src/video/directfb/SDL_DirectFB_render.c
+--- a/src/video/directfb/SDL_DirectFB_render.c	Tue Nov 15 01:12:27 2016 -0800
++++ b/src/video/directfb/SDL_DirectFB_render.c	Tue Nov 15 01:14:30 2016 -0800
+@@ -1273,7 +1273,7 @@
+                      Uint32 format, void * pixels, int pitch)
+ {
+     Uint32 sdl_format;
+-    void * laypixels;
++    unsigned char* laypixels;
+     int laypitch;
+     DFBSurfacePixelFormat dfb_format;
+     DirectFB_RenderData *data = (DirectFB_RenderData *) renderer->driverdata;
+@@ -1303,7 +1303,7 @@
+     SDL_Window *window = renderer->window;
+     SDL_DFB_WINDOWDATA(window);
+     Uint32 sdl_format;
+-    void * laypixels;
++    unsigned char* laypixels;
+     int laypitch;
+     DFBSurfacePixelFormat dfb_format;
+ 
+diff -r 6b2307dbec54 -r ea44906e19b8 src/video/directfb/SDL_DirectFB_shape.c
+--- a/src/video/directfb/SDL_DirectFB_shape.c	Tue Nov 15 01:12:27 2016 -0800
++++ b/src/video/directfb/SDL_DirectFB_shape.c	Tue Nov 15 01:14:30 2016 -0800
+@@ -37,17 +37,19 @@
+ SDL_WindowShaper*
+ DirectFB_CreateShaper(SDL_Window* window) {
+     SDL_WindowShaper* result = NULL;
++    SDL_ShapeData* data;
++    int resized_properly;
+ 
+     result = malloc(sizeof(SDL_WindowShaper));
+     result->window = window;
+     result->mode.mode = ShapeModeDefault;
+     result->mode.parameters.binarizationCutoff = 1;
+     result->userx = result->usery = 0;
+-    SDL_ShapeData* data = SDL_malloc(sizeof(SDL_ShapeData));
++    data = SDL_malloc(sizeof(SDL_ShapeData));
+     result->driverdata = data;
+     data->surface = NULL;
+     window->shaper = result;
+-    int resized_properly = DirectFB_ResizeWindowShape(window);
++    resized_properly = DirectFB_ResizeWindowShape(window);
+     SDL_assert(resized_properly == 0);
+ 
+     return result;
+

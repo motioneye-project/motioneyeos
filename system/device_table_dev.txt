@@ -31,6 +31,7 @@
 /dev/ttyAM	c	666	0	0	204	16	0	1	3
 /dev/ttyCPM	c	666	0	0	204	46	0	1	4
 /dev/ttyAMA	c	666	0	0	204	64	0	1	4
+/dev/ttyBF	c	666	0	0	204	64	0	1	2
 /dev/ttySAC	c	666	0	0	204	64	0	1	4
 /dev/ttySC	c	666	0	0	204	8	0	1	8
 /dev/ttyPSC	c	666	0	0	204	148	0	1	4

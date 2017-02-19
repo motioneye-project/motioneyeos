@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBDRM_VERSION = 2.4.68
+LIBDRM_VERSION = 2.4.75
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
 LIBDRM_SITE = http://dri.freedesktop.org/libdrm
 LIBDRM_LICENSE = MIT
@@ -63,6 +63,12 @@ ifeq ($(BR2_PACKAGE_LIBDRM_OMAP),y)
 LIBDRM_CONF_OPTS += --enable-omap-experimental-api
 else
 LIBDRM_CONF_OPTS += --disable-omap-experimental-api
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDRM_ETNAVIV),y)
+LIBDRM_CONF_OPTS += --enable-etnaviv-experimental-api
+else
+LIBDRM_CONF_OPTS += --disable-etnaviv-experimental-api
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDRM_EXYNOS),y)

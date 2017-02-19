@@ -4,16 +4,18 @@
 #
 ################################################################################
 
-GMP_VERSION = 6.1.0
+GMP_VERSION = 6.1.2
 GMP_SITE = $(BR2_GNU_MIRROR)/gmp
 GMP_SOURCE = gmp-$(GMP_VERSION).tar.xz
 GMP_INSTALL_STAGING = YES
-GMP_LICENSE = LGPLv3+
-GMP_LICENSE_FILES = COPYING.LESSERv3
+GMP_LICENSE = LGPLv3+ or GPLv2+
+GMP_LICENSE_FILES = COPYING.LESSERv3 COPYINGv2
 GMP_DEPENDENCIES = host-m4
+HOST_GMP_DEPENDENCIES = host-m4
 
-# GMP doesn't support assembly for r6 ISA yet
-ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+# GMP doesn't support assembly for coldfire or mips r6 ISA yet
+# Disable for ARM v7m since it has different asm constraints
+ifeq ($(BR2_m68k_cf)$(BR2_MIPS_CPU_MIPS32R6)$(BR2_MIPS_CPU_MIPS64R6)$(BR2_ARM_CPU_ARMV7M)$(BR2_arc),y)
 GMP_CONF_OPTS += --disable-assembly
 endif
 

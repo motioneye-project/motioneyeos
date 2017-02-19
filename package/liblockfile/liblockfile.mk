@@ -18,7 +18,7 @@ LIBLOCKFILE_CONF_OPTS = --mandir=/usr/share/man
 define LIBLOCKFILE_INSTALL_STAGING_CMDS
 	mkdir -p $(addprefix $(STAGING_DIR)/usr/share/man/man,1 3)
 	rm -f $(STAGING_DIR)/usr/lib/liblockfile.so
-	$(MAKE) -C $(LIBLOCKFILE_DIR) ROOT=$(STAGING_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(LIBLOCKFILE_DIR) ROOT=$(STAGING_DIR) install
 	ln -sf liblockfile.so $(STAGING_DIR)/usr/lib/liblockfile.so.1
 endef
 

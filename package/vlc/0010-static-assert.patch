@@ -1,0 +1,25 @@
+From: Thomas Guillem <thomas@gllm.fr>
+Date: Thu, 30 Apr 2015 13:29:50 +0000 (+0200)
+Subject: Fix build when using C99 and C++11
+X-Git-Url: http://git.videolan.org/?p=vlc.git;a=commitdiff_plain;h=51ce6cdaf598754e617900994c1943c6cba6d604
+
+Fix build when using C99 and C++11
+
+Indeed, C99 doesn't have static_assert and C++11 has it.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+
+diff --git a/include/vlc_fixups.h b/include/vlc_fixups.h
+index b949d24..ee168d7 100644
+--- a/include/vlc_fixups.h
++++ b/include/vlc_fixups.h
+@@ -239,7 +239,7 @@ static inline locale_t newlocale(int mask, const char * locale, locale_t base)
+ }
+ #endif
+ 
+-#if !defined (HAVE_STATIC_ASSERT)
++#if !defined (HAVE_STATIC_ASSERT) && !defined(__cpp_static_assert)
+ # define _Static_assert(x, s) ((void) sizeof (struct { unsigned:-!(x); }))
+ # define static_assert _Static_assert
+ #endif

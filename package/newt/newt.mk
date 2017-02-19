@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NEWT_VERSION = 0.52.18
-NEWT_SITE = https://fedorahosted.org/releases/n/e/newt
+NEWT_VERSION = 0.52.19
+NEWT_SITE = https://pagure.io/releases/newt
 NEWT_INSTALL_STAGING = YES
 NEWT_DEPENDENCIES = popt slang \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)

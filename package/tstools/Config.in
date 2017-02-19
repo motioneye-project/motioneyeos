@@ -1,6 +1,7 @@
 config BR2_PACKAGE_TSTOOLS
 	bool "tstools"
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
 	help
 	  This is a set of cross-platform command line tools for working with
 	  MPEG data.
@@ -14,3 +15,7 @@ config BR2_PACKAGE_TSTOOLS
 	  data on DVDs.
 
 	  https://github.com/kynesim/tstools/
+
+comment "tstools needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

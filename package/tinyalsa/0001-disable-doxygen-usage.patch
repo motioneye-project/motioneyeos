@@ -1,0 +1,32 @@
+Disable doxygen usage
+
+In order to avoid a dependency on doxygen on the build machine, this
+patch adjusts the main Makefile to not build and install the
+documentation.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -13,13 +13,11 @@
+ all:
+ 	$(MAKE) -C src
+ 	$(MAKE) -C utils
+-	$(MAKE) -C doxygen
+ 
+ .PHONY: clean
+ clean:
+ 	$(MAKE) -C src clean
+ 	$(MAKE) -C utils clean
+-	$(MAKE) -C doxygen clean
+ 
+ .PHONY: install
+ install:
+@@ -27,5 +25,3 @@
+ 	cp -Ru include/tinyalsa $(DESTDIR)$(INCDIR)/
+ 	$(MAKE) -C src install
+ 	$(MAKE) -C utils install
+-	$(MAKE) -C doxygen install
+-

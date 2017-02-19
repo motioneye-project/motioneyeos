@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBUBOX_VERSION = e88d816d6e462180f0337565e04e36be58a63309
+LIBUBOX_VERSION = 290c64ef5b5c3e75be851594f269d6a9568e64e5
 LIBUBOX_SITE = git://git.openwrt.org/project/libubox.git
-LIBUBOX_LICENSE = LGPLv2.1, GPLv2, BSD-3c, MIT
+LIBUBOX_LICENSE = ISC, BSD-3c
 LIBUBOX_INSTALL_STAGING = YES
 LIBUBOX_DEPENDENCIES = $(if $(BR2_PACKAGE_JSON_C),json-c)
 

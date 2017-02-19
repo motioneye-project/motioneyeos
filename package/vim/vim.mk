@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-# 7.4 release patchlevel 889
-VIM_VERSION = 74b738d414b2895b3365e26ae3b7792eb82ccf47
+VIM_VERSION = v8.0.0001
 VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
@@ -50,19 +49,19 @@ endif
 
 define VIM_INSTALL_TARGET_CMDS
 	cd $(@D)/src; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installtools; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installlinks
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installvimbin; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installtools; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installlinks
 endef
 
 define VIM_INSTALL_RUNTIME_CMDS
 	cd $(@D)/src; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
-		$(MAKE) DESTDIR=$(TARGET_DIR) installmacros
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installrtbase; \
+		$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) installmacros
 endef
 
 define VIM_REMOVE_DOCS
-	find $(TARGET_DIR)/usr/share/vim -type f -name "*.txt" -delete
+	$(RM) -rf $(TARGET_DIR)/usr/share/vim/vim*/doc/
 endef
 
 # Avoid oopses with vipw/vigr, lack of $EDITOR and 'vi' command expectation

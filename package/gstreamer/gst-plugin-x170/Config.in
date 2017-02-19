@@ -11,6 +11,6 @@ config BR2_PACKAGE_GST_PLUGIN_X170
 
 	  http://www.at91.com/linux4sam/bin/view/Linux4SAM/SAM9M10Gstreamer
 
-comment "gst-plugin-x170 needs an (e)glibc toolchain and a Linux kernel to be built"
+comment "gst-plugin-x170 needs a glibc toolchain and a Linux kernel to be built"
 	depends on BR2_arm926t
 	depends on !BR2_LINUX_KERNEL || !BR2_TOOLCHAIN_USES_GLIBC

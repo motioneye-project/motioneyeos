@@ -25,7 +25,7 @@ endif
 # separately the build step and the install step and get a correct
 # behavior. So we do everything in the install step.
 define WF111_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) PWD=$(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PWD=$(@D) \
 		$(LINUX_MAKE_FLAGS) KDIR=$(LINUX_DIR) \
 		OUTPUT=$(TARGET_DIR) install_static
 endef

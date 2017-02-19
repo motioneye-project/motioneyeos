@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBBDPLUS
+	bool "libbdplus"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBGCRYPT
+	help
+	  libbdplus is a research project to implement the BD+ System
+	  Specifications.
+	  This research project provides, through an open-source
+	  library, a way to understand how the BD+ works.
+	  NB: this project doesn't offer any key, configuration file or
+	  certificate that could be used to decode encrypted copyrighted
+	  material.
+
+	  http://www.videolan.org/developers/libbdplus.html
+
+comment "libbdplus needs a toolchain w/ threads, dynamic library"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

@@ -1,0 +1,63 @@
+From b7a166acaddc4c78afa2b653e25114d9114699f3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 6 Aug 2016 11:24:50 +0200
+Subject: [PATCH] Proper detection of cxxabi.h and execinfo.h
+
+The current code in webrtc/base/checks.cc assumes that if __GLIBCXX__ is
+defined and __UCLIBC__ is not defined, then both cxxabi.h and execinfo.h
+will be available.
+
+Unfortunately, this is not correct with the musl C library:
+
+ - It defines __GLIBCXX__
+ - It does not define __UCLIBC__ (it's not uClibc after all!)
+ - But it also doesn't provide execinfo.h
+
+Therefore, in order to make things work properly, we switch to proper
+autoconf checks for cxxabi.h and execinfo.h, and only use the backtrace
+functionality if both are provided.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac          | 2 ++
+ webrtc/base/checks.cc | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index acbb3e2..ff4c752 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -45,6 +45,8 @@ AC_SUBST(GNUSTL_CFLAGS)
+ # Borrowed from gst-plugins-bad
+ AC_CHECK_HEADER(MobileCoreServices/MobileCoreServices.h, HAVE_IOS="yes", HAVE_IOS="no", [-])
+ 
++AC_CHECK_HEADERS([cxxabi.h execinfo.h])
++
+ # Based on gst-plugins-bad configure.ac and defines in
+ # <chromium source>/build/config/BUILDCONFIG.gn and
+ # webrtc/BUILD.gn
+diff --git a/webrtc/base/checks.cc b/webrtc/base/checks.cc
+index 49a31f2..05d23a6 100644
+--- a/webrtc/base/checks.cc
++++ b/webrtc/base/checks.cc
+@@ -16,7 +16,7 @@
+ #include <cstdio>
+ #include <cstdlib>
+ 
+-#if defined(__GLIBCXX__) && !defined(__UCLIBC__)
++#if defined(HAVE_CXX_ABI_H) && defined(HAVE_EXECINFO_H)
+ #include <cxxabi.h>
+ #include <execinfo.h>
+ #endif
+@@ -55,7 +55,7 @@ void PrintError(const char* format, ...) {
+ // to get usable symbols on Linux. This is copied from V8. Chromium has a more
+ // advanced stace trace system; also more difficult to copy.
+ void DumpBacktrace() {
+-#if defined(__GLIBCXX__) && !defined(__UCLIBC__)
++#if defined(HAVE_CXX_ABI_H) && defined(HAVE_EXECINFO_H)
+   void* trace[100];
+   int size = backtrace(trace, sizeof(trace) / sizeof(*trace));
+   char** symbols = backtrace_symbols(trace, size);
+-- 
+2.7.4
+

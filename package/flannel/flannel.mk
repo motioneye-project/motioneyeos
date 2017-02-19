@@ -21,7 +21,10 @@ FLANNEL_MAKE_ENV = \
 
 FLANNEL_GLDFLAGS = \
 	-X github.com/coreos/flannel/version.Version=$(FLANNEL_VERSION) \
-	-extldflags '-static'
+
+ifeq ($(BR2_STATIC_LIBS),y)
+FLANNEL_GLDFLAGS += -extldflags '-static'
+endif
 
 define FLANNEL_CONFIGURE_CMDS
 	# Put sources at prescribed GOPATH location.

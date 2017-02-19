@@ -11,8 +11,8 @@ LIBSSH2_LICENSE_FILES = COPYING
 LIBSSH2_INSTALL_STAGING = YES
 LIBSSH2_CONF_OPTS = --disable-examples-build
 
-# libssh2 must use either libgcrypt or OpenSSL
-# Only select openssl if libgcrypt is not selected
+# Dependency is either on libgcrypt or openssl, guaranteed in Config.in.
+# Favour libgcrypt.
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBSSH2_DEPENDENCIES += libgcrypt
 LIBSSH2_CONF_OPTS += --with-libgcrypt \

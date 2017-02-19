@@ -18,18 +18,18 @@ DUMA_OPTIONS = \
 # The dependency of some source files in duma_config.h, which is generated at
 # build time, is not specified in the Makefile. Force non-parallel build.
 define DUMA_BUILD_CMDS
-	$(MAKE1) $(TARGET_CONFIGURE_OPTS)       \
+	$(TARGET_MAKE_ENV) $(MAKE1) $(TARGET_CONFIGURE_OPTS)       \
 		OS=linux \
 		DUMA_OPTIONS="$(DUMA_OPTIONS)"   \
 		$(DUMA_CPP) -C $(@D)
 endef
 
 define DUMA_INSTALL_STAGING_CMDS
-	$(MAKE) OS=linux prefix=$(STAGING_DIR)/usr install -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) OS=linux prefix=$(STAGING_DIR)/usr install -C $(@D)
 endef
 
 define DUMA_INSTALL_TARGET_CMDS
-	$(MAKE) OS=linux prefix=$(TARGET_DIR)/usr install -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) OS=linux prefix=$(TARGET_DIR)/usr install -C $(@D)
 endef
 
 $(eval $(generic-package))

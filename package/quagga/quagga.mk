@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-QUAGGA_VERSION = 1.0.20160315
-QUAGGA_SOURCE = quagga-$(QUAGGA_VERSION).tar.xz
+QUAGGA_VERSION = 1.1.1
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
-QUAGGA_DEPENDENCIES = host-gawk
+QUAGGA_DEPENDENCIES = host-gawk host-pkgconf
 QUAGGA_LICENSE = GPLv2+
 QUAGGA_LICENSE_FILES = COPYING
 
@@ -27,6 +26,13 @@ QUAGGA_CONF_OPTS += --enable-capabilities
 QUAGGA_DEPENDENCIES += libcap
 else
 QUAGGA_CONF_OPTS += --disable-capabilities
+endif
+
+ifeq ($(BR2_PACKAGE_PROTOBUF_C),y)
+QUAGGA_CONF_OPTS += --enable-protobuf
+QUAGGA_DEPENDENCIES += protobuf-c
+else
+QUAGGA_CONF_OPTS += --disable-protobuf
 endif
 
 QUAGGA_CONF_OPTS += $(if $(BR2_PACKAGE_QUAGGA_ZEBRA),--enable-zebra,--disable-zebra)
@@ -68,13 +74,15 @@ else
 QUAGGA_CONF_OPTS += --disable-vtysh
 endif
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 QUAGGA_CONF_OPTS += --disable-pie
 endif
 
 define QUAGGA_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/quagga/quagga_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/quagga.conf
+	$(INSTALL) -D -m 644 package/quagga/quagga@.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/quagga@.service
 endef
 
 $(eval $(autotools-package))

@@ -35,7 +35,7 @@ PASSWD="${TARGET_DIR}/etc/passwd"
 SHADOW="${TARGET_DIR}/etc/shadow"
 GROUP="${TARGET_DIR}/etc/group"
 # /etc/gshadow is not part of the standard skeleton, so not everybody
-# will have it, but some may hav it, and its content must be in sync
+# will have it, but some may have it, and its content must be in sync
 # with /etc/group, so any use of gshadow must be conditional.
 GSHADOW="${TARGET_DIR}/etc/gshadow"
 
@@ -43,7 +43,7 @@ GSHADOW="${TARGET_DIR}/etc/gshadow"
 # such as:
 #    BR2_DEFCONFIG="$(CONFIG_DIR)/defconfig"
 # which when sourced from a shell script will eventually try to execute
-# a command name 'CONFIG_DIR', which is plain wrong for virtually every
+# a command named 'CONFIG_DIR', which is plain wrong for virtually every
 # systems out there.
 # So, we have to scan that file instead. Sigh... :-(
 PASSWD_METHOD="$( sed -r -e '/^BR2_TARGET_GENERIC_PASSWD_METHOD="(.*)"$/!d;'    \

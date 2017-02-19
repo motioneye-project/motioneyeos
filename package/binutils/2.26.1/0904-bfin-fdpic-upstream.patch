@@ -1,0 +1,30 @@
+From ed3056ebdb9795446157af03d3e08fbb93c1b01d Mon Sep 17 00:00:00 2001
+From: Nick Clifton <nickc@redhat.com>
+Date: Tue, 29 Mar 2016 10:24:16 +0100
+Subject: [PATCH] Relax assertion in BFIN linker to allow for discard GOT relocs.
+
+	PR 17334
+	* elf32-bfin.c (elf32_bfinfdpic_finish_dynamic_sections): Relax
+	assertion on the size of the got section to allow it to be bigger
+	than the number of relocs.
+diff --git a/bfd/elf32-bfin.c b/bfd/elf32-bfin.c
+index 7cc8b6d..b2fcf38 100644
+--- a/bfd/elf32-bfin.c
++++ b/bfd/elf32-bfin.c
+@@ -4457,7 +4457,13 @@ elf32_bfinfdpic_finish_dynamic_sections (bfd *output_bfd,
+   if (bfinfdpic_got_section (info))
+     {
+       BFD_ASSERT (bfinfdpic_gotrel_section (info)->size
+-		  == (bfinfdpic_gotrel_section (info)->reloc_count
++		  /* PR 17334: It appears that the GOT section can end up
++		     being bigger than the number of relocs.  Presumably
++		     because some relocs have been deleted.  A test case has
++		     yet to be generated for verify this, but in the meantime
++		     the test below has been changed from == to >= so that
++		     applications can continue to be built.  */
++		  >= (bfinfdpic_gotrel_section (info)->reloc_count
+ 		      * sizeof (Elf32_External_Rel)));
+ 
+       if (bfinfdpic_gotfixup_section (info))
+-- 
+1.7.1

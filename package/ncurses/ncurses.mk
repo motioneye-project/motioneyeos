@@ -8,7 +8,6 @@ NCURSES_VERSION = 5.9
 NCURSES_SITE = $(BR2_GNU_MIRROR)/ncurses
 NCURSES_INSTALL_STAGING = YES
 NCURSES_DEPENDENCIES = host-ncurses
-HOST_NCURSES_DEPENDENCIES =
 NCURSES_PROGS = clear infocmp tabs tic toe tput tset
 NCURSES_LICENSE = MIT with advertising clause
 NCURSES_LICENSE_FILES = README
@@ -56,33 +55,46 @@ NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_MENU) += menu
 NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_PANEL) += panel
 NCURSES_LIBS-$(BR2_PACKAGE_NCURSES_TARGET_FORM) += form
 
+NCURSES_TERMINFO_FILES = \
+	a/ansi \
+	l/linux \
+	p/putty \
+	p/putty-vt100 \
+	s/screen \
+	v/vt100 \
+	v/vt100-putty \
+	v/vt102 \
+	v/vt200 \
+	v/vt220 \
+	x/xterm \
+	x/xterm-color \
+	x/xterm-xfree86 \
+
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 NCURSES_CONF_OPTS += --enable-widec
 NCURSES_LIB_SUFFIX = w
 
 define NCURSES_LINK_LIBS_STATIC
-	for lib in $(NCURSES_LIBS-y:%=lib%); do \
-		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).a \
-			$(1)/usr/lib/$${lib}.a; \
-	done
+	$(foreach lib,$(NCURSES_LIBS-y:%=lib%), \
+		ln -sf $(lib)$(NCURSES_LIB_SUFFIX).a $(1)/usr/lib/$(lib).a
+	)
 	ln -sf libncurses$(NCURSES_LIB_SUFFIX).a \
 		$(1)/usr/lib/libcurses.a
 endef
 
 define NCURSES_LINK_LIBS_SHARED
-	for lib in $(NCURSES_LIBS-y:%=lib%); do \
-		ln -sf $${lib}$(NCURSES_LIB_SUFFIX).so \
-			$(1)/usr/lib/$${lib}.so; \
-	done
+	$(foreach lib,$(NCURSES_LIBS-y:%=lib%), \
+		ln -sf $(lib)$(NCURSES_LIB_SUFFIX).so $(1)/usr/lib/$(lib).so
+	)
 	ln -sf libncurses$(NCURSES_LIB_SUFFIX).so \
 		$(1)/usr/lib/libcurses.so
 endef
 
 define NCURSES_LINK_PC
-	for pc in $(NCURSES_LIBS-y); do \
-		ln -sf $${pc}$(NCURSES_LIB_SUFFIX).pc \
-			$(1)/usr/lib/pkgconfig/$${pc}.pc; \
-	done
+	$(foreach pc,$(NCURSES_LIBS-y), \
+		ln -sf $(pc)$(NCURSES_LIB_SUFFIX).pc \
+			$(1)/usr/lib/pkgconfig/$(pc).pc
+	)
 endef
 
 NCURSES_LINK_TARGET_LIBS = \
@@ -96,10 +108,10 @@ NCURSES_LINK_STAGING_PC = $(call NCURSES_LINK_PC,$(STAGING_DIR))
 
 NCURSES_CONF_OPTS += --enable-ext-colors
 NCURSES_ABI_VERSION = 6
-define NCURSES_INSTALL_TARGET_256_COLORS_TERMINFO
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm+256color $(TARGET_DIR)/usr/share/terminfo/x
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-256color $(TARGET_DIR)/usr/share/terminfo/x
-endef
+NCURSES_TERMINFO_FILES += \
+	p/putty-256color \
+	x/xterm+256color \
+	x/xterm-256color
 
 NCURSES_POST_INSTALL_STAGING_HOOKS += NCURSES_LINK_STAGING_LIBS
 NCURSES_POST_INSTALL_STAGING_HOOKS += NCURSES_LINK_STAGING_PC
@@ -115,26 +127,26 @@ endif
 # ncurses breaks with parallel build, but takes quite a while to
 # build single threaded. Work around it similar to how Gentoo does
 define NCURSES_BUILD_CMDS
-	$(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR) sources
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) DESTDIR=$(STAGING_DIR) sources
 	rm -rf $(@D)/misc/pc-files
-	$(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR)
 endef
 
 ifneq ($(BR2_STATIC_LIBS),y)
 define NCURSES_INSTALL_TARGET_LIBS
-	for lib in $(NCURSES_LIBS-y:%=lib%); do \
-		cp -dpf $(NCURSES_DIR)/lib/$${lib}$(NCURSES_LIB_SUFFIX).so* \
-			$(TARGET_DIR)/usr/lib/; \
-	done
+	$(foreach lib,$(NCURSES_LIBS-y:%=lib%), \
+		cp -dpf $(NCURSES_DIR)/lib/$(lib)$(NCURSES_LIB_SUFFIX).so* \
+			$(TARGET_DIR)/usr/lib/
+	)
 endef
 endif
 
 ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PROGS),y)
 define NCURSES_INSTALL_TARGET_PROGS
-	for x in $(NCURSES_PROGS); do \
-		$(INSTALL) -m 0755 $(NCURSES_DIR)/progs/$$x \
-			$(TARGET_DIR)/usr/bin/$$x; \
-	done
+	$(foreach prog,$(NCURSES_PROGS), \
+		$(INSTALL) -m 0755 $(NCURSES_DIR)/progs/$(prog) \
+			$(TARGET_DIR)/usr/bin/$(prog)
+	)
 	ln -sf tset $(TARGET_DIR)/usr/bin/reset
 endef
 endif
@@ -145,22 +157,10 @@ define NCURSES_INSTALL_TARGET_CMDS
 	$(NCURSES_LINK_TARGET_LIBS)
 	$(NCURSES_INSTALL_TARGET_PROGS)
 	ln -snf /usr/share/terminfo $(TARGET_DIR)/usr/lib/terminfo
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo/x
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm $(TARGET_DIR)/usr/share/terminfo/x
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-color $(TARGET_DIR)/usr/share/terminfo/x
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/x/xterm-xfree86 $(TARGET_DIR)/usr/share/terminfo/x
-	$(NCURSES_INSTALL_TARGET_256_COLORS_TERMINFO)
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo/v
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt100 $(TARGET_DIR)/usr/share/terminfo/v
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt102 $(TARGET_DIR)/usr/share/terminfo/v
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt200 $(TARGET_DIR)/usr/share/terminfo/v
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/v/vt220 $(TARGET_DIR)/usr/share/terminfo/v
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo/a
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/a/ansi $(TARGET_DIR)/usr/share/terminfo/a
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo/l
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/l/linux $(TARGET_DIR)/usr/share/terminfo/l
-	mkdir -p $(TARGET_DIR)/usr/share/terminfo/s
-	cp -dpf $(STAGING_DIR)/usr/share/terminfo/s/screen $(TARGET_DIR)/usr/share/terminfo/s
+	$(foreach terminfo,$(NCURSES_TERMINFO_FILES),\
+		$(INSTALL) -D -m 0644 $(STAGING_DIR)/usr/share/terminfo/$(terminfo) \
+			$(TARGET_DIR)/usr/share/terminfo/$(terminfo)
+	)
 endef # NCURSES_INSTALL_TARGET_CMDS
 
 #
@@ -169,8 +169,8 @@ endef # NCURSES_INSTALL_TARGET_CMDS
 # ourselves, and use that during installation.
 #
 define HOST_NCURSES_BUILD_CMDS
-	$(MAKE1) -C $(@D) sources
-	$(MAKE) -C $(@D)/progs tic
+	$(HOST_MAKE_ENV) $(MAKE1) -C $(@D) sources
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/progs tic
 endef
 
 HOST_NCURSES_CONF_OPTS = \

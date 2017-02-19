@@ -143,6 +143,402 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.02"
+
+config BR2_PACKAGE_PERL_DB_FILE
+	bool "perl-db-file removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BERKELEYDB
+	select BR2_PACKAGE_PERL
+	help
+	  DB_File can be built as a core Perl module, so the separate
+	  perl-db-file package has been removed.
+
+config BR2_KERNEL_HEADERS_4_7
+	bool "kernel headers version 4.7.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.7.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.4.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_6
+	bool "kernel headers version 4.6.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.6.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.4.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_5
+	bool "kernel headers version 4.5.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_4
+	select BR2_LEGACY
+	help
+	  Version 4.5.x of the Linux kernel headers are no longer
+	   maintained upstream and are now removed. As an alternative,
+	   version 4.4.x of the headers have been automatically
+	   selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_14
+	bool "kernel headers version 3.14.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_12
+	select BR2_LEGACY
+	  help
+	  Version 3.14.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 3.12.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_TOOLCHAIN_EXTERNAL_MUSL_CROSS
+	bool "musl-cross 1.1.12 toolchain removed"
+	select BR2_LEGACY
+	help
+	  The support for the prebuilt toolchain based on the Musl C
+	  library provided by the musl-cross project has been removed.
+	  Upstream doesn't provide any prebuilt toolchain anymore, use the
+	  Buildroot toolchain instead.
+
+config BR2_UCLIBC_INSTALL_TEST_SUITE
+	bool "uClibc tests now in uclibc-ng-test"
+	select BR2_LEGACY
+	select BR2_PACKAGE_UCLIBC_NG_TEST
+	help
+	  The test suite of the uClibc C library has been moved into a
+	  separate package, uclibc-ng-test.
+
+config BR2_TOOLCHAIN_EXTERNAL_BLACKFIN_UCLINUX
+	bool "Blackfin.uclinux.org 2014R1 toolchain removed"
+	select BR2_LEGACY
+	help
+	  The ADI Blackfin toolchain has many bugs which are fixed in
+	  more recent gcc and uClibc-ng releases. Use the Buildroot
+	  toolchain instead.
+
+config BR2_PACKAGE_MAKEDEVS
+	bool "makedevs removed"
+	select BR2_LEGACY
+	help
+	  The makedevs tool is part of busybox. The Buildroot fork
+	  should not be used outside of the Buildroot infrastructure.
+
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV7A
+	bool "Arago ARMv7 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
+config BR2_TOOLCHAIN_EXTERNAL_ARAGO_ARMV5TE
+	bool "Arago ARMv5 2011.09 removed"
+	select BR2_LEGACY
+	help
+	  The Arago toolchains are every old and not updated anymore.
+
+config BR2_PACKAGE_SNOWBALL_HDMISERVICE
+	bool "snowball-hdmiservice removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+config BR2_PACKAGE_SNOWBALL_INIT
+	bool "snowball-init removed"
+	select BR2_LEGACY
+	help
+	  We no longer have support for the Snowball platform in
+	  Buildroot, so this package was no longer useful.
+
+config BR2_GDB_VERSION_7_9
+	bool "gdb 7.9 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.9 version of gdb has been removed. Use a newer version
+	  instead.
+
+###############################################################################
+comment "Legacy options removed in 2016.11"
+
+config BR2_PACKAGE_PHP_SAPI_CLI_CGI
+	bool "PHP CGI and CLI options are now seperate"
+	select BR2_PACKAGE_PHP_SAPI_CLI
+	select BR2_PACKAGE_PHP_SAPI_CGI
+	select BR2_LEGACY
+	help
+	  The PHP Interface options have been split up into a
+	  separate option for each interface.
+
+config BR2_PACKAGE_PHP_SAPI_CLI_FPM
+	bool "PHP CLI and FPM options are now separate"
+	select BR2_PACKAGE_PHP_SAPI_CLI
+	select BR2_PACKAGE_PHP_SAPI_FPM
+	select BR2_LEGACY
+	help
+	  The PHP Interface options have been split up into a
+	  separate option for each interface.
+
+config BR2_PACKAGE_WVSTREAMS
+	bool "wvstreams removed"
+	select BR2_LEGACY
+	help
+	  wvstreams is not maintained anymore since about 2009. It also
+	  doesn't build anymore with recent compilers (GCC 5+).
+
+config BR2_PACKAGE_WVDIAL
+	bool "wvdial removed"
+	select BR2_LEGACY
+	help
+	  wvdial is not maintained anymore since about 2009. It also
+	  doesn't build anymore with recent compilers (GCC 5+).
+
+config BR2_PACKAGE_WEBKITGTK24
+	bool "webkitgtk 2.4.x removed"
+	select BR2_LEGACY
+	help
+	  This legacy package only existed because some other packages
+	  depended on that specific version of webkitgtk. However, the
+	  other packages have been fixed. webkitgtk 2.4 is full of
+	  security issues so it needs to be removed.
+
+config BR2_PACKAGE_TORSMO
+	bool "torsmo removed"
+	select BR2_LEGACY
+	help
+	  torsmo has been unmaintained for a long time, and nobody
+	  seems to be interested in it.
+
+config BR2_PACKAGE_SSTRIP
+	bool "sstrip removed"
+	select BR2_LEGACY
+	help
+	  sstrip is unmaintained and potentially harmful. It doesn't
+	  save so much compared to normal binutils strip, and there is
+	  a big risk of binaries that don't work. Use normal strip
+	  instead.
+
+config BR2_KERNEL_HEADERS_4_3
+	bool "kernel headers version 4.3.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 4.3.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_2
+	bool "kernel headers version 4.2.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 4.2.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_PACKAGE_KODI_ADDON_XVDR
+	bool "kodi-addon-xvdr removed"
+	select BR2_LEGACY
+	help
+	  According to the github project page:
+	  https://github.com/pipelka/xbmc-addon-xvdr
+	  this package is discontinued.
+
+config BR2_PACKAGE_IPKG
+	bool "ipkg removed"
+	select BR2_LEGACY
+	help
+	  ipkg dates back to the early 2000s when Compaq started the
+	  handhelds.org project and it hasn't seen development since 2006.
+	  Use opkg as a replacement.
+
+config BR2_GCC_VERSION_4_7_X
+	bool "gcc 4.7.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc version 4.7.x has been removed. The current
+	  default version (4.9.x or later) has been selected instead.
+
+config BR2_BINUTILS_VERSION_2_24_X
+	bool "binutils version 2.24 support removed"
+	select BR2_LEGACY
+	help
+	  Support for binutils version 2.24 has been removed. The
+	  current default version (2.26 or later) has been selected
+	  instead.
+
+config BR2_PACKAGE_WESTON_RPI
+	bool "Weston propietary RPI support is gone"
+	select BR2_LEGACY
+	help
+	  Upstream decided the propietary (rpi-userland) weston composer
+	  support wasn't worth the effort so it was removed. Switch to
+	  the open VC4 support.
+
+config BR2_LINUX_KERNEL_TOOL_CPUPOWER
+	bool "linux-tool cpupower"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
+	help
+	  Linux tool cpupower option was renamed.
+
+config BR2_LINUX_KERNEL_TOOL_PERF
+	bool "linux-tool perf"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_PERF
+	help
+	  Linux tool perf option was renamed.
+
+config BR2_LINUX_KERNEL_TOOL_SELFTESTS
+	bool "linux-tool selftests"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
+	help
+	  Linux tool selftests option was renamed.
+
+config BR2_GCC_VERSION_4_8_ARC
+	bool "gcc arc option renamed"
+	select BR2_LEGACY
+	select BR2_GCC_VERSION_ARC
+	help
+	  The option that selects the gcc version for the ARC
+	  architecture has been renamed to BR2_GCC_VERSION_ARC.
+
+config BR2_KERNEL_HEADERS_4_0
+	bool "kernel headers version 4.0.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	  Version 4.0.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.18.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_19
+	bool "kernel headers version 3.19.x are no longer supported"
+	select BR2_KERNEL_HEADERS_3_18
+	select BR2_LEGACY
+	help
+	  Version 3.19.x of the Linux kernel headers have been deprecated
+	  for more than four buildroot releases and are now removed.
+	  As an alternative, version 3.18.x of the headers have been
+	  automatically selected in your configuration.
+
+config BR2_PACKAGE_LIBEVAS_GENERIC_LOADERS
+	bool "libevas-generic-loaders package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.18, libevas-generic-loaders is now provided by the efl
+	  package.
+
+config BR2_PACKAGE_ELEMENTARY
+	bool "elementary package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_EFL
+	help
+	  With EFL 1.18, elementary is now provided by the efl package.
+
+config BR2_LINUX_KERNEL_CUSTOM_LOCAL
+	bool "Linux kernel local directory option removed"
+	help
+	  The option to select a local directory as the source of the Linux
+	  kernel has been removed. It hurts reproducibility of builds.
+
+	  In case you were using this option during development of your
+	  Linux kernel, use the override mechanism instead.
+
+###############################################################################
+comment "Legacy options removed in 2016.08"
+
+config BR2_PACKAGE_SYSTEMD_COMPAT
+	bool "systemd compatibility libraries have been removed"
+	select BR2_LEGACY
+	help
+	  The systemd option to enable the compatibility libraries has
+	  been removed. Theses libraries have been useless since a few
+	  version, and have been fully dropped from the source since
+	  v230.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER
+	bool "gst1-plugins-bad liveadder plugin removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER
+	help
+	  The functionality of the liveadder plugin of the
+	  gst1-plugins-bad package has been merged into audiomixer.
+
+config BR2_PACKAGE_LIBFSLVPUWRAP
+	bool "libfslvpuwrap has been renamed to imx-vpuwrap"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_VPUWRAP
+	help
+	  The libfslvpuwrap has been renamed to match the renamed package.
+
+config BR2_PACKAGE_LIBFSLPARSER
+	bool "libfslparser has been renamed to imx-parser"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_PARSER
+	help
+	  The libfslparser has been renamed to match the renamed package.
+
+config BR2_PACKAGE_LIBFSLCODEC
+	bool "libfslcodec has been renamed to imx-codec"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_CODEC
+	help
+	  The libfslcodec has been renamed to match the renamed package.
+
+config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE_FIT_SIGNATURE_SUPPORT
+	bool "FIT support in uboot-tools has been refactored"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DTC
+	select BR2_PACKAGE_DTC_PROGRAMS
+	select BR2_PACKAGE_UBOOT_TOOLS_FIT_SUPPORT
+	select BR2_PACKAGE_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
+	select BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
+	help
+	  This option has been removed in favor of a more fine-grained
+	  configuration, which is recommended. Selecting this option
+	  enables FIT and FIT signature support for the target packages.
+	  It will also select the dtc and openssl packages.
+
+config BR2_PTHREADS_OLD
+	bool "linuxthreads (stable/old)"
+	select BR2_LEGACY
+	help
+	  Linuxthreads have been reworked, BR2_PTHREADS_OLD is now
+	  BR2_PTHREADS and the old BR2_PTHREADS - LT.new got removed.
+
+config BR2_BINUTILS_VERSION_2_23_X
+	bool "binutils 2.23 removed"
+	select BR2_LEGACY
+	help
+	  Binutils 2.23 has been removed, using a newer version is
+	  recommended.
+
+config BR2_TOOLCHAIN_BUILDROOT_EGLIBC
+	bool "eglibc support has been removed"
+	select BR2_LEGACY
+	help
+	  The eglibc project no longer exists, as it has been merged
+	  back into the glibc project. Therefore, support for eglibc
+	  has been removed, and glibc should be used instead.
+
+config BR2_GDB_VERSION_7_8
+	bool "gdb 7.8 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.8 version of gdb has been removed. Use a newer version
+	  instead.
+
+###############################################################################
 comment "Legacy options removed in 2016.05"
 
 config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
@@ -220,11 +616,18 @@ config BR2_PACKAGE_QT5QUICK1
 	  from upstream starting from Qt 5.6.
 
 config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR
-	bool "uboot custom patch dir removed"
-	select BR2_LEGACY
+	string "uboot custom patch dir has been removed"
 	help
 	  The uboot custom patch directory option has been removed. Use
 	  the improved BR2_TARGET_UBOOT_PATCH option instead.
+
+config BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR_WRAP
+	bool
+	default y if BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR != ""
+	select BR2_LEGACY
+
+# Note: BR2_TARGET_UBOOT_CUSTOM_PATCH_DIR is still referenced from
+# boot/uboot/Config.in
 
 config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
 	bool "xf86-input-void removed"
@@ -235,12 +638,12 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_VOID
 
 config BR2_KERNEL_HEADERS_3_17
 	bool "kernel headers version 3.17.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_18
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	  Version 3.17.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.18.x of the headers have been
+	  As an alternative, version 3.12.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_GDB_VERSION_7_7
@@ -302,7 +705,7 @@ config BR2_GCC_VERSION_4_5_X
 	  version instead.
 
 config BR2_PACKAGE_SQLITE_READLINE
-	bool "command-line editing support was updated"
+	bool "sqlite command-line editing support was updated"
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
 	select BR2_LEGACY
@@ -336,7 +739,7 @@ config BR2_PACKAGE_E2FSPROGS_FINDFS
 	  This option attempted to enable findfs capabilities from
 	  e2fsprogs but has not worked since July 2015 (due to
 	  packaging changes). One can use BusyBox's findfs support or
-	  enable the BR2_PACKAGE_UTIL_LINUX_FINDFS option.
+	  enable the BR2_PACKAGE_UTIL_LINUX_BINARIES option.
 
 config BR2_PACKAGE_OPENPOWERLINK_DEBUG_LEVEL
 	bool "openpowerlink debug option has been removed"
@@ -381,12 +784,12 @@ config BR2_PACKAGE_CUPS_PDFTOPS
 
 config BR2_KERNEL_HEADERS_3_16
 	bool "kernel headers version 3.16.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_18
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	Version 3.16.x of the Linux kernel headers have been deprecated
 	for more than four buildroot releases and are now removed.
-	As an alternative, version 3.18.x of the headers have been
+	As an alternative, version 3.12.x of the headers have been
 	automatically selected in your configuration.
 
 config BR2_PACKAGE_PYTHON_PYXML
@@ -597,32 +1000,32 @@ config BR2_KERNEL_HEADERS_3_0
 
 config BR2_KERNEL_HEADERS_3_11
 	bool "kernel headers version 3.11.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_12
+	select BR2_KERNEL_HEADERS_3_10
 	select BR2_LEGACY
 	help
 	  Version 3.11.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.12.x of the headers have been
+	  As an alternative, version 3.10.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_KERNEL_HEADERS_3_13
 	bool "kernel headers version 3.13.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_14
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	  Version 3.13.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.14.x of the headers have been
+	  As an alternative, version 3.12.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_KERNEL_HEADERS_3_15
 	bool "kernel headers version 3.15.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_18
+	select BR2_KERNEL_HEADERS_3_12
 	select BR2_LEGACY
 	help
 	  Version 3.15.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.18.x of the headers have been
+	  As an alternative, version 3.12.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_PACKAGE_DIRECTFB_EXAMPLES_ANDI
@@ -913,11 +1316,9 @@ config BR2_PACKAGE_KODI_PVR_ADDONS
 config BR2_BINUTILS_VERSION_2_23_2
 	bool "binutils 2.23 option renamed"
 	select BR2_LEGACY
-	select BR2_BINUTILS_VERSION_2_23_X
 	help
-	  The binutils version option has been renamed to match the
-	  same patchlevel logic used by gcc. The new option is now
-	  BR2_BINUTILS_VERSION_2_23_X.
+	  Binutils 2.23.2 has been removed, using a newer version is
+	  recommended.
 
 config BR2_BINUTILS_VERSION_2_24
 	bool "binutils 2.24 option renamed"
@@ -1174,11 +1575,12 @@ config BR2_PACKAGE_STRONGSWAN_TOOLS
 	  deprecated.
 
 config BR2_PACKAGE_XBMC_ADDON_XVDR
-	bool "xbmc options have been renamed"
+	bool "xbmc-addon-xvdr removed"
 	select BR2_LEGACY
-	select BR2_PACKAGE_KODI_ADDON_XVDR
 	help
-	  The XBMC media center project was renamed to Kodi entertainment center
+	  According to the github project page:
+	  https://github.com/pipelka/xbmc-addon-xvdr
+	  this package is discontinued.
 
 config BR2_PACKAGE_XBMC_PVR_ADDONS
 	bool "xbmc options have been renamed"
@@ -1430,12 +1832,12 @@ config BR2_PACKAGE_LIBELF
 
 config BR2_KERNEL_HEADERS_3_8
 	bool "kernel headers version 3.8.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_10
+	select BR2_KERNEL_HEADERS_3_4
 	select BR2_LEGACY
 	help
 	  Version 3.8.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.10.x of the headers have been
+	  As an alternative, version 3.4.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_PACKAGE_GETTEXT_TOOLS
@@ -1588,22 +1990,22 @@ config BR2_PACKAGE_EVTEST_CAPTURE
 
 config BR2_KERNEL_HEADERS_3_6
 	bool "kernel headers version 3.6.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_10
+	select BR2_KERNEL_HEADERS_3_4
 	select BR2_LEGACY
 	help
 	  Version 3.6.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.10.x of the headers have been
+	  As an alternative, version 3.4.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_KERNEL_HEADERS_3_7
 	bool "kernel headers version 3.7.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_10
+	select BR2_KERNEL_HEADERS_3_4
 	select BR2_LEGACY
 	help
 	  Version 3.7.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.10.x of the headers have been
+	  As an alternative, version 3.4.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_PACKAGE_VALA
@@ -1776,22 +2178,22 @@ config BR2_KERNEL_HEADERS_3_1
 
 config BR2_KERNEL_HEADERS_3_3
 	bool "kernel headers version 3.3.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_4
+	select BR2_KERNEL_HEADERS_3_2
 	select BR2_LEGACY
 	help
 	  Version 3.3.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.4.x of the headers have been
+	  As an alternative, version 3.2.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_KERNEL_HEADERS_3_5
 	bool "kernel headers version 3.5.x are no longer supported"
-	select BR2_KERNEL_HEADERS_3_10
+	select BR2_KERNEL_HEADERS_3_4
 	select BR2_LEGACY
 	help
 	  Version 3.5.x of the Linux kernel headers have been deprecated
 	  for more than four buildroot releases and are now removed.
-	  As an alternative, version 3.10.x of the headers have been
+	  As an alternative, version 3.4.x of the headers have been
 	  automatically selected in your configuration.
 
 config BR2_GDB_VERSION_7_2

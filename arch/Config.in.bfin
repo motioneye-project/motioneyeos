@@ -1,7 +1,7 @@
 choice
 	prompt "Target CPU"
 	depends on BR2_bfin
-	default BR2_bf609
+	default BR2_bf532
 	help
 	  Specify target CPU
 config BR2_bf606

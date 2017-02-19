@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-QT5WEBKIT_VERSION = d2ff5a085572b1ee24dcb42ae107063f3142d14e
-# Using GitHub since it supports downloading tarballs from random commits.
-# The http://code.qt.io/cgit/qt/qtwebkit.git/ repo doesn't allow to do so.
-QT5WEBKIT_SITE = $(call github,qtproject,qtwebkit,$(QT5WEBKIT_VERSION))
-QT5WEBKIT_DEPENDENCIES = qt5base sqlite host-ruby host-gperf host-bison host-flex
+QT5WEBKIT_VERSION = $(QT5_VERSION)
+QT5WEBKIT_SITE = $(QT5_SNAPSHOTS_SITE)
+QT5WEBKIT_SOURCE = qtwebkit-opensource-src-$(QT5WEBKIT_VERSION).tar.xz
+QT5WEBKIT_DEPENDENCIES = \
+	host-bison host-flex host-gperf host-python host-ruby \
+	qt5base sqlite
 QT5WEBKIT_INSTALL_STAGING = YES
 
 QT5WEBKIT_LICENSE_FILES = Source/WebCore/LICENSE-LGPL-2 Source/WebCore/LICENSE-LGPL-2.1
@@ -31,23 +32,26 @@ ifeq ($(BR2_PACKAGE_QT5DECLARATIVE),y)
 QT5WEBKIT_DEPENDENCIES += qt5declarative
 endif
 
-# Since we get the source from git, generated header files are not included.
-# qmake detects that header file generation (using the syncqt tool) must be
-# done based on the existence of a .git directory (cfr. the git_build config
-# option which is set in qt_build_paths.prf).
-# So, to make sure that qmake detects that header files must be generated,
-# create an empty .git directory.
+# QtWebkit's build system uses python, but only supports python2. We work
+# around this by forcing python2 early in the PATH, via a python->python2
+# symlink.
+QT5WEBKIT_ENV = PATH=$(@D)/host-bin:$(BR_PATH)
+define QT5WEBKIT_PYTHON2_SYMLINK
+	mkdir -p $(@D)/host-bin
+	ln -sf $(HOST_DIR)/usr/bin/python2 $(@D)/host-bin/python
+endef
+QT5WEBKIT_PRE_CONFIGURE_HOOKS += QT5WEBKIT_PYTHON2_SYMLINK
+
 define QT5WEBKIT_CONFIGURE_CMDS
-	mkdir -p $(@D)/.git
-	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5WEBKIT_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
 
 define QT5WEBKIT_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(QT5WEBKIT_ENV) $(MAKE) -C $(@D)
 endef
 
 define QT5WEBKIT_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
+	$(TARGET_MAKE_ENV) $(QT5WEBKIT_ENV) $(MAKE) -C $(@D) install
 	$(QT5_LA_PRL_FILES_FIXUP)
 endef
 

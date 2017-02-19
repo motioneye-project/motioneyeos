@@ -1,0 +1,18 @@
+Add missing <sys/cdefs.h> include
+
+quota.h uses the __P definition, so it must include <sys/cdefs.h>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/quota.h
+===================================================================
+--- a/quota.h
++++ b/quota.h
+@@ -2,6 +2,7 @@
+ #define GUARD_QUOTA_H
+ 
+ #include <sys/types.h>
++#include <sys/cdefs.h>
+ 
+ typedef u_int32_t qid_t;	/* Type in which we store ids in memory */
+ typedef int64_t qsize_t;	/* Type in which we store size limitations */

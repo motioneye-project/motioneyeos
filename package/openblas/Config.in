@@ -1,0 +1,75 @@
+config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
+	string
+	default "P2"           if BR2_x86_pentium2
+	default "KATMAI"       if BR2_x86_pentium3
+	default "NORTHWOOD"    if BR2_x86_pentium4
+	default "PRESCOTT"     if BR2_x86_prescott
+	default "BANIAS"       if BR2_x86_pentium_m
+	default "CORE2"        if BR2_x86_core2
+	default "NEHALEM"      if BR2_x86_corei7
+	default "SANDYBRIDGE"  if BR2_x86_corei7_avx
+	default "HASWELL"      if BR2_x86_core_avx2
+	default "ATOM"         if BR2_x86_atom
+	default "ATHLON"       if BR2_x86_athlon || BR2_x86_athlon_4
+	default "OPTERON"      if BR2_x86_opteron
+	default "OPTERON_SSE3" if BR2_x86_opteron_sse3
+	default "BARCELONA"    if BR2_x86_barcelona
+	default "STEAMROLLER"  if BR2_x86_steamroller
+	default "VIAC3"        if BR2_x86_c3 || BR2_x86_c32
+	default "SSE_GENERIC"  if BR2_X86_CPU_HAS_SSE
+	default "POWER4"       if BR2_powerpc_power4
+	default "POWER5"       if BR2_powerpc_power5
+	default "POWER6"       if BR2_powerpc_power6
+	default "POWER7"       if BR2_powerpc_power7
+	default "POWER8"       if BR2_powerpc_power8
+	default "PPCG4"        if BR2_powerpc_7400 || BR2_powerpc_7450
+	default "PPC970"       if BR2_powerpc_970
+	default "PPC440"       if BR2_powerpc_440
+	default "PPC440FP2"    if BR2_powerpc_440fp
+	# P5600 is built with MSA support which is only available in Codescape toolchains
+	default "P5600"        if BR2_mips_p5600 && BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS
+	default "SICORTEX"     if BR2_MIPS_CPU_MIPS64
+	# I6400 is built with MSA support which is only available in Codescape toolchains
+	default "I6400"        if BR2_mips_i6400 && BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
+	default "SPARC"        if BR2_sparc
+	# Cortex-A15 always have a VFPv4
+	default "CORTEXA15"    if (BR2_cortex_a15 && BR2_ARM_EABIHF)
+	# Cortex-A9 have an optional VFPv3, so we need to make sure it
+	# is available
+	default "CORTEXA9"     if (BR2_cortex_a9 && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV3)
+	default "ARMV5"        if BR2_ARM_CPU_ARMV5
+	# On ARMv6, OpenBLAS assumes that a VFP is available, and
+	# EABIhf is used
+	default "ARMV6"        if (BR2_ARM_CPU_ARMV6 && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV2)
+	# On ARMv7, OpenBLAS assumes that a full VFPv3+ is available
+	# (and not the more limited D16 variant), and that EABIhf is
+	# used.
+	default "ARMV7"        if (BR2_ARM_CPU_ARMV7A && BR2_ARM_EABIHF && \
+				   BR2_ARM_CPU_HAS_VFPV3)
+	default "ARMV8"        if BR2_aarch64 || BR2_aarch64_be
+	help
+	  OpenBLAS target CPU. See TargetList.txt in the source tree for
+	  the possible target strings. A possible value is set
+	  automatically based on your Target Architecture Variant.
+
+config BR2_PACKAGE_OPENBLAS_ARCH_SUPPORTS
+	bool
+	default y if BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET != ""
+
+config BR2_PACKAGE_OPENBLAS
+	bool "openblas"
+	depends on BR2_PACKAGE_OPENBLAS_ARCH_SUPPORTS
+	help
+	  An optimized BLAS library based on GotoBLAS2 1.13 BSD version.
+
+	  https://www.openblas.net/
+
+if BR2_PACKAGE_OPENBLAS
+
+config BR2_PACKAGE_OPENBLAS_TARGET
+	string "OpenBLAS target CPU"
+	default BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
+
+endif

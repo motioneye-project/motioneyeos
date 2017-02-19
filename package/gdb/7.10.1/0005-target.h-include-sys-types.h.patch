@@ -1,0 +1,30 @@
+From cd68d0ebe7748a5448c86eb021b717df6fe83f35 Mon Sep 17 00:00:00 2001
+From: Doug Evans <xdje42@gmail.com>
+Date: Sun, 22 Nov 2015 17:24:03 -0800
+Subject: [PATCH] target.h: #include <sys/types.h>.
+
+For musl.
+
+[Romain:
+  rebase on gdb 7.10.1 from upstream (7.11)
+  remove ChangeLog entry]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ gdb/gdbserver/target.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gdb/gdbserver/target.h b/gdb/gdbserver/target.h
+index 9a40867..6af043c 100644
+--- a/gdb/gdbserver/target.h
++++ b/gdb/gdbserver/target.h
+@@ -21,6 +21,7 @@
+ #ifndef TARGET_H
+ #define TARGET_H
+ 
++#include <sys/types.h> /* for mode_t */
+ #include "target/target.h"
+ #include "target/resume.h"
+ #include "target/wait.h"
+-- 
+2.5.5
+

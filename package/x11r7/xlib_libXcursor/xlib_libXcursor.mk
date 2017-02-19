@@ -11,6 +11,9 @@ XLIB_LIBXCURSOR_LICENSE = MIT
 XLIB_LIBXCURSOR_LICENSE_FILES = COPYING
 XLIB_LIBXCURSOR_INSTALL_STAGING = YES
 XLIB_LIBXCURSOR_DEPENDENCIES = xlib_libX11 xlib_libXfixes xlib_libXrender xproto_xproto
+HOST_XLIB_LIBXCURSOR_DEPENDENCIES = \
+	host-xlib_libX11 host-xlib_libXfixes host-xlib_libXrender \
+	host-xproto_xproto
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

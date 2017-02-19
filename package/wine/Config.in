@@ -17,7 +17,7 @@ config BR2_PACKAGE_WINE
 
 	  http://www.winehq.org
 
-comment "wine needs a (e)glibc toolchain"
+comment "wine needs a glibc toolchain"
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_i386
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

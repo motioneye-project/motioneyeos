@@ -4,17 +4,20 @@
 #
 ################################################################################
 
-E2FSPROGS_VERSION = 1.42.13
+E2FSPROGS_VERSION = 1.43.3
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VERSION).tar.xz
 E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2FSPROGS_VERSION)
 E2FSPROGS_LICENSE = GPLv2, libuuid BSD-3c, libss and libet MIT-like with advertising clause
-E2FSPROGS_LICENSE_FILES = COPYING lib/uuid/COPYING lib/ss/mit-sipb-copyright.h lib/et/internal.h
+E2FSPROGS_LICENSE_FILES = NOTICE lib/uuid/COPYING lib/ss/mit-sipb-copyright.h lib/et/internal.h
 E2FSPROGS_INSTALL_STAGING = YES
-E2FSPROGS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-libs
+E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
+# we don't have a host-util-linux
+HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf
 
 # e4defrag doesn't build on older systems like RHEL5.x, and we don't
 # need it on the host anyway.
-HOST_E2FSPROGS_CONF_OPTS += --disable-defrag
+# Disable fuse2fs as well to avoid carrying over deps, and it's unused
+HOST_E2FSPROGS_CONF_OPTS += --disable-defrag --disable-fuse2fs
 
 E2FSPROGS_CONF_OPTS = \
 	$(if $(BR2_STATIC_LIBS),,--enable-elf-shlibs) \
@@ -30,9 +33,28 @@ E2FSPROGS_CONF_OPTS = \
 	--disable-testio-debug \
 	--disable-rpath
 
+ifeq ($(BR2_PACKAGE_E2FSPROGS_FUSE2FS),y)
+E2FSPROGS_CONF_OPTS += --enable-fuse2fs
+E2FSPROGS_DEPENDENCIES += libfuse
+else
+E2FSPROGS_CONF_OPTS += --disable-fuse2fs
+endif
+
 ifeq ($(BR2_nios2),y)
 E2FSPROGS_CONF_ENV += ac_cv_func_fallocate=no
 endif
+
+# Some programs are built for the host, but use definitions guessed by
+# the configure script (i.e with the cross-compiler). Help them by
+# saying that <sys/stat.h> is available on the host, which is needed
+# for util/subst.c to build properly.
+E2FSPROGS_CONF_ENV += BUILD_CFLAGS="-DHAVE_SYS_STAT_H"
+
+# Disable use of the host magic.h, as on older hosts (e.g. RHEL 5)
+# it doesn't provide definitions expected by e2fsprogs support lib.
+HOST_E2FSPROGS_CONF_ENV += \
+	ac_cv_header_magic_h=no \
+	ac_cv_lib_magic_magic_file=no
 
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 # util-linux libuuid pulls in libintl if needed, so ensure we also
@@ -40,16 +62,19 @@ ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 E2FSPROGS_CONF_ENV += LIBS=-lintl
 endif
 
-E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
-
-E2FSPROGS_MAKE_OPTS = \
-	LDCONFIG=true
+E2FSPROGS_MAKE_OPTS = LDCONFIG=true
+E2FSPROGS_INSTALL_STAGING_OPTS = \
+	DESTDIR=$(STAGING_DIR) \
+	LDCONFIG=true \
+	install-libs
+E2FSPROGS_INSTALL_TARGET_OPTS = \
+	DESTDIR=$(TARGET_DIR) \
+	LDCONFIG=true \
+	install
 
 define HOST_E2FSPROGS_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
 endef
-# we don't have a host-util-linux
-HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf
 
 # binaries to keep or remove
 E2FSPROGS_BINTARGETS_$(BR2_PACKAGE_E2FSPROGS_BADBLOCKS) += usr/sbin/badblocks
@@ -134,15 +159,6 @@ endef
 
 ifeq ($(BR2_PACKAGE_E2FSPROGS_TUNE2FS),y)
 E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_TUNE2FS_SYMLINK
-endif
-
-# systemd really wants to have fsck in /sbin
-define E2FSPROGS_TARGET_FSCK_SYMLINK
-	ln -sf ../usr/sbin/fsck $(TARGET_DIR)/sbin/fsck
-endef
-
-ifeq ($(BR2_PACKAGE_E2FSPROGS_FSCK),y)
-E2FSPROGS_POST_INSTALL_TARGET_HOOKS += E2FSPROGS_TARGET_FSCK_SYMLINK
 endif
 
 $(eval $(autotools-package))

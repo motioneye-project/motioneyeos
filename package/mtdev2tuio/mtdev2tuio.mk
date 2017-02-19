@@ -13,7 +13,7 @@ MTDEV2TUIO_LICENSE_FILES = COPYING
 # mtdev2tuio Makefile misuses $(LD) as gcc, so we need to override LD
 # here. Liblo uses log(3), so we need to link with -lm
 define MTDEV2TUIO_BUILD_CMDS
-	$(MAKE) \
+	$(TARGET_MAKE_ENV) $(MAKE) \
 		$(TARGET_CONFIGURE_OPTS) \
 		LD="$(TARGET_CC)" \
 		LIBS="-lmtdev -llo -lm" \

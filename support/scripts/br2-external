@@ -1,0 +1,221 @@
+#!/bin/bash
+set -e
+
+# This script must be able to run with bash-3.1, so it can't use
+# associative arrays. Instead, it emulates them using 'eval'. It
+# can however use indexed arrays, supported since at least bash-3.0.
+
+# The names of the br2-external trees, once validated.
+declare -a BR2_EXT_NAMES
+
+# URL to manual for help in converting old br2-external trees.
+# Escape '#' so that make does not consider it a comment.
+MANUAL_URL='https://buildroot.org/manual.html\#br2-external-converting'
+
+main() {
+    local OPT OPTARG
+    local br2_ext ofile ofmt
+
+    while getopts :hkmo: OPT; do
+        case "${OPT}" in
+        h)  help; exit 0;;
+        o)  ofile="${OPTARG}";;
+        k)  ofmt="kconfig";;
+        m)  ofmt="mk";;
+        :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
+        \?) error "unknown option '%s'\n" "${OPTARG}";;
+        esac
+    done
+    # Forget options; keep only positional args
+    shift $((OPTIND-1))
+
+    case "${ofmt}" in
+    mk|kconfig)
+        ;;
+    *)  error "no output format specified (-m/-k)\n";;
+    esac
+    if [ -z "${ofile}" ]; then
+        error "no output file specified (-o)\n"
+    fi
+
+    exec >"${ofile}"
+
+    do_validate ${@//:/ }
+
+    do_${ofmt}
+}
+
+# Validates the br2-external trees passed as arguments. Makes each of
+# them canonical and store them in the global arrays BR2_EXT_NAMES
+# and BR2_EXT_PATHS.
+#
+# Note: since this script is always first called from Makefile context
+# to generate the Makefile fragment before it is called to generate the
+# Kconfig snippet, we're sure that any error in do_validate will be
+# interpreted in Makefile context. Going up to generating the Kconfig
+# snippet means that there were no error.
+#
+do_validate() {
+    local br2_ext
+
+    if [ ${#} -eq 0 ]; then
+        # No br2-external tree is valid
+        return
+    fi
+
+    for br2_ext in "${@}"; do
+        do_validate_one "${br2_ext}"
+    done
+}
+
+do_validate_one() {
+    local br2_ext="${1}"
+    local br2_name br2_desc n d
+
+    if [ ! -d "${br2_ext}" ]; then
+        error "'%s': no such file or directory\n" "${br2_ext}"
+    fi
+    if [ ! -r "${br2_ext}" -o ! -x "${br2_ext}" ]; then
+        error "'%s': permission denied\n" "${br2_ext}"
+    fi
+    if [ ! -f "${br2_ext}/external.desc" ]; then
+        error "'%s': does not have a name (in 'external.desc'). See %s\n" \
+            "${br2_ext}" "${MANUAL_URL}"
+    fi
+    br2_name="$(sed -r -e '/^name: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
+    if [ -z "${br2_name}" ]; then
+        error "'%s/external.desc': does not define the name\n" "${br2_ext}"
+    fi
+    # Only ASCII chars in [A-Za-z0-9_] are permitted
+    n="$(sed -r -e 's/[A-Za-z0-9_]//g' <<<"${br2_name}" )"
+    if [ -n "${n}" ]; then
+        # Escape '$' so that it gets printed
+        error "'%s': name '%s' contains invalid chars: '%s'\n" \
+            "${br2_ext}" "${br2_name//\$/\$\$}" "${n//\$/\$\$}"
+    fi
+    eval d="\"\${BR2_EXT_PATHS_${br2_name}}\""
+    if [ -n "${d}" ]; then
+        error "'%s': name '%s' is already used in '%s'\n" \
+            "${br2_ext}" "${br2_name}" "${d}"
+    fi
+    br2_desc="$(sed -r -e '/^desc: +(.*)$/!d; s//\1/' "${br2_ext}/external.desc")"
+    if [ ! -f "${br2_ext}/external.mk" ]; then
+        error "'%s/external.mk': no such file or directory\n" "${br2_ext}"
+    fi
+    if [ ! -f "${br2_ext}/Config.in" ]; then
+        error "'%s/Config.in': no such file or directory\n" "${br2_ext}"
+    fi
+
+    # Register this br2-external tree, use an absolute canonical path
+    br2_ext="$( cd "${br2_ext}"; pwd )"
+    BR2_EXT_NAMES+=( "${br2_name}" )
+    eval BR2_EXT_PATHS_${br2_name}="\"\${br2_ext}\""
+    eval BR2_EXT_DESCS_${br2_name}="\"\${br2_desc:-\${br2_name}}\""
+}
+
+# Generate the .mk snippet that defines makefile variables
+# for the br2-external tree
+do_mk() {
+    local br2_name br2_ext
+
+    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
+    printf '\n'
+
+    printf 'BR2_EXTERNAL ?='
+    for br2_name in "${BR2_EXT_NAMES[@]}"; do
+        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+        printf ' %s' "${br2_ext}"
+    done
+    printf '\n'
+
+    printf 'BR2_EXTERNAL_NAMES = \n'
+    printf 'BR2_EXTERNAL_DIRS = \n'
+    printf 'BR2_EXTERNAL_MKS = \n'
+
+    if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
+        printf '\n'
+        printf '# No br2-external tree defined.\n'
+        return
+    fi
+
+    for br2_name in "${BR2_EXT_NAMES[@]}"; do
+        eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
+        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+        printf '\n'
+        printf 'BR2_EXTERNAL_NAMES += %s\n' "${br2_name}"
+        printf 'BR2_EXTERNAL_DIRS += %s\n' "${br2_ext}"
+        printf 'BR2_EXTERNAL_MKS += %s/external.mk\n' "${br2_ext}"
+        printf 'export BR2_EXTERNAL_%s_PATH = %s\n' "${br2_name}" "${br2_ext}"
+        printf 'export BR2_EXTERNAL_%s_DESC = %s\n' "${br2_name}" "${br2_desc}"
+    done
+}
+
+# Generate the kconfig snippet for the br2-external tree.
+do_kconfig() {
+    local br2_name br2_ext
+
+    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
+    printf '\n'
+
+    if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
+        printf '# No br2-external tree defined.\n'
+        return
+    fi
+
+    printf 'menu "External options"\n'
+    printf '\n'
+
+    for br2_name in "${BR2_EXT_NAMES[@]}"; do
+        eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
+        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+        if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
+            printf 'menu "%s"\n' "${br2_desc}"
+        fi
+        printf 'comment "%s (in %s)"\n' "${br2_desc}" "${br2_ext}"
+        printf 'config BR2_EXTERNAL_%s_PATH\n' "${br2_name}"
+        printf '\tstring\n'
+        printf '\tdefault "%s"\n' "${br2_ext}"
+        printf 'source "%s/Config.in"\n' "${br2_ext}"
+        if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
+            printf 'endmenu # %s\n' "${br2_name}"
+        fi
+        printf '\n'
+    done
+
+    printf "endmenu # User-provided options\n"
+}
+
+help() {
+    cat <<-_EOF_
+	Usage:
+	    ${my_name} <-m|-k> -o FILE PATH
+
+	With -m, ${my_name} generates the makefile fragment that defines
+	variables related to the br2-external trees passed as positional
+	arguments.
+
+	With -k, ${my_name} generates the kconfig snippet to include the
+	configuration options specified in the br2-external trees passed
+	as positional arguments.
+
+	Using -k and -m together is not possible. The last one wins.
+
+	Options:
+	    -m  Generate the makefile fragment.
+
+	    -k  Generate the kconfig snippet.
+
+	    -o FILE
+	        FILE in which to generate the kconfig snippet or makefile
+	        fragment.
+
+	Returns:
+	    0   If no error
+	    !0  If any error
+	_EOF_
+}
+
+error() { local fmt="${1}"; shift; printf "BR2_EXTERNAL_ERROR = ${fmt}" "${@}"; exit 1; }
+
+my_name="${0##*/}"
+main "${@}"

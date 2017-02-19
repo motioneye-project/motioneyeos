@@ -1,0 +1,64 @@
+From https://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-001
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.4
+Patch-ID:	bash44-001
+
+Bug-Reported-by:	Sean Zha <freeman_cha@hotmail.com>
+Bug-Reference-ID:	<BN3PR01MB13657D9303EB94BF6E54216E8CCA0@BN3PR01MB1365.prod.exchangelabs.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2016-09/msg00107.html
+
+Bug-Description:
+
+Bash-4.4 changed the way the history list is initially allocated to reduce
+the number of reallocations and copies.  Users who set HISTSIZE to a very
+large number to essentially unlimit the size of the history list will get
+memory allocation errors 
+
+Patch (apply with `patch -p0'):
+
+*** a/bash-4.4/lib/readline/history.c	2015-12-28 13:50:31.000000000 -0500
+--- b/lib/readline/history.c	2016-09-30 14:28:40.000000000 -0400
+***************
+*** 58,61 ****
+--- 58,63 ----
+  #define DEFAULT_HISTORY_INITIAL_SIZE	502
+  
++ #define MAX_HISTORY_INITIAL_SIZE	8192
++ 
+  /* The number of slots to increase the_history by. */
+  #define DEFAULT_HISTORY_GROW_SIZE 50
+***************
+*** 308,312 ****
+  	{
+  	  if (history_stifled && history_max_entries > 0)
+! 	    history_size = history_max_entries + 2;
+  	  else
+  	    history_size = DEFAULT_HISTORY_INITIAL_SIZE;
+--- 310,316 ----
+  	{
+  	  if (history_stifled && history_max_entries > 0)
+! 	    history_size = (history_max_entries > MAX_HISTORY_INITIAL_SIZE)
+! 				? MAX_HISTORY_INITIAL_SIZE
+! 				: history_max_entries + 2;
+  	  else
+  	    history_size = DEFAULT_HISTORY_INITIAL_SIZE;
+*** a/bash-4.4/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 0
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 1
+  
+  #endif /* _PATCHLEVEL_H_ */

@@ -8,9 +8,11 @@ config BR2_PACKAGE_QT5DECLARATIVE
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5declarative module.
+	  Qt Declarative module provides the Qt QML and Qt Quick
+	  modules for developing UIs with the QML language
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtqml-index.html
+	  http://doc.qt.io/qt-5/qtquick-index.html
 
 if BR2_PACKAGE_QT5DECLARATIVE
 

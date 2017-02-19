@@ -4,11 +4,16 @@
 #
 ################################################################################
 
-SUNXI_MALI_VERSION = d343311efc8db166d8371b28494f0f27b6a58724
-SUNXI_MALI_SITE = $(call github,linux-sunxi,sunxi-mali,$(SUNXI_MALI_VERSION))
+# last sha1 character dropped to ensure unique filename
+SUNXI_MALI_VERSION = d343311efc8db166d8371b28494f0f27b6a5872
+SUNXI_MALI_SITE = https://github.com/linux-sunxi/sunxi-mali
+SUNXI_MALI_SITE_METHOD = git
+
+# Get the sunxi-mali-proprietary libraries
+SUNXI_MALI_GIT_SUBMODULES = YES
 
 SUNXI_MALI_INSTALL_STAGING = YES
-SUNXI_MALI_DEPENDENCIES = libump sunxi-mali-prop
+SUNXI_MALI_DEPENDENCIES = libump
 SUNXI_MALI_PROVIDES = libegl libgles
 
 # The options below must be provided in the environment.  Providing these
@@ -40,13 +45,6 @@ endif
 ifeq ($(BR2_PACKAGE_SUNXI_MALI_R3P1),y)
 SUNXI_MALI_MAKE_OPTS += VERSION=r3p1
 endif
-
-define SUNXI_MALI_GIT_SUBMODULE_FIXUP
-	rm -rf $(@D)/lib/mali
-	cp -rf $(SUNXI_MALI_PROP_SRCDIR) $(@D)/lib/mali
-endef
-
-SUNXI_MALI_PRE_CONFIGURE_HOOKS += SUNXI_MALI_GIT_SUBMODULE_FIXUP
 
 define SUNXI_MALI_BUILD_CMDS
 	$(SUNXI_MALI_MAKE_ENV) $(MAKE) -C $(@D) $(SUNXI_MALI_MAKE_OPTS) all

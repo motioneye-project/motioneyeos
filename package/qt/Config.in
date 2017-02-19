@@ -126,6 +126,7 @@ config BR2_PACKAGE_QT_CONFIG_FILE
 config BR2_PACKAGE_QT_QT3SUPPORT
 	bool "Compatibility with Qt3"
 	depends on BR2_PACKAGE_QT_GUI_MODULE
+	select BR2_PACKAGE_QT_SQL_MODULE
 	help
 	  Turns on support for older Qt3. This will create an additional
 	  library with proxy code and increase the space required on target.
@@ -265,7 +266,7 @@ config BR2_PACKAGE_QT_SYSTEMJPEG
 config BR2_PACKAGE_QT_QTJPEG
 	bool "Use Qt bundled libjpeg"
 	help
-	  Link against libjpeg proveded with Qt
+	  Link against libjpeg provided with Qt
 endchoice
 
 choice
@@ -301,6 +302,11 @@ config BR2_PACKAGE_QT_SYSTEMTIFF
 config BR2_PACKAGE_QT_QTTIFF
 	bool "Use Qt bundled libtiff"
 endchoice
+
+config BR2_PACKAGE_QT_ACCESSIBILITY
+	bool "Enable accessibility support"
+	help
+	  This enables and compiles the accessibility support.
 
 endif # BR2_PACKAGE_QT_GUI_MODULE
 
@@ -350,12 +356,41 @@ config BR2_PACKAGE_QT_PHONON_BACKEND
 	  Build the platform Phonon plugin.
 	  If unsure, say n.
 
+config BR2_PACKAGE_QT_OPENGL
+	bool "OpenGL support"
+	depends on (BR2_PACKAGE_HAS_LIBGL && BR2_PACKAGE_QT_X11) || \
+		   (BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_HAS_LIBGLES)
+	default y
+	help
+	  This option enables OpenGL support.
+
+if BR2_PACKAGE_QT_OPENGL
+
+choice
+	prompt "OpenGL API"
+	help
+	  Select OpenGL API.
+
+comment "Desktop OpenGL not available (needs Qt standard (X11))"
+	depends on !BR2_PACKAGE_QT_X11
+
+config BR2_PACKAGE_QT_OPENGL_GL_DESKTOP
+	bool "Desktop OpenGL"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_QT_X11
+	help
+	  Use desktop OpenGL.
+
 config BR2_PACKAGE_QT_OPENGL_ES
 	bool "OpenGL ES v2.x support"
 	depends on BR2_PACKAGE_HAS_LIBGLES
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	help
 	  Enable the OpenGL ES v2.x support.
+
+endchoice
+
+endif # BR2_PACKAGE_QT_OPENGL
 
 endif
 
@@ -434,15 +469,23 @@ config BR2_PACKAGE_QT_WEBKIT
 	depends on BR2_PACKAGE_QT_NETWORK
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # needs pthread_getattr_np()
+	depends on BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
 	help
 	  Build the WebKit module.
 	  If unsure, say n.
 
-comment "WebKit needs shared library/NPTL toolchain/script/gui/network support"
-	depends on !(BR2_PACKAGE_QT_SCRIPT && BR2_PACKAGE_QT_SHARED && \
-		BR2_PACKAGE_QT_GUI_MODULE && BR2_PACKAGE_QT_NETWORK)
-	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+comment "WebKit needs a toolchain w/ dynamic library, NPTL"
 	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIB
+
+comment "WebKit needs QtShared/Script/Gui/Network and Gstreamer 0.10"
+	depends on BR2_PACKAGE_QT_ARCH_SUPPORTS_WEBKIT
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL && !BR2_STATIC_LIB
+	depends on !BR2_PACKAGE_QT_SCRIPT     || !BR2_PACKAGE_QT_SHARED   \
+		|| !BR2_PACKAGE_QT_GUI_MODULE || !BR2_PACKAGE_QT_NETWORK  \
+		|| !BR2_PACKAGE_GSTREAMER
 
 config BR2_PACKAGE_QT_STL
 	bool "STL support"

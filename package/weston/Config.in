@@ -53,9 +53,10 @@ config BR2_PACKAGE_WESTON_FBDEV
 # FreeRDP needs threads and !static, already the case for weston
 config BR2_PACKAGE_WESTON_RDP
 	bool "RDP compositor"
-	depends on BR2_USE_WCHAR # freerdp
 	depends on BR2_USE_MMU # freerdp, libglib2
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_WCHAR # freerdp
+	depends on BR2_INSTALL_LIBSTDCPP # freerdp
 	select BR2_PACKAGE_FREERDP
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
@@ -71,15 +72,36 @@ config BR2_PACKAGE_WESTON_RDP
 	  so you may want to change them in a post-build script or a rootfs
 	  overlay.
 
-comment "RDP compositor needs a toolchain w/ wchar"
-	depends on BROKEN # needs FreeRDP master
+comment "RDP compositor needs a toolchain w/ wchar, C++"
+	depends on BR2_USE_MMU
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_USE_WCHAR
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
 
-# rpi-userland is an EGL/GLES provider, so we can't select it
-config BR2_PACKAGE_WESTON_RPI
-	bool "RPi compositor"
-	depends on BR2_PACKAGE_RPI_USERLAND
+config BR2_PACKAGE_WESTON_X11
+	bool "X11 compositor"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
+
+comment "X11 compositor needs X.org enabled"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_WESTON_XWAYLAND
+	bool "XWayland support"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_LIBEPOXY
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+
+comment "XWayland support needs libepoxy and X.org enabled"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_LIBEPOXY
+
+config BR2_PACKAGE_WESTON_DEMO_CLIENTS
+	bool "demo clients"
+	help
+	  This enables the installation of Weston's demo clients.
 
 endif

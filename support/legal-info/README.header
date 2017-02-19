@@ -14,10 +14,17 @@ This material is composed of the following items.
    compiled programs.
    Note: this may have not been saved due to technical limitations, you may
    need to collect it manually.
- * The source code for all packages; this has been saved in the sources/
-   subdirectory (except for the non-redistributable packages, which have not
-   been saved); patches applied to some packages by Buildroot are included in
-   the Buildroot sources and were not duplicated in the sources/ subdirectory.
+ * The original source code for all packages; this has been saved in the
+   sources/ subdirectory (except for the non-redistributable packages, which
+   have not been saved). Patches that were applied are also saved, along
+   with a file named 'series' that lists the patches in the order they were
+   applied. Patches are under the same license as the files that they modify
+   in the original package.
+   Note: Buildroot applies additional patches to Libtool scripts of
+   autotools-based packages. These patches can be found under
+   support/libtool in the Buildroot source and, due to technical
+   limitations, are not saved with the package sources. You may need
+   to collect them manually.
  * A manifest file listing the configured packages and related information.
  * The license text of the packages; they have been saved in the licenses/
    subdirectory.

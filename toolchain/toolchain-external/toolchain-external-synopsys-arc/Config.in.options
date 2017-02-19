@@ -1,0 +1,10 @@
+if BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "arc-linux"		 if BR2_arcle
+	default "arceb-linux"		 if BR2_arceb
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-synopsys-arc"
+
+endif

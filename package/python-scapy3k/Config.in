@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_SCAPY3K
+	bool "python-scapy3k"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON3_ZLIB
+	help
+	  Network packet and pcap file crafting/sniffing/manipulation
+	  security tool (based on scapy) with python3 compatibility.
+
+	  https://github.com/phaethon/scapy

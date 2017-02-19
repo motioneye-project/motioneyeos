@@ -1,0 +1,35 @@
+From 990f3d67d340d226bbd4187f5d310a4d2bf2bfe4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tim=20R=C3=BChsen?= <tim.ruehsen@gmx.de>
+Date: Mon, 6 Feb 2017 11:25:48 +0100
+Subject: [PATCH] Remove skipping libunistring with --disable-iri
+
+* configure.ac: Remove checking for IRI=no
+
+On certain systems, gnulib falls back to libunistring
+for mbtowc() and wcwidth() (used in src/progress.c).
+
+Reported-by: Zhiming Wang
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ configure.ac | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 8786e00..686f040 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -663,11 +663,6 @@ if test "X$iri" != "Xno"; then
+ #    ])
+   ])
+ fi
+-if test "X$iri" = "Xno"; then
+-  # we don't need libunistring - clear settings from gnulib module
+-  LIBUNISTRING=""
+-  LTLIBUNISTRING=""
+-fi
+ 
+ dnl
+ dnl Check for UUID
+-- 
+2.6.2
+

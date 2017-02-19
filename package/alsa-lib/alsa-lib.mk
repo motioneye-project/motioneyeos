@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-ALSA_LIB_VERSION = 1.1.1
+ALSA_LIB_VERSION = 1.1.3
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 ALSA_LIB_SITE = ftp://ftp.alsa-project.org/pub/lib
-ALSA_LIB_LICENSE = LGPLv2.1+
-ALSA_LIB_LICENSE_FILES = COPYING
+ALSA_LIB_LICENSE = LGPLv2.1+ (library), GPLv2+ (aserver)
+ALSA_LIB_LICENSE_FILES = COPYING aserver/COPYING
 ALSA_LIB_INSTALL_STAGING = YES
 ALSA_LIB_CFLAGS = $(TARGET_CFLAGS)
 ALSA_LIB_AUTORECONF = YES
@@ -60,10 +60,6 @@ ALSA_LIB_CFLAGS += -I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
 ALSA_LIB_DEPENDENCIES = python
 else
 ALSA_LIB_CONF_OPTS += --disable-python
-endif
-
-ifeq ($(BR2_SOFT_FLOAT),y)
-ALSA_LIB_CONF_OPTS += --with-softfloat
 endif
 
 ifeq ($(BR2_bfin),y)

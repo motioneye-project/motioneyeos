@@ -15,7 +15,6 @@ XSERVER_XORG_SERVER_AUTORECONF = YES
 XSERVER_XORG_SERVER_DEPENDENCIES = 	\
 	xfont_font-util			\
 	xutil_util-macros 		\
-	xlib_libXfont 			\
 	xlib_libX11 			\
 	xlib_libXau 			\
 	xlib_libXdmcp 			\
@@ -73,7 +72,9 @@ ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 XSERVER_XORG_SERVER_CONF_OPTS += \
 	--with-systemd-daemon \
 	--enable-systemd-logind
-XSERVER_XORG_SERVER_DEPENDENCIES += systemd
+XSERVER_XORG_SERVER_DEPENDENCIES += \
+	systemd \
+	xproto_dri2proto
 else
 XSERVER_XORG_SERVER_CONF_OPTS += \
 	--without-systemd-daemon \
@@ -81,9 +82,9 @@ XSERVER_XORG_SERVER_CONF_OPTS += \
 endif
 
 # Xwayland support needs libdrm, libepoxy, wayland and libxcomposite
-ifeq ($(BR2_PACKAGE_LIBDRM)$(BR2_PACKAGE_LIBEPOXY)$(BR2_PACKAGE_WAYLAND)$(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),yyyy)
+ifeq ($(BR2_PACKAGE_LIBDRM)$(BR2_PACKAGE_LIBEPOXY)$(BR2_PACKAGE_WAYLAND)$(BR2_PACKAGE_WAYLAND_PROTOCOLS)$(BR2_PACKAGE_XLIB_LIBXCOMPOSITE),yyyyy)
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-xwayland
-XSERVER_XORG_SERVER_DEPENDENCIES += libdrm libepoxy wayland xlib_libXcomposite
+XSERVER_XORG_SERVER_DEPENDENCIES += libdrm libepoxy wayland wayland-protocols xlib_libXcomposite
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-xwayland
 endif
@@ -169,11 +170,11 @@ XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-udev-kms
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-config-udev-kms
 endif
-else
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += dbus
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-config-dbus
-endif
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
@@ -192,6 +193,14 @@ XSERVER_XORG_SERVER_DEPENDENCIES += xproto_recordproto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-record
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-record
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFONT2),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXfont2
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFONT),y)
+XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libXfont
 endif
 
 ifneq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
@@ -214,9 +223,11 @@ endif
 ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO),y)
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libxshmfence xproto_dri3proto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri3
-ifeq ($(BR2_PACKAGE_LIBEPOXY),y)
+ifeq ($(BR2_PACKAGE_HAS_LIBGL)$(BR2_PACKAGE_LIBEPOXY),yy)
 XSERVER_XORG_SERVER_DEPENDENCIES += libepoxy
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-glamor
+else
+XSERVER_XORG_SERVER_CONF_OPTS += --disable-glamor
 endif
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri3 --disable-glamor

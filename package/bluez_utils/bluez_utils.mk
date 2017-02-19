@@ -54,4 +54,8 @@ BLUEZ_UTILS_CONF_OPTS +=	\
 	--disable-usb
 endif
 
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
+BLUEZ_UTILS_CONF_OPTS += --disable-pie
+endif
+
 $(eval $(autotools-package))

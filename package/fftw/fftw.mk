@@ -10,7 +10,13 @@ FFTW_INSTALL_STAGING = YES
 FFTW_LICENSE = GPLv2+
 FFTW_LICENSE_FILES = COPYING
 
-FFTW_CONF_OPTS = --disable-fortran
+# fortran support only enables generation and installation of fortran sources
+ifeq ($(BR2_TOOLCHAIN_HAS_FORTRAN),y)
+FFTW_CONF_OPTS += --enable-fortran
+FFTW_CONF_ENV += FLIBS="-lgfortran -lm"
+else
+FFTW_CONF_OPTS += --disable-fortran
+endif
 
 FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_SINGLE),--enable,--disable)-single
 FFTW_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE),--enable,--disable)-long-double
@@ -31,7 +37,8 @@ FFTW_CFLAGS += $(if $(BR2_PACKAGE_FFTW_USE_NEON),-mfpu=neon)
 
 # Generic optimisations
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-FFTW_CONF_OPTS += --enable-threads --with-combined-threads
+FFTW_CONF_OPTS += --enable-threads
+FFTW_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--without,--with)-combined-threads
 else
 FFTW_CONF_OPTS += --disable-threads
 endif

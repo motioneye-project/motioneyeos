@@ -1,11 +1,12 @@
 menu "Linux Kernel Extensions"
 
+#-------------------------------------------------------------------------------
 # Xenomai
 config BR2_LINUX_KERNEL_EXT_XENOMAI
 	bool "Adeos/Xenomai Real-time patch"
+	depends on BR2_PACKAGE_XENOMAI_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
-		   BR2_bfin || BR2_powerpc || BR2_sh4
+	depends on !BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_XENOMAI
 	help
 	  Xenomai is split in two parts: a kernel part and a userspace
@@ -24,19 +25,19 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI
 	  Xenomai is know to support Blackfin, SH4, x86, ARM, NIOS2
 	  and PowerPC architectures.
 
-comment "xenomai needs a toolchain w/ threads"
-	depends on BR2_i386 || BR2_x86_64 || BR2_arm || \
-		   BR2_bfin || BR2_powerpc || BR2_sh4
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
 config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
-	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
 	string "Path for Adeos patch file"
+	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
 	help
 	  Optionally, explicitly specify the Adeos patch to use.
 	  Download it at http://download.gna.org/adeos/patches
 	  and verify that your kernel version in buildroot matches.
 
+comment "xenomai needs a uClibc or glibc toolchain w/ threads"
+	depends on BR2_PACKAGE_XENOMAI_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL
+
+#-------------------------------------------------------------------------------
 # RTAI
 config BR2_LINUX_KERNEL_EXT_RTAI
 	bool "RTAI Real-time patch"
@@ -44,6 +45,17 @@ config BR2_LINUX_KERNEL_EXT_RTAI
 	help
 	  RTAI Kernel part.
 
+#-------------------------------------------------------------------------------
+# ev3dev Linux drivers
+config BR2_LINUX_KERNEL_EXT_EV3DEV_LINUX_DRIVERS
+	bool "ev3dev Linux drivers"
+	select BR2_PACKAGE_EV3DEV_LINUX_DRIVERS
+	help
+	  Linux drivers for LEGO MINDSTORMS EV3 from the ev3dev project.
+
+	  https://github.com/ev3dev/lego-linux-drivers
+
+#-------------------------------------------------------------------------------
 # fbtft
 config BR2_LINUX_KERNEL_EXT_FBTFT
 	bool "FB TFT drivers"
@@ -63,5 +75,57 @@ config BR2_LINUX_KERNEL_EXT_FBTFT
 	  - CONFIG_FB_TFT_ILI9341
 
 	  https://github.com/notro/fbtft
+
+# aufs-standalone
+config BR2_LINUX_KERNEL_EXT_AUFS
+	bool "Aufs Filesystem Module patch"
+	select BR2_PACKAGE_AUFS
+	help
+	  Aufs is split in two parts: a kernel part and a userspace
+	  part. Enabling this option automatically selects the aufs
+	  standalone (module) package and patches the Linux kernel
+	  built by Buildroot with the aufs kernel part (ie fs/aufs).
+
+	  It is important to use the correct branch of aufs-standalone.
+
+if BR2_LINUX_KERNEL_EXT_AUFS
+
+choice
+	bool "aufs-standalone series"
+	help
+	  Select the major series of this version. This must match the
+	  major version of your kernel (e.g. for kernels 3.x, select
+	  aufs3.x; for kernels 4.x, select aufs4.x).
+
+	  Note: neither aufs1.x nor aufs2.x (both for kernels older than
+	  3.x) are supported.
+
+config BR2_LINUX_KERNEL_EXT_AUFS_SERIES_3
+	bool "aufs3.x"
+
+config BR2_LINUX_KERNEL_EXT_AUFS_SERIES_4
+	bool "aufs4.x"
+
+endchoice
+
+config BR2_LINUX_KERNEL_EXT_AUFS_SERIES
+	int
+	default 3 if BR2_LINUX_KERNEL_EXT_AUFS_SERIES_3
+	default 4 if BR2_LINUX_KERNEL_EXT_AUFS_SERIES_4
+
+config BR2_LINUX_KERNEL_EXT_AUFS_VERSION
+	string "aufs-standalone version"
+	default ""
+	help
+	  The version you choose must match that of your kernel. Usually,
+	  the sha1 of the cset you want to use; avoid using a branch name
+	  as this yields non-reproducible builds.
+
+	  See the following resources to see what versions are available:
+
+	  For aufs3.x: https://sourceforge.net/p/aufs/aufs3-standalone/ref/master/branches/
+	  For aufs4.x: https://github.com/sfjro/aufs4-standalone/branches/all
+
+endif # aufs
 
 endmenu

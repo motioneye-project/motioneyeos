@@ -5,7 +5,7 @@
 ################################################################################
 
 URG_VERSION = 0.8.18
-URG_SITE = http://www.hokuyo-aut.jp/02sensor/07scanner/download/urg_programs_en
+URG_SITE = http://pkgs.fedoraproject.org/repo/pkgs/urg/urg-0.8.18.zip/md5/93f90d2ccc36e784407c5282ef6bd2cb
 URG_SOURCE = urg-$(URG_VERSION).zip
 URG_LICENSE = LGPLv3
 URG_LICENSE_FILES = COPYING

@@ -1,14 +1,9 @@
 comment "boost needs a toolchain w/ C++, threads, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 
-config BR2_PACKAGE_BOOST_ARCH_SUPPORTS
-	bool
-	default y if !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
-
 config BR2_PACKAGE_BOOST
 	bool "boost"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_PACKAGE_BOOST_ARCH_SUPPORTS
 	# Boost could theorically be built with threading=single, but
 	# that unfortunately doesn't work. Until someone fixes that,
 	# let's depend on threads.
@@ -70,8 +65,8 @@ config BR2_PACKAGE_BOOST_CONTAINER
 # supported, but it doesn't build.
 config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
-	depends on (BR2_arm || BR2_armeb || BR2_i386 || BR2_mips || BR2_mipsel \
-			|| BR2_powerpc || BR2_x86_64)
+	depends on ((BR2_arm || BR2_armeb) && BR2_ARM_CPU_HAS_ARM) || \
+		BR2_i386 || BR2_mips || BR2_mipsel || BR2_powerpc || BR2_x86_64
 
 config BR2_PACKAGE_BOOST_COROUTINE
 	bool "boost-coroutine"
@@ -119,6 +114,11 @@ comment "boost-log needs a toolchain w/ NPTL"
 config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
 
+config BR2_PACKAGE_BOOST_METAPARSE
+	depends on BR2_USE_MMU # boost-test
+	select BR2_PACKAGE_BOOST_TEST
+	bool "boost-metaparse"
+
 config BR2_PACKAGE_BOOST_MPI
 	bool "boost-mpi"
 
@@ -154,7 +154,13 @@ config BR2_PACKAGE_BOOST_THREAD
 config BR2_PACKAGE_BOOST_TIMER
 	bool "boost-timer"
 
+config BR2_PACKAGE_BOOST_TYPE_ERASURE
+	bool "boost-type_erasure"
+
 config BR2_PACKAGE_BOOST_WAVE
 	bool "boost-wave"
+	# limitation of assembler for coldfire
+	# error: Tried to convert PC relative branch to absolute jump
+	depends on !BR2_m68k_cf
 
 endif

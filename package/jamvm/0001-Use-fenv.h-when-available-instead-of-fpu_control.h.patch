@@ -1,0 +1,108 @@
+From ecd4eceae98cfb1c83133bdeaa9095546ca8b7c6 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 26 May 2016 15:05:48 +0200
+Subject: [PATCH] Use <fenv.h> when available instead of <fpu_control.h>
+
+musl libc (http://musl-libc.org lack the non-standard <fpu_control.h>
+header, which is used in src/os/linux/{i386,x86_64}/init.c files to
+setup the floating point precision. This patch makes it use the
+standard C <fenv.h> header instead when available.
+
+Original patch at Felix Janda at
+https://sourceforge.net/p/jamvm/patches/6/, adapted to still use
+<fpu_control.h> if <fenv.h> is not provided.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac               |  2 +-
+ src/os/linux/i386/init.c   | 15 +++++++++++++++
+ src/os/linux/x86_64/init.c | 15 +++++++++++++--
+ 3 files changed, 29 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 19f77e6..ce59a3e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -279,7 +279,7 @@ fi
+ 
+ dnl Checks for header files.
+ AC_HEADER_STDC
+-AC_CHECK_HEADERS(sys/time.h unistd.h endian.h sys/param.h locale.h alloca.h)
++AC_CHECK_HEADERS(sys/time.h unistd.h endian.h sys/param.h locale.h alloca.h fenv.h)
+ 
+ if test "$enable_zip" != no; then
+     AC_CHECK_HEADER(zlib.h,,AC_MSG_ERROR(zlib.h is missing))
+diff --git a/src/os/linux/i386/init.c b/src/os/linux/i386/init.c
+index d9c6648..8fefe7d 100644
+--- a/src/os/linux/i386/init.c
++++ b/src/os/linux/i386/init.c
+@@ -19,18 +19,33 @@
+  * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+  */
+ 
++#include "config.h"
++
++#if defined(HAVE_FENV_H)
++#include <fenv.h>
++#else
+ #include <fpu_control.h>
++#endif
+ 
+ /* Change floating point precision to double (64-bit) from
+  * the extended (80-bit) Linux default. */
+ 
+ void setDoublePrecision() {
++#if defined(HAVE_FENV_H)
++    fenv_t fenv;
++
++    fegetenv(&fenv);
++    fenv.__control_word &= ~0x300; /* _FPU_EXTENDED */
++    fenv.__control_word |= 0x200; /* _FPU_DOUBLE */
++    fesetenv(&fenv);
++#else
+     fpu_control_t cw;
+ 
+     _FPU_GETCW(cw);
+     cw &= ~_FPU_EXTENDED;
+     cw |= _FPU_DOUBLE;
+     _FPU_SETCW(cw);
++#endif
+ }
+ 
+ void initialisePlatform() {
+diff --git a/src/os/linux/x86_64/init.c b/src/os/linux/x86_64/init.c
+index 9d55229..b42b14e 100644
+--- a/src/os/linux/x86_64/init.c
++++ b/src/os/linux/x86_64/init.c
+@@ -19,7 +19,11 @@
+  * Foundation, 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+  */
+ 
+-#ifdef __linux__
++#include "config.h"
++
++#if defined(HAVE_FENV_H)
++#include <fenv.h>
++#else
+ #include <fpu_control.h>
+ #endif
+ 
+@@ -30,7 +34,14 @@
+ */
+ 
+ void setDoublePrecision() {
+-#ifdef __linux__
++#if defined(HAVE_FENV_H)
++    fenv_t fenv;
++
++    fegetenv(&fenv);
++    fenv.__control_word &= ~0x300; /*_FPU_EXTENDED */
++    fenv.__control_word |= 0x200; /*_FPU_DOUBLE */
++    fesetenv(&fenv);
++#else
+     fpu_control_t cw;
+ 
+     _FPU_GETCW(cw);
+-- 
+2.7.4
+

@@ -1,0 +1,9 @@
+if BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
+
+config BR2_TOOLCHAIN_EXTERNAL_PREFIX
+	default "armeb-linux-gnueabihf"
+
+config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
+	default "toolchain-external-linaro-armeb"
+
+endif

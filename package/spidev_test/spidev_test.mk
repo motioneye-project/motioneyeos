@@ -16,6 +16,15 @@ SPIDEV_TEST_SITE = http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.gi
 SPIDEV_TEST_SOURCE = spidev_test.c?id=$(SPIDEV_TEST_VERSION)
 SPIDEV_TEST_LICENSE = GPLv2
 
+# musl libc requires linux/ioctl.h for _IOC_SIZEBITS. Do a sed patch to keep
+# compatibility with different spidev_test.c versions that we support.
+define SPIDEV_ADD_LINUX_IOCTL
+	$(SED) 's~^#include <sys/ioctl.h>~#include <sys/ioctl.h>\n#include <linux/ioctl.h>~' \
+		$(@D)/spidev_test.c
+endef
+
+SPIDEV_TEST_POST_PATCH_HOOKS += SPIDEV_ADD_LINUX_IOCTL
+
 define SPIDEV_TEST_EXTRACT_CMDS
 	cp $(BR2_DL_DIR)/$(SPIDEV_TEST_SOURCE) $(@D)/spidev_test.c
 endef

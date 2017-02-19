@@ -10,7 +10,7 @@ ARPTABLES_SITE = http://downloads.sourceforge.net/project/ebtables/arptables/arp
 ARPTABLES_LICENSE = GPLv2+
 
 define ARPTABLES_BUILD_CMDS
-	$(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		CC="$(TARGET_CC)" COPT_FLAGS="$(TARGET_CFLAGS)"
 endef
 

@@ -1,2 +1,2 @@
-# Locally calculated
-sha256  1e7cb674c83ace48172263f86847ed04bb6ab2f24116b11a8505f70a15e8805c  lftp-4.6.4.tar.xz
+# Locally calculated after checking gpg signature
+sha256 bf67c4d128b6f769a4082947376a9679c5ee3463a24ab761a0757f75d70bd92c  lftp-4.7.4.tar.xz

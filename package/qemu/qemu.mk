@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.5.1.1
+QEMU_VERSION = 2.7.0
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
 QEMU_SITE = http://wiki.qemu.org/download
 QEMU_LICENSE = GPLv2, LGPLv2.1, MIT, BSD-3c, BSD-2c, Others/BSD-1c
@@ -34,6 +34,8 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-python host-zlib host-libglib2 host-p
 #       mips64          mips64
 #       mips64el        mips64el
 #       powerpc         ppc
+#       powerpc64       ppc64
+#       powerpc64le     ppc64 (system) / ppc64le (usermode)
 #       sh2a            not supported
 #       sh4             sh4
 #       sh4eb           sh4eb
@@ -55,15 +57,33 @@ endif
 ifeq ($(HOST_QEMU_ARCH),powerpc)
 HOST_QEMU_ARCH = ppc
 endif
+ifeq ($(HOST_QEMU_ARCH),powerpc64)
+HOST_QEMU_ARCH = ppc64
+endif
+ifeq ($(HOST_QEMU_ARCH),powerpc64le)
+HOST_QEMU_ARCH = ppc64le
+HOST_QEMU_SYS_ARCH = ppc64
+endif
 ifeq ($(HOST_QEMU_ARCH),sh4a)
 HOST_QEMU_ARCH = sh4
 endif
 ifeq ($(HOST_QEMU_ARCH),sh4aeb)
 HOST_QEMU_ARCH = sh4eb
 endif
-HOST_QEMU_TARGETS = $(HOST_QEMU_ARCH)-linux-user
+HOST_QEMU_SYS_ARCH ?= $(HOST_QEMU_ARCH)
 
-ifeq ($(BR2_PACKAGE_HOST_QEMU),y)
+ifeq ($(BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE),y)
+HOST_QEMU_TARGETS += $(HOST_QEMU_SYS_ARCH)-softmmu
+HOST_QEMU_OPTS += --enable-system --enable-fdt
+HOST_QEMU_DEPENDENCIES += host-dtc
+else
+HOST_QEMU_OPTS += --disable-system
+endif
+
+ifeq ($(BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE),y)
+HOST_QEMU_TARGETS += $(HOST_QEMU_ARCH)-linux-user
+HOST_QEMU_OPTS += --enable-linux-user
+
 HOST_QEMU_HOST_SYSTEM_TYPE = $(shell uname -s)
 ifneq ($(HOST_QEMU_HOST_SYSTEM_TYPE),Linux)
 $(error "qemu-user can only be used on Linux hosts")
@@ -84,23 +104,36 @@ HOST_QEMU_COMPARE_VERSION = $(shell test $(HOST_QEMU_HOST_SYSTEM_VERSION) -ge $(
 # built with kernel headers that are older or the same as the kernel
 # version running on the host machine.
 #
+
 ifeq ($(BR_BUILDING),y)
 ifneq ($(HOST_QEMU_COMPARE_VERSION),OK)
 $(error "Refusing to build qemu-user: target Linux version newer than host's.")
 endif
-endif
+endif # BR_BUILDING
+
+else # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
+HOST_QEMU_OPTS += --disable-linux-user
+endif # BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
+
+ifeq ($(BR2_PACKAGE_HOST_QEMU_VDE2),y)
+HOST_QEMU_OPTS += --enable-vde
+HOST_QEMU_DEPENDENCIES += host-vde2
 endif
 
+# Override CPP, as it expects to be able to call it like it'd
+# call the compiler.
 define HOST_QEMU_CONFIGURE_CMDS
-	cd $(@D); $(HOST_CONFIGURE_OPTS) ./configure    \
-		--target-list="$(HOST_QEMU_TARGETS)"    \
-		--prefix="$(HOST_DIR)/usr"              \
-		--interp-prefix=$(STAGING_DIR)          \
-		--cc="$(HOSTCC)"                        \
-		--host-cc="$(HOSTCC)"                   \
-		--python=$(HOST_DIR)/usr/bin/python2    \
-		--extra-cflags="$(HOST_CFLAGS)"         \
-		--extra-ldflags="$(HOST_LDFLAGS)"
+	cd $(@D); $(HOST_CONFIGURE_OPTS) CPP="$(HOSTCC) -E" \
+		./configure \
+		--target-list="$(HOST_QEMU_TARGETS)" \
+		--prefix="$(HOST_DIR)/usr" \
+		--interp-prefix=$(STAGING_DIR) \
+		--cc="$(HOSTCC)" \
+		--host-cc="$(HOSTCC)" \
+		--python=$(HOST_DIR)/usr/bin/python2 \
+		--extra-cflags="$(HOST_CFLAGS)" \
+		--extra-ldflags="$(HOST_LDFLAGS)" \
+		$(HOST_QEMU_OPTS)
 endef
 
 define HOST_QEMU_BUILD_CMDS
@@ -173,11 +206,20 @@ else
 QEMU_OPTS += --disable-fdt
 endif
 
+ifeq ($(BR2_PACKAGE_QEMU_TOOLS),y)
+QEMU_OPTS += --enable-tools
+else
+QEMU_OPTS += --disable-tools
+endif
+
+# Override CPP, as it expects to be able to call it like it'd
+# call the compiler.
 define QEMU_CONFIGURE_CMDS
 	( cd $(@D);                                     \
 		LIBS='$(QEMU_LIBS)'                     \
 		$(TARGET_CONFIGURE_OPTS)                \
 		$(TARGET_CONFIGURE_ARGS)                \
+		CPP="$(TARGET_CC) -E"			\
 		$(QEMU_VARS)                            \
 		./configure                             \
 			--prefix=/usr                   \
@@ -208,7 +250,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-strip                 \
 			--disable-seccomp               \
 			--disable-sparse                \
-			--disable-tools                 \
 			$(QEMU_OPTS)                    \
 	)
 endef

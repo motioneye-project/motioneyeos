@@ -12,4 +12,4 @@ config BR2_PACKAGE_TARGETCLI_FB
 	  LIO generic SCSI target, present in 3.x Linux kernel
 	  versions.
 
-	  https://github.com/agrover/targetcli-fb
+	  https://github.com/open-iscsi/targetcli-fb

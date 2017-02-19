@@ -30,9 +30,6 @@ ERLANG_CONF_ENV += erl_xcomp_sysroot=$(STAGING_DIR)
 
 ERLANG_CONF_OPTS = --without-javac
 
-ERLANG_DEPENDENCIES += libatomic_ops
-ERLANG_CONF_OPTS += --with-libatomic_ops=$(STAGING_DIR)/usr LIBS=-latomic_ops
-
 # erlang uses openssl for all things crypto. Since the host tools (such as
 # rebar) uses crypto, we need to build host-erlang with support for openssl.
 HOST_ERLANG_DEPENDENCIES = host-openssl
@@ -56,6 +53,14 @@ ERLANG_CONF_OPTS += --with-ssl
 ERLANG_DEPENDENCIES += openssl
 else
 ERLANG_CONF_OPTS += --without-ssl
+endif
+
+# ODBC support in erlang requires threads
+ifeq ($(BR2_PACKAGE_UNIXODBC)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+ERLANG_DEPENDENCIES += unixodbc
+ERLANG_CONF_OPTS += --with-odbc
+else
+ERLANG_CONF_OPTS += --without-odbc
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)

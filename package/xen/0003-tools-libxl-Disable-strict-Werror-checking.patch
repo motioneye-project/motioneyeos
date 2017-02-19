@@ -1,0 +1,26 @@
+From 19f1e70041044fde1542109a0525424cc6d5d053 Mon Sep 17 00:00:00 2001
+From: Alistair Francis <alistair.francis@xilinx.com>
+Date: Wed, 7 Dec 2016 11:35:10 -0800
+Subject: [PATCH] tools/libxl: Disable strict Werror checking
+
+Signed-off-by: Alistair Francis <alistair.francis@xilinx.com>
+---
+ tools/libxl/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/libxl/Makefile b/tools/libxl/Makefile
+index defeb40..239faf3 100644
+--- a/tools/libxl/Makefile
++++ b/tools/libxl/Makefile
+@@ -11,7 +11,7 @@ MINOR = 0
+ XLUMAJOR = 4.7
+ XLUMINOR = 0
+ 
+-CFLAGS += -Werror -Wno-format-zero-length -Wmissing-declarations \
++CFLAGS += -Wno-format-zero-length -Wmissing-declarations \
+ 	-Wno-declaration-after-statement -Wformat-nonliteral
+ CFLAGS += -I. -fPIC
+ 
+-- 
+2.7.4
+
