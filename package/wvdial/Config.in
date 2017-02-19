@@ -1,0 +1,15 @@
+config BR2_PACKAGE_WVDIAL
+	bool "wvdial"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # wvstreams
+	depends on !BR2_STATIC_LIBS # wvstreams
+	depends on !BR2_TOOLCHAIN_USES_MUSL # wvstreams
+	select BR2_PACKAGE_WVSTREAMS
+	help
+	  wvdial is an intelligent Point-to-Point Protocol dialer
+
+	  http://wvdial.googlecode.com/
+
+comment "wvdial needs a (e)glibc or uClibc toolchain w/ C++, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL

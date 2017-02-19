@@ -1,0 +1,80 @@
+This prevents the Webkit test suites from being built.
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+----
+Index: webkit-1.9.6/GNUmakefile.am
+===================================================================
+--- webkit-1.9.6.orig/GNUmakefile.am	2012-08-06 03:17:24.000000000 -0500
++++ webkit-1.9.6/GNUmakefile.am	2013-05-28 10:08:53.645129501 -0500
+@@ -282,11 +282,14 @@
+ include Tools/DumpRenderTree/gtk/GNUmakefile.ImageDiff.am
+ 
+ include Source/WebKit2/GNUmakefile.am
+-include Source/WebKit2/UIProcess/API/gtk/tests/GNUmakefile.am
+ include Tools/MiniBrowser/gtk/GNUmakefile.am
++
++if ENABLE_TESTS
++include Source/WebKit2/UIProcess/API/gtk/tests/GNUmakefile.am
+ include Tools/WebKitTestRunner/GNUmakefile.am
+ include Source/ThirdParty/gtest/GNUmakefile.am
+ include Tools/TestWebKitAPI/GNUmakefile.am
++endif # ENABLE_TESTS
+ # [GTK] Refactor the translations now that we have webkit2
+ # https://bugs.webkit.org/show_bug.cgi?id=55153
+ 
+Index: webkit-1.9.6/Source/WebKit/gtk/GNUmakefile.am
+===================================================================
+--- webkit-1.9.6.orig/Source/WebKit/gtk/GNUmakefile.am	2012-07-19 05:02:29.000000000 -0500
++++ webkit-1.9.6/Source/WebKit/gtk/GNUmakefile.am	2013-05-28 10:09:49.277130516 -0500
+@@ -413,6 +413,7 @@
+ dist_resources_DATA = \
+ 	$(shell ls $(srcdir)/Source/WebKit/gtk/resources/*.html)
+ 
++if ENABLE_TESTS
+ # Build unit tests
+ webkit_tests_cflags = \
+ 	-fno-strict-aliasing \
+@@ -613,6 +614,8 @@
+ Programs_unittests_testcopyandpaste_LDADD = $(webkit_tests_ldadd)
+ Programs_unittests_testcopyandpaste_LDFLAGS = $(webkit_tests_ldflags)
+ 
++endif # ENABLE_TESTS
++
+ # Project-wide clean rules
+ # Files that will be cleaned
+ CLEANFILES += \
+Index: webkit-1.9.6/configure.ac
+===================================================================
+--- webkit-1.9.6.orig/configure.ac	2012-08-06 08:45:10.000000000 -0500
++++ webkit-1.9.6/configure.ac	2013-05-28 10:07:55.817128445 -0500
+@@ -516,6 +516,14 @@
+ AC_SUBST(CAIRO_CFLAGS)
+ AC_SUBST(CAIRO_LIBS)
+ 
++# check wheter to build tests
++AC_MSG_CHECKING([wheter to build tests])
++AC_ARG_ENABLE(tests,
++              AC_HELP_STRING([--enable-tests],
++                             [turn on tests [default=no]]),
++              [],[enable_debug="no"])
++AC_MSG_RESULT([$enable_tests])
++
+ # check whether to build with debugging enabled
+ AC_MSG_CHECKING([whether to do a debug build])
+ AC_ARG_ENABLE(debug,
+@@ -1423,6 +1431,7 @@
+ AM_CONDITIONAL([USE_FARSTREAM], [test "$have_farstream" = "yes"])
+ 
+ # WebKit feature conditionals
++AM_CONDITIONAL([ENABLE_TESTS],[test "$enable_tests" = "yes"])
+ AM_CONDITIONAL([ENABLE_DEBUG],[test "$enable_debug_features" = "yes"])
+ AM_CONDITIONAL([ENABLE_UNSTABLE_FEATURES],[test "$enable_unstable_features" = "yes"])
+ AM_CONDITIONAL([ENABLE_WEBGL],[test "$enable_webgl" = "yes"])
+@@ -1534,6 +1543,7 @@
+ WebKit was configured with the following options:
+ 
+ Build configuration:
++ Enable tests (slow)                                      : $enable_tests
+  Enable debugging (slow)                                  : $enable_debug
+  Compile with debug symbols (slow)                        : $enable_debug_symbols
+  Enable debug features (slow)                             : $enable_debug_features

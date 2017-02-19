@@ -1,0 +1,34 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		if [ ! -d /var/mysql/mysql ] ; then
+			echo "Creating MySQL system tables..."
+			mysql_install_db --user=mysql --ldata=/var/mysql
+		fi
+
+		# mysqld runs as user mysql, but /run is only writable by root
+		# so create a subdirectory for mysql.
+		install -d -o mysql -g root -m 0700 /run/mysql
+
+		# We don't use start-stop-daemon because mysqld has
+		# its own wrapper script.
+		printf "Starting mysql..."
+		/usr/bin/mysqld_safe --pid-file=/run/mysql/mysqld.pid &
+		echo "done."
+		;;
+	stop)
+		printf "Stopping mysql..."
+		if test -f /run/mysql/mysqld.pid ; then
+			kill `cat /run/mysql/mysqld.pid`
+		fi
+		echo "done."
+		;;
+	restart)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: /etc/init.d/mysqld {start|stop|restart}"
+		;;
+esac

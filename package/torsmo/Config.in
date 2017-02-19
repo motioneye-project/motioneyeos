@@ -1,0 +1,11 @@
+config BR2_PACKAGE_TORSMO
+	bool "torsmo"
+	depends on BR2_DEPRECATED_SINCE_2015_11
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	help
+	  Torsmo is a system monitor that sits in the corner of your desktop.
+
+	  http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/Torsmo

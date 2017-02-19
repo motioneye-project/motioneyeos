@@ -1,0 +1,42 @@
+From cca72c48b5643fa62e1d55b7b181e147f5ba7fe9 Mon Sep 17 00:00:00 2001
+From: Lionel Landwerlin <llandwerlin@gmail.com>
+Date: Sun, 28 Mar 2010 21:47:38 +0200
+Subject: [PATCH] Relax X11 dependency
+
+Signed-off-by: Lionel Landwerlin <llandwerlin@gmail.com>
+---
+ configure.in      |    4 +++-
+ gail/gailwindow.c |    2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 3801655..abaf417 100644
+--- a/configure.in
++++ b/configure.in
+@@ -86,7 +86,9 @@ GTK_REQUIRED_VERSION=2.9.4
+ PKG_CHECK_MODULES(DEP, $ATK_PACKAGES >= $ATK_REQUIRED_VERSION \
+ 	$GTK_PACKAGES >= $GTK_REQUIRED_VERSION)
+ 
+-if test "$gail_native_win32" != "yes"; then
++AC_ARG_ENABLE(x, [      --disable-x     disable x11 backend ],x11_backend=no,x11_backend=yes)
++
++if test "$gail_native_win32" != "yes" -a "$x11_backend" != "no"; then
+ 
+ PKG_CHECK_MODULES(X, x11, :, [
+ # pkg-config modules not found (only present since X11R7 aka Xorg); use
+diff --git a/gail/gailwindow.c b/gail/gailwindow.c
+index 616b25e..add454b 100644
+--- a/gail/gailwindow.c
++++ b/gail/gailwindow.c
+@@ -1071,7 +1071,7 @@ gail_window_get_mdi_zorder (AtkComponent *component)
+   return get_window_zorder (widget->window);
+ }
+ 
+-#elif defined (GDK_WINDOWING_WIN32)
++#elif defined (GDK_WINDOWING_WIN32) || defined (GDK_WINDOWING_DIRECTFB)
+ 
+ static gint
+ gail_window_get_mdi_zorder (AtkComponent *component)
+-- 
+1.7.0.2
+

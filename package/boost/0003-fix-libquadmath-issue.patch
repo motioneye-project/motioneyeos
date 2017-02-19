@@ -1,0 +1,91 @@
+From 74ff2db959c5fa75bec770c41ed2951a740fe936 Mon Sep 17 00:00:00 2001
+From: jzmaddock <jz.maddock@gmail.com>
+Date: Fri, 1 Jan 2016 16:49:48 +0000
+Subject: [PATCH] Change <quadmath.h> config to not use it at all if we don't
+ have __has_include as GCC may be configured with --disable-libquadmath but
+ still signal that it supports __float128
+
+Backported from: 74ff2db959c5fa75bec770c41ed2951a740fe936
+
+[Jörg Krause: adjust pathes to match sourceforge release tarball]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+---
+ boost/math/special_functions/fpclassify.hpp | 16 +++++++++++++---
+ boost/math/tools/config.hpp                 | 12 ------------
+ 2 files changed, 13 insertions(+), 15 deletions(-)
+
+diff --git a/boost/math/special_functions/fpclassify.hpp b/boost/math/special_functions/fpclassify.hpp
+index 0a4e1ac..58fad13 100644
+--- a/boost/math/special_functions/fpclassify.hpp
++++ b/boost/math/special_functions/fpclassify.hpp
+@@ -81,7 +81,12 @@ is used.
+ #include <float.h>
+ #endif
+ #ifdef BOOST_MATH_USE_FLOAT128
++#ifdef __has_include
++#if  __has_include("quadmath.h")
+ #include "quadmath.h"
++#define BOOST_MATH_HAS_QUADMATH_H
++#endif
++#endif
+ #endif
+ 
+ #ifdef BOOST_NO_STDC_NAMESPACE
+@@ -124,9 +129,14 @@ inline bool is_nan_helper(T, const boost::false_type&)
+ {
+    return false;
+ }
+-#ifdef BOOST_MATH_USE_FLOAT128
++#if defined(BOOST_MATH_USE_FLOAT128) 
++#if defined(BOOST_MATH_HAS_QUADMATH_H)
+ inline bool is_nan_helper(__float128 f, const boost::true_type&) { return ::isnanq(f); }
+ inline bool is_nan_helper(__float128 f, const boost::false_type&) { return ::isnanq(f); }
++#else
++inline bool is_nan_helper(__float128 f, const boost::true_type&) { return ::isnan(static_cast<double>(f)); }
++inline bool is_nan_helper(__float128 f, const boost::false_type&) { return ::isnan(static_cast<double>(f)); }
++#endif
+ #endif
+ }
+ 
+@@ -519,7 +529,7 @@ inline bool (isinf)(long double x)
+    return detail::isinf_impl(static_cast<value_type>(x), method());
+ }
+ #endif
+-#ifdef BOOST_MATH_USE_FLOAT128
++#if defined(BOOST_MATH_USE_FLOAT128) && defined(BOOST_MATH_HAS_QUADMATH_H)
+ template<>
+ inline bool (isinf)(__float128 x)
+ {
+@@ -611,7 +621,7 @@ inline bool (isnan)(long double x)
+    return detail::isnan_impl(x, method());
+ }
+ #endif
+-#ifdef BOOST_MATH_USE_FLOAT128
++#if defined(BOOST_MATH_USE_FLOAT128) && defined(BOOST_MATH_HAS_QUADMATH_H)
+ template<>
+ inline bool (isnan)(__float128 x)
+ {
+diff --git a/boost/math/tools/config.hpp b/boost/math/tools/config.hpp
+index ffd0ab4..75d29b6 100644
+--- a/boost/math/tools/config.hpp
++++ b/boost/math/tools/config.hpp
+@@ -265,18 +265,6 @@
+ #  define BOOST_MATH_INT_VALUE_SUFFIX(RV, SUF) RV##SUF
+ #endif
+ //
+-// Test whether to support __float128, if we don't have quadmath.h then this can't currently work:
+-//
+-#ifndef BOOST_MATH_USE_FLOAT128
+-#ifdef __has_include
+-#if ! __has_include("quadmath.h")
+-#define BOOST_MATH_DISABLE_FLOAT128
+-#endif
+-#elif !defined(BOOST_ARCH_X86)
+-#define BOOST_MATH_DISABLE_FLOAT128
+-#endif
+-#endif
+-//
+ // And then the actual configuration:
+ //
+ #if defined(_GLIBCXX_USE_FLOAT128) && defined(BOOST_GCC) && !defined(__STRICT_ANSI__) \

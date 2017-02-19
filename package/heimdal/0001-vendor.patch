@@ -1,0 +1,19 @@
+Add --vendor option to krb5-config, required by samba 4.
+Status: Backport from upstream git.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura heimdal-1.5.3.orig/tools/krb5-config.in heimdal-1.5.3.vendor/tools/krb5-config.in
+--- heimdal-1.5.3.orig/tools/krb5-config.in	2012-12-09 19:06:44.000000000 -0300
++++ heimdal-1.5.3.vendor/tools/krb5-config.in	2013-12-18 15:49:45.283986300 -0300
+@@ -50,6 +50,10 @@
+     do_usage=yes
+     usage_exit=0
+     ;;
++  --vendor)
++    echo "Heimdal";
++    exit 0
++    ;;
+   --version)
+     echo "@PACKAGE@ @VERSION@"
+     exit 0

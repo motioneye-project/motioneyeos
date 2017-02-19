@@ -1,0 +1,32 @@
+From: Jo-Philipp Wich <jow@openwrt.org>
+Date: Thu, 18 Jun 2015 21:58:31 +0000 (+0200)
+Subject: fix musl compatibility
+X-Git-Tag: release-1.0.26~9
+X-Git-Url: http://www.tinc-vpn.org/git/browse?p=tinc;a=commitdiff_plain;h=a04fd9d0c9babca461cee186677db8f607677c6a;hp=bb616245b7883ab30291cd8d46672ed2ae733166
+
+fix musl compatibility
+
+Let configure include sys/if_tun.h when testing for netinet/if_ether.h
+to detect the Kernel/libc header conflict on musl.
+
+After this patch, configure will correctly detect netinet/if_ether.h as
+unusable and the subsequent compilation will not attempt to use it.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(downloaded upstream commit included in tinc 1.0.25:
+ http://www.tinc-vpn.org/git/browse?p=tinc;a=commitdiff;h=a04fd9d0c9babca461cee186677db8f607677c6a)
+---
+
+diff --git a/src/have.h b/src/have.h
+index e83f98f..69d5100 100644
+--- a/src/have.h
++++ b/src/have.h
+@@ -207,4 +207,8 @@
+ #include <resolv.h>
+ #endif
+ 
++#ifdef HAVE_LINUX_IF_TUN_H
++#include <linux/if_tun.h>
++#endif
++
+ #endif /* __TINC_SYSTEM_H__ */

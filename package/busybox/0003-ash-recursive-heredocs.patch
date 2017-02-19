@@ -1,0 +1,84 @@
+From 4194c2875310c13ee3ca2bb0e1aea6a2ae67c55a Mon Sep 17 00:00:00 2001
+From: Ron Yorston <rmy@pobox.com>
+Date: Thu, 29 Oct 2015 16:44:56 +0000
+Subject: [PATCH] ash: fix error during recursive processing of here document
+
+Save the value of the checkkwd flag to prevent it being clobbered
+during recursion.
+
+Based on commit ec2c84d from git://git.kernel.org/pub/scm/utils/dash/dash.git
+by Herbert Xu.
+
+function                                             old     new   delta
+readtoken                                            190     203     +13
+------------------------------------------------------------------------------
+(add/remove: 0/0 grow/shrink: 1/0 up/down: 13/0)               Total: 13 bytes
+
+Signed-off-by: Ron Yorston <rmy@pobox.com>
+Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+(cherry picked from commit 713f07d906d9171953be0c12e2369869855b6ca6)
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ shell/ash.c                               | 5 +++--
+ shell/ash_test/ash-heredoc/heredoc3.right | 1 +
+ shell/ash_test/ash-heredoc/heredoc3.tests | 9 +++++++++
+ 3 files changed, 13 insertions(+), 2 deletions(-)
+ create mode 100644 shell/ash_test/ash-heredoc/heredoc3.right
+ create mode 100755 shell/ash_test/ash-heredoc/heredoc3.tests
+
+diff --git a/shell/ash.c b/shell/ash.c
+index 8a1628e..256e933 100644
+--- a/shell/ash.c
++++ b/shell/ash.c
+@@ -11893,6 +11893,7 @@ static int
+ readtoken(void)
+ {
+ 	int t;
++	int kwd = checkkwd;
+ #if DEBUG
+ 	smallint alreadyseen = tokpushback;
+ #endif
+@@ -11906,7 +11907,7 @@ readtoken(void)
+ 	/*
+ 	 * eat newlines
+ 	 */
+-	if (checkkwd & CHKNL) {
++	if (kwd & CHKNL) {
+ 		while (t == TNL) {
+ 			parseheredoc();
+ 			t = xxreadtoken();
+@@ -11920,7 +11921,7 @@ readtoken(void)
+ 	/*
+ 	 * check for keywords
+ 	 */
+-	if (checkkwd & CHKKWD) {
++	if (kwd & CHKKWD) {
+ 		const char *const *pp;
+ 
+ 		pp = findkwd(wordtext);
+diff --git a/shell/ash_test/ash-heredoc/heredoc3.right b/shell/ash_test/ash-heredoc/heredoc3.right
+new file mode 100644
+index 0000000..ce01362
+--- /dev/null
++++ b/shell/ash_test/ash-heredoc/heredoc3.right
+@@ -0,0 +1 @@
++hello
+diff --git a/shell/ash_test/ash-heredoc/heredoc3.tests b/shell/ash_test/ash-heredoc/heredoc3.tests
+new file mode 100755
+index 0000000..96c227c
+--- /dev/null
++++ b/shell/ash_test/ash-heredoc/heredoc3.tests
+@@ -0,0 +1,9 @@
++echo hello >greeting
++cat <<EOF &&
++$(cat greeting)
++EOF
++{
++	echo $?
++	cat greeting
++} >/dev/null
++rm greeting
+-- 
+2.7.4
+

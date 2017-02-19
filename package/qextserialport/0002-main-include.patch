@@ -1,0 +1,15 @@
+Create a main include file QExtSerialPort
+
+This main include file will be installed in
+<QExtSerialPort/QExtSerialPort> so that Qt applications can use this
+library by including header files in a Qt-like style.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: qextserialport-ef4af2a2ee3f/src/QExtSerialPort
+===================================================================
+--- /dev/null
++++ qextserialport-ef4af2a2ee3f/src/QExtSerialPort
+@@ -0,0 +1,2 @@
++#include "qextserialport.h"
++#include "qextserialenumerator.h"

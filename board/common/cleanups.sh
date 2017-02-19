@@ -187,7 +187,10 @@ rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S80dhcp-relay
 rm -f $TARGET/etc/init.d/S80dhcp-server
 rm -f $TARGET/etc/init.d/S91smb
+<<<<<<< HEAD
 rm -f $TARGET/etc/init.d/S99motion
+=======
+>>>>>>> thingos/master
 
 # other unwanted dirs
 rm -rf $TARGET/data/*

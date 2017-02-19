@@ -1,0 +1,33 @@
+From 28145b46649165b94666ee585d064b41306e10fd Mon Sep 17 00:00:00 2001
+From: Alex Suykov <alex.suykov@gmail.com>
+Date: Sat, 10 Jan 2015 11:55:32 +0100
+Subject: [PATCH newt 2/2] Remove bogus -I/usr/include/slang from CPPFLAGS
+
+Hardcoding -I/usr/include/slang in CPPFLAGS is bogus for
+cross-compilation. With recent versions of slang, the headers are
+installed in ${sysroot}/usr/include directly, so there is no need for
+an additional flag. And if one was needed, it should be added by the
+configure script, after detecting the right header location.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 17853e0..d32d784 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -5,7 +5,7 @@ CC = @CC@
+ CPP = @CPP@
+ CFLAGS = @CFLAGS@
+ LDFLAGS = @LDFLAGS@
+-CPPFLAGS = -D_GNU_SOURCE -I/usr/include/slang @CPPFLAGS@ 
++CPPFLAGS = -D_GNU_SOURCE @CPPFLAGS@
+ GNU_LD = @GNU_LD@
+ 
+ VERSION = @VERSION@
+-- 
+2.1.0
+

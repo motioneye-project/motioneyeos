@@ -1,0 +1,45 @@
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 27 Oct 2015 13:58:24 +0200
+Subject: [PATCH] configure.ac: fix stack protector test
+
+gcc does not generate stack protection check code for function that does not
+use its stack. Some toolchain (most notable uClibc based) accept the
+-fstack-protector option, but don't provide libssp. The current test will
+incorrectly identify this case, leading to link failures like:
+
+ipmiutil.o: In function `main':
+ipmiutil.c:(.text.startup+0x1c0): undefined reference to
+`__stack_chk_fail_local'
+ialarms.o: In function `get_alarms_picmg':
+ialarms.c:(.text+0x1c5): undefined reference to `__stack_chk_fail_local'
+ialarms.o: In function `.L46':
+ialarms.c:(.text+0x362): undefined reference to `__stack_chk_fail_local'
+ialarms.o: In function `get_enc_leds':
+ialarms.c:(.text+0x45f): undefined reference to `__stack_chk_fail_local'
+
+Add stack usage code to the test to correctly identify missing libssp.
+
+Patch status: sent upstream
+(http://sourceforge.net/p/ipmiutil/mailman/message/34572536/)
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 41b6ea89167a..f3f60fb9ff69 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -334,7 +334,7 @@ else
+         rm -f $tmpc $tmpo >/dev/null 2>&1
+ 	echo $ECHO_N "checking compile fortify flags ... $ECHO_C"
+ 	cfhard="-fstack-protector --param=ssp-buffer-size=4 -D_FORTIFY_SOURCE=2"
+-	echo "int main() { return(1); }" >$tmpc
++	echo "int main() { alloca(100); return(1); }" >$tmpc
+ 	$CC -o $tmpo $cfhard $tmpc  >/dev/null 2>&1
+ 	if test $? -ne 0 ; then
+ 	   cfhard=
+-- 
+2.6.1
+

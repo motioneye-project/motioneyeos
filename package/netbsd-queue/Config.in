@@ -1,0 +1,2 @@
+config BR2_PACKAGE_NETBSD_QUEUE
+	bool
