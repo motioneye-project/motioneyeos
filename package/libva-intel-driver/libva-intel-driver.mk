@@ -5,8 +5,8 @@
 ################################################################################
 
 LIBVA_INTEL_DRIVER_VERSION = 1.7.3
-LIBVA_INTEL_DRIVER_SOURCE = libva-intel-driver-$(LIBVA_INTEL_DRIVER_VERSION).tar.bz2
-LIBVA_INTEL_DRIVER_SITE = http://www.freedesktop.org/software/vaapi/releases/libva-intel-driver
+LIBVA_INTEL_DRIVER_SITE = \
+	$(call github,01org,intel-vaapi-driver,$(LIBVA_INTEL_DRIVER_VERSION))
 LIBVA_INTEL_DRIVER_LICENSE = MIT
 LIBVA_INTEL_DRIVER_LICENSE_FILES = COPYING
 # needed to work around https://bugs.freedesktop.org/show_bug.cgi?id=79478
