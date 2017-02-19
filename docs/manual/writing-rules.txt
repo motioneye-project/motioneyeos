@@ -29,7 +29,8 @@ config BR2_PACKAGE_LIBFOO
 	depends on BR2_PACKAGE_LIBBAZ
 	select BR2_PACKAGE_LIBBAR
 	help
-	  This is a comment that explains what libfoo is.
+	  This is a comment that explains what libfoo is. The help text
+	  should be wrapped.
 
 	  http://foosoftware.org/libfoo/
 ---------------------
@@ -40,7 +41,8 @@ config BR2_PACKAGE_LIBFOO
 * The help text itself should be indented with one tab and two
   spaces.
 
-* The help text should be wrapped to fit 72 columns.
+* The help text should be wrapped to fit 72 columns, where tab counts
+  for 8, so 62 characters in the text itself.
 
 The +Config.in+ files are the input for the configuration tool
 used in Buildroot, which is the regular _Kconfig_. For further

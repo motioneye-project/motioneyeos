@@ -28,7 +28,8 @@ contain:
 config BR2_PACKAGE_LIBFOO
 	bool "libfoo"
 	help
-	  This is a comment that explains what libfoo is.
+	  This is a comment that explains what libfoo is. The help text
+	  should be wrapped.
 
 	  http://foosoftware.org/libfoo/
 ---------------------------
@@ -36,8 +37,9 @@ config BR2_PACKAGE_LIBFOO
 The +bool+ line, +help+ line and other metadata information about the
 configuration option must be indented with one tab. The help text
 itself should be indented with one tab and two spaces, lines should
-not be longer than 72 columns, and it must mention the upstream URL
-of the project.
+be wrapped to fit 72 columns, where tab counts for 8, so 62 characters
+in the text itself. The help text must mention the upstream URL of the
+project after an empty line.
 
 As a convention specific to Buildroot, the ordering of the attributes
 is as follows:
