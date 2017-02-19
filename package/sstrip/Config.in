@@ -1,7 +1,0 @@
-config BR2_PACKAGE_SSTRIP
-	bool "sstrip"
-	help
-	  Small utility that removes a few bytes from an executable that
-	  strip leaves behind.
-
-	  http://www.muppetlabs.com/~breadbox/software/elfkickers.html
