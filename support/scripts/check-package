@@ -1,0 +1,144 @@
+#!/usr/bin/env python
+# See support/scripts/check-package.txt before editing this file.
+
+from __future__ import print_function
+import argparse
+import inspect
+import re
+import sys
+
+import checkpackagelib_config
+import checkpackagelib_hash
+import checkpackagelib_mk
+import checkpackagelib_patch
+
+VERBOSE_LEVEL_TO_SHOW_IGNORED_FILES = 3
+flags = None  # Command line arguments.
+
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+
+    # Do not use argparse.FileType("r") here because only files with known
+    # format will be open based on the filename.
+    parser.add_argument("files", metavar="F", type=str, nargs="*",
+                        help="list of files")
+
+    parser.add_argument("--manual-url", action="store",
+                        default="http://nightly.buildroot.org/",
+                        help="default: %(default)s")
+    parser.add_argument("--verbose", "-v", action="count", default=0)
+
+    # Now the debug options in the order they are processed.
+    parser.add_argument("--include-only", dest="include_list", action="append",
+                        help="run only the specified functions (debug)")
+    parser.add_argument("--exclude", dest="exclude_list", action="append",
+                        help="do not run the specified functions (debug)")
+    parser.add_argument("--dry-run", action="store_true", help="print the "
+                        "functions that would be called for each file (debug)")
+
+    return parser.parse_args()
+
+
+CONFIG_IN_FILENAME = re.compile("/Config\.\S*$")
+FILE_IS_FROM_A_PACKAGE = re.compile("package/[^/]*/")
+
+
+def get_lib_from_filename(fname):
+    if FILE_IS_FROM_A_PACKAGE.search(fname) is None:
+        return None
+    if CONFIG_IN_FILENAME.search(fname):
+        return checkpackagelib_config
+    if fname.endswith(".hash"):
+        return checkpackagelib_hash
+    if fname.endswith(".mk"):
+        return checkpackagelib_mk
+    if fname.endswith(".patch"):
+        return checkpackagelib_patch
+    return None
+
+
+def is_a_check_function(m):
+    if not inspect.isclass(m):
+        return False
+    # do not call the base class
+    if m.__name__.startswith("_"):
+        return False
+    if flags.include_list and m.__name__ not in flags.include_list:
+        return False
+    if flags.exclude_list and m.__name__ in flags.exclude_list:
+        return False
+    return True
+
+
+def print_warnings(warnings):
+    # Avoid the need to use 'return []' at the end of every check function.
+    if warnings is None:
+        return 0  # No warning generated.
+
+    for level, message in enumerate(warnings):
+        if flags.verbose >= level:
+            print(message.replace("\t", "< tab  >").rstrip())
+    return 1  # One more warning to count.
+
+
+def check_file_using_lib(fname):
+    # Count number of warnings generated and lines processed.
+    nwarnings = 0
+    nlines = 0
+
+    lib = get_lib_from_filename(fname)
+    if not lib:
+        if flags.verbose >= VERBOSE_LEVEL_TO_SHOW_IGNORED_FILES:
+            print("{}: ignored".format(fname))
+        return nwarnings, nlines
+    classes = inspect.getmembers(lib, is_a_check_function)
+
+    if flags.dry_run:
+        functions_to_run = [c[0] for c in classes]
+        print("{}: would run: {}".format(fname, functions_to_run))
+        return nwarnings, nlines
+
+    objects = [c[1](fname, flags.manual_url) for c in classes]
+
+    for cf in objects:
+        nwarnings += print_warnings(cf.before())
+    for lineno, text in enumerate(open(fname, "r").readlines()):
+        nlines += 1
+        for cf in objects:
+            nwarnings += print_warnings(cf.check_line(lineno + 1, text))
+    for cf in objects:
+        nwarnings += print_warnings(cf.after())
+
+    return nwarnings, nlines
+
+
+def __main__():
+    global flags
+    flags = parse_args()
+
+    if len(flags.files) == 0:
+        print("No files to check style")
+        sys.exit(1)
+
+    # Accumulate number of warnings generated and lines processed.
+    total_warnings = 0
+    total_lines = 0
+
+    for fname in flags.files:
+        nwarnings, nlines = check_file_using_lib(fname)
+        total_warnings += nwarnings
+        total_lines += nlines
+
+    # The warning messages are printed to stdout and can be post-processed
+    # (e.g. counted by 'wc'), so for stats use stderr. Wait all warnings are
+    # printed, for the case there are many of them, before printing stats.
+    sys.stdout.flush()
+    print("{} lines processed".format(total_lines), file=sys.stderr)
+    print("{} warnings generated".format(total_warnings), file=sys.stderr)
+
+    if total_warnings > 0:
+        sys.exit(1)
+
+
+__main__()
