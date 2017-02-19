@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=0b65a216ce9dc9c1a7e20a729dd7c05b, sha256 locally computed
-md5     0b65a216ce9dc9c1a7e20a729dd7c05b backports_abc-0.4.tar.gz
-sha256  8b3e4092ba3d541c7a2f9b7d0d9c0275b21c6a01c53a61c731eba6686939d0a5  backports_abc-0.4.tar.gz
+# md5 from https://pypi.python.org/pypi/backports_abc/json, sha256 locally computed
+md5 7d1936ec183a3586290adf60f6f96764 backports_abc-0.5.tar.gz
+sha256 033be54514a03e255df75c5aee8f9e672f663f93abb723444caec8fe43437bde backports_abc-0.5.tar.gz

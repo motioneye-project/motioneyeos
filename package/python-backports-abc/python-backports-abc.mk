@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_BACKPORTS_ABC_VERSION = 0.4
+PYTHON_BACKPORTS_ABC_VERSION = 0.5
 PYTHON_BACKPORTS_ABC_SOURCE = backports_abc-$(PYTHON_BACKPORTS_ABC_VERSION).tar.gz
-PYTHON_BACKPORTS_ABC_SITE = https://pypi.python.org/packages/source/b/backports_abc
+PYTHON_BACKPORTS_ABC_SITE = https://pypi.python.org/packages/68/3c/1317a9113c377d1e33711ca8de1e80afbaf4a3c950dd0edfaf61f9bfe6d8
 PYTHON_BACKPORTS_ABC_LICENSE = Python Software Foundation License
 PYTHON_BACKPORTS_ABC_SETUP_TYPE = setuptools
 
