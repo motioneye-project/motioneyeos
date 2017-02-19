@@ -9,9 +9,6 @@ cp $BOARD_DIR/bl1.bin.hardkernel $IMG_DIR
 cp $BOARD_DIR/u-boot.bin $IMG_DIR
 cp $BOARD_DIR/boot.ini $BOOT_DIR
 
-# disable software updating
-sed -i 's/enable_update true/enable_update false/' $TARGET/etc/motioneye.conf
-
 # fix some lib dirs
 if ! [ -L $TARGET/lib/arm-linux-gnueabihf ]; then
     mv $TARGET/lib/arm-linux-gnueabihf/* $TARGET/lib
