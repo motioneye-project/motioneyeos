@@ -4,4 +4,7 @@
 # checked by running "make menuconfig".
 
 # Notice: ignore 'imported but unused' from pyflakes for check functions.
+from checkpackagelib import ConsecutiveEmptyLines
+from checkpackagelib import EmptyLastLine
 from checkpackagelib import NewlineAtEof
+from checkpackagelib import TrailingSpace
