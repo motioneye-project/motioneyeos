@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-WGET_VERSION = 1.19
+WGET_VERSION = 1.18
 WGET_SOURCE = wget-$(WGET_VERSION).tar.xz
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
 WGET_DEPENDENCIES = host-pkgconf
 WGET_LICENSE = GPLv3+
 WGET_LICENSE_FILES = COPYING
-
-# For 0002-Remove-skipping-libunistring-with-disable-iri.patch
-WGET_AUTORECONF = YES
 
 # Prefer full-blown wget over busybox
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
