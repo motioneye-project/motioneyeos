@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi/rpi-gpio/json, sha256 locally computed
-md5	9db86fd5f3bae872de9dbb068ee0b096  RPi.GPIO-0.6.2.tar.gz
-sha256	82acff0ef6bbe3cdf6f4dbdd73d96add5294bb94baf7f51c1d901861af3c2392  RPi.GPIO-0.6.2.tar.gz
+# md5 from https://pypi.python.org/pypi/rpi_gpio/json, sha256 locally computed
+md5 e4abe1cfb5eacebe53078032256eb837 RPi.GPIO-0.6.3.tar.gz
+sha256 a5fc0eb5e401963b6c0a03650da6b42c4005f02d962b81241d96c98d0a578516 RPi.GPIO-0.6.3.tar.gz
