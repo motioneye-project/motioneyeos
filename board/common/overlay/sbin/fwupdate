@@ -14,7 +14,7 @@ function exit_usage() {
     echo ""
     echo "Statuses:"
     echo "       idle"
-    echo "       downloading <version>: <percent>%"
+    echo "       downloading <version>"
     echo "       downloaded <version>"
     echo "       extracting <version>"
     echo "       extracted <version>"
@@ -46,8 +46,8 @@ FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
 FW_FILE_EXTR=firmware.img
 
-WGET_LOG_FILE=wget.log
-WGET_PID_FILE=wget.pid
+CURL_LOG_FILE=curl.log
+CURL_PID_FILE=curl.pid
 
 GUNZIP_LOG_FILE=gunzip.log
 GUNZIP_PID_FILE=gunzip.pid
@@ -130,28 +130,26 @@ function do_download() {
     mkdir -p $FW_DIR
     echo $version > $FW_DIR/$VER_FILE
 
-    wget --no-check-certificate -O $FW_DIR/$FW_FILE --quiet --show-progress --progress=dot "$url" &> $FW_DIR/$WGET_LOG_FILE &
+    curl_opts="-S -f -L"
+    if [ -n "$os_firmware_username" ]; then
+        curl_opts+=" --user $os_firmware_username:$os_firmware_password"
+    fi
+
+    curl $curl_opts -o $FW_DIR/$FW_FILE "$url" &> $FW_DIR/$CURL_LOG_FILE &
     pid=$!
-    echo $pid > $FW_DIR/$WGET_PID_FILE
+    echo $pid > $FW_DIR/$CURL_PID_FILE
     wait $pid
 }
 
 function download_status() {
-    if [ -f $FW_DIR/$WGET_PID_FILE ]; then
-        pid=$(cat $FW_DIR/$WGET_PID_FILE)
+    if [ -f $FW_DIR/$CURL_PID_FILE ]; then
+        pid=$(cat $FW_DIR/$CURL_PID_FILE)
         if kill -0 $pid &>/dev/null; then
-            progress=$(tail -n2 $FW_DIR/$WGET_LOG_FILE | grep -oe '[[:digit:]]*%')
-            if [ -z "$progress" ]; then
-                progress="0%"
-            fi
-            
-            progress=($progress)
-            
-            echo ${progress[0]}
+            echo "running"
             return
         fi
     fi
-    
+
     if [ -f $FW_DIR/$FW_FILE ]; then
         echo "done"
     fi
@@ -326,11 +324,11 @@ function show_status() {
     fi
     
     status=$(download_status)
-    if [ "$status" == "done" ]; then
-        echo "downloaded $(new_version)"
+    if [ "$status" == "running" ]; then
+        echo "downloading $(new_version)"
         return
     elif [ -n "$status" ]; then
-        echo "downloading $(new_version): $status"
+        echo "downloaded $(new_version)"
         return
     fi
 
