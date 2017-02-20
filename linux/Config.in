@@ -26,7 +26,7 @@ choice
 	prompt "Kernel version"
 
 config BR2_LINUX_KERNEL_LATEST_VERSION
-	bool "Latest version (4.9.9)"
+	bool "Latest version (4.10)"
 
 config BR2_LINUX_KERNEL_CUSTOM_VERSION
 	bool "Custom version"
@@ -97,7 +97,11 @@ endif
 
 config BR2_LINUX_KERNEL_VERSION
 	string
+<<<<<<< a1e02440f3035cfbe5119c00457b3e1c2f7ac4d1
 	default "4.9.9" if BR2_LINUX_KERNEL_LATEST_VERSION
+=======
+	default "4.10" if BR2_LINUX_KERNEL_LATEST_VERSION
+>>>>>>> linux: bump default to version 4.10
 	default BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE \
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_TARBALL
