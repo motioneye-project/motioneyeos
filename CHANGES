@@ -1,3 +1,35 @@
+2017.02-rc2, Released February 20th, 2017
+
+	Fixes all over the tree.
+
+	Support for SOURCE_DATE_EPOCH in the toolchain wrapper for
+	older gcc versions for reproducible builds has been
+	(temporarily) reverted because of licensing compatiblity
+	concerns.
+
+	Defconfigs: SD card generation fix for the Udoo Neo board
+
+	Infrastructure to handle .lz compressed tarballs added, and
+	affected packages updated to use it.
+
+	Updated/fixed packages: bctoolbox, bind, canelloni,
+	cbootimage, ccache, classpath, cups, dbus, ddrescue, directfb,
+	ed, erlang, gcc, gdb, glmark2, gstreamer, gstreamer1, hiredis,
+	kmod, kmsxx, lcdapi, libasplib, libgpiod, libnss, libraw,
+	libv4l, mesa3d-headers, mosquitto, mpd, mpv, musl, ntfs-3g,
+	ocrad, openswan, postgresql, qt5base, qt5quickcontrols, redis,
+	riemann-c-client, samba4, sunxi-mali, tcping, trousers,
+	uclibc, util-linux, vim, wavpack, wget, wiringpi, xfsprogs,
+	xserver_xorg-server
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#8941: Valgrind fails to build with stack protection turned on
+	#9291: perl: SysV message queues not configured, even if available
+	#9651: libxcb-1.12 built Error
+	#9656: util-linux: schedutils doesn't build on target w/o enabl...
+	#9666: qt5quickcontrols install fails
+
 2017.02-rc1, Released February 11th, 2017
 
 	Fixes all over the tree and new features.
