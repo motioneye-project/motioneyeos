@@ -172,6 +172,10 @@ rm -f $TARGET/usr/sbin/ctdb*
 rm -f $TARGET/usr/sbin/winbindd
 rm -f $TARGET/usr/share/perl5
 
+# useless mongodb binaries
+rm -f $TARGET/usr/bin/mongos
+rm -f $TARGET/usr/bin/mongoperf
+
 # unused python folders
 rm -rf $TARGET/usr/lib/python2.7/site-packages/samba/
 rm -rf $TARGET/usr/lib/python2.7/ensurepip/
