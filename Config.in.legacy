@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_SUNXI_MALI_R2P4
+	bool "sunxi-mali r2p4 removed"
+	select BR2_LEGACY
+	help
+	  sunxi-mali libMali for r2p4 Mali kernel module has been
+	  removed since the libump package only provides libUMP.so.3.
+	  libMali for r2p4 Mali kernel module requires libUMP.so.2.
+
 config BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT
 	bool "CoffeeScript option has been removed"
 	select BR2_LEGACY
