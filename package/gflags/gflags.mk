@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GFLAGS_VERSION = v2.1.2
+GFLAGS_VERSION = v2.2.0
 GFLAGS_SITE = $(call github,gflags,gflags,$(GFLAGS_VERSION))
 GFLAGS_INSTALL_STAGING = YES
 GFLAGS_LICENSE = BSD-3c
