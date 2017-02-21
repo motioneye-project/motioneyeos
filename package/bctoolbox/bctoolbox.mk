@@ -8,7 +8,6 @@ BCTOOLBOX_VERSION = 0.4.0
 BCTOOLBOX_SITE = $(call github,BelledonneCommunications,bctoolbox,$(BCTOOLBOX_VERSION))
 BCTOOLBOX_LICENSE = GPLv2+
 BCTOOLBOX_LICENSE_FILES = COPYING
-BCTOOLBOX_DEPENDENCIES = mbedtls
 BCTOOLBOX_INSTALL_STAGING = YES
 
 # Set CMAKE_SKIP_RPATH to prevent bctoolbox from adding the rpath to
