@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v1.12.6
-DOCKER_ENGINE_COMMIT = 78d18021ecba00c00730dec9d56de6896f9e708d
+DOCKER_ENGINE_VERSION = v1.13.1
+DOCKER_ENGINE_COMMIT = 092cba3727bb9b4a2f0e922cd6c0f93ea270e363
 DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
@@ -66,6 +66,7 @@ DOCKER_ENGINE_BUILD_TAGS += exclude_graphdriver_vfs
 endif
 
 define DOCKER_ENGINE_CONFIGURE_CMDS
+	mkdir -p $(DOCKER_ENGINE_GOPATH)/src/github.com/docker
 	ln -fs $(@D) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/docker
 	cd $(@D) && \
 		GITCOMMIT="$$(echo $(DOCKER_ENGINE_COMMIT) | head -c7)" \
@@ -100,7 +101,7 @@ define DOCKER_ENGINE_BUILD_CMDS
 			-o $(@D)/bin/$(target) \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
 			-ldflags "$(DOCKER_ENGINE_GLDFLAGS)" \
-			./cmd/$(target)
+			github.com/docker/docker/cmd/$(target)
 	)
 endef
 
