@@ -23,7 +23,7 @@ with an example :
 10: LUAFOO_BUILD_OPTS += FOO_INCDIR=$(STAGING_DIR)/usr/include
 11: LUAFOO_BUILD_OPTS += FOO_LIBDIR=$(STAGING_DIR)/usr/lib
 12: LUAFOO_LICENSE = luaFoo license
-13: LUAFOO_LICENSE_FILES = COPYING
+13: LUAFOO_LICENSE_FILES = $(LUAFOO_SUBDIR)/COPYING
 14:
 15: $(eval $(luarocks-package))
 ------------------------
