@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LUA_CJSON_VERSION_UPSTREAM = 2.1.0
-LUA_CJSON_VERSION = $(LUA_CJSON_VERSION_UPSTREAM)-1
+LUA_CJSON_VERSION = 2.1.0-1
 LUA_CJSON_LICENSE = MIT
-LUA_CJSON_LICENSE_FILES = lua-cjson-$(LUA_CJSON_VERSION_UPSTREAM)/LICENSE
+LUA_CJSON_LICENSE_FILES = $(LUA_CJSON_SUBDIR)/LICENSE
 
 $(eval $(luarocks-package))
