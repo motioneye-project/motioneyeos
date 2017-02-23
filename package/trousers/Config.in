@@ -5,7 +5,7 @@ config BR2_PACKAGE_TROUSERS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# doesn't build properly in static only configurations
 	depends on !BR2_STATIC_LIBS
-	# broken toolchain
+	# ARC toolchain issue
 	depends on !BR2_arc
 	help
 	  The open-source TCG Software Stack (TSS).
