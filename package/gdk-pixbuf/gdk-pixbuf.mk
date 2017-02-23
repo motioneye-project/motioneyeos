@@ -80,7 +80,7 @@ define GDK_PIXBUF_COPY_LOADERS_CACHE
 	cp -f $(HOST_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache \
 		$(@D)/gdk-pixbuf
 endef
-GDK_PIXBUF_POST_PATCH_HOOKS += GDK_PIXBUF_COPY_LOADERS_CACHE
+GDK_PIXBUF_PRE_BUILD_HOOKS += GDK_PIXBUF_COPY_LOADERS_CACHE
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
