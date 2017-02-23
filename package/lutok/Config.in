@@ -1,7 +1,6 @@
 config BR2_PACKAGE_LUTOK
 	bool "lutok"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	depends on !BR2_PACKAGE_LUAJIT
 	help
 	  Lutok is a lightweight C++ API library for Lua.
