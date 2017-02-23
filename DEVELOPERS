@@ -106,6 +106,7 @@ N:	Arnout Vandecappelle <arnout@mind.be>
 F:	package/freescale-imx/firmware-imx/
 F:	package/freescale-imx/imx-lib/
 F:	package/gstreamer/gst-fsl-plugins/
+F:	package/lua-bit32/
 F:	package/owfs/
 F:	package/python-bottle/
 F:	package/sqlcipher/

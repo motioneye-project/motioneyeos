@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LUA_BIT32
+	bool "lua-bit32"
+	help
+	  bit32 is the native Lua 5.2 bit manipulation library, in the
+	  version from Lua 5.3; it is compatible with Lua 5.1, 5.2 and
+	  5.3.
+
+	  http://www.lua.org/manual/5.2/manual.html#6.7
