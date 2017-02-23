@@ -10,7 +10,6 @@ config BR2_PACKAGE_KISMET
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS # dlfcn.h
 	select BR2_PACKAGE_NCURSES
-	select BR2_PACKAGE_NCURSES_TARGET_PANEL
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_LIBNL
 	help
