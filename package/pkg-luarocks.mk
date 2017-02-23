@@ -36,8 +36,8 @@ define inner-luarocks-package
 $(2)_BUILD_OPTS		?=
 $(2)_NAME_UPSTREAM	?= $(1)
 $(2)_SUBDIR		?= $$($(2)_NAME_UPSTREAM)-$$(shell echo "$$($(2)_VERSION)" | sed -e "s/-[0-9]$$$$//")
-$(2)_ROCKSPEC		?= $$($(2)_NAME_UPSTREAM)-$$($(2)_VERSION).rockspec
-$(2)_SOURCE		?= $$($(2)_NAME_UPSTREAM)-$$($(2)_VERSION).src.rock
+$(2)_ROCKSPEC		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).rockspec
+$(2)_SOURCE		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).src.rock
 $(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
 
 # Since we do not support host-luarocks-package, we know this is

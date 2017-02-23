@@ -82,7 +82,8 @@ Two of them are populated by the LuaRocks infrastructure (for the
 
 * +LUA_FOO_SITE+, which defaults to +$(BR2_LUAROCKS_MIRROR)+
 
-* +LUA_FOO_SOURCE+, which defaults to +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).src.rock+
+* +LUA_FOO_SOURCE+, which defaults to
+  +$(lowercase LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).src.rock+
 
 A few additional variables, specific to the LuaRocks infrastructure, are
 also defined. They can be overridden in specific cases.
@@ -91,7 +92,7 @@ also defined. They can be overridden in specific cases.
   package name
 
 * +LUA_FOO_ROCKSPEC+, which defaults to
-  +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).rockspec+
+  +$(lowercase LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).rockspec+
 
 * +LUA_FOO_SUBDIR+, which defaults to
   +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION_WITHOUT_ROCKSPEC_REVISION)+
