@@ -13,34 +13,40 @@ with an example :
 ------------------------
 01: ################################################################################
 02: #
-03: # luafoo
+03: # lua-foo
 04: #
 05: ################################################################################
 06:
-07: LUAFOO_VERSION = 1.0.2-1
-08: LUAFOO_DEPENDENCIES = foo
-09:
-10: LUAFOO_BUILD_OPTS += FOO_INCDIR=$(STAGING_DIR)/usr/include
-11: LUAFOO_BUILD_OPTS += FOO_LIBDIR=$(STAGING_DIR)/usr/lib
-12: LUAFOO_LICENSE = luaFoo license
-13: LUAFOO_LICENSE_FILES = $(LUAFOO_SUBDIR)/COPYING
-14:
-15: $(eval $(luarocks-package))
+07: LUA_FOO_VERSION = 1.0.2-1
+08: LUA_FOO_NAME_UPSTREAM = foo
+09: LUA_FOO_DEPENDENCIES = bar
+10:
+11: LUA_FOO_BUILD_OPTS += BAR_INCDIR=$(STAGING_DIR)/usr/include
+12: LUA_FOO_BUILD_OPTS += BAR_LIBDIR=$(STAGING_DIR)/usr/lib
+13: LUA_FOO_LICENSE = luaFoo license
+14: LUA_FOO_LICENSE_FILES = $(LUA_FOO_SUBDIR)/COPYING
+15:
+16: $(eval $(luarocks-package))
 ------------------------
 
 On line 7, we declare the version of the package (the same as in the rockspec,
 which is the concatenation of the upstream version and the rockspec revision,
 separated by a hyphen '-').
 
-On line 8, we declare our dependencies against native libraries, so that they
+On line 8, we declare that the package is called "foo" on LuaRocks. In
+Buildroot, we give Lua-related packages a name that starts with "lua", so the
+Buildroot name is different from the upstream name. +LUA_FOO_NAME_UPSTREAM+
+makes the link between the two names.
+
+On line 9, we declare our dependencies against native libraries, so that they
 are built before the build process of our package starts.
 
-On lines 10-11, we tell Buildroot to pass custom options to LuaRocks when it is
+On lines 11-12, we tell Buildroot to pass custom options to LuaRocks when it is
 building the package.
 
-On lines 12-13, we specify the licensing terms for the package.
+On lines 13-14, we specify the licensing terms for the package.
 
-Finally, on line 15, we invoke the +luarocks-package+
+Finally, on line 16, we invoke the +luarocks-package+
 macro that generates all the Makefile rules that actually allows the
 package to be built.
 
@@ -67,24 +73,28 @@ macro.
 
 First, all the package metadata information variables that exist in
 the generic infrastructure also exist in the LuaRocks infrastructure:
-+LUAFOO_VERSION+, +LUAFOO_SOURCE+, +LUAFOO_SITE+,
-+LUAFOO_DEPENDENCIES+, +LUAFOO_LICENSE+, +LUAFOO_LICENSE_FILES+.
++LUA_FOO_VERSION+, +LUA_FOO_SOURCE+, +LUA_FOO_SITE+,
++LUA_FOO_DEPENDENCIES+, +LUA_FOO_LICENSE+, +LUA_FOO_LICENSE_FILES+.
 
 Two of them are populated by the LuaRocks infrastructure (for the
 +download+ step). If your package is not hosted on the LuaRocks mirror
 +$(BR2_LUAROCKS_MIRROR)+, you can override them:
 
-* +LUAFOO_SITE+, which defaults to +$(BR2_LUAROCKS_MIRROR)+
+* +LUA_FOO_SITE+, which defaults to +$(BR2_LUAROCKS_MIRROR)+
 
-* +LUAFOO_SOURCE+, which defaults to +luafoo-$(LUAFOO_VERSION).src.rock+
+* +LUA_FOO_SOURCE+, which defaults to +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).src.rock+
 
 A few additional variables, specific to the LuaRocks infrastructure, are
 also defined. They can be overridden in specific cases.
 
-* +LUAFOO_ROCKSPEC+, which defaults to +luafoo-$(LUAFOO_VERSION).rockspec+
+* +LUA_FOO_NAME_UPSTREAM+, which defaults to +lua-foo+, i.e. the Buildroot
+  package name
 
-* +LUAFOO_SUBDIR+, which defaults to
-  +luafoo-$(LUAFOO_VERSION_WITHOUT_ROCKSPEC_REVISION)+
+* +LUA_FOO_ROCKSPEC+, which defaults to
+  +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION).rockspec+
 
-* +LUAFOO_BUILD_OPTS+ contains additional build options for the
+* +LUA_FOO_SUBDIR+, which defaults to
+  +$(LUA_FOO_NAME_UPSTREAM)-$(LUA_FOO_VERSION_WITHOUT_ROCKSPEC_REVISION)+
+
+* +LUA_FOO_BUILD_OPTS+ contains additional build options for the
   +luarocks build+ call.
