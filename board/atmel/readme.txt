@@ -44,7 +44,7 @@ using SAM-BA" section below.
 For the Xplained boards, an alternative Buildroot configuration is
 provided to boot from an SD card. Those configurations are labeled as
 'mmc'. In this case, after building Buildroot, follow the instructions
-in the "Preparting the SD card" sction.
+in the "Preparing the SD card" section.
 
 To configure and build Buildroot, run:
 
