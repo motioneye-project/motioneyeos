@@ -24,7 +24,11 @@ config BR2_GLIBC_VERSION_2_24
 	# See: https://sourceware.org/ml/libc-alpha/2016-08/msg00212.html
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
-comment "glibc-2.24 needs kernel headers >= 3.2"
+config BR2_GLIBC_VERSION_2_25
+	bool "2.25"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+comment "glibc-2.24+ needs kernel headers >= 3.2"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
 endchoice
@@ -36,3 +40,4 @@ config BR2_GLIBC_VERSION_STRING
 	default "2.22" if BR2_GLIBC_VERSION_2_22
 	default "2.23" if BR2_GLIBC_VERSION_2_23
 	default "2.24" if BR2_GLIBC_VERSION_2_24
+	default "2.25" if BR2_GLIBC_VERSION_2_25
