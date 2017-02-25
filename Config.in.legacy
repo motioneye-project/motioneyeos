@@ -143,6 +143,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.05"
+
+config BR2_GLIBC_VERSION_2_22
+	bool "glibc 2.22 removed"
+	select BR2_LEGACY
+	help
+	  Support for glibc version 2.22 has been removed. The current
+	  default version has been selected instead.
+
+###############################################################################
 comment "Legacy options removed in 2017.02"
 
 config BR2_PACKAGE_PERL_DB_FILE
