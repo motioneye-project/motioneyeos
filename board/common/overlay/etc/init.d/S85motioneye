@@ -29,7 +29,7 @@ opts=$(cat "$conf" | while read line; do echo "--$line"; done)
 port=$(echo "$opts" | grep -oE 'port [[:digit:]]+' | cut -d ' ' -f 2)
 
 responsive() {
-    wget --method=HEAD -q -t 1 -T 2 -O - http://127.0.0.1:$port &>/dev/null && return 0 || return 1
+    curl -m 2 --head http://127.0.0.1:$port &>/dev/null && return 0 || return 1
 }
 
 watch() {
