@@ -1,0 +1,18 @@
+Set endianess for or1k
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur classpath-0.98.orig/native/fdlibm/ieeefp.h classpath-0.98/native/fdlibm/ieeefp.h
+--- classpath-0.98.orig/native/fdlibm/ieeefp.h	2008-01-13 18:33:50.000000000 +0100
++++ classpath-0.98/native/fdlibm/ieeefp.h	2017-02-26 12:39:12.316327363 +0100
+@@ -123,6 +123,10 @@
+ #define __IEEE_BIG_ENDIAN
+ #endif
+ 
++#ifdef __or1k__
++#define __IEEE_BIG_ENDIAN
++#endif
++
+ #ifdef __v800
+ #define __IEEE_LITTLE_ENDIAN
+ #endif
