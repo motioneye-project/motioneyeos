@@ -1,3 +1,29 @@
+2017.02-rc3, Released February 26th, 2017
+
+	Fixes all over the tree.
+
+	Cmake reverted to version 3.6.3 to workaround regressions
+	related to RPATH handling.
+
+	Updated/fixed packages: bctoolbox, berkeleydb, binutils,
+	btrfs-progs, classpath, directfb, glibc, gstreamer1,
+	gst1-plugins-{base,good,bad,ugly}, gst1-libav,
+	gst1-rtsp-server, gst1-validate, gst-omx, htop, libcurl,
+	libepoxy, libimxvpuapi, libpcap, libuv, ncurses, openssh,
+	oracle-mysql, poco, python, qt5base, qt5webkit, sslh, synergy,
+	trousers, uclibc-ng-test, util-linux, vlc, xfsprogs
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9251: Shared C++ libraries for Microblaze results in Segmentation...
+	#9456: mkusers script bash errors
+	#9506: Collectd 5.7.0 fails to build with libcrypt
+	#9581: VagrantFile provisioning step fails due to issue with grub-pc
+	#9586: usbmount: usbmount slows down the system... to a state of...
+	#9616: CMake host packages cannot provide CONF_ENV
+	#9641: Need raptor package installed in staging
+	#9671: stunnel build error
+
 2017.02-rc2, Released February 20th, 2017
 
 	Fixes all over the tree.
