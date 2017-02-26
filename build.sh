@@ -12,6 +12,7 @@ target=${*:2}
 cd $(dirname $0)
 basedir=$(pwd)
 osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
+osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 gzip=$(which pigz || which gzip)
 
 if [ "$board" == "all" ]; then
@@ -44,10 +45,9 @@ if [ "$target" == "mkimage" ]; then
 elif [ "$target" == "mkrelease" ]; then
     $boarddir/mkimage.sh
     cp $outputdir/images/$osname-$board.img $basedir
-    date=$(date +%Y%m%d)
-    mv $basedir/$osname-$board.img  $basedir/$osname-$board-$date.img
-    rm -f $basedir/$osname-$board-$date.img.gz
-    $gzip $basedir/$osname-$board-$date.img
+    mv $basedir/$osname-$board.img  $basedir/$osname-$board-$osversion.img
+    rm -f $basedir/$osname-$board-$osversion.img.gz
+    $gzip $basedir/$osname-$board-$osversion.img
 elif [ -n "$target" ]; then
     make O=$outputdir $target
 else
