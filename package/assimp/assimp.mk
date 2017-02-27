@@ -20,7 +20,7 @@ endif
 # not passed) in gcc versions 5.x or older. The -Os optimization level
 # causes a "unable to find a register to spill in class
 # ‘GENERAL_REGS’" error. -O2 works fine.
-ifeq ($(BR2_sh):$(BR2_STATIC_LIBS):$(BR2_HOST_GCC_AT_LEAST_6),y:y:)
+ifeq ($(BR2_sh):$(BR2_STATIC_LIBS):$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),y:y:)
 ASSIMP_CXXFLAGS += -O2
 endif
 
