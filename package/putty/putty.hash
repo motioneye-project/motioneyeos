@@ -1,3 +1,3 @@
-# Hashes from: http://the.earth.li/~sgtatham/putty/0.67/{sha256,sha512}sums
-sha256 80192458e8a46229de512afeca5c757dd8fce09606b3c992fbaeeee29b994a47                                                                 putty-0.67.tar.gz
-sha512 c2b17da46b8db3fe3837a10cb9cf5dd4b3ef6bfa15cadab83f3b87cf1479ed31fced90b774297ae53bdcbbdf230fc80d5c73d5ff3be6916fb591fd7ce3d35eca putty-0.67.tar.gz
+# Hashes from: http://the.earth.li/~sgtatham/putty/0.68/{sha256,sha512}sums
+sha256 7ba256f46e5a353cafe811ce7914d0e22a52bdfc0e6e2d183ad28b5af44cd09c                                                                 putty-0.68.tar.gz
+sha512 e3a6e4f45e1fce70d4cbb6d4769ab72b23c10920e48a88bba95b3f4c225b0193ddc1444e69d572bdec5e505d2c56fed365f07d990c156b35f272b56f978ef5d3 putty-0.68.tar.gz
