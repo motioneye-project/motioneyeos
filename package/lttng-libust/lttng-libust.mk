@@ -13,6 +13,7 @@ LTTNG_LIBUST_INSTALL_STAGING = YES
 LTTNG_LIBUST_DEPENDENCIES = liburcu util-linux
 LTTNG_LIBUST_CONF_OPTS += --disable-man-pages
 # 0002-doc-examples-Makefile.am-define-C-and-C-compilers-fo.patch
+# 0003-Validate-the-presence-of-dlmopen-at-configure-time.patch
 LTTNG_LIBUST_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
