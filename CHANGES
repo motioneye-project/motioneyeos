@@ -1,3 +1,15 @@
+2017.02, Released February 28th, 2017
+
+	Minor fixes, mainly fixing autobuilder issues.
+
+	Don't use cmake 3.7.x from the build host as it is also
+	affected by the RPATH handling issues, and instead build our
+	own if needed.
+
+	Updated/fixed packages: assimp, classpath, genimage, mplayer,
+	mpv, openocd, python-libconfig, qt5base, qt5quickcontrols,
+	vlc, xterm
+
 2017.02-rc3, Released February 26th, 2017
 
 	Fixes all over the tree.
