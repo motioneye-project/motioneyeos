@@ -306,6 +306,9 @@ F:	package/micropython/
 F:	package/micropython-lib/
 F:	package/syslog-ng/
 
+N:	Christian Kellermann <christian.kellermann@solectrix.de>
+F:	package/python-pylibftdi/
+
 N:	Christian Stewart <christian@paral.in>
 F:	linux/linux-ext-aufs.mk
 F:	package/aufs/
