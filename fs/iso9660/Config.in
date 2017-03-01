@@ -3,7 +3,7 @@ config BR2_TARGET_ROOTFS_ISO9660
 	depends on (BR2_i386 || BR2_x86_64)
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_TARGET_GRUB || \
-		BR2_TARGET_GRUB2 || \
+		BR2_TARGET_GRUB2_I386_PC || \
 		BR2_TARGET_SYSLINUX_ISOLINUX
 	select BR2_LINUX_KERNEL_INSTALL_TARGET \
 	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
@@ -33,7 +33,7 @@ config BR2_TARGET_ROOTFS_ISO9660_GRUB
 
 config BR2_TARGET_ROOTFS_ISO9660_GRUB2
 	bool "grub2"
-	depends on BR2_TARGET_GRUB2
+	depends on BR2_TARGET_GRUB2_I386_PC
 	help
 	  Use Grub 2 as the bootloader for the ISO9660 image. Make
 	  sure to enable the 'iso9660' module in
@@ -82,7 +82,7 @@ config BR2_TARGET_ROOTFS_ISO9660_HYBRID
 
 endif
 
-comment "iso image needs a Linux kernel and one of grub, grub2 or isolinux to be built"
+comment "iso image needs a Linux kernel and one of grub, grub2 i386-pc or isolinux to be built"
 	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_LINUX_KERNEL || \
-		!(BR2_TARGET_GRUB || BR2_TARGET_GRUB2 || BR2_TARGET_SYSLINUX_ISOLINUX)
+		!(BR2_TARGET_GRUB || BR2_TARGET_GRUB2_I386_PC || BR2_TARGET_SYSLINUX_ISOLINUX)
