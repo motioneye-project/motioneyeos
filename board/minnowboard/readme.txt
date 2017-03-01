@@ -1,13 +1,9 @@
-How to get started with the MinnowBoard (MAX)
-=============================================
+How to get started with the MinnowBoard MAX
+===========================================
 
 1. Build
 
   Apply the defconfig:
-
-  $ make minnowboard_defconfig
-
-  Or, for the Minnowboard MAX board:
 
   $ make minnowboard_max_defconfig
 
@@ -18,7 +14,7 @@ How to get started with the MinnowBoard (MAX)
 2. Write the SD card
 
   The build process will create a SD card image in output/images.
-  Write the image to an mSD card, insert into the MinnowBoard
+  Write the image to an mSD card, insert into the MinnowBoard MAX
   and power the board on.
 
   $ dd if=output/images/sdcard.img of=/dev/mmcblk0; sync
