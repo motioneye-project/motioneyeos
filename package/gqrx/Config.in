@@ -1,0 +1,42 @@
+comment "gqrx needs a toolchain w/ C++, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR
+
+comment "gqrx needs qt5, gnuradio, fftw's single precision"
+	depends on !BR2_PACKAGE_GNURADIO || !BR2_PACKAGE_FFTW_PRECISION_SINGLE || \
+		!BR2_PACKAGE_QT5
+
+config BR2_PACKAGE_GQRX
+	bool "gqrx"
+	depends on BR2_PACKAGE_FFTW_PRECISION_SINGLE # gnuradio
+	depends on BR2_PACKAGE_GNURADIO
+	depends on BR2_PACKAGE_QT5
+	depends on BR2_INSTALL_LIBSTDCPP # boost
+	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
+	depends on BR2_USE_WCHAR # boost
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
+	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_GNURADIO_ANALOG
+	select BR2_PACKAGE_GNURADIO_AUDIO
+	select BR2_PACKAGE_GNURADIO_BLOCKS
+	select BR2_PACKAGE_GNURADIO_DIGITAL
+	select BR2_PACKAGE_GNURADIO_FFT
+	select BR2_PACKAGE_GNURADIO_FILTER
+	select BR2_PACKAGE_GR_OSMOSDR
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5SVG
+	help
+	  Gqrx is an open source software defined radio (SDR) receiver
+	  implemented using GNU Radio and the Qt GUI
+	  toolkit. Currently it works on Linux and Mac with hardware
+	  supported by gr-osmosdr, including Funcube Dongle, RTL-SDR,
+	  Airspy, HackRF, BladeRF, RFSpace, USRP and SoapySDR.
+
+	  Gqrx can operate as an AM/FM/SSB receiver with audio output
+	  or as an FFT-only instrument. There are also various hooks
+	  for interacting with external application using network
+	  sockets.
+
+	  http://gqrx.dk/

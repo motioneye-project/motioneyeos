@@ -1,0 +1,30 @@
+From 138e7efdc8cad6453620c6366e6fa5e786593f7f Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 16 Feb 2017 14:41:48 +0200
+Subject: [PATCH] Fix musl compatibility
+
+Include netinet/ether.h before kernel headers to suppress the conflicting
+definition of struct ethhdr.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: not upstreamable; depends on Buildroot local musl patch
+---
+ include/ebtables_u.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/ebtables_u.h b/include/ebtables_u.h
+index 35a5bcc54c86..268b1fd599d2 100644
+--- a/include/ebtables_u.h
++++ b/include/ebtables_u.h
+@@ -24,6 +24,7 @@
+ #ifndef EBTABLES_U_H
+ #define EBTABLES_U_H
+ #include <netinet/in.h>
++#include <netinet/ether.h>
+ #include <linux/netfilter_bridge/ebtables.h>
+ #include <linux/netfilter/x_tables.h>
+ 
+-- 
+2.11.0
+

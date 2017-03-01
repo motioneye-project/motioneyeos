@@ -1,0 +1,26 @@
+From d33635fe940ff898e026d3fb77446e52f8f2bd3f Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 16 Feb 2017 14:59:30 -0300
+Subject: [PATCH] include asm/ioctl.h for _IOC_SIZE
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ src/unionfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/unionfs.c b/src/unionfs.c
+index 5aed5ce..f6cd368 100644
+--- a/src/unionfs.c
++++ b/src/unionfs.c
+@@ -32,7 +32,7 @@
+ #include <sys/types.h>
+ #include <sys/time.h>
+ #include <inttypes.h>
+-#include <sys/ioctl.h>
++#include <asm/ioctl.h>
+ 
+ #ifdef linux
+ 	#include <sys/vfs.h>
+-- 
+2.10.2
+

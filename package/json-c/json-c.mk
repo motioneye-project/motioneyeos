@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JSON_C_VERSION = json-c-0.12-20140410
+JSON_C_VERSION = json-c-0.12.1-20160607
 JSON_C_SITE = $(call github,json-c,json-c,$(JSON_C_VERSION))
 JSON_C_INSTALL_STAGING = YES
 JSON_C_MAKE = $(MAKE1)

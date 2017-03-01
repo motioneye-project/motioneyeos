@@ -5,7 +5,7 @@
 ################################################################################
 
 GDK_PIXBUF_VERSION_MAJOR = 2.36
-GDK_PIXBUF_VERSION = $(GDK_PIXBUF_VERSION_MAJOR).4
+GDK_PIXBUF_VERSION = $(GDK_PIXBUF_VERSION_MAJOR).5
 GDK_PIXBUF_SOURCE = gdk-pixbuf-$(GDK_PIXBUF_VERSION).tar.xz
 GDK_PIXBUF_SITE = http://ftp.gnome.org/pub/gnome/sources/gdk-pixbuf/$(GDK_PIXBUF_VERSION_MAJOR)
 GDK_PIXBUF_LICENSE = LGPLv2+
@@ -72,6 +72,15 @@ define GDK_PIXBUF_DISABLE_TESTS
 	$(SED) 's/ tests//' $(@D)/Makefile.in
 endef
 GDK_PIXBUF_POST_PATCH_HOOKS += GDK_PIXBUF_DISABLE_TESTS
+
+# Target gdk-pixbuf needs loaders.cache populated to build for the
+# thumbnailer. Use the host-built since it matches the target options
+# regarding mime types (which is the used information).
+define GDK_PIXBUF_COPY_LOADERS_CACHE
+	cp -f $(HOST_DIR)/usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache \
+		$(@D)/gdk-pixbuf
+endef
+GDK_PIXBUF_PRE_BUILD_HOOKS += GDK_PIXBUF_COPY_LOADERS_CACHE
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

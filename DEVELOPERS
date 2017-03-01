@@ -744,6 +744,7 @@ F:	package/zd1211-firmware/
 
 N:	Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 F:	package/gnuradio/
+F:	package/gqrx/
 F:	package/gr-osmosdr/
 F:	package/libusbgx/
 F:	package/python-cheetah/
@@ -764,6 +765,9 @@ F:	package/python-rpi-gpio/
 
 N:	Ignacy Gawędzki <ignacy.gawedzki@green-communications.fr>
 F:	package/angularjs/
+
+N:	Ilias Apalodimas <apalos@gmail.com>
+F:	package/keepalived/
 
 N:	James Knight <james.knight@rockwellcollins.com>
 F:	package/atkmm/
@@ -1282,6 +1286,7 @@ F:	package/expedite/
 F:	package/iqvlinux/
 F:	package/liblinear/
 F:	package/linux-syscall-support/
+F:	package/lugaru/
 F:	package/mcelog/
 F:	package/openpowerlink/
 F:	package/stress-ng/

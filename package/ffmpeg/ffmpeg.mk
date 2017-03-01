@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 3.2.3
+FFMPEG_VERSION = 3.2.4
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -495,5 +495,10 @@ define FFMPEG_CONFIGURE_CMDS
 		$(FFMPEG_CONF_OPTS) \
 	)
 endef
+
+define FFMPEG_REMOVE_EXAMPLE_SRC_FILES
+	rm -rf $(TARGET_DIR)/usr/share/ffmpeg/examples
+endef
+FFMPEG_POST_INSTALL_TARGET_HOOKS += FFMPEG_REMOVE_EXAMPLE_SRC_FILES
 
 $(eval $(autotools-package))

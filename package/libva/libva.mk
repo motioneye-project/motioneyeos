@@ -5,8 +5,7 @@
 ################################################################################
 
 LIBVA_VERSION = 1.7.3
-LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
-LIBVA_SITE = http://www.freedesktop.org/software/vaapi/releases/libva
+LIBVA_SITE = $(call github,01org,libva,libva-$(LIBVA_VERSION))
 LIBVA_LICENSE = MIT
 LIBVA_LICENSE_FILES = COPYING
 LIBVA_AUTORECONF = YES

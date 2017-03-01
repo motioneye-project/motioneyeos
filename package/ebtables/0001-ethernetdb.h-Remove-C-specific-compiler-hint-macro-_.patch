@@ -1,0 +1,50 @@
+From f8079671326e9fd079391d24911a9a8a77f1d6fd Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 16 May 2015 12:31:58 +0200
+Subject: [PATCH] ethernetdb.h: Remove C++ specific compiler hint macro _THROW
+
+Fixes compilation with musl libc
+
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit f8079671326e9fd0
+
+ include/ethernetdb.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/include/ethernetdb.h b/include/ethernetdb.h
+index 46d8bfd1b7e5..1683abe01987 100644
+--- a/include/ethernetdb.h
++++ b/include/ethernetdb.h
+@@ -38,21 +38,20 @@ struct ethertypeent {
+ 
+ /* Open ethertype data base files and mark them as staying open even
+    after a later search if STAY_OPEN is non-zero.  */
+-extern void setethertypeent(int __stay_open) __THROW;
++extern void setethertypeent(int __stay_open);
+ 
+ /* Close ethertype data base files and clear `stay open' flag.  */
+-extern void endethertypeent(void) __THROW;
++extern void endethertypeent(void);
+ 
+ /* Get next entry from ethertype data base file.  Open data base if
+    necessary.  */
+-extern struct ethertypeent *getethertypeent(void) __THROW;
++extern struct ethertypeent *getethertypeent(void);
+ 
+ /* Return entry from ethertype data base for network with NAME.  */
+-extern struct ethertypeent *getethertypebyname(__const char *__name)
+-    __THROW;
++extern struct ethertypeent *getethertypebyname(__const char *__name);
+ 
+ /* Return entry from ethertype data base which number is PROTO.  */
+-extern struct ethertypeent *getethertypebynumber(int __ethertype) __THROW;
++extern struct ethertypeent *getethertypebynumber(int __ethertype);
+ 
+ 
+ #endif				/* ethernetdb.h */
+-- 
+2.11.0
+

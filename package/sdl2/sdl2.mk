@@ -18,8 +18,6 @@ SDL2_CONF_OPTS += \
 	--disable-esd \
 	--disable-dbus \
 	--disable-pulseaudio \
-	--disable-video-opengl \
-	--disable-video-opengles \
 	--disable-video-wayland
 
 # We must enable static build to get compilation successful.
@@ -97,6 +95,20 @@ endif
 
 else
 SDL2_CONF_OPTS += --disable-video-x11 --without-x
+endif
+
+ifeq ($(BR2_PACKAGE_SDL2_OPENGL),y)
+SDL2_CONF_OPTS += --enable-video-opengl
+SDL2_DEPENDENCIES += libgl
+else
+SDL2_CONF_OPTS += --disable-video-opengl
+endif
+
+ifeq ($(BR2_PACKAGE_SDL2_OPENGLES),y)
+SDL2_CONF_OPTS += --enable-video-opengles
+SDL2_DEPENDENCIES += libgles
+else
+SDL2_CONF_OPTS += --disable-video-opengles
 endif
 
 ifeq ($(BR2_PACKAGE_TSLIB),y)
