@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBEPOXY_VERSION_MAJOR = 1.4
-LIBEPOXY_VERSION = $(LIBEPOXY_VERSION_MAJOR).0
+LIBEPOXY_VERSION = $(LIBEPOXY_VERSION_MAJOR).1
 LIBEPOXY_SITE = http://ftp.gnome.org/pub/gnome/sources/libepoxy/$(LIBEPOXY_VERSION_MAJOR)
 LIBEPOXY_SOURCE = libepoxy-$(LIBEPOXY_VERSION).tar.xz
 LIBEPOXY_INSTALL_STAGING = YES
