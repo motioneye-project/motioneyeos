@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-WESTON_VERSION = 1.12.0
+WESTON_VERSION = 2.0.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
-# configure.ac patched by 0003-configure-search-for-lib-with-clock_getres.patch
-WESTON_AUTORECONF = YES
 
 WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 	libxkbcommon pixman libpng jpeg mtdev udev cairo libinput \
