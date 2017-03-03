@@ -85,6 +85,14 @@ config BR2_bfin
 	  http://www.analog.com/
 	  http://en.wikipedia.org/wiki/Blackfin
 
+config BR2_csky
+	bool "csky"
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	help
+	  csky is processor IP from china.
+	  http://www.c-sky.com/
+	  http://www.github.com/c-sky
+
 config BR2_i386
 	bool "i386"
 	select BR2_ARCH_HAS_MMU_MANDATORY
@@ -367,6 +375,10 @@ endif
 
 if BR2_bfin
 source "arch/Config.in.bfin"
+endif
+
+if BR2_csky
+source "arch/Config.in.csky"
 endif
 
 if BR2_m68k

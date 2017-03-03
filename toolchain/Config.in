@@ -46,6 +46,7 @@ config BR2_TOOLCHAIN_BUILDROOT
 	depends on !BR2_bf607
 	depends on !BR2_bf608
 	depends on !BR2_bf609
+	depends on !BR2_csky
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"

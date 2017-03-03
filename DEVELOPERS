@@ -593,6 +593,9 @@ F:	package/sdl2/
 N:	Guillaume William Brs <guillaume.bressaix@gmail.com>
 F:	package/liquid-dsp/
 
+N:	Guo Ren <ren_guo@c-sky.com>
+F:	arch/Config.in.csky
+
 N:	Gustavo Zacarias <gustavo@zacarias.com.ar>
 F:	arch/Config.in.powerpc
 F:	board/qemu/
