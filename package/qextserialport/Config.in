@@ -4,4 +4,4 @@ config BR2_PACKAGE_QEXTSERIALPORT
 	help
 	  A Qt library to manage serial ports
 
-	  http://code.google.com/p/qextserialport/
+	  http://qextserialport.github.io/
