@@ -6,4 +6,4 @@ config BR2_PACKAGE_PYTHON_IPADDR
 	  used to create/poke/manipulate IPv4 and IPv6 addresses and
 	  prefixes.
 
-	  https://code.google.com/p/ipaddr-py/
+	  https://github.com/google/ipaddr-py
