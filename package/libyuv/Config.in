@@ -6,7 +6,7 @@ config BR2_PACKAGE_LIBYUV
 	  libyuv is an open source project that includes YUV scaling
 	  and conversion functionality.
 
-	  https://code.google.com/p/libyuv
+	  https://chromium.googlesource.com/libyuv/libyuv/
 
 comment "libyuv needs a toolchain w/ C++, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
