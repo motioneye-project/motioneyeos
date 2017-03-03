@@ -7,7 +7,7 @@ config BR2_PACKAGE_SNAPPY
 	  library; instead, it aims for very high speeds and reasonable
 	  compression.
 
-	  http://code.google.com/p/snappy/
+	  http://google.github.io/snappy/
 
 comment "snappy needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
