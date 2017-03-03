@@ -9,4 +9,4 @@ config BR2_PACKAGE_PYTHON_PROTOBUF
 	  Protocol buffers are Google's language-neutral, platform-neutral,
 	  extensible mechanism for serializing structured data.
 
-	  http://code.google.com/p/protobuf/
+	  https://github.com/protobuf-c/protobuf-c
