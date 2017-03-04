@@ -516,7 +516,6 @@ F:	board/olimex/a20_olinuxino
 F:	configs/olimex_a20_olinuxino_*
 F:	package/4th/
 F:	package/botan/
-F:	package/cosmo/
 F:	package/dado/
 F:	package/ficl/
 F:	package/gdbm/
