@@ -10,6 +10,10 @@
 # RELOCATED_HOST_DIR variable.
 string(REPLACE "/usr/share/buildroot" "" RELOCATED_HOST_DIR ${CMAKE_CURRENT_LIST_DIR})
 
+# Point cmake to the location where we have our custom modules,
+# so that it can find our custom platform description.
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR})
+
 set(CMAKE_SYSTEM_NAME Buildroot)
 set(CMAKE_SYSTEM_PROCESSOR @@CMAKE_SYSTEM_PROCESSOR@@)
 
