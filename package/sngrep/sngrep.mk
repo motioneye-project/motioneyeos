@@ -9,7 +9,7 @@ SNGREP_SITE = $(call github,irontec,sngrep,$(SNGREP_VERSION))
 SNGREP_LICENSE = GPLv3+
 SNGREP_LICENSE_FILES = LICENSE
 SNGREP_AUTORECONF = YES
-SNGREP_DEPENDENCIES = libpcap ncurses
+SNGREP_DEPENDENCIES = libpcap ncurses host-pkgconf
 
 SNGREP_CONF_ENV += \
 	$(if $(BR2_STATIC_LIBS),LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --libs`")
