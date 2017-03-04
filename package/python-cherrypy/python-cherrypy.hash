@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi/cherrypy/json, sha256 locally computed
-md5 4957d9f40c7a0772ad4f2e3fbb5a627f CherryPy-10.1.1.tar.gz
-sha256 a78a604e3afb0074cafa9c15c4ca25af0db4e52b2931e4a2c4b7df09151aa032 CherryPy-10.1.1.tar.gz
+# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=4b765329b0b4b65ec25811e3febb6c93, sha256 locally computed
+md5	4b765329b0b4b65ec25811e3febb6c93  CherryPy-4.0.0.tar.gz
+sha256	73ad4f8870b5a3e9988a7778b5d3003a390d440527ec3458a0c7e58865d2611a  CherryPy-4.0.0.tar.gz
