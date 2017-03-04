@@ -998,6 +998,7 @@ F:	package/libsecret/
 
 N:	Martin Bark <martin@barkynet.com>
 F:	package/ca-certificates/
+F:	package/nodejs/
 F:	package/tzdata/
 F:	package/zic/
 
