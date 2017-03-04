@@ -3,5 +3,5 @@ sha1   7a95765e56b124758fcd7b609589e65b8870880b                                x
 sha256 fcf66fa6ad86227613d2d3e8ae13ded297e2a1e947e9060a083eaf80d323451f        xorg-server-1.14.7.tar.bz2
 # From https://lists.x.org/archives/xorg-announce/2015-October/002650.html
 sha256 0c4b45c116a812a996eb432d8508cf26c2ec8c3916ff2a50781796882f8d6457        xorg-server-1.17.4.tar.bz2
-# From https://lists.x.org/archives/xorg-announce/2017-January/002754.html
-sha256 79ae2cf39d3f6c4a91201d8dad549d1d774b3420073c5a70d390040aa965a7fb        xorg-server-1.19.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-March/002779.html
+sha256 4f8ab9f4a1a885fe7550080555381b34b82858582559e8e3c4da96e3a85884bb        xorg-server-1.19.2.tar.bz2
