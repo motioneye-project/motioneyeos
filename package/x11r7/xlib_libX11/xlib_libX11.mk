@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-XLIB_LIBX11_VERSION = 1.6.4
+XLIB_LIBX11_VERSION = 1.6.5
 XLIB_LIBX11_SOURCE = libX11-$(XLIB_LIBX11_VERSION).tar.bz2
-XLIB_LIBX11_SITE = http://xorg.freedesktop.org/releases/individual/lib
+XLIB_LIBX11_SITE = https://xorg.freedesktop.org/archive/individual/lib
 XLIB_LIBX11_LICENSE = MIT
 XLIB_LIBX11_LICENSE_FILES = COPYING
 XLIB_LIBX11_INSTALL_STAGING = YES
