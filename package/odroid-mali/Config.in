@@ -5,6 +5,16 @@ config BR2_PACKAGE_ODROID_MALI
 	select BR2_PACKAGE_ODROID_SCRIPTS # runtime
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_aarch64 || BR2_ARM_EABIHF
+	# The version of the khrplatform.h header bundled with
+	# odroid-mali has a definition of the khronos_intptr_t and
+	# khronos_ssize_t that doesn't match the official Khronos
+	# registry headers or the Mesa3D headers. Due to this, it
+	# causes conflicts with some packages that redefines those
+	# types (with the correct definitions), such as libepoxy.
+	#
+	# Issue reported upstream at:
+	# https://github.com/mdrjr/c2_mali/issues/1
+	depends on BROKEN
 	help
 	  Install the ARM Mali drivers for odroidc2 based systems.
 
