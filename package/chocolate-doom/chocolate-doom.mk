@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHOCOLATE_DOOM_VERSION = 2.2.1
+CHOCOLATE_DOOM_VERSION = 2.3.0
 CHOCOLATE_DOOM_SITE = http://www.chocolate-doom.org/downloads/$(CHOCOLATE_DOOM_VERSION)
 CHOCOLATE_DOOM_LICENSE = GPLv2+
 CHOCOLATE_DOOM_LICENSE_FILES = COPYING
