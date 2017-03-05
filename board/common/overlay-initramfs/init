@@ -10,6 +10,9 @@ FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
 FW_FILE_EXTR=firmware.img
 
+LEGACY_FW_DIR=/data/.firmware_upadate
+LEGACY_FW_FILE_EXTR=firmware
+
 ROOT_INFO_FILE=root_info
 
 msg() {
@@ -49,8 +52,13 @@ msg "Mounting data partition"
 mount $DATA_DEV /data
 
 if ! [ -r $FW_DIR/$FW_FILE_EXTR ]; then
-    msg "No firmware found, aborting"
-    exit 1
+    if [ -r $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR ]; then
+        msg "Detected legacy firmware path"
+        mv $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR $FW_DIR/$FW_FILE_EXTR
+    else
+        msg "No firmware found, aborting"
+        exit 1
+    fi
 fi
 
 if ! [ -r $FW_DIR/$ROOT_INFO_FILE ]; then
@@ -66,4 +74,3 @@ dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root
 
 msg "Cleaning up"
 rm -rf $FW_DIR
-
