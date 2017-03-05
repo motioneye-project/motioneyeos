@@ -525,6 +525,10 @@ endif
 if BR2_PACKAGE_HAS_LUAINTERPRETER && !BR2_STATIC_LIBS
 # lua modules are dynamically loaded, so not available on static builds
 menu "Lua libraries/modules"
+# When adding lua packages, make sure the name start with "lua". If the
+# upstream package is "luafoo", call it "luafoo" in Buildroot; if the upstream
+# package is "foo", call it "lua-foo". Many packages currently don't follow
+# this convention, but that's historical accident.
 	source "package/argparse/Config.in"
 	source "package/cgilua/Config.in"
 	source "package/copas/Config.in"
