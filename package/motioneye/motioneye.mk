@@ -28,7 +28,7 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
         $($(PKG)_INSTALL_TARGET_OPTS))
 
     # additional config modules
-    cp package/motioneye/update.py $(DST_DIR)
+    cp package/motioneye/platformupdate.py $(DST_DIR)
     cp package/motioneye/ipctl.py $(DST_DIR)
     cp package/motioneye/servicectl.py $(DST_DIR)
     cp package/motioneye/watchctl.py $(DST_DIR)
