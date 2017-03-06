@@ -1,30 +1,22 @@
-From 3338bcb05479f1149420d4a0ea3904cb9e42eef5 Mon Sep 17 00:00:00 2001
+From 60110b93a5cbc6ec3d92035d9daf86a30a7fd791 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 14 Nov 2012 19:18:22 +0800
-Subject: [PATCH 3/5] at91sam9260/9g20: add wathdog support
+Subject: [PATCH 3/4] at91sam9260/9g20: add wathdog support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
- arch/arm/mach-at91/at91sam9260_devices.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/arm/mach-at91/at91sam9260_devices.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 1c375ee..5885f91 100644
+index 67c4ea860..51852a9a8 100644
 --- a/arch/arm/mach-at91/at91sam9260_devices.c
 +++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -10,6 +10,7 @@
-  *
-  */
- #include <common.h>
-+#include <init.h>
- #include <sizes.h>
- #include <asm/armlinux.h>
- #include <asm/hardware.h>
-@@ -397,3 +398,14 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
- #else
+@@ -400,6 +400,17 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data)
  void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
  #endif
-+
+ 
 +#ifdef CONFIG_WATCHDOG_AT91SAM9X
 +static int at91_add_device_watchdog(void)
 +{
@@ -35,6 +27,10 @@ index 1c375ee..5885f91 100644
 +}
 +coredevice_initcall(at91_add_device_watchdog);
 +#endif
++
+ static int at91_fixup_device(void)
+ {
+ 	at91_rtt_irq_fixup(IOMEM(AT91SAM9260_BASE_RTT));
 -- 
-1.8.1.4
+2.12.0
 

@@ -1,25 +1,26 @@
-From e1d54ffb987c346c45c20968be34c50c62a91c07 Mon Sep 17 00:00:00 2001
+From 24d99ffc4b22e45721e74bfc10717cc5bacdbfc4 Mon Sep 17 00:00:00 2001
 From: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
 Date: Wed, 14 Nov 2012 19:17:47 +0800
-Subject: [PATCH 2/5] watchdog: add at91sam9 watchdog support
+Subject: [PATCH 2/4] watchdog: add at91sam9 watchdog support
 
 with keep alive support
 
 Signed-off-by: Jean-Christophe PLAGNIOL-VILLARD <plagnioj@jcrosoft.com>
+Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
- drivers/watchdog/Kconfig        |   7 +++
+ drivers/watchdog/Kconfig        |   8 +++
  drivers/watchdog/Makefile       |   1 +
  drivers/watchdog/at91sam9_wdt.c | 131 ++++++++++++++++++++++++++++++++++++++++
  drivers/watchdog/at91sam9_wdt.h |  38 ++++++++++++
- 4 files changed, 177 insertions(+)
+ 4 files changed, 178 insertions(+)
  create mode 100644 drivers/watchdog/at91sam9_wdt.c
  create mode 100644 drivers/watchdog/at91sam9_wdt.h
 
 diff --git a/drivers/watchdog/Kconfig b/drivers/watchdog/Kconfig
-index 0b4dc84..98a21d7 100644
+index 7ebff89b9..479e737f0 100644
 --- a/drivers/watchdog/Kconfig
 +++ b/drivers/watchdog/Kconfig
-@@ -11,6 +11,13 @@ menuconfig WATCHDOG
+@@ -11,12 +11,20 @@ menuconfig WATCHDOG
  
  if WATCHDOG
  
@@ -30,21 +31,29 @@ index 0b4dc84..98a21d7 100644
 +	  Watchdog timer embedded into AT91SAM9X and AT91CAP9 chips. This will
 +	  reboot your system when the timeout is reached.
 +
- config WATCHDOG_MXS28
- 	bool "i.MX28"
- 	depends on ARCH_IMX28
+ config WATCHDOG_DAVINCI
+ 	bool "TI Davinci"
+ 	depends on ARCH_DAVINCI
+ 	help
+ 	  Add support for watchdog on the TI Davinci SoC.
+ 
++
+ config WATCHDOG_DW
+ 	bool "Synopsys DesignWare watchdog"
+ 	select RESET_CONTROLLER
 diff --git a/drivers/watchdog/Makefile b/drivers/watchdog/Makefile
-index f522b88..3d15d52 100644
+index 5fca4c368..245a5c84a 100644
 --- a/drivers/watchdog/Makefile
 +++ b/drivers/watchdog/Makefile
-@@ -1,3 +1,4 @@
+@@ -1,4 +1,5 @@
  obj-$(CONFIG_WATCHDOG) += wd_core.o
 +obj-$(CONFIG_WATCHDOG_AT91SAM9X) += at91sam9_wdt.o
+ obj-$(CONFIG_WATCHDOG_DAVINCI) += davinci_wdt.o
+ obj-$(CONFIG_WATCHDOG_OMAP) += omap_wdt.o
  obj-$(CONFIG_WATCHDOG_MXS28) += im28wd.o
- obj-$(CONFIG_WATCHDOG_IMX_RESET_SOURCE) += imxwd.o
 diff --git a/drivers/watchdog/at91sam9_wdt.c b/drivers/watchdog/at91sam9_wdt.c
 new file mode 100644
-index 0000000..203d83a
+index 000000000..203d83aff
 --- /dev/null
 +++ b/drivers/watchdog/at91sam9_wdt.c
 @@ -0,0 +1,131 @@
@@ -181,7 +190,7 @@ index 0000000..203d83a
 +coredevice_initcall(at91sam9_wdt_init);
 diff --git a/drivers/watchdog/at91sam9_wdt.h b/drivers/watchdog/at91sam9_wdt.h
 new file mode 100644
-index 0000000..2b68c1a
+index 000000000..2b68c1a2a
 --- /dev/null
 +++ b/drivers/watchdog/at91sam9_wdt.h
 @@ -0,0 +1,38 @@
@@ -224,5 +233,5 @@ index 0000000..2b68c1a
 +
 +#endif
 -- 
-1.8.1.4
+2.12.0
 

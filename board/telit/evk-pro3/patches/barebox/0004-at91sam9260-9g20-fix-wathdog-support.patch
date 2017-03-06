@@ -1,7 +1,7 @@
-From e03bf0e3ad24898019b89eb9a6935d159c60268f Mon Sep 17 00:00:00 2001
+From d8231b1726a020733d87c2685ec1631403e050cf Mon Sep 17 00:00:00 2001
 From: Fabio Porcedda <fabio.porcedda@gmail.com>
 Date: Thu, 17 Jan 2013 11:32:35 +0100
-Subject: [PATCH 4/5] at91sam9260/9g20: fix wathdog support
+Subject: [PATCH 4/4] at91sam9260/9g20: fix wathdog support
 
 Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
 ---
@@ -9,10 +9,10 @@ Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/arm/mach-at91/at91sam9260_devices.c b/arch/arm/mach-at91/at91sam9260_devices.c
-index 5885f91..df675d2 100644
+index 51852a9a8..20c8cac9d 100644
 --- a/arch/arm/mach-at91/at91sam9260_devices.c
 +++ b/arch/arm/mach-at91/at91sam9260_devices.c
-@@ -403,7 +403,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
+@@ -404,7 +404,7 @@ void at91_add_device_mci(short mmc_id, struct atmel_mci_platform_data *data) {}
  static int at91_add_device_watchdog(void)
  {
  	add_generic_device("at91sam9_wdt", DEVICE_ID_SINGLE, NULL,
@@ -22,5 +22,5 @@ index 5885f91..df675d2 100644
  	return 0;
  }
 -- 
-1.8.1.4
+2.12.0
 
