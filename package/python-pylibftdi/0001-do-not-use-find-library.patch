@@ -24,7 +24,7 @@ diff -purN pylibftdi-0.15.0.orig/pylibftdi/driver.py pylibftdi-0.15.0/pylibftdi/
          if lib is None:
 -            raise LibraryMissingError('{} library not found (search: {})'.format(
 -                name, search_list))
-+		return cdll.LoadLibrary(name + '.so')
++            return cdll.LoadLibrary(name + '.so')
 +
          return lib
  
