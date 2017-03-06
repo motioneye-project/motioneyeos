@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-LIBPLATFORM_VERSION = 2.1.0
-LIBPLATFORM_SITE = $(call github,Pulse-Eight,platform,p8-platform-$(LIBPLATFORM_VERSION))
-LIBPLATFORM_LICENSE = GPLv2+
-LIBPLATFORM_LICENSE_FILES = src/os.h
+LIBPLATFORM_VERSION = feafe68e3e0b02c3261aefb3d711863ef6fadd38
+LIBPLATFORM_SITE = $(call github,Pulse-Eight,platform,$(LIBPLATFORM_VERSION))
+LIBPLATFORM_LICENSE = GPLv2+, PHP license v3.01
+LIBPLATFORM_LICENSE_FILES = src/os.h src/util/fstrcmp.c
 LIBPLATFORM_INSTALL_STAGING = YES
 
 $(eval $(cmake-package))
