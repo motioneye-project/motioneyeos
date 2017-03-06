@@ -1,0 +1,39 @@
+From cde9a78711e8eaed0aefb9e36288f22918e8d4b2 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 2 Mar 2017 09:41:41 -0300
+Subject: [PATCH] build: disable tests from building
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ Makefile.am | 2 +-
+ Makefile.in | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 9e31b34..32e5c29 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,6 +1,6 @@
+ ## Process this file with automake to create Makefile.in.
+ 
+-SUBDIRS= pango pango-view examples docs tools tests win32
++SUBDIRS= pango pango-view examples docs tools win32
+ 
+ EXTRA_DIST = 			\
+ 	autogen.sh		\
+diff --git a/Makefile.in b/Makefile.in
+index 6b6f6c7..ed0cfa2 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -418,7 +418,7 @@ target_alias = @target_alias@
+ top_build_prefix = @top_build_prefix@
+ top_builddir = @top_builddir@
+ top_srcdir = @top_srcdir@
+-SUBDIRS = pango pango-view examples docs tools tests win32
++SUBDIRS = pango pango-view examples docs tools win32
+ EXTRA_DIST = \
+ 	autogen.sh		\
+ 	pango.pc.in		\
+-- 
+2.10.2
+
