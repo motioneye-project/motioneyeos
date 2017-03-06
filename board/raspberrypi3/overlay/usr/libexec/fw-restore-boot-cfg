@@ -1,0 +1,10 @@
+#!/bin/bash
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <old_boot>" 1>&2
+    exit -1
+fi
+
+old_boot=$1
+cp $old_boot/config.txt /boot
+

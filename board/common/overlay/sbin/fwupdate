@@ -230,7 +230,13 @@ function flash_boot() {
     wait $pid
 
     mount -o rw /boot
-    restore_boot_$board $FW_DIR/old_boot 2>/dev/null || true
+    
+    # the /usr/libexec/fw-restore-boot-cfg script, if present, takes the old (backup) boot dir as argument
+    # and should restore any /boot configuration that needs to be preserved across updates
+    # from the old boot dir to the current (new) /boot dir
+    if [ -x /usr/libexec/fw-restore-boot-cfg ]; then
+        /usr/libexec/fw-restore-boot-cfg $FW_DIR/old_boot 2>/dev/null || true
+    fi
     touch $FW_DIR/$BOOT_READY_FILE
 }
 
@@ -257,19 +263,6 @@ function flash_cleanup() {
     mount /boot 2>/dev/null
 }
 
-function restore_boot_raspberrypi() {
-    old_boot=$1
-    cp $old_boot/config.txt /boot
-}
-
-function restore_boot_raspberrypi2() {
-    restore_boot_raspberrypi
-}
-
-function restore_boot_raspberrypi3() {
-    restore_boot_raspberrypi
-}
-
 
 #### flash reboot ####
 
@@ -278,8 +271,13 @@ function flash_reboot() {
 
     board=$(cat $SYS_BOARD_FILE)
     
+    # the /usr/libexec/fw-prepare-boot script should be present and should
+    # make the necessary changes to the current boot configuration so that
+    # the firmware update initramfs will be used by the next boot
     mount -o remount,rw /boot
-    prepare_boot_$board
+    if [ -x /usr/libexec/fw-prepare-boot ]; then
+        /usr/libexec/fw-prepare-boot
+    fi
 
     sync
     busybox reboot &
@@ -287,18 +285,6 @@ function flash_reboot() {
     echo b > /proc/sysrq-trigger
     
     exit 0
-}
-
-function prepare_boot_raspberrypi() {
-    echo "initramfs fwupdater.gz" >> /boot/config.txt
-}
-
-function prepare_boot_raspberrypi2() {
-    prepare_boot_raspberrypi
-}
-
-function prepare_boot_raspberrypi3() {
-    prepare_boot_raspberrypi
 }
 
 
