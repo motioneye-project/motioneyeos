@@ -86,6 +86,7 @@ beaglebone_defconfig: *defconfig
 beaglebone_qt5_defconfig: *defconfig
 chromebook_snow_defconfig: *defconfig
 ci20_defconfig: *defconfig
+csky_gx6605s_defconfig: *defconfig
 cubieboard2_defconfig: *defconfig
 firefly_rk3288_defconfig: *defconfig
 firefly_rk3288_demo_defconfig: *defconfig

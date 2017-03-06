@@ -612,6 +612,8 @@ F:	package/liquid-dsp/
 
 N:	Guo Ren <ren_guo@c-sky.com>
 F:	arch/Config.in.csky
+F:	board/csky/
+F:	configs/csky_*
 
 N:	Gustavo Zacarias <gustavo@zacarias.com.ar>
 F:	arch/Config.in.powerpc

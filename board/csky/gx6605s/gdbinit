@@ -1,0 +1,25 @@
+tar jtag jtag://127.0.0.1:1025
+reset
+
+# setup CCR (Cache Config Reg)
+# 0-1:MP,2:IE,3:DE,4:WB,5:RS,6:Z,7:BE
+set $cr18 = 0x7d
+
+# vendor custom setup, double cache line & preload
+set $cr30 = 0xc
+
+# pin mux for serial8250
+set *(unsigned int *) 0xa030a14c |= (1 << 22) | (1 << 23)
+
+# pass devicetree blob
+# r2 is magic
+# r3 is address
+set $r2 = 0x20150401
+set $r3 = 0x92000000
+restore gx6605s.dtb binary 0x92000000
+
+# flush cache
+set $cr17 = 0x33
+
+load
+
