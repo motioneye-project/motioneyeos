@@ -41,6 +41,11 @@ trap on_exit EXIT
 msg "Waiting for sdcard"
 sleep 2
 
+if [ -x /prepare_initramfs ]; then
+    msg "Preparing initramfs"
+    /prepare_initramfs
+fi
+
 msg "Mounting pseudo filesystems"
 mount -t devtmpfs devtmpfs /dev
 mount -t proc proc /proc
