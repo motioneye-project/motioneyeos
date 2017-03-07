@@ -39,9 +39,4 @@ else
 LIBPLAYER_CONF_OPTS += --disable-gstreamer
 endif
 
-ifeq ($(BR2_PACKAGE_LIBPLAYER_PYTHON),y)
-LIBPLAYER_DEPENDENCIES += python
-LIBPLAYER_CONF_OPTS += --enable-binding-python
-endif
-
 $(eval $(autotools-package))
