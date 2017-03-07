@@ -1,4 +1,4 @@
-From 733ee65f308ec48be427463c06f372ca116ccada Mon Sep 17 00:00:00 2001
+From a2b911055f5b75e02d6a8853a9b21dfad277758e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:50:11 +0100
 Subject: [PATCH] Add an option to disable NIS
@@ -12,10 +12,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 38b7515..f25733a 100644
+index e9ea63f..98d1332 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2917,6 +2917,12 @@ AC_ARG_ENABLE(codecs-cjk,
+@@ -2999,6 +2999,12 @@ AC_ARG_ENABLE(codecs-cjk,
  		DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _codecs_kr _codecs_jp _codecs_cn _codecs_tw _codecs_hk _codecs_iso2022"
  	fi])
  
@@ -29,5 +29,5 @@ index 38b7515..f25733a 100644
  AC_ARG_ENABLE(tk,
  	AS_HELP_STRING([--disable-tk], [disable tk]),
 -- 
-2.6.4
+2.7.4
 

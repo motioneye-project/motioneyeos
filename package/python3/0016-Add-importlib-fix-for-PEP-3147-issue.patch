@@ -1,4 +1,4 @@
-From d2b5be9a0627e38d2280ef865dab3e74b7d2bde4 Mon Sep 17 00:00:00 2001
+From 66c1baaf357f75591ee2f31966385b6eb96c8eb4 Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 Date: Wed, 23 Dec 2015 11:46:14 +0100
 Subject: [PATCH] Add importlib fix for PEP 3147 issue
@@ -23,10 +23,10 @@ Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
  1 file changed, 5 insertions(+), 32 deletions(-)
 
 diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
-index 616b17f..e30129c 100644
+index 9788828..dfcc27e 100644
 --- a/Lib/importlib/_bootstrap_external.py
 +++ b/Lib/importlib/_bootstrap_external.py
-@@ -255,8 +255,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -258,8 +258,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
      a True value is the same as setting 'optimization' to the empty string
      while a False value is equivalent to setting 'optimization' to '1'.
  
@@ -35,7 +35,7 @@ index 616b17f..e30129c 100644
      """
      if debug_override is not None:
          _warnings.warn('the debug_override parameter is deprecated; use '
-@@ -267,10 +265,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -270,10 +268,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
          optimization = '' if debug_override else 1
      head, tail = _path_split(path)
      base, sep, rest = tail.rpartition('.')
@@ -47,7 +47,7 @@ index 616b17f..e30129c 100644
      if optimization is None:
          if sys.flags.optimize == 0:
              optimization = ''
-@@ -281,39 +276,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -284,39 +279,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
          if not optimization.isalnum():
              raise ValueError('{!r} is not alphanumeric'.format(optimization))
          almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
@@ -92,5 +92,5 @@ index 616b17f..e30129c 100644
  
  
 -- 
-2.6.4
+2.7.4
 

@@ -1,4 +1,4 @@
-From ace3ebd517ea0ac42208b6a06c7e8f82da3b9c1b Mon Sep 17 00:00:00 2001
+From 49bfbdadd4808e7868e443b2786faf513c9818ea Mon Sep 17 00:00:00 2001
 From: Baruch Siach <baruch@tkos.co.il>
 Date: Wed, 23 Dec 2015 11:44:02 +0100
 Subject: [PATCH] Serial ioctl() workaround
@@ -29,5 +29,5 @@ index b78d33e..58b0444 100644
  /* HP-UX requires that this be included to pick up MDCD, MCTS, MDSR,
   * MDTR, MRI, and MRTS (appearantly used internally by some things
 -- 
-2.6.4
+2.7.4
 

@@ -1,4 +1,4 @@
-From 6281850ee8c3fb6d93b4997833af0cca4a48947b Mon Sep 17 00:00:00 2001
+From cb39a3171e28ac6db79d3604959730746e50c2b4 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:49:42 +0100
 Subject: [PATCH] Add an option to disable expat
@@ -18,10 +18,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  3 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index b97c21e..bdfee19 100644
+index 90a055c..fcb1ac4 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1180,7 +1180,7 @@ LIBSUBDIRS=	\
+@@ -1206,7 +1206,7 @@ LIBSUBDIRS=	\
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
@@ -30,7 +30,7 @@ index b97c21e..bdfee19 100644
  		importlib \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
-@@ -1257,6 +1257,10 @@ ifeq (@CURSES@,yes)
+@@ -1283,6 +1283,10 @@ ifeq (@CURSES@,yes)
  LIBSUBDIRS += curses
  endif
  
@@ -42,10 +42,10 @@ index b97c21e..bdfee19 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index 0be47b2..e6bcacc 100644
+index 3814ba0..a7e9d16 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2591,13 +2591,21 @@ PKG_PROG_PKG_CONFIG
+@@ -2673,13 +2673,21 @@ PKG_PROG_PKG_CONFIG
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -73,10 +73,10 @@ index 0be47b2..e6bcacc 100644
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
 diff --git a/setup.py b/setup.py
-index 722308b..ecddb6a 100644
+index be27531..53a471c 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1434,7 +1434,7 @@ class PyBuildExt(build_ext):
+@@ -1464,7 +1464,7 @@ class PyBuildExt(build_ext):
          #
          # More information on Expat can be found at www.libexpat.org.
          #
@@ -86,5 +86,5 @@ index 722308b..ecddb6a 100644
              define_macros = []
              expat_lib = ['expat']
 -- 
-2.6.4
+2.7.4
 

@@ -1,4 +1,4 @@
-From 7c560d917ee0e536c76fac275d1cb0b6136269ab Mon Sep 17 00:00:00 2001
+From 5855e029370e5636e3eb2283eaa8d11248744eac Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:32:23 +0100
 Subject: [PATCH] distutils/sysconfig: use sysconfigdata
@@ -61,5 +61,5 @@ index 573724d..721edec 100644
  def _init_nt():
      """Initialize the module as appropriate for NT"""
 -- 
-2.6.4
+2.7.4
 

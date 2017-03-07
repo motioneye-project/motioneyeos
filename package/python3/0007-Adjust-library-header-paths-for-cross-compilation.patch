@@ -1,4 +1,4 @@
-From e634929f76a45f5b683dc19bc01efed2ab83e19e Mon Sep 17 00:00:00 2001
+From f24bff04a609d30ead9776ae3b27aa579135c8bf Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:33:14 +0100
 Subject: [PATCH] Adjust library/header paths for cross-compilation
@@ -21,7 +21,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 15 insertions(+), 5 deletions(-)
 
 diff --git a/Lib/distutils/command/build_ext.py b/Lib/distutils/command/build_ext.py
-index d4cb11e..e7a0ba9 100644
+index f03a4e3..0355963 100644
 --- a/Lib/distutils/command/build_ext.py
 +++ b/Lib/distutils/command/build_ext.py
 @@ -232,7 +232,10 @@ class build_ext(Command):
@@ -63,5 +63,5 @@ index 721edec..d20e2d8 100644
  # Path to the base directory of the project. On Windows the binary may
  # live in project/PCBuild/win32 or project/PCBuild/amd64.
 -- 
-2.6.4
+2.7.4
 

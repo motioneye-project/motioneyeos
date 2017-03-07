@@ -1,4 +1,4 @@
-From 4f851142b8f3149d23654117621285df34ec768b Mon Sep 17 00:00:00 2001
+From e151b6863bd8f697f17b50eda2cecef57e433c3e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 13:58:00 +0100
 Subject: [PATCH] Support PGEN_FOR_BUILD and FREEZE_IMPORTLIB_FOR_BUILD
@@ -10,10 +10,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 13 insertions(+)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 2466615..fdf622d 100644
+index 0c26bcf..d1237eb 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -712,10 +712,15 @@ Programs/_testembed: Programs/_testembed.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
+@@ -719,10 +719,15 @@ Programs/_testembed: Programs/_testembed.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
  ############################################################################
  # Importlib
  
@@ -28,10 +28,10 @@ index 2466615..fdf622d 100644
 +endif
  
  Python/importlib_external.h: $(srcdir)/Lib/importlib/_bootstrap_external.py Programs/_freeze_importlib
- 	./Programs/_freeze_importlib \
-@@ -789,8 +794,13 @@ $(GRAMMAR_H): $(GRAMMAR_INPUT) $(PGEN)
- $(GRAMMAR_C): $(GRAMMAR_H)
- 		touch $(GRAMMAR_C)
+ 	if test "$(cross_compiling)" != "yes"; then \
+@@ -811,8 +816,13 @@ $(GRAMMAR_C): $(GRAMMAR_H)
+ 		mv $(GRAMMAR_C).tmp $(GRAMMAR_C); \
+ 	fi
  
 +ifeq (@PGEN_FOR_BUILD@,)
  $(PGEN): $(PGENOBJS)
@@ -44,10 +44,10 @@ index 2466615..fdf622d 100644
  Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
  				$(srcdir)/Include/token.h \
 diff --git a/configure.ac b/configure.ac
-index c4c2353..750c232 100644
+index 4e2b88e..16a827c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -79,6 +79,9 @@ else
+@@ -80,6 +80,9 @@ else
  fi
  AC_SUBST(PYTHON_FOR_BUILD)
  
@@ -58,5 +58,5 @@ index c4c2353..750c232 100644
  dnl it does, we get path names containing '//' which is both ugly and
  dnl can cause trouble.
 -- 
-2.6.4
+2.7.4
 

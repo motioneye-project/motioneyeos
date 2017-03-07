@@ -1,4 +1,4 @@
-From 9ae1dce0a2fa01fc3dbc83d8b8c1b56e4b1b162b Mon Sep 17 00:00:00 2001
+From 3d12c6e8180bc250d77a4bbb78899ccf8566b1cb Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:49:01 +0100
 Subject: [PATCH] Add option to disable the sqlite3 module
@@ -11,10 +11,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  2 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 3823940..c822dbd 100644
+index aeedad9..d262c04 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1177,7 +1177,6 @@ LIBSUBDIRS=	tkinter \
+@@ -1203,7 +1203,6 @@ LIBSUBDIRS=	tkinter \
  		email email/mime \
  		ensurepip ensurepip/_bundled \
  		html json http dbm xmlrpc \
@@ -22,7 +22,7 @@ index 3823940..c822dbd 100644
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
-@@ -1224,7 +1223,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+@@ -1250,7 +1249,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
  		test/test_importlib/namespace_pkgs/project3/parent/child \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
@@ -30,7 +30,7 @@ index 3823940..c822dbd 100644
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1245,6 +1243,11 @@ TESTSUBDIRS += lib2to3/tests			\
+@@ -1271,6 +1269,11 @@ TESTSUBDIRS += lib2to3/tests			\
  	lib2to3/tests/data/fixers/myfixes
  endif
  
@@ -43,10 +43,10 @@ index 3823940..c822dbd 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index 652ad88..cae12ad 100644
+index 32239d3..c9d0912 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2894,6 +2894,15 @@ if test "$posix_threads" = "yes"; then
+@@ -2976,6 +2976,15 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -63,5 +63,5 @@ index 652ad88..cae12ad 100644
  
  AC_ARG_ENABLE(pydoc,
 -- 
-2.6.4
+2.7.4
 

@@ -1,4 +1,4 @@
-From 3c877ea9f09913586f87064b7a2b9d2b49cb05aa Mon Sep 17 00:00:00 2001
+From a42283b5bee8bfd0a6a39e6805787643d075f1a5 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:48:44 +0100
 Subject: [PATCH] Add an option to disable lib2to3
@@ -15,10 +15,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  3 files changed, 21 insertions(+), 6 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index a98ad65..3823940 100644
+index 83fc343..aeedad9 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1138,7 +1138,9 @@ ifeq (@PYDOC@,yes)
+@@ -1164,7 +1164,9 @@ ifeq (@PYDOC@,yes)
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
  endif
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
@@ -28,7 +28,7 @@ index a98ad65..3823940 100644
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
  	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
-@@ -1177,7 +1179,6 @@ LIBSUBDIRS=	tkinter \
+@@ -1203,7 +1205,6 @@ LIBSUBDIRS=	tkinter \
  		html json http dbm xmlrpc \
  		sqlite3 \
  		logging csv wsgiref urllib \
@@ -36,7 +36,7 @@ index a98ad65..3823940 100644
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -1224,9 +1225,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
+@@ -1250,9 +1251,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
  		sqlite3/test \
@@ -46,7 +46,7 @@ index a98ad65..3823940 100644
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1239,6 +1237,14 @@ ifeq (@PYDOC@,yes)
+@@ -1265,6 +1263,14 @@ ifeq (@PYDOC@,yes)
  LIBSUBDIRS += pydoc_data
  endif
  
@@ -61,7 +61,7 @@ index a98ad65..3823940 100644
  ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
-@@ -1337,10 +1343,12 @@ ifeq (@PYC_BUILD@,yes)
+@@ -1363,10 +1369,12 @@ ifeq (@PYC_BUILD@,yes)
  		-d $(LIBDEST)/site-packages -f \
  		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
  endif
@@ -75,10 +75,10 @@ index a98ad65..3823940 100644
  # Create the PLATDIR source directory, if one wasn't distributed..
  $(srcdir)/Lib/$(PLATDIR):
 diff --git a/configure.ac b/configure.ac
-index e9b6d6f..652ad88 100644
+index eea25d4..32239d3 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2906,6 +2906,12 @@ AC_ARG_ENABLE(test-modules,
+@@ -2988,6 +2988,12 @@ AC_ARG_ENABLE(test-modules,
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  
@@ -92,10 +92,10 @@ index e9b6d6f..652ad88 100644
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
  AC_MSG_CHECKING([if --enable-ipv6 is specified])
 diff --git a/setup.py b/setup.py
-index 137911d..722308b 100644
+index 2a01896..be27531 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2221,10 +2221,11 @@ def main():
+@@ -2254,10 +2254,11 @@ def main():
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  
@@ -110,5 +110,5 @@ index 137911d..722308b 100644
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
 -- 
-2.6.4
+2.7.4
 

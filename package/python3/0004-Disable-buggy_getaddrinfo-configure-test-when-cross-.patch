@@ -1,4 +1,4 @@
-From 093caf46b7a742ee2f7bcf617a915ac1653aa8ac Mon Sep 17 00:00:00 2001
+From 449ac686b4c0f73bbbf0202c4a5689b5ddb37d53 Mon Sep 17 00:00:00 2001
 From: Vanya Sergeev <vsergeev@gmail.com>
 Date: Wed, 23 Dec 2015 11:30:33 +0100
 Subject: [PATCH] Disable buggy_getaddrinfo configure test when cross-compiling
@@ -10,10 +10,10 @@ Signed-off-by: Vanya Sergeev <vsergeev@gmail.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index 66d4642..c492594 100644
+index db0e336..f57f2eb 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3662,7 +3662,7 @@ fi
+@@ -3744,7 +3744,7 @@ fi
  
  AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
  
@@ -23,5 +23,5 @@ index 66d4642..c492594 100644
  	if test $ipv6 = yes
  	then
 -- 
-2.6.4
+2.7.4
 

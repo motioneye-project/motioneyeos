@@ -1,4 +1,4 @@
-From 789b0f99d7c1d25bfa9c05fd12f4d55bb70f377b Mon Sep 17 00:00:00 2001
+From ed4bf13c66a3faa186781ca8ab2978a9bc8d5f39 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:51:58 +0100
 Subject: [PATCH] Add an option to disable the ossaudiodev module
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 51e1760..c4c2353 100644
+index 3d08ab0..4e2b88e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2639,6 +2639,12 @@ else
+@@ -2721,6 +2721,12 @@ else
  fi
  AC_SUBST(MPDEC)
  
@@ -26,5 +26,5 @@ index 51e1760..c4c2353 100644
  AC_MSG_CHECKING(for --enable-loadable-sqlite-extensions)
  AC_ARG_ENABLE(loadable-sqlite-extensions,
 -- 
-2.6.4
+2.7.4
 

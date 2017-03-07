@@ -1,4 +1,4 @@
-From d0d42570e5a23c3bf559e0413ec97729fd2f9e24 Mon Sep 17 00:00:00 2001
+From 61f201afe59bbfbb1094d987fd74ac9cd4764d52 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:49:14 +0100
 Subject: [PATCH] Add an option to disable the tk module
@@ -11,10 +11,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  2 files changed, 17 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index c822dbd..0a93c27 100644
+index d262c04..851faa3 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1170,7 +1170,7 @@ maninstall:	altmaninstall
+@@ -1196,7 +1196,7 @@ maninstall:	altmaninstall
  PLATDIR=	@PLATDIR@
  MACHDEPS=	$(PLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -23,7 +23,7 @@ index c822dbd..0a93c27 100644
  		site-packages \
  		asyncio \
  		collections concurrent concurrent/futures encodings \
-@@ -1188,8 +1188,7 @@ LIBSUBDIRS=	tkinter \
+@@ -1214,8 +1214,7 @@ LIBSUBDIRS=	tkinter \
  		venv venv/scripts venv/scripts/posix \
  		curses $(MACHDEPS)
  
@@ -33,7 +33,7 @@ index c822dbd..0a93c27 100644
  		test/test_email test/test_email/data \
  		test/test_json \
  		test/audiodata \
-@@ -1248,6 +1247,12 @@ LIBSUBDIRS += sqlite3
+@@ -1274,6 +1273,12 @@ LIBSUBDIRS += sqlite3
  TESTSUBDIRS += sqlite3/test
  endif
  
@@ -47,10 +47,10 @@ index c822dbd..0a93c27 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index cae12ad..787b185 100644
+index c9d0912..d5047ec 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2903,6 +2903,15 @@ if test "$SQLITE3" = "no" ; then
+@@ -2985,6 +2985,15 @@ if test "$SQLITE3" = "no" ; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
  fi
  
@@ -67,5 +67,5 @@ index cae12ad..787b185 100644
  
  AC_ARG_ENABLE(pydoc,
 -- 
-2.6.4
+2.7.4
 

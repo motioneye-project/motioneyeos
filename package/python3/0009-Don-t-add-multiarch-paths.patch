@@ -1,4 +1,4 @@
-From bac5ac529cc0902a340a5cd03308433c6e80d1f6 Mon Sep 17 00:00:00 2001
+From f270af67f4ea6cc781f7cf05ba66e078190368df Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:36:27 +0100
 Subject: [PATCH] Don't add multiarch paths
@@ -17,10 +17,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 24a7153..8380a64 100644
+index 1b4b981..9a48d5f 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -474,10 +474,10 @@ class PyBuildExt(build_ext):
+@@ -497,10 +497,10 @@ class PyBuildExt(build_ext):
          if not cross_compiling:
              add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
              add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
@@ -33,5 +33,5 @@ index 24a7153..8380a64 100644
          # Add paths specified in the environment variables LDFLAGS and
          # CPPFLAGS for header and library files.
 -- 
-2.6.4
+2.7.4
 

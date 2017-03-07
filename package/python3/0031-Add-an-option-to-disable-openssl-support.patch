@@ -1,4 +1,6 @@
+From d903da1181cedb76d8191b33aea0519844f85b22 Mon Sep 17 00:00:00 2001
 From: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+Date: Tue, 7 Mar 2017 23:25:12 +0100
 Subject: [PATCH] Add an option to disable openssl support.
 
 Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
@@ -6,9 +8,11 @@ Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
  configure.ac | 6 ++++++
  1 file changed, 6 insertions(+)
 
+diff --git a/configure.ac b/configure.ac
+index 16a827c..65c0ce0 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3027,6 +3027,12 @@
+@@ -3027,6 +3027,12 @@ AC_ARG_ENABLE(unicodedata,
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} unicodedata"
    	  fi])
  
@@ -21,3 +25,6 @@ Signed-off-by: Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
  AC_SUBST(TK)
  AC_ARG_ENABLE(tk,
  	AS_HELP_STRING([--disable-tk], [disable tk]),
+-- 
+2.7.4
+

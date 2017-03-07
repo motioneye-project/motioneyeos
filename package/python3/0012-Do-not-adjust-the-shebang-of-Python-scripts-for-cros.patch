@@ -1,4 +1,4 @@
-From 45f482813de828415906e6a416c9c35450c38da7 Mon Sep 17 00:00:00 2001
+From c0eb115234b1c41a25c1a9e8a39e49155357c45a Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 Date: Wed, 23 Dec 2015 11:44:30 +0100
 Subject: [PATCH] Do not adjust the shebang of Python scripts for
@@ -31,5 +31,5 @@ index 90a8380..bdf4cf1 100644
                           self.build_dir)
                  updated_files.append(outfile)
 -- 
-2.6.4
+2.7.4
 

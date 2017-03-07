@@ -1,4 +1,4 @@
-From 4ac038d30ec71b3f223ac7c91613856dd82b6347 Mon Sep 17 00:00:00 2001
+From 1fca2c29a600b1eaa28da19e8c258fa0300c4eaf Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:29:04 +0100
 Subject: [PATCH] Change the install location of _sysconfigdata.py
@@ -25,10 +25,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 11 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 823def3..4d2a061 100644
+index 87528a0..5a258e0 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -585,6 +585,9 @@ pybuilddir.txt: $(BUILDPYTHON)
+@@ -588,6 +588,9 @@ pybuilddir.txt: $(BUILDPYTHON)
  		rm -f ./pybuilddir.txt ; \
  		exit 1 ; \
  	fi
@@ -36,9 +36,9 @@ index 823def3..4d2a061 100644
 +	mkdir -p `cat pysysconfigdatadir.txt`
 +	cp `cat pybuilddir.txt`/_sysconfigdata.py `cat pysysconfigdatadir.txt`
  
- # Build the shared modules
- # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
-@@ -1235,7 +1238,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ # This is shared by the math and cmath modules
+ Modules/_math.o: Modules/_math.c Modules/_math.h
+@@ -1261,7 +1264,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  		else	true; \
  		fi; \
  	done
@@ -47,7 +47,7 @@ index 823def3..4d2a061 100644
  	do \
  		if test -x $$i; then \
  			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
-@@ -1245,6 +1248,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+@@ -1271,6 +1274,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  			echo $(INSTALL_DATA) $$i $(LIBDEST); \
  		fi; \
  	done
@@ -59,7 +59,7 @@ index 823def3..4d2a061 100644
  	@for d in $(LIBSUBDIRS); \
  	do \
  		a=$(srcdir)/Lib/$$d; \
-@@ -1580,7 +1588,7 @@ clean: pycremoval
+@@ -1606,7 +1614,7 @@ clean: pycremoval
  	find build -name 'fficonfig.h' -exec rm -f {} ';' || true
  	find build -name '*.py' -exec rm -f {} ';' || true
  	find build -name '*.py[co]' -exec rm -f {} ';' || true
@@ -69,10 +69,10 @@ index 823def3..4d2a061 100644
  	-rm -f Programs/_testembed Programs/_freeze_importlib
  	-rm -rf build
 diff --git a/configure.ac b/configure.ac
-index 694293e..76b70a0 100644
+index 1c07c05..8d0a43b 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -70,7 +70,7 @@ if test "$cross_compiling" = yes; then
+@@ -71,7 +71,7 @@ if test "$cross_compiling" = yes; then
  	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
  	fi
          AC_MSG_RESULT($interp)
@@ -82,5 +82,5 @@ index 694293e..76b70a0 100644
  elif test "$cross_compiling" = maybe; then
      AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])
 -- 
-2.6.4
+2.7.4
 

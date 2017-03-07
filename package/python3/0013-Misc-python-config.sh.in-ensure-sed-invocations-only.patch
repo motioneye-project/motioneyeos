@@ -1,4 +1,4 @@
-From 5858abdc25acd522869103d64b60a0c9687e2ec1 Mon Sep 17 00:00:00 2001
+From a92c541ce8dd40af86642ac420e628aeeb6a5f05 Mon Sep 17 00:00:00 2001
 From: Peter Korsgaard <peter@korsgaard.com>
 Date: Thu, 20 Nov 2014 13:24:59 +0100
 Subject: [PATCH] Misc/python-config.sh.in: ensure sed invocations only match
@@ -56,5 +56,5 @@ index 30c6927..f905a71 100644
  PYTHONFRAMEWORK="@PYTHONFRAMEWORK@"
  INCDIR="-I$includedir/python${VERSION}${ABIFLAGS}"
 -- 
-2.6.4
+2.7.4
 

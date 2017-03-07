@@ -1,4 +1,4 @@
-From d7c568632f7cb83346096ea114a06f89a0b488d6 Mon Sep 17 00:00:00 2001
+From f59154777625b039d8f76aa787817b108867ee04 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:36:00 +0100
 Subject: [PATCH] Don't look in /usr/lib/termcap for libraries
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/setup.py b/setup.py
-index 1ebfa50..24a7153 100644
+index 149911c..1b4b981 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -753,12 +753,9 @@ class PyBuildExt(build_ext):
+@@ -783,12 +783,9 @@ class PyBuildExt(build_ext):
                  pass # Issue 7384: Already linked against curses or tinfo.
              elif curses_library:
                  readline_libs.append(curses_library)
@@ -27,5 +27,5 @@ index 1ebfa50..24a7153 100644
                                     libraries=readline_libs) )
          else:
 -- 
-2.6.4
+2.7.4
 
