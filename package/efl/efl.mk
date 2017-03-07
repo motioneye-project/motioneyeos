@@ -38,6 +38,7 @@ EFL_CONF_OPTS = \
 	--with-elm-prefs-cc=$(HOST_DIR)/usr/bin/elm_prefs_cc \
 	--with-elua=$(HOST_DIR)/usr/bin/elua \
 	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
+	--disable-image-loader-jp2k \
 	--disable-lua-old \
 	--disable-poppler \
 	--disable-sdl \
@@ -249,13 +250,6 @@ EFL_CONF_OPTS += --enable-image-loader-tiff=yes
 EFL_DEPENDENCIES += tiff
 else
 EFL_CONF_OPTS += --disable-image-loader-tiff
-endif
-
-ifeq ($(BR2_PACKAGE_EFL_JP2K),y)
-EFL_CONF_OPTS += --enable-image-loader-jp2k=yes
-EFL_DEPENDENCIES += openjpeg
-else
-EFL_CONF_OPTS += --disable-image-loader-jp2k
 endif
 
 ifeq ($(BR2_PACKAGE_EFL_WEBP),y)

@@ -252,16 +252,6 @@ config BR2_PACKAGE_EFL_PNG
 	  This enables the loader code that loads png files using
 	  libpng.
 
-# JP2K support require openjpeg 1.x (libopenjpeg1.pc) which is not
-# available in Buildroot anymore.
-config BR2_PACKAGE_EFL_JP2K
-	bool "libevas jp2k loader"
-	select BR2_PACKAGE_OPENJPEG
-	depends on BROKEN # require openjpeg 1.x
-	help
-	  This enables the loader code that loads jp2k files using
-	  openjpeg.
-
 config BR2_PACKAGE_EFL_JPEG
 	bool "libevas jpeg loader"
 	help
