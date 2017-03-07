@@ -1,18 +1,24 @@
-Remove the python symlink install rules.
+From bddfcbb8a4c011ca2fe471f7a4124cd64b5b0f00 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Tue, 7 Mar 2017 22:23:58 +0100
+Subject: [PATCH] Remove the python symlink install rules
 
-The python symlink installation will be handled by Buildroot itself, because
-Buildroot needs to control to what python interpreter (python2 or python3) the
-python symlink points to.
+The python symlink installation will be handled by Buildroot itself,
+because Buildroot needs to control to what python interpreter (python2
+or python3) the python symlink points to.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Bernd: rebased against version 2.7.12.]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
-(rebased against version 2.7.12)
+---
+ Makefile.pre.in | 7 -------
+ 1 file changed, 7 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index beb0837..dedcf61 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -974,17 +974,10 @@
+@@ -968,17 +968,10 @@ bininstall:	altbininstall
  		echo "Creating directory $(LIBPC)"; \
  		$(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC); \
  	fi
@@ -30,3 +36,6 @@ Index: b/Makefile.pre.in
  	-test -d $(DESTDIR)$(LIBPC) || $(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC)
  	-rm -f $(DESTDIR)$(LIBPC)/python2.pc
  	(cd $(DESTDIR)$(LIBPC); $(LN) -s python-$(VERSION).pc python2.pc)
+-- 
+2.7.4
+

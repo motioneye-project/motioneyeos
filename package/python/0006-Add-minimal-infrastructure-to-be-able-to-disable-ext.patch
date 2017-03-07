@@ -1,8 +1,24 @@
-Index: b/Makefile.pre.in
-===================================================================
+From 977de9474c1fb46359ab6a487e153fbd91a2b568 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:21:28 +0100
+Subject: [PATCH] Add minimal infrastructure to be able to disable extensions
+
+This commit adds some logic to the Python build system to be able to
+disable Python extensions. Follow-up commits actually add options to
+disable specific extensions.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.pre.in | 6 +++++-
+ configure.ac    | 2 ++
+ setup.py        | 5 ++++-
+ 3 files changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 96fc718..33b994d 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -156,6 +156,8 @@
+@@ -161,6 +161,8 @@ FILEMODE=	644
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -11,7 +27,7 @@ Index: b/Makefile.pre.in
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -477,6 +479,7 @@
+@@ -548,6 +550,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -19,7 +35,7 @@ Index: b/Makefile.pre.in
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1191,7 +1194,8 @@
+@@ -1269,7 +1272,8 @@ libainstall:	all python-config
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -29,11 +45,11 @@ Index: b/Makefile.pre.in
  	   	--prefix=$(prefix) \
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 63e6918..5d4232f 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2290,6 +2290,8 @@
+@@ -2462,6 +2462,8 @@ LIBS="$withval $LIBS"
  
  PKG_PROG_PKG_CONFIG
  
@@ -42,11 +58,11 @@ Index: b/configure.ac
  # Check for use of the system expat library
  AC_MSG_CHECKING(for --with-system-expat)
  AC_ARG_WITH(system_expat,
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 64001e2..3b51c0a 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -33,7 +33,10 @@
+@@ -33,7 +33,10 @@ host_platform = get_platform()
  COMPILED_WITH_PYDEBUG = ('--with-pydebug' in sysconfig.get_config_var("CONFIG_ARGS"))
  
  # This global variable is used to hold the list of modules to be disabled.
@@ -58,3 +74,6 @@ Index: b/setup.py
  
  def add_dir_to_list(dirlist, dir):
      """Add the directory 'dir' to the list 'dirlist' (at the front) if
+-- 
+2.7.4
+

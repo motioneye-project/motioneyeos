@@ -1,4 +1,7 @@
-setup.py: do not add invalid header locations
+From 3dc31a435b67de2ba3dd3457f0c939e20b58e8de Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:17:06 +0100
+Subject: [PATCH] setup.py: do not add invalid header locations
 
 This piece of code incorrectly adds /usr/include to
 self.compiler.include_dirs, and results in the following invalid
@@ -17,11 +20,15 @@ cc1: warning: include location "/usr/include" is unsafe for cross-compilation [-
 [...]
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Index: b/setup.py
-===================================================================
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 54054c2..64001e2 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -480,7 +480,7 @@
+@@ -496,7 +496,7 @@ class PyBuildExt(build_ext):
                      for directory in reversed(options.dirs):
                          add_dir_to_list(dir_list, directory)
  
@@ -30,3 +37,6 @@ Index: b/setup.py
                  and not sysconfig.get_config_var('PYTHONFRAMEWORK'):
              # OSX note: Don't add LIBDIR and INCLUDEDIR to building a framework
              # (PYTHONFRAMEWORK is set) to avoid # linking problems when
+-- 
+2.7.4
+

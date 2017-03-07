@@ -1,4 +1,7 @@
-Fix get_python_inc() for cross-compilation
+From 367ee7d103cf9f670c3925d555edf6f6a5b9d8d5 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:17:25 +0100
+Subject: [PATCH] Fix get_python_inc() for cross-compilation
 
 When we are cross compiling, doing os.path.dirname(sys.executable) to
 get the build directory is incorrect, because we're executing the host
@@ -21,11 +24,15 @@ This patch allows to fix the
 incorrectly added to the header paths.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+---
+ Lib/distutils/sysconfig.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index de7da1d..d72b6e5 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -79,7 +79,7 @@
+@@ -79,7 +79,7 @@ def get_python_inc(plat_specific=0, prefix=None):
  
      if os.name == "posix":
          if python_build:
@@ -34,3 +41,6 @@ Index: b/Lib/distutils/sysconfig.py
              if plat_specific:
                  # python.h is located in the buildir
                  inc_dir = buildir
+-- 
+2.7.4
+

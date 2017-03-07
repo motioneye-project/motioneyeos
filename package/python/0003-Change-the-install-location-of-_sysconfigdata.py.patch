@@ -1,4 +1,7 @@
-Change the install location of _sysconfigdata.py
+From 0ef0d4ddd3f2261e381f22061a9a451dfbb1dc9e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:17:59 +0100
+Subject: [PATCH] Change the install location of _sysconfigdata.py
 
 The _sysconfigdata.py module contains definitions that are needed when
 building Python modules. In cross-compilation mode, when building
@@ -16,12 +19,16 @@ this directory gets added to the PYTHONPATH of the host Python
 interpreter when building Python modules for the target.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.pre.in | 12 ++++++++++--
+ configure.ac    |  2 +-
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index e288964..5367df7 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -462,6 +462,9 @@
+@@ -529,6 +529,9 @@ pybuilddir.txt: $(BUILDPYTHON)
  		rm -f ./pybuilddir.txt ; \
  		exit 1 ; \
  	fi
@@ -29,9 +36,9 @@ Index: b/Makefile.pre.in
 +	mkdir -p `cat pysysconfigdatadir.txt`
 +	cp `cat pybuilddir.txt`/_sysconfigdata.py `cat pysysconfigdatadir.txt`
  
- # Build the shared modules
- # Under GNU make, MAKEFLAGS are sorted and normalized; the 's' for
-@@ -1002,7 +1005,7 @@
+ # This is shared by the math and cmath modules
+ Modules/_math.o: Modules/_math.c Modules/_math.h
+@@ -1080,7 +1083,7 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  		else	true; \
  		fi; \
  	done
@@ -40,7 +47,7 @@ Index: b/Makefile.pre.in
  	do \
  		if test -x $$i; then \
  			$(INSTALL_SCRIPT) $$i $(DESTDIR)$(LIBDEST); \
-@@ -1012,6 +1015,11 @@
+@@ -1090,6 +1093,11 @@ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  			echo $(INSTALL_DATA) $$i $(LIBDEST); \
  		fi; \
  	done
@@ -52,7 +59,7 @@ Index: b/Makefile.pre.in
  	@for d in $(LIBSUBDIRS); \
  	do \
  		a=$(srcdir)/Lib/$$d; \
-@@ -1337,7 +1345,7 @@
+@@ -1418,7 +1426,7 @@ distclean: clobber
  		Modules/Setup Modules/Setup.local Modules/Setup.config \
  		Modules/ld_so_aix Modules/python.exp Misc/python.pc
  	-rm -f python*-gdb.py
@@ -61,16 +68,19 @@ Index: b/Makefile.pre.in
  	# Issue #28258: set LC_ALL to avoid issues with Estonian locale.
  	# Expansion is performed here by shell (spawned by make) itself before
  	# arguments are passed to find. So LC_ALL=C must be set as a separate
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 1273465..5f89797 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -33,7 +33,7 @@
+@@ -33,7 +33,7 @@ if test "$cross_compiling" = yes; then
  	    AC_MSG_ERROR([python$PACKAGE_VERSION interpreter not found])
  	fi
          AC_MSG_RESULT($interp)
 -	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pybuilddir.txt && echo $(abs_builddir)/`cat pybuilddir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
 +	PYTHON_FOR_BUILD='_PYTHON_PROJECT_BASE=$(abs_builddir) _PYTHON_HOST_PLATFORM=$(_PYTHON_HOST_PLATFORM) PYTHONPATH=$(shell test -f pysysconfigdatadir.txt && echo $(abs_builddir)/`cat pysysconfigdatadir.txt`:)$(srcdir)/Lib:$(srcdir)/Lib/$(PLATDIR) '$interp
      fi
- elif test "$cross_compiling" = maybe; then
-     AC_MSG_ERROR([Cross compiling required --host=HOST-TUPLE and --build=ARCH])
+     # Used to comment out stuff for rebuilding generated files
+     GENERATED_COMMENT='#'
+-- 
+2.7.4
+

@@ -1,13 +1,18 @@
-Don't look in /usr/lib/termcap for libraries
+From 87b627d8845e67fd798449b414bece04f18bd450 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:22:40 +0100
+Subject: [PATCH] Don't look in /usr/lib/termcap for libraries
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ setup.py | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 3b51c0a..fa32532 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -764,12 +764,9 @@
+@@ -784,12 +784,9 @@ class PyBuildExt(build_ext):
                  pass # Issue 7384: Already linked against curses or tinfo.
              elif curses_library:
                  readline_libs.append(curses_library)
@@ -21,3 +26,6 @@ Index: b/setup.py
                                     extra_link_args=readline_extra_link_args,
                                     libraries=readline_libs) )
          else:
+-- 
+2.7.4
+

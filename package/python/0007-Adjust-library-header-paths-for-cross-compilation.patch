@@ -1,4 +1,7 @@
-Adjust library/header paths for cross-compilation
+From f3e0a677c4736f95338825a022a884f8dc7a5c14 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:22:19 +0100
+Subject: [PATCH] Adjust library/header paths for cross-compilation
 
 When cross-compiling third-party extensions, the get_python_inc() or
 get_python_lib() can be called, to return the path to headers or
@@ -15,12 +18,32 @@ The _python_sysroot variable is also used to prefix the LIBDIR value
 taken from the sysconfigdata module.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Lib/distutils/command/build_ext.py | 5 ++++-
+ Lib/distutils/sysconfig.py         | 9 +++++++--
+ 2 files changed, 11 insertions(+), 3 deletions(-)
 
-Index: b/Lib/distutils/sysconfig.py
-===================================================================
+diff --git a/Lib/distutils/command/build_ext.py b/Lib/distutils/command/build_ext.py
+index 2c68be3..375b08c 100644
+--- a/Lib/distutils/command/build_ext.py
++++ b/Lib/distutils/command/build_ext.py
+@@ -240,7 +240,10 @@ class build_ext (Command):
+         if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
+             if not sysconfig.python_build:
+                 # building third party extensions
+-                self.library_dirs.append(sysconfig.get_config_var('LIBDIR'))
++                libdir = sysconfig.get_config_var('LIBDIR')
++                if "_python_sysroot" in os.environ:
++                    libdir = os.environ.get("_python_sysroot") + libdir
++                self.library_dirs.append(libdir)
+             else:
+                 # building python standard extensions
+                 self.library_dirs.append('.')
+diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
+index d72b6e5..72151df 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -19,8 +19,13 @@
+@@ -19,8 +19,13 @@ import sys
  from distutils.errors import DistutilsPlatformError
  
  # These are needed in a couple of spots, so just compute them once.
@@ -36,19 +59,6 @@ Index: b/Lib/distutils/sysconfig.py
  
  # Path to the base directory of the project. On Windows the binary may
  # live in project/PCBuild9.  If we're dealing with an x64 Windows build,
-Index: b/Lib/distutils/command/build_ext.py
-===================================================================
---- a/Lib/distutils/command/build_ext.py
-+++ b/Lib/distutils/command/build_ext.py
-@@ -237,7 +237,10 @@
-         if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
-             if not sysconfig.python_build:
-                 # building third party extensions
--                self.library_dirs.append(sysconfig.get_config_var('LIBDIR'))
-+                libdir = sysconfig.get_config_var('LIBDIR')
-+                if "_python_sysroot" in os.environ:
-+                    libdir = os.environ.get("_python_sysroot") + libdir
-+                self.library_dirs.append(libdir)
-             else:
-                 # building python standard extensions
-                 self.library_dirs.append('.')
+-- 
+2.7.4
+

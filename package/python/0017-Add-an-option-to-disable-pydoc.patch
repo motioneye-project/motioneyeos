@@ -1,22 +1,24 @@
-Add an option to disable pydoc
+From 52463745b6c46a46a6f2e2bc17983bb3f7bdac6e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:27:34 +0100
+Subject: [PATCH] Add an option to disable pydoc
 
 It removes 0.5 MB of data from the target plus the pydoc script
 itself.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
 ---
- Makefile.pre.in |    6 +++++-
- configure.in    |    5 +++++
- setup.py        |   10 +++++++---
+ Makefile.pre.in |  6 +++++-
+ configure.ac    |  5 +++++
+ setup.py        | 10 +++++++---
  3 files changed, 17 insertions(+), 4 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 280cc4e..84d5fc6 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -974,7 +974,7 @@
+@@ -1052,7 +1052,7 @@ LIBSUBDIRS=	lib-tk site-packages \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		lib-old \
@@ -25,7 +27,7 @@ Index: b/Makefile.pre.in
  
  TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
  	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
-@@ -997,6 +997,10 @@
+@@ -1075,6 +1075,10 @@ ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
  
@@ -36,11 +38,11 @@ Index: b/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index a1a35f6..8bab160 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2633,6 +2633,11 @@
+@@ -2805,6 +2805,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -52,11 +54,11 @@ Index: b/configure.ac
  
  AC_SUBST(TEST_MODULES)
  
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 9a5c2b8..69771e2 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2211,6 +2211,12 @@
+@@ -2233,6 +2233,12 @@ def main():
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -69,7 +71,7 @@ Index: b/setup.py
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2231,9 +2237,7 @@
+@@ -2253,9 +2259,7 @@ def main():
            ext_modules=[Extension('_struct', ['_struct.c'])],
  
            # Scripts to install
@@ -80,3 +82,6 @@ Index: b/setup.py
          )
  
  # --install-platlib
+-- 
+2.7.4
+

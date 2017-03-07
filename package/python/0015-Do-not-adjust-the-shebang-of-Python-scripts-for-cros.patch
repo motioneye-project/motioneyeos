@@ -1,4 +1,8 @@
-Do not adjust the shebang of Python scripts for cross-compilation
+From 70049366ddf1fc9084bb02cf4459380976cdf8f7 Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+Date: Tue, 7 Mar 2017 22:26:09 +0100
+Subject: [PATCH] Do not adjust the shebang of Python scripts for
+ cross-compilation
 
 The copy_scripts() method in distutils copies the scripts listed in
 the setup file and adjusts the first line to refer to the current
@@ -9,12 +13,15 @@ This patch modifies copy_scripts() to preserve the shebang when
 cross-compilation is detected.
 
 Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+---
+ Lib/distutils/command/build_scripts.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: b/Lib/distutils/command/build_scripts.py
-===================================================================
+diff --git a/Lib/distutils/command/build_scripts.py b/Lib/distutils/command/build_scripts.py
+index 567df65..4922d50 100644
 --- a/Lib/distutils/command/build_scripts.py
 +++ b/Lib/distutils/command/build_scripts.py
-@@ -89,7 +89,7 @@
+@@ -89,7 +89,7 @@ class build_scripts (Command):
                      adjust = 1
                      post_interp = match.group(1) or ''
  
@@ -23,3 +30,6 @@ Index: b/Lib/distutils/command/build_scripts.py
                  log.info("copying and adjusting %s -> %s", script,
                           self.build_dir)
                  if not self.dry_run:
+-- 
+2.7.4
+

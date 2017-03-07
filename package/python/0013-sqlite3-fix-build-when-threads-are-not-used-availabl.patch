@@ -1,4 +1,7 @@
-sqlite3: fix build when threads are not used/available
+From 0f0be88526ece7d2f6ee21c1f59b1546ec6dc7c0 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 7 Mar 2017 22:25:14 +0100
+Subject: [PATCH] sqlite3: fix build when threads are not used/available
 
 When threads are not used/available, a function in the sqlite3 extension
 ends up with a label at the end:
@@ -34,12 +37,15 @@ Fix that by adding a dummy statement after the label, so that the label
 is never the last statement of the function.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ Modules/_sqlite/connection.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Index: b/Modules/_sqlite/connection.c
-===================================================================
+diff --git a/Modules/_sqlite/connection.c b/Modules/_sqlite/connection.c
+index 237d6e4..cdf69ab 100644
 --- a/Modules/_sqlite/connection.c
 +++ b/Modules/_sqlite/connection.c
-@@ -786,6 +786,7 @@
+@@ -794,6 +794,7 @@ error:
  #ifdef WITH_THREAD
      PyGILState_Release(threadstate);
  #endif
@@ -47,3 +53,6 @@ Index: b/Modules/_sqlite/connection.c
  }
  
  static void _pysqlite_drop_unused_statement_references(pysqlite_Connection* self)
+-- 
+2.7.4
+

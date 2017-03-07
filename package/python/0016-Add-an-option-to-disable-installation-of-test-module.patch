@@ -1,21 +1,23 @@
-Add an option to disable installation of test modules
+From 0eac7789c0dd4aebe9e69d3c73d0c95e96922ea3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:27:16 +0100
+Subject: [PATCH] Add an option to disable installation of test modules
 
 The Python standard distribution comes with many test modules, that
 are not necessarly useful on embedded targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
-
 ---
- Makefile.pre.in |   40 +++++++++++++++++++++++++++-------------
- configure.in    |    6 ++++++
- 2 files changed, 33 insertions(+), 13 deletions(-)
+ Makefile.pre.in | 48 ++++++++++++++++++++++++++++++++----------------
+ configure.ac    |  6 ++++++
+ 2 files changed, 38 insertions(+), 16 deletions(-)
 
-Index: b/Makefile.pre.in
-===================================================================
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index dedcf61..280cc4e 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -960,27 +960,43 @@
+@@ -1038,27 +1038,43 @@ PLATMACDIRS= plat-mac plat-mac/Carbon plat-mac/lib-scriptpackages \
  	plat-mac/lib-scriptpackages/SystemEvents \
  	plat-mac/lib-scriptpackages/Terminal
  PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
@@ -75,11 +77,11 @@ Index: b/Makefile.pre.in
  libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
-Index: b/configure.ac
-===================================================================
+diff --git a/configure.ac b/configure.ac
+index 183a903..a1a35f6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2634,6 +2634,12 @@
+@@ -2806,6 +2806,12 @@ if test "$posix_threads" = "yes"; then
  fi
  
  
@@ -92,3 +94,6 @@ Index: b/configure.ac
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
  AC_MSG_CHECKING([if --enable-ipv6 is specified])
+-- 
+2.7.4
+

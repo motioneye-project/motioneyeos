@@ -1,4 +1,7 @@
-Abort on failed module build
+From a131e2ff219872d97eef6585117bd2f8ff9e310d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:24:48 +0100
+Subject: [PATCH] Abort on failed module build
 
 When building a Python module fails, the setup.py script currently
 doesn't exit with an error, and simply continues. This is not a really
@@ -6,12 +9,15 @@ nice behavior, so this patch changes setup.py to abort with an error,
 so that the build issue is clearly noticeable.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ setup.py | 1 +
+ 1 file changed, 1 insertion(+)
 
-Index: b/setup.py
-===================================================================
+diff --git a/setup.py b/setup.py
+index 0b9ea57..9a5c2b8 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -283,6 +283,7 @@
+@@ -299,6 +299,7 @@ class PyBuildExt(build_ext):
              print "Failed to build these modules:"
              print_three_column(failed)
              print
@@ -19,3 +25,6 @@ Index: b/setup.py
  
      def build_extension(self, ext):
  
+-- 
+2.7.4
+
