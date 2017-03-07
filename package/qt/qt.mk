@@ -359,9 +359,6 @@ endif
 
 # Qt SQL Drivers
 ifeq ($(BR2_PACKAGE_QT_SQL_MODULE),y)
-ifeq ($(BR2_PACKAGE_QT_IBASE),y)
-QT_CONFIGURE_OPTS += -qt-sql-ibase
-endif
 ifeq ($(BR2_PACKAGE_QT_MYSQL),y)
 QT_CONFIGURE_OPTS += -qt-sql-mysql -mysql_config $(STAGING_DIR)/usr/bin/mysql_config
 QT_DEPENDENCIES += mysql

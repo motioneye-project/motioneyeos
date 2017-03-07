@@ -14,13 +14,6 @@ config BR2_PACKAGE_QT_MYSQL
 	  Build MySQL driver
 	  If unsure, say n.
 
-config BR2_PACKAGE_QT_IBASE
-	bool "iBase Driver"
-	depends on BROKEN # libfbclient not in BR
-	help
-	  Build iBase driver
-	  If unsure, say n.
-
 config BR2_PACKAGE_QT_ODBC
 	bool "ODBC Driver"
 	select BR2_PACKAGE_UNIXODBC
