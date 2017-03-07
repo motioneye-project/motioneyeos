@@ -1,4 +1,4 @@
-From 45fcf92ec1e89e0afd0bf2bbc7a1008b56135ba3 Mon Sep 17 00:00:00 2001
+From fc16ab40e3e6a5b4deed2fa7c5475fa216ff8d17 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:30:22 +0100
 Subject: [PATCH] Add an option to disable the ssl module
@@ -9,7 +9,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 524614c..743707a 100644
+index 524614c..cadac82 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -2834,6 +2834,12 @@ AC_ARG_ENABLE(nis,
@@ -19,7 +19,7 @@ index 524614c..743707a 100644
 +AC_ARG_ENABLE(ssl,
 +	AS_HELP_STRING([--disable-ssl], [disable SSL]),
 +	[ if test "$enableval" = "no"; then
-+    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ssl"
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _ssl"
 +  	  fi])
 +
  AC_ARG_ENABLE(dbm,
