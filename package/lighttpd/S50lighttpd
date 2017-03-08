@@ -7,6 +7,8 @@ DAEMON=/usr/sbin/$NAME
 PID_FILE="/var/run/$NAME.pid"
 CONF_FILE="/etc/$NAME/$NAME.conf"
 
+[ -r /etc/default/$NAME ] && . /etc/default/$NAME
+
 start() {
 	printf "Starting lighttpd: "
 	start-stop-daemon -S -q -p $PID_FILE --exec $DAEMON -- -f $CONF_FILE
