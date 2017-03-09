@@ -478,6 +478,7 @@ comment "Legacy options removed in 2016.08"
 config BR2_PACKAGE_EFL_JP2K
 	bool "libevas jp2k loader has been removed"
 	select BR2_LEGACY
+	help
 	  JP2K support in EFL requires openjpeg 1.x (libopenjpeg1.pc)
 	  while Buildroot only packages openjpeg 2.x. Therefore, the
 	  JP2K loader has been removed from EFL.
