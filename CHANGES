@@ -156,6 +156,14 @@
 	#9576: External tree with BR 2016.11 does not work anymore
 	#9606: xorg-server cannot build for ARM target
 
+2016.11.3, Released March 9th, 2017
+
+	Important / security related fixes.
+
+	Updated/fixed packages: bind, dbus, gnutls, imagemagick,
+	lcms2, libcurl, ntfs-3g, ntp, openssl, php, quagga, redis,
+	squid, stunnel, tcpdump, vim, wavpack, wireshark, xlib_libXpm
+
 2016.11.2, Released January 25th, 2017
 
 	Important / security related fixes.
