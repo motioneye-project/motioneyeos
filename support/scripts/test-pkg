@@ -108,7 +108,7 @@ build_one() {
 	_EOF_
     cat "${cfg}" >>"${dir}/.config"
 
-    if ! make O="${dir}" olddefconfig >/dev/null 2>&1; then
+    if ! make O="${dir}" olddefconfig > "${dir}/logfile" 2>&1; then
         printf "FAILED\n"
         return 2
     fi
