@@ -133,16 +133,6 @@ check_kernel_headers_version = \
 # $1: path to gcc
 # $2: expected gcc version
 #
-# Some details about the sed expression:
-# - 1!d
-#   - delete if not line 1
-#
-# - s/^[^)]+\) ([^[:space:]]+).*/\1/
-#   - eat all until the first ')' character followed by a space
-#   - match as many non-space chars as possible
-#   - eat all the remaining chars on the line
-#   - replace by the matched expression
-#
 check_gcc_version = \
 	expected_version="$(strip $2)" ; \
 	if [ -z "$${expected_version}" ]; then \
