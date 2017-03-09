@@ -148,7 +148,7 @@ check_gcc_version = \
 	if [ -z "$${expected_version}" ]; then \
 		exit 0 ; \
 	fi; \
-	real_version=`$(1) --version | sed -r -e '1!d; s/^[^)]+\) ([^[:space:]]+).*/\1/;'` ; \
+	real_version=`$(1) -dumpversion` ; \
 	if [[ ! "$${real_version}" =~ ^$${expected_version}\. ]] ; then \
 		printf "Incorrect selection of gcc version: expected %s.x, got %s\n" \
 			"$${expected_version}" "$${real_version}" ; \
