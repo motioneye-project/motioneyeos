@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JASPER_VERSION = 2.0.10
+JASPER_VERSION = 2.0.12
 JASPER_SITE = http://www.ece.uvic.ca/~frodo/jasper/software
 JASPER_INSTALL_STAGING = YES
 JASPER_LICENSE = JasPer License Version 2.0
