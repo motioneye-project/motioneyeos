@@ -6,12 +6,12 @@
 # Make sure the ssh-keygen progam exists
 [ -f /usr/bin/ssh-keygen ] || exit 0
 
-# Create any missing keys
-/usr/bin/ssh-keygen -A
-
 umask 077
 
 start() {
+	# Create any missing keys
+	/usr/bin/ssh-keygen -A
+
 	printf "Starting sshd: "
 	/usr/sbin/sshd
 	touch /var/lock/sshd

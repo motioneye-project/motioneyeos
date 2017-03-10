@@ -19,7 +19,7 @@ ifeq ($(BR2_STATIC_LIBS),y)
 HIREDIS_TARGETS += static
 else ifeq ($(BR2_SHARED_LIBS),y)
 HIREDIS_TARGETS += dynamic
-else ifeq $(BR2_SHARED_STATIC_LIBS),y)
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
 HIREDIS_TARGETS += dynamic static
 endif
 

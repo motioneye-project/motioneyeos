@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-GLMARK2_VERSION = fa71af2dfab711fac87b9504b6fc9862f44bf72a
+GLMARK2_VERSION = 7215c0f337dae0b232535549c37fca441747a891
 GLMARK2_SITE = $(call github,glmark2,glmark2,$(GLMARK2_VERSION))
-GLMARK2_LICENSE = GPLv3+ SGIv1
+GLMARK2_LICENSE = GPLv3+, SGIv1
 GLMARK2_LICENSE_FILES = COPYING COPYING.SGI
 GLMARK2_DEPENDENCIES = host-pkgconf jpeg libpng \
 	$(if $(BR2_PACKAGE_HAS_LIBEGL),libegl) \

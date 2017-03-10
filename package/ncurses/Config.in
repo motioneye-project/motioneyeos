@@ -18,21 +18,6 @@ config BR2_PACKAGE_NCURSES_WCHAR
 	help
 	  Enable wide char & UTF-8 support in ncurses libraries
 
-config BR2_PACKAGE_NCURSES_TARGET_PANEL
-	bool "ncurses libpanel in target"
-	help
-	  Includes ncurses dynamic libpanel in target
-
-config BR2_PACKAGE_NCURSES_TARGET_FORM
-	bool "ncurses libform in target"
-	help
-	  Includes ncurses dynamic libform in target
-
-config BR2_PACKAGE_NCURSES_TARGET_MENU
-	bool "ncurses libmenu in target"
-	help
-	  Includes ncurses dynamic libmenu in target
-
 config BR2_PACKAGE_NCURSES_TARGET_PROGS
 	bool "ncurses programs"
 	help

@@ -5,6 +5,7 @@ config BR2_PACKAGE_TPM_TOOLS
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	depends on BR2_TOOLCHAIN_HAS_THREADS # trousers
 	depends on !BR2_STATIC_LIBS # trousers
+	depends on !BR2_arc # trousers
 	help
 	  Tools to manage and diagnose a TPM
 
@@ -12,3 +13,4 @@ config BR2_PACKAGE_TPM_TOOLS
 
 comment "tpm-tools needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_arc

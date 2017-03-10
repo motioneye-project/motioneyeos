@@ -86,9 +86,9 @@ else # umask / $(CURDIR) / $(O)
 all:
 
 # Set and export the version string
-export BR2_VERSION := 2017.02-rc1
+export BR2_VERSION := 2017.02
 # Actual time the release is cut (for reproducible builds)
-BR2_VERSION_EPOCH = 1486825200
+BR2_VERSION_EPOCH = 1488315000
 
 # Save running make version since it's clobbered by the make package
 RUNNING_MAKE_VERSION := $(MAKE_VERSION)
@@ -402,6 +402,7 @@ unexport QMAKESPEC
 unexport TERMINFO
 unexport MACHINE
 unexport O
+unexport GCC_COLORS
 
 GNU_HOST_NAME := $(shell support/gnuconfig/config.guess)
 
@@ -431,6 +432,7 @@ KERNEL_ARCH := $(shell echo "$(ARCH)" | sed -e "s/-.*//" \
 ZCAT := $(call qstrip,$(BR2_ZCAT))
 BZCAT := $(call qstrip,$(BR2_BZCAT))
 XZCAT := $(call qstrip,$(BR2_XZCAT))
+LZCAT := $(call qstrip,$(BR2_LZCAT))
 TAR_OPTIONS = $(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 
 # packages compiled for the host go here

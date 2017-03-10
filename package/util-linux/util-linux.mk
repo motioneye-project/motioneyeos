@@ -5,11 +5,11 @@
 ################################################################################
 
 UTIL_LINUX_VERSION_MAJOR = 2.29
-UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR).1
+UTIL_LINUX_VERSION = $(UTIL_LINUX_VERSION_MAJOR).2
 UTIL_LINUX_SOURCE = util-linux-$(UTIL_LINUX_VERSION).tar.xz
 UTIL_LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/util-linux/v$(UTIL_LINUX_VERSION_MAJOR)
-# For 0001-build-sys-use-lm-for-scriptreplay-if-necessary.patch and
-# 0002-build-sys-improve-detection-of-the-isnan-function-in.patch
+
+# 0001-build-sys-use-lm-for-scriptreplay-if-necessary.patch
 UTIL_LINUX_AUTORECONF = YES
 
 # README.licensing claims that some files are GPLv2-only, but this is not true.

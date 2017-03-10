@@ -4,9 +4,10 @@ menuconfig BR2_PACKAGE_MPD
 	depends on BR2_USE_WCHAR # flac
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++14
-	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	# 0.19.x could be built with GCC 4.6, but for simplicity we require
+	# the same toolchain dependencies for all versions.
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++14
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_MPD_TREMOR if !(BR2_PACKAGE_MPD_MAD || BR2_PACKAGE_MPD_MPG123 || BR2_PACKAGE_MPD_VORBIS || BR2_PACKAGE_MPD_WAVPACK || BR2_PACKAGE_MPD_FLAC || BR2_PACKAGE_MPD_MUSEPACK || BR2_PACKAGE_MPD_FFMPEG)
@@ -19,6 +20,24 @@ menuconfig BR2_PACKAGE_MPD
 	  http://www.musicpd.org
 
 if BR2_PACKAGE_MPD
+
+# Hidden config symbols to select the branch 0.20 by default and fallback
+# to branch 0.19 for toolchains affected by GCC bug PR 64735. This way we
+# keep support for mpd on some architectures, like ARMv5, until GCC 7 is
+# released, which will fix this issue.
+config BR2_PACKAGE_MPD_VERSION_STRING
+	string
+	default "0.20" if !BR2_TOOLCHAIN_HAS_GCC_BUG_64735
+	default "0.19"
+
+config BR2_PACKAGE_MPD_VERSION_0_20
+	bool
+	default y if BR2_PACKAGE_MPD_VERSION_STRING = "0.20"
+
+config BR2_PACKAGE_MPD_VERSION_0_19
+	bool
+	default y if BR2_PACKAGE_MPD_VERSION_STRING = "0.19"
+	select BR2_PACKAGE_LIBGLIB2
 
 comment "Archive plugins"
 
@@ -320,6 +339,3 @@ comment "mpd needs a toolchain w/ C++, threads, wchar, gcc >= 4.9"
 	depends on BR2_TOOLCHAIN_HAS_ATOMIC
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-
-comment "mpd needs a toolchain not affected by GCC bug 64735"
-	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735

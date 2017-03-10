@@ -6,11 +6,12 @@ TOOLCHAINS_URL='http://autobuild.buildroot.org/toolchains/configs/toolchain-conf
 main() {
     local o O opts
     local cfg dir pkg random toolchain
+    local ret nb nb_skip nb_fail
     local -a toolchains
 
     o='hc:d:p:r:'
     O='help,config-snippet:build-dir:package:,random:'
-    opts="$( getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}"  )"
+    opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
     eval set -- "${opts}"
 
     random=0
@@ -39,6 +40,9 @@ main() {
     if [ -z "${cfg}" ]; then
         printf "error: no config snippet specified\n" >&2; exit 1
     fi
+    if [ ! -e "${cfg}" ]; then
+        printf "error: %s: no such file\n" "${cfg}" >&2; exit 1
+    fi
     if [ -z "${dir}" ]; then
         dir="${HOME}/br-test-pkg"
     fi
@@ -46,23 +50,34 @@ main() {
     # Extract the URLs of the toolchains; drop internal toolchains
     # E.g.: http://server/path/to/name.config,arch,libc
     #  -->  http://server/path/to/name.config
-    toolchains=( $( curl -s "${TOOLCHAINS_URL}" \
-                    |sed -r -e 's/,.*//; /internal/d;' \
-                    |if [ ${random} -gt 0 ]; then \
-                        sort -R |head -n ${random}
-                     else
-                        cat
-                     fi |sort
-                  )
+    toolchains=($(curl -s "${TOOLCHAINS_URL}" \
+                  |sed -r -e 's/,.*//; /internal/d;' \
+                  |if [ ${random} -gt 0 ]; then \
+                      sort -R |head -n ${random}
+                   else
+                      cat
+                   fi |sort
+                 )
                )
 
     if [ ${#toolchains[@]} -eq 0 ]; then
         printf "error: no toolchain found (networking issue?)\n" >&2; exit 1
     fi
 
+    nb=0
+    nb_skip=0
+    nb_fail=0
     for toolchain in "${toolchains[@]}"; do
-        build_one "${dir}" "${toolchain}" "${cfg}" "${pkg}"
+        build_one "${dir}" "${toolchain}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
+        case ${ret} in
+        (0) ;;
+        (1) : $((nb_skip++));;
+        (2) : $((nb_fail++));;
+        esac
+        : $((nb++))
     done
+
+    printf "%d builds, %d skipped, %d failed\n" ${nb} ${nb_skip} ${nb_fail}
 }
 
 build_one() {
@@ -70,20 +85,19 @@ build_one() {
     local url="${2}"
     local cfg="${3}"
     local pkg="${4}"
-    local toolchain line skip
+    local toolchain
 
     # Using basename(1) on a URL works nicely
-    toolchain="$( basename "${url}" .config )"
+    toolchain="$(basename "${url}" .config)"
 
     printf "%40s: " "${toolchain}"
 
     dir="${dir}/${toolchain}"
     mkdir -p "${dir}"
 
-    printf "download config"
     if ! curl -s "${url}" >"${dir}/.config"; then
-        printf ": FAILED\n"
-        return
+        printf "FAILED\n"
+        return 2
     fi
 
     cat >>"${dir}/.config" <<-_EOF_
@@ -94,45 +108,38 @@ build_one() {
 	_EOF_
     cat "${cfg}" >>"${dir}/.config"
 
-    printf ", olddefconfig"
     if ! make O="${dir}" olddefconfig >/dev/null 2>&1; then
-        printf ": FAILED\n"
-        return
+        printf "FAILED\n"
+        return 2
     fi
     # We want all the options from the snippet to be present as-is (set
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
     # which case this config is untestable and we skip it.
-    skip=false
-    while read line; do
-        if ! grep "^${line}\$" "${dir}/.config" >/dev/null 2>&1; then
-            printf "%s\n" "${line}"
-            skip=true
-        fi
-    done <"${cfg}" >"${dir}/missing.config"
-    if ${skip}; then
-        printf ", SKIPPED\n"
-        return
+    # We don't care about the locale to sort in, as long as both sort are
+    # done in the same locale.
+    comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
+    if [ -s "${dir}/missing.config" ]; then
+        printf "SKIPPED\n"
+        return 1
     fi
     # Remove file, it's empty anyway.
     rm -f "${dir}/missing.config"
 
     if [ -n "${pkg}" ]; then
-        printf ", dirclean"
         if ! make O="${dir}" "${pkg}-dirclean" >> "${dir}/logfile" 2>&1; then
-            printf ": FAILED\n"
-            return
+            printf "FAILED\n"
+            return 2
         fi
     fi
 
-    printf ", build"
     # shellcheck disable=SC2086
     if ! make O="${dir}" ${pkg} >> "${dir}/logfile" 2>&1; then
-        printf ": FAILED\n"
-        return
+        printf "FAILED\n"
+        return 2
     fi
 
-    printf ": OK\n"
+    printf "OK\n"
 }
 
 help() {

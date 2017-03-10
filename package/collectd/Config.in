@@ -526,6 +526,7 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 
 config BR2_PACKAGE_COLLECTD_MQTT
 	bool "mqtt"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # mosquitto
 	select BR2_PACKAGE_MOSQUITTO
 	help
 	  Sends metrics to and/or receives metrics from an MQTT broker.
