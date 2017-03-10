@@ -4,14 +4,22 @@
 #
 ################################################################################
 
-MPD_VERSION_MAJOR = 0.20
+MPD_VERSION_MAJOR = $(call qstrip,$(BR2_PACKAGE_MPD_VERSION_STRING))
+ifeq ($(BR2_PACKAGE_MPD_VERSION_0_20),y)
 MPD_VERSION = $(MPD_VERSION_MAJOR).4
+else
+MPD_VERSION = $(MPD_VERSION_MAJOR).21
+endif
 MPD_SOURCE = mpd-$(MPD_VERSION).tar.xz
 MPD_SITE = http://www.musicpd.org/download/mpd/$(MPD_VERSION_MAJOR)
 MPD_DEPENDENCIES = host-pkgconf boost
 MPD_LICENSE = GPLv2+
 MPD_LICENSE_FILES = COPYING
 MPD_AUTORECONF = YES
+
+ifeq ($(BR2_PACKAGE_MPD_VERSION_0_19),y)
+MPD_DEPENDENCIES += libglib2
+endif
 
 # Some options need an explicit --disable or --enable
 

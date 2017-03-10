@@ -1,0 +1,29 @@
+From d41f5ec6bb66654558757c3ef9cd2a158ee06ccc Mon Sep 17 00:00:00 2001
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Wed, 15 Feb 2017 09:29:29 +0100
+Subject: [PATCH] Add missing <cstdio> include
+
+This header defines EOF macro. Some toolchains cannot
+find this macro, if <cstdio> is missing. So include it
+explicitly.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ sctpthread.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/sctpthread.cpp b/sctpthread.cpp
+index 6c83fed..d83b472 100644
+--- a/sctpthread.cpp
++++ b/sctpthread.cpp
+@@ -19,6 +19,7 @@
+  */
+ 
+ #include <chrono>
++#include <cstdio>
+ #include <algorithm>
+ 
+ #include <string.h>
+-- 
+2.1.4
+

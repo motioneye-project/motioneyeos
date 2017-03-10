@@ -1,0 +1,42 @@
+From 1fc5444f5620670bb9d293be4f92df59661e1810 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 20 Feb 2017 23:31:24 +0100
+Subject: [PATCH] kerncompat.h: define BTRFS_DISABLE_BACKTRACE when building
+ with uClibc
+
+uClibc does not provide backtrace() nor <execinfo.h>. When building
+btrfs-progs, passing --disable-backtrace is enough to make it build with
+uClibc. But once btrfs-progs is installed and another program/library
+includes kerncompat.h, it fails to build with uClibc, because
+BTRFS_DISABLE_BACKTRACE is not defined.
+
+The most correct fix for this would be to have kerncompat.h generated
+from kerncompat.h.in during the btrfs-progs build process, and tuned
+depending on autoconf/automake variables. But as a quick fix that
+follows the current strategy, we simply tweak the existing __GLIBC__
+conditional. Indeed, uClibc pretends to be glibc and defines __GLIBC__,
+but it does not replace it completely, hence the need to define
+BTRFS_DISABLE_BACKTRACE when __GLIBC__ is not defined *or* when
+__UCLIBC__ is defined.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ kerncompat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kerncompat.h b/kerncompat.h
+index 0f207b7..e47d164 100644
+--- a/kerncompat.h
++++ b/kerncompat.h
+@@ -32,7 +32,7 @@
+ 
+ #include <features.h>
+ 
+-#ifndef __GLIBC__
++#if !defined(__GLIBC__) || defined(__UCLIBC__)
+ #ifndef BTRFS_DISABLE_BACKTRACE
+ #define BTRFS_DISABLE_BACKTRACE
+ #endif
+-- 
+2.7.4
+

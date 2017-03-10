@@ -7,13 +7,20 @@
 VLC_VERSION = 2.2.4
 VLC_SITE = http://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
-VLC_LICENSE = GPLv2+ LGPLv2.1+
+VLC_LICENSE = GPLv2+, LGPLv2.1+
 VLC_LICENSE_FILES = COPYING COPYING.LIB
 VLC_DEPENDENCIES = host-pkgconf
 VLC_AUTORECONF = YES
 
 # Install vlc libraries in staging.
 VLC_INSTALL_STAGING = YES
+
+# gcc bug internal compiler error: in merge_overlapping_regs, at
+# regrename.c:304. This bug is fixed since gcc 6.
+ifeq ($(BR2_microblaze):$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),y:)
+VLC_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O0"
+VLC_CONF_OPTS += --disable-optimizations
+endif
 
 # VLC defines two autoconf functions which are also defined by our own pkg.m4
 # from pkgconf. Unfortunately, they are defined in a different way: VLC adds

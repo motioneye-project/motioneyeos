@@ -24,7 +24,7 @@ HOST_HEIMDAL_CONF_OPTS = \
 	--without-hesiod \
 	--without-x \
 	--disable-heimdal-documentation
-HOST_HEIMDAL_CONF_ENV = MAKEINFO=true LIBS="-lpthread"
+HOST_HEIMDAL_CONF_ENV = MAKEINFO=true
 HEIMDAL_LICENSE = BSD-3c
 HEIMDAL_LICENSE_FILES = LICENSE
 

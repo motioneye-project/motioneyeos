@@ -30,6 +30,12 @@ ERLANG_CONF_ENV += erl_xcomp_sysroot=$(STAGING_DIR)
 
 ERLANG_CONF_OPTS = --without-javac
 
+# Force ERL_TOP to the downloaded source directory. This prevents
+# Erlang's configure script from inadvertantly using files from
+# a version of Erlang installed on the host.
+ERLANG_CONF_ENV += ERL_TOP=$(@D)
+HOST_ERLANG_CONF_ENV += ERL_TOP=$(@D)
+
 # erlang uses openssl for all things crypto. Since the host tools (such as
 # rebar) uses crypto, we need to build host-erlang with support for openssl.
 HOST_ERLANG_DEPENDENCIES = host-openssl

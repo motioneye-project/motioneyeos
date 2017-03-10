@@ -6,6 +6,7 @@ config BR2_PACKAGE_MOARVM
 	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS # libatomic_ops
 	# needs AO_fetch_compare_and_swap, not implemented for sparcv8/sparcv9
 	depends on !BR2_sparc64 && !BR2_sparc
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libuv
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_LIBTOMMATH
 	select BR2_PACKAGE_LIBATOMIC_OPS
@@ -23,4 +24,4 @@ comment "moarvm needs a toolchain w/ NPTL, dynamic library"
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS
 	depends on !BR2_sparc64 && !BR2_sparc
-
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4

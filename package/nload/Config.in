@@ -5,7 +5,6 @@ config BR2_PACKAGE_NLOAD
 	bool "nload"
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_NCURSES
-	select BR2_PACKAGE_NCURSES_TARGET_FORM
 	help
 	  nload is a console application which monitors network traffic
 	  and bandwidth usage in real time. It visualizes the in- and

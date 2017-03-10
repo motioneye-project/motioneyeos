@@ -108,12 +108,12 @@ endef
 ORACLE_MYSQL_POST_INSTALL_TARGET_HOOKS += ORACLE_MYSQL_ADD_FOLDER
 
 define ORACLE_MYSQL_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 0755 package/oracle-mysql/S97mysqld \
+	$(INSTALL) -D -m 0755 $(ORACLE_MYSQL_PKGDIR)/S97mysqld \
 		$(TARGET_DIR)/etc/init.d/S97mysqld
 endef
 
 define ORACLE_MYSQL_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/mysql/mysqld.service \
+	$(INSTALL) -D -m 644 $(ORACLE_MYSQL_PKGDIR)/mysqld.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/mysqld.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -sf ../../../../usr/lib/systemd/system/mysqld.service \

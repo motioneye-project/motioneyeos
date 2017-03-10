@@ -9,7 +9,7 @@ LM_SENSORS_SOURCE = lm-sensors_$(LM_SENSORS_VERSION).orig.tar.bz2
 LM_SENSORS_SITE = http://snapshot.debian.org/archive/debian/20170208T211941Z/pool/main/l/lm-sensors
 LM_SENSORS_INSTALL_STAGING = YES
 LM_SENSORS_DEPENDENCIES = host-bison host-flex
-LM_SENSORS_LICENSE = libsensors LGPLv2.1+, programs GPLv2+
+LM_SENSORS_LICENSE = LGPLv2.1+ (libsensors), GPLv2+ (programs)
 LM_SENSORS_LICENSE_FILES = COPYING.LGPL COPYING
 
 LM_SENSORS_BINS_ = bin/sensors-conf-convert

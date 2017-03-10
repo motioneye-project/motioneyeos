@@ -12,6 +12,8 @@ subtree only, this patch adds a check : a .git directory has to exist at
 the root of the project to enable git-extracted version string.
 
 Signed-off-by: David Bachelart <david.bachelart@bbright.com>
+[yann.morin.1998@free.fr: fix troll character U+c2a0]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
  genver.sh | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
@@ -34,7 +36,7 @@ index 79fd0a0..051e57b 100755
  fi
  
 -if head=`git rev-parse --verify HEAD 2>/dev/null`; then
-+if [ -d .git ] && head=`git rev-parse --verify HEAD 2>/dev/null`; then
++if [ -d .git ] && head=`git rev-parse --verify HEAD 2>/dev/null`; then
  	# generate the version info based on the tag
  	release=`(git describe --tags || git --describe || git describe --all --long) \
  		2>/dev/null | tr -d '\n'`

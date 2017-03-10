@@ -47,7 +47,7 @@ define MESA3D_HEADERS_INSTALL_DRI_PC
 	$(INSTALL) -D -m 0644 $(@D)/include/GL/internal/dri_interface.h \
 		$(STAGING_DIR)/usr/include/GL/internal/dri_interface.h
 	$(INSTALL) -D -m 0644 $(@D)/src/mesa/drivers/dri/dri.pc \
-		$(STAGING_DIR)/usr/lib/pkg-config/dri.pc
+		$(STAGING_DIR)/usr/lib/pkgconfig/dri.pc
 endef
 
 endif # Xorg
@@ -60,10 +60,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
 MESA3D_HEADERS_DIRS += GLES GLES2
-endif
-
-ifeq ($(BR2_PACKAGE_HAS_LIBOPENVG),y)
-MESA3D_HEADERS_DIRS += VG
 endif
 
 define MESA3D_HEADERS_BUILD_CMDS

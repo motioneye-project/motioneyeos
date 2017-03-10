@@ -19,6 +19,7 @@ LIBASPLIB_CONF_OPTS = \
 	-DBUILD_TIMER=ON
 
 # Internal error, aborting at dw2gencfi.c:214 in emit_expr_encoded
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79509
 ifeq ($(BR2_m68k_cf),y)
 LIBASPLIB_CXXFLAGS += -fno-dwarf2-cfi-asm
 endif

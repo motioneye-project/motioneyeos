@@ -6,6 +6,9 @@ version_min="${2}"
 major_min="${version_min%.*}"
 minor_min="${version_min#*.}"
 
+# cmake-3.7 incorrectly handles rpath, linking to host libraries
+blacklist_version="3.7"
+
 cmake=`which ${candidate}`
 if [ ! -x "${cmake}" ]; then
     # echo nothing: no suitable cmake found
@@ -26,6 +29,11 @@ version="$(${cmake} --version \
           )"
 major="${version%.*}"
 minor="${version#*.}"
+
+if [ "${version}" = "${blacklist_version}" ]; then
+    # echo nothing: no suitable cmake found
+    exit 1
+fi
 
 if [ ${major} -gt ${major_min} ]; then
     echo "${cmake}"

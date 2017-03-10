@@ -5,6 +5,8 @@ test -n "$os_version" || source /etc/init.d/base
 sys_version_file="/etc/version"
 version_file="/data/etc/version"
 post_upgrade_dir="/usr/share/post-upgrade"
+sys_os_conf="/etc/os.conf"
+os_conf="/data/etc/os.conf"
 
 hash=$(md5sum $version_file 2>/dev/null | cut -d ' ' -f 1)
 sys_hash=$(md5sum $sys_version_file 2>/dev/null | cut -d ' ' -f 1)
@@ -34,10 +36,23 @@ function run_post_upgrade() {
     done
 }
 
+function update_os_conf() {
+    source $sys_os_conf
+    sys_vars=$(cat $sys_os_conf | cut -d '=' -f 1)
+    for var in $sys_vars; do
+        if ! grep "$var=" $os_conf &>/dev/null; then
+            msg_begin "Adding $var to os.conf"
+            echo "$var=\"${!var}\"" >> $os_conf
+            msg_done
+        fi
+    done
+}
+
 case "$1" in
     start)
         run_post_upgrade
         cp $sys_version_file $version_file
+        update_os_conf
         ;;
 
     stop)

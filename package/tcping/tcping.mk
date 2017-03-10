@@ -5,7 +5,7 @@
 ################################################################################
 
 TCPING_VERSION = 1.3.5
-TCPING_SITE = http://www.linuxco.de/tcping
+TCPING_SITE = http://linuxco.de/tcping
 TCPING_LICENSE = GPLv3+
 TCPING_LICENSE_FILES = LICENSE
 
