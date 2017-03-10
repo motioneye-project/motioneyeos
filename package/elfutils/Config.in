@@ -22,7 +22,7 @@ config BR2_PACKAGE_ELFUTILS
 	  Note that this option only installs the libraries, and not
 	  the programs.
 
-	  https://fedorahosted.org/elfutils
+	  https://sourceware.org/elfutils/
 
 if BR2_PACKAGE_ELFUTILS
 
