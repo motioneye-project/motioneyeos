@@ -11,7 +11,7 @@ before_script:
     # The container has no package lists, so need to update first
     - apt-get update -qq
     - apt-get install -y -qq --no-install-recommends
-        build-essential locales bc ca-certificates file rsync
+        build-essential locales bc ca-certificates file rsync gcc-multilib
         git bzr cvs mercurial subversion libc6:i386 unzip wget cpio
     # To be able to generate a toolchain with locales, enable one UTF-8 locale
     - sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
