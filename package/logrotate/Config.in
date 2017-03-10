@@ -6,7 +6,7 @@ config BR2_PACKAGE_LOGROTATE
 	help
 	  A simple program to rotate logs.
 
-	  https://fedorahosted.org/logrotate/
+	  https://github.com/logrotate/logrotate
 
 comment "logrotate needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
