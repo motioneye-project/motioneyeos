@@ -1,0 +1,48 @@
+From 88ec2ad37cabb3d3b7ca0e8e5ea3d682c083618d Mon Sep 17 00:00:00 2001
+From: Tobias Klauser <tklauser@distanz.ch>
+Date: Mon, 6 Mar 2017 12:22:57 +0100
+Subject: [PATCH] netsniff-ng: nlmsg: Drop dissection of GENL_ID_GENERATE type
+
+After kernel commit a07ea4d9941a ("genetlink: no longer support using
+static family IDs"), GENL_ID_GENERATE is no longer exposed to userspace
+(and actually should never have been). Change the genl nlmsg dissector
+to only consider the nlctrl family and the two other static family IDs
+needed for workarounds. All other family IDs are considered dynamically
+generated.
+
+Fixes #171
+Reported-by: Jaroslav Škarvada <jskarvad@redhat.com>
+Signed-off-by: Tobias Klauser <tklauser@distanz.ch>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 88ec2ad37cabb
+
+ proto_nlmsg.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/proto_nlmsg.c b/proto_nlmsg.c
+index f8993e794a54..f2064059be08 100644
+--- a/proto_nlmsg.c
++++ b/proto_nlmsg.c
+@@ -242,9 +242,15 @@ static const char *nlmsg_rtnl_type2str(uint16_t type)
+ static const char *nlmsg_genl_type2str(uint16_t type)
+ {
+ 	switch (type) {
+-	case GENL_ID_GENERATE:	return "id gen";
+-	case GENL_ID_CTRL:	return "id ctrl";
+-	default:		return NULL;
++	case GENL_ID_CTRL:	return "nlctrl";
++#if defined(GENL_ID_PCMRAID)
++	case GENL_ID_PCMRAID:	return "pcmraid";
++#endif
++#if defined(GENL_ID_VFS_DQUOT)
++	case GENL_ID_VFS_DQUOT:	return "vfs dquot";
++#endif
++	/* only dynamic family IDs should be used starting with Linux 4.10 */
++	default:		return "dynamic";
+ 	}
+ }
+ 
+-- 
+2.11.0
+
