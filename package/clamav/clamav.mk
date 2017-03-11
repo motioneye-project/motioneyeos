@@ -48,6 +48,13 @@ else
 CLAMAV_CONF_OPTS += --disable-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_JSON_C),y)
+CLAMAV_CONF_OPTS += --with-libjson=$(STAGING_DIR)/usr
+CLAMAV_DEPENDENCIES += json-c
+else
+CLAMAV_CONF_OPTS += --without-libjson
+endif
+
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
 CLAMAV_CONF_OPTS += --with-xml=$(STAGING_DIR)/usr
 CLAMAV_DEPENDENCIES += libxml2
