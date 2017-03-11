@@ -1425,6 +1425,7 @@ menu "Security"
 endmenu
 
 menu "Text and terminal handling"
+	source "package/augeas/Config.in"
 	source "package/enchant/Config.in"
 	source "package/icu/Config.in"
 	source "package/libcli/Config.in"
