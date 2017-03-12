@@ -35,6 +35,13 @@ else
 GNUPG2_CONF_OPTS += --disable-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+GNUPG2_CONF_OPTS += --enable-gnutls
+GNUPG2_DEPENDENCIES += gnutls
+else
+GNUPG2_CONF_OPTS += --disable-gnutls
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB_COMPAT),y)
 GNUPG2_CONF_OPTS += --enable-ccid-driver
 GNUPG2_DEPENDENCIES += libusb-compat
