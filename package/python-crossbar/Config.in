@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_CROSSBAR
 	bool "python-crossbar"
-	depends on !BR2_TOOLCHAIN_USES_MUSL # python-psutil
 	# All the following dependencies are runtime dependencies
 	select BR2_PACKAGE_PYTHON_AUTOBAHN
 	select BR2_PACKAGE_PYTHON_CBOR
@@ -40,5 +39,5 @@ config BR2_PACKAGE_PYTHON_CROSSBAR
 
 	  https://pypi.python.org/pypi/crossbar
 
-comment "python-crossbar needs a uClibc or glibc toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP || BR2_TOOLCHAIN_USES_MUSL
+comment "python-crossbar needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
