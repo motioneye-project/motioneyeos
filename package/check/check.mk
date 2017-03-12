@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CHECK_VERSION = 0.10.0
-CHECK_SITE = http://downloads.sourceforge.net/project/check/check/$(CHECK_VERSION)
+CHECK_VERSION = 0.11.0
+CHECK_SITE = https://github.com/libcheck/check/releases/download/$(CHECK_VERSION)
 CHECK_INSTALL_STAGING = YES
 CHECK_DEPENDENCIES = host-pkgconf
 CHECK_LICENSE = LGPLv2.1+

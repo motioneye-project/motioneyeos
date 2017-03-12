@@ -3,4 +3,4 @@ config BR2_PACKAGE_CHECK
 	help
 	  Check is a unit testing framework for C.
 
-	  http://check.sourceforge.net/
+	  https://libcheck.github.io/check/
