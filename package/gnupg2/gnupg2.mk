@@ -10,7 +10,7 @@ GNUPG2_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
 GNUPG2_LICENSE = GPLv3+
 GNUPG2_LICENSE_FILES = COPYING
 GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libnpth \
-	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
+	$(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
 
 GNUPG2_CONF_OPTS = \
 	--disable-rpath --disable-regex --disable-doc \
@@ -47,6 +47,13 @@ GNUPG2_CONF_OPTS += --with-readline=$(STAGING_DIR)
 GNUPG2_DEPENDENCIES += readline
 else
 GNUPG2_CONF_OPTS += --without-readline
+endif
+
+ifeq ($(BR2_PACKAGE_SQLITE),y)
+GNUPG2_CONF_OPTS += --enable-sqlite
+GNUPG2_DEPENDENCIES += sqlite
+else
+GNUPG2_CONF_OPTS += --disable-sqlite
 endif
 
 $(eval $(autotools-package))
