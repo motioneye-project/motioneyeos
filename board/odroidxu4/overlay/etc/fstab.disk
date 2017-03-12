@@ -1,0 +1,4 @@
+# <file system> <mount pt>            <type>   <options>         <dump> <pass>
+/dev/mmcblk1p1  /boot                 vfat     ro,defaults       0      0
+/dev/mmcblk1p3  /data                 ext4     defaults,noatime  0      0
+
