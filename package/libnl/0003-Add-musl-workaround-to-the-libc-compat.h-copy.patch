@@ -1,0 +1,37 @@
+From be07fdbc9658de19304defa7538f219cd3f21ec0 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sun, 12 Mar 2017 08:52:20 +0200
+Subject: [PATCH] Add musl workaround to the libc-compat.h copy
+
+The libc-compat.h kernel header uses glibc specific macros to solve conflicts
+with libc provided headers. This patch makes libc-compat.h work also for musl
+libc.
+
+Future rebase note: when upstream updates libc-compat.h some additional macro
+definitions will be needed. See the Buildroot iproute2 patch
+package/iproute2/0001-Add-the-musl-workaround-to-the-libc-compat.h-copy.patch.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: libc-compat.h is a local copy of a kernel headers. A proper
+musl fix must go to the kernel first.
+---
+ include/linux-private/linux/libc-compat.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux-private/linux/libc-compat.h b/include/linux-private/linux/libc-compat.h
+index 9bed5b6ae4d9..e2562a819464 100644
+--- a/include/linux-private/linux/libc-compat.h
++++ b/include/linux-private/linux/libc-compat.h
+@@ -49,7 +49,7 @@
+ #define _LIBC_COMPAT_H
+ 
+ /* We have included glibc headers... */
+-#if defined(__GLIBC__)
++#if 1
+ 
+ /* Coordinate with glibc netinet/in.h header. */
+ #if defined(_NETINET_IN_H)
+-- 
+2.11.0
+
