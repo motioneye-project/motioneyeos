@@ -36,7 +36,7 @@ SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
 OS_CONF=/data/etc/os.conf
 
-BOOT_DEV=/dev/mmcblk0p1
+BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
 ROOT_INFO_FILE=root_info
