@@ -24,6 +24,9 @@ endif
 ifneq ($(BR2_PACKAGE_NBD_SERVER),y)
 NBD_TOREMOVE += /usr/bin/nbd-server
 endif
+ifneq ($(BR2_PACKAGE_NBD_TRDUMP),y)
+NBD_TOREMOVE += /usr/bin/nbd-trdump
+endif
 
 define NBD_CLEANUP_AFTER_INSTALL
 	rm -f $(addprefix $(TARGET_DIR), $(NBD_TOREMOVE))

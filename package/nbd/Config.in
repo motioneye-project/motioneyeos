@@ -16,12 +16,17 @@ config BR2_PACKAGE_NBD_CLIENT
 	bool "nbd client"
 	default y
 	help
-	  the client part of NBD.
+	  The client part of NBD.
 
 config BR2_PACKAGE_NBD_SERVER
 	bool "nbd server"
 	help
-	  the server part of NBD.
+	  The server part of NBD.
+
+config BR2_PACKAGE_NBD_TRDUMP
+	bool "nbd trdump"
+	help
+	  Utility to dump server logs in human-readable form.
 
 endif
 
