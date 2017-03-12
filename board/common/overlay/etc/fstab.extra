@@ -1,0 +1,4 @@
+# <file system> <mount pt>            <type>   <options>         <dump> <pass>
+/data/output    /home/ftp/sdcard      rbind    rbind             0      0
+/data/media     /home/ftp/storage     rbind    rbind             0      0
+
