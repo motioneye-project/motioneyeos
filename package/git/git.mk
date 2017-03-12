@@ -23,8 +23,8 @@ else
 GIT_CONF_OPTS += --without-openssl
 endif
 
-ifeq ($(BR2_PACKAGE_PERL),y)
-GIT_DEPENDENCIES += perl
+ifeq ($(BR2_PACKAGE_PCRE),y)
+GIT_DEPENDENCIES += pcre
 GIT_CONF_OPTS += --with-libpcre
 else
 GIT_CONF_OPTS += --without-libpcre
