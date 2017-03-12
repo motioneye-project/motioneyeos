@@ -4,16 +4,13 @@
 #
 ################################################################################
 
-GNUPG2_VERSION = 2.0.30
+GNUPG2_VERSION = 2.1.19
 GNUPG2_SOURCE = gnupg-$(GNUPG2_VERSION).tar.bz2
 GNUPG2_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
 GNUPG2_LICENSE = GPLv3+
 GNUPG2_LICENSE_FILES = COPYING
-GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libpthsem \
+GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libnpth \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
-
-# Patching configure.ac and m4 macros, as well as Makefile.am
-GNUPG2_AUTORECONF = YES
 
 GNUPG2_CONF_OPTS = \
 	--disable-rpath --disable-regex --disable-doc \
@@ -21,7 +18,7 @@ GNUPG2_CONF_OPTS = \
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
 	--with-libassuan-prefix=$(STAGING_DIR)/usr \
 	--with-ksba-prefix=$(STAGING_DIR)/usr \
-	--with-pth-prefix=$(STAGING_DIR)/usr
+	--with-npth-prefix=$(STAGING_DIR)/usr
 GNUPG2_CONF_ENV = gl_cv_header_working_stdint_h=yes
 
 ifneq ($(BR2_PACKAGE_GNUPG2_GPGV2),y)
