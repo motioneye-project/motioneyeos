@@ -1,5 +1,6 @@
 config BR2_PACKAGE_FIREJAIL
 	bool "firejail"
+	depends on BROKEN # does not cross-compile at all
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# uClibc: error: ‘EM_ARM’ undeclared
@@ -16,4 +17,5 @@ config BR2_PACKAGE_FIREJAIL
 
 comment "firejail needs a glibc or musl toolchain w/ threads"
 	depends on BR2_USE_MMU
+	depends on BROKEN
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || !BR2_TOOLCHAIN_HAS_THREADS
