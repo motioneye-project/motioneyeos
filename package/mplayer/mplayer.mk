@@ -224,6 +224,12 @@ else
 MPLAYER_CONF_OPTS += --disable-gif
 endif
 
+# We intentionally don't pass --enable-pulse, to let the
+# autodetection find which library to link with.
+ifeq ($(BR2_PACKAGE_PULSEAUDIO),y)
+MPLAYER_DEPENDENCIES += pulseaudio
+endif
+
 # We intentionally don't pass --enable-librtmp to let autodetection
 # find which library to link with.
 ifeq ($(BR2_PACKAGE_RTMPDUMP),y)
