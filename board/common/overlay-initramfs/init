@@ -2,9 +2,27 @@
 
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
 
-BOOT_DEV=/dev/mmcblk0p1
-ROOT_DEV=/dev/mmcblk0p2
-DATA_DEV=/dev/mmcblk0p3
+msg() {
+    echo "* $1"
+}
+
+ROOT_DEV=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+if [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+    DISK_DEV=${BASH_REMATCH[1]}
+    BOOT_DEV=${DISK_DEV}p1
+    DATA_DEV=${DISK_DEV}p3
+else  # e.g. /dev/sdc2
+    [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)([0-9])$ ]]
+    DISK_DEV=${BASH_REMATCH[1]}
+    BOOT_DEV=${DISK_DEV}1
+    DATA_DEV=${DISK_DEV}3
+fi
+
+msg "Disk device is $DISK_DEV"
+msg "Boot device is $BOOT_DEV"
+msg "Root device is $ROOT_DEV"
+msg "Data device is $DATA_DEV"
+
 
 FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
@@ -14,10 +32,6 @@ LEGACY_FW_DIR=/data/.firmware_update
 LEGACY_FW_FILE_EXTR=firmware
 
 ROOT_INFO_FILE=root_info
-
-msg() {
-    echo "* $1"
-}
 
 on_exit() {
     msg "Switching to normal boot"
