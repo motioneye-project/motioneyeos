@@ -18,10 +18,10 @@ ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 NBD_CONF_ENV = ac_cv_header_linux_falloc_h=no
 endif
 
-ifneq ($(BR2_NBD_CLIENT),y)
+ifneq ($(BR2_PACKAGE_NBD_CLIENT),y)
 NBD_TOREMOVE += nbd-client
 endif
-ifneq ($(BR2_NBD_SERVER),y)
+ifneq ($(BR2_PACKAGE_NBD_SERVER),y)
 NBD_TOREMOVE += nbd-server
 endif
 

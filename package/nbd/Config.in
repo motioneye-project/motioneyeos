@@ -12,13 +12,13 @@ config BR2_PACKAGE_NBD
 
 if BR2_PACKAGE_NBD
 
-config BR2_NBD_CLIENT
+config BR2_PACKAGE_NBD_CLIENT
 	bool "nbd client"
 	default y
 	help
 	  the client part of NBD.
 
-config BR2_NBD_SERVER
+config BR2_PACKAGE_NBD_SERVER
 	bool "nbd server"
 	help
 	  the server part of NBD.

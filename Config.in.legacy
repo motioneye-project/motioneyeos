@@ -145,6 +145,20 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_NBD_CLIENT
+	bool "nbd client option was renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NBD_CLIENT
+	help
+	  The nbd client option has been renamed to BR2_PACKAGE_NBD_CLIENT.
+
+config BR2_NBD_SERVER
+	bool "nbd server option was renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_NBD_SERVER
+	help
+	  The nbd server option has been renamed to BR2_PACKAGE_NBD_SERVER.
+
 config BR2_PACKAGE_GMOCK
 	bool "gmock merged into gtest package"
 	select BR2_LEGACY
