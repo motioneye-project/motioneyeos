@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/psutil/json, sha256 locally computed
-md5	3090e32d42761086ae82036cadb95ba3  psutil-5.1.3.tar.gz
-sha256  959bd58bdc8152b0a143cb3bd822d4a1b8f7230617b0e3eb2ff6e63812120f2b  psutil-5.1.3.tar.gz
+md5	c9aa2599dcd9e5b59d71b6660d396062  psutil-5.2.0.tar.gz
+sha256  2fc91d068faa5613c093335f0e758673ef8c722ad4bfa4aded64c13ae69089eb  psutil-5.2.0.tar.gz
