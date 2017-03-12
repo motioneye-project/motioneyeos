@@ -19,14 +19,14 @@ NBD_CONF_ENV = ac_cv_header_linux_falloc_h=no
 endif
 
 ifneq ($(BR2_PACKAGE_NBD_CLIENT),y)
-NBD_TOREMOVE += nbd-client
+NBD_TOREMOVE += /usr/sbin/nbd-client
 endif
 ifneq ($(BR2_PACKAGE_NBD_SERVER),y)
-NBD_TOREMOVE += nbd-server
+NBD_TOREMOVE += /usr/bin/nbd-server
 endif
 
 define NBD_CLEANUP_AFTER_INSTALL
-	rm -f $(addprefix $(TARGET_DIR)/usr/sbin/, $(NBD_TOREMOVE))
+	rm -f $(addprefix $(TARGET_DIR), $(NBD_TOREMOVE))
 endef
 
 NBD_POST_INSTALL_TARGET_HOOKS += NBD_CLEANUP_AFTER_INSTALL
