@@ -229,7 +229,7 @@ function flash_boot() {
     echo $pid > $FW_DIR/$DD_PID_FILE
     wait $pid
 
-    mount -o rw /boot
+    mount -T /etc/fstab.disk -o rw /boot
     
     # the /usr/libexec/fw-restore-boot-cfg script, if present, takes the old (backup) boot dir as argument
     # and should restore any /boot configuration that needs to be preserved across updates

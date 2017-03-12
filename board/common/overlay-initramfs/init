@@ -6,14 +6,20 @@ msg() {
     echo "* $1"
 }
 
+msg "Waiting for sdcard"
+sleep 2
+
+msg "Mounting pseudo filesystems"
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+
 ROOT_DEV=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
-if [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
-    DISK_DEV=${BASH_REMATCH[1]}
+if echo ${ROOT_DEV: -2} | grep -E 'p[0-9]' &>/dev/null; then  # e.g. /dev/mmcblk0p2
+    DISK_DEV=${ROOT_DEV:0:$((${#ROOT_DEV}-2))}
     BOOT_DEV=${DISK_DEV}p1
     DATA_DEV=${DISK_DEV}p3
 else  # e.g. /dev/sdc2
-    [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)([0-9])$ ]]
-    DISK_DEV=${BASH_REMATCH[1]}
+    DISK_DEV=${ROOT_DEV:0:$((${#ROOT_DEV}-1))}
     BOOT_DEV=${DISK_DEV}1
     DATA_DEV=${DISK_DEV}3
 fi
@@ -51,13 +57,6 @@ on_exit() {
 }
 
 trap on_exit EXIT
-
-msg "Waiting for sdcard"
-sleep 2
-
-msg "Mounting pseudo filesystems"
-mount -t devtmpfs devtmpfs /dev
-mount -t proc proc /proc
 
 if [ -x /prepare_initramfs ]; then
     msg "Preparing initramfs"
