@@ -1,0 +1,119 @@
+From 066e28ccecb4bad5c0477606a138591f1da1963e Mon Sep 17 00:00:00 2001
+From: Raffi Enficiaud <raffi.enficiaud@free.fr>
+Date: Mon, 30 Jan 2017 22:09:12 +0100
+Subject: [PATCH] Preventing the compilation of floating points with GCC when
+ glibc is not in use
+
+- Gathering the support of FPE in one place/several macros and using those in both
+  execution_monitor.hpp and execution_monitor.ipp in a more coherent way
+- Updating the support of the floating point exceptions: fenableexcept/fdisableexcept are
+  GLIBC extensions and the definition of FENV does not imply the existance of those functions
+
+Fetch from:
+https://github.com/boostorg/test/commit/066e28ccecb4bad5c0477606a138591f1da1963e
+
+[Adjust github patch to tarball release]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ boost/test/execution_monitor.hpp      | 17 +++++++++++++++--
+ boost/test/impl/execution_monitor.ipp | 21 +++++++--------------
+ 2 files changed, 22 insertions(+), 16 deletions(-)
+
+diff --git a/boost/test/execution_monitor.hpp b/boost/test/execution_monitor.hpp
+index f53348a..12c5644 100644
+--- a/boost/test/execution_monitor.hpp
++++ b/boost/test/execution_monitor.hpp
+@@ -66,6 +66,19 @@
+ 
+ #endif
+ 
++#if defined(BOOST_SEH_BASED_SIGNAL_HANDLING) && !defined(UNDER_CE)
++  //! Indicates tha the floating point exception handling is supported
++  //! through SEH
++  #define BOOST_TEST_FPE_SUPPORT_WITH_SEH__
++#elif !defined(BOOST_SEH_BASED_SIGNAL_HANDLING) && !defined(UNDER_CE)
++  #if !defined(BOOST_NO_FENV_H) && !defined(BOOST_CLANG) && \
++      (defined(__GLIBC__) && defined(__USE_GNU))
++  //! Indicates that floating point exception handling is supported for the
++  //! non SEH version of it, for the GLIBC extensions only
++  #define BOOST_TEST_FPE_SUPPORT_WITH_GLIBC_EXTENSIONS__
++  #endif
++#endif
++
+ 
+ // Additional macro documentations not being generated without this hack
+ #ifdef BOOST_TEST_DOXYGEN_DOC__
+@@ -489,7 +502,7 @@ namespace fpe {
+ enum masks {
+     BOOST_FPE_OFF       = 0,
+ 
+-#ifdef BOOST_SEH_BASED_SIGNAL_HANDLING /* *** */
++#if defined(BOOST_TEST_FPE_SUPPORT_WITH_SEH__) /* *** */
+     BOOST_FPE_DIVBYZERO = EM_ZERODIVIDE,
+     BOOST_FPE_INEXACT   = EM_INEXACT,
+     BOOST_FPE_INVALID   = EM_INVALID,
+@@ -498,7 +511,7 @@ enum masks {
+ 
+     BOOST_FPE_ALL       = MCW_EM,
+ 
+-#elif defined(BOOST_NO_FENV_H) || defined(BOOST_CLANG) /* *** */
++#elif !defined(BOOST_TEST_FPE_SUPPORT_WITH_GLIBC_EXTENSIONS__)/* *** */
+     BOOST_FPE_ALL       = BOOST_FPE_OFF,
+ 
+ #else /* *** */
+diff --git a/boost/test/impl/execution_monitor.ipp b/boost/test/impl/execution_monitor.ipp
+index 416004d..0c5690c 100644
+--- a/boost/test/impl/execution_monitor.ipp
++++ b/boost/test/impl/execution_monitor.ipp
+@@ -1354,11 +1354,7 @@ unsigned
+ enable( unsigned mask )
+ {
+     boost::ignore_unused(mask);
+-
+-#if defined(UNDER_CE)
+-    /* Not Implemented in Windows CE */
+-    return BOOST_FPE_OFF;
+-#elif defined(BOOST_SEH_BASED_SIGNAL_HANDLING)
++#if defined(BOOST_TEST_FPE_SUPPORT_WITH_SEH__)
+     _clearfp();
+ 
+ #if BOOST_WORKAROUND( BOOST_MSVC, <= 1310)
+@@ -1373,9 +1369,10 @@ enable( unsigned mask )
+     if( ::_controlfp_s( 0, old_cw & ~mask, BOOST_FPE_ALL ) != 0 )
+         return BOOST_FPE_INV;
+ #endif
+-
+     return ~old_cw & BOOST_FPE_ALL;
+-#elif defined(__GLIBC__) && defined(__USE_GNU)
++
++#elif defined(BOOST_TEST_FPE_SUPPORT_WITH_GLIBC_EXTENSIONS__)
++    // same macro definition as in execution_monitor.hpp
+     if (BOOST_FPE_ALL == BOOST_FPE_OFF)
+         /* Not Implemented */
+         return BOOST_FPE_OFF;
+@@ -1395,12 +1392,8 @@ disable( unsigned mask )
+ {
+     boost::ignore_unused(mask);
+ 
+-#if defined(UNDER_CE)
+-    /* Not Implemented in Windows CE */
+-    return BOOST_FPE_INV;
+-#elif defined(BOOST_SEH_BASED_SIGNAL_HANDLING)
++#if defined(BOOST_TEST_FPE_SUPPORT_WITH_SEH__)
+     _clearfp();
+-
+ #if BOOST_WORKAROUND( BOOST_MSVC, <= 1310)
+     unsigned old_cw = ::_controlfp( 0, 0 );
+     ::_controlfp( old_cw | mask, BOOST_FPE_ALL );
+@@ -1413,9 +1406,9 @@ disable( unsigned mask )
+     if( ::_controlfp_s( 0, old_cw | mask, BOOST_FPE_ALL ) != 0 )
+         return BOOST_FPE_INV;
+ #endif
+-
+     return ~old_cw & BOOST_FPE_ALL;
+-#elif defined(__GLIBC__) && defined(__USE_GNU)
++
++#elif defined(BOOST_TEST_FPE_SUPPORT_WITH_GLIBC_EXTENSIONS__)
+     if (BOOST_FPE_ALL == BOOST_FPE_OFF)
+         /* Not Implemented */
+         return BOOST_FPE_INV;
