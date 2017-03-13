@@ -10,10 +10,4 @@ KMSCUBE_LICENSE = MIT
 KMSCUBE_DEPENDENCIES = host-pkgconf mesa3d libdrm
 KMSCUBE_AUTORECONF = YES
 
-# Autoreconf requires an existing m4 directory
-define KMSCUBE_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-KMSCUBE_POST_PATCH_HOOKS += KMSCUBE_PATCH_M4
-
 $(eval $(autotools-package))
