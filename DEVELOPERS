@@ -141,6 +141,7 @@ F:	package/sigrok-cli/
 N:	Baruch Siach <baruch@tkos.co.il>
 F:	package/ebtables/
 F:	package/openipmi/
+F:	package/ti-uim/
 
 N:	Ben Boeckel <mathstuf@gmail.com>
 F:	package/taskd/
