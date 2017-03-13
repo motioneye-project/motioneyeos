@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-RPM_VERSION = 4.13.0
+RPM_VERSION_MAJOR = 4.13
+RPM_VERSION = $(RPM_VERSION_MAJOR).0.1
 RPM_SOURCE = rpm-$(RPM_VERSION).tar.bz2
-RPM_SITE = https://github.com/rpm-software-management/rpm/releases/download/rpm-$(RPM_VERSION)-release
+RPM_SITE = http://ftp.rpm.org/releases/rpm-$(RPM_VERSION_MAJOR).x
 RPM_DEPENDENCIES = host-pkgconf berkeleydb file popt zlib
 RPM_LICENSE = GPLv2 or LGPLv2 (library only)
 RPM_LICENSE_FILES = COPYING
