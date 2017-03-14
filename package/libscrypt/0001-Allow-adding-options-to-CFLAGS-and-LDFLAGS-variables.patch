@@ -1,0 +1,34 @@
+From 097c5d9248f4afd34c73de5aba01a143ef784257 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <stefan.sorensen@spectralink.com>
+Date: Tue, 14 Mar 2017 09:23:51 +0100
+Subject: [PATCH] Allow adding options to CFLAGS and LDFLAGS variables
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This also removes a number of hard-coded CFLAGS, leaving it up to the
+user to pass appropriate optimization/hardening flags.
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 7022a4a..3098a9a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,8 +5,8 @@ MAKE_DIR     ?= install -d
+ INSTALL_DATA ?= install
+ 
+ CC?=gcc
+-CFLAGS?=-O2 -Wall -g -D_FORTIFY_SOURCE=2 -fstack-protector -fPIC
+-LDFLAGS?=-Wl,-z,now -Wl,-z,relro -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version
++override CFLAGS+=-fPIC
++override LDFLAGS+=-Wl,-z,now -Wl,-z,relro -Wl,-soname,libscrypt.so.0 -Wl,--version-script=libscrypt.version
+ CFLAGS_EXTRA?=-Wl,-rpath=.
+ 
+ all: reference
+-- 
+2.7.4
+
