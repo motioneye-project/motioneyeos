@@ -479,6 +479,9 @@ all: world
 include Makefile.legacy
 
 include package/Makefile.in
+# arch/arch.mk.* must be after package/Makefile.in because it may need to
+# complement variables defined therein, like BR_NO_CHECK_HASH_FOR.
+-include $(wildcard arch/arch.mk.*)
 include support/dependencies/dependencies.mk
 
 include toolchain/*.mk
