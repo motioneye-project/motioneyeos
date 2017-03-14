@@ -4,26 +4,19 @@
 #
 ################################################################################
 
-IRSSI_VERSION = 0.8.21
+IRSSI_VERSION = 1.0.2
 IRSSI_SOURCE = irssi-$(IRSSI_VERSION).tar.xz
 # Do not use the github helper here. The generated tarball is *NOT* the
 # same as the one uploaded by upstream for the release.
 IRSSI_SITE = https://github.com/irssi/irssi/releases/download/$(IRSSI_VERSION)
 IRSSI_LICENSE = GPLv2+
 IRSSI_LICENSE_FILES = COPYING
-IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses
+IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses openssl
 
 IRSSI_CONF_OPTS = \
 	--disable-glibtest \
 	--with-ncurses=$(STAGING_DIR)/usr \
 	--without-perl
-
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-IRSSI_CONF_OPTS += --enable-ssl
-IRSSI_DEPENDENCIES += openssl
-else
-IRSSI_CONF_OPTS += --disable-ssl
-endif
 
 ifeq ($(BR2_PACKAGE_IRSSI_PROXY),y)
 IRSSI_CONF_OPTS += --with-proxy
