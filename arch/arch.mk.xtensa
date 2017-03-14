@@ -13,3 +13,16 @@
 ################################################################################
 ARCH_XTENSA_CORE_NAME = $(call qstrip,$(BR2_XTENSA_CORE_NAME))
 ARCH_XTENSA_OVERLAY_TAR = $(call qstrip,$(BR2_XTENSA_OVERLAY_DIR))/xtensa_$(ARCH_XTENSA_CORE_NAME).tar
+
+################################################################################
+# arch-xtensa-overlay-extract -- extract an extensa overlay
+#
+# argument 1 is the path in which to extract
+# argument 2 is the component to extract, one of: gcc, binutils, gdb
+#
+# Example:
+#   $(call arch-xtensa-overlay-extract,/path/to/overlay.tar,$(@D),gcc)
+################################################################################
+define arch-xtensa-overlay-extract
+	tar xf $(ARCH_XTENSA_OVERLAY_TAR) -C $(1) --strip-components=1 $(2)
+endef
