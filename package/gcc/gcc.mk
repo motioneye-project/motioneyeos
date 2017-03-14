@@ -25,7 +25,7 @@ endif
 # Xtensa special hook
 #
 define HOST_GCC_XTENSA_OVERLAY_EXTRACT
-	tar xf $(ARCH_XTENSA_OVERLAY_TAR) -C $(@D) --strip-components=1 gcc
+	$(call arch-xtensa-overlay-extract,$(@D),gcc)
 endef
 
 #
