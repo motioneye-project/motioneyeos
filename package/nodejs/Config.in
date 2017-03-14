@@ -1,8 +1,13 @@
+config BR2_PACKAGE_NODEJS_ARCH_SUPPORTS
+	bool
+	# On ARM, at least ARMv6+ with VFPv2+ is needed
+	default y if BR2_arm && !BR2_ARM_CPU_ARMV4 && !BR2_ARM_CPU_ARMV5 && BR2_ARM_CPU_HAS_VFPV2
+	default y if BR2_mipsel && !BR2_MIPS_SOFT_FLOAT
+	default y if BR2_aarch64 || BR2_i386 || BR2_x86_64
+
 comment "nodejs needs a toolchain w/ C++, dynamic library, threads, gcc >= 4.8, wchar"
 	depends on BR2_USE_MMU
-	depends on BR2_arm || BR2_aarch64 || BR2_i386 || BR2_x86_64 || BR2_mipsel
-	depends on !BR2_MIPS_SOFT_FLOAT
-	depends on !BR2_ARM_CPU_ARMV4
+	depends on BR2_PACKAGE_NODEJS_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR
 
@@ -10,12 +15,7 @@ config BR2_PACKAGE_NODEJS
 	bool "nodejs"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_arm || BR2_aarch64 || BR2_i386 || BR2_x86_64 || BR2_mipsel
-	depends on !BR2_MIPS_SOFT_FLOAT
-	# ARM needs BLX, so v5t+
-	depends on !BR2_ARM_CPU_ARMV4
-	# 0.10.x could be built without the following toolchain dependencies but
-	# simplify things by requiring these basic dependencies for all versions.
+	depends on BR2_PACKAGE_NODEJS_ARCH_SUPPORTS
 	depends on BR2_HOST_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_USE_WCHAR
@@ -31,20 +31,6 @@ config BR2_PACKAGE_NODEJS
 	  http://nodejs.org/
 
 if BR2_PACKAGE_NODEJS
-
-# Starting with 0.12.x, on ARM, V8 (the JS engine)
-# now requires an armv6+ and a VFPv2+.
-config BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
-	bool
-	# On supported architectures other than ARM, no special requirement
-	default y if !BR2_arm
-	# On ARM, at least ARMv6+ with VFPv2+ is needed
-	default y if !BR2_ARM_CPU_ARMV5 && BR2_ARM_CPU_HAS_VFPV2
-
-config BR2_PACKAGE_NODEJS_VERSION_STRING
-	string
-	default "6.9.4"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
-	default "0.10.48"
 
 config BR2_PACKAGE_NODEJS_NPM
 	bool "NPM for the target"

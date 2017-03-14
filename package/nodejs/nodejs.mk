@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NODEJS_VERSION = $(call qstrip,$(BR2_PACKAGE_NODEJS_VERSION_STRING))
+NODEJS_VERSION = 6.9.4
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs zlib \
@@ -27,14 +27,11 @@ else
 NODEJS_CONF_OPTS += --without-ssl
 endif
 
-# 0.10.x does not have icu support
-ifeq ($(findstring 0.10.,$(NODEJS_VERSION)),)
 ifeq ($(BR2_PACKAGE_ICU),y)
 NODEJS_DEPENDENCIES += icu
 NODEJS_CONF_OPTS += --with-intl=system-icu
 else
 NODEJS_CONF_OPTS += --with-intl=none
-endif
 endif
 
 ifneq ($(BR2_PACKAGE_NODEJS_NPM),y)
@@ -63,7 +60,7 @@ define HOST_NODEJS_CONFIGURE_CMDS
 		--without-dtrace \
 		--without-etw \
 		--shared-zlib \
-		$(if $(BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS),--with-intl=none) \
+		--with-intl=none \
 	)
 endef
 
