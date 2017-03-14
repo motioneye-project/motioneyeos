@@ -20,9 +20,7 @@ LIBGTK3_CONF_ENV = \
 
 LIBGTK3_CONF_OPTS = \
 	--disable-glibtest \
-	--enable-explicit-deps=no \
-	--enable-gtk2-dependency \
-	--disable-introspection
+	--enable-explicit-deps=no
 
 # Override pkg-config pkgdatadir variable, it needs the prefix
 LIBGTK3_MAKE_OPTS = \
