@@ -11,6 +11,8 @@ KEEPALIVED_LICENSE = GPLv2+
 KEEPALIVED_LICENSE_FILES = COPYING
 KEEPALIVED_CONF_OPTS += --disable-dbus
 
+KEEPALIVED_PATCH = https://github.com/acassen/keepalived/commit/5d98b7b69fcbba84fa69e5b5e9a019bfbcb76e8b.patch
+
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 KEEPALIVED_DEPENDENCIES += libnfnetlink
 endif
