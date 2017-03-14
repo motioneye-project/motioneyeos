@@ -327,8 +327,8 @@ config BR2_TARGET_UBOOT_SPL_NAME
 	depends on BR2_TARGET_UBOOT_SPL
 	help
 	  A space-separated list of SPL binaries, generated during
-	  u-boot build. For most platform it is spl/u-boot-spl.bin
-	  but not always. It is MLO on OMAP for example.
+	  u-boot build. For most platform it is spl/u-boot-spl.bin but
+	  not always. It is MLO on OMAP and SPL on i.MX6 for example.
 
 config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	bool "Generate image for Xilinx Zynq"
