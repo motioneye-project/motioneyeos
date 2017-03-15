@@ -29,7 +29,6 @@ MONO_CONF_OPTS = --with-mcs-docs=no \
 define MONO_INSTALL_LIBS
 	rsync -av --exclude=*.so --exclude=*.mdb \
 		$(HOST_DIR)/usr/lib/mono $(TARGET_DIR)/usr/lib/
-	rsync -av $(HOST_DIR)/etc/mono $(TARGET_DIR)/etc
 endef
 
 MONO_POST_INSTALL_TARGET_HOOKS += MONO_INSTALL_LIBS
