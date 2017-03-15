@@ -1,4 +1,4 @@
-From 10d5bde8d628a93993dd7305dc9a406da69f65a9 Mon Sep 17 00:00:00 2001
+From 17ffb0cb301d4bf6ef900c8698d716f68cb77360 Mon Sep 17 00:00:00 2001
 From: Peter Seiderer <ps.report@gmx.net>
 Date: Wed, 2 Dec 2015 00:22:26 +0100
 Subject: [PATCH] Adjust for buildroot build.
@@ -19,7 +19,7 @@ Signed-off-by: Peter Seiderer <ps.report@gmx.net>
  3 files changed, 18 insertions(+), 12 deletions(-)
 
 diff --git a/devLib/Makefile b/devLib/Makefile
-index 1b1ebe0..84b4d2a 100644
+index cf665d6..3fb41e8 100644
 --- a/devLib/Makefile
 +++ b/devLib/Makefile
 @@ -36,10 +36,10 @@ DYNAMIC=libwiringPiDev.so.$(VERSION)
@@ -54,7 +54,7 @@ index 1b1ebe0..84b4d2a 100644
  
  .PHONY:	install-static
 diff --git a/gpio/Makefile b/gpio/Makefile
-index 7dcd090..dc4be72 100644
+index f41a005..7095fa5 100644
 --- a/gpio/Makefile
 +++ b/gpio/Makefile
 @@ -32,11 +32,11 @@ endif
@@ -63,14 +63,14 @@ index 7dcd090..dc4be72 100644
  DEBUG	= -O2
 -CC	= gcc
 -INCLUDE	= -I$(DESTDIR)$(PREFIX)/include
--CFLAGS	= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
+-CFLAGS	= $(DEBUG) -Wall -Wextra $(INCLUDE) -Winline -pipe
 +CC	?= gcc
 +INCLUDE	= -I../wiringPi -I../devLib
-+CFLAGS	+= $(DEBUG) -Wall $(INCLUDE) -Winline -pipe
++CFLAGS	+= $(DEBUG) -Wall -Wextra $(INCLUDE) -Winline -pipe
  
 -LDFLAGS	= -L$(DESTDIR)$(PREFIX)/lib
 +LDFLAGS	= -L../wiringPi -L../devLib
- LIBS    = -lwiringPi -lwiringPiDev -lpthread
+ LIBS    = -lwiringPi -lwiringPiDev -lpthread -lrt -lm -lcrypt
  
  # May not need to  alter anything below this line
 @@ -52,9 +52,13 @@ version.h:	../VERSION
@@ -89,7 +89,7 @@ index 7dcd090..dc4be72 100644
  	$Q echo [Compile] $<
  	$Q $(CC) -c $(CFLAGS) $< -o $@
 diff --git a/wiringPi/Makefile b/wiringPi/Makefile
-index acb6e58..8b84dc6 100644
+index e1868b9..68c950e 100644
 --- a/wiringPi/Makefile
 +++ b/wiringPi/Makefile
 @@ -36,10 +36,10 @@ DYNAMIC=libwiringPi.so.$(VERSION)
@@ -100,20 +100,20 @@ index acb6e58..8b84dc6 100644
 +CC	?= gcc
  INCLUDE	= -I.
  DEFS	= -D_GNU_SOURCE
--CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Winline $(INCLUDE) -pipe -fPIC
-+CFLAGS	+= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Winline $(INCLUDE) -pipe -fPIC
+-CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Winline $(INCLUDE) -pipe -fPIC
++CFLAGS	+= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Winline $(INCLUDE) -pipe -fPIC
  
- LIBS    =
+ LIBS    = -lm -lpthread -lrt -lcrypt
  
-@@ -90,6 +90,7 @@ $(STATIC):	$(OBJ)
+@@ -79,6 +79,7 @@ $(STATIC):	$(OBJ)
  $(DYNAMIC):	$(OBJ)
  	$Q echo "[Link (Dynamic)]"
- 	$Q $(CC) -shared -Wl,-soname,libwiringPi.so$(WIRINGPI_SONAME_SUFFIX) -o libwiringPi.so.$(VERSION) -lpthread $(OBJ)
+ 	$Q $(CC) -shared -Wl,-soname,libwiringPi.so$(WIRINGPI_SONAME_SUFFIX) -o libwiringPi.so.$(VERSION) $(LIBS) $(OBJ)
 +	$Q ln -sf libwiringPi.so.$(VERSION) libwiringPi.so
  
  .c.o:
  	$Q echo [Compile] $<
-@@ -115,7 +116,7 @@ install:	$(DYNAMIC)
+@@ -104,7 +105,7 @@ install:	$(DYNAMIC)
  	$Q echo "[Install Dynamic Lib]"
  	$Q install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
  	$Q install -m 0755 libwiringPi.so.$(VERSION)			$(DESTDIR)$(PREFIX)/lib/libwiringPi.so.$(VERSION)
