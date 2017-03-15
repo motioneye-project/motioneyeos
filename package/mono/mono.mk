@@ -18,9 +18,7 @@ MONO_INSTALL_STAGING = YES
 MONO_AUTORECONF = YES
 
 # Disable managed code (mcs folder) from building
-MONO_CONF_OPTS = --disable-gtk-doc \
-	--with-mcs-docs=no \
-	--with-moonlight=no \
+MONO_CONF_OPTS = --with-mcs-docs=no \
 	--with-ikvm-native=no \
 	--enable-minimal=profiler,debug \
 	--disable-mcs-build \
@@ -44,9 +42,7 @@ MONO_DEPENDENCIES += host-mono
 
 ## Mono managed
 
-HOST_MONO_CONF_OPTS = --disable-gtk-doc \
-	--with-mcs-docs=no \
-	--with-moonlight=no \
+HOST_MONO_CONF_OPTS = --with-mcs-docs=no \
 	--disable-libraries \
 	--with-ikvm-native=no \
 	--enable-minimal=profiler,debug \
