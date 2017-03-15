@@ -1,5 +1,2 @@
-# From https://downloads.mariadb.org/mariadb/10.1.21/
-sha1 f9ccaa9881b98eeef68f4dbcf5ab9653c903819f  mariadb-10.1.21.tar.gz
-
-# Locally computed
-sha256 5a816355781ea22a6c65a436d8162f19bd292ec90e2b7d9499c031ae4a659490  mariadb-10.1.21.tar.gz
+# From https://downloads.mariadb.org/mariadb/10.1.22/
+sha256 bcb0572e7ad32cea9740a21e9255f733bdf60a5561ffbda317c22dd12b3966ce  mariadb-10.1.22.tar.gz
