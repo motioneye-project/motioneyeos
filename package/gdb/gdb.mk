@@ -84,9 +84,11 @@ GDB_CONF_ENV = \
 # not when cross-compiling with uClibc or musl as C libraries. So use
 # gl_cv_func_gettimeofday_clobber=no to not use rpl_gettimeofday,
 # assuming musl and uClibc have a properly working gettimeofday
-# implementation. It needs to be passed to GDB_MAKE_ENV and not
-# GDB_CONF_ENV, because otherwise it does not get passed to the
-# configure script of nested packages.
+# implementation. It needs to be passed to GDB_CONF_ENV to build
+# gdbserver only but also to GDB_MAKE_ENV, because otherwise it does
+# not get passed to the configure script of nested packages while
+# building gdbserver with full debugger.
+GDB_CONF_ENV += gl_cv_func_gettimeofday_clobber=no
 GDB_MAKE_ENV = gl_cv_func_gettimeofday_clobber=no
 
 # The shared only build is not supported by gdb, so enable static build for
