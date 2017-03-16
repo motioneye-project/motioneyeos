@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_S6_RC
+	bool "host s6-rc"
+	depends on BR2_PACKAGE_S6_RC
+	help
+	  This package provides the host variant of the s6-rc tools,
+	  required to build the s6-rc service database offline.
+
+	  http://skarnet.org/software/s6-rc/
