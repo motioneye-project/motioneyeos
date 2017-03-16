@@ -148,6 +148,9 @@ Buildroot, with the name used in the manifest files:
 * `Apache-2.0`:
   http://apache.org/licenses/LICENSE-2.0.html[
   Apache License, version 2.0];
+* `ISC`:
+  https://opensource.org/licenses/ISC[
+  ISC License];
 
 [[legal-info-buildroot]]
 === Complying with the Buildroot license
