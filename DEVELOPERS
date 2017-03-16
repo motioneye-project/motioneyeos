@@ -1552,7 +1552,6 @@ F:	package/ne10/
 F:	package/pkg-python.mk
 F:	package/pkg-autotools.mk
 F:	package/pkg-generic.mk
-F:	package/polarssl/
 F:	package/python/
 F:	package/python3/
 F:	package/python-mad/

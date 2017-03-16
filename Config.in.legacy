@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_POLARSSL
+	bool "polarssl has been removed"
+	select BR2_LEGACY
+	help
+	  The polarssl crypto library has been removed since the 1.2.x
+	  release branch is no longer maintained. Newer upstream
+	  branches/releases (mbedtls) have API changes so they're not
+	  drop-in replacements.
+
 config BR2_NBD_CLIENT
 	bool "nbd client option was renamed"
 	select BR2_LEGACY
