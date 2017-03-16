@@ -1,0 +1,44 @@
+From d689d14dbcd768c028eab2fb378d849e543dcfe9 Mon Sep 17 00:00:00 2001
+From: Fred Klassen <fklassen@appneta.com>
+Date: Sun, 26 Feb 2017 20:45:59 -0800
+Subject: [PATCH] #278 fail if capture has a packet that is too large (#286)
+
+* #278 fail if capture has a packet that is too large
+
+[baruch: remove the CHANGELOG update]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: upstream commit d689d14db
+
+diff --git a/src/tcpcapinfo.c b/src/tcpcapinfo.c
+index 775f1625b00f..96928820fe94 100644
+--- a/src/tcpcapinfo.c
++++ b/src/tcpcapinfo.c
+@@ -281,6 +281,15 @@ main(int argc, char *argv[])
+                 caplen = pcap_ph.caplen;
+             }
+ 
++            if (caplentoobig) {
++                printf("\n\nCapture file appears to be damaged or corrupt.\n"
++                        "Contains packet of size %u, bigger than snap length %u\n",
++                        caplen, pcap_fh.snaplen);
++
++                close(fd);
++                break;
++            }
++
+             /* check to make sure timestamps don't go backwards */
+             if (last_sec > 0 && last_usec > 0) {
+                 if ((pcap_ph.ts.tv_sec == last_sec) ? 
+@@ -306,7 +315,7 @@ main(int argc, char *argv[])
+                 }
+ 
+                 close(fd);
+-                continue;
++                break;
+             }
+ 
+             /* print the frame checksum */
+-- 
+2.11.0
+
