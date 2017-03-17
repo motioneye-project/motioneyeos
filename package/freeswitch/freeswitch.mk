@@ -37,6 +37,10 @@ FREESWITCH_DEPENDENCIES = \
 	util-linux \
 	zlib
 
+# disable display of ClueCon banner in fs_cli
+FREESWITCH_CONF_ENV += \
+	disable_cc=yes
+
 # we neither need host-perl nor host-php
 FREESWITCH_CONF_ENV += \
 	ac_cv_prog_PERL=false \
