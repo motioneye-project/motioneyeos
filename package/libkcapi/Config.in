@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBKCAPI
+	bool "libkcapi"
+	help
+	  Linux Kernel Crypto API userspace interface library
+
+	  http://www.chronox.de/libkcapi.html
+
+if BR2_PACKAGE_LIBKCAPI
+
+config BR2_PACKAGE_LIBKCAPI_APPS
+	bool "build test applications"
+	help
+	  Build additional test applications that can provide
+	  performance or algorithm tests.
+
+endif

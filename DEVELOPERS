@@ -1003,6 +1003,9 @@ F:	package/easydbus/
 F:	package/rs485conf/
 F:	package/turbolua/
 
+N:	Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+F:	package/libkcapi/
+
 N:	Marek Belisko <marek.belisko@open-nandra.com>
 F:	package/libatasmart/
 F:	package/polkit/
