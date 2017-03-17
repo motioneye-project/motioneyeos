@@ -43,4 +43,15 @@ endef
 
 ACL_POST_INSTALL_STAGING_HOOKS += ACL_FIX_LIBTOOL_LA_LIBDIR
 
+HOST_ACL_DEPENDENCIES = host-attr
+HOST_ACL_CONF_OPTS = --enable-gettext=no
+HOST_ACL_MAKE_ENV = CFLAGS="$(HOST_CFLAGS)"
+HOST_ACL_INSTALL_OPTS = \
+	prefix=$(HOST_DIR)/usr \
+	exec_prefix=$(HOST_DIR)/usr \
+	PKG_DEVLIB_DIR=$(HOST_DIR)/usr/lib \
+	install-dev install-lib
+# For the host, libacl.la is correct, no fixup needed.
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
