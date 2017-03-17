@@ -1,0 +1,39 @@
+From 68213f6902d291d2ba1626fd950fd7d4a1329d33 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 28 Nov 2016 23:13:08 +0100
+Subject: [PATCH] syslogd.c: rename dprintf() to mydprintf()
+
+There is an existing kludge in syslogd.c to rename all dprintf()
+function calls and its definition to mydprintf(). This kludge is only
+applied when the glibc C library is used (i.e when GLIBC is defined),
+because glibc also provides a dprintf() function, with a different
+signature and behavior.
+
+However, the musl C library also provides the dprintf() function (with
+the same signature as the one in glibc, obviously), but does not define
+the GLIBC macro, causing a conflicting definition of dprintf.
+
+This commit fixes that by having the rename kludge used unconditionally.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ syslogd.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/syslogd.c b/syslogd.c
+index b5e8054..22a9ed5 100644
+--- a/syslogd.c
++++ b/syslogd.c
+@@ -818,9 +818,7 @@ void doexit(int sig);
+ void init();
+ void cfline(char *line, register struct filed *f);
+ int decode(char *name, struct code *codetab);
+-#if defined(__GLIBC__)
+ #define dprintf mydprintf
+-#endif /* __GLIBC__ */
+ static void dprintf(char *, ...);
+ static void allocate_log(void);
+ void sighup_handler();
+-- 
+2.7.4
+

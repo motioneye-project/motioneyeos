@@ -1,0 +1,195 @@
+#!/bin/bash
+set -e
+
+TOOLCHAINS_URL='http://autobuild.buildroot.org/toolchains/configs/toolchain-configs.csv'
+
+main() {
+    local o O opts
+    local cfg dir pkg random toolchain
+    local ret nb nb_skip nb_fail
+    local -a toolchains
+
+    o='hc:d:p:r:'
+    O='help,config-snippet:build-dir:package:,random:'
+    opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
+    eval set -- "${opts}"
+
+    random=0
+    while [ ${#} -gt 0 ]; do
+        case "${1}" in
+        (-h|--help)
+            help; exit 0
+            ;;
+        (-c|--config-snippet)
+            cfg="${2}"; shift 2
+            ;;
+        (-d|--build-dir)
+            dir="${2}"; shift 2
+            ;;
+        (-p|--package)
+            pkg="${2}"; shift 2
+            ;;
+        (-r|--random)
+            random="${2}"; shift 2
+            ;;
+        (--)
+            shift; break
+            ;;
+        esac
+    done
+    if [ -z "${cfg}" ]; then
+        printf "error: no config snippet specified\n" >&2; exit 1
+    fi
+    if [ ! -e "${cfg}" ]; then
+        printf "error: %s: no such file\n" "${cfg}" >&2; exit 1
+    fi
+    if [ -z "${dir}" ]; then
+        dir="${HOME}/br-test-pkg"
+    fi
+
+    # Extract the URLs of the toolchains; drop internal toolchains
+    # E.g.: http://server/path/to/name.config,arch,libc
+    #  -->  http://server/path/to/name.config
+    toolchains=($(curl -s "${TOOLCHAINS_URL}" \
+                  |sed -r -e 's/,.*//; /internal/d;' \
+                  |if [ ${random} -gt 0 ]; then \
+                      sort -R |head -n ${random}
+                   else
+                      cat
+                   fi |sort
+                 )
+               )
+
+    if [ ${#toolchains[@]} -eq 0 ]; then
+        printf "error: no toolchain found (networking issue?)\n" >&2; exit 1
+    fi
+
+    nb=0
+    nb_skip=0
+    nb_fail=0
+    for toolchain in "${toolchains[@]}"; do
+        build_one "${dir}" "${toolchain}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
+        case ${ret} in
+        (0) ;;
+        (1) : $((nb_skip++));;
+        (2) : $((nb_fail++));;
+        esac
+        : $((nb++))
+    done
+
+    printf "%d builds, %d skipped, %d failed\n" ${nb} ${nb_skip} ${nb_fail}
+}
+
+build_one() {
+    local dir="${1}"
+    local url="${2}"
+    local cfg="${3}"
+    local pkg="${4}"
+    local toolchain
+
+    # Using basename(1) on a URL works nicely
+    toolchain="$(basename "${url}" .config)"
+
+    printf "%40s: " "${toolchain}"
+
+    dir="${dir}/${toolchain}"
+    mkdir -p "${dir}"
+
+    if ! curl -s "${url}" >"${dir}/.config"; then
+        printf "FAILED\n"
+        return 2
+    fi
+
+    cat >>"${dir}/.config" <<-_EOF_
+	BR2_INIT_NONE=y
+	BR2_SYSTEM_BIN_SH_NONE=y
+	# BR2_PACKAGE_BUSYBOX is not set
+	# BR2_TARGET_ROOTFS_TAR is not set
+	_EOF_
+    cat "${cfg}" >>"${dir}/.config"
+
+    if ! make O="${dir}" olddefconfig >/dev/null 2>&1; then
+        printf "FAILED\n"
+        return 2
+    fi
+    # We want all the options from the snippet to be present as-is (set
+    # or not set) in the actual .config; if one of them is not, it means
+    # some dependency from the toolchain or arch is not available, in
+    # which case this config is untestable and we skip it.
+    # We don't care about the locale to sort in, as long as both sort are
+    # done in the same locale.
+    comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
+    if [ -s "${dir}/missing.config" ]; then
+        printf "SKIPPED\n"
+        return 1
+    fi
+    # Remove file, it's empty anyway.
+    rm -f "${dir}/missing.config"
+
+    if [ -n "${pkg}" ]; then
+        if ! make O="${dir}" "${pkg}-dirclean" >> "${dir}/logfile" 2>&1; then
+            printf "FAILED\n"
+            return 2
+        fi
+    fi
+
+    # shellcheck disable=SC2086
+    if ! make O="${dir}" ${pkg} >> "${dir}/logfile" 2>&1; then
+        printf "FAILED\n"
+        return 2
+    fi
+
+    printf "OK\n"
+}
+
+help() {
+    cat <<_EOF_
+test-pkg: test-build a package against various toolchains and architectures
+
+The supplied config snippet is appended to each toolchain config, the
+resulting configuration is checked to ensure it still contains all options
+specified in the snippet; if any is missing, the build is skipped, on the
+assumption that the package under test requires a toolchain or architecture
+feature that is missing.
+
+In case failures are noticed, you can fix the package and just re-run the
+same command again; it will re-run the test where it failed. If you did
+specify a package (with -p), the package build dir will be removed first.
+
+The list of toolchains is retrieved from the Buildroot autobuilders, available
+at ${TOOLCHAINS_URL}.
+
+Options:
+
+    -h, --help
+        Print this help.
+
+    -c CFG, --config-snippet CFG
+        Use the CFG file as the source for the config snippet. This file
+        should contain all the config options required to build a package.
+
+    -d DIR, --build-dir DIR
+        Do the builds in directory DIR, one sub-dir per toolchain.
+
+    -p PKG, --package PKG
+        Test-build the package PKG, by running 'make PKG'; if not specified,
+        just runs 'make'.
+
+    -r N, --random N
+        Limit the tests to the N randomly selected toolchains, instead of
+        building with all toolchains.
+
+Example:
+
+    Testing libcec would require a config snippet that contains:
+        BR2_PACKAGE_LIBCEC=y
+
+    Testing libcurl with openSSL support would require a snippet such as:
+        BR2_PACKAGE_OPENSSL=y
+        BR2_PACKAGE_LIBCURL=y
+
+_EOF_
+}
+
+my_name="${0##*/}"
+main "${@}"

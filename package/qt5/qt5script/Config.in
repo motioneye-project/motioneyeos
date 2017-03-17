@@ -6,10 +6,11 @@ config BR2_PACKAGE_QT5SCRIPT
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5script module.
+	  Qt Script provides support for making Qt applications
+	  scriptable. Provided for Qt 4.x compatibility.
 
 	  This package has been tagged as deprecated since version
 	  5.5.0 and should be replaced by Qt QML module in new
 	  design.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtscript-index.html

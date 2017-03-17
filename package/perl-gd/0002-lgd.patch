@@ -7,7 +7,7 @@ Index: b/Makefile.PL
 ===================================================================
 --- a/Makefile.PL
 +++ b/Makefile.PL
-@@ -34,9 +34,9 @@
+@@ -42,9 +42,9 @@
  END
  }
  
@@ -18,7 +18,7 @@ Index: b/Makefile.PL
  
  # support for AMD64 libraries
  if (-d '/usr/lib64') {
-@@ -291,7 +291,6 @@
+@@ -294,7 +294,6 @@
    @$LIBPATH      = map {s/^-L// && "-L$_"} split /\s+/,$ldflags;
    @$LIBS         = split /\s+/,$libs;
  

@@ -11,6 +11,7 @@ XUTIL_MAKEDEPEND_LICENSE = MIT
 XUTIL_MAKEDEPEND_LICENSE_FILES = COPYING
 
 XUTIL_MAKEDEPEND_DEPENDENCIES = xproto_xproto
+HOST_XUTIL_MAKEDEPEND_DEPENDENCIES = host-xproto_xproto
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

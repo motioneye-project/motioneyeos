@@ -14,6 +14,13 @@ PINENTRY_DEPENDENCIES = \
 	host-pkgconf
 PINENTRY_CONF_OPTS += --without-libcap       # requires PAM
 
+# pinentry uses some std::string functionality that needs C++11
+# support when gcc >= 5.x. This should be removed when bumping
+# pinentry, since newer versions no longer use std::string.
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_5),y)
+PINENTRY_CONF_ENV = CXXFLAGS="$(TARGET_CXXFLAGS) -std=gnu++11"
+endif
+
 # build with X if available
 ifeq ($(BR2_PACKAGE_XORG7),y)
 PINENTRY_CONF_OPTS += --with-x

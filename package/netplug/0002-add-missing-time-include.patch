@@ -1,0 +1,20 @@
+Add missing <time.h> include
+
+netplug.h uses time_t, so it must include <time.h>. This fixes a build
+issue with the musl C library.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/netplug.h
+===================================================================
+--- a/netplug.h
++++ b/netplug.h
+@@ -20,7 +20,7 @@
+ #ifndef __netplug_h
+ #define __netplug_h
+ 
+-
++#include <time.h>
+ #include <asm/types.h>
+ #include <sys/socket.h>
+ #include <linux/netlink.h>

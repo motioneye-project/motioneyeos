@@ -8,6 +8,7 @@ config BR2_PACKAGE_SETOOLS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libselinux
 	# bfin: infamous _ symbol prefix issue
 	# nios2: triggers some toolchain issue "No symbol version
 	# section for versioned symbol"
@@ -28,7 +29,8 @@ config BR2_PACKAGE_SETOOLS
 
 	  https://github.com/TresysTechnology/setools3/wiki
 
-comment "setools needs a toolchain w/ threads, C++, wchar, dynamic library"
+comment "setools needs a glibc toolchain w/ threads, C++, wchar, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
-		|| !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
+		|| !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_TOOLCHAIN_USES_GLIBC
 	depends on !BR2_nios2 && !BR2_bfin && !BR2_arc

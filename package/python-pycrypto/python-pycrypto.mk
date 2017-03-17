@@ -26,6 +26,7 @@ HOST_PYTHON_PYCRYPTO_POST_EXTRACT_HOOKS += PYTHON_PYCRYPTO_RENAME_LICENSE
 PYTHON_PYCRYPTO_LICENSE_FILES += LEGAL/copy/LICENSE.original
 
 PYTHON_PYCRYPTO_DEPENDENCIES = gmp
+HOST_PYTHON_PYCRYPTO_DEPENDENCIES = host-gmp
 
 # The configure step needs to be run outside of the setup.py since it isn't
 # run correctly for cross-compiling

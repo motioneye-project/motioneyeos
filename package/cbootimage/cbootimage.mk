@@ -10,4 +10,6 @@ CBOOTIMAGE_LICENSE = GPLv2
 CBOOTIMAGE_LICENSE_FILES = COPYING
 CBOOTIMAGE_AUTORECONF = YES
 
+$(eval $(autotools-package))
 $(eval $(host-autotools-package))
+

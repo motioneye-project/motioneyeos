@@ -1,0 +1,14 @@
+config BR2_PACKAGE_HOST_LTTNG_BABELTRACE
+	bool "host lttng-babeltrace"
+	help
+	  The Babeltrace project provides trace read and write
+	  libraries, as well as a trace converter application. Plugins
+	  can be created for any trace format to allow its conversion
+	  to/from another trace format.
+
+	  Babeltrace is the reference implementation of the Common
+	  Trace Format (see <http://diamon.org/ctf/>). Babeltrace
+	  can decode and display LTTng traces, since the latter are
+	  written using the CTF format.
+
+	  http://diamon.org/babeltrace

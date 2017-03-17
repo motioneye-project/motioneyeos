@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-LCMS2_VERSION = 2.7
-LCMS2_SITE = http://downloads.sourceforge.net/lcms/lcms
+LCMS2_VERSION = 2.8
+LCMS2_SITE = http://downloads.sourceforge.net/project/lcms/lcms/$(LCMS2_VERSION)
 LCMS2_LICENSE = MIT
 LCMS2_LICENSE_FILES = COPYING
 LCMS2_INSTALL_STAGING = YES
-
-LCMS2_CONF_OPTS = \
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
 LCMS2_CONF_OPTS += --with-jpeg

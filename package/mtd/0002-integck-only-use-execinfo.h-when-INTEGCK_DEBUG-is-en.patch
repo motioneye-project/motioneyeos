@@ -1,0 +1,62 @@
+From 30f0cd91b21dbc5d593d61ae44875ad0cb53cb4d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 16 Jul 2016 11:27:06 +0200
+Subject: [PATCH] integck: only use execinfo.h when INTEGCK_DEBUG is enabled
+
+Guard the usage of execinfo.h by INTEGCK_DEBUG so that by defaut,
+integck builds properly on systems without <execinfo.h> (uClibc and
+musl based systems). As stated in the code, the backtrace()
+functionality of <execinfo.h> will anyway only work properly when
+INTEGCK_DEBUG is defined (it makes all functions non-static, which is
+needed for backtrace to provide some useful information).
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tests/fs-tests/integrity/integck.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/tests/fs-tests/integrity/integck.c b/tests/fs-tests/integrity/integck.c
+index 8badd1f..6ef817e 100644
+--- a/tests/fs-tests/integrity/integck.c
++++ b/tests/fs-tests/integrity/integck.c
+@@ -31,7 +31,9 @@
+ #include <getopt.h>
+ #include <assert.h>
+ #include <mntent.h>
++#ifdef INTEGCK_DEBUG
+ #include <execinfo.h>
++#endif
+ #include <bits/stdio_lim.h>
+ #include <sys/mman.h>
+ #include <sys/vfs.h>
+@@ -248,14 +250,18 @@ static char *random_name_buf;
+ static void check_failed(const char *cond, const char *func, const char *file,
+ 			 int line)
+ {
+-	int error = errno, count;
++	int error = errno;
++#ifdef INTEGCK_DEBUG
++	int count;
+ 	void *addresses[128];
++#endif
+ 
+ 	fflush(stdout);
+ 	fflush(stderr);
+ 	errmsg("condition '%s' failed in %s() at %s:%d",
+ 	       cond, func, file, line);
+ 	normsg("error %d (%s)", error, strerror(error));
++#ifdef INTEGCK_DEBUG
+ 	/*
+ 	 * Note, to make this work well you need:
+ 	 * 1. Make all functions non-static - add "#define static'
+@@ -264,6 +270,7 @@ static void check_failed(const char *cond, const char *func, const char *file,
+ 	 */
+ 	count = backtrace(addresses, 128);
+ 	backtrace_symbols_fd(addresses, count, fileno(stdout));
++#endif
+ 	exit(EXIT_FAILURE);
+ }
+ 
+-- 
+2.7.4
+

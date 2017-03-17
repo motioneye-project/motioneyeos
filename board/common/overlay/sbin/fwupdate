@@ -1,0 +1,369 @@
+#!/bin/bash
+
+
+#### usage ####
+
+function exit_usage() {
+    echo "Usage: fwupdate versions                  (lists available versions)"
+    echo "       fwupdate current                   (shows the current version"
+    echo "       fwupdate download <version|url>    (downloads a firmware version)"
+    echo "       fwupdate extract                   (extracts the downloaded firmware archive)"
+    echo "       fwupdate flashboot                 (flashes the boot partition from extracted image)"
+    echo "       fwupdate flashreboot               (prepares for reboot + root partititon flash)"
+    echo "       fwupdate status                    (shows the current firmware updating status; see below)"
+    echo ""
+    echo "Statuses:"
+    echo "       idle"
+    echo "       downloading <version>"
+    echo "       downloaded <version>"
+    echo "       extracting <version>"
+    echo "       extracted <version>"
+    echo "       flashing boot <version>"
+    echo "       boot ready <version>"
+    echo ""
+
+    exit 1
+}
+
+if [ -z "$1" ]; then
+    exit_usage
+fi
+
+
+#### configuration ####
+
+SYS_VERSION_FILE=/etc/version
+SYS_BOARD_FILE=/etc/board
+OS_CONF=/data/etc/os.conf
+
+BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
+MIN_FREE_DISK=$((500*1024))  # 500 MB
+VER_FILE=version
+ROOT_INFO_FILE=root_info
+BOOT_READY_FILE=boot_flash_ready
+
+FW_DIR=/data/.fwupdate
+FW_FILE=firmware.img.gz
+FW_FILE_EXTR=firmware.img
+
+CURL_LOG_FILE=curl.log
+CURL_PID_FILE=curl.pid
+
+GUNZIP_LOG_FILE=gunzip.log
+GUNZIP_PID_FILE=gunzip.pid
+
+DD_LOG_FILE=dd.log
+DD_PID_FILE=dd.pid
+
+
+#### versions ####
+
+function show_versions() {
+    source $OS_CONF
+    board=$(cat $SYS_BOARD_FILE)
+    show_url=$1
+  
+    # the /usr/libexec/list-versions-* helpers return a table with the following format:
+    #     <version>|<prerelease>|<board>|<url>
+    versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
+               /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
+
+    for version in $versions; do
+        OIFS=$IFS
+        IFS="|"
+        varr=($version)
+        IFS=$OIFS
+        if [ "$os_prereleases" == "false" ] && [ "${varr[1]}" == "true" ]; then
+            continue  # skip prereleases
+        fi
+        if [ "$board" != "${varr[2]}" ]; then
+            continue  # skip other boards
+        fi
+
+        if [ "$show_url" == "true" ]; then
+            echo ${varr[0]} ${varr[3]}
+        else
+            echo ${varr[0]}
+        fi
+    done
+}
+
+function show_current() {
+    source $SYS_VERSION_FILE
+    
+    echo $os_version
+}
+
+
+#### download ####
+
+function do_download() {
+    echo "downloading..."
+
+    rm -f $FW_DIR/$FW_FILE 
+    rm -f $FW_DIR/$FW_FILE_EXTR
+    rm -f $FW_DIR/$BOOT_READY_FILE
+
+    source $OS_CONF
+    board=$(cat $SYS_BOARD_FILE)
+    url=$1
+    version=$1
+
+    if ! [[ "$url" == http* ]]; then  # a version was given
+        url=$(show_versions true | grep "^$1" | cut -d ' ' -f 2)
+    else
+        version="custom"
+    fi
+
+    if [ -z "$url" ]; then
+        echo "no such version" 1>&2
+        exit 1
+    fi
+
+    free_disk=$(df /data | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4)
+    if [ "$free_disk" -lt $MIN_FREE_DISK ]; then
+        echo "not enough disk space" 1>&2
+        exit 1
+    fi
+
+    rm -rf $FW_DIR/*
+    mkdir -p $FW_DIR
+    echo $version > $FW_DIR/$VER_FILE
+
+    curl_opts="-S -f -L"
+    if [ -n "$os_firmware_username" ]; then
+        curl_opts+=" --user $os_firmware_username:$os_firmware_password"
+    fi
+
+    curl $curl_opts -o $FW_DIR/$FW_FILE "$url" &> $FW_DIR/$CURL_LOG_FILE &
+    pid=$!
+    echo $pid > $FW_DIR/$CURL_PID_FILE
+    wait $pid
+}
+
+function download_status() {
+    if [ -f $FW_DIR/$CURL_PID_FILE ]; then
+        pid=$(cat $FW_DIR/$CURL_PID_FILE)
+        if kill -0 $pid &>/dev/null; then
+            echo "running"
+            return
+        fi
+    fi
+
+    if [ -f $FW_DIR/$FW_FILE ]; then
+        echo "done"
+    fi
+}
+
+
+#### extract ####
+
+function do_extract() {
+    echo "extracting..."
+    
+    rm -f $FW_DIR/$FW_FILE_EXTR
+    rm -f $FW_DIR/$BOOT_READY_FILE
+
+    if ! [ -f $FW_DIR/$FW_FILE ]; then
+        echo "firmware file not downloaded" 1>&2
+        exit 1
+    fi
+
+    rm -f $FW_DIR/$FW_FILE_EXTR
+
+    gunzip -k -c $FW_DIR/$FW_FILE > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$GUNZIP_LOG_FILE &
+    pid=$!
+    echo $pid > $FW_DIR/$GUNZIP_PID_FILE
+    wait $pid
+
+    # TODO verify hash
+}
+
+function extract_status() {
+    if [ -f $FW_DIR/$GUNZIP_PID_FILE ]; then
+        pid=$(cat $FW_DIR/$GUNZIP_PID_FILE)
+        if kill -0 $pid &>/dev/null; then
+            echo "running"
+            return
+        fi
+    fi
+
+    if [ -f $FW_DIR/$FW_FILE_EXTR ]; then
+        echo "done"
+    fi
+}
+
+
+#### flash boot ####
+
+function flash_boot() {
+    echo "flashing boot..."
+    
+    rm -f $FW_DIR/$BOOT_READY_FILE
+
+    set +e
+    board=$(cat $SYS_BOARD_FILE)
+
+    cp -r /boot $FW_DIR/old_boot
+    umount /boot
+    trap flash_cleanup EXIT
+
+    mount -o remount,rw /
+    mv /sbin/reboot /sbin/reboot.bak
+    ln -s /bin/true /sbin/reboot
+    
+    boot_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}1")
+    boot_info=($boot_info)
+    boot_start=$((${boot_info[1]} / 2048))  # in MB
+    boot_size=$((${boot_info[3]} / 1048576))  # in MB
+
+    root_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}2")
+    root_info=($root_info)
+    root_start=$((${root_info[1]} / 2048))  # in MB
+    root_size=$((${root_info[3]} / 1048576))  # in MB
+    
+    echo $root_start $root_size > $FW_DIR/$ROOT_INFO_FILE
+
+    dd if=$FW_DIR/$FW_FILE_EXTR skip=$boot_start of=$BOOT_DEV bs=1048576 count=$boot_size &>$FW_DIR/$DD_LOG_FILE &
+    pid=$!
+    echo $pid > $FW_DIR/$DD_PID_FILE
+    wait $pid
+
+    mount -T /etc/fstab.disk -o rw /boot
+    
+    # the /usr/libexec/fw-restore-boot-cfg script, if present, takes the old (backup) boot dir as argument
+    # and should restore any /boot configuration that needs to be preserved across updates
+    # from the old boot dir to the current (new) /boot dir
+    if [ -x /usr/libexec/fw-restore-boot-cfg ]; then
+        /usr/libexec/fw-restore-boot-cfg $FW_DIR/old_boot 2>/dev/null || true
+    fi
+    touch $FW_DIR/$BOOT_READY_FILE
+}
+
+function flash_boot_status() {
+    if [ -f $FW_DIR/$DD_PID_FILE ]; then
+        pid=$(cat $FW_DIR/$DD_PID_FILE)
+        if kill -0 $pid &>/dev/null; then
+            echo "running"
+            return
+        fi
+    fi
+
+    if [ -f $FW_DIR/$BOOT_READY_FILE ]; then
+        echo "done"
+    fi
+}
+
+function flash_cleanup() {
+    if [ -f /sbin/reboot.bak ]; then
+        rm -f /sbin/reboot
+        mv /sbin/reboot.bak /sbin/reboot
+    fi
+    
+    mount /boot 2>/dev/null
+}
+
+
+#### flash reboot ####
+
+function flash_reboot() {
+    echo "preparing for reboot..."
+
+    board=$(cat $SYS_BOARD_FILE)
+    
+    # the /usr/libexec/fw-prepare-boot script should be present and should
+    # make the necessary changes to the current boot configuration so that
+    # the firmware update initramfs will be used by the next boot
+    mount -o remount,rw /boot
+    if [ -x /usr/libexec/fw-prepare-boot ]; then
+        /usr/libexec/fw-prepare-boot
+    fi
+
+    sync
+    busybox reboot &
+    sleep 10
+    echo b > /proc/sysrq-trigger
+    
+    exit 0
+}
+
+
+#### status ####
+
+function show_status() {
+    status=$(flash_boot_status)
+    if [ "$status" == "running" ]; then
+        echo "flashing boot $(new_version)"
+        return
+    elif [ "$status" == "done" ]; then
+        echo "boot ready $(new_version)"
+        return
+    fi
+
+    status=$(extract_status)
+    if [ "$status" == "running" ]; then
+        echo "extracting $(new_version)"
+        return
+    elif [ "$status" == "done" ]; then
+        echo "extracted $(new_version)"
+        return
+    fi
+    
+    status=$(download_status)
+    if [ "$status" == "running" ]; then
+        echo "downloading $(new_version)"
+        return
+    elif [ -n "$status" ]; then
+        echo "downloaded $(new_version)"
+        return
+    fi
+
+    echo "idle"
+}
+
+function new_version() {
+    cat $FW_DIR/$VER_FILE
+}
+
+
+case "$1" in
+    versions)
+        show_versions
+        ;;
+
+    current)
+        show_current
+        ;;
+
+    download)
+        if [ -z "$2" ]; then
+            exit_usage
+        fi
+
+        do_download $2
+        show_status
+        ;;
+
+    extract)
+        do_extract
+        show_status
+        ;;
+
+    flashboot)
+        flash_boot
+        show_status
+        ;;
+
+    flashreboot)
+        flash_reboot
+        ;;
+
+    status)
+        show_status
+        ;;
+
+    *)
+        exit_usage
+        ;;
+esac
+

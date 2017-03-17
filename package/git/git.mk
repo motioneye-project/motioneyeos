@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-GIT_VERSION = 2.8.2
+GIT_VERSION = 2.11.1
 GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = https://www.kernel.org/pub/software/scm/git
-GIT_LICENSE = GPLv2 LGPLv2.1+
+GIT_LICENSE = GPLv2, LGPLv2.1+
 GIT_LICENSE_FILES = COPYING LGPL-2.1
 GIT_DEPENDENCIES = zlib host-gettext
 

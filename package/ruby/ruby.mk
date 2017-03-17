@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-RUBY_VERSION_MAJOR = 2.3
-RUBY_VERSION = $(RUBY_VERSION_MAJOR).1
-RUBY_VERSION_EXT = 2.3.0
+RUBY_VERSION_MAJOR = 2.4
+RUBY_VERSION = $(RUBY_VERSION_MAJOR).0
+RUBY_VERSION_EXT = 2.4.0
 RUBY_SITE = http://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION_MAJOR)
 RUBY_SOURCE = ruby-$(RUBY_VERSION).tar.xz
 RUBY_DEPENDENCIES = host-pkgconf host-ruby
@@ -24,10 +24,21 @@ RUBY_CFLAGS = $(TARGET_CFLAGS)
 # With some SuperH toolchains (like Sourcery CodeBench 2012.09), ruby fails to
 # build with 'pcrel too far'. This seems to be caused by the -Os option we pass
 # by default. To fix the problem, use standard -O2 optimization instead.
-ifeq ($(BR2_sh)$(BR2_sh64),y)
+ifeq ($(BR2_sh),y)
 RUBY_CFLAGS += -O2
 endif
 RUBY_CONF_ENV = CFLAGS="$(RUBY_CFLAGS)"
+
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+# On uClibc, finite, isinf and isnan are not directly implemented as
+# functions.  Instead math.h #define's these to __finite, __isinf and
+# __isnan, confusing the Ruby configure script. Tell it that they
+# really are available.
+RUBY_CONF_ENV += \
+	ac_cv_func_finite=yes \
+	ac_cv_func_isinf=yes \
+	ac_cv_func_isnan=yes
+endif
 
 ifeq ($(BR2_bfin),y)
 RUBY_CONF_ENV += ac_cv_func_dl_iterate_phdr=no

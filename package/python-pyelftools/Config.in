@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYELFTOOLS
+	bool "python-pyelftools"
+	help
+	  Pyelftools is a Python library for parsing and analyzing ELF
+	  files and DWARF debug information.
+
+	  https://github.com/eliben/pyelftools

@@ -8,6 +8,6 @@ config BR2_PACKAGE_LIBUMP
 
 	  http://github.com/linux-sunxi/libump
 
-comment "libump needs a (e)glibc toolchain"
+comment "libump needs a glibc toolchain"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

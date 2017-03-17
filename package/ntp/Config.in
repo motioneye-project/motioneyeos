@@ -1,6 +1,7 @@
 config BR2_PACKAGE_NTP
 	bool "ntp"
 	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_OPENSSL
 	help
 	  Network Time Protocol suite/programs.
 	  Provides things like ntpd, ntpdate, ntpq, etc...
@@ -18,6 +19,12 @@ config BR2_PACKAGE_NTP_NTP_KEYGEN
 	bool "ntp-keygen"
 	help
 	  Create a NTP host key
+
+config BR2_PACKAGE_NTP_NTP_SHM_CLK
+	bool "SHM clock support"
+	help
+	  Compile ntp with support for a SHM clock attached through
+	  shared memory.
 
 config BR2_PACKAGE_NTP_NTP_WAIT
 	bool "ntp-wait"

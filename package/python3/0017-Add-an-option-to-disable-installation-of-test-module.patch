@@ -1,4 +1,4 @@
-From 3cdd905ad1ff001713d20b768c001b5299a2e72c Mon Sep 17 00:00:00 2001
+From 1d2891204c6bf05d5e2eb0e5fa2ee78f6a2b755b Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:47:00 +0100
 Subject: [PATCH] Add an option to disable installation of test modules
@@ -14,12 +14,12 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  2 files changed, 42 insertions(+), 20 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index e0f9e0f..12fae84 100644
+index 9420860..d4c771a 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1133,8 +1133,30 @@ PLATDIR=	plat-$(MACHDEP)
- EXTRAPLATDIR= @EXTRAPLATDIR@
- MACHDEPS=	$(PLATDIR) $(EXTRAPLATDIR)
+@@ -1166,8 +1166,30 @@ maninstall:	altmaninstall
+ PLATDIR=	@PLATDIR@
+ MACHDEPS=	$(PLATDIR)
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
 -LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
 -		tkinter/test/test_ttk site-packages test \
@@ -50,7 +50,7 @@ index e0f9e0f..12fae84 100644
  		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -1161,28 +1183,22 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
+@@ -1199,28 +1221,22 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
  		test/test_importlib/namespace_pkgs/project3/parent/child \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
@@ -92,10 +92,10 @@ index e0f9e0f..12fae84 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index a3026b8..b7a8836 100644
+index bfb599e..9f3d226 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2659,6 +2659,12 @@ if test "$posix_threads" = "yes"; then
+@@ -2895,6 +2895,12 @@ if test "$posix_threads" = "yes"; then
  fi
  
  

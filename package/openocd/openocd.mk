@@ -99,5 +99,20 @@ HOST_OPENOCD_CONF_OPTS = \
 
 HOST_OPENOCD_DEPENDENCIES = host-libftdi host-libusb host-libusb-compat
 
+# Avoid documentation rebuild. On PowerPC64(le), we patch the
+# configure script. Due to this, the version.texi files gets
+# regenerated, and then since it has a newer date than openocd.info,
+# openocd build system rebuilds the documentation. Unfortunately, this
+# documentation rebuild fails on old machines. We work around this by
+# faking the date of the generated version.texi file, to make the
+# build system believe the documentation doesn't need to be
+# regenerated.
+define OPENOCD_FIX_VERSION_TEXI
+       touch -r $(@D)/doc/openocd.info $(@D)/doc/version.texi
+endef
+OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
+HOST_OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
+
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

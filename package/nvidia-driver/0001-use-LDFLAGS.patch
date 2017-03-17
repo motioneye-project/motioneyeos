@@ -1,0 +1,48 @@
+kernel: use LDFLAGS when linking modules
+
+Currently, linking module objects is simply using $(LD), assuming that
+the default emulation is correct for the current architecture.
+
+However, that might not be the case when the toolchain default is not
+the same as the current arch. For example, if the toolchain defaults to
+i386 and is capable of x86_64, and we're targetting x86_64 (or the
+opposite), the link would fail because the ld emulation is incorrect:
+
+    .../i686-pc-linux-gnu-ld: Relocatable linking with relocations from
+    format elf64-x86-64 (.../nvidia-driver-370.23/kernel/nvidia/nv-frontend.o)
+    to format elf32-i386 (.../nvidia-driver-370.23/kernel/nvidia/nv-interface.o)
+    is not supported
+
+Add use of $(LDFLAGS) when doing the link, as the kernel provides the
+proper emulation in those.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Issue reported upstream:
+    https://devtalk.nvidia.com/default/topic/958653/
+
+diff -durN nvidia-driver-370.23.orig/kernel/nvidia/nvidia.Kbuild nvidia-driver-370.23/kernel/nvidia/nvidia.Kbuild
+--- nvidia-driver-370.23.orig/kernel/nvidia/nvidia.Kbuild	2016-08-09 01:57:50.000000000 +0200
++++ nvidia-driver-370.23/kernel/nvidia/nvidia.Kbuild	2016-08-20 12:25:02.780233423 +0200
+@@ -87,7 +87,7 @@
+ always += $(NVIDIA_INTERFACE)
+ 
+ $(obj)/$(NVIDIA_INTERFACE): $(addprefix $(obj)/,$(NVIDIA_OBJECTS))
+-	$(LD) -r -o $@ $^
++	$(LD) $(LDFLAGS) -r -o $@ $^
+ 
+ 
+ #
+diff -durN nvidia-driver-370.23.orig/kernel/nvidia-modeset/nvidia-modeset.Kbuild nvidia-driver-370.23/kernel/nvidia-modeset/nvidia-modeset.Kbuild
+--- nvidia-driver-370.23.orig/kernel/nvidia-modeset/nvidia-modeset.Kbuild	2016-08-09 01:43:19.000000000 +0200
++++ nvidia-driver-370.23/kernel/nvidia-modeset/nvidia-modeset.Kbuild	2016-08-20 12:25:39.596772662 +0200
+@@ -70,7 +70,7 @@
+ always += $(NVIDIA_MODESET_INTERFACE)
+ 
+ $(obj)/$(NVIDIA_MODESET_INTERFACE): $(addprefix $(obj)/,$(NVIDIA_MODESET_OBJECTS))
+-	$(LD) -r -o $@ $^
++	$(LD) $(LDFLAGS) -r -o $@ $^
+ 
+ #
+ # Register the conftests needed by nvidia-modeset.ko

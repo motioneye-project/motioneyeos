@@ -1,11 +1,22 @@
 #!/bin/bash
 
-disk_dev="/dev/mmcblk0"
-data_dev="${disk_dev}p3"
+test -n "$os_version" || source /etc/init.d/base
+
+msg_begin "Detecting disk device"
+root_part=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+if [[ "$root_part" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+    disk_dev=${BASH_REMATCH[1]}
+    data_dev=${disk_dev}p3
+elif [[ "$root_part" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+    disk_dev=${BASH_REMATCH[1]}
+    data_dev=${disk_dev}3
+else
+    msg_fail "unknown ($root_part)"
+    exit 1
+fi
+msg_done "$disk_dev"
 
 test -b $data_dev && exit 0
-
-test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
     start)
@@ -24,7 +35,7 @@ case "$1" in
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Mounting data partition"
-        mount /data
+        mount -T /etc/fstab.disk /data
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Creating required data files"
@@ -39,7 +50,8 @@ case "$1" in
         msg_done
 
         # mount other partitions depending on data
-        mount -a
+        mount -T /etc/fstab.disk -a
+        mount -T /etc/fstab.extra -a
         ;;
 
     stop)

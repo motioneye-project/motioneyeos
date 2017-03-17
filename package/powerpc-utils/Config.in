@@ -28,7 +28,7 @@ config BR2_PACKAGE_POWERPC_UTILS_RTAS
 	  lsslot, activate_firmware, rtas_ibm_get_vpd, serv_config,
 	  rtas_event_decode, sys_ident.
 
-comment "RTAS support needs an (e)glibc toolchain"
+comment "RTAS support needs a glibc toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 endif

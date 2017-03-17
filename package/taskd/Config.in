@@ -1,6 +1,6 @@
 config BR2_PACKAGE_TASKD
 	bool "taskd"
-	depends on BR2_USE_WCHAR # gnutls, util-linux
+	depends on BR2_USE_WCHAR # gnutls
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_GNUTLS

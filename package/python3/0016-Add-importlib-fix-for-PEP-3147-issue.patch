@@ -1,4 +1,4 @@
-From 1153f503a38daf6388021575f1ad6ce8b702911b Mon Sep 17 00:00:00 2001
+From d2b5be9a0627e38d2280ef865dab3e74b7d2bde4 Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 Date: Wed, 23 Dec 2015 11:46:14 +0100
 Subject: [PATCH] Add importlib fix for PEP 3147 issue
@@ -19,44 +19,51 @@ This effectively disables PEP 3147 for:
 
 Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 ---
- Lib/importlib/_bootstrap.py | 26 +++++---------------------
- 1 file changed, 5 insertions(+), 21 deletions(-)
+ Lib/importlib/_bootstrap_external.py | 37 +++++-------------------------------
+ 1 file changed, 5 insertions(+), 32 deletions(-)
 
-diff --git a/Lib/importlib/_bootstrap.py b/Lib/importlib/_bootstrap.py
-index 5b91c05..a1755ec 100644
---- a/Lib/importlib/_bootstrap.py
-+++ b/Lib/importlib/_bootstrap.py
-@@ -444,8 +444,6 @@ def cache_from_source(path, debug_override=None):
-     If debug_override is not None, then it must be a boolean and is used in
-     place of sys.flags.optimize.
+diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
+index 616b17f..e30129c 100644
+--- a/Lib/importlib/_bootstrap_external.py
++++ b/Lib/importlib/_bootstrap_external.py
+@@ -255,8 +255,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+     a True value is the same as setting 'optimization' to the empty string
+     while a False value is equivalent to setting 'optimization' to '1'.
  
 -    If sys.implementation.cache_tag is None then NotImplementedError is raised.
 -
      """
-     debug = not sys.flags.optimize if debug_override is None else debug_override
-     if debug:
-@@ -454,33 +452,19 @@ def cache_from_source(path, debug_override=None):
-         suffixes = OPTIMIZED_BYTECODE_SUFFIXES
+     if debug_override is not None:
+         _warnings.warn('the debug_override parameter is deprecated; use '
+@@ -267,10 +265,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+         optimization = '' if debug_override else 1
      head, tail = _path_split(path)
      base, sep, rest = tail.rpartition('.')
 -    tag = sys.implementation.cache_tag
 -    if tag is None:
 -        raise NotImplementedError('sys.implementation.cache_tag is None')
--    filename = ''.join([(base if base else rest), sep, tag, suffixes[0]])
--    return _path_join(head, _PYCACHE, filename)
-+    filename = ''.join([(base if base else rest), suffixes[0]])
-+    return _path_join(head, filename)
+-    almost_filename = ''.join([(base if base else rest), sep, tag])
++    almost_filename = ''.join([(base if base else rest)])
+     if optimization is None:
+         if sys.flags.optimize == 0:
+             optimization = ''
+@@ -281,39 +276,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+         if not optimization.isalnum():
+             raise ValueError('{!r} is not alphanumeric'.format(optimization))
+         almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
+-    return _path_join(head, _PYCACHE, almost_filename + BYTECODE_SUFFIXES[0])
++    return _path_join(head, almost_filename + BYTECODE_SUFFIXES[0])
  
  
  def source_from_cache(path):
-     """Given the path to a .pyc./.pyo file, return the path to its .py file.
+     """Given the path to a .pyc. file, return the path to its .py file.
  
-     The .pyc/.pyo file does not need to exist; this simply returns the path to
--    the .py file calculated to correspond to the .pyc/.pyo file.  If path does
--    not conform to PEP 3147 format, ValueError will be raised. If
+     The .pyc file does not need to exist; this simply returns the path to
+-    the .py file calculated to correspond to the .pyc file.  If path does
+-    not conform to PEP 3147/488 format, ValueError will be raised. If
 -    sys.implementation.cache_tag is None then NotImplementedError is raised.
-+    the .py file calculated to correspond to the .pyc/.pyo file.
- 
+-
++    the .py file calculated to correspond to the .pyc file.
      """
 -    if sys.implementation.cache_tag is None:
 -        raise NotImplementedError('sys.implementation.cache_tag is None')
@@ -65,9 +72,19 @@ index 5b91c05..a1755ec 100644
 -    if pycache != _PYCACHE:
 -        raise ValueError('{} not bottom-level directory in '
 -                         '{!r}'.format(_PYCACHE, path))
--    if pycache_filename.count('.') != 2:
--        raise ValueError('expected only 2 dots in '
+-    dot_count = pycache_filename.count('.')
+-    if dot_count not in {2, 3}:
+-        raise ValueError('expected only 2 or 3 dots in '
 -                         '{!r}'.format(pycache_filename))
+-    elif dot_count == 3:
+-        optimization = pycache_filename.rsplit('.', 2)[-2]
+-        if not optimization.startswith(_OPT):
+-            raise ValueError("optimization portion of filename does not start "
+-                             "with {!r}".format(_OPT))
+-        opt_level = optimization[len(_OPT):]
+-        if not opt_level.isalnum():
+-            raise ValueError("optimization level {!r} is not an alphanumeric "
+-                             "value".format(optimization))
 -    base_filename = pycache_filename.partition('.')[0]
 +    head, filename = _path_split(path)
 +    base_filename = filename.partition('.')[0]

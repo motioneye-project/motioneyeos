@@ -1,0 +1,32 @@
+From 4ad8932f93c490d15586b1def3863e9580e6eceb Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Sat, 3 Dec 2016 13:51:50 +0000
+Subject: [PATCH] remove dependency check on version file
+
+$(VERSION_DEPS) includes dependencies from tzdata meaning applications
+such as zic can't build from tzcode on their own.  Remove the dependency
+to $(VERSION_DEPS) since it is not necessary to check for version updates
+in released code.  This solves building zic from tzcode without needing
+tzdata.
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 1b714a8..00d2c09 100644
+--- a/Makefile
++++ b/Makefile
+@@ -437,7 +437,7 @@ INSTALL:	ALL install date.1
+ 		cp date $(DESTDIR)$(BINDIR)/.
+ 		cp -f date.1 $(DESTDIR)$(MANDIR)/man1/.
+ 
+-version:	$(VERSION_DEPS)
++version:
+ 		{ (type git) >/dev/null 2>&1 && \
+ 		  V=`git describe --match '[0-9][0-9][0-9][0-9][a-z]*' \
+ 				--abbrev=7 --dirty` || \
+-- 
+2.7.4
+

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETTLE_VERSION = 3.2
+NETTLE_VERSION = 3.3
 NETTLE_SITE = http://www.lysator.liu.se/~nisse/archive
 NETTLE_DEPENDENCIES = gmp
 NETTLE_INSTALL_STAGING = YES
@@ -15,7 +15,7 @@ NETTLE_LICENSE_FILES = COPYING.LESSERv3 COPYINGv2
 NETTLE_CONF_OPTS = --disable-openssl
 
 # ARM assembly requires v6+ ISA
-ifeq ($(BR2_ARM_CPU_ARMV4)$(BR2_ARM_CPU_ARMV5),y)
+ifeq ($(BR2_ARM_CPU_ARMV4)$(BR2_ARM_CPU_ARMV5)$(BR2_ARM_CPU_ARMV7M),y)
 NETTLE_CONF_OPTS += --disable-assembler
 endif
 

@@ -1,0 +1,54 @@
+From 2e2eab070384834036c1458c669070ed17d81dbe Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 10 Feb 2016 23:15:36 +0100
+Subject: [PATCH] sysdep.c: don't include <linux/if_tun.h> on Linux
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Including <linux/if_tun.h> in sysdep.c is not necessary since sysdep.h
+already includes <netinet/if_ether.h>. And this is actually
+potentially harmful since both files redefine the same 'struct
+ethhdr', causing the following build failure with the musl C library:
+
+In file included from sysdep.h:28:0,
+                 from sysdep.c:71:
+.../buildroot/output/host/usr/arm-buildroot-linux-musleabihf/sysroot/usr/include/netinet/if_ether.h:96:8: error: redefinition of ‘struct ethhdr’
+ struct ethhdr {
+        ^
+In file included from .../buildroot/output/host/usr/arm-buildroot-linux-musleabihf/sysroot/usr/include/linux/if_tun.h:20:0,
+                 from sysdep.c:62:
+.../buildroot/output/host/usr/arm-buildroot-linux-musleabihf/sysroot/usr/include/linux/if_ether.h:138:8: note: originally defined here
+ struct ethhdr {
+        ^
+
+Original patch from:
+http://git.alpinelinux.org/cgit/aports/tree/testing/vpnc/working.patch
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ sysdep.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/sysdep.c b/sysdep.c
+index d8f181d..f83543d 100644
+--- a/sysdep.c
++++ b/sysdep.c
+@@ -58,13 +58,11 @@
+ 
+ #if defined(__DragonFly__)
+ #include <net/tun/if_tun.h>
+-#elif defined(__linux__)
+-#include <linux/if_tun.h>
+ #elif defined(__APPLE__)
+ /* no header for tun */
+ #elif defined(__CYGWIN__)
+ #include "tap-win32.h"
+-#else
++#elif !defined(__linux__)
+ #include <net/if_tun.h>
+ #endif
+ 
+-- 
+2.6.4
+

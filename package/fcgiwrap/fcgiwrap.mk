@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-FCGIWRAP_VERSION = 1.1.0
+FCGIWRAP_VERSION = 99c942c90063c73734e56bacaa65f947772d9186
 FCGIWRAP_SITE = $(call github,gnosek,fcgiwrap,$(FCGIWRAP_VERSION))
 FCGIWRAP_DEPENDENCIES = host-pkgconf libfcgi
 FCGIWRAP_LICENSE = MIT
-FCGIWRAP_LICENSE_FILES = fcgiwrap.c
+FCGIWRAP_LICENSE_FILES = COPYING
 FCGIWRAP_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)

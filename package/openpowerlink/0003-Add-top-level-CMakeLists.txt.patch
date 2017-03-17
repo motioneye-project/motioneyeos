@@ -1,0 +1,201 @@
+From 7f81c74726aec4aef6bd93ee644200ab34375437 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Wed, 25 May 2016 15:59:20 +0200
+Subject: [PATCH] Add top level CMakeLists.txt
+
+This CMakeLists.txt can be used to build openpowerlink
+using a automated build system.
+
+Don't use FIND_LIBRARY when the stack is built from a top
+level build (ie CFG_OPLK_LIB is ON).
+For a top level build, CMake will automatically add a build
+dependency on oplk libraries for building demos applications.
+
+Also replace OPLKLIB_DEBUG by OPLKLIB in OPLK_LINK_LIBRARIES macro
+if CMAKE_BUILD_TYPE is "Debug", otherwise TARGET_LINK_LIBRARIES can't
+find the openpowerlink library.
+This issue may be related to:
+https://github.com/OpenAutomationTechnologies/openPOWERLINK_V2/issues/109
+
+Fixes:
+http://autobuild.buildroot.net/results/da4/da445b65cb136d71577f04e3a17fdb2ef6302a9b
+
+This patch has not been accepted by upstream:
+https://github.com/openPOWERLINK/openPOWERLINK_V2/pull/57
+
+Add PCIe support (v2.3.2)
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ CMakeLists.txt                               | 42 +++++++++++++++++
+ apps/common/cmake/findoplklib.cmake          | 68 +++++++++++++++-------------
+ apps/common/cmake/linkoplklib.cmake          |  2 +-
+ drivers/linux/drv_daemon_pcap/CMakeLists.txt | 12 +++--
+ 4 files changed, 89 insertions(+), 35 deletions(-)
+ create mode 100644 CMakeLists.txt
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+new file mode 100644
+index 0000000..28d4e7a
+--- /dev/null
++++ b/CMakeLists.txt
+@@ -0,0 +1,42 @@
++
++CMAKE_MINIMUM_REQUIRED (VERSION 2.8.7)
++
++#### LIB ####
++
++IF (CFG_OPLK_LIB)
++    ADD_SUBDIRECTORY("stack")
++ENDIF (CFG_OPLK_LIB)
++
++#### Linux kernel Ethernet module  ####
++
++IF (CFG_KERNEL_DRIVERS)
++    ADD_SUBDIRECTORY("drivers/linux/drv_kernelmod_edrv")
++ENDIF (CFG_KERNEL_DRIVERS)
++
++#### Linux kernel PCIe module  ####
++
++IF (CFG_KERNEL_PCIE_DRIVERS)
++    ADD_SUBDIRECTORY("drivers/linux/drv_kernelmod_pcie")
++ENDIF (CFG_KERNEL_PCIE_DRIVERS)
++
++#### Pcap userspace driver  ####
++
++IF (CFG_PCAP_DAEMON)
++    ADD_SUBDIRECTORY("drivers/linux/drv_daemon_pcap")
++ENDIF (CFG_PCAP_DAEMON)
++
++#### OpenPowerLink Demos  ####
++
++# Add subdirectory of CN console demo application
++IF (CFG_DEMO_CN_CONSOLE)
++    ADD_SUBDIRECTORY("apps/demo_cn_console")
++ENDIF (CFG_DEMO_CN_CONSOLE)
++
++# Add subdirectory of MN console demo application
++IF (CFG_DEMO_MN_CONSOLE)
++    ADD_SUBDIRECTORY("apps/demo_mn_console")
++ENDIF (CFG_DEMO_MN_CONSOLE)
++
++IF (CFG_DEMO_MN_QT)
++    ADD_SUBDIRECTORY("apps/demo_mn_qt")
++ENDIF (CFG_DEMO_MN_QT)
+diff --git a/apps/common/cmake/findoplklib.cmake b/apps/common/cmake/findoplklib.cmake
+index f7e710f..b8b04c5 100644
+--- a/apps/common/cmake/findoplklib.cmake
++++ b/apps/common/cmake/findoplklib.cmake
+@@ -85,36 +85,42 @@ MACRO(FIND_OPLK_LIBRARY OPLK_NODE_TYPE)
+     # Set oplk library directory
+     SET(OPLKLIB_DIR ${OPLK_BASE_DIR}/stack/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR})
+ 
+-    IF((CMAKE_GENERATOR MATCHES "Visual Studio") OR (CMAKE_BUILD_TYPE STREQUAL "Release"))
+-        # Search for release library
+-        UNSET(OPLKLIB CACHE)
+-        MESSAGE(STATUS "Searching for LIBRARY ${OPLKLIB_NAME} in ${OPLKLIB_DIR}")
+-        FIND_LIBRARY(OPLKLIB NAME ${OPLKLIB_NAME}
+-                             HINTS ${OPLKLIB_DIR} ${OPLKLIB_DIR}/${CFG_DEMO_BOARD_NAME}/${CFG_DEMO_NAME})
+-
+-        IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+-
+-            UNSET(OPLKDLL CACHE)
+-            FIND_PROGRAM(OPLKDLL NAME ${OPLKLIB_NAME}.dll
+-                                 HINTS ${OPLKLIB_DIR})
+-
+-        ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+-    ENDIF()
+-
+-    IF((CMAKE_GENERATOR MATCHES "Visual Studio") OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
+-        # Search for debug library
+-        UNSET(OPLKLIB_DEBUG CACHE)
+-        MESSAGE(STATUS "Searching for LIBRARY ${OPLKLIB_DEBUG_NAME} in ${OPLKLIB_DIR}")
+-        FIND_LIBRARY(OPLKLIB_DEBUG NAME ${OPLKLIB_DEBUG_NAME}
+-                                   HINTS ${OPLKLIB_DIR} ${OPLKLIB_DIR}/${CFG_DEMO_BOARD_NAME}/${CFG_DEMO_NAME})
+-
+-        IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+-
+-            UNSET(OPLKDLL_DEBUG CACHE)
+-            FIND_PROGRAM(OPLKDLL_DEBUG NAME ${OPLKLIB_DEBUG_NAME}.dll
+-                                       HINTS ${OPLKLIB_DIR})
+-
+-        ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
+-    ENDIF()
++    # Don't look for oplk libraries for a top level build
++    IF(CFG_OPLK_LIB)
++        SET(OPLKLIB ${OPLKLIB_NAME})
++        SET(OPLKLIB_DEBUG ${OPLKLIB_DEBUG_NAME})
++    ELSE(CFG_OPLK_LIB)
++        IF((CMAKE_GENERATOR MATCHES "Visual Studio") OR (CMAKE_BUILD_TYPE STREQUAL "Release"))
++            # Search for release library
++            UNSET(OPLKLIB CACHE)
++            MESSAGE(STATUS "Searching for LIBRARY ${OPLKLIB_NAME} in ${OPLKLIB_DIR}")
++            FIND_LIBRARY(OPLKLIB NAME ${OPLKLIB_NAME}
++                                HINTS ${OPLKLIB_DIR} ${OPLKLIB_DIR}/${CFG_DEMO_BOARD_NAME}/${CFG_DEMO_NAME})
++
++            IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++
++                UNSET(OPLKDLL CACHE)
++                FIND_PROGRAM(OPLKDLL NAME ${OPLKLIB_NAME}.dll
++                                    HINTS ${OPLKLIB_DIR})
++
++            ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++        ENDIF()
++
++        IF((CMAKE_GENERATOR MATCHES "Visual Studio") OR (CMAKE_BUILD_TYPE STREQUAL "Debug"))
++            # Search for debug library
++            UNSET(OPLKLIB_DEBUG CACHE)
++            MESSAGE(STATUS "Searching for LIBRARY ${OPLKLIB_DEBUG_NAME} in ${OPLKLIB_DIR}")
++            FIND_LIBRARY(OPLKLIB_DEBUG NAME ${OPLKLIB_DEBUG_NAME}
++                                    HINTS ${OPLKLIB_DIR} ${OPLKLIB_DIR}/${CFG_DEMO_BOARD_NAME}/${CFG_DEMO_NAME})
++
++            IF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++
++                UNSET(OPLKDLL_DEBUG CACHE)
++                FIND_PROGRAM(OPLKDLL_DEBUG NAME ${OPLKLIB_DEBUG_NAME}.dll
++                                        HINTS ${OPLKLIB_DIR})
++
++            ENDIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++        ENDIF()
++    ENDIF(CFG_OPLK_LIB)
+ 
+ ENDMACRO(FIND_OPLK_LIBRARY)
+diff --git a/apps/common/cmake/linkoplklib.cmake b/apps/common/cmake/linkoplklib.cmake
+index 49aab66..d9fd418 100644
+--- a/apps/common/cmake/linkoplklib.cmake
++++ b/apps/common/cmake/linkoplklib.cmake
+@@ -33,7 +33,7 @@ MACRO(OPLK_LINK_LIBRARIES EXECUTABLE_NAME)
+         TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} optimized ${OPLKLIB} debug ${OPLKLIB_DEBUG})
+     ELSE()
+         IF(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
+-            TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} debug ${OPLKLIB_DEBUG})
++            TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} debug ${OPLKLIB})
+         ELSE ()
+             TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} optimized ${OPLKLIB})
+         ENDIF()
+diff --git a/drivers/linux/drv_daemon_pcap/CMakeLists.txt b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
+index 1ef9353..e720834 100644
+--- a/drivers/linux/drv_daemon_pcap/CMakeLists.txt
++++ b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
+@@ -104,9 +104,15 @@ ENDIF()
+ SET(OPLKLIB_DIR ${OPLK_BASE_DIR}/stack/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR})
+ SET(OPLKLIB_INCDIR ${OPLK_BASE_DIR}/stack/proj/${SYSTEM_NAME_DIR}/lib${LIB_NAME})
+ 
+-UNSET(OPLKLIB CACHE)
+-FIND_LIBRARY(OPLKLIB NAME ${LIB_NAME}${BUILD_TYPE_EXT}
+-                     HINTS ${OPLKLIB_DIR})
++# Don't look for oplk libraries for a top level build
++IF(CFG_OPLK_LIB)
++    SET(OPLKLIB ${LIB_NAME}${BUILD_TYPE_EXT})
++ELSE(CFG_OPLK_LIB)
++    UNSET(OPLKLIB CACHE)
++    FIND_LIBRARY(OPLKLIB NAME ${LIB_NAME}${BUILD_TYPE_EXT}
++                        HINTS ${OPLKLIB_DIR})
++ENDIF(CFG_OPLK_LIB)
++
+ INCLUDE_DIRECTORIES(${OPLKLIB_INCDIR})
+ 
+ SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -std=c99 -pthread -fno-strict-aliasing")
+-- 
+2.8.1
+

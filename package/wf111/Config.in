@@ -30,7 +30,7 @@ config BR2_PACKAGE_WF111_TARBALL_PATH
 
 endif
 
-comment "wf111 needs an (e)glibc toolchain"
+comment "wf111 needs a glibc toolchain"
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_ARM_CPU_ARMV5 || BR2_ARM_CPU_ARMV7A || BR2_i386
 	depends on !BR2_TOOLCHAIN_USES_GLIBC

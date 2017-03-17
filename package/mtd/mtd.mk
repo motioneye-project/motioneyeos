@@ -97,11 +97,22 @@ MTD_TARGETS_UBI_$(BR2_PACKAGE_MTD_UBIBLOCK)	+= ubiblock
 MTD_TARGETS_y += $(addprefix ubi-utils/,$(MTD_TARGETS_UBI_y))
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSUBIFS) += mkfs.ubifs/mkfs.ubifs
 
+ifeq ($(BR2_PACKAGE_MTD_INTEGCK),y)
+define MTD_BUILD_INTEGCK
+	$(TARGET_CONFIGURE_OPTS) $(MAKE1) CROSS=$(TARGET_CROSS) \
+		BUILDDIR=$(@D) $(MTD_MAKE_OPTS) -C $(@D)/tests/fs-tests all
+endef
+define MTD_INSTALL_INTEGCK
+	$(INSTALL) -D -m 755 $(@D)/tests/fs-tests/integrity/integck $(TARGET_DIR)/usr/sbin/integck
+endef
+endif
+
 define MTD_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE1) CROSS=$(TARGET_CROSS) \
 		BUILDDIR=$(@D) $(MTD_MAKE_OPTS) -C $(@D) \
 		$(addprefix $(@D)/,$(MTD_TARGETS_y)) \
 		$(addprefix $(@D)/,$(MTD_STAGING_y))
+	$(MTD_BUILD_INTEGCK)
 endef
 
 define MTD_INSTALL_STAGING_CMDS
@@ -116,6 +127,7 @@ define MTD_INSTALL_TARGET_CMDS
 	for f in $(MTD_TARGETS_y) ; do \
 		$(INSTALL) -D -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$${f##*/} ; \
 	done
+	$(MTD_INSTALL_INTEGCK)
 endef
 
 $(eval $(generic-package))

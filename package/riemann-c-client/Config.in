@@ -1,0 +1,17 @@
+config BR2_PACKAGE_RIEMANN_C_CLIENT
+	bool "riemann-c-client"
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf-c
+	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf-c
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" # protobuf-c
+	select BR2_PACKAGE_PROTOBUF_C
+	help
+	  Riemann-c-client is a C client library for the Riemann
+	  monitoring system, providing a convenient and simple API,
+	  high test coverage and a copyleft license, along with API
+	  and ABI stability.
+
+	  https://github.com/algernon/riemann-c-client
+
+comment "riemann-c-client needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"

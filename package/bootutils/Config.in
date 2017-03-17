@@ -1,5 +1,6 @@
 config BR2_PACKAGE_BOOTUTILS
 	bool "bootutils"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  BootUtils is a collection of utilities to facilitate booting of
 	  Linux 2.6-based systems. The process of finding the root volume

@@ -1,5 +1,5 @@
 config BR2_PACKAGE_HOST_IMX_USB_LOADER
-	bool "host-imx-usb loader"
+	bool "host imx-usb-loader"
 	depends on BR2_arm
 	help
 	  This package contains tools to download and execute code

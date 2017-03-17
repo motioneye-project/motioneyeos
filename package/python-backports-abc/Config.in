@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_BACKPORTS_ABC
 	bool "python-backports-abc"
+	depends on BR2_PACKAGE_PYTHON
 	help
 	  A backport of recent additions to the 'collections.abc'
 	  module.

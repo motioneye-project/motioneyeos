@@ -1,4 +1,4 @@
-config BR2_PACKAGE_COLLECTD
+menuconfig BR2_PACKAGE_COLLECTD
 	bool "collectd"
 	# Uses fork()
 	depends on BR2_USE_MMU
@@ -39,6 +39,7 @@ config BR2_PACKAGE_COLLECTD_VALUE
 	bool "value"
 	help
 	  Select values by their data sources' values.
+
 endmenu
 
 menu "misc plugins"
@@ -73,6 +74,11 @@ config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 
 comment "notify_email needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_COLLECTD_NOTIFY_NAGIOS
+	bool "notify_nagios"
+	help
+	  Sends notifications to Nagios as a passive check result.
 
 config BR2_PACKAGE_COLLECTD_SYSLOG
 	bool "syslog"
@@ -121,6 +127,11 @@ config BR2_PACKAGE_COLLECTD_CEPH
 	help
 	  Statistics from the Ceph distributed storage system.
 
+config BR2_PACKAGE_COLLECTD_CHRONY
+	bool "chrony"
+	help
+	  Collects NTP data from the chrony NTP server.
+
 config BR2_PACKAGE_COLLECTD_CGROUPS
 	bool "cgroups"
 	help
@@ -145,6 +156,11 @@ config BR2_PACKAGE_COLLECTD_CPUFREQ
 	bool "cpufreq"
 	help
 	  Collects the current CPU's frequency.
+
+config BR2_PACKAGE_COLLECTD_CPUSLEEP
+	bool "cpusleep"
+	help
+	  Measures time spent by CPU in deep sleep mode.
 
 config BR2_PACKAGE_COLLECTD_CURL
 	bool "curl"
@@ -220,6 +236,18 @@ config BR2_PACKAGE_COLLECTD_FSCACHE
 	help
 	  Collects information about the file-system based caching
 	  infrastructure for network file-systems and other slow media.
+
+config BR2_PACKAGE_COLLECTD_GPS
+	bool "gps"
+	select BR2_PACKAGE_GPSD
+	help
+	  Reports the number of sattelites seen by and precision
+	  of a GPS receiver.
+
+config BR2_PACKAGE_COLLECTD_HUGEPAGES
+	bool "hugepages"
+	help
+	  Reports the number of used and free hugepages on Linux.
 
 config BR2_PACKAGE_COLLECTD_INTERFACE
 	bool "interface"
@@ -496,6 +524,13 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 	  Writes data collected to Carbon (Graphite's) storage API.
 	  http://graphite.wikidot.com/start
 
+config BR2_PACKAGE_COLLECTD_MQTT
+	bool "mqtt"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # mosquitto
+	select BR2_PACKAGE_MOSQUITTO
+	help
+	  Sends metrics to and/or receives metrics from an MQTT broker.
+
 config BR2_PACKAGE_COLLECTD_NETWORK
 	bool "network"
 	help
@@ -516,7 +551,7 @@ config BR2_PACKAGE_COLLECTD_RIEMANN
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	# protobuf-c -> host-protobuf
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
-	select BR2_PACKAGE_PROTOBUF_C
+	select BR2_PACKAGE_RIEMANN_C_CLIENT
 	select BR2_PACKAGE_LIBTOOL
 	help
 	  Sends data to Riemann, a stream processing and monitoring system.
@@ -537,6 +572,20 @@ config BR2_PACKAGE_COLLECTD_WRITELOG
 	bool "write_log"
 	help
 	  Writes data to the log.
+
+config BR2_PACKAGE_COLLECTD_WRITEPROMETHEUS
+	bool "write_prometheus"
+	depends on BR2_INSTALL_LIBSTDCPP # protobuf-c
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86" # protobuf-c
+	select BR2_PACKAGE_LIBMICROHTTPD
+	select BR2_PACKAGE_PROTOBUF_C
+	help
+	  Publishes values using an embedded HTTP server, in a format
+	  compatible with Prometheus' collectd_exporter.
+
+comment "write_prometheus needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 
 config BR2_PACKAGE_COLLECTD_WRITESENSU
 	bool "write_sensu"

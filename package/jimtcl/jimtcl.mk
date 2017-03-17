@@ -51,7 +51,7 @@ endef
 define JIMTCL_BUILD_CMDS
 	SH_CFLAGS="-fPIC" \
 	SHOBJ_CFLAGS="-fPIC" \
-	$(MAKE) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
 
 define JIMTCL_INSTALL_STAGING_CMDS

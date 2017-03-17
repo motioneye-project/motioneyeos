@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DTACH_VERSION = 0.8
-DTACH_SITE = http://downloads.sourceforge.net/project/dtach/dtach/$(DTACH_VERSION)
+DTACH_VERSION = v0.9
+DTACH_SITE = $(call github,crigler,dtach,$(DTACH_VERSION))
 DTACH_LICENSE = GPLv2+
 DTACH_LICENSE_FILES = COPYING
 

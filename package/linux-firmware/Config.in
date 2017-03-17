@@ -19,12 +19,27 @@ endmenu # Audio
 
 menu "Video firmware"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_I915
+	bool "Intel i915 video card firmware"
+	help
+	  Firmware files for the Intel i915 video cards.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	bool "AMD Radeon video card firmware"
 	help
 	  Firmware files for AMD Radeon video cards.
 
 endmenu # Video
+
+menu "Bluetooth firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IBT
+	bool "Intel Wireless Bluetooth"
+	help
+	  Firmware files for Intel 3160/7260/7265/8260/8265 Wireless
+	  bluetooth support.
+
+endmenu # Bluetooth
 
 menu "WiFi firmware"
 
@@ -160,6 +175,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8797
 	bool "Marvell Wifi-Ex 8797 USB"
 	help
 	  Firmware files for the Marvell Wifi-Ex 8797 module on USB.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_USB8801
+	bool "Marvell Wifi-Ex 8801 USB"
+	help
+	  Firmware files for the Marvell Wifi-Ex 8801 module on USB.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_MWIFIEX_SD8887
 	bool "Marvell Wifi-Ex 8887 SDIO"

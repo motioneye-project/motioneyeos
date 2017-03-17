@@ -1,0 +1,47 @@
+Fixed bug 3466 - Can't build 2.0.5 on ppc64
+
+/home/fedora/SDL2-2.0.5/src/video/SDL_blit_N.c: In function 'calc_swizzle32':
+/home/fedora/SDL2-2.0.5/src/video/SDL_blit_N.c:127:5: error: ISO C90 forbids mixed declarations and code [-Werror=declaration-after-statement]
+const vector unsigned char plus = VECUINT8_LITERAL(0x00, 0x00, 0x00, 0x00,
+^ 
+
+Downloaded from upstream repo
+https://hg.libsdl.org/SDL/rev/5184186d4366
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -r 71d4148e32de -r 5184186d4366 src/video/SDL_blit_N.c
+--- a/src/video/SDL_blit_N.c	Wed Oct 19 21:22:42 2016 -0700
++++ b/src/video/SDL_blit_N.c	Sat Oct 22 11:01:55 2016 -0700
+@@ -118,12 +118,6 @@
+         16, 8, 0, 24,
+         0, NULL
+     };
+-    if (!srcfmt) {
+-        srcfmt = &default_pixel_format;
+-    }
+-    if (!dstfmt) {
+-        dstfmt = &default_pixel_format;
+-    }
+     const vector unsigned char plus = VECUINT8_LITERAL(0x00, 0x00, 0x00, 0x00,
+                                                        0x04, 0x04, 0x04, 0x04,
+                                                        0x08, 0x08, 0x08, 0x08,
+@@ -136,6 +130,14 @@
+     Uint32 gmask = RESHIFT(srcfmt->Gshift) << (dstfmt->Gshift);
+     Uint32 bmask = RESHIFT(srcfmt->Bshift) << (dstfmt->Bshift);
+     Uint32 amask;
++
++    if (!srcfmt) {
++        srcfmt = &default_pixel_format;
++    }
++    if (!dstfmt) {
++        dstfmt = &default_pixel_format;
++    }
++
+     /* Use zero for alpha if either surface doesn't have alpha */
+     if (dstfmt->Amask) {
+         amask =
+
+
+
+

@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Starts babeld.
+#
+
+# Allow a few customizations from a config file
+test -r /etc/default/babeld && . /etc/default/babeld
+
+start() {
+	printf "Starting babeld: "
+	start-stop-daemon -S -q -p /run/babeld.pid \
+		--exec /usr/sbin/babeld -- $DAEMON_ARGS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	printf "Stopping babeld: "
+	start-stop-daemon -K -q -p /run/babeld.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

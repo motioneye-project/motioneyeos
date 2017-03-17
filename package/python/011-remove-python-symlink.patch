@@ -5,15 +5,17 @@ Buildroot needs to control to what python interpreter (python2 or python3) the
 python symlink points to.
 
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(rebased against version 2.7.12)
 
 Index: b/Makefile.pre.in
 ===================================================================
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -890,17 +890,10 @@
- #  $(PYTHON) -> python2 -> python$(VERSION))
- # Also create equivalent chains for other installed files
- bininstall:	altbininstall
+@@ -974,17 +974,10 @@
+ 		echo "Creating directory $(LIBPC)"; \
+ 		$(INSTALL) -d -m $(DIRMODE) $(DESTDIR)$(LIBPC); \
+ 	fi
 -	-if test -f $(DESTDIR)$(BINDIR)/$(PYTHON) -o -h $(DESTDIR)$(BINDIR)/$(PYTHON); \
 -	then rm -f $(DESTDIR)$(BINDIR)/$(PYTHON); \
 -	else true; \

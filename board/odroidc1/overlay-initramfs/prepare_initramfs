@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# we don't have the codepage kernel modules compiled in, so we have to manually insert them
+mkdir /system
+mount /dev/mmcblk0p2 /system
+/system/bin/busybox insmod /system/lib/modules/*/kernel/fs/nls/nls_cp437.ko
+

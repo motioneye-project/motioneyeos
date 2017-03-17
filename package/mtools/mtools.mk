@@ -22,11 +22,9 @@ HOST_MTOOLS_CONF_ENV = \
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MTOOLS_DEPENDENCIES += libiconv
 MTOOLS_CONF_ENV += LIBS=-liconv
-# We have no host dependencies
-HOST_MTOOLS_DEPENDENCIES =
 endif
 
-# Package does not build in parallel due to improper make rules
+# Package does not build in parallel due to improper make rules
 MTOOLS_MAKE = $(MAKE1)
 
 $(eval $(autotools-package))

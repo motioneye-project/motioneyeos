@@ -35,7 +35,3 @@ endchoice
 config BR2_GCC_TARGET_CPU
 	default "68040"		if BR2_m68k_68040
 	default "5208"		if BR2_m68k_cf5208
-
-config BR2_GCC_TARGET_ARCH
-	default "m68k"		if BR2_m68k_m68k
-	default "cf"		if BR2_m68k_cf

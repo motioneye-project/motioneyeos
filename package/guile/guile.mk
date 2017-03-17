@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GUILE_VERSION = 2.0.11
+GUILE_VERSION = 2.0.13
 GUILE_SOURCE = guile-$(GUILE_VERSION).tar.xz
 GUILE_SITE = $(BR2_GNU_MIRROR)/guile
 GUILE_INSTALL_STAGING = YES
@@ -30,6 +30,11 @@ GUILE_CFLAGS = \
 
 ifeq ($(BR2_STATIC_LIBS),y)
 GUILE_CFLAGS += -DGC_NO_DLOPEN
+endif
+
+# Triggers assembler error with -Os
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM)$(BR2_OPTIMIZE_S),yy)
+GUILE_CFLAGS += -O2
 endif
 
 # It can use readline, but on the condition that it was build against

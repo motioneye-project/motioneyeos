@@ -1,0 +1,15 @@
+config BR2_PACKAGE_P7ZIP
+	bool "p7zip"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR
+	help
+	  p7zip is a quick port of the command line version of 7-zip for Unix.
+	  (see http://www.7-zip.org)
+
+	  7-Zip is a file archiver with highest compression ratio.
+
+	  http://sourceforge.net/projects/p7zip
+
+comment "p7zip needs a toolchain w/ threads, wchar, C++"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP

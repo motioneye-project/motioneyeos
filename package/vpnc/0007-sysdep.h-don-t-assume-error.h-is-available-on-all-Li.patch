@@ -1,0 +1,52 @@
+From 7f41ef32c8c887ee23ca83da4dfd7a4f27e01186 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 10 Feb 2016 23:09:51 +0100
+Subject: [PATCH] sysdep.h: don't assume <error.h> is available on all Linux
+ platforms
+
+The current logic in sysdep.h assumes that whenever you have __linux__
+or __GLIBC__ defined, then <error.h> functionality is
+available. However, the <error.h> functionality is a glibc-ism, not
+available in more standard-conformant C libraries such as the musl C
+library. With musl, __linux__ is defined (but of course not
+__GLIBC__). With the current logic, sysdep.h assumes that <error.h> is
+available, which isn't the case.
+
+This patch therefore changes the logic to only use <error.h> when
+__GLIBC__ is defined. It fixes the following build error:
+
+In file included from tunip.c:87:0:
+sysdep.h:41:19: fatal error: error.h: No such file or directory
+ #include <error.h>
+
+Original patch from
+http://git.alpinelinux.org/cgit/aports/tree/testing/vpnc/working.patch.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ sysdep.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/sysdep.h b/sysdep.h
+index 137bf6d..fb65b31 100644
+--- a/sysdep.h
++++ b/sysdep.h
+@@ -38,11 +38,14 @@ int tun_get_hwaddr(int fd, char *dev, uint8_t *hwaddr);
+ 
+ /***************************************************************************/
+ #if defined(__linux__) || defined(__GLIBC__)
++
++#ifdef __GLIBC__
+ #include <error.h>
++#define HAVE_ERROR     1
++#endif
+ 
+ #define HAVE_VASPRINTF 1
+ #define HAVE_ASPRINTF  1
+-#define HAVE_ERROR     1
+ #define HAVE_UNSETENV  1
+ #define HAVE_SETENV    1
+ #endif
+-- 
+2.6.4
+

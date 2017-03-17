@@ -13,8 +13,32 @@ HOST_NODEJS_DEPENDENCIES = host-python host-zlib
 NODEJS_LICENSE = MIT (core code); MIT, Apache and BSD family licenses (Bundled components)
 NODEJS_LICENSE_FILES = LICENSE
 
+NODEJS_CONF_OPTS = \
+	--without-snapshot \
+	--shared-zlib \
+	--without-dtrace \
+	--without-etw \
+	--dest-os=linux
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NODEJS_DEPENDENCIES += openssl
+NODEJS_CONF_OPTS += --shared-openssl
+else
+NODEJS_CONF_OPTS += --without-ssl
+endif
+
+# 0.10.x does not have icu support
+ifeq ($(findstring 0.10.,$(NODEJS_VERSION)),)
+ifeq ($(BR2_PACKAGE_ICU),y)
+NODEJS_DEPENDENCIES += icu
+NODEJS_CONF_OPTS += --with-intl=system-icu
+else
+NODEJS_CONF_OPTS += --with-intl=none
+endif
+endif
+
+ifneq ($(BR2_PACKAGE_NODEJS_NPM),y)
+NODEJS_CONF_OPTS += --without-npm
 endif
 
 # nodejs build system is based on python, but only support python-2.6 or
@@ -39,6 +63,7 @@ define HOST_NODEJS_CONFIGURE_CMDS
 		--without-dtrace \
 		--without-etw \
 		--shared-zlib \
+		$(if $(BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS),--with-intl=none) \
 	)
 endef
 
@@ -66,18 +91,20 @@ else ifeq ($(BR2_mipsel),y)
 NODEJS_CPU = mipsel
 else ifeq ($(BR2_arm),y)
 NODEJS_CPU = arm
+else ifeq ($(BR2_aarch64),y)
+NODEJS_CPU = arm64
 # V8 needs to know what floating point ABI the target is using.
 NODEJS_ARM_FP = $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
 endif
 
 # MIPS architecture specific options
 ifeq ($(BR2_mips)$(BR2_mipsel),y)
-ifeq ($(BR2_mips_32r6),y)
+ifeq ($(BR2_MIPS_CPU_MIPS32R6),y)
 NODEJS_MIPS_ARCH_VARIANT = r6
 NODEJS_MIPS_FPU_MODE = fp64
-else ifeq ($(BR2_mips_32r2),y)
+else ifeq ($(BR2_MIPS_CPU_MIPS32R2),y)
 NODEJS_MIPS_ARCH_VARIANT = r2
-else ifeq ($(BR2_mips_32),y)
+else ifeq ($(BR2_MIPS_CPU_MIPS32),y)
 NODEJS_MIPS_ARCH_VARIANT = r1
 endif
 endif
@@ -93,17 +120,11 @@ define NODEJS_CONFIGURE_CMDS
 		PYTHON=$(HOST_DIR)/usr/bin/python2 \
 		$(HOST_DIR)/usr/bin/python2 ./configure \
 		--prefix=/usr \
-		--without-snapshot \
-		--shared-zlib \
-		$(if $(BR2_PACKAGE_OPENSSL),--shared-openssl,--without-ssl) \
-		$(if $(BR2_PACKAGE_NODEJS_NPM),,--without-npm) \
-		--without-dtrace \
-		--without-etw \
 		--dest-cpu=$(NODEJS_CPU) \
 		$(if $(NODEJS_ARM_FP),--with-arm-float-abi=$(NODEJS_ARM_FP)) \
 		$(if $(NODEJS_MIPS_ARCH_VARIANT),--with-mips-arch-variant=$(NODEJS_MIPS_ARCH_VARIANT)) \
 		$(if $(NODEJS_MIPS_FPU_MODE),--with-mips-fpu-mode=$(NODEJS_MIPS_FPU_MODE)) \
-		--dest-os=linux \
+		$(NODEJS_CONF_OPTS) \
 	)
 endef
 

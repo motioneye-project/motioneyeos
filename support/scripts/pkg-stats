@@ -94,10 +94,10 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 
     if test \
 	$i = "boot/common.mk" -o \
+	$i = "linux/linux-ext-ev3dev-linux-drivers.mk" -o \
 	$i = "linux/linux-ext-fbtft.mk" -o \
 	$i = "linux/linux-ext-xenomai.mk" -o \
 	$i = "linux/linux-ext-rtai.mk" -o \
-	$i = "package/efl/efl.mk" -o \
 	$i = "package/freescale-imx/freescale-imx.mk" -o \
 	$i = "package/gcc/gcc.mk" -o \
 	$i = "package/gstreamer/gstreamer.mk" -o \

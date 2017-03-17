@@ -1,0 +1,17 @@
+avoid regen during install
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+--- a/sources/Makefile
++++ b/sources/Makefile
+@@ -120,7 +120,7 @@
+ 	ln -sf $(SHARED_LIB) $(LIBRARIES)/lib4th.so
+ endif
+ 
+-mostlyinstall: libinstall all
++mostlyinstall: libinstall
+ 	cp 4th 4tsh pp4th $(BINARIES)
+ 
+ install: mostlyinstall
+-- 
+

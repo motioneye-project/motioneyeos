@@ -1,0 +1,45 @@
+From d96a3cafeebeb80b4796bacbe0e6da0bbd3ee48e Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Sun, 28 Aug 2016 00:39:55 +0200
+Subject: [PATCH 1/2] Fix {THEORA,SPEEX}_LDFLAGS typo
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Needed to properly link against libshout, otherwise the build fails with:
+
+  error: LDFLAGS: No such file or directory
+
+Upstream status: pending
+https://github.com/xiph/Icecast-libshout/pull/4
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 87a7f55..85f18ad 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -134,7 +134,7 @@ PKG_CHECK_MODULES(THEORA, theora, [
+   ])
+ fi
+ XIPH_VAR_APPEND([XIPH_CPPFLAGS],[$THEORA_CFLAGS])
+-XIPH_VAR_PREPEND([XIPH_LIBS],[$THEORA LDFLAGS $THEORA_LIBS])
++XIPH_VAR_PREPEND([XIPH_LIBS],[$THEORA_LDFLAGS $THEORA_LIBS])
+ AM_CONDITIONAL([HAVE_THEORA], [test -n "$THEORA_LIBS"])
+ if test -n "$THEORA_LIBS"
+ then
+@@ -153,7 +153,7 @@ PKG_CHECK_MODULES(SPEEX, speex, [
+   ])
+ fi
+ XIPH_VAR_APPEND([XIPH_CPPFLAGS],[$SPEEX_CFLAGS])
+-XIPH_VAR_PREPEND([XIPH_LIBS],[$SPEEX LDFLAGS $SPEEX_LIBS])
++XIPH_VAR_PREPEND([XIPH_LIBS],[$SPEEX_LDFLAGS $SPEEX_LIBS])
+ AM_CONDITIONAL([HAVE_SPEEX], [test -n "$SPEEX_LIBS"])
+ if test -n "$SPEEX_LIBS"
+ then
+-- 
+2.9.3
+

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XLIB_LIBX11_VERSION = 1.6.3
+XLIB_LIBX11_VERSION = 1.6.4
 XLIB_LIBX11_SOURCE = libX11-$(XLIB_LIBX11_VERSION).tar.bz2
 XLIB_LIBX11_SITE = http://xorg.freedesktop.org/releases/individual/lib
 XLIB_LIBX11_LICENSE = MIT
@@ -22,6 +22,18 @@ XLIB_LIBX11_DEPENDENCIES = \
 	xproto_inputproto \
 	xproto_xf86bigfontproto \
 	host-xproto_xproto
+
+HOST_XLIB_LIBX11_DEPENDENCIES = \
+	host-libxcb \
+	host-xutil_util-macros \
+	host-xlib_xtrans \
+	host-xlib_libXau \
+	host-xlib_libXdmcp \
+	host-xproto_kbproto \
+	host-xproto_xproto \
+	host-xproto_xextproto \
+	host-xproto_inputproto \
+	host-xproto_xf86bigfontproto
 
 XLIB_LIBX11_CONF_OPTS = \
 	--disable-malloc0returnsnull \

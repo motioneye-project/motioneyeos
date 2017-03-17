@@ -1,0 +1,2 @@
+config BR2_PACKAGE_MUSL_COMPAT_HEADERS
+	bool

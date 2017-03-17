@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KMOD_VERSION = 22
+KMOD_VERSION = 23
 KMOD_SOURCE = kmod-$(KMOD_VERSION).tar.xz
 KMOD_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/kernel/kmod
 KMOD_INSTALL_STAGING = YES
@@ -12,8 +12,14 @@ KMOD_DEPENDENCIES = host-pkgconf
 HOST_KMOD_DEPENDENCIES = host-pkgconf
 
 # license info for libkmod only, conditionally add more below
-KMOD_LICENSE = LGPLv2.1+
+KMOD_LICENSE = LGPLv2.1+ (library)
 KMOD_LICENSE_FILES = libkmod/COPYING
+
+# --gc-sections triggers binutils ld segfault
+# https://sourceware.org/bugzilla/show_bug.cgi?id=21180
+ifeq ($(BR2_microblaze),y)
+KMOD_CONF_ENV += cc_cv_LDFLAGS__Wl___gc_sections=false
+endif
 
 # static linking not supported, see
 # https://git.kernel.org/cgit/utils/kernel/kmod/kmod.git/commit/?id=b7016153ec8
@@ -40,7 +46,7 @@ endif
 ifeq ($(BR2_PACKAGE_KMOD_TOOLS),y)
 
 # add license info for kmod tools
-KMOD_LICENSE += GPLv2+
+KMOD_LICENSE := $(KMOD_LICENSE), GPLv2+ (tools)
 KMOD_LICENSE_FILES += COPYING
 
 # take precedence over busybox implementation

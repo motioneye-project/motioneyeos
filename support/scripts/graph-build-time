@@ -276,7 +276,7 @@ parser.add_argument("--order", '-O', metavar="GRAPH_ORDER",
                     help="Ordering of packages: build or duration (for histogram only)")
 parser.add_argument("--alternate-colors", '-c', action="store_true",
                     help="Use alternate colour-scheme")
-parser.add_argument("--input", '-i', metavar="OUTPUT",
+parser.add_argument("--input", '-i', metavar="INPUT",
                     help="Input file (usually $(O)/build/build-time.log)")
 parser.add_argument("--output", '-o', metavar="OUTPUT", required=True,
                     help="Output file (.pdf or .png extension)")

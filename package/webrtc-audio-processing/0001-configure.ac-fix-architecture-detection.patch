@@ -1,0 +1,84 @@
+From 233413841882608c6d5b98b6ce89fcb8a292db82 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 6 Aug 2016 10:22:34 +0200
+Subject: [PATCH] configure.ac: fix architecture detection
+
+The current architecture detection, based on the "host_cpu" part of the
+tuple does not work properly for a number of reason:
+
+ - The code assumes that if host_cpu starts with "arm" then ARM
+   instructions are available, which is incorrect. Indeed, Cortex-M
+   platforms can run Linux, they are ARM platforms (so host_cpu = arm),
+   but they don't support ARM instructions: they support only the
+   Thumb-2 instruction set.
+
+ - The armv7 case is also not very useful, as it is not standard at all
+   to pass armv7 as host_cpu even if the host system is actually ARMv7
+   based.
+
+ - For the same reason, the armv8 case is not very useful: armv8 is
+   never used as the host_cpu part of a tuple.
+
+So, this commit moves away from a host_cpu based logic, and instead
+tests using AC_CHECK_DECLS() the built-in definitions of the compiler:
+
+ - If we have __ARM_ARCH_ISA_ARM defined, then it's an ARM processor
+   that supports the ARM instruction set (this allows to exclude Thumb-2
+   only processors).
+
+ - If we have __ARM_ARCH_7A__, then we have an ARMv7-A processor, and
+   we can enable the corresponding optimizations
+
+ - Same for __i386__ and __x86_64__.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+Submitted upstream, under a slightly different form so that it applies
+on master:
+
+  https://lists.freedesktop.org/archives/pulseaudio-discuss/2016-August/026600.html
+---
+ configure.ac | 27 +++++++++------------------
+ 1 file changed, 9 insertions(+), 18 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6f9553b..836c6ad 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -55,24 +55,15 @@ AS_CASE(["${host}"],
+ )
+ AC_SUBST(PLATFORM_CFLAGS)
+ 
+-AS_CASE(["${host_cpu}"],
+-    [i?86|x86_64],
+-        [
+-         HAVE_X86=1
+-        ],
+-    [armv7*|armv8*],
+-        [
+-         HAVE_ARM=1
+-         HAVE_ARMV7=1
+-         ARCH_CFLAGS="-DWEBRTC_ARCH_ARM -DWEBRTC_ARCH_ARM_V7"
+-        ],
+-    [arm*],
+-        [
+-         HAVE_ARM=1
+-         ARCH_CFLAGS="-DWEBRTC_ARCH_ARM"
+-        ]
+-    # FIXME: Add MIPS support, see webrtc/BUILD.gn for defines
+-)
++# Testing __ARM_ARCH_ISA_ARM since the code contains ARM instructions,
++# which don't work on Thumb-2 only platforms (ARMv7-M).
++AC_CHECK_DECLS([__ARM_ARCH_ISA_ARM],
++	[HAVE_ARM=1; ARCH_CFLAGS="${ARCH_CFLAGS} -DWEBRTC_ARCH_ARM"])
++AC_CHECK_DECLS([__ARM_ARCH_7A__],
++	[HAVE_ARMV7=1; ARCH_CFLAGS="${ARCH_CFLAGS} -DWEBRTC_ARCH_ARM_V7"])
++AC_CHECK_DECLS([__i386__], [HAVE_X86=1])
++AC_CHECK_DECLS([__x86_64__], [HAVE_X86=1])
++
+ AM_CONDITIONAL(HAVE_X86, [test "x${HAVE_X86}" = "x1"])
+ AM_CONDITIONAL(HAVE_ARM, [test "x${HAVE_ARM}" = "x1"])
+ AM_CONDITIONAL(HAVE_ARMV7, [test "x${HAVE_ARMV7}" = "x1"])
+-- 
+2.7.4
+

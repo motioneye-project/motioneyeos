@@ -1,0 +1,35 @@
+From 6946a491cae42b971aad3bc5d822e0e549eca8bd Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Thu, 1 Dec 2016 15:20:33 -0200
+Subject: [PATCH] Use gnu++11 standard to prevent errors on PPC.
+
+PPC altivec vectorization triggers a bug when compiling with -std=c++11
+because "bool" is redefined in altivec.h.
+
+Acording to a bug report in GCC, "You need to use -std=g++11 or
+undefine bool after the include of altivec.h as context sensitive
+keywords is not part of the C++11 standard".
+
+So let's use gnu++11 standard.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 6dd0129587b3..6ed50ea4c335 100644
+--- a/Makefile
++++ b/Makefile
+@@ -51,7 +51,7 @@ else
+ endif
+ CXXFLAGS+= -Wall -Wextra -Wno-unused-parameter -Wno-ignored-qualifiers
+ ifdef HAVE_GCC
+-  CXXFLAGS+= -Wno-multichar -Wunused -fno-rtti -Woverloaded-virtual -Wnon-virtual-dtor -std=c++11
++  CXXFLAGS+= -Wno-multichar -Wunused -fno-rtti -Woverloaded-virtual -Wnon-virtual-dtor -std=gnu++11
+ endif
+ 
+ ifdef PROFILE
+-- 
+1.9.1
+

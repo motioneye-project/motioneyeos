@@ -4,7 +4,8 @@ test -n "$os_version" || source /etc/init.d/base
 
 mount_fs() {
     msg_begin "Mounting filesystems"
-    /bin/mount -a
+    /bin/mount -T /etc/fstab.disk -a
+    /bin/mount -T /etc/fstab.extra -a
     test $? == 0 && msg_done || msg_fail
 }
 

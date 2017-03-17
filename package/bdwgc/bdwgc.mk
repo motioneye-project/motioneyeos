@@ -11,6 +11,7 @@ BDWGC_INSTALL_STAGING = YES
 BDWGC_LICENSE = bdwgc license
 BDWGC_LICENSE_FILES = README.QUICK
 BDWGC_DEPENDENCIES = libatomic_ops host-pkgconf
+HOST_BDWGC_DEPENDENCIES = host-libatomic_ops host-pkgconf
 
 # The libtool shipped with the package is bogus and generates some
 # -L/usr/lib flags. It uses a version not supported by Buildroot

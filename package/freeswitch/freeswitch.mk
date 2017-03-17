@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREESWITCH_VERSION = 1.6.8
+FREESWITCH_VERSION = 1.6.14
 FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).tar.xz
 FREESWITCH_SITE = http://files.freeswitch.org/freeswitch-releases
 FREESWITCH_LICENSE = MPLv1.1, \
@@ -69,8 +69,6 @@ FREESWITCH_CONF_ENV += \
 	ac_cv_gcc_supports_w_no_unused_result=no
 
 FREESWITCH_CONF_OPTS = \
-	--disable-libvpx \
-	--disable-libyuv \
 	--without-erlang \
 	--enable-fhs \
 	--without-python \
@@ -175,11 +173,6 @@ ifeq ($(BR2_PACKAGE_FREETYPE),y)
 FREESWITCH_DEPENDENCIES += freetype
 endif
 
-ifeq ($(BR2_PACKAGE_IMAGEMAGICK),y)
-FREESWITCH_DEPENDENCIES += imagemagick
-FREESWITCH_ENABLED_MODULES += formats/mod_imagick
-endif
-
 ifeq ($(BR2_PACKAGE_LIBBROADVOICE),y)
 FREESWITCH_DEPENDENCIES += libbroadvoice
 FREESWITCH_ENABLED_MODULES += codecs/mod_bv
@@ -282,6 +275,17 @@ endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
 FREESWITCH_DEPENDENCIES += xz
+endif
+
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8)$(BR2_PACKAGE_FFMPEG),yy)
+FREESWITCH_LICENSE := $(FREESWITCH_LICENSE), BSD-3c (libvpx, libyuv)
+FREESWITCH_LICENSE_FILES += libs/libvpx/LICENSE libs/libyuv/LICENSE
+FREESWITCH_CONF_OPTS += --enable-libvpx --enable-libyuv
+FREESWITCH_DEPENDENCIES += host-yasm ffmpeg
+FREESWITCH_ENABLED_MODULES += applications/mod_av applications/mod_fsv
+FREESWITCH_MAKE_ENV += CROSS=$(TARGET_CROSS)
+else
+FREESWITCH_CONF_OPTS += --disable-libvpx --disable-libyuv
 endif
 
 $(eval $(autotools-package))

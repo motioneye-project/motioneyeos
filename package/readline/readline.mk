@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-READLINE_VERSION = 6.3
+READLINE_VERSION = 7.0
 READLINE_SITE = $(BR2_GNU_MIRROR)/readline
 READLINE_INSTALL_STAGING = YES
 READLINE_DEPENDENCIES = ncurses

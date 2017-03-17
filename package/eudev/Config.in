@@ -2,18 +2,17 @@ config BR2_PACKAGE_EUDEV
 	bool "eudev"
 	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
 	depends on BR2_USE_MMU # uses fork()
-	depends on BR2_USE_WCHAR # util-linux
+	depends on BR2_USE_WCHAR # needs C99 compiler
 	depends on !BR2_STATIC_LIBS # kmod
 	select BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_KMOD
 	help
-	  Userspace device daemon. This is a standalone version,
-	  independent of systemd. It is a fork maintained by Gentoo.
-
-	  eudev requires a Linux kernel >= 2.6.34: it relies on devtmpfs
-	  and inotify.
+	  eudev is a fork of systemd-udev with the goal of obtaining better
+	  compatibility with existing software such as OpenRC and Upstart,
+	  older kernels, various toolchains and anything else required by
+	  users and various distributions.
 
 	  https://wiki.gentoo.org/wiki/Project:Eudev
 

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_MEDIASTREAMER
 	bool "mediastreamer"
 	select BR2_PACKAGE_ORTP
-	depends on BR2_INSTALL_LIBSTDCPP # until fixed
+	depends on BR2_INSTALL_LIBSTDCPP # ortp
 	depends on BR2_TOOLCHAIN_HAS_THREADS # ortp
 	help
 	  Mediastreamer is a powerful and lightweighted streaming

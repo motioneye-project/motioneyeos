@@ -10,6 +10,7 @@ LIBCROCO_SITE = http://ftp.gnome.org/pub/gnome/sources/libcroco/$(LIBCROCO_VERSI
 LIBCROCO_SOURCE = libcroco-$(LIBCROCO_VERSION).tar.xz
 LIBCROCO_INSTALL_STAGING = YES
 LIBCROCO_DEPENDENCIES = host-pkgconf libglib2 libxml2
+HOST_LIBCROCO_DEPENDENCIES = host-pkgconf host-libglib2 host-libxml2
 LIBCROCO_CONFIG_SCRIPTS = croco-$(LIBCROCO_VERSION_MAJOR)-config
 # NEWS states that it's only LGPL
 # Source code says v2.1+ even though COPYING.LIB is v2

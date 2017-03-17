@@ -1,0 +1,38 @@
+From 2255601757a8a58baddad2d37d0bcc6b003a3732 Mon Sep 17 00:00:00 2001
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Date: Fri, 25 Nov 2016 19:42:27 +0200
+Subject: [PATCH] Allow build with uClibc
+
+Basically this replaces type definitions in <uchar.h>.
+
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+---
+ src/export.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/src/export.c b/src/export.c
+index 7f2d4dd..72c02d1 100644
+--- a/src/export.c
++++ b/src/export.c
+@@ -21,11 +21,17 @@
+ #include <inttypes.h>
+ #include <stdint.h>
+ #include <stdlib.h>
+-#include <uchar.h>
+ 
+ #include <efivar.h>
+ #include "lib.h"
+ 
++#ifdef __UCLIBC__
++typedef int_least16_t char16_t;
++typedef int_least32_t char32_t;
++#else
++#include <uchar.h>
++#endif
++
+ #define EFIVAR_MAGIC 0xf3df1597
+ 
+ #define ATTRS_UNSET 0xa5a5a5a5a5a5a5a5
+-- 
+2.10.2
+

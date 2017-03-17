@@ -1,0 +1,44 @@
+From 89263555143e3c0125320ca565b41805f27460c9 Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 16 May 2015 15:44:32 +0200
+Subject: [PATCH] Define _GNU_SOURCE to get members of tcphdr
+
+The source uses linux names for members of tcphdr. For example
+"source" instead of "th_sport", ... musl libc's headers need
+_GNU_SOURCE defined in order to expose these.
+
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+[Rahul Bedarkar: Backported from https://git.netfilter.org/ulogd2/commit/?id=89263555143e3c0125320ca565b41805f27460c9]
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ filter/raw2packet/ulogd_raw2packet_BASE.c | 1 +
+ filter/ulogd_filter_PWSNIFF.c             | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/filter/raw2packet/ulogd_raw2packet_BASE.c b/filter/raw2packet/ulogd_raw2packet_BASE.c
+index c9d5227..ad894fc 100644
+--- a/filter/raw2packet/ulogd_raw2packet_BASE.c
++++ b/filter/raw2packet/ulogd_raw2packet_BASE.c
+@@ -35,6 +35,7 @@
+ #include <netinet/ip.h>
+ #include <netinet/ip6.h>
+ #include <netinet/in.h>
++#define _GNU_SOURCE
+ #include <netinet/tcp.h>
+ #include <netinet/ip_icmp.h>
+ #include <netinet/icmp6.h>
+diff --git a/filter/ulogd_filter_PWSNIFF.c b/filter/ulogd_filter_PWSNIFF.c
+index 5169eee..a3e2b42 100644
+--- a/filter/ulogd_filter_PWSNIFF.c
++++ b/filter/ulogd_filter_PWSNIFF.c
+@@ -25,6 +25,7 @@
+ #include <sys/socket.h>
+ #include <netinet/ip.h>
+ #include <netinet/in.h>
++#define _GNU_SOURCE
+ #include <netinet/tcp.h>
+ #include <ulogd/ulogd.h>
+ 
+-- 
+2.6.2
+

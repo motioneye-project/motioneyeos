@@ -5,12 +5,12 @@
 ################################################################################
 
 TCPING_VERSION = 1.3.5
-TCPING_SITE = http://www.linuxco.de/tcping
+TCPING_SITE = http://linuxco.de/tcping
 TCPING_LICENSE = GPLv3+
 TCPING_LICENSE_FILES = LICENSE
 
 define TCPING_BUILD_CMDS
-	$(MAKE) CC="$(TARGET_CC)" CCFLAGS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
+	$(TARGET_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" CCFLAGS="$(TARGET_CFLAGS) $(TARGET_LDFLAGS)" \
 		-C $(@D) tcping.linux
 endef
 

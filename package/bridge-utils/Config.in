@@ -4,4 +4,4 @@ config BR2_PACKAGE_BRIDGE_UTILS
 	  Manage ethernet bridging; a way to connect networks together to
 	  form a larger network.
 
-	  http://linux-net.osdl.org/index.php/Bridge
+	  https://git.kernel.org/cgit/linux/kernel/git/shemminger/bridge-utils.git/

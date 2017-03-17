@@ -1,0 +1,103 @@
+#!/bin/sh
+
+PATH=/bin:/sbin:/usr/bin:/usr/sbin
+
+msg() {
+    echo "* $1"
+}
+
+msg "Waiting for sdcard"
+sleep 2
+
+msg "Mounting pseudo filesystems"
+mount -t devtmpfs devtmpfs /dev
+mount -t proc proc /proc
+
+ROOT_DEV=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+if echo ${ROOT_DEV: -2} | grep -E 'p[0-9]' &>/dev/null; then  # e.g. /dev/mmcblk0p2
+    DISK_DEV=${ROOT_DEV:0:$((${#ROOT_DEV}-2))}
+    BOOT_DEV=${DISK_DEV}p1
+    DATA_DEV=${DISK_DEV}p3
+else  # e.g. /dev/sdc2
+    DISK_DEV=${ROOT_DEV:0:$((${#ROOT_DEV}-1))}
+    BOOT_DEV=${DISK_DEV}1
+    DATA_DEV=${DISK_DEV}3
+fi
+
+msg "Disk device is $DISK_DEV"
+msg "Boot device is $BOOT_DEV"
+msg "Root device is $ROOT_DEV"
+msg "Data device is $DATA_DEV"
+
+
+FW_DIR=/data/.fwupdate
+FW_FILE=firmware.img.gz
+FW_FILE_EXTR=firmware.img
+
+LEGACY_FW_DIR=/data/.firmware_update
+LEGACY_FW_FILE_EXTR=firmware
+
+ROOT_INFO_FILE=root_info
+
+on_exit() {
+    msg "Switching to normal boot"
+    /remove_initramfs
+
+    msg "Unmounting data partition"
+    umount /data
+    
+    msg "Unmounting boot partition"
+    umount /boot
+    
+    msg "Syncing"
+    sync
+    
+    msg "Rebooting"
+    echo 'b' > /proc/sysrq-trigger
+}
+
+trap on_exit EXIT
+
+if [ -x /prepare_initramfs ]; then
+    msg "Preparing initramfs"
+    /prepare_initramfs
+fi
+
+msg "Mounting boot partition"
+mount $BOOT_DEV /boot
+
+msg "Mounting data partition"
+mount $DATA_DEV /data
+
+if ! [ -r $FW_DIR/$FW_FILE_EXTR ]; then
+    if [ -r $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR ]; then
+        msg "Detected legacy firmware path"
+        mkdir -p $FW_DIR
+        mv $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR $FW_DIR/$FW_FILE_EXTR
+        
+        msg "Computing root partition info"
+        root_start=$(fdisk -l $FW_DIR/$FW_FILE_EXTR | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 4)
+        root_start=$(($root_start / 2048))
+        root_size=$(fdisk -l $FW_DIR/$FW_FILE_EXTR | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 6)
+        root_size=$(($root_size / 2048))
+        
+        echo $root_start $root_size > $FW_DIR/$ROOT_INFO_FILE
+    else
+        msg "No firmware found, aborting"
+        exit 1
+    fi
+fi
+
+if ! [ -r $FW_DIR/$ROOT_INFO_FILE ]; then
+    msg "No root partition info, aborting"
+    exit 1
+fi
+
+msg "Copying root image"
+root_start=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 1)
+root_size=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 2)
+
+dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size || exit 1
+
+msg "Cleaning up"
+rm -rf $FW_DIR

@@ -4,9 +4,10 @@ config BR2_PACKAGE_QT5TOOLS
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5tools module.
+	  Qt Tools provides tools facilitate the development
+	  and design of applications.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtmodules.html#qt-tools
 
 if BR2_PACKAGE_QT5TOOLS
 

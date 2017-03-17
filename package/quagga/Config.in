@@ -25,9 +25,9 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	  on different hosts.
 
 config BR2_PACKAGE_QUAGGA_BGPD
-	bool "BPGv4+ protocol"
+	bool "BGPv4+ protocol"
 	help
-	  Build bpgd daemon.
+	  Build bgpd daemon.
 
 config BR2_PACKAGE_QUAGGA_BGP_ANNOUNCE
 	bool "BGP route announcement"

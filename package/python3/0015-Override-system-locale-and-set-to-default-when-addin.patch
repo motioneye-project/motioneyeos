@@ -1,4 +1,4 @@
-From 807357dc50a5a97016ce22646b5eb6a5b64a1a5d Mon Sep 17 00:00:00 2001
+From 46fda6fc83500bf5663397f9d28b618e6b6b20c1 Mon Sep 17 00:00:00 2001
 From: Samuel Cabrero <samuelcabrero@gmail.com>
 Date: Wed, 23 Dec 2015 11:45:48 +0100
 Subject: [PATCH] Override system locale and set to default when adding gcc
@@ -20,10 +20,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 565c304..8966779 100644
+index 9e08e7e..3feca04 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -423,7 +423,7 @@ class PyBuildExt(build_ext):
+@@ -441,7 +441,7 @@ class PyBuildExt(build_ext):
          tmpfile = os.path.join(self.build_temp, 'gccpaths')
          if not os.path.exists(self.build_temp):
              os.makedirs(self.build_temp)

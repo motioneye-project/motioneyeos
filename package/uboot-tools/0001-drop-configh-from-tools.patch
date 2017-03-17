@@ -1,7 +1,7 @@
-From 2e54434e4dd178773e8e11e48afc81299771f3e7 Mon Sep 17 00:00:00 2001
+From b742c7590ac6d9ac72dd227679ccff79433b3512 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
 Date: Tue, 4 Aug 2015 22:13:20 +0200
-Subject: [PATCH 1/1] drop configh from tools
+Subject: [PATCH] drop configh from tools
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -18,12 +18,12 @@ Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
  1 file changed, 11 deletions(-)
 
 diff --git a/tools/env/fw_env.h b/tools/env/fw_env.h
-index 60c0517..1c5daaa 100644
+index 57149e7..50049fe 100644
 --- a/tools/env/fw_env.h
 +++ b/tools/env/fw_env.h
-@@ -5,17 +5,6 @@
-  * SPDX-License-Identifier:	GPL-2.0+
-  */
+@@ -8,17 +8,6 @@
+ #include <aes.h>
+ #include <stdint.h>
  
 -/* Pull in the current config to define the default environment */
 -#include <linux/kconfig.h>
@@ -40,5 +40,5 @@ index 60c0517..1c5daaa 100644
   * To build the utility with the static configuration
   * comment out the next line.
 -- 
-2.5.0
+2.7.4
 

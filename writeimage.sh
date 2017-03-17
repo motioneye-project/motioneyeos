@@ -92,6 +92,7 @@ sync
 if which partprobe > /dev/null 2>&1; then
     msg "re-reading sdcard partition table"
     partprobe ${SDCARD_DEV}
+    sleep 1
 fi
 
 msg "mounting sdcard"

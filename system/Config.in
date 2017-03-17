@@ -1,5 +1,35 @@
 menu "System configuration"
 
+choice
+	prompt "Root FS skeleton"
+
+config BR2_ROOTFS_SKELETON_DEFAULT
+	bool "default target skeleton"
+	help
+	  Use default target skeleton
+
+config BR2_ROOTFS_SKELETON_CUSTOM
+	bool "custom target skeleton"
+	help
+	  Use custom target skeleton.
+
+endchoice
+
+if BR2_ROOTFS_SKELETON_CUSTOM
+
+config BR2_ROOTFS_SKELETON_CUSTOM_PATH
+	string "custom target skeleton path"
+	help
+	  Path to custom target skeleton.
+
+# dummy config so merged /usr workarounds can also be activated for
+# custom rootfs skeleton
+config BR2_ROOTFS_MERGED_USR
+
+endif
+
+if BR2_ROOTFS_SKELETON_DEFAULT
+
 config BR2_TARGET_GENERIC_HOSTNAME
 	string "System hostname"
 	default "buildroot"
@@ -17,6 +47,8 @@ config BR2_TARGET_GENERIC_ISSUE
 
 	  Leave empty to not create /etc/issue, or to keep the
 	  one from a custom skeleton.
+
+endif
 
 choice
 	bool "Passwords encoding"
@@ -74,6 +106,7 @@ config BR2_INIT_BUSYBOX
 
 config BR2_INIT_SYSV
 	bool "systemV"
+	depends on BR2_USE_MMU # sysvinit
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # sysvinit
 	select BR2_PACKAGE_INITSCRIPTS
 	select BR2_PACKAGE_SYSVINIT
@@ -94,8 +127,9 @@ config BR2_INIT_SYSTEMD
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 	select BR2_ROOTFS_MERGED_USR
 	select BR2_PACKAGE_SYSTEMD
+	select BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW if BR2_ROOTFS_SKELETON_DEFAULT
 
-comment "systemd needs (e)glibc toolchain, headers >= 3.10"
+comment "systemd needs a glibc toolchain, headers >= 3.10"
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC \
 		&& BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10)
 
@@ -124,7 +158,7 @@ config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_MDEV
 
 config BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
 	bool "Dynamic using devtmpfs + eudev"
-	depends on BR2_USE_WCHAR
+	depends on BR2_USE_WCHAR # eudev
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU # eudev
 	select BR2_PACKAGE_EUDEV
@@ -162,33 +196,10 @@ config BR2_ROOTFS_STATIC_DEVICE_TABLE
 	  See package/makedevs/README for details on the usage and
 	  syntax of these files.
 
-choice
-	prompt "Root FS skeleton"
-
-config BR2_ROOTFS_SKELETON_DEFAULT
-	bool "default target skeleton"
+config BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES
+	bool "support extended attributes in device tables"
 	help
-	  Use default target skeleton
-
-config BR2_ROOTFS_SKELETON_CUSTOM
-	bool "custom target skeleton"
-	help
-	  Use custom target skeleton.
-
-endchoice
-
-if BR2_ROOTFS_SKELETON_CUSTOM
-config BR2_ROOTFS_SKELETON_CUSTOM_PATH
-	string "custom target skeleton path"
-	default "system/skeleton"
-	help
-	  Path to custom target skeleton.
-
-# dummy config so merged /usr workarounds can also be activated for
-# custom rootfs skeleton
-config BR2_ROOTFS_MERGED_USR
-
-endif
+	  Support extended attributes handling in device tables
 
 if BR2_ROOTFS_SKELETON_DEFAULT
 
@@ -265,13 +276,19 @@ config BR2_SYSTEM_BIN_SH_DASH
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	select BR2_PACKAGE_DASH
 
+config BR2_SYSTEM_BIN_SH_MKSH
+	bool "mksh"
+	depends on BR2_USE_MMU # mksh
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_MKSH
+
 config BR2_SYSTEM_BIN_SH_ZSH
 	bool "zsh"
 	depends on BR2_USE_MMU # zsh
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	select BR2_PACKAGE_ZSH
 
-comment "bash, dash, zsh need BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+comment "bash, dash, mksh, zsh need BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
 	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS && BR2_PACKAGE_BUSYBOX
 
 config BR2_SYSTEM_BIN_SH_NONE
@@ -284,6 +301,7 @@ config BR2_SYSTEM_BIN_SH
 	default "busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
 	default "bash"    if BR2_SYSTEM_BIN_SH_BASH
 	default "dash"    if BR2_SYSTEM_BIN_SH_DASH
+	default "mksh"    if BR2_SYSTEM_BIN_SH_MKSH
 	default "zsh"     if BR2_SYSTEM_BIN_SH_ZSH
 
 menuconfig BR2_TARGET_GENERIC_GETTY
@@ -351,13 +369,10 @@ config BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW
 	  read-only.
 	  If unsure, say Y.
 
-endif # BR2_ROOTFS_SKELETON_DEFAULT
-
-
 config BR2_SYSTEM_DHCP
 	string "Network interface to configure through DHCP"
 	default ""
-	depends on !BR2_PACKAGE_SYSTEMD_NETWORKD && (BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+	depends on BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || BR2_PACKAGE_SYSTEMD_NETWORKD
 	help
 	  Enter here the name of the network interface (E.G. eth0) to
 	  automatically configure through DHCP at bootup.
@@ -367,17 +382,49 @@ config BR2_SYSTEM_DHCP
 	  For more complicated network setups use an overlay to overwrite
 	  /etc/network/interfaces or add a networkd configuration file.
 
-comment "automatic network configuration via DHCP is not compatible with networkd"
-	depends on BR2_PACKAGE_SYSTEMD_NETWORKD
+comment "automatic network configuration via DHCP needs ifupdown or busybox or networkd"
+	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || BR2_PACKAGE_SYSTEMD_NETWORKD)
 
-comment "automatic network configuration via DHCP needs ifupdown or busybox"
-	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN)
+endif # BR2_ROOTFS_SKELETON_DEFAULT
+
+config BR2_ENABLE_LOCALE_PURGE
+	bool "Purge unwanted locales"
+	default y
+	help
+	  Explicitly specify what locales to install on target. If N
+	  then all locales supported by packages are installed.
+
+config BR2_ENABLE_LOCALE_WHITELIST
+	string "Locales to keep"
+	default "C en_US"
+	depends on BR2_ENABLE_LOCALE_PURGE
+	help
+	  Whitespace seperated list of locales to allow on target.
+	  Locales not listed here will be removed from the target.
+	  See 'locale -a' on your host for a list of locales available
+	  on your build host, or have a look in /usr/share/locale in
+	  the target file system for available locales.
+
+	  Notice that listing a locale here doesn't guarantee that it
+	  will be available on the target - That purely depends on the
+	  support for that locale in the selected packages.
+
+config BR2_GENERATE_LOCALE
+	string "Generate locale data"
+	default ""
+	depends on \
+		(BR2_TOOLCHAIN_BUILDROOT_UCLIBC && BR2_ENABLE_LOCALE) || \
+		BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  Generate support for a list of locales. Locales can be
+	  specified with or without encoding, when no encoding is
+	  specified, UTF-8 is assumed. Examples of locales: en_US,
+	  fr_FR.UTF-8.
 
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
-	# No timezone for musl; only for uClibc or (e)glibc.
-	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_TZ if BR2_TOOLCHAIN_USES_UCLIBC
 	help
 	  Say 'y' here to install timezone info.
@@ -391,7 +438,7 @@ config BR2_TARGET_TZ_ZONELIST
 	  Space-separated list of time zones to compile.
 
 	  The value "default" includes all commonly used time zones. Note
-	  that this set consumes around 5.5M for (e)glibc and 2.1M for uClibc.
+	  that this set consumes around 5.5M for glibc and 2.1M for uClibc.
 
 	  The full list is the list of files in the time zone database source,
 	  not including the build and .tab files.
@@ -449,6 +496,38 @@ config BR2_ROOTFS_POST_BUILD_SCRIPT
 	  argument. Make sure the exit code of those scripts are 0, otherwise
 	  make will stop after calling them.
 
+config BR2_ROOTFS_POST_FAKEROOT_SCRIPT
+	string "Custom scripts to run inside the fakeroot environment"
+	default ""
+	help
+	  Specify a space-separated list of scripts to be run at the end
+	  of the fakeroot script right before the image(s) are actually
+	  generated.
+
+	  This gives users the opportunity to do customisations of the
+	  content of the rootfs, which would otherwise require root
+	  rights.
+
+	  These scripts are called with the target directory name as
+	  first argument. The build will fail on the first scripts that
+	  exits with a non-zero exit code.
+
+	  Note that Buildroot already provides mechanisms to customise
+	  the content of the rootfs:
+
+	    - BR2_ROOTFS_STATIC_DEVICE_TABLE
+	        to create arbitrary entries statically in /dev
+
+	    - BR2_ROOTFS_DEVICE_TABLE
+	        to set arbitrary permissions as well as extended attributes
+	        (such as capabilities) on files and directories,
+
+	    - BR2_ROOTFS_USERS_TABLES:
+	        to create arbitrary users and their home directories
+
+	  It is highly recommended to use those mechanisms if possible,
+	  rather than using custom fakeroot scripts.
+
 config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	string "Custom scripts to run after creating filesystem images"
 	default ""
@@ -468,8 +547,10 @@ config BR2_ROOTFS_POST_IMAGE_SCRIPT
 	  source directory as the current directory.
 
 config BR2_ROOTFS_POST_SCRIPT_ARGS
-	string "Extra post-{build,image} arguments"
-	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" || BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
+	string "Extra arguments passed to custom scripts"
+	depends on BR2_ROOTFS_POST_BUILD_SCRIPT != "" \
+		|| BR2_ROOTFS_POST_FAKEROOT_SCRIPT != "" \
+		|| BR2_ROOTFS_POST_IMAGE_SCRIPT != ""
 	help
 	  Pass these additional arguments to each post-build or post-image
 	  scripts.

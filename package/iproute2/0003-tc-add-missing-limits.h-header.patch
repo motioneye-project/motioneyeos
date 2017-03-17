@@ -1,0 +1,38 @@
+From 1f4547b0a81db617f4b0d02711d9e39278eb8283 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 22 Dec 2016 20:45:11 +0200
+Subject: [PATCH] tc: add missing limits.h header
+
+This fixes under musl build issues like:
+
+f_matchall.c: In function ‘matchall_parse_opt’:
+f_matchall.c:48:12: error: ‘LONG_MIN’ undeclared (first use in this function)
+   if (h == LONG_MIN || h == LONG_MAX) {
+            ^
+f_matchall.c:48:12: note: each undeclared identifier is reported only once for each function it appears in
+f_matchall.c:48:29: error: ‘LONG_MAX’ undeclared (first use in this function)
+   if (h == LONG_MIN || h == LONG_MAX) {
+                             ^
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: posted http://marc.info/?l=linux-netdev&m=148243283002957&w=2
+---
+ tc/tc_util.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tc/tc_util.h b/tc/tc_util.h
+index f198a4ad5554..4db26c6d5e25 100644
+--- a/tc/tc_util.h
++++ b/tc/tc_util.h
+@@ -2,6 +2,7 @@
+ #define _TC_UTIL_H_ 1
+ 
+ #define MAX_MSG 16384
++#include <limits.h>
+ #include <linux/pkt_sched.h>
+ #include <linux/pkt_cls.h>
+ #include <linux/gen_stats.h>
+-- 
+2.11.0
+

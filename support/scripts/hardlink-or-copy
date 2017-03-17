@@ -1,0 +1,35 @@
+#!/bin/bash
+
+# Try to hardlink a file into a directory, fallback to copy on failure.
+#
+# Hardlink-or-copy the source file in the first argument into the
+# destination directory in the second argument, using the basename in
+# the third argument as basename for the destination file. If the third
+# argument is missing, use the basename of the source file as basename
+# for the destination file.
+#
+# In either case, remove the destination prior to doing the
+# hardlink-or-copy.
+#
+# Note that this is NOT an atomic operation.
+
+set -e
+
+main() {
+    local src_file="${1}"
+    local dst_dir="${2}"
+    local dst_file="${3}"
+
+    if [ -n "${dst_file}" ]; then
+        dst_file="${dst_dir}/${dst_file}"
+    else
+        dst_file="${dst_dir}/${src_file##*/}"
+    fi
+
+    mkdir -p "${dst_dir}"
+    rm -f "${dst_file}"
+    ln -f "${src_file}" "${dst_file}" 2>/dev/null \
+    || cp -f "${src_file}" "${dst_file}"
+}
+
+main "${@}"

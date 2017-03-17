@@ -1,0 +1,39 @@
+From 7c8d81605302e7d7fdd3e7d8eb69302bddc64a2c Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Fri, 16 Sep 2016 12:12:26 +0300
+Subject: [PATCH] arc: Use -mcpu=XXX instead of obsolete -marcXXX
+
+With newer ARC tools old way of CPU specification gets obsolete,
+so we're switching to newer and more common way of setting "-mcpu".
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ arch/arc/config.mk | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arc/config.mk b/arch/arc/config.mk
+index 7c974f0..13676bd 100644
+--- a/arch/arc/config.mk
++++ b/arch/arc/config.mk
+@@ -31,15 +31,15 @@ CONFIG_MMU = 1
+ endif
+ 
+ ifdef CONFIG_CPU_ARC750D
+-PLATFORM_CPPFLAGS += -marc700
++PLATFORM_CPPFLAGS += -mcpu=arc700
+ endif
+ 
+ ifdef CONFIG_CPU_ARC770D
+-PLATFORM_CPPFLAGS += -marc700 -mlock -mswape
++PLATFORM_CPPFLAGS += -mcpu=arc700 -mlock -mswape
+ endif
+ 
+ ifdef CONFIG_CPU_ARCEM6
+-PLATFORM_CPPFLAGS += -marcem
++PLATFORM_CPPFLAGS += -mcpu=arcem
+ endif
+ 
+ ifdef CONFIG_CPU_ARCHS34
+-- 
+2.7.4
+

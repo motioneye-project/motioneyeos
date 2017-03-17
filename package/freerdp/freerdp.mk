@@ -111,7 +111,7 @@ endif
 # Xorg is enabled but neither the server nor the X client are, then
 # there's nothing that guarantees those two libs are enabled. So we
 # really must check for them.
-ifeq ($(BR2_PACKAGE_XLIB_LIBX11)$(BR2_PACKAGE_XLIB_LIBX11),yy)
+ifeq ($(BR2_PACKAGE_XLIB_LIBX11)$(BR2_PACKAGE_XLIB_LIBXEXT),yy)
 FREERDP_DEPENDENCIES += xlib_libX11 xlib_libXext
 FREERDP_CONF_OPTS += -DWITH_X11=ON
 else

@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-BOTAN_VERSION = 1.10.8
+BOTAN_VERSION = 1.10.13
 BOTAN_SOURCE = Botan-$(BOTAN_VERSION).tgz
-BOTAN_SITE = http://files.randombit.net/botan
+BOTAN_SITE = http://botan.randombit.net/releases
 BOTAN_LICENSE = BSD-2c
 BOTAN_LICENSE_FILES = doc/license.txt
 
@@ -44,19 +44,19 @@ BOTAN_CONF_OPTS += --with-zlib
 endif
 
 define BOTAN_CONFIGURE_CMDS
-	(cd $(@D); ./configure.py $(BOTAN_CONF_OPTS))
+	(cd $(@D); $(TARGET_MAKE_ENV) ./configure.py $(BOTAN_CONF_OPTS))
 endef
 
 define BOTAN_BUILD_CMDS
-	$(MAKE) -C $(@D) AR="$(TARGET_AR) crs"
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) AR="$(TARGET_AR) crs"
 endef
 
 define BOTAN_INSTALL_STAGING_CMDS
-	$(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)/usr" install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)/usr" install
 endef
 
 define BOTAN_INSTALL_TARGET_CMDS
-	$(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)/usr" install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)/usr" install
 endef
 
 $(eval $(generic-package))

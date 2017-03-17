@@ -1,0 +1,4 @@
+# Codescape toolchains from Imagination Technologies
+# From: http://codescape-mips-sdk.imgtec.com/components/toolchain/2016.05-06/downloads.html
+sha256 3a7aba259beb05f0e3054b5a61a368a5085447f47361949a938ac9cc7de4227b  Codescape.GNU.Tools.Package.2016.05-06.for.MIPS.MTI.Linux.CentOS-5.x86.tar.gz
+sha256 a676a8b3647c8c651fb8935a75db8f00b79d36ec55676f7c05bac12b550788f7  Codescape.GNU.Tools.Package.2016.05-06.for.MIPS.MTI.Linux.CentOS-5.x86_64.tar.gz

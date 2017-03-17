@@ -1,4 +1,0 @@
-config BR2_PACKAGE_MOTION_MMAL
-	bool "motion-mmal"
-	depends on BR2_PACKAGE_RPI_FIRMWARE && BR2_PACKAGE_RPI_USERLAND
-	help

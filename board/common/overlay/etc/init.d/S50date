@@ -38,22 +38,10 @@ date_interval="900"
 
 source $conf
 
-kill_after_timeout() {
-    sleep $date_timeout
-    ps aux | grep httplib | grep -v  grep | tr -s ' ' | cut -d ' ' -f 2 | xargs -r kill
-}
-
 set_current_date_http() {
-    kill_after_timeout &
-
-    timestamp=$(python -c "import calendar, httplib, email.utils; conn = httplib.HTTPConnection('$date_host'); conn.request('HEAD', '/'); \
-            print calendar.timegm(email.utils.parsedate(conn.getresponse().getheader('date')))")
-    
-    if [ -n "$timestamp" ]; then
-        date +%s -s @$timestamp > /dev/null
-    else
-        return 1
-    fi
+    date_str=$(curl -v -s -m $date_timeout -X GET http://$date_host 2>&1 | grep Date | sed -e 's/< Date: //')
+    date -D "%a, %d %b %Y %H:%M:%S" -s "$date_str" > /dev/null
+    return $?
 }
 
 set_current_date_ntp() {

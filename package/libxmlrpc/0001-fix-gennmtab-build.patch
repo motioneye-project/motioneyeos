@@ -19,7 +19,7 @@ Index: b/lib/expat/gennmtab/Makefile
 +	$(CC_FOR_BUILD) -c $< -o $@ $(CFLAGS_FOR_BUILD) $(INCLUDES)
  
  gennmtab:%:%.o
--	$(BUILDTOOL_CCLD) -o $@ $(LDFLAGS) $^
+-	$(BUILDTOOL_CCLD) -o $@ $(LDFLAGS_ALL) $^
 +	$(CC_FOR_BUILD) -o $@ $(LDFLAGS_FOR_BUILD) $^
  
  include depend.mk

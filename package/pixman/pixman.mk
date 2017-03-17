@@ -12,12 +12,30 @@ PIXMAN_LICENSE_FILES = COPYING
 
 PIXMAN_INSTALL_STAGING = YES
 PIXMAN_DEPENDENCIES = host-pkgconf
+HOST_PIXMAN_DEPENDENCIES = host-pkgconf
 
 # For 0001-Disable-tests.patch
 PIXMAN_AUTORECONF = YES
 
 # don't build gtk based demos
 PIXMAN_CONF_OPTS = --disable-gtk
+
+# The ARM SIMD code from pixman requires a recent enough ARM core, but
+# there is a runtime CPU check that makes sure it doesn't get used if
+# the HW doesn't support it. The only case where the ARM SIMD code
+# cannot be *built* at all is when the platform doesn't support ARM
+# instructions at all, so we have to disable that explicitly.
+ifeq ($(BR2_ARM_CPU_HAS_ARM),y)
+PIXMAN_CONF_OPTS += --enable-arm-simd
+else
+PIXMAN_CONF_OPTS += --disable-arm-simd
+endif
+
+ifeq ($(BR2_ARM_CPU_HAS_ARM)$(BR2_ARM_CPU_HAS_NEON),yy)
+PIXMAN_CONF_OPTS += --enable-arm-neon
+else
+PIXMAN_CONF_OPTS += --disable-arm-neon
+endif
 
 # disable iwmmxt support for CPU's that don't have
 # this feature

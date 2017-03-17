@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEON_VERSION = 0.30.0
+NEON_VERSION = 0.30.2
 NEON_SITE = http://www.webdav.org/neon
 NEON_LICENSE = LGPLv2+ (library), GPLv2+ (manual and tests)
 NEON_LICENSE_FILES = src/COPYING.LIB test/COPYING README
@@ -28,7 +28,7 @@ NEON_CONF_OPTS += --without-ssl
 endif
 
 ifeq ($(BR2_PACKAGE_NEON_EXPAT),y)
-NEON_CONF_OPTS += --with-expat=$(STAGING_DIR)/usr/lib/libexpat.la
+NEON_CONF_OPTS += --with-expat=yes
 NEON_DEPENDENCIES += expat
 else
 NEON_CONF_OPTS += --with-expat=no

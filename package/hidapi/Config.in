@@ -1,7 +1,7 @@
 config BR2_PACKAGE_HIDAPI
 	bool "hidapi"
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBGUDEV
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
@@ -12,5 +12,5 @@ config BR2_PACKAGE_HIDAPI
 
 	  http://www.signal11.us/oss/hidapi/
 
-comment "hidapi needs udev /dev management and a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_HAS_UDEV
+comment "hidapi needs udev /dev management and a toolchain w/ NPTL threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_HAS_UDEV

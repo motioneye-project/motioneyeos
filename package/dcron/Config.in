@@ -1,6 +1,7 @@
 config BR2_PACKAGE_DCRON
 	bool "dcron"
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  dcron is a time-based job scheduler with anacron-like
 	  features. It works as a background daemon that parses

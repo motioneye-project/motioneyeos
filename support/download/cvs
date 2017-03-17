@@ -26,6 +26,8 @@ rev="${3}"
 rawname="${4}"
 basename="${5}"
 
+shift 5 # Get rid of our options
+
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
 _cvs() {
@@ -48,6 +50,6 @@ fi
 
 export TZ=UTC
 _cvs ${verbose} -z3 -d"'${repo}'" \
-     co -d "'${basename}'" ${select} "'${rev}'" -P "'${rawname}'"
+     co "${@}" -d "'${basename}'" ${select} "'${rev}'" -P "'${rawname}'"
 
 tar czf "${output}" "${basename}"

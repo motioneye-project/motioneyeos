@@ -12,15 +12,15 @@ Index: b/src/Makefile
 ===================================================================
 --- a/src/Makefile
 +++ b/src/Makefile
-@@ -56,7 +56,7 @@
-   TRANSPORT_MODS += blddir/lib/curl_transport/curltransaction
-   TRANSPORT_MODS += blddir/lib/curl_transport/curlmulti
-   TRANSPORT_MODS += blddir/lib/curl_transport/lock_pthread
+@@ -57,7 +57,7 @@
+   TRANSPORT_MODS += $(BLDDIR)/lib/curl_transport/xmlrpc_curl_transport
+   TRANSPORT_MODS += $(BLDDIR)/lib/curl_transport/curltransaction
+   TRANSPORT_MODS += $(BLDDIR)/lib/curl_transport/curlmulti
 -  TRANSPORT_LIBDEP += $(shell curl-config --libs)
 +  TRANSPORT_LIBDEP += $(shell $CURL_CONFIG --libs)
+   TRANSPORT_INCLUDES += -Isrcdir/lib/curl_transport
  endif
  ifeq ($(MUST_BUILD_LIBWWW_CLIENT),yes)
-   TRANSPORT_MODS += blddir/lib/libwww_transport/xmlrpc_libwww_transport
 Index: b/config.mk.in
 ===================================================================
 --- a/config.mk.in
@@ -68,29 +68,3 @@ Index: b/lib/curl_transport/Makefile
  # We expect that curl-config --cflags just gives us -I options, because
  # we need just the -I options for 'make dep'.  Plus, it's scary to think
  # of what any other compiler flag would do to our compile.
-Index: b/src/cpp/test/Makefile
-===================================================================
---- a/src/cpp/test/Makefile
-+++ b/src/cpp/test/Makefile
-@@ -20,7 +20,7 @@
- LIBS := $(shell $(XMLRPC_C_CONFIG) client --ldadd)
- 
- ifeq ($(MUST_BUILD_CURL_CLIENT),yes)
--  LIBS += $(shell curl-config --libs)
-+  LIBS += $(shell $(CURL_CONFIG) --libs)
- endif
- ifeq ($(MUST_BUILD_LIBWWW_CLIENT),yes)
-   LIBS += $(shell libwww-config --libs)
-Index: b/tools/common.mk
-===================================================================
---- a/tools/common.mk
-+++ b/tools/common.mk
-@@ -15,7 +15,7 @@
-   CLIENT_LDLIBS += $(shell libwww-config --libs)
- endif
- ifeq ($(MUST_BUILD_CURL_CLIENT),yes)
--  CLIENT_LDLIBS += $(shell curl-config --libs)
-+  CLIENT_LDLIBS += $(shell $(CURL_CONFIG) --libs)
- endif
- ifeq ($(MUST_BUILD_WININET_CLIENT),yes)
-   CLIENT_LDLIBS += $(shell wininet-config --libs)

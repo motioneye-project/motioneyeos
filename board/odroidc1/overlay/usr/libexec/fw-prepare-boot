@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sed -i 's/00 - 0x/00 0x22000000 0x/' /boot/boot.ini
+

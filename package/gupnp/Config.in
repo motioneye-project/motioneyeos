@@ -1,6 +1,6 @@
 config BR2_PACKAGE_GUPNP
 	bool "gupnp"
-	depends on BR2_USE_WCHAR # glib2, gssdp, util-linux
+	depends on BR2_USE_WCHAR # glib2, gssdp
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2, gssdp
 	depends on BR2_USE_MMU # glib2, gssdp
 	select BR2_PACKAGE_LIBGLIB2

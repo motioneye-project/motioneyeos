@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MIRACLECAST_VERSION = 8b61f733da124ccbfd1b85e188581fad1c41c1e1
+MIRACLECAST_VERSION = c94be167c85c6ec8badd7ac79e3dea2e0b73225c
 MIRACLECAST_SITE = $(call github,albfan,miraclecast,$(MIRACLECAST_VERSION))
 MIRACLECAST_LICENSE = LGPLv2.1+, GPLv2 (gdhcp)
 MIRACLECAST_LICENSE_FILES = COPYING LICENSE_gdhcp LICENSE_htable LICENSE_lgpl

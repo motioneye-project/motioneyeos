@@ -22,14 +22,14 @@ config BR2_PACKAGE_IPTABLES_NFTABLES
 	# uses dlfcn
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_WCHAR
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	select BR2_PACKAGE_LIBMNL
 	select BR2_PACKAGE_LIBNFTNL
 	help
 	  Build nftables compat utilities.
 
-comment "nftables compat needs a toolchain w/ wchar, dynamic library, headers >= 3.4"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || \
+comment "nftables compat needs a toolchain w/ wchar, dynamic library, headers >= 3.12"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
 		!BR2_USE_WCHAR || BR2_STATIC_LIBS
 
 endif

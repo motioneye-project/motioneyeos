@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGTK3_VERSION_MAJOR = 3.20
-LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).4
+LIBGTK3_VERSION_MAJOR = 3.22
+LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).7
 LIBGTK3_SOURCE = gtk+-$(LIBGTK3_VERSION).tar.xz
 LIBGTK3_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK3_VERSION_MAJOR)
 LIBGTK3_LICENSE = LGPLv2+
@@ -182,13 +182,11 @@ endef
 
 # Create icon-theme.cache for each of the icon directories/themes
 # It's not strictly necessary but speeds up lookups
-ifeq ($(BR2_PACKAGE_LIBGTK3),y)
 define LIBGTK3_UPDATE_ICON_CACHE
 	find $(TARGET_DIR)/usr/share/icons -maxdepth 1 -mindepth 1 -type d \
 		-exec $(HOST_DIR)/usr/bin/gtk-update-icon-cache {} \;
 endef
-TARGET_FINALIZE_HOOKS += LIBGTK3_UPDATE_ICON_CACHE
-endif
+LIBGTK3_TARGET_FINALIZE_HOOKS += LIBGTK3_UPDATE_ICON_CACHE
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

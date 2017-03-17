@@ -1,0 +1,36 @@
+From afc191aec355619d6ebabb2cad660a5a8ad4569b Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 30 Jan 2017 23:13:43 +0100
+Subject: [PATCH] domtestcase.cpp: fix narrowing conversion compile error with
+ gcc 6+ / signed char
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/test/cpp/xml/domtestcase.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/test/cpp/xml/domtestcase.cpp b/src/test/cpp/xml/domtestcase.cpp
+index ad276d1a..2a1e6e2e 100644
+--- a/src/test/cpp/xml/domtestcase.cpp
++++ b/src/test/cpp/xml/domtestcase.cpp
+@@ -190,7 +190,7 @@ public:
+                 DOMConfigurator::configure(LOG4CXX_TEST_STR("input/xml/DOMTestCase3.xml"));
+                 LOG4CXX_INFO(logger, "File name is expected to end with a superscript 3")
+ #if LOG4CXX_LOGCHAR_IS_UTF8
+-                const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, 0xC2, 0xB3, 0 };
++                const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, static_cast<logchar>(0xC2), static_cast<logchar>(0xB3), 0 };
+ #else
+                 const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, 0xB3, 0 };
+ #endif
+@@ -209,7 +209,7 @@ public:
+                 DOMConfigurator::configure(LOG4CXX_TEST_STR("input/xml/DOMTestCase4.xml"));
+                 LOG4CXX_INFO(logger, "File name is expected to end with an ideographic 4")
+ #if LOG4CXX_LOGCHAR_IS_UTF8
+-                const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, 0xE3, 0x86, 0x95, 0 };
++                const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, static_cast<logchar>(0xE3), static_cast<logchar>(0x86), static_cast<logchar>(0x95), 0 };
+ #else
+                 const logchar fname[] = { 0x6F, 0x75, 0x74, 0x70, 0x75, 0x74, 0x2F, 0x64, 0x6F, 0x6D, 0x3195, 0 };
+ #endif
+-- 
+2.11.0
+

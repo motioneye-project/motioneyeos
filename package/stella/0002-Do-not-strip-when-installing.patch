@@ -1,0 +1,26 @@
+From a86140353cb2e162d88da9caa1716915be2f6893 Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Tue, 26 Jul 2016 13:25:12 -0300
+Subject: [PATCH 2/2] Do not strip when installing
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 6dd0129587b3..b1aea5eed4a1 100644
+--- a/Makefile
++++ b/Makefile
+@@ -172,7 +172,7 @@ config.mak: $(srcdir)/configure
+ 
+ install: all
+ 	$(INSTALL) -d "$(DESTDIR)$(BINDIR)"
+-	$(INSTALL) -c -s -m 755 "$(srcdir)/stella$(EXEEXT)" "$(DESTDIR)$(BINDIR)/stella$(EXEEXT)"
++	$(INSTALL) -c -m 755 "$(srcdir)/stella$(EXEEXT)" "$(DESTDIR)$(BINDIR)/stella$(EXEEXT)"
+ 	$(INSTALL) -d "$(DESTDIR)$(DOCDIR)"
+ 	$(INSTALL) -c -m 644 "$(srcdir)/Announce.txt" "$(srcdir)/Changes.txt" "$(srcdir)/Copyright.txt" "$(srcdir)/License.txt" "$(srcdir)/README-SDL.txt" "$(srcdir)/Readme.txt" "$(srcdir)/Todo.txt" "$(srcdir)/docs/index.html" "$(srcdir)/docs/debugger.html" "$(DESTDIR)$(DOCDIR)/"
+ 	$(INSTALL) -d "$(DESTDIR)$(DOCDIR)/graphics"
+-- 
+1.9.1
+

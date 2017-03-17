@@ -1,0 +1,61 @@
+From e5e71c31d54562f9c67a8226f0bfc08ad24b81cf Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Tue, 1 Nov 2016 09:30:23 +0100
+Subject: [PATCH 2/4] From upstream master branch:
+ https://github.com/Itseez/opencv/blob/master/modules/core/src/
+
+Do not include sysctl.h targeting Linux systems.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+[Samuel Martin: convert patch to git diff, add cap_ffmpeg_impl.hpp fix]
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ modules/core/src/parallel.cpp           | 2 +-
+ modules/core/src/system.cpp             | 2 +-
+ modules/highgui/src/cap_ffmpeg_impl.hpp | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/modules/core/src/parallel.cpp b/modules/core/src/parallel.cpp
+index 4459a24..0374876 100644
+--- a/modules/core/src/parallel.cpp
++++ b/modules/core/src/parallel.cpp
+@@ -56,7 +56,7 @@
+     #include <sys/types.h>
+     #if defined ANDROID
+         #include <sys/sysconf.h>
+-    #else
++    #elif defined __APPLE__
+         #include <sys/sysctl.h>
+     #endif
+ #endif
+diff --git a/modules/core/src/system.cpp b/modules/core/src/system.cpp
+index 9a7b262..731f090 100644
+--- a/modules/core/src/system.cpp
++++ b/modules/core/src/system.cpp
+@@ -163,7 +163,7 @@ std::wstring GetTempFileNameWinRT(std::wstring prefix)
+ #include <sys/types.h>
+ #if defined ANDROID
+ #include <sys/sysconf.h>
+-#else
++#elif defined __APPLE__
+ #include <sys/sysctl.h>
+ #endif
+ #endif
+diff --git a/modules/highgui/src/cap_ffmpeg_impl.hpp b/modules/highgui/src/cap_ffmpeg_impl.hpp
+index dc3e10d..23674ff 100644
+--- a/modules/highgui/src/cap_ffmpeg_impl.hpp
++++ b/modules/highgui/src/cap_ffmpeg_impl.hpp
+@@ -126,9 +126,9 @@ extern "C" {
+     #include <unistd.h>
+     #include <stdio.h>
+     #include <sys/types.h>
+-    #include <sys/sysctl.h>
+     #include <sys/time.h>
+ #if defined __APPLE__
++    #include <sys/sysctl.h>
+     #include <mach/clock.h>
+     #include <mach/mach.h>
+ #endif
+-- 
+2.10.2
+

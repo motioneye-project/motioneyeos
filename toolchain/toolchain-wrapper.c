@@ -66,6 +66,9 @@ static char *predef_args[] = {
 #ifdef BR_OMIT_LOCK_PREFIX
 	"-Wa,-momit-lock-prefix=yes",
 #endif
+#ifdef BR_NO_FUSED_MADD
+	"-mno-fused-madd",
+#endif
 #ifdef BR_BINFMT_FLAT
 	"-Wl,-elf2flt",
 #endif
@@ -80,22 +83,77 @@ static char *predef_args[] = {
 #endif
 };
 
-static void check_unsafe_path(const char *path, int paranoid)
-{
-	char **c;
-	static char *unsafe_paths[] = {
-		"/lib", "/usr/include", "/usr/lib", "/usr/local/include", "/usr/local/lib", NULL,
-	};
+/* A {string,length} tuple, to avoid computing strlen() on constants.
+ *  - str must be a \0-terminated string
+ *  - len does not account for the terminating '\0'
+ */
+struct str_len_s {
+	const char *str;
+	size_t     len;
+};
 
-	for (c = unsafe_paths; *c != NULL; c++) {
-		if (!strncmp(path, *c, strlen(*c))) {
-			fprintf(stderr, "%s: %s: unsafe header/library path used in cross-compilation: '%s'\n",
-				program_invocation_short_name,
-				paranoid ? "ERROR" : "WARNING", path);
-			if (paranoid)
-				exit(1);
+/* Define a {string,length} tuple. Takes an unquoted constant string as
+ * parameter. sizeof() on a string literal includes the terminating \0,
+ * but we don't want to count it.
+ */
+#define STR_LEN(s) { #s, sizeof(#s)-1 }
+
+/* List of paths considered unsafe for cross-compilation.
+ *
+ * An unsafe path is one that points to a directory with libraries or
+ * headers for the build machine, which are not suitable for the target.
+ */
+static const struct str_len_s unsafe_paths[] = {
+	STR_LEN(/lib),
+	STR_LEN(/usr/include),
+	STR_LEN(/usr/lib),
+	STR_LEN(/usr/local/include),
+	STR_LEN(/usr/local/lib),
+	{ NULL, 0 },
+};
+
+/* Unsafe options are options that specify a potentialy unsafe path,
+ * that will be checked by check_unsafe_path(), below.
+ */
+static const struct str_len_s unsafe_opts[] = {
+	STR_LEN(-I),
+	STR_LEN(-idirafter),
+	STR_LEN(-iquote),
+	STR_LEN(-isystem),
+	STR_LEN(-L),
+	{ NULL, 0 },
+};
+
+/* Check if path is unsafe for cross-compilation. Unsafe paths are those
+ * pointing to the standard native include or library paths.
+ *
+ * We print the arguments leading to the failure. For some options, gcc
+ * accepts the path to be concatenated to the argument (e.g. -I/foo/bar)
+ * or separated (e.g. -I /foo/bar). In the first case, we need only print
+ * the argument as it already contains the path (arg_has_path), while in
+ * the second case we need to print both (!arg_has_path).
+ *
+ * If paranoid, exit in error instead of just printing a warning.
+ */
+static void check_unsafe_path(const char *arg,
+			      const char *path,
+			      int paranoid,
+			      int arg_has_path)
+{
+	const struct str_len_s *p;
+
+	for (p=unsafe_paths; p->str; p++) {
+		if (strncmp(path, p->str, p->len))
 			continue;
-		}
+		fprintf(stderr,
+			"%s: %s: unsafe header/library path used in cross-compilation: '%s%s%s'\n",
+			program_invocation_short_name,
+			paranoid ? "ERROR" : "WARNING",
+			arg,
+			arg_has_path ? "" : "' '", /* close single-quote, space, open single-quote */
+			arg_has_path ? "" : path); /* so that arg and path are properly quoted. */
+		if (paranoid)
+			exit(1);
 	}
 }
 
@@ -222,24 +280,23 @@ int main(int argc, char **argv)
 
 	/* Check for unsafe library and header paths */
 	for (i = 1; i < argc; i++) {
-
-		/* Skip options that do not start with -I and -L */
-		if (strncmp(argv[i], "-I", 2) && strncmp(argv[i], "-L", 2))
-			continue;
-
-		/* We handle two cases: first the case where -I/-L and
-		 * the path are separated by one space and therefore
-		 * visible as two separate options, and then the case
-		 * where they are stuck together forming one single
-		 * option.
-		 */
-		if (argv[i][2] == '\0') {
-			i++;
-			if (i == argc)
+		const struct str_len_s *opt;
+		for (opt=unsafe_opts; opt->str; opt++ ) {
+			/* Skip any non-unsafe option. */
+			if (strncmp(argv[i], opt->str, opt->len))
 				continue;
-			check_unsafe_path(argv[i], paranoid);
-		} else {
-			check_unsafe_path(argv[i] + 2, paranoid);
+
+			/* Handle both cases:
+			 *  - path is a separate argument,
+			 *  - path is concatenated with option.
+			 */
+			if (argv[i][opt->len] == '\0') {
+				i++;
+				if (i == argc)
+					break;
+				check_unsafe_path(argv[i-1], argv[i], paranoid, 0);
+			} else
+				check_unsafe_path(argv[i], argv[i] + opt->len, paranoid, 1);
 		}
 	}
 

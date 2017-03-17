@@ -14,7 +14,7 @@ AM33X_CM3_LICENSE_FILES = License.txt
 # The build command below will use the standard cross-compiler (normally
 # build for Cortex-A8, to build the FW for the Cortex-M3.
 define AM33X_CM3_BUILD_CMDS
-	$(MAKE) CC="$(TARGET_CC)" CROSS_COMPILE="$(TARGET_CROSS)" -C $(@D) all
+	$(TARGET_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" CROSS_COMPILE="$(TARGET_CROSS)" -C $(@D) all
 endef
 
 # Not all of the firmware files are used

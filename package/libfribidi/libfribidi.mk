@@ -14,11 +14,9 @@ LIBFRIBIDI_INSTALL_STAGING = YES
 # Run autoreconf to regenerate ltmain.sh.
 LIBFRIBIDI_AUTORECONF = YES
 LIBFRIBIDI_DEPENDENCIES = host-pkgconf
-
-ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
-LIBFRIBIDI_DEPENDENCIES += libglib2
-else
-LIBFRIBIDI_CONF_OPTS += --with-glib=no
-endif
+# libglib2 dependency causes a build failure, and this optional
+# dependency is going to be removed upstream, see
+# https://github.com/behdad/fribidi/pull/14
+LIBFRIBIDI_CONF_OPTS = --with-glib=no
 
 $(eval $(autotools-package))

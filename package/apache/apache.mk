@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-APACHE_VERSION = 2.4.20
+APACHE_VERSION = 2.4.25
 APACHE_SOURCE = httpd-$(APACHE_VERSION).tar.bz2
 APACHE_SITE = http://archive.apache.org/dist/httpd
 APACHE_LICENSE = Apache-2.0
@@ -20,6 +20,14 @@ APACHE_CONF_ENV= \
 	ap_cv_void_ptr_lt_long=no \
 	PCRE_CONFIG=$(STAGING_DIR)/usr/bin/pcre-config
 
+ifeq ($(BR2_PACKAGE_APACHE_MPM_EVENT),y)
+APACHE_MPM = event
+else ifeq ($(BR2_PACKAGE_APACHE_MPM_PREFORK),y)
+APACHE_MPM = prefork
+else ifeq ($(BR2_PACKAGE_APACHE_MPM_WORKER),y)
+APACHE_MPM = worker
+endif
+
 APACHE_CONF_OPTS = \
 	--sysconfdir=/etc/apache2 \
 	--with-apr=$(STAGING_DIR)/usr \
@@ -31,7 +39,7 @@ APACHE_CONF_OPTS = \
 	--enable-mime-magic \
 	--without-suexec-bin \
 	--enable-mods-shared=all \
-	--with-mpm=worker \
+	--with-mpm=$(APACHE_MPM) \
 	--disable-lua \
 	--disable-luajit
 

@@ -20,10 +20,12 @@ else
 UBINIZE_CONFIG_FILE_PATH = fs/ubifs/ubinize.cfg
 endif
 
+# don't use sed -i as it misbehaves on systems with SELinux enabled when this is
+# executed through fakeroot (see #9386)
 define ROOTFS_UBI_CMD
-	$(INSTALL) -m 0644 $(UBINIZE_CONFIG_FILE_PATH) $(BUILD_DIR)/ubinize.cfg ;\
-	$(SED) 's;BR2_ROOTFS_UBIFS_PATH;$@fs;' $(BUILD_DIR)/ubinize.cfg ;\
-	$(HOST_DIR)/usr/sbin/ubinize -o $@ $(UBI_UBINIZE_OPTS) $(BUILD_DIR)/ubinize.cfg ;\
+	sed 's;BR2_ROOTFS_UBIFS_PATH;$@fs;' \
+		$(UBINIZE_CONFIG_FILE_PATH) > $(BUILD_DIR)/ubinize.cfg
+	$(HOST_DIR)/usr/sbin/ubinize -o $@ $(UBI_UBINIZE_OPTS) $(BUILD_DIR)/ubinize.cfg
 	rm $(BUILD_DIR)/ubinize.cfg
 endef
 

@@ -4,12 +4,11 @@
 #
 ################################################################################
 
-DOS2UNIX_VERSION = 7.3.1
+DOS2UNIX_VERSION = 7.3.4
 DOS2UNIX_SITE = http://waterlan.home.xs4all.nl/dos2unix
 DOS2UNIX_LICENSE = BSD-2c
 DOS2UNIX_LICENSE_FILES = COPYING.txt
 DOS2UNIX_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
-HOST_DOS2UNIX_DEPENDENCIES =
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
 DOS2UNIX_DEPENDENCIES += host-gettext

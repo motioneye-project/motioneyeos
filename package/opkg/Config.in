@@ -22,6 +22,7 @@ if BR2_PACKAGE_OPKG
 
 config BR2_PACKAGE_OPKG_GPG_SIGN
 	bool "gnupg support"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
 	select BR2_PACKAGE_LIBGPGME
 	select BR2_PACKAGE_LIBGPG_ERROR
 	help

@@ -312,11 +312,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBRFB
 	help
 	  Connects to a VNC server and decodes RFB stream
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIVEADDER
-	bool "liveadder"
-	help
-	  Adds multiple live discontinuous streams
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MIDI
 	bool "midi"
 	help
@@ -424,6 +419,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SUBENC
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_STEREO
 	bool "stereo"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TIMECODE
+	bool "timecode"
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTA
 	bool "tta"
 
@@ -463,14 +461,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_YADIF
 
 comment "plugins with external dependencies"
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM
-	bool "shm"
-	help
-	  shared memory sink source
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD
-	bool "vcd"
-
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_APEXSINK
 	bool "apexsink"
 	select BR2_PACKAGE_OPENSSL
@@ -478,10 +468,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_APEXSINK
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASSRENDER
 	bool "assrender"
 	select BR2_PACKAGE_LIBASS
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC
-	bool "voaacenc"
-	select BR2_PACKAGE_VO_AACENC
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2
 	bool "bz2"
@@ -515,18 +501,16 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB
 	depends on BR2_PACKAGE_DIRECTFB
 	default y
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
-	bool "wayland"
-	depends on BR2_PACKAGE_WAYLAND
-	default y
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
+	bool "dvb"
+	select BR2_PACKAGE_DTV_SCAN_TABLES
+	# FEC_2_5 / QAM_4_NR definitions
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 	help
-	  Wayland Video Sink
+	  DVB elements
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP
-	bool "webp"
-	select BR2_PACKAGE_WEBP
-	help
-	  Webp image format plugin
+comment "dvb needs a toolchain w/ headers >= 3.7"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FAAD
 	bool "faad"
@@ -538,6 +522,39 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FBDEV
 	bool "fbdev"
 	help
 	  Linux framebuffer video sink
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC
+	bool "fdk-aac"
+	select BR2_PACKAGE_FDK_AAC
+	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  MPEG AAC encoder/decoder
+
+comment "fdk-aac needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
+	bool "gl"
+	default y
+	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
+
+comment "gl needs the gst1-plugins-bad opengl library"
+	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
+	bool "hls"
+	select BR2_PACKAGE_NETTLE if !(BR2_PACKAGE_LIBGCRYPT || BR2_PACKAGE_OPENSSL)
+	help
+	  Fragmented streaming plugins
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_KMS
+	bool "kmssink"
+	depends on BR2_TOOLCHAIN_HAS_THREADS #  libdrm -> libpthread-stubs
+	select BR2_PACKAGE_LIBDRM
+	help
+	  KMS video sink
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_LIBMMS
 	bool "libmms"
@@ -638,38 +655,63 @@ comment "rsvg plugin needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
-	bool "gl"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
-
-comment "gl needs the gst1-plugins-bad opengl library"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SBC
+	bool "sbc"
+	select BR2_PACKAGE_SBC
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL
 	bool "sdl"
 	select BR2_PACKAGE_SDL
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM
+	bool "shm"
+	help
+	  shared memory sink source
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SNDFILE
 	bool "sndfile"
 	select BR2_PACKAGE_LIBSNDFILE
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
-	bool "dvb"
-	select BR2_PACKAGE_DTV_SCAN_TABLES
-	# FEC_2_5 / QAM_4_NR definitions
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
-	help
-	  DVB elements
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SRTP
+	bool "srtp"
+	select BR2_PACKAGE_LIBSRTP
 
-comment "dvb needs a toolchain w/ headers >= 3.7"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD
+	bool "vcd"
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
-	bool "hls"
-	select BR2_PACKAGE_GNUTLS
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC
+	bool "voaacenc"
+	select BR2_PACKAGE_VO_AACENC
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
+	bool "wayland"
+	depends on BR2_PACKAGE_WAYLAND
+	default y
 	help
-	  Fragmented streaming plugins
+	  Wayland Video Sink
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP
+	bool "webp"
+	select BR2_PACKAGE_WEBP
+	help
+	  Webp image format plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC
+	bool "webrtc"
+	# All depends from webrtc-audio-processing
+	depends on BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING
+	select BR2_PACKAGE_WEBRTC
+	help
+	  WebRTC echo-cancellation, gain control and noise suppression
+
+comment "webrtc needs a toolchain w/ C++, NPTL, gcc >= 4.8"
+	depends on BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_X265
 	bool "x265"

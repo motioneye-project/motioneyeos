@@ -9,6 +9,7 @@ config BR2_PACKAGE_QT_WEBKIT_KIOSK
 	depends on !BR2_STATIC_LIBS # qt5webkit
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5webkit
 	depends on !BR2_BINFMT_FLAT # qt5webkit
+	depends on !BR2_MIPS_SOFT_FLOAT # qt5webkit
 	help
 	  Simple kiosk-mode browser powered by Qt5Webkit
 

@@ -117,7 +117,8 @@ $$(O)/docs/$(1)/$(1).$(6): $$($(2)_SOURCES) \
 	$$(Q)$$(call MESSAGE,"Generating $(7) $(1)...")
 	$$(Q)mkdir -p $$(@D)
 	$$(Q)a2x $(8) -f $(4) -d book -L \
-		$$(foreach r,$$($(2)_RESOURCES),-r $$(r)) -r $$(@D) \
+		$$(foreach r,$$($(2)_RESOURCES) $$(@D), \
+			--resource="$$(abspath $$(r))") \
 		$$($(2)_$(4)_A2X_OPTS) \
 		--asciidoc-opts="$$($(2)_$(4)_ASCIIDOC_OPTS)" \
 		$$(BUILD_DIR)/docs/$(1)/$(1).txt
@@ -140,7 +141,7 @@ endef
 ################################################################################
 define ASCIIDOC
 # Single line, because splitting a foreach is not easy...
-$(1)-check-dependencies: asciidoc-check-dependencies
+$(1)-check-dependencies: asciidoc-check-dependencies $$($(2)_DEPENDENCIES)
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_HOOKS),$$(call $$(hook))$$(sep))
 
 # Single line, because splitting a foreach is not easy...

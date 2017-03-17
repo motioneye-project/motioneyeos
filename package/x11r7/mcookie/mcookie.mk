@@ -4,8 +4,6 @@
 #
 ################################################################################
 
-# Source included in Buildroot
-MCOOKIE_SOURCE =
 MCOOKIE_LICENSE = Public Domain
 
 define MCOOKIE_EXTRACT_CMDS

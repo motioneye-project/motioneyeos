@@ -3,6 +3,7 @@ config BR2_PACKAGE_WGET
 	# fork()
 	depends on BR2_USE_MMU
 	depends on BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  Network utility to retrieve files from http, https and ftp.
 
@@ -11,3 +12,4 @@ config BR2_PACKAGE_WGET
 comment "wget needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

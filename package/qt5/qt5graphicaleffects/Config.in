@@ -8,9 +8,11 @@ config BR2_PACKAGE_QT5GRAPHICALEFFECTS
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  This package corresponds to the qt5graphicaleffects module.
+	  The Qt Graphical Effects module provides a set of QML types
+	  for adding visually impressive and configurable effects to
+	  user interfaces.
 
-	  http://qt.io
+	  http://doc.qt.io/qt-5/qtgraphicaleffects-index.html
 
 comment "qt5graphicaleffects needs an OpenGL-capable backend"
 	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE

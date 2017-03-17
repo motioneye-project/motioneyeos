@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GETTEXT_VERSION = 0.19.7
+GETTEXT_VERSION = 0.19.8.1
 GETTEXT_SITE = $(BR2_GNU_MIRROR)/gettext
 GETTEXT_SOURCE = gettext-$(GETTEXT_VERSION).tar.xz
 GETTEXT_INSTALL_STAGING = YES
@@ -60,12 +60,6 @@ endef
 
 GETTEXT_POST_INSTALL_TARGET_HOOKS += GETTEXT_REMOVE_UNNEEDED
 
-define GETTEXT_GETTEXTIZE_EYE_CANDY
-	$(SED) '/Press Return\|read dummy/d' $(HOST_DIR)/usr/bin/gettextize
-endef
-
-HOST_GETTEXT_POST_INSTALL_HOOKS += GETTEXT_GETTEXTIZE_EYE_CANDY
-
 # Force build with NLS support, otherwise libintl is not built
 # This is needed because some packages (eg. libglib2) requires
 # locales, but do not properly depend on BR2_ENABLE_LOCALE, and
@@ -80,6 +74,16 @@ define HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
 	$(SED) '/read dummy/d' $(HOST_DIR)/usr/bin/gettextize
 endef
 HOST_GETTEXT_POST_INSTALL_HOOKS += HOST_GETTEXT_GETTEXTIZE_CONFIRMATION
+
+# autoreconf expects gettextize to install ABOUT-NLS, but it only gets
+# installed by gettext-runtime which we don't build/install for the
+# host, so do it manually
+define HOST_GETTEXT_ADD_ABOUT_NLS
+	$(INSTALL) -m 0644 $(@D)/$(HOST_GETTEXT_SUBDIR)/ABOUT-NLS \
+		$(HOST_DIR)/usr/share/gettext/ABOUT-NLS
+endef
+
+HOST_GETTEXT_POST_INSTALL_HOOKS += HOST_GETTEXT_ADD_ABOUT_NLS
 
 GETTEXTIZE = $(HOST_CONFIGURE_OPTS) AUTOM4TE=$(HOST_DIR)/usr/bin/autom4te $(HOST_DIR)/usr/bin/gettextize -f
 

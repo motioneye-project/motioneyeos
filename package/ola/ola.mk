@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-OLA_VERSION = 0.10.0
-OLA_SITE = $(call github,OpenLightingProject,ola,$(OLA_VERSION))
-OLA_PATCH = https://github.com/OpenLightingProject/ola/commit/34999c70dcbe2d38bf13d57c9cfbdc63f0899b9a.patch
+OLA_VERSION = 0.10.2
+OLA_SITE = https://github.com/OpenLightingProject/ola/releases/download/$(OLA_VERSION)
 OLA_LICENSE = LGPLv2.1+ (libola, libolacommon, Python bindings), GPLv2+ (libolaserver, olad, Python examples and tests)
 OLA_LICENSE_FILES = LICENCE GPL LGPL
 OLA_INSTALL_STAGING = YES
@@ -40,7 +39,8 @@ HOST_OLA_CONF_OPTS = \
 	--disable-examples \
 	--disable-unittests \
 	--disable-doxygen-html \
-	--disable-doxygen-doc
+	--disable-doxygen-doc \
+	--disable-fatal-warnings
 
 # On the host side, we only need ola_protoc_plugin, so build and install this
 # only.
@@ -86,6 +86,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_OLA_RDM_TESTS),y)
 OLA_CONF_OPTS += --enable-rdm-tests
+OLA_DEPENDENCIES += python-numpy
+# needed as numpy builds some shared libraries and ola checks for
+# numpy using a host python test program which fails with 'wrong ELF
+# class'.
+OLA_CONF_ENV = ac_cv_have_pymod_numpy=yes
 else
 OLA_CONF_OPTS += --disable-rdm-tests
 endif

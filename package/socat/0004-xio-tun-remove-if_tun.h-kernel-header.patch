@@ -1,0 +1,91 @@
+From 1c141194e3587cc8124e5f4512dc3030e5a104b1 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 28 Aug 2016 22:06:09 +0200
+Subject: [PATCH] xio-tun: remove if_tun.h kernel header
+
+xio-tun mixes userspace and kernel headers.
+
+http://wiki.musl-libc.org/wiki/FAQ#Q:_why_am_i_getting_.22error:_redefinition_of_struct_ethhdr.2Ftcphdr.2Fetc.22_.3F
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ config.h.in   | 3 ---
+ configure.in  | 8 +-------
+ sysincludes.h | 3 ---
+ xio-tun.c     | 6 ++++++
+ 4 files changed, 7 insertions(+), 13 deletions(-)
+
+diff --git a/config.h.in b/config.h.in
+index 9058bf8..ed0962c 100644
+--- a/config.h.in
++++ b/config.h.in
+@@ -258,9 +258,6 @@
+ /* Define if you have the <linux/errqueue.h> header file.  */
+ #undef HAVE_LINUX_ERRQUEUE_H
+ 
+-/* Define if you have the <linux/if_tun.h> header file.  */
+-#undef HAVE_LINUX_IF_TUN_H
+-
+ /* Define if you have the <netpacket/packet.h> header file.  */
+ #undef HAVE_NETPACKET_PACKET_H
+ 
+diff --git a/configure.in b/configure.in
+index 1d2e76f..27bb3d5 100644
+--- a/configure.in
++++ b/configure.in
+@@ -78,7 +78,7 @@ AC_CHECK_HEADERS(arpa/nameser.h)
+ 
+ AC_HEADER_RESOLV()
+ 
+-AC_CHECK_HEADERS(termios.h linux/if_tun.h)
++AC_CHECK_HEADERS(termios.h)
+ AC_CHECK_HEADERS(net/if_dl.h)
+ AC_CHECK_HEADERS(linux/types.h)
+ AC_CHECK_HEADER(linux/errqueue.h, AC_DEFINE(HAVE_LINUX_ERRQUEUE_H), [], [#include <sys/time.h>
+@@ -680,12 +680,6 @@ AC_ARG_ENABLE(tun, [  --disable-tun           disable TUN/TAP support],
+ 	       esac],
+ 	       [AC_MSG_RESULT(yes);    WITH_TUN=1 ])
+ 
+-#
+-if ! test "$ac_cv_header_linux_if_tun_h" = 'yes'; then
+-  AC_MSG_WARN(include file linux/if_tun.h not found, disabling TUN)
+-  WITH_TUN=
+-fi
+-#
+ if test -n "$WITH_TUN"; then
+   AC_DEFINE(WITH_TUN)
+ fi
+diff --git a/sysincludes.h b/sysincludes.h
+index 98dff77..28067f4 100644
+--- a/sysincludes.h
++++ b/sysincludes.h
+@@ -142,9 +142,6 @@
+ #if HAVE_NETINET_IF_ETHER_H
+ #include <netinet/if_ether.h>
+ #endif
+-#if HAVE_LINUX_IF_TUN_H
+-#include <linux/if_tun.h>
+-#endif
+ 
+ #if HAVE_TERMIOS_H && _WITH_TERMIOS
+ #include <termios.h>
+diff --git a/xio-tun.c b/xio-tun.c
+index 0628d27..f965a7e 100644
+--- a/xio-tun.c
++++ b/xio-tun.c
+@@ -14,6 +14,12 @@
+ 
+ #include "xio-tun.h"
+ 
++/* TUNSETIFF flags from if_tun.h kernel header */
++#define IFF_TUN		0x0001
++#define IFF_TAP		0x0002
++#define IFF_NO_PI	0x1000
++
++#define TUNSETIFF	_IOW('T', 202, int)
+ 
+ static int xioopen_tun(int argc, const char *argv[], struct opt *opts, int xioflags, xiofile_t *fd, unsigned groups, int dummy1, int dummy2, int dummy3);
+ 
+-- 
+2.5.5
+

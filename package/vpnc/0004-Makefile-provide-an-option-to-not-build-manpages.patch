@@ -1,0 +1,57 @@
+From 3c16d0b7bf809a56affd6e1a4c0998027968b91a Mon Sep 17 00:00:00 2001
+From: Ulf Samuelsson <ulf.samuelsson@atmel.com>
+Date: Mon, 8 Feb 2016 23:03:48 +0100
+Subject: [PATCH] Makefile: provide an option to not build manpages
+
+The process of generating the vpnc.8 man page consists in running the
+vpnc tool itself, and parse its --long-help output. While this is
+perfectly fine when building natively, it fails completely when
+cross-compiling: the vpnc binary that was built cannot be executed on
+the build machine.
+
+In order to support such situations with minimal changes, this patch
+adjusts the Makefile to make it understand a MANS variable. By
+default, it's defined to "vpnc.8", which means the manpage continues
+to be built as usual. However, if it's overriden to be empty, then no
+manpage is built.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+
+ Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 7ac225a..ea2cd41 100644
+--- a/Makefile
++++ b/Makefile
+@@ -54,6 +54,7 @@ endif
+ SRCS = sysdep.c vpnc-debug.c isakmp-pkt.c tunip.c config.c dh.c math_group.c supp.c decrypt-utils.c crypto.c $(CRYPTO_SRCS)
+ BINS = vpnc cisco-decrypt test-crypto
+ OBJS = $(addsuffix .o,$(basename $(SRCS)))
++MANS ?= vpnc.8
+ CRYPTO_OBJS = $(addsuffix .o,$(basename $(CRYPTO_SRCS)))
+ BINOBJS = $(addsuffix .o,$(BINS))
+ BINSRCS = $(addsuffix .c,$(BINS))
+@@ -76,7 +77,7 @@ ifneq (,$(findstring Apple,$(shell $(CC) --version)))
+ override CFLAGS += -fstrict-aliasing -freorder-blocks -fsched-interblock
+ endif
+ 
+-all : $(BINS) vpnc.8
++all : $(BINS) $(MANS)
+ 
+ vpnc : $(OBJS) vpnc.o
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
+@@ -136,7 +137,9 @@ install-common: all
+ 	install -m600 vpnc.conf $(DESTDIR)$(ETCDIR)/default.conf
+ 	install -m755 vpnc-disconnect $(DESTDIR)$(SBINDIR)
+ 	install -m755 pcf2vpnc $(DESTDIR)$(BINDIR)
++ifneq ($(MANS),)
+ 	install -m644 vpnc.8 $(DESTDIR)$(MANDIR)/man8
++endif
+ 	install -m644 pcf2vpnc.1 $(DESTDIR)$(MANDIR)/man1
+ 	install -m644 cisco-decrypt.1 $(DESTDIR)$(MANDIR)/man1
+ 	install -m644 COPYING $(DESTDIR)$(DOCDIR)
+-- 
+2.6.4
+

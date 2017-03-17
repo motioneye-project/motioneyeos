@@ -1,0 +1,45 @@
+From 600ab10e3b452cdffc6c82770b0bb2ff5c23ad70 Mon Sep 17 00:00:00 2001
+From: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+Date: Fri, 12 Aug 2016 22:59:35 +0530
+Subject: [PATCH 1/1] fs-tests: integrity: don't include header
+ <bits/stdio_lim.h>
+
+With musl C library, we get following build error
+
+integck.c:37:28: fatal error: bits/stdio_lim.h: No such file or directory
+ #include <bits/stdio_lim.h>
+                            ^
+compilation terminated.
+make[2]: *** [integck] Error 1
+
+Header <bits/stdio_lim.h> is not available in musl C library. However
+<stdio.h> has all definition that <bits/stdio_lim.h> supposed to be
+providing. Moreover <bits/stdio_lim.h> shouldn't be included directly
+instead we should be using <stdio.h>.
+
+Since we already include <stdio.h> and in case of uClibc or glibc
+<bits/stdio_lim.h> gets included internally, we can safely remove it.
+
+This build issue is found by Buildroot autobuilder
+http://autobuild.buildroot.net/results/175/1754861457af520480cc34d7d2d0edff2868ff66/
+
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ tests/fs-tests/integrity/integck.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/tests/fs-tests/integrity/integck.c b/tests/fs-tests/integrity/integck.c
+index 6ef817e..0bb9711 100644
+--- a/tests/fs-tests/integrity/integck.c
++++ b/tests/fs-tests/integrity/integck.c
+@@ -34,7 +34,6 @@
+ #ifdef INTEGCK_DEBUG
+ #include <execinfo.h>
+ #endif
+-#include <bits/stdio_lim.h>
+ #include <sys/mman.h>
+ #include <sys/vfs.h>
+ #include <sys/mount.h>
+-- 
+2.6.2
+

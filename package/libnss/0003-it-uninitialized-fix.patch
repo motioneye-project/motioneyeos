@@ -1,0 +1,24 @@
+# HG changeset patch
+# User catdesk <catdesk@tuta.io>
+# Date 1477710600 -7200
+#      Sat Oct 29 05:10:00 2016 +0200
+# Node ID b9ef971b94ab110302d49255339077bc1b4aed7f
+# Parent  eb8c96563cd70aa69d48b01516085f7d2fb46178
+Bug 1313846 - Declare 'it = NULL' earlier. r=franziskus
+
+[Thomas: patch taken from upstream mercurial repository, revision
+12791.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+diff -r eb8c96563cd7 -r b9ef971b94ab lib/jar/jarfile.c
+--- a/nss/lib/jar/jarfile.c	Mon Oct 31 17:31:20 2016 +0100
++++ b/nss/lib/jar/jarfile.c	Sat Oct 29 05:10:00 2016 +0200
+@@ -657,7 +657,7 @@
+ jar_listzip(JAR *jar, JAR_FILE fp)
+ {
+     ZZLink *ent;
+-    JAR_Item *it;
++    JAR_Item *it = NULL;
+     JAR_Physical *phy = NULL;
+     struct ZipLocal *Local = PORT_ZNew(struct ZipLocal);
+     struct ZipCentral *Central = PORT_ZNew(struct ZipCentral);

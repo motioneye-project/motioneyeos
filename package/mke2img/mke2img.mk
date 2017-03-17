@@ -4,7 +4,6 @@
 #
 ################################################################################
 
-HOST_MKE2IMG_SOURCE =
 HOST_MKE2IMG_DEPENDENCIES = host-genext2fs host-e2fsprogs
 
 define HOST_MKE2IMG_INSTALL_CMDS

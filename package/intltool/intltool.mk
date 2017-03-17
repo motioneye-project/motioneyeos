@@ -11,5 +11,4 @@ INTLTOOL_LICENSE_FILES = COPYING
 
 HOST_INTLTOOL_DEPENDENCIES = host-gettext host-libxml-parser-perl
 
-$(eval $(autotools-package))
 $(eval $(host-autotools-package))

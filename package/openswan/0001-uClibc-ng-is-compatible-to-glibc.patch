@@ -1,0 +1,39 @@
+From 0f7bf4706d2932aaa50904fc529a853c9f86478f Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Mon, 13 Feb 2017 22:18:11 +0100
+Subject: [PATCH] uClibc-ng is compatible to glibc
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+Pull-Request: https://github.com/xelerance/Openswan/pull/227
+
+---
+ linux/include/openswan.h | 12 ------------
+ 1 file changed, 12 deletions(-)
+
+diff --git a/linux/include/openswan.h b/linux/include/openswan.h
+index e2c45a130..66b9d42b2 100644
+--- a/linux/include/openswan.h
++++ b/linux/include/openswan.h
+@@ -27,18 +27,6 @@
+ #endif
+ 
+ /*
+- * When using uclibc, malloc(0) returns NULL instead of success. This is
+- * to make it use the inbuilt work-around.
+- * See: http://osdir.com/ml/network.freeswan.devel/2003-11/msg00009.html
+- */
+-#ifdef __UCLIBC__
+-# if !defined(__MALLOC_GLIBC_COMPAT__) && !defined(MALLOC_GLIBC_COMPAT)
+-#  warning Please compile uclibc with GLIBC_COMPATIBILITY defined
+-# endif
+-#endif
+-
+-
+-/*
+  * We've just got to have some datatypes defined...  And annoyingly, just
+  * where we get them depends on whether we're in userland or not.
+  */
+-- 
+2.11.1
+

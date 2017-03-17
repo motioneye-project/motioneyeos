@@ -4,37 +4,70 @@
 #
 ################################################################################
 
-PYTHON_PILLOW_VERSION = 2.4.0
-PYTHON_PILLOW_SOURCE = Pillow-$(PYTHON_PILLOW_VERSION).zip
-PYTHON_PILLOW_SITE = https://pypi.python.org/packages/source/P/Pillow
-PYTHON_PILLOW_DEPENDENCIES = python zlib freetype jpeg host-python-setuptools
+PYTHON_PILLOW_VERSION = 4.0.0
+PYTHON_PILLOW_SOURCE = Pillow-$(PYTHON_PILLOW_VERSION).tar.gz
+PYTHON_PILLOW_SITE = https://pypi.python.org/packages/8d/80/eca7a2d1a3c2dafb960f32f844d570de988e609f5fd17de92e1cf6a01b0a
+PYTHON_PILLOW_LICENSE = PIL Software License
+PYTHON_PILLOW_LICENSE_FILES = LICENSE
 PYTHON_PILLOW_SETUP_TYPE = setuptools
+PYTHON_PILLOW_BUILD_OPTS = --disable-platform-guessing
 
-define PYTHON_PILLOW_EXTRACT_CMDS
-	(unzip -o $(DL_DIR)/$(PYTHON_PILLOW_SOURCE) -d $(BUILD_DIR); \
-	mv $(BUILD_DIR)/Pillow-$(PYTHON_PILLOW_VERSION)/* $(@D))
-#	echo "[build_ext]" >> $(@D)/setup.cfg
-#	echo "disable-webp = " >> $(@D)/setup.cfg
-#	echo "disable-lcms = " >> $(@D)/setup.cfg
-#	echo "disable-freetype = " >> $(@D)/setup.cfg
-#	echo "disable-jpeg2000 = " >> $(@D)/setup.cfg
-#	echo "disable-tcl = " >> $(@D)/setup.cfg
-#	echo "disable-webpmux = " >> $(@D)/setup.cfg
-#	echo "disable-tiff = " >> $(@D)/setup.cfg
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+PYTHON_PILLOW_DEPENDENCIES += freetype
+PYTHON_PILLOW_BUILD_OPTS += --enable-freetype
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-freetype
+endif
+
+ifeq ($(BR2_PACKAGE_JPEG),y)
+PYTHON_PILLOW_DEPENDENCIES += jpeg
+PYTHON_PILLOW_BUILD_OPTS += --enable-jpeg
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-jpeg
+endif
+
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+PYTHON_PILLOW_DEPENDENCIES += openjpeg
+PYTHON_PILLOW_BUILD_OPTS += --enable-jpeg2000
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-jpeg2000
+endif
+
+ifeq ($(BR2_PACKAGE_TIFF),y)
+PYTHON_PILLOW_DEPENDENCIES += tiff
+PYTHON_PILLOW_BUILD_OPTS += --enable-tiff
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-tiff
+endif
+
+ifeq ($(BR2_PACKAGE_WEBP),y)
+PYTHON_PILLOW_DEPENDENCIES += webp
+PYTHON_PILLOW_BUILD_OPTS += --enable-webp
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-webp
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+PYTHON_PILLOW_DEPENDENCIES += zlib
+PYTHON_PILLOW_BUILD_OPTS += --enable-zlib
+else
+PYTHON_PILLOW_BUILD_OPTS += --disable-zlib
+endif
+
+define PYTHON_PILLOW_BUILD_CMDS
+	cd $(PYTHON_PILLOW_BUILDDIR); \
+		$(PYTHON_PILLOW_BASE_ENV) $(PYTHON_PILLOW_ENV) \
+		$(PYTHON_PILLOW_PYTHON_INTERPRETER) setup.py build_ext \
+		$(PYTHON_PILLOW_BASE_BUILD_OPTS) $(PYTHON_PILLOW_BUILD_OPTS)
 endef
 
-define PYTHON_PILLOW_BUILD_CMDS__
-	(cd $(@D); \
-		PYTHONXCPREFIX="$(STAGING_DIR)/usr/" \
-		LDFLAGS="-L$(STAGING_DIR)/lib -L$(STAGING_DIR)/usr/lib" \
-	$(HOST_DIR)/usr/bin/python setup.py build build_ext --disable-lcms --disable-webp)
-endef
-
-define PYTHON_PILLOW_INSTALL_TARGET_CMDS____
-	(cd $(@D); \
-	PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages \
-	$(HOST_DIR)/usr/bin/python setup.py install \
-	--single-version-externally-managed --root=/ --prefix=$(TARGET_DIR)/usr)
+define PYTHON_PILLOW_INSTALL_TARGET_CMDS
+	cd $(PYTHON_PILLOW_BUILDDIR); \
+		$(PYTHON_PILLOW_BASE_ENV) $(PYTHON_PILLOW_ENV) \
+		$(PYTHON_PILLOW_PYTHON_INTERPRETER) setup.py build_ext \
+		$(PYTHON_PILLOW_BUILD_OPTS) install \
+		$(PYTHON_PILLOW_BASE_INSTALL_TARGET_OPTS) \
+		$(PYTHON_PILLOW_INSTALL_TARGET_OPTS)
 endef
 
 $(eval $(python-package))

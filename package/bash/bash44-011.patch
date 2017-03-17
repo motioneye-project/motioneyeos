@@ -1,0 +1,54 @@
+From https://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-011
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.4
+Patch-ID:	bash44-011
+
+Bug-Reported-by:	Russell King <rmk@armlinux.org.uk>
+Bug-Reference-ID:	<E1cNnFx-0007G2-S2@flint.armlinux.org.uk>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2017-01/msg00000.html
+
+Bug-Description:
+
+Subshells begun to run command and process substitutions may attempt to
+set the terminal's process group to an incorrect value if they receive
+a fatal signal.  This depends on the behavior of the process that starts
+the shell.
+
+Patch (apply with `patch -p0'):
+
+*** bash-4.4-patched/sig.c	2016-02-11 15:02:45.000000000 -0500
+--- b/sig.c	2017-01-04 09:09:47.000000000 -0500
+***************
+*** 586,590 ****
+    if (sig == SIGHUP && (interactive || (subshell_environment & (SUBSHELL_COMSUB|SUBSHELL_PROCSUB))))
+      hangup_all_jobs ();
+!   end_job_control ();
+  #endif /* JOB_CONTROL */
+  
+--- b/571,576 ----
+    if (sig == SIGHUP && (interactive || (subshell_environment & (SUBSHELL_COMSUB|SUBSHELL_PROCSUB))))
+      hangup_all_jobs ();
+!   if ((subshell_environment & (SUBSHELL_COMSUB|SUBSHELL_PROCSUB)) == 0)
+!     end_job_control ();
+  #endif /* JOB_CONTROL */
+  
+*** bash-4.4/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 10
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- b/26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 11
+  
+  #endif /* _PATCHLEVEL_H_ */

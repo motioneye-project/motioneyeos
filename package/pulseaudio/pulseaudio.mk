@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PULSEAUDIO_VERSION = 8.0
+PULSEAUDIO_VERSION = 9.0
 PULSEAUDIO_SOURCE = pulseaudio-$(PULSEAUDIO_VERSION).tar.xz
 PULSEAUDIO_SITE = http://freedesktop.org/software/pulseaudio/releases
 PULSEAUDIO_INSTALL_STAGING = YES
@@ -18,8 +18,11 @@ PULSEAUDIO_CONF_OPTS = \
 # Make sure we don't detect libatomic_ops. Indeed, since pulseaudio
 # requires json-c, which needs 4 bytes __sync builtins, there should
 # be no need for pulseaudio to rely on libatomic_ops.
-PULSE_AUDIO_CONF_ENV += \
+PULSEAUDIO_CONF_ENV += \
 	ac_cv_header_atomic_ops_h=no
+
+# 0002-webrtc-C-11-is-only-required-for-WebRTC-support.patch
+PULSEAUDIO_AUTORECONF = YES
 
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkgconf libtool json-c libsndfile speex host-intltool \
@@ -31,7 +34,6 @@ PULSEAUDIO_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_BLUEZ_UTILS),bluez_utils) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
-	$(if $(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),webrtc-audio-processing) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
 
 ifeq ($(BR2_PACKAGE_GDBM),y)
@@ -79,25 +81,17 @@ PULSEAUDIO_CONF_OPTS += --without-soxr
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
-PULSEAUDIO_CONF_OPTS += --enable-libudev
+PULSEAUDIO_CONF_OPTS += --enable-udev
 PULSEAUDIO_DEPENDENCIES += udev
 else
-PULSEAUDIO_CONF_OPTS += --disable-libudev
+PULSEAUDIO_CONF_OPTS += --disable-udev
 endif
 
-ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
-# The optional webrtc echo canceller is written in C++, causing auto* to want
-# to link module-echo-cancel.so with CXX even if webrtc ISN'T used.
-# If we don't have C++ support enabled in BR, CXX will point to /bin/false,
-# which makes configure think we aren't able to create C++ .so files
-# (arguable true), breaking the build when it tries to install the .so
-# workaround it by patching up the libtool invocations to use C mode instead
-define PULSEAUDIO_FORCE_CC
-	$(SED) 's/--tag=CXX/--tag=CC/g' -e 's/(CXXLD)/(CCLD)/g' \
-		$(@D)/src/Makefile.in
-endef
-
-PULSEAUDIO_POST_PATCH_HOOKS += PULSEAUDIO_FORCE_CC
+ifeq ($(BR2_PACKAGE_WEBRTC_AUDIO_PROCESSING),y)
+PULSEAUDIO_CONF_OPTS += --enable-webrtc-aec
+PULSEAUDIO_DEPENDENCIES += webrtc-audio-processing
+else
+PULSEAUDIO_CONF_OPTS += --disable-webrtc-aec
 endif
 
 # neon intrinsics not available with float-abi=soft

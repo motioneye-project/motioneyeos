@@ -5,7 +5,7 @@
 ################################################################################
 
 PYTHON_VERSION_MAJOR = 2.7
-PYTHON_VERSION = $(PYTHON_VERSION_MAJOR).11
+PYTHON_VERSION = $(PYTHON_VERSION_MAJOR).13
 PYTHON_SOURCE = Python-$(PYTHON_VERSION).tar.xz
 PYTHON_SITE = http://python.org/ftp/python/$(PYTHON_VERSION)
 PYTHON_LICENSE = Python software foundation license v2, others
@@ -39,8 +39,12 @@ HOST_PYTHON_CONF_OPTS += 	\
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
 # python is called.
+# Make python believe we don't have 'hg' and 'svn', so that it doesn't
+# try to communicate over the network during the build.
 HOST_PYTHON_CONF_ENV += \
-	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags"
+	LDFLAGS="$(HOST_LDFLAGS) -Wl,--enable-new-dtags" \
+	ac_cv_prog_HAS_HG=/bin/false \
+	ac_cv_prog_SVNVERSION=/bin/false
 
 # Building host python in parallel sometimes triggers a "Bus error"
 # during the execution of "./python setup.py build" in the
@@ -101,6 +105,9 @@ endif
 
 # Default is UCS2 w/o a conf opt
 ifeq ($(BR2_PACKAGE_PYTHON_UCS4),y)
+# host-python must have the same UCS2/4 configuration as the target
+# python
+HOST_PYTHON_CONF_OPTS += --enable-unicode=ucs4
 PYTHON_CONF_OPTS += --enable-unicode=ucs4
 endif
 
@@ -126,11 +133,22 @@ else
 PYTHON_CONF_OPTS += --disable-ossaudiodev
 endif
 
+# Make python believe we don't have 'hg' and 'svn', so that it doesn't
+# try to communicate over the network during the build.
 PYTHON_CONF_ENV += \
 	ac_cv_have_long_long_format=yes \
 	ac_cv_file__dev_ptmx=yes \
 	ac_cv_file__dev_ptc=yes \
-	ac_cv_working_tzset=yes
+	ac_cv_working_tzset=yes \
+	ac_cv_prog_HAS_HG=/bin/false \
+	ac_cv_prog_SVNVERSION=/bin/false
+
+# GCC is always compliant with IEEE754
+ifeq ($(BR2_ENDIAN),"LITTLE")
+PYTHON_CONF_ENV += ac_cv_little_endian_double=yes
+else
+PYTHON_CONF_ENV += ac_cv_big_endian_double=yes
+endif
 
 PYTHON_CONF_OPTS += \
 	--without-cxx-main 	\
@@ -143,7 +161,8 @@ PYTHON_CONF_OPTS += \
 	--disable-tk		\
 	--disable-nis		\
 	--disable-dbm		\
-	--disable-pyo-build
+	--disable-pyo-build	\
+	--disable-pyc-build
 
 # This is needed to make sure the Python build process doesn't try to
 # regenerate those files with the pgen program. Otherwise, it builds
@@ -217,16 +236,38 @@ PYTHON_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/sysconfigdata/
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+define PYTHON_CREATE_PYC_FILES
+	PYTHONPATH="$(PYTHON_PATH)" \
+	$(HOST_DIR)/usr/bin/python$(PYTHON_VERSION_MAJOR) \
+		support/scripts/pycompile.py \
+		$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)
+endef
+
+ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY)$(BR2_PACKAGE_PYTHON_PY_PYC),y)
+PYTHON_TARGET_FINALIZE_HOOKS += PYTHON_CREATE_PYC_FILES
+endif
+
 ifeq ($(BR2_PACKAGE_PYTHON_PYC_ONLY),y)
-define PYTHON_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.py' -print0 | xargs -0 rm -f
+define PYTHON_REMOVE_PY_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.py' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+PYTHON_TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PY_FILES
 endif
 
+# Normally, *.pyc files should not have been compiled, but just in
+# case, we make sure we remove all of them.
 ifeq ($(BR2_PACKAGE_PYTHON_PY_ONLY),y)
-define PYTHON_FINALIZE_TARGET
-	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyc' -print0 | xargs -0 rm -f
+define PYTHON_REMOVE_PYC_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyc' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
 endef
+PYTHON_TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYC_FILES
 endif
 
-TARGET_FINALIZE_HOOKS += PYTHON_FINALIZE_TARGET
+# In all cases, we don't want to keep the optimized .pyo files
+define PYTHON_REMOVE_PYO_FILES
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR) -name '*.pyo' -print0 | \
+		xargs -0 --no-run-if-empty rm -f
+endef
+PYTHON_TARGET_FINALIZE_HOOKS += PYTHON_REMOVE_PYO_FILES
