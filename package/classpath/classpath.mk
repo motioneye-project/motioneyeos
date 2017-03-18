@@ -52,7 +52,7 @@ else
 CLASSPATH_CONF_OPTS += --disable-gtk-peer --disable-gstreamer-peer
 endif
 
-ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT),yy)
+ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT)$(BR2_TOOLCHAIN_HAS_THREADS),yyy)
 CLASSPATH_CONF_OPTS += --enable-xmlj
 CLASSPATH_DEPENDENCIES += libxml2 libxslt
 else
