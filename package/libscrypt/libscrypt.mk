@@ -15,12 +15,12 @@ define LIBSCRYPT_BUILD_CMDS
 endef
 
 define LIBSCRYPT_INSTALL_STAGING_CMDS
-        $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=/usr \
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=/usr \
 		DESTDIR=$(STAGING_DIR) install
 endef
 
 define LIBSCRYPT_INSTALL_TARGET_CMDS
-        $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=/usr \
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=/usr \
 		DESTDIR=$(TARGET_DIR) install
 endef
 
