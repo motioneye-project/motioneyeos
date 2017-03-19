@@ -589,6 +589,7 @@ F:	package/httping/
 F:	package/iozone/
 F:	package/leptonica/
 F:	package/ocrad/
+F:	package/tesseract-ocr/
 F:	package/webp/
 
 N:	Gregory Dymarek <gregd72002@gmail.com>

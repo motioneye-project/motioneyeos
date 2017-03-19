@@ -1,0 +1,8 @@
+# locally computed
+sha256  3fe83e06d0f73b39f6e92ed9fc7ccba3ef734877b76aa5ddaaa778fac095d996  tesseract-ocr-3.05.00.tar.gz
+sha256  c0515c9f1e0c79e1069fcc05c2b2f6a6841fb5e1082d695db160333c1154f06d  eng.traineddata
+sha256  86afb23ad146467f263e8ade56fd3951b1cc28f8c4eebc34f993d3c02d88a7ab  fra.traineddata
+sha256  cb7eb42a7e972cec7ef904fe81825d7b547c46df684c814fdb11a930b13bca3a  deu.traineddata
+sha256  f23985996bbcfe2b57864ccb082783c1c74c87429f04411a04a6ba4d3da2efda  spa.traineddata
+sha256  323ae74d4a2ff49e932dbb4d6282fe0e67ddfafda075ec85803ecd077207454c  chi_sim.traineddata
+sha256  774d566bd0b36e4b6c07415dfa5b6b57feb2575b1f5f231d7fe01a52dac5dd0e  chi_tra.traineddata

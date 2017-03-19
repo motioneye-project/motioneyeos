@@ -244,6 +244,7 @@ comment "Graphic applications"
 	source "package/mesa3d-demos/Config.in"
 	source "package/qt5cinex/Config.in"
 	source "package/rrdtool/Config.in"
+	source "package/tesseract-ocr/Config.in"
 
 comment "Graphic libraries"
 	source "package/cegui06/Config.in"
