@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LEPTONICA
+	bool "leptonica"
+	help
+	  Leptonica is a pedagogically-oriented open source site containing
+	  software that is broadly useful for image processing and image
+	  analysis applications.
+
+	  http://www.leptonica.org/
