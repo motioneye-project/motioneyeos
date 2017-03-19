@@ -48,7 +48,7 @@ define UCLIBC_NG_TEST_BUILD_CMDS
 endef
 
 define UCLIBC_NG_TEST_INSTALL_TARGET_CMDS
-        $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)" install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(TARGET_DIR)" install
 endef
 
 $(eval $(generic-package))
