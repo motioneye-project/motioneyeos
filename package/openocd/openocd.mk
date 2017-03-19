@@ -108,7 +108,7 @@ HOST_OPENOCD_DEPENDENCIES = host-libftdi host-libusb host-libusb-compat
 # build system believe the documentation doesn't need to be
 # regenerated.
 define OPENOCD_FIX_VERSION_TEXI
-       touch -r $(@D)/doc/openocd.info $(@D)/doc/version.texi
+	touch -r $(@D)/doc/openocd.info $(@D)/doc/version.texi
 endef
 OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
 HOST_OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
