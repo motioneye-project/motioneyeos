@@ -180,6 +180,13 @@ else
 MESA3D_CONF_OPTS += --disable-gles1 --disable-gles2
 endif
 
+ifeq ($(BR2_PACKAGE_LM_SENSORS),y)
+MESA3D_CONF_OPTS += --enable-lmsensors
+MESA3D_DEPENDENCIES += lm-sensors
+else
+MESA3D_CONF_OPTS += --disable-lmsensors
+endif
+
 # Avoid automatic search of llvm-config
 MESA3D_CONF_OPTS += --with-llvm-prefix=$(STAGING_DIR)/usr/bin
 
