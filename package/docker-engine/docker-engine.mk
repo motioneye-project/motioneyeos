@@ -28,7 +28,12 @@ DOCKER_ENGINE_GLDFLAGS = \
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DOCKER_ENGINE_GLDFLAGS += -extldflags '-static'
+else
+ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT),y)
+DOCKER_ENGINE_GLDFLAGS_DOCKER += -extldflags '-static'
 endif
+endif
+
 
 DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
 DOCKER_ENGINE_BUILD_TARGETS = docker
@@ -100,7 +105,7 @@ define DOCKER_ENGINE_BUILD_CMDS
 		$(HOST_DIR)/usr/bin/go build -v \
 			-o $(@D)/bin/$(target) \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
-			-ldflags "$(DOCKER_ENGINE_GLDFLAGS)" \
+			-ldflags "$(DOCKER_ENGINE_GLDFLAGS) $(DOCKER_ENGINE_GLDFLAGS_$(call UPPERCASE,$(target)))" \
 			github.com/docker/docker/cmd/$(target)
 	)
 endef
