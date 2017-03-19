@@ -568,3 +568,7 @@ config BR2_GCC_TARGET_FLOAT_ABI
 config BR2_GCC_TARGET_MODE
 	default "arm"		if BR2_ARM_INSTRUCTIONS_ARM
 	default "thumb"		if BR2_ARM_INSTRUCTIONS_THUMB || BR2_ARM_INSTRUCTIONS_THUMB2
+
+config BR2_READELF_ARCH_NAME
+	default "ARM"		if BR2_arm || BR2_armeb
+	default "AArch64"	if BR2_aarch64 || BR2_aarch64_be

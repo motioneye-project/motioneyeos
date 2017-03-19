@@ -105,3 +105,6 @@ config BR2_GCC_TARGET_CPU_REVISION
 	  value of the -mcpu option. For example, if the selected CPU is
 	  bf609, and then selected CPU revision is "0.0", then gcc will
 	  receive the -mcpu=bf609-0.0 option.
+
+config BR2_READELF_ARCH_NAME
+	default "Analog Devices Blackfin"

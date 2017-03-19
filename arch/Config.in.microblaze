@@ -6,6 +6,9 @@ config BR2_ENDIAN
 	default "LITTLE" if BR2_microblazeel
 	default "BIG"	 if BR2_microblazebe
 
+config BR2_READELF_ARCH_NAME
+	default "Xilinx MicroBlaze"
+
 config BR2_microblaze
 	bool
 	default y if BR2_microblazeel || BR2_microblazebe

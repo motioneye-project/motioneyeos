@@ -212,3 +212,7 @@ config BR2_GCC_TARGET_ABI
 	default "no-spe"		if BR2_PPC_ABI_no-spe
 	default "ibmlongdouble"		if BR2_PPC_ABI_ibmlongdouble
 	default "ieeelongdouble"	if BR2_PPC_ABI_ieeelongdouble
+
+config BR2_READELF_ARCH_NAME
+	default "PowerPC"	if BR2_powerpc
+	default "PowerPC64"	if BR2_powerpc64 || BR2_powerpc64le

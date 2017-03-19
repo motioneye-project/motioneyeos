@@ -54,3 +54,6 @@ config BR2_ENDIAN
 
 config BR2_ARCH
 	default "xtensa"	if BR2_xtensa
+
+config BR2_READELF_ARCH_NAME
+	default "Tensilica Xtensa Processor"

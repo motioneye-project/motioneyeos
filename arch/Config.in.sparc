@@ -28,3 +28,7 @@ config BR2_GCC_TARGET_CPU
 	default "leon3"		if BR2_sparc_leon3
 	default "v8"		if BR2_sparc_v8
 	default "ultrasparc"	if BR2_sparc_v9
+
+config BR2_READELF_ARCH_NAME
+	default "Sparc"		if BR2_sparc
+	default "Sparc v9"	if BR2_sparc64

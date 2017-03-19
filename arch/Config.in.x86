@@ -275,3 +275,7 @@ config BR2_GCC_TARGET_ARCH
 	default "c3"		if BR2_x86_c3
 	default "c3-2"		if BR2_x86_c32
 	default "geode"		if BR2_x86_geode
+
+config BR2_READELF_ARCH_NAME
+	default "Intel 80386"			if BR2_i386
+	default "Advanced Micro Devices X86-64" if BR2_x86_64

@@ -44,3 +44,5 @@ config BR2_GCC_TARGET_CPU
 	default "ck810f"	if (BR2_ck810 &&  BR2_CSKY_FPU && !BR2_CSKY_DSP)
 	default "ck810ef"	if (BR2_ck810 &&  BR2_CSKY_FPU &&  BR2_CSKY_DSP)
 
+config BR2_READELF_ARCH_NAME
+	default "CSKY"

@@ -161,3 +161,6 @@ config BR2_GCC_TARGET_ABI
 	default "32"		if BR2_MIPS_OABI32
 	default "n32"		if BR2_MIPS_NABI32
 	default "64"		if BR2_MIPS_NABI64
+
+config BR2_READELF_ARCH_NAME
+	default "MIPS R3000"

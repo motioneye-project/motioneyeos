@@ -292,6 +292,12 @@ config BR2_GCC_TARGET_MODE
 config BR2_BINFMT_SUPPORTS_SHARED
 	bool
 
+# Must match the name of the architecture from readelf point of view,
+# i.e the "Machine:" field of readelf output. See get_machine_name()
+# in binutils/readelf.c for the list of possible values.
+config BR2_READELF_ARCH_NAME
+	string
+
 # Set up target binary format
 choice
 	prompt "Target Binary Format"
