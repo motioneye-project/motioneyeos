@@ -565,7 +565,9 @@ define $(2)_CONFIGURE_CMDS
 	if test "$$(BR2_TOOLCHAIN_EXTERNAL_UCLIBC)" = "y" ; then \
 		$$(call check_uclibc,$$$${SYSROOT_DIR}) ; \
 	elif test "$$(BR2_TOOLCHAIN_EXTERNAL_MUSL)" = "y" ; then \
-		$$(call check_musl,$$$${SYSROOT_DIR}) ; \
+		$$(call check_musl,\
+			"$$(TOOLCHAIN_EXTERNAL_CC) $$(TOOLCHAIN_EXTERNAL_CFLAGS)",\
+			$$(TOOLCHAIN_EXTERNAL_READELF)) ; \
 	else \
 		$$(call check_glibc,$$$${SYSROOT_DIR}) ; \
 	fi

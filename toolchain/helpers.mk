@@ -197,13 +197,18 @@ check_glibc = \
 #
 # Check that the selected C library really is musl
 #
-# $1: sysroot directory
+# $1: cross-gcc path
+# $2: cross-readelf path
 check_musl = \
-	SYSROOT_DIR="$(strip $1)"; \
-	if test ! -f $${SYSROOT_DIR}/lib/libc.so -o -e $${SYSROOT_DIR}/lib/libm.so ; then \
+	__CROSS_CC=$(strip $1) ; \
+	__CROSS_READELF=$(strip $2) ; \
+	echo 'void main(void) {}' | $${__CROSS_CC} -x c -o $(BUILD_DIR)/.br-toolchain-test.tmp - >/dev/null 2>&1; \
+	if ! $${__CROSS_READELF} -l $(BUILD_DIR)/.br-toolchain-test.tmp 2> /dev/null | grep 'program interpreter: /lib/ld-musl' -q; then \
+		rm -f $(BUILD_DIR)/.br-toolchain-test.tmp*; \
 		echo "Incorrect selection of the C library" ; \
 		exit -1; \
-	fi
+	fi ; \
+	rm -f $(BUILD_DIR)/.br-toolchain-test.tmp*
 
 #
 # Check the conformity of Buildroot configuration with regard to the
