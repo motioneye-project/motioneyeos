@@ -1,0 +1,40 @@
+From 4d729e322fae359a1aefaafec1144764a54e8ad4 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tim=20R=C3=BChsen?= <tim.ruehsen@gmx.de>
+Date: Mon, 6 Mar 2017 10:04:22 +0100
+Subject: [PATCH] Fix CRLF injection in Wget host part
+
+* src/url.c (url_parse): Reject control characters in host part of URL
+
+Reported-by: Orange Tsai
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 4d729e322fae35
+
+ src/url.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/src/url.c b/src/url.c
+index 8f8ff0b881af..7d36b27d7b92 100644
+--- a/src/url.c
++++ b/src/url.c
+@@ -925,6 +925,17 @@ url_parse (const char *url, int *error, struct iri *iri, bool percent_encode)
+       url_unescape (u->host);
+       host_modified = true;
+ 
++      /* check for invalid control characters in host name */
++      for (p = u->host; *p; p++)
++        {
++          if (c_iscntrl(*p))
++            {
++              url_free(u);
++              error_code = PE_INVALID_HOST_NAME;
++              goto error;
++            }
++        }
++
+       /* Apply IDNA regardless of iri->utf8_encode status */
+       if (opt.enable_iri && iri)
+         {
+-- 
+2.11.0
+
