@@ -13,8 +13,8 @@ KEEPALIVED_CONF_OPTS += --disable-dbus
 
 KEEPALIVED_PATCH = https://github.com/acassen/keepalived/commit/5d98b7b69fcbba84fa69e5b5e9a019bfbcb76e8b.patch
 
-ifeq ($(BR2_PACKAGE_LIBNL),y)
-KEEPALIVED_DEPENDENCIES += libnfnetlink
+ifeq ($(BR2_PACKAGE_LIBNL)$(BR2_PACKAGE_LIBNFNETLINK),yy)
+KEEPALIVED_DEPENDENCIES += libnl libnfnetlink
 endif
 
 ifeq ($(BR2_PACKAGE_IPSET),y)
