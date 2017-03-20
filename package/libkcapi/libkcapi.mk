@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBKCAPI_VERSION = a039f8a5adca57dc69a19d7361600c2f410e0c26
+LIBKCAPI_VERSION = 79cb80714ebcbae2b9de9bb5aca9a6a546f2f121
 LIBKCAPI_SITE = $(call github,smuellerDD,libkcapi,$(LIBKCAPI_VERSION))
 LIBKCAPI_AUTORECONF = YES
 LIBKCAPI_INSTALL_STAGING = YES
