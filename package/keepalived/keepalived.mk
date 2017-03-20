@@ -4,17 +4,18 @@
 #
 ################################################################################
 
-KEEPALIVED_VERSION = 1.3.2
+KEEPALIVED_VERSION = 1.3.5
 KEEPALIVED_SITE = http://www.keepalived.org/software
 KEEPALIVED_DEPENDENCIES = host-pkgconf openssl popt
 KEEPALIVED_LICENSE = GPLv2+
 KEEPALIVED_LICENSE_FILES = COPYING
 KEEPALIVED_CONF_OPTS += --disable-dbus
 
-KEEPALIVED_PATCH = https://github.com/acassen/keepalived/commit/5d98b7b69fcbba84fa69e5b5e9a019bfbcb76e8b.patch
-
 ifeq ($(BR2_PACKAGE_LIBNL)$(BR2_PACKAGE_LIBNFNETLINK),yy)
 KEEPALIVED_DEPENDENCIES += libnl libnfnetlink
+KEEPALIVED_CONF_OPTS += --enable-libnl
+else
+KEEPALIVED_CONF_OPTS += --disable-libnl
 endif
 
 ifeq ($(BR2_PACKAGE_IPSET),y)
