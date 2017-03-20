@@ -53,8 +53,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBV4L_UTILS),y)
 LIBV4L_CONF_OPTS += --enable-v4l-utils
-# clock_gettime is used, which is provided by librt for glibc < 2.17
-LIBV4L_LIBS += -lrt
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 LIBV4L_DEPENDENCIES += gettext
 endif
