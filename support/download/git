@@ -94,6 +94,8 @@ popd >/dev/null
 # Generate the archive, sort with the C locale so that it is reproducible
 find "${basename}" -not -type d >"${basename}.list"
 LC_ALL=C sort <"${basename}.list" >"${basename}.list.sorted"
-tar cf - --numeric-owner --owner=0 --group=0 --mtime="${date}" \
+# Create GNU-format tarballs, since that's the format of the tarballs on
+# sources.buildroot.org and used in the *.hash files
+tar cf - --numeric-owner --owner=0 --group=0 --mtime="${date}" --format=gnu \
          -T "${basename}.list.sorted" >"${output}.tar"
 gzip -n <"${output}.tar" >"${output}"
