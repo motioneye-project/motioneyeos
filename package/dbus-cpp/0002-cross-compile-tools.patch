@@ -1,0 +1,34 @@
+tools: just do proper cross-compile
+
+Those tools are not used during the build; besides, they are installed.
+
+So they don't need to not be cross-compiled.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Upstream status: not submitted, upstream is dead.
+
+diff -durN dbus-cpp-0.9.0.orig/tools/Makefile.am dbus-cpp-0.9.0/tools/Makefile.am
+--- dbus-cpp-0.9.0.orig/tools/Makefile.am	2017-03-21 21:48:57.013409423 +0100
++++ dbus-cpp-0.9.0/tools/Makefile.am	2017-03-21 21:49:35.329979798 +0100
+@@ -1,7 +1,3 @@
+-# hacky, but ...
+-
+-CXX = $(CXX_FOR_BUILD)
+-
+ AM_CPPFLAGS = \
+ 	$(dbus_CFLAGS) \
+ 	$(xml_CFLAGS) \
+@@ -9,11 +3,7 @@
+ 	-I$(top_builddir)/include \
+ 	-Wall
+ 
+-if CROSS_COMPILING
+-libdbus_cxx_la = $(BUILD_LIBDBUS_CXX_DIR)/src/libdbus-c++-1.la
+-else
+ libdbus_cxx_la = $(top_builddir)/src/libdbus-c++-1.la
+-endif
+ 
+ bin_PROGRAMS = dbusxx-xml2cpp dbusxx-introspect
+ 
