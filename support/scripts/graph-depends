@@ -26,7 +26,7 @@ import subprocess
 import argparse
 from fnmatch import fnmatch
 
-import pkgutil
+import brpkgutil
 
 # Modes of operation:
 MODE_FULL = 1   # draw full dependency graph for all selected packages
@@ -102,13 +102,13 @@ else:
 transitive = args.transitive
 
 if args.direct:
-    get_depends_func = pkgutil.get_depends
+    get_depends_func = brpkgutil.get_depends
     arrow_dir = "forward"
 else:
     if mode == MODE_FULL:
         sys.stderr.write("--reverse needs a package\n")
         sys.exit(1)
-    get_depends_func = pkgutil.get_rdepends
+    get_depends_func = brpkgutil.get_rdepends
     arrow_dir = "back"
 
 # Get the colours: we need exactly three colours,
@@ -330,7 +330,7 @@ if check_only:
     sys.exit(0)
 
 dict_deps = remove_extra_deps(dict_deps)
-dict_version = pkgutil.get_version([pkg for pkg in allpkgs
+dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
                                 if pkg != "all" and not pkg.startswith("root")])
 
 # Print the attributes of a node: label and fill-color
