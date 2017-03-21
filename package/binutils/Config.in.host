@@ -18,6 +18,9 @@ choice
 	config BR2_BINUTILS_VERSION_2_27_X
 		bool "binutils 2.27"
 
+	config BR2_BINUTILS_VERSION_2_28_X
+		bool "binutils 2.28"
+
 endchoice
 
 config BR2_BINUTILS_VERSION
@@ -26,6 +29,7 @@ config BR2_BINUTILS_VERSION
 	default "2.25.1"	if BR2_BINUTILS_VERSION_2_25_X
 	default "2.26.1"	if BR2_BINUTILS_VERSION_2_26_X
 	default "2.27"		if BR2_BINUTILS_VERSION_2_27_X
+	default "2.28"		if BR2_BINUTILS_VERSION_2_28_X
 
 config BR2_BINUTILS_ENABLE_LTO
 	bool
