@@ -4,7 +4,7 @@ config BR2_PACKAGE_TSLIB
 	help
 	  Tslib is a filtering layer for touchscreen panel events.
 
-	  https://github.com/kergoth/tslib
+	  http://tslib.org
 
 comment "tslib needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
