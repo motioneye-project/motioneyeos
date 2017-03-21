@@ -13,6 +13,9 @@ IRSSI_LICENSE = GPLv2+
 IRSSI_LICENSE_FILES = COPYING
 IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses openssl
 
+# We're patching configure.ac, so we need to autoreconf
+IRSSI_AUTORECONF = YES
+
 IRSSI_CONF_OPTS = \
 	--disable-glibtest \
 	--with-ncurses=$(STAGING_DIR)/usr \
