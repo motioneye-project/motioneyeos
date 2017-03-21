@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TSLIB_VERSION = 1.7
+TSLIB_VERSION = 1.8
 TSLIB_SITE = https://github.com/kergoth/tslib/releases/download/$(TSLIB_VERSION)
 TSLIB_SOURCE = tslib-$(TSLIB_VERSION).tar.xz
 TSLIB_LICENSE = GPL, LGPL
