@@ -1,0 +1,59 @@
+From 379642bcd8d89db52feba88a651e4e56d6ac5767 Mon Sep 17 00:00:00 2001
+From: Brandon Williams <bmwill@google.com>
+Date: Fri, 17 Mar 2017 11:41:54 -0700
+Subject: [PATCH] grep: set default output method
+
+Signed-off-by: Brandon Williams <bmwill@google.com>
+Signed-off-by: Junio C Hamano <gitster@pobox.com>
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ grep.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
+
+diff --git a/grep.c b/grep.c
+index 0dbdc1d..56ef0ec 100644
+--- a/grep.c
++++ b/grep.c
+@@ -12,6 +12,11 @@ static int grep_source_is_binary(struct grep_source *gs);
+ 
+ static struct grep_opt grep_defaults;
+ 
++static void std_output(struct grep_opt *opt, const void *buf, size_t size)
++{
++	fwrite(buf, size, 1, stdout);
++}
++
+ /*
+  * Initialize the grep_defaults template with hardcoded defaults.
+  * We could let the compiler do this, but without C99 initializers
+@@ -42,6 +47,7 @@ void init_grep_defaults(void)
+ 	color_set(opt->color_selected, "");
+ 	color_set(opt->color_sep, GIT_COLOR_CYAN);
+ 	opt->color = -1;
++	opt->output = std_output;
+ }
+ 
+ static int parse_pattern_type_arg(const char *opt, const char *arg)
+@@ -152,6 +158,7 @@ void grep_init(struct grep_opt *opt, const char *prefix)
+ 	opt->pathname = def->pathname;
+ 	opt->regflags = def->regflags;
+ 	opt->relative = def->relative;
++	opt->output = def->output;
+ 
+ 	color_set(opt->color_context, def->color_context);
+ 	color_set(opt->color_filename, def->color_filename);
+@@ -1379,11 +1386,6 @@ static int look_ahead(struct grep_opt *opt,
+ 	return 0;
+ }
+ 
+-static void std_output(struct grep_opt *opt, const void *buf, size_t size)
+-{
+-	fwrite(buf, size, 1, stdout);
+-}
+-
+ static int fill_textconv_grep(struct userdiff_driver *driver,
+ 			      struct grep_source *gs)
+ {
+-- 
+2.6.2
+
