@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-JANUS_GATEWAY_VERSION = v0.2.1
+JANUS_GATEWAY_VERSION = v0.2.2
 JANUS_GATEWAY_SITE = $(call github,meetecho,janus-gateway,$(JANUS_GATEWAY_VERSION))
 JANUS_GATEWAY_LICENSE = GPLv3
 JANUS_GATEWAY_LICENSE_FILES = COPYING
 
 # ding-libs provides the ini_config library
 JANUS_GATEWAY_DEPENDENCIES = host-pkgconf jansson libnice \
-	libsrtp host-gengetopt libglib2 openssl 
+	libsrtp host-gengetopt libglib2 openssl
 
 # Straight out of the repository, no ./configure, and we also patch
 # configure.ac.
@@ -24,7 +24,8 @@ JANUS_GATEWAY_POST_PATCH_HOOKS += JANUS_GATEWAY_M4
 
 JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
-	--disable-rabbitmq
+	--disable-rabbitmq \
+	--disable-sample-event-handler
 
 ifeq ($(BR2_PACKAGE_JANUS_AUDIO_BRIDGE),y)
 JANUS_GATEWAY_DEPENDENCIES += opus
