@@ -1,7 +1,7 @@
-comment "tesseract-ocr needs a toolchain w/ threads, C++, gcc >= 4.8, dynamic library"
+comment "tesseract-ocr needs a toolchain w/ threads, C++, gcc >= 4.8, dynamic library, wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || BR2_STATIC_LIBS
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || BR2_STATIC_LIBS || !BR2_USE_WCHAR
 
 menuconfig BR2_PACKAGE_TESSERACT_OCR
 	bool "tesseract-ocr"
@@ -10,6 +10,7 @@ menuconfig BR2_PACKAGE_TESSERACT_OCR
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_LEPTONICA
 	help
 	  Tesseract is an OCR (Optical Character Recognition) engine,
