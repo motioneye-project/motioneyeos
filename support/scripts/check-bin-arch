@@ -25,14 +25,14 @@ IFS="
 while read f; do
 	# Skip firmware files, they could be ELF files for other
 	# architectures
-	if [[ "${f}" =~ ^\./(usr/)?lib/firmware/.* ]]; then
+	if [[ "${f}" =~ ^/(usr/)?lib/firmware/.* ]]; then
 		continue
 	fi
 
 	# Skip files in /usr/share, several packages (qemu,
 	# pru-software-support) legitimately install ELF binaries that
 	# are not for the target architecture
-	if [[ "${f}" =~ ^\./usr/share/.* ]]; then
+	if [[ "${f}" =~ ^/usr/share/.* ]]; then
 		continue
 	fi
 
