@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_SYSTEMD_KDBUS
+	bool "systemd-kdbus has been removed"
+	select BR2_LEGACY
+	help
+	  --enable/disable-kdbus configure option has been removed since
+	  systemd-231.
+
 config BR2_PACKAGE_POLARSSL
 	bool "polarssl has been removed"
 	select BR2_LEGACY
