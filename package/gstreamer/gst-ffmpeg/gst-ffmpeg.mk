@@ -80,6 +80,12 @@ else
 GST_FFMPEG_CONF_EXTRA_OPTS += --disable-altivec
 endif
 
+# libav configure script misdetects the VIS optimizations as being
+# available, so forcefully disable them.
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+GST_FFMPEG_CONF_EXTRA_OPTS += --disable-vis
+endif
+
 ifeq ($(BR2_STATIC_LIBS),)
 GST_FFMPEG_CONF_EXTRA_OPTS += --enable-pic
 endif
