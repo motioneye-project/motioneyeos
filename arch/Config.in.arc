@@ -39,7 +39,8 @@ config BR2_GCC_TARGET_CPU
 	default "archs"	 if BR2_archs38
 
 config BR2_READELF_ARCH_NAME
-	default "ARCv2"
+	default "ARCompact" 	if BR2_arc750d || BR2_arc770d
+	default "ARCv2"		if BR2_archs38
 
 choice
 	prompt "MMU Page Size"
