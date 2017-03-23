@@ -83,5 +83,6 @@ Run
 
   Setup the Console with the rate 115200/8-N-1.
 
-  $ ./output/host/usr/bin/csky-linux-gdb -x board/csky/gx6605s/gdbinit output/images/vmlinux
+  $ cd output/images
+  $ ../host/usr/bin/csky-linux-gdb -x ../../board/csky/gx6605s/gdbinit vmlinux
 
