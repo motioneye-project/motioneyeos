@@ -1,6 +1,6 @@
-From 66c1baaf357f75591ee2f31966385b6eb96c8eb4 Mon Sep 17 00:00:00 2001
+From 7615840f2298aedc990db3d9be2badb19294a807 Mon Sep 17 00:00:00 2001
 From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
-Date: Wed, 23 Dec 2015 11:46:14 +0100
+Date: Wed, 22 Feb 2017 16:48:49 -0800
 Subject: [PATCH] Add importlib fix for PEP 3147 issue
 
 Python 3 has a new standard for installing .pyc file, called PEP
@@ -18,15 +18,17 @@ This effectively disables PEP 3147 for:
 * Packages built with automake that use the `py-compile` helper
 
 Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Lib/importlib/_bootstrap_external.py | 37 +++++-------------------------------
- 1 file changed, 5 insertions(+), 32 deletions(-)
+ Lib/importlib/_bootstrap_external.py | 38 +++++-------------------------------
+ 1 file changed, 5 insertions(+), 33 deletions(-)
 
 diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
-index 9788828..dfcc27e 100644
+index 9feec50..3550013 100644
 --- a/Lib/importlib/_bootstrap_external.py
 +++ b/Lib/importlib/_bootstrap_external.py
-@@ -258,8 +258,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -275,8 +275,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
      a True value is the same as setting 'optimization' to the empty string
      while a False value is equivalent to setting 'optimization' to '1'.
  
@@ -35,8 +37,8 @@ index 9788828..dfcc27e 100644
      """
      if debug_override is not None:
          _warnings.warn('the debug_override parameter is deprecated; use '
-@@ -270,10 +268,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
-         optimization = '' if debug_override else 1
+@@ -288,10 +286,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+     path = _os.fspath(path)
      head, tail = _path_split(path)
      base, sep, rest = tail.rpartition('.')
 -    tag = sys.implementation.cache_tag
@@ -47,7 +49,7 @@ index 9788828..dfcc27e 100644
      if optimization is None:
          if sys.flags.optimize == 0:
              optimization = ''
-@@ -284,39 +279,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+@@ -302,40 +297,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
          if not optimization.isalnum():
              raise ValueError('{!r} is not alphanumeric'.format(optimization))
          almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
@@ -67,6 +69,7 @@ index 9788828..dfcc27e 100644
      """
 -    if sys.implementation.cache_tag is None:
 -        raise NotImplementedError('sys.implementation.cache_tag is None')
+-    path = _os.fspath(path)
 -    head, pycache_filename = _path_split(path)
 -    head, pycache = _path_split(head)
 -    if pycache != _PYCACHE:
@@ -92,5 +95,5 @@ index 9788828..dfcc27e 100644
  
  
 -- 
-2.7.4
+2.9.3
 

@@ -1,16 +1,18 @@
-From e151b6863bd8f697f17b50eda2cecef57e433c3e Mon Sep 17 00:00:00 2001
+From 0fbfab21290eeca5b908745e5fb51d2ab2a50aef Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 13:58:00 +0100
+Date: Wed, 22 Feb 2017 17:53:40 -0800
 Subject: [PATCH] Support PGEN_FOR_BUILD and FREEZE_IMPORTLIB_FOR_BUILD
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
  Makefile.pre.in | 10 ++++++++++
  configure.ac    |  3 +++
  2 files changed, 13 insertions(+)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 0c26bcf..d1237eb 100644
+index 82b01c9..7c14a4e 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
 @@ -719,10 +719,15 @@ Programs/_testembed: Programs/_testembed.o $(LIBRARY) $(LDLIBRARY) $(PY3LIBRARY)
@@ -27,11 +29,11 @@ index 0c26bcf..d1237eb 100644
 +	cp $^ $@
 +endif
  
- Python/importlib_external.h: $(srcdir)/Lib/importlib/_bootstrap_external.py Programs/_freeze_importlib
- 	if test "$(cross_compiling)" != "yes"; then \
-@@ -811,8 +816,13 @@ $(GRAMMAR_C): $(GRAMMAR_H)
- 		mv $(GRAMMAR_C).tmp $(GRAMMAR_C); \
- 	fi
+ Python/importlib_external.h: @GENERATED_COMMENT@ $(srcdir)/Lib/importlib/_bootstrap_external.py Programs/_freeze_importlib Python/marshal.c
+ 	./Programs/_freeze_importlib \
+@@ -796,8 +801,13 @@ $(GRAMMAR_H): @GENERATED_COMMENT@ $(GRAMMAR_INPUT) $(PGEN)
+ $(GRAMMAR_C): @GENERATED_COMMENT@ $(GRAMMAR_H)
+ 	touch $(GRAMMAR_C)
  
 +ifeq (@PGEN_FOR_BUILD@,)
  $(PGEN): $(PGENOBJS)
@@ -44,12 +46,12 @@ index 0c26bcf..d1237eb 100644
  Parser/grammar.o:	$(srcdir)/Parser/grammar.c \
  				$(srcdir)/Include/token.h \
 diff --git a/configure.ac b/configure.ac
-index 4e2b88e..16a827c 100644
+index 9a61018..3a12788 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -80,6 +80,9 @@ else
- fi
+@@ -91,6 +91,9 @@ fi
  AC_SUBST(PYTHON_FOR_BUILD)
+ AC_SUBST(GENERATED_COMMENT)
  
 +AC_SUBST(PGEN_FOR_BUILD)
 +AC_SUBST(FREEZE_IMPORTLIB_FOR_BUILD)
@@ -58,5 +60,5 @@ index 4e2b88e..16a827c 100644
  dnl it does, we get path names containing '//' which is both ugly and
  dnl can cause trouble.
 -- 
-2.7.4
+2.9.3
 

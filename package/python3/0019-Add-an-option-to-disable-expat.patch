@@ -1,6 +1,6 @@
-From cb39a3171e28ac6db79d3604959730746e50c2b4 Mon Sep 17 00:00:00 2001
+From a7e1fc80dc729018e806d6f3202c852c0d69cba7 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 11:49:42 +0100
+Date: Wed, 22 Feb 2017 17:40:45 -0800
 Subject: [PATCH] Add an option to disable expat
 
 This patch replaces the existing --with-system-expat option with a
@@ -11,6 +11,8 @@ installation of XML modules).
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
  Makefile.pre.in |  6 +++++-
  configure.ac    | 18 +++++++++++++-----
@@ -18,10 +20,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  3 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 90a055c..fcb1ac4 100644
+index 3621130..a9bdbde 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1206,7 +1206,7 @@ LIBSUBDIRS=	\
+@@ -1205,7 +1205,7 @@ LIBSUBDIRS=	site-packages \
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
@@ -30,7 +32,7 @@ index 90a055c..fcb1ac4 100644
  		importlib \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
-@@ -1283,6 +1283,10 @@ ifeq (@CURSES@,yes)
+@@ -1268,6 +1268,10 @@ ifeq (@CURSES@,yes)
  LIBSUBDIRS += curses
  endif
  
@@ -38,14 +40,14 @@ index 90a055c..fcb1ac4 100644
 +LIBSUBDIRS += $(XMLLIBSUBDIRS)
 +endif
 +
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS += $(TESTSUBDIRS)
- endif
+ ifeq (@LIB2TO3@,yes)
+ LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
+ TESTSUBDIRS += lib2to3/tests			\
 diff --git a/configure.ac b/configure.ac
-index 3814ba0..a7e9d16 100644
+index 485f73c..a426b3a 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2673,13 +2673,21 @@ PKG_PROG_PKG_CONFIG
+@@ -2782,13 +2782,21 @@ PKG_PROG_PKG_CONFIG
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -73,10 +75,10 @@ index 3814ba0..a7e9d16 100644
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
 diff --git a/setup.py b/setup.py
-index be27531..53a471c 100644
+index 80ec79b..660bbd7 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1464,7 +1464,7 @@ class PyBuildExt(build_ext):
+@@ -1492,7 +1492,7 @@ class PyBuildExt(build_ext):
          #
          # More information on Expat can be found at www.libexpat.org.
          #
@@ -86,5 +88,5 @@ index be27531..53a471c 100644
              define_macros = []
              expat_lib = ['expat']
 -- 
-2.7.4
+2.9.3
 

@@ -1,29 +1,32 @@
-From 2d1a718b6fc386e718c26dec23633f478e8791a0 Mon Sep 17 00:00:00 2001
+From 25cb62e9ff67c990be5a694d66394f20b7ca1fda Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 11:49:30 +0100
+Date: Wed, 22 Feb 2017 17:31:51 -0800
 Subject: [PATCH] Add an option to disable the curses module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Makefile.pre.in | 6 +++++-
+ Makefile.pre.in | 7 +++++--
  configure.ac    | 9 +++++++++
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ 2 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 851faa3..90a055c 100644
+index 93ef34d..3621130 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1212,7 +1212,7 @@ LIBSUBDIRS=	\
+@@ -1210,8 +1210,7 @@ LIBSUBDIRS=	site-packages \
+ 		turtledemo \
  		multiprocessing multiprocessing/dummy \
  		unittest \
- 		venv venv/scripts venv/scripts/posix \
--		curses $(MACHDEPS)
-+		$(MACHDEPS)
+-		venv venv/scripts venv/scripts/common venv/scripts/posix \
+-		curses
++		venv venv/scripts venv/scripts/common venv/scripts/posix
  
- TESTSUBDIRS = 	test test/test_asyncio \
- 		test/test_email test/test_email/data \
-@@ -1279,6 +1279,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
+ TESTSUBDIRS=	test \
+ 		test/audiodata \
+@@ -1265,6 +1264,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
  	tkinter/test/test_ttk
  endif
  
@@ -31,14 +34,14 @@ index 851faa3..90a055c 100644
 +LIBSUBDIRS += curses
 +endif
 +
- ifeq (@TEST_MODULES@,yes)
- LIBSUBDIRS += $(TESTSUBDIRS)
- endif
+ ifeq (@LIB2TO3@,yes)
+ LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
+ TESTSUBDIRS += lib2to3/tests			\
 diff --git a/configure.ac b/configure.ac
-index d5047ec..3814ba0 100644
+index 52887c9..485f73c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2994,6 +2994,15 @@ if test "$TK" = "no"; then
+@@ -3099,6 +3099,15 @@ if test "$TK" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  
@@ -55,5 +58,5 @@ index d5047ec..3814ba0 100644
  
  AC_ARG_ENABLE(pydoc,
 -- 
-2.7.4
+2.9.3
 

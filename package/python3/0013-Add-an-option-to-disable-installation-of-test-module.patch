@@ -1,6 +1,6 @@
-From 78e54257cf149408036661be98be6f2650c5a8f9 Mon Sep 17 00:00:00 2001
+From 203087fe335a4b254c415f298ac6710d3f98b27e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 11:47:00 +0100
+Date: Wed, 22 Feb 2017 17:01:18 -0800
 Subject: [PATCH] Add an option to disable installation of test modules
 
 The Python standard distribution comes with many test modules, that
@@ -8,23 +8,25 @@ are not necessarly useful on embedded targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Makefile.pre.in | 56 ++++++++++++++++++++++++++++++++++++--------------------
- configure.ac    |  6 ++++++
- 2 files changed, 42 insertions(+), 20 deletions(-)
+ Makefile.pre.in | 55 ++++++++++++++++++++++++++++++++++++-------------------
+ configure.ac    |  5 +++++
+ 2 files changed, 41 insertions(+), 19 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index d70375a..e5a4372 100644
+index 0e06ddb..029d3e3 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1192,8 +1192,30 @@ maninstall:	altmaninstall
- PLATDIR=	@PLATDIR@
- MACHDEPS=	$(PLATDIR)
+@@ -1191,8 +1191,28 @@ maninstall:	altmaninstall
+ 
+ # Install the library
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
 -LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
 -		tkinter/test/test_ttk site-packages test \
-+LIBSUBDIRS=	tkinter \
-+		site-packages \
++
++LIBSUBDIRS=	tkinter site-packages \
 +		asyncio \
 +		collections concurrent concurrent/futures encodings \
 +		email email/mime \
@@ -40,22 +42,20 @@ index d70375a..e5a4372 100644
 +		turtledemo \
 +		multiprocessing multiprocessing/dummy \
 +		unittest \
-+		venv venv/scripts venv/scripts/posix \
-+		curses pydoc_data $(MACHDEPS)
++		venv venv/scripts venv/scripts/common venv/scripts/posix \
++		curses pydoc_data
 +
-+TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
-+		test test/test_asyncio \
-+		test/test_email test/test_email/data \
-+		test/test_json \
++TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
++		tkinter/test/test_ttk test \
  		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -1225,28 +1247,22 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
+@@ -1226,29 +1246,26 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
  		test/test_importlib/namespace_pkgs/project3/parent/child \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
 -		asyncio \
--		test/test_asyncio \
+ 		test/test_asyncio \
 -		collections concurrent concurrent/futures encodings \
 -		email email/mime test/test_email test/test_email/data \
 -		ensurepip ensurepip/_bundled \
@@ -63,6 +63,8 @@ index d70375a..e5a4372 100644
 -		sqlite3 sqlite3/test \
 -		logging csv wsgiref urllib \
 -		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
++		test/test_email test/test_email/data \
++		test/test_json \
 +		sqlite3/test \
 +		lib2to3/tests \
  		lib2to3/tests/data lib2to3/tests/data/fixers \
@@ -77,37 +79,37 @@ index d70375a..e5a4372 100644
 +		test/test_importlib test/test_importlib/builtin \
  		test/test_importlib/extension test/test_importlib/frozen \
  		test/test_importlib/import_ test/test_importlib/source \
+ 		test/test_tools test/test_warnings test/test_warnings/data \
 -		turtledemo \
 -		multiprocessing multiprocessing/dummy \
 -		unittest unittest/test unittest/test/testmock \
--		venv venv/scripts venv/scripts/posix \
--		curses pydoc_data $(MACHDEPS)
+-		venv venv/scripts venv/scripts/common venv/scripts/posix \
+-		curses pydoc_data
 +		unittest/test unittest/test/testmock
 +
 +ifeq (@TEST_MODULES@,yes)
 +LIBSUBDIRS += $(TESTSUBDIRS)
 +endif
 +
- libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ libinstall:	build_all $(srcdir)/Modules/xxmodule.c
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index c43ff9f..8b8c249 100644
+index fc4e71a..972eaca 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2977,6 +2977,12 @@ if test "$posix_threads" = "yes"; then
+@@ -3081,6 +3081,11 @@ if test "$posix_threads" = "yes"; then
+       AC_CHECK_FUNCS(pthread_atfork)
  fi
- 
  
 +AC_SUBST(TEST_MODULES)
 +
 +AC_ARG_ENABLE(test-modules,
 +	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
 +	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
-+
+ 
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
- AC_MSG_CHECKING([if --enable-ipv6 is specified])
 -- 
-2.7.4
+2.9.3
 

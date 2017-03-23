@@ -1,20 +1,22 @@
-From 3d12c6e8180bc250d77a4bbb78899ccf8566b1cb Mon Sep 17 00:00:00 2001
+From 59b833c2ee545e53bcb920e9509b67419c2fb1ad Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 11:49:01 +0100
+Date: Wed, 22 Feb 2017 17:20:45 -0800
 Subject: [PATCH] Add option to disable the sqlite3 module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
  Makefile.pre.in | 7 +++++--
  configure.ac    | 9 +++++++++
  2 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index aeedad9..d262c04 100644
+index 8e67c91..3907f92 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1203,7 +1203,6 @@ LIBSUBDIRS=	tkinter \
+@@ -1202,7 +1202,6 @@ LIBSUBDIRS=	tkinter site-packages \
  		email email/mime \
  		ensurepip ensurepip/_bundled \
  		html json http dbm xmlrpc \
@@ -22,15 +24,15 @@ index aeedad9..d262c04 100644
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
-@@ -1250,7 +1249,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
- 		test/test_importlib/namespace_pkgs/project3/parent/child \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+@@ -1252,7 +1251,6 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_asyncio \
+ 		test/test_email test/test_email/data \
+ 		test/test_json \
 -		sqlite3/test \
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1271,6 +1269,11 @@ TESTSUBDIRS += lib2to3/tests			\
+@@ -1270,6 +1268,11 @@ TESTSUBDIRS += lib2to3/tests			\
  	lib2to3/tests/data/fixers/myfixes
  endif
  
@@ -43,10 +45,10 @@ index aeedad9..d262c04 100644
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
 diff --git a/configure.ac b/configure.ac
-index 32239d3..c9d0912 100644
+index b518cbe..a30c45d 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2976,6 +2976,15 @@ if test "$posix_threads" = "yes"; then
+@@ -3081,6 +3081,15 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -63,5 +65,5 @@ index 32239d3..c9d0912 100644
  
  AC_ARG_ENABLE(pydoc,
 -- 
-2.7.4
+2.9.3
 

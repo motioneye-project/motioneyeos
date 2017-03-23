@@ -1,6 +1,6 @@
-From a42283b5bee8bfd0a6a39e6805787643d075f1a5 Mon Sep 17 00:00:00 2001
+From a60b0237cb8eb1899b5c4dcf71527437e79972c9 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Date: Wed, 23 Dec 2015 11:48:44 +0100
+Date: Wed, 22 Feb 2017 17:15:31 -0800
 Subject: [PATCH] Add an option to disable lib2to3
 
 lib2to3 is a library to convert Python 2.x code to Python 3.x. As
@@ -8,6 +8,8 @@ such, it is probably not very useful on embedded system targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
  Makefile.pre.in | 16 ++++++++++++----
  configure.ac    |  6 ++++++
@@ -15,10 +17,10 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
  3 files changed, 21 insertions(+), 6 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 83fc343..aeedad9 100644
+index 92315f2..8e67c91 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1164,7 +1164,9 @@ ifeq (@PYDOC@,yes)
+@@ -1165,7 +1165,9 @@ ifeq (@PYDOC@,yes)
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
  endif
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
@@ -28,7 +30,7 @@ index 83fc343..aeedad9 100644
  	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
  	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
-@@ -1203,7 +1205,6 @@ LIBSUBDIRS=	tkinter \
+@@ -1202,7 +1204,6 @@ LIBSUBDIRS=	tkinter site-packages \
  		html json http dbm xmlrpc \
  		sqlite3 \
  		logging csv wsgiref urllib \
@@ -36,9 +38,9 @@ index 83fc343..aeedad9 100644
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command $(XMLLIBSUBDIRS) \
-@@ -1250,9 +1251,6 @@ TESTSUBDIRS = 	tkinter/test tkinter/test/test_tkinter tkinter/test/test_ttk \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+@@ -1252,9 +1253,6 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_email test/test_email/data \
+ 		test/test_json \
  		sqlite3/test \
 -		lib2to3/tests \
 -		lib2to3/tests/data lib2to3/tests/data/fixers \
@@ -46,9 +48,9 @@ index 83fc343..aeedad9 100644
  		ctypes/test \
  		idlelib/idle_test \
  		distutils/tests \
-@@ -1265,6 +1263,14 @@ ifeq (@PYDOC@,yes)
- LIBSUBDIRS += pydoc_data
- endif
+@@ -1264,6 +1262,14 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_tools test/test_warnings test/test_warnings/data \
+ 		unittest/test unittest/test/testmock
  
 +ifeq (@LIB2TO3@,yes)
 +LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
@@ -72,13 +74,13 @@ index 83fc343..aeedad9 100644
  		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
 +endif
  
- # Create the PLATDIR source directory, if one wasn't distributed..
- $(srcdir)/Lib/$(PLATDIR):
+ python-config: $(srcdir)/Misc/python-config.in Misc/python-config.sh
+ 	# Substitution happens here, as the completely-expanded BINDIR
 diff --git a/configure.ac b/configure.ac
-index eea25d4..32239d3 100644
+index 654594a..b518cbe 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2988,6 +2988,12 @@ AC_ARG_ENABLE(test-modules,
+@@ -3093,6 +3093,12 @@ AC_ARG_ENABLE(test-modules,
  	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
  	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
  
@@ -92,10 +94,10 @@ index eea25d4..32239d3 100644
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
  AC_MSG_CHECKING([if --enable-ipv6 is specified])
 diff --git a/setup.py b/setup.py
-index 2a01896..be27531 100644
+index 26bf414..80ec79b 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2254,10 +2254,11 @@ def main():
+@@ -2279,10 +2279,11 @@ def main():
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
  
@@ -110,5 +112,5 @@ index 2a01896..be27531 100644
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
 -- 
-2.7.4
+2.9.3
 
