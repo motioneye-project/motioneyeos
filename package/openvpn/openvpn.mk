@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENVPN_VERSION = 2.4.0
+OPENVPN_VERSION = 2.4.1
 OPENVPN_SOURCE = openvpn-$(OPENVPN_VERSION).tar.xz
 OPENVPN_SITE = http://swupdate.openvpn.net/community/releases
 OPENVPN_DEPENDENCIES = host-pkgconf openssl
@@ -22,8 +22,7 @@ OPENVPN_CONF_ENV = IFCONFIG=/sbin/ifconfig \
 ifeq ($(BR2_PACKAGE_OPENVPN_SMALL),y)
 OPENVPN_CONF_OPTS += \
 	--enable-small \
-	--disable-plugins \
-	--disable-eurephia
+	--disable-plugins
 endif
 
 # BusyBox 1.21+ places the ip applet in the "correct" place
