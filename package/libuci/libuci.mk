@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBUCI_VERSION = e339407372ffc70b1451e4eda218c01aa95a6a7f
-LIBUCI_SITE = git://nbd.name/uci.git
+LIBUCI_VERSION = 49ec6efbdac4819033d34f08927d795f83a3932d
+LIBUCI_SITE = git://git.openwrt.org/project/uci.git
 LIBUCI_LICENSE = LGPLv2.1, GPLv2 (tools)
 LIBUCI_INSTALL_STAGING = YES
 LIBUCI_DEPENDENCIES = libubox
