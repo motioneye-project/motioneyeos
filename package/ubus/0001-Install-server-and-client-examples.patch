@@ -1,23 +1,28 @@
-Install server and client examples
+From aa4aea68a9d2a38fabb5ae8e5a0d05dfd7bcf907 Mon Sep 17 00:00:00 2001
+From: Rahul Jain <Rahul.Jain@imgtec.com>
+Date: Fri, 24 Mar 2017 18:03:24 +0530
+Subject: [PATCH] Install server and client examples
 
 Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+Signed-off-by: Rahul Jain <Rahul.Jain@imgtec.com>
+[Rahul Jain: rebase the patch on latest version]
 ---
  examples/CMakeLists.txt | 4 ++++
  1 file changed, 4 insertions(+)
 
 diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
-index 0279f6e66b50..2f8f4e026e20 100644
+index 81f9997..38f153f 100644
 --- a/examples/CMakeLists.txt
 +++ b/examples/CMakeLists.txt
 @@ -9,4 +9,8 @@ IF (BUILD_EXAMPLES)
  
  	ADD_EXECUTABLE(client client.c count.c)
- 	TARGET_LINK_LIBRARIES(client ubus ubox)
+ 	TARGET_LINK_LIBRARIES(client ubus ${ubox_library})
 +
 +	INSTALL(TARGETS server client
-+	        RUNTIME DESTINATION sbin
++		RUNTIME DESTINATION sbin
 +	)
  ENDIF()
 -- 
-1.9.1
+2.6.2
 
