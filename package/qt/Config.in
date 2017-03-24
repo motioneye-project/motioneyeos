@@ -185,6 +185,14 @@ endmenu
 
 menu "Fonts"
 
+config BR2_PACKAGE_QT_FONT_TRUETYPE
+	bool "dejavu/vera"
+	depends on BR2_PACKAGE_QT_QTFREETYPE || BR2_PACKAGE_QT_SYSTEMFREETYPE
+	default y
+
+comment "dejavu/vera fonts need freetype support"
+	depends on !BR2_PACKAGE_QT_QTFREETYPE && !BR2_PACKAGE_QT_SYSTEMFREETYPE
+
 config BR2_PACKAGE_QT_FONT_MICRO
 	bool "micro"
 	default y
