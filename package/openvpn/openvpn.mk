@@ -35,6 +35,12 @@ else
 OPENVPN_CONF_ENV += IPROUTE=/sbin/ip
 endif
 
+ifeq ($(BR2_PACKAGE_OPENVPN_LZ4),y)
+OPENVPN_DEPENDENCIES += lz4
+else
+OPENVPN_CONF_OPTS += --disable-lz4
+endif
+
 ifeq ($(BR2_PACKAGE_OPENVPN_LZO),y)
 OPENVPN_DEPENDENCIES += lzo
 else

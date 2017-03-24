@@ -14,6 +14,13 @@ config BR2_PACKAGE_OPENVPN
 
 if BR2_PACKAGE_OPENVPN
 
+config BR2_PACKAGE_OPENVPN_LZ4
+	bool "LZ4 compression"
+	default y
+	select BR2_PACKAGE_LZ4
+	help
+	  Enable LZ4 compression.
+
 config BR2_PACKAGE_OPENVPN_LZO
 	bool "LZO compression"
 	default y
