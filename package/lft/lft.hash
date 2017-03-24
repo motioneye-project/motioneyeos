@@ -1,2 +1,4 @@
-# Locally calculated, matches download from fossies.org and pwhois.org
-sha256	d182d6774e64dcdeb19ed1a598fa588e57ddb6cbb6847d9277c405d3a4597d89	lft-3.77.tar.gz
+# From http://pwhois.org/lft/
+md5 7d20fd5323137b208abf1b4e1355c153  lft-3.78.tar.gz
+# Locally calculated
+sha256 000575891b4094319a56d395c0ec576651fe76b251596ab19d3eb2e5f8d4bf78  lft-3.78.tar.gz

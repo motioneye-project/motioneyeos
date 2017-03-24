@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LFT_VERSION = 3.77
+LFT_VERSION = 3.78
 LFT_SITE = http://pwhois.org/get
 LFT_DEPENDENCIES = libpcap
 LFT_LICENSE = VOSTROM Public License for Open Source
