@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBUBOX_VERSION = 290c64ef5b5c3e75be851594f269d6a9568e64e5
+LIBUBOX_VERSION = 723730214732862de7e892bae2f7a7889e66bf1b
 LIBUBOX_SITE = git://git.openwrt.org/project/libubox.git
 LIBUBOX_LICENSE = ISC, BSD-3c
 LIBUBOX_INSTALL_STAGING = YES
