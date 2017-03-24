@@ -12,7 +12,7 @@ UPMPDCLI_DEPENDENCIES = host-pkgconf libmpdclient libupnpp libmicrohttpd jsoncpp
 
 # Upmpdcli only runs if user upmpdcli exists
 define UPMPDCLI_USERS
-	upmpdcli -1 upmpdcli -1 * - - - Upmpdcli MPD UPnP Renderer Front-End
+	upmpdcli -1 upmpdcli -1 * - - audio Upmpdcli MPD UPnP Renderer Front-End
 endef
 
 define UPMPDCLI_INSTALL_INIT_SYSV
