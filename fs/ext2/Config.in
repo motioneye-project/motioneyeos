@@ -44,21 +44,14 @@ config BR2_TARGET_ROOTFS_EXT2_REV
 config BR2_TARGET_ROOTFS_EXT2_LABEL
 	string "filesystem label"
 
+# 61440 = 60MB, i.e usually small enough to fit on a 64MB media
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
-	int "exact size in blocks (leave at 0 for auto calculation)"
-	default 0
+	int "exact size in blocks"
+	default 61440
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "exact number of inodes (leave at 0 for auto calculation)"
 	default 0
-
-config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS
-	int "extra size in blocks" if BR2_TARGET_ROOTFS_EXT2_BLOCKS = 0
-	default 0
-	help
-	  Enter here the number of extra blocks of free space you
-	  want on your filesystem. By default, Buildroot will not
-	  leave much space free.
 
 config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
 	int "extra inodes" if BR2_TARGET_ROOTFS_EXT2_INODES = 0

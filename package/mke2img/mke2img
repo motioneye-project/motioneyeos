@@ -17,14 +17,12 @@ main() {
     # Default values
     gen=2
     rev=1
-    nb_extra_blocks=0
     nb_extra_inodes=0
 
-    while getopts :hb:B:i:I:r:d:o:G:R:l:u: OPT; do
+    while getopts :hb:i:I:r:d:o:G:R:l:u: OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
         b)  nb_blocks=${OPTARG};;
-        B)  nb_extra_blocks=${OPTARG};;
         i)  nb_inodes=${OPTARG};;
         I)  nb_extra_inodes=${OPTARG};;
         r)  nb_res_blocks=${OPTARG};;
@@ -63,22 +61,6 @@ main() {
         nb_inodes=$((nb_inodes+400))
     fi
     nb_inodes=$((nb_inodes+nb_extra_inodes))
-
-    # calculate needed blocks
-    if [ -z "${nb_blocks}" ]; then
-        # size ~= superblock, block+inode bitmaps, inodes (8 per block),
-        # blocks; we scale inodes / blocks with 10% to compensate for
-        # bitmaps size + slack
-        nb_blocks=$(du -s -k "${root_dir}" |sed -r -e 's/[[:space:]]+.*$//')
-        nb_blocks=$((500+(nb_blocks+nb_inodes/8)*11/10))
-        if [ ${gen} -ge 3 ]; then
-            # we add 1300 blocks (a bit more than 1 MiB, assuming 1KiB blocks)
-            # for the journal
-            # Note: I came to 1300 blocks after trial-and-error checks. YMMV.
-            nb_blocks=$((nb_blocks+1300))
-        fi
-    fi
-    nb_blocks=$((nb_blocks+nb_extra_blocks))
 
     # Upgrade to rev1 if needed
     if [ ${rev} -ge 1 ]; then

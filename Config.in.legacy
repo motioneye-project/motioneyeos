@@ -145,6 +145,20 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS
+	int "extra size in blocks has been removed"
+	default 0
+	help
+	  Since the support for auto calculation of the filesystem size has been
+	  removed, this option is now useless and must be 0.
+	  You may want to check that BR2_TARGET_ROOTFS_EXT2_BLOCKS matchs
+	  your needs.
+
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS_WRAP
+	bool
+	default y if BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS != 0
+	select BR2_LEGACY
+
 config BR2_PACKAGE_SYSTEMD_KDBUS
 	bool "systemd-kdbus has been removed"
 	select BR2_LEGACY
