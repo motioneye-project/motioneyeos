@@ -1348,6 +1348,7 @@ F:	package/mcelog/
 F:	package/openpowerlink/
 F:	package/physfs/
 F:	package/stress-ng/
+F:	package/supertux/
 F:	package/terminology/
 F:	package/upower/
 F:	package/xenomai/
