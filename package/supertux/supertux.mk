@@ -46,4 +46,25 @@ endef
 SUPERTUX_POST_PATCH_HOOKS += SUPERTUX_REMOVE_PEDANTIC
 endif
 
+# From https://bugs.debian.org/cgi-bin/bugreport.cgi/?bug=770670
+# "The problem lies within SDL_cpuinfo.h.  It includes altivec.h, which by
+# definition provides an unconditional vector, pixel and bool define in
+# standard-c++ mode.  In GNU-c++ mode this names are only defined
+# context-sensitive by cpp.  SDL_cpuinfo.h is included by SDL.h.
+# Including altivec.h makes arbitrary code break."
+#
+# Acording to a bug report in GCC [1]:
+# "You need to use -std=g++11 or undefine bool after the include of altivec.h
+# as context sensitive keywords is not part of the C++11 standard".
+# So use gnu++11 instead of c++11 only for altivec system.
+# [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58241#c3
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
+define SUPERTUX_FIX_ALTIVEC_ISSUE
+	$(SED) 's%std=c++0x%std=gnu++0x%' $(@D)/CMakeLists.txt
+	$(SED) 's%std=c++11%std=gnu++11%' $(@D)/CMakeLists.txt
+	$(SED) 's%std=c++0x%std=gnu++0x%' $(@D)/external/tinygettext/CMakeLists.txt
+endef
+SUPERTUX_POST_PATCH_HOOKS += SUPERTUX_FIX_ALTIVEC_ISSUE
+endif
+
 $(eval $(cmake-package))
