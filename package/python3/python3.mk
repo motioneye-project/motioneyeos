@@ -24,9 +24,9 @@ PYTHON3_LIBTOOL_PATCH = NO
 # installed in $(HOST_DIR), as it is needed when cross-compiling
 # third-party Python modules.
 
-HOST_PYTHON3_CONF_OPTS += 	\
+HOST_PYTHON3_CONF_OPTS +=	\
 	--without-ensurepip	\
-	--without-cxx-main 	\
+	--without-cxx-main	\
 	--disable-sqlite3	\
 	--disable-tk		\
 	--with-expat=system	\
@@ -152,7 +152,7 @@ endif
 
 PYTHON3_CONF_OPTS += \
 	--without-ensurepip	\
-	--without-cxx-main 	\
+	--without-cxx-main	\
 	--with-system-ffi	\
 	--disable-pydoc		\
 	--disable-test-modules	\

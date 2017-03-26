@@ -22,11 +22,11 @@ LESSTIF_CONF_OPTS = \
 
 # Reduces the buggy makefile to the smallest possible (and working) thing
 define LESSTIF_NOMAN2HTML
-	echo "all:" 	> $(@D)/doc/Makefile
-	echo "" 		>> $(@D)/doc/Makefile
+	echo "all:" > $(@D)/doc/Makefile
+	echo "" >> $(@D)/doc/Makefile
 	echo "install:" >> $(@D)/doc/Makefile
-	echo "" 		>> $(@D)/doc/Makefile
-	echo "clean:" 	>> $(@D)/doc/Makefile
+	echo "" >> $(@D)/doc/Makefile
+	echo "clean:" >> $(@D)/doc/Makefile
 endef
 
 # Prevents to copy ac_find_motif.m4 on target, it would else

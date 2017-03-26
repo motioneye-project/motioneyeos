@@ -49,9 +49,9 @@ else
 $(2)_WAF = ./waf
 endif
 
-$(2)_BUILD_OPTS 			?=
-$(2)_INSTALL_STAGING_OPTS 		?=
-$(2)_INSTALL_TARGET_OPTS 		?=
+$(2)_BUILD_OPTS				?=
+$(2)_INSTALL_STAGING_OPTS		?=
+$(2)_INSTALL_TARGET_OPTS		?=
 $(2)_WAF_OPTS				?=
 
 #

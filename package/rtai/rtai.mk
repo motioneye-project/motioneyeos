@@ -20,8 +20,8 @@ RTAI_DEPENDENCIES = linux
 
 RTAI_CONF_OPTS = \
 	--includedir=/usr/include/rtai \
-	--with-linux-dir=$(LINUX_DIR) 	\
-	--disable-leds		      	\
+	--with-linux-dir=$(LINUX_DIR)	\
+	--disable-leds			\
 	--enable-usi			\
 	--enable-align-priority		\
 	--disable-rtailab		\

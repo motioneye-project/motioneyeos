@@ -17,9 +17,9 @@ PYTHON_LIBTOOL_PATCH = NO
 # also installed in $(HOST_DIR), as it is needed when cross-compiling
 # third-party Python modules.
 
-HOST_PYTHON_CONF_OPTS += 	\
+HOST_PYTHON_CONF_OPTS +=	\
 	--enable-static		\
-	--without-cxx-main 	\
+	--without-cxx-main	\
 	--disable-sqlite3	\
 	--disable-tk		\
 	--with-expat=system	\
@@ -159,7 +159,7 @@ PYTHON_CONF_ENV += ac_cv_big_endian_double=yes
 endif
 
 PYTHON_CONF_OPTS += \
-	--without-cxx-main 	\
+	--without-cxx-main	\
 	--without-doc-strings	\
 	--with-system-ffi	\
 	--disable-pydoc		\

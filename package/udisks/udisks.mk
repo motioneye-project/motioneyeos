@@ -11,7 +11,7 @@ UDISKS_LICENSE_FILES = COPYING
 # For 0002-Fix-systemd-service-file.patch
 UDISKS_AUTORECONF = YES
 
-UDISKS_DEPENDENCIES = 	\
+UDISKS_DEPENDENCIES =	\
 	sg3_utils	\
 	host-pkgconf	\
 	udev		\

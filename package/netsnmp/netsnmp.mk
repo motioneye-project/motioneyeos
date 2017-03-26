@@ -117,7 +117,7 @@ endef
 endif
 
 define NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
-	$(SED) 	"s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
+	$(SED)	"s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
 		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
 		$(STAGING_DIR)/usr/bin/net-snmp-config
 endef

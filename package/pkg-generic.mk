@@ -642,7 +642,7 @@ else
 $(1)-install-images:
 endif
 
-$(1)-install-host:      	$$($(2)_TARGET_INSTALL_HOST)
+$(1)-install-host:		$$($(2)_TARGET_INSTALL_HOST)
 $$($(2)_TARGET_INSTALL_HOST):	$$($(2)_TARGET_BUILD)
 
 $(1)-build:		$$($(2)_TARGET_BUILD)
