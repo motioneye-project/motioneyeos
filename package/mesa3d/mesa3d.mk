@@ -30,17 +30,6 @@ MESA3D_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mno-compact-eh"
 MESA3D_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -mno-compact-eh"
 endif
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-MESA3D_DEPENDENCIES += openssl
-MESA3D_CONF_OPTS += --with-sha1=libcrypto
-else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-MESA3D_DEPENDENCIES += libgcrypt
-MESA3D_CONF_OPTS += --with-sha1=libgcrypt
-else ifeq ($(BR2_PACKAGE_LIBSHA1),y)
-MESA3D_DEPENDENCIES += libsha1
-MESA3D_CONF_OPTS += --with-sha1=libsha1
-endif
-
 ifeq ($(BR2_PACKAGE_XORG7),y)
 MESA3D_DEPENDENCIES += \
 	xproto_xf86driproto \
