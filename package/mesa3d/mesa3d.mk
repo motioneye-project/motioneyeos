@@ -176,6 +176,13 @@ else
 MESA3D_CONF_OPTS += --disable-texture-float
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
+MESA3D_DEPENDENCIES += libvdpau
+MESA3D_CONF_OPTS += --enable-vdpau
+else
+MESA3D_CONF_OPTS += --disable-vdpau
+endif
+
 ifeq ($(BR2_PACKAGE_LM_SENSORS),y)
 MESA3D_CONF_OPTS += --enable-lmsensors
 MESA3D_DEPENDENCIES += lm-sensors
