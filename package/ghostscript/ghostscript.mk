@@ -15,6 +15,7 @@ GHOSTSCRIPT_DEPENDENCIES = \
 	host-lcms2 \
 	host-libjpeg \
 	host-pkgconf \
+	host-zlib \
 	fontconfig \
 	ghostscript-fonts \
 	jpeg \
@@ -31,7 +32,7 @@ endef
 GHOSTSCRIPT_POST_PATCH_HOOKS += GHOSTSCRIPT_REMOVE_LIBS
 
 GHOSTSCRIPT_CONF_ENV = \
-	CCAUX=$(HOSTCC) \
+	CCAUX="$(HOSTCC)" \
 	CFLAGSAUX="$(HOST_CFLAGS) $(HOST_LDFLAGS)"
 
 GHOSTSCRIPT_CONF_OPTS = \
