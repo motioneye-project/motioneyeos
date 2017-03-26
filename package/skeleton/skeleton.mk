@@ -203,9 +203,11 @@ define SKELETON_BIN_SH
 	rm -f $(TARGET_DIR)/bin/sh
 endef
 else
+ifneq ($(SKELETON_TARGET_GENERIC_BIN_SH),)
 define SKELETON_BIN_SH
 	ln -sf $(SKELETON_TARGET_GENERIC_BIN_SH) $(TARGET_DIR)/bin/sh
 endef
+endif
 endif
 TARGET_FINALIZE_HOOKS += SKELETON_BIN_SH
 
