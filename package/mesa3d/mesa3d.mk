@@ -22,6 +22,9 @@ MESA3D_DEPENDENCIES = \
 	expat \
 	libdrm
 
+# Disable assembly usage.
+MESA3D_CONF_OPTS = --disable-asm
+
 # The Sourcery MIPS toolchain has a special (non-upstream) feature to
 # have "compact exception handling", which unfortunately breaks with
 # mesa3d, so we disable it here by passing -mno-compact-eh.
