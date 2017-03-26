@@ -77,11 +77,13 @@ MESA3D_VULKAN_DRIVERS-$(BR2_PACKAGE_MESA3D_VULKAN_DRIVER_INTEL)   += intel
 
 ifeq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER),)
 MESA3D_CONF_OPTS += \
-	--without-gallium-drivers
+	--without-gallium-drivers \
+	--disable-gallium-extra-hud
 else
 MESA3D_CONF_OPTS += \
 	--enable-shared-glapi \
-	--with-gallium-drivers=$(subst $(space),$(comma),$(MESA3D_GALLIUM_DRIVERS-y))
+	--with-gallium-drivers=$(subst $(space),$(comma),$(MESA3D_GALLIUM_DRIVERS-y)) \
+	--enable-gallium-extra-hud
 endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),)
