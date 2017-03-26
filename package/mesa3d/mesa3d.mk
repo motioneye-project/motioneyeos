@@ -176,6 +176,13 @@ else
 MESA3D_CONF_OPTS += --disable-texture-float
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXVMC),y)
+MESA3D_DEPENDENCIES += xlib_libXvMC
+MESA3D_CONF_OPTS += --enable-xvmc
+else
+MESA3D_CONF_OPTS += --disable-xvmc
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
 MESA3D_DEPENDENCIES += libvdpau
 MESA3D_CONF_OPTS += --enable-vdpau
