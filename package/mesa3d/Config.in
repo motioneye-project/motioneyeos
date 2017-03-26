@@ -190,6 +190,29 @@ config BR2_PACKAGE_MESA3D_OPENGL_ES
 	  Use the Khronos OpenGL ES APIs. This is commonly used on embedded
 	  systems and represents a subset of the OpenGL API.
 
+config BR2_PACKAGE_MESA3D_OPENGL_TEXTURE_FLOAT
+	bool "OpenGL texture float (patented format)"
+	help
+	  GL_ARB_texture_float is required to enable GLX core profile
+	  (OpenGL3.x) otherwise the compat profile is used
+	  (OpenGL2.1).
+
+	  The source code to implement ARB_texture_float extension is
+	  included and can be toggled on at compile time, for those
+	  who purchased a license from SGI, or are in a country where
+	  the patent does not apply, etc.
+
+	  Please consult docs/patents.txt with your lawyer before
+	  building Mesa.
+
+	  Also, note that this option doesn't affect all drivers. Some
+	  drivers have support for texture float enabled
+	  unconditionally.
+
+	  If unsure, say N.
+
+	  http://www.google.com/patents/about?id=mIIOAAAAEBAJ&dq=6650327
+
 endif # BR2_PACKAGE_MESA3D_DRIVER
 
 config BR2_PACKAGE_PROVIDES_LIBGL

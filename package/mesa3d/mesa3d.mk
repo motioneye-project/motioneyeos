@@ -169,6 +169,13 @@ else
 MESA3D_CONF_OPTS += --disable-gles1 --disable-gles2
 endif
 
+ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_TEXTURE_FLOAT),y)
+MESA3D_CONF_OPTS += --enable-texture-float
+MESA3D_LICENSE_FILES += docs/patents.txt
+else
+MESA3D_CONF_OPTS += --disable-texture-float
+endif
+
 ifeq ($(BR2_PACKAGE_LM_SENSORS),y)
 MESA3D_CONF_OPTS += --enable-lmsensors
 MESA3D_DEPENDENCIES += lm-sensors
