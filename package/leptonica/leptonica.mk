@@ -10,6 +10,12 @@ LEPTONICA_LICENSE = BSD-2c
 LEPTONICA_LICENSE_FILES = leptonica-license.txt
 LEPTONICA_INSTALL_STAGING = YES
 
+# we patch configure.ac
+LEPTONICA_AUTORECONF = YES
+
+# PKG_CHECK_MODULES() is used in configure.ac patch
+LEPTONICA_DEPENDENCIES = host-pkgconf
+
 LEPTONICA_CONF_OPTS += --disable-programs
 
 ifeq ($(BR2_PACKAGE_GIFLIB),y)
