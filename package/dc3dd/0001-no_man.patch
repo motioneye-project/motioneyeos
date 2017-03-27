@@ -1,0 +1,15 @@
+Remove the man directory to the subdirs to prevent building the man pages
+
+Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
+
+--- a/Makefile.am	2017-03-27 09:53:19.988820588 +0200
++++ b/Makefile.am	2017-03-27 09:54:14.325817466 +0200
+@@ -15,7 +15,7 @@
+ # You should have received a copy of the GNU General Public License
+ # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ 
+-SUBDIRS = lib src man po
++SUBDIRS = lib src po
+ EXTRA_DIST = cfg.mk maint.mk \
+   .prev-version THANKS-to-translators THANKStt.in \
+   .version \
