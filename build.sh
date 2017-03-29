@@ -16,7 +16,7 @@ osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version
 gzip=$(which pigz || which gzip)
 
 if [ "$board" == "all" ]; then
-    boards=$(ls $basedir/configs/*_defconfig | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
+    boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
     for b in $boards; do
         if ! $0 $b $target; then
             exit 1
