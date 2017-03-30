@@ -688,7 +688,7 @@ while (my ($distname, $dist) = each %dist) {
         $license =~ s|artistic_2|Artistic-2.0|;
         $license =~ s|mit|MIT|;
         $license =~ s|openssl|OpenSSL|;
-        $license =~ s|perl_5|Artistic or GPLv1+|;
+        $license =~ s|perl_5|Artistic or GPL-1.0+|;
         my $license_files = join q{ }, @{$license_files{$distname}};
         say qq{write ${mkname}} unless $quiet;
         open my $fh, q{>}, $mkname;
