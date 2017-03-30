@@ -11,7 +11,7 @@ DING_LIBS_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_GETTEXT),gettext) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 DING_LIBS_INSTALL_STAGING = YES
-DING_LIBS_LICENSE = LGPLv3+ (library),GPL-3.0+ (test programs)
+DING_LIBS_LICENSE = LGPL-3.0+ (library),GPL-3.0+ (test programs)
 DING_LIBS_LICENSE_FILES = COPYING COPYING.LESSER
 
 # autoconf/automake generated files not present in tarball

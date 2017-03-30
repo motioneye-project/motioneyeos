@@ -10,7 +10,7 @@ GUILE_SITE = $(BR2_GNU_MIRROR)/guile
 GUILE_INSTALL_STAGING = YES
 # For 0002-calculate-csqrt_manually.patch
 GUILE_AUTORECONF = YES
-GUILE_LICENSE = LGPLv3+
+GUILE_LICENSE = LGPL-3.0+
 GUILE_LICENSE_FILES = LICENSE COPYING COPYING.LESSER
 
 # libtool dependency is needed because guile uses libltdl

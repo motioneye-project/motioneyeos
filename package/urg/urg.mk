@@ -7,7 +7,7 @@
 URG_VERSION = 0.8.18
 URG_SITE = http://pkgs.fedoraproject.org/repo/pkgs/urg/urg-0.8.18.zip/md5/93f90d2ccc36e784407c5282ef6bd2cb
 URG_SOURCE = urg-$(URG_VERSION).zip
-URG_LICENSE = LGPLv3
+URG_LICENSE = LGPL-3.0
 URG_LICENSE_FILES = COPYING
 
 URG_INSTALL_STAGING = YES
