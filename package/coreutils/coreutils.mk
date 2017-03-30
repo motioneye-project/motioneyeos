@@ -123,7 +123,4 @@ endef
 
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP
 
-# If both coreutils and busybox are selected, the corresponding applets
-# may need to be reinstated by the clean targets.
-
 $(eval $(autotools-package))
