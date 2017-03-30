@@ -7,7 +7,7 @@
 VBOOT_UTILS_VERSION = bbdd62f9b030db7ad8eef789aaf58a7ff9a25656
 VBOOT_UTILS_SITE = https://chromium.googlesource.com/chromiumos/platform/vboot_reference
 VBOOT_UTILS_SITE_METHOD = git
-VBOOT_UTILS_LICENSE = BSD-3c
+VBOOT_UTILS_LICENSE = BSD-3-Clause
 VBOOT_UTILS_LICENSE_FILES = LICENSE
 
 HOST_VBOOT_UTILS_DEPENDENCIES = host-openssl host-util-linux host-pkgconf

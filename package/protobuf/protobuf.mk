@@ -9,7 +9,7 @@
 # version/site variables.
 PROTOBUF_VERSION = v3.0.0
 PROTOBUF_SITE = $(call github,google,protobuf,$(PROTOBUF_VERSION))
-PROTOBUF_LICENSE = BSD-3c
+PROTOBUF_LICENSE = BSD-3-Clause
 PROTOBUF_LICENSE_FILES = LICENSE
 # no configure script
 PROTOBUF_AUTORECONF = YES

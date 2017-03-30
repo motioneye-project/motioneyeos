@@ -9,7 +9,7 @@ PYTHON_LXML_SITE = http://lxml.de/files
 PYTHON_LXML_SOURCE = lxml-$(PYTHON_LXML_VERSION).tgz
 
 # Not including the GPL, because it is used only for the test scripts.
-PYTHON_LXML_LICENSE = BSD-3c, Others
+PYTHON_LXML_LICENSE = BSD-3-Clause, Others
 PYTHON_LXML_LICENSE_FILES = \
 	LICENSES.txt \
 	doc/licenses/BSD.txt \

@@ -8,7 +8,7 @@ GO_BOOTSTRAP_VERSION = 1.4.3
 GO_BOOTSTRAP_SITE = https://storage.googleapis.com/golang
 GO_BOOTSTRAP_SOURCE = go$(GO_BOOTSTRAP_VERSION).src.tar.gz
 
-GO_BOOTSTRAP_LICENSE = BSD-3c
+GO_BOOTSTRAP_LICENSE = BSD-3-Clause
 GO_BOOTSTRAP_LICENSE_FILES = LICENSE
 
 # To build programs that need cgo support the toolchain needs to be

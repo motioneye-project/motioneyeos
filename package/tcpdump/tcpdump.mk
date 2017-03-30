@@ -6,7 +6,7 @@
 
 TCPDUMP_VERSION = 4.9.0
 TCPDUMP_SITE = http://www.tcpdump.org/release
-TCPDUMP_LICENSE = BSD-3c
+TCPDUMP_LICENSE = BSD-3-Clause
 TCPDUMP_LICENSE_FILES = LICENSE
 TCPDUMP_CONF_ENV = \
 	ac_cv_linux_vers=2 \

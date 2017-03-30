@@ -8,7 +8,7 @@ DASH_VERSION = 0.5.8
 DASH_SOURCE = dash_$(DASH_VERSION).orig.tar.gz
 DASH_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/d/dash
 DASH_PATCH = dash_$(DASH_VERSION)-1.diff.gz
-DASH_LICENSE = BSD-3c, GPL-2.0+ (mksignames.c)
+DASH_LICENSE = BSD-3-Clause, GPL-2.0+ (mksignames.c)
 DASH_LICENSE_FILES = COPYING
 
 # 0002-fix-parallel-build.patch

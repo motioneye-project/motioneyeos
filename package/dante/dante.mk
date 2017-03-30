@@ -6,7 +6,7 @@
 
 DANTE_VERSION = 1.4.1
 DANTE_SITE = http://www.inet.no/dante/files
-DANTE_LICENSE = BSD-3c
+DANTE_LICENSE = BSD-3-Clause
 DANTE_LICENSE_FILES = LICENSE
 
 # Dante uses a *VERY* old configure.ac
