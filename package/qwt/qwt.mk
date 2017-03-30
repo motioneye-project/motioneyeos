@@ -16,7 +16,7 @@ QWT_DEPENDENCIES += qt5base
 QWT_QMAKE = $(QT5_QMAKE)
 endif
 
-QWT_LICENSE = LGPLv2.1 with exceptions
+QWT_LICENSE = LGPL-2.1 with exceptions
 QWT_LICENSE_FILES = COPYING
 
 QWT_CONFIG = 's%QWT_INSTALL_PREFIX.*/usr/local/.*%QWT_INSTALL_PREFIX = /usr%'

@@ -7,7 +7,7 @@
 MIDORI_VERSION = 0.5.11
 MIDORI_SOURCE = midori_$(MIDORI_VERSION)_all_.tar.bz2
 MIDORI_SITE = http://midori-browser.org/downloads
-MIDORI_LICENSE = LGPLv2.1+
+MIDORI_LICENSE = LGPL-2.1+
 MIDORI_LICENSE_FILES = COPYING
 MIDORI_DEPENDENCIES = \
 	host-intltool \

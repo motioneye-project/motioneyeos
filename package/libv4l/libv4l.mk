@@ -15,7 +15,7 @@ LIBV4L_CONF_OPTS = --disable-doxygen-doc
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
 # v4l-utils components have different licences, see v4l-utils.spec for details
-LIBV4L_LICENSE = GPL-2.0+ (utilities), LGPLv2.1+ (libraries)
+LIBV4L_LICENSE = GPL-2.0+ (utilities), LGPL-2.1+ (libraries)
 LIBV4L_LICENSE_FILES = COPYING COPYING.libv4l lib/libv4l1/libv4l1-kernelcode-license.txt
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)

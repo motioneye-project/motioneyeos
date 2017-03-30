@@ -14,7 +14,7 @@ HOST_LIBCROCO_DEPENDENCIES = host-pkgconf host-libglib2 host-libxml2
 LIBCROCO_CONFIG_SCRIPTS = croco-$(LIBCROCO_VERSION_MAJOR)-config
 # NEWS states that it's only LGPL
 # Source code says v2.1+ even though COPYING.LIB is v2
-LIBCROCO_LICENSE = LGPLv2.1+
+LIBCROCO_LICENSE = LGPL-2.1+
 LIBCROCO_LICENSE_FILES = COPYING.LIB
 
 $(eval $(autotools-package))

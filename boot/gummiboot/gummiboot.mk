@@ -7,7 +7,7 @@
 GUMMIBOOT_SITE = http://cgit.freedesktop.org/gummiboot
 GUMMIBOOT_SITE_METHOD = git
 GUMMIBOOT_VERSION = 43
-GUMMIBOOT_LICENSE = LGPLv2.1+
+GUMMIBOOT_LICENSE = LGPL-2.1+
 GUMMIBOOT_LICENSE_FILES = LICENSE
 
 # The git archive does not have the autoconf/automake stuff generated.

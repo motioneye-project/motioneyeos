@@ -7,7 +7,7 @@
 LIBPLAYER_VERSION = 2.0.1
 LIBPLAYER_SITE = http://libplayer.geexbox.org/releases
 LIBPLAYER_SOURCE = libplayer-$(LIBPLAYER_VERSION).tar.bz2
-LIBPLAYER_LICENSE = LGPLv2.1+
+LIBPLAYER_LICENSE = LGPL-2.1+
 LIBPLAYER_LICENSE_FILES = COPYING
 
 # When passing the standard buildroot configure arguments, the configure script

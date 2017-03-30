@@ -16,7 +16,7 @@ LIBSECRET_CONF_OPTS = \
 	--disable-coverage \
 	--enable-introspection=no \
 	--enable-vala=no
-LIBSECRET_LICENSE = LGPLv2.1+
+LIBSECRET_LICENSE = LGPL-2.1+
 LIBSECRET_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)

@@ -9,7 +9,7 @@ PSEUDO_SITE = https://git.yoctoproject.org/git/pseudo
 PSEUDO_SITE_METHOD = git
 
 # No "or later" clause.
-PSEUDO_LICENSE = LGPLv2.1
+PSEUDO_LICENSE = LGPL-2.1
 PSEUDO_LICENSE_FILES = COPYING
 
 HOST_PSEUDO_DEPENDENCIES = host-attr host-sqlite
