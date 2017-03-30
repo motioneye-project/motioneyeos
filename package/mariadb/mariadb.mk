@@ -6,7 +6,7 @@
 
 MARIADB_VERSION = 10.1.22
 MARIADB_SITE = https://downloads.mariadb.org/interstitial/mariadb-$(MARIADB_VERSION)/source
-MARIADB_LICENSE = GPL-2.0 (server), GPL-2.0 with FLOSS exception (GPL client library), LGPLv2 (LGPL client library)
+MARIADB_LICENSE = GPL-2.0 (server), GPL-2.0 with FLOSS exception (GPL client library), LGPL-2.0 (LGPL client library)
 MARIADB_LICENSE_FILES = README COPYING COPYING.LESSER
 MARIADB_INSTALL_STAGING = YES
 MARIADB_PROVIDES = mysql

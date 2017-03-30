@@ -13,7 +13,7 @@ OWFS_CONF_OPTS = --disable-owperl --without-perl5 --disable-owtcl --without-tcl
 OWFS_AUTORECONF = YES
 
 # owtcl license is declared in module/ownet/c/src/include/ow_functions.h
-OWFS_LICENSE = GPL-2.0+, LGPLv2 (owtcl)
+OWFS_LICENSE = GPL-2.0+, LGPL-2.0 (owtcl)
 OWFS_LICENSE_FILES = COPYING COPYING.LIB
 OWFS_INSTALL_STAGING = YES
 

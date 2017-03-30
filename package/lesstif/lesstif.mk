@@ -11,7 +11,7 @@ LESSTIF_DEPENDENCIES = \
 	xlib_libXt \
 	xlib_libXext \
 	freetype
-LESSTIF_LICENSE = LGPLv2+
+LESSTIF_LICENSE = LGPL-2.0+
 LESSTIF_LICENSE_FILES = COPYING.LIB
 LESSTIF_CONF_OPTS = \
 	--with-gnu-ld \
