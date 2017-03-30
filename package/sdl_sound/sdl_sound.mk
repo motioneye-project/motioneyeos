@@ -45,6 +45,13 @@ else
 SDL_SOUND_CONF_OPTS += --disable-speex
 endif
 
+ifeq ($(BR2_PACKAGE_PHYSFS),y)
+SDL_SOUND_CONF_OPTS += --enable-physfs
+SDL_SOUND_DEPENDENCIES += physfs
+else
+SDL_SOUND_CONF_OPTS += --disable-physfs
+endif
+
 SDL_SOUND_CONF_OPTS = \
 	--with-sdl-prefix=$(STAGING_DIR)/usr \
 	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
