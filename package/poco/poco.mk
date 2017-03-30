@@ -6,7 +6,7 @@
 
 POCO_VERSION = poco-1.7.2-release
 POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
-POCO_LICENSE = Boost-v1.0
+POCO_LICENSE = BSL-1.0
 POCO_LICENSE_FILES = LICENSE
 POCO_INSTALL_STAGING = YES
 POCO_PATCH = https://github.com/pocoproject/poco/commit/30159aea4b3f6421da9d74a8bf22aad6d3bf26b4.patch
