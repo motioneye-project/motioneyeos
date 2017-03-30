@@ -7,7 +7,7 @@
 PORTMAP_VERSION = 6.0
 PORTMAP_SOURCE = portmap-$(PORTMAP_VERSION).tgz
 PORTMAP_SITE = http://neil.brown.name/portmap
-PORTMAP_LICENSE = BSD-4c (portmap.c) SunRPC License (portmap.c from_local.c)
+PORTMAP_LICENSE = BSD-4-Clause (portmap.c) SunRPC License (portmap.c from_local.c)
 PORTMAP_LICENSE_FILES = portmap.c from_local.c
 PORTMAP_SBINS = portmap pmap_dump pmap_set
 

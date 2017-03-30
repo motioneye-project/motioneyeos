@@ -11,7 +11,7 @@ RADVD_DEPENDENCIES = host-bison flex host-flex host-pkgconf
 RADVD_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 # For 0002-Don-t-force-fstack-protector-the-toolchain-might-lac.patch
 RADVD_AUTORECONF = YES
-RADVD_LICENSE = BSD-4c-like
+RADVD_LICENSE = BSD-4-Clause-like
 RADVD_LICENSE_FILES = COPYRIGHT
 
 define RADVD_INSTALL_INIT_SYSV

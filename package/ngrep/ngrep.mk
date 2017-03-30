@@ -7,7 +7,7 @@
 NGREP_VERSION = 1.45
 NGREP_SOURCE = ngrep-$(NGREP_VERSION).tar.bz2
 NGREP_SITE = http://downloads.sourceforge.net/project/ngrep/ngrep/$(NGREP_VERSION)
-NGREP_LICENSE = BSD-4c-like
+NGREP_LICENSE = BSD-4-Clause-like
 NGREP_LICENSE_FILES = LICENSE.txt
 NGREP_INSTALL_STAGING = YES
 
