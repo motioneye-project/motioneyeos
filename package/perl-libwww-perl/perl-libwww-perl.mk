@@ -20,7 +20,7 @@ PERL_LIBWWW_PERL_DEPENDENCIES = \
 	perl-net-http \
 	perl-uri \
 	perl-www-robotrules
-PERL_LIBWWW_PERL_LICENSE = Artistic or GPLv1+
+PERL_LIBWWW_PERL_LICENSE = Artistic or GPL-1.0+
 PERL_LIBWWW_PERL_LICENSE_FILES = LICENSE
 
 $(eval $(perl-package))
