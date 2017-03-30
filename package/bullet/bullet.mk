@@ -7,7 +7,7 @@
 BULLET_VERSION = 2.85.1
 BULLET_SITE = $(call github,bulletphysics,bullet3,$(BULLET_VERSION))
 BULLET_INSTALL_STAGING = YES
-BULLET_LICENSE = zlib license
+BULLET_LICENSE = Zlib
 BULLET_LICENSE_FILES = LICENSE.txt
 
 # Disable demos apps and unit tests.
