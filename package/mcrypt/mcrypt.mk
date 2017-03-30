@@ -11,7 +11,7 @@ MCRYPT_DEPENDENCIES = libmcrypt libmhash \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 MCRYPT_CONF_OPTS = --with-libmcrypt-prefix=$(STAGING_DIR)/usr
-MCRYPT_LICENSE = GPLv3
+MCRYPT_LICENSE = GPL-3.0
 MCRYPT_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

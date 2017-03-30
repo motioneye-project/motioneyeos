@@ -7,7 +7,7 @@
 LFTP_VERSION = 4.7.4
 LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
-LFTP_LICENSE = GPLv3+
+LFTP_LICENSE = GPL-3.0+
 LFTP_LICENSE_FILES = COPYING
 # Needed so that our libtool patch applies properly, and for patch
 # 0001-fix-static-link-with-readline.patch.

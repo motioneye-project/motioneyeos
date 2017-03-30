@@ -6,7 +6,7 @@
 
 HAVEGED_VERSION = 1.9.1
 HAVEGED_SITE = http://www.issihosts.com/haveged
-HAVEGED_LICENSE = GPLv3+
+HAVEGED_LICENSE = GPL-3.0+
 HAVEGED_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)

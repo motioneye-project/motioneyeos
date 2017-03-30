@@ -10,7 +10,7 @@ BASH_SITE = $(BR2_GNU_MIRROR)/bash
 BASH_DEPENDENCIES = ncurses readline host-bison \
 	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
 BASH_CONF_OPTS = --with-installed-readline
-BASH_LICENSE = GPLv3+
+BASH_LICENSE = GPL-3.0+
 BASH_LICENSE_FILES = COPYING
 
 BASH_CONF_ENV += \

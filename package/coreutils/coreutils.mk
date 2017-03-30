@@ -7,7 +7,7 @@
 COREUTILS_VERSION = 8.26
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
-COREUTILS_LICENSE = GPLv3+
+COREUTILS_LICENSE = GPL-3.0+
 COREUTILS_LICENSE_FILES = COPYING
 
 # coreutils-01-fix-for-dummy-man-usage.patch triggers autoreconf on build

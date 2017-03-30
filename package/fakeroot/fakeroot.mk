@@ -16,7 +16,7 @@ HOST_FAKEROOT_CONF_ENV = \
 	ac_cv_header_sys_capability_h=no \
 	ac_cv_func_capset=no
 
-FAKEROOT_LICENSE = GPLv3+
+FAKEROOT_LICENSE = GPL-3.0+
 FAKEROOT_LICENSE_FILES = COPYING
 
 $(eval $(host-autotools-package))

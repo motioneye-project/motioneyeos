@@ -6,7 +6,7 @@
 
 HANS_VERSION = 0.4.4
 HANS_SITE = http://downloads.sourceforge.net/project/hanstunnel/source
-HANS_LICENSE = GPLv3+
+HANS_LICENSE = GPL-3.0+
 HANS_LICENSE_FILES = LICENSE
 
 define HANS_BUILD_CMDS

@@ -11,7 +11,7 @@ SUPERTUXKART_SITE = http://downloads.sourceforge.net/project/supertuxkart/SuperT
 # Supertuxkart itself is GPLv3+, but it bundles a few libraries with different
 # licenses. Irrlicht, bullet and angelscript have zlib license, while glew is
 # BSD-3c. Since they are linked statically, the result is GPLv3+.
-SUPERTUXKART_LICENSE = GPLv3+
+SUPERTUXKART_LICENSE = GPL-3.0+
 SUPERTUXKART_LICENSE_FILES = COPYING
 
 SUPERTUXKART_DEPENDENCIES = \

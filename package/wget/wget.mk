@@ -8,7 +8,7 @@ WGET_VERSION = 1.19.1
 WGET_SOURCE = wget-$(WGET_VERSION).tar.xz
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
 WGET_DEPENDENCIES = host-pkgconf
-WGET_LICENSE = GPLv3+
+WGET_LICENSE = GPL-3.0+
 WGET_LICENSE_FILES = COPYING
 
 # Prefer full-blown wget over busybox

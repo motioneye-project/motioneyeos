@@ -7,7 +7,7 @@
 LIBICONV_VERSION = 1.14
 LIBICONV_SITE = $(BR2_GNU_MIRROR)/libiconv
 LIBICONV_INSTALL_STAGING = YES
-LIBICONV_LICENSE = GPLv3+ (iconv program), LGPLv2+ (library)
+LIBICONV_LICENSE = GPL-3.0+ (iconv program), LGPLv2+ (library)
 LIBICONV_LICENSE_FILES = COPYING COPYING.LIB
 
 # Don't build the preloadable library, as we don't need it (it's only

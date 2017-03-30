@@ -7,7 +7,7 @@
 4TH_VERSION = 3.62.4
 4TH_SOURCE = 4th-$(4TH_VERSION)-unix.tar.gz
 4TH_SITE = http://downloads.sourceforge.net/project/forth-4th/4th-$(4TH_VERSION)
-4TH_LICENSE = GPLv3+, LGPLv3+
+4TH_LICENSE = GPL-3.0+, LGPLv3+
 # The COPYING file only contains the text of the LGPLv3, but the
 # source code really contains parts under GPLv3+.
 4TH_LICENSE_FILES = COPYING

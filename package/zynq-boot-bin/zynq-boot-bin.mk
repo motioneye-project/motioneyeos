@@ -7,7 +7,7 @@
 ZYNQ_BOOT_BIN_VERSION = xilinx-v2015.1
 ZYNQ_BOOT_BIN_SOURCE = zynq-boot-bin.py
 ZYNQ_BOOT_BIN_SITE = https://raw.githubusercontent.com/Xilinx/u-boot-xlnx/$(ZYNQ_BOOT_BIN_VERSION)/tools
-ZYNQ_BOOT_BIN_LICENSE = GPLv3+
+ZYNQ_BOOT_BIN_LICENSE = GPL-3.0+
 
 HOST_ZYNQ_BOOT_BIN_DEPENDENCIES = host-python
 

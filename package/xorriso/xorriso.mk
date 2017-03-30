@@ -6,7 +6,7 @@
 
 XORRISO_VERSION = 1.4.6
 XORRISO_SITE = $(BR2_GNU_MIRROR)/xorriso
-XORRISO_LICENSE = GPLv3+
+XORRISO_LICENSE = GPL-3.0+
 XORRISO_LICENSE_FILES = COPYING COPYRIGHT
 # Disable everything until we actually need those features, and add the correct
 # host libraries

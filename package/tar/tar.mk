@@ -10,7 +10,7 @@ TAR_SITE = $(BR2_GNU_MIRROR)/tar
 # busybox installs in /bin, so we need tar to install as well in /bin
 # so that it overrides the Busybox symlinks.
 TAR_CONF_OPTS = --exec-prefix=/
-TAR_LICENSE = GPLv3+
+TAR_LICENSE = GPL-3.0+
 TAR_LICENSE_FILES = COPYING
 
 # Prefer full-blown tar over buybox's version
