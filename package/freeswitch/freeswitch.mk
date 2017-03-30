@@ -8,11 +8,11 @@ FREESWITCH_VERSION = 1.6.15
 FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).tar.xz
 FREESWITCH_SITE = http://files.freeswitch.org/freeswitch-releases
 FREESWITCH_LICENSE = MPL-1.1, \
-	GPLv3+ with font exception (fonts), \
+	GPL-3.0+ with font exception (fonts), \
 	Apache-2.0 (apr, apr-util), \
-	LGPLv2+ (sofia-sip), \
-	LGPLv2.1, GPLv2 (spandsp), \
-	BSD-3c (libsrtp), \
+	LGPL-2.0+ (sofia-sip), \
+	LGPL-2.1, GPL-2.0 (spandsp), \
+	BSD-3-Clause (libsrtp), \
 	tiff license
 
 FREESWITCH_LICENSE_FILES = \
