@@ -6,7 +6,7 @@
 
 MONIT_VERSION = 5.20.0
 MONIT_SITE = http://mmonit.com/monit/dist
-MONIT_LICENSE = AGPLv3 with OpenSSL exception
+MONIT_LICENSE = AGPL-3.0 with OpenSSL exception
 MONIT_LICENSE_FILES = COPYING
 #
 # Touching Makefile.am:
