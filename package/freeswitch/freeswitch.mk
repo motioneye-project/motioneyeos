@@ -7,7 +7,7 @@
 FREESWITCH_VERSION = 1.6.15
 FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).tar.xz
 FREESWITCH_SITE = http://files.freeswitch.org/freeswitch-releases
-FREESWITCH_LICENSE = MPLv1.1, \
+FREESWITCH_LICENSE = MPL-1.1, \
 	GPLv3+ with font exception (fonts), \
 	Apache-2.0 (apr, apr-util), \
 	LGPLv2+ (sofia-sip), \

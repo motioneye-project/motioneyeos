@@ -10,7 +10,7 @@ LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_
 LIBNSS_DISTDIR = dist
 LIBNSS_INSTALL_STAGING = YES
 LIBNSS_DEPENDENCIES = libnspr sqlite zlib
-LIBNSS_LICENSE = MPLv2.0
+LIBNSS_LICENSE = MPL-2.0
 LIBNSS_LICENSE_FILES = nss/COPYING
 
 # --gc-sections triggers binutils ld segfault
