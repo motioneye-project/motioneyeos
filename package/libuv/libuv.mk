@@ -9,7 +9,7 @@ LIBUV_SITE = $(call github,libuv,libuv,$(LIBUV_VERSION))
 LIBUV_DEPENDENCIES = host-pkgconf
 LIBUV_INSTALL_STAGING = YES
 LIBUV_AUTORECONF = YES
-LIBUV_LICENSE = BSD-2c, BSD-3-Clause, ISC, MIT
+LIBUV_LICENSE = BSD-2-Clause, BSD-3-Clause, ISC, MIT
 LIBUV_LICENSE_FILES = LICENSE
 
 # Upstream needs tests to be run sequentially. This is the default in

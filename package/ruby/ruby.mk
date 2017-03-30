@@ -17,7 +17,7 @@ HOST_RUBY_CONF_OPTS = \
 	--disable-install-doc \
 	--with-out-ext=curses,openssl,readline \
 	--without-gmp
-RUBY_LICENSE = Ruby or BSD-2c, BSD-3-Clause, others
+RUBY_LICENSE = Ruby or BSD-2-Clause, BSD-3-Clause, others
 RUBY_LICENSE_FILES = LEGAL COPYING BSDL
 
 RUBY_CFLAGS = $(TARGET_CFLAGS)

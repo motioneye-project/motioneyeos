@@ -10,7 +10,7 @@ PHP_GNUPG_SITE = $(call github,Sean-Der,pecl-encryption-gnupg,$(PHP_GNUPG_VERSIO
 PHP_GNUPG_DEPENDENCIES = php libgpgme host-autoconf host-pkgconf
 PHP_GNUPG_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-gnupg=$(STAGING_DIR)/usr/include --with-gpg=/usr/bin/gpg
-PHP_GNUPG_LICENSE = BSD-2c
+PHP_GNUPG_LICENSE = BSD-2-Clause
 PHP_GNUPG_LICENSE_FILES = LICENSE
 
 define PHP_GNUPG_PHPIZE

@@ -7,7 +7,7 @@
 BOTAN_VERSION = 1.10.13
 BOTAN_SOURCE = Botan-$(BOTAN_VERSION).tgz
 BOTAN_SITE = http://botan.randombit.net/releases
-BOTAN_LICENSE = BSD-2c
+BOTAN_LICENSE = BSD-2-Clause
 BOTAN_LICENSE_FILES = doc/license.txt
 
 BOTAN_INSTALL_STAGING = YES
