@@ -6,7 +6,7 @@
 
 BATCTL_VERSION = 2016.1
 BATCTL_SITE = http://downloads.open-mesh.org/batman/releases/batman-adv-$(BATCTL_VERSION)
-BATCTL_LICENSE = GPLv2
+BATCTL_LICENSE = GPL-2.0
 BATCTL_DEPENDENCIES = libnl host-pkgconf
 
 define BATCTL_BUILD_CMDS

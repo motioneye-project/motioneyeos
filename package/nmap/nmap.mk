@@ -11,7 +11,7 @@ NMAP_DEPENDENCIES = libpcap pcre
 NMAP_CONF_OPTS = --without-liblua --without-zenmap \
 	--with-libdnet=included --with-liblinear=included \
 	--with-libpcre="$(STAGING_DIR)/usr" --without-ncat
-NMAP_LICENSE = GPLv2
+NMAP_LICENSE = GPL-2.0
 NMAP_LICENSE_FILES = COPYING
 
 # needed by libpcap

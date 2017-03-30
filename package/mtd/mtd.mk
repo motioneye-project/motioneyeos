@@ -7,7 +7,7 @@
 MTD_VERSION = 1.5.2
 MTD_SOURCE = mtd-utils-$(MTD_VERSION).tar.bz2
 MTD_SITE = ftp://ftp.infradead.org/pub/mtd-utils
-MTD_LICENSE = GPLv2
+MTD_LICENSE = GPL-2.0
 MTD_LICENSE_FILES = COPYING
 
 MTD_INSTALL_STAGING = YES

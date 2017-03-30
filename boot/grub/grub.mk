@@ -9,7 +9,7 @@ GRUB_SOURCE = grub_$(GRUB_VERSION).orig.tar.gz
 GRUB_PATCH = grub_$(GRUB_VERSION)-68.diff.gz
 GRUB_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/g/grub
 
-GRUB_LICENSE = GPLv2+
+GRUB_LICENSE = GPL-2.0+
 GRUB_LICENSE_FILES = COPYING
 
 # Passing -O0 since the default -O2 passed by Buildroot generates

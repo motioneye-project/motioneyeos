@@ -13,7 +13,7 @@ LINPHONE_CONF_OPTS = \
 LINPHONE_AUTORECONF = YES
 LINPHONE_INSTALL_STAGING = YES
 LINPHONE_DEPENDENCIES = host-pkgconf libeXosip2 speex
-LINPHONE_LICENSE = GPLv2+
+LINPHONE_LICENSE = GPL-2.0+
 LINPHONE_LICENSE_FILES = COPYING
 LINPHONE_PATCH = \
 	https://sources.debian.net/data/main/l/linphone/3.6.1-2.5/debian/patches/libav9.patch \

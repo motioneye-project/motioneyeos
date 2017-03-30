@@ -9,7 +9,7 @@ NBD_SOURCE = nbd-$(NBD_VERSION).tar.xz
 NBD_SITE = http://downloads.sourceforge.net/project/nbd/nbd/$(NBD_VERSION)
 NBD_CONF_OPTS = --enable-lfs
 NBD_DEPENDENCIES = libglib2
-NBD_LICENSE = GPLv2
+NBD_LICENSE = GPL-2.0
 NBD_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)

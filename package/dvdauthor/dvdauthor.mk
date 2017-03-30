@@ -7,7 +7,7 @@
 DVDAUTHOR_VERSION = 0.7.1
 DVDAUTHOR_SITE = http://sourceforge.net/projects/dvdauthor/files/dvdauthor/$(DVDAUTHOR_VERSION)
 DVDAUTHOR_DEPENDENCIES = host-pkgconf libxml2 freetype libpng
-DVDAUTHOR_LICENSE = GPLv2+
+DVDAUTHOR_LICENSE = GPL-2.0+
 DVDAUTHOR_LICENSE_FILES = COPYING
 DVDAUTHOR_CONF_ENV = \
 	ac_cv_prog_FREETYPECONFIG=$(STAGING_DIR)/usr/bin/freetype-config \

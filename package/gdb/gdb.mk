@@ -20,7 +20,7 @@ GDB_SOURCE = gdb-$(GDB_VERSION).tar.gz
 GDB_FROM_GIT = y
 endif
 
-GDB_LICENSE = GPLv2+, LGPLv2+, GPLv3+, LGPLv3+
+GDB_LICENSE = GPL-2.0+, LGPLv2+, GPLv3+, LGPLv3+
 GDB_LICENSE_FILES = COPYING COPYING.LIB COPYING3 COPYING3.LIB
 
 # We only want gdbserver and not the entire debugger.

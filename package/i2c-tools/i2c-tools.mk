@@ -6,7 +6,7 @@
 
 I2C_TOOLS_VERSION = v3.1.2
 I2C_TOOLS_SITE = git://git.kernel.org/pub/scm/utils/i2c-tools/i2c-tools.git
-I2C_TOOLS_LICENSE = GPLv2+, GPLv2 (py-smbus)
+I2C_TOOLS_LICENSE = GPL-2.0+, GPL-2.0 (py-smbus)
 I2C_TOOLS_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)

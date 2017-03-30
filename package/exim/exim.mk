@@ -7,7 +7,7 @@
 EXIM_VERSION = 4.89
 EXIM_SOURCE = exim-$(EXIM_VERSION).tar.bz2
 EXIM_SITE = ftp://ftp.exim.org/pub/exim/exim4
-EXIM_LICENSE = GPLv2+
+EXIM_LICENSE = GPL-2.0+
 EXIM_LICENSE_FILES = LICENCE
 EXIM_DEPENDENCIES = pcre berkeleydb host-pkgconf
 

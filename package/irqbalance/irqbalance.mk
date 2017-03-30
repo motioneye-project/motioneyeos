@@ -6,7 +6,7 @@
 
 IRQBALANCE_VERSION = v1.0.9
 IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,$(IRQBALANCE_VERSION))
-IRQBALANCE_LICENSE = GPLv2
+IRQBALANCE_LICENSE = GPL-2.0
 IRQBALANCE_LICENSE_FILES = COPYING
 IRQBALANCE_DEPENDENCIES = host-pkgconf
 # Autoreconf needed because package is distributed without a configure script

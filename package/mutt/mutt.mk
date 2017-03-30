@@ -6,7 +6,7 @@
 
 MUTT_VERSION = 1.7.1
 MUTT_SITE = https://bitbucket.org/mutt/mutt/downloads
-MUTT_LICENSE = GPLv2+
+MUTT_LICENSE = GPL-2.0+
 MUTT_LICENSE_FILES = GPL
 MUTT_DEPENDENCIES = ncurses
 MUTT_CONF_OPTS = --disable-smtp

@@ -6,7 +6,7 @@
 
 IMX_UUC_VERSION = 3440b1108373e79669cc17ba1d2be91a123a2053
 IMX_UUC_SITE = $(call github,NXPmicro,imx-uuc,$(IMX_UUC_VERSION))
-IMX_UUC_LICENSE = GPLv2+
+IMX_UUC_LICENSE = GPL-2.0+
 IMX_UUC_LICENSE_FILES = COPYING
 
 # mkfs.vfat is needed to create a FAT partition used by g_mass_storage

@@ -12,7 +12,7 @@ GST1_LIBAV_DEPENDENCIES = \
 	host-pkgconf ffmpeg gstreamer1 gst1-plugins-base \
 	$(if $(BR2_PACKAGE_BZIP2),bzip2) \
 	$(if $(BR2_PACKAGE_XZ),xz)
-GST1_LIBAV_LICENSE = GPLv2+
+GST1_LIBAV_LICENSE = GPL-2.0+
 GST1_LIBAV_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

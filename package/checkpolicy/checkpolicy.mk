@@ -6,7 +6,7 @@
 
 CHECKPOLICY_VERSION = 2.6
 CHECKPOLICY_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014
-CHECKPOLICY_LICENSE = GPLv2
+CHECKPOLICY_LICENSE = GPL-2.0
 CHECKPOLICY_LICENSE_FILES = COPYING
 
 HOST_CHECKPOLICY_DEPENDENCIES = host-libselinux host-flex host-bison

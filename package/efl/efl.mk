@@ -7,7 +7,7 @@
 EFL_VERSION = 1.18.4
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
-EFL_LICENSE = BSD-2c, LGPLv2.1+, GPLv2+
+EFL_LICENSE = BSD-2c, LGPLv2.1+, GPL-2.0+
 EFL_LICENSE_FILES = \
 	COMPLIANCE \
 	COPYING \

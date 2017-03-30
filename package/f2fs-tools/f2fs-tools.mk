@@ -12,7 +12,7 @@ F2FS_TOOLS_DEPENDENCIES = host-pkgconf util-linux
 # GIT version, shipped without configure
 F2FS_TOOLS_AUTORECONF = YES
 F2FS_TOOLS_INSTALL_STAGING = YES
-F2FS_TOOLS_LICENSE = GPLv2
+F2FS_TOOLS_LICENSE = GPL-2.0
 F2FS_TOOLS_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

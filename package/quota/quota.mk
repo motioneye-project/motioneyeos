@@ -8,7 +8,7 @@ QUOTA_VERSION = 4.01
 QUOTA_SITE = http://downloads.sourceforge.net/project/linuxquota/quota-tools/$(QUOTA_VERSION)
 QUOTA_DEPENDENCIES = host-gettext
 QUOTA_AUTORECONF = YES
-QUOTA_LICENSE = GPLv2+
+QUOTA_LICENSE = GPL-2.0+
 QUOTA_CONF_OPTS = --disable-strip-binaries
 
 QUOTA_CFLAGS = $(TARGET_CFLAGS)

@@ -7,7 +7,7 @@
 FFTW_VERSION = 3.3.4
 FFTW_SITE = http://www.fftw.org
 FFTW_INSTALL_STAGING = YES
-FFTW_LICENSE = GPLv2+
+FFTW_LICENSE = GPL-2.0+
 FFTW_LICENSE_FILES = COPYING
 
 # fortran support only enables generation and installation of fortran sources

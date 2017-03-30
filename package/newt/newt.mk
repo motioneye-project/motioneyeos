@@ -11,7 +11,7 @@ NEWT_DEPENDENCIES = popt slang \
 	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
 NEWT_CONF_OPTS = --without-python --without-tcl
 NEWT_MAKE = $(MAKE1)
-NEWT_LICENSE = GPLv2
+NEWT_LICENSE = GPL-2.0
 NEWT_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

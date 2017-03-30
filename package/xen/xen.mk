@@ -6,7 +6,7 @@
 
 XEN_VERSION = 4.7.1
 XEN_SITE = http://bits.xensource.com/oss-xen/release/$(XEN_VERSION)
-XEN_LICENSE = GPLv2
+XEN_LICENSE = GPL-2.0
 XEN_LICENSE_FILES = COPYING
 XEN_DEPENDENCIES = host-python
 

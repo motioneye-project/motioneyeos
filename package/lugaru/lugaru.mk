@@ -8,7 +8,7 @@ LUGARU_VERSION = 1.2
 LUGARU_SITE = https://bitbucket.org/osslugaru/lugaru/downloads
 LUGARU_SOURCE = lugaru-$(LUGARU_VERSION).tar.xz
 
-LUGARU_LICENSE = GPLv2+, CC-BY-SA-3.0 (Wolfire and Slib assets), \
+LUGARU_LICENSE = GPL-2.0+, CC-BY-SA-3.0 (Wolfire and Slib assets), \
 	CC-BY-SA-4.0 (OSS Lugaru, Jendraz and Philtron R. assets)
 LUGARU_LICENSE_FILES = COPYING.txt CONTENT-LICENSE.txt
 

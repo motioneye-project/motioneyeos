@@ -5,7 +5,7 @@
 ################################################################################
 
 LINUX_VERSION = $(call qstrip,$(BR2_LINUX_KERNEL_VERSION))
-LINUX_LICENSE = GPLv2
+LINUX_LICENSE = GPL-2.0
 LINUX_LICENSE_FILES = COPYING
 
 define LINUX_HELP_CMDS

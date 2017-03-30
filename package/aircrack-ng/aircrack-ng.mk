@@ -6,7 +6,7 @@
 
 AIRCRACK_NG_VERSION = 1.2-rc1
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
-AIRCRACK_NG_LICENSE = GPLv2+
+AIRCRACK_NG_LICENSE = GPL-2.0+
 AIRCRACK_NG_LICENSE_FILES = LICENSE
 AIRCRACK_NG_DEPENDENCIES = openssl zlib host-pkgconf
 # Enable buddy-ng, easside-ng, tkiptun-ng, wesside-ng

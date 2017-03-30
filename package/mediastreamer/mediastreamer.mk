@@ -10,7 +10,7 @@ MEDIASTREAMER_INSTALL_STAGING = YES
 MEDIASTREAMER_DEPENDENCIES = host-intltool host-pkgconf ortp host-gettext
 # tests fail linking on some architectures, so disable them
 MEDIASTREAMER_CONF_OPTS = --disable-tests --disable-glx --disable-strict
-MEDIASTREAMER_LICENSE = GPLv2+
+MEDIASTREAMER_LICENSE = GPL-2.0+
 MEDIASTREAMER_LICENSE_FILES = COPYING
 
 # fix compilation issue with latest bctoolbox (touches configure.ac)

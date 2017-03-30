@@ -9,7 +9,7 @@ GMRENDER_RESURRECT_SITE = $(call github,hzeller,gmrender-resurrect,$(GMRENDER_RE
 # Original distribution does not have default configure,
 # so we need to autoreconf:
 GMRENDER_RESURRECT_AUTORECONF = YES
-GMRENDER_RESURRECT_LICENSE = GPLv2+
+GMRENDER_RESURRECT_LICENSE = GPL-2.0+
 GMRENDER_RESURRECT_LICENSE_FILES = COPYING
 GMRENDER_RESURRECT_DEPENDENCIES = gstreamer1 libupnp
 

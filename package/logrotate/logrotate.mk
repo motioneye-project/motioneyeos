@@ -6,7 +6,7 @@
 
 LOGROTATE_VERSION = 3.11.0
 LOGROTATE_SITE = $(call github,logrotate,logrotate,$(LOGROTATE_VERSION))
-LOGROTATE_LICENSE = GPLv2+
+LOGROTATE_LICENSE = GPL-2.0+
 LOGROTATE_LICENSE_FILES = COPYING
 LOGROTATE_DEPENDENCIES = popt host-pkgconf
 # tarball does not have a generated configure script

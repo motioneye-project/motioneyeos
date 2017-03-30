@@ -8,7 +8,7 @@ DROPWATCH_VERSION = 1.4
 DROPWATCH_SOURCE = dropwatch-$(DROPWATCH_VERSION).tar.xz
 DROPWATCH_SITE = https://git.fedorahosted.org/cgit/dropwatch.git/snapshot
 DROPWATCH_DEPENDENCIES = binutils libnl readline host-pkgconf
-DROPWATCH_LICENSE = GPLv2
+DROPWATCH_LICENSE = GPL-2.0
 DROPWATCH_LICENSE_FILES = COPYING
 
 # libbfd may be linked to libintl

@@ -13,7 +13,7 @@
 
 IPUTILS_VERSION = 55828d1fef3fed7f07abcbf7be9282a9662e78c7
 IPUTILS_SITE = $(call github,iputils,iputils,$(IPUTILS_VERSION))
-IPUTILS_LICENSE = GPLv2+, BSD-3c, BSD-4c
+IPUTILS_LICENSE = GPL-2.0+, BSD-3c, BSD-4c
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
 

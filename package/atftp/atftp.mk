@@ -6,7 +6,7 @@
 
 ATFTP_VERSION = 0.7.1
 ATFTP_SITE = http://sourceforge.net/projects/atftp/files
-ATFTP_LICENSE = GPLv2+
+ATFTP_LICENSE = GPL-2.0+
 ATFTP_LICENSE_FILES = LICENSE
 ATFTP_CONF_OPTS = --disable-libwrap --disable-mtftp
 # For static we need to explicitly link against libpthread

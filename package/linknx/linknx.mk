@@ -6,7 +6,7 @@
 
 LINKNX_VERSION = 0.0.1.32
 LINKNX_SITE = http://downloads.sourceforge.net/project/linknx/linknx/linknx-$(LINKNX_VERSION)
-LINKNX_LICENSE = GPLv2+
+LINKNX_LICENSE = GPL-2.0+
 LINKNX_INSTALL_STAGING = YES
 # Patching acinclude.m4
 LINKNX_AUTORECONF = YES

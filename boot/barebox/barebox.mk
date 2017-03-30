@@ -36,7 +36,7 @@ endif
 endif
 
 $(1)_DEPENDENCIES = host-lzop
-$(1)_LICENSE = GPLv2 with exceptions
+$(1)_LICENSE = GPL-2.0 with exceptions
 $(1)_LICENSE_FILES = COPYING
 
 $(1)_CUSTOM_EMBEDDED_ENV_PATH = $$(call qstrip,$$(BR2_TARGET_$(1)_CUSTOM_EMBEDDED_ENV_PATH))

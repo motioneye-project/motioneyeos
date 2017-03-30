@@ -6,7 +6,7 @@
 
 MINICOM_VERSION = 2.7
 MINICOM_SITE = https://alioth.debian.org/frs/download.php/file/3977
-MINICOM_LICENSE = GPLv2+
+MINICOM_LICENSE = GPL-2.0+
 MINICOM_LICENSE_FILES = COPYING
 
 # pkg-config is only used to check for liblockdev, which we don't have

@@ -9,7 +9,7 @@ OPENIPMI_SITE = http://sourceforge.net/projects/openipmi/files/OpenIPMI%202.0%20
 OPENIPMI_SOURCE = OpenIPMI-$(OPENIPMI_VERSION).tar.gz
 OPENIPMI_PATCH = \
 	http://sourceforge.net/p/openipmi/patches/26/attachment/0001-ui-use-standard-uint32_t.patch
-OPENIPMI_LICENSE = LGPLv2+, GPLv2+, BSD-3c
+OPENIPMI_LICENSE = LGPLv2+, GPL-2.0+, BSD-3c
 OPENIPMI_LICENSE_FILES = COPYING.LIB COPYING COPYING.BSD
 OPENIPMI_DEPENDENCIES = popt ncurses host-pkgconf
 # Patching Makefile.am

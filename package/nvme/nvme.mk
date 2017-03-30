@@ -6,7 +6,7 @@
 
 NVME_VERSION = v0.3
 NVME_SITE = $(call github,linux-nvme,nvme-cli,$(NVME_VERSION))
-NVME_LICENSE = GPLv2+
+NVME_LICENSE = GPL-2.0+
 NVME_LICENSE_FILES = LICENSE
 
 # Yes LIBUDEV=0 means udev support enabled, LIBUDEV=1 means udev

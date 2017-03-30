@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HOST_MKPIMAGE_LICENSE = GPLv2
+HOST_MKPIMAGE_LICENSE = GPL-2.0
 
 # source included in the package
 # came from barebox's repository:

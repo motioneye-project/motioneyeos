@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MAKEDEVS_LICENSE = GPLv2
+MAKEDEVS_LICENSE = GPL-2.0
 
 HOST_MAKEDEVS_CFLAGS = $(HOST_CFLAGS)
 HOST_MAKEDEVS_LDFLAGS = $(HOST_LDFLAGS)

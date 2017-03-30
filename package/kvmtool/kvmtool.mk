@@ -15,7 +15,7 @@ KVMTOOL_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_LIBVNCSERVER),libvncserver) \
 	$(if $(BR2_PACKAGE_SDL),sdl) \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
-KVMTOOL_LICENSE = GPLv2
+KVMTOOL_LICENSE = GPL-2.0
 KVMTOOL_LICENSE_FILES = COPYING
 
 # This is required to convert a static binary (init helper) back into

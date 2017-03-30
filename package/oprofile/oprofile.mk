@@ -6,7 +6,7 @@
 
 OPROFILE_VERSION = 1.1.0
 OPROFILE_SITE = http://downloads.sourceforge.net/project/oprofile/oprofile/oprofile-$(OPROFILE_VERSION)
-OPROFILE_LICENSE = GPLv2+
+OPROFILE_LICENSE = GPL-2.0+
 OPROFILE_LICENSE_FILES = COPYING
 OPROFILE_CONF_OPTS = \
 	--disable-account-check \

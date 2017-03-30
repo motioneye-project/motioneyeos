@@ -14,7 +14,7 @@ LIBATOMIC_OPS_AUTORECONF = YES
 # covered by an MIT-style license. A few library routines are covered
 # by the GNU General Public License. These are put into a separate
 # library, libatomic_ops_gpl.a."
-LIBATOMIC_OPS_LICENSE = MIT (main library) / GPLv2+ (gpl extension)
+LIBATOMIC_OPS_LICENSE = MIT (main library) / GPL-2.0+ (gpl extension)
 LIBATOMIC_OPS_LICENSE_FILES = doc/LICENSING.txt COPYING
 
 LIBATOMIC_OPS_INSTALL_STAGING = YES

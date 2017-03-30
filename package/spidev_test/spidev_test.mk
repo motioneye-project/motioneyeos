@@ -14,7 +14,7 @@ SPIDEV_TEST_VERSION = v3.0
 endif
 SPIDEV_TEST_SITE = http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/plain/Documentation/spi
 SPIDEV_TEST_SOURCE = spidev_test.c?id=$(SPIDEV_TEST_VERSION)
-SPIDEV_TEST_LICENSE = GPLv2
+SPIDEV_TEST_LICENSE = GPL-2.0
 
 # musl libc requires linux/ioctl.h for _IOC_SIZEBITS. Do a sed patch to keep
 # compatibility with different spidev_test.c versions that we support.

@@ -7,7 +7,7 @@
 CLOOP_VERSION = 2.634-1
 CLOOP_SOURCE = cloop_$(CLOOP_VERSION).tar.gz
 CLOOP_SITE = http://debian-knoppix.alioth.debian.org/packages/sources/cloop
-CLOOP_LICENSE = GPLv2 (module), GPLv2+ (advancecomp)
+CLOOP_LICENSE = GPL-2.0 (module), GPL-2.0+ (advancecomp)
 CLOOP_LICENSE_FILES = README advancecomp-1.15/COPYING
 
 HOST_CLOOP_DEPENDENCIES = host-zlib

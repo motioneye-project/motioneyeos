@@ -6,7 +6,7 @@
 
 SYNERGY_VERSION = v1.8.5-stable
 SYNERGY_SITE = $(call github,symless,synergy,$(SYNERGY_VERSION))
-SYNERGY_LICENSE = GPLv2
+SYNERGY_LICENSE = GPL-2.0
 SYNERGY_LICENSE_FILES = LICENSE
 SYNERGY_DEPENDENCIES = libcurl openssl xlib_libX11 xlib_libXtst
 

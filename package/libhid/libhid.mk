@@ -9,7 +9,7 @@ LIBHID_SITE = http://sources.buildroot.net
 LIBHID_DEPENDENCIES = libusb-compat libusb
 LIBHID_INSTALL_STAGING = YES
 LIBHID_AUTORECONF = YES
-LIBHID_LICENSE = GPLv2
+LIBHID_LICENSE = GPL-2.0
 LIBHID_LICENSE_FILES = COPYING
 # configure runs libusb-config for cflags/ldflags. Ensure it picks up
 # the target version

@@ -8,7 +8,7 @@ LIBAO_VERSION = 1.2.0
 LIBAO_SITE = http://downloads.xiph.org/releases/ao
 LIBAO_DEPENDENCIES = host-pkgconf
 LIBAO_INSTALL_STAGING = YES
-LIBAO_LICENSE = GPLv2+
+LIBAO_LICENSE = GPL-2.0+
 LIBAO_LICENSE_FILES = COPYING
 LIBAO_CONF_OPTS = \
 	--disable-esd \

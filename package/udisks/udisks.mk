@@ -6,7 +6,7 @@
 
 UDISKS_VERSION = 1.0.5
 UDISKS_SITE = http://hal.freedesktop.org/releases
-UDISKS_LICENSE = GPLv2+
+UDISKS_LICENSE = GPL-2.0+
 UDISKS_LICENSE_FILES = COPYING
 # For 0002-Fix-systemd-service-file.patch
 UDISKS_AUTORECONF = YES

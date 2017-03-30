@@ -10,7 +10,7 @@ OPENOBEX_SITE = http://downloads.sourceforge.net/project/openobex/openobex/$(OPE
 OPENOBEX_SOURCE = openobex-$(OPENOBEX_VERSION)-Source.zip
 # Libraries seems to be released under LGPLv2.1+,
 # while other material is under GPLv2+.
-OPENOBEX_LICENSE = GPLv2+/LGPLv2.1+
+OPENOBEX_LICENSE = GPL-2.0+/LGPLv2.1+
 OPENOBEX_LICENSE_FILES = COPYING COPYING.LIB
 
 OPENOBEX_DEPENDENCIES = host-pkgconf

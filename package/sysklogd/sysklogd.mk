@@ -6,7 +6,7 @@
 
 SYSKLOGD_VERSION = 1.5.1
 SYSKLOGD_SITE = http://www.infodrom.org/projects/sysklogd/download
-SYSKLOGD_LICENSE = GPLv2+
+SYSKLOGD_LICENSE = GPL-2.0+
 SYSKLOGD_LICENSE_FILES = COPYING
 
 # Override BusyBox implementations if BusyBox is enabled.

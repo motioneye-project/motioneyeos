@@ -6,7 +6,7 @@
 
 LTRIS_SITE = http://downloads.sourceforge.net/lgames/ltris
 LTRIS_VERSION = 1.0.19
-LTRIS_LICENSE = GPLv2+
+LTRIS_LICENSE = GPL-2.0+
 LTRIS_LICENSE_FILES = COPYING
 
 LTRIS_DEPENDENCIES = sdl

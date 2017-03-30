@@ -18,7 +18,7 @@ CLASSPATH_CONF_OPTS = \
 # don't support qt4 on X11
 CLASSPATH_CONF_OPTS += --disable-qt-peer
 CLASSPATH_DEPENDENCIES = host-pkgconf
-CLASSPATH_LICENSE = GPLv2+ with exception
+CLASSPATH_LICENSE = GPL-2.0+ with exception
 CLASSPATH_LICENSE_FILES = COPYING
 
 # Needs ALSA pcm and sequencer (midi) support
