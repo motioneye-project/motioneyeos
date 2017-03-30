@@ -22,7 +22,7 @@ system is based on hand-written Makefiles or shell scripts.
 07: LIBFOO_VERSION = 1.0
 08: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
 09: LIBFOO_SITE = http://www.foosoftware.org/download
-10: LIBFOO_LICENSE = GPLv3+
+10: LIBFOO_LICENSE = GPL-3.0+
 11: LIBFOO_LICENSE_FILES = COPYING
 12: LIBFOO_INSTALL_STAGING = YES
 13: LIBFOO_CONFIG_SCRIPTS = libfoo-config
@@ -396,8 +396,8 @@ information is (assuming the package name is +libfoo+) :
 * +LIBFOO_LICENSE+ defines the license (or licenses) under which the package
   is released.
   This name will appear in the manifest file produced by +make legal-info+.
-  If the license appears in xref:legal-info-list-licenses[the following list],
-  use the same string to make the manifest file uniform.
+  If the license appears in https://spdx.org/licenses/[the SPDX License List],
+  use the SPDX short identifier to make the manifest file uniform.
   Otherwise, describe the license in a precise and concise way, avoiding
   ambiguous names such as +BSD+ which actually name a family of licenses.
   This variable is optional. If it is not defined, +unknown+ will appear in
@@ -405,12 +405,12 @@ information is (assuming the package name is +libfoo+) :
   The expected format for this variable must comply with the following rules:
   ** If different parts of the package are released under different
   licenses, then +comma+ separate licenses (e.g. +`LIBFOO_LICENSE =
-  GPLv2+, LGPLv2.1+`+). If there is clear distinction between which
+  GPL-2.0+, LGPL-2.1+`+). If there is clear distinction between which
   component is licensed under what license, then annotate the license
   with that component, between parenthesis (e.g. +`LIBFOO_LICENSE =
-  GPLv2+ (programs), LGPLv2.1+ (libraries)`+).
+  GPL-2.0+ (programs), LGPL-2.1+ (libraries)`+).
   ** If the package is dual licensed, then separate licenses with the
-  +or+ keyword (e.g. +`LIBFOO_LICENSE = AFLv2.1 or GPLv2+`+).
+  +or+ keyword (e.g. +`LIBFOO_LICENSE = AFL-2.1 or GPL-2.0+`+).
 
 * +LIBFOO_LICENSE_FILES+ is a space-separated list of files in the package
   tarball that contain the license(s) under which the package is released.

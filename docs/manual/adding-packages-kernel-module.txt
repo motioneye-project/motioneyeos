@@ -24,7 +24,7 @@ builds a kernel module, and no other component:
 07: FOO_VERSION = 1.2.3
 08: FOO_SOURCE = foo-$(FOO_VERSION).tar.xz
 09: FOO_SITE = http://www.foosoftware.org/download
-10: FOO_LICENSE = GPLv2
+10: FOO_LICENSE = GPL-2.0
 11: FOO_LICENSE_FILES = COPYING
 12: 
 13: $(eval $(kernel-module))
@@ -63,7 +63,7 @@ Let's look at a more complex example:
 07: FOO_VERSION = 1.2.3
 08: FOO_SOURCE = foo-$(FOO_VERSION).tar.xz
 09: FOO_SITE = http://www.foosoftware.org/download
-10: FOO_LICENSE = GPLv2
+10: FOO_LICENSE = GPL-2.0
 11: FOO_LICENSE_FILES = COPYING
 12: 
 13: FOO_MODULE_SUBDIRS = driver/base
