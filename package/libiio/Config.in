@@ -81,9 +81,6 @@ comment "IIO Daemon is not yet available on Blackfin"
 
 config BR2_PACKAGE_LIBIIO_TESTS
 	bool "Install test programs"
-	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
-	select BR2_PACKAGE_LIBIIO_XML_BACKEND
-	select BR2_PACKAGE_LIBIIO_NETWORK_BACKEND
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Install the test programs (iio_info, iio_genxml, iio_readdev).
