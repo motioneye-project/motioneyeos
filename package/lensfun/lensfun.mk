@@ -34,6 +34,12 @@ else
 LENSFUN_CONF_OPTS += -DBUILD_LENSTOOL=OFF
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+LENSFUN_CONF_OPTS += -DBUILD_STATIC=ON
+else
+LENSFUN_CONF_OPTS += -DBUILD_STATIC=OFF
+endif
+
 # Don't install helper scripts (which require python3 and gksudo).
 # Don't run setup.py on the host.
 LENSFUN_CONF_OPTS += -DINSTALL_HELPER_SCRIPTS=OFF -DPYTHON=OFF
