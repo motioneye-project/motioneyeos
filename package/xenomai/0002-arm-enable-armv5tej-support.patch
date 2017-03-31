@@ -1,0 +1,32 @@
+From fcd06f42fef4d52bb0d9772fa71015988c828b1b Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Fri, 31 Mar 2017 21:10:23 +0200
+Subject: [PATCH] arm: enable armv5tej support
+
+armv5tej are not detected in lib/cobalt/arch/arm/include/asm/xenomai/features.h
+
+Apply the same patch from xenomai-2.6:
+https://git.xenomai.org/xenomai-2.6.git/commit/?id=ebc2779baa222db4a5936c3d3022803355585b8c
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ lib/cobalt/arch/arm/include/asm/xenomai/features.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/lib/cobalt/arch/arm/include/asm/xenomai/features.h b/lib/cobalt/arch/arm/include/asm/xenomai/features.h
+index 10bd0c7..e84b809 100644
+--- a/lib/cobalt/arch/arm/include/asm/xenomai/features.h
++++ b/lib/cobalt/arch/arm/include/asm/xenomai/features.h
+@@ -34,7 +34,8 @@
+ #endif /* armv4 */
+ 
+ #if defined(__ARM_ARCH_5__) || defined(__ARM_ARCH_5T__) \
+-	|| defined(__ARM_ARCH_5E__) || defined(__ARM_ARCH_5TE__)
++	|| defined(__ARM_ARCH_5E__) || defined(__ARM_ARCH_5TE__) \
++	|| defined(__ARM_ARCH_5TEJ__)
+ #define __LINUX_ARM_ARCH__ 5
+ #endif /* armv5 */
+ 
+-- 
+2.9.3
+
