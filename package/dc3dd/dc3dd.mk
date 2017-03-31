@@ -11,6 +11,6 @@ DC3DD_SITE = https://downloads.sourceforge.net/project/dc3dd/dc3dd/$(DC3DD_VERSI
 DC3DD_LICENSE = GPLv3+
 DC3DD_LICENSE_FILES = COPYING
 # We are patching the Makefile.am
-DC3DD_AUTORECONF = yes
+DC3DD_AUTORECONF = YES
 
 $(eval $(autotools-package))
