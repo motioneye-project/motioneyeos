@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XORRISO_VERSION = 1.4.2
+XORRISO_VERSION = 1.4.6
 XORRISO_SITE = $(BR2_GNU_MIRROR)/xorriso
 XORRISO_LICENSE = GPLv3+
 XORRISO_LICENSE_FILES = COPYING COPYRIGHT
