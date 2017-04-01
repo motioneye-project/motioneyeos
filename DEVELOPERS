@@ -520,8 +520,10 @@ F:	package/gssdp/
 F:	package/gupnp/
 F:	package/gupnp-dlna/
 F:	package/gupnp-tools/
+F:	package/hiredis/
 F:	package/igd2-for-linux/
 F:	package/minissdpd/
+F:	package/motion/
 F:	package/tinycbor/
 F:	package/tinydtls/
 
