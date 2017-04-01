@@ -1,2 +1,2 @@
-# From https://www.mesa3d.org/relnotes/17.0.2.html
-sha256 f8f191f909e01e65de38d5bdea5fb057f21649a3aed20948be02348e77a689d4  mesa-17.0.2.tar.xz
+# From https://lists.freedesktop.org/archives/mesa-announce/2017-April/000315.html
+sha512 0bcf1609b54fdabb30ec0a500b78e039bd50060c2c7f5a2e57fca29e1a311fb785dadc3cd311018ebe8020d1cc6320181ece2d2aa39d2f215b0ebf2cb0a55165  mesa-17.0.3.tar.xz
