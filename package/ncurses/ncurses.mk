@@ -27,8 +27,7 @@ NCURSES_CONF_OPTS = \
 	--enable-pc-files \
 	--with-pkg-config-libdir="/usr/lib/pkgconfig" \
 	$(if $(BR2_PACKAGE_NCURSES_TARGET_PROGS),,--without-progs) \
-	--without-manpages \
-
+	--without-manpages
 
 # Install after busybox for the full-blown versions
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
@@ -64,7 +63,7 @@ NCURSES_TERMINFO_FILES = \
 	v/vt220 \
 	x/xterm \
 	x/xterm-color \
-	x/xterm-xfree86 \
+	x/xterm-xfree86
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 NCURSES_CONF_OPTS += --enable-widec
