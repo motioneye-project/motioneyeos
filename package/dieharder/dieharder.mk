@@ -15,12 +15,16 @@ DIEHARDER_DEPENDENCIES = gsl
 # The original configure does not use variables provided in the
 # environment so _CONF_ENV does not work. (_CONF_OPTS does).
 #
-# In addition, the m4/*.m4 files are symlinks to /usr/share, which
-# clearly doesn't work, so doing an autoreconf replaces them.
-#
 # Finally, we patch configure.ac and some Makefile.am so we need to
 # autoreconf anyway
 DIEHARDER_AUTORECONF = YES
+
+# The m4/*.m4 files are symlinks to /usr/share, which clearly doesn't
+# work, and doing an autoreconf does not replace them.
+define DIEHARDER_M4_CLEAN
+	rm -f $(@D)/m4/*.m4
+endef
+DIEHARDER_POST_PATCH_HOOKS += DIEHARDER_M4_CLEAN
 
 # fix endianness detection
 ifeq ($(BR2_ENDIAN),"BIG")
