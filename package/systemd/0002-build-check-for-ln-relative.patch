@@ -1,0 +1,96 @@
+From c78fa2b40cb8b810d06ef225e30f12a7ed44ffa2 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 1 Apr 2017 11:26:29 +0200
+Subject: [PATCH] build: check for ln --relative
+
+ln --relative is recent enough that not all distributions support it.
+This is especially the case for enterprise-grade distributions than can
+have a life-span of more than a decade.
+
+Detect if ln supports --relative and use it if so.
+
+If not supported, use a bit of sed magic to construct the ../ sequence,
+that leads back to / when appended to the destination directory.
+
+We introduce this as a macro that expands to a single command. To avoid
+complexity in the macro, we expect paths to be passed whitout the
+leading DESTDIR.
+
+---
+Upstream status: submitted, disputed:
+    https://github.com/systemd/systemd/pull/5682
+
+---
+ Makefile.am  | 25 ++++++++++++++++++++++---
+ configure.ac |  5 ++++-
+ 2 files changed, 26 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 1cc657a..ec503f2 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -300,6 +300,24 @@ install-busnames-target-wants-hook:
+ 	what="$(BUSNAMES_TARGET_WANTS)" && wants=busnames.target && dir=$(systemunitdir) && $(add-wants)
+ 	what="$(USER_BUSNAMES_TARGET_WANTS)" && wants=busnames.target && dir=$(userunitdir) && $(add-wants)
+ 
++# Macro to emulate ln --relative when needed
++# $(1): options for ln, except --relative
++# $(2): source file, absolute path without leading DESTDIR
++# $(3): destination file, absolute path without leading DESTDIR
++if HAVE_LN_RELATIVE
++define ln-s-relative
++	$(LN_S) --relative $(1) \
++		$(DESTDIR)$(strip $(2)) \
++		$(DESTDIR)$(strip $(3))
++endef
++else
++define ln-s-relative
++	$(LN_S) $(1) \
++		`dirname $(strip $(3)) |sed -r -e 's:/+[^/]+:../:g; s:/$$::'`$(strip $(2)) \
++		$(DESTDIR)$(strip $(3))
++endef
++endif
++
+ define add-wants
+ 	[ -z "$$what" ] || ( \
+ 	  dir=$(DESTDIR)$$dir/$$wants.wants && \
+@@ -313,8 +331,9 @@ install-directories-hook:
+ 	$(MKDIR_P) $(addprefix $(DESTDIR),$(INSTALL_DIRS))
+ 
+ install-environment-conf-hook: install-directories-hook
+-	$(AM_V_LN)$(LN_S) --relative -f $(DESTDIR)$(sysconfdir)/environment \
+-		$(DESTDIR)$(environmentdir)/99-environment.conf
++	$(AM_V_LN)$(call ln-s-relative,-f,\
++			$(sysconfdir)/environment,\
++			$(environmentdir)/99-environment.conf)
+ 
+ install-aliases-hook:
+ 	set -- $(SYSTEM_UNIT_ALIASES) && \
+@@ -337,7 +356,7 @@ define install-relative-aliases
+ 	while [ -n "$$1" ]; do \
+ 		$(MKDIR_P) `dirname $(DESTDIR)$$dir/$$2` && \
+ 		rm -f $(DESTDIR)$$dir/$$2 && \
+-		$(LN_S) --relative $(DESTDIR)$$1 $(DESTDIR)$$dir/$$2 && \
++		$(call ln-s-relative,,$$1,$$dir/$$2) && \
+ 		shift 2 || exit $$?; \
+ 	done
+ endef
+diff --git a/configure.ac b/configure.ac
+index cf37ca6..d586fc4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -108,7 +108,10 @@ AC_PATH_PROG([SULOGIN], [sulogin], [/usr/sbin/sulogin], [$PATH:/usr/sbin:/sbin])
+ AC_PATH_PROG([MOUNT_PATH], [mount], [/usr/bin/mount], [$PATH:/usr/sbin:/sbin])
+ AC_PATH_PROG([UMOUNT_PATH], [umount], [/usr/bin/umount], [$PATH:/usr/sbin:/sbin])
+ 
+-AS_IF([! ln --relative --help > /dev/null 2>&1], [AC_MSG_ERROR([*** ln doesn't support --relative ***])])
++AC_MSG_CHECKING([if ln supports --relative])
++AS_IF([! ${LN_S} --relative --help > /dev/null 2>&1], [ln_relative=no], [ln_relative=yes])
++AC_MSG_RESULT([$ln_relative])
++AM_CONDITIONAL([HAVE_LN_RELATIVE], [test "x$ln_relative" = "xyes"])
+ 
+ M4_DEFINES=
+ 
+-- 
+2.9.3
+
