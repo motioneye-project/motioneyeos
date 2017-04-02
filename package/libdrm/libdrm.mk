@@ -8,6 +8,8 @@ LIBDRM_VERSION = 2.4.76
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
 LIBDRM_SITE = http://dri.freedesktop.org/libdrm
 LIBDRM_LICENSE = MIT
+# 0003-tests-etnaviv-link-against-libdrm.patch
+LIBDRM_AUTORECONF = YES
 
 LIBDRM_INSTALL_STAGING = YES
 

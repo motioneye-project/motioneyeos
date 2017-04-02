@@ -1,0 +1,31 @@
+From b1e904cd1d5989a13c0a184525e8153bac22e1d7 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 2 Apr 2017 12:17:41 +0200
+Subject: [PATCH] tests/etnaviv: link against libdrm
+
+Fixes link errors detected by buildroot autobuilders:
+
+http://autobuild.buildroot.net/results/68a/68af62f4ab6944d326468818562c05fd5cc55b03/build-end.log
+
+Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=100530
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ tests/etnaviv/Makefile.am | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tests/etnaviv/Makefile.am b/tests/etnaviv/Makefile.am
+index 06318643..226baee2 100644
+--- a/tests/etnaviv/Makefile.am
++++ b/tests/etnaviv/Makefile.am
+@@ -28,6 +28,7 @@ etnaviv_2d_test_SOURCES = \
+ 	write_bmp.h
+ 
+ etnaviv_cmd_stream_test_LDADD = \
++	$(top_builddir)/libdrm.la \
+ 	$(top_builddir)/etnaviv/libdrm_etnaviv.la
+ 
+ etnaviv_cmd_stream_test_SOURCES = \
+-- 
+2.11.0
+
