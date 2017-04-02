@@ -11,7 +11,7 @@ PHP_AMQP_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-amqp=$(STAGING_DIR)/usr
 # phpize does the autoconf magic
 PHP_AMQP_DEPENDENCIES = rabbitmq-c php host-autoconf
-PHP_AMQP_LICENSE = PHP
+PHP_AMQP_LICENSE = PHP-3.01
 PHP_AMQP_LICENSE_FILES = LICENSE
 
 define PHP_AMQP_PHPIZE
