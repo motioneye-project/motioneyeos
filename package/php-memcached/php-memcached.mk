@@ -12,8 +12,8 @@ PHP_MEMCACHED_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-zlib-dir=$(STAGING_DIR)/usr
 # phpize does the autoconf magic
 PHP_MEMCACHED_DEPENDENCIES = libmemcached php zlib host-autoconf host-pkgconf
-PHP_MEMCACHED_LICENSE = MIT
-PHP_MEMCACHED_LICENSE_FILES = LICENSE
+PHP_MEMCACHED_LICENSE = PHP-3.01, MIT (fastlz), ISC-like (g_fmt.c, g_fmt.h)
+PHP_MEMCACHED_LICENSE_FILES = LICENSE fastlz/LICENSE g_fmt.h
 
 define PHP_MEMCACHED_PHPIZE
 	(cd $(@D); \
