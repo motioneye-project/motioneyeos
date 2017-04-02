@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYNERGY_VERSION = v1.8.5-stable
+SYNERGY_VERSION = v1.8.8-stable
 SYNERGY_SITE = $(call github,symless,synergy,$(SYNERGY_VERSION))
 SYNERGY_LICENSE = GPL-2.0
 SYNERGY_LICENSE_FILES = LICENSE
