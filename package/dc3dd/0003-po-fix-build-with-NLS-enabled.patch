@@ -1,0 +1,25 @@
+From 67d8ff286ebd0ea4c8ef5a02a819bbb6b6273ccd Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 2 Apr 2017 10:58:42 +0200
+Subject: [PATCH] po: fix build with NLS enabled
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ po/Makefile.in.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/po/Makefile.in.in b/po/Makefile.in.in
+index 6a39807..2793c7e 100755
+--- a/po/Makefile.in.in
++++ b/po/Makefile.in.in
+@@ -34,6 +34,7 @@ gettextsrcdir = $(datadir)/gettext/po
+ INSTALL = @INSTALL@
+ INSTALL_DATA = @INSTALL_DATA@
+ mkinstalldirs = $(SHELL) @install_sh@ -d
++MKDIR_P = @MKDIR_P@
+ mkdir_p = @mkdir_p@
+ 
+ GMSGFMT_ = @GMSGFMT@
+-- 
+2.9.3
+
