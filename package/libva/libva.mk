@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-LIBVA_VERSION = 1.7.3
-LIBVA_SITE = $(call github,01org,libva,libva-$(LIBVA_VERSION))
+LIBVA_VERSION = 1.8.0
+LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
+LIBVA_SITE = https://github.com/01org/libva/releases/download/$(LIBVA_VERSION)
 LIBVA_LICENSE = MIT
 LIBVA_LICENSE_FILES = COPYING
-LIBVA_AUTORECONF = YES
 LIBVA_INSTALL_STAGING = YES
 LIBVA_DEPENDENCIES = host-pkgconf libdrm
 
@@ -45,11 +45,5 @@ LIBVA_CONF_OPTS += --enable-egl
 else
 LIBVA_CONF_OPTS += --disable-egl
 endif
-
-# Autoreconf requires an m4 directory to exist
-define LIBVA_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-LIBVA_POST_PATCH_HOOKS += LIBVA_PATCH_M4
 
 $(eval $(autotools-package))

@@ -1,2 +1,4 @@
+# From https://lists.01.org/pipermail/intel-vaapi-media/2017-March/000015.html
+sha1 d9468956c301784b6b12c39cafd30ac52e24290b libva-1.8.0.tar.bz2
 # Locally computed
-sha256 f0f816a725007fbf3c7ed816ff71ba420696bec63ff49045e9b23d9b34ac73c8  libva-1.7.3.tar.gz
+sha256 eb92f3dcbe3981df3575348377263b31361113c77b2c3745f23174d1f562d658  libva-1.8.0.tar.bz2
