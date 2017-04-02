@@ -15,7 +15,8 @@ LIBDRM_INSTALL_STAGING = YES
 
 LIBDRM_DEPENDENCIES = \
 	libpthread-stubs \
-	host-pkgconf
+	host-pkgconf \
+	host-xutil_util-macros
 
 LIBDRM_CONF_OPTS = \
 	--disable-cairo-tests \
