@@ -10,7 +10,7 @@ PHP_SSH2_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-ssh2=$(STAGING_DIR)/usr
 # phpize does the autoconf magic
 PHP_SSH2_DEPENDENCIES = libssh2 php host-autoconf
-PHP_SSH2_LICENSE = PHP
+PHP_SSH2_LICENSE = PHP-3.01
 PHP_SSH2_LICENSE_FILES = LICENSE
 
 define PHP_SSH2_PHPIZE
