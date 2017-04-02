@@ -757,6 +757,8 @@ legal-info: dirs legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p
 show-targets:
 	@echo $(PACKAGES) $(TARGETS_ROOTFS)
 
+show-build-order: $(patsubst %,%-show-build-order,$(PACKAGES))
+
 graph-build: $(O)/build/build-time.log
 	@install -d $(GRAPHS_DIR)
 	$(foreach o,name build duration,./support/scripts/graph-build-time \
