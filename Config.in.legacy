@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_BINUTILS_VERSION_2_25_X
+	bool "binutils version 2.25 support removed"
+	select BR2_LEGACY
+	help
+	  Support for binutils version 2.25 has been removed. The
+	  current default version (2.27 or later) has been selected
+	  instead.
+
 config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
 	bool "uclibc RPC support has been removed"
 	select BR2_LEGACY
