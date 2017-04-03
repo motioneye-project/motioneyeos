@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
+	bool "uclibc RPC support has been removed"
+	select BR2_LEGACY
+	help
+	  uClibc-ng removed internal RPC implementation in 1.0.23. You
+	  should use libtirpc instead.
+
 config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS
 	int "extra size in blocks has been removed"
 	default 0

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UCLIBC_VERSION = 1.0.22
+UCLIBC_VERSION = 1.0.23
 UCLIBC_SOURCE = uClibc-ng-$(UCLIBC_VERSION).tar.xz
 UCLIBC_SITE = http://downloads.uclibc-ng.org/releases/$(UCLIBC_VERSION)
 UCLIBC_LICENSE = LGPL-2.1+
@@ -268,24 +268,6 @@ endif
 UCLIBC_IPV6_CONFIG = $(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_IPV6,$(@D)/.config)
 
 #
-# RPC
-#
-
-ifeq ($(BR2_TOOLCHAIN_BUILDROOT_INET_RPC),y)
-define UCLIBC_RPC_CONFIG
-	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_RPC,$(@D)/.config)
-	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_FULL_RPC,$(@D)/.config)
-	$(call KCONFIG_ENABLE_OPT,UCLIBC_HAS_REENTRANT_RPC,$(@D)/.config)
-endef
-else
-define UCLIBC_RPC_CONFIG
-	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_RPC,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_FULL_RPC,$(@D)/.config)
-	$(call KCONFIG_DISABLE_OPT,UCLIBC_HAS_REENTRANT_RPC,$(@D)/.config)
-endef
-endif
-
-#
 # soft-float
 #
 
@@ -427,7 +409,6 @@ define UCLIBC_KCONFIG_FIXUP_CMDS
 	$(UCLIBC_ENDIAN_CONFIG)
 	$(UCLIBC_LARGEFILE_CONFIG)
 	$(UCLIBC_IPV6_CONFIG)
-	$(UCLIBC_RPC_CONFIG)
 	$(UCLIBC_FLOAT_CONFIG)
 	$(UCLIBC_SSP_CONFIG)
 	$(UCLIBC_THREAD_CONFIG)

@@ -22,13 +22,6 @@ config BR2_UCLIBC_CONFIG_FRAGMENT_FILES
 	  A space-separated list of configuration fragment files,
 	  that will be merged to the main uClibc configuration file.
 
-config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
-	bool "Enable RPC support"
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	help
-	  Enable this option if you want your toolchain to support
-	  RPC (needed for NFS, for example).
-
 config BR2_TOOLCHAIN_BUILDROOT_WCHAR
 	bool "Enable WCHAR support"
 	select BR2_USE_WCHAR
