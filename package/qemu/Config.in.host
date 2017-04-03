@@ -17,34 +17,6 @@ config BR2_PACKAGE_HOST_QEMU
 
 if BR2_PACKAGE_HOST_QEMU
 
-config BR2_PACKAGE_HOST_QEMU_STATIC
-	bool "Build statically"
-	help
-	  Build qemu as a statically linked executable. Use this
-	  option if you want to 'chroot' in your target directory. The
-	  following steps detail how to achieve this with an ARM
-	  target:
-
-	    1. Copy the qemu binary in your target directory:
-
-	       cp host/usr/bin/qemu-arm target/usr/bin
-
-	    2. Make sure binfmt_misc is mounted on /proc/sys/fs/binfmt_misc:
-
-	       mount -t binfmt_misc none /proc/sys/fs/binfmt_misc
-
-	    3. Register /usr/bin/qemu-arm is interpreter for arm
-	       binaries. See linux/Documentation/binfmt_misc.txt for
-	       more information:
-
-	       MAGIC='\x7f\x45\x4c\x46\x01\x01\x01\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02\x00\x28\x00'
-	       MASK='\xff\xff\xff\xff\xff\xff\xff\x00\xff\xff\xff\xff\xff\xff\xff\xff\xfe\xff\xff\xff'
-	       echo ":qemu-arm:M:0:$MAGIC:$MASK:/usr/bin/qemu-arm:OC" > /proc/sys/fs/binfmt_misc/register
-
-	    4. Chroot into your target:
-
-	       chroot target /bin/sh
-
 comment "Emulators selection"
 
 config BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE

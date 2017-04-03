@@ -120,10 +120,6 @@ HOST_QEMU_OPTS += --enable-vde
 HOST_QEMU_DEPENDENCIES += host-vde2
 endif
 
-ifeq ($(BR2_PACKAGE_HOST_QEMU_STATIC),y)
-HOST_QEMU_OPTS += --static
-endif
-
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define HOST_QEMU_CONFIGURE_CMDS
