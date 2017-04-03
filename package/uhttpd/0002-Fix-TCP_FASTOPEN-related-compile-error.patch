@@ -1,0 +1,30 @@
+From adbab70d3602d77736781be344cfdc5508cb0600 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 3 Apr 2017 19:22:30 +0200
+Subject: [PATCH] Fix TCP_FASTOPEN related compile error.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ listen.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/listen.c b/listen.c
+index 2a54888..4dabe34 100644
+--- a/listen.c
++++ b/listen.c
+@@ -96,6 +96,12 @@ static void listener_cb(struct uloop_fd *fd, unsigned int events)
+ 		uh_block_listener(l);
+ }
+ 
++#ifdef linux
++#ifndef TCP_FASTOPEN
++#define TCP_FASTOPEN 23
++#endif
++#endif
++
+ void uh_setup_listeners(void)
+ {
+ 	struct listener *l;
+-- 
+2.11.0
+
