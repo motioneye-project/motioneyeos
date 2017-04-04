@@ -16,7 +16,7 @@ LEAFNODE2_CONF_ENV = \
 
 # --enable-runas-user use 'news' as default but the configure stop
 # if news doesn't exist on the build host.
-# Use 'root' while cross-compiling 
+# Use 'root' while cross-compiling
 LEAFNODE2_CONF_OPTS = \
 	--sysconfdir=/etc/leafnode2 \
 	--enable-spooldir=/var/spool/news \

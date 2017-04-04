@@ -15,7 +15,7 @@ GOOGLE_BREAKPAD_LICENSE = BSD-3-Clause
 GOOGLE_BREAKPAD_LICENSE_FILES = LICENSE
 GOOGLE_BREAKPAD_DEPENDENCIES = host-google-breakpad linux-syscall-support
 
-HOST_GOOGLE_BREAKPAD_DEPENDENCIES = host-linux-syscall-support 
+HOST_GOOGLE_BREAKPAD_DEPENDENCIES = host-linux-syscall-support
 
 # Avoid using depot-tools to download this file.
 define HOST_GOOGLE_BREAKPAD_LSS
