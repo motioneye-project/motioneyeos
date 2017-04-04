@@ -1,0 +1,32 @@
+From 6e5a40566ee44694b186d4c2cbcf5f8690d8bba4 Mon Sep 17 00:00:00 2001
+From: Paul Cercueil <paul.cercueil@analog.com>
+Date: Tue, 4 Apr 2017 11:25:37 +0200
+Subject: [PATCH] CMake: Test tools require threads
+
+If libiio was compiled without any backend enabled the build of the
+tools would fail with undefined references to libpthread, at least on
+Buildroot (strangely not on my Debian PC).
+
+Signed-off-by: Paul Cercueil <paul.cercueil@analog.com>
+---
+ CMakeLists.txt | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 9c17273..cf92de3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -36,6 +36,10 @@ endif()
+ option(WITH_NETWORK_BACKEND "Enable the network backend" ON)
+ option(WITH_TESTS "Build the test programs" ON)
+ 
++if (WITH_TESTS)
++	set(NEED_THREADS 1)
++endif()
++
+ if (MSVC)
+ 	# Avoid annoying warnings from Visual Studio
+ 	add_definitions(-D_CRT_SECURE_NO_WARNINGS=1)
+-- 
+2.11.0
+
