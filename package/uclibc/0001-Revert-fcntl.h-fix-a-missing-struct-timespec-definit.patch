@@ -1,0 +1,34 @@
+From 6d7cc87cb64dc8df20b0d1c7b3e3566f9ec5a3dc Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 4 Apr 2017 21:26:41 +0200
+Subject: [PATCH] Revert "fcntl.h: fix a missing `struct timespec` definition"
+
+This reverts commit 657c4a9d6c2e649d86307f46ce9d5e44192f6e7a, it breaks
+many packages in Buildroot:
+
+  http://autobuild.buildroot.net/results/fcd024f6658890861fd7165e15edc65f77a9d8e7/
+  http://autobuild.buildroot.net/results/431135d9f985f3b3f935cc29fe16728b2412dd3a/
+  etc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ include/fcntl.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/include/fcntl.h b/include/fcntl.h
+index 5a73a98..adcd7ef 100644
+--- a/include/fcntl.h
++++ b/include/fcntl.h
+@@ -34,9 +34,6 @@ __BEGIN_DECLS
+ 
+ /* For XPG all symbols from <sys/stat.h> should also be available.  */
+ #ifdef __USE_XOPEN
+-# ifdef __USE_XOPEN2K8
+-#  define __need_timespec
+-# endif
+ # include <sys/stat.h>
+ #endif
+ 
+-- 
+2.7.4
+
