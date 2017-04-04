@@ -24,7 +24,6 @@ GST1_PLUGINS_GOOD_CONF_OPTS = \
 	--disable-esd \
 	--disable-esdtest
 
-
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_GOOD_CONF_OPTS += \
 	--disable-jack \

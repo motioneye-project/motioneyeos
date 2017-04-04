@@ -25,7 +25,6 @@ RRDTOOL_CONF_OPTS = \
 	--disable-ruby \
 	--disable-tcl
 
-
 ifeq ($(BR2_NEEDS_GETTEXT),y)
 RRDTOOL_DEPENDENCIES += gettext
 endif

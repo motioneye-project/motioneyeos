@@ -61,5 +61,4 @@ else
 X11VNC_CONF_OPTS += --without-zlib
 endif
 
-
 $(eval $(autotools-package))

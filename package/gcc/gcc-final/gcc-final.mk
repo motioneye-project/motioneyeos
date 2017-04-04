@@ -50,7 +50,6 @@ define  HOST_GCC_FINAL_CONFIGURE_CMDS
 	)
 endef
 
-
 # Languages supported by the cross-compiler
 GCC_FINAL_CROSS_LANGUAGES-y = c
 GCC_FINAL_CROSS_LANGUAGES-$(BR2_INSTALL_LIBSTDCPP) += c++

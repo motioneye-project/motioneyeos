@@ -94,7 +94,6 @@ define GLIBC_CONFIGURE_CMDS
 	$(GLIBC_ADD_MISSING_STUB_H)
 endef
 
-
 #
 # We also override the install to target commands since we only want
 # to install the libraries, and nothing more.

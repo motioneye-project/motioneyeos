@@ -125,7 +125,6 @@ ORACLE_MYSQL_CONF_OPTS += \
 	--without-server
 endif
 
-
 define ORACLE_MYSQL_REMOVE_TEST_PROGS
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench
 endef

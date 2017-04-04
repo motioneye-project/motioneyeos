@@ -22,7 +22,6 @@ NETWORK_MANAGER_CONF_ENV = \
 	ac_cv_file__etc_redhat_release=no \
 	ac_cv_file__etc_SuSE_release=no
 
-
 NETWORK_MANAGER_CONF_OPTS = \
 	--disable-tests \
 	--disable-qt \

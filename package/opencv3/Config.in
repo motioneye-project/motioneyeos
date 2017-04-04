@@ -130,7 +130,6 @@ comment "opengl support needs an OpenGL provider"
 
 endif # BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
 
-
 config BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
 	bool "imgcodecs"
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC

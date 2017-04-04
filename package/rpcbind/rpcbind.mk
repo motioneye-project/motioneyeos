@@ -36,5 +36,4 @@ define RPCBIND_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S30rpcbind
 endef
 
-
 $(eval $(autotools-package))

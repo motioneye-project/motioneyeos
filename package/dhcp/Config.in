@@ -26,7 +26,6 @@ config BR2_PACKAGE_DHCP_RELAY
 	help
 	  DHCP relay agent from the ISC DHCP distribution.
 
-
 config BR2_PACKAGE_DHCP_CLIENT
 	bool "dhcp client"
 	help

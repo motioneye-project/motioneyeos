@@ -62,5 +62,4 @@ define QT5LOCATION_INSTALL_TARGET_CMDS
 	$(QT5LOCATION_INSTALL_TARGET_QMLS)
 endef
 
-
 $(eval $(generic-package))

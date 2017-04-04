@@ -135,7 +135,6 @@ config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 		BR2_PACKAGE_EFL_PULSEAUDIO && \
 		BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
 
-
 comment "Warning: one of the recommended option for EFL is not enabled"
 	depends on !BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
 

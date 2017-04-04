@@ -79,7 +79,6 @@ else
 QT_CONFIGURE_OPTS += -no-glib
 endif
 
-
 ### Pixel depths
 QT_PIXEL_DEPTHS = # empty
 ifeq ($(BR2_PACKAGE_QT_PIXEL_DEPTH_1),y)
@@ -546,7 +545,6 @@ endef
 define QT_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
-
 
 # Build the list of libraries and plugins to install to the target
 

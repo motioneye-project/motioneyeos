@@ -34,7 +34,6 @@ DOCKER_ENGINE_GLDFLAGS_DOCKER += -extldflags '-static'
 endif
 endif
 
-
 DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
 DOCKER_ENGINE_BUILD_TARGETS = docker
 

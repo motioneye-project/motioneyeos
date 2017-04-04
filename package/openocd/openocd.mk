@@ -113,6 +113,5 @@ endef
 OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
 HOST_OPENOCD_POST_BUILD_HOOKS += OPENOCD_FIX_VERSION_TEXI
 
-
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
