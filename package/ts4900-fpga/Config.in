@@ -9,4 +9,3 @@ config BR2_PACKAGE_TS4900_FPGA
 	  script expects to find it in the /boot folder.
 
 	  http://wiki.embeddedarm.com/wiki/TS-4900#FPGA_Changelog
-

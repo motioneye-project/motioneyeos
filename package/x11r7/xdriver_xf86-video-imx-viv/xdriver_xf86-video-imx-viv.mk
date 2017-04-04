@@ -33,4 +33,3 @@ define XDRIVER_XF86_VIDEO_IMX_VIV_INSTALL_TARGET_CMDS
 endef
 
 $(eval $(generic-package))
-

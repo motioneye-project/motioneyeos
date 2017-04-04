@@ -13,4 +13,3 @@ config BR2_PACKAGE_IMX_LIB
 
 	  This library is provided by Freescale as-is and doesn't have
 	  an upstream.
-

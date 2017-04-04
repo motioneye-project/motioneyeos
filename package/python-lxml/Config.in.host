@@ -5,4 +5,3 @@ config BR2_PACKAGE_HOST_PYTHON_LXML
 	  libxml2 and libxslt.
 
 	  http://lxml.de/
-

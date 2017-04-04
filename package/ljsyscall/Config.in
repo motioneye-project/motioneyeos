@@ -9,4 +9,3 @@ config BR2_PACKAGE_LJSYSCALL
 
 comment "ljsyscall needs LuaJIT"
 	depends on !BR2_PACKAGE_LUAJIT
-

@@ -8,4 +8,3 @@ config BR2_PACKAGE_LIBCLI
 	  tree.
 
 	  http://sites.dparrish.com/libcli
-

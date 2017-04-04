@@ -4,4 +4,3 @@ config BR2_PACKAGE_PERL_NETADDR_IP
 	  Manages IPv4 and IPv6 addresses and subnets
 
 	  https://metacpan.org/release/NetAddr-IP
-

@@ -12,4 +12,3 @@ CBOOTIMAGE_AUTORECONF = YES
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-

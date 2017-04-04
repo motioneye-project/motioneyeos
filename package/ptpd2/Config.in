@@ -6,4 +6,3 @@ config BR2_PACKAGE_PTPD2
 	  (PTP) as defined by the IEEE-1588-2008.
 
 	  https://github.com/ptpd/ptpd
-
