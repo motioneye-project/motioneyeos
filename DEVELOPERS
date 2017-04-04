@@ -127,7 +127,7 @@ F:	package/luasec/
 F:	package/lua-ev/
 F:	package/orbit/
 
-N:	Bartosz Golaszewski <bgolaszewski@baylibre.com>
+N:	Bartosz Golaszewski <brgl@bgdev.pl>
 F:	package/autoconf-archive/
 F:	package/doxygen/
 F:	package/libgpiod/
