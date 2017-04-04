@@ -20,7 +20,7 @@ index c14f288..82df745 100644
  
  #include "vpx_config.h"
 -#if defined(__uClinux__)
--# include <lddk.h>
+-#include <lddk.h>
 -#endif
  
  #include <stdlib.h>
