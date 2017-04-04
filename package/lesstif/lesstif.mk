@@ -3,6 +3,7 @@
 # lesstif
 #
 ################################################################################
+
 LESSTIF_VERSION = 0.95.2
 LESSTIF_SOURCE = lesstif-$(LESSTIF_VERSION).tar.bz2
 LESSTIF_SITE = http://downloads.sourceforge.net/project/lesstif/lesstif/$(LESSTIF_VERSION)
