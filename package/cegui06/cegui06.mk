@@ -16,7 +16,7 @@ CEGUI06_INSTALL_STAGING = YES
 CEGUI06_DEPENDENCIES =              \
 	expat                       \
 	freetype                    \
-	pcre                        \
+	pcre
 
 CEGUI06_CONF_OPTS =                 \
 	--enable-expat              \
@@ -31,6 +31,6 @@ CEGUI06_CONF_OPTS =                 \
 	--disable-samples           \
 	--disable-lua-module        \
 	--disable-toluacegui        \
-	--disable-external-toluapp  \
+	--disable-external-toluapp
 
 $(eval $(autotools-package))

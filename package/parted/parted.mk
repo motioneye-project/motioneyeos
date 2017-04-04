@@ -36,7 +36,7 @@ endif
 HOST_PARTED_DEPENDENCIES = host-pkgconf host-util-linux
 HOST_PARTED_CONF_OPTS += \
 	--without-readline \
-	--disable-device-mapper \
+	--disable-device-mapper
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

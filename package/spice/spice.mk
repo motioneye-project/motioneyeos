@@ -18,7 +18,7 @@ SPICE_DEPENDENCIES =        \
 	openssl             \
 	pixman              \
 	python-pyparsing    \
-	spice-protocol      \
+	spice-protocol
 
 # We disable everything for now, because the dependency tree can become
 # quite deep if we try to enable some features, and I have not tested that.
@@ -26,7 +26,7 @@ SPICE_CONF_OPTS =                 \
 	--disable-opengl          \
 	--disable-smartcard       \
 	--disable-automated-tests \
-	--without-sasl            \
+	--without-sasl
 
 SPICE_DEPENDENCIES += host-pkgconf
 

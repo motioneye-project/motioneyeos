@@ -11,7 +11,7 @@ TIFF_LICENSE_FILES = COPYRIGHT
 TIFF_INSTALL_STAGING = YES
 TIFF_CONF_OPTS = \
 	--disable-cxx \
-	--without-x \
+	--without-x
 
 TIFF_DEPENDENCIES = host-pkgconf
 

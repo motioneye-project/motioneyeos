@@ -17,7 +17,7 @@ JIMTCL_HEADERS_TO_INSTALL = \
 	jim-signal.h \
 	jim-subcmd.h \
 	jim-win32compat.h \
-	jim-config.h \
+	jim-config.h
 
 ifeq ($(BR2_PACKAGE_TCL),)
 define JIMTCL_LINK_TCLSH

@@ -25,6 +25,6 @@ CELT051_CONF_OPTS =                       \
 	--disable-static-modes            \
 	--disable-assertions              \
 	--disable-oggtest                 \
-	--with-ogg=$(STAGING_DIR)/usr     \
+	--with-ogg=$(STAGING_DIR)/usr
 
 $(eval $(autotools-package))

@@ -14,6 +14,6 @@ LIBNICE_INSTALL_STAGING = YES
 LIBNICE_AUTORECONF = YES
 LIBNICE_CONF_OPTS = \
 	--without-gstreamer \
-	--without-gstreamer-0.10 \
+	--without-gstreamer-0.10
 
 $(eval $(autotools-package))

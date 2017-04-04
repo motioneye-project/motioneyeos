@@ -43,18 +43,18 @@ NVIDIA_DRIVER_PROVIDES = libgl libegl libgles
 NVIDIA_DRIVER_LIBS_GL = \
 	libGLX.so.0 \
 	libGL.so.$(NVIDIA_DRIVER_VERSION) \
-	libGLX_nvidia.so.$(NVIDIA_DRIVER_VERSION) \
+	libGLX_nvidia.so.$(NVIDIA_DRIVER_VERSION)
 
 NVIDIA_DRIVER_LIBS_EGL = \
 	libEGL.so.1 \
 	libGLdispatch.so.0 \
-	libEGL_nvidia.so.$(NVIDIA_DRIVER_VERSION) \
+	libEGL_nvidia.so.$(NVIDIA_DRIVER_VERSION)
 
 NVIDIA_DRIVER_LIBS_GLES = \
 	libGLESv1_CM.so.1 \
 	libGLESv2.so.2 \
 	libGLESv1_CM_nvidia.so.$(NVIDIA_DRIVER_VERSION) \
-	libGLESv2_nvidia.so.$(NVIDIA_DRIVER_VERSION) \
+	libGLESv2_nvidia.so.$(NVIDIA_DRIVER_VERSION)
 
 NVIDIA_DRIVER_LIBS_MISC = \
 	libnvidia-eglcore.so.$(NVIDIA_DRIVER_VERSION) \
@@ -63,13 +63,13 @@ NVIDIA_DRIVER_LIBS_MISC = \
 	libnvidia-glsi.so.$(NVIDIA_DRIVER_VERSION) \
 	tls/libnvidia-tls.so.$(NVIDIA_DRIVER_VERSION) \
 	libvdpau_nvidia.so.$(NVIDIA_DRIVER_VERSION) \
-	libnvidia-ml.so.$(NVIDIA_DRIVER_VERSION) \
+	libnvidia-ml.so.$(NVIDIA_DRIVER_VERSION)
 
 NVIDIA_DRIVER_LIBS = \
 	$(NVIDIA_DRIVER_LIBS_GL) \
 	$(NVIDIA_DRIVER_LIBS_EGL) \
 	$(NVIDIA_DRIVER_LIBS_GLES) \
-	$(NVIDIA_DRIVER_LIBS_MISC) \
+	$(NVIDIA_DRIVER_LIBS_MISC)
 
 # Install the gl.pc file
 define NVIDIA_DRIVER_INSTALL_GL_DEV
