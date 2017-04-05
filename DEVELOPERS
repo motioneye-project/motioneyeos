@@ -104,6 +104,7 @@ N:	Arnaud Aujon <arnaud@intelibre.fr>
 F:	package/espeak/
 
 N:	Arnout Vandecappelle <arnout@mind.be>
+F:	package/arp-scan/
 F:	package/freescale-imx/firmware-imx/
 F:	package/freescale-imx/imx-lib/
 F:	package/gstreamer/gst-fsl-plugins/
