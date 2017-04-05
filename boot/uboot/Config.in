@@ -407,4 +407,18 @@ config BR2_TARGET_UBOOT_ENVIMAGE_REDUNDANT
 
 endif # BR2_TARGET_UBOOT_ENVIMAGE
 
+if BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
+
+config BR2_TARGET_UBOOT_CUSTOM_DTS_PATH
+	string "Device Tree Source file paths"
+	help
+	  Space-separated list of paths to device tree source files
+	  that will be copied to arch/ARCH/dts/ before starting the
+	  build.
+
+	  To use this device tree source file, the U-Boot configuration
+	  file must refer to it.
+
+endif
+
 endif # BR2_TARGET_UBOOT
