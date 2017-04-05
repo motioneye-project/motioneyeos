@@ -150,6 +150,7 @@ N:	Benjamin Kamath <kamath.ben@gmail.com>
 F:	package/lapack/
 
 N:	Benoît Allard <benoit.allard@greenbone.net>
+F:	boot/syslinux/
 F:	package/dc3dd/
 
 N:	Bernd Kuhls <bernd.kuhls@t-online.de>
