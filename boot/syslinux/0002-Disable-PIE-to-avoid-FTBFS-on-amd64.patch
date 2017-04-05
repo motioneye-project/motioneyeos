@@ -1,0 +1,30 @@
+From 250bf2c921713434627dc7bc8b0918fa0841f9b7 Mon Sep 17 00:00:00 2001
+From: Graham Inggs <ginggs@ubuntu.com>
+Date: Wed, 5 Apr 2017 22:03:12 +0200
+Subject: [PATCH] Disable PIE to avoid FTBFS on amd64
+
+gcc 6.x has PIE support enabled by default, which causes a build issue
+with syslinux. This patch disables PIE support in the relevant
+syslinux Makefile.
+
+Signed-off-by: Ryan Coe <bluemrp9@gmail.com>
+---
+ gpxe/src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gpxe/src/Makefile b/gpxe/src/Makefile
+index cc91d78..077af64 100644
+--- a/gpxe/src/Makefile
++++ b/gpxe/src/Makefile
+@@ -4,7 +4,7 @@
+ #
+ 
+ CLEANUP		:=
+-CFLAGS		:=
++CFLAGS		:= -fno-PIE
+ ASFLAGS		:=
+ LDFLAGS		:=
+ MAKEDEPS	:= Makefile
+-- 
+2.7.4
+
