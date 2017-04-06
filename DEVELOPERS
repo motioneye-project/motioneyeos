@@ -1411,6 +1411,9 @@ F:	package/kyua/
 F:	package/lutok/
 F:	package/yaml-cpp/
 
+N:	Semyon Kolganov <semenak94@mail.ru>
+F:	package/fmt/
+
 N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/
 F:	package/mongodb/
