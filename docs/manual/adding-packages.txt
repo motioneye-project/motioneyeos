@@ -9,6 +9,9 @@ applications) can be integrated into Buildroot. It also shows how
 existing packages are integrated, which is needed for fixing issues or
 tuning their configuration.
 
+When you add a new package, be sure to test it in various conditions;
+see xref:testing-package[]
+
 include::adding-packages-directory.txt[]
 
 include::adding-packages-generic.txt[]
