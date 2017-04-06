@@ -74,6 +74,6 @@ Index: b/nspr/pr/include/md/_linux.h
  #define _PR_SI_ARCHITECTURE "or1k"
 +#elif defined(__microblaze__)
 +#define _PR_SI_ARCHITECTURE "microblaze"
- #elif defined(nios2)
+ #elif defined(__nios2__)
  #define _PR_SI_ARCHITECTURE "nios2"
  #else
