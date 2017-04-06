@@ -6,7 +6,7 @@ TOOLCHAINS_URL='http://autobuild.buildroot.org/toolchains/configs/toolchain-conf
 main() {
     local o O opts
     local cfg dir pkg random toolchain
-    local ret nb nb_skip nb_fail
+    local ret nb nb_skip nb_fail nb_tc
     local -a toolchains
 
     o='hc:d:p:r:'
@@ -60,7 +60,8 @@ main() {
                  )
                )
 
-    if [ ${#toolchains[@]} -eq 0 ]; then
+    nb_tc="${#toolchains[@]}"
+    if [ ${nb_tc} -eq 0 ]; then
         printf "error: no toolchain found (networking issue?)\n" >&2; exit 1
     fi
 
@@ -68,13 +69,15 @@ main() {
     nb_skip=0
     nb_fail=0
     for toolchain in "${toolchains[@]}"; do
+        : $((nb++))
+        printf "%40s [%*d/%d]: " "$(basename "${toolchain}" .config)" \
+                                 ${#nb_tc} ${nb} ${nb_tc}
         build_one "${dir}" "${toolchain}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
         case ${ret} in
-        (0) ;;
-        (1) : $((nb_skip++));;
-        (2) : $((nb_fail++));;
+        (0) printf "OK\n";;
+        (1) : $((nb_skip++)); printf "SKIPPED\n";;
+        (2) : $((nb_fail++)); printf "FAILED\n";;
         esac
-        : $((nb++))
     done
 
     printf "%d builds, %d skipped, %d failed\n" ${nb} ${nb_skip} ${nb_fail}
@@ -90,13 +93,10 @@ build_one() {
     # Using basename(1) on a URL works nicely
     toolchain="$(basename "${url}" .config)"
 
-    printf "%40s: " "${toolchain}"
-
     dir="${dir}/${toolchain}"
     mkdir -p "${dir}"
 
     if ! curl -s "${url}" >"${dir}/.config"; then
-        printf "FAILED\n"
         return 2
     fi
 
@@ -109,7 +109,6 @@ build_one() {
     cat "${cfg}" >>"${dir}/.config"
 
     if ! make O="${dir}" olddefconfig > "${dir}/logfile" 2>&1; then
-        printf "FAILED\n"
         return 2
     fi
     # We want all the options from the snippet to be present as-is (set
@@ -120,7 +119,6 @@ build_one() {
     # done in the same locale.
     comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
     if [ -s "${dir}/missing.config" ]; then
-        printf "SKIPPED\n"
         return 1
     fi
     # Remove file, it's empty anyway.
@@ -128,18 +126,14 @@ build_one() {
 
     if [ -n "${pkg}" ]; then
         if ! make O="${dir}" "${pkg}-dirclean" >> "${dir}/logfile" 2>&1; then
-            printf "FAILED\n"
             return 2
         fi
     fi
 
     # shellcheck disable=SC2086
     if ! make O="${dir}" ${pkg} >> "${dir}/logfile" 2>&1; then
-        printf "FAILED\n"
         return 2
     fi
-
-    printf "OK\n"
 }
 
 help() {

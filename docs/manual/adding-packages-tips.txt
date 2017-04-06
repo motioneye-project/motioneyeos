@@ -84,17 +84,17 @@ result (excerpt, results are fake):
 
 ----
 $ ./support/scripts/test-pkg -c libcurl.config -p libcurl
-                armv5-ctng-linux-gnueabi: OK
-              armv7-ctng-linux-gnueabihf: OK
-                        br-aarch64-glibc: SKIPPED
-                           br-arcle-hs38: SKIPPED
-                            br-arm-basic: FAILED
-                  br-arm-cortex-a9-glibc: OK
-                   br-arm-cortex-a9-musl: FAILED
-                   br-arm-cortex-m4-full: OK
-                             br-arm-full: OK
-                    br-arm-full-nothread: OK
-                      br-arm-full-static: OK
+                armv5-ctng-linux-gnueabi [ 1/11]: OK
+              armv7-ctng-linux-gnueabihf [ 2/11]: OK
+                        br-aarch64-glibc [ 3/11]: SKIPPED
+                           br-arcle-hs38 [ 4/11]: SKIPPED
+                            br-arm-basic [ 5/11]: FAILED
+                  br-arm-cortex-a9-glibc [ 6/11]: OK
+                   br-arm-cortex-a9-musl [ 7/11]: FAILED
+                   br-arm-cortex-m4-full [ 8/11]: OK
+                             br-arm-full [ 9/11]: OK
+                    br-arm-full-nothread [10/11]: OK
+                      br-arm-full-static [11/11]: OK
 11 builds, 2 skipped, 2 failed
 ----
 
