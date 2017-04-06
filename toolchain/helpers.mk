@@ -127,11 +127,13 @@ copy_toolchain_sysroot = \
 			$(call simplify_symlink,$$i,$(STAGING_DIR)) ; \
 		done ; \
 	fi ; \
-	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so ]; then \
-		cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so $(STAGING_DIR)/lib/ ; \
-	fi ; \
-	if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so.* ]; then \
-		cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so.* $(STAGING_DIR)/lib/ ; \
+	if [ ! -e $(STAGING_DIR)/lib/ld*.so ] && [ ! -e $(STAGING_DIR)/lib/ld*.so.* ]; then \
+		if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so ]; then \
+			cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so $(STAGING_DIR)/lib/ ; \
+		fi ; \
+		if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so.* ]; then \
+			cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so.* $(STAGING_DIR)/lib/ ; \
+		fi ; \
 	fi ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
