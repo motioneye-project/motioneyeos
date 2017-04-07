@@ -6,7 +6,7 @@ TOOLCHAINS_URL='http://autobuild.buildroot.org/toolchains/configs/toolchain-conf
 main() {
     local o O opts
     local cfg dir pkg random toolchain
-    local ret nb nb_skip nb_fail nb_tc
+    local ret nb nb_skip nb_fail nb_tc build_dir
     local -a toolchains
 
     o='hc:d:p:r:'
@@ -68,11 +68,13 @@ main() {
     nb=0
     nb_skip=0
     nb_fail=0
-    for toolchain in "${toolchains[@]}"; do
+    for toolchainconfig in "${toolchains[@]}"; do
         : $((nb++))
-        printf "%40s [%*d/%d]: " "$(basename "${toolchain}" .config)" \
-                                 ${#nb_tc} ${nb} ${nb_tc}
-        build_one "${dir}" "${toolchain}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
+        # Using basename(1) on a URL works nicely
+        toolchain="$(basename "${toolchainconfig}" .config)"
+        build_dir="${dir}/${toolchain}"
+        printf "%40s [%*d/%d]: " "${toolchain}" ${#nb_tc} ${nb} ${nb_tc}
+        build_one "${build_dir}" "${toolchainconfig}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
         case ${ret} in
         (0) printf "OK\n";;
         (1) : $((nb_skip++)); printf "SKIPPED\n";;
@@ -88,12 +90,7 @@ build_one() {
     local url="${2}"
     local cfg="${3}"
     local pkg="${4}"
-    local toolchain
 
-    # Using basename(1) on a URL works nicely
-    toolchain="$(basename "${url}" .config)"
-
-    dir="${dir}/${toolchain}"
     mkdir -p "${dir}"
 
     if ! curl -s "${url}" >"${dir}/.config"; then
