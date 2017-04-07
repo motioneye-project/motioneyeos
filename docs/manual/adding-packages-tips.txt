@@ -93,9 +93,9 @@ $ ./support/scripts/test-pkg -c libcurl.config -p libcurl
                    br-arm-cortex-a9-musl [ 7/11]: FAILED
                    br-arm-cortex-m4-full [ 8/11]: OK
                              br-arm-full [ 9/11]: OK
-                    br-arm-full-nothread [10/11]: OK
+                    br-arm-full-nothread [10/11]: FAILED
                       br-arm-full-static [11/11]: OK
-11 builds, 2 skipped, 2 failed
+11 builds, 2 skipped, 2 build failed, 1 legal-info failed
 ----
 
 The results mean:
@@ -111,6 +111,7 @@ The results mean:
 * `FAILED`: the build failed. Inspect the +logfile+ file in the output
   build  directory to see what went wrong:
 ** the actual build failed,
+** the legal-info failed,
 ** one of the preliminary steps (downloading the config file, applying
    the configuration, running `dirclean` for the package) failed.
 
