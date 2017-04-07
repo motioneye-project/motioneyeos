@@ -4,4 +4,4 @@ config BR2_PACKAGE_ETHTOOL
 	  ethtool is a small utility for examining and tuning your
 	  ethernet-based network interface.
 
-	  http://sourceforge.net/projects/gkernel/
+	  https://www.kernel.org/pub/software/network/ethtool/
