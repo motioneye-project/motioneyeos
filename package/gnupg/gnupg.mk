@@ -11,7 +11,12 @@ GNUPG_LICENSE = GPL-3.0+
 GNUPG_LICENSE_FILES = COPYING
 GNUPG_DEPENDENCIES = zlib ncurses $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 GNUPG_CONF_ENV = ac_cv_sys_symbol_underscore=no
-GNUPG_CONF_OPTS = --disable-rpath --enable-minimal --disable-regex
+GNUPG_CONF_OPTS = \
+	--disable-rpath \
+	--enable-minimal \
+	--disable-regex \
+	--enable-sha256 \
+	--enable-sha512
 
 # gnupg doesn't support assembly for coldfire
 ifeq ($(BR2_m68k_cf),y)
