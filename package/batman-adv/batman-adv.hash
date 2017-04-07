@@ -1,2 +1,3 @@
-# From https://downloads.open-mesh.org/batman/stable/sources/batman-adv/batman-adv-2016.1.tar.gz.sha1
-sha1 c9ca52c913fbf81aca266695a77359ecdbcc8bd8 batman-adv-2016.1.tar.gz
+# From https://downloads.open-mesh.org/batman/stable/sources/batman-adv/batman-adv-2017.0.1.tar.gz.{md5,sha1}
+md5  ce14f7f1bbc037691bbbc611e16f0360         batman-adv-2017.0.1.tar.gz
+sha1 593cecc015b876caa5b21fbb4d0f6186742a1abb batman-adv-2017.0.1.tar.gz
