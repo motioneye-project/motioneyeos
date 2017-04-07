@@ -1,12 +1,13 @@
 config BR2_TARGET_SYSLINUX
 	bool "syslinux"
 	depends on BR2_i386 || BR2_x86_64
-	select BR2_HOSTARCH_NEEDS_IA32_COMPILER
 	# Make sure at least one of the flavors is installed
 	select BR2_TARGET_SYSLINUX_ISOLINUX \
 		if !BR2_TARGET_SYSLINUX_PXELINUX && \
 		   !BR2_TARGET_SYSLINUX_MBR && \
 		   !BR2_TARGET_SYSLINUX_EFI
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  The syslinux bootloader for x86 systems.
 	  This includes: syslinux, pxelinux, extlinux.
