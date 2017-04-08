@@ -1,2 +1,5 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002590.html
-sha256	07f864654561e4ac8629a0ef9c8f07fbc1f8592d1b6c418431593e9ba2cf2fcf	libpciaccess-0.13.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-April/002791.html
+md5 d810ab17e24c1418dedf7207fb2841d4  libpciaccess-0.13.5.tar.bz2
+sha1 ea98c13623e218359ca6d9af9ab9aa4780201a5b  libpciaccess-0.13.5.tar.bz2
+sha256 752c54e9b3c311b4347cb50aea8566fa48eab274346ea8a06f7f15de3240b999  libpciaccess-0.13.5.tar.bz2
+sha512 4b77aa66b3429fd5f9bff0408b0624305e766bf209f3fa2a0a9024df55bf87ca68f9a5aa34f97ffe131997e0669c65cf542210cf308c0de09842424968c5a159  libpciaccess-0.13.5.tar.bz2
