@@ -68,6 +68,7 @@ td.lotsofpatches {
 <td class=\"centered\">License</td>
 <td class=\"centered\">License files</td>
 <td class=\"centered\">Hash file</td>
+<td class=\"centered\">Warnings</td>
 </tr>
 "
 
@@ -321,6 +322,14 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	echo "<td class=\"centered wrong\">No</td>"
     else
 	echo "<td class=\"centered correct\">Yes</td>"
+    fi
+
+    file_list=$(find ${package_dir} -name '*.mk' -o -name '*.in*' -o -name '*.hash')
+    nwarnings=$(./support/scripts/check-package ${file_list} 2>&1 | sed '/\([0-9]*\) warnings generated/!d; s//\1/')
+    if [ ${nwarnings} -eq 0 ] ; then
+	echo "<td class=\"centered correct\">${nwarnings}</td>"
+    else
+	echo "<td class=\"centered wrong\">${nwarnings}</td>"
     fi
 
     echo "</tr>"
