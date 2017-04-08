@@ -13,6 +13,10 @@ ARP_SCAN_DEPENDENCIES = libpcap
 # 0001-configure-try-linking-to-detect-stack-protector-supp.patch touches acinclude.m4
 ARP_SCAN_AUTORECONF = YES
 
+ifeq ($(BR2_STATIC_LIBS),y)
+ARP_SCAN_CONF_OPTS = LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`"
+endif
+
 ARP_SCAN_CONF_ENV = pgac_cv_snprintf_long_long_int_format='%lld'
 
 $(eval $(autotools-package))
