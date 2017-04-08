@@ -250,6 +250,7 @@ F:	package/perl-timedate/
 F:	package/perl-uri/
 F:	package/perl-www-robotrules/
 F:	package/pixman/
+F:	package/pngquant/
 F:	package/pound/
 F:	package/pure-ftpd/
 F:	package/python-couchdb/
