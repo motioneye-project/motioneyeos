@@ -1,5 +1,3 @@
-Upstream-Status: Pending
-
 From 44bdce8c6ed9b30c1643e5981172a4f9025f013c Mon Sep 17 00:00:00 2001
 From: Andreas Oberritter <obi@opendreambox.org>
 Date: Wed, 13 Mar 2013 16:17:08 +0100
@@ -11,6 +9,7 @@ other linux/nfs*.h files directly.
 
 Signed-off-by: Andreas Oberritter <obi@opendreambox.org>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Upstream-Status: Pending
 ---
  include/rpc_subs.h |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
