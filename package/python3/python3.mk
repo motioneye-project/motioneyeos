@@ -8,7 +8,7 @@ PYTHON3_VERSION_MAJOR = 3.6
 PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).1
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
-PYTHON3_LICENSE = Python software foundation license v2, others
+PYTHON3_LICENSE = Python-2.0, others
 PYTHON3_LICENSE_FILES = LICENSE
 
 # Python itself doesn't use libtool, but it includes the source code
