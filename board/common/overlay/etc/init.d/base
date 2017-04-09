@@ -16,3 +16,7 @@ msg_fail() {
     test -n "$1" && echo $1 || echo "failed"
 }
 
+msg_background() {
+    test -n "$1" && echo $1 || echo "pending"
+}
+

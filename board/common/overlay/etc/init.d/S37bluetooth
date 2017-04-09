@@ -1,0 +1,53 @@
+#!/bin/bash
+
+test -n "$os_version" || source /etc/init.d/base
+
+hci=hci0
+bluetoothd=/usr/libexec/bluetooth/bluetoothd
+
+start() {
+    msg_begin "Starting bluetooth"
+
+    # wait up to 10 seconds for device
+    count=0
+    while ! hciconfig $hci &>/dev/null; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge 10 ]; then
+            msg_fail "no device"
+            return 1
+        fi
+    done
+
+    hciconfig $hci up
+    /usr/libexec/bluetooth/bluetoothd &>/dev/null &
+    msg_done
+}
+
+stop() {
+    msg_begin "Stopping bluetooth"
+    killall bluetoothd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+        
+    stop)
+        stop
+        ;;
+        
+    restart)
+        stop
+        start
+        ;;
+    
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+
