@@ -1,5 +1,12 @@
 #!/bin/bash
 
+sys_btconf="/etc/bluetooth.conf"
+boot_btconf="/boot/bluetooth.conf"
+btconf="/data/etc/bluetooth.conf"
+
+# dbus is only used by bluez
+test -f $btconf || test -f $boot_btconf || test -f $sys_btconf || exit 0
+
 test -n "$os_version" || source /etc/init.d/base
 
 start() {

@@ -1,5 +1,11 @@
 #!/bin/bash
 
+sys_conf="/etc/bluetooth.conf"
+boot_conf="/boot/bluetooth.conf"
+conf="/data/etc/bluetooth.conf"
+
+test -f $conf || test -f $boot_conf || test -f $sys_conf || exit 0
+
 test -n "$os_version" || source /etc/init.d/base
 
 function start() {
@@ -24,7 +30,7 @@ case "$1" in
 
     stop)
         msg_begin "Detaching UART bluetooth modem"
-        killall hciattach
+        killall hciattach &>/dev/null
         test $? == 0 && msg_done || msg_fail
         ;;
 
