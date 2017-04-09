@@ -285,10 +285,13 @@ MPLAYER_CFLAGS += -mfpu=neon
 endif
 endif
 
+define MPLAYER_DISABLE_INLINE_ASM
+	$(SED) 's,#define HAVE_INLINE_ASM 1,#define HAVE_INLINE_ASM 0,g' \
+		$(@D)/config.h
+endef
+
 ifeq ($(BR2_i386),y)
-# inline asm breaks with "can't find a register in class 'GENERAL_REGS'"
-# inless we free up ebp
-MPLAYER_CFLAGS += -fomit-frame-pointer
+MPLAYER_POST_CONFIGURE_HOOKS += MPLAYER_DISABLE_INLINE_ASM
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
