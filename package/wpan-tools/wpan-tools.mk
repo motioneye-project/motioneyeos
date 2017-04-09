@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WPAN_TOOLS_VERSION = 0.5
+WPAN_TOOLS_VERSION = 0.7
 WPAN_TOOLS_SITE = http://wpan.cakelab.org/releases
 WPAN_TOOLS_DEPENDENCIES = host-pkgconf libnl
 WPAN_TOOLS_LICENSE = ISC
