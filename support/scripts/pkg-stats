@@ -119,6 +119,8 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	$i = "package/pkg-virtual.mk" -o \
 	$i = "package/pkg-download.mk" -o \
 	$i = "package/pkg-generic.mk" -o \
+	$i = "package/pkg-waf.mk" -o \
+	$i = "package/pkg-kernel-module.mk" -o \
 	$i = "package/pkg-utils.mk" ; then
 	echo "skipping $i" 1>&2
 	continue
