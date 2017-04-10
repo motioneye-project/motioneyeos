@@ -51,6 +51,33 @@ config BR2_PACKAGE_XENOMAI_VERSION
 	  BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH, in the Linux
 	  Kernel -> Linux Kernel Extensions menu.
 
+choice
+	prompt "Xenomai core"
+	default BR2_PACKAGE_XENOMAI_MERCURY
+	help
+	  Select the Xenomai core: dual kernel (Cobalt)
+	  or native Linux Kernel (Mercury).
+
+config BR2_PACKAGE_XENOMAI_MERCURY
+	bool "Mercury"
+	depends on !BR2_LINUX_KERNEL_EXT_XENOMAI
+	help
+	  Select Mercury core for the Xenomai userspace.
+	  You want to use it if you have the native Linux Kernel.
+
+config BR2_PACKAGE_XENOMAI_COBALT
+	bool "Cobalt"
+	help
+	  Select Cobalt core (dual kernel) for the Xenomai
+	  userspace. Use this if you use a Xenomai-patched
+	  Linux kernel.
+
+	  If you want to use Cobalt core, your kernel must have
+	  the Adeos and Xenomai patches applied to it. You can
+	  add these through the BR2_LINUX_KERNEL_EXT_XENOMAI option
+	  in the Linux Kernel Extensions menu.
+endchoice
+
 config BR2_PACKAGE_XENOMAI_TESTSUITE
 	bool "Install testsuite"
 	help
