@@ -78,6 +78,24 @@ config BR2_PACKAGE_XENOMAI_COBALT
 	  in the Linux Kernel Extensions menu.
 endchoice
 
+config BR2_PACKAGE_XENOMAI_ENABLE_SMP
+	bool "Enable SMP support"
+	default y
+	help
+	  This option enables SMP support in Xenomai userspace.
+
+	  If this option is turned on while no SMP support is enabled
+	  in the kernel, things will still work. However, if SMP is
+	  enabled in the kernel but this option is not turned on,
+	  Xenomai applications will complain with:
+
+	    feature mismatch: missing="smp/nosmp"
+
+	  Please refer to this troubleshooting guide for more
+	  information:
+
+	  http://xenomai.org/troubleshooting-a-dual-kernel-configuration/#feature_mismatch_missing8221smpnosmp8221
+
 config BR2_PACKAGE_XENOMAI_TESTSUITE
 	bool "Install testsuite"
 	help

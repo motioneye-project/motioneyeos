@@ -29,6 +29,12 @@ else
 XENOMAI_CONF_OPTS += --with-core=cobalt
 endif
 
+ifeq ($(BR2_PACKAGE_XENOMAI_ENABLE_SMP),y)
+XENOMAI_CONF_OPTS += --enable-smp
+else
+XENOMAI_CONF_OPTS += --disable-smp
+endif
+
 define XENOMAI_REMOVE_DEVFILES
 	for i in xeno-config xeno-info wrap-link.sh ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$$i ; \
