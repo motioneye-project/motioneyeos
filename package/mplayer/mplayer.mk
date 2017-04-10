@@ -306,9 +306,9 @@ MPLAYER_CONF_OPTS += \
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE),y)
-MPLAYER_CONF_OPTS += --enable-sse
+MPLAYER_CONF_OPTS += --enable-mmxext --enable-sse
 else
-MPLAYER_CONF_OPTS += --disable-sse
+MPLAYER_CONF_OPTS += --disable-mmxext --disable-sse
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE2),y)
