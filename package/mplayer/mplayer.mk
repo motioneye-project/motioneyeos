@@ -288,6 +288,8 @@ endif
 define MPLAYER_DISABLE_INLINE_ASM
 	$(SED) 's,#define HAVE_INLINE_ASM 1,#define HAVE_INLINE_ASM 0,g' \
 		$(@D)/config.h
+	$(SED) 's,#define HAVE_MMX_INLINE 1,#define HAVE_MMX_INLINE 0,g' \
+		$(@D)/config.h
 endef
 
 ifeq ($(BR2_i386),y)
