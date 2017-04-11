@@ -1,0 +1,48 @@
+From ee5a5a51780bcb17e5240335ddfa9c98a0e6f890 Mon Sep 17 00:00:00 2001
+From: Alexey Brodkin <abrodkin@synopsys.com>
+Date: Thu, 30 Mar 2017 19:18:30 +0300
+Subject: [PATCH] axs103: Clean-up smp_kick_all_cpus()
+
+ * Rely on default pulse polarity value
+ * Don't mess with "multicore" value as it doesn't affect execution
+
+In essence we now do a bare minimal stuff:
+ 1) Select HS38x2_1 with CORE_SEL=1 bits
+ 2) Select "manual" core start (via CREG) with START_MODE=0
+ 3) Generate cpu_start pulse with START=1
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Signed-off-by: Vlad Zakharov <vzakhar@synopsys.com>
+---
+ board/synopsys/axs10x/axs10x.c | 12 +++++-------
+ 1 file changed, 5 insertions(+), 7 deletions(-)
+
+diff --git a/board/synopsys/axs10x/axs10x.c b/board/synopsys/axs10x/axs10x.c
+index a5e774b2cf7b..57c790220f71 100644
+--- a/board/synopsys/axs10x/axs10x.c
++++ b/board/synopsys/axs10x/axs10x.c
+@@ -61,16 +61,14 @@ void smp_kick_all_cpus(void)
+ {
+ /* CPU start CREG */
+ #define AXC003_CREG_CPU_START	0xF0001400
+-
+ /* Bits positions in CPU start CREG */
+ #define BITS_START	0
+-#define BITS_POLARITY	8
++#define BITS_START_MODE	4
+ #define BITS_CORE_SEL	9
+-#define BITS_MULTICORE	12
+-
+-#define CMD	(1 << BITS_MULTICORE) | (1 << BITS_CORE_SEL) | \
+-		(1 << BITS_POLARITY) | (1 << BITS_START)
+ 
+-	writel(CMD, (void __iomem *)AXC003_CREG_CPU_START);
++	int cmd = readl((void __iomem *)AXC003_CREG_CPU_START);
++	cmd |= (1 << BITS_CORE_SEL) | (1 << BITS_START);
++	cmd &= ~(1 << BITS_START_MODE);
++	writel(cmd, (void __iomem *)AXC003_CREG_CPU_START);
+ }
+ #endif
+-- 
+2.7.4
+
