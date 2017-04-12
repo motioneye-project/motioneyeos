@@ -13,4 +13,11 @@ config BR2_PACKAGE_PROFTPD_MOD_REWRITE
 	help
 	  Compile ProFTPD with mod_rewrite support
 
+config BR2_PACKAGE_PROFTPD_MOD_REDIS
+	bool "mod_redis support"
+	select BR2_PACKAGE_HIREDIS
+	help
+	  The mod_redis module enables ProFTPD support for caching data in Redis
+	  servers, using the hiredis client library.
+
 endif

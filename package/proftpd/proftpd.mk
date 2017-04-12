@@ -27,6 +27,13 @@ ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
 PROFTPD_CONF_OPTS += --with-modules=mod_rewrite
 endif
 
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REDIS),y)
+PROFTPD_CONF_OPTS += --enable-redis
+PROFTPD_DEPENDENCIES += hiredis
+else
+PROFTPD_CONF_OPTS += --disable-redis
+endif
+
 # configure script doesn't handle detection of %llu format string
 # support for printing the file size when cross compiling, breaking
 # access for large files.
