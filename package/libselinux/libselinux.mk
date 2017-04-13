@@ -20,7 +20,6 @@ LIBSELINUX_MAKE_OPTS = \
 	LDFLAGS="$(TARGET_LDFLAGS) -lpcre -lpthread" \
 	ARCH=$(KERNEL_ARCH)
 
-LIBSELINUX_MAKE_TARGETS = all
 LIBSELINUX_MAKE_INSTALL_TARGETS = install
 
 ifeq ($(BR2_PACKAGE_PYTHON)$(BR2_PACKAGE_PYTHON3),y)
@@ -39,16 +38,23 @@ LIBSELINUX_MAKE_OPTS += \
 	PYSITEDIR=$(TARGET_DIR)/usr/lib/$(LIBSELINUX_PYLIBVER)/site-packages \
 	SWIG_LIB="$(HOST_DIR)/usr/share/swig/$(SWIG_VERSION)/"
 
-LIBSELINUX_MAKE_TARGETS += swigify pywrap
 LIBSELINUX_MAKE_INSTALL_TARGETS += install-pywrap
+
+# dependencies are broken and result in file truncation errors at link
+# time if the Python bindings are built through the same make
+# invocation as the rest of the library.
+define LIBSELINUX_BUILD_PYTHON_BINDINGS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) swigify pywrap
+endef
 endif # python || python3
 
 define LIBSELINUX_BUILD_CMDS
 	# DESTDIR is needed during the compile to compute library and
 	# header paths.
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) \
-		$(LIBSELINUX_MAKE_TARGETS)
+		$(LIBSELINUX_MAKE_OPTS) DESTDIR=$(STAGING_DIR) all
+	$(LIBSELINUX_BUILD_PYTHON_BINDINGS)
 endef
 
 define LIBSELINUX_INSTALL_STAGING_CMDS
