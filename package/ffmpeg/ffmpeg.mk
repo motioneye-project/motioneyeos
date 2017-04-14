@@ -432,6 +432,8 @@ FFMPEG_CONF_OPTS += --disable-vfp
 endif
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 FFMPEG_CONF_OPTS += --enable-neon
+else ifeq ($(BR2_aarch64),y)
+FFMPEG_CONF_OPTS += --enable-neon
 else
 FFMPEG_CONF_OPTS += --disable-neon
 endif
