@@ -31,6 +31,26 @@ endef
 
 HIREDIS_INCLUDE_DIR = $(STAGING_DIR)/usr/include/hiredis
 
+ifeq ($(BR2_SHARED_LIBS),)
+define HIREDIS_INSTALL_STAGING_STATIC_LIB
+	$(INSTALL) -D -m 0755 $(@D)/libhiredis.a \
+		$(STAGING_DIR)/usr/lib/libhiredis.a
+endef
+endif
+
+ifeq ($(BR2_STATIC_LIBS),)
+define HIREDIS_INSTALL_STAGING_SHARED_LIB
+	$(INSTALL) -D -m 0755 $(@D)/libhiredis.so \
+		$(STAGING_DIR)/usr/lib/libhiredis.so.$(HIREDIS_VERSION_MAJOR)
+	ln -sf libhiredis.so.$(HIREDIS_VERSION_MAJOR) $(STAGING_DIR)/usr/lib/libhiredis.so
+endef
+define HIREDIS_INSTALL_TARGET_SHARED_LIB
+	$(INSTALL) -D -m 0755 $(@D)/libhiredis.so \
+		$(TARGET_DIR)/usr/lib/libhiredis.so.$(HIREDIS_VERSION_MAJOR)
+	ln -sf libhiredis.so.$(HIREDIS_VERSION_MAJOR) $(TARGET_DIR)/usr/lib/libhiredis.so
+endef
+endif
+
 # Do not call make install as this target will build shared and static libraries
 define HIREDIS_INSTALL_STAGING_CMDS
 	mkdir -p $(HIREDIS_INCLUDE_DIR)
@@ -38,15 +58,12 @@ define HIREDIS_INSTALL_STAGING_CMDS
 		$(@D)/adapters $(HIREDIS_INCLUDE_DIR)
 	$(INSTALL) -D -m 0644 $(@D)/hiredis.pc \
 		$(STAGING_DIR)/usr/lib/pkgconfig/hiredis.pc
-	$(INSTALL) -D -m 0755 $(@D)/libhiredis.so \
-		$(STAGING_DIR)/usr/lib/libhiredis.so.$(HIREDIS_VERSION_MAJOR)
-	ln -sf libhiredis.so.$(HIREDIS_VERSION_MAJOR) $(STAGING_DIR)/usr/lib/libhiredis.so
+	$(HIREDIS_INSTALL_STAGING_STATIC_LIB)
+	$(HIREDIS_INSTALL_STAGING_SHARED_LIB)
 endef
 
 define HIREDIS_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/libhiredis.so \
-		$(TARGET_DIR)/usr/lib/libhiredis.so.$(HIREDIS_VERSION_MAJOR)
-	ln -sf libhiredis.so.$(HIREDIS_VERSION_MAJOR) $(TARGET_DIR)/usr/lib/libhiredis.so
+	$(HIREDIS_INSTALL_TARGET_SHARED_LIB)
 endef
 
 $(eval $(generic-package))
