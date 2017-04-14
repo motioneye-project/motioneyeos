@@ -24,7 +24,6 @@ EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
 
 # Configure options:
 # --disable-lua-old: build elua for the target.
-# --disable-poppler: disable poppler image loader.
 # --disable-sdl: disable sdl2 support.
 # --disable-spectre: disable spectre image loader.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
@@ -43,7 +42,6 @@ EFL_CONF_OPTS = \
 	--disable-image-loader-jp2k \
 	--with-net-control=none \
 	--disable-lua-old \
-	--disable-poppler \
 	--disable-sdl \
 	--disable-spectre \
 	--disable-xinput22 \
@@ -260,6 +258,13 @@ EFL_CONF_OPTS += --enable-image-loader-webp=yes
 EFL_DEPENDENCIES += webp
 else
 EFL_CONF_OPTS += --disable-image-loader-webp
+endif
+
+ifeq ($(BR2_PACKAGE_POPPLER),y)
+EFL_DEPENDENCIES += poppler
+EFL_CONF_OPTS += --enable-poppler
+else
+EFL_CONF_OPTS += --disable-poppler
 endif
 
 ifeq ($(BR2_PACKAGE_EFL_LIBRAW),y)
