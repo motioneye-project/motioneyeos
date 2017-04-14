@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ATOP_VERSION = 2.2-3
+ATOP_VERSION = 2.3.0
 ATOP_SITE = http://www.atoptool.nl/download
 ATOP_LICENSE = GPL-2.0+
 ATOP_LICENSE_FILES = COPYING
