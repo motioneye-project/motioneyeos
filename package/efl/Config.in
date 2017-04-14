@@ -179,6 +179,7 @@ config BR2_PACKAGE_EFL_WAYLAND
 	depends on BR2_PACKAGE_EFL_EEZE # efl drm
 	depends on BR2_PACKAGE_EFL_OPENGLES # OpenGL ES with EGL support only
 	select BR2_PACKAGE_EFL_DRM
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
 
 comment "Wayland support needs udev /dev management (eeze) and OpenGL ES w/ EGL, threads"
 	depends on BR2_PACKAGE_WAYLAND
