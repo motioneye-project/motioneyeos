@@ -44,7 +44,6 @@ EFL_CONF_OPTS = \
 	--disable-sdl \
 	--disable-spectre \
 	--disable-xinput22 \
-	--disable-wayland \
 	--enable-liblz4 \
 	--with-doxygen=no
 
