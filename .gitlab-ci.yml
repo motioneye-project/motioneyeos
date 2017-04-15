@@ -175,10 +175,10 @@ roseapplepi_defconfig: *defconfig
 s6lx9_microboard_defconfig: *defconfig
 sheevaplug_defconfig: *defconfig
 snps_aarch64_vdk_defconfig: *defconfig
+snps_arc700_axs101_defconfig: *defconfig
+snps_archs38_axs103_defconfig: *defconfig
 snps_archs38_vdk_defconfig: *defconfig
 snps_archs38_zebu_defconfig: *defconfig
-snps_axs101_defconfig: *defconfig
-snps_axs103_defconfig: *defconfig
 stm32f429_disco_defconfig: *defconfig
 stm32f469_disco_defconfig: *defconfig
 telit_evk_pro3_defconfig: *defconfig
