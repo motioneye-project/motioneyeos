@@ -452,6 +452,11 @@ else
 FFMPEG_CONF_OPTS += --disable-altivec
 endif
 
+# Uses __atomic_fetch_add_4
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+FFMPEG_CONF_OPTS += --extra-libs=-latomic
+endif
+
 ifeq ($(BR2_STATIC_LIBS),)
 FFMPEG_CONF_OPTS += --enable-pic
 else
