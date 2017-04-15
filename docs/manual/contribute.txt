@@ -227,7 +227,7 @@ Finally, the patch should be signed off. This is done by adding
 +Signed-off-by: Your Real Name <your@email.address>+ at the end of the
 commit message. +git commit -s+ does that for you, if configured
 properly. The +Signed-off-by+ tag means that you publish the patch
-under the Buildroot license (i.e. GPL-2.0, except for package patches,
+under the Buildroot license (i.e. GPL-2.0+, except for package patches,
 which have the upstream license), and that you are allowed to do so.
 See http://developercertificate.org/[the Developer Certificate of
 Origin] for details.
