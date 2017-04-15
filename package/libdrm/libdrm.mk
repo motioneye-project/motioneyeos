@@ -4,19 +4,14 @@
 #
 ################################################################################
 
-LIBDRM_VERSION = 2.4.79
+LIBDRM_VERSION = 2.4.80
 LIBDRM_SOURCE = libdrm-$(LIBDRM_VERSION).tar.bz2
 LIBDRM_SITE = http://dri.freedesktop.org/libdrm
 LIBDRM_LICENSE = MIT
-# 0003-tests-etnaviv-link-against-libdrm.patch
-LIBDRM_AUTORECONF = YES
-
 LIBDRM_INSTALL_STAGING = YES
-
 LIBDRM_DEPENDENCIES = \
 	libpthread-stubs \
-	host-pkgconf \
-	host-xutil_util-macros
+	host-pkgconf
 
 LIBDRM_CONF_OPTS = \
 	--disable-cairo-tests \
