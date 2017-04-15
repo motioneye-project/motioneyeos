@@ -14,6 +14,10 @@ TRINITY_PATCH = https://github.com/kernelslacker/trinity/commit/b0e66a2d084ffc21
 		https://github.com/kernelslacker/trinity/commit/f447db18b389050ecc5e66dbf549d5953633e23e.patch \
 		https://github.com/kernelslacker/trinity/commit/87427256640f806710dd97fc807a9a896147c617.patch
 
+ifeq ($(BR2_PACKAGE_BTRFS_PROGS),y)
+TRINITY_DEPENDENCIES += btrfs-progs
+endif
+
 define TRINITY_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure)
 endef
