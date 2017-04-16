@@ -23,6 +23,7 @@ MPV_CONF_OPTS = \
 	--disable-cdda \
 	--disable-cocoa \
 	--disable-coreaudio \
+	--disable-cuda-hwaccel \
 	--disable-libv4l2 \
 	--disable-opensles \
 	--disable-rpi \
