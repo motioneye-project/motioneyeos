@@ -293,6 +293,10 @@ endef
 EFL_POST_INSTALL_TARGET_HOOKS = EFL_HOOK_REMOVE_UPOWER
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+EFL_DEPENDENCIES += libunwind
+endif
+
 $(eval $(autotools-package))
 
 ################################################################################
