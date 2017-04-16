@@ -1,0 +1,39 @@
+From 212f6c8206bd4dcc7d8970c5f1632823ae4e783a Mon Sep 17 00:00:00 2001
+From: Michael Forney <mforney@mforney.org>
+Date: Sun, 12 Feb 2017 23:01:21 -0800
+Subject: [PATCH] Fix build with HAVE_GL==0
+
+video/out/opengl/hwdec.h includes video/out/opengl/common.h, which tries
+to include opengl headers.
+
+Downloaded from upstream commit:
+https://github.com/mpv-player/mpv/commit/212f6c8206bd4dcc7d8970c5f1632823ae4e783a
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ options/options.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/options/options.c b/options/options.c
+index b711156..0bb36ad 100644
+--- a/options/options.c
++++ b/options/options.c
+@@ -40,7 +40,6 @@
+ #include "stream/stream.h"
+ #include "video/csputils.h"
+ #include "video/hwdec.h"
+-#include "video/out/opengl/hwdec.h"
+ #include "video/image_writer.h"
+ #include "sub/osd.h"
+ #include "audio/filter/af.h"
+@@ -53,6 +52,10 @@
+ #include "video/out/drm_common.h"
+ #endif
+ 
++#if HAVE_GL
++#include "video/out/opengl/hwdec.h"
++#endif
++
+ extern const char mp_help_text[];
+ 
+ static void print_version(struct mp_log *log)
