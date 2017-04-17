@@ -8,8 +8,8 @@
 4TH_SOURCE = 4th-$(4TH_VERSION)-unix.tar.gz
 4TH_SITE = http://downloads.sourceforge.net/project/forth-4th/4th-$(4TH_VERSION)
 4TH_LICENSE = GPL-3.0+, LGPL-3.0+
-# The COPYING file only contains the text of the LGPLv3, but the
-# source code really contains parts under GPLv3+.
+# The COPYING file only contains the text of the LGPL-3.0, but the
+# source code really contains parts under GPL-3.0+.
 4TH_LICENSE_FILES = COPYING
 4TH_DEPENDENCIES = host-4th
 4TH_INSTALL_STAGING = YES

@@ -8,8 +8,8 @@ OPENOBEX_VERSION_MAJOR = 1.5
 OPENOBEX_VERSION = $(OPENOBEX_VERSION_MAJOR).0
 OPENOBEX_SITE = http://downloads.sourceforge.net/project/openobex/openobex/$(OPENOBEX_VERSION_MAJOR)
 OPENOBEX_SOURCE = openobex-$(OPENOBEX_VERSION)-Source.zip
-# Libraries seems to be released under LGPLv2.1+,
-# while other material is under GPLv2+.
+# Libraries seems to be released under LGPL-2.1+,
+# while other material is under GPL-2.0+.
 OPENOBEX_LICENSE = GPL-2.0+/LGPL-2.1+
 OPENOBEX_LICENSE_FILES = COPYING COPYING.LIB
 

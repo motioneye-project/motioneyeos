@@ -7,8 +7,8 @@
 GST_FSL_PLUGINS_VERSION = 4.0.3
 GST_FSL_PLUGINS_SITE = $(FREESCALE_IMX_SITE)
 
-# Most is LGPLv2+, but some sources are copied from upstream and are
-# LGPLv2.1+, which essentially makes it LGPLv2.1+
+# Most is LGPL-2.0+, but some sources are copied from upstream and are
+# LGPL-2.1+, which essentially makes it LGPL-2.1+
 GST_FSL_PLUGINS_LICENSE = LGPL-2.0+, LGPL-2.1+, PROPRIETARY (asf.h)
 GST_FSL_PLUGINS_LICENSE_FILES = COPYING-LGPL-2.1 COPYING-LGPL-2
 

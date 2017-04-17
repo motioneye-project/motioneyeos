@@ -7,7 +7,7 @@
 XSCREENSAVER_VERSION = 5.32
 XSCREENSAVER_SITE = http://www.jwz.org/xscreensaver
 
-# N.B. GPLv2+ code (in the hacks/glx subdirectory) is not currently built.
+# N.B. GPL-2.0+ code (in the hacks/glx subdirectory) is not currently built.
 XSCREENSAVER_LICENSE = MIT-like, GPL-2.0+
 XSCREENSAVER_LICENSE_FILES = hacks/screenhack.h hacks/glx/chessmodels.h
 

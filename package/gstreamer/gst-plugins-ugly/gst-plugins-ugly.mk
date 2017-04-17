@@ -8,7 +8,7 @@ GST_PLUGINS_UGLY_VERSION = 0.10.19
 GST_PLUGINS_UGLY_SOURCE = gst-plugins-ugly-$(GST_PLUGINS_UGLY_VERSION).tar.xz
 GST_PLUGINS_UGLY_SITE = http://gstreamer.freedesktop.org/src/gst-plugins-ugly
 GST_PLUGINS_UGLY_PATCH = http://git.alpinelinux.org/cgit/aports/plain/main/gst-plugins-ugly0.10/cdio-cd-text-api.patch
-# COPYING is in fact LGPLv2.1, but all of the code is v2+
+# COPYING is in fact LGPL-2.1, but all of the code is LGPL-2.0+
 # (except for one test, xingmux)
 GST_PLUGINS_UGLY_LICENSE = LGPL-2.0+, GPL-2.0+ (synaesthesia)
 GST_PLUGINS_UGLY_LICENSE_FILES = COPYING

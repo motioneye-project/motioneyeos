@@ -12,7 +12,7 @@ DTV_SCAN_TABLES_SITE_METHOD = git
 # as per traditional copyright, but just a collection of 'facts', so there's
 # probably no license to apply to these data files.
 # However, the package prominently contains the COPYING and COPYING.LIB
-# license files (respectively for the GPLv2 and the LGPLv2.1), so we use
+# license files (respectively for the GPL-2.0 and the LGPL-2.1), so we use
 # that as the licensing information.
 DTV_SCAN_TABLES_LICENSE = GPL-2.0, LGPL-2.1
 DTV_SCAN_TABLES_LICENSE_FILES = COPYING COPYING.LGPL

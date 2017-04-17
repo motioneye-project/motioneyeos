@@ -9,7 +9,7 @@ GUPNP_DLNA_VERSION = $(GUPNP_DLNA_VERSION_MAJOR).5
 GUPNP_DLNA_SOURCE = gupnp-dlna-$(GUPNP_DLNA_VERSION).tar.xz
 GUPNP_DLNA_SITE = \
 	http://ftp.gnome.org/pub/gnome/sources/gupnp-dlna/$(GUPNP_DLNA_VERSION_MAJOR)
-# COPYING contains LGPLv2.1 but all source files contain LPGLv2+
+# COPYING contains LGPL-2.1 but all source files contain LPGL-2.0+
 GUPNP_DLNA_LICENSE = LGPL-2.0+
 GUPNP_DLNA_LICENSE_FILES = COPYING
 GUPNP_DLNA_INSTALL_STAGING = YES

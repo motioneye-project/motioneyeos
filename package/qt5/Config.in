@@ -43,7 +43,7 @@ config BR2_PACKAGE_QT5_VERSION_LATEST
 	depends on !BR2_arc && !BR2_nios2 && !BR2_xtensa
 	help
 	  This option builds Qt 5.8, which is licensed under
-	  (L)GPLv3+.
+	  (L)GPL-3.0+.
 
 comment "Latest Qt version needs host/toolchain w/ gcc >= 4.8"
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_HOST_GCC_AT_LEAST_4_8
@@ -54,7 +54,7 @@ config BR2_PACKAGE_QT5_VERSION_5_6
 	bool "LTS (5.6)"
 	help
 	  This option builds Qt 5.6, which is licensed under
-	  (L)GPLv2+.
+	  (L)GPL-2.0+.
 
 endchoice
 

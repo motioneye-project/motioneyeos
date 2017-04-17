@@ -8,7 +8,7 @@ SUPERTUX_VERSION = 0.5.1
 SUPERTUX_SITE = https://github.com/SuperTux/supertux/releases/download/v$(SUPERTUX_VERSION)
 SUPERTUX_SOURCE = SuperTux-v$(SUPERTUX_VERSION)-Source.tar.gz
 
-# Supertux itself is GPLv3+, but it bundles a few libraries with different
+# Supertux itself is GPL-3.0+, but it bundles a few libraries with different
 # licenses (sexp-cpp, squirrel, tinygettext) which are linked statically.
 SUPERTUX_LICENSE = GPL-3.0+ (code), CC-BY-SA-2.0, CC-BY-SA-3.0, GPL-2.0+ (images music sounds)
 SUPERTUX_LICENSE_FILES = LICENSE.txt data/AUTHORS
