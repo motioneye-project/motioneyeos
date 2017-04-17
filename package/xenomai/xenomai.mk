@@ -17,6 +17,8 @@ XENOMAI_LICENSE = GPL-2.0+ with exception (headers), LGPL-2.1+ (libraries), GPL-
 # GFDL is not included but refers to gnu.org
 XENOMAI_LICENSE_FILES = debian/copyright include/COPYING lib/trank/COPYING kernel/cobalt/COPYING
 
+XENOMAI_DEPENDENCIES = host-pkgconf
+
 # 0002-boilerplate-build-obstack-support-conditionally.patch
 XENOMAI_AUTORECONF = YES
 
