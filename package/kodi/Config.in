@@ -266,7 +266,9 @@ config BR2_PACKAGE_KODI_UPNP
 	  Enable UPnP support
 
 config BR2_PACKAGE_KODI_OPTICALDRIVE
-	bool
+	bool "optical drives"
+	help
+	  Add support for optical drives, to read e.g. DVDs...
 
 menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-modplug/Config.in"
