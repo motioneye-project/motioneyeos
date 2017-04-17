@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AUBIO_VERSION = 0.4.3
+AUBIO_VERSION = 0.4.5
 AUBIO_SITE = https://aubio.org/pub
 AUBIO_SOURCE = aubio-$(AUBIO_VERSION).tar.bz2
 AUBIO_LICENSE = GPL-3.0+
@@ -26,7 +26,8 @@ else
 AUBIO_CONF_OPTS += --disable-sndfile
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
+# Could not compile aubio in double precision mode with libsamplerate
+ifeq ($(BR2_PACKAGE_LIBSAMPLERATE)$(BR2_PACKAGE_FFTW_PRECISION_SINGLE),yy)
 AUBIO_DEPENDENCIES += libsamplerate
 AUBIO_CONF_OPTS += --enable-samplerate
 else
