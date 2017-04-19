@@ -112,42 +112,46 @@ config BR2_PACKAGE_XENOMAI_ANALOGY
 	  This option allows to install the Xenomai Analogy utilities
 	  and libraries
 
+menu "Skin selection"
+
 config BR2_PACKAGE_XENOMAI_NATIVE_SKIN
-	bool "Alchemy (native) skin library"
+	bool "Alchemy (native) skin"
 	default y
 	help
 	  This option allows to install the Alchemy Xenomai skin, previously
 	  called 'native'
 
 config BR2_PACKAGE_XENOMAI_POSIX_SKIN
-	bool "POSIX skin library"
+	bool "POSIX skin"
 	default y
 	help
 	  This option allows to install the POSIX Xenomai skin
 
-config BR2_PACKAGE_XENOMAI_VXWORKS_SKIN
-	bool "VX-Works skin library"
-	help
-	  This option allows to install the VX-Works Xenomai skin
-
 config BR2_PACKAGE_XENOMAI_PSOS_SKIN
-	bool "PSOS skin library"
+	bool "pSOS skin"
 	help
-	  This option allows to install the PSOS Xenomai skin
+	  This option allows to install the pSOS Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_RTAI_SKIN
-	bool "RTAI skin library"
+	bool "RTAI skin"
 	help
 	  This option allows to install the RTAI Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_UITRON_SKIN
-	bool "uiTron skin library"
+	bool "uITRON skin"
 	help
-	  This option allows to install the uiTron Xenomai skin
+	  This option allows to install the uITRON Xenomai skin
 
 config BR2_PACKAGE_XENOMAI_VRTX_SKIN
-	bool "VRTX skin library"
+	bool "VRTX skin"
 	help
 	  This option allows to install the VRTX Xenomai skin
+
+config BR2_PACKAGE_XENOMAI_VXWORKS_SKIN
+	bool "VxWorks skin"
+	help
+	  This option allows to install the VxWorks Xenomai skin
+
+endmenu
 
 endif
