@@ -4,13 +4,12 @@
 #
 ################################################################################
 
-MUTT_VERSION = 1.7.1
+MUTT_VERSION = 1.8.2
 MUTT_SITE = https://bitbucket.org/mutt/mutt/downloads
 MUTT_LICENSE = GPL-2.0+
 MUTT_LICENSE_FILES = GPL
 MUTT_DEPENDENCIES = ncurses
-MUTT_CONF_OPTS = --disable-smtp
-MUTT_AUTORECONF = YES
+MUTT_CONF_OPTS = --disable-doc --disable-smtp
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MUTT_DEPENDENCIES += libiconv
