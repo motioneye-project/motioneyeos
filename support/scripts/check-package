@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-# See support/scripts/check-package.txt before editing this file.
+# See support/scripts/checkpackagelib/readme.txt before editing this file.
 
 from __future__ import print_function
 import argparse
@@ -7,10 +7,10 @@ import inspect
 import re
 import sys
 
-import checkpackagelib_config
-import checkpackagelib_hash
-import checkpackagelib_mk
-import checkpackagelib_patch
+import checkpackagelib.lib_config
+import checkpackagelib.lib_hash
+import checkpackagelib.lib_mk
+import checkpackagelib.lib_patch
 
 VERBOSE_LEVEL_TO_SHOW_IGNORED_FILES = 3
 flags = None  # Command line arguments.
@@ -48,13 +48,13 @@ def get_lib_from_filename(fname):
     if FILE_IS_FROM_A_PACKAGE.search(fname) is None:
         return None
     if CONFIG_IN_FILENAME.search(fname):
-        return checkpackagelib_config
+        return checkpackagelib.lib_config
     if fname.endswith(".hash"):
-        return checkpackagelib_hash
+        return checkpackagelib.lib_hash
     if fname.endswith(".mk"):
-        return checkpackagelib_mk
+        return checkpackagelib.lib_mk
     if fname.endswith(".patch"):
-        return checkpackagelib_patch
+        return checkpackagelib.lib_patch
     return None
 
 

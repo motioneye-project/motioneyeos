@@ -1,6 +1,6 @@
-# See support/scripts/check-package.txt before editing this file.
+# See support/scripts/checkpackagelib/readme.txt before editing this file.
 
-from checkpackagebase import _CheckFunction
+from base import _CheckFunction
 
 
 class ConsecutiveEmptyLines(_CheckFunction):

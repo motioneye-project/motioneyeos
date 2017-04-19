@@ -1,16 +1,16 @@
-# See support/scripts/check-package.txt before editing this file.
+# See support/scripts/checkpackagelib/readme.txt before editing this file.
 # Kconfig generates errors if someone introduces a typo like "boool" instead of
 # "bool", so below check functions don't need to check for things already
 # checked by running "make menuconfig".
 
 import re
 
-from checkpackagebase import _CheckFunction
+from base import _CheckFunction
 # Notice: ignore 'imported but unused' from pyflakes for check functions.
-from checkpackagelib import ConsecutiveEmptyLines
-from checkpackagelib import EmptyLastLine
-from checkpackagelib import NewlineAtEof
-from checkpackagelib import TrailingSpace
+from lib import ConsecutiveEmptyLines
+from lib import EmptyLastLine
+from lib import NewlineAtEof
+from lib import TrailingSpace
 
 
 def _empty_or_comment(text):

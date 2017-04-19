@@ -8,8 +8,8 @@ How the scripts are structured:
   of variables (for the case it needs to keep data across calls) and the
   equivalent finalization (e.g. for the case a warning must be issued if some
   pattern is not in the input file).
-- checkpackagebase.py contains the base class for all check functions.
-- checkpackagelib.py contains the classes for common check functions.
+- base.py contains the base class for all check functions.
+- lib.py contains the classes for common check functions.
   Each check function is explicitly included in a given type-parsing library.
   Do not include every single check function in this file, a class that will
   only parse hash files should be implemented in the hash-parsing library.
@@ -20,8 +20,7 @@ How the scripts are structured:
   first and second warnings are printed; when called with -vv until the third
   warning is printed; an so on.
   Helper functions can be defined and will not be called by the main script.
-- checkpackagelib_type.py contains check functions specific to files of this
-  type.
+- lib_type.py contains check functions specific to files of this type.
 
 Some hints when changing this code:
 - prefer O(n) algorithms, where n is the total number of lines in the files
