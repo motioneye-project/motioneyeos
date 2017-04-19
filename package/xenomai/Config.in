@@ -96,6 +96,30 @@ config BR2_PACKAGE_XENOMAI_ENABLE_SMP
 
 	  http://xenomai.org/troubleshooting-a-dual-kernel-configuration/#feature_mismatch_missing8221smpnosmp8221
 
+config BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY
+	bool "Enable registry"
+	select BR2_PACKAGE_LIBFUSE
+	depends on !BR2_STATIC_LIBS # libfuse
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
+	depends on BR2_USE_MMU # libfuse
+	help
+	  Xenomai APIs can export their internal state through a
+	  pseudo-filesystem, whose files may be read to obtain
+	  information about the existing real-time objects, such as
+	  tasks, semaphores, message queues and so on.
+
+comment "registry needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY_PATH
+	string "Custom registry root path"
+	depends on BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY
+	help
+	  Specify the root path of the registry here.
+	  To use the Xenomai default (currently: /var/run/xenomai),
+	  leave this option empty.
+
 config BR2_PACKAGE_XENOMAI_TESTSUITE
 	bool "Install testsuite"
 	help

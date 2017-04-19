@@ -45,6 +45,18 @@ else
 XENOMAI_CONF_OPTS += --disable-smp
 endif
 
+ifeq ($(BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY),y)
+XENOMAI_DEPENDENCIES += libfuse
+XENOMAI_REGISTRY_PATH = $(call qstrip,$(BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY_PATH))
+ifeq ($(XENOMAI_REGISTRY_PATH),)
+XENOMAI_CONF_OPTS += --enable-registry
+else
+XENOMAI_CONF_OPTS += --enable-registry=$(XENOMAI_REGISTRY_PATH)
+endif
+else
+XENOMAI_CONF_OPTS += --disable-registry
+endif
+
 # Some of these files may be desired by some users -- at that point specific
 # config options need to be added to keep a particular set.
 define XENOMAI_REMOVE_UNNEEDED_FILES
