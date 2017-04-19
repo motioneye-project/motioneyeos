@@ -94,10 +94,11 @@ endif
 
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_NATIVE_SKIN),,alchemy)
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_POSIX_SKIN),,posix)
-XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_VXWORKS_SKIN),,vxworks)
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_PSOS_SKIN),,psos)
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_RTAI_SKIN),,rtai)
+XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_SMOKEY_SKIN),,smokey)
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_UITRON_SKIN),,uitron)
+XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_VXWORKS_SKIN),,vxworks)
 XENOMAI_REMOVE_SKIN_LIST += $(if $(BR2_PACKAGE_XENOMAI_VRTX_SKIN),,vrtx)
 
 define XENOMAI_REMOVE_SKINS
@@ -105,6 +106,9 @@ define XENOMAI_REMOVE_SKINS
 		rm -f $(TARGET_DIR)/usr/lib/lib$$i.* ; \
 		if [ $$i == "posix" ] ; then \
 			rm -f $(TARGET_DIR)/usr/lib/posix.wrappers ; \
+		fi ; \
+		if [ $$i == "smokey" ] ; then \
+			rm -f $(TARGET_DIR)/usr/bin/smokey* ; \
 		fi ; \
 	done
 endef
