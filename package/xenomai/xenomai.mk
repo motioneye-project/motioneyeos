@@ -56,13 +56,11 @@ XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_DEVFILES
 ifeq ($(BR2_PACKAGE_XENOMAI_TESTSUITE),)
 define XENOMAI_REMOVE_TESTSUITE
 	rm -rf $(TARGET_DIR)/usr/share/xenomai/
-	for i in klatency rtdm xeno xeno-load check-vdso \
-		irqloop cond-torture-posix switchtest arith \
-		sigtest clocktest cyclictest latency wakeup-time \
-		xeno-test cond-torture-native mutex-torture-posix \
-		mutex-torture-native ; do \
+	for i in clocktest gpiotest latency spitest switchtest \
+		xeno-test-run-wrapper dohell xeno-test-run xeno-test ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$$i ; \
 	done
+	rm -rf $(TARGET_DIR)/usr/demo/
 endef
 
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_TESTSUITE
