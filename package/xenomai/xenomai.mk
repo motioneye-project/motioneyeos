@@ -81,11 +81,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_XENOMAI_ANALOGY),)
 define XENOMAI_REMOVE_ANALOGY
-	for i in cmd_bits cmd_read cmd_write insn_write \
-		insn_bits insn_read ; do \
+	for i in cmd_read cmd_write cmd_bits insn_read insn_write insn_bits \
+			wf_generate ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$$i ; \
 	done
-	rm -f $(TARGET_DIR)/usr/sbin/analogy_config
+	for i in analogy_config analogy_calibrate ; do \
+		rm -f $(TARGET_DIR)/usr/sbin/$$i ; \
+	done
 	rm -f $(TARGET_DIR)/usr/lib/libanalogy.*
 endef
 
