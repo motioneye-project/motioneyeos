@@ -113,10 +113,11 @@ config BR2_PACKAGE_XENOMAI_ANALOGY
 	  and libraries
 
 config BR2_PACKAGE_XENOMAI_NATIVE_SKIN
-	bool "Native skin library"
+	bool "Alchemy (native) skin library"
 	default y
 	help
-	  This option allows to install the Native Xenomai skin
+	  This option allows to install the Alchemy Xenomai skin, previously
+	  called 'native'
 
 config BR2_PACKAGE_XENOMAI_POSIX_SKIN
 	bool "POSIX skin library"
