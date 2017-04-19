@@ -120,6 +120,12 @@ config BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY_PATH
 	  To use the Xenomai default (currently: /var/run/xenomai),
 	  leave this option empty.
 
+config BR2_PACKAGE_XENOMAI_ADDITIONAL_CONF_OPTS
+	string "Additional configure options"
+	help
+	  Specify any additional options to pass to the configure
+	  script here.  See Xenomai documentation for details.
+
 config BR2_PACKAGE_XENOMAI_TESTSUITE
 	bool "Install testsuite"
 	help
