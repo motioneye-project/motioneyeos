@@ -4,15 +4,21 @@
 #
 ################################################################################
 
+# Build the latest version that is compatible with the toolchain's kernel headers
 # v3.15+ requires SPI_TX_QUAD/SPI_RX_QUAD to build
 # Normally kernel headers can't be newer than kernel so switch based on that.
 # If you need quad-pumped spi support you need to upgrade your toolchain.
+# Note that the location of spidev_test.c changes from v4.5 onwards.
+
 ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15),y)
-SPIDEV_TEST_VERSION = v3.15
+SPIDEV_TEST_VERSION = v4.10
+SPIDEV_TEST_PATH = tools/spi
 else
 SPIDEV_TEST_VERSION = v3.0
+SPIDEV_TEST_PATH = Documentation/spi
 endif
-SPIDEV_TEST_SITE = http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/plain/Documentation/spi
+
+SPIDEV_TEST_SITE = http://git.kernel.org/cgit/linux/kernel/git/torvalds/linux.git/plain/$(SPIDEV_TEST_PATH)
 SPIDEV_TEST_SOURCE = spidev_test.c?id=$(SPIDEV_TEST_VERSION)
 SPIDEV_TEST_LICENSE = GPL-2.0
 
