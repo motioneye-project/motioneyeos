@@ -45,13 +45,19 @@ else
 XENOMAI_CONF_OPTS += --disable-smp
 endif
 
-define XENOMAI_REMOVE_DEVFILES
-	for i in xeno-config xeno-info wrap-link.sh ; do \
+# Some of these files may be desired by some users -- at that point specific
+# config options need to be added to keep a particular set.
+define XENOMAI_REMOVE_UNNEEDED_FILES
+	for i in xeno xeno-config xeno-info wrap-link.sh ; do \
 		rm -f $(TARGET_DIR)/usr/bin/$$i ; \
+	done
+	for i in autotune corectl hdb rtnet nomaccfg rtcfg rtifconfig \
+		rtiwconfig rtping rtroute tdmacfg rtps slackspot version; do \
+		rm -f $(TARGET_DIR)/usr/sbin/$$i ; \
 	done
 endef
 
-XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_DEVFILES
+XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_UNNEEDED_FILES
 
 ifeq ($(BR2_PACKAGE_XENOMAI_TESTSUITE),)
 define XENOMAI_REMOVE_TESTSUITE
