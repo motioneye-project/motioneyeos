@@ -15,7 +15,12 @@ XENOMAI_SITE = https://xenomai.org/downloads/xenomai/stable
 XENOMAI_SOURCE = xenomai-$(XENOMAI_VERSION).tar.bz2
 XENOMAI_LICENSE = GPL-2.0+ with exception (headers), LGPL-2.1+ (libraries), GPL-2.0+ (kernel), GFDL-1.2+ (docs), GPL-2.0 (ipipe patch, can driver)
 # GFDL is not included but refers to gnu.org
-XENOMAI_LICENSE_FILES = debian/copyright include/COPYING lib/trank/COPYING kernel/cobalt/COPYING
+XENOMAI_LICENSE_FILES = debian/copyright include/COPYING kernel/cobalt/COPYING \
+	kernel/cobalt/posix/COPYING kernel/cobalt/rtdm/COPYING \
+	lib/alchemy/COPYING lib/analogy/COPYING \
+	lib/boilerplate/iniparser/LICENSE lib/boilerplate/COPYING \
+	lib/cobalt/COPYING lib/copperplate/COPYING lib/psos/COPYING \
+	lib/smokey/COPYING lib/trank/COPYING lib/vxworks/COPYING
 
 XENOMAI_DEPENDENCIES = host-pkgconf
 
