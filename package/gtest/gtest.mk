@@ -37,6 +37,13 @@ HOST_GTEST_GMOCK_PYTHONPATH = \
 # the gtest sources.
 GTEST_CONF_OPTS = -DBUILD_SHARED_LIBS=OFF
 
+# Ensure that GTest is compiled with -fPIC to allow linking the static
+# libraries with dynamically linked programs. This is not a requirement
+# for most architectures but is mandatory for ARM.
+ifeq ($(BR2_STATIC_LIBS),)
+GTEST_CONF_OPTS += -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+endif
+
 GTEST_CONF_OPTS += -DBUILD_GTEST=ON
 
 ifeq ($(BR2_PACKAGE_GTEST_GMOCK),y)
