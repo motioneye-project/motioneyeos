@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBNSS_VERSION = 3.27.2
+LIBNSS_VERSION = 3.30.2
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(subst .,_,$(LIBNSS_VERSION))_RTM/src
 LIBNSS_DISTDIR = dist
@@ -33,9 +33,6 @@ LIBNSS_BUILD_VARS = \
 	NSS_USE_SYSTEM_SQLITE=1 \
 	NSS_ENABLE_ECC=1 \
 	NATIVE_CC="$(HOSTCC)" \
-	TARGETCC="$(TARGET_CC)" \
-	TARGETCCC="$(TARGET_CXX)" \
-	TARGETRANLIB="$(TARGET_RANLIB)" \
 	OS_ARCH="Linux" \
 	OS_RELEASE="2.6" \
 	OS_TEST="$(ARCH)"
@@ -55,17 +52,16 @@ endif
 endif
 
 define LIBNSS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/nss coreconf \
+	$(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D)/nss coreconf \
 		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 		DIST=$(@D)/$(LIBNSS_DISTDIR) \
 		CHECKLOC= \
 		$(LIBNSS_BUILD_VARS)
-	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/nss lib/dbm all \
+	$(TARGET_CONFIGURE_OPTS) $(MAKE1) -C $(@D)/nss lib/dbm all \
 		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
 		DIST=$(@D)/$(LIBNSS_DISTDIR) \
 		CHECKLOC= \
-		$(LIBNSS_BUILD_VARS) TARGET_OPTIMIZER="$(TARGET_CFLAGS)" \
-		NATIVE_FLAGS="$(HOST_CFLAGS)"
+		$(LIBNSS_BUILD_VARS) NATIVE_FLAGS="$(HOST_CFLAGS)"
 endef
 
 define LIBNSS_INSTALL_STAGING_CMDS
