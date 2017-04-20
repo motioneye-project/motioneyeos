@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZSH_VERSION = 5.3
+ZSH_VERSION = 5.3.1
 ZSH_SITE = http://www.zsh.org/pub
 ZSH_SOURCE = zsh-$(ZSH_VERSION).tar.xz
 ZSH_DEPENDENCIES = ncurses
