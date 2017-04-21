@@ -81,7 +81,7 @@ diff --git a/ld/config.in b/ld/config.in
 index 276fb77..35c58eb 100644
 --- a/ld/config.in
 +++ b/ld/config.in
-@@ -14,6 +14,9 @@
+@@ -17,6 +17,9 @@
     language is requested. */
  #undef ENABLE_NLS
  
@@ -95,7 +95,7 @@ diff --git a/ld/configure b/ld/configure
 index a446283..d1f9504 100755
 --- a/ld/configure
 +++ b/ld/configure
-@@ -786,6 +786,7 @@ with_lib_path
+@@ -789,6 +789,7 @@ with_lib_path
  enable_targets
  enable_64_bit_bfd
  with_sysroot
@@ -103,7 +103,7 @@ index a446283..d1f9504 100755
  enable_gold
  enable_got
  enable_compressed_debug_sections
-@@ -1442,6 +1443,8 @@ Optional Features:
+@@ -1446,6 +1447,8 @@ Optional Features:
    --disable-largefile     omit support for large files
    --enable-targets        alternative target configurations
    --enable-64-bit-bfd     64-bit support (on hosts with narrower word sizes)
@@ -112,7 +112,7 @@ index a446283..d1f9504 100755
    --enable-gold[=ARG]     build gold [ARG={default,yes,no}]
    --enable-got=<type>     GOT handling scheme (target, single, negative,
                            multigot)
-@@ -15491,7 +15494,18 @@ else
+@@ -15499,7 +15502,18 @@ else
  fi
  
  
@@ -156,7 +156,7 @@ diff --git a/ld/ld.h b/ld/ld.h
 index d84ec4e..3476b26 100644
 --- a/ld/ld.h
 +++ b/ld/ld.h
-@@ -164,6 +164,14 @@ typedef struct {
+@@ -172,6 +172,14 @@ typedef struct {
    /* If set, display the target memory usage (per memory region).  */
    bfd_boolean print_memory_usage;
  
@@ -175,7 +175,7 @@ diff --git a/ld/ld.texinfo b/ld/ld.texinfo
 index 1dd7492..fb1438e 100644
 --- a/ld/ld.texinfo
 +++ b/ld/ld.texinfo
-@@ -2332,6 +2332,18 @@ string identifying the original linked file does not change.
+@@ -2403,6 +2403,18 @@ string identifying the original linked file does not change.
  
  Passing @code{none} for @var{style} disables the setting from any
  @code{--build-id} options earlier on the command line.
@@ -226,7 +226,7 @@ diff --git a/ld/ldlex.h b/ld/ldlex.h
 index 6f11e7b..0ca3110 100644
 --- a/ld/ldlex.h
 +++ b/ld/ldlex.h
-@@ -144,6 +144,8 @@ enum option_values
+@@ -146,6 +146,8 @@ enum option_values
    OPTION_PRINT_MEMORY_USAGE,
    OPTION_REQUIRE_DEFINED_SYMBOL,
    OPTION_ORPHAN_HANDLING,
@@ -239,7 +239,7 @@ diff --git a/ld/ldmain.c b/ld/ldmain.c
 index bb0b9cc..a23c56c 100644
 --- a/ld/ldmain.c
 +++ b/ld/ldmain.c
-@@ -257,6 +257,8 @@ main (int argc, char **argv)
+@@ -270,6 +270,8 @@ main (int argc, char **argv)
    command_line.warn_mismatch = TRUE;
    command_line.warn_search_mismatch = TRUE;
    command_line.check_section_addresses = -1;
@@ -252,7 +252,7 @@ diff --git a/ld/lexsup.c b/ld/lexsup.c
 index 4cad209..be7d584 100644
 --- a/ld/lexsup.c
 +++ b/ld/lexsup.c
-@@ -530,6 +530,14 @@ static const struct ld_option ld_options[] =
+@@ -535,6 +535,14 @@ static const struct ld_option ld_options[] =
    { {"orphan-handling", required_argument, NULL, OPTION_ORPHAN_HANDLING},
      '\0', N_("=MODE"), N_("Control how orphan sections are handled."),
      TWO_DASHES },
@@ -267,7 +267,7 @@ index 4cad209..be7d584 100644
  };
  
  #define OPTION_COUNT ARRAY_SIZE (ld_options)
-@@ -542,6 +550,7 @@ parse_args (unsigned argc, char **argv)
+@@ -547,6 +555,7 @@ parse_args (unsigned argc, char **argv)
    int ingroup = 0;
    char *default_dirlist = NULL;
    char *shortopts;
@@ -275,7 +275,7 @@ index 4cad209..be7d584 100644
    struct option *longopts;
    struct option *really_longopts;
    int last_optind;
-@@ -1516,6 +1525,14 @@ parse_args (unsigned argc, char **argv)
+@@ -1528,6 +1537,14 @@ parse_args (unsigned argc, char **argv)
            }
            break;
  
@@ -290,7 +290,7 @@ index 4cad209..be7d584 100644
  	case OPTION_PUSH_STATE:
  	  input_flags.pushed = xmemdup (&input_flags,
  					sizeof (input_flags),
-@@ -1559,6 +1576,10 @@ parse_args (unsigned argc, char **argv)
+@@ -1571,6 +1588,10 @@ parse_args (unsigned argc, char **argv)
        command_line.soname = NULL;
      }
  
