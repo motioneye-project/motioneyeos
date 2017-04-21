@@ -1,13 +1,6 @@
 ################################################################################
 #
-# Qt Embedded for Linux
-#
-# This makefile was originally composed by Thomas Lundquist <thomasez@zelow.no>
-# Later heavily modified by buildroot developers
-#
-# BTW, this uses alot of FPU calls and it's pretty slow if you use
-# the kernels FPU emulation so it's better to choose soft float in the
-# buildroot config (and uClibc.config of course, if you have your own.)
+# qt
 #
 ################################################################################
 
