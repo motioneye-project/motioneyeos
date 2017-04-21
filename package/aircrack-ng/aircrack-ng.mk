@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AIRCRACK_NG_VERSION = 1.2-rc1
+AIRCRACK_NG_VERSION = 1.2-rc4
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
 AIRCRACK_NG_LICENSE = GPL-2.0+
 AIRCRACK_NG_LICENSE_FILES = LICENSE
@@ -22,6 +22,12 @@ AIRCRACK_NG_MAKE_OPTS += libnl=false
 else
 AIRCRACK_NG_MAKE_OPTS += libnl=true
 AIRCRACK_NG_DEPENDENCIES += libnl
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
+AIRCRACK_NG_MAKE_OPTS += STACK_PROTECTOR=true
+else
+AIRCRACK_NG_MAKE_OPTS += STACK_PROTECTOR=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
