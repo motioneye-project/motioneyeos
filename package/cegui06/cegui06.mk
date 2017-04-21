@@ -13,24 +13,24 @@ CEGUI06_LICENSE = MIT
 CEGUI06_LICENSE_FILES = COPYING
 CEGUI06_INSTALL_STAGING = YES
 
-CEGUI06_DEPENDENCIES =              \
-	expat                       \
-	freetype                    \
+CEGUI06_DEPENDENCIES = \
+	expat \
+	freetype \
 	pcre
 
-CEGUI06_CONF_OPTS =                 \
-	--enable-expat              \
-	--disable-external-tinyxml  \
-	--disable-xerces-c          \
-	--disable-libxml            \
-	--disable-tinyxml           \
-	--disable-opengl-renderer   \
-	--disable-external-glew     \
+CEGUI06_CONF_OPTS = \
+	--enable-expat \
+	--disable-external-tinyxml \
+	--disable-xerces-c \
+	--disable-libxml \
+	--disable-tinyxml \
+	--disable-opengl-renderer \
+	--disable-external-glew \
 	--disable-irrlicht-renderer \
 	--disable-directfb-renderer \
-	--disable-samples           \
-	--disable-lua-module        \
-	--disable-toluacegui        \
+	--disable-samples \
+	--disable-lua-module \
+	--disable-toluacegui \
 	--disable-external-toluapp
 
 $(eval $(autotools-package))

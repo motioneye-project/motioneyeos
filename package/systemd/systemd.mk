@@ -132,7 +132,7 @@ endif
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += \
-	--enable-gcrypt	\
+	--enable-gcrypt \
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
 	--with-libgpg-error-prefix=$(STAGING_DIR)/usr
 else

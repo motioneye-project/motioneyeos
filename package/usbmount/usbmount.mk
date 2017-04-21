@@ -14,9 +14,9 @@ USBMOUNT_LICENSE_FILES = debian/copyright
 define USBMOUNT_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/usbmount $(TARGET_DIR)/usr/share/usbmount/usbmount
 
-	$(INSTALL) -m 0755 -D $(@D)/00_create_model_symlink	\
+	$(INSTALL) -m 0755 -D $(@D)/00_create_model_symlink \
 		$(TARGET_DIR)/etc/usbmount/mount.d/00_create_model_symlink
-	$(INSTALL) -m 0755 -D $(@D)/00_remove_model_symlink	\
+	$(INSTALL) -m 0755 -D $(@D)/00_remove_model_symlink \
 		$(TARGET_DIR)/etc/usbmount/umount.d/00_remove_model_symlink
 
 	$(INSTALL) -m 0644 -D $(@D)/usbmount.rules $(TARGET_DIR)/lib/udev/rules.d/usbmount.rules

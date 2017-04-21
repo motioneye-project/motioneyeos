@@ -17,7 +17,7 @@ NGREP_LIBS += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 endif
 NGREP_CONF_ENV += LIBS+="$(NGREP_LIBS)"
 
-NGREP_CONF_OPTS =  \
+NGREP_CONF_OPTS = \
 	--with-pcap-includes=$(STAGING_DIR)/usr/include/pcap \
 	--enable-pcre \
 	--with-pcre=$(STAGING_DIR)/usr \

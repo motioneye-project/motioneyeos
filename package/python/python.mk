@@ -17,23 +17,23 @@ PYTHON_LIBTOOL_PATCH = NO
 # also installed in $(HOST_DIR), as it is needed when cross-compiling
 # third-party Python modules.
 
-HOST_PYTHON_CONF_OPTS +=	\
-	--enable-static		\
-	--without-cxx-main	\
-	--disable-sqlite3	\
-	--disable-tk		\
-	--with-expat=system	\
-	--disable-curses	\
-	--disable-codecs-cjk	\
-	--disable-nis		\
-	--enable-unicodedata	\
-	--disable-dbm		\
-	--disable-gdbm		\
-	--disable-bsddb		\
-	--disable-test-modules	\
-	--disable-bz2		\
-	--disable-ssl		\
-	--disable-ossaudiodev	\
+HOST_PYTHON_CONF_OPTS += \
+	--enable-static \
+	--without-cxx-main \
+	--disable-sqlite3 \
+	--disable-tk \
+	--with-expat=system \
+	--disable-curses \
+	--disable-codecs-cjk \
+	--disable-nis \
+	--enable-unicodedata \
+	--disable-dbm \
+	--disable-gdbm \
+	--disable-bsddb \
+	--disable-test-modules \
+	--disable-bz2 \
+	--disable-ssl \
+	--disable-ossaudiodev \
 	--disable-pyo-build
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
@@ -159,17 +159,17 @@ PYTHON_CONF_ENV += ac_cv_big_endian_double=yes
 endif
 
 PYTHON_CONF_OPTS += \
-	--without-cxx-main	\
-	--without-doc-strings	\
-	--with-system-ffi	\
-	--disable-pydoc		\
-	--disable-test-modules	\
-	--disable-lib2to3	\
-	--disable-gdbm		\
-	--disable-tk		\
-	--disable-nis		\
-	--disable-dbm		\
-	--disable-pyo-build	\
+	--without-cxx-main \
+	--without-doc-strings \
+	--with-system-ffi \
+	--disable-pydoc \
+	--disable-test-modules \
+	--disable-lib2to3 \
+	--disable-gdbm \
+	--disable-tk \
+	--disable-nis \
+	--disable-dbm \
+	--disable-pyo-build \
 	--disable-pyc-build
 
 # This is needed to make sure the Python build process doesn't try to

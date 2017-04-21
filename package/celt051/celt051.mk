@@ -18,13 +18,13 @@ CELT051_DEPENDENCIES = libogg
 # if target is the same kind as host (ie. same arch, same bitness,
 # same endianness, so that /usr/lib contains libraries linkable by
 # our cross-compiler)
-CELT051_CONF_OPTS =                       \
-	--enable-fixed-point              \
-	--disable-fixed-point-debug       \
+CELT051_CONF_OPTS = \
+	--enable-fixed-point \
+	--disable-fixed-point-debug \
 	--disable-experimental-postfilter \
-	--disable-static-modes            \
-	--disable-assertions              \
-	--disable-oggtest                 \
+	--disable-static-modes \
+	--disable-assertions \
+	--disable-oggtest \
 	--with-ogg=$(STAGING_DIR)/usr
 
 $(eval $(autotools-package))

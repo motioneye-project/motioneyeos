@@ -12,9 +12,9 @@ BLUEZ5_UTILS_DEPENDENCIES = dbus libglib2
 BLUEZ5_UTILS_LICENSE = GPL-2.0+, LGPL-2.1+
 BLUEZ5_UTILS_LICENSE_FILES = COPYING COPYING.LIB
 
-BLUEZ5_UTILS_CONF_OPTS =	\
-	--enable-tools		\
-	--enable-library	\
+BLUEZ5_UTILS_CONF_OPTS = \
+	--enable-tools \
+	--enable-library \
 	--disable-cups
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_OBEX),y)

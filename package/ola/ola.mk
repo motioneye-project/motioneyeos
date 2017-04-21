@@ -35,7 +35,7 @@ HOST_OLA_CONF_OPTS = \
 	--disable-uart \
 	--disable-libusb \
 	--disable-libftdi \
-	--disable-http  \
+	--disable-http \
 	--disable-examples \
 	--disable-unittests \
 	--disable-doxygen-html \

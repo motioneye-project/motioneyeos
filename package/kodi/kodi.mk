@@ -69,7 +69,7 @@ KODI_CONF_ENV = \
 	USE_TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr" \
 	TEXTUREPACKER_NATIVE_ROOT="$(HOST_DIR)/usr"
 
-KODI_CONF_OPTS +=  \
+KODI_CONF_OPTS += \
 	--with-ffmpeg=shared \
 	--disable-joystick \
 	--disable-openmax \

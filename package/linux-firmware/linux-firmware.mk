@@ -53,11 +53,11 @@ endif
 # rtl81xx
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX),y)
 LINUX_FIRMWARE_FILES += \
-	rtlwifi/rtl8192cfw.bin rtlwifi/rtl8192cfwU.bin		\
-	rtlwifi/rtl8192cfwU_B.bin rtlwifi/rtl8192cufw.bin	\
-	rtlwifi/rtl8192defw.bin rtlwifi/rtl8192sefw.bin		\
-	rtlwifi/rtl8188efw.bin rtlwifi/rtl8188eufw.bin		\
-	rtlwifi/rtl8192cufw_A.bin				\
+	rtlwifi/rtl8192cfw.bin rtlwifi/rtl8192cfwU.bin \
+	rtlwifi/rtl8192cfwU_B.bin rtlwifi/rtl8192cufw.bin \
+	rtlwifi/rtl8192defw.bin rtlwifi/rtl8192sefw.bin \
+	rtlwifi/rtl8188efw.bin rtlwifi/rtl8188eufw.bin \
+	rtlwifi/rtl8192cufw_A.bin \
 	rtlwifi/rtl8192cufw_B.bin rtlwifi/rtl8192cufw_TMSC.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
 endif
@@ -192,19 +192,19 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X),y)
 # wl1271-nvs.bin is a symlink to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
-	ti-connectivity/wl1271-fw-2.bin				\
-	ti-connectivity/wl1271-fw-ap.bin			\
-	ti-connectivity/wl1271-fw.bin				\
-	ti-connectivity/wl1271-nvs.bin				\
-	ti-connectivity/wl127x-fw-3.bin				\
-	ti-connectivity/wl127x-fw-plt-3.bin			\
-	ti-connectivity/wl127x-nvs.bin				\
-	ti-connectivity/wl127x-fw-4-mr.bin			\
-	ti-connectivity/wl127x-fw-4-plt.bin			\
-	ti-connectivity/wl127x-fw-4-sr.bin			\
-	ti-connectivity/wl127x-fw-5-mr.bin			\
-	ti-connectivity/wl127x-fw-5-plt.bin			\
-	ti-connectivity/wl127x-fw-5-sr.bin			\
+	ti-connectivity/wl1271-fw-2.bin \
+	ti-connectivity/wl1271-fw-ap.bin \
+	ti-connectivity/wl1271-fw.bin \
+	ti-connectivity/wl1271-nvs.bin \
+	ti-connectivity/wl127x-fw-3.bin \
+	ti-connectivity/wl127x-fw-plt-3.bin \
+	ti-connectivity/wl127x-nvs.bin \
+	ti-connectivity/wl127x-fw-4-mr.bin \
+	ti-connectivity/wl127x-fw-4-plt.bin \
+	ti-connectivity/wl127x-fw-4-sr.bin \
+	ti-connectivity/wl127x-fw-5-mr.bin \
+	ti-connectivity/wl127x-fw-5-plt.bin \
+	ti-connectivity/wl127x-fw-5-sr.bin \
 	ti-connectivity/TIInit_7.2.31.bts
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
@@ -213,20 +213,20 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X),y)
 # wl1271-nvs.bin and wl12xx-nvs.bin are symlinks to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
-	ti-connectivity/wl128x-fw-3.bin				\
-	ti-connectivity/wl128x-fw-ap.bin			\
-	ti-connectivity/wl128x-fw-plt-3.bin			\
-	ti-connectivity/wl128x-fw.bin				\
-	ti-connectivity/wl1271-nvs.bin				\
-	ti-connectivity/wl128x-nvs.bin				\
-	ti-connectivity/wl12xx-nvs.bin				\
-	ti-connectivity/wl127x-nvs.bin				\
-	ti-connectivity/wl128x-fw-4-mr.bin			\
-	ti-connectivity/wl128x-fw-4-plt.bin			\
-	ti-connectivity/wl128x-fw-4-sr.bin			\
-	ti-connectivity/wl128x-fw-5-mr.bin			\
-	ti-connectivity/wl128x-fw-5-plt.bin			\
-	ti-connectivity/wl128x-fw-5-sr.bin			\
+	ti-connectivity/wl128x-fw-3.bin \
+	ti-connectivity/wl128x-fw-ap.bin \
+	ti-connectivity/wl128x-fw-plt-3.bin \
+	ti-connectivity/wl128x-fw.bin \
+	ti-connectivity/wl1271-nvs.bin \
+	ti-connectivity/wl128x-nvs.bin \
+	ti-connectivity/wl12xx-nvs.bin \
+	ti-connectivity/wl127x-nvs.bin \
+	ti-connectivity/wl128x-fw-4-mr.bin \
+	ti-connectivity/wl128x-fw-4-plt.bin \
+	ti-connectivity/wl128x-fw-4-sr.bin \
+	ti-connectivity/wl128x-fw-5-mr.bin \
+	ti-connectivity/wl128x-fw-5-plt.bin \
+	ti-connectivity/wl128x-fw-5-sr.bin \
 	ti-connectivity/TIInit_7.2.31.bts
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif

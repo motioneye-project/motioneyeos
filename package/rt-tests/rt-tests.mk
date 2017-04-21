@@ -15,16 +15,16 @@ RT_TESTS_DEPENDENCIES = python
 endif
 
 define RT_TESTS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)	\
-		CC="$(TARGET_CC)"		\
-		CFLAGS="$(TARGET_CFLAGS)"	\
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		CC="$(TARGET_CC)" \
+		CFLAGS="$(TARGET_CFLAGS)" \
 		prefix=/usr
 endef
 
 define RT_TESTS_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)		\
-		DESTDIR="$(TARGET_DIR)"			\
-		prefix=/usr				\
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		DESTDIR="$(TARGET_DIR)" \
+		prefix=/usr \
 		$(if $(BR2_PACKAGE_PYTHON),PYLIB=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages/,PYLIB="") \
 		install
 endef

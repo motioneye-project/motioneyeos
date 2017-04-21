@@ -48,7 +48,7 @@ SDL2_DEPENDENCIES += xlib_libX11 xlib_libXext
 SDL2_CONF_OPTS += --enable-video-x11 \
 	--with-x=$(STAGING_DIR) \
 	--x-includes=$(STAGING_DIR)/usr/include \
-	--x-libraries=$(STAGING_DIR)/usr/lib  \
+	--x-libraries=$(STAGING_DIR)/usr/lib \
 	--enable-video-x11-xshape
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXCURSOR),y)

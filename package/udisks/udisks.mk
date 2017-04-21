@@ -11,16 +11,16 @@ UDISKS_LICENSE_FILES = COPYING
 # For 0002-Fix-systemd-service-file.patch
 UDISKS_AUTORECONF = YES
 
-UDISKS_DEPENDENCIES =	\
-	sg3_utils	\
-	host-pkgconf	\
-	udev		\
-	dbus		\
-	dbus-glib	\
-	polkit		\
-	parted		\
-	lvm2		\
-	libatasmart	\
+UDISKS_DEPENDENCIES = \
+	sg3_utils \
+	host-pkgconf \
+	udev \
+	dbus \
+	dbus-glib \
+	polkit \
+	parted \
+	lvm2 \
+	libatasmart \
 	libgudev
 
 UDISKS_CONF_OPTS = --disable-remote-access --disable-man-pages

@@ -70,22 +70,22 @@ endef
 TVHEADEND_PRE_CONFIGURE_HOOKS += TVHEADEND_INSTALL_DTV_SCAN_TABLES
 
 define TVHEADEND_CONFIGURE_CMDS
-	(cd $(@D);						\
-		$(TARGET_CONFIGURE_OPTS)			\
-		$(TARGET_CONFIGURE_ARGS)			\
-		CFLAGS="$(TVHEADEND_CFLAGS)"			\
-		./configure					\
-			--prefix=/usr				\
-			--arch="$(ARCH)"			\
-			--cpu="$(BR2_GCC_TARGET_CPU)"		\
-			--nowerror				\
-			--python="$(HOST_DIR)/usr/bin/python"	\
-			--enable-dvbscan			\
-			--enable-bundle				\
-			--enable-pngquant			\
-			--disable-ffmpeg_static			\
-			--disable-hdhomerun_static		\
-			$(TVHEADEND_CONF_OPTS)			\
+	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
+		CFLAGS="$(TVHEADEND_CFLAGS)" \
+		./configure \
+			--prefix=/usr \
+			--arch="$(ARCH)" \
+			--cpu="$(BR2_GCC_TARGET_CPU)" \
+			--nowerror \
+			--python="$(HOST_DIR)/usr/bin/python" \
+			--enable-dvbscan \
+			--enable-bundle \
+			--enable-pngquant \
+			--disable-ffmpeg_static \
+			--disable-hdhomerun_static \
+			$(TVHEADEND_CONF_OPTS) \
 	)
 endef
 

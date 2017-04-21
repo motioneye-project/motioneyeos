@@ -11,22 +11,22 @@ POCO_LICENSE_FILES = LICENSE
 POCO_INSTALL_STAGING = YES
 POCO_PATCH = https://github.com/pocoproject/poco/commit/30159aea4b3f6421da9d74a8bf22aad6d3bf26b4.patch
 
-POCO_DEPENDENCIES = zlib pcre					\
-	$(if $(BR2_PACKAGE_POCO_XML),expat)			\
-	$(if $(BR2_PACKAGE_POCO_CRYPTO),openssl)		\
-	$(if $(BR2_PACKAGE_POCO_NETSSL_OPENSSL),openssl)	\
-	$(if $(BR2_PACKAGE_POCO_DATA_SQLITE),sqlite)		\
+POCO_DEPENDENCIES = zlib pcre \
+	$(if $(BR2_PACKAGE_POCO_XML),expat) \
+	$(if $(BR2_PACKAGE_POCO_CRYPTO),openssl) \
+	$(if $(BR2_PACKAGE_POCO_NETSSL_OPENSSL),openssl) \
+	$(if $(BR2_PACKAGE_POCO_DATA_SQLITE),sqlite) \
 	$(if $(BR2_PACKAGE_POCO_DATA_MYSQL),mysql)
 
-POCO_OMIT = Data/ODBC PageCompiler					\
-	$(if $(BR2_PACKAGE_POCO_XML),,XML)				\
-	$(if $(BR2_PACKAGE_POCO_UTIL),,Util)				\
-	$(if $(BR2_PACKAGE_POCO_NET),,Net)				\
-	$(if $(BR2_PACKAGE_POCO_NETSSL_OPENSSL),,NetSSL_OpenSSL)	\
-	$(if $(BR2_PACKAGE_POCO_CRYPTO),,Crypto)			\
-	$(if $(BR2_PACKAGE_POCO_ZIP),,Zip)				\
-	$(if $(BR2_PACKAGE_POCO_DATA),,Data)				\
-	$(if $(BR2_PACKAGE_POCO_DATA_MYSQL),,Data/MySQL)		\
+POCO_OMIT = Data/ODBC PageCompiler \
+	$(if $(BR2_PACKAGE_POCO_XML),,XML) \
+	$(if $(BR2_PACKAGE_POCO_UTIL),,Util) \
+	$(if $(BR2_PACKAGE_POCO_NET),,Net) \
+	$(if $(BR2_PACKAGE_POCO_NETSSL_OPENSSL),,NetSSL_OpenSSL) \
+	$(if $(BR2_PACKAGE_POCO_CRYPTO),,Crypto) \
+	$(if $(BR2_PACKAGE_POCO_ZIP),,Zip) \
+	$(if $(BR2_PACKAGE_POCO_DATA),,Data) \
+	$(if $(BR2_PACKAGE_POCO_DATA_MYSQL),,Data/MySQL) \
 	$(if $(BR2_PACKAGE_POCO_DATA_SQLITE),,Data/SQLite)
 
 ifeq ($(LIBC),uclibc)
@@ -48,12 +48,12 @@ endif
 
 define POCO_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_MAKE_ENV) ./configure \
-		--config=Linux		\
-		--prefix=/usr		\
-		--omit="$(POCO_OMIT)"	\
-		$(POCO_CONF_OPTS)	\
-		--unbundled		\
-		--no-tests		\
+		--config=Linux \
+		--prefix=/usr \
+		--omit="$(POCO_OMIT)" \
+		$(POCO_CONF_OPTS) \
+		--unbundled \
+		--no-tests \
 		--no-samples)
 endef
 

@@ -24,19 +24,19 @@ PYTHON3_LIBTOOL_PATCH = NO
 # installed in $(HOST_DIR), as it is needed when cross-compiling
 # third-party Python modules.
 
-HOST_PYTHON3_CONF_OPTS +=	\
-	--without-ensurepip	\
-	--without-cxx-main	\
-	--disable-sqlite3	\
-	--disable-tk		\
-	--with-expat=system	\
-	--disable-curses	\
-	--disable-codecs-cjk	\
-	--disable-nis		\
-	--enable-unicodedata	\
-	--disable-test-modules	\
-	--disable-idle3		\
-	--disable-ossaudiodev	\
+HOST_PYTHON3_CONF_OPTS += \
+	--without-ensurepip \
+	--without-cxx-main \
+	--disable-sqlite3 \
+	--disable-tk \
+	--with-expat=system \
+	--disable-curses \
+	--disable-codecs-cjk \
+	--disable-nis \
+	--enable-unicodedata \
+	--disable-test-modules \
+	--disable-idle3 \
+	--disable-ossaudiodev \
 	--disable-openssl
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
@@ -151,15 +151,15 @@ PYTHON3_CONF_ENV += ac_cv_func_wcsftime=no
 endif
 
 PYTHON3_CONF_OPTS += \
-	--without-ensurepip	\
-	--without-cxx-main	\
-	--with-system-ffi	\
-	--disable-pydoc		\
-	--disable-test-modules	\
-	--disable-lib2to3	\
-	--disable-tk		\
-	--disable-nis		\
-	--disable-idle3		\
+	--without-ensurepip \
+	--without-cxx-main \
+	--with-system-ffi \
+	--disable-pydoc \
+	--disable-test-modules \
+	--disable-lib2to3 \
+	--disable-tk \
+	--disable-nis \
+	--disable-idle3 \
 	--disable-pyc-build
 
 # Python builds two tools to generate code: 'pgen' and

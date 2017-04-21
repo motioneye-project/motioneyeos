@@ -46,7 +46,7 @@ define PYTHON_SIP_CONFIGURE_CMDS
 		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(HOST_DIR)/usr/bin/python configure.py \
 			--bindir $(TARGET_DIR)/usr/bin \
 			--destdir $(TARGET_DIR)/$(PYTHON_SIP_LIB_DIR) \
-			--incdir $(STAGING_DIR)/$(PYTHON_SIP_INCLUDE_DIR)  \
+			--incdir $(STAGING_DIR)/$(PYTHON_SIP_INCLUDE_DIR) \
 			--sipdir $(TARGET_DIR)/usr/share/sip \
 			--sysroot $(STAGING_DIR)/usr \
 			--use-qmake && \

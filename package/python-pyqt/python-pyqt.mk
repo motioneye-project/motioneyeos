@@ -84,7 +84,7 @@ PYTHON_PYQT_CONF_OPTS = \
 # Python 3.x.
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 PYTHON_PYQT_CONF_OPTS += \
-	--vendorid-incdir $(STAGING_DIR)/usr/include/$(PYTHON_PYQT_PYTHON_DIR)  \
+	--vendorid-incdir $(STAGING_DIR)/usr/include/$(PYTHON_PYQT_PYTHON_DIR) \
 	--vendorid-libdir $(STAGING_DIR)/usr/lib/$(PYTHON_PYQT_PYTHON_DIR)/config
 endif
 

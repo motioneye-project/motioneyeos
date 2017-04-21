@@ -16,24 +16,24 @@ BLUEZ_UTILS_LICENSE_FILES = COPYING COPYING.LIB
 
 # BlueZ 3.x compatibility
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS_COMPAT),y)
-BLUEZ_UTILS_CONF_OPTS +=	\
-	--enable-hidd	\
-	--enable-pand	\
-	--enable-sdp	\
+BLUEZ_UTILS_CONF_OPTS += \
+	--enable-hidd \
+	--enable-pand \
+	--enable-sdp \
 	--enable-dund
 endif
 
 # audio support
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS_AUDIO),y)
-BLUEZ_UTILS_DEPENDENCIES +=	\
-	alsa-lib		\
+BLUEZ_UTILS_DEPENDENCIES += \
+	alsa-lib \
 	libsndfile
-BLUEZ_UTILS_CONF_OPTS +=	\
-	--enable-alsa	\
+BLUEZ_UTILS_CONF_OPTS += \
+	--enable-alsa \
 	--enable-audio
 else
-BLUEZ_UTILS_CONF_OPTS +=	\
-	--disable-alsa	\
+BLUEZ_UTILS_CONF_OPTS += \
+	--disable-alsa \
 	--disable-audio
 endif
 
@@ -47,10 +47,10 @@ endif
 # USB support
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS_USB),y)
 BLUEZ_UTILS_DEPENDENCIES += libusb
-BLUEZ_UTILS_CONF_OPTS +=	\
+BLUEZ_UTILS_CONF_OPTS += \
 	--enable-usb
 else
-BLUEZ_UTILS_CONF_OPTS +=	\
+BLUEZ_UTILS_CONF_OPTS += \
 	--disable-usb
 endif
 

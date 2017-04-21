@@ -56,7 +56,7 @@ MPLAYER_CONF_OPTS += --disable-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_FREETYPE),y)
-MPLAYER_CONF_OPTS +=  \
+MPLAYER_CONF_OPTS += \
 	--enable-freetype \
 	--with-freetype-config=$(STAGING_DIR)/usr/bin/freetype-config
 MPLAYER_DEPENDENCIES += freetype
@@ -128,7 +128,7 @@ MPLAYER_CONF_OPTS += --disable-libcdio
 # We intentionally don't pass --enable-dvdread, to let the
 # autodetection find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
-MPLAYER_CONF_OPTS +=  \
+MPLAYER_CONF_OPTS += \
 	--with-dvdread-config="$(PKG_CONFIG_HOST_BINARY) dvdread"
 MPLAYER_DEPENDENCIES += libdvdread
 endif
@@ -136,7 +136,7 @@ endif
 # We intentionally don't pass --enable-dvdnav to let the autodetection
 # find which library to link with.
 ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
-MPLAYER_CONF_OPTS +=  \
+MPLAYER_CONF_OPTS += \
 	--with-dvdnav-config="$(PKG_CONFIG_HOST_BINARY) dvdnav"
 MPLAYER_DEPENDENCIES += libdvdnav
 endif

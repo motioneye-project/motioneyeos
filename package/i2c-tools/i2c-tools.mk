@@ -30,7 +30,7 @@ I2C_TOOLS_PYTHON_BASE_ENV = \
 	CFLAGS="$(TARGET_CFLAGS) -I../include"
 
 define I2C_TOOLS_BUILD_PYSMBUS
-	(cd $(@D)/py-smbus;  \
+	(cd $(@D)/py-smbus; \
 	$(I2C_TOOLS_PYTHON_BASE_ENV) \
 		$(HOST_DIR)/usr/bin/python setup.py build \
 		$(PKG_PYTHON_DISTUTILS_BUILD_OPTS))
