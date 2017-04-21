@@ -136,9 +136,9 @@ endef
 XENOMAI_POST_INSTALL_TARGET_HOOKS += XENOMAI_REMOVE_SKINS
 
 define XENOMAI_DEVICES
-/dev/rtheap  c  666  0  0  10  254  0  0  -
-/dev/rtscope c  666  0  0  10  253  0  0  -
-/dev/rtp     c  666  0  0  150 0    0  1  32
+	/dev/rtheap  c  666  0  0  10  254  0  0  -
+	/dev/rtscope c  666  0  0  10  253  0  0  -
+	/dev/rtp     c  666  0  0  150 0    0  1  32
 endef
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
