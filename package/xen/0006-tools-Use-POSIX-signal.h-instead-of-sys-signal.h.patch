@@ -1,0 +1,41 @@
+From 67315f02798cdccb186bd12dc5be94a7aec90852 Mon Sep 17 00:00:00 2001
+From: Alistair Francis <alistair.francis@xilinx.com>
+Date: Mon, 17 Apr 2017 14:15:54 -0700
+Subject: [PATCH] tools: Use POSIX signal.h instead of sys/signal.h
+
+The POSIX spec specifies to use:
+    #include <signal.h>
+instead of:
+    #include <sys/signal.h>
+as seen here:
+   http://pubs.opengroup.org/onlinepubs/009695399/functions/signal.html
+
+This removes the warning:
+    #warning redirecting incorrect #include <sys/signal.h> to <signal.h>
+when building with the musl C-library.
+
+Signed-off-by: Alistair Francis <alistair.francis@xilinx.com>
+Acked-by: Wei Liu <wei.liu2@citrix.com>
+Acked-by: Razvan Cojocaru <rcojocaru@bitdefender.com>
+Acked-by: Ian Jackson <ian.jackson@eu.citrix.com>
+Release-acked-by: Julien Grall <julien.grall@arm.com>
+---
+ tools/blktap2/drivers/tapdisk-server.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/blktap2/drivers/tapdisk-server.c b/tools/blktap2/drivers/tapdisk-server.c
+index eecde3d23f..71315bb069 100644
+--- a/tools/blktap2/drivers/tapdisk-server.c
++++ b/tools/blktap2/drivers/tapdisk-server.c
+@@ -30,7 +30,7 @@
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <sys/ioctl.h>
+-#include <sys/signal.h>
++#include <signal.h>
+ 
+ #include "tapdisk-utils.h"
+ #include "tapdisk-server.h"
+-- 
+2.11.0
+
