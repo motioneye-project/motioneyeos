@@ -311,7 +311,7 @@ endif # UBOOT_BOARD_NAME
 else ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG),y)
 ifeq ($(BR2_TARGET_UBOOT_USE_DEFCONFIG),y)
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_BOARD_DEFCONFIG)),)
-$(error No board defconfig name specified, check your BR2_TARGET_UBOOT_DEFCONFIG setting)
+$(error No board defconfig name specified, check your BR2_TARGET_UBOOT_BOARD_DEFCONFIG setting)
 endif # qstrip BR2_TARGET_UBOOT_BOARD_DEFCONFIG
 endif # BR2_TARGET_UBOOT_USE_DEFCONFIG
 ifeq ($(BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG),y)
