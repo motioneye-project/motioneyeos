@@ -1,2 +1,3 @@
-# From http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/c/ccid/ccid_1.4.18-1.dsc
-sha256	5fdba97a2d2eb1c652b7dd4aa0bb8cee4814bab0cf61aecb84b32b57272541aa	ccid_1.4.18.orig.tar.bz2
+# From http://cdn-fastly.deb.debian.org/debian/pool/main/c/ccid/ccid_1.4.26-1.dsc
+sha1 20e22c23b8458548a6b572b044e5dbe4ecdc42e5  ccid_1.4.26.tar.bz2
+sha256 3267bf708ab780c02f01f6241b7c7277cb892d30fd1179a9926a8cc0ca40be2f  ccid_1.4.26.tar.bz2
