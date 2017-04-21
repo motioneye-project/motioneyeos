@@ -1,1 +1,2 @@
-../protobuf/protobuf.hash
+# Locally calculated
+sha256 c574e2b2178ffe66599274e8cfa11ecf83799a7992be30f0b68fb33ea0a0f1af protobuf-python-3.2.0.tar.gz

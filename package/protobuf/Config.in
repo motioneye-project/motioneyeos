@@ -13,10 +13,6 @@
 # *could* technically build with gcc 4.7. This is probably not a big deal,
 # and we can live with requiring gcc 4.8 on PowerPC to build protobuf.
 #
-# The SPARC64 build fails due to a missing definition of Atomic64. This
-# has been fixed on the master branch but the build still breaks due to
-# undefined references to internal NoBarrier_Atomic*() functions.
-#
 # host-protobuf only builds on certain architectures
 config BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 	bool
@@ -24,8 +20,8 @@ config BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 	default y if BR2_i386
 	default y if BR2_mipsel
 	default y if BR2_x86_64
+	default y if BR2_sparc64
 	default y if BR2_TOOLCHAIN_HAS_ATOMIC
-	depends on !BR2_sparc64 # missing definition of Atomic64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_USE_MMU # fork()
 
