@@ -14,7 +14,12 @@ LIBPNG_INSTALL_STAGING = YES
 LIBPNG_DEPENDENCIES = host-pkgconf zlib
 HOST_LIBPNG_DEPENDENCIES = host-pkgconf host-zlib
 LIBPNG_CONFIG_SCRIPTS = libpng$(LIBPNG_SERIES)-config libpng-config
-LIBPNG_CONF_OPTS = $(if $(BR2_ARM_CPU_HAS_NEON),--enable-arm-neon=yes,--enable-arm-neon=no)
+
+ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
+LIBPNG_CONF_OPTS += --enable-arm-neon
+else
+LIBPNG_CONF_OPTS += --disable-arm-neon
+endif
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
