@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ACPICA_VERSION = 20161117
+ACPICA_VERSION = 20170303
 ACPICA_SOURCE = acpica-unix2-$(ACPICA_VERSION).tar.gz
 ACPICA_SITE = https://acpica.org/sites/acpica/files
 ACPICA_LICENSE = BSD-3-Clause or GPL-2.0
