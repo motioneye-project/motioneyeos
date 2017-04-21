@@ -1304,6 +1304,7 @@ F:	package/glog/
 F:	package/gssdp/
 F:	package/gupnp/
 F:	package/gupnp-av/
+F:	package/nanomsg/
 
 N:	Rahul Jain <rahul.jain@imgtec.com>
 F:	package/uhttpd/
