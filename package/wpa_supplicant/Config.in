@@ -11,8 +11,8 @@ if BR2_PACKAGE_WPA_SUPPLICANT
 config BR2_PACKAGE_WPA_SUPPLICANT_NL80211
 	bool "Enable nl80211 support"
 	default y
-	select BR2_PACKAGE_LIBNL
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
 	help
 	  Enable support for nl80211.  This is the current wireless
 	  API for Linux, supported by all wireless drivers in vanilla
@@ -83,8 +83,8 @@ config BR2_PACKAGE_WPA_SUPPLICANT_CLI
 	  Install wpa_cli command line utility
 
 config BR2_PACKAGE_WPA_SUPPLICANT_WPA_CLIENT_SO
-	depends on !BR2_STATIC_LIBS
 	bool "Install wpa_client shared library"
+	depends on !BR2_STATIC_LIBS
 	help
 	  Install libwpa_client.so.
 
