@@ -28,10 +28,12 @@ endif
 # Disable fuse2fs as well to avoid carrying over deps, and it's unused
 HOST_E2FSPROGS_CONF_OPTS = \
 	--disable-defrag \
+	--disable-e2initrd-helper \
 	--disable-fuse2fs \
 	--disable-libblkid \
 	--disable-libuuid \
-	--enable-symlink-install
+	--enable-symlink-install \
+	--disable-testio-debug
 
 # Set the binary directories to "/bin" and "/sbin" to override programs
 # installed by busybox.
