@@ -45,6 +45,7 @@ comment "e4defrag needs a glibc or musl toolchain"
 config BR2_PACKAGE_E2FSPROGS_FSCK
 	bool "fsck"
 	default y
+	depends on !BR2_PACKAGE_UTIL_LINUX_FSCK
 	help
 	  Check and repair a Linux file system. This is a wrapper around
 	  the filesystem-specific fsck tools.
