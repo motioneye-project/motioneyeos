@@ -4,6 +4,10 @@ comment "gnupg2 needs a toolchain w/ threads and dynamic library support"
 
 config BR2_PACKAGE_GNUPG2
 	bool "gnupg2"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnpth
+	depends on BR2_USE_MMU # libassuan, libnpth
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LIBGPG_ERROR
 	select BR2_PACKAGE_LIBGCRYPT
@@ -11,10 +15,6 @@ config BR2_PACKAGE_GNUPG2
 	select BR2_PACKAGE_LIBKSBA
 	select BR2_PACKAGE_LIBNPTH
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libnpth
-	depends on BR2_USE_MMU # libassuan, libnpth
-	depends on !BR2_STATIC_LIBS
 	help
 	  GnuPG is the GNU project's complete and free implementation
 	  of the OpenPGP standard as defined by RFC4880. GnuPG allows

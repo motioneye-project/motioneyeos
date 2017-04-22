@@ -489,8 +489,8 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DASH
 	  DASH demuxer plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DECKLINK
-	depends on BR2_INSTALL_LIBSTDCPP
 	bool "decklink"
+	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  Blackmagic Decklink plugin
 
@@ -499,14 +499,14 @@ comment "decklink needs a toolchain w/ C++"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DIRECTFB
 	bool "directfb"
-	depends on BR2_PACKAGE_DIRECTFB
 	default y
+	depends on BR2_PACKAGE_DIRECTFB
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"
-	select BR2_PACKAGE_DTV_SCAN_TABLES
 	# FEC_2_5 / QAM_4_NR definitions
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	select BR2_PACKAGE_DTV_SCAN_TABLES
 	help
 	  DVB elements
 
@@ -526,9 +526,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FBDEV
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC
 	bool "fdk-aac"
-	select BR2_PACKAGE_FDK_AAC
 	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
 	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_FDK_AAC
 	help
 	  MPEG AAC encoder/decoder
 
@@ -686,9 +686,9 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VOAACENC
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND
 	bool "wayland"
+	default y
 	depends on BR2_PACKAGE_WAYLAND
 	select BR2_PACKAGE_WAYLAND_PROTOCOLS
-	default y
 	help
 	  Wayland Video Sink
 

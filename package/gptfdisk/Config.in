@@ -35,10 +35,10 @@ config BR2_PACKAGE_GPTFDISK_SGDISK
 
 config BR2_PACKAGE_GPTFDISK_CGDISK
 	bool "ncurses cgdisk"
-	select BR2_PACKAGE_NCURSES
-	select BR2_PACKAGE_NCURSES_WCHAR # needed because of UTF-16
 	depends on BR2_USE_WCHAR # ncurses wchar
 	depends on !(BR2_bfin && BR2_BINFMT_FLAT) # ncurses wchar support
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_WCHAR # needed because of UTF-16
 	help
 	  Install the ncurses-based GUID partition table (GPT)
 	  manipulator /usr/sbin/cgdisk.

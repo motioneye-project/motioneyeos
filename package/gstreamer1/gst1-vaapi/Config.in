@@ -1,12 +1,12 @@
 config BR2_PACKAGE_GST1_VAAPI
 	bool "gst1-vaapi"
+	depends on !BR2_STATIC_LIBS # dlopen(), libva
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libva, libdrm
+	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LIBVA
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	select BR2_PACKAGE_GST1_PLUGINS_BAD # gstreamer-codecparsers
-	depends on !BR2_STATIC_LIBS # dlopen(), libva
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libva, libdrm
-	depends on BR2_PACKAGE_HAS_UDEV
 	help
 	  gstreamer-vaapi consists in a collection of VA-API based
 	  plugins for GStreamer and helper libraries.

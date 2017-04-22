@@ -306,9 +306,9 @@ comment "flac needs a toolchain w/ wchar"
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_GDKPIXBUF
 	bool "gdkpixbuf"
-	select BR2_PACKAGE_GDK_PIXBUF
 	depends on BR2_USE_WCHAR # gdk-pixbuf -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gdk-pixbuf -> libglib2
+	select BR2_PACKAGE_GDK_PIXBUF
 	help
 	  GdkPixbuf-based image decoder, overlay and sink
 
@@ -316,12 +316,12 @@ comment "gdkpixbuf needs a toolchain w/ wchar, threads"
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_PULSE
+	bool "pulseaudio"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # pulseaudio
 	depends on BR2_USE_MMU # pulseaudio
 	depends on !BR2_STATIC_LIBS # pulseaudio
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
 	select BR2_PACKAGE_PULSEAUDIO
-	bool "pulseaudio"
 	help
 	  PulseAudio plugin library
 
@@ -360,9 +360,9 @@ comment "taglib needs a toolchain w/ C++, wchar"
 
 config BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_VPX
 	bool "vpx (webm)"
-	select BR2_PACKAGE_LIBVPX
 	depends on !BR2_bfin # libvpx
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libvpx
+	select BR2_PACKAGE_LIBVPX
 	help
 	  VP8 plugin
 
