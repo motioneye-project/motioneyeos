@@ -98,10 +98,10 @@ config BR2_PACKAGE_XENOMAI_ENABLE_SMP
 
 config BR2_PACKAGE_XENOMAI_ENABLE_REGISTRY
 	bool "Enable registry"
-	select BR2_PACKAGE_LIBFUSE
 	depends on !BR2_STATIC_LIBS # libfuse
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
 	depends on BR2_USE_MMU # libfuse
+	select BR2_PACKAGE_LIBFUSE
 	help
 	  Xenomai APIs can export their internal state through a
 	  pseudo-filesystem, whose files may be read to obtain
