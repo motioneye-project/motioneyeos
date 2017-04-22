@@ -21,9 +21,9 @@ if BR2_PACKAGE_DIRECTFB
 
 config BR2_PACKAGE_DIRECTFB_MULTI
 	bool "directfb multi application"
-	select BR2_PACKAGE_LINUX_FUSION
 	depends on BR2_USE_MMU # madvise()
 	depends on BR2_LINUX_KERNEL
+	select BR2_PACKAGE_LINUX_FUSION
 	help
 	  Enable use of multiple concurrent DirectFB applications
 
@@ -113,8 +113,8 @@ config BR2_PACKAGE_DIRECTFB_SERIALMOUSE
 
 config BR2_PACKAGE_DIRECTFB_TSLIB
 	bool "enable touchscreen support"
-	depends on !BR2_STATIC_LIBS # tslib
 	default y
+	depends on !BR2_STATIC_LIBS # tslib
 	select BR2_PACKAGE_TSLIB
 
 comment "touchscreen support needs a toolchain w/ dynamic library"
@@ -130,8 +130,8 @@ config BR2_PACKAGE_DIRECTFB_TIFF
 
 config BR2_PACKAGE_DIRECTFB_IMLIB2
 	bool "enable IMLIB2 support"
-	select BR2_PACKAGE_IMLIB2
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_IMLIB2
 
 comment "imlib2 support needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS

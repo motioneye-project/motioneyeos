@@ -1,8 +1,8 @@
 config BR2_PACKAGE_DING_LIBS
 	bool "ding-libs"
+	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT
 	help
 	  The ding-libs packages contain a set of libraries used by
 	  the System Security Services Daemon (SSSD) and other

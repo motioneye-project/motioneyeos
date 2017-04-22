@@ -17,9 +17,9 @@ if BR2_PACKAGE_DOVECOT
 
 config BR2_PACKAGE_DOVECOT_MYSQL
 	bool "mysql support"
-	select BR2_PACKAGE_MYSQL
 	depends on BR2_INSTALL_LIBSTDCPP # mysql
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
 	help
 	  Enable MySQL support.
 
