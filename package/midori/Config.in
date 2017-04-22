@@ -5,6 +5,12 @@ comment "midori needs libgtk3 and a glibc toolchain w/ C++, gcc >= 4.9"
 
 config BR2_PACKAGE_MIDORI
 	bool "midori"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, gcr, gnupg2
+	depends on BR2_PACKAGE_LIBGTK3
+	depends on BR2_INSTALL_LIBSTDCPP # webkitgtk
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # webkitgtk
+	depends on BR2_TOOLCHAIN_USES_GLIBC # webkitgtk
+	depends on BR2_PACKAGE_WEBKITGTK_ARCH_SUPPORTS
 	# GCR can only be used with the X11 backend
 	select BR2_PACKAGE_GCR if BR2_PACKAGE_LIBGTK3_X11
 	select BR2_PACKAGE_GRANITE
@@ -15,12 +21,6 @@ config BR2_PACKAGE_MIDORI
 	select BR2_PACKAGE_WEBKITGTK
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, gcr, gnupg2
-	depends on BR2_PACKAGE_LIBGTK3
-	depends on BR2_INSTALL_LIBSTDCPP # webkitgtk
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # webkitgtk
-	depends on BR2_TOOLCHAIN_USES_GLIBC # webkitgtk
-	depends on BR2_PACKAGE_WEBKITGTK_ARCH_SUPPORTS
 	help
 	  Midori is a lightweight web browser based on WebKit
 
