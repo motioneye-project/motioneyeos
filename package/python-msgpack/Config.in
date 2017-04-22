@@ -1,8 +1,8 @@
 config BR2_PACKAGE_PYTHON_MSGPACK
 	bool "python-msgpack"
-	select BR2_PACKAGE_MSGPACK
 	depends on BR2_INSTALL_LIBSTDCPP # msgpack
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # msgpack
+	select BR2_PACKAGE_MSGPACK
 	help
 	  MessagePack (http://msgpack.org/) is a fast, compact binary
 	  serialization format, suitable for similar data to JSON.

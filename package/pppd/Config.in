@@ -11,8 +11,8 @@ config BR2_PACKAGE_PPPD
 if BR2_PACKAGE_PPPD
 
 config BR2_PACKAGE_PPPD_FILTER
-	select BR2_PACKAGE_LIBPCAP
 	bool "filtering"
+	select BR2_PACKAGE_LIBPCAP
 	help
 	  Packet filtering abilities for pppd. If enabled,
 	  the pppd active-filter and pass-filter options

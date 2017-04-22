@@ -4,13 +4,13 @@ comment "python-libconfig needs a glibc or uClibc toolchain w/ C++, threads"
 
 config BR2_PACKAGE_PYTHON_LIBCONFIG
 	bool "python-libconfig"
-	select BR2_PACKAGE_BOOST
-	select BR2_PACKAGE_BOOST_PYTHON
-	select BR2_PACKAGE_LIBCONFIG
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# error: invalid use of incomplete type 'struct _IO_FILE'
 	depends on !BR2_TOOLCHAIN_USES_MUSL
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_PYTHON
+	select BR2_PACKAGE_LIBCONFIG
 	help
 	  Python bindings to the C++ library libconfig
 

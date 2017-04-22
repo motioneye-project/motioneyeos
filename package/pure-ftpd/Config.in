@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PURE_FTPD
 	bool "pure-ftpd"
-	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  Pure-FTPd is a free (BSD), secure, production-quality and standard-
 	  conformant FTP server. It doesn't provide useless bells and whistles,

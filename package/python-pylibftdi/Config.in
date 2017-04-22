@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PYTHON_PYLIBFTDI
 	bool "python-pylibftdi"
-	select BR2_PACKAGE_LIBFTDI
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBFTDI
 	help
 	  This package contains the python language binding libftdi.
 

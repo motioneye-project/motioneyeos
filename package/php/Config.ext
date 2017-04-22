@@ -53,8 +53,8 @@ config BR2_PACKAGE_PHP_EXT_ZIP
 
 config BR2_PACKAGE_PHP_EXT_ZLIB
 	bool "zlib"
-	select BR2_PACKAGE_ZLIB
 	default y
+	select BR2_PACKAGE_ZLIB
 	help
 	  zlib support
 
@@ -136,9 +136,9 @@ config BR2_PACKAGE_PHP_EXT_PDO_MYSQL
 
 config BR2_PACKAGE_PHP_EXT_PDO_POSTGRESQL
 	bool "PostgreSQL"
-	select BR2_PACKAGE_POSTGRESQL
 	depends on BR2_USE_MMU # postgresql
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_POSTGRESQL
 	help
 	  PDO driver for PostgreSQL
 
@@ -164,8 +164,8 @@ comment "Human language and character encoding support"
 
 config BR2_PACKAGE_PHP_EXT_GETTEXT
 	bool "Gettext"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  Gettext support
 
@@ -180,11 +180,11 @@ config BR2_PACKAGE_PHP_EXT_ICONV
 
 config BR2_PACKAGE_PHP_EXT_INTL
 	bool "intl"
-	select BR2_PACKAGE_ICU
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_BINFMT_FLAT # icu
 	depends on BR2_TOOLCHAIN_HAS_THREADS # icu
+	select BR2_PACKAGE_ICU
 	help
 	  Internationalization support
 
