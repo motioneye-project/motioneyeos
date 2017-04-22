@@ -39,8 +39,8 @@ config BR2_PACKAGE_EXIV2_PNG
 
 config BR2_PACKAGE_EXIV2_XMP
 	bool "XMP support"
-	select BR2_PACKAGE_EXPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_EXPAT
 	help
 	  Build with XMP support
 

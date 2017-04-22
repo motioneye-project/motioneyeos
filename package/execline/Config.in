@@ -1,7 +1,7 @@
 config BR2_PACKAGE_EXECLINE
 	bool "execline"
-	select BR2_PACKAGE_SKALIBS
 	depends on BR2_USE_MMU # skalibs
+	select BR2_PACKAGE_SKALIBS
 	help
 	  execline is a (non-interactive) scripting language, like sh;
 	  but its syntax is quite different from a traditional shell

@@ -5,9 +5,6 @@ comment "elfutils needs a uClibc or glibc toolchain w/ wchar, dynamic library"
 
 config BR2_PACKAGE_ELFUTILS
 	bool "elfutils"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS
 	# Only glibc and uClibc implement the myriad of required GNUisms
@@ -15,6 +12,9 @@ config BR2_PACKAGE_ELFUTILS
 	# build issue caused by the _ prefix used on blackfin for
 	# assembly symbols
 	depends on !BR2_bfin
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  Libraries/utilities to handle ELF objects (drop in
 	  replacement for libelf).
