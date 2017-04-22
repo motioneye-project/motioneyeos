@@ -1,10 +1,10 @@
 config BR2_PACKAGE_APACHE
 	bool "apache"
-	select BR2_PACKAGE_APR_UTIL
-	select BR2_PACKAGE_PCRE
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # apr
+	select BR2_PACKAGE_APR_UTIL
+	select BR2_PACKAGE_PCRE
 	help
 	  The Apache HTTP Server Project is an effort to develop and maintain an
 	  open-source HTTP server for modern operating systems including UNIX

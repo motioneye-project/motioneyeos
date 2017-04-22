@@ -1,9 +1,9 @@
 config BR2_PACKAGE_AGENTPP
 	bool "agent++"
-	select BR2_PACKAGE_SNMPPP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # snmp++
 	depends on !BR2_STATIC_LIBS # snmp++
+	select BR2_PACKAGE_SNMPPP
 	help
 	  AGENT++ is a set of C++ classes which provides a complete protocol
 	  engine and dispatch table for the development of SNMP agents.

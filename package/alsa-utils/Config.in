@@ -33,10 +33,10 @@ config BR2_PACKAGE_ALSA_UTILS_ALSALOOP
 
 config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	bool "alsamixer"
+	default y
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ALSA_LIB_MIXER
-	depends on BR2_USE_WCHAR
-	default y
 
 comment "alsamixer needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
