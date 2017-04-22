@@ -40,9 +40,9 @@ config BR2_PACKAGE_FFMPEG_FFMPEG
 
 config BR2_PACKAGE_FFMPEG_FFPLAY
 	bool "Build ffplay"
+	depends on !BR2_STATIC_LIBS # sdl2
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_SDL2
-	depends on !BR2_STATIC_LIBS # sdl2
 	help
 	  FFplay is a very simple and portable media player using the
 	  FFmpeg libraries and the SDL library.
