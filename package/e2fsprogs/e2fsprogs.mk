@@ -10,14 +10,21 @@ E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2F
 E2FSPROGS_LICENSE = GPL-2.0, MIT-like with advertising clause (libss and libet)
 E2FSPROGS_LICENSE_FILES = NOTICE lib/ss/mit-sipb-copyright.h lib/et/internal.h
 E2FSPROGS_INSTALL_STAGING = YES
+
+# Use libblkid and libuuid from util-linux for host and target packages.
+# This prevents overriding them with e2fsprogs' ones, which may cause
+# problems for other packages.
 E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
-# we don't have a host-util-linux
-HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf
+HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf host-util-linux
 
 # e4defrag doesn't build on older systems like RHEL5.x, and we don't
 # need it on the host anyway.
 # Disable fuse2fs as well to avoid carrying over deps, and it's unused
-HOST_E2FSPROGS_CONF_OPTS += --disable-defrag --disable-fuse2fs
+HOST_E2FSPROGS_CONF_OPTS = \
+	--disable-defrag \
+	--disable-fuse2fs \
+	--disable-libblkid \
+	--disable-libuuid
 
 E2FSPROGS_CONF_OPTS = \
 	$(if $(BR2_STATIC_LIBS),,--enable-elf-shlibs) \
