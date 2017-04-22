@@ -7,7 +7,7 @@ config BR2_PACKAGE_E2FSPROGS
 	help
 	  The EXT2 file system utilities.
 
-	  http://e2fsprogs.sf.net
+	  http://e2fsprogs.sourceforge.net
 
 if BR2_PACKAGE_E2FSPROGS
 
