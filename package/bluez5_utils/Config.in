@@ -29,8 +29,8 @@ if BR2_PACKAGE_BLUEZ5_UTILS
 
 config BR2_PACKAGE_BLUEZ5_UTILS_OBEX
 	bool "build OBEX support"
-	select BR2_PACKAGE_LIBICAL
 	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBICAL
 	help
 	  Enable the OBEX support in Bluez 5.x.
 

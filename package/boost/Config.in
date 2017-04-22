@@ -115,9 +115,9 @@ config BR2_PACKAGE_BOOST_MATH
 	bool "boost-math"
 
 config BR2_PACKAGE_BOOST_METAPARSE
+	bool "boost-metaparse"
 	depends on BR2_USE_MMU # boost-test
 	select BR2_PACKAGE_BOOST_TEST
-	bool "boost-metaparse"
 
 config BR2_PACKAGE_BOOST_MPI
 	bool "boost-mpi"
@@ -126,8 +126,8 @@ config BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
 	bool "boost-program_options"
 
 config BR2_PACKAGE_BOOST_PYTHON
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	bool "boost-python"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 
 config BR2_PACKAGE_BOOST_RANDOM
 	bool "boost-random"

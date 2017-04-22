@@ -2,8 +2,8 @@ comment "Binutils Options"
 
 choice
 	prompt "Binutils Version"
-	depends on !BR2_arc
 	default BR2_BINUTILS_VERSION_2_27_X
+	depends on !BR2_arc
 	help
 	  Select the version of binutils you wish to use.
 

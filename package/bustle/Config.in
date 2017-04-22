@@ -1,11 +1,11 @@
 config BR2_PACKAGE_BUSTLE
 	bool "bustle"
-	select BR2_PACKAGE_LIBPCAP
-	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
 	depends on BR2_PACKAGE_DBUS # runtime
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_LIBGLIB2
 	help
 	  Bustle is a better dbus-monitor! It records and draws
 	  sequence diagrams of D-Bus activity, showing signal
