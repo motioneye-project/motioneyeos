@@ -1,13 +1,13 @@
 config BR2_PACKAGE_TEKUI
 	bool "tekui"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LUAFILESYSTEM	# runtime only
 	select BR2_PACKAGE_LUAEXPAT		# runtime only
 	select BR2_PACKAGE_LUASOCKET		# runtime only
 	select BR2_PACKAGE_LUAPOSIX		# runtime only
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  TekUI is a small, freestanding and portable graphical user interface
 	  (GUI) toolkit written in Lua and C. It was initially developed for
