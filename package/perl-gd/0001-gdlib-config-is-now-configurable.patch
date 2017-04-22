@@ -13,23 +13,23 @@ index dfe8ad7..0fa6ef3 100644
 --- a/Makefile.PL
 +++ b/Makefile.PL
 @@ -21,7 +21,7 @@ END
- my (@INC,@LIBPATH,@LIBS);
+ my (@INC,@LIBPATH,@LIBS,$LIBGD_VERSION);
  my $AUTOCONFIG = 0;      # global set by try_to_autoconfigure() below
  
 -my ($options,$lib_gd_path,$lib_ft_path,$lib_png_path,$lib_jpeg_path,$lib_xpm_path,$lib_zlib_path,$force);
 +my ($options,$lib_gd_path,$lib_ft_path,$lib_png_path,$lib_jpeg_path,$lib_xpm_path,$lib_zlib_path,$force,$gdlib_config_path);
  
  use Getopt::Long;
- my $result = GetOptions("options=s"         => \$options,
-@@ -32,6 +32,7 @@ my $result = GetOptions("options=s"         => \$options,
- 			"lib_xpm_path=s"    => \$lib_xpm_path,
- 			"lib_zlib_path=s"   => \$lib_zlib_path,
- 			"ignore_missing_gd" => \$force,
+ my $result = GetOptions("ignore_missing_gd" => \$force,
+@@ -32,6 +32,7 @@ my $result = GetOptions("ignore_missing_gd" => \$force,
+ 			"lib_jpeg_path=s" => \$lib_jpeg_path,
+ 			"lib_xpm_path=s"  => \$lib_xpm_path,
+ 			"lib_zlib_path=s" => \$lib_zlib_path,
 +			"gdlib_config_path=s" => \$gdlib_config_path,
  		       );
  
  unless (try_to_autoconfigure(\$options,\$lib_gd_path,\@INC,\@LIBPATH,\@LIBS) || $force) {
-@@ -72,6 +73,7 @@ Configure GD module.
+@@ -75,6 +76,7 @@ Configure GD module.
       -lib_xpm_path  path            path to libxpm
       -lib_zlib_path path            path to libpng
       -ignore_missing_gd             Ignore missing or old libgd installations and try to compile anyway
@@ -37,7 +37,7 @@ index dfe8ad7..0fa6ef3 100644
  
  If no options are passed on the command line.  The program will
  attempt to autoconfigure itself with the gdlib-config program (present
-@@ -118,6 +120,15 @@ if( defined($lib_zlib_path) )
+@@ -121,6 +123,15 @@ if( defined($lib_zlib_path) )
      @INC     = ("-I$lib_zlib_path/include", @INC);
      @LIBPATH = ("-L$lib_zlib_path/lib", @LIBPATH); 
  }
@@ -53,15 +53,15 @@ index dfe8ad7..0fa6ef3 100644
  #############################################################################################
  
  if ($^O eq 'VMS'){
-@@ -278,7 +289,7 @@ exit 0;
- 
- sub try_to_autoconfigure {
-   my ($options,$lib_gd_path,$INC,$LIBPATH,$LIBS) = @_;
--  my $config = `gdlib-config --all`;
-+  my $config = `$gdlib_config_path --all`;
-   return unless $config;
-   $AUTOCONFIG++;
- 
+@@ -289,7 +300,7 @@ sub try_to_autoconfigure {
+   my ($prefix) = $$lib_gd_path ? ($$lib_gd_path =~ m|(^.*)/lib|) : "";
+   my $bindir = $prefix ? "$prefix/bin/" : "";
+   my $config = `${bindir}gdlib-config --all` if -e "${bindir}gdlib-config";
+-  $config = `gdlib-config --all` if !$config;
++  $config = `$gdlib_config_path --all` if !$config;
+   unless ($config) {
+       my %config;
+       require ExtUtils::PkgConfig;
 -- 
 1.9.3
 
