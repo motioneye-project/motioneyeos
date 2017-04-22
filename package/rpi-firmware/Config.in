@@ -47,8 +47,8 @@ config BR2_PACKAGE_RPI_FIRMWARE_BOOT
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 	bool "Install Device Tree Blobs (DTBs)"
-	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
 	default y
+	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
 	help
 	  If you are using a Linux kernel <= 3.18, you should say 'y' here.
 
@@ -58,9 +58,9 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	bool "Install DTB overlays"
+	default y
 	depends on BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS \
 		|| BR2_LINUX_KERNEL_DTS_SUPPORT
-	default y
 	help
 	  Say 'y' here if you need to load one or more of the DTB overlays,
 	  to support HATs (Hardware Attached on Top, add-on modules).
