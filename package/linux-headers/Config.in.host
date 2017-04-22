@@ -22,48 +22,49 @@ choice
 	  or hide packages that have strong requirements on the kernel
 	  headers.
 
-	config BR2_KERNEL_HEADERS_AS_KERNEL
-		bool "Same as kernel being built"
-		depends on BR2_LINUX_KERNEL
+config BR2_KERNEL_HEADERS_AS_KERNEL
+	bool "Same as kernel being built"
+	depends on BR2_LINUX_KERNEL
 
-	config BR2_KERNEL_HEADERS_3_2
-		bool "Linux 3.2.x kernel headers"
-		depends on !BR2_arc && !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+config BR2_KERNEL_HEADERS_3_2
+	bool "Linux 3.2.x kernel headers"
+	depends on !BR2_arc && !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
-	config BR2_KERNEL_HEADERS_3_4
-		bool "Linux 3.4.x kernel headers"
-		depends on !BR2_arc && !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+config BR2_KERNEL_HEADERS_3_4
+	bool "Linux 3.4.x kernel headers"
+	depends on !BR2_arc && !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 
-	config BR2_KERNEL_HEADERS_3_10
-		bool "Linux 3.10.x kernel headers"
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+config BR2_KERNEL_HEADERS_3_10
+	bool "Linux 3.10.x kernel headers"
+	depends on !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
-	config BR2_KERNEL_HEADERS_3_12
-		bool "Linux 3.12.x kernel headers"
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+config BR2_KERNEL_HEADERS_3_12
+	bool "Linux 3.12.x kernel headers"
+	depends on !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
-	config BR2_KERNEL_HEADERS_4_1
-		bool "Linux 4.1.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+config BR2_KERNEL_HEADERS_4_1
+	bool "Linux 4.1.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
 
-	config BR2_KERNEL_HEADERS_4_4
-		bool "Linux 4.4.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+config BR2_KERNEL_HEADERS_4_4
+	bool "Linux 4.4.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 
-	config BR2_KERNEL_HEADERS_4_9
-		bool "Linux 4.9.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+config BR2_KERNEL_HEADERS_4_9
+	bool "Linux 4.9.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
 
-	config BR2_KERNEL_HEADERS_4_10
-		bool "Linux 4.10.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
+config BR2_KERNEL_HEADERS_4_10
+	bool "Linux 4.10.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 
-	config BR2_KERNEL_HEADERS_VERSION
-		bool "Manually specified Linux version"
+config BR2_KERNEL_HEADERS_VERSION
+	bool "Manually specified Linux version"
+
 endchoice
 
 config BR2_DEFAULT_KERNEL_VERSION

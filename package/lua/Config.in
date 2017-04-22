@@ -17,14 +17,14 @@ choice
 	help
 	  Select the version of Lua API/ABI you wish to use.
 
-	config BR2_PACKAGE_LUA_5_1
-		bool "Lua 5.1.x"
+config BR2_PACKAGE_LUA_5_1
+	bool "Lua 5.1.x"
 
-	config BR2_PACKAGE_LUA_5_2
-		bool "Lua 5.2.x"
+config BR2_PACKAGE_LUA_5_2
+	bool "Lua 5.2.x"
 
-	config BR2_PACKAGE_LUA_5_3
-		bool "Lua 5.3.x"
+config BR2_PACKAGE_LUA_5_3
+	bool "Lua 5.3.x"
 
 endchoice
 
