@@ -1,15 +1,15 @@
 config BR2_PACKAGE_QT5_GL_AVAILABLE
 	bool
-	depends on BR2_PACKAGE_HAS_LIBGL || BR2_PACKAGE_HAS_LIBGLES
 	default y
+	depends on BR2_PACKAGE_HAS_LIBGL || BR2_PACKAGE_HAS_LIBGLES
 
 config BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	bool
+	default y
 	# Javascript engine is only available on certain architectures
 	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
 	# ARM needs BLX, so v5t+
 	depends on !BR2_ARM_CPU_ARMV4
-	default y
 
 comment "Qt5 needs a toolchain w/ wchar, NPTL, C++, dynamic library"
 	depends on !BR2_PACKAGE_QT

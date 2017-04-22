@@ -6,10 +6,10 @@ menuconfig BR2_PACKAGE_QT_SQL_MODULE
 if BR2_PACKAGE_QT_SQL_MODULE
 config BR2_PACKAGE_QT_MYSQL
 	bool "MySQL Driver"
+	depends on BR2_USE_MMU # mysql
 	select BR2_PACKAGE_MYSQL
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
-	depends on BR2_USE_MMU # mysql
 	help
 	  Build MySQL driver
 	  If unsure, say n.
@@ -23,8 +23,8 @@ config BR2_PACKAGE_QT_ODBC
 
 config BR2_PACKAGE_QT_PSQL
 	bool "PostgreSQL Driver"
-	select BR2_PACKAGE_POSTGRESQL
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_POSTGRESQL
 	help
 	  Build PostgreSQL driver
 	  If unsure, say n.

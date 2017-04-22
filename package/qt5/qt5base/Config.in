@@ -61,19 +61,19 @@ config BR2_PACKAGE_QT5BASE_SQL
 if BR2_PACKAGE_QT5BASE_SQL
 config BR2_PACKAGE_QT5BASE_MYSQL
 	bool "MySQL Plugin"
+	depends on BR2_USE_MMU # mysql
 	select BR2_PACKAGE_MYSQL
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
-	depends on BR2_USE_MMU # mysql
 	help
 	  Build MySQL plugin
 	  If unsure, say n.
 
 config BR2_PACKAGE_QT5BASE_PSQL
 	bool "PostgreSQL Plugin"
-	select BR2_PACKAGE_POSTGRESQL
 	depends on BR2_USE_MMU # postgresql
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_POSTGRESQL
 	help
 	  Build PostgreSQL plugin
 	  If unsure, say n.
@@ -198,9 +198,9 @@ comment "X.org XCB backend available if X.org is enabled"
 
 config BR2_PACKAGE_QT5BASE_EGLFS
 	bool "eglfs support"
-	select BR2_PACKAGE_QT5BASE_OPENGL
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	select BR2_PACKAGE_QT5BASE_OPENGL
 
 comment "eglfs backend available if OpenGL and EGL are enabled"
 	depends on !BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_QT5_GL_AVAILABLE
@@ -250,16 +250,16 @@ endif
 
 config BR2_PACKAGE_QT5BASE_DBUS
 	bool "DBus module"
-	select BR2_PACKAGE_DBUS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
+	select BR2_PACKAGE_DBUS
 	help
 	  This option enables the D-Bus module.
 
 config BR2_PACKAGE_QT5BASE_ICU
 	bool "Enable ICU support"
-	select BR2_PACKAGE_ICU
 	depends on !BR2_BINFMT_FLAT # icu
+	select BR2_PACKAGE_ICU
 	help
 	  This option enables ICU support in Qt5. This is for example
 	  needed for Qt5Webkit.

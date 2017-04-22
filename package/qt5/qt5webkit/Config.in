@@ -1,16 +1,16 @@
 config BR2_PACKAGE_QT5WEBKIT
 	bool "qt5webkit"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_BINFMT_FLAT # icu
+	# assumes a FPU is available on MIPS
+	depends on !BR2_MIPS_SOFT_FLOAT
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_ICU
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_QT5BASE_XCB
 	select BR2_PACKAGE_XLIB_LIBXRENDER if BR2_PACKAGE_QT5BASE_XCB
-	depends on !BR2_STATIC_LIBS
-	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
-	depends on !BR2_BINFMT_FLAT # icu
-	# assumes a FPU is available on MIPS
-	depends on !BR2_MIPS_SOFT_FLOAT
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
