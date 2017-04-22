@@ -4,10 +4,10 @@ comment "ubus needs a toolchain w/ dynamic library"
 
 config BR2_PACKAGE_UBUS
 	bool "ubus"
-	select BR2_PACKAGE_LIBUBOX
-	select BR2_PACKAGE_JSON_C
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # json-c
 	depends on !BR2_STATIC_LIBS # libubox
+	select BR2_PACKAGE_LIBUBOX
+	select BR2_PACKAGE_JSON_C
 	help
 	  IPC/RPC bus that allows communication between processes.
 

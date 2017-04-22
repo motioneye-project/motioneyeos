@@ -1,12 +1,12 @@
 config BR2_PACKAGE_USHARE
 	bool "ushare"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libupnp
-	select BR2_PACKAGE_LIBUPNP
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	# ushare has a completely custom configure script that does
 	# broken things with library ordering, which breaks static
 	# linking.
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBUPNP
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  uShare is a UPnP (TM) A/V & DLNA Media Server.
 	  It implements the server component that provides UPnP media devices
