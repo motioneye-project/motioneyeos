@@ -1,14 +1,14 @@
 config BR2_PACKAGE_CONNMAN
 	bool "connman"
-	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_IPTABLES
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus, libglib2
 	depends on !BR2_STATIC_LIBS # needs dlopen()
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_TOOLCHAIN_USES_MUSL # mixes userspace and kernel headers
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_IPTABLES
 	help
 	  The Connection Manager (ConnMan) project provides a daemon
 	  for managing internet connections within embedded devices
@@ -50,8 +50,8 @@ config BR2_PACKAGE_CONNMAN_LOOPBACK
 
 config BR2_PACKAGE_CONNMAN_NEARD
 	bool "enable neard support"
-	select BR2_PACKAGE_NEARD
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # neard
+	select BR2_PACKAGE_NEARD
 
 config BR2_PACKAGE_CONNMAN_OFONO
 	bool "enable ofono support"

@@ -1,11 +1,11 @@
 config BR2_PACKAGE_CHECKPOLICY
 	bool "checkpolicy"
-	select BR2_PACKAGE_LIBSELINUX
-	select BR2_PACKAGE_FLEX
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libselinux
 	depends on !BR2_STATIC_LIBS # libselinux
 	depends on BR2_TOOLCHAIN_USES_GLIBC # libselinux
 	depends on !BR2_arc # libselinux
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_FLEX
 	help
 	  checkpolicy is the SELinux policy compiler. It uses libsepol
 	  to generate the binary policy. checkpolicy uses the static
