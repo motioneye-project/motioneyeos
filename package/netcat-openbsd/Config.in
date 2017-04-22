@@ -1,10 +1,10 @@
 config BR2_PACKAGE_NETCAT_OPENBSD
 	bool "netcat-openbsd"
-	select BR2_PACKAGE_LIBBSD
 	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_LIBBSD
 	help
 	  A simple Unix utility which reads and writes data across network
 	  connections using TCP or UDP protocol. It is designed to be a

@@ -141,8 +141,8 @@ config BR2_PACKAGE_NGINX_HTTP_CHARSET_MODULE
 
 config BR2_PACKAGE_NGINX_HTTP_GZIP_MODULE
 	bool "ngx_http_gzip_module"
-	select BR2_PACKAGE_ZLIB
 	default y
+	select BR2_PACKAGE_ZLIB
 	help
 	  Enable ngx_http_gzip_module
 
@@ -202,8 +202,8 @@ config BR2_PACKAGE_NGINX_HTTP_REFERER_MODULE
 
 config BR2_PACKAGE_NGINX_HTTP_REWRITE_MODULE
 	bool "ngx_http_rewrite_module"
-	select BR2_PACKAGE_PCRE
 	default y
+	select BR2_PACKAGE_PCRE
 	help
 	  Enable ngx_http_rewrite_module
 
