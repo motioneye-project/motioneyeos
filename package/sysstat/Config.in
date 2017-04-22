@@ -1,8 +1,7 @@
 config BR2_PACKAGE_SYSSTAT
 	bool "sysstat"
+	depends on BR2_USE_MMU 	# fork()
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	# Uses fork()
-	depends on BR2_USE_MMU
 	help
 	  The sysstat utilities are a collection of performance
 	  monitoring tools for Linux. These include sar, sadf, mpstat,

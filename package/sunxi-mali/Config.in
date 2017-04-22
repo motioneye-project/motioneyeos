@@ -51,8 +51,8 @@ comment "r3p0 requires an EABIhf toolchain"
 	depends on !BR2_ARM_EABIHF
 
 config BR2_PACKAGE_SUNXI_MALI_R3P1
-	depends on BR2_ARM_EABIHF
 	bool "r3p1"
+	depends on BR2_ARM_EABIHF
 
 comment "r3p1 requires an EABIhf toolchain"
 	depends on !BR2_ARM_EABIHF

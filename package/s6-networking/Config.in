@@ -1,8 +1,8 @@
 config BR2_PACKAGE_S6_NETWORKING
 	bool "s6-networking"
+	depends on BR2_USE_MMU # s6
 	select BR2_PACKAGE_S6_DNS
 	select BR2_PACKAGE_S6
-	depends on BR2_USE_MMU # s6
 	help
 	  s6-networking is a suite of small networking utilities for
 	  Unix systems. It includes command-line client and server

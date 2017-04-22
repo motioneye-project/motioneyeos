@@ -1,7 +1,7 @@
 config BR2_PACKAGE_S6_PORTABLE_UTILS
 	bool "s6-portable-utils"
-	select BR2_PACKAGE_SKALIBS
 	depends on BR2_USE_MMU # skalibs
+	select BR2_PACKAGE_SKALIBS
 	help
 	  s6-portable-utils is a set of tiny general Unix utilities,
 	  often performing well-known tasks such as cut and grep, but

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_S6
 	bool "s6"
-	select BR2_PACKAGE_EXECLINE
 	depends on BR2_USE_MMU # execline
+	select BR2_PACKAGE_EXECLINE
 	help
 	  s6 is a small suite of programs for UNIX, designed to allow
 	  process supervision (a.k.a service supervision), in the line

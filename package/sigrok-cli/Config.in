@@ -1,12 +1,12 @@
 config BR2_PACKAGE_SIGROK_CLI
 	bool "sigrok-cli"
-	select BR2_PACKAGE_LIBSIGROK
 	# libsigrok->libglib2:
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
 	# libsigrok
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	select BR2_PACKAGE_LIBSIGROK
 	help
 	  Sigrok-cli is a command-line frontend for the sigrok
 	  software suite.

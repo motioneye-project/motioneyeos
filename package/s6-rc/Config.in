@@ -1,7 +1,7 @@
 config BR2_PACKAGE_S6_RC
 	bool "s6-rc"
-	select BR2_PACKAGE_S6
 	depends on BR2_USE_MMU # s6
+	select BR2_PACKAGE_S6
 	help
 	  s6-rc is a service manager for s6-based systems, i.e. a
 	  suite of programs that can start and stop services, both

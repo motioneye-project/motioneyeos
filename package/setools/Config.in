@@ -1,9 +1,5 @@
 config BR2_PACKAGE_SETOOLS
 	bool "setools"
-	select BR2_PACKAGE_LIBSELINUX
-	select BR2_PACKAGE_SQLITE
-	select BR2_PACKAGE_LIBXML2
-	select BR2_PACKAGE_BZIP2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_INSTALL_LIBSTDCPP
@@ -14,6 +10,10 @@ config BR2_PACKAGE_SETOOLS
 	# section for versioned symbol"
 	# arc: libselinux not available
 	depends on !BR2_nios2 && !BR2_bfin && !BR2_arc
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_BZIP2
 	help
 	  SETools is an open source project designed to facilitate
 	  SELinux policy analysis. The primary tools are:
