@@ -7,6 +7,9 @@ menuconfig BR2_PACKAGE_E2FSPROGS
 	help
 	  The EXT2 file system utilities.
 
+	  The uuid utilities (uuidd, uuidgen) are not built. Use the
+	  ones from util-linux, instead.
+
 	  http://e2fsprogs.sourceforge.net
 
 if BR2_PACKAGE_E2FSPROGS
@@ -94,9 +97,5 @@ config BR2_PACKAGE_E2FSPROGS_TUNE2FS
 	bool "tune2fs"
 	default y
 	select BR2_PACKAGE_E2FSPROGS_E2LABEL
-
-config BR2_PACKAGE_E2FSPROGS_UUIDGEN
-	bool "uuidgen"
-	default y
 
 endif
