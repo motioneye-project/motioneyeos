@@ -1,9 +1,5 @@
 config BR2_PACKAGE_LIBSEMANAGE
 	bool "libsemanage"
-	select BR2_PACKAGE_AUDIT
-	select BR2_PACKAGE_LIBSELINUX
-	select BR2_PACKAGE_USTR
-	select BR2_PACKAGE_BZIP2
 	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
@@ -12,6 +8,10 @@ config BR2_PACKAGE_LIBSEMANAGE
 	# - audit is not available on musl
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on !BR2_arc
+	select BR2_PACKAGE_AUDIT
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_USTR
+	select BR2_PACKAGE_BZIP2
 	help
 	  libsemanage is the policy management library. It uses
 	  libsepol for binary policy manipulation and libselinux for

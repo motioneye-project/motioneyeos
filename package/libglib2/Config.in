@@ -1,5 +1,8 @@
 config BR2_PACKAGE_LIBGLIB2
 	bool "libglib2"
+	depends on BR2_USE_WCHAR # gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_LIBFFI
@@ -8,9 +11,6 @@ config BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_ZLIB
-	depends on BR2_USE_WCHAR # gettext
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_USE_MMU # fork()
 	help
 	  Low-level core library that forms the basis of GTK+ and GNOME.
 

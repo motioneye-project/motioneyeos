@@ -1,7 +1,7 @@
 menuconfig BR2_PACKAGE_LIBDRM
 	bool "libdrm"
-	select BR2_PACKAGE_LIBPTHREAD_STUBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libpthread-stubs
+	select BR2_PACKAGE_LIBPTHREAD_STUBS
 	help
 	  Direct Rendering Manager
 
@@ -20,10 +20,10 @@ config BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
 
 config BR2_PACKAGE_LIBDRM_INTEL
 	bool "intel"
-	select BR2_PACKAGE_LIBPCIACCESS
 	depends on BR2_i386 || BR2_x86_64
 	depends on BR2_PACKAGE_LIBDRM_HAS_ATOMIC
 	select BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
+	select BR2_PACKAGE_LIBPCIACCESS
 	help
 	  Install intel graphics driver.
 

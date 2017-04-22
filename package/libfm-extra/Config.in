@@ -1,9 +1,9 @@
 config BR2_PACKAGE_LIBFM_EXTRA
 	bool "libfm-extra"
-	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
 	help
 	  The libfm-extra package contains a library and other files
 	  required by menu-cache-gen libexec of menu-cache

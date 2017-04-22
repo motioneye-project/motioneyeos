@@ -1,9 +1,9 @@
 config BR2_PACKAGE_LIBNICE
 	bool "libnice"
-	select BR2_PACKAGE_LIBGLIB2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBGLIB2
 	help
 	  Libnice is an implementation of the IETF's Interactive
 	  Connectivity Establishment (ICE) standard (RFC 5245) and the

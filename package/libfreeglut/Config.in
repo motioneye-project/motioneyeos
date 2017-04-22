@@ -1,11 +1,11 @@
 config BR2_PACKAGE_LIBFREEGLUT
 	bool "libfreeglut"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBGLU
 	select BR2_PACKAGE_XLIB_LIBXI
 	select BR2_PACKAGE_XLIB_LIBXRANDR
 	select BR2_PACKAGE_XLIB_LIBXXF86VM
-	depends on BR2_PACKAGE_HAS_LIBGL
-	depends on BR2_PACKAGE_XORG7
 	help
 	  FreeGLUT is a free-software/open-source alternative to the
 	  OpenGL Utility Toolkit (GLUT) library. GLUT (and hence

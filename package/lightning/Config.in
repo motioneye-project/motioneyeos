@@ -18,10 +18,10 @@ if BR2_PACKAGE_LIGHTNING
 
 config BR2_PACKAGE_LIGHTNING_DISASSEMBLER
 	bool "enable disassembler"
-	select BR2_PACKAGE_BINUTILS
-	select BR2_PACKAGE_ZLIB
 	depends on !BR2_nios2 # binutils
 	depends on BR2_USE_WCHAR # binutils
+	select BR2_PACKAGE_BINUTILS
+	select BR2_PACKAGE_ZLIB
 	help
 	  Enable the GNU lightning disassembler.
 
