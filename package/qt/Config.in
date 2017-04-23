@@ -100,15 +100,8 @@ config BR2_PACKAGE_QT_STATIC
 endchoice
 
 config BR2_PACKAGE_QT_LICENSE_APPROVED
-	bool "Approve free license"
-	help
-	  Select this if you approve one of the available free licenses for the
-	  Qt4 library.
-	  By doing this you will not be asked while the library is compiled.
-	  Please read and understand the license terms before approving this.
-
-	  LGPL v2.1: http://doc.trolltech.com/4.5/lgpl.html
-	  GPL  v3.0: http://doc.trolltech.com/4.5/gpl.html
+	bool
+	default y
 
 config BR2_PACKAGE_QT_CONFIG_FILE
 	string "Config file"
