@@ -99,10 +99,6 @@ config BR2_PACKAGE_QT_STATIC
 
 endchoice
 
-config BR2_PACKAGE_QT_LICENSE_APPROVED
-	bool
-	default y
-
 config BR2_PACKAGE_QT_CONFIG_FILE
 	string "Config file"
 	help
