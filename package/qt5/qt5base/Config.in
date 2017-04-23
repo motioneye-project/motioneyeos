@@ -27,10 +27,6 @@ config BR2_PACKAGE_QT5BASE_CUSTOM_CONF_OPTS
 	  E.g. to remove the Windows Vista style option, add the option
 	  -no-feature-style_windowsvista.
 
-config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
-	bool
-	default y
-
 config BR2_PACKAGE_QT5BASE_CONFIG_FILE
 	string "Config file"
 	help
