@@ -15,14 +15,10 @@ QT_DEPENDENCIES = host-pkgconf
 QT_INSTALL_STAGING = YES
 
 QT_LICENSE := LGPL-2.1 with exceptions or GPL-3.0
-ifneq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)
-QT_LICENSE := $(QT_LICENSE) or Digia Qt Commercial license
-endif
 QT_LICENSE_FILES = LICENSE.LGPL LGPL_EXCEPTION.txt LICENSE.GPL3
 
-ifeq ($(BR2_PACKAGE_QT_LICENSE_APPROVED),y)
+# Opensource licenses are the only one we catter about
 QT_CONFIGURE_OPTS += -opensource -confirm-license
-endif
 
 QT_CONFIG_FILE = $(call qstrip,$(BR2_PACKAGE_QT_CONFIG_FILE))
 
