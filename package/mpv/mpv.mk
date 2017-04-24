@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.24.0
+MPV_VERSION = 0.25.0
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
@@ -134,10 +134,10 @@ endif
 
 # OpenGL support
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
-MPV_CONF_OPTS += --enable-gl --enable-standard-gl
+MPV_CONF_OPTS += --enable-gl
 MPV_DEPENDENCIES += libgl
 else
-MPV_CONF_OPTS += --disable-gl --disable-standard-gl
+MPV_CONF_OPTS += --disable-gl
 endif
 
 # pulseaudio support
