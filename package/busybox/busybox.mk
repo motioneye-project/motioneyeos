@@ -148,17 +148,6 @@ define BUSYBOX_MUSL_TWEAKS
 endef
 endif
 
-ifeq ($(BR2_PACKAGE_NCURSES_TARGET_PROGS),y)
-# Ncurses package overlaps:
-#     /usr/bin/clear
-#     /usr/bin/reset -> /usr/bin/tset (symlink)
-#
-define BUSYBOX_DISABLE_NCURSES_PROGS
-	$(call KCONFIG_DISABLE_OPT,CONFIG_CLEAR,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_DISABLE_OPT,CONFIG_RESET,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
 define BUSYBOX_INSTALL_UDHCPC_SCRIPT
 	if grep -q CONFIG_UDHCPC=y $(@D)/.config; then \
 		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
@@ -240,7 +229,6 @@ define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_SET_WATCHDOG)
 	$(BUSYBOX_SET_SELINUX)
 	$(BUSYBOX_MUSL_TWEAKS)
-	$(BUSYBOX_DISABLE_NCURSES_PROGS)
 endef
 
 define BUSYBOX_CONFIGURE_CMDS
