@@ -5,13 +5,22 @@ die() {
   exit 1
 }
 
+# Parse arguments and put into argument list of the script
+opts="$(getopt -n "${0##*/}" -o c: -- "$@")" || exit $?
+eval set -- "$opts"
+
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
-while getopts c: OPT ; do
-	case "${OPT}" in
-	c) GENIMAGE_CFG="${OPTARG}";;
-	:) die "option '${OPTARG}' expects a mandatory argument\n";;
-	\?) die "unknown option '${OPTARG}'\n";;
+while true ; do
+	case "$1" in
+	-c)
+	  GENIMAGE_CFG="${2}";
+	  shift 2 ;;
+	--) # Discard all non-option parameters
+	  shift 1;
+	  break ;;
+	*)
+	  die "unknown option '${1}'" ;;
 	esac
 done
 
