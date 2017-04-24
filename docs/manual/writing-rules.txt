@@ -143,3 +143,8 @@ http://www.methods.co.nz/asciidoc/[asciidoc] format.
 
 For further details about the http://www.methods.co.nz/asciidoc/[asciidoc]
 syntax, refer to http://www.methods.co.nz/asciidoc/userguide.html[].
+
+=== Support scripts
+
+Some scripts in the +support/+ directory are written in Python and should follow
+the https://www.python.org/dev/peps/pep-0008/[PEP8 Style Guide for Python Code].
