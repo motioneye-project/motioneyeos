@@ -17,8 +17,8 @@ index d4837d0..937da8a 100644
  	      && command_line.rpath == NULL)
  	    {
  	      path = (const char *) getenv ("LD_RUN_PATH");
-+	      if ((lib_path) && (strlen (lib_path) == 0))
-+	        lib_path = NULL;
++	      if ((path) && (strlen (path) == 0))
++	        path = NULL;
  	      if (path
  		  && gld${EMULATION_NAME}_search_needed (path, &n, force))
  		break;
