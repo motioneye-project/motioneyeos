@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MINICOM_VERSION = 2.7
-MINICOM_SITE = https://alioth.debian.org/frs/download.php/file/3977
+MINICOM_VERSION = 2.7.1
+MINICOM_SITE = https://alioth.debian.org/frs/download.php/file/4215
 MINICOM_LICENSE = GPL-2.0+
 MINICOM_LICENSE_FILES = COPYING
 
