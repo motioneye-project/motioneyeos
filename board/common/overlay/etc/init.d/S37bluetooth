@@ -25,7 +25,7 @@ configure() {
 
     # if no specific name configured, use hostname
     if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then
-        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" /etc/bluetooth/main.conf 
+        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" $run_conf
     fi
     
     # bring adapter up
