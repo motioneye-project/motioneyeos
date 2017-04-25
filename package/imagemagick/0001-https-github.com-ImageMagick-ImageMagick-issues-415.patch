@@ -1,0 +1,52 @@
+From b218117cad34d39b9ffb587b45c71c5a49b12bde Mon Sep 17 00:00:00 2001
+From: Cristy <urban-warrior@imagemagick.org>
+Date: Fri, 31 Mar 2017 15:24:33 -0400
+Subject: [PATCH] https://github.com/ImageMagick/ImageMagick/issues/415
+
+Fixes CVE-2017-7606
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ coders/pnm.c | 2 +-
+ coders/rle.c | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/coders/pnm.c b/coders/pnm.c
+index 9a1221d79..c525ebb8f 100644
+--- a/coders/pnm.c
++++ b/coders/pnm.c
+@@ -1979,7 +1979,7 @@ static MagickBooleanType WritePNMImage(const ImageInfo *image_info,Image *image,
+                           pixel=ScaleQuantumToChar(GetPixelRed(image,p));
+                         else
+                           pixel=ScaleQuantumToAny(GetPixelRed(image,p),
+-                          max_value);
++                            max_value);
+                       }
+                     q=PopCharPixel((unsigned char) pixel,q);
+                     p+=GetPixelChannels(image);
+diff --git a/coders/rle.c b/coders/rle.c
+index 2318901ec..ec071dc7b 100644
+--- a/coders/rle.c
++++ b/coders/rle.c
+@@ -271,7 +271,8 @@ static Image *ReadRLEImage(const ImageInfo *image_info,ExceptionInfo *exception)
+         p=colormap;
+         for (i=0; i < (ssize_t) number_colormaps; i++)
+           for (x=0; x < (ssize_t) map_length; x++)
+-            *p++=(unsigned char) ScaleShortToQuantum(ReadBlobLSBShort(image));
++            *p++=(unsigned char) ScaleQuantumToChar(ScaleShortToQuantum(
++              ReadBlobLSBShort(image)));
+       }
+     if ((flags & 0x08) != 0)
+       {
+@@ -476,7 +477,7 @@ static Image *ReadRLEImage(const ImageInfo *image_info,ExceptionInfo *exception)
+               for (x=0; x < (ssize_t) number_planes; x++)
+               {
+                 ValidateColormapValue(image,(size_t) (x*map_length+
+-                    (*p & mask)),&index,exception);
++                  (*p & mask)),&index,exception);
+                 *p=colormap[(ssize_t) index];
+                 p++;
+               }
+-- 
+2.11.0
+
