@@ -18,9 +18,27 @@ test -n "$os_version" || source /etc/init.d/base
 
 hci=hci0
 bluetoothd=/usr/libexec/bluetooth/bluetoothd
+run_conf="/var/lib/bluetooth.conf"
+
+configure() {
+    cp $conf $run_conf
+
+    # if no specific name configured, use hostname
+    if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then
+        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" /etc/bluetooth/main.conf 
+    fi
+    
+    # bring adapter up
+    hciconfig $hci up
+    
+    # if DiscoverableTimeout is set to 0, make adapter is discoverable from boot time
+    if ! grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+         hciconfig $hci piscan
+    fi
+}
 
 start() {
-    msg_begin "Starting bluetooth"
+    msg_begin "Configuring bluetooth"
 
     # wait up to 10 seconds for device
     count=0
@@ -34,13 +52,21 @@ start() {
             return 1
         fi
     done
-
+    
+    if configure; then
+        msg_done
+    else
+        msg_fail
+        return 1
+    fi
+    
+    msg_begin "Starting bluetoothd"
     /usr/libexec/bluetooth/bluetoothd &>/dev/null &
     msg_done
 }
 
 stop() {
-    msg_begin "Stopping bluetooth"
+    msg_begin "Stopping bluetoothd"
     killall bluetoothd &>/dev/null
     test $? == 0 && msg_done || msg_fail
 }
