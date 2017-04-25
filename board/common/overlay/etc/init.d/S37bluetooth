@@ -32,7 +32,7 @@ configure() {
     hciconfig $hci up
     
     # if DiscoverableTimeout is set to 0, make adapter is discoverable from boot time
-    if ! grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
          hciconfig $hci piscan
     fi
 }
