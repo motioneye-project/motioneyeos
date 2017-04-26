@@ -1654,10 +1654,6 @@ F:	package/uclibc/
 F:	package/uclibc-ng-test/
 F:	package/mksh/
 
-N:	Waldemar Rymarkiewicz <waldemar.rymarkiewicz@tieto.com>
-F:	package/ccid/
-F:	package/pcsc-lite/
-
 N:	Will Newton <will.newton@gmail.com>
 F:	package/enchant/
 F:	package/erlang/
