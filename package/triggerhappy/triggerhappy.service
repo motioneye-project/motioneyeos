@@ -2,7 +2,7 @@
 Description=Triggerhappy daemon
 
 [Service]
-ExecStart=/usr/sbin/thd --triggers /etc/triggerhappy/triggers.d --socket /var/run/thd.socket --user nobody /dev/input/event*
+ExecStart=/usr/sbin/thd --triggers /etc/triggerhappy/triggers.d --socket /var/run/thd.socket --user nobody --deviceglob /dev/input/event*
 Restart=always
 
 [Install]
