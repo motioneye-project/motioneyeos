@@ -1,6 +1,12 @@
+config BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386
+	default y if BR2_x86_64
+
 config BR2_TARGET_GRUB2
 	bool "grub2"
-	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	depends on BR2_USE_WCHAR
 	help
 	  GNU GRUB is a Multiboot boot loader. It was derived from
 	  GRUB, the GRand Unified Bootloader, which was originally
@@ -167,3 +173,7 @@ config BR2_TARGET_GRUB2_BUILTIN_CONFIG
 	  entries cannot be described in this embedded configuration.
 
 endif # BR2_TARGET_GRUB2
+
+comment "grub2 needs a toolchain w/ wchar"
+	depends on BR2_TARGET_GRUB2_ARCH_SUPPORTS
+	depends on !BR2_USE_WCHAR
