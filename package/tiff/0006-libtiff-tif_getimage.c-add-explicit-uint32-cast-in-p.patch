@@ -1,0 +1,31 @@
+From 48780b4fcc425cddc4ef8ffdf536f96a0d1b313b Mon Sep 17 00:00:00 2001
+From: erouault <erouault>
+Date: Wed, 11 Jan 2017 16:38:26 +0000
+Subject: [PATCH] libtiff/tif_getimage.c: add explicit uint32 cast in putagreytile to
+ avoid UndefinedBehaviorSanitizer warning.
+ Patch by Nicolás Peña.
+ Fixes http://bugzilla.maptools.org/show_bug.cgi?id=2658
+
+Fixes CVE-2017-7592
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libtiff/tif_getimage.c | 2 +-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/libtiff/tif_getimage.c b/libtiff/tif_getimage.c
+index fed31f1f..2fa1775c 100644
+--- a/libtiff/tif_getimage.c
++++ b/libtiff/tif_getimage.c
+@@ -1302,7 +1302,7 @@ DECLAREContigPutFunc(putagreytile)
+     while (h-- > 0) {
+ 	for (x = w; x-- > 0;)
+         {
+-            *cp++ = BWmap[*pp][0] & (*(pp+1) << 24 | ~A1);
++            *cp++ = BWmap[*pp][0] & ((uint32)*(pp+1) << 24 | ~A1);
+             pp += samplesperpixel;
+         }
+ 	cp += toskew;
+-- 
+2.11.0
+

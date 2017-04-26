@@ -1,0 +1,35 @@
+From 47f2fb61a3a64667bce1a8398a8fcb1b348ff122 Mon Sep 17 00:00:00 2001
+From: erouault <erouault>
+Date: Wed, 11 Jan 2017 12:15:01 +0000
+Subject: [PATCH] * libtiff/tif_jpeg.c: avoid integer division by zero in
+ JPEGSetupEncode() when horizontal or vertical sampling is set to 0. Fixes
+ http://bugzilla.maptools.org/show_bug.cgi?id=2653
+
+Fixes CVE-2017-7595
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libtiff/tif_jpeg.c | 7 +++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/libtiff/tif_jpeg.c b/libtiff/tif_jpeg.c
+index 38595f98..6c17c388 100644
+--- a/libtiff/tif_jpeg.c
++++ b/libtiff/tif_jpeg.c
+@@ -1626,6 +1626,13 @@ JPEGSetupEncode(TIFF* tif)
+ 	case PHOTOMETRIC_YCBCR:
+ 		sp->h_sampling = td->td_ycbcrsubsampling[0];
+ 		sp->v_sampling = td->td_ycbcrsubsampling[1];
++                if( sp->h_sampling == 0 || sp->v_sampling == 0 )
++                {
++                    TIFFErrorExt(tif->tif_clientdata, module,
++                            "Invalig horizontal/vertical sampling value");
++                    return (0);
++                }
++
+ 		/*
+ 		 * A ReferenceBlackWhite field *must* be present since the
+ 		 * default value is inappropriate for YCbCr.  Fill in the
+-- 
+2.11.0
+

@@ -1,0 +1,46 @@
+From 438274f938e046d33cb0e1230b41da32ffe223e1 Mon Sep 17 00:00:00 2001
+From: erouault <erouault>
+Date: Fri, 2 Dec 2016 21:56:56 +0000
+Subject: [PATCH] * libtiff/tif_read.c, libtiff/tiffiop.h: fix uint32 overflow
+ in TIFFReadEncodedStrip() that caused an integer division by zero. Reported
+ by Agostino Sarubbo. Fixes http://bugzilla.maptools.org/show_bug.cgi?id=2596
+
+Fixes CVE-2016-10266
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libtiff/tif_read.c | 2 +-
+ libtiff/tiffiop.h  | 4 ++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/libtiff/tif_read.c b/libtiff/tif_read.c
+index c26c55f4..52bbf507 100644
+--- a/libtiff/tif_read.c
++++ b/libtiff/tif_read.c
+@@ -346,7 +346,7 @@ TIFFReadEncodedStrip(TIFF* tif, uint32 strip, void* buf, tmsize_t size)
+ 	rowsperstrip=td->td_rowsperstrip;
+ 	if (rowsperstrip>td->td_imagelength)
+ 		rowsperstrip=td->td_imagelength;
+-	stripsperplane=((td->td_imagelength+rowsperstrip-1)/rowsperstrip);
++	stripsperplane= TIFFhowmany_32_maxuint_compat(td->td_imagelength, rowsperstrip);
+ 	stripinplane=(strip%stripsperplane);
+ 	plane=(uint16)(strip/stripsperplane);
+ 	rows=td->td_imagelength-stripinplane*rowsperstrip;
+diff --git a/libtiff/tiffiop.h b/libtiff/tiffiop.h
+index ffbb647b..cb59460a 100644
+--- a/libtiff/tiffiop.h
++++ b/libtiff/tiffiop.h
+@@ -250,6 +250,10 @@ struct tiff {
+ #define TIFFhowmany_32(x, y) (((uint32)x < (0xffffffff - (uint32)(y-1))) ? \
+ 			   ((((uint32)(x))+(((uint32)(y))-1))/((uint32)(y))) : \
+ 			   0U)
++/* Variant of TIFFhowmany_32() that doesn't return 0 if x close to MAXUINT. */
++/* Caution: TIFFhowmany_32_maxuint_compat(x,y)*y might overflow */
++#define TIFFhowmany_32_maxuint_compat(x, y) \
++			   (((uint32)(x) / (uint32)(y)) + ((((uint32)(x) % (uint32)(y)) != 0) ? 1 : 0))
+ #define TIFFhowmany8_32(x) (((x)&0x07)?((uint32)(x)>>3)+1:(uint32)(x)>>3)
+ #define TIFFroundup_32(x, y) (TIFFhowmany_32(x,y)*(y))
+ #define TIFFhowmany_64(x, y) ((((uint64)(x))+(((uint64)(y))-1))/((uint64)(y)))
+-- 
+2.11.0
+

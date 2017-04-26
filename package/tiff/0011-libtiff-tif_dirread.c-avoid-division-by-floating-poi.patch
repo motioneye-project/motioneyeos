@@ -1,0 +1,47 @@
+From 3cfd62d77c2a7e147a05bd678524c345fa9c2bb8 Mon Sep 17 00:00:00 2001
+From: erouault <erouault>
+Date: Wed, 11 Jan 2017 13:28:01 +0000
+Subject: [PATCH] * libtiff/tif_dirread.c: avoid division by floating point 0
+ in TIFFReadDirEntryCheckedRational() and TIFFReadDirEntryCheckedSrational(),
+ and return 0 in that case (instead of infinity as before presumably)
+ Apparently some sanitizers do not like those divisions by zero. Fixes
+ http://bugzilla.maptools.org/show_bug.cgi?id=2644
+
+Fixes CVE-2017-7598
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libtiff/tif_dirread.c | 10 ++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/libtiff/tif_dirread.c b/libtiff/tif_dirread.c
+index 570d0c32..8a1e42aa 100644
+--- a/libtiff/tif_dirread.c
++++ b/libtiff/tif_dirread.c
+@@ -2872,7 +2872,10 @@ static enum TIFFReadDirEntryErr TIFFReadDirEntryCheckedRational(TIFF* tif, TIFFD
+ 		m.l = direntry->tdir_offset.toff_long8;
+ 	if (tif->tif_flags&TIFF_SWAB)
+ 		TIFFSwabArrayOfLong(m.i,2);
+-	if (m.i[0]==0)
++        /* Not completely sure what we should do when m.i[1]==0, but some */
++        /* sanitizers do not like division by 0.0: */
++        /* http://bugzilla.maptools.org/show_bug.cgi?id=2644 */
++	if (m.i[0]==0 || m.i[1]==0)
+ 		*value=0.0;
+ 	else
+ 		*value=(double)m.i[0]/(double)m.i[1];
+@@ -2900,7 +2903,10 @@ static enum TIFFReadDirEntryErr TIFFReadDirEntryCheckedSrational(TIFF* tif, TIFF
+ 		m.l=direntry->tdir_offset.toff_long8;
+ 	if (tif->tif_flags&TIFF_SWAB)
+ 		TIFFSwabArrayOfLong(m.i,2);
+-	if ((int32)m.i[0]==0)
++        /* Not completely sure what we should do when m.i[1]==0, but some */
++        /* sanitizers do not like division by 0.0: */
++        /* http://bugzilla.maptools.org/show_bug.cgi?id=2644 */
++	if ((int32)m.i[0]==0 || m.i[1]==0)
+ 		*value=0.0;
+ 	else
+ 		*value=(double)((int32)m.i[0])/(double)m.i[1];
+-- 
+2.11.0
+
