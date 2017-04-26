@@ -64,10 +64,10 @@ HOST_BINUTILS_CONF_ENV += MAKEINFO=true
 HOST_BINUTILS_MAKE_OPTS += MAKEINFO=true
 HOST_BINUTILS_INSTALL_OPTS += MAKEINFO=true install
 
-# gcc bug with Os/O2/O3, PR77311
+# gcc bug with Os/O1/O2/O3, PR77311
 # error: unable to find a register to spill in class 'CCREGS'
 ifeq ($(BR2_bfin),y)
-BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O1"
+BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O0"
 endif
 
 # Workaround a build issue with -Os for ARM Cortex-M cpus.
