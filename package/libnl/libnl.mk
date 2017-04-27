@@ -13,6 +13,8 @@ LIBNL_DEPENDENCIES = host-bison host-flex host-pkgconf
 # Patching configure.ac
 LIBNL_AUTORECONF = YES
 
+LIBNL_PATCH = https://github.com/thom311/libnl/commit/3e18948f17148e6a3c4255bdeaaf01ef6081ceeb.patch
+
 ifeq ($(BR2_PACKAGE_LIBNL_TOOLS),y)
 LIBNL_CONF_OPTS += --enable-cli
 else
