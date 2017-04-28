@@ -486,6 +486,8 @@ include package/Makefile.in
 -include $(wildcard arch/arch.mk.*)
 include support/dependencies/dependencies.mk
 
+PACKAGES += $(DEPENDENCIES_HOST_PREREQ)
+
 include toolchain/*.mk
 include toolchain/*/*.mk
 
