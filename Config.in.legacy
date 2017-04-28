@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_OPENOCD_FT2XXX
+	bool "openocd ft2232 support has been removed"
+	select BR2_PACKAGE_OPENOCD_FTDI
+	select BR2_LEGACY
+	help
+	  FT2232 support in OpenOCD has been removed, it's replaced by
+	  FDTI support, which has automatically been enabled.
+
 config BR2_PACKAGE_KODI_RTMPDUMP
 	bool "kodi rtmp has been removed"
 	select BR2_LEGACY

@@ -123,14 +123,6 @@ config BR2_PACKAGE_OPENOCD_PARPORT
 	help
 	  Enable building the pc parallel port driver
 
-config BR2_PACKAGE_OPENOCD_FT2XXX
-	bool "FT2232 based devices (DEPRECATED)"
-	select BR2_PACKAGE_LIBFTDI1
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	help
-	  (DEPRECATED) Enable building support for FT2232
-	  based devices using the libftdi library
-
 config BR2_PACKAGE_OPENOCD_VPI
 	bool "JTAG VPI"
 	help
