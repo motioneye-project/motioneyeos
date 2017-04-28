@@ -8,7 +8,7 @@ config BR2_PACKAGE_XDRIVER_XF86_INPUT_TSLIB
 	help
 	  Touch screen library input driver
 
-	  http://www.ptxdist.org/software/xf86-input-tslib/index_en.html
+	  https://github.com/merge/xf86-input-tslib
 
 comment "xf86-input-tslib needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
