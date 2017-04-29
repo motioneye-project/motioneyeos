@@ -24,4 +24,7 @@ else
 XMLSTARLET_CONF_OPTS += --disable-static-libs
 endif
 
+HOST_XMLSTARLET_DEPENDENCIES += host-libxml2 host-libxslt
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
