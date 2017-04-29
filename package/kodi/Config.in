@@ -192,6 +192,17 @@ config BR2_PACKAGE_KODI_NONFREE
 	  Enable components with non-free licenses. This option
 	  currently only controls support for RAR archives.
 
+config BR2_PACKAGE_KODI_PULSEAUDIO
+	bool "pulseaudio"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
+	# Pulseaudio support in kodi needs glib support in Pulseaudio,
+	# see FindPulseAudio.cmake. Kodi meets all dependencies of
+	# libglib2, so there is no need to propagate them here.
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PULSEAUDIO
+	help
+	  Enable Pulseaudio support.
+
 config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	bool "shairport"
 	select BR2_PACKAGE_LIBSHAIRPLAY
