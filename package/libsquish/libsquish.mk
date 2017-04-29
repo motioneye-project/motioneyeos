@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSQUISH_VERSION = 1.13
+LIBSQUISH_VERSION = 1.15
 LIBSQUISH_SOURCE = libsquish-$(LIBSQUISH_VERSION).tgz
 LIBSQUISH_SITE = http://downloads.sourceforge.net/project/libsquish
 LIBSQUISH_INSTALL_STAGING = YES
