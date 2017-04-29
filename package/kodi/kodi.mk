@@ -147,7 +147,11 @@ ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 KODI_CONF_OPTS += -DCORE_SYSTEM_NAME=rbpi
 KODI_DEPENDENCIES += rpi-userland
 else
-# these options only exist on non-rpi systems
+# Kodi considers "rpbi" and "linux" as two separate platforms. The
+# below options, defined in
+# project/cmake/scripts/linux/ArchSetup.cmake are only valid for the
+# "linux" platforms. The "rpbi" platform has a different set of
+# options, defined in project/cmake/scripts/rbpi/
 KODI_CONF_OPTS += -DENABLE_LDGOLD=OFF
 ifeq ($(BR2_PACKAGE_LIBAMCODEC),y)
 KODI_CONF_OPTS += -DENABLE_AML=ON
