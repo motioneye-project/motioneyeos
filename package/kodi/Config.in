@@ -28,7 +28,6 @@ config BR2_PACKAGE_KODI_GL_EGL
 	default y
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGL
-	depends on !BR2_PACKAGE_RPI_USERLAND # rpi depends on gles
 
 comment "kodi needs an OpenGL EGL with either an openGL or an OpenGL ES backend"
 	depends on !BR2_PACKAGE_KODI_GL_EGL && !BR2_PACKAGE_KODI_EGL_GLES
