@@ -33,8 +33,6 @@ KODI_DEPENDENCIES = \
 	libfribidi \
 	libplist \
 	libsamplerate \
-	libxml2 \
-	libxslt \
 	lzo \
 	ncurses \
 	openssl \
@@ -181,6 +179,13 @@ KODI_CONF_OPTS += -DENABLE_CAP=ON
 KODI_DEPENDENCIES += libcap
 else
 KODI_CONF_OPTS += -DENABLE_CAP=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT),yy)
+KODI_CONF_OPTS += -DENABLE_XSLT=ON
+KODI_DEPENDENCIES += libxml2 libxslt
+else
+KODI_CONF_OPTS += -DENABLE_XSLT=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_BLUEZ),y)
