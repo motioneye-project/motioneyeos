@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_KODI_VISUALISATION_FOUNTAIN
+	bool "kodi-visualisation-fountain has been removed"
+	select BR2_LEGACY
+	help
+	  According to upstream 'the visualization is not currently
+	  in a working shape.'
+
 config BR2_PACKAGE_PORTMAP
 	bool "portmap has been removed"
 	select BR2_LEGACY
