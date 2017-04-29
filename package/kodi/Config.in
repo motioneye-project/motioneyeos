@@ -241,25 +241,25 @@ config BR2_PACKAGE_KODI_LIBUSB
 
 config BR2_PACKAGE_KODI_LIBVA
 	bool "va"
-	depends on !BR2_PACKAGE_KODI_EGL_GLES
+	depends on BR2_PACKAGE_KODI_EGL_GL
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBVA
 	help
 	  Enable libva support.
 
 comment "libva support needs X.org with an openGL backend"
-	depends on !BR2_PACKAGE_XORG7 || BR2_PACKAGE_KODI_EGL_GLES
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_EGL_GL
 
 config BR2_PACKAGE_KODI_LIBVDPAU
 	bool "vdpau"
-	depends on !BR2_PACKAGE_KODI_EGL_GLES
+	depends on BR2_PACKAGE_KODI_EGL_GL
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBVDPAU
 	help
 	  Enable libvdpau support.
 
 comment "libvdpau support needs X.org with an openGL backend"
-	depends on !BR2_PACKAGE_XORG7 || BR2_PACKAGE_KODI_EGL_GLES
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_EGL_GL
 
 config BR2_PACKAGE_KODI_UPNP
 	bool "upnp"
