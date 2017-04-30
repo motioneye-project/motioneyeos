@@ -1,0 +1,35 @@
+From 3774fc08b502c3e685afca098b6e8a195aded6a0 Mon Sep 17 00:00:00 2001
+From: Werner Lemberg <wl@gnu.org>
+Date: Sun, 26 Mar 2017 08:32:09 +0200
+Subject: [PATCH] * src/psaux/psobjs.c (t1_builder_close_contour): Add safety
+ guard.
+
+Reported as
+
+  https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=941
+
+Fixes CVE-2017-8287
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+diff --git a/src/psaux/psobjs.c b/src/psaux/psobjs.c
+index d18e821a..0baf8368 100644
+--- a/src/psaux/psobjs.c
++++ b/src/psaux/psobjs.c
+@@ -1718,6 +1718,14 @@
+     first = outline->n_contours <= 1
+             ? 0 : outline->contours[outline->n_contours - 2] + 1;
+ 
++    /* in malformed fonts it can happen that a contour was started */
++    /* but no points were added                                    */
++    if ( outline->n_contours && first == outline->n_points )
++    {
++      outline->n_contours--;
++      return;
++    }
++
+     /* We must not include the last point in the path if it */
+     /* is located on the first point.                       */
+     if ( outline->n_points > 1 )
+-- 
+2.11.0
+
