@@ -1209,10 +1209,6 @@ F:	package/google-breakpad/
 N:	Patrick Gerber <kpa_info@yahoo.fr>
 F:	package/yavta/
 
-N:	Patrick Ziegler <patrick.ziegler@fh-kl.de>
-F:	package/aespipe/
-F:	package/libqmi/
-
 N:	Paul Cercueil <paul.cercueil@analog.com>
 F:	package/libiio/
 
