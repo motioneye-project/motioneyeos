@@ -46,11 +46,14 @@ BLUEZ5_UTILS_CONF_OPTS += --disable-sixaxis
 endif
 
 # install gatttool (For some reason upstream choose not to do it by default)
-ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL),y)
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED),y)
 define BLUEZ5_UTILS_INSTALL_GATTTOOL
 	$(INSTALL) -D -m 0755 $(@D)/attrib/gatttool $(TARGET_DIR)/usr/bin/gatttool
 endef
 BLUEZ5_UTILS_POST_INSTALL_TARGET_HOOKS += BLUEZ5_UTILS_INSTALL_GATTTOOL
+BLUEZ5_UTILS_CONF_OPTS += --enable-deprecated
+else
+BLUEZ5_UTILS_CONF_OPTS += --disable-deprecated
 endif
 
 # enable test

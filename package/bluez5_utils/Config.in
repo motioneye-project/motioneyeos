@@ -48,16 +48,13 @@ config BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
 comment "bluez5-utils client needs a glibc or musl toolchain"
 	depends on BR2_TOOLCHAIN_USES_UCLIBC
 
-config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
-	bool "install GATT tool"
+config BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED
+	bool "install deprecated tool"
 	depends on BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
 	help
-	  Generic Attribute Profile (GATT) support. This provides
-	  profile discovery and description services for Bluetooth Low
-	  Energy. This will install the gatttool utility.
-
-	  It is always built with BlueZ 5.x, but upstream choose not
-	  to install it by default.
+	  Build BlueZ 5.x deprecated tools. These currently include:
+	  hciattach, hciconfig, hcitool, hcidump, rfcomm, sdptool,
+	  ciptool, gatttool.
 
 config BR2_PACKAGE_BLUEZ5_UTILS_EXPERIMENTAL
 	bool "build experimental plugins"
