@@ -1,3 +1,22 @@
+2017.02.2, Released May 1st, 2017
+
+	Important / security related fixes.
+
+	Use HTTPS for the Codesourcery external toolchains as the HTTP
+	URLs no longer work.
+
+	Updated/fixed packages: bind, busybox, dovecot, freetype,
+	ghostscript, glibc, granite, hiredis, icu, imagemagick,
+	gst-plugins-base, gst1-plugins-base, libcroco, libcurl, libnl,
+	libnspr, libnss, libsamplerate, libsndfile, libunwind,
+	minicom, mplayer, mpv, nodejs, python-django, python-pyyaml,
+	python-web2py, samba4, syslinux, systemd, tiff, trinity,
+	uboot, wireshark, xen
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9791: Python searches for packages in the user site directory
+
 2017.02.1, Released April 4th, 2017
 
 	Important / security related fixes.
