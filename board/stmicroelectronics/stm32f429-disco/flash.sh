@@ -1,14 +1,20 @@
 #!/bin/bash
 
 OUTPUT_DIR=$1
+BOARD_NAME=${2:-stm32f429discovery}
 
 if ! test -d "${OUTPUT_DIR}" ; then
     echo "ERROR: no output directory specified."
-    echo "Usage: $0 OUTPUT_DIR"
+    echo "Usage: $0 OUTPUT_DIR BOARD_NAME"
+    echo ""
+    echo "Arguments:"
+    echo "    OUTPUT_DIR    The Buildroot output directory."
+    echo "    BOARD_NAME    One of the available boards among:"
+    echo "                  stm32f429discovery, stm32f429disc1"
     exit 1
 fi
 
-${OUTPUT_DIR}/host/usr/bin/openocd -f board/stm32f429discovery.cfg \
+${OUTPUT_DIR}/host/usr/bin/openocd -f board/${BOARD_NAME}.cfg \
   -c "init" \
   -c "reset init" \
   -c "flash probe 0" \

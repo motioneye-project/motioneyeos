@@ -4,6 +4,12 @@ STM32F429 Discovery
 This tutorial describes how to use the predefined Buildroot
 configuration for the STM32F429 Discovery evaluation platform.
 
+Supported HW
+------------
+
+ - STM32F429I-DISCO evaluation board
+ - STM32F429I-DISC1 evaluation board
+
 Building
 --------
 
@@ -24,7 +30,8 @@ The UART is configured at 115200.
 Flashing
 --------
 
-  ./board/stmicroelectronics/stm32f429-disco/flash.sh output/
+  ./board/stmicroelectronics/stm32f429-disco/flash.sh output/ \
+      {stm32f429discovery|stm32f429disc1}
 
 It will flash the minimal bootloader, the Device Tree Blob, and the
 kernel image which includes the root filesystem as initramfs.
