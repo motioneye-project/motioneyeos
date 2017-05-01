@@ -48,6 +48,8 @@ config BR2_TARGET_ROOTFS_EXT2_LABEL
 config BR2_TARGET_ROOTFS_EXT2_BLOCKS
 	int "exact size in blocks"
 	default 61440
+	help
+	  Specify the file system size as a number of 1024-byte blocks.
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "exact number of inodes (leave at 0 for auto calculation)"
