@@ -6,7 +6,7 @@ config BR2_PACKAGE_HOST_LINUX_HEADERS
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
-	default BR2_KERNEL_HEADERS_4_10
+	default BR2_KERNEL_HEADERS_4_11
 	help
 	  Select the kernel version to get headers from.
 
@@ -62,6 +62,10 @@ config BR2_KERNEL_HEADERS_4_10
 	bool "Linux 4.10.x kernel headers"
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 
+config BR2_KERNEL_HEADERS_4_11
+	bool "Linux 4.11.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
+
 config BR2_KERNEL_HEADERS_VERSION
 	bool "Manually specified Linux version"
 
@@ -82,6 +86,10 @@ choice
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_11
+	bool "4.11.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_10
 	bool "4.10.x"
@@ -222,4 +230,5 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "4.4.64"	if BR2_KERNEL_HEADERS_4_4
 	default "4.9.25"	if BR2_KERNEL_HEADERS_4_9
 	default "4.10.13"	if BR2_KERNEL_HEADERS_4_10
+	default "4.11"		if BR2_KERNEL_HEADERS_4_11
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
