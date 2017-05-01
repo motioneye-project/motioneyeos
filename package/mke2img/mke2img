@@ -44,6 +44,9 @@ main() {
     if [ -z "${image}" ]; then
         error "you must specify an output image file with '-o'\n"
     fi
+    if [ -z "${nb_blocks}" ]; then
+        error "you must specify the size of the output image with '-b'\n"
+    fi
     case "${gen}:${rev}" in
     2:0|2:1|3:1|4:1)
         ;;
