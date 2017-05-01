@@ -45,6 +45,14 @@ else
 BLUEZ5_UTILS_CONF_OPTS += --disable-health
 endif
 
+# enable midi profile
+ifeq ($(BR2_PACKAGE_BLUEZ5_PLUGINS_MIDI),y)
+BLUEZ5_UTILS_CONF_OPTS += --enable-midi
+BLUEZ5_UTILS_DEPENDENCIES += alsa-lib
+else
+BLUEZ5_UTILS_CONF_OPTS += --disable-midi
+endif
+
 # enable nfc plugin
 ifeq ($(BR2_PACKAGE_BLUEZ5_PLUGINS_NFC),y)
 BLUEZ5_UTILS_CONF_OPTS += --enable-nfc
