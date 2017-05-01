@@ -413,6 +413,9 @@ F:	package/openldap/
 N:	David du Colombier <0intro@gmail.com>
 F:	package/x264/
 
+N:	David Graziano <david.graziano@rockwellcollins.com>
+F:	package/libcsv/
+
 N:	David Lechner <david@lechnology.com>
 F:	board/lego/ev3/
 F:	configs/lego_ev3_defconfig
@@ -1067,6 +1070,7 @@ F:	package/fmc/
 F:	package/fmlib/
 F:	package/igmpproxy/
 F:	package/iputils/
+F:	package/libcsv/
 F:	package/omniorb/
 F:	package/python-ipy/
 F:	package/python-posix-ipc/
