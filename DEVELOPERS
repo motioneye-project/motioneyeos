@@ -140,6 +140,7 @@ F:	package/pulseview/
 F:	package/sigrok-cli/
 
 N:	Baruch Siach <baruch@tkos.co.il>
+F:	package/daemon/
 F:	package/ebtables/
 F:	package/openipmi/
 F:	package/ti-uim/
