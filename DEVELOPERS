@@ -1392,6 +1392,7 @@ F:	package/glog/
 F:	package/gssdp/
 F:	package/gupnp/
 F:	package/gupnp-av/
+F:	package/let-me-create/
 F:	package/nanomsg/
 
 N:	Rahul Jain <rahul.jain@imgtec.com>
