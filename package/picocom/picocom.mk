@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PICOCOM_VERSION = 2.1
+PICOCOM_VERSION = 2.2
 PICOCOM_SITE = $(call github,npat-efault,picocom,$(PICOCOM_VERSION))
 PICOCOM_LICENSE = GPL-2.0+
 PICOCOM_LICENSE_FILES = LICENSE.txt
