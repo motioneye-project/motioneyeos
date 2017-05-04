@@ -1,4 +1,4 @@
-From 2f44edc9fbcbf2202174aec723e8a8d191c13d2f Mon Sep 17 00:00:00 2001
+From 85863c9e051fe59add4e47dbfcb37072234f0110 Mon Sep 17 00:00:00 2001
 From: Matt Weber <matthew.weber@rockwellcollins.com>
 Date: Mon, 1 May 2017 19:55:07 -0500
 Subject: [PATCH] musl compat canonicalize_file_name()
@@ -11,9 +11,23 @@ https://bugs.freedesktop.org/show_bug.cgi?id=99944
 
 Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
 ---
+ configure.ac                |  2 ++
  src/libqmi-glib/qmi-utils.h | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ 2 files changed, 20 insertions(+)
 
+diff --git a/configure.ac b/configure.ac
+index 162d5ae..9cb82fd 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -80,6 +80,8 @@ AC_SUBST(GLIB_LIBS)
+ GLIB_MKENUMS=`$PKG_CONFIG --variable=glib_mkenums glib-2.0`
+ AC_SUBST(GLIB_MKENUMS)
+ 
++AC_CHECK_FUNCS([canonicalize_file_name])
++
+ dnl qmi-firmware-update is optional, enabled by default
+ AC_ARG_ENABLE([firmware-update],
+               AS_HELP_STRING([--enable-firmware-update],
 diff --git a/src/libqmi-glib/qmi-utils.h b/src/libqmi-glib/qmi-utils.h
 index 4fd5199..4869da5 100644
 --- a/src/libqmi-glib/qmi-utils.h
@@ -44,5 +58,5 @@ index 4fd5199..4869da5 100644
  
  G_BEGIN_DECLS
 -- 
-1.9.1
+2.7.4
 
