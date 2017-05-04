@@ -97,22 +97,8 @@ OPENCV3_CONF_OPTS += \
 #
 # * PowerPC support is turned off since its only effect is altering CFLAGS,
 #   adding '-mcpu=G3 -mtune=G5' to them, which is already handled by Buildroot.
-# * fma3 and popcnt support is disabled because according to gcc manual [2], it
-#   is only available on x86_64 haswell, broadwell and knl architecture.
-#
-# [2] https://gcc.gnu.org/onlinedocs/gcc-5.1.0/gcc/x86-Options.html#x86-Options
 OPENCV3_CONF_OPTS += \
-	-DENABLE_AVX=$(if $(BR2_X86_CPU_HAS_AVX),ON,OFF) \
-	-DENABLE_AVX2=$(if $(BR2_X86_CPU_HAS_AVX2),ON,OFF) \
-	-DENABLE_FMA3=OFF \
-	-DENABLE_POPCNT=OFF \
-	-DENABLE_POWERPC=OFF \
-	-DENABLE_SSE=$(if $(BR2_X86_CPU_HAS_SSE),ON,OFF) \
-	-DENABLE_SSE2=$(if $(BR2_X86_CPU_HAS_SSE2),ON,OFF) \
-	-DENABLE_SSE3=$(if $(BR2_X86_CPU_HAS_SSE3),ON,OFF) \
-	-DENABLE_SSE41=$(if $(BR2_X86_CPU_HAS_SSE4),ON,OFF) \
-	-DENABLE_SSE42=$(if $(BR2_X86_CPU_HAS_SSE42),ON,OFF) \
-	-DENABLE_SSSE3=$(if $(BR2_X86_CPU_HAS_SSSE3),ON,OFF)
+	-DENABLE_POWERPC=OFF
 
 # Cuda stuff
 OPENCV3_CONF_OPTS += \
