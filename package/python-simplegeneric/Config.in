@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PYTHON_SIMPLEGENERIC
 	bool "python-simplegeneric"
 	help
-	  A configuration system for Python applications.
+	  Simple generic functions (similar to Python's own len(),
+	  pickle.dump(), etc.)
 
 	  https://pypi.python.org/pypi/simplegeneric
