@@ -28,7 +28,8 @@ config BR2_PACKAGE_AUFS_UTIL_VERSION
 	  Usually, the sha1 of the cset you want to use; avoid using a
 	  branch name as this yields non-reproducible builds.
 
-	  See the following resources to see what versions are available:
+	  See the following resources to see what versions are 
+	  available:
 
 	  https://sourceforge.net/p/aufs/aufs-util/ci/master/tree/
 

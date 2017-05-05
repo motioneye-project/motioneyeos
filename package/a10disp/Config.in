@@ -3,8 +3,8 @@ config BR2_PACKAGE_A10DISP
 	depends on BR2_arm
 	depends on BR2_LINUX_KERNEL
 	help
-	  Program to change the display mode of Allwinner ARM SOCs running
-	  the linux-sunxi kernel (and not the mainline kernel.)
+	  Program to change the display mode of Allwinner ARM SOCs
+	  running the linux-sunxi kernel (and not the mainline kernel.)
 
 	  http://github.com/hglm/a10disp
 
