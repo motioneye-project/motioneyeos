@@ -1498,6 +1498,7 @@ F:	package/proxychains-ng/
 F:	package/yasm/
 
 N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
+F:	package/cracklib/
 F:	package/libscrypt/
 
 N:	Stephan Hoffmann <sho@relinux.de>
