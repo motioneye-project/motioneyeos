@@ -9,11 +9,13 @@ config BR2_PACKAGE_DIRECTFB
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_ZLIB
 	help
-	  DirectFB (Direct Frame Buffer) is a set of graphics APIs implemented
-	  on top of the Linux Frame Buffer (fbdev) abstraction layer. It is an
-	  alternative to X11 with a smaller memory footprint that still has an
-	  integrated windowing system. As of 4 October 2015, DirectFB's website
-	  http://www.directfb.org/ is down. See alternative site listed below.
+	  DirectFB (Direct Frame Buffer) is a set of graphics APIs
+	  implemented on top of the Linux Frame Buffer (fbdev)
+	  abstraction layer. It is an alternative to X11 with a smaller
+	  memory footprint that still has an integrated windowing
+	  system. As of 4 October 2015, DirectFB's website
+	  http://www.directfb.org/ is down. See alternative site listed
+	  below.
 
 	  http://elinux.org/DirectFB
 

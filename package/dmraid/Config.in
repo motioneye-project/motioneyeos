@@ -6,8 +6,9 @@ config BR2_PACKAGE_DMRAID
 	depends on !BR2_TOOLCHAIN_USES_MUSL # lvm2
 	select BR2_PACKAGE_LVM2
 	help
-	  dmraid discovers, activates, deactivates and displays properties
-	  of software RAID sets (eg, ATARAID) and contained DOS partitions.
+	  dmraid discovers, activates, deactivates and displays
+	  properties of software RAID sets (eg, ATARAID) and contained
+	  DOS partitions.
 
 	  dmraid uses the Linux device-mapper to create devices with
 	  respective mappings for the ATARAID sets discovered.
