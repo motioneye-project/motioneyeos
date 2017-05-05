@@ -11,8 +11,8 @@ config BR2_PACKAGE_CURLFTPFS
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBCURL
 	help
-	  CurlFtpFS is a filesystem for accessing FTP hosts based on FUSE
-	  and libcurl.
+	  CurlFtpFS is a filesystem for accessing FTP hosts based on
+	  FUSE and libcurl.
 
 	  http://curlftpfs.sourceforge.net/
 

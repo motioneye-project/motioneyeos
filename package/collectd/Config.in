@@ -89,8 +89,8 @@ config BR2_PACKAGE_COLLECTD_SYSLOG
 config BR2_PACKAGE_COLLECTD_THRESHOLD
 	bool "threshold"
 	help
-	  Checks values against configured thresholds and creates notifications
-	  if values are out of bounds.
+	  Checks values against configured thresholds and creates
+	  notifications if values are out of bounds.
 
 endmenu
 
@@ -140,17 +140,20 @@ config BR2_PACKAGE_COLLECTD_CGROUPS
 config BR2_PACKAGE_COLLECTD_CONNTRACK
 	bool "conntrack"
 	help
-	  Collects the number of entries in Linux's connection tracking table.
+	  Collects the number of entries in Linux's connection tracking
+	  table.
 
 config BR2_PACKAGE_COLLECTD_CONTEXTSWITCH
 	bool "contextswitch"
 	help
-	  Collects the number of context switches done by the operating system.
+	  Collects the number of context switches done by the operating
+	  system.
 
 config BR2_PACKAGE_COLLECTD_CPU
 	bool "cpu"
 	help
-	  Collects the amount of time spent by the CPU in various states.
+	  Collects the amount of time spent by the CPU in various
+	  states.
 
 config BR2_PACKAGE_COLLECTD_CPUFREQ
 	bool "cpufreq"
@@ -229,7 +232,8 @@ config BR2_PACKAGE_COLLECTD_FHCOUNT
 config BR2_PACKAGE_COLLECTD_FILECOUNT
 	bool "filecount"
 	help
-	  Counts the number of files in a directory and all its subdirectories.
+	  Counts the number of files in a directory and all its
+	  subdirectories.
 
 config BR2_PACKAGE_COLLECTD_FSCACHE
 	bool "fscache"
@@ -323,7 +327,8 @@ config BR2_PACKAGE_COLLECTD_MYSQL
 	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
 	select BR2_PACKAGE_MYSQL
 	help
-	  Connects to a MySQL database and issues a "show status" command.
+	  Connects to a MySQL database and issues a "show status"
+	  command.
 
 config BR2_PACKAGE_COLLECTD_NETLINK
 	bool "netlink"
@@ -334,7 +339,8 @@ config BR2_PACKAGE_COLLECTD_NETLINK
 config BR2_PACKAGE_COLLECTD_NFS
 	bool "nfs"
 	help
-	  Collects information about the usage of the Network File System.
+	  Collects information about the usage of the Network File
+	  System.
 
 config BR2_PACKAGE_COLLECTD_NGINX
 	bool "nginx"
@@ -358,7 +364,8 @@ config BR2_PACKAGE_COLLECTD_OPENLDAP
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_OPENLDAP
 	help
-	  Read monitoring information from OpenLDAP's cn=Monitor subtree.
+	  Read monitoring information from OpenLDAP's cn=Monitor
+	  subtree.
 
 comment "openldap support needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
@@ -409,8 +416,8 @@ config BR2_PACKAGE_COLLECTD_SMART
 	depends on BR2_PACKAGE_HAS_UDEV # libatasmart
 	select BR2_PACKAGE_LIBATASMART
 	help
-	  Collect SMART statistics, notably load cycle count, temperature
-	  and bad sectors.
+	  Collect SMART statistics, notably load cycle count,
+	  temperature and bad sectors.
 
 comment "SMART requires udev to be enabled"
 	depends on !BR2_PACKAGE_HAS_UDEV
@@ -445,8 +452,8 @@ config BR2_PACKAGE_COLLECTD_TAIL
 config BR2_PACKAGE_COLLECTD_TAIL_CSV
 	bool "tail csv"
 	help
-	  Follows (tails) files in CSV format, parses each line and submits
-	  extracted values.
+	  Follows (tails) files in CSV format, parses each line and
+	  submits extracted values.
 
 config BR2_PACKAGE_COLLECTD_TCPCONNS
 	bool "tcpconns"
@@ -516,7 +523,8 @@ comment "Select at least one for collectd to be useful"
 config BR2_PACKAGE_COLLECTD_CSV
 	bool "csv"
 	help
-	  Writes values to a plain-text file in Comma Separated Values format.
+	  Writes values to a plain-text file in Comma Separated Values
+	  format.
 
 config BR2_PACKAGE_COLLECTD_GRAPHITE
 	bool "graphite"
@@ -555,7 +563,8 @@ config BR2_PACKAGE_COLLECTD_RIEMANN
 	select BR2_PACKAGE_RIEMANN_C_CLIENT
 	select BR2_PACKAGE_LIBTOOL
 	help
-	  Sends data to Riemann, a stream processing and monitoring system.
+	  Sends data to Riemann, a stream processing and monitoring
+	  system.
 
 config BR2_PACKAGE_COLLECTD_UNIXSOCK
 	bool "unixsock"
@@ -567,7 +576,8 @@ config BR2_PACKAGE_COLLECTD_WRITEHTTP
 	bool "write_http"
 	select BR2_PACKAGE_LIBCURL
 	help
-	  Sends values collected to a web-server using HTTP POST and PUTVAL.
+	  Sends values collected to a web-server using HTTP POST and
+	  PUTVAL.
 
 config BR2_PACKAGE_COLLECTD_WRITELOG
 	bool "write_log"
@@ -592,14 +602,14 @@ comment "write_prometheus needs a toolchain w/ C++, host gcc >= 4.5"
 config BR2_PACKAGE_COLLECTD_WRITESENSU
 	bool "write_sensu"
 	help
-	  Sends data to Sensu, a stream processing and monitoring system,
-	  via the Sensu client local TCP socket.
+	  Sends data to Sensu, a stream processing and monitoring
+	  system, via the Sensu client local TCP socket.
 
 config BR2_PACKAGE_COLLECTD_WRITETSDB
 	bool "write_tsdb"
 	help
-	  Sends data OpenTSDB, a scalable no master, no shared state time
-	  series database.
+	  Sends data OpenTSDB, a scalable no master, no shared state
+	  time series database.
 
 endmenu
 

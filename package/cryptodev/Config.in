@@ -31,8 +31,8 @@ config BR2_PACKAGE_OCF_LINUX
 	select BR2_PACKAGE_HAS_CRYPTODEV
 	help
 	  OCF-Linux is a Linux port of the OpenBSD/FreeBSD Cryptographic
-	  Framework (OCF). This port aims to bring full asynchronous HW/SW
-	  crypto acceleration to the Linux kernel and applications
+	  Framework (OCF). This port aims to bring full asynchronous
+	  HW/SW crypto acceleration to the Linux kernel and applications
 	  running under Linux.
 
 	  http://ocf-linux.sourceforge.net/

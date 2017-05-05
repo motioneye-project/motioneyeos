@@ -6,6 +6,7 @@ config BR2_PACKAGE_CA_CERTIFICATES
 	  connections.
 
 	  It includes, among others, certificate authorities used by the
-	  Debian infrastructure and those shipped with Mozilla's browsers.
+	  Debian infrastructure and those shipped with Mozilla's
+	  browsers.
 
 	  http://anonscm.debian.org/gitweb/?p=collab-maint/ca-certificates.git
