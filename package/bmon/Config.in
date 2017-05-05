@@ -5,8 +5,8 @@ config BR2_PACKAGE_BMON
 	select BR2_PACKAGE_LIBNL
 	select BR2_PACKAGE_NCURSES
 	help
-	  bmon is a bandwidth monitor capable of retrieving statistics from
-	  various input modules. It provides various output methods
+	  bmon is a bandwidth monitor capable of retrieving statistics
+	  from various input modules. It provides various output methods
 	  including a curses based interface.
 
 	  https://github.com/tgraf/bmon/

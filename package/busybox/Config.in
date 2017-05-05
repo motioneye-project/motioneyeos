@@ -2,8 +2,8 @@ config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
 	help
-	  The Swiss Army Knife of embedded Linux. It slices, it dices, it
-	  makes Julian Fries.
+	  The Swiss Army Knife of embedded Linux. It slices, it dices,
+	  it makes Julian Fries.
 
 	  http://busybox.net/
 
@@ -15,10 +15,12 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	default "package/busybox/busybox.config"
 	help
-	  Some people may wish to use their own modified BusyBox configuration
-	  file, and will specify their config file location with this option.
+	  Some people may wish to use their own modified BusyBox
+	  configuration file, and will specify their config file
+	  location with this option.
 
-	  Most people will just use the default BusyBox configuration file.
+	  Most people will just use the default BusyBox configuration
+	  file.
 
 config BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES
 	string "Additional BusyBox configuration fragment files"
