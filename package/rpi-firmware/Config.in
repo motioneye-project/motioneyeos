@@ -67,6 +67,7 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	bool "vcdbg"
+	depends on BR2_arm # rpi-userland
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_INSTALL_LIBSTDCPP # rpi-userland
 	select BR2_PACKAGE_RPI_USERLAND
@@ -74,6 +75,7 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	  Install vcdbg, to help debug communication with the GPU.
 
 comment "vcdbg needs a glibc toolchain w/ C++"
+	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_INSTALL_LIBSTDCPP
 
 endif # BR2_PACKAGE_RPI_FIRMWARE
