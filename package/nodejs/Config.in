@@ -44,13 +44,6 @@ config BR2_PACKAGE_NODEJS_NPM
 
 	  Note that NPM is always built for the buildroot host.
 
-config BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT
-	bool "CoffeeScript"
-	help
-	  CoffeeScript is a little language that compiles into JavaScript.
-
-	  http://www.coffeescript.org
-
 config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL
 	string "Additional modules"
 	help

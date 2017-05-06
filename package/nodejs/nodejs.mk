@@ -139,11 +139,9 @@ define NODEJS_BUILD_CMDS
 endef
 
 #
-# Build the list of modules to install based on the booleans for
-# popular modules, as well as the "additional modules" list.
+# Build the list of modules to install.
 #
 NODEJS_MODULES_LIST= $(call qstrip,\
-	$(if $(BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT),coffee-script) \
 	$(BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL))
 
 # Define NPM for other packages to use

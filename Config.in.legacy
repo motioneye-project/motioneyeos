@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT
+	bool "CoffeeScript option has been removed"
+	select BR2_LEGACY
+	help
+	  The option to enable NodeJS CoffeeScript has been removed.
+	  To continue using it, add "coffee-script" to
+	  BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL.
+
 config BR2_PACKAGE_NODEJS_MODULES_EXPRESS
 	bool "Express web application framework option has been removed"
 	select BR2_LEGACY
