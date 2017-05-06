@@ -30,11 +30,6 @@ configure() {
     
     # bring adapter up
     hciconfig $hci up
-    
-    # if DiscoverableTimeout is set to 0, make adapter is discoverable from boot time
-    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
-         hciconfig $hci piscan
-    fi
 }
 
 start() {
@@ -59,10 +54,16 @@ start() {
         msg_fail
         return 1
     fi
-    
+
     msg_begin "Starting bluetoothd"
-    /usr/libexec/bluetooth/bluetoothd &>/dev/null &
+    $bluetoothd &>/dev/null &
     msg_done
+
+    # if DiscoverableTimeout is set to 0, make adapter discoverable from boot time
+    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+        sleep 1
+        hciconfig $hci piscan
+    fi
 }
 
 stop() {
