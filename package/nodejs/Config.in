@@ -44,16 +44,6 @@ config BR2_PACKAGE_NODEJS_NPM
 
 	  Note that NPM is always built for the buildroot host.
 
-config BR2_PACKAGE_NODEJS_MODULES_EXPRESS
-	bool "Express web application framework"
-	help
-	  Express is a minimal and flexible node.js web application
-	  framework, providing a robust set of features for building
-	  single and multi-page, and hybrid web applications.
-
-	  http://www.expressjs.com
-	  https://github.com/visionmedia/express
-
 config BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT
 	bool "CoffeeScript"
 	help

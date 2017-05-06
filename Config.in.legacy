@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.05"
 
+config BR2_PACKAGE_NODEJS_MODULES_EXPRESS
+	bool "Express web application framework option has been removed"
+	select BR2_LEGACY
+	help
+	  The option to enable the NodeJS Express web application
+	  framework has been removed. To continue using it, add
+	  "express" to BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL.
+
 config BR2_PACKAGE_BLUEZ5_UTILS_GATTTOOL
 	bool "bluez5_utils gatttool install option removed"
 	select BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED
