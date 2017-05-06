@@ -1,0 +1,31 @@
+From 7fcaa080ef3fddb3f7dcfaf2984bc397d7c9e96c Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 29 Apr 2017 22:27:26 +0200
+Subject: [PATCH] use ln -snf
+
+Otherwise the install step fail due to existing symlink.
+
+'libloki.so': File exists
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Sigend-off-by: Corentin GUILLEVIC <corentin.guillevic@smile.fr>
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index 054285e..2c169ab 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -80,7 +80,7 @@ install-static: $(RESULT_DIR)$(STATIC_LIB)
+ install-shared: $(RESULT_DIR)$(SHARED_LIB_VERSIONED)
+ 	mkdir -p $(DESTDIR)$(prefix)/lib
+ 	$(INSTALL_DATA) $(RESULT_DIR)$(SHARED_LIB_VERSIONED) $(DESTDIR)$(prefix)/lib
+-	cd $(DESTDIR)$(prefix)/lib; ln -s $(SHARED_LIB_VERSIONED) $(SHARED_LIB_BASE)
++	cd $(DESTDIR)$(prefix)/lib; ln -snf $(SHARED_LIB_VERSIONED) $(SHARED_LIB_BASE)
+ 
+ %.lo : %.cpp
+ 	$(CXX) -c $(CXXFLAGS) -fPIC $(CPPFLAGS) -o $@ $<
+-- 
+2.9.3
+
