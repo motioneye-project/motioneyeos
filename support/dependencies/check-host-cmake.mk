@@ -12,7 +12,7 @@ BR2_CMAKE_VERSION_MIN = 3.1
 
 BR2_CMAKE ?= cmake
 ifeq ($(call suitable-host-package,cmake,\
-	$(BR2_CMAKE) $(BR2_CMAKE_VERSION_MIN)),)
+	$(BR2_CMAKE_VERSION_MIN) $(BR2_CMAKE)),)
 BR2_CMAKE = $(HOST_DIR)/usr/bin/cmake
 BR2_CMAKE_HOST_DEPENDENCY = host-cmake
 endif

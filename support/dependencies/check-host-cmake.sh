@@ -1,7 +1,7 @@
 #!/bin/sh
 
-candidate="${1}"
-version_min="${2}"
+version_min="${1}"
+candidate="${2}"
 
 major_min="${version_min%.*}"
 minor_min="${version_min#*.}"
