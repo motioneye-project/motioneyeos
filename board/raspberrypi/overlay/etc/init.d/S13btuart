@@ -1,0 +1,45 @@
+#!/bin/bash
+
+sys_conf="/etc/bluetooth.conf"
+boot_conf="/boot/bluetooth.conf"
+conf="/data/etc/bluetooth.conf"
+
+test -f $conf || test -f $boot_conf || test -f $sys_conf || exit 0
+
+test -d "/proc/device-tree/soc/gpio@7e200000/uart0_pins" || exit 0  # no rpi bluetooth detected
+
+test -n "$os_version" || source /etc/init.d/base
+
+function start() {
+    if [ "$(cat /proc/device-tree/aliases/uart0)" = "$(cat /proc/device-tree/aliases/serial1)" ] ; then
+        if [ "$(wc -c /proc/device-tree/soc/gpio@7e200000/uart0_pins/brcm\,pins | cut -f 1 -d ' ')" = " 16" ] ; then
+	        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 3000000 flow - &>/dev/null
+        else
+	        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 921600 noflow - &>/dev/null
+        fi
+    else
+        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 460800 noflow - &>/dev/null
+    fi
+}
+
+case "$1" in
+    start)
+        msg_begin "Attaching UART bluetooth modem"
+        # for some reason, sometimes the hciattach command needs to be run twice
+        (start || start) &>/dev/null &
+        msg_background
+        ;;
+
+    stop)
+        msg_begin "Detaching UART bluetooth modem"
+        killall hciattach &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    *)
+        echo $"Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+

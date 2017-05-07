@@ -33,8 +33,6 @@ rm -rf $TARGET/usr/share/ffmpeg/
 rm -rf $TARGET/usr/share/perl5/
 rm -rf $TARGET/usr/share/common-lisp/
 
-find $TARGET -name '*libmount*' | xargs rm -rf
-
 # various binaries
 rm -f $TARGET/bin/more
 rm -f $TARGET/bin/wdctl

@@ -1,0 +1,95 @@
+#!/bin/bash
+
+sys_conf="/etc/bluetooth.conf"
+boot_conf="/boot/bluetooth.conf"
+conf="/data/etc/bluetooth.conf"
+
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
+fi
+
+test -f $conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+hci=hci0
+bluetoothd=/usr/libexec/bluetooth/bluetoothd
+run_conf="/var/lib/bluetooth.conf"
+
+configure() {
+    cp $conf $run_conf
+
+    # if no specific name configured, use hostname
+    if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then
+        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" $run_conf
+    fi
+    
+    # bring adapter up
+    hciconfig $hci up
+}
+
+start() {
+    msg_begin "Configuring bluetooth"
+
+    # wait up to 10 seconds for device
+    count=0
+    while ! hciconfig $hci &>/dev/null; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge 10 ]; then
+            msg_fail "no device"
+            logger -t bluetooth -s "bluetooth device not available, rebooting"
+            reboot
+            return 1
+        fi
+    done
+    
+    if configure; then
+        msg_done
+    else
+        msg_fail
+        return 1
+    fi
+
+    msg_begin "Starting bluetoothd"
+    $bluetoothd &>/dev/null &
+    msg_done
+
+    # if DiscoverableTimeout is set to 0, make adapter discoverable from boot time
+    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+        sleep 1
+        hciconfig $hci piscan
+    fi
+}
+
+stop() {
+    msg_begin "Stopping bluetoothd"
+    killall bluetoothd &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+        
+    stop)
+        stop
+        ;;
+        
+    restart)
+        stop
+        start
+        ;;
+    
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

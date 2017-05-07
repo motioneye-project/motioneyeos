@@ -50,7 +50,7 @@ mkdir -p $BOOT
 mount -o loop $loop_dev $BOOT
 
 msg "copying boot filesystem contents"
-cp $BOOT_SRC/* $BOOT
+cp -r $BOOT_SRC/* $BOOT
 sync
 
 msg "unmounting boot filesystem"
