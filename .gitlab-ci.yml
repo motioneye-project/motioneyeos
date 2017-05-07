@@ -86,6 +86,7 @@ beaglebone_defconfig: *defconfig
 beaglebone_qt5_defconfig: *defconfig
 chromebook_snow_defconfig: *defconfig
 ci20_defconfig: *defconfig
+ci40_defconfig: *defconfig
 csky_gx6605s_defconfig: *defconfig
 cubieboard2_defconfig: *defconfig
 firefly_rk3288_defconfig: *defconfig
@@ -168,6 +169,7 @@ qemu_xtensa_lx60_defconfig: *defconfig
 qemu_xtensa_lx60_nommu_defconfig: *defconfig
 raspberrypi0_defconfig: *defconfig
 raspberrypi2_defconfig: *defconfig
+raspberrypi3_64_defconfig: *defconfig
 raspberrypi3_defconfig: *defconfig
 raspberrypi_defconfig: *defconfig
 riotboard_defconfig: *defconfig
