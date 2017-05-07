@@ -1,6 +1,7 @@
-comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar"
+comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar, host and target gcc >= 4.5"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
-		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR
+		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR \
+		|| !BR2_HOST_GCC_AT_LEAST_4_5 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 
 config BR2_PACKAGE_MOSH
@@ -8,6 +9,8 @@ config BR2_PACKAGE_MOSH
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
+	depends on BR2_HOST_GCC_AT_LEAST_4_5 # protobuf
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5 # protobuf
 	depends on !BR2_STATIC_LIBS # protobuf
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_PROTOBUF
