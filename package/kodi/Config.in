@@ -295,6 +295,7 @@ endmenu
 
 menu "Peripheral addons"
 	source "package/kodi-peripheral-joystick/Config.in"
+	source "package/kodi-peripheral-steamcontroller/Config.in"
 endmenu
 
 menu "PVR addons"
