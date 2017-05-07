@@ -27,6 +27,9 @@ config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_NONE
 
 config BR2_PACKAGE_ESPEAK_AUDIO_BACKEND_ALSA
 	bool "alsa via portaudio"
+	# Selecting portaudio generates spurious "unmet dependencies"
+	# warnings. Unless you are changing the dependencies of espeak
+	# or portaudio, just ignore those spurious warnings.
 	select BR2_PACKAGE_PORTAUDIO
 	select BR2_PACKAGE_PORTAUDIO_CXX
 
