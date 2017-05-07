@@ -122,7 +122,8 @@ if [ -n "$SSID" ]; then
     if [ -n "$PSK" ]; then
         echo "    psk=\"$PSK\"" >> $conf
     fi
-    echo -e "}\n" >> $conf
+    echo "}" >> $conf
+    echo "" >> $conf
 fi
 
 # modem
