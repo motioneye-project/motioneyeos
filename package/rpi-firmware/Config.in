@@ -67,7 +67,7 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	bool "vcdbg"
-	depends on BR2_arm # rpi-userland
+	depends on BR2_arm # prebuilt arm binary, rpi-userland
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_INSTALL_LIBSTDCPP # rpi-userland
 	select BR2_PACKAGE_RPI_USERLAND
