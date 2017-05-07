@@ -10,7 +10,7 @@
 #
 BR2_CMAKE_VERSION_MIN = 3.1
 
-BR2_CMAKE_CANDIDATES ?= cmake
+BR2_CMAKE_CANDIDATES ?= cmake cmake3
 BR2_CMAKE ?= $(call suitable-host-package,cmake,\
 	$(BR2_CMAKE_VERSION_MIN) $(BR2_CMAKE_CANDIDATES))
 ifeq ($(BR2_CMAKE),)
