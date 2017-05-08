@@ -20,4 +20,10 @@ ifeq ($(BR2_MIPS_NABI64),y)
 MPIR_CONF_OPTS += ABI=64
 endif
 
+# The optimized ARM assembly code uses ARM-only (i.e not Thumb1/2
+# compatible) instructions.
+ifeq ($(BR2_arm)$(BR2_armeb):$(BR2_ARM_CPU_HAS_ARM),y:)
+MPIR_CONF_ENV += MPN_PATH="generic"
+endif
+
 $(eval $(autotools-package))
