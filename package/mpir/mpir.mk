@@ -31,4 +31,9 @@ ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
 MPIR_CONF_ENV += MPN_PATH="generic"
 endif
 
+# Optimized powerpc64 code is not suitable for powerpc64le
+ifeq ($(BR2_powerpc64le),y)
+MPIR_CONF_ENV += MPN_PATH="generic"
+endif
+
 $(eval $(autotools-package))
