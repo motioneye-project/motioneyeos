@@ -26,4 +26,9 @@ ifeq ($(BR2_arm)$(BR2_armeb):$(BR2_ARM_CPU_HAS_ARM),y:)
 MPIR_CONF_ENV += MPN_PATH="generic"
 endif
 
+# Optimized mips32/mips64 code not suitable for mips32r6/mips64r6
+ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+MPIR_CONF_ENV += MPN_PATH="generic"
+endif
+
 $(eval $(autotools-package))
