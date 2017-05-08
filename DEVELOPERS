@@ -1070,22 +1070,32 @@ F:	package/ts4900-fpga/
 
 N:	Matt Weber <matthew.weber@rockwellcollins.com>
 F:	package/bc/
+F:	package/checkpolicy/
+F:	package/cgroupfs-mount/
 F:	package/eigen/
 F:	package/fmc/
 F:	package/fmlib/
 F:	package/igmpproxy/
 F:	package/iputils/
 F:	package/libcsv/
+F:	package/libselinux/
+F:	package/libsemanage/
+F:	package/libsepol/
+F:	package/libqmi/
+F:	package/nginx-upload/
 F:	package/omniorb/
+F:	package/policycoreutils/
 F:	package/python-ipy/
 F:	package/python-posix-ipc/
 F:	package/python-pypcap/
 F:	package/python-pyrex/
 F:	package/raptor/
+F:	package/sepolgen/
 F:	package/setools/
 F:	package/simicsfs/
 F:	package/smcroute/
 F:	package/tclap/
+F:	package/valijson/
 
 N:	Mauro Condarelli <mc5686@mclink.it>
 F:	package/mc/
