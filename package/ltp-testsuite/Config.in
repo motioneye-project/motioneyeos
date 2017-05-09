@@ -1,6 +1,15 @@
 config BR2_PACKAGE_LTP_TESTSUITE_ARCH_SUPPORTS
 	bool
-	default y
+	# Needs __sync*() built-ins for 4-byte data, except on a few
+	# architectures for which a specific implementation is
+	# provided in ltp-testsuite
+	default y if BR2_TOOLCHAIN_HAS_SYNC_4
+	default y if BR2_arc
+	default y if BR2_i386
+	default y if BR2_powerpc
+	default y if BR2_powepc64
+	default y if BR2_powerpc64le
+	default y if BR2_x86_64
 	# does not build on nios2, cachectl.h issue
 	depends on !BR2_nios2
 
