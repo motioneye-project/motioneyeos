@@ -36,10 +36,8 @@ class BRTest(unittest.TestCase):
     keepbuilds = False
 
     def show_msg(self, msg):
-        print "[%s/%s/%s] %s" % (os.path.basename(self.__class__.outputdir),
-                                 self.testname,
-                                 datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                                 msg)
+        print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
+                                    self.testname, msg)
     def setUp(self):
         self.testname = self.__class__.__name__
         self.builddir = os.path.join(self.__class__.outputdir, self.testname)
