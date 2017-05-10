@@ -27,7 +27,7 @@ MPIR_CONF_ENV += MPN_PATH="generic"
 endif
 
 # Optimized mips32/mips64 code not suitable for mips32r6/mips64r6
-ifeq ($(BR2_mips_32r6)$(BR2_mips_64r6),y)
+ifeq ($(BR2_MIPS_CPU_MIPS32R6)$(BR2_MIPS_CPU_MIPS64R6),y)
 MPIR_CONF_ENV += MPN_PATH="generic"
 endif
 
