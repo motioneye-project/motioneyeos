@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIT_VERSION = 2.12.2
+GIT_VERSION = 2.13.0
 GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = https://www.kernel.org/pub/software/scm/git
 GIT_LICENSE = GPL-2.0, LGPL-2.1+
