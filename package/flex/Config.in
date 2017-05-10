@@ -5,4 +5,4 @@ config BR2_PACKAGE_FLEX
 	  A fast lexical analyser generator. A tool for generating
 	  programs that perform pattern-matching on text.
 
-	  http://flex.sourceforge.net/
+	  https://github.com/westes/flex/
