@@ -41,7 +41,6 @@ class BRTest(unittest.TestCase):
     def setUp(self):
         self.testname = self.__class__.__name__
         self.builddir = os.path.join(self.__class__.outputdir, self.testname)
-        self.runlog = self.builddir + "-run.log"
         self.emulator = None
         self.show_msg("Starting")
         self.b = Builder(self.__class__.config, self.builddir, self.logtofile)
