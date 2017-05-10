@@ -8,24 +8,17 @@ from urllib2 import urlopen, HTTPError, URLError
 
 ARTIFACTS_URL = "http://autobuild.buildroot.net/artefacts/"
 
-@contextlib.contextmanager
-def smart_open(filename=None):
+def open_log_file(builddir, stage, logtofile=True):
     """
-    Return a file-like object that can be written to using the 'with'
-    keyword, as in the example:
-    with infra.smart_open("test.log") as outfile:
-       outfile.write("Hello, world!\n")
+    Open a file for logging and return its handler.
+    If logtofile is True, returns sys.stdout. Otherwise opens a file
+    with a suitable name in the build directory.
     """
-    if filename and filename != '-':
-        fhandle = open(filename, 'a+')
+    if logtofile:
+        fhandle = open("{}-{}.log".format(builddir, stage), 'a+')
     else:
         fhandle = sys.stdout
-
-    try:
-        yield fhandle
-    finally:
-        if fhandle is not sys.stdout:
-            fhandle.close()
+    return fhandle
 
 def filepath(relpath):
     return os.path.join(os.getcwd(), "support/testing", relpath)

@@ -8,15 +8,11 @@ class Builder(object):
     def __init__(self, config, builddir, logtofile):
         self.config = config
         self.builddir = builddir
-        self.logtofile = logtofile
+        self.logfile = infra.open_log_file(builddir, "build", logtofile)
 
     def build(self):
         if not os.path.isdir(self.builddir):
             os.makedirs(self.builddir)
-
-        log = "{}-build.log".format(self.builddir)
-        if not self.logtofile:
-            log = None
 
         config_file = os.path.join(self.builddir, ".config")
         with open(config_file, "w+") as cf:
@@ -25,14 +21,12 @@ class Builder(object):
         cmd = ["make",
                "O={}".format(self.builddir),
                "olddefconfig"]
-        with infra.smart_open(log) as log_fh:
-            ret = subprocess.call(cmd, stdout=log_fh, stderr=log_fh)
+        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile)
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
 
         cmd = ["make", "-C", self.builddir]
-        with infra.smart_open(log) as log_fh:
-            ret = subprocess.call(cmd, stdout=log_fh, stderr=log_fh)
+        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile)
         if ret != 0:
             raise SystemError("Build failed")
 

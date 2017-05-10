@@ -14,9 +14,7 @@ class Emulator(object):
         self.__tn = None
         self.downloaddir = downloaddir
         self.log = ""
-        self.log_file = "{}-run.log".format(builddir)
-        if logtofile is None:
-            self.log_file = None
+        self.logfile = infra.open_log_file(builddir, "run", logtofile)
 
     # Start Qemu to boot the system
     #
@@ -72,9 +70,8 @@ class Emulator(object):
         if kernel_cmdline:
             qemu_cmd += ["-append", " ".join(kernel_cmdline)]
 
-        with infra.smart_open(self.log_file) as lfh:
-            lfh.write("> starting qemu with '%s'\n" % " ".join(qemu_cmd))
-            self.qemu = subprocess.Popen(qemu_cmd, stdout=lfh, stderr=lfh)
+        self.logfile.write("> starting qemu with '%s'\n" % " ".join(qemu_cmd))
+        self.qemu = subprocess.Popen(qemu_cmd, stdout=self.logfile, stderr=self.logfile)
 
         # Wait for the telnet port to appear and connect to it.
         while True:
@@ -88,8 +85,7 @@ class Emulator(object):
     def __read_until(self, waitstr, timeout=5):
         data = self.__tn.read_until(waitstr, timeout)
         self.log += data
-        with infra.smart_open(self.log_file) as lfh:
-            lfh.write(data)
+        self.logfile.write(data)
         return data
 
     def __write(self, wstr):
@@ -100,8 +96,7 @@ class Emulator(object):
     def login(self, password=None):
         self.__read_until("buildroot login:", 10)
         if "buildroot login:" not in self.log:
-            with infra.smart_open(self.log_file) as lfh:
-                lfh.write("==> System does not boot")
+            self.logfile.write("==> System does not boot")
             raise SystemError("System does not boot")
 
         self.__write("root\n")
