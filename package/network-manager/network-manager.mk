@@ -30,8 +30,14 @@ NETWORK_MANAGER_CONF_OPTS = \
 	--with-crypto=gnutls \
 	--with-iptables=/usr/sbin/iptables \
 	--disable-ifupdown \
-	--disable-ifnet \
-	--disable-concheck
+	--disable-ifnet
+
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+NETWORK_MANAGER_DEPENDENCIES += libcurl
+NETWORK_MANAGER_CONF_OPTS += --enable-concheck
+else
+NETWORK_MANAGER_CONF_OPTS += --disable-concheck
+endif
 
 ifeq ($(BR2_PACKAGE_NETWORK_MANAGER_TUI),y)
 NETWORK_MANAGER_DEPENDENCIES += newt
