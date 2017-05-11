@@ -44,6 +44,13 @@ else
 LINUX_PAM_CONF_OPTS += --disable-audit
 endif
 
+ifeq ($(BR2_PACKAGE_CRACKLIB),y)
+LINUX_PAM_CONF_OPTS += --enable-cracklib
+LINUX_PAM_DEPENDENCIES += cracklib
+else
+LINUX_PAM_CONF_OPTS += --disable-cracklib
+endif
+
 # Install default pam config (deny everything except login)
 define LINUX_PAM_INSTALL_CONFIG
 	$(INSTALL) -m 0644 -D package/linux-pam/login.pam \
