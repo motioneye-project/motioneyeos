@@ -476,6 +476,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-videoframe_audiolevel
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-iqa
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-iqa
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOPARSERS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-videoparsers
 else

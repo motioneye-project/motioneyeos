@@ -407,6 +407,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL
 	help
 	  videoframe_audiolevel
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA
+	bool "iqa"
+	help
+	  Image Quality Assessment
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOPARSERS
 	bool "videoparsers"
 	help

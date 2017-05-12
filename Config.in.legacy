@@ -185,7 +185,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTA
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOMEASURE
 	bool "videomeasure removed"
+	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA
 	select BR2_LEGACY
+	help
+	  videomeasure plugin has been removed and has been replaced by
+	  iqa, which has automatically been enabled.
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_APEXSINK
 	bool "apexsink removed"
