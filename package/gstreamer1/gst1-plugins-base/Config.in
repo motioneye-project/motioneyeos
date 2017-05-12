@@ -66,6 +66,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_AUDIORESAMPLE
 	help
 	  Resamples audio
 
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_RAWPARSE
+	bool "rawparse"
+	help
+	  Parses byte streams into raw frames
+
 config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_SUBPARSE
 	bool "subparse"
 	help
