@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BAD_VERSION = 1.10.4
+GST1_PLUGINS_BAD_VERSION = 1.12.0
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_INSTALL_STAGING = YES
@@ -21,8 +21,6 @@ GST1_PLUGINS_BAD_CONF_OPTS = \
 	--disable-winks \
 	--disable-android_media \
 	--disable-apple_media \
-	--disable-sdltest \
-	--disable-wininet \
 	--disable-acm
 
 # Options which require currently unpackaged libraries
@@ -44,29 +42,21 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-ladspa \
 	--disable-lv2 \
 	--disable-libde265 \
-	--disable-linsys \
 	--disable-modplug \
-	--disable-mimic \
 	--disable-mplex \
-	--disable-nas \
 	--disable-ofa \
 	--disable-openexr \
 	--disable-openni2 \
-	--disable-pvr \
-	--disable-libvisual \
-	--disable-timidity \
 	--disable-teletextdec \
 	--disable-wildmidi \
 	--disable-smoothstreaming \
 	--disable-soundtouch \
 	--disable-spc \
 	--disable-gme \
-	--disable-xvid \
 	--disable-vdpau \
 	--disable-schro \
 	--disable-zbar \
 	--disable-spandsp \
-	--disable-sndio \
 	--disable-gtk3 \
 	--disable-qt
 
@@ -218,28 +208,10 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-camerabin2
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CDXAPARSE),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-cdxaparse
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-cdxaparse
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COLOREFFECTS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-coloreffects
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-coloreffects
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DATAURISRC),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-dataurisrc
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-dataurisrc
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DCCP),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-dccp
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-dccp
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS),y)
@@ -313,12 +285,6 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GDP),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-gdp
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-gdp
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HDVPARSE),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-hdvparse
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-hdvparse
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ID3TAG),y)
@@ -401,12 +367,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-mpegpsmux
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MVE),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-mve
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-mve
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_MXF),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-mxf
 else
@@ -419,22 +379,10 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-netsim
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NUVDEMUX),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-nuvdemux
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-nuvdemux
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ONVIF),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-onvif
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-onvif
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PATCHDETECT),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-patchdetect
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-patchdetect
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PCAPPARSE),y)
@@ -466,12 +414,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-rtmp
 GST1_PLUGINS_BAD_DEPENDENCIES += rtmpdump
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-rtmp
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDI),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-sdi
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-sdi
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDP),y)
@@ -522,12 +464,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-timecode
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTA),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-tta
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-tta
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFILTERS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-videofilters
 else
@@ -538,12 +474,6 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOFRAME_AUDIOLEVEL),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-videoframe_audiolevel
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-videoframe_audiolevel
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOMEASURE),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-videomeasure
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-videomeasure
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VIDEOPARSERS),y)
@@ -577,13 +507,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += --disable-yadif
 endif
 
 # Plugins with dependencies
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_APEXSINK),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-apexsink
-GST1_PLUGINS_BAD_DEPENDENCIES += openssl
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-apexsink
-endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASSRENDER),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-assrender
@@ -763,14 +686,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-sbc
 GST1_PLUGINS_BAD_DEPENDENCIES += sbc
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-sbc
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SDL),y)
-GST1_PLUGINS_BAD_CONF_ENV += ac_cv_path_SDL_CONFIG=$(STAGING_DIR)/usr/bin/sdl-config
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-sdl
-GST1_PLUGINS_BAD_DEPENDENCIES += sdl
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_SHM),y)
