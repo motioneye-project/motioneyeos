@@ -98,6 +98,9 @@ F:	package/python-pydal/
 F:	package/python-web2py/
 F:	package/sysdig/
 
+N:	Antony Pavlov <antonynpavlov@gmail.com>
+F:	package/lsscsi/
+
 N:	Anthony Viallard <viallard@syscom-instruments.com>
 F:	package/gnuplot/
 
