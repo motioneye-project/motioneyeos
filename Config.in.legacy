@@ -145,6 +145,10 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MAD
+	bool "mad (*.mp3 audio) removed"
+	select BR2_LEGACY
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC
 	bool "gst1-plugins-bad webrtc renamed to webrtcdsp"
 	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTCDSP
