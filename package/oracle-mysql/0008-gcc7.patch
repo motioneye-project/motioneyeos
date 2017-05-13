@@ -1,0 +1,24 @@
+Fix gcc7 compile
+
+mysql.cc: In function 'void build_completion_hash(bool, bool)':
+mysql.cc:2687:37: error: invalid conversion from 'char' to 'char*' [-fpermissive]
+       field_names[i][num_fields*2]= '\0';
+                                     ^~~~
+
+Patch was partly backported from upstream commit:
+https://github.com/mysql/mysql-server/commit/ae21683d980d5fe9e39bd0193827ea3604256eb9
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr mysql-5.1.73.org/client/mysql.cc mysql-5.1.73/client/mysql.cc
+--- mysql-5.1.73.org/client/mysql.cc	2013-11-04 19:52:27.000000000 +0100
++++ mysql-5.1.73/client/mysql.cc	2017-05-13 19:52:10.125101101 +0200
+@@ -2684,7 +2684,7 @@
+         mysql_free_result(fields);
+         break;
+       }
+-      field_names[i][num_fields*2]= '\0';
++      field_names[i][num_fields*2]= NULL;
+       j=0;
+       while ((sql_field=mysql_fetch_field(fields)))
+       {
