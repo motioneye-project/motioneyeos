@@ -11,6 +11,11 @@ LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc
 
+# 0003-utils-qv4l2-Makefile.am-link-with-librt.patch, host-gettext
+# needed for autoreconf to work
+LIBV4L_AUTORECONF = YES
+LIBV4L_DEPENDENCIES += host-gettext
+
 # fix uclibc-ng configure/compile
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
