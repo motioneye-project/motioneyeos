@@ -17,6 +17,10 @@ PROTOBUF_LICENSE_FILES = LICENSE
 PROTOBUF_DEPENDENCIES = host-protobuf
 PROTOBUF_CONF_OPTS = --with-protoc=$(HOST_DIR)/usr/bin/protoc
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+PROTOBUF_CONF_ENV += LIBS=-latomic
+endif
+
 PROTOBUF_INSTALL_STAGING = YES
 
 PROTOBUF_PATCH = https://github.com/google/protobuf/commit/416f90939d4de58fe1a4e2489120010313183291.patch
