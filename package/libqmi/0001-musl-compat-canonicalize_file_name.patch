@@ -1,22 +1,24 @@
-From 85863c9e051fe59add4e47dbfcb37072234f0110 Mon Sep 17 00:00:00 2001
+From 8f6181b6f8dd82aa1ab1288cc7f2fd05d4a2519f Mon Sep 17 00:00:00 2001
 From: Matt Weber <matthew.weber@rockwellcollins.com>
 Date: Mon, 1 May 2017 19:55:07 -0500
 Subject: [PATCH] musl compat canonicalize_file_name()
 
-Adds an inline equivalent of canonicalize_file_name
+Adds an equivalent of canonicalize_file_name
 using realpath().
 
 Bug report (origin of this patch):
 https://bugs.freedesktop.org/show_bug.cgi?id=99944
 
+Bug report has been updated with suggestion to not use inline.
+
 Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
 ---
  configure.ac                |  2 ++
- src/libqmi-glib/qmi-utils.h | 18 ++++++++++++++++++
- 2 files changed, 20 insertions(+)
+ src/libqmi-glib/qmi-utils.c | 15 +++++++++++++++
+ 2 files changed, 17 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 162d5ae..9cb82fd 100644
+index c56fa3e..d835db4 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -80,6 +80,8 @@ AC_SUBST(GLIB_LIBS)
@@ -28,19 +30,16 @@ index 162d5ae..9cb82fd 100644
  dnl qmi-firmware-update is optional, enabled by default
  AC_ARG_ENABLE([firmware-update],
                AS_HELP_STRING([--enable-firmware-update],
-diff --git a/src/libqmi-glib/qmi-utils.h b/src/libqmi-glib/qmi-utils.h
-index 4fd5199..4869da5 100644
---- a/src/libqmi-glib/qmi-utils.h
-+++ b/src/libqmi-glib/qmi-utils.h
-@@ -29,6 +29,24 @@
- #error "Only <libqmi-glib.h> can be included directly."
- #endif
+diff --git a/src/libqmi-glib/qmi-utils.c b/src/libqmi-glib/qmi-utils.c
+index 29e5f22..26aff9e 100644
+--- a/src/libqmi-glib/qmi-utils.c
++++ b/src/libqmi-glib/qmi-utils.c
+@@ -34,6 +34,21 @@
+ #include "qmi-utils.h"
+ #include "qmi-error-types.h"
  
 +#ifndef HAVE_CANONICALIZE_FILE_NAME
 +#include <limits.h>
-+#include <string.h>
-+#include <stdlib.h>
-+#include <stdio.h>
 +static char * canonicalize_file_name(const char *path)
 +{
 +       char buf[PATH_MAX] = { };
@@ -54,9 +53,9 @@ index 4fd5199..4869da5 100644
 +}
 +#endif
 +
- #include <glib.h>
- 
- G_BEGIN_DECLS
+ /**
+  * SECTION:qmi-utils
+  * @title: Common utilities
 -- 
-2.7.4
+1.9.1
 
