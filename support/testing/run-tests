@@ -10,17 +10,17 @@ def main():
     parser = argparse.ArgumentParser(description='Run Buildroot tests')
     parser.add_argument('testname', nargs='*',
                         help='list of test cases to execute')
-    parser.add_argument('--list', '-l', action='store_true',
+    parser.add_argument('-l', '--list', action='store_true',
                         help='list of available test cases')
-    parser.add_argument('--all', '-a', action='store_true',
+    parser.add_argument('-a', '--all', action='store_true',
                         help='execute all test cases')
-    parser.add_argument('--stdout', '-s', action='store_true',
+    parser.add_argument('-s', '--stdout', action='store_true',
                         help='log everything to stdout')
-    parser.add_argument('--output', '-o',
+    parser.add_argument('-o', '--output',
                         help='output directory')
-    parser.add_argument('--download', '-d',
+    parser.add_argument('-d', '--download',
                         help='download directory')
-    parser.add_argument('--keep', '-k',
+    parser.add_argument('-k', '--keep',
                         help='keep build directories',
                         action='store_true')
 
