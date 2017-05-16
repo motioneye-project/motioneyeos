@@ -1,5 +1,9 @@
 config BR2_PACKAGE_FXLOAD
 	bool "fxload"
+	# Hits gcc PR63261 on Microblaze with debugging symbols
+	# enabled. Since this package is unlikely to be useful on
+	# Microblaze, just disable it on this architecture.
+	depends on !BR2_microblaze
 	help
 	  This program is conveniently able to download firmware into FX, FX2,
 	  and FX2LP EZ-USB devices, as well as the original AnchorChips EZ-USB.
