@@ -7,7 +7,7 @@ BR2_TARGET_ROOTFS_CPIO=y
 # BR2_TARGET_ROOTFS_TAR is not set
 """
 
-def check_broken_links(path):
+def has_broken_links(path):
     for root, dirs, files in os.walk(path):
         for f in files:
             fpath = os.path.join(root, f)
@@ -20,9 +20,9 @@ class TestExternalToolchain(infra.basetest.BRTest):
         # Check for broken symlinks
         for d in ["lib", "usr/lib"]:
             path = os.path.join(self.builddir, "staging", d)
-            self.assertFalse(check_broken_links(path))
+            self.assertFalse(has_broken_links(path))
             path = os.path.join(self.builddir, "target", d)
-            self.assertFalse(check_broken_links(path))
+            self.assertFalse(has_broken_links(path))
 
         interp = infra.get_elf_prog_interpreter(self.builddir,
                                                 self.toolchain_prefix,
