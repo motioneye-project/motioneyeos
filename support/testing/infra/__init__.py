@@ -77,6 +77,16 @@ def get_file_arch(builddir, prefix, fpath):
     return get_elf_arch_tag(builddir, prefix, fpath, "Tag_CPU_arch")
 
 def get_elf_prog_interpreter(builddir, prefix, fpath):
+    """
+    Runs the cross readelf on 'fpath' to extract the program interpreter
+    name and returns it.
+    Example:
+    >>> get_elf_prog_interpreter('br-tests/TestExternalToolchainLinaroArm',
+                                 'arm-linux-gnueabihf',
+                                 'bin/busybox')
+    /lib/ld-linux-armhf.so.3
+    >>>
+    """
     cmd = ["host/usr/bin/{}-readelf".format(prefix),
            "-l", os.path.join("target", fpath)]
     out = subprocess.check_output(cmd, cwd=builddir, env={"LANG": "C"})
