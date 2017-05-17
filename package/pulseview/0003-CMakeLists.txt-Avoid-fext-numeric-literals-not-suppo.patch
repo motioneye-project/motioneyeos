@@ -1,0 +1,28 @@
+From 6ad4d7a6f17edecc3523a7ab3d627f9a70dbacc1 Mon Sep 17 00:00:00 2001
+From: Uwe Hermann <uwe@hermann-uwe.de>
+Date: Wed, 17 May 2017 11:00:44 +0200
+Subject: [PATCH] CMakeLists.txt: Avoid -fext-numeric-literals, (not supported
+ by clang).
+
+This (re-)fixes bug #863.
+
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
+---
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index e8bc79f..e7e4432 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -395,6 +395,7 @@ add_definitions(${QT_DEFINITIONS} -DQT_NO_KEYWORDS)
+ add_definitions(-D__STDC_LIMIT_MACROS)
+ add_definitions(-Wall -Wextra)
+ add_definitions(-std=c++11)
++add_definitions(-DBOOST_MATH_DISABLE_FLOAT128=1)
+ 
+ if(ENABLE_DECODE)
+ 	add_definitions(-DENABLE_DECODE)
+-- 
+2.9.3
+
