@@ -21,6 +21,7 @@ NTP_CONF_OPTS = \
 	--with-crypto
 
 # 0002-ntp-syscalls-fallback.patch
+# 0003-ntpq-fpic.patch
 NTP_AUTORECONF = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
