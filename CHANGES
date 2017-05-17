@@ -1,3 +1,22 @@
+2017.05-rc2, Released May 17th, 2017
+
+	Fixes all over the tree.
+
+	ARC toolchain bumped to 2017.03-rc2
+
+	Updated/fixed packages: bluez_utils, boost, clamav, daemon,
+	efibootmgr, efl, espeak, expedite, faketime, ffmpeg, fxload,
+	git, gpsd, kvm-unit-tests, libcdio, libv4l, lua, mke2img,
+	mpir, mpv, odroid-scripts, openblas, opencv3, openvpn, php,
+	postgresql, protobuf, qt5declarative, qwt, radvd, rpcbind,
+	rtmpdump, strongswan, sudo, ltp-testsuite, uclibc-ng-test,
+	vlc, x11vnc, xfsprogs
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9796: source-check broken for Git downloads
+	#9866: BASE_DIR usage
+
 2017.05-rc1, Released May 8th, 2017
 
 	Fixes all over the tree and new features.
