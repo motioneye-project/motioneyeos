@@ -5,7 +5,6 @@ config BR2_PACKAGE_LXC
 	# build system forcefully builds a shared library
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # setns() system call
-	select BR2_PACKAGE_LIBCAP
 	help
 	  Linux Containers (LXC), provides the ability to group and isolate
 	  of a set of processes in a jail by virtualizing and accounting the
