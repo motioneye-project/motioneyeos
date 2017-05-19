@@ -13,7 +13,11 @@ FETCHMAIL_LICENSE_FILES = COPYING
 FETCHMAIL_AUTORECONF = YES
 FETCHMAIL_GETTEXTIZE = YES
 
+# needed to help fetchmail detecting the availability of openssl,
+# because it doesn't use pkg-config
+ifeq ($(BR2_STATIC_LIBS),y)
 FETCHMAIL_CONF_ENV += LIBS="-lz"
+endif
 
 FETCHMAIL_CONF_OPTS = \
 	--with-ssl=$(STAGING_DIR)/usr
