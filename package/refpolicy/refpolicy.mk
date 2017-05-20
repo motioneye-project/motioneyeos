@@ -31,6 +31,8 @@ REFPOLICY_MAKE = \
 
 REFPOLICY_POLICY_VERSION = \
 	$(call qstrip,$(BR2_PACKAGE_REFPOLICY_POLICY_VERSION))
+REFPOLICY_POLICY_STATE = \
+	$(call qstrip,$(BR2_PACKAGE_REFPOLICY_POLICY_STATE))
 
 define REFPOLICY_CONFIGURE_CMDS
 	$(SED) "/OUTPUT_POLICY/c\OUTPUT_POLICY = $(REFPOLICY_POLICY_VERSION)" \
@@ -50,6 +52,10 @@ endef
 
 define REFPOLICY_INSTALL_TARGET_CMDS
 	$(REFPOLICY_MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
+	$(INSTALL) -m 0755 -D package/refpolicy/config \
+		$(TARGET_DIR)/etc/selinux/config
+	$(SED) "/^SELINUX=/c\SELINUX=$(REFPOLICY_POLICY_STATE)" \
+		$(TARGET_DIR)/etc/selinux/config
 endef
 
 $(eval $(generic-package))

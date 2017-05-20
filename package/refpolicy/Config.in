@@ -40,4 +40,30 @@ config BR2_PACKAGE_REFPOLICY_POLICY_VERSION
 	string "Policy version"
 	default "30"
 
+choice
+	prompt "SELinux default state"
+	default BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_ENFORCING
+	bool "Enforcing"
+	help
+	  SELinux security policy is enforced
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+	bool "Permissive"
+	help
+	  SELinux prints warnings instead of enforcing
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_DISABLED
+	bool "Disabled"
+	help
+	  No SELinux policy is loaded
+endchoice
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE
+	string
+	default "permissive" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+	default "enforcing" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_ENFORCING
+	default "disabled" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_DISABLED
+
 endif
