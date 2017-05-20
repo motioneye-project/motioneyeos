@@ -1765,6 +1765,7 @@ endmenu
 menu "Security"
 	source "package/checkpolicy/Config.in"
 	source "package/policycoreutils/Config.in"
+	source "package/refpolicy/Config.in"
 	source "package/sepolgen/Config.in"
 	source "package/setools/Config.in"
 endmenu

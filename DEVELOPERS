@@ -39,6 +39,7 @@ F:	package/libsepol/
 F:	package/nginx-naxsi/
 F:	package/policycoreutils/
 F:	package/python-mutagen/
+F:	package/refpolicy/
 F:	package/sepolgen/
 F:	package/setools/
 F:	package/sngrep/
