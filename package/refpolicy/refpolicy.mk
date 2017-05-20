@@ -29,8 +29,12 @@ REFPOLICY_MAKE = \
 	$(TARGET_MAKE_ENV) \
 	$(MAKE1)
 
+REFPOLICY_POLICY_VERSION = \
+	$(call qstrip,$(BR2_PACKAGE_REFPOLICY_POLICY_VERSION))
+
 define REFPOLICY_CONFIGURE_CMDS
-	$(SED) "/OUTPUT_POLICY/c\OUTPUT_POLICY = 30" $(@D)/build.conf
+	$(SED) "/OUTPUT_POLICY/c\OUTPUT_POLICY = $(REFPOLICY_POLICY_VERSION)" \
+		$(@D)/build.conf
 	$(SED) "/MONOLITHIC/c\MONOLITHIC = y" $(@D)/build.conf
 	$(SED) "/NAME/c\NAME = targeted" $(@D)/build.conf
 endef
