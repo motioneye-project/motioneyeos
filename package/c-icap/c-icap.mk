@@ -48,6 +48,13 @@ else
 C_ICAP_CONF_OPTS += --without-ldap
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE),y)
+C_ICAP_CONF_OPTS += --with-pcre
+C_ICAP_DEPENDENCIES += pcre
+else
+C_ICAP_CONF_OPTS += --without-pcre
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 C_ICAP_CONF_OPTS += --with-zlib
 C_ICAP_DEPENDENCIES += zlib
