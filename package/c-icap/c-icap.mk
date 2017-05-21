@@ -13,7 +13,6 @@ C_ICAP_INSTALL_STAGING = YES
 C_ICAP_CONFIG_SCRIPTS = c-icap-config c-icap-libicapapi-config
 C_ICAP_CONF_OPTS = \
 	--with-process-mutexes=posix \
-	--without-ldap \
 	--without-perl \
 	--enable-large-files \
 	--enable-ipv6
@@ -40,6 +39,13 @@ C_ICAP_CONF_OPTS += --with-bzip2
 C_ICAP_DEPENDENCIES += bzip2
 else
 C_ICAP_CONF_OPTS += --without-bzip2
+endif
+
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+C_ICAP_CONF_OPTS += --with-ldap
+C_ICAP_DEPENDENCIES += openldap
+else
+C_ICAP_CONF_OPTS += --without-ldap
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
