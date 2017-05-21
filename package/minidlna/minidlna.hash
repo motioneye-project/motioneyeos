@@ -1,3 +1,5 @@
-# From http://sourceforge.net/projects/minidlna/files/minidlna/1.1.5/
-md5	1970e553a1eb8a3e7e302e2ce292cbc4	minidlna-1.1.5.tar.gz
-sha1	8185337621f5f9111118d8a4bca1e8cfcdd19505	minidlna-1.1.5.tar.gz
+# From http://sourceforge.net/projects/minidlna/files/minidlna/1.2.0/
+md5 5f59700431e9f66198238deeb4e0d0de  minidlna-1.2.0.tar.gz
+sha1 700e07440167ddef44b06aa59cabe5e3abe612f6  minidlna-1.2.0.tar.gz
+# Locally computed
+sha256 8d34436580c4c44be25976d5e46bc5b71af69bf441c4492774eac001164c4433  minidlna-1.2.0.tar.gz
