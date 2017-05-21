@@ -160,6 +160,8 @@ F:	boot/syslinux/
 F:	package/dc3dd/
 
 N:	Bernd Kuhls <bernd.kuhls@t-online.de>
+F:	package/alsa-lib/
+F:	package/alsa-utils/
 F:	package/apache/
 F:	package/apr/
 F:	package/apr-util/
