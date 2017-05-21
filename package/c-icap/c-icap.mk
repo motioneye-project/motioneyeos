@@ -41,6 +41,13 @@ else
 C_ICAP_CONF_OPTS += --without-bzip2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBMEMCACHED),y)
+C_ICAP_CONF_OPTS += --with-memcached
+C_ICAP_DEPENDENCIES += libmemcached
+else
+C_ICAP_CONF_OPTS += --without-memcached
+endif
+
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
 C_ICAP_CONF_OPTS += --with-ldap
 C_ICAP_DEPENDENCIES += openldap
