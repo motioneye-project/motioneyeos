@@ -29,10 +29,10 @@ C_ICAP_CONF_ENV = ac_cv_10031b_ipc_sem=yes ac_cv_fcntl=yes
 C_ICAP_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
-C_ICAP_CONF_OPTS += --with-berkeleydb
+C_ICAP_CONF_OPTS += --with-bdb
 C_ICAP_DEPENDENCIES += berkeleydb
 else
-C_ICAP_CONF_OPTS += --without-berkeleydb
+C_ICAP_CONF_OPTS += --without-bdb
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
