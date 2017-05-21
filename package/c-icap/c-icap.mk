@@ -12,7 +12,6 @@ C_ICAP_LICENSE_FILES = COPYING
 C_ICAP_INSTALL_STAGING = YES
 C_ICAP_CONFIG_SCRIPTS = c-icap-config c-icap-libicapapi-config
 C_ICAP_CONF_OPTS = \
-	--with-process-mutexes=posix \
 	--without-perl \
 	--enable-large-files \
 	--enable-ipv6
