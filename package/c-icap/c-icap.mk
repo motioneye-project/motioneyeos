@@ -36,10 +36,10 @@ C_ICAP_CONF_OPTS += --without-bdb
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
-C_ICAP_CONF_OPTS += --with-bzip2
+C_ICAP_CONF_OPTS += --with-bzlib
 C_ICAP_DEPENDENCIES += bzip2
 else
-C_ICAP_CONF_OPTS += --without-bzip2
+C_ICAP_CONF_OPTS += --without-bzlib
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
