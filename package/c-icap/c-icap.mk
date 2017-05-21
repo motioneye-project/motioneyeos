@@ -54,6 +54,13 @@ else
 C_ICAP_CONF_OPTS += --without-ldap
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+C_ICAP_CONF_OPTS += --with-openssl
+C_ICAP_DEPENDENCIES += openssl
+else
+C_ICAP_CONF_OPTS += --without-openssl
+endif
+
 ifeq ($(BR2_PACKAGE_PCRE),y)
 C_ICAP_CONF_OPTS += --with-pcre
 C_ICAP_DEPENDENCIES += pcre
