@@ -281,6 +281,7 @@ comment "Graphic libraries"
 	source "package/sdl2/Config.in"
 	source "package/sdl2_gfx/Config.in"
 	source "package/sdl2_image/Config.in"
+	source "package/sdl2_mixer/Config.in"
 	source "package/sdl2_ttf/Config.in"
 
 comment "Other GUIs"

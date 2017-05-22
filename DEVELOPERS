@@ -576,6 +576,7 @@ F:	package/perl*
 F:	package/pkg-perl.mk
 F:	package/pkg-luarocks.mk
 F:	package/qemu/
+F:	package/sdl2_mixer/
 F:	package/tekui/
 F:	support/scripts/scancpan
 
