@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.54.0
+POPPLER_VERSION = 0.55.0
 POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig host-pkgconf
@@ -46,10 +46,10 @@ POPPLER_CONF_OPTS += --disable-libtiff
 endif
 
 ifeq ($(BR2_PACKAGE_JPEG),y)
-POPPLER_CONF_OPTS += --enable-libjpeg
+POPPLER_CONF_OPTS += --enable-dctdecoder=libjpeg
 POPPLER_DEPENDENCIES += jpeg
 else
-POPPLER_CONF_OPTS += --disable-libjpeg
+POPPLER_CONF_OPTS += --enable-dctdecoder=none
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
