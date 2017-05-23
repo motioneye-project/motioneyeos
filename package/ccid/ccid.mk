@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-CCID_VERSION = 1.4.26
+CCID_VERSION = 1.4.27
 CCID_SOURCE = ccid_$(CCID_VERSION).tar.bz2
-CCID_SITE = https://alioth.debian.org/frs/download.php/file/4205
+CCID_SITE = https://alioth.debian.org/frs/download.php/file/4218
 CCID_LICENSE = LGPL-2.1+
 CCID_LICENSE_FILES = COPYING
 CCID_INSTALL_STAGING = YES
