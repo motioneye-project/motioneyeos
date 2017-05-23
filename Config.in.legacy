@@ -143,6 +143,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.08"
+
+config BR2_GCC_VERSION_4_8_X
+	bool "gcc 4.8.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc version 4.8.x has been removed. The current
+	  default version (5.x or later) has been selected instead.
+
+###############################################################################
 comment "Legacy options removed in 2017.05"
 
 config BR2_PACKAGE_SUNXI_MALI_R2P4
