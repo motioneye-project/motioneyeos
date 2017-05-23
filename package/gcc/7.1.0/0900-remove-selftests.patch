@@ -1,0 +1,111 @@
+From 63f0917d90eb83d267dc517fdfb6523a74b1917c Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Wed, 3 May 2017 00:37:06 +0200
+Subject: [PATCH] remove selftests
+
+When the gcc archive is extracted by the gcc.mk, the gcc/testsuite
+is excluded:
+
+HOST_GCC_EXCLUDES = \
+	libjava/* libgo/* \
+	gcc/testsuite/* libstdc++-v3/testsuite/*
+
+The new Makefile target from the "Selftest framework" [1] added a dependency
+on the gcc/testsuite/Makefile.
+Revert partially the commit [1] to allow building gcc without selftest.
+
+[1] https://github.com/gcc-mirror/gcc/commit/99b4f3a2d5bf2c137de9731e27b483eb6b462fd9
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ gcc/Makefile.in | 46 +++++-----------------------------------------
+ 1 file changed, 5 insertions(+), 41 deletions(-)
+
+diff --git a/gcc/Makefile.in b/gcc/Makefile.in
+index 74d1912..652a554 100644
+--- a/gcc/Makefile.in
++++ b/gcc/Makefile.in
+@@ -1581,14 +1581,13 @@ OBJS = \
+ OBJS-libcommon = diagnostic.o diagnostic-color.o diagnostic-show-locus.o \
+ 	edit-context.o \
+ 	pretty-print.o intl.o \
+-	vec.o input.o version.o hash-table.o ggc-none.o memory-block.o \
+-	selftest.o
++	vec.o input.o version.o hash-table.o ggc-none.o memory-block.o
+ 
+ # Objects in libcommon-target.a, used by drivers and by the core
+ # compiler and containing target-dependent code.
+ OBJS-libcommon-target = $(common_out_object_file) prefix.o params.o \
+ 	opts.o opts-common.o options.o vec.o hooks.o common/common-targhooks.o \
+-	hash-table.o file-find.o spellcheck.o selftest.o
++	hash-table.o file-find.o spellcheck.o
+ 
+ # This lists all host objects for the front ends.
+ ALL_HOST_FRONTEND_OBJS = $(foreach v,$(CONFIG_LANGUAGES),$($(v)_OBJS))
+@@ -1865,10 +1864,10 @@ config.status: $(srcdir)/configure $(srcdir)/config.gcc
+ quickstrap: all
+ 	cd $(toplevel_builddir) && $(MAKE) all-target-libgcc
+ 
+-all.internal: start.encap rest.encap doc selftest
++all.internal: start.encap rest.encap doc
+ # This is what to compile if making a cross-compiler.
+ all.cross: native gcc-cross$(exeext) cpp$(exeext) specs \
+-	libgcc-support lang.all.cross doc selftest @GENINSRC@ srcextra
++	libgcc-support lang.all.cross doc @GENINSRC@ srcextra
+ # This is what must be made before installing GCC and converting libraries.
+ start.encap: native xgcc$(exeext) cpp$(exeext) specs \
+ 	libgcc-support lang.start.encap @GENINSRC@ srcextra
+@@ -1888,41 +1887,6 @@ endif
+ # This does the things that can't be done on the host machine.
+ rest.cross: specs
+ 
+-# GCC's selftests.
+-# Specify a dummy input file to placate the driver.
+-# Specify -nostdinc to work around missing WIND_BASE environment variable
+-# required for *-wrs-vxworks-* targets.
+-# Specify -o /dev/null so the output of -S is discarded. More importantly
+-# It does not try to create a file with the name "null.s" on POSIX and
+-# "nul.s" on Windows. Because on Windows "nul" is a reserved file name.
+-# Specify the path to gcc/testsuite/selftests within the srcdir
+-# as an argument to -fself-test.
+-SELFTEST_FLAGS = -nostdinc -x c /dev/null -S -o /dev/null \
+-	-fself-test=$(srcdir)/testsuite/selftests
+-
+-# Run the selftests during the build once we have a driver and a cc1,
+-# so that self-test failures are caught as early as possible.
+-# Use "s-selftest" to ensure that we only run the selftests if the
+-# driver, cc1, or selftest data change.
+-.PHONY: selftest
+-selftest: s-selftest
+-s-selftest: $(GCC_PASSES) cc1$(exeext) stmp-int-hdrs \
+-  $(srcdir)/testsuite/selftests
+-	$(GCC_FOR_TARGET) $(SELFTEST_FLAGS)
+-	$(STAMP) $@
+-
+-# Convenience method for running selftests under gdb:
+-.PHONY: selftest-gdb
+-selftest-gdb: $(GCC_PASSES) cc1$(exeext) stmp-int-hdrs
+-	$(GCC_FOR_TARGET) $(SELFTEST_FLAGS) \
+-	  -wrapper gdb,--args
+-
+-# Convenience method for running selftests under valgrind:
+-.PHONY: selftest-valgrind
+-selftest-valgrind: $(GCC_PASSES) cc1$(exeext) stmp-int-hdrs
+-	$(GCC_FOR_TARGET) $(SELFTEST_FLAGS) \
+-	  -wrapper valgrind,--leak-check=full
+-
+ # Recompile all the language-independent object files.
+ # This is used only if the user explicitly asks for it.
+ compilations: $(BACKEND)
+@@ -2076,7 +2040,7 @@ gcc-nm.c: gcc-ar.c
+ 	cp $^ $@
+ 
+ COLLECT2_OBJS = collect2.o collect2-aix.o tlink.o vec.o ggc-none.o \
+-  collect-utils.o file-find.o hash-table.o selftest.o
++  collect-utils.o file-find.o hash-table.o
+ COLLECT2_LIBS = @COLLECT2_LIBS@
+ collect2$(exeext): $(COLLECT2_OBJS) $(LIBDEPS)
+ # Don't try modifying collect2 (aka ld) in place--it might be linking this.
+-- 
+2.9.3
+
