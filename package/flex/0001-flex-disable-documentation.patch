@@ -1,4 +1,4 @@
-flex: prevent flex binary to be built
+flex: disable documentation
 
 Since we prevent the flex binary to be built, we also need to prevent
 the documentation to be built, otherwise it will fail like this:
@@ -21,15 +21,3 @@ diff -rup a/Makefile.in b/Makefile.in
  	examples \
  	po \
  	tests \
-diff -rup a/src/Makefile.in b/src/Makefile.in
---- a/src/Makefile.in	2017-05-06 15:49:09.000000000 +0100
-+++ b/src/Makefile.in	2017-05-10 14:35:01.918464036 +0100
-@@ -90,7 +90,7 @@ PRE_UNINSTALL = :
- POST_UNINSTALL = :
- build_triplet = @build@
- host_triplet = @host@
--bin_PROGRAMS = flex$(EXEEXT)
-+bin_PROGRAMS =
- @ENABLE_BOOTSTRAP_TRUE@noinst_PROGRAMS = stage1flex$(EXEEXT)
- @CROSS_TRUE@am__append_1 = \
- @CROSS_TRUE@		      ../lib/malloc.c \
