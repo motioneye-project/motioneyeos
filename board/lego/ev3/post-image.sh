@@ -4,8 +4,6 @@ BOARD_DIR="$(dirname $0)"
 GENIMAGE_CFG="${BOARD_DIR}/genimage.cfg"
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
-ln -sf "uImage.da850-lego-ev3" "${BINARIES_DIR}/uImage"
-
 rm -rf "${GENIMAGE_TMP}"
 
 genimage \
