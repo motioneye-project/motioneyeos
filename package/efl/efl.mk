@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.19.0
+EFL_VERSION = 1.19.1
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
 EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+
