@@ -17,10 +17,22 @@ define ACPICA_BUILD_CMDS
 		all
 endef
 
+define HOST_ACPICA_BUILD_CMDS
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
+		all
+endef
+
 define ACPICA_INSTALL_TARGET_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
 		HARDWARE_NAME=$(BR2_ARCH) DESTDIR="$(TARGET_DIR)" \
 		INSTALLFLAGS=-m755 install
 endef
 
+define HOST_ACPICA_INSTALL_CMDS
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
+		PREFIX="$(HOST_DIR)/usr" \
+		INSTALLFLAGS=-m755 install
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
