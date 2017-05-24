@@ -1,0 +1,42 @@
+From 068c3baff3048a3db4ef2518ff917ce749cd8169 Mon Sep 17 00:00:00 2001
+From: Sergey Matyukevich <geomatsi@gmail.com>
+Date: Sat, 20 May 2017 11:24:26 +0300
+Subject: [PATCH 2/3] ARM: dts: orange-pi-zero: enable SPI NOR
+
+Enable SPI NOR on orange-pi-zero board.
+
+For more information see:
+- http://linux-sunxi.org/Orange_Pi_Zero#SPI_NOR_flash
+
+Signed-off-by: Sergey Matyukevich <geomatsi@gmail.com>
+---
+ arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+index 4e1a9050c6b4..cdf19821b1f3 100644
+--- a/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
++++ b/arch/arm/boot/dts/sun8i-h2-plus-orangepi-zero.dts
+@@ -161,3 +161,19 @@
+ 	/* USB VBUS is always on */
+ 	status = "okay";
+ };
++
++&spi0 {
++	status = "okay";
++
++	flash@0 {
++		#address-cells = <1>;
++		#size-cells = <1>;
++		compatible = "mxicy,mx25l1606e", "winbond,w25q128";
++		reg = <0>;
++		spi-max-frequency = <40000000>;
++
++		partition@00000000 {
++			reg = <0x00000000 0x200000>;	/* 2Mb */
++		};
++	};
++};
+-- 
+2.11.0
+
