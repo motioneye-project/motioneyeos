@@ -581,6 +581,7 @@ F:	support/scripts/scancpan
 
 N:	Frank Hunleth <fhunleth@troodon-software.com>
 F:	package/am335x-pru-package/
+F:	package/libconfuse/
 F:	package/libdmtx/
 F:	package/libsodium/
 F:	package/php-amqp/
