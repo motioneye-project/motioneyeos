@@ -1195,9 +1195,6 @@ F:	package/nvidia-tegra23/nvidia-tegra23-codecs/
 N:	Nimai Mahajan <nimaim@gmail.com>
 F:	package/libucl/
 
-N:	Niranjan Reddy <niranjan.reddy@rockwellcollins.com>
-F:	package/cgroupfs-mount/
-
 N:	Noé Rubinstein <noe.rubinstein@gmail.com>
 F:	package/tpm-tools/
 F:	package/trousers/
