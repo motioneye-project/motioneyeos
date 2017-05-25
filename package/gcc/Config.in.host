@@ -4,7 +4,7 @@ choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_ARC if BR2_arc
 	default BR2_GCC_VERSION_OR1K if BR2_or1k
-	default BR2_GCC_VERSION_5_X
+	default BR2_GCC_VERSION_6_X
 	help
 	  Select the version of gcc you wish to use.
 
