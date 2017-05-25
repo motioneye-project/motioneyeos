@@ -10,7 +10,7 @@ config BR2_PACKAGE_SAMBA4
 	depends on BR2_USE_WCHAR # python
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # python -> libffi
-	depends on !BR2_STATIC_LIBS # python
+	depends on !BR2_STATIC_LIBS # python, gnutls
 	depends on !BR2_nios2 # binary too large, relocations don't fit
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_E2FSPROGS

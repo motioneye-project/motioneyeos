@@ -49,10 +49,14 @@ if BR2_PACKAGE_WEBKITGTK
 
 config BR2_PACKAGE_WEBKITGTK_HTTPS
 	bool "HTTPS support"
+	depends on !BR2_STATIC_LIBS # gnutls -> libsoup
 	select BR2_PACKAGE_CA_CERTIFICATES # runtime
 	select BR2_PACKAGE_LIBSOUP_SSL
 	help
 	  Enable HTTPS protocol support.
+
+comment "webkitgtk https support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_WEBKITGTK_MULTIMEDIA
 	bool "multimedia support"

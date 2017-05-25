@@ -33,11 +33,15 @@ config BR2_PACKAGE_CONNMAN_WIFI
 
 config BR2_PACKAGE_CONNMAN_WISPR
 	bool "enable WISPr support"
+	depends on !BR2_STATIC_LIBS # gnutls
 	select BR2_PACKAGE_GNUTLS
 	help
 	  Enable support for Wireless Internet Service Provider
 	  roaming (WISPr). A RADIUS server is used to authenticate the
 	  subscriber's credentials.
+
+comment "connman WISPr needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_CONNMAN_BLUETOOTH
 	bool "enable Bluetooth support"
