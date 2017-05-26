@@ -30,9 +30,17 @@ N:	Abhilash Tuse <abhilash.tuse@imgtec.com>
 F:	package/gstreamer1/gst1-rtsp-server/
 
 N:	Adam Duskett <aduskett@gmail.com>
+F:	package/audit/
+F:	package/checkpolicy/
 F:	package/gstreamer1/gst1-vaapi/
+F:	package/libselinux/
+F:	package/libsemanage/
+F:	package/libsepol/
 F:	package/nginx-naxsi/
+F:	package/policycoreutils/
 F:	package/python-mutagen/
+F:	package/sepolgen/
+F:	package/setools/
 F:	package/sngrep/
 
 N:	Alex Suykov <alex.suykov@gmail.com>
