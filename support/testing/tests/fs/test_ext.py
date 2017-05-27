@@ -86,6 +86,7 @@ BR2_TARGET_ROOTFS_EXT2_3=y
         out = dumpe2fs_run(self.builddir, "rootfs.ext3")
         self.assertEqual(dumpe2fs_getprop(out, REVISION_PROP), "1 (dynamic)")
         self.assertIn("has_journal", dumpe2fs_getprop(out, FEATURES_PROP))
+        self.assertNotIn("extent", dumpe2fs_getprop(out, FEATURES_PROP))
 
         exit_code = boot_img_and_check_fs_type(self.emulator,
                                                self.builddir, "ext3")
