@@ -2,8 +2,6 @@
 
 test -n "$os_version" || source /etc/init.d/base
 
-test -x /etc/init.d/adminpw || exit 0
-
 case "$1" in
     start)
         # make sure root and admin users exist in shadow file
@@ -16,22 +14,25 @@ case "$1" in
             echo 'admin::::::::' >> /data/etc/shadow
         fi
 
-        # set root and admin passwords (admin is just an alias for root)
-        password=$(/etc/init.d/adminpw)
-        msg_begin "Setting root password"
-
         # remove shadow backups
         rm -f /data/etc/shadow+
         rm -f /data/etc/shadow-
 
-        echo -en "$password\n$password\n" | passwd &>/dev/null # root
-        echo -en "$password\n$password\n" | passwd admin &>/dev/null # admin
-        
-        sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
-        sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
+        if [ -x /etc/init.d/adminpw ]; then
+            # set root and admin passwords (admin is just an alias for root)
+            password=$(/etc/init.d/adminpw)
+            msg_begin "Setting root password"
+
+            echo -en "$password\n$password\n" | passwd &>/dev/null # root
+            echo -en "$password\n$password\n" | passwd admin &>/dev/null # admin
+            
+            sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
+            sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
+            msg_done
+        fi
+
         sync
 
-        msg_done
         ;;
 
     stop)
