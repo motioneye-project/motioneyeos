@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ELF2FLT_VERSION = 9dbc458c6122c495bbdec8dc975a15c9d39e5ff2
+ELF2FLT_VERSION = 6d80ab6c93409e796f85da404bde84b841231531
 ELF2FLT_SITE = $(call github,uclinux-dev,elf2flt,$(ELF2FLT_VERSION))
 ELF2FLT_LICENSE = GPL-2.0+
 ELF2FLT_LICENSE_FILES = LICENSE.TXT
