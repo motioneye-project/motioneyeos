@@ -5,7 +5,7 @@
 ################################################################################
 
 MXML_VERSION = 2.10
-MXML_SITE = http://www.msweet.org/files/project3
+MXML_SITE = https://github.com/michaelrsweet/mxml/releases/download/release-$(MXML_VERSION)
 MXML_LICENSE = LGPL-2.0+ with exceptions
 MXML_LICENSE_FILES = COPYING
 MXML_INSTALL_STAGING = YES
