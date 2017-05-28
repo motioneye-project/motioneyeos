@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLANN_VERSION = 3645f0c30a47267e56e5acdecfc7bac2b76bc3d5
+FLANN_VERSION = 1.9.1
 FLANN_SITE = $(call github,mariusmuja,flann,$(FLANN_VERSION))
 FLANN_INSTALL_STAGING = YES
 FLANN_LICENSE = BSD-3-Clause
