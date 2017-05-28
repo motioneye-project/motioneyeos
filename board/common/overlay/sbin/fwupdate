@@ -11,6 +11,7 @@ function exit_usage() {
     echo "       fwupdate flashboot                 (flashes the boot partition from extracted image)"
     echo "       fwupdate flashreboot               (prepares for reboot + root partititon flash)"
     echo "       fwupdate status                    (shows the current firmware updating status; see below)"
+    echo "       fwupdate upgrade <version|url>     (performs all the operations necessary for upgrading)"
     echo ""
     echo "Statuses:"
     echo "       idle"
@@ -321,6 +322,27 @@ function show_status() {
     echo "idle"
 }
 
+
+#### upgrade ####
+
+function do_upgrade() {
+    echo "upgrading to $1"
+    
+    set -e
+
+    do_download "$2"
+    show_status
+
+    do_extract
+    show_status
+    
+    flash_boot
+    show_status
+    
+    flash_reboot
+}
+
+
 function new_version() {
     cat $FW_DIR/$VER_FILE
 }
@@ -340,7 +362,7 @@ case "$1" in
             exit_usage
         fi
 
-        do_download $2
+        do_download "$2"
         show_status
         ;;
 
@@ -360,6 +382,14 @@ case "$1" in
 
     status)
         show_status
+        ;;
+
+    upgrade)
+        if [ -z "$2" ]; then
+            exit_usage
+        fi
+
+        do_upgrade "$2"
         ;;
 
     *)

@@ -15,7 +15,10 @@ case "$1" in
         fi
 
         # set root and admin passwords
-        password=$(/etc/init.d/adminpw)
+        password=""
+        if [ -x /etc/init.d/adminpw ]; then
+            password=$(/etc/init.d/adminpw)
+        fi
         msg_begin "Setting root password"
 
         rm -f /data/etc/shadow+
