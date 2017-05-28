@@ -1,6 +1,4 @@
 #!/bin/bash
 
-if [ -f /data/etc/motion.conf ]; then
-    cat /data/etc/motion.conf | grep admin_password | grep -v _hash | cut -d ' ' -f 3-
-fi
+# echo your admin password here
 
