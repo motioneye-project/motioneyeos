@@ -9,7 +9,7 @@ config BR2_PACKAGE_STELLA
 	help
 	  Stella is a multi-platform Atari 2600 VCS emulator.
 
-	  http://stella.sourceforge.net/
+	  https://stella-emu.github.io/
 
 comment "stella needs a toolchain w/ dynamic library, C++, gcc >= 4.8"
 	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
