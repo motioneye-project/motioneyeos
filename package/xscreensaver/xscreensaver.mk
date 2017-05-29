@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XSCREENSAVER_VERSION = 5.32
-XSCREENSAVER_SITE = http://www.jwz.org/xscreensaver
+XSCREENSAVER_VERSION = 5.36
+XSCREENSAVER_SITE = https://www.jwz.org/xscreensaver
 
 # N.B. GPL-2.0+ code (in the hacks/glx subdirectory) is not currently built.
 XSCREENSAVER_LICENSE = MIT-like, GPL-2.0+
