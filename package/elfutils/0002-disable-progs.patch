@@ -1,4 +1,7 @@
-Add a --{enable,disable}-progs configure option
+From dfea82b761b2ea4708fbf9370a5467ae4be525ca Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 29 May 2017 23:03:48 +0300
+Subject: [PATCH] Add a --{enable,disable}-progs configure option
 
 Add a --{enable,disable}-progs configuration option to elfutils. This
 allows to selectively disable the compilation of the elfutils programs
@@ -13,26 +16,15 @@ Based on the former patch by Thomas Petazzoni.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ Makefile.am  | 6 +++++-
+ configure.ac | 6 ++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
 
-diff -rup a/configure.ac b/configure.ac
---- a/configure.ac	2016-03-31 09:48:08.000000000 +0100
-+++ b/configure.ac	2016-06-17 14:47:03.561704498 +0100
-@@ -253,6 +253,12 @@ AC_SUBST([LIBEBL_SUBDIR])
- AC_DEFINE_UNQUOTED(LIBEBL_SUBDIR, "$LIBEBL_SUBDIR")
- AH_TEMPLATE([LIBEBL_SUBDIR], [$libdir subdirectory containing libebl modules.])
- 
-+AC_ARG_ENABLE([progs],
-+	AS_HELP_STRING([--enable-progs], [enable progs]),
-+	enable_progs=$enableval,
-+	enable_progs=yes)
-+AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
-+
- dnl zlib is mandatory.
- save_LIBS="$LIBS"
- LIBS=
-diff -rup a/Makefile.am b/Makefile.am
---- a/Makefile.am	2016-01-12 12:49:19.000000000 +0000
-+++ b/Makefile.am	2016-06-17 14:48:02.585861468 +0100
+diff --git a/Makefile.am b/Makefile.am
+index 2ff444e7bf1d..70443abb4fb6 100644
+--- a/Makefile.am
++++ b/Makefile.am
 @@ -26,9 +26,13 @@ AM_MAKEFLAGS = --no-print-directory
  
  pkginclude_HEADERS = version.h
@@ -48,3 +40,23 @@ diff -rup a/Makefile.am b/Makefile.am
  
  EXTRA_DIST = elfutils.spec GPG-KEY NOTES CONTRIBUTING \
  	     COPYING COPYING-GPLV2 COPYING-LGPLV3
+diff --git a/configure.ac b/configure.ac
+index c2c1d90b2133..7b4c38381cca 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -259,6 +259,12 @@ AC_SUBST([LIBEBL_SUBDIR])
+ AC_DEFINE_UNQUOTED(LIBEBL_SUBDIR, "$LIBEBL_SUBDIR")
+ AH_TEMPLATE([LIBEBL_SUBDIR], [$libdir subdirectory containing libebl modules.])
+ 
++AC_ARG_ENABLE([progs],
++	AS_HELP_STRING([--enable-progs], [enable progs]),
++	enable_progs=$enableval,
++	enable_progs=yes)
++AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
++
+ dnl zlib is mandatory.
+ save_LIBS="$LIBS"
+ LIBS=
+-- 
+2.11.0
+
