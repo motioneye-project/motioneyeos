@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STELLA_VERSION = 4.7.2
+STELLA_VERSION = 4.7.3
 STELLA_SOURCE = stella-$(STELLA_VERSION)-src.tar.xz
 STELLA_SITE = https://github.com/stella-emu/stella/releases/download/release-$(STELLA_VERSION)
 STELLA_LICENSE = GPL-2.0+
