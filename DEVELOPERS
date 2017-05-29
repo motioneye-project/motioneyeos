@@ -404,9 +404,6 @@ F:	package/lua-cjson/
 F:	package/luaexpat/
 F:	package/xinetd/
 
-N:	Dave Skok <blanco.ether@gmail.com>
-F:	package/ola/
-
 N:	David Bachelart <david.bachelart@bbright.com>
 F:	package/ccrypt/
 F:	package/dos2unix/
