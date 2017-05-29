@@ -32,6 +32,8 @@ config BR2_PACKAGE_SWUPDATE
 	    archives.
 	  * Select BR2_PACKAGE_UBOOT_TOOLS and BR2_PACKAGE_ZLIB to add support
 	    for setting the U-Boot environment.
+	  * Select BR2_PACKAGE_ZEROMQ to add support for using a remote
+	    handler.
 
 	  https://sbabic.github.io/swupdate
 

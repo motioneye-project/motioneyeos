@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2017.01
+SWUPDATE_VERSION = 2017.04
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
 SWUPDATE_LICENSE = GPL-2.0+, MIT, Public Domain
 SWUPDATE_LICENSE_FILES = COPYING
@@ -69,6 +69,13 @@ SWUPDATE_DEPENDENCIES += uboot-tools
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=n
+endif
+
+ifeq ($(BR2_PACKAGE_ZEROMQ),y)
+SWUPDATE_DEPENDENCIES += zeromq
+SWUPDATE_MAKE_ENV += HAVE_LIBZEROMQ=y
+else
+SWUPDATE_MAKE_ENV += HAVE_LIBZEROMQ=n
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
