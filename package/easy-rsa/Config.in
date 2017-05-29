@@ -1,0 +1,15 @@
+config BR2_PACKAGE_EASY_RSA
+	bool "easy-rsa"
+	select BR2_PACKAGE_OPENSSL # runtime
+	select BR2_PACKAGE_OPENSSL_BIN
+	help
+	  Simple shell based CA utility
+
+	  This package eases the creation of certificates, for example
+	  for openvpn clients.
+
+	  This was formerly part of the openvpn package.
+
+	  easy-rsa is a wrapper script around OpenSSL binaries.
+
+	  https://github.com/OpenVPN/easy-rsa

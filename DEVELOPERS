@@ -969,6 +969,7 @@ F:	package/lldpd/
 
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/
+F:	package/easy-rsa/
 
 N:	Justin Maggard <jmaggard@netgear.com>
 F:	package/dtach/
