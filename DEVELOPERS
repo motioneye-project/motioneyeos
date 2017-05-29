@@ -83,9 +83,6 @@ N:	Andrey Smirnov <andrew.smirnov@gmail.com
 F:	package/python-decorator/
 F:	package/python-simplegeneric/
 
-N:	Andrew Ruder <andrew.ruder@elecsyscorp.com>
-F:	package/expect/
-
 N:	Andy Kennedy <andy.kennedy@adtran.com>
 F:	package/libunwind/
 
