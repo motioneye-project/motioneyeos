@@ -1,0 +1,18 @@
+Without this patch, dependencies would be downloaded and compiled
+by rebar at build time.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/rebar.config b/rebar.config
+index 68ffdeb..651a829 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -24,8 +24,6 @@
+ {port_env, [{"CFLAGS", "$CFLAGS"}, {"LDFLAGS", "$LDFLAGS -lyaml"}]}.
+ {port_specs, [{"priv/lib/fast_yaml.so", ["c_src/fast_yaml.c"]}]}.
+
+-{deps, [{p1_utils, ".*", {git, "git://github.com/processone/p1_utils", {tag, "1.0.7"}}}]}.
+-
+ {clean_files, ["c_src/fast_yaml.gcda", "c_src/fast_yaml.gcno"]}.
+
+ {cover_enabled, true}.
