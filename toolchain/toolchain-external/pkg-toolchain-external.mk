@@ -481,6 +481,8 @@ ifeq ($(BR2_i386),y)
 MUSL_ARCH = i386
 else ifeq ($(BR2_ARM_EABIHF),y)
 MUSL_ARCH = armhf
+else ifeq ($(BR2_mips):$(BR2_SOFT_FLOAT),y:y)
+MUSL_ARCH = mips-sf
 else ifeq ($(BR2_mipsel):$(BR2_SOFT_FLOAT),y:y)
 MUSL_ARCH = mipsel-sf
 else ifeq ($(BR2_sh),y)
