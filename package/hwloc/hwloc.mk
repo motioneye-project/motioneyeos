@@ -11,6 +11,7 @@ HWLOC_SITE = http://www.open-mpi.org/software/hwloc/v$(HWLOC_VERSION_MAJOR)/down
 HWLOC_LICENSE = BSD-3-Clause
 HWLOC_LICENSE_FILES = COPYING
 HWLOC_DEPENDENCIES = host-pkgconf
+HWLOC_INSTALL_STAGING = YES
 # 0001-utils-hwloc-Makefile.am-fix-install-man-race-conditi.patch touches Makefile.am
 HWLOC_AUTORECONF = YES
 
