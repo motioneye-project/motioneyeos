@@ -8,8 +8,9 @@ config BR2_PACKAGE_EXIM
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_BERKELEYDB
 	help
-	  Exim is a message transfer agent (MTA) developed at the University of
-	  Cambridge for use on Unix systems connected to the Internet.
+	  Exim is a message transfer agent (MTA) developed at the
+	  University of Cambridge for use on Unix systems connected to
+	  the Internet.
 
 	  http://www.exim.org/
 
