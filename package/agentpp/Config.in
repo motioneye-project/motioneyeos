@@ -5,13 +5,14 @@ config BR2_PACKAGE_AGENTPP
 	depends on !BR2_STATIC_LIBS # snmp++
 	select BR2_PACKAGE_SNMPPP
 	help
-	  AGENT++ is a set of C++ classes which provides a complete protocol
-	  engine and dispatch table for the development of SNMP agents.
-	  AGENT++ is a multilingual API which supports SNMPv1, SNMPv2c, and
-	  SNMPv3. It provides various C++ classes implementing prototypes for
-	  scalar and table SNMP managed objects that can be customized by
-	  derivation. Additional classes support the development of proxy
-	  agents as well as sending notifications.
+	  AGENT++ is a set of C++ classes which provides a complete
+	  protocol engine and dispatch table for the development of
+	  SNMP agents. AGENT++ is a multilingual API which supports
+	  SNMPv1, SNMPv2c, and SNMPv3. It provides various C++ classes
+	  implementing prototypes for scalar and table SNMP managed
+	  objects that can be customized by derivation. Additional
+	  classes support the development of proxy agents as well as
+	  sending notifications.
 
 	  SNMPv3 support is enabled if SNMP++ enables it.
 
