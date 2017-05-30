@@ -1,0 +1,52 @@
+From 796dea37fb229c34740f98bf80f3263d7a4e3c6d Mon Sep 17 00:00:00 2001
+From: Olaf Hering <olaf@aepfle.de>
+Date: Wed, 15 Mar 2017 07:01:34 +0000
+Subject: [PATCH] tools: include sys/sysmacros.h on Linux
+
+Due to a bug in the glibc headers the macros makedev(), major() and
+minor() where available by including sys/types.h. This bug was
+addressed in glibc-2.25 by introducing a warning when these macros are
+used. Since Xen is build with -Werror this new warning cause a compile
+error.
+
+Use sys/sysmacros.h to define these three macros.
+
+blktap2 is already Linux specific. The kernel header which was used to
+get makedev() does not provided it anymore, and it was wrong to use a
+kernel header anyway.
+
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Acked-by: Wei Liu <wei.liu2@citrix.com>
+Signed-off-by: Alistair Francis <alistair.francis@xilinx.com>
+---
+ tools/blktap2/control/tap-ctl-allocate.c | 1 +
+ tools/libxl/libxl_osdeps.h               | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/tools/blktap2/control/tap-ctl-allocate.c b/tools/blktap2/control/tap-ctl-allocate.c
+index 8a6471e987..187cadcde7 100644
+--- a/tools/blktap2/control/tap-ctl-allocate.c
++++ b/tools/blktap2/control/tap-ctl-allocate.c
+@@ -33,6 +33,7 @@
+ #include <string.h>
+ #include <getopt.h>
+ #include <libgen.h>
++#include <sys/sysmacros.h>
+ #include <sys/stat.h>
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+diff --git a/tools/libxl/libxl_osdeps.h b/tools/libxl/libxl_osdeps.h
+index a40d62066b..de1d24ecae 100644
+--- a/tools/libxl/libxl_osdeps.h
++++ b/tools/libxl/libxl_osdeps.h
+@@ -39,6 +39,7 @@
+ #define SYSFS_PCI_DEV          "/sys/bus/pci/devices"
+ #define SYSFS_PCIBACK_DRIVER   "/sys/bus/pci/drivers/pciback"
+ #define NETBACK_NIC_NAME       "vif%u.%d"
++#include <sys/sysmacros.h>
+ #include <pty.h>
+ #include <uuid/uuid.h>
+ #elif defined(__sun__)
+-- 
+2.11.0
+
