@@ -24,4 +24,4 @@ config BR2_PACKAGE_MOSH
 	  allows roaming, and provides speculative local echo and line editing
 	  of user keystrokes.
 
-	  https://mosh.mit.edu
+	  https://mosh.org
