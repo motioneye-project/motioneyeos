@@ -1,3 +1,18 @@
+2017.05, Released May 31st, 2017
+
+	Minor fixes.
+
+	External toolchain: musl dynamic linker symlink for mips-sf
+	corrected.
+
+	Updated/fixed packages: agentpp, bash, exim, hans, madplay,
+	qpid-proton, rtl8188eu, snmppp, stm32flash, strongswan, sudo,
+	xen
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9906: genimage: Disk full
+
 2017.05-rc3, Released May 30th, 2017
 
 	Fixes all over the tree.

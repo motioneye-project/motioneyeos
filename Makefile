@@ -86,9 +86,9 @@ else # umask / $(CURDIR) / $(O)
 all:
 
 # Set and export the version string
-export BR2_VERSION := 2017.05-rc3
+export BR2_VERSION := 2017.05
 # Actual time the release is cut (for reproducible builds)
-BR2_VERSION_EPOCH = 1496130000
+BR2_VERSION_EPOCH = 1496267000
 
 # Save running make version since it's clobbered by the make package
 RUNNING_MAKE_VERSION := $(MAKE_VERSION)

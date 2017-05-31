@@ -5,7 +5,7 @@
 ################################################################################
 
 # Buildroot version to use
-RELEASE='2017.02'
+RELEASE='2017.05'
 
 ### Change here for more memory/cores ###
 VM_MEMORY=2048
