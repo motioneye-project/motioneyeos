@@ -1,0 +1,8 @@
+config BR2_PACKAGE_ERLANG_P1_XMPP
+	bool "erlang-p1-xmpp"
+	select BR2_PACKAGE_ERLANG_P1_XML
+	select BR2_PACKAGE_ERLANG_P1_STRINGPREP
+	help
+	  XMPP library for Erlang.
+
+	  https://github.com/processone/xmpp
