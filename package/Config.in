@@ -341,6 +341,7 @@ comment "X window managers"
 	source "package/matchbox/Config.in"
 	source "package/metacity/Config.in"
 	source "package/openbox/Config.in"
+	source "package/ratpoison/Config.in"
 endmenu
 
 menu "Hardware handling"
