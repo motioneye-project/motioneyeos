@@ -86,7 +86,7 @@ else # umask / $(CURDIR) / $(O)
 all:
 
 # Set and export the version string
-export BR2_VERSION := 2017.05
+export BR2_VERSION := 2017.08-git
 # Actual time the release is cut (for reproducible builds)
 BR2_VERSION_EPOCH = 1496267000
 
