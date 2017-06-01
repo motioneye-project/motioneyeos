@@ -1,0 +1,4 @@
+#!/bin/bash
+
+sed 's/#initrd_filename=.*/initrd_filename=initrd.img/' uEnv.txt
+
