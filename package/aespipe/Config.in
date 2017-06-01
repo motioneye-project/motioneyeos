@@ -2,9 +2,10 @@ config BR2_PACKAGE_AESPIPE
 	bool "aespipe"
 	depends on BR2_USE_MMU # fork()
 	help
-	  aespipe program is AES encrypting or decrypting pipe. It reads from
-	  standard input and writes to standard output. It can be used to
-	  create and restore encrypted tar or cpio archives. It can be used to
-	  encrypt and decrypt loop-AES compatible encrypted disk images.
+	  aespipe program is AES encrypting or decrypting pipe. It reads
+	  from standard input and writes to standard output. It can be
+	  used to create and restore encrypted tar or cpio archives.
+	  It can be used to encrypt and decrypt loop-AES compatible
+	  encrypted disk images.
 
 	  http://koti.tnnet.fi/jari.ruusu/linux/

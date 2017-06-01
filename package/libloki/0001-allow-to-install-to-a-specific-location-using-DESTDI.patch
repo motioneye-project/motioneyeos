@@ -1,0 +1,65 @@
+From 0b80e8beff68a0570fdc2d9281992060414475c1 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 29 Apr 2017 22:13:54 +0200
+Subject: [PATCH] allow to install to a specific location using DESTDIR
+
+DESTDIR is the autotools standard variable where to copy
+headers, libraries and binaries. It's not the same as "prefix".
+
+So while installing to Buildroot STAGING directory, use prefix=/usr
+and DESTOR=$(STAGING_DIR).
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+Sigend-off-by: Corentin GUILLEVIC <corentin.guillevic@smile.fr>
+---
+ include/Makefile | 12 ++++++------
+ src/Makefile     | 10 +++++-----
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/include/Makefile b/include/Makefile
+index 26a8139..a8cf369 100644
+--- a/include/Makefile
++++ b/include/Makefile
+@@ -2,10 +2,10 @@ include ../Makefile.common
+ 
+ .PHONY: install
+ install:
+-	mkdir -p $(prefix)/include/loki
+-	mkdir -p $(prefix)/include/loki/flex
+-	mkdir -p $(prefix)/include/loki/yasli
++	mkdir -p $(DESTDIR)$(prefix)/include/loki
++	mkdir -p $(DESTDIR)$(prefix)/include/loki/flex
++	mkdir -p $(DESTDIR)$(prefix)/include/loki/yasli
+ 	
+-	install -m 644 loki/*.h $(prefix)/include/loki
+-	install -m 644 loki/flex/*.h $(prefix)/include/loki/flex
+-	install -m 644 loki/yasli/*.h $(prefix)/include/loki/yasli
++	install -m 644 loki/*.h $(DESTDIR)$(prefix)/include/loki
++	install -m 644 loki/flex/*.h $(DESTDIR)$(prefix)/include/loki/flex
++	install -m 644 loki/yasli/*.h $(DESTDIR)$(prefix)/include/loki/yasli
+diff --git a/src/Makefile b/src/Makefile
+index b272929..054285e 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -74,13 +74,13 @@ INSTALL_DATA := $(INSTALL) -m 644
+ install: install-static install-shared
+ 
+ install-static: $(RESULT_DIR)$(STATIC_LIB)
+-	mkdir -p $(prefix)/lib
+-	$(INSTALL_DATA) $(RESULT_DIR)$(STATIC_LIB) $(prefix)/lib
++	mkdir -p $(DESTDIR)$(prefix)/lib
++	$(INSTALL_DATA) $(RESULT_DIR)$(STATIC_LIB) $(DESTDIR)$(prefix)/lib
+ 
+ install-shared: $(RESULT_DIR)$(SHARED_LIB_VERSIONED)
+-	mkdir -p $(prefix)/lib
+-	$(INSTALL_DATA) $(RESULT_DIR)$(SHARED_LIB_VERSIONED) $(prefix)/lib
+-	cd $(prefix)/lib; ln -s $(SHARED_LIB_VERSIONED) $(SHARED_LIB_BASE)
++	mkdir -p $(DESTDIR)$(prefix)/lib
++	$(INSTALL_DATA) $(RESULT_DIR)$(SHARED_LIB_VERSIONED) $(DESTDIR)$(prefix)/lib
++	cd $(DESTDIR)$(prefix)/lib; ln -s $(SHARED_LIB_VERSIONED) $(SHARED_LIB_BASE)
+ 
+ %.lo : %.cpp
+ 	$(CXX) -c $(CXXFLAGS) -fPIC $(CPPFLAGS) -o $@ $<
+-- 
+2.9.3
+

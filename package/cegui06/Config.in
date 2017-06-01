@@ -10,11 +10,11 @@ config BR2_PACKAGE_CEGUI06
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_PCRE
 	help
-	  Crazy Eddie's GUI System is a free library providing windowing and
-	  widgets for graphics APIs / engines where such functionality is not
-	  natively available, or severely lacking. The library is object
-	  orientated, written in C++, and targeted at games developers who
-	  should be spending their time creating great games, not building
-	  GUI sub-systems!
+	  Crazy Eddie's GUI System is a free library providing windowing
+	  and widgets for graphics APIs / engines where such
+	  functionality is not natively available, or severely lacking.
+	  The library is object orientated, written in C++, and targeted
+	  at games developers who should be spending their time creating
+	  great games, not building GUI sub-systems!
 
 	  http://www.cegui.org.uk/

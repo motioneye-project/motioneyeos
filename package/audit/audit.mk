@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AUDIT_VERSION = 2.7.1
+AUDIT_VERSION = 2.7.6
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
 AUDIT_LICENSE = GPL-2.0+ (programs), unclear (libraries)
 AUDIT_LICENSE_FILES = COPYING

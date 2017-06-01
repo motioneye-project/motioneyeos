@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TINYALSA_VERSION = 1.1.0
+TINYALSA_VERSION = 1.1.1
 TINYALSA_SITE = $(call github,tinyalsa,tinyalsa,$(TINYALSA_VERSION))
 TINYALSA_LICENSE = BSD-3-Clause
 TINYALSA_LICENSE_FILES = NOTICE

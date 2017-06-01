@@ -365,6 +365,9 @@ F:	package/policycoreutils/
 F:	package/sepolgen/
 F:	package/ustr/
 
+N:	Corentin Guillevic <corentin.guillevic@smile.fr>
+F:	package/libloki/
+
 N:	Cédric Chépied <cedric.chepied@gmail.com>
 F:	package/znc/
 
@@ -574,11 +577,14 @@ F:	package/perl*
 F:	package/pkg-perl.mk
 F:	package/pkg-luarocks.mk
 F:	package/qemu/
+F:	package/sdl2_mixer/
+F:	package/sdl2_net/
 F:	package/tekui/
 F:	support/scripts/scancpan
 
 N:	Frank Hunleth <fhunleth@troodon-software.com>
 F:	package/am335x-pru-package/
+F:	package/libconfuse/
 F:	package/libdmtx/
 F:	package/libsodium/
 F:	package/php-amqp/
@@ -858,6 +864,7 @@ F:	package/python-libconfig/
 N:	Johan Oudinet <johan.oudinet@gmail.com>
 F:	package/ejabberd/
 F:	package/erlang-goldrush/
+F:	package/erlang-jiffy/
 F:	package/erlang-lager/
 F:	package/erlang-p1-cache-tab/
 F:	package/erlang-p1-iconv/
@@ -867,6 +874,7 @@ F:	package/erlang-p1-stun/
 F:	package/erlang-p1-tls/
 F:	package/erlang-p1-utils/
 F:	package/erlang-p1-xml/
+F:	package/erlang-p1-xmpp/
 F:	package/erlang-p1-yaml/
 F:	package/erlang-p1-zlib/
 F:	package/nginx-dav-ext/
@@ -1034,6 +1042,7 @@ F:	board/grinn/
 F:	configs/grinn_*
 F:	package/argparse/
 F:	package/easydbus/
+F:	package/luaossl/
 F:	package/rs485conf/
 F:	package/turbolua/
 
@@ -1503,6 +1512,8 @@ F:	package/proxychains-ng/
 F:	package/yasm/
 
 N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
+F:	package/cracklib/
+F:	package/libpwquality/
 F:	package/libscrypt/
 
 N:	Stephan Hoffmann <sho@relinux.de>

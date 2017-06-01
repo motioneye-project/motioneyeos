@@ -13,15 +13,23 @@ FETCHMAIL_LICENSE_FILES = COPYING
 FETCHMAIL_AUTORECONF = YES
 FETCHMAIL_GETTEXTIZE = YES
 
+# needed to help fetchmail detecting the availability of openssl,
+# because it doesn't use pkg-config
+ifeq ($(BR2_STATIC_LIBS),y)
 FETCHMAIL_CONF_ENV += LIBS="-lz"
+endif
 
 FETCHMAIL_CONF_OPTS = \
 	--with-ssl=$(STAGING_DIR)/usr
 
 FETCHMAIL_DEPENDENCIES = \
 	ca-certificates \
-	openssl \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
+	openssl
+
+# libintl is an optional dependency
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+FETCHMAIL_DEPENDENCIES += gettext
+endif
 
 # fetchmailconf.py script is not (yet) python3-compliant.
 # Prevent the pyc-compilation with python-3 from failing by removing this

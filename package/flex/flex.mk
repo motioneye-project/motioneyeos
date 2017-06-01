@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-FLEX_VERSION = 2.5.37
-FLEX_SITE = http://download.sourceforge.net/project/flex
+FLEX_VERSION = 2.6.4
+FLEX_SITE = https://github.com/westes/flex/files/981163
 FLEX_INSTALL_STAGING = YES
 FLEX_LICENSE = FLEX
 FLEX_LICENSE_FILES = COPYING
@@ -16,7 +16,7 @@ FLEX_CONF_ENV = ac_cv_path_M4=/usr/bin/m4
 HOST_FLEX_DEPENDENCIES = host-m4
 
 define FLEX_DISABLE_PROGRAM
-	$(SED) 's/^bin_PROGRAMS.*//' $(@D)/Makefile.in
+	$(SED) 's/^bin_PROGRAMS.*//' $(@D)/src/Makefile.in
 endef
 FLEX_POST_PATCH_HOOKS += FLEX_DISABLE_PROGRAM
 

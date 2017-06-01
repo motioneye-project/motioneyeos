@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MOSH_VERSION = 1.2.6
-MOSH_SITE = https://mosh.mit.edu
+MOSH_VERSION = 1.3.0
+MOSH_SITE = https://mosh.org
 MOSH_DEPENDENCIES = zlib ncurses protobuf host-pkgconf
 MOSH_LICENSE = GPL-3.0+ with exception
 MOSH_LICENSE_FILES = COPYING COPYING.iOS

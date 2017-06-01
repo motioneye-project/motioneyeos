@@ -13,12 +13,6 @@ See:
 - http://www.lego.com/en-us/mindstorms/products/ev3/31313-mindstorms-ev3/
 - http://www.ti.com/product/am1808
 
-The buildroot configuration uses the Linux kernel of the ev3dev project.
-See:
-- https://github.com/ev3dev/ev3-kernel/
-- https://github.com/ev3dev/lego-linux-drivers/
-- http://www.ev3dev.org/
-
 How it works
 ============
 
@@ -65,7 +59,8 @@ After building, you should obtain this tree:
     ├── rootfs.squashfs
     ├── sdcard.img
     ├── u-boot.bin
-    └── uImage
+    ├── uImage -> uImage.da850-lego-ev3
+    └── uImage.da850-lego-ev3
 
 Installation
 ============

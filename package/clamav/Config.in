@@ -7,8 +7,8 @@ config BR2_PACKAGE_CLAMAV
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_ZLIB
 	help
-	  ClamAV is an open source antivirus engine for detecting trojans,
-	  viruses, malware & other malicious threats.
+	  ClamAV is an open source antivirus engine for detecting
+	  trojans, viruses, malware & other malicious threats.
 
 	  http://www.clamav.net
 

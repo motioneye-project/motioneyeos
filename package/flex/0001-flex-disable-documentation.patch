@@ -1,0 +1,23 @@
+flex: disable documentation
+
+Since we prevent the flex binary to be built, we also need to prevent
+the documentation to be built, otherwise it will fail like this:
+
+Making all in doc
+make[2]: Entering directory '/br/output/build/flex-2.6.4/doc'
+make[2]: *** No rule to make target '../src/flex', needed by 'flex.1'.
+Stop.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/Makefile.in b/Makefile.in
+--- a/Makefile.in	2017-05-06 15:49:09.000000000 +0100
++++ b/Makefile.in	2017-05-10 14:35:20.152794902 +0100
+@@ -450,7 +450,6 @@ EXTRA_DIST = \
+ 
+ SUBDIRS = \
+ 	src \
+-	doc \
+ 	examples \
+ 	po \
+ 	tests \

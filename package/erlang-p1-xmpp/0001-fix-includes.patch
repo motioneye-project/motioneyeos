@@ -1,0 +1,16 @@
+Without this patch, rebar fails to find include file fxml.hrl.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/include/xmpp.hrl b/include/xmpp.hrl
+index afa5f61..678858e 100644
+--- a/include/xmpp.hrl
++++ b/include/xmpp.hrl
+@@ -26,7 +26,7 @@
+ -include("ns.hrl").
+ -include("jid.hrl").
+ -include("xmpp_codec.hrl").
+--include("fxml.hrl").
++-include_lib("p1_xml/include/fxml.hrl").
+
+ -type stanza() :: iq() | presence() | message().

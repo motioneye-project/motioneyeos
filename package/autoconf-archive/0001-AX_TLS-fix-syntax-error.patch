@@ -17,6 +17,8 @@ fi
 Remove the [] on the third part of AS_IF.
 
 Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+(rebased against version 2017.03.21)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  m4/ax_tls.m4 | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
@@ -29,8 +31,8 @@ index 809b761..2135dd2 100644
  #   modified version of the Autoconf Macro, you may extend this special
  #   exception to the GPL to apply to your modified version as well.
  
--#serial 11
-+#serial 12
+-#serial 13
++#serial 14
  
  AC_DEFUN([AX_TLS], [
    AC_MSG_CHECKING([for thread local storage (TLS) class])

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LUA_SDL2
+	bool "lua-sdl2"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_SDL2
+	select BR2_PACKAGE_SDL2_IMAGE
+	select BR2_PACKAGE_SDL2_MIXER
+	select BR2_PACKAGE_SDL2_NET
+	select BR2_PACKAGE_SDL2_TTF
+	help
+	  Lua-SDL2 is a pure C binding of SDL2 to Lua 5.1, Lua 5.2,
+	  Lua 5.3, and LuaJIT.
+
+	  https://github.com/Tangent128/luasdl2
+
+comment "lua-sdl2 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

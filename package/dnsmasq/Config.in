@@ -34,7 +34,8 @@ config BR2_PACKAGE_DNSMASQ_IDN
 	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Enable IDN support in dnsmasq.
-	  This option is a big space taker since it pulls in many libraries.
+	  This option is a big space taker since it pulls in many
+	  libraries.
 
 config BR2_PACKAGE_DNSMASQ_LUA
 	bool "Lua scripting support"

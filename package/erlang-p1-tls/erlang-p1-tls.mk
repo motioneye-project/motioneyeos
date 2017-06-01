@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-ERLANG_P1_TLS_VERSION = 1.0.0
-ERLANG_P1_TLS_SITE = $(call github,processone,tls,$(ERLANG_P1_TLS_VERSION))
-ERLANG_P1_TLS_LICENSE = GPL-2.0+ with OpenSSL exception
-ERLANG_P1_TLS_LICENSE_FILES = COPYING
+ERLANG_P1_TLS_VERSION = 1.0.11
+ERLANG_P1_TLS_SITE = $(call github,processone,fast_tls,$(ERLANG_P1_TLS_VERSION))
+ERLANG_P1_TLS_LICENSE = Apache-2.0
+ERLANG_P1_TLS_LICENSE_FILES = LICENSE.txt
 ERLANG_P1_TLS_INSTALL_STAGING = YES
-ERLANG_P1_TLS_DEPENDENCIES = openssl
+ERLANG_P1_TLS_DEPENDENCIES = openssl erlang-p1-utils
 
 $(eval $(rebar-package))

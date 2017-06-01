@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-AUGEAS_VERSION = 1.7.0
+AUGEAS_VERSION = 1.8.0
 AUGEAS_SITE = http://download.augeas.net
 AUGEAS_INSTALL_STAGING = YES
 AUGEAS_LICENSE = LGPL-2.1+
 AUGEAS_LICENSE_FILES = COPYING
 AUGEAS_DEPENDENCIES = host-pkgconf readline libxml2
-
-# Fetch upstream patch to fix static linking
-AUGEAS_PATCH = https://github.com/hercules-team/augeas/commit/05a27f4e374e9f0dc2cda6301b52d2a6b109b2e8.patch
 
 AUGEAS_CONF_OPTS = --disable-gnulib-tests
 

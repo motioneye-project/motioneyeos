@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-EXIV2_VERSION = 0.25
-EXIV2_SITE = http://www.exiv2.org
+EXIV2_VERSION = 0.26
+EXIV2_SITE = http://www.exiv2.org/builds
+EXIV2_SOURCE = exiv2-$(EXIV2_VERSION)-trunk.tar.gz
 EXIV2_INSTALL_STAGING = YES
 
 EXIV2_CONF_OPTS += -DEXIV2_ENABLE_BUILD_SAMPLES=OFF

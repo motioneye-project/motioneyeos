@@ -1,0 +1,30 @@
+From d27062fe7a520d5791f7a56d175a5cb6a39bae61 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <stefan.sorensen@spectralink.com>
+Date: Tue, 18 Apr 2017 12:00:39 +0200
+Subject: [PATCH] Force grep to treat the input as text when formatting word
+ files.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+---
+ util/cracklib-format | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/util/cracklib-format b/util/cracklib-format
+index 1d7be5b..b1de8e8 100644
+--- a/util/cracklib-format
++++ b/util/cracklib-format
+@@ -4,7 +4,7 @@
+ # into cracklib-packer
+ #
+ gzip -cdf "$@" |
+-    grep -v '^\(#\|$\)' |
++    grep -a -v '^\(#\|$\)' |
+     tr '[A-Z]' '[a-z]' |
+     tr -cd '\012[a-z][0-9]' |
+     env LC_ALL=C sort -u
+-- 
+2.9.3
+

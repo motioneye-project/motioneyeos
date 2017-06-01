@@ -6,8 +6,8 @@ config BR2_PACKAGE_CWIID
 	depends on BR2_USE_MMU # bluez_utils -> dbus, libglib2
 	select BR2_PACKAGE_BLUEZ_UTILS
 	help
-	  A collection of Linux tools written in C for interfacing to the
-	  Nintendo Wiimote.
+	  A collection of Linux tools written in C for interfacing to
+	  the Nintendo Wiimote.
 
 	  http://abstrakraft.org/cwiid/
 

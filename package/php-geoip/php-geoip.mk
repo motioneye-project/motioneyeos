@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-PHP_GEOIP_VERSION = ebb68228ad94298a305710f701b2ade9acff985d
-PHP_GEOIP_SITE = $(call github,php7-extensions,ext-php7-geoip,$(PHP_GEOIP_VERSION))
+PHP_GEOIP_VERSION = 1.1.1
+PHP_GEOIP_SOURCE = geoip-$(PHP_GEOIP_VERSION).tgz
+PHP_GEOIP_SITE = https://pecl.php.net/get
 PHP_GEOIP_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
 	--with-geoip=$(STAGING_DIR)/usr
 # phpize does the autoconf magic

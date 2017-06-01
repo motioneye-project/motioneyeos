@@ -4,10 +4,17 @@
 #
 ################################################################################
 
-LIBGPIOD_VERSION = v0.1.3
+LIBGPIOD_VERSION = v0.2
 LIBGPIOD_SITE = $(call github,brgl,libgpiod,$(LIBGPIOD_VERSION))
-LIBGPIOD_LICENSE = GPL-3.0+
+LIBGPIOD_LICENSE = LGPL-2.1+
 LIBGPIOD_LICENSE_FILES = COPYING
+
+# Needed for autoreconf to work properly
+define LIBGPIOD_FIXUP_M4_DIR
+        mkdir $(@D)/m4
+endef
+LIBGPIOD_POST_EXTRACT_HOOKS += LIBGPIOD_FIXUP_M4_DIR
+
 # fetched from github, no configure script provided
 LIBGPIOD_AUTORECONF = YES
 

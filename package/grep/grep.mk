@@ -11,7 +11,11 @@ GREP_LICENSE = GPL-3.0+
 GREP_LICENSE_FILES = COPYING
 GREP_CONF_OPTS = --disable-perl-regexp \
 	$(if $(BR2_TOOLCHAIN_USES_MUSL),--with-included-regex)
-GREP_DEPENDENCIES = $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
+
+# Can use libintl if available
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+GREP_DEPENDENCIES += gettext
+endif
 
 # link with iconv if enabled
 ifeq ($(BR2_PACKAGE_LIBICONV),y)

@@ -1,0 +1,20 @@
+Without this patch, dependencies would be downloaded and compiled
+by rebar at build time.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/rebar.config b/rebar.config
+index fbc69a1..6250420 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -29,10 +29,6 @@
+
+ {port_specs, [{"priv/lib/esip_drv.so", ["c_src/esip_codec.c"]}]}.
+
+-{deps, [{stun, ".*", {git, "https://github.com/processone/stun", {tag, "1.0.10"}}},
+-	{fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.11"}}},
+-	{p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.7"}}}]}.
+-
+ {clean_files, ["c_src/esip_codec.gcda", "c_src/esip_codec.gcno"]}.
+
+ {cover_enabled, true}.

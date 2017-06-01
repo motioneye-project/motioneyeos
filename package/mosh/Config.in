@@ -20,15 +20,16 @@ config BR2_PACKAGE_MOSH
 	# runtime dependency
 	select BR2_PACKAGE_OPENSSH if !BR2_PACKAGE_DROPBEAR_CLIENT
 	help
-	  Remote terminal application that supports intermittent connectivity,
-	  allows roaming, and provides speculative local echo and line editing
-	  of user keystrokes.
+	  Remote terminal application that supports intermittent
+	  connectivity, allows roaming, and provides speculative local
+	  echo and line editing of user keystrokes.
 
-	  Mosh requires that the remote machine has a locale setting matching
-	  the one on the client.
+	  Mosh requires that the remote machine has a locale setting
+	  matching the one on the client.
 
-	  When using mosh with dropbear on a remote machine, the client needs mosh
-	  with a version above 1.3.0 and the --no-ssh-pty option needs to be passed
-	  when starting the connection.
+	  When using mosh with dropbear on a remote machine, the
+	  client needs mosh with a version above 1.3.0 and the
+	  --no-ssh-pty option needs to be passed when starting the
+	  connection.
 
-	  https://mosh.mit.edu
+	  https://mosh.org

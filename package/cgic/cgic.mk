@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CGIC_VERSION = 2.06
-CGIC_SOURCE = cgic206.tar.gz
+CGIC_VERSION = 2.07
+CGIC_SOURCE = cgic207.tar.gz
 CGIC_SITE = http://boutell.com/cgic
 CGIC_LICENSE = Custom
 CGIC_LICENSE_FILES = license.txt

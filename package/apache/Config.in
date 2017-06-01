@@ -6,11 +6,12 @@ config BR2_PACKAGE_APACHE
 	select BR2_PACKAGE_APR_UTIL
 	select BR2_PACKAGE_PCRE
 	help
-	  The Apache HTTP Server Project is an effort to develop and maintain an
-	  open-source HTTP server for modern operating systems including UNIX
-	  and Windows NT. The goal of this project is to provide a secure,
-	  efficient and extensible server that provides HTTP services in sync
-	  with the current HTTP standards.
+	  The Apache HTTP Server Project is an effort to develop and
+	  maintain an open-source HTTP server for modern operating
+	  systems including UNIX and Windows NT. The goal of this
+	  project is to provide a secure, efficient and extensible
+	  server that provides HTTP services in sync with the current
+	  HTTP standards.
 
 	  http://httpd.apache.org
 

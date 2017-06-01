@@ -39,14 +39,9 @@ comment "OBEX support needs a toolchain w/ C++"
 
 config BR2_PACKAGE_BLUEZ5_UTILS_CLIENT
 	bool "build CLI client"
-	# wordexp support not in our uClibc configuration
-	depends on !BR2_TOOLCHAIN_USES_UCLIBC
 	select BR2_PACKAGE_READLINE
 	help
 	  Enable the Bluez 5.x command line client.
-
-comment "bluez5-utils client needs a glibc or musl toolchain"
-	depends on BR2_TOOLCHAIN_USES_UCLIBC
 
 config BR2_PACKAGE_BLUEZ5_UTILS_DEPRECATED
 	bool "install deprecated tool"
@@ -87,7 +82,8 @@ config BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS
 	bool "build sixaxis plugin"
 	depends on BR2_PACKAGE_HAS_UDEV
 	help
-	  Build BlueZ 5.x sixaxis plugin (support Sony Dualshock controller)
+	  Build BlueZ 5.x sixaxis plugin (support Sony Dualshock
+	  controller)
 
 comment "sixaxis plugin needs udev /dev management"
 	depends on !BR2_PACKAGE_HAS_UDEV

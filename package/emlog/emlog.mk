@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EMLOG_VERSION = 576a6c0fcf76dfeff48124b2f5fc0b4207d88ca1
+EMLOG_VERSION = emlog-0.60
 EMLOG_SITE = $(call github,nicupavel,emlog,$(EMLOG_VERSION))
 EMLOG_LICENSE = GPL-2.0
 EMLOG_LICENSE_FILES = COPYING

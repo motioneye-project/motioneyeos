@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONO_VERSION = 4.6.2.16
+MONO_VERSION = 4.8.1.0
 MONO_SITE = http://download.mono-project.com/sources/mono
 MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
 MONO_LICENSE = GPL-2.0 or MIT (compiler, tools), MIT (libs) or commercial
@@ -20,9 +20,10 @@ MONO_AUTORECONF = YES
 # Disable managed code (mcs folder) from building
 MONO_CONF_OPTS = --with-mcs-docs=no \
 	--with-ikvm-native=no \
-	--enable-minimal=profiler,debug \
+	--enable-minimal=profiler,debug,aot \
 	--disable-mcs-build \
-	--enable-static
+	--enable-static \
+	--disable-btls
 
 # The libraries have been built by the host-mono build. Since they are
 # architecture-independent, we simply copy them to the target.
@@ -44,8 +45,9 @@ MONO_DEPENDENCIES += host-mono
 HOST_MONO_CONF_OPTS = --with-mcs-docs=no \
 	--disable-libraries \
 	--with-ikvm-native=no \
-	--enable-minimal=profiler,debug \
-	--enable-static
+	--enable-minimal=profiler,debug,aot \
+	--enable-static \
+	--disable-btls
 
 # ensure monolite is used
 HOST_MONO_MAKE_OPTS += EXTERNAL_MCS=false

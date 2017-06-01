@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=b9b556fe6f016c0a3b27cc67790cf821, sha256 locally computed
-md5     b9b556fe6f016c0a3b27cc67790cf821  python-can-1.4.3.tar.gz
-sha256  2dcd32737cc39fbf39f41521146a9685f594942c99c6183bad7e3c404930198b  python-can-1.4.3.tar.gz
+# md5 from https://pypi.python.org/pypi/python-can/json, sha256 locally computed
+md5     f653aecf8b9034bbba32cc04ca6a7b6d  python-can-1.5.2.tar.gz
+sha256  edabb426e6cd11c2dc7a98980340135aa0eb02143b0d51bf14e3e6178c131cc3  python-can-1.5.2.tar.gz

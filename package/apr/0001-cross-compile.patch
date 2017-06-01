@@ -42,10 +42,10 @@ diff -uNr apr-1.5.1.org/Makefile.in apr-1.5.1/Makefile.in
  
  # get substituted into some targets
  APR_MAJOR_VERSION=@APR_MAJOR_VERSION@
-@@ -134,8 +136,13 @@
+@@ -134,8 +134,13 @@
+ 	$(APR_MKDIR) tools
+ 	$(LT_COMPILE)
  
- OBJECTS_gen_test_char = tools/gen_test_char.lo $(LOCAL_LIBS)
- tools/gen_test_char.lo: make_tools_dir
 +ifdef CC_FOR_BUILD
 +tools/gen_test_char@EXEEXT@: tools/gen_test_char.c $(LOCAL_LIBS)
 +	$(CC_FOR_BUILD) $(CFLAGS_FOR_BUILD) -DCROSS_COMPILE -o $@ $<
