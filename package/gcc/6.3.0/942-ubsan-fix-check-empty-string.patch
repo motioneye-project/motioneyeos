@@ -1,0 +1,40 @@
+From 8db2cf6353c13f2a84cbe49b689654897906c499 Mon Sep 17 00:00:00 2001
+From: kyukhin <kyukhin@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Sat, 3 Sep 2016 10:57:05 +0000
+Subject: [PATCH] gcc/ubsan.c: Fix check for empty string
+
+Building host-gcc-initial with GCC7 on the host fails due to the
+comparison of a pointer to an integer in ubsan_use_new_style_p, which
+is forbidden by ISO C++:
+
+ubsan.c:1474:23: error: ISO C++ forbids comparison between pointer and
+integer [-fpermissive]
+       || xloc.file == '\0' || xloc.file[0] == '\xff'
+
+Backport the fix from upstream GCC to enable the build with GCC 7.
+
+Backported from:
+https://gcc.gnu.org/viewcvs/gcc?view=revision&revision=239971
+
+Signed-off-by: Joshua Lock <joshua.g.lock@intel.com>
+[Add commit log from [1]]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+[1] https://patchwork.openembedded.org/patch/138884/
+---
+ gcc/ubsan.c   | 2 +-
+ 2 files changed, 5 insertions(+), 1 deletion(-)
+
+Index: gcc-6.3.0/gcc/ubsan.c
+===================================================================
+--- gcc-6.3.0.orig/gcc/ubsan.c
++++ gcc-6.3.0/gcc/ubsan.c
+@@ -1471,7 +1471,7 @@ ubsan_use_new_style_p (location_t loc)
+ 
+   expanded_location xloc = expand_location (loc);
+   if (xloc.file == NULL || strncmp (xloc.file, "\1", 2) == 0
+-      || xloc.file == '\0' || xloc.file[0] == '\xff'
++      || xloc.file[0] == '\0' || xloc.file[0] == '\xff'
+       || xloc.file[1] == '\xff')
+     return false;
+ 
