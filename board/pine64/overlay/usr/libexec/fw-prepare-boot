@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sed -i 's/00 - 0x/00 0x13000000 0x/' /boot/boot.ini
+sed 's/#initrd_filename=.*/initrd_filename=initrd.img/' uEnv.txt
 
