@@ -67,7 +67,6 @@ config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	# Broken or unsupported architectures
 	depends on !BR2_arc
-	depends on !BR2_microblaze
 	depends on !BR2_or1k
 	# Unsupported MIPS cores
 	depends on !BR2_mips_m6250 && !BR2_mips_p6600
