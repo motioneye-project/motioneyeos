@@ -157,12 +157,18 @@ endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_INDEVS),y)
 FFMPEG_CONF_OPTS += --enable-indevs
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FFMPEG_DEPENDENCIES += alsa-lib
+endif
 else
 FFMPEG_CONF_OPTS += --disable-indevs
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_OUTDEVS),y)
 FFMPEG_CONF_OPTS += --enable-outdevs
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FFMPEG_DEPENDENCIES += alsa-lib
+endif
 else
 FFMPEG_CONF_OPTS += --disable-outdevs
 endif
