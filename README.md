@@ -12,7 +12,7 @@
 
 # Features
 
- * support for popular single-board computers (see [Supported Single-board Computers])
+ * support for popular single-board computers (see [Supported Single-board Computers](https://github.com/ccrisan/thingos/wiki/Supported-Single-board-Computers))
  * quick boots (see [Boot Process])
  * read-only partitions to minimize corruption risks (see [Partition Layout])
  * simple configuration via text files (see [Configuration Files])
@@ -27,7 +27,7 @@ Just follow the [Getting Started] guide.
 
 # Supported Boards
 
-Here's a list of [Supported Single-board Computers].
+Here's a list of [Supported Single-board Computers](https://github.com/ccrisan/thingos/wiki/Supported-Single-board-Computers).
 
 # Documentation
 
