@@ -1,0 +1,24 @@
+config BR2_PACKAGE_RHASH
+	bool "rhash"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  LibRHash is a professional, portable, thread-safe C library
+	  for computing a wide variety of hash sums, such as CRC32,
+	  MD4, MD5, SHA1, SHA256, SHA512, SHA3, AICH, ED2K, Tiger,
+	  DC++ TTH, BitTorrent BTIH, GOST R 34.11-94, RIPEMD-160,
+	  HAS-160, EDON-R, Whirlpool and Snefru.
+
+	  https://github.com/rhash/RHash
+
+if BR2_PACKAGE_RHASH
+
+config BR2_PACKAGE_RHASH_BIN
+	bool "rhash binary"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Install rhash console utility
+
+comment "rhash binary needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+endif
