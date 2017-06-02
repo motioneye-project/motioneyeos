@@ -31,4 +31,4 @@ Here's a list of [Supported Single-board Computers].
 
 # Documentation
 
-Feel free to browse the wiki articles available on the side bar.
+Feel free to browse the [wiki articles](https://github.com/ccrisan/thingos/wiki).
