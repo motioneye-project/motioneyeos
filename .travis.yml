@@ -1,1 +1,1 @@
-script: bundle exec ./build.sh
+script: ./build.sh
