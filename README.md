@@ -28,3 +28,7 @@ Just follow the [Getting Started] guide.
 # Supported Boards
 
 Here's a list of [Supported Single-board Computers].
+
+# Documentation
+
+Feel free to browse the wiki articles available on the side bar.
