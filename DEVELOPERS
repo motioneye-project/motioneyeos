@@ -80,7 +80,7 @@ F:	package/openal/
 F:	package/p7zip/
 F:	package/wine/
 
-N:	Andrey Smirnov <andrew.smirnov@gmail.com
+N:	Andrey Smirnov <andrew.smirnov@gmail.com>
 F:	package/python-decorator/
 F:	package/python-simplegeneric/
 
