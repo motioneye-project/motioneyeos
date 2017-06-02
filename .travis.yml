@@ -1,1 +1,1 @@
-script: ./build. raspberrypi all
+script: ./build.sh raspberrypi all
