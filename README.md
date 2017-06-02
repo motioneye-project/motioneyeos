@@ -1,6 +1,6 @@
 # What's thingOS?
 
-thingOS is a highly customized [Build](https://buildroot.uclibc.org) that serves as a base for IoT dedicated operating systems. If you want to turn your Raspberry PI board into something that controls your lights, doors, sprinklers or other devices, by designing your own "firmware", thingOS may be a good choice.
+thingOS is a highly customized [BuildRoot](https://buildroot.uclibc.org) that serves as a base for IoT dedicated operating systems. If you want to turn your Raspberry PI board into something that controls your lights, doors, sprinklers or other devices, by designing your own "firmware", thingOS may be a good choice.
 
 # Philosophy
 
