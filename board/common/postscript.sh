@@ -28,6 +28,15 @@ ln -s /tmp $TARGET/var/run
 ln -s /tmp $TARGET/var/spool
 ln -s /tmp $TARGET/var/tmp
 
+# cleanups
 $COMMON_DIR/cleanups.sh
 test -x $BOARD_DIR/cleanups.sh && test -x $BOARD_DIR/cleanups.sh || true
+
+# board-specific os.conf
+if [ -r $BOARD_DIR/os.conf ]; then
+    for line in $(cat $BOARD_DIR/os.conf); do
+        key=$(echo $line | cut -d '=' -f 1)
+        sed -i -r "s/$key=.*/$line/" /$TARGET/etc/os.conf
+    done
+fi
 
