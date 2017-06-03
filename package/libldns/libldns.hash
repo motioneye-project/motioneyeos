@@ -1,4 +1,4 @@
-# From http://www.nlnetlabs.nl/downloads/ldns/ldns-1.6.17.tar.gz.sha1
-sha1	4218897b3c002aadfc7280b3f40cda829e05c9a4	ldns-1.6.17.tar.gz
-# Locally calculated
-sha256	8b88e059452118e8949a2752a55ce59bc71fa5bc414103e17f5b6b06f9bcc8cd	ldns-1.6.17.tar.gz
+# From http://www.nlnetlabs.nl/downloads/ldns/ldns-1.7.0.tar.gz.sha1
+sha1 ceeeccf8a27e61a854762737f6ee02f44662c1b8  ldns-1.7.0.tar.gz
+# From http://www.nlnetlabs.nl/downloads/ldns/ldns-1.7.0.tar.gz.sha256
+sha256 c19f5b1b4fb374cfe34f4845ea11b1e0551ddc67803bd6ddd5d2a20f0997a6cc  ldns-1.7.0.tar.gz
