@@ -30,7 +30,7 @@ case "$1" in
             3
             ${data_start}
             \n
-            w" | /sbin/fdisk $disk_dev 2>&1 >/dev/null | grep -v "Device or resource busy" | grep -v '^$'
+            w" | /sbin/fdisk $disk_dev &>/dev/null
         partx -a $disk_dev &>/dev/null
         test -b $data_dev && msg_done || msg_fail
 
