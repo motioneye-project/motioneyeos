@@ -18,7 +18,7 @@
  * simple configuration via text files (see [OS Configuration](https://github.com/ccrisan/thingos/wiki/OS-Configuration))
  * over-the-air "firmware" updates (see [Firmware Updates](https://github.com/ccrisan/thingos/wiki/Firmware-Updates))
  * out-of-the box backup and restore mechanism (see [Backup/Restore](https://github.com/ccrisan/thingos/wiki/Backup-Restore))
- * high reliability (see [Reliability](https://github.com/ccrisan/thingos/wiki/Reliability)
+ * high reliability (see [Reliability](https://github.com/ccrisan/thingos/wiki/Reliability))
  * everything that [BuildRoot](https://buildroot.uclibc.org) has to offer
 
 # Getting Started
