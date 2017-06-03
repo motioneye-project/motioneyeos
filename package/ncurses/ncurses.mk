@@ -47,6 +47,7 @@ endif
 
 NCURSES_TERMINFO_FILES = \
 	a/ansi \
+	d/dumb \
 	l/linux \
 	p/putty \
 	p/putty-vt100 \
