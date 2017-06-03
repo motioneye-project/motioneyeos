@@ -14,4 +14,11 @@ ifeq ($(BR2_PACKAGE_GETTEXT),y)
 GDBM_DEPENDENCIES += gettext
 endif
 
+ifeq ($(BR2_PACKAGE_READLINE),y)
+GDBM_CONF_OPTS += --with-readline
+GDBM_DEPENDENCIES += readline
+else
+GDBM_CONF_OPTS += --without-readline
+endif
+
 $(eval $(autotools-package))
