@@ -1,1 +1,5 @@
-script: bundle exec ./build.sh
+before_install:
+  - sudo apt-get -qq update
+  - sudo apt-get install -y bc
+
+script: ./build.sh raspberrypi all > /dev/null
