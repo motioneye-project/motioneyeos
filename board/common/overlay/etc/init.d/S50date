@@ -50,7 +50,7 @@ set_current_date_ntp() {
 
 start_http() {
     msg_begin "Setting current date using http"
-    set_current_date_http
+    set_current_date_http || set_current_date_http
     test $? == 0 && msg_done "$(date)" || msg_fail
     
     msg_begin "Starting http date updater"
@@ -76,7 +76,7 @@ start_ntp() {
     rm ${ntp_conf}.tmp
 
     msg_begin "Setting current date using ntp"
-    set_current_date_ntp
+    set_current_date_ntp || set_current_date_ntp
     test $? == 0 && msg_done "$(date)" || msg_fail
 
     msg_begin "Starting ntpd"
