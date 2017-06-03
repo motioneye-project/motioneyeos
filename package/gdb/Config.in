@@ -1,11 +1,17 @@
+config BR2_PACKAGE_GDB_ARCH_SUPPORTS
+	bool
+	default y
+	depends on !BR2_bfin
+	depends on !BR2_nios2
+
 comment "gdb/gdbserver needs a toolchain w/ threads, threads debug"
-	depends on !BR2_nios2 && !BR2_bfin
+	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 
 config BR2_PACKAGE_GDB
 	bool "gdb"
 	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	depends on !BR2_nios2 && !BR2_bfin
+	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	# When the external toolchain gdbserver is copied to the
 	# target, we don't allow building a separate gdbserver. The
 	# one from the external toolchain should be used.
