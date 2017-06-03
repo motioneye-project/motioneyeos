@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-ARMADILLO_VERSION = 6.500.4
-# upstream removed tarball from
-# http://downloads.sourceforge.net/project/arma
-ARMADILLO_SITE = https://ftp.fau.de/macports/distfiles/armadillo
+ARMADILLO_VERSION = 7.900.1
+ARMADILLO_SOURCE = armadillo-$(ARMADILLO_VERSION).tar.xz
+ARMADILLO_SITE = https://downloads.sourceforge.net/project/arma
 ARMADILLO_DEPENDENCIES = clapack
 ARMADILLO_INSTALL_STAGING = YES
 ARMADILLO_LICENSE = MPL-2.0

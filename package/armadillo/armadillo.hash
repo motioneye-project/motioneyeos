@@ -1,5 +1,5 @@
 # From http://sourceforge.net/projects/arma/files/?source=navbar
-md5	a39f27197d24b3d25437fab6bb1d118f		armadillo-6.500.4.tar.gz
-sha1	68166e67521a720c72917d196b0807bc6cab8b2e	armadillo-6.500.4.tar.gz
+md5 5ef71763bd429a3d481499878351f3be  armadillo-7.900.1.tar.xz
+sha1 8118faf1c6a7a39c55a1103a1f90e85e613cc377  armadillo-7.900.1.tar.xz
 # Locally computed:
-sha256	813de85fa61ba5077ed871d801ba7070d369e7e9742002e4c11474c75ff6d1c6	armadillo-6.500.4.tar.gz
+sha256 33eec7013990b5477ccc5ad3abc68bc2326c7a7a2790014d625cfcf37c0e07d3  armadillo-7.900.1.tar.xz
