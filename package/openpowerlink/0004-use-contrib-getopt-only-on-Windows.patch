@@ -1,7 +1,7 @@
-From d05273e65657d82e44fb7bd91a8fba0ba990ff2c Mon Sep 17 00:00:00 2001
+From e7e421526b17c179d5ac33a982b180ff5f7ef7a7 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Sat, 27 May 2017 23:51:41 +0200
-Subject: [PATCH] [FIX] use contrib getopt() only on Windows
+Subject: [PATCH] use contrib getopt() only on Windows
 
 Otherwise, contrib getopt will clash with the one from the libc when
 building statically.
@@ -22,7 +22,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  4 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/apps/demo_cn_console/CMakeLists.txt b/apps/demo_cn_console/CMakeLists.txt
-index a3a80bb..5733213 100644
+index 3bb8f25..800797a 100644
 --- a/apps/demo_cn_console/CMakeLists.txt
 +++ b/apps/demo_cn_console/CMakeLists.txt
 @@ -61,7 +61,6 @@ SET(DEMO_SOURCES
@@ -42,7 +42,7 @@ index a3a80bb..5733213 100644
  ELSE()
      MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
 diff --git a/apps/demo_cn_console/src/main.c b/apps/demo_cn_console/src/main.c
-index c630586..9406473 100644
+index d64536c..f790570 100644
 --- a/apps/demo_cn_console/src/main.c
 +++ b/apps/demo_cn_console/src/main.c
 @@ -50,7 +50,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -60,18 +60,18 @@ index c630586..9406473 100644
  #include <eventlog/eventlog.h>
  
 diff --git a/apps/demo_mn_console/CMakeLists.txt b/apps/demo_mn_console/CMakeLists.txt
-index 9c3378c..a81c4b3 100644
+index 6f9c5a1..2e74529 100644
 --- a/apps/demo_mn_console/CMakeLists.txt
 +++ b/apps/demo_mn_console/CMakeLists.txt
-@@ -67,7 +67,6 @@ SET(DEMO_SOURCES
+@@ -68,7 +68,6 @@ SET(DEMO_SOURCES
      ${COMMON_SOURCE_DIR}/eventlog/eventlog.c
      ${COMMON_SOURCE_DIR}/eventlog/eventlogstring.c
      ${CONTRIB_SOURCE_DIR}/console/printlog.c
 -    ${CONTRIB_SOURCE_DIR}/getopt/getopt.c
+     ${FIRMWARE_MANAGER_SOURCES}
      )
  
- INCLUDE_DIRECTORIES(
-@@ -129,6 +128,7 @@ ENDIF()
+@@ -131,6 +130,7 @@ ENDIF()
  IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
      include(linux.cmake)
  ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
@@ -80,7 +80,7 @@ index 9c3378c..a81c4b3 100644
  ELSE()
      MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
 diff --git a/apps/demo_mn_console/src/main.c b/apps/demo_mn_console/src/main.c
-index 12d9be0..194e446 100644
+index cba747d..b766ed1 100644
 --- a/apps/demo_mn_console/src/main.c
 +++ b/apps/demo_mn_console/src/main.c
 @@ -50,7 +50,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
@@ -96,7 +96,7 @@ index 12d9be0..194e446 100644
 +
  #include <console/console.h>
  #include <eventlog/eventlog.h>
- 
+ #include <firmwaremanager/firmwaremanager.h>
 -- 
 2.9.4
 

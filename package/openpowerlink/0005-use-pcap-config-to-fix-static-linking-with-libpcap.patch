@@ -1,7 +1,7 @@
-From 406e1759dc6a4c18f6a38c3d7571aacb177487c6 Mon Sep 17 00:00:00 2001
+From 88c0af910edd156075acf04d8497f541ed377d4b Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Sun, 28 May 2017 00:25:11 +0200
-Subject: [PATCH] [FIX]: use pcap-config to fix static linking with libpcap
+Subject: [PATCH] use pcap-config to fix static linking with libpcap
 
 When linking demo_mn_console statically with pcap, the CMake build
 system forget to link with other libraries linked with libpcap
@@ -129,10 +129,10 @@ index 6ed75ee..c69dbd9 100644
  SET(ARCH_LIBRARIES ${ARCH_LIBRARIES} pthread rt)
  
 diff --git a/drivers/linux/drv_daemon_pcap/CMakeLists.txt b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
-index 2b4a2c1..98f693f 100644
+index ecceb4c..b362a34 100644
 --- a/drivers/linux/drv_daemon_pcap/CMakeLists.txt
 +++ b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
-@@ -134,7 +134,27 @@ INCLUDE_DIRECTORIES(
+@@ -140,7 +140,27 @@ INCLUDE_DIRECTORIES(
      ${CONTRIB_SOURCE_DIR}
      )
  
