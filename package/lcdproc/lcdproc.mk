@@ -10,9 +10,7 @@ LCDPROC_LICENSE = GPL-2.0+
 LCDPROC_LICENSE_FILES = COPYING
 LCDPROC_MAKE = $(MAKE1)
 
-LCDPROC_CONF_OPTS = --enable-drivers=$(BR2_PACKAGE_LCDPROC_DRIVERS) \
-	--with-ft-prefix="$(STAGING_DIR)/usr" \
-	--with-ft-exec-prefix="$(STAGING_DIR)/usr"
+LCDPROC_CONF_OPTS = --enable-drivers=$(BR2_PACKAGE_LCDPROC_DRIVERS)
 
 ifeq ($(BR2_PACKAGE_LCDPROC_MENUS),y)
 LCDPROC_CONF_OPTS += --enable-lcdproc-menus
