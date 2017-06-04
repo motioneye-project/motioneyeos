@@ -2,7 +2,7 @@
 
 
 function usage() {
-    echo "Usage: $0 [options...]" 1>&2
+    echo "Usage: $0 [options...]"
     echo ""
     echo "Available options:"
     echo "    <-i image_file> - indicates the path to the image file (e.g. -i /home/user/Download/file.img.gz)"
@@ -14,7 +14,7 @@ function usage() {
 }
 
 if [ -z "$1" ]; then
-    usage
+    usage 1>&2
 fi
 
 if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
@@ -51,13 +51,13 @@ while getopts "a:d:f:h:i:lm:n:o:p:s:w" o; do
             DNS=${S_IP[2]}
             ;;
         *)
-            usage
+            usage 1>&2
             ;;
     esac
 done
 
 if [ -z "$SDCARD_DEV" ] || [ -z "$DISK_IMG" ]; then
-    usage
+    usage 1>&2
 fi
 
 function cleanup {
