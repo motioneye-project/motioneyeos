@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GRAPHITE2_VERSION = 1.3.9
+GRAPHITE2_VERSION = 1.3.10
 GRAPHITE2_SOURCE = graphite2-$(GRAPHITE2_VERSION).tgz
 GRAPHITE2_SITE = http://downloads.sourceforge.net/project/silgraphite/graphite2
 GRAPHITE2_INSTALL_STAGING = YES
