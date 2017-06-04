@@ -11,18 +11,21 @@ flags passed by Buildroot.
 
 [Romain:
  - rebase on top of 3.0.1 release]
+[Bernd:
+ - rebase on top of 3.0.5 release]
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
- Make.defaults | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ Make.defaults | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
 diff --git a/Make.defaults b/Make.defaults
-index 169273d..b0ddea0 100644
+index 51bd7d8..7d7e8e7 100755
 --- a/Make.defaults
 +++ b/Make.defaults
-@@ -80,14 +80,14 @@ endif
+@@ -85,14 +85,14 @@ OBJDIR       := $(TOPDIR)/$(ARCH)
  #
  
  # Arch-specific compilation flags
@@ -40,7 +43,7 @@ index 169273d..b0ddea0 100644
    ifeq ($(HOSTARCH),x86_64)
      ARCH3264 = -m32
    endif
-@@ -103,10 +103,10 @@ ifeq ($(ARCH),x86_64)
+@@ -108,17 +108,17 @@ ifeq ($(ARCH),x86_64)
                                   && [ $(GCCMINOR) -ge "7" ] ) ) \
                            && echo 1)
    ifeq ($(GCCNEWENOUGH),1)
@@ -48,12 +51,20 @@ index 169273d..b0ddea0 100644
 +    override CPPFLAGS += -DGNU_EFI_USE_MS_ABI -maccumulate-outgoing-args --std=c11
    endif
  
--  CFLAGS += -mno-red-zone -mno-mmx -mno-sse
-+  override CFLAGS += -mno-red-zone -mno-mmx -mno-sse
+-  CFLAGS += -mno-red-zone
++  override CFLAGS += -mno-red-zone
    ifeq ($(HOSTARCH),ia32)
      ARCH3264 = -m64
    endif
-@@ -127,7 +127,7 @@ export LIBGCC=$(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
+ endif
+ 
+ ifeq ($(ARCH),mips64el)
+-  CFLAGS += -march=mips64r2
++  override CFLAGS += -march=mips64r2
+   ARCH3264 = -mabi=64
+ endif
+ 
+@@ -139,7 +139,7 @@ export LIBGCC=$(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
  endif
  
  ifeq ($(ARCH),arm)
@@ -62,19 +73,24 @@ index 169273d..b0ddea0 100644
  endif
  
  # Generic compilation flags
-@@ -135,10 +135,10 @@ INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -I$(TOPDIR)/inc/$(ARCH) \
-            -I$(TOPDIR)/inc/protocol
+@@ -149,7 +149,7 @@ INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -I$(TOPDIR)/inc/$(ARCH) \
+ # Only enable -fpic for non MinGW compilers (unneeded on MinGW)
+ GCCMACHINE := $(shell $(CC) -dumpmachine)
+ ifneq (mingw32,$(findstring mingw32, $(GCCMACHINE)))
+-  CFLAGS += -fpic
++  override CFLAGS += -fpic
+ endif
  
  ifeq (FreeBSD, $(findstring FreeBSD, $(OS)))
--CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
-+override CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
+@@ -157,7 +157,7 @@ CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
+            -fshort-wchar -fno-strict-aliasing \
             -ffreestanding -fno-stack-protector
  else
--CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
-+override CFLAGS  += $(ARCH3264) -O2 -fpic -Wall -fshort-wchar -fno-strict-aliasing \
-            -fno-merge-constants -ffreestanding -fno-stack-protector       \
+-CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
++override CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
+            -fshort-wchar -fno-strict-aliasing \
+            -fno-merge-constants -ffreestanding -fno-stack-protector \
             -fno-stack-check
- endif
 -- 
-1.9.3
+2.11.0
 

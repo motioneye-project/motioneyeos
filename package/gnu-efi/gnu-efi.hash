@@ -1,3 +1,5 @@
 # From http://sourceforge.net/projects/gnu-efi/files
-md5 c4099c443b6b0c2b04dedc33e7814ec0 gnu-efi-3.0.1.tar.bz2
-sha1 07eea4d72f7ecb7229aaa77ddd411de5673c67b6 gnu-efi-3.0.1.tar.bz2
+md5 1f719c9c135778aa6b087b89a1cc2423 gnu-efi-3.0.5.tar.bz2
+sha1 183dadda9de78a44bd2343ffbf7869458ff5372a gnu-efi-3.0.5.tar.bz2
+# Locally computed
+sha256 bd8fcd5914f18fc0e4ba948ab03b00013e528504f529c60739b748f6ef130b22 gnu-efi-3.0.5.tar.bz2
