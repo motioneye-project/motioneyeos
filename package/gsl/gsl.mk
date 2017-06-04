@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GSL_VERSION = 1.16
+GSL_VERSION = 2.3
 GSL_SITE = $(BR2_GNU_MIRROR)/gsl
 GSL_INSTALL_STAGING = YES
 GSL_LICENSE = GPL-3.0
