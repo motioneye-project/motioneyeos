@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-EXIV2_VERSION = 0.26
-EXIV2_SITE = http://www.exiv2.org/builds
-EXIV2_SOURCE = exiv2-$(EXIV2_VERSION)-trunk.tar.gz
+EXIV2_VERSION = 910f3507795e1930ae216c9febee0bf9a88e99c0
+EXIV2_SITE = $(call github,Exiv2,exiv2,$(EXIV2_VERSION))
 EXIV2_INSTALL_STAGING = YES
 
 EXIV2_CONF_OPTS += -DEXIV2_ENABLE_BUILD_SAMPLES=OFF
@@ -45,6 +44,9 @@ endif
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
 EXIV2_CONF_OPTS += -DEXIV2_ENABLE_NLS=ON
+ifeq ($(BR2_PACKAGE_GETTEXT),y)
+EXIV2_DEPENDENCIES += gettext
+endif
 else
 EXIV2_CONF_OPTS += -DEXIV2_ENABLE_NLS=OFF
 endif
