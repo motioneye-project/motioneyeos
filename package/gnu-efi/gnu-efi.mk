@@ -20,6 +20,10 @@ ifeq ($(BR2_i386),y)
 GNU_EFI_PLATFORM = ia32
 else ifeq ($(BR2_x86_64),y)
 GNU_EFI_PLATFORM = x86_64
+else ifeq ($(BR2_arm)$(BR2_armeb),y)
+GNU_EFI_PLATFORM = arm
+else ifeq ($(BR2_aarch64)$(BR2_aarch64_be),y)
+GNU_EFI_PLATFORM = aarch64
 endif
 
 define GNU_EFI_BUILD_CMDS
