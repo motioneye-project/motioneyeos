@@ -13,17 +13,17 @@
 # Features
 
  * support for popular single-board computers (see [Supported Single-board Computers](https://github.com/ccrisan/thingos/wiki/Supported-Single-board-Computers))
- * quick boots (see [Boot Process])
- * read-only partitions to minimize corruption risks (see [Partition Layout])
- * simple configuration via text files (see [Configuration Files])
- * over-the-air "firmware" updates (see [Firmware Updates])
- * out-of-the box backup and restore mechanism (see [Backup/Restore])
- * high reliability (see [Watchdogs])
+ * quick boots (see [Boot Process](https://github.com/ccrisan/thingos/wiki/Boot-Process))
+ * read-only partitions to minimize corruption risks (see [Partitions](https://github.com/ccrisan/thingos/wiki/Partitions))
+ * simple configuration via text files (see [OS Configuration](https://github.com/ccrisan/thingos/wiki/OS-Configuration))
+ * over-the-air "firmware" updates (see [Firmware Updates](https://github.com/ccrisan/thingos/wiki/Firmware-Updates))
+ * out-of-the box backup and restore mechanism (see [Backup/Restore](https://github.com/ccrisan/thingos/wiki/Backup-Restore))
+ * high reliability (see [Reliability](https://github.com/ccrisan/thingos/wiki/Reliability))
  * everything that [BuildRoot](https://buildroot.uclibc.org) has to offer
 
 # Getting Started
 
-Just follow the [Getting Started] guide.
+Just follow the [Getting Started](https://github.com/ccrisan/thingos/wiki/Getting-Started) guide.
 
 # Supported Boards
 
