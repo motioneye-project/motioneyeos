@@ -1,0 +1,34 @@
+From fa4d8468907aa41cb08964e82eb3c7d82a7270bf Mon Sep 17 00:00:00 2001
+From: Martin Bark <martin@barkynet.com>
+Date: Sun, 4 Jun 2017 23:11:54 +0100
+Subject: [PATCH] add missing stdarg includes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes error when using uclibc
+../deps/v8/src/wasm/wasm-result.h:118:70: error: ‘va_list’ has not been declared
+
+This has been fixed upstream in v8, see
+https://codereview.chromium.org/2780913002
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ deps/v8/src/wasm/wasm-result.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/deps/v8/src/wasm/wasm-result.h b/deps/v8/src/wasm/wasm-result.h
+index 004ac22..eac307c 100644
+--- a/deps/v8/src/wasm/wasm-result.h
++++ b/deps/v8/src/wasm/wasm-result.h
+@@ -5,6 +5,7 @@
+ #ifndef V8_WASM_RESULT_H_
+ #define V8_WASM_RESULT_H_
+ 
++#include <cstdarg>
+ #include <memory>
+ 
+ #include "src/base/compiler-specific.h"
+-- 
+2.7.4
+

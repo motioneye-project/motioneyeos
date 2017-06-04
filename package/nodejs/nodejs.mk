@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NODEJS_VERSION = 7.10.0
+NODEJS_VERSION = 8.0.0
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs zlib \
