@@ -19,6 +19,9 @@ SYSTEMD_DEPENDENCIES = \
 SYSTEMD_PROVIDES = udev
 SYSTEMD_AUTORECONF = YES
 
+SYSTEMD_PATCH = \
+	https://github.com/systemd/systemd/commit/a924f43f30f9c4acaf70618dd2a055f8b0f166be.patch
+
 # Make sure that systemd will always be built after busybox so that we have
 # a consistent init setup between two builds
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
