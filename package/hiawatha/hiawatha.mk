@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HIAWATHA_VERSION = 10.5
-HIAWATHA_SITE = http://www.hiawatha-webserver.org/files
+HIAWATHA_VERSION = 10.6
+HIAWATHA_SITE = https://www.hiawatha-webserver.org/files
 HIAWATHA_DEPENDENCIES = zlib
 HIAWATHA_LICENSE = GPL-2.0
 HIAWATHA_LICENSE_FILES = LICENSE
