@@ -1,4 +1,4 @@
-# From https://launchpad.net/granite/0.4/0.4.0.1/+download/granite-0.4.0.1.tar.xz/+md5
-md5	db41150ca6e77162392362686e848086	granite-0.4.0.1.tar.xz
+# From https://launchpad.net/granite/0.4/0.4.1/+download/granite-0.4.1.tar.xz/+md5
+md5 b1002c0488bb9ade0ef89730c4f84393 granite-0.4.1.tar.xz
 # Calculated based on the hash above
-sha256	95a142a8befeedc35a089d638e759b657905508dc3007036d6c1fa3efe94c4dd	granite-0.4.0.1.tar.xz
+sha256 8bb411523e6cd5685c928dbfe08893892189cedf9fad5f537aa76182032cf09c  granite-0.4.1.tar.xz
