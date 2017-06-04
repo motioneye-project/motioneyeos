@@ -183,6 +183,7 @@ F:	package/ffmpeg/
 F:	package/ghostscript/
 F:	package/giflib/
 F:	package/glmark2/
+F:	package/hdparm/
 F:	package/jsoncpp/
 F:	package/kodi*
 F:	package/lame/
