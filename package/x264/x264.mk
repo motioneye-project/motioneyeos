@@ -10,7 +10,7 @@ X264_LICENSE = GPL-2.0+
 X264_DEPENDENCIES = host-pkgconf
 X264_LICENSE_FILES = COPYING
 X264_INSTALL_STAGING = YES
-X264_CONF_OPTS = --disable-avs
+X264_CONF_OPTS = --disable-avs --disable-lavf --disable-swscale
 
 ifeq ($(BR2_i386)$(BR2_x86_64),y)
 # yasm needed for assembly files
