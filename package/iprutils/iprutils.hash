@@ -1,2 +1,5 @@
+# From https://sourceforge.net/projects/iprdd/files/iprutils%20for%202.6%20kernels/2.4.14/
+md5 8e5a4fb399f719882f22a6a540afeb0b  iprutils-2.4.14.1.tar.gz
+sha1 7e14b8c0b8909ca2fc50b85848de422cd01ffc9b  iprutils-2.4.14.1.tar.gz
 # Locally computed:
-sha256	99f28418fec505c4dfd532270569d4902a3792dcb2f08710b896f4e7bc0211e0	iprutils-2.4.10.1.tar.gz
+sha256 581403fbca17d4858383f8a6961c0e4aecb3f0f214a3680924238a94b9dc3ddf  iprutils-2.4.14.1.tar.gz
