@@ -18,4 +18,11 @@ endif
 
 LCDPROC_DEPENDENCIES = freetype ncurses zlib
 
+ifeq ($(BR2_PACKAGE_LIBPNG),y)
+LCDPROC_DEPENDENCIES += libpng
+LCDPROC_CONF_OPTS += --enable-libpng
+else
+LCDPROC_CONF_OPTS += --disable-libpng
+endif
+
 $(eval $(autotools-package))
