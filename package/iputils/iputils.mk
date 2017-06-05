@@ -7,11 +7,11 @@
 # The original upstream was forked to the github repository in 2014 to
 # pull fixes from other distribution and centralize the changes after
 # the upstream seemed to have gone dormant.  The fork contains the
-# latest changes including msul support, removing a libsysfs dependency
+# latest changes including musl support, removing a libsysfs dependency
 # and IPv6 updates.
 # http://www.spinics.net/lists/netdev/msg279881.html
 
-IPUTILS_VERSION = 55828d1fef3fed7f07abcbf7be9282a9662e78c7
+IPUTILS_VERSION = s20161105
 IPUTILS_SITE = $(call github,iputils,iputils,$(IPUTILS_VERSION))
 IPUTILS_LICENSE = GPL-2.0+, BSD-3-Clause, BSD-4-Clause
 # Only includes a license file for BSD
