@@ -7,7 +7,7 @@ config BR2_PACKAGE_PYTHON_PYICU
 	help
 	  Python extension wrapping the ICU C++ API.
 
-	  http://pyicu.osafoundation.org/
+	  https://github.com/ovalhub/pyicu
 
 comment "python-pyicu needs a toolchain w/ C++, gcc >= 4.8"
 	depends on !BR2_BINFMT_FLAT
