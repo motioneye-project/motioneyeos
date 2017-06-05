@@ -4,4 +4,4 @@ qemu-system-mips -M malta -cpu mips32r6-generic -kernel output/images/vmlinux -d
 
 The login prompt will appear in the terminal that started Qemu.
 
-Tested with QEMU 2.6.0
+Tested with QEMU 2.9.0

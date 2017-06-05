@@ -4,7 +4,4 @@ Run the emulation with:
 
 The login prompt will appear in the terminal that started Qemu.
 
-Tested with QEMU 2.6.0
-
-Might work with 2.6.0 by changing the -cpu entry to MIPS64R6-generic
-since the naming was updated and the old name removed in 2.7.0
+Tested with QEMU 2.9.0

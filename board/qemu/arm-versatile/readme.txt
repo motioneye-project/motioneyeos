@@ -9,4 +9,4 @@ Or for the noMMU emulation:
 The login prompt will appear in the terminal that started Qemu. The
 graphical window is the framebuffer.
 
-Tested with QEMU 2.5.0
+Tested with QEMU 2.9.0
