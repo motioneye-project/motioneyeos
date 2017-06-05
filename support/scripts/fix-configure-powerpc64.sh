@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # This is a script to find, and correct, a problem with old versions of
 # configure that affect powerpc64 and powerpc64le.
