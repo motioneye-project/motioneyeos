@@ -50,6 +50,13 @@ config BR2_GDB_VERSION_7_11
 config BR2_GDB_VERSION_7_12
 	bool "gdb 7.12.x"
 
+config BR2_GDB_VERSION_8_0
+	bool "gdb 8.0.x"
+	# Needs a C++11 compiler
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
 endchoice
 
 endif
@@ -62,4 +69,5 @@ config BR2_GDB_VERSION
 	default "7.10.1"   if BR2_GDB_VERSION_7_10
 	default "7.11.1"   if BR2_GDB_VERSION_7_11 || !BR2_PACKAGE_HOST_GDB
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
+	default "8.0"      if BR2_GDB_VERSION_8_0
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
