@@ -201,7 +201,6 @@ def _set_os_settings(s):
 
 def _get_motioneye_settings():
     port = 80
-    base_path = ''
     motion_binary = '/usr/bin/motion'
     debug = False
     motion_keep_alive = False
@@ -226,9 +225,6 @@ def _get_motioneye_settings():
                 if name == 'port':
                     port = int(value)
 
-                elif name == 'base_path':
-                    base_path = value.strip()
-
                 elif name == 'motion_binary':
                     motion_binary = value
                     
@@ -240,13 +236,12 @@ def _get_motioneye_settings():
 
     s = {
         'port': port,
-        'basePath': base_path,
         'motionBinary': motion_binary,
         'motionKeepAlive': motion_keep_alive,
         'debug': debug
     }
 
-    logging.debug(('motioneye settings: port=%(port)s, base_path=%(basePath)s, motion_binary=%(motionBinary)s, ' +
+    logging.debug(('motioneye settings: port=%(port)s, motion_binary=%(motionBinary)s, ' +
             'motion_keep_alive=%(motionKeepAlive)s, debug=%(debug)s') % s)
 
     return s
@@ -255,13 +250,12 @@ def _get_motioneye_settings():
 def _set_motioneye_settings(s):
     s = dict(s)
     s.setdefault('port', 80)
-    s.setdefault('basePath', '')
     s.setdefault('motionBinary', '/usr/bin/motion')
     debug = s.setdefault('debug', False) # value needed later
     s.setdefault('motion_keep_alive', False)
     
     logging.debug('writing motioneye settings to %s: ' % MOTIONEYE_CONF +
-            ('port=%(port)s, base_path=%(basePath)s, motion_binary=%(motionBinary)s, ' +
+            ('port=%(port)s, motion_binary=%(motionBinary)s, ' +
             'motion_keep_alive=%(motionKeepAlive)s, debug=%(debug)s') % s)
 
     lines = []
@@ -285,14 +279,6 @@ def _set_motioneye_settings(s):
             if name == 'port':
                 lines[i] = 'port %s' % s.pop('port')
     
-            elif name == 'base_path':
-                base_path = s.pop('basePath')
-                if base_path:
-                    lines[i] = 'base_path %s' % base_path
-                
-                else:
-                    lines[i] = None
-
             elif name == 'motion_binary':
                 lines[i] = 'motion_binary %s' % s.pop('motionBinary')
     
@@ -306,9 +292,6 @@ def _set_motioneye_settings(s):
 
     if 'port' in s:
         lines.append('port %s' % s.pop('port'))
-
-    if s.get('basePath'):
-        lines.append('base_path %s' % s.pop('basePath'))
 
     if 'motionBinary' in s:
         lines.append('motion_binary %s' % s.pop('motionBinary'))
@@ -442,7 +425,7 @@ def dateTimeout():
         'type': 'number',
         'min': 1,
         'max': 3600,
-        'unit': 's',
+        'unit': 'seconds',
         'section': 'expertSettings',
         'advanced': True,
         'reboot': True,
@@ -461,7 +444,7 @@ def dateInterval():
         'type': 'number',
         'min': 10,
         'max': 86400,
-        'unit': 's',
+        'unit': 'seconds',
         'section': 'expertSettings',
         'advanced': True,
         'reboot': True,
@@ -501,21 +484,6 @@ def port():
 
 
 @additional_config
-def basePath():
-    return {
-        'label': 'Base Path',
-        'description': 'sets a base path of all the URIs used by motionEye (useful when running behind a reverse proxy exposing the motionEye UI at /cams, for example)',
-        'type': 'str',
-        'section': 'expertSettings',
-        'advanced': True,
-        'reboot': True,
-        'get': _get_motioneye_settings,
-        'set': _set_motioneye_settings,
-        'get_set_dict': True
-    }
-
-
-@additional_config
 def motionBinary():
     return {
         'label': 'Motion Binary',
@@ -540,6 +508,7 @@ def motionKeepAlive():
         'section': 'expertSettings',
         'advanced': True,
         'reboot': True,
+        'unit': 'seconds',
         'get': _get_motioneye_settings,
         'set': _set_motioneye_settings,
         'get_set_dict': True
