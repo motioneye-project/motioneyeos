@@ -6,6 +6,8 @@ Subject: [PATCH] remove checking erlang version
 Without this patch, the configure will try to run erlang to simply check
 if the version is supported by ejabberd. Instead, we do this test
 statically.
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
 ---
  configure.ac | 2 --
  1 file changed, 2 deletions(-)

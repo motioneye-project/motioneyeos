@@ -4,14 +4,16 @@
 #
 ################################################################################
 
-EJABBERD_VERSION = 16.01
+EJABBERD_VERSION = 17.04
 EJABBERD_SOURCE = ejabberd-$(EJABBERD_VERSION).tgz
 EJABBERD_SITE = https://www.process-one.net/downloads/ejabberd/$(EJABBERD_VERSION)
 EJABBERD_LICENSE = GPL-2.0+ with OpenSSL exception
 EJABBERD_LICENSE_FILES = COPYING
 EJABBERD_DEPENDENCIES = getent openssl host-erlang-lager erlang-lager \
 	erlang-p1-cache-tab erlang-p1-iconv erlang-p1-sip \
-	erlang-p1-stringprep erlang-p1-xml erlang-p1-yaml erlang-p1-zlib
+	erlang-p1-stringprep erlang-p1-stun erlang-p1-tls \
+	erlang-p1-utils erlang-p1-xml erlang-p1-xmpp erlang-p1-yaml \
+	erlang-p1-zlib host-erlang-p1-utils host-erlang-p1-xmpp
 
 # 0001-remove-make-targets-for-deps.patch updates Makefile.in
 EJABBERD_USE_AUTOCONF = YES

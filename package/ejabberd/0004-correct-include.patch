@@ -6,6 +6,8 @@ Subject: [PATCH] correct include
 This part of the code was moved into it's own project and was packaged
 separately by me. To make the build process work, this small fix is
 necessary.
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
 ---
  src/mod_sip.erl           | 2 +-
  src/mod_sip_proxy.erl     | 2 +-
