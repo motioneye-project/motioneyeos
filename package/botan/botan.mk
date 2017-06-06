@@ -43,6 +43,12 @@ BOTAN_DEPENDENCIES += zlib
 BOTAN_CONF_OPTS += --with-zlib
 endif
 
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
+BOTAN_CONF_OPTS += --enable-altivec
+else
+BOTAN_CONF_OPTS += --disable-altivec
+endif
+
 define BOTAN_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_MAKE_ENV) ./configure.py $(BOTAN_CONF_OPTS))
 endef
