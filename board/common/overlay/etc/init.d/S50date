@@ -40,6 +40,7 @@ source $conf
 
 set_current_date_http() {
     date_str=$(curl -v -s -m $date_timeout -X GET http://$date_host 2>&1 | grep Date | sed -e 's/< Date: //')
+    test -z "$date_str" && return 1
     date -u -D "%a, %d %b %Y %H:%M:%S" -s "$date_str" > /dev/null
     return $?
 }
@@ -50,7 +51,7 @@ set_current_date_ntp() {
 
 start_http() {
     msg_begin "Setting current date using http"
-    set_current_date_http
+    set_current_date_http || set_current_date_http
     test $? == 0 && msg_done "$(date)" || msg_fail
     
     msg_begin "Starting http date updater"
@@ -76,7 +77,7 @@ start_ntp() {
     rm ${ntp_conf}.tmp
 
     msg_begin "Setting current date using ntp"
-    set_current_date_ntp
+    set_current_date_ntp || set_current_date_ntp
     test $? == 0 && msg_done "$(date)" || msg_fail
 
     msg_begin "Starting ntpd"
