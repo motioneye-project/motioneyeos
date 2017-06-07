@@ -17,4 +17,16 @@ ifeq ($(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6),)
 TSLIB_CONF_OPTS += --disable-tools
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+TSLIB_CONF_OPTS += \
+	--enable-input=static \
+	--enable-linear=static \
+	--enable-median=static \
+	--enable-pthres=static \
+	--enable-iir=static \
+	--enable-dejitter=static \
+	--enable-debounce=static \
+	--enable-skip=static
+endif
+
 $(eval $(autotools-package))
