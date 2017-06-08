@@ -92,9 +92,9 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSUBIFS)	+= mkfs.ubifs
 MTD_TARGETS_$(BR2_PACKAGE_MTD_INTEGCK)		+= integck
 
 define MTD_INSTALL_TARGET_CMDS
-	for f in $(MTD_TARGETS_y) ; do \
-		$(INSTALL) -D -m 0755 $(@D)/$$f $(TARGET_DIR)/usr/sbin/$${f##*/} ; \
-	done
+	$(foreach f,$(MTD_TARGETS_y), \
+		$(INSTALL) -D -m 0755 $(@D)/$(f) $(TARGET_DIR)/usr/sbin/$(notdir $(f))
+	)
 endef
 
 $(eval $(autotools-package))
