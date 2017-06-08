@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-AUTOFS_VERSION = 5.1.2
+AUTOFS_VERSION = 5.1.3
 AUTOFS_SOURCE = autofs-$(AUTOFS_VERSION).tar.xz
 AUTOFS_SITE = $(BR2_KERNEL_MIRROR)/linux/daemons/autofs/v5
 AUTOFS_LICENSE = GPL-2.0+
 AUTOFS_LICENSE_FILES = COPYING COPYRIGHT
 AUTOFS_DEPENDENCIES = host-flex host-bison
-# For 0002-autofs-configure-check-for-clock_gettime-in-librt.patch and
-# 0003-configure-add-cache-variable-for-Linux-proc-filesyst.patch.
-AUTOFS_AUTORECONF = YES
 
 # autofs looks on the build machine for the path of modprobe, so tell
 # it explicitly where it will be located on the target.
