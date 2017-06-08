@@ -6,6 +6,25 @@ config BR2_PACKAGE_MTD
 	  http://www.linux-mtd.infradead.org/
 
 if BR2_PACKAGE_MTD
+
+# The three hidden options below match mtd configure script options
+# --enable-jffs, --enable-ubifs and --enable-tests.
+
+config BR2_PACKAGE_MTD_JFFS_UTILS
+	bool
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_ZLIB
+
+config BR2_PACKAGE_MTD_UBIFS_UTILS
+	bool
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_ZLIB
+
+config BR2_PACKAGE_MTD_TESTS
+	bool
+
 comment "MTD tools selection"
 
 config BR2_PACKAGE_MTD_DOCFDISK
@@ -50,18 +69,15 @@ config BR2_PACKAGE_MTD_FTL_FORMAT
 
 config BR2_PACKAGE_MTD_JFFS2DUMP
 	bool "jffs2dump"
+	select BR2_PACKAGE_MTD_JFFS_UTILS
 
 config BR2_PACKAGE_MTD_MKFSJFFS2
 	bool "mkfs.jffs2"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_MTD_JFFS_UTILS
 
 config BR2_PACKAGE_MTD_MKFSUBIFS
 	bool "mkfs.ubifs"
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_LZO
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_MTD_UBIFS_UTILS
 
 config BR2_PACKAGE_MTD_MTD_DEBUG
 	bool "mtd_debug"
@@ -102,6 +118,7 @@ config BR2_PACKAGE_MTD_SERVE_IMAGE
 
 config BR2_PACKAGE_MTD_SUMTOOL
 	bool "sumtool"
+	select BR2_PACKAGE_MTD_JFFS_UTILS
 
 config BR2_PACKAGE_MTD_MTDINFO
 	bool "mtdinfo"
@@ -158,6 +175,7 @@ config BR2_PACKAGE_MTD_UBIBLOCK
 config BR2_PACKAGE_MTD_INTEGCK
 	bool "integck"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_MTD_TESTS
 	help
 	  Install the integck test program.
 
