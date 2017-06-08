@@ -273,12 +273,8 @@ comment "icu support needs a toolchain w/ gcc >= 4.8, host gcc >= 4.8"
 
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"
-	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_TSLIB
 	help
 	  This options enables the Tslib plugin
-
-comment "tslib support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
 
 endif
