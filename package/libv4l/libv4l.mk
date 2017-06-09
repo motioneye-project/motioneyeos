@@ -13,6 +13,13 @@ LIBV4L_CONF_OPTS = --disable-doxygen-doc
 
 # 0003-utils-qv4l2-Makefile.am-link-with-librt.patch, host-gettext
 # needed for autoreconf to work
+# below patches requires autoreconf:
+# 0004-configure.ac-clarify-configure-summary.patch
+# 0005-configure.ac-revisit-v4l2-ctl-compliance-using-libv4.patch
+# 0006-configure.ac-revisit-disable-libv4l-to-disable-dyn-l.patch
+# 0007-configure.ac-add-disable-libv4l-option.patch
+# 0008-configure.ac-fix-build-of-v4l-utils-on-uclinux.patch
+# 0009-configure.ac-add-USE_LIBV4L-to-summary.patch
 LIBV4L_AUTORECONF = YES
 LIBV4L_DEPENDENCIES += host-gettext
 
