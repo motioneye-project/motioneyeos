@@ -253,10 +253,12 @@ endif
 
 ifeq ($(BR2_USE_MMU),y)
 define UCLIBC_MMU_CONFIG
+	$(call KCONFIG_ENABLE_OPT,ARCH_HAS_MMU,$(@D)/.config)
 	$(call KCONFIG_ENABLE_OPT,ARCH_USE_MMU,$(@D)/.config)
 endef
 else
 define UCLIBC_MMU_CONFIG
+	$(call KCONFIG_DISABLE_OPT,ARCH_HAS_MMU,$(@D)/.config)
 	$(call KCONFIG_DISABLE_OPT,ARCH_USE_MMU,$(@D)/.config)
 endef
 endif
