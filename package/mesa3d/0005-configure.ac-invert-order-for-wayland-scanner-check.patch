@@ -9,17 +9,20 @@ non-executable and wrong scanner.
 Try searching the PATH first, and if that fails fall back into
 pkg-config.
 
+[Vincent: tweak patch for 17.1.1 version]
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 ---
  configure.ac | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 5f30ae8..461792e 100644
+index 2c7e636..0198d52 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2025,11 +2025,11 @@ if test "x$with_egl_platforms" != "x" -a "x$enable_egl" != xyes; then
-     AC_MSG_ERROR([cannot build egl state tracker without EGL library])
+@@ -2174,11 +2174,11 @@ if test "x$with_platforms" != xauto; then
+     with_egl_platforms=$with_platforms
  fi
  
 -PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
@@ -27,10 +30,10 @@ index 5f30ae8..461792e 100644
 -        WAYLAND_SCANNER='')
 +AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
  if test "x$WAYLAND_SCANNER" = x; then
--    AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
-+    PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
-+            WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
-+            WAYLAND_SCANNER='')
+-    AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
++	PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
++		WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
++		WAYLAND_SCANNER='')
  fi
  
  # Do per-EGL platform setups and checks
