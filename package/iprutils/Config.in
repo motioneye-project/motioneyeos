@@ -5,6 +5,7 @@ config BR2_PACKAGE_IPRUTILS
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBSYSFS
 	select BR2_PACKAGE_PCIUTILS
+	select BR2_PACKAGE_ZLIB
 	help
 	  System utilities for IBM Power RAID devices
 
