@@ -189,6 +189,13 @@ else
 MESA3D_CONF_OPTS += --disable-xvmc
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+MESA3D_CONF_OPTS += --enable-libunwind
+MESA3D_DEPENDENCIES += libunwind
+else
+MESA3D_CONF_OPTS += --disable-libunwind
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
 MESA3D_DEPENDENCIES += libvdpau
 MESA3D_CONF_OPTS += --enable-vdpau
