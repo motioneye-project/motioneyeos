@@ -1,0 +1,35 @@
+From adadadc151fa8232ecd78649a10496661b98e40d Mon Sep 17 00:00:00 2001
+From: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Date: Thu, 1 Jun 2017 12:13:18 +0200
+Subject: util/rand_xor: add missing include statements
+
+Fixes for:
+
+src/util/rand_xor.c:60:13: error: implicit declaration of function 'open' [-Werror=implicit-function-declaration]
+    int fd = open("/dev/urandom", O_RDONLY);
+             ^~~~
+src/util/rand_xor.c:60:34: error: 'O_RDONLY' undeclared (first use in this function)
+    int fd = open("/dev/urandom", O_RDONLY);
+                                  ^~~~~~~~
+
+Signed-off-by: Nicolas Dechesne <nicolas.dechesne@linaro.org>
+Reviewed-by: Eric Engestrom <eric.engestrom@imgtec.com>
+[backported from upstream master branch:
+ https://cgit.freedesktop.org/mesa/mesa/commit/?id=adadadc151fa8232ecd78649a10496661b98e40d ]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff --git a/src/util/rand_xor.c b/src/util/rand_xor.c
+index de05fa6..de04bbc 100644
+--- a/src/util/rand_xor.c
++++ b/src/util/rand_xor.c
+@@ -25,6 +25,7 @@
+ #if defined(__linux__)
+ #include <sys/file.h>
+ #include <unistd.h>
++#include <fcntl.h>
+ #else
+ #include <time.h>
+ #endif
+-- 
+cgit v0.10.2
+
