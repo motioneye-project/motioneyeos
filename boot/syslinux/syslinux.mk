@@ -13,7 +13,8 @@ SYSLINUX_LICENSE_FILES = COPYING
 
 SYSLINUX_INSTALL_IMAGES = YES
 
-SYSLINUX_DEPENDENCIES = host-nasm host-upx util-linux
+# host-util-linux needed to provide libuuid when building host tools
+SYSLINUX_DEPENDENCIES = host-nasm host-upx util-linux host-util-linux
 
 ifeq ($(BR2_TARGET_SYSLINUX_LEGACY_BIOS),y)
 SYSLINUX_TARGET += bios
