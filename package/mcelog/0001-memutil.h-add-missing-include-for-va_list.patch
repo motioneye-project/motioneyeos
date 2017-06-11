@@ -1,0 +1,31 @@
+From 36aad32283eae5b47a05e3adfa3f5f6a7b1b55c0 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 11 Jun 2017 10:02:39 +0200
+Subject: [PATCH] memutil.h: add missing include for va_list
+
+Fixes compile error with uclibc-ng:
+
+In file included from mcelog.c:51:0:
+memutil.h:4:48: error: unknown type name 'va_list'
+ int xvasprintf(char **ret, const char *format, va_list ap);
+
+Patch sent upstream: https://github.com/andikleen/mcelog/pull/54
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ memutil.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/memutil.h b/memutil.h
+index 81028e9..dbed7fa 100644
+--- a/memutil.h
++++ b/memutil.h
+@@ -1,4 +1,5 @@
+ #include <stdlib.h>
++#include <stdarg.h>
+ 
+ int xasprintf(char **strp, const char *fmt, ...);
+ int xvasprintf(char **ret, const char *format, va_list ap);
+-- 
+2.11.0
+
