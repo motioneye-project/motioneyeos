@@ -1,0 +1,44 @@
+From 5c5e6d0f469c8b4384bbe5d6c8f78069c182daf0 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 9 Apr 2017 19:56:55 +0200
+Subject: [PATCH] override CPPFLAGS, CXXFLAGS and CFLAGS in Makefile
+
+When CPPFLAGS is passed on the command line, include paths for the
+bundled libraries are lost. Since the hand written Makefile want
+to use them unconditionally, we need to use the key word "override"
+before CPPFLAGS.
+
+Do the same for CXXFLAGS and CFLAGS otherwise -fPIC is lost.
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ source/Irrlicht/Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/source/Irrlicht/Makefile b/source/Irrlicht/Makefile
+index 0712b07..b334e9c 100644
+--- a/source/Irrlicht/Makefile
++++ b/source/Irrlicht/Makefile
+@@ -62,7 +62,7 @@ LINKOBJ = $(IRRMESHOBJ) $(IRROBJ) $(IRRPARTICLEOBJ) $(IRRANIMOBJ) \
+ ###############
+ #Compiler flags
+ CXXINCS = -I../../include -Izlib -Ijpeglib -Ilibpng
+-CPPFLAGS += $(CXXINCS) -DIRRLICHT_EXPORTS=1
++override CPPFLAGS += $(CXXINCS) -DIRRLICHT_EXPORTS=1
+ CXXFLAGS += -Wall -pipe -fno-exceptions -fno-rtti -fstrict-aliasing
+ ifndef NDEBUG
+ CXXFLAGS += -g -D_DEBUG
+@@ -74,8 +74,8 @@ CXXFLAGS += -pg
+ endif
+ CFLAGS := -O3 -fexpensive-optimizations -DPNG_THREAD_UNSAFE_OK -DPNG_NO_MMX_CODE -DPNG_NO_MNG_FEATURES
+ 
+-sharedlib sharedlib_osx: CXXFLAGS += -fPIC
+-sharedlib sharedlib_osx: CFLAGS += -fPIC
++sharedlib sharedlib_osx: override CXXFLAGS += -fPIC
++sharedlib sharedlib_osx: override CFLAGS += -fPIC
+ 
+ #multilib handling
+ ifeq ($(HOSTTYPE), x86_64)
+-- 
+2.9.3
+

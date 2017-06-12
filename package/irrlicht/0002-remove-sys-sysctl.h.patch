@@ -1,0 +1,38 @@
+From 5382142d37730f6758753b758c91e257ffd5892c Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 9 Apr 2017 22:20:19 +0200
+Subject: [PATCH] remove sys/sysctl.h
+
+With musl irrlicht doesn't build due to missing sys/sysctl.h
+
+fatal error: sys/sysctl.h: No such file or directory
+
+From [1]
+"sysctl does not work, and NEVER worked. using it is bogus.
+it was a bogus experimental syscall that was deprecated before
+it was ever used (basically, a broken binary version of
+/proc/sys, without any stability between kernel versions for
+what the binary constants meant)."
+
+[1] https://devsonacid.wordpress.com/tag/musl/
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ source/Irrlicht/COSOperator.cpp | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/source/Irrlicht/COSOperator.cpp b/source/Irrlicht/COSOperator.cpp
+index 0899d1d..ccf5ef5 100644
+--- a/source/Irrlicht/COSOperator.cpp
++++ b/source/Irrlicht/COSOperator.cpp
+@@ -13,7 +13,6 @@
+ #include <unistd.h>
+ #ifndef _IRR_SOLARIS_PLATFORM_
+ #include <sys/types.h>
+-#include <sys/sysctl.h>
+ #endif
+ #endif
+ 
+-- 
+2.9.3
+
