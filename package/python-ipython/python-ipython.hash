@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/ipython/json, sha256 locally computed
-md5 19e4a46ec7d7a32d068de4c253c9b459 ipython-5.2.2.tar.gz
-sha256 6ee1c89f6031e0c86727820ad394c6eb4d3ac28de48e0df3b9367ccf92e212e2 ipython-5.2.2.tar.gz
+md5 d8cc938f46801060239184a35ec9c5a6 ipython-5.4.0.tar.gz
+sha256 6907826c427c917bf0cdab71ee728288b1f1975c4b94b3ed608b67db3183c974 ipython-5.4.0.tar.gz
