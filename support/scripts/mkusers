@@ -219,12 +219,12 @@ add_one_group() {
     fi
 
     # Remove any previous instance of this group, and re-add the new one
-    sed -i -e '/^'"${group}"':.*/d;' "${GROUP}"
+    sed -i --follow-symlinks -e '/^'"${group}"':.*/d;' "${GROUP}"
     printf "%s:x:%d:\n" "${group}" "${gid}" >>"${GROUP}"
 
     # Ditto for /etc/gshadow if it exists
     if [ -f "${GSHADOW}" ]; then
-        sed -i -e '/^'"${group}"':.*/d;' "${GSHADOW}"
+        sed -i --follow-symlinks -e '/^'"${group}"':.*/d;' "${GSHADOW}"
         printf "%s:*::\n" "${group}" >>"${GSHADOW}"
     fi
 }
@@ -263,7 +263,8 @@ add_user_to_group() {
 
     for _f in "${GROUP}" "${GSHADOW}"; do
         [ -f "${_f}" ] || continue
-        sed -r -i -e 's/^('"${group}"':.*:)(([^:]+,)?)'"${username}"'(,[^:]+*)?$/\1\2\4/;'  \
+        sed -r -i --follow-symlinks \
+                  -e 's/^('"${group}"':.*:)(([^:]+,)?)'"${username}"'(,[^:]+*)?$/\1\2\4/;'  \
                   -e 's/^('"${group}"':.*)$/\1,'"${username}"'/;'                           \
                   -e 's/,+/,/'                                                              \
                   -e 's/:,/:/'                                                              \
@@ -303,7 +304,7 @@ add_one_user() {
 
     # Remove any previous instance of this user
     for _f in "${PASSWD}" "${SHADOW}"; do
-        sed -r -i -e '/^'"${username}"':.*/d;' "${_f}"
+        sed -r -i --follow-symlinks -e '/^'"${username}"':.*/d;' "${_f}"
     done
 
     _gid="$( get_gid "${group}" )"
