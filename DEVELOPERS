@@ -84,6 +84,7 @@ N:	Andrey Smirnov <andrew.smirnov@gmail.com>
 F:	package/python-decorator/
 F:	package/python-ipython-genutils/
 F:	package/python-pathlib2/
+F:	package/python-pickleshare/
 F:	package/python-scandir/
 F:	package/python-simplegeneric/
 F:	package/python-traitlets/
