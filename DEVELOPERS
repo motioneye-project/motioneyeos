@@ -84,6 +84,7 @@ N:	Andrey Smirnov <andrew.smirnov@gmail.com>
 F:	package/python-decorator/
 F:	package/python-ipython-genutils/
 F:	package/python-simplegeneric/
+F:	package/python-traitlets/
 
 N:	Andy Kennedy <andy.kennedy@adtran.com>
 F:	package/libunwind/
