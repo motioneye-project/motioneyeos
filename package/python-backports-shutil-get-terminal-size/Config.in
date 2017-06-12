@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_BACKPORTS_SHUTIL_GET_TERMINAL_SIZE
+	bool "python-backports-shutil-get-terminal-size"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  A backport of the get_terminal_size function from Python
+	  3.3's shutil.
+
+	  https://pypi.python.org/pypi/backports.shutil_get_terminal_size

@@ -81,6 +81,7 @@ F:	package/p7zip/
 F:	package/wine/
 
 N:	Andrey Smirnov <andrew.smirnov@gmail.com>
+F:	package/python-backports-shutil-get-terminal-size/
 F:	package/python-decorator/
 F:	package/python-ipython-genutils/
 F:	package/python-pathlib2/
