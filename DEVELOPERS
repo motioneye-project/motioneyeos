@@ -827,6 +827,10 @@ F:	package/angularjs/
 N:	Ilias Apalodimas <apalos@gmail.com>
 F:	package/keepalived/
 
+N:	Jagan Teki <jagan@amarulasolutions.com>
+F:	board/engicam/
+F:	configs/engicam_imx6q_icore_defconfig
+
 N:	James Knight <james.knight@rockwellcollins.com>
 F:	package/atkmm/
 F:	package/cairomm/
