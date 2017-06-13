@@ -1,0 +1,28 @@
+From: Lucas Stach <l.stach@pengutronix.de>
+Date: Wed, 31 May 2017 13:01:00 +0200
+Subject: [PATCH] NativeStateDRM: use fixed event context version
+
+Using the latest version is not a good idea, as the context content may
+change between versions.
+
+Fixes a segfault with new kernel and libdrm.
+
+Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ src/native-state-drm.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/native-state-drm.cpp b/src/native-state-drm.cpp
+index 454a24d898ff..b9af996667dc 100644
+--- a/src/native-state-drm.cpp
++++ b/src/native-state-drm.cpp
+@@ -106,7 +106,7 @@ NativeStateDRM::flip()
+     FD_ZERO(&fds);
+     FD_SET(fd_, &fds);
+     drmEventContext evCtx;
+-    evCtx.version = DRM_EVENT_CONTEXT_VERSION;
++    evCtx.version = 2;
+     evCtx.page_flip_handler = page_flip_handler;
+ 
+     while (waiting) {
