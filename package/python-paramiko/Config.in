@@ -5,6 +5,8 @@ config BR2_PACKAGE_PYTHON_PARAMIKO
 	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
 	select BR2_PACKAGE_PYTHON_CRYPTOGRAPHY # runtime
 	select BR2_PACKAGE_PYTHON_PYASN # runtime
+	select BR2_PACKAGE_PYTHON_PYNACL # runtime
+	select BR2_PACKAGE_PYTHON_BCRYPT # runtime
 	help
 	  SSH2 protocol library.
 
