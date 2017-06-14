@@ -546,6 +546,7 @@ dirs: $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BR2_CONFIG)
 	$(MAKE1) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" silentoldconfig
 
+.PHONY: prepare
 prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 
 .PHONY: world
@@ -723,6 +724,7 @@ target-post-image: $(TARGETS_ROOTFS) target-finalize
 .PHONY: source
 source: $(foreach p,$(PACKAGES),$(p)-all-source)
 
+.PHONY: _external-deps external-deps
 _external-deps: $(foreach p,$(PACKAGES),$(p)-all-external-deps)
 external-deps:
 	@$(MAKE1) -Bs $(EXTRAMAKEARGS) _external-deps | sort -u
@@ -760,11 +762,14 @@ legal-info: dirs legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p
 		mv .legal-info.sha256 legal-info.sha256)
 	@echo "Legal info produced in $(LEGAL_INFO_DIR)"
 
+.PHONY: show-targets
 show-targets:
 	@echo $(PACKAGES) $(TARGETS_ROOTFS)
 
+.PHONY: show-build-order
 show-build-order: $(patsubst %,%-show-build-order,$(PACKAGES))
 
+.PHONY: graph-build
 graph-build: $(O)/build/build-time.log
 	@install -d $(GRAPHS_DIR)
 	$(foreach o,name build duration,./support/scripts/graph-build-time \
@@ -776,10 +781,12 @@ graph-build: $(O)/build/build-time.log
 				   --output=$(GRAPHS_DIR)/build.pie-$(t).$(BR_GRAPH_OUT) \
 				   $(if $(BR2_GRAPH_ALT),--alternate-colors)$(sep))
 
+.PHONY: graph-depends-requirements
 graph-depends-requirements:
 	@dot -? >/dev/null 2>&1 || \
 		{ echo "ERROR: The 'dot' program from Graphviz is needed for graph-depends" >&2; exit 1; }
 
+.PHONY: graph-depends
 graph-depends: graph-depends-requirements
 	@$(INSTALL) -d $(GRAPHS_DIR)
 	@cd "$(CONFIG_DIR)"; \
@@ -789,6 +796,7 @@ graph-depends: graph-depends-requirements
 		-o $(GRAPHS_DIR)/$(@).$(BR_GRAPH_OUT) \
 		$(GRAPHS_DIR)/$(@).dot
 
+.PHONY: graph-size
 graph-size:
 	$(Q)mkdir -p $(GRAPHS_DIR)
 	$(Q)$(TOPDIR)/support/scripts/size-stats --builddir $(BASE_DIR) \
@@ -796,6 +804,7 @@ graph-size:
 		--file-size-csv $(GRAPHS_DIR)/file-size-stats.csv \
 		--package-size-csv $(GRAPHS_DIR)/package-size-stats.csv
 
+.PHONY: check-dependencies
 check-dependencies:
 	@cd "$(CONFIG_DIR)"; \
 	$(TOPDIR)/support/scripts/graph-depends -C
