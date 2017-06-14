@@ -521,7 +521,7 @@ my %deps_runtime;       # name -> list of target dependencies
 my %deps_optional;      # name -> list of optional target dependencies
 my %license_files;      # name -> list of license files
 my %checksum;           # author -> list of checksum
-my $mcpan = MetaCPAN::API::Tiny->new();
+my $mcpan = MetaCPAN::API::Tiny->new(base_url => 'http://fastapi.metacpan.org/v1');
 my $ua = HTTP::Tiny->new();
 
 sub get_checksum {
@@ -538,7 +538,7 @@ sub get_checksum {
 
 sub get_manifest {
     my ($author, $distname, $version) = @_;
-    my $url = qq{http://api.metacpan.org/source/${author}/${distname}-${version}/MANIFEST};
+    my $url = qq{http://fastapi.metacpan.org/source/${author}/${distname}-${version}/MANIFEST};
     my $response = $ua->get($url);
     return $response->{content};
 }
