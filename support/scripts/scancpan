@@ -536,13 +536,6 @@ sub get_checksum {
     return $chksum->{$basename}, $basename;
 }
 
-sub get_manifest {
-    my ($author, $distname, $version) = @_;
-    my $url = qq{http://fastapi.metacpan.org/source/${author}/${distname}-${version}/MANIFEST};
-    my $response = $ua->get($url);
-    return $response->{content};
-}
-
 sub is_xs {
     my ($manifest) = @_;
     # This heuristic determines if a module is a native extension, by searching
@@ -572,7 +565,9 @@ sub fetch {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
         $dist{$name} = $result;
-        my $manifest = get_manifest( $result->{author}, $name, $result->{version} );
+        my $manifest = $mcpan->source( author => $result->{author},
+                                       release => $name . q{-} . $result->{version},
+                                       path => 'MANIFEST' );
         $need_dlopen{$name} = is_xs( $manifest );
         $license_files{$name} = find_license_files( $manifest );
         my %build = ();
