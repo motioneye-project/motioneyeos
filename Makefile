@@ -548,7 +548,7 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 
 world: target-post-image
 
-.PHONY: all world toolchain dirs clean distclean source outputmakefile \
+.PHONY: all world dirs clean distclean source outputmakefile \
 	legal-info legal-info-prepare legal-info-clean printvars help \
 	list-defconfigs target-finalize target-post-image source-check
 
