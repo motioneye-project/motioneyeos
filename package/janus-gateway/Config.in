@@ -56,6 +56,14 @@ config BR2_PACKAGE_JANUS_VOICE_MAIL
 
 comment "transports"
 
+config BR2_PACKAGE_JANUS_RABBITMQ
+	bool "RabbitMQ"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_RABBITMQ_C
+
+comment "RabbitMQ transport needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_JANUS_REST
 	bool "REST (HTTP/HTTPS)"
 	depends on BR2_TOOLCHAIN_HAS_THREADS

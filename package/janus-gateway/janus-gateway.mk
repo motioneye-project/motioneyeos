@@ -24,7 +24,6 @@ JANUS_GATEWAY_POST_PATCH_HOOKS += JANUS_GATEWAY_M4
 
 JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
-	--disable-rabbitmq \
 	--disable-sample-event-handler
 
 ifeq ($(BR2_PACKAGE_JANUS_AUDIO_BRIDGE),y)
@@ -82,6 +81,13 @@ JANUS_GATEWAY_DEPENDENCIES += libogg
 JANUS_GATEWAY_CONF_OPTS += --enable-plugin-voicemail
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_RABBITMQ),y)
+JANUS_GATEWAY_DEPENDENCIES += rabbitmq-c
+JANUS_GATEWAY_CONF_OPTS += --enable-rabbitmq
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-rabbitmq
 endif
 
 ifeq ($(BR2_PACKAGE_JANUS_REST),y)
