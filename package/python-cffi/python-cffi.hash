@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/cffi/json, sha256 locally computed
-md5 b8fa7ccb87790531db3316ab17aa8244 cffi-1.9.1.tar.gz
-sha256 563e0bd53fda03c151573217b3a49b3abad8813de9dd0632e10090f6190fdaf8 cffi-1.9.1.tar.gz
+md5 2b5fa41182ed0edaf929a789e602a070 cffi-1.10.0.tar.gz
+sha256 b3b02911eb1f6ada203b0763ba924234629b51586f72a21faacc638269f4ced5 cffi-1.10.0.tar.gz
