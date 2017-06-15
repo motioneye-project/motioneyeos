@@ -33,6 +33,7 @@ N:	Adam Duskett <aduskett@gmail.com>
 F:	package/audit/
 F:	package/checkpolicy/
 F:	package/gstreamer1/gst1-vaapi/
+F:	package/janus-gateway/
 F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
