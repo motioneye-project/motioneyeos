@@ -56,6 +56,15 @@ config BR2_PACKAGE_JANUS_VOICE_MAIL
 
 comment "transports"
 
+config BR2_PACKAGE_JANUS_MQTT
+	bool "MQTT"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_PAHO_MQTT_C
+
+comment "MQTT transport needs a toolchain w/ threads and dynamic library support"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_JANUS_RABBITMQ
 	bool "RabbitMQ"
 	depends on BR2_TOOLCHAIN_HAS_THREADS

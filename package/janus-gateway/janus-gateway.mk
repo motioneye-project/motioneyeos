@@ -83,6 +83,13 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_MQTT),y)
+JANUS_GATEWAY_DEPENDENCIES += paho-mqtt-c
+JANUS_GATEWAY_CONF_OPTS += --enable-mqtt
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-mqtt
+endif
+
 ifeq ($(BR2_PACKAGE_JANUS_RABBITMQ),y)
 JANUS_GATEWAY_DEPENDENCIES += rabbitmq-c
 JANUS_GATEWAY_CONF_OPTS += --enable-rabbitmq
