@@ -104,6 +104,12 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-rest
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_UNIX_SOCKETS),y)
+JANUS_GATEWAY_CONF_OPTS += --enable-unix-sockets
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-unix-sockets
+endif
+
 ifeq ($(BR2_PACKAGE_JANUS_WEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
