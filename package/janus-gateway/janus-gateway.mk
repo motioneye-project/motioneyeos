@@ -84,18 +84,18 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
 endif
 
-ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
-JANUS_GATEWAY_DEPENDENCIES += libwebsockets
-JANUS_GATEWAY_CONF_OPTS += --enable-websockets
-else
-JANUS_GATEWAY_CONF_OPTS += --disable-websockets
-endif
-
 ifeq ($(BR2_PACKAGE_JANUS_REST),y)
 JANUS_GATEWAY_DEPENDENCIES += libmicrohttpd
 JANUS_GATEWAY_CONF_OPTS += --enable-rest
 else
 JANUS_GATEWAY_CONF_OPTS += --disable-rest
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_WEBSOCKETS),y)
+JANUS_GATEWAY_DEPENDENCIES += libwebsockets
+JANUS_GATEWAY_CONF_OPTS += --enable-websockets
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-websockets
 endif
 
 # Parallel build broken

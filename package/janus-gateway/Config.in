@@ -64,6 +64,11 @@ config BR2_PACKAGE_JANUS_REST
 comment "REST transport needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
+config BR2_PACKAGE_JANUS_WEBSOCKETS
+	bool "WebSockets"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_LIBWEBSOCKETS
+
 endif
 
 comment "janus-gateway needs a toolchain w/ dynamic library, threads, wchar"
