@@ -91,6 +91,13 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
 endif
 
+ifeq ($(BR2_PACKAGE_JANUS_REST),y)
+JANUS_GATEWAY_DEPENDENCIES += libmicrohttpd
+JANUS_GATEWAY_CONF_OPTS += --enable-rest
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-rest
+endif
+
 # Parallel build broken
 JANUS_GATEWAY_MAKE = $(MAKE1)
 
