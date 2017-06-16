@@ -13,6 +13,4 @@ LIBOPING_CONF_OPTS = --without-perl-bindings
 LIBOPING_LICENSE = LGPL-2.1+, GPL-2.0
 LIBOPING_LICENSE_FILES = COPYING
 
-LIBOPING_AUTORECONF = YES
-
 $(eval $(autotools-package))
