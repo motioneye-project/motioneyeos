@@ -64,6 +64,9 @@ F:	package/liblog4c-localtime/
 N:	Alexandre Belloni <alexandre.belloni@free-electrons.com>
 F:	package/tz/
 
+N:	Alexandre Esse <alexandre.esse.dev@gmail.com>
+F:	package/kvazaar/
+
 N:	Alistair Francis <alistair.francis@xilinx.com>
 F:	package/xen/
 
