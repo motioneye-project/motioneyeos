@@ -306,4 +306,13 @@ config BR2_PACKAGE_LINUX_FIRMWARE_XCx000
 
 endmenu
 
+menu "SoC Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IMX_SDMA
+	bool "Freescale i.MX SDMA"
+	help
+	  Firmware files for i.MX SDMA.
+
+endmenu
+
 endif
