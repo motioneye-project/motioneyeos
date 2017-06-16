@@ -146,19 +146,17 @@ cross-compilation toolchains. Buildroot knows about a number of
 well-known cross-compilation toolchains (from
 http://www.linaro.org[Linaro] for ARM,
 http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/[Sourcery
-CodeBench] for ARM, x86, x86-64, PowerPC, MIPS and SuperH,
-https://blackfin.uclinux.org/gf/project/toolchain[Blackfin toolchains
-from Analog Devices], etc.) and is capable of downloading them
-automatically, or it can be pointed to a custom toolchain, either
-available for download or installed locally.
+CodeBench] for ARM, x86-64, PowerPC, and MIPS, and is capable of
+downloading them automatically, or it can be pointed to a custom
+toolchain, either available for download or installed locally.
 
 Then, you have three solutions to use an external toolchain:
 
 * Use a predefined external toolchain profile, and let Buildroot
   download, extract and install the toolchain. Buildroot already knows
-  about a few CodeSourcery, Linaro, Blackfin and Xilinx toolchains.
-  Just select the toolchain profile in +Toolchain+ from the
-  available ones. This is definitely the easiest solution.
+  about a few CodeSourcery and Linaro toolchains. Just select the
+  toolchain profile in +Toolchain+ from the available ones. This is
+  definitely the easiest solution.
 
 * Use a predefined external toolchain profile, but instead of having
   Buildroot download and extract the toolchain, you can tell Buildroot
