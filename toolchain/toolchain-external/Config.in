@@ -36,9 +36,8 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Conf
 # SH4a
 source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in"
 
-# x86/x86_64 (use amd64 toolchain by default for AMD64)
+# x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in"
-source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in"
 
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
@@ -130,9 +129,8 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Conf
 # SH4a
 source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in.options"
 
-# x86/x86_64
+# x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in.options"
-source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in.options"
 
 # Custom toolchains
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in.options"
