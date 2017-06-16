@@ -221,8 +221,6 @@ Advantages of this backend:
   often very significant in the overall build time of an embedded
   Linux system.
 
-* Not limited to uClibc: glibc and eglibc toolchains are supported.
-
 Drawbacks of this backend:
 
 * If your pre-built external toolchain has a bug, may be hard to get a
