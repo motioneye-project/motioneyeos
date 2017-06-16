@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
+	bool "SH Sourcery toolchain has been removed"
+	select BR2_LEGACY
+	help
+	  The Sourcery CodeBench toolchain for the sh architecture has
+	  been removed, since it uses glibc older than 2.17 that requires
+	  -lrt to link executables using clock_* system calls. This makes
+	  this toolchain difficult to maintain over time.
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_X86
 	bool "x86 Sourcery toolchain has been removed"
 	select BR2_LEGACY

@@ -33,9 +33,6 @@ source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Confi
 # NIOSII
 source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Config.in"
 
-# SH4a
-source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in"
-
 # x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in"
 
@@ -125,9 +122,6 @@ source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Confi
 
 # NIOSII
 source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Config.in.options"
-
-# SH4a
-source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in.options"
 
 # x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in.options"
