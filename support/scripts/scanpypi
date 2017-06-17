@@ -258,7 +258,7 @@ class BuildrootPackage():
             setup.main([]) # Will raise AttributeError if not found
             self.setup_metadata = self.setup_args[self.metadata_name]
         # Here we must remove the module the hard way.
-        # We must do this because of a very sepcific case: if a package calls
+        # We must do this because of a very specific case: if a package calls
         # setup from the __main__ but does not come with a 'main()' function,
         # for some reason setup.main([]) will successfully call the main
         # function of a previous package...
