@@ -144,25 +144,25 @@ endif
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 MESA3D_PROVIDES += libegl
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
-MESA3D_EGL_PLATFORMS = drm
+MESA3D_PLATFORMS = drm
 else ifeq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4),y)
-MESA3D_EGL_PLATFORMS = drm
+MESA3D_PLATFORMS = drm
 else ifeq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_ETNAVIV),y)
-MESA3D_EGL_PLATFORMS = drm
+MESA3D_PLATFORMS = drm
 else ifeq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VIRGL),y)
-MESA3D_EGL_PLATFORMS = drm
+MESA3D_PLATFORMS = drm
 endif
 ifeq ($(BR2_PACKAGE_WAYLAND),y)
 MESA3D_DEPENDENCIES += wayland
-MESA3D_EGL_PLATFORMS += wayland
+MESA3D_PLATFORMS += wayland
 endif
 ifeq ($(BR2_PACKAGE_XORG7),y)
-MESA3D_EGL_PLATFORMS += x11
+MESA3D_PLATFORMS += x11
 endif
 MESA3D_CONF_OPTS += \
 	--enable-gbm \
 	--enable-egl \
-	--with-egl-platforms=$(subst $(space),$(comma),$(MESA3D_EGL_PLATFORMS))
+	--with-egl-platforms=$(subst $(space),$(comma),$(MESA3D_PLATFORMS))
 else
 MESA3D_CONF_OPTS += \
 	--disable-egl
