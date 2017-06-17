@@ -141,8 +141,6 @@ endef
 MESA3D_POST_INSTALL_STAGING_HOOKS += MESA3D_REMOVE_OPENGL_HEADERS
 endif
 
-ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
-MESA3D_PROVIDES += libegl
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
 MESA3D_PLATFORMS = drm
 else ifeq ($(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4),y)
@@ -159,10 +157,15 @@ endif
 ifeq ($(BR2_PACKAGE_XORG7),y)
 MESA3D_PLATFORMS += x11
 endif
+
+MESA3D_CONF_OPTS += \
+	--with-platforms=$(subst $(space),$(comma),$(MESA3D_PLATFORMS))
+
+ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
+MESA3D_PROVIDES += libegl
 MESA3D_CONF_OPTS += \
 	--enable-gbm \
-	--enable-egl \
-	--with-egl-platforms=$(subst $(space),$(comma),$(MESA3D_PLATFORMS))
+	--enable-egl
 else
 MESA3D_CONF_OPTS += \
 	--disable-egl
