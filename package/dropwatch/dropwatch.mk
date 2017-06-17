@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-DROPWATCH_VERSION = 1.4
-DROPWATCH_SOURCE = dropwatch-$(DROPWATCH_VERSION).tar.xz
-DROPWATCH_SITE = https://git.fedorahosted.org/cgit/dropwatch.git/snapshot
+DROPWATCH_VERSION = 7c33d8a8ed105b07a46b55d71d93b36ed34c16db
+DROPWATCH_SITE = git://git.infradead.org/users/nhorman/dropwatch.git
 DROPWATCH_DEPENDENCIES = binutils libnl readline host-pkgconf
 DROPWATCH_LICENSE = GPL-2.0
 DROPWATCH_LICENSE_FILES = COPYING
