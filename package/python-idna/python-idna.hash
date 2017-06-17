@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/idna/json, sha256 locally computed
-md5 e2d3f8a45d3d048a653eb186896e9e3e idna-2.2.tar.gz
-sha256 0ac27740937d86850010e035c6a10a564158a5accddf1aa24df89b0309252426 idna-2.2.tar.gz
+md5 fc1d992bef73e8824db411bb5d21f012 idna-2.5.tar.gz
+sha256 3cb5ce08046c4e3a560fc02f138d0ac63e00f8ce5901a56b32ec8b7994082aab idna-2.5.tar.gz
