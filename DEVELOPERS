@@ -1487,6 +1487,9 @@ F:	package/libbson/
 F:	package/lua-resty-http/
 F:	package/mpir/
 
+N:	Sergey Matyukevich <geomatsi@gmail.com>
+F:	package/xr819-xradio/
+
 N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/
 F:	package/mongodb/
