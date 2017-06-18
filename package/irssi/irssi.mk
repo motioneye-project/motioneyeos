@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IRSSI_VERSION = 1.0.2
+IRSSI_VERSION = 1.0.3
 IRSSI_SOURCE = irssi-$(IRSSI_VERSION).tar.xz
 # Do not use the github helper here. The generated tarball is *NOT* the
 # same as the one uploaded by upstream for the release.
@@ -12,9 +12,6 @@ IRSSI_SITE = https://github.com/irssi/irssi/releases/download/$(IRSSI_VERSION)
 IRSSI_LICENSE = GPL-2.0+
 IRSSI_LICENSE_FILES = COPYING
 IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses openssl
-
-# We're patching configure.ac, so we need to autoreconf
-IRSSI_AUTORECONF = YES
 
 IRSSI_CONF_OPTS = \
 	--disable-glibtest \
