@@ -1,0 +1,30 @@
+From 02283be90292b2f57183aa930c4d69375f1d905d Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Wed, 18 Jan 2017 13:17:21 +0100
+Subject: [PATCH] build-sys: use -lm for scriptreplay if necessary
+
+Reported-by: Bert van Hall <bert.vanhall@avionic-design.de>
+Addresses: https://github.com/karelzak/util-linux/pull/397
+Signed-off-by: Karel Zak <kzak@redhat.com>
+(cherry picked from commit feda4342df1ced25df3d200ed23469e740196c86)
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ term-utils/Makemodule.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/term-utils/Makemodule.am b/term-utils/Makemodule.am
+index 1b7c5fc..ad1bb1f 100644
+--- a/term-utils/Makemodule.am
++++ b/term-utils/Makemodule.am
+@@ -21,7 +21,7 @@ if BUILD_SCRIPTREPLAY
+ usrbin_exec_PROGRAMS += scriptreplay
+ dist_man_MANS += term-utils/scriptreplay.1
+ scriptreplay_SOURCES = term-utils/scriptreplay.c
+-scriptreplay_LDADD = $(LDADD) libcommon.la
++scriptreplay_LDADD = $(LDADD) libcommon.la $(MATH_LIBS)
+ endif # BUILD_SCRIPTREPLAY
+ 
+ 
+-- 
+2.7.4
+
