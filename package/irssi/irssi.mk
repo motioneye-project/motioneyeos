@@ -15,7 +15,6 @@ IRSSI_DEPENDENCIES = host-pkgconf libglib2 ncurses openssl
 
 IRSSI_CONF_OPTS = \
 	--disable-glibtest \
-	--with-ncurses=$(STAGING_DIR)/usr \
 	--without-perl
 
 ifeq ($(BR2_PACKAGE_IRSSI_PROXY),y)
