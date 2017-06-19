@@ -422,6 +422,7 @@ endmenu
 	source "package/lcdproc/Config.in"
 	source "package/libuio/Config.in"
 	source "package/libump/Config.in"
+	source "package/linuxconsoletools/Config.in"
 	source "package/linux-backports/Config.in"
 	source "package/lirc-tools/Config.in"
 	source "package/lm-sensors/Config.in"
