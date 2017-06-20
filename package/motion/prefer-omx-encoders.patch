@@ -1,0 +1,24 @@
+diff --git a/ffmpeg.c b/ffmpeg.c
+index 30a9cde..829d5a2 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -484,7 +484,13 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
+     char errstr[128];
+     int chkrate;
+ 
+-    ffmpeg->codec = avcodec_find_encoder(ffmpeg->oc->oformat->video_codec);
++    ffmpeg->codec = NULL;
++    if (ffmpeg->oc->oformat->video_codec == AV_CODEC_ID_H264)
++        ffmpeg->codec = avcodec_find_encoder_by_name("h264_omx");
++    else if (ffmpeg->oc->oformat->video_codec == AV_CODEC_ID_MPEG4)
++        ffmpeg->codec = avcodec_find_encoder_by_name("mpeg4_omx");
++    if (!ffmpeg->codec)
++        ffmpeg->codec = avcodec_find_encoder(ffmpeg->oc->oformat->video_codec);
+     if (!ffmpeg->codec) {
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "%s: Codec %s not found", ffmpeg->codec_name);
+         ffmpeg_free_context(ffmpeg);
+@@ -926,4 +932,3 @@ int ffmpeg_put_image(struct ffmpeg *ffmpeg, unsigned char *image, const struct t
+     return 0;
+ #endif // HAVE_FFMPEG
+ }
+-
