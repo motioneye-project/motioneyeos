@@ -1,0 +1,43 @@
+diff --git a/motion.c b/motion.c
+index e0e28e3..5c5d93f 100644
+--- a/motion.c
++++ b/motion.c
+@@ -308,12 +308,23 @@ static void sig_handler(int signo)
+     case SIGUSR1:
+         /*
+          * Ouch! We have been hit from the outside! Someone wants us to
+-         * make a movie!
++         * start recording!
+          */
+         if (cnt_list) {
+             i = -1;
+             while (cnt_list[++i])
+-                cnt_list[i]->makemovie = 1;
++                cnt_list[i]->conf.emulate_motion = 1;
++        }
++        break;
++    case SIGUSR2:
++        /*
++         * Ouch! We have been hit from the outside! Someone wants us to
++         * stop recording!
++         */
++        if (cnt_list) {
++            i = -1;
++            while (cnt_list[++i])
++                cnt_list[i]->conf.emulate_motion = 0;
+         }
+         break;
+     case SIGHUP:
+@@ -405,6 +416,7 @@ static void setup_signals(struct sigaction *sig_handler_action, struct sigaction
+     sigaction(SIGQUIT, sig_handler_action, NULL);
+     sigaction(SIGTERM, sig_handler_action, NULL);
+     sigaction(SIGUSR1, sig_handler_action, NULL);
++    sigaction(SIGUSR2, sig_handler_action, NULL);
+ 
+     /* use SIGVTALRM as a way to break out of the ioctl, don't restart */
+     sig_handler_action->sa_flags = 0;
+@@ -3564,4 +3576,3 @@ size_t mystrftime(const struct context *cnt, char *s, size_t max, const char *us
+ 
+     return strftime(s, max, format, &timestamp_tm);
+ }
+-
