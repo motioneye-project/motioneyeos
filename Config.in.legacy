@@ -145,6 +145,44 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_INPUT_TOOLS
+	bool "input-tools removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUXCONSOLETOOLS
+	help
+	  input-tools has been removed, it is replaced by
+	  linuxconsoletools, which has automatically been enabled.
+
+config BR2_PACKAGE_INPUT_TOOLS_INPUTATTACH
+	bool "inputattach moved to linuxconsoletools"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUXCONSOLETOOLS
+	select BR2_PACKAGE_LINUXCONSOLETOOLS_INPUTATTACH
+	help
+	  input-tools has been removed, inputattach is now part
+	  of linuxconsoletools, which has automatically been
+	  enabled.
+
+config BR2_PACKAGE_INPUT_TOOLS_JSCAL
+	bool "jscal moved to linuxconsoletools"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUXCONSOLETOOLS
+	select BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK
+	help
+	  input-tools has been removed, jscal is now part
+	  of linuxconsoletools, which has automatically been
+	  enabled.
+
+config BR2_PACKAGE_INPUT_TOOLS_JSTEST
+	bool "jstest moved to linuxconsoletools"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LINUXCONSOLETOOLS
+	select BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK
+	help
+	  input-tools has been removed, jstest is now part
+	  of linuxconsoletools, which has automatically been
+	  enabled.
+
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 	bool "SH Sourcery toolchain has been removed"
 	select BR2_LEGACY
