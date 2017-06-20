@@ -66,6 +66,7 @@ F:	package/tz/
 
 N:	Alexandre Esse <alexandre.esse.dev@gmail.com>
 F:	package/kvazaar/
+F:	package/v4l2loopback/
 
 N:	Alistair Francis <alistair.francis@xilinx.com>
 F:	package/xen/
