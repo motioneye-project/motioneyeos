@@ -1066,6 +1066,7 @@ F:	board/grinn/
 F:	configs/grinn_*
 F:	package/argparse/
 F:	package/easydbus/
+F:	package/lua-flu/
 F:	package/luaossl/
 F:	package/rs485conf/
 F:	package/turbolua/
