@@ -11,10 +11,10 @@ Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
  expat/configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/expat/configure.ac b/expat/configure.ac
+diff --git a/configure.ac b/configure.ac
 index 1357c9a..444c002 100644
---- a/expat/configure.ac
-+++ b/expat/configure.ac
+--- a/configure.ac
++++ b/configure.ac
 @@ -130,7 +130,7 @@ AC_LINK_IFELSE([AC_LANG_SOURCE([
  
  
