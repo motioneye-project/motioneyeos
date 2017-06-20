@@ -8,6 +8,12 @@ OPENSSH_VERSION = 7.5p1
 OPENSSH_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
 OPENSSH_LICENSE = BSD-3-Clause, BSD-2-Clause, Public Domain
 OPENSSH_LICENSE_FILES = LICENCE
+# Autoreconf needed due to the following patches modifying configure.ac:
+# f4fcd8c788a4854d4ebae400cf55e3957f906835.patch
+# afc3e31b637db9dae106d4fad78f7b481c8c24e3.patch
+OPENSSH_AUTORECONF = YES
+OPENSSH_PATCH = https://github.com/openssh/openssh-portable/commit/f4fcd8c788a4854d4ebae400cf55e3957f906835.patch \
+	https://github.com/openssh/openssh-portable/commit/afc3e31b637db9dae106d4fad78f7b481c8c24e3.patch
 OPENSSH_CONF_ENV = LD="$(TARGET_CC)" LDFLAGS="$(TARGET_CFLAGS)"
 OPENSSH_CONF_OPTS = \
 	--sysconfdir=/etc/ssh \
