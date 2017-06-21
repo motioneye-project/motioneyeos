@@ -212,6 +212,7 @@ qemu_x86_defconfig: *defconfig
 qemu_xtensa_lx60_defconfig: *defconfig
 qemu_xtensa_lx60_nommu_defconfig: *defconfig
 raspberrypi0_defconfig: *defconfig
+raspberrypi0w_defconfig: *defconfig
 raspberrypi2_defconfig: *defconfig
 raspberrypi3_64_defconfig: *defconfig
 raspberrypi3_defconfig: *defconfig
