@@ -235,6 +235,10 @@ define UBOOT_INSTALL_IMAGES_CMDS
 			$(if $(BR2_TARGET_UBOOT_ENVIMAGE_REDUNDANT),-r) \
 			$(if $(filter BIG,$(BR2_ENDIAN)),-b) \
 			-o $(BINARIES_DIR)/uboot-env.bin -)
+	$(if $(BR2_TARGET_UBOOT_BOOT_SCRIPT),
+		$(HOST_DIR)/usr/bin/mkimage -C none -A $(MKIMAGE_ARCH) -T script \
+			-d $(call qstrip,$(BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE)) \
+			$(BINARIES_DIR)/boot.scr)
 endef
 
 define UBOOT_INSTALL_OMAP_IFT_IMAGE
@@ -293,6 +297,15 @@ $(error Please define a source file for Uboot environment (BR2_TARGET_UBOOT_ENVI
 endif
 ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_ENVIMAGE_SIZE)),)
 $(error Please provide Uboot environment size (BR2_TARGET_UBOOT_ENVIMAGE_SIZE setting))
+endif
+endif
+UBOOT_DEPENDENCIES += host-uboot-tools
+endif
+
+ifeq ($(BR2_TARGET_UBOOT_BOOT_SCRIPT),y)
+ifeq ($(BR_BUILDING),y)
+ifeq ($(call qstrip,$(BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE)),)
+$(error Please define a source file for Uboot boot script (BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE setting))
 endif
 endif
 UBOOT_DEPENDENCIES += host-uboot-tools
