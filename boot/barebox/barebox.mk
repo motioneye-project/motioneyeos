@@ -109,11 +109,11 @@ define $(1)_BUILD_CMDS
 	$$($(1)_BUILD_CUSTOM_ENV)
 endef
 
-$(1)_IMAGE_FILE = $$(call qstrip,$$(BR2_TARGET_$(1)_IMAGE_FILE))
+$(1)_IMAGE_FILES = $$(call qstrip,$$(BR2_TARGET_$(1)_IMAGE_FILE))
 
 define $(1)_INSTALL_IMAGES_CMDS
-	if test -n "$$($(1)_IMAGE_FILE)"; then \
-		cp -L $$(@D)/$$($(1)_IMAGE_FILE) $$(BINARIES_DIR) ; \
+	if test -n "$$($(1)_IMAGE_FILES)"; then \
+		cp -L $$(foreach image,$$($(1)_IMAGE_FILES),$$(@D)/$$(image)) $$(BINARIES_DIR) ; \
 	elif test -h $$(@D)/barebox-flash-image ; then \
 		cp -L $$(@D)/barebox-flash-image $$(BINARIES_DIR)/barebox.bin ; \
 	else \
