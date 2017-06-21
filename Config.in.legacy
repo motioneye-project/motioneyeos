@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_SPICE_TUNNEL
+	bool "spice network redirection removed"
+	select BR2_LEGACY
+	help
+	  Spice network redirection, aka tunnelling has been removed
+	  upstream.
+
 config BR2_PACKAGE_INPUT_TOOLS
 	bool "input-tools removed"
 	select BR2_LEGACY
