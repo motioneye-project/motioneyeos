@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRACE_VERSION = 4.16
+STRACE_VERSION = 4.17
 STRACE_SOURCE = strace-$(STRACE_VERSION).tar.xz
 STRACE_SITE = http://downloads.sourceforge.net/project/strace/strace/$(STRACE_VERSION)
 STRACE_LICENSE = BSD-3-Clause
