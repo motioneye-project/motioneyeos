@@ -54,4 +54,27 @@ To boot your newly created system:
   emulator at 115200 bps, 8n1;
 - power on the board.
 
+Testing graphics on the i.MX6Q Sabre SD board
+=============================================
+
+The imx6q-sabresd_qt5_defconfig allows to quickly test the graphics
+capabilities of i.MX6 using the opensource Etnaviv graphics stack
+and kernel mainline.
+
+In order to build it:
+
+make imx6q-sabresd_qt5_defconfig
+make
+
+Then flash the SD card as explained above.
+
+Running kmscube application:
+
+# kmscube -D /dev/dri/card1
+
+Running Qt5 Cinematic Demo:
+
+# export QT_QPA_EGLFS_KMS_CONFIG=/root/sabresd.json
+# /usr/share/Qt5/CinematicExperience/Qt5_CinematicExperience
+
 Enjoy!
