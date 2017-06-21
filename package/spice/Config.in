@@ -22,38 +22,3 @@ config BR2_PACKAGE_SPICE
 	  This package implements the server-part of Spice.
 
 	  http://www.spice-space.org/
-
-if BR2_PACKAGE_SPICE
-
-comment "client depends on X.org"
-	depends on !BR2_PACKAGE_XORG7
-
-config BR2_PACKAGE_SPICE_CLIENT
-	bool "Enable client"
-	depends on BR2_PACKAGE_XORG7
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PACKAGE_XLIB_LIBXFIXES
-	select BR2_PACKAGE_XLIB_LIBXRANDR
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXEXT
-	select BR2_PACKAGE_XLIB_LIBXRENDER
-	select BR2_PACKAGE_ALSA_LIB
-
-comment "client needs a toolchain w/ threads, C++"
-	depends on BR2_PACKAGE_XORG7
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
-
-config BR2_PACKAGE_SPICE_GUI
-	bool "Enable GUI"
-	depends on BR2_PACKAGE_SPICE_CLIENT
-	depends on !BR2_STATIC_LIBS
-	select BR2_PACKAGE_CEGUI06
-	help
-	  Say 'y' here to enable the Graphical User Interface (GUI)
-	  start dialog.
-
-comment "gui needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
-
-endif # BR2_PACKAGE_SPICE

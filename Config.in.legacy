@@ -145,6 +145,22 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_SPICE_CLIENT
+	bool "spice client support removed"
+	select BR2_LEGACY
+	help
+	  Spice client support has been removed upstream. The
+	  functionality now lives in the spice-gtk widget and
+	  virt-viewer.
+
+config BR2_PACKAGE_SPICE_GUI
+	bool "spice gui support removed"
+	select BR2_LEGACY
+	help
+	  Spice gui support has been removed upstream. The
+	  functionality now lives in the spice-gtk widget and
+	  virt-viewer.
+
 config BR2_PACKAGE_SPICE_TUNNEL
 	bool "spice network redirection removed"
 	select BR2_LEGACY

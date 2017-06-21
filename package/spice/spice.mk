@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SPICE_VERSION = 0.12.5
+SPICE_VERSION = 0.12.6
 SPICE_SOURCE = spice-$(SPICE_VERSION).tar.bz2
 SPICE_SITE = http://www.spice-space.org/download/releases
 SPICE_LICENSE = LGPL-2.1+
@@ -35,38 +35,36 @@ else
 SPICE_CONF_OPTS += --disable-celt051
 endif
 
+ifeq ($(BR2_PACKAGE_LZ4),y)
+SPICE_CONF_OPTS += --enable-lz4
+SPICE_DEPENDENCIES += lz4
+else
+SPICE_CONF_OPTS += --disable-lz4
+endif
+
 # no enable/disable, detected using pkg-config
 ifeq ($(BR2_PACKAGE_OPUS),y)
 SPICE_DEPENDENCIES += opus
 endif
 
-ifeq ($(BR2_PACKAGE_SPICE_CLIENT),y)
-SPICE_CONF_OPTS += --enable-client
-SPICE_DEPENDENCIES += \
-	xlib_libXfixes \
-	xlib_libXrandr \
-	xlib_libX11 \
-	xlib_libXext \
-	xlib_libXrender \
-	alsa-lib
-else
-SPICE_CONF_OPTS += --disable-client
-endif
-
-ifeq ($(BR2_PACKAGE_SPICE_GUI),y)
-SPICE_CONF_OPTS += --enable-gui
-SPICE_DEPENDENCIES += cegui06
-else
-SPICE_CONF_OPTS += --disable-gui
-endif
+# build system uses pkg-config --variable=codegendir spice-protocol which
+# returns the runtime path rather than build time, so it needs some help
+SPICE_MAKE_OPTS = CODE_GENERATOR_BASEDIR=$(STAGING_DIR)/usr/lib/spice-protocol
+SPICE_INSTALL_STAGING_OPTS = $(SPICE_MAKE_OPTS) DESTDIR=$(STAGING_DIR) install
+SPICE_INSTALL_TARGET_OPTS = $(SPICE_MAKE_OPTS) DESTDIR=$(TARGET_DIR) install
 
 # spice uses a number of source files that are generated with python / pyparsing.
 # The generated files are part of the tarball, so python / pyparsing isn't needed
 # when building from the tarball, but the configure script gets confused and looks
 # for the wrong file name to know if it needs to check for python / pyparsing,
-# so convince it they aren't needed
+# so convince it they aren't needed.
+# It will also regenerate these files if the spice-protocol protocol definition
+# is newer than the generated files (which it will be when spice-protocol
+# installs it to staging), so ensure their timestamp is updated to skip this.
 define SPICE_NO_PYTHON_PYPARSING
+	mkdir -p $(@D)/client
 	touch $(@D)/client/generated_marshallers.cpp
+	touch $(@D)/spice-common/common/generated_*
 endef
 
 SPICE_PRE_CONFIGURE_HOOKS += SPICE_NO_PYTHON_PYPARSING
