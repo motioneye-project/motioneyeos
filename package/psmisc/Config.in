@@ -6,4 +6,4 @@ config BR2_PACKAGE_PSMISC
 	help
 	  Helpful /proc related utilities such as pstree, fuser, and killall
 
-	  http://psmisc.sourceforge.net/
+	  https://gitlab.com/psmisc/psmisc
