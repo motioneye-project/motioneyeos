@@ -1,5 +1,8 @@
 config BR2_PACKAGE_LINUXCONSOLETOOLS
 	bool "linuxconsoletools"
+	select BR2_PACKAGE_LINUXCONSOLETOOLS_INPUTATTACH if \
+	       !BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK && \
+	       !BR2_PACKAGE_LINUXCONSOLETOOLS_FORCEFEEDBACK
 	help
 	  Linuxconsoletools contains the inputattach utility
 	  to attach legacy serial devices to the Linux kernel
