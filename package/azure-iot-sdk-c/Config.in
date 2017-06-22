@@ -1,0 +1,16 @@
+config BR2_PACKAGE_AZURE_IOT_SDK_C
+	bool "azure-iot-sdk-c"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Microsoft Azure IoT Hub device SDK for C is used
+	  to connect devices running C code to Azure IoT Hub.
+
+	  https://docs.microsoft.com/nl-nl/azure/iot-hub/iot-hub-device-sdk-c-intro
+
+comment "azure-iot-sdk-c needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

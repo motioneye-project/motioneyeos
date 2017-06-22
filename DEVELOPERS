@@ -81,6 +81,7 @@ N:	Anders Darander <anders@chargestorm.se>
 F:	package/ktap/
 
 N:	André Hentschel <nerv@dawncrow.de>
+F:	package/azure-iot-sdk-c/
 F:	package/openal/
 F:	package/p7zip/
 F:	package/wine/
