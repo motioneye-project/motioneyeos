@@ -1,3 +1,5 @@
+# From https://sourceforge.net/projects/psmisc/files/psmisc/
+md5 bbba1f701c02fb50d59540d1ff90d8d1 psmisc-23.1.tar.xz
+sha1 d19031a5ba18a530aa0bb768cb74593f9af74b08 psmisc-23.1.tar.xz
 # Locally computed:
-sha256  97323cad619210845b696d7d722c383852b2acb5c49b5b0852c4f29c77a8145a  psmisc-22.21.tar.gz
-sha256  4f1cb11c7182ad96e682ec50a2d9a6a22079a2b11dffde3bb3cb67823b679422  e7203c36a2a4dc10cd8268a5dc036fc9c2a73b6c.diff
+sha256  2e84d474cf75dfbe3ecdacfb797bbfab71a35c7c2639d1b9f6d5f18b2149ba30  psmisc-23.1.tar.xz
