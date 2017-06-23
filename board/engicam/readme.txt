@@ -5,7 +5,7 @@ Buildroot for Engicam i.MX6 SOM platforms:
 This file documents the Buildroot support for all Engicam i.MX6 SOM
 platform boards.
 
-i.CoreM6 Quad/Dual SOM Starter kits:
+i.CoreM6 Quad/Dual/DualLite/Solo SOM Starter kits:
 https://www.engicam.com/vis-prod/101120
 
 This configuration uses U-Boot mainline and kernel mainline.
@@ -17,7 +17,7 @@ First, configure Buildroot for the Engicam i.MX SOM's:
 
 - for i.CoreM6 Quad/Dual:
 
-  make engicam_imx6q_icore_defconfig
+  make engicam_imx6qdl_icore_defconfig
 
 Build all components:
 
@@ -26,6 +26,8 @@ Build all components:
 You will find the following files in output/images/:
 - for i.CoreM6 Quad/Dual:
   - imx6q-icore.dtb
+- for i.CoreM6 DualLite/Solo:
+  - imx6dl-icore.dtb
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
@@ -46,6 +48,7 @@ directory, ready to be dumped on a SD card. Launch the following
 command as root:
 
   dd if=output/images/sdcard.img of=/dev/<your-sd-device>
+  sync
 
 *** WARNING! This will destroy all the card content. Use with care! ***
 
