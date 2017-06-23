@@ -1069,6 +1069,7 @@ N:	Marcin Niestroj <m.niestroj@grinn-global.com>
 F:	board/grinn/
 F:	configs/grinn_*
 F:	package/argparse/
+F:	package/dt-utils/
 F:	package/easydbus/
 F:	package/lua-flu/
 F:	package/luaossl/
