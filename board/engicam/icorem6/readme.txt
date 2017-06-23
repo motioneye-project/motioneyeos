@@ -1,8 +1,8 @@
-*****************************************
-Buildroot for Engicam i.MX6 SOM platforms:
-*****************************************
+*********************************************
+Buildroot for Engicam i.CoreM6 SOM platforms:
+*********************************************
 
-This file documents the Buildroot support for all Engicam i.MX6 SOM
+This file documents the Buildroot support for Engicam i.CoreM6
 platform boards.
 
 i.CoreM6 Quad/Dual/DualLite/Solo SOM Starter kits:
@@ -13,9 +13,9 @@ This configuration uses U-Boot mainline and kernel mainline.
 Build
 =====
 
-First, configure Buildroot for the Engicam i.MX SOM's:
+First, configure Buildroot for the Engicam i.CoreM6:
 
-- for i.CoreM6 Quad/Dual:
+- for i.CoreM6 Quad/Dual/DualLite/Solo:
 
   make engicam_imx6qdl_icore_defconfig
 
@@ -53,7 +53,7 @@ command as root:
 *** WARNING! This will destroy all the card content. Use with care! ***
 
 For details about the medium image layout, see the definition in
-board/engicam/genimage.cfg
+board/engicam/icorem6/genimage.cfg
 
 Boot the i.CoreM6 boards with SD boot:
 =====================================
