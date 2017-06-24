@@ -4,10 +4,12 @@
 #
 ################################################################################
 
-LIBGPIOD_VERSION = v0.2
+LIBGPIOD_VERSION = v0.3
 LIBGPIOD_SITE = $(call github,brgl,libgpiod,$(LIBGPIOD_VERSION))
 LIBGPIOD_LICENSE = LGPL-2.1+
 LIBGPIOD_LICENSE_FILES = COPYING
+
+LIBGPIOD_DEPENDENCIES = host-pkgconf
 
 # Needed for autoreconf to work properly
 define LIBGPIOD_FIXUP_M4_DIR
