@@ -1726,9 +1726,9 @@ F:	arch/Config.in.bfin
 F:	arch/Config.in.m68k
 F:	arch/Config.in.or1k
 F:	arch/Config.in.sparc
+F:	package/mksh/
 F:	package/uclibc/
 F:	package/uclibc-ng-test/
-F:	package/mksh/
 
 N:	Will Newton <will.newton@gmail.com>
 F:	package/enchant/
