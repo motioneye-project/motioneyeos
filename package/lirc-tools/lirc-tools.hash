@@ -1,3 +1,5 @@
-# hash from http://sourceforge.net/projects/lirc/files/LIRC/0.9.4b/
-sha1 7cb2867de1b486708781413aa33568e0612fb912 lirc-0.9.4b.tar.bz2
-md5 9e3f2869a47bbd7c973dd63f30c13fc2 lirc-0.9.4b.tar.bz2
+# hash from http://sourceforge.net/projects/lirc/files/LIRC/0.9.4d/
+sha1 5dbfd95a9e290260e6b5febadf685227df9c0529 lirc-0.9.4d.tar.bz2
+md5 0d11679cbdd94a5a6da00a8e7231b4bf lirc-0.9.4d.tar.bz2
+# Locally computed
+sha256 c68f18c35b489b865c0a741d119b136e8702191538cd3551b977a7af6c4e41ab lirc-0.9.4d.tar.bz2
