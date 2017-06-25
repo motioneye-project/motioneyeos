@@ -85,5 +85,10 @@ endef
 
 define legal-license-file # pkgname, pkgname-pkgver, pkgdir, filename, file-fullpath, {HOST|TARGET}
 	mkdir -p $(LICENSE_FILES_DIR_$(6))/$(2)/$(dir $(4)) && \
+	{ \
+		support/download/check-hash $(3)/$(1).hash $(5) $(4); \
+		ret=$${?}; \
+		case $${ret} in (0|3) ;; (*) exit 1;; esac; \
+	} && \
 	cp $(5) $(LICENSE_FILES_DIR_$(6))/$(2)/$(4)
 endef
