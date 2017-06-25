@@ -68,9 +68,6 @@ define UBOOT_TOOLS_INSTALL_DUMPIMAGE
 endef
 endif
 
-define UBOOT_TOOLS_INSTALL_LIBUBOOTENV
-endef
-
 define UBOOT_TOOLS_INSTALL_STAGING_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/tools/env/lib.a $(STAGING_DIR)/usr/lib/libubootenv.a
 	$(INSTALL) -D -m 0644 $(@D)/tools/env/fw_env.h $(STAGING_DIR)/usr/include/fw_env.h
