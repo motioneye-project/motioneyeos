@@ -17,22 +17,6 @@ def _empty_line_or_comment(text):
     return text.strip() == "" or text.startswith("#")
 
 
-class HashFilename(_CheckFunction):
-    def check_line(self, lineno, text):
-        if _empty_line_or_comment(text):
-            return
-
-        fields = text.split()
-        if len(fields) < 3:
-            return
-
-        if '/' in fields[2]:
-            return ["{}:{}: use filename without directory component"
-                    " ({}#adding-packages-hash)"
-                    .format(self.filename, lineno, self.url_to_manual),
-                    text]
-
-
 class HashNumberOfFields(_CheckFunction):
     def check_line(self, lineno, text):
         if _empty_line_or_comment(text):
