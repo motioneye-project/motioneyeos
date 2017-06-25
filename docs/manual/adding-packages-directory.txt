@@ -445,7 +445,7 @@ package. The only reason for not adding a +.hash+ file is when hash
 checking is not possible due to how the package is downloaded.
 
 The hashes stored in that file are used to validate the integrity of the
-downloaded files.
+downloaded files and of the license files.
 
 The format of this file is one line for each file for which to check the
 hash, each line being space-separated, with these three fields:
@@ -460,7 +460,10 @@ hash, each line being space-separated, with these three fields:
 ** for +sha256+, 64 hexadecimal characters
 ** for +sha384+, 96 hexadecimal characters
 ** for +sha512+, 128 hexadecimal characters
-* the name of the file, without any directory component
+* the name of the file:
+** for a source archive: the basename of the file, without any directory
+   component,
+** for a license file: the path as it appears in +FOO_LICENSE_FILES+.
 
 Lines starting with a +#+ sign are considered comments, and ignored. Empty
 lines are ignored.
@@ -476,6 +479,10 @@ best to add all those hashes in the +.hash+ file. If upstream does not
 provide any hash, or only provides an +md5+ hash, then compute at least one
 strong hash yourself (preferably +sha256+, but not +md5+), and mention
 this in a comment line above the hashes.
+
+.Note
+The hashes for license files are used to detect a license change when a
+package version is bumped.
 
 .Note
 The number of spaces does not matter, so one can use spaces (or tabs) to
@@ -503,6 +510,10 @@ sha256 ff52101fb90bbfc3fe9475e425688c660f46216d7e751c4bbdb1dc85cdccacb9 libfoo-f
 
 # No hash for 1234:
 none   xxx                                                              libfoo-1234.tar.gz
+
+# Hash for license files:
+sha256 a45a845012742796534f7e91fe623262ccfb99460a2bd04015bd28d66fba95b8  COPYING
+sha256 01b1f9f2c8ee648a7a596a1abe8aa4ed7899b1c9e5551bda06da6e422b04aa55  doc/COPYING.LGPL
 ----
 
 If the +.hash+ file is present, and it contains one or more hashes for a
