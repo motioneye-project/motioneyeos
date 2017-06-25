@@ -1,6 +1,6 @@
-From 6754b208e7ec3bd1d4265db18fa4c0e7961a77bf Mon Sep 17 00:00:00 2001
+From f0e49690a6da92079d03afbf2aae413b273d2010 Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-Date: Mon, 20 Mar 2017 20:05:00 +0100
+Date: Thu, 18 May 2017 19:38:37 +0200
 Subject: [PATCH] No runtime tests for endianness
 
 Replace build and execution of runtime test programs for determining
@@ -18,10 +18,10 @@ Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
  create mode 100644 src/sysdeps/trylittleendian.c
 
 diff --git a/configure b/configure
-index 1579025..4da9c5e 100755
+index 1eaccd3..5fffc34 100755
 --- a/configure
 +++ b/configure
-@@ -463,13 +463,20 @@ EOF
+@@ -471,13 +471,20 @@ EOF
    fi
    exec 3>&-
  
@@ -44,8 +44,8 @@ index 1579025..4da9c5e 100755
 -  rm -f tryendianness
 +  rm -f trybigendian trylittleendian
  
-   trytypesize ushort USHORT "unsigned short"
-   trytypesize uint UINT "unsigned int"
+   trytypes
+   choose clr accept4 ACCEPT4 'accept4()'
 diff --git a/src/sysdeps/trybigendian.c b/src/sysdeps/trybigendian.c
 new file mode 100644
 index 0000000..d857572
@@ -94,5 +94,5 @@ index 0000000..68b93c1
 +	return 0;
 +}
 -- 
-2.1.4
+2.9.3
 
