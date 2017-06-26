@@ -22,6 +22,12 @@ config BR2_PACKAGE_SQLITE_ENABLE_FTS3
 	  (see http://www.sqlite.org/amalgamation.html), version 3 of
 	  the full-text search engine is added to the build automatically.
 
+config BR2_PACKAGE_SQLITE_ENABLE_JSON1
+	bool "Enable the JSON extensions for SQLite"
+	help
+	  When this option is defined in the amalgamation, the JSON
+	  extensions are added to the build automatically.
+
 config BR2_PACKAGE_SQLITE_ENABLE_UNLOCK_NOTIFY
 	bool "Enable sqlite3_unlock_notify() interface"
 	help
