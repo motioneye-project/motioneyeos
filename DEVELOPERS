@@ -1085,6 +1085,7 @@ F:	package/argparse/
 F:	package/dt-utils/
 F:	package/easydbus/
 F:	package/lua-flu/
+F:	package/lua-stdlib/
 F:	package/luaossl/
 F:	package/rs485conf/
 F:	package/turbolua/
