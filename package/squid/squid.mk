@@ -50,11 +50,6 @@ else
 SQUID_CONF_ENV += squid_cv_gnu_atomics=no
 endif
 
-# On uClibc librt needs libpthread
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS)$(BR2_TOOLCHAIN_USES_UCLIBC),yy)
-SQUID_CONF_ENV += ac_cv_search_shm_open="-lrt -lpthread"
-endif
-
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 SQUID_CONF_OPTS += --with-openssl
 SQUID_DEPENDENCIES += openssl
