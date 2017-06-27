@@ -1,0 +1,122 @@
+From 6d0ba622891bed9d8394eef1935add53003b12e8 Mon Sep 17 00:00:00 2001
+From: Florian Weimer <fweimer@redhat.com>
+Date: Mon, 19 Jun 2017 22:31:04 +0200
+Subject: [PATCH] ld.so: Reject overly long LD_PRELOAD path elements
+
+[Peter: Drop ChangeLog modification]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ elf/rtld.c | 82 ++++++++++++++++++++++++++++++++++++++++++++++++++------------
+ 1 file changed, 72 insertions(+), 16 deletions(-)
+
+diff --git a/elf/rtld.c b/elf/rtld.c
+index 2269dbec81..86ae20c83f 100644
+--- a/elf/rtld.c
++++ b/elf/rtld.c
+@@ -99,6 +99,35 @@ uintptr_t __pointer_chk_guard_local
+ strong_alias (__pointer_chk_guard_local, __pointer_chk_guard)
+ #endif
+ 
++/* Length limits for names and paths, to protect the dynamic linker,
++   particularly when __libc_enable_secure is active.  */
++#ifdef NAME_MAX
++# define SECURE_NAME_LIMIT NAME_MAX
++#else
++# define SECURE_NAME_LIMIT 255
++#endif
++#ifdef PATH_MAX
++# define SECURE_PATH_LIMIT PATH_MAX
++#else
++# define SECURE_PATH_LIMIT 1024
++#endif
++
++/* Check that AT_SECURE=0, or that the passed name does not contain
++   directories and is not overly long.  Reject empty names
++   unconditionally.  */
++static bool
++dso_name_valid_for_suid (const char *p)
++{
++  if (__glibc_unlikely (__libc_enable_secure))
++    {
++      /* Ignore pathnames with directories for AT_SECURE=1
++	 programs, and also skip overlong names.  */
++      size_t len = strlen (p);
++      if (len >= SECURE_NAME_LIMIT || memchr (p, '/', len) != NULL)
++	return false;
++    }
++  return *p != '\0';
++}
+ 
+ /* List of auditing DSOs.  */
+ static struct audit_list
+@@ -718,6 +747,42 @@ static const char *preloadlist attribute_relro;
+ /* Nonzero if information about versions has to be printed.  */
+ static int version_info attribute_relro;
+ 
++/* The LD_PRELOAD environment variable gives list of libraries
++   separated by white space or colons that are loaded before the
++   executable's dependencies and prepended to the global scope list.
++   (If the binary is running setuid all elements containing a '/' are
++   ignored since it is insecure.)  Return the number of preloads
++   performed.  */
++unsigned int
++handle_ld_preload (const char *preloadlist, struct link_map *main_map)
++{
++  unsigned int npreloads = 0;
++  const char *p = preloadlist;
++  char fname[SECURE_PATH_LIMIT];
++
++  while (*p != '\0')
++    {
++      /* Split preload list at space/colon.  */
++      size_t len = strcspn (p, " :");
++      if (len > 0 && len < sizeof (fname))
++	{
++	  memcpy (fname, p, len);
++	  fname[len] = '\0';
++	}
++      else
++	fname[0] = '\0';
++
++      /* Skip over the substring and the following delimiter.  */
++      p += len;
++      if (*p != '\0')
++	++p;
++
++      if (dso_name_valid_for_suid (fname))
++	npreloads += do_preload (fname, main_map, "LD_PRELOAD");
++    }
++  return npreloads;
++}
++
+ static void
+ dl_main (const ElfW(Phdr) *phdr,
+ 	 ElfW(Word) phnum,
+@@ -1464,23 +1529,8 @@ ERROR: ld.so: object '%s' cannot be loaded as audit interface: %s; ignored.\n",
+ 
+   if (__glibc_unlikely (preloadlist != NULL))
+     {
+-      /* The LD_PRELOAD environment variable gives list of libraries
+-	 separated by white space or colons that are loaded before the
+-	 executable's dependencies and prepended to the global scope
+-	 list.  If the binary is running setuid all elements
+-	 containing a '/' are ignored since it is insecure.  */
+-      char *list = strdupa (preloadlist);
+-      char *p;
+-
+       HP_TIMING_NOW (start);
+-
+-      /* Prevent optimizing strsep.  Speed is not important here.  */
+-      while ((p = (strsep) (&list, " :")) != NULL)
+-	if (p[0] != '\0'
+-	    && (__builtin_expect (! __libc_enable_secure, 1)
+-		|| strchr (p, '/') == NULL))
+-	  npreloads += do_preload (p, main_map, "LD_PRELOAD");
+-
++      npreloads += handle_ld_preload (preloadlist, main_map);
+       HP_TIMING_NOW (stop);
+       HP_TIMING_DIFF (diff, start, stop);
+       HP_TIMING_ACCUM_NT (load_time, diff);
+-- 
+2.11.0
+
