@@ -30,6 +30,10 @@ ifeq ($(BR2_PACKAGE_LIBGLIB2)$(BR2_PACKAGE_PULSEAUDIO),yy)
 QT5MULTIMEDIA_DEPENDENCIES += libglib2 pulseaudio
 endif
 
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+QT5MULTIMEDIA_DEPENDENCIES += alsa-lib
+endif
+
 define QT5MULTIMEDIA_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_MAKE_ENV) $(HOST_DIR)/usr/bin/qmake)
 endef
