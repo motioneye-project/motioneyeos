@@ -264,6 +264,9 @@ config BR2_GCC_TARGET_ARCH
 config BR2_GCC_TARGET_ABI
 	string
 
+config BR2_GCC_TARGET_NAN
+	string
+
 config BR2_GCC_TARGET_CPU
 	string
 

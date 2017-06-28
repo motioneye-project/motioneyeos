@@ -1,20 +1,26 @@
 # mips default CPU ISAs
 config BR2_MIPS_CPU_MIPS32
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS32R2
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS32R5
 	bool
 config BR2_MIPS_CPU_MIPS32R6
 	bool
+	select BR2_MIPS_NAN_2008
 config BR2_MIPS_CPU_MIPS64
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS64R2
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS64R5
 	bool
 config BR2_MIPS_CPU_MIPS64R6
 	bool
+	select BR2_MIPS_NAN_2008
 
 choice
 	prompt "Target Architecture Variant"
@@ -51,6 +57,7 @@ config BR2_mips_m5150
 	bool "M5150"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+	select BR2_MIPS_NAN_2008
 config BR2_mips_m6250
 	bool "M6250"
 	depends on !BR2_ARCH_IS_64
@@ -59,6 +66,7 @@ config BR2_mips_p5600
 	bool "P5600"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+	select BR2_MIPS_NAN_2008
 config BR2_mips_xburst
 	bool "XBurst"
 	depends on !BR2_ARCH_IS_64
@@ -125,6 +133,33 @@ config BR2_MIPS_SOFT_FLOAT
 	  or a kernel FPU emulator, but you still wish to support
 	  floating point functions, then everything will need to be
 	  compiled with soft floating point support (-msoft-float).
+
+config BR2_MIPS_NAN_LEGACY
+	bool
+
+config BR2_MIPS_NAN_2008
+	bool
+
+choice
+	prompt "Target NaN"
+	depends on BR2_mips_32r5 || BR2_mips_64r5
+	default BR2_MIPS_ENABLE_NAN_2008
+	help
+	  NaN encoding to be used
+
+config BR2_MIPS_ENABLE_NAN_LEGACY
+	bool "legacy"
+	select BR2_MIPS_NAN_LEGACY
+
+config BR2_MIPS_ENABLE_NAN_2008
+	bool "2008"
+	depends on !BR2_MIPS_SOFT_FLOAT
+	select BR2_MIPS_NAN_2008
+endchoice
+
+config BR2_GCC_TARGET_NAN
+	default "legacy"	if BR2_MIPS_NAN_LEGACY
+	default "2008"		if BR2_MIPS_NAN_2008
 
 config BR2_ARCH
 	default "mips"		if BR2_mips
