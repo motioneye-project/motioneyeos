@@ -29,11 +29,16 @@ PYTHON_WEB2PY_EXCLUSIONS = \
 	setup.py \
 	tox.ini
 
-define PYTHON_WEB2PY_INSTALL_TARGET_CMDS
+define PYTHON_WEB2PY_GENERATE_PASSWORD
 	$(HOST_DIR)/bin/python2 -c 'import os; \
 		os.chdir("$(@D)"); \
 		from gluon.main import save_password; \
 		save_password($(BR2_PACKAGE_PYTHON_WEB2PY_PASSWORD),8000)'
+endef
+
+PYTHON_WEB2PY_POST_BUILD_HOOKS += PYTHON_WEB2PY_GENERATE_PASSWORD
+
+define PYTHON_WEB2PY_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/var/www/web2py
 	rsync -a $(@D)/ $(TARGET_DIR)/var/www/web2py/ \
 		$(addprefix --exclude=,$(PYTHON_WEB2PY_EXCLUSIONS))
