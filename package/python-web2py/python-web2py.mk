@@ -10,13 +10,33 @@ PYTHON_WEB2PY_LICENSE = LGPL-3.0
 PYTHON_WEB2PY_LICENSE_FILES = LICENSE
 PYTHON_WEB2PY_DEPENDENCIES = python python-pydal host-python-pydal
 
+PYTHON_WEB2PY_EXCLUSIONS = \
+	welcome.w2p \
+	applications/examples \
+	applications/welcome \
+	deposit \
+	docs \
+	examples \
+	extras \
+	handlers \
+	scripts \
+	ABOUT \
+	anyserver.py \
+	CHANGELOG \
+	Makefile \
+	MANIFEST.in \
+	README.markdown \
+	setup.py \
+	tox.ini
+
 define PYTHON_WEB2PY_INSTALL_TARGET_CMDS
 	$(HOST_DIR)/bin/python2 -c 'import os; \
 		os.chdir("$(@D)"); \
 		from gluon.main import save_password; \
 		save_password($(BR2_PACKAGE_PYTHON_WEB2PY_PASSWORD),8000)'
 	mkdir -p $(TARGET_DIR)/var/www/web2py
-	cp -dpfr $(@D)/* $(TARGET_DIR)/var/www/web2py
+	rsync -a $(@D)/ $(TARGET_DIR)/var/www/web2py/ \
+		$(addprefix --exclude=,$(PYTHON_WEB2PY_EXCLUSIONS))
 endef
 
 define PYTHON_WEB2PY_INSTALL_INIT_SYSV
