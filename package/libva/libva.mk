@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVA_VERSION = 1.8.2
+LIBVA_VERSION = 1.8.3
 LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
 LIBVA_SITE = https://github.com/01org/libva/releases/download/$(LIBVA_VERSION)
 LIBVA_LICENSE = MIT
@@ -15,7 +15,6 @@ LIBVA_DEPENDENCIES = host-pkgconf libdrm
 # libdrm is a hard-dependency
 LIBVA_CONF_OPTS = \
 	--enable-drm \
-	--disable-dummy-driver \
 	--with-drivers-path="/usr/lib/va"
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
