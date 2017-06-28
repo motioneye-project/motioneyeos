@@ -134,6 +134,30 @@ config BR2_MIPS_SOFT_FLOAT
 	  floating point functions, then everything will need to be
 	  compiled with soft floating point support (-msoft-float).
 
+choice
+	prompt "FP mode"
+	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
+	default BR2_MIPS_FP32_MODE_XX
+	help
+	  FP mode to be used
+
+config BR2_MIPS_FP32_MODE_32
+	bool "32"
+	depends on !BR2_MIPS_CPU_MIPS32R6
+
+config BR2_MIPS_FP32_MODE_XX
+	bool "xx"
+
+config BR2_MIPS_FP32_MODE_64
+	bool "64"
+	depends on !BR2_MIPS_CPU_MIPS32
+endchoice
+
+config BR2_GCC_TARGET_FP32_MODE
+	default "32"	if BR2_MIPS_FP32_MODE_32
+	default "xx"	if BR2_MIPS_FP32_MODE_XX
+	default "64"	if BR2_MIPS_FP32_MODE_64
+
 config BR2_MIPS_NAN_LEGACY
 	bool
 

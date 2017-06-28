@@ -267,6 +267,9 @@ config BR2_GCC_TARGET_ABI
 config BR2_GCC_TARGET_NAN
 	string
 
+config BR2_GCC_TARGET_FP32_MODE
+	string
+
 config BR2_GCC_TARGET_CPU
 	string
 

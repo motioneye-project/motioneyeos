@@ -254,6 +254,20 @@ int main(int argc, char **argv)
 		*cur++ = "-mfloat-abi=" BR_FLOAT_ABI;
 #endif
 
+#ifdef BR_FP32_MODE
+	/* add fp32 mode if soft-float is not args or hard-float overrides soft-float */
+	int add_fp32_mode = 1;
+	for (i = 1; i < argc; i++) {
+		if (!strcmp(argv[i], "-msoft-float"))
+			add_fp32_mode = 0;
+		else if (!strcmp(argv[i], "-mhard-float"))
+			add_fp32_mode = 1;
+	}
+
+	if (add_fp32_mode == 1)
+		*cur++ = "-mfp" BR_FP32_MODE;
+#endif
+
 #if defined(BR_ARCH) || \
     defined(BR_CPU)
 	/* Add our -march/cpu flags, but only if none of
