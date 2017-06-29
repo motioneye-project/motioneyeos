@@ -3,6 +3,7 @@ import argparse
 import sys
 import os
 import nose2
+import multiprocessing
 
 from infra.basetest import BRTest
 
@@ -23,6 +24,8 @@ def main():
     parser.add_argument('-k', '--keep',
                         help='keep build directories',
                         action='store_true')
+    parser.add_argument('-t', '--testcases', type=int, default=1,
+                        help='number of testcases to run simultaneously')
     parser.add_argument('-j', '--jlevel', type=int,
                         help='BR2_JLEVEL to use for each testcase')
 
@@ -72,15 +75,30 @@ def main():
 
     BRTest.keepbuilds = args.keep
 
+    if args.testcases != 1:
+        if args.testcases < 1:
+            print "Invalid number of testcases to run simultaneously"
+            print ""
+            parser.print_help()
+            return 1
+        # same default BR2_JLEVEL as package/Makefile.in
+        br2_jlevel = 1 + multiprocessing.cpu_count()
+        each_testcase = br2_jlevel / args.testcases
+        if each_testcase < 1:
+            each_testcase = 1
+        BRTest.jlevel = each_testcase
+
     if args.jlevel:
         if args.jlevel < 0:
             print "Invalid BR2_JLEVEL to use for each testcase"
             print ""
             parser.print_help()
             return 1
+        # the user can override the auto calculated value
         BRTest.jlevel = args.jlevel
 
     nose2_args = ["-v",
+                  "-N", str(args.testcases),
                   "-s", "support/testing",
                   "-c", "support/testing/conf/unittest.cfg"]
 
