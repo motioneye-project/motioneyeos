@@ -80,9 +80,6 @@ class Emulator(object):
         # works as expected.
         return data.replace("\r\r", "\r")
 
-    def __write(self, wstr):
-        self.qemu.send(wstr)
-
     # Wait for the login prompt to appear, and then login as root with
     # the provided password, or no password if not specified.
     def login(self, password=None):
@@ -91,10 +88,10 @@ class Emulator(object):
             self.logfile.write("==> System does not boot")
             raise SystemError("System does not boot")
 
-        self.__write("root\n")
+        self.qemu.sendline("root")
         if password:
             self.__read_until("Password:")
-            self.__write(password + "\n")
+            self.qemu.sendline(password)
         self.__read_until("# ")
         if "# " not in self.log:
             raise SystemError("Cannot login")
@@ -103,12 +100,12 @@ class Emulator(object):
     # Run the given 'cmd' on the target
     # return a tuple (output, exit_code)
     def run(self, cmd):
-        self.__write(cmd + "\n")
+        self.qemu.sendline(cmd)
         output = self.__read_until("# ")
         output = output.strip().splitlines()
         output = output[1:len(output)-1]
 
-        self.__write("echo $?\n")
+        self.qemu.sendline("echo $?")
         exit_code = self.__read_until("# ")
         exit_code = exit_code.strip().splitlines()[1]
         exit_code = int(exit_code)
