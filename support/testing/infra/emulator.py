@@ -1,7 +1,7 @@
 import pexpect
 
 import infra
-import infra.basetest
+
 
 class Emulator(object):
 
