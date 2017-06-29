@@ -7,26 +7,6 @@
   if such options contain a +$+ sign. For example, the following is known
   to break: +BR2_TARGET_LDFLAGS="-Wl,-rpath=\'$ORIGIN/../lib'"+
 
-* The +ltp-testsuite+ package does not build with the default uClibc
-  configuration used by the Buildroot toolchain backend. The LTP
-  testsuite uses several functions that are considered obsolete, such
-  as sigset() and others. uClibc configuration options such as
-  DO_XSI_MATH, UCLIBC_HAS_OBSOLETE_BSD_SIGNAL and
-  UCLIBC_SV4_DEPRECATED are needed if one wants to build the
-  +ltp-testsuite+ package with uClibc. You need to either use a glibc
-  based toolchain, or enable the appropriate options in the uClibc
-  configuration.
-
-* The +xfsprogs+ package does not build with the default uClibc
-  configuration used by the Buildroot toolchain backend. You need to
-  either use a glibc based toolchain, or enable the appropriate
-  options in the uClibc configuration.
-
-* The +mrouted+ package does not build with the default uClibc
-  configuration used by the Buildroot toolchain backend. You need to
-  either use a glibc based toolchain, or enable the appropriate
-  options in the uClibc configuration.
-
 * The +libffi+ package is not supported on the SuperH 2 and ARC
   architectures.
 
