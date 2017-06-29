@@ -95,6 +95,9 @@ F:	package/python-scandir/
 F:	package/python-simplegeneric/
 F:	package/python-traitlets/
 
+N:	Andrey Yurovsky <yurovsky@gmail.com>
+F:	package/rauc/
+
 N:	Andy Kennedy <andy.kennedy@adtran.com>
 F:	package/libunwind/
 
