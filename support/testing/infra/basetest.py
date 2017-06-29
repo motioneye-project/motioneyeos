@@ -34,6 +34,7 @@ class BRTest(unittest.TestCase):
     outputdir = None
     logtofile = True
     keepbuilds = False
+    jlevel = None
 
     def show_msg(self, msg):
         print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
@@ -43,7 +44,10 @@ class BRTest(unittest.TestCase):
         self.builddir = os.path.join(self.__class__.outputdir, self.testname)
         self.emulator = None
         self.show_msg("Starting")
-        self.b = Builder(self.__class__.config, self.builddir, self.logtofile)
+        config = self.__class__.config
+        if self.jlevel:
+            config += "BR2_JLEVEL={}\n".format(self.jlevel)
+        self.b = Builder(config, self.builddir, self.logtofile)
 
         if not self.keepbuilds:
             self.b.delete()

@@ -23,6 +23,8 @@ def main():
     parser.add_argument('-k', '--keep',
                         help='keep build directories',
                         action='store_true')
+    parser.add_argument('-j', '--jlevel', type=int,
+                        help='BR2_JLEVEL to use for each testcase')
 
     args = parser.parse_args()
 
@@ -69,6 +71,14 @@ def main():
         return 1
 
     BRTest.keepbuilds = args.keep
+
+    if args.jlevel:
+        if args.jlevel < 0:
+            print "Invalid BR2_JLEVEL to use for each testcase"
+            print ""
+            parser.print_help()
+            return 1
+        BRTest.jlevel = args.jlevel
 
     nose2_args = ["-v",
                   "-s", "support/testing",
