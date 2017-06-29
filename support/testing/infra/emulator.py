@@ -67,6 +67,8 @@ class Emulator(object):
 
         self.logfile.write("> starting qemu with '%s'\n" % " ".join(qemu_cmd))
         self.qemu = pexpect.spawn(qemu_cmd[0], qemu_cmd[1:])
+        # We want only stdout into the log to avoid double echo
+        self.qemu.logfile_read = self.logfile
 
     def __read_until(self, waitstr, timeout=5):
         index = self.qemu.expect([waitstr, pexpect.TIMEOUT], timeout=timeout)
@@ -74,7 +76,6 @@ class Emulator(object):
         if index == 0:
             data += self.qemu.after
         self.log += data
-        self.logfile.write(data)
         # Remove double carriage return from qemu stdout so str.splitlines()
         # works as expected.
         return data.replace("\r\r", "\r")
