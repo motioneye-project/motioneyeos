@@ -1,4 +1,5 @@
-# From https://lists.gnupg.org/pipermail/gnupg-announce/2017q2/000406.html
-sha1  ea4ae1a4dba51f15095319419d7b42a0bf160384  libgcrypt-1.7.7.tar.bz2
-# Locally calculated
-sha256  b9b85eba0793ea3e6e66b896eb031fa05e1a4517277cc9ab10816b359254cd9a  libgcrypt-1.7.7.tar.bz2
+# From https://lists.gnupg.org/pipermail/gnupg-announce/2017q2/000408.html
+sha1  65a4a495aa858483e66868199eaa8238572ca6cd  libgcrypt-1.7.8.tar.bz2
+# Locally calculated after checking signature
+# https://gnupg.org/ftp/gcrypt/libgcrypt/libgcrypt-1.7.8.tar.bz2.sig
+sha256  948276ea47e6ba0244f36a17b51dcdd52cfd1e664b0a1ac3bc82134fb6cec199  libgcrypt-1.7.8.tar.bz2
