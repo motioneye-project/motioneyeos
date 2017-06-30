@@ -34,6 +34,12 @@ check-gitlab-ci.yml:
         - make .gitlab-ci.yml
         - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
 
+check-DEVELOPERS:
+    script:
+        - PYTHONPATH=$PWD/support/scripts
+                python -c 'from getdeveloperlib import parse_developers; parse_developers()' |
+                grep . && exit 1
+
 .defconfig: &defconfig
     # Running the defconfigs for every push is too much, so limit to
     # explicit triggers through the API.
