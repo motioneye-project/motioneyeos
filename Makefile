@@ -813,6 +813,14 @@ else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 all: menuconfig
 
+# Some subdirectories are also package names. To avoid that "make linux"
+# on an unconfigured tree produces "Nothing to be done", add an explicit
+# rule for it.
+.PHONY: linux toolchain
+linux toolchain:
+	$(error Please configure Buildroot first (e.g. "make menuconfig"))
+	@exit 1
+
 endif # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 # configuration
