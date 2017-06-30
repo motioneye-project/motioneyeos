@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FMT_VERSION = 3.0.1
+FMT_VERSION = 4.0.0
 FMT_SITE = $(call github,fmtlib,fmt,$(FMT_VERSION))
 FMT_LICENSE = BSD-2-Clause
 FMT_LICENSE_FILES = LICENSE.rst
