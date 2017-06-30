@@ -13,13 +13,16 @@ flags passed by Buildroot.
  - rebase on top of 3.0.1 release]
 [Bernd:
  - rebase on top of 3.0.5 release]
+[Benoît:
+ - rebase on top of 3.0.6 release]
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Romain Naour <romain.naour@openwide.fr>
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
 ---
- Make.defaults | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ Make.defaults |   22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/Make.defaults b/Make.defaults
 index 51bd7d8..7d7e8e7 100755
@@ -43,12 +46,15 @@ index 51bd7d8..7d7e8e7 100755
    ifeq ($(HOSTARCH),x86_64)
      ARCH3264 = -m32
    endif
-@@ -108,17 +108,17 @@ ifeq ($(ARCH),x86_64)
+@@ -109,19 +109,19 @@ ifeq ($(ARCH),x86_64)
                                   && [ $(GCCMINOR) -ge "7" ] ) ) \
                            && echo 1)
    ifeq ($(GCCNEWENOUGH),1)
 -    CPPFLAGS += -DGNU_EFI_USE_MS_ABI -maccumulate-outgoing-args --std=c11
 +    override CPPFLAGS += -DGNU_EFI_USE_MS_ABI -maccumulate-outgoing-args --std=c11
+   else ifeq ($(USING_CLANG),clang)
+-    CPPFLAGS += -DGNU_EFI_USE_MS_ABI --std=c11
++    override CPPFLAGS += -DGNU_EFI_USE_MS_ABI --std=c11
    endif
  
 -  CFLAGS += -mno-red-zone
@@ -64,7 +70,7 @@ index 51bd7d8..7d7e8e7 100755
    ARCH3264 = -mabi=64
  endif
  
-@@ -139,7 +139,7 @@ export LIBGCC=$(shell $(CC) $(ARCH3264) -print-libgcc-file-name)
+@@ -142,7 +142,7 @@ export LIBGCC=$(shell $(CC) $(ARCH3264)
  endif
  
  ifeq ($(ARCH),arm)
@@ -73,7 +79,7 @@ index 51bd7d8..7d7e8e7 100755
  endif
  
  # Generic compilation flags
-@@ -149,7 +149,7 @@ INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -I$(TOPDIR)/inc/$(ARCH) \
+@@ -152,15 +152,15 @@ INCDIR  += -I$(SRCDIR) -I$(TOPDIR)/inc -
  # Only enable -fpic for non MinGW compilers (unneeded on MinGW)
  GCCMACHINE := $(shell $(CC) -dumpmachine)
  ifneq (mingw32,$(findstring mingw32, $(GCCMACHINE)))
@@ -82,14 +88,15 @@ index 51bd7d8..7d7e8e7 100755
  endif
  
  ifeq (FreeBSD, $(findstring FreeBSD, $(OS)))
-@@ -157,7 +157,7 @@ CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
+-CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
++override CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
             -fshort-wchar -fno-strict-aliasing \
             -ffreestanding -fno-stack-protector
  else
 -CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
 +override CFLAGS  += $(ARCH3264) -g -O2 -Wall -Wextra -Werror \
             -fshort-wchar -fno-strict-aliasing \
-            -fno-merge-constants -ffreestanding -fno-stack-protector \
+            -fno-merge-all-constants -ffreestanding -fno-stack-protector \
             -fno-stack-check
 -- 
 2.11.0
