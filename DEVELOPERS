@@ -605,7 +605,7 @@ F:	package/qemu/
 F:	package/sdl2_mixer/
 F:	package/sdl2_net/
 F:	package/tekui/
-F:	support/scripts/scancpan
+F:	utils/scancpan
 
 N:	Frank Hunleth <fhunleth@troodon-software.com>
 F:	package/am335x-pru-package/
@@ -1391,8 +1391,8 @@ N:	Rhys Williams <github@wilberforce.co.nz>
 F:	package/lirc-tools/
 
 N:	Ricardo Martincoski <ricardo.martincoski@gmail.com>
-F:	tools/check-package
-F:	tools/checkpackagelib/
+F:	utils/check-package
+F:	utils/checkpackagelib/
 
 N:	Richard Braun <rbraun@sceen.net>
 F:	package/curlftpfs/
@@ -1631,7 +1631,7 @@ N:	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
 F:	docs/manual/
 F:	package/opkg-utils/
 F:	support/scripts/size-stats
-F:	support/scripts/size-stats-compare
+F:	utils/size-stats-compare
 F:	toolchain/
 
 N:	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
@@ -1835,7 +1835,7 @@ F:	package/ti-utils/
 F:	package/x11r7/xapp_xconsole/
 F:	package/x11r7/xapp_xinput-calibrator/
 F:	package/zlog/
-F:	support/scripts/scanpypi
+F:	utils/scanpypi
 
 N:	Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
 F:	package/crudini/
