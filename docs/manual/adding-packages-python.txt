@@ -167,7 +167,7 @@ possible to customize what is done in any particular step:
 
 If the Python package for which you would like to create a Buildroot
 package is available on PyPI, you may want to use the +scanpypi+ tool
-located in +support/scripts+ to automate the process.
+located in +utils/+ to automate the process.
 
 You can find the list of existing PyPI packages
 https://pypi.python.org[here].
@@ -178,7 +178,7 @@ your host.
 When at the root of your buildroot directory just do :
 
 -----------------------
-./support/scripts/scanpypi foo bar -o package
+utils/scanpypi foo bar -o package
 -----------------------
 
 This will generate packages +python-foo+ and +python-bar+ in the package
@@ -198,7 +198,7 @@ If your Buildroot package is not in the official Buildroot tree but in
 a br2-external tree, use the -o flag as follows:
 
 -----------------------
-./support/scripts/scanpypi foo bar -o other_package_dir
+utils/scanpypi foo bar -o other_package_dir
 -----------------------
 
 This will generate packages +python-foo+ and +python-bar+ in the
@@ -207,7 +207,7 @@ This will generate packages +python-foo+ and +python-bar+ in the
 Option +-h+ will list the available options:
 
 -----------------------
-./support/scripts/scanpypi -h
+utils/scanpypi -h
 -----------------------
 
 [[python-package-cffi-backend]]

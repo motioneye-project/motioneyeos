@@ -326,7 +326,7 @@ Buildroot release, use the +size-stats-compare+ script. It takes two
 Refer to the help text of this script for more details:
 
 ----------------
-support/scripts/size-stats-compare -h
+utils/size-stats-compare -h
 ----------------
 
 include::eclipse-integration.txt[]
