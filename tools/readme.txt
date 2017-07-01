@@ -15,6 +15,10 @@ scancpan
     a script to create a Buildroot package by scanning a CPAN module
     description.
 
+scanpypi
+    a script to create a Buildroot package by scanning a PyPI package
+    description.
+
 size-stat-compare
     a script to compare the rootfs size between two differnt Buildroot
     configurations. This can be used to identify the size impact of
