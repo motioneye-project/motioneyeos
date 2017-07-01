@@ -35,8 +35,11 @@ check-gitlab-ci.yml:
         - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
 
 check-DEVELOPERS:
+    # get-developers should print just "No action specified"; if it prints
+    # anything else, it's a parse error.
+    # The initial ! is removed by YAML so we need to quote it.
     script:
-        - ! utils/get-developers | grep -v 'No action specified'
+        - "! utils/get-developers | grep -v 'No action specified'"
 
 .defconfig: &defconfig
     # Running the defconfigs for every push is too much, so limit to
