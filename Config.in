@@ -436,7 +436,7 @@ endchoice
 
 config BR2_STRIP_EXCLUDE_FILES
 	string "executables that should not be stripped"
-	depends on !BR2_STRIP_none
+	depends on BR2_STRIP_strip
 	default ""
 	help
 	  You may specify a space-separated list of binaries and
@@ -444,7 +444,7 @@ config BR2_STRIP_EXCLUDE_FILES
 
 config BR2_STRIP_EXCLUDE_DIRS
 	string "directories that should be skipped when stripping"
-	depends on !BR2_STRIP_none
+	depends on BR2_STRIP_strip
 	default ""
 	help
 	  You may specify a space-separated list of directories that
