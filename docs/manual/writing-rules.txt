@@ -146,5 +146,6 @@ syntax, refer to http://www.methods.co.nz/asciidoc/userguide.html[].
 
 === Support scripts
 
-Some scripts in the +support/+ directory are written in Python and should follow
-the https://www.python.org/dev/peps/pep-0008/[PEP8 Style Guide for Python Code].
+Some scripts in the +support/+ and +tools/+ directories are written in
+Python and should follow the
+https://www.python.org/dev/peps/pep-0008/[PEP8 Style Guide for Python Code].
