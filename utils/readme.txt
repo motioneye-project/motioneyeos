@@ -28,10 +28,10 @@ scanpypi
     a script to create a Buildroot package by scanning a PyPI package
     description.
 
-size-stat-compare
-    a script to compare the rootfs size between two differnt Buildroot
+size-stats-compare
+    a script to compare the rootfs size between two different Buildroot
     configurations. This can be used to identify the size impact of
-    a specific option, or of a set of specific options, or an update
+    a specific option, of a set of specific options, or of an update
     to a newer Buildroot version...
 
 test-pkg
