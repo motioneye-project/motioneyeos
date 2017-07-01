@@ -11,6 +11,12 @@ get-developpers
     of Buildroot, so they can be Cc:ed on a mail. Accepts a patch as
     input, a package name or and architecture name.
 
+size-stat-compare
+    a script to compare the rootfs size between two differnt Buildroot
+    configurations. This can be used to identify the size impact of
+    a specific option, or of a set of specific options, or an update
+    to a newer Buildroot version...
+
 test-pkg
     a script that tests a specific package against a set of various
     toolchains, with the goal to detect toolchain-related dependencies
