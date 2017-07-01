@@ -295,7 +295,7 @@ information). This tool reads your patches and outputs the appropriate
 +git send-email+ command to use:
 
 ---------------------
-$ ./tools/get-developers outgoing/*
+$ ./utils/get-developers outgoing/*
 ---------------------
 
 Use the output of +get-developers+ to send your patches:

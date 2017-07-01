@@ -1,4 +1,4 @@
-# See tools/checkpackagelib/readme.txt before editing this file.
+# See utils/checkpackagelib/readme.txt before editing this file.
 # The format of the patch files is tested during the build, so below check
 # functions don't need to check for things already checked by running
 # "make package-dirclean package-patch".

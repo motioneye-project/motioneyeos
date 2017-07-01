@@ -1,4 +1,4 @@
-# See tools/checkpackagelib/readme.txt before editing this file.
+# See utils/checkpackagelib/readme.txt before editing this file.
 # The validity of the hashes itself is checked when building, so below check
 # functions don't need to check for things already checked by running
 # "make package-dirclean package-source".

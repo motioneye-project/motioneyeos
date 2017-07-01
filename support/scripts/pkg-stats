@@ -337,7 +337,7 @@ for i in $(find boot/ linux/ package/ toolchain/ -name '*.mk' | sort) ; do
     fi
 
     file_list=$(find ${package_dir} -name '*.mk' -o -name '*.in*' -o -name '*.hash')
-    nwarnings=$(./tools/check-package ${file_list} 2>&1 | sed '/\([0-9]*\) warnings generated/!d; s//\1/')
+    nwarnings=$(./utils/check-package ${file_list} 2>&1 | sed '/\([0-9]*\) warnings generated/!d; s//\1/')
     if [ ${nwarnings} -eq 0 ] ; then
 	echo "<td class=\"centered correct\">${nwarnings}</td>"
     else
