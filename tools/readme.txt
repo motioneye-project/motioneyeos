@@ -11,6 +11,10 @@ get-developpers
     of Buildroot, so they can be Cc:ed on a mail. Accepts a patch as
     input, a package name or and architecture name.
 
+scancpan
+    a script to create a Buildroot package by scanning a CPAN module
+    description.
+
 size-stat-compare
     a script to compare the rootfs size between two differnt Buildroot
     configurations. This can be used to identify the size impact of
