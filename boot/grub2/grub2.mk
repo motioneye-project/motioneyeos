@@ -46,7 +46,7 @@ endif
 # bootloader itself; none of these are used to build the native
 # tools.
 #
-# NOTE: TARGET_STRIP is overridden by BR2_STRIP_none, so always
+# NOTE: TARGET_STRIP is overridden by !BR2_STRIP_strip, so always
 # use the cross compile variant to ensure grub2 builds
 
 GRUB2_CONF_ENV = \

@@ -414,25 +414,16 @@ config BR2_DEBUG_3
 endchoice
 endif
 
-choice
-	prompt "strip command for binaries on target"
-	default BR2_STRIP_strip
-
 config BR2_STRIP_strip
-	bool "strip"
+	bool "strip target binaries"
 	depends on !BR2_PACKAGE_HOST_ELF2FLT
+	default y
 	help
 	  Binaries and libraries in the target filesystem will be
 	  stripped using the normal 'strip' command. This allows to save
 	  space, mainly by removing debugging symbols. Debugging symbols
 	  on the target are needed for native debugging, but not when
 	  remote debugging is used.
-
-config BR2_STRIP_none
-	bool "none"
-	help
-	  Do not strip binaries and libraries in the target filesystem.
-endchoice
 
 config BR2_STRIP_EXCLUDE_FILES
 	string "executables that should not be stripped"

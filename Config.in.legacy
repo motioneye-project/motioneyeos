@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_STRIP_none
+	bool "Strip command 'none' has been removed"
+	select BR2_LEGACY
+	help
+	  The strip command choice has been changed into a single
+	  boolean option. Please check that the new setting is
+	  correct (in the "Build options" sub-menu)
+
 config BR2_PACKAGE_BEECRYPT_CPP
 	bool "C++ support removed in beecrypt"
 	select BR2_LEGACY
