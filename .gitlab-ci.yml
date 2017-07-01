@@ -36,9 +36,7 @@ check-gitlab-ci.yml:
 
 check-DEVELOPERS:
     script:
-        - PYTHONPATH=$PWD/support/scripts
-                python -c 'from getdeveloperlib import parse_developers; parse_developers()' |
-                grep . && exit 1
+        - ! utils/get-developers | grep -v 'No action specified'
 
 .defconfig: &defconfig
     # Running the defconfigs for every push is too much, so limit to
