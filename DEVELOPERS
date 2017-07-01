@@ -343,7 +343,9 @@ F:	package/libsvg-cairo/
 
 N:	Chakra Divi <chakra@openedev.com>
 F:	board/olimex/a13_olinuxino
+F:	board/orangepi/orangepi-plus
 F:	configs/olimex_a13_olinuxino_defconfig
+F:	configs/orangepi_plus_defconfig
 
 N:	Chris Packham <judge.packham@gmail.com>
 F:	package/eventlog/
