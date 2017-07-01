@@ -1,4 +1,4 @@
-# See support/scripts/checkpackagelib/readme.txt before editing this file.
+# See tools/checkpackagelib/readme.txt before editing this file.
 # Kconfig generates errors if someone introduces a typo like "boool" instead of
 # "bool", so below check functions don't need to check for things already
 # checked by running "make menuconfig".

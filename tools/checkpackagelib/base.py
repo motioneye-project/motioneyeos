@@ -1,4 +1,4 @@
-# See support/scripts/checkpackagelib/readme.txt before editing this file.
+# See tools/checkpackagelib/readme.txt before editing this file.
 
 
 class _CheckFunction(object):

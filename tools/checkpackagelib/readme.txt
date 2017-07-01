@@ -57,19 +57,19 @@ Some hints when changing this code:
 Usage examples:
 - to get a list of check functions that would be called without actually
   calling them you can use the --dry-run option:
-$ support/scripts/check-package --dry-run package/yourfavorite/*
+$ tools/check-package --dry-run package/yourfavorite/*
 
 - when you just added a new check function, e.g. Something, check how it behaves
   for all current packages:
-$ support/scripts/check-package --include-only Something $(find package -type f)
+$ tools/check-package --include-only Something $(find package -type f)
 
 - the effective processing time (when the .pyc were already generated and all
   files to be processed are cached in the RAM) should stay in the order of few
   seconds:
-$ support/scripts/check-package $(find package -type f) >/dev/null ; \
-  time support/scripts/check-package $(find package -type f) >/dev/null
+$ tools/check-package $(find package -type f) >/dev/null ; \
+  time tools/check-package $(find package -type f) >/dev/null
 
 - vim users can navigate the warnings (most editors probably have similar
   function) since warnings are generated in the form 'path/file:line: warning':
 $ find package/ -name 'Config.*' > filelist && vim -c \
-  'set makeprg=support/scripts/check-package\ $(cat\ filelist)' -c make -c copen
+  'set makeprg=tools/check-package\ $(cat\ filelist)' -c make -c copen
