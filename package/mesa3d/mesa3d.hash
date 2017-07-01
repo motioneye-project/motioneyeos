@@ -1,5 +1,5 @@
-# From https://lists.freedesktop.org/archives/mesa-announce/2017-June/000337.html
-md5 1946a93d543bc219427e2bebe2ac4752  mesa-17.1.3.tar.xz
-sha1 c79c420d9ecb08ed56d106427528793bdd3ab7ab  mesa-17.1.3.tar.xz
-sha256 5f1ee9a8aea2880f887884df2dea0c16dd1b13eb42fd2e52265db0dc1b380e8c mesa-17.1.3.tar.xz
-sha512 b487d4f3d7717f379e7aaf66958bbef886fbae219e6e0333123c4623dc7db84109aca8cf07be08c0b79a74bdb198c704073fd549c6e85aa952ed3c97da1a8a94 mesa-17.1.3.tar.xz
+# From https://lists.freedesktop.org/archives/mesa-announce/2017-June/000339.html
+md5 be2ef7c9edec23b07f74f6512a6a6fa5  mesa-17.1.4.tar.xz
+sha1 70a6c971125f754b78e502ade668bd02e46074d6  mesa-17.1.4.tar.xz
+sha256 06f3b0e6a28f0d20b7f3391cf67fe89ae98ecd0a686cd545da76557b6cec9cad  mesa-17.1.4.tar.xz
+sha512 cb8369f0edd3e17b4eee8da159b9dc487f8144d69fe4b95901e9aa6a924759866f26f91fc2ead7036707eecea41582185e7ce73d54f97bf310f198b72ee0a8e4  mesa-17.1.4.tar.xz
