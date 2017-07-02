@@ -13,12 +13,6 @@ OPENZWAVE_LICENSE_FILES = license/license.txt license/lgpl.txt \
 OPENZWAVE_DEPENDENCIES = host-pkgconf udev
 OPENZWAVE_INSTALL_STAGING = YES
 
-# This patch fixes incorrect default value of LIBDIR:
-# http://autobuild.buildroot.net/results/68719fdf1320a69310bada6d3c47654dacdb5898
-# This patch is currently in dev branch and will be a part of v1.6
-OPENZWAVE_PATCH = \
-	https://github.com/OpenZWave/open-zwave/commit/599e2a11c6f48dde744012ec45686c08e15f3059.patch
-
 # Set instlibdir to install libopenzwave.so* in the correct directory
 # otherwise openzwave will check that /lib64 exists (on the host) to
 # know if the library should be installed in $(PREFIX)/lib or $(PREFIX)/lib64.
