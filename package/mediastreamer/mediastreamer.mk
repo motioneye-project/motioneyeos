@@ -13,10 +13,6 @@ MEDIASTREAMER_CONF_OPTS = --disable-tests --disable-glx --disable-strict
 MEDIASTREAMER_LICENSE = GPL-2.0+
 MEDIASTREAMER_LICENSE_FILES = COPYING
 
-# fix compilation issue with latest bctoolbox (touches configure.ac)
-MEDIASTREAMER_PATCH = \
-	https://github.com/BelledonneCommunications/mediastreamer2/commit/26f884bf977977041fe6f98a0af186be1580bf22.patch
-
 # patching configure.ac
 MEDIASTREAMER_AUTORECONF = YES
 
