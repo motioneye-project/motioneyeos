@@ -1,0 +1,67 @@
+From a52cfc804813aef8e4b304e20cf843fa6907af6c Mon Sep 17 00:00:00 2001
+From: Chris Robinson <chris.kcat@gmail.com>
+Date: Wed, 7 Sep 2016 09:57:40 -0700
+Subject: [PATCH] Check for run-time NEON support by reading /proc/cpuinfo
+
+Less than ideal since documentations warn it may not list 'neon' even if it's
+really supported. However, the "proper" APIs to check for NEON extensions don't
+seem to exist in my toolchain.
+
+[Upstream commit: https://github.com/kcat/openal-soft/commit/a52cfc804813aef8e4b304e20cf843fa6907afc6]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Alc/helpers.c | 34 ++++++++++++++++++++++++++++++++--
+ 1 file changed, 32 insertions(+), 2 deletions(-)
+
+diff --git a/Alc/helpers.c b/Alc/helpers.c
+index 9b6c7894..4ffda46c 100644
+--- a/Alc/helpers.c
++++ b/Alc/helpers.c
+@@ -32,6 +32,7 @@
+ #include <time.h>
+ #include <errno.h>
+ #include <stdarg.h>
++#include <ctype.h>
+ #ifdef HAVE_MALLOC_H
+ #include <malloc.h>
+ #endif
+@@ -232,8 +233,37 @@ void FillCPUCaps(ALuint capfilter)
+ #endif
+ #endif
+ #ifdef HAVE_NEON
+-    /* Assume Neon support if compiled with it */
+-    caps |= CPU_CAP_NEON;
++    FILE *file = fopen("/proc/cpuinfo", "rt");
++    if(file)
++        ERR("Failed to open /proc/cpuinfo, cannot check for NEON support\n");
++    else
++    {
++        char buf[256];
++        while(fgets(buf, sizeof(buf), file) != NULL)
++        {
++            char *str;
++
++            if(strncmp(buf, "Features\t:", 10) != 0)
++                continue;
++
++            TRACE("Got features string:%s\n", buf+10);
++
++            str = buf;
++            while((str=strstr(str, "neon")) != NULL)
++            {
++                if(isspace(*(str-1)) && (str[4] == 0 || isspace(str[4])))
++                {
++                    caps |= CPU_CAP_NEON;
++                    break;
++                }
++                str++;
++            }
++            break;
++        }
++
++        fclose(file);
++        file = NULL;
++    }
+ #endif
+ 
+     TRACE("Extensions:%s%s%s%s%s%s\n",

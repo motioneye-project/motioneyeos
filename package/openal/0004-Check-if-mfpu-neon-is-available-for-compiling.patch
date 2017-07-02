@@ -1,0 +1,47 @@
+From 46b3e1d08ca10e809eb2e20b6371812958b97e1f Mon Sep 17 00:00:00 2001
+From: Chris Robinson <chris.kcat@gmail.com>
+Date: Mon, 12 Sep 2016 11:31:59 -0700
+Subject: [PATCH] Check if -mfpu=neon is available for compiling the NEON mixer
+
+[Upstream commit: https://github.com/kcat/openal-soft/commit/46b3e1d08ca10e809eb2e20b6371812958b97e1f]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ CMakeLists.txt | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index d92bbb7d..0d3bb5cd 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -364,6 +364,7 @@ SET(SSE_SWITCH "")
+ SET(SSE2_SWITCH "")
+ SET(SSE3_SWITCH "")
+ SET(SSE4_1_SWITCH "")
++SET(FPU_NEON_SWITCH "")
+ IF(NOT MSVC)
+     CHECK_C_COMPILER_FLAG(-msse HAVE_MSSE_SWITCH)
+     IF(HAVE_MSSE_SWITCH)
+@@ -381,6 +382,10 @@ IF(NOT MSVC)
+     IF(HAVE_MSSE4_1_SWITCH)
+         SET(SSE4_1_SWITCH "-msse4.1")
+     ENDIF()
++    CHECK_C_COMPILER_FLAG(-mfpu=neon HAVE_MFPU_NEON_SWITCH)
++    IF(HAVE_MFPU_NEON_SWITCH)
++        SET(FPU_NEON_SWITCH "-mfpu=neon")
++    ENDIF()
+ ENDIF()
+ 
+ CHECK_C_SOURCE_COMPILES("int foo(const char *str, ...) __attribute__((format(printf, 1, 2)));
+@@ -766,8 +771,11 @@ IF(HAVE_ARM_NEON_H)
+     IF(ALSOFT_CPUEXT_NEON)
+         SET(HAVE_NEON 1)
+         SET(ALC_OBJS  ${ALC_OBJS} Alc/mixer_neon.c)
++        IF(FPU_NEON_SWITCH)
++            SET_SOURCE_FILES_PROPERTIES(Alc/mixer_neon.c PROPERTIES
++                                        COMPILE_FLAGS "${FPU_NEON_SWITCH}")
++        ENDIF()
+         SET(CPU_EXTS "${CPU_EXTS}, Neon")
+-        SET_SOURCE_FILES_PROPERTIES(Alc/mixer_neon.c PROPERTIES COMPILE_FLAGS -mfpu=neon)
+     ENDIF()
+ ENDIF()
+ IF(ALSOFT_REQUIRE_NEON AND NOT HAVE_NEON)
