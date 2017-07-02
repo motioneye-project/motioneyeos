@@ -4,19 +4,7 @@
 # It needs to be regenerated every time a defconfig is added, using
 # "make .gitlab-ci.yml".
 
-image: debian:stable
-
-before_script:
-    - dpkg --add-architecture i386
-    # The container has no package lists, so need to update first
-    - apt-get update -qq
-    - apt-get install -y -qq --no-install-recommends
-        build-essential locales bc ca-certificates file rsync gcc-multilib
-        git bzr cvs mercurial subversion libc6:i386 unzip wget cpio
-        python-nose2 python-pexpect qemu-system-arm qemu-system-x86
-    # To be able to generate a toolchain with locales, enable one UTF-8 locale
-    - sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
-    - /usr/sbin/locale-gen
+image: buildroot/base
 
 .defconfig_script: &defconfig_script
     - echo 'Configure Buildroot'
