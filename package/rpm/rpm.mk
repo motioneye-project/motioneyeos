@@ -11,12 +11,9 @@ RPM_SITE = http://ftp.rpm.org/releases/rpm-$(RPM_VERSION_MAJOR).x
 RPM_DEPENDENCIES = host-pkgconf berkeleydb file popt zlib
 RPM_LICENSE = GPL-2.0 or LGPL-2.0 (library only)
 RPM_LICENSE_FILES = COPYING
-RPM_PATCH = \
-	https://github.com/rpm-software-management/rpm/commit/b5f1895aae096836d6e8e155ee289e1b10fcabcb.patch \
-	https://github.com/rpm-software-management/rpm/commit/c810a0aca3f1148d2072d44b91b8cc9caeb4cf19.patch
 
-# b5f1895aae096836d6e8e155ee289e1b10fcabcb.patch
-# c810a0aca3f1148d2072d44b91b8cc9caeb4cf19.patch
+# 0001-configure-ac-use-link-instead-of-compile-for-gcc-flags-test.patch
+# 0002-configure-ac-correct-stack-protector-check.patch
 RPM_AUTORECONF = YES
 
 RPM_CONF_OPTS = \
