@@ -1,0 +1,44 @@
+From f4fcd8c788a4854d4ebae400cf55e3957f906835 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Tue, 20 Jun 2017 16:42:11 +0100
+Subject: [PATCH] configure.ac: detect MIPS ABI
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[Upstream commit: ttps://github.com/openssh/openssh-portable/commit/f4fcd8c788a4854d4ebae400cf55e3957f906835]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 18079acba..f990cfe08 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -746,6 +746,27 @@ main() { if (NSVersionOfRunTimeLibrary("System") >= (60 << 16))
+ 	fi
+ 	AC_CHECK_HEADERS([linux/seccomp.h linux/filter.h linux/audit.h], [],
+ 	    [], [#include <linux/types.h>])
++	# Obtain MIPS ABI
++	case "$host" in
++	mips*)
++		AC_COMPILE_IFELSE([
++#if _MIPS_SIM != _ABIO32
++#error
++#endif
++			],[mips_abi="o32"],[AC_COMPILE_IFELSE([
++#if _MIPS_SIM != _ABIN32
++#error
++#endif
++				],[mips_abi="n32"],[AC_COMPILE_IFELSE([
++#if _MIPS_SIM != _ABI64
++#error
++#endif
++					],[mips_abi="n64"],[AC_MSG_ERROR([unknown MIPS ABI])
++				])
++			])
++		])
++		;;
++	esac
+ 	AC_MSG_CHECKING([for seccomp architecture])
+ 	seccomp_audit_arch=
+ 	case "$host" in
