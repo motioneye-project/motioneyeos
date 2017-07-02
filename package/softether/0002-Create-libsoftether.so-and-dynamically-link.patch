@@ -1,0 +1,133 @@
+From 75625af541fd128f51079d0ffe5ef24645b8f421 Mon Sep 17 00:00:00 2001
+From: Darik Horn <dajhorn@vanadac.com>
+Date: Sun, 13 Apr 2014 12:51:15 -0400
+Subject: [PATCH] Create libsoftether.so and dynamically link the userland.
+
+Sharing object code between vpnbridge, vpnclient, vpnserver, and vpncmd
+reduces the binary size of SoftEther by 85% and its administrative memory
+footprint by 50%.
+
+[Upstream commit https://github.com/dajhorn/SoftEtherVPN/commit/75625af541fd128f51079d0ffe5ef24645b8f421]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac                 |  1 +
+ src/Makefile.am              |  7 +++++--
+ src/libsoftether/Makefile.am | 34 ++++++++++++++++++++++++++++++++++
+ src/vpnbridge/Makefile.am    |  3 +--
+ src/vpnclient/Makefile.am    |  3 +--
+ src/vpncmd/Makefile.am       |  3 +--
+ src/vpnserver/Makefile.am    |  3 +--
+ 7 files changed, 44 insertions(+), 10 deletions(-)
+ create mode 100644 src/libsoftether/Makefile.am
+
+diff --git a/configure.ac b/configure.ac
+index 4a3fc2ba..94639c44 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -30,6 +30,7 @@ AC_CONFIG_FILES([
+ 	src/Mayaqua/Makefile
+ 	src/Cedar/Makefile
+ 	src/hamcorebuilder/Makefile
++	src/libsoftether/Makefile
+ 	src/bin/hamcore/Makefile
+ 	src/vpnserver/Makefile
+ 	src/vpnclient/Makefile
+diff --git a/src/Makefile.am b/src/Makefile.am
+index dc745426..1d041d47 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -22,5 +22,8 @@ SUBDIRS = Mayaqua Cedar
+ # This is a nodist helper.
+ SUBDIRS += hamcorebuilder
+ 
+-# These are final build products.
+-SUBDIRS += bin/hamcore vpnserver vpnclient vpnbridge vpncmd
++# These are shared components.
++SUBDIRS += libsoftether bin/hamcore
++
++# These are the final build products.
++SUBDIRS += vpnserver vpnclient vpnbridge vpncmd
+diff --git a/src/libsoftether/Makefile.am b/src/libsoftether/Makefile.am
+new file mode 100644
+index 00000000..601920d9
+--- /dev/null
++++ b/src/libsoftether/Makefile.am
+@@ -0,0 +1,34 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++lib_LTLIBRARIES = \
++	libsoftether.la
++
++libsoftether_la_SOURCES =
++
++libsoftether_la_LDFLAGS = \
++	-avoid-version
++
++libsoftether_la_LIBTOOLFLAGS = \
++	--tag=disable-static
++
++libsoftether_la_LIBADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la
+diff --git a/src/vpnbridge/Makefile.am b/src/vpnbridge/Makefile.am
+index 35fe043d..fb91dd2d 100644
+--- a/src/vpnbridge/Makefile.am
++++ b/src/vpnbridge/Makefile.am
+@@ -25,5 +25,4 @@ vpnbridge_SOURCES = \
+ 	vpnbridge.c
+ 
+ vpnbridge_LDADD = \
+-	$(top_builddir)/src/Mayaqua/libmayaqua.la \
+-	$(top_builddir)/src/Cedar/libcedar.la
++	$(top_builddir)/src/libsoftether/libsoftether.la
+diff --git a/src/vpnclient/Makefile.am b/src/vpnclient/Makefile.am
+index 1aa55330..c225c416 100644
+--- a/src/vpnclient/Makefile.am
++++ b/src/vpnclient/Makefile.am
+@@ -25,5 +25,4 @@ vpnclient_SOURCES = \
+ 	vpncsvc.c
+ 
+ vpnclient_LDADD = \
+-	$(top_builddir)/src/Mayaqua/libmayaqua.la \
+-	$(top_builddir)/src/Cedar/libcedar.la
++	$(top_builddir)/src/libsoftether/libsoftether.la
+diff --git a/src/vpncmd/Makefile.am b/src/vpncmd/Makefile.am
+index d8042aa2..271affb0 100644
+--- a/src/vpncmd/Makefile.am
++++ b/src/vpncmd/Makefile.am
+@@ -25,5 +25,4 @@ vpncmd_SOURCES = \
+ 	vpncmd.c
+ 
+ vpncmd_LDADD = \
+-	$(top_builddir)/src/Mayaqua/libmayaqua.la \
+-	$(top_builddir)/src/Cedar/libcedar.la
++	$(top_builddir)/src/libsoftether/libsoftether.la
+diff --git a/src/vpnserver/Makefile.am b/src/vpnserver/Makefile.am
+index c1c33570..1f7b7f98 100644
+--- a/src/vpnserver/Makefile.am
++++ b/src/vpnserver/Makefile.am
+@@ -25,5 +25,4 @@ vpnserver_SOURCES = \
+ 	vpnserver.c
+ 
+ vpnserver_LDADD = \
+-	$(top_builddir)/src/Mayaqua/libmayaqua.la \
+-	$(top_builddir)/src/Cedar/libcedar.la
++	$(top_builddir)/src/libsoftether/libsoftether.la
