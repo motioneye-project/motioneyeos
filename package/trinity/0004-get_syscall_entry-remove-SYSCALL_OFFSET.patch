@@ -1,0 +1,44 @@
+From 1d9af9d07ae111c253c92112fb50000adac47a0c Mon Sep 17 00:00:00 2001
+From: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+Date: Thu, 29 Jun 2017 12:24:10 +0200
+Subject: [PATCH] get_syscall_entry: remove SYSCALL_OFFSET
+
+0-based syscall numbers are used throughout the application and the
+SYSCALL_OFFSET is only added when invoking the syscall. It is therefore
+wrong to substract the offset in get_syscall_entry, as it leads to
+dereferencing array entries at negative offsets and segfaults.
+
+Tested on MIPS32/LE.
+This change effectively reverts cc5108ff ('make get_syscall_entry take
+SYSCALL_OFFSET into account')
+
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+[Upstream commit: https://github.com/kernelslacker/trinity/commit/1d9af9d07ae111c253c92112fb50000adac47a0c]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tables.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
+
+diff --git a/tables.c b/tables.c
+index e7dab85d..8090146a 100644
+--- a/tables.c
++++ b/tables.c
+@@ -673,15 +673,14 @@ int munge_tables(void)
+  */
+ struct syscallentry * get_syscall_entry(unsigned int callno, bool do32)
+ {
+-	unsigned int offset = callno - SYSCALL_OFFSET;
+ 	if (biarch == FALSE)
+-		return syscalls[offset].entry;
++		return syscalls[callno].entry;
+ 
+ 	/* biarch case */
+ 	if (do32 == TRUE)
+-		return syscalls_32bit[offset].entry;
++		return syscalls_32bit[callno].entry;
+ 	else
+-		return syscalls_64bit[offset].entry;
++		return syscalls_64bit[callno].entry;
+ }
+ 
+ /*
