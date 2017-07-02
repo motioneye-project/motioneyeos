@@ -13,6 +13,7 @@ before_script:
     - apt-get install -y -qq --no-install-recommends
         build-essential locales bc ca-certificates file rsync gcc-multilib
         git bzr cvs mercurial subversion libc6:i386 unzip wget cpio
+        python-nose2 python-pexpect qemu-system-arm qemu-system-x86
     # To be able to generate a toolchain with locales, enable one UTF-8 locale
     - sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
     - /usr/sbin/locale-gen
@@ -57,6 +58,13 @@ check-DEVELOPERS:
             - output/build/build-time.log
             - output/build/packages-file-list.txt
 
+.runtime_test: &runtime_test
+    script: ./support/testing/run-tests -o test-output/ -d test-dl/ ${CI_BUILD_NAME}
+    artifacts:
+        when: always
+        expire_in: 2 weeks
+        paths:
+            - test-output/*.log
 acmesystems_aria_g25_128mb_defconfig: *defconfig
 acmesystems_aria_g25_256mb_defconfig: *defconfig
 acmesystems_arietta_g25_128mb_defconfig: *defconfig
@@ -209,3 +217,28 @@ zynq_microzed_defconfig: *defconfig
 zynq_zc706_defconfig: *defconfig
 zynq_zed_defconfig: *defconfig
 zynq_zybo_defconfig: *defconfig
+tests.core.test_post_scripts.TestPostScripts: *runtime_test
+tests.core.test_rootfs_overlay.TestRootfsOverlay: *runtime_test
+tests.core.test_timezone.TestGlibcAllTimezone: *runtime_test
+tests.core.test_timezone.TestGlibcNonDefaultLimitedTimezone: *runtime_test
+tests.core.test_timezone.TestNoTimezone: *runtime_test
+tests.fs.test_ext.TestExt2: *runtime_test
+tests.fs.test_ext.TestExt2r1: *runtime_test
+tests.fs.test_ext.TestExt3: *runtime_test
+tests.fs.test_ext.TestExt4: *runtime_test
+tests.fs.test_iso9660.TestIso9660Grub2External: *runtime_test
+tests.fs.test_iso9660.TestIso9660Grub2Internal: *runtime_test
+tests.fs.test_iso9660.TestIso9660GrubExternal: *runtime_test
+tests.fs.test_iso9660.TestIso9660GrubInternal: *runtime_test
+tests.fs.test_iso9660.TestIso9660SyslinuxExternal: *runtime_test
+tests.fs.test_iso9660.TestIso9660SyslinuxInternal: *runtime_test
+tests.fs.test_jffs2.TestJffs2: *runtime_test
+tests.fs.test_squashfs.TestSquashfs: *runtime_test
+tests.fs.test_ubi.TestUbi: *runtime_test
+tests.fs.test_yaffs2.TestYaffs2: *runtime_test
+tests.package.test_dropbear.TestDropbear: *runtime_test
+tests.package.test_python.TestPythonBase: *runtime_test
+tests.toolchain.test_external.TestExternalToolchainLinaroArm: *runtime_test
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv4: *runtime_test
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv5: *runtime_test
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv7: *runtime_test

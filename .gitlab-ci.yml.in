@@ -13,6 +13,7 @@ before_script:
     - apt-get install -y -qq --no-install-recommends
         build-essential locales bc ca-certificates file rsync gcc-multilib
         git bzr cvs mercurial subversion libc6:i386 unzip wget cpio
+        python-nose2 python-pexpect qemu-system-arm qemu-system-x86
     # To be able to generate a toolchain with locales, enable one UTF-8 locale
     - sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
     - /usr/sbin/locale-gen
@@ -57,3 +58,10 @@ check-DEVELOPERS:
             - output/build/build-time.log
             - output/build/packages-file-list.txt
 
+.runtime_test: &runtime_test
+    script: ./support/testing/run-tests -o test-output/ -d test-dl/ ${CI_BUILD_NAME}
+    artifacts:
+        when: always
+        expire_in: 2 weeks
+        paths:
+            - test-output/*.log
