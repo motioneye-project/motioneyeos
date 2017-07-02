@@ -1,0 +1,28 @@
+From 3466fd05c8c6f1052e0426d64eed40f8a88fd78f Mon Sep 17 00:00:00 2001
+From: steve-mcintyre <steve-github@einval.com>
+Date: Fri, 6 Jan 2017 18:18:47 +0000
+Subject: [PATCH] Don't use -fshort-wchar when building (#63)
+
+It's not needed and is causing build failures with gcc 6. Closes
+Debian bug #849651
+
+Signed-off-by: Steve McIntyre <steve@einval.com>
+[Upstream commit: https://github.com/rhinstaller/efibootmgr/commit/3466fd05c8c6f1052e0426d64eed40f8a88fd78f]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Make.defaults | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Make.defaults b/Make.defaults
+index 50f1f4d..0ac50ef 100644
+--- a/Make.defaults
++++ b/Make.defaults
+@@ -26,7 +26,7 @@ clang_cflags =
+ gcc_cflags =
+ cflags	= $(CFLAGS) $(SUBDIR_CFLAGS) \
+ 	-Werror -Wall -Wextra -Wsign-compare -Wstrict-aliasing \
+-	-std=gnu11 -fshort-wchar -fPIC \
++	-std=gnu11 -fPIC \
+ 	-D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -DLOCALEDIR=\"$(localedir)\" \
+ 	-DEFIBOOTMGR_VERSION="\"$(VERSION)\"" \
+ 	$(if $(findstring clang,$(CC)),$(clang_cflags),) \
