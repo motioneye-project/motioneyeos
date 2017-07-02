@@ -1,0 +1,45 @@
+From ca6bd26fff5c679c8838c29e1e2913ccbcc0b0cd Mon Sep 17 00:00:00 2001
+From: Kaian <kaian@irontec.com>
+Date: Tue, 30 May 2017 11:15:49 +0200
+Subject: [PATCH] autotools: fix ncurses wchar detection
+
+Author: Adam Duskett <aduskett@codeblue.com>
+
+Ncurses detection is currently broken in buildroot.
+
+This patch does the following:
+ - Add SNGREP_CHECK_SCRIPT to configure.ac which checks for a
+   libname, a function in that library, sets a define if found, and
+   if not found, moves on to the next part. This is taken from the
+   htop configure.ac.
+
+ - Adds SNGREP_CHECK_LIB to configure.ac which checks for a
+   library, a function within that library, sets a define if that function
+   is found, and if not found, moves on to the next part.
+   This is taken from the htop configure.ac
+
+ - Modifies scrollbar.h and ui_panel.h to include <wctypes.h> instead of
+   <ncursesw/ncurses.h> if unicode is supported.
+
+[Upstream commit: https://github.com/irontec/sngrep/commit/ca6bd26fff5c679c8838c29e1e2913ccbcc0b0cd]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 2821c55..10c83ab 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1,9 +1,9 @@
+ AC_PREREQ([2.59])
+ AC_INIT([sngrep], [1.4.3], [kaian@irontec.com], [sngrep], [http://www.irontec.com/])
+ AM_INIT_AUTOMAKE([1.9])
+-m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+ AC_CONFIG_HEADERS([src/config.h])
+-AC_CONFIG_MACRO_DIRS([m4])
++m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
++m4_ifdef([AC_CONFIG_MACRO_DIRS], AC_CONFIG_MACRO_DIRS([m4]), m4_include([m4/sngrep.m4]))
+ 
+ AC_COPYRIGHT("Irontec S.L.")
+ 

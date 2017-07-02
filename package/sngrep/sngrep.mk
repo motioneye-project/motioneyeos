@@ -14,10 +14,6 @@ SNGREP_DEPENDENCIES = libpcap ncurses host-pkgconf
 SNGREP_CONF_ENV += \
 	$(if $(BR2_STATIC_LIBS),LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --libs`")
 
-# This patch fixes ncurses wchar detection
-SNGREP_PATCH = \
-	https://github.com/irontec/sngrep/pull/191/commits/4740f3341a99eaec105dee202a6fa7828212cdf1.patch
-
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 SNGREP_CONF_OPTS += --enable-unicode
 else
