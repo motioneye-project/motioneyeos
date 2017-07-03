@@ -164,13 +164,12 @@ comment "Human language and character encoding support"
 
 config BR2_PACKAGE_PHP_EXT_GETTEXT
 	bool "Gettext"
-	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	depends on BR2_SYSTEM_ENABLE_NLS
 	help
 	  Gettext support
 
-comment "Gettext support needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+comment "Gettext support needs NLS enabled"
+	depends on !BR2_SYSTEM_ENABLE_NLS
 
 config BR2_PACKAGE_PHP_EXT_ICONV
 	bool "iconv"
