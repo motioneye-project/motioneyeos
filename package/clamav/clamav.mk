@@ -15,7 +15,7 @@ CLAMAV_DEPENDENCIES = \
 	libtool \
 	openssl \
 	zlib \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
+	$(TARGET_NLS_DEPENDENCIES)
 
 # mmap cannot be detected when cross-compiling, needed for mempool support
 CLAMAV_CONF_ENV = \
