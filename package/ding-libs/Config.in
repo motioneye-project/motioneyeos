@@ -1,7 +1,5 @@
 config BR2_PACKAGE_DING_LIBS
 	bool "ding-libs"
-	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  The ding-libs packages contain a set of libraries used by
@@ -16,7 +14,3 @@ config BR2_PACKAGE_DING_LIBS
 	  structure (libini_config).
 
 	  https://git.fedorahosted.org/git/ding-libs.git
-
-comment "ding-libs needs a toolchain w/ wchar"
-	depends on BR2_NEEDS_GETTEXT
-	depends on !BR2_USE_WCHAR
