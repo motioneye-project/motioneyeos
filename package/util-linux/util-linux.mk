@@ -17,7 +17,7 @@ UTIL_LINUX_AUTORECONF = YES
 UTIL_LINUX_LICENSE = GPL-2.0+, BSD-4-Clause, LGPL-2.1+ (libblkid, libfdisk, libmount), BSD-3-Clause (libuuid)
 UTIL_LINUX_LICENSE_FILES = README.licensing Documentation/licenses/COPYING.GPLv2 Documentation/licenses/COPYING.UCB Documentation/licenses/COPYING.LGPLv2.1 Documentation/licenses/COPYING.BSD-3
 UTIL_LINUX_INSTALL_STAGING = YES
-UTIL_LINUX_DEPENDENCIES = host-pkgconf
+UTIL_LINUX_DEPENDENCIES = host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 # uClibc needs NTP_LEGACY for sys/timex.h -> ntp_gettime() support
 # (used in logger.c), and the common default is N.
 UTIL_LINUX_CONF_ENV = scanf_cv_type_modifier=no \
@@ -25,6 +25,7 @@ UTIL_LINUX_CONF_ENV = scanf_cv_type_modifier=no \
 UTIL_LINUX_CONF_OPTS += \
 	--disable-rpath \
 	--disable-makeinstall-chown
+UTIL_LINUX_LIBS = $(TARGET_NLS_LIBS)
 
 # system depends on util-linux so we enable systemd support
 # (which needs systemd to be installed)
@@ -60,11 +61,6 @@ else
 UTIL_LINUX_CONF_OPTS += --disable-widechar
 endif
 UTIL_LINUX_CONF_OPTS += --without-ncursesw --without-ncurses
-endif
-
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-UTIL_LINUX_DEPENDENCIES += gettext
-UTIL_LINUX_LIBS += -lintl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCAP_NG),y)

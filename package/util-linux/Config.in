@@ -1,6 +1,5 @@
 menuconfig BR2_PACKAGE_UTIL_LINUX
 	bool "util-linux"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Various useful/essential linux libraries and utilities.
 
