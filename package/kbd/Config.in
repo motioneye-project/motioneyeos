@@ -2,7 +2,6 @@ config BR2_PACKAGE_KBD
 	bool "kbd"
 	# Uses fork()
 	depends on BR2_USE_MMU
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Keytable files and keyboard utilities.
 
