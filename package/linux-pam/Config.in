@@ -4,7 +4,6 @@ config BR2_PACKAGE_LINUX_PAM
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_TOOLCHAIN_USES_MUSL
 	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	select BR2_PACKAGE_FLEX
 	help
 	  A Security Framework that Provides Authentication for Applications

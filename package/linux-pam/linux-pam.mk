@@ -16,15 +16,12 @@ LINUX_PAM_CONF_OPTS = \
 	--disable-regenerate-docu \
 	--enable-securedir=/lib/security \
 	--libdir=/lib
-LINUX_PAM_DEPENDENCIES = flex host-flex host-pkgconf
+LINUX_PAM_DEPENDENCIES = flex host-flex host-pkgconf \
+	$(TARGET_NLS_DEPENDENCIES)
 LINUX_PAM_AUTORECONF = YES
 LINUX_PAM_LICENSE = BSD-3-Clause
 LINUX_PAM_LICENSE_FILES = Copyright
-
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-LINUX_PAM_DEPENDENCIES += gettext
-LINUX_PAM_MAKE_OPTS += LIBS=-lintl
-endif
+LINUX_PAM_MAKE_OPTS += LIBS=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 LINUX_PAM_CONF_OPTS += --enable-selinux
