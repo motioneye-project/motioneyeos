@@ -11,6 +11,7 @@ RPM_SITE = http://ftp.rpm.org/releases/rpm-$(RPM_VERSION_MAJOR).x
 RPM_DEPENDENCIES = host-pkgconf berkeleydb file popt zlib
 RPM_LICENSE = GPL-2.0 or LGPL-2.0 (library only)
 RPM_LICENSE_FILES = COPYING
+RPM_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
 
 # 0001-configure-ac-use-link-instead-of-compile-for-gcc-flags-test.patch
 # 0002-configure-ac-correct-stack-protector-check.patch
@@ -42,8 +43,7 @@ RPM_CONF_OPTS += --with-beecrypt
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/beecrypt
 endif
 
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-RPM_DEPENDENCIES += gettext
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
 RPM_CONF_OPTS += --with-libintl-prefix=$(STAGING_DIR)/usr
 else
 RPM_CONF_OPTS += --without-libintl-prefix
@@ -71,12 +71,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_BINUTILS),y)
 RPM_DEPENDENCIES += binutils
-endif
-
-# RPM, when using NLS, requires GNU gettext's _nl_msg_cat_cntr, which is not
-# provided in musl.
-ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-RPM_CONF_OPTS += --disable-nls
 endif
 
 # ac_cv_prog_cc_c99: RPM uses non-standard GCC extensions (ex. `asm`).
