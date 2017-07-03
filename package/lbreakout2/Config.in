@@ -2,7 +2,6 @@ config BR2_PACKAGE_LBREAKOUT2
 	bool "LBreakout2"
 	select BR2_PACKAGE_SDL
 	select BR2_PACKAGE_LIBPNG
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  LBreakout2 is the successor to LBreakout, a breakout-style arcade
 	  game in the manner of Arkanoid. Requires SDL, libpng, and
