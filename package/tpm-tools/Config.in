@@ -5,7 +5,6 @@ config BR2_PACKAGE_TPM_TOOLS
 	depends on !BR2_arc # trousers
 	select BR2_PACKAGE_TROUSERS
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Tools to manage and diagnose a TPM
 
