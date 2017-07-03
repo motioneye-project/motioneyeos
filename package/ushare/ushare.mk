@@ -7,9 +7,10 @@
 USHARE_VERSION = 1.1a
 USHARE_SOURCE = ushare-$(USHARE_VERSION).tar.bz2
 USHARE_SITE = http://ushare.geexbox.org/releases
-USHARE_DEPENDENCIES = host-pkgconf libupnp
+USHARE_DEPENDENCIES = host-pkgconf libupnp $(TARGET_NLS_DEPENDENCIES)
 USHARE_LICENSE = GPL-2.0+
 USHARE_LICENSE_FILES = COPYING
+USHARE_LDFLAGS = $(TARGET_NLS_LIBS)
 
 USHARE_CONF_OPTS = \
 	--prefix=/usr \
@@ -18,12 +19,7 @@ USHARE_CONF_OPTS = \
 	--sysconfdir=/etc \
 	--disable-strip
 
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-USHARE_DEPENDENCIES += gettext
-USHARE_LDFLAGS += -lintl
-endif
-
-ifeq ($(BR2_ENABLE_LOCALE),)
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),)
 USHARE_CONF_OPTS += --disable-nls
 endif
 
