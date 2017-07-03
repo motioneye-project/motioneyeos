@@ -10,10 +10,10 @@ HTTPING_SITE = http://www.vanheusden.com/httping
 HTTPING_LICENSE = GPL-2.0
 HTTPING_LICENSE_FILES = license.txt
 HTTPING_LDFLAGS = $(TARGET_LDFLAGS) \
-	$(if $(BR2_NEEDS_GETTEXT),-lintl) \
+	$(TARGET_NLS_LIBS) \
 	$(if $(BR2_PACKAGE_LIBICONV),-liconv)
-HTTPING_DEPENDENCIES = host-gettext \
-	$(if $(BR2_NEEDS_GETTEXT),gettext) \
+HTTPING_DEPENDENCIES = \
+	$(TARGET_NLS_DEPENDENCIES) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
 	$(if $(BR2_PACKAGE_NCURSES_WCHAR),ncurses) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
