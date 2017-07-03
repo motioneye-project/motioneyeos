@@ -7,15 +7,11 @@
 NDISC6_VERSION = 1.0.2
 NDISC6_SOURCE = ndisc6-$(NDISC6_VERSION).tar.bz2
 NDISC6_SITE = http://www.remlab.net/files/ndisc6
-NDISC6_CONF_ENV = CC="$(TARGET_CC) -std=gnu99"
+NDISC6_CONF_ENV = CC="$(TARGET_CC) -std=gnu99" LIBS=$(TARGET_NLS_LIBS)
 NDISC6_CONF_OPTS = --disable-rpath --disable-suid-install
 NDISC6_LICENSE = GPL-2.0 or GPL-3.0
 NDISC6_LICENSE_FILES = COPYING
-
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-NDISC6_DEPENDENCIES += gettext
-NDISC6_CONF_ENV += LIBS="-lintl"
-endif
+NDISC8_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
 
 NDISC6_BIN_ += dnssort # perl script
 NDISC6_BIN_$(BR2_PACKAGE_NDISC6_NAME2ADDR) += name2addr addr2name
