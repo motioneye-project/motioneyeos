@@ -8,7 +8,7 @@ VIM_VERSION = v8.0.0329
 VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
-	ncurses $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
+	ncurses $(TARGET_NLS_DEPENDENCIES) \
 	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
 VIM_SUBDIR = src
 VIM_CONF_ENV = \
