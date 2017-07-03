@@ -79,20 +79,6 @@ config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
 
 	  Note: the full set of gconv libs are ~8MiB (on ARM).
 
-# glibc and eglibc directly include gettext, so a separatly compiled
-# gettext isn't needed and shouldn't be built to avoid conflicts. Some
-# packages always need gettext, other packages only need gettext when
-# locale support is enabled. See the documentation for how packages
-# should rely on the following two options.
-
-config BR2_NEEDS_GETTEXT
-	bool
-	default y if BR2_TOOLCHAIN_USES_UCLIBC
-
-config BR2_NEEDS_GETTEXT_IF_LOCALE
-	bool
-	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
-
 # This boolean is true if the toolchain provides a built-in full
 # featured gettext implementation (glibc), and false if only a stub
 # gettext implementation is provided (uclibc, musl)
