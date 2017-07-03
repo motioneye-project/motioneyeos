@@ -8,17 +8,11 @@ config BR2_PACKAGE_LINUX_TOOLS
 config BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
 	bool "cpupower"
 	depends on !BR2_bfin # pciutils
-	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT # gettext
 	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_PCIUTILS
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  cpupower is a collection of tools to examine and tune power
 	  saving related features of your processor.
-
-comment "cpupower needs a toolchain w/ wchar"
-	depends on !BR2_bfin
-	depends on !BR2_USE_WCHAR && BR2_NEEDS_GETTEXT
 
 config BR2_PACKAGE_LINUX_TOOLS_GPIO
 	bool "gpio"
