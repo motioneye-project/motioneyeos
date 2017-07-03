@@ -56,6 +56,22 @@ config BR2_PACKAGE_BUSYBOX_SELINUX
 	  crond, then individual binaries have to be enabled for the
 	  SELinux type transitions to occur properly.
 
+config BR2_PACKAGE_BUSYBOX_INDIVIDUAL_BINARIES
+	bool "Individual binaries"
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_bfin # libbusybox.so link issue
+	help
+	  By default (i.e with this option disabled), Busybox is
+	  installed as a single binary in /bin/busybox and all applets
+	  are a symbolic link to /bin/busybox.
+
+	  With this option enabled, each applet is a separate binary,
+	  which is needed for proper operation with SELinux.
+
+comment "Busybox individual binaries need a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on !BR2_bfin
+
 config BR2_PACKAGE_BUSYBOX_WATCHDOG
 	bool "Install the watchdog daemon startup script"
 	help
