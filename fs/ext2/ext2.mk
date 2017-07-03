@@ -19,9 +19,9 @@ endif
 # qstrip results in stripping consecutive spaces into a single one. So the
 # variable is not qstrip-ed to preserve the integrity of the string value.
 EXT2_LABEL := $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_LABEL))
-ifneq ($(EXT2_LABEL),)
+#" Syntax highlighting... :-/ )
+
 EXT2_OPTS += -l "$(EXT2_LABEL)"
-endif
 
 ROOTFS_EXT2_DEPENDENCIES = host-mke2img
 
