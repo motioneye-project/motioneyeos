@@ -41,12 +41,6 @@ ifeq ($(BR2_PACKAGE_LIBPFM4),y)
 OPROFILE_DEPENDENCIES += libpfm4
 endif
 
-# When gettext is enabled, popt links with -lintl, specifies it in its
-# popt.pc and has done so for the past 6+ years. But oprofile does not
-# use pkconfig to find popt, so misses -lintl, which is important for
-# a static build. We have to do the call to pkgconfig manually...
-OPROFILE_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs popt`"
-
 ifeq ($(BR2_STATIC_LIBS),)
 define OPROFILE_INSTALL_SHARED_LIBRARY
 	$(INSTALL) -m 755 $(@D)/libopagent/.libs/*.so* $(TARGET_DIR)/usr/lib/oprofile
