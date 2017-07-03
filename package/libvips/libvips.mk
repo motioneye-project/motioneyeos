@@ -41,7 +41,7 @@ LIBVIPS_CONF_OPTS = \
 LIBVIPS_INSTALL_STAGING = YES
 LIBVIPS_DEPENDENCIES = \
 	host-pkgconf libglib2 \
-	libxml2 $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext)
+	libxml2 $(TARGET_NLS_DEPENDENCIES)
 
 # --disable-cxx is broken upstream
 # https://github.com/jcupitt/libvips/issues/231
