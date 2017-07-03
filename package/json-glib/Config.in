@@ -4,7 +4,6 @@ config BR2_PACKAGE_JSON_GLIB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_USE_MMU # glib2
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  JSON-GLib is a library providing serialization and
 	  deserialization support for the JavaScript Object Notation
