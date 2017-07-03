@@ -97,8 +97,8 @@ AVAHI_CONF_OPTS = \
 	--with-autoipd-group=avahi
 
 AVAHI_DEPENDENCIES = \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) host-intltool \
-	host-pkgconf host-gettext
+	host-intltool host-pkgconf \
+	$(TARGET_NLS_DEPENDENCIES)
 
 AVAHI_CFLAGS = $(TARGET_CFLAGS)
 
@@ -168,7 +168,7 @@ endif
 
 AVAHI_CONF_ENV += CFLAGS="$(AVAHI_CFLAGS)"
 
-AVAHI_MAKE_OPTS += $(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),LIBS=-lintl)
+AVAHI_MAKE_OPTS += LIBS=$(TARGET_NLS_LIBS)
 
 define AVAHI_USERS
 	avahi -1 avahi -1 * - - -
