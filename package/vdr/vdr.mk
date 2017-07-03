@@ -14,7 +14,8 @@ VDR_DEPENDENCIES = \
 	freetype \
 	fontconfig \
 	jpeg \
-	libcap
+	libcap \
+	$(TARGET_NLS_DEPENDENCIES)
 
 VDR_INCLUDE_DIRS = -I$(STAGING_DIR)/usr/include/freetype2
 VDR_MAKE_FLAGS = \
@@ -22,11 +23,7 @@ VDR_MAKE_FLAGS = \
 	PLUGINLIBDIR=/usr/lib/vdr \
 	PREFIX=/usr \
 	VIDEODIR=/var/lib/vdr
-
-ifeq ($(BR2_NEEDS_GETTEXT),y)
-VDR_DEPENDENCIES += gettext
-VDR_LDFLAGS += -lintl
-endif
+VDR_LDFLAGS = $(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
 VDR_DEPENDENCIES += libfribidi

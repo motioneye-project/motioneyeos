@@ -7,7 +7,6 @@ config BR2_PACKAGE_VDR
 	depends on !BR2_TOOLCHAIN_USES_MUSL # _nl_msg_cat_cntr
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	select BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_JPEG
