@@ -816,7 +816,7 @@ else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 # rule for it.
 # Also for 'all' we error out and ask the user to configure first.
 .PHONY: linux toolchain
-linux toolchain all:
+linux toolchain all: outputmakefile
 	$(error Please configure Buildroot first (e.g. "make menuconfig"))
 	@exit 1
 
