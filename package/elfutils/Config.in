@@ -14,7 +14,6 @@ config BR2_PACKAGE_ELFUTILS
 	depends on !BR2_bfin
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  Libraries/utilities to handle ELF objects (drop in
 	  replacement for libelf).
