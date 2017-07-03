@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPG123_VERSION = 1.23.8
+MPG123_VERSION = 1.25.1
 MPG123_SOURCE = mpg123-$(MPG123_VERSION).tar.bz2
 MPG123_SITE = http://downloads.sourceforge.net/project/mpg123/mpg123/$(MPG123_VERSION)
 MPG123_CONF_OPTS = --disable-lfs-alias
@@ -74,10 +74,11 @@ endif
 
 MPG123_CONF_OPTS += --with-audio=$(subst $(space),$(comma),$(MPG123_AUDIO))
 
-ifeq ($(BR2_PACKAGE_LIBTOOL),y)
-MPG123_DEPENDENCIES += libtool
-# .la files gets stripped , so directly load .so files rather than .la
-MPG123_CONF_OPTS += --with-modules --with-module-suffix=.so
+# output modules are loaded with dlopen()
+ifeq ($(BR2_STATIC_LIBS),y)
+MPG123_CONF_OPTS += --disable-modules
+else
+MPG123_CONF_OPTS += --enable-modules
 endif
 
 $(eval $(autotools-package))
