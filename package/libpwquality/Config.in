@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBPWQUALITY
 	bool "libpwquality"
+	select BR2_PACKAGE_CRACKLIB
 	help
 	  This is a library for password quality checks and generation
 	  of random passwords that pass the checks.  This library uses
