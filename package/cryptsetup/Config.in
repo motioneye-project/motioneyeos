@@ -8,7 +8,6 @@ config BR2_PACKAGE_CRYPTSETUP
 	select BR2_PACKAGE_LVM2
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  This tool helps manipulate dm-crypt and luks partitions for
 	  on-disk encryption.
