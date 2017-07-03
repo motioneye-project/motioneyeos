@@ -22,7 +22,7 @@ MIDORI_DEPENDENCIES = \
 	libxml2 \
 	sqlite \
 	webkitgtk \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
+	$(TARGET_NLS_DEPENDENCIES) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 MIDORI_CONF_OPTS = \
