@@ -8,7 +8,6 @@ menuconfig BR2_PACKAGE_ALSA_UTILS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	select BR2_PACKAGE_ALSA_LIB
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  This package contains the command line utilities for the ALSA
 	  project.

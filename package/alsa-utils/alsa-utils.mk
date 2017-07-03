@@ -10,26 +10,23 @@ ALSA_UTILS_SITE = ftp://ftp.alsa-project.org/pub/utils
 ALSA_UTILS_LICENSE = GPL-2.0
 ALSA_UTILS_LICENSE_FILES = COPYING
 ALSA_UTILS_INSTALL_STAGING = YES
-ALSA_UTILS_DEPENDENCIES = host-gettext host-pkgconf alsa-lib \
+ALSA_UTILS_DEPENDENCIES = host-pkgconf alsa-lib \
 	$(if $(BR2_PACKAGE_NCURSES),ncurses) \
-	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate)
+	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
+	$(TARGET_NLS_DEPENDENCIES)
 # Regenerate aclocal.m4 to pick the patched
 # version of alsa.m4 from alsa-lib
 ALSA_UTILS_AUTORECONF = YES
 ALSA_UTILS_GETTEXTIZE = YES
 
 ALSA_UTILS_CONF_ENV = \
-	ac_cv_prog_ncurses5_config=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
+	ac_cv_prog_ncurses5_config=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS) \
+	LIBS=$(TARGET_NLS_LIBS)
 
 ALSA_UTILS_CONF_OPTS = \
 	--disable-xmlto \
 	--disable-rst2man \
 	--with-curses=$(if $(BR2_PACKAGE_NCURSES_WCHAR),ncursesw,ncurses)
-
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-ALSA_UTILS_DEPENDENCIES += gettext
-ALSA_UTILS_CONF_ENV += LIBS=-lintl
-endif
 
 ifeq ($(BR2_PACKAGE_ALSA_UTILS_ALSALOOP),y)
 ALSA_UTILS_CONF_OPTS += --enable-alsaloop
