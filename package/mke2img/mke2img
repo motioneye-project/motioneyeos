@@ -59,7 +59,7 @@ main() {
     esac
 
     # calculate needed inodes
-    if [ -z "${nb_inodes}" ]; then
+    if [ ${nb_inodes:-0} -eq 0 ]; then
         nb_inodes=$(find "${root_dir}" | wc -l)
         nb_inodes=$((nb_inodes+400))
     fi
