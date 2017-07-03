@@ -1,0 +1,32 @@
+From af07587e8775c25450cda8ba9e9a8b1a58072634 Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 3 Jul 2017 15:55:00 +0200
+Subject: [PATCH] fix a build issue on linux
+
+On linux PATH_MAX is defined in linux/limits.h. If we include usb.h
+without previously having indirectly included it, the build fails.
+
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
+---
+ libusb/usb.h | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/libusb/usb.h b/libusb/usb.h
+index d2c30aa..7ad9a66 100644
+--- a/libusb/usb.h
++++ b/libusb/usb.h
+@@ -41,6 +41,11 @@ typedef unsigned __int32  uint32_t;
+ #include <stdint.h>
+ #endif
+ 
++/* On linux PATH_MAX is defined in linux/limits.h. */
++#if defined(__linux__)
++#include <linux/limits.h>
++#endif
++
+ /*
+  * USB spec information
+  *
+-- 
+2.9.3
+
