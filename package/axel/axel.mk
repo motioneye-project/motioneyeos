@@ -8,16 +8,10 @@ AXEL_VERSION = 2.4
 AXEL_SITE = http://sources.buildroot.net
 AXEL_LICENSE = GPL-2.0+
 AXEL_LICENSE_FILES = COPYING
+AXEL_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
+AXEL_LDFLAGS = -lpthread $(TARGET_NLS_LIBS)
 
-ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
-AXEL_DEPENDENCIES += gettext
-AXEL_LDFLAGS += -lintl
-endif
-
-# -lintl may use symbols from -lpthread
-AXEL_LDFLAGS += -lpthread
-
-ifneq ($(BR2_ENABLE_LOCALE),y)
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),)
 AXEL_DISABLE_I18N = --i18n=0
 endif
 
