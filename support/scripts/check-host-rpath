@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# This script scans $(HOST_DIR)/{bin,sbin} for all ELF files, and checks
-# they have an RPATH to $(HOST_DIR)/usr/lib if they need libraries from
+# This script scans $(HOST_DIR)/{,usr/}{bin,sbin} for all ELF files, and checks
+# they have an RPATH to $(HOST_DIR)/{,usr/}lib if they need libraries from
 # there.
 
 # Override the user's locale so we are sure we can parse the output of
@@ -40,7 +40,7 @@ elf_needs_rpath() {
     local lib
 
     while read lib; do
-        [ -e "${hostdir}/usr/lib/${lib}" ] && return 0
+        [ -e "${hostdir}/lib/${lib}" ] && return 0
     done < <( readelf -d "${file}"                                         \
               |sed -r -e '/^.* \(NEEDED\) .*Shared library: \[(.+)\]$/!d;' \
                      -e 's//\1/;'                                          \
@@ -58,6 +58,8 @@ check_elf_has_rpath() {
         for dir in ${rpath//:/ }; do
             # Remove duplicate and trailing '/' for proper match
             dir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${dir}" )"
+            [ "${dir}" = "${hostdir}/lib" -o "${dir}" = "\$ORIGIN/../lib" ] && return 0
+            # For the time being, the rpath is allowed with both usr/lib and lib
             [ "${dir}" = "${hostdir}/usr/lib" -o "${dir}" = "\$ORIGIN/../../usr/lib" ] && return 0
         done
     done < <( readelf -d "${file}"                                              \
