@@ -28,9 +28,8 @@ LIBFTDI1_CONF_OPTS += -DPYTHON_BINDINGS=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFTDI1_FDTI_EEPROM),y)
-# ftdi_eeprom optionally depends on libintl, so make sure gettext is built
-# _before_ libfitdi1 when gettext is enbaled.
-LIBFTDI1_DEPENDENCIES += libconfuse $(if $(BR2_PACKAGE_GETTEXT),gettext)
+# ftdi_eeprom optionally depends on libintl
+LIBFTDI1_DEPENDENCIES += libconfuse $(TARGET_NLS_DEPENDENCIES)
 LIBFTDI1_CONF_OPTS += -DFTDI_EEPROM=ON
 else
 LIBFTDI1_CONF_OPTS += -DFTDI_EEPROM=OFF
