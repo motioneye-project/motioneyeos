@@ -11,17 +11,27 @@ USHARE_DEPENDENCIES = host-pkgconf libupnp
 USHARE_LICENSE = GPL-2.0+
 USHARE_LICENSE_FILES = COPYING
 
+USHARE_CONF_OPTS = \
+	--prefix=/usr \
+	--cross-compile \
+	--cross-prefix="$(TARGET_CROSS)" \
+	--sysconfdir=/etc \
+	--disable-strip
+
 ifeq ($(BR2_NEEDS_GETTEXT_IF_LOCALE),y)
 USHARE_DEPENDENCIES += gettext
 USHARE_LDFLAGS += -lintl
 endif
 
+ifeq ($(BR2_ENABLE_LOCALE),)
+USHARE_CONF_OPTS += --disable-nls
+endif
+
 define USHARE_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
-		./configure --prefix=/usr $(DISABLE_NLS) --cross-compile \
-		--cross-prefix="$(TARGET_CROSS)" --sysconfdir=/etc \
-		--disable-strip \
+		./configure \
+			$(USHARE_CONF_OPTS) \
 	)
 endef
 
