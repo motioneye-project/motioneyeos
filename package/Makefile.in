@@ -360,9 +360,9 @@ TARGET_CONFIGURE_ARGS = \
 ################################################################################
 
 ifeq ($(BR2_ENABLE_LOCALE),y)
-DISABLE_NLS :=
+NLS_OPTS =
 else
-DISABLE_NLS :=--disable-nls
+NLS_OPTS = --disable-nls
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)

@@ -201,7 +201,7 @@ define $(2)_CONFIGURE_CMDS
 		--with-fop=no \
 		$$(if $$($$(PKG)_OVERRIDE_SRCDIR),,--disable-dependency-tracking) \
 		--enable-ipv6 \
-		$$(DISABLE_NLS) \
+		$$(NLS_OPTS) \
 		$$(SHARED_STATIC_LIBS_OPTS) \
 		$$(QUIET) $$($$(PKG)_CONF_OPTS) \
 	)
