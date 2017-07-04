@@ -93,6 +93,12 @@ config BR2_NEEDS_GETTEXT_IF_LOCALE
 	bool
 	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
 
+# This boolean is true if the toolchain provides a built-in full
+# featured gettext implementation (glibc), and false if only a stub
+# gettext implementation is provided (uclibc, musl)
+config BR2_TOOLCHAIN_HAS_FULL_GETTEXT
+	bool
+
 config BR2_USE_MMU
 	bool "Enable MMU support" if BR2_ARCH_HAS_MMU_OPTIONAL
 	default y if BR2_ARCH_HAS_MMU_OPTIONAL || BR2_ARCH_HAS_MMU_MANDATORY
