@@ -1,3 +1,22 @@
+2017.08-rc1, To be released
+
+	Major revamp of the gettext handling, with user-visible
+	effect:
+
+	  - prior to this revamp, when BR2_ENABLE_LOCALE=y, each
+	    package could decide to enable or not NLS support. When
+	    BR2_ENABLE_LOCALE was disabled, NLS support was forced off
+	    by passing --disable-nls to packages.
+
+	  - after this revamp, a new BR2_SYSTEM_ENABLE_NLS option
+            controls whether NLS support should be enabled or not in
+            packages. This option defaults to disabled, which means
+            that now, NLS support is by default disabled in all
+            packages.
+
+	Therefore, if you need NLS support in packages, you must now
+	explicitly enable the BR2_SYSTEM_ENABLE_NLS option.
+
 2017.05.1, Released July 4th, 2017
 
 	Important / security related fixes.
