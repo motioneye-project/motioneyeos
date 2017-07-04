@@ -24,12 +24,8 @@ FETCHMAIL_CONF_OPTS = \
 
 FETCHMAIL_DEPENDENCIES = \
 	ca-certificates \
-	openssl
-
-# libintl is an optional dependency
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-FETCHMAIL_DEPENDENCIES += gettext
-endif
+	openssl \
+	$(TARGET_NLS_DEPENDENCIES)
 
 # fetchmailconf.py script is not (yet) python3-compliant.
 # Prevent the pyc-compilation with python-3 from failing by removing this
