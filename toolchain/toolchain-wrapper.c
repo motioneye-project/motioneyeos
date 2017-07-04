@@ -178,7 +178,7 @@ int main(int argc, char **argv)
 			perror(__FILE__ ": malloc");
 			return 2;
 		}
-		sprintf(relbasedir, "%s/../..", argv[0]);
+		sprintf(relbasedir, "%s/..", argv[0]);
 		absbasedir = realpath(relbasedir, NULL);
 	} else {
 		basename = progpath;

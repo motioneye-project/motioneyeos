@@ -552,16 +552,15 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 .PHONY: world
 world: target-post-image
 
-# When creating HOST_DIR, also symlink usr/lib -> ../lib
+# When creating HOST_DIR, also symlink usr -> .
 $(HOST_DIR):
-	@mkdir -p $@/usr $@/lib
-	@ln -snf ../lib $@/usr/lib
+	@mkdir -p $@
+	@ln -snf . $@/usr
 
 # Populating the staging with the base directories is handled by the skeleton package
 $(STAGING_DIR): | $(HOST_DIR)
 	@mkdir -p $(STAGING_DIR)
 	@ln -snf $(STAGING_DIR) $(BASE_DIR)/staging
-	@ln -snf ../$(GNU_TARGET_NAME) $(HOST_DIR)/usr/$(GNU_TARGET_NAME)
 
 RSYNC_VCS_EXCLUSIONS = \
 	--exclude .svn --exclude .git --exclude .hg --exclude .bzr \
