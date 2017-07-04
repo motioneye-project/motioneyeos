@@ -233,13 +233,6 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-debugutils
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-dtls
-GST1_PLUGINS_BAD_DEPENDENCIES += openssl
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-dtls
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-dvbsuboverlay
 else
@@ -634,6 +627,13 @@ GST1_PLUGINS_BAD_CONF_OPTS += --enable-libmms
 GST1_PLUGINS_BAD_DEPENDENCIES += libmms
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-libmms
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-dtls
+GST1_PLUGINS_BAD_DEPENDENCIES += openssl
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-dtls
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_TTML),y)
