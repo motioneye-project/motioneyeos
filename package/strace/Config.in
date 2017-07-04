@@ -1,8 +1,14 @@
 config BR2_PACKAGE_STRACE
 	bool "strace"
+	# needs at least kernel headers 4.0 on nios2
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0 || !BR2_nios2
 	help
 	  A useful diagnostic, instructional, and debugging tool.
 	  Allows you to track what system calls a program makes
 	  while it is running.
 
 	  http://sourceforge.net/projects/strace/
+
+comment "strace needs a toolchain w/ headers >= 4.0 on nios2"
+	depends on BR2_nios2
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
