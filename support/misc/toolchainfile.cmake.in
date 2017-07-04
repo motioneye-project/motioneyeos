@@ -4,11 +4,11 @@
 #
 
 # In order to allow the toolchain to be relocated, we calculate the
-# HOST_DIR based on this file's location: $(HOST_DIR)/usr/share/buildroot
+# HOST_DIR based on this file's location: $(HOST_DIR)/share/buildroot
 # and store it in RELOCATED_HOST_DIR.
 # All the other variables that need to refer to HOST_DIR will use the
 # RELOCATED_HOST_DIR variable.
-string(REPLACE "/usr/share/buildroot" "" RELOCATED_HOST_DIR ${CMAKE_CURRENT_LIST_DIR})
+string(REPLACE "/share/buildroot" "" RELOCATED_HOST_DIR ${CMAKE_CURRENT_LIST_DIR})
 
 # Point cmake to the location where we have our custom modules,
 # so that it can find our custom platform description.

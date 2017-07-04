@@ -39,5 +39,5 @@ endif
 
 $(eval $(virtual-package))
 
-toolchain: $(HOST_DIR)/usr/share/buildroot/toolchainfile.cmake
-toolchain: $(HOST_DIR)/usr/share/buildroot/Platform/Buildroot.cmake
+toolchain: $(HOST_DIR)/share/buildroot/toolchainfile.cmake
+toolchain: $(HOST_DIR)/share/buildroot/Platform/Buildroot.cmake
