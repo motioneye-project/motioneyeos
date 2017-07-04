@@ -15,7 +15,7 @@ diff --git a/auto/lib/openssl/conf b/auto/lib/openssl/conf
 index 39d9602..995c6f3 100644
 --- a/auto/lib/openssl/conf
 +++ b/auto/lib/openssl/conf
-@@ -50,8 +50,8 @@ else
+@@ -58,8 +58,8 @@ else
          ngx_feature_name="NGX_OPENSSL"
          ngx_feature_run=no
          ngx_feature_incs="#include <openssl/ssl.h>"
