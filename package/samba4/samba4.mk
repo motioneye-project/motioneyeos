@@ -15,7 +15,8 @@ SAMBA4_DEPENDENCIES = \
 	e2fsprogs popt python zlib \
 	$(if $(BR2_PACKAGE_LIBAIO),libaio) \
 	$(if $(BR2_PACKAGE_LIBCAP),libcap) \
-	$(if $(BR2_PACKAGE_READLINE),readline)
+	$(if $(BR2_PACKAGE_READLINE),readline) \
+	$(TARGET_NLS_DEPENDENCIES)
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 SAMBA4_CONF_OPTS += --with-acl-support
@@ -44,12 +45,6 @@ SAMBA4_CONF_OPTS += --with-fam
 SAMBA4_DEPENDENCIES += gamin
 else
 SAMBA4_CONF_OPTS += --without-fam
-endif
-
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-SAMBA4_DEPENDENCIES += gettext
-else
-SAMBA4_CONF_OPTS += --without-gettext
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
