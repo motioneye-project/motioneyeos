@@ -28,6 +28,7 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-avc \
 	--disable-opensles \
 	--disable-uvch264 \
+	--disable-msdk \
 	--disable-voamrwbenc \
 	--disable-bs2b \
 	--disable-chromaprint \
