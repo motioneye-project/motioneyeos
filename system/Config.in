@@ -448,14 +448,12 @@ config BR2_TARGET_LOCALTIME
 	help
 	  The time zone to install as the default local time, expressed as a
 	  tzdata location, such as:
+	    Etc/UTC             (the default)
 	    GMT
 	    Europe/Paris
 	    America/New_York
 	    Pacific/Wallis
 	    ...
-
-	  If empty, no local time will be set, and the dates will be
-	  expressed in UTC.
 
 endif # BR2_TARGET_TZ_INFO
 
