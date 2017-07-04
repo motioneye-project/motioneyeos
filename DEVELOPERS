@@ -1783,7 +1783,6 @@ F:	package/libiscsi/
 F:	package/libseccomp/
 F:	package/linux-tools/
 F:	package/mesa3d-headers/
-F:	package/mke2img/
 F:	package/nbd/
 F:	package/nut/
 F:	package/nvidia-driver/

@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_HOST_MKE2IMG
+	bool "host mke2img has been removed"
+	select BR2_LEGACY
+	help
+	  We now call mkfs directly to generate ext2/3/4 filesystem
+	  image, so mke2img is no longer necessary.
+
 config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
 	int "ext2 extra inodes has been removed" if BR2_TARGET_ROOTFS_EXT2_INODES = 0
 	default 0
