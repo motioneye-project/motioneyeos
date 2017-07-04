@@ -77,10 +77,11 @@ else
 COREUTILS_CONF_OPTS += --disable-xattr
 endif
 
+COREUTILS_DEPENDENCIES += $(TARGET_NLS_DEPENDENCIES)
+
 # It otherwise fails to link properly, not mandatory though
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
 COREUTILS_CONF_OPTS += --with-libintl-prefix=$(STAGING_DIR)/usr
-COREUTILS_DEPENDENCIES += gettext
 endif
 
 ifeq ($(BR2_PACKAGE_GMP),y)
