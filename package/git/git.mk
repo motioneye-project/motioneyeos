@@ -9,11 +9,7 @@ GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = https://www.kernel.org/pub/software/scm/git
 GIT_LICENSE = GPL-2.0, LGPL-2.1+
 GIT_LICENSE_FILES = COPYING LGPL-2.1
-GIT_DEPENDENCIES = zlib host-gettext
-
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-GIT_DEPENDENCIES += gettext
-endif
+GIT_DEPENDENCIES = zlib $(TARGET_NLS_DEPENDENCIES)
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 GIT_DEPENDENCIES += openssl
