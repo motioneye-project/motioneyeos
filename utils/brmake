@@ -29,7 +29,12 @@ main() {
     m=$((d/60))
     d=$((d%60))
     [ ${m} -eq 0 ] || { printf "%${mf}dmin " ${m}; sf="02"; }
-    printf "%${sf}ds\n" ${d}
+    printf "%${sf}ds" ${d}
+
+    if [ ${ret} -ne 0 ]; then
+        printf "  (error code: %s)" ${ret}
+    fi
+    printf "\n"
 
     return ${ret}
 }
