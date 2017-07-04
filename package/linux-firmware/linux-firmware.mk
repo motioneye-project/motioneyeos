@@ -30,6 +30,12 @@ LINUX_FIRMWARE_FILES += intel/ibt-*
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ibt_firmware
 endif
 
+# Qualcomm Atheros Rome 6174A Bluetooth
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174A_BT),y)
+LINUX_FIRMWARE_FILES += qca/rampatch_usb_00000302.bin qca/nvm_usb_00000302.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.qcom
+endif
+
 # Freescale i.MX SDMA
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_IMX_SDMA),y)
 LINUX_FIRMWARE_FILES += imx/sdma/sdma-imx6q.bin imx/sdma/sdma-imx7d.bin
@@ -192,6 +198,12 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_MEDIATEK_MT7601U),y)
 LINUX_FIRMWARE_FILES += mt7601u.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ralink_a_mediatek_company_firmware
+endif
+
+# qca6174
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174),y)
+LINUX_FIRMWARE_FILES += ath10k/QCA6174
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.QualcommAtheros_ath10k
 endif
 
 # wl127x
