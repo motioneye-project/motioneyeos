@@ -54,15 +54,11 @@ HOST_PYTHON_CONF_ENV += \
 # MAKE1 has shown to workaround the problem.
 HOST_PYTHON_MAKE = $(MAKE1)
 
-PYTHON_DEPENDENCIES = host-python libffi
+PYTHON_DEPENDENCIES = host-python libffi $(TARGET_NLS_DEPENDENCIES)
 
 HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
 
 PYTHON_INSTALL_STAGING = YES
-
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-PYTHON_DEPENDENCIES += gettext
-endif
 
 ifeq ($(BR2_PACKAGE_PYTHON_READLINE),y)
 PYTHON_DEPENDENCIES += readline
