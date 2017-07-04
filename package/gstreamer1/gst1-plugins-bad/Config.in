@@ -164,6 +164,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ASFMUX
 	help
 	  ASF Muxer Plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOBUFFERSPLIT
+	bool "audiobuffersplit"
+	help
+	  Audio buffersplit plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD
 	bool "audiofxbad"
 	help
@@ -173,6 +178,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER
 	bool "audiomixer"
 	help
 	  Audio mixer plugin
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX
+	bool "audiomixmatrix"
+	help
+	  Audio N:M mixer plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
 	bool "compositor"

@@ -166,6 +166,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-asfmux
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOBUFFERSPLIT),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiobuffersplit
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiobuffersplit
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiofxbad
 else
@@ -176,6 +182,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiomixer
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiomixer
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiomixmatrix
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiomixmatrix
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR),y)
