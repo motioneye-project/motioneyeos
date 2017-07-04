@@ -39,6 +39,14 @@ HOST_GETTEXT_CONF_OPTS = \
 	--disable-relocatable \
 	--without-emacs
 
+# Force the build of libintl, even if the C library provides a stub
+# gettext implementation
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
+GETTEXT_CONF_OPTS += --with-included-gettext
+else
+GETTEXT_CONF_OPTS += --without-included-gettext
+endif
+
 # For the target version, we only need the runtime, and for the host
 # version, we only need the tools.
 GETTEXT_SUBDIR = gettext-runtime
