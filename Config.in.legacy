@@ -145,6 +145,21 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
+	int "ext2 extra inodes has been removed" if BR2_TARGET_ROOTFS_EXT2_INODES = 0
+	default 0
+	help
+	  Buildroot now uses mkfs.ext2/3/4 to generate ext2/3/4
+	  images. It now automatically selects the number of inodes
+	  based on the image size. The extra number of inodes can no
+	  longer be provided; instead, provide the total number of
+	  inodes needed in BR2_TARGET_ROOTFS_EXT2_INODES.
+
+config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES_WRAP
+	bool
+	default y if BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES != 0
+	select BR2_LEGACY
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_CDXAPARSE
 	bool "cdxaparse removed"
 	select BR2_LEGACY
