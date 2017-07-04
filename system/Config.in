@@ -420,6 +420,25 @@ config BR2_GENERATE_LOCALE
 	  specified, UTF-8 is assumed. Examples of locales: en_US,
 	  fr_FR.UTF-8.
 
+config BR2_SYSTEM_ENABLE_NLS
+	bool "Enable Native Language Support (NLS)"
+	depends on BR2_USE_WCHAR
+	#  - glibc has built-in NLS support, but anyway doesn't
+	#    support static linking
+	#  - musl and uclibc support static linking, but they don't
+	#    have built-in NLS support, which is provided by the
+	#    libintl library from gettext. The fact that it is a
+	#    separate library causes too many problems for static
+	#    linking.
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_GETTEXT if !BR2_TOOLCHAIN_HAS_FULL_GETTEXT
+	help
+	  This option will enable Native Language Support, which will
+	  allow software packages to support translations.
+
+comment "NLS support needs a toolchain w/ wchar, dynamic library"
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
 	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
