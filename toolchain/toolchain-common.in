@@ -7,6 +7,11 @@ source "package/gdb/Config.in.host"
 
 comment "Toolchain Generic Options"
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=19615
+# Affect toolchains built with binutils 2.26 (fixed in binutils 2.26.1).
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19615
+	bool
+
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64735
 # exception_ptr, nested_exception, and future from libstdc++ are not
 # available for architectures not supporting always lock-free atomic
