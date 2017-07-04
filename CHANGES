@@ -1,3 +1,34 @@
+2017.05.1, Released July 4th, 2017
+
+	Important / security related fixes.
+
+	Update support/scripts/scancpan to use METACPAN v1 API as v0
+	has been shutdown.
+
+	Update support/scripts/mkusers to handle setups where
+	/etc/shadow is a symlink.
+
+	External toolchain: Don't create musl dynamic loader symlink
+	for static builds.
+
+	Setlocalversion: Correct detection of mercurial revisions for
+	non-tagged versions.
+
+	Defconfigs: at91sam9x5ek_mmc: workaround boot rom issue.
+
+	Updated/fixed packages: apache, automake, bind, botan, c-ares,
+	dhcp, expat, fcgiwrap, gcc, gdb, gesftpserver, glibc, glmark2,
+	gnutls, gst1-plugins-bad, imagemagick, imx-uuc, intltool,
+	iperf, ipsec-tools, irssi, kmod, libcurl, libgcrypt, libmad,
+	libnl, lugaro, mosquitto, mpg123, ncurses, nodejs, ntp,
+	openssh, openvpn, pngquant, python-simplegeneric, qt5base,
+	qt5multimedia, rtl8821au, socat, spice, systemd, tor, trinity,
+	tslib, vlc, x264, xen, xlib_libxshmfenc, xserver_xorg-server
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9976: License file for package 'rtl8821au' incorrect
+
 2017.05, Released May 31st, 2017
 
 	Minor fixes.
