@@ -15,8 +15,7 @@ define HOST_IMX_USB_LOADER_BUILD_CMDS
 endef
 
 define HOST_IMX_USB_LOADER_INSTALL_CMDS
-	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
-		DESTDIR=$(HOST_DIR) sysconfdir=/etc install
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) prefix=$(HOST_DIR) install
 endef
 
 $(eval $(host-generic-package))
