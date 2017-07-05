@@ -14,8 +14,8 @@
 # cgpt does not create protective MBR, and the kernel refuses to read
 # GPT unless there's some kind of MBR in sector 0. So we need parted
 # to write that single sector before doing anything with the GPT.
-cgpt=$HOST_DIR/usr/bin/cgpt
-parted=$HOST_DIR/usr/sbin/parted
+cgpt=$HOST_DIR/bin/cgpt
+parted=$HOST_DIR/sbin/parted
 kernel=$BINARIES_DIR/uImage.kpart
 rootfs=$BINARIES_DIR/rootfs.ext2
 

@@ -9,7 +9,7 @@ GENIMAGE_TMP=$BUILD_DIR/.genimage_tmp
 
 rm -rf $GENIMAGE_TMP
 
-${HOST_DIR}/usr/bin/genimage \
+${HOST_DIR}/bin/genimage \
         --config ${GENIMAGE_CFG} \
         --rootpath $TARGET_DIR \
         --tmppath $GENIMAGE_TMP \

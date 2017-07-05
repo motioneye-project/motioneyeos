@@ -3,7 +3,7 @@
 # 2013, Carlo Caione <carlo.caione@gmail.com>
 
 BOARD_DIR="$(dirname $0)"
-MKIMAGE=$HOST_DIR/usr/bin/mkimage
+MKIMAGE=$HOST_DIR/bin/mkimage
 BOOT_CMD=$BOARD_DIR/boot.cmd
 BOOT_CMD_H=$BINARIES_DIR/boot.scr
 

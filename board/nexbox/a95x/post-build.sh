@@ -1,7 +1,7 @@
 #!/bin/sh
 
 BOARD_DIR="$(dirname $0)"
-MKIMAGE=$HOST_DIR/usr/bin/mkimage
+MKIMAGE=$HOST_DIR/bin/mkimage
 
 $MKIMAGE -C none -A arm64 -T script -d $BOARD_DIR/boot.txt $BINARIES_DIR/boot.scr
 

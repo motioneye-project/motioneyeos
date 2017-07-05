@@ -5,9 +5,9 @@
 # The resulting file is called uImage.kpart.
 
 BOARD_DIR=$(dirname $0)
-mkimage=$HOST_DIR/usr/bin/mkimage
-futility=$HOST_DIR/usr/bin/futility
-devkeys=$HOST_DIR/usr/share/vboot/devkeys
+mkimage=$HOST_DIR/bin/mkimage
+futility=$HOST_DIR/bin/futility
+devkeys=$HOST_DIR/share/vboot/devkeys
 
 run() { echo "$@"; "$@"; }
 die() { echo "$@" >&2; exit 1; }
