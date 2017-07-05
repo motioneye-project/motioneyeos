@@ -31,7 +31,7 @@ endif
 # needed for compiling packages using cppcms. And it is not worth
 # creating a host package just for a python script.
 define CPPCMS_INSTALL_HOST_TOOLS
-	cp $(STAGING_DIR)/usr/bin/cppcms_tmpl_cc $(HOST_DIR)/usr/bin/cppcms_tmpl_cc
+	cp $(STAGING_DIR)/usr/bin/cppcms_tmpl_cc $(HOST_DIR)/bin/cppcms_tmpl_cc
 endef
 CPPCMS_POST_INSTALL_STAGING_HOOKS += CPPCMS_INSTALL_HOST_TOOLS
 

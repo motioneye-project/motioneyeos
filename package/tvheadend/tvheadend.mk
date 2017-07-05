@@ -86,7 +86,7 @@ define TVHEADEND_CONFIGURE_CMDS
 			--arch="$(ARCH)" \
 			--cpu="$(BR2_GCC_TARGET_CPU)" \
 			--nowerror \
-			--python="$(HOST_DIR)/usr/bin/python" \
+			--python="$(HOST_DIR)/bin/python" \
 			--enable-dvbscan \
 			--enable-bundle \
 			--enable-pngquant \
@@ -97,7 +97,7 @@ define TVHEADEND_CONFIGURE_CMDS
 endef
 
 define TVHEADEND_FIX_PNGQUANT_PATH
-	$(SED) "s%^pngquant_bin =.*%pngquant_bin = '$(HOST_DIR)/usr/bin/pngquant'%" \
+	$(SED) "s%^pngquant_bin =.*%pngquant_bin = '$(HOST_DIR)/bin/pngquant'%" \
 		$(@D)/support/mkbundle
 endef
 TVHEADEND_POST_CONFIGURE_HOOKS += TVHEADEND_FIX_PNGQUANT_PATH

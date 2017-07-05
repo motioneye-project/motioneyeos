@@ -44,7 +44,7 @@ SOCAT_CONF_OPTS += --disable-readline
 endif
 
 define SOCAT_RUN_AUTOCONF
-	(cd $(@D); $(HOST_DIR)/usr/bin/autoconf)
+	(cd $(@D); $(HOST_DIR)/bin/autoconf)
 endef
 
 SOCAT_PRE_CONFIGURE_HOOKS += SOCAT_RUN_AUTOCONF

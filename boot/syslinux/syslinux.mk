@@ -55,7 +55,7 @@ define SYSLINUX_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) \
 		CC="$(TARGET_CC)" \
 		LD="$(TARGET_LD)" \
-		NASM="$(HOST_DIR)/usr/bin/nasm" \
+		NASM="$(HOST_DIR)/bin/nasm" \
 		CC_FOR_BUILD="$(HOSTCC)" \
 		CFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
 		LDFLAGS_FOR_BUILD="$(HOST_LDFLAGS)" \
@@ -78,7 +78,7 @@ endef
 # However, buildroot makes no usage of it, so better delete it than have it
 # installed at the wrong place
 define SYSLINUX_POST_INSTALL_CLEANUP
-	rm -rf $(HOST_DIR)/usr/bin/syslinux
+	rm -rf $(HOST_DIR)/bin/syslinux
 endef
 SYSLINUX_POST_INSTALL_TARGET_HOOKS += SYSLINUX_POST_INSTALL_CLEANUP
 

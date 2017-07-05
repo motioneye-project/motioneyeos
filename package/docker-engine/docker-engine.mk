@@ -107,7 +107,7 @@ define DOCKER_ENGINE_BUILD_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
 		cd $(@D)/gopath/src/github.com/docker/docker; \
 		$(DOCKER_ENGINE_MAKE_ENV) \
-		$(HOST_DIR)/usr/bin/go build -v \
+		$(HOST_DIR)/bin/go build -v \
 			-o $(@D)/bin/$(target) \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
 			-ldflags "$(DOCKER_ENGINE_GLDFLAGS) $(DOCKER_ENGINE_GLDFLAGS_$(call UPPERCASE,$(target)))" \

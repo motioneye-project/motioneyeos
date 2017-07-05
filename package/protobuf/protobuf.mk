@@ -15,7 +15,7 @@ PROTOBUF_LICENSE_FILES = LICENSE
 
 # N.B. Need to use host protoc during cross compilation.
 PROTOBUF_DEPENDENCIES = host-protobuf
-PROTOBUF_CONF_OPTS = --with-protoc=$(HOST_DIR)/usr/bin/protoc
+PROTOBUF_CONF_OPTS = --with-protoc=$(HOST_DIR)/bin/protoc
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 PROTOBUF_CONF_ENV += LIBS=-latomic

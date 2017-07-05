@@ -28,7 +28,7 @@ define HOST_MFGTOOLS_INSTALL_CMDS
 	$(INSTALL) -D -m 755 $(@D)/MfgToolLib/libMfgToolLib.so \
 		$(HOST_DIR)/usr/lib/libMfgToolLib.so
 	$(INSTALL) -D -m 755 $(@D)/TestPrgm/mfgtoolcli \
-		$(HOST_DIR)/usr/bin/mfgtoolcli
+		$(HOST_DIR)/bin/mfgtoolcli
 endef
 
 $(eval $(host-cmake-package))

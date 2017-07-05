@@ -15,7 +15,7 @@ define HOST_MXSLDR_BUILD_CMDS
 endef
 
 define HOST_MXSLDR_INSTALL_CMDS
-	$(INSTALL) -m 0755 -D $(@D)/mxsldr $(HOST_DIR)/usr/bin/mxsldr
+	$(INSTALL) -m 0755 -D $(@D)/mxsldr $(HOST_DIR)/bin/mxsldr
 endef
 
 $(eval $(host-generic-package))

@@ -20,7 +20,7 @@ MOARVM_CONF_OPTS = \
 	--ld="$(TARGET_CC)" \
 	--prefix="/usr" \
 	--pkgconfig=$(PKG_CONFIG_HOST_BINARY) \
-	--lua=$(HOST_DIR)/usr/bin/luajit \
+	--lua=$(HOST_DIR)/bin/luajit \
 	--has-libuv \
 	--has-libtommath \
 	--has-libatomic

@@ -27,7 +27,7 @@ define 4TH_BUILD_CMDS
 	$(4TH_MAKE_ENV) $(MAKE) -C $(@D)/sources all \
 		CROSS="$(TARGET_CROSS)" \
 		CFLAGS="$(4TH_CFLAGS)" \
-		FOURTH=$(HOST_DIR)/usr/bin/4th
+		FOURTH=$(HOST_DIR)/bin/4th
 endef
 
 define 4TH_INSTALL_STAGING_CMDS
@@ -59,10 +59,10 @@ define HOST_4TH_BUILD_CMDS
 endef
 
 define HOST_4TH_INSTALL_CMDS
-	mkdir -p $(HOST_DIR)/usr/bin
+	mkdir -p $(HOST_DIR)/bin
 	mkdir -p $(HOST_DIR)/usr/lib
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/sources mostlyinstall \
-		BINARIES=$(HOST_DIR)/usr/bin \
+		BINARIES=$(HOST_DIR)/bin \
 		LIBRARIES=$(HOST_DIR)/usr/lib
 endef
 

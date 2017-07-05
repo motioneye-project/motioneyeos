@@ -54,7 +54,7 @@ SYSTEMD_CONF_ENV = \
 	ac_cv_path_UMOUNT_PATH=/usr/bin/umount
 
 define SYSTEMD_RUN_INTLTOOLIZE
-	cd $(@D) && $(HOST_DIR)/usr/bin/intltoolize --force --automake
+	cd $(@D) && $(HOST_DIR)/bin/intltoolize --force --automake
 endef
 SYSTEMD_PRE_CONFIGURE_HOOKS += SYSTEMD_RUN_INTLTOOLIZE
 

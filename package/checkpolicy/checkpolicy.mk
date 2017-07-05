@@ -12,8 +12,8 @@ CHECKPOLICY_LICENSE_FILES = COPYING
 CHECKPOLICY_DEPENDENCIES = libselinux flex host-flex host-bison
 
 TARGET_CHECKPOLICY_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) \
-	LEX="$(HOST_DIR)/usr/bin/flex" \
-	YACC="$(HOST_DIR)/usr/bin/bison -y"
+	LEX="$(HOST_DIR)/bin/flex" \
+	YACC="$(HOST_DIR)/bin/bison -y"
 
 # DESTDIR is used at build time to find libselinux
 define CHECKPOLICY_BUILD_CMDS
@@ -32,8 +32,8 @@ endef
 HOST_CHECKPOLICY_DEPENDENCIES = host-libselinux host-flex host-bison
 
 HOST_CHECKPOLICY_MAKE_OPTS = $(HOST_CONFIGURE_OPTS) \
-	LEX="$(HOST_DIR)/usr/bin/flex" \
-	YACC="$(HOST_DIR)/usr/bin/bison -y"
+	LEX="$(HOST_DIR)/bin/flex" \
+	YACC="$(HOST_DIR)/bin/bison -y"
 
 # DESTDIR is used at build time to find host-libselinux
 define HOST_CHECKPOLICY_BUILD_CMDS

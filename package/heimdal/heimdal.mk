@@ -31,8 +31,8 @@ HEIMDAL_LICENSE_FILES = LICENSE
 # We need asn1_compile in the PATH for samba4
 define HOST_HEIMDAL_MAKE_SYMLINK
 	ln -sf $(HOST_DIR)/usr/libexec/heimdal/asn1_compile \
-		$(HOST_DIR)/usr/bin/asn1_compile
-	ln -sf $(HOST_DIR)/usr/bin/compile_et \
+		$(HOST_DIR)/bin/asn1_compile
+	ln -sf $(HOST_DIR)/bin/compile_et \
 		$(HOST_DIR)/usr/libexec/heimdal/compile_et
 endef
 

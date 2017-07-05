@@ -19,7 +19,7 @@ HOST_KODI_JSONSCHEMABUILDER_CONF_OPTS = \
 define HOST_KODI_JSONSCHEMABUILDER_INSTALL_CMDS
 	$(INSTALL) -m 755 -D \
 		$(@D)/tools/depends/native/JsonSchemaBuilder/JsonSchemaBuilder \
-		$(HOST_DIR)/usr/bin/JsonSchemaBuilder
+		$(HOST_DIR)/bin/JsonSchemaBuilder
 endef
 
 $(eval $(host-cmake-package))

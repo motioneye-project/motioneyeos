@@ -44,7 +44,7 @@ define HOST_NODEJS_CONFIGURE_CMDS
 	# The build system directly calls python. Work around this by forcing python2
 	# into PATH. See https://github.com/nodejs/node/issues/2735
 	mkdir -p $(@D)/bin
-	ln -sf $(HOST_DIR)/usr/bin/python2 $(@D)/bin/python
+	ln -sf $(HOST_DIR)/bin/python2 $(@D)/bin/python
 
 	# Build with the static, built-in OpenSSL which is supplied as part of
 	# the nodejs source distribution.  This is needed on the host because
@@ -53,8 +53,8 @@ define HOST_NODEJS_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(HOST_CONFIGURE_OPTS) \
 		PATH=$(@D)/bin:$(BR_PATH) \
-		PYTHON=$(HOST_DIR)/usr/bin/python2 \
-		$(HOST_DIR)/usr/bin/python2 ./configure \
+		PYTHON=$(HOST_DIR)/bin/python2 \
+		$(HOST_DIR)/bin/python2 ./configure \
 		--prefix=$(HOST_DIR) \
 		--without-snapshot \
 		--without-dtrace \
@@ -65,7 +65,7 @@ define HOST_NODEJS_CONFIGURE_CMDS
 endef
 
 define HOST_NODEJS_BUILD_CMDS
-	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
+	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
 		$(MAKE) -C $(@D) \
 		$(HOST_CONFIGURE_OPTS) \
 		NO_LOAD=cctest.target.mk \
@@ -73,13 +73,13 @@ define HOST_NODEJS_BUILD_CMDS
 endef
 
 define HOST_NODEJS_INSTALL_CMDS
-	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
+	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
 		$(MAKE) -C $(@D) install \
 		$(HOST_CONFIGURE_OPTS) \
 		NO_LOAD=cctest.target.mk \
 		PATH=$(@D)/bin:$(BR_PATH)
 
-	$(INSTALL) -m755 -D $(@D)/out/Release/mkpeephole $(HOST_DIR)/usr/bin/mkpeephole
+	$(INSTALL) -m755 -D $(@D)/out/Release/mkpeephole $(HOST_DIR)/bin/mkpeephole
 endef
 
 ifeq ($(BR2_i386),y)
@@ -112,14 +112,14 @@ endif
 
 define NODEJS_CONFIGURE_CMDS
 	mkdir -p $(@D)/bin
-	ln -sf $(HOST_DIR)/usr/bin/python2 $(@D)/bin/python
+	ln -sf $(HOST_DIR)/bin/python2 $(@D)/bin/python
 
 	(cd $(@D); \
 		$(TARGET_CONFIGURE_OPTS) \
 		PATH=$(@D)/bin:$(BR_PATH) \
 		LD="$(TARGET_CXX)" \
-		PYTHON=$(HOST_DIR)/usr/bin/python2 \
-		$(HOST_DIR)/usr/bin/python2 ./configure \
+		PYTHON=$(HOST_DIR)/bin/python2 \
+		$(HOST_DIR)/bin/python2 ./configure \
 		--prefix=/usr \
 		--dest-cpu=$(NODEJS_CPU) \
 		$(if $(NODEJS_ARM_FP),--with-arm-float-abi=$(NODEJS_ARM_FP)) \
@@ -129,11 +129,11 @@ define NODEJS_CONFIGURE_CMDS
 	)
 
 	# use host version of mkpeephole
-	sed "s#<(mkpeephole_exec)#$(HOST_DIR)/usr/bin/mkpeephole#g" -i $(@D)/deps/v8/src/v8.gyp
+	sed "s#<(mkpeephole_exec)#$(HOST_DIR)/bin/mkpeephole#g" -i $(@D)/deps/v8/src/v8.gyp
 endef
 
 define NODEJS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
+	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
 		$(MAKE) -C $(@D) \
 		$(TARGET_CONFIGURE_OPTS) \
 		NO_LOAD=cctest.target.mk \
@@ -155,7 +155,7 @@ NPM = $(TARGET_CONFIGURE_OPTS) \
 	npm_config_build_from_source=true \
 	npm_config_nodedir=$(BUILD_DIR)/nodejs-$(NODEJS_VERSION) \
 	npm_config_prefix=$(TARGET_DIR)/usr \
-	$(HOST_DIR)/usr/bin/npm
+	$(HOST_DIR)/bin/npm
 
 #
 # We can only call NPM if there's something to install.
@@ -170,7 +170,7 @@ endef
 endif
 
 define NODEJS_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/usr/bin/python2 \
+	$(TARGET_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
 		$(MAKE) -C $(@D) install \
 		DESTDIR=$(TARGET_DIR) \
 		$(TARGET_CONFIGURE_OPTS) \

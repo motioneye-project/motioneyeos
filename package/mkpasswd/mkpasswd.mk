@@ -16,9 +16,9 @@ define HOST_MKPASSWD_BUILD_CMDS
 endef
 
 define HOST_MKPASSWD_INSTALL_CMDS
-	$(INSTALL) -D -m 755 $(@D)/mkpasswd $(HOST_DIR)/usr/bin/mkpasswd
+	$(INSTALL) -D -m 755 $(@D)/mkpasswd $(HOST_DIR)/bin/mkpasswd
 endef
 
 $(eval $(host-generic-package))
 
-MKPASSWD = $(HOST_DIR)/usr/bin/mkpasswd
+MKPASSWD = $(HOST_DIR)/bin/mkpasswd

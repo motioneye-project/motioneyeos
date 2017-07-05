@@ -66,7 +66,7 @@ endef
 
 define HOST_S6_RC_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install-dynlib install-bin
-	rm -f $(HOST_DIR)/usr/bin/s6-rc-dryrun
+	rm -f $(HOST_DIR)/bin/s6-rc-dryrun
 endef
 
 $(eval $(generic-package))

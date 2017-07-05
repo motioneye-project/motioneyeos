@@ -20,13 +20,13 @@ endef
 
 # Since it's a prebuilt application and it does not conform to the
 # usual Unix hierarchy, we install it in $(HOST_DIR)/opt/sam-ba and
-# then create a symbolic link from $(HOST_DIR)/usr/bin to the
+# then create a symbolic link from $(HOST_DIR)/bin to the
 # application binary, for easier usage.
 
 define HOST_SAM_BA_INSTALL_CMDS
 	mkdir -p $(HOST_DIR)/opt/sam-ba/
 	cp -a $(@D)/* $(HOST_DIR)/opt/sam-ba/
-	ln -sf ../../opt/sam-ba/sam-ba $(HOST_DIR)/usr/bin/sam-ba
+	ln -sf ../../opt/sam-ba/sam-ba $(HOST_DIR)/bin/sam-ba
 endef
 
 $(eval $(host-generic-package))

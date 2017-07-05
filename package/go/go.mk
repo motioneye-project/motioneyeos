@@ -99,8 +99,8 @@ define HOST_GO_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/go $(HOST_GO_ROOT)/bin/go
 	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/gofmt $(HOST_GO_ROOT)/bin/gofmt
 
-	ln -sf ../lib/go/bin/go $(HOST_DIR)/usr/bin/
-	ln -sf ../lib/go/bin/gofmt $(HOST_DIR)/usr/bin/
+	ln -sf ../lib/go/bin/go $(HOST_DIR)/bin/
+	ln -sf ../lib/go/bin/gofmt $(HOST_DIR)/bin/
 
 	cp -a $(@D)/lib $(HOST_GO_ROOT)/
 

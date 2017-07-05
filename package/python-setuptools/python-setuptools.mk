@@ -13,7 +13,7 @@ PYTHON_SETUPTOOLS_SETUP_TYPE = setuptools
 # recent setuptools versions require bootstrap.py to be invoked
 # before the standard setup process.
 define PYTHON_SETUPTOOLS_RUN_BOOTSTRAP
-	cd  $(@D) && $(HOST_DIR)/usr/bin/python ./bootstrap.py
+	cd  $(@D) && $(HOST_DIR)/bin/python ./bootstrap.py
 endef
 
 PYTHON_SETUPTOOLS_PRE_CONFIGURE_HOOKS = PYTHON_SETUPTOOLS_RUN_BOOTSTRAP

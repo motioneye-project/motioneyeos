@@ -15,7 +15,7 @@ define HOST_YAFFS2UTILS_BUILD_CMDS
 endef
 
 define HOST_YAFFS2UTILS_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) INSTALLDIR=$(HOST_DIR)/usr/bin install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) INSTALLDIR=$(HOST_DIR)/bin install
 endef
 
 $(eval $(host-generic-package))

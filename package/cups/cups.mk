@@ -15,7 +15,7 @@ CUPS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) DSTROOT=$(TARGET_DIR) install
 
 # Using autoconf, not autoheader, so we cannot use AUTORECONF = YES.
 define CUPS_RUN_AUTOCONF
-	cd $(@D); $(HOST_DIR)/usr/bin/autoconf -f
+	cd $(@D); $(HOST_DIR)/bin/autoconf -f
 endef
 CUPS_PRE_CONFIGURE_HOOKS += CUPS_RUN_AUTOCONF
 

@@ -12,9 +12,9 @@ PYTHON_PYPCAP_SETUP_TYPE = distutils
 PYTHON_PYPCAP_DEPENDENCIES = host-python-pyrex libpcap
 
 define PYTHON_PYPCAP_CONFIGURE_CMDS
-	$(HOST_DIR)/usr/bin/python2 $(HOST_DIR)/usr/bin/pyrexc $(@D)/pcap.pyx
+	$(HOST_DIR)/bin/python2 $(HOST_DIR)/bin/pyrexc $(@D)/pcap.pyx
 	(cd $(@D); \
-		$(HOST_DIR)/usr/bin/python setup.py \
+		$(HOST_DIR)/bin/python setup.py \
 		config --with-pcap=$(STAGING_DIR)/usr)
 endef
 

@@ -19,7 +19,7 @@ endif
 
 XEN_CONF_OPTS = --disable-ocamltools
 
-XEN_CONF_ENV = PYTHON=$(HOST_DIR)/usr/bin/python2
+XEN_CONF_ENV = PYTHON=$(HOST_DIR)/bin/python2
 XEN_MAKE_ENV = \
 	XEN_TARGET_ARCH=$(XEN_ARCH) \
 	CROSS_COMPILE=$(TARGET_CROSS) \

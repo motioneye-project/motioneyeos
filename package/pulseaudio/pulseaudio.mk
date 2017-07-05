@@ -52,7 +52,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
 PULSEAUDIO_DEPENDENCIES += orc
-PULSEAUDIO_CONF_ENV += ORCC=$(HOST_DIR)/usr/bin/orcc
+PULSEAUDIO_CONF_ENV += ORCC=$(HOST_DIR)/bin/orcc
 PULSEAUDIO_CONF_OPTS += --enable-orc
 else
 PULSEAUDIO_CONF_OPTS += --disable-orc

@@ -15,7 +15,7 @@ define HOST_B43_FWCUTTER_BUILD_CMDS
 endef
 
 define HOST_B43_FWCUTTER_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/b43-fwcutter $(HOST_DIR)/usr/bin/b43-fwcutter
+	$(INSTALL) -D -m 0755 $(@D)/b43-fwcutter $(HOST_DIR)/bin/b43-fwcutter
 endef
 
 $(eval $(host-generic-package))

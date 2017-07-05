@@ -11,6 +11,6 @@ TERMINOLOGY_LICENSE = BSD-2-Clause
 TERMINOLOGY_LICENSE_FILES = COPYING
 
 TERMINOLOGY_DEPENDENCIES = efl host-pkgconf
-TERMINOLOGY_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc
+TERMINOLOGY_CONF_OPTS = --with-edje-cc=$(HOST_DIR)/bin/edje_cc
 
 $(eval $(autotools-package))

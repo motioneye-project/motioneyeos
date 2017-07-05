@@ -37,7 +37,7 @@ define HOST_SOFTETHER_BUILD_CMDS
 endef
 
 define HOST_SOFTETHER_INSTALL_CMDS
-	$(INSTALL) -m 0755 $(@D)/src/hamcorebuilder/hamcorebuilder $(HOST_DIR)/usr/bin/hamcorebuilder
+	$(INSTALL) -m 0755 $(@D)/src/hamcorebuilder/hamcorebuilder $(HOST_DIR)/bin/hamcorebuilder
 endef
 
 $(eval $(autotools-package))

@@ -15,7 +15,7 @@ endef
 
 define HOST_OMAP_U_BOOT_UTILS_INSTALL_CMDS
 	for f in gpsign pserial tagger ucmd ukermit ; do \
-		$(INSTALL) -D -m 755 $(@D)/$$f $(HOST_DIR)/usr/bin/$$f ; \
+		$(INSTALL) -D -m 755 $(@D)/$$f $(HOST_DIR)/bin/$$f ; \
 	done
 endef
 

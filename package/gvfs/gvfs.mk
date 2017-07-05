@@ -128,7 +128,7 @@ define GVFS_REMOVE_TARGET_SCHEMAS
 endef
 
 define GVFS_COMPILE_SCHEMAS
-	$(HOST_DIR)/usr/bin/glib-compile-schemas --targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas $(STAGING_DIR)/usr/share/glib-2.0/schemas
+	$(HOST_DIR)/bin/glib-compile-schemas --targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas $(STAGING_DIR)/usr/share/glib-2.0/schemas
 endef
 
 GVFS_POST_INSTALL_TARGET_HOOKS += \

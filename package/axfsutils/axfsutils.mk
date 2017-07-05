@@ -18,7 +18,7 @@ endef
 
 define HOST_AXFSUTILS_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/mkfs.axfs-legacy/mkfs.axfs \
-		$(HOST_DIR)/usr/bin/mkfs.axfs
+		$(HOST_DIR)/bin/mkfs.axfs
 endef
 
 $(eval $(host-generic-package))

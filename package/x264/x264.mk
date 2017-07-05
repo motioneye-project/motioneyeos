@@ -15,7 +15,7 @@ X264_CONF_OPTS = --disable-avs --disable-lavf --disable-swscale
 ifeq ($(BR2_i386)$(BR2_x86_64),y)
 # nasm needed for assembly files
 X264_DEPENDENCIES += host-nasm
-X264_CONF_ENV += AS="$(HOST_DIR)/usr/bin/nasm"
+X264_CONF_ENV += AS="$(HOST_DIR)/bin/nasm"
 else ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_aarch64),y)
 # We need to pass gcc as AS, because the ARM assembly files have to be
 # preprocessed

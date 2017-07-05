@@ -30,7 +30,7 @@ endif
 
 define HOST_PYTHON_SIP_CONFIGURE_CMDS
 	(cd $(@D); \
-		$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(HOST_DIR)/usr/bin/python configure.py)
+		$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(HOST_DIR)/bin/python configure.py)
 endef
 
 define HOST_PYTHON_SIP_BUILD_CMDS
@@ -43,14 +43,14 @@ endef
 
 define PYTHON_SIP_CONFIGURE_CMDS
 	(cd $(@D); \
-		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(HOST_DIR)/usr/bin/python configure.py \
+		$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(HOST_DIR)/bin/python configure.py \
 			--bindir $(TARGET_DIR)/usr/bin \
 			--destdir $(TARGET_DIR)/$(PYTHON_SIP_LIB_DIR) \
 			--incdir $(STAGING_DIR)/$(PYTHON_SIP_INCLUDE_DIR) \
 			--sipdir $(TARGET_DIR)/usr/share/sip \
 			--sysroot $(STAGING_DIR)/usr \
 			--use-qmake && \
-		$(HOST_DIR)/usr/bin/qmake)
+		$(HOST_DIR)/bin/qmake)
 endef
 
 define PYTHON_SIP_BUILD_CMDS

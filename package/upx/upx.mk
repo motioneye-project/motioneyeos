@@ -23,7 +23,7 @@ endef
 
 # UPX has no install procedure, so install it manually.
 define HOST_UPX_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/src/upx.out $(HOST_DIR)/usr/bin/upx
+	$(INSTALL) -D -m 0755 $(@D)/src/upx.out $(HOST_DIR)/bin/upx
 endef
 
 $(eval $(host-generic-package))

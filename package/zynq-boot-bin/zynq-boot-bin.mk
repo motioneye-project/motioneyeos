@@ -16,7 +16,7 @@ define HOST_ZYNQ_BOOT_BIN_EXTRACT_CMDS
 endef
 
 define HOST_ZYNQ_BOOT_BIN_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/$(ZYNQ_BOOT_BIN_SOURCE) $(HOST_DIR)/usr/bin/$(ZYNQ_BOOT_BIN_SOURCE)
+	$(INSTALL) -D -m 0755 $(@D)/$(ZYNQ_BOOT_BIN_SOURCE) $(HOST_DIR)/bin/$(ZYNQ_BOOT_BIN_SOURCE)
 endef
 
 $(eval $(host-generic-package))

@@ -72,7 +72,7 @@ endef
 PYTHON_PYQT_CONF_OPTS = \
 	--bindir $(TARGET_DIR)/usr/bin \
 	--destdir $(TARGET_DIR)/usr/lib/$(PYTHON_PYQT_PYTHON_DIR)/site-packages \
-	--qmake $(HOST_DIR)/usr/bin/qmake \
+	--qmake $(HOST_DIR)/bin/qmake \
 	--sysroot $(STAGING_DIR)/usr \
 	-w --confirm-license \
 	--no-designer-plugin \
@@ -93,7 +93,7 @@ define PYTHON_PYQT_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) \
 		$(TARGET_CONFIGURE_OPTS) \
-		$(HOST_DIR)/usr/bin/python configure-ng.py \
+		$(HOST_DIR)/bin/python configure-ng.py \
 			$(PYTHON_PYQT_CONF_OPTS) \
 	)
 endef

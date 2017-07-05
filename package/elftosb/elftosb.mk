@@ -14,9 +14,9 @@ define HOST_ELFTOSB_BUILD_CMDS
 endef
 
 define HOST_ELFTOSB_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/bld/linux/elftosb $(HOST_DIR)/usr/bin/elftosb
-	$(INSTALL) -D -m 0755 $(@D)/bld/linux/keygen $(HOST_DIR)/usr/bin/keygen
-	$(INSTALL) -D -m 0755 $(@D)/bld/linux/sbtool $(HOST_DIR)/usr/bin/sbtool
+	$(INSTALL) -D -m 0755 $(@D)/bld/linux/elftosb $(HOST_DIR)/bin/elftosb
+	$(INSTALL) -D -m 0755 $(@D)/bld/linux/keygen $(HOST_DIR)/bin/keygen
+	$(INSTALL) -D -m 0755 $(@D)/bld/linux/sbtool $(HOST_DIR)/bin/sbtool
 endef
 
 $(eval $(host-generic-package))

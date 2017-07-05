@@ -73,7 +73,7 @@ HOST_SETOOLS_CONF_OPTS = \
 
 HOST_SETOOLS_CONF_ENV += \
 	am_cv_pathless_PYTHON=python \
-	ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python \
+	ac_cv_path_PYTHON=$(HOST_DIR)/bin/python \
 	am_cv_python_platform=linux2 \
 	am_cv_python_version=$(HOST_SETOOLS_PYTHON_VERSION) \
 	am_cv_python_pythondir=$(HOST_SETOOLS_PYTHON_SITE_PACKAGES) \

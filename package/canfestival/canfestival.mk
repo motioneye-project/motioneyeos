@@ -37,13 +37,13 @@ endef
 
 define CANFESTIVAL_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) all \
-		PYTHON=$(HOST_DIR)/usr/bin/python2
+		PYTHON=$(HOST_DIR)/bin/python2
 endef
 
 define CANFESTIVAL_INSTALL_TARGET_CMDS
 	for d in $(CANFESTIVAL_INSTALLED-y) ; do \
 		$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/$$d install \
-			PYTHON=$(HOST_DIR)/usr/bin/python2 \
+			PYTHON=$(HOST_DIR)/bin/python2 \
 			DESTDIR=$(TARGET_DIR) || exit 1 ; \
 	done
 endef
@@ -51,7 +51,7 @@ endef
 define CANFESTIVAL_INSTALL_STAGING_CMDS
 	for d in $(CANFESTIVAL_INSTALLED-y) ; do \
 		$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D)/$$d install \
-			PYTHON=$(HOST_DIR)/usr/bin/python2 \
+			PYTHON=$(HOST_DIR)/bin/python2 \
 			DESTDIR=$(STAGING_DIR) || exit 1 ; \
 	done
 endef

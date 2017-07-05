@@ -25,7 +25,7 @@ REFPOLICY_DEPENDENCIES = \
 # Cannot use multiple threads to build the reference policy
 REFPOLICY_MAKE = \
 	TEST_TOOLCHAIN=$(HOST_DIR) \
-	PYTHON="$(HOST_DIR)/usr/bin/python2" \
+	PYTHON="$(HOST_DIR)/bin/python2" \
 	$(TARGET_MAKE_ENV) \
 	$(MAKE1)
 

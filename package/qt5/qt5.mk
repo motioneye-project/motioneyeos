@@ -34,4 +34,4 @@ define QT5_LA_PRL_FILES_FIXUP
 endef
 
 # Variable for other Qt applications to use
-QT5_QMAKE = $(HOST_DIR)/usr/bin/qmake -spec devices/linux-buildroot-g++
+QT5_QMAKE = $(HOST_DIR)/bin/qmake -spec devices/linux-buildroot-g++

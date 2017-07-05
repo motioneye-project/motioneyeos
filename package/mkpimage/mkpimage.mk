@@ -15,7 +15,7 @@ define HOST_MKPIMAGE_BUILD_CMDS
 endef
 
 define HOST_MKPIMAGE_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/mkpimage $(HOST_DIR)/usr/bin/mkpimage
+	$(INSTALL) -D -m 0755 $(@D)/mkpimage $(HOST_DIR)/bin/mkpimage
 endef
 
 $(eval $(host-generic-package))

@@ -37,7 +37,7 @@ define CA_CERTIFICATES_INSTALL_TARGET_CMDS
 	done
 
 	# Create symlinks to the certificates by their hash values
-	$(HOST_DIR)/usr/bin/c_rehash $(TARGET_DIR)/etc/ssl/certs
+	$(HOST_DIR)/bin/c_rehash $(TARGET_DIR)/etc/ssl/certs
 endef
 
 $(eval $(generic-package))

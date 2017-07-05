@@ -67,7 +67,7 @@ define HOST_AM335X_PRU_PACKAGE_BUILD_CMDS
 endef
 
 define HOST_AM335X_PRU_PACKAGE_INSTALL_CMDS
-	$(INSTALL) -m 0755 -D $(@D)/pru_sw/utils/pasm $(HOST_DIR)/usr/bin/pasm
+	$(INSTALL) -m 0755 -D $(@D)/pru_sw/utils/pasm $(HOST_DIR)/bin/pasm
 endef
 
 $(eval $(generic-package))

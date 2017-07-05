@@ -14,4 +14,4 @@ HOST_LZOP_DEPENDENCIES = host-lzo
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
-LZOP = $(HOST_DIR)/usr/bin/lzop
+LZOP = $(HOST_DIR)/bin/lzop

@@ -333,7 +333,7 @@ endif # BR2_CCACHE
 # Avoid that a .br_real is symlinked a second time.
 # Also create <arch>-linux-<tool> symlinks.
 define HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
-	$(Q)cd $(HOST_DIR)/usr/bin; \
+	$(Q)cd $(HOST_DIR)/bin; \
 	for i in $(GNU_TARGET_NAME)-*; do \
 		case "$$i" in \
 		*.br_real) \

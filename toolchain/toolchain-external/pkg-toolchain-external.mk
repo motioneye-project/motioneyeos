@@ -54,7 +54,7 @@
 #  so we're sure the correct configuration is always used and the
 #  toolchain behaves similar to an internal toolchain.
 #  This toolchain wrapper and symlinks are installed into
-#  $(HOST_DIR)/usr/bin like for the internal toolchains, and the rest
+#  $(HOST_DIR)/bin like for the internal toolchains, and the rest
 #  of Buildroot is handled identical for the 2 toolchain types.
 ################################################################################
 
@@ -228,13 +228,13 @@ endif
 
 #
 # The following functions creates the symbolic links needed to get the
-# cross-compilation tools visible in $(HOST_DIR)/usr/bin. Some of
+# cross-compilation tools visible in $(HOST_DIR)/bin. Some of
 # links are done directly to the corresponding tool in the external
 # toolchain installation directory, while some other links are done to
 # the toolchain wrapper (preprocessor, C, C++ and Fortran compiler)
 #
 # We skip gdb symlink when we are building our own gdb to prevent two
-# gdb's in $(HOST_DIR)/usr/bin.
+# gdb's in $(HOST_DIR)/bin.
 #
 # The LTO support in gcc creates wrappers for ar, ranlib and nm which load
 # the lto plugin. These wrappers are called *-gcc-ar, *-gcc-ranlib, and
@@ -243,7 +243,7 @@ endif
 # match the *cc-* pattern. Therefore, an additional case is added for *-ar,
 # *-ranlib and *-nm.
 define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
-	$(Q)cd $(HOST_DIR)/usr/bin; \
+	$(Q)cd $(HOST_DIR)/bin; \
 	for i in $(TOOLCHAIN_EXTERNAL_CROSS)*; do \
 		base=$${i##*/}; \
 		case "$$base" in \

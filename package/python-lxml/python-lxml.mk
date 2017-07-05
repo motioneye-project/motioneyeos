@@ -29,8 +29,8 @@ PYTHON_LXML_BUILD_OPTS = \
 	--with-xslt-config=$(STAGING_DIR)/usr/bin/xslt-config \
 	--with-xml2-config=$(STAGING_DIR)/usr/bin/xml2-config
 HOST_PYTHON_LXML_BUILD_OPTS = \
-	--with-xslt-config=$(HOST_DIR)/usr/bin/xslt-config \
-	--with-xml2-config=$(HOST_DIR)/usr/bin/xml2-config
+	--with-xslt-config=$(HOST_DIR)/bin/xslt-config \
+	--with-xml2-config=$(HOST_DIR)/bin/xml2-config
 
 $(eval $(python-package))
 $(eval $(host-python-package))

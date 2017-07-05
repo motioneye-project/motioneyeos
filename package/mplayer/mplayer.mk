@@ -301,7 +301,7 @@ endif
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 MPLAYER_CONF_OPTS += \
 	--enable-mmx \
-	--yasm=$(HOST_DIR)/usr/bin/yasm
+	--yasm=$(HOST_DIR)/bin/yasm
 MPLAYER_DEPENDENCIES += host-yasm
 else
 MPLAYER_CONF_OPTS += \

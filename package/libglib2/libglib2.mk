@@ -65,7 +65,7 @@ LIBGLIB2_CONF_ENV = \
 	jm_cv_func_working_re_compile_pattern=yes \
 	ac_use_included_regex=no \
 	gl_cv_c_restrict=no \
-	ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/usr/bin/glib-genmarshal \
+	ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/bin/glib-genmarshal \
 	ac_cv_prog_F77=no \
 	ac_cv_func_posix_getgrgid_r=no \
 	glib_cv_long_long_format=ll \
@@ -161,7 +161,7 @@ endef
 # them as well, and better do it in a central place.
 # It's used at run time so it doesn't matter defering it.
 define LIBGLIB2_COMPILE_SCHEMAS
-	$(HOST_DIR)/usr/bin/glib-compile-schemas \
+	$(HOST_DIR)/bin/glib-compile-schemas \
 		$(STAGING_DIR)/usr/share/glib-2.0/schemas \
 		--targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas
 endef
@@ -172,4 +172,4 @@ LIBGLIB2_TARGET_FINALIZE_HOOKS += LIBGLIB2_COMPILE_SCHEMAS
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
-LIBGLIB2_HOST_BINARY = $(HOST_DIR)/usr/bin/glib-genmarshal
+LIBGLIB2_HOST_BINARY = $(HOST_DIR)/bin/glib-genmarshal

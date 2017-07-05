@@ -30,6 +30,6 @@ HOST_AUTOMAKE_POST_INSTALL_HOOKS += HOST_AUTOMAKE_MAKE_ACLOCAL
 $(eval $(host-autotools-package))
 
 # variables used by other packages
-AUTOMAKE = $(HOST_DIR)/usr/bin/automake
+AUTOMAKE = $(HOST_DIR)/bin/automake
 ACLOCAL_DIR = $(STAGING_DIR)/usr/share/aclocal
-ACLOCAL = $(HOST_DIR)/usr/bin/aclocal -I $(ACLOCAL_DIR)
+ACLOCAL = $(HOST_DIR)/bin/aclocal -I $(ACLOCAL_DIR)
