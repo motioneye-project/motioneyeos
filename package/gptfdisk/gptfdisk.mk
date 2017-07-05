@@ -48,7 +48,7 @@ define HOST_GPTFDISK_BUILD_CMDS
 endef
 
 define HOST_GPTFDISK_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/sgdisk $(HOST_DIR)/usr/sbin/sgdisk
+	$(INSTALL) -D -m 0755 $(@D)/sgdisk $(HOST_DIR)/sbin/sgdisk
 endef
 
 $(eval $(generic-package))

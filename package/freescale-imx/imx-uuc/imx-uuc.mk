@@ -21,7 +21,7 @@ define IMX_UUC_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 755 $(@D)/uuc $(TARGET_DIR)/usr/bin/uuc
 	$(INSTALL) -D -m 755 $(@D)/sdimage $(TARGET_DIR)/usr/bin/sdimage
 	dd if=/dev/zero of=$(TARGET_DIR)/fat bs=1M count=1
-	$(HOST_DIR)/usr/sbin/mkfs.vfat $(TARGET_DIR)/fat
+	$(HOST_DIR)/sbin/mkfs.vfat $(TARGET_DIR)/fat
 endef
 
 define IMX_UUC_INSTALL_INIT_SYSV

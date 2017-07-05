@@ -46,8 +46,8 @@ endif
 
 HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-e2fsprogs
 
-MKFS_JFFS2 = $(HOST_DIR)/usr/sbin/mkfs.jffs2
-SUMTOOL = $(HOST_DIR)/usr/sbin/sumtool
+MKFS_JFFS2 = $(HOST_DIR)/sbin/mkfs.jffs2
+SUMTOOL = $(HOST_DIR)/sbin/sumtool
 
 MTD_TARGETS_$(BR2_PACKAGE_MTD_DOCFDISK)		+= docfdisk
 MTD_TARGETS_$(BR2_PACKAGE_MTD_DOC_LOADBIOS)	+= doc_loadbios
