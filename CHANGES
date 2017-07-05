@@ -17,6 +17,13 @@
 	Therefore, if you need NLS support in packages, you must now
 	explicitly enable the BR2_SYSTEM_ENABLE_NLS option.
 
+	Infrastructure:
+
+	- The host directory no longer has a usr/ component. This
+	  makes it much more natural to use that directory as an
+	  externally used toolchain. For compatibility with existing
+	  scripts, a link usr -> . is still added.
+
 2017.05.1, Released July 4th, 2017
 
 	Important / security related fixes.
