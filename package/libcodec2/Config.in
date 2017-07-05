@@ -2,6 +2,15 @@ config BR2_PACKAGE_LIBCODEC2
 	bool "libcodec2"
 	help
 	  Codec2 is an open source low bit rate speech codec designed
-	  for communications quality speech between 1200 and 3200 bit/s.
+	  for communications quality speech between 700 and 3200 bit/s.
 
 	  http://rowetel.com/codec2.html
+
+if BR2_PACKAGE_LIBCODEC2
+
+config BR2_PACKAGE_LIBCODEC2_EXAMPLES
+	bool "libcodec2_examples"
+	help
+	  Install Codec2 examples.
+
+endif

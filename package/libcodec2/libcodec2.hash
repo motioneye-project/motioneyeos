@@ -1,2 +1,4 @@
+# sha1 from http://files.freedv.org/codec2/SHA1SUMS
+sha1   8988aa33121b857d58a16f75b5061281b254a146	codec-0.7.tar.xz
 # Locally computed
-sha256 7e5d5a93f34e3d6f663ec9beb586678074a531996a6398360a59946bfdfa49c2  libcodec2-392a55b4f3f8ad30d845ac6ae35e8b27343bb944.tar.gz
+sha256 0695bb93cd985dd39f02f0db35ebc28a98b9b88747318f90774aba5f374eadb2  codec2-0.7.tar.xz
