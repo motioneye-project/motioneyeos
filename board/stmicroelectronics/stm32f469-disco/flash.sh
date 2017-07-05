@@ -8,7 +8,7 @@ if ! test -d "${OUTPUT_DIR}" ; then
     exit 1
 fi
 
-${OUTPUT_DIR}/host/usr/bin/openocd -f board/stm32f469discovery.cfg \
+${OUTPUT_DIR}/host/bin/openocd -f board/stm32f469discovery.cfg \
   -c "init" \
   -c "reset init" \
   -c "flash probe 0" \
