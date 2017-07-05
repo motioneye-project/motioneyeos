@@ -23,7 +23,7 @@ Update uboot
 
 - Load u-boot.imx in the WarpBoard by using the imx-usb-loader host utility:
 
-  $ ./output/host/usr/bin/imx_usb -c output/host/etc/imx-loader.d/ output/images/u-boot.imx
+  $ ./output/host/bin/imx_usb -c output/host/etc/imx-loader.d/ output/images/u-boot.imx
 
 - U-Boot will appear in minicom
 
@@ -36,7 +36,7 @@ Update uboot
 
 - Transfer U-Boot into flash by running this command in host side:
 
- $ sudo ./output/host/usr/bin/dfu-util -D output/images/u-boot.imx -a boot
+ $ sudo ./output/host/bin/dfu-util -D output/images/u-boot.imx -a boot
 
 - remove power and put the WarpBoard back into normal boot mode by
   opening the j2 jumper.
