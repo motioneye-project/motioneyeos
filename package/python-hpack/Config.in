@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_HPACK
+	bool "python-hpack"
+	help
+	  Pure-Python HPACK header compression.
+
+	  http://hyper.rtfd.org
