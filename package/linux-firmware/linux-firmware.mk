@@ -33,7 +33,7 @@ endif
 # Qualcomm Atheros Rome 6174A Bluetooth
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174A_BT),y)
 LINUX_FIRMWARE_FILES += qca/rampatch_usb_00000302.bin qca/nvm_usb_00000302.bin
-LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.qcom
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.qcom
 endif
 
 # Freescale i.MX SDMA
