@@ -117,6 +117,15 @@ copy_toolchain_sysroot = \
 				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
+	for link in $$(find $(STAGING_DIR) -type l); do \
+		target=$$(readlink $${link}) ; \
+		if [ "$${target}" == "$${target\#/}" ] ; then \
+			continue ; \
+		fi ; \
+		relpath="$(call relpath_prefix,$${target\#/})" ; \
+		echo "Fixing symlink $${link} from $${target} to $${relpath}$${target\#/}" ; \
+		ln -sf $${relpath}$${target\#/} $${link} ; \
+	done ; \
 	relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
 	if [ "$${relpath}" != "" ]; then \
 		for i in $$(find -H $(STAGING_DIR)/$${ARCH_LIB_DIR} $(STAGING_DIR)/usr/$${ARCH_LIB_DIR} -type l -xtype l); do \
