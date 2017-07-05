@@ -16,6 +16,8 @@ define GENROMFS_BUILD_CMDS
 		LDFLAGS="$(TARGET_LDFLAGS)"
 endef
 
+# "PREFIX" is the equivalent of DESTDIR in autotools, "prefix" is the
+# traditional prefix. "prefix" defaults to /usr so no need to set it.
 define GENROMFS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(TARGET_DIR) install
 endef
@@ -25,7 +27,7 @@ define HOST_GENROMFS_BUILD_CMDS
 endef
 
 define HOST_GENROMFS_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) PREFIX=$(HOST_DIR) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) prefix=$(HOST_DIR) install
 endef
 
 $(eval $(generic-package))
