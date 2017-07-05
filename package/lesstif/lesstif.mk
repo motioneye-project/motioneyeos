@@ -31,7 +31,7 @@ define LESSTIF_NOMAN2HTML
 endef
 
 # Prevents to copy ac_find_motif.m4 on target, it would else
-# be created at $(TARGET_DIR)/$(TOPDIR)/output/host/usr/share/aclocal/ac_find_motif.m4
+# be created at $(TARGET_DIR)/$(HOST_DIR)/share/aclocal/ac_find_motif.m4
 define LESSTIF_FIXACLOCAL
 	sed -i -e "/install-data-am: install-aclocalDATA/d" $(@D)/scripts/autoconf/Makefile
 endef
