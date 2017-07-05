@@ -127,7 +127,7 @@ installed what and remove it when the package is unselected. However, it
 is much more complicated than that:
 
  * It is not only about the +target/+ directory, but also the sysroot in
-   +host/usr/<tuple>/sysroot+ and the +host/+ directory itself. All files
+   +host/<tuple>/sysroot+ and the +host/+ directory itself. All files
    installed in those directories by various packages must be tracked.
 
  * When a package is unselected from the configuration, it is not
