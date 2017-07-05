@@ -35,7 +35,7 @@ config BR2_PACKAGE_XVISOR_DEFCONFIG
 	default "generic-v5" if BR2_ARM_CPU_ARMV5
 	default "generic-v6" if BR2_ARM_CPU_ARMV6
 	default "generic-v7" if BR2_ARM_CPU_ARMV7A
-	default "generic-v8" if BR2_AARCH64
+	default "generic-v8" if BR2_aarch64
 	default "x86_64_generic" if BR2_x86_64
 	depends on BR2_PACKAGE_XVISOR_USE_DEFCONFIG
 	help
