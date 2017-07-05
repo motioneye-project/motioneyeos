@@ -167,14 +167,14 @@ define HOST_BOOST_BUILD_CMDS
 	--user-config=$(@D)/user-config.jam \
 	$(HOST_BOOST_OPTS) \
 	--ignore-site-config \
-	--prefix=$(HOST_DIR)/usr )
+	--prefix=$(HOST_DIR) )
 endef
 
 define HOST_BOOST_INSTALL_CMDS
 	(cd $(@D) && ./b2 -j$(PARALLEL_JOBS) -q \
 	--user-config=$(@D)/user-config.jam \
 	$(HOST_BOOST_OPTS) \
-	--prefix=$(HOST_DIR)/usr \
+	--prefix=$(HOST_DIR) \
 	--ignore-site-config \
 	--layout=$(BOOST_LAYOUT) install )
 endef

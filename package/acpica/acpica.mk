@@ -30,7 +30,7 @@ endef
 
 define HOST_ACPICA_INSTALL_CMDS
 	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) \
-		PREFIX="$(HOST_DIR)/usr" \
+		PREFIX="$(HOST_DIR)" \
 		INSTALLFLAGS=-m755 install
 endef
 

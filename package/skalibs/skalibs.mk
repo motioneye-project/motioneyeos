@@ -33,7 +33,7 @@ define SKALIBS_INSTALL_STAGING_CMDS
 endef
 
 HOST_SKALIBS_CONF_OPTS = \
-	--prefix=$(HOST_DIR)/usr \
+	--prefix=$(HOST_DIR) \
 	--disable-static \
 	--enable-shared \
 	--disable-allstatic

@@ -91,7 +91,7 @@ endef
 
 HOST_PERL_CONF_OPTS = \
 	-des \
-	-Dprefix="$(HOST_DIR)/usr" \
+	-Dprefix="$(HOST_DIR)" \
 	-Dcc="$(HOSTCC)"
 
 define HOST_PERL_CONFIGURE_CMDS

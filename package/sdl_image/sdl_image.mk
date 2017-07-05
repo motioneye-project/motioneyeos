@@ -37,8 +37,8 @@ SDL_IMAGE_DEPENDENCIES = sdl \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_WEBP),webp)
 
 HOST_SDL_IMAGE_CONF_OPTS = \
-	--with-sdl-prefix=$(HOST_DIR)/usr \
-	--with-sdl-exec-prefix=$(HOST_DIR)/usr \
+	--with-sdl-prefix=$(HOST_DIR) \
+	--with-sdl-exec-prefix=$(HOST_DIR) \
 	--disable-sdltest \
 	--disable-static \
 	--disable-jpg-shared \

@@ -28,8 +28,8 @@ ATTR_INSTALL_TARGET_OPTS = \
 	install install-lib
 
 HOST_ATTR_INSTALL_OPTS = \
-	prefix=$(HOST_DIR)/usr \
-	exec_prefix=$(HOST_DIR)/usr \
+	prefix=$(HOST_DIR) \
+	exec_prefix=$(HOST_DIR) \
 	install-dev install-lib
 
 # The libdir variable in libattr.la is empty, so let's fix it. This is
