@@ -1,2 +1,5 @@
 # Locally computed
 sha256 7580e408a2c0b5a89ca214739978ce6ff480b5e7d8d7698a2aa92fadc484d1e0  glog-v0.3.5.tar.gz
+
+# Hash for License file:
+sha256 0fc497129c5c69ff6f22da6933c7e4aaef082fde8437fd57680c2780100772a4  COPYING
