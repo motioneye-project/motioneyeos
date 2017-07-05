@@ -1,2 +1,5 @@
 # Locally computed
 sha256	466c36c6508a451734e4f4d76825cf9cd9b8716d2b70ef36479ae40f08271f88	gflags-v2.2.0.tar.gz
+
+# Hash for license file:
+sha256 90d1f3701813c3cd65eee2dc736746fe46b465918f3f7d6d31463a2018b33fa5  COPYING.txt
