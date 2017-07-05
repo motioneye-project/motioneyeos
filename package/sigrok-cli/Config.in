@@ -4,6 +4,8 @@ config BR2_PACKAGE_SIGROK_CLI
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
+	# libsigrok->libzip
+	depends on !BR2_STATIC_LIBS
 	# libsigrok
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	select BR2_PACKAGE_LIBSIGROK
@@ -13,6 +15,7 @@ config BR2_PACKAGE_SIGROK_CLI
 
 	  http://sigrok.org/wiki/Sigrok-cli
 
-comment "sigrok-cli needs a toolchain w/ wchar, threads, gcc >= 4.7"
+comment "sigrok-cli needs a toolchain w/ wchar, threads, dynamic library, gcc >= 4.7"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 || BR2_STATIC_LIBS
