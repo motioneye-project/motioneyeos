@@ -49,7 +49,7 @@ HOST_ACL_MAKE_ENV = CFLAGS="$(HOST_CFLAGS)"
 HOST_ACL_INSTALL_OPTS = \
 	prefix=$(HOST_DIR) \
 	exec_prefix=$(HOST_DIR) \
-	PKG_DEVLIB_DIR=$(HOST_DIR)/usr/lib \
+	PKG_DEVLIB_DIR=$(HOST_DIR)/lib \
 	install-dev install-lib
 # For the host, libacl.la is correct, no fixup needed.
 

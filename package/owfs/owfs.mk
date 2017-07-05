@@ -68,7 +68,7 @@ OWFS_MAKE_ENV += \
 OWFS_DEPENDENCIES += python host-swig
 # The configure scripts finds PYSITEDIR as the python_lib directory of
 # host-python, and then prepends DESTDIR in front of it. So we end up
-# installing things in $(TARGET_DIR)/$(HOST_DIR)/usr/lib/python which is
+# installing things in $(TARGET_DIR)/$(HOST_DIR)/lib/python which is
 # clearly wrong.
 # Patching owfs to do the right thing is not trivial, it's much easier to
 # override the PYSITEDIR variable in make.

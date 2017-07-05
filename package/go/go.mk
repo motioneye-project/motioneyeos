@@ -37,7 +37,7 @@ GO_GOARCH = mips64le
 endif
 
 HOST_GO_DEPENDENCIES = host-go-bootstrap
-HOST_GO_ROOT = $(HOST_DIR)/usr/lib/go
+HOST_GO_ROOT = $(HOST_DIR)/lib/go
 
 # For the convienience of target packages.
 HOST_GO_TOOLDIR = $(HOST_GO_ROOT)/pkg/tool/linux_$(GO_GOARCH)

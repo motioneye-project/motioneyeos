@@ -229,9 +229,9 @@ HOST_LDFLAGS  += -L$(HOST_DIR)/lib -Wl,-rpath,$(HOST_DIR)/lib
 export PERL=$(shell which perl)
 
 # host-intltool needs libxml-parser-perl, which Buildroot installs in
-# $(HOST_DIR)/usr/lib/perl, so we must make sure that the system perl
+# $(HOST_DIR)/lib/perl, so we must make sure that the system perl
 # finds this perl module by exporting the proper value for PERL5LIB.
-export PERL5LIB=$(HOST_DIR)/usr/lib/perl
+export PERL5LIB=$(HOST_DIR)/lib/perl
 
 TARGET_MAKE_ENV = PATH=$(BR_PATH)
 
@@ -282,7 +282,7 @@ HOST_MAKE_ENV = \
 	PKG_CONFIG_SYSROOT_DIR="/" \
 	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
 	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig"
+	PKG_CONFIG_LIBDIR="$(HOST_DIR)/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig"
 
 HOST_CONFIGURE_OPTS = \
 	$(HOST_MAKE_ENV) \

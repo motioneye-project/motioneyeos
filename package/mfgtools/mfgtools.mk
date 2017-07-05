@@ -26,7 +26,7 @@ HOST_MFGTOOLS_POST_BUILD_HOOKS += HOST_MFGTOOLS_CLI_BUILD
 
 define HOST_MFGTOOLS_INSTALL_CMDS
 	$(INSTALL) -D -m 755 $(@D)/MfgToolLib/libMfgToolLib.so \
-		$(HOST_DIR)/usr/lib/libMfgToolLib.so
+		$(HOST_DIR)/lib/libMfgToolLib.so
 	$(INSTALL) -D -m 755 $(@D)/TestPrgm/mfgtoolcli \
 		$(HOST_DIR)/bin/mfgtoolcli
 endef

@@ -60,10 +60,10 @@ endef
 
 define HOST_4TH_INSTALL_CMDS
 	mkdir -p $(HOST_DIR)/bin
-	mkdir -p $(HOST_DIR)/usr/lib
+	mkdir -p $(HOST_DIR)/lib
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/sources mostlyinstall \
 		BINARIES=$(HOST_DIR)/bin \
-		LIBRARIES=$(HOST_DIR)/usr/lib
+		LIBRARIES=$(HOST_DIR)/lib
 endef
 
 $(eval $(generic-package))

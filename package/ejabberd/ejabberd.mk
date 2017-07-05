@@ -28,7 +28,7 @@ EJABBERD_ERLANG_LIBS = sasl crypto public_key ssl mnesia inets compiler
 # Guess answers for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling.
 EJABBERD_CONF_ENV = \
-	ac_cv_erlang_root_dir="$(HOST_DIR)/usr/lib/erlang" \
+	ac_cv_erlang_root_dir="$(HOST_DIR)/lib/erlang" \
 	$(foreach lib,$(EJABBERD_ERLANG_LIBS), \
 		ac_cv_erlang_lib_dir_$(lib)="`package/ejabberd/check-erlang-lib $(lib)`")
 

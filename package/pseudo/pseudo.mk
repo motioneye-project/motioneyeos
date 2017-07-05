@@ -21,9 +21,9 @@ HOST_PSEUDO_DEPENDENCIES = host-attr host-sqlite
 # a warning at configure time.
 HOST_PSEUDO_CONF_OPTS = \
 	--cflags="$(HOSTCFLAGS)" \
-	--with-rpath=$(HOST_DIR)/usr/lib \
+	--with-rpath=$(HOST_DIR)/lib \
 	--bits=$(if $(filter %64,$(HOSTARCH)),64,32) \
-	--libdir=$(HOST_DIR)/usr/lib \
+	--libdir=$(HOST_DIR)/lib \
 	--with-sqlite=$(HOST_DIR)/usr
 
 $(eval $(host-autotools-package))

@@ -13,7 +13,7 @@ SCONS_SETUP_TYPE = distutils
 HOST_SCONS_NEEDS_HOST_PYTHON = python2
 
 HOST_SCONS_INSTALL_OPTS = \
-	--install-lib=$(HOST_DIR)/usr/lib/scons-$(SCONS_VERSION)
+	--install-lib=$(HOST_DIR)/lib/scons-$(SCONS_VERSION)
 
 $(eval $(host-python-package))
 

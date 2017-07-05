@@ -26,7 +26,7 @@ HOST_GTEST_DEPENDENCIES += host-python
 endif
 
 HOST_GTEST_GMOCK_PYTHONPATH = \
-	$(HOST_DIR)/usr/lib/python$(HOST_GTEST_PYTHON_VERSION)/site-packages
+	$(HOST_DIR)/lib/python$(HOST_GTEST_PYTHON_VERSION)/site-packages
 
 # While it is possible to build gtest as shared library, using this gtest shared
 # library requires to set some special configure option in the project using

@@ -388,7 +388,7 @@ endif
 # system bus which is non-existent and does not contain
 # any upower service in it.
 define HOST_EFL_HOOK_REMOVE_UPOWER
-	rm -fr $(HOST_DIR)/usr/lib/ecore/system/upower
+	rm -fr $(HOST_DIR)/lib/ecore/system/upower
 endef
 HOST_EFL_POST_INSTALL_HOOKS = HOST_EFL_HOOK_REMOVE_UPOWER
 

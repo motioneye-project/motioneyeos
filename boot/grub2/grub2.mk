@@ -79,7 +79,7 @@ GRUB2_INSTALL_TARGET_OPTS = DESTDIR=$(HOST_DIR) install
 
 ifeq ($(BR2_TARGET_GRUB2_I386_PC),y)
 define GRUB2_IMAGE_INSTALL_ELTORITO
-	cat $(HOST_DIR)/usr/lib/grub/$(GRUB2_TUPLE)/cdboot.img $(GRUB2_IMAGE) > \
+	cat $(HOST_DIR)/lib/grub/$(GRUB2_TUPLE)/cdboot.img $(GRUB2_IMAGE) > \
 		$(BINARIES_DIR)/grub-eltorito.img
 endef
 endif
@@ -87,7 +87,7 @@ endif
 define GRUB2_IMAGE_INSTALLATION
 	mkdir -p $(dir $(GRUB2_IMAGE))
 	$(HOST_DIR)/bin/grub-mkimage \
-		-d $(HOST_DIR)/usr/lib/grub/$(GRUB2_TUPLE) \
+		-d $(HOST_DIR)/lib/grub/$(GRUB2_TUPLE) \
 		-O $(GRUB2_TUPLE) \
 		-o $(GRUB2_IMAGE) \
 		-p "$(GRUB2_PREFIX)" \

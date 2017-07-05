@@ -15,11 +15,11 @@ define HOST_LIBXML_PARSER_PERL_CONFIGURE_CMDS
 	(cd $(@D) ; \
 		$(HOST_CONFIGURE_OPTS) $(LIBXML_PARSER_PERL_RUN_PERL) Makefile.PL \
 			PREFIX=$(HOST_DIR) \
-			EXPATLIBPATH=$(HOST_DIR)/usr/lib \
+			EXPATLIBPATH=$(HOST_DIR)/lib \
 			EXPATINCPATH=$(HOST_DIR)/usr/include \
 			INSTALLDIRS=site \
-			INSTALLSITELIB=$(HOST_DIR)/usr/lib/perl \
-			INSTALLSITEARCH=$(HOST_DIR)/usr/lib/perl \
+			INSTALLSITELIB=$(HOST_DIR)/lib/perl \
+			INSTALLSITEARCH=$(HOST_DIR)/lib/perl \
 	)
 endef
 

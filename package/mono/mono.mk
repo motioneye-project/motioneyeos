@@ -29,7 +29,7 @@ MONO_CONF_OPTS = --with-mcs-docs=no \
 # architecture-independent, we simply copy them to the target.
 define MONO_INSTALL_LIBS
 	rsync -av --exclude=*.so --exclude=*.mdb \
-		$(HOST_DIR)/usr/lib/mono $(TARGET_DIR)/usr/lib/
+		$(HOST_DIR)/lib/mono $(TARGET_DIR)/usr/lib/
 endef
 
 MONO_POST_INSTALL_TARGET_HOOKS += MONO_INSTALL_LIBS
@@ -56,7 +56,7 @@ HOST_MONO_DEPENDENCIES = host-monolite host-gettext
 
 define HOST_MONO_SETUP_MONOLITE
 	rm -rf $(@D)/mcs/class/lib/monolite
-	(cd $(@D)/mcs/class/lib; ln -s $(HOST_DIR)/usr/lib/monolite monolite)
+	(cd $(@D)/mcs/class/lib; ln -s $(HOST_DIR)/lib/monolite monolite)
 endef
 
 HOST_MONO_POST_CONFIGURE_HOOKS += HOST_MONO_SETUP_MONOLITE

@@ -49,9 +49,9 @@ HOST_S6_RC_DEPENDENCIES = host-s6
 HOST_S6_RC_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
 	--libexecdir=/usr/libexec \
-	--with-sysdeps=$(HOST_DIR)/usr/lib/skalibs/sysdeps \
+	--with-sysdeps=$(HOST_DIR)/lib/skalibs/sysdeps \
 	--with-include=$(HOST_DIR)/usr/include \
-	--with-dynlib=$(HOST_DIR)/usr/lib \
+	--with-dynlib=$(HOST_DIR)/lib \
 	--disable-static \
 	--enable-shared \
 	--disable-allstatic
