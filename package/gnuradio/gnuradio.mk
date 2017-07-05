@@ -30,6 +30,10 @@ GNURADIO_CONF_OPTS = \
 # compile time.
 GNURADIO_INSTALL_STAGING = YES
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+GNURADIO_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-latomic
+endif
+
 # Yes, this is silly, because -march is already known by the compiler
 # with the internal toolchain, and passed by the external wrapper for
 # external toolchains. Nonetheless, gnuradio does some matching on the
