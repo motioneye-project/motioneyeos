@@ -88,7 +88,7 @@ you will probably want the rootfs to occupy the whole remaining space.
 
 cgpt may be used to check current layout:
 
-	output/host/usr/bin/cgpt show $SD
+	output/host/bin/cgpt show $SD
 
 All sizes and all offsets are in 512-byte blocks.
 
