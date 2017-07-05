@@ -31,8 +31,8 @@ config BR2_TARGET_GRUB2
 	     sudo tar -C /mnt -xf output/images/rootfs.tar
 	     sudo umount /mnt
 	  5. Install Grub2
-	     sudo ./output/host/usr/sbin/grub-bios-setup \
-			-b ./output/host/usr/lib/grub/i386-pc/boot.img \
+	     sudo ./output/host/sbin/grub-bios-setup \
+			-b ./output/host/lib/grub/i386-pc/boot.img \
 			-c ./output/images/grub.img -d . /dev/loop0
 	  6. Cleanup loop device
 	     sudo partx -d /dev/loop0
