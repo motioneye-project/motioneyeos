@@ -5,7 +5,7 @@ if [ "$#" -ne 0 ]; then
     exit 1
 fi
 
-LOCFILE="usr/share/buildroot/sdk-location"
+LOCFILE="share/buildroot/sdk-location"
 FILEPATH="$(readlink -f "$0")"
 NEWPATH="$(dirname "${FILEPATH}")"
 
