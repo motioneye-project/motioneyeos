@@ -16,7 +16,7 @@ HOST_UPX_DEPENDENCIES = host-ucl host-zlib
 # stating to "please choose a target for 'make'"... :-(
 define HOST_UPX_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) CPPFLAGS="$(HOST_CPPFLAGS)" \
-		LDFLAGS="$(HOST_LDFLAGS)" UPX_UCLDIR=$(HOST_DIR)/usr \
+		LDFLAGS="$(HOST_LDFLAGS)" UPX_UCLDIR=$(HOST_DIR) \
 		CXXFLAGS_WERROR= \
 		-C $(@D) all
 endef

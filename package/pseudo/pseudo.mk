@@ -24,6 +24,6 @@ HOST_PSEUDO_CONF_OPTS = \
 	--with-rpath=$(HOST_DIR)/lib \
 	--bits=$(if $(filter %64,$(HOSTARCH)),64,32) \
 	--libdir=$(HOST_DIR)/lib \
-	--with-sqlite=$(HOST_DIR)/usr
+	--with-sqlite=$(HOST_DIR)
 
 $(eval $(host-autotools-package))

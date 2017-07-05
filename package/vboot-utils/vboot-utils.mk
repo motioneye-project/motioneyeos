@@ -31,7 +31,7 @@ define HOST_VBOOT_UTILS_BUILD_CMDS
 endef
 
 define HOST_VBOOT_UTILS_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR)/usr \
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) \
 		futil_install cgpt_install devkeys_install
 endef
 

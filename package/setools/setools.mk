@@ -64,8 +64,8 @@ HOST_SETOOLS_CONF_OPTS = \
 	--disable-swig-java \
 	--disable-swig-python \
 	--disable-swig-tcl \
-	--with-sepol-devel="$(HOST_DIR)/usr" \
-	--with-selinux-devel="$(HOST_DIR)/usr" \
+	--with-sepol-devel="$(HOST_DIR)" \
+	--with-selinux-devel="$(HOST_DIR)" \
 	PYTHON_LDFLAGS="-L$(HOST_DIR)/lib/" \
 	PYTHON_CPPFLAGS="-I$(HOST_SETOOLS_PYTHON_INCLUDES)" \
 	PYTHON_SITE_PKG="$(HOST_SETOOLS_PYTHON_SITE_PACKAGES)" \

@@ -11,7 +11,7 @@ LUAROCKS_LICENSE_FILES = COPYING
 
 HOST_LUAROCKS_DEPENDENCIES = host-luainterpreter
 
-LUAROCKS_CONFIG_DIR = $(HOST_DIR)/usr/etc/luarocks
+LUAROCKS_CONFIG_DIR = $(HOST_DIR)/etc/luarocks
 LUAROCKS_CONFIG_FILE = $(LUAROCKS_CONFIG_DIR)/config-$(LUAINTERPRETER_ABIVER).lua
 LUAROCKS_CFLAGS = $(TARGET_CFLAGS) -fPIC
 ifeq ($(BR2_PACKAGE_LUA_5_3),y)
@@ -21,7 +21,7 @@ endif
 HOST_LUAROCKS_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
 	--sysconfdir=$(LUAROCKS_CONFIG_DIR) \
-	--with-lua=$(HOST_DIR)/usr
+	--with-lua=$(HOST_DIR)
 
 ifeq ($(BR2_PACKAGE_LUAJIT),y)
 HOST_LUAROCKS_CONF_OPTS += --lua-suffix=jit
