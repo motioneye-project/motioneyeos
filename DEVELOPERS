@@ -45,6 +45,9 @@ F:	package/sepolgen/
 F:	package/setools/
 F:	package/sngrep/
 
+N:	Adrian Perez de Castro <aperez@igalia.com>
+F:	package/webkitgtk/
+
 N:	Alex Suykov <alex.suykov@gmail.com>
 F:	package/vboot-utils/
 
