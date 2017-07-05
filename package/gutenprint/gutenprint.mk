@@ -84,7 +84,7 @@ HOST_GUTENPRINT_POST_BUILD_HOOKS += HOST_GUTENPRINT_POST_BUILD_INSTAL_TMP_HEADER
 
 define GUTENPRINT_POST_INSTALL_TARGET_FIXUP
 	mkdir -p $(TARGET_DIR)/usr/share/gutenprint/5.2
-	cp -rf $(HOST_DIR)/usr/share/gutenprint/5.2/xml $(TARGET_DIR)/usr/share/gutenprint/5.2
+	cp -rf $(HOST_DIR)/share/gutenprint/5.2/xml $(TARGET_DIR)/usr/share/gutenprint/5.2
 endef
 GUTENPRINT_POST_INSTALL_TARGET_HOOKS += GUTENPRINT_POST_INSTALL_TARGET_FIXUP
 

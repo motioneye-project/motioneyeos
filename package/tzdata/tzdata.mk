@@ -31,7 +31,7 @@ TZDATA_EXTRACT_CMDS =
 
 define TZDATA_INSTALL_TARGET_CMDS
 	$(INSTALL) -d -m 0755 $(TARGET_DIR)/usr/share/zoneinfo
-	cp -a $(HOST_DIR)/usr/share/zoneinfo/* $(TARGET_DIR)/usr/share/zoneinfo
+	cp -a $(HOST_DIR)/share/zoneinfo/* $(TARGET_DIR)/usr/share/zoneinfo
 	cd $(TARGET_DIR)/usr/share/zoneinfo; \
 	for zone in posix/*; do \
 	    ln -sfn "$${zone}" "$${zone##*/}"; \
@@ -55,8 +55,8 @@ define HOST_TZDATA_BUILD_CMDS
 endef
 
 define HOST_TZDATA_INSTALL_CMDS
-	$(INSTALL) -d -m 0755 $(HOST_DIR)/usr/share/zoneinfo
-	cp -a $(@D)/_output/* $(@D)/*.tab $(HOST_DIR)/usr/share/zoneinfo
+	$(INSTALL) -d -m 0755 $(HOST_DIR)/share/zoneinfo
+	cp -a $(@D)/_output/* $(@D)/*.tab $(HOST_DIR)/share/zoneinfo
 endef
 
 $(eval $(generic-package))

@@ -12,7 +12,7 @@ AUTOMAKE_LICENSE_FILES = COPYING
 
 HOST_AUTOMAKE_DEPENDENCIES = host-autoconf
 
-ACLOCAL_HOST_DIR = $(HOST_DIR)/usr/share/aclocal
+ACLOCAL_HOST_DIR = $(HOST_DIR)/share/aclocal
 
 define GTK_DOC_M4_INSTALL
 	$(INSTALL) -D -m 0644 package/automake/gtk-doc.m4 \
