@@ -63,6 +63,8 @@ GRUB2_CONF_ENV = \
 GRUB2_CONF_OPTS = \
 	--target=$(GRUB2_TARGET) \
 	--with-platform=$(GRUB2_PLATFORM) \
+	--prefix=/ \
+	--exec-prefix=/ \
 	--disable-grub-mkfont \
 	--enable-efiemu=no \
 	ac_cv_lib_lzma_lzma_code=no \
