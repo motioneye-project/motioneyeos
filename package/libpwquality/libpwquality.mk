@@ -27,6 +27,11 @@ else
 LIBPWQUALITY_CONF_OPTS += --disable-pam
 endif
 
+# Static link with cracklib requires -lz if zlib is enabled
+ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_ZLIB),yy)
+LIBPWQUALITY_CONF_ENV += LIBS="-lz"
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPWQUALITY_TOOLS),)
 define LIBPWQUALITY_REMOVE_TOOLS
 	rm -f $(TARGET_DIR)/usr/bin/pwmake
