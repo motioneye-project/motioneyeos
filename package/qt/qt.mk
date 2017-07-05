@@ -598,11 +598,11 @@ QT_CONF_FILE = $(HOST_DIR)/bin/qt.conf
 define QT_INSTALL_QT_CONF
 	mkdir -p $(dir $(QT_CONF_FILE))
 	echo "[Paths]"                             > $(QT_CONF_FILE)
-	echo "Prefix=$(HOST_DIR)"             >> $(QT_CONF_FILE)
+	echo "Prefix=$(HOST_DIR)"                 >> $(QT_CONF_FILE)
 	echo "Headers=$(STAGING_DIR)/usr/include" >> $(QT_CONF_FILE)
 	echo "Libraries=$(STAGING_DIR)/usr/lib"   >> $(QT_CONF_FILE)
-	echo "Data=$(HOST_DIR)"               >> $(QT_CONF_FILE)
-	echo "Binaries=$(HOST_DIR)/bin"       >> $(QT_CONF_FILE)
+	echo "Data=$(HOST_DIR)"                   >> $(QT_CONF_FILE)
+	echo "Binaries=$(HOST_DIR)/bin"           >> $(QT_CONF_FILE)
 endef
 
 # After running Qt normal installation process (which installs
