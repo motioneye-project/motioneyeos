@@ -30,7 +30,7 @@ define LEAFNODE2_BUILD_SORTNL_TOOL
 	cd $(@D); \
 	$(HOSTCC) $(HOST_CFLAGS) -o b_sortnl_host \
 		arc4random.c mergesort.c b_sortnl.c critmem_malloc.c \
-		critmem_realloc.c -DHAVE_CONFIG_H -I$(HOST_DIR)/usr/include \
+		critmem_realloc.c -DHAVE_CONFIG_H -I$(HOST_DIR)/include \
 		-L $(HOST_DIR)/lib -Wl,-rpath,$(HOST_DIR)/lib -lpcre
 endef
 

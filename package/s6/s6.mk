@@ -48,7 +48,7 @@ HOST_S6_DEPENDENCIES = host-execline
 HOST_S6_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
 	--with-sysdeps=$(HOST_DIR)/lib/skalibs/sysdeps \
-	--with-include=$(HOST_DIR)/usr/include \
+	--with-include=$(HOST_DIR)/include \
 	--with-dynlib=$(HOST_DIR)/lib \
 	--disable-static \
 	--enable-shared \

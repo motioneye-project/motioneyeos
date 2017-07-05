@@ -50,7 +50,7 @@ HOST_S6_RC_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
 	--libexecdir=/usr/libexec \
 	--with-sysdeps=$(HOST_DIR)/lib/skalibs/sysdeps \
-	--with-include=$(HOST_DIR)/usr/include \
+	--with-include=$(HOST_DIR)/include \
 	--with-dynlib=$(HOST_DIR)/lib \
 	--disable-static \
 	--enable-shared \

@@ -14,7 +14,7 @@ HOST_MFGTOOLS_DEPENDENCIES = host-libusb
 HOST_MFGTOOLS_CFLAGS = \
 	$(HOST_CFLAGS) $(HOST_LDFLAGS) -std=c++11 -lpthread \
 	-L$(@D)/MfgToolLib -lMfgToolLib -I$(@D)/MfgToolLib \
-	-lusb-1.0 -I$(HOST_DIR)/usr/include/libusb-1.0 \
+	-lusb-1.0 -I$(HOST_DIR)/include/libusb-1.0 \
 	-fpermissive -Wno-write-strings
 
 define HOST_MFGTOOLS_CLI_BUILD

@@ -20,7 +20,7 @@ HOST_GOOGLE_BREAKPAD_DEPENDENCIES = host-linux-syscall-support
 # Avoid using depot-tools to download this file.
 define HOST_GOOGLE_BREAKPAD_LSS
 	$(INSTALL) -D -m 0644 \
-		$(HOST_DIR)/usr/include/linux_syscall_support.h \
+		$(HOST_DIR)/include/linux_syscall_support.h \
 		$(@D)/src/third_party/lss/linux_syscall_support.h
 endef
 HOST_GOOGLE_BREAKPAD_PRE_CONFIGURE_HOOKS += HOST_GOOGLE_BREAKPAD_LSS

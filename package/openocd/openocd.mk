@@ -88,8 +88,8 @@ HOST_OPENOCD_CONF_OPTS = \
 	--enable-openjtag \
 	--enable-buspirate \
 	--enable-sysfsgpio \
-	--oldincludedir=$(HOST_DIR)/usr/include \
-	--includedir=$(HOST_DIR)/usr/include \
+	--oldincludedir=$(HOST_DIR)/include \
+	--includedir=$(HOST_DIR)/include \
 	--disable-doxygen-html \
 	--with-jim-shared=no \
 	--disable-shared \
