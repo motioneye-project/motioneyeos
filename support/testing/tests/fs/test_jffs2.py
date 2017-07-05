@@ -28,7 +28,7 @@ BR2_TARGET_ROOTFS_JFFS2_PADSIZE=0x4000000
 
     def test_run(self):
         img = os.path.join(self.builddir, "images", "rootfs.jffs2")
-        out = subprocess.check_output(["host/usr/sbin/jffs2dump", "-c", img],
+        out = subprocess.check_output(["host/sbin/jffs2dump", "-c", img],
                                       cwd=self.builddir,
                                       env={"LANG": "C"})
         out = out.splitlines()

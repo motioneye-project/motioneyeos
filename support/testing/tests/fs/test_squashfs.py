@@ -13,7 +13,7 @@ BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
 """
 
     def test_run(self):
-        unsquashfs_cmd = ["host/usr/bin/unsquashfs", "-s", "images/rootfs.squashfs"]
+        unsquashfs_cmd = ["host/bin/unsquashfs", "-s", "images/rootfs.squashfs"]
         out = subprocess.check_output(unsquashfs_cmd,
                                       cwd=self.builddir,
                                       env={"LANG": "C"})

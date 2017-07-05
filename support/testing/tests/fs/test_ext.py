@@ -13,7 +13,7 @@ RESBLKCNT_PROP = "Reserved block count"
 CHECK_FS_TYPE_CMD = "mount | grep '/dev/root on / type {}'"
 
 def dumpe2fs_run(builddir, image):
-    cmd = ["host/usr/sbin/dumpe2fs", os.path.join("images", image)]
+    cmd = ["host/sbin/dumpe2fs", os.path.join("images", image)]
     ret = subprocess.check_output(cmd,
                                   stderr=open(os.devnull, "w"),
                                   cwd=builddir,
