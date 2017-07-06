@@ -30,8 +30,12 @@ ifeq ($(BR2_x86_64),y)
 XVISOR_ARCH = x86
 else ifeq ($(BR2_arm)$(BR2_aarch64),y)
 XVISOR_ARCH = arm
-else
+endif
+
+ifeq ($(BR2_PACKAGE_XVISOR)$(BR_BUILDING),yy)
+ifeq ($(XVISOR_ARCH),)
 $(error "Architecture not supported by XVisor")
+endif
 endif
 
 XVISOR_MAKE_ENV = \
