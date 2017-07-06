@@ -84,6 +84,7 @@ python_packages=0
 rebar_packages=0
 virtual_packages=0
 generic_packages=0
+waf_packages=0
 manual_packages=0
 packages_with_licence=0
 packages_without_licence=0
@@ -231,6 +232,11 @@ for i in $(find boot/ linux/ package/ toolchain/ -name '*.mk' | sort) ; do
 	hastarget=1
     fi
 
+    if grep -E "\(waf-package\)" $i > /dev/null ; then
+	infratype="waf"
+	hastarget=1
+    fi
+
     pkg=$(basename $i)
     dir=$(dirname $i)
     pkg=${pkg%.mk}
@@ -259,6 +265,8 @@ for i in $(find boot/ linux/ package/ toolchain/ -name '*.mk' | sort) ; do
 	virtual_packages=$(($virtual_packages+1))
     elif [ ${infratype} = "generic" ]; then
 	generic_packages=$(($generic_packages+1))
+    elif [ ${infratype} = "waf" ]; then
+	waf_packages=$(($waf_packages+1))
     fi
 
     if grep -qE "^${pkgvariable}_LICENSE[ ]*=" $i ; then
@@ -389,6 +397,10 @@ echo "</tr>"
 echo "<tr>"
 echo "<td>Packages using the <i>virtual</i> infrastructure</td>"
 echo "<td>$virtual_packages</td>"
+echo "</tr>"
+echo "<tr>"
+echo "<td>Packages using the <i>waf</i> infrastructure</td>"
+echo "<td>$waf_packages</td>"
 echo "</tr>"
 echo "<tr>"
 echo "<td>Packages not using any infrastructure</td>"
