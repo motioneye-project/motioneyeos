@@ -126,6 +126,7 @@ for i in $(find boot/ linux/ package/ toolchain/ -name '*.mk' | sort) ; do
 	$i = "package/pkg-waf.mk" -o \
 	$i = "package/pkg-kernel-module.mk" -o \
 	$i = "package/pkg-utils.mk" -o \
+	$i = "package/nvidia-tegra23/nvidia-tegra23.mk" -o \
 	$i = "toolchain/toolchain-external/pkg-toolchain-external.mk" -o \
 	$i = "toolchain/toolchain-external/toolchain-external.mk" -o \
 	$i = "toolchain/toolchain.mk" -o \
