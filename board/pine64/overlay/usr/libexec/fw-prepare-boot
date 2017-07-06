@@ -1,4 +1,4 @@
 #!/bin/bash
 
-sed 's/#initrd_filename=.*/initrd_filename=fwupdater.img/' uEnv.txt
+sed -r -i 's/#initrd_filename=.*/initrd_filename=fwupdater.img/' /boot/uEnv.txt
 
