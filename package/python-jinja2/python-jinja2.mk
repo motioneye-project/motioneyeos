@@ -17,11 +17,13 @@ HOST_PYTHON_JINJA2_DEPENDENCIES = host-python-markupsafe
 # not available in Python 2 and some features available in Python 3.6.
 # So in both cases *.py compilation would produce compiler errors.
 # Hence remove both files after package extraction.
+ifeq ($(BR2_PACKAGE_PYTHON),y)
 define PYTHON_JINJA2_REMOVE_ASYNC_SUPPORT
 	rm $(@D)/jinja2/asyncsupport.py $(@D)/jinja2/asyncfilters.py
 endef
 
 PYTHON_JINJA2_POST_EXTRACT_HOOKS = PYTHON_JINJA2_REMOVE_ASYNC_SUPPORT
+endif
 
 $(eval $(python-package))
 $(eval $(host-python-package))
