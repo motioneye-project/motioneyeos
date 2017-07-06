@@ -45,7 +45,6 @@ case "$1" in
         msg_begin "Creating required data files"
         mkdir /data/etc
         mkdir /data/log
-        mkdir -m 775 /data/output
         mkdir -m 775 /data/media
         cp /etc/version /data/etc/version
         ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
