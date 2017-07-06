@@ -44,7 +44,7 @@ else
 MTD_CONF_OPTS += --without-xattr
 endif
 
-HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-e2fsprogs
+HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-util-linux
 HOST_MTD_CONF_OPTS = --disable-tests
 
 MKFS_JFFS2 = $(HOST_DIR)/sbin/mkfs.jffs2
