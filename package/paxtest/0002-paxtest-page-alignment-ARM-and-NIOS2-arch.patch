@@ -1,0 +1,49 @@
+From 70406ad5668a15fedce2ae1ed3bc4fad04d9f040 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Wed, 5 Jul 2017 20:47:42 -0500
+Subject: [PATCH] paxtest: page alignment ARM and NIOS2 arch
+
+- Extended ARM range from ARMv6-v7 to also include anything below v7
+- Added NIOS2 arch to conditionally have smaller alignment
+
+Submitted Upstream to pageexec@freemail.hu.  Also posted a
+bug to both (Hardened) Suse and Gentoo's bugtrackers.
+https://bugzilla.opensuse.org/show_bug.cgi?id=1047422
+https://bugs.gentoo.org/show_bug.cgi?id=623946
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ paxtest.h | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/paxtest.h b/paxtest.h
+index 8623bfb..a230c1a 100644
+--- a/paxtest.h
++++ b/paxtest.h
+@@ -5,13 +5,21 @@
+ #include <unistd.h>
+ 
+ /*
+- * ARMv6 and ARMv7 do not like 64k alignment, 32k is ok
++ * Earlier ARMv# through ARMv7 do not like 64k alignment, 32k is ok
+  */
+-#if defined(__arm__) && __ARM_ARCH >= 6 && __ARM_ARCH <= 7
++#if defined(__arm__) && __ARM_ARCH <= 7
+ #define PAGE_SIZE_MAX  (32768)
+ #else
+ #define PAGE_SIZE_MAX	0x10000	/* 64k should cover most arches */
+ #endif
++
++/*
++ * NIOS2's assemblier doesn't like 64k alignment
++ */
++#if defined(__nios2_arch__)
++#define PAGE_SIZE_MAX  (32768)
++#endif
++
+ #ifndef __aligned
+ #define __aligned(x)	__attribute__((aligned(x)))
+ #endif
+-- 
+1.9.1
+

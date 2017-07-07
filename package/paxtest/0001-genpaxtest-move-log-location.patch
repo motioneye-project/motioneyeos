@@ -1,0 +1,30 @@
+From 623d99e4f557ef9cd771006e4f916c12d22a07a8 Mon Sep 17 00:00:00 2001
+From: David Graziano <david.graziano@rockwellcollins.com>
+Date: Mon, 12 Jun 2017 10:41:45 -0500
+Subject: [PATCH] genpaxtest: move log location
+
+Move log location to /var/log instead of local directory.
+(For read-only filesystems)
+
+Signed-off-by: David Graziano <david.graziano@rockwellcollins.com>
+---
+ genpaxtest | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/genpaxtest b/genpaxtest
+index 5a22e15..d62b15e 100644
+--- a/genpaxtest
++++ b/genpaxtest
+@@ -35,7 +35,7 @@
+        exit 1
+ fi
+
+-LOG=\$HOME/paxtest.log
++LOG=/var/log/paxtest.log
+ [ -n "\$1" ] && LOG=\$1
+ touch "\$LOG"
+ if [ ! -e "\$LOG" ]; then
+ 
+-- 
+1.9.1
+

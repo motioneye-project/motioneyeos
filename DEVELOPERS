@@ -1146,6 +1146,7 @@ F:	package/libsepol/
 F:	package/libqmi/
 F:	package/nginx-upload/
 F:	package/omniorb/
+F:	package/paxtest/
 F:	package/policycoreutils/
 F:	package/python-ipy/
 F:	package/python-posix-ipc/
