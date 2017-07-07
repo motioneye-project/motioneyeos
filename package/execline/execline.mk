@@ -44,8 +44,11 @@ endef
 
 HOST_EXECLINE_DEPENDENCIES = host-skalibs
 
+# Set --shebangdir to /usr/bin, as this value is used by the host variant of
+# s6-rc when generating execline scripts for the target.
 HOST_EXECLINE_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
+	--shebangdir=/usr/bin \
 	--with-sysdeps=$(HOST_DIR)/lib/skalibs/sysdeps \
 	--with-include=$(HOST_DIR)/include \
 	--with-dynlib=$(HOST_DIR)/lib \
