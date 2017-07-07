@@ -1239,6 +1239,9 @@ N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
 
+N:	Naoki Matsumoto <n-matsumoto@melcoinc.co.jp>
+F:	package/pcre2/
+
 N:	Nathan Lynch <ntl@pobox.com>
 F:	package/chrony/
 
