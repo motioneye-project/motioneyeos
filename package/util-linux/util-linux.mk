@@ -33,7 +33,6 @@ UTIL_LINUX_CONF_OPTS += \
 	--without-systemd \
 	--with-systemdsystemunitdir=no
 
-# We don't want the host-busybox dependency to be added automatically
 HOST_UTIL_LINUX_DEPENDENCIES = host-pkgconf
 
 # We also don't want the host-python dependency
