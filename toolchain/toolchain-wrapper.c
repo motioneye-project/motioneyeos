@@ -192,7 +192,7 @@ int main(int argc, char **argv)
 		for (i = ret; i > 0; i--) {
 			if (absbasedir[i] == '/') {
 				absbasedir[i] = '\0';
-				if (++count == 3)
+				if (++count == 2)
 					break;
 			}
 		}
