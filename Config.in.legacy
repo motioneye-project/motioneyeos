@@ -145,6 +145,17 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_XTENSA_CUSTOM_NAME
+	string "The BR2_XTENSA_CUSTOM_NAME option has been renamed"
+	help
+	  The BR2_XTENSA_CUSTOM_NAME option has been renamed
+	  to BR2_XTENSA_CORE_NAME.
+
+config BR2_XTENSA_CUSTOM_NAME_WRAP
+	bool
+	default y if BR2_XTENSA_CUSTOM_NAME != ""
+	select BR2_LEGACY
+
 config BR2_PACKAGE_HOST_MKE2IMG
 	bool "host mke2img has been removed"
 	select BR2_LEGACY

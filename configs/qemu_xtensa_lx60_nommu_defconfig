@@ -1,8 +1,7 @@
 # Architecture
 BR2_xtensa=y
 BR2_XTENSA_CUSTOM=y
-BR2_XTENSA_CUSTOM_NAME="dc233c"
-BR2_XTENSA_CORE_NAME="lx60"
+BR2_XTENSA_CORE_NAME="dc233c"
 BR2_XTENSA_OVERLAY_DIR="board/qemu/xtensa-lx60"
 
 # Toolchain
