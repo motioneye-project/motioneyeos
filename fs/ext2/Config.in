@@ -44,12 +44,16 @@ config BR2_TARGET_ROOTFS_EXT2_REV
 config BR2_TARGET_ROOTFS_EXT2_LABEL
 	string "filesystem label"
 
-# 61440 = 60MB, i.e usually small enough to fit on a 64MB media
-config BR2_TARGET_ROOTFS_EXT2_BLOCKS
-	int "exact size in blocks"
-	default 61440
+config BR2_TARGET_ROOTFS_EXT2_SIZE
+	string "exact size"
+	default BR2_TARGET_ROOTFS_EXT2_BLOCKS if BR2_TARGET_ROOTFS_EXT2_BLOCKS_WRAP # legacy 2017.08
+	default "60M"
 	help
-	  Specify the file system size as a number of 1024-byte blocks.
+	  The size of the filesystem image. If it does not have a suffix,
+	  it is interpreted as power-of-two kilobytes. If it is suffixed
+	  by 'k', 'm', 'g', 't' (either upper-case or lower-case), then
+	  it is interpreted in power-of-two kilobytes, megabytes,
+	  gigabytes, terabytes, etc.
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "exact number of inodes (leave at 0 for auto calculation)"

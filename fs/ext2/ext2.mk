@@ -4,6 +4,11 @@
 #
 ################################################################################
 
+EXT2_SIZE = $(call qstrip,$(BR2_TARGET_ROOTFS_EXT2_SIZE))
+ifeq ($(BR2_TARGET_ROOTFS_EXT2)-$(EXT2_SIZE),y-)
+$(error BR2_TARGET_ROOTFS_EXT2_SIZE cannot be empty)
+endif
+
 # qstrip results in stripping consecutive spaces into a single one. So the
 # variable is not qstrip-ed to preserve the integrity of the string value.
 EXT2_LABEL := $(subst ",,$(BR2_TARGET_ROOTFS_EXT2_LABEL))
@@ -21,7 +26,7 @@ ROOTFS_EXT2_DEPENDENCIES = host-e2fsprogs
 define ROOTFS_EXT2_CMD
 	rm -f $@
 	$(HOST_DIR)/sbin/mkfs.ext$(BR2_TARGET_ROOTFS_EXT2_GEN) $(EXT2_OPTS) $@ \
-		 $(BR2_TARGET_ROOTFS_EXT2_BLOCKS)
+		"$(EXT2_SIZE)"
 endef
 
 rootfs-ext2-symlink:

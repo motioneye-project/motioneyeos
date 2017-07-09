@@ -152,6 +152,23 @@ config BR2_PACKAGE_HOST_MKE2IMG
 	  We now call mkfs directly to generate ext2/3/4 filesystem
 	  image, so mke2img is no longer necessary.
 
+config BR2_TARGET_ROOTFS_EXT2_BLOCKS
+	int "exact size in blocks has been removed"
+	default 0
+	help
+	  This option has been removed in favor of
+	  BR2_TARGET_ROOTFS_EXT2_SIZE. It has been set automatically
+	  to the value you had before. Set to 0 here to remove the
+	  warning.
+
+config BR2_TARGET_ROOTFS_EXT2_BLOCKS_WRAP
+	bool
+	default y if BR2_TARGET_ROOTFS_EXT2_BLOCKS != 0 && \
+		BR2_TARGET_ROOTFS_EXT2_BLOCKS != 61440 # deprecated default value
+	select BR2_LEGACY
+
+# Note: BR2_TARGET_ROOTFS_EXT2_BLOCKS_WRAP still referenced in fs/ext2/Config.in
+
 config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
 	int "ext2 extra inodes has been removed" if BR2_TARGET_ROOTFS_EXT2_INODES = 0
 	default 0
