@@ -1,0 +1,33 @@
+diff -uNr linux-pine64-orig/drivers/media/platform/sunxi-vfe/vfe.c linux-pine64-vfe-fix/drivers/media/platform/sunxi-vfe/vfe.c
+--- linux-pine64-orig/drivers/media/platform/sunxi-vfe/vfe.c	2017-07-09 19:19:29.738112486 +0300
++++ linux-pine64-vfe-fix/drivers/media/platform/sunxi-vfe/vfe.c	2017-07-09 19:22:05.466235166 +0300
+@@ -1348,17 +1348,17 @@
+ 			bsp_csi_int_disable(dev->vip_sel, dev->cur_ch,CSI_INT_FRAME_DONE);
+ 		if (dev->first_flag == 0) {
+ 			dev->first_flag++;
+-			vfe_print("capture video mode!\n");
++			//vfe_print("capture video mode!\n");
+ 			goto set_isp_stat_addr;
+ 		}
+ 		if (dev->first_flag == 1) {
+ 			dev->first_flag++;
+-			vfe_print("capture video first frame done!\n");
++			//vfe_print("capture video first frame done!\n");
+ 		}
+ 
+ 		//video buffer handle:
+ 		if ((&dma_q->active) == dma_q->active.next->next->next) {
+-			vfe_warn("Only two buffer left for csi\n");
++			//vfe_warn("Only two buffer left for csi\n");
+ 			dev->first_flag=0;
+ 			goto unlock;  
+ 		}
+@@ -1366,7 +1366,7 @@
+ 
+ 		/* Nobody is waiting on this buffer*/ 
+ 		if (!waitqueue_active(&buf->vb.vb2_queue->done_wq)) {
+-			vfe_warn(" Nobody is waiting on this video buffer,buf = 0x%p\n",buf);		   
++			//vfe_warn(" Nobody is waiting on this video buffer,buf = 0x%p\n",buf);		   
+ 		}
+ 		list_del(&buf->list);
+ 		v4l2_get_timestamp(&buf->vb.v4l2_buf.timestamp);
