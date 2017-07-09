@@ -1,4 +1,4 @@
-console=ttyS0,115200n8
+console=tty1
 selinux=permissive
 enforcing=0
 optargs=no_console_suspend panic=10 quiet loglevel=1 ipv6.disable=1
