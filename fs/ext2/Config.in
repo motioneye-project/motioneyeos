@@ -68,6 +68,25 @@ config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	  Traditionally, this has been 5%, and all ext-related tools still
 	  default to reserving 5% when creating a new ext filesystem.
 
+config BR2_TARGET_ROOTFS_EXT2_MKFS_OPTIONS
+	string "additional mke2fs options"
+	default "-O ^64bit"
+	help
+	  Specify a space-separated list of mke2fs options, including any
+	  ext2/3/4 filesystem features.
+
+	  For more information about the mke2fs options, see the manual
+	  page mke2fs(8).
+
+	  For more information about the ext2/3/4 features which can be
+	  set, see the manual page ext4(5).
+
+	  The default is "-O ^64bit", i.e. disable 64-bit filesystem
+	  support. This default value has been chosen because U-Boot
+	  versions before 2017.02 don't support this filesystem
+	  option: using it may make the filesystem unreadable by
+	  U-Boot.
+
 choice
 	prompt "Compression method"
 	default BR2_TARGET_ROOTFS_EXT2_NONE
