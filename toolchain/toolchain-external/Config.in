@@ -67,10 +67,14 @@ endchoice
 
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "Toolchain path"
-	default "/path/to/toolchain/usr"
+	default ""
 	depends on BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED
 	help
-	  Path to where the external toolchain is installed.
+	  Path to where the external toolchain is installed. The
+	  compiler itself is expected to be in the "bin" subdirectory
+	  of this path.
+
+	  If empty, the compiler will be searched in $PATH.
 
 config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	bool
