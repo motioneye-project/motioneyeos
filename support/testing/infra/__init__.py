@@ -55,7 +55,7 @@ def get_elf_arch_tag(builddir, prefix, fpath, tag):
     v5TEJ
     >>>
     """
-    cmd = ["host/usr/bin/{}-readelf".format(prefix),
+    cmd = ["host/bin/{}-readelf".format(prefix),
            "-A", os.path.join("target", fpath)]
     out = subprocess.check_output(cmd, cwd=builddir, env={"LANG": "C"})
     regexp = re.compile("^  {}: (.*)$".format(tag))
@@ -80,7 +80,7 @@ def get_elf_prog_interpreter(builddir, prefix, fpath):
     /lib/ld-linux-armhf.so.3
     >>>
     """
-    cmd = ["host/usr/bin/{}-readelf".format(prefix),
+    cmd = ["host/bin/{}-readelf".format(prefix),
            "-l", os.path.join("target", fpath)]
     out = subprocess.check_output(cmd, cwd=builddir, env={"LANG": "C"})
     regexp = re.compile("^ *\[Requesting program interpreter: (.*)\]$")
