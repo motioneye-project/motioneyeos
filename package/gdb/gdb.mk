@@ -44,7 +44,7 @@ HOST_GDB_MAKE_OPTS += MAKEINFO=true
 HOST_GDB_INSTALL_OPTS += MAKEINFO=true install
 
 # Apply the Xtensa specific patches
-ifneq ($(ARCH_XTENSA_CORE_NAME),)
+ifneq ($(ARCH_XTENSA_OVERLAY_FILE),)
 define GDB_XTENSA_OVERLAY_EXTRACT
 	$(call arch-xtensa-overlay-extract,$(@D),gdb)
 endef

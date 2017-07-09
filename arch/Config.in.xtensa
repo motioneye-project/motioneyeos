@@ -13,23 +13,20 @@ config BR2_xtensa_fsf
 
 endchoice
 
-config BR2_XTENSA_CORE_NAME
-	string "Custom Xtensa processor configuration name" if BR2_XTENSA_CUSTOM
-	default BR2_XTENSA_CUSTOM_NAME if BR2_XTENSA_CUSTOM_NAME != "" # legacy
-	help
-	  Name given to a custom Xtensa processor configuration.
-
-config BR2_XTENSA_OVERLAY_DIR
-	string "Overlay directory for custom configuration"
+config BR2_XTENSA_OVERLAY_FILE
+	string "Overlay file for custom configuration"
 	depends on BR2_XTENSA_CUSTOM
 	help
-	  Provide the directory path that contains the overlay file
-	  for a custom processor configuration. The path is relative
-	  to the top directory of buildroot.
+	  Enter the path to the overlay tarball for a custom processor
+	  configuration.
+
 	  These overlay files are tar packages with updated configuration
 	  files for various toolchain packages and Xtensa processor
 	  configurations. They are provided by the processor vendor or
 	  directly from Tensilica.
+
+	  The path can be either absolute, or relative to the top directory
+	  of buildroot.
 
 choice
 	prompt "Target Architecture Endianness"

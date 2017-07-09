@@ -1,18 +1,15 @@
 ################################################################################
-# Those two variables can be used by packages that need to extract the overlay.
+# This variable can be used by packages that need to extract the overlay.
 #
-# ARCH_XTENSA_CORE_NAME   is the name of the Xtensa core; empty if none or the
-#                         standard 'fsf' core.
-# ARCH_XTENSA_OVERLAY_TAR is the path to the overlay tarball; only valid when
-#                         ARCH_XTENSA_CORE_NAME is not empty.
+# ARCH_XTENSA_OVERLAY_FILE is the path to the overlay tarball; empty if not
+#                          using any overlay
 #
 # Example:
-#   ifneq ($(ARCH_XTENSA_CORE_NAME),)
-#       tar xf $(ARCH_XTENSA_OVERLAY_TAR) -C $(@D) --strip-components=1 gcc
+#   ifneq ($(ARCH_XTENSA_OVERLAY_FILE),)
+#       tar xf $(ARCH_XTENSA_OVERLAY_FILE) -C $(@D) --strip-components=1 gcc
 #   endif
 ################################################################################
-ARCH_XTENSA_CORE_NAME = $(call qstrip,$(BR2_XTENSA_CORE_NAME))
-ARCH_XTENSA_OVERLAY_TAR = $(call qstrip,$(BR2_XTENSA_OVERLAY_DIR))/xtensa_$(ARCH_XTENSA_CORE_NAME).tar
+ARCH_XTENSA_OVERLAY_FILE = $(call qstrip,$(BR2_XTENSA_OVERLAY_FILE))
 
 ################################################################################
 # arch-xtensa-overlay-extract -- extract an extensa overlay
@@ -24,5 +21,5 @@ ARCH_XTENSA_OVERLAY_TAR = $(call qstrip,$(BR2_XTENSA_OVERLAY_DIR))/xtensa_$(ARCH
 #   $(call arch-xtensa-overlay-extract,/path/to/overlay.tar,$(@D),gcc)
 ################################################################################
 define arch-xtensa-overlay-extract
-	tar xf $(ARCH_XTENSA_OVERLAY_TAR) -C $(1) --strip-components=1 $(2)
+	tar xf $(ARCH_XTENSA_OVERLAY_FILE) -C $(1) --strip-components=1 $(2)
 endef

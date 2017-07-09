@@ -145,11 +145,23 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
-config BR2_XTENSA_CUSTOM_NAME
-	string "The BR2_XTENSA_CUSTOM_NAME option has been renamed"
+config BR2_XTENSA_OVERLAY_DIR
+	string "The BR2_XTENSA_OVERLAY_DIR option has been removed"
 	help
-	  The BR2_XTENSA_CUSTOM_NAME option has been renamed
-	  to BR2_XTENSA_CORE_NAME.
+	  The BR2_XTENSA_OVERLAY_DIR has been removed in favour of
+	  BR2_XTENSA_OVERLAY_FILE. You must now pass the complete
+	  path to the overlay file, not to the directory containing
+	  it.
+
+config BR2_XTENSA_OVERLAY_DIR_WRAP
+	bool
+	default y if BR2_XTENSA_OVERLAY_DIR != ""
+	select BR2_LEGACY
+
+config BR2_XTENSA_CUSTOM_NAME
+	string "The BR2_XTENSA_CUSTOM_NAME option has been removed"
+	help
+	  The BR2_XTENSA_CUSTOM_NAME option has been removed.
 
 config BR2_XTENSA_CUSTOM_NAME_WRAP
 	bool

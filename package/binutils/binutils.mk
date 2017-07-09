@@ -122,7 +122,7 @@ define BINUTILS_INSTALL_TARGET_CMDS
 endef
 endif
 
-ifneq ($(ARCH_XTENSA_CORE_NAME),)
+ifneq ($(ARCH_XTENSA_OVERLAY_FILE),)
 define BINUTILS_XTENSA_OVERLAY_EXTRACT
 	$(call arch-xtensa-overlay-extract,$(@D),binutils)
 endef
