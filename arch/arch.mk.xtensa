@@ -21,5 +21,7 @@ ARCH_XTENSA_OVERLAY_FILE = $(call qstrip,$(BR2_XTENSA_OVERLAY_FILE))
 #   $(call arch-xtensa-overlay-extract,/path/to/overlay.tar,$(@D),gcc)
 ################################################################################
 define arch-xtensa-overlay-extract
-	tar xf $(ARCH_XTENSA_OVERLAY_FILE) -C $(1) --strip-components=1 $(2)
+	$(call suitable-extractor,$(ARCH_XTENSA_OVERLAY_FILE)) \
+		$(ARCH_XTENSA_OVERLAY_FILE) | \
+	$(TAR) --strip-components=1 -C $(1) $(TAR_OPTIONS) - $(2)
 endef
