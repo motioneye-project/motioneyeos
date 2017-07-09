@@ -182,8 +182,26 @@ config BR2_cortex_a15
 	select BR2_ARM_CPU_ARMV7A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	depends on !BR2_ARCH_IS_64
+config BR2_cortex_a15_a7
+	bool "cortex-A15/A7 big.LITTLE"
+	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_HAS_NEON
+	select BR2_ARM_CPU_HAS_VFPV4
+	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_ARMV7A
+	select BR2_ARCH_HAS_MMU_OPTIONAL
+	depends on !BR2_ARCH_IS_64
 config BR2_cortex_a17
 	bool "cortex-A17"
+	select BR2_ARM_CPU_HAS_ARM
+	select BR2_ARM_CPU_HAS_NEON
+	select BR2_ARM_CPU_HAS_VFPV4
+	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_ARMV7A
+	select BR2_ARCH_HAS_MMU_OPTIONAL
+	depends on !BR2_ARCH_IS_64
+config BR2_cortex_a17_a7
+	bool "cortex-A17/A7 big.LITTLE"
 	select BR2_ARM_CPU_HAS_ARM
 	select BR2_ARM_CPU_HAS_NEON
 	select BR2_ARM_CPU_HAS_VFPV4
@@ -207,8 +225,24 @@ config BR2_cortex_a57
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8
 	select BR2_ARCH_HAS_MMU_OPTIONAL
+config BR2_cortex_a57_a53
+	bool "cortex-A57/A53 big.LITTLE"
+	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_FP_ARMV8
+	select BR2_ARM_CPU_ARMV8
+	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a72
 	bool "cortex-A72"
+	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
+	select BR2_ARM_CPU_HAS_FP_ARMV8
+	select BR2_ARM_CPU_ARMV8
+	select BR2_ARCH_HAS_MMU_OPTIONAL
+config BR2_cortex_a72_a53
+	bool "cortex-A72/A53 big.LITTLE"
 	select BR2_ARM_CPU_HAS_ARM if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
@@ -526,7 +560,9 @@ config BR2_GCC_TARGET_CPU
 	default "cortex-a9"	if BR2_cortex_a9
 	default "cortex-a12"	if BR2_cortex_a12
 	default "cortex-a15"	if BR2_cortex_a15
+	default "cortex-a15.cortex-a7"	if BR2_cortex_a15_a7
 	default "cortex-a17"	if BR2_cortex_a17
+	default "cortex-a17.cortex-a7"	if BR2_cortex_a17_a7
 	default "cortex-m3"	if BR2_cortex_m3
 	default "cortex-m4"	if BR2_cortex_m4
 	default "fa526"		if BR2_fa526
@@ -536,7 +572,9 @@ config BR2_GCC_TARGET_CPU
 	default "iwmmxt"	if BR2_iwmmxt
 	default "cortex-a53"	if BR2_cortex_a53
 	default "cortex-a57"	if BR2_cortex_a57
+	default "cortex-a57.cortex-a53"	if BR2_cortex_a57_a53
 	default "cortex-a72"	if BR2_cortex_a72
+	default "cortex-a72.cortex-a53"	if BR2_cortex_a72_a53
 
 config BR2_GCC_TARGET_ABI
 	default "aapcs-linux"	if BR2_arm || BR2_armeb

@@ -25,7 +25,8 @@ config BR2_GCC_VERSION_4_9_X
 	# Broken or unsupported architectures
 	depends on !BR2_arc && !BR2_bfin && !BR2_or1k
 	# Broken or unsupported ARM cores
-	depends on !BR2_cortex_a17 && !BR2_cortex_a72
+	depends on !BR2_cortex_a17 && !BR2_cortex_a17_a7
+	depends on !BR2_cortex_a72 && !BR2_cortex_a72_a53
 	# Unsupported MIPS cores
 	depends on !BR2_mips_interaptiv
 	# Unsupported for MIPS R5
@@ -45,6 +46,8 @@ config BR2_GCC_VERSION_5_X
 	bool "gcc 5.x"
 	# Broken or unsupported architectures
 	depends on !BR2_arc && !BR2_bfin && !BR2_or1k
+	# Broken or unsupported ARM cores
+	depends on !BR2_cortex_a57_a53 && !BR2_cortex_a72_a53
 	# musl ppc64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
 	# Unsupported MIPS cores
