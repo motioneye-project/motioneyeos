@@ -11,12 +11,16 @@ LIBSSH2_LICENSE_FILES = COPYING
 LIBSSH2_INSTALL_STAGING = YES
 LIBSSH2_CONF_OPTS = --disable-examples-build
 
-# Dependency is either on libgcrypt or openssl, guaranteed in Config.in.
-# Favour libgcrypt.
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+# Dependency is one of mbedtls, libgcrypt or openssl, guaranteed in
+# Config.in. Favour mbedtls.
+ifeq ($(BR2_PACKAGE_MBEDTLS),y)
+LIBSSH2_DEPENDENCIES += mbedtls
+LIBSSH2_CONF_OPTS += --with-mbedtls=$(STAGING_DIR)/usr \
+	--without-openssl --without-libgcrypt
+else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBSSH2_DEPENDENCIES += libgcrypt
 LIBSSH2_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr \
-	--without-openssl
+	--without-openssl --without-mbedtls
 # configure.ac forgets to link to dependent libraries of gcrypt breaking static
 # linking
 LIBSSH2_CONF_ENV += LIBS="`$(STAGING_DIR)/usr/bin/libgcrypt-config --libs`"
@@ -24,7 +28,7 @@ else
 LIBSSH2_DEPENDENCIES += openssl
 LIBSSH2_CONF_OPTS += --with-openssl \
 	--with-libssl-prefix=$(STAGING_DIR)/usr \
-	--without-libgcrypt
+	--without-libgcrypt --without-mbedtls
 endif
 
 # Add zlib support if enabled
