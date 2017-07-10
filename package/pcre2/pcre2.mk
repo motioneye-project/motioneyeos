@@ -16,5 +16,10 @@ PCRE2_CONF_OPTS += --enable-pcre2-8
 PCRE2_CONF_OPTS += $(if $(BR2_PACKAGE_PCRE2_16),--enable-pcre2-16,--disable-pcre2-16)
 PCRE2_CONF_OPTS += $(if $(BR2_PACKAGE_PCRE2_32),--enable-pcre2-32,--disable-pcre2-32)
 
+# disable fork usage if not available
+ifeq ($(BR2_USE_MMU),)
+PCRE2_CONF_OPTS += --disable-pcre2grep-callout
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
