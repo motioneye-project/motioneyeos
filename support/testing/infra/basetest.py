@@ -39,7 +39,7 @@ class BRTest(unittest.TestCase):
     def __init__(self, names):
         super(BRTest, self).__init__(names)
         self.testname = self.__class__.__name__
-        self.builddir = os.path.join(self.__class__.outputdir, self.testname)
+        self.builddir = self.outputdir and os.path.join(self.outputdir, self.testname)
         self.emulator = None
 
     def show_msg(self, msg):
