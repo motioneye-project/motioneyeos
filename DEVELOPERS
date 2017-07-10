@@ -346,9 +346,11 @@ F:	package/libsvg-cairo/
 
 N:	Chakra Divi <chakra@openedev.com>
 F:	board/friendlyarm/nanopi-m1
+F:	board/friendlyarm/nanopi-m1-plus
 F:	board/olimex/a13_olinuxino
 F:	board/orangepi/orangepi-plus
 F:	configs/nanopi_m1_defconfig
+F:	configs/nanopi_m1_plus_defconfig
 F:	configs/olimex_a13_olinuxino_defconfig
 F:	configs/orangepi_plus_defconfig
 

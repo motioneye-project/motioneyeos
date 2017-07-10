@@ -128,6 +128,7 @@ mx6cubox_defconfig: *defconfig
 mx6sx_udoo_neo_defconfig: *defconfig
 mx6udoo_defconfig: *defconfig
 nanopi_m1_defconfig: *defconfig
+nanopi_m1_plus_defconfig: *defconfig
 nanopi_neo_defconfig: *defconfig
 nexbox_a95x_defconfig: *defconfig
 nitrogen6sx_defconfig: *defconfig
