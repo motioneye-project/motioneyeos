@@ -1,0 +1,39 @@
+From 05442de962d3dc624f79fc1a00eca3ffc5489ced Mon Sep 17 00:00:00 2001
+From: Michal Srb <msrb@suse.com>
+Date: Wed, 24 May 2017 15:54:39 +0300
+Subject: [PATCH] Xi: Zero target buffer in SProcXSendExtensionEvent.
+
+Make sure that the xEvent eventT is initialized with zeros, the same way as
+in SProcSendEvent.
+
+Some event swapping functions do not overwrite all 32 bytes of xEvent
+structure, for example XSecurityAuthorizationRevoked. Two cooperating
+clients, one swapped and the other not, can send
+XSecurityAuthorizationRevoked event to each other to retrieve old stack data
+from X server. This can be potentialy misused to go around ASLR or
+stack-protector.
+
+Signed-off-by: Michal Srb <msrb@suse.com>
+Reviewed-by: Peter Hutterer <peter.hutterer@who-t.net>
+Signed-off-by: Peter Hutterer <peter.hutterer@who-t.net>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Xi/sendexev.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Xi/sendexev.c b/Xi/sendexev.c
+index 11d82029f..1cf118ab6 100644
+--- a/Xi/sendexev.c
++++ b/Xi/sendexev.c
+@@ -78,7 +78,7 @@ SProcXSendExtensionEvent(ClientPtr client)
+ {
+     CARD32 *p;
+     int i;
+-    xEvent eventT;
++    xEvent eventT = { .u.u.type = 0 };
+     xEvent *eventP;
+     EventSwapPtr proc;
+ 
+-- 
+2.11.0
+
