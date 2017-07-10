@@ -1,2 +1,5 @@
 # Locally computed
-sha256 972b8da73b5aada91e8f21573cf5dbf6dc2d5d64864210e80b2b1aa710a66d02  i2c-tools-v3.1.2.tar.gz
+sha256 6d6079153cd49a62d4addacef4c092db1a46ba60b2807070a3fbe050262aef87  i2c-tools-3.1.2.tar.xz
+
+# License file
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING
