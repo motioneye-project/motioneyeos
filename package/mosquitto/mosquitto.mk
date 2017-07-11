@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-MOSQUITTO_VERSION = 1.4.12
-MOSQUITTO_SITE = http://mosquitto.org/files/source
+MOSQUITTO_VERSION = 1.4.14
+MOSQUITTO_SITE = https://mosquitto.org/files/source
 MOSQUITTO_LICENSE = EPL-1.0 or EDLv1.0
 MOSQUITTO_LICENSE_FILES = LICENSE.txt epl-v10 edl-v10
 MOSQUITTO_INSTALL_STAGING = YES
-MOSQUITTO_PATCH = \
-	https://mosquitto.org/files/cve/2017-9868/mosquitto-1.4.x_cve-2017-9868.patch
 
 MOSQUITTO_MAKE_OPTS = \
 	UNAME=Linux \
