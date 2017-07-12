@@ -13,6 +13,7 @@ BR2_ROOTFS_POST_BUILD_SCRIPT="board/common/postscript.sh"
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/longsleep/linux-pine64/archive/a08f5219d240ae0edf93d090ff1fda0a82a6cb3a.tar.gz"
+BR2_LINUX_KERNEL_PATCH="board/pine64/linux-vfe-dmesg-flood-fix.patch"
 BR2_LINUX_KERNEL_DEFCONFIG="sun50iw1p1smp_linux"
 BR2_PACKAGE_BUSYBOX_CONFIG="board/common/busybox.config"
 BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y
