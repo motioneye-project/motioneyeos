@@ -57,6 +57,12 @@ else
 GIT_CONF_OPTS += --without-tcltk
 endif
 
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),)
+GIT_MAKE_OPTS = NO_GETTEXT=1
+endif
+
+GIT_INSTALL_TARGET_OPTS = $(GIT_MAKE_OPTS) DESTDIR=$(TARGET_DIR) install
+
 # assume yes for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling
 GIT_CONF_ENV += \
