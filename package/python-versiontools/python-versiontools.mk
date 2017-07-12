@@ -11,3 +11,4 @@ PYTHON_VERSIONTOOLS_SETUP_TYPE = setuptools
 PYTHON_VERSIONTOOLS_LICENSE = LGPL-3.0
 
 $(eval $(python-package))
+$(eval $(host-python-package))
