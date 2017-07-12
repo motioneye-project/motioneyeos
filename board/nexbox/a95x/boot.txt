@@ -3,7 +3,7 @@ setenv bootargs console=ttyAML0,115200 earlyprintk root=/dev/mmcblk1p2 rootwait
 fatload mmc 0:1 0x01080000 uImage
 
 if itest.s "${aml_dt}" == "gxl_p212_2g"; then
-	fatload mmc 0:1 $dtb_mem_addr meson-gxl-nexbox-a95x.dtb
+	fatload mmc 0:1 $dtb_mem_addr meson-gxl-s905x-nexbox-a95x.dtb
 else
 	fatload mmc 0:1 $dtb_mem_addr meson-gxbb-nexbox-a95x.dtb
 fi
