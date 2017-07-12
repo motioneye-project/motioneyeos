@@ -17,27 +17,27 @@ BR2_TARGET_ROOTFS_CPIO=y
                            options=["-initrd", cpio_file])
         self.emulator.login()
 
-    def version_test(self, version):
+    def version_test(self, version, timeout=-1):
         cmd = self.interpreter + " --version 2>&1 | grep '^{}'".format(version)
-        _, exit_code = self.emulator.run(cmd)
+        _, exit_code = self.emulator.run(cmd, timeout)
         self.assertEqual(exit_code, 0)
 
-    def math_floor_test(self):
+    def math_floor_test(self, timeout=-1):
         cmd = self.interpreter + " -c 'import math; math.floor(12.3)'"
-        _, exit_code = self.emulator.run(cmd)
+        _, exit_code = self.emulator.run(cmd, timeout)
         self.assertEqual(exit_code, 0)
 
-    def libc_time_test(self):
+    def libc_time_test(self, timeout=-1):
         cmd = self.interpreter + " -c 'from __future__ import print_function;"
         cmd += "import ctypes;"
         cmd += "libc = ctypes.cdll.LoadLibrary(\"libc.so.1\");"
         cmd += "print(libc.time(None))'"
-        _, exit_code = self.emulator.run(cmd)
+        _, exit_code = self.emulator.run(cmd, timeout)
         self.assertEqual(exit_code, 0)
 
-    def zlib_test(self):
+    def zlib_test(self, timeout=-1):
         cmd = self.interpreter + " -c 'import zlib'"
-        _, exit_code = self.emulator.run(cmd)
+        _, exit_code = self.emulator.run(cmd, timeout)
         self.assertEqual(exit_code, 1)
 
 class TestPython2(TestPythonBase):
