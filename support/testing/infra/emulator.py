@@ -89,11 +89,11 @@ class Emulator(object):
             raise SystemError("Cannot login")
         self.run("dmesg -n 1")
 
-    # Run the given 'cmd' on the target
+    # Run the given 'cmd' with a 'timeout' on the target
     # return a tuple (output, exit_code)
-    def run(self, cmd):
+    def run(self, cmd, timeout=-1):
         self.qemu.sendline(cmd)
-        self.qemu.expect("# ")
+        self.qemu.expect("# ", timeout=timeout)
         # Remove double carriage return from qemu stdout so str.splitlines()
         # works as expected.
         output = self.qemu.before.replace("\r\r", "\r").splitlines()[1:]
