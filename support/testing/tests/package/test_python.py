@@ -8,6 +8,8 @@ class TestPythonBase(infra.basetest.BRTest):
 BR2_TARGET_ROOTFS_CPIO=y
 # BR2_TARGET_ROOTFS_TAR is not set
 """
+    interpreter = "python"
+
     def login(self):
         cpio_file = os.path.join(self.builddir, "images", "rootfs.cpio")
         self.emulator.boot(arch="armv5",
@@ -16,17 +18,17 @@ BR2_TARGET_ROOTFS_CPIO=y
         self.emulator.login()
 
     def version_test(self, version):
-        cmd = "python --version 2>&1 | grep '^{}'".format(version)
+        cmd = self.interpreter + " --version 2>&1 | grep '^{}'".format(version)
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
     def math_floor_test(self):
-        cmd = "python -c 'import math; math.floor(12.3)'"
+        cmd = self.interpreter + " -c 'import math; math.floor(12.3)'"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
     def libc_time_test(self):
-        cmd = "python -c 'from __future__ import print_function;"
+        cmd = self.interpreter + " -c 'from __future__ import print_function;"
         cmd += "import ctypes;"
         cmd += "libc = ctypes.cdll.LoadLibrary(\"libc.so.1\");"
         cmd += "print(libc.time(None))'"
@@ -34,7 +36,7 @@ BR2_TARGET_ROOTFS_CPIO=y
         self.assertEqual(exit_code, 0)
 
     def zlib_test(self):
-        cmd = "python -c 'import zlib'"
+        cmd = self.interpreter + " -c 'import zlib'"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 1)
 
