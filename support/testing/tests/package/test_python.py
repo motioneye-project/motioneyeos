@@ -26,9 +26,10 @@ BR2_TARGET_ROOTFS_CPIO=y
         self.assertEqual(exit_code, 0)
 
     def libc_time_test(self):
-        cmd = "python -c 'import ctypes;"
+        cmd = "python -c 'from __future__ import print_function;"
+        cmd += "import ctypes;"
         cmd += "libc = ctypes.cdll.LoadLibrary(\"libc.so.1\");"
-        cmd += "print libc.time(None)'"
+        cmd += "print(libc.time(None))'"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
@@ -45,6 +46,18 @@ BR2_PACKAGE_PYTHON=y
     def test_run(self):
         self.login()
         self.version_test("Python 2")
+        self.math_floor_test()
+        self.libc_time_test()
+        self.zlib_test()
+
+class TestPython3(TestPythonBase):
+    config = TestPythonBase.config + \
+"""
+BR2_PACKAGE_PYTHON3=y
+"""
+    def test_run(self):
+        self.login()
+        self.version_test("Python 3")
         self.math_floor_test()
         self.libc_time_test()
         self.zlib_test()
