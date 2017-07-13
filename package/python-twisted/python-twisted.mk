@@ -10,6 +10,6 @@ PYTHON_TWISTED_SITE = https://pypi.python.org/packages/d2/5d/ed5071740be94da6255
 PYTHON_TWISTED_SETUP_TYPE = setuptools
 PYTHON_TWISTED_LICENSE = MIT
 PYTHON_TWISTED_LICENSE_FILES = LICENSE
-PYTHON_TWISTED_DEPENDENCIES = python-incremental
+PYTHON_TWISTED_DEPENDENCIES = python-incremental host-python-incremental
 
 $(eval $(python-package))
