@@ -37,6 +37,19 @@ config BR2_PACKAGE_MINETEST_SERVER
 	help
 	  Build Minetest server.
 
+config BR2_PACKAGE_MINETEST_SOUND
+	bool "enable sound"
+	depends on BR2_PACKAGE_MINETEST_CLIENT
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
+	select BR2_PACKAGE_LIBVORBIS
+	select BR2_PACKAGE_OPENAL
+
+comment "sound support needs a toolchain w/ threads NPTL"
+	depends on BR2_PACKAGE_MINETEST_CLIENT
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
 endif
 
 comment "minetest needs a toolchain w/ C++, gcc >= 4.7, threads"
