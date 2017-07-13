@@ -1328,6 +1328,7 @@ F:	package/libspatialindex/
 F:	package/linux-syscall-support/
 F:	package/lugaru/
 F:	package/mcelog/
+F:	package/minetest/
 F:	package/openpowerlink/
 F:	package/physfs/
 F:	package/stress-ng/
