@@ -1,0 +1,54 @@
+From 626cd8e9c7c2a5d5c907a12abbaa6066b6d5f2ff Mon Sep 17 00:00:00 2001
+From: "vorunbekannt75@web.de" <vorunbekannt75@web.de>
+Date: Tue, 6 Jun 2017 19:20:58 +0200
+Subject: [PATCH] Default: Revert "Default: Shorter and better ABMs"
+
+This reverts commit e523c3a2965afe76b9102b67992e15fafba1594a to re-enable
+the overriding and redefinition of these global functions.
+
+[Romain backport from upstream]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ mods/default/functions.lua | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/mods/default/functions.lua b/mods/default/functions.lua
+index 5dc22ca..327e0c8 100644
+--- a/mods/default/functions.lua
++++ b/mods/default/functions.lua
+@@ -139,7 +139,9 @@ if minetest.settings:get_bool("enable_lavacooling") ~= false then
+ 		interval = 1,
+ 		chance = 2,
+ 		catch_up = false,
+-		action = default.cool_lava,
++		action = function(...)
++			default.cool_lava(...)
++		end,
+ 	})
+ end
+ 
+@@ -222,7 +224,9 @@ minetest.register_abm({
+ 	neighbors = {"group:sand"},
+ 	interval = 12,
+ 	chance = 83,
+-	action = default.grow_cactus
++	action = function(...)
++		default.grow_cactus(...)
++	end
+ })
+ 
+ minetest.register_abm({
+@@ -231,7 +235,9 @@ minetest.register_abm({
+ 	neighbors = {"default:dirt", "default:dirt_with_grass"},
+ 	interval = 14,
+ 	chance = 71,
+-	action = default.grow_papyrus
++	action = function(...)
++		default.grow_papyrus(...)
++	end
+ })
+ 
+ 
+-- 
+2.9.4
+
