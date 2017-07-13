@@ -1469,14 +1469,6 @@ F:	package/biosdevname/
 N:	Rémi Rérolle <remi.rerolle@gmail.com>
 F:	package/libfreeimage/
 
-N:	Sagaert Johan <sagaert.johan@skynet.be>
-F:	package/git/
-F:	package/gsl/
-F:	package/jquery-mobile/
-F:	package/libgsasl/
-F:	package/qdecoder/
-F:	package/qlibc/
-
 N:	Sam Bobroff <sam.bobroff@au1.ibm.com>
 F:	arch/Config.in.powerpc
 F:	package/librtas/
