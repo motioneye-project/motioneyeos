@@ -309,7 +309,8 @@ HOST_CONFIGURE_OPTS = \
 EXTRA_ENV = \
 	PATH=$(BR_PATH) \
 	BR2_DL_DIR=$(BR2_DL_DIR) \
-	BUILD_DIR=$(BUILD_DIR)
+	BUILD_DIR=$(BUILD_DIR) \
+	O=$(CANONICAL_O)
 
 ################################################################################
 # settings we need to pass to configure
