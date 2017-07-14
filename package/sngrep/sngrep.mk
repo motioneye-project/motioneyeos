@@ -14,11 +14,7 @@ SNGREP_DEPENDENCIES = libpcap ncurses host-pkgconf
 SNGREP_CONF_ENV += \
 	$(if $(BR2_STATIC_LIBS),LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --libs`")
 
-ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
-SNGREP_CONF_OPTS += --enable-unicode
-else
 SNGREP_CONF_OPTS += --disable-unicode
-endif
 
 # openssl and gnutls can't be enabled at the same time.
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
