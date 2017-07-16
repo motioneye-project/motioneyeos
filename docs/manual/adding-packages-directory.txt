@@ -482,7 +482,9 @@ this in a comment line above the hashes.
 
 .Note
 The hashes for license files are used to detect a license change when a
-package version is bumped.
+package version is bumped. For a package with multiple versions (like Qt5),
+create the hash file in a subdirectory +<packageversion>+ of that package
+(see also xref:patch-apply-order[]).
 
 .Note
 The number of spaces does not matter, so one can use spaces (or tabs) to
