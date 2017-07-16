@@ -1,0 +1,8 @@
+config BR2_PACKAGE_KODI_INPUTSTREAM_ADAPTIVE
+	bool "kodi-inputstream-adaptive"
+	select BR2_PACKAGE_LIBPLATFORM
+	select BR2_PACKAGE_KODI_PLATFORM
+	help
+	  Kodi inputstream addon for several manifest types
+
+	  https://github.com/peak3d/inputstream.adaptive
