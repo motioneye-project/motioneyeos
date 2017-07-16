@@ -423,6 +423,7 @@ config BR2_PACKAGE_OPENOCD_FT2XXX
 config BR2_PACKAGE_KODI_RTMPDUMP
 	bool "kodi rtmp has been removed"
 	select BR2_LEGACY
+	select BR2_PACKAGE_KODI_INPUTSTREAM_RTMP
 	help
 	  Internal rtmp support was removed from Kodi.
 
