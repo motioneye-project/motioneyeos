@@ -98,6 +98,7 @@ F:	package/python-pathlib2/
 F:	package/python-pickleshare/
 F:	package/python-scandir/
 F:	package/python-simplegeneric/
+F:	package/python-systemd/
 F:	package/python-traitlets/
 
 N:	Andrey Yurovsky <yurovsky@gmail.com>
