@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NVME_VERSION = v0.3
+NVME_VERSION = v1.3
 NVME_SITE = $(call github,linux-nvme,nvme-cli,$(NVME_VERSION))
 NVME_LICENSE = GPL-2.0+
 NVME_LICENSE_FILES = LICENSE
