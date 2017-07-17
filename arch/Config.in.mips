@@ -139,7 +139,10 @@ choice
 	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
 	default BR2_MIPS_FP32_MODE_XX
 	help
-	  FP mode to be used
+	  MIPS32 supports different FP modes (32,xx,64). Information about FP
+	  modes can be found here:
+	  https://sourceware.org/binutils/docs/as/MIPS-Options.html
+	  https://dmz-portal.imgtec.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking#5._Generating_modeless_code
 
 config BR2_MIPS_FP32_MODE_32
 	bool "32"
