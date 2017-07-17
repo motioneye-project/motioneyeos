@@ -169,7 +169,9 @@ choice
 	depends on BR2_mips_32r5 || BR2_mips_64r5
 	default BR2_MIPS_ENABLE_NAN_2008
 	help
-	  NaN encoding to be used
+	  MIPS supports two different NaN encodings, legacy and 2008.
+	  Information about MIPS NaN encodings can be found here:
+	  https://sourceware.org/binutils/docs/as/MIPS-NaN-Encodings.html
 
 config BR2_MIPS_ENABLE_NAN_LEGACY
 	bool "legacy"
