@@ -148,21 +148,6 @@ endif
 endif
 TARGET_FINALIZE_HOOKS += SKELETON_BIN_SH
 
-ifeq ($(BR2_INIT_BUSYBOX)$(BR2_INIT_SYSV),y)
-ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
-# Find commented line, if any, and remove leading '#'s
-define SKELETON_REMOUNT_RW
-	$(SED) '/^#.*-o remount,rw \/$$/s~^#\+~~' $(TARGET_DIR)/etc/inittab
-endef
-else
-# Find uncommented line, if any, and add a leading '#'
-define SKELETON_REMOUNT_RW
-	$(SED) '/^[^#].*-o remount,rw \/$$/s~^~#~' $(TARGET_DIR)/etc/inittab
-endef
-endif
-TARGET_FINALIZE_HOOKS += SKELETON_REMOUNT_RW
-endif # BR2_INIT_BUSYBOX || BR2_INIT_SYSV
-
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
 $(eval $(generic-package))
