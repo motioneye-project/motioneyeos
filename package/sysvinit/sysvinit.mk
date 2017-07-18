@@ -47,4 +47,12 @@ define SYSVINIT_INSTALL_TARGET_CMDS
 	ln -sf killall5 $(TARGET_DIR)/sbin/pidof
 endef
 
+ifeq ($(BR2_TARGET_GENERIC_GETTY),y)
+define SYSVINIT_SET_GETTY
+	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(shell echo $(SYSTEM_GETTY_PORT) | tail -c+4)::respawn:/sbin/getty -L $(SYSTEM_GETTY_OPTIONS) $(SYSTEM_GETTY_PORT) $(SYSTEM_GETTY_BAUDRATE) $(SYSTEM_GETTY_TERM) #~' \
+		$(TARGET_DIR)/etc/inittab
+endef
+SYSVINIT_TARGET_FINALIZE_HOOKS += SYSVINIT_SET_GETTY
+endif # BR2_TARGET_GENERIC_GETTY
+
 $(eval $(generic-package))

@@ -22,6 +22,12 @@
 # - SYSTEM_LIB_SYMLINK
 #   create the appropriate /lib{32,64} symlinks
 #
+# - SYSTEM_GETTY_PORT
+# - SYSTEM_GETTY_BAUDRATE
+# - SYSTEM_GETTY_TERM
+# - SYSTEM_GETTY_OPTIONS
+#   the un-quoted getty setting
+#
 
 # This function handles the merged or non-merged /usr cases
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
@@ -60,3 +66,8 @@ define SYSTEM_LIB_SYMLINK
 	ln -snf lib $(1)/usr/lib32
 endef
 endif
+
+SYSTEM_GETTY_PORT = $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT))
+SYSTEM_GETTY_BAUDRATE = $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE))
+SYSTEM_GETTY_TERM = $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_TERM))
+SYSTEM_GETTY_OPTIONS = $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_OPTIONS))
