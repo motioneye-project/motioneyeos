@@ -40,8 +40,8 @@ Unlike other packages, the +linux-tools+ package options appear in the
 +linux+ kernel menu, under the `Linux Kernel Tools` sub-menu, not under
 the `Target packages` main menu.
 
-Then for each linux tool, add a new +.mk+ file named
-+package/linux-tools/linux-tool-foo.mk+. It would basically look like:
+Then for each linux tool, add a new +.mk.in+ file named
++package/linux-tools/linux-tool-foo.mk.in+. It would basically look like:
 
 ------------------------------
 01: ################################################################################
