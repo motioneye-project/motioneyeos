@@ -9,6 +9,7 @@
 # Hence, skeleton would depends on the toolchain and the toolchain would depend
 # on skeleton.
 SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
+SKELETON_ADD_SKELETON_DEPENDENCY = NO
 
 # The skeleton also handles the merged /usr case in the sysroot
 SKELETON_INSTALL_STAGING = YES
