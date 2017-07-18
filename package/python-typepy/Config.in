@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_TYPEPY
+	bool "python-typepy"
+	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
+	select BR2_PACKAGE_PYTHON_ENUM34 if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_IPADDRESS if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
+	select BR2_PACKAGE_PYTHON_PYTZ # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  A Python library for variable type checker/validator/converter at a
+	  run time.
+
+	  https://github.com/thombashi/typepy
