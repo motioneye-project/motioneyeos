@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/setuptools_scm/json, sha256 locally computed
-md5 d91e17693598d8ba84c5b4fed48b015d setuptools_scm-1.15.1rc1.tar.gz
-sha256 24007d8a43c4b43c7ad6c8725cbdfb94212c30f6ab849f21f7bb3809333f105a setuptools_scm-1.15.1rc1.tar.gz
+md5 f17493d53f0d842bb0152f214775640b setuptools_scm-1.15.6.tar.gz
+sha256 49ab4685589986a42da85706b3311a2f74f1af567d39fee6cb1e088d7a75fb5f setuptools_scm-1.15.6.tar.gz
