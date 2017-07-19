@@ -18,9 +18,13 @@ test -n "$os_version" || source /etc/init.d/base
 
 hci=hci0
 bluetoothd=/usr/libexec/bluetooth/bluetoothd
-run_conf="/var/lib/bluetooth.conf"
+data_dir=/var/lib/bluetooth
+run_data_dir=/data/bluetooth
+run_conf=/var/lib/bluetooth.conf
 
 configure() {
+    mkdir -p $run_data_dir
+    ln -sf $run_data_dir $data_dir
     cp $conf $run_conf
 
     # if no specific name configured, use hostname
