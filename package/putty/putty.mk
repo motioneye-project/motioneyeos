@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PUTTY_VERSION = 0.68
+PUTTY_VERSION = 0.70
 PUTTY_SITE = http://the.earth.li/~sgtatham/putty/$(PUTTY_VERSION)
 PUTTY_SUBDIR = unix
 PUTTY_LICENSE = MIT
