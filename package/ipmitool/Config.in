@@ -18,6 +18,12 @@ config BR2_PACKAGE_IPMITOOL_LANPLUS
 	  device using the OpenIPMI ipmi_si kernel module, or if using the
 	  legacy IPMI v1.5 RMCP LAN interface.
 
+config BR2_PACKAGE_IPMITOOL_USB
+	bool "enable usb interface"
+	help
+	  Enables the IPMI USB interface typically used to send inband
+	  IPMI commands to the BMC of a server.
+
 config BR2_PACKAGE_IPMITOOL_IPMIEVD
 	bool "ipmievd"
 	help

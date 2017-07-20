@@ -17,6 +17,12 @@ else
 IPMITOOL_CONF_OPTS += --disable-intf-lanplus
 endif
 
+ifeq ($(BR2_PACKAGE_IPMITOOL_USB),y)
+IPMITOOL_CONF_OPTS += --enable-intf-usb
+else
+IPMITOOL_CONF_OPTS += --disable-intf-usb
+endif
+
 ifeq ($(BR2_PACKAGE_IPMITOOL_IPMISHELL),y)
 IPMITOOL_DEPENDENCIES += ncurses readline
 IPMITOOL_CONF_OPTS += --enable-ipmishell
