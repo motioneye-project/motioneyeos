@@ -15,6 +15,7 @@ LINUX_ZIGBEE_AUTORECONF = YES
 
 LINUX_ZIGBEE_CONF_OPTS = \
 	--disable-manpages \
+	--disable-werror \
 	--with-leasefile="$(call qstrip,$(BR2_PACKAGE_LINUX_ZIGBEE_LEASEFILE))"
 
 ifeq ($(BR2_PACKAGE_LINUX_ZIGBEE_TESTS),y)
