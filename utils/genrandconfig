@@ -332,19 +332,24 @@ def gen_config(args):
     configs = get_toolchain_configs(args.toolchains_url)
 
     i = randint(0, len(configs) - 1)
-    config = configs[i]
+    toolchainconfig = configs[i]
 
-    configlines = config
+    configlines = list(toolchainconfig)
+
+    # Combine with the minimal configuration
+    minimalconfigfile = os.path.join(args.buildrootdir,
+                                     'support/config-fragments/minimal.config')
+    with open(minimalconfigfile) as minimalf:
+        configlines += minimalf.readlines()
 
     # Amend the configuration with a few things.
-    configlines.append("BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y\n")
-    configlines.append("# BR2_TARGET_ROOTFS_TAR is not set\n")
-    configlines.append("BR2_COMPILER_PARANOID_UNSAFE_PATH=y\n")
     if randint(0, 20) == 0:
         configlines.append("BR2_ENABLE_DEBUG=y\n")
-    if randint(0, 30) == 0:
+    if randint(0, 1) == 0:
+        configlines.append("BR2_INIT_BUSYBOX=y\n")
+    elif randint(0, 15) == 0:
         configlines.append("BR2_INIT_SYSTEMD=y\n")
-    elif randint(0, 20) == 0:
+    elif randint(0, 10) == 0:
         configlines.append("BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y\n")
     if randint(0, 20) == 0:
         configlines.append("BR2_STATIC_LIBS=y\n")
@@ -364,7 +369,7 @@ def gen_config(args):
     subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
                            "olddefconfig"])
 
-    if not is_toolchain_usable(configfile, config):
+    if not is_toolchain_usable(configfile, toolchainconfig):
         return 2
 
     # Now, generate the random selection of packages, and fixup
