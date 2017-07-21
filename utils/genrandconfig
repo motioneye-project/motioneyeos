@@ -197,7 +197,7 @@ def is_toolchain_usable(outputdir, config):
     return True
 
 
-def fixup_config(outputdir, sysinfo):
+def fixup_config(outputdir):
     """Finalize the configuration and reject any problematic combinations
 
     This function returns 'True' when the configuration has been
@@ -206,6 +206,7 @@ def fixup_config(outputdir, sysinfo):
     generated).
     """
 
+    sysinfo = SystemInfo()
     with open(os.path.join(outputdir, ".config")) as configf:
         configlines = configf.readlines()
 
@@ -402,7 +403,7 @@ def gen_config(args):
         if ret != 0:
             log_write(args.log, "ERROR: cannot generate random configuration")
             return -1
-        if fixup_config(outputdir, args.sysinfo):
+        if fixup_config(outputdir):
             break
 
     ret = subprocess.call(["make", "O=%s" % outputdir, "-C", srcdir,
@@ -436,7 +437,6 @@ if __name__ == '__main__':
 
     # Arguments expected by gen_config for which we just set a default here
     args.log = sys.stdout
-    args.sysinfo = SystemInfo()
 
     # Output directory is already created by autobuild-run so emulate it here
     idir = "instance-%d" % args.instance
