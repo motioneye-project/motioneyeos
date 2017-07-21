@@ -184,7 +184,7 @@ def is_toolchain_usable(**kwargs):
         if 'BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y\n' in configlines or \
            'BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64=y\n' in configlines or \
            'BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB=y\n' in configlines:
-            ldd_version_output = subprocess.Popen(['ldd', '--version'], stdout=subprocess.PIPE).communicate()[0]
+            ldd_version_output = subprocess.check_output(['ldd', '--version'])
             glibc_version = ldd_version_output.splitlines()[0].split()[-1]
             if StrictVersion('2.14') > StrictVersion(glibc_version):
                 log_write(log, "WARN: ignoring the Linaro ARM toolchains becausee too old host glibc")
