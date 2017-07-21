@@ -169,6 +169,7 @@ config BR2_MIPS_NAN_2008
 
 choice
 	prompt "Target NaN"
+	depends on BR2_TOOLCHAIN_HAS_MNAN_OPTION
 	depends on BR2_mips_32r5 || BR2_mips_64r5
 	default BR2_MIPS_ENABLE_NAN_2008
 	help
