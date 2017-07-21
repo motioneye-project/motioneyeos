@@ -94,11 +94,9 @@ build_one() {
 
     mkdir -p "${dir}"
 
-    cat "${toolchainconfig}" "support/config-fragments/minimal.config" "${cfg}" >>"${dir}/.config"
-
-    if ! make O="${dir}" olddefconfig > "${dir}/logfile" 2>&1; then
-        return 2
-    fi
+    support/kconfig/merge_config.sh -O "${dir}" \
+        "${toolchainconfig}" "support/config-fragments/minimal.config" "${cfg}" \
+        > /dev/null
     # We want all the options from the snippet to be present as-is (set
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
