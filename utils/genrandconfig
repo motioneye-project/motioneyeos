@@ -354,7 +354,10 @@ def gen_config(args):
     # Write out the configuration file
     if not os.path.exists(args.outputdir):
         os.makedirs(args.outputdir)
-    configfile = os.path.join(args.outputdir, ".config")
+    if args.outputdir == os.path.abspath(os.path.join(args.buildrootdir, "output")):
+        configfile = os.path.join(args.buildrootdir, ".config")
+    else:
+        configfile = os.path.join(args.outputdir, ".config")
     with open(configfile, "w+") as configf:
         configf.writelines(configlines)
 
