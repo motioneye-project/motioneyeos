@@ -137,7 +137,7 @@ config BR2_MIPS_SOFT_FLOAT
 choice
 	prompt "FP mode"
 	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
-	default BR2_MIPS_FP32_MODE_XX
+	default BR2_MIPS_FP32_MODE_XX if BR2_TOOLCHAIN_HAS_MFPXX_OPTION
 	help
 	  MIPS32 supports different FP modes (32,xx,64). Information about FP
 	  modes can be found here:
@@ -150,6 +150,7 @@ config BR2_MIPS_FP32_MODE_32
 
 config BR2_MIPS_FP32_MODE_XX
 	bool "xx"
+	depends on BR2_TOOLCHAIN_HAS_MFPXX_OPTION
 
 config BR2_MIPS_FP32_MODE_64
 	bool "64"
