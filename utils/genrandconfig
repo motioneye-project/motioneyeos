@@ -352,6 +352,8 @@ def gen_config(args):
         configlines.append("BR2_PACKAGE_PYTHON_PY_ONLY=y\n")
 
     # Write out the configuration file
+    if not os.path.exists(args.outputdir):
+        os.makedirs(args.outputdir)
     with open(os.path.join(args.outputdir, ".config"), "w+") as configf:
         configf.writelines(configlines)
 
@@ -391,29 +393,22 @@ def gen_config(args):
 if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description="Generate a random configuration")
-    parser.add_argument("--instance", "-i",
-                        help="Instance number for creating unique directories",
-                        type=int, default=0)
+    parser.add_argument("--outputdir", "-o",
+                        help="Output directory (relative to current directory)",
+                        type=str, default='output')
+    parser.add_argument("--buildrootdir", "-b",
+                        help="Buildroot directory (relative to current directory)",
+                        type=str, default='.')
     parser.add_argument("--toolchains-url",
                         help="URL of toolchain configuration file",
                         type=str,
                         default="http://autobuild.buildroot.org/toolchains/configs/toolchain-configs.csv")
     args = parser.parse_args()
 
-    # Output directory is already created by autobuild-run so emulate it here
-    idir = "instance-%d" % args.instance
     # We need the absolute path to use with O=, because the relative
     # path to the output directory here is not relative to the
-    # Buildroot sources, but to the location of the autobuilder
-    # script.
-    args.outputdir = os.path.abspath(os.path.join(idir, "output"))
-    args.buildrootdir = os.path.join(idir, "buildroot")
-
-    if not os.path.exists(idir):
-        os.mkdir(idir)
-        os.mkdir(args.outputdir)
-        # gen_config expects "buildroot" directory under idir
-        os.symlink("..", args.buildrootdir)
+    # Buildroot sources, but to the current directory.
+    args.outputdir = os.path.abspath(args.outputdir)
 
     try:
         ret = gen_config(args)
