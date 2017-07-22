@@ -552,6 +552,14 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 .PHONY: world
 world: target-post-image
 
+.PHONY: sdk
+sdk: world
+	@$(call MESSAGE,"Rendering the SDK relocatable")
+	$(TOPDIR)/support/scripts/fix-rpath host
+	$(TOPDIR)/support/scripts/fix-rpath staging
+	$(INSTALL) -m 755 $(TOPDIR)/support/misc/relocate-sdk.sh $(HOST_DIR)/relocate-sdk.sh
+	echo $(HOST_DIR) > $(HOST_DIR)/share/buildroot/sdk-location
+
 # Compatibility symlink in case a post-build script still uses $(HOST_DIR)/usr
 $(HOST_DIR)/usr: $(HOST_DIR)
 	@ln -snf . $@
@@ -1001,6 +1009,7 @@ help:
 	@echo 'Build:'
 	@echo '  all                    - make world'
 	@echo '  toolchain              - build toolchain'
+	@echo '  sdk                    - build relocatable SDK'
 	@echo
 	@echo 'Configuration:'
 	@echo '  menuconfig             - interactive curses-based configurator'
