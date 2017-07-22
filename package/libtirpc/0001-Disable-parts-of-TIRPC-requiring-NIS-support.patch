@@ -13,6 +13,8 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
 [peda@axentia.se: update for 1.0.1]
 Signed-off-by: Peter Rosin <peda@axentia.se>
+[bernd.kuhls@t-online.de: update for 1.0.2]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  src/Makefile.am | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
@@ -25,8 +27,8 @@ index 6cc567a..9834f9a 100644
          rpcb_st_xdr.c svc.c svc_auth.c svc_dg.c svc_auth_unix.c svc_auth_none.c \
  	svc_auth_des.c \
          svc_generic.c svc_raw.c svc_run.c svc_simple.c svc_vc.c getpeereid.c \
--        auth_time.c auth_des.c authdes_prot.c debug.c
-+        auth_des.c authdes_prot.c debug.c
+-        auth_time.c auth_des.c authdes_prot.c debug.c des_crypt.c des_impl.c
++        auth_des.c authdes_prot.c debug.c des_crypt.c des_impl.c
  
  ## XDR
  libtirpc_la_SOURCES += xdr.c xdr_rec.c xdr_array.c xdr_float.c xdr_mem.c xdr_reference.c xdr_stdio.c xdr_sizeof.c
