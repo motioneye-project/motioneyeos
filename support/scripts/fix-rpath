@@ -45,6 +45,9 @@ Environment:
 
     TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR
                  (default HOST_DIR/opt/ext-toolchain)
+
+Returns:         0 if success or 1 in case of error
+
 EOF
 }
 
@@ -59,6 +62,11 @@ main() {
     local tree="${1}"
     local find_args=( )
     local sanitize_extra_args=( )
+
+    if ! "${PATCHELF}" --version > /dev/null 2>&1; then
+	echo "Error: can't execute patchelf utility '${PATCHELF}'"
+	exit 1
+    fi
 
     case "${tree}" in
         host)
