@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HEIMDAL_VERSION = 7.1.0
-HEIMDAL_SITE = http://www.h5l.org/dist/src
+HEIMDAL_VERSION = 7.4.0
+HEIMDAL_SITE = https://github.com/heimdal/heimdal/releases/download/heimdal-$(HEIMDAL_VERSION)
 HOST_HEIMDAL_DEPENDENCIES = host-e2fsprogs host-ncurses host-pkgconf
 HEIMDAL_INSTALL_STAGING = YES
 HEIMDAL_MAKE = $(MAKE1)
@@ -15,6 +15,7 @@ HOST_HEIMDAL_CONF_OPTS = \
 	--enable-static \
 	--without-openldap \
 	--without-capng \
+	--with-db-type-preference= \
 	--without-sqlite3 \
 	--without-libintl \
 	--without-openssl \
