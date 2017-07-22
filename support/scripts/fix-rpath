@@ -27,7 +27,7 @@ Description:
 
     Sanitization behaves the same whatever the kind of the processed tree,
     but the resulting RPATH differs. The rpath sanitization is done using
-    "patchelf --make-rpath-relazive".
+    "patchelf --make-rpath-relative".
 
 Arguments:
 
@@ -81,7 +81,7 @@ main() {
                 find_args+=( "-path" "${TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR}" "-prune" "-o" )
 
             for excludepath in ${HOST_EXCLUDEPATHS}; do
-                find_args+=( "-path" "${HOST_DIR}""${excludepath}" "-prune" "-o" );
+                find_args+=( "-path" "${HOST_DIR}""${excludepath}" "-prune" "-o" )
             done
 
             # do not process the patchelf binary but a copy to work-around "file in use"
