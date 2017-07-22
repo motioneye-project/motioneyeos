@@ -10,16 +10,20 @@ CPPCMS_LICENSE = LGPL-3.0
 CPPCMS_LICENSE_FILES = COPYING.TXT
 CPPCMS_SITE = http://downloads.sourceforge.net/project/cppcms/cppcms/$(CPPCMS_VERSION)
 CPPCMS_INSTALL_STAGING = YES
+CPPCMS_CXXFLAGS = $(TARGET_CXXFLAGS)
 
 # disable rpath to avoid getting /usr/lib added to the link search
 # path
-CPPCMS_CONF_OPTS = -DCMAKE_SKIP_RPATH=ON
+CPPCMS_CONF_OPTS = \
+	-DCMAKE_SKIP_RPATH=ON \
+	-DCMAKE_CXX_FLAGS="$(CPPCMS_CXXFLAGS)"
 
 CPPCMS_DEPENDENCIES = zlib pcre libgcrypt
 
 ifeq ($(BR2_PACKAGE_CPPCMS_ICU),y)
 CPPCMS_CONF_OPTS += -DDISABLE_ICONV=ON
 CPPCMS_DEPENDENCIES += icu
+CPPCMS_CXXFLAGS += "`$(STAGING_DIR)/usr/bin/icu-config --cxxflags`"
 endif
 
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
