@@ -23,6 +23,11 @@ S6_NETWORKING_CONF_OPTS = \
 	$(if $(BR2_STATIC_LIBS),,--disable-allstatic) \
 	$(SHARED_STATIC_LIBS_OPTS)
 
+ifeq ($(BR2_PACKAGE_LIBRESSL),y)
+S6_NETWORKING_CONF_OPTS += --enable-ssl=libressl
+S6_NETWORKING_DEPENDENCIES = libressl
+endif
+
 define S6_NETWORKING_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure $(S6_NETWORKING_CONF_OPTS))
 endef
