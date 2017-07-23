@@ -41,7 +41,8 @@ class BRTest(unittest.TestCase):
         self.testname = self.__class__.__name__
         self.builddir = self.outputdir and os.path.join(self.outputdir, self.testname)
         self.emulator = None
-        self.config = '\n'.join([line.lstrip() for line in self.config.splitlines()])
+        self.config = '\n'.join([line.lstrip() for line in
+                                 self.config.splitlines()]) + '\n'
 
     def show_msg(self, msg):
         print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
