@@ -16,6 +16,12 @@ ifeq ($(BR2_i386)$(BR2_x86_64),y)
 X265_DEPENDENCIES += host-yasm
 endif
 
+# disable altivec, it has build issues
+# https://bitbucket.org/multicoreware/x265/issues/320/
+ifeq ($(BR2_powerpc64)$(BR2_powerpc64le),y)
+X265_CONF_OPTS += -DENABLE_ALTIVEC=OFF
+endif
+
 ifeq ($(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),y)
 X265_CONF_OPTS += -DENABLE_SHARED=ON -DENABLE_PIC=ON
 else
