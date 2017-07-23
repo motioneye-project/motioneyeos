@@ -1,6 +1,6 @@
-comment "samba4 needs a toolchain w/ RPC, wchar, dynamic library, NPTL"
+comment "samba4 needs a uClibc or glibc toolchain w/ wchar, dynamic library, NPTL"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_NATIVE_RPC \
+	depends on !BR2_USE_WCHAR || BR2_TOOLCHAIN_USES_MUSL \
 		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_USE_MMU
 
@@ -8,12 +8,13 @@ config BR2_PACKAGE_SAMBA4
 	bool "samba4"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # python
-	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # python -> libffi
 	depends on !BR2_STATIC_LIBS # python, gnutls
 	depends on !BR2_nios2 # binary too large, relocations don't fit
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_ZLIB
