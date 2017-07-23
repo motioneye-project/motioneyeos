@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-X265_VERSION = 2.4
+X265_VERSION = 2.5
 X265_SOURCE = x265_$(X265_VERSION).tar.gz
 X265_SITE = https://bitbucket.org/multicoreware/x265/downloads
 X265_LICENSE = GPL-2.0+
