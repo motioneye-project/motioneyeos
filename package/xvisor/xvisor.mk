@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-XVISOR_VERSION = 0.2.8
+XVISOR_VERSION = 0.2.9
 XVISOR_SITE = http://www.xhypervisor.org/tarball
 XVISOR_LICENSE = GPL-2.0+
 XVISOR_LICENSE_FILES = COPYING
 XVISOR_INSTALL_IMAGES = YES
 XVISOR_INSTALL_TARGET = NO
+XVISOR_DEPENDENCIES = host-bison host-flex
 
 XVISOR_MAKE_TARGETS = all
 
