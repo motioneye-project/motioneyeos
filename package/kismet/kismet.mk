@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-KISMET_VERSION = Kismet-2014-02-R1
-KISMET_SITE = http://www.kismetwireless.net/kismet.git
-KISMET_SITE_METHOD = git
+KISMET_VERSION = 2016-07-R1
+KISMET_SOURCE = kismet-$(KISMET_VERSION).tar.xz
+KISMET_SITE = http://www.kismetwireless.net/code
 KISMET_DEPENDENCIES = host-pkgconf libpcap ncurses libnl
 KISMET_CONF_OPTS += --with-netlink-version=3
 KISMET_LICENSE = GPL-2.0+
