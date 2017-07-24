@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BOOST_VERSION = 1.63.0
+BOOST_VERSION = 1.64.0
 BOOST_SOURCE = boost_$(subst .,_,$(BOOST_VERSION)).tar.bz2
 BOOST_SITE = http://downloads.sourceforge.net/project/boost/boost/$(BOOST_VERSION)
 BOOST_INSTALL_STAGING = YES
