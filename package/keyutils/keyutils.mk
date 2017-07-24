@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KEYUTILS_VERSION = 1.5.9
+KEYUTILS_VERSION = 1.5.10
 KEYUTILS_SOURCE = keyutils-$(KEYUTILS_VERSION).tar.bz2
 KEYUTILS_SITE = http://people.redhat.com/~dhowells/keyutils
 KEYUTILS_LICENSE = GPL-2.0+, LGPL-2.1+
