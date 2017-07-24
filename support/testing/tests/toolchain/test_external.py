@@ -229,3 +229,14 @@ BR2_TOOLCHAIN_EXTERNAL_CXX=y
                            kernel="builtin",
                            options=["-initrd", img])
         self.emulator.login()
+
+class TestExternalToolchainCCache(TestExternalToolchainBuildrootuClibc):
+    extraconfig = \
+"""
+BR2_CCACHE=y
+BR2_CCACHE_DIR="{builddir}/ccache-dir"
+"""
+
+    def __init__(self, names):
+        super(TestExternalToolchainBuildrootuClibc, self).__init__(names)
+        self.config += self.extraconfig.format(builddir=self.builddir)

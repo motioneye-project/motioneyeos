@@ -233,6 +233,7 @@ tests.package.test_python.TestPython2: *runtime_test
 tests.package.test_python.TestPython3: *runtime_test
 tests.toolchain.test_external.TestExternalToolchainBuildrootMusl: *runtime_test
 tests.toolchain.test_external.TestExternalToolchainBuildrootuClibc: *runtime_test
+tests.toolchain.test_external.TestExternalToolchainCCache: *runtime_test
 tests.toolchain.test_external.TestExternalToolchainCtngMusl: *runtime_test
 tests.toolchain.test_external.TestExternalToolchainLinaroArm: *runtime_test
 tests.toolchain.test_external.TestExternalToolchainSourceryArmv4: *runtime_test
