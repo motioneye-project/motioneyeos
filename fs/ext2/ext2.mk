@@ -29,7 +29,11 @@ ROOTFS_EXT2_DEPENDENCIES = host-e2fsprogs
 define ROOTFS_EXT2_CMD
 	rm -f $@
 	$(HOST_DIR)/sbin/mkfs.ext$(BR2_TARGET_ROOTFS_EXT2_GEN) $(EXT2_OPTS) $@ \
-		"$(EXT2_SIZE)"
+		"$(EXT2_SIZE)" \
+	|| { ret=$$?; \
+	     echo "*** Maybe you need to increase the filesystem size (BR2_TARGET_ROOTFS_EXT2_SIZE)" 1>&2; \
+	     exit $$ret; \
+	}
 endef
 
 rootfs-ext2-symlink:
