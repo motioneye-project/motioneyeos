@@ -5,11 +5,13 @@ choice
 
 config BR2_ROOTFS_SKELETON_DEFAULT
 	bool "default target skeleton"
+	select BR2_PACKAGE_SKELETON
 	help
 	  Use default target skeleton
 
 config BR2_ROOTFS_SKELETON_CUSTOM
 	bool "custom target skeleton"
+	select BR2_PACKAGE_SKELETON
 	help
 	  Use custom target skeleton.
 
