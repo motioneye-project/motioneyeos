@@ -218,6 +218,7 @@ config BR2_ROOTFS_MERGED_USR
 config BR2_TARGET_ENABLE_ROOT_LOGIN
 	bool "Enable root login with password"
 	default y
+	select BR2_PACKAGE_HOST_MKPASSWD if BR2_TARGET_GENERIC_ROOT_PASSWD != ""
 	help
 	  Allow root to log in with a password.
 
