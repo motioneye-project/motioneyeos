@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LCDAPI_VERSION = v0.10
+LCDAPI_VERSION = v0.11
 LCDAPI_SITE = $(call github,spdawson,lcdapi,$(LCDAPI_VERSION))
 LCDAPI_LICENSE = LGPL-2.1+
 LCDAPI_LICENSE_FILES = COPYING
