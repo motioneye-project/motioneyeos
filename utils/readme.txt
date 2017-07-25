@@ -15,6 +15,11 @@ check-package
     a script that checks the coding style of a package's Config.in and
     .mk files, and also tests them for various types of typoes.
 
+genrandconfig
+    a script that generates a random configuration, used by the autobuilders
+    (http://autobuild.buildroot.org). It selects a random toolchain from
+    support/config-fragments/autobuild and randomly selects packages to build.
+
 get-developpers
     a script to return the list of people interested in a specific part
     of Buildroot, so they can be Cc:ed on a mail. Accepts a patch as
