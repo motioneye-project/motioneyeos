@@ -5,8 +5,8 @@
 ################################################################################
 
 LBREAKOUT2_VERSION_MAJOR = 2.6
-LBREAKOUT2_VERSION = $(LBREAKOUT2_VERSION_MAJOR).4
-LBREAKOUT2_SITE = http://downloads.sourceforge.net/lgames/lbreakout2/$(LBREAKOUT2_VERSION_MAJOR)
+LBREAKOUT2_VERSION = $(LBREAKOUT2_VERSION_MAJOR).5
+LBREAKOUT2_SITE = https://downloads.sourceforge.net/lgames/lbreakout2/$(LBREAKOUT2_VERSION_MAJOR)
 LBREAKOUT2_LICENSE = GPL-2.0+
 LBREAKOUT2_LICENSE_FILES = COPYING
 
