@@ -69,6 +69,7 @@ menu "Compressors and decompressors"
 	source "package/unzip/Config.in"
 	source "package/xz/Config.in"
 	source "package/zip/Config.in"
+	source "package/zstd/Config.in"
 endmenu
 
 menu "Debugging, profiling and benchmark"

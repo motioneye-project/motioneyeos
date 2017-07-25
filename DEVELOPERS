@@ -100,6 +100,7 @@ F:	package/python-scandir/
 F:	package/python-simplegeneric/
 F:	package/python-systemd/
 F:	package/python-traitlets/
+F:	package/zstd/
 
 N:	Andrey Yurovsky <yurovsky@gmail.com>
 F:	package/rauc/
