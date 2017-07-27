@@ -189,7 +189,7 @@ $$($(2)_DIR)/.kconfig_editor_%: $$($(2)_DIR)/.stamp_kconfig_fixup_done
 # which in turn depends on the (newly-set an non-existent) custom
 # defconfig file.
 #
-# Instead, we use an PHONY rule that will catch that situation.
+# Instead, we use a PHONY rule that will catch that situation.
 #
 $(1)-check-configuration-done:
 	@if [ ! -f $$($(2)_DIR)/.stamp_kconfig_fixup_done ]; then \
