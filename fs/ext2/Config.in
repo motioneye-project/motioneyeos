@@ -64,7 +64,7 @@ config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	default 5
 	help
 	  The number of blocks on the filesystem (as a percentage of the
-	  total number of blocksi), that are reserved for use by root.
+	  total number of blocks), that are reserved for use by root.
 	  Traditionally, this has been 5%, and all ext-related tools still
 	  default to reserving 5% when creating a new ext filesystem.
 
