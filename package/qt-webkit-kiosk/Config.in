@@ -3,7 +3,9 @@ config BR2_PACKAGE_QT_WEBKIT_KIOSK
 	depends on BR2_PACKAGE_QT5
 	depends on !BR2_STATIC_LIBS # qt5webkit
 	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5webkit
-	depends on !BR2_BINFMT_FLAT # qt5webkit
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # icu/qt5webkit
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # icu/qt5webkit
+	depends on !BR2_BINFMT_FLAT # icu/qt5webkit
 	depends on !BR2_MIPS_SOFT_FLOAT # qt5webkit
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_QT5BASE_GUI
@@ -21,3 +23,10 @@ config BR2_PACKAGE_QT_WEBKIT_KIOSK_SOUNDS
 	  Deploy browser sound files on target
 
 endif
+
+comment "qt-webkit-kiosk needs a toolchain w/ dynamic library, gcc >= 4.8, host gcc >= 4.8"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || \
+		!BR2_HOST_GCC_AT_LEAST_4_8
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_BINFMT_FLAT
+	depends on !BR2_MIPS_SOFT_FLOAT
