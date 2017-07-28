@@ -1,22 +1,32 @@
-Misc fixes from Archlinux
+From e8f43832d401ad1e071e6860b2bf4a1e796d4356 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Fri, 28 Jul 2017 08:18:22 -0400
+Subject: [PATCH] Misc fixes from Archlinux
 
 Patch from:
     https://git.archlinux.org/svntogit/packages.git/plain/gsm/trunk/gsm.patch
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+Refresh for 1.0.17
+---
+ Makefile | 84 ++++++++++++++++++++++++++++++++--------------------------------
+ 1 file changed, 42 insertions(+), 42 deletions(-)
 
---- a/Makefile	2006-04-26 15:14:26.000000000 -0400
-+++ b/Makefile	2010-06-19 16:53:25.000000000 -0400
-@@ -44,7 +44,7 @@
+diff --git a/Makefile b/Makefile
+index d5c0c90..ef61bd5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -44,7 +44,7 @@ WAV49	= -DWAV49
  # CCFLAGS 	= -c -O
  
  CC		= gcc -ansi -pedantic
--CCFLAGS 	= -c -O2 -DNeedFunctionPrototypes=1
-+CCFLAGS 	= -c -O2 -fPIC -DNeedFunctionPrototypes=1
+-CCFLAGS 	= -c -O2 -DNeedFunctionPrototypes=1 -Wall -Wno-comment
++CCFLAGS 	= -c -O2 -fPIC -DNeedFunctionPrototypes=1 -Wall -Wno-comment
  
  LD 		= $(CC)
  
-@@ -96,11 +96,11 @@
+@@ -96,11 +96,11 @@ TOAST_INSTALL_MAN = $(TOAST_INSTALL_ROOT)/man/man1
  #  Other tools
  
  SHELL		= /bin/sh
@@ -30,7 +40,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  FIND		= find
  COMPRESS 	= compress
  COMPRESSFLAGS 	= 
-@@ -139,7 +139,7 @@
+@@ -139,7 +139,7 @@ LFLAGS	= $(LDFLAGS) $(LDINC)
  
  # Targets
  
@@ -39,7 +49,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  
  TOAST	= $(BIN)/toast
  UNTOAST	= $(BIN)/untoast
-@@ -257,7 +257,7 @@
+@@ -257,7 +257,7 @@ STUFF = 	ChangeLog			\
  # Install targets
  
  GSM_INSTALL_TARGETS =	\
@@ -48,7 +58,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  		$(GSM_INSTALL_INC)/gsm.h		\
  		$(GSM_INSTALL_MAN)/gsm.3		\
  		$(GSM_INSTALL_MAN)/gsm_explode.3	\
-@@ -279,7 +279,7 @@
+@@ -279,7 +279,7 @@ TOAST_INSTALL_TARGETS =	\
  
  # Target rules
  
@@ -57,7 +67,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  		@-echo $(ROOT): Done.
  
  tst:		$(TST)/lin2cod $(TST)/cod2lin $(TOAST) $(TST)/test-result
-@@ -299,24 +299,23 @@
+@@ -299,24 +299,23 @@ install:	toastinstall gsminstall
  
  # The basic API: libgsm
  
@@ -90,7 +100,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  
  
  # The local bin and lib directories
-@@ -351,53 +350,54 @@
+@@ -351,53 +350,54 @@ toastuninstall:
  		fi
  
  $(TOAST_INSTALL_BIN)/toast:	$(TOAST)
@@ -161,7 +171,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  
  # Distribution
  
-@@ -425,7 +425,7 @@
+@@ -425,7 +425,7 @@ semi-clean:
  			-print | xargs rm $(RMFLAGS)
  
  clean:	semi-clean
@@ -170,7 +180,7 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  			$(TOAST) $(TCAT) $(UNTOAST)	\
  			$(ROOT)/gsm-1.0.tar.Z
  
-@@ -473,22 +473,22 @@
+@@ -473,22 +473,22 @@ $(ADDTST)/add:	$(ADDTST)/add_test.o
  $(TST)/test-result:	$(TST)/lin2cod $(TST)/cod2lin $(TOAST) $(TST)/run
  			( cd $(TST); ./run ) 
  
@@ -203,3 +213,6 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
  			$(LD) $(LFLAGS) -o $(TST)/cod2lin \
 -				$(TST)/cod2lin.o $(LIBGSM) $(LDLIB)
 +				$(TST)/cod2lin.o $(LIBGSMSO) $(LDLIB)
+-- 
+2.13.3
+
