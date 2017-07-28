@@ -1,3 +1,3 @@
 # Locally calculated after checking pgp signature
-# http://dbus.freedesktop.org/releases/dbus/dbus-1.10.20.tar.gz.asc
-sha256	e574b9780b5425fde4d973bb596e7ea0f09e00fe2edd662da9016e976c460b48  dbus-1.10.20.tar.gz
+# http://dbus.freedesktop.org/releases/dbus/dbus-1.10.22.tar.gz.asc
+sha256	e2b1401e3eedc7b5c9a2034d31254c886e1fcbc7858006e0a1c59158fe4b7b97  dbus-1.10.22.tar.gz
