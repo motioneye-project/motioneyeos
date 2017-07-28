@@ -17,6 +17,7 @@ ifeq ($(BR2_PACKAGE_MBEDTLS),y)
 LIBSSH2_DEPENDENCIES += mbedtls
 LIBSSH2_CONF_OPTS += --with-mbedtls=$(STAGING_DIR)/usr \
 	--without-openssl --without-libgcrypt
+LIBSSH2_CONF_ENV += ac_cv_libgcrypt=no
 else ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 LIBSSH2_DEPENDENCIES += libgcrypt
 LIBSSH2_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr \
