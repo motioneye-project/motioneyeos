@@ -1426,6 +1426,9 @@ N:	Rico Bachmann <bachmann@tofwerk.com>
 F:	package/apr-util/
 F:	package/subversion/
 
+N:	RJ Ascani <rj.ascani@gmail.com>
+F:	package/azmq/
+
 N:	Rodrigo Rebello <rprebello@gmail.com>
 F:	package/chocolate-doom/
 F:	package/irssi/
