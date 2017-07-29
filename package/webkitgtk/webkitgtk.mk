@@ -40,9 +40,13 @@ WEBKITGTK_CONF_OPTS += \
 	-DENABLE_WEB_AUDIO=ON
 WEBKITGTK_DEPENDENCIES += gstreamer1 gst1-libav gst1-plugins-base gst1-plugins-good
 else
+# ENABLE_MEDIA_STREAM has to be explicitly disabled because there is a missing
+# feature dependency in the WebKitGTK+ CMake files. This can be removed once
+# https://bugs.webkit.org/show_bug.cgi?id=174940 makes it into a release.
 WEBKITGTK_CONF_OPTS += \
 	-DENABLE_VIDEO=OFF \
-	-DENABLE_WEB_AUDIO=OFF
+	-DENABLE_WEB_AUDIO=OFF \
+	-DENABLE_MEDIA_STREAM=OFF
 endif
 
 # Only one target platform can be built, assume X11 > Wayland
