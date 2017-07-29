@@ -7,9 +7,6 @@ choice
 	help
 	  Select the version of binutils you wish to use.
 
-config BR2_BINUTILS_VERSION_2_26_X
-	bool "binutils 2.26.1"
-
 config BR2_BINUTILS_VERSION_2_27_X
 	bool "binutils 2.27"
 	# binutils 2.27 triggers a bug in elf2flt on ARM/noMMU
@@ -26,7 +23,6 @@ endchoice
 config BR2_BINUTILS_VERSION
 	string
 	default "arc-2017.03"	if BR2_arc
-	default "2.26.1"	if BR2_BINUTILS_VERSION_2_26_X
 	default "2.27"		if BR2_BINUTILS_VERSION_2_27_X
 	default "2.28.1"	if BR2_BINUTILS_VERSION_2_28_X
 	default "2.29"		if BR2_BINUTILS_VERSION_2_29_X
