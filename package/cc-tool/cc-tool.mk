@@ -23,4 +23,8 @@ ifeq ($(BR2_STATIC_LIBS),y)
 CC_TOOL_CONF_ENV += LIBS="-lpthread"
 endif
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+CC_TOOL_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS) -latomic"
+endif
+
 $(eval $(autotools-package))
