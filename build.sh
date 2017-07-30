@@ -13,9 +13,7 @@ cd $(dirname $0)
 basedir=$(pwd)
 osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
 osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
-exec &> /dev/null
-gzip=$(which pigz || which gzip)
-exec 1>&1 2>&2
+gzip=$(which pigz 2> /dev/null || which gzip 2> /dev/null)
 
 if [ "$board" == "all" ]; then
     boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
