@@ -47,12 +47,15 @@ check-DEVELOPERS:
             - output/build/packages-file-list.txt
 
 .runtime_test: &runtime_test
-    script: ./support/testing/run-tests -o test-output/ -d test-dl/ ${CI_BUILD_NAME}
+    # Keep build directories so the rootfs can be an artifact of the job. The
+    # runner will clean up those files for us.
+    script: ./support/testing/run-tests -o test-output/ -d test-dl/ -k ${CI_BUILD_NAME}
     artifacts:
         when: always
         expire_in: 2 weeks
         paths:
             - test-output/*.log
+            - test-output/*/images/*
 acmesystems_aria_g25_128mb_defconfig: *defconfig
 acmesystems_aria_g25_256mb_defconfig: *defconfig
 acmesystems_arietta_g25_128mb_defconfig: *defconfig
