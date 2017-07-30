@@ -76,9 +76,7 @@ if ! [ -f $DISK_IMG ]; then
     exit 1
 fi
 
-exec &> /dev/null
-gunzip=$(which unpigz || which gunzip)
-exec 1>&1 2>&2
+gunzip=$(which unpigz 2> /dev/null || which gunzip 2> /dev/null)
 
 if [[ $DISK_IMG == *.gz ]]; then
     msg "decompressing the gzipped image"
