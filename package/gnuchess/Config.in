@@ -4,7 +4,8 @@ config BR2_PACKAGE_GNUCHESS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_FLEX
 	help
-	  GNU Chess lets most modern computers play a full game of chess.
+	  GNU Chess lets most modern computers play a full game of
+	  chess.
 
 	  http://ftp.gnu.org/pub/gnu/chess
 

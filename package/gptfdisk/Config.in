@@ -10,9 +10,10 @@ config BR2_PACKAGE_GPTFDISK
 		!(BR2_PACKAGE_GPTFDISK_SGDISK || BR2_PACKAGE_GPTFDISK_CGDISK)
 	help
 	  GPT fdisk (consisting of the gdisk and sgdisk programs) is a
-	  text-mode partitioning tool that works on Globally Unique Identifier
-	  (GUID) Partition Table (GPT) disks, rather than on the more common
-	  (through 2010) Master Boot Record (MBR) partition tables.
+	  text-mode partitioning tool that works on Globally Unique
+	  Identifier (GUID) Partition Table (GPT) disks, rather than on
+	  the more common (through 2010) Master Boot Record (MBR)
+	  partition tables.
 
 	  http://www.rodsbooks.com/gdisk/
 
@@ -22,16 +23,17 @@ config BR2_PACKAGE_GPTFDISK_GDISK
 	bool "interactive gdisk"
 	help
 	  Install the interactive GUID partition table (GPT) manipulator
-	  /usr/sbin/gdisk which is modelled after and quite similar in use
-	  to the traditional MBR based fdisk tool.
+	  /usr/sbin/gdisk which is modelled after and quite similar in
+	  use to the traditional MBR based fdisk tool.
 
 config BR2_PACKAGE_GPTFDISK_SGDISK
 	bool "command line sgdisk"
 	select BR2_PACKAGE_POPT
 	help
-	  Install the command-line GUID partition table (GPT) manipulator
-	  /usr/sbin/sgdisk which is named after the traditional MBR based
-	  sfdisk tool albeit with an entirely different option syntax.
+	  Install the command-line GUID partition table (GPT)
+	  manipulator /usr/sbin/sgdisk which is named after the
+	  traditional MBR based sfdisk tool albeit with an entirely
+	  different option syntax.
 
 config BR2_PACKAGE_GPTFDISK_CGDISK
 	bool "ncurses cgdisk"
