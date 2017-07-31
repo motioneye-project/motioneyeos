@@ -4,7 +4,7 @@ config BR2_PACKAGE_SWUPDATE
 	depends on BR2_USE_MMU # fork()
 	# swupdate requires a parser and uses libconfig as default
 	select BR2_PACKAGE_LIBCONFIG if !BR2_PACKAGE_JSON_C && \
-		!BR2_PACKAGE_HAS_LUAINTERPRETER
+		!BR2_PACKAGE_LUA_5_2 && !BR2_PACKAGE_LUA_5_3
 	help
 	  swupdate provides a reliable way to update the software on an
 	  embedded system.
@@ -19,11 +19,8 @@ config BR2_PACKAGE_SWUPDATE
 	  use your own modified configuration, you have to select the
 	  necessary packages manually:
 
-	  * Select BR2_PACKAGE_LUA or BR2_PACKAGE_LUAJIT if you want
+	  * Select BR2_PACKAGE_LUA_5_2 or BR2_PACKAGE_LUA_5_3 if you want
 	    to have Lua support.
-	    CONFIG_HANDLER_IN_LUA is not supported in LuaJIT or Lua 5.1.
-	    Note that for LuaJIT support, you need to set
-	    CONFIG_LUAVERSION="jit-5.1".
 	  * Select BR2_LIBCURL if you want to use the download feature.
 	  * Select BR2_PACKAGE_OPENSSL is you want to add encryption support.
 	  * Select BR2_PACKAGE_MTD if you want to use swupdate with UBI
