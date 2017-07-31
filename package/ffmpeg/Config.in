@@ -15,8 +15,8 @@ menuconfig BR2_PACKAGE_FFMPEG
 	bool "ffmpeg"
 	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	help
-	  FFmpeg is a complete, cross-platform solution to record, convert
-	  and stream audio and video.
+	  FFmpeg is a complete, cross-platform solution to record,
+	  convert and stream audio and video.
 
 	  http://www.ffmpeg.org
 

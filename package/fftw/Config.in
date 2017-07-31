@@ -33,15 +33,15 @@ config BR2_PACKAGE_FFTW_PRECISION_SINGLE
 	select BR2_PACKAGE_FFTW_USE_SSE2 if BR2_X86_CPU_HAS_SSE2
 	select BR2_PACKAGE_FFTW_USE_NEON if BR2_ARM_CPU_HAS_NEON && !BR2_ARM_SOFT_FLOAT
 	help
-	  Compile fftw in single precision, i.e. use 'float' for floating
-	  point type.
+	  Compile fftw in single precision, i.e. use 'float' for
+	  floating point type.
 
 config BR2_PACKAGE_FFTW_PRECISION_DOUBLE
 	bool "double"
 	select BR2_PACKAGE_FFTW_USE_SSE2 if BR2_X86_CPU_HAS_SSE2
 	help
-	  Compile fftw in double precision (the default), i.e. use 'double'
-	  for floating point type.
+	  Compile fftw in double precision (the default), i.e. use
+	  'double' for floating point type.
 
 config BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE
 	bool "long double"

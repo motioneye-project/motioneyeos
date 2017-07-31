@@ -5,9 +5,10 @@ config BR2_PACKAGE_FXLOAD
 	# Microblaze, just disable it on this architecture.
 	depends on !BR2_microblaze
 	help
-	  This program is conveniently able to download firmware into FX, FX2,
-	  and FX2LP EZ-USB devices, as well as the original AnchorChips EZ-USB.
-	  It is intended to be invoked by hotplug scripts when the unprogrammed
-	  device appears on the bus.
+	  This program is conveniently able to download firmware into
+	  FX, FX2, and FX2LP EZ-USB devices, as well as the original
+	  AnchorChips EZ-USB.
+	  It is intended to be invoked by hotplug scripts when the
+	  unprogrammed device appears on the bus.
 
 	  http://sourceforge.net/projects/linux-hotplug/

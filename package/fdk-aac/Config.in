@@ -10,9 +10,9 @@ config BR2_PACKAGE_FDK_AAC
 	depends on BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
-	  The Fraunhofer FDK AAC Codec Library for Android ("FDK AAC Codec")
-	  is software that implements the MPEG Advanced Audio Coding ("AAC")
-	  encoding and decoding scheme for digital audio
+	  The Fraunhofer FDK AAC Codec Library for Android ("FDK AAC
+	  Codec") is software that implements the MPEG Advanced Audio
+	  Coding ("AAC") encoding and decoding scheme for digital audio
 
 	  http://sourceforge.net/projects/opencore-amr/files/fdk-aac/
 

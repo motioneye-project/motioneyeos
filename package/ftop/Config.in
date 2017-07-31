@@ -3,6 +3,7 @@ config BR2_PACKAGE_FTOP
 	select BR2_PACKAGE_NCURSES
 	help
 	  Ftop is to files what top is to processes.
-	  The progress of all open files and file systems can be monitored.
+	  The progress of all open files and file systems can be
+	  monitored.
 
 	  https://sourceforge.net/projects/ftop/

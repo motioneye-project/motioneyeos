@@ -5,6 +5,7 @@ config BR2_PACKAGE_FETCHMAIL
 	select BR2_PACKAGE_OPENSSL
 	help
 	  Fetchmail - the mail-retrieval daemon
-	  Client daemon to move mail from POP and IMAP to your local computer
+	  Client daemon to move mail from POP and IMAP to your local
+	  computer
 
 	  http://www.fetchmail.info/
