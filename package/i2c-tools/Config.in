@@ -4,8 +4,8 @@ config BR2_PACKAGE_I2C_TOOLS
 	help
 	  Heterogeneous set of I2C tools for Linux
 
-	  This package contains a heterogeneous set of I2C tools for Linux:
-	  a bus probing tool, a chip dumper, register-level access helpers,
-	  EEPROM decoding scripts, and more.
+	  This package contains a heterogeneous set of I2C tools for
+	  Linux: a bus probing tool, a chip dumper, register-level
+	  access helpers, EEPROM decoding scripts, and more.
 
 	  https://i2c.wiki.kernel.org/index.php/I2C_Tools

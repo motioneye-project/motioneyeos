@@ -2,7 +2,8 @@ config BR2_PACKAGE_IPMITOOL
 	bool "ipmitool"
 	depends on BR2_USE_MMU # fork()
 	help
-	  IPMItool provides a simple command-line interface to IPMI-enabled devices.
+	  IPMItool provides a simple command-line interface to
+	  IPMI-enabled devices.
 
 	  http://sourceforge.net/projects/ipmitool/
 
@@ -12,11 +13,11 @@ config BR2_PACKAGE_IPMITOOL_LANPLUS
 	bool "enable lanplus interface"
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Enables the IPMI v2.0 RMCP+ LAN interface typically used to send IPMI
-	  commands to the BMC of a remote server.
-	  Not needed if you only want to communicate with the local BMC of your
-	  device using the OpenIPMI ipmi_si kernel module, or if using the
-	  legacy IPMI v1.5 RMCP LAN interface.
+	  Enables the IPMI v2.0 RMCP+ LAN interface typically used to
+	  send IPMI commands to the BMC of a remote server.
+	  Not needed if you only want to communicate with the local BMC
+	  of your device using the OpenIPMI ipmi_si kernel module, or if
+	  using the legacy IPMI v1.5 RMCP LAN interface.
 
 config BR2_PACKAGE_IPMITOOL_USB
 	bool "enable usb interface"
