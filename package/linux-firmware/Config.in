@@ -249,7 +249,8 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
 	bool "TI wl127x"
 	help
-	  Firmware files for WLAN and Bluetooth modules wl1271 and wl1273
+	  Firmware files for WLAN and Bluetooth modules wl1271 and
+	  wl1273
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
 	bool "TI wl128x"
@@ -268,17 +269,20 @@ menu "Ethernet firmware"
 config BR2_PACKAGE_LINUX_FIRMWARE_BNX2X
 	bool "Broadcom NetXtremeII"
 	help
-	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards (bnx2x)
+	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards
+	  (bnx2x)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
 	bool "Chelsio T4"
 	help
-	  Firmware files for Chelsio T4 1Gb and 10Gb ethernet cards (cxgb4)
+	  Firmware files for Chelsio T4 1Gb and 10Gb ethernet cards
+	  (cxgb4)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5
 	bool "Chelsio T5"
 	help
-	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards (cxgb4)
+	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards
+	  (cxgb4)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
 	bool "Realtek 8169"

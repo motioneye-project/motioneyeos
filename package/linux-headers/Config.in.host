@@ -10,17 +10,17 @@ choice
 	help
 	  Select the kernel version to get headers from.
 
-	  The kernel headers must be at least as old as the oldest kernel
-	  you intend to run on your target.
+	  The kernel headers must be at least as old as the oldest
+	  kernel you intend to run on your target.
 
 	  If you use Buildroot to build a kernel, then you can use
 	  the sources from that kernel as source for the headers.
 
-	  If you choose a custom version of the kernel headers, or choose
-	  to use the same sources as the kernel, you'll have to select
-	  (below) the series of that kernel, so that Buildroot can show
-	  or hide packages that have strong requirements on the kernel
-	  headers.
+	  If you choose a custom version of the kernel headers, or
+	  choose to use the same sources as the kernel, you'll have to
+	  select (below) the series of that kernel, so that Buildroot
+	  can show or hide packages that have strong requirements on the
+	  kernel headers.
 
 config BR2_KERNEL_HEADERS_AS_KERNEL
 	bool "Same as kernel being built"
@@ -86,7 +86,8 @@ choice
 	bool "Custom kernel headers series"
 	depends on BR2_KERNEL_HEADERS_VERSION || BR2_KERNEL_HEADERS_AS_KERNEL
 	help
-	  Specify the kernel headers series you manually selected, above.
+	  Specify the kernel headers series you manually selected,
+	  above.
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.

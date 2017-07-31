@@ -4,7 +4,8 @@ config BR2_PACKAGE_LSHW
 	depends on BR2_USE_WCHAR
 	help
 	  lshw (Hardware Lister) is a small tool to provide
-	  detailed information on the hardware configuration of the machine.
+	  detailed information on the hardware configuration of the
+	  machine.
 
 	  http://ezix.org/project/wiki/HardwareLiSter
 

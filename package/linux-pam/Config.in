@@ -6,7 +6,8 @@ config BR2_PACKAGE_LINUX_PAM
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_FLEX
 	help
-	  A Security Framework that Provides Authentication for Applications
+	  A Security Framework that Provides Authentication for
+	  Applications
 
 	  http://linux-pam.org
 

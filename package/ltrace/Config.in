@@ -11,10 +11,10 @@ config BR2_PACKAGE_LTRACE
 		|| BR2_powerpc || BR2_sparc || BR2_x86_64 || BR2_xtensa)
 	select BR2_PACKAGE_ELFUTILS
 	help
-	  Debugging program which runs a specified command until it exits.
-	  While the command is executing, ltrace intercepts and records
-	  the dynamic library calls which are called by the executed
-	  process and the signals received by that process.
+	  Debugging program which runs a specified command until it
+	  exits. While the command is executing, ltrace intercepts and
+	  records the dynamic library calls which are called by the
+	  executed process and the signals received by that process.
 
 	  http://ltrace.org
 

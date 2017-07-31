@@ -3,11 +3,11 @@ config BR2_PACKAGE_LBREAKOUT2
 	select BR2_PACKAGE_SDL
 	select BR2_PACKAGE_LIBPNG
 	help
-	  LBreakout2 is the successor to LBreakout, a breakout-style arcade
-	  game in the manner of Arkanoid. Requires SDL, libpng, and
-	  optionnally SDL_mixer/SDL_net.
-	  A display with minimum 640x480 resolution, a keyboard and a mouse
-	  are recommanded.
+	  LBreakout2 is the successor to LBreakout, a breakout-style
+	  arcade game in the manner of Arkanoid. Requires SDL, libpng,
+	  and optionnally SDL_mixer/SDL_net.
+	  A display with minimum 640x480 resolution, a keyboard and a
+	  mouse are recommanded.
 
 	  http://lgames.sourceforge.net/index.php?project=LBreakout2
 

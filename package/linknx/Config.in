@@ -7,8 +7,8 @@ config BR2_PACKAGE_LINKNX
 	select BR2_PACKAGE_ARGP_STANDALONE \
 	       if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
 	help
-	  Linknx is an automation platform providing high level functionalities
-	  to EIB/KNX installation.
+	  Linknx is an automation platform providing high level
+	  functionalities to EIB/KNX installation.
 
 	  http://linknx.sourceforge.net/
 	  https://github.com/linknx/linknx
