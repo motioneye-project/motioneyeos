@@ -1,6 +1,8 @@
 add lua.pc
 
 Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+[Jörg Krause: add @MYLIBS@]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
 
 Index: b/etc/lua.pc
 ===================================================================
@@ -34,7 +36,7 @@ Index: b/etc/lua.pc
 +Description: An Extensible Extension Language
 +Version: ${R}
 +Requires:
-+Libs: -L${libdir} -llua -lm
++Libs: -L${libdir} -llua -lm @MYLIBS@
 +Cflags: -I${includedir}
 +
 +# (end of lua.pc)
