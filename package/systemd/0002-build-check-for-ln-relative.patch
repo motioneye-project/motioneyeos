@@ -1,6 +1,6 @@
-From c78fa2b40cb8b810d06ef225e30f12a7ed44ffa2 Mon Sep 17 00:00:00 2001
+From b60e16cc2ef8c9b4c05c4348a980d3312f2e1cb4 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
-Date: Sat, 1 Apr 2017 11:26:29 +0200
+Date: Fri, 28 Jul 2017 07:04:07 -0400
 Subject: [PATCH] build: check for ln --relative
 
 ln --relative is recent enough that not all distributions support it.
@@ -16,20 +16,22 @@ We introduce this as a macro that expands to a single command. To avoid
 complexity in the macro, we expect paths to be passed whitout the
 leading DESTDIR.
 
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[Adam: Refresh for 234]
+Signed-off-by: Adam Duskett  <aduskett@gmail.com>
 ---
-Upstream status: submitted, disputed:
+Upstream-Status: Denied [No desire to support building on old distributions]
     https://github.com/systemd/systemd/pull/5682
 
----
  Makefile.am  | 25 ++++++++++++++++++++++---
  configure.ac |  5 ++++-
  2 files changed, 26 insertions(+), 4 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 1cc657a..ec503f2 100644
+index c16e622..bed097f 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -300,6 +300,24 @@ install-busnames-target-wants-hook:
+@@ -305,6 +305,24 @@ install-busnames-target-wants-hook:
  	what="$(BUSNAMES_TARGET_WANTS)" && wants=busnames.target && dir=$(systemunitdir) && $(add-wants)
  	what="$(USER_BUSNAMES_TARGET_WANTS)" && wants=busnames.target && dir=$(userunitdir) && $(add-wants)
  
@@ -54,7 +56,7 @@ index 1cc657a..ec503f2 100644
  define add-wants
  	[ -z "$$what" ] || ( \
  	  dir=$(DESTDIR)$$dir/$$wants.wants && \
-@@ -313,8 +331,9 @@ install-directories-hook:
+@@ -318,8 +336,9 @@ install-directories-hook:
  	$(MKDIR_P) $(addprefix $(DESTDIR),$(INSTALL_DIRS))
  
  install-environment-conf-hook: install-directories-hook
@@ -66,7 +68,7 @@ index 1cc657a..ec503f2 100644
  
  install-aliases-hook:
  	set -- $(SYSTEM_UNIT_ALIASES) && \
-@@ -337,7 +356,7 @@ define install-relative-aliases
+@@ -342,7 +361,7 @@ define install-relative-aliases
  	while [ -n "$$1" ]; do \
  		$(MKDIR_P) `dirname $(DESTDIR)$$dir/$$2` && \
  		rm -f $(DESTDIR)$$dir/$$2 && \
@@ -76,10 +78,10 @@ index 1cc657a..ec503f2 100644
  	done
  endef
 diff --git a/configure.ac b/configure.ac
-index cf37ca6..d586fc4 100644
+index c7537aa..9354441 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -108,7 +108,10 @@ AC_PATH_PROG([SULOGIN], [sulogin], [/usr/sbin/sulogin], [$PATH:/usr/sbin:/sbin])
+@@ -109,7 +109,10 @@ AC_PATH_PROG([SULOGIN], [sulogin], [/usr/sbin/sulogin], [$PATH:/usr/sbin:/sbin])
  AC_PATH_PROG([MOUNT_PATH], [mount], [/usr/bin/mount], [$PATH:/usr/sbin:/sbin])
  AC_PATH_PROG([UMOUNT_PATH], [umount], [/usr/bin/umount], [$PATH:/usr/sbin:/sbin])
  
@@ -92,5 +94,5 @@ index cf37ca6..d586fc4 100644
  M4_DEFINES=
  
 -- 
-2.9.3
+2.13.3
 

@@ -1,0 +1,48 @@
+From 7deb6387aeb07fa4300fa3cf9d6c039dabd120d7 Mon Sep 17 00:00:00 2001
+From: Maxime Ripard <maxime.ripard@free-electrons.com>
+Date: Mon, 31 Jul 2017 10:08:46 -0400
+Subject: [PATCH] fix-getty-unit
+
+Prefer getty to agetty in console setup systemd units
+
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+[Adam: Refresh for 234]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ units/getty@.service.m4        | 5 +----
+ units/serial-getty@.service.m4 | 2 +-
+ 2 files changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/units/getty@.service.m4 b/units/getty@.service.m4
+index 2a84061..7ad588f 100644
+--- a/units/getty@.service.m4
++++ b/units/getty@.service.m4
+@@ -33,10 +33,7 @@ ConditionPathExists=/dev/tty0
+ 
+ [Service]
+ # the VT is cleared by TTYVTDisallocate
+-# The '-o' option value tells agetty to replace 'login' arguments with an
+-# option to preserve environment (-p), followed by '--' for safety, and then
+-# the entered username.
+-ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear %I $TERM
++ExecStart=-/sbin/getty -L %I 115200 vt100
+ Type=idle
+ Restart=always
+ RestartSec=0
+diff --git a/units/serial-getty@.service.m4 b/units/serial-getty@.service.m4
+index b7caeaf..c663612 100644
+--- a/units/serial-getty@.service.m4
++++ b/units/serial-getty@.service.m4
+@@ -31,7 +31,7 @@ Before=rescue.service
+ # The '-o' option value tells agetty to replace 'login' arguments with an
+ # option to preserve environment (-p), followed by '--' for safety, and then
+ # the entered username.
+-ExecStart=-/sbin/agetty -o '-p -- \\u' --keep-baud 115200,38400,9600 %I $TERM
++ExecStart=-/sbin/getty -L %I 115200 vt100
+ Type=idle
+ Restart=always
+ UtmpIdentifier=%I
+-- 
+2.13.3
+
