@@ -207,7 +207,8 @@ config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	select BR2_PACKAGE_LIBSHAIRPLAY
 	help
 	  Enable Shairport support.
-	  Select this if you want to stream content from an Apple device.
+	  Select this if you want to stream content from an Apple
+	  device.
 
 config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	bool "samba"
