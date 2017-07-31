@@ -16,8 +16,8 @@ config BR2_PACKAGE_LIBURCU
 
 	  On ARM, because of bug:
 	    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58854
-	  liburcu cannot be built using gcc 4.8.0, 4.8.1 or 4.8.2 without the
-	  following bug fix:
+	  liburcu cannot be built using gcc 4.8.0, 4.8.1 or 4.8.2
+	  without the following bug fix:
 	    http://gcc.gnu.org/viewcvs/gcc?view=revision&revision=204665
 
 	  http://lttng.org/urcu

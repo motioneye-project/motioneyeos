@@ -42,13 +42,13 @@ config BR2_PACKAGE_LIBGTK3_BROADWAY
 	bool "Broadway GDK backend"
 	default y
 	  help
-	  This enables the Broadway backend for GDK, which provides support
-	  for displaying GTK+ applications in a web browser, using HTML5 and
-	  web sockets.
+	  This enables the Broadway backend for GDK, which provides
+	  support for displaying GTK+ applications in a web browser,
+	  using HTML5 and web sockets.
 
 	  For example, to run gtk3-demo on a target which IP address is
-	  192.168.0.1 and use it from a web browser, execute the following
-	  commands:
+	  192.168.0.1 and use it from a web browser, execute the
+	  following commands:
 
 	  $ broadwayd -a 192.168.0.1 -p 8080 :2 &
 	  $ export GDK_BACKEND=broadway

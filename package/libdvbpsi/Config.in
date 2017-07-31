@@ -3,8 +3,8 @@ config BR2_PACKAGE_LIBDVBPSI
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  libdvbpsi is a simple library designed for decoding and
-	  generation of MPEG TS and DVB PSI tables according to standards
-	  ISO/IEC 13818 and ITU-T H.222.0.
+	  generation of MPEG TS and DVB PSI tables according to
+	  standards ISO/IEC 13818 and ITU-T H.222.0.
 
 	  http://www.videolan.org/developers/libdvbpsi.html
 

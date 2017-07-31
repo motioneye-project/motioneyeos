@@ -5,8 +5,8 @@ config BR2_PACKAGE_LIBQMI
 	depends on BR2_USE_MMU # libglib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
-	  libqmi is a glib-based library for talking to WWAN modems and devices
-	  which speak the Qualcomm MSM Interface (QMI) protocol.
+	  libqmi is a glib-based library for talking to WWAN modems and
+	  devices which speak the Qualcomm MSM Interface (QMI) protocol.
 
 	  http://www.freedesktop.org/wiki/Software/libqmi/
 

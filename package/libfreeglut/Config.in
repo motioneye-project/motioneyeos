@@ -9,9 +9,9 @@ config BR2_PACKAGE_LIBFREEGLUT
 	help
 	  FreeGLUT is a free-software/open-source alternative to the
 	  OpenGL Utility Toolkit (GLUT) library. GLUT (and hence
-	  FreeGLUT) takes care of all the system-specific chores required
-	  for creating windows, initializing OpenGL contexts, and
-	  handling input events, to allow for trully portable OpenGL
+	  FreeGLUT) takes care of all the system-specific chores
+	  required for creating windows, initializing OpenGL contexts,
+	  and handling input events, to allow for trully portable OpenGL
 	  programs.
 
 	  http://freeglut.sourceforge.net

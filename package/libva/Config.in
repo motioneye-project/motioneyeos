@@ -7,10 +7,11 @@ config BR2_PACKAGE_LIBVA
 	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_XLIB_LIBXFIXES if BR2_PACKAGE_XORG7
 	help
-	  The main motivation for VA-API (Video Acceleration API) is to enable
-	  hardware accelerated video decode/encode at various entry-points (VLD,
-	  IDCT, Motion Compensation etc.) for the prevailing coding standards
-	  today (MPEG-2, MPEG-4 ASP/H.263, MPEG-4 AVC/H.264, and VC-1/VMW3).
+	  The main motivation for VA-API (Video Acceleration API) is to
+	  enable hardware accelerated video decode/encode at various
+	  entry-points (VLD, IDCT, Motion Compensation etc.) for the
+	  prevailing coding standards today (MPEG-2, MPEG-4 ASP/H.263,
+	  MPEG-4 AVC/H.264, and VC-1/VMW3).
 
 	  https://01.org/linuxmedia/vaapi
 

@@ -2,9 +2,9 @@ config BR2_PACKAGE_LIBPLAYER
 	bool "libplayer"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  libplayer provides a generic A/V API that relies on various multimedia
-	  player for Linux systems. It currently supports MPlayer, xine VLC and
-	  GStreamer only
+	  libplayer provides a generic A/V API that relies on various
+	  multimedia player for Linux systems. It currently supports
+	  MPlayer, xine VLC and GStreamer only
 
 	  http://libplayer.geexbox.org/
 

@@ -7,8 +7,8 @@ config BR2_PACKAGE_LIBUPNPP
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBUPNP
 	help
-	  The libupnpp C++ library wraps libupnp for easier use by upmpdcli and
-	  upplay.
+	  The libupnpp C++ library wraps libupnp for easier use by
+	  upmpdcli and upplay.
 
 	  http://www.lesbonscomptes.com/upmpdcli/
 

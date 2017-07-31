@@ -6,9 +6,10 @@ config BR2_PACKAGE_LIBV4L
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
-	  libv4l is a collection of libraries which adds a thin abstraction
-	  layer on top of video4linux2 devices. libv4l consists of 3 different
-	  libraries: libv4lconvert, libv4l1 and libv4l2.
+	  libv4l is a collection of libraries which adds a thin
+	  abstraction layer on top of video4linux2 devices. libv4l
+	  consists of 3 different libraries: libv4lconvert, libv4l1 and
+	  libv4l2.
 
 	  http://linuxtv.org/wiki/index.php/V4l-utils
 
@@ -20,7 +21,8 @@ comment "libv4l JPEG support not enabled"
 config BR2_PACKAGE_LIBV4L_UTILS
 	bool "v4l-utils tools"
 	help
-	  v4l-utils is a collection of various video4linux and DVB utilities.
+	  v4l-utils is a collection of various video4linux and DVB
+	  utilities.
 	  Enable this if you want to build the following tools:
 	  - cx18-ctl
 	  - dvb-fe-tool, dvbv5-zap, dvbv5-scan, dvb-format-convert

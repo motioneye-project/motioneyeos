@@ -7,8 +7,8 @@ config BR2_PACKAGE_LIBMBIM
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  libmbim is a glib-based library for talking to WWAN modems and
-	  devices which speak the Mobile Interface Broadband Model (MBIM)
-	  protocol.
+	  devices which speak the Mobile Interface Broadband Model
+	  (MBIM) protocol.
 
 	  http://www.freedesktop.org/wiki/Software/libmbim/
 

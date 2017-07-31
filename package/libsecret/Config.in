@@ -5,10 +5,10 @@ config BR2_PACKAGE_LIBSECRET
 	depends on BR2_USE_MMU # libglib2
 	select BR2_PACKAGE_LIBGLIB2
 	help
-	  libsecret is a library for storing and retrieving passwords and other
-	  secrets. It communicates with the "Secret Service" using DBus.
-	  gnome-keyring and ksecretservice are both implementations of a Secret
-	  Service.
+	  libsecret is a library for storing and retrieving passwords
+	  and other secrets. It communicates with the "Secret Service"
+	  using DBus. gnome-keyring and ksecretservice are both
+	  implementations of a Secret Service.
 
 	  https://wiki.gnome.org/Libsecret
 

@@ -3,8 +3,9 @@ config BR2_PACKAGE_LIBZIP
 	depends on !BR2_STATIC_LIBS # dlsym()
 	select BR2_PACKAGE_ZLIB
 	help
-	  C library for reading, creating, and modifying zip archives. This
-	  package also contains zipcmp, ziptorrent and zipmerge utilities.
+	  C library for reading, creating, and modifying zip archives.
+	  This package also contains zipcmp, ziptorrent and zipmerge
+	  utilities.
 
 	  http://www.nih.at/libzip/
 
