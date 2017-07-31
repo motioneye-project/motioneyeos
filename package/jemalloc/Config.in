@@ -14,8 +14,9 @@ config BR2_PACKAGE_JEMALLOC
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  This library providing a malloc(3) implementation that emphasizes
-	  fragmentation avoidance and scalable concurrency support.
+	  This library providing a malloc(3) implementation that
+	  emphasizes fragmentation avoidance and scalable concurrency
+	  support.
 
 	  http://jemalloc.net/
 
