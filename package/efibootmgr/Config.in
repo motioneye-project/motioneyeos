@@ -9,9 +9,9 @@ config BR2_PACKAGE_EFIBOOTMGR
 	select BR2_PACKAGE_EFIVAR
 	help
 	  A Linux user-space application to modify the Intel Extensible
-	  Firmware Interface (EFI) Boot Manager. This application can create
-	  and destroy boot entries, change the boot order, change the next
-	  running boot option, and more.
+	  Firmware Interface (EFI) Boot Manager. This application can
+	  create and destroy boot entries, change the boot order, change
+	  the next running boot option, and more.
 
 	  https://github.com/rhinstaller/efibootmgr
 
