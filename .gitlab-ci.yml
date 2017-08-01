@@ -229,6 +229,14 @@ tests.fs.test_jffs2.TestJffs2: *runtime_test
 tests.fs.test_squashfs.TestSquashfs: *runtime_test
 tests.fs.test_ubi.TestUbi: *runtime_test
 tests.fs.test_yaffs2.TestYaffs2: *runtime_test
+tests.init.test_busybox.TestInitSystemBusyboxRo: *runtime_test
+tests.init.test_busybox.TestInitSystemBusyboxRoNet: *runtime_test
+tests.init.test_busybox.TestInitSystemBusyboxRw: *runtime_test
+tests.init.test_busybox.TestInitSystemBusyboxRwNet: *runtime_test
+tests.init.test_none.TestInitSystemNone: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRwFull: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRwIfupdown: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRwNetworkd: *runtime_test
 tests.package.test_dropbear.TestDropbear: *runtime_test
 tests.package.test_ipython.TestIPythonPy2: *runtime_test
 tests.package.test_ipython.TestIPythonPy3: *runtime_test
