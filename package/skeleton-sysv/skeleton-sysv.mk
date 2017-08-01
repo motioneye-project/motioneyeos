@@ -15,4 +15,8 @@ SKELETON_SYSV_DEPENDENCIES = skeleton-common
 
 SKELETON_SYSV_PROVIDES = skeleton
 
+define SKELETON_SYSV_INSTALL_TARGET_CMDS
+	$(call SYSTEM_RSYNC,$(SKELETON_SYSV_PKGDIR)/skeleton,$(TARGET_DIR))
+endef
+
 $(eval $(generic-package))
