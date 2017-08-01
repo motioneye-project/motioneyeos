@@ -2,6 +2,7 @@ menu "Target packages"
 
 	source "package/busybox/Config.in"
 	source "package/skeleton/Config.in"
+	source "package/skeleton-common/Config.in"
 	source "package/skeleton-custom/Config.in"
 
 menu "Audio and video applications"
