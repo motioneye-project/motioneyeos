@@ -234,6 +234,9 @@ tests.init.test_busybox.TestInitSystemBusyboxRoNet: *runtime_test
 tests.init.test_busybox.TestInitSystemBusyboxRw: *runtime_test
 tests.init.test_busybox.TestInitSystemBusyboxRwNet: *runtime_test
 tests.init.test_none.TestInitSystemNone: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRoFull: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRoIfupdown: *runtime_test
+tests.init.test_systemd.TestInitSystemSystemdRoNetworkd: *runtime_test
 tests.init.test_systemd.TestInitSystemSystemdRwFull: *runtime_test
 tests.init.test_systemd.TestInitSystemSystemdRwIfupdown: *runtime_test
 tests.init.test_systemd.TestInitSystemSystemdRwNetworkd: *runtime_test
