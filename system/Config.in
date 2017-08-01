@@ -1,5 +1,9 @@
 menu "System configuration"
 
+# Note: usually, it is not possible to select a provider of a virtual
+# package. But here we have an exception: there are only two providers
+# and they only get selected each by separate entries in this choice.
+# So this is a safe situation.
 choice
 	prompt "Root FS skeleton"
 

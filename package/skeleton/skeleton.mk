@@ -11,10 +11,4 @@
 SKELETON_ADD_TOOLCHAIN_DEPENDENCY = NO
 SKELETON_ADD_SKELETON_DEPENDENCY = NO
 
-ifeq ($(BR2_PACKAGE_SKELETON_CUSTOM),y)
-SKELETON_DEPENDENCIES = skeleton-custom
-else
-SKELETON_DEPENDENCIES = skeleton-common
-endif
-
-$(eval $(generic-package))
+$(eval $(virtual-package))
