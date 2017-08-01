@@ -66,6 +66,8 @@
 
 	- Switch to gcc 6.x as the default gcc version, add support
 	  for gcc 7.x, remove support for gcc 4.8
+	- Switch to binutils 2.28 as the default binutils version, add
+	  support for binutils 2.29, remove support for binutils 2.26
 	- Support added for gdb 8.0
 	- uClibc-ng bumped to 1.0.26
 	- CodeSourcery toolchains for x86 and SuperH have been
