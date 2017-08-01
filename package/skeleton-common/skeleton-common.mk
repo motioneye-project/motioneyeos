@@ -26,17 +26,14 @@ define SKELETON_COMMON_INSTALL_TARGET_CMDS
 		$(TARGET_DIR_WARNING_FILE)
 endef
 
-# For the staging dir, we don't really care about /bin and /sbin.
-# But for consistency with the target dir, and to simplify the code,
-# we still handle them for the merged or non-merged /usr cases.
-# Since the toolchain is not yet available, the staging is not yet
-# populated, so we need to create the directories in /usr
+# We don't care much about what goes in staging, as long as it is
+# correctly setup for merged/non-merged /usr. The simplest is to
+# fill it in with the content of the skeleton.
 define SKELETON_COMMON_INSTALL_STAGING_CMDS
-	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/lib
-	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/bin
-	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/sbin
+	$(call SYSTEM_RSYNC,$(SKELETON_COMMON_PATH),$(STAGING_DIR))
 	$(call SYSTEM_USR_SYMLINKS_OR_DIRS,$(STAGING_DIR))
 	$(call SYSTEM_LIB_SYMLINK,$(STAGING_DIR))
+	$(INSTALL) -d -m 0755 $(STAGING_DIR)/usr/include
 endef
 
 SKELETON_COMMON_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
