@@ -1230,6 +1230,10 @@ F:	package/python-pyzmq/
 N:	Michael Trimarchi <michael@amarulasolutions.com>
 F:	package/python-spidev/
 
+N:	Michał Łyszczek <michal.lyszczek@bofc.pl>
+F:	board/altera/socrates_cyclone5/
+F:	configs/socrates_cyclone5_defconfig
+
 N:	Mikhail Boiko <mikhailboiko85@gmail.com>
 F:	package/libfribidi/
 
