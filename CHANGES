@@ -122,7 +122,7 @@
 	ratpoison, rauc, refpolicy, rhash, sdl2_mixer, sdl2_net,
 	xr819-xradio, zstd
 
-	Removed packages: input-tools, mke2img
+	Removed packages: cloog, input-tools, mke2img
 
 	Issues resolved (http://bugs.buildroot.org):
 
