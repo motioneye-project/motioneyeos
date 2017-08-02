@@ -156,6 +156,8 @@
 	#10061: gcc5.4 buildroot toolchain for powerpc libsanitizer
 		failure
 	#10076: Makefile:4113: recipe for target 'all-gcc'  failed
+	#10091: gcc7.1 does not build with graphite support due to old
+		isl
 	#10121: webkit without the multimedia option causes build
 		error
 
