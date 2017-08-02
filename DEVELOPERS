@@ -1602,7 +1602,6 @@ F:	package/tovid/
 F:	package/xorriso/
 
 N:	Steve Thomas <scjthm@live.com>
-F:	package/cloog/
 F:	package/isl/
 
 N:	Steven Noonan <steven@uplinklabs.net>
