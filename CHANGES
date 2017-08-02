@@ -1,4 +1,4 @@
-2017.08-rc1, To be released
+2017.08-rc1, Released August 2nd, 2017
 
 	Infrastructure:
 
@@ -155,6 +155,7 @@
 	#10056: No .config file was produced in /buildroot folder
 	#10061: gcc5.4 buildroot toolchain for powerpc libsanitizer
 		failure
+	#10071: fakeroot: replace hard-coded paths in post install
 	#10076: Makefile:4113: recipe for target 'all-gcc'  failed
 	#10091: gcc7.1 does not build with graphite support due to old
 		isl
