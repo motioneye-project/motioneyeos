@@ -57,6 +57,8 @@ KODI_EXTRA_DOWNLOADS = \
 	https://github.com/xbmc/libdvdread/archive/$(KODI_LIBDVDREAD_VERSION).tar.gz
 
 KODI_CONF_OPTS += \
+	-DCMAKE_C_FLAGS="$(TARGET_CFLAGS) $(KODI_C_FLAGS)" \
+	-DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) $(KODI_CXX_FLAGS)" \
 	-DENABLE_CCACHE=OFF \
 	-DENABLE_DVDCSS=ON \
 	-DENABLE_INTERNAL_CROSSGUID=OFF \
@@ -70,14 +72,34 @@ KODI_CONF_OPTS += \
 	-DLIBDVDNAV_URL=$(DL_DIR)/$(KODI_LIBDVDNAV_VERSION).tar.gz \
 	-DLIBDVDREAD_URL=$(DL_DIR)/$(KODI_LIBDVDREAD_VERSION).tar.gz
 
-ifeq ($(BR2_arm),y)
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+KODI_CONF_OPTS += -DCORE_SYSTEM_NAME=rbpi
+KODI_DEPENDENCIES += rpi-userland
+# These CPU-specific options are only used on rbpi:
+# https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L13
+ifeq ($(BR2_arm1176jzf_s)$(BR2_cortex_a7)$(BR2_cortex_a53),y)
+KODI_CONF_OPTS += -DWITH_CPU=$(BR2_GCC_TARGET_CPU)
+endif
+else
+ifeq ($(BR2_arceb)$(BR2_arcle),y)
+KODI_CONF_OPTS += -DWITH_ARCH=arc -DWITH_CPU=arc
+else ifeq ($(BR2_armeb),y)
 KODI_CONF_OPTS += -DWITH_ARCH=arm -DWITH_CPU=arm
-else ifeq ($(BR2_mips),y)
-KODI_CONF_OPTS += -DWITH_ARCH=mips -DWITH_CPU=mips
-else ifeq ($(BR2_i386),y)
-KODI_CONF_OPTS += -DWITH_ARCH=i486-linux -DWITH_CPU=$(BR2_GCC_TARGET_ARCH)
-else ifeq ($(BR2_x86_64),y)
-KODI_CONF_OPTS += -DWITH_ARCH=x86_64-linux -DWITH_CPU=x86_64
+else ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
+KODI_CONF_OPTS += \
+	-DWITH_ARCH=mips$(if $(BR2_ARCH_IS_64),64) \
+	-DWITH_CPU=mips$(if $(BR2_ARCH_IS_64),64)
+else ifeq ($(BR2_powerpc)$(BR2_powerpc64le),y)
+KODI_CONF_OPTS += \
+	-DWITH_ARCH=powerpc$(if $(BR2_ARCH_IS_64),64) \
+	-DWITH_CPU=powerpc$(if $(BR2_ARCH_IS_64),64)
+else ifeq ($(BR2_powerpc64)$(BR2_sparc64)$(BR2_sh4)$(BR2_xtensa),y)
+KODI_CONF_OPTS += -DWITH_ARCH=$(BR2_ARCH) -DWITH_CPU=$(BR2_ARCH)
+else
+# Kodi auto-detects ARCH, tested: arm, aarch64, i386, x86_64
+# see project/cmake/scripts/linux/ArchSetup.cmake
+KODI_CONF_OPTS += -DWITH_CPU=$(BR2_ARCH)
+endif
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_SSE),y)
@@ -126,6 +148,11 @@ ifeq ($(BR2_X86_CPU_HAS_AVX2),y)
 KODI_CONF_OPTS += -D_AVX2_OK=ON -D_AVX2_TRUE=ON
 else
 KODI_CONF_OPTS += -D_AVX2_OK=OFF -D_AVX2_TRUE=OFF
+endif
+
+# mips: uses __atomic_load_8
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+KODI_CXX_FLAGS += -latomic
 endif
 
 ifeq ($(BR2_PACKAGE_KODI_MYSQL),y)
@@ -230,9 +257,9 @@ endif
 ifeq ($(BR2_PACKAGE_KODI_EGL_GLES),y)
 KODI_DEPENDENCIES += libegl libgles
 KODI_CONF_OPTS += \
-	-DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags --libs egl`" \
-	-DCMAKE_C_FLAGS="$(TARGET_CFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags --libs egl`" \
 	-DENABLE_OPENGLES=ON
+KODI_C_FLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags --libs egl`
+KODI_CXX_FLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags --libs egl`
 else
 KODI_CONF_OPTS += -DENABLE_OPENGLES=OFF
 endif

@@ -1,8 +1,8 @@
 config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	bool
-	default y if (BR2_arm || (BR2_mipsel && BR2_TOOLCHAIN_USES_GLIBC) || BR2_i386 || BR2_x86_64) \
-		&& BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS \
-		&& BR2_TOOLCHAIN_HAS_SYNC_8
+	default y if BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	# i386: needs sse (see upstream PR 10351)
+	depends on !(BR2_i386 && !BR2_X86_CPU_HAS_SSE)
 	depends on BR2_USE_MMU # libcdio, and others
 
 comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, locale, threads, wchar, dynamic library, gcc >= 4.8, host gcc >= 4.6"
