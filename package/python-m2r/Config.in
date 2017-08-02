@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_M2R
+	bool "python-m2r"
+	select BR2_PACKAGE_PYTHON_MISTUNE # runtime
+	select BR2_PACKAGE_PYTHON_DOCUTILS # runtime
+	help
+	  Markdown to reStructuredText converter.
+
+	  https://github.com/miyakogi/m2r
