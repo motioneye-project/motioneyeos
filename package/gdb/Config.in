@@ -3,6 +3,7 @@ config BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	default y
 	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
 	depends on !BR2_bfin
+	depends on !BR2_microblaze
 	depends on !BR2_nios2
 	depends on !BR2_or1k
 
@@ -47,11 +48,11 @@ config BR2_PACKAGE_GDB_SERVER
 config BR2_PACKAGE_GDB_DEBUGGER
 	bool "full debugger"
 	depends on BR2_USE_WCHAR
-	depends on !BR2_sh && !BR2_microblaze
+	depends on !BR2_sh
 	select BR2_PACKAGE_NCURSES
 
 comment "full gdb on target needs a toolchain w/ wchar"
-	depends on !BR2_sh && !BR2_microblaze
+	depends on !BR2_sh
 	depends on !BR2_USE_WCHAR
 
 if BR2_PACKAGE_GDB_DEBUGGER

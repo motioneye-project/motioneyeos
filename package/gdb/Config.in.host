@@ -7,6 +7,7 @@ config BR2_PACKAGE_HOST_GDB
 	# toolchain should be used.
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
 	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
+	depends on !BR2_microblaze
 	depends on !BR2_nios2
 	depends on !BR2_or1k
 	help
@@ -29,7 +30,7 @@ config BR2_PACKAGE_HOST_GDB_PYTHON
 
 config BR2_PACKAGE_HOST_GDB_SIM
 	bool "Simulator support"
-	depends on !BR2_arc && !BR2_microblaze
+	depends on !BR2_arc
 	help
 	  This option enables the simulator support in the cross gdb.
 
@@ -37,7 +38,6 @@ choice
 	prompt "GDB debugger Version"
 	default BR2_GDB_VERSION_7_11
 	depends on !BR2_arc
-	depends on !BR2_microblaze
 	help
 	  Select the version of gdb you wish to use.
 
@@ -65,7 +65,6 @@ endif
 config BR2_GDB_VERSION
 	string
 	default "arc-2017.03-gdb" if BR2_arc
-	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
 	default "7.10.1"   if BR2_GDB_VERSION_7_10
 	default "7.11.1"   if BR2_GDB_VERSION_7_11 || !BR2_PACKAGE_HOST_GDB
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
