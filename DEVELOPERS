@@ -948,6 +948,9 @@ F:	package/libuio/
 F:	package/netsniff-ng/
 F:	package/rabbitmq-c/
 
+N:	Joshua Henderson <joshua.henderson@microchip.com>
+F:	package/qt5/qt5wayland/
+
 N:	Juha Rantanen <juha@codercoded.com>
 F:	package/acsccid/
 
