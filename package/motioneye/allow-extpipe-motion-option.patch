@@ -1,0 +1,19 @@
+commit 7a916dea0c90f7040ce3c5a78da560edc4d9ba53
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Fri Aug 4 14:36:04 2017 +1000
+
+    allow extpipe motion option
+
+diff --git a/motioneye/config.py b/motioneye/config.py
+index 48e8cf5..1b1b087 100644
+--- a/motioneye/config.py
++++ b/motioneye/config.py
+@@ -118,6 +118,8 @@ _KNOWN_MOTION_OPTIONS = set([
+     'threshold',
+     'videodevice',
+     'width',
++    'use_extpipe',
++    'extpipe',
+ ])
+ 
+ 
