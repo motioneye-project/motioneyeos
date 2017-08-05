@@ -49,7 +49,9 @@ check-DEVELOPERS:
 .runtime_test: &runtime_test
     # Keep build directories so the rootfs can be an artifact of the job. The
     # runner will clean up those files for us.
-    script: ./support/testing/run-tests -o test-output/ -d test-dl/ -k ${CI_BUILD_NAME}
+    # Multiply every emulator timeout by 10 to avoid sporadic failures in
+    # elastic runners.
+    script: ./support/testing/run-tests -o test-output/ -d test-dl/ -k --timeout-multiplier 10 ${CI_BUILD_NAME}
     artifacts:
         when: always
         expire_in: 2 weeks
