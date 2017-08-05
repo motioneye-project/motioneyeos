@@ -35,6 +35,7 @@ class BRTest(unittest.TestCase):
     logtofile = True
     keepbuilds = False
     jlevel = 0
+    timeout_multiplier = 1
 
     def __init__(self, names):
         super(BRTest, self).__init__(names)
@@ -60,7 +61,8 @@ class BRTest(unittest.TestCase):
             self.b.build()
             self.show_msg("Building done")
 
-        self.emulator = Emulator(self.builddir, self.downloaddir, self.logtofile)
+        self.emulator = Emulator(self.builddir, self.downloaddir,
+                                 self.logtofile, self.timeout_multiplier)
 
     def tearDown(self):
         self.show_msg("Cleaning up")

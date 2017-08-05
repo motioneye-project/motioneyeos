@@ -28,6 +28,8 @@ def main():
                         help='number of testcases to run simultaneously')
     parser.add_argument('-j', '--jlevel', type=int,
                         help='BR2_JLEVEL to use for each testcase')
+    parser.add_argument('--timeout-multiplier', type=int, default=1,
+                        help='increase timeouts (useful for slow machines)')
 
     args = parser.parse_args()
 
@@ -96,6 +98,13 @@ def main():
             return 1
         # the user can override the auto calculated value
         BRTest.jlevel = args.jlevel
+
+    if args.timeout_multiplier < 1:
+        print "Invalid multiplier for timeout values"
+        print ""
+        parser.print_help()
+        return 1
+    BRTest.timeout_multiplier = args.timeout_multiplier
 
     nose2_args = ["-v",
                   "-N", str(args.testcases),
