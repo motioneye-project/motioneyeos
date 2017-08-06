@@ -1,0 +1,23 @@
+From fb6e573263b7fb80a12d0eb74d22e13899f745ee Mon Sep 17 00:00:00 2001
+From: Stephen Anthony <sa666666@gmail.com>
+Date: Mon, 17 Apr 2017 18:52:04 -0230
+Subject: [PATCH] Update UNIX configure script for gcc7 and above.
+
+Backported from upstream commit:
+https://github.com/stella-emu/stella/commit/fb6e573263b7fb80a12d0eb74d22e13899f745ee
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff --git a/configure b/configure
+index 94b91ef9..b1218e9f 100755
+--- a/configure
++++ b/configure
+@@ -417,7 +417,7 @@ elif test "$have_gcc" = yes; then
+ 	fi
+ 
+ 	case $cxx_version in
+-		4.[7-9]|4.[7-9].[0-9]|4.[7-9].[0-9][-.]*|[5-6].[0-9]|[5-6].[0-9].[0-9]|[5-6].[0-9].[0-9][-.]*)
++		4.[7-9]|4.[7-9].[0-9]|4.[7-9].[0-9][-.]*|[5-9]|[5-9].[0-9]|[5-9].[0-9].[0-9]|[5-9].[0-9].[0-9][-.]*)
+ 			_cxx_major=`echo $cxx_version | cut -d '.' -f 1`
+ 			_cxx_minor=`echo $cxx_version | cut -d '.' -f 2`
+ 			cxx_version="$cxx_version, ok"
