@@ -51,6 +51,10 @@ case "$1" in
         touch /data/etc/adjtime
         sync
         msg_done
+        
+        msg_begin "Setting empty root password"
+        PASSWORD="" adminpasswd
+        msg_done
 
         # mount other partitions depending on data
         mount -T /etc/fstab.disk -a
