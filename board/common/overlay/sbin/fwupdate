@@ -330,7 +330,7 @@ function do_upgrade() {
     
     set -e
 
-    do_download "$2"
+    do_download "$1"
     show_status
 
     do_extract

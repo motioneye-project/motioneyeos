@@ -32,6 +32,9 @@ fi
 
 test -f $conf || exit 0
 
+# we want only Unix newlines here
+sed -i 's/\r//g' $conf
+
 ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
 
