@@ -9,7 +9,7 @@ case "$1" in
         msg_begin "Starting syslogd"
         syslogd
         test $? == 0 && msg_done || msg_fail
-        echo "---- booting $os_name $os_version----" >> $dmesg_log
+        echo "---- booting $os_name $os_version ----" >> $dmesg_log
         dmesg -T -w >> $dmesg_log &
         ;;
 
