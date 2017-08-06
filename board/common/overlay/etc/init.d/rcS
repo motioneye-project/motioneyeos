@@ -1,7 +1,7 @@
 #!/bin/sh
 
 boot_log=/var/log/boot.log
-tmp_boot_log=/tmp/boot.log
+tmp_boot_log=/tmp/_boot.log
 pid_file=/tmp/rc.pid
 
 source /etc/init.d/base
