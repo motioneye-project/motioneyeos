@@ -368,7 +368,7 @@ choice
 	default BR2_LINUX_KERNEL_USE_INTREE_DTS
 
 config BR2_LINUX_KERNEL_USE_INTREE_DTS
-	bool "Use a device tree present in the kernel."
+	bool "Use a device tree present in the kernel"
 	help
 	  Use a device tree source distributed with
 	  the kernel sources. The dts files are located
