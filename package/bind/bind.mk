@@ -24,6 +24,7 @@ BIND_CONF_ENV = \
 	BUILD_CC="$(TARGET_CC)" \
 	BUILD_CFLAGS="$(TARGET_CFLAGS)"
 BIND_CONF_OPTS = \
+	--without-lmdb \
 	--with-libjson=no \
 	--with-randomdev=/dev/urandom \
 	--enable-epoll \
