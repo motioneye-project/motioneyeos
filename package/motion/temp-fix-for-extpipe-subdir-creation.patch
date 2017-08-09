@@ -1,0 +1,17 @@
+diff --git a/event.c b/event.c
+index f67214e..44d8096 100644
+--- a/event.c
++++ b/event.c
+@@ -572,6 +572,12 @@ static void event_create_extpipe(struct context *cnt,
+             }
+         }
+ 
++        /* Temporary solution for https://github.com/Motion-Project/motion/issues/360#issuecomment-320849158
++        Always create any path specified as file name */
++        if (create_path(cnt->extpipefilename) == -1)
++            return ;
++        /* end of fix */
++
+         mystrftime(cnt, stamp, sizeof(stamp), cnt->conf.extpipe, currenttime_tv, cnt->extpipefilename, 0);
+ 
+         MOTION_LOG(NTC, TYPE_EVENTS, NO_ERRNO, "pipe: %s", stamp);
