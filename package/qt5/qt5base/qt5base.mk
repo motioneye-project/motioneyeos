@@ -190,6 +190,16 @@ else
 QT5BASE_CONFIGURE_OPTS += -no-libinput
 endif
 
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+# only enable gtk support if libgtk3 X11 backend is enabled
+ifeq ($(BR2_PACKAGE_LIBGTK3)$(BR2_PACKAGE_LIBGTK3_X11),yy)
+QT5BASE_CONFIGURE_OPTS += -gtk
+QT5BASE_DEPENDENCIES += libgtk3
+else
+QT5BASE_CONFIGURE_OPTS += -no-gtk
+endif
+endif
+
 # Build the list of libraries to be installed on the target
 QT5BASE_INSTALL_LIBS_y                                 += Qt5Core
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XCB)        += Qt5XcbQpa
