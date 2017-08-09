@@ -1,0 +1,78 @@
+From 1252dc1d1f465b8ab6b36ff7252e395e66a040cf Mon Sep 17 00:00:00 2001
+From: Simon McVittie <smcv@debian.org>
+Date: Fri, 21 Jul 2017 10:46:39 +0100
+Subject: [PATCH 1/2] config-loader-expat: Tell Expat not to defend against
+ hash collisions
+
+By default, Expat uses cryptographic-quality random numbers as a salt for
+its hash algorithm, and since 2.2.1 it gets them from the getrandom
+syscall on Linux. That syscall refuses to return any entropy until the
+kernel's CSPRNG (random pool) has been initialized. Unfortunately, this
+can take as long as 40 seconds on embedded devices with few entropy
+sources, which is too long: if the system dbus-daemon blocks for that
+length of time, important D-Bus clients like systemd and systemd-logind
+time out and fail to connect to it.
+
+We're parsing small configuration files here, and we trust them
+completely, so we don't need to defend against hash collisions: nobody
+is going to be crafting them to cause pathological performance.
+
+Bug: https://bugs.freedesktop.org/show_bug.cgi?id=101858
+Signed-off-by: Simon McVittie <smcv@debian.org>
+Tested-by: Christopher Hewitt <hewitt@ieee.org>
+Reviewed-by: Philip Withnall <withnall@endlessm.com>
+
+Upstream commit 1252dc1d1f465b8ab6b36ff7252e395e66a040cf
+Signed-off-by: Marcus Hoffmann <m.hoffmann@cartelsol.com>
+---
+ bus/config-loader-expat.c | 14 ++++++++++++++
+ configure.ac              |  8 ++++++++
+ 2 files changed, 22 insertions(+)
+
+diff --git a/bus/config-loader-expat.c b/bus/config-loader-expat.c
+index b571fda3..27cbe2d0 100644
+--- a/bus/config-loader-expat.c
++++ b/bus/config-loader-expat.c
+@@ -203,6 +203,20 @@ bus_config_load (const DBusString      *file,
+       goto failed;
+     }
+ 
++  /* We do not need protection against hash collisions (CVE-2012-0876)
++   * because we are only parsing trusted XML; and if we let Expat block
++   * waiting for the CSPRNG to be initialized, as it does by default to
++   * defeat CVE-2012-0876, it can cause timeouts during early boot on
++   * entropy-starved embedded devices.
++   *
++   * TODO: When Expat gets a more explicit API for this than
++   * XML_SetHashSalt, check for that too, and use it preferentially.
++   * https://github.com/libexpat/libexpat/issues/91 */
++#if defined(HAVE_XML_SETHASHSALT)
++  /* Any nonzero number will do. https://xkcd.com/221/ */
++  XML_SetHashSalt (expat, 4);
++#endif
++
+   if (!_dbus_string_get_dirname (file, &dirname))
+     {
+       dbus_set_error (error, DBUS_ERROR_NO_MEMORY, NULL);
+diff --git a/configure.ac b/configure.ac
+index 52da11fb..c4022ed7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -938,6 +938,14 @@ XML_CFLAGS=
+ AC_SUBST([XML_CFLAGS])
+ AC_SUBST([XML_LIBS])
+ 
++save_cflags="$CFLAGS"
++save_libs="$LIBS"
++CFLAGS="$CFLAGS $XML_CFLAGS"
++LIBS="$LIBS $XML_LIBS"
++AC_CHECK_FUNCS([XML_SetHashSalt])
++CFLAGS="$save_cflags"
++LIBS="$save_libs"
++
+ # Thread lib detection
+ AC_ARG_VAR([THREAD_LIBS])
+ save_libs="$LIBS"
+-- 
+2.11.0
+

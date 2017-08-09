@@ -66,6 +66,7 @@ MUTT_CONF_ENV += \
 MUTT_CONF_OPTS += --with-mailpath=/var/mail
 
 define MUTT_VAR_MAIL
+	mkdir -p $(TARGET_DIR)/var
 	ln -sf /tmp $(TARGET_DIR)/var/mail
 endef
 MUTT_POST_INSTALL_TARGET_HOOKS += MUTT_VAR_MAIL

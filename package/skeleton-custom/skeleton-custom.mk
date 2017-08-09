@@ -36,27 +36,6 @@ SKELETON_CUSTOM_USR_LIB_INODE = $(shell stat -c '%i' $(SKELETON_CUSTOM_PATH)/usr
 SKELETON_CUSTOM_USR_BIN_INODE = $(shell stat -c '%i' $(SKELETON_CUSTOM_PATH)/usr/bin/. 2>/dev/null)
 SKELETON_CUSTOM_USR_SBIN_INODE = $(shell stat -c '%i' $(SKELETON_CUSTOM_PATH)/usr/sbin/. 2>/dev/null)
 
-# Ensure that the custom skeleton has /lib, /bin and /sbin, and their
-# /usr counterparts
-ifeq ($(SKELETON_CUSTOM_LIB_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /lib
-endif
-ifeq ($(SKELETON_CUSTOM_USR_LIB_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /usr/lib
-endif
-ifeq ($(SKELETON_CUSTOM_BIN_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /bin
-endif
-ifeq ($(SKELETON_CUSTOM_USR_BIN_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /usr/bin
-endif
-ifeq ($(SKELETON_CUSTOM_SBIN_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /sbin
-endif
-ifeq ($(SKELETON_CUSTOM_USR_SBIN_INODE),)
-SKELETON_CUSTOM_MISSING_DIRS += /usr/sbin
-endif
-
 # For a merged /usr, ensure that /lib, /bin and /sbin and their /usr
 # counterparts are appropriately setup as symlinks ones to the others.
 ifeq ($(BR2_ROOTFS_MERGED_USR),y)
@@ -74,11 +53,6 @@ endif
 endif # merged /usr
 
 ifeq ($(BR2_PACKAGE_SKELETON_CUSTOM)$(BR_BUILDING),yy)
-ifneq ($(SKELETON_CUSTOM_MISSING_DIRS),)
-$(error The custom skeleton in $(SKELETON_CUSTOM_PATH) is \
-	missing those directories or symlinks: \
-	$(SKELETON_CUSTOM_MISSING_DIRS))
-endif
 ifneq ($(SKELETON_CUSTOM_NOT_MERGED_USR_DIRS),)
 $(error The custom skeleton in $(SKELETON_CUSTOM_PATH) is not \
 	using a merged /usr for the following directories: \
