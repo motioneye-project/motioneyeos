@@ -1,3 +1,30 @@
+2017.08-rc2, Released August 11th, 2017
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: bind, dbus, erlang-p1-xml, faad2,
+	ficl, gcc, gdb, glibc, jack2, libcurl, linux, linux-headers,
+	lua, mutt, nvme, qt5base, skeleton-common, snappy, stella,
+	swupdate, uclibc, valgrind, webkitgtk.
+
+	Updated/fixed defconfigs: beaglebone_qt5, minnowboard_max,
+	nanopi_m1{, _plus}, olimex_a20_olinuxino_lime, qemu_sparc,
+	qemu_sparc64.
+
+	The cmake-package infrastructure for host packages has been
+	fixed to not incorrectly detect target packages through
+	pkg-config.
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#9926:  systemd-resolved.service: Failed at step  NAMESPACE (systemd 233)
+	#10021: libqeglfs-viv-integration.so file is missing for qt5 on armv7
+	#10026: lua-5.3.4: fix lua linker error in swupdate
+	#10146: package/skeleton-common fix recursive variable
+	#10156: glibc compilation fails for X86 32bits  (i386)
+	#10201: toolchain-wrapper.c:192: (error) Memory  leak:
+	#10221: Buildroot Support
+
 2017.08-rc1, Released August 2nd, 2017
 
 	Infrastructure:
