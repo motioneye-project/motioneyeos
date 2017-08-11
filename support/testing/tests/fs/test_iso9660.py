@@ -85,43 +85,6 @@ BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
         self.assertEqual(exit_code, 0)
 
 #
-# Grub
-#
-
-class TestIso9660GrubExternal(infra.basetest.BRTest):
-    config = BASIC_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_ISO9660=y
-# BR2_TARGET_ROOTFS_ISO9660_INITRD is not set
-BR2_TARGET_GRUB=y
-BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
-""".format(infra.filepath("conf/grub-menu.lst"))
-
-    def test_run(self):
-        exit_code = test_mount_internal_external(self.emulator,
-                                                 self.builddir, internal=False)
-        self.assertEqual(exit_code, 0)
-
-        exit_code = test_touch_file(self.emulator)
-        self.assertEqual(exit_code, 1)
-
-class TestIso9660GrubInternal(infra.basetest.BRTest):
-    config = BASIC_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_ISO9660=y
-BR2_TARGET_GRUB=y
-BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
-""".format(infra.filepath("conf/grub-menu.lst"))
-
-    def test_run(self):
-        exit_code = test_mount_internal_external(self.emulator,
-                                                 self.builddir, internal=True)
-        self.assertEqual(exit_code, 0)
-
-        exit_code = test_touch_file(self.emulator)
-        self.assertEqual(exit_code, 0)
-
-#
 # Syslinux
 #
 

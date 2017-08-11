@@ -169,6 +169,15 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_TARGET_GRUB
+	bool "grub (aka grub-legacy) has been removed"
+	select BR2_LEGACY
+	help
+	  grub-legacy is no longer maintained, and no longer builds with
+	  recent binutils versions.
+
+	  Use grub2 or syslinux instead.
+
 config BR2_PACKAGE_SIMICSFS
 	bool "simicsfs support removed"
 	select BR2_LEGACY
