@@ -2,8 +2,7 @@ config BR2_TARGET_ROOTFS_ISO9660
 	bool "iso image"
 	depends on (BR2_i386 || BR2_x86_64)
 	depends on BR2_LINUX_KERNEL
-	depends on BR2_TARGET_GRUB || \
-		BR2_TARGET_GRUB2_I386_PC || \
+	depends on BR2_TARGET_GRUB2_I386_PC || \
 		BR2_TARGET_SYSLINUX_ISOLINUX
 	select BR2_LINUX_KERNEL_INSTALL_TARGET \
 	       if (!BR2_TARGET_ROOTFS_ISO9660_INITRD && !BR2_TARGET_ROOTFS_INITRAMFS)
@@ -26,11 +25,6 @@ if BR2_TARGET_ROOTFS_ISO9660
 choice
 	prompt "Bootloader"
 
-config BR2_TARGET_ROOTFS_ISO9660_GRUB
-	bool "grub"
-	depends on BR2_TARGET_GRUB
-	select BR2_TARGET_GRUB_FS_ISO9660
-
 config BR2_TARGET_ROOTFS_ISO9660_GRUB2
 	bool "grub2"
 	depends on BR2_TARGET_GRUB2_I386_PC
@@ -48,13 +42,11 @@ endchoice
 
 config BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU
 	string "Boot menu config file"
-	default "fs/iso9660/menu.lst" if BR2_TARGET_ROOTFS_ISO9660_GRUB
 	default "fs/iso9660/grub.cfg" if BR2_TARGET_ROOTFS_ISO9660_GRUB2
 	default "fs/iso9660/isolinux.cfg" if BR2_TARGET_ROOTFS_ISO9660_ISOLINUX
 	help
 	  Use this option to provide a custom bootloader configuration
-	  file (menu.lst for Grub, grub.cfg for Grub 2, isolinux.cfg for
-	  isolinux).
+	  file (grub.cfg for Grub 2, isolinux.cfg for isolinux).
 
 	  Note that the strings __KERNEL_PATH__ and __INITRD_PATH__
 	  will automatically be replaced by the path to the kernel and
@@ -82,7 +74,7 @@ config BR2_TARGET_ROOTFS_ISO9660_HYBRID
 
 endif
 
-comment "iso image needs a Linux kernel and one of grub, grub2 i386-pc or isolinux to be built"
+comment "iso image needs a Linux kernel and either grub2 i386-pc or isolinux to be built"
 	depends on BR2_i386 || BR2_x86_64
 	depends on !BR2_LINUX_KERNEL || \
-		!(BR2_TARGET_GRUB || BR2_TARGET_GRUB2_I386_PC || BR2_TARGET_SYSLINUX_ISOLINUX)
+		!(BR2_TARGET_GRUB2_I386_PC || BR2_TARGET_SYSLINUX_ISOLINUX)
