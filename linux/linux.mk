@@ -31,6 +31,10 @@ LINUX_SITE = $(call qstrip,$(BR2_LINUX_KERNEL_CUSTOM_REPO_URL))
 LINUX_SITE_METHOD = svn
 else ifeq ($(BR2_LINUX_KERNEL_LATEST_CIP_VERSION),y)
 LINUX_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/bwh/linux-cip.git
+else ifneq ($(findstring -rc,$(LINUX_VERSION)),)
+# Since 4.12-rc1, -rc kernels are generated from cgit. This also works for
+# older -rc kernels.
+LINUX_SITE = https://git.kernel.org/torvalds/t
 else
 LINUX_SOURCE = linux-$(LINUX_VERSION).tar.xz
 # In X.Y.Z, get X and Y. We replace dots and dashes by spaces in order
@@ -43,10 +47,6 @@ LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v3.x
 else ifeq ($(findstring x4.,x$(LINUX_VERSION)),x4.)
 LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v4.x
 endif
-# release candidates are in testing/ subdir
-ifneq ($(findstring -rc,$(LINUX_VERSION)),)
-LINUX_SITE := $(LINUX_SITE)/testing
-endif # -rc
 endif
 
 ifeq ($(BR2_LINUX_KERNEL)$(BR2_LINUX_KERNEL_LATEST_VERSION),y)
