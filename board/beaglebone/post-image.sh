@@ -8,7 +8,15 @@ BOARD_DIR="$(dirname $0)"
 # copy the uEnv.txt to the output/images directory
 cp board/beaglebone/uEnv.txt $BINARIES_DIR/uEnv.txt
 
-GENIMAGE_CFG="${BOARD_DIR}/genimage.cfg"
+# the 4.1 kernel does not provide a dtb for beaglebone green, so we
+# use a different genimage config if am335x-bonegreen.dtb is not
+# built:
+if [ -e ${BINARIES_DIR}/am335x-bonegreen.dtb ] ; then
+	GENIMAGE_CFG="${BOARD_DIR}/genimage.cfg"
+else
+	GENIMAGE_CFG="${BOARD_DIR}/genimage_linux41.cfg"
+fi
+
 GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
 rm -rf "${GENIMAGE_TMP}"
