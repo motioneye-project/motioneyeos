@@ -18,4 +18,6 @@ GST1_VALIDATE_DEPENDENCIES = \
 	python \
 	$(if $(BR2_PACKAGE_CAIRO),cairo)
 
+GST1_VALIDATE_CONF_OPTS += --disable-sphinx-doc
+
 $(eval $(autotools-package))
