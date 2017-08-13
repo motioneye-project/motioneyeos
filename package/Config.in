@@ -5,7 +5,7 @@ menu "Target packages"
 	source "package/skeleton-common/Config.in"
 	source "package/skeleton-custom/Config.in"
 	source "package/skeleton-init-none/Config.in"
-	source "package/skeleton-systemd/Config.in"
+	source "package/skeleton-init-systemd/Config.in"
 	source "package/skeleton-sysv/Config.in"
 
 menu "Audio and video applications"

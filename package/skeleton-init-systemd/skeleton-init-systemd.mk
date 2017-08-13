@@ -1,6 +1,6 @@
 ################################################################################
 #
-# skeleton-systemd
+# skeleton-init-systemd
 #
 ################################################################################
 
@@ -8,16 +8,16 @@
 # skeleton and the toolchain is a target package, as is skeleton.
 # Hence, skeleton would depends on the toolchain and the toolchain would depend
 # on skeleton.
-SKELETON_SYSTEMD_ADD_TOOLCHAIN_DEPENDENCY = NO
-SKELETON_SYSTEMD_ADD_SKELETON_DEPENDENCY = NO
+SKELETON_INIT_SYSTEMD_ADD_TOOLCHAIN_DEPENDENCY = NO
+SKELETON_INIT_SYSTEMD_ADD_SKELETON_DEPENDENCY = NO
 
-SKELETON_SYSTEMD_DEPENDENCIES = skeleton-common
+SKELETON_INIT_SYSTEMD_DEPENDENCIES = skeleton-common
 
-SKELETON_SYSTEMD_PROVIDES = skeleton
+SKELETON_INIT_SYSTEMD_PROVIDES = skeleton
 
 ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
 
-define SKELETON_SYSTEMD_ROOT_RO_OR_RW
+define SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW
 	echo "/dev/root / auto rw 0 1" >$(TARGET_DIR)/etc/fstab
 	mkdir -p $(TARGET_DIR)/var
 endef
@@ -29,7 +29,7 @@ else
 # filesystem gets created, the /var symlink will be replaced with
 # a real (but empty) directory, and the "factory files" will be copied
 # back there by the tmpfiles.d mechanism.
-define SKELETON_SYSTEMD_ROOT_RO_OR_RW
+define SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW
 	mkdir -p $(TARGET_DIR)/etc/systemd/tmpfiles.d
 	mkdir -p $(TARGET_DIR)/usr/share/factory/var
 	ln -s usr/share/factory/var $(TARGET_DIR)/var
@@ -37,7 +37,7 @@ define SKELETON_SYSTEMD_ROOT_RO_OR_RW
 	echo "tmpfs /var tmpfs mode=1777 0 0" >>$(TARGET_DIR)/etc/fstab
 endef
 
-define SKELETON_SYSTEMD_PRE_ROOTFS_VAR
+define SKELETON_INIT_SYSTEMD_PRE_ROOTFS_VAR
 	rm -f $(TARGET_DIR)/var
 	mkdir $(TARGET_DIR)/var
 	for i in $(TARGET_DIR)/usr/share/factory/var/*; do \
@@ -52,20 +52,20 @@ define SKELETON_SYSTEMD_PRE_ROOTFS_VAR
 		fi; \
 	done >$(TARGET_DIR)/etc/tmpfiles.d/var-factory.conf
 endef
-SKELETON_SYSTEMD_ROOTFS_PRE_CMD_HOOKS += SKELETON_SYSTEMD_PRE_ROOTFS_VAR
+SKELETON_INIT_SYSTEMD_ROOTFS_PRE_CMD_HOOKS += SKELETON_INIT_SYSTEMD_PRE_ROOTFS_VAR
 
-define SKELETON_SYSTEMD_POST_ROOTFS_VAR
+define SKELETON_INIT_SYSTEMD_POST_ROOTFS_VAR
 	rm -rf $(TARGET_DIR)/var
 	ln -s usr/share/factory/var $(TARGET_DIR)/var
 endef
-SKELETON_SYSTEMD_ROOTFS_POST_CMD_HOOKS += SKELETON_SYSTEMD_POST_ROOTFS_VAR
+SKELETON_INIT_SYSTEMD_ROOTFS_POST_CMD_HOOKS += SKELETON_INIT_SYSTEMD_POST_ROOTFS_VAR
 
 endif
 
-define SKELETON_SYSTEMD_INSTALL_TARGET_CMDS
+define SKELETON_INIT_SYSTEMD_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/home
 	mkdir -p $(TARGET_DIR)/srv
-	$(SKELETON_SYSTEMD_ROOT_RO_OR_RW)
+	$(SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW)
 endef
 
 $(eval $(generic-package))
