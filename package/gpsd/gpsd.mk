@@ -44,7 +44,7 @@ endif
 # A bug was reported to the gcc bug tracker:
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68485
 ifeq ($(BR2_microblaze),y)
-GPSD_CFLAGS += -fno-expensive-optimizations -fno-schedule-insns
+GPSD_CFLAGS += -O0
 endif
 
 # Enable or disable Qt binding

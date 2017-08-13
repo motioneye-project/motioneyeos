@@ -1,0 +1,29 @@
+From eb7cce5dbb53a64cf55ac0d9a7fa4dcbebd4b173 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Mon, 14 Aug 2017 23:24:38 +0200
+Subject: [PATCH] SConstruct: do not force -O2 by default
+
+-O2 can cause problems on some architectures, so do not force it by
+ default.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ SConstruct | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/SConstruct b/SConstruct
+index fe444a2..93d91a4 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -330,8 +330,6 @@ if not 'CCFLAGS' in os.environ:
+     # Should we build with optimisation?
+     if env['debug'] or env['coveraging']:
+         env.Append(CCFLAGS=['-O0'])
+-    else:
+-        env.Append(CCFLAGS=['-O2'])
+ 
+ # Get a slight speedup by not doing automatic RCS and SCCS fetches.
+ env.SourceCode('.', None)
+-- 
+2.9.4
+
