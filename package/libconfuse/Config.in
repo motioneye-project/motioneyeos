@@ -8,4 +8,4 @@ config BR2_PACKAGE_LIBCONFUSE
 	  environment variable expansion, functions and nested include
 	  statements.
 
-	  http://savannah.nongnu.org/download/confuse/
+	  https://github.com/martinh/libconfuse/
