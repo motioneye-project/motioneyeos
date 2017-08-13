@@ -1,2 +1,0 @@
-config BR2_PACKAGE_SKELETON_COMMON
-	bool
