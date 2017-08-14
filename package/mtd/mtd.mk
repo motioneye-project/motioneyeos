@@ -26,9 +26,9 @@ MTD_CONF_OPTS += --without-ubifs
 endif
 
 ifeq ($(BR2_PACKAGE_MTD_TESTS),y)
-MTD_CONF_OPTS += --enable-tests
+MTD_CONF_OPTS += --enable-tests --enable-install-tests
 else
-MTD_CONF_OPTS += --disable-tests
+MTD_CONF_OPTS += --disable-tests --disable-install-tests
 endif
 
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
@@ -90,7 +90,14 @@ MTD_TARGETS_$(BR2_PACKAGE_MTD_UBIRSVOL)		+= ubirsvol
 MTD_TARGETS_$(BR2_PACKAGE_MTD_UBIUPDATEVOL)	+= ubiupdatevol
 MTD_TARGETS_$(BR2_PACKAGE_MTD_UBIBLOCK)		+= ubiblock
 MTD_TARGETS_$(BR2_PACKAGE_MTD_MKFSUBIFS)	+= mkfs.ubifs
+MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_READTEST)	+= flash_readtest
+MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_SPEED)	+= flash_speed
+MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_STRESS)	+= flash_stress
+MTD_TARGETS_$(BR2_PACKAGE_MTD_FLASH_TORTURE)	+= flash_torture
 MTD_TARGETS_$(BR2_PACKAGE_MTD_INTEGCK)		+= integck
+MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDBITERRS)	+= nandbiterrs
+MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDPAGETEST)	+= nandpagetest
+MTD_TARGETS_$(BR2_PACKAGE_MTD_NANDSUBPAGETEST)	+= nandsubpagetest
 
 define MTD_INSTALL_TARGET_CMDS
 	$(foreach f,$(MTD_TARGETS_y), \
