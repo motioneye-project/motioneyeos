@@ -24,6 +24,7 @@ SYSDIG_SUPPORTS_IN_SOURCE_BUILD = NO
 define SYSDIG_MODULE_GEN_MAKEFILE
 	$(INSTALL) -m 0644 $(@D)/driver/Makefile.in $(@D)/driver/Makefile
 	$(SED) 's/@KBUILD_FLAGS@//;' $(@D)/driver/Makefile
+	$(SED) 's/@PROBE_NAME@/sysdig-probe/;' $(@D)/driver/Makefile
 endef
 SYSDIG_POST_PATCH_HOOKS += SYSDIG_MODULE_GEN_MAKEFILE
 
