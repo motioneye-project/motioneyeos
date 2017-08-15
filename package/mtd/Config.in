@@ -24,6 +24,7 @@ config BR2_PACKAGE_MTD_UBIFS_UTILS
 
 config BR2_PACKAGE_MTD_TESTS
 	bool
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 
 comment "MTD tools selection"
 
@@ -174,9 +175,14 @@ config BR2_PACKAGE_MTD_UBIBLOCK
 
 config BR2_PACKAGE_MTD_INTEGCK
 	bool "integck"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mtd-tests
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_MTD_TESTS
 	help
 	  Install the integck test program.
+
+comment "integck needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
 
 endif
