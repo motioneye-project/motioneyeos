@@ -1,0 +1,86 @@
+config BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	bool
+	default y if BR2_aarch64 || BR2_arm || \
+		BR2_i386 || BR2_x86_64 || \
+		BR2_mips || BR2_mips64
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5declarative
+	depends on !BR2_BINFMT_FLAT # qt5base-icu
+	depends on BR2_USE_MMU # libglib2, qt5base-dbus
+
+comment "qt5webengine needs udev /dev management and a glibc toolchain w/ gcc >= 4.8, host gcc >= 4.8, threads, wchar"
+	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+
+comment "qt5webengine needs an OpenGL and EGL-capable backend"
+	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
+
+comment "qt5webengine is not available with Qt 5.6"
+	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_QT5_VERSION_5_6
+
+config BR2_PACKAGE_QT5WEBENGINE
+	bool "qt5webengine"
+	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_USES_GLIBC # execinfo.h, mallinfo
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # qt5base-icu
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # qt5base-icu
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2, libvpx, qt5base-dbus
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative, qt5base-eglfs
+	depends on BR2_PACKAGE_HAS_LIBEGL # qt5base-eglfs
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on !BR2_PACKAGE_QT5_VERSION_5_6
+	# v8 (a chromium 3rd-party) compiles its internal host-tools with the
+	# same word size as the target. For 32-bits targets, it adds the -m32
+	# flag (for 64-bits, it adds the -m64 flag).
+	# https://github.com/v8/v8/blob/5.6.326.55/gypfiles/toolchain.gypi#L1036-L1037
+	select BR2_HOSTARCH_NEEDS_IA32_COMPILER if !BR2_ARCH_IS_64 # v8/chromium
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBVPX
+	select BR2_PACKAGE_OPUS
+	select BR2_PACKAGE_WEBP
+	select BR2_PACKAGE_WEBP_DEMUX
+	select BR2_PACKAGE_QT5BASE_DBUS
+	select BR2_PACKAGE_QT5BASE_EGLFS
+	select BR2_PACKAGE_QT5BASE_FONTCONFIG
+	select BR2_PACKAGE_QT5BASE_ICU
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
+	select BR2_PACKAGE_QT5QUICKCONTROLS
+	select BR2_PACKAGE_QT5QUICKCONTROLS2
+	select BR2_PACKAGE_QT5WEBCHANNEL
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE if BR2_PACKAGE_QT5BASE_XCB
+	select BR2_PACKAGE_XLIB_LIBXCURSOR if BR2_PACKAGE_QT5BASE_XCB
+	select BR2_PACKAGE_XLIB_LIBXI if BR2_PACKAGE_QT5BASE_XCB
+	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_QT5BASE_XCB
+	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER if BR2_PACKAGE_QT5BASE_XCB
+	select BR2_PACKAGE_XLIB_LIBXTST if BR2_PACKAGE_QT5BASE_XCB
+	help
+	  The Qt WebEngine module provides a web browser engine that
+	  makes it easy to embed content from the World Wide Web into
+	  your Qt application.
+
+	  Qt WebEngine provides C++ classes and QML types for rendering
+	  HTML, XHTML, and SVG documents, styled using Cascading Style
+	  Sheets (CSS) and scripted with JavaScript. HTML documents can
+	  be made fully editable by the user through the use of the
+	  contenteditable attribute on HTML elements.
+
+	  http://doc.qt.io/qt-5/qtwebengine-index.html
+
+if BR2_PACKAGE_QT5WEBENGINE
+
+config BR2_PACKAGE_QT5WEBENGINE_PROPRIETARY_CODECS
+	bool "proprietary codecs"
+	help
+	  Qt WebEngine supports the MPEG-4 Part 14 (MP4) file format,
+	  which includes required proprietary audio and video codecs,
+	  such as H.264 and MPEG layer-3 (MP3).
+
+endif

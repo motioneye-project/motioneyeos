@@ -1,0 +1,246 @@
+From 085c2c529473bbe9dd7c8c5698a45053520cc423 Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?J=C3=BCri=20Valdmann?= <juri.valdmann@qt.io>
+Date: Tue, 20 Jun 2017 15:36:43 +0200
+Subject: [PATCH 1/1] Always compile QWebEnginePage::print
+
+- Remove two out of five layers of ifdefs around and inside this method.
+- Now always compiled but will yield an error if printing is disabled.
+- Remove printing-related ifdefs from demobrowser.
+
+Task-number: QTBUG-61510
+Change-Id: I79781189d3d3fb62db0a2216b2b989e3fa1d1f86
+Reviewed-by: Allan Sandfeld Jensen <allan.jensen@qt.io>
+Reviewed-by: Rolf Eike Beer <eb@emlix.com>
+Upstream-Status: Merged
+Signed-off-by: Gaël PORTAY <gael.portay@savoirfairelinux.com>
+---
+ examples/webenginewidgets/demobrowser/browsermainwindow.cpp | 12 ------------
+ examples/webenginewidgets/demobrowser/browsermainwindow.h   |  6 ------
+ examples/webenginewidgets/demobrowser/printtopdfdialog.cpp  |  7 -------
+ src/webenginewidgets/api/qwebenginepage.cpp                 | 10 ++--------
+ src/webenginewidgets/api/qwebenginepage.h                   |  8 --------
+ 5 files changed, 2 insertions(+), 41 deletions(-)
+
+diff --git a/examples/webenginewidgets/demobrowser/browsermainwindow.cpp b/examples/webenginewidgets/demobrowser/browsermainwindow.cpp
+index 327d7a9d..14d49f7f 100644
+--- a/examples/webenginewidgets/demobrowser/browsermainwindow.cpp
++++ b/examples/webenginewidgets/demobrowser/browsermainwindow.cpp
+@@ -109,9 +109,7 @@ BrowserMainWindow::BrowserMainWindow(QWidget *parent, Qt::WindowFlags flags)
+     , m_historyForward(0)
+     , m_stop(0)
+     , m_reload(0)
+-#ifndef QT_NO_PRINTER
+     , m_currentPrinter(nullptr)
+-#endif
+ {
+     setToolButtonStyle(Qt::ToolButtonFollowStyle);
+     setAttribute(Qt::WA_DeleteOnClose, true);
+@@ -312,9 +310,7 @@ void BrowserMainWindow::setupMenu()
+ #if defined(QWEBENGINEPAGE_PRINT)
+     fileMenu->addAction(tr("P&rint Preview..."), this, SLOT(slotFilePrintPreview()));
+ #endif
+-#ifndef QT_NO_PRINTER
+     fileMenu->addAction(tr("&Print..."), this, SLOT(slotFilePrint()), QKeySequence::Print);
+-#endif
+     fileMenu->addAction(tr("&Print to PDF..."), this, SLOT(slotFilePrintToPDF()));
+     fileMenu->addSeparator();
+ 
+@@ -702,23 +698,19 @@ void BrowserMainWindow::slotFileOpen()
+ 
+ void BrowserMainWindow::slotFilePrintPreview()
+ {
+-#ifndef QT_NO_PRINTPREVIEWDIALOG
+     if (!currentTab())
+         return;
+     QPrintPreviewDialog *dialog = new QPrintPreviewDialog(this);
+     connect(dialog, SIGNAL(paintRequested(QPrinter*)),
+             currentTab(), SLOT(print(QPrinter*)));
+     dialog->exec();
+-#endif
+ }
+ 
+ void BrowserMainWindow::slotFilePrint()
+ {
+-#ifndef QT_NO_PRINTER
+     if (!currentTab())
+         return;
+     printRequested(currentTab()->page());
+-#endif
+ }
+ 
+ void BrowserMainWindow::slotHandlePdfPrinted(const QByteArray& result)
+@@ -751,7 +743,6 @@ void BrowserMainWindow::slotFilePrintToPDF()
+     currentTab()->page()->printToPdf(invoke(this, &BrowserMainWindow::slotHandlePdfPrinted), dialog->pageLayout());
+ }
+ 
+-#ifndef QT_NO_PRINTER
+ void BrowserMainWindow::slotHandlePagePrinted(bool result)
+ {
+     Q_UNUSED(result);
+@@ -763,7 +754,6 @@ void BrowserMainWindow::slotHandlePagePrinted(bool result)
+ 
+ void BrowserMainWindow::printRequested(QWebEnginePage *page)
+ {
+-#ifndef QT_NO_PRINTDIALOG
+     if (m_currentPrinter)
+         return;
+     m_currentPrinter = new QPrinter();
+@@ -774,9 +764,7 @@ void BrowserMainWindow::printRequested(QWebEnginePage *page)
+         return;
+     }
+     page->print(m_currentPrinter, invoke(this, &BrowserMainWindow::slotHandlePagePrinted));
+-#endif
+ }
+-#endif
+ 
+ void BrowserMainWindow::slotPrivateBrowsing()
+ {
+diff --git a/examples/webenginewidgets/demobrowser/browsermainwindow.h b/examples/webenginewidgets/demobrowser/browsermainwindow.h
+index 91e1c1d2..5bbbb292 100644
+--- a/examples/webenginewidgets/demobrowser/browsermainwindow.h
++++ b/examples/webenginewidgets/demobrowser/browsermainwindow.h
+@@ -56,9 +56,7 @@
+ #include <QtCore/QUrl>
+ 
+ QT_BEGIN_NAMESPACE
+-#ifndef QT_NO_PRINTER
+ class QPrinter;
+-#endif
+ class QWebEnginePage;
+ QT_END_NAMESPACE
+ 
+@@ -142,10 +140,8 @@ private slots:
+     void slotSwapFocus();
+     void slotHandlePdfPrinted(const QByteArray&);
+ 
+-#ifndef QT_NO_PRINTER
+     void slotHandlePagePrinted(bool result);
+     void printRequested(QWebEnginePage *page);
+-#endif
+     void geometryChangeRequested(const QRect &geometry);
+     void updateToolbarActionText(bool visible);
+     void updateBookmarksToolbarActionText(bool visible);
+@@ -180,9 +176,7 @@ private:
+     QAction *m_restoreLastSession;
+     QAction *m_addBookmark;
+ 
+-#ifndef QT_NO_PRINTER
+     QPrinter *m_currentPrinter;
+-#endif
+ 
+     QIcon m_reloadIcon;
+     QIcon m_stopIcon;
+diff --git a/examples/webenginewidgets/demobrowser/printtopdfdialog.cpp b/examples/webenginewidgets/demobrowser/printtopdfdialog.cpp
+index 0f3b1765..50a8bb91 100644
+--- a/examples/webenginewidgets/demobrowser/printtopdfdialog.cpp
++++ b/examples/webenginewidgets/demobrowser/printtopdfdialog.cpp
+@@ -52,10 +52,8 @@
+ #include "ui_printtopdfdialog.h"
+ 
+ #include <QtCore/QDir>
+-#ifndef QT_NO_PRINTER
+ #include <QtPrintSupport/QPageSetupDialog>
+ #include <QtPrintSupport/QPrinter>
+-#endif // QT_NO_PRINTER
+ #include <QtWidgets/QFileDialog>
+ 
+ PrintToPdfDialog::PrintToPdfDialog(const QString &filePath, QWidget *parent) :
+@@ -66,11 +64,8 @@ PrintToPdfDialog::PrintToPdfDialog(const QString &filePath, QWidget *parent) :
+     ui->setupUi(this);
+     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
+     connect(ui->chooseFilePathButton, &QToolButton::clicked, this, &PrintToPdfDialog::onChooseFilePathButtonClicked);
+-#ifndef QT_NO_PRINTER
+     connect(ui->choosePageLayoutButton, &QToolButton::clicked, this, &PrintToPdfDialog::onChoosePageLayoutButtonClicked);
+-#else
+     ui->choosePageLayoutButton->hide();
+-#endif // QT_NO_PRINTER
+     updatePageLayoutLabel();
+     setFilePath(filePath);
+ }
+@@ -82,7 +77,6 @@ PrintToPdfDialog::~PrintToPdfDialog()
+ 
+ void PrintToPdfDialog::onChoosePageLayoutButtonClicked()
+ {
+-#ifndef QT_NO_PRINTER
+     QPrinter printer;
+     printer.setPageLayout(currentPageLayout);
+ 
+@@ -92,7 +86,6 @@ void PrintToPdfDialog::onChoosePageLayoutButtonClicked()
+     currentPageLayout.setPageSize(printer.pageLayout().pageSize());
+     currentPageLayout.setOrientation(printer.pageLayout().orientation());
+     updatePageLayoutLabel();
+-#endif // QT_NO_PRINTER
+ }
+ 
+ void PrintToPdfDialog::onChooseFilePathButtonClicked()
+diff --git a/src/webenginewidgets/api/qwebenginepage.cpp b/src/webenginewidgets/api/qwebenginepage.cpp
+index 2cdb0116..6042b9fd 100644
+--- a/src/webenginewidgets/api/qwebenginepage.cpp
++++ b/src/webenginewidgets/api/qwebenginepage.cpp
+@@ -80,11 +80,9 @@
+ #include <QMenu>
+ #include <QMessageBox>
+ #include <QMimeData>
+-#if defined(QT_PRINTSUPPORT_LIB)
+-#ifndef QT_NO_PRINTER
++#ifdef ENABLE_PRINTING
+ #include <QPrinter>
+-#endif //QT_NO_PRINTER
+-#endif //QT_PRINTSUPPORT_LIB
++#endif
+ #include <QStandardPaths>
+ #include <QStyle>
+ #include <QTimer>
+@@ -2051,8 +2049,6 @@ void QWebEnginePage::printToPdf(const QWebEngineCallback<const QByteArray&> &res
+ #endif // if defined(ENABLE_PDF)
+ }
+ 
+-#if defined(QT_PRINTSUPPORT_LIB)
+-#ifndef QT_NO_PRINTER
+ /*!
+     \fn void QWebEnginePage::print(QPrinter *printer, FunctorOrLambda resultCallback)
+     Renders the current content of the page into a temporary PDF document, then prints it using \a printer.
+@@ -2089,8 +2085,6 @@ void QWebEnginePage::print(QPrinter *printer, const QWebEngineCallback<bool> &re
+     d->m_callbacks.invokeDirectly(resultCallback, false);
+ #endif // if defined(ENABLE_PDF)
+ }
+-#endif // if defined(QT_NO_PRINTER)
+-#endif // if defined(QT_PRINTSUPPORT_LIB)
+ 
+ /*!
+     \since 5.7
+diff --git a/src/webenginewidgets/api/qwebenginepage.h b/src/webenginewidgets/api/qwebenginepage.h
+index c7d5a19e..5619639c 100644
+--- a/src/webenginewidgets/api/qwebenginepage.h
++++ b/src/webenginewidgets/api/qwebenginepage.h
+@@ -55,11 +55,7 @@
+ 
+ QT_BEGIN_NAMESPACE
+ class QMenu;
+-#if defined(QT_PRINTSUPPORT_LIB)
+-#ifndef QT_NO_PRINTER
+ class QPrinter;
+-#endif // QT_NO_PRINTER
+-#endif // QT_PRINTSUPPORT_LIB
+ 
+ class QWebChannel;
+ class QWebEngineContextMenuData;
+@@ -294,15 +290,11 @@ public:
+     void printToPdf(const QWebEngineCallback<const QByteArray&> &resultCallback, const QPageLayout &layout = QPageLayout(QPageSize(QPageSize::A4), QPageLayout::Portrait, QMarginsF()));
+ #endif
+ 
+-#if defined(QT_PRINTSUPPORT_LIB)
+-#ifndef QT_NO_PRINTER
+ #ifdef Q_QDOC
+     void print(QPrinter *printer, FunctorOrLambda resultCallback);
+ #else
+     void print(QPrinter *printer, const QWebEngineCallback<bool> &resultCallback);
+ #endif // QDOC
+-#endif // QT_NO_PRINTER
+-#endif // QT_PRINTSUPPORT_LIB
+ 
+     const QWebEngineContextMenuData &contextMenuData() const;
+ 
+-- 
+2.13.2
+
