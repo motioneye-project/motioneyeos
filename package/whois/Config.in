@@ -4,4 +4,4 @@ config BR2_PACKAGE_WHOIS
 	help
 	  Improved whois client.
 
-	  http://www.linux.it/~md/software/
+	  https://github.com/rfc1036/whois
