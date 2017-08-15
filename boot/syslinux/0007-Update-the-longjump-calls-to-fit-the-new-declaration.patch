@@ -1,4 +1,4 @@
-From db49dbac8a0c563fb6d07c348873e8ae50fee2a6 Mon Sep 17 00:00:00 2001
+From 3bd5c2d951421a89f76b2423e5810862f53486c1 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Beno=C3=AEt=20Allard?= <benoit.allard@greenbone.net>
 Date: Fri, 9 Jun 2017 11:59:43 +0200
 Subject: [PATCH] Update the longjump calls to fit the new declaration
@@ -12,7 +12,7 @@ Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
  1 file changed, 1 insertion(+), 2 deletions(-)
 
 diff --git a/efi/main.c b/efi/main.c
-index fd95f5c..b5383cd 100644
+index 208fee4f..71d31a5c 100644
 --- a/efi/main.c
 +++ b/efi/main.c
 @@ -10,7 +10,6 @@
@@ -23,15 +23,15 @@ index fd95f5c..b5383cd 100644
  
  #include "efi.h"
  #include "fio.h"
-@@ -31,7 +30,7 @@ uint32_t timer_irq;
+@@ -30,7 +29,7 @@ uint32_t timer_irq;
  __export uint8_t KbdMap[256];
  char aux_seg[256];
  
 -static jmp_buf load_error_buf;
 +static jmp_buf *load_error_buf;
  
- EFI_HANDLE image_handle, image_device_handle, mnpsb_handle;
- 
+ static inline EFI_STATUS
+ efi_close_protocol(EFI_HANDLE handle, EFI_GUID *guid, EFI_HANDLE agent,
 -- 
-2.1.4
+2.13.3
 
