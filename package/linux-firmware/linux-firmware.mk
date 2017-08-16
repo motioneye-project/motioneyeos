@@ -414,6 +414,14 @@ LINUX_FIRMWARE_FILES += \
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.broadcom_bcm43xx
 endif
 
+# ql2xxx
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX),y)
+LINUX_FIRMWARE_FILES += \
+	ql2100_fw.bin ql2200_fw.bin ql2300_fw.bin ql2322_fw.bin \
+	ql2400_fw.bin ql2500_fw.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.qla2xxx
+endif
+
 ifneq ($(LINUX_FIRMWARE_FILES),)
 define LINUX_FIRMWARE_INSTALL_FILES
 	cd $(@D) ; \
