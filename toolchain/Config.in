@@ -48,6 +48,8 @@ config BR2_TOOLCHAIN_BUILDROOT
 	depends on !BR2_bf608
 	depends on !BR2_bf609
 	depends on !BR2_csky
+	depends on !BR2_mips_m6250
+	depends on !BR2_mips_p6600
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"
