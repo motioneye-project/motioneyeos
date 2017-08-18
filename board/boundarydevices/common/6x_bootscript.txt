@@ -106,6 +106,7 @@ fi
 
 if itest.s "x" != "x${wlmac}" ; then
 	setenv bootargs ${bootargs} wlcore.mac=${wlmac}
+	setenv bootargs ${bootargs} wlan.mac=${wlmac}
 fi
 
 if itest.s "x" != "x${gpumem}" ; then
