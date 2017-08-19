@@ -1,0 +1,90 @@
+From 7a9c16dcf58ff4c8154f3a9dfa1f02ec3daa1662 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Fri, 17 Jul 2015 17:02:16 +0100
+Subject: [PATCH] check for and use C library provided strlcpy and strlcat
+
+The musl-libc library provides implementations of strlcpy and strlcat,
+so introduce a feature check for it and only use the kvmtool
+implementation if there is no library support for it.
+This avoids clashes with the public definition.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Will Deacon <will.deacon@arm.com>
+[backport from upstream commit 8f22adc4230f07980a318ad1662fba5af0c131c1.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile                 |  5 +++++
+ config/feature-tests.mak | 10 ++++++++++
+ include/kvm/strbuf.h     |  2 ++
+ util/strbuf.c            |  2 ++
+ 4 files changed, 19 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 151fa9d..bf71db4 100644
+--- a/Makefile
++++ b/Makefile
+@@ -199,6 +199,11 @@ endif
+ # On a given system, some libs may link statically, some may not; so, check
+ # both and only build those that link!
+ 
++ifeq ($(call try-build,$(SOURCE_STRLCPY),$(CFLAGS),),y)
++	CFLAGS_DYNOPT	+= -DHAVE_STRLCPY
++	CFLAGS_STATOPT	+= -DHAVE_STRLCPY
++endif
++
+ ifeq ($(call try-build,$(SOURCE_BFD),$(CFLAGS),-lbfd -static),y)
+ 	CFLAGS_STATOPT	+= -DCONFIG_HAS_BFD
+ 	OBJS_STATOPT	+= symbol.o
+diff --git a/config/feature-tests.mak b/config/feature-tests.mak
+index 6bee6c2..03cdb42 100644
+--- a/config/feature-tests.mak
++++ b/config/feature-tests.mak
+@@ -196,3 +196,13 @@ int main(void)
+ 	return 0;
+ }
+ endef
++
++define SOURCE_STRLCPY
++#include <string.h>
++
++int main(void)
++{
++	strlcpy(NULL, NULL, 0);
++	return 0;
++}
++endef
+diff --git a/include/kvm/strbuf.h b/include/kvm/strbuf.h
+index 2beefbc..7657339 100644
+--- a/include/kvm/strbuf.h
++++ b/include/kvm/strbuf.h
+@@ -6,8 +6,10 @@
+ 
+ int prefixcmp(const char *str, const char *prefix);
+ 
++#ifndef HAVE_STRLCPY
+ extern size_t strlcat(char *dest, const char *src, size_t count);
+ extern size_t strlcpy(char *dest, const char *src, size_t size);
++#endif
+ 
+ /* some inline functions */
+ 
+diff --git a/util/strbuf.c b/util/strbuf.c
+index 99d6b0c..2c6e8ad 100644
+--- a/util/strbuf.c
++++ b/util/strbuf.c
+@@ -13,6 +13,7 @@ int prefixcmp(const char *str, const char *prefix)
+ 	}
+ }
+ 
++#ifndef HAVE_STRLCPY
+ /**
+  * strlcat - Append a length-limited, %NUL-terminated string to another
+  * @dest: The string to be appended to
+@@ -60,3 +61,4 @@ size_t strlcpy(char *dest, const char *src, size_t size)
+ 	}
+ 	return ret;
+ }
++#endif
+-- 
+2.9.4
+
