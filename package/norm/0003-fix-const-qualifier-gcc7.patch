@@ -1,0 +1,46 @@
+protolib: remove const qualifiers in ProtoSortedTreeTemplate
+
+The methods PeekPrevItem() and PeekNextItem() in
+ProtoSortedTreeTemplate were using a const qualifier, but not the
+corresponding methods in ProtoSortedTree, causing a build failure with
+gcc 7.x:
+
+norm-1.5r6/protolib/include/protoTree.h: In member function 'ITEM_TYPE* ProtoSortedTreeTemplate<ITEM_TYPE>::Iterator::PeekPrevItem() const':
+norm-1.5r6/protolib/include/protoTree.h:652:93: error: no matching function for call to 'ProtoSortedTreeTemplate<ITEM_TYPE>::Iterator::PeekPrevItem() const'
+                     {return static_cast<ITEM_TYPE*>(ProtoSortedTree::Iterator::PeekPrevItem());}
+                                                                                             ^
+norm-1.5r6/protolib/include/protoTree.h:565:23: note: candidate: ProtoSortedTree::Item* ProtoSortedTree::Iterator::PeekPrevItem() <near match>
+                 Item* PeekPrevItem()
+                       ^~~~~~~~~~~~
+
+Since the same methods in ProtoTreeTemplate don't have the const
+qualifier, we take the simple solution of dropping such qualifiers
+from ProtoSortedTreeTemplate as well, which fixes the build of norm
+with gcc 7.x.
+
+Many thanks to Romain Naour <romain.naour@gmail.com> for pointing out
+the solution.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Patch has been submitted upstream and accepted, but mailing list
+archive not updated.]
+
+Index: b/protolib/include/protoTree.h
+===================================================================
+--- a/protolib/include/protoTree.h
++++ b/protolib/include/protoTree.h
+@@ -648,12 +648,12 @@
+                 
+                 ITEM_TYPE* GetPrevItem()
+                     {return static_cast<ITEM_TYPE*>(ProtoSortedTree::Iterator::GetPrevItem());}
+-                ITEM_TYPE* PeekPrevItem() const
++                ITEM_TYPE* PeekPrevItem()
+                     {return static_cast<ITEM_TYPE*>(ProtoSortedTree::Iterator::PeekPrevItem());}
+                 
+                 ITEM_TYPE* GetNextItem()
+                     {return static_cast<ITEM_TYPE*>(ProtoSortedTree::Iterator::GetNextItem());}
+-                ITEM_TYPE* PeekNextItem() const
++                ITEM_TYPE* PeekNextItem()
+                     {return static_cast<ITEM_TYPE*>(ProtoSortedTree::Iterator::PeekNextItem());}
+ 
+         };  // end class ProtoSortedTreeTemplate::Iterator
