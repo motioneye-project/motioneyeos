@@ -4,4 +4,4 @@ config BR2_PACKAGE_PERL_NET_DNS
 	help
 	  Perl Interface to the Domain Name System
 
-	  http://www.net-dns.org
+	  https://metacpan.org/release/Net-DNS
