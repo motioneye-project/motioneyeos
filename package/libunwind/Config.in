@@ -22,11 +22,14 @@ config BR2_PACKAGE_LIBUNWIND
 	bool "libunwind"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_LIBUNWIND_ARCH_SUPPORTS
+	# forcefully links against libgcc_s, only available in dynamic
+	# linking configurations
+	depends on !BR2_STATIC_LIBS
 	help
 	  C API to determine the call-chain of a program.
 
 	  http://www.nongnu.org/libunwind/index.html
 
-comment "libunwind needs a toolchain w/ threads"
+comment "libunwind needs a toolchain w/ threads, dynamic library"
 	depends on BR2_PACKAGE_LIBUNWIND_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
