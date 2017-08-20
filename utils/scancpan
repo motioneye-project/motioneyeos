@@ -567,11 +567,17 @@ sub fetch {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
         $dist{$name} = $result;
-        my $manifest = $mcpan->source( author => $result->{author},
-                                       release => $name . q{-} . $result->{version},
-                                       path => 'MANIFEST' );
-        $need_dlopen{$name} = is_xs( $manifest );
-        $license_files{$name} = find_license_files( $manifest );
+        eval {
+            my $manifest = $mcpan->source( author => $result->{author},
+                                           release => $name . q{-} . $result->{version},
+                                           path => 'MANIFEST' );
+            $need_dlopen{$name} = is_xs( $manifest );
+            $license_files{$name} = find_license_files( $manifest );
+        };
+        if ($@) {
+            warn $@;
+            $license_files{$name} = [];
+        }
         my %build = ();
         my %runtime = ();
         my %optional = ();
