@@ -75,4 +75,7 @@ VIM_POST_INSTALL_TARGET_HOOKS += VIM_INSTALL_RUNTIME_CMDS
 VIM_POST_INSTALL_TARGET_HOOKS += VIM_REMOVE_DOCS
 endif
 
+HOST_VIM_DEPENDENCIES = host-ncurses
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
