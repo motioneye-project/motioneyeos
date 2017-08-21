@@ -13,7 +13,6 @@ Supported platforms
 Buildroot currently supports the following Armadeus platforms with the
 associated defconfigs:
 
- * APF9328 SOM + devt boards -> armadeus_apf9328_defconfig
  * APF27 SOM + devt board    -> armadeus_apf27_defconfig
  * APF51 SOM + devt board    -> armadeus_apf51_defconfig
  * APF28 SOM + devt board    -> armadeus_apf28_defconfig
@@ -46,15 +45,12 @@ When the build is finished, you will end up with:
 
     output/images/
     ├── imx**-apfxxdev.dtb	[1]
-    ├── rootfs.jffs2		[2]
     ├── rootfs.tar
-    ├── rootfs.ubi		[2]
-    ├── rootfs.ubifs		[2]
+    ├── rootfs.ubi
+    ├── rootfs.ubifs
     └── uImage
 
 [1] Only if the kernel version used uses a Device Tree.
-[2] .ubi/.ubifs images are not available on APF9328 and replaced by a
-    .jffs2 one in this case.
 
 Building U-Boot is currently not supported in these configurations.
 
@@ -69,7 +65,6 @@ it:
   $ cp output/images/uImage /tftpboot/apfxx-linux.bin
   $ cp output/images/*.dtb /tftpboot/
   $ cp output/images/rootfs.ubi /tftpboot/apfxx-rootfs.ubi
-  $ cp output/images/rootfs.jffs2 /tftpboot/apfxx-rootfs.jffs2
 
 where "apfxx" is the version of your SOM, as used with _defconfigs.
 
