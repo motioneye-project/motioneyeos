@@ -18,6 +18,8 @@ LIBV4L_CONF_OPTS = --disable-doxygen-doc
 # 0007-configure.ac-add-disable-libv4l-option.patch
 # 0008-configure.ac-fix-build-of-v4l-utils-on-uclinux.patch
 # 0009-configure.ac-add-USE_LIBV4L-to-summary.patch
+# 0010-Build-libv4lconvert-helper-support-only-when-fork-is.patch
+# 0011-configure.ac-drop-disable-libv4l-disable-plugin-supp.patch
 LIBV4L_AUTORECONF = YES
 # host-gettext needed for autoreconf to work
 LIBV4L_DEPENDENCIES += host-gettext
