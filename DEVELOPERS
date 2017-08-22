@@ -178,6 +178,7 @@ F:	package/daemon/
 F:	package/ebtables/
 F:	package/openipmi/
 F:	package/ti-uim/
+F:	package/uhubctl/
 
 N:	Ben Boeckel <mathstuf@gmail.com>
 F:	package/taskd/
