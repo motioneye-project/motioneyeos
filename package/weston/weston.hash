@@ -1,2 +1,5 @@
-# From https://lists.freedesktop.org/archives/wayland-devel/2017-February/033231.html
-sha256  b4e446ac27f118196f1609dab89bb3cb3e81652d981414ad860e733b355365d8  weston-2.0.0.tar.xz
+# From https://lists.freedesktop.org/archives/wayland-devel/2017-August/034749.html
+md5 9c42a4c51a1b9f35d040fa9d45ada36d  weston-3.0.0.tar.xz
+sha1 0a75c2ee10f2453a073411157bb6ed029080669f  weston-3.0.0.tar.xz
+sha256 cde1d55e8dd70c3cbb3d1ec72f60e60000041579caa1d6a262bd9c35e93723a5  weston-3.0.0.tar.xz
+sha512 b824c39f2a884f6d50d607613f447090621f684c96f7d905f25f6e500dabd03ecb2b1cd1030babc193c3417223cb220103abb792437e1a5ead7229a76b5c7a58  weston-3.0.0.tar.xz

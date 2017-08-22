@@ -17,8 +17,8 @@ config BR2_PACKAGE_WESTON
 	select BR2_PACKAGE_CAIRO_PNG
 	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_JPEG
-	select BR2_PACKAGE_MTDEV
 	select BR2_PACKAGE_LIBINPUT
+	select BR2_PACKAGE_LIBDRM
 	# Runtime dependency
 	select BR2_PACKAGE_XKEYBOARD_CONFIG
 	# Make sure at least one compositor is selected.
@@ -40,7 +40,6 @@ config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 config BR2_PACKAGE_WESTON_DRM
 	bool "DRM compositor"
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
-	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 
 # Uses libgbm from mesa3d
