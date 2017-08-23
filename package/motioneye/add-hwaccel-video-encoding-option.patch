@@ -1,0 +1,183 @@
+commit 508d177f9f62a33f1062443243d8c1b9c6172edf
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Wed Aug 23 16:12:47 2017 +1000
+
+    Add option to enable hardware accelerated video encoding
+
+diff --git a/motioneye/config.py b/motioneye/config.py
+index 48e8cf5..b810588 100644
+--- a/motioneye/config.py
++++ b/motioneye/config.py
+@@ -57,6 +57,7 @@ _EXPONENTIAL_QUALITY_CODECS = ['mpeg4', 'msmpeg4', 'swf', 'flv', 'mov', 'mkv']
+ _EXPONENTIAL_QUALITY_FACTOR = 100000 # voodoo
+ _EXPONENTIAL_DEF_QUALITY = 511 # about 75%
+ _MAX_FFMPEG_VARIABLE_BITRATE = 32767
++_HW_ACCEL_CODECS = ['mp4', 'mkv']
+ 
+ _KNOWN_MOTION_OPTIONS = set([
+     'auto_brightness',
+@@ -737,6 +738,7 @@ def motion_camera_ui_to_dict(ui, old_config=None):
+         'movie_filename': ui['movie_file_name'],
+         'max_movie_time': ui['max_movie_length'],
+         '@preserve_movies': int(ui['preserve_movies']),
++        '@movie_hwaccel': ui['movie_hwaccel'],
+     
+         # motion detection
+         '@motion_detection': ui['motion_detection'],
+@@ -930,6 +932,9 @@ def motion_camera_ui_to_dict(ui, old_config=None):
+             
+     else:
+         vbr = max(1, q)
++    if motionctl.has_hwaccel_movie_encoding_support() and ui['movie_hwaccel']:
++        if data['ffmpeg_video_codec'] in _HW_ACCEL_CODECS:
++            data['ffmpeg_video_codec'] = data['ffmpeg_video_codec']+':h264_omx'
+ 
+     data['ffmpeg_variable_bitrate'] = int(vbr)
+ 
+@@ -1120,6 +1125,7 @@ def motion_camera_dict_to_ui(data):
+         'movie_file_name': data['movie_filename'],
+         'max_movie_length': data['max_movie_time'],
+         'preserve_movies': data['@preserve_movies'],
++        'movie_hwaccel': data['@movie_hwaccel'],
+ 
+         # motion detection
+         'motion_detection': data['@motion_detection'],
+@@ -1313,6 +1319,7 @@ def motion_camera_dict_to_ui(data):
+         ui['recording_mode'] = 'motion-triggered'
+         
+     ui['movie_format'] = data['ffmpeg_video_codec']
++    ui['movie_format'] = [x.strip() for x in ui['movie_format'].split(':')][0]
+     
+     bitrate = data['ffmpeg_variable_bitrate']
+     if motionctl.needs_ffvb_quirks():
+@@ -1897,6 +1904,7 @@ def _set_default_motion_camera(camera_id, data):
+         data.setdefault('ffmpeg_variable_bitrate', _EXPONENTIAL_DEF_QUALITY)
+ 
+     data.setdefault('@preserve_movies', 0)
++    data.setdefault('@movie_hwaccel', 0)
+     
+     data.setdefault('@working_schedule', '')
+     data.setdefault('@working_schedule_type', 'outside')
+diff --git a/motioneye/handlers.py b/motioneye/handlers.py
+index 051621c..4044d73 100644
+--- a/motioneye/handlers.py
++++ b/motioneye/handlers.py
+@@ -221,6 +221,7 @@ class MainHandler(BaseHandler):
+                 admin_username=config.get_main().get('@admin_username'),
+                 has_streaming_auth=motionctl.has_streaming_auth(),
+                 has_new_movie_format_support=motionctl.has_new_movie_format_support(),
++                has_hwaccel_movie_encoding_support=motionctl.has_hwaccel_movie_encoding_support(),
+                 has_motion=bool(motionctl.find_motion()[0]),
+                 mask_width=utils.MASK_WIDTH)
+ 
+diff --git a/motioneye/motionctl.py b/motioneye/motionctl.py
+index 832ed38..da61c23 100644
+--- a/motioneye/motionctl.py
++++ b/motioneye/motionctl.py
+@@ -38,6 +38,7 @@ _LAST_OLD_CONFIG_VERSIONS = (490, '3.2.12')
+ _started = False
+ _motion_binary_cache = None
+ _motion_detected = {}
++_hwaccel_codec_cache = None
+ 
+ 
+ def find_motion():
+@@ -75,6 +76,38 @@ def find_motion():
+     return _motion_binary_cache
+ 
+ 
++def hwaccel_codec_supported():
++    global _hwaccel_codec_cache
++    if _hwaccel_codec_cache:
++        return _hwaccel_codec_cache
++
++    if settings.FFMPEG_BINARY:
++        if os.path.exists(settings.FFMPEG_BINARY):
++            binary = settings.FFMPEG_BINARY
++        else:
++            return False
++
++    else: # autodetect ffmpeg binary path
++        try:
++            binary = subprocess.check_output(['which', 'ffmpeg'], stderr=utils.DEV_NULL).strip()
++        except subprocess.CalledProcessError: # not found
++            return False
++
++    try:
++        help = subprocess.check_output(binary + ' -codecs -hide_banner', shell=True)
++
++    except subprocess.CalledProcessError: # not found
++        return False
++
++    result = re.findall('h264_omx', help, re.IGNORECASE)
++    if result:
++        logging.debug('Hardware accelerated codec found: %s' % result)
++        _hwaccel_codec_cache = True
++    else:
++        _hwaccel_codec_cache = False
++    return _hwaccel_codec_cache
++
++
+ def start(deferred=False):
+     import config
+     import mjpgclient
+@@ -354,6 +387,10 @@ def has_new_movie_format_support():
+     return version.lower().count('git') or update.compare_versions(version, '3.4') >= 0 
+ 
+ 
++def has_hwaccel_movie_encoding_support():
++    return hwaccel_codec_supported()
++
++
+ def get_rtsp_support():
+     binary, version = find_motion()
+     if not binary:
+diff --git a/motioneye/settings.py b/motioneye/settings.py
+index cfd8488..8ba1363 100644
+--- a/motioneye/settings.py
++++ b/motioneye/settings.py
+@@ -124,3 +124,6 @@ ADD_REMOVE_CAMERAS = True
+ 
+ # enable HTTPS certificate validation
+ VALIDATE_CERTS = True
++
++# path to the ffmpeg binary (automatically detected by default)
++FFMPEG_BINARY = None
+diff --git a/motioneye/static/js/main.js b/motioneye/static/js/main.js
+index ac43386..1a25d76 100644
+--- a/motioneye/static/js/main.js
++++ b/motioneye/static/js/main.js
+@@ -1869,6 +1869,7 @@ function cameraUi2Dict() {
+         'movie_file_name': $('#movieFileNameEntry').val(),
+         'movie_quality': $('#movieQualitySlider').val(),
+         'movie_format': $('#movieFormatSelect').val(),
++        'movie_hwaccel': $('#hwaccelEncoding')[0].checked,
+         'recording_mode': $('#recordingModeSelect').val(),
+         'max_movie_length': $('#maxMovieLengthEntry').val(),
+         'preserve_movies': $('#preserveMoviesSelect').val() >= 0 ? $('#preserveMoviesSelect').val() : $('#moviesLifetimeEntry').val(),
+@@ -2219,6 +2220,7 @@ function dict2CameraUi(dict) {
+     $('#movieFileNameEntry').val(dict['movie_file_name']); markHideIfNull('movie_file_name', 'movieFileNameEntry');
+     $('#movieQualitySlider').val(dict['movie_quality']); markHideIfNull('movie_quality', 'movieQualitySlider');
+     $('#movieFormatSelect').val(dict['movie_format']); markHideIfNull('movie_format', 'movieFormatSelect');
++    $('#hwaccelEncoding')[0].checked = dict['movie_hwaccel']; markHideIfNull('movie_hwaccel', 'hwaccelEncoding');
+     $('#recordingModeSelect').val(dict['recording_mode']); markHideIfNull('recording_mode', 'recordingModeSelect');
+     $('#maxMovieLengthEntry').val(dict['max_movie_length']); markHideIfNull('max_movie_length', 'maxMovieLengthEntry');
+     $('#preserveMoviesSelect').val(dict['preserve_movies']);
+diff --git a/motioneye/templates/main.html b/motioneye/templates/main.html
+index e2b38d8..3fc6183 100644
+--- a/motioneye/templates/main.html
++++ b/motioneye/templates/main.html
+@@ -762,6 +762,13 @@
+                         <td class="settings-item-value"><input type="text" class="range styled movies camera-config" id="movieQualitySlider"></td>
+                         <td><span class="help-mark" title="sets the MPEG video quality (higher values produce a better video quality but require more storage space)">?</span></td>
+                     </tr>
++                    {% if has_hwaccel_movie_encoding_support %}
++                    <tr class="settings-item advanced-setting">
++                        <td class="settings-item-label"><span class="settings-item-label">Hardware Acceleration</span></td>
++                        <td class="settings-item-value"><input type="checkbox" class="styled movies camera-config" id="hwaccelEncoding"></td>
++                        <td><span class="help-mark" title="uses hardware acceleration when encoding movie">?</span></td>
++                    </tr>
++                    {% endif %}
+                     <tr class="settings-item advanced-setting">
+                         <td class="settings-item-label"><span class="settings-item-label">Recording Mode</span></td>
+                         <td class="settings-item-value">
