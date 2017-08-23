@@ -22,9 +22,9 @@ RPCBIND_CONF_OPTS += --with-systemdsystemunitdir=no
 endif
 
 define RPCBIND_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -m 0755 -D package/rpcbind/rpcbind.service \
+	$(INSTALL) -m 0644 -D package/rpcbind/rpcbind.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.service
-	$(INSTALL) -m 0755 -D package/rpcbind/rpcbind.socket \
+	$(INSTALL) -m 0644 -D package/rpcbind/rpcbind.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.socket
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/sockets.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/rpcbind.socket \
