@@ -1,3 +1,26 @@
+2017.08-rc3, Released August 23rd, 2017
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: alsa-lib, alsa-utils, cc-tool,
+	dbus-cpp, e2fsprogs, elf2flt, faad2, fakeroot, gcc, git, gpsd,
+	gst1-validate, kvmtool, libconfuse, libepoxy, librsync,
+	libspatialindex, libunwind, linux, linux-headers, lua,
+	mariadb, mesa3d, mtd, openocd, python3, syslinux, sysvinit,
+	whois, xen, zmqpp.
+
+	Updated/fixed defconfigs: ci20, socrates_cyclone5,
+	toradex_apalis_imx6.
+
+	Removed defconfig: Armadeus APF9328.
+
+	skeleton-* packages introduced in -rc1 have been renamed to
+	skeleton-init-* instead.
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#10141: Squashfs extended attribute failures
+
 2017.08-rc2, Released August 11th, 2017
 
 	Fixes all over the tree.
