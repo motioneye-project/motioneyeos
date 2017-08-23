@@ -1,0 +1,145 @@
+diff --git a/ffmpeg.c b/ffmpeg.c
+index 87b4f75..3e7787c 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -236,10 +236,21 @@ static void ffmpeg_free_context(struct ffmpeg *ffmpeg){
+ 
+ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
+ 
++    size_t codec_name_len = strcspn(ffmpeg->codec_name, ":");
++    char *codec_name = alloca(codec_name_len + 1);
++
++    if (codec_name == NULL) {
++        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Failed to allocate memory for codec name");
++        ffmpeg_free_context(ffmpeg);
++        return -1;
++    }
++    memcpy(codec_name, ffmpeg->codec_name, codec_name_len);
++    codec_name[codec_name_len] = 0;
++
+     /* Only the newer codec and containers can handle the really fast FPS */
+-    if (((strcmp(ffmpeg->codec_name, "msmpeg4") == 0) ||
+-        (strcmp(ffmpeg->codec_name, "mpeg4") == 0) ||
+-        (strcmp(ffmpeg->codec_name, "swf") == 0) ) && (ffmpeg->fps >50)){
++    if (((strcmp(codec_name, "msmpeg4") == 0) ||
++        (strcmp(codec_name, "mpeg4") == 0) ||
++        (strcmp(codec_name, "swf") == 0) ) && (ffmpeg->fps >50)){
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "The frame rate specified is too high for the ffmpeg movie type specified. Choose a different ffmpeg container or lower framerate.");
+         ffmpeg_free_context(ffmpeg);
+         return -1;
+@@ -250,59 +261,59 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_MPEG2VIDEO;
+         strncat(ffmpeg->filename, ".mpg", 4);
+         if (!ffmpeg->oc->oformat) {
+-            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "ffmpeg_video_codec option value %s is not supported", ffmpeg->codec_name);
++            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "ffmpeg_video_codec option value %s is not supported", codec_name);
+             ffmpeg_free_context(ffmpeg);
+             return -1;
+         }
+         return 0;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "mpeg4") == 0) {
++    if (strcmp(codec_name, "mpeg4") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("avi", NULL, NULL);
+         strncat(ffmpeg->filename, ".avi", 4);
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "msmpeg4") == 0) {
++    if (strcmp(codec_name, "msmpeg4") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("avi", NULL, NULL);
+         strncat(ffmpeg->filename, ".avi", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_MSMPEG4V2;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "swf") == 0) {
++    if (strcmp(codec_name, "swf") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("swf", NULL, NULL);
+         strncat(ffmpeg->filename, ".swf", 4);
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "flv") == 0) {
++    if (strcmp(codec_name, "flv") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("flv", NULL, NULL);
+         strncat(ffmpeg->filename, ".flv", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_FLV1;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "ffv1") == 0) {
++    if (strcmp(codec_name, "ffv1") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("avi", NULL, NULL);
+         strncat(ffmpeg->filename, ".avi", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_FFV1;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "mov") == 0) {
++    if (strcmp(codec_name, "mov") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("mov", NULL, NULL);
+         strncat(ffmpeg->filename, ".mov", 4);
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "mp4") == 0) {
++    if (strcmp(codec_name, "mp4") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("mp4", NULL, NULL);
+         strncat(ffmpeg->filename, ".mp4", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_H264;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "mkv") == 0) {
++    if (strcmp(codec_name, "mkv") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("matroska", NULL, NULL);
+         strncat(ffmpeg->filename, ".mkv", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_H264;
+     }
+ 
+-    if (strcmp(ffmpeg->codec_name, "hevc") == 0) {
++    if (strcmp(codec_name, "hevc") == 0) {
+         ffmpeg->oc->oformat = av_guess_format("mp4", NULL, NULL);
+         strncat(ffmpeg->filename, ".mp4", 4);
+         if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_HEVC;
+@@ -310,7 +321,7 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
+ 
+     //Check for valid results
+     if (!ffmpeg->oc->oformat) {
+-        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "codec option value %s is not supported", ffmpeg->codec_name);
++        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "codec option value %s is not supported", codec_name);
+         ffmpeg_free_context(ffmpeg);
+         return -1;
+     }
+@@ -484,13 +495,23 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
+     int retcd;
+     char errstr[128];
+     int chkrate;
++    size_t codec_name_len = strcspn(ffmpeg->codec_name, ":");
+ 
+-    ffmpeg->codec = avcodec_find_encoder(ffmpeg->oc->oformat->video_codec);
++    ffmpeg->codec = NULL;
++    if (ffmpeg->codec_name[codec_name_len]) {
++        ffmpeg->codec = avcodec_find_encoder_by_name(&ffmpeg->codec_name[codec_name_len+1]);
++        if (!ffmpeg->codec)
++            MOTION_LOG(WRN, TYPE_ENCODER, NO_ERRNO, "Preferred codec %s not found", &ffmpeg->codec_name[codec_name_len+1]);
++    }
++    if (!ffmpeg->codec)
++        ffmpeg->codec = avcodec_find_encoder(ffmpeg->oc->oformat->video_codec);
+     if (!ffmpeg->codec) {
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Codec %s not found", ffmpeg->codec_name);
+         ffmpeg_free_context(ffmpeg);
+         return -1;
+     }
++    if (ffmpeg->codec_name[codec_name_len])
++        MOTION_LOG(NTC, TYPE_ENCODER, NO_ERRNO, "Using codec %s", ffmpeg->codec->name);
+ 
+ #if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
+     //If we provide the codec to this, it results in a memory leak.  ffmpeg ticket: 5714
+diff --git a/ffmpeg.h b/ffmpeg.h
+index 78a2785..95383a7 100644
+--- a/ffmpeg.h
++++ b/ffmpeg.h
+@@ -5,6 +5,7 @@
+ #include <stdarg.h>
+ #include <sys/time.h>
+ #include <stdint.h>
++#include <alloca.h>
+ #include "config.h"
+ 
+ enum TIMELAPSE_TYPE {
