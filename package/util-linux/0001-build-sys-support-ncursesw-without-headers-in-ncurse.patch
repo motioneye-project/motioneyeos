@@ -1,0 +1,58 @@
+From 87c26ce5b689abe1b52181f98ef3c9eb1b1a5165 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Tue, 1 Aug 2017 14:36:25 +0200
+Subject: [PATCH] build-sys: support ncursesw without headers in ncursesw/
+ directory
+
+Let's check always for alone ncurses.h and term.h if the preferred
+variant with ncursesw/ subdirectory is not available.
+
+The patch also minimize number of HAVE_...NCURSES_H macros in
+config.h. We don't need to check for ncurses.h if ncurses/ncurses.h is
+available.
+
+Reported-by: Carlos Santos <casantos@datacom.ind.br>
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ configure.ac | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index b204ec11e..592bd587e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -810,6 +810,13 @@ AS_IF([test "x$with_ncursesw" != xno], [
+   AS_IF([test "x$have_ncursesw" = xyes], [
+     AC_CHECK_HEADERS([ncursesw/ncurses.h], [have_ncursesw_header=yes])
+     AC_CHECK_HEADERS([ncursesw/term.h])
++
++    # Define HAVE_NCURSES_H only if check for HAVE_NCURSESW_NCURSES_H is
++    # unsuccessful to avoid too many *_H permitations in config.h
++    AS_IF([test "x$have_ncursesw_header" = xno], [
++	   AC_CHECK_HEADERS([ncurses.h], [have_ncursesw_header=yes])
++	   AC_CHECK_HEADERS([term.h])
++    ])
+     AS_IF([test "x$have_ncursesw_header" = xno], [have_ncursesw=no])
+   ])
+   AS_IF([test "x$have_ncursesw" = xyes], [
+@@ -834,8 +841,15 @@ AS_CASE([$with_ncurses:$build_widechar],
+ AS_IF([test "x$have_ncursesw" = xno -a "x$with_ncurses" != xno ], [
+   UL_NCURSES_CHECK([ncurses])
+   AS_IF([test "x$have_ncurses" = xyes], [
+-    AC_CHECK_HEADERS([ncurses/ncurses.h ncurses.h], [have_ncurses_header=yes])
+-    AC_CHECK_HEADERS([ncurses/term.h term.h])
++    AC_CHECK_HEADERS([ncurses/ncurses.h], [have_ncurses_header=yes])
++    AC_CHECK_HEADERS([ncurses/term.h])
++
++    # Define HAVE_NCURSES_H only if check for HAVE_NCURSES_NCURSES_H is
++    # unsuccessful to avoid too many *_H permitations in config.h
++    AS_IF([test "x$have_ncurses_header" = xno], [
++	   AC_CHECK_HEADERS([ncurses.h], [have_ncurses_header=yes])
++	   AC_CHECK_HEADERS([term.h])
++    ])
+     AS_IF([test "x$have_ncurses_header" = xno], [have_ncurses=no])
+   ])
+   AS_IF([test "x$have_ncurses" = xyes], [
+-- 
+2.13.5
+
