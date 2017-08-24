@@ -27,7 +27,7 @@ NSS_PAM_LDAPD_CONF_OPTS += --disable-pam
 endif
 
 define NSS_PAM_LDAPD_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -m 755 -D package/nss-pam-ldapd/nslcd.service \
+	$(INSTALL) -m 644 -D package/nss-pam-ldapd/nslcd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/nslcd.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/nslcd.service \
