@@ -29,7 +29,7 @@ define MINIDLNA_INSTALL_INIT_SYSV
 endef
 
 define MINIDLNA_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0755 package/minidlna/minidlnad.service \
+	$(INSTALL) -D -m 0644 package/minidlna/minidlnad.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/minidlnad.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
