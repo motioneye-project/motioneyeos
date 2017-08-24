@@ -64,7 +64,7 @@ define TRANSMISSION_INSTALL_INIT_SYSV
 endef
 
 define TRANSMISSION_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0755 $(@D)/daemon/transmission-daemon.service \
+	$(INSTALL) -D -m 0644 $(@D)/daemon/transmission-daemon.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/transmission-daemon.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/transmission-daemon.service \
