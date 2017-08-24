@@ -206,6 +206,7 @@ toradex_apalis_imx6_defconfig: *defconfig
 ts4800_defconfig: *defconfig
 ts4900_defconfig: *defconfig
 ts5x00_defconfig: *defconfig
+ts7680_defconfig: *defconfig
 wandboard_defconfig: *defconfig
 warp7_defconfig: *defconfig
 warpboard_defconfig: *defconfig
