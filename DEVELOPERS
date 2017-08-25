@@ -1026,6 +1026,10 @@ F:	package/libgphoto2/
 N:	Koen Martens <gmc@sonologic.nl>
 F:	package/linuxconsoletools/
 
+N:	Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+F:	package/bcusdk/
+F:	package/libpthsem/
+
 N:	Laurent Cans <laurent.cans@gmail.com>
 F:	package/aircrack-ng/
 
