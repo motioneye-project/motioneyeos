@@ -8,14 +8,8 @@ test -n "$os_debug" || source /etc/init.d/conf
 test "$os_networkless" == "true" && exit 0
 
 start() {
-    msg_begin "Setting smb admin password"
-    
     mkdir -p /var/log/samba
     mkdir -p /var/lib/samba/private
-
-    password=$(/etc/init.d/adminpw)
-    echo -e "$password\n$password\n" | /usr/bin/smbpasswd -a admin -s > /dev/null
-    test $? == 0 && msg_done || msg_fail
 
     msg_begin "Starting smbd"
     smbd -D
