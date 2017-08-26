@@ -29,3 +29,10 @@ echo -en "$PASSWORD\n$PASSWORD\n" | passwd admin &>/dev/null # admin
 sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
 sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration
 
+# call admin password hooks in /etc/adminpasswd.d
+if [ -d /etc/adminpasswd.d ]; then
+    for script in /etc/adminpasswd.d/*; do
+        test -x $script && $script
+    done
+fi
+
