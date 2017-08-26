@@ -70,5 +70,5 @@ case "$1" in
         exit 1
 esac
 
-exit $?
-
+# always exit with a successful status
+exit 0
