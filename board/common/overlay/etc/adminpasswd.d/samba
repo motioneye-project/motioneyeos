@@ -1,0 +1,3 @@
+#!/bin/bash
+
+echo -e "$PASSWORD\n$PASSWORD\n" | /usr/bin/smbpasswd -a admin -s > /dev/null
