@@ -13,6 +13,8 @@ sys_hash=$(md5sum $sys_version_file 2>/dev/null | cut -d ' ' -f 1)
 
 test "$hash" == "$sys_hash" && exit 0
 
+test -d $post_upgrade_dir || exit 0
+
 function version_gt() {
     if [ "$1" != "$2" ] && [ $(echo -e "$2\n$1" | sort -t . | head -n 1) == "$2" ]; then
         return 0

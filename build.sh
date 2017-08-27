@@ -48,10 +48,11 @@ elif [ "$target" == "mkrelease" ]; then
     mv $basedir/$osname-$board.img  $basedir/$osname-$board-$osversion.img
     rm -f $basedir/$osname-$board-$osversion.img.gz
     $gzip $basedir/$osname-$board-$osversion.img
+    echo "your image is ready at $basedir/$osname-$board-$osversion.img.gz"
 elif [ -n "$target" ]; then
     make O=$outputdir $target
 else
-    make O=$outputdir
-    test -x $boarddir/mkimage.sh && $boarddir/mkimage.sh
+    make O=$outputdir all
+    echo "build successful"
 fi
 

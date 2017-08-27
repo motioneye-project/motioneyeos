@@ -1,0 +1,53 @@
+#!/bin/bash
+
+sys_btconf="/etc/bluetooth.conf"
+boot_btconf="/boot/bluetooth.conf"
+btconf="/data/etc/bluetooth.conf"
+
+# dbus is only used by bluez
+test -f $btconf || test -f $boot_btconf || test -f $sys_btconf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+start() {
+    mkdir -p /tmp/dbus
+
+    msg_begin "Starting dbus"
+
+    dbus-uuidgen --ensure
+    dbus-daemon --system
+    
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping dbus"
+    udevadm control --stop-exec-queue
+    killall dbus-daemon &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+
+    rm -f /var/run/messagebus.pid
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit $?
+

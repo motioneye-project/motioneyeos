@@ -23,6 +23,8 @@ function cleanup {
 
 trap cleanup EXIT
 
+PART_START=${PART_START:-2048} # 2048 sectors = 1MB
+
 BOOT_SRC=$IMG_DIR/boot
 BOOT=$IMG_DIR/.boot
 BOOT_IMG=$IMG_DIR/boot.img
@@ -50,7 +52,7 @@ mkdir -p $BOOT
 mount -o loop $loop_dev $BOOT
 
 msg "copying boot filesystem contents"
-cp $BOOT_SRC/* $BOOT
+cp -r $BOOT_SRC/* $BOOT
 sync
 
 msg "unmounting boot filesystem"
@@ -109,18 +111,19 @@ loop_dev=$(losetup -f)
 losetup -f $DISK_IMG
 
 msg "partitioning disk"
+root_part_start=$(($PART_START + $BOOT_SIZE * 2048))
 set +e
 fdisk -u=sectors $loop_dev <<END
 o
 n
 p
 1
-
+${PART_START}
 +${BOOT_SIZE}M
 n
 p
 2
-
+${root_part_start}
 +${ROOT_SIZE}M
 
 t

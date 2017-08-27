@@ -6,7 +6,7 @@ conf="/data/etc/wpa_supplicant.conf"
 
 log="/var/log/wpa_supplicant.log"
 prog="/usr/sbin/wpa_supplicant"
-driver=wext
+driver=nl80211,wext
 
 sys_watch_conf="/etc/watch.conf"
 boot_watch_conf="/boot/watch.conf"
@@ -31,6 +31,9 @@ if ! [ -f $conf ]; then
 fi
 
 test -f $conf || exit 0
+
+# we want only Unix newlines here
+sed -i 's/\r//g' $conf
 
 ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0

@@ -92,14 +92,13 @@ start() {
 
     # add connected camera(s) with default settings
     if responsive && ! [ -f $motion_conf ]; then
-        count=$(ls /dev/video* 2>/dev/null | wc -l)
         index=1
         for device in $(ls /dev/video* 2>/dev/null); do
-            if [ "$count" -gt "1" ]; then
-                output_dir="/data/output/camera$index/"
-            else
-                output_dir="/data/output/"
+            # filter out devices that don't look like cameras
+            if ! v4l2-ctl -d $device --list-formats-ext 2>/dev/null | grep -oE '[[:digit:]]+x[[:digit:]]+' &>/dev/null; then
+                continue
             fi
+            output_dir="/data/output/camera$index/"
             loc="/config/add/?_username=admin"
             device=$(find_persistent_device $device)
             body="{\"path\": \"$device\", \"proto\": \"v4l2\"}"

@@ -1,13 +1,11 @@
 #!/bin/sh
 
 PATH=/bin:/sbin:/usr/bin:/usr/sbin
+DISK_TIMEOUT="10"
 
 msg() {
-    echo "* $1"
+    echo " * $1"
 }
-
-msg "Waiting for sdcard"
-sleep 2
 
 msg "Mounting pseudo filesystems"
 mount -t devtmpfs devtmpfs /dev
@@ -24,11 +22,23 @@ else  # e.g. /dev/sdc2
     DATA_DEV=${DISK_DEV}3
 fi
 
+msg "Waiting for sdcard"
+count=0
+while true; do
+    if [ $count -ge $DISK_TIMEOUT ]; then
+        break
+    fi
+    if [ -b $ROOT_DEV ]; then
+        break
+    fi
+    count=$(($count + 1))
+    sleep 1
+done
+
 msg "Disk device is $DISK_DEV"
 msg "Boot device is $BOOT_DEV"
 msg "Root device is $ROOT_DEV"
 msg "Data device is $DATA_DEV"
-
 
 FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
@@ -101,3 +111,4 @@ dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root
 
 msg "Cleaning up"
 rm -rf $FW_DIR
+

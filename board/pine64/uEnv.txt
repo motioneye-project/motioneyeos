@@ -1,0 +1,63 @@
+console=tty1
+selinux=permissive
+enforcing=0
+optargs=no_console_suspend panic=10 quiet loglevel=1 ipv6.disable=1
+kernel_filename=kernel.img
+#initrd_filename=ramdisk.img
+#recovery_initrd_filename=ramdisk-recovery.img
+hardware=sun50iw1p1
+
+# INFO:
+# To enable one of below options,
+# uncomment them by removing # in front of name
+
+# To use android recovery:
+# Create empty file recovery.txt in root of this partition
+
+# To enable LCD or HDMI, if not changed it will use default (experimental)
+disp_screen0=hdmi
+# disp_screen1=lcd or hdmi
+# disp_mode=screen0 or screen1 or dualhead or xinerama or clone
+
+# USB OTG port mode (experimental)
+# otg_mode=device or host or otg
+otg_mode=host
+
+# Configure contiguous memory allocation
+# This maybe required to be enlarged for 4K displays
+cma=384M
+
+# To change HDMI display mode:
+# hdmi_mode=480i
+# hdmi_mode=576i
+# hdmi_mode=480p
+# hdmi_mode=576p
+# hdmi_mode=720p50
+hdmi_mode=720p60
+# hdmi_mode=1080i50
+# hdmi_mode=1080i60
+# hdmi_mode=1080p24
+# hdmi_mode=1080p50
+# hdmi_mode=1080p60
+# hdmi_mode=2160p30
+# hdmi_mode=2160p25
+# hdmi_mode=2160p24
+
+# To enable DVI compatibilty:
+disp_dvi_compat=on
+
+# To enable CSI camera, if not enabled it will use default:
+# camera_type=s5k4ec
+# camera_type=ov5640
+
+# Configure ethernet speed
+eth0_speed=auto
+# eth0_speed=1000
+# eth0_speed=100
+# eth0_speed=10
+
+# Disable HDMI CEC
+hdmi_cec=0
+
+# Enable experimental HDMI CEC driver
+# hdmi_cec=2

@@ -5,7 +5,7 @@ if [ -z "$TARGET" ]; then
     exit 1
 fi
 
-rm -f $TARGET/boot/.gitkeep
+find $TARGET -name '.empty' | xargs -r rm
 
 # /etc stuff
 rm -rf $TARGET/etc/network/
@@ -32,8 +32,6 @@ rm -rf $TARGET/usr/share/locale/*
 rm -rf $TARGET/usr/share/ffmpeg/
 rm -rf $TARGET/usr/share/perl5/
 rm -rf $TARGET/usr/share/common-lisp/
-
-find $TARGET -name '*libmount*' | xargs rm -rf
 
 # various binaries
 rm -f $TARGET/bin/more

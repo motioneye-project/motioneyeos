@@ -3,15 +3,17 @@
 test -n "$os_version" || source /etc/init.d/base
 
 msg_begin "Detecting disk device"
-root_part=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
-if [[ "$root_part" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+root_dev=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+if [[ "$root_dev" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
     disk_dev=${BASH_REMATCH[1]}
+    boot_dev=${disk_dev}p1
     data_dev=${disk_dev}p3
-elif [[ "$root_part" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+elif [[ "$root_dev" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
     disk_dev=${BASH_REMATCH[1]}
+    boot_dev=${disk_dev}1
     data_dev=${disk_dev}3
 else
-    msg_fail "unknown ($root_part)"
+    msg_fail "unknown ($root_dev)"
     exit 1
 fi
 msg_done "$disk_dev"
@@ -21,12 +23,14 @@ test -b $data_dev && exit 0
 case "$1" in
     start)
         msg_begin "Creating data partition"
+        root_end=$(partx -s -g -o END $root_dev)
+        data_start=$(($root_end + 1))
         echo -e "n
             p
             3
+            ${data_start}
             \n
-            \n
-            w" | /sbin/fdisk $disk_dev 2>&1 >/dev/null | grep -v "Device or resource busy" | grep -v '^$'
+            w" | /sbin/fdisk $disk_dev &>/dev/null
         partx -a $disk_dev &>/dev/null
         test -b $data_dev && msg_done || msg_fail
 
@@ -39,14 +43,15 @@ case "$1" in
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Creating required data files"
-        mkdir /data/etc
-        mkdir /data/log
-        mkdir -m 775 /data/output
-        mkdir -m 775 /data/media
+        cp -pur /usr/share/dataskel/* /data
         cp /etc/version /data/etc/version
         ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
         touch /data/etc/adjtime
         sync
+        msg_done
+        
+        msg_begin "Setting empty root password"
+        PASSWORD="" adminpasswd
         msg_done
 
         # mount other partitions depending on data
@@ -63,5 +68,5 @@ case "$1" in
         exit 1
 esac
 
-exit $?
-
+# always exit with a successful status
+exit 0
