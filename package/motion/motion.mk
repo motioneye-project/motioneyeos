@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOTION_VERSION = 37b3595
+MOTION_VERSION = ab9e800d5984f2907f00bebabc794d1dba9682ad
 MOTION_SITE = $(call github,motion-project,motion,$(MOTION_VERSION))
 MOTION_AUTORECONF = YES
 MOTION_CONF_OPTS = --without-pgsql --without-sdl --without-sqlite3 --without-mysql --with-ffmpeg=$(STAGING_DIR)/usr/lib \
