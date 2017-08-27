@@ -1,0 +1,5 @@
+#!/bin/bash
+
+test "$MEYE_USERNAME" == "admin" || exit 0
+PASSWORD="$MEYE_PASSWORD" /usr/sbin/adminpasswd
+

@@ -11,7 +11,7 @@ mkdir -p $BOOT_DIR
 
 test -x $BOARD_DIR/postscript.sh && $BOARD_DIR/postscript.sh
 
-# transform /var contents into symlinks
+# transform /var contents as needed
 rm -rf $TARGET/var/cache
 rm -rf $TARGET/var/lib
 rm -rf $TARGET/var/lock
@@ -21,7 +21,7 @@ rm -rf $TARGET/var/spool
 rm -rf $TARGET/var/tmp
 
 ln -s /tmp $TARGET/var/cache
-ln -s /tmp $TARGET/var/lib
+ln -s /data/varlib $TARGET/var/lib
 ln -s /tmp $TARGET/var/lock
 ln -s /data/log $TARGET/var/log
 ln -s /tmp $TARGET/var/run

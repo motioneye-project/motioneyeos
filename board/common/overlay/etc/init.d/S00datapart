@@ -43,14 +43,15 @@ case "$1" in
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Creating required data files"
-        mkdir /data/etc
-        mkdir /data/log
-        mkdir -m 775 /data/media
-        mkdir -m 775 /data/output
+        cp -pur /usr/share/dataskel/* /data
         cp /etc/version /data/etc/version
         ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
         touch /data/etc/adjtime
         sync
+        msg_done
+        
+        msg_begin "Setting empty root password"
+        PASSWORD="" adminpasswd
         msg_done
 
         # mount other partitions depending on data
@@ -67,5 +68,5 @@ case "$1" in
         exit 1
 esac
 
-exit $?
-
+# always exit with a successful status
+exit 0

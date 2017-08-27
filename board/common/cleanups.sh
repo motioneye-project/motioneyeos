@@ -5,7 +5,7 @@ if [ -z "$TARGET" ]; then
     exit 1
 fi
 
-rm -f $TARGET/boot/.gitkeep
+find $TARGET -name '.empty' | xargs -r rm
 
 # /etc stuff
 rm -rf $TARGET/etc/network/

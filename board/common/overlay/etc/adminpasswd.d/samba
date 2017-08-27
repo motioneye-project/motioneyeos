@@ -1,0 +1,5 @@
+#!/bin/bash
+
+mkdir -p /var/lib/samba/private
+echo -e "$PASSWORD\n$PASSWORD\n" | /usr/bin/smbpasswd -a admin -s > /dev/null
+
