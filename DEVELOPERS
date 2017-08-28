@@ -327,6 +327,9 @@ N:	Bogdan Radulescu <bogdan@nimblex.net>
 F:	package/iftop/
 F:	package/ncdu/
 
+N:	Brock Williams <brock@cottonwoodcomputer.com>
+F:	package/pdmenu/
+
 N:	Bryan Brinsko <bryan.brinsko@rockwellcollins.com>
 F:	package/pps-tools/
 
