@@ -1,3 +1,16 @@
+2017.08, To be released
+
+	Fixes all over the tree.
+
+	Updated/fixed packages:
+
+	Updated/fixed defconfigs:
+
+	Removed packages: simicfs.
+
+	Issues resolved (http://bugs.buildroot.org):
+	#10261: Grub2 fails to build for x86_64
+
 2017.08-rc3, Released August 23rd, 2017
 
 	Fixes all over the tree.
