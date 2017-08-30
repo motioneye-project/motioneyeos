@@ -145,6 +145,19 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.08"
 
+config BR2_PACKAGE_SIMICSFS
+	bool "simicsfs support removed"
+	select BR2_LEGACY
+	help
+	  Support for simicsfs kernel driver that provides access to a
+	  host computer's local filesystem when the target is
+	  executing within a SIMICS simulation has been removed.
+
+	  Simics is now moving away from the simicsfs kernel module,
+	  as the kernel module has required too much maintenance
+	  work. Users should move to the user mode Simics agent
+	  instead.
+
 config BR2_BINUTILS_VERSION_2_26_X
 	bool "binutils version 2.26 support removed"
 	select BR2_LEGACY

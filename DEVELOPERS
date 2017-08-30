@@ -1162,7 +1162,6 @@ F:	package/python-pyrex/
 F:	package/raptor/
 F:	package/sepolgen/
 F:	package/setools/
-F:	package/simicsfs/
 F:	package/smcroute/
 F:	package/tclap/
 F:	package/valijson/
