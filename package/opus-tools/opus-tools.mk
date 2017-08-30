@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPUS_TOOLS_VERSION = 0.1.9
-OPUS_TOOLS_SITE = http://downloads.xiph.org/releases/opus
+OPUS_TOOLS_VERSION = 0.1.10
+OPUS_TOOLS_SITE = https://downloads.xiph.org/releases/opus
 OPUS_TOOLS_LICENSE = BSD-2-Clause
 OPUS_TOOLS_LICENSE_FILES = COPYING
 OPUS_TOOLS_CONF_OPTS = --disable-oggtest --disable-opustest
