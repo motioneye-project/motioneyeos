@@ -2,7 +2,14 @@
 
 	Fixes all over the tree.
 
-	Updated/fixed packages:
+	Toolchain: Don't allow internal toolchain builds for MIPS
+	M6201/P6600, as support for these are not yet in mainline GCC.
+
+	Updated/fixed packages: bcusdk, connman, dialog, dnsmasq,
+	gnupg, grub2, iostat, iucode-tool, libgcrypt, libkcapi,
+	libphidget, libv4l, linux-tools, mediastreamer, minidlna,
+	nss-pam-ldapd, nvidia-driver, qt-webkit-kiosk, rpcbind, squid,
+	transmission, vde2, vim
 
 	Updated/fixed defconfigs:
 
