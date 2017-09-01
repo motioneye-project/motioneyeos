@@ -1,6 +1,6 @@
-2017.08, To be released
+2017.08, Released September 1st, 2017
 
-	Fixes all over the tree.
+	Minor fixes.
 
 	Toolchain: Don't allow internal toolchain builds for MIPS
 	M6201/P6600, as support for these are not yet in mainline GCC.
