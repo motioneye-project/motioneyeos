@@ -4,15 +4,17 @@
 #
 ################################################################################
 
-GNUPG2_VERSION = 2.1.21
+GNUPG2_VERSION = 2.2.0
 GNUPG2_SOURCE = gnupg-$(GNUPG2_VERSION).tar.bz2
-GNUPG2_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
+GNUPG2_SITE = https://gnupg.org/ftp/gcrypt/gnupg
 GNUPG2_LICENSE = GPL-3.0+
 GNUPG2_LICENSE_FILES = COPYING
 GNUPG2_DEPENDENCIES = zlib libgpg-error libgcrypt libassuan libksba libnpth \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
 
+# Keep the gpg2 binary name to avoid conflict with gnupg
 GNUPG2_CONF_OPTS = \
+	--enable-gpg-is-gpg2 \
 	--disable-rpath --disable-regex --disable-doc \
 	--with-libgpg-error-prefix=$(STAGING_DIR)/usr \
 	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
