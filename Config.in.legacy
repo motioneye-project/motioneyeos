@@ -143,6 +143,21 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2017.11"
+
+config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
+	bool "util-linux login utilities option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_UTIL_LINUX_LAST
+	select BR2_PACKAGE_UTIL_LINUX_LOGIN
+	select BR2_PACKAGE_UTIL_LINUX_RUNUSER
+	select BR2_PACKAGE_UTIL_LINUX_SU
+	select BR2_PACKAGE_UTIL_LINUX_SULOGIN
+	help
+	  Login utilities (last, login, runuser, su, sulogin) now have
+	  their own configuration options in the util-linux menu.
+
+###############################################################################
 comment "Legacy options removed in 2017.08"
 
 config BR2_PACKAGE_SIMICSFS

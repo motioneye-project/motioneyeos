@@ -164,25 +164,24 @@ config BR2_PACKAGE_UTIL_LINUX_LINE
 	help
 	  Read one line
 
-config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
-	bool "login utilities"
-	depends on BR2_USE_MMU # fork() (login, runuser, su, sulogin)
-	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
-	depends on !BR2_STATIC_LIBS
-	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
-	depends on BR2_USE_MMU # linux-pam
-	select BR2_PACKAGE_LINUX_PAM
-	help
-	  Login utilities (last, login, runuser, su, sulogin)
-
-comment "login utilities needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
-	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
-		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
-
 config BR2_PACKAGE_UTIL_LINUX_LOGGER
 	bool "logger"
 	help
 	  Enter messages into the system log
+
+config BR2_PACKAGE_UTIL_LINUX_LOGIN
+	bool "login"
+	depends on BR2_ENABLE_LOCALE # linux-pam
+	depends on BR2_USE_WCHAR # linux-pam
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	depends on BR2_USE_MMU # fork(), linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+	help
+	  Begin a session on the system
+
+comment "login needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
 
 config BR2_PACKAGE_UTIL_LINUX_LOSETUP
 	bool "losetup"
@@ -296,6 +295,14 @@ config BR2_PACKAGE_UTIL_LINUX_RESET
 	help
 	  Reset the terminal
 
+config BR2_PACKAGE_UTIL_LINUX_RUNUSER
+	bool "runuser"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Run a command with substitute user and group ID (does not need
+	  to ask for a password, because it may be executed by the root
+	  user only)
+
 config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 	bool "scheduling utilities"
 	help
@@ -312,6 +319,18 @@ config BR2_PACKAGE_UTIL_LINUX_SETTERM
 	select BR2_PACKAGE_NCURSES
 	help
 	  Set terminal attributes
+
+config BR2_PACKAGE_UTIL_LINUX_SU
+	bool "su"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Run a command with substitute user and group ID
+
+config BR2_PACKAGE_UTIL_LINUX_SULOGIN
+	bool "sulogin"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Single-user login
 
 config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "switch_root"
