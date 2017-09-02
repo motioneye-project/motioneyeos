@@ -329,4 +329,13 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IMX_SDMA
 
 endmenu
 
+menu "Fibre Channel Adapter Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX
+	bool "QLogic 2xxx Fibre Channel Adapters"
+	help
+	  Firmware files for ql2xxx adapters
+
+endmenu
+
 endif

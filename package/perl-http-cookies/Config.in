@@ -3,6 +3,6 @@ config BR2_PACKAGE_PERL_HTTP_COOKIES
 	select BR2_PACKAGE_PERL_HTTP_DATE
 	select BR2_PACKAGE_PERL_HTTP_MESSAGE
 	help
-	  Objects that represent a "cookie jar"
+	  HTTP cookie jars
 
-	  http://github.com/gisle/http-cookies
+	  https://github.com/libwww-perl/http-cookies

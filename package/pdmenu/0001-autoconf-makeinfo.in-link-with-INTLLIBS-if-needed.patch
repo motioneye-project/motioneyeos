@@ -1,0 +1,27 @@
+From 319cc3859044214961164ed1f219f2f21ca965af Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 30 Aug 2017 23:04:37 +0200
+Subject: [PATCH] autoconf/makeinfo.in: link with INTLLIBS if needed
+
+gettext may be provided by external libraries, as specified in
+INTLLIBS, so we must include @INTLLIBS@ in the LIBS variable.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ autoconf/makeinfo.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/autoconf/makeinfo.in b/autoconf/makeinfo.in
+index ee3054a..6d58d77 100644
+--- a/autoconf/makeinfo.in
++++ b/autoconf/makeinfo.in
+@@ -13,5 +13,5 @@ DEFINES		= -DETCDIR=\"${SYSCONFDIR}/\" -DVER=\"${VER}\" @DEFS@ \
+ 		  $(PROFILE) -D__USE_FIXED_PROTOTYPES__ -D_GNU_SOURCE \
+ 		  -DLOCALEDIR=\"@datadir@/locale\"
+ CFLAGS		= $(DEFINES) @gcc_cflags@ @CFLAGS@
+-LIBS		= @LIBS@ $(EFENCE)
++LIBS		= @LIBS@ @INTLLIBS@ $(EFENCE)
+ INSTALL_PROGRAM	= ${INSTALL}
+-- 
+2.13.5
+

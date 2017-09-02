@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPUS_VERSION = 1.1.4
-OPUS_SITE = http://downloads.xiph.org/releases/opus
+OPUS_VERSION = 1.2.1
+OPUS_SITE = https://downloads.xiph.org/releases/opus
 OPUS_LICENSE = BSD-3-Clause
 OPUS_LICENSE_FILES = COPYING
 OPUS_INSTALL_STAGING = YES

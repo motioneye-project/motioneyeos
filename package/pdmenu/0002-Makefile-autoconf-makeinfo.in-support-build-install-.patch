@@ -1,0 +1,76 @@
+From 5368bd0cfd0640f5c0ca766d4fda1b3f71c1b013 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 30 Aug 2017 23:07:26 +0200
+Subject: [PATCH] Makefile, autoconf/makeinfo.in: support build/install without
+ gettext
+
+The gettext tool msgfmt may not be available to build the .mo files
+from the .po files, so we handle this case by disabling the
+build/installation of .po files in such a case.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile             | 17 ++++++++++++++---
+ autoconf/makeinfo.in |  1 +
+ 2 files changed, 15 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index a708046..3e83ca3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -7,11 +7,18 @@ OBJFILES	:= $(SRCFILES:%.c=%.o)
+ LANGS		= fr ru es
+ MOS		:= $(addprefix po/, $(addsuffix .mo, $(LANGS)))
+ LOCALEDIR	= $(INSTALL_PREFIX)/usr/share/locale
+-
+-all: pdmenu $(POTFILE) $(MOS)
++TARGETS		= pdmenu
++INSTALL_TARGETS	= install-pdmenu
+ 
+ include makeinfo
+ 
++ifneq ($(MSGFMT),)
++TARGETS += $(POTFILE) $(MOS)
++INSTALL_TARGETS += install-pos
++endif
++
++all: $(TARGETS)
++
+ pdmenu: .dep $(OBJFILES)
+ 	${CC} -o pdmenu $(OBJFILES) $(CFLAGS) $(LIBS)
+ 
+@@ -40,7 +47,9 @@ clean:
+ 	$(MAKE) $(POTFILE) # make sure translators' input is ready
+ 	rm -f $(OBJFILES) pdmenu $(MOS)
+ 
+-install: all
++install: $(INSTALL_TARGETS)
++
++install-pdmenu:
+ 	$(INSTALL) -d $(INSTALL_PREFIX)/$(BINDIR) \
+ 		$(INSTALL_PREFIX)/$(MANDIR)/man1 \
+ 		$(INSTALL_PREFIX)/$(MANDIR)/man5 \
+@@ -56,6 +65,8 @@ install: all
+ 	$(INSTALL) examples/pdmenurc $(INSTALL_PREFIX)/$(SYSCONFDIR)/pdmenurc -m 0644
+ 	$(INSTALL) examples/showdir.pl $(INSTALL_PREFIX)/$(DATADIR)/pdmenu
+ 	cd $(INSTALL_PREFIX)/$(DATADIR)/pdmenu && $(LN_S) -f showdir.pl editdir.pl
++
++install-pos:
+ 	for lang in $(LANGS); do \
+ 		[ ! -d $(LOCALEDIR)/$$lang/LC_MESSAGES/ ] && mkdir -p $(LOCALEDIR)/$$lang/LC_MESSAGES/; \
+ 		install -m 644 po/$$lang.mo $(LOCALEDIR)/$$lang/LC_MESSAGES/pdmenu.mo; \
+diff --git a/autoconf/makeinfo.in b/autoconf/makeinfo.in
+index 6d58d77..069daf8 100644
+--- a/autoconf/makeinfo.in
++++ b/autoconf/makeinfo.in
+@@ -8,6 +8,7 @@ DATADIR		= @datadir@
+ CC		= @CC@
+ INSTALL		= @INSTALL@
+ LN_S		= @LN_S@
++MSGFMT		= @MSGFMT@
+ VER		= @VER@
+ DEFINES		= -DETCDIR=\"${SYSCONFDIR}/\" -DVER=\"${VER}\" @DEFS@ \
+ 		  $(PROFILE) -D__USE_FIXED_PROTOTYPES__ -D_GNU_SOURCE \
+-- 
+2.13.5
+

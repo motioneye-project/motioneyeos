@@ -6,7 +6,6 @@ config BR2_PACKAGE_PERL_HTTP_MESSAGE
 	select BR2_PACKAGE_PERL_LWP_MEDIATYPES
 	select BR2_PACKAGE_PERL_URI
 	help
-	  The HTTP-Message distribution contains classes useful for representing
-	  the messages passed in HTTP style communication.
+	  HTTP style message (base class)
 
-	  https://github.com/libwww-perl/http-message
+	  https://github.com/libwww-perl/HTTP-Message

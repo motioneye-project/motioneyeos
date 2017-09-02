@@ -18,10 +18,10 @@ cross-compiling:
    prevent overwriting those files/directories, which meant calling
    "make install" twice was failing.
 
-[Vincent: tweak the patch for 2.2.2 release]
+[Olivier: tweak the patch for 2.2.4 release]
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
 ---
  Makedefs.in        | 12 ++++++------
  conf/Makefile      |  6 +++---
@@ -37,7 +37,7 @@ index 3afef0a..3e4f1bd 100644
  # Installation programs...
  #
  
--INSTALL_BIN	=	$(LIBTOOL) $(INSTALL) -c -m 555 @INSTALL_STRIP@
+-INSTALL_BIN	=	$(LIBTOOL) $(INSTALL) -c -m @CUPS_EXE_FILE_PERM@ @INSTALL_STRIP@
 -INSTALL_COMPDATA =	$(INSTALL) -c -m 444 @INSTALL_GZIP@
 +INSTALL_BIN	=	$(LIBTOOL) $(INSTALL) -c -m 755
 +INSTALL_COMPDATA =	$(INSTALL) -c -m 644 @INSTALL_GZIP@
@@ -45,9 +45,9 @@ index 3afef0a..3e4f1bd 100644
 -INSTALL_DATA	=	$(INSTALL) -c -m 444
 +INSTALL_DATA	=	$(INSTALL) -c -m 644
  INSTALL_DIR	=	$(INSTALL) -d
--INSTALL_LIB	=	$(LIBTOOL) $(INSTALL) -c -m 555 @INSTALL_STRIP@
+-INSTALL_LIB	=	$(LIBTOOL) $(INSTALL) -c -m @CUPS_EXE_FILE_PERM@ @INSTALL_STRIP@
 -INSTALL_MAN	=	$(INSTALL) -c -m 444
--INSTALL_SCRIPT	=	$(INSTALL) -c -m 555
+-INSTALL_SCRIPT	=	$(INSTALL) -c -m @CUPS_EXE_FILE_PERM@
 +INSTALL_LIB	=	$(LIBTOOL) $(INSTALL) -c -m 755
 +INSTALL_MAN	=	$(INSTALL) -c -m 644
 +INSTALL_SCRIPT	=	$(INSTALL) -c -m 755

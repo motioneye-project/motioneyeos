@@ -178,6 +178,7 @@ F:	package/daemon/
 F:	package/ebtables/
 F:	package/openipmi/
 F:	package/ti-uim/
+F:	package/uhubctl/
 
 N:	Ben Boeckel <mathstuf@gmail.com>
 F:	package/taskd/
@@ -325,6 +326,9 @@ F:	package/nginx-upload/
 N:	Bogdan Radulescu <bogdan@nimblex.net>
 F:	package/iftop/
 F:	package/ncdu/
+
+N:	Brock Williams <brock@cottonwoodcomputer.com>
+F:	package/pdmenu/
 
 N:	Bryan Brinsko <bryan.brinsko@rockwellcollins.com>
 F:	package/pps-tools/
@@ -543,6 +547,7 @@ F:	package/supertuxkart/
 N:	Fabio Estevam <festevam@gmail.com>
 F:	board/warp7/
 F:	configs/freescale_imx*
+F:	configs/imx6q-sabresd*
 F:	configs/imx6ulpico_defconfig
 F:	configs/mx6cubox_defconfig
 F:	configs/mx6sx_udoo_neo_defconfig
@@ -946,6 +951,9 @@ F:	package/libnet/
 F:	package/libuio/
 F:	package/netsniff-ng/
 F:	package/rabbitmq-c/
+
+N:	Joshua Henderson <joshua.henderson@microchip.com>
+F:	package/qt5/qt5wayland/
 
 N:	Juha Rantanen <juha@codercoded.com>
 F:	package/acsccid/
@@ -1427,6 +1435,9 @@ F:	package/tzdata/
 N:	Rico Bachmann <bachmann@tofwerk.com>
 F:	package/apr-util/
 F:	package/subversion/
+
+N:	RJ Ascani <rj.ascani@gmail.com>
+F:	package/azmq/
 
 N:	Rodrigo Rebello <rprebello@gmail.com>
 F:	package/chocolate-doom/

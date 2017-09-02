@@ -3,6 +3,7 @@
 import argparse
 import getdeveloperlib
 import sys
+import os
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -12,6 +13,8 @@ def parse_args():
                         help='find developers in charge of this architecture')
     parser.add_argument('-p', dest='package', action='store',
                         help='find developers in charge of this package')
+    parser.add_argument('-f', dest='files', nargs='*',
+                        help='find developers in charge of these files')
     parser.add_argument('-c', dest='check', action='store_const',
                         const=True, help='list files not handled by any developer')
     return parser.parse_args()
@@ -27,6 +30,8 @@ def __main__():
     if args.architecture is not None:
         action += 1
     if args.package is not None:
+        action += 1
+    if args.files:
         action += 1
     if args.check:
         action += 1
@@ -58,6 +63,16 @@ def __main__():
             if args.package in dev.packages:
                 print(dev.name)
         return
+
+    # Handle the files action
+    if args.files is not None:
+        args.files = [os.path.abspath(f) for f in args.files]
+        for dev in devs:
+            for devfile in dev.files:
+                commonfiles = [f for f in args.files if f.startswith(devfile)]
+                if commonfiles:
+                    print(dev.name)
+                    break
 
     # Handle the patches action
     if len(args.patches) != 0:

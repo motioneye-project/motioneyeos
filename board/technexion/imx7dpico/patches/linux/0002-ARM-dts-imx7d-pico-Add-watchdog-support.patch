@@ -1,0 +1,49 @@
+From d1ceec2a8f6ab1b35c296c3339127adca1ace30b Mon Sep 17 00:00:00 2001
+From: Fabio Estevam <fabio.estevam@nxp.com>
+Date: Tue, 23 May 2017 12:16:08 -0300
+Subject: [PATCH] ARM: dts: imx7d-pico: Add watchdog support
+
+imx7d-pico has the WDOG1_B pin connected to the PMIC, so add the
+wdog1 node and use the 'fsl,ext-reset-output' property to
+properly describe it.
+
+Signed-off-by: Fabio Estevam <fabio.estevam@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Upstream: https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=d1ceec2a8f6ab1b35c296c3339127adca1ace30b
+---
+ arch/arm/boot/dts/imx7d-pico.dts | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+diff --git a/arch/arm/boot/dts/imx7d-pico.dts b/arch/arm/boot/dts/imx7d-pico.dts
+index ebda3df..f874352 100644
+--- a/arch/arm/boot/dts/imx7d-pico.dts
++++ b/arch/arm/boot/dts/imx7d-pico.dts
+@@ -284,6 +284,13 @@
+ 	status = "okay";
+ };
+ 
++&wdog1 {
++	pinctrl-names = "default";
++	pinctrl-0 = <&pinctrl_wdog>;
++	fsl,ext-reset-output;
++	status = "okay";
++};
++
+ &iomuxc {
+ 	pinctrl_enet1: enet1grp {
+ 		fsl,pins = <
+@@ -385,3 +392,11 @@
+ 		>;
+ 	};
+ };
++
++&iomuxc_lpsr {
++	pinctrl_wdog: wdoggrp {
++		fsl,pins = <
++			MX7D_PAD_LPSR_GPIO1_IO00__WDOD1_WDOG_B	0x74
++		>;
++	};
++};
+-- 
+2.7.4
+

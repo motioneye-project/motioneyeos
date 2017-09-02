@@ -14,6 +14,7 @@ BCUSDK_CONF_OPTS = \
 	--enable-onlyeibd \
 	--enable-ft12 \
 	--enable-pei16 \
+	--enable-tpuarts \
 	--enable-eibnetip \
 	--enable-eibnetipserver \
 	--enable-eibnetiptunnel \

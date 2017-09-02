@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LZIP_VERSION = 1.18
+LZIP_VERSION = 1.19
 LZIP_SITE = http://download.savannah.gnu.org/releases/lzip
 LZIP_LICENSE = GPL-2.0+
 LZIP_LICENSE_FILES = COPYING

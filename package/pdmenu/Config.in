@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PDMENU
+	bool "pdmenu"
+	depends on BR2_USE_MMU # slang
+	select BR2_PACKAGE_SLANG
+	help
+	  Pdmenu is a full screen menuing system for Unix. It is
+	  designed to be easy to use, and is suitable as a login shell
+	  for inexperienced users, or it can just be ran at the
+	  command line as a handy menu.
+
+	  Pdmenu features color support and GPM mouse support at the
+	  Linux console. It was developed on Linux, and has now been
+	  compiled on many other unixes without problems.
+
+	  https://joeyh.name/code/pdmenu/
