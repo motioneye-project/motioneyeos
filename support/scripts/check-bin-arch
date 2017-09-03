@@ -36,6 +36,12 @@ while read f; do
 		continue
 	fi
 
+	# Skip symlinks. Some symlinks may have absolute paths as
+	# target, pointing to host binaries while we're building.
+	if [[ -L "${f}" ]]; then
+		continue
+	fi
+
 	# Get architecture using readelf. We pipe through 'head -1' so
 	# that when the file is a static library (.a), we only take
 	# into account the architecture of the first object file.
