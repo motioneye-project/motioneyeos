@@ -24,12 +24,11 @@ config BR2_GCC_VERSION_4_9_X
 	bool "gcc 4.9.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	# Broken or unsupported architectures
-	depends on !BR2_arc && !BR2_or1k
-	# musl microblaze unsupported
+	depends on !BR2_arc
+	depends on !BR2_or1k
+	# musl on microblaze, ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
-	# musl ppc64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	# musl mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
@@ -39,10 +38,10 @@ config BR2_GCC_VERSION_5_X
 	bool "gcc 5.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	# Broken or unsupported architectures
-	depends on !BR2_arc && !BR2_or1k
-	# musl ppc64 unsupported
+	depends on !BR2_arc
+	depends on !BR2_or1k
+	# musl on ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	# musl mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
