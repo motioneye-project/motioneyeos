@@ -87,6 +87,7 @@ config BR2_bfin
 
 config BR2_csky
 	bool "csky"
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
 	  csky is processor IP from china.
