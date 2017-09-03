@@ -28,12 +28,6 @@ config BR2_GCC_VERSION_4_9_X
 	# Broken or unsupported ARM cores
 	depends on !BR2_cortex_a17 && !BR2_cortex_a17_a7
 	depends on !BR2_cortex_a72 && !BR2_cortex_a72_a53
-	# Unsupported MIPS cores
-	depends on !BR2_mips_interaptiv
-	# Unsupported for MIPS R5
-	depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
-	# Unsupported for MIPS R6
-	depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
 	# musl microblaze unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
 	# musl ppc64 unsupported
@@ -53,8 +47,6 @@ config BR2_GCC_VERSION_5_X
 	depends on !BR2_cortex_a57_a53 && !BR2_cortex_a72_a53
 	# musl ppc64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	# Unsupported MIPS cores
-	depends on !BR2_mips_interaptiv && !BR2_mips_m5150 && !BR2_mips_i6400
 	# musl mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
