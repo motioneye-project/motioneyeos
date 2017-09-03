@@ -59,7 +59,7 @@ config BR2_ARM_CPU_ARMV7A
 config BR2_ARM_CPU_ARMV7M
 	bool
 
-config BR2_ARM_CPU_ARMV8
+config BR2_ARM_CPU_ARMV8A
 	bool
 
 choice
@@ -249,7 +249,7 @@ config BR2_cortex_a53
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
-	select BR2_ARM_CPU_ARMV8
+	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a57
 	bool "cortex-A57"
@@ -257,7 +257,7 @@ config BR2_cortex_a57
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
-	select BR2_ARM_CPU_ARMV8
+	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 config BR2_cortex_a57_a53
 	bool "cortex-A57/A53 big.LITTLE"
@@ -265,7 +265,7 @@ config BR2_cortex_a57_a53
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
-	select BR2_ARM_CPU_ARMV8
+	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_cortex_a72
@@ -274,7 +274,7 @@ config BR2_cortex_a72
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
-	select BR2_ARM_CPU_ARMV8
+	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 config BR2_cortex_a72_a53
@@ -283,7 +283,7 @@ config BR2_cortex_a72_a53
 	select BR2_ARM_CPU_HAS_NEON if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_THUMB2 if !BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
-	select BR2_ARM_CPU_ARMV8
+	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 endchoice
@@ -570,7 +570,7 @@ config BR2_GCC_TARGET_CPU
 	# armv7m
 	default "cortex-m3"	if BR2_cortex_m3
 	default "cortex-m4"	if BR2_cortex_m4
-	# armv8
+	# armv8a
 	default "cortex-a53"	if BR2_cortex_a53
 	default "cortex-a57"	if BR2_cortex_a57
 	default "cortex-a57.cortex-a53"	if BR2_cortex_a57_a53
