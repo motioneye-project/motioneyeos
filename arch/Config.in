@@ -79,6 +79,7 @@ config BR2_aarch64_be
 config BR2_bfin
 	bool "Blackfin"
 	select BR2_ARCH_HAS_FDPIC_SUPPORT
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	help
 	  The Blackfin is a family of 16 or 32-bit microprocessors developed,
 	  manufactured and marketed by Analog Devices.
