@@ -43,6 +43,7 @@ choice
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
+	depends on BR2_ARCH_HAS_TOOLCHAIN_BUILDROOT
 	depends on !BR2_bf606
 	depends on !BR2_bf607
 	depends on !BR2_bf608

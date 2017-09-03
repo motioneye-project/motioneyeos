@@ -250,6 +250,16 @@ config BR2_xtensa
 
 endchoice
 
+# For some architectures or specific cores, our internal toolchain
+# backend is not suitable (like, missing support in upstream gcc, or
+# no ChipCo fork exists...)
+config BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+	bool
+
+config BR2_ARCH_HAS_TOOLCHAIN_BUILDROOT
+	bool
+	default y if !BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+
 # The following string values are defined by the individual
 # Config.in.$ARCH files
 config BR2_ARCH
