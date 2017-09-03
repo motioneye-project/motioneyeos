@@ -61,6 +61,7 @@ config BR2_mips_m5150
 config BR2_mips_m6250
 	bool "M6250"
 	depends on !BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 	select BR2_MIPS_CPU_MIPS32R6
 config BR2_mips_p5600
 	bool "P5600"
@@ -103,6 +104,7 @@ config BR2_mips_i6400
 config BR2_mips_p6600
 	bool "P6600"
 	depends on BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
