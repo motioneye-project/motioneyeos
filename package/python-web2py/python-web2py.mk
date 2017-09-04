@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-PYTHON_WEB2PY_VERSION = R-2.14.6
+PYTHON_WEB2PY_VERSION = R-2.15.4
 PYTHON_WEB2PY_SITE = $(call github,web2py,web2py,$(PYTHON_WEB2PY_VERSION))
 PYTHON_WEB2PY_LICENSE = LGPL-3.0
 PYTHON_WEB2PY_LICENSE_FILES = LICENSE
-PYTHON_WEB2PY_DEPENDENCIES = python python-pydal host-python-pydal
+PYTHON_WEB2PY_DEPENDENCIES = $(if $(BR2_PACKAGE_PYTHON3),host-python3 python3,host-python python) \
+	python-pydal host-python-pydal
 
 PYTHON_WEB2PY_EXCLUSIONS = \
 	welcome.w2p \
@@ -30,7 +31,7 @@ PYTHON_WEB2PY_EXCLUSIONS = \
 	tox.ini
 
 define PYTHON_WEB2PY_GENERATE_PASSWORD
-	$(HOST_DIR)/bin/python2 -c 'import os; \
+	$(HOST_DIR)/bin/python -c 'import os; \
 		os.chdir("$(@D)"); \
 		from gluon.main import save_password; \
 		save_password($(BR2_PACKAGE_PYTHON_WEB2PY_PASSWORD),8000)'
