@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PYTHON_SIMPLESQLITE
+	bool "python-simplesqlite"
+	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
+	select BR2_PACKAGE_PYTHON_LOGBOOK # runtime
+	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
+	select BR2_PACKAGE_PYTHON_PATHVALIDATE # runtime
+	select BR2_PACKAGE_PYTHON_PYTABLEREADER # runtime
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_SQLITE if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_SQLITE if BR2_PACKAGE_PYTHON3 # runtime
+	select BR2_PACKAGE_PYTHON_TYPEPY # runtime
+	help
+	  SimpleSQLite is a Python library to simplify SQLite database
+	  operations: table creation, data insertion and get data as
+	  other data formats.
+
+	  https://github.com/thombashi/SimpleSQLite
