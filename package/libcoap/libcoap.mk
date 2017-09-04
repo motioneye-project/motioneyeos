@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBCOAP_VERSION = c909bf802034b7762a2182848304b2530e58444f
+LIBCOAP_VERSION = v4.1.2
 LIBCOAP_SITE = $(call github,obgm,libcoap,$(LIBCOAP_VERSION))
 LIBCOAP_INSTALL_STAGING = YES
 LIBCOAP_LICENSE = GPL-2.0+ or BSD-2-Clause
