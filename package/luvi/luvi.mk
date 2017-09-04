@@ -5,7 +5,8 @@
 ################################################################################
 
 LUVI_VERSION = v2.7.6
-LUVI_SITE = $(call github,luvit,luvi,$(LUVI_VERSION))
+LUVI_SITE = git://github.com/luvit/luvi.git
+LUVI_GIT_SUBMODULES = YES
 LUVI_LICENSE = Apache-2.0
 LUVI_LICENSE_FILES = LICENSE.txt
 LUVI_DEPENDENCIES = libuv luajit luv host-luajit
