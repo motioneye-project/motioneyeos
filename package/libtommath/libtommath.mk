@@ -17,7 +17,7 @@ define LIBTOMMATH_BUILD_CMDS
 endef
 
 define LIBTOMMATH_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)" install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)" PREFIX=/usr install
 endef
 
 $(eval $(generic-package))
