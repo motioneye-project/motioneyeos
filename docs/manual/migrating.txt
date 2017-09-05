@@ -1,8 +1,15 @@
 // -*- mode:doc; -*-
 // vim: set syntax=asciidoc:
 
+[[migrating-from-ol-versions]]
+== Migrating from older Buildroot versions
+
+Some versions have introduced backward incompatibilities. This section
+explains those incompatibilities, and for each explains what to do to
+complete the migration.
+
 [[br2-external-converting]]
-== Converting old br2-external trees
+=== Migrating to 2016.11
 
 Before Buildroot 2016.11, it was possible to use only one br2-external
 tree at once. With Buildroot 2016.11 came the possibility to use more

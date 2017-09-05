@@ -3,4 +3,4 @@
 
 include::makedev-syntax.txt[]
 include::makeusers-syntax.txt[]
-include::br2-external-converting.txt[]
+include::migrating.txt[]
