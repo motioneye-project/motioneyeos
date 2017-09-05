@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NODEJS_VERSION = 8.2.1
+NODEJS_VERSION = 8.4.0
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs c-ares \
@@ -82,8 +82,6 @@ define HOST_NODEJS_INSTALL_CMDS
 		$(HOST_CONFIGURE_OPTS) \
 		NO_LOAD=cctest.target.mk \
 		PATH=$(@D)/bin:$(BR_PATH)
-
-	$(INSTALL) -m755 -D $(@D)/out/Release/mkpeephole $(HOST_DIR)/bin/mkpeephole
 endef
 
 ifeq ($(BR2_i386),y)
@@ -131,9 +129,6 @@ define NODEJS_CONFIGURE_CMDS
 		$(if $(NODEJS_MIPS_FPU_MODE),--with-mips-fpu-mode=$(NODEJS_MIPS_FPU_MODE)) \
 		$(NODEJS_CONF_OPTS) \
 	)
-
-	# use host version of mkpeephole
-	sed "s#<(mkpeephole_exec)#$(HOST_DIR)/bin/mkpeephole#g" -i $(@D)/deps/v8/src/v8.gyp
 endef
 
 define NODEJS_BUILD_CMDS
