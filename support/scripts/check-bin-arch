@@ -38,7 +38,7 @@ while read f; do
 
 	# Skip symlinks. Some symlinks may have absolute paths as
 	# target, pointing to host binaries while we're building.
-	if [[ -L "${f}" ]]; then
+	if [[ -L "${TARGET_DIR}/${f}" ]]; then
 		continue
 	fi
 
