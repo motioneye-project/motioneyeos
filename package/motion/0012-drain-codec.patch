@@ -1,0 +1,68 @@
+diff --git a/ffmpeg.c b/ffmpeg.c
+index 0e44c97..e5a2b9e 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -463,6 +463,55 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+ 
+ }
+ 
++static int ffmpeg_drain_codec(struct ffmpeg *ffmpeg){
++
++#if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
++    //ffmpeg version 3.1 and after
++    int retcd = 0;
++    char errstr[128];
++
++    av_init_packet(&ffmpeg->pkt);
++    ffmpeg->pkt.data = NULL;
++    ffmpeg->pkt.size = 0;
++
++    retcd = avcodec_send_frame(ffmpeg->ctx_codec, NULL);
++    if (retcd < 0 ){
++        av_strerror(retcd, errstr, sizeof(errstr));
++        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error draining codec:%s",errstr);
++        my_packet_unref(ffmpeg->pkt);
++        return -1;
++    }
++    for (;;) {
++        retcd = avcodec_receive_packet(ffmpeg->ctx_codec, &ffmpeg->pkt);
++        if (retcd == AVERROR_EOF)
++            break;
++        if (retcd < 0 ){
++            av_strerror(retcd, errstr, sizeof(errstr));
++            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error receiving encoded packet video:%s",errstr);
++            my_packet_unref(ffmpeg->pkt);
++            return -1;
++        } else {
++            retcd = ffmpeg_write_packet(ffmpeg);
++            if (retcd < 0) {
++                MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error while writing video frame");
++                my_packet_unref(ffmpeg->pkt);
++                return -1;
++            }
++        }
++    }
++
++    my_packet_unref(ffmpeg->pkt);
++    return 0;
++
++#else
++
++    // do nothing
++    return 0;
++
++#endif
++
++}
++
+ static int ffmpeg_set_pts(struct ffmpeg *ffmpeg, const struct timeval *tv1){
+ 
+     int64_t pts_interval;
+@@ -894,6 +943,7 @@ void ffmpeg_close(struct ffmpeg *ffmpeg){
+ #ifdef HAVE_FFMPEG
+ 
+     if (ffmpeg != NULL) {
++        ffmpeg_drain_codec(ffmpeg);
+         if (ffmpeg->tlapse != TIMELAPSE_APPEND) {
+             av_write_trailer(ffmpeg->oc);
+         }
