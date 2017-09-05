@@ -1,13 +1,13 @@
 diff --git a/ffmpeg.c b/ffmpeg.c
-index 87b4f75..3e7787c 100644
+index 87b4f75..f3c685a 100644
 --- a/ffmpeg.c
 +++ b/ffmpeg.c
-@@ -236,10 +236,21 @@ static void ffmpeg_free_context(struct ffmpeg *ffmpeg){
+@@ -236,12 +236,24 @@ static void ffmpeg_free_context(struct ffmpeg *ffmpeg){
  
  static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
  
 +    size_t codec_name_len = strcspn(ffmpeg->codec_name, ":");
-+    char *codec_name = alloca(codec_name_len + 1);
++    char *codec_name = malloc(codec_name_len + 1);
 +
 +    if (codec_name == NULL) {
 +        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Failed to allocate memory for codec name");
@@ -26,16 +26,21 @@ index 87b4f75..3e7787c 100644
 +        (strcmp(codec_name, "swf") == 0) ) && (ffmpeg->fps >50)){
          MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "The frame rate specified is too high for the ffmpeg movie type specified. Choose a different ffmpeg container or lower framerate.");
          ffmpeg_free_context(ffmpeg);
++        free(codec_name);
          return -1;
-@@ -250,59 +261,59 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
+     }
+ 
+@@ -250,59 +262,61 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
          if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_MPEG2VIDEO;
          strncat(ffmpeg->filename, ".mpg", 4);
          if (!ffmpeg->oc->oformat) {
 -            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "ffmpeg_video_codec option value %s is not supported", ffmpeg->codec_name);
 +            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "ffmpeg_video_codec option value %s is not supported", codec_name);
              ffmpeg_free_context(ffmpeg);
++            free(codec_name);
              return -1;
          }
++        free(codec_name);
          return 0;
      }
  
@@ -97,16 +102,29 @@ index 87b4f75..3e7787c 100644
          ffmpeg->oc->oformat = av_guess_format("mp4", NULL, NULL);
          strncat(ffmpeg->filename, ".mp4", 4);
          if (ffmpeg->oc->oformat) ffmpeg->oc->oformat->video_codec = MY_CODEC_ID_HEVC;
-@@ -310,7 +321,7 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
+@@ -310,17 +324,20 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
  
      //Check for valid results
      if (!ffmpeg->oc->oformat) {
 -        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "codec option value %s is not supported", ffmpeg->codec_name);
 +        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "codec option value %s is not supported", codec_name);
          ffmpeg_free_context(ffmpeg);
++        free(codec_name);
          return -1;
      }
-@@ -484,13 +495,23 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
+ 
+     if (ffmpeg->oc->oformat->video_codec == MY_CODEC_ID_NONE) {
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Could not get the codec");
+         ffmpeg_free_context(ffmpeg);
++        free(codec_name);
+         return -1;
+     }
+ 
++    free(codec_name);
+     return 0;
+ }
+ 
+@@ -484,13 +501,23 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
      int retcd;
      char errstr[128];
      int chkrate;
@@ -131,15 +149,3 @@ index 87b4f75..3e7787c 100644
  
  #if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
      //If we provide the codec to this, it results in a memory leak.  ffmpeg ticket: 5714
-diff --git a/ffmpeg.h b/ffmpeg.h
-index 78a2785..95383a7 100644
---- a/ffmpeg.h
-+++ b/ffmpeg.h
-@@ -5,6 +5,7 @@
- #include <stdarg.h>
- #include <sys/time.h>
- #include <stdint.h>
-+#include <alloca.h>
- #include "config.h"
- 
- enum TIMELAPSE_TYPE {
