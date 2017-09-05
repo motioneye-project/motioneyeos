@@ -108,8 +108,8 @@ def main():
 
     nose2_args = ["-v",
                   "-N", str(args.testcases),
-                  "-s", "support/testing",
-                  "-c", "support/testing/conf/unittest.cfg"]
+                  "-s", test_dir,
+                  "-c", os.path.join(test_dir, "conf/unittest.cfg")]
 
     if len(args.testname) != 0:
         nose2_args += args.testname
