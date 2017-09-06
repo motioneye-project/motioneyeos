@@ -41,6 +41,12 @@ TVHEADEND_DEPENDENCIES += opus
 else
 TVHEADEND_CONF_OPTS += --disable-libopus
 endif
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+TVHEADEND_CONF_OPTS += --enable-omx
+TVHEADEND_DEPENDENCIES += rpi-userland
+else
+TVHEADEND_CONF_OPTS += --disable-omx
+endif
 ifeq ($(BR2_PACKAGE_X265),y)
 TVHEADEND_CONF_OPTS += --enable-libx265
 TVHEADEND_DEPENDENCIES += x265
@@ -51,6 +57,7 @@ else
 TVHEADEND_CONF_OPTS += \
 	--disable-libav \
 	--disable-libopus \
+	--disable-omx \
 	--disable-vaapi \
 	--disable-libx264 \
 	--disable-libx265
