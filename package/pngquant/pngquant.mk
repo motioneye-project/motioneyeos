@@ -22,6 +22,7 @@ define PNGQUANT_CONFIGURE_CMDS
 		./configure --prefix=/usr \
 		$(if $(BR2_PACKAGE_LCMS2),--with-lcms2,--without-lcms2) \
 		$(if $(BR2_X86_CPU_HAS_SSE),--enable-sse,--disable-sse) \
+		$(TARGET_CONFIGURE_OPTS) \
 	)
 endef
 
