@@ -29,6 +29,12 @@ endif
 ifeq ($(BR2_PACKAGE_TVHEADEND_TRANSCODING),y)
 TVHEADEND_CONF_OPTS += --enable-libav --enable-libx264
 TVHEADEND_DEPENDENCIES += ffmpeg x264
+ifeq ($(BR2_PACKAGE_LIBVA)$(BR2_PACKAGE_XORG7),yy)
+TVHEADEND_CONF_OPTS += --enable-vaapi
+TVHEADEND_DEPENDENCIES += libva
+else
+TVHEADEND_CONF_OPTS += --disable-vaapi
+endif
 ifeq ($(BR2_PACKAGE_OPUS),y)
 TVHEADEND_CONF_OPTS += --enable-libopus
 TVHEADEND_DEPENDENCIES += opus
@@ -45,6 +51,7 @@ else
 TVHEADEND_CONF_OPTS += \
 	--disable-libav \
 	--disable-libopus \
+	--disable-vaapi \
 	--disable-libx264 \
 	--disable-libx265
 endif
