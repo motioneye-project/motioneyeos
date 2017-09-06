@@ -36,3 +36,4 @@ if [ -d /etc/adminpasswd.d ]; then
     done
 fi
 
+sync
