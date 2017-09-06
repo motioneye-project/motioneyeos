@@ -15,7 +15,33 @@ LIBQMI_AUTORECONF = YES
 
 LIBQMI_DEPENDENCIES = libglib2
 
-# we don't want -Werror and disable gudev Gobject bindings
-LIBQMI_CONF_OPTS = --enable-more-warnings=no --without-udev
+# we don't want -Werror
+LIBQMI_CONF_OPTS = --enable-more-warnings=no
+
+# if libgudev available, request udev support for a better
+# qmi-firmware-update experience
+ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
+LIBQMI_DEPENDENCIES += libgudev
+LIBQMI_CONF_OPTS += --with-udev
+else
+LIBQMI_CONF_OPTS += --without-udev
+endif
+
+# if libmbim available, request QMI-over-MBIM support
+ifeq ($(BR2_PACKAGE_LIBMBIM),y)
+LIBQMI_DEPENDENCIES += libmbim
+LIBQMI_CONF_OPTS += --enable-mbim-qmux
+else
+LIBQMI_CONF_OPTS += --disable-mbim-qmux
+endif
+
+# if ModemManager available, enable MM runtime check in
+# qmi-firmware-update (note that we don't need to build-depend on
+# anything else)
+ifeq ($(BR2_PACKAGE_MODEM_MANAGER),y)
+LIBQMI_CONF_OPTS += --enable-mm-runtime-check
+else
+LIBQMI_CONF_OPTS += --disable-mm-runtime-check
+endif
 
 $(eval $(autotools-package))
