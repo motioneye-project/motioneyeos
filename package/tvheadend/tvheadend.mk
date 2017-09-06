@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION = 54e63e3f9af8fdc0d23f61f3cda7fa7b246c1732
+TVHEADEND_VERSION = 303f418e1ac2bb3078f7a974b69f04ab6a56c636
 TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
 TVHEADEND_LICENSE = GPL-3.0+
 TVHEADEND_LICENSE_FILES = LICENSE.md
@@ -27,10 +27,26 @@ TVHEADEND_CONF_OPTS += --disable-dbus-1
 endif
 
 ifeq ($(BR2_PACKAGE_TVHEADEND_TRANSCODING),y)
-TVHEADEND_DEPENDENCIES += ffmpeg
-TVHEADEND_CONF_OPTS += --enable-libav
+TVHEADEND_CONF_OPTS += --enable-libav --enable-libx264
+TVHEADEND_DEPENDENCIES += ffmpeg x264
+ifeq ($(BR2_PACKAGE_OPUS),y)
+TVHEADEND_CONF_OPTS += --enable-libopus
+TVHEADEND_DEPENDENCIES += opus
 else
-TVHEADEND_CONF_OPTS += --disable-libav
+TVHEADEND_CONF_OPTS += --disable-libopus
+endif
+ifeq ($(BR2_PACKAGE_X265),y)
+TVHEADEND_CONF_OPTS += --enable-libx265
+TVHEADEND_DEPENDENCIES += x265
+else
+TVHEADEND_CONF_OPTS += --disable-libx265
+endif
+else
+TVHEADEND_CONF_OPTS += \
+	--disable-libav \
+	--disable-libopus \
+	--disable-libx264 \
+	--disable-libx265
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDVBCSA),y)
