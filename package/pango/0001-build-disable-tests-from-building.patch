@@ -1,16 +1,18 @@
-From cde9a78711e8eaed0aefb9e36288f22918e8d4b2 Mon Sep 17 00:00:00 2001
+From 1c503a8b2f127c12e58a6e8ba01743c04061df50 Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
-Date: Thu, 2 Mar 2017 09:41:41 -0300
+Date: Tue, 5 Sep 2017 07:25:17 -0400
 Subject: [PATCH] build: disable tests from building
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Adam: refresh for pango 1.40.12]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  Makefile.am | 2 +-
  Makefile.in | 2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index 9e31b34..32e5c29 100644
+index 70bf8b0..c69daf0 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -1,6 +1,6 @@
@@ -19,21 +21,21 @@ index 9e31b34..32e5c29 100644
 -SUBDIRS= pango pango-view examples docs tools tests win32
 +SUBDIRS= pango pango-view examples docs tools win32
  
- EXTRA_DIST = 			\
- 	autogen.sh		\
+ meson_dist_files = \
+ 	pango/pango-features.h.meson \
 diff --git a/Makefile.in b/Makefile.in
-index 6b6f6c7..ed0cfa2 100644
+index 8489ca1..51f6ada 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -418,7 +418,7 @@ target_alias = @target_alias@
+@@ -412,7 +412,7 @@ target_alias = @target_alias@
  top_build_prefix = @top_build_prefix@
  top_builddir = @top_builddir@
  top_srcdir = @top_srcdir@
 -SUBDIRS = pango pango-view examples docs tools tests win32
 +SUBDIRS = pango pango-view examples docs tools win32
- EXTRA_DIST = \
- 	autogen.sh		\
- 	pango.pc.in		\
+ meson_dist_files = \
+ 	pango/pango-features.h.meson \
+ 	pango-view/meson.build \
 -- 
-2.10.2
+2.13.5
 
