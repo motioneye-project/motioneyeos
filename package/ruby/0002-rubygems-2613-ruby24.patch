@@ -1,0 +1,364 @@
+[PATCH] bump rubygems to 2.6.12
+
+Downloaded from upstream:
+https://bugs.ruby-lang.org/attachments/download/6693/rubygems-2613-ruby24.patch
+
+And converted to patch-p1.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+diff --git a/lib/rubygems.rb b/lib/rubygems.rb
+index bc5bf9b4c2..55aa85b8b2 100644
+--- a/lib/rubygems.rb
++++ b/lib/rubygems.rb
+@@ -10,7 +10,7 @@
+ require 'thread'
+ 
+ module Gem
+-  VERSION = "2.6.12"
++  VERSION = "2.6.13"
+ end
+ 
+ # Must be first since it unloads the prelude from 1.9.2
+diff --git a/lib/rubygems/commands/query_command.rb b/lib/rubygems/commands/query_command.rb
+index 70f8127292..44144203e0 100644
+--- a/lib/rubygems/commands/query_command.rb
++++ b/lib/rubygems/commands/query_command.rb
+@@ -226,7 +226,7 @@ def output_versions output, versions
+         end
+       end
+ 
+-      output << make_entry(matching_tuples, platforms)
++      output << clean_text(make_entry(matching_tuples, platforms))
+     end
+   end
+ 
+@@ -353,7 +353,8 @@ def spec_platforms entry, platforms
+   end
+ 
+   def spec_summary entry, spec
+-    entry << "\n\n" << format_text(spec.summary, 68, 4)
++    summary = truncate_text(spec.summary, "the summary for #{spec.full_name}")
++    entry << "\n\n" << format_text(summary, 68, 4)
+   end
+ 
+ end
+diff --git a/lib/rubygems/installer.rb b/lib/rubygems/installer.rb
+index 967543c2d1..6fd3399dd4 100644
+--- a/lib/rubygems/installer.rb
++++ b/lib/rubygems/installer.rb
+@@ -697,6 +697,11 @@ def verify_gem_home(unpack = false) # :nodoc:
+       unpack or File.writable?(gem_home)
+   end
+ 
++  def verify_spec_name
++    return if spec.name =~ Gem::Specification::VALID_NAME_PATTERN
++    raise Gem::InstallError, "#{spec} has an invalid name"
++  end
++
+   ##
+   # Return the text for an application file.
+ 
+@@ -823,6 +828,8 @@ def pre_install_checks
+ 
+     ensure_loadable_spec
+ 
++    verify_spec_name
++
+     if options[:install_as_default]
+       Gem.ensure_default_gem_subdirectories gem_home
+     else
+diff --git a/lib/rubygems/remote_fetcher.rb b/lib/rubygems/remote_fetcher.rb
+index e6a13d4b8c..8f0cf0b402 100644
+--- a/lib/rubygems/remote_fetcher.rb
++++ b/lib/rubygems/remote_fetcher.rb
+@@ -110,7 +110,7 @@ def api_endpoint(uri)
+     else
+       target = res.target.to_s.strip
+ 
+-      if /\.#{Regexp.quote(host)}\z/ =~ target
++      if URI("http://" + target).host.end_with?(".#{host}")
+         return URI.parse "#{uri.scheme}://#{target}#{uri.path}"
+       end
+ 
+diff --git a/lib/rubygems/specification.rb b/lib/rubygems/specification.rb
+index 500f0af768..88e320c05a 100644
+--- a/lib/rubygems/specification.rb
++++ b/lib/rubygems/specification.rb
+@@ -108,6 +108,8 @@ class Gem::Specification < Gem::BasicSpecification
+ 
+   private_constant :LOAD_CACHE if defined? private_constant
+ 
++  VALID_NAME_PATTERN = /\A[a-zA-Z0-9\.\-\_]+\z/ # :nodoc:
++
+   # :startdoc:
+ 
+   ##
+@@ -2671,9 +2673,15 @@ def validate packaging = true
+       end
+     end
+ 
+-    unless String === name then
++    if !name.is_a?(String) then
+       raise Gem::InvalidSpecificationException,
+-            "invalid value for attribute name: \"#{name.inspect}\""
++            "invalid value for attribute name: \"#{name.inspect}\" must be a string"
++    elsif name !~ /[a-zA-Z]/ then
++      raise Gem::InvalidSpecificationException,
++            "invalid value for attribute name: #{name.dump} must include at least one letter"
++    elsif name !~ VALID_NAME_PATTERN then
++      raise Gem::InvalidSpecificationException,
++            "invalid value for attribute name: #{name.dump} can only include letters, numbers, dashes, and underscores"
+     end
+ 
+     if raw_require_paths.empty? then
+diff --git a/lib/rubygems/text.rb b/lib/rubygems/text.rb
+index 732f1b99f2..b944b62c27 100644
+--- a/lib/rubygems/text.rb
++++ b/lib/rubygems/text.rb
+@@ -6,13 +6,26 @@
+ 
+ module Gem::Text
+ 
++  ##
++  # Remove any non-printable characters and make the text suitable for
++  # printing.
++  def clean_text(text)
++    text.gsub(/[\000-\b\v-\f\016-\037\177]/, ".".freeze)
++  end
++
++  def truncate_text(text, description, max_length = 100_000)
++    raise ArgumentError, "max_length must be positive" unless max_length > 0
++    return text if text.size <= max_length
++    "Truncating #{description} to #{max_length.to_s.reverse.gsub(/...(?=.)/,'\&,').reverse} characters:\n" + text[0, max_length]
++  end
++
+   ##
+   # Wraps +text+ to +wrap+ characters and optionally indents by +indent+
+   # characters
+ 
+   def format_text(text, wrap, indent=0)
+     result = []
+-    work = text.dup
++    work = clean_text(text)
+ 
+     while work.length > wrap do
+       if work =~ /^(.{0,#{wrap}})[ \n]/ then
+diff --git a/test/rubygems/test_gem_commands_query_command.rb b/test/rubygems/test_gem_commands_query_command.rb
+index d8d682b136..469223c6c0 100644
+--- a/test/rubygems/test_gem_commands_query_command.rb
++++ b/test/rubygems/test_gem_commands_query_command.rb
+@@ -116,6 +116,86 @@ def test_execute_details
+     This is a lot of text. This is a lot of text. This is a lot of text.
+     This is a lot of text.
+ 
++pl (1)
++    Platform: i386-linux
++    Author: A User
++    Homepage: http://example.com
++
++    this is a summary
++    EOF
++
++    assert_equal expected, @ui.output
++    assert_equal '', @ui.error
++  end
++
++  def test_execute_details_cleans_text
++    spec_fetcher do |fetcher|
++      fetcher.spec 'a', 2 do |s|
++        s.summary = 'This is a lot of text. ' * 4
++        s.authors = ["Abraham Lincoln \x01", "\x02 Hirohito"]
++        s.homepage = "http://a.example.com/\x03"
++      end
++
++      fetcher.legacy_platform
++    end
++
++    @cmd.handle_options %w[-r -d]
++
++    use_ui @ui do
++      @cmd.execute
++    end
++
++    expected = <<-EOF
++
++*** REMOTE GEMS ***
++
++a (2)
++    Authors: Abraham Lincoln ., . Hirohito
++    Homepage: http://a.example.com/.
++
++    This is a lot of text. This is a lot of text. This is a lot of text.
++    This is a lot of text.
++
++pl (1)
++    Platform: i386-linux
++    Author: A User
++    Homepage: http://example.com
++
++    this is a summary
++    EOF
++
++    assert_equal expected, @ui.output
++    assert_equal '', @ui.error
++  end
++
++  def test_execute_details_truncates_summary
++    spec_fetcher do |fetcher|
++      fetcher.spec 'a', 2 do |s|
++        s.summary = 'This is a lot of text. ' * 10_000
++        s.authors = ["Abraham Lincoln \x01", "\x02 Hirohito"]
++        s.homepage = "http://a.example.com/\x03"
++      end
++
++      fetcher.legacy_platform
++    end
++
++    @cmd.handle_options %w[-r -d]
++
++    use_ui @ui do
++      @cmd.execute
++    end
++
++    expected = <<-EOF
++
++*** REMOTE GEMS ***
++
++a (2)
++    Authors: Abraham Lincoln ., . Hirohito
++    Homepage: http://a.example.com/.
++
++    Truncating the summary for a-2 to 100,000 characters:
++#{"    This is a lot of text. This is a lot of text. This is a lot of text.\n" * 1449}    This is a lot of te
++
+ pl (1)
+     Platform: i386-linux
+     Author: A User
+diff --git a/test/rubygems/test_gem_installer.rb b/test/rubygems/test_gem_installer.rb
+index 882981d344..dd049214fb 100644
+--- a/test/rubygems/test_gem_installer.rb
++++ b/test/rubygems/test_gem_installer.rb
+@@ -1448,6 +1448,26 @@ def test_pre_install_checks_wrong_rubygems_version
+     end
+   end
+ 
++  def test_pre_install_checks_malicious_name
++    spec = util_spec '../malicious', '1'
++    def spec.full_name # so the spec is buildable
++      "malicious-1"
++    end
++    def spec.validate; end
++
++    util_build_gem spec
++
++    gem = File.join(@gemhome, 'cache', spec.file_name)
++
++    use_ui @ui do
++      @installer = Gem::Installer.at gem
++      e = assert_raises Gem::InstallError do
++        @installer.pre_install_checks
++      end
++      assert_equal '#<Gem::Specification name=../malicious version=1> has an invalid name', e.message
++    end
++  end
++
+   def test_shebang
+     util_make_exec @spec, "#!/usr/bin/ruby"
+ 
+diff --git a/test/rubygems/test_gem_remote_fetcher.rb b/test/rubygems/test_gem_remote_fetcher.rb
+index cb994462cd..fbb7d89019 100644
+--- a/test/rubygems/test_gem_remote_fetcher.rb
++++ b/test/rubygems/test_gem_remote_fetcher.rb
+@@ -241,6 +241,21 @@ def test_api_endpoint_ignores_trans_domain_values_that_end_with_original
+     dns.verify
+   end
+ 
++  def test_api_endpoint_ignores_trans_domain_values_that_end_with_original_in_path
++    uri = URI.parse "http://example.com/foo"
++    target = MiniTest::Mock.new
++    target.expect :target, "evil.com/a.example.com"
++
++    dns = MiniTest::Mock.new
++    dns.expect :getresource, target, [String, Object]
++
++    fetch = Gem::RemoteFetcher.new nil, dns
++    assert_equal URI.parse("http://example.com/foo"), fetch.api_endpoint(uri)
++
++    target.verify
++    dns.verify
++  end
++
+   def test_api_endpoint_timeout_warning
+     uri = URI.parse "http://gems.example.com/foo"
+ 
+diff --git a/test/rubygems/test_gem_specification.rb b/test/rubygems/test_gem_specification.rb
+index d43289d745..0fcc11e78f 100644
+--- a/test/rubygems/test_gem_specification.rb
++++ b/test/rubygems/test_gem_specification.rb
+@@ -2985,7 +2985,37 @@ def test_validate_name
+       @a1.validate
+     end
+ 
+-    assert_equal 'invalid value for attribute name: ":json"', e.message
++    assert_equal 'invalid value for attribute name: ":json" must be a string', e.message
++
++    @a1.name = []
++    e = assert_raises Gem::InvalidSpecificationException do
++      @a1.validate
++    end
++    assert_equal "invalid value for attribute name: \"[]\" must be a string", e.message
++
++    @a1.name = ""
++    e = assert_raises Gem::InvalidSpecificationException do
++      @a1.validate
++    end
++    assert_equal "invalid value for attribute name: \"\" must include at least one letter", e.message
++
++    @a1.name = "12345"
++    e = assert_raises Gem::InvalidSpecificationException do
++      @a1.validate
++    end
++    assert_equal "invalid value for attribute name: \"12345\" must include at least one letter", e.message
++
++    @a1.name = "../malicious"
++    e = assert_raises Gem::InvalidSpecificationException do
++      @a1.validate
++    end
++    assert_equal "invalid value for attribute name: \"../malicious\" can only include letters, numbers, dashes, and underscores", e.message
++
++    @a1.name = "\ba\t"
++    e = assert_raises Gem::InvalidSpecificationException do
++      @a1.validate
++    end
++    assert_equal "invalid value for attribute name: \"\\ba\\t\" can only include letters, numbers, dashes, and underscores", e.message
+   end
+ 
+   def test_validate_non_nil
+diff --git a/test/rubygems/test_gem_text.rb b/test/rubygems/test_gem_text.rb
+index a6e22e04da..04f3f605e8 100644
+--- a/test/rubygems/test_gem_text.rb
++++ b/test/rubygems/test_gem_text.rb
+@@ -36,6 +36,10 @@ def test_format_text_trailing # for two spaces after .
+     assert_equal expected, format_text(text, 78)
+   end
+ 
++  def test_format_removes_nonprintable_characters
++    assert_equal "text with weird .. stuff .", format_text("text with weird \x1b\x02 stuff \x7f", 40)
++  end
++
+   def test_min3
+     assert_equal 1, min3(1, 1, 1)
+     assert_equal 1, min3(1, 1, 2)
+@@ -74,4 +78,11 @@ def test_levenshtein_distance_replace
+     assert_equal 7, levenshtein_distance("xxxxxxx", "ZenTest")
+     assert_equal 7, levenshtein_distance("zentest", "xxxxxxx")
+   end
++
++  def test_truncate_text
++    assert_equal "abc", truncate_text("abc", "desc")
++    assert_equal "Truncating desc to 2 characters:\nab", truncate_text("abc", "desc", 2)
++    s = "ab" * 500_001
++    assert_equal "Truncating desc to 1,000,000 characters:\n#{s[0, 1_000_000]}", truncate_text(s, "desc", 1_000_000)
++  end
+ end
