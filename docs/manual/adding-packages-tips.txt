@@ -138,7 +138,7 @@ past, the 'github' helper function should be used as shown below.
 ------------------------
 # Use a tag or a full commit ID
 FOO_VERSION = v1.0
-FOO_SITE = $(call github,<user>,<package>,$(FOO_VERSION))
+FOO_SITE = $(call github,<user>,<package>[,<version>])
 ------------------------
 
 .Notes
@@ -147,6 +147,9 @@ FOO_SITE = $(call github,<user>,<package>,$(FOO_VERSION))
   Buildroot (e.g.: +foo-f6fb6654af62045239caed5950bc6c7971965e60.tar.gz+),
   so it is not necessary to specify it in the +.mk+ file.
 - When using a commit ID as version, you should use the full 40 hex characters.
+- The +version+ parameter is optional and should only be specified if anything
+  other than FOO_VERSION needs to be used, e.g. when this function is used to
+  specify a custom Linux or U-Boot tarball.
 
 If the package you wish to add does have a release section on GitHub, the
 maintainer may have uploaded a release tarball, or the release may just point
