@@ -49,6 +49,11 @@ F:	package/sngrep/
 N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/webkitgtk/
 
+N:	Aleksander Morgado <aleksander@aleksander.es>
+F:	package/libmbim/
+F:	package/libqmi/
+F:	package/modem-manager/
+
 N:	Alex Suykov <alex.suykov@gmail.com>
 F:	package/vboot-utils/
 
