@@ -13,6 +13,10 @@ GST1_PLUGINS_BAD_LICENSE_FILES = COPYING COPYING.LIB
 # enabled.
 GST1_PLUGINS_BAD_LICENSE = LGPL-2.0+, LGPL-2.1+
 
+# patch 0001-openjpeg-Fix-build-against-openjpeg-2.2.patch touches configure.ac
+GST1_PLUGINS_BAD_AUTORECONF = YES
+GST1_PLUGINS_BAD_GETTEXTIZE = YES
+
 GST1_PLUGINS_BAD_CONF_OPTS = \
 	--disable-examples \
 	--disable-valgrind \
