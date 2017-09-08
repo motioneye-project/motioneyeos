@@ -1629,6 +1629,9 @@ N:	Steven Noonan <steven@uplinklabs.net>
 F:	package/hwloc/
 F:	package/powertop/
 
+N:	Sven Haardiek <sven.haardiek@greenbone.net>
+F:	package/lcdproc/
+
 N:	Sven Neumann <neumann@teufel.de>
 F:	package/gstreamer1/gst1-libav/
 
