@@ -7,7 +7,7 @@ config BR2_PACKAGE_STRACE
 	  Allows you to track what system calls a program makes
 	  while it is running.
 
-	  http://sourceforge.net/projects/strace/
+	  https://strace.io
 
 comment "strace needs a toolchain w/ headers >= 4.0 on nios2"
 	depends on BR2_nios2
