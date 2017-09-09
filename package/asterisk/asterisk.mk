@@ -55,7 +55,6 @@ ASTERISK_CONF_OPTS = \
 	--without-cpg \
 	--without-curses \
 	--without-dahdi \
-	--without-gsm \
 	--without-gtk2 \
 	--without-gmime \
 	--without-h323 \
@@ -138,6 +137,13 @@ ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 ASTERISK_CONF_OPTS += --with-execinfo
 else
 ASTERISK_CONF_OPTS += --without-execinfo
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGSM),y)
+ASTERISK_DEPENDENCIES += libgsm
+ASTERISK_CONF_OPTS += --with-gsm
+else
+ASTERISK_CONF_OPTS += --without-gsm
 endif
 
 ASTERISK_DIRS = \
