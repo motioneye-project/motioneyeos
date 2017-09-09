@@ -1,0 +1,37 @@
+xpp: do not try to install the manpages for the perl tools
+
+The man pages are generated neither at build time nor at install time,
+so the install step fails.
+
+Just disable them.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN dahdi-tools-2.11.0.orig/xpp/Makefile.am dahdi-tools-2.11.0/xpp/Makefile.am
+--- dahdi-tools-2.11.0.orig/xpp/Makefile.am	2015-12-22 21:19:12.000000000 +0100
++++ dahdi-tools-2.11.0/xpp/Makefile.am	2016-01-04 23:56:31.851820973 +0100
+@@ -3,7 +3,6 @@
+ 
+ SUBDIRS		=
+ 
+-man_MANS	=
+ 
+ 
+ # FIXME: try to improve code, so we can use $(PEDANTIC)
+@@ -59,7 +58,6 @@
+ udevrules_DATA	= xpp.rules
+ 
+ dist_sbin_SCRIPTS	= $(perl_scripts)
+-man_MANS		+= $(perl_mans)
+ CLEANFILES		= $(perl_checks) $(perl_mans)
+ 
+ if	PBX_USB
+@@ -147,8 +145,6 @@
+ 		astribank_allow.8 \
+ 		astribank_is_starting.8
+ 
+-man_MANS	+= $(man_pages)
+-
+ endif
+ 
+ EXTRA_DIST	= \
