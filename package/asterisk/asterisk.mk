@@ -48,7 +48,6 @@ ASTERISK_CONF_OPTS = \
 	--disable-internal-poll \
 	--disable-asteriskssl \
 	--disable-rpath \
-	--without-asound \
 	--without-bfd \
 	--without-bluetooth \
 	--without-cap \
@@ -142,6 +141,13 @@ ASTERISK_DEPENDENCIES += libgsm
 ASTERISK_CONF_OPTS += --with-gsm
 else
 ASTERISK_CONF_OPTS += --without-gsm
+endif
+
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+ASTERISK_DEPENDENCIES += alsa-lib
+ASTERISK_CONF_OPTS += --with-asound
+else
+ASTERISK_CONF_OPTS += --without-asound
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
