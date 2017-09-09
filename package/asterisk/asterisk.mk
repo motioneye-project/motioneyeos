@@ -102,7 +102,6 @@ ASTERISK_CONF_OPTS = \
 	--without-speexdsp \
 	--without-sqlite \
 	--without-srtp \
-	--without-ssl \
 	--without-suppserv \
 	--without-tds \
 	--without-termcap \
@@ -143,6 +142,13 @@ ASTERISK_DEPENDENCIES += libgsm
 ASTERISK_CONF_OPTS += --with-gsm
 else
 ASTERISK_CONF_OPTS += --without-gsm
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+ASTERISK_DEPENDENCIES += openssl
+ASTERISK_CONF_OPTS += --with-ssl
+else
+ASTERISK_CONF_OPTS += --without-ssl
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
