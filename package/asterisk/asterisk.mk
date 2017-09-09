@@ -87,7 +87,6 @@ ASTERISK_CONF_OPTS = \
 	--without-sdl \
 	--without-SDL_image \
 	--without-spandsp \
-	--without-ss7 \
 	--without-sqlite \
 	--without-suppserv \
 	--without-tds \
@@ -197,8 +196,16 @@ endif
 ifeq ($(BR2_PACKAGE_DAHDI_LINUX)$(BR2_PACKAGE_DAHDI_TOOLS),yy)
 ASTERISK_DEPENDENCIES += dahdi-linux dahdi-tools
 ASTERISK_CONF_OPTS += --with-dahdi --with-tonezone
+
+ifeq ($(BR2_PACKAGE_LIBSS7),y)
+ASTERISK_DEPENDENCIES += libss7
+ASTERISK_CONF_OPTS += --with-ss7
 else
-ASTERISK_CONF_OPTS += --without-dahdi --without-tonezone
+ASTERISK_CONF_OPTS += --without-ss7
+endif # SS7
+
+else
+ASTERISK_CONF_OPTS += --without-dahdi --without-tonezone --without-ss7
 endif # DAHDI
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
