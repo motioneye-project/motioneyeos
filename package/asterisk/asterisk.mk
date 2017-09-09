@@ -66,7 +66,6 @@ ASTERISK_CONF_OPTS = \
 	--without-jack \
 	--without-uriparser \
 	--without-kqueue \
-	--without-ldap \
 	--without-libedit \
 	--without-libxslt \
 	--without-ltdl \
@@ -153,6 +152,13 @@ ASTERISK_DEPENDENCIES += libical
 ASTERISK_CONF_OPTS += --with-ical
 else
 ASTERISK_CONF_OPTS += --without-ical
+endif
+
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+ASTERISK_DEPENDENCIES += openldap
+ASTERISK_CONF_OPTS += --with-ldap
+else
+ASTERISK_CONF_OPTS += --without-ldap
 endif
 
 ifeq ($(BR2_PACKAGE_NEON),y)
