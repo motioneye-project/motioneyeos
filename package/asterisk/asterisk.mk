@@ -81,7 +81,6 @@ ASTERISK_CONF_OPTS = \
 	--without-postgres \
 	--without-pjproject \
 	--without-popt \
-	--without-pri \
 	--without-pwlib \
 	--without-resample \
 	--without-sdl \
@@ -197,6 +196,13 @@ ifeq ($(BR2_PACKAGE_DAHDI_LINUX)$(BR2_PACKAGE_DAHDI_TOOLS),yy)
 ASTERISK_DEPENDENCIES += dahdi-linux dahdi-tools
 ASTERISK_CONF_OPTS += --with-dahdi --with-tonezone
 
+ifeq ($(BR2_PACKAGE_LIBPRI),y)
+ASTERISK_DEPENDENCIES += libpri
+ASTERISK_CONF_OPTS += --with-pri
+else
+ASTERISK_CONF_OPTS += --without-pri
+endif # PRI
+
 ifeq ($(BR2_PACKAGE_LIBSS7),y)
 ASTERISK_DEPENDENCIES += libss7
 ASTERISK_CONF_OPTS += --with-ss7
@@ -205,7 +211,9 @@ ASTERISK_CONF_OPTS += --without-ss7
 endif # SS7
 
 else
-ASTERISK_CONF_OPTS += --without-dahdi --without-tonezone --without-ss7
+ASTERISK_CONF_OPTS += \
+	--without-dahdi --without-tonezone \
+	--without-pri --without-ss7
 endif # DAHDI
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
