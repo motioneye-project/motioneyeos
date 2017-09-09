@@ -1,2 +1,5 @@
-# From https://lists.freedesktop.org/archives/xorg/2017-March/058669.html
-sha256 3cad872e6330afb1707da11e4e959e6887ebe5bcd81854b4d2e496c52c059875  xf86-video-ati-7.9.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-September/002806.html
+md5 0ff538f78ae82ccce384dadf7a705863  xf86-video-ati-7.10.0.tar.bz2
+sha1 38e535ecc8445c1b9464ac34db959337929887f7  xf86-video-ati-7.10.0.tar.bz2
+sha256 ee51d642e3105cb5424f02622dc2966b87b42d498bb34104a70fcf6d4a8f4e79  xf86-video-ati-7.10.0.tar.bz2
+sha512 1f2f4af1d299af62644693e6fbc47a5078c9bc5e7887a1ac217121ef2fd29d8c9f50a8d9be9ddb0887d0b49141bb33484f82c1313a472ad6867266b53b4a11ad  xf86-video-ati-7.10.0.tar.bz2
