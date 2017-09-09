@@ -84,7 +84,6 @@ ASTERISK_CONF_OPTS = \
 	--without-popt \
 	--without-pri \
 	--without-pwlib \
-	--without-radius \
 	--without-resample \
 	--without-sdl \
 	--without-SDL_image \
@@ -189,6 +188,13 @@ ASTERISK_DEPENDENCIES += portaudio
 ASTERISK_CONF_OPTS += --with-portaudio
 else
 ASTERISK_CONF_OPTS += --without-portaudio
+endif
+
+ifeq ($(BR2_PACKAGE_FREERADIUS_CLIENT),y)
+ASTERISK_DEPENDENCIES += freeradius-client
+ASTERISK_CONF_OPTS += --with-radius
+else
+ASTERISK_CONF_OPTS += --without-radius
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
