@@ -57,7 +57,6 @@ ASTERISK_CONF_OPTS = \
 	--without-gmime \
 	--without-h323 \
 	--without-hoard \
-	--without-ical \
 	--without-iconv \
 	--without-iksemel \
 	--without-imap \
@@ -147,6 +146,13 @@ ASTERISK_DEPENDENCIES += bluez_utils
 ASTERISK_CONF_OPTS += --with-bluetooth
 else
 ASTERISK_CONF_OPTS += --without-bluetooth
+endif
+
+ifeq ($(BR2_PACKAGE_LIBICAL),y)
+ASTERISK_DEPENDENCIES += libical
+ASTERISK_CONF_OPTS += --with-ical
+else
+ASTERISK_CONF_OPTS += --without-ical
 endif
 
 ifeq ($(BR2_PACKAGE_NEON),y)
