@@ -114,7 +114,6 @@ ASTERISK_CONF_OPTS = \
 	--without-vorbis \
 	--without-vpb \
 	--without-x11 \
-	--without-z \
 	--with-crypt \
 	--with-jansson \
 	--with-libcurl \
@@ -144,6 +143,13 @@ ASTERISK_DEPENDENCIES += libgsm
 ASTERISK_CONF_OPTS += --with-gsm
 else
 ASTERISK_CONF_OPTS += --without-gsm
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+ASTERISK_DEPENDENCIES += zlib
+ASTERISK_CONF_OPTS += --with-z
+else
+ASTERISK_CONF_OPTS += --without-z
 endif
 
 ASTERISK_DIRS = \
