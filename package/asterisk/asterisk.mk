@@ -50,7 +50,6 @@ ASTERISK_CONF_OPTS = \
 	--disable-rpath \
 	--without-asound \
 	--without-bfd \
-	--without-execinfo \
 	--without-bluetooth \
 	--without-cap \
 	--without-cpg \
@@ -134,6 +133,12 @@ ASTERISK_CONF_OPTS += --without-avcodec
 
 ASTERISK_CONF_ENV = \
 	ac_cv_path_CONFIG_LIBXML2=$(STAGING_DIR)/usr/bin/xml2-config
+
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+ASTERISK_CONF_OPTS += --with-execinfo
+else
+ASTERISK_CONF_OPTS += --without-execinfo
+endif
 
 ASTERISK_DIRS = \
 	ASTVARLIBDIR="/usr/lib/asterisk" \
