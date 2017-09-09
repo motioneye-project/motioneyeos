@@ -90,7 +90,6 @@ ASTERISK_CONF_OPTS = \
 	--without-spandsp \
 	--without-ss7 \
 	--without-sqlite \
-	--without-srtp \
 	--without-suppserv \
 	--without-tds \
 	--without-termcap \
@@ -209,6 +208,13 @@ ASTERISK_DEPENDENCIES += speex
 ASTERISK_CONF_OPTS += --with-speex --with-speexdsp
 else
 ASTERISK_CONF_OPTS += --without-speex  --without-speexdsp
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSRTP),y)
+ASTERISK_DEPENDENCIES += libsrtp
+ASTERISK_CONF_OPTS += --with-srtp
+else
+ASTERISK_CONF_OPTS += --without-srtp
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
