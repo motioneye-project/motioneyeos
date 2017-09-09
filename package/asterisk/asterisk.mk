@@ -73,7 +73,6 @@ ASTERISK_CONF_OPTS = \
 	--without-mysqlclient \
 	--without-nbs \
 	--without-neon29 \
-	--without-netsnmp \
 	--without-newt \
 	--without-openr2 \
 	--without-osptk \
@@ -162,6 +161,13 @@ ASTERISK_CONF_ENV += \
 	ac_cv_path_CONFIG_NEON=$(STAGING_DIR)/usr/bin/neon-config
 else
 ASTERISK_CONF_OPTS += --without-neon
+endif
+
+ifeq ($(BR2_PACKAGE_NETSNMP),y)
+ASTERISK_DEPENDENCIES += netsnmp
+ASTERISK_CONF_OPTS += --with-netsnmp=$(STAGING_DIR)/usr
+else
+ASTERISK_CONF_OPTS += --without-netsnmp
 endif
 
 ifeq ($(BR2_PACKAGE_LIBOGG),y)
