@@ -49,7 +49,6 @@ ASTERISK_CONF_OPTS = \
 	--disable-asteriskssl \
 	--disable-rpath \
 	--without-bfd \
-	--without-bluetooth \
 	--without-cap \
 	--without-cpg \
 	--without-curses \
@@ -146,6 +145,13 @@ ASTERISK_DEPENDENCIES += alsa-lib
 ASTERISK_CONF_OPTS += --with-asound
 else
 ASTERISK_CONF_OPTS += --without-asound
+endif
+
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
+ASTERISK_DEPENDENCIES += bluez_utils
+ASTERISK_CONF_OPTS += --with-bluetooth
+else
+ASTERISK_CONF_OPTS += --without-bluetooth
 endif
 
 ifeq ($(BR2_PACKAGE_NEON),y)
