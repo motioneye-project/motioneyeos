@@ -84,7 +84,6 @@ ASTERISK_CONF_OPTS = \
 	--without-postgres \
 	--without-pjproject \
 	--without-popt \
-	--without-portaudio \
 	--without-pri \
 	--without-pwlib \
 	--without-radius \
@@ -171,6 +170,13 @@ ASTERISK_DEPENDENCIES += opus
 ASTERISK_CONF_OPTS += --with-opus
 else
 ASTERISK_CONF_OPTS += --without-opus
+endif
+
+ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
+ASTERISK_DEPENDENCIES += portaudio
+ASTERISK_CONF_OPTS += --with-portaudio
+else
+ASTERISK_CONF_OPTS += --without-portaudio
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
