@@ -79,7 +79,6 @@ ASTERISK_CONF_OPTS = \
 	--without-netsnmp \
 	--without-newt \
 	--without-openr2 \
-	--without-opus \
 	--without-osptk \
 	--without-oss \
 	--without-postgres \
@@ -168,6 +167,13 @@ ASTERISK_DEPENDENCIES += libogg
 ASTERISK_CONF_OPTS += --with-ogg
 else
 ASTERISK_CONF_OPTS += --without-ogg
+endif
+
+ifeq ($(BR2_PACKAGE_OPUS),y)
+ASTERISK_DEPENDENCIES += opus
+ASTERISK_CONF_OPTS += --with-opus
+else
+ASTERISK_CONF_OPTS += --without-opus
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
