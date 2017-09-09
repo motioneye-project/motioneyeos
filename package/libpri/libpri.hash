@@ -1,0 +1,7 @@
+# sha1 and sha256 from http://downloads.asterisk.org/pub/telephony/libpri/releases/
+sha1    63536f3300fb007dfd5fe8064406992ca938bd9a                          libpri-1.5.0.tar.gz
+sha256  ee224bc4aa65c54546bd09675c3f0b71817ce9e277332bce86989d8dcd556a24  libpri-1.5.0.tar.gz
+
+# License files, locally calculated
+sha256  fa5fc1d1eec39532ea517518eeefd7b6e3c14341a55e5880a0e2a49eee47a5b7  LICENSE
+sha256  53b8b3aea4faec23fd9dbd4936044aca80c9b00343e6e58ee3303cec19512b33  README
