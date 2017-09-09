@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-S6_RC_VERSION = 0.2.0.1
+S6_RC_VERSION = 0.2.1.2
 S6_RC_SITE = http://skarnet.org/software/s6-rc
 S6_RC_LICENSE = ISC
 S6_RC_LICENSE_FILES = COPYING
