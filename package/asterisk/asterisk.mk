@@ -79,7 +79,6 @@ ASTERISK_CONF_OPTS = \
 	--without-neon29 \
 	--without-netsnmp \
 	--without-newt \
-	--without-ogg \
 	--without-openr2 \
 	--without-opus \
 	--without-osptk \
@@ -156,6 +155,13 @@ ASTERISK_CONF_ENV += \
 	ac_cv_path_CONFIG_NEON=$(STAGING_DIR)/usr/bin/neon-config
 else
 ASTERISK_CONF_OPTS += --without-neon
+endif
+
+ifeq ($(BR2_PACKAGE_LIBOGG),y)
+ASTERISK_DEPENDENCIES += libogg
+ASTERISK_CONF_OPTS += --with-ogg
+else
+ASTERISK_CONF_OPTS += --without-ogg
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
