@@ -52,7 +52,6 @@ ASTERISK_CONF_OPTS = \
 	--without-cap \
 	--without-cpg \
 	--without-curses \
-	--without-dahdi \
 	--without-gtk2 \
 	--without-gmime \
 	--without-h323 \
@@ -95,7 +94,6 @@ ASTERISK_CONF_OPTS = \
 	--without-termcap \
 	--without-timerfd \
 	--without-tinfo \
-	--without-tonezone \
 	--without-unbound \
 	--without-unixodbc \
 	--without-vpb \
@@ -195,6 +193,13 @@ ASTERISK_CONF_OPTS += --with-radius
 else
 ASTERISK_CONF_OPTS += --without-radius
 endif
+
+ifeq ($(BR2_PACKAGE_DAHDI_LINUX)$(BR2_PACKAGE_DAHDI_TOOLS),yy)
+ASTERISK_DEPENDENCIES += dahdi-linux dahdi-tools
+ASTERISK_CONF_OPTS += --with-dahdi --with-tonezone
+else
+ASTERISK_CONF_OPTS += --without-dahdi --without-tonezone
+endif # DAHDI
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 ASTERISK_DEPENDENCIES += openssl
