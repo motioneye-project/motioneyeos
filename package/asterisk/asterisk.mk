@@ -76,7 +76,6 @@ ASTERISK_CONF_OPTS = \
 	--without-misdn \
 	--without-mysqlclient \
 	--without-nbs \
-	--without-neon \
 	--without-neon29 \
 	--without-netsnmp \
 	--without-newt \
@@ -148,6 +147,15 @@ ASTERISK_DEPENDENCIES += alsa-lib
 ASTERISK_CONF_OPTS += --with-asound
 else
 ASTERISK_CONF_OPTS += --without-asound
+endif
+
+ifeq ($(BR2_PACKAGE_NEON),y)
+ASTERISK_DEPENDENCIES += neon
+ASTERISK_CONF_OPTS += --with-neon
+ASTERISK_CONF_ENV += \
+	ac_cv_path_CONFIG_NEON=$(STAGING_DIR)/usr/bin/neon-config
+else
+ASTERISK_CONF_OPTS += --without-neon
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
