@@ -103,7 +103,6 @@ ASTERISK_CONF_OPTS = \
 	--without-tonezone \
 	--without-unbound \
 	--without-unixodbc \
-	--without-vorbis \
 	--without-vpb \
 	--without-x11 \
 	--with-crypt \
@@ -186,6 +185,13 @@ ASTERISK_DEPENDENCIES += speex
 ASTERISK_CONF_OPTS += --with-speex --with-speexdsp
 else
 ASTERISK_CONF_OPTS += --without-speex  --without-speexdsp
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
+ASTERISK_DEPENDENCIES += libvorbis
+ASTERISK_CONF_OPTS += --with-vorbis
+else
+ASTERISK_CONF_OPTS += --without-vorbis
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
