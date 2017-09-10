@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FWUP_VERSION = v0.14.3
+FWUP_VERSION = v0.15.4
 FWUP_SITE = $(call github,fhunleth,fwup,$(FWUP_VERSION))
 FWUP_LICENSE = Apache-2.0
 FWUP_LICENSE_FILES = LICENSE
