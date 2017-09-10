@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 
+config BR2_PACKAGE_AICCU
+	bool "aiccu utility removed"
+	select BR2_LEGACY
+	help
+	  As the SixXS project has ceased its operation on 2017-06-06,
+	  the AICCU utility has no use anymore and has been removed.
+
+	  https://www.sixxs.net/sunset/
+
 config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
 	bool "util-linux login utilities option removed"
 	select BR2_LEGACY

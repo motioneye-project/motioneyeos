@@ -1241,7 +1241,6 @@ N:	Maxime Ripard <maxime.ripard@free-electrons.com>
 F:	package/kmsxx/
 
 N:	Michael Rommel <rommel@layer-7.net>
-F:	package/aiccu/
 F:	package/knock/
 F:	package/python-crc16/
 F:	package/python-pyzmq/

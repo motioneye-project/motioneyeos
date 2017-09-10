@@ -1562,7 +1562,6 @@ menu "Miscellaneous"
 endmenu
 
 menu "Networking applications"
-	source "package/aiccu/Config.in"
 	source "package/aircrack-ng/Config.in"
 	source "package/apache/Config.in"
 	source "package/argus/Config.in"
