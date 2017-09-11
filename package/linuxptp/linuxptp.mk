@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUXPTP_VERSION = 97c351cafd7327fd28047580c9e2528a6f7e742b
+LINUXPTP_VERSION = 17c9787b1d6891636b5be9e4e5a08278b44e9a7a
 LINUXPTP_SITE_METHOD = git
 LINUXPTP_SITE = git://git.code.sf.net/p/linuxptp/code
 LINUXPTP_LICENSE = GPL-2.0+
