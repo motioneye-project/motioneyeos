@@ -101,4 +101,4 @@ LC_ALL=C sort <"${basename}.list" >"${basename}.list.sorted"
 # sources.buildroot.org and used in the *.hash files
 tar cf - --numeric-owner --owner=0 --group=0 --mtime="${date}" --format=gnu \
          -T "${basename}.list.sorted" >"${output}.tar"
-gzip -n <"${output}.tar" >"${output}"
+gzip -6 -n <"${output}.tar" >"${output}"
