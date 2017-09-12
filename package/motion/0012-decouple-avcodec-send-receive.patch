@@ -1,5 +1,11 @@
+commit e9e7cf1bc641202d8babe09204857ffff8e497c5
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Tue Sep 12 16:04:09 2017 +1000
+
+    decouple avcodec send receive
+
 diff --git a/ffmpeg.c b/ffmpeg.c
-index 739bcb3..0e44c97 100644
+index dac1d6d..6cd48fa 100644
 --- a/ffmpeg.c
 +++ b/ffmpeg.c
 @@ -324,6 +324,15 @@ static int ffmpeg_get_oformat(struct ffmpeg *ffmpeg){
@@ -18,7 +24,7 @@ index 739bcb3..0e44c97 100644
  static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
  
  #if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
-@@ -331,27 +340,41 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+@@ -331,25 +340,41 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
      int retcd = 0;
      char errstr[128];
  
@@ -44,8 +50,6 @@ index 739bcb3..0e44c97 100644
 -        //Packet is freed upon failure of encoding
          return -1;
      }
--    if (ffmpeg->picture->key_frame == 1)
--      ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
 +    while (retcd >= 0) {
 +        retcd = avcodec_receive_packet(ffmpeg->ctx_codec, &ffmpeg->pkt);
 +        if (retcd == AVERROR(EAGAIN)){
@@ -73,7 +77,7 @@ index 739bcb3..0e44c97 100644
      return 0;
  
  #elif (LIBAVFORMAT_VERSION_MAJOR >= 55) || ((LIBAVFORMAT_VERSION_MAJOR == 54) && (LIBAVFORMAT_VERSION_MINOR > 6))
-@@ -360,11 +383,15 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+@@ -358,11 +383,15 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
      char errstr[128];
      int got_packet_ptr;
  
@@ -90,9 +94,9 @@ index 739bcb3..0e44c97 100644
          return -1;
      }
      if (got_packet_ptr == 0){
-@@ -376,6 +403,15 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
-     if (ffmpeg->picture->key_frame == 1)
-       ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
+@@ -371,6 +400,15 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+         return -2;
+     }
  
 +    retcd = ffmpeg_write_packet(ffmpeg);
 +    if (retcd < 0) {
@@ -106,7 +110,7 @@ index 739bcb3..0e44c97 100644
      return 0;
  
  #else
-@@ -384,6 +420,10 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+@@ -379,6 +417,10 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
      uint8_t *video_outbuf;
      int video_outbuf_size;
  
@@ -117,24 +121,27 @@ index 739bcb3..0e44c97 100644
      video_outbuf_size = (ffmpeg->ctx_codec->width +16) * (ffmpeg->ctx_codec->height +16) * 1;
      video_outbuf = mymalloc(video_outbuf_size);
  
-@@ -407,6 +447,16 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+@@ -397,8 +439,18 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     ffmpeg->pkt.size = retcd;
+     ffmpeg->pkt.data = video_outbuf;
  
-     free(video_outbuf);
- 
+-    free(video_outbuf);
 +    retcd = ffmpeg_write_packet(ffmpeg);
 +    if (retcd < 0) {
 +        av_strerror(retcd, errstr, sizeof(errstr));
 +        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error while writing video frame");
 +        my_packet_unref(ffmpeg->pkt);
++        free(video_outbuf);
 +        ffmpeg_free_context(ffmpeg);
 +        return -1;
 +    }
-+
+ 
 +    my_packet_unref(ffmpeg->pkt);
++    free(video_outbuf);
      return 0;
  
  #endif
-@@ -697,36 +747,18 @@ static int ffmpeg_set_outputfile(struct ffmpeg *ffmpeg){
+@@ -689,36 +741,18 @@ static int ffmpeg_set_outputfile(struct ffmpeg *ffmpeg){
  static int ffmpeg_put_frame(struct ffmpeg *ffmpeg, const struct timeval *tv1){
      int retcd;
  
