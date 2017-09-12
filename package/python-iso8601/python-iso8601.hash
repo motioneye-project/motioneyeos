@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/iso8601/json, sha256 locally computed
+md5	4de940f691c5ea759fb254384c8ddcf6  iso8601-0.1.12.tar.gz
+sha256	49c4b20e1f38aa5cf109ddcd39647ac419f928512c869dc01d5c7098eddede82  iso8601-0.1.12.tar.gz
+sha256  116d368d14a8cf0061027c944c60ee20b476ce42814818a7d627396906761f16  LICENSE
