@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PYTHON_IBMIOTF
+	bool "python-ibmiotf"
+	select BR2_PACKAGE_PYTHON_DICTTOXML # runtime
+	select BR2_PACKAGE_PYTHON_ISO8601 # runtime
+	select BR2_PACKAGE_PYTHON_PAHO_MQTT # runtime
+	select BR2_PACKAGE_PYTHON_PYTZ # runtime
+	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
+	select BR2_PACKAGE_PYTHON_REQUESTS_TOOLBELT # runtime
+	select BR2_PACKAGE_PYTHON_SSL if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_SSL if BR2_PACKAGE_PYTHON3 # runtime
+	select BR2_PACKAGE_PYTHON_XMLTODICT # runtime
+	help
+	  Python Client for IBM Watson IoT Platform.
+
+	  https://github.com/ibm-watson-iot/iot-python
