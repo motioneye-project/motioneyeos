@@ -14,6 +14,8 @@ LIBCURL_DEPENDENCIES = host-pkgconf \
 LIBCURL_LICENSE = curl
 LIBCURL_LICENSE_FILES = COPYING
 LIBCURL_INSTALL_STAGING = YES
+# Patching m4/curl-confopts.m4
+LIBCURL_AUTORECONF = YES
 
 # We disable NTLM support because it uses fork(), which doesn't work
 # on non-MMU platforms. Moreover, this authentication method is
@@ -21,6 +23,12 @@ LIBCURL_INSTALL_STAGING = YES
 # http://curl.haxx.se/docs/manpage.html#--ntlm.
 LIBCURL_CONF_OPTS = --disable-manual --disable-ntlm-wb \
 	--enable-hidden-symbols --with-random=/dev/urandom --disable-curldebug
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBCURL_CONF_OPTS += --enable-threaded-resolver
+else
+LIBCURL_CONF_OPTS += --disable-threaded-resolver
+endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL_VERBOSE),y)
 LIBCURL_CONF_OPTS += --enable-verbose
