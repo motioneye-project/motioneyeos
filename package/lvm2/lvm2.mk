@@ -21,6 +21,8 @@ LVM2_CONF_OPTS += \
 	--enable-dmeventd \
 	--disable-nls
 
+LVM2_DEPENDENCIES += host-pkgconf
+
 # LVM2 uses autoconf, but not automake, and the build system does not
 # take into account the toolchain passed at configure time.
 LVM2_MAKE_ENV = $(TARGET_CONFIGURE_OPTS)
