@@ -82,4 +82,10 @@ config BR2_PACKAGE_WEBKITGTK_MULTIMEDIA
 	  This option pulls in all of the required dependencies
 	  to enable multimedia (video/audio) support.
 
+config BR2_PACKAGE_WEBKITGTK_WEBDRIVER
+	bool "WebDriver support"
+	help
+	  Enable support for WebDriver. This will build and install the
+	  WebKitWebDriver program in the target.
+
 endif

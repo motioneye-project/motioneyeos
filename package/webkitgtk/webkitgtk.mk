@@ -49,6 +49,12 @@ WEBKITGTK_CONF_OPTS += \
 	-DENABLE_MEDIA_STREAM=OFF
 endif
 
+ifeq ($(BR2_PACKAGE_WEBKITGTK_WEBDRIVER),y)
+WEBKITGTK_CONF_OPTS += -DENABLE_WEBDRIVER=ON
+else
+WEBKITGTK_CONF_OPTS += -DENABLE_WEBDRIVER=OFF
+endif
+
 # Only one target platform can be built, assume X11 > Wayland
 
 # GTK3-X11 target gives OpenGL from newer libgtk3 versions
