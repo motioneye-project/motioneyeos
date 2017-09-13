@@ -32,6 +32,8 @@ You will find the following files in output/images/:
   - imx6dl-icore.dtb
 - for i.CoreM6 Quad/Dual ofcap 10:
   - imx6q-icore-ofcap10.dtb
+- for i.CoreM6 Quad/Dual ofcap 12:
+  - imx6q-icore-ofcap12.dtb
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
