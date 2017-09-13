@@ -91,6 +91,8 @@ Running Qt5 Cinematic Demo:
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore.json
 - for i.CoreM6 ofcap10
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore-ofcap10.json
+- for i.CoreM6 ofcap12
+# export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore-ofcap12.json
 # CinematicExperience-demo
 
 Enjoy!
