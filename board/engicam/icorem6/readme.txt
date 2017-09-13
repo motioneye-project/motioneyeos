@@ -7,6 +7,8 @@ platform boards.
 
 i.CoreM6 Quad/Dual/DualLite/Solo SOM Starter kits:
 https://www.engicam.com/vis-prod/101120
+i.CoreM6 Quad/Dual/DualLite/Solo Open Frame 10.1 C.TOUCH kits:
+https://www.engicam.com/vis-prod/101133
 
 This configuration uses U-Boot mainline and kernel mainline.
 
@@ -28,6 +30,8 @@ You will find the following files in output/images/:
   - imx6q-icore.dtb
 - for i.CoreM6 DualLite/Solo:
   - imx6dl-icore.dtb
+- for i.CoreM6 Quad/Dual ofcap 10:
+  - imx6q-icore-ofcap10.dtb
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
