@@ -11,4 +11,11 @@ NGIRCD_DEPENDENCIES = zlib
 NGIRCD_LICENSE = GPL-2.0+
 NGIRCD_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+NGIRCD_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
+NGIRCD_DEPENDENCIES += openssl
+else
+NGIRCD_CONF_OPTS += --without-openssl
+endif
+
 $(eval $(autotools-package))
