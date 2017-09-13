@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NMON_VERSION = 16f
-NMON_SITE = http://sourceforge.net/projects/nmon/files
+NMON_VERSION = 16g
+NMON_SITE = https://sourceforge.net/projects/nmon/files
 NMON_SOURCE = lmon$(NMON_VERSION).c
 NMON_LICENSE = GPL-3.0+
 NMON_LICENSE_FILES = $(NMON_SOURCE)
