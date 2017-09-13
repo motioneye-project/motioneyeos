@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NET_TOOLS_VERSION = 3f170bff115303e92319791cbd56371e33dcbf6d
+NET_TOOLS_VERSION = 479bb4a7e11a4084e2935c0a576388f92469225b
 NET_TOOLS_SITE = git://git.code.sf.net/p/net-tools/code
 NET_TOOLS_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
 NET_TOOLS_LICENSE = GPL-2.0+
