@@ -1,4 +1,7 @@
-flex: disable documentation
+From a98443c6a72d5821d4e0152311e5c3eb4cdff25c Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Wed, 13 Sep 2017 17:26:48 +0300
+Subject: [PATCH] flex: disable documentation
 
 Since we prevent the flex binary to be built, we also need to prevent
 the documentation to be built, otherwise it will fail like this:
@@ -9,11 +12,17 @@ make[2]: *** No rule to make target '../src/flex', needed by 'flex.1'.
 Stop.
 
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[Adrian: patch Makefile.am instead of Makefile.in]
+Signed-off-by: Adrian Perez de Castro <aperez@igalia.com>
+---
+ Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff -rup a/Makefile.in b/Makefile.in
---- a/Makefile.in	2017-05-06 15:49:09.000000000 +0100
-+++ b/Makefile.in	2017-05-10 14:35:20.152794902 +0100
-@@ -450,7 +450,6 @@ EXTRA_DIST = \
+diff --git a/Makefile.am b/Makefile.am
+index 638c549..9db3420 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -43,7 +43,6 @@ EXTRA_DIST = \
  
  SUBDIRS = \
  	src \
@@ -21,3 +30,6 @@ diff -rup a/Makefile.in b/Makefile.in
  	examples \
  	po \
  	tests \
+-- 
+2.14.1
+
