@@ -14,7 +14,7 @@ config BR2_PACKAGE_NEARD
 
 	  http://git.kernel.org/?p=network/nfc/neard.git;a=summary
 
-	  https://01.org/linux-nfc/documentation/how-start-linux-nfc-code...
+	  https://01.org/linux-nfc/
 
 if BR2_PACKAGE_NEARD
 
