@@ -10,6 +10,13 @@ NGIRCD_SITE = https://arthur.barton.de/pub/ngircd
 NGIRCD_LICENSE = GPL-2.0+
 NGIRCD_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+NGIRCD_CONF_OPTS += --with-pam=$(STAGING_DIR)/usr
+NGIRCD_DEPENDENCIES += linux-pam
+else
+NGIRCD_CONF_OPTS += --with-pam
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NGIRCD_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 NGIRCD_DEPENDENCIES += openssl
