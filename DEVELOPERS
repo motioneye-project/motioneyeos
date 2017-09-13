@@ -1329,6 +1329,7 @@ N:	Peter Korsgaard <peter@korsgaard.com>
 F:	board/orangepi/
 F:	configs/orangepi_pc_defconfig
 F:	package/flickcurl/
+F:	package/fscryptctl/
 F:	package/jo/
 F:	package/libfastjson/
 F:	package/lzop/
