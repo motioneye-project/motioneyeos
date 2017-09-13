@@ -70,8 +70,8 @@ To boot your newly created system:
 - close JM3 for sd boot.
 - power on the board.
 
-Testing graphics on i.CoreM6 Starter Kit:
-========================================
+Testing graphics on i.CoreM6:
+============================
 
 Build with support for Etnaviv, Qt5 and demo applications:
 
@@ -87,6 +87,8 @@ Running glmark2-es2-drm
 Running Qt5 Cinematic Demo:
 - for i.CoreM6 Starter Kit
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore.json
+- for i.CoreM6 ofcap10
+# export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore-ofcap10.json
 # CinematicExperience-demo
 
 Enjoy!
