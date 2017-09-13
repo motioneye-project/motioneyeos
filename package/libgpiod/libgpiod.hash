@@ -1,2 +1,2 @@
-# Locally computed
-sha256 24794006c14194e269b944f2cca0e85e481f1538be3c143479c4c6691bf25add libgpiod-v0.3.tar.gz
+# From https://www.kernel.org/pub/software/libs/libgpiod/sha256sums.asc
+sha256 6dfd6aeb544e8b7baf484a05c9ae0e67022c109362a41d87005393046b6beacf  libgpiod-0.3.1.tar.xz
