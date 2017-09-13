@@ -16,6 +16,12 @@ NGIRCD_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
 NGIRCD_DEPENDENCIES += openssl
 else
 NGIRCD_CONF_OPTS += --without-openssl
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+NGIRCD_CONF_OPTS += --with-gnutls=$(STAGING_DIR)/usr
+NGIRCD_DEPENDENCIES += gnutls
+else
+NGIRCD_CONF_OPTS += --without-gnutls
+endif
 endif
 
 $(eval $(autotools-package))
