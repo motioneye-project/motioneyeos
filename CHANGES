@@ -1,3 +1,9 @@
+2017.11-rc1, To be released
+
+	netsnmp: all MIB files are now installed, making the target filesystem a
+	bit bigger than before. To remove unneeded MIBS, you should use a
+	post-build script.
+
 2017.08, Released September 1st, 2017
 
 	Minor fixes.
