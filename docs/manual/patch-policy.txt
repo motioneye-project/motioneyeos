@@ -19,9 +19,14 @@ global patch directory.
 ==== Downloaded
 
 If it is necessary to apply a patch that is available for download, then add it
-to the +<packagename>_PATCH+ variable. It is downloaded from the same site
-as the package itself. It can be a single patch, or a tarball containing a
-patch series.
+to the +<packagename>_PATCH+ variable. If an entry contains +://+,
+then Buildroot will assume it is a full URL and download the patch
+from this location. Otherwise, Buildroot will assume that the patch should be
+downloaded from +<packagename>_SITE+. It can be a single patch,
+or a tarball containing a patch series.
+
+Like for all downloads, a hash should be added to the +<packagename>.hash+
+file.
 
 This method is typically used for packages from Debian.
 
