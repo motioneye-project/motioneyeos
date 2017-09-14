@@ -14,6 +14,11 @@ config BR2_PACKAGE_HOSTAPD
 
 if BR2_PACKAGE_HOSTAPD
 
+config BR2_PACKAGE_HOSTAPD_DRIVER_RTW
+	bool "Enable rtl871xdrv driver"
+	help
+	  Enable support for Realtek wireless chips.
+
 config BR2_PACKAGE_HOSTAPD_ACS
 	bool "Enable ACS"
 	default y
