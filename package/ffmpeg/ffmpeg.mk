@@ -254,6 +254,14 @@ else
 FFMPEG_CONF_OPTS += --disable-vdpau
 endif
 
+ifeq ($(BR2_PACKAGE_RPI_FIRMWARE)$(BR2_PACKAGE_RPI_USERLAND),yy)
+FFMPEG_CONF_OPTS += --enable-mmal --enable-omx --enable-omx-rpi \
+	--extra-cflags=-I$(STAGING_DIR)/usr/include/IL
+FFMPEG_DEPENDENCIES += rpi-firmware rpi-userland
+else
+FFMPEG_CONF_OPTS += --disable-mmal --disable-omx --disable-omx-rpi
+endif
+
 # To avoid a circular dependency only use opencv if opencv itself does
 # not depend on ffmpeg.
 ifeq ($(BR2_PACKAGE_OPENCV_LIB_IMGPROC)x$(BR2_PACKAGE_OPENCV_WITH_FFMPEG),yx)
