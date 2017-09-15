@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SUDO_VERSION = 1.8.20p2
-SUDO_SITE = http://www.sudo.ws/sudo/dist
+SUDO_VERSION = 1.8.21p2
+SUDO_SITE = https://www.sudo.ws/sudo/dist
 SUDO_LICENSE = ISC, BSD-3-Clause
 SUDO_LICENSE_FILES = doc/LICENSE
 # This is to avoid sudo's make install from chown()ing files which fails
