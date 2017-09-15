@@ -1,3 +1,5 @@
-# From https://listengine.tuxfamily.org/chrony.tuxfamily.org/chrony-announce/2017/01/msg00003.html
-md5 f8d2ee78c55548bfbe95582c6a855cee  chrony-3.1.tar.gz
-sha1 564dd010a10fbdcc7c177337115ccffa43fe0f95  chrony-3.1.tar.gz
+# From https://listengine.tuxfamily.org/chrony.tuxfamily.org/chrony-announce/2017/09/msg00000.html
+md5 f4c4eb0dc92f35ee4bb7d3dcd8029ecb  chrony-3.2.tar.gz
+sha1 64db6c31e013222cc0a2b66322192b4cedf6e048  chrony-3.2.tar.gz
+# Locally calculated
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING
