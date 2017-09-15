@@ -1,4 +1,7 @@
-Don't use <fenv.h> on uClibc
+From 1d309b81a6fdac33dfb5148f618bafe6ebdff958 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 15 Sep 2017 12:51:36 +0300
+Subject: [PATCH] Don't use <fenv.h> on uClibc
 
 The python-numpy code already has provisions to not use <fenv.h> when
 not available. However, it uses __GLIBC__ to know whether fenv.h is
@@ -9,30 +12,30 @@ This patch fixes that by changing all defined(__GLIBC__) occurences by
 (defined(__GLIBC__) && !defined(__UCLIBC__)).
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ numpy/core/include/numpy/ufuncobject.h | 2 +-
+ numpy/core/src/npymath/ieee754.c.src   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: b/numpy/core/include/numpy/ufuncobject.h
-===================================================================
+diff --git a/numpy/core/include/numpy/ufuncobject.h b/numpy/core/include/numpy/ufuncobject.h
+index d0ac1fd7d732..65e49fcd5b7a 100644
 --- a/numpy/core/include/numpy/ufuncobject.h
 +++ b/numpy/core/include/numpy/ufuncobject.h
-@@ -413,11 +413,11 @@
-         (void) fpsetsticky(0); \
-         }
- 
--#elif defined(__GLIBC__) || defined(__APPLE__) || \
-+#elif (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || \
+@@ -319,7 +319,7 @@ typedef struct _loop1d_info {
+ #if defined(sun) || defined(__BSD__) || defined(__OpenBSD__) || \
+       (defined(__FreeBSD__) && (__FreeBSD_version < 502114)) || \
+       defined(__NetBSD__) || \
+-      defined(__GLIBC__) || defined(__APPLE__) || \
++      (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || \
        defined(__CYGWIN__) || defined(__MINGW32__) || \
-       (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
- 
--#if defined(__GLIBC__) || defined(__APPLE__) || \
-+#if (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || \
-     defined(__MINGW32__) || defined(__FreeBSD__)
- #include <fenv.h>
- #elif defined(__CYGWIN__)
-Index: b/numpy/core/src/npymath/ieee754.c.src
-===================================================================
+       (defined(__FreeBSD__) && (__FreeBSD_version >= 502114)) || \
+       defined(_AIX) || \
+diff --git a/numpy/core/src/npymath/ieee754.c.src b/numpy/core/src/npymath/ieee754.c.src
+index 0370ea6c77aa..e63e409b6604 100644
 --- a/numpy/core/src/npymath/ieee754.c.src
 +++ b/numpy/core/src/npymath/ieee754.c.src
-@@ -586,11 +586,11 @@
+@@ -612,7 +612,7 @@ void npy_set_floatstatus_invalid(void)
  }
  
  
@@ -40,40 +43,7 @@ Index: b/numpy/core/src/npymath/ieee754.c.src
 +#elif (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || \
        defined(__CYGWIN__) || defined(__MINGW32__) || \
        (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
- 
--# if defined(__GLIBC__) || defined(__APPLE__) || \
-+# if (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || \
-      defined(__MINGW32__) || defined(__FreeBSD__)
  #  include <fenv.h>
- # elif defined(__CYGWIN__)
-Index: b/numpy/numarray/_capi.c
-===================================================================
---- a/numpy/numarray/_capi.c
-+++ b/numpy/numarray/_capi.c
-@@ -10,7 +10,7 @@
- #include <sys/param.h>
- #endif
- 
--#if defined(__GLIBC__) || defined(__APPLE__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
-+#if (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
- #include <fenv.h>
- #elif defined(__CYGWIN__)
- #include "numpy/fenv/fenv.h"
-@@ -258,7 +258,7 @@
- }
- 
- /* Likewise for Integer overflows */
--#if defined(__GLIBC__) || defined(__APPLE__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
-+#if (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
- static int int_overflow_error(Float64 value) { /* For x86_64 */
-     feraiseexcept(FE_OVERFLOW);
-     return (int) value;
-@@ -3007,7 +3007,7 @@
-     return retstatus;
- }
- 
--#elif defined(__GLIBC__) || defined(__APPLE__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
-+#elif (defined(__GLIBC__) && !defined(__UCLIBC__)) || defined(__APPLE__) || defined(__CYGWIN__) || defined(__MINGW32__) || (defined(__FreeBSD__) && (__FreeBSD_version >= 502114))
- 
- static int
- NA_checkFPErrors(void)
+-- 
+2.7.5
+

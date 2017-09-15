@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-PYTHON_NUMPY_VERSION = 1.8.0
+PYTHON_NUMPY_VERSION = 1.13.1
 PYTHON_NUMPY_SOURCE = numpy-$(PYTHON_NUMPY_VERSION).tar.gz
-PYTHON_NUMPY_SITE = http://downloads.sourceforge.net/numpy
+PYTHON_NUMPY_SITE = https://github.com/numpy/numpy/releases/download/v$(PYTHON_NUMPY_VERSION)
 PYTHON_NUMPY_LICENSE = BSD-3-Clause
 PYTHON_NUMPY_LICENSE_FILES = LICENSE.txt
-PYTHON_NUMPY_SETUP_TYPE = distutils
+PYTHON_NUMPY_SETUP_TYPE = setuptools
 
 ifeq ($(BR2_PACKAGE_CLAPACK),y)
 PYTHON_NUMPY_DEPENDENCIES += clapack
