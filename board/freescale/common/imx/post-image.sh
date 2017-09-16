@@ -28,6 +28,15 @@ linux_image()
 	fi
 }
 
+genimage_type()
+{
+	if grep -Eq "^BR2_TARGET_UBOOT_SPL=y$" ${BR2_CONFIG}; then
+		echo "genimage.cfg.template_spl"
+	else
+		echo "genimage.cfg.template"
+	fi
+}
+
 main()
 {
 	local FILES="$(dtb_list) $(linux_image)"
@@ -35,7 +44,7 @@ main()
 	local GENIMAGE_TMP="${BUILD_DIR}/genimage.tmp"
 
 	sed -e "s/%FILES%/${FILES}/" \
-		board/freescale/common/imx/genimage.cfg.template > ${GENIMAGE_CFG}
+		board/freescale/common/imx/$(genimage_type) > ${GENIMAGE_CFG}
 
 	rm -rf "${GENIMAGE_TMP}"
 
