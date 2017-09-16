@@ -145,6 +145,46 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 
+config BR2_PACKAGE_OPENOBEX_BLUEZ
+	bool "openobex bluez option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ_UTILS
+	help
+	  The OpenOBEX package no longer offers an option to enable or
+	  disable BlueZ support. Instead, BlueZ support is always
+	  included when the bluez5_utils or bluez_utils package is
+	  selected.
+
+config BR2_PACKAGE_OPENOBEX_LIBUSB
+	bool "openobex libusb option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBUSB
+	help
+	  The OpenOBEX package no longer offers an option to enable or
+	  disable libusb support. Instead, USB support is always
+	  included when the libusb package is selected.
+
+config BR2_PACKAGE_OPENOBEX_APPS
+	bool "openobex apps option removed"
+	select BR2_LEGACY
+	help
+	  The OpenOBEX package no longer offers an option to enable or
+	  disable apps support.
+
+config BR2_PACKAGE_OPENOBEX_SYSLOG
+	bool "openobex syslog option removed"
+	select BR2_LEGACY
+	help
+	  The OpenOBEX package no longer offers an option to enable or
+	  disable syslog support.
+
+config BR2_PACKAGE_OPENOBEX_DUMP
+	bool "openobex dump option removed"
+	select BR2_LEGACY
+	help
+	  The OpenOBEX package no longer offers an option to enable or
+	  disable dump support.
+
 config BR2_PACKAGE_AICCU
 	bool "aiccu utility removed"
 	select BR2_LEGACY
