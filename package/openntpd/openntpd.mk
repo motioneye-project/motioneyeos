@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENNTPD_VERSION = 6.0p1
+OPENNTPD_VERSION = 6.2p2
 OPENNTPD_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenNTPD
 OPENNTPD_LICENSE = MIT-like, BSD-2-Clause, BSD-3-Clause
 OPENNTPD_LICENSE_FILES = COPYING
