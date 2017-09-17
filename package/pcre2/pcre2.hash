@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature at https://ftp.pcre.org/pub/pcre/pcre2-10.23.tar.bz2.sig
-sha256	dfc79b918771f02d33968bd34a749ad7487fa1014aeb787fad29dd392b78c56e	pcre2-10.23.tar.bz2
+# Locally calculated after checking pgp signature at https://ftp.pcre.org/pub/pcre/pcre2-10.30.tar.bz2.sig
+sha256 90bd41c605d30e3745771eb81928d779f158081a51b2f314bbcc1f73de5773db  pcre2-10.30.tar.bz2

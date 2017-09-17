@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PCRE2_VERSION = 10.23
+PCRE2_VERSION = 10.30
 PCRE2_SITE = https://ftp.pcre.org/pub/pcre
 PCRE2_SOURCE = pcre2-$(PCRE2_VERSION).tar.bz2
 PCRE2_LICENSE = BSD-3-Clause
