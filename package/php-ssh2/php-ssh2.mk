@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_SSH2_VERSION = 1.0
+PHP_SSH2_VERSION = 1.1.2
 PHP_SSH2_SOURCE = ssh2-$(PHP_SSH2_VERSION).tgz
 PHP_SSH2_SITE = https://pecl.php.net/get
 PHP_SSH2_CONF_OPTS = --with-php-config=$(STAGING_DIR)/usr/bin/php-config \
