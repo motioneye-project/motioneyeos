@@ -66,7 +66,7 @@ else
 POPPLER_CONF_OPTS += --disable-zlib
 endif
 
-ifeq ($(BR2_PACKAGE_POPPLER_LIBCURL),y)
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
 POPPLER_CONF_OPTS += --enable-libcurl
 POPPLER_DEPENDENCIES += libcurl
 else
