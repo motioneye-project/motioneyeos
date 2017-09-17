@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-OPENCV_VERSION = 2.4.13.2
+OPENCV_VERSION = 2.4.13.3
 OPENCV_SITE = $(call github,itseez,opencv,$(OPENCV_VERSION))
 OPENCV_INSTALL_STAGING = YES
 OPENCV_LICENSE = BSD-3-Clause
 OPENCV_LICENSE_FILES = LICENSE
+OPENCV_SUPPORTS_IN_SOURCE_BUILD = NO
 
 # OpenCV component options
 OPENCV_CONF_OPTS += \
