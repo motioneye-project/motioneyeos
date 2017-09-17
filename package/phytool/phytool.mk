@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHYTOOL_VERSION = 1.0.1
+PHYTOOL_VERSION = 2
 PHYTOOL_SOURCE = phytool-$(PHYTOOL_VERSION).tar.xz
 PHYTOOL_SITE = https://github.com/wkz/phytool/releases/download/v$(PHYTOOL_VERSION)
 PHYTOOL_LICENSE = GPL-2.0+
