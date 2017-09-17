@@ -1,2 +1,4 @@
 # From https://www.gnupg.org/download/integrity_check.html
-sha1  0c47f0ddea4631bcba01ebbeca8bffe0bf43e440  pinentry-0.9.4.tar.bz2
+sha1  85d9ac81ebad3fb082514c505c90c39a0456f1f6  pinentry-1.0.0.tar.bz2
+# Locally computed
+sha256 1672c2edc1feb036075b187c0773787b2afd0544f55025c645a71b4c2f79275a  pinentry-1.0.0.tar.bz2

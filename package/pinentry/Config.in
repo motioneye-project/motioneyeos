@@ -1,5 +1,9 @@
 menuconfig BR2_PACKAGE_PINENTRY
 	bool "pinentry"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
+	depends on BR2_USE_MMU # libassuan
+	select BR2_PACKAGE_LIBASSUAN
+	select BR2_PACKAGE_LIBGPG_ERROR
 	# At least one backend is needed to avoid build breakage
 	select BR2_PACKAGE_PINENTRY_NCURSES if !BR2_PACKAGE_PINENTRY_GTK2 && !BR2_PACKAGE_PINENTRY_QT4
 	help

@@ -4,22 +4,19 @@
 #
 ################################################################################
 
-PINENTRY_VERSION = 0.9.4
+PINENTRY_VERSION = 1.0.0
 PINENTRY_SOURCE = pinentry-$(PINENTRY_VERSION).tar.bz2
-PINENTRY_SITE = ftp://ftp.gnupg.org/gcrypt/pinentry
+PINENTRY_SITE = https://www.gnupg.org/ftp/gcrypt/pinentry
 PINENTRY_LICENSE = GPL-2.0+
 PINENTRY_LICENSE_FILES = COPYING
 PINENTRY_DEPENDENCIES = \
+	libassuan libgpg-error \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv) \
 	host-pkgconf
-PINENTRY_CONF_OPTS += --without-libcap       # requires PAM
-
-# pinentry uses some std::string functionality that needs C++11
-# support when gcc >= 5.x. This should be removed when bumping
-# pinentry, since newer versions no longer use std::string.
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_5),y)
-PINENTRY_CONF_ENV = CXXFLAGS="$(TARGET_CXXFLAGS) -std=gnu++11"
-endif
+PINENTRY_CONF_OPTS += \
+	--with-libassuan-prefix=$(STAGING_DIR)/usr \
+	--with-libgpg-error-prefix=$(STAGING_DIR)/usr \
+	--without-libcap       # requires PAM
 
 # build with X if available
 ifeq ($(BR2_PACKAGE_XORG7),y)
@@ -56,10 +53,10 @@ ifeq ($(BR2_PACKAGE_PINENTRY_QT4),y)
 # -pthread needs to be passed for certain toolchains
 # http://autobuild.buildroot.net/results/6be/6be109ccedec603a67cebdb31b55865dcce0e128/
 PINENTRY_CONF_OPTS += LIBS=-pthread MOC=$(HOST_DIR)/bin/moc
-PINENTRY_CONF_OPTS += --enable-pinentry-qt4
+PINENTRY_CONF_OPTS += --enable-pinentry-qt
 PINENTRY_DEPENDENCIES += qt
 else
-PINENTRY_CONF_OPTS += --disable-pinentry-qt4
+PINENTRY_CONF_OPTS += --disable-pinentry-qt
 endif
 
 $(eval $(autotools-package))
