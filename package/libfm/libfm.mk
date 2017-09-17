@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFM_VERSION = 1.2.4
+LIBFM_VERSION = 1.2.5
 LIBFM_SOURCE = libfm-$(LIBFM_VERSION).tar.xz
 LIBFM_SITE = http://sourceforge.net/projects/pcmanfm/files
 LIBFM_DEPENDENCIES = menu-cache libglib2 cairo
