@@ -1,68 +1,101 @@
+commit 9c604dc427804b9620044a2bdddca1b8c1831627
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Mon Sep 18 14:30:22 2017 +1000
+
+    drain codec at end of recording
+
 diff --git a/ffmpeg.c b/ffmpeg.c
-index 0e44c97..e5a2b9e 100644
+index aa06bef..c690896 100644
 --- a/ffmpeg.c
 +++ b/ffmpeg.c
-@@ -463,6 +463,55 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
- 
+@@ -350,7 +350,7 @@ static int ffmpeg_write_packet(struct ffmpeg *ffmpeg){
+     }
  }
  
-+static int ffmpeg_drain_codec(struct ffmpeg *ffmpeg){
-+
-+#if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
-+    //ffmpeg version 3.1 and after
-+    int retcd = 0;
-+    char errstr[128];
-+
-+    av_init_packet(&ffmpeg->pkt);
-+    ffmpeg->pkt.data = NULL;
-+    ffmpeg->pkt.size = 0;
-+
-+    retcd = avcodec_send_frame(ffmpeg->ctx_codec, NULL);
-+    if (retcd < 0 ){
-+        av_strerror(retcd, errstr, sizeof(errstr));
-+        MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error draining codec:%s",errstr);
-+        my_packet_unref(ffmpeg->pkt);
-+        return -1;
-+    }
-+    for (;;) {
-+        retcd = avcodec_receive_packet(ffmpeg->ctx_codec, &ffmpeg->pkt);
-+        if (retcd == AVERROR_EOF)
-+            break;
-+        if (retcd < 0 ){
-+            av_strerror(retcd, errstr, sizeof(errstr));
-+            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error receiving encoded packet video:%s",errstr);
-+            my_packet_unref(ffmpeg->pkt);
-+            return -1;
-+        } else {
-+            retcd = ffmpeg_write_packet(ffmpeg);
-+            if (retcd < 0) {
-+                MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error while writing video frame");
-+                my_packet_unref(ffmpeg->pkt);
-+                return -1;
-+            }
-+        }
-+    }
-+
-+    my_packet_unref(ffmpeg->pkt);
-+    return 0;
-+
-+#else
-+
-+    // do nothing
-+    return 0;
-+
-+#endif
-+
-+}
-+
- static int ffmpeg_set_pts(struct ffmpeg *ffmpeg, const struct timeval *tv1){
+-static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
++static int ffmpeg_encode_video(struct ffmpeg *ffmpeg, AVFrame *picture){
  
-     int64_t pts_interval;
-@@ -894,6 +943,7 @@ void ffmpeg_close(struct ffmpeg *ffmpeg){
+ #if (LIBAVFORMAT_VERSION_MAJOR >= 58) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR >= 41))
+     //ffmpeg version 3.1 and after
+@@ -361,7 +361,7 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     ffmpeg->pkt.data = NULL;
+     ffmpeg->pkt.size = 0;
+ 
+-    retcd = avcodec_send_frame(ffmpeg->ctx_codec, ffmpeg->picture);
++    retcd = avcodec_send_frame(ffmpeg->ctx_codec, picture);
+     if (retcd < 0 ){
+         av_strerror(retcd, errstr, sizeof(errstr));
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error sending frame for encoding:%s",errstr);
+@@ -370,10 +370,15 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     }
+     while (retcd >= 0) {
+         retcd = avcodec_receive_packet(ffmpeg->ctx_codec, &ffmpeg->pkt);
+-        if (retcd == AVERROR(EAGAIN)){
+-            //Buffered packet.  Throw special return code
+-            my_packet_unref(ffmpeg->pkt);
+-            return -2;
++        if (picture == NULL) {
++            if (retcd == AVERROR_EOF)
++                break;
++        } else {
++            if (retcd == AVERROR(EAGAIN)){
++                //Buffered packet.  Throw special return code
++                my_packet_unref(ffmpeg->pkt);
++                return -2;
++            }
+         }
+         if (retcd < 0 ){
+             av_strerror(retcd, errstr, sizeof(errstr));
+@@ -404,7 +409,7 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     ffmpeg->pkt.data = NULL;
+     ffmpeg->pkt.size = 0;
+ 
+-    retcd = avcodec_encode_video2(ffmpeg->ctx_codec, &ffmpeg->pkt, ffmpeg->picture, &got_packet_ptr);
++    retcd = avcodec_encode_video2(ffmpeg->ctx_codec, &ffmpeg->pkt, picture, &got_packet_ptr);
+     if (retcd < 0 ){
+         av_strerror(retcd, errstr, sizeof(errstr));
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error encoding video:%s",errstr);
+@@ -441,7 +446,7 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     video_outbuf_size = (ffmpeg->ctx_codec->width +16) * (ffmpeg->ctx_codec->height +16) * 1;
+     video_outbuf = mymalloc(video_outbuf_size);
+ 
+-    retcd = avcodec_encode_video(ffmpeg->video_st->codec, video_outbuf, video_outbuf_size, ffmpeg->picture);
++    retcd = avcodec_encode_video(ffmpeg->video_st->codec, video_outbuf, video_outbuf_size, picture);
+     if (retcd < 0 ){
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error encoding video");
+         my_packet_unref(ffmpeg->pkt);
+@@ -457,11 +462,12 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+     ffmpeg->pkt.size = retcd;
+     ffmpeg->pkt.data = video_outbuf;
+ 
+-    if (ffmpeg->picture->key_frame == 1)
+-      ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
+-
+-    ffmpeg->pkt.pts = ffmpeg->picture->pts;
+-    ffmpeg->pkt.dts = ffmpeg->pkt.pts;
++    if (picture) {
++        if (picture->key_frame == 1)
++          ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
++        ffmpeg->pkt.pts = picture->pts;
++        ffmpeg->pkt.dts = ffmpeg->pkt.pts;
++    }
+ 
+     retcd = ffmpeg_write_packet(ffmpeg);
+     if (retcd < 0) {
+@@ -817,7 +823,7 @@ static int ffmpeg_put_frame(struct ffmpeg *ffmpeg, const struct timeval *tv1){
+         return 0;
+     }
+ 
+-    retcd = ffmpeg_encode_video(ffmpeg);
++    retcd = ffmpeg_encode_video(ffmpeg, ffmpeg->picture);
+     if (retcd < 0){
+         if (retcd != -2)
+             MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, "Error while encoding picture");
+@@ -957,6 +963,7 @@ void ffmpeg_close(struct ffmpeg *ffmpeg){
  #ifdef HAVE_FFMPEG
  
      if (ffmpeg != NULL) {
-+        ffmpeg_drain_codec(ffmpeg);
++        ffmpeg_encode_video(ffmpeg, NULL); // drain codec
          if (ffmpeg->tlapse != TIMELAPSE_APPEND) {
              av_write_trailer(ffmpeg->oc);
          }

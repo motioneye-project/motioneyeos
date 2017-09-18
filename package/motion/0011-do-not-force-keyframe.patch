@@ -1,11 +1,5 @@
-commit 52b6beab2975ec609c7a072b1ed037a84ea92c14
-Author: Joo Aun Saw <jasaw@dius.com.au>
-Date:   Tue Sep 12 15:29:28 2017 +1000
-
-    do not force packet keyframe
-
 diff --git a/ffmpeg.c b/ffmpeg.c
-index 739bcb3..dac1d6d 100644
+index 739bcb3..aa17ddc 100644
 --- a/ffmpeg.c
 +++ b/ffmpeg.c
 @@ -349,8 +349,6 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
@@ -27,13 +21,20 @@ index 739bcb3..dac1d6d 100644
      return 0;
  
  #else
-@@ -402,9 +397,6 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+@@ -399,12 +394,16 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+         return -2;
+     }
+ 
++    // Encoder did not provide metadata, set it up manually
      ffmpeg->pkt.size = retcd;
      ffmpeg->pkt.data = video_outbuf;
  
--    if (ffmpeg->picture->key_frame == 1)
--      ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
--
+     if (ffmpeg->picture->key_frame == 1)
+       ffmpeg->pkt.flags |= AV_PKT_FLAG_KEY;
+ 
++    ffmpeg->pkt.pts = ffmpeg->picture->pts;
++    ffmpeg->pkt.dts = ffmpeg->pkt.pts;
++
      free(video_outbuf);
  
      return 0;
