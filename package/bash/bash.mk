@@ -25,6 +25,7 @@ BASH_CONF_ENV += \
 # The static build needs some trickery
 ifeq ($(BR2_STATIC_LIBS),y)
 BASH_CONF_OPTS += --enable-static-link
+BASH_CONF_ENV += SHOBJ_STATUS=unsupported
 # bash wants to redefine the getenv() function. To check whether this is
 # possible, AC_TRY_RUN is used which is not possible in
 # cross-compilation.
