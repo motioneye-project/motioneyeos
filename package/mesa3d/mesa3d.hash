@@ -1,2 +1,5 @@
-# From https://www.mesa3d.org/relnotes/17.2.0.html
-sha256 3123448f770eae58bc73e15480e78909defb892f10ab777e9116c9b218094943  mesa-17.2.0.tar.xz
+# From https://lists.freedesktop.org/archives/mesa-announce/2017-September/000359.html
+md5 f53ed38110237d9df5f9198c09ef0ab0  mesa-17.2.1.tar.xz
+sha1 7429e74a0ef12ea9d60b41b2b852898b3da0b238  mesa-17.2.1.tar.xz
+sha256 77385d17827cff24a3bae134342234f2efe7f7f990e778109682571dbbc9ba1e  mesa-17.2.1.tar.xz
+sha512 19a7d6c2e2d439b1c73199bffd4154b42017bccc138be954a893c3b70e885f07988de84dc8aa2aff36e06295e91f0181d5b95372152f6f0f80b7afe4b3846b6a  mesa-17.2.1.tar.xz
