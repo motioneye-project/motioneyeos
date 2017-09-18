@@ -1,4 +1,4 @@
-From 6bb211f4b53e92ffba793863f8c8b97a90f8dd3c Mon Sep 17 00:00:00 2001
+From da3880edac19100f69891f225cc2f07a82be1e52 Mon Sep 17 00:00:00 2001
 From: Peter Korsgaard <peter@korsgaard.com>
 Date: Thu, 20 Nov 2014 13:24:59 +0100
 Subject: [PATCH] Misc/python-config.sh.in: ensure sed invocations only match
@@ -25,7 +25,7 @@ Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
  1 file changed, 6 insertions(+), 6 deletions(-)
 
 diff --git a/Misc/python-config.sh.in b/Misc/python-config.sh.in
-index 30c6927..f905a71 100644
+index 30c6927871..f905a7132f 100644
 --- a/Misc/python-config.sh.in
 +++ b/Misc/python-config.sh.in
 @@ -29,12 +29,12 @@ prefix_real=$(installed_prefix "$0")
@@ -56,5 +56,5 @@ index 30c6927..f905a71 100644
  PYTHONFRAMEWORK="@PYTHONFRAMEWORK@"
  INCDIR="-I$includedir/python${VERSION}${ABIFLAGS}"
 -- 
-2.9.3
+2.13.5
 

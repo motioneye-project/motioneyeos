@@ -1,4 +1,4 @@
-From 203087fe335a4b254c415f298ac6710d3f98b27e Mon Sep 17 00:00:00 2001
+From bba0896a05e6406076893dd2f4c3b330e41082a6 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 22 Feb 2017 17:01:18 -0800
 Subject: [PATCH] Add an option to disable installation of test modules
@@ -16,10 +16,10 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  2 files changed, 41 insertions(+), 19 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 0e06ddb..029d3e3 100644
+index 4ce917ab8d..4110fff4ac 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1191,8 +1191,28 @@ maninstall:	altmaninstall
+@@ -1194,8 +1194,28 @@ maninstall:	altmaninstall
  
  # Install the library
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -50,7 +50,7 @@ index 0e06ddb..029d3e3 100644
  		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -1226,29 +1246,26 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
+@@ -1229,29 +1249,26 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
  		test/test_importlib/namespace_pkgs/project3/parent/child \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package \
                  test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
@@ -95,10 +95,10 @@ index 0e06ddb..029d3e3 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index fc4e71a..972eaca 100644
+index d5ee2aedfb..f924937fe1 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3081,6 +3081,11 @@ if test "$posix_threads" = "yes"; then
+@@ -3112,6 +3112,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -111,5 +111,5 @@ index fc4e71a..972eaca 100644
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
 -- 
-2.9.3
+2.13.5
 

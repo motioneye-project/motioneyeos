@@ -1,4 +1,4 @@
-From 03936d5f998e60f234617b41f85053ea10b7a3d8 Mon Sep 17 00:00:00 2001
+From 63ab4a20076740bd39985c7dee3d6231cdc74c75 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:43:24 +0100
 Subject: [PATCH] Abort on failed module build
@@ -14,7 +14,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+)
 
 diff --git a/setup.py b/setup.py
-index 09fc3ee..0be015e 100644
+index c956fa08d1..b3add2be76 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -312,6 +312,7 @@ class PyBuildExt(build_ext):
@@ -26,5 +26,5 @@ index 09fc3ee..0be015e 100644
          if self.failed_on_import:
              failed = self.failed_on_import[:]
 -- 
-2.9.3
+2.13.5
 

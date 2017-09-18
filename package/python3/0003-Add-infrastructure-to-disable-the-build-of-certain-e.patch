@@ -1,4 +1,4 @@
-From 300143451b42717eb05fc8b876f25ff4b202d8c4 Mon Sep 17 00:00:00 2001
+From 2c2afc80831c518e5daf3df6c9e4c4ac0a7be001 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 22 Feb 2017 16:33:22 -0800
 Subject: [PATCH] Add infrastructure to disable the build of certain extensions
@@ -44,10 +44,10 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  3 files changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index b78a765..0e06ddb 100644
+index b38bd79121..4ce917ab8d 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -188,6 +188,8 @@ FILEMODE=	644
+@@ -190,6 +190,8 @@ FILEMODE=	644
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -56,7 +56,7 @@ index b78a765..0e06ddb 100644
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -606,6 +608,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
+@@ -575,6 +577,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -64,7 +64,7 @@ index b78a765..0e06ddb 100644
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  
-@@ -1433,7 +1436,8 @@ libainstall:	all python-config
+@@ -1436,7 +1439,8 @@ libainstall:	@DEF_MAKE_RULE@ python-config
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -75,10 +75,10 @@ index b78a765..0e06ddb 100644
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
 diff --git a/configure.ac b/configure.ac
-index 250b23b..fc4e71a 100644
+index 5f87c4db5a..d5ee2aedfb 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2779,6 +2779,8 @@ LIBS="$withval $LIBS"
+@@ -2810,6 +2810,8 @@ LIBS="$withval $LIBS"
  
  PKG_PROG_PKG_CONFIG
  
@@ -88,7 +88,7 @@ index 250b23b..fc4e71a 100644
  AC_MSG_CHECKING(for --with-system-expat)
  AC_ARG_WITH(system_expat,
 diff --git a/setup.py b/setup.py
-index f04bf22..c5bce21 100644
+index fe477974bd..86643ae8bf 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -43,7 +43,11 @@ host_platform = get_platform()
@@ -105,5 +105,5 @@ index f04bf22..c5bce21 100644
  def add_dir_to_list(dirlist, dir):
      """Add the directory 'dir' to the list 'dirlist' (after any relative
 -- 
-2.9.3
+2.13.5
 

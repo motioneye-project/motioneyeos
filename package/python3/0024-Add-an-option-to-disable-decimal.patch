@@ -1,4 +1,4 @@
-From dc321780e26a9270f20b784f438a632bd952cbb3 Mon Sep 17 00:00:00 2001
+From 0870559b9af82b55f1fd8b35528510f563577256 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:51:31 +0100
 Subject: [PATCH] Add an option to disable decimal
@@ -15,10 +15,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  2 files changed, 13 insertions(+), 6 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index 72989a1..71aea1d 100644
+index 2699e7ceb1..e2c3b6f25c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2831,13 +2831,20 @@ AC_SUBST(LIBFFI_INCLUDEDIR)
+@@ -2862,13 +2862,20 @@ AC_SUBST(LIBFFI_INCLUDEDIR)
  AC_MSG_RESULT($with_system_ffi)
  
  # Check for use of the system libmpdec library
@@ -45,10 +45,10 @@ index 72989a1..71aea1d 100644
  # Check for support for loadable sqlite extensions
  AC_MSG_CHECKING(for --enable-loadable-sqlite-extensions)
 diff --git a/setup.py b/setup.py
-index 1079eba..c3a96c1 100644
+index d642825c1e..5b98255857 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2055,7 +2055,7 @@ class PyBuildExt(build_ext):
+@@ -2058,7 +2058,7 @@ class PyBuildExt(build_ext):
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []
@@ -58,5 +58,5 @@ index 1079eba..c3a96c1 100644
              libraries = [':libmpdec.so.2']
              sources = ['_decimal/_decimal.c']
 -- 
-2.9.3
+2.13.5
 

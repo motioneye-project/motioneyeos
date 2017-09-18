@@ -1,4 +1,4 @@
-From 0458813245e8ba3d5b567cd53303cbe975144e95 Mon Sep 17 00:00:00 2001
+From 01b588baf835ec95df7c5696eff1f6c07eaa1108 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:36:00 +0100
 Subject: [PATCH] Don't look in /usr/lib/termcap for libraries
@@ -9,7 +9,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+), 4 deletions(-)
 
 diff --git a/setup.py b/setup.py
-index c5bce21..c5eb97d 100644
+index 86643ae8bf..cd00fbdbda 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -786,12 +786,9 @@ class PyBuildExt(build_ext):
@@ -27,5 +27,5 @@ index c5bce21..c5eb97d 100644
                                     libraries=readline_libs) )
          else:
 -- 
-2.9.3
+2.13.5
 

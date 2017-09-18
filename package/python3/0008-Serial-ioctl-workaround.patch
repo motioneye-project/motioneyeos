@@ -1,4 +1,4 @@
-From 076ac00569a0e6b330d75951c599a36464c4902b Mon Sep 17 00:00:00 2001
+From 20767cb868ff271f4501a6e023f367400882d75e Mon Sep 17 00:00:00 2001
 From: Baruch Siach <baruch@tkos.co.il>
 Date: Wed, 23 Dec 2015 11:44:02 +0100
 Subject: [PATCH] Serial ioctl() workaround
@@ -15,7 +15,7 @@ Signed-off-by: Baruch Siach <baruch@tkos.co.il>
  1 file changed, 2 insertions(+)
 
 diff --git a/Modules/termios.c b/Modules/termios.c
-index b78d33e..58b0444 100644
+index b78d33e688..58b0444565 100644
 --- a/Modules/termios.c
 +++ b/Modules/termios.c
 @@ -9,7 +9,9 @@
@@ -29,5 +29,5 @@ index b78d33e..58b0444 100644
  /* HP-UX requires that this be included to pick up MDCD, MCTS, MDSR,
   * MDTR, MRI, and MRTS (appearantly used internally by some things
 -- 
-2.9.3
+2.13.5
 

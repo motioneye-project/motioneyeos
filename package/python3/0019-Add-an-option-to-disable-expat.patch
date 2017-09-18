@@ -1,4 +1,4 @@
-From a7e1fc80dc729018e806d6f3202c852c0d69cba7 Mon Sep 17 00:00:00 2001
+From 63fc5bc90cb57460552b544cbed0c2939759ab9e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 22 Feb 2017 17:40:45 -0800
 Subject: [PATCH] Add an option to disable expat
@@ -20,10 +20,10 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  3 files changed, 19 insertions(+), 7 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 3621130..a9bdbde 100644
+index 6a6bc082cd..dc4b92b6fe 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1205,7 +1205,7 @@ LIBSUBDIRS=	site-packages \
+@@ -1208,7 +1208,7 @@ LIBSUBDIRS=	site-packages \
  		logging csv wsgiref urllib \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
@@ -32,7 +32,7 @@ index 3621130..a9bdbde 100644
  		importlib \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
-@@ -1268,6 +1268,10 @@ ifeq (@CURSES@,yes)
+@@ -1271,6 +1271,10 @@ ifeq (@CURSES@,yes)
  LIBSUBDIRS += curses
  endif
  
@@ -44,10 +44,10 @@ index 3621130..a9bdbde 100644
  LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
  TESTSUBDIRS += lib2to3/tests			\
 diff --git a/configure.ac b/configure.ac
-index 485f73c..a426b3a 100644
+index 5896b39ff9..6f21482207 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2782,13 +2782,21 @@ PKG_PROG_PKG_CONFIG
+@@ -2813,13 +2813,21 @@ PKG_PROG_PKG_CONFIG
  AC_SUBST(DISABLED_EXTENSIONS)
  
  # Check for use of the system expat library
@@ -75,10 +75,10 @@ index 485f73c..a426b3a 100644
  # Check for use of the system libffi library
  AC_MSG_CHECKING(for --with-system-ffi)
 diff --git a/setup.py b/setup.py
-index 80ec79b..660bbd7 100644
+index 76429e1326..38aa5e605e 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1492,7 +1492,7 @@ class PyBuildExt(build_ext):
+@@ -1495,7 +1495,7 @@ class PyBuildExt(build_ext):
          #
          # More information on Expat can be found at www.libexpat.org.
          #
@@ -88,5 +88,5 @@ index 80ec79b..660bbd7 100644
              define_macros = []
              expat_lib = ['expat']
 -- 
-2.9.3
+2.13.5
 

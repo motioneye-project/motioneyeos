@@ -5,7 +5,7 @@
 ################################################################################
 
 PYTHON3_VERSION_MAJOR = 3.6
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).1
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).2
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_LICENSE = Python-2.0, others
@@ -18,11 +18,8 @@ PYTHON3_LICENSE_FILES = LICENSE
 # the Python sources, but instead use an external libffi library.
 PYTHON3_LIBTOOL_PATCH = NO
 
-# Python needs itself and a "pgen" program to build itself, both being
-# provided in the Python sources. So in order to cross-compile Python,
-# we need to build a host Python first. This host Python is also
-# installed in $(HOST_DIR), as it is needed when cross-compiling
-# third-party Python modules.
+# This host Python is installed in $(HOST_DIR), as it is needed when
+# cross-compiling third-party Python modules.
 
 HOST_PYTHON3_CONF_OPTS += \
 	--without-ensurepip \
@@ -162,21 +159,48 @@ PYTHON3_CONF_OPTS += \
 	--disable-idle3 \
 	--disable-pyc-build
 
-# Python builds two tools to generate code: 'pgen' and
-# '_freeze_importlib'. Unfortunately, for the target Python, they are
-# built for the target, while we need to run them at build time. So
-# when installing host-python, we copy them to
-# $(HOST_DIR)/bin. And then, when building the target python
-# package, we tell the configure script where they are located.
-define HOST_PYTHON3_INSTALL_TOOLS
-	cp $(@D)/Parser/pgen $(HOST_DIR)/bin/python-pgen
+
+#
+# Some of CPython's source code is generated using Python interpreter
+# and some helper tools such as "Programs/_freeze_importlib" or
+# "Parser/pgen" (look for regen-* targets in Makefile.pre.in for more
+# info). Normally CPython codebase ships with those files
+# pre-generated, so just regular "make" with no additional steps
+# should be sufficient for a succesfull build, however due to
+# Buildroot's "Add importlib fix for PEP 3147 issue" custom patch we
+# end up modifying "Lib/importlib/_bootstrap_external.py" which means
+# we have to do "regen-importlib" step before building CPython
+# (Importlib is a builtin module that needs to be "frozen"/converted
+# to a C array of bytecode using "Programs/_freeze_importlib")
+#
+# To achive that we add pre-build steps to host-python3 as well as
+# python3 that execute "regen-importlib" target.
+#
+# Unfortunately, for the target Python, "Programs/_freeze_importlib"
+# is built for the target, while we need to run them at build time. So
+# when installing host-python3, we copy them to $(HOST_DIR)/bin...
+#
+define HOST_PYTHON3_MAKE_REGEN_IMPORTLIB
+	$(HOST_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) regen-importlib
 	cp $(@D)/Programs/_freeze_importlib $(HOST_DIR)/bin/python-freeze-importlib
 endef
-HOST_PYTHON3_POST_INSTALL_HOOKS += HOST_PYTHON3_INSTALL_TOOLS
 
-PYTHON3_CONF_ENV += \
-	PGEN_FOR_BUILD=$(HOST_DIR)/bin/python-pgen \
-	FREEZE_IMPORTLIB_FOR_BUILD=$(HOST_DIR)/bin/python-freeze-importlib
+HOST_PYTHON3_PRE_BUILD_HOOKS += HOST_PYTHON3_MAKE_REGEN_IMPORTLIB
+#
+# ... And then, when building the target python we first buid
+# 'Programs/_freeze_importlib' to force GNU Make to update all of the
+# prerequisites of 'Programs/_freeze_importlib', then copy our stashed
+# "host-usable" version over the one that was just build and then
+# build "regen-importlib" target
+#
+define PYTHON3_MAKE_REGEN_IMPORTLIB
+	$(TARGET_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) Programs/_freeze_importlib
+	cp $(HOST_DIR)/bin/python-freeze-importlib $(@D)/Programs/_freeze_importlib
+	$(TARGET_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) regen-importlib
+endef
+
+PYTHON3_PRE_BUILD_HOOKS += PYTHON3_MAKE_REGEN_IMPORTLIB
+
 
 #
 # Remove useless files. In the config/ directory, only the Makefile
