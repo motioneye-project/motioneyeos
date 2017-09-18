@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-MSGPACK_VERSION = 0.5.4
-MSGPACK_SITE = http://downloads.sourceforge.net/project/msgpack/msgpack/cpp
-MSGPACK_LICENSE = Apache-2.0
-MSGPACK_LICENSE_FILES = COPYING
+MSGPACK_VERSION = 2.1.5
+MSGPACK_SITE = $(call github,msgpack,msgpack-c,cpp-$(MSGPACK_VERSION))
+MSGPACK_LICENSE = BSL-1.0
+MSGPACK_LICENSE_FILES = COPYING LICENSE_1_0.txt
+MSGPACK_INSTALL_STAGING = YES
 
-$(eval $(autotools-package))
+$(eval $(cmake-package))
