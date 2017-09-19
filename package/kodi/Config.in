@@ -193,7 +193,6 @@ config BR2_PACKAGE_KODI_NONFREE
 
 config BR2_PACKAGE_KODI_PULSEAUDIO
 	bool "pulseaudio"
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
 	# Pulseaudio support in kodi needs glib support in Pulseaudio,
 	# see FindPulseAudio.cmake. Kodi meets all dependencies of
 	# libglib2, so there is no need to propagate them here.

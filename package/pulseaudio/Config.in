@@ -1,13 +1,22 @@
+config BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC
+	bool
+	default y if BR2_PACKAGE_LIBATOMIC_OPS_ARCH_SUPPORTS || \
+		BR2_TOOLCHAIN_HAS_SYNC_4
+
+config BR2_PACKAGE_PULSEAUDIO_ENABLE_ATOMIC
+	bool
+	select BR2_PACKAGE_LIBATOMIC_OPS if !BR2_TOOLCHAIN_HAS_SYNC_4
+
 config BR2_PACKAGE_PULSEAUDIO
 	bool "pulseaudio"
+	depends on BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # json-c
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_LIBTOOL
-	select BR2_PACKAGE_JSON_C
 	select BR2_PACKAGE_LIBSNDFILE
+	select BR2_PACKAGE_PULSEAUDIO_ENABLE_ATOMIC
 	select BR2_PACKAGE_SPEEX
 	help
 	  PulseAudio is a sound system for POSIX OSes, meaning that it
@@ -33,5 +42,5 @@ endif
 
 comment "pulseaudio needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

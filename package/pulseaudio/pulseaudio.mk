@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PULSEAUDIO_VERSION = 9.0
+PULSEAUDIO_VERSION = 11.1
 PULSEAUDIO_SOURCE = pulseaudio-$(PULSEAUDIO_VERSION).tar.xz
 PULSEAUDIO_SITE = http://freedesktop.org/software/pulseaudio/releases
 PULSEAUDIO_INSTALL_STAGING = YES
@@ -15,17 +15,8 @@ PULSEAUDIO_CONF_OPTS = \
 	--disable-legacy-database-entry-format \
 	--disable-manpages
 
-# Make sure we don't detect libatomic_ops. Indeed, since pulseaudio
-# requires json-c, which needs 4 bytes __sync builtins, there should
-# be no need for pulseaudio to rely on libatomic_ops.
-PULSEAUDIO_CONF_ENV += \
-	ac_cv_header_atomic_ops_h=no
-
-# 0002-webrtc-C-11-is-only-required-for-WebRTC-support.patch
-PULSEAUDIO_AUTORECONF = YES
-
 PULSEAUDIO_DEPENDENCIES = \
-	host-pkgconf libtool json-c libsndfile speex host-intltool \
+	host-pkgconf libtool libsndfile speex host-intltool \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
 	$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib) \
 	$(if $(BR2_PACKAGE_LIBGLIB2),libglib2) \
@@ -47,6 +38,13 @@ PULSEAUDIO_CONF_OPTS += --enable-jack
 PULSEAUDIO_DEPENDENCIES += jack2
 else
 PULSEAUDIO_CONF_OPTS += --disable-jack
+endif
+
+ifeq ($(BR2_PACKAGE_LIBATOMIC_OPS),y)
+PULSEAUDIO_DEPENDENCIES += libatomic_ops
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+PULSEAUDIO_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -DAO_NO_SPARC_V9"
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
