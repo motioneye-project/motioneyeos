@@ -6,6 +6,16 @@
 
 XEN_VERSION = 4.9.0
 XEN_SITE = https://downloads.xenproject.org/release/xen/$(XEN_VERSION)
+XEN_PATCH = \
+	https://xenbits.xenproject.org/xsa/xsa226.patch \
+	https://xenbits.xenproject.org/xsa/xsa227.patch \
+	https://xenbits.xenproject.org/xsa/xsa228.patch \
+	https://xenbits.xenproject.org/xsa/xsa230.patch \
+	https://xenbits.xenproject.org/xsa/xsa231-4.9.patch \
+	https://xenbits.xenproject.org/xsa/xsa232.patch \
+	https://xenbits.xenproject.org/xsa/xsa233.patch \
+	https://xenbits.xenproject.org/xsa/xsa234-4.9.patch \
+	https://xenbits.xenproject.org/xsa/xsa235-4.9.patch
 XEN_LICENSE = GPL-2.0
 XEN_LICENSE_FILES = COPYING
 XEN_DEPENDENCIES = host-acpica host-python
