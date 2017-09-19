@@ -173,6 +173,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN
 	bool "login"
 	depends on BR2_ENABLE_LOCALE # linux-pam
 	depends on BR2_USE_WCHAR # linux-pam
+	depends on !BR2_STATIC_LIBS # linux-pam
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on BR2_USE_MMU # fork(), linux-pam
 	select BR2_PACKAGE_LINUX_PAM
