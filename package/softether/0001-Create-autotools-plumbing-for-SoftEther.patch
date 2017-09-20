@@ -1494,9 +1494,9 @@ index 00000000..4a3fc2ba
 +
 +
 +AC_OUTPUT
---- a/configure	2016-04-24 16:49:31.000000000 +0200
+--- a/configure	2017-07-16 04:53:31.000000000 +0200
 +++ b/configure	1970-01-01 01:00:00.000000000 +0100
-@@ -1,83 +0,0 @@
+@@ -1,112 +0,0 @@
 -#!/bin/sh
 -
 -echo '---------------------------------------------------------------------'
@@ -1515,74 +1515,103 @@ index 00000000..4a3fc2ba
 -
 -echo 'Welcome to the corner-cutting configure script !'
 -echo
--echo 'Select your operating system below:'
--echo ' 1: Linux'
--echo ' 2: FreeBSD'
--echo ' 3: Solaris'
--echo ' 4: Mac OS X'
--echo ' 5: OpenBSD'
--echo
--echo -n 'Which is your operating system (1 - 5) ? : '
--read TMP
--echo
+-
 -OS=""
--if test "$TMP" = "1"
--then
+-case "`uname -s`" in
+-Linux)
 -	OS="linux"
--fi
--if test "$TMP" = "2"
--then
+-	;;
+-FreeBSD)
 -	OS="freebsd"
--fi
--if test "$TMP" = "3"
--then
+-	;;
+-SunOS)
 -	OS="solaris"
--fi
--if test "$TMP" = "4"
--then
+-	;;
+-Darwin)
 -	OS="macos"
--fi
--if test "$TMP" = "5"
--then
+-	;;
+-OpenBSD)
 -	OS="openbsd"
--fi
+-	;;
+-*)
+-	echo 'Select your operating system below:'
+-	echo ' 1: Linux'
+-	echo ' 2: FreeBSD'
+-	echo ' 3: Solaris'
+-	echo ' 4: Mac OS X'
+-	echo ' 5: OpenBSD'
+-	echo
+-	echo -n 'Which is your operating system (1 - 5) ? : '
+-	read TMP
+-	echo
+-	if test "$TMP" = "1"
+-	then
+-		OS="linux"
+-	fi
+-	if test "$TMP" = "2"
+-	then
+-		OS="freebsd"
+-	fi
+-	if test "$TMP" = "3"
+-	then
+-		OS="solaris"
+-	fi
+-	if test "$TMP" = "4"
+-	then
+-		OS="macos"
+-	fi
+-	if test "$TMP" = "5"
+-	then
+-		OS="openbsd"
+-	fi
 -
--if test "$OS" = ""
--then
--	echo "Wrong number."
--	exit 1
--fi
+-	if test "$OS" = ""
+-	then
+-		echo "Wrong number."
+-		exit 1
+-	fi
+-	;;
+-esac
 -
--echo 'Select your CPU bits below:'
--echo ' 1: 32-bit'
--echo ' 2: 64-bit'
--echo
--echo -n 'Which is the type of your CPU (1 - 2) ? : '
--read TMP
--echo
 -CPU=""
--if test "$TMP" = "1"
--then
--	CPU="32bit"
--fi
--if test "$TMP" = "2"
--then
--	CPU="64bit"
--fi
+-case "`uname -m`" in
+-x86_64|amd64|aarch64|arm64|armv8*|mips64|ppc64|sparc64|alpha|ia64)
+-	CPU=64bit
+-	;;
+-i?86|x86pc|i86pc|armv4*|armv5*|armv6*|armv7*)
+-	CPU=32bit
+-	;;
+-*)
+-	echo 'Select your CPU bits below:'
+-	echo ' 1: 32-bit'
+-	echo ' 2: 64-bit'
+-	echo
+-	echo -n 'Which is the type of your CPU (1 - 2) ? : '
+-	read TMP
+-	echo
+-	if test "$TMP" = "1"
+-	then
+-		CPU="32bit"
+-	fi
+-	if test "$TMP" = "2"
+-	then
+-		CPU="64bit"
+-	fi
 -
--if test "$CPU" = ""
--then
--	echo "Wrong number."
--	exit 1
--fi
+-	if test "$CPU" = ""
+-	then
+-		echo "Wrong number."
+-		exit 1
+-	fi
+-	;;
+-esac
 -
 -cp src/makefiles/${OS}_${CPU}.mak Makefile
 -
 -echo "The Makefile is generated. Run 'make' to build SoftEther VPN."
--
 --- a/manual_configure	1970-01-01 01:00:00.000000000 +0100
-+++ b/manual_configure	2016-04-24 16:49:31.000000000 +0200
-@@ -0,0 +1,83 @@
++++ b/manual_configure	2017-07-16 04:53:31.000000000 +0200
+@@ -0,0 +1,112 @@
 +#!/bin/sh
 +
 +echo '---------------------------------------------------------------------'
@@ -1601,71 +1630,100 @@ index 00000000..4a3fc2ba
 +
 +echo 'Welcome to the corner-cutting configure script !'
 +echo
-+echo 'Select your operating system below:'
-+echo ' 1: Linux'
-+echo ' 2: FreeBSD'
-+echo ' 3: Solaris'
-+echo ' 4: Mac OS X'
-+echo ' 5: OpenBSD'
-+echo
-+echo -n 'Which is your operating system (1 - 5) ? : '
-+read TMP
-+echo
++
 +OS=""
-+if test "$TMP" = "1"
-+then
++case "`uname -s`" in
++Linux)
 +	OS="linux"
-+fi
-+if test "$TMP" = "2"
-+then
++	;;
++FreeBSD)
 +	OS="freebsd"
-+fi
-+if test "$TMP" = "3"
-+then
++	;;
++SunOS)
 +	OS="solaris"
-+fi
-+if test "$TMP" = "4"
-+then
++	;;
++Darwin)
 +	OS="macos"
-+fi
-+if test "$TMP" = "5"
-+then
++	;;
++OpenBSD)
 +	OS="openbsd"
-+fi
++	;;
++*)
++	echo 'Select your operating system below:'
++	echo ' 1: Linux'
++	echo ' 2: FreeBSD'
++	echo ' 3: Solaris'
++	echo ' 4: Mac OS X'
++	echo ' 5: OpenBSD'
++	echo
++	echo -n 'Which is your operating system (1 - 5) ? : '
++	read TMP
++	echo
++	if test "$TMP" = "1"
++	then
++		OS="linux"
++	fi
++	if test "$TMP" = "2"
++	then
++		OS="freebsd"
++	fi
++	if test "$TMP" = "3"
++	then
++		OS="solaris"
++	fi
++	if test "$TMP" = "4"
++	then
++		OS="macos"
++	fi
++	if test "$TMP" = "5"
++	then
++		OS="openbsd"
++	fi
 +
-+if test "$OS" = ""
-+then
-+	echo "Wrong number."
-+	exit 1
-+fi
++	if test "$OS" = ""
++	then
++		echo "Wrong number."
++		exit 1
++	fi
++	;;
++esac
 +
-+echo 'Select your CPU bits below:'
-+echo ' 1: 32-bit'
-+echo ' 2: 64-bit'
-+echo
-+echo -n 'Which is the type of your CPU (1 - 2) ? : '
-+read TMP
-+echo
 +CPU=""
-+if test "$TMP" = "1"
-+then
-+	CPU="32bit"
-+fi
-+if test "$TMP" = "2"
-+then
-+	CPU="64bit"
-+fi
++case "`uname -m`" in
++x86_64|amd64|aarch64|arm64|armv8*|mips64|ppc64|sparc64|alpha|ia64)
++	CPU=64bit
++	;;
++i?86|x86pc|i86pc|armv4*|armv5*|armv6*|armv7*)
++	CPU=32bit
++	;;
++*)
++	echo 'Select your CPU bits below:'
++	echo ' 1: 32-bit'
++	echo ' 2: 64-bit'
++	echo
++	echo -n 'Which is the type of your CPU (1 - 2) ? : '
++	read TMP
++	echo
++	if test "$TMP" = "1"
++	then
++		CPU="32bit"
++	fi
++	if test "$TMP" = "2"
++	then
++		CPU="64bit"
++	fi
 +
-+if test "$CPU" = ""
-+then
-+	echo "Wrong number."
-+	exit 1
-+fi
++	if test "$CPU" = ""
++	then
++		echo "Wrong number."
++		exit 1
++	fi
++	;;
++esac
 +
 +cp src/makefiles/${OS}_${CPU}.mak Makefile
 +
 +echo "The Makefile is generated. Run 'make' to build SoftEther VPN."
-+
 diff --git a/src/Cedar/Makefile.am b/src/Cedar/Makefile.am
 new file mode 100644
 index 00000000..5346537d
