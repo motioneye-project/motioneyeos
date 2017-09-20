@@ -1,0 +1,13 @@
+[Unit]
+Description=System Logging Service
+Requires=syslog.socket
+Wants=klogd.service
+
+[Service]
+ExecStart=/usr/sbin/syslogd -m 0 -n
+StandardOutput=null
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+Alias=syslog.service
