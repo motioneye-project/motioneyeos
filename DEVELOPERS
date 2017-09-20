@@ -914,6 +914,8 @@ F:	package/fxload/
 
 N:	Joel Stanley <joel@jms.id.au>
 F:	package/pdbg/
+F:	board/qemu/ppc64le-pseries/
+F:	configs/qemu_ppc64le_pseries_defconfig
 
 N:	Johan Derycke <johanderycke@gmail.com>
 F:	package/python-libconfig/
