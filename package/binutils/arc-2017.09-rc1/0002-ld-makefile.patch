@@ -1,6 +1,6 @@
-From 32078014f734430e1c68fe40aaf970b9805ecaf5 Mon Sep 17 00:00:00 2001
+From d4e18ebc6ad810167a2de84b185a5f0d65b9ec2d Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
-Date: Fri, 21 Apr 2017 21:19:13 +0300
+Date: Fri, 25 Dec 2015 11:40:53 +0100
 Subject: [PATCH] ld-makefile
 
 [Romain: rebase on top of 2.26]
@@ -11,7 +11,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/ld/Makefile.am b/ld/Makefile.am
-index 9dd31ff..553a107 100644
+index 625347f..d5334d2 100644
 --- a/ld/Makefile.am
 +++ b/ld/Makefile.am
 @@ -57,7 +57,7 @@ endif
@@ -24,7 +24,7 @@ index 9dd31ff..553a107 100644
  EMUL = @EMUL@
  EMULATION_OFILES = @EMULATION_OFILES@
 diff --git a/ld/Makefile.in b/ld/Makefile.in
-index c464302..feb34ba 100644
+index ba25177..a2cf228 100644
 --- a/ld/Makefile.in
 +++ b/ld/Makefile.in
 @@ -446,7 +446,7 @@ AM_CFLAGS = $(WARN_CFLAGS) $(ELF_CLFAGS)
@@ -37,5 +37,5 @@ index c464302..feb34ba 100644
  BFDDIR = $(BASEDIR)/bfd
  INCDIR = $(BASEDIR)/include
 -- 
-2.7.4
+2.9.4
 

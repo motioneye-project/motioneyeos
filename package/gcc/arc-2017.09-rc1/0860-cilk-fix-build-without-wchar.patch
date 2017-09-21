@@ -1,4 +1,7 @@
-[PATCH] cilk: fix build without wchar
+From 714739e69ead1d9823233af40645277f6d4633ea Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Tue, 2 May 2017 23:21:46 +0200
+Subject: [PATCH] cilk: fix build without wchar
 
 When building against uClibc with wchar support disabled, WCHAR_MIN and
 WCHAR_MAX are not defined leading to compilation errors.
@@ -6,15 +9,17 @@ WCHAR_MAX are not defined leading to compilation errors.
 Fix it by only including the wchar code if available.
 
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+[Romain: convert to git patch]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
- libcilkrts/include/cilk/reducer_min_max.h |    8 ++++++++
+ libcilkrts/include/cilk/reducer_min_max.h | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-Index: b/libcilkrts/include/cilk/reducer_min_max.h
-===================================================================
+diff --git a/libcilkrts/include/cilk/reducer_min_max.h b/libcilkrts/include/cilk/reducer_min_max.h
+index 641aa82..4f8e010 100644
 --- a/libcilkrts/include/cilk/reducer_min_max.h
 +++ b/libcilkrts/include/cilk/reducer_min_max.h
-@@ -3154,7 +3154,9 @@
+@@ -3289,7 +3289,9 @@ __CILKRTS_BEGIN_EXTERN_C
  CILK_C_REDUCER_MAX_INSTANCE(char,               char,       CHAR_MIN)
  CILK_C_REDUCER_MAX_INSTANCE(unsigned char,      uchar,      0)
  CILK_C_REDUCER_MAX_INSTANCE(signed char,        schar,      SCHAR_MIN)
@@ -24,7 +29,7 @@ Index: b/libcilkrts/include/cilk/reducer_min_max.h
  CILK_C_REDUCER_MAX_INSTANCE(short,              short,      SHRT_MIN)
  CILK_C_REDUCER_MAX_INSTANCE(unsigned short,     ushort,     0)
  CILK_C_REDUCER_MAX_INSTANCE(int,                int,        INT_MIN)
-@@ -3306,7 +3308,9 @@
+@@ -3441,7 +3443,9 @@ __CILKRTS_BEGIN_EXTERN_C
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(char,               char,       CHAR_MIN)
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(unsigned char,      uchar,      0)
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(signed char,        schar,      SCHAR_MIN)
@@ -34,7 +39,7 @@ Index: b/libcilkrts/include/cilk/reducer_min_max.h
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(short,              short,      SHRT_MIN)
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(unsigned short,     ushort,     0)
  CILK_C_REDUCER_MAX_INDEX_INSTANCE(int,                int,        INT_MIN)
-@@ -3432,7 +3436,9 @@
+@@ -3567,7 +3571,9 @@ __CILKRTS_BEGIN_EXTERN_C
  CILK_C_REDUCER_MIN_INSTANCE(char,               char,       CHAR_MAX)
  CILK_C_REDUCER_MIN_INSTANCE(unsigned char,      uchar,      CHAR_MAX)
  CILK_C_REDUCER_MIN_INSTANCE(signed char,        schar,      SCHAR_MAX)
@@ -44,7 +49,7 @@ Index: b/libcilkrts/include/cilk/reducer_min_max.h
  CILK_C_REDUCER_MIN_INSTANCE(short,              short,      SHRT_MAX)
  CILK_C_REDUCER_MIN_INSTANCE(unsigned short,     ushort,     USHRT_MAX)
  CILK_C_REDUCER_MIN_INSTANCE(int,                int,        INT_MAX)
-@@ -3584,7 +3590,9 @@
+@@ -3719,7 +3725,9 @@ __CILKRTS_BEGIN_EXTERN_C
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(char,               char,       CHAR_MAX)
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(unsigned char,      uchar,      CHAR_MAX)
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(signed char,        schar,      SCHAR_MAX)
@@ -54,3 +59,6 @@ Index: b/libcilkrts/include/cilk/reducer_min_max.h
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(short,              short,      SHRT_MAX)
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(unsigned short,     ushort,     USHRT_MAX)
  CILK_C_REDUCER_MIN_INDEX_INSTANCE(int,                int,        INT_MAX)
+-- 
+2.9.3
+

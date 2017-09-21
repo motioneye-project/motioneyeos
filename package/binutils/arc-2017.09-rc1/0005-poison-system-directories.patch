@@ -1,4 +1,4 @@
-From be366461dd49e760440fb28eaee5164eb281adcc Mon Sep 17 00:00:00 2001
+From b100e9d16bfe6725b2624902af457ecfa490b150 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Fri, 25 Dec 2015 11:45:38 +0100
 Subject: [PATCH] poison-system-directories
@@ -78,10 +78,10 @@ Signed-off-by: Scott Garman <scott.a.garman@intel.com>
  9 files changed, 89 insertions(+)
 
 diff --git a/ld/config.in b/ld/config.in
-index 276fb77..35c58eb 100644
+index 5d91380..ffe84a7 100644
 --- a/ld/config.in
 +++ b/ld/config.in
-@@ -17,6 +17,9 @@
+@@ -21,6 +21,9 @@
     language is requested. */
  #undef ENABLE_NLS
  
@@ -92,10 +92,10 @@ index 276fb77..35c58eb 100644
  #undef EXTRA_SHLIB_EXTENSION
  
 diff --git a/ld/configure b/ld/configure
-index a446283..d1f9504 100755
+index da20ab5..63e3da7 100755
 --- a/ld/configure
 +++ b/ld/configure
-@@ -789,6 +789,7 @@ with_lib_path
+@@ -785,6 +785,7 @@ with_lib_path
  enable_targets
  enable_64_bit_bfd
  with_sysroot
@@ -103,7 +103,7 @@ index a446283..d1f9504 100755
  enable_gold
  enable_got
  enable_compressed_debug_sections
-@@ -1446,6 +1447,8 @@ Optional Features:
+@@ -1443,6 +1444,8 @@ Optional Features:
    --disable-largefile     omit support for large files
    --enable-targets        alternative target configurations
    --enable-64-bit-bfd     64-bit support (on hosts with narrower word sizes)
@@ -112,7 +112,7 @@ index a446283..d1f9504 100755
    --enable-gold[=ARG]     build gold [ARG={default,yes,no}]
    --enable-got=<type>     GOT handling scheme (target, single, negative,
                            multigot)
-@@ -15499,7 +15502,18 @@ else
+@@ -15497,7 +15500,18 @@ else
  fi
  
  
@@ -132,7 +132,7 @@ index a446283..d1f9504 100755
  # Check whether --enable-got was given.
  if test "${enable_got+set}" = set; then :
 diff --git a/ld/configure.ac b/ld/configure.ac
-index 188172d..2cd8443 100644
+index 34315e6..5ade9a0 100644
 --- a/ld/configure.ac
 +++ b/ld/configure.ac
 @@ -95,6 +95,16 @@ AC_SUBST(use_sysroot)
@@ -153,12 +153,12 @@ index 188172d..2cd8443 100644
  dnl "install_as_default" is set to false if gold is the default linker.
  dnl "installed_linker" is the installed BFD linker name.
 diff --git a/ld/ld.h b/ld/ld.h
-index d84ec4e..3476b26 100644
+index 162e156..7d6d7ef 100644
 --- a/ld/ld.h
 +++ b/ld/ld.h
-@@ -172,6 +172,14 @@ typedef struct {
-   /* If set, display the target memory usage (per memory region).  */
-   bfd_boolean print_memory_usage;
+@@ -177,6 +177,14 @@ typedef struct
+      in the linker script.  */
+   bfd_boolean force_group_allocation;
  
 +  /* If TRUE (the default) warn for uses of system directories when
 +     cross linking.  */
@@ -172,10 +172,10 @@ index d84ec4e..3476b26 100644
    enum endian_enum endian;
  
 diff --git a/ld/ld.texinfo b/ld/ld.texinfo
-index 1dd7492..fb1438e 100644
+index bb5f719..78501e4 100644
 --- a/ld/ld.texinfo
 +++ b/ld/ld.texinfo
-@@ -2403,6 +2403,18 @@ string identifying the original linked file does not change.
+@@ -2480,6 +2480,18 @@ string identifying the original linked file does not change.
  
  Passing @code{none} for @var{style} disables the setting from any
  @code{--build-id} options earlier on the command line.
@@ -195,11 +195,11 @@ index 1dd7492..fb1438e 100644
  
  @c man end
 diff --git a/ld/ldfile.c b/ld/ldfile.c
-index 1439309..086b354 100644
+index f7e5473..2cd84d3 100644
 --- a/ld/ldfile.c
 +++ b/ld/ldfile.c
-@@ -114,6 +114,23 @@ ldfile_add_library_path (const char *name, bfd_boolean cmdline)
-     new_dirs->name = concat (ld_sysroot, name + 1, (const char *) NULL);
+@@ -116,6 +116,23 @@ ldfile_add_library_path (const char *name, bfd_boolean cmdline)
+     new_dirs->name = concat (ld_sysroot, name + strlen ("$SYSROOT"), (const char *) NULL);
    else
      new_dirs->name = xstrdup (name);
 +
@@ -223,20 +223,20 @@ index 1439309..086b354 100644
  
  /* Try to open a BFD for a lang_input_statement.  */
 diff --git a/ld/ldlex.h b/ld/ldlex.h
-index 6f11e7b..0ca3110 100644
+index 5aa7f6b..cb655e0 100644
 --- a/ld/ldlex.h
 +++ b/ld/ldlex.h
-@@ -146,6 +146,8 @@ enum option_values
-   OPTION_PRINT_MEMORY_USAGE,
+@@ -147,6 +147,8 @@ enum option_values
    OPTION_REQUIRE_DEFINED_SYMBOL,
    OPTION_ORPHAN_HANDLING,
+   OPTION_FORCE_GROUP_ALLOCATION,
 +  OPTION_NO_POISON_SYSTEM_DIRECTORIES,
 +  OPTION_ERROR_POISON_SYSTEM_DIRECTORIES,
  };
  
  /* The initial parser states.  */
 diff --git a/ld/ldmain.c b/ld/ldmain.c
-index bb0b9cc..a23c56c 100644
+index ee5ab11..5f6effd 100644
 --- a/ld/ldmain.c
 +++ b/ld/ldmain.c
 @@ -270,6 +270,8 @@ main (int argc, char **argv)
@@ -249,10 +249,10 @@ index bb0b9cc..a23c56c 100644
    /* We initialize DEMANGLING based on the environment variable
       COLLECT_NO_DEMANGLE.  The gcc collect2 program will demangle the
 diff --git a/ld/lexsup.c b/ld/lexsup.c
-index 4cad209..be7d584 100644
+index 08106bc..d619d50 100644
 --- a/ld/lexsup.c
 +++ b/ld/lexsup.c
-@@ -535,6 +535,14 @@ static const struct ld_option ld_options[] =
+@@ -538,6 +538,14 @@ static const struct ld_option ld_options[] =
    { {"orphan-handling", required_argument, NULL, OPTION_ORPHAN_HANDLING},
      '\0', N_("=MODE"), N_("Control how orphan sections are handled."),
      TWO_DASHES },
@@ -267,7 +267,7 @@ index 4cad209..be7d584 100644
  };
  
  #define OPTION_COUNT ARRAY_SIZE (ld_options)
-@@ -547,6 +555,7 @@ parse_args (unsigned argc, char **argv)
+@@ -550,6 +558,7 @@ parse_args (unsigned argc, char **argv)
    int ingroup = 0;
    char *default_dirlist = NULL;
    char *shortopts;
@@ -275,7 +275,7 @@ index 4cad209..be7d584 100644
    struct option *longopts;
    struct option *really_longopts;
    int last_optind;
-@@ -1528,6 +1537,14 @@ parse_args (unsigned argc, char **argv)
+@@ -1534,6 +1543,14 @@ parse_args (unsigned argc, char **argv)
            }
            break;
  
@@ -290,7 +290,7 @@ index 4cad209..be7d584 100644
  	case OPTION_PUSH_STATE:
  	  input_flags.pushed = xmemdup (&input_flags,
  					sizeof (input_flags),
-@@ -1571,6 +1588,10 @@ parse_args (unsigned argc, char **argv)
+@@ -1577,6 +1594,10 @@ parse_args (unsigned argc, char **argv)
        command_line.soname = NULL;
      }
  
@@ -302,5 +302,5 @@ index 4cad209..be7d584 100644
      {
        lang_leave_group ();
 -- 
-2.4.3
+2.9.4
 

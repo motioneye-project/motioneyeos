@@ -1,0 +1,63 @@
+From cb7f97fb860b5286d3470ccda0f623f4657780a3 Mon Sep 17 00:00:00 2001
+From: claziss <claziss@synopsys.com>
+Date: Tue, 19 Sep 2017 15:45:19 +0200
+Subject: [PATCH] [ARC][ZOL] Update uses for hw-loop labels.
+
+Make sure we mark the hw-loop labels as beeing used.
+
+gcc/
+2017-09-19  Claudiu Zissulescu  <claziss@synopsys.com>
+
+	* config/arc/arc.c (hwloop_optimize): Update hw-loop's end/start
+	labels number of usages.
+
+gcc/testsuite
+2017-09-19  Claudiu Zissulescu  <claziss@synopsys.com>
+
+	* gcc.target/arc/loop-2.cpp: New test.
+---
+ gcc/config/arc/arc.c                    |  3 +++
+ gcc/testsuite/gcc.target/arc/arc.exp    |  2 +-
+ gcc/testsuite/gcc.target/arc/loop-2.cpp | 18 ++++++++++++++++++
+ 3 files changed, 22 insertions(+), 1 deletion(-)
+ create mode 100644 gcc/testsuite/gcc.target/arc/loop-2.cpp
+
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index 5c0a872cc97..cc7fc624ff2 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -7613,6 +7613,9 @@ hwloop_optimize (hwloop_info loop)
+   /* Insert the loop end label before the last instruction of the
+      loop.  */
+   emit_label_after (end_label, loop->last_insn);
++  /* Make sure we mark the begining and end label as used.  */
++  LABEL_NUSES (loop->end_label)++;
++  LABEL_NUSES (loop->start_label)++;
+ 
+   return true;
+ }
+diff --git a/gcc/testsuite/gcc.target/arc/loop-2.cpp b/gcc/testsuite/gcc.target/arc/loop-2.cpp
+new file mode 100644
+index 00000000000..d1dc917ba47
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/arc/loop-2.cpp
+@@ -0,0 +1,18 @@
++/* { dg-options "-O2" } *
++/* { dg-do assemble } */
++
++/* This file fails to assemble if we forgot to increase the number of
++   uses for loop's start and end labels.  */
++int a, c, d;
++int *b;
++void fn1(int p1) {
++  if (d == 5)
++    for (int i; i < p1; ++i)
++      if (c)
++        b[i] = c;
++      else
++        int t = a = t;
++  else
++    for (int i; i < p1; ++i)
++      b[i] = 0;
++}
+

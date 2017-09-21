@@ -1,4 +1,4 @@
-From 30628870e583375f8927c04398c7219c6e9f703c Mon Sep 17 00:00:00 2001
+From 378bda0e19d279535b3f4a0e448a658a534a5d67 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Fri, 25 Dec 2015 11:42:48 +0100
 Subject: [PATCH] add sysroot fix from bug #3049
@@ -12,13 +12,14 @@ Signed-off-by: Sven Rebhan <odinshorse@googlemail.com>
 [Romain: rebase on top of 2.26]
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
- ld/ldfile.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ ld/ldfile.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/ld/ldfile.c diff --git b/ld/ldfile.c
---- a/ld/ldfile.c	2017-03-02 03:23:54.000000000 -0500
-+++ b/ld/ldfile.c	2017-03-20 09:52:27.687415942 -0400
-@@ -336,18 +336,24 @@
+diff --git a/ld/ldfile.c b/ld/ldfile.c
+index 3b37a0a..f7e5473 100644
+--- a/ld/ldfile.c
++++ b/ld/ldfile.c
+@@ -338,18 +338,24 @@ ldfile_open_file_search (const char *arch,
       directory first.  */
    if (!entry->flags.maybe_archive)
      {
@@ -45,4 +46,6 @@ diff --git a/ld/ldfile.c diff --git b/ld/ldfile.c
  	return TRUE;
  
        if (IS_ABSOLUTE_PATH (entry->filename))
+-- 
+2.9.4
 
