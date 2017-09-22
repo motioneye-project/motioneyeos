@@ -1262,6 +1262,10 @@ N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
 
+N:	Mike Harmony <mike.harmony@snapav.com>
+F:	board/sinovoip/m2-plus/
+F:	configs/bananapi_m2_plus_defconfig
+
 N:	Nathan Lynch <ntl@pobox.com>
 F:	package/chrony/
 
