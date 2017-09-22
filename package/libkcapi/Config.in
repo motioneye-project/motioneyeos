@@ -9,6 +9,7 @@ if BR2_PACKAGE_LIBKCAPI
 
 config BR2_PACKAGE_LIBKCAPI_APPS
 	bool "build test applications"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Build additional test applications that can provide
 	  performance or algorithm tests.
