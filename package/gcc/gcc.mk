@@ -254,6 +254,14 @@ HOST_GCC_COMMON_CONF_OPTS += \
 	--without-long-double-128
 endif
 
+# Since glibc >= 2.26, poerpc64le requires double/long double which
+# requires at least gcc 6.2.
+# See sysdeps/powerpc/powerpc64le/configure.ac
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC)$(BR2_TOOLCHAIN_GCC_AT_LEAST_6)$(BR2_powerpc64le),yyy)
+HOST_GCC_COMMON_CONF_OPTS += \
+	--with-long-double-128
+endif
+
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".br_real"'
 ifeq ($(BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS),)
 ifeq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
