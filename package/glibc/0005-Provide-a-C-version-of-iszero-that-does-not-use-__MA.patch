@@ -1,0 +1,210 @@
+From 45970aa26d1af87b016ef95b4b35c566aeb6e841 Mon Sep 17 00:00:00 2001
+From: "Gabriel F. T. Gomes" <gftg@linux.vnet.ibm.com>
+Date: Tue, 22 Aug 2017 16:34:42 -0300
+Subject: [PATCH] Provide a C++ version of iszero that does not use __MATH_TG
+ (bug 21930)
+
+When signaling nans are enabled (with -fsignaling-nans), the C++ version
+of iszero uses the fpclassify macro, which is defined with __MATH_TG.
+However, when support for float128 is available, __MATH_TG uses the
+builtin __builtin_types_compatible_p, which is only available in C mode.
+
+This patch refactors the C++ version of iszero so that it uses function
+overloading to select between the floating-point types, instead of
+relying on fpclassify and __MATH_TG.
+
+Tested for powerpc64le, s390x, x86_64, and with build-many-glibcs.py.
+
+	[BZ #21930]
+	* math/math.h [defined __cplusplus && defined __SUPPORT_SNAN__]
+	(iszero): New C++ implementation that does not use
+	fpclassify/__MATH_TG/__builtin_types_compatible_p, when
+	signaling nans are enabled, since __builtin_types_compatible_p
+	is a C-only feature.
+	* math/test-math-iszero.cc: When __HAVE_DISTINCT_FLOAT128 is
+	defined, include ieee754_float128.h for access to the union and
+	member ieee854_float128.ieee.
+	[__HAVE_DISTINCT_FLOAT128] (do_test): Call check_float128.
+	[__HAVE_DISTINCT_FLOAT128] (check_float128): New function.
+	* sysdeps/powerpc/powerpc64le/Makefile [subdir == math]
+	(CXXFLAGS-test-math-iszero.cc): Add -mfloat128 to the build
+	options of test-math-zero on powerpc64le.
+
+(cherry picked from commit 42496114ec0eb7d6d039d05d4262e109951c600c)
+[Romain rebase on glibc 2.26]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ math/math.h                          | 33 +++++++++++++--
+ math/test-math-iszero.cc             | 79 ++++++++++++++++++++++++++++++++++++
+ sysdeps/powerpc/powerpc64le/Makefile |  3 +-
+ 3 files changed, 110 insertions(+), 5 deletions(-)
+
+diff --git a/math/math.h b/math/math.h
+index 60dfa31..7c0fc6d 100644
+--- a/math/math.h
++++ b/math/math.h
+@@ -513,15 +513,40 @@ inline int issignaling (_Float128 __val) { return __issignalingf128 (__val); }
+ #  endif
+ # else	/* __cplusplus */
+ extern "C++" {
++#  ifdef __SUPPORT_SNAN__
++inline int
++iszero (float __val)
++{
++  return __fpclassifyf (__val) == FP_ZERO;
++}
++inline int
++iszero (double __val)
++{
++  return __fpclassify (__val) == FP_ZERO;
++}
++inline int
++iszero (long double __val)
++{
++#   ifdef __NO_LONG_DOUBLE_MATH
++  return __fpclassify (__val) == FP_ZERO;
++#   else
++  return __fpclassifyl (__val) == FP_ZERO;
++#   endif
++}
++#   if __HAVE_DISTINCT_FLOAT128
++inline int
++iszero (_Float128 __val)
++{
++  return __fpclassifyf128 (__val) == FP_ZERO;
++}
++#   endif
++#  else
+ template <class __T> inline bool
+ iszero (__T __val)
+ {
+-#  ifdef __SUPPORT_SNAN__
+-  return fpclassify (__val) == FP_ZERO;
+-#  else
+   return __val == 0;
+-#  endif
+ }
++#  endif
+ } /* extern C++ */
+ # endif	/* __cplusplus */
+ #endif /* Use IEC_60559_BFP_EXT.  */
+diff --git a/math/test-math-iszero.cc b/math/test-math-iszero.cc
+index 027e972..5c07261 100644
+--- a/math/test-math-iszero.cc
++++ b/math/test-math-iszero.cc
+@@ -22,6 +22,13 @@
+ 
+ #include <limits>
+ 
++/* Support for _Float128 in std::numeric_limits is limited.
++   Include ieee754_float128.h and use the bitfields in the union
++   ieee854_float128.ieee_nan to build corner-case inputs.  */
++#if __HAVE_DISTINCT_FLOAT128
++# include <ieee754_float128.h>
++#endif
++
+ static bool errors;
+ 
+ static void
+@@ -72,12 +79,84 @@ check_type ()
+          std::numeric_limits<T>::has_denorm == std::denorm_absent);
+ }
+ 
++#if __HAVE_DISTINCT_FLOAT128
++static void
++check_float128 ()
++{
++  ieee854_float128 q;
++
++  q.d = 0.0Q;
++  CHECK (iszero (q.d), 1);
++  q.d = -0.0Q;
++  CHECK (iszero (q.d), 1);
++  q.d = 1.0Q;
++  CHECK (iszero (q.d), 0);
++  q.d = -1.0Q;
++  CHECK (iszero (q.d), 0);
++
++  /* Normal min.  */
++  q.ieee.negative = 0;
++  q.ieee.exponent = 0x0001;
++  q.ieee.mantissa0 = 0x0000;
++  q.ieee.mantissa1 = 0x00000000;
++  q.ieee.mantissa2 = 0x00000000;
++  q.ieee.mantissa3 = 0x00000000;
++  CHECK (iszero (q.d), 0);
++  q.ieee.negative = 1;
++  CHECK (iszero (q.d), 0);
++
++  /* Normal max.  */
++  q.ieee.negative = 0;
++  q.ieee.exponent = 0x7FFE;
++  q.ieee.mantissa0 = 0xFFFF;
++  q.ieee.mantissa1 = 0xFFFFFFFF;
++  q.ieee.mantissa2 = 0xFFFFFFFF;
++  q.ieee.mantissa3 = 0xFFFFFFFF;
++  CHECK (iszero (q.d), 0);
++  q.ieee.negative = 1;
++  CHECK (iszero (q.d), 0);
++
++  /* Infinity.  */
++  q.ieee.negative = 0;
++  q.ieee.exponent = 0x7FFF;
++  q.ieee.mantissa0 = 0x0000;
++  q.ieee.mantissa1 = 0x00000000;
++  q.ieee.mantissa2 = 0x00000000;
++  q.ieee.mantissa3 = 0x00000000;
++  CHECK (iszero (q.d), 0);
++
++  /* Quiet NaN.  */
++  q.ieee_nan.quiet_nan = 1;
++  q.ieee_nan.mantissa0 = 0x0000;
++  CHECK (iszero (q.d), 0);
++
++  /* Signaling NaN.  */
++  q.ieee_nan.quiet_nan = 0;
++  q.ieee_nan.mantissa0 = 0x4000;
++  CHECK (iszero (q.d), 0);
++
++  /* Denormal min.  */
++  q.ieee.negative = 0;
++  q.ieee.exponent = 0x0000;
++  q.ieee.mantissa0 = 0x0000;
++  q.ieee.mantissa1 = 0x00000000;
++  q.ieee.mantissa2 = 0x00000000;
++  q.ieee.mantissa3 = 0x00000001;
++  CHECK (iszero (q.d), 0);
++  q.ieee.negative = 1;
++  CHECK (iszero (q.d), 0);
++}
++#endif
++
+ static int
+ do_test (void)
+ {
+   check_type<float> ();
+   check_type<double> ();
+   check_type<long double> ();
++#if __HAVE_DISTINCT_FLOAT128
++  check_float128 ();
++#endif
+   return errors;
+ }
+ 
+diff --git a/sysdeps/powerpc/powerpc64le/Makefile b/sysdeps/powerpc/powerpc64le/Makefile
+index 19adbfa..dea2290 100644
+--- a/sysdeps/powerpc/powerpc64le/Makefile
++++ b/sysdeps/powerpc/powerpc64le/Makefile
+@@ -17,7 +17,8 @@ $(foreach suf,$(all-object-suffixes),$(objpfx)test-float128%$(suf)): CFLAGS += -
+ $(foreach suf,$(all-object-suffixes),$(objpfx)test-ifloat128%$(suf)): CFLAGS += -mfloat128
+ CFLAGS-libm-test-support-float128.c += -mfloat128
+ CFLAGS-test-math-issignaling.cc += -mfloat128
+-$(objpfx)test-float128% $(objpfx)test-ifloat128%: \
++CFLAGS-test-math-iszero.cc += -mfloat128
++$(objpfx)test-float128% $(objpfx)test-ifloat128% $(objpfx)test-math-iszero: \
+   gnulib-tests += $(f128-loader-link)
+ endif
+ 
+-- 
+2.9.5
+

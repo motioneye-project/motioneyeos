@@ -1,0 +1,225 @@
+From 9bcf391a21677c6d5fa1c2be71554ec181e24f39 Mon Sep 17 00:00:00 2001
+From: "Gabriel F. T. Gomes" <gftg@linux.vnet.ibm.com>
+Date: Mon, 14 Aug 2017 13:46:15 -0300
+Subject: [PATCH] Provide a C++ version of issignaling that does not use
+ __MATH_TG
+
+The macro __MATH_TG contains the logic to select between long double and
+_Float128, when these types are ABI-distinct.  This logic relies on
+__builtin_types_compatible_p, which is not available in C++ mode.
+
+On the other hand, C++ function overloading provides the means to
+distinguish between the floating-point types.  The overloading
+resolution will match the correct parameter regardless of type
+qualifiers, i.e.: const and volatile.
+
+Tested for powerpc64le, s390x, and x86_64.
+
+	* math/math.h [defined __cplusplus] (issignaling): Provide a C++
+	definition for issignaling that does not rely on __MATH_TG,
+	since __MATH_TG uses __builtin_types_compatible_p, which is only
+	available in C mode.
+	(CFLAGS-test-math-issignaling.cc): New variable.
+	* math/Makefile [CXX] (tests): Add test-math-issignaling.
+	* math/test-math-issignaling.cc: New test for C++ implementation
+	of type-generic issignaling.
+	* sysdeps/powerpc/powerpc64le/Makefile [subdir == math]
+	(CXXFLAGS-test-math-issignaling.cc): Add -mfloat128 to the build
+	options of test-math-issignaling on powerpc64le.
+
+(cherry picked from commit a16e8bc08edca84d507715c66d6cddbbc7ed3b62)
+[Romain rebase on glibc 2.26]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ math/Makefile                        |   3 +-
+ math/math.h                          |  19 +++++-
+ math/test-math-issignaling.cc        | 113 +++++++++++++++++++++++++++++++++++
+ sysdeps/powerpc/powerpc64le/Makefile |   1 +
+ 4 files changed, 134 insertions(+), 2 deletions(-)
+ create mode 100644 math/test-math-issignaling.cc
+
+diff --git a/math/Makefile b/math/Makefile
+index e09b0c0..0130fcf 100644
+--- a/math/Makefile
++++ b/math/Makefile
+@@ -203,7 +203,7 @@ tests-static = test-fpucw-static test-fpucw-ieee-static \
+ 	       test-signgam-ullong-static test-signgam-ullong-init-static
+ 
+ ifneq (,$(CXX))
+-tests += test-math-isinff test-math-iszero
++tests += test-math-isinff test-math-iszero test-math-issignaling
+ endif
+ 
+ ifneq (no,$(PERL))
+@@ -350,6 +350,7 @@ CFLAGS-test-signgam-ullong-init-static.c = -std=c99
+ 
+ CFLAGS-test-math-isinff.cc = -std=gnu++11
+ CFLAGS-test-math-iszero.cc = -std=gnu++11
++CFLAGS-test-math-issignaling.cc = -std=gnu++11
+ 
+ CFLAGS-test-iszero-excess-precision.c = -fexcess-precision=standard
+ CFLAGS-test-iseqsig-excess-precision.c = -fexcess-precision=standard
+diff --git a/math/math.h b/math/math.h
+index dea8dbe..add86af 100644
+--- a/math/math.h
++++ b/math/math.h
+@@ -474,7 +474,24 @@ enum
+ # include <bits/iscanonical.h>
+ 
+ /* Return nonzero value if X is a signaling NaN.  */
+-# define issignaling(x) __MATH_TG ((x), __issignaling, (x))
++# ifndef __cplusplus
++#  define issignaling(x) __MATH_TG ((x), __issignaling, (x))
++# else
++   /* In C++ mode, __MATH_TG cannot be used, because it relies on
++      __builtin_types_compatible_p, which is a C-only builtin.  On the
++      other hand, overloading provides the means to distinguish between
++      the floating-point types.  The overloading resolution will match
++      the correct parameter (regardless of type qualifiers (i.e.: const
++      and volatile).  */
++extern "C++" {
++inline int issignaling (float __val) { return __issignalingf (__val); }
++inline int issignaling (double __val) { return __issignaling (__val); }
++inline int issignaling (long double __val) { return __issignalingl (__val); }
++#  if __HAVE_DISTINCT_FLOAT128
++inline int issignaling (_Float128 __val) { return __issignalingf128 (__val); }
++#  endif
++} /* extern C++ */
++# endif
+ 
+ /* Return nonzero value if X is subnormal.  */
+ # define issubnormal(x) (fpclassify (x) == FP_SUBNORMAL)
+diff --git a/math/test-math-issignaling.cc b/math/test-math-issignaling.cc
+new file mode 100644
+index 0000000..22ae9e1
+--- /dev/null
++++ b/math/test-math-issignaling.cc
+@@ -0,0 +1,113 @@
++/* Test for the C++ implementation of issignaling.
++   Copyright (C) 2017 Free Software Foundation, Inc.
++   This file is part of the GNU C Library.
++
++   The GNU C Library is free software; you can redistribute it and/or
++   modify it under the terms of the GNU Lesser General Public
++   License as published by the Free Software Foundation; either
++   version 2.1 of the License, or (at your option) any later version.
++
++   The GNU C Library is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
++   Lesser General Public License for more details.
++
++   You should have received a copy of the GNU Lesser General Public
++   License along with the GNU C Library; if not, see
++   <http://www.gnu.org/licenses/>.  */
++
++#define _GNU_SOURCE 1
++#include <math.h>
++#include <stdio.h>
++
++#include <limits>
++
++/* There is no signaling_NaN for _Float128 in std::numeric_limits.
++   Include ieee754_float128.h and use the bitfields in the union
++   ieee854_float128.ieee_nan to build a signaling NaN.  */
++#if __HAVE_DISTINCT_FLOAT128
++# include <ieee754_float128.h>
++#endif
++
++static bool errors;
++
++static void
++check (int actual, int expected, const char *actual_expr, int line)
++{
++  if (actual != expected)
++    {
++      errors = true;
++      printf ("%s:%d: error: %s\n", __FILE__, line, actual_expr);
++      printf ("%s:%d:   expected: %d\n", __FILE__, line, expected);
++      printf ("%s:%d:   actual: %d\n", __FILE__, line, actual);
++    }
++}
++
++#define CHECK(actual, expected) \
++  check ((actual), (expected), #actual, __LINE__)
++
++template <class T>
++static void
++check_type ()
++{
++  typedef std::numeric_limits<T> limits;
++  CHECK (issignaling (T{0}), 0);
++  if (limits::has_infinity)
++    {
++      CHECK (issignaling (limits::infinity ()), 0);
++      CHECK (issignaling (-limits::infinity ()), 0);
++    }
++  if (limits::has_quiet_NaN)
++    CHECK (issignaling (limits::quiet_NaN ()), 0);
++  if (limits::has_signaling_NaN)
++    CHECK (issignaling (limits::signaling_NaN ()), 1);
++}
++
++#if __HAVE_DISTINCT_FLOAT128
++static void
++check_float128 ()
++{
++  ieee854_float128 q;
++
++  q.d = 0;
++  CHECK (issignaling (q.d), 0);
++
++  /* Infinity.  */
++  q.ieee.negative = 0;
++  q.ieee.exponent = 0x7FFF;
++  q.ieee.mantissa0 = 0x0000;
++  q.ieee.mantissa1 = 0x00000000;
++  q.ieee.mantissa2 = 0x00000000;
++  q.ieee.mantissa3 = 0x00000000;
++  CHECK (issignaling (q.d), 0);
++
++  /* Quiet NaN.  */
++  q.ieee_nan.quiet_nan = 1;
++  q.ieee_nan.mantissa0 = 0x0000;
++  CHECK (issignaling (q.d), 0);
++
++  /* Still a quiet NaN.  */
++  q.ieee_nan.quiet_nan = 1;
++  q.ieee_nan.mantissa0 = 0x4000;
++  CHECK (issignaling (q.d), 0);
++
++  /* Signaling NaN.  */
++  q.ieee_nan.quiet_nan = 0;
++  q.ieee_nan.mantissa0 = 0x4000;
++  CHECK (issignaling (q.d), 1);
++}
++#endif
++
++static int
++do_test (void)
++{
++  check_type<float> ();
++  check_type<double> ();
++  check_type<long double> ();
++#if __HAVE_DISTINCT_FLOAT128
++  check_float128 ();
++#endif
++  return errors;
++}
++
++#include <support/test-driver.c>
+diff --git a/sysdeps/powerpc/powerpc64le/Makefile b/sysdeps/powerpc/powerpc64le/Makefile
+index 77617b6..19adbfa 100644
+--- a/sysdeps/powerpc/powerpc64le/Makefile
++++ b/sysdeps/powerpc/powerpc64le/Makefile
+@@ -16,6 +16,7 @@ $(foreach suf,$(all-object-suffixes),%f128_r$(suf)): CFLAGS += -mfloat128
+ $(foreach suf,$(all-object-suffixes),$(objpfx)test-float128%$(suf)): CFLAGS += -mfloat128
+ $(foreach suf,$(all-object-suffixes),$(objpfx)test-ifloat128%$(suf)): CFLAGS += -mfloat128
+ CFLAGS-libm-test-support-float128.c += -mfloat128
++CFLAGS-test-math-issignaling.cc += -mfloat128
+ $(objpfx)test-float128% $(objpfx)test-ifloat128%: \
+   gnulib-tests += $(f128-loader-link)
+ endif
+-- 
+2.9.5
+

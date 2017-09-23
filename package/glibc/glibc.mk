@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GLIBC_VERSION = 2.25
+GLIBC_VERSION = 2.26
 GLIBC_SITE = $(BR2_GNU_MIRROR)/libc
 GLIBC_SOURCE = glibc-$(GLIBC_VERSION).tar.xz
 GLIBC_SRC_SUBDIR = .

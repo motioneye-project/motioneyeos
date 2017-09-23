@@ -1,0 +1,50 @@
+From f7439f9b1089e17b6721f28e228682831a2f0135 Mon Sep 17 00:00:00 2001
+From: "Gabriel F. T. Gomes" <gftg@linux.vnet.ibm.com>
+Date: Mon, 21 Aug 2017 14:23:27 +0200
+Subject: [PATCH] Do not use __builtin_types_compatible_p in C++ mode (bug
+ 21930)
+
+The logic to define isinf for float128 depends on the availability of
+__builtin_types_compatible_p, which is only available in C mode,
+however, the conditionals do not check for C or C++ mode.  This lead to
+an error in libstdc++ configure, as reported by bug 21930.
+
+This patch adds a conditional for C mode in the definition of isinf for
+float128.  No definition is provided in C++ mode, since libstdc++
+headers undefine isinf.
+
+Tested for powerpc64le (glibc test suite and libstdc++-v3 configure).
+
+	[BZ #21930]
+	* math/math.h (isinf): Check if in C or C++ mode before using
+	__builtin_types_compatible_p, since this is a C mode feature.
+
+(cherry picked from commit 47a67213a9f51c5f8816d240500b10db605d8b77)
+[Romain rebase on glibc 2.26]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ math/math.h | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/math/math.h b/math/math.h
+index e217080..dea8dbe 100644
+--- a/math/math.h
++++ b/math/math.h
+@@ -442,8 +442,12 @@ enum
+ 
+ /* Return nonzero value if X is positive or negative infinity.  */
+ # if __HAVE_DISTINCT_FLOAT128 && !__GNUC_PREREQ (7,0) \
+-     && !defined __SUPPORT_SNAN__
+-   /* __builtin_isinf_sign is broken for float128 only before GCC 7.0.  */
++     && !defined __SUPPORT_SNAN__ && !defined __cplusplus
++   /* Since __builtin_isinf_sign is broken for float128 before GCC 7.0,
++      use the helper function, __isinff128, with older compilers.  This is
++      only provided for C mode, because in C++ mode, GCC has no support
++      for __builtin_types_compatible_p (and when in C++ mode, this macro is
++      not used anyway, because libstdc++ headers undefine it).  */
+ #  define isinf(x) \
+     (__builtin_types_compatible_p (__typeof (x), _Float128) \
+      ? __isinff128 (x) : __builtin_isinf_sign (x))
+-- 
+2.9.5
+

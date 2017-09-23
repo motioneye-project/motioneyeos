@@ -1,0 +1,47 @@
+From 9dbd8386a1b706beb30291a7e76bbfe69c2620cf Mon Sep 17 00:00:00 2001
+From: "Gabriel F. T. Gomes" <gftg@linux.vnet.ibm.com>
+Date: Wed, 23 Aug 2017 10:16:54 -0300
+Subject: [PATCH] Fix the C++ version of issignaling when __NO_LONG_DOUBLE_MATH
+ is defined
+
+When __NO_LONG_DOUBLE_MATH is defined, __issignalingl is not available,
+thus issignaling with long double argument should call __issignaling,
+instead.
+
+Tested for powerpc64le.
+
+	* math/math.h [defined __cplusplus] (issignaling): In the long
+	double case, call __issignalingl only if __NO_LONG_DOUBLE_MATH
+	is not defined.  Call __issignaling, otherwise.
+
+(cherry picked from commit 3d7b66f66cb223e899a7ebc0f4c20f13e711c9e0)
+[Romain rebase on glibc 2.26]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ math/math.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/math/math.h b/math/math.h
+index add86af..60dfa31 100644
+--- a/math/math.h
++++ b/math/math.h
+@@ -486,7 +486,15 @@ enum
+ extern "C++" {
+ inline int issignaling (float __val) { return __issignalingf (__val); }
+ inline int issignaling (double __val) { return __issignaling (__val); }
+-inline int issignaling (long double __val) { return __issignalingl (__val); }
++inline int
++issignaling (long double __val)
++{
++#  ifdef __NO_LONG_DOUBLE_MATH
++  return __issignaling (__val);
++#  else
++  return __issignalingl (__val);
++#  endif
++}
+ #  if __HAVE_DISTINCT_FLOAT128
+ inline int issignaling (_Float128 __val) { return __issignalingf128 (__val); }
+ #  endif
+-- 
+2.9.5
+
