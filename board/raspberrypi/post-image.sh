@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 BOARD_DIR="$(dirname $0)"
 BOARD_NAME="$(basename ${BOARD_DIR})"
@@ -37,6 +37,11 @@ __EOF__
 enable_uart=1
 __EOF__
 		fi
+		;;
+		--gpu_mem_256=*|--gpu_mem_512=*|--gpu_mem_1024=*)
+		# Set GPU memory
+		gpu_mem="${1:2}"
+		sed -e "/^${gpu_mem%=*}=/s,=.*,=${gpu_mem##*=}," -i "${BINARIES_DIR}/rpi-firmware/config.txt"
 		;;
 	esac
 
