@@ -18,6 +18,7 @@ main() {
 
     ret=0
     while read file; do
+        is_elf "${file}" || continue
         elf_needs_rpath "${file}" "${hostdir}" || continue
         check_elf_has_rpath "${file}" "${hostdir}" && continue
         if [ ${ret} -eq 0 ]; then
@@ -26,12 +27,16 @@ main() {
             printf "*** ERROR: package %s installs executables without proper RPATH:\n" "${pkg}"
         fi
         printf "***   %s\n" "${file}"
-    done < <( find "${hostdir}"/{bin,sbin} -type f -exec file {} + 2>/dev/null \
-              |sed -r -e '/^([^:]+):.*\<ELF\>.*\<executable\>.*/!d'                \
-                      -e 's//\1/'                                                  \
-            )
+    done < <( find "${hostdir}"/{bin,sbin} -type f 2>/dev/null )
 
     return ${ret}
+}
+
+is_elf() {
+    local f="${1}"
+
+    readelf -l "${f}" 2>/dev/null \
+    |grep -E 'Requesting program interpreter:' >/dev/null 2>&1
 }
 
 elf_needs_rpath() {
