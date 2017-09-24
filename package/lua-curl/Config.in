@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_CURL
+	bool "lua-curl"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  Lua binding to libcurl.
+
+	  https://lua-curl.github.io/
