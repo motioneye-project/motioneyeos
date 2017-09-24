@@ -1,5 +1,6 @@
 config BR2_PACKAGE_ORBIT
 	bool "orbit"
+	depends on BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
 	# These are runtime dependencies
 	select BR2_PACKAGE_LPEG
 	select BR2_PACKAGE_LUAFILESYSTEM
@@ -9,3 +10,7 @@ config BR2_PACKAGE_ORBIT
 	  Ruby frameworks such as Camping
 
 	  http://keplerproject.github.com/orbit
+
+comment "orbit needs a Lua 5.1 interpreter"
+	depends on !BR2_PACKAGE_LUA_5_1
+	depends on !BR2_PACKAGE_LUAJIT
