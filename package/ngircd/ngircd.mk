@@ -14,7 +14,7 @@ ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 NGIRCD_CONF_OPTS += --with-pam=$(STAGING_DIR)/usr
 NGIRCD_DEPENDENCIES += linux-pam
 else
-NGIRCD_CONF_OPTS += --with-pam
+NGIRCD_CONF_OPTS += --without-pam
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
