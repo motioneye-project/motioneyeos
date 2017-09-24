@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_DATAFILE
+	bool "lua-datafile"
+	help
+	  datafile is a library for avoiding hardcoded paths
+	  when loading resource files in Lua modules.
+
+	  https://github.com/hishamhm/datafile
