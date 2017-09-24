@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LUA_BASEXX
+	bool "lua-basexx"
+	help
+	  A Lua library which provides base2(bitfield), base16(hex),
+	  base32(crockford/rfc), base64(rfc/url), base85(z85) decoding
+	  and encoding.
+
+	  https://github.com/aiq/basexx
