@@ -3,23 +3,31 @@
 # Start/stop nginx
 #
 
+NGINX=/usr/sbin/nginx
 PIDFILE=/var/run/nginx.pid
 
 case "$1" in
   start)
 	echo "Starting nginx..."
 	mkdir -p /var/log/nginx /var/tmp/nginx
-	start-stop-daemon -S -x /usr/sbin/nginx -p $PIDFILE
+	start-stop-daemon -S -x "$NGINX" -p "$PIDFILE"
 	;;
   stop)
-	printf "Stopping nginx..."
-	start-stop-daemon -K -o -p $PIDFILE
+	echo "Stopping nginx..."
+	# Use -R 1 to wait for nginx to actually stop.  Useful so
+	# restart has no race condition.  Note that BusyBox knows
+	# about -R but ignores it silently.
+	start-stop-daemon -K -x "$NGINX" -p "$PIDFILE" -R 1 -o
 	;;
-  restart|reload)
+  reload|force-reload)
+	echo "Reloading nginx configuration..."
+	"$NGINX" -s reload
+	;;
+  restart)
 	"$0" stop
 	"$0" start
 	;;
   *)
-	echo "Usage: $0 {start|stop|restart}"
+	echo "Usage: $0 {start|stop|restart|reload|force-reload}"
 	exit 1
 esac
