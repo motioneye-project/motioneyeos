@@ -1,18 +1,21 @@
 *******************************
-Freescale i.MX6Q Sabre SD board
+Freescale i.MX6 Sabre SD boards
 *******************************
 
-This file documents the Buildroot support for the Freescale i.MX6Q Sabre SD
-board.
+This file documents the Buildroot support for the Freescale i.MX6 Sabre SD
+boards based on i.MX6Q, i.MX6DL and iMX6QP.
+
+Thanks to the SPL support in U-Boot it is possible to run a single
+sdcard.img in all i.MX6 Sabre SD board variants.
 
 This configuration uses U-Boot mainline and kernel mainline.
 
 Build
 =====
 
-First, configure Buildroot for the i.MX6Q Sabre SD board:
+First, configure Buildroot for the i.MX6 Sabre SD board:
 
-  make imx6q-sabresd_defconfig
+  make imx6-sabresd_defconfig
 
 Build all components:
 
@@ -20,6 +23,8 @@ Build all components:
 
 You will find the following files in output/images/ :
   - imx6q-sabresd.dtb
+  - imx6dl-sabresd.dtb
+  - imx6qp-sabresd.dtb
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
@@ -45,8 +50,8 @@ command as root:
 For details about the medium image layout, see the definition in
 board/freescale/common/imx/genimage.cfg.template.
 
-Boot the i.MX6Q Sabre SD board
-==============================
+Boot the i.MX6 Sabre SD board
+=============================
 
 To boot your newly created system:
 - insert the SD card in the SD3 slot of the board (close to the HDMI connector);
@@ -54,8 +59,8 @@ To boot your newly created system:
   emulator at 115200 bps, 8n1;
 - power on the board.
 
-Testing graphics on the i.MX6Q Sabre SD board
-=============================================
+Testing graphics on the i.MX6 Sabre SD board
+============================================
 
 The imx6q-sabresd_qt5_defconfig allows to quickly test the graphics
 capabilities of i.MX6 using the opensource Etnaviv graphics stack
