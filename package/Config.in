@@ -391,6 +391,7 @@ endmenu
 	source "package/dbus-python/Config.in"
 	source "package/dbus-triggerd/Config.in"
 	source "package/devmem2/Config.in"
+	source "package/dfu-util/Config.in"
 	source "package/dmidecode/Config.in"
 	source "package/dmraid/Config.in"
 	source "package/dt-utils/Config.in"
