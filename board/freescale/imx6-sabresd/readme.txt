@@ -62,13 +62,13 @@ To boot your newly created system:
 Testing graphics on the i.MX6 Sabre SD board
 ============================================
 
-The imx6q-sabresd_qt5_defconfig allows to quickly test the graphics
+The imx6-sabresd_qt5_defconfig allows to quickly test the graphics
 capabilities of i.MX6 using the opensource Etnaviv graphics stack
 and kernel mainline.
 
 In order to build it:
 
-make imx6q-sabresd_qt5_defconfig
+make imx6-sabresd_qt5_defconfig
 make
 
 Then flash the SD card as explained above.
