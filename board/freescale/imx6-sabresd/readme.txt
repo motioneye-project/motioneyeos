@@ -75,7 +75,7 @@ Then flash the SD card as explained above.
 
 Running kmscube application:
 
-# kmscube -D /dev/dri/card1
+# kmscube
 
 Running Qt5 Cinematic Demo:
 
