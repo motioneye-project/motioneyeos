@@ -82,4 +82,8 @@ Running Qt5 Cinematic Demo:
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/sabresd.json
 # /usr/share/Qt5/CinematicExperience/Qt5_CinematicExperience
 
+Running gl2mark benchmark:
+
+# glmark2-es2-drm
+
 Enjoy!
