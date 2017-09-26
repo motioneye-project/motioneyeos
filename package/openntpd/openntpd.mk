@@ -8,7 +8,7 @@ OPENNTPD_VERSION = 6.2p2
 OPENNTPD_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenNTPD
 OPENNTPD_LICENSE = MIT-like, BSD-2-Clause, BSD-3-Clause
 OPENNTPD_LICENSE_FILES = COPYING
-# Ships a beta libtool version hence our patch doesn't apply.
+# Patching include/Makefile.am
 OPENNTPD_AUTORECONF = YES
 
 # openntpd uses pthread functions for arc4random emulation but forgets
