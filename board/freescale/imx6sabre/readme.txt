@@ -18,8 +18,8 @@ Read the SABRE for Automotive Infotainment Quick Start Guide for an
 introduction to the board:
 http://cache.freescale.com/files/32bit/doc/user_guide/IMX6SABREINFOQSG.pdf
 
-Build
-=====
+Building with NXP kernel and NXP U-Boot
+=======================================
 
 First, configure Buildroot for your SABRE board.
 For i.MX6Q SABRE SD board:
@@ -53,6 +53,27 @@ You will find in ./output/images/ the following files:
   - rootfs.tar
   - u-boot.imx
   - uImage, or zImage for i.MX6 SoloX
+
+Building with mainline kernel and mainline U-Boot
+=================================================
+
+Mainline U-Boot uses SPL and can support the three
+variants of mx6sabreauto boards: mx6q, mx6dl and mx6qp.
+
+First, configure Buildroot for your mx6sabreauto board
+
+  make imx6-sabreauto_defconfig
+
+Build all components:
+
+  make
+
+You will find in output/images/ the following files:
+  - imx6dl-sabresd.dtb, imx6q-sabresd.dtb, imx6q-sabresd.dtb
+  - rootfs.ext2
+  - SPL and u-boot.img
+  - u-boot.imx
+  - zImage
 
 Create a bootable SD card
 =========================
