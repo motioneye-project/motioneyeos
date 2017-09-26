@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONO_VERSION = 5.0.1.1
+MONO_VERSION = 5.2.0.224
 MONO_SITE = http://download.mono-project.com/sources/mono
 MONO_SOURCE = mono-$(MONO_VERSION).tar.bz2
 MONO_LICENSE = GPL-2.0 or MIT (compiler, tools), MIT (libs) or commercial
