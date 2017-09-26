@@ -190,6 +190,7 @@ raspberrypi0_defconfig: *defconfig
 raspberrypi2_defconfig: *defconfig
 raspberrypi3_64_defconfig: *defconfig
 raspberrypi3_defconfig: *defconfig
+raspberrypi3_qt5we_defconfig: *defconfig
 raspberrypi_defconfig: *defconfig
 riotboard_defconfig: *defconfig
 roseapplepi_defconfig: *defconfig
