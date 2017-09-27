@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EVEMU_VERSION = 2.6.0
+EVEMU_VERSION = 2.7.0
 EVEMU_SITE = http://www.freedesktop.org/software/evemu
 EVEMU_SOURCE = evemu-$(EVEMU_VERSION).tar.xz
 EVEMU_LICENSE = LGPL-3.0 (library), GPL-3.0 (tools)
