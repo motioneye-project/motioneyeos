@@ -484,9 +484,9 @@ use HTTP::Tiny;
 use Safe;
 use MetaCPAN::API::Tiny;
 
-# Below, 5.024 should be aligned with the version of perl actually
+# Below, 5.026 should be aligned with the version of perl actually
 # bundled in Buildroot:
-die <<"MSG" if $] < 5.024;
+die <<"MSG" if $] < 5.026;
 This script needs a host perl with the same major version as Buildroot target perl.
 
 Your current host perl is:
@@ -494,7 +494,7 @@ Your current host perl is:
     version $]
 
 You may install a local one by running:
-    perlbrew install perl-5.24.0
+    perlbrew install perl-5.26.0
 MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
@@ -527,8 +527,8 @@ my $ua = HTTP::Tiny->new();
 
 sub get_checksum {
     my ($url) = @_;
-    my($path) = $url =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
-    my($basename, $dirname) = fileparse( $path );
+    my ($path) = $url =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
+    my ($basename, $dirname) = fileparse( $path );
     unless ($checksum{$dirname}) {
         my $url = $mirror . $dirname . q{CHECKSUMS};
         my $response = $ua->get($url);
@@ -673,11 +673,11 @@ while (my ($distname, $dist) = each %dist) {
     }
     if ($force || !-f $mkname) {
         my $version = $dist->{version};
-        my($path) = $dist->{download_url} =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
+        my ($path) = $dist->{download_url} =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
         # this URL contains only the scheme, auth and path parts (but no query and fragment parts)
         # the scheme is not used, because the job is done by the BR download infrastructure
         # the auth part is not used, because we use $(BR2_CPAN_MIRROR)
-        my($filename, $directories, $suffix) = fileparse( $path, q{tar.gz}, q{tgz} );
+        my ($filename, $directories, $suffix) = fileparse( $path, q{tar.gz}, q{tgz} );
         $directories =~ s|/$||;
         my $dependencies = join q{ }, map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} ),
                                       map( { fsname( $_ ); } sort @{$deps_runtime{$distname}} );
@@ -723,7 +723,7 @@ while (my ($distname, $dist) = each %dist) {
         close $fh;
     }
     if ($force || !-f $hashname) {
-        my($checksum, $filename) = get_checksum($dist->{download_url});
+        my ($checksum, $filename) = get_checksum($dist->{download_url});
         my $md5 = $checksum->{md5};
         my $sha256 = $checksum->{sha256};
         say qq{write ${hashname}} unless $quiet;
@@ -831,7 +831,7 @@ in order to work with the right CoreList data.
 
 =head1 LICENSE
 
-Copyright (C) 2013-2016 by Francois Perrad <francois.perrad@gadz.org>
+Copyright (C) 2013-2017 by Francois Perrad <francois.perrad@gadz.org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
