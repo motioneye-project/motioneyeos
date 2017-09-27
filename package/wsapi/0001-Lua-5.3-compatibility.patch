@@ -11,10 +11,10 @@ Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
  src/wsapi/util.lua   | 2 +-
  2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/src/wsapi/ringer.lua b/src/wsapi/ringer.lua
+diff --git a/wsapi-1.6.1/src/wsapi/ringer.lua b/wsapi-1.6.1/src/wsapi/ringer.lua
 index 58309f2..db7b68f 100644
---- a/src/wsapi/ringer.lua
-+++ b/src/wsapi/ringer.lua
+--- a/wsapi-1.6.1/src/wsapi/ringer.lua
++++ b/wsapi-1.6.1/src/wsapi/ringer.lua
 @@ -5,6 +5,7 @@ local rings = require "rings"
  local _M = {}
  
@@ -23,10 +23,10 @@ index 58309f2..db7b68f 100644
    local app_name, bootstrap_code, is_file = ...
    if bootstrap_code then
      local bootstrap, err
-diff --git a/src/wsapi/util.lua b/src/wsapi/util.lua
+diff --git a/wsapi-1.6.1/src/wsapi/util.lua b/wsapi-1.6.1/src/wsapi/util.lua
 index 24d3cfe..34e5816 100644
---- a/src/wsapi/util.lua
-+++ b/src/wsapi/util.lua
+--- a/wsapi-1.6.1/src/wsapi/util.lua
++++ b/wsapi-1.6.1/src/wsapi/util.lua
 @@ -174,7 +174,7 @@ function _M.make_env_post(pd, type, qs)
  end
  
