@@ -4,15 +4,11 @@
 #
 ################################################################################
 
-DASH_VERSION = 0.5.8
-DASH_SOURCE = dash_$(DASH_VERSION).orig.tar.gz
-DASH_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/d/dash
-DASH_PATCH = dash_$(DASH_VERSION)-1.diff.gz
+DASH_VERSION = 0.5.9.1
+DASH_SOURCE = dash-$(DASH_VERSION).tar.gz
+DASH_SITE = http://gondor.apana.org.au/~herbert/dash/files
 DASH_LICENSE = BSD-3-Clause, GPL-2.0+ (mksignames.c)
 DASH_LICENSE_FILES = COPYING
-
-# 0002-fix-parallel-build.patch
-DASH_AUTORECONF = YES
 
 define DASH_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 $(@D)/src/dash $(TARGET_DIR)/bin/dash
