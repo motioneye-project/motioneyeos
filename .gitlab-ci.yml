@@ -120,8 +120,8 @@ gdb_bfin_bf512_defconfig: *defconfig
 grinn_chiliboard_defconfig: *defconfig
 grinn_liteboard_defconfig: *defconfig
 imx23evk_defconfig: *defconfig
-imx6q-sabresd_defconfig: *defconfig
-imx6q-sabresd_qt5_defconfig: *defconfig
+imx6-sabresd_defconfig: *defconfig
+imx6-sabresd_qt5_defconfig: *defconfig
 imx6ulpico_defconfig: *defconfig
 imx7dpico_defconfig: *defconfig
 lego_ev3_defconfig: *defconfig
