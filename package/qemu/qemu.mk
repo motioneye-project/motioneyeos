@@ -238,7 +238,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-curses \
 			--disable-curl \
 			--disable-bluez \
-			--disable-uuid \
 			--disable-vde \
 			--disable-linux-aio \
 			--disable-cap-ng \
