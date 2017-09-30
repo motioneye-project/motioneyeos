@@ -1742,6 +1742,7 @@ endif
 	source "package/pptp-linux/Config.in"
 	source "package/privoxy/Config.in"
 	source "package/proftpd/Config.in"
+	source "package/prosody/Config.in"
 	source "package/proxychains-ng/Config.in"
 	source "package/ptpd/Config.in"
 	source "package/ptpd2/Config.in"
