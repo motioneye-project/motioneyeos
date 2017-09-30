@@ -23,7 +23,7 @@ endif
 BINUTILS_SITE ?= $(BR2_GNU_MIRROR)/binutils
 ifeq ($(BINUTILS_VERSION),2.28.1)
 BINUTILS_SOURCE ?= binutils-$(BINUTILS_VERSION).tar.xz
-else ifeq ($(BINUTILS_VERSION),2.29)
+else ifeq ($(BINUTILS_VERSION),2.29.1)
 BINUTILS_SOURCE ?= binutils-$(BINUTILS_VERSION).tar.xz
 else
 BINUTILS_SOURCE ?= binutils-$(BINUTILS_VERSION).tar.bz2
