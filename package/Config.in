@@ -396,6 +396,7 @@ endmenu
 	source "package/dmraid/Config.in"
 	source "package/dt-utils/Config.in"
 	source "package/dtv-scan-tables/Config.in"
+	source "package/dump1090/Config.in"
 	source "package/dvb-apps/Config.in"
 	source "package/dvbsnoop/Config.in"
 	source "package/edid-decode/Config.in"

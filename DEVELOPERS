@@ -1332,6 +1332,7 @@ F:	package/libunistring/
 N:	Peter Korsgaard <peter@korsgaard.com>
 F:	board/orangepi/
 F:	configs/orangepi_pc_defconfig
+F:	package/dump1090/
 F:	package/flickcurl/
 F:	package/fscryptctl/
 F:	package/jo/
