@@ -25,10 +25,7 @@ endif
 URG_CONFIG_SCRIPTS = c_urg-config urg-config
 
 define URG_EXTRACT_CMDS
-	$(RM) -rf $(URG_DIR)
-	$(UNZIP) -d $(BUILD_DIR)/ $(DL_DIR)/$(URG_SOURCE)
-	test -d $(URG_DIR) || \
-		mv $(BUILD_DIR)/$(subst .zip,,$(URG_SOURCE)) $(URG_DIR)
+	$(UNZIP) -d $(BUILD_DIR) $(DL_DIR)/$(URG_SOURCE)
 endef
 
 $(eval $(autotools-package))
