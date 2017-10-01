@@ -63,7 +63,7 @@ config BR2_HOST_GCC_AT_LEAST_7
 	select BR2_HOST_GCC_AT_LEAST_6
 
 # Hidden boolean selected by packages in need of Java in order to build
-# (example: xbmc)
+# (example: kodi)
 config BR2_NEEDS_HOST_JAVA
 	bool
 
