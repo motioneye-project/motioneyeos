@@ -29,6 +29,13 @@ comment "X11 video driver needs X.org"
 	depends on !BR2_PACKAGE_XORG7
 	depends on BR2_USE_MMU
 
+config BR2_PACKAGE_SDL2_KMSDRM
+	bool "KMS/DRM video driver"
+	depends on BR2_PACKAGE_LIBDRM
+
+comment "KMS/DRM video driver needs libdrm"
+	depends on !BR2_PACKAGE_LIBDRM
+
 config BR2_PACKAGE_SDL2_OPENGL
 	bool "OpenGL (GLX)"
 	depends on BR2_PACKAGE_HAS_LIBGL
