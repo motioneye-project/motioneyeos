@@ -40,32 +40,31 @@ endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
 DNSMASQ_DEPENDENCIES += libnetfilter_conntrack
-endif
-
-ifeq ($(BR2_PACKAGE_DNSMASQ_CONNTRACK),y)
-define DNSMASQ_ENABLE_CONNTRACK
-	$(SED) 's^.*#define HAVE_CONNTRACK.*^#define HAVE_CONNTRACK^' \
-		$(DNSMASQ_DIR)/src/config.h
-endef
+DNSMASQ_COPTS += -DHAVE_CONNTRACK
 endif
 
 ifeq ($(BR2_PACKAGE_DNSMASQ_LUA),y)
 DNSMASQ_DEPENDENCIES += lua
+DNSMASQ_COPTS += -DHAVE_LUASCRIPT
 
 # liblua uses dlopen when dynamically linked
 ifneq ($(BR2_STATIC_LIBS),y)
 DNSMASQ_MAKE_OPTS += LIBS+="-ldl"
 endif
 
-define DNSMASQ_ENABLE_LUA
+define DNSMASQ_TWEAK_LIBLUA
 	$(SED) 's/lua5.2/lua/g' $(DNSMASQ_DIR)/Makefile
-	$(SED) 's^.*#define HAVE_LUASCRIPT.*^#define HAVE_LUASCRIPT^' \
-		$(DNSMASQ_DIR)/src/config.h
 endef
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 DNSMASQ_DEPENDENCIES += dbus
+DNSMASQ_COPTS += -DHAVE_DBUS
+
+define DNSMASQ_INSTALL_DBUS
+	$(INSTALL) -m 0644 -D $(@D)/dbus/dnsmasq.conf \
+		$(TARGET_DIR)/etc/dbus-1/system.d/dnsmasq.conf
+endef
 endif
 
 define DNSMASQ_FIX_PKGCONFIG
@@ -73,32 +72,11 @@ define DNSMASQ_FIX_PKGCONFIG
 		$(DNSMASQ_DIR)/Makefile
 endef
 
-ifeq ($(BR2_PACKAGE_DBUS),y)
-define DNSMASQ_ENABLE_DBUS
-	$(SED) 's^.*#define HAVE_DBUS.*^#define HAVE_DBUS^' \
-		$(DNSMASQ_DIR)/src/config.h
-endef
-else
-define DNSMASQ_ENABLE_DBUS
-	$(SED) 's^.*#define HAVE_DBUS.*^/* #define HAVE_DBUS */^' \
-		$(DNSMASQ_DIR)/src/config.h
-endef
-endif
-
 define DNSMASQ_BUILD_CMDS
 	$(DNSMASQ_FIX_PKGCONFIG)
-	$(DNSMASQ_ENABLE_DBUS)
-	$(DNSMASQ_ENABLE_LUA)
-	$(DNSMASQ_ENABLE_CONNTRACK)
+	$(DNSMASQ_TWEAK_LIBLUA)
 	$(DNSMASQ_MAKE_ENV) $(MAKE) -C $(@D) $(DNSMASQ_MAKE_OPTS) all$(DNSMASQ_I18N)
 endef
-
-ifeq ($(BR2_PACKAGE_DBUS),y)
-define DNSMASQ_INSTALL_DBUS
-	$(INSTALL) -m 0644 -D $(@D)/dbus/dnsmasq.conf \
-		$(TARGET_DIR)/etc/dbus-1/system.d/dnsmasq.conf
-endef
-endif
 
 define DNSMASQ_INSTALL_TARGET_CMDS
 	$(DNSMASQ_MAKE_ENV) $(MAKE) -C $(@D) $(DNSMASQ_MAKE_OPTS) install$(DNSMASQ_I18N)
