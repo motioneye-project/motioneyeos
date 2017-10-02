@@ -167,6 +167,12 @@ config BR2_PACKAGE_FFMPEG_OUTDEVS
 	bool "Enable output devices"
 	default y
 
+config BR2_PACKAGE_FFMPEG_RPI_HW_CODECS
+	bool "Enable rpi hardware accelerated codecs"
+	depends on BR2_PACKAGE_RPI_USERLAND
+	help
+	  Enable HW accelerated codecs on Raspberry pi.
+
 config BR2_PACKAGE_FFMPEG_EXTRACONF
 	string "Additional parameters for ./configure"
 	default ""
