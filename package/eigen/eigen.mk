@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EIGEN_VERSION = 3.3.3
+EIGEN_VERSION = 3.3.4
 EIGEN_SOURCE = $(EIGEN_VERSION).tar.bz2
 EIGEN_SITE = https://bitbucket.org/eigen/eigen/get
 EIGEN_LICENSE = MPL2, BSD-3-Clause, LGPL-2.1
