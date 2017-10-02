@@ -1,4 +1,4 @@
-bcm2835-v4l2 max_video_width=2592 max_video_height=1944
+bcm2835-v4l2 max_video_width=1920 max_video_height=1200
 bcm2835-wdt
 i2c-bcm2708
 i2c-dev
