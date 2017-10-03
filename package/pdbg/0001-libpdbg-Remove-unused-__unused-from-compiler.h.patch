@@ -1,0 +1,39 @@
+From 5a85b8c78846b342bdeba37caed03b64b1dd2864 Mon Sep 17 00:00:00 2001
+From: Joel Stanley <joel@jms.id.au>
+Date: Tue, 3 Oct 2017 21:37:46 +1030
+Subject: [PATCH] libpdbg: Remove unused __unused from compiler.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The compiler.h header contains a macro that defines __unused. When
+building against uClibc this collides with uClibc_stdio.h:
+
+In file included from /usr/include/stdio.h:71:0,
+                 from libpdbg/fake.c:17:
+/usr/include/bits/uClibc_stdio.h:149:16: error: expected identifier or ‘(’ before ‘;’ token
+  void *__unused;    /* Placeholder for codeset binding. */
+                ^
+
+As it is unused in pdbg, remove it.
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ libpdbg/compiler.h | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/libpdbg/compiler.h b/libpdbg/compiler.h
+index 35bf16525761..86bd9673ac36 100644
+--- a/libpdbg/compiler.h
++++ b/libpdbg/compiler.h
+@@ -24,7 +24,6 @@
+ /* Macros for various compiler bits and pieces */
+ #define __packed		__attribute__((packed))
+ #define __align(x)		__attribute__((__aligned__(x)))
+-#define __unused		__attribute__((unused))
+ #define __used			__attribute__((used))
+ #define __section(x)		__attribute__((__section__(x)))
+ #define __noreturn		__attribute__((noreturn))
+-- 
+2.14.1
+
