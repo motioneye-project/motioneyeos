@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 7.1.9
+PHP_VERSION = 7.1.10
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
