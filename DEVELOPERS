@@ -1337,6 +1337,7 @@ F:	package/dump1090/
 F:	package/flickcurl/
 F:	package/fscryptctl/
 F:	package/jo/
+F:	package/jose/
 F:	package/libfastjson/
 F:	package/lzop/
 F:	package/memtool/
