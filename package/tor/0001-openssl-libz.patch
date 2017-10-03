@@ -11,7 +11,12 @@ Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 diff -uNr tor-0.3.1.7.org/configure.ac tor-0.3.1.7/configure.ac
 --- tor-0.3.1.7.org/configure.ac	2017-09-15 15:34:06.000000000 +0200
 +++ tor-0.3.1.7/configure.ac	2017-09-19 19:40:17.090538467 +0200
-@@ -713,7 +713,7 @@
+@@ -709,11 +709,11 @@
+       fi
+   ])
+ 
+-TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI],
++TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto -lz $TOR_LIB_GDI],
      [#include <openssl/rand.h>],
      [void RAND_add(const void *buf, int num, double entropy);],
      [RAND_add((void*)0,0,0);], [],
