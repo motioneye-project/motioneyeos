@@ -51,4 +51,17 @@ ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 LVM2_CONF_ENV += ac_cv_flag_HAVE_PIE=no
 endif
 
+HOST_LVM2_DEPENDENCIES = host-pkgconf
+HOST_LVM2_CONF_OPTS = \
+	--enable-write_install \
+	--enable-pkgconfig \
+	--disable-cmdlib \
+	--disable-dmeventd \
+	--disable-applib \
+	--disable-fsadm \
+	--disable-readline
+HOST_LVM2_MAKE_OPTS = device-mapper
+HOST_LVM2_INSTALL_OPTS = install_device-mapper
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
