@@ -5,7 +5,7 @@ import infra.basetest
 
 class InitSystemBase(infra.basetest.BRTest):
 
-    def startEmulator(self, fs_type, kernel=None, dtb=None, init=None):
+    def start_emulator(self, fs_type, kernel=None, dtb=None, init=None):
         img = os.path.join(self.builddir, "images", "rootfs.{}".format(fs_type))
         subprocess.call(["truncate", "-s", "%1M", img])
 
@@ -37,12 +37,12 @@ class InitSystemBase(infra.basetest.BRTest):
         if init is None:
             self.emulator.login()
 
-    def checkInit(self, path):
+    def check_init(self, path):
         cmd = "cmp /proc/1/exe {}".format(path)
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
-    def checkNetwork(self, interface, exitCode=0):
+    def check_network(self, interface, exitCode=0):
         cmd = "ip addr show {} |grep inet".format(interface)
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, exitCode)

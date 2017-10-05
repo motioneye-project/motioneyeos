@@ -8,8 +8,8 @@ class InitSystemBusyboxBase(InitSystemBase):
         # BR2_TARGET_ROOTFS_TAR is not set
         """
 
-    def checkInit(self):
-        super(InitSystemBusyboxBase, self).checkInit("/bin/busybox")
+    def check_init(self):
+        super(InitSystemBusyboxBase, self).check_init("/bin/busybox")
 
 
 class TestInitSystemBusyboxRo(InitSystemBusyboxBase):
@@ -20,9 +20,9 @@ class TestInitSystemBusyboxRo(InitSystemBusyboxBase):
         """
 
     def test_run(self):
-        self.startEmulator("squashfs")
-        self.checkInit()
-        self.checkNetwork("eth0", 1)
+        self.start_emulator("squashfs")
+        self.check_init()
+        self.check_network("eth0", 1)
 
 
 class TestInitSystemBusyboxRw(InitSystemBusyboxBase):
@@ -32,9 +32,9 @@ class TestInitSystemBusyboxRw(InitSystemBusyboxBase):
         """
 
     def test_run(self):
-        self.startEmulator("ext2")
-        self.checkInit()
-        self.checkNetwork("eth0", 1)
+        self.start_emulator("ext2")
+        self.check_init()
+        self.check_network("eth0", 1)
 
 
 class TestInitSystemBusyboxRoNet(InitSystemBusyboxBase):
@@ -46,9 +46,9 @@ class TestInitSystemBusyboxRoNet(InitSystemBusyboxBase):
         """
 
     def test_run(self):
-        self.startEmulator("squashfs")
-        self.checkInit()
-        self.checkNetwork("eth0")
+        self.start_emulator("squashfs")
+        self.check_init()
+        self.check_network("eth0")
 
 
 class TestInitSystemBusyboxRwNet(InitSystemBusyboxBase):
@@ -59,6 +59,6 @@ class TestInitSystemBusyboxRwNet(InitSystemBusyboxBase):
         """
 
     def test_run(self):
-        self.startEmulator("ext2")
-        self.checkInit()
-        self.checkNetwork("eth0")
+        self.start_emulator("ext2")
+        self.check_init()
+        self.check_network("eth0")

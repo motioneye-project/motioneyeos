@@ -13,7 +13,7 @@ class TestInitSystemNone(InitSystemBase):
         """
 
     def test_run(self):
-        self.startEmulator(fs_type="squashfs", init="/bin/sh")
+        self.start_emulator(fs_type="squashfs", init="/bin/sh")
         index = self.emulator.qemu.expect(["/bin/sh: can't access tty; job control turned off", pexpect.TIMEOUT], timeout=60)
         if index != 0:
             self.emulator.logfile.write("==> System does not boot")
@@ -30,4 +30,4 @@ class TestInitSystemNone(InitSystemBase):
         _, exit_code = self.emulator.run("mount -t proc none /proc")
         self.assertEqual(exit_code, 0)
 
-        self.checkInit("/bin/sh")
+        self.check_init("/bin/sh")
