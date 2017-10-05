@@ -25,6 +25,7 @@ BASIC_CONFIG = \
     # BR2_TARGET_ROOTFS_TAR is not set
     """.format(infra.filepath("conf/minimal-x86-qemu-kernel.config"))
 
+
 def test_mount_internal_external(emulator, builddir, internal=True):
     img = os.path.join(builddir, "images", "rootfs.iso9660")
     emulator.boot(arch="i386", options=["-cdrom", img])
@@ -38,13 +39,14 @@ def test_mount_internal_external(emulator, builddir, internal=True):
     _, exit_code = emulator.run(cmd)
     return exit_code
 
+
 def test_touch_file(emulator):
     _, exit_code = emulator.run("touch test")
     return exit_code
 
 #
 # Grub 2
-#
+
 
 class TestIso9660Grub2External(infra.basetest.BRTest):
     config = BASIC_CONFIG + \
@@ -64,6 +66,7 @@ class TestIso9660Grub2External(infra.basetest.BRTest):
 
         exit_code = test_touch_file(self.emulator)
         self.assertEqual(exit_code, 1)
+
 
 class TestIso9660Grub2Internal(infra.basetest.BRTest):
     config = BASIC_CONFIG + \
@@ -86,7 +89,7 @@ class TestIso9660Grub2Internal(infra.basetest.BRTest):
 
 #
 # Syslinux
-#
+
 
 class TestIso9660SyslinuxExternal(infra.basetest.BRTest):
     config = BASIC_CONFIG + \
@@ -105,6 +108,7 @@ class TestIso9660SyslinuxExternal(infra.basetest.BRTest):
 
         exit_code = test_touch_file(self.emulator)
         self.assertEqual(exit_code, 1)
+
 
 class TestIso9660SyslinuxInternal(infra.basetest.BRTest):
     config = BASIC_CONFIG + \

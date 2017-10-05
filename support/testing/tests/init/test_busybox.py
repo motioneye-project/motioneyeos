@@ -1,6 +1,7 @@
 import infra.basetest
 from tests.init.base import InitSystemBase as InitSystemBase
 
+
 class InitSystemBusyboxBase(InitSystemBase):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """
@@ -11,7 +12,6 @@ class InitSystemBusyboxBase(InitSystemBase):
         super(InitSystemBusyboxBase, self).checkInit("/bin/busybox")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemBusyboxRo(InitSystemBusyboxBase):
     config = InitSystemBusyboxBase.config + \
         """
@@ -25,7 +25,6 @@ class TestInitSystemBusyboxRo(InitSystemBusyboxBase):
         self.checkNetwork("eth0", 1)
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemBusyboxRw(InitSystemBusyboxBase):
     config = InitSystemBusyboxBase.config + \
         """
@@ -38,7 +37,6 @@ class TestInitSystemBusyboxRw(InitSystemBusyboxBase):
         self.checkNetwork("eth0", 1)
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemBusyboxRoNet(InitSystemBusyboxBase):
     config = InitSystemBusyboxBase.config + \
         """
@@ -53,7 +51,6 @@ class TestInitSystemBusyboxRoNet(InitSystemBusyboxBase):
         self.checkNetwork("eth0")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemBusyboxRwNet(InitSystemBusyboxBase):
     config = InitSystemBusyboxBase.config + \
         """

@@ -4,6 +4,7 @@ import subprocess
 
 import infra
 
+
 class Builder(object):
     def __init__(self, config, builddir, logtofile):
         self.config = '\n'.join([line.lstrip() for line in

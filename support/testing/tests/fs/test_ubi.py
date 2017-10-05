@@ -3,6 +3,7 @@ import os
 
 import infra.basetest
 
+
 class TestUbi(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """

@@ -3,8 +3,10 @@ import subprocess
 
 import infra.basetest
 
+
 def compare_file(file1, file2):
     return subprocess.call(["cmp", file1, file2])
+
 
 class TestRootfsOverlay(infra.basetest.BRTest):
 

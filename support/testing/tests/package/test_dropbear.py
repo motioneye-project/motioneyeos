@@ -2,6 +2,7 @@ import os
 
 import infra.basetest
 
+
 class TestDropbear(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """

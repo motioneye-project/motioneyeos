@@ -12,6 +12,7 @@ RESBLKCNT_PROP = "Reserved block count"
 
 CHECK_FS_TYPE_CMD = "mount | grep '/dev/root on / type {}'"
 
+
 def dumpe2fs_run(builddir, image):
     cmd = ["host/sbin/dumpe2fs", os.path.join("images", image)]
     ret = subprocess.check_output(cmd,
@@ -20,11 +21,13 @@ def dumpe2fs_run(builddir, image):
                                   env={"LANG": "C"})
     return ret.strip().splitlines()
 
+
 def dumpe2fs_getprop(out, prop):
     for line in out:
         fields = line.split(": ")
         if fields[0] == prop:
             return fields[1].strip()
+
 
 def boot_img_and_check_fs_type(emulator, builddir, fs_type):
     img = os.path.join(builddir, "images", "rootfs.{}".format(fs_type))
@@ -36,6 +39,7 @@ def boot_img_and_check_fs_type(emulator, builddir, fs_type):
     emulator.login()
     _, exit_code = emulator.run(CHECK_FS_TYPE_CMD.format(fs_type))
     return exit_code
+
 
 class TestExt2(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
@@ -54,6 +58,7 @@ class TestExt2(infra.basetest.BRTest):
         exit_code = boot_img_and_check_fs_type(self.emulator,
                                                self.builddir, "ext2")
         self.assertEqual(exit_code, 0)
+
 
 class TestExt2r1(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
@@ -74,6 +79,7 @@ class TestExt2r1(infra.basetest.BRTest):
                                                self.builddir, "ext2")
         self.assertEqual(exit_code, 0)
 
+
 class TestExt3(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """
@@ -91,6 +97,7 @@ class TestExt3(infra.basetest.BRTest):
         exit_code = boot_img_and_check_fs_type(self.emulator,
                                                self.builddir, "ext3")
         self.assertEqual(exit_code, 0)
+
 
 class TestExt4(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
@@ -116,5 +123,3 @@ class TestExt4(infra.basetest.BRTest):
         exit_code = boot_img_and_check_fs_type(self.emulator,
                                                self.builddir, "ext4")
         self.assertEqual(exit_code, 0)
-
-

@@ -7,6 +7,7 @@ import multiprocessing
 
 from infra.basetest import BRTest
 
+
 def main():
     parser = argparse.ArgumentParser(description='Run Buildroot tests')
     parser.add_argument('testname', nargs='*',
@@ -115,6 +116,7 @@ def main():
         nose2_args += args.testname
 
     nose2.discover(argv=nose2_args)
+
 
 if __name__ == "__main__":
     sys.exit(main())

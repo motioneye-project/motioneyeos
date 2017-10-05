@@ -28,6 +28,7 @@ MINIMAL_CONFIG = \
     # BR2_TARGET_ROOTFS_TAR is not set
     """
 
+
 class BRTest(unittest.TestCase):
     config = None
     downloaddir = None
@@ -47,6 +48,7 @@ class BRTest(unittest.TestCase):
     def show_msg(self, msg):
         print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
                                     self.testname, msg)
+
     def setUp(self):
         self.show_msg("Starting")
         self.b = Builder(self.config, self.builddir, self.logtofile)

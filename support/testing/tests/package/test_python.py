@@ -2,6 +2,7 @@ import os
 
 import infra.basetest
 
+
 class TestPythonBase(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """
@@ -40,11 +41,13 @@ class TestPythonBase(infra.basetest.BRTest):
         _, exit_code = self.emulator.run(cmd, timeout)
         self.assertEqual(exit_code, 1)
 
+
 class TestPython2(TestPythonBase):
     config = TestPythonBase.config + \
         """
         BR2_PACKAGE_PYTHON=y
         """
+
     def test_run(self):
         self.login()
         self.version_test("Python 2")
@@ -52,11 +55,13 @@ class TestPython2(TestPythonBase):
         self.libc_time_test()
         self.zlib_test()
 
+
 class TestPython3(TestPythonBase):
     config = TestPythonBase.config + \
         """
         BR2_PACKAGE_PYTHON3=y
         """
+
     def test_run(self):
         self.login()
         self.version_test("Python 3")

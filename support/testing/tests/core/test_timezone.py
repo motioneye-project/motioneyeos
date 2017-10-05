@@ -2,11 +2,13 @@ import os
 
 import infra.basetest
 
+
 def boot_armv5_cpio(emulator, builddir):
         img = os.path.join(builddir, "images", "rootfs.cpio")
         emulator.boot(arch="armv5", kernel="builtin",
                       options=["-initrd", img])
         emulator.login()
+
 
 class TestNoTimezone(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
@@ -22,6 +24,7 @@ class TestNoTimezone(infra.basetest.BRTest):
         self.assertEqual(tz[0].strip(), "UTC")
         tz, _ = self.emulator.run("TZ=America/Los_Angeles date +%Z")
         self.assertEqual(tz[0].strip(), "UTC")
+
 
 class TestGlibcAllTimezone(infra.basetest.BRTest):
     config = \
@@ -43,6 +46,7 @@ class TestGlibcAllTimezone(infra.basetest.BRTest):
         self.assertEqual(tz[0].strip(), "PST")
         tz, _ = self.emulator.run("TZ=Europe/Paris date +%Z")
         self.assertEqual(tz[0].strip(), "CET")
+
 
 class TestGlibcNonDefaultLimitedTimezone(infra.basetest.BRTest):
     config = \

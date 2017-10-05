@@ -3,6 +3,7 @@ import pexpect
 import infra.basetest
 from tests.init.base import InitSystemBase as InitSystemBase
 
+
 class TestInitSystemNone(InitSystemBase):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """

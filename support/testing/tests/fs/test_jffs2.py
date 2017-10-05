@@ -3,12 +3,14 @@ import subprocess
 
 import infra.basetest
 
+
 def jffs2dump_find_file(files_list, fname):
     for file_name in files_list:
         file_name = file_name.strip()
         if file_name.startswith("Dirent") and file_name.endswith(fname):
             return True
     return False
+
 
 class TestJffs2(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \

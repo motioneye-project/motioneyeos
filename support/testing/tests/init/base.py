@@ -2,6 +2,7 @@ import os
 import subprocess
 import infra.basetest
 
+
 class InitSystemBase(infra.basetest.BRTest):
 
     def startEmulator(self, fs_type, kernel=None, dtb=None, init=None):

@@ -3,6 +3,7 @@ import subprocess
 
 import infra.basetest
 
+
 class TestSquashfs(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         """

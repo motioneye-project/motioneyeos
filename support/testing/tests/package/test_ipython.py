@@ -1,5 +1,3 @@
-import os
-
 from tests.package.test_python import TestPythonBase
 #
 # The following pythong tests are not being used here:
@@ -8,7 +6,8 @@ from tests.package.test_python import TestPythonBase
 #
 # - zlib_test: IPython does not return a non-zero code the way CPython
 #              does, so this test ends up being a false-negative
-#
+
+
 class TestIPythonPy2(TestPythonBase):
     config = TestPythonBase.config + \
         """
@@ -22,6 +21,7 @@ class TestIPythonPy2(TestPythonBase):
         self.math_floor_test(40)
         self.libc_time_test(40)
 
+
 class TestIPythonPy3(TestPythonBase):
     config = TestPythonBase.config + \
         """
@@ -34,5 +34,3 @@ class TestIPythonPy3(TestPythonBase):
         self.login()
         self.math_floor_test(40)
         self.libc_time_test(40)
-
-

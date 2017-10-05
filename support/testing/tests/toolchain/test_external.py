@@ -7,6 +7,7 @@ BASIC_CONFIG = \
     # BR2_TARGET_ROOTFS_TAR is not set
     """
 
+
 def has_broken_links(path):
     for root, dirs, files in os.walk(path):
         for f in files:
@@ -14,6 +15,7 @@ def has_broken_links(path):
             if not os.path.exists(fpath):
                 return True
     return False
+
 
 class TestExternalToolchain(infra.basetest.BRTest):
     def common_check(self):
@@ -29,6 +31,7 @@ class TestExternalToolchain(infra.basetest.BRTest):
                                                 "bin/busybox")
         interp_path = os.path.join(self.builddir, "target", interp[1:])
         self.assertTrue(os.path.exists(interp_path))
+
 
 class TestExternalToolchainSourceryArmv4(TestExternalToolchain):
     config = BASIC_CONFIG + \
@@ -61,6 +64,7 @@ class TestExternalToolchainSourceryArmv4(TestExternalToolchain):
                            options=["-initrd", img])
         self.emulator.login()
 
+
 class TestExternalToolchainSourceryArmv5(TestExternalToolchain):
     config = BASIC_CONFIG + \
         """
@@ -85,6 +89,7 @@ class TestExternalToolchainSourceryArmv5(TestExternalToolchain):
                            kernel="builtin",
                            options=["-initrd", img])
         self.emulator.login()
+
 
 class TestExternalToolchainSourceryArmv7(TestExternalToolchain):
     config = BASIC_CONFIG + \
@@ -124,6 +129,7 @@ class TestExternalToolchainSourceryArmv7(TestExternalToolchain):
                            options=["-initrd", img])
         self.emulator.login()
 
+
 class TestExternalToolchainLinaroArm(TestExternalToolchain):
     config = BASIC_CONFIG + \
         """
@@ -155,6 +161,7 @@ class TestExternalToolchainLinaroArm(TestExternalToolchain):
                            options=["-initrd", img])
         self.emulator.login()
 
+
 class TestExternalToolchainBuildrootMusl(TestExternalToolchain):
     config = BASIC_CONFIG + \
         """
@@ -179,6 +186,7 @@ class TestExternalToolchainBuildrootMusl(TestExternalToolchain):
                            kernel="builtin",
                            options=["-initrd", img])
         self.emulator.login()
+
 
 class TestExternalToolchainCtngMusl(TestExternalToolchain):
     config = BASIC_CONFIG + \
@@ -206,6 +214,7 @@ class TestExternalToolchainCtngMusl(TestExternalToolchain):
                            options=["-initrd", img])
         self.emulator.login()
 
+
 class TestExternalToolchainBuildrootuClibc(TestExternalToolchain):
     config = BASIC_CONFIG + \
         """
@@ -229,6 +238,7 @@ class TestExternalToolchainBuildrootuClibc(TestExternalToolchain):
                            kernel="builtin",
                            options=["-initrd", img])
         self.emulator.login()
+
 
 class TestExternalToolchainCCache(TestExternalToolchainBuildrootuClibc):
     extraconfig = \

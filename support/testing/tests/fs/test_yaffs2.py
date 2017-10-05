@@ -2,6 +2,7 @@ import os
 
 import infra.basetest
 
+
 class TestYaffs2(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
         infra.basetest.MINIMAL_CONFIG + \

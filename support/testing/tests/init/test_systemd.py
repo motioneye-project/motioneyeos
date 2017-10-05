@@ -1,6 +1,7 @@
 import infra.basetest
 from tests.init.base import InitSystemBase as InitSystemBase
 
+
 class InitSystemSystemdBase(InitSystemBase):
     config = \
         """
@@ -21,7 +22,6 @@ class InitSystemSystemdBase(InitSystemBase):
         super(InitSystemSystemdBase, self).checkInit("/lib/systemd/systemd")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRoNetworkd(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
@@ -43,7 +43,6 @@ class TestInitSystemSystemdRoNetworkd(InitSystemSystemdBase):
         self.assertEqual(out[0], "foobar")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRwNetworkd(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
@@ -57,7 +56,6 @@ class TestInitSystemSystemdRwNetworkd(InitSystemSystemdBase):
         self.checkNetwork("eth0")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRoIfupdown(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
@@ -73,7 +71,6 @@ class TestInitSystemSystemdRoIfupdown(InitSystemSystemdBase):
         self.checkNetwork("eth0")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRwIfupdown(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
@@ -89,7 +86,6 @@ class TestInitSystemSystemdRwIfupdown(InitSystemSystemdBase):
         self.checkNetwork("eth0")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRoFull(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
@@ -121,7 +117,6 @@ class TestInitSystemSystemdRoFull(InitSystemSystemdBase):
         self.checkNetwork("eth0")
 
 
-#-------------------------------------------------------------------------------
 class TestInitSystemSystemdRwFull(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \
         """
