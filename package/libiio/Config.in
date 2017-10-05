@@ -96,7 +96,7 @@ config BR2_PACKAGE_LIBIIO_BINDINGS_CSHARP
 
 config BR2_PACKAGE_LIBIIO_BINDINGS_PYTHON
 	bool "Install Python bindings"
-	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	help
 	  Install the Python bindings.
 
