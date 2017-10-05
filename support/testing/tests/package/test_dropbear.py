@@ -4,13 +4,13 @@ import infra.basetest
 
 class TestDropbear(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_GENERIC_ROOT_PASSWD="testpwd"
-BR2_SYSTEM_DHCP="eth0"
-BR2_PACKAGE_DROPBEAR=y
-BR2_TARGET_ROOTFS_CPIO=y
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_GENERIC_ROOT_PASSWD="testpwd"
+        BR2_SYSTEM_DHCP="eth0"
+        BR2_PACKAGE_DROPBEAR=y
+        BR2_TARGET_ROOTFS_CPIO=y
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         img = os.path.join(self.builddir, "images", "rootfs.cpio")

@@ -5,12 +5,12 @@ import infra.basetest
 
 class TestSquashfs(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_SQUASHFS=y
-# BR2_TARGET_ROOTFS_SQUASHFS4_GZIP is not set
-BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_SQUASHFS=y
+        # BR2_TARGET_ROOTFS_SQUASHFS4_GZIP is not set
+        BR2_TARGET_ROOTFS_SQUASHFS4_LZ4=y
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         unsquashfs_cmd = ["host/bin/unsquashfs", "-s", "images/rootfs.squashfs"]

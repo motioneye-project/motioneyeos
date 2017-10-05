@@ -2,10 +2,10 @@ import os
 import infra
 
 BASIC_CONFIG = \
-"""
-BR2_TARGET_ROOTFS_CPIO=y
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+    """
+    BR2_TARGET_ROOTFS_CPIO=y
+    # BR2_TARGET_ROOTFS_TAR is not set
+    """
 
 def has_broken_links(path):
     for root, dirs, files in os.walk(path):
@@ -32,12 +32,12 @@ class TestExternalToolchain(infra.basetest.BRTest):
 
 class TestExternalToolchainSourceryArmv4(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_arm920t=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
-"""
+        """
+        BR2_arm=y
+        BR2_arm920t=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
+        """
     toolchain_prefix = "arm-none-linux-gnueabi"
 
     def test_run(self):
@@ -63,11 +63,11 @@ BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
 
 class TestExternalToolchainSourceryArmv5(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
-"""
+        """
+        BR2_arm=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
+        """
     toolchain_prefix = "arm-none-linux-gnueabi"
 
     def test_run(self):
@@ -88,14 +88,14 @@ BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
 
 class TestExternalToolchainSourceryArmv7(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_cortex_a8=y
-BR2_ARM_EABI=y
-BR2_ARM_INSTRUCTIONS_THUMB2=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
-"""
+        """
+        BR2_arm=y
+        BR2_cortex_a8=y
+        BR2_ARM_EABI=y
+        BR2_ARM_INSTRUCTIONS_THUMB2=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
+        """
     toolchain_prefix = "arm-none-linux-gnueabi"
 
     def test_run(self):
@@ -126,12 +126,12 @@ BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM=y
 
 class TestExternalToolchainLinaroArm(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_cortex_a8=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y
-"""
+        """
+        BR2_arm=y
+        BR2_cortex_a8=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y
+        """
     toolchain_prefix = "arm-linux-gnueabihf"
 
     def test_run(self):
@@ -157,19 +157,19 @@ BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y
 
 class TestExternalToolchainBuildrootMusl(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_cortex_a9=y
-BR2_ARM_ENABLE_VFP=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-cortex-a9-musl-2017.05-444-g6c704ba.tar.bz2"
-BR2_TOOLCHAIN_EXTERNAL_GCC_6=y
-BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_11=y
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
-BR2_TOOLCHAIN_EXTERNAL_CXX=y
-"""
+        """
+        BR2_arm=y
+        BR2_cortex_a9=y
+        BR2_ARM_ENABLE_VFP=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
+        BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-cortex-a9-musl-2017.05-444-g6c704ba.tar.bz2"
+        BR2_TOOLCHAIN_EXTERNAL_GCC_6=y
+        BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_11=y
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
+        BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        """
     toolchain_prefix = "arm-linux"
 
     def test_run(self):
@@ -182,20 +182,20 @@ BR2_TOOLCHAIN_EXTERNAL_CXX=y
 
 class TestExternalToolchainCtngMusl(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_cortex_a9=y
-BR2_ARM_ENABLE_VFP=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.net/toolchains/tarballs/arm-ctng-linux-musleabihf.tar.xz"
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="arm-ctng-linux-musleabihf"
-BR2_TOOLCHAIN_EXTERNAL_GCC_7=y
-BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
-BR2_TOOLCHAIN_EXTERNAL_CXX=y
-"""
+        """
+        BR2_arm=y
+        BR2_cortex_a9=y
+        BR2_ARM_ENABLE_VFP=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
+        BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.net/toolchains/tarballs/arm-ctng-linux-musleabihf.tar.xz"
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX="arm-ctng-linux-musleabihf"
+        BR2_TOOLCHAIN_EXTERNAL_GCC_7=y
+        BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM_MUSL=y
+        BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        """
     toolchain_prefix = "arm-ctng-linux-musleabihf"
 
     def test_run(self):
@@ -208,18 +208,18 @@ BR2_TOOLCHAIN_EXTERNAL_CXX=y
 
 class TestExternalToolchainBuildrootuClibc(TestExternalToolchain):
     config = BASIC_CONFIG + \
-"""
-BR2_arm=y
-BR2_TOOLCHAIN_EXTERNAL=y
-BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
-BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
-BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-full-2017.05-444-g6c704ba.tar.bz2"
-BR2_TOOLCHAIN_EXTERNAL_GCC_4_9=y
-BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
-BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
-# BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG is not set
-BR2_TOOLCHAIN_EXTERNAL_CXX=y
-"""
+        """
+        BR2_arm=y
+        BR2_TOOLCHAIN_EXTERNAL=y
+        BR2_TOOLCHAIN_EXTERNAL_CUSTOM=y
+        BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD=y
+        BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/br-arm-full-2017.05-444-g6c704ba.tar.bz2"
+        BR2_TOOLCHAIN_EXTERNAL_GCC_4_9=y
+        BR2_TOOLCHAIN_EXTERNAL_HEADERS_3_10=y
+        BR2_TOOLCHAIN_EXTERNAL_LOCALE=y
+        # BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG is not set
+        BR2_TOOLCHAIN_EXTERNAL_CXX=y
+        """
     toolchain_prefix = "arm-linux"
 
     def test_run(self):
@@ -232,10 +232,10 @@ BR2_TOOLCHAIN_EXTERNAL_CXX=y
 
 class TestExternalToolchainCCache(TestExternalToolchainBuildrootuClibc):
     extraconfig = \
-"""
-BR2_CCACHE=y
-BR2_CCACHE_DIR="{builddir}/ccache-dir"
-"""
+        """
+        BR2_CCACHE=y
+        BR2_CCACHE_DIR="{builddir}/ccache-dir"
+        """
 
     def __init__(self, names):
         super(TestExternalToolchainBuildrootuClibc, self).__init__(names)

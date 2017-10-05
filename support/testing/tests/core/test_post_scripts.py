@@ -5,15 +5,15 @@ import infra.basetest
 
 class TestPostScripts(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_INIT_NONE=y
-BR2_SYSTEM_BIN_SH_NONE=y
-# BR2_PACKAGE_BUSYBOX is not set
-BR2_ROOTFS_POST_BUILD_SCRIPT="{}"
-BR2_ROOTFS_POST_IMAGE_SCRIPT="{}"
-BR2_ROOTFS_POST_SCRIPT_ARGS="foobar baz"
-""".format(infra.filepath("tests/core/post-build.sh"),
-           infra.filepath("tests/core/post-image.sh"))
+        """
+        BR2_INIT_NONE=y
+        BR2_SYSTEM_BIN_SH_NONE=y
+        # BR2_PACKAGE_BUSYBOX is not set
+        BR2_ROOTFS_POST_BUILD_SCRIPT="{}"
+        BR2_ROOTFS_POST_IMAGE_SCRIPT="{}"
+        BR2_ROOTFS_POST_SCRIPT_ARGS="foobar baz"
+        """.format(infra.filepath("tests/core/post-build.sh"),
+                   infra.filepath("tests/core/post-image.sh"))
 
     def check_post_log_file(self, path, what):
         lines = {}

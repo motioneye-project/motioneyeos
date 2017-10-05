@@ -5,14 +5,14 @@ import infra.basetest
 
 class TestUbi(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_UBIFS=y
-BR2_TARGET_ROOTFS_UBIFS_LEBSIZE=0x7ff80
-BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE=0x1
-BR2_TARGET_ROOTFS_UBI=y
-BR2_TARGET_ROOTFS_UBI_PEBSIZE=0x80000
-BR2_TARGET_ROOTFS_UBI_SUBSIZE=1
-"""
+        """
+        BR2_TARGET_ROOTFS_UBIFS=y
+        BR2_TARGET_ROOTFS_UBIFS_LEBSIZE=0x7ff80
+        BR2_TARGET_ROOTFS_UBIFS_MINIOSIZE=0x1
+        BR2_TARGET_ROOTFS_UBI=y
+        BR2_TARGET_ROOTFS_UBI_PEBSIZE=0x80000
+        BR2_TARGET_ROOTFS_UBI_SUBSIZE=1
+        """
 
     # TODO: if you boot Qemu twice on the same UBI image, it fails to
     # attach the image the second time, with "ubi0 error:

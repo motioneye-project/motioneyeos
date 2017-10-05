@@ -39,12 +39,12 @@ def boot_img_and_check_fs_type(emulator, builddir, fs_type):
 
 class TestExt2(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_EXT2=y
-BR2_TARGET_ROOTFS_EXT2_2r0=y
-BR2_TARGET_ROOTFS_EXT2_LABEL="foobaz"
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_EXT2=y
+        BR2_TARGET_ROOTFS_EXT2_2r0=y
+        BR2_TARGET_ROOTFS_EXT2_LABEL="foobaz"
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         out = dumpe2fs_run(self.builddir, "rootfs.ext2")
@@ -57,12 +57,12 @@ BR2_TARGET_ROOTFS_EXT2_LABEL="foobaz"
 
 class TestExt2r1(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_EXT2=y
-BR2_TARGET_ROOTFS_EXT2_2r1=y
-BR2_TARGET_ROOTFS_EXT2_LABEL="foobar"
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_EXT2=y
+        BR2_TARGET_ROOTFS_EXT2_2r1=y
+        BR2_TARGET_ROOTFS_EXT2_LABEL="foobar"
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         out = dumpe2fs_run(self.builddir, "rootfs.ext2")
@@ -76,11 +76,11 @@ BR2_TARGET_ROOTFS_EXT2_LABEL="foobar"
 
 class TestExt3(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_EXT2=y
-BR2_TARGET_ROOTFS_EXT2_3=y
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_EXT2=y
+        BR2_TARGET_ROOTFS_EXT2_3=y
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         out = dumpe2fs_run(self.builddir, "rootfs.ext3")
@@ -94,14 +94,14 @@ BR2_TARGET_ROOTFS_EXT2_3=y
 
 class TestExt4(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_EXT2=y
-BR2_TARGET_ROOTFS_EXT2_4=y
-BR2_TARGET_ROOTFS_EXT2_SIZE="16384"
-BR2_TARGET_ROOTFS_EXT2_INODES=3000
-BR2_TARGET_ROOTFS_EXT2_RESBLKS=10
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_EXT2=y
+        BR2_TARGET_ROOTFS_EXT2_4=y
+        BR2_TARGET_ROOTFS_EXT2_SIZE="16384"
+        BR2_TARGET_ROOTFS_EXT2_INODES=3000
+        BR2_TARGET_ROOTFS_EXT2_RESBLKS=10
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     def test_run(self):
         out = dumpe2fs_run(self.builddir, "rootfs.ext4")

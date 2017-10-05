@@ -12,15 +12,15 @@ def jffs2dump_find_file(files_list, fname):
 
 class TestJffs2(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
-"""
-BR2_TARGET_ROOTFS_JFFS2=y
-BR2_TARGET_ROOTFS_JFFS2_CUSTOM=y
-BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE=0x80000
-BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER=y
-BR2_TARGET_ROOTFS_JFFS2_PAD=y
-BR2_TARGET_ROOTFS_JFFS2_PADSIZE=0x4000000
-# BR2_TARGET_ROOTFS_TAR is not set
-"""
+        """
+        BR2_TARGET_ROOTFS_JFFS2=y
+        BR2_TARGET_ROOTFS_JFFS2_CUSTOM=y
+        BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE=0x80000
+        BR2_TARGET_ROOTFS_JFFS2_NOCLEANMARKER=y
+        BR2_TARGET_ROOTFS_JFFS2_PAD=y
+        BR2_TARGET_ROOTFS_JFFS2_PADSIZE=0x4000000
+        # BR2_TARGET_ROOTFS_TAR is not set
+        """
 
     # TODO: there are some scary JFFS2 messages when one starts to
     # write files in the rootfs: "jffs2: Newly-erased block contained
