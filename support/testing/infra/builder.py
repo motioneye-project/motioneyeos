@@ -6,7 +6,8 @@ import infra
 
 class Builder(object):
     def __init__(self, config, builddir, logtofile):
-        self.config = config
+        self.config = '\n'.join([line.lstrip() for line in
+                                 config.splitlines()]) + '\n'
         self.builddir = builddir
         self.logfile = infra.open_log_file(builddir, "build", logtofile)
 
