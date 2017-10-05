@@ -28,4 +28,14 @@ else
 CRYPTSETUP_CONF_OPTS += --with-crypto_backend=kernel
 endif
 
+HOST_CRYPTSETUP_DEPENDENCIES = \
+	host-pkgconf \
+	host-lvm2 \
+	host-popt \
+	host-util-linux \
+	host-openssl
+
+HOST_CRYPTSETUP_CONF_OPTS = --with-crypto-backend=openssl
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
