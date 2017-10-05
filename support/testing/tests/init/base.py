@@ -18,7 +18,7 @@ class InitSystemBase(infra.basetest.BRTest):
         else:
             kernel = os.path.join(self.builddir, "images", kernel)
             options.extend(["-dtb", os.path.join(self.builddir, "images",
-                                             "{}.dtb".format(dtb))])
+                                                 "{}.dtb".format(dtb))])
 
         kernel_cmdline = ["root=/dev/mmcblk0",
                           "rootfstype={}".format(fs_type),
@@ -26,7 +26,7 @@ class InitSystemBase(infra.basetest.BRTest):
                           "ro",
                           "console=ttyAMA0"]
 
-        if not init is None:
+        if init is not None:
             kernel_cmdline.extend(["init={}".format(init)])
 
         self.emulator.boot(arch="armv7",
