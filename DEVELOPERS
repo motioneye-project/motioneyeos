@@ -207,6 +207,7 @@ F:	package/eudev/
 F:	package/exim/
 F:	package/fetchmail/
 F:	package/freeswitch/
+F:	package/freeswitch-mod-bcg729/
 F:	package/ffmpeg/
 F:	package/ghostscript/
 F:	package/giflib/

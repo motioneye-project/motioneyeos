@@ -1,0 +1,10 @@
+config BR2_PACKAGE_FREESWITCH_MOD_BCG729
+	bool "freeswitch-mod-bcg729"
+	depends on BR2_PACKAGE_FREESWITCH
+	depends on !BR2_STATIC_LIBS # freeswitch
+	select BR2_PACKAGE_BCG729
+	help
+	  FreeSWITCH G.729A module using the opensource bcg729
+	  implementation by Belledonne Communications.
+
+	  https://github.com/xadhoom/mod_bcg729
