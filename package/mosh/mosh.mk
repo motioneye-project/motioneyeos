@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOSH_VERSION = 1.3.0
+MOSH_VERSION = 1.3.2
 MOSH_SITE = https://mosh.org
 MOSH_DEPENDENCIES = zlib ncurses protobuf host-pkgconf
 MOSH_LICENSE = GPL-3.0+ with exception
