@@ -1,4 +1,4 @@
-# From https://lists.x.org/archives/xorg-announce/2017-May/002800.html
-md5 af9498e8954907d0a47f0f7b3d21e1ef  xkeyboard-config-2.21.tar.bz2
-sha1 ccdc53ad0ff6bbabda19ef30a47c2cbe014d42ec  xkeyboard-config-2.21.tar.bz2
-sha256 30c17049fae129fc14875656da9aa3099e3031d6ce0ee1d77aae190fd9edcec5  xkeyboard-config-2.21.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-October/002811.html
+md5 eb61fb3fd419e817df572b0c8d94a883  xkeyboard-config-2.22.tar.bz2
+sha1 1e252098685afc3e802c98f3fd70d683654a13ab  xkeyboard-config-2.22.tar.bz2
+sha256 deaec9989fbc443358b43864437b7b6d39caff07890a4a8055105ce9fcaa59bd  xkeyboard-config-2.22.tar.bz2
