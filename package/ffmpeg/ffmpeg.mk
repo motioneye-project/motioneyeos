@@ -26,7 +26,6 @@ FFMPEG_CONF_OPTS = \
 	--enable-avdevice \
 	--enable-avcodec \
 	--enable-avformat \
-	--disable-x11grab \
 	--enable-network \
 	--disable-gray \
 	--enable-swscale-alpha \
@@ -39,7 +38,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-dxva2 \
 	--enable-runtime-cpudetect \
 	--disable-hardcoded-tables \
-	--disable-memalign-hack \
 	--disable-mipsdsp \
 	--disable-mipsdspr2 \
 	--disable-msa \
@@ -471,6 +469,11 @@ else ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_CPU)
 else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_RPI_HW_CODECS),y)
+FFMPEG_DEPENDENCIES += rpi-userland
+FFMPEG_CONF_OPTS += --enable-omx --enable-omx-rpi --enable-mmal --extra-cflags=-I../../staging/usr/include/IL/
 endif
 
 
