@@ -129,6 +129,12 @@ config BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE
 	depends on BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG
 	help
 	  Path to the U-Boot configuration file.
+
+config BR2_TARGET_UBOOT_CONFIG_FRAGMENT_FILES
+	string "Additional configuration fragment files"
+	help
+	  A space-separated list of configuration fragment files,
+	  that will be merged to the main U-Boot configuration file.
 endif
 
 config BR2_TARGET_UBOOT_NEEDS_DTC
