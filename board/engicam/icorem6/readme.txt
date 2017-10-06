@@ -17,8 +17,6 @@ Build
 
 First, configure Buildroot for the Engicam i.CoreM6:
 
-- for i.CoreM6 Quad/Dual/DualLite/Solo:
-
   make engicam_imx6qdl_icore_defconfig
 
 Build all components:
@@ -26,14 +24,10 @@ Build all components:
   make
 
 You will find the following files in output/images/:
-- for i.CoreM6 Quad/Dual:
-  - imx6q-icore.dtb
-- for i.CoreM6 DualLite/Solo:
-  - imx6dl-icore.dtb
-- for i.CoreM6 Quad/Dual ofcap 10:
-  - imx6q-icore-ofcap10.dtb
-- for i.CoreM6 Quad/Dual ofcap 12:
-  - imx6q-icore-ofcap12.dtb
+  - imx6q-icore.dtb (for i.CoreM6 Quad/Dual)
+  - imx6dl-icore.dtb (for i.CoreM6 DualLite/Solo)
+  - imx6q-icore-ofcap10.dtb (for i.CoreM6 Quad/Dual ofcap 10)
+  - imx6q-icore-ofcap12.dtb (for i.CoreM6 Quad/Dual ofcap 12)
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
@@ -93,6 +87,7 @@ Running Qt5 Cinematic Demo:
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore-ofcap10.json
 - for i.CoreM6 ofcap12
 # export QT_QPA_EGLFS_KMS_CONFIG=/root/imx6qdl-icore-ofcap12.json
+
 # CinematicExperience-demo
 
 Enjoy!
