@@ -1,4 +1,4 @@
-From 7e87ca3c531228d35e13e802d2622006138b104c Mon Sep 17 00:00:00 2001
+From 141c4309d7164dcd4e09d137fc075c1726fd8dbb Mon Sep 17 00:00:00 2001
 From: Felix Janda <felix.janda@posteo.de>
 Date: Sun, 3 May 2015 10:33:15 +0200
 Subject: [PATCH] libparted/arch/linux.c: Compile without ENABLE_DEVICE_MAPPER
@@ -10,7 +10,7 @@ Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
  1 file changed, 17 insertions(+), 4 deletions(-)
 
 diff --git a/libparted/arch/linux.c b/libparted/arch/linux.c
-index 90ab21d..f6141e4 100644
+index 0f18904..cf38c6f 100644
 --- a/libparted/arch/linux.c
 +++ b/libparted/arch/linux.c
 @@ -2304,6 +2304,7 @@ zasprintf (const char *format, ...)
@@ -57,7 +57,7 @@ index 90ab21d..f6141e4 100644
          return result;
  }
  
-@@ -2958,12 +2968,15 @@ _disk_sync_part_table (PedDisk* disk)
+@@ -2945,12 +2955,15 @@ _disk_sync_part_table (PedDisk* disk)
                                                 unsigned long long *length);
  
  
@@ -75,5 +75,5 @@ index 90ab21d..f6141e4 100644
                  remove_partition = _blkpg_remove_partition;
  #ifdef BLKPG_RESIZE_PARTITION
 -- 
-2.1.4
+2.14.2
 
