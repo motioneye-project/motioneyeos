@@ -9,10 +9,10 @@ FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
 
-FFMPEG_LICENSE = LGPLv2.1+, libjpeg license
+FFMPEG_LICENSE = LGPL-2.1+, libjpeg license
 FFMPEG_LICENSE_FILES = LICENSE.md COPYING.LGPLv2.1
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
-FFMPEG_LICENSE += and GPLv2+
+FFMPEG_LICENSE += and GPL-2.0+
 FFMPEG_LICENSE_FILES += COPYING.GPLv2
 endif
 
@@ -42,6 +42,9 @@ FFMPEG_CONF_OPTS = \
 	--disable-mipsdspr2 \
 	--disable-msa \
 	--enable-hwaccels \
+	--disable-cuda \
+	--disable-cuvid \
+	--disable-nvenc \
 	--disable-avisynth \
 	--disable-frei0r \
 	--disable-libopencore-amrnb \
@@ -157,12 +160,18 @@ endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_INDEVS),y)
 FFMPEG_CONF_OPTS += --enable-indevs
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FFMPEG_DEPENDENCIES += alsa-lib
+endif
 else
 FFMPEG_CONF_OPTS += --disable-indevs
 endif
 
 ifeq ($(BR2_PACKAGE_FFMPEG_OUTDEVS),y)
 FFMPEG_CONF_OPTS += --enable-outdevs
+ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FFMPEG_DEPENDENCIES += alsa-lib
+endif
 else
 FFMPEG_CONF_OPTS += --disable-outdevs
 endif
@@ -243,6 +252,14 @@ FFMPEG_CONF_OPTS += --enable-vdpau
 FFMPEG_DEPENDENCIES += libvdpau
 else
 FFMPEG_CONF_OPTS += --disable-vdpau
+endif
+
+ifeq ($(BR2_PACKAGE_RPI_FIRMWARE)$(BR2_PACKAGE_RPI_USERLAND),yy)
+FFMPEG_CONF_OPTS += --enable-mmal --enable-omx --enable-omx-rpi \
+	--extra-cflags=-I$(STAGING_DIR)/usr/include/IL
+FFMPEG_DEPENDENCIES += rpi-firmware rpi-userland
+else
+FFMPEG_CONF_OPTS += --disable-mmal --disable-omx --disable-omx-rpi
 endif
 
 # To avoid a circular dependency only use opencv if opencv itself does
@@ -362,11 +379,6 @@ ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 FFMPEG_CONF_OPTS += --enable-yasm
 FFMPEG_DEPENDENCIES += host-yasm
 else
-ifeq ($(BR2_x86_i586),y)
-# Needed to work around a bug with gcc 5.x:
-# error: 'asm' operand has impossible constraints
-FFMPEG_CONF_OPTS += --disable-inline-asm
-endif
 FFMPEG_CONF_OPTS += --disable-yasm
 FFMPEG_CONF_OPTS += --disable-mmx
 endif
@@ -437,6 +449,8 @@ FFMPEG_CONF_OPTS += --disable-vfp
 endif
 ifeq ($(BR2_ARM_CPU_HAS_NEON),y)
 FFMPEG_CONF_OPTS += --enable-neon
+else ifeq ($(BR2_aarch64),y)
+FFMPEG_CONF_OPTS += --enable-neon
 else
 FFMPEG_CONF_OPTS += --disable-neon
 endif
@@ -455,6 +469,11 @@ else
 FFMPEG_CONF_OPTS += --disable-altivec
 endif
 
+# Uses __atomic_fetch_add_4
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+FFMPEG_CONF_OPTS += --extra-libs=-latomic
+endif
+
 ifeq ($(BR2_STATIC_LIBS),)
 FFMPEG_CONF_OPTS += --enable-pic
 else
@@ -471,12 +490,15 @@ else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
 endif
 
+<<<<<<< HEAD
 ifeq ($(BR2_PACKAGE_FFMPEG_RPI_HW_CODECS),y)
 FFMPEG_DEPENDENCIES += rpi-userland
 FFMPEG_CONF_OPTS += --enable-omx --enable-omx-rpi --enable-mmal --extra-cflags=-I../../staging/usr/include/IL/
 endif
 
 
+=======
+>>>>>>> thingos
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
@@ -498,5 +520,10 @@ define FFMPEG_CONFIGURE_CMDS
 		$(FFMPEG_CONF_OPTS) \
 	)
 endef
+
+define FFMPEG_REMOVE_EXAMPLE_SRC_FILES
+	rm -rf $(TARGET_DIR)/usr/share/ffmpeg/examples
+endef
+FFMPEG_POST_INSTALL_TARGET_HOOKS += FFMPEG_REMOVE_EXAMPLE_SRC_FILES
 
 $(eval $(autotools-package))
