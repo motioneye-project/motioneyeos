@@ -490,15 +490,6 @@ else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
 FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
 endif
 
-<<<<<<< HEAD
-ifeq ($(BR2_PACKAGE_FFMPEG_RPI_HW_CODECS),y)
-FFMPEG_DEPENDENCIES += rpi-userland
-FFMPEG_CONF_OPTS += --enable-omx --enable-omx-rpi --enable-mmal --extra-cflags=-I../../staging/usr/include/IL/
-endif
-
-
-=======
->>>>>>> thingos
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
 
 # Override FFMPEG_CONFIGURE_CMDS: FFmpeg does not support --target and others
