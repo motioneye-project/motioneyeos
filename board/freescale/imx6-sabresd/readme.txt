@@ -86,4 +86,25 @@ Running gl2mark benchmark:
 
 # glmark2-es2-drm
 
+Testing video playback on the i.MX6 Sabre SD board
+==================================================
+
+As the mx6sabresd has two display outputs (LVDS and HDMI), it is necessary to
+know what is the connector that corresponds to the HDMI output.
+
+This information can be found by running:
+
+# modetest
+
+And search for the HDMI connector number. In our case it shows up as 37.
+
+In the mx6sabresd prompt run the following Gstreamer pipeline:
+
+# gst-launch-1.0 filesrc location=/root/trailer_1080p_h264_mp3.avi ! avidemux ! \
+h264parse ! v4l2video1dec capture-io-mode=dmabuf ! kmssink connector-id=37    \
+name=imx-drm sync=0
+
+(The video used on this example was retrieved from:
+http://linode.boundarydevices.com/videos/trailer_1080p_h264_mp3.avi)
+
 Enjoy!
