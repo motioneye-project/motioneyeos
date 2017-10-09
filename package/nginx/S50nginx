@@ -14,10 +14,7 @@ case "$1" in
 	;;
   stop)
 	echo "Stopping nginx..."
-	# Use -R 1 to wait for nginx to actually stop.  Useful so
-	# restart has no race condition.  Note that BusyBox knows
-	# about -R but ignores it silently.
-	start-stop-daemon -K -x "$NGINX" -p "$PIDFILE" -R 1 -o
+	start-stop-daemon -K -x "$NGINX" -p "$PIDFILE" -o
 	;;
   reload|force-reload)
 	echo "Reloading nginx configuration..."
@@ -25,6 +22,7 @@ case "$1" in
 	;;
   restart)
 	"$0" stop
+	sleep 1 # Prevent race condition: ensure nginx stops before start.
 	"$0" start
 	;;
   *)
