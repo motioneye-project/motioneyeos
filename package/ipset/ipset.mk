@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IPSET_VERSION = 6.32
+IPSET_VERSION = 6.34
 IPSET_SOURCE = ipset-$(IPSET_VERSION).tar.bz2
 IPSET_SITE = http://ipset.netfilter.org
 IPSET_DEPENDENCIES = libmnl host-pkgconf
