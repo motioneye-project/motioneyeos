@@ -1,5 +1,5 @@
 config BR2_PACKAGE_HOST_CRYPTSETUP
-	bool "host-cryptsetup"
+	bool "host cryptsetup"
 	select BR2_PACKAGE_HOST_UTIL_LINUX
 	help
 	  This tool helps manipulate dm-crypt and luks partitions for
