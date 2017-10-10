@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-AUDIT_VERSION = 2.7.7
+AUDIT_VERSION = 2.7.8
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
-AUDIT_LICENSE = GPL-2.0+ (programs), unclear (libraries)
-AUDIT_LICENSE_FILES = COPYING
+AUDIT_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
+AUDIT_LICENSE_FILES = COPYING COPYING.LIB
 
 AUDIT_INSTALL_STAGING = YES
 
