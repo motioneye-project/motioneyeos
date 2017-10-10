@@ -59,7 +59,8 @@ HOST_LVM2_CONF_OPTS = \
 	--disable-dmeventd \
 	--disable-applib \
 	--disable-fsadm \
-	--disable-readline
+	--disable-readline \
+	--disable-selinux
 HOST_LVM2_MAKE_OPTS = device-mapper
 HOST_LVM2_INSTALL_OPTS = install_device-mapper
 
