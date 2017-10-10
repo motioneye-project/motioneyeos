@@ -4,11 +4,8 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.10.22
+DBUS_VERSION = 1.10.24
 DBUS_SITE = https://dbus.freedesktop.org/releases/dbus
-
-# 0001-config-loader-expat-Tell-Expat-not-to-defend-against.patch
-DBUS_AUTORECONF = YES
 DBUS_LICENSE = AFL-2.1 or GPL-2.0+ (library, tools), GPL-2.0+ (tools)
 DBUS_LICENSE_FILES = COPYING
 DBUS_INSTALL_STAGING = YES
