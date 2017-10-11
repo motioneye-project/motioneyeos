@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-WIRINGPI_VERSION = 2.44
+# using git commit id instead of (wrong) 2.44 git tag (Bug 10391)
+WIRINGPI_VERSION = 96344ff7125182989f98d3be8d111952a8f74e15
 WIRINGPI_SITE = git://git.drogon.net/wiringPi
 
 WIRINGPI_LICENSE = LGPL-3.0+
