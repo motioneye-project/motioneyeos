@@ -7,46 +7,62 @@ root_dev=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
 if [[ "$root_dev" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
     disk_dev=${BASH_REMATCH[1]}
     boot_dev=${disk_dev}p1
-    data_dev=${disk_dev}p3
+    config_dev=${disk_dev}p3
+    data_dev=${disk_dev}p4
 elif [[ "$root_dev" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
     disk_dev=${BASH_REMATCH[1]}
     boot_dev=${disk_dev}1
-    data_dev=${disk_dev}3
+    config_dev=${disk_dev}3
+    data_dev=${disk_dev}4
 else
     msg_fail "unknown ($root_dev)"
     exit 1
 fi
 msg_done "$disk_dev"
 
-test -b $data_dev && exit 0
+test -b $config_dev && exit 0
 
 case "$1" in
     start)
-        msg_begin "Creating data partition"
+		CONFIG_SIZE="64" # MB
+        msg_begin "Creating config and data partitions"
         root_end=$(partx -s -g -o END $root_dev)
-        data_start=$(($root_end + 1))
+        config_start=$(($root_end + 1))
+        data_start=$(($config_start + $CONFIG_SIZE * 2048))
         echo -e "n
             p
             3
+            ${config_start}
+            +${CONFIG_SIZE}M
+            n
+            p
             ${data_start}
             \n
             w" | /sbin/fdisk $disk_dev &>/dev/null
         partx -a $disk_dev &>/dev/null
         test -b $data_dev && msg_done || msg_fail
 
+        msg_begin "Formatting config partition"
+        mkfs.ext4 -q $config_dev
+        test $? == 0 && msg_done || msg_fail
+
         msg_begin "Formatting data partition"
         mkfs.ext4 -q $data_dev
         test $? == 0 && msg_done || msg_fail
 
+        msg_begin "Mounting config partition"
+        mount -T /etc/fstab.disk /config
+        test $? == 0 && msg_done || msg_fail
         msg_begin "Mounting data partition"
         mount -T /etc/fstab.disk /data
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Creating required data files"
+        cp -pur /usr/share/configskel/* /config
         cp -pur /usr/share/dataskel/* /data
-        cp /etc/version /data/etc/version
-        ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
-        touch /data/etc/adjtime
+        cp /etc/version /config/etc/version
+        ln -s /usr/share/zoneinfo/UTC /config/etc/localtime
+        touch /config/etc/adjtime
         sync
         msg_done
         
