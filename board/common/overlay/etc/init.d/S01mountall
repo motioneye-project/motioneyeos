@@ -3,8 +3,26 @@
 test -n "$os_version" || source /etc/init.d/base
 
 mount_fs() {
+
+	OLD_PART=".old"
+	root_dev=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+	if [[ "$root_dev" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+		disk_dev=${BASH_REMATCH[1]}
+		config_dev=${disk_dev}p3
+		data_dev=${disk_dev}p4
+	elif [[ "$root_dev" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+		disk_dev=${BASH_REMATCH[1]}
+		config_dev=${disk_dev}3
+		data_dev=${disk_dev}4
+	else
+		return 1
+	fi
+
+	test -b $data_dev && OLD_PART=""
+
     msg_begin "Mounting filesystems"
-    /bin/mount -T /etc/fstab.disk -a &&
+
+    /bin/mount -T /etc/fstab.disk${OLD_PART} -a &&
     /bin/mount -T /etc/fstab.extra -a &&
     if [ -r /data/etc/fstab.user ]; then /bin/mount -T /data/etc/fstab.user -a; fi
 
