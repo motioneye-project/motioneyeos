@@ -108,6 +108,11 @@ config BR2_TARGET_ROOTFS_EXT2_BZIP2
 	help
 	  Do compress the ext2/3/4 filesystem with bzip2.
 
+config BR2_TARGET_ROOTFS_EXT2_LZ4
+	bool "lz4"
+	help
+	  Do compress the ext2 filesystem with lz4.
+
 config BR2_TARGET_ROOTFS_EXT2_LZMA
 	bool "lzma"
 	help
