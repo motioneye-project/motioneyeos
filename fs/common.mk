@@ -56,6 +56,11 @@ ROOTFS_$(2)_DEPENDENCIES += host-lzma
 ROOTFS_$(2)_COMPRESS_EXT = .lzma
 ROOTFS_$(2)_COMPRESS_CMD = $$(LZMA) -9 -c
 endif
+ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZ4),y)
+ROOTFS_$(2)_DEPENDENCIES += host-lz4
+ROOTFS_$(2)_COMPRESS_EXT = .lz4
+ROOTFS_$(2)_COMPRESS_CMD = lz4 -l -9 -c
+endif
 ifeq ($$(BR2_TARGET_ROOTFS_$(2)_LZO),y)
 ROOTFS_$(2)_DEPENDENCIES += host-lzop
 ROOTFS_$(2)_COMPRESS_EXT = .lzo
