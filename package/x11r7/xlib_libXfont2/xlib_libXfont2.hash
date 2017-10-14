@@ -1,2 +1,5 @@
-# From https://lists.x.org/archives/xorg-announce/2015-December/002663.html
-sha256 e9fbbb475ddd171b3a6a54b989cbade1f6f874fc35d505ebc5be426bc6e4db7e  libXfont2-2.0.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-October/002813.html
+md5 d39e6446e46f939486d1a8b856e8b67b  libXfont2-2.0.2.tar.bz2
+sha1 d5117914a026b3fd47123cb1c2a22daaae3b63e4  libXfont2-2.0.2.tar.bz2
+sha256 94088d3b87f7d42c7116d9adaad155859e93330c6e47f5989f2de600b9a6c111  libXfont2-2.0.2.tar.bz2
+sha512 d62b0c3d663a2c668796cca8c6c2a90f83feeae1253b7d946668d33502cd8099c963285b88db4f745efb0d4ff783c118eb3d84cb8e6e1724586e1ef2be23e593  libXfont2-2.0.2.tar.bz2
