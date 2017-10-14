@@ -8,6 +8,8 @@ are not necessarly useful on embedded targets.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Bernd: rebased against version 2.7.14]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  Makefile.pre.in | 48 ++++++++++++++++++++++++++++++++----------------
  configure.ac    |  6 ++++++
@@ -17,7 +19,7 @@ diff --git a/Makefile.pre.in b/Makefile.pre.in
 index dedcf61..280cc4e 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1038,27 +1038,43 @@ PLATMACDIRS= plat-mac plat-mac/Carbon plat-mac/lib-scriptpackages \
+@@ -1032,28 +1032,44 @@
  	plat-mac/lib-scriptpackages/SystemEvents \
  	plat-mac/lib-scriptpackages/Terminal
  PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
@@ -26,6 +28,7 @@ index dedcf61..280cc4e 100644
 -		test/data test/cjkencodings test/decimaltestdata test/xmltestdata \
 -		test/imghdrdata \
 -		test/subprocessdata \
+-		test/support \
 -		test/tracedmodules \
 +LIBSUBDIRS=	lib-tk site-packages \
  		encodings compiler hotshot \
@@ -58,6 +61,7 @@ index dedcf61..280cc4e 100644
 +	test/cjkencodings test/decimaltestdata test/xmltestdata \
 +	test/imghdrdata \
 +	test/subprocessdata \
++	test/support \
 +	test/tracedmodules \
 +	email/test email/test/data \
 +	json/tests \
