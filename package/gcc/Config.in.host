@@ -89,7 +89,7 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 config BR2_GCC_VERSION
 	string
 	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
-	default "5.4.0"     if BR2_GCC_VERSION_5_X
+	default "5.5.0"     if BR2_GCC_VERSION_5_X
 	default "6.4.0"     if BR2_GCC_VERSION_6_X
 	default "7.2.0"     if BR2_GCC_VERSION_7_X
 	default "arc-2017.09-rc1" if BR2_GCC_VERSION_ARC
