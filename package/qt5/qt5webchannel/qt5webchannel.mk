@@ -38,10 +38,17 @@ define QT5WEBCHANNEL_INSTALL_STAGING_CMDS
 	$(QT5_LA_PRL_FILES_FIXUP)
 endef
 
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+define QT5WEBCHANNEL_INSTALL_TARGET_JAVASCRIPT
+	$(INSTALL) -m 0644 -D $(@D)/examples/webchannel/shared/qwebchannel.js \
+		$(TARGET_DIR)/var/www/qwebchannel.js
+endef
+else
 define QT5WEBCHANNEL_INSTALL_TARGET_JAVASCRIPT
 	$(INSTALL) -m 0644 -D $(@D)/src/webchannel/qwebchannel.js \
 		$(TARGET_DIR)/var/www/qwebchannel.js
 endef
+endif
 
 ifeq ($(BR2_PACKAGE_QT5DECLARATIVE_QUICK),y)
 define QT5WEBCHANNEL_INSTALL_TARGET_QMLS

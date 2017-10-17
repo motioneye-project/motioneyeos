@@ -1,8 +1,8 @@
 # Hash from: http://download.qt.io/official_releases/qt/5.6/5.6.2/submodules/qtquickcontrols2-opensource-src-5.6.2.tar.xz.mirrorlist
 sha256 09dc1710aa4701aebe145829eb99bab94d0870cf578f7dddcec0af92286dfec1 qtquickcontrols2-opensource-src-5.6.2.tar.xz
 
-# Hash from: http://download.qt.io/official_releases/qt/5.9/5.9.1/submodules/qtquickcontrols2-opensource-src-5.9.1.tar.xz.mirrorlist
-sha256 203be0321112d1513b722fce463f9e30d7d00befb33349901d9517f4f13408ff qtquickcontrols2-opensource-src-5.9.1.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qtquickcontrols2-opensource-src-5.9.2.tar.xz.mirrorlist
+sha256 2b55dd3dd53b4a6abb0ceb74b7fb98a5e52e9056c71a6cdbaead5cdf9d1ac8d2 qtquickcontrols2-opensource-src-5.9.2.tar.xz
 
 # Hashes for license files:
 sha256 d2cfc059acb4abd8e513cd0a73cd8489f34cbafa7bc34d5d31fb3210821cf8ca LICENSE.GPLv3

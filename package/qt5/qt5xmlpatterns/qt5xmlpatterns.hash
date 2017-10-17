@@ -1,8 +1,8 @@
 # Hash from: http://download.qt.io/official_releases/qt/5.6/5.6.2/submodules/qtxmlpatterns-opensource-src-5.6.2.tar.xz.mirrorlist
 sha256 7c6df3eebf188d8ce6822a22cebbc63da5ac27047cf1bd7236d5b988244782cc qtxmlpatterns-opensource-src-5.6.2.tar.xz
 
-# Hash from: http://download.qt.io/official_releases/qt/5.9/5.9.1/submodules/qtxmlpatterns-opensource-src-5.9.1.tar.xz.mirrorlist
-sha256 b584686496ad1b1b3426d642bd705cab3fc02313b067a33d1b826a27aee29c24 qtxmlpatterns-opensource-src-5.9.1.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qtxmlpatterns-opensource-src-5.9.2.tar.xz.mirrorlist
+sha256 0aa6aa83087d5754cfefaa3d119454009fc2dd5f266c1eb2ea7a434cef22d34e qtxmlpatterns-opensource-src-5.9.2.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2

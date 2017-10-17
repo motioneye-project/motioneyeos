@@ -4,8 +4,15 @@
 #
 ################################################################################
 
+# no 5.9.2 package available, fall back to 5.9.1 version
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+QT5WEBKIT_VERSION = 5.9.1
+QT5WEBKIT_SITE = http://download.qt.io/official_releases/qt/5.9/5.9.1/submodules
+else
 QT5WEBKIT_VERSION = $(QT5_VERSION)
 QT5WEBKIT_SITE = $(QT5_SITE)
+endif
+
 QT5WEBKIT_SOURCE = qtwebkit-opensource-src-$(QT5WEBKIT_VERSION).tar.xz
 QT5WEBKIT_DEPENDENCIES = \
 	host-bison host-flex host-gperf host-python host-ruby \
