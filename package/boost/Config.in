@@ -73,10 +73,6 @@ config BR2_PACKAGE_BOOST_COROUTINE
 	bool "boost-coroutine"
 	depends on BR2_PACKAGE_BOOST_CONTEXT
 
-config BR2_PACKAGE_BOOST_COROUTINE2
-	bool "boost-coroutine2"
-	depends on BR2_PACKAGE_BOOST_CONTEXT
-
 config BR2_PACKAGE_BOOST_DATE_TIME
 	bool "boost-date_time"
 
