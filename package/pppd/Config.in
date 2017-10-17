@@ -23,6 +23,18 @@ config BR2_PACKAGE_PPPD_RADIUS
 	help
 	  Install RADIUS support for pppd
 
+config BR2_PACKAGE_PPPD_OVERWRITE_RESOLV_CONF
+	bool "overwrite /etc/resolv.conf"
+	default y
+	help
+	  Overwrite /etc/resolv.conf instead of maintaining the
+	  separate list of nameservers in /etc/ppp/resolv.conf
+
+	  Note that the pppd default of writing to /etc/ppp/resolv.conf
+	  does not work on a read-only rootfs unless you make it
+	  writable in your rootfs customizations (e.g. by linking it to
+	  a file in tmpfs or by mounting a writable filesystem on it).
+
 endif
 
 comment "pppd needs a uClibc or glibc toolchain w/ dynamic library"

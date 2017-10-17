@@ -41,7 +41,9 @@ PPPD_POST_EXTRACT_HOOKS += PPPD_DROP_INTERNAL_IF_PPOL2TP_H
 define PPPD_SET_RESOLV_CONF
 	$(SED) 's,ppp/resolv.conf,resolv.conf,' $(@D)/pppd/pathnames.h
 endef
+ifeq ($(BR2_PACKAGE_PPPD_OVERWRITE_RESOLV_CONF),y)
 PPPD_POST_EXTRACT_HOOKS += PPPD_SET_RESOLV_CONF
+endif
 
 define PPPD_CONFIGURE_CMDS
 	$(SED) 's/FILTER=y/#FILTER=y/' $(PPPD_DIR)/pppd/Makefile.linux
