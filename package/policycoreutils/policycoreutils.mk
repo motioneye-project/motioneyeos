@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-POLICYCOREUTILS_VERSION = 2.6
-POLICYCOREUTILS_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20161014
+POLICYCOREUTILS_VERSION = 2.7
+POLICYCOREUTILS_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20170804
 POLICYCOREUTILS_LICENSE = GPL-2.0
 POLICYCOREUTILS_LICENSE_FILES = COPYING
 
@@ -41,28 +41,8 @@ POLICYCOREUTILS_MAKE_OPTS += \
 
 POLICYCOREUTILS_MAKE_DIRS = \
 	load_policy newrole run_init \
-	secon semodule semodule_deps \
-	semodule_expand semodule_link \
-	semodule_package sepolgen-ifgen \
-	sestatus setfiles setsebool
-
-ifeq ($(BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND),y)
-POLICYCOREUTILS_MAKE_DIRS += restorecond
-POLICYCOREUTILS_DEPENDENCIES += libglib2
-endif
-
-ifeq ($(BR2_PACKAGE_POLICYCOREUTILS_AUDIT2ALLOW),y)
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
-POLICYCOREUTILS_DEPENDENCIES += python3
-POLICYCOREUTILS_MAKE_OPTS += PYLIBVER="python$(PYTHON3_VERSION_MAJOR)"
-else
-POLICYCOREUTILS_DEPENDENCIES += python
-POLICYCOREUTILS_MAKE_OPTS += PYLIBVER="python$(PYTHON_VERSION_MAJOR)"
-endif
-
-POLICYCOREUTILS_DEPENDENCIES += sepolgen checkpolicy
-POLICYCOREUTILS_MAKE_DIRS += audit2allow
-endif
+	secon semodule sestatus setfiles \
+	setsebool
 
 # We need to pass DESTDIR at build time because it's used by
 # policycoreutils build system to find headers and libraries.
@@ -81,8 +61,7 @@ define POLICYCOREUTILS_INSTALL_TARGET_CMDS
 endef
 
 HOST_POLICYCOREUTILS_DEPENDENCIES = \
-	host-libsemanage host-dbus-glib \
-	host-sepolgen host-setools
+	host-libsemanage host-dbus-glib host-setools
 
 # Undefining _FILE_OFFSET_BITS here because of a "bug" with glibc fts.h
 # large file support.
@@ -112,10 +91,9 @@ endif
 
 # Note: We are only building the programs required by the refpolicy build
 HOST_POLICYCOREUTILS_MAKE_DIRS = \
-	load_policy semodule semodule_deps \
-	semodule_expand semodule_link \
-	semodule_package setfiles restorecond \
-	audit2allow scripts semanage sepolicy
+	load_policy newrole run_init \
+	secon semodule sestatus setfiles \
+	setsebool
 
 define HOST_POLICYCOREUTILS_BUILD_CMDS
 	$(foreach d,$(HOST_POLICYCOREUTILS_MAKE_DIRS),
@@ -127,10 +105,6 @@ define HOST_POLICYCOREUTILS_INSTALL_CMDS
 	$(foreach d,$(HOST_POLICYCOREUTILS_MAKE_DIRS),
 		$(MAKE) -C $(@D)/$(d) $(HOST_POLICYCOREUTILS_MAKE_OPTS) install
 	)
-	# Fix python paths
-	$(SED) 's%/usr/bin/%$(HOST_DIR)/bin/%g' $(HOST_DIR)/bin/audit2allow
-	$(SED) 's%/usr/bin/%$(HOST_DIR)/bin/%g' $(HOST_DIR)/bin/sepolgen-ifgen
-	$(SED) 's%/usr/bin/%$(HOST_DIR)/bin/%g' $(HOST_DIR)/bin/sepolicy
 endef
 
 $(eval $(generic-package))

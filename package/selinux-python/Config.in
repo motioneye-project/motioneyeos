@@ -1,0 +1,63 @@
+menuconfig BR2_PACKAGE_SELINUX_PYTHON
+	bool "selinux-python"
+	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
+	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  A set of SELinux tools written in python that help with
+	  managing a system with SELinux enabled. If no packages are
+	  selected nothing will actually be built.
+	  https://github.com/SELinuxProject/selinux/wiki
+
+if BR2_PACKAGE_SELINUX_PYTHON
+
+config BR2_PACKAGE_SELINUX_PYTHON_AUDIT2ALLOW
+	bool "audit2allow"
+	depends on BR2_USE_WCHAR # sepolgen
+	depends on BR2_USE_MMU # sepolgen
+	depends on BR2_TOOLCHAIN_HAS_THREADS # sepolgen, checkpolicy
+	depends on !BR2_STATIC_LIBS # sepolgen
+	depends on BR2_TOOLCHAIN_USES_GLIBC # checkpolicy
+	depends on !BR2_arc # checkpolicy
+	select BR2_PACKAGE_CHECKPOLICY
+	select BR2_PACKAGE_SELINUX_PYTHON_SEPOLGEN
+	select BR2_PACKAGE_SEMODULE_UTILS
+	help
+	  This module installs two programs:
+
+	  audit2allow - Generate SELinux policy allow/dontaudit rules
+	  from logs of denied operations.
+
+	  audit2why - translates SELinux audit messages into a
+	  description of why the access was denied (audit2allow -w)
+
+comment "audit2allow needs a glibc toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_arc
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+
+config BR2_PACKAGE_SELINUX_PYTHON_SEPOLGEN
+	bool "sepolgen"
+	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_SEMODULE_UTILS
+	help
+	  This package contains a Python module that allows you to
+	  generate an initial SELinux policy module template.
+
+comment "sepolgen needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
+
+endif
+
+comment "selinux-python packages needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS

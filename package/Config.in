@@ -1844,7 +1844,9 @@ menu "Security"
 	source "package/paxtest/Config.in"
 	source "package/policycoreutils/Config.in"
 	source "package/refpolicy/Config.in"
-	source "package/sepolgen/Config.in"
+	source "package/restorecond/Config.in"
+	source "package/selinux-python/Config.in"
+	source "package/semodule-utils/Config.in"
 	source "package/setools/Config.in"
 endmenu
 

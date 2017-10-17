@@ -145,6 +145,35 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 
+config BR2_PACKAGE_POLICYCOREUTILS_AUDIT2ALLOW
+	bool "policycoreutils audit2allow option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SELINUX_PYTHON
+	select BR2_PACKAGE_SELINUX_PYTHON_AUDIT2ALLOW
+	help
+	  The policycoreutils package no longer offers audit2allow
+	  as a option. This package has been moved into the
+	  selinux-python package by the SELinux maintainers.
+
+config BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND
+	bool "policycoreutils restorecond option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_RESTORECOND
+	help
+	  The policycoreutils package no longer offers restorecond
+	  as a option.  This package has been moved into a seperate
+	  package maintained by the SELinux maintainers.
+
+config BR2_PACKAGE_SEPOLGEN
+	bool "sepolgen package has been removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SELINUX_PYTHON
+	select BR2_PACKAGE_SELINUX_PYTHON_SEPOLGEN
+	help
+	  Sepolgen is no longer a individual package, but instead has
+	  been moved into the selinux-python package by the SELinux
+	  maintainers.
+
 config BR2_PACKAGE_OPENOBEX_BLUEZ
 	bool "openobex bluez option removed"
 	select BR2_LEGACY

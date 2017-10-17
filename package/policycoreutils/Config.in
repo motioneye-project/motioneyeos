@@ -28,54 +28,11 @@ config BR2_PACKAGE_POLICYCOREUTILS
 	  The base package will install the following utilities:
 	      load_policy
 	      newrole
-	      restorecond
 	      run_init
 	      secon
 	      semodule
-	      semodule_deps
-	      semodule_expand
-	      semodule_link
-	      semodule_package
-	      sepolgen-ifgen
 	      sestatus
 	      setfiles
 	      setsebool
 
 	  http://selinuxproject.org/page/Main_Page
-
-if BR2_PACKAGE_POLICYCOREUTILS
-
-config BR2_PACKAGE_POLICYCOREUTILS_AUDIT2ALLOW
-	bool "audit2allow"
-	depends on BR2_USE_WCHAR # python3, sepolgen
-	depends on BR2_USE_MMU # python3, sepolgen
-	depends on BR2_TOOLCHAIN_HAS_THREADS # python3, sepolgen, checkpolicy
-	depends on !BR2_STATIC_LIBS # python3, sepolgen
-	depends on BR2_TOOLCHAIN_USES_GLIBC # checkpolicy
-	depends on !BR2_arc # checkpolicy
-	select BR2_PACKAGE_SEPOLGEN
-	select BR2_PACKAGE_CHECKPOLICY
-	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
-	help
-	  Enable audit2allow to be built
-
-comment "audit2allow needs a glibc toolchain w/ wchar, threads, dynamic library"
-	depends on BR2_USE_MMU
-	depends on !BR2_arc
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_STATIC_LIBS
-
-config BR2_PACKAGE_POLICYCOREUTILS_RESTORECOND
-	bool "restorecond"
-	depends on BR2_USE_WCHAR # glib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
-	depends on BR2_USE_MMU # glib2
-	select BR2_PACKAGE_LIBGLIB2
-	help
-	  Enable restorecond to be built
-
-comment "restorecond needs a toolchain w/ wchar, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
-endif
