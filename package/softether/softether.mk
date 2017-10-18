@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SOFTETHER_VERSION = e9006faf0c8739147ab97e27fe11c5cdd20ed9e6
+SOFTETHER_VERSION = v4.22-9634-beta
 SOFTETHER_SITE = $(call github,SoftEtherVPN,SoftEtherVPN,$(SOFTETHER_VERSION))
 SOFTETHER_LICENSE = GPL-2.0
 SOFTETHER_LICENSE_FILES = LICENSE
