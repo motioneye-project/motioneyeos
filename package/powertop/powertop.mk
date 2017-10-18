@@ -12,6 +12,8 @@ POWERTOP_DEPENDENCIES = pciutils ncurses libnl host-pkgconf \
 POWERTOP_LICENSE = GPL-2.0
 POWERTOP_LICENSE_FILES = COPYING
 POWERTOP_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
+# 0001-dont-force-stack-smashing-protection.patch
+POWERTOP_AUTORECONF = YES
 
 # Help powertop at finding the right ncurses library depending on
 # which one is available.
