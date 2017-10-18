@@ -8,7 +8,7 @@ SOFTETHER_VERSION = v4.22-9634-beta
 SOFTETHER_SITE = $(call github,SoftEtherVPN,SoftEtherVPN,$(SOFTETHER_VERSION))
 SOFTETHER_LICENSE = GPL-2.0
 SOFTETHER_LICENSE_FILES = LICENSE
-SOFTETHER_DEPENDENCIES = host-softether openssl readline
+SOFTETHER_DEPENDENCIES = host-softether libopenssl readline
 SOFTETHER_AUTORECONF = YES
 
 ifeq ($(BR2_ENABLE_LOCALE),)
@@ -26,7 +26,7 @@ SOFTETHER_CONF_OPTS = \
 	--with-zlib="$(STAGING_DIR)/usr"
 
 # host-libiconv does not exist, therefore we need this extra line
-HOST_SOFTETHER_DEPENDENCIES = host-pkgconf host-openssl host-readline
+HOST_SOFTETHER_DEPENDENCIES = host-pkgconf host-libopenssl host-readline
 
 # target build creates the file hamcore.se2 which needs the host variant of
 # hamcorebuilder, for details see http://www.vpnusers.com/viewtopic.php?p=5426
