@@ -13,7 +13,7 @@ choice
 	prompt "ssl library"
 	default BR2_PACKAGE_LIBOPENSSL
 	help
-	  Select OpenSSL.
+	  Select OpenSSL or LibreSSL.
 
 config BR2_PACKAGE_LIBOPENSSL
 	bool "openssl"
@@ -45,6 +45,27 @@ config BR2_PACKAGE_LIBOPENSSL_ENGINES
 
 endif
 
+config BR2_PACKAGE_LIBRESSL
+	bool "libressl"
+	depends on !BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
+	help
+	  LibreSSL is a version of the TLS/crypto stack forked from
+	  OpenSSL in 2014, with goals of modernizing the codebase,
+	  improving security, and applying best practice development
+	  processes.
+
+	  http://www.libressl.org/
+
+if BR2_PACKAGE_LIBRESSL
+
+config BR2_PACKAGE_LIBRESSL_BIN
+	bool "openssl binary"
+	help
+	  Install the openssl binary to the target file system. This is
+	  a command line tool for doing various cryptographic stuff.
+
+endif
+
 endchoice
 
 config BR2_PACKAGE_HAS_OPENSSL
@@ -53,6 +74,7 @@ config BR2_PACKAGE_HAS_OPENSSL
 config BR2_PACKAGE_PROVIDES_OPENSSL
 	string
 	default "libopenssl"  if BR2_PACKAGE_LIBOPENSSL
+	default "libressl"  if BR2_PACKAGE_LIBRESSL
 
 config BR2_PACKAGE_PROVIDES_HOST_OPENSSL
 	string
