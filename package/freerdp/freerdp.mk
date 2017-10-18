@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-# Changeset on the master branch
-FREERDP_VERSION = 17834af7bb378f85a3b3cc4dcadaa5125a337e16
+FREERDP_VERSION = 2.0.0-rc0
 FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
 FREERDP_DEPENDENCIES = libglib2 openssl zlib
 FREERDP_LICENSE = Apache-2.0
