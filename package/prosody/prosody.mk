@@ -18,16 +18,19 @@ ifeq ($(BR2_PACKAGE_LUAJIT),y)
 PROSODY_DEPENDENCIES += luajit
 endif
 
+PROSODY_CONF_OPTS = \
+	--with-lua=$(STAGING_DIR)/usr \
+	--c-compiler=$(TARGET_CC) \
+	--cflags="$(TARGET_CFLAGS)" \
+	--linker=$(TARGET_CC) \
+	--ldflags="$(TARGET_LDFLAGS) -shared" \
+	--sysconfdir=/etc/prosody \
+	--prefix=/usr
+
 define PROSODY_CONFIGURE_CMDS
 	cd $(@D) && \
 		$(TARGET_CONFIGURE_OPTS) \
-		./configure --prefix=/usr \
-		--c-compiler=$(TARGET_CC) \
-		--cflags="$(TARGET_CFLAGS)" \
-		--linker=$(TARGET_CC) \
-		--ldflags="$(TARGET_LDFLAGS) -shared" \
-		--sysconfdir=/etc/prosody \
-		--with-lua=$(STAGING_DIR)/usr
+		./configure $(PROSODY_CONF_OPTS)
 endef
 
 define PROSODY_BUILD_CMDS
