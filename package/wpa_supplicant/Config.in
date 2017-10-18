@@ -4,7 +4,7 @@ config BR2_PACKAGE_WPA_SUPPLICANT
 	help
 	  WPA supplicant for secure wireless networks
 
-	  http://hostap.epitest.fi/wpa_supplicant/
+	  http://w1.fi/wpa_supplicant/
 
 if BR2_PACKAGE_WPA_SUPPLICANT
 
