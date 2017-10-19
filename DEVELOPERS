@@ -409,7 +409,6 @@ F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/policycoreutils/
-F:	package/sepolgen/
 F:	package/ustr/
 
 N:	Corentin Guillevic <corentin.guillevic@smile.fr>
@@ -1036,7 +1035,6 @@ F:	package/python-posix-ipc/
 F:	package/python-pypcap/
 F:	package/python-pyrex/
 F:	package/raptor/
-F:	package/sepolgen/
 F:	package/setools/
 F:	package/smcroute/
 F:	package/tclap/
