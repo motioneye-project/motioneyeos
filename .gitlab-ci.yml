@@ -88,6 +88,7 @@ atmel_sama5d4_xplained_defconfig: *defconfig
 atmel_sama5d4_xplained_dev_defconfig: *defconfig
 atmel_sama5d4_xplained_mmc_defconfig: *defconfig
 atmel_sama5d4_xplained_mmc_dev_defconfig: *defconfig
+bananapi_m1_defconfig: *defconfig
 bananapi_m2_plus_defconfig: *defconfig
 bananapro_defconfig: *defconfig
 beagleboardx15_defconfig: *defconfig
