@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.8.1.1
+QEMU_VERSION = 2.10.1
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.xz
 QEMU_SITE = http://download.qemu.org
 QEMU_LICENSE = GPL-2.0, LGPL-2.1, MIT, BSD-3-Clause, BSD-2-Clause, Others/BSD-1c
