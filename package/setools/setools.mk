@@ -24,7 +24,7 @@ endif
 define SETOOLS_FIX_SETUP
 	# By default, setup.py will look for libsepol.a in the host machines
 	# /usr/lib directory. This needs to be changed to the staging directory.
-	$(SED) "s@base_lib_dirs =.*@base_lib_dirs = ['$(STAGING_DIR)/lib']@g" \
+	$(SED) "s@base_lib_dirs =.*@base_lib_dirs = ['$(STAGING_DIR)/usr/lib']@g" \
 		$(@D)/setup.py
 endef
 SETOOLS_POST_PATCH_HOOKS += SETOOLS_FIX_SETUP
