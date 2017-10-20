@@ -458,7 +458,7 @@ choice
 config BR2_OPTIMIZE_0
 	bool "optimization level 0"
 	help
-	  Do not optimize. This is the default.
+	  Do not optimize.
 
 config BR2_OPTIMIZE_1
 	bool "optimization level 1"
@@ -525,6 +525,7 @@ config BR2_OPTIMIZE_S
 	  -falign-loops -falign-labels -freorder-blocks
 	  -freorder-blocks-and-partition -fprefetch-loop-arrays
 	  -ftree-vect-loop-version
+	  This is the default.
 
 endchoice
 
