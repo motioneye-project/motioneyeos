@@ -12,3 +12,4 @@ PYTHON_XLRD_LICENSE = BSD-3-Clause
 PYTHON_XLRD_LICENSE_FILES = xlrd/licences.py
 
 $(eval $(python-package))
+$(eval $(host-python-package))
