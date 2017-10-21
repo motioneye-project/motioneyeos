@@ -1,3 +1,6 @@
+config BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
+	bool
+
 config BR2_PACKAGE_OPENSSL
 	bool "openssl support"
 	select BR2_PACKAGE_HAS_OPENSSL
