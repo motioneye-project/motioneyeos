@@ -22,12 +22,19 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <errno.h>
+#include <time.h>
+#include <stdbool.h>
 
 #ifdef BR_CCACHE
 static char ccache_path[PATH_MAX];
 #endif
 static char path[PATH_MAX];
 static char sysroot[PATH_MAX];
+/* As would be defined by gcc:
+ *   https://gcc.gnu.org/onlinedocs/cpp/Standard-Predefined-Macros.html
+ * sizeof() on string literals includes the terminating \0. */
+static char _time_[sizeof("-D__TIME__=\"HH:MM:SS\"")];
+static char _date_[sizeof("-D__DATE__=\"MMM DD YYYY\"")];
 
 /**
  * GCC errors out with certain combinations of arguments (examples are
@@ -35,12 +42,15 @@ static char sysroot[PATH_MAX];
  * that we only pass the predefined one to the real compiler if the inverse
  * option isn't in the argument list.
  * This specifies the worst case number of extra arguments we might pass
- * Currently, we have:
+ * Currently, we may have:
  * 	-mfloat-abi=
  * 	-march=
  * 	-mcpu=
+ * 	-D__TIME__=
+ * 	-D__DATE__=
+ * 	-Wno-builtin-macro-redefined
  */
-#define EXCLUSIVE_ARGS	3
+#define EXCLUSIVE_ARGS	6
 
 static char *predef_args[] = {
 #ifdef BR_CCACHE
@@ -158,6 +168,60 @@ static void check_unsafe_path(const char *arg,
 		if (paranoid)
 			exit(1);
 	}
+}
+
+/* Returns false if SOURCE_DATE_EPOCH was not defined in the environment.
+ *
+ * Returns true if SOURCE_DATE_EPOCH is in the environment and represent
+ * a valid timestamp, in which case the timestamp is formatted into the
+ * global variables _date_ and _time_.
+ *
+ * Aborts if SOURCE_DATE_EPOCH was set in the environment but did not
+ * contain a valid timestamp.
+ *
+ * Valid values are defined in the spec:
+ *     https://reproducible-builds.org/specs/source-date-epoch/
+ * but we further restrict them to be positive or null.
+ */
+bool parse_source_date_epoch_from_env(void)
+{
+	char *epoch_env, *endptr;
+	time_t epoch;
+	struct tm epoch_tm;
+
+	if ((epoch_env = getenv("SOURCE_DATE_EPOCH")) == NULL)
+		return false;
+	errno = 0;
+	epoch = (time_t) strtoll(epoch_env, &endptr, 10);
+	/* We just need to test if it is incorrect, but we do not
+	 * care why it is incorrect.
+	 */
+	if ((errno != 0) || !*epoch_env || *endptr || (epoch < 0)) {
+		fprintf(stderr, "%s: invalid SOURCE_DATE_EPOCH='%s'\n",
+			program_invocation_short_name,
+			epoch_env);
+		exit(1);
+	}
+	tzset(); /* For localtime_r(), below. */
+	if (localtime_r(&epoch, &epoch_tm) == NULL) {
+		fprintf(stderr, "%s: cannot parse SOURCE_DATE_EPOCH=%s\n",
+				program_invocation_short_name,
+				getenv("SOURCE_DATE_EPOCH"));
+		exit(1);
+	}
+	if (!strftime(_time_, sizeof(_time_), "-D__TIME__=\"%T\"", &epoch_tm)) {
+		fprintf(stderr, "%s: cannot set time from SOURCE_DATE_EPOCH=%s\n",
+				program_invocation_short_name,
+				getenv("SOURCE_DATE_EPOCH"));
+		exit(1);
+	}
+	if (!strftime(_date_, sizeof(_date_), "-D__DATE__=\"%b %e %Y\"", &epoch_tm)) {
+		fprintf(stderr, "%s: cannot set date from SOURCE_DATE_EPOCH=%s\n",
+				program_invocation_short_name,
+				getenv("SOURCE_DATE_EPOCH"));
+		exit(1);
+	}
+	return true;
 }
 
 int main(int argc, char **argv)
@@ -288,6 +352,13 @@ int main(int argc, char **argv)
 #endif
 	}
 #endif /* ARCH || CPU */
+
+	if (parse_source_date_epoch_from_env()) {
+		*cur++ = _time_;
+		*cur++ = _date_;
+		/* This has existed since gcc-4.4.0. */
+		*cur++ = "-Wno-builtin-macro-redefined";
+	}
 
 	paranoid_wrapper = getenv("BR_COMPILER_PARANOID_UNSAFE_PATH");
 	if (paranoid_wrapper && strlen(paranoid_wrapper) > 0)

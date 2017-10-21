@@ -712,6 +712,8 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
+	# SOURCE_DATE_EPOCH support in toolchain-wrapper requires GCC 4.4
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
 	help
 	  This option will remove all sources of non-reproducibility
 	  from the build process. For a given Buildroot configuration,
