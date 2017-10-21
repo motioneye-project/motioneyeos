@@ -23,10 +23,6 @@ HOST_LUAROCKS_CONF_OPTS = \
 	--sysconfdir=$(LUAROCKS_CONFIG_DIR) \
 	--with-lua=$(HOST_DIR)
 
-ifeq ($(BR2_PACKAGE_LUAJIT),y)
-HOST_LUAROCKS_CONF_OPTS += --lua-suffix=jit
-endif
-
 define HOST_LUAROCKS_CONFIGURE_CMDS
 	cd $(@D) && ./configure $(HOST_LUAROCKS_CONF_OPTS)
 endef
