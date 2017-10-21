@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WINE_VERSION = 2.0.2
+WINE_VERSION = 2.0.3
 WINE_SOURCE = wine-$(WINE_VERSION).tar.xz
 WINE_SITE = https://dl.winehq.org/wine/source/2.0
 WINE_LICENSE = LGPL-2.1+
