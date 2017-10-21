@@ -64,7 +64,6 @@ config BR2_PACKAGE_LIBDRM_OMAP
 
 config BR2_PACKAGE_LIBDRM_ETNAVIV
 	bool "etnaviv (experimental)"
-	depends on BR2_arm
 	depends on BR2_PACKAGE_LIBDRM_HAS_ATOMIC
 	select BR2_PACKAGE_LIBDRM_ENABLE_ATOMIC
 	help
