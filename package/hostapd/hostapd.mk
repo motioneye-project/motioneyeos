@@ -38,8 +38,8 @@ HOSTAPD_LIBS += -lnl-3 -lm -lpthread
 endif
 
 # Try to use openssl if it's already available
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-HOSTAPD_DEPENDENCIES += openssl
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+HOSTAPD_DEPENDENCIES += libopenssl
 HOSTAPD_LIBS += $(if $(BR2_STATIC_LIBS),-lcrypto -lz)
 HOSTAPD_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
