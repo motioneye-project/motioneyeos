@@ -11,8 +11,8 @@ config BR2_PACKAGE_AIRCRACK_NG
 	help
 	  A set of tools for auditing wireless networks
 
-	  For complete functionality, also select ethtool, iw, rfkill,
-	  util-linux utilities, and wireless_tools.
+	  For complete functionality, also select ethtool, iw,
+	  util-linux (utilities and rfkill), and wireless_tools.
 
 	  http://www.aircrack-ng.org/
 

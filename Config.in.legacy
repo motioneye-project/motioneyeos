@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 
+config BR2_PACKAGE_RFKILL
+	bool "rfkill package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_RFKILL
+	help
+	  The rfkill program is now provided by the util-linux package.
+
 config BR2_PACKAGE_UTIL_LINUX_RESET
 	bool "util-linux reset option removed"
 	select BR2_LEGACY
