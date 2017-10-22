@@ -76,8 +76,9 @@ config BR2_PACKAGE_PROVIDES_OPENSSL
 	default "libopenssl"  if BR2_PACKAGE_LIBOPENSSL
 	default "libressl"  if BR2_PACKAGE_LIBRESSL
 
+endif
+
+# ensure libopenssl is used for the host variant
 config BR2_PACKAGE_PROVIDES_HOST_OPENSSL
 	string
 	default "host-libopenssl"
-
-endif
