@@ -535,6 +535,7 @@ F:	package/efivar/
 F:	package/fwts/
 F:	package/spi-tools/
 F:	package/xdotool/
+F:	configs/pc_x86_64_*
 
 N:	Erik Stromdahl <erik.stromdahl@gmail.com>
 F:	package/mxsldr/
