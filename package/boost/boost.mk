@@ -12,7 +12,7 @@ BOOST_LICENSE = BSL-1.0
 BOOST_LICENSE_FILES = LICENSE_1_0.txt
 
 # keep host variant as minimal as possible
-HOST_BOOST_FLAGS = --without-icu \
+HOST_BOOST_FLAGS = --without-icu --with-toolset=gcc \
 	--without-libraries=$(subst $(space),$(comma),atomic chrono context \
 	coroutine date_time exception filesystem graph graph_parallel iostreams \
 	locale log math mpi program_options python random regex serialization \
@@ -49,6 +49,8 @@ BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_TYPE_ERASURE),,type_erasure)
 BOOST_WITHOUT_FLAGS += $(if $(BR2_PACKAGE_BOOST_WAVE),,wave)
 
 BOOST_TARGET_CXXFLAGS = $(TARGET_CXXFLAGS)
+
+BOOST_FLAGS = --with-toolset=gcc
 
 ifeq ($(BR2_PACKAGE_ICU),y)
 BOOST_FLAGS += --with-icu=$(STAGING_DIR)/usr
