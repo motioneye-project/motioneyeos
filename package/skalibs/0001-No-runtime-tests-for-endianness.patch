@@ -1,6 +1,6 @@
-From f0e49690a6da92079d03afbf2aae413b273d2010 Mon Sep 17 00:00:00 2001
+From d3920dce139734e00bbe4447a16ef24dfe4d704a Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-Date: Thu, 18 May 2017 19:38:37 +0200
+Date: Tue, 10 Oct 2017 19:51:02 +0200
 Subject: [PATCH] No runtime tests for endianness
 
 Replace build and execution of runtime test programs for determining
@@ -10,29 +10,27 @@ This improves support for cross-compilation.
 
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
- configure                     | 15 +++++++++++----
+ configure                     | 13 ++++++++++---
  src/sysdeps/trybigendian.c    | 16 ++++++++++++++++
  src/sysdeps/trylittleendian.c | 19 +++++++++++++++++++
- 3 files changed, 46 insertions(+), 4 deletions(-)
+ 3 files changed, 45 insertions(+), 3 deletions(-)
  create mode 100644 src/sysdeps/trybigendian.c
  create mode 100644 src/sysdeps/trylittleendian.c
 
 diff --git a/configure b/configure
-index 1eaccd3..5fffc34 100755
+index f34dcd0..f2a77f3 100755
 --- a/configure
 +++ b/configure
-@@ -471,13 +471,20 @@ EOF
-   fi
+@@ -478,12 +478,19 @@ EOF
    exec 3>&-
  
--  echo "Checking system endianness..."
--  $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO -o tryendianness src/sysdeps/tryendianness.c
+   echo "Checking system endianness..."
+-  $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o tryendianness src/sysdeps/tryendianness.c
 -  endianness=$(./tryendianness) || fail "$0: unable to determine endianness"
-+    echo "Checking system endianness..."
-+  if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO -o trybigendian src/sysdeps/trybigendian.c 2>/dev/null; then
++  if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o trybigendian src/sysdeps/trybigendian.c 2>/dev/null; then
 +      endianness=big
 +  else
-+      if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO -o trylittleendian src/sysdeps/trylittleendian.c 2>/dev/null; then
++      if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o trylittleendian src/sysdeps/trylittleendian.c 2>/dev/null; then
 +          endianness=little
 +      else
 +          fail "$0: unable to determine endianness"
@@ -94,5 +92,5 @@ index 0000000..68b93c1
 +	return 0;
 +}
 -- 
-2.9.3
+2.13.6
 

@@ -1,6 +1,6 @@
-From 4d9aca413b42191223d8dc2ba9b4f943ee90c94b Mon Sep 17 00:00:00 2001
+From 02ef4599179ead87cc6d154a32acaa6627cbfca2 Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-Date: Thu, 29 Dec 2016 19:36:24 +0100
+Date: Tue, 10 Oct 2017 19:51:34 +0200
 Subject: [PATCH] Make linker use dummy file when testing libs
 
 For some architectures, like Xtensa or HPPA, ld from binutils requires
@@ -18,19 +18,19 @@ Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/configure b/configure
-index 115fea3..7d38447 100755
+index 8348b1f..62e5981 100755
 --- a/configure
 +++ b/configure
-@@ -226,7 +226,7 @@ trylibs () {
+@@ -227,7 +227,7 @@ trylibs () {
    echo "Checking whether system has $2..." >&3
    shift 2
-   if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO -c -o try$name.o src/sysdeps/try$name.c 2>/dev/null ; then
--    until $CC_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o /dev/null try$name.o $args 2>/dev/null ; do
-+    until $CC_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o try$name try$name.o $args 2>/dev/null ; do
+   if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST -c -o try$name.o src/sysdeps/try$name.c 2>/dev/null ; then
+-    until $CC_AUTO $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o /dev/null try$name.o $args 2>/dev/null ; do
++    until $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST -o try$name try$name.o $args 2>/dev/null ; do
        if test -z "$*" ; then
          rm -f try$name.o
          echo
-@@ -242,7 +242,7 @@ trylibs () {
+@@ -243,7 +243,7 @@ trylibs () {
      else
        echo "  ... yes, with$args" >&3
      fi
@@ -40,5 +40,5 @@ index 115fea3..7d38447 100755
    else
      echo
 -- 
-2.9.3
+2.13.6
 

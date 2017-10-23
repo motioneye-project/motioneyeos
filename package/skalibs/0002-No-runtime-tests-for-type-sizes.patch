@@ -1,6 +1,6 @@
-From 91045c0f5fa8f126fa7a407e467b6d941e7ef602 Mon Sep 17 00:00:00 2001
+From df3a3e708653ca1cdb0eda77bbda5cb8de177571 Mon Sep 17 00:00:00 2001
 From: "Van Bemten, Lionel (Nokia - BE/Antwerp)" <lionel.van_bemten@nokia.com>
-Date: Thu, 18 May 2017 19:38:46 +0200
+Date: Tue, 10 Oct 2017 19:51:18 +0200
 Subject: [PATCH] No runtime tests for type sizes
 
 Replace build and execution of runtime test programs for determining
@@ -11,11 +11,11 @@ This improves support for cross-compilation.
 Signed-off-by: "Van Bemten, Lionel (Nokia - BE/Antwerp)" <lionel.van_bemten@nokia.com>
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 ---
- configure | 75 ++++++++++++++++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 60 insertions(+), 15 deletions(-)
+ configure | 77 ++++++++++++++++++++++++++++++++++++++++++++++++++-------------
+ 1 file changed, 61 insertions(+), 16 deletions(-)
 
 diff --git a/configure b/configure
-index 8ba948e..b129556 100755
+index f2a77f3..8348b1f 100755
 --- a/configure
 +++ b/configure
 @@ -154,25 +154,70 @@ choose () {
@@ -37,7 +37,7 @@ index 8ba948e..b129556 100755
 +  return 0;
 +}
 +EOF
-+    if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o trysizeof${abbr} trysizeof${abbr}.c 2>/dev/null; then
++    if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o trysizeof${abbr} trysizeof${abbr}.c 2>/dev/null; then
 +        r=true
 +        break
 +    fi
@@ -64,7 +64,7 @@ index 8ba948e..b129556 100755
 +  return 0;
 +}
 +EOF
-+  if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o trysignof${abbr} trysignof${abbr}.c 2>/dev/null; then
++  if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o trysignof${abbr} trysignof${abbr}.c 2>/dev/null; then
 +    echo "#define ${package_macro_name}_HASSIGNED${caps}" >> $sysdeps/sysdeps.h
 +    echo "#undef ${package_macro_name}_HASUNSIGNED${caps}" >> $sysdeps/sysdeps.h
 +    echo "signed${abbr}: yes" >> $sysdeps/sysdeps
@@ -78,7 +78,7 @@ index 8ba948e..b129556 100755
 +
  trytypes () {
    echo "Checking size and signedness of standard types..."
--  $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o output-types src/sysdeps/output-types.c
+-  $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST $LDFLAGS_AUTO $LDFLAGS $LDFLAGS_POST -o output-types src/sysdeps/output-types.c
 -  ./output-types >> $sysdeps/sysdeps
 -  ./output-types | grep -F sizeof | while read key value ; do
 -    caps=$(echo $key | sed s/:\$// | tr a-z A-Z)
@@ -105,5 +105,5 @@ index 8ba948e..b129556 100755
  }
  
 -- 
-2.9.4
+2.13.6
 
