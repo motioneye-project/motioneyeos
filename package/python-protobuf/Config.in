@@ -1,9 +1,9 @@
 config BR2_PACKAGE_PYTHON_PROTOBUF
 	bool "python-protobuf"
-	depends on BR2_PACKAGE_PYTHON
 	# host-protobuf only builds on certain architectures
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_HOST_GCC_AT_LEAST_4_5 # host-protobuf
+	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
 	  Python implementation of the Google Protocol Buffers.
 
