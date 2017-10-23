@@ -79,6 +79,13 @@ config BR2_PACKAGE_BOOST_DATE_TIME
 config BR2_PACKAGE_BOOST_EXCEPTION
 	bool "boost-exception"
 
+config BR2_PACKAGE_BOOST_FIBER
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	bool "boost-fiber"
+
+comment "boost-fiber needs a toolchain w/ NPTL"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
 config BR2_PACKAGE_BOOST_FILESYSTEM
 	bool "boost-filesystem"
 
