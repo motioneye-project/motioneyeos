@@ -1345,6 +1345,7 @@ config BR2_LINUX_KERNEL_SAME_AS_HEADERS
 
 config BR2_PACKAGE_CUPS_PDFTOPS
 	bool "Pdftops support has been removed from Cups"
+	select BR2_PACKAGE_CUPS_FILTERS
 	select BR2_LEGACY
 	help
 	  Pdftops support has been removed from the cups package

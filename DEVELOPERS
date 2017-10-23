@@ -1304,6 +1304,7 @@ F:	package/python-pyelftools/
 
 N:	Olivier Schonken <olivier.schonken@gmail.com>
 F:	package/cups/
+F:	package/cups-filters/
 F:	package/ijs/
 F:	package/poppler/
 F:	package/qpdf/
