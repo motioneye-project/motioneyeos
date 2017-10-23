@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=/usr
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: libjpeg
+Description: A JPEG codec that provides the libjpeg API
+Version: @PACKAGE_VERSION@
+Libs: -L${libdir} -ljpeg
+Cflags: -I${includedir}
