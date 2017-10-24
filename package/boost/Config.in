@@ -158,6 +158,15 @@ config BR2_PACKAGE_BOOST_SERIALIZATION
 config BR2_PACKAGE_BOOST_SIGNALS
 	bool "boost-signals"
 
+config BR2_PACKAGE_BOOST_STACKTRACE
+	bool "boost-stacktrace"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Gather, store, copy and print backtraces.
+
+comment "boost-stacktrace needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_BOOST_SYSTEM
 	bool "boost-system"
 
