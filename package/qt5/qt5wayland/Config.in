@@ -1,3 +1,7 @@
+comment "qt5wayland needs an OpenGL-capable backend"
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
+
 config BR2_PACKAGE_QT5WAYLAND
 	bool "qt5wayland"
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
@@ -11,10 +15,6 @@ config BR2_PACKAGE_QT5WAYLAND
 	  This package corresponds to the qt5wayland module.
 
 	  http://qt.io
-
-comment "qt5wayland needs an OpenGL-capable backend"
-	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
-	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
 
 if BR2_PACKAGE_QT5WAYLAND
 
