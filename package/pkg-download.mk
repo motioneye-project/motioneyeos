@@ -68,9 +68,6 @@ export BR_NO_CHECK_HASH_FOR =
 # ssh authentication. DOWNLOAD_WGET is the normal wget-based download
 # mechanism.
 #
-# The SOURCE_CHECK_* helpers are in charge of simply checking that the source
-# is available for download. This can be used to make sure one will be able
-# to get all the sources needed for one's build configuration.
 ################################################################################
 
 define DOWNLOAD_GIT
@@ -86,12 +83,6 @@ define DOWNLOAD_GIT
 		$($(PKG)_DL_OPTS)
 endef
 
-# TODO: improve to check that the given PKG_DL_VERSION exists on the remote
-# repository
-define SOURCE_CHECK_GIT
-	$(GIT) ls-remote --heads $($(PKG)_SITE) > /dev/null
-endef
-
 define DOWNLOAD_BZR
 	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -101,10 +92,6 @@ define DOWNLOAD_BZR
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
-endef
-
-define SOURCE_CHECK_BZR
-	$(BZR) ls --quiet $($(PKG)_SITE) > /dev/null
 endef
 
 define DOWNLOAD_CVS
@@ -119,11 +106,6 @@ define DOWNLOAD_CVS
 		$($(PKG)_DL_OPTS)
 endef
 
-# Not all CVS servers support ls/rls, use login to see if we can connect
-define SOURCE_CHECK_CVS
-	$(CVS) -d:pserver:anonymous:@$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) login
-endef
-
 define DOWNLOAD_SVN
 	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -133,10 +115,6 @@ define DOWNLOAD_SVN
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
-endef
-
-define SOURCE_CHECK_SVN
-	$(SVN) ls $($(PKG)_SITE)@$($(PKG)_DL_VERSION) > /dev/null
 endef
 
 # SCP URIs should be of the form scp://[user@]host:filepath
@@ -152,10 +130,6 @@ define DOWNLOAD_SCP
 		$($(PKG)_DL_OPTS)
 endef
 
-define SOURCE_CHECK_SCP
-	$(SSH) $(call domain,$(1),:) ls '$(call notdomain,$(1),:)' > /dev/null
-endef
-
 define DOWNLOAD_HG
 	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
@@ -165,12 +139,6 @@ define DOWNLOAD_HG
 		$($(PKG)_DL_VERSION) \
 		$($(PKG)_RAW_BASE_NAME) \
 		$($(PKG)_DL_OPTS)
-endef
-
-# TODO: improve to check that the given PKG_DL_VERSION exists on the remote
-# repository
-define SOURCE_CHECK_HG
-	$(HG) incoming --force -l1 $($(PKG)_SITE) > /dev/null
 endef
 
 define DOWNLOAD_WGET
@@ -183,10 +151,6 @@ define DOWNLOAD_WGET
 		$($(PKG)_DL_OPTS)
 endef
 
-define SOURCE_CHECK_WGET
-	$(WGET) --spider '$(call qstrip,$(1))'
-endef
-
 define DOWNLOAD_LOCALFILES
 	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
 		-o $(DL_DIR)/$(2) \
@@ -195,10 +159,6 @@ define DOWNLOAD_LOCALFILES
 		-- \
 		$(call stripurischeme,$(call qstrip,$(1))) \
 		$($(PKG)_DL_OPTS)
-endef
-
-define SOURCE_CHECK_LOCALFILES
-	test -e $(call stripurischeme,$(call qstrip,$(1)))
 endef
 
 ################################################################################
@@ -219,10 +179,6 @@ endef
 
 define DOWNLOAD
 	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)),DOWNLOAD)
-endef
-
-define SOURCE_CHECK
-	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)),SOURCE_CHECK)
 endef
 
 define DOWNLOAD_INNER
