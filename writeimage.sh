@@ -76,12 +76,12 @@ if ! [ -f $DISK_IMG ]; then
     exit 1
 fi
 
-gunzip=$(which unpigz || which gunzip)
+gunzip=$(which unpigz 2> /dev/null || which gunzip 2> /dev/null)
 
 if [[ $DISK_IMG == *.gz ]]; then
     msg "decompressing the gzipped image"
-    $gunzip -c $DISK_IMG > ${DISK_IMG::-3}
-    DISK_IMG=${DISK_IMG::-3}
+    $gunzip -c $DISK_IMG > ${DISK_IMG%???}
+    DISK_IMG=${DISK_IMG%???}
 fi
 
 umount ${SDCARD_DEV}* 2>/dev/null || true
