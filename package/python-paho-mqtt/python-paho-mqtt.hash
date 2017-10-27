@@ -1,3 +1,6 @@
 # md5 from https://pypi.python.org/pypi/paho-mqtt/json, sha256 locally computed
-md5	b9338236e2836e8579ef140956189cc4  paho-mqtt-1.3.0.tar.gz
-sha256	2c9ef5494cfc1e41a9fff6544c5a2cd59ea5d401d9119a06ecf7fad6a2ffeb93  paho-mqtt-1.3.0.tar.gz
+md5	2cc27d8b369700b1fc99325add0dadd2  paho-mqtt-1.3.1.tar.gz
+sha256	31911f6031de306c27ed79dc77b690d7c55b0dcb0f0434ca34ec6361d0371122  paho-mqtt-1.3.1.tar.gz
+sha256	76f13729e84e9222e543303df00f87d1b2c0995b6a505cd859a285667e44babb  LICENSE.txt
+sha256	e8cf7d54ea46c19aba793983889b7f7425e1ebfcaaccec764a7db091646e203c  edl-v10
+sha256	3b9be6b894d0769de796e653571ff6cef494913c0ce78c35a97db939e7d9087c  epl-v10
