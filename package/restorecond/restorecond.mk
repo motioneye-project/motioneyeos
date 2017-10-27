@@ -35,9 +35,9 @@ define RESTORECOND_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -m 0644 -D $(@D)/restorecond.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/restorecond.service
 
-    mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-    ln -fs ../../../../usr/lib/systemd/system/restorecond.service \
-        $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/restorecond.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -fs ../../../../usr/lib/systemd/system/restorecond.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/restorecond.service
 
 	$(INSTALL) -m 0600 -D $(@D)/org.selinux.Restorecond.service \
 		$(TARGET_DIR)/etc/systemd/system/org.selinux.Restorecond.service
