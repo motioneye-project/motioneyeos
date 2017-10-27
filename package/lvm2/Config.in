@@ -3,8 +3,6 @@ config BR2_PACKAGE_LVM2
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # needs fork()
 	depends on !BR2_STATIC_LIBS # It fails to build statically
-	# http://lists.busybox.net/pipermail/buildroot/2016-August/170592.html
-	depends on !BR2_TOOLCHAIN_USES_MUSL
 	help
 	  This is LVM2, the rewrite of The Linux Logical Volume Manager.
 	  LVM supports enterprise level volume management of disk and
@@ -27,19 +25,29 @@ if BR2_PACKAGE_LVM2
 
 config BR2_PACKAGE_LVM2_STANDARD_INSTALL
 	bool "standard install instead of only dmsetup"
+	# http://lists.busybox.net/pipermail/buildroot/2016-August/170592.html
+	depends on !BR2_TOOLCHAIN_USES_MUSL
 	default y if !BR2_PACKAGE_LVM2_DMSETUP_ONLY # legacy 2013.11
 	help
 	  Install the standard suite of lvm2 programs. When this option
 	  is not set, only dmsetup is installed.
 
+comment "lvm2 standard install needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
+
 config BR2_PACKAGE_LVM2_APP_LIBRARY
 	bool "install application library"
+	# http://lists.busybox.net/pipermail/buildroot/2016-August/170592.html
+	depends on !BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_LVM2_STANDARD_INSTALL
 	help
 	  Install application library (liblvm2app).
 
+comment "lvm2 application library needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
+
 endif
 
-comment "lvm2 needs a glibc or uClibc toolchain w/ threads, dynamic library"
+comment "lvm2 needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
