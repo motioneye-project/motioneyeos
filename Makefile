@@ -679,6 +679,10 @@ $(TARGETS_ROOTFS): target-finalize
 .PHONY: target-finalize
 target-finalize: $(PACKAGES)
 	@$(call MESSAGE,"Finalizing target directory")
+	# Check files that are touched by more than one package
+	./support/scripts/check-uniq-files -t target $(BUILD_DIR)/packages-file-list.txt
+	./support/scripts/check-uniq-files -t staging $(BUILD_DIR)/packages-file-list-staging.txt
+	./support/scripts/check-uniq-files -t host $(BUILD_DIR)/packages-file-list-host.txt
 	$(foreach hook,$(TARGET_FINALIZE_HOOKS),$($(hook))$(sep))
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/share/aclocal \
 		$(TARGET_DIR)/usr/lib/pkgconfig $(TARGET_DIR)/usr/share/pkgconfig \
