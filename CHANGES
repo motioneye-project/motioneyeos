@@ -533,6 +533,24 @@
 	#9846: musl libc not installed correctly in target folder
 	#9856: build libubox failed on ubuntu 17.04 64bit
 
+2017.02.7, Released October 28th, 2017
+
+	Important / security related fixes.
+
+	Webkitgtk bumped to the 2.18.x series, fixing a large number
+	of security issues.
+
+	Defconfigs: wandboard: Correct rootfs offset
+
+	Toolchain: Linaro toolchains updated to 2017.08 release,
+	fixing a number of issues. Musl: fix for CVE-2017-15650.
+
+	Updated/fixed packages: busybox, bzip2, dnsmasq, git, go,
+	hostapd, irssi, iucode-tool, lame, libcurl, libffi, libnspr,
+	libnss, nodejs, openssh, openvpn, qemu, qt, redis, sdl2,
+	webkitgtk, wget, wpa_supplicant, xen, xlib_libXfont,
+	xlib_libXfont2, xserver_xorg-server
+
 2017.02.6, Released September 24th, 2017
 
 	Important / security related fixes.
