@@ -542,6 +542,7 @@ F:	package/eudev/
 F:	package/execline/
 F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
+F:	package/meson/
 F:	package/ninja/
 F:	package/s6/
 F:	package/s6-dns/
