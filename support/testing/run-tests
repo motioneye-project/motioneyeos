@@ -58,7 +58,6 @@ def main():
             return 1
 
     BRTest.downloaddir = os.path.abspath(args.download)
-    os.putenv("BR2_DL_DIR", BRTest.downloaddir)
 
     if args.output is None:
         print "Missing output directory, please use -o/--output"

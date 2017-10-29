@@ -24,15 +24,18 @@ class Builder(object):
                            "> end defconfig\n")
         self.logfile.flush()
 
+        env = {"PATH": os.environ["PATH"]}
         cmd = ["make",
                "O={}".format(self.builddir),
                "olddefconfig"]
-        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile)
+        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
+                              env=env)
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
 
         cmd = ["make", "-C", self.builddir]
-        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile)
+        ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
+                              env=env)
         if ret != 0:
             raise SystemError("Build failed")
 
