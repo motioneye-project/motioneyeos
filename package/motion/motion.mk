@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOTION_VERSION = 2a140fa
+MOTION_VERSION = d4cbc78
 MOTION_SITE = $(call github,motion-project,motion,$(MOTION_VERSION))
 MOTION_AUTORECONF = YES
 MOTION_CONF_OPTS = --without-pgsql \
