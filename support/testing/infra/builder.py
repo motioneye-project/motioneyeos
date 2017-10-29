@@ -12,7 +12,7 @@ class Builder(object):
         self.builddir = builddir
         self.logfile = infra.open_log_file(builddir, "build", logtofile)
 
-    def build(self):
+    def configure(self):
         if not os.path.isdir(self.builddir):
             os.makedirs(self.builddir)
 
@@ -33,6 +33,8 @@ class Builder(object):
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
 
+    def build(self):
+        env = {"PATH": os.environ["PATH"]}
         cmd = ["make", "-C", self.builddir]
         ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
                               env=env)

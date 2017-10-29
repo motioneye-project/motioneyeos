@@ -58,6 +58,7 @@ class BRTest(unittest.TestCase):
 
         if not self.b.is_finished():
             self.show_msg("Building")
+            self.b.configure()
             self.b.build()
             self.show_msg("Building done")
 
