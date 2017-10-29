@@ -201,6 +201,7 @@ F:	package/apr/
 F:	package/apr-util/
 F:	package/bcg729/
 F:	package/bluez-tools/
+F:	package/boinc/
 F:	package/clamav/
 F:	package/dovecot/
 F:	package/dovecot-pigeonhole/
@@ -584,6 +585,7 @@ F:	package/alljoyn/
 F:	package/alljoyn-base/
 F:	package/alljoyn-tcl/
 F:	package/alljoyn-tcl-base/
+F:	package/boinc/
 F:	package/gtksourceview/
 F:	package/gssdp/
 F:	package/gupnp/
