@@ -126,7 +126,9 @@ def get_toolchain_configs(toolchains_csv, buildrootdir):
     """
 
     with open(toolchains_csv) as r:
-        toolchains = decode_byte_list(r.readlines())
+        # filter empty lines and comments
+        lines = [ t for t in r.readlines() if len(t.strip()) > 0 and t[0] != '#' ]
+        toolchains = decode_byte_list(lines)
     configs = []
 
     (_, _, _, _, hostarch) = os.uname()
