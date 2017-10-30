@@ -1,2 +1,3 @@
 # Locally calculated after checking pgp signature
-sha256 9e733f366d8d600004bb171cf2ec75dad0da4b922b7102ee4b3e18824966192d  pure-ftpd-1.0.46.tar.bz2
+sha256 cb1b695e779a06e42d62d7a1a428d2f605d621dfd5afe4e192b5f9fc4e343692  pure-ftpd-1.0.47.tar.bz2
+sha256 e724ba991d8efa4c963e84ec31314c532dab00ac455ef77020fe60e78177bf23  COPYING
