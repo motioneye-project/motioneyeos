@@ -184,6 +184,7 @@ N:	Baruch Siach <baruch@tkos.co.il>
 F:	package/daemon/
 F:	package/ebtables/
 F:	package/openipmi/
+F:	package/socat/
 F:	package/ti-uim/
 F:	package/uhubctl/
 
