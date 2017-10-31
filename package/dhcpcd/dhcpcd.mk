@@ -41,6 +41,14 @@ define DHCPCD_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S41dhcpcd
 endef
 
+define DHCPCD_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 package/dhcpcd/dhcpcd.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/dhcpcd.service
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/dhcpcd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dhcpcd.service
+endef
+
 # NOTE: Even though this package has a configure script, it is not generated
 # using the autotools, so we have to use the generic package infrastructure.
 
