@@ -1,3 +1,2 @@
-# Locally calculated after checking pgp signature
-# https://www.libssh2.org/download/libssh2-1.8.0.tar.gz.asc
-sha256	39f34e2f6835f4b992cafe8625073a88e5a28ba78f83e8099610a7b3af4676d4	libssh2-1.8.0.tar.gz
+# Locally calculated
+sha256 e73d55cd512863aa6423c6e137039e3e1bcbf5ba87f130e7441132c2c78a5425 libssh2-616fd4d1b3e4a55de67c48819fefca83132126b5.tar.gz
