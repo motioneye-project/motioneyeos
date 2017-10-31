@@ -1,2 +1,5 @@
-# Locally computed
-sha256 64e4cd87eaee38ae60b2984ef02b66159b9bdd33030040db2a04339cf15f6173  libdrm-2.4.85.tar.bz2
+# From https://lists.freedesktop.org/archives/dri-devel/2017-October/156384.html
+md5 b4f9063838559d08649d45fec2d1184a  libdrm-2.4.87.tar.bz2
+sha1 26b976c8901061399b8b934854b960f5b0761f36  libdrm-2.4.87.tar.bz2
+sha256 4c1c5293bdbfa248e029d3e6446767e17a3208387a719ec9da2d20c19849ed48  libdrm-2.4.87.tar.bz2
+sha512 9ce259d38eaffbcaf82a6975ffa513307da6750bcc31a53cade5717f854151b0e7b6d4ce25c0b518cab5a542c544d5984329f216dc4cdc9369b4adae19a68e48  libdrm-2.4.87.tar.bz2
