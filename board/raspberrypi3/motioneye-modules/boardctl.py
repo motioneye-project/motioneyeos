@@ -53,14 +53,13 @@ OVERCLOCK = {
     800: '800|250|400|0',
     900: '900|250|450|0',
     950: '950|250|450|0',
-    1000: '1000|500|600|6',
-    1001: '1001|500|500|2'
+    1000: '1000|500|600|6'
 }
 
 def _get_board_settings():
     gpu_mem = 128
     camera_led = True
-    arm_freq = 700
+    arm_freq = None
 
     if os.path.exists(CONFIG_TXT):
         logging.debug('reading board settings from %s' % CONFIG_TXT)
@@ -133,7 +132,7 @@ def _set_board_settings(s):
             
             seen.add(name)
 
-            if name == 'gpu_mem':
+            if name.startswith('gpu_mem'):
                 lines[i] = '%s=%s' % (name, s['gpuMem'])
 
             elif name == 'disable_camera_led':

@@ -53,14 +53,13 @@ OVERCLOCK = {
     800: '800|250|400|0',
     900: '900|250|450|0',
     950: '950|250|450|0',
-    1000: '1000|500|600|6',
-    1001: '1001|500|500|2'
+    1000: '1000|500|600|6'
 }
 
 def _get_board_settings():
     gpu_mem = 128
     camera_led = True
-    arm_freq = 1001
+    arm_freq = None
 
     if os.path.exists(CONFIG_TXT):
         logging.debug('reading board settings from %s' % CONFIG_TXT)
@@ -79,7 +78,7 @@ def _get_board_settings():
                 name = name.strip()
                 value = value.strip()
 
-                if name == 'gpu_mem':
+                if name.startswith('gpu_mem'):
                     gpu_mem = int(value)
                 
                 elif name == 'arm_freq':
@@ -88,7 +87,7 @@ def _get_board_settings():
                 elif name == 'disable_camera_led':
                     camera_led = value == '0'
     
-    overclock = OVERCLOCK.get(arm_freq, '700|250|400|0')
+    overclock = OVERCLOCK.get(arm_freq, 'none')
 
     s = {
         'gpuMem': gpu_mem,
@@ -103,7 +102,7 @@ def _get_board_settings():
 
 def _set_board_settings(s):
     s.setdefault('gpuMem', 128)
-    s.setdefault('overclock', '700|250|400|0')
+    s.setdefault('overclock', 'none')
     s.setdefault('cameraLed', True)
     
     old_settings = _get_board_settings()
@@ -115,8 +114,14 @@ def _set_board_settings(s):
     logging.debug('writing board settings to %s: ' % CONFIG_TXT + 
             'gpu_mem=%(gpuMem)s, overclock=%(overclock)s, camera_led=%(cameraLed)s' % s)
     
-    arm_freq, gpu_freq, sdram_freq, over_voltage = s['overclock'].split('|')
-
+    if s['overclock'] != 'none':
+        arm_freq, gpu_freq, sdram_freq, over_voltage = s['overclock'].split('|')
+        overclocked = True
+        
+    else:
+        arm_freq, gpu_freq, sdram_freq, over_voltage = OVERCLOCK[800].split('|')
+        overclocked = False
+    
     lines = []
     if os.path.exists(CONFIG_TXT):
         with open(CONFIG_TXT) as f:
@@ -141,39 +146,39 @@ def _set_board_settings(s):
             if name == 'gpu_mem':
                 lines[i] = '%s=%s' % (name, s['gpuMem'])
 
-            elif name == 'arm_freq':
-                lines[i] = 'arm_freq=%s' % arm_freq
-                
-            elif name in ['gpu_freq', 'core_freq']:
-                lines[i] = '%s=%s' % (name, gpu_freq)
-                
-            elif name == 'sdram_freq':
-                lines[i] = 'sdram_freq=%s' % sdram_freq
-                
-            elif name == 'over_voltage':
-                lines[i] = 'over_voltage=%s' % over_voltage
-                
             elif name == 'disable_camera_led':
                 lines[i] = 'disable_camera_led=%s' % ['1', '0'][s['cameraLed']]
+
+            if name == 'arm_freq':
+                lines[i] = ('' if overclocked else '#') + 'arm_freq=%s' % arm_freq
+
+            elif name in ['gpu_freq', 'core_freq']:
+                lines[i] = ('' if overclocked else '#') + '%s=%s' % (name, gpu_freq)
+                
+            elif name == 'sdram_freq':
+                lines[i] = ('' if overclocked else '#') + 'sdram_freq=%s' % sdram_freq
+                
+            elif name == 'over_voltage':
+                lines[i] = ('' if overclocked else '#') + 'over_voltage=%s' % over_voltage
 
     if 'gpu_mem' not in seen:
         lines.append('gpu_mem=%s' % s['gpuMem'])
 
-    if 'arm_freq' not in seen:
-        lines.append('arm_freq=%s' % arm_freq)
-
-    if 'gpu_freq' not in seen:
-        lines.append('gpu_freq=%s' % gpu_freq)
-
-    if 'sdram_freq' not in seen:
-        lines.append('sdram_freq=%s' % sdram_freq)
-
-    if 'over_voltage' not in seen:
-        lines.append('over_voltage=%s' % over_voltage)
-
     if 'disable_camera_led' not in seen:
         lines.append('disable_camera_led=%s' % ['1', '0'][s['cameraLed']])
         
+    if 'arm_freq' not in seen:
+        lines.append(('' if overclocked else '#') + 'arm_freq=%s' % arm_freq)
+
+    if 'gpu_freq' not in seen:
+        lines.append(('' if overclocked else '#') + 'gpu_freq=%s' % gpu_freq)
+
+    if 'sdram_freq' not in seen:
+        lines.append(('' if overclocked else '#') + 'sdram_freq=%s' % sdram_freq)
+
+    if 'over_voltage' not in seen:
+        lines.append(('' if overclocked else '#') + 'over_voltage=%s' % over_voltage)
+
     logging.debug('remounting /boot read-write')
     if os.system('mount -o remount,rw /boot'):
         logging.error('failed to remount /boot read-write')
@@ -259,12 +264,11 @@ def overclock():
         'description': 'choose an overclocking preset for your Raspberry PI',
         'type': 'choices',
         'choices': [
-            ('700|250|400|0', 'none (700/250/400/0)'),
+            ('none', '(none)'),
             ('800|250|400|0', 'modest (800/250/400/0)'),
             ('900|250|450|0', 'medium (900/250/450/0)'),
             ('950|250|450|0', 'high (950/250/450/0)'),
-            ('1000|500|600|6', 'turbo (1000/500/600/6)'),
-            ('1001|500|500|2', 'Pi2 (1000/500/500/2)')
+            ('1000|500|600|6', 'turbo (1000/500/600/6)')
         ],
         'section': 'expertSettings',
         'advanced': True,
