@@ -36,6 +36,11 @@ define DHCPCD_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install DESTDIR=$(TARGET_DIR)
 endef
 
+define DHCPCD_INSTALL_INIT_SYSV
+	$(INSTALL) -m 755 -D package/dhcpcd/S41dhcpcd \
+		$(TARGET_DIR)/etc/init.d/S41dhcpcd
+endef
+
 # NOTE: Even though this package has a configure script, it is not generated
 # using the autotools, so we have to use the generic package infrastructure.
 
