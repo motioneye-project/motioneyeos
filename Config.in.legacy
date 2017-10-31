@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 
+config BR2_PACKAGE_UTIL_LINUX_RESET
+	bool "util-linux reset option removed"
+	select BR2_LEGACY
+	help
+	  The util-linux package no longer offers a "reset" command. Use
+	  either the reset command provided by BusyBox or select ncurses
+	  programs, which will install a symlink from "tset" to reset.
+
 config BR2_PACKAGE_POLICYCOREUTILS_AUDIT2ALLOW
 	bool "policycoreutils audit2allow option removed"
 	select BR2_LEGACY

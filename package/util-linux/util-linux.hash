@@ -1,2 +1,2 @@
-# From https://www.kernel.org/pub/linux/utils/util-linux/v2.30/sha256sums.asc
-sha256 7b5be5489e9b5b7177832836467aba1c87bf0e9bcbcb5a6f35d76cd4782589dc  util-linux-2.30.2.tar.xz
+# From https://www.kernel.org/pub/linux/utils/util-linux/v2.31/sha256sums.asc
+sha256 f9be7cdcf4fc5c5064a226599acdda6bdf3d86c640152ba01ea642d91108dc8a  util-linux-2.31.tar.xz
