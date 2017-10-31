@@ -620,6 +620,7 @@ F:	package/igd2-for-linux/
 F:	package/libupnp18/
 F:	package/minissdpd/
 F:	package/motion/
+F:	package/rygel/
 F:	package/tinycbor/
 F:	package/tinydtls/
 
