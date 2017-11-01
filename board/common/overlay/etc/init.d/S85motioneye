@@ -67,6 +67,52 @@ find_persistent_device() {
     echo $device
 }
 
+add_mmal_cameras() {
+    vcgencmd=$(which vcgencmd)
+    if [ -z "$vcgencmd" ]; then
+        return 1
+    fi
+    
+    camera=$($vcgencmd get_camera 2>/dev/null)
+    if [ "$camera" != "supported=1 detected=1" ]; then
+        return 1
+    fi
+    
+    output_dir="/data/output/camera1/"
+    loc="/config/add/?_username=admin"
+    device="vc.ril.camera"
+    body="{\"path\": \"$device\", \"proto\": \"mmal\"}"
+    signature=$(echo -n "POST:$loc:$body:" | sha1sum | cut -d ' ' -f 1)
+
+    curl -s -m 60 --data "$body" "http://127.0.0.1:$port$loc&_signature=$signature" > /dev/null
+    
+    return 0
+}
+
+add_v4l2_cameras() {
+    index=1
+    for device in $(ls /dev/video* 2>/dev/null); do
+        # filter out devices that don't look like cameras
+        if ! v4l2-ctl -d $device --list-formats-ext 2>/dev/null | grep -oE '[[:digit:]]+x[[:digit:]]+' &>/dev/null; then
+            continue
+        fi
+        output_dir="/data/output/camera$index/"
+        loc="/config/add/?_username=admin"
+        device=$(find_persistent_device $device)
+        body="{\"path\": \"$device\", \"proto\": \"v4l2\"}"
+        signature=$(echo -n "POST:$loc:$body:" | sha1sum | cut -d ' ' -f 1)
+
+        curl -s -m 60 --data "$body" "http://127.0.0.1:$port$loc&_signature=$signature" > /dev/null
+        index=$(($index + 1))
+    done
+    
+    if [ $index -gt 1 ]; then
+        return 0
+    else
+        return 1
+    fi
+}
+
 start() {
     msg_begin "Starting motioneye"
 
@@ -92,22 +138,7 @@ start() {
 
     # add connected camera(s) with default settings
     if responsive && ! [ -f $motion_conf ]; then
-        index=1
-        for device in $(ls /dev/video* 2>/dev/null); do
-            # filter out devices that don't look like cameras
-            if ! v4l2-ctl -d $device --list-formats-ext 2>/dev/null | grep -oE '[[:digit:]]+x[[:digit:]]+' &>/dev/null; then
-                continue
-            fi
-            output_dir="/data/output/camera$index/"
-            loc="/config/add/?_username=admin"
-            device=$(find_persistent_device $device)
-            body="{\"path\": \"$device\", \"proto\": \"v4l2\"}"
-            signature=$(echo -n "POST:$loc:$body:" | sha1sum | cut -d ' ' -f 1)
-
-            curl -s -m 60 --data "$body" "http://127.0.0.1:$port$loc&_signature=$signature" > /dev/null
-            index=$(($index + 1))
-        done
-        
+        add_mmal_cameras || add_v4l2_cameras
         sync
     fi
 
