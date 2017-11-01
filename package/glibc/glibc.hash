@@ -1,4 +1,4 @@
 # Locally calculated (fetched from Github)
 sha256  f1f2566fea1518dd7244d322882242bbd654eb215fba51a7ab001b8fd2c9bcbe     glibc-glibc-2.26-73-g4b692dffb95ac4812b161eb6a16113d7e824982e.tar.gz
 # Locally calculated (fetched from Github)
-sha256  adf2dd19a76705a6fb748492eba30cb0be621422190116382a891a3cf099e895     glibc-arc-2017.09-eng010.tar.gz
+sha256  5aa9adeac09727db0b8a52794186563771e74d70410e9fd86431e339953fd4bb     glibc-arc-2017.09-release.tar.gz
