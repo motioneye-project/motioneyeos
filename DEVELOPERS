@@ -1627,6 +1627,7 @@ N:	Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 F:	package/mmc-utils/
 F:	package/python-flask-jsonrpc/
 F:	package/python-flask-login/
+F:	package/qt5/qt5charts/
 
 N:	Theo Debrouwere <t.debrouwere@televic.com>
 F:	package/pugixml/
