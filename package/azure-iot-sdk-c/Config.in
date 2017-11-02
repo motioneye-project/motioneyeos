@@ -11,7 +11,7 @@ config BR2_PACKAGE_AZURE_IOT_SDK_C
 	  Microsoft Azure IoT Hub device SDK for C is used
 	  to connect devices running C code to Azure IoT Hub.
 
-	  https://docs.microsoft.com/nl-nl/azure/iot-hub/iot-hub-device-sdk-c-intro
+	  https://github.com/Azure/azure-iot-sdk-c
 
 comment "azure-iot-sdk-c needs a toolchain w/ C++ and NPTL"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL
