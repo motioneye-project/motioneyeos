@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FEH_VERSION = 2.18.3
+FEH_VERSION = 2.21
 FEH_SOURCE = feh-$(FEH_VERSION).tar.bz2
 FEH_SITE = http://feh.finalrewind.org
 FEH_DEPENDENCIES = libcurl imlib2 libpng xlib_libXinerama xlib_libXt
