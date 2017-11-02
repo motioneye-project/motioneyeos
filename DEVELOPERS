@@ -1239,8 +1239,17 @@ N:	Petr Kulhavy <brain@jikos.cz>
 F:	package/linuxptp/
 
 N:	Petr Vorel <petr.vorel@gmail.com>
+F:	package/connman/
+F:	package/feh/
+F:	package/imlib2/
+F:	package/libmbim/
+F:	package/libqmi/
 F:	package/linux-backports/
 F:	package/ltp-testsuite/
+F:	package/modem-manager/
+F:	package/network-manager/
+F:	package/ofono/
+F:	package/python-networkmanager/
 
 N:	Phil Eichinger <phil.eichinger@gmail.com>
 F:	package/libqrencode/
