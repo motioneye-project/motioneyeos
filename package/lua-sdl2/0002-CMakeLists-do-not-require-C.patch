@@ -1,0 +1,58 @@
+From 5732174debfe027f7620af55c283060201f0ad03 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 2 Nov 2017 22:54:51 +0100
+Subject: [PATCH] CMakeLists: do not require C++
+
+The project doesn't use C++, so don't let CMake check for a C++
+compiler by explicitly specifying that this is a C-only project.
+
+Submitted-upstream: https://github.com/Tangent128/luasdl2/pull/69
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ common/CMakeLists.txt    | 2 +-
+ examples/CMakeLists.txt  | 2 +-
+ tutorials/CMakeLists.txt | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/common/CMakeLists.txt b/common/CMakeLists.txt
+index 9e19709..8cfb748 100644
+--- a/common/CMakeLists.txt
++++ b/common/CMakeLists.txt
+@@ -15,7 +15,7 @@
+ # ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+ # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ 
+-project(common)
++project(common C)
+ 
+ set(
+ 	SOURCES
+diff --git a/examples/CMakeLists.txt b/examples/CMakeLists.txt
+index 572b3b7..4e3af4d 100644
+--- a/examples/CMakeLists.txt
++++ b/examples/CMakeLists.txt
+@@ -16,7 +16,7 @@
+ # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #
+ 
+-project(examples)
++project(examples C)
+ 
+ # Option to enable / disable examples installation
+ option(WITH_DOCS "Installation of documentation and examples" On)
+diff --git a/tutorials/CMakeLists.txt b/tutorials/CMakeLists.txt
+index adefbc9..6ec069e 100644
+--- a/tutorials/CMakeLists.txt
++++ b/tutorials/CMakeLists.txt
+@@ -16,7 +16,7 @@
+ # OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ #
+ 
+-project(tutorials)
++project(tutorials C)
+ 
+ # Option to enable / disable examples installation
+ option(WITH_DOCS "Installation of tutorials" On)
+-- 
+2.13.6
+
