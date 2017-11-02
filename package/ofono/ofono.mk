@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OFONO_VERSION = 1.20
+OFONO_VERSION = 1.21
 OFONO_SOURCE = ofono-$(OFONO_VERSION).tar.xz
 OFONO_SITE = $(BR2_KERNEL_MIRROR)/linux/network/ofono
 OFONO_LICENSE = GPL-2.0
