@@ -1,4 +1,17 @@
+config BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
+	bool
+	default y
+	# The ARC version needs C++11, thus gcc >= 4.8, like gdb-8.0.x
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_arc
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_arc
+	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
+	depends on !BR2_microblaze
+	depends on !BR2_nios2
+	depends on !BR2_or1k
+
 comment "Host GDB Options"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
+	depends on BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 
 config BR2_PACKAGE_HOST_GDB
 	bool "Build cross gdb for the host"
@@ -6,10 +19,7 @@ config BR2_PACKAGE_HOST_GDB
 	# allow to build a cross-gdb, as the one of the external
 	# toolchain should be used.
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
-	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
-	depends on !BR2_microblaze
-	depends on !BR2_nios2
-	depends on !BR2_or1k
+	depends on BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 	help
 	  Build a cross gdb that runs on the host machine and debugs
 	  programs running on the target. It requires 'gdbserver'
