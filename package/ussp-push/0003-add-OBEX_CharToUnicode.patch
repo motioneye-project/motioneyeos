@@ -1,0 +1,47 @@
+From eafac77d76d2a23c191a56f715d6c4afc0800da8 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Fri, 3 Nov 2017 09:10:01 +0100
+Subject: [PATCH] add OBEX_CharToUnicode
+
+[fetch from debian source: http://http.debian.net/debian/pool/main/u/ussp-push/ussp-push_0.11-4.debian.tar.xz]
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ src/obex_main.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
+
+diff --git a/src/obex_main.c b/src/obex_main.c
+index 6233d7e..971cc37 100644
+--- a/src/obex_main.c
++++ b/src/obex_main.c
+@@ -84,7 +84,27 @@ void request_done(obex_t * handle, obex_object_t * object, int obex_cmd, int obe
+ 
+ int bt_debug;
+ 
++static int OBEX_CharToUnicode(uint8_t *uc, const uint8_t *c, int size)
++{
++	int len, n;
++
++	if (uc == NULL || c == NULL)
++		return -1;
++
++	len = n = strlen((char *) c);
++	if (n*2+2 > size)
++		return -1;
++
++	uc[n*2+1] = 0;
++	uc[n*2] = 0;
+ 
++	while (n--) {
++		uc[n*2+1] = c[n];
++		uc[n*2] = 0;
++	}
++
++	return (len * 2) + 2;
++}
+ 
+ /*
+  * These two functions are from affix/profiles/obex/obex_io.c
+-- 
+2.15.0
+
