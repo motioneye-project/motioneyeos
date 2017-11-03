@@ -1,2 +1,4 @@
 # Copied from https://github.com/numpy/numpy/releases/tag/v1.13.3
 sha256	4c6b4eef790528bebb7ec9590d74cc193868940fe68e4109a91c196df72d8094	numpy-1.13.3.tar.gz
+# License files, locally calculated
+sha256	94eebc7c8f86a287c1e9146ed52ebcde88183806d848d8c66e0e52d1aebf3b13	LICENSE.txt
