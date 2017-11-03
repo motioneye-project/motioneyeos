@@ -31,8 +31,16 @@ F:	package/gstreamer1/gst1-rtsp-server/
 
 N:	Adam Duskett <aduskett@gmail.com>
 F:	package/audit/
+F:	package/busybox/
 F:	package/checkpolicy/
+F:	package/cppdb/
+F:	package/gstreamer1/gstreamer1/
+F:	package/gstreamer1/gst1-plugins-bad/
+F:	package/gstreamer1/gst1-plugins-base/
+F:	package/gstreamer1/gst1-plugins-good/
+F:	package/gstreamer1/gst1-plugins-ugly/
 F:	package/gstreamer1/gst1-vaapi/
+F:	package/imx-usb-loader/
 F:	package/janus-gateway/
 F:	package/libressl/
 F:	package/libselinux/
