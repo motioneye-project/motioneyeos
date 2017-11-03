@@ -1,5 +1,5 @@
-# From https://downloads.mariadb.org/mariadb/10.1.26/
-sha256 ba88b1cb9967dea2909938a34ba89373b162b0d83e5c98a0f1c94540156bf73d  mariadb-10.1.26.tar.gz
+# From https://downloads.mariadb.org/mariadb/10.1.28/
+sha256 292dc8fff420c4bdaf3a2c3381ec3c99292965db2b09de0d7fec414c00032bbd  mariadb-10.1.28.tar.gz
 
 # Hash for license files
 sha256 69ce89a0cadbe35a858398c258be93c388715e84fc0ca04e5a1fd1aa9770dd3a  README
