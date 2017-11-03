@@ -1,2 +1,4 @@
 # Locally computed:
 sha256 e87aae032bf07c26f85ac0ed3250998c37621d95f8bd748b31f15b33c45ee995  flex-2.6.4.tar.gz
+# License files, locally calculated
+sha256 97fd685958d93be7f8dab939bb8161dbd6afb0718c63bfc337c24321aea44273  COPYING
