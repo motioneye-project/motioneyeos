@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/openobex/files/openobex/1.7.2/
 sha1 4a5098a62889134cbd2b54997e7ff3e959e601e6  openobex-1.7.2-Source.tar.gz
 md5 f6e0b6cb7dcfd731460a7e9a91429a3a  openobex-1.7.2-Source.tar.gz
+# License files, locally calculated
+sha256	e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4  COPYING
+sha256	6095e9ffa777dd22839f7801aa845b31c9ed07f3d6bf8a26dc5d2dec8ccc0ef3  COPYING.LIB
