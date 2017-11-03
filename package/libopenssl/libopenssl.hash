@@ -1,5 +1,5 @@
-# From https://www.openssl.org/source/openssl-1.0.2l.tar.gz.sha256
-sha256	ce07195b659e75f4e1db43552860070061f156a98bb37b672b101ba6e3ddf30c	openssl-1.0.2l.tar.gz
+# From https://www.openssl.org/source/openssl-1.0.2m.tar.gz.sha256
+sha256	8c6ff15ec6b319b50788f42c7abc2890c08ba5a1cdcd3810eb9092deada37b0f	openssl-1.0.2m.tar.gz
 # Locally computed
 sha256	eddd8a5123748052c598214487ac178e4bfa4e31ba2ec520c70d59c8c5bfa2e9	openssl-1.0.2a-parallel-install-dirs.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d
 sha256	147c3eeaad614c044749ea527cb433eae5e2d5cad34a78c6ba61cd967bfbe01f	openssl-1.0.2a-parallel-obj-headers.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d
