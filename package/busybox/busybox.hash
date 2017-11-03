@@ -1,3 +1,5 @@
 # From https://busybox.net/downloads/busybox-1.27.2.tar.bz2.sign
 md5	476186f4bab81781dab2369bfd42734e	busybox-1.27.2.tar.bz2
 sha1	11669e223cc38de646ce26080e91ca29b8d42ad9	busybox-1.27.2.tar.bz2
+# License files, locally calculated
+sha256	bbfc9843646d483c334664f651c208b9839626891d8f17604db2146962f43548	LICENSE
