@@ -1,2 +1,5 @@
 # Locally calculated
 sha256 0b3f782bc24845d85f36bafbff0f2f1384dc72df730fda4e7924ec1a70baca5a clapack-3.2.1-CMAKE.tgz
+# License files, locally calculated
+sha256 23014869214a231525b38c39fdb5f82364fa24154ac80fdcab2a79671460fd09 COPYING
+sha256 44561c447e91203ddc747beeca5cc2794d95ee982c17c578670e4f0408bc3904 F2CLIBS/libf2c/Notice
