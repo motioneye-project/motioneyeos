@@ -260,9 +260,9 @@ options that no longer exist or are no longer needed.
 
 If you are interested in getting notified of build failures and of
 further changes in the packages you added or modified, please add
-yourself to the DEVELOPERS file. This should be done in a separate
-patch of the series. See xref:DEVELOPERS[the DEVELOPERS file] for more
-information.
+yourself to the DEVELOPERS file. This should be done in the same patch
+creating or modifying the package. See xref:DEVELOPERS[the DEVELOPERS file]
+for more information.
 
 ==== Preparing a patch series
 
