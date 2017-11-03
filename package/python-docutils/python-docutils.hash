@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/docutils/json, sha256 locally computed
-md5 ea4a893c633c788be9b8078b6b305d53 docutils-0.13.1.tar.gz
-sha256 718c0f5fb677be0f34b781e04241c4067cbd9327b66bdd8e763201130f5175be docutils-0.13.1.tar.gz
+md5	c53768d63db3873b7d452833553469de  docutils-0.14.tar.gz
+sha256	51e64ef2ebfb29cae1faa133b3710143496eca21c530f3f71424d77687764274  docutils-0.14.tar.gz
+sha256  58c2807e9e6e3297ad4da08acc8884d09d8c5ffc9d824dd100922d0bb1ee4717  COPYING.txt
