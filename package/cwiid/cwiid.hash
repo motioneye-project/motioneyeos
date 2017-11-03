@@ -1,2 +1,4 @@
 # Locally calculated
 sha256 3adf3bf018721dee3c47e12ba4dd71810a239918dce925aa4079cb2a98bca5fe  cwiid-fadf11e89b579bcc0336a0692ac15c93785f3f82.tar.gz
+# License files, locally calculated
+sha256 231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING
