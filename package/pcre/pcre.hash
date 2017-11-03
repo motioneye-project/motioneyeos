@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
 sha256 e62c7eac5ae7c0e7286db61ff82912e1c0b7a0c13706616e94a7dd729321b530  pcre-8.41.tar.bz2
+# License files, locally calculated
+sha256 9ac4dfc82b2645ff77b56b759f95f28aa15ab15a03670fa6d4313a6b351e60f0  LICENCE
