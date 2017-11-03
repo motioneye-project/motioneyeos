@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-MONOLITE_VERSION = 1050200001
-MONOLITE_SITE = http://download.mono-project.com/monolite/
-MONOLITE_SOURCE = monolite-$(MONOLITE_VERSION)-latest.tar.gz
+MONOLITE_VERSION = 1050400003
+MONOLITE_SITE = http://download.mono-project.com/monolite
+MONOLITE_SOURCE = monolite-linux-$(MONOLITE_VERSION)-latest.tar.gz
 MONOLITE_LICENSE = LGPL-2.0 or commercial
 
 define HOST_MONOLITE_INSTALL_CMDS
