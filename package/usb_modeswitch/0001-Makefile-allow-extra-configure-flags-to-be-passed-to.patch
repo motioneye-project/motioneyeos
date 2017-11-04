@@ -1,0 +1,29 @@
+From 1309df373c882f27f476130b06746a6d1e1a0f85 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Fri, 3 Nov 2017 23:21:44 +0100
+Subject: [PATCH] Makefile: allow extra configure flags to be passed to jimtcl
+ on the make command line
+
+E.G. to pass --host / --build for cross compilation.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index a151e2a..94dabd9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -19,7 +19,7 @@ TCL        ?= $(HOST_TCL)
+ else
+ TCL        ?= /usr/bin/tclsh
+ endif
+-JIM_CONFIGURE_OPTS = --disable-lineedit \
++override JIM_CONFIGURE_OPTS += --disable-lineedit \
+ 	--with-out-jim-ext="stdlib posix load signal syslog" --prefix=/usr
+ 
+ .PHONY: clean install install-common uninstall \
+-- 
+2.11.0
+
