@@ -4,7 +4,8 @@ config BR2_PACKAGE_PYTHON_NETWORKMANAGER
 	depends on BR2_USE_WCHAR # dbus-python
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-python
 	depends on BR2_PACKAGE_DBUS # dbus-python
-	select BR2_PACKAGE_DBUS_PYTHON
+	select BR2_PACKAGE_DBUS_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
 	  python-networkmanager wraps NetworkManagers D-Bus interface
 	  so you can be less verbose when talking to NetworkManager
