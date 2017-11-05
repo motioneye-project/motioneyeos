@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBSSH2
 	bool "libssh2"
+	select BR2_PACKAGE_OPENSSL if !(BR2_PACKAGE_MBEDTLS || BR2_PACKAGE_LIBGCRYPT)
 	help
 	  libssh2 is a client-side C library implementing the SSH2
 	  protocol as defined by Internet Drafts: SECSH-TRANS(22),
@@ -17,16 +18,15 @@ choice
 
 config BR2_PACKAGE_LIBSSH2_MBEDTLS
 	bool "mbedtls"
-	select BR2_PACKAGE_MBEDTLS
+	depends on BR2_PACKAGE_MBEDTLS
 
 config BR2_PACKAGE_LIBSSH2_LIBGCRYPT
 	bool "gcrypt"
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt -> libgpg-error
-	select BR2_PACKAGE_LIBGCRYPT
+	depends on BR2_PACKAGE_LIBGCRYPT
 
 config BR2_PACKAGE_LIBSSH2_OPENSSL
 	bool "openssl"
-	select BR2_PACKAGE_OPENSSL
+	depends on BR2_PACKAGE_OPENSSL
 
 endchoice
 endif
