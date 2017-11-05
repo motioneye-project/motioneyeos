@@ -1,5 +1,7 @@
 2017.11-rc1, To be released
 
+	Fixes all over the tree and new features.
+
 	libssh2: there is now an explicit choice of the backend to use
 	(mbedtls, gnutls or openssl). Previously, the choice was implicit
 	based on the TLS library that was selected. Now, it is possible to
@@ -10,6 +12,32 @@
 	netsnmp: all MIB files are now installed, making the target filesystem a
 	bit bigger than before. To remove unneeded MIBS, you should use a
 	post-build script.
+
+	New packages: asterisk, azmq, bcg729, boinc, dahdi-linux,
+	dahdi-tools, freeswitch-mod-bcg729, fscryptctl, libb64,
+	libpri, libss7, lua-basexx, lua-compat53, lua-cqueues,
+	lua-curl, lua-datafile, lua-fifo, lua-httpd,
+	lua-lpeg-patterns, lua-markdown, lua-sailor, lua-value,
+	luksmeta, minetest, minetest-game, pdmenu, prosody,
+	python-aiocoap, python-automat, python-ibmiotf,
+	python-iso8601, python-m2r, python-simplesqlite,
+	python-websockets, python-xmltodict, qt5wayland, qt5webengine,
+	restorecond, selinux-python, semodule-utils, uhubctl,
+	wireguard, wsapi-fcgi, wsapi-xavante
+
+	Removed packages: aiccu, rfkill, sepolgen
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	#10281: lsblk does not compile for util-linux
+	#10336: lttng compilation fails : linking error
+	#10351: glibc missing in rootfs
+	#10356: nfs-utils missing header
+	#10366: dropbear download url has changed
+	#10391: WiringPi retrieves wrong (old) version
+	#10406: Beaglebone black: Buggy SGX driver version, swapped...
+	#10426: uboot-tools' fw_setenv does not update the redundant...
+	#10451: libpcap 1.8.x and 1.7x does not compile on PPC
 
 2017.08.1, Released October 23rd, 2017
 
