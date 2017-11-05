@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DBUS_VERSION = 1.10.24
+DBUS_VERSION = 1.12.0
 DBUS_SITE = https://dbus.freedesktop.org/releases/dbus
 DBUS_LICENSE = AFL-2.1 or GPL-2.0+ (library, tools), GPL-2.0+ (tools)
 DBUS_LICENSE_FILES = COPYING
@@ -20,20 +20,15 @@ endef
 
 DBUS_DEPENDENCIES = host-pkgconf expat
 
-DBUS_CONF_ENV = ac_cv_have_abstract_sockets=yes
 DBUS_CONF_OPTS = \
 	--with-dbus-user=dbus \
 	--disable-tests \
 	--disable-asserts \
-	--enable-abstract-sockets \
-	--disable-selinux \
 	--disable-xml-docs \
 	--disable-doxygen-docs \
-	--disable-dnotify \
 	--with-xml=expat \
 	--with-system-socket=/var/run/dbus/system_bus_socket \
-	--with-system-pid-file=/var/run/messagebus.pid \
-	--with-init-scripts=none
+	--with-system-pid-file=/var/run/messagebus.pid
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DBUS_CONF_OPTS += LIBS='-pthread'
@@ -109,11 +104,9 @@ HOST_DBUS_CONF_OPTS = \
 	--with-dbus-user=dbus \
 	--disable-tests \
 	--disable-asserts \
-	--enable-abstract-sockets \
 	--disable-selinux \
 	--disable-xml-docs \
 	--disable-doxygen-docs \
-	--enable-dnotify \
 	--without-x \
 	--with-xml=expat
 
