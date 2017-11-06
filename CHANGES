@@ -6,8 +6,7 @@
 	(mbedtls, gnutls or openssl). Previously, the choice was implicit
 	based on the TLS library that was selected. Now, it is possible to
 	choose the backend, which is important if several TLS libraries are
-	selected. The default is mbedtls, even if you didn't have mbedtls
-	selected before.
+	selected.
 
 	netsnmp: all MIB files are now installed, making the target filesystem a
 	bit bigger than before. To remove unneeded MIBS, you should use a
