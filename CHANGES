@@ -2,6 +2,9 @@
 
 	Fixes all over the tree and new features.
 
+	Openssl is now a virtual package, which may be provided by
+	OpenSSL (now renamed to libopenssl) or LibreSSL.
+
 	libssh2: there is now an explicit choice of the backend to use
 	(mbedtls, gnutls or openssl). Previously, the choice was implicit
 	based on the TLS library that was selected. Now, it is possible to
@@ -11,6 +14,12 @@
 	netsnmp: all MIB files are now installed, making the target filesystem a
 	bit bigger than before. To remove unneeded MIBS, you should use a
 	post-build script.
+
+	New defconfigs: Atmel SAM45D27, Bananapi M1 and M2 Plus,
+	Engicam i.CoreM6 Qt5 configuration, i.MX6 sabreauto (mainline
+	kernel/u-boot), i.MX6Q sabresd Qt5 configuration, i.MX7d-pico,
+	QEMU ppc64le, Raspberry pi3 Qt5 webengine configuration,
+	Technologic TS-7680.
 
 	New packages: asterisk, azmq, bcg729, boinc, dahdi-linux,
 	dahdi-tools, freeswitch-mod-bcg729, fscryptctl, libb64,
