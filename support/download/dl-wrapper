@@ -21,7 +21,7 @@ set -e
 
 main() {
     local OPT OPTARG
-    local backend output hfile recurse quiet
+    local backend output hfile recurse quiet rc
 
     # Parse our options; anything after '--' is for the backend
     while getopts :hb:o:H:rq OPT; do
@@ -93,9 +93,16 @@ main() {
 
     # Check if the downloaded file is sane, and matches the stored hashes
     # for that file
-    if ! support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
-        rm -rf "${tmpd}"
-        exit 1
+    if support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
+        rc=0
+    else
+        if [ ${?} -ne 3 ]; then
+            rm -rf "${tmpd}"
+            exit 1
+        fi
+
+        # the hash file exists and there was no hash to check the file against
+        rc=1
     fi
 
     # tmp_output is in the same directory as the final output, so we can
@@ -141,6 +148,8 @@ main() {
         rm -f "${tmp_output}"
         exit 1
     fi
+
+    return ${rc}
 }
 
 help() {
