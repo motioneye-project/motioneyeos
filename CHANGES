@@ -32,6 +32,7 @@
 	#10336: lttng compilation fails : linking error
 	#10351: glibc missing in rootfs
 	#10356: nfs-utils missing header
+	#10361: python3 python-config script generates invalid includes
 	#10366: dropbear download url has changed
 	#10391: WiringPi retrieves wrong (old) version
 	#10406: Beaglebone black: Buggy SGX driver version, swapped...
