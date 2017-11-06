@@ -21,7 +21,7 @@ endif
 PROSODY_CONF_OPTS = \
 	--with-lua=$(STAGING_DIR)/usr \
 	--c-compiler=$(TARGET_CC) \
-	--cflags="$(TARGET_CFLAGS)" \
+	--cflags="$(TARGET_CFLAGS) -fPIC" \
 	--linker=$(TARGET_CC) \
 	--ldflags="$(TARGET_LDFLAGS) -shared" \
 	--sysconfdir=/etc/prosody \
