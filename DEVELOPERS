@@ -805,6 +805,7 @@ F:	configs/qemu_ppc64le_pseries_defconfig
 
 N:	Joseph Kogut <joseph.kogut@gmail.com>
 F:	package/python-raven/
+F:	package/python-schedule/
 F:	package/python-websockets/
 
 N:	Johan Derycke <johanderycke@gmail.com>
