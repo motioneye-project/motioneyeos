@@ -9,7 +9,8 @@ PARTED_SOURCE = parted-$(PARTED_VERSION).tar.xz
 PARTED_SITE = $(BR2_GNU_MIRROR)/parted
 PARTED_DEPENDENCIES = host-pkgconf util-linux
 PARTED_INSTALL_STAGING = YES
-# For uclinux patch
+# 0002-configure.ac-uclinux-is-also-linux.patch
+# 0004-libparted-labels-link-with-libiconv-if-needed.patch
 PARTED_AUTORECONF = YES
 PARTED_GETTEXTIZE = YES
 PARTED_LICENSE = GPL-3.0+
@@ -27,6 +28,10 @@ PARTED_DEPENDENCIES += lvm2
 PARTED_CONF_OPTS += --enable-device-mapper
 else
 PARTED_CONF_OPTS += --disable-device-mapper
+endif
+
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+PARTED_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
