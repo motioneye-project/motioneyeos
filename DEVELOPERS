@@ -1434,7 +1434,11 @@ N:	Sergey Matyukevich <geomatsi@gmail.com>
 F:	package/xr819-xradio/
 F:	package/armbian-firmware/
 F:	board/orangepi/orangepi-zero
+F:	board/orangepi/orangepi-one
+F:	board/linksprite/pcduino
+F:	configs/orangepi_one_defconfig
 F:	configs/orangepi_zero_defconfig
+F:	configs/linksprite_pcduino_defconfig
 
 N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/
