@@ -24,9 +24,23 @@ COLLECTD_PLUGINS_DISABLE = \
 
 COLLECTD_CONF_ENV += LIBS="-lm"
 
+#
+# NOTE: There's also a third availible setting "intswap", which might
+# be needed on some old ARM hardware (see [2]), but is not being
+# accounted for as per discussion [1]
+#
+# [1] http://lists.busybox.net/pipermail/buildroot/2017-November/206100.html
+# [2] http://lists.busybox.net/pipermail/buildroot/2017-November/206251.html
+#
+ifeq ($(BR2_ENDIAN),"BIG")
+COLLECTD_FP_LAYOUT=endianflip
+else
+COLLECTD_FP_LAYOUT=nothing
+endif
+
 COLLECTD_CONF_OPTS += \
 	--with-nan-emulation \
-	--with-fp-layout=nothing \
+	--with-fp-layout=$(COLLECTD_FP_LAYOUT) \
 	--with-perl-bindings=no \
 	$(foreach p, $(COLLECTD_PLUGINS_DISABLE), --disable-$(p)) \
 	$(if $(BR2_PACKAGE_COLLECTD_AGGREGATION),--enable-aggregation,--disable-aggregation) \
