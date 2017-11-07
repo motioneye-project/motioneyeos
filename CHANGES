@@ -15,6 +15,11 @@
 	bit bigger than before. To remove unneeded MIBS, you should use a
 	post-build script.
 
+	Toolchain: Linaro toolchains updated to 2017.08, ARC toolchain
+	updated to 2017.09, Glibc updated to 2.26, Glibc support for
+	ARCv2. The toolchain wrapper now handles SOURCE_DATE_EPOCH for
+	older (pre-gcc7.x) toolchains for BR2_REPRODUCIBLE.
+
 	New defconfigs: Atmel SAM45D27, Bananapi M1 and M2 Plus,
 	Engicam i.CoreM6 Qt5 configuration, i.MX6 sabreauto (mainline
 	kernel/u-boot), i.MX6Q sabresd Qt5 configuration, i.MX7d-pico,
