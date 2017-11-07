@@ -21,12 +21,17 @@ HOST_VBOOT_UTILS_DEPENDENCIES = host-openssl host-util-linux host-pkgconf
 # media partitioning.
 #
 # make target for futility is "futil".
+#
+# The value of ARCH is only relevant for crossystem (a target tool) and
+# does not affect futil or cgpt in any way as long as it is one of the
+# supported targets.
 
 define HOST_VBOOT_UTILS_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 		CC="$(HOSTCC)" \
 		CFLAGS="$(HOST_CFLAGS) -D_LARGEFILE64_SOURCE -D_GNU_SOURCE" \
 		LDFLAGS="$(HOST_LDFLAGS)" \
+		ARCH=arm \
 		futil cgpt
 endef
 
