@@ -11,6 +11,12 @@ OPENNTPD_LICENSE_FILES = COPYING
 # Need to autoreconf for our libtool patch to apply properly
 OPENNTPD_AUTORECONF = YES
 
+# Openntpd searches for tls_config_set_ca_mem which is only available
+# in LibreSSL
+ifeq ($(BR2_PACKAGE_LIBRESSL),y)
+OPENNTPD_DEPENDENCIES += openssl
+endif
+
 # openntpd uses pthread functions for arc4random emulation but forgets
 # to use -pthread
 OPENNTPD_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -pthread"
