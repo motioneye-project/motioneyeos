@@ -486,6 +486,7 @@ endmenu
 	source "package/rtl8723bs/Config.in"
 	source "package/rtl8723bu/Config.in"
 	source "package/rtl8821au/Config.in"
+	source "package/rtl8189fs/Config.in"
 	source "package/sane-backends/Config.in"
 	source "package/sdparm/Config.in"
 	source "package/setserial/Config.in"
