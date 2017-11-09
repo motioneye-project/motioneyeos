@@ -1,7 +1,8 @@
 config BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 	bool
 	# Numpy has some CPU specific code
-	default y if BR2_arc 
+	# ARC toolchain issues for ARCompact
+	default y if BR2_arc && !(BR2_arc770d || BR2_arc750d)
 	default y if BR2_aarch64
 	default y if BR2_arm 
 	default y if BR2_armeb
