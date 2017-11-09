@@ -58,7 +58,6 @@ config BR2_GCC_VERSION_6_X
 config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	# Broken or unsupported architectures
-	depends on !BR2_arc
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
