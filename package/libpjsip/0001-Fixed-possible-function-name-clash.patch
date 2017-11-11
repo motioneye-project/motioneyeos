@@ -1,0 +1,26 @@
+Re #2059 (misc): Fixed possible function name clash with md5 due to non-static function.
+
+Backported from: https://trac.pjsip.org/repos/changeset/5688
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+
+Index: pjlib-util/src/pjlib-util/md5.c
+===================================================================
+diff --git a/pjproject/pjlib-util/src/pjlib-util/md5.c b/pjproject/pjlib-util/src/pjlib-util/md5.c
+--- a/pjlib-util/src/pjlib-util/md5.c	(revision 5687)
++++ b/pjlib-util/src/pjlib-util/md5.c	(revision 5688)
+@@ -29,13 +29,13 @@
+ #ifndef HIGHFIRST
+ #define byteReverse(buf, len)	/* Nothing */
+ #else
+-void byteReverse(unsigned char *buf, unsigned longs);
++static void byteReverse(unsigned char *buf, unsigned longs);
+ 
+ #ifndef ASM_MD5
+ /*
+  * Note: this code is harmless on little-endian machines.
+  */
+-void byteReverse(unsigned char *buf, unsigned longs)
++static void byteReverse(unsigned char *buf, unsigned longs)
+ {
+     pj_uint32_t t;
+     do {
