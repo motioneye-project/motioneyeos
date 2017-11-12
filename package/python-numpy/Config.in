@@ -1,8 +1,9 @@
 config BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 	bool
 	# Numpy has some CPU specific code
-	# ARC toolchain issues for ARCompact
-	default y if BR2_arc && !(BR2_arc770d || BR2_arc750d)
+	# ARCompact build fails due to toolchain issue
+	# ARC HS38 build fails on glibc due to missing FE_* definitions
+	default y if BR2_arc && BR2_archs38 && !BR2_TOOLCHAIN_USES_GLIBC
 	default y if BR2_aarch64
 	default y if BR2_arm
 	default y if BR2_armeb
