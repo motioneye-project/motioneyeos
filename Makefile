@@ -793,7 +793,7 @@ legal-info: dirs legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p
 
 .PHONY: show-targets
 show-targets:
-	@echo $(PACKAGES) $(TARGETS_ROOTFS)
+	@echo $(sort $(PACKAGES)) $(sort $(TARGETS_ROOTFS))
 
 .PHONY: show-build-order
 show-build-order: $(patsubst %,%-show-build-order,$(PACKAGES))
