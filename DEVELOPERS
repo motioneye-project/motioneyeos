@@ -325,6 +325,7 @@ F:	package/python-mako/
 F:	package/python-oauthlib/
 F:	package/python-pyicu/
 F:	package/python-pylru/
+F:	package/python-requests-oauthlib/
 F:	package/python-slob/
 F:	package/rtmpdump/
 F:	package/softether/
