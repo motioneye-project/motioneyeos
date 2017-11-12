@@ -4,7 +4,7 @@ config BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW
 	depends on !(BR2_archs38 && BR2_TOOLCHAIN_USES_GLIBC)
 	# fenv.h lacks FE_INVALID, FE_OVERFLOW & FE_UNDERFLOW on nios2
-	depends on !BR2_nios
+	depends on !BR2_nios2
 	# No support for ARMv7-M in the ARM assembly logic
 	depends on !BR2_ARM_CPU_ARMV7M
 	# Microblaze build affected by gcc PR71124 (infinite loop)
