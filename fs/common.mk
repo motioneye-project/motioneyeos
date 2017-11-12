@@ -19,10 +19,6 @@
 #  ROOTFS_$(FSTYPE)_POST_GEN_HOOKS, a list of hooks to call after
 #  generating the filesystem image
 #
-#  ROOTFS_$(FSTYPE)_POST_TARGETS, the list of targets that should be
-#  run after running the main filesystem target. This is useful for
-#  initramfs, to rebuild the kernel once the initramfs is generated.
-#
 # In terms of configuration option, this macro assumes that the
 # BR2_TARGET_ROOTFS_$(FSTYPE) config option allows to enable/disable
 # the generation of a filesystem image of a particular type. If
@@ -115,7 +111,7 @@ endif
 rootfs-$(1)-show-depends:
 	@echo $$(ROOTFS_$(2)_DEPENDENCIES)
 
-rootfs-$(1): $$(BINARIES_DIR)/rootfs.$(1) $$(ROOTFS_$(2)_POST_TARGETS)
+rootfs-$(1): $$(BINARIES_DIR)/rootfs.$(1)
 
 .PHONY: rootfs-$(1) rootfs-$(1)-show-depends
 
@@ -123,6 +119,13 @@ ifeq ($$(BR2_TARGET_ROOTFS_$(2)),y)
 TARGETS_ROOTFS += rootfs-$(1)
 PACKAGES += $$(filter-out rootfs-%,$$(ROOTFS_$(2)_DEPENDENCIES))
 endif
+
+# Check for legacy POST_TARGETS rules
+ifneq ($$(ROOTFS_$(2)_POST_TARGETS),)
+$$(error Filesystem $(1) uses post-target rules, which are no longer supported.\
+	Update $(1) to use post-gen hooks instead)
+endif
+
 endef
 
 define ROOTFS_TARGET
