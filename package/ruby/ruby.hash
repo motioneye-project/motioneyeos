@@ -1,2 +1,6 @@
-# From https://www.ruby-lang.org/en/news/2017/03/22/ruby-2-4-1-released/
-sha256 4fc8a9992de3e90191de369270ea4b6c1b171b7941743614cc50822ddc1fe654  ruby-2.4.1.tar.xz
+# From https://www.ruby-lang.org/en/news/2017/09/14/ruby-2-4-2-released/
+sha256 748a8980d30141bd1a4124e11745bb105b436fb1890826e0d2b9ea31af27f735  ruby-2.4.2.tar.xz
+# License files, Locally calculated
+sha256 5cda9584acd5e1096276a375085b7e659fa67a072fd69ec2c3931e54f7f563bb  LEGAL
+sha256 f5eb1b2956d5f7a67b2e5722a3749bc2fe86f9c580f2e3f5a08519cf073b5864  COPYING
+sha256 a5e3042dacb53eebda91f3b1caefbfec8307711df8c4ed1ed20e4e97c43307a4  BSDL
