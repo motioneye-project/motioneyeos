@@ -44,3 +44,5 @@ the +DEVELOPERS+ file for various tasks:
   list the ones that are not handled by any developer. The purpose of
   this option is to help completing the +DEVELOPERS+ file.
 
+- When using without any arguments, it validates the integrity of the
+  DEVELOPERS file and will note WARNINGS for items that don't match.

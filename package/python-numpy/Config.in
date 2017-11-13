@@ -1,9 +1,19 @@
 config BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 	bool
 	# Numpy has some CPU specific code
-	default y if BR2_arc || BR2_aarch64 || BR2_arm || BR2_armeb || BR2_i386 \
-		|| BR2_mips || BR2_mipsel || BR2_powerpc || BR2_powerpc64 \
-		|| BR2_sh || BR2_x86_64
+	# ARCompact build fails due to toolchain issue
+	# ARC HS38 build fails on glibc due to missing FE_* definitions
+	default y if BR2_arc && BR2_archs38 && !BR2_TOOLCHAIN_USES_GLIBC
+	default y if BR2_aarch64
+	default y if BR2_arm
+	default y if BR2_armeb
+	default y if BR2_i386
+	default y if BR2_mips
+	default y if BR2_mipsel
+	default y if BR2_powerpc
+	default y if BR2_powerpc64
+	default y if BR2_sh
+	default y if BR2_x86_64
 
 config BR2_PACKAGE_PYTHON_NUMPY
 	bool "python-numpy"

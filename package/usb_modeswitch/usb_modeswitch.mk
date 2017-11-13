@@ -20,6 +20,12 @@ USB_MODESWITCH_BUILD_TARGETS = script
 USB_MODESWITCH_INSTALL_TARGETS = install-script
 endif
 
+# build system of embedded jimtcl doesn't use autotools, but does use
+# an old version of gnuconfig which doesn't know all the architectures
+# supported by Buildroot, so update config.guess / config.sub like we
+# do in pkg-autotools.mk
+USB_MODESWITCH_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
+
 define USB_MODESWITCH_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE -Wall -I." \

@@ -190,9 +190,15 @@ F:	package/sigrok-cli/
 
 N:	Baruch Siach <baruch@tkos.co.il>
 F:	package/daemon/
+F:	package/dropbear/
 F:	package/ebtables/
+F:	package/i2c-tools/
+F:	package/libcurl/
+F:	package/libpcap/
 F:	package/openipmi/
 F:	package/socat/
+F:	package/strace/
+F:	package/tcpdump/
 F:	package/ti-uim/
 F:	package/uhubctl/
 
