@@ -18,8 +18,7 @@ GLIBC_VERSION = glibc-2.26-73-g4b692dffb95ac4812b161eb6a16113d7e824982e
 # When updating the version, check it on the official repository;
 # *NEVER* decide on a version string by looking at the mirror.
 # Then check that the mirror has been synced already (happens once a day.)
-GLIBC_SITE = https://github.com/bminor/glibc.git
-GLIBC_SITE_METHOD = git
+GLIBC_SITE = $(call github,bminor,glibc,$(GLIBC_VERSION))
 endif
 
 GLIBC_SRC_SUBDIR = .
