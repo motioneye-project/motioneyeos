@@ -50,7 +50,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-openh264 \
 	--disable-libyuv \
 	--disable-ipp \
-	--disable-ssl \
 	--disable-silk \
 	--with-external-srtp
 
@@ -59,8 +58,8 @@ LIBPJSIP_CONF_OPTS = \
 # so we want to use it.
 LIBPJSIP_CONF_OPTS += --enable-epoll
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-LIBPJSIP_DEPENDENCIES += openssl
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+LIBPJSIP_DEPENDENCIES += libopenssl
 LIBPJSIP_CONF_OPTS += --with-ssl=$(STAGING_DIR)/usr
 else
 LIBPJSIP_CONF_OPTS += --disable-ssl
