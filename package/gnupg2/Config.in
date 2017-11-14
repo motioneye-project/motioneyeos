@@ -28,10 +28,10 @@ config BR2_PACKAGE_GNUPG2
 
 if BR2_PACKAGE_GNUPG2
 
-config BR2_PACKAGE_GNUPG2_GPGV2
-	bool "gpgv2"
+config BR2_PACKAGE_GNUPG2_GPGV
+	bool "gpgv"
 	help
-	  gpgv2 is an OpenPGP signature verification tool.
+	  gpgv is an OpenPGP signature verification tool.
 
 	  This program is actually a stripped-down version of gpg
 	  which is only able to check signatures. It is somewhat
