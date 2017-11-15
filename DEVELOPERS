@@ -1300,6 +1300,8 @@ N:	Petr Vorel <petr.vorel@gmail.com>
 F:	package/connman/
 F:	package/feh/
 F:	package/imlib2/
+F:	package/iproute2/
+F:	package/iputils/
 F:	package/libmbim/
 F:	package/libqmi/
 F:	package/linux-backports/
