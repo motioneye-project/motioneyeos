@@ -964,7 +964,7 @@ F:	support/legal-info/
 N:	Lucas De Marchi <lucas.de.marchi@gmail.com>
 F:	package/fswebcam/
 
-N:	Ludovic Desroches <ludovic.desroches@atmel.com>
+N:	Ludovic Desroches <ludovic.desroches@microchip.com>
 F:	board/atmel/
 F:	configs/at91*
 F:	configs/atmel_*
