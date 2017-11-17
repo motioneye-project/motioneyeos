@@ -1,5 +1,5 @@
-# From http://sourceforge.net/projects/gptfdisk/files/gptfdisk/1.0.1/
-md5 d7f3d306b083123bcc6f5941efade586  gptfdisk-1.0.1.tar.gz
-sha1 ad28c511c642235815b83fffddf728c117057cba  gptfdisk-1.0.1.tar.gz
+# From http://sourceforge.net/projects/gptfdisk/files/gptfdisk/1.0.3/
+md5 07b625a583b66c8c5840be5923f3e3fe  gptfdisk-1.0.3.tar.gz
+sha1 9a74bbe7805d562316e92417f71e4b03155308e6  gptfdisk-1.0.3.tar.gz
 # Locally computed
-sha256 864c8aee2efdda50346804d7e6230407d5f42a8ae754df70404dd8b2fdfaeac7  gptfdisk-1.0.1.tar.gz
+sha256 89fd5aec35c409d610a36cb49c65b442058565ed84042f767bba614b8fc91b5c  gptfdisk-1.0.3.tar.gz
