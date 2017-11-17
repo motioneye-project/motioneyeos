@@ -106,7 +106,7 @@ config BR2_WGET
 
 config BR2_SVN
 	string "Subversion (svn) command"
-	default "svn"
+	default "svn --non-interactive"
 
 config BR2_BZR
 	string "Bazaar (bzr) command"
