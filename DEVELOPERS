@@ -608,6 +608,7 @@ F:	package/gupnp-dlna/
 F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/igd2-for-linux/
+F:	package/libupnp/
 F:	package/minissdpd/
 F:	package/motion/
 F:	package/tinycbor/
