@@ -4,15 +4,17 @@ mysql.cc: In function 'void build_completion_hash(bool, bool)':
 mysql.cc:2687:37: error: invalid conversion from 'char' to 'char*' [-fpermissive]
        field_names[i][num_fields*2]= '\0';
                                      ^~~~
-
 Patch was partly backported from upstream commit:
 https://github.com/mysql/mysql-server/commit/ae21683d980d5fe9e39bd0193827ea3604256eb9
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Thomas: add more gcc 7.x fixes in instance_map.cc.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
-diff -uNr mysql-5.1.73.org/client/mysql.cc mysql-5.1.73/client/mysql.cc
---- mysql-5.1.73.org/client/mysql.cc	2013-11-04 19:52:27.000000000 +0100
-+++ mysql-5.1.73/client/mysql.cc	2017-05-13 19:52:10.125101101 +0200
+Index: b/client/mysql.cc
+===================================================================
+--- a/client/mysql.cc
++++ b/client/mysql.cc
 @@ -2684,7 +2684,7 @@
          mysql_free_result(fields);
          break;
@@ -22,3 +24,22 @@ diff -uNr mysql-5.1.73.org/client/mysql.cc mysql-5.1.73/client/mysql.cc
        j=0;
        while ((sql_field=mysql_fetch_field(fields)))
        {
+Index: b/server-tools/instance-manager/instance_map.cc
+===================================================================
+--- a/server-tools/instance-manager/instance_map.cc
++++ b/server-tools/instance-manager/instance_map.cc
+@@ -526,12 +526,12 @@
+              Options::Main::config_file);
+ 
+     argv_options[1]= defaults_file_arg;
+-    argv_options[2]= '\0';
++    argv_options[2]= NULL;
+ 
+     argc= 2;
+   }
+   else
+-    argv_options[1]= '\0';
++    argv_options[1]= NULL;
+ 
+   /*
+     If the routine failed, we'll simply fallback to defaults in
