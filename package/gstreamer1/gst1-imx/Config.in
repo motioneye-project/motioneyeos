@@ -84,4 +84,10 @@ config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSRC
 	help
 	  Elements for V4L2 capture
 
+config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSINK
+	bool "imxv4l2videosink"
+	select BR2_PACKAGE_GST1_PLUGINS_BAD
+	help
+	  Elements for V4L2 output
+
 endif
