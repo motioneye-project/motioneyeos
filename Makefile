@@ -483,13 +483,13 @@ include system/system.mk
 include package/Makefile.in
 # arch/arch.mk.* must be after package/Makefile.in because it may need to
 # complement variables defined therein, like BR_NO_CHECK_HASH_FOR.
--include $(wildcard arch/arch.mk.*)
+-include $(sort $(wildcard arch/arch.mk.*))
 include support/dependencies/dependencies.mk
 
 PACKAGES += $(DEPENDENCIES_HOST_PREREQ)
 
-include toolchain/*.mk
-include toolchain/*/*.mk
+include $(sort $(wildcard toolchain/*.mk))
+include $(sort $(wildcard toolchain/*/*.mk))
 
 # Include the package override file if one has been provided in the
 # configuration.
@@ -1109,7 +1109,7 @@ print-version:
 	./support/testing/run-tests -l 2>&1 | sed -r -e '/^test_run \((.*)\).*/!d; s//\1: *runtime_test/' | LC_ALL=C sort >> $@
 
 include docs/manual/manual.mk
--include $(foreach dir,$(BR2_EXTERNAL_DIRS),$(dir)/docs/*/*.mk)
+-include $(foreach dir,$(BR2_EXTERNAL_DIRS),$(sort $(wildcard $(dir)/docs/*/*.mk)))
 
 .PHONY: $(noconfig_targets)
 
