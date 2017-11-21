@@ -57,6 +57,7 @@ F:	package/setools/
 F:	package/sngrep/
 
 N:	Adrian Perez de Castro <aperez@igalia.com>
+F:	package/libepoxy/
 F:	package/webkitgtk/
 
 N:	Aleksander Morgado <aleksander@aleksander.es>
