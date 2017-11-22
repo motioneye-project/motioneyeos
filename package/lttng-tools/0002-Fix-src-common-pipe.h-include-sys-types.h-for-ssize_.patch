@@ -1,0 +1,31 @@
+From 40dde31f7eeb71af169b97b82d8fd1739895dfc3 Mon Sep 17 00:00:00 2001
+From: Philippe Proulx <eeppeliteloop@gmail.com>
+Date: Wed, 8 Nov 2017 15:19:24 -0500
+Subject: [PATCH] Fix: src/common/pipe.h: include <sys/types.h> for ssize_t and
+ mode_t
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Philippe Proulx <eeppeliteloop@gmail.com>
+[Philippe: backport from upstream commit 40dde31f]
+Signed-off-by: Jérémie Galarneau <jeremie.galarneau@efficios.com>
+---
+ src/common/pipe.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/common/pipe.h b/src/common/pipe.h
+index 2d4fc967..30f7c3f3 100644
+--- a/src/common/pipe.h
++++ b/src/common/pipe.h
+@@ -20,6 +20,7 @@
+
+ #include <pthread.h>
+ #include <common/macros.h>
++#include <sys/types.h>
+
+ enum lttng_pipe_state {
+ 	LTTNG_PIPE_STATE_OPENED = 1,
+--
+2.15.0
+
