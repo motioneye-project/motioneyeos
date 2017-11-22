@@ -5,15 +5,14 @@
 ################################################################################
 
 LTTNG_LIBUST_SITE = http://lttng.org/files/lttng-ust
-LTTNG_LIBUST_VERSION = 2.9.0
+LTTNG_LIBUST_VERSION = 2.10.0
 LTTNG_LIBUST_SOURCE = lttng-ust-$(LTTNG_LIBUST_VERSION).tar.bz2
 LTTNG_LIBUST_LICENSE = LGPL-2.1, MIT (system headers), GPL-2.0 (liblttng-ust-ctl/ustctl.c used by lttng-sessiond)
 LTTNG_LIBUST_LICENSE_FILES = COPYING
 LTTNG_LIBUST_INSTALL_STAGING = YES
 LTTNG_LIBUST_DEPENDENCIES = liburcu util-linux
-LTTNG_LIBUST_CONF_OPTS += --disable-man-pages
-# 0002-doc-examples-Makefile.am-define-C-and-C-compilers-fo.patch
-# 0003-Validate-the-presence-of-dlmopen-at-configure-time.patch
+LTTNG_LIBUST_CONF_OPTS += --disable-man-pages --disable-examples
+# 0001-configure.ac-add-disable-examples-option-to-not-buil.patch
 LTTNG_LIBUST_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
