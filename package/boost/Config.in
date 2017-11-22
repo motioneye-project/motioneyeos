@@ -101,6 +101,9 @@ config BR2_PACKAGE_BOOST_EXCEPTION
 config BR2_PACKAGE_BOOST_FIBER
 	bool "boost-fiber"
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	# mips support uses the "pause" instruction, only available
+	# since mips32r2/mips64r2.
+	depends on !BR2_MIPS_CPU_MIPS32 && !BR2_MIPS_CPU_MIPS64
 	help
 	  C++11 userland threads library.
 
