@@ -581,7 +581,7 @@ F:	board/warp7/
 F:	configs/freescale_imx*
 F:	configs/imx6-sabresd*
 F:	configs/imx6slevk_defconfig
-F:	configs/imx6sxsdb_defconfig
+F:	configs/imx6sx-sdb_defconfig
 F:	configs/imx6ulevk_defconfig
 F:	configs/imx6ulpico_defconfig
 F:	configs/mx6cubox_defconfig
