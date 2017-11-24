@@ -1,0 +1,66 @@
+From 4067b793689f740e86b2f070c63cc72860347ab5 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 23 Nov 2017 22:53:03 +0100
+Subject: [PATCH] Check for pthread_getname_np
+
+On some toolchains (like musl), pthread_setname_np is available but not
+pthread_getname_np so add this check in configure.ac
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ configure.ac | 11 +++++++++++
+ logger.c     |  2 +-
+ motion.c     |  2 +-
+ 3 files changed, 13 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 21efd2a..06b2990 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -140,6 +140,17 @@ if test x$THREADS = xyes; then
+     [AC_DEFINE([HAVE_PTHREAD_SETNAME_NP], [1], [Define if you have pthread_setname_np function.])
+     AC_MSG_RESULT([yes])],
+     [AC_MSG_RESULT([no])] )
++
++##############################################################################
++###  Check for pthread_getname_np (nonstandard GNU extension)
++##############################################################################
++  AC_MSG_CHECKING([for pthread_getname_np])
++  AC_LINK_IFELSE(
++    [AC_LANG_PROGRAM([#include <pthread.h>], [pthread_getname_np(pthread_self(), NULL, 0)])],
++    [AC_DEFINE([HAVE_PTHREAD_GETNAME_NP], [1], [Define if you have pthread_getname_np function.])
++    AC_MSG_RESULT([yes])],
++    [AC_MSG_RESULT([no])] )
++
+   LIBS="$HOLD_LIBS"
+ fi
+ 
+diff --git a/logger.c b/logger.c
+index 01ea5a5..fd80d77 100644
+--- a/logger.c
++++ b/logger.c
+@@ -207,7 +207,7 @@ void motion_log(int level, unsigned int type, int errno_flag, const char *fmt, .
+     errno_save = errno;
+ 
+     char threadname[32] = "unknown";
+-#if ((!defined(BSD) && HAVE_PTHREAD_SETNAME_NP) || defined(__APPLE__))
++#if ((!defined(BSD) && HAVE_PTHREAD_GETNAME_NP) || defined(__APPLE__))
+     pthread_getname_np(pthread_self(), threadname, sizeof(threadname));
+ #endif
+ 
+diff --git a/motion.c b/motion.c
+index 8570896..985d4b2 100644
+--- a/motion.c
++++ b/motion.c
+@@ -3772,7 +3772,7 @@ void util_threadname_set(const char *abbr, int threadnbr, const char *threadname
+ 
+ void util_threadname_get(char *threadname){
+ 
+-#if ((!defined(BSD) && HAVE_PTHREAD_SETNAME_NP) || defined(__APPLE__))
++#if ((!defined(BSD) && HAVE_PTHREAD_GETNAME_NP) || defined(__APPLE__))
+     char currname[16];
+     pthread_getname_np(pthread_self(), currname, sizeof(currname));
+     snprintf(threadname, sizeof(currname), "%s",currname);
+-- 
+2.14.1
+
