@@ -1,2 +1,3 @@
 # Locally calculated
-sha256  d54991185d514a0aba54ebeb408d7575b60f5818a772e28fa0e18b98bc1db454	avahi-0.6.32.tar.gz
+sha256 57a99b5dfe7fdae794e3d1ee7a62973a368e91e414bd0dfa5d84434de5b14804  avahi-0.7.tar.gz
+sha256 a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861  LICENSE
