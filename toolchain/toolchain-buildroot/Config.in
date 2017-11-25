@@ -72,6 +72,11 @@ comment "glibc on powerpc64le needs a toolchain w/ headers >= 3.10"
 	depends on BR2_powerpc64le
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
+# Support for MIPS NAN2008 needs headers >= 4.5
+comment "glibc on MIPS w/ NAN2008 needs a toolchain w/ headers >= 4.5"
+	depends on BR2_MIPS_NAN_2008
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+
 config BR2_TOOLCHAIN_BUILDROOT_MUSL
 	bool "musl"
 	depends on BR2_aarch64	  || BR2_arm     || BR2_armeb     || BR2_i386 || \
