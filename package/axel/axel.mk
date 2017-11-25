@@ -4,33 +4,27 @@
 #
 ################################################################################
 
-AXEL_VERSION = 2.4
-AXEL_SITE = http://sources.buildroot.net
+AXEL_VERSION = 2.16
+AXEL_SITE = https://github.com/axel-download-accelerator/axel/releases/download/v$(AXEL_VERSION)
+AXEL_SOURCE = axel-$(AXEL_VERSION).tar.xz
 AXEL_LICENSE = GPL-2.0+
 AXEL_LICENSE_FILES = COPYING
 AXEL_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
-AXEL_LDFLAGS = -lpthread $(TARGET_NLS_LIBS)
 
-ifeq ($(BR2_SYSTEM_ENABLE_NLS),)
-AXEL_DISABLE_I18N = --i18n=0
+# ac_cv_prog_cc_c99 is required for BR2_USE_WCHAR=n because the C99 test
+# provided by autoconf relies on wchar_t.
+AXEL_CONF_OPTS = \
+	ac_cv_prog_cc_c99=-std=c99 \
+	CFLAGS="$(TARGET_CFLAGS)"
+
+ifeq ($(BR2_PACKAGE_LIBRESSL),y)
+AXEL_CONF_OPTS += --with-ssl
+AXEL_DEPENDENCIES += libressl
+else ifeq ($(BR2_PACKAGE_OPENSSL),y)
+AXEL_CONF_OPTS += --with-ssl
+AXEL_DEPENDENCIES += openssl
+else
+AXEL_CONF_OPTS += --without-ssl
 endif
 
-define AXEL_CONFIGURE_CMDS
-	(cd $(@D); \
-		./configure \
-			--prefix=/usr \
-			--debug=1 \
-			$(AXEL_DISABLE_I18N) \
-	)
-endef
-
-define AXEL_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
-	LFLAGS="$(TARGET_LDFLAGS) $(AXEL_LDFLAGS)" -C $(@D)
-endef
-
-define AXEL_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
-endef
-
-$(eval $(generic-package))
+$(eval $(autotools-package))
