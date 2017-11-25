@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POSTGRESQL_VERSION = 9.6.6
+POSTGRESQL_VERSION = 10.1
 POSTGRESQL_SOURCE = postgresql-$(POSTGRESQL_VERSION).tar.bz2
 POSTGRESQL_SITE = http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_LICENSE = PostgreSQL
@@ -56,6 +56,11 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 POSTGRESQL_DEPENDENCIES += openssl
 POSTGRESQL_CONF_OPTS += --with-openssl
+else
+# PostgreSQL checks for /dev/urandom and fails if it's being cross-compiled and
+# an SSL library isn't found. Since /dev/urandom is guaranteed to be provided
+# on Linux systems, explicitly tell the configure script it's available.
+POSTGRESQL_CONF_ENV += ac_cv_file__dev_urandom=yes
 endif
 
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
