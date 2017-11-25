@@ -1,0 +1,31 @@
+From 10d92524cd6736c767c9ce55a1d9b9f1a2a69a9f Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 25 Nov 2017 22:26:58 +0100
+Subject: [PATCH] Example flatstyle needs widgets module
+
+Fixes compile with disabled widgets module.
+
+Task-number: QTBUG-64761
+Change-Id: I743884d77d51e89061d87cab006bab0cafc9ddb7
+
+Upstream: https://codereview.qt-project.org/212583
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ examples/quickcontrols2/quickcontrols2.pro | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/examples/quickcontrols2/quickcontrols2.pro b/examples/quickcontrols2/quickcontrols2.pro
+index 858759f..8310e9b 100644
+--- a/examples/quickcontrols2/quickcontrols2.pro
++++ b/examples/quickcontrols2/quickcontrols2.pro
+@@ -6,5 +6,6 @@ SUBDIRS += \
+     contactlist \
+     sidepanel \
+     swipetoremove \
+-    flatstyle \
+     wearable
++
++qtHaveModule(widgets): SUBDIRS += flatstyle
+-- 
+2.7.4
+
