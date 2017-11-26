@@ -50,4 +50,11 @@ else
 LINPHONE_CONF_OPTS += --disable-libv4l1 --disable-libv4l2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUPNP),y)
+LINPHONE_DEPENDENCIES += libupnp
+LINPHONE_CONF_OPTS += --enable-upnp
+else
+LINPHONE_CONF_OPTS += --disable-upnp
+endif
+
 $(eval $(autotools-package))
