@@ -15,6 +15,8 @@ DVB_APPS_DEPENDENCIES = libiconv
 DVB_APPS_LDLIBS += -liconv
 endif
 
+DVB_APPS_MAKE_OPTS = PERL5LIB=$(@D)/util/scan
+
 ifeq ($(BR2_STATIC_LIBS),y)
 DVB_APPS_MAKE_OPTS += enable_shared=no
 else ifeq ($(BR2_SHARED_LIBS),y)
