@@ -1209,6 +1209,9 @@ N:	Mike Harmony <mike.harmony@snapav.com>
 F:	board/sinovoip/m2-plus/
 F:	configs/bananapi_m2_plus_defconfig
 
+N:	Mylène Josserand <mylene.josserand@free-electrons.com>
+F:	package/rtl8723bu/
+
 N:	Nathan Lynch <ntl@pobox.com>
 F:	package/chrony/
 

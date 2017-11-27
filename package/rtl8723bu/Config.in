@@ -1,0 +1,10 @@
+config BR2_PACKAGE_RTL8723BU
+	bool "rtl8723bu"
+	depends on BR2_LINUX_KERNEL
+	help
+	  rtl8723bu wifi driver
+
+	  https://github.com/lwfinger/rtl8723bu
+
+comment "rtl8723bu needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
