@@ -9,6 +9,8 @@ This causes redefinition conflicts for link(2) when both standard
 unistd.h and bsd/unistd.h get included.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+(rebased for version 4.7.3)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  lib/replace/wscript | 12 ------------
  1 file changed, 12 deletions(-)
@@ -17,14 +19,15 @@ diff --git a/lib/replace/wscript b/lib/replace/wscript
 index 1dfd902..456be9b 100644
 --- a/lib/replace/wscript
 +++ b/lib/replace/wscript
-@@ -248,18 +248,6 @@ def configure(conf):
+@@ -253,19 +253,6 @@
  
-     conf.CHECK_FUNCS('prctl dirname basename')
+     strlcpy_in_bsd = False
  
 -    # libbsd on some platforms provides strlcpy and strlcat
 -    if not conf.CHECK_FUNCS('strlcpy strlcat'):
--        conf.CHECK_FUNCS_IN('strlcpy strlcat', 'bsd', headers='bsd/string.h',
--                checklibc=True)
+-        if conf.CHECK_FUNCS_IN('strlcpy strlcat', 'bsd', headers='bsd/string.h',
+-                               checklibc=True):
+-            strlcpy_in_bsd = True
 -    if not conf.CHECK_FUNCS('getpeereid'):
 -        conf.CHECK_FUNCS_IN('getpeereid', 'bsd', headers='sys/types.h bsd/unistd.h')
 -    if not conf.CHECK_FUNCS_IN('setproctitle', 'setproctitle', headers='setproctitle.h'):
