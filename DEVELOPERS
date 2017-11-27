@@ -1743,8 +1743,11 @@ F:	package/fwup/
 
 N:	Yann E. MORIN <yann.morin.1998@free.fr>
 F:	fs/squashfs/
+F:	package/asterisk/
 F:	package/cegui06/
 F:	package/celt051/
+F:	package/dahdi-linux/
+F:	package/dahdi-tools/
 F:	package/dtc/
 F:	package/dtv-scan-tables/
 F:	package/dvb-apps/
@@ -1755,7 +1758,9 @@ F:	package/libedit/
 F:	package/libgsm/
 F:	package/libinput/
 F:	package/libiscsi/
+F:	package/libpri/
 F:	package/libseccomp/
+F:	package/libss7/
 F:	package/linux-tools/
 F:	package/mesa3d-headers/
 F:	package/nbd/
