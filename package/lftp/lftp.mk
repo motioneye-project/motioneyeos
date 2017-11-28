@@ -41,6 +41,13 @@ else
 LFTP_CONF_OPTS += --without-openssl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBIDN),y)
+LFTP_DEPENDENCIES += libidn
+LFTP_CONF_OPTS += --with-libidn=$(STAGING_DIR)/usr
+else
+LFTP_CONF_OPTS += --without-libidn
+endif
+
 # Remove /usr/share/lftp
 define LFTP_REMOVE_DATA
 	$(RM) -fr $(TARGET_DIR)/usr/share/lftp
