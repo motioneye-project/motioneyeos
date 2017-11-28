@@ -13,9 +13,13 @@ MTOOLS_CONF_OPTS = --without-x
 # info documentation not needed
 MTOOLS_CONF_ENV = \
 	ac_cv_func_setpgrp_void=yes \
+	ac_cv_lib_bsd_gethostbyname=no \
+	ac_cv_lib_bsd_main=no \
 	ac_cv_path_INSTALL_INFO=
 
 HOST_MTOOLS_CONF_ENV = \
+	ac_cv_lib_bsd_gethostbyname=no \
+	ac_cv_lib_bsd_main=no \
 	ac_cv_path_INSTALL_INFO=
 
 # link with iconv if enabled
