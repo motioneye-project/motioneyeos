@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtserialbus-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 71c89be3879414e2a11cad93a4882758f9259b1c0aec980560309192c99f9a9e qtserialbus-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qtserialbus-opensource-src-5.9.2.tar.xz.mirrorlist
-sha256 bbc24bdafd0191fc808e08b19f378e74bedbb79faf4e396b66ba7ca9fed9be08 qtserialbus-opensource-src-5.9.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.3/submodules/qtserialbus-opensource-src-5.9.3.tar.xz.mirrorlist
+sha256 ef62745e1793515e03fa586171de13eb17ee7699c9eb626f76a4dc5a00c46938 qtserialbus-opensource-src-5.9.3.tar.xz
 
 # Hashes for license files:
 sha256 edfe70e99be2a7c109d860b19204609e582720b211c50caedac729da372a1253 LICENSE.GPLv2

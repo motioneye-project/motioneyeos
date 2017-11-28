@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qt3d-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 10d05a30e925fcad971126c7f47a5e32c39f007dab96b298b2094501f9607ffe qt3d-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qt3d-opensource-src-5.9.2.tar.xz.mirrorlist
-sha256 c955a92fe2f3f2f03493ae0e9d973ebe1c4b1e037b58f18092fa2040f5b50783 qt3d-opensource-src-5.9.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.3/submodules/qt3d-opensource-src-5.9.3.tar.xz.mirrorlist
+sha256 97925132f0583ccd76f5e104c849341df3abba73dd4d9b647622a23bdae6273f qt3d-opensource-src-5.9.3.tar.xz
 
 # Hashes for license files:
 sha256 edfe70e99be2a7c109d860b19204609e582720b211c50caedac729da372a1253 LICENSE.GPL

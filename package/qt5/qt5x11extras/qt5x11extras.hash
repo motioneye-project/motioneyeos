@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtx11extras-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 1e7a8e96e0629f2b2b78de684b156b357210cf5df6b42f30789423f2cb07677f qtx11extras-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qtx11extras-opensource-src-5.9.2.tar.xz.mirrorlist
-sha256 db85450ad4851816a4fade1ffc10d078d28f2cca174cffa6cbd6d1220b395ac5 qtx11extras-opensource-src-5.9.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.3/submodules/qtx11extras-opensource-src-5.9.3.tar.xz.mirrorlist
+sha256 e4e0bf8cbb629758ab85b72d240d7424642482f602ce414e06deef4e147bf2be qtx11extras-opensource-src-5.9.3.tar.xz
 
 # Hashes for license files:
 sha256 edfe70e99be2a7c109d860b19204609e582720b211c50caedac729da372a1253 LICENSE.GPLv2

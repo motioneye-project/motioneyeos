@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtwebchannel-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 8eb1b0ac2286653c7932758c21e7760788a5d7cfd6162da09afa926d5be50713 qtwebchannel-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.2/submodules/qtwebchannel-opensource-src-5.9.2.tar.xz.mirrorlist
-sha256 9c1b4defecadd7f9ee15d5815d464abef0961fc565cc7831720fc7c0c0d13a26 qtwebchannel-opensource-src-5.9.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.3/submodules/qtwebchannel-opensource-src-5.9.3.tar.xz.mirrorlist
+sha256 632795b293f1318e9aaa1e124b6a39b1625c8c1e35b0a9f05a02ea0066458358 qtwebchannel-opensource-src-5.9.3.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2
