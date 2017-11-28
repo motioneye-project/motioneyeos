@@ -1,5 +1,6 @@
 config BR2_PACKAGE_HOST_RAUC
 	bool "host rauc"
+	select BR2_PACKAGE_HOST_SQUASHFS # run-time dependency
 	help
 	  RAUC is the Robust Auto-Update Controller developed by
 	  Pengutronix. Enable this option to build the rauc
