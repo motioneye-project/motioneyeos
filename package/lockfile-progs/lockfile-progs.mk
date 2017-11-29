@@ -11,7 +11,7 @@ LOCKFILE_PROGS_DEPENDENCIES = liblockfile
 LOCKFILE_PROGS_LICENSE = GPL-2.0
 LOCKFILE_PROGS_LICENSE_FILES = COPYING
 
-LOCKFILE_BINS = \
+LOCKFILE_PROGS_BINS = \
 	$(addprefix lockfile-,check create remove touch) \
 	$(addprefix mail-,lock touchlock unlock)
 
@@ -20,7 +20,7 @@ define LOCKFILE_PROGS_BUILD_CMDS
 endef
 
 define LOCKFILE_PROGS_INSTALL_TARGET_CMDS
-	for i in $(LOCKFILE_BINS); do \
+	for i in $(LOCKFILE_PROGS_BINS); do \
 		$(INSTALL) -D -m 755 $(@D)/bin/$$i $(TARGET_DIR)/usr/bin/$$i || exit 1; \
 	done
 endef
