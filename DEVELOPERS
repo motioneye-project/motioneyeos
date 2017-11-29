@@ -1422,6 +1422,7 @@ F:	package/minetest/
 F:	package/minetest-game/
 F:	package/openpowerlink/
 F:	package/physfs/
+F:	package/solarus/
 F:	package/stress-ng/
 F:	package/supertux/
 F:	package/terminology/
