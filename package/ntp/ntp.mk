@@ -17,7 +17,7 @@ NTP_CONF_OPTS = \
 	--disable-tickadj \
 	--disable-debugging \
 	--with-yielding-select=yes \
-	--disable-local-libevent \
+	--disable-local-libevent
 
 # 0002-ntp-syscalls-fallback.patch
 # 0003-ntpq-fpic.patch
