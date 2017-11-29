@@ -1,5 +1,5 @@
-# From https://lists.x.org/archives/xorg-announce/2017-October/002816.html
-md5 9ba75bf38ba62a6ad52550ab716da9b3  libXfont-1.5.3.tar.bz2
-sha1 628b8ca2207f09324b8926084318a2fa2edb16d1  libXfont-1.5.3.tar.bz2
-sha256 ab85c10fd2683481dfef672a77fe60e6a2039558cbc0e9bf56b5e1df471c93d0  libXfont-1.5.3.tar.bz2
-sha512 e7c8a09c4d174129e5d550194d3c3dc2b4abf797e52fe588c6002920727c52cf33b7db8d07fc69c2987e766d3af2d6ddda72f0c70eb21b135c691c97656a81b4  libXfont-1.5.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-November/002825.html
+md5  16eaf156edd79b68038b6a7c44aa9e9b  libXfont-1.5.4.tar.bz2
+sha1 9db050f63b9c4cb19e0dbb40575558ccb95719ca  libXfont-1.5.4.tar.bz2
+sha256 1a7f7490774c87f2052d146d1e0e64518d32e6848184a18654e8d0bb57883242  libXfont-1.5.4.tar.bz2
+sha512 864edbaff45c44bd92bc4b06275c73fdf584a9b88bc523a297d4c75c01ca253f438463e929af70d753ddecfa648bb0b9bcf0ec72267db9f2b1704f7afa906cb3  libXfont-1.5.4.tar.bz2
