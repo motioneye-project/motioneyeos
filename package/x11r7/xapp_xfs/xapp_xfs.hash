@@ -1,2 +1,5 @@
-# From http://lists.x.org/archives/xorg-announce/2014-August/002472.html
-sha256	a40b75e674c091464f85739292b6bf24e2d153f4a2ac456d3ea6b8a64e269ffa	xfs-1.1.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-November/002826.html
+md5  b4d2e644bfb35cae8858d2411501b07e  xfs-1.2.0.tar.bz2
+sha1 00848fcc2915ed8b00e75ac311c4727327324f57  xfs-1.2.0.tar.bz2
+sha256 db2212115783498f8eeaaee1349461d6c4e9d2005e142bacd3a984fe57269860  xfs-1.2.0.tar.bz2
+sha512 557b08aa07919239ce345d60b288b886640200bb1a59649fc890c3ccaa8559cc6745189614e696ab1b390ec024b393be5493787b7b0d2b3545b342d743c2e0ef  xfs-1.2.0.tar.bz2
