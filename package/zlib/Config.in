@@ -20,6 +20,15 @@ config BR2_PACKAGE_LIBZLIB
 
 	  http://www.zlib.net
 
+config BR2_PACKAGE_ZLIB_NG
+	bool "zlib-ng"
+	select BR2_PACKAGE_HAS_ZLIB
+	help
+	  Zlib replacement with optimizations for
+	  "next generation" systems.
+
+	  https://github.com/mtl1979/zlib-ng/tree/renamelib
+
 endchoice
 
 config BR2_PACKAGE_HAS_ZLIB
@@ -28,6 +37,7 @@ config BR2_PACKAGE_HAS_ZLIB
 config BR2_PACKAGE_PROVIDES_ZLIB
 	string
 	default "libzlib" if BR2_PACKAGE_LIBZLIB
+	default "zlib-ng" if BR2_PACKAGE_ZLIB_NG
 
 endif
 
