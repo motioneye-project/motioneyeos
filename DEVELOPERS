@@ -679,6 +679,7 @@ F:	package/zxing-cpp/
 N:	Gaël Portay <gael.portay@savoirfairelinux.com>
 F:	package/qt5/qt5virtualkeyboard/
 F:	package/qt5/qt5webengine/
+F:	package/qt5/qt5webkit-examples/
 
 N:	Gary Bisson <gary.bisson@boundarydevices.com>
 F:	board/boundarydevices/
