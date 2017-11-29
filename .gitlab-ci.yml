@@ -30,6 +30,10 @@ check-DEVELOPERS:
     script:
         - "! utils/get-developers | grep -v 'No action specified'"
 
+check-package:
+    script:
+        - find . -type f -name '*.mk' -exec ./utils/check-package {} +
+
 .defconfig: &defconfig
     # Running the defconfigs for every push is too much, so limit to
     # explicit triggers through the API.
