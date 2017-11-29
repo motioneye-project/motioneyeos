@@ -13,14 +13,14 @@ AM335X_PRU_PACKAGE_INSTALL_STAGING = YES
 
 # The default 'all' rule builds everything, when we just need the library
 ifeq ($(BR2_ENABLE_DEBUG),y)
-AM335X_MAKE_TARGET = debug $(if $(BR2_STATIC_LIBS),,sodebug)
+AM335X_PRU_PACKAGE_MAKE_TARGET = debug $(if $(BR2_STATIC_LIBS),,sodebug)
 else
-AM335X_MAKE_TARGET = release $(if $(BR2_STATIC_LIBS),,sorelease)
+AM335X_PRU_PACKAGE_MAKE_TARGET = release $(if $(BR2_STATIC_LIBS),,sorelease)
 endif
 
 define AM335X_PRU_PACKAGE_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) CROSS_COMPILE="$(TARGET_CROSS)" \
-		-C $(@D)/pru_sw/app_loader/interface $(AM335X_MAKE_TARGET)
+		-C $(@D)/pru_sw/app_loader/interface $(AM335X_PRU_PACKAGE_MAKE_TARGET)
 endef
 
 # 'install' installs whatever was built, and our patch removes the dependency
