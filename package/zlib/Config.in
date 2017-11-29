@@ -1,7 +1,37 @@
 config BR2_PACKAGE_ZLIB
+	bool "zlib support"
+	help
+	  Select the desired Zlib library provider.
+
+if BR2_PACKAGE_ZLIB
+
+choice
+	prompt "zlib variant"
+	default BR2_PACKAGE_LIBZLIB
+	help
+	  Select the desired Zlib library provider.
+
+config BR2_PACKAGE_LIBZLIB
 	bool "zlib"
+	select BR2_PACKAGE_HAS_ZLIB
 	help
 	  Standard (de)compression library. Used by things like
 	  gzip and libpng.
 
 	  http://www.zlib.net
+
+endchoice
+
+config BR2_PACKAGE_HAS_ZLIB
+	bool
+
+config BR2_PACKAGE_PROVIDES_ZLIB
+	string
+	default "libzlib" if BR2_PACKAGE_LIBZLIB
+
+endif
+
+# ensure libzlib is used for the host variant
+config BR2_PACKAGE_PROVIDES_HOST_ZLIB
+	string
+	default "host-libzlib"
