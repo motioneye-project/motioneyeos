@@ -87,7 +87,11 @@ config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSRC
 config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSINK
 	bool "imxv4l2videosink"
 	select BR2_PACKAGE_GST1_PLUGINS_BAD
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2 # V4L2_COLORSPACE_DEFAULT
 	help
 	  Elements for V4L2 output
+
+comment "imxv4l2videosink needs a toolchain w/ headers >= 4.2"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
 
 endif
