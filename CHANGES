@@ -1,3 +1,31 @@
+2017.11, Released November 30, 2017
+
+	Fixes all over the tree.
+
+	Toolchain: Use github mirror for Glibc.
+
+	Defconfigs: Correct boot.cmd for bananapi-m1.
+
+	Makefiles: Workaround include order issues for certain make
+	versions by explicitly sorting the result of wildcard where it
+	matters.
+
+	Download: Ensure subversion runs in non-interactive mode.
+
+	Updated/fixed packages: asterisk, boost, chrony, dovecot,
+	dvb-apps, exim, feh, freerdp, fwup, google-breakpad, jose,
+	kvm-unit-test, lftp, libcurl, libevent, libfastjson, libpjsip,
+	libupnp, linphone, localedef, lttng-tools, mp4v2, mtools,
+	ndisc6, oracle-mysql, parted, pdbg, qt, qt5connectivity,
+	qt5declarative, qt5webkit, rauc, runc, samba4, shairport-sync,
+	systemd-bootchart, webkitgtk, wireguard, xlib_libXcursor,
+	xlib_libXfont, xlib_libXfont2,
+
+	Issues resolved (http://bugs.buildroot.org):
+
+	10501: host-localedef fails to compile on Ubuntu 17.10
+	10506: Changed kernel image type (e.g. zImage to uImage)...
+
 2017.11-rc2, Released November 13th, 2017
 
 	Fixes all over the tree.
