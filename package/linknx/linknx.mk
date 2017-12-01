@@ -9,7 +9,6 @@ LINKNX_SITE = $(call github,linknx,linknx,$(LINKNX_VERSION))
 LINKNX_LICENSE = GPL-2.0+
 LINKNX_INSTALL_STAGING = YES
 LINKNX_CONF_OPTS = \
-	--without-lua \
 	--without-log4cpp \
 	--without-pth-test \
 	--with-pth=$(STAGING_DIR)/usr \
@@ -23,6 +22,13 @@ LINKNX_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr
 LINKNX_DEPENDENCIES += libcurl
 else
 LINKNX_CONF_OPTS += --without-libcurl
+endif
+
+ifeq ($(BR2_PACKAGE_LUA),y)
+LINKNX_CONF_OPTS += --with-lua
+LINKNX_DEPENDENCIES += lua
+else
+LINKNX_CONF_OPTS += --without-lua
 endif
 
 ifeq ($(BR2_PACKAGE_MYSQL),y)
