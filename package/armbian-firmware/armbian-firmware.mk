@@ -11,8 +11,8 @@ ARMBIAN_FIRMWARE_SITE_METHOD = git
 # XR819 WiFi firmware
 ifeq ($(BR2_PACKAGE_ARMBIAN_FIRMWARE_XR819),y)
 ARMBIAN_FIRMWARE_FILES += \
-	xr819/boot_xr819.bin  \
-	xr819/fw_xr819.bin  \
+	xr819/boot_xr819.bin \
+	xr819/fw_xr819.bin \
 	xr819/sdd_xr819.bin
 endif
 
