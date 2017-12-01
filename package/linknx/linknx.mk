@@ -18,6 +18,13 @@ LINKNX_CONF_OPTS = \
 LINKNX_DEPENDENCIES = libpthsem \
 	$(if $(BR2_PACKAGE_ARGP_STANDALONE),argp-standalone)
 
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+LINKNX_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr
+LINKNX_DEPENDENCIES += libcurl
+else
+LINKNX_CONF_OPTS += --without-libcurl
+endif
+
 ifeq ($(BR2_PACKAGE_MYSQL),y)
 LINKNX_CONF_OPTS += --with-mysql=$(STAGING_DIR)/usr
 LINKNX_DEPENDENCIES += mysql
