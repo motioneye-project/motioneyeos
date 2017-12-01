@@ -4,12 +4,9 @@
 #
 ################################################################################
 
-REFPOLICY_VERSION = RELEASE_2_20170204
-
-# Do not use GitHub helper as git submodules are needed for refpolicy-contrib
-REFPOLICY_SITE = https://github.com/TresysTechnology/refpolicy.git
-REFPOLICY_SITE_METHOD = git
-REFPOLICY_GIT_SUBMODULES = y # Required for refpolicy-contrib
+REFPOLICY_VERSION = 2.20170805
+REFPOLICY_SOURCE = refpolicy-$(REFPOLICY_VERSION).tar.bz2
+REFPOLICY_SITE = https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files
 REFPOLICY_LICENSE = GPL-2.0
 REFPOLICY_LICENSE_FILES = COPYING
 REFPOLICY_INSTALL_STAGING = YES
@@ -19,13 +16,17 @@ REFPOLICY_DEPENDENCIES = \
 	host-policycoreutils \
 	host-setools \
 	host-gawk \
-	host-python \
 	policycoreutils
+
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+REFPOLICY_DEPENDENCIES += host-python3
+else
+REFPOLICY_DEPENDENCIES += host-python
+endif
 
 # Cannot use multiple threads to build the reference policy
 REFPOLICY_MAKE = \
 	TEST_TOOLCHAIN=$(HOST_DIR) \
-	PYTHON="$(HOST_DIR)/bin/python2" \
 	$(TARGET_MAKE_ENV) \
 	$(MAKE1)
 

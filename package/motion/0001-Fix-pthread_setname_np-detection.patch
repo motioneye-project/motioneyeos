@@ -1,0 +1,50 @@
+From 505be2201377fa347a34b6cb4164c856b55e7484 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 23 Nov 2017 22:47:39 +0100
+Subject: [PATCH] Fix pthread_setname_np detection
+
+Commit 6617c6f2c8aad041d3428bea11206fd2e61763b1 replaced
+AC_LINK_IFELSE with AC_COMPILE_IFELSE. This has broken the
+pthread_setname_np detection as compilation will always succeed even if
+pthread_setname_np is not available (if the function is not found, a
+simple warning will be displayed in config.log).
+
+The correct fix is to put back AC_LINK_IFELSE with -pthread in LIBS
+otherwise compilation will fail on toolchain without pthread_setname_np.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ configure.ac | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1792b65..21efd2a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -128,17 +128,20 @@ fi
+ if test x$THREADS = xyes; then
+   TEMP_LIBS="$TEMP_LIBS -pthread"
+   TEMP_CFLAGS="${TEMP_CFLAGS} -D_THREAD_SAFE"
+-fi
+ 
+ ##############################################################################
+ ###  Check for pthread_setname_np (nonstandard GNU extension)
+ ##############################################################################
+-AC_MSG_CHECKING([for pthread_setname_np])
+-AC_COMPILE_IFELSE(
++  AC_MSG_CHECKING([for pthread_setname_np])
++  HOLD_LIBS="$LIBS"
++  LIBS="$TEMP_LIBS"
++  AC_LINK_IFELSE(
+     [AC_LANG_PROGRAM([#include <pthread.h>], [pthread_setname_np(pthread_self(), "name")])],
+     [AC_DEFINE([HAVE_PTHREAD_SETNAME_NP], [1], [Define if you have pthread_setname_np function.])
+     AC_MSG_RESULT([yes])],
+     [AC_MSG_RESULT([no])] )
++  LIBS="$HOLD_LIBS"
++fi
+ 
+ ##############################################################################
+ ###  Check for JPG
+-- 
+2.14.1
+

@@ -1,0 +1,10 @@
+[Unit]
+Description=Rygel DLNA server
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/rygel
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

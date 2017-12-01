@@ -484,18 +484,17 @@ endif # BR_BUILDING
 $(eval $(kconfig-package))
 
 # Support for rebuilding the kernel after the cpio archive has
-# been generated in $(BINARIES_DIR)/rootfs.cpio.
-$(LINUX_DIR)/.stamp_initramfs_rebuilt: $(LINUX_DIR)/.stamp_target_installed $(LINUX_DIR)/.stamp_images_installed $(BINARIES_DIR)/rootfs.cpio
+# been generated.
+.PHONY: linux-rebuild-with-initramfs
+linux-rebuild-with-initramfs: $(LINUX_DIR)/.stamp_target_installed
+linux-rebuild-with-initramfs: $(LINUX_DIR)/.stamp_images_installed
+linux-rebuild-with-initramfs: rootfs-cpio
+linux-rebuild-with-initramfs:
 	@$(call MESSAGE,"Rebuilding kernel with initramfs")
 	# Build the kernel.
-	$(LINUX_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(@D) $(LINUX_TARGET_NAME)
+	$(LINUX_MAKE_ENV) $(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) $(LINUX_TARGET_NAME)
 	$(LINUX_APPEND_DTB)
 	# Copy the kernel image(s) to its(their) final destination
 	$(call LINUX_INSTALL_IMAGE,$(BINARIES_DIR))
 	# If there is a .ub file copy it to the final destination
 	test ! -f $(LINUX_IMAGE_PATH).ub || cp $(LINUX_IMAGE_PATH).ub $(BINARIES_DIR)
-	$(Q)touch $@
-
-# The initramfs building code must make sure this target gets called
-# after it generated the initramfs list of files.
-linux-rebuild-with-initramfs: $(LINUX_DIR)/.stamp_initramfs_rebuilt

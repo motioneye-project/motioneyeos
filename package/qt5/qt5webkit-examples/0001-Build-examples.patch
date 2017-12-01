@@ -1,0 +1,52 @@
+From 78f558df35860484711a600d155ae7a13ebf44b2 Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Date: Tue, 28 Nov 2017 23:14:42 -0500
+Subject: [PATCH 1/1] Build examples
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+This patch improves the qt5webkit examples build for 2 aspects:
+
+	- Allows to build even if qt5base examples are not enabled
+	- Builds xmlpatterns example only if the qt5xmlpattern package
+	has been built
+
+Signed-off-by: Massimo Callegari <massimocallegari@yahoo.it>
+Signed-off-by: Gaël PORTAY <gael.portay@savoirfairelinux.com>
+[gportay: build imageanalyzer example if concurrent module is built]
+---
+ examples/webkitwidgets/webkitwidgets.pro | 7 ++++---
+ qtwebkit-examples.pro                    | 1 +
+ 2 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/examples/webkitwidgets/webkitwidgets.pro b/examples/webkitwidgets/webkitwidgets.pro
+index ab20df4..67f6785 100644
+--- a/examples/webkitwidgets/webkitwidgets.pro
++++ b/examples/webkitwidgets/webkitwidgets.pro
+@@ -4,9 +4,10 @@ SUBDIRS +=  domtraversal \
+             previewer \
+             fancybrowser \
+             simpleselector \
+-            imageanalyzer \
+             framecapture \
+             browser \
+             embedded \
+-            scroller \
+-            xmlpatterns
++            scroller
++
++qtHaveModule(xmlpatterns): SUBDIRS += xmlpatterns
++qtHaveModule(concurrent): SUBDIRS += imageanalyzer
+diff --git a/qtwebkit-examples.pro b/qtwebkit-examples.pro
+index 3fcecf1..2ade7ff 100644
+--- a/qtwebkit-examples.pro
++++ b/qtwebkit-examples.pro
+@@ -3,3 +3,4 @@ requires(qtHaveModule(webkit))
+ load(qt_parts)
+ 
+ SUBDIRS += doc
++SUBDIRS += examples
+-- 
+2.15.0
+

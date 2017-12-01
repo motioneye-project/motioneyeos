@@ -79,6 +79,7 @@ config BR2_aarch64_be
 config BR2_bfin
 	bool "Blackfin"
 	select BR2_ARCH_HAS_FDPIC_SUPPORT
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	help
 	  The Blackfin is a family of 16 or 32-bit microprocessors developed,
 	  manufactured and marketed by Analog Devices.
@@ -260,6 +261,27 @@ config BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 config BR2_ARCH_HAS_TOOLCHAIN_BUILDROOT
 	bool
 	default y if !BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+
+# The following symbols are selected by the individual
+# Config.in.$ARCH files
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
+	bool
+
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_4_9
+	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_4_8
+
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_5
+	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_4_9
+
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_6
+	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
+
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_7
+	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 
 # The following string values are defined by the individual
 # Config.in.$ARCH files

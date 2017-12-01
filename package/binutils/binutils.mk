@@ -15,7 +15,7 @@ BINUTILS_VERSION = 2.28.1
 endif
 endif # BINUTILS_VERSION
 
-ifeq ($(BR2_arc),y)
+ifeq ($(BINUTILS_VERSION),arc-2017.09-release)
 BINUTILS_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,binutils-gdb,$(BINUTILS_VERSION))
 BINUTILS_SOURCE = binutils-$(BINUTILS_VERSION).tar.gz
 BINUTILS_FROM_GIT = y

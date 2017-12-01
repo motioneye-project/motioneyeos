@@ -143,6 +143,17 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2018.02"
+
+config BR2_PACKAGE_GNUPG2_GPGV2
+	bool "gnupg2 gpgv2 option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GNUPG2_GPGV
+	help
+	  The gpgv2 executable is now named gpgv. The config option
+	  has been renamed accordingly.
+
+###############################################################################
 comment "Legacy options removed in 2017.11"
 
 config BR2_PACKAGE_RFKILL
@@ -1142,13 +1153,6 @@ config BR2_x86_i386
 	help
 	  The support for the i386 processors of the x86 architecture
 	  has been removed.
-
-config BR2_PACKAGE_QT5WEBKIT_EXAMPLES
-	bool "qt5webkit-examples package removed"
-	select BR2_LEGACY
-	help
-	  The qt5webkit-examples package has been removed, since it
-	  was removed from upstream starting from Qt 5.6.
 
 config BR2_PACKAGE_QT5QUICK1
 	bool "qt5quick1 package removed"

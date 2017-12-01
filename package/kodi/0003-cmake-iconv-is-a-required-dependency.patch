@@ -1,0 +1,92 @@
+From 70ab56d74aff8b2e3ac49fed6bdf3751c9b1457e Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 12 Feb 2017 14:24:18 +0100
+Subject: [PATCH] [cmake] iconv is a required dependency
+
+This patch adds support for libiconv currently only provided by the
+autoconf-based build system:
+https://github.com/xbmc/xbmc/blob/Krypton/configure.ac#L1172
+
+This commit fixes an error during linking with an uClibc-based
+buildroot toolchain:
+
+[100%] Linking CXX executable kodi.bin
+/home/buildroot/br8_ffmpeg3_kodi17_github/output/host/usr/lib/gcc/i586-buildroot-linux-uclibc/6.3.0/../../../../i586-buildroot-linux-uclibc/bin/ld: build/utils/utils.a(CharsetConverter.cpp.o): undefined reference to symbol 'libiconv_open'
+/home/buildroot/br8_ffmpeg3_kodi17_github/output/host/usr/i586-buildroot-linux-uclibc/sysroot/usr/lib32/libiconv.so.2: error adding symbols: DSO missing from command line
+
+Backported to Krypton from master branch commit:
+https://github.com/xbmc/xbmc/commit/9a64537543e8dc8609ca8a98181ba17f30c53493
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ project/cmake/CMakeLists.txt          |  2 +-
+ project/cmake/modules/FindIconv.cmake | 44 +++++++++++++++++++++++++++++++++++
+ 2 files changed, 45 insertions(+), 1 deletion(-)
+ create mode 100644 project/cmake/modules/FindIconv.cmake
+
+diff --git a/project/cmake/CMakeLists.txt b/project/cmake/CMakeLists.txt
+index aeb1ff47c2..07c1d1a8d3 100644
+--- a/project/cmake/CMakeLists.txt
++++ b/project/cmake/CMakeLists.txt
+@@ -103,7 +103,7 @@ list(APPEND DEPLIBS ${CMAKE_THREAD_LIBS_INIT})
+ 
+ # Required dependencies
+ set(required_deps Sqlite3 FreeType PCRE Cpluff LibDvd
+-                  TinyXML Python Yajl Cdio
++                  TinyXML Python Yajl Cdio Iconv
+                   Lzo2 Fribidi TagLib FFMPEG CrossGUID)
+ if(NOT WIN32)
+   list(APPEND required_deps ZLIB)
+diff --git a/project/cmake/modules/FindIconv.cmake b/project/cmake/modules/FindIconv.cmake
+new file mode 100644
+index 0000000000..8ee01fb6b8
+--- /dev/null
++++ b/project/cmake/modules/FindIconv.cmake
+@@ -0,0 +1,44 @@
++#.rst:
++# FindICONV
++# --------
++# Finds the ICONV library
++#
++# This will will define the following variables::
++#
++# ICONV_FOUND - system has ICONV
++# ICONV_INCLUDE_DIRS - the ICONV include directory
++# ICONV_LIBRARIES - the ICONV libraries
++#
++# and the following imported targets::
++#
++#   ICONV::ICONV   - The ICONV library
++
++find_path(ICONV_INCLUDE_DIR NAMES iconv.h)
++
++find_library(ICONV_LIBRARY NAMES iconv libiconv c)
++
++set(CMAKE_REQUIRED_LIBRARIES ${ICONV_LIBRARY})
++check_function_exists(iconv HAVE_ICONV_FUNCTION)
++if(NOT HAVE_ICONV_FUNCTION)
++  check_function_exists(libiconv HAVE_LIBICONV_FUNCTION2)
++  set(HAVE_ICONV_FUNCTION ${HAVE_LIBICONV_FUNCTION2})
++  unset(HAVE_LIBICONV_FUNCTION2)
++endif()
++
++include(FindPackageHandleStandardArgs)
++find_package_handle_standard_args(Iconv
++                                  REQUIRED_VARS ICONV_LIBRARY ICONV_INCLUDE_DIR HAVE_ICONV_FUNCTION)
++
++if(ICONV_FOUND)
++  set(ICONV_LIBRARIES ${ICONV_LIBRARY})
++  set(ICONV_INCLUDE_DIRS ${ICONV_INCLUDE_DIR})
++
++  if(NOT TARGET ICONV::ICONV)
++    add_library(ICONV::ICONV UNKNOWN IMPORTED)
++    set_target_properties(ICONV::ICONV PROPERTIES
++                                     IMPORTED_LOCATION "${ICONV_LIBRARY}"
++                                     INTERFACE_INCLUDE_DIRECTORIES "${ICONV_INCLUDE_DIR}")
++  endif()
++endif()
++
++mark_as_advanced(ICONV_INCLUDE_DIR ICONV_LIBRARY HAVE_ICONV_FUNCTION)
+-- 
+2.11.0
+

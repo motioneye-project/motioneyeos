@@ -1,0 +1,51 @@
+From 927c0132251f1cd3452b96ebd75f1b06bc53e4ec Mon Sep 17 00:00:00 2001
+From: claziss <claziss@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Mon, 10 Jul 2017 13:55:26 +0000
+Subject: [PATCH] [ARC] Configure script to allow non uclibc based triplets
+
+gcc/
+2017-07-10  Vineet Gupta <vgupta@synopsys.com>
+
+        * config.gcc: Remove uclibc from arc target spec.
+
+libgcc/
+2017-07-10  Vineet Gupta <vgupta@synopsys.com>
+
+        * config.host: Remove uclibc from arc target spec.
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/trunk@250097 138bc75d-0d04-0410-961f-82ee72b054a4
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ gcc/config.gcc     | 2 +-
+ libgcc/config.host | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/gcc/config.gcc b/gcc/config.gcc
+index 1b47457..933a451 100644
+--- a/gcc/config.gcc
++++ b/gcc/config.gcc
+@@ -1044,7 +1044,7 @@ arc*-*-elf*)
+ 	big*)	tm_file="arc/big.h ${tm_file}"
+ 	esac
+ 	;;
+-arc*-*-linux-uclibc*)
++arc*-*-linux*)
+ 	tm_file="arc/arc-arch.h dbxelf.h elfos.h gnu-user.h linux.h linux-android.h glibc-stdint.h arc/linux.h ${tm_file}"
+ 	tmake_file="${tmake_file} arc/t-arc"
+ 	extra_gcc_objs="driver-arc.o"
+diff --git a/libgcc/config.host b/libgcc/config.host
+index 989ac71..a5ab453 100644
+--- a/libgcc/config.host
++++ b/libgcc/config.host
+@@ -383,7 +383,7 @@ arc*-*-elf*)
+ 	extra_parts="crti.o crtn.o crtend.o crtbegin.o crtendS.o crtbeginS.o"
+ 	extra_parts="$extra_parts crttls.o"
+ 	;;
+-arc*-*-linux-uclibc*)
++arc*-*-linux*)
+ 	tmake_file="${tmake_file} t-slibgcc-libgcc t-slibgcc-nolc-override arc/t-arc-uClibc arc/t-arc"
+ 	extra_parts="$extra_parts crti.o crtn.o"
+ 	extra_parts="$extra_parts crttls.o"
+-- 
+2.10.2
+

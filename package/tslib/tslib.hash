@@ -1,5 +1,5 @@
-# https://github.com/kergoth/tslib/releases/download/1.13/tslib-1.13.tar.xz.sha256
-sha256  b381279f2d6ad6acb80cfc4852860853b7bcd1a9440821e9fe920c33f4e4f8da  tslib-1.13.tar.xz
+# https://github.com/kergoth/tslib/releases/download/1.14/tslib-1.14.tar.xz.sha256
+sha256  56ce7adfb896442001938470a7f946cc029bfb03ed74e7f62db92d9c9ba83df4  tslib-1.14.tar.xz
 
 # Locally computed
 sha256  9b872a8a070b8ad329c4bd380fb1bf0000f564c75023ec8e1e6803f15364b9e9  COPYING

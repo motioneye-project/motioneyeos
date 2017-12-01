@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_IMX_VERSION = 0.12.3
+GST1_IMX_VERSION = 0.13.0
 GST1_IMX_SITE = $(call github,Freescale,gstreamer-imx,$(GST1_IMX_VERSION))
 
 GST1_IMX_LICENSE = LGPL-2.0+
@@ -83,10 +83,17 @@ GST1_IMX_CONF_OPTS += --disable-vpu
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_IMX_V4L2VIDEOSRC),y)
-# There's no --enable-v4l2src option
+# There's no --enable-imxv4l2videosrc option
 GST1_IMX_DEPENDENCIES += gst1-plugins-bad
 else
-GST1_IMX_CONF_OPTS += --disable-v4l2src
+GST1_IMX_CONF_OPTS += --disable-imxv4l2videosrc
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_IMX_V4L2VIDEOSINK),y)
+# There's no --enable-imxv4l2videosink option
+GST1_IMX_DEPENDENCIES += gst1-plugins-bad
+else
+GST1_IMX_CONF_OPTS += --disable-imxv4l2videosink
 endif
 
 $(eval $(waf-package))

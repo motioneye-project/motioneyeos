@@ -38,7 +38,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2017.09"
+	bool "2017.11"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -86,7 +86,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2017.09"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2017.11"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -334,13 +334,14 @@ config BR2_TARGET_UBOOT_SPL
 	  into DDR.
 
 config BR2_TARGET_UBOOT_SPL_NAME
-	string "U-Boot SPL binary image name"
+	string "U-Boot SPL/TPL binary image name(s)"
 	default "spl/u-boot-spl.bin"
 	depends on BR2_TARGET_UBOOT_SPL
 	help
-	  A space-separated list of SPL binaries, generated during
-	  u-boot build. For most platform it is spl/u-boot-spl.bin but
-	  not always. It is MLO on OMAP and SPL on i.MX6 for example.
+	  A space-separated list of SPL/TPL binaries, generated during
+	  u-boot build. For most platform SPL name is spl/u-boot-spl.bin
+	  and TPL name is tpl/u-boot-tpl.bin but not always. SPL name is
+	  MLO on OMAP and SPL on i.MX6 for example.
 
 config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	bool "Generate image for Xilinx Zynq"

@@ -4,14 +4,7 @@
 #
 ################################################################################
 
-#
-# This program is free software; you can redistribute it
-# and/or modify it under the terms of the GNU Lesser General
-# Public License as published by the Free Software Foundation
-# either version 2.1 of the License, or (at your option) any
-# later version.
-
-AVAHI_VERSION = 0.6.32
+AVAHI_VERSION = 0.7
 AVAHI_SITE = https://github.com/lathiat/avahi/releases/download/v$(AVAHI_VERSION)
 AVAHI_LICENSE = LGPL-2.1+
 AVAHI_LICENSE_FILES = LICENSE

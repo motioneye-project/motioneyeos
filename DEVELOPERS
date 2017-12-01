@@ -79,6 +79,9 @@ F:	package/putty/
 N:	Alexander Lukichev <alexander.lukichev@espotel.com>
 F:	package/openpgm/
 
+N:	Alexander Mukhin <alexander.i.mukhin@gmail.com>
+F:	package/hostapd/
+
 N:	Alexander Varnin <fenixk19@mail.ru>
 F:	package/liblog4c-localtime/
 
@@ -324,8 +327,10 @@ F:	package/python-mwclient/
 F:	package/python-mwscrape/
 F:	package/python-mwscrape2slob/
 F:	package/python-mako/
+F:	package/python-oauthlib/
 F:	package/python-pyicu/
 F:	package/python-pylru/
+F:	package/python-requests-oauthlib/
 F:	package/python-slob/
 F:	package/rtmpdump/
 F:	package/softether/
@@ -339,6 +344,7 @@ F:	package/vdr/
 F:	package/vdr-plugin-vnsiserver/
 F:	package/vlc/
 F:	package/vnstat/
+F:	package/waylandpp/
 F:	package/x11r7/
 F:	package/x264/
 F:	package/x265/
@@ -579,6 +585,9 @@ N:	Fabio Estevam <festevam@gmail.com>
 F:	board/warp7/
 F:	configs/freescale_imx*
 F:	configs/imx6-sabresd*
+F:	configs/imx6slevk_defconfig
+F:	configs/imx6sx-sdb_defconfig
+F:	configs/imx6ulevk_defconfig
 F:	configs/imx6ulpico_defconfig
 F:	configs/mx6cubox_defconfig
 F:	configs/mx6sx_udoo_neo_defconfig
@@ -611,8 +620,10 @@ F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/igd2-for-linux/
 F:	package/libupnp/
+F:	package/libupnp18/
 F:	package/minissdpd/
 F:	package/motion/
+F:	package/rygel/
 F:	package/tinycbor/
 F:	package/tinydtls/
 
@@ -671,6 +682,7 @@ F:	package/zxing-cpp/
 N:	Gaël Portay <gael.portay@savoirfairelinux.com>
 F:	package/qt5/qt5virtualkeyboard/
 F:	package/qt5/qt5webengine/
+F:	package/qt5/qt5webkit-examples/
 
 N:	Gary Bisson <gary.bisson@boundarydevices.com>
 F:	board/boundarydevices/
@@ -797,6 +809,8 @@ F:	board/qemu/ppc64le-pseries/
 F:	configs/qemu_ppc64le_pseries_defconfig
 
 N:	Joseph Kogut <joseph.kogut@gmail.com>
+F:	package/python-raven/
+F:	package/python-schedule/
 F:	package/python-websockets/
 
 N:	Johan Derycke <johanderycke@gmail.com>
@@ -1004,6 +1018,10 @@ F:	package/turbolua/
 
 N:	Marcin Nowakowski <marcin.nowakowski@imgtec.com>
 F:	package/libkcapi/
+
+N:	Marcus Folkesson <marcus.folkesson@gmail.com>
+F:	package/libostree/
+F:	utils/diffconfig
 
 N:	Marek Belisko <marek.belisko@open-nandra.com>
 F:	package/libatasmart/
@@ -1411,6 +1429,7 @@ F:	package/minetest/
 F:	package/minetest-game/
 F:	package/openpowerlink/
 F:	package/physfs/
+F:	package/solarus/
 F:	package/stress-ng/
 F:	package/supertux/
 F:	package/supertuxkart/
@@ -1485,6 +1504,13 @@ F:	package/mpir/
 
 N:	Sergey Matyukevich <geomatsi@gmail.com>
 F:	package/xr819-xradio/
+F:	package/armbian-firmware/
+F:	board/orangepi/orangepi-zero
+F:	board/orangepi/orangepi-one
+F:	board/linksprite/pcduino
+F:	configs/orangepi_one_defconfig
+F:	configs/orangepi_zero_defconfig
+F:	configs/linksprite_pcduino_defconfig
 
 N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/

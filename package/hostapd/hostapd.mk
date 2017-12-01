@@ -47,6 +47,11 @@ HOSTAPD_CONFIG_DISABLE += CONFIG_EAP_PWD
 HOSTAPD_CONFIG_EDITS += 's/\#\(CONFIG_TLS=\).*/\1internal/'
 endif
 
+ifeq ($(BR2_PACKAGE_HOSTAPD_DRIVER_RTW),y)
+HOSTAPD_PATCH += https://github.com/pritambaral/hostapd-rtl871xdrv/raw/master/rtlxdrv.patch
+HOSTAPD_CONFIG_SET += CONFIG_DRIVER_RTW
+endif
+
 ifeq ($(BR2_PACKAGE_HOSTAPD_ACS),y)
 HOSTAPD_CONFIG_ENABLE += CONFIG_ACS
 endif

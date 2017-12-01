@@ -1,12 +1,14 @@
 comment "Linaro toolchains available for Cortex-A + EABIhf"
 	depends on BR2_armeb
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	depends on !BR2_ARM_CPU_ARMV7A || !BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB
 	bool "Linaro armeb 2017.08"
 	depends on BR2_armeb
-	depends on BR2_ARM_CPU_ARMV7A || BR2_ARM_CPU_ARMV8
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
+	depends on BR2_ARM_CPU_ARMV7A || BR2_ARM_CPU_ARMV8A
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_ARM_EABIHF
 	depends on !BR2_STATIC_LIBS

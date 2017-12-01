@@ -1,0 +1,31 @@
+From cdd8d11858fa34f6e813fae46b5556e9fb3570dc Mon Sep 17 00:00:00 2001
+From: David Lechner <david@lechnology.com>
+Date: Sun, 19 Nov 2017 19:54:32 -0600
+Subject: [PATCH] configs: legoev3: increase flash image sizes
+
+This increases the kernel image to 4M and the rootfs image to 10M.
+
+It is getting hard to get a kernel image to fit in 3M and the rootfs image
+size now matches the filesyssize variable.
+
+Signed-off-by: David Lechner <david@lechnology.com>
+---
+ include/configs/legoev3.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/legoev3.h b/include/configs/legoev3.h
+index 79fa3c4..2eeaf85 100644
+--- a/include/configs/legoev3.h
++++ b/include/configs/legoev3.h
+@@ -204,7 +204,7 @@
+ 	"mmcargs=setenv bootargs mem=${memsize} console=${console} root=/dev/mmcblk0p2 rw rootwait lpj=747520\0" \
+ 	"mmcboot=bootm ${loadaddr}\0" \
+ 	"flashargs=setenv bootargs mem=${memsize} initrd=${filesysaddr},${filesyssize} root=/dev/ram0 rw rootfstype=squashfs console=${console} lpj=747520\0" \
+-	"flashboot=sf probe 0; sf read ${loadaddr} 0x50000 0x300000; sf read ${filesysaddr} 0x350000 0x960000; bootm ${loadaddr}\0" \
++	"flashboot=sf probe 0; sf read ${loadaddr} 0x50000 0x400000; sf read ${filesysaddr} 0x450000 0xA00000; bootm ${loadaddr}\0" \
+ 	"loadimage=fatload mmc 0 ${loadaddr} uImage\0" \
+ 	"loadbootscr=fatload mmc 0 ${bootscraddr} boot.scr\0" \
+ 	"bootscript=source ${bootscraddr}\0" \
+-- 
+2.7.4
+

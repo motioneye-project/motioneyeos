@@ -1,0 +1,5 @@
+# md5 from https://pypi.python.org/pypi/raven/json, sha256 locally computed
+md5	2efce7acbabe1a0f32d168736a654789  raven-6.3.0.tar.gz
+sha256	f3e465a545dcdb6a387d1fcb199d08f786ba3732d7ce6aa681718b04da6aedf1  raven-6.3.0.tar.gz
+# License file, locally calculated
+sha256	5ce9459bc19ced99cc9eb135d4f559ed01e336354bdf16dd998be85aa688c233  LICENSE

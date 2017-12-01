@@ -7,9 +7,11 @@ config BR2_MIPS_CPU_MIPS32R2
 	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS32R5
 	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 config BR2_MIPS_CPU_MIPS32R6
 	bool
 	select BR2_MIPS_NAN_2008
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 config BR2_MIPS_CPU_MIPS64
 	bool
 	select BR2_MIPS_NAN_LEGACY
@@ -18,9 +20,11 @@ config BR2_MIPS_CPU_MIPS64R2
 	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS64R5
 	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 config BR2_MIPS_CPU_MIPS64R6
 	bool
 	select BR2_MIPS_NAN_2008
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 
 choice
 	prompt "Target Architecture Variant"
@@ -53,11 +57,13 @@ config BR2_mips_interaptiv
 	bool "interAptiv"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R2
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_mips_m5150
 	bool "M5150"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
 	select BR2_MIPS_NAN_2008
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_mips_m6250
 	bool "M6250"
 	depends on !BR2_ARCH_IS_64
@@ -101,6 +107,7 @@ config BR2_mips_i6400
 	bool "I6400"
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64R6
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_mips_p6600
 	bool "P6600"
 	depends on BR2_ARCH_IS_64
@@ -139,7 +146,7 @@ config BR2_MIPS_SOFT_FLOAT
 choice
 	prompt "FP mode"
 	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
-	default BR2_MIPS_FP32_MODE_XX if BR2_TOOLCHAIN_HAS_MFPXX_OPTION
+	default BR2_MIPS_FP32_MODE_XX
 	help
 	  MIPS32 supports different FP modes (32,xx,64). Information about FP
 	  modes can be found here:
@@ -152,7 +159,7 @@ config BR2_MIPS_FP32_MODE_32
 
 config BR2_MIPS_FP32_MODE_XX
 	bool "xx"
-	depends on BR2_TOOLCHAIN_HAS_MFPXX_OPTION
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 
 config BR2_MIPS_FP32_MODE_64
 	bool "64"
@@ -169,10 +176,10 @@ config BR2_MIPS_NAN_LEGACY
 
 config BR2_MIPS_NAN_2008
 	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_4_9
 
 choice
 	prompt "Target NaN"
-	depends on BR2_TOOLCHAIN_HAS_MNAN_OPTION
 	depends on BR2_mips_32r5 || BR2_mips_64r5
 	default BR2_MIPS_ENABLE_NAN_2008
 	help

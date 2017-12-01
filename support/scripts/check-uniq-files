@@ -1,0 +1,40 @@
+#!/usr/bin/env python
+
+import sys
+import csv
+import argparse
+from collections import defaultdict
+
+warn = 'Warning: {} file "{}" is touched by more than one package: {}\n'
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('packages_file_list', nargs='*',
+                    help='The packages-file-list to check from')
+    parser.add_argument('-t', '--type', metavar="TYPE",
+                        help='Report as a TYPE file (TYPE is either target, staging, or host)')
+
+    args = parser.parse_args()
+
+    if not len(args.packages_file_list) == 1:
+        sys.stderr.write('No packages-file-list was provided.\n')
+        return False
+
+    if args.type is None:
+        sys.stderr.write('No type was provided\n')
+        return False
+
+    file_to_pkg = defaultdict(list)
+    with open(args.packages_file_list[0], 'r') as pkg_file_list:
+        r = csv.reader(pkg_file_list, delimiter=',')
+        for row in r:
+            pkg = row[0]
+            file = row[1]
+            file_to_pkg[file].append(pkg)
+
+    for file in file_to_pkg:
+        if len(file_to_pkg[file]) > 1:
+            sys.stderr.write(warn.format(args.type, file, file_to_pkg[file]))
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WEBP_VERSION = 0.5.2
+WEBP_VERSION = 0.6.0
 WEBP_SOURCE = libwebp-$(WEBP_VERSION).tar.gz
 WEBP_SITE = http://downloads.webmproject.org/releases/webp
 WEBP_LICENSE = BSD-3-Clause
@@ -21,6 +21,12 @@ ifeq ($(BR2_PACKAGE_WEBP_DEMUX),y)
 WEBP_CONF_OPTS += --enable-libwebpdemux
 else
 WEBP_CONF_OPTS += --disable-libwebpdemux
+endif
+
+ifeq ($(BR2_PACKAGE_WEBP_MUX),y)
+WEBP_CONF_OPTS += --enable-libwebpmux
+else
+WEBP_CONF_OPTS += --disable-libwebpmux
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)

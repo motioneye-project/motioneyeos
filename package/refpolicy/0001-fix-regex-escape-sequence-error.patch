@@ -1,0 +1,59 @@
+From 6c9cc47e6cc9c6e67b1b822f7a1a2e1f6d836118 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Tue, 10 Oct 2017 18:00:30 -0400
+Subject: [PATCH] fix regex escape sequence error.
+
+python3.6 will error out with the message "invalid escape sequence"
+in genhomedircon.py.  This patch fixes these errors by turning the string
+in the into a raw string.
+
+Upstream status: accepted
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ support/genhomedircon.py | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/support/genhomedircon.py b/support/genhomedircon.py
+index 036f5cc9..6662f412 100644
+--- a/support/genhomedircon.py
++++ b/support/genhomedircon.py
+@@ -189,13 +189,13 @@ def oldgenhomedircon(filecontextdir, filecontext):
+                 addme = 1
+                 for regex in prefix_regex:
+                         #match a trailing (/*)? which is actually a bug in rpc_pipefs
+-                        regex = re.sub("\(/\*\)\?$", "", regex)
++                        regex = re.sub(r"\(/\*\)\?$", "", regex)
+                         #match a trailing .+
+-                        regex = re.sub("\.+$", "", regex)
++                        regex = re.sub(r"\.+$", "", regex)
+                         #match a trailing .*
+-                        regex = re.sub("\.\*$", "", regex)
++                        regex = re.sub(r"\.\*$", "", regex)
+                         #strip a (/.*)? which matches anything trailing to a /*$ which matches trailing /'s
+-                        regex = re.sub("\(\/\.\*\)\?", "", regex)
++                        regex = re.sub(r"\(\/\.\*\)\?", "", regex)
+                         regex = regex + "/*$"
+                         if re.search(regex, potential, 0):
+                                 addme = 0
+@@ -391,13 +391,13 @@ class selinuxConfig:
+ 		exists=1
+ 		for regex in prefix_regex:
+ 			#match a trailing (/*)? which is actually a bug in rpc_pipefs
+-			regex = re.sub("\(/\*\)\?$", "", regex)
++			regex = re.sub(r"\(/\*\)\?$", "", regex)
+ 			#match a trailing .+
+-			regex = re.sub("\.+$", "", regex)
++			regex = re.sub(r"\.+$", "", regex)
+ 			#match a trailing .*
+-			regex = re.sub("\.\*$", "", regex)
++			regex = re.sub(r"\.\*$", "", regex)
+ 			#strip a (/.*)? which matches anything trailing to a /*$ which matches trailing /'s
+-			regex = re.sub("\(\/\.\*\)\?", "", regex)
++			regex = re.sub(r"\(\/\.\*\)\?", "", regex)
+ 			regex = regex + "/*$"
+ 			if re.search(regex, home, 0):
+ 				exists = 0
+-- 
+2.13.6
+

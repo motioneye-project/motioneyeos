@@ -126,6 +126,9 @@ imx23evk_defconfig: *defconfig
 imx6-sabreauto_defconfig: *defconfig
 imx6-sabresd_defconfig: *defconfig
 imx6-sabresd_qt5_defconfig: *defconfig
+imx6slevk_defconfig: *defconfig
+imx6sx-sdb_defconfig: *defconfig
+imx6ulevk_defconfig: *defconfig
 imx6ulpico_defconfig: *defconfig
 imx7dpico_defconfig: *defconfig
 lego_ev3_defconfig: *defconfig

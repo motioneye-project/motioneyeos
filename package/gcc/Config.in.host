@@ -22,22 +22,13 @@ config BR2_GCC_VERSION_OR1K
 
 config BR2_GCC_VERSION_4_9_X
 	bool "gcc 4.9.x"
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	# Broken or unsupported architectures
-	depends on !BR2_arc && !BR2_bfin && !BR2_or1k
-	# Broken or unsupported ARM cores
-	depends on !BR2_cortex_a17 && !BR2_cortex_a17_a7
-	depends on !BR2_cortex_a72 && !BR2_cortex_a72_a53
-	# Unsupported MIPS cores
-	depends on !BR2_mips_interaptiv
-	# Unsupported for MIPS R5
-	depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
-	# Unsupported for MIPS R6
-	depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
-	# musl microblaze unsupported
+	depends on !BR2_arc
+	depends on !BR2_or1k
+	# musl on microblaze, ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
-	# musl ppc64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	# musl mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
@@ -45,15 +36,12 @@ config BR2_GCC_VERSION_4_9_X
 
 config BR2_GCC_VERSION_5_X
 	bool "gcc 5.x"
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	# Broken or unsupported architectures
-	depends on !BR2_arc && !BR2_bfin && !BR2_or1k
-	# Broken or unsupported ARM cores
-	depends on !BR2_cortex_a57_a53 && !BR2_cortex_a72_a53
-	# musl ppc64 unsupported
+	depends on !BR2_arc
+	depends on !BR2_or1k
+	# musl on ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	# Unsupported MIPS cores
-	depends on !BR2_mips_interaptiv && !BR2_mips_m5150 && !BR2_mips_i6400
-	# musl mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
@@ -61,6 +49,7 @@ config BR2_GCC_VERSION_5_X
 
 config BR2_GCC_VERSION_6_X
 	bool "gcc 6.x"
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	# Broken or unsupported architectures
 	depends on !BR2_arc
 	depends on !BR2_or1k
@@ -69,7 +58,6 @@ config BR2_GCC_VERSION_6_X
 config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	# Broken or unsupported architectures
-	depends on !BR2_arc
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 

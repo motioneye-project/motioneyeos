@@ -38,8 +38,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-opus \
 	--disable-oss \
 	--disable-ext-sound \
-	--disable-small-filter \
-	--disable-large-filter \
 	--disable-g711-codec \
 	--disable-l16-codec \
 	--disable-g722-codec \

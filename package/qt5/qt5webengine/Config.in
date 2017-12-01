@@ -20,10 +20,6 @@ comment "qt5webengine needs an OpenGL and EGL-capable backend"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
 	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
 
-comment "qt5webengine is not available with Qt 5.6"
-	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
-	depends on BR2_PACKAGE_QT5_VERSION_5_6
-
 config BR2_PACKAGE_QT5WEBENGINE
 	bool "qt5webengine"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
@@ -35,7 +31,6 @@ config BR2_PACKAGE_QT5WEBENGINE
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative, qt5base-eglfs
 	depends on BR2_PACKAGE_HAS_LIBEGL # qt5base-eglfs
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on !BR2_PACKAGE_QT5_VERSION_5_6
 	# v8 (a chromium 3rd-party) compiles its internal host-tools with the
 	# same word size as the target. For 32-bits targets, it adds the -m32
 	# flag (for 64-bits, it adds the -m64 flag).
