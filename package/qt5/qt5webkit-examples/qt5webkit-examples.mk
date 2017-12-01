@@ -39,7 +39,7 @@ define QT5WEBKIT_EXAMPLES_INSTALL_STAGING_CMDS
 endef
 
 ifeq ($(BR2_PACKAGE_QT5DECLARATIVE),y)
-QT5WEBKIT_DEPENDENCIES += qt5declarative
+QT5WEBKIT_EXAMPLES_DEPENDENCIES += qt5declarative
 define QT5WEBKIT_EXAMPLES_INSTALL_QML
 	cp -dpfr $(@D)/examples/webkitqml $(TARGET_DIR)/usr/lib/qt/examples
 endef
