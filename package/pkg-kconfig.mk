@@ -19,7 +19,7 @@ define kconfig-package-update-config
 	@$(if $($(PKG)_KCONFIG_DEFCONFIG), \
 		echo "Unable to perform $(@) when using a defconfig rule"; exit 1)
 	cp -f $($(PKG)_DIR)/$(1) $($(PKG)_KCONFIG_FILE)
-	touch --reference $($(PKG)_DIR)/$($(PKG)_KCONFIG_DOTCONFIG) $($(PKG)_KCONFIG_FILE)
+	$(Q)touch --reference $($(PKG)_DIR)/$($(PKG)_KCONFIG_DOTCONFIG) $($(PKG)_KCONFIG_FILE)
 endef
 
 ################################################################################
