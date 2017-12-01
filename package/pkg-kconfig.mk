@@ -18,6 +18,11 @@ define kconfig-package-update-config
 		echo "Unable to perform $(@) when fragment files are set"; exit 1)
 	@$(if $($(PKG)_KCONFIG_DEFCONFIG), \
 		echo "Unable to perform $(@) when using a defconfig rule"; exit 1)
+	$(Q)if [ -d $($(PKG)_KCONFIG_FILE) ]; then \
+		echo "Unable to perform $(@) when $($(PKG)_KCONFIG_FILE) is a directory"; \
+		exit 1; \
+	fi
+	$(Q)mkdir -p $(dir $($(PKG)_KCONFIG_FILE))
 	cp -f $($(PKG)_DIR)/$(1) $($(PKG)_KCONFIG_FILE)
 	$(Q)touch --reference $($(PKG)_DIR)/$($(PKG)_KCONFIG_DOTCONFIG) $($(PKG)_KCONFIG_FILE)
 endef
