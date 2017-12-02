@@ -1021,6 +1021,7 @@ F:	package/libkcapi/
 
 N:	Marcus Folkesson <marcus.folkesson@gmail.com>
 F:	package/libostree/
+F:	utils/config
 F:	utils/diffconfig
 
 N:	Marek Belisko <marek.belisko@open-nandra.com>
