@@ -48,6 +48,13 @@ else
 MOTION_CONF_OPTS += --without-sqlite3
 endif
 
+ifeq ($(BR2_PACKAGE_WEBP_MUX),y)
+MOTION_DEPENDENCIES += webp
+MOTION_CONF_OPTS += --with-webp
+else
+MOTION_CONF_OPTS += --without-webp
+endif
+
 # Do not use default install target as it installs many unneeded files and
 # directories: docs, examples and init scripts
 define MOTION_INSTALL_TARGET_CMDS
