@@ -1,2 +1,6 @@
 # Locally computed:
 sha256	abfb4c7e7728e86ba374c2e0ef7de912594eb24a8c44935457352df844530238	openzwave-V1.5.tar.gz
+sha256	c8db08727d03bea1213cdb29459b4b489b0d68a0866765df40ff205c6cd7224b	license/license.txt
+sha256	4da452226e9064b597020ad404e1c78d8175bc31ad7c1908485a92c0a4d70284	license/lgpl.txt
+sha256	33ffdead480674d5f33e2934822a3b93c93e3f8c894667a3bf30bd1195b38f83	license/gpl.txt
+sha256	6f50ebf9af9b6658c7936ffcc6fedd99254df984c0fec2e6ffb9f3aa1c4ef3e1	license/Apache-License-2.0.txt
