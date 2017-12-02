@@ -29,6 +29,13 @@ else
 WEBP_CONF_OPTS += --disable-libwebpmux
 endif
 
+ifeq ($(BR2_PACKAGE_GIFLIB),y)
+WEBP_DEPENDENCIES += giflib
+WEBP_CONF_OPTS += --enable-gif
+else
+WEBP_CONF_OPTS += --disable-gif
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 WEBP_DEPENDENCIES += libpng
 WEBP_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
