@@ -36,6 +36,13 @@ else
 WEBP_CONF_OPTS += --disable-gif
 endif
 
+ifeq ($(BR2_PACKAGE_LIBFREEGLUT),y)
+WEBP_DEPENDENCIES += libfreeglut
+WEBP_CONF_OPTS += --enable-gl
+else
+WEBP_CONF_OPTS += --disable-gl
+endif
+
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 WEBP_DEPENDENCIES += libpng
 WEBP_CONF_ENV += ac_cv_path_LIBPNG_CONFIG=$(STAGING_DIR)/usr/bin/libpng-config
