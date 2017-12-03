@@ -64,6 +64,15 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_FIP
 	  platforms were ATF encapsulates the second stage bootloader
 	  (such as U-Boot).
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
+	bool "Use U-Boot as BL33"
+	depends on BR2_TARGET_UBOOT
+	help
+	  This option allows to embed u-boot.bin as the BL33 part of
+	  the ARM Trusted Firmware. It ensures that the u-boot package
+	  gets built before ATF, and that the appropriate BL33
+	  variable pointing to u-boot.bin is passed when building ATF.
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	string "Additional ATF build variables"
 	help
