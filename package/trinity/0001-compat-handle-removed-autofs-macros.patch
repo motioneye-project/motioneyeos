@@ -1,0 +1,61 @@
+From e4f31d5a1ce65974c2a6b2e6e1a2b16fffc51518 Mon Sep 17 00:00:00 2001
+From: Jiri Slaby <jslaby@suse.cz>
+Date: Tue, 28 Nov 2017 10:15:22 +0100
+Subject: [PATCH] compat: handle removed autofs macros
+
+In file included from ioctls/autofs.c:4:0:
+ioctls/autofs.c:241:8: error: 'AUTOFS_IOC_EXPIRE_INDIRECT' undeclared here (not in a function); did you mean 'AUTOFS_IOC_EXPIRE_CMD'?
+  IOCTL(AUTOFS_IOC_EXPIRE_INDIRECT),
+        ^
+include/ioctls.h:53:15: note: in definition of macro 'IOCTL'
+  { .request = _request, .name = #_request, }
+               ^~~~~~~~
+ioctls/autofs.c:242:8: error: 'AUTOFS_IOC_EXPIRE_DIRECT' undeclared here (not in a function); did you mean 'AUTOFS_IOC_EXPIRE_INDIRECT'?
+  IOCTL(AUTOFS_IOC_EXPIRE_DIRECT),
+        ^
+include/ioctls.h:53:15: note: in definition of macro 'IOCTL'
+  { .request = _request, .name = #_request, }
+               ^~~~~~~~
+
+Define them as AUTOFS_IOC_EXPIRE_MULTI as they used to be.
+
+Signed-off-by: Jiri Slaby <jslaby@suse.cz>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit e4f31d5a1ce
+
+ include/compat.h | 8 ++++++++
+ ioctls/autofs.c  | 1 +
+ 2 files changed, 9 insertions(+)
+
+diff --git a/include/compat.h b/include/compat.h
+index 10065ceca5f6..fc9a1b95ac4c 100644
+--- a/include/compat.h
++++ b/include/compat.h
+@@ -1209,3 +1209,11 @@ struct kvm_get_htab_fd {
+ #ifndef SO_IP_SET
+ #define SO_IP_SET 83
+ #endif
++
++/* linux/auto_fs4.h */
++#ifndef AUTOFS_IOC_EXPIRE_INDIRECT
++#define AUTOFS_IOC_EXPIRE_INDIRECT AUTOFS_IOC_EXPIRE_MULTI
++#endif
++#ifndef AUTOFS_IOC_EXPIRE_DIRECT
++#define AUTOFS_IOC_EXPIRE_DIRECT AUTOFS_IOC_EXPIRE_MULTI
++#endif
+diff --git a/ioctls/autofs.c b/ioctls/autofs.c
+index 04a3eb811326..a39ccccc056b 100644
+--- a/ioctls/autofs.c
++++ b/ioctls/autofs.c
+@@ -8,6 +8,7 @@
+ #include "shm.h"
+ #include "syscall.h"
+ #include "utils.h"
++#include "compat.h"
+ 
+ /* include/linux/auto_dev-ioctl.h */
+ /*
+-- 
+2.15.0
+
