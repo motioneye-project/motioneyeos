@@ -1508,12 +1508,12 @@ F:	package/lua-resty-http/
 F:	package/mpir/
 
 N:	Sergey Matyukevich <geomatsi@gmail.com>
+F:	board/linksprite/pcduino
 F:	board/orangepi/orangepi-zero
 F:	board/orangepi/orangepi-one
-F:	board/linksprite/pcduino
+F:	configs/linksprite_pcduino_defconfig
 F:	configs/orangepi_one_defconfig
 F:	configs/orangepi_zero_defconfig
-F:	configs/linksprite_pcduino_defconfig
 F:	package/armbian-firmware/
 F:	package/xr819-xradio/
 
