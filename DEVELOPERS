@@ -1085,6 +1085,7 @@ F:	package/iperf/
 F:	package/iperf3/
 F:	package/iputils/
 F:	package/iw/
+F:	package/kvm-unit-tests/
 F:	package/libcsv/
 F:	package/libcurl/
 F:	package/libfcgi/
