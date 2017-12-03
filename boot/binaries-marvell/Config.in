@@ -1,0 +1,32 @@
+config BR2_TARGET_BINARIES_MARVELL
+	bool "binaries-marvell"
+	depends on BR2_aarch64
+	help
+	  Some systems, including Marvell Armada SoC, have a separate
+	  System Control Processor (SCP) for power management, clocks,
+	  reset and system control. ATF Boot Loader stage 2 (BL2) loads
+	  optional SCP_BL2 image into a platform-specific region
+	  of secure memory. This package downloads and installs such
+	  firmwares, which are needed to build ATF.
+
+	  https://github.com/MarvellEmbeddedProcessors/binaries-marvell/
+
+if BR2_TARGET_BINARIES_MARVELL
+
+choice
+	prompt "Marvell Armada platform"
+
+config BR2_TARGET_BINARIES_MARVELL_7040
+	bool "7040"
+
+config BR2_TARGET_BINARIES_MARVELL_8040
+	bool "8040"
+
+endchoice
+
+config BR2_TARGET_BINARIES_MARVELL_IMAGE
+	string
+	default "mrvl_scp_bl2_8040.img" if BR2_TARGET_BINARIES_MARVELL_8040
+	default "mrvl_scp_bl2_7040.img" if BR2_TARGET_BINARIES_MARVELL_7040
+
+endif
