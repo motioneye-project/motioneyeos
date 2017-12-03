@@ -56,6 +56,14 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_PLATFORM
 	help
 	  Target plaform to build for.
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_FIP
+	bool "Build FIP image"
+	help
+	  This option enables building the FIP image (Firmware Image
+	  Package). This is typically the image format used by
+	  platforms were ATF encapsulates the second stage bootloader
+	  (such as U-Boot).
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	string "Additional ATF build variables"
 	help
