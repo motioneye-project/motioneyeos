@@ -64,6 +64,13 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_FIP
 	  platforms were ATF encapsulates the second stage bootloader
 	  (such as U-Boot).
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31
+	bool "Build BL31 image"
+	help
+	  This option enables building the BL31 image. This is
+	  typically used on platforms where another bootloader (e.g
+	  U-Boot) encapsulates ATF BL31.
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
 	bool "Use U-Boot as BL33"
 	depends on BR2_TARGET_UBOOT
