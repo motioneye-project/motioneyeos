@@ -1,0 +1,10 @@
+config BR2_TARGET_MV_DDR_MARVELL
+	bool "mv-ddr-marvell"
+	depends on BR2_aarch64
+	help
+	  Marvell keeps algorithms for DDR training in a separate
+	  repository. This code is not built separately, it is needed
+	  as a dependency to build ATF firmware for Marvell Armada 7040
+	  and 8040 SoCs.
+
+	  https://github.com/MarvellEmbeddedProcessors/mv-ddr-marvell/
