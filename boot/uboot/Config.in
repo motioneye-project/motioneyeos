@@ -158,6 +158,18 @@ config BR2_TARGET_UBOOT_NEEDS_OPENSSL
 	  typically the case when the board configuration has
 	  CONFIG_FIT_SIGNATURE enabled.
 
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31
+	bool "U-Boot needs ATF BL31"
+	depends on BR2_TARGET_ARM_TRUSTED_FIRMWARE
+	depend on !BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
+	select BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31
+	help
+	  Some specific platforms (such as Allwinner A64/H5)
+	  encapsulate the BL31 part of ATF inside U-Boot. This option
+	  makes sure ATF gets built prior to U-Boot, and that the BL31
+	  variable pointing to ATF's BL31 binary, is passed during the
+	  Buildroot build.
+
 menu "U-Boot binary format"
 
 config BR2_TARGET_UBOOT_FORMAT_AIS
