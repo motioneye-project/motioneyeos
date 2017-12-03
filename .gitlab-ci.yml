@@ -162,6 +162,7 @@ olimex_imx233_olinuxino_defconfig: *defconfig
 openblocks_a6_defconfig: *defconfig
 orangepi_one_defconfig: *defconfig
 orangepi_pc_defconfig: *defconfig
+orangepi_pc_plus_defconfig: *defconfig
 orangepi_plus_defconfig: *defconfig
 orangepi_zero_defconfig: *defconfig
 pandaboard_defconfig: *defconfig
