@@ -64,6 +64,7 @@ config BR2_ARM_CPU_ARMV8A
 
 choice
 	prompt "Target Architecture Variant"
+	default BR2_cortex_a53 if BR2_ARCH_IS_64
 	default BR2_arm926t
 	help
 	  Specific CPU variant to use
