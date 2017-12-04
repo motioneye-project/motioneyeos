@@ -1852,6 +1852,7 @@ F:	package/modem-manager/
 F:	package/nuttcp/
 F:	package/parted/
 F:	package/phytool/
+F:	package/poco/
 F:	package/python*
 F:	package/ser2net/
 F:	package/socketcand/
