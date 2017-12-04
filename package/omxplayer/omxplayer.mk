@@ -10,7 +10,7 @@ OMXPLAYER_LICENSE = GPL-2.0+
 OMXPLAYER_LICENSE_FILES = COPYING
 
 OMXPLAYER_DEPENDENCIES = \
-	host-pkgconf boost dbus ffmpeg freetype libidn libusb pcre \
+	host-pkgconf alsa-lib boost dbus ffmpeg freetype libidn libusb pcre \
 	rpi-userland zlib
 
 OMXPLAYER_EXTRA_CFLAGS = \
