@@ -1,0 +1,29 @@
+config BR2_PACKAGE_GSTREAMER1_MM
+	bool "gstreamer1-mm"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # glibmm
+	depends on BR2_INSTALL_LIBSTDCPP # glibmm
+	depends on BR2_USE_WCHAR # glibmm -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # glibmm -> libglib2
+	select BR2_PACKAGE_GLIBMM
+	select BR2_PACKAGE_GSTREAMER1_CHECK
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  gstreamermm provides C++ bindings for the GStreamer streaming
+	  multimedia library (http://gstreamer.freedesktop.org). With
+	  gstreamermm it is possible to	develop applications that work
+	  with multimedia in C++.
+
+	  gstreamermm is developed over glibmm, libsigc++ and libxml++
+	  and the functionalities they provide. This means that, among
+	  other things, referencing and unreferencing of GObjects is
+	  handled automatically via glibmm's automatic pointer class,
+	  Glib::RefPtr, and libsigc++'s slots are used for callbacks and
+	  signals.
+
+	  https://gstreamer.freedesktop.org/bindings/cplusplus.html
+
+comment "gstreamer1-mm needs a toolchain w/ C++, wchar, threads, gcc >= 4.9"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || !BR2_USE_WCHAR \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

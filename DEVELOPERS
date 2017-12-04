@@ -35,6 +35,7 @@ F:	package/busybox/
 F:	package/checkpolicy/
 F:	package/cppdb/
 F:	package/gstreamer1/gstreamer1/
+F:	package/gstreamer1/gstreamer1-mm/
 F:	package/gstreamer1/gst1-plugins-bad/
 F:	package/gstreamer1/gst1-plugins-base/
 F:	package/gstreamer1/gst1-plugins-good/

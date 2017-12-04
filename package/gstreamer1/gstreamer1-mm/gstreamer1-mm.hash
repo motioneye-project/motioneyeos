@@ -1,0 +1,6 @@
+# From http://ftp.gnome.org/pub/gnome/sources/gstreamermm/1.10/gstreamermm-1.10.0.sha256sum
+sha256 be58fe9ef7d7e392568ec85e80a84f4730adbf91fb0355ff7d7c616675ea8d60 gstreamermm-1.10.0.tar.xz
+
+# Locally computed
+sha256 7c78a8d7fc6781d51402d5a6036bedda9cffb0e5d28757e25d54d6eacbb1949f  COPYING
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING.examples
