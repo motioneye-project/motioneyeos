@@ -759,6 +759,9 @@ F:	package/angularjs/
 N:	Ilias Apalodimas <apalos@gmail.com>
 F:	package/keepalived/
 
+N:	Ismael Luceno <ismael@iodev.co.uk>
+F:	package/axel/
+
 N:	Jagan Teki <jagan@amarulasolutions.com>
 F:	board/bananapi/
 F:	board/engicam/
