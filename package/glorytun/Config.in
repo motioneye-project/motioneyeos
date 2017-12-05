@@ -1,0 +1,7 @@
+config BR2_PACKAGE_GLORYTUN
+	bool "glorytun"
+	select BR2_PACKAGE_LIBSODIUM
+	help
+	  A small, simple and secure VPN.
+
+	  https://github.com/angt/glorytun

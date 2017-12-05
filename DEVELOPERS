@@ -60,6 +60,9 @@ N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/libepoxy/
 F:	package/webkitgtk/
 
+N:	Adrien Gallouët <adrien@gallouet.fr>
+F:	package/glorytun/
+
 N:	Aleksander Morgado <aleksander@aleksander.es>
 F:	package/libmbim/
 F:	package/libqmi/
