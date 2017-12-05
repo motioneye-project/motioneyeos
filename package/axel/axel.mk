@@ -17,10 +17,7 @@ AXEL_CONF_OPTS = \
 	ac_cv_prog_cc_c99=-std=c99 \
 	CFLAGS="$(TARGET_CFLAGS)"
 
-ifeq ($(BR2_PACKAGE_LIBRESSL),y)
-AXEL_CONF_OPTS += --with-ssl
-AXEL_DEPENDENCIES += libressl
-else ifeq ($(BR2_PACKAGE_OPENSSL),y)
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
 AXEL_CONF_OPTS += --with-ssl
 AXEL_DEPENDENCIES += openssl
 else
