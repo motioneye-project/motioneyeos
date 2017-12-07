@@ -783,6 +783,10 @@ F:	package/pangomm/
 F:	package/rpm/
 F:	package/yad/
 
+N:	Jan Kraval <jan.kraval@gmail.com>
+F:	board/orangepi/orangepi-lite
+F:	configs/orangepi_lite_defconfig
+
 N:	Jan Pedersen <jp@jp-embedded.com>
 F:	package/zip/
 
