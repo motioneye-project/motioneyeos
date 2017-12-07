@@ -5,6 +5,8 @@ Subject: Do not create backup of old installed binary
 This is a rather unusual feature that packagers will not expect.
 
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[baruch: update for 4.6.2]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
  Makefile.in | 4 ----
  1 file changed, 4 deletions(-)
@@ -16,7 +18,7 @@ index 187a69b..65549e9 100644
 @@ -83,12 +83,9 @@ screen: $(OFILES)
  	    $(OPTIONS) $(CFLAGS) $<
  
- install_bin: .version screen
+ install_bin: .version screen installdirs
 -	-if [ -f $(DESTDIR)$(bindir)/$(SCREEN) ] && [ ! -f $(DESTDIR)$(bindir)/$(SCREEN).old ]; \
 -		then mv $(DESTDIR)$(bindir)/$(SCREEN) $(DESTDIR)$(bindir)/$(SCREEN).old; fi
  	$(INSTALL_PROGRAM) screen $(DESTDIR)$(bindir)/$(SCREEN)
