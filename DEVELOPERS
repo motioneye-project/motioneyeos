@@ -1133,6 +1133,7 @@ F:	package/unionfs/
 F:	package/valijson/
 F:	package/wpa_supplicant/
 F:	package/wireless_tools/
+F:	package/xen/
 
 N:	Mauro Condarelli <mc5686@mclink.it>
 F:	package/mc/
