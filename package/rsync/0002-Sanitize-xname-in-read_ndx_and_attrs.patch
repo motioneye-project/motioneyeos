@@ -1,0 +1,39 @@
+From 70aeb5fddd1b2f8e143276f8d5a085db16c593b9 Mon Sep 17 00:00:00 2001
+From: Jeriko One <jeriko.one@gmx.us>
+Date: Thu, 16 Nov 2017 17:05:42 -0800
+Subject: [PATCH] Sanitize xname in read_ndx_and_attrs.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 70aeb5fddd
+
+ rsync.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/rsync.c b/rsync.c
+index b82e59881018..a0945ba4e7f5 100644
+--- a/rsync.c
++++ b/rsync.c
+@@ -49,6 +49,7 @@ extern int flist_eof;
+ extern int file_old_total;
+ extern int keep_dirlinks;
+ extern int make_backups;
++extern int sanitize_paths;
+ extern struct file_list *cur_flist, *first_flist, *dir_flist;
+ extern struct chmod_mode_struct *daemon_chmod_modes;
+ #ifdef ICONV_OPTION
+@@ -396,6 +397,11 @@ int read_ndx_and_attrs(int f_in, int f_out, int *iflag_ptr, uchar *type_ptr,
+ 	if (iflags & ITEM_XNAME_FOLLOWS) {
+ 		if ((len = read_vstring(f_in, buf, MAXPATHLEN)) < 0)
+ 			exit_cleanup(RERR_PROTOCOL);
++
++		if (sanitize_paths) {
++			sanitize_path(buf, buf, "", 0, SP_DEFAULT);
++			len = strlen(buf);
++		}
+ 	} else {
+ 		*buf = '\0';
+ 		len = -1;
+-- 
+2.15.0
+
