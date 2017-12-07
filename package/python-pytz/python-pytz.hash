@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/pytz/json, sha256 locally computed
-md5	88b1d6c50c764579292edce3493c8a3a  pytz-2016.10.tar.bz2
-sha256  7016b2c4fa075c564b81c37a252a5fccf60d8964aa31b7f5eae59aeb594ae02b  pytz-2016.10.tar.bz2
+md5	7006b56c0d68a162d9fe57d4249c3171  pytz-2017.3.zip
+sha256  fae4cffc040921b8a2d60c6cf0b5d662c1190fe54d718271db4eb17d44a185b7  pytz-2017.3.zip
+sha256  a1c7102a51ef9ed37766f7388c71fd41bae2a7a95c30673c419ab84e1acc5f02  LICENSE.txt
