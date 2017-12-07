@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/tabledata/json, sha256 locally computed
+md5	4ff69d8855a835890944591721d0c129  tabledata-0.0.5.tar.gz
+sha256	e16490e4c15f06ee258015431ec247a5b301aec4ebca3297cf6451efb9eb3cfb  tabledata-0.0.5.tar.gz
+sha256  cbce2ac14dd81b6a1155029034512a304505692cc63b625538916cf93bee8ca2  LICENSE

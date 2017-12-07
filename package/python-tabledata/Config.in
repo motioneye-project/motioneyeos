@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_TABLEDATA
+	bool "python-tabledata"
+	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
+	select BR2_PACKAGE_PYTHON_LOGBOOK # runtime
+	select BR2_PACKAGE_PYTHON_PATHVALIDATE # runtime
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_TYPEPY # runtime
+	help
+	  A Python library to represent tabular data for
+	  pytablewriter/pytablereader/SimpleSQLite.
+
+	  https://github.com/thombashi/tabledata
