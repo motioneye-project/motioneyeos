@@ -1,2 +1,5 @@
-# From http://www.stunnel.org/pipermail/stunnel-announce/2016-September/000125.html
-sha256	eb8952fcfdfcdf5056a1f1a78e1ec5014b819c5f5f7599b924dc4490ffe4b5ea	stunnel-5.36.tar.gz
+# From https://www.stunnel.org/downloads/stunnel-5.44.tar.gz.sha256
+sha256	990a325dbb47d77d88772dd02fbbd27d91b1fea3ece76c9ff4461eca93f12299	stunnel-5.44.tar.gz
+# Locally calculated
+sha256	c43821865591e4d893906e2801b5ec4de58e51978f5563a61475cd0adc0bec4d	COPYING
+sha256	1ee2b290e92c211b08df10e9fcaf32596cdb22b8eae731b18c2c074a4a83eebe	COPYRIGHT.GPL
