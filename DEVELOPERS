@@ -1093,6 +1093,7 @@ F:	package/iperf3/
 F:	package/iputils/
 F:	package/iw/
 F:	package/kvm-unit-tests/
+F:	package/kvmtool/
 F:	package/libcsv/
 F:	package/libcurl/
 F:	package/libfcgi/
