@@ -160,6 +160,7 @@ olimex_a20_olinuxino_lime_mali_defconfig: *defconfig
 olimex_a20_olinuxino_micro_defconfig: *defconfig
 olimex_imx233_olinuxino_defconfig: *defconfig
 openblocks_a6_defconfig: *defconfig
+orangepi_lite_defconfig: *defconfig
 orangepi_one_defconfig: *defconfig
 orangepi_pc_defconfig: *defconfig
 orangepi_pc_plus_defconfig: *defconfig
