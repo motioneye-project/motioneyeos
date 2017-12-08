@@ -19,9 +19,11 @@ define IIO_BUILD_CMDS
 		$(IIO_MAKE_OPTS)
 endef
 
+# DESTDIR used since kernel version 4.14
 define IIO_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(LINUX_DIR)/tools/iio \
 		$(IIO_MAKE_OPTS) \
 		INSTALL_ROOT=$(TARGET_DIR) \
+		DESTDIR=$(TARGET_DIR) \
 		install
 endef
