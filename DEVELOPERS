@@ -185,6 +185,9 @@ F:	package/luasec/
 F:	package/lua-ev/
 F:	package/orbit/
 
+N:	Bartosz Bilas <b.bilas@grinn-global.com>
+F:	package/qt5/qt5scxml/
+
 N:	Bartosz Golaszewski <brgl@bgdev.pl>
 F:	package/autoconf-archive/
 F:	package/doxygen/
