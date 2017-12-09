@@ -1,0 +1,7 @@
+bootargs=console=ttyS0,115200 root=/dev/mmcblk1p1 rw rootwait
+fdt_addr=0x1000000
+fdt_high=0xffffffffffffffff
+fdt_name=boot/armada-8040-mcbin.dtb
+kernel_addr=0x2000000
+image_name=boot/Image
+bootcmd=mmc dev 1; ext4load mmc 1:1 $kernel_addr $image_name; ext4load mmc 1:1 $fdt_addr $fdt_name; booti $kernel_addr - $fdt_addr
