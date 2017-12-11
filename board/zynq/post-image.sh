@@ -9,3 +9,5 @@ FIRST_DT=$(sed -n \
            ${BR2_CONFIG})
 
 [ -z "${FIRST_DT}" ] || ln -fs ${FIRST_DT}.dtb ${BINARIES_DIR}/devicetree.dtb
+
+support/scripts/genimage.sh -c board/zynq/genimage.cfg

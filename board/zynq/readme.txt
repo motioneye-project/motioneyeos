@@ -14,13 +14,13 @@ Steps to create a working system for a Zynq board:
     make zynq_microzed_defconfig  (MicroZed)
 2) make
 3) All needed files will be available in the output/images directory.
-   Create a FAT32 partition at the beginning of your SD Card and copy files:
-     - boot.bin
-     - u-boot.img
-     - uImage
-     - uramdisk.image.gz (should be renamed from rootfs.cpio.uboot)
-     - devicetree.dtb (should be renamed from zynq-***.dtb)
-   into your SD card
+   The sdcard.img file is a complete bootable image ready to be written
+   on the boot medium. To install it, simply copy the image to an SD
+   card:
+
+       # dd if=output/images/sdcard.img of=/dev/sdX
+
+   Where 'sdX' is the device node of the uSD.
 4) boot your board
 
 You can alter the booting procedure by creating a file uEnv.txt
