@@ -18,6 +18,18 @@ GNUPG_CONF_OPTS = \
 	--enable-sha256 \
 	--enable-sha512
 
+HOST_GNUPG_DEPENDENCIES = host-zlib host-ncurses
+HOST_GNUPG_CONF_OPTS = \
+	--disable-rpath \
+	--enable-minimal \
+	--disable-regex \
+	--enable-sha256 \
+	--enable-sha512 \
+	--enable-aes \
+	--enable-rsa \
+	--without-libcurl \
+	--without-readline
+
 # gnupg doesn't support assembly for coldfire
 ifeq ($(BR2_m68k_cf),y)
 GNUPG_CONF_OPTS += --disable-asm
@@ -68,3 +80,4 @@ GNUPG_POST_INSTALL_TARGET_HOOKS += GNUPG_REMOVE_GPGSPLIT
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
