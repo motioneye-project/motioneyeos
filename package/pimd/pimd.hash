@@ -1,0 +1,6 @@
+# Locally computed:
+sha256 c77a9812751f114490a28a6839b16aac8b020c8d9fd6aa22bf3880c054e19f1d  pimd-2.3.2.tar.gz
+
+# Hash for license files:
+sha256 3379436c16caccdef9b40a49fbdfdbb45aad8ecb05870834490b8fb080126009  LICENSE
+sha256 4328a21f0822caa9976356623118bcdcc9970c7a0f9a3deeba23c779b7cfb5d1  LICENSE.mrouted

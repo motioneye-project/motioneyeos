@@ -1546,6 +1546,7 @@ F:	package/xr819-xradio/
 N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/
 F:	package/mongodb/
+F:	package/pimd/
 F:	package/stella/
 F:	package/traceroute/
 F:	package/tunctl/
