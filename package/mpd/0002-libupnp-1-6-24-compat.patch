@@ -1,0 +1,48 @@
+From 78728138a04c2493c6bfadee98060043eca204bf Mon Sep 17 00:00:00 2001
+From: Max Kellermann <max@musicpd.org>
+Date: Sat, 2 Dec 2017 14:47:27 +0100
+Subject: [PATCH] lib/upnp/Compat: disable the 1.8 API emulation with libupnp
+ 1.6.24
+
+libupnp 1.6.24 added a few badly designed macros which break the MPD
+build:
+
+ https://sourceforge.net/p/pupnp/code/ci/8177a4195a4d4a5d6cb095eaf4ca5b65ac446381/
+
+To work around this, we disable our emulation functions (from
+714011c81ed6053f7a35812071499356f337dd70) on this libupnp version.
+
+Closes #163
+
+Backported from: 78728138a04c2493c6bfadee98060043eca204bf
+
+Signed-off-by: Max Kellermann <max@musicpd.org>
+[Jörg Krause: Drop patching News file]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+---
+ src/lib/upnp/Compat.hxx | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/src/lib/upnp/Compat.hxx b/src/lib/upnp/Compat.hxx
+index 2e2d2f1de..c9f1cc47f 100644
+--- a/src/lib/upnp/Compat.hxx
++++ b/src/lib/upnp/Compat.hxx
+@@ -23,12 +23,15 @@
+ #include <upnp/upnp.h>
+ 
+ #if UPNP_VERSION < 10800
+-#include "Compiler.h"
+-
+ /* emulate the libupnp 1.8 API with older versions */
+ 
+ using UpnpDiscovery = Upnp_Discovery;
+ 
++#endif
++
++#if UPNP_VERSION < 10624
++#include "Compiler.h"
++
+ gcc_pure
+ static inline int
+ UpnpDiscovery_get_Expires(const UpnpDiscovery *disco) noexcept
