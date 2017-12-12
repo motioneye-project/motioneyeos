@@ -73,6 +73,7 @@ class TestATFMarvell(infra.basetest.BRTest):
     BR2_TARGET_UBOOT_BOARDNAME="mvebu_mcbin-88f8040"
     BR2_TARGET_UBOOT_CUSTOM_VERSION=y
     BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE="2017.09"
+    BR2_TARGET_UBOOT_NEEDS_DTC=y
     """
 
     def test_run(self):
