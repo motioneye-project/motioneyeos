@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LYNX
+	bool "lynx"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_SLANG if !BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_GNUTLS
+	help
+	  The Text Web-Browser.
+
+	  http://lynx.invisible-island.net/
