@@ -231,6 +231,9 @@ zynq_microzed_defconfig: *defconfig
 zynq_zc706_defconfig: *defconfig
 zynq_zed_defconfig: *defconfig
 zynq_zybo_defconfig: *defconfig
+tests.boot.test_atf.TestATFAllwinner: *runtime_test
+tests.boot.test_atf.TestATFMarvell: *runtime_test
+tests.boot.test_atf.TestATFVexpress: *runtime_test
 tests.core.test_post_scripts.TestPostScripts: *runtime_test
 tests.core.test_rootfs_overlay.TestRootfsOverlay: *runtime_test
 tests.core.test_timezone.TestGlibcAllTimezone: *runtime_test
