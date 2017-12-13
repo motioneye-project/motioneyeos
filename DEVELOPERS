@@ -1278,10 +1278,8 @@ F:	package/google-breakpad/
 N:	Patrick Gerber <kpa_info@yahoo.fr>
 F:	package/yavta/
 
-N:	Paul Cercueil <paul.cercueil@analog.com>
-F:	package/libiio/
-
 N:	Paul Cercueil <paul@crapouillou.net>
+F:	package/libiio/
 F:	package/lightning/
 
 N:	Pedro Aguilar <paguilar@paguilar.org>
