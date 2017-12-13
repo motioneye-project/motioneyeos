@@ -1,2 +1,7 @@
+# From https://lists.gnupg.org/pipermail/gnupg-announce/2017q4/000418.html
+sha1 77d3390887da25ed70b7ac04392360efbdca501f  gpgme-1.10.0.tar.bz2
 # Locally calculated after checking pgp signature
-sha256 1b29fedb8bfad775e70eafac5b0590621683b2d9869db994568e6401f4034ceb  gpgme-1.9.0.tar.bz2
+# https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.10.0.tar.bz2.sig
+sha256 1a8fed1197c3b99c35f403066bb344a26224d292afc048cfdfc4ccd5690a0693  gpgme-1.10.0.tar.bz2
+# Locally calculated
+sha256 ca0061fc1381a3ab242310e4b3f56389f28e3d460eb2fd822ed7a21c6f030532  COPYING.LESSER

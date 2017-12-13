@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGPGME_VERSION = 1.9.0
-LIBGPGME_SITE = ftp://ftp.gnupg.org/gcrypt/gpgme
+LIBGPGME_VERSION = 1.10.0
+LIBGPGME_SITE = https://gnupg.org/ftp/gcrypt/gpgme
 LIBGPGME_SOURCE = gpgme-$(LIBGPGME_VERSION).tar.bz2
 LIBGPGME_LICENSE = LGPL-2.1+
 LIBGPGME_LICENSE_FILES = COPYING.LESSER
