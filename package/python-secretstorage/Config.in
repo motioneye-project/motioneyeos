@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_SECRETSTORAGE
+	bool "python-secretstorage"
+	depends on BR2_INSTALL_LIBSTDCPP # python-cryptography
+	select BR2_PACKAGE_PYTHON_CRYPTOGRAPHY # runtime
+	help
+	  Python bindings to FreeDesktop.org Secret Service API.
+
+	  https://github.com/mitya57/secretstorage
+
+comment "python-secretstorage needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
