@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MORE_ITERTOOLS
+	bool "python-more-itertools"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  More routines for operating on iterables, beyond itertools.
+
+	  https://github.com/erikrose/more-itertools
