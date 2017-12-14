@@ -1,3 +1,3 @@
 # Locally calculated
-sha256 7472ed65dd73945d4574e30fd2d26ef15d65b309dee83aaaf5a97df8fe3a94c7  gcc-linaro-6.4.1-2017.08-i686_armeb-linux-gnueabihf.tar.xz
-sha256 97a0de6ce7a77a2df7398e907621242752e6e5f1787772d7b308c82a3a039fab  gcc-linaro-6.4.1-2017.08-x86_64_armeb-linux-gnueabihf.tar.xz
+sha256 2f4bcff14c007feaf0ec68eca828ab6968bf7dbc6d50afa1615d39b591f424a8  gcc-linaro-6.4.1-2017.11-i686_armeb-linux-gnueabihf.tar.xz
+sha256 14c476c65d17032839ab60be2ec601a59920189305e27f02cb9171ad556c8a6b  gcc-linaro-6.4.1-2017.11-x86_64_armeb-linux-gnueabihf.tar.xz
