@@ -2,8 +2,11 @@ config BR2_PACKAGE_IQVLINUX
 	bool "iqvlinux"
 	depends on BR2_LINUX_KERNEL
 	help
-	  Intel Ethernet Adapter Debug Driver for Linux (iqvlinux),
-	  which supports kernel versions 2.6.x up through 4.0.x.
+	  Intel Ethernet Adapter Debug Driver for Linux (iqvlinux).
+
+	  Officially supports kernel versions 2.6.x up through 4.0.x but
+	  the Buildroot package contains a patch to allow it to be built
+	  on newer kernel versions.
 
 	  This debug driver supports all Intel's networking Tools based
 	  on the SDK version 2.19.36.0 or higher which support Intel
