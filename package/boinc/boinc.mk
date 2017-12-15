@@ -45,7 +45,7 @@ endef
 BOINC_POST_INSTALL_TARGET_HOOKS += BOINC_REMOVE_UNNEEDED_FILE
 
 define BOINC_INSTALL_INIT_SYSV
-	 $(INSTALL) -D -m 0755 package/boinc/S99boinc-client \
+	$(INSTALL) -D -m 0755 package/boinc/S99boinc-client \
 		$(TARGET_DIR)/etc/init.d/S99boinc-client
 endef
 
