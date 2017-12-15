@@ -12,7 +12,7 @@ config BR2_PACKAGE_IQVLINUX
 	  Note: This driver requires PCI support to be enabled
 	  (i.e. CONFIG_PCI).
 
-	  http://sourceforge.net/projects/e1000/files/iqvlinux/
+	  https://sourceforge.net/projects/e1000/files/iqvlinux/
 
 comment "iqvlinux needs a Linux kernel to be built"
 	depends on !BR2_LINUX_KERNEL

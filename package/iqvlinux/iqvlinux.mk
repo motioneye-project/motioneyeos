@@ -4,9 +4,13 @@
 #
 ################################################################################
 
-IQVLINUX_VERSION = 1.1.5.3
-IQVLINUX_SITE = http://sourceforge.net/projects/e1000/files/iqvlinux/$(IQVLINUX_VERSION)
-IQVLINUX_SOURCE = iqvlinux.tar.gz
+# The upstream tarball is just named iqvlinux.tar.gz, which we cannot
+# use because it doesn't contain a version number. Therefore, the
+# download from the upstream site will fail, and fallback to the
+# backup mirror, where we have added an iqvlinux-1.2.0.3.tar.gz
+# tarball.
+IQVLINUX_VERSION = 1.2.0.3
+IQVLINUX_SITE = https://downloads.sourceforge.net/project/e1000/iqvlinux/$(IQVLINUX_VERSION)
 
 IQVLINUX_LICENSE = GPL-2.0, BSD-3-Clause
 IQVLINUX_LICENSE_FILES = \
