@@ -35,4 +35,9 @@ LIBGPGME_CONF_ENV += LIBS="-largp" ac_cv_type_error_t=yes
 LIBGPGME_DEPENDENCIES += argp-standalone
 endif
 
+# MIPS N64 (re)introduced getdents64 in kernel version 3.10
+ifeq ($(BR2_MIPS_NABI64)x$(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10),yx)
+LIBGPGME_CONF_OPTS += --disable-linux-getdents
+endif
+
 $(eval $(autotools-package))
