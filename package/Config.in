@@ -1805,6 +1805,7 @@ endif
 	source "package/tinyhttpd/Config.in"
 	source "package/tn5250/Config.in"
 	source "package/tor/Config.in"
+	source "package/traceroute/Config.in"
 	source "package/transmission/Config.in"
 	source "package/tunctl/Config.in"
 	source "package/tvheadend/Config.in"

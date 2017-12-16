@@ -1547,6 +1547,7 @@ N:	Sergio Prado <sergio.prado@e-labworks.com>
 F:	package/libgdiplus/
 F:	package/mongodb/
 F:	package/stella/
+F:	package/traceroute/
 F:	package/tunctl/
 F:	package/ubus/
 
