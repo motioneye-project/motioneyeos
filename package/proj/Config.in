@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PROJ
+	bool "proj"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  proj.4 is a standard UNIX filter function which converts
+	  geographic longitude and latitude coordinates into cartesian
+	  coordinates (and vice versa), and it is a C API for software
+	  developers to include coordinate transformation in their own
+	  software.
+
+	  http://proj4.org/
+
+comment "proj needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

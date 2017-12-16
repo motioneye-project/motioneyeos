@@ -1889,6 +1889,7 @@ F:	utils/scanpypi
 N:	Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
 F:	package/crudini/
 F:	package/grantlee/
+F:	package/proj/
 F:	package/python-configobj/
 F:	package/python-iniparse/
 F:	package/qjson/
