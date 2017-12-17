@@ -1,0 +1,9 @@
+config BR2_PACKAGE_RPI_ARMMEM
+	bool "rpi-armmem"
+	depends on BR2_arm && BR2_PACKAGE_RPI_FIRMWARE && BR2_PACKAGE_RPI_USERLAND
+	help
+	  A replacement for memcpy and memset functionality for the
+	  Raspberry Pi with the intention of gaining greater performance.
+
+	  https://github.com/bavison/arm-mem/
+
