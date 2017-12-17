@@ -23,7 +23,8 @@ endef
 
 define TRACEROUTE_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) \
-		DESTDIR=$(TARGET_DIR) prefix=/usr install -C $(@D)
+		DESTDIR=$(TARGET_DIR) prefix=/usr install \
+		INSTALL=$(INSTALL) -C $(@D)
 endef
 
 $(eval $(generic-package))
