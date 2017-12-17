@@ -288,6 +288,13 @@ else
 VLC_CONF_OPTS += --disable-upnp
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUPNP18),y)
+VLC_CONF_OPTS += --enable-upnp
+VLC_DEPENDENCIES += libupnp18
+else
+VLC_CONF_OPTS += --disable-upnp
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVNCSERVER),y)
 VLC_CONF_OPTS += --enable-vnc
 VLC_DEPENDENCIES += libvncserver
