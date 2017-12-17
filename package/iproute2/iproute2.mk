@@ -31,9 +31,8 @@ define IPROUTE2_WITH_IPTABLES
 endef
 else
 define IPROUTE2_WITH_IPTABLES
-	# em_ipset needs xtables, but configure misdetects it
-	echo "TC_CONFIG_IPSET:=n" >>$(@D)/Config
-	echo "TC_CONFIG_XT:=n" >>$(@D)/Config
+	# m_xt.so is built unconditionally
+	echo "TC_CONFIG_XT:=n" >>$(@D)/config.mk
 endef
 endif
 
