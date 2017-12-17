@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LUV
+	bool "luv"
+	select BR2_PACKAGE_LIBUV
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libuv
+	help
+	  libuv bindings for LuaJIT and Lua.
+
+	  https://github.com/luvit/luv
+
+comment "luv needs a toolchain w/ NPTL, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4

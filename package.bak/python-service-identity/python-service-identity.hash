@@ -1,0 +1,3 @@
+# md5 from https://pypi.python.org/pypi/service_identity/json, sha256 locally computed
+md5	d52392597b9c44a740abf322bfdb21e6  service_identity-16.0.0.tar.gz
+sha256	0630e222f59f91f3db498be46b1d879ff220955d7bbad719a5cb9ad14e3c3036  service_identity-16.0.0.tar.gz

@@ -1,0 +1,311 @@
+config BR2_PACKAGE_EFL
+	bool "efl"
+	 # g++ issue with 4.4.5, tested with g++ 4.7.2
+	depends on BR2_HOST_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS # luajit
+	depends on BR2_TOOLCHAIN_HAS_THREADS # untested without threads
+	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR # use wchar_t
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_JPEG # Emile needs libjpeg
+	select BR2_PACKAGE_LIBCURL # Ecore_con_url, runtime dependency
+	# https://phab.enlightenment.org/T2728
+	select BR2_PACKAGE_LUAJIT # Lua support broken
+	select BR2_PACKAGE_LZ4
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enlightenment Foundation Libraries
+
+	  https://enlightenment.org
+
+if BR2_PACKAGE_EFL
+
+config BR2_PACKAGE_EFL_BULLET
+	bool "Enable bullet support (recommended)"
+	select BR2_PACKAGE_BULLET
+	default y
+	help
+	  If you have chosen to disable physics support, this disables
+	  lots of core functionality and is effectively never
+	  tested. You are going to find features that suddenly don't
+	  work and as a result cause a series of breakages. This is
+	  simply not tested so you are on your own in terms of
+	  ensuring everything works if you do this.
+
+config BR2_PACKAGE_EFL_EEZE
+	bool "Enable eeze (udev) support (recommended)"
+	depends on BR2_PACKAGE_HAS_UDEV # libudev
+	default y
+	help
+	  Eeze is EFL's hardware abstraction layer on top of udev.
+	  Having it off will disable some hardware detection, such as
+	  'drm' graphics engine or 'elput', as well as mounting
+	  removable media.
+
+comment "eeze needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_EFL_FONTCONFIG
+	bool "Enable fontconfig support (recommended)"
+	select BR2_PACKAGE_FONTCONFIG
+	default y
+	help
+	  If fontconfig is disabled, this is going to make general
+	  font searching not work, and only some very direct 'load
+	  /path/file.ttf' will work alongside some old-school ttf file
+	  path searching. This is very likely not what you want, so
+	  highly reconsider turning fontconfig off. Having it off will
+	  lead to visual problems like missing text in many UI areas
+	  etc...
+
+config BR2_PACKAGE_EFL_GSTREAMER1
+	bool "Enable gstreamer1 support (recommended)"
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	default y
+	help
+	  If Gstreamer 1.x support is disabled, it will heavily limit
+	  your media support options and render some functionality as
+	  useless, leading to visible application bugs.
+
+config BR2_PACKAGE_EFL_LIBFRIBIDI
+	bool "Enable libfribidi support (recommended)"
+	select BR2_PACKAGE_LIBFRIBIDI
+	default y
+	help
+	  Fribidi is used for handling right-to-left text (like
+	  Arabic, Hebrew, Farsi, Persian etc.) and is very likely not
+	  a feature you want to disable unless you know for absolute
+	  certain you will never encounter and have to display such
+	  scripts. Also note that we don't test with fribidi disabled
+	  so you may also trigger code paths with bugs that are never
+	  normally used.
+
+config BR2_PACKAGE_EFL_LIBSNDFILE
+	bool "Enable libsndfile support (recommended)"
+	select BR2_PACKAGE_LIBSNDFILE
+	default y
+	help
+	  If you disabled audio support in Ecore, this is not tested
+	  and may create bugs for you due to it creating untested code
+	  paths.  Reconsider disabling audio.
+
+config BR2_PACKAGE_EFL_PULSEAUDIO
+	bool "Enable pulseaudio support (recommended)"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pulseaudio -> json-c
+	select BR2_PACKAGE_PULSEAUDIO
+	default y
+	help
+	  The only audio output method supported by Ecore right now is
+	  via Pulseaudio. You have disabled that and likely have
+	  broken a whole bunch of things in the process. Reconsider
+	  your configure options.
+
+	  NOTE: multisense support is automatically enabled with
+	  pulseaudio.
+
+config BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
+	bool "Enable libmount support (recommended)"
+	depends on BR2_PACKAGE_EFL_EEZE
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	# libblkid is part of required tools, see EFL's README.
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	default y
+	help
+	  Libmount is used heavily inside Eeze for support of removable
+	  devices etc... and disabling this will hurt support for
+	  Enlightenment and its filemanager.
+
+comment "efl's libmount support needs udev /dev management (eeze)"
+	depends on !BR2_PACKAGE_EFL_EEZE
+
+config BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
+	bool
+	default y if BR2_PACKAGE_EFL_BULLET && \
+		BR2_PACKAGE_EFL_EEZE && \
+		BR2_PACKAGE_EFL_FONTCONFIG && \
+		BR2_PACKAGE_EFL_GSTREAMER1 && \
+		BR2_PACKAGE_EFL_LIBFRIBIDI && \
+		BR2_PACKAGE_EFL_LIBSNDFILE && \
+		BR2_PACKAGE_EFL_PULSEAUDIO && \
+		BR2_PACKAGE_EFL_UTIL_LINUX_LIBMOUNT
+
+
+comment "Warning: one of the recommended option for EFL is not enabled"
+	depends on !BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG
+
+config BR2_PACKAGE_EFL_EOLIAN_CPP
+	bool "Enable Eolian C++ bindings"
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # Eolian (host) needs C++11
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # Eolian needs C++11
+	help
+	  Eolian is an EO object parser and code generator.
+	  With this option enabled Eolian will handle automatic generation
+	  of EFL bindings for the C++11 language.
+
+comment "Eolian needs host and target gcc >= 4.8"
+	depends on !BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+comment "libecore video support"
+
+config BR2_PACKAGE_EFL_FB
+	bool "FB support"
+
+config BR2_PACKAGE_EFL_X_XLIB
+	bool "X11 support (xlib)"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXCOMPOSITE
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXDAMAGE
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXP
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXSCRNSAVER
+	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_XPROTO_GLPROTO
+
+config BR2_PACKAGE_EFL_WAYLAND
+	bool "Wayland support"
+	depends on BR2_PACKAGE_WAYLAND
+	depends on BR2_TOOLCHAIN_HAS_THREADS # Evas DRM Engine -> libdrm
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # Evas DRM Engine
+	depends on BR2_PACKAGE_EFL_EEZE # efl drm
+	depends on BR2_PACKAGE_EFL_OPENGLES # OpenGL ES with EGL support only
+	select BR2_PACKAGE_EFL_DRM
+
+comment "Wayland support needs udev /dev management (eeze) and OpenGL ES w/ EGL, threads"
+	depends on BR2_PACKAGE_WAYLAND
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
+		|| !BR2_PACKAGE_EFL_OPENGLES || !BR2_PACKAGE_EFL_EEZE
+
+choice
+	bool "OpenGL support"
+	help
+	  libevas can be configured to use HW acceleration with OpenGL or
+	  OpenGL ES.
+
+config BR2_PACKAGE_EFL_OPENGL
+	bool "OpenGL"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_EFL_X_XLIB
+
+comment "OpenGL support needs X11 and an OpenGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGL || !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_EFL_OPENGLES
+	bool "OpenGL ES (w/ EGL)"
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	depends on BR2_PACKAGE_HAS_LIBGLES
+
+comment "OpenGL ES support needs an OpenGL ES w/ EGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGLES || !BR2_PACKAGE_HAS_LIBEGL
+
+config BR2_PACKAGE_EFL_OPENGL_NONE
+	bool "none"
+
+endchoice # OpenGL support
+
+config BR2_PACKAGE_EFL_ELPUT
+	bool "Elput"
+	depends on BR2_PACKAGE_EFL_EEZE
+	select BR2_PACKAGE_LIBINPUT
+	select BR2_PACKAGE_LIBXKBCOMMON
+	help
+	  The elput library is an efl abstraction for the libinput library
+	  which can be used by various other subsystems (ecore_fb,
+	  ecore_drm, etc) to handle interfacing with libinput without
+	  having to duplicate the code in each subsystem.
+
+comment "Elput support needs udev /dev management (eeze)"
+	depends on !BR2_PACKAGE_EFL_EEZE
+
+config BR2_PACKAGE_EFL_DRM
+	bool "Evas DRM Engine"
+	depends on BR2_PACKAGE_EFL_EEZE
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL # require libgbm from mesa3d
+	select BR2_PACKAGE_EFL_ELPUT
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBXKBCOMMON
+	help
+	  This option enable building support for the Evas DRM Engine.
+
+comment "Evas DRM Engine needs udev /dev management (eeze) and mesa3d w/ EGL support, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_PACKAGE_MESA3D_OPENGL_EGL \
+		|| !BR2_PACKAGE_EFL_EEZE
+
+comment "libevas loaders"
+
+config BR2_PACKAGE_EFL_PNG
+	bool "libevas png loader"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  This enables the loader code that loads png files using
+	  libpng.
+
+# JP2K support require openjpeg 1.x (libopenjpeg1.pc) which is not
+# available in Buildroot anymore.
+config BR2_PACKAGE_EFL_JP2K
+	bool "libevas jp2k loader"
+	select BR2_PACKAGE_OPENJPEG
+	depends on BROKEN # require openjpeg 1.x
+	help
+	  This enables the loader code that loads jp2k files using
+	  openjpeg.
+
+config BR2_PACKAGE_EFL_JPEG
+	bool "libevas jpeg loader"
+	help
+	  This enables the loader code that loads jpeg files using
+	  libjpeg.
+
+config BR2_PACKAGE_EFL_GIF
+	bool "libevas gif loader"
+	select BR2_PACKAGE_GIFLIB
+	help
+	  This enables the loader code that loads gif files using
+	  giflib.
+
+config BR2_PACKAGE_EFL_TIFF
+	bool "libevas tiff loader"
+	select BR2_PACKAGE_TIFF
+	help
+	  This enables the loader code that loads tiff files.
+
+config BR2_PACKAGE_EFL_WEBP
+	bool "libevas webp image loader"
+	select BR2_PACKAGE_WEBP
+	help
+	  This enables the loader code that loads images using WebP.
+
+config BR2_PACKAGE_EFL_LIBRAW
+	bool "libraw loader"
+	select BR2_PACKAGE_LIBRAW
+	help
+	  This option enables the Evas generic Libraw loader
+
+config BR2_PACKAGE_EFL_SVG
+	bool "SVG loader"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	select BR2_PACKAGE_LIBRSVG
+	select BR2_PACKAGE_CAIRO
+	help
+	  This option enables the Evas generic SVG loader
+
+endif # BR2_PACKAGE_EFL
+
+comment "efl needs a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_HOST_GCC_AT_LEAST_4_7 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	depends on BR2_USE_MMU

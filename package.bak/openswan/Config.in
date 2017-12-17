@@ -1,0 +1,16 @@
+config BR2_PACKAGE_OPENSWAN
+	bool "openswan"
+	depends on BR2_USE_MMU # iproute2
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # iproute2
+	depends on !BR2_TOOLCHAIN_USES_MUSL # GLOB_BRACE
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_IPROUTE2
+	help
+	  Openswan is an implementation of IPsec for Linux
+
+	  http://www.openswan.org
+
+comment "openswan needs a uClibc or glibc toolchain w/ headers >= 3.0"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 || \
+		BR2_TOOLCHAIN_USES_MUSL

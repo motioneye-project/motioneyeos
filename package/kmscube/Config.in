@@ -1,0 +1,9 @@
+config BR2_PACKAGE_KMSCUBE
+	bool "kmscube"
+	# requires libgbm from mesa3d
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	depends on BR2_PACKAGE_MESA3D_OPENGL_ES
+	help
+	  kmscube is an application to test kms/drm drivers.
+
+	  https://cgit.freedesktop.org/mesa/kmscube/

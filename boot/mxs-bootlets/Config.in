@@ -1,0 +1,90 @@
+config BR2_TARGET_MXS_BOOTLETS
+	bool "mxs-bootlets"
+	depends on BR2_arm
+	help
+	  Stage1 bootloaders for Freescale iMX23/iMX28 SoCs
+
+if BR2_TARGET_MXS_BOOTLETS
+
+choice
+	prompt "Source"
+	default BR2_TARGET_MXS_BOOTLETS_FREESCALE
+	help
+	  Select the location of the bootlets you want to use
+
+config BR2_TARGET_MXS_BOOTLETS_FREESCALE
+	bool "Freescale 10.12.01 version"
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_TARBALL
+	bool "Custom tarball"
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT
+	bool "Custom Git repository"
+
+endchoice
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_TARBALL_URL
+	depends on BR2_TARGET_MXS_BOOTLETS_CUSTOM_TARBALL
+	string "URL of custom bootlets tarball"
+
+if BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT_URL
+	string "URL of custom Git repository"
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_GIT_VERSION
+	string "Custom Git version"
+
+endif
+
+choice
+	prompt "Bootstream"
+	help
+	  Select which bootstream to generate
+
+config BR2_TARGET_MXS_BOOTLETS_BAREBOX
+	depends on BR2_TARGET_BAREBOX
+	bool "Barebox Bootloader"
+
+config BR2_TARGET_MXS_BOOTLETS_LINUX
+	depends on BR2_LINUX_KERNEL
+	bool "Linux Kernel"
+
+config BR2_TARGET_MXS_BOOTLETS_UBOOT
+	depends on BR2_TARGET_UBOOT
+	bool "U-boot bootloader"
+
+endchoice
+
+config BR2_TARGET_MXS_BOOTLETS_HAS_IVT
+	bool "HAB Support"
+	help
+	  Enable this option if you are building bootlets
+	  for the iMX28 platform that needs to include instructions
+	  for the secure boot mechanism present on these SoCs
+
+choice
+	prompt "Board"
+	help
+	  Select the board to build the bootlets for
+
+config BR2_TARGET_MXS_BOOTLETS_STMP37xx
+	bool "Sigmatel ST-MP3-7xx Board"
+
+config BR2_TARGET_MXS_BOOTLETS_STMP378x
+	bool "Sigmatel ST-MP3-78x Board"
+
+config BR2_TARGET_MXS_BOOTLETS_IMX28EVK
+	bool "Freescale iMX28 EVK Board"
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD
+	bool "Custom board"
+endchoice
+
+config BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD_NAME
+	string "Custom board name"
+	depends on BR2_TARGET_MXS_BOOTLETS_CUSTOM_BOARD
+	help
+	  Name of the board to build the bootlets for
+
+endif

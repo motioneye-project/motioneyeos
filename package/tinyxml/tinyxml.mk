@@ -10,7 +10,7 @@ TINYXML_SITE = http://mirrors.xbmc.org/build-deps/sources
 # configure.ac which is not present in mainline.
 TINYXML_AUTORECONF = YES
 TINYXML_INSTALL_STAGING = YES
-TINYXML_LICENSE = zlib
+TINYXML_LICENSE = Zlib
 TINYXML_LICENSE_FILES = README
 
 $(eval $(autotools-package))

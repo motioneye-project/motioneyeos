@@ -1,0 +1,9 @@
+config BR2_PACKAGE_NETTLE
+	bool "nettle"
+	select BR2_PACKAGE_GMP
+	help
+	  Nettle is a cryptographic library that is designed to fit easily
+	  in more or less any context: In crypto toolkits for object-oriented
+	  languages, in applications like LSH or GNUPG, or even in kernel space
+
+	  http://www.lysator.liu.se/~nisse/nettle/

@@ -1,0 +1,4 @@
+# From https://github.com/zeromq/zeromq4-1/releases
+sha1	2b7490b77860be3060b1b1f92cd73184d309ca69	zeromq-4.1.5.tar.gz
+# Calculated based on the hash above
+sha256	04aac57f081ffa3a2ee5ed04887be9e205df3a7ddade0027460b8042432bdbcf	zeromq-4.1.5.tar.gz

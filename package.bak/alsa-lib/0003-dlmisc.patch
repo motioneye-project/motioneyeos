@@ -1,0 +1,59 @@
+alsa-lib: provide dummy definitions of RTLD_* if necessary
+
+The FLAT GNU toolchain (e.g. blackfin) doesn't include the dlfcn.h header
+file, so we need to guard that include. Additionally, provide dummy
+definitions for parameters RTLD_GLOBAL / RTLD_NOW which are normally
+provided by dlfcn.h.
+
+Signed-off-by: Sonic Zhang <sonic.zhang@analog.com>
+[Thomas: don't add separate dlmisc.h, move dummy defs to global.h]
+Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
+
+diff --git a/include/global.h b/include/global.h
+--- a/include/global.h
++++ b/include/global.h
+@@ -97,6 +97,16 @@ extern struct snd_dlsym_link *snd_dlsym_
+ /** \brief Returns the version of a dynamic symbol as a string. */
+ #define SND_DLSYM_VERSION(version) __STRING(version)
+ 
++/* RTLD_NOW and RTLD_GLOBAL (used for 'mode' in snd_dlopen) are not defined
++ * on all arches (e.g. blackfin), so provide a dummy definition here. */
++#ifndef RTLD_NOW
++#define RTLD_NOW 0
++#endif
++
++#ifndef RTLD_GLOBAL
++#define RTLD_GLOBAL 0
++#endif
++
+ void *snd_dlopen(const char *file, int mode);
+ void *snd_dlsym(void *handle, const char *name, const char *version);
+ int snd_dlclose(void *handle);
+diff --git a/modules/mixer/simple/sbasedl.c b/modules/mixer/simple/sbasedl.c
+--- a/modules/mixer/simple/sbasedl.c
++++ b/modules/mixer/simple/sbasedl.c
+@@ -27,7 +27,9 @@
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <math.h>
++#include "config.h"
++#ifdef HAVE_DLFCN
+ #include <dlfcn.h>
++#endif
+-#include "config.h"
+ #include "asoundlib.h"
+ #include "mixer_abst.h"
+diff --git a/src/mixer/simple_abst.c b/src/mixer/simple_abst.c
+--- a/src/mixer/simple_abst.c
++++ b/src/mixer/simple_abst.c
+@@ -34,7 +34,9 @@
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
+ #include <math.h>
++#include "config.h"
++#ifdef HAVE_DLFCN
+ #include <dlfcn.h>
++#endif
+-#include "config.h"
+ #include "asoundlib.h"
+ #include "mixer_simple.h"

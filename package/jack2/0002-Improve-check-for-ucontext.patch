@@ -1,0 +1,84 @@
+From ad79670d6d1e7ef2aad6935715921e5317cbe618 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 23 May 2016 22:28:12 +0200
+Subject: [PATCH] Improve check for ucontext
+
+The ucontext functionality is not available on all CPUs with all C
+libraries. Instead of making just assumptions based on the CPU
+architecture, this commit adds the necessary checks in wscript to verify
+the availability of the ucontext functionality, before using it in
+dbus/sigsegv.c.
+
+This avoids the long list of architecture exclusions, and make it more
+robust when building jack2 for new CPU architectures.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ dbus/sigsegv.c | 12 ++++++------
+ wscript        | 16 +++++++++++++++-
+ 2 files changed, 21 insertions(+), 7 deletions(-)
+
+diff --git a/dbus/sigsegv.c b/dbus/sigsegv.c
+index df2c42c..00a62b5 100644
+--- a/dbus/sigsegv.c
++++ b/dbus/sigsegv.c
+@@ -106,20 +106,20 @@ static void signal_segv(int signum, siginfo_t* info, void*ptr) {
+     jack_error("info.si_errno = %d", info->si_errno);
+     jack_error("info.si_code  = %d (%s)", info->si_code, si_code_str);
+     jack_error("info.si_addr  = %p", info->si_addr);
+-#if !defined(__alpha__) && !defined(__ia64__) && !defined(__FreeBSD_kernel__) && !defined(__arm__) && !defined(__hppa__) && !defined(__sh__) && !defined(__aarch64__)
++#if defined(HAVE_UCONTEXT) && defined(HAVE_NGREG)
+     for(i = 0; i < NGREG; i++)
+         jack_error("reg[%02d]       = 0x" REGFORMAT, i, 
+-#if defined(__powerpc64__)
++#if defined(HAVE_UCONTEXT_GP_REGS)
+                 ucontext->uc_mcontext.gp_regs[i]
+-#elif defined(__powerpc__)
++#elif defined(HAVE_UCONTEXT_UC_REGS)
+                 ucontext->uc_mcontext.uc_regs[i]
+-#elif defined(__sparc__) && defined(__arch64__)
++#elif defined(HAVE_UCONTEXT_MC_GREGS)
+                 ucontext->uc_mcontext.mc_gregs[i]
+-#else
++#elif defined(HAVE_UCONTEXT_GREGS)
+                 ucontext->uc_mcontext.gregs[i]
+ #endif
+                 );
+-#endif /* alpha, ia64, kFreeBSD, arm, hppa */
++#endif /* defined(HAVE_UCONTEXT) && defined(HAVE_NGREG) */
+ 
+ #if defined(SIGSEGV_STACK_X86) || defined(SIGSEGV_STACK_IA64)
+ # if defined(SIGSEGV_STACK_IA64)
+diff --git a/wscript b/wscript
+index 63ba3aa..34a56fc 100644
+--- a/wscript
++++ b/wscript
+@@ -168,10 +168,24 @@ def configure(conf):
+ 
+     conf.check_cc(header_name='execinfo.h', define_name="HAVE_EXECINFO_H", mandatory=False)
+     conf.check_cc(header_name='samplerate.h', define_name="HAVE_SAMPLERATE")
+-
+     if conf.is_defined('HAVE_SAMPLERATE'):
+         conf.env['LIB_SAMPLERATE'] = ['samplerate']
+ 
++    # test for the availability of ucontext, and how it should be used
++    for t in ("gp_regs", "uc_regs", "mc_gregs", "gregs"):
++        fragment = "#include <ucontext.h>\n"
++        fragment += "int main() { ucontext_t *ucontext; return (int) ucontext->uc_mcontext.%s[0]; }" % t
++        confvar = "HAVE_UCONTEXT_%s" % t.upper()
++        conf.check_cc(fragment=fragment, define_name=confvar, mandatory=False,
++                      msg="Checking for ucontext->uc_mcontext.%s" % t)
++        if conf.is_defined(confvar):
++            conf.define('HAVE_UCONTEXT', 1)
++
++    fragment = "#include <ucontext.h>\n"
++    fragment += "int main() { return NGREG; }"
++    conf.check_cc(fragment=fragment, define_name="HAVE_NGREG", mandatory=False,
++                  msg="Checking for NGREG")
++
+     conf.sub_config('example-clients')
+ 
+     if conf.check_cfg(package='celt', atleast_version='0.11.0', args='--cflags --libs', mandatory=False):
+-- 
+2.7.4
+

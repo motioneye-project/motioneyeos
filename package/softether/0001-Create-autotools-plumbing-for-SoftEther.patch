@@ -1,0 +1,2105 @@
+From c5e5d7e93c6f3302adf5821c29c4efdb7630e418 Mon Sep 17 00:00:00 2001
+From: Darik Horn <dajhorn@vanadac.com>
+Date: Sat, 12 Apr 2014 17:46:04 -0400
+Subject: [PATCH] Create autotools plumbing for SoftEther.
+
+Add autoconf and automake capabilities to SoftEther so that it can be built
+like this:
+
+	# autoreconf --force --install
+	# ./configure
+	# make install DESTDIR=/tmp/softether
+
+All standard configure parameters are supported, plus:
+
+	# ./configure --enable-debug
+
+Autotools support makes porting, cross compiling, and optimization much easier.
+
+These GNU autoconf-archive components are used for dependency checking:
+
+  * ax_check_openssl.m4
+  * ax_check_zlib.m4
+  * ax_lib_readline.m4
+  * ax_pthread.m4
+  * ax_with_curses.m4
+
+NB: http://www.gnu.org/software/autoconf-archive/
+
+[Upstream commit: https://github.com/dajhorn/SoftEtherVPN/commit/c5e5d7e93c6f3302adf5821c29c4efdb7630e418]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am                    |  21 ++
+ autotools/ax_check_openssl.m4  | 124 ++++++++++
+ autotools/ax_check_zlib.m4     | 142 +++++++++++
+ autotools/ax_lib_readline.m4   | 107 +++++++++
+ autotools/ax_pthread.m4        | 332 ++++++++++++++++++++++++++
+ autotools/ax_with_curses.m4    | 518 +++++++++++++++++++++++++++++++++++++++++
+ autotools/softether.am         |  39 ++++
+ configure.ac                   |  96 ++++++++
+ configure => manual_configure  |   0
+ src/Cedar/Makefile.am          |  82 +++++++
+ src/Makefile.am                |  26 +++
+ src/Mayaqua/Makefile.am        |  43 ++++
+ src/bin/hamcore/Makefile.am    |  29 +++
+ src/hamcorebuilder/Makefile.am |  29 +++
+ src/vpnbridge/Makefile.am      |  29 +++
+ src/vpnclient/Makefile.am      |  29 +++
+ src/vpncmd/Makefile.am         |  29 +++
+ src/vpnserver/Makefile.am      |  29 +++
+ 18 files changed, 1704 insertions(+)
+ create mode 100644 Makefile.am
+ create mode 100644 autotools/ax_check_openssl.m4
+ create mode 100644 autotools/ax_check_zlib.m4
+ create mode 100644 autotools/ax_lib_readline.m4
+ create mode 100644 autotools/ax_pthread.m4
+ create mode 100644 autotools/ax_with_curses.m4
+ create mode 100644 autotools/softether.am
+ create mode 100644 configure.ac
+ rename configure => manual_configure (100%)
+ create mode 100644 src/Cedar/Makefile.am
+ create mode 100644 src/Makefile.am
+ create mode 100644 src/Mayaqua/Makefile.am
+ create mode 100644 src/bin/hamcore/Makefile.am
+ create mode 100644 src/hamcorebuilder/Makefile.am
+ create mode 100644 src/vpnbridge/Makefile.am
+ create mode 100644 src/vpnclient/Makefile.am
+ create mode 100644 src/vpncmd/Makefile.am
+ create mode 100644 src/vpnserver/Makefile.am
+
+diff --git a/Makefile.am b/Makefile.am
+new file mode 100644
+index 00000000..aa73b2ba
+--- /dev/null
++++ b/Makefile.am
+@@ -0,0 +1,21 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++ACLOCAL_AMFLAGS = -I autotools
++include $(top_srcdir)/autotools/softether.am
++SUBDIRS = src
+diff --git a/autotools/ax_check_openssl.m4 b/autotools/ax_check_openssl.m4
+new file mode 100644
+index 00000000..a87c5a6b
+--- /dev/null
++++ b/autotools/ax_check_openssl.m4
+@@ -0,0 +1,124 @@
++# ===========================================================================
++#     http://www.gnu.org/software/autoconf-archive/ax_check_openssl.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_CHECK_OPENSSL([action-if-found[, action-if-not-found]])
++#
++# DESCRIPTION
++#
++#   Look for OpenSSL in a number of default spots, or in a user-selected
++#   spot (via --with-openssl).  Sets
++#
++#     OPENSSL_INCLUDES to the include directives required
++#     OPENSSL_LIBS to the -l directives required
++#     OPENSSL_LDFLAGS to the -L or -R flags required
++#
++#   and calls ACTION-IF-FOUND or ACTION-IF-NOT-FOUND appropriately
++#
++#   This macro sets OPENSSL_INCLUDES such that source files should use the
++#   openssl/ directory in include directives:
++#
++#     #include <openssl/hmac.h>
++#
++# LICENSE
++#
++#   Copyright (c) 2009,2010 Zmanda Inc. <http://www.zmanda.com/>
++#   Copyright (c) 2009,2010 Dustin J. Mitchell <dustin@zmanda.com>
++#
++#   Copying and distribution of this file, with or without modification, are
++#   permitted in any medium without royalty provided the copyright notice
++#   and this notice are preserved. This file is offered as-is, without any
++#   warranty.
++
++#serial 8
++
++AU_ALIAS([CHECK_SSL], [AX_CHECK_OPENSSL])
++AC_DEFUN([AX_CHECK_OPENSSL], [
++    found=false
++    AC_ARG_WITH([openssl],
++        [AS_HELP_STRING([--with-openssl=DIR],
++            [root of the OpenSSL directory])],
++        [
++            case "$withval" in
++            "" | y | ye | yes | n | no)
++            AC_MSG_ERROR([Invalid --with-openssl value])
++              ;;
++            *) ssldirs="$withval"
++              ;;
++            esac
++        ], [
++            # if pkg-config is installed and openssl has installed a .pc file,
++            # then use that information and don't search ssldirs
++            AC_PATH_PROG([PKG_CONFIG], [pkg-config])
++            if test x"$PKG_CONFIG" != x""; then
++                OPENSSL_LDFLAGS=`$PKG_CONFIG openssl --libs-only-L 2>/dev/null`
++                if test $? = 0; then
++                    OPENSSL_LIBS=`$PKG_CONFIG openssl --libs-only-l 2>/dev/null`
++                    OPENSSL_INCLUDES=`$PKG_CONFIG openssl --cflags-only-I 2>/dev/null`
++                    found=true
++                fi
++            fi
++
++            # no such luck; use some default ssldirs
++            if ! $found; then
++                ssldirs="/usr/local/ssl /usr/lib/ssl /usr/ssl /usr/pkg /usr/local /usr"
++            fi
++        ]
++        )
++
++
++    # note that we #include <openssl/foo.h>, so the OpenSSL headers have to be in
++    # an 'openssl' subdirectory
++
++    if ! $found; then
++        OPENSSL_INCLUDES=
++        for ssldir in $ssldirs; do
++            AC_MSG_CHECKING([for openssl/ssl.h in $ssldir])
++            if test -f "$ssldir/include/openssl/ssl.h"; then
++                OPENSSL_INCLUDES="-I$ssldir/include"
++                OPENSSL_LDFLAGS="-L$ssldir/lib"
++                OPENSSL_LIBS="-lssl -lcrypto"
++                found=true
++                AC_MSG_RESULT([yes])
++                break
++            else
++                AC_MSG_RESULT([no])
++            fi
++        done
++
++        # if the file wasn't found, well, go ahead and try the link anyway -- maybe
++        # it will just work!
++    fi
++
++    # try the preprocessor and linker with our new flags,
++    # being careful not to pollute the global LIBS, LDFLAGS, and CPPFLAGS
++
++    AC_MSG_CHECKING([whether compiling and linking against OpenSSL works])
++    echo "Trying link with OPENSSL_LDFLAGS=$OPENSSL_LDFLAGS;" \
++        "OPENSSL_LIBS=$OPENSSL_LIBS; OPENSSL_INCLUDES=$OPENSSL_INCLUDES" >&AS_MESSAGE_LOG_FD
++
++    save_LIBS="$LIBS"
++    save_LDFLAGS="$LDFLAGS"
++    save_CPPFLAGS="$CPPFLAGS"
++    LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
++    LIBS="$OPENSSL_LIBS $LIBS"
++    CPPFLAGS="$OPENSSL_INCLUDES $CPPFLAGS"
++    AC_LINK_IFELSE(
++        [AC_LANG_PROGRAM([#include <openssl/ssl.h>], [SSL_new(NULL)])],
++        [
++            AC_MSG_RESULT([yes])
++            $1
++        ], [
++            AC_MSG_RESULT([no])
++            $2
++        ])
++    CPPFLAGS="$save_CPPFLAGS"
++    LDFLAGS="$save_LDFLAGS"
++    LIBS="$save_LIBS"
++
++    AC_SUBST([OPENSSL_INCLUDES])
++    AC_SUBST([OPENSSL_LIBS])
++    AC_SUBST([OPENSSL_LDFLAGS])
++])
+diff --git a/autotools/ax_check_zlib.m4 b/autotools/ax_check_zlib.m4
+new file mode 100644
+index 00000000..ae5705f6
+--- /dev/null
++++ b/autotools/ax_check_zlib.m4
+@@ -0,0 +1,142 @@
++# ===========================================================================
++#       http://www.gnu.org/software/autoconf-archive/ax_check_zlib.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_CHECK_ZLIB([action-if-found], [action-if-not-found])
++#
++# DESCRIPTION
++#
++#   This macro searches for an installed zlib library. If nothing was
++#   specified when calling configure, it searches first in /usr/local and
++#   then in /usr, /opt/local and /sw. If the --with-zlib=DIR is specified,
++#   it will try to find it in DIR/include/zlib.h and DIR/lib/libz.a. If
++#   --without-zlib is specified, the library is not searched at all.
++#
++#   If either the header file (zlib.h) or the library (libz) is not found,
++#   shell commands 'action-if-not-found' is run. If 'action-if-not-found' is
++#   not specified, the configuration exits on error, asking for a valid zlib
++#   installation directory or --without-zlib.
++#
++#   If both header file and library are found, shell commands
++#   'action-if-found' is run. If 'action-if-found' is not specified, the
++#   default action appends '-I${ZLIB_HOME}/include' to CPFLAGS, appends
++#   '-L$ZLIB_HOME}/lib' to LDFLAGS, prepends '-lz' to LIBS, and calls
++#   AC_DEFINE(HAVE_LIBZ). You should use autoheader to include a definition
++#   for this symbol in a config.h file. Sample usage in a C/C++ source is as
++#   follows:
++#
++#     #ifdef HAVE_LIBZ
++#     #include <zlib.h>
++#     #endif /* HAVE_LIBZ */
++#
++# LICENSE
++#
++#   Copyright (c) 2008 Loic Dachary <loic@senga.org>
++#   Copyright (c) 2010 Bastien Chevreux <bach@chevreux.org>
++#
++#   This program is free software; you can redistribute it and/or modify it
++#   under the terms of the GNU General Public License as published by the
++#   Free Software Foundation; either version 2 of the License, or (at your
++#   option) any later version.
++#
++#   This program is distributed in the hope that it will be useful, but
++#   WITHOUT ANY WARRANTY; without even the implied warranty of
++#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
++#   Public License for more details.
++#
++#   You should have received a copy of the GNU General Public License along
++#   with this program. If not, see <http://www.gnu.org/licenses/>.
++#
++#   As a special exception, the respective Autoconf Macro's copyright owner
++#   gives unlimited permission to copy, distribute and modify the configure
++#   scripts that are the output of Autoconf when processing the Macro. You
++#   need not follow the terms of the GNU General Public License when using
++#   or distributing such scripts, even though portions of the text of the
++#   Macro appear in them. The GNU General Public License (GPL) does govern
++#   all other use of the material that constitutes the Autoconf Macro.
++#
++#   This special exception to the GPL applies to versions of the Autoconf
++#   Macro released by the Autoconf Archive. When you make and distribute a
++#   modified version of the Autoconf Macro, you may extend this special
++#   exception to the GPL to apply to your modified version as well.
++
++#serial 14
++
++AU_ALIAS([CHECK_ZLIB], [AX_CHECK_ZLIB])
++AC_DEFUN([AX_CHECK_ZLIB],
++#
++# Handle user hints
++#
++[AC_MSG_CHECKING(if zlib is wanted)
++zlib_places="/usr/local /usr /opt/local /sw"
++AC_ARG_WITH([zlib],
++[  --with-zlib=DIR         root directory path of zlib installation @<:@defaults to
++                          /usr/local or /usr if not found in /usr/local@:>@
++  --without-zlib          to disable zlib usage completely],
++[if test "$withval" != no ; then
++  AC_MSG_RESULT(yes)
++  if test -d "$withval"
++  then
++    zlib_places="$withval $zlib_places"
++  else
++    AC_MSG_WARN([Sorry, $withval does not exist, checking usual places])
++  fi
++else
++  zlib_places=
++  AC_MSG_RESULT(no)
++fi],
++[AC_MSG_RESULT(yes)])
++
++#
++# Locate zlib, if wanted
++#
++if test -n "${zlib_places}"
++then
++	# check the user supplied or any other more or less 'standard' place:
++	#   Most UNIX systems      : /usr/local and /usr
++	#   MacPorts / Fink on OSX : /opt/local respectively /sw
++	for ZLIB_HOME in ${zlib_places} ; do
++	  if test -f "${ZLIB_HOME}/include/zlib.h"; then break; fi
++	  ZLIB_HOME=""
++	done
++
++  ZLIB_OLD_LDFLAGS=$LDFLAGS
++  ZLIB_OLD_CPPFLAGS=$CPPFLAGS
++  if test -n "${ZLIB_HOME}"; then
++        LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
++        CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
++  fi
++  AC_LANG_SAVE
++  AC_LANG_C
++  AC_CHECK_LIB([z], [inflateEnd], [zlib_cv_libz=yes], [zlib_cv_libz=no])
++  AC_CHECK_HEADER([zlib.h], [zlib_cv_zlib_h=yes], [zlib_cv_zlib_h=no])
++  AC_LANG_RESTORE
++  if test "$zlib_cv_libz" = "yes" && test "$zlib_cv_zlib_h" = "yes"
++  then
++    #
++    # If both library and header were found, action-if-found
++    #
++    m4_ifblank([$1],[
++                CPPFLAGS="$CPPFLAGS -I${ZLIB_HOME}/include"
++                LDFLAGS="$LDFLAGS -L${ZLIB_HOME}/lib"
++                LIBS="-lz $LIBS"
++                AC_DEFINE([HAVE_LIBZ], [1],
++                          [Define to 1 if you have `z' library (-lz)])
++               ],[
++                # Restore variables
++                LDFLAGS="$ZLIB_OLD_LDFLAGS"
++                CPPFLAGS="$ZLIB_OLD_CPPFLAGS"
++                $1
++               ])
++  else
++    #
++    # If either header or library was not found, action-if-not-found
++    #
++    m4_default([$2],[
++                AC_MSG_ERROR([either specify a valid zlib installation with --with-zlib=DIR or disable zlib usage with --without-zlib])
++                ])
++  fi
++fi
++])
+diff --git a/autotools/ax_lib_readline.m4 b/autotools/ax_lib_readline.m4
+new file mode 100644
+index 00000000..056f25c2
+--- /dev/null
++++ b/autotools/ax_lib_readline.m4
+@@ -0,0 +1,107 @@
++# ===========================================================================
++#      http://www.gnu.org/software/autoconf-archive/ax_lib_readline.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_LIB_READLINE
++#
++# DESCRIPTION
++#
++#   Searches for a readline compatible library. If found, defines
++#   `HAVE_LIBREADLINE'. If the found library has the `add_history' function,
++#   sets also `HAVE_READLINE_HISTORY'. Also checks for the locations of the
++#   necessary include files and sets `HAVE_READLINE_H' or
++#   `HAVE_READLINE_READLINE_H' and `HAVE_READLINE_HISTORY_H' or
++#   'HAVE_HISTORY_H' if the corresponding include files exists.
++#
++#   The libraries that may be readline compatible are `libedit',
++#   `libeditline' and `libreadline'. Sometimes we need to link a termcap
++#   library for readline to work, this macro tests these cases too by trying
++#   to link with `libtermcap', `libcurses' or `libncurses' before giving up.
++#
++#   Here is an example of how to use the information provided by this macro
++#   to perform the necessary includes or declarations in a C file:
++#
++#     #ifdef HAVE_LIBREADLINE
++#     #  if defined(HAVE_READLINE_READLINE_H)
++#     #    include <readline/readline.h>
++#     #  elif defined(HAVE_READLINE_H)
++#     #    include <readline.h>
++#     #  else /* !defined(HAVE_READLINE_H) */
++#     extern char *readline ();
++#     #  endif /* !defined(HAVE_READLINE_H) */
++#     char *cmdline = NULL;
++#     #else /* !defined(HAVE_READLINE_READLINE_H) */
++#       /* no readline */
++#     #endif /* HAVE_LIBREADLINE */
++#
++#     #ifdef HAVE_READLINE_HISTORY
++#     #  if defined(HAVE_READLINE_HISTORY_H)
++#     #    include <readline/history.h>
++#     #  elif defined(HAVE_HISTORY_H)
++#     #    include <history.h>
++#     #  else /* !defined(HAVE_HISTORY_H) */
++#     extern void add_history ();
++#     extern int write_history ();
++#     extern int read_history ();
++#     #  endif /* defined(HAVE_READLINE_HISTORY_H) */
++#       /* no history */
++#     #endif /* HAVE_READLINE_HISTORY */
++#
++# LICENSE
++#
++#   Copyright (c) 2008 Ville Laurikari <vl@iki.fi>
++#
++#   Copying and distribution of this file, with or without modification, are
++#   permitted in any medium without royalty provided the copyright notice
++#   and this notice are preserved. This file is offered as-is, without any
++#   warranty.
++
++#serial 6
++
++AU_ALIAS([VL_LIB_READLINE], [AX_LIB_READLINE])
++AC_DEFUN([AX_LIB_READLINE], [
++  AC_CACHE_CHECK([for a readline compatible library],
++                 ax_cv_lib_readline, [
++    ORIG_LIBS="$LIBS"
++    for readline_lib in readline edit editline; do
++      for termcap_lib in "" termcap curses ncurses; do
++        if test -z "$termcap_lib"; then
++          TRY_LIB="-l$readline_lib"
++        else
++          TRY_LIB="-l$readline_lib -l$termcap_lib"
++        fi
++        LIBS="$ORIG_LIBS $TRY_LIB"
++        AC_TRY_LINK_FUNC(readline, ax_cv_lib_readline="$TRY_LIB")
++        if test -n "$ax_cv_lib_readline"; then
++          break
++        fi
++      done
++      if test -n "$ax_cv_lib_readline"; then
++        break
++      fi
++    done
++    if test -z "$ax_cv_lib_readline"; then
++      ax_cv_lib_readline="no"
++    fi
++    LIBS="$ORIG_LIBS"
++  ])
++
++  if test "$ax_cv_lib_readline" != "no"; then
++    LIBS="$LIBS $ax_cv_lib_readline"
++    AC_DEFINE(HAVE_LIBREADLINE, 1,
++              [Define if you have a readline compatible library])
++    AC_CHECK_HEADERS(readline.h readline/readline.h)
++    AC_CACHE_CHECK([whether readline supports history],
++                   ax_cv_lib_readline_history, [
++      ax_cv_lib_readline_history="no"
++      AC_TRY_LINK_FUNC(add_history, ax_cv_lib_readline_history="yes")
++    ])
++    if test "$ax_cv_lib_readline_history" = "yes"; then
++      AC_DEFINE(HAVE_READLINE_HISTORY, 1,
++                [Define if your readline library has \`add_history'])
++      AC_CHECK_HEADERS(history.h readline/history.h)
++    fi
++  fi
++])dnl
+diff --git a/autotools/ax_pthread.m4 b/autotools/ax_pthread.m4
+new file mode 100644
+index 00000000..d383ad5c
+--- /dev/null
++++ b/autotools/ax_pthread.m4
+@@ -0,0 +1,332 @@
++# ===========================================================================
++#        http://www.gnu.org/software/autoconf-archive/ax_pthread.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_PTHREAD([ACTION-IF-FOUND[, ACTION-IF-NOT-FOUND]])
++#
++# DESCRIPTION
++#
++#   This macro figures out how to build C programs using POSIX threads. It
++#   sets the PTHREAD_LIBS output variable to the threads library and linker
++#   flags, and the PTHREAD_CFLAGS output variable to any special C compiler
++#   flags that are needed. (The user can also force certain compiler
++#   flags/libs to be tested by setting these environment variables.)
++#
++#   Also sets PTHREAD_CC to any special C compiler that is needed for
++#   multi-threaded programs (defaults to the value of CC otherwise). (This
++#   is necessary on AIX to use the special cc_r compiler alias.)
++#
++#   NOTE: You are assumed to not only compile your program with these flags,
++#   but also link it with them as well. e.g. you should link with
++#   $PTHREAD_CC $CFLAGS $PTHREAD_CFLAGS $LDFLAGS ... $PTHREAD_LIBS $LIBS
++#
++#   If you are only building threads programs, you may wish to use these
++#   variables in your default LIBS, CFLAGS, and CC:
++#
++#     LIBS="$PTHREAD_LIBS $LIBS"
++#     CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++#     CC="$PTHREAD_CC"
++#
++#   In addition, if the PTHREAD_CREATE_JOINABLE thread-attribute constant
++#   has a nonstandard name, defines PTHREAD_CREATE_JOINABLE to that name
++#   (e.g. PTHREAD_CREATE_UNDETACHED on AIX).
++#
++#   Also HAVE_PTHREAD_PRIO_INHERIT is defined if pthread is found and the
++#   PTHREAD_PRIO_INHERIT symbol is defined when compiling with
++#   PTHREAD_CFLAGS.
++#
++#   ACTION-IF-FOUND is a list of shell commands to run if a threads library
++#   is found, and ACTION-IF-NOT-FOUND is a list of commands to run it if it
++#   is not found. If ACTION-IF-FOUND is not specified, the default action
++#   will define HAVE_PTHREAD.
++#
++#   Please let the authors know if this macro fails on any platform, or if
++#   you have any other suggestions or comments. This macro was based on work
++#   by SGJ on autoconf scripts for FFTW (http://www.fftw.org/) (with help
++#   from M. Frigo), as well as ac_pthread and hb_pthread macros posted by
++#   Alejandro Forero Cuervo to the autoconf macro repository. We are also
++#   grateful for the helpful feedback of numerous users.
++#
++#   Updated for Autoconf 2.68 by Daniel Richard G.
++#
++# LICENSE
++#
++#   Copyright (c) 2008 Steven G. Johnson <stevenj@alum.mit.edu>
++#   Copyright (c) 2011 Daniel Richard G. <skunk@iSKUNK.ORG>
++#
++#   This program is free software: you can redistribute it and/or modify it
++#   under the terms of the GNU General Public License as published by the
++#   Free Software Foundation, either version 3 of the License, or (at your
++#   option) any later version.
++#
++#   This program is distributed in the hope that it will be useful, but
++#   WITHOUT ANY WARRANTY; without even the implied warranty of
++#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
++#   Public License for more details.
++#
++#   You should have received a copy of the GNU General Public License along
++#   with this program. If not, see <http://www.gnu.org/licenses/>.
++#
++#   As a special exception, the respective Autoconf Macro's copyright owner
++#   gives unlimited permission to copy, distribute and modify the configure
++#   scripts that are the output of Autoconf when processing the Macro. You
++#   need not follow the terms of the GNU General Public License when using
++#   or distributing such scripts, even though portions of the text of the
++#   Macro appear in them. The GNU General Public License (GPL) does govern
++#   all other use of the material that constitutes the Autoconf Macro.
++#
++#   This special exception to the GPL applies to versions of the Autoconf
++#   Macro released by the Autoconf Archive. When you make and distribute a
++#   modified version of the Autoconf Macro, you may extend this special
++#   exception to the GPL to apply to your modified version as well.
++
++#serial 21
++
++AU_ALIAS([ACX_PTHREAD], [AX_PTHREAD])
++AC_DEFUN([AX_PTHREAD], [
++AC_REQUIRE([AC_CANONICAL_HOST])
++AC_LANG_PUSH([C])
++ax_pthread_ok=no
++
++# We used to check for pthread.h first, but this fails if pthread.h
++# requires special compiler flags (e.g. on True64 or Sequent).
++# It gets checked for in the link test anyway.
++
++# First of all, check if the user has set any of the PTHREAD_LIBS,
++# etcetera environment variables, and if threads linking works using
++# them:
++if test x"$PTHREAD_LIBS$PTHREAD_CFLAGS" != x; then
++        save_CFLAGS="$CFLAGS"
++        CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++        save_LIBS="$LIBS"
++        LIBS="$PTHREAD_LIBS $LIBS"
++        AC_MSG_CHECKING([for pthread_join in LIBS=$PTHREAD_LIBS with CFLAGS=$PTHREAD_CFLAGS])
++        AC_TRY_LINK_FUNC([pthread_join], [ax_pthread_ok=yes])
++        AC_MSG_RESULT([$ax_pthread_ok])
++        if test x"$ax_pthread_ok" = xno; then
++                PTHREAD_LIBS=""
++                PTHREAD_CFLAGS=""
++        fi
++        LIBS="$save_LIBS"
++        CFLAGS="$save_CFLAGS"
++fi
++
++# We must check for the threads library under a number of different
++# names; the ordering is very important because some systems
++# (e.g. DEC) have both -lpthread and -lpthreads, where one of the
++# libraries is broken (non-POSIX).
++
++# Create a list of thread flags to try.  Items starting with a "-" are
++# C compiler flags, and other items are library names, except for "none"
++# which indicates that we try without any flags at all, and "pthread-config"
++# which is a program returning the flags for the Pth emulation library.
++
++ax_pthread_flags="pthreads none -Kthread -kthread lthread -pthread -pthreads -mthreads pthread --thread-safe -mt pthread-config"
++
++# The ordering *is* (sometimes) important.  Some notes on the
++# individual items follow:
++
++# pthreads: AIX (must check this before -lpthread)
++# none: in case threads are in libc; should be tried before -Kthread and
++#       other compiler flags to prevent continual compiler warnings
++# -Kthread: Sequent (threads in libc, but -Kthread needed for pthread.h)
++# -kthread: FreeBSD kernel threads (preferred to -pthread since SMP-able)
++# lthread: LinuxThreads port on FreeBSD (also preferred to -pthread)
++# -pthread: Linux/gcc (kernel threads), BSD/gcc (userland threads)
++# -pthreads: Solaris/gcc
++# -mthreads: Mingw32/gcc, Lynx/gcc
++# -mt: Sun Workshop C (may only link SunOS threads [-lthread], but it
++#      doesn't hurt to check since this sometimes defines pthreads too;
++#      also defines -D_REENTRANT)
++#      ... -mt is also the pthreads flag for HP/aCC
++# pthread: Linux, etcetera
++# --thread-safe: KAI C++
++# pthread-config: use pthread-config program (for GNU Pth library)
++
++case ${host_os} in
++        solaris*)
++
++        # On Solaris (at least, for some versions), libc contains stubbed
++        # (non-functional) versions of the pthreads routines, so link-based
++        # tests will erroneously succeed.  (We need to link with -pthreads/-mt/
++        # -lpthread.)  (The stubs are missing pthread_cleanup_push, or rather
++        # a function called by this macro, so we could check for that, but
++        # who knows whether they'll stub that too in a future libc.)  So,
++        # we'll just look for -pthreads and -lpthread first:
++
++        ax_pthread_flags="-pthreads pthread -mt -pthread $ax_pthread_flags"
++        ;;
++
++        darwin*)
++        ax_pthread_flags="-pthread $ax_pthread_flags"
++        ;;
++esac
++
++# Clang doesn't consider unrecognized options an error unless we specify
++# -Werror. We throw in some extra Clang-specific options to ensure that
++# this doesn't happen for GCC, which also accepts -Werror.
++
++AC_MSG_CHECKING([if compiler needs -Werror to reject unknown flags])
++save_CFLAGS="$CFLAGS"
++ax_pthread_extra_flags="-Werror"
++CFLAGS="$CFLAGS $ax_pthread_extra_flags -Wunknown-warning-option -Wsizeof-array-argument"
++AC_COMPILE_IFELSE([AC_LANG_PROGRAM([int foo(void);],[foo()])],
++                  [AC_MSG_RESULT([yes])],
++                  [ax_pthread_extra_flags=
++                   AC_MSG_RESULT([no])])
++CFLAGS="$save_CFLAGS"
++
++if test x"$ax_pthread_ok" = xno; then
++for flag in $ax_pthread_flags; do
++
++        case $flag in
++                none)
++                AC_MSG_CHECKING([whether pthreads work without any flags])
++                ;;
++
++                -*)
++                AC_MSG_CHECKING([whether pthreads work with $flag])
++                PTHREAD_CFLAGS="$flag"
++                ;;
++
++                pthread-config)
++                AC_CHECK_PROG([ax_pthread_config], [pthread-config], [yes], [no])
++                if test x"$ax_pthread_config" = xno; then continue; fi
++                PTHREAD_CFLAGS="`pthread-config --cflags`"
++                PTHREAD_LIBS="`pthread-config --ldflags` `pthread-config --libs`"
++                ;;
++
++                *)
++                AC_MSG_CHECKING([for the pthreads library -l$flag])
++                PTHREAD_LIBS="-l$flag"
++                ;;
++        esac
++
++        save_LIBS="$LIBS"
++        save_CFLAGS="$CFLAGS"
++        LIBS="$PTHREAD_LIBS $LIBS"
++        CFLAGS="$CFLAGS $PTHREAD_CFLAGS $ax_pthread_extra_flags"
++
++        # Check for various functions.  We must include pthread.h,
++        # since some functions may be macros.  (On the Sequent, we
++        # need a special flag -Kthread to make this header compile.)
++        # We check for pthread_join because it is in -lpthread on IRIX
++        # while pthread_create is in libc.  We check for pthread_attr_init
++        # due to DEC craziness with -lpthreads.  We check for
++        # pthread_cleanup_push because it is one of the few pthread
++        # functions on Solaris that doesn't have a non-functional libc stub.
++        # We try pthread_create on general principles.
++        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <pthread.h>
++                        static void routine(void *a) { a = 0; }
++                        static void *start_routine(void *a) { return a; }],
++                       [pthread_t th; pthread_attr_t attr;
++                        pthread_create(&th, 0, start_routine, 0);
++                        pthread_join(th, 0);
++                        pthread_attr_init(&attr);
++                        pthread_cleanup_push(routine, 0);
++                        pthread_cleanup_pop(0) /* ; */])],
++                [ax_pthread_ok=yes],
++                [])
++
++        LIBS="$save_LIBS"
++        CFLAGS="$save_CFLAGS"
++
++        AC_MSG_RESULT([$ax_pthread_ok])
++        if test "x$ax_pthread_ok" = xyes; then
++                break;
++        fi
++
++        PTHREAD_LIBS=""
++        PTHREAD_CFLAGS=""
++done
++fi
++
++# Various other checks:
++if test "x$ax_pthread_ok" = xyes; then
++        save_LIBS="$LIBS"
++        LIBS="$PTHREAD_LIBS $LIBS"
++        save_CFLAGS="$CFLAGS"
++        CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++
++        # Detect AIX lossage: JOINABLE attribute is called UNDETACHED.
++        AC_MSG_CHECKING([for joinable pthread attribute])
++        attr_name=unknown
++        for attr in PTHREAD_CREATE_JOINABLE PTHREAD_CREATE_UNDETACHED; do
++            AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <pthread.h>],
++                           [int attr = $attr; return attr /* ; */])],
++                [attr_name=$attr; break],
++                [])
++        done
++        AC_MSG_RESULT([$attr_name])
++        if test "$attr_name" != PTHREAD_CREATE_JOINABLE; then
++            AC_DEFINE_UNQUOTED([PTHREAD_CREATE_JOINABLE], [$attr_name],
++                               [Define to necessary symbol if this constant
++                                uses a non-standard name on your system.])
++        fi
++
++        AC_MSG_CHECKING([if more special flags are required for pthreads])
++        flag=no
++        case ${host_os} in
++            aix* | freebsd* | darwin*) flag="-D_THREAD_SAFE";;
++            osf* | hpux*) flag="-D_REENTRANT";;
++            solaris*)
++            if test "$GCC" = "yes"; then
++                flag="-D_REENTRANT"
++            else
++                # TODO: What about Clang on Solaris?
++                flag="-mt -D_REENTRANT"
++            fi
++            ;;
++        esac
++        AC_MSG_RESULT([$flag])
++        if test "x$flag" != xno; then
++            PTHREAD_CFLAGS="$flag $PTHREAD_CFLAGS"
++        fi
++
++        AC_CACHE_CHECK([for PTHREAD_PRIO_INHERIT],
++            [ax_cv_PTHREAD_PRIO_INHERIT], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[#include <pthread.h>]],
++                                                [[int i = PTHREAD_PRIO_INHERIT;]])],
++                    [ax_cv_PTHREAD_PRIO_INHERIT=yes],
++                    [ax_cv_PTHREAD_PRIO_INHERIT=no])
++            ])
++        AS_IF([test "x$ax_cv_PTHREAD_PRIO_INHERIT" = "xyes"],
++            [AC_DEFINE([HAVE_PTHREAD_PRIO_INHERIT], [1], [Have PTHREAD_PRIO_INHERIT.])])
++
++        LIBS="$save_LIBS"
++        CFLAGS="$save_CFLAGS"
++
++        # More AIX lossage: compile with *_r variant
++        if test "x$GCC" != xyes; then
++            case $host_os in
++                aix*)
++                AS_CASE(["x/$CC"],
++                  [x*/c89|x*/c89_128|x*/c99|x*/c99_128|x*/cc|x*/cc128|x*/xlc|x*/xlc_v6|x*/xlc128|x*/xlc128_v6],
++                  [#handle absolute path differently from PATH based program lookup
++                   AS_CASE(["x$CC"],
++                     [x/*],
++                     [AS_IF([AS_EXECUTABLE_P([${CC}_r])],[PTHREAD_CC="${CC}_r"])],
++                     [AC_CHECK_PROGS([PTHREAD_CC],[${CC}_r],[$CC])])])
++                ;;
++            esac
++        fi
++fi
++
++test -n "$PTHREAD_CC" || PTHREAD_CC="$CC"
++
++AC_SUBST([PTHREAD_LIBS])
++AC_SUBST([PTHREAD_CFLAGS])
++AC_SUBST([PTHREAD_CC])
++
++# Finally, execute ACTION-IF-FOUND/ACTION-IF-NOT-FOUND:
++if test x"$ax_pthread_ok" = xyes; then
++        ifelse([$1],,[AC_DEFINE([HAVE_PTHREAD],[1],[Define if you have POSIX threads libraries and header files.])],[$1])
++        :
++else
++        ax_pthread_ok=no
++        $2
++fi
++AC_LANG_POP
++])dnl AX_PTHREAD
+diff --git a/autotools/ax_with_curses.m4 b/autotools/ax_with_curses.m4
+new file mode 100644
+index 00000000..e4cbd31b
+--- /dev/null
++++ b/autotools/ax_with_curses.m4
+@@ -0,0 +1,518 @@
++# ===========================================================================
++#      http://www.gnu.org/software/autoconf-archive/ax_with_curses.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_WITH_CURSES
++#
++# DESCRIPTION
++#
++#   This macro checks whether a SysV or X/Open-compatible Curses library is
++#   present, along with the associated header file.  The NcursesW
++#   (wide-character) library is searched for first, followed by Ncurses,
++#   then the system-default plain Curses.  The first library found is the
++#   one returned.
++#
++#   The following options are understood: --with-ncursesw, --with-ncurses,
++#   --without-ncursesw, --without-ncurses.  The "--with" options force the
++#   macro to use that particular library, terminating with an error if not
++#   found.  The "--without" options simply skip the check for that library.
++#   The effect on the search pattern is:
++#
++#     (no options)                           - NcursesW, Ncurses, Curses
++#     --with-ncurses     --with-ncursesw     - NcursesW only [*]
++#     --without-ncurses  --with-ncursesw     - NcursesW only [*]
++#                        --with-ncursesw     - NcursesW only [*]
++#     --with-ncurses     --without-ncursesw  - Ncurses only [*]
++#     --with-ncurses                         - NcursesW, Ncurses [**]
++#     --without-ncurses  --without-ncursesw  - Curses only
++#                        --without-ncursesw  - Ncurses, Curses
++#     --without-ncurses                      - NcursesW, Curses
++#
++#   [*]  If the library is not found, abort the configure script.
++#
++#   [**] If the second library (Ncurses) is not found, abort configure.
++#
++#   The following preprocessor symbols may be defined by this macro if the
++#   appropriate conditions are met:
++#
++#     HAVE_CURSES             - if any SysV or X/Open Curses library found
++#     HAVE_CURSES_ENHANCED    - if library supports X/Open Enhanced functions
++#     HAVE_CURSES_COLOR       - if library supports color (enhanced functions)
++#     HAVE_CURSES_OBSOLETE    - if library supports certain obsolete features
++#     HAVE_NCURSESW           - if NcursesW (wide char) library is to be used
++#     HAVE_NCURSES            - if the Ncurses library is to be used
++#
++#     HAVE_CURSES_H           - if <curses.h> is present and should be used
++#     HAVE_NCURSESW_H         - if <ncursesw.h> should be used
++#     HAVE_NCURSES_H          - if <ncurses.h> should be used
++#     HAVE_NCURSESW_CURSES_H  - if <ncursesw/curses.h> should be used
++#     HAVE_NCURSES_CURSES_H   - if <ncurses/curses.h> should be used
++#
++#   (These preprocessor symbols are discussed later in this document.)
++#
++#   The following output variable is defined by this macro; it is precious
++#   and may be overridden on the ./configure command line:
++#
++#     CURSES_LIB  - library to add to xxx_LDADD
++#
++#   The library listed in CURSES_LIB is NOT added to LIBS by default. You
++#   need to add CURSES_LIB to the appropriate xxx_LDADD line in your
++#   Makefile.am.  For example:
++#
++#     prog_LDADD = @CURSES_LIB@
++#
++#   If CURSES_LIB is set on the configure command line (such as by running
++#   "./configure CURSES_LIB=-lmycurses"), then the only header searched for
++#   is <curses.h>.  The user may use the CPPFLAGS precious variable to
++#   override the standard #include search path.  If the user needs to
++#   specify an alternative path for a library (such as for a non-standard
++#   NcurseW), the user should use the LDFLAGS variable.
++#
++#   The following shell variables may be defined by this macro:
++#
++#     ax_cv_curses           - set to "yes" if any Curses library found
++#     ax_cv_curses_enhanced  - set to "yes" if Enhanced functions present
++#     ax_cv_curses_color     - set to "yes" if color functions present
++#     ax_cv_curses_obsolete  - set to "yes" if obsolete features present
++#
++#     ax_cv_ncursesw      - set to "yes" if NcursesW library found
++#     ax_cv_ncurses       - set to "yes" if Ncurses library found
++#     ax_cv_plaincurses   - set to "yes" if plain Curses library found
++#     ax_cv_curses_which  - set to "ncursesw", "ncurses", "plaincurses" or "no"
++#
++#   These variables can be used in your configure.ac to determine the level
++#   of support you need from the Curses library.  For example, if you must
++#   have either Ncurses or NcursesW, you could include:
++#
++#     AX_WITH_CURSES
++#     if test "x$ax_cv_ncursesw" != xyes && test "x$ax_cv_ncurses" != xyes; then
++#         AC_MSG_ERROR([requires either NcursesW or Ncurses library])
++#     fi
++#
++#   If any Curses library will do (but one must be present and must support
++#   color), you could use:
++#
++#     AX_WITH_CURSES
++#     if test "x$ax_cv_curses" != xyes || test "x$ax_cv_curses_color" != xyes; then
++#         AC_MSG_ERROR([requires an X/Open-compatible Curses library with color])
++#     fi
++#
++#   Certain preprocessor symbols and shell variables defined by this macro
++#   can be used to determine various features of the Curses library.  In
++#   particular, HAVE_CURSES and ax_cv_curses are defined if the Curses
++#   library found conforms to the traditional SysV and/or X/Open Base Curses
++#   definition.  Any working Curses library conforms to this level.
++#
++#   HAVE_CURSES_ENHANCED and ax_cv_curses_enhanced are defined if the
++#   library supports the X/Open Enhanced Curses definition.  In particular,
++#   the wide-character types attr_t, cchar_t and wint_t, the functions
++#   wattr_set() and wget_wch() and the macros WA_NORMAL and _XOPEN_CURSES
++#   are checked.  The Ncurses library does NOT conform to this definition,
++#   although NcursesW does.
++#
++#   HAVE_CURSES_COLOR and ax_cv_curses_color are defined if the library
++#   supports color functions and macros such as COLOR_PAIR, A_COLOR,
++#   COLOR_WHITE, COLOR_RED and init_pair().  These are NOT part of the
++#   X/Open Base Curses definition, but are part of the Enhanced set of
++#   functions.  The Ncurses library DOES support these functions, as does
++#   NcursesW.
++#
++#   HAVE_CURSES_OBSOLETE and ax_cv_curses_obsolete are defined if the
++#   library supports certain features present in SysV and BSD Curses but not
++#   defined in the X/Open definition.  In particular, the functions
++#   getattrs(), getcurx() and getmaxx() are checked.
++#
++#   To use the HAVE_xxx_H preprocessor symbols, insert the following into
++#   your system.h (or equivalent) header file:
++#
++#     #if defined HAVE_NCURSESW_CURSES_H
++#     #  include <ncursesw/curses.h>
++#     #elif defined HAVE_NCURSESW_H
++#     #  include <ncursesw.h>
++#     #elif defined HAVE_NCURSES_CURSES_H
++#     #  include <ncurses/curses.h>
++#     #elif defined HAVE_NCURSES_H
++#     #  include <ncurses.h>
++#     #elif defined HAVE_CURSES_H
++#     #  include <curses.h>
++#     #else
++#     #  error "SysV or X/Open-compatible Curses header file required"
++#     #endif
++#
++#   For previous users of this macro: you should not need to change anything
++#   in your configure.ac or Makefile.am, as the previous (serial 10)
++#   semantics are still valid.  However, you should update your system.h (or
++#   equivalent) header file to the fragment shown above. You are encouraged
++#   also to make use of the extended functionality provided by this version
++#   of AX_WITH_CURSES, as well as in the additional macros
++#   AX_WITH_CURSES_PANEL, AX_WITH_CURSES_MENU and AX_WITH_CURSES_FORM.
++#
++# LICENSE
++#
++#   Copyright (c) 2009 Mark Pulford <mark@kyne.com.au>
++#   Copyright (c) 2009 Damian Pietras <daper@daper.net>
++#   Copyright (c) 2012 Reuben Thomas <rrt@sc3d.org>
++#   Copyright (c) 2011 John Zaitseff <J.Zaitseff@zap.org.au>
++#
++#   This program is free software: you can redistribute it and/or modify it
++#   under the terms of the GNU General Public License as published by the
++#   Free Software Foundation, either version 3 of the License, or (at your
++#   option) any later version.
++#
++#   This program is distributed in the hope that it will be useful, but
++#   WITHOUT ANY WARRANTY; without even the implied warranty of
++#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
++#   Public License for more details.
++#
++#   You should have received a copy of the GNU General Public License along
++#   with this program. If not, see <http://www.gnu.org/licenses/>.
++#
++#   As a special exception, the respective Autoconf Macro's copyright owner
++#   gives unlimited permission to copy, distribute and modify the configure
++#   scripts that are the output of Autoconf when processing the Macro. You
++#   need not follow the terms of the GNU General Public License when using
++#   or distributing such scripts, even though portions of the text of the
++#   Macro appear in them. The GNU General Public License (GPL) does govern
++#   all other use of the material that constitutes the Autoconf Macro.
++#
++#   This special exception to the GPL applies to versions of the Autoconf
++#   Macro released by the Autoconf Archive. When you make and distribute a
++#   modified version of the Autoconf Macro, you may extend this special
++#   exception to the GPL to apply to your modified version as well.
++
++#serial 15
++
++AU_ALIAS([MP_WITH_CURSES], [AX_WITH_CURSES])
++AC_DEFUN([AX_WITH_CURSES], [
++    AC_ARG_VAR([CURSES_LIB], [linker library for Curses, e.g. -lcurses])
++    AC_ARG_WITH([ncurses], [AS_HELP_STRING([--with-ncurses],
++        [force the use of Ncurses or NcursesW])],
++        [], [with_ncurses=check])
++    AC_ARG_WITH([ncursesw], [AS_HELP_STRING([--without-ncursesw],
++        [do not use NcursesW (wide character support)])],
++        [], [with_ncursesw=check])
++
++    ax_saved_LIBS=$LIBS
++    AS_IF([test "x$with_ncurses" = xyes || test "x$with_ncursesw" = xyes],
++        [ax_with_plaincurses=no], [ax_with_plaincurses=check])
++
++    ax_cv_curses_which=no
++
++    # Test for NcursesW
++
++    AS_IF([test "x$CURSES_LIB" = x && test "x$with_ncursesw" != xno], [
++        LIBS="$ax_saved_LIBS -lncursesw"
++
++        AC_CACHE_CHECK([for NcursesW wide-character library], [ax_cv_ncursesw], [
++            AC_LINK_IFELSE([AC_LANG_CALL([], [initscr])],
++                [ax_cv_ncursesw=yes], [ax_cv_ncursesw=no])
++        ])
++        AS_IF([test "x$ax_cv_ncursesw" = xno && test "x$with_ncursesw" = xyes], [
++            AC_MSG_ERROR([--with-ncursesw specified but could not find NcursesW library])
++        ])
++
++        AS_IF([test "x$ax_cv_ncursesw" = xyes], [
++            ax_cv_curses=yes
++            ax_cv_curses_which=ncursesw
++            CURSES_LIB="-lncursesw"
++            AC_DEFINE([HAVE_NCURSESW], [1], [Define to 1 if the NcursesW library is present])
++            AC_DEFINE([HAVE_CURSES],   [1], [Define to 1 if a SysV or X/Open compatible Curses library is present])
++
++            AC_CACHE_CHECK([for working ncursesw/curses.h], [ax_cv_header_ncursesw_curses_h], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@define _XOPEN_SOURCE_EXTENDED 1
++                        @%:@include <ncursesw/curses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        chtype c = COLOR_PAIR(1) & A_COLOR;
++                        attr_t d = WA_NORMAL;
++                        cchar_t e;
++                        wint_t f;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                        init_pair(1, COLOR_WHITE, COLOR_RED);
++                        wattr_set(stdscr, d, 0, NULL);
++                        wget_wch(stdscr, &f);
++                    ]])],
++                    [ax_cv_header_ncursesw_curses_h=yes],
++                    [ax_cv_header_ncursesw_curses_h=no])
++            ])
++            AS_IF([test "x$ax_cv_header_ncursesw_curses_h" = xyes], [
++                ax_cv_curses_enhanced=yes
++                ax_cv_curses_color=yes
++                ax_cv_curses_obsolete=yes
++                AC_DEFINE([HAVE_CURSES_ENHANCED],   [1], [Define to 1 if library supports X/Open Enhanced functions])
++                AC_DEFINE([HAVE_CURSES_COLOR],      [1], [Define to 1 if library supports color (enhanced functions)])
++                AC_DEFINE([HAVE_CURSES_OBSOLETE],   [1], [Define to 1 if library supports certain obsolete features])
++                AC_DEFINE([HAVE_NCURSESW_CURSES_H], [1], [Define to 1 if <ncursesw/curses.h> is present])
++            ])
++
++            AC_CACHE_CHECK([for working ncursesw.h], [ax_cv_header_ncursesw_h], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@define _XOPEN_SOURCE_EXTENDED 1
++                        @%:@include <ncursesw.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        chtype c = COLOR_PAIR(1) & A_COLOR;
++                        attr_t d = WA_NORMAL;
++                        cchar_t e;
++                        wint_t f;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                        init_pair(1, COLOR_WHITE, COLOR_RED);
++                        wattr_set(stdscr, d, 0, NULL);
++                        wget_wch(stdscr, &f);
++                    ]])],
++                    [ax_cv_header_ncursesw_h=yes],
++                    [ax_cv_header_ncursesw_h=no])
++            ])
++            AS_IF([test "x$ax_cv_header_ncursesw_h" = xyes], [
++                ax_cv_curses_enhanced=yes
++                ax_cv_curses_color=yes
++                ax_cv_curses_obsolete=yes
++                AC_DEFINE([HAVE_CURSES_ENHANCED], [1], [Define to 1 if library supports X/Open Enhanced functions])
++                AC_DEFINE([HAVE_CURSES_COLOR],    [1], [Define to 1 if library supports color (enhanced functions)])
++                AC_DEFINE([HAVE_CURSES_OBSOLETE], [1], [Define to 1 if library supports certain obsolete features])
++                AC_DEFINE([HAVE_NCURSESW_H],      [1], [Define to 1 if <ncursesw.h> is present])
++            ])
++
++            AC_CACHE_CHECK([for working ncurses.h], [ax_cv_header_ncurses_h_with_ncursesw], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@define _XOPEN_SOURCE_EXTENDED 1
++                        @%:@include <ncurses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        chtype c = COLOR_PAIR(1) & A_COLOR;
++                        attr_t d = WA_NORMAL;
++                        cchar_t e;
++                        wint_t f;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                        init_pair(1, COLOR_WHITE, COLOR_RED);
++                        wattr_set(stdscr, d, 0, NULL);
++                        wget_wch(stdscr, &f);
++                    ]])],
++                    [ax_cv_header_ncurses_h_with_ncursesw=yes],
++                    [ax_cv_header_ncurses_h_with_ncursesw=no])
++            ])
++            AS_IF([test "x$ax_cv_header_ncurses_h_with_ncursesw" = xyes], [
++                ax_cv_curses_enhanced=yes
++                ax_cv_curses_color=yes
++                ax_cv_curses_obsolete=yes
++                AC_DEFINE([HAVE_CURSES_ENHANCED], [1], [Define to 1 if library supports X/Open Enhanced functions])
++                AC_DEFINE([HAVE_CURSES_COLOR],    [1], [Define to 1 if library supports color (enhanced functions)])
++                AC_DEFINE([HAVE_CURSES_OBSOLETE], [1], [Define to 1 if library supports certain obsolete features])
++                AC_DEFINE([HAVE_NCURSES_H],       [1], [Define to 1 if <ncurses.h> is present])
++            ])
++
++            AS_IF([test "x$ax_cv_header_ncursesw_curses_h" = xno && test "x$ax_cv_header_ncursesw_h" = xno && test "x$ax_cv_header_ncurses_h_with_ncursesw" = xno], [
++                AC_MSG_WARN([could not find a working ncursesw/curses.h, ncursesw.h or ncurses.h])
++            ])
++        ])
++    ])
++
++    # Test for Ncurses
++
++    AS_IF([test "x$CURSES_LIB" = x && test "x$with_ncurses" != xno && test "x$ax_cv_curses_which" = xno], [
++        LIBS="$ax_saved_LIBS -lncurses"
++
++        AC_CACHE_CHECK([for Ncurses library], [ax_cv_ncurses], [
++            AC_LINK_IFELSE([AC_LANG_CALL([], [initscr])],
++                [ax_cv_ncurses=yes], [ax_cv_ncurses=no])
++        ])
++        AS_IF([test "x$ax_cv_ncurses" = xno && test "x$with_ncurses" = xyes], [
++            AC_MSG_ERROR([--with-ncurses specified but could not find Ncurses library])
++        ])
++
++        AS_IF([test "x$ax_cv_ncurses" = xyes], [
++            ax_cv_curses=yes
++            ax_cv_curses_which=ncurses
++            CURSES_LIB="-lncurses"
++            AC_DEFINE([HAVE_NCURSES], [1], [Define to 1 if the Ncurses library is present])
++            AC_DEFINE([HAVE_CURSES],  [1], [Define to 1 if a SysV or X/Open compatible Curses library is present])
++
++            AC_CACHE_CHECK([for working ncurses/curses.h], [ax_cv_header_ncurses_curses_h], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@include <ncurses/curses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        chtype c = COLOR_PAIR(1) & A_COLOR;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                        init_pair(1, COLOR_WHITE, COLOR_RED);
++                    ]])],
++                    [ax_cv_header_ncurses_curses_h=yes],
++                    [ax_cv_header_ncurses_curses_h=no])
++            ])
++            AS_IF([test "x$ax_cv_header_ncurses_curses_h" = xyes], [
++                ax_cv_curses_color=yes
++                ax_cv_curses_obsolete=yes
++                AC_DEFINE([HAVE_CURSES_COLOR],     [1], [Define to 1 if library supports color (enhanced functions)])
++                AC_DEFINE([HAVE_CURSES_OBSOLETE],  [1], [Define to 1 if library supports certain obsolete features])
++                AC_DEFINE([HAVE_NCURSES_CURSES_H], [1], [Define to 1 if <ncurses/curses.h> is present])
++            ])
++
++            AC_CACHE_CHECK([for working ncurses.h], [ax_cv_header_ncurses_h], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@include <ncurses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        chtype c = COLOR_PAIR(1) & A_COLOR;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                        init_pair(1, COLOR_WHITE, COLOR_RED);
++                    ]])],
++                    [ax_cv_header_ncurses_h=yes],
++                    [ax_cv_header_ncurses_h=no])
++            ])
++            AS_IF([test "x$ax_cv_header_ncurses_h" = xyes], [
++                ax_cv_curses_color=yes
++                ax_cv_curses_obsolete=yes
++                AC_DEFINE([HAVE_CURSES_COLOR],    [1], [Define to 1 if library supports color (enhanced functions)])
++                AC_DEFINE([HAVE_CURSES_OBSOLETE], [1], [Define to 1 if library supports certain obsolete features])
++                AC_DEFINE([HAVE_NCURSES_H],       [1], [Define to 1 if <ncurses.h> is present])
++            ])
++
++            AS_IF([test "x$ax_cv_header_ncurses_curses_h" = xno && test "x$ax_cv_header_ncurses_h" = xno], [
++                AC_MSG_WARN([could not find a working ncurses/curses.h or ncurses.h])
++            ])
++        ])
++    ])
++
++    # Test for plain Curses (or if CURSES_LIB was set by user)
++
++    AS_IF([test "x$with_plaincurses" != xno && test "x$ax_cv_curses_which" = xno], [
++        AS_IF([test "x$CURSES_LIB" != x], [
++            LIBS="$ax_saved_LIBS $CURSES_LIB"
++        ], [
++            LIBS="$ax_saved_LIBS -lcurses"
++        ])
++
++        AC_CACHE_CHECK([for Curses library], [ax_cv_plaincurses], [
++            AC_LINK_IFELSE([AC_LANG_CALL([], [initscr])],
++                [ax_cv_plaincurses=yes], [ax_cv_plaincurses=no])
++        ])
++
++        AS_IF([test "x$ax_cv_plaincurses" = xyes], [
++            ax_cv_curses=yes
++            ax_cv_curses_which=plaincurses
++            AS_IF([test "x$CURSES_LIB" = x], [
++                CURSES_LIB="-lcurses"
++            ])
++            AC_DEFINE([HAVE_CURSES], [1], [Define to 1 if a SysV or X/Open compatible Curses library is present])
++
++            # Check for base conformance (and header file)
++
++            AC_CACHE_CHECK([for working curses.h], [ax_cv_header_curses_h], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@include <curses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        initscr();
++                    ]])],
++                    [ax_cv_header_curses_h=yes],
++                    [ax_cv_header_curses_h=no])
++            ])
++            AS_IF([test "x$ax_cv_header_curses_h" = xyes], [
++                AC_DEFINE([HAVE_CURSES_H], [1], [Define to 1 if <curses.h> is present])
++
++                # Check for X/Open Enhanced conformance
++
++                AC_CACHE_CHECK([for X/Open Enhanced Curses conformance], [ax_cv_plaincurses_enhanced], [
++                    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                            @%:@define _XOPEN_SOURCE_EXTENDED 1
++                            @%:@include <curses.h>
++                            @%:@ifndef _XOPEN_CURSES
++                            @%:@error "this Curses library is not enhanced"
++                            "this Curses library is not enhanced"
++                            @%:@endif
++                        ]], [[
++                            chtype a = A_BOLD;
++                            int b = KEY_LEFT;
++                            chtype c = COLOR_PAIR(1) & A_COLOR;
++                            attr_t d = WA_NORMAL;
++                            cchar_t e;
++                            wint_t f;
++                            initscr();
++                            init_pair(1, COLOR_WHITE, COLOR_RED);
++                            wattr_set(stdscr, d, 0, NULL);
++                            wget_wch(stdscr, &f);
++                        ]])],
++                        [ax_cv_plaincurses_enhanced=yes],
++                        [ax_cv_plaincurses_enhanced=no])
++                ])
++                AS_IF([test "x$ax_cv_plaincurses_enhanced" = xyes], [
++                    ax_cv_curses_enhanced=yes
++                    ax_cv_curses_color=yes
++                    AC_DEFINE([HAVE_CURSES_ENHANCED], [1], [Define to 1 if library supports X/Open Enhanced functions])
++                    AC_DEFINE([HAVE_CURSES_COLOR],    [1], [Define to 1 if library supports color (enhanced functions)])
++                ])
++
++                # Check for color functions
++
++                AC_CACHE_CHECK([for Curses color functions], [ax_cv_plaincurses_color], [
++                    AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@define _XOPEN_SOURCE_EXTENDED 1
++                        @%:@include <curses.h>
++                        ]], [[
++                            chtype a = A_BOLD;
++                            int b = KEY_LEFT;
++                            chtype c = COLOR_PAIR(1) & A_COLOR;
++                            initscr();
++                            init_pair(1, COLOR_WHITE, COLOR_RED);
++                        ]])],
++                        [ax_cv_plaincurses_color=yes],
++                        [ax_cv_plaincurses_color=no])
++                ])
++                AS_IF([test "x$ax_cv_plaincurses_color" = xyes], [
++                    ax_cv_curses_color=yes
++                    AC_DEFINE([HAVE_CURSES_COLOR], [1], [Define to 1 if library supports color (enhanced functions)])
++                ])
++
++                # Check for obsolete functions
++
++                AC_CACHE_CHECK([for obsolete Curses functions], [ax_cv_plaincurses_obsolete], [
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([[
++                        @%:@include <curses.h>
++                    ]], [[
++                        chtype a = A_BOLD;
++                        int b = KEY_LEFT;
++                        int g = getattrs(stdscr);
++                        int h = getcurx(stdscr) + getmaxx(stdscr);
++                        initscr();
++                    ]])],
++                    [ax_cv_plaincurses_obsolete=yes],
++                    [ax_cv_plaincurses_obsolete=no])
++                ])
++                AS_IF([test "x$ax_cv_plaincurses_obsolete" = xyes], [
++                    ax_cv_curses_obsolete=yes
++                    AC_DEFINE([HAVE_CURSES_OBSOLETE], [1], [Define to 1 if library supports certain obsolete features])
++                ])
++            ])
++
++            AS_IF([test "x$ax_cv_header_curses_h" = xno], [
++                AC_MSG_WARN([could not find a working curses.h])
++            ])
++        ])
++    ])
++
++    AS_IF([test "x$ax_cv_curses"          != xyes], [ax_cv_curses=no])
++    AS_IF([test "x$ax_cv_curses_enhanced" != xyes], [ax_cv_curses_enhanced=no])
++    AS_IF([test "x$ax_cv_curses_color"    != xyes], [ax_cv_curses_color=no])
++    AS_IF([test "x$ax_cv_curses_obsolete" != xyes], [ax_cv_curses_obsolete=no])
++
++    LIBS=$ax_saved_LIBS
++])dnl
+diff --git a/autotools/softether.am b/autotools/softether.am
+new file mode 100644
+index 00000000..e5e91eeb
+--- /dev/null
++++ b/autotools/softether.am
+@@ -0,0 +1,39 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++if CONFIGURE_ENABLE_DEBUG
++DEBUG_CFLAGS = -g -D_DEBUG -DDEBUG
++else
++DEBUG_CFLAGS = -DNDEBUG -DVPN_SPEED
++endif
++
++AM_CFLAGS = \
++	$(DEBUG_CFLAGS) \
++	-I$(top_srcdir)/src \
++	-I$(top_srcdir)/src/Mayaqua \
++	-I$(top_srcdir)/src/Cedar \
++	-DUNIX \
++	-DUNIX_LINUX \
++	-D_REENTRANT \
++	-DREENTRANT \
++	-D_THREAD_SAFE \
++	-D_THREADSAFE \
++	-DTHREAD_SAFE \
++	-DTHREADSAFE \
++	-D_FILE_OFFSET_BITS=64 \
++	-fsigned-char
+diff --git a/configure.ac b/configure.ac
+new file mode 100644
+index 00000000..4a3fc2ba
+--- /dev/null
++++ b/configure.ac
+@@ -0,0 +1,96 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++AC_INIT([SoftEther], [1], [http://www.vpnusers.com/], [softether], [http://www.softether.org/])
++AC_CONFIG_AUX_DIR([autotools])
++AC_CONFIG_MACRO_DIR([autotools])
++AM_INIT_AUTOMAKE([foreign -Wall -Werror])
++AM_PROG_AR
++AC_PROG_CC
++AC_PROG_LIBTOOL
++AC_CONFIG_HEADERS([softether_config.h])
++AC_CONFIG_FILES([
++	Makefile
++	src/Makefile
++	src/Mayaqua/Makefile
++	src/Cedar/Makefile
++	src/hamcorebuilder/Makefile
++	src/bin/hamcore/Makefile
++	src/vpnserver/Makefile
++	src/vpnclient/Makefile
++	src/vpnbridge/Makefile
++	src/vpncmd/Makefile
++])
++
++
++AC_ARG_ENABLE(
++	[debug],
++	AS_HELP_STRING([--enable-debug], [build SoftEther with debugging features]),
++	[debug=yes]
++)
++AM_CONDITIONAL([CONFIGURE_ENABLE_DEBUG], [test _"$debug" = _yes])
++
++
++AX_PTHREAD([
++	AC_SUBST(PTHREAD_CC)
++	AC_SUBST(PTHREAD_CFLAGS)
++	AC_SUBST(PTHREAD_LIBS)
++],[
++	AC_MSG_ERROR([pthread capabilities not found])
++])
++
++CC="$PTHREAD_CC"
++CFLAGS="$CFLAGS $PTHREAD_CFLAGS"
++LIBS="$PTHREAD_LIBS $LIBS"
++
++
++AX_CHECK_OPENSSL([
++	AC_SUBST(OPENSSL_LIBS)
++	AC_SUBST(OPENSSL_LDFLAGS)
++],[
++	AC_MSG_ERROR([openssl not found])
++])
++
++LIBS="$LIBS $OPENSSL_LIBS"
++LDFLAGS="$LDFLAGS $OPENSSL_LDFLAGS"
++
++
++# This macro automatically updates build variables.
++AX_CHECK_ZLIB(, AC_MSG_ERROR([zlib not found]))
++
++
++AX_WITH_CURSES
++if test "_$ax_cv_curses" != _yes
++then
++	AC_MSG_ERROR([libcurses, libncurses, or libncursesw not found])
++else
++	AC_SUBST(CURSES_LIB)
++	LIBS="$LIBS $CURSES_LIB"
++fi
++
++
++AX_LIB_READLINE
++if test "_$ax_cv_lib_readline" = _no
++then
++	AC_MSG_ERROR([libreadline not found])
++else
++	: This macro automatically updates build variables.
++fi
++
++
++AC_OUTPUT
+--- a/configure	2017-07-16 04:53:31.000000000 +0200
++++ b/configure	1970-01-01 01:00:00.000000000 +0100
+@@ -1,112 +0,0 @@
+-#!/bin/sh
+-
+-echo '---------------------------------------------------------------------'
+-echo 'SoftEther VPN for Unix'
+-echo
+-echo 'Copyright (c) SoftEther VPN Project at University of Tsukuba, Japan.'
+-echo 'Copyright (c) Daiyuu Nobori. All Rights Reserved.'
+-echo
+-echo 'This program is free software; you can redistribute it and/or'
+-echo 'modify it under the terms of the GNU General Public License'
+-echo 'version 2 as published by the Free Software Foundation.'
+-echo
+-echo 'Read and understand README.TXT, LICENSE.TXT and WARNING.TXT before use.'
+-echo '---------------------------------------------------------------------'
+-echo
+-
+-echo 'Welcome to the corner-cutting configure script !'
+-echo
+-
+-OS=""
+-case "`uname -s`" in
+-Linux)
+-	OS="linux"
+-	;;
+-FreeBSD)
+-	OS="freebsd"
+-	;;
+-SunOS)
+-	OS="solaris"
+-	;;
+-Darwin)
+-	OS="macos"
+-	;;
+-OpenBSD)
+-	OS="openbsd"
+-	;;
+-*)
+-	echo 'Select your operating system below:'
+-	echo ' 1: Linux'
+-	echo ' 2: FreeBSD'
+-	echo ' 3: Solaris'
+-	echo ' 4: Mac OS X'
+-	echo ' 5: OpenBSD'
+-	echo
+-	echo -n 'Which is your operating system (1 - 5) ? : '
+-	read TMP
+-	echo
+-	if test "$TMP" = "1"
+-	then
+-		OS="linux"
+-	fi
+-	if test "$TMP" = "2"
+-	then
+-		OS="freebsd"
+-	fi
+-	if test "$TMP" = "3"
+-	then
+-		OS="solaris"
+-	fi
+-	if test "$TMP" = "4"
+-	then
+-		OS="macos"
+-	fi
+-	if test "$TMP" = "5"
+-	then
+-		OS="openbsd"
+-	fi
+-
+-	if test "$OS" = ""
+-	then
+-		echo "Wrong number."
+-		exit 1
+-	fi
+-	;;
+-esac
+-
+-CPU=""
+-case "`uname -m`" in
+-x86_64|amd64|aarch64|arm64|armv8*|mips64|ppc64|sparc64|alpha|ia64)
+-	CPU=64bit
+-	;;
+-i?86|x86pc|i86pc|armv4*|armv5*|armv6*|armv7*)
+-	CPU=32bit
+-	;;
+-*)
+-	echo 'Select your CPU bits below:'
+-	echo ' 1: 32-bit'
+-	echo ' 2: 64-bit'
+-	echo
+-	echo -n 'Which is the type of your CPU (1 - 2) ? : '
+-	read TMP
+-	echo
+-	if test "$TMP" = "1"
+-	then
+-		CPU="32bit"
+-	fi
+-	if test "$TMP" = "2"
+-	then
+-		CPU="64bit"
+-	fi
+-
+-	if test "$CPU" = ""
+-	then
+-		echo "Wrong number."
+-		exit 1
+-	fi
+-	;;
+-esac
+-
+-cp src/makefiles/${OS}_${CPU}.mak Makefile
+-
+-echo "The Makefile is generated. Run 'make' to build SoftEther VPN."
+--- a/manual_configure	1970-01-01 01:00:00.000000000 +0100
++++ b/manual_configure	2017-07-16 04:53:31.000000000 +0200
+@@ -0,0 +1,112 @@
++#!/bin/sh
++
++echo '---------------------------------------------------------------------'
++echo 'SoftEther VPN for Unix'
++echo
++echo 'Copyright (c) SoftEther VPN Project at University of Tsukuba, Japan.'
++echo 'Copyright (c) Daiyuu Nobori. All Rights Reserved.'
++echo
++echo 'This program is free software; you can redistribute it and/or'
++echo 'modify it under the terms of the GNU General Public License'
++echo 'version 2 as published by the Free Software Foundation.'
++echo
++echo 'Read and understand README.TXT, LICENSE.TXT and WARNING.TXT before use.'
++echo '---------------------------------------------------------------------'
++echo
++
++echo 'Welcome to the corner-cutting configure script !'
++echo
++
++OS=""
++case "`uname -s`" in
++Linux)
++	OS="linux"
++	;;
++FreeBSD)
++	OS="freebsd"
++	;;
++SunOS)
++	OS="solaris"
++	;;
++Darwin)
++	OS="macos"
++	;;
++OpenBSD)
++	OS="openbsd"
++	;;
++*)
++	echo 'Select your operating system below:'
++	echo ' 1: Linux'
++	echo ' 2: FreeBSD'
++	echo ' 3: Solaris'
++	echo ' 4: Mac OS X'
++	echo ' 5: OpenBSD'
++	echo
++	echo -n 'Which is your operating system (1 - 5) ? : '
++	read TMP
++	echo
++	if test "$TMP" = "1"
++	then
++		OS="linux"
++	fi
++	if test "$TMP" = "2"
++	then
++		OS="freebsd"
++	fi
++	if test "$TMP" = "3"
++	then
++		OS="solaris"
++	fi
++	if test "$TMP" = "4"
++	then
++		OS="macos"
++	fi
++	if test "$TMP" = "5"
++	then
++		OS="openbsd"
++	fi
++
++	if test "$OS" = ""
++	then
++		echo "Wrong number."
++		exit 1
++	fi
++	;;
++esac
++
++CPU=""
++case "`uname -m`" in
++x86_64|amd64|aarch64|arm64|armv8*|mips64|ppc64|sparc64|alpha|ia64)
++	CPU=64bit
++	;;
++i?86|x86pc|i86pc|armv4*|armv5*|armv6*|armv7*)
++	CPU=32bit
++	;;
++*)
++	echo 'Select your CPU bits below:'
++	echo ' 1: 32-bit'
++	echo ' 2: 64-bit'
++	echo
++	echo -n 'Which is the type of your CPU (1 - 2) ? : '
++	read TMP
++	echo
++	if test "$TMP" = "1"
++	then
++		CPU="32bit"
++	fi
++	if test "$TMP" = "2"
++	then
++		CPU="64bit"
++	fi
++
++	if test "$CPU" = ""
++	then
++		echo "Wrong number."
++		exit 1
++	fi
++	;;
++esac
++
++cp src/makefiles/${OS}_${CPU}.mak Makefile
++
++echo "The Makefile is generated. Run 'make' to build SoftEther VPN."
+diff --git a/src/Cedar/Makefile.am b/src/Cedar/Makefile.am
+new file mode 100644
+index 00000000..5346537d
+--- /dev/null
++++ b/src/Cedar/Makefile.am
+@@ -0,0 +1,82 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++noinst_LTLIBRARIES = libcedar.la
++
++libcedar_la_SOURCES = \
++	Account.c \
++	Admin.c \
++	AzureClient.c \
++	AzureServer.c \
++	Bridge.c \
++	BridgeUnix.c \
++	BridgeWin32.c \
++	Cedar.c \
++	CedarPch.c \
++	Client.c \
++	CM.c \
++	Command.c \
++	Connection.c \
++	Console.c \
++	Database.c \
++	DDNS.c \
++	EM.c \
++	EtherLog.c \
++	Hub.c \
++	Interop_OpenVPN.c \
++	Interop_SSTP.c \
++	IPsec.c \
++	IPsec_EtherIP.c \
++	IPsec_IKE.c \
++	IPsec_IkePacket.c \
++	IPsec_IPC.c \
++	IPsec_L2TP.c \
++	IPsec_PPP.c \
++	IPsec_Win7.c \
++	Layer3.c \
++	Link.c \
++	Listener.c \
++	Logging.c \
++	Nat.c \
++	NativeStack.c \
++	NM.c \
++	NullLan.c \
++	Protocol.c \
++	Radius.c \
++	Remote.c \
++	Sam.c \
++	SecureInfo.c \
++	SecureNAT.c \
++	SeLowUser.c \
++	Server.c \
++	Session.c \
++	SM.c \
++	SW.c \
++	UdpAccel.c \
++	UT.c \
++	VG.c \
++	Virtual.c \
++	VLan.c \
++	VLanUnix.c \
++	VLanWin32.c \
++	WaterMark.c \
++	WebUI.c \
++	WinUi.c \
++	Wpc.c
+diff --git a/src/Makefile.am b/src/Makefile.am
+new file mode 100644
+index 00000000..dc745426
+--- /dev/null
++++ b/src/Makefile.am
+@@ -0,0 +1,26 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++# These components are built as libtool convenience libraries.
++SUBDIRS = Mayaqua Cedar
++
++# This is a nodist helper.
++SUBDIRS += hamcorebuilder
++
++# These are final build products.
++SUBDIRS += bin/hamcore vpnserver vpnclient vpnbridge vpncmd
+diff --git a/src/Mayaqua/Makefile.am b/src/Mayaqua/Makefile.am
+new file mode 100644
+index 00000000..6b8dc1a6
+--- /dev/null
++++ b/src/Mayaqua/Makefile.am
+@@ -0,0 +1,43 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++noinst_LTLIBRARIES = libmayaqua.la
++
++libmayaqua_la_SOURCES = \
++	Cfg.c \
++	Encrypt.c \
++	FileIO.c \
++	Internat.c \
++	Kernel.c \
++	Mayaqua.c \
++	Memory.c \
++	Microsoft.c \
++	Network.c \
++	Object.c \
++	OS.c \
++	Pack.c \
++	Secure.c \
++	Str.c \
++	Table.c \
++	TcpIp.c \
++	Tick64.c \
++	Tracking.c \
++	Unix.c \
++	Win32.c
+diff --git a/src/bin/hamcore/Makefile.am b/src/bin/hamcore/Makefile.am
+new file mode 100644
+index 00000000..37b0291e
+--- /dev/null
++++ b/src/bin/hamcore/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++# This is required to use a custom build rule with -Wall and -Werror enabled.
++AUTOMAKE_OPTIONS = -Wno-override
++EXEEXT =
++HAMCOREBUILDER = $(top_builddir)/src/hamcorebuilder/hamcorebuilder
++
++sbin_PROGRAMS = hamcore.se2
++
++hamcore.se2$(EXEEXT): $(HAMCOREBUILDER)
++	$(HAMCOREBUILDER) $(top_srcdir)/src/bin/hamcore $@
+diff --git a/src/hamcorebuilder/Makefile.am b/src/hamcorebuilder/Makefile.am
+new file mode 100644
+index 00000000..a22429f0
+--- /dev/null
++++ b/src/hamcorebuilder/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++noinst_PROGRAMS = \
++	hamcorebuilder
++
++hamcorebuilder_SOURCES = \
++	hamcorebuilder.c
++
++hamcorebuilder_LDADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la
+diff --git a/src/vpnbridge/Makefile.am b/src/vpnbridge/Makefile.am
+new file mode 100644
+index 00000000..35fe043d
+--- /dev/null
++++ b/src/vpnbridge/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++sbin_PROGRAMS = \
++	vpnbridge
++
++vpnbridge_SOURCES = \
++	vpnbridge.c
++
++vpnbridge_LDADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la
+diff --git a/src/vpnclient/Makefile.am b/src/vpnclient/Makefile.am
+new file mode 100644
+index 00000000..1aa55330
+--- /dev/null
++++ b/src/vpnclient/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++sbin_PROGRAMS = \
++	vpnclient
++
++vpnclient_SOURCES = \
++	vpncsvc.c
++
++vpnclient_LDADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la
+diff --git a/src/vpncmd/Makefile.am b/src/vpncmd/Makefile.am
+new file mode 100644
+index 00000000..d8042aa2
+--- /dev/null
++++ b/src/vpncmd/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++sbin_PROGRAMS = \
++	vpncmd
++
++vpncmd_SOURCES = \
++	vpncmd.c
++
++vpncmd_LDADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la
+diff --git a/src/vpnserver/Makefile.am b/src/vpnserver/Makefile.am
+new file mode 100644
+index 00000000..c1c33570
+--- /dev/null
++++ b/src/vpnserver/Makefile.am
+@@ -0,0 +1,29 @@
++#  Copyright 2014 Darik Horn <dajhorn@vanadac.com>
++#
++#  This file is part of SoftEther.
++#
++#  SoftEther is free software: you can redistribute it and/or modify it under
++#  the terms of the GNU General Public License as published by the Free 
++#  Software Foundation, either version 2 of the License, or (at your option)
++#  any later version.
++#
++#  SoftEther is distributed in the hope that it will be useful, but WITHOUT ANY
++#  WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
++#  FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
++#  details.
++#
++#  You should have received a copy of the GNU General Public License along with
++#  SoftEther.  If not, see <http://www.gnu.org/licenses/>.
++
++
++include $(top_srcdir)/autotools/softether.am
++
++sbin_PROGRAMS = \
++	vpnserver
++
++vpnserver_SOURCES = \
++	vpnserver.c
++
++vpnserver_LDADD = \
++	$(top_builddir)/src/Mayaqua/libmayaqua.la \
++	$(top_builddir)/src/Cedar/libcedar.la

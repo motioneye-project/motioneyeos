@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_TRY_TINY
+	bool "perl-try-tiny"
+	help
+	  Minimal try/catch with proper preservation of $@
+
+	  https://github.com/p5sagit/Try-Tiny

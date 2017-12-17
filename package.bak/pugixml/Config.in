@@ -1,0 +1,19 @@
+config BR2_PACKAGE_PUGIXML
+	bool "pugixml"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Light-weight, simple and fast XML parser for C++ with XPath support
+
+	  Features:
+	  * DOM-like interface with rich traversal/modification capabilities
+	  * Extremely fast non-validating XML parser which constructs the DOM tree
+	    from an XML file/buffer
+	  * XPath 1.0 implementation for complex data-driven tree queries
+	  * Full Unicode support with Unicode interface variants and automatic
+	    encoding conversions
+
+	  http://pugixml.org/
+	  https://github.com/zeux/pugixml
+
+comment "pugixml needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

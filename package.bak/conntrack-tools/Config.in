@@ -1,0 +1,22 @@
+config BR2_PACKAGE_CONNTRACK_TOOLS
+	bool "conntrack-tools"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC || BR2_TOOLCHAIN_HAS_THREADS # libtirpc
+	depends on !BR2_STATIC_LIBS # dlopen()
+	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
+	select BR2_PACKAGE_LIBNETFILTER_CTHELPER
+	select BR2_PACKAGE_LIBNETFILTER_CTTIMEOUT
+	select BR2_PACKAGE_LIBNETFILTER_QUEUE
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  The conntrack-tools are a set of tools targeted at
+	  system administrators.
+	  They are conntrack, the userspace command line interface,
+	  and conntrackd, the userspace daemon.
+
+	  http://www.netfilter.org/projects/conntrack-tools/
+
+comment "conntrack-tools needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC) || \
+		BR2_STATIC_LIBS

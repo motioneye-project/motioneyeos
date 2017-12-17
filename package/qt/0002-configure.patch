@@ -1,0 +1,52 @@
+Fix -hostprefix behaviour
+
+When -hostprefix ./configure option is used, Qt installs all its
+headers, libraries and binaries inside the given host prefix, instead
+of the prefix. This is used by Buildroot to make sure that all Qt
+libraries and headers are installed in $(STAGING_DIR).
+
+Qt ./configure script also allows to tune the installation location of
+various elements, for examples the plugins through the -plugindir
+option. Unfortunately, this option only impact the installation path
+on the target, but not on the host when -hostprefix is used.
+
+This patch modifies Qt ./configure script so that HOST_*PATH_STR
+variables are composed of the host prefix concatenated with the path
+of installation on the target. This way, the plugin installation local
+in the $(STAGING_DIR) and on the target remains the same.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+---
+ configure |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+Index: qt-everywhere-opensource-src-4.8.1/configure
+===================================================================
+--- qt-everywhere-opensource-src-4.8.1.orig/configure
++++ qt-everywhere-opensource-src-4.8.1/configure
+@@ -4661,15 +4661,15 @@
+ 
+ 
+ if [ ! -z "$QT_HOST_PREFIX" ]; then
+-    HOSTPREFIX_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_prfxpath=$QT_HOST_PREFIX"`
+-    HOSTDOCUMENTATION_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_docspath=$QT_HOST_PREFIX/doc"`
+-    HOSTHEADERS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_hdrspath=$QT_HOST_PREFIX/include"`
+-    HOSTLIBRARIES_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_libspath=$QT_HOST_PREFIX/lib"`
+-    HOSTBINARIES_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_binspath=$QT_HOST_PREFIX/bin"`
+-    HOSTPLUGINS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_plugpath=$QT_HOST_PREFIX/plugins"`
+-    HOSTIMPORTS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_impspath=$QT_HOST_PREFIX/IMPORTS"`
+-    HOSTDATA_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_datapath=$QT_HOST_PREFIX"`
+-    HOSTTRANSLATIONS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_trnspath=$QT_HOST_PREFIX/translations"`
++    HOSTPREFIX_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_prfxpath=$QT_HOST_PREFIX/$QT_INSTALL_PREFIX"`
++    HOSTDOCUMENTATION_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_docspath=$QT_HOST_PREFIX/$QT_INSTALL_DOCS"`
++    HOSTHEADERS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_hdrspath=$QT_HOST_PREFIX/$QT_INSTALL_HEADERS"`
++    HOSTLIBRARIES_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_libspath=$QT_HOST_PREFIX/$QT_INSTALL_LIBS"`
++    HOSTBINARIES_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_binspath=$QT_HOST_PREFIX/$QT_INSTALL_BINS"`
++    HOSTPLUGINS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_plugpath=$QT_HOST_PREFIX/$QT_INSTALL_PLUGINS"`
++    HOSTIMPORTS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_impspath=$QT_HOST_PREFIX/$QT_INSTALL_IMPORTS"`
++    HOSTDATA_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_datapath=$QT_HOST_PREFIX/$QT_INSTALL_DATA"`
++    HOSTTRANSLATIONS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_trnspath=$QT_HOST_PREFIX/$QT_INSTALL_TRANSLATIONS"`
+     HOSTSETTINGS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_stngpath=$QT_INSTALL_SETTINGS"`
+     HOSTEXAMPLES_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_xmplpath=$QT_INSTALL_EXAMPLES"`
+     HOSTDEMOS_PATH_STR=`"$relpath/config.tests/unix/padstring" 268 "qt_demopath=$QT_INSTALL_DEMOS"`

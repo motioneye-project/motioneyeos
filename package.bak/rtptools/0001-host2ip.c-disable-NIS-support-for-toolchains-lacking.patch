@@ -1,0 +1,73 @@
+From f8ffde6c0c0a9008cd65601f6c9712899106e42c Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Mon, 11 Apr 2016 23:03:48 +0200
+Subject: [PATCH] host2ip.c: disable NIS support for toolchains lacking SUN RPC
+
+Some toolchains are missing SUN RPC; this is the case for toolchains
+based on uClibc, and some glibc-based toolchains (when SUN RPC headers
+were taken out of glibc).
+
+Add a configure check for the required SUN RPC header, and make the code
+using SUN RPC conditional on the result.
+
+Also drop the legacy AM_C_PROTOTYPES: it is no longer supported by
+autoconf and breaks autoreconf.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+[yann.morin.1998@free.fr: add the ./configure check; do not include
+ features.h; do not check specifically for uClibc]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure.in | 3 ++-
+ host2ip.c    | 5 +++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index de394cf..889e6ed 100644
+--- a/configure.in
++++ b/configure.in
+@@ -39,9 +39,10 @@ CU_CHECK_LIB(socket, socket)
+ dnl Checks for header files.
+ AC_HEADER_STDC
+ AC_CHECK_HEADERS(search.h sys/time.h unistd.h)
++AC_CHECK_HEADER([rpcsvc/ypclnt.h],
++                [AC_DEFINE([HAVE_YP],[1],[Define to 1 if you have rpcsvc/ypclnt.h])])
+ 
+ dnl Checks for typedefs, structures, and compiler characteristics.
+-AM_C_PROTOTYPES
+ AC_C_CONST
+ AC_C_BIGENDIAN
+ AC_TYPE_UID_T
+diff --git a/host2ip.c b/host2ip.c
+index b094343..95014cd 100644
+--- a/host2ip.c
++++ b/host2ip.c
+@@ -3,7 +3,10 @@
+ #include <netdb.h>           /* gethostbyname() */
+ #include <netinet/in.h>      /* sockaddr_in */
+ #include <arpa/inet.h>       /* inet_addr() */
++#ifdef HAVE_YP
+ #include <rpcsvc/ypclnt.h>   /* YP */
++#endif
++
+ #include <string.h>          /* strlen() added by Akira 12/27/01 */ 
+ #include "sysdep.h"
+ 
+@@ -28,6 +31,7 @@ struct in_addr host2ip(char *host)
+   else if ((hep = gethostbyname(host))) {
+     in = *(struct in_addr *)(hep->h_addr_list[0]);
+   }
++#ifdef HAVE_YP
+   /* As a last resort, try YP. */
+   else {
+     static char *domain = 0;  /* YP domain */
+@@ -39,5 +43,6 @@ struct in_addr host2ip(char *host)
+       in.s_addr = inet_addr(value);
+     }
+   }
++#endif
+   return in;
+ } /* host2ip */
+-- 
+1.9.1
+

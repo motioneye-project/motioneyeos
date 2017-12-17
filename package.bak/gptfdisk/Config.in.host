@@ -1,0 +1,11 @@
+config BR2_PACKAGE_HOST_GPTFDISK
+	bool "host gptfdisk"
+	select BR2_PACKAGE_HOST_UTIL_LINUX
+	help
+	  GPT fdisk (consisting of the gdisk and sgdisk programs) is a
+	  text-mode partitioning tool that works on Globally Unique
+	  Identifier (GUID) Partition Table (GPT) disks, rather than
+	  on the more common (through 2010) Master Boot Record (MBR)
+	  partition tables.
+
+	  http://www.rodsbooks.com/gdisk/

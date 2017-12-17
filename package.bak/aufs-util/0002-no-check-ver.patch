@@ -1,0 +1,24 @@
+Makefile: do not check version
+
+The aufs-util package tries to ensure that its version is compatible
+with the one in the running kernel. However, this test is flawed: the
+version string in the aufs4x branch for aufs-util is aufs3.x, so it does
+not match the version in the kernel when it is aufs4.x.
+
+Disengage this check, ion the assumption the user knows what he is
+doing.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/Makefile b/Makefile
+--- a/Makefile
++++ b/Makefile
+@@ -62,7 +62,7 @@
+ $(foreach v, CPPFLAGS CFLAGS INSTALL Install ManDir LibUtilHdr, \
+ 	$(eval MAKE += ${v}="$${${v}}"))
+ 
+-all: ver_test ${Man} ${Bin} ${Etc}
++all: ${Man} ${Bin} ${Etc}
+ 	${MAKE} -C libau $@
+ 	ln -sf ./libau/libau*.so .
+ 	$(call MakeFHSM, $@)

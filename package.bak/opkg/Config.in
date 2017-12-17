@@ -1,0 +1,32 @@
+comment "opkg needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_OPKG
+	bool "opkg"
+	select BR2_PACKAGE_LIBARCHIVE
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR # libarchive
+	help
+	  Opkg is a lightweight package management system, based on ipkg. It is
+	  written in C and resembles apt/dpkg in operation. It is intended for
+	  use on embedded Linux devices.
+	  Opkg is maintained, stable, robust and conservative in its memory
+	  usage, despite its buggy ipkg ancestry. As best it can, opkg
+	  maintains backwards compatibility with ipkg and conforms to a subset
+	  of debian's policy manual regarding control files.
+
+	  http://code.google.com/p/opkg/
+
+if BR2_PACKAGE_OPKG
+
+config BR2_PACKAGE_OPKG_GPG_SIGN
+	bool "gnupg support"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
+	select BR2_PACKAGE_LIBGPGME
+	select BR2_PACKAGE_LIBGPG_ERROR
+	help
+	  Enable opkg package signature checking support using
+	  gnupg/libgpgme.
+
+endif

@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LEVELDB
+	bool "leveldb"
+	# Missing/broken atomic pointer support
+	depends on !BR2_bfin
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_SNAPPY
+	help
+	  LevelDB is a fast key-value storage library written at Google that
+	  provides an ordered mapping from string keys to string values.
+
+	  https://github.com/google/leveldb
+
+comment "leveldb needs a toolchain w/ C++, threads"
+	depends on !BR2_bfin
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

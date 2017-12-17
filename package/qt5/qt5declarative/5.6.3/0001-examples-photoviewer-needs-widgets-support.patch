@@ -1,0 +1,32 @@
+From b616a7e2a7e03e2eb189dca3dc428c0e19e1652b Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 6 Apr 2017 21:53:40 +0200
+Subject: [PATCH] examples: photoviewer needs widgets support
+
+Fixes:
+
+  .../qt5declarative-5.8.0/examples/quick/demos/photoviewer/photoviewer.pro
+  Project ERROR: Unknown module(s) in QT: widgets
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ examples/quick/demos/demos.pro | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/examples/quick/demos/demos.pro b/examples/quick/demos/demos.pro
+index 0644b81a2..5a6fd52ba 100644
+--- a/examples/quick/demos/demos.pro
++++ b/examples/quick/demos/demos.pro
+@@ -7,5 +7,7 @@ SUBDIRS = samegame \
+             photosurface \
+             stocqt
+ 
+-qtHaveModule(xmlpatterns): SUBDIRS += rssnews photoviewer
+-
++qtHaveModule(xmlpatterns) {
++    SUBDIRS += rssnews
++    qtHaveModule(widgets): SUBDIRS += photoviewer
++}
+-- 
+2.11.0
+

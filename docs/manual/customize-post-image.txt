@@ -1,0 +1,37 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Customization _after_ the images have been created
+
+While post-build scripts (xref:rootfs-custom[]) are run _before_
+building the filesystem image, kernel and bootloader, *post-image
+scripts* can be used to perform some specific actions _after_ all images
+have been created.
+
+Post-image scripts can for example be used to automatically extract your
+root filesystem tarball in a location exported by your NFS server, or
+to create a special firmware image that bundles your root filesystem and
+kernel image, or any other custom action required for your project.
+
+To enable this feature, specify a space-separated list of post-image
+scripts in config option +BR2_ROOTFS_POST_IMAGE_SCRIPT+ (in the +System
+configuration+ menu). If you specify a relative path, it will be
+relative to the root of the Buildroot tree.
+
+Just like post-build scripts, post-image scripts are run with the main
+Buildroot tree as current working directory. The path to the +images+
+output directory is passed as the first argument to each script. If the
+config option +BR2_ROOTFS_POST_SCRIPT_ARGS+ is not empty, these
+arguments will be passed to the script too. All the scripts will be
+passed the exact same set of arguments, it is not possible to pass
+different sets of arguments to each script.
+
+Again just like for the post-build scripts, the scripts have access to
+the environment variables +BR2_CONFIG+, +HOST_DIR+, +STAGING_DIR+,
++TARGET_DIR+, +BUILD_DIR+, +BINARIES_DIR+ and +BASE_DIR+.
+
+The post-image scripts will be executed as the user that executes
+Buildroot, which should normally _not_ be the root user. Therefore, any
+action requiring root permissions in one of these scripts will require
+special handling (usage of fakeroot or sudo), which is left to the
+script developer.

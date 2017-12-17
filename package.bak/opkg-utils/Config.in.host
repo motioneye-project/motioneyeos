@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_OPKG_UTILS
+	bool "host opkg-utils"
+	help
+	  Helper scripts for use with the opkg package manager.
+
+	  https://git.yoctoproject.org/cgit/cgit.cgi/opkg-utils/

@@ -1,0 +1,27 @@
+[Unit]
+Description=Dropbear SSH daemon
+After=syslog.target network.target auditd.service
+
+[Service]
+# If /etc/dropbear is a symlink to /var/run/dropbear, and
+#   - the filesystem is RO (i.e. we can not rm the symlink),
+#     create the directory pointed to by the symlink.
+#   - the filesystem is RW (i.e. we can rm the symlink),
+#     replace the symlink with an actual directory
+ExecStartPre=/bin/sh -c '\
+if [ -L /etc/dropbear \
+     -a "$(readlink /etc/dropbear)" = "/var/run/dropbear" ]; then \
+    if rm -f /etc/dropbear >/dev/null 2>&1; then \
+        mkdir -p /etc/dropbear; \
+    else \
+        echo "No persistent location to store SSH host keys. New keys will be"; \
+        echo "generated at each boot. Are you sure this is what you want to do?"; \
+        mkdir -p "$(readlink /etc/dropbear)"; \
+    fi; \
+fi'
+EnvironmentFile=-/etc/default/dropbear
+ExecStart=/usr/sbin/dropbear -F -R $DROPBEAR_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

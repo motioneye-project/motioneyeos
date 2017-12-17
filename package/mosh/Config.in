@@ -1,6 +1,7 @@
-comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar"
+comment "mosh needs a toolchain w/ C++, threads, dynamic library, wchar, host and target gcc >= 4.5"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP \
-		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR
+		|| BR2_STATIC_LIBS || !BR2_USE_WCHAR \
+		|| !BR2_HOST_GCC_AT_LEAST_4_5 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 
 config BR2_PACKAGE_MOSH
@@ -8,6 +9,8 @@ config BR2_PACKAGE_MOSH
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 	depends on BR2_INSTALL_LIBSTDCPP # protobuf
 	depends on BR2_TOOLCHAIN_HAS_THREADS # protobuf
+	depends on BR2_HOST_GCC_AT_LEAST_4_5 # protobuf
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5 # protobuf
 	depends on !BR2_STATIC_LIBS # protobuf
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_PROTOBUF
@@ -17,8 +20,16 @@ config BR2_PACKAGE_MOSH
 	# runtime dependency
 	select BR2_PACKAGE_OPENSSH if !BR2_PACKAGE_DROPBEAR_CLIENT
 	help
-	  Remote terminal application that supports intermittent connectivity,
-	  allows roaming, and provides speculative local echo and line editing
-	  of user keystrokes.
+	  Remote terminal application that supports intermittent
+	  connectivity, allows roaming, and provides speculative local
+	  echo and line editing of user keystrokes.
 
-	  https://mosh.mit.edu
+	  Mosh requires that the remote machine has a locale setting
+	  matching the one on the client.
+
+	  When using mosh with dropbear on a remote machine, the
+	  client needs mosh with a version above 1.3.0 and the
+	  --no-ssh-pty option needs to be passed when starting the
+	  connection.
+
+	  https://mosh.org

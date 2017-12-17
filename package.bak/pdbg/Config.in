@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PDBG
+	bool "pdbg"
+	help
+	  PowerPC FSI Debugger, for low level debugging of a IBM
+	  Power8 CPU over FSI.
+
+	  pdbg runs on a BMC, which is generally an ARM-powered system
+	  monitoring/controlling a host CPU.
+
+	  https://github.com/open-power/pdbg

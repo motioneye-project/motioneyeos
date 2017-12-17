@@ -1,0 +1,51 @@
+detect.py: fix the ZMQ version check to the ZMQ version of the buildroot
+
+The setup.py script tries to compile a test C program and runs it, to
+retrieve a version string for the installed ZMQ library, but if the cross
+compiler links it together, the result cannot be run on the host, due to
+different architectures and libraries.
+
+And if the host compiler would compile/link it, it would not link with
+the library version inside buildroot but with the library from the
+host, possibly returning a wrong version number.
+
+Instead of trying to run the compiled test program to get the version
+dynamically, return the version of the buildroot environment.
+
+Written by Michael Rommel, modified for version 16.0.2 by Lionel
+Flandrin.
+
+Signed-off-by: Lionel Flandrin <lionel@svkt.org>
+---
+ buildutils/detect.py | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/buildutils/detect.py b/buildutils/detect.py
+index 9520da7..823144f 100644
+--- a/buildutils/detect.py
++++ b/buildutils/detect.py
+@@ -117,13 +117,15 @@ def detect_zmq(basedir, compiler=None, **compiler_attrs):
+     
+     cc = get_compiler(compiler=compiler, **compiler_attrs)
+     efile = test_compilation(cfile, compiler=cc)
+-    patch_lib_paths(efile, cc.library_dirs)
++    #patch_lib_paths(efile, cc.library_dirs)
+     
+-    rc, so, se = get_output_error([efile])
+-    if rc:
+-        msg = "Error running version detection script:\n%s\n%s" % (so,se)
+-        logging.error(msg)
+-        raise IOError(msg)
++    #rc, so, se = get_output_error([efile])
++    # if rc:
++    #     msg = "Error running version detection script:\n%s\n%s" % (so,se)
++    #     logging.error(msg)
++    #     raise IOError(msg)
++
++    so = "vers: ##ZEROMQ_VERSION##"
+ 
+     handlers = {'vers':  lambda val: tuple(int(v) for v in val.split('.'))}
+ 
+-- 
+2.11.0
+

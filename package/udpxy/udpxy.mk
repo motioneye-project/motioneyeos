@@ -2,12 +2,12 @@
 #
 # udpxy
 #
-#################################################################################
+################################################################################
 
 UDPXY_VERSION = 1.0.23-9-prod
 UDPXY_SOURCE = udpxy.$(UDPXY_VERSION).tar.gz
 UDPXY_SITE = http://www.udpxy.com/download/1_23
-UDPXY_LICENSE = GPLv3+
+UDPXY_LICENSE = GPL-3.0+
 UDPXY_LICENSE_FILES = README
 
 define UDPXY_BUILD_CMDS

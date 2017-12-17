@@ -1,0 +1,51 @@
+From 39d4d46a0bd504ac708ffe72df87bf74cd12ad30 Mon Sep 17 00:00:00 2001
+From: William Cohen <wcohen@redhat.com>
+Date: Fri, 5 Feb 2016 17:30:19 -0500
+Subject: [PATCH] Fix FTBFS problem with GCC-6
+
+GCC-6 is pickier about some of the type conversions causing the Fedora
+24 mass rebuild the build of oprofile failed with:
+
+make[3]: Entering directory '/builddir/build/BUILD/oprofile-1.1.0/libutil++'
+g++ -DHAVE_CONFIG_H -I. -I..  -I ../libutil -I ../libop -I ../libpp   -W -Wall -fno-common -ftemplate-depth-50 -O2 -g -pipe -Wall -Werror=format-security -Wp,-D_FORTIFY_SOURCE=2 -fexceptions -fstack-protector-strong --param=ssp-buffer-size=4 -grecord-gcc-switches -specs=/usr/lib/rpm/redhat/redhat-hardened-cc1 -m32 -march=i686 -mtune=atom -fasynchronous-unwind-tables -c -o op_bfd.o op_bfd.cpp
+op_bfd.cpp: In member function 'void op_bfd::get_symbol_range(symbol_index_t, long long unsigned int&, long long unsigned int&) const':
+op_bfd.cpp:538:47: error: cannot convert 'std::ostream {aka std::basic_ostream<char>}' to 'const bool' in initialization
+  bool const verbose = cverb << (vbfd & vlevel1);
+                                               ^
+op_bfd.cpp:546:7: error: in argument to unary !
+  if (!verbose)
+       ^~~~~~~
+
+Avoid the intermediate bool type to make GCC-6 happy.
+
+Signed-off-by: William Cohen <wcohen@redhat.com>
+[Backported from upstream]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ libutil++/op_bfd.cpp | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/libutil++/op_bfd.cpp b/libutil++/op_bfd.cpp
+index 389c920..f2eb42b 100644
+--- a/libutil++/op_bfd.cpp
++++ b/libutil++/op_bfd.cpp
+@@ -535,15 +535,13 @@ void op_bfd::get_symbol_range(symbol_index_t sym_idx,
+ {
+ 	op_bfd_symbol const & sym = syms[sym_idx];
+ 
+-	bool const verbose = cverb << (vbfd & vlevel1);
+-
+ 	if (anon_obj)
+ 		start = sym.vma();
+ 	else
+ 		start = sym.filepos();
+ 	end = start + sym.size();
+ 
+-	if (!verbose)
++	if (!(cverb << (vbfd & vlevel1)))
+ 		return;
+ 
+ 	io_state state(cverb << (vbfd & vlevel1));
+-- 
+2.5.5
+

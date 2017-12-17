@@ -1,0 +1,76 @@
+From da21733178b34eea303964db5a05e8a3ee4095b4 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 26 Aug 2017 15:17:06 +0200
+Subject: [PATCH] build: make it possible to disable the build of the flex
+ program
+
+The flex program uses fork(), which isn't available on noMMU
+systems. However, the libfl library does not use fork(), and be used
+by other programs/libraries.
+
+Therefore, it makes sense to provide an option to disable the build of
+the flex program.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Submitted-upstream: https://github.com/westes/flex/pull/256
+Refused. We'll have to adapt when they do a new release...
+---
+ Makefile.am     | 2 ++
+ configure.ac    | 6 ++++++
+ doc/Makefile.am | 4 ++++
+ src/Makefile.am | 3 +++
+ 4 files changed, 15 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index e790e9d..8b57bc9 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -62,8 +62,10 @@ ChangeLog: $(srcdir)/tools/git2cl
+ indent:
+ 	cd src && $(MAKE) $(AM_MAKEFLAGS) indent
+ 
++if ENABLE_PROGRAM
+ install-exec-hook:
+ 	cd $(DESTDIR)$(bindir) && \
+ 		$(LN_S) -f flex$(EXEEXT) flex++$(EXEEXT)
++endif
+ 
+ .PHONY: ChangeLog indent
+diff --git a/configure.ac b/configure.ac
+index 8882016..f49872b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -75,6 +75,12 @@ AC_ARG_ENABLE([libfl],
+   [], [enable_libfl=yes])
+ AM_CONDITIONAL([ENABLE_LIBFL], [test "x$enable_libfl" = xyes])
+ 
++AC_ARG_ENABLE([program],
++  [AS_HELP_STRING([--disable-program],
++                  [do not build the flex program, only the libfl library])],
++  [], [enable_program=yes])
++AM_CONDITIONAL([ENABLE_PROGRAM], [test "x$enable_program" = xyes])
++
+ # --disable-bootstrap is intended only to workaround problems with bootstrap
+ # (e.g. when cross-compiling flex or when bootstrapping has bugs).
+ # Ideally we should be able to bootstrap even when cross-compiling.
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 0d13a5a..c73bc17 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -4,7 +4,10 @@ LIBS = @LIBS@
+ 
+ m4 = @M4@
+ 
++if ENABLE_PROGRAM
+ bin_PROGRAMS = flex
++endif
++
+ if ENABLE_BOOTSTRAP
+ noinst_PROGRAMS = stage1flex
+ endif
+-- 
+2.9.4
+

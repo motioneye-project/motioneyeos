@@ -1,8 +1,10 @@
 config BR2_PACKAGE_LUAPOSIX
 	bool "luaposix"
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
-	select BR2_PACKAGE_LUABITOP if BR2_PACKAGE_LUA_5_1
-	# LuaBitOp is already included in LuaJIT
+	# "bit32" is included in Lua 5.2+. luajit has an equivalent
+	# "bit" module, but since it has a different name, luaposix
+	# doesn't find it.
+	select BR2_PACKAGE_LUA_BIT32 if BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
 	help
 	  This is a POSIX binding for LuaJIT, Lua 5.1, 5.2 and 5.3;
 	  like most libraries it simply binds to C APIs on the

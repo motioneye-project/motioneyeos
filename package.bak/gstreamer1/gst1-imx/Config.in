@@ -1,0 +1,87 @@
+comment "gst1-imx needs a toolchain w/ dynamic library"
+	depends on BR2_arm
+	depends on BR2_STATIC_LIBS
+
+menuconfig BR2_PACKAGE_GST1_IMX
+	bool "gst1-imx"
+	depends on BR2_arm # Only relevant for i.MX
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  This is a set of GStreamer 1.0 plugins for plugins for Freescale's
+	  i.MX platforms, which make use of the i.MX multimedia capabilities.
+
+	  https://github.com/Freescale/gstreamer-imx
+
+if BR2_PACKAGE_GST1_IMX
+
+config BR2_PACKAGE_GST1_IMX_EGLVISINK
+	bool "imxeglvivsink"
+	depends on BR2_PACKAGE_IMX_GPU_VIV
+	help
+	  Elements leveraging the 3D GPU
+
+comment "imxeglvivsink needs the Vivante 3D libraries"
+	depends on !BR2_PACKAGE_IMX_GPU_VIV
+
+config BR2_PACKAGE_GST1_IMX_G2D
+	bool "imxg2d"
+	depends on BR2_PACKAGE_IMX_GPU_VIV_G2D
+	help
+	  Elements leveraging the 2D GPU
+
+comment "imxg2d needs the Vivante 2D libraries"
+	depends on !BR2_PACKAGE_IMX_GPU_VIV_G2D
+
+config BR2_PACKAGE_GST1_IMX_IPU
+	bool "imxipu"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Elements leveraging the IPU
+
+comment "imxipu needs an imx-specific Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_GST1_IMX_MP3ENCODER
+	bool "mp3encoder"
+	depends on BR2_PACKAGE_IMX_CODEC
+	help
+	  Elements for MP3 encoding
+
+comment "mp3encoder needs the i.MX codec binaries"
+	depends on !BR2_PACKAGE_IMX_CODEC
+
+config BR2_PACKAGE_GST1_IMX_PXP
+	bool "imxpxp"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Elements leveraging the PXP
+
+comment "imxpxp needs an imx-specific Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_GST1_IMX_UNIAUDIODEC
+	bool "uniaudiodec"
+	depends on BR2_PACKAGE_IMX_CODEC
+	help
+	  Elements for audio decoding
+
+comment "uniaudiodec needs the i.MX codec binaries"
+	depends on !BR2_PACKAGE_IMX_CODEC
+
+config BR2_PACKAGE_GST1_IMX_VPU
+	bool "imxvpu"
+	depends on BR2_PACKAGE_LIBIMXVPUAPI
+	help
+	  Elements leveraging the VPU
+
+comment "imxvpu needs the VPU imxvpuapi library"
+	depends on !BR2_PACKAGE_LIBIMXVPUAPI
+
+config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSRC
+	bool "imxv4l2videosrc"
+	select BR2_PACKAGE_GST1_PLUGINS_BAD
+	help
+	  Elements for V4L2 capture
+
+endif

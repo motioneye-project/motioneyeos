@@ -1,0 +1,40 @@
+From 3d195f4f599f37c89419f1db1302f94acb38c264 Mon Sep 17 00:00:00 2001
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Tue, 1 Aug 2017 10:15:33 +0200
+Subject: [PATCH] Convert HISTORY.rst from UTF-8 format to ASCII
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+UTF-8 formatted file breaks installations on some systems:
+
+Traceback (most recent call last):
+  File "setup.py", line 34, in <module>
+    long_description=open('README.rst').read() + '\n\n' + open('HISTORY.rst').read(),
+  File "/home/peko/autobuild/instance-1/output/target/usr/lib/python3.6/encodings/ascii.py", line 26, in decode
+    return codecs.ascii_decode(input, self.errors)[0]
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xc2 in position 1125: ordinal not in range(128)
+
+To fix this error just replace '§' with 'S' meaning 'Section'.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ HISTORY.rst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/HISTORY.rst b/HISTORY.rst
+index 37b2d9c..b9310f5 100644
+--- a/HISTORY.rst
++++ b/HISTORY.rst
+@@ -27,7 +27,7 @@ Release History
+ - HPACK now tolerates receiving multiple header table size changes in sequence,
+   rather than only one.
+ - HPACK now forbids header table size changes anywhere but first in a header
+-  block, as required by RFC 7541 § 4.2.
++  block, as required by RFC 7541 S 4.2.
+ - Other miscellaneous performance improvements.
+ 
+ 2.3.0 (2016-08-04)
+-- 
+2.11.0
+

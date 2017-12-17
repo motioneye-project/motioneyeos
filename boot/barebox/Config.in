@@ -1,0 +1,85 @@
+config BR2_TARGET_BAREBOX
+	bool "Barebox"
+	help
+	  The Barebox bootloader, formerly known as U-Boot v2.
+
+	  http://www.barebox.org
+
+if BR2_TARGET_BAREBOX
+choice
+	prompt "version"
+	help
+	  Select the specific Barebox version you want to use
+
+config BR2_TARGET_BAREBOX_LATEST_VERSION
+	bool "2017.09.0"
+
+config BR2_TARGET_BAREBOX_CUSTOM_VERSION
+	bool "Custom version"
+	help
+	  This option allows to use a specific official versions
+
+config BR2_TARGET_BAREBOX_CUSTOM_TARBALL
+	bool "Custom tarball"
+
+config BR2_TARGET_BAREBOX_CUSTOM_GIT
+	bool "Custom Git repository"
+
+endchoice
+
+config BR2_TARGET_BAREBOX_CUSTOM_VERSION_VALUE
+	string "Barebox version"
+	depends on BR2_TARGET_BAREBOX_CUSTOM_VERSION
+
+if BR2_TARGET_BAREBOX_CUSTOM_TARBALL
+
+config BR2_TARGET_BAREBOX_CUSTOM_TARBALL_LOCATION
+	string "URL of custom Barebox tarball"
+
+endif
+
+config BR2_TARGET_BAREBOX_VERSION
+	string
+	default "2017.09.0"	if BR2_TARGET_BAREBOX_LATEST_VERSION
+	default BR2_TARGET_BAREBOX_CUSTOM_VERSION_VALUE if BR2_TARGET_BAREBOX_CUSTOM_VERSION
+	default "custom"	if BR2_TARGET_BAREBOX_CUSTOM_TARBALL
+	default BR2_TARGET_BAREBOX_CUSTOM_GIT_VERSION if BR2_TARGET_BAREBOX_CUSTOM_GIT
+
+config BR2_TARGET_BAREBOX_CUSTOM_PATCH_DIR
+	string "custom patch dir"
+	help
+	  If your board requires custom patches, add the path to the
+	  directory containing the patches here. The patches must be
+	  named barebox-<version>-<something>.patch.
+
+	  Most users may leave this empty
+
+if BR2_TARGET_BAREBOX_CUSTOM_GIT
+
+config BR2_TARGET_BAREBOX_CUSTOM_GIT_REPO_URL
+	string "URL of custom Git repository"
+
+config BR2_TARGET_BAREBOX_CUSTOM_GIT_VERSION
+	string "Custom Git version"
+
+endif
+
+source boot/barebox/barebox/Config.in
+
+menuconfig BR2_TARGET_BAREBOX_AUX
+	bool "Build barebox with an auxiliary config"
+	help
+	  Build barebox with an auxiliary configuration.
+
+	  Useful for building an SPL (Secondary Program Loader) in
+	  addition to the traditional TPL (Tertiary Program Loader),
+	  such as the X-Loader or MLO for Texas Instruments
+	  processors.
+
+if BR2_TARGET_BAREBOX_AUX
+
+source boot/barebox/barebox-aux/Config.in
+
+endif
+
+endif

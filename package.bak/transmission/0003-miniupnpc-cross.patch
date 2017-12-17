@@ -1,0 +1,31 @@
+Fix libminiupnpc version detection
+
+Problem is known upstream: https://trac.transmissionbt.com/ticket/6140
+
+For buildroot we know the libminiupnpc version so we hard-code 2.0.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr transmission-2.92.org/configure.ac transmission-2.92/configure.ac
+--- transmission-2.92.org/configure.ac	2016-03-06 21:23:45.336198393 +0100
++++ transmission-2.92/configure.ac	2016-07-02 21:48:13.452385686 +0200
+@@ -386,18 +386,7 @@
+ dnl MINIUPNPC_API_VERSION and we won't have to figure
+ dnl it out on our own
+ if test "x$upnp_version" = "xunknown" ; then
+-  AC_RUN_IFELSE(
+-    [AC_LANG_PROGRAM(
+-      [#include <stdlib.h>
+-       #include <miniupnpc/miniupnpc.h>],
+-      [#ifdef MINIUPNPC_API_VERSION
+-       return EXIT_SUCCESS;
+-       #else
+-       return EXIT_FAILURE;
+-       #endif]
+-    )],
+-    [upnp_version=">= 1.7"]
+-  )
++  upnp_version="2.0"
+ fi
+ 
+ dnl Or maybe it's miniupnp 1.6

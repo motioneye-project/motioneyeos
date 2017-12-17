@@ -1,0 +1,160 @@
+menuconfig BR2_PACKAGE_GST1_PLUGINS_BASE
+	bool "gst1-plugins-base"
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXV if BR2_PACKAGE_XORG7
+	help
+	  A basic set of well-supported plug-ins for GStreamer.
+
+	  http://gstreamer.freedesktop.org/
+
+if BR2_PACKAGE_GST1_PLUGINS_BASE
+
+comment "dependency-less plugins"
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ADDER
+	bool "adder"
+	help
+	  Adds multiple streams
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	bool "app"
+	help
+	  Elements used to communicate with applications
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_AUDIOCONVERT
+	bool "audioconvert (mandatory for audio playback)"
+	default y
+	help
+	  Convert audio to different formats
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_AUDIORATE
+	bool "audiorate"
+	help
+	  Adjusts audio frames
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_AUDIOTESTSRC
+	bool "audiotestsrc"
+	help
+	  Creates audio test signals of given frequency and volume
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ENCODING
+	bool "encoding"
+	help
+	  various encoding-related elements
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VIDEOCONVERT
+	bool "videoconvert"
+	help
+	  Colorspace conversion
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_GIO
+	bool "gio"
+	help
+	  GIO elements
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_PLAYBACK
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_TYPEFIND
+	bool "playback"
+	default y
+	help
+	  various playback elements
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_AUDIORESAMPLE
+	bool "audioresample (mandatory for audio playback)"
+	default y
+	help
+	  Resamples audio
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_SUBPARSE
+	bool "subparse"
+	help
+	  Subtitle parsing
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_TCP
+	bool "tcp"
+	help
+	  transfer data over the network via TCP
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_TYPEFIND
+	bool "typefind"
+	default y
+	help
+	  default typefind functions
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VIDEOTESTSRC
+	bool "videotestsrc"
+	help
+	  Creates a test video stream
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VIDEORATE
+	bool "videorate"
+	help
+	  Adjusts video frames
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VIDEOSCALE
+	bool "videoscale (mandatory for video playback)"
+	default y
+	help
+	  Resizes video
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VOLUME
+	bool "volume (mandatory for audio playback)"
+	default y
+	help
+	  plugin for controlling audio volume
+
+comment "plugins with external dependencies"
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ALSA
+	bool "alsa (mandatory for audio playback)"
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_PCM
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	help
+	  ALSA plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_TREMOR
+	bool "tremor"
+	select BR2_PACKAGE_TREMOR
+	help
+	  Vorbis Tremor decoder
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OGG
+	bool "ogg (*.ogg audio/video)"
+	select BR2_PACKAGE_LIBOGG
+	help
+	  ogg stream manipulation (info about ogg: http://xiph.org)
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OPUS
+	bool "opus"
+	select BR2_PACKAGE_OPUS
+	help
+	  Opus codec for speech and audio.
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_PANGO
+	bool "pango font renderer"
+	depends on BR2_INSTALL_LIBSTDCPP # pango -> freetype
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pango -> harfbuzz
+	select BR2_PACKAGE_PANGO
+	help
+	  Pango-based text rendering and overlay
+
+comment "pango plugin needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_THEORA
+	bool "theora (*.ogg video)"
+	select BR2_PACKAGE_LIBTHEORA
+	help
+	  Theora plugin library
+
+config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_VORBIS
+	bool "vorbis (*.ogg audio)"
+	select BR2_PACKAGE_LIBVORBIS
+	help
+	  Vorbis plugin library
+
+endif

@@ -1,0 +1,29 @@
+From b2fe84bfd00117d4897f1f2e8f83d3410eb188b8 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Thu, 12 Oct 2017 22:04:58 -0400
+Subject: [PATCH] remove werror flag from setup
+
+Compilers older than gcc6 will generate uninitialized variable warnings which
+will cause compiling to fail.
+
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 2ca44c9..9319bf6 100644
+--- a/setup.py
++++ b/setup.py
+@@ -146,7 +146,7 @@ ext_py_mods = [Extension('setools.policyrep._qpol',
+                           'libqpol/policy_scan.c',
+                           'libqpol/xen_query.c'],
+                          include_dirs=include_dirs,
+-                         extra_compile_args=['-Werror', '-Wextra',
++                         extra_compile_args=['-Wextra',
+                                              '-Waggregate-return',
+                                              '-Wfloat-equal',
+                                              '-Wformat', '-Wformat=2',
+-- 
+2.13.6
+

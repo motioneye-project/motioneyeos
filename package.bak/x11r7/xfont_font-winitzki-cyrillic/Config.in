@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_WINITZKI_CYRILLIC
+	bool "font-winitzki-cyrillic"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

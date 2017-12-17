@@ -11,7 +11,7 @@ ORACLE_MYSQL_SITE = http://dev.mysql.com/get/Downloads/MySQL-$(ORACLE_MYSQL_VERS
 ORACLE_MYSQL_INSTALL_STAGING = YES
 ORACLE_MYSQL_DEPENDENCIES = readline ncurses
 ORACLE_MYSQL_AUTORECONF = YES
-ORACLE_MYSQL_LICENSE = GPLv2
+ORACLE_MYSQL_LICENSE = GPL-2.0
 ORACLE_MYSQL_LICENSE_FILES = README COPYING
 ORACLE_MYSQL_PROVIDES = mysql
 
@@ -58,7 +58,7 @@ define HOST_ORACLE_MYSQL_BUILD_CMDS
 endef
 
 define HOST_ORACLE_MYSQL_INSTALL_CMDS
-	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash $(HOST_DIR)/usr/bin/
+	$(INSTALL) -m 0755  $(@D)/sql/gen_lex_hash $(HOST_DIR)/bin/
 endef
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
@@ -124,7 +124,6 @@ else
 ORACLE_MYSQL_CONF_OPTS += \
 	--without-server
 endif
-
 
 define ORACLE_MYSQL_REMOVE_TEST_PROGS
 	rm -rf $(TARGET_DIR)/usr/mysql-test $(TARGET_DIR)/usr/sql-bench

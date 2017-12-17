@@ -8,7 +8,7 @@ config BR2_PACKAGE_TAGLIB
 	  and ID3v2 for MP3 files, Ogg Vorbis comments and ID3 tags and
 	  Vorbis comments in FLAC, MPC, Speex, WavPack and TrueAudio files.
 
-	  http://taglib.github.com
+	  http://taglib.org/
 
 if BR2_PACKAGE_TAGLIB
 

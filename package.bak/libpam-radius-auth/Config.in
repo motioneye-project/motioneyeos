@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBPAM_RADIUS_AUTH
+	bool "libpam-radius-auth"
+	help
+	  This is the PAM to RADIUS authentication module. It allows
+	  any PAM-capable machine to become a RADIUS client for
+	  authentication and accounting requests. You will need a
+	  RADIUS server to perform the actual authentication.
+
+	  http://freeradius.org/pam_radius_auth/

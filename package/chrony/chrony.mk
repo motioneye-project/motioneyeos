@@ -4,16 +4,15 @@
 #
 ################################################################################
 
-CHRONY_VERSION = 2.4.1
+CHRONY_VERSION = 3.2
 CHRONY_SITE = http://download.tuxfamily.org/chrony
-CHRONY_LICENSE = GPLv2
+CHRONY_LICENSE = GPL-2.0
 CHRONY_LICENSE_FILES = COPYING
 
 CHRONY_CONF_OPTS = \
 	--host-system=Linux \
 	--host-machine=$(BR2_ARCH) \
 	--prefix=/usr \
-	--without-seccomp \
 	--without-tomcrypt
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
@@ -26,6 +25,13 @@ ifeq ($(BR2_PACKAGE_LIBNSS),y)
 CHRONY_DEPENDENCIES += host-pkgconf libnss
 else
 CHRONY_CONF_OPTS += --without-nss
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
+CHRONY_CONF_OPTS += --enable-scfilter
+CHRONY_DEPENDENCIES += libseccomp
+else
+CHRONY_CONF_OPTS += --without-seccomp
 endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)

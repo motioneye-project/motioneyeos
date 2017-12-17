@@ -18,7 +18,6 @@ if BR2_PACKAGE_LIQUID_DSP
 
 config BR2_PACKAGE_LIQUID_DSP_FAST
 	bool "optimize for speed over accuracy"
-	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
 	help
 	  Optimize for speed over accuracy.
 

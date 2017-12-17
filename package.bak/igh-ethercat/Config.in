@@ -1,0 +1,29 @@
+comment "igh-ethercat needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_IGH_ETHERCAT
+	bool "igh-ethercat"
+	depends on BR2_LINUX_KERNEL
+	help
+	  IgH EtherCAT Master for Linux.
+
+	  http://www.etherlab.org/en/ethercat/index.php
+
+if BR2_PACKAGE_IGH_ETHERCAT
+
+config BR2_PACKAGE_IGH_ETHERCAT_8139TOO
+	bool "8139too driver"
+
+config BR2_PACKAGE_IGH_ETHERCAT_E100
+	bool "e100 driver"
+
+config BR2_PACKAGE_IGH_ETHERCAT_E1000
+	bool "e1000 driver"
+
+config BR2_PACKAGE_IGH_ETHERCAT_E1000E
+	bool "e1000e driver"
+
+config BR2_PACKAGE_IGH_ETHERCAT_R8169
+	bool "r8169 driver"
+
+endif

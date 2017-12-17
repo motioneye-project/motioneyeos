@@ -1,0 +1,132 @@
+comment "python needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_PYTHON
+	bool "python"
+	depends on BR2_USE_WCHAR
+	# uses fork()
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libffi
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBFFI
+	help
+	  The python language interpreter.
+
+	  http://www.python.org/
+
+if BR2_PACKAGE_PYTHON
+
+choice
+	prompt "python module format to install"
+	default BR2_PACKAGE_PYTHON_PYC_ONLY
+	help
+	  Select Python module format to install on target (py, pyc or both)
+
+config BR2_PACKAGE_PYTHON_PY_ONLY
+	bool ".py sources only"
+
+config BR2_PACKAGE_PYTHON_PYC_ONLY
+	bool ".pyc compiled sources only"
+
+config BR2_PACKAGE_PYTHON_PY_PYC
+	bool ".py sources and .pyc compiled"
+
+endchoice
+
+menu "core python modules"
+
+comment "The following modules are unusual or require extra libraries"
+
+config BR2_PACKAGE_PYTHON_BZIP2
+	select BR2_PACKAGE_BZIP2
+	bool "bzip2 module"
+	help
+	  bzip2 module for Python
+
+config BR2_PACKAGE_PYTHON_BSDDB
+	select BR2_PACKAGE_BERKELEYDB
+	bool "bsddb module"
+	help
+	  bsddb module for Python.
+
+config BR2_PACKAGE_PYTHON_CODECSCJK
+	bool "codecscjk module"
+	help
+	  Chinese/Japanese/Korean codecs module for Python (large).
+
+config BR2_PACKAGE_PYTHON_CURSES
+	select BR2_PACKAGE_NCURSES
+	bool "curses module"
+	help
+	  curses module for Python.
+
+config BR2_PACKAGE_PYTHON_OSSAUDIODEV
+	bool "ossaudiodev module"
+	help
+	  ossaudiodev module for Python.
+
+config BR2_PACKAGE_PYTHON_READLINE
+	select BR2_PACKAGE_READLINE
+	bool "readline"
+	help
+	  readline module for Python (required for command-line
+	  editing in the Python shell).
+
+config BR2_PACKAGE_PYTHON_SSL
+	select BR2_PACKAGE_OPENSSL
+	bool "ssl"
+	help
+	  _ssl module for Python (required for https in urllib etc).
+
+config BR2_PACKAGE_PYTHON_UNICODEDATA
+	bool "unicodedata module"
+	default y
+	help
+	  Unicode character database (used by stringprep module) (large).
+
+if BR2_PACKAGE_PYTHON_UNICODEDATA
+
+choice
+	prompt "Python unicode database format"
+	default BR2_PACKAGE_PYTHON_UCS2
+	help
+	  Select Python unicode database format for target
+
+config BR2_PACKAGE_PYTHON_UCS2
+	bool "Universal Character Set 2-byte (UCS2)"
+
+config BR2_PACKAGE_PYTHON_UCS4
+	bool "Universal Character Set 4-byte (UCS4)"
+
+endchoice
+
+endif
+
+config BR2_PACKAGE_PYTHON_SQLITE
+	bool "sqlite module"
+	select BR2_PACKAGE_SQLITE
+	help
+	  SQLite database support
+
+config BR2_PACKAGE_PYTHON_PYEXPAT
+	select BR2_PACKAGE_EXPAT
+	bool "xml module"
+	help
+	  pyexpat and xml libraries for Python
+
+config BR2_PACKAGE_PYTHON_ZLIB
+	bool "zlib module"
+	select BR2_PACKAGE_ZLIB
+	help
+	  zlib support in Python
+
+config BR2_PACKAGE_PYTHON_HASHLIB
+	bool "hashlib module"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  hashlib support in Python
+
+endmenu
+
+endif

@@ -1,20 +1,26 @@
 # mips default CPU ISAs
 config BR2_MIPS_CPU_MIPS32
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS32R2
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS32R5
 	bool
 config BR2_MIPS_CPU_MIPS32R6
 	bool
+	select BR2_MIPS_NAN_2008
 config BR2_MIPS_CPU_MIPS64
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS64R2
 	bool
+	select BR2_MIPS_NAN_LEGACY
 config BR2_MIPS_CPU_MIPS64R5
 	bool
 config BR2_MIPS_CPU_MIPS64R6
 	bool
+	select BR2_MIPS_NAN_2008
 
 choice
 	prompt "Target Architecture Variant"
@@ -51,14 +57,17 @@ config BR2_mips_m5150
 	bool "M5150"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+	select BR2_MIPS_NAN_2008
 config BR2_mips_m6250
 	bool "M6250"
 	depends on !BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 	select BR2_MIPS_CPU_MIPS32R6
 config BR2_mips_p5600
 	bool "P5600"
 	depends on !BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS32R5
+	select BR2_MIPS_NAN_2008
 config BR2_mips_xburst
 	bool "XBurst"
 	depends on !BR2_ARCH_IS_64
@@ -95,6 +104,7 @@ config BR2_mips_i6400
 config BR2_mips_p6600
 	bool "P6600"
 	depends on BR2_ARCH_IS_64
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
 	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
@@ -126,6 +136,64 @@ config BR2_MIPS_SOFT_FLOAT
 	  floating point functions, then everything will need to be
 	  compiled with soft floating point support (-msoft-float).
 
+choice
+	prompt "FP mode"
+	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
+	default BR2_MIPS_FP32_MODE_XX if BR2_TOOLCHAIN_HAS_MFPXX_OPTION
+	help
+	  MIPS32 supports different FP modes (32,xx,64). Information about FP
+	  modes can be found here:
+	  https://sourceware.org/binutils/docs/as/MIPS-Options.html
+	  https://dmz-portal.imgtec.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking#5._Generating_modeless_code
+
+config BR2_MIPS_FP32_MODE_32
+	bool "32"
+	depends on !BR2_MIPS_CPU_MIPS32R6
+
+config BR2_MIPS_FP32_MODE_XX
+	bool "xx"
+	depends on BR2_TOOLCHAIN_HAS_MFPXX_OPTION
+
+config BR2_MIPS_FP32_MODE_64
+	bool "64"
+	depends on !BR2_MIPS_CPU_MIPS32
+endchoice
+
+config BR2_GCC_TARGET_FP32_MODE
+	default "32"	if BR2_MIPS_FP32_MODE_32
+	default "xx"	if BR2_MIPS_FP32_MODE_XX
+	default "64"	if BR2_MIPS_FP32_MODE_64
+
+config BR2_MIPS_NAN_LEGACY
+	bool
+
+config BR2_MIPS_NAN_2008
+	bool
+
+choice
+	prompt "Target NaN"
+	depends on BR2_TOOLCHAIN_HAS_MNAN_OPTION
+	depends on BR2_mips_32r5 || BR2_mips_64r5
+	default BR2_MIPS_ENABLE_NAN_2008
+	help
+	  MIPS supports two different NaN encodings, legacy and 2008.
+	  Information about MIPS NaN encodings can be found here:
+	  https://sourceware.org/binutils/docs/as/MIPS-NaN-Encodings.html
+
+config BR2_MIPS_ENABLE_NAN_LEGACY
+	bool "legacy"
+	select BR2_MIPS_NAN_LEGACY
+
+config BR2_MIPS_ENABLE_NAN_2008
+	bool "2008"
+	depends on !BR2_MIPS_SOFT_FLOAT
+	select BR2_MIPS_NAN_2008
+endchoice
+
+config BR2_GCC_TARGET_NAN
+	default "legacy"	if BR2_MIPS_NAN_LEGACY
+	default "2008"		if BR2_MIPS_NAN_2008
+
 config BR2_ARCH
 	default "mips"		if BR2_mips
 	default "mipsel"	if BR2_mipsel
@@ -134,7 +202,7 @@ config BR2_ARCH
 
 config BR2_ENDIAN
 	default "LITTLE"	if BR2_mipsel || BR2_mips64el
-	default "BIG" 	    	if BR2_mips || BR2_mips64
+	default "BIG"		if BR2_mips || BR2_mips64
 
 config BR2_GCC_TARGET_ARCH
 	default "mips32"	if BR2_mips_32
@@ -161,3 +229,6 @@ config BR2_GCC_TARGET_ABI
 	default "32"		if BR2_MIPS_OABI32
 	default "n32"		if BR2_MIPS_NABI32
 	default "64"		if BR2_MIPS_NABI64
+
+config BR2_READELF_ARCH_NAME
+	default "MIPS R3000"

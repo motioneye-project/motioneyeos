@@ -1,0 +1,23 @@
+The udphdr structure has uh_* fields when _FAVOR_BSD is
+defined. Otherwise, the fields are just named source, dest, len and
+check. See <netinet/udp.h>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: dhcpdump-1.8/dhcpdump.c
+===================================================================
+--- dhcpdump-1.8.orig/dhcpdump.c	2011-05-17 20:20:46.506980003 +0200
++++ dhcpdump-1.8/dhcpdump.c	2011-05-17 20:20:59.338979999 +0200
+@@ -163,10 +163,10 @@
+ 	strcpy(ip_origin, (u_char *)inet_ntoa(ip->ip_src));
+ 	strcpy(ip_destination, (u_char *)inet_ntoa(ip->ip_dst));
+ 
+-	if (hmask && check_ch((u_char *)(sp + offset), ntohs(udp->uh_ulen)))
++	if (hmask && check_ch((u_char *)(sp + offset), ntohs(udp->len)))
+ 		return;
+ 
+-	printdata((u_char *)(sp + offset), ntohs(udp->uh_ulen));
++	printdata((u_char *)(sp + offset), ntohs(udp->len));
+ }
+ 
+ // check for matching CHADDR (Peter Apian-Bennewitz <apian@ise.fhg.de>)

@@ -1,0 +1,62 @@
+From 404aad42698c6d5cbd78421720f9a2bc0e8ec9fe Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 22 Feb 2017 17:31:51 -0800
+Subject: [PATCH] Add an option to disable the curses module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Makefile.pre.in | 7 +++++--
+ configure.ac    | 9 +++++++++
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index dc1e917cc3..6a6bc082cd 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1213,8 +1213,7 @@ LIBSUBDIRS=	site-packages \
+ 		turtledemo \
+ 		multiprocessing multiprocessing/dummy \
+ 		unittest \
+-		venv venv/scripts venv/scripts/common venv/scripts/posix \
+-		curses
++		venv venv/scripts venv/scripts/common venv/scripts/posix
+ 
+ TESTSUBDIRS=	test \
+ 		test/audiodata \
+@@ -1268,6 +1267,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
+ 	tkinter/test/test_ttk
+ endif
+ 
++ifeq (@CURSES@,yes)
++LIBSUBDIRS += curses
++endif
++
+ ifeq (@LIB2TO3@,yes)
+ LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
+ TESTSUBDIRS += lib2to3/tests			\
+diff --git a/configure.ac b/configure.ac
+index 6a56a5b0c1..5896b39ff9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3130,6 +3130,15 @@ if test "$TK" = "no"; then
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
+ fi
+ 
++AC_SUBST(CURSES)
++AC_ARG_ENABLE(curses,
++	AS_HELP_STRING([--disable-curses], [disable curses]),
++	[ CURSES="${enableval}" ], [ CURSES=yes ])
++
++if test "$CURSES" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _curses _curses_panel"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+-- 
+2.13.5
+

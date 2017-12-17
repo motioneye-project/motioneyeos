@@ -6,7 +6,7 @@
 
 FBDUMP_VERSION = 0.4.2
 FBDUMP_SITE = http://www.rcdrummond.net/fbdump
-FBDUMP_LICENSE = GPLv2
+FBDUMP_LICENSE = GPL-2.0
 FBDUMP_LICENSE_FILES = COPYING
 
 # The VGA16 specific feature of fbdump doesn't make much sense outside

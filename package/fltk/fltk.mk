@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-FLTK_VERSION = 1.3.3
-FLTK_SOURCE = fltk-$(FLTK_VERSION)-source.tar.gz
+FLTK_VERSION = 1.3.4
+FLTK_SOURCE = fltk-$(FLTK_VERSION)-1-source.tar.gz
 FLTK_SITE = http://fltk.org/pub/fltk/$(FLTK_VERSION)
 FLTK_INSTALL_STAGING = YES
 # We force --libdir=/usr/lib, because by default, it is set to
@@ -19,7 +19,7 @@ FLTK_CONF_OPTS = --enable-threads --with-x --disable-gl \
 	--libdir=/usr/lib
 FLTK_DEPENDENCIES = jpeg libpng xlib_libX11 xlib_libXext xlib_libXt
 FLTK_CONFIG_SCRIPTS = fltk-config
-FLTK_LICENSE = LGPLv2 with exceptions
+FLTK_LICENSE = LGPL-2.0 with exceptions
 FLTK_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_CAIRO),y)

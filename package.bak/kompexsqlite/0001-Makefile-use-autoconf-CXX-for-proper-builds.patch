@@ -1,0 +1,27 @@
+From 769693d9ddf63b04dd4aad6cad080f3cee3f997e Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 11 Jun 2015 14:08:38 -0300
+Subject: [PATCH] Makefile: use autoconf CXX for proper builds
+
+Status: applied upstream.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ Makefile.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Makefile.in b/Makefile.in
+index 91fb8b2..fe862cd 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -23,6 +23,7 @@ mandir = $(prefix)/share/man/man3
+ headerdir = $(prefix)/include/kompex
+ 
+ CC = @CC@
++CXX = @CXX@
+ CFLAGS = @CFLAGS@
+ CPPFLAGS = $(CFLAGS) @CPPFLAGS@
+ LDFLAGS = @LDFLAGS@
+-- 
+2.3.6
+

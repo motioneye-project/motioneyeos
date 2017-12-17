@@ -1,0 +1,29 @@
+comment "python-sip needs a toolchain w/ C++, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "python-sip needs qt or qt5"
+	depends on BR2_USE_MMU
+	depends on BR2_INSTALL_LIBSTDCPP && BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
+
+config BR2_PACKAGE_PYTHON_SIP
+	bool "python-sip"
+	depends on BR2_INSTALL_LIBSTDCPP # qt
+	depends on BR2_TOOLCHAIN_HAS_THREADS # qt
+	depends on BR2_USE_MMU # qt
+	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
+	help
+	  SIP is a tool that makes it very easy to create Python
+	  bindings for C and C++ libraries. It was originally
+	  developed to create PyQt, the Python bindings for the Qt
+	  toolkit, but can be used to create bindings for any C or C++
+	  library.
+
+	  SIP comprises a code generator and a Python module. The code
+	  generator processes a set of specification files and
+	  generates C or C++ code which is then compiled to create the
+	  bindings extension module. The SIP Python module provides
+	  support functions to the automatically generated code.
+
+	  http://www.riverbankcomputing.com/software/sip/intro

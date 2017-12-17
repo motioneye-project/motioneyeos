@@ -6,7 +6,7 @@
 
 LIBPAM_TACPLUS_VERSION = 1.3.9
 LIBPAM_TACPLUS_SITE = $(call github,jeroennijhof,pam_tacplus,$(LIBPAM_TACPLUS_VERSION))
-LIBPAM_TACPLUS_LICENSE = GPLv2+
+LIBPAM_TACPLUS_LICENSE = GPL-2.0+
 LIBPAM_TACPLUS_LICENSE_FILES = COPYING
 LIBPAM_TACPLUS_DEPENDENCIES = linux-pam
 # Fetching from github, we need to generate the configure script

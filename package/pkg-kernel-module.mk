@@ -25,7 +25,7 @@
 #
 #   $(eval $(kernel-module))
 #   define FOO_MOD_TWEAK
-#   	# do something
+#       # do something
 #   endef
 #   FOO_POST_BUILD_HOOKS += FOO_MOD_TWEAK
 #   $(eval $(generic-package))

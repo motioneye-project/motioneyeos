@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PYTHON_PARAMIKO
+	bool "python-paramiko"
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyasn
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
+	select BR2_PACKAGE_PYTHON_CRYPTOGRAPHY # runtime
+	select BR2_PACKAGE_PYTHON_PYASN # runtime
+	help
+	  SSH2 protocol library.
+
+	  https://github.com/paramiko/paramiko/
+
+comment "python-paramiko needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

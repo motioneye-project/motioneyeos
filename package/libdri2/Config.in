@@ -1,11 +1,11 @@
 config BR2_PACKAGE_LIBDRI2
 	bool "libdri2"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
+	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XPROTO_DRI2PROTO
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
-	depends on BR2_PACKAGE_XORG7
 	help
 	  Library for the DRI2 extension to the X Window System.
 

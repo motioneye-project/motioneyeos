@@ -1,0 +1,72 @@
+comment "gdb/gdbserver needs a toolchain w/ threads, threads debug"
+	depends on !BR2_nios2 && !BR2_bfin
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+
+config BR2_PACKAGE_GDB
+	bool "gdb"
+	# When the external toolchain gdbserver is copied to the
+	# target, we don't allow building a separate gdbserver. The
+	# one from the external toolchain should be used.
+	select BR2_PACKAGE_GDB_SERVER if \
+		(!BR2_PACKAGE_GDB_DEBUGGER && !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY)
+	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	depends on !BR2_nios2 && !BR2_bfin
+	help
+	  GDB, the GNU Project debugger, allows you to see what is
+	  going on `inside' another program while it executes -- or
+	  what another program was doing at the moment it crashed.
+
+	  This option allows to build gdbserver and/or the gdb
+	  debugger for the target.
+
+	  For embedded development, the most common solution is to
+	  build only 'gdbserver' for the target, and use a cross-gdb
+	  on the host. See BR2_PACKAGE_HOST_GDB in the Toolchain menu
+	  to enable one. Notice that external toolchains often provide
+	  their own pre-built cross-gdb and gdbserver binaries.
+
+	  http://www.gnu.org/software/gdb/
+
+if BR2_PACKAGE_GDB
+
+config BR2_PACKAGE_GDB_SERVER
+	bool "gdbserver"
+	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
+	help
+	  Build the gdbserver stub to run on the target.
+	  A full gdb is needed to debug the progam.
+
+config BR2_PACKAGE_GDB_DEBUGGER
+	bool "full debugger"
+	select BR2_PACKAGE_NCURSES
+	depends on BR2_USE_WCHAR
+	depends on !BR2_sh && !BR2_microblaze
+
+comment "full gdb on target needs a toolchain w/ wchar"
+	depends on !BR2_sh && !BR2_microblaze
+	depends on !BR2_USE_WCHAR
+
+if BR2_PACKAGE_GDB_DEBUGGER
+
+config BR2_PACKAGE_GDB_TUI
+	bool "TUI support"
+	help
+	  This option enables terminal user interface (TUI) for gdb
+
+	  "The GDB Text User Interface (TUI) is a terminal interface
+	  which uses the curses library to show the source file, the
+	  assembly output, the program registers and GDB commands in
+	  separate text windows."
+
+	  https://sourceware.org/gdb/current/onlinedocs/gdb/TUI.html
+
+config BR2_PACKAGE_GDB_PYTHON
+	bool "Python support"
+	# Only Python 2.x is supported by gdb for now
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  This option enables Python support in the target gdb.
+
+endif
+
+endif

@@ -1,0 +1,18 @@
+config BR2_PACKAGE_QT5SERIALBUS
+	bool "qt5serialbus"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6 # CAN FD
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5SERIALPORT
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt5serialbus module.
+
+	  This module was in tech preview in Qt 5.6, and promoted
+	  to a core module in Qt 5.8.0.
+
+	  http://doc.qt.io/qt-5/qtserialbus-index.html
+
+comment "qt5serialbus needs headers >= 3.6"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6

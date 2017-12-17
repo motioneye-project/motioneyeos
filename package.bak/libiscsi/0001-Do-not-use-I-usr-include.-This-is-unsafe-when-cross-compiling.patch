@@ -1,0 +1,67 @@
+From f27bdf64f0c375352ca42928071a9178a5a04c46 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Sun, 16 Oct 2016 10:53:13 +0100
+Subject: [PATCH] Do not use -I/usr/include. This is unsafe when cross-compiling.
+
+Upstream status: PR sent (https://github.com/sahlberg/libiscsi/pull/219)
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ examples/Makefile.am | 2 +-
+ lib/Makefile.am      | 2 +-
+ tests/Makefile.am    | 2 +-
+ utils/Makefile.am    | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/examples/Makefile.am b/examples/Makefile.am
+index 0de0b1f..42ad818 100644
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -1,6 +1,6 @@
+ AM_CPPFLAGS=-I. -I${srcdir}/../include "-D_U_=__attribute__((unused))" \
+ 	"-D_R_(A,B)=__attribute__((format(printf,A,B)))"
+-AM_CFLAGS=$(WARN_CFLAGS) -I/usr/include
++AM_CFLAGS=$(WARN_CFLAGS)
+ LDADD = ../lib/libiscsi.la
+ 
+ noinst_PROGRAMS = iscsiclient iscsi-dd
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index d612fb7..47ffc33 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -29,7 +29,7 @@ libiscsi_la_CPPFLAGS = -I${srcdir}/../include -I$(srcdir)/include \
+ 	"-D_U_=__attribute__((unused))" \
+ 	"-D_R_(A,B)=__attribute__((format(printf,A,B)))"
+ 
+-AM_CFLAGS=$(WARN_CFLAGS) -I/usr/include
++AM_CFLAGS=$(WARN_CFLAGS)
+ 
+ dist_noinst_DATA = libiscsi.syms libiscsi.def
+ 
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 9d699fc..b4cbf21 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -1,6 +1,6 @@
+ AM_CPPFLAGS = -I../include "-D_U_=__attribute__((unused))" \
+ 	"-D_R_(A,B)=__attribute__((format(printf,A,B)))"
+-AM_CFLAGS = $(WARN_CFLAGS) -I/usr/include
++AM_CFLAGS = $(WARN_CFLAGS)
+ LDADD = ../lib/libiscsi.la
+ 
+ noinst_PROGRAMS = prog_reconnect prog_reconnect_timeout prog_noop_reply \
+diff --git a/utils/Makefile.am b/utils/Makefile.am
+index 657ca9d..bde1c81 100644
+--- a/utils/Makefile.am
++++ b/utils/Makefile.am
+@@ -1,6 +1,6 @@
+ AM_CPPFLAGS = -I${srcdir}/../include "-D_U_=__attribute__((unused))" \
+ 	"-D_R_(A,B)=__attribute__((format(printf,A,B)))"
+-AM_CFLAGS = $(WARN_CFLAGS) -I/usr/include
++AM_CFLAGS = $(WARN_CFLAGS)
+ LDADD = ../lib/libiscsi.la
+ 
+ bin_PROGRAMS = iscsi-inq iscsi-ls iscsi-perf iscsi-readcapacity16 \
+-- 
+2.10.0
+

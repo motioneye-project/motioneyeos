@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_AUTOMAT
+	bool "python-automat"
+	select BR2_PACKAGE_PYTHON_ATTRS # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Self-service finite-state machines for the programmer on the
+	  go.
+
+	  https://github.com/glyph/Automat

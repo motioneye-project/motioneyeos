@@ -1,0 +1,33 @@
+From 3f064076c783914cafdff028db303681dae4291d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 15 Nov 2012 18:31:53 +0100
+Subject: [PATCH] libXt: util: don't link makestrs with target cflags
+
+The line:
+
+AM_CFLAGS = $(XT_CFLAGS)
+
+in util/Makefile.am is wrong because it adds target cflags to the
+compilation of makestrs, which is built for the build machine, which
+leads to build failures when cross-compiling.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ util/Makefile.am |    1 -
+ util/makestrs.c  |    1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/util/Makefile.am b/util/Makefile.am
+index dedfa6b..cc6f3fc 100644
+--- a/util/Makefile.am
++++ b/util/Makefile.am
+@@ -10,7 +10,6 @@ EXTRA_DIST = \
+        StrDefs.ht \
+        string.list
+ 
+-AM_CFLAGS = $(XT_CFLAGS)
+ makestrs_SOURCES = makestrs.c
+ 
+ 
+-- 
+1.7.9.5

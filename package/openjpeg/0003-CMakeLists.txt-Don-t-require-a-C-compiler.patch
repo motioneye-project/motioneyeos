@@ -1,0 +1,34 @@
+From 786ddcd1475adc6193c59d53e0d8ed2c502f2b00 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Sat, 23 Sep 2017 18:49:31 +0200
+Subject: [PATCH] CMakeLists.txt: Don't require a C++ compiler
+
+By default, CMake assumes that the project is using both C and C++.  By
+explicitly passing 'C' as argument of the project() macro, we tell CMake
+that only C is used, which prevents CMake from erroring out if a C++
+compiler doesn't exist.
+
+Submitted upstream:
+https://github.com/uclouvain/openjpeg/pull/1027
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ec42bc99..d80eb48b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -24,7 +24,7 @@ endif()
+ #string(TOLOWER ${OPENJPEG_NAMESPACE} OPENJPEG_LIBRARY_NAME)
+ set(OPENJPEG_LIBRARY_NAME openjp2)
+ 
+-project(${OPENJPEG_NAMESPACE})
++project(${OPENJPEG_NAMESPACE} C)
+ 
+ # Do full dependency headers.
+ include_regular_expression("^.*$")
+-- 
+2.11.0
+

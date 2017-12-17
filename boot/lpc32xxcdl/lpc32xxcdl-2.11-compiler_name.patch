@@ -1,0 +1,52 @@
+Use CROSS_COMPILE as compiler name and stop using libc
+
+Signed-off-by: Alexandre Belloni <abelloni@adeneo-embedded.com>
+---
+ makerule/lpc32xx/make.lpc32xx.gnu |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/makerule/lpc32xx/make.lpc32xx.gnu b/makerule/lpc32xx/make.lpc32xx.gnu
+index 1014c28..3277d99 100644
+--- a/makerule/lpc32xx/make.lpc32xx.gnu
++++ b/makerule/lpc32xx/make.lpc32xx.gnu
+@@ -27,19 +27,19 @@ CFLAGS   += -mno-sched-prolog -fno-hosted -mno-thumb-interwork -ffunction-sectio
+ CFLAGS   += -I$(CSP_INC_DIR) -I$(BSP_INC_DIR) -I$(GEN_INC_DIR)
+ AFLAGS   = -mcpu=arm926ej-s
+ AFLAGS   += -I$(CSP_INC_DIR) -I$(BSP_INC_DIR) -I$(GEN_INC_DIR)
+-CC       = arm-none-eabi-gcc
+-AS       = arm-none-eabi-as
+-AR       = arm-none-eabi-ar -r
+-LD       = arm-none-eabi-gcc
+-NM       = arm-none-eabi-nm
+-OBJDUMP  = arm-none-eabi-objdump
+-OBJCOPY  = arm-none-eabi-objcopy
+-READELF  = arm-none-eabi-readelf
++CC       = $(CROSS_COMPILE)gcc
++AS       = $(CROSS_COMPILE)as
++AR       = $(CROSS_COMPILE)ar -r
++LD       = $(CROSS_COMPILE)gcc
++NM       = $(CROSS_COMPILE)nm
++OBJDUMP  = $(CROSS_COMPILE)objdump
++OBJCOPY  = $(CROSS_COMPILE)objcopy
++READELF  = $(CROSS_COMPILE)readelf
+ LDFLAGS  += -Wl,--gc-sections
+ 
+ LK       =  -static
+ LK       += -Wl,--start-group $(TARGET_CSP_LIB) $(TARGET_BSP_LIB) $(TARGET_GEN_LIB)
+-LK       +=  -lgcc -lc -lg -lm -lstdc++ -lsupc++ 
++LK       +=  -nostdlib -lgcc #-lc -lg -lm -lstdc++ -lsupc++ 
+ LK       += -Wl,--end-group
+ MAP      = -Xlinker -Map -Xlinker
+ LDESC    = -Xlinker -T  
+@@ -47,6 +47,6 @@ ENTRY    = -e
+ BIN      = -bin
+ EXT      = .elf
+ LEXT     = 
+-ELFTOREC =arm-none-eabi-objcopy -O srec --strip-all --verbose
+-ELFTOBIN =arm-none-eabi-objcopy -I elf32-littlearm -O binary --strip-all --verbose
++ELFTOREC = $(OBJCOPY) -O srec --strip-all --verbose
++ELFTOBIN = $(OBJCOPY) -I elf32-littlearm -O binary --strip-all --verbose
+ REC      =.srec
+-- 
+1.7.7.3
+

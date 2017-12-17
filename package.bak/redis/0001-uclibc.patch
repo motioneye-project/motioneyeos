@@ -1,0 +1,23 @@
+redis-001-uclibc.patch: This patch fixes redis so that it can be compiled
+against uclibc.  Patch originates from:
+
+  Support cross-compiling for uClibc targets
+  https://github.com/antirez/redis/pull/537
+  Mike Steinert, mike.steinert@gmail.com
+
+Signed-off-by: Daniel Price <daniel.price@gmail.com>
+[Martin: adapt to 3.0.3]
+Signed-off-by: Martin Bark <martin@barkynet.com>
+
+=========================================================================
+diff -ur old/src/config.h new/src/config.h
+--- old/src/config.h	2012-10-26 07:20:24.000000000 -0700
++++ new/src/config.h	2012-10-31 13:41:51.206309564 -0700
+@@ -62,7 +62,7 @@
+ #endif
+ 
+ /* Test for backtrace() */
+-#if defined(__APPLE__) || (defined(__linux__) && defined(__GLIBC__))
++#if defined(__APPLE__) || (defined(__linux__) && defined(__GLIBC__) && !defined(__UCLIBC__))
+ #define HAVE_BACKTRACE 1
+ #endif

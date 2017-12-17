@@ -1,0 +1,63 @@
+From 71f329d997d949d3c12d62d2f1473a1c99ee49b0 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sun, 27 Aug 2017 21:30:37 +0300
+Subject: [PATCH] Fix build without Python
+
+Don't define HAVE_PYTHON35 when PYTHON_LIBS is empty.
+
+Also, don't build Python dependent code when HAVE_PYTHON35 is not
+defined.
+
+This fixes build failures like:
+
+Makefile:1616: recipe for target 'python-pkg/dist/lirc-0.10.0.tar.gz' failed
+make[3]: *** [python-pkg/dist/lirc-0.10.0.tar.gz] Error 1
+python-pkg/lirc/_client.c:1:20: fatal error: Python.h: No such file or directory
+ #include <Python.h>
+                    ^
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 74a2bcab6b
+
+ Makefile.am  | 2 ++
+ configure.ac | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 9f3dd14340cc..d8164fcd44cf 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -104,6 +104,7 @@ dist_py_pkg_doc_DATA    = python-pkg/doc/Doxyfile \
+ 
+ libpython               = $(libdir)/python$(PYTHON_VERSION)
+ pydir                   = $(libpython)/site-packages/lirc
++if HAVE_PYTHON35
+ py_LTLIBRARIES          = python-pkg/lib/_client.la
+ python_pkg_lib__client_la_SOURCES = \
+                           python-pkg/lirc/_client.c
+@@ -116,6 +117,7 @@ python_pkg_lib__client_la_LDFLAGS  = \
+                           $(PYTHON_LIBS)
+ python_pkg_lib__client_la_LIBADD = \
+                           lib/liblirc_client.la
++endif
+ 
+ pylint: .phony
+ 	$(MAKE) -C tools pylint
+diff --git a/configure.ac b/configure.ac
+index 4108688433f8..07d901deafdf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -50,7 +50,8 @@ test -z "$PYTHON_LIBS" && \
+ test -n "$PYTHON_LIBS" || \
+     AC_MSG_WARN([No python package found (missing devel package?)])
+ python_version_nodots=$(echo $PYTHON_VERSION | tr -d '.')
+-AM_CONDITIONAL(HAVE_PYTHON35, [test $python_version_nodots -ge 35])
++AM_CONDITIONAL(HAVE_PYTHON35, [test -n "$PYTHON_LIBS" && \
++			       test $python_version_nodots -ge 35])
+ CFLAGS="$CFLAGS $PYTHON_CFLAGS"
+ 
+ 
+-- 
+2.14.1
+

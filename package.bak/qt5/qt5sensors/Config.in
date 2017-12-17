@@ -1,0 +1,11 @@
+config BR2_PACKAGE_QT5SENSORS
+	bool "qt5sensors"
+	select BR2_PACKAGE_QT5BASE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  The Qt Sensors API provides access to sensor hardware
+	  via QML and C++ interfaces.
+
+	  http://doc.qt.io/qt-5/qtsensors-index.html

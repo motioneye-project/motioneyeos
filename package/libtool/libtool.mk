@@ -11,7 +11,7 @@ LIBTOOL_INSTALL_STAGING = YES
 LIBTOOL_CONF_ENV = HELP2MAN=true
 LIBTOOL_DEPENDENCIES = host-m4
 HOST_LIBTOOL_DEPENDENCIES = host-m4
-LIBTOOL_LICENSE = GPLv2+
+LIBTOOL_LICENSE = GPL-2.0+
 LIBTOOL_LICENSE_FILES = COPYING
 
 HOST_LIBTOOL_CONF_ENV = MAKEINFO=true
@@ -41,5 +41,5 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # variables used by other packages
-LIBTOOL = $(HOST_DIR)/usr/bin/libtool
-LIBTOOLIZE = $(HOST_DIR)/usr/bin/libtoolize
+LIBTOOL = $(HOST_DIR)/bin/libtool
+LIBTOOLIZE = $(HOST_DIR)/bin/libtoolize

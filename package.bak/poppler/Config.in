@@ -1,0 +1,39 @@
+config BR2_PACKAGE_POPPLER
+	bool "poppler"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_XLIB_LIBXEXT if BR2_PACKAGE_XORG7
+	help
+	  Poppler is a PDF rendering library based on the xpdf-3.0 code base.
+
+	  http://poppler.freedesktop.org/
+
+if BR2_PACKAGE_POPPLER
+
+config BR2_PACKAGE_POPPLER_QT
+	bool "Qt support"
+	depends on BR2_PACKAGE_QT
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Qt GUI module
+	select BR2_PACKAGE_QT_GUI_MODULE
+	select BR2_PACKAGE_QT_XML
+	help
+	  Build Qt support into the Poppler library
+
+comment "poppler Qt support needs a toolchain not affected by Binutils bug 19405"
+	depends on BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+
+config BR2_PACKAGE_POPPLER_QT5
+	bool "Qt5 support"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5BASE_XML
+	help
+	  Build Qt support into the Poppler library
+
+endif
+
+comment "poppler needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

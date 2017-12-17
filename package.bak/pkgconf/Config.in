@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PKGCONF
+	bool "pkgconf"
+	help
+	  pkgconf is a program which helps to configure compiler and linker
+	  flags for development frameworks. It is similar to pkg-config,
+	  but was written from scratch in the summer of 2011 to replace
+	  pkg-config, which now needs itself to build itself
+
+	  https://github.com/nenolod/pkgconf

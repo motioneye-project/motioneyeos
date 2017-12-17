@@ -1,0 +1,16 @@
+Make jhead use LDFLAGS for the final link.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura jhead-2.97.orig/makefile jhead-2.97/makefile
+--- jhead-2.97.orig/makefile	2013-03-27 09:22:38.759966389 -0300
++++ jhead-2.97/makefile	2013-03-27 09:25:06.290691745 -0300
+@@ -14,7 +14,7 @@
+ 	${CC} $(CFLAGS) -c $< -o $@
+ 
+ jhead: $(objs) jhead.h
+-	${CC} -o jhead $(objs) -lm
++	${CC} $(LDFLAGS) -o jhead $(objs) -lm
+ 
+ clean:
+ 	rm -f $(objs) jhead

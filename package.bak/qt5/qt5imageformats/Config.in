@@ -1,0 +1,12 @@
+config BR2_PACKAGE_QT5IMAGEFORMATS
+	bool "qt5imageformats"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  The Qt Image Formats module provides plugins for
+	  additional image formats: TIFF, MNG, TGA, WBMP
+
+	  http://doc.qt.io/qt-5/qtimageformats-index.html

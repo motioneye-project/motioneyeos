@@ -1,0 +1,54 @@
+From d868600a3f437750bc44a783d677a25a48100096 Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Sun, 4 Dec 2016 19:11:25 +0100
+Subject: [PATCH] No runtime tests for type sizes
+
+Replace build and execution of runtime test programs for determining
+some type sizes of the target with compile time test programs.
+
+This improves support for cross-compilation.
+
+Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+---
+ configure | 24 +++++++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
+
+diff --git a/configure b/configure
+index 4da9c5e..b5926ca 100755
+--- a/configure
++++ b/configure
+@@ -157,10 +157,28 @@ choose () {
+ 
+ trytypesize () {
+   echo "Checking size of $3..."
+-  $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o trysizeof$1 src/sysdeps/trysizeof$1.c
+-  type_size=$(./trysizeof$1) || fail "$0: unable to determine size of $3"
++  r=false
++  type_size=0
++  while true; do
++    cat<<EOF>trysizeof$1.c
++#include <sys/types.h>
++
++int main(void)
++{
++  static int v = 1 / !!((sizeof($3) == $type_size));
++  return 0;
++}
++EOF
++    if $CC_AUTO $CPPFLAGS_AUTO $CFLAGS_AUTO $LDFLAGS_AUTO -o trysizeof$1 trysizeof$1.c 2>/dev/null; then
++        r=true
++        break
++    fi
++    type_size=$(expr $type_size + 1)
++    test $type_size -le 16 || break
++  done
++  test $r = true || fail "$0: unable to determine size of $3"
+   type_bits=$(expr 8 \* $type_size)
+-  rm -f trysizeof$1
++  rm -f trysizeof$1 trysizeof$1.c
+   echo "sizeof$1: $type_size" >> $sysdeps/sysdeps
+   echo "#define ${package_macro_name}_SIZEOF$2 $type_size" >> $sysdeps/sysdeps.h
+   echo "#define ${package_macro_name}_$2_BITS $type_bits" >> $sysdeps/sysdeps.h
+-- 
+2.5.5
+

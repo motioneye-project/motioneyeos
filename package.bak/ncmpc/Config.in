@@ -1,0 +1,18 @@
+config BR2_PACKAGE_NCMPC
+	bool "ncmpc"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR # libglib2 -> gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBMPDCLIENT
+	select BR2_PACKAGE_NCURSES
+	help
+	  ncmpc is a fully featured MPD client, which runs in a terminal
+	  (using ncurses). Its goal is to provide a keyboard oriented
+	  and consistent interface to MPD, without wasting resources.
+
+	  http://www.musicpd.org/clients/ncmpc/
+
+comment "ncmpc needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

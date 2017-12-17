@@ -1,6 +1,10 @@
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
 	bool "Sourcery CodeBench ARM 2014.05"
 	depends on BR2_arm
+	# a15/a7 appeared in gcc-4.9, a17/a7 in gcc-5, a57/a53 and a72/a53
+	# in gcc-6, or they each were broken earlier than that.
+	depends on !BR2_cortex_a15_a7 && !BR2_cortex_a17_a7
+	depends on !BR2_cortex_a57_53 && !BR2_cortex_a72_53
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_ARM_EABI
 	# Unsupported ARM cores

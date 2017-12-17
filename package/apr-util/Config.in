@@ -1,10 +1,10 @@
 config BR2_PACKAGE_APR_UTIL
 	bool "apr-util"
-	select BR2_PACKAGE_APR
-	select BR2_PACKAGE_EXPAT
 	# apr really needs shared library support
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_MMU # apr
+	select BR2_PACKAGE_APR
+	select BR2_PACKAGE_EXPAT
 	help
 	  The utility library for the apache runtime project
 

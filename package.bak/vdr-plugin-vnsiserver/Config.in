@@ -1,0 +1,9 @@
+config BR2_PACKAGE_VDR_PLUGIN_VNSISERVER
+	bool "vdr-plugin-vnsiserver"
+	depends on BR2_PACKAGE_VDR
+	help
+	  VDR plugin to handle KODI clients.
+	  The vdr-plugin-vnsiserver is able to handle serveral KODI
+	  clients connecting via the VNSI addon.
+
+	  https://github.com/FernetMenta/vdr-plugin-vnsiserver

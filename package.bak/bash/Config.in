@@ -1,0 +1,11 @@
+config BR2_PACKAGE_BASH
+	bool "bash"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	# uses fork()
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  The standard GNU Bourne again shell.
+
+	  http://tiswww.case.edu/php/chet/bash/bashtop.html

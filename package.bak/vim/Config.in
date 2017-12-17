@@ -1,0 +1,27 @@
+config BR2_PACKAGE_VIM
+	bool "vim"
+	depends on BR2_USE_MMU # uses fork()
+	depends on BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  VIM Text editor
+
+	  http://www.vim.org/
+
+if BR2_PACKAGE_VIM
+
+config BR2_PACKAGE_VIM_RUNTIME
+	bool "install runtime"
+	default y
+	help
+	  Install VIM runtime (syntax highlighing + macros).
+	  This option adds about 11MB of data to /usr/share/
+
+endif
+
+comment "vim needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

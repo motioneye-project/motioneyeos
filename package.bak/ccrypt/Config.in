@@ -1,0 +1,6 @@
+config BR2_PACKAGE_CCRYPT
+	bool "ccrypt"
+	help
+	  ccrypt is a utility for encrypting and decrypting files and streams.
+
+	  http://ccrypt.sourceforge.net/

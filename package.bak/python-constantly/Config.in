@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_CONSTANTLY
+	bool "python-constantly"
+	help
+	  A library that provides symbolic constant support. It
+	  includes collections and constants with text, numeric,
+	  and bit flag values.
+
+	  https://github.com/twisted/constantly

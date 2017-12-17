@@ -4,81 +4,67 @@
 #
 ################################################################################
 
-SETOOLS_VERSION = 3.3.8
-SETOOLS_SOURCE = setools-$(SETOOLS_VERSION).tar.bz2
-SETOOLS_SITE = https://raw.githubusercontent.com/wiki/TresysTechnology/setools3/files/dists/setools-$(SETOOLS_VERSION)
-SETOOLS_DEPENDENCIES = libselinux libsepol sqlite libxml2 bzip2 host-bison host-flex
+SETOOLS_VERSION = 4.1.1
+SETOOLS_SITE = $(call github,TresysTechnology,setools,$(SETOOLS_VERSION))
+SETOOLS_DEPENDENCIES = libselinux libsepol python-setuptools host-bison host-flex host-swig
 SETOOLS_INSTALL_STAGING = YES
-SETOOLS_LICENSE = GPLv2+, LGPLv2.1+
+SETOOLS_LICENSE = GPL-2.0+, LGPL-2.1+
 SETOOLS_LICENSE_FILES = COPYING COPYING.GPL COPYING.LGPL
+SETOOLS_SETUP_TYPE = setuptools
+HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol
 
-# configure.ac is patched by the cross compile patch,
-# so autoreconf is necessary
-SETOOLS_AUTORECONF = YES
-
-# Notes: Need "disable-selinux-check" so the configure does not check to see
-#        if host has selinux enabled.
-#        No python support as only the libraries and commandline tools are
-#        installed on target
-SETOOLS_CONF_OPTS = \
-	--disable-debug \
-	--disable-gui \
-	--disable-bwidget-check \
-	--disable-selinux-check \
-	--disable-swig-java \
-	--disable-swig-python \
-	--disable-swig-tcl \
-	--with-sepol-devel="$(STAGING_DIR)/usr" \
-	--with-selinux-devel="$(STAGING_DIR)/usr"
-
-ifeq ($(BR2_sparc64):$(BR2_STATIC_LIBS),y:)
-SETOOLS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -fPIC"
-endif
-
-HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol host-sqlite \
-	host-libxml2 host-bzip2 host-bison
 
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
-HOST_SETOOLS_PYTHON_VERSION=$(PYTHON3_VERSION_MAJOR)
-HOST_SETOOLS_DEPENDENCIES += host-python3
-HOST_SETOOLS_CONF_ENV += am_cv_python_version=$(PYTHON3_VERSION)
+SETOOLS_PYLIBVER = python$(PYTHON3_VERSION_MAJOR)
 else
-HOST_SETOOLS_PYTHON_VERSION=$(PYTHON_VERSION_MAJOR)
-HOST_SETOOLS_DEPENDENCIES += host-python
-HOST_SETOOLS_CONF_ENV += am_cv_python_version=$(PYTHON_VERSION)
+SETOOLS_PYLIBVER = python$(PYTHON_VERSION_MAJOR)
+SETOOLS_DEPENDENCIES += python-enum34
 endif
 
-HOST_SETOOLS_PYTHON_SITE_PACKAGES = $(HOST_DIR)/usr/lib/python$(HOST_SETOOLS_PYTHON_VERSION)/site-packages
-HOST_SETOOLS_PYTHON_INCLUDES = $(HOST_DIR)/usr/include/python$(HOST_SETOOLS_PYTHON_VERSION)
-HOST_SETOOLS_PYTHON_LIB = -lpython$(HOST_SETOOLS_PYTHON_VERSION)
+define SETOOLS_FIX_SETUP
+	# By default, setup.py will look for libsepol.a in the host machines
+	# /usr/lib directory. This needs to be changed to the staging directory.
+	$(SED) "s@base_lib_dirs =.*@base_lib_dirs = ['$(STAGING_DIR)/usr/lib']@g" \
+		$(@D)/setup.py
+endef
+SETOOLS_POST_PATCH_HOOKS += SETOOLS_FIX_SETUP
 
-# Notes: Need "disable-selinux-check" so the configure does not check to see
-#        if host has selinux enabled.
-#        Host builds with python support to enable tools for offline target
-#        policy analysis
-HOST_SETOOLS_CONF_OPTS = \
-	--disable-debug \
-	--disable-gui \
-	--disable-bwidget-check \
-	--disable-selinux-check \
-	--disable-swig-java \
-	--disable-swig-python \
-	--disable-swig-tcl \
-	--with-sepol-devel="$(HOST_DIR)/usr" \
-	--with-selinux-devel="$(HOST_DIR)/usr" \
-	PYTHON_LDFLAGS="-L$(HOST_DIR)/usr/lib/" \
-	PYTHON_CPPFLAGS="-I$(HOST_SETOOLS_PYTHON_INCLUDES)" \
-	PYTHON_SITE_PKG="$(HOST_SETOOLS_PYTHON_SITE_PACKAGES)" \
-	PYTHON_EXTRA_LIBS="-lpthread -ldl -lutil $(HOST_SETOOLS_PYTHON_LIB)"
+define HOST_SETOOLS_FIX_SETUP
+	# By default, setup.py will look for libsepol.a in the host machines
+	# /usr/lib directory. This needs to be changed to the host directory.
+	$(SED) "s@base_lib_dirs =.*@base_lib_dirs = ['$(HOST_DIR)/lib']@g" \
+		$(@D)/setup.py
+endef
+HOST_SETOOLS_POST_PATCH_HOOKS += HOST_SETOOLS_FIX_SETUP
 
-HOST_SETOOLS_CONF_ENV += \
-	am_cv_pathless_PYTHON=python \
-	ac_cv_path_PYTHON=$(HOST_DIR)/usr/bin/python \
-	am_cv_python_platform=linux2 \
-	am_cv_python_version=$(HOST_SETOOLS_PYTHON_VERSION) \
-	am_cv_python_pythondir=$(HOST_SETOOLS_PYTHON_SITE_PACKAGES) \
-	am_cv_python_pyexecdir=$(HOST_SETOOLS_PYTHON_SITE_PACKAGES) \
-	am_cv_python_includes=-I$(HOST_SETOOLS_PYTHON_INCLUDES)
+# sedta and seinfoflow depend on python-networkx. This package is not
+# available in buildroot.
+define SETOOLS_REMOVE_BROKEN_SCRIPTS
+	$(RM) $(TARGET_DIR)/usr/bin/sedta
+	$(RM) $(TARGET_DIR)/usr/bin/seinfoflow
+endef
+SETOOLS_POST_INSTALL_TARGET_HOOKS += SETOOLS_REMOVE_BROKEN_SCRIPTS
 
-$(eval $(autotools-package))
-$(eval $(host-autotools-package))
+# apol requires pyqt5. However, the setools installation
+# process will install apol even if pyqt5 is missing.
+# Remove these scripts from the target it pyqt5 is not selected.
+ifeq ($(BR2_PACKAGE_PYTHON_PYQT5),)
+define SETOOLS_REMOVE_QT_SCRIPTS
+	$(RM) $(TARGET_DIR)/usr/bin/apol
+	$(RM) -r $(TARGET_DIR)/lib/$(SETOOLS_PYLIBVER)/site-packages/setoolsgui/
+endef
+SETOOLS_POST_INSTALL_TARGET_HOOKS += SETOOLS_REMOVE_QT_SCRIPTS
+endif
+
+# sedta and seinfoflow depend on python-networkx. This package is not
+# available in buildroot. pyqt5 is not a host-package, remove apol
+# from the host directory as well.
+define HOST_SETOOLS_REMOVE_BROKEN_SCRIPTS
+	$(RM) $(HOST_DIR)/bin/sedta
+	$(RM) $(HOST_DIR)/bin/seinfoflow
+	$(RM) $(HOST_DIR)/bin/apol
+endef
+HOST_SETOOLS_POST_INSTALL_HOOKS += HOST_SETOOLS_REMOVE_BROKEN_SCRIPTS
+
+$(eval $(python-package))
+$(eval $(host-python-package))

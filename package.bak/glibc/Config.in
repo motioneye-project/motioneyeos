@@ -1,0 +1,38 @@
+if BR2_TOOLCHAIN_BUILDROOT_GLIBC
+
+config BR2_PACKAGE_GLIBC
+	bool
+	default y
+	select BR2_PACKAGE_LINUX_HEADERS
+	select BR2_TOOLCHAIN_HAS_SSP
+
+choice
+	prompt "glibc version"
+	default BR2_GLIBC_VERSION_2_23
+
+config BR2_GLIBC_VERSION_2_22
+	bool "2.22"
+	# Too old to build with gcc >= 6.x
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
+config BR2_GLIBC_VERSION_2_23
+	bool "2.23"
+
+config BR2_GLIBC_VERSION_2_24
+	bool "2.24"
+	# Linux 3.2 or later kernel headers are required on all arches.
+	# See: https://sourceware.org/ml/libc-alpha/2016-08/msg00212.html
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+comment "glibc-2.24 needs kernel headers >= 3.2"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+endchoice
+
+endif
+
+config BR2_GLIBC_VERSION_STRING
+	string
+	default "2.22" if BR2_GLIBC_VERSION_2_22
+	default "2.23" if BR2_GLIBC_VERSION_2_23
+	default "2.24" if BR2_GLIBC_VERSION_2_24

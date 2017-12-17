@@ -1,0 +1,4 @@
+config BR2_PACKAGE_MATCHBOX_LIB
+	bool "matchbox-lib"
+	help
+	  Matchbox common functionality library.

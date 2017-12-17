@@ -1,0 +1,46 @@
+config BR2_PACKAGE_UDISKS
+	bool "udisks"
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-glib -> glib2
+	depends on BR2_USE_MMU # lvm2
+	depends on !BR2_STATIC_LIBS # lvm2
+	depends on !BR2_TOOLCHAIN_USES_MUSL # lvm2
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS_GLIB
+	depends on BR2_USE_WCHAR # dbus-glib -> glib2
+	select BR2_PACKAGE_SG3_UTILS
+	select BR2_PACKAGE_POLKIT
+	select BR2_PACKAGE_PARTED
+	select BR2_PACKAGE_LVM2
+	select BR2_PACKAGE_LIBATASMART
+	select BR2_PACKAGE_LIBGUDEV
+	help
+	  The udisks project provides
+
+	   o A storage daemon that implements well-defined D-Bus
+	     interfaces that can be used to query and manipulate
+	     storage devices.
+
+	   o a command-line tool, udisks(1), that can be used to query
+	     and use the daemon
+
+	  http://www.freedesktop.org/wiki/Software/udisks
+
+if BR2_PACKAGE_UDISKS
+
+config BR2_PACKAGE_UDISKS_LVM2
+	bool "lvm2 support"
+	select BR2_PACKAGE_LVM2_APP_LIBRARY
+	help
+	  Enable LVM2 support
+
+endif
+
+comment "udisks needs udev /dev management"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+comment "udisks needs a glibc or uClibc toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL

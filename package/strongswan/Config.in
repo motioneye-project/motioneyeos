@@ -120,12 +120,12 @@ config BR2_PACKAGE_STRONGSWAN_SCEP
 
 config BR2_PACKAGE_STRONGSWAN_SCRIPTS
 	bool "Enable additional utilities (found in scripts directory)"
-	depends on BR2_PACKAGE_STRONGSWAN_CHARON
 	default y
+	depends on BR2_PACKAGE_STRONGSWAN_CHARON
 
 config BR2_PACKAGE_STRONGSWAN_VICI
 	bool "Enable vici/swanctl"
-	depends on BR2_PACKAGE_STRONGSWAN_CHARON
 	default y
+	depends on BR2_PACKAGE_STRONGSWAN_CHARON
 
 endif

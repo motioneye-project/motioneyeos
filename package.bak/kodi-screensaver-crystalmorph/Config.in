@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_CRYSTALMORPH
+	bool "kodi-screensaver-crystalmorph"
+	depends on BR2_PACKAGE_HAS_LIBGL # libglu
+	help
+	  CrystalMorph screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.crystalmorph
+
+comment "kodi-screensaver-crystalmorph needs OpenGL"
+	depends on !BR2_PACKAGE_HAS_LIBGL

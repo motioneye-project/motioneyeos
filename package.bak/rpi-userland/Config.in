@@ -1,0 +1,51 @@
+config BR2_PACKAGE_RPI_USERLAND
+	bool "rpi-userland"
+	depends on BR2_arm
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	select BR2_PACKAGE_HAS_LIBOPENVG
+	select BR2_PACKAGE_HAS_LIBOPENMAX
+	help
+	  Raspberry Pi Userland contains the necessary library to use the
+	  VideoCore driver.
+
+	  Includes source for the ARM side code to interface to:
+	  EGL, mmal, GLESv2, vcos, openmaxil, vchiq_arm, bcm_host, WFC, OpenVG.
+
+	  https://github.com/raspberrypi/userland/
+
+if BR2_PACKAGE_RPI_USERLAND
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "rpi-userland"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "rpi-userland"
+
+config BR2_PACKAGE_PROVIDES_LIBOPENVG
+	default "rpi-userland"
+
+config BR2_PACKAGE_PROVIDES_LIBOPENMAX
+	default "rpi-userland"
+
+config BR2_PACKAGE_RPI_USERLAND_START_VCFILED
+	bool "Start vcfiled"
+	depends on BR2_INIT_SYSV || BR2_INIT_BUSYBOX
+	help
+	  vcfiled is a daemon serving files to VideoCore from the host file
+	  system.
+
+config BR2_PACKAGE_RPI_USERLAND_HELLO
+	bool "hello_pi examples"
+	help
+	  Install the hello-pi examples to test the HW (GPU, camera...)
+
+endif
+
+comment "rpi-userland needs a toolchain w/ C++, threads, dynamic library"
+	depends on BR2_arm
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS

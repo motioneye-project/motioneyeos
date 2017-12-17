@@ -1,0 +1,25 @@
+Include correct libdir in pkgconfig files
+
+Downloaded from
+https://sources.debian.net/src/sidplay-libs/2.1.1-14/debian/patches/pkg-config.patch/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- sidplay-libs-2.1.1.orig/libsidplay/unix/libsidplay2.pc.in
++++ sidplay-libs-2.1.1/libsidplay/unix/libsidplay2.pc.in
+@@ -7,5 +7,5 @@ builders=@builders@
+ Name: @PACKAGE@
+ Description: C64 cycle exact stereo sidplayer library.
+ Version: @VERSION@
+-Libs: ${libdir}/libsidplay2.la
++Libs: -L${libdir} -lsidplay2
+ Cflags: -DHAVE_UNIX -I${includedir}
+--- sidplay-libs-2.1.1.orig/libsidutils/unix/libsidutils.pc.in
++++ sidplay-libs-2.1.1/libsidutils/unix/libsidutils.pc.in
+@@ -6,5 +6,5 @@ includedir=@includedir@
+ Name: @PACKAGE@
+ Description: Utils for supporting the libsidplay2 library.
+ Version: @VERSION@
+-Libs: ${libdir}/libsidutils.la
++Libs: -L${libdir} -lsidutils
+ Cflags: -DHAVE_UNIX -I${includedir}

@@ -1,0 +1,22 @@
+[PATCH] don't force -Werror in CFLAGS
+
+Released software shouldn't get built with -Werror.
+
+Signed-of-by: Peter Korsgaard <jacmet@sunsite.dk>
+---
+ configure.ac |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: libomxil-bellagio-0.9.3/configure.ac
+===================================================================
+--- libomxil-bellagio-0.9.3.orig/configure.ac
++++ libomxil-bellagio-0.9.3/configure.ac
+@@ -5,7 +5,7 @@
+ AC_PREREQ([2.59])
+ 
+ AC_CONFIG_HEADERS([config.h])
+-CFLAGS="${CFLAGS} -Wall -Werror"
++CFLAGS="${CFLAGS} -Wall"
+ 
+ ################################################################################
+ # Set the shared versioning info, according to section 6.3 of the libtool info #

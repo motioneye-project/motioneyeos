@@ -1,0 +1,20 @@
+config BR2_PACKAGE_GUPNP
+	bool "gupnp"
+	depends on BR2_USE_WCHAR # glib2, gssdp
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2, gssdp
+	depends on BR2_USE_MMU # glib2, gssdp
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GSSDP
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  GUPnP implements the UPnP specification: resource announcement
+	  and discovery, description, control, event notification, and
+	  presentation.
+
+	  http://www.gupnp.org/
+
+comment "gupnp needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

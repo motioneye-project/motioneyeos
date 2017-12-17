@@ -1,0 +1,13 @@
+config BR2_PACKAGE_WHOIS
+	bool "whois"
+	depends on BR2_USE_WCHAR # gettext
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  Improved whois client.
+
+	  http://www.linux.it/~md/software/
+
+comment "whois needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

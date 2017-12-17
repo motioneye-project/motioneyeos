@@ -1,0 +1,9 @@
+config BR2_PACKAGE_READLINE
+	bool "readline"
+	select BR2_PACKAGE_NCURSES
+	help
+	  The GNU Readline library provides a set of functions for use
+	  by applications that allow users to edit command lines
+	  as they are typed in.
+
+	  https://cnswww.cns.cwru.edu/php/chet/readline/rltop.html

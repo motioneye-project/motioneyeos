@@ -1,0 +1,59 @@
+#! /bin/sh
+# tvheadend startup script inspired by the Debian one in the package
+
+# Author: Yann E. MORIN <yann.morin.1998@free.fr>
+
+PATH=/usr/sbin:/usr/bin:/sbin:/bin
+NAME=tvheadend
+DAEMON=/usr/bin/$NAME
+PIDFILE=/var/run/$NAME.pid
+
+[ -f "${DAEMON}" -a -x "${DAEMON}" ] || exit 0
+
+# Read configuration variable file if it is present
+[ -r "/etc/default/${NAME}" ] && . "/etc/default/${NAME}"
+
+ARGS="-f"
+[ -z "${TVH_USER}"      ] || ARGS="${ARGS} -u ${TVH_USER}"
+[ -z "${TVH_GROUP}"     ] || ARGS="${ARGS} -g ${TVH_GROUP}"
+[ -z "${TVH_ADAPTERS}"  ] || ARGS="${ARGS} -a ${TVH_ADAPTERS}"
+[ -z "${TVH_HTTP_PORT}" ] || ARGS="${ARGS} -w ${TVH_HTTP_PORT}"
+[ -z "${TVH_HTSP_PORT}" ] || ARGS="${ARGS} -e ${TVH_HTSP_PORT}"
+[ "${TVH_DEBUG}" = "1"  ] && ARGS="${ARGS} -s"
+
+# If first run, start in wizard mode
+if [ -z "$(ls -1 /home/tvheadend/.hts/tvheadend/accesscontrol/ 2>/dev/null)" ]; then
+    ARGS="${ARGS} -C"
+fi
+
+case "$1" in
+    start)
+        printf "Starting TVHeadend daemon: "
+        if start-stop-daemon -S -q -p ${PIDFILE} -m --exec "${DAEMON}" -- ${ARGS}; then
+            printf "OK\n"
+        else
+            printf "failed\n"
+        fi
+        ;;
+    stop)
+        printf "Stopping TVHeadend daemon: "
+        start-stop-daemon -K -q -p ${PIDFILE} -s TERM
+        sleep 2
+        if start-stop-daemon -K -q -p ${PIDFILE} -t; then
+            printf "failed, killing: "
+            start-stop-daemon -K -q -p ${PIDFILE} -s KILL -o
+        fi
+        printf "OK\n"
+        ;;
+    restart|force-reload)
+        "${0}" stop
+        sleep 2
+        "${0}" start
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|force-reload}" >&2
+        exit 1
+        ;;
+esac
+
+:

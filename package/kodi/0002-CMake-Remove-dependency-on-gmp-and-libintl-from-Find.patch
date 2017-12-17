@@ -1,0 +1,39 @@
+CMake: Remove dependency on gmp and libintl from FindPython.cmake
+
+Downloaded from Openelec:
+https://github.com/OpenELEC/OpenELEC.tv/blob/master/packages/mediacenter/kodi/patches/kodi-998.02-cmake-python.patch
+
+The dependency for libintl and gmp was introduced by this commit
+https://github.com/xbmc/xbmc/commit/8558d672e98b62f3ea0126ba491376add8ed71cb
+without further explanation and, apparently, without necessity.
+
+A question asking whether this is really needed was sent upstream:
+https://github.com/xbmc/xbmc/pull/10973#pullrequestreview-34179550
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -Naur kodi-17.1-Krypton/project/cmake/modules/FindPython.cmake kodi-17.1-Krypton.patch/project/cmake/modules/FindPython.cmake
+--- kodi-17.1-Krypton/project/cmake/modules/FindPython.cmake	2017-03-20 17:17:49.000000000 +0100
++++ kodi-17.1-Krypton.patch/project/cmake/modules/FindPython.cmake	2017-03-30 11:10:01.065718667 +0200
+@@ -16,14 +16,12 @@
+ if(KODI_DEPENDSBUILD)
+   find_library(FFI_LIBRARY ffi REQUIRED)
+   find_library(EXPAT_LIBRARY expat REQUIRED)
+-  find_library(INTL_LIBRARY intl REQUIRED)
+-  find_library(GMP_LIBRARY gmp REQUIRED)
+ 
+   if(NOT CORE_SYSTEM_NAME STREQUAL android)
+     set(PYTHON_DEP_LIBRARIES pthread dl util)
+   endif()
+ 
+-  set(PYTHON_LIBRARIES ${PYTHON_LIBRARY} ${FFI_LIBRARY} ${EXPAT_LIBRARY} ${INTL_LIBRARY} ${GMP_LIBRARY} ${PYTHON_DEP_LIBRARIES})
++  set(PYTHON_LIBRARIES ${PYTHON_LIBRARY} ${FFI_LIBRARY} ${EXPAT_LIBRARY} ${PYTHON_DEP_LIBRARIES})
+ else()
+   find_package(PythonLibs 2.7 REQUIRED)
+   list(APPEND PYTHON_LIBRARIES ${PC_PYTHON_STATIC_LIBRARIES})
+@@ -36,4 +34,4 @@
+   set(PYTHON_INCLUDE_DIRS ${PYTHON_INCLUDE_DIR})
+ endif()
+ 
+-mark_as_advanced(PYTHON_EXECUTABLE PYTHON_INCLUDE_DIRS PYTHON_INCLUDE_DIR PYTHON_LIBRARY PYTHON_LIBRARIES PYTHON_LDFLAGS FFI_LIBRARY EXPAT_LIBRARY INTL_LIBRARY GMP_LIBRARY)
++mark_as_advanced(PYTHON_EXECUTABLE PYTHON_INCLUDE_DIRS PYTHON_INCLUDE_DIR PYTHON_LIBRARY PYTHON_LIBRARIES PYTHON_LDFLAGS FFI_LIBRARY EXPAT_LIBRARY)

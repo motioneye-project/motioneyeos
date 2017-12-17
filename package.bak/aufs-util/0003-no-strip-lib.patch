@@ -1,0 +1,18 @@
+install: do not strip libs when installing
+
+We want unstripped binaries in staging; stripping is done by Buildroot
+as a whole in target-finalize if needed, anyway.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/libau/Makefile b/libau/Makefile
+--- a/libau/Makefile
++++ b/libau/Makefile
+@@ -37,7 +37,6 @@
+ 	ln -sf $< $@
+ ${LibSo}.${LibSoMajor}: ${LibSo}.${LibSoMajor}.${LibSoMinor}
+ 	ln -sf $< $@
+-${LibSo}.${LibSoMajor}.${LibSoMinor}: override LDFLAGS += -s
+ ${LibSo}.${LibSoMajor}.${LibSoMinor}: override LDLIBS += -ldl -lpthread
+ ${LibSo}.${LibSoMajor}.${LibSoMinor}: ${LibSoObj}
+ 	${CC} --shared -Wl,-soname,${LibSo}.${LibSoMajor} ${LDFLAGS} \

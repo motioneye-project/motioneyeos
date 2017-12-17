@@ -1,0 +1,64 @@
+config BR2_PACKAGE_NETWORK_MANAGER
+	bool "networkmanager"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
+	depends on BR2_USE_MMU # dbus
+	depends on BR2_PACKAGE_HAS_UDEV
+	# Tested with 3.2, but may even work with earlier versions
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	depends on BR2_TOOLCHAIN_USES_GLIBC # CLOCK_BOOTTIME, IPTOS_CLASS_*
+	select BR2_PACKAGE_DHCPCD if !BR2_PACKAGE_DHCP_CLIENT
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS_GLIB
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_LIBGUDEV
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_WIRELESS_TOOLS
+	select BR2_PACKAGE_WIRELESS_TOOLS_LIB
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_LIBNDP
+	help
+	  NetworkManager is a set of co-operative tools that make networking
+	  simple and straightforward. Whether WiFi, wired, 3G, or Bluetooth,
+	  NetworkManager allows you to quickly move from one network to
+	  another: once a network has been configured and joined once, it
+	  can be detected and re-joined automatically the next time it's
+	  available.
+
+	  http://projects.gnome.org/NetworkManager/
+
+if BR2_PACKAGE_NETWORK_MANAGER
+
+config BR2_PACKAGE_NETWORK_MANAGER_TUI
+	bool "nmtui support"
+	select BR2_PACKAGE_NEWT
+	help
+	  This option enables terminal based UI
+
+config BR2_PACKAGE_NETWORK_MANAGER_MODEM_MANAGER
+	bool "modem-manager support"
+	select BR2_PACKAGE_MODEM_MANAGER
+	select BR2_PACKAGE_MODEM_MANAGER_LIBMBIM
+	select BR2_PACKAGE_MODEM_MANAGER_LIBQMI
+	help
+	  This option enables support for ModemManager
+
+config BR2_PACKAGE_NETWORK_MANAGER_PPPD
+	bool "pppd support"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # pppd
+	select BR2_PACKAGE_PPPD
+	help
+	  This option enables support for PPPD daemon
+
+comment "pppd support needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
+
+endif
+
+comment "NetworkManager needs udev /dev management and a glibc toolchain w/ headers >= 3.7"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 || \
+		!BR2_TOOLCHAIN_USES_GLIBC

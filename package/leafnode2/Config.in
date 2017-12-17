@@ -7,7 +7,8 @@ config BR2_PACKAGE_LEAFNODE2
 	  server designed for small sites with just a few active
 	  newsgroups.
 
-	  Leafnode-2 needs inetd, check chapter 14 of the documentation at
+	  Leafnode-2 needs inetd, check chapter 14 of the documentation
+	  at:
 	  http://www.dt.e-technik.uni-dortmund.de/~ma/leafnode/beta/leafnode-readme.txt
 
 	  For example, you can add this line to inetd.conf:

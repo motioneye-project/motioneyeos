@@ -1,0 +1,49 @@
+config BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	bool
+	# see src/syscfg/
+	default y if \
+		BR2_aarch64	|| BR2_aarch64_eb	|| BR2_arm	|| \
+		BR2_armeb	|| BR2_i386		|| BR2_mips	|| \
+		BR2_mipsel	|| BR2_mips64		|| BR2_mips64el	|| \
+		BR2_m68k	|| BR2_nios2		|| BR2_powerpc	|| \
+		BR2_powerpc64 	|| BR2_powerpc64le 	|| BR2_sh4	|| \
+		BR2_sh4eb	|| BR2_sh4a		|| BR2_sh4aeb	|| \
+		BR2_sparc	|| BR2_sparc64		|| BR2_x86_64
+
+config BR2_PACKAGE_LIBGPG_ERROR
+	bool "libgpg-error"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	help
+	  Libgpg-error is a small library with error codes and
+	  descriptions shared by most GnuPG related software.
+
+	  https://www.gnupg.org/related_software/libgpg-error
+
+config BR2_PACKAGE_LIBGPG_ERROR_SYSCFG
+	string
+	default "aarch64-unknown-linux-gnu" \
+		if BR2_aarch64 || BR2_aarch64_eb
+	default "arm-unknown-linux-gnueabi" \
+		if BR2_arm || BR2_armeb
+	default "i686-pc-linux-gnu" \
+		if BR2_i386
+	default "mips-unknown-linux-gnu" \
+		if BR2_mips || BR2_mipsel
+	default "mips64el-unknown-linux-gnuabi64" \
+		if BR2_mips64 || BR2_mips64el
+	default "m68k-unknown-linux-gnu" \
+		if BR2_m68k
+	default "nios2-unknown-linux-gnu" \
+		if BR2_nios2
+	default "powerpc-unknown-linux-gnu" \
+		if BR2_powerpc
+	default "powerpc64-unknown-linux-gnu" \
+		if BR2_powerpc64 || BR2_powerpc64le
+	default "sh4-unknown-linux-gnu" \
+		if BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb
+	default "sparc-unknown-linux-gnu" \
+		if BR2_sparc
+	default "sparc64-unknown-linux-gnu" \
+		if BR2_sparc64
+	default "x86_64-pc-linux-gnu" \
+		if BR2_x86_64

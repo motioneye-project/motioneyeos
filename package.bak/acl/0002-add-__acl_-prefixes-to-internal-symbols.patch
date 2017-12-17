@@ -1,0 +1,292 @@
+From debbe4f7b591b3f35d0ed65c17fa81b196b2eb2d Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Tue, 12 Aug 2014 08:37:25 -0400
+Subject: [PATCH] add __acl_ prefixes to internal symbols
+
+When static linking libacl, people sometimes run into symbol collisions
+because their own code defines symbols like "quote".  So for acl internal
+symbols, use an __acl_ prefix.
+
+[Rahul Bedarkar: backported from upstream 
+  http://git.savannah.gnu.org/cgit/acl.git/commit/?id=a2c4d71c2e84419a49db503ed59de4d3d1dca7dd ]
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ exports                    | 12 ++----------
+ getfacl/getfacl.c          |  4 ++--
+ include/misc.h             |  8 ++++----
+ libacl/__acl_to_any_text.c |  4 ++--
+ libacl/acl_from_text.c     |  4 ++--
+ libmisc/high_water_alloc.c |  2 +-
+ libmisc/next_line.c        |  6 +++---
+ libmisc/quote.c            |  4 ++--
+ libmisc/unquote.c          |  2 +-
+ setfacl/parse.c            | 10 +++++-----
+ setfacl/setfacl.c          |  4 ++--
+ 11 files changed, 26 insertions(+), 34 deletions(-)
+
+diff --git a/exports b/exports
+index 7d8e69e..bf15d84 100644
+--- a/exports
++++ b/exports
+@@ -59,22 +59,14 @@ ACL_1.0 {
+ 	acl_to_any_text;
+ 
+     local:
+-    	# Library internal stuff
++	# Library internal stuff
+ 	__new_var_obj_p;
+ 	__new_obj_p_here;
+ 	__free_obj_p;
+ 	__check_obj_p;
+ 	__ext2int_and_check;
+-	__acl_reorder_entry_obj_p;
+-	__acl_reorder_obj_p;
+-	__acl_init_obj;
+-	__acl_create_entry_obj;
+-	__acl_free_acl_obj;
+-	__acl_to_any_text;
++	__acl_*;
+ 	__apply_mask_to_mode;
+-
+-	quote;
+-	unquote;
+ };
+ 
+ ACL_1.1 {
+diff --git a/getfacl/getfacl.c b/getfacl/getfacl.c
+index f8eaf25..af9e225 100644
+--- a/getfacl/getfacl.c
++++ b/getfacl/getfacl.c
+@@ -90,7 +90,7 @@ int opt_numeric;  /* don't convert id's to symbolic names */
+ 
+ static const char *xquote(const char *str, const char *quote_chars)
+ {
+-	const char *q = quote(str, quote_chars);
++	const char *q = __acl_quote(str, quote_chars);
+ 	if (q == NULL) {
+ 		fprintf(stderr, "%s: %s\n", progname, strerror(errno));
+ 		exit(1);
+@@ -718,7 +718,7 @@ int main(int argc, char *argv[])
+ 	do {
+ 		if (optind == argc ||
+ 		    strcmp(argv[optind], "-") == 0) {
+-			while ((line = next_line(stdin)) != NULL) {
++			while ((line = __acl_next_line(stdin)) != NULL) {
+ 				if (*line == '\0')
+ 					continue;
+ 
+diff --git a/include/misc.h b/include/misc.h
+index 0c5fdcc..c25accf 100644
+--- a/include/misc.h
++++ b/include/misc.h
+@@ -15,9 +15,9 @@
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
+-extern int high_water_alloc(void **buf, size_t *bufsize, size_t newsize);
++extern int __acl_high_water_alloc(void **buf, size_t *bufsize, size_t newsize);
+ 
+-extern const char *quote(const char *str, const char *quote_chars);
+-extern char *unquote(char *str);
++extern const char *__acl_quote(const char *str, const char *quote_chars);
++extern char *__acl_unquote(char *str);
+ 
+-extern char *next_line(FILE *file);
++extern char *__acl_next_line(FILE *file);
+diff --git a/libacl/__acl_to_any_text.c b/libacl/__acl_to_any_text.c
+index a4f9c34..19f1ccc 100644
+--- a/libacl/__acl_to_any_text.c
++++ b/libacl/__acl_to_any_text.c
+@@ -159,7 +159,7 @@ acl_entry_to_any_str(const acl_entry_t entry_d, char *text_p, ssize_t size,
+ 				if (options & TEXT_NUMERIC_IDS)
+ 					str = NULL;
+ 				else
+-					str = quote(user_name(
++					str = __acl_quote(user_name(
+ 						entry_obj_p->eid.qid), ":, \t\n\r");
+ 				if (str != NULL) {
+ 					strncpy(text_p, str, size);
+@@ -182,7 +182,7 @@ acl_entry_to_any_str(const acl_entry_t entry_d, char *text_p, ssize_t size,
+ 				if (options & TEXT_NUMERIC_IDS)
+ 					str = NULL;
+ 				else
+-					str = quote(group_name(
++					str = __acl_quote(group_name(
+ 						entry_obj_p->eid.qid), ":, \t\n\r");
+ 				if (str != NULL) {
+ 					strncpy(text_p, str, size);
+diff --git a/libacl/acl_from_text.c b/libacl/acl_from_text.c
+index 1e05322..f6165be 100644
+--- a/libacl/acl_from_text.c
++++ b/libacl/acl_from_text.c
+@@ -206,7 +206,7 @@ parse_acl_entry(const char **text_p, acl_t *acl_p)
+ 			str = get_token(text_p);
+ 			if (str) {
+ 				entry_obj.etag = ACL_USER;
+-				error = get_uid(unquote(str),
++				error = get_uid(__acl_unquote(str),
+ 						&entry_obj.eid.qid);
+ 				free(str);
+ 				if (error) {
+@@ -225,7 +225,7 @@ parse_acl_entry(const char **text_p, acl_t *acl_p)
+ 			str = get_token(text_p);
+ 			if (str) {
+ 				entry_obj.etag = ACL_GROUP;
+-				error = get_gid(unquote(str),
++				error = get_gid(__acl_unquote(str),
+ 						&entry_obj.eid.qid);
+ 				free(str);
+ 				if (error) {
+diff --git a/libmisc/high_water_alloc.c b/libmisc/high_water_alloc.c
+index c127dc1..951f4bb 100644
+--- a/libmisc/high_water_alloc.c
++++ b/libmisc/high_water_alloc.c
+@@ -21,7 +21,7 @@
+ #include <stdlib.h>
+ #include "misc.h"
+ 
+-int high_water_alloc(void **buf, size_t *bufsize, size_t newsize)
++int __acl_high_water_alloc(void **buf, size_t *bufsize, size_t newsize)
+ {
+ #define CHUNK_SIZE	256
+ 	/*
+diff --git a/libmisc/next_line.c b/libmisc/next_line.c
+index 0566d7a..126a364 100644
+--- a/libmisc/next_line.c
++++ b/libmisc/next_line.c
+@@ -23,7 +23,7 @@
+ 
+ #define LINE_SIZE getpagesize()
+ 
+-char *next_line(FILE *file)
++char *__acl_next_line(FILE *file)
+ {
+ 	static char *line;
+ 	static size_t line_size;
+@@ -31,7 +31,7 @@ char *next_line(FILE *file)
+ 	int eol = 0;
+ 
+ 	if (!line) {
+-		if (high_water_alloc((void **)&line, &line_size, LINE_SIZE))
++		if (__acl_high_water_alloc((void **)&line, &line_size, LINE_SIZE))
+ 			return NULL;
+ 	}
+ 	c = line;
+@@ -47,7 +47,7 @@ char *next_line(FILE *file)
+ 		if (feof(file))
+ 			break;
+ 		if (!eol) {
+-			if (high_water_alloc((void **)&line, &line_size,
++			if (__acl_high_water_alloc((void **)&line, &line_size,
+ 					     2 * line_size))
+ 				return NULL;
+ 			c = strrchr(line, '\0');
+diff --git a/libmisc/quote.c b/libmisc/quote.c
+index bf8f9eb..a28800c 100644
+--- a/libmisc/quote.c
++++ b/libmisc/quote.c
+@@ -23,7 +23,7 @@
+ #include <string.h>
+ #include "misc.h"
+ 
+-const char *quote(const char *str, const char *quote_chars)
++const char *__acl_quote(const char *str, const char *quote_chars)
+ {
+ 	static char *quoted_str;
+ 	static size_t quoted_str_len;
+@@ -40,7 +40,7 @@ const char *quote(const char *str, const char *quote_chars)
+ 	if (nonpr == 0)
+ 		return str;
+ 
+-	if (high_water_alloc((void **)&quoted_str, &quoted_str_len,
++	if (__acl_high_water_alloc((void **)&quoted_str, &quoted_str_len,
+ 			     (s - (unsigned char *)str) + nonpr * 3 + 1))
+ 		return NULL;
+ 	for (s = (unsigned char *)str, q = quoted_str; *s != '\0'; s++) {
+diff --git a/libmisc/unquote.c b/libmisc/unquote.c
+index bffebf9..4f4ce7c 100644
+--- a/libmisc/unquote.c
++++ b/libmisc/unquote.c
+@@ -22,7 +22,7 @@
+ #include <ctype.h>
+ #include "misc.h"
+ 
+-char *unquote(char *str)
++char *__acl_unquote(char *str)
+ {
+ 	unsigned char *s, *t;
+ 
+diff --git a/setfacl/parse.c b/setfacl/parse.c
+index e7e6add..7433459 100644
+--- a/setfacl/parse.c
++++ b/setfacl/parse.c
+@@ -226,7 +226,7 @@ user_entry:
+ 			str = get_token(text_p);
+ 			if (str) {
+ 				cmd->c_tag = ACL_USER;
+-				error = get_uid(unquote(str), &cmd->c_id);
++				error = get_uid(__acl_unquote(str), &cmd->c_id);
+ 				free(str);
+ 				if (error) {
+ 					*text_p = backup;
+@@ -245,7 +245,7 @@ user_entry:
+ 			str = get_token(text_p);
+ 			if (str) {
+ 				cmd->c_tag = ACL_GROUP;
+-				error = get_gid(unquote(str), &cmd->c_id); 
++				error = get_gid(__acl_unquote(str), &cmd->c_id);
+ 				free(str);
+ 				if (error) {
+ 					*text_p = backup;
+@@ -466,7 +466,7 @@ read_acl_comments(
+ 		if (strncmp(cp, "file:", 5) == 0) {
+ 			cp += 5;
+ 			SKIP_WS(cp);
+-			cp = unquote(cp);
++			cp = __acl_unquote(cp);
+ 			
+ 			if (path_p) {
+ 				if (*path_p)
+@@ -483,7 +483,7 @@ read_acl_comments(
+ 			if (uid_p) {
+ 				if (*uid_p != ACL_UNDEFINED_ID)
+ 					goto fail;
+-				if (get_uid(unquote(cp), uid_p) != 0)
++				if (get_uid(__acl_unquote(cp), uid_p) != 0)
+ 					continue;
+ 			}
+ 		} else if (strncmp(cp, "group:", 6) == 0) {
+@@ -493,7 +493,7 @@ read_acl_comments(
+ 			if (gid_p) {
+ 				if (*gid_p != ACL_UNDEFINED_ID)
+ 					goto fail;
+-				if (get_gid(unquote(cp), gid_p) != 0)
++				if (get_gid(__acl_unquote(cp), gid_p) != 0)
+ 					continue;
+ 			}
+ 		} else if (strncmp(cp, "flags:", 6) == 0) {
+diff --git a/setfacl/setfacl.c b/setfacl/setfacl.c
+index 81062a6..fb2d172 100644
+--- a/setfacl/setfacl.c
++++ b/setfacl/setfacl.c
+@@ -92,7 +92,7 @@ int promote_warning;
+ 
+ static const char *xquote(const char *str, const char *quote_chars)
+ {
+-	const char *q = quote(str, quote_chars);
++	const char *q = __acl_quote(str, quote_chars);
+ 	if (q == NULL) {
+ 		fprintf(stderr, "%s: %s\n", progname, strerror(errno));
+ 		exit(1);
+@@ -311,7 +311,7 @@ int next_file(const char *arg, seq_t seq)
+ 	args.seq = seq;
+ 
+ 	if (strcmp(arg, "-") == 0) {
+-		while ((line = next_line(stdin)))
++		while ((line = __acl_next_line(stdin)))
+ 			errors = walk_tree(line, walk_flags, 0, do_set, &args);
+ 		if (!feof(stdin)) {
+ 			fprintf(stderr, _("%s: Standard input: %s\n"),
+-- 
+2.6.2
+

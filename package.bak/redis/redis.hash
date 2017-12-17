@@ -1,0 +1,4 @@
+# From https://github.com/antirez/redis-hashes/blob/master/README
+sha1 6780d1abb66f33a97aad0edbe020403d0a15b67f  redis-3.2.8.tar.gz
+# Calculated based on the hash above
+sha256 61b373c23d18e6cc752a69d5ab7f676c6216dc2853e46750a8c4ed791d68482c  redis-3.2.8.tar.gz

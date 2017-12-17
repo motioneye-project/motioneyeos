@@ -570,9 +570,12 @@ int main(int argc, char **argv)
 				ret = EXIT_FAILURE;
 				goto loop;
 			}
-		} else if (type == 'f') {
+		} else if (type == 'f' || type == 'F') {
 			struct stat st;
 			if ((stat(full_name, &st) < 0 || !S_ISREG(st.st_mode))) {
+				if (type == 'F') {
+					continue; /*Ignore optional files*/
+				}
 				bb_perror_msg("line %d: regular file '%s' does not exist", linenum, full_name);
 				ret = EXIT_FAILURE;
 				goto loop;

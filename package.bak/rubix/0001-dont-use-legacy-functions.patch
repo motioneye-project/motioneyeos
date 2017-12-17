@@ -1,0 +1,18 @@
+Use strstr() instead of index(), since index() is a legacy function
+and it may not be available in uClibc, depending on the configuration.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: rubix-1.0.5/cube.c
+===================================================================
+--- rubix-1.0.5.orig/cube.c	2010-02-14 14:19:05.000000000 +0100
++++ rubix-1.0.5/cube.c	2010-02-14 14:19:14.000000000 +0100
+@@ -257,7 +257,7 @@
+     if (i==-1) goto finish;
+     if (buffer[0]=='%') goto new_section;
+     buffer[0]=toupper(buffer[0]);
+-    ptr = index(buffer, '=');
++    ptr = strstr(buffer, '=');
+     if (ptr) {
+       ++ptr;
+       while (isspace(*ptr)) ++ptr;

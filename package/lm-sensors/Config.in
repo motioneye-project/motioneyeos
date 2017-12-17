@@ -38,9 +38,9 @@ config BR2_PACKAGE_LM_SENSORS_ISASET
 config BR2_PACKAGE_LM_SENSORS_PWMCONFIG
 	bool "pwmconfig"
 	help
-	  Pwmconfig searches your sensors for pulse width modulation (PWM)
-	  controls, and tests each one to see if it controls a fan on
-	  your motherboard.
+	  Pwmconfig searches your sensors for pulse width modulation
+	  (PWM) controls, and tests each one to see if it controls a fan
+	  on your motherboard.
 
 config BR2_PACKAGE_LM_SENSORS_SENSORS_DETECT
 	bool "sensors-detect"

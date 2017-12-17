@@ -1,0 +1,55 @@
+config BR2_PACKAGE_LM_SENSORS
+	bool "lm-sensors"
+	help
+	  Lm-sensors is a hardware health monitoring package for
+	  Linux. It allows you to access information from
+	  temperature, voltage, and fan speed sensors. It
+	  works with most newer systems.
+
+	  https://hwmon.wiki.kernel.org
+
+if BR2_PACKAGE_LM_SENSORS
+comment "lm-sensors tools"
+
+config BR2_PACKAGE_LM_SENSORS_SENSORS
+	bool "sensors"
+	default y
+	help
+	  Sensors is used to show the current readings of all sensor
+	  chips.
+
+config BR2_PACKAGE_LM_SENSORS_FANCONTROL
+	bool "fancontrol"
+	help
+	  Script for temperature driven fan control
+
+config BR2_PACKAGE_LM_SENSORS_ISADUMP
+	bool "isadump"
+	help
+	  Isadump is a small helper program to examine registers
+	  visible through the ISA bus.
+
+config BR2_PACKAGE_LM_SENSORS_ISASET
+	bool "isaset"
+	help
+	  Isaset is a small helper program to set register visible
+	  through the ISA bus.
+
+config BR2_PACKAGE_LM_SENSORS_PWMCONFIG
+	bool "pwmconfig"
+	help
+	  Pwmconfig searches your sensors for pulse width modulation (PWM)
+	  controls, and tests each one to see if it controls a fan on
+	  your motherboard.
+
+config BR2_PACKAGE_LM_SENSORS_SENSORS_DETECT
+	bool "sensors-detect"
+	depends on BR2_PACKAGE_PERL
+	help
+	  Sensors-detect is an interactive program for detecting
+	  available hardware monitoring chips.
+
+comment "sensors-detect needs perl"
+	depends on !BR2_PACKAGE_PERL
+
+endif

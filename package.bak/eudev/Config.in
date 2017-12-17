@@ -1,0 +1,43 @@
+config BR2_PACKAGE_EUDEV
+	bool "eudev"
+	depends on BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
+	depends on BR2_USE_MMU # uses fork()
+	depends on BR2_USE_WCHAR # needs C99 compiler
+	depends on !BR2_STATIC_LIBS # kmod
+	select BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_KMOD
+	help
+	  eudev is a fork of systemd-udev with the goal of obtaining better
+	  compatibility with existing software such as OpenRC and Upstart,
+	  older kernels, various toolchains and anything else required by
+	  users and various distributions.
+
+	  https://wiki.gentoo.org/wiki/Project:Eudev
+
+if BR2_PACKAGE_EUDEV
+
+config BR2_PACKAGE_PROVIDES_UDEV
+	default "eudev"
+
+config BR2_PACKAGE_EUDEV_RULES_GEN
+	bool "enable rules generator"
+	help
+	  Enable persistent rules generator
+
+config BR2_PACKAGE_EUDEV_ENABLE_HWDB
+	bool "enable hwdb installation"
+	default y
+	help
+	  Enables hardware database installation to /etc/udev/hwdb.d
+
+endif
+
+comment "eudev needs eudev /dev management"
+	depends on BR2_USE_MMU
+	depends on !BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV
+
+comment "eudev needs a toolchain w/ wchar, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS

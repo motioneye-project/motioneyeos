@@ -1,0 +1,35 @@
+From 73e56ba8e91b6bae59220e6f25c1b7c15817edb5 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 12 Feb 2017 21:17:44 +0100
+Subject: [PATCH] ImageIO: fix invalid conversion
+
+Fixes:
+Source/Utils/ImageIO.cpp:125:27: error: invalid conversion from 'int' to 'boolean' [-fpermissive]
+     cinfo.quantize_colors = 0;
+                           ^
+
+quantize_colors type is bool, so it must be initialized to TRUE or FALSE.
+
+Patch status: upsteam
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ Source/Utils/ImageIO.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Source/Utils/ImageIO.cpp b/Source/Utils/ImageIO.cpp
+index 706c201..c19a63e 100644
+--- a/Source/Utils/ImageIO.cpp
++++ b/Source/Utils/ImageIO.cpp
+@@ -122,7 +122,7 @@ static bool load_jpg(const char* file_name, ImageRec& tex)
+     (void)jpeg_read_header(&cinfo, TRUE);
+ 
+     cinfo.out_color_space = JCS_RGB;
+-    cinfo.quantize_colors = 0;
++    cinfo.quantize_colors = FALSE;
+     (void)jpeg_calc_output_dimensions(&cinfo);
+     (void)jpeg_start_decompress(&cinfo);
+ 
+-- 
+2.9.3
+

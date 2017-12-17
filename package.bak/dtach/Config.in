@@ -1,0 +1,9 @@
+config BR2_PACKAGE_DTACH
+	bool "dtach"
+	depends on BR2_USE_MMU # fork()
+	help
+	  dtach is a tiny program that emulates the detach feature of screen,
+	  allowing you to run a program in an environment that is protected
+	  from the controlling terminal and attach to it later.
+
+	  http://dtach.sourceforge.net/

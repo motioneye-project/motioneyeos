@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KODI_VISUALISATION_GOOM
+	bool "kodi-visualisation-goom"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	help
+	  GOOM visualiser for Kodi
+
+	  https://github.com/notspiff/visualization.goom
+
+comment "kodi-visualization-goom needs OpenGL"
+	depends on !BR2_PACKAGE_HAS_LIBGL

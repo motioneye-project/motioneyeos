@@ -1,0 +1,9 @@
+config BR2_PACKAGE_MUSL
+	bool
+	depends on BR2_TOOLCHAIN_USES_MUSL
+	default y
+	select BR2_PACKAGE_LINUX_HEADERS
+	# SSP broken on i386/ppc: http://www.openwall.com/lists/musl/2016/12/04/2
+	select BR2_TOOLCHAIN_HAS_SSP if !(BR2_i386 || BR2_powerpc)
+	# Compatibility headers: cdefs.h, queue.h
+	select BR2_PACKAGE_MUSL_COMPAT_HEADERS

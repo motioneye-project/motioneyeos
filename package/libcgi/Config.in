@@ -8,4 +8,4 @@ config BR2_PACKAGE_LIBCGI
 	  session and cookie support, GET and POST methods manipulation
 	  etc..., to help you to quickly write powerful CGI programs.
 
-	  http://libcgi.sourceforge.net/
+	  https://github.com/rafaelsteil/libcgi/

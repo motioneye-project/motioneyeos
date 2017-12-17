@@ -1,0 +1,31 @@
+config BR2_PACKAGE_PURE_FTPD
+	bool "pure-ftpd"
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_USE_MMU # fork()
+	help
+	  Pure-FTPd is a free (BSD), secure, production-quality and standard-
+	  conformant FTP server. It doesn't provide useless bells and whistles,
+	  but focuses on efficiency and ease of use. It provides simple answers
+	  to common needs, plus unique useful features for personal users as
+	  well as hosting providers.
+
+	  http://www.pureftpd.org
+
+if BR2_PACKAGE_PURE_FTPD
+
+config BR2_PACKAGE_PURE_FTPD_FTPWHO
+	bool "ftpwho"
+	help
+	  Enable the pure-ftpd command.  Pure-ftpwho shows current Pure-ftpd
+	  client sessions.  Only the system administrator may run this.  Output
+	  can be text (default), HTML, XML data and parser-optimized.
+
+config BR2_PACKAGE_PURE_FTPD_QUOTAS
+	bool "quotas"
+	help
+	  Enable virtual quotas. With virtual quotas, restrictions can
+	  be placed on the maximum number of files a user can store in
+	  his account. In addition, restrictions can also be placed
+	  on the total size.
+
+endif

@@ -1,0 +1,118 @@
+This patch adjusts the omap3630 portion of the powervr driver to use the new
+clk kernel api.
+
+Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
+[yann.morin.1998@free.fr: rebased ontop of 5.01.00.01]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+diff -durN ti-gfx-5_01_00_01.orig/GFX_Linux_KM/services4/system/omap3630/sysutils_linux.c ti-gfx-5_01_00_01/GFX_Linux_KM/services4/system/omap3630/sysutils_linux.c
+--- ti-gfx-5_01_00_01.orig/GFX_Linux_KM/services4/system/omap3630/sysutils_linux.c	2013-12-23 15:44:20.000000000 +0100
++++ ti-gfx-5_01_00_01/GFX_Linux_KM/services4/system/omap3630/sysutils_linux.c	2014-02-26 19:17:39.829571846 +0100
+@@ -182,6 +182,49 @@
+  @Return   PVRSRV_ERROR
+ 
+ ******************************************************************************/
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
++int clk_disable_unprepare(struct clk *clk)
++{
++	return clk_disable(clk);
++}
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
++int clk_disable_unprepare(struct clk *clk)
++{
++	res = clk_disable(clk);
++	if (res < 0)
++		return res;
++
++	res = clk_unprepare(clk);
++	if (ret < 0)
++		return res;
++
++	return 0;
++}
++#endif
++
++
++#if LINUX_VERSION_CODE < KERNEL_VERSION(3,2,0)
++int clk_prepare_enable(struct clk *clk)
++{
++	return clk_enable(clk);
++}
++#elif LINUX_VERSION_CODE < KERNEL_VERSION(3,3,0)
++int clk_prepare_enable(struct clk *clk)
++{
++	res = clk_prepare(clk);
++	if (ret < 0)
++		return res;
++
++	res = clk_enable(clk);
++	if (res < 0) {
++		clk_unprepare(clk);
++		return res;
++	}
++
++	return 0;
++}
++#endif
++
+ PVRSRV_ERROR EnableSGXClocks(SYS_DATA *psSysData)
+ {
+ #if !defined(NO_HARDWARE)
+@@ -198,7 +241,7 @@
+ 
+ #if !defined(PM_RUNTIME_SUPPORT)
+         PVR_DPF((PVR_DBG_MESSAGE, "EnableSGXClocks: Enabling SGX Clocks"));
+-        res=clk_enable(psSysSpecData->psSGX_FCK);
++        res=clk_prepare_enable(psSysSpecData->psSGX_FCK);
+         if (res < 0)
+         {
+                 PVR_DPF((PVR_DBG_ERROR, "EnableSGXClocks: Couldn't enable SGX functional clock (%d)", res));
+@@ -324,7 +367,7 @@
+ 
+ 	PVR_DPF((PVR_DBG_MESSAGE, "DisableSGXClocks: Disabling SGX Clocks"));
+ #if !defined(PM_RUNTIME_SUPPORT)
+-        clk_disable(psSysSpecData->psSGX_FCK);
++        clk_disable_unprepare(psSysSpecData->psSGX_FCK);
+ #endif
+ 	SysDisableSGXInterrupts(psSysData);
+ 
+@@ -540,14 +583,14 @@
+ 	rate = clk_get_rate(psSysSpecData->psGPT11_FCK);
+ 	PVR_TRACE(("GPTIMER11 clock is %dMHz", HZ_TO_MHZ(rate)));
+ 
+-	res = clk_enable(psSysSpecData->psGPT11_FCK);
++	res = clk_prepare_enable(psSysSpecData->psGPT11_FCK);
+ 	if (res < 0)
+ 	{
+ 		PVR_DPF((PVR_DBG_ERROR, "EnableSystemClocks: Couldn't enable GPTIMER11 functional clock (%d)", res));
+ 		goto ExitError;
+ 	}
+ 
+-	res = clk_enable(psSysSpecData->psGPT11_ICK);
++	res = clk_prepare_enable(psSysSpecData->psGPT11_ICK);
+ 	if (res < 0)
+ 	{
+ 		PVR_DPF((PVR_DBG_ERROR, "EnableSystemClocks: Couldn't enable GPTIMER11 interface clock (%d)", res));
+@@ -610,9 +653,9 @@
+ 
+ ExitDisableGPT11ICK:
+ #if defined(PVR_OMAP4_TIMING_PRCM)
+-	clk_disable(psSysSpecData->psGPT11_ICK);
++	clk_disable_unprepare(psSysSpecData->psGPT11_ICK);
+ ExitDisableGPT11FCK:
+-	clk_disable(psSysSpecData->psGPT11_FCK);
++	clk_disable_unprepare(psSysSpecData->psGPT11_FCK);
+ ExitError:
+ #endif	/* defined(PVR_OMAP4_TIMING_PRCM) */
+ 	eError = PVRSRV_ERROR_CLOCK_REQUEST_FAILED;
+@@ -664,9 +707,9 @@
+ 	psSysSpecData->sTimerRegPhysBase.uiAddr = 0;
+ #endif
+ #if defined(PVR_OMAP4_TIMING_PRCM)
+-	clk_disable(psSysSpecData->psGPT11_ICK);
++	clk_disable_unprepare(psSysSpecData->psGPT11_ICK);
+ 
+-	clk_disable(psSysSpecData->psGPT11_FCK);
++	clk_disable_unprepare(psSysSpecData->psGPT11_FCK);
+ #endif	/* defined(PVR_OMAP4_TIMING_PRCM) */
+ }
+ #endif	/* PVR_OMAP_USE_DM_TIMER_API */

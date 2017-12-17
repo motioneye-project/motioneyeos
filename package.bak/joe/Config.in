@@ -1,0 +1,21 @@
+config BR2_PACKAGE_JOE
+	bool "joe"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Joe's Own Editor
+
+	  JOE is an easy-to-use, full featured terminal-based screen editor.
+	  Its behavior is a blending of WordStar and GNU-EMACS (but it does
+	  not use code from either program). It is a great editor for new
+	  users or as an alternative to vi.
+
+	  http://joe-editor.sf.net
+
+config BR2_PACKAGE_JOE_FULL
+	bool "full install of rc and syntax highlighting files"
+	depends on BR2_PACKAGE_JOE
+	default y
+	help
+	  Install all rc and syntax highlighting files. Without this option
+	  only the joe binary is installed, which contains a default
+	  configuration.

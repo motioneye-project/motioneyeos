@@ -1,0 +1,21 @@
+config BR2_PACKAGE_TSTOOLS
+	bool "tstools"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	help
+	  This is a set of cross-platform command line tools for working with
+	  MPEG data.
+
+	  The emphasis is on relatively simple tools which concentrate on MPEG
+	  (H.264 and H.262) data packaged according to H.222 (i.e., TS or PS),
+	  with a particular interest in checking for conformance.
+
+	  Transport Stream (TS) is typically used for distribution of cable
+	  and satellite data. Program Stream (PS) is typically used to store
+	  data on DVDs.
+
+	  https://github.com/kynesim/tstools/
+
+comment "tstools needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

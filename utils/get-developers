@@ -1,0 +1,99 @@
+#!/usr/bin/env python
+
+import argparse
+import getdeveloperlib
+import sys
+import os
+
+def parse_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('patches', metavar='P', type=argparse.FileType('r'), nargs='*',
+                        help='list of patches (use - to read patches from stdin)')
+    parser.add_argument('-a', dest='architecture', action='store',
+                        help='find developers in charge of this architecture')
+    parser.add_argument('-p', dest='package', action='store',
+                        help='find developers in charge of this package')
+    parser.add_argument('-f', dest='files', nargs='*',
+                        help='find developers in charge of these files')
+    parser.add_argument('-c', dest='check', action='store_const',
+                        const=True, help='list files not handled by any developer')
+    return parser.parse_args()
+
+def __main__():
+    devs = getdeveloperlib.parse_developers()
+    if devs is None:
+        sys.exit(1)
+    args = parse_args()
+
+    # Check that only one action is given
+    action = 0
+    if args.architecture is not None:
+        action += 1
+    if args.package is not None:
+        action += 1
+    if args.files:
+        action += 1
+    if args.check:
+        action += 1
+    if len(args.patches) != 0:
+        action += 1
+    if action > 1:
+        print("Cannot do more than one action")
+        return
+    if action == 0:
+        print("No action specified")
+        return
+
+    # Handle the check action
+    if args.check:
+        files = getdeveloperlib.check_developers(devs)
+        for f in files:
+            print(f)
+
+    # Handle the architecture action
+    if args.architecture is not None:
+        for dev in devs:
+            if args.architecture in dev.architectures:
+                print(dev.name)
+        return
+
+    # Handle the package action
+    if args.package is not None:
+        for dev in devs:
+            if args.package in dev.packages:
+                print(dev.name)
+        return
+
+    # Handle the files action
+    if args.files is not None:
+        args.files = [os.path.abspath(f) for f in args.files]
+        for dev in devs:
+            for devfile in dev.files:
+                commonfiles = [f for f in args.files if f.startswith(devfile)]
+                if commonfiles:
+                    print(dev.name)
+                    break
+
+    # Handle the patches action
+    if len(args.patches) != 0:
+        (files, infras) = getdeveloperlib.analyze_patches(args.patches)
+        matching_devs = set()
+        for dev in devs:
+            # See if we have developers matching by package name
+            for f in files:
+                if dev.hasfile(f):
+                    matching_devs.add(dev.name)
+            # See if we have developers matching by package infra
+            for i in infras:
+                if i in dev.infras:
+                    matching_devs.add(dev.name)
+
+        result = "--to buildroot@buildroot.org"
+        for dev in matching_devs:
+            result += " --cc \"%s\"" % dev
+
+        if result != "":
+            print("git send-email %s" % result)
+
+__main__()
+

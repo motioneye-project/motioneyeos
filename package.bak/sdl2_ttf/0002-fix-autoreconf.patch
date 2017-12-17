@@ -1,0 +1,30 @@
+# HG changeset patch
+# User "Yann E. MORIN" <yann.morin.1998@free.fr>
+# Date 1485597428 -3600
+# Node ID 26376ce4a3e6565885fd984b3fe5a39a6895dcdd
+# Parent  3b93536d291a34183592fd29ef1df9cf1416ac09
+configure: fix autoreconf
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/configure.in b/configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -1,5 +1,6 @@
+ dnl Process this file with autoconf to produce a configure script.
+-AC_INIT(README.txt)
++dnl The version string must be a literal
++AC_INIT([SDL2_ttf],[2.0.14])
+ 
+ dnl Set various version strings - taken gratefully from the GTk sources
+ 
+@@ -42,7 +42,7 @@
+ AC_CANONICAL_HOST
+ 
+ dnl Setup for automake
+-AM_INIT_AUTOMAKE(SDL2_ttf, $VERSION)
++AM_INIT_AUTOMAKE([foreign])
+ 
+ dnl Check for tools
+ AC_PROG_LIBTOOL
+

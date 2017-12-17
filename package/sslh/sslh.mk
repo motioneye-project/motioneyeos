@@ -6,7 +6,7 @@
 
 SSLH_VERSION = v1.18
 SSLH_SITE = http://www.rutschle.net/tech/sslh
-SSLH_LICENSE = GPLv2+
+SSLH_LICENSE = GPL-2.0+
 SSLH_LICENSE_FILES = COPYING
 
 SSLH_DEPENDENCIES = libconfig

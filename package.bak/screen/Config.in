@@ -1,0 +1,13 @@
+config BR2_PACKAGE_SCREEN
+	bool "screen"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
+	help
+	  Screen is a full-screen window manager that multiplexes a physical
+	  terminal between several processes, typically interactive shells.
+	  Each virtual terminal provides the functions of the DEC VT100
+	  terminal and, in addition, several control functions from the ANSI
+	  X3.64 (ISO 6429) and ISO 2022 standards (e.g., insert/delete line
+	  and support for multiple character sets).
+
+	  http://www.gnu.org/software/screen/

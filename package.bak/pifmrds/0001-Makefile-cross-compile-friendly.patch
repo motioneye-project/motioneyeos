@@ -1,0 +1,37 @@
+Makefile: make it cross-compile (and Buildroot) friendly.
+
+The current Makefile makes heavy assumptions that it is doing native
+compilation on the RPi, as it checks that `uname -m` is an ARM machine.
+
+This is wrong in the cross-compilation case.
+
+Remove the conditional altogether, and do not override the CFLAGS
+as passed in the environment (Buildroot passes proper CFLAGS).
+
+[intial patch by: Eric Limpens <limpens@gmail.com>]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN pifmrds-c67306ea9b8d827f45e0d90279d367e97119bcb1.orig/src/Makefile pifmrds-c67306ea9b8d827f45e0d90279d367e97119bcb1/src/Makefile
+--- pifmrds-c67306ea9b8d827f45e0d90279d367e97119bcb1.orig/src/Makefile	2014-05-04 18:21:40.000000000 +0200
++++ pifmrds-c67306ea9b8d827f45e0d90279d367e97119bcb1/src/Makefile	2014-06-21 16:38:31.971804343 +0200
+@@ -1,20 +1,8 @@
+ CC = gcc
+-STD_CFLAGS = -Wall -std=gnu99 -c -g -O3
+ 
+-# Enable ARM-specific options only on ARM, and compilation of the app only on ARM
+-UNAME := $(shell uname -m)
+-
+-ifeq ($(UNAME), armv6l)
+-	CFLAGS = $(STD_CFLAGS) -march=armv6 -mtune=arm1176jzf-s -mfloat-abi=hard -mfpu=vfp -ffast-math
+-
+ app: rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o
+ 	$(CC) -o pi_fm_rds rds.o waveforms.o pi_fm_rds.o fm_mpx.o control_pipe.o -lm -lsndfile
+ 
+-else
+-	CFLAGS = $(STD_CFLAGS)
+-endif
+-
+-
+ rds_wav: rds.o waveforms.o rds_wav.o fm_mpx.o
+ 	$(CC) -o rds_wav rds_wav.o rds.o waveforms.o fm_mpx.o -lm -lsndfile
+ 

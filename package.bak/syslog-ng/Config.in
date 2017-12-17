@@ -1,0 +1,21 @@
+config BR2_PACKAGE_SYSLOG_NG
+	bool "syslog-ng"
+	select BR2_PACKAGE_EVENTLOG
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_OPENSSL
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  syslog-ng is an enhanced log daemon, supporting a wide range
+	  of input and output methods: syslog, unstructured text,
+	  queueing, SQL & NoSQL
+
+	  https://syslog-ng.org/
+
+comment "syslog-ng needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

@@ -1,0 +1,133 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[make-tips]]
+=== 'make' tips
+
+This is a collection of tips that help you make the most of Buildroot.
+
+.Display all commands executed by make:
+
+--------------------
+ $ make V=1 <target>
+--------------------
+
+.Display the list of boards with a defconfig:
+
+--------------------
+ $ make list-defconfigs
+--------------------
+
+.Display all available targets:
+
+--------------------
+ $ make help
+--------------------
+
+Not all targets are always available,
+some settings in the +.config+ file may hide some targets:
+
+* +busybox-menuconfig+ only works when +busybox+ is enabled;
+* +linux-menuconfig+ and +linux-savedefconfig+ only work when
+  +linux+ is enabled;
+* +uclibc-menuconfig+ is only available when the uClibc C library is
+  selected in the internal toolchain backend;
+* +barebox-menuconfig+ and +barebox-savedefconfig+ only work when the
+  +barebox+ bootloader is enabled.
+* +uboot-menuconfig+ and +uboot-savedefconfig+ only work when the
+  +U-Boot+ bootloader is enabled.
+
+.Cleaning:
+
+Explicit cleaning is required when any of the architecture or toolchain
+configuration options are changed.
+
+To delete all build products (including build directories, host, staging
+and target trees, the images and the toolchain):
+
+--------------------
+ $ make clean
+--------------------
+
+.Generating the manual:
+
+The present manual sources are located in the 'docs/manual' directory.
+To generate the manual:
+
+---------------------------------
+ $ make manual-clean
+ $ make manual
+---------------------------------
+
+The manual outputs will be generated in 'output/docs/manual'.
+
+.Notes
+- A few tools are required to build the documentation (see:
+  xref:requirement-optional[]).
+
+.Resetting Buildroot for a new target:
+
+To delete all build products as well as the configuration:
+
+--------------------
+ $ make distclean
+--------------------
+
+.Notes
+If +ccache+ is enabled, running +make clean+ or +distclean+ does
+not empty the compiler cache used by Buildroot. To delete it, refer
+to xref:ccache[].
+
+.Dumping the internal make variables:
+
+One can dump all the variables known to make, along with their values:
+
+----
+ $ make -s printvars
+ VARIABLE=value_of_variable
+ ...
+----
+
+It is possible to tweak the output using some variables:
+
+- +VARS+ will limit the listing to variables which names match the
+  specified make-pattern
+- +QUOTED_VARS+, if set to +YES+, will single-quote the value
+- +RAW_VARS+, if set to +YES+, will print the unexpanded value
+
+For example:
+
+----
+ $ make -s printvars VARS=BUSYBOX_%DEPENDENCIES
+ BUSYBOX_DEPENDENCIES=skeleton toolchain
+ BUSYBOX_FINAL_ALL_DEPENDENCIES=skeleton toolchain
+ BUSYBOX_FINAL_DEPENDENCIES=skeleton toolchain
+ BUSYBOX_FINAL_PATCH_DEPENDENCIES=
+ BUSYBOX_RDEPENDENCIES=ncurses util-linux
+----
+
+----
+ $ make -s printvars VARS=BUSYBOX_%DEPENDENCIES QUOTED_VARS=YES
+ BUSYBOX_DEPENDENCIES='skeleton toolchain'
+ BUSYBOX_FINAL_ALL_DEPENDENCIES='skeleton toolchain'
+ BUSYBOX_FINAL_DEPENDENCIES='skeleton toolchain'
+ BUSYBOX_FINAL_PATCH_DEPENDENCIES=''
+ BUSYBOX_RDEPENDENCIES='ncurses util-linux'
+----
+
+----
+ $ make -s printvars VARS=BUSYBOX_%DEPENDENCIES RAW_VARS=YES
+ BUSYBOX_DEPENDENCIES=skeleton toolchain
+ BUSYBOX_FINAL_ALL_DEPENDENCIES=$(sort $(BUSYBOX_FINAL_DEPENDENCIES) $(BUSYBOX_FINAL_PATCH_DEPENDENCIES))
+ BUSYBOX_FINAL_DEPENDENCIES=$(sort $(BUSYBOX_DEPENDENCIES))
+ BUSYBOX_FINAL_PATCH_DEPENDENCIES=$(sort $(BUSYBOX_PATCH_DEPENDENCIES))
+ BUSYBOX_RDEPENDENCIES=ncurses util-linux
+----
+
+The output of quoted variables can be reused in shell scripts, for example:
+
+----
+ $ eval $(make -s printvars VARS=BUSYBOX_DEPENDENCIES QUOTED_VARS=YES)
+ $ echo $BUSYBOX_DEPENDENCIES
+ skeleton toolchain
+----

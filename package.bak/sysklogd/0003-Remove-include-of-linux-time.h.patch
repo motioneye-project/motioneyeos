@@ -1,0 +1,50 @@
+From f4926a61ba2d3766255dd996bf0315bc8fa0c528 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 28 Nov 2016 23:09:03 +0100
+Subject: [PATCH] Remove include of <linux/time.h>
+
+klogd.c and ksym_mod.c currently include <linux/time.h> if GLIBC is not
+defined. Unfortunately, this breaks badly with the musl C library: this
+C library is not glibc so it doesn't define GLIBC, but it does have a
+definition of "struct timespec" in its header file, which conflict with
+the one provided by the Linux kernel headers.
+
+So, this commit simply gets rid of this header inclusion.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ klogd.c    | 3 ---
+ ksym_mod.c | 3 ---
+ 2 files changed, 6 deletions(-)
+
+diff --git a/klogd.c b/klogd.c
+index a173353..6505d96 100644
+--- a/klogd.c
++++ b/klogd.c
+@@ -262,9 +262,6 @@
+ #include <errno.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
+-#if !defined(__GLIBC__)
+-#include <linux/time.h>
+-#endif /* __GLIBC__ */
+ #include <stdarg.h>
+ #include <paths.h>
+ #include <stdlib.h>
+diff --git a/ksym_mod.c b/ksym_mod.c
+index 2e69d65..6e26da1 100644
+--- a/ksym_mod.c
++++ b/ksym_mod.c
+@@ -116,9 +116,6 @@
+ #include <fcntl.h>
+ #include <sys/stat.h>
+ #include "module.h"
+-#if !defined(__GLIBC__)
+-#include <linux/time.h>
+-#endif /* __GLIBC__ */
+ #include <stdarg.h>
+ #include <paths.h>
+ #include <linux/version.h>
+-- 
+2.7.4
+

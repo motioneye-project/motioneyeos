@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_BITSTRING
+	bool "python-bitstring"
+	help
+	  Simple construction, analysis and modification of binary data.
+
+	  https://github.com/scott-griffiths/bitstring

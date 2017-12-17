@@ -1,0 +1,19 @@
+config BR2_PACKAGE_TMUX
+	bool "tmux"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR # mbtowc()
+	depends on BR2_ENABLE_LOCALE # runtime
+	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_NCURSES
+	help
+	  tmux is a terminal multiplexer, it enables a number of
+	  terminals (or windows) to be accessed and controlled from a
+	  single terminal.
+
+	  NOTE: tmux needs a working UTF-8 locale (BR2_GENERATE_LOCALE)
+
+	  https://tmux.github.io/
+
+comment "tmux needs a toolchain w/ wchar, locale"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_ENABLE_LOCALE

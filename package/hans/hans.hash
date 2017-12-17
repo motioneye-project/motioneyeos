@@ -1,3 +1,5 @@
 # From http://sourceforge.net/projects/hanstunnel/files/source/
-md5	97a93a886bc766212257198fd99d1061	hans-0.4.4.tar.gz
-sha1	8a21a9acc6d52cf7d2a5049523469e2609716ab3	hans-0.4.4.tar.gz
+md5 8628393ec1b61a6c3a47a0a3dcb455b3  hans-1.0.tar.gz
+sha1 0bc857df109af222732cb95c861a0f0a6dd53dee  hans-1.0.tar.gz
+# Locally computed
+sha256 f8f70cf22ba14d9223695c9e9a2d75289d8360f61f533b83ee538836f29a458e  hans-1.0.tar.gz

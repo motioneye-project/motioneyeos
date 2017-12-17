@@ -1,0 +1,39 @@
+#!/bin/sh
+
+CONFIG=/etc/bind/named.conf
+DAEMON=/usr/sbin/named
+
+[ -x $DAEMON ] || exit 0
+[ -f $CONFIG ] || exit 0
+
+case "$1" in
+	start)
+		if [ ! -f /etc/rndc.key ]; then
+		    printf "Initializing bind control key: "
+                    # if rndc.key is a symlink, the target must exist
+		    touch /etc/rndc.key
+		    rndc-confgen -a -r /dev/urandom 2>/dev/null && echo "OK" || echo "FAIL"
+		fi
+		printf "Starting domain name daemon: "
+		start-stop-daemon -S -x $DAEMON -- -c $CONFIG -u named
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		printf "Stopping domain name daemon: "
+		rndc stop || start-stop-daemon -K -x $DAEMON
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	restart)
+		$0 stop || true
+		sleep 1
+		$0 start
+		;;
+	reload|force-reload)
+		rndc reload || $0 restart
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload|force-reload}"
+		exit 1
+esac
+
+exit 0

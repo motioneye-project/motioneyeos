@@ -1,0 +1,3 @@
+# md5 from https://pypi.python.org/pypi/werkzeug/json, sha256 locally computed
+md5	1d34afa1f19abcef4c0da51ebc2c4ea7  Werkzeug-0.11.11.tar.gz
+sha256	e72c46bc14405cba7a26bd2ce28df734471bc9016bc8b4cb69466c2c14c2f7e5  Werkzeug-0.11.11.tar.gz

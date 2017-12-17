@@ -1,0 +1,9 @@
+config BR2_PACKAGE_FBSET
+	bool "fbset"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  Fbset is a system utility to show or change the settings of the frame
+	  buffer device. The frame buffer device provides a simple and unique
+	  interface to access different kinds of graphic displays.
+
+	  http://users.telenet.be/geertu/Linux/fbdev/

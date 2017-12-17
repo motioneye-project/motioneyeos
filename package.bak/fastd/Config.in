@@ -1,0 +1,29 @@
+config BR2_PACKAGE_FASTD
+	bool "fastd"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # libuecc
+	select BR2_PACKAGE_LIBUECC
+	select BR2_PACKAGE_LIBSODIUM
+	select BR2_PACKAGE_LIBCAP
+	help
+	  Fast and Secure Tunneling Daemon
+
+	  https://projects.universe-factory.net/projects/fastd/wiki
+
+if BR2_PACKAGE_FASTD
+
+config BR2_PACKAGE_FASTD_STATUS_SOCKET
+	bool "status socket support"
+	default y
+	select BR2_PACKAGE_JSON_C
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # json-c
+	help
+	  Enable support for a socket to get fastd's status.
+
+endif
+
+comment "fastd needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| BR2_STATIC_LIBS

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_UX500_FIRMWARE
+	bool "ux500-firmware"
+	help
+	  This package provides various binary firmware files (closed binary blobs)
+	  for the Azurewave AW-NH580 combo module (wifi, bt, gps).
+
+	  https://launchpad.net/~igloocommunity-maintainers/+archive/snowball/+files/

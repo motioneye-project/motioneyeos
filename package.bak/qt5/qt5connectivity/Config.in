@@ -1,0 +1,19 @@
+config BR2_PACKAGE_QT5CONNECTIVITY
+	bool "qt5connectivity"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_CONCURRENT
+	select BR2_PACKAGE_QT5BASE_DBUS
+	depends on BR2_PACKAGE_NEARD || BR2_PACKAGE_BLUEZ_UTILS || BR2_PACKAGE_BLUEZ5_UTILS
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  Qt Connectivity module provides support for Bluetooth/NFC
+	  peripherials.
+
+	  http://doc.qt.io/qt-5/qtbluetooth-index.html
+	  http://doc.qt.io/qt-5/qtnfc-index.html
+
+comment "qt5connectivity needs neard and/or bluez(5)_utils"
+	depends on !BR2_PACKAGE_NEARD && !BR2_PACKAGE_BLUEZ_UTILS && \
+		!BR2_PACKAGE_BLUEZ5_UTILS

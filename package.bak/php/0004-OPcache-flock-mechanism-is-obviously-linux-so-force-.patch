@@ -1,0 +1,58 @@
+From bedbd41ef0a5ce80b83a6f6eaebd7c90f0bc5615 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 9 Aug 2016 11:52:19 +0200
+Subject: [PATCH] OPcache: flock mechanism is obviously linux so force it.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ ext/opcache/config.m4 | 34 ++--------------------------------
+ 1 file changed, 2 insertions(+), 32 deletions(-)
+
+diff --git a/ext/opcache/config.m4 b/ext/opcache/config.m4
+index fbb9b21..ffddc8e 100644
+--- a/ext/opcache/config.m4
++++ b/ext/opcache/config.m4
+@@ -343,38 +343,8 @@ int main() {
+     msg=yes,msg=no,msg=no)
+   AC_MSG_RESULT([$msg])
+ 
+-flock_type=unknown
+-AC_MSG_CHECKING("whether flock struct is linux ordered")
+-AC_TRY_RUN([
+-  #include <fcntl.h>
+-  struct flock lock = { 1, 2, 3, 4, 5 };
+-  int main() { 
+-    if(lock.l_type == 1 && lock.l_whence == 2 && lock.l_start == 3 && lock.l_len == 4) {
+-		return 0;
+-    }
+-    return 1;
+-  } 
+-], [
+-	flock_type=linux
+-    AC_DEFINE([HAVE_FLOCK_LINUX], [], [Struct flock is Linux-type])
+-    AC_MSG_RESULT("yes")
+-], AC_MSG_RESULT("no") )
+-
+-AC_MSG_CHECKING("whether flock struct is BSD ordered")
+-AC_TRY_RUN([
+-  #include <fcntl.h>
+-  struct flock lock = { 1, 2, 3, 4, 5 };
+-  int main() { 
+-    if(lock.l_start == 1 && lock.l_len == 2 && lock.l_type == 4 && lock.l_whence == 5) {
+-		return 0;
+-    }
+-    return 1;
+-  } 
+-], [
+-	flock_type=bsd
+-    AC_DEFINE([HAVE_FLOCK_BSD], [], [Struct flock is BSD-type]) 
+-    AC_MSG_RESULT("yes")
+-], AC_MSG_RESULT("no") )
++flock_type=linux
++AC_DEFINE([HAVE_FLOCK_LINUX], [], [Struct flock is Linux-type])
+ 
+ if test "$flock_type" = "unknown"; then
+ 	AC_MSG_ERROR([Don't know how to define struct flock on this system[,] set --enable-opcache=no])
+-- 
+2.7.4
+

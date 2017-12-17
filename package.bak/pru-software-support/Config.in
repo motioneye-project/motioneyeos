@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PRU_SOFTWARE_SUPPORT
+	bool "pru-software-support"
+	depends on BR2_PACKAGE_HOST_TI_CGT_PRU_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_PRU_SOFTWARE_SUPPORT
+	help
+	  PRU firmware examples extracted from TI's PRU software
+	  support package. See readme.txt for installation details.
+
+	  https://git.ti.com/pru-software-support-package/pru-software-support-package

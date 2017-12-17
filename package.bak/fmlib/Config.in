@@ -1,0 +1,49 @@
+comment "fmlib needs a Linux kernel to be built"
+	depends on BR2_powerpc_e500mc || BR2_powerpc_e6500
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_FMLIB
+	bool "fmlib"
+	depends on BR2_powerpc_e500mc || BR2_powerpc_e6500
+	depends on BR2_LINUX_KERNEL
+	help
+	  The Frame Manager library provides Freescale PowerPC platforms an
+	  API on top of the Frame Manager driver ioctl calls, that provides
+	  a user space application with a simple way to configure driver
+	  parameters and PCD (parse - classify - distribute) rules.
+
+	  http://git.freescale.com/git/cgit.cgi/ppc/sdk/fmlib.git/tree/README
+
+if BR2_PACKAGE_FMLIB
+choice
+	prompt "QorIQ Target Family"
+	help
+	  Select the family of QorIQ processor.
+
+config BR2_FMLIB_QORIQ_FAMILY_P4080
+	bool "p40xx"
+	depends on BR2_powerpc_e500mc
+
+config BR2_FMLIB_QORIQ_FAMILY_T4240
+	bool "t42xx"
+	depends on BR2_powerpc_e500mc
+
+config BR2_FMLIB_QORIQ_FAMILY_T2080
+	bool "t208x"
+	depends on BR2_powerpc_e6500
+
+endchoice
+
+config BR2_PACKAGE_FMLIB_ARCHTYPE
+	string
+	default "e500mc" if BR2_powerpc_e500mc
+	default "ppc64e6500" if BR2_powerpc_e6500 && BR2_powerpc64
+	default "ppc32e6500" if BR2_powerpc_e6500 && BR2_powerpc
+
+config BR2_PACKAGE_FMLIB_PLATFORM
+	string
+	default "P4080" if BR2_FMLIB_QORIQ_FAMILY_P4080
+	default "T4240" if BR2_FMLIB_QORIQ_FAMILY_T4240
+	default "FMAN_V3H" if BR2_FMLIB_QORIQ_FAMILY_T2080
+
+endif

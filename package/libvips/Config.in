@@ -1,6 +1,6 @@
 config BR2_PACKAGE_LIBVIPS
 	bool "libvips"
-	depends on BR2_USE_WCHAR # gettext, libglib2
+	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # fork()
 	# C++ support is required to build libvips
@@ -8,7 +8,6 @@ config BR2_PACKAGE_LIBVIPS
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBXML2
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  libvips is a 2D image processing library. Compared to
 	  similar libraries, libvips runs quickly and uses little

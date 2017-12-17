@@ -9,6 +9,8 @@ Signed-off-by: Steve James <ste@junkomatic.net>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 [baruch: update for v1.19]
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[Bernd: update for v1.20]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  Makefile | 14 ++++++++++++++
  1 file changed, 14 insertions(+)
@@ -19,8 +21,8 @@ index 07a5a1ead6fd..c87023db527a 100644
 +++ b/Makefile
 @@ -412,3 +412,17 @@ $(SHARED_OUTDIR)/%.o: %.cc
  
- $(SHARED_OUTDIR)/%.o: %.c
- 	$(CC) $(CFLAGS) $(PLATFORM_SHARED_CFLAGS) -c $< -o $@
+ $(SHARED_OUTDIR)/port/port_posix_sse.o: port/port_posix_sse.cc
+ 	$(CXX) $(CXXFLAGS) $(PLATFORM_SHARED_CFLAGS) $(PLATFORM_SSEFLAGS) -c $< -o $@
 +
 +INSTALL_ROOT = /
 +INSTALL_PREFIX= usr/local

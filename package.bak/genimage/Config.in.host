@@ -1,0 +1,13 @@
+config BR2_PACKAGE_HOST_GENIMAGE
+	bool "host genimage"
+	help
+	  genimage is a tool to generate multiple filesystem and flash
+	  images from a given root filesystem tree. genimage is
+	  intended to be run in a fakeroot environment.
+
+	  Configuration is done in a config file parsed by
+	  libconfuse. Options like the path to tools can be given in
+	  environment variables, the config file or commandline
+	  switches.
+
+	  http://www.pengutronix.de/software/genimage/

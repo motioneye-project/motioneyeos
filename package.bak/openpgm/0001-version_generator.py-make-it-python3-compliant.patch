@@ -1,0 +1,42 @@
+From e04f5c20fc1536f8e6d4faf32f2f4657d441f7c8 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Mon, 14 Apr 2014 17:54:37 +0200
+Subject: [PATCH] version_generator.py: make it python3 compliant
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ openpgm/pgm/version_generator.py | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/openpgm/pgm/version_generator.py b/openpgm/pgm/version_generator.py
+index 2265480..c31376f 100755
+--- a/openpgm/pgm/version_generator.py
++++ b/openpgm/pgm/version_generator.py
+@@ -1,5 +1,7 @@
+ #!/usr/bin/python
+ 
++from __future__ import print_function
++
+ import os
+ import platform
+ import time
+@@ -8,7 +10,7 @@ build_date = time.strftime ("%Y-%m-%d")
+ build_time = time.strftime ("%H:%M:%S")
+ build_rev = filter (str.isdigit, "$Revision: 1369 $")
+ 
+-print """
++print("""
+ /* vim:ts=8:sts=8:sw=4:noai:noexpandtab
+  * 
+  * OpenPGM version.
+@@ -47,6 +49,6 @@ const char* pgm_build_revision = "%s";
+ 
+ 
+ /* eof */
+-"""%(build_date, build_time, platform.system(), platform.machine(), build_rev)
++"""%(build_date, build_time, platform.system(), platform.machine(), build_rev))
+ 
+ # end of file
+-- 
+1.9.2
+

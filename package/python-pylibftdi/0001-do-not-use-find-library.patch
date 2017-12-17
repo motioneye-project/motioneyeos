@@ -1,0 +1,31 @@
+Hard code library loading
+
+Shortcut the search for the libraries in case the built in
+find_library is broken.
+
+As buildroot does not ship any of the external programs that the core
+procedure use to find libraries use the canonical name of the shared
+object and load it.
+
+In this case this affects loading libftdi and libusb.
+
+This should be reliable as we specify said libs as dependencies of
+this package.
+
+Signed-off-by: Christian Kellermann <christian.kellermann@solectrix.de>
+
+---
+diff -purN pylibftdi-0.15.0.orig/pylibftdi/driver.py pylibftdi-0.15.0/pylibftdi/driver.py
+--- pylibftdi-0.15.0.orig/pylibftdi/driver.py	2015-04-26 22:41:39.000000000 +0200
++++ pylibftdi-0.15.0/pylibftdi/driver.py	2017-02-27 13:08:56.502958000 +0100
+@@ -121,8 +121,8 @@ class Driver(object):
+                     lib = getattr(cdll, lib_path)
+                     break
+         if lib is None:
+-            raise LibraryMissingError('{} library not found (search: {})'.format(
+-                name, search_list))
++            return cdll.LoadLibrary(name + '.so')
++
+         return lib
+ 
+     @property

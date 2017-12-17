@@ -1,0 +1,14 @@
+config BR2_PACKAGE_JOSE
+	bool "jose"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_OPENSSL
+	help
+	  C-language implementation of Javascript Object Signing and
+	  Encryption.
+
+	  https://github.com/latchset/jose
+
+comment "jose needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

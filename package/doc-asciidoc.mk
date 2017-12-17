@@ -1,5 +1,6 @@
 # we can't use suitable-host-package here because that's not available in
 # the context of 'make release'
+.PHONY: asciidoc-check-dependencies
 asciidoc-check-dependencies:
 	$(Q)if [ -z "$(shell support/dependencies/check-host-asciidoc.sh)" ]; then \
 		echo "You need a sufficiently recent asciidoc on your host" \
@@ -58,8 +59,9 @@ $(1): $(1)-$(5)
 .PHONY: $(1)-$(5)
 $(1)-$(5): $$(O)/docs/$(1)/$(1).$(6)
 
-# Single line, because splitting a foreach is not easy...
 asciidoc-check-dependencies-$(5):
+.PHONY: $(1)-check-dependencies-$(5)
+# Single line, because splitting a foreach is not easy...
 $(1)-check-dependencies-$(5): asciidoc-check-dependencies-$(5)
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_$$(call UPPERCASE,$(5))_HOOKS),$$(call $$(hook))$$(sep))
 
@@ -141,6 +143,7 @@ endef
 ################################################################################
 define ASCIIDOC
 # Single line, because splitting a foreach is not easy...
+.PHONY: $(1)-check-dependencies
 $(1)-check-dependencies: asciidoc-check-dependencies $$($(2)_DEPENDENCIES)
 	$$(Q)$$(foreach hook,$$($(2)_CHECK_DEPENDENCIES_HOOKS),$$(call $$(hook))$$(sep))
 
@@ -153,6 +156,7 @@ $$(BUILD_DIR)/docs/$(1)/.stamp_doc_rsynced:
 	$$(Q)rsync -a $(3) $$(@D)
 	$$(Q)$$(foreach hook,$$($(2)_POST_RSYNC_HOOKS),$$(call $$(hook))$$(sep))
 
+.PHONY: $(1)-prepare-sources
 $(1)-prepare-sources: $$(BUILD_DIR)/docs/$(1)/.stamp_doc_rsynced
 
 $(2)_ASCIIDOC_CONF = $(3)/asciidoc.conf

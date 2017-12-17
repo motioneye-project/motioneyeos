@@ -1,0 +1,43 @@
+comment "gnupg2 needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_GNUPG2
+	bool "gnupg2"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LIBGPG_ERROR
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBASSUAN
+	select BR2_PACKAGE_LIBKSBA
+	select BR2_PACKAGE_LIBPTHSEM
+	select BR2_PACKAGE_LIBPTHSEM_COMPAT
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
+	depends on BR2_USE_MMU # libassuan
+	depends on !BR2_STATIC_LIBS
+	help
+	  GnuPG is the GNU project's complete and free implementation
+	  of the OpenPGP standard as defined by RFC4880. GnuPG allows
+	  to encrypt and sign your data and communication, features a
+	  versatile key management system as well as access modules
+	  for all kinds of public key directories. GnuPG, also known
+	  as GPG, is a command line tool with features for easy
+	  integration with other applications.
+
+	  http://gnupg.org/
+
+if BR2_PACKAGE_GNUPG2
+
+config BR2_PACKAGE_GNUPG2_GPGV2
+	bool "gpgv2"
+	help
+	  gpgv2 is an OpenPGP signature verification tool.
+
+	  This program is actually a stripped-down version of gpg
+	  which is only able to check signatures. It is somewhat
+	  smaller than the fully-blown gpg and uses a different (and
+	  simpler) way to check that the public keys used to make the
+	  signature are valid. There are no configuration files and
+	  only a few options are implemented.
+
+endif

@@ -3,8 +3,6 @@ config BR2_PACKAGE_GMRENDER_RESURRECT
 	depends on BR2_USE_WCHAR # gstreamer1 -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer1 -> libglib2, libupnp
 	depends on BR2_USE_MMU # gstreamer1
-	# uses <error.h>
-	depends on !BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_GST1_PLUGINS_BASE # run-time only
 	select BR2_PACKAGE_LIBUPNP
@@ -13,7 +11,6 @@ config BR2_PACKAGE_GMRENDER_RESURRECT
 
 	  https://github.com/hzeller/gmrender-resurrect
 
-comment "gmrender-resurrect needs a glibc or uClibc toolchain w/ wchar, threads"
+comment "gmrender-resurrect needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_TOOLCHAIN_USES_MUSL
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

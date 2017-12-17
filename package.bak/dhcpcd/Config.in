@@ -1,0 +1,10 @@
+comment "dhcpcd needs a toolchain w/ headers >= 3.1"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
+config BR2_PACKAGE_DHCPCD
+	bool "dhcpcd"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1 # sa_family_t in linux/socket.h
+	help
+	  An RFC2131 compliant DHCP client
+
+	  http://roy.marples.name/projects/dhcpcd/

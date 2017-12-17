@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBTORRENT
+	bool "libtorrent"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1 && BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_ZLIB
+	help
+	  BitTorrent library written in C++ for *nix
+
+	  https://github.com/rakshasa/libtorrent
+
+comment "libtorrent needs a toolchain w/ C++, threads"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1 && BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

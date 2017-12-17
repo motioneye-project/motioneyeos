@@ -1,0 +1,28 @@
+#!/bin/sh
+#
+# Start/stop rabbitmq-server
+#
+
+INSTALLUSER=rabbitmq
+RUNDIR=/var/run/rabbitmq
+
+case "$1" in
+  start)
+	install -d -o "$INSTALLUSER" -g "$INSTALLUSER" "$RUNDIR" || exit 1
+        printf "Starting rabbitmq-server: "
+        su -c "/usr/sbin/rabbitmq-server -detached" - "$INSTALLUSER" 2>/dev/null
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  stop)
+        printf "Stopping rabbitmq-server: "
+        su -c "/usr/sbin/rabbitmqctl stop" - "$INSTALLUSER"
+        [ $? = 0 ] && echo "OK" || echo "FAIL"
+	;;
+  restart|reload)
+        "$0" stop || true
+        "$0" start
+	;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac

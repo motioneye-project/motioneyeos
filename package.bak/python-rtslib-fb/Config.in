@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_RTSLIB_FB
+	bool "python-rtslib-fb"
+	select BR2_PACKAGE_PYTHON_SIX
+	help
+	  rtslib-fb is an object-based Python library for configuring
+	  the LIO generic SCSI target, present in 3.x Linux kernel
+	  versions.
+
+	  https://github.com/open-iscsi/rtslib-fb

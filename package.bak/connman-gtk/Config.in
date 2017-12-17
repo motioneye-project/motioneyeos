@@ -1,0 +1,22 @@
+comment "connman-gtk needs libgtk3 and a glibc or uClibc toolchain w/ wchar, threads, resolver, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || !BR2_PACKAGE_LIBGTK3 || \
+		BR2_TOOLCHAIN_USES_MUSL
+
+config BR2_PACKAGE_CONNMAN_GTK
+	bool "connman-gtk"
+	depends on BR2_USE_WCHAR # libglib2, connman
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2, connman
+	depends on BR2_USE_MMU # libglib2
+	depends on !BR2_STATIC_LIBS # connman
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # connman
+	depends on !BR2_TOOLCHAIN_USES_MUSL # connman
+	depends on BR2_PACKAGE_LIBGTK3
+	select BR2_PACKAGE_CONNMAN
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  GTK GUI for ConnMan.
+
+	  https://github.com/jgke/connman-gtk

@@ -1,0 +1,23 @@
+The a/{b,c} construct doesn't work within make, so let's split the
+creation of the installation directories in two commands.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+Index: memtester-4.2.1/Makefile
+===================================================================
+--- memtester-4.2.1.orig/Makefile
++++ memtester-4.2.1/Makefile
+@@ -25,8 +25,9 @@
+ all: memtester
+ 
+ install: all
+-	mkdir -m 755 -p $(INSTALLPATH)/{bin,man/man8}
++	mkdir -m 755 -p $(INSTALLPATH)/bin
+ 	install -m 755 memtester $(INSTALLPATH)/bin/
++	mkdir -m 755 -p $(INSTALLPATH)/man/man8
+ 	gzip -c memtester.8 >memtester.8.gz ; install -m 644 memtester.8.gz $(INSTALLPATH)/man/man8/
+ 
+ auto-ccld.sh: \

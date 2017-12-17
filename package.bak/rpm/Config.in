@@ -1,0 +1,21 @@
+comment "rpm needs a toolchain w/ dynamic library and threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	depends on BR2_USE_MMU
+
+config BR2_PACKAGE_RPM
+	bool "rpm"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	depends on BR2_TOOLCHAIN_HAS_THREADS # beecrypt
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_BEECRYPT if !BR2_PACKAGE_LIBNSS
+	select BR2_PACKAGE_BERKELEYDB
+	select BR2_PACKAGE_FILE
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_ZLIB
+	help
+	  The RPM Package Manager (RPM).
+
+	  http://www.rpm.org/

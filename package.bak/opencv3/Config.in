@@ -1,0 +1,343 @@
+menuconfig BR2_PACKAGE_OPENCV3
+	bool "opencv3"
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # include dlfcn.h
+	depends on !BR2_PACKAGE_OPENCV
+	help
+	  OpenCV (Open Source Computer Vision) is a library of programming
+	  functions for real time computer vision.
+
+	  Note that the opencv_core module and the opencv_hal library
+	  are always built and installed, not matter which other
+	  modules are enabled below.
+
+	  http://opencv.org/
+
+if BR2_PACKAGE_OPENCV3
+
+comment "OpenCV modules"
+
+config BR2_PACKAGE_OPENCV3_LIB_CALIB3D
+	bool "calib3d"
+	select BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	help
+	  Include opencv_calib3d (camera calibration and 3d reconstruction) module
+	  into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
+	bool "features2d"
+	select BR2_PACKAGE_OPENCV3_LIB_FLANN
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_ML
+	help
+	  Include opencv_features2d (2d features framework) module into the OpenCV
+	  build.
+
+config BR2_PACKAGE_OPENCV3_LIB_FLANN
+	bool "flann"
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_flann (clustering and search in multi-dimensional spaces)
+	  module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
+	bool "highgui"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_VIDEOIO
+	help
+	  Include opencv_highgui (high-level gui and media i/o) module into the
+	  OpenCV build.
+
+if BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
+
+choice
+	prompt "gui toolkit"
+	help
+	  GUI toolkit to be used by the opencv_highgui module.
+
+config BR2_PACKAGE_OPENCV3_GUI_NONE
+	bool "none"
+
+config BR2_PACKAGE_OPENCV3_WITH_GTK
+	bool "gtk2"
+	depends on BR2_PACKAGE_LIBGTK2
+
+comment "gtk2 support needs libgtk2"
+	depends on BR2_USE_MMU # libgtk2 -> glib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_PACKAGE_LIBGTK2
+
+config BR2_PACKAGE_OPENCV3_WITH_GTK3
+	bool "gtk3"
+	depends on BR2_PACKAGE_LIBGTK3
+
+comment "gtk3 support needs libgtk3"
+	depends on BR2_USE_MMU # libgtk3 -> glib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_PACKAGE_LIBGTK3
+
+config BR2_PACKAGE_OPENCV3_WITH_QT
+	bool "qt4"
+	depends on BR2_PACKAGE_QT
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Qt GUI module
+	select BR2_PACKAGE_QT_STL
+	select BR2_PACKAGE_QT_GUI_MODULE
+	select BR2_PACKAGE_QT_TEST
+	help
+	  Use Qt4 with QtTest and QtGui modules and STL support, as GUI toolkit.
+
+comment "qt4 support needs qt and a toolchain not affected by Binutils bug 19405"
+	depends on BR2_USE_MMU # qt
+	depends on (!BR2_PACKAGE_QT && !BR2_PACKAGE_QT5) || BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+
+config BR2_PACKAGE_OPENCV3_WITH_QT5
+	bool "qt5"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_CONCURRENT
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	help
+	  Use Qt5 with base, concurrent, test, gui and widgets components, as GUI
+	  toolkit.
+
+comment "qt5 support needs qt5"
+	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
+
+endchoice
+
+config BR2_PACKAGE_OPENCV3_WITH_OPENGL
+	bool "opengl support"
+	# OpenGL support done using Qt5OpenGL, so depends on WITH_QT5
+	depends on BR2_PACKAGE_OPENCV3_WITH_QT5
+	# OpenGL support requires Qt5OpenGL with GL support, not GLES
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	depends on BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_QT5BASE_OPENGL
+	help
+	  Enable OpenGL for UI.
+
+comment "opengl support needs an OpenGL provider"
+	depends on BR2_PACKAGE_OPENCV3_WITH_QT5
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || \
+		!BR2_PACKAGE_HAS_LIBGL
+
+endif # BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
+
+
+config BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
+	bool "imgcodecs"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	help
+	  Include opencv_imgcodecs (image codecs) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	bool "imgproc"
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_imgproc (image processing) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_ML
+	bool "ml"
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_ml (machine learning) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
+	bool "objdetect"
+	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_ML
+	help
+	  Include opencv_objdetect (object detection) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_PHOTO
+	bool "photo"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	help
+	  Include opencv_photo (computational photography) module into the OpenCV
+	  build.
+
+config BR2_PACKAGE_OPENCV3_LIB_PYTHON
+	bool "python"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	select BR2_PACKAGE_PYTHON_NUMPY
+	help
+	  Include opencv_python module into the OpenCV build.
+	  No python example is installed.
+
+config BR2_PACKAGE_OPENCV3_LIB_SHAPE
+	bool "shape"
+	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
+	help
+	  Include opencv_shape (shape descriptors and matchers) module into the
+	  OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_STITCHING
+	bool "stitching"
+	select BR2_PACKAGE_OPENCV3_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
+	help
+	  Include opencv_stitching (images stitching) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_SUPERRES
+	bool "superres"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
+	help
+	  Include opencv_superres (super resolution) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_TS
+	bool "ts"
+	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
+	select BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_VIDEOIO
+	help
+	  Include opencv_ts (test) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_VIDEOIO
+	bool "videoio"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	help
+	  Include opencv_videoio (media i/o) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_VIDEO
+	bool "video"
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	help
+	  Include opencv_video (video analysis) module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV3_LIB_VIDEOSTAB
+	bool "videostab"
+	select BR2_PACKAGE_OPENCV3_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_PHOTO
+	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
+	help
+	  Include opencv_videostab (video stabilization) module into the OpenCV
+	  build.
+
+comment "Test sets"
+config BR2_PACKAGE_OPENCV3_BUILD_TESTS
+	bool "build tests"
+
+config BR2_PACKAGE_OPENCV3_BUILD_PERF_TESTS
+	bool "build performance tests"
+
+comment "3rd party support"
+
+config BR2_PACKAGE_OPENCV3_WITH_FFMPEG
+	bool "ffmpeg support"
+	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_AVRESAMPLE
+	select BR2_PACKAGE_FFMPEG_SWSCALE
+	help
+	  Use ffmpeg from the target system.
+
+choice
+	prompt "gstreamer support"
+	help
+	  OpenCV prefers gstreamer-1 over gstreamer-0.10.
+
+config BR2_PACKAGE_OPENCV3_WITHOUT_GSTREAMER
+	bool "none"
+
+config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER
+	bool "gstreamer-0.10"
+	depends on BR2_USE_MMU # gstreamer -> libglib2
+	depends on BR2_USE_WCHAR # gstreamer -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer -> libglib2
+	select BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+
+comment "gstreamer-0.10 support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER1
+	bool "gstreamer-1.x"
+	depends on BR2_USE_MMU # gstreamer1 -> libglib2
+	depends on BR2_USE_WCHAR # gstreamer1 -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer1 -> libglib2
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+
+comment "gstreamer-1.x support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+endchoice
+
+config BR2_PACKAGE_OPENCV3_WITH_JASPER
+	bool "jpeg2000 support"
+	select BR2_PACKAGE_JASPER
+	help
+	  Enable jpeg2000 support.
+
+	  Note: this does not use the libjasper bundled with opencv,
+	  but uses the libjasper package installed system-wide by
+	  Buildroot.
+
+config BR2_PACKAGE_OPENCV3_WITH_JPEG
+	bool "jpeg support"
+	select BR2_PACKAGE_JPEG
+	help
+	  Use shared libjpeg from the target system.
+
+config BR2_PACKAGE_OPENCV3_WITH_PNG
+	bool "png support"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Use shared libpng from the target system.
+
+config BR2_PACKAGE_OPENCV3_WITH_TIFF
+	bool "tiff support"
+	select BR2_PACKAGE_TIFF
+	help
+	  Use shared libtiff from the target system.
+
+config BR2_PACKAGE_OPENCV3_WITH_V4L
+	bool "v4l support"
+	help
+	  Enable Video 4 Linux support.
+
+	  If the package libv4l is enabled, its support is automatically enabled.
+
+comment "Install options"
+
+config BR2_PACKAGE_OPENCV3_INSTALL_DATA
+	bool "install extra data"
+	help
+	  Install various data that is used by cv libraries and/or demo
+	  applications, specifically for haarcascades and lbpcascades
+	  features.
+
+	  For further information: see OpenCV documentation.
+
+endif # BR2_PACKAGE_OPENCV3
+
+comment "opencv3 needs a toolchain w/ C++, NPTL, wchar, dynamic library"
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_USE_WCHAR || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		BR2_STATIC_LIBS

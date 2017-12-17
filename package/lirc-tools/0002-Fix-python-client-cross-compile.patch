@@ -1,0 +1,47 @@
+From 13c4ffcfde07f659a836fba4a604dc1c5024bb90 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 29 Aug 2017 11:37:36 +0300
+Subject: [PATCH] Fix python client cross compile
+
+The setup.py setuptools wrapper needs to use a version of python built
+specifically for cross compiling to cross compile successfully. Allow
+setting that in the environment using the SETUPTOOLS_ENV variable.
+
+Fixes the following build failure:
+
+/usr/bin/ld: skipping incompatible .../lirc-tools-0.10.0/lib/.libs/liblirc_client.so when searching for -llirc_client
+/usr/bin/ld: cannot find -llirc_client
+collect2: error: ld returned 1 exit status
+error: command '/usr/bin/gcc' failed with exit status 1
+Makefile:1578: recipe for target 'all-local' failed
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://sourceforge.net/p/lirc/tickets/308/
+
+ Makefile.am | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Makefile.am b/Makefile.am
+index d8164fcd44cf..a16be4278ae2 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -131,6 +131,7 @@ pep8: $(py_PYTHON)
+ if HAVE_PYTHON35
+ all-local:
+ 	cd python-pkg; \
++	    $(SETUPTOOLS_ENV) \
+ 	    CFLAGS="-I$(abs_top_srcdir)/lib -I$(abs_builddir)/lib" \
+ 	    LDFLAGS=-L$(abs_builddir)/lib/.libs $(PYTHON) setup.py \
+ 	    $(if $(VERBOSE),,-q) build
+@@ -179,6 +180,7 @@ $(abs_builddir)/python-pkg/setup.py:
+ $(PYTHON_TARBALL): $(abs_builddir)/python-pkg/setup.py
+ 	cp $(top_builddir)/VERSION $(abs_builddir)/python-pkg
+ 	cd $(abs_builddir)/python-pkg; CFLAGS=-I$(abs_top_srcdir)/lib \
++	    $(SETUPTOOLS_ENV) \
+ 	    LDFLAGS=-L$(abs_builddir)/lib/.libs $(PYTHON) setup.py -q sdist
+ 
+ $(top_builddir)/python-pkg/VERSION: VERSION
+-- 
+2.14.1
+

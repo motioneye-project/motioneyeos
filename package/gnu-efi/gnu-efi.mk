@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-GNU_EFI_VERSION = 3.0.1
+GNU_EFI_VERSION = 3.0.6
 GNU_EFI_SOURCE = gnu-efi-$(GNU_EFI_VERSION).tar.bz2
 GNU_EFI_SITE = http://downloads.sourceforge.net/project/gnu-efi
 GNU_EFI_INSTALL_STAGING = YES
-GNU_EFI_LICENSE = BSD-3c and/or GPLv2+ (gnuefi), BSD-3c (efilib)
+GNU_EFI_LICENSE = BSD-3-Clause and/or GPL-2.0+ (gnuefi), BSD-3-Clause (efilib)
 GNU_EFI_LICENSE_FILES = README.efilib
 
 # gnu-efi is a set of library and header files used to build
@@ -20,6 +20,10 @@ ifeq ($(BR2_i386),y)
 GNU_EFI_PLATFORM = ia32
 else ifeq ($(BR2_x86_64),y)
 GNU_EFI_PLATFORM = x86_64
+else ifeq ($(BR2_arm)$(BR2_armeb),y)
+GNU_EFI_PLATFORM = arm
+else ifeq ($(BR2_aarch64)$(BR2_aarch64_be),y)
+GNU_EFI_PLATFORM = aarch64
 endif
 
 define GNU_EFI_BUILD_CMDS

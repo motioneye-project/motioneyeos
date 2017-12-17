@@ -1,0 +1,8 @@
+config BR2_PACKAGE_MICROPYTHON_LIB
+	bool "micropython-lib"
+	select BR2_PACKAGE_PCRE # runtime
+	depends on BR2_PACKAGE_MICROPYTHON
+	help
+	  Core Python libraries ported to MicroPython.
+
+	  http://micropython.org

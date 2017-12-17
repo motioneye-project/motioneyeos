@@ -1,0 +1,42 @@
+From 9db18d93811153fc9a70c9844fadc6fdf7cbbb64 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@uclibc-ng.org>
+Date: Sun, 6 Aug 2017 21:15:50 +0200
+Subject: [PATCH] microblaze: handle R_MICROBLAZE_NONE for ld.so bootstrap
+
+Latest binutils 2.29 release emits a R_MICROBLAZE_NONE
+relocation, which breaks shared library loader bootstrap
+relocation.
+
+Signed-off-by: Waldemar Brodkorb <wbx@uclibc-ng.org>
+---
+ ldso/ldso/microblaze/dl-startup.h | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
+
+diff --git a/ldso/ldso/microblaze/dl-startup.h b/ldso/ldso/microblaze/dl-startup.h
+index 720c53a..16d5762 100644
+--- a/ldso/ldso/microblaze/dl-startup.h
++++ b/ldso/ldso/microblaze/dl-startup.h
+@@ -82,18 +82,15 @@ static __always_inline
+ void PERFORM_BOOTSTRAP_RELOC(ELF_RELOC *rpnt, unsigned long *reloc_addr,
+ 	unsigned long symbol_addr, unsigned long load_addr, attribute_unused Elf32_Sym *symtab)
+ {
+-
+ 	switch (ELF_R_TYPE(rpnt->r_info))
+ 	{
+ 		case R_MICROBLAZE_REL:
+-
+ 			*reloc_addr = load_addr + rpnt->r_addend;
+ 			break;
+-
++		case R_MICROBLAZE_NONE:
++			break;
+ 		default:
+ 			_dl_exit(1);
+ 			break;
+-
+ 	}
+-
+ }
+-- 
+2.1.4
+

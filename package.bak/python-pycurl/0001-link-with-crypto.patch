@@ -1,0 +1,12 @@
+diff -uNr pycurl-7.19.5.1-orig/setup.py pycurl-7.19.5.1-new/setup.py
+--- pycurl-7.19.5.1-orig/setup.py	2015-01-07 05:37:47.000000000 +0200
++++ pycurl-7.19.5.1-new/setup.py	2015-04-05 11:44:25.356335107 +0300
+@@ -56,7 +56,7 @@
+         self.include_dirs = []
+         self.define_macros = [("PYCURL_VERSION", '"%s"' % VERSION)]
+         self.library_dirs = []
+-        self.libraries = []
++        self.libraries = ['crypto']
+         self.runtime_library_dirs = []
+         self.extra_objects = []
+         self.extra_compile_args = []

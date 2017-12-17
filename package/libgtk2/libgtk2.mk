@@ -9,14 +9,14 @@ LIBGTK2_VERSION = $(LIBGTK2_VERSION_MAJOR).31
 LIBGTK2_SOURCE = gtk+-$(LIBGTK2_VERSION).tar.xz
 LIBGTK2_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK2_VERSION_MAJOR)
 LIBGTK2_INSTALL_STAGING = YES
-LIBGTK2_LICENSE = LGPLv2+
+LIBGTK2_LICENSE = LGPL-2.0+
 LIBGTK2_LICENSE_FILES = COPYING
 # For 0001-reduce-dependencies.patch
 LIBGTK2_AUTORECONF = YES
 
 LIBGTK2_CONF_ENV = \
-	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/usr/bin/gtk-update-icon-cache \
-	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource \
+	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/bin/gtk-update-icon-cache \
+	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/bin/gdk-pixbuf-csource \
 	DB2HTML=false
 
 LIBGTK2_CONF_OPTS = --disable-glibtest --enable-explicit-deps=no
@@ -120,7 +120,7 @@ define HOST_LIBGTK2_BUILD_CMDS
 endef
 
 define HOST_LIBGTK2_INSTALL_CMDS
-	cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/usr/bin
+	cp $(@D)/gtk/gtk-update-icon-cache $(HOST_DIR)/bin
 endef
 
 $(eval $(autotools-package))

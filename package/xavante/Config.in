@@ -1,14 +1,14 @@
 config BR2_PACKAGE_XAVANTE
 	bool "xavante"
 	# Runtime dependency only
-	select BR2_PACKAGE_CGILUA
 	select BR2_PACKAGE_COPAS
-	select BR2_PACKAGE_COXPCALL
 	select BR2_PACKAGE_LUAFILESYSTEM
 	select BR2_PACKAGE_LUASOCKET
-	select BR2_PACKAGE_WSAPI
 	help
 	  Xavante is a Lua HTTP 1.1 Web server that uses a modular
-	  architecture based on URI mapped handlers.
+	  architecture based on URI mapped handlers. Xavante currently
+	  offers a file handler, a redirect handler and a WSAPI handler.
+	  Those are used for general files, URI remapping and WSAPI
+	  applications respectively.
 
 	  http://keplerproject.github.com/xavante/

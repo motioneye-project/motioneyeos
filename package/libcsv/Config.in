@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBCSV
+	bool "libcsv"
+	help
+	  libcsv is a small, simple and fast CSV library written in
+	  pure ANSI C89 that can read and write CSV data. It provides
+	  a straight-forward interface using callback functions to
+	  handle parsed fields and rows and can parse improperly
+	  formatted CSV files.
+
+	  https://sourceforge.net/projects/libcsv/

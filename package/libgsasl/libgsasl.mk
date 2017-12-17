@@ -6,7 +6,7 @@
 
 LIBGSASL_VERSION = 1.8.0
 LIBGSASL_SITE = $(BR2_GNU_MIRROR)/gsasl
-LIBGSASL_LICENSE = LGPLv2.1+ (library), GPLv3+ (programs)
+LIBGSASL_LICENSE = LGPL-2.1+ (library), GPL-3.0+ (programs)
 LIBGSASL_LICENSE_FILES = README COPYING.LIB COPYING
 LIBGSASL_INSTALL_STAGING = YES
 # It doesn't seem to build with our libgcrypt so better be safe

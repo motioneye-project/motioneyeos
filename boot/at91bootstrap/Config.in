@@ -1,0 +1,47 @@
+config BR2_TARGET_AT91BOOTSTRAP
+	depends on BR2_arm926t
+	bool "AT91 Bootstrap"
+	help
+	  AT91Bootstrap is a first level bootloader for the Atmel AT91
+	  devices. It integrates algorithms for:
+	  - Device initialization such as clock configuration, PIO settings...
+	  - Peripheral drivers such as PIO, PMC or SDRAMC...
+	  - Physical media algorithm such as DataFlash, NandFlash, NOR Flash...
+
+if	BR2_TARGET_AT91BOOTSTRAP
+
+config BR2_TARGET_AT91BOOTSTRAP_CUSTOM_PATCH_DIR
+	string "custom patch dir"
+	help
+	  If your board requires custom patches, add the path to the
+	  directory containing the patches here. The patches must be
+	  named at91bootstrap-<version>-<something>.patch.
+
+	  Most users may leave this empty
+
+config BR2_TARGET_AT91BOOTSTRAP_BOARD
+	string "Bootstrap board"
+	default ""
+	help
+	  This is used to do a make <board>_config
+
+choice
+	prompt "Boot Memory"
+	default BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
+	help
+	  Select Chip for which AT91 bootstrap should be built
+
+config BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
+	bool "Data Flash"
+
+config BR2_TARGET_AT91BOOTSTRAP_NANDFLASH
+	bool "NAND Flash"
+
+endchoice
+
+config BR2_TARGET_AT91BOOTSTRAP_MEMORY
+	string
+	default	"dataflash"	if	BR2_TARGET_AT91BOOTSTRAP_DATAFLASH
+	default	"nandflash"	if	BR2_TARGET_AT91BOOTSTRAP_NANDFLASH
+
+endif

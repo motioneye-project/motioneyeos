@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_DAEMON
+	bool "python-daemon"
+	select BR2_PACKAGE_PYTHON_DOCUTILS # runtime
+	help
+	  Library to implement a well-behaved Unix daemon process.
+
+	  https://pypi.python.org/pypi/python-daemon/

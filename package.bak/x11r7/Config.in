@@ -1,0 +1,278 @@
+menuconfig BR2_PACKAGE_XORG7
+	bool "X.org X Window System"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # dlopen in xlib_libX11
+	help
+	  Support for X11R7 libraries, servers, drivers, and/or
+	  applications in the target.
+
+	  http://xorg.freedesktop.org
+
+if BR2_PACKAGE_XORG7
+	menu "X11R7 Servers"
+		source package/x11r7/xserver_xorg-server/Config.in
+	endmenu
+	menu "X11R7 Libraries"
+		source package/x11r7/libxcb/Config.in
+		source package/x11r7/xcb-util/Config.in
+		source package/x11r7/xcb-util-cursor/Config.in
+		source package/x11r7/xcb-util-image/Config.in
+		source package/x11r7/xcb-util-keysyms/Config.in
+		source package/x11r7/xcb-util-renderutil/Config.in
+		source package/x11r7/xcb-util-wm/Config.in
+		source package/x11r7/xlib_libFS/Config.in
+		source package/x11r7/xlib_libICE/Config.in
+		source package/x11r7/xlib_libSM/Config.in
+		source package/x11r7/xlib_libX11/Config.in
+		source package/x11r7/xlib_libXScrnSaver/Config.in
+		source package/x11r7/xlib_libXau/Config.in
+		source package/x11r7/xlib_libXaw/Config.in
+		source package/x11r7/xlib_libXcomposite/Config.in
+		source package/x11r7/xlib_libXcursor/Config.in
+		source package/x11r7/xlib_libXdamage/Config.in
+		source package/x11r7/xlib_libXdmcp/Config.in
+		source package/x11r7/xlib_libXext/Config.in
+		source package/x11r7/xlib_libXfixes/Config.in
+		source package/x11r7/xlib_libXfont/Config.in
+		source package/x11r7/xlib_libXfont2/Config.in
+		source package/x11r7/xlib_libXft/Config.in
+		source package/x11r7/xlib_libXi/Config.in
+		source package/x11r7/xlib_libXinerama/Config.in
+		source package/x11r7/xlib_libXmu/Config.in
+		source package/x11r7/xlib_libXpm/Config.in
+		source package/x11r7/xlib_libXrandr/Config.in
+		source package/x11r7/xlib_libXrender/Config.in
+		source package/x11r7/xlib_libXres/Config.in
+		source package/x11r7/xlib_libXt/Config.in
+		source package/x11r7/xlib_libXtst/Config.in
+		source package/x11r7/xlib_libXv/Config.in
+		source package/x11r7/xlib_libXvMC/Config.in
+		source package/x11r7/xlib_libXxf86dga/Config.in
+		source package/x11r7/xlib_libXxf86vm/Config.in
+		source package/x11r7/xlib_libdmx/Config.in
+		source package/x11r7/xlib_libfontenc/Config.in
+		source package/x11r7/xlib_libxkbfile/Config.in
+		source package/x11r7/xlib_libxshmfence/Config.in
+		source package/x11r7/xlib_xtrans/Config.in
+	endmenu
+	menu "X11R7 Applications"
+		source package/x11r7/xapp_appres/Config.in
+		source package/x11r7/xapp_bdftopcf/Config.in
+		source package/x11r7/xapp_beforelight/Config.in
+		source package/x11r7/xapp_bitmap/Config.in
+		source package/x11r7/xapp_editres/Config.in
+		source package/x11r7/xapp_fonttosfnt/Config.in
+		source package/x11r7/xapp_fslsfonts/Config.in
+		source package/x11r7/xapp_fstobdf/Config.in
+		source package/x11r7/xapp_iceauth/Config.in
+		source package/x11r7/xapp_ico/Config.in
+		source package/x11r7/xapp_listres/Config.in
+		source package/x11r7/xapp_luit/Config.in
+		source package/x11r7/xapp_mkfontdir/Config.in
+		source package/x11r7/xapp_mkfontscale/Config.in
+		source package/x11r7/xapp_oclock/Config.in
+		source package/x11r7/xapp_rgb/Config.in
+		source package/x11r7/xapp_rstart/Config.in
+		source package/x11r7/xapp_scripts/Config.in
+		source package/x11r7/xapp_sessreg/Config.in
+		source package/x11r7/xapp_setxkbmap/Config.in
+		source package/x11r7/xapp_showfont/Config.in
+		source package/x11r7/xapp_smproxy/Config.in
+		source package/x11r7/xapp_twm/Config.in
+		source package/x11r7/xapp_viewres/Config.in
+		source package/x11r7/xapp_x11perf/Config.in
+		source package/x11r7/xapp_xauth/Config.in
+		source package/x11r7/xapp_xbacklight/Config.in
+		source package/x11r7/xapp_xbiff/Config.in
+		source package/x11r7/xapp_xcalc/Config.in
+		source package/x11r7/xapp_xclipboard/Config.in
+		source package/x11r7/xapp_xclock/Config.in
+		source package/x11r7/xapp_xcmsdb/Config.in
+		source package/x11r7/xapp_xcompmgr/Config.in
+		source package/x11r7/xapp_xconsole/Config.in
+		source package/x11r7/xapp_xcursorgen/Config.in
+		source package/x11r7/xapp_xdbedizzy/Config.in
+		source package/x11r7/xapp_xditview/Config.in
+		source package/x11r7/xapp_xdm/Config.in
+		source package/x11r7/xapp_xdpyinfo/Config.in
+		source package/x11r7/xapp_xdriinfo/Config.in
+		source package/x11r7/xapp_xedit/Config.in
+		source package/x11r7/xapp_xev/Config.in
+		source package/x11r7/xapp_xeyes/Config.in
+		source package/x11r7/xapp_xf86dga/Config.in
+		source package/x11r7/xapp_xfd/Config.in
+		source package/x11r7/xapp_xfindproxy/Config.in
+		source package/x11r7/xapp_xfontsel/Config.in
+		source package/x11r7/xapp_xfs/Config.in
+		source package/x11r7/xapp_xfsinfo/Config.in
+		source package/x11r7/xapp_xgamma/Config.in
+		source package/x11r7/xapp_xgc/Config.in
+		source package/x11r7/xapp_xhost/Config.in
+		source package/x11r7/xapp_xinit/Config.in
+		source package/x11r7/xapp_xinput/Config.in
+		source package/x11r7/xapp_xinput-calibrator/Config.in
+		source package/x11r7/xapp_xkbcomp/Config.in
+		source package/x11r7/xapp_xkbevd/Config.in
+		source package/x11r7/xapp_xkbprint/Config.in
+		source package/x11r7/xapp_xkbutils/Config.in
+		source package/x11r7/xapp_xkill/Config.in
+		source package/x11r7/xapp_xload/Config.in
+		source package/x11r7/xapp_xlogo/Config.in
+		source package/x11r7/xapp_xlsatoms/Config.in
+		source package/x11r7/xapp_xlsclients/Config.in
+		source package/x11r7/xapp_xlsfonts/Config.in
+		source package/x11r7/xapp_xmag/Config.in
+		source package/x11r7/xapp_xman/Config.in
+		source package/x11r7/xapp_xmessage/Config.in
+		source package/x11r7/xapp_xmh/Config.in
+		source package/x11r7/xapp_xmodmap/Config.in
+		source package/x11r7/xapp_xmore/Config.in
+		source package/x11r7/xapp_xpr/Config.in
+		source package/x11r7/xapp_xprop/Config.in
+		source package/x11r7/xapp_xrandr/Config.in
+		source package/x11r7/xapp_xrdb/Config.in
+		source package/x11r7/xapp_xrefresh/Config.in
+		source package/x11r7/xapp_xset/Config.in
+		source package/x11r7/xapp_xsetmode/Config.in
+		source package/x11r7/xapp_xsetpointer/Config.in
+		source package/x11r7/xapp_xsetroot/Config.in
+		source package/x11r7/xapp_xsm/Config.in
+		source package/x11r7/xapp_xstdcmap/Config.in
+		source package/x11r7/xapp_xvidtune/Config.in
+		source package/x11r7/xapp_xvinfo/Config.in
+		source package/x11r7/xapp_xwd/Config.in
+		source package/x11r7/xapp_xwininfo/Config.in
+		source package/x11r7/xapp_xwud/Config.in
+	endmenu
+	if BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	menu "X11R7 Drivers"
+		source package/x11r7/xdriver_xf86-input-evdev/Config.in
+		source package/x11r7/xdriver_xf86-input-joystick/Config.in
+		source package/x11r7/xdriver_xf86-input-keyboard/Config.in
+		source package/x11r7/xdriver_xf86-input-libinput/Config.in
+		source package/x11r7/xdriver_xf86-input-mouse/Config.in
+		source package/x11r7/xdriver_xf86-input-synaptics/Config.in
+		source package/x11r7/xdriver_xf86-input-tslib/Config.in
+		source package/x11r7/xdriver_xf86-input-vmmouse/Config.in
+		source package/x11r7/xdriver_xf86-video-amdgpu/Config.in
+		source package/x11r7/xdriver_xf86-video-ark/Config.in
+		source package/x11r7/xdriver_xf86-video-ast/Config.in
+		source package/x11r7/xdriver_xf86-video-ati/Config.in
+		source package/x11r7/xdriver_xf86-video-cirrus/Config.in
+		source package/x11r7/xdriver_xf86-video-dummy/Config.in
+		source package/x11r7/xdriver_xf86-video-fbdev/Config.in
+		source package/x11r7/xdriver_xf86-video-fbturbo/Config.in
+		source package/x11r7/xdriver_xf86-video-geode/Config.in
+		source package/x11r7/xdriver_xf86-video-glide/Config.in
+		source package/x11r7/xdriver_xf86-video-glint/Config.in
+		source package/x11r7/xdriver_xf86-video-i128/Config.in
+		source package/x11r7/xdriver_xf86-video-imx/Config.in
+		source package/x11r7/xdriver_xf86-video-imx-viv/Config.in
+		source package/x11r7/xdriver_xf86-video-intel/Config.in
+		source package/x11r7/xdriver_xf86-video-mach64/Config.in
+		source package/x11r7/xdriver_xf86-video-mga/Config.in
+		source package/x11r7/xdriver_xf86-video-neomagic/Config.in
+		source package/x11r7/xdriver_xf86-video-nouveau/Config.in
+		source package/x11r7/xdriver_xf86-video-nv/Config.in
+		source package/x11r7/xdriver_xf86-video-openchrome/Config.in
+		source package/x11r7/xdriver_xf86-video-qxl/Config.in
+		source package/x11r7/xdriver_xf86-video-r128/Config.in
+		source package/x11r7/xdriver_xf86-video-savage/Config.in
+		source package/x11r7/xdriver_xf86-video-siliconmotion/Config.in
+		source package/x11r7/xdriver_xf86-video-sis/Config.in
+		source package/x11r7/xdriver_xf86-video-tdfx/Config.in
+		source package/x11r7/xdriver_xf86-video-tga/Config.in
+		source package/x11r7/xdriver_xf86-video-trident/Config.in
+		source package/x11r7/xdriver_xf86-video-v4l/Config.in
+		source package/x11r7/xdriver_xf86-video-vesa/Config.in
+		source package/x11r7/xdriver_xf86-video-vmware/Config.in
+		source package/x11r7/xdriver_xf86-video-voodoo/Config.in
+		source package/x11r7/xdriver_xf86-video-wsfb/Config.in
+	endmenu
+	endif
+	menu "X11R7 Fonts"
+		source package/x11r7/xfont_font-util/Config.in
+		source package/x11r7/xfont_encodings/Config.in
+		source package/x11r7/xfont_font-adobe-100dpi/Config.in
+		source package/x11r7/xfont_font-adobe-75dpi/Config.in
+		source package/x11r7/xfont_font-adobe-utopia-100dpi/Config.in
+		source package/x11r7/xfont_font-adobe-utopia-75dpi/Config.in
+		source package/x11r7/xfont_font-adobe-utopia-type1/Config.in
+		source package/x11r7/xfont_font-alias/Config.in
+		source package/x11r7/xfont_font-arabic-misc/Config.in
+		source package/x11r7/xfont_font-bh-100dpi/Config.in
+		source package/x11r7/xfont_font-bh-75dpi/Config.in
+		source package/x11r7/xfont_font-bh-lucidatypewriter-100dpi/Config.in
+		source package/x11r7/xfont_font-bh-lucidatypewriter-75dpi/Config.in
+		source package/x11r7/xfont_font-bh-ttf/Config.in
+		source package/x11r7/xfont_font-bh-type1/Config.in
+		source package/x11r7/xfont_font-bitstream-100dpi/Config.in
+		source package/x11r7/xfont_font-bitstream-75dpi/Config.in
+		source package/x11r7/xfont_font-bitstream-type1/Config.in
+		source package/x11r7/xfont_font-cronyx-cyrillic/Config.in
+		source package/x11r7/xfont_font-cursor-misc/Config.in
+		source package/x11r7/xfont_font-daewoo-misc/Config.in
+		source package/x11r7/xfont_font-dec-misc/Config.in
+		source package/x11r7/xfont_font-ibm-type1/Config.in
+		source package/x11r7/xfont_font-isas-misc/Config.in
+		source package/x11r7/xfont_font-jis-misc/Config.in
+		source package/x11r7/xfont_font-micro-misc/Config.in
+		source package/x11r7/xfont_font-misc-cyrillic/Config.in
+		source package/x11r7/xfont_font-misc-ethiopic/Config.in
+		source package/x11r7/xfont_font-misc-meltho/Config.in
+		source package/x11r7/xfont_font-misc-misc/Config.in
+		source package/x11r7/xfont_font-mutt-misc/Config.in
+		source package/x11r7/xfont_font-schumacher-misc/Config.in
+		source package/x11r7/xfont_font-screen-cyrillic/Config.in
+		source package/x11r7/xfont_font-sony-misc/Config.in
+		source package/x11r7/xfont_font-sun-misc/Config.in
+		source package/x11r7/xfont_font-winitzki-cyrillic/Config.in
+		source package/x11r7/xfont_font-xfree86-type1/Config.in
+	endmenu
+	menu "X11R7 X protocols"
+		source package/x11r7/xcb-proto/Config.in
+		source package/x11r7/xproto_applewmproto/Config.in
+		source package/x11r7/xproto_bigreqsproto/Config.in
+		source package/x11r7/xproto_compositeproto/Config.in
+		source package/x11r7/xproto_damageproto/Config.in
+		source package/x11r7/xproto_dmxproto/Config.in
+		source package/x11r7/xproto_dri2proto/Config.in
+		source package/x11r7/xproto_dri3proto/Config.in
+		source package/x11r7/xproto_fixesproto/Config.in
+		source package/x11r7/xproto_fontcacheproto/Config.in
+		source package/x11r7/xproto_fontsproto/Config.in
+		source package/x11r7/xproto_glproto/Config.in
+		source package/x11r7/xproto_inputproto/Config.in
+		source package/x11r7/xproto_kbproto/Config.in
+		source package/x11r7/xproto_presentproto/Config.in
+		source package/x11r7/xproto_randrproto/Config.in
+		source package/x11r7/xproto_recordproto/Config.in
+		source package/x11r7/xproto_renderproto/Config.in
+		source package/x11r7/xproto_resourceproto/Config.in
+		source package/x11r7/xproto_scrnsaverproto/Config.in
+		source package/x11r7/xproto_videoproto/Config.in
+		source package/x11r7/xproto_windowswmproto/Config.in
+		source package/x11r7/xproto_xcmiscproto/Config.in
+		source package/x11r7/xproto_xextproto/Config.in
+		source package/x11r7/xproto_xf86bigfontproto/Config.in
+		source package/x11r7/xproto_xf86dgaproto/Config.in
+		source package/x11r7/xproto_xf86driproto/Config.in
+		source package/x11r7/xproto_xf86vidmodeproto/Config.in
+		source package/x11r7/xproto_xineramaproto/Config.in
+		source package/x11r7/xproto_xproto/Config.in
+		source package/x11r7/xproto_xproxymanagementprotocol/Config.in
+	endmenu
+	menu "X11R7 Utilities"
+		source package/x11r7/xutil_makedepend/Config.in
+		source package/x11r7/mcookie/Config.in
+	endmenu
+	menu "X11R7 Other data"
+		source package/x11r7/xdata_xbitmaps/Config.in
+		source package/x11r7/xdata_xcursor-themes/Config.in
+		source package/x11r7/xcursor-transparent-theme/Config.in
+	endmenu
+endif
+
+comment "X.org needs a toolchain w/ wchar, threads, dynamic library"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

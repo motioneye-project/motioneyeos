@@ -1,0 +1,19 @@
+Disable tests to avoid MMU dependency due to fork.
+
+Fixes
+CMakeFiles/regression.dir/regression.c.o: In function `_test_file_locks':
+/home/br/br4/output/build/libical-v1.0.1/src/test/regression.c:(.text+0x96d8): undefined reference to `_fork'
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr libical-1.0.1.org/src/CMakeLists.txt libical-1.0.1/src/CMakeLists.txt
+--- libical-1.0.1.org/src/CMakeLists.txt	2014-10-09 17:07:05.000000000 +0200
++++ libical-1.0.1/src/CMakeLists.txt	2015-04-25 17:41:22.657345548 +0200
+@@ -1,7 +1,6 @@
+ add_subdirectory(libical)
+ add_subdirectory(libicalss)
+ add_subdirectory(libicalvcal)
+-add_subdirectory(test)
+ 
+ if(MSVC)
+   install(FILES

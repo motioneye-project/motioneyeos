@@ -1,10 +1,10 @@
 config BR2_PACKAGE_LIBPLAYER
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	bool "libplayer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  libplayer provides a generic A/V API that relies on various multimedia
-	  player for Linux systems. It currently supports MPlayer, xine VLC and
-	  GStreamer only
+	  libplayer provides a generic A/V API that relies on various
+	  multimedia player for Linux systems. It currently supports
+	  MPlayer, xine VLC and GStreamer only
 
 	  http://libplayer.geexbox.org/
 
@@ -20,16 +20,13 @@ config BR2_PACKAGE_LIBPLAYER_GSTREAMER
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
 	depends on BR2_USE_MMU # glib2
+	depends on !BR2_STATIC_LIBS # gstreamer
 	select BR2_PACKAGE_GSTREAMER
 
-comment "gstreamer backend needs a toolchain w/ wchar, threads"
+comment "gstreamer backend needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
-config BR2_PACKAGE_LIBPLAYER_PYTHON
-	depends on BR2_PACKAGE_PYTHON
-	depends on BROKEN # player_init params, builds for host
-	bool "Libplayer python bindings"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
 endif
 
 comment "libplayer needs a toolchain w/ threads"

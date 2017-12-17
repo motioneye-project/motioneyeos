@@ -1,0 +1,20 @@
+config BR2_PACKAGE_ALLJOYN_TCL
+	bool "alljoyn-tcl"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  The AllJoyn framework defines a common way for devices and
+	  apps to communicate with one another regardless of brands,
+	  categories, transports, and OSes. Developers write
+	  applications that discover nearby devices, and communicate
+	  with each other directly and through the cloud, unleashing
+	  new possibilities in the Internet of Things.
+
+	  AllJoyn Thin Core Library (AJTCL) is designed to bring the
+	  benefits of the AllJoyn distributed programming environment
+	  to embedded systems.
+
+	  https://allseenalliance.org
+
+comment "alljoyn-tcl needs a toolchain w/ threads and dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

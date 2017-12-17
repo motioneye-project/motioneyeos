@@ -1,0 +1,17 @@
+config BR2_PACKAGE_QT5ENGINIO
+	bool "qt5enginio"
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_NETWORK
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  Enginio is a Backend-as-a-Service solution for simplifying
+	  backend development of connected and data-driven applications.
+
+	  This package has been tagged as deprecated since version
+	  5.6 and not recommended for new design.
+
+	  http://doc.qt.io/archives/qt-5.5/enginio-index.html

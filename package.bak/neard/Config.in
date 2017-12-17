@@ -1,0 +1,31 @@
+config BR2_PACKAGE_NEARD
+	bool "neard"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl, dbus, libglib2
+	depends on BR2_USE_MMU # dbus, libglib2
+	depends on !BR2_STATIC_LIBS # dlopen
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBNL
+	help
+	  Near Field Communication (NFC) manager. This userspace daemon is
+	  a part of the NFC stack provided by the Linux NFC project.
+
+	  http://git.kernel.org/?p=network/nfc/neard.git;a=summary
+
+	  https://01.org/linux-nfc/documentation/how-start-linux-nfc-code...
+
+if BR2_PACKAGE_NEARD
+
+config BR2_PACKAGE_NEARD_TOOLS
+	bool "neard tools"
+	help
+	  Build and install neard tools.
+
+endif
+
+comment "neard needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

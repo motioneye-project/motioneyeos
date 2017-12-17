@@ -1,0 +1,14 @@
+config BR2_PACKAGE_EASYDBUS
+	bool "easydbus"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	help
+	  Easy to use DBus library for Lua.
+
+	  https://github.com/mniestroj/easydbus
+
+comment "easydbus needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

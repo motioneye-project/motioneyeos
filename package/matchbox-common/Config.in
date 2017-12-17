@@ -1,7 +1,7 @@
 config BR2_PACKAGE_MATCHBOX_COMMON
 	bool "matchbox-common"
-	select BR2_PACKAGE_MATCHBOX_LIB
 	depends on BR2_PACKAGE_MATCHBOX_PANEL || BR2_PACKAGE_MATCHBOX_DESKTOP
+	select BR2_PACKAGE_MATCHBOX_LIB
 	help
 	  Common desktop folders and matchbox-session script.
 

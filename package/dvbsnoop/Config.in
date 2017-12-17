@@ -1,21 +1,21 @@
 config BR2_PACKAGE_DVBSNOOP
 	bool "dvbsnoop"
 	help
-	  Dvbsnoop is just a simple tool to analyze, view or debug a transport
-	  stream (TS), program elementary stream (PES) or even a program stream
-	  (PS). Dvbsnoop is trying to get input mostly direct from a frontend
-	  (satellite or cable tuner inside a set-top box for example) via DVB
-	  APIv3 to view into a TS, or a demux to view PES or PS (also mostly
-	  inside the set-top box or even PCI Card or USB Plug) but also from a
-	  file (recorded TS).
-	  Dvbsnoop is working well on SD transport streams but may have some
-	  limited functionality on HD transport streams (DVB-{C,S,T}2 because
-	  of missing knowledge how to handle it.
+	  Dvbsnoop is just a simple tool to analyze, view or debug a
+	  transport stream (TS), program elementary stream (PES) or even
+	  a program stream (PS). Dvbsnoop is trying to get input mostly
+	  direct from a frontend (satellite or cable tuner inside a
+	  set-top box for example) via DVB APIv3 to view into a TS, or a
+	  demux to view PES or PS (also mostly inside the set-top box or
+	  even PCI Card or USB Plug) but also from a file (recorded TS).
+	  Dvbsnoop is working well on SD transport streams but may have
+	  some limited functionality on HD transport streams
+	  (DVB-{C,S,T}2 because of missing knowledge how to handle it.
 
-	  Dvbsnoop itself doesn't do the tuning on the frontend, this has to be
-	  done by external helpers or manually driver call.
-	  The dvbsnoop tool was written while developing the software Neutrino
-	  on the set-top box DBox2.
+	  Dvbsnoop itself doesn't do the tuning on the frontend, this
+	  has to be done by external helpers or manually driver call.
+	  The dvbsnoop tool was written while developing the software
+	  Neutrino on the set-top box DBox2.
 
 	  http://dvbsnoop.sourceforge.net
 	  http://en.wikipedia.org/wiki/DBox2

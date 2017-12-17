@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_ADOBE_UTOPIA_100DPI
+	bool "font-adobe-utopia-100dpi"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

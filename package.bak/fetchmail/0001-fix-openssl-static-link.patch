@@ -1,0 +1,30 @@
+Fix checking for statically build OpenSSL with libz dependency
+
+Fixes
+http://autobuild.buildroot.net/results/48a/48ad6d3659cf1f04581b7e3d115bebf454ff17fd/
+
+configure: Enabling OpenSSL support in /home/br/br/output/host/usr/i486-buildroot-linux-uclibc/sysroot/usr.
+checking for additional library dependencies of SSL... error
+configure: error: cannot link with SSL - check config.log
+
+In config.log multiple linking errors to libz can be found:
+
+configure:10099: /home/br/br/output/host/usr/bin/i486-ctng-linux-uclibc-gcc -o
+  conftest -D_LARGEFILE_SOURCE -D_LARGEFILE64
+  /home/br/br/output/host/usr/i486-buildroot-linux-uclibc/sysroot/usr/lib/libcrypto.a(c_zlib.o):
+  In function `zlib_stateful_c_zlib.c:(.text+0x56): undefined reference to `inflate'
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr fetchmail-6.3.26.org/configure.ac fetchmail-6.3.26/configure.ac
+--- fetchmail-6.3.26.org/configure.ac	2013-04-23 22:51:10.000000000 +0200
++++ fetchmail-6.3.26/configure.ac	2014-07-27 09:20:25.000000000 +0200
+@@ -778,7 +778,7 @@
+     AC_MSG_ERROR([SSL support enabled, but OpenSSL not found])
+   fi
+   LDFLAGS="$LDFLAGS -L$with_ssl/lib"
+-  LIBS="$LIBS -lssl -lcrypto"
++  LIBS="-lssl -lcrypto $LIBS"
+   dnl check if -ldl is needed
+   AC_MSG_CHECKING([for additional library dependencies of SSL])
+   found=0

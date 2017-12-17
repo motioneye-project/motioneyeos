@@ -1,0 +1,51 @@
+config BR2_PACKAGE_ALLJOYN_BASE
+	bool "alljoyn-base"
+	depends on BR2_USE_MMU # alljoyn
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR # alljoyn
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # alljoyn
+	select BR2_PACKAGE_ALLJOYN
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ALLJOYN_BASE_CONTROLPANEL if \
+		!BR2_PACKAGE_ALLJOYN_BASE_NOTIFICATION && \
+		!BR2_PACKAGE_ALLJOYN_BASE_ONBOARDING
+	help
+
+	  AllJoyn Base Services are common services used by many
+	  devices, providing a set of interfaces for different devices
+	  to interact and interoperate with one another.
+
+	  https://allseenalliance.org
+
+if BR2_PACKAGE_ALLJOYN_BASE
+
+config BR2_PACKAGE_ALLJOYN_BASE_CONTROLPANEL
+	bool "controlpanel"
+	help
+	  Enable AllJoyn Control Panel base service which allows
+	  devices to advertise a virtual control panel to be
+	  controlled remotely.
+
+config BR2_PACKAGE_ALLJOYN_BASE_NOTIFICATION
+	bool "notification"
+	help
+	  Enable AllJoyn Notification base service which allows
+	  text-based notifications to be sent and received by devices
+	  on the AllJoyn network. Also supports audio and images via
+	  URLs.
+
+config BR2_PACKAGE_ALLJOYN_BASE_ONBOARDING
+	bool "onboarding"
+	help
+	  Enable AllJoyn Onboarding base service which provides a
+	  consistent way to bring a new device onto the Wi-Fi network.
+
+endif # BR2_PACKAGE_ALLJOYN_BASE
+
+comment "alljoyn-base needs a toolchain w/ C++, threads, wchar, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR || BR2_STATIC_LIBS

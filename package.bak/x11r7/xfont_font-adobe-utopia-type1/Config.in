@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_ADOBE_UTOPIA_TYPE1
+	bool "font-adobe-utopia-type1"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

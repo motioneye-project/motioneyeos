@@ -1,0 +1,88 @@
+comment "nvidia-driver needs a glibc toolchain"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
+config BR2_PACKAGE_NVIDIA_DRIVER
+	bool "nvidia-driver"
+	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  The binary-only driver blob for NVidia cards.
+	  This is the userland part only.
+
+	  http://www.nvidia.com/
+
+if BR2_PACKAGE_NVIDIA_DRIVER
+
+comment "nvidia-driver X.org drivers needs a modular Xorg server"
+	depends on !BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+
+config BR2_PACKAGE_NVIDIA_DRIVER_XORG
+	bool "X.org drivers"
+	default y
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR
+	select BR2_PACKAGE_MESA3D_HEADERS
+	select BR2_PACKAGE_XLIB_LIBX11 # runtime
+	select BR2_PACKAGE_XLIB_LIBXEXT # runtime
+	select BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+	select BR2_PACKAGE_HAS_LIBGLES
+
+if BR2_PACKAGE_NVIDIA_DRIVER_XORG
+
+config BR2_PACKAGE_PROVIDES_LIBGL
+	default "nvidia-driver"
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "nvidia-driver"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "nvidia-driver"
+
+config BR2_PACKAGE_NVIDIA_DRIVER_PRIVATE_LIBS
+	bool "Install private libraries"
+	help
+	  Two libraries require special agreement with NVidia to
+	  develop code linking to those libraries: libnvidia-ifr.so
+	  and libnvidia-fbc.so (to grab and encode an OpenGL buffer or
+	  an X framebuffer.)
+
+	  Say 'y' here if you plan on running a program that uses
+	  those private libraries.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER_XORG
+
+config BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+	bool "CUDA support"
+
+if BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+
+config BR2_PACKAGE_NVIDIA_DRIVER_OPENCL
+	bool "OpenCL support"
+
+config BR2_PACKAGE_NVIDIA_DRIVER_CUDA_PROGS
+	bool "CUDA MPS server and control"
+	help
+	  Say 'y' here if you need to run more than one program
+	  doing CUDA at the same time. The MPS server will be
+	  launched automatically when needed.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER_CUDA
+
+comment "nvidia kernel module needs a kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_PACKAGE_NVIDIA_DRIVER_MODULE
+	bool "nvidia kernel module"
+	depends on BR2_LINUX_KERNEL
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
+	help
+	  Build the nvidia.ko kernel module.
+
+	  If CUDA support (above) is set, and the target is x86_64, then
+	  this will also build the nvidia-uvm.ko kernel module, which
+	  provides Unified Memory access to the GPU and CPU memories for
+	  CUDA programs.
+
+endif # BR2_PACKAGE_NVIDIA_DRIVER

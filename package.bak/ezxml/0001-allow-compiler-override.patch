@@ -1,0 +1,17 @@
+diff -urpN ezxml/GNUmakefile ezxml.patched/GNUmakefile
+--- ezxml/GNUmakefile	2006-03-25 18:44:04.000000000 +0100
++++ ezxml.patched/GNUmakefile	2008-02-24 13:57:37.000000000 +0100
+@@ -21,10 +21,10 @@
+ # TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ # SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+-CC = gcc
+-AR = ar
++CC ?= gcc
++AR ?= ar
+ RM = rm -f
+-CFLAGS = -Wall -O2
++CFLAGS ?= -Wall -O2
+ DEBUG_CFLAGS = -O0 -g
+ OBJS = ezxml.o
+ LIB = libezxml.a

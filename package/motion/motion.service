@@ -1,0 +1,10 @@
+[Unit]
+Description=Motion camera monitoring system
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/motion
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

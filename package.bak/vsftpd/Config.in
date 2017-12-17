@@ -1,0 +1,18 @@
+config BR2_PACKAGE_VSFTPD
+	bool "vsftpd"
+	depends on BR2_USE_MMU # fork()
+	help
+	  vsftpd is an ftp daemon written with security in mind.
+	  http://vsftpd.beasts.org/
+
+if BR2_PACKAGE_VSFTPD
+
+config BR2_PACKAGE_VSFTPD_UTMPX
+	bool "log vsftpd access to utmpx"
+	# musl 1.1.4 has an empty utmpx implementation and no WTMPX_FILE
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	help
+	  Enable logging of vsftpd access to utmpx.
+	  Note that Buildroot does not generate utmpx by default.
+
+endif

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_UTIL_LINUX
+	bool "host util-linux"
+	help
+	  Various useful/essential linux libraries and utilities.
+
+	  Things like mkfs, mkswap, swapon, fdisk, mount, dmesg, etc...
+
+	  http://www.kernel.org/pub/linux/utils/util-linux/

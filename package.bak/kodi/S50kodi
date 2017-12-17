@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Starts Kodi
+#
+
+BIN=/usr/bin/br-kodi
+KODI=/usr/lib/xbmc/kodi.bin
+KODI_ARGS="--standalone -fs -n"
+PIDFILE=/var/run/kodi.pid
+
+start() {
+	printf "Starting Kodi: "
+	start-stop-daemon -S -q -b -m -p $PIDFILE --exec $BIN -- $KODI $KODI_ARGS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	printf "Stopping Kodi: "
+	start-stop-daemon -K -q -p $PIDFILE
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart|reload)
+		restart
+	;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac

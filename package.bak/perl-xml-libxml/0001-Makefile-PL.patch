@@ -1,0 +1,18 @@
+fake check_lib for cross-compilation
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+Index: b/Makefile.PL
+===================================================================
+--- a/Makefile.PL
++++ b/Makefile.PL
+@@ -88,8 +88,7 @@
+ # -------------------------------------------------------------------------- #
+ # -------------------------------------------------------------------------- #
+ 
+-use lib qw(inc);
+-use Devel::CheckLib;
++sub check_lib { return 1; }
+ 
+ # Prompt the user here for any paths and other configuration
+ 

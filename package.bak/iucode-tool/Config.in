@@ -1,0 +1,10 @@
+config BR2_PACKAGE_IUCODE_TOOL
+	bool "iucode-tool"
+	depends on BR2_x86_64 || BR2_i386
+	select BR2_PACKAGE_INTEL_MICROCODE
+	select BR2_PACKAGE_ARGP_STANDALONE \
+	       if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
+	help
+	  Intel processor microcode tool
+
+	  https://gitlab.com/iucode-tool

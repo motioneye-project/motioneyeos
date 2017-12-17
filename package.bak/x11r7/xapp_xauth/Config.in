@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XAUTH
+	bool "xauth"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAU
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXMU
+	help
+	  X authority file utility

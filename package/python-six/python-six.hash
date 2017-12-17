@@ -1,2 +1,4 @@
-# Locally computed:
-sha256  105f8d68616f8248e24bf0e9372ef04d3cc10104f1980f54d57b2ce73a5ad56a  six-1.10.0.tar.gz
+# md5 from https://pypi.python.org/pypi/six/json, sha256 locally computed
+md5	d12789f9baf7e9fb2524c0c64f1773f8  six-1.11.0.tar.gz
+sha256	70e8a77beed4562e7f14fe23a786b54f6296e34344c23bc42f07b15018ff98e9  six-1.11.0.tar.gz
+sha256  63478682e84e8c98f4c46308995f1f521a6886976e25421827d2a2be03581328  LICENSE

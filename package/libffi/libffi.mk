@@ -14,13 +14,13 @@ LIBFFI_AUTORECONF = YES
 # Move the headers to the usual location, and adjust the .pc file
 # accordingly.
 define LIBFFI_MOVE_HEADERS
-	mv $(1)/usr/lib/libffi-$(LIBFFI_VERSION)/include/*.h $(1)/usr/include/
+	mv $(1)/lib/libffi-$(LIBFFI_VERSION)/include/*.h $(1)/include/
 	$(SED) '/^includedir.*/d' -e '/^Cflags:.*/d' \
-		$(1)/usr/lib/pkgconfig/libffi.pc
-	rm -rf $(1)/usr/lib/libffi-*
+		$(1)/lib/pkgconfig/libffi.pc
+	rm -rf $(1)/lib/libffi-*
 endef
 
-LIBFFI_MOVE_STAGING_HEADERS = $(call LIBFFI_MOVE_HEADERS,$(STAGING_DIR))
+LIBFFI_MOVE_STAGING_HEADERS = $(call LIBFFI_MOVE_HEADERS,$(STAGING_DIR)/usr)
 LIBFFI_POST_INSTALL_STAGING_HOOKS += LIBFFI_MOVE_STAGING_HEADERS
 
 HOST_LIBFFI_MOVE_HOST_HEADERS = $(call LIBFFI_MOVE_HEADERS,$(HOST_DIR))

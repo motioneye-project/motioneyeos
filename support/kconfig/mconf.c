@@ -176,7 +176,7 @@ menu_instructions[] = N_(
 	"Arrow keys navigate the menu.  "
 	"<Enter> selects submenus ---> (or empty submenus ----).  "
 	"Highlighted letters are hotkeys.  "
-	"Pressing <Y> selectes a feature, while <N> will exclude a feature.  "
+	"Pressing <Y> selects a feature, while <N> excludes a feature.  "
 	"Press <Esc><Esc> to exit, <?> for Help, </> for Search.  "
 	"Legend: [*] feature is selected  [ ] feature is excluded"),
 radiolist_instructions[] = N_(

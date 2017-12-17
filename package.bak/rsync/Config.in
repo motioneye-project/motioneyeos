@@ -1,0 +1,10 @@
+config BR2_PACKAGE_RSYNC
+	bool "rsync"
+	# fork()
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_POPT
+	help
+	  File transfer program to keep remote files in sync.
+
+	  http://rsync.samba.org/

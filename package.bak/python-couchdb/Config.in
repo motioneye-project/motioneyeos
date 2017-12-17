@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_COUCHDB
+	bool "python-couchdb"
+	select BR2_PACKAGE_PYTHON_SSL if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_SSL if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Python client library for working with CouchDB.
+
+	  https://github.com/djc/couchdb-python/

@@ -1,0 +1,55 @@
+comment "zeromq needs a toolchain w/ C++, threads"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_TOOLCHAIN_HAS_THREADS)
+
+config BR2_PACKAGE_ZEROMQ
+	bool "zeromq"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  ØMQ (ZeroMQ, 0MQ, zmq) looks like an embeddable networking
+	  library but acts like a concurrency framework. It gives you
+	  sockets that carry whole messages across various transports
+	  like in-process, inter- process, TCP, and multicast. You can
+	  connect sockets N-to-N with patterns like fanout, pub-sub,
+	  task distribution, and request-reply. It's fast enough to
+	  be the fabric for clustered products. Its asynchronous I/O
+	  model gives you scalable multicore applications, built as
+	  asynchronous message-processing tasks. It has a score of
+	  language APIs and runs on most operating systems.
+
+	  ØMQ is from iMatix and is LGPL open source.
+
+	  http://www.zeromq.org/
+
+if BR2_PACKAGE_ZEROMQ
+
+comment "norm support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_ZEROMQ_NORM
+	bool "NORM support"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_NORM
+	help
+	  Add support for NACK-Oriented Reliable Multicast (RFC 5740)
+	  protocol.
+
+comment "PGM/EPGM support needs a toolchain w/ wchar"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_ZEROMQ_PGM
+	bool "PGM/EPGM support"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_WCHAR # openpgm
+	select BR2_PACKAGE_OPENPGM
+	help
+	  Add support for Pragmatic General Multicast protocol (RFC 3208)
+	  implemented either over raw IP packets or UDP datagrams
+	  (encapsulated PGM).
+
+endif

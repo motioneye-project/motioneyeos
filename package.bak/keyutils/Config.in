@@ -1,0 +1,15 @@
+config BR2_PACKAGE_KEYUTILS
+	bool "keyutils"
+	depends on !BR2_microblaze
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # dlopen
+	help
+	  These tools are used to control the key management system
+	  built into the Linux kernel.
+
+	  http://people.redhat.com/~dhowells/keyutils/
+
+comment "keyutils needs a toolchain w/ dynamic library"
+	depends on !BR2_microblaze
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

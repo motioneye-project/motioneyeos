@@ -1,0 +1,12 @@
+# Prompt-less option, because this package is not doing anything except
+# downloading the ev3dev driver sources. The real work is done by a Linux
+# extension.
+config BR2_PACKAGE_EV3DEV_LINUX_DRIVERS
+	bool
+	depends on BR2_LINUX_KERNEL
+	help
+	  Linux drivers for LEGO MINDSTORMS EV3
+
+	  This is only the download helper for the kernel patch.
+
+	  https://github.com/ev3dev/lego-linux-drivers

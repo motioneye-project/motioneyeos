@@ -7,7 +7,7 @@
 PYTHON_PYQT5_VERSION = 5.7
 PYTHON_PYQT5_SOURCE = PyQt5_gpl-$(PYTHON_PYQT5_VERSION).tar.gz
 PYTHON_PYQT5_SITE = http://downloads.sourceforge.net/project/pyqt/PyQt5/PyQt-$(PYTHON_PYQT5_VERSION)
-PYTHON_PYQT5_LICENSE = GPLv3
+PYTHON_PYQT5_LICENSE = GPL-3.0
 PYTHON_PYQT5_LICENSE_FILES = LICENSE
 
 PYTHON_PYQT5_DEPENDENCIES = python-sip host-python-sip qt5base
@@ -47,7 +47,7 @@ endef
 PYTHON_PYQT5_CONF_OPTS = \
 	--bindir $(TARGET_DIR)/usr/bin \
 	--destdir $(TARGET_DIR)/usr/lib/$(PYTHON_PYQT5_PYTHON_DIR)/site-packages \
-	--qmake $(HOST_DIR)/usr/bin/qmake \
+	--qmake $(HOST_DIR)/bin/qmake \
 	--sysroot $(STAGING_DIR)/usr \
 	-w --confirm-license \
 	--no-designer-plugin \
@@ -59,7 +59,7 @@ define PYTHON_PYQT5_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) \
 		$(TARGET_CONFIGURE_OPTS) \
-		$(HOST_DIR)/usr/bin/python configure.py \
+		$(HOST_DIR)/bin/python configure.py \
 			$(PYTHON_PYQT5_CONF_OPTS) \
 	)
 endef

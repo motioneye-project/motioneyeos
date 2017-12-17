@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_MIME_BASE64
+	bool "perl-mime-base64"
+	depends on !BR2_STATIC_LIBS
+	help
+	  This package contains a base64 encoder/decoder and a quoted-printable
+	  encoder/decoder.
+
+	  http://github.com/gisle/mime-base64
+
+comment "perl-mime-base64 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

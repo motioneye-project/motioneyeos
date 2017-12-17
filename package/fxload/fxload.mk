@@ -6,7 +6,7 @@
 
 FXLOAD_VERSION = 2008_10_13
 FXLOAD_SITE = http://downloads.sourceforge.net/project/linux-hotplug/fxload/$(FXLOAD_VERSION)
-FXLOAD_LICENSE = GPLv2+
+FXLOAD_LICENSE = GPL-2.0+
 FXLOAD_LICENSE_FILES = COPYING
 
 define FXLOAD_BUILD_CMDS

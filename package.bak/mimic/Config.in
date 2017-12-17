@@ -1,0 +1,41 @@
+comment "mimic needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+
+config BR2_PACKAGE_MIMIC
+	bool "mimic"
+	depends on BR2_USE_WCHAR
+	help
+	  Mimic is a fast, lightweight Text-to-speech engine developed
+	  by Mycroft A.I. and VocaliD, based on Carnegie Mellon
+	  University's Flite (Festival-Lite) software. Mimic takes in
+	  text and reads it out loud to create a high quality voice.
+
+	  https://github.com/MycroftAI/mimic
+
+if BR2_PACKAGE_MIMIC
+
+choice
+	prompt "audio backend"
+	default BR2_PACKAGE_MIMIC_AUDIO_BACKEND_NONE
+
+config BR2_PACKAGE_MIMIC_AUDIO_BACKEND_NONE
+	bool "none"
+	help
+	  With no backend, mimic will only be able to produce .wav
+	  files.
+
+config BR2_PACKAGE_MIMIC_AUDIO_BACKEND_ALSA
+	bool "alsa"
+	depends on BR2_PACKAGE_ALSA_LIB
+
+config BR2_PACKAGE_MIMIC_AUDIO_BACKEND_PORTAUDIO
+	bool "alsa via portaudio"
+	depends on BR2_PACKAGE_PORTAUDIO
+
+config BR2_PACKAGE_MIMIC_AUDIO_BACKEND_PULSEAUDIO
+	bool "pulseaudio"
+	depends on BR2_PACKAGE_PULSEAUDIO
+
+endchoice
+
+endif # BR2_PACKAGE_MIMIC

@@ -1,0 +1,313 @@
+menuconfig BR2_PACKAGE_OPENCV
+	bool "opencv-2.4"
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	help
+	  OpenCV (Open Source Computer Vision) is a library of programming
+	  functions for real time computer vision.
+
+	  http://opencv.org/
+
+if BR2_PACKAGE_OPENCV
+
+comment "OpenCV modules"
+
+config BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	bool "calib3d"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_calib3d module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_CONTRIB
+	bool "contrib"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_ML
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	help
+	  Include opencv_contrib module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	bool "features2d"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_FLANN
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_features2d module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_FLANN
+	bool "flann"
+	default y
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_flann module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_GPU
+	bool "gpu"
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # opencv libphoto
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_LEGACY
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	select BR2_PACKAGE_OPENCV_LIB_PHOTO
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	depends on !BR2_STATIC_LIBS
+	help
+	  Include opencv_gpu module into the OpenCV build.
+
+comment "gpu module needs a toolchain w/ dynamic libraries"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	bool "highgui"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_highgui module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	bool "imgproc"
+	default y
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_imgproc module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_LEGACY
+	bool "legacy"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_ML
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	help
+	  Include opencv_legacy module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_ML
+	bool "ml (machine learning)"
+	default y
+	# opencv_core dependency is already enabled
+	help
+	  Include opencv_ml module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_NONFREE
+	bool "nonfree"
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_nonfree module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	bool "objdetect"
+	default y
+	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_objdetect module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_PHOTO
+	bool "photo"
+	default y
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Binutils 2.25 nios2 issue
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_photo module into the OpenCV build.
+
+comment "opencv_python module requires numpy which is not yet available."
+
+config BR2_PACKAGE_OPENCV_LIB_STITCHING
+	bool "stitching"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+	help
+	  Include opencv_stitching module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_SUPERRES
+	bool "superres"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	help
+	  Include opencv_superres "super resolution" - module into the OpenCV
+	  build.
+
+config BR2_PACKAGE_OPENCV_LIB_TS
+	bool "ts (touchscreen)"
+	default y
+	# opencv_core dependency is already enabled
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	help
+	  Include opencv_ts module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_VIDEO
+	bool "video"
+	default y
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	help
+	  Include opencv_video module into the OpenCV build.
+
+config BR2_PACKAGE_OPENCV_LIB_VIDEOSTAB
+	bool "videostab"
+	default y
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # opencv libphoto
+	select BR2_PACKAGE_OPENCV_LIB_CALIB3D
+	select BR2_PACKAGE_OPENCV_LIB_FEATURES2D
+	select BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_PHOTO
+	select BR2_PACKAGE_OPENCV_LIB_VIDEO
+	help
+	  Include opencv_videostab module into the OpenCV build.
+
+if !BR2_STATIC_LIBS
+
+comment "Test sets"
+
+config BR2_PACKAGE_OPENCV_BUILD_TESTS
+	bool "build tests"
+
+config BR2_PACKAGE_OPENCV_BUILD_PERF_TESTS
+	bool "build performance tests"
+
+endif
+
+comment "Tests sets need a toolchain w/ dynamic libraries"
+	depends on BR2_STATIC_LIBS
+
+comment "3rd party support"
+
+config BR2_PACKAGE_OPENCV_WITH_FFMPEG
+	bool "ffmpeg support"
+	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_SWSCALE
+	help
+	  Use ffmpeg from the target system.
+
+choice
+	prompt "gstreamer support"
+	help
+	  OpenCV prefers gstreamer-1 over gstreamer-0.10.
+
+config BR2_PACKAGE_OPENCV_WITHOUT_GSTREAMER
+	bool "none"
+
+config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
+	bool "gstreamer-0.10"
+	depends on BR2_USE_MMU # gstreamer -> libglib2
+	depends on BR2_USE_WCHAR # gstreamer -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer -> libglib2
+	select BR2_PACKAGE_GSTREAMER
+	select BR2_PACKAGE_GST_PLUGINS_BASE
+	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
+
+comment "gstreamer-0.10 support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_OPENCV_WITH_GSTREAMER1
+	bool "gstreamer-1.x"
+	depends on BR2_USE_MMU # gstreamer1 -> libglib2
+	depends on BR2_USE_WCHAR # gstreamer1 -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer1 -> libglib2
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+
+comment "gstreamer-1.x support needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+endchoice
+
+config BR2_PACKAGE_OPENCV_WITH_GTK
+	bool "gtk support"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_WCHAR # libgtk2 -> libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libgtk2 -> libglib2
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # libgtk2 -> glib2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libgtk2 -> pango -> harfbuzz
+	depends on BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	select BR2_PACKAGE_LIBGTK2
+
+config BR2_PACKAGE_OPENCV_WITH_JASPER
+	bool "jpeg2000 support"
+	select BR2_PACKAGE_JASPER
+	help
+	  Enable jpeg2000 support.
+
+	  Note: this does not use the libjasper bundled with opencv,
+	  but uses the libjasper package installed system-wide by
+	  Buildroot.
+
+config BR2_PACKAGE_OPENCV_WITH_JPEG
+	bool "jpeg support"
+	select BR2_PACKAGE_JPEG
+	help
+	  Use shared libjpeg from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_PNG
+	bool "png support"
+	select BR2_PACKAGE_LIBPNG
+	help
+	  Use shared libpng from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_QT
+	bool "qt backend support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # qt
+	depends on BR2_PACKAGE_OPENCV_LIB_HIGHGUI
+	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Qt GUI module
+	select BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT_STL
+	select BR2_PACKAGE_QT_GUI_MODULE
+	select BR2_PACKAGE_QT_TEST
+	help
+	  Use Qt with QtTest module and STL support
+
+comment "qt backend support needs a toolchain not affected by Binutils bug 19405"
+	depends on BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+
+config BR2_PACKAGE_OPENCV_WITH_TIFF
+	bool "tiff support"
+	select BR2_PACKAGE_TIFF
+	help
+	  Use shared libtiff from the target system.
+
+config BR2_PACKAGE_OPENCV_WITH_V4L
+	bool "v4l support"
+	help
+	  Enable Video 4 Linux support.
+
+	  If the package libv4l is enabled, its support is automatically enabled.
+
+comment "Install options"
+
+config BR2_PACKAGE_OPENCV_INSTALL_DATA
+	bool "install extra data"
+	help
+	  Install various data that is used by cv libraries and/or demo
+	  applications, specifically for haarcascades and lbpcascades
+	  features.
+
+	  For further information: see OpenCV documentation.
+
+endif # BR2_PACKAGE_OPENCV
+
+comment "opencv needs a toolchain w/ C++, NPTL, wchar"
+	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR && BR2_TOOLCHAIN_HAS_THREADS_NPTL)

@@ -1,0 +1,20 @@
+[PATCH] Fix compilation on musl
+
+Using the ssize_t typedef requires including <unistd.h>. 
+
+See : https://sourceforge.net/p/dtorrent/patches/3/
+
+Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+Upstream-status: submitted
+---
+diff -Nur a/compat.c b/compat.c
+--- a/compat.c	2015-07-29 18:22:24.658415171 +0100
++++ b/compat.c	2015-07-29 18:36:21.752576311 +0100
+@@ -63,6 +63,7 @@
+ 
+ #ifndef HAVE_STRNSTR
+ #include <string.h>
++#include <unistd.h>
+ /* FUNCTION PROGRAMER: Siberiaic Sang */
+ char *strnstr(const char *haystack, const char *needle, size_t haystacklen)
+ {

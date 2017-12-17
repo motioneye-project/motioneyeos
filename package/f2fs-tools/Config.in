@@ -1,8 +1,8 @@
 config BR2_PACKAGE_F2FS_TOOLS
 	bool "f2fs-tools"
+	depends on BR2_USE_WCHAR # uses wchar_t
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	depends on BR2_USE_WCHAR # uses wchar_t
 	help
 	  Tools for Flash-Friendly File System (F2FS)
 

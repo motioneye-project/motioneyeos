@@ -1,0 +1,26 @@
+config BR2_PACKAGE_SYSTEMD_BOOTCHART
+	bool "systemd-bootchart"
+	depends on BR2_INIT_SYSTEMD
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+	help
+	  systemd-bootchart is a tool, usually run at system startup,
+	  that collects the CPU load, disk load, memory usage, as well
+	  as per-process information from a running system. Collected
+	  results are output as an SVG graph.
+
+	  systemd-bootchart requires a Linux kernel >= 3.0 with the
+	  following options enabled:
+
+	  - CONFIG_SCHEDSTATS
+	  - CONFIG_SCHED_DEBUG
+
+	  These options will be automatically enabled by Buildroot if
+	  it is responsible for building the kernel. Otherwise, if you
+	  are building your kernel outside of Buildroot, make sure
+	  these options are enabled.
+
+	  http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
+
+comment "systemd-bootchart needs a toolchain w/ headers >= 3.17"
+	depends on BR2_INIT_SYSTEMD
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17

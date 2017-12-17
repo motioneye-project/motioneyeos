@@ -10,7 +10,7 @@ config BR2_PACKAGE_HOSTAPD
 	  IEEE 802.1X/WPA/WPA2/EAP authenticators, RADIUS client,
 	  EAP server and RADIUS authentication server.
 
-	  http://hostap.epitest.fi/
+	  http://w1.fi/hostapd/
 
 if BR2_PACKAGE_HOSTAPD
 

@@ -1,0 +1,29 @@
+From d4fec31889ad660a58dab633c511221feb66e817 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 5 Oct 2013 15:55:06 +0200
+Subject: [PATCH] networking/libiproute: use <linux/if_packet.h> instead of
+ <net/if_packet.h>
+
+The musl C library doesn't provide the <net/if_packet.h> since the
+corresponding kernel headers <linux/if_packet.h> already provides the
+necessary definitions. Replacing <net/if_packet.h> by
+<linux/if_packet.h> also removes the need to include
+<netpacket/packet.h>
+
+This commit fixes the build of iplink with the musl C library.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Gustavo: update for busybox 1.22.0]
+
+diff -Nura busybox-1.22.0.orig/networking/libiproute/iplink.c busybox-1.22.0/networking/libiproute/iplink.c
+--- busybox-1.22.0.orig/networking/libiproute/iplink.c	2014-01-01 09:42:40.301137882 -0300
++++ busybox-1.22.0/networking/libiproute/iplink.c	2014-01-01 09:43:01.282827700 -0300
+@@ -7,7 +7,7 @@
+  */
+ #include <net/if.h>
+ /*#include <net/if_packet.h> - not needed? */
+-#include <netpacket/packet.h>
++#include <linux/if_packet.h>
+ #include <netinet/if_ether.h>
+ 
+ #include <linux/if_vlan.h>

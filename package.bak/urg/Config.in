@@ -1,0 +1,10 @@
+config BR2_PACKAGE_URG
+	bool "urg"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Library to control Hokuyo's URG series sensors.
+
+	  https://sourceforge.net/p/urgnetwork/wiki/Home/
+
+comment "urg needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

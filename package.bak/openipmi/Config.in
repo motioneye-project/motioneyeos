@@ -1,0 +1,18 @@
+config BR2_PACKAGE_OPENIPMI
+	bool "openipmi"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_NCURSES
+	help
+	  IPMI allows remote monitoring and remote management of
+	  devices. OpenIPMI provides a library and command line tools
+	  to interact with IPMI enabled devices. OpenIPMI also provides
+	  an IPMI BMC simulator.
+
+	  http://openipmi.sourceforge.net
+
+comment "openipmi needs a toolchain w/ dynamic library, NPTL"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS_NPTL

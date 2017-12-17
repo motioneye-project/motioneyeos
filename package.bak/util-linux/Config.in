@@ -1,0 +1,371 @@
+menuconfig BR2_PACKAGE_UTIL_LINUX
+	bool "util-linux"
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  Various useful/essential linux libraries and utilities.
+
+	  Things like mkfs, mkswap, swapon, fdisk, mount, dmesg, etc...
+
+	  http://www.kernel.org/pub/linux/utils/util-linux/
+
+if BR2_PACKAGE_UTIL_LINUX
+
+config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	bool "libblkid"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Install libblkid.
+
+config BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	bool "libfdisk"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Install libfdisk.
+
+config BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	bool "libmount"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	help
+	  Install libmount.
+
+config BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	bool "libsmartcols"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Install libsmartcols.
+
+config BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	bool "libuuid"
+	help
+	  Install libuuid.
+
+config BR2_PACKAGE_UTIL_LINUX_BINARIES
+	bool "basic set"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Install the basic set of util-linux binaries.
+
+	  blkdiscard, blkid, blockdev, chcpu, col, colcrt, colrm,
+	  column, ctrlaltdel, dmesg, fdisk, findfs, findmnt, flock,
+	  fsfreeze, fstrim, getopt, hexdump, ipcmk, isosize, ldattach,
+	  look, lsblk, lscpu, lsipc, lslocks, lsns, mcookie, mkfs,
+	  mkswap, namei, prlimit, readprofile, renice, rev, rtcwake,
+	  script, scriptreplay, setarch, setsid, sfdisk, swaplabel,
+	  swapoff, swapon, tailf, uuidgen, whereis, wipefs
+
+	  The setarch utility also installs architecture-specific
+	  symlinks like linux32, linux64, uname26, i386 and x86_64.
+
+config BR2_PACKAGE_UTIL_LINUX_AGETTY
+	bool "agetty"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Alternative linux getty
+
+config BR2_PACKAGE_UTIL_LINUX_BFS
+	bool "bfs"
+	help
+	  SCO bfs filesystem support
+
+config BR2_PACKAGE_UTIL_LINUX_CAL
+	bool "cal"
+	help
+	  Display a calendar, or some part of it
+
+config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
+	bool "chfn/chsh"
+	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	depends on BR2_USE_MMU # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+	help
+	  Change login shell, real user name and information
+
+comment "chfn/chsh needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+
+config BR2_PACKAGE_UTIL_LINUX_CRAMFS
+	bool "cramfs utilities"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Utilities for compressed ROM file system (fsck.cramfs, mkfs.cramfs)
+
+config BR2_PACKAGE_UTIL_LINUX_EJECT
+	bool "eject"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Eject removable media
+
+config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
+	bool "fallocate"
+	help
+	  Preallocate space to a file
+
+config BR2_PACKAGE_UTIL_LINUX_FDFORMAT
+	bool "fdformat"
+	help
+	  Low-level format a floppy disk
+
+config BR2_PACKAGE_UTIL_LINUX_FSCK
+	bool "fsck"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Check and repair a linux filesystem
+
+config BR2_PACKAGE_UTIL_LINUX_HWCLOCK
+	bool "hwclock"
+	help
+	  Query or set the hardware clock (RTC)
+
+config BR2_PACKAGE_UTIL_LINUX_IPCRM
+	bool "ipcrm"
+	help
+	  Remove certain IPC resources
+
+config BR2_PACKAGE_UTIL_LINUX_IPCS
+	bool "ipcs"
+	help
+	  Show information on IPC facilities
+
+config BR2_PACKAGE_UTIL_LINUX_KILL
+	bool "kill"
+	help
+	  Send a signal to a process
+
+config BR2_PACKAGE_UTIL_LINUX_LAST
+	bool "last"
+	help
+	  Show a listing of last logged in users
+
+config BR2_PACKAGE_UTIL_LINUX_LINE
+	bool "line"
+	help
+	  Read one line
+
+config BR2_PACKAGE_UTIL_LINUX_LOGIN_UTILS
+	bool "login utilities"
+	depends on BR2_USE_MMU # fork() (login, runuser, su, sulogin)
+	depends on (BR2_ENABLE_LOCALE && BR2_USE_WCHAR) # linux-pam
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	depends on BR2_USE_MMU # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
+	help
+	  Login utilities (last, login, runuser, su, sulogin)
+
+comment "login utilities needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
+	depends on !(BR2_ENABLE_LOCALE && BR2_USE_WCHAR) \
+		|| BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+
+config BR2_PACKAGE_UTIL_LINUX_LOGGER
+	bool "logger"
+	help
+	  Enter messages into the system log
+
+config BR2_PACKAGE_UTIL_LINUX_LOSETUP
+	bool "losetup"
+	depends on BR2_USE_MMU # libsmartcols
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	help
+	  Set up and control loop devices
+
+config BR2_PACKAGE_UTIL_LINUX_LSLOGINS
+	bool "lslogins"
+	depends on BR2_USE_MMU # libsmartcols
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	help
+	  Display information about known users in the system
+
+config BR2_PACKAGE_UTIL_LINUX_MESG
+	bool "mesg"
+	help
+	  Control write access to your terminal
+
+config BR2_PACKAGE_UTIL_LINUX_MINIX
+	bool "minix"
+	help
+	  Minix filesystem support
+
+config BR2_PACKAGE_UTIL_LINUX_MORE
+	bool "more"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
+	help
+	  File perusal filter for crt viewing
+
+config BR2_PACKAGE_UTIL_LINUX_MOUNT
+	bool "mount/umount"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Mount/unmount filesystems
+
+config BR2_PACKAGE_UTIL_LINUX_MOUNTPOINT
+	bool "mountpoint"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  See if a directory is a mountpoint
+
+config BR2_PACKAGE_UTIL_LINUX_NEWGRP
+	bool "newgrp"
+	help
+	  Log in to a new group
+
+config BR2_PACKAGE_UTIL_LINUX_NOLOGIN
+	bool "nologin"
+	help
+	  Politely refuse a login
+
+config BR2_PACKAGE_UTIL_LINUX_NSENTER
+	bool "nsenter"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	help
+	  Enter the namespaces of another process
+
+comment "nsenter needs a toolchain w/ headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_PACKAGE_UTIL_LINUX_PG
+	bool "pg"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
+	help
+	  Browse pagewise through text files
+
+config BR2_PACKAGE_UTIL_LINUX_PARTX
+	bool "partition utilities"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Partition utilities (addpart, delpart, partx)
+
+config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
+	bool "pivot_root"
+	help
+	  Change the root filesystem
+
+config BR2_PACKAGE_UTIL_LINUX_RAW
+	bool "raw"
+	help
+	  Build a linux raw character device
+
+config BR2_PACKAGE_UTIL_LINUX_RENAME
+	bool "rename"
+	help
+	  Rename files
+
+config BR2_PACKAGE_UTIL_LINUX_RESET
+	bool "reset"
+	help
+	  Reset the terminal
+
+config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
+	bool "scheduling utilities"
+	help
+	  Scheduling utilities (chrt, ionice, taskset)
+
+config BR2_PACKAGE_UTIL_LINUX_SETPRIV
+	bool "setpriv"
+	select BR2_PACKAGE_LIBCAP_NG
+	help
+	  Run a program with different Linux privilege settings
+
+config BR2_PACKAGE_UTIL_LINUX_SETTERM
+	bool "setterm"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Set terminal attributes
+
+config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
+	bool "switch_root"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Switch to another filesystem as the root of the mount tree
+
+config BR2_PACKAGE_UTIL_LINUX_TUNELP
+	bool "tunelp"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Set various parameters for the lp device
+
+config BR2_PACKAGE_UTIL_LINUX_UL
+	bool "ul"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Do underlining
+
+config BR2_PACKAGE_UTIL_LINUX_UNSHARE
+	bool "unshare"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Run program with some namespaces unshared from parent
+
+config BR2_PACKAGE_UTIL_LINUX_UTMPDUMP
+	bool "utmpdump"
+	help
+	  Dump UTMP and WTMP files in raw format
+
+config BR2_PACKAGE_UTIL_LINUX_UUIDD
+	bool "uuidd"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  UUID generation daemon
+
+config BR2_PACKAGE_UTIL_LINUX_VIPW
+	bool "vipw"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Edit the password, group, shadow-password or shadow-group file
+
+config BR2_PACKAGE_UTIL_LINUX_WALL
+	bool "wall"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Send a message to everybody's terminal
+
+config BR2_PACKAGE_UTIL_LINUX_WDCTL
+	bool "wdctl"
+	depends on BR2_USE_MMU # libsmartcols
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	help
+	  Shows hardware watchdog status
+
+config BR2_PACKAGE_UTIL_LINUX_WRITE
+	bool "write"
+	help
+	  Send a message to another user
+
+config BR2_PACKAGE_UTIL_LINUX_ZRAMCTL
+	bool "zramctl"
+	depends on BR2_USE_MMU # libsmartcols
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	help
+	  Set up and control zram devices
+
+endif

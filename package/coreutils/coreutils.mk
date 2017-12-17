@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-COREUTILS_VERSION = 8.26
+COREUTILS_VERSION = 8.27
 COREUTILS_SITE = $(BR2_GNU_MIRROR)/coreutils
 COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
-COREUTILS_LICENSE = GPLv3+
+COREUTILS_LICENSE = GPL-3.0+
 COREUTILS_LICENSE_FILES = COPYING
 
 # coreutils-01-fix-for-dummy-man-usage.patch triggers autoreconf on build
@@ -77,10 +77,11 @@ else
 COREUTILS_CONF_OPTS += --disable-xattr
 endif
 
+COREUTILS_DEPENDENCIES += $(TARGET_NLS_DEPENDENCIES)
+
 # It otherwise fails to link properly, not mandatory though
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
 COREUTILS_CONF_OPTS += --with-libintl-prefix=$(STAGING_DIR)/usr
-COREUTILS_DEPENDENCIES += gettext
 endif
 
 ifeq ($(BR2_PACKAGE_GMP),y)
@@ -122,8 +123,5 @@ define COREUTILS_CLEANUP
 endef
 
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP
-
-# If both coreutils and busybox are selected, the corresponding applets
-# may need to be reinstated by the clean targets.
 
 $(eval $(autotools-package))

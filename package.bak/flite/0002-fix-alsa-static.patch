@@ -1,0 +1,19 @@
+Use pkg-config to determine alsa link flags. This fixes static linking.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+diff -Nuar flite-1.4-release.orig/configure.in flite-1.4-release/configure.in
+--- flite-1.4-release.orig/flite-1.4-release/configure.in	2009-08-14 23:46:38.000000000 +0300
++++ flite-1.4-release/flite-1.4-release/configure.in	2014-04-30 18:52:33.253297236 +0300
+@@ -275,7 +275,10 @@
+                 #endif],
+               [AUDIODRIVER="alsa"
+ 	       AUDIODEFS=-DCST_AUDIO_ALSA
+-               AUDIOLIBS=-lasound])
++               AUDIOLIBS=`pkg-config --libs alsa`
++               if test "$shared" = false; then
++                   AUDIOLIBS=`pkg-config --libs --static alsa`
++               fi])
+ AC_CHECK_HEADER(mmsystem.h,
+ 	      [AUDIODRIVER="wince"
+ 	       AUDIODEFS=-DCST_AUDIO_WINCE

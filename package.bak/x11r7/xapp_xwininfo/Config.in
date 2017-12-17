@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XAPP_XWININFO
+	bool "xwininfo"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	help
+	  window information utility for X

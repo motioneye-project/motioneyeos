@@ -1,0 +1,38 @@
+From c68c868b573acc73e144312326750be2ed96632f Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 29 Jun 2017 14:43:19 +0300
+Subject: [PATCH] trace-listen: add missing header
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The PATH_MAX macro requires the limits.h header. This fixes build with musl
+libc:
+
+.../trace-cmd-trace-cmd-v2.6.1/trace-listen.c: In function ‘make_pid_name’:
+.../trace-cmd-trace-cmd-v2.6.1/trace-listen.c:167:16: error: ‘PATH_MAX’ undeclared (first use in this function)
+  snprintf(buf, PATH_MAX, VAR_RUN_DIR "/trace-cmd-net.pid");
+                ^~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://lkml.org/lkml/2017/6/29/286
+
+ trace-listen.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/trace-listen.c b/trace-listen.c
+index 17ff9d8c160c..838d6bcf3649 100644
+--- a/trace-listen.c
++++ b/trace-listen.c
+@@ -31,6 +31,7 @@
+ #include <fcntl.h>
+ #include <signal.h>
+ #include <errno.h>
++#include <limits.h>
+ 
+ #include "trace-local.h"
+ #include "trace-msg.h"
+-- 
+2.11.0
+

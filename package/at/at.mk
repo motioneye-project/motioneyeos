@@ -11,7 +11,7 @@ AT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/a
 AT_MAKE = $(MAKE1)
 AT_AUTORECONF = YES
 AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex) host-bison host-flex
-AT_LICENSE = GPLv2+, GPLv3+, ISC
+AT_LICENSE = GPL-2.0+, GPL-3.0+, ISC
 AT_LICENSE_FILES = Copyright COPYING
 
 AT_CONF_OPTS = \

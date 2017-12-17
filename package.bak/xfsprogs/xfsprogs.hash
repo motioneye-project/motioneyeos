@@ -1,0 +1,3 @@
+# Locally calculated after checking pgp signature:
+#   https://www.kernel.org/pub/linux/utils/fs/xfs/xfsprogs/xfsprogs-4.8.0.tar.sign
+sha256 82ce9cb3a55f4e208e8fe3471ff0aff0602b8300f3e50bdf05cc7e11549686f9  xfsprogs-4.8.0.tar.xz

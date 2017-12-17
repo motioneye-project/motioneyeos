@@ -1,0 +1,35 @@
+From 8869b15c754ae615203b65a99e043f56770bacd5 Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+Date: Wed, 23 Dec 2015 11:44:30 +0100
+Subject: [PATCH] Do not adjust the shebang of Python scripts for
+ cross-compilation
+
+The copy_scripts() method in distutils copies the scripts listed in
+the setup file and adjusts the first line to refer to the current
+Python interpreter. When cross-compiling, this means that the adjusted
+shebang refers to the host Python interpreter.
+
+This patch modifies copy_scripts() to preserve the shebang when
+cross-compilation is detected.
+
+Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+---
+ Lib/distutils/command/build_scripts.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Lib/distutils/command/build_scripts.py b/Lib/distutils/command/build_scripts.py
+index ccc70e6465..d6d54195c1 100644
+--- a/Lib/distutils/command/build_scripts.py
++++ b/Lib/distutils/command/build_scripts.py
+@@ -91,7 +91,7 @@ class build_scripts(Command):
+                     adjust = True
+                     post_interp = match.group(1) or b''
+ 
+-            if adjust:
++            if adjust and not '_python_sysroot' in os.environ:
+                 log.info("copying and adjusting %s -> %s", script,
+                          self.build_dir)
+                 updated_files.append(outfile)
+-- 
+2.13.5
+

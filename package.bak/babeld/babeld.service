@@ -1,0 +1,10 @@
+[Unit]
+Description=Babel daemon
+
+[Service]
+EnvironmentFile=-/etc/default/babeld
+ExecStart=/usr/sbin/babeld $DAEMON_ARGS
+ExecReload=/bin/kill -HUP $MAINPID
+
+[Install]
+WantedBy=multi-user.target

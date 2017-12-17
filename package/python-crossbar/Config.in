@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_CROSSBAR
 	bool "python-crossbar"
-	depends on !BR2_TOOLCHAIN_USES_MUSL # python-psutil
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyasn
 	# All the following dependencies are runtime dependencies
 	select BR2_PACKAGE_PYTHON_AUTOBAHN
 	select BR2_PACKAGE_PYTHON_CBOR
@@ -32,7 +32,6 @@ config BR2_PACKAGE_PYTHON_CROSSBAR
 	select BR2_PACKAGE_PYTHON_UBJSON
 	select BR2_PACKAGE_PYTHON_WATCHDOG
 	select BR2_PACKAGE_PYTHON_WSACCEL
-	depends on BR2_INSTALL_LIBSTDCPP # python-pyasn
 	help
 	  Crossbar.io is an open-source WAMP application router that
 	  allows to build advanced applications from loosely-coupled
@@ -40,5 +39,5 @@ config BR2_PACKAGE_PYTHON_CROSSBAR
 
 	  https://pypi.python.org/pypi/crossbar
 
-comment "python-crossbar needs a uClibc or glibc toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP || BR2_TOOLCHAIN_USES_MUSL
+comment "python-crossbar needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

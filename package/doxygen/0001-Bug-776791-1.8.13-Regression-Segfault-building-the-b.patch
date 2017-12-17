@@ -1,0 +1,30 @@
+From 0f02761a158a5e9ddbd5801682482af8986dbc35 Mon Sep 17 00:00:00 2001
+From: albert-github <albert.tests@gmail.com>
+Date: Wed, 4 Jan 2017 12:24:55 +0100
+Subject: [PATCH] Bug 776791 - [1.8.13 Regression] Segfault building the
+ breathe docs
+
+Protected against NULL pointer of variable al
+
+[Romain: backport from upstream]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/xmlgen.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/xmlgen.cpp b/src/xmlgen.cpp
+index fe95c7a..70e198a 100644
+--- a/src/xmlgen.cpp
++++ b/src/xmlgen.cpp
+@@ -620,7 +620,7 @@ static void generateXMLForMember(MemberDef *md,FTextStream &ti,FTextStream &t,De
+     if (md->isInline()) t << "yes"; else t << "no";
+     t << "\"";
+ 
+-    if (al->refQualifier!=RefQualifierNone)
++    if (al!=0 && al->refQualifier!=RefQualifierNone)
+     {
+       t << " refqual=\"";
+       if (al->refQualifier==RefQualifierLValue) t << "lvalue"; else t << "rvalue";
+-- 
+2.9.4
+

@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-NETSNIFF_NG_VERSION = v0.6.2
-NETSNIFF_NG_SITE = $(call github,netsniff-ng,netsniff-ng,$(NETSNIFF_NG_VERSION))
-NETSNIFF_NG_LICENSE = GPLv2
+NETSNIFF_NG_VERSION = 0.6.3
+NETSNIFF_NG_SITE = http://pub.netsniff-ng.org/netsniff-ng
+NETSNIFF_NG_SOURCE = netsniff-ng-$(NETSNIFF_NG_VERSION).tar.xz
+NETSNIFF_NG_LICENSE = GPL-2.0
 NETSNIFF_NG_LICENSE_FILES = README COPYING
 # Prevent netsniff-ng configure script from finding a host installed nacl
 NETSNIFF_NG_CONF_ENV = \

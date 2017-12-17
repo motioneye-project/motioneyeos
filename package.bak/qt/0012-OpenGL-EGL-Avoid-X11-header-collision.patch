@@ -1,0 +1,60 @@
+From 87c9c18fad02744238336a6cf1ce70d3ec2c89c2 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 11 Jun 2016 17:03:07 +0200
+Subject: [PATCH 1/1] OpenGL/EGL: Avoid X11 header collision
+
+Including X11 headers via EGL/egl.h leads to a collision of defines
+between Qt and X11. To fix this qt5 added
+  DEFINES += MESA_EGL_NO_X11_HEADERS
+in various files:
+
+https://github.com/qtproject/qtbase/blob/dev/src/platformsupport/eglconvenience/eglconvenience.pri#L19
+https://github.com/qtproject/qtbase/blob/dev/src/plugins/platforms/minimalegl/minimalegl.pro#L10
+https://github.com/qtproject/qtbase/blob/dev/src/plugins/platforms/eglfs/deviceintegration/eglfs_x11/eglfs_x11.pro#L6
+[...]
+
+This patch fixes a similar compile error in qt4:
+http://autobuild.buildroot.net/results/9b0/9b0ed92984eead89d148eaa71aff6e2f1e117837/
+http://autobuild.buildroot.org/results/4fd/4fd57553336d36439fab32a7221fc8639758e887/
+http://autobuild.buildroot.org/results/5cb/5cb8072f8220f7203fa79936eedcc43eab53ec66/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(patch not sent upstream because qt4 branch is closed:
+ http://blog.qt.io/blog/2015/05/26/qt-4-8-7-released/)
+---
+
+ src/gui/egl/egl.pri   | 3 +++
+ src/opengl/opengl.pro | 3 +++
+ 2 files changed, 6 insertions(+)
+
+diff --git a/src/gui/egl/egl.pri b/src/gui/egl/egl.pri
+index 8e8664c..715ffd7 100644
+--- a/src/gui/egl/egl.pri
++++ b/src/gui/egl/egl.pri
+@@ -22,6 +22,9 @@ contains(QT_CONFIG, egl): {
+             !isEmpty(QMAKE_LIBS_EGL): LIBS += $$QMAKE_LIBS_EGL
+         }
+ 
++	# Avoid X11 header collision
++	DEFINES += MESA_EGL_NO_X11_HEADERS
++
+ 	wince*: SOURCES += egl/qegl_wince.cpp
+ 
+ 	unix {
+diff --git a/src/opengl/opengl.pro b/src/opengl/opengl.pro
+index ce1a5d2..65b1031 100644
+--- a/src/opengl/opengl.pro
++++ b/src/opengl/opengl.pro
+@@ -149,6 +149,9 @@ embedded {
+                qglwindowsurface_qws_p.h \
+                qgl_egl_p.h
+ 
++    # Avoid X11 header collision
++    DEFINES += MESA_EGL_NO_X11_HEADERS
++
+     contains(QT_CONFIG, fontconfig) {
+         include($$QT_SOURCE_TREE/config.tests/unix/freetype/freetype.pri)
+     } else {
+-- 
+2.8.1
+

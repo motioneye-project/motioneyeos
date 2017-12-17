@@ -1,0 +1,52 @@
+From b0a1f12349bee43040a889c7e74873cfb253b9d8 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Thu, 6 Feb 2014 21:42:50 +0100
+Subject: [PATCH] fix makefile
+
+- allow to extend CFLAGS and CC_LDFLAGS
+- remove hard-coded include dirs. and lib. dirs. (which pointed to some
+  location in the host system)
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 92a2cc0..1b54175 100755
+--- a/Makefile
++++ b/Makefile
+@@ -37,9 +37,9 @@ MYSQLHISTLOGOBJ = mysqlhistlog2300.o rw2300.o linux2300.o win2300.o
+ 
+ VERSION = 1.11
+ 
+-CFLAGS = -Wall -O3 -DVERSION=\"$(VERSION)\"
+-CC_LDFLAGS = -lm
+-CC_WINFLAG = 
++override CFLAGS += -Wall -O3 -DVERSION=\"$(VERSION)\"
++override CC_LDFLAGS += -lm
++CC_WINFLAG =
+ # For Windows - comment the two line above and un-comment the two lines below.
+ #CC_LDFLAGS = -lm -lwsock32
+ #CC_WINFLAG = -mwindows
+@@ -80,7 +80,7 @@ xml2300 : $(XMLOBJ)
+ 	$(CC) $(CFLAGS) -o $@ $(XMLOBJ) $(CC_LDFLAGS) $(CC_WINFLAG)
+ 
+ mysql2300:
+-	$(CC) $(CFLAGS) -o mysql2300 mysql2300.c rw2300.c linux2300.c $(CC_LDFLAGS) $(CC_WINFLAG) -I/usr/include/mysql -L/usr/lib/mysql -lmysqlclient
++	$(CC) $(CFLAGS) -o mysql2300 mysql2300.c rw2300.c linux2300.c $(CC_LDFLAGS) $(CC_WINFLAG)
+ 
+ pgsql2300: $(PGSQLOBJ)
+ 	$(CC) $(CFLAGS) -o $@ $(PGSQLOBJ) $(CC_LDFLAGS) $(CC_WINFLAG) -I/usr/include/pgsql -L/usr/lib/pgsql -lpq
+@@ -95,7 +95,7 @@ minmax2300: $(MINMAXOBJ)
+ 	$(CC) $(CFLAGS) -o $@ $(MINMAXOBJ) $(CC_LDFLAGS) $(CC_WINFLAG)
+ 	
+ mysqlhistlog2300 :
+-	$(CC) $(CFLAGS) -o mysqlhistlog2300 mysqlhistlog2300.c rw2300.c linux2300.c $(CC_LDFLAGS) $(CC_WINFLAG) -I/usr/include/mysql -L/usr/lib/mysql -lmysqlclient
++	$(CC) $(CFLAGS) -o mysqlhistlog2300 mysqlhistlog2300.c rw2300.c linux2300.c $(CC_LDFLAGS) $(CC_WINFLAG)
+ 
+ 
+ install:
+-- 
+1.8.5.3
+

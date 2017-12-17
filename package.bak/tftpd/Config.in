@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TFTPD
+	bool "tftpd"
+	# linker issue with pre-6.x toolchains
+	depends on !(BR2_nios2 && !BR2_TOOLCHAIN_GCC_AT_LEAST_6)
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  HPA's Trivial File Transfer Protocol (tftp) server.

@@ -1,0 +1,13 @@
+config BR2_PACKAGE_WSAPI_XAVANTE
+	bool "wsapi-xavante"
+	# Runtime dependencies
+	select BR2_PACKAGE_COXPCALL
+	select BR2_PACKAGE_RINGS
+	select BR2_PACKAGE_WSAPI
+	select BR2_PACKAGE_XAVANTE
+	help
+	  WSAPI is an API that abstracts the web server from Lua web
+	  applications. This is the rock that contains the Xavante
+	  adapter and launcher.
+
+	  http://keplerproject.github.com/wsapi/

@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LIBQMI
+	bool "libqmi"
+	select BR2_PACKAGE_LIBGLIB2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	help
+	  libqmi is a glib-based library for talking to WWAN modems and devices
+	  which speak the Qualcomm MSM Interface (QMI) protocol.
+
+	  http://www.freedesktop.org/wiki/Software/libqmi/
+
+comment "libqmi needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

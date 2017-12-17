@@ -1,0 +1,30 @@
+config BR2_PACKAGE_LIBSPATIALINDEX
+	bool "libspatialindex"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  The purpose of libspatialindex is to provide:
+
+	  * An extensible framework that will support robust spatial
+	    indexing methods.
+
+	  * Support for sophisticated spatial queries. Range, point
+	    location, nearest neighbor and k-nearest neighbor as well
+	    as parametric queries (defined by spatial constraints)
+	    should be easy to deploy and run.
+
+	  * Easy to use interfaces for inserting, deleting and updating
+	    information.
+
+	  * Wide variety of customization capabilities. Basic index and
+	    storage characteristics like the page size, node capacity,
+	    minimum fan-out, splitting algorithm, etc. should be easy
+	    to customize.
+
+	  * Index persistence. Internal memory and external memory
+	    structures should be supported. Clustered and non-clustered
+	    indices should be easy to be persisted.
+
+	  https://libspatialindex.github.io
+
+comment "libspatialindex needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

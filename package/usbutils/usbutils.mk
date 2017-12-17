@@ -8,7 +8,7 @@ USBUTILS_VERSION = 008
 USBUTILS_SOURCE = usbutils-$(USBUTILS_VERSION).tar.xz
 USBUTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/usb/usbutils
 USBUTILS_DEPENDENCIES = host-pkgconf libusb udev
-USBUTILS_LICENSE = GPLv2+
+USBUTILS_LICENSE = GPL-2.0+
 USBUTILS_LICENSE_FILES = COPYING
 
 # Build after busybox since it's got a lightweight lsusb

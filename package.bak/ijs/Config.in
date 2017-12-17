@@ -1,0 +1,8 @@
+config BR2_PACKAGE_IJS
+	bool "ijs"
+	depends on BR2_USE_MMU # fork()
+	help
+	  The IJS package contains a library which implements a
+	  protocol for transmission of raster page images.
+
+	  http://www.openprinting.org/

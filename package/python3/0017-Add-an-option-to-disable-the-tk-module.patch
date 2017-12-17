@@ -1,0 +1,73 @@
+From f96a00d42e714171f1d90501ed73594fddee570f Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 22 Feb 2017 17:23:42 -0800
+Subject: [PATCH] Add an option to disable the tk module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Makefile.pre.in | 11 ++++++++---
+ configure.ac    |  9 +++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index a1ce0712cd..dc1e917cc3 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1199,7 +1199,7 @@ maninstall:	altmaninstall
+ # Install the library
+ XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
+ 
+-LIBSUBDIRS=	tkinter site-packages \
++LIBSUBDIRS=	site-packages \
+ 		asyncio \
+ 		collections concurrent concurrent/futures encodings \
+ 		email email/mime \
+@@ -1216,8 +1216,7 @@ LIBSUBDIRS=	tkinter site-packages \
+ 		venv venv/scripts venv/scripts/common venv/scripts/posix \
+ 		curses
+ 
+-TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+-		tkinter/test/test_ttk test \
++TESTSUBDIRS=	test \
+ 		test/audiodata \
+ 		test/capath test/data \
+ 		test/cjkencodings test/decimaltestdata test/xmltestdata \
+@@ -1263,6 +1262,12 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_tools test/test_warnings test/test_warnings/data \
+ 		unittest/test unittest/test/testmock
+ 
++ifeq (@TK@,yes)
++LIBSUBDIRS += tkinter
++TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
++	tkinter/test/test_ttk
++endif
++
+ ifeq (@LIB2TO3@,yes)
+ LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
+ TESTSUBDIRS += lib2to3/tests			\
+diff --git a/configure.ac b/configure.ac
+index d7582cfea4..6a56a5b0c1 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3121,6 +3121,15 @@ if test "$SQLITE3" = "no" ; then
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
+ fi
+ 
++AC_SUBST(TK)
++AC_ARG_ENABLE(tk,
++	AS_HELP_STRING([--disable-tk], [disable tk]),
++	[ TK="${enableval}" ], [ TK=yes ])
++
++if test "$TK" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+-- 
+2.13.5
+

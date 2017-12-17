@@ -1,0 +1,144 @@
+From dbdc772a35244b45c725a72fad5ddade9bd7d521 Mon Sep 17 00:00:00 2001
+From: pcarpent <pierre-francois.carpentier@c-s.fr>
+Date: Tue, 15 Dec 2015 10:23:44 +0100
+Subject: [PATCH] fix makefile
+
+add DESTDIR variables in install targets
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(downloaded from upstream commit not included in v2.4.1
+ https://github.com/wolkykim/qlibc/commit/dbdc772a35244b45c725a72fad5ddade9bd7d521)
+---
+ src/Makefile.in | 110 ++++++++++++++++++++++++++++----------------------------
+ 1 file changed, 55 insertions(+), 55 deletions(-)
+
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 8a7ab43..4e274ed 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -122,70 +122,70 @@ qlibcext: ${QLIBCEXT_OBJS}
+ install: ${INSTALL_TARGETS}
+ 
+ install-qlibc: qlibc
+-	${MKDIR_P} ${INST_INCDIR}/qlibc
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibc.h ${INST_INCDIR}/qlibc/qlibc.h
+-	${MKDIR_P} ${INST_INCDIR}/qlibc/containers/
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qtreetbl.h ${INST_INCDIR}/qlibc/containers/qtreetbl.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qhashtbl.h ${INST_INCDIR}/qlibc/containers/qhashtbl.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qhasharr.h ${INST_INCDIR}/qlibc/containers/qhasharr.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qlisttbl.h ${INST_INCDIR}/qlibc/containers/qlisttbl.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qlist.h ${INST_INCDIR}/qlibc/containers/qlist.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qvector.h ${INST_INCDIR}/qlibc/containers/qvector.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qqueue.h ${INST_INCDIR}/qlibc/containers/qqueue.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qstack.h ${INST_INCDIR}/qlibc/containers/qstack.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qgrow.h ${INST_INCDIR}/qlibc/containers/qgrow.h
+-	${MKDIR_P} ${INST_INCDIR}/qlibc/utilities/
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qcount.h ${INST_INCDIR}/qlibc/utilities/qcount.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qencode.h ${INST_INCDIR}/qlibc/utilities/qencode.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qfile.h ${INST_INCDIR}/qlibc/utilities/qfile.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qhash.h ${INST_INCDIR}/qlibc/utilities/qhash.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qio.h ${INST_INCDIR}/qlibc/utilities/qio.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qsocket.h ${INST_INCDIR}/qlibc/utilities/qsocket.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qstring.h ${INST_INCDIR}/qlibc/utilities/qstring.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qsystem.h ${INST_INCDIR}/qlibc/utilities/qsystem.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qtime.h ${INST_INCDIR}/qlibc/utilities/qtime.h
+-	${MKDIR_P} ${INST_INCDIR}/qlibc/ipc/
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/ipc/qsem.h ${INST_INCDIR}/qlibc/ipc/qsem.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/ipc/qshm.h ${INST_INCDIR}/qlibc/ipc/qshm.h
+-	${MKDIR_P} ${INST_LIBDIR}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_LIBNAME} ${INST_LIBDIR}/${QLIBC_LIBNAME}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_SLIBREALNAME} ${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
+-	( cd ${INST_LIBDIR}; ${LN_S} -f ${QLIBC_SLIBREALNAME} ${QLIBC_SLIBNAME} )
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibc.h $(DESTDIR)/${INST_INCDIR}/qlibc/qlibc.h
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc/containers/
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qtreetbl.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qtreetbl.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qhashtbl.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qhashtbl.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qhasharr.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qhasharr.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qlisttbl.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qlisttbl.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qlist.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qlist.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qvector.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qvector.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qqueue.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qqueue.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qstack.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qstack.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/containers/qgrow.h $(DESTDIR)/${INST_INCDIR}/qlibc/containers/qgrow.h
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qcount.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qcount.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qencode.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qencode.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qfile.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qfile.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qhash.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qhash.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qio.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qio.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qsocket.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qsocket.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qstring.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qstring.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qsystem.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qsystem.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/utilities/qtime.h $(DESTDIR)/${INST_INCDIR}/qlibc/utilities/qtime.h
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc/ipc/
++	${INSTALL_DATA} ${QLIBC_INCDIR}/ipc/qsem.h $(DESTDIR)/${INST_INCDIR}/qlibc/ipc/qsem.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/ipc/qshm.h $(DESTDIR)/${INST_INCDIR}/qlibc/ipc/qshm.h
++	${MKDIR_P} $(DESTDIR)/${INST_LIBDIR}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_LIBNAME} $(DESTDIR)/${INST_LIBDIR}/${QLIBC_LIBNAME}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBC_SLIBREALNAME} $(DESTDIR)/${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
++	( cd $(DESTDIR)/${INST_LIBDIR}; ${LN_S} -f ${QLIBC_SLIBREALNAME} ${QLIBC_SLIBNAME} )
+ 
+ uninstall-qlibc:
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibc.h
+-	${RM} -rf ${INST_INCDIR}/qlibc/containers
+-	${RM} -rf ${INST_INCDIR}/qlibc/utilities
+-	${RM} -rf ${INST_INCDIR}/qlibc/ipc
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_LIBNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBC_SLIBNAME}
++	${RM} -f $(DESTDIR)/${INST_INCDIR}/qlibc/qlibc.h
++	${RM} -rf $(DESTDIR)/${INST_INCDIR}/qlibc/containers
++	${RM} -rf $(DESTDIR)/${INST_INCDIR}/qlibc/utilities
++	${RM} -rf $(DESTDIR)/${INST_INCDIR}/qlibc/ipc
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBC_LIBNAME}
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBC_SLIBREALNAME}
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBC_SLIBNAME}
+ 
+ install-qlibcext: qlibcext
+-	${MKDIR_P} ${INST_INCDIR}/qlibc
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext.h ${INST_INCDIR}/qlibc/qlibcext.h
+-	${MKDIR_P} ${INST_INCDIR}/qlibc/extensions/
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qconfig.h ${INST_INCDIR}/qlibc/extensions/qconfig.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qaconf.h ${INST_INCDIR}/qlibc/extensions/qaconf.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qlog.h ${INST_INCDIR}/qlibc/extensions/qlog.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qhttpclient.h ${INST_INCDIR}/qlibc/extensions/qhttpclient.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qdatabase.h ${INST_INCDIR}/qlibc/extensions/qdatabase.h
+-	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qtokenbucket.h ${INST_INCDIR}/qlibc/extensions/qtokenbucket.h
+-	${MKDIR_P} ${INST_LIBDIR}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_LIBNAME} ${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
+-	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_SLIBREALNAME} ${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
+-	( cd ${INST_LIBDIR}; ${LN_S} -f ${QLIBCEXT_SLIBREALNAME} ${QLIBCEXT_SLIBNAME} )
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc
++	${INSTALL_DATA} ${QLIBC_INCDIR}/qlibcext.h $(DESTDIR)/${INST_INCDIR}/qlibc/qlibcext.h
++	${MKDIR_P} $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qconfig.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qconfig.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qaconf.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qaconf.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qlog.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qlog.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qhttpclient.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qhttpclient.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qdatabase.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qdatabase.h
++	${INSTALL_DATA} ${QLIBC_INCDIR}/extensions/qtokenbucket.h $(DESTDIR)/${INST_INCDIR}/qlibc/extensions/qtokenbucket.h
++	${MKDIR_P} $(DESTDIR)/${INST_LIBDIR}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_LIBNAME} $(DESTDIR)/${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
++	${INSTALL_DATA} ${QLIBC_LIBDIR}/${QLIBCEXT_SLIBREALNAME} $(DESTDIR)/${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
++	( cd $(DESTDIR)/${INST_LIBDIR}; ${LN_S} -f ${QLIBCEXT_SLIBREALNAME} ${QLIBCEXT_SLIBNAME} )
+ 
+ uninstall-qlibcext:
+-	${RM} -f ${INST_INCDIR}/qlibc/qlibcext.h
+-	${RM} -rf ${INST_INCDIR}/qlibc/extensions
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
+-	${RM} -f ${INST_LIBDIR}/${QLIBCEXT_SLIBNAME}
++	${RM} -f $(DESTDIR)/${INST_INCDIR}/qlibc/qlibcext.h
++	${RM} -rf $(DESTDIR)/${INST_INCDIR}/qlibc/extensions
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBCEXT_LIBNAME}
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBCEXT_SLIBREALNAME}
++	${RM} -f $(DESTDIR)/${INST_LIBDIR}/${QLIBCEXT_SLIBNAME}
+ 
+ deinstall: uninstall
+ uninstall: uninstall-qlibc uninstall-qlibcext
+-	${RMDIR} ${INST_INCDIR}/qlibc
++	${RMDIR} $(DESTDIR)/${INST_INCDIR}/qlibc
+ 
+ clean:
+ 	${RM} -f ${QLIBC_OBJS}

@@ -1,4 +1,4 @@
-From 4e8aa3a9e1696e5e02ff0a3ae5a72f034ee60c2f Mon Sep 17 00:00:00 2001
+From 16230b7f51bff2bdf061fa80e9a49c807596bb92 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 15:57:10 +0200
 Subject: [PATCH] install the stack libraries to "lib" subdirectory
@@ -53,7 +53,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  11 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/stack/proj/linux/liboplkcn-sim/CMakeLists.txt b/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
-index 73b641d..b8b5c9d 100644
+index 2b3da16..ddb3e92 100644
 --- a/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcn-sim/CMakeLists.txt
 @@ -96,4 +96,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -63,7 +63,7 @@ index 73b641d..b8b5c9d 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcn/CMakeLists.txt b/stack/proj/linux/liboplkcn/CMakeLists.txt
-index 323eafc..459124a 100644
+index 3be6c52..cf1b1dd 100644
 --- a/stack/proj/linux/liboplkcn/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcn/CMakeLists.txt
 @@ -90,4 +90,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -73,7 +73,7 @@ index 323eafc..459124a 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt b/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
-index f8b1850..c16194a 100644
+index 904de6c..d8713a8 100644
 --- a/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcnapp-kernelintf/CMakeLists.txt
 @@ -83,4 +83,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -83,7 +83,7 @@ index f8b1850..c16194a 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt b/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
-index 0f07e63..0074616 100644
+index e2514cf..a4e2b75 100644
 --- a/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcnapp-userintf/CMakeLists.txt
 @@ -83,4 +83,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -93,7 +93,7 @@ index 0f07e63..0074616 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt b/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
-index d0dad78..ee0fdec 100644
+index 98f068c..bb20006 100644
 --- a/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkcndrv-pcap/CMakeLists.txt
 @@ -76,4 +76,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -153,7 +153,7 @@ index cd97882..aaaa526 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 diff --git a/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt b/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
-index 7e1a820..82205c2 100644
+index 0c29087..1783134 100644
 --- a/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
 +++ b/stack/proj/linux/liboplkmndrv-pcap/CMakeLists.txt
 @@ -79,4 +79,4 @@ ADD_LIBRARY(${LIB_NAME} ${LIB_TYPE} ${LIB_SOURCES})
@@ -163,5 +163,5 @@ index 7e1a820..82205c2 100644
 -INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION . LIBRARY DESTINATION .)
 +INSTALL(TARGETS ${LIB_NAME} ARCHIVE DESTINATION lib LIBRARY DESTINATION lib)
 -- 
-2.8.1
+2.9.4
 

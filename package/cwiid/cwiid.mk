@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-CWIID_VERSION = 0.6.00
-CWIID_SOURCE = cwiid-$(CWIID_VERSION).tgz
-CWIID_SITE = http://abstrakraft.org/cwiid/downloads
-CWIID_LICENSE = GPLv2+
+CWIID_VERSION = fadf11e89b579bcc0336a0692ac15c93785f3f82
+CWIID_SITE = $(call github,abstrakraft,cwiid,$(CWIID_VERSION))
+CWIID_LICENSE = GPL-2.0+
 CWIID_LICENSE_FILES = COPYING
 
 CWIID_AUTORECONF = YES

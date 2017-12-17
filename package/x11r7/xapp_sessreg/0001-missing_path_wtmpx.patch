@@ -1,0 +1,24 @@
+Fix missing defines _PATH_WTMPX/_PATH_UTMPX in musl
+
+Downloaded from
+https://cgit.gentoo.org/proj/musl.git/tree/x11-apps/sessreg/files/sessreg-1.1.0-missing_path_wtmpx.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -Naur sessreg-1.1.0.orig/sessreg.h sessreg-1.1.0/sessreg.h
+--- sessreg-1.1.0.orig/sessreg.h	2015-01-20 05:00:27.000000000 +0000
++++ sessreg-1.1.0/sessreg.h	2016-02-23 11:54:42.057000000 +0000
+@@ -103,6 +103,13 @@
+ # define TTYS_FILE	"/etc/ttys"
+ #endif
+ 
++#ifndef _PATH_WTMPX
++# define _PATH_WTMPX	"/var/log/wtmp"
++#endif
++#ifndef _PATH_UTMPX
++# define _PATH_UTMPX	"/var/log/utmp"
++#endif
++
+ #ifndef WTMPX_FILE
+ # define WTMPX_FILE	_PATH_WTMPX
+ #endif

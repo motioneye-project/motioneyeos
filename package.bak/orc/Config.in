@@ -1,0 +1,13 @@
+config BR2_PACKAGE_ORC
+	bool "orc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_BINFMT_FLAT # configure doesn't know uclinux
+	help
+	  Orc is a library and set of tools for compiling and executing
+	  very simple programs that operate on arrays of data.
+
+	  http://code.entropywave.com/projects/orc/
+
+comment "orc needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_BINFMT_FLAT

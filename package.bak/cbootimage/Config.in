@@ -1,0 +1,16 @@
+config BR2_PACKAGE_CBOOTIMAGE
+	bool "cbootimage"
+	depends on BR2_arm || BR2_armeb
+	# uses non-standard u_intXX_t types
+	# https://github.com/NVIDIA/cbootimage/pull/7
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	help
+	  This project provides a tool which compiles BCT (Boot
+	  Configuration Table) images to place into the boot flash of
+	  a Tegra-based device.
+
+	  https://github.com/NVIDIA/cbootimage
+
+comment "cbootimage needs a glibc or uClibc toolchain"
+	depends on BR2_arm || BR2_armeb
+	depends on BR2_TOOLCHAIN_USES_MUSL

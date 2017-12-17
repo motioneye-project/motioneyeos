@@ -1,0 +1,164 @@
+config BR2_PACKAGE_MTD
+	bool "mtd, jffs2 and ubi/ubifs tools"
+	help
+	  Build mtd, jffs2 and ubi/ubifs tools
+
+	  http://www.linux-mtd.infradead.org/
+
+if BR2_PACKAGE_MTD
+comment "MTD tools selection"
+
+config BR2_PACKAGE_MTD_DOCFDISK
+	bool "docfdisk"
+
+config BR2_PACKAGE_MTD_DOC_LOADBIOS
+	bool "doc_loadbios"
+
+config BR2_PACKAGE_MTD_FLASHCP
+	bool "flashcp"
+	default y
+
+config BR2_PACKAGE_MTD_FLASH_ERASE
+	bool "flash_erase"
+	default y
+
+config BR2_PACKAGE_MTD_FLASH_LOCK
+	bool "flash_lock"
+	default y
+
+config BR2_PACKAGE_MTD_FLASH_OTP_DUMP
+	bool "flash_otp_dump"
+
+config BR2_PACKAGE_MTD_FLASH_OTP_INFO
+	bool "flash_otp_info"
+
+config BR2_PACKAGE_MTD_FLASH_OTP_LOCK
+	bool "flash_otp_lock"
+
+config BR2_PACKAGE_MTD_FLASH_OTP_WRITE
+	bool "flash_otp_write"
+
+config BR2_PACKAGE_MTD_FLASH_UNLOCK
+	bool "flash_unlock"
+	default y
+
+config BR2_PACKAGE_MTD_FTL_CHECK
+	bool "ftl_check"
+
+config BR2_PACKAGE_MTD_FTL_FORMAT
+	bool "ftl_format"
+
+config BR2_PACKAGE_MTD_JFFS2DUMP
+	bool "jffs2dump"
+
+config BR2_PACKAGE_MTD_MKFSJFFS2
+	bool "mkfs.jffs2"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LZO
+
+config BR2_PACKAGE_MTD_MKFSUBIFS
+	bool "mkfs.ubifs"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+
+config BR2_PACKAGE_MTD_MTD_DEBUG
+	bool "mtd_debug"
+	default y
+
+config BR2_PACKAGE_MTD_MTDPART
+	bool "mtdpart"
+
+config BR2_PACKAGE_MTD_NANDDUMP
+	bool "nanddump"
+	default y
+
+config BR2_PACKAGE_MTD_NANDTEST
+	bool "nandtest"
+	default y
+
+config BR2_PACKAGE_MTD_NANDWRITE
+	bool "nandwrite"
+	default y
+
+config BR2_PACKAGE_MTD_NFTLDUMP
+	bool "nftldump"
+
+config BR2_PACKAGE_MTD_NFTL_FORMAT
+	bool "nftl_format"
+
+config BR2_PACKAGE_MTD_RECV_IMAGE
+	bool "recv_image"
+
+config BR2_PACKAGE_MTD_RFDDUMP
+	bool "rfddump"
+
+config BR2_PACKAGE_MTD_RFDFORMAT
+	bool "rfdformat"
+
+config BR2_PACKAGE_MTD_SERVE_IMAGE
+	bool "serve_image"
+
+config BR2_PACKAGE_MTD_SUMTOOL
+	bool "sumtool"
+
+config BR2_PACKAGE_MTD_MTDINFO
+	bool "mtdinfo"
+	default y
+
+config BR2_PACKAGE_MTD_UBIATTACH
+	bool "ubiattach"
+	default y
+
+config BR2_PACKAGE_MTD_UBICRC32
+	bool "ubicrc32"
+	default y
+
+config BR2_PACKAGE_MTD_UBIDETACH
+	bool "ubidetach"
+	default y
+
+config BR2_PACKAGE_MTD_UBIFORMAT
+	bool "ubiformat"
+	default y
+
+config BR2_PACKAGE_MTD_UBIMKVOL
+	bool "ubimkvol"
+	default y
+
+config BR2_PACKAGE_MTD_UBINFO
+	bool "ubinfo"
+	default y
+
+config BR2_PACKAGE_MTD_UBINIZE
+	bool "ubinize"
+	default y
+
+config BR2_PACKAGE_MTD_UBIRENAME
+	bool "ubirename"
+	default y
+
+config BR2_PACKAGE_MTD_UBIRMVOL
+	bool "ubirmvol"
+	default y
+
+config BR2_PACKAGE_MTD_UBIRSVOL
+	bool "ubirsvol"
+	default y
+
+config BR2_PACKAGE_MTD_UBIUPDATEVOL
+	bool "ubiupdatevol"
+	default y
+
+config BR2_PACKAGE_MTD_UBIBLOCK
+	bool "ubiblock"
+	default y
+
+config BR2_PACKAGE_MTD_INTEGCK
+	bool "integck"
+	depends on BR2_USE_MMU # fork()
+	help
+	  Install the integck test program.
+
+endif

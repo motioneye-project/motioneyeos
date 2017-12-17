@@ -1,0 +1,38 @@
+menuconfig BR2_PACKAGE_NVIDIA_TEGRA23
+	bool "nvidia-tegra23"
+	depends on BR2_cortex_a9
+	depends on BR2_ARM_EABIHF && BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14
+	help
+	  Install NVidia proprietary blobs to drive Tegra2 or Tegra3
+	  GPUs found in some mobile-targeted ARM SoCs.
+
+if BR2_PACKAGE_NVIDIA_TEGRA23
+
+choice
+	prompt "Tegra platform"
+	help
+	  Select the SOC platform.
+
+config BR2_PACKAGE_NVIDIA_TEGRA23_TEGRA2
+	bool "Tegra 2"
+	help
+	  NVIDIA Tegra 2 is a dual-core Cortex-A9 without NEON.
+
+config BR2_PACKAGE_NVIDIA_TEGRA23_TEGRA3
+	bool "Tegra 3"
+	depends on BR2_ARM_CPU_HAS_NEON
+	help
+	  NVIDIA Tegra 3 is a quad-core Cortex-A9 with NEON.
+
+endchoice
+
+source "package/nvidia-tegra23/nvidia-tegra23-binaries/Config.in"
+source "package/nvidia-tegra23/nvidia-tegra23-codecs/Config.in"
+endif
+
+comment "nvidia-tegra23 needs Xorg <= 1.14 and a glibc toolchain w/ EABIhf"
+	depends on BR2_cortex_a9
+	depends on !BR2_ARM_EABIHF || !BR2_TOOLCHAIN_USES_GLIBC \
+		|| !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_XSERVER_XORG_SERVER_VIDEODRV_ABI_14

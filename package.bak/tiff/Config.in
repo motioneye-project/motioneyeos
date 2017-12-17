@@ -1,0 +1,70 @@
+menuconfig BR2_PACKAGE_TIFF
+	bool "tiff"
+	help
+	  Library for handling TIFF (Tag Image File Format) images.
+
+	  http://simplesystems.org/libtiff/
+
+if BR2_PACKAGE_TIFF
+
+config BR2_PACKAGE_TIFF_CCITT
+	bool "CCITT Group 3 & 4 support"
+	default y
+
+config BR2_PACKAGE_TIFF_PACKBITS
+	bool "Macintosh PackBits algorithm"
+	default y
+
+config BR2_PACKAGE_TIFF_LZW
+	bool "LZW algorithm"
+	default y
+
+config BR2_PACKAGE_TIFF_THUNDER
+	bool "ThunderScan 4-bit RLE algorithm"
+	default y
+
+config BR2_PACKAGE_TIFF_NEXT
+	bool "NeXT 2-bit RLE algorithm"
+	default y
+
+config BR2_PACKAGE_TIFF_LOGLUV
+	bool "LogLuv high dynamic range encoding"
+	default y
+
+config BR2_PACKAGE_TIFF_MDI
+	bool "Microsoft Document Imaging"
+	default y
+
+config BR2_PACKAGE_TIFF_ZLIB
+	bool "Zlib usage (required for Deflate compression)"
+	select BR2_PACKAGE_ZLIB
+	default y
+
+config BR2_PACKAGE_TIFF_XZ
+	bool "XZ compression"
+	select BR2_PACKAGE_XZ
+
+config BR2_PACKAGE_TIFF_PIXARLOG
+	bool "Pixar log-format algorithm (requires Zlib)"
+	select BR2_PACKAGE_TIFF_ZLIB
+	default y
+
+config BR2_PACKAGE_TIFF_JPEG
+	bool "JPEG compression"
+	select BR2_PACKAGE_JPEG
+	default y
+
+config BR2_PACKAGE_TIFF_OLD_JPEG
+	bool "Old JPEG decompression"
+	default y
+
+config BR2_PACKAGE_TIFF_JBIG
+	bool "JBIG compression"
+	default y
+
+config BR2_PACKAGE_TIFF_UTILITIES
+	bool "tiff utilities"
+	help
+	  Install all tiff utilities.
+
+endif

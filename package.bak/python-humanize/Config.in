@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_HUMANIZE
+	bool "python-humanize"
+	help
+	  Python humanize package contains various common humanization
+	  utilities, like turning a number into a fuzzy human readable
+	  duration ('3 minutes ago') or into a human readable size or
+	  throughput.
+
+	  http://github.com/jmoiron/humanize

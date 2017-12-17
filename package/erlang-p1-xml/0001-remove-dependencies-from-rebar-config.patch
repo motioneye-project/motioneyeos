@@ -1,0 +1,18 @@
+Without this patch, dependencies would be downloaded and compiled
+by rebar at build time.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/rebar.config b/rebar.config
+index 3e20029..a47f1ff 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -31,8 +31,6 @@
+ {port_specs, [{"priv/lib/fxml.so", ["c_src/fxml.c"]},
+               {"priv/lib/fxml_stream.so", ["c_src/fxml_stream.c"]}]}.
+
+-{deps, [{p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.7"}}}]}.
+-
+ {clean_files, ["c_src/fxml.gcda", "c_src/fxml.gcno", "c_src/fxml_stream.gcda", "c_src/fxml_stream.gcno"]}.
+
+ {cover_enabled, true}.

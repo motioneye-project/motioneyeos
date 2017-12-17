@@ -1,0 +1,28 @@
+Fillers to make autoreconf (automake) happy.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura thrift-0.9.2.orig/AUTHORS thrift-0.9.2/AUTHORS
+--- thrift-0.9.2.orig/AUTHORS	1969-12-31 21:00:00.000000000 -0300
++++ thrift-0.9.2/AUTHORS	2014-12-05 14:46:20.431211224 -0300
+@@ -0,0 +1,2 @@
++
++
+diff -Nura thrift-0.9.2.orig/ChangeLog thrift-0.9.2/ChangeLog
+--- thrift-0.9.2.orig/ChangeLog	1969-12-31 21:00:00.000000000 -0300
++++ thrift-0.9.2/ChangeLog	2014-12-05 14:46:34.290686170 -0300
+@@ -0,0 +1,2 @@
++
++
+diff -Nura thrift-0.9.2.orig/NEWS thrift-0.9.2/NEWS
+--- thrift-0.9.2.orig/NEWS	1969-12-31 21:00:00.000000000 -0300
++++ thrift-0.9.2/NEWS	2014-12-05 14:46:32.308618241 -0300
+@@ -0,0 +1,2 @@
++
++
+diff -Nura thrift-0.9.2.orig/README thrift-0.9.2/README
+--- thrift-0.9.2.orig/README	1969-12-31 21:00:00.000000000 -0300
++++ thrift-0.9.2/README	2014-12-05 14:46:28.305481028 -0300
+@@ -0,0 +1,2 @@
++
++

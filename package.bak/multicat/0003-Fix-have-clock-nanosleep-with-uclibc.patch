@@ -1,0 +1,24 @@
+uClibc may be configured without support for clock_nanosleep(). The function is
+only available with uClibc if the C library is build with NPTL support (sets
+__UCLIBC_HAS_THREADS_NATIVE__) and __UCLIBC_HAS_ADVANCED_REALTIME__ set.
+
+Upstream status: Pending
+https://mailman.videolan.org/pipermail/multicat-devel/2016-March/000129.html
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+
+diff -purN multicat-2.1.orig/util.h multicat-2.1/util.h
+--- multicat-2.1.orig/util.h	2015-07-15 22:47:39.000000000 +0200
++++ multicat-2.1/util.h	2016-03-20 18:13:51.899780405 +0100
+@@ -26,7 +26,10 @@
+ 
+ #ifdef __APPLE__
+ #define POLLRDHUP 0
+-#else
++/* uClibc may not have clock_nanosleep() available */
++#elif !defined (__UCLIBC__) || \
++       defined (__UCLIBC__) && defined (__UCLIBC_HAS_THREADS_NATIVE__) \
++                            && defined (__UCLIBC_HAS_ADVANCED_REALTIME__)
+ #define HAVE_CLOCK_NANOSLEEP
+ #endif
+ 

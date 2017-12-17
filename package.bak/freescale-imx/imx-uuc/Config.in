@@ -1,0 +1,21 @@
+config BR2_PACKAGE_IMX_UUC
+	bool "imx-uuc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_arm # Only relevant for i.MX
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_HOST_DOSFSTOOLS
+	help
+	  This package provides the Universal Adapter user-space
+	  utility that is used to receive commands from the
+	  Manufacturing Tool using the Freescale UTP Protocol.
+
+	  It requires a Freescale/NXP kernel whose configuration
+	  contains the CONFIG_FSL_UTP option.
+
+	  This package is provided by Freescale/NXP as-is and doesn't
+	  have an upstream.
+
+comment "imx-uuc needs a toolchain w/ threads"
+	depends on BR2_arm
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LUA_STDLIB
+	bool "lua-stdlib"
+	help
+	  lua-stdlib is a library of modules for common programming
+	  tasks, including list, table and functional operations,
+	  objects, pickling, pretty-printing and command-line option
+	  parsing.
+
+	  https://github.com/lua-stdlib/lua-stdlib/

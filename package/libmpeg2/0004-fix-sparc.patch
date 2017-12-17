@@ -1,0 +1,16 @@
+Do not use sparcv9 optimization flags for sparcv8 builds
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur libmpeg2-0.5.1.orig/configure.ac libmpeg2-0.5.1/configure.ac
+--- libmpeg2-0.5.1.orig/configure.ac	2008-07-18 16:30:17.000000000 +0200
++++ libmpeg2-0.5.1/configure.ac	2017-04-26 21:09:15.780838339 +0200
+@@ -95,7 +95,7 @@
+ 		break
+ 	    fi
+ 	done;;
+-    sparc-* | sparc64-*)
++    sparc64-*)
+ 	AC_DEFINE([ARCH_SPARC],,[sparc architecture])
+ 	TRY_CFLAGS="$OPT_CFLAGS -mcpu=ultrasparc -mvis"
+ 	AC_TRY_CFLAGS([$TRY_CFLAGS $CFLAGS],[OPT_CFLAGS="$TRY_CFLAGS"]);;

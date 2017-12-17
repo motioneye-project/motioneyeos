@@ -7,7 +7,7 @@
 RPCBIND_VERSION = 0.2.3
 RPCBIND_SITE = http://downloads.sourceforge.net/project/rpcbind/rpcbind/$(RPCBIND_VERSION)
 RPCBIND_SOURCE = rpcbind-$(RPCBIND_VERSION).tar.bz2
-RPCBIND_LICENSE = BSD-3c
+RPCBIND_LICENSE = BSD-3-Clause
 RPCBIND_LICENSE_FILES = COPYING
 
 RPCBIND_CONF_ENV += \
@@ -22,9 +22,9 @@ RPCBIND_CONF_OPTS += --with-systemdsystemunitdir=no
 endif
 
 define RPCBIND_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -m 0755 -D package/rpcbind/rpcbind.service \
+	$(INSTALL) -m 0644 -D package/rpcbind/rpcbind.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.service
-	$(INSTALL) -m 0755 -D package/rpcbind/rpcbind.socket \
+	$(INSTALL) -m 0644 -D package/rpcbind/rpcbind.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.socket
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/sockets.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/rpcbind.socket \
@@ -35,6 +35,5 @@ define RPCBIND_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/rpcbind/S30rpcbind \
 		$(TARGET_DIR)/etc/init.d/S30rpcbind
 endef
-
 
 $(eval $(autotools-package))

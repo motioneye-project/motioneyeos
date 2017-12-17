@@ -1,0 +1,19 @@
+comment "xtables-addons needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+comment "xtables-addons needs a toolchain w/ dynamic library, threads"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_XTABLES_ADDONS
+	bool "xtables-addons"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS # extensions are .so
+	select BR2_PACKAGE_IPTABLES
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
+	help
+	  Xtables-addons is the successor to patch-o-matic(-ng).
+	  Likewise, it contains extensions that were not, or are not yet,
+	  accepted in the main kernel/iptables packages.
+
+	  http://xtables-addons.sourceforge.net/

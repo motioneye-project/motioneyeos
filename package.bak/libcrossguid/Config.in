@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBCROSSGUID
+	bool "libcrossguid"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # C++11
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Lightweight cross platform C++ GUID/UUID library
+
+	  https://github.com/graeme-hill/crossguid
+
+comment "libcrossguid needs a toolchain w/ C++, gcc >= 4.7"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7

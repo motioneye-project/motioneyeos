@@ -1,0 +1,30 @@
+config BR2_PACKAGE_LIBSEMANAGE
+	bool "libsemanage"
+	select BR2_PACKAGE_AUDIT
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_USTR
+	select BR2_PACKAGE_BZIP2
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	# - libselinux needs fts.h (not available in uClibc/musl)
+	# - libsemanage itself needs getpwent_r() not available in musl
+	# - audit is not available on musl
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_arc
+	help
+	  libsemanage is the policy management library. It uses
+	  libsepol for binary policy manipulation and libselinux for
+	  interacting with the SELinux system. It also exec's helper
+	  programs for loading policy and for checking whether the
+	  file_contexts configuration is valid (load_policy and
+	  setfiles from policycoreutils) presently, although this may
+	  change at least for the bootstrapping case (for rpm).
+
+	  http://selinuxproject.org/page/Main_Page
+
+comment "libsemanage needs a glibc toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_USES_GLIBC

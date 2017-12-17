@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PAHO_MQTT_C
+	bool "paho-mqtt-c"
+	depends on !BR2_STATIC_LIBS  # dlopen()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  MQTT client C library
+
+	  https://eclipse.org/paho/clients/c/
+
+comment "paho-mqtt-c needs a toolchain w/ threads and dynamic library support"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

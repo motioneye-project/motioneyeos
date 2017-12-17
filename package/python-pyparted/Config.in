@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PYTHON_PYPARTED
 	bool "python-pyparted"
 	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_PYTHON_CFFI # runtime
 	select BR2_PACKAGE_PARTED
 	help
 	  Python bindings for GNU parted (libparted).

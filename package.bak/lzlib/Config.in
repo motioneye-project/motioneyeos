@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LZLIB
+	bool "lzlib"
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_PACKAGE_LUA
+	help
+	  This package provides a library to access zlib library
+	  functions and also to read/write gzip files using an
+	  interface similar to the base io package.
+
+	  https://github.com/LuaDist/lzlib

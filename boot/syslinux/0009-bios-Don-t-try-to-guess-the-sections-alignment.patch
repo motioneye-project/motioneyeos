@@ -1,0 +1,295 @@
+From 76946dd67bc856eaf4fe69d0826547a794176f78 Mon Sep 17 00:00:00 2001
+From: Sylvain Gault <sylvain.gault@gmail.com>
+Date: Tue, 29 Sep 2015 04:45:09 +0200
+Subject: [PATCH] bios: Don't try to guess the sections alignment
+
+For the compression / decompression to succeed, the sections layout must
+be the same between the virtual memory and load memory. The section
+alignment was kept in sync by introducing aligment that should be
+greater or equal to the actual section alignment.
+
+This patch compute the load memory addresses of the sections so that
+the layout is the same as the virtual memory addresses.
+
+Signed-off-by: Sylvain Gault <sylvain.gault@gmail.com>
+Tested-by: poma <pomidorabelisima@gmail.com>
+Signed-off-by: Paulo Alcantara <pcacjr@zytor.com>
+
+Upstream: 0cc9a99e560a2f52bcf052fd85b1efae35ee812f
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ core/i386/syslinux.ld   | 63 ++++++++++---------------------------------------
+ core/x86_64/syslinux.ld | 63 ++++++++++---------------------------------------
+ 2 files changed, 24 insertions(+), 102 deletions(-)
+
+diff --git a/core/i386/syslinux.ld b/core/i386/syslinux.ld
+index 73904510..92b75b11 100644
+--- a/core/i386/syslinux.ld
++++ b/core/i386/syslinux.ld
+@@ -255,10 +255,9 @@ SECTIONS
+ 	. = 0x100000;
+ 
+ 	__pm_code_start = .;
++	__vma_to_lma = __pm_code_lma - __pm_code_start;
+ 
+-	__text_vma = .;
+-	__text_lma = __pm_code_lma;
+-	.text : AT(__text_lma) {
++	.text : AT(ADDR(.text) + __vma_to_lma) {
+ 		FILL(0x90909090)
+ 		__text_start = .;
+ 		*(.text)
+@@ -266,106 +265,68 @@ SECTIONS
+ 		__text_end = .;
+ 	}
+ 
+-	. = ALIGN(32);
+-
+-	__rodata_vma = .;
+-	__rodata_lma = __rodata_vma + __text_lma - __text_vma;
+-	.rodata : AT(__rodata_lma) {
++	.rodata : AT(ADDR(.rodata) + __vma_to_lma) {
+ 		__rodata_start = .;
+ 		*(.rodata)
+ 		*(.rodata.*)
+ 		__rodata_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__ctors_vma = .;
+-	__ctors_lma = __ctors_vma + __text_lma - __text_vma;
+-	.ctors : AT(__ctors_lma) {
++	.ctors : AT(ADDR(.ctors) + __vma_to_lma) {
+ 		__ctors_start = .;
+ 		KEEP (*(SORT(.ctors.*)))
+ 		KEEP (*(.ctors))
+ 		__ctors_end = .;
+ 	}
+ 
+-	__dtors_vma = .;
+-	__dtors_lma = __dtors_vma + __text_lma - __text_vma;
+-	.dtors : AT(__dtors_lma) {
++	.dtors : AT(ADDR(.dtors) + __vma_to_lma) {
+ 		__dtors_start = .;
+ 		KEEP (*(SORT(.dtors.*)))
+ 		KEEP (*(.dtors))
+ 		__dtors_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__dynsym_vma = .;
+-	__dynsym_lma = __dynsym_vma + __text_lma - __text_vma;
+-	.dynsym : AT(__dynsym_lma) {
++	.dynsym : AT(ADDR(.dynsym) + __vma_to_lma) {
+ 		__dynsym_start = .;
+ 		*(.dynsym)
+ 		__dynsym_end = .;
+ 	}
+ 	__dynsym_len = __dynsym_end - __dynsym_start;
+ 
+-	. = ALIGN(4);
+-
+-	__dynstr_vma = .;
+-	__dynstr_lma = __dynstr_vma + __text_lma - __text_vma;
+-	.dynstr : AT(__dynstr_lma) {
++	.dynstr : AT(ADDR(.dynstr) + __vma_to_lma) {
+ 		__dynstr_start = .;
+ 		*(.dynstr)
+ 		__dynstr_end = .;
+ 	}
+ 	__dynstr_len = __dynstr_end - __dynstr_start;
+ 
+-	. = ALIGN(4);
+-
+-	__gnu_hash_vma = .;
+-	__gnu_hash_lma = __gnu_hash_vma + __text_lma - __text_vma;
+-	.gnu.hash : AT(__gnu_hash_lma) {
++	.gnu.hash : AT(ADDR(.gnu.hash) + __vma_to_lma) {
+ 		__gnu_hash_start = .;
+ 		*(.gnu.hash)
+ 		__gnu_hash_end = .;
+ 	}
+ 
+ 
+-	. = ALIGN(4);
+-
+-	__dynlink_vma = .;
+-	__dynlink_lma = __dynlink_vma + __text_lma - __text_vma;
+-	.dynlink : AT(__dynlink_lma) {
++	.dynlink : AT(ADDR(.dynlink) + __vma_to_lma) {
+ 		__dynlink_start = .;
+ 		*(.dynlink)
+ 		__dynlink_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__got_vma = .;
+-	__got_lma = __got_vma + __text_lma - __text_vma;
+-	.got : AT(__got_lma) {
++	.got : AT(ADDR(.got) + __vma_to_lma) {
+ 		__got_start = .;
+ 		KEEP (*(.got.plt))
+ 		KEEP (*(.got))
+ 		__got_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__dynamic_vma = .;
+-	__dynamic_lma = __dynamic_vma + __text_lma - __text_vma;
+-	.dynamic : AT(__dynamic_lma) {
++	.dynamic : AT(ADDR(.dynamic) + __vma_to_lma) {
+ 		__dynamic_start = .;
+ 		*(.dynamic)
+ 		__dynamic_end = .;
+ 	}
+ 
+-	. = ALIGN(32);
+-
+-	__data_vma = .;
+-	__data_lma = __data_vma + __text_lma - __text_vma;
+-	.data : AT(__data_lma) {
++	.data : AT(ADDR(.data) + __vma_to_lma) {
+ 		__data_start = .;
+ 		*(.data)
+ 		*(.data.*)
+diff --git a/core/x86_64/syslinux.ld b/core/x86_64/syslinux.ld
+index bf815c46..70c6e00a 100644
+--- a/core/x86_64/syslinux.ld
++++ b/core/x86_64/syslinux.ld
+@@ -255,10 +255,9 @@ SECTIONS
+ 	. = 0x100000;
+ 
+ 	__pm_code_start = .;
++	__vma_to_lma = __pm_code_lma - __pm_code_start;
+ 
+-	__text_vma = .;
+-	__text_lma = __pm_code_lma;
+-	.text : AT(__text_lma) {
++	.text : AT(ADDR(.text) + __vma_to_lma) {
+ 		FILL(0x90909090)
+ 		__text_start = .;
+ 		*(.text)
+@@ -266,106 +265,68 @@ SECTIONS
+ 		__text_end = .;
+ 	}
+ 
+-	. = ALIGN(32);
+-
+-	__rodata_vma = .;
+-	__rodata_lma = __rodata_vma + __text_lma - __text_vma;
+-	.rodata : AT(__rodata_lma) {
++	.rodata : AT(ADDR(.rodata) + __vma_to_lma) {
+ 		__rodata_start = .;
+ 		*(.rodata)
+ 		*(.rodata.*)
+ 		__rodata_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__ctors_vma = .;
+-	__ctors_lma = __ctors_vma + __text_lma - __text_vma;
+-	.ctors : AT(__ctors_lma) {
++	.ctors : AT(ADDR(.ctors) + __vma_to_lma) {
+ 		__ctors_start = .;
+ 		KEEP (*(SORT(.ctors.*)))
+ 		KEEP (*(.ctors))
+ 		__ctors_end = .;
+ 	}
+ 
+-	__dtors_vma = .;
+-	__dtors_lma = __dtors_vma + __text_lma - __text_vma;
+-	.dtors : AT(__dtors_lma) {
++	.dtors : AT(ADDR(.dtors) + __vma_to_lma) {
+ 		__dtors_start = .;
+ 		KEEP (*(SORT(.dtors.*)))
+ 		KEEP (*(.dtors))
+ 		__dtors_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__dynsym_vma = .;
+-	__dynsym_lma = __dynsym_vma + __text_lma - __text_vma;
+-	.dynsym : AT(__dynsym_lma) {
++	.dynsym : AT(ADDR(.dynsym) + __vma_to_lma) {
+ 		__dynsym_start = .;
+ 		*(.dynsym)
+ 		__dynsym_end = .;
+ 	}
+ 	__dynsym_len = __dynsym_end - __dynsym_start;
+ 
+-	. = ALIGN(4);
+-
+-	__dynstr_vma = .;
+-	__dynstr_lma = __dynstr_vma + __text_lma - __text_vma;
+-	.dynstr : AT(__dynstr_lma) {
++	.dynstr : AT(ADDR(.dynstr) + __vma_to_lma) {
+ 		__dynstr_start = .;
+ 		*(.dynstr)
+ 		__dynstr_end = .;
+ 	}
+ 	__dynstr_len = __dynstr_end - __dynstr_start;
+ 
+-	. = ALIGN(4);
+-
+-	__gnu_hash_vma = .;
+-	__gnu_hash_lma = __gnu_hash_vma + __text_lma - __text_vma;
+-	.gnu.hash : AT(__gnu_hash_lma) {
++	.gnu.hash : AT(ADDR(.gnu.hash) + __vma_to_lma) {
+ 		__gnu_hash_start = .;
+ 		*(.gnu.hash)
+ 		__gnu_hash_end = .;
+ 	}
+ 
+ 
+-	. = ALIGN(4);
+-
+-	__dynlink_vma = .;
+-	__dynlink_lma = __dynlink_vma + __text_lma - __text_vma;
+-	.dynlink : AT(__dynlink_lma) {
++	.dynlink : AT(ADDR(.dynlink) + __vma_to_lma) {
+ 		__dynlink_start = .;
+ 		*(.dynlink)
+ 		__dynlink_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__got_vma = .;
+-	__got_lma = __got_vma + __text_lma - __text_vma;
+-	.got : AT(__got_lma) {
++	.got : AT(ADDR(.got) + __vma_to_lma) {
+ 		__got_start = .;
+ 		KEEP (*(.got.plt))
+ 		KEEP (*(.got))
+ 		__got_end = .;
+ 	}
+ 
+-	. = ALIGN(4);
+-
+-	__dynamic_vma = .;
+-	__dynamic_lma = __dynamic_vma + __text_lma - __text_vma;
+-	.dynamic : AT(__dynamic_lma) {
++	.dynamic : AT(ADDR(.dynamic) + __vma_to_lma) {
+ 		__dynamic_start = .;
+ 		*(.dynamic)
+ 		__dynamic_end = .;
+ 	}
+ 
+-	. = ALIGN(32);
+-
+-	__data_vma = .;
+-	__data_lma = __data_vma + __text_lma - __text_vma;
+-	.data : AT(__data_lma) {
++	.data : AT(ADDR(.data) + __vma_to_lma) {
+ 		__data_start = .;
+ 		*(.data)
+ 		*(.data.*)
+-- 
+2.13.3
+

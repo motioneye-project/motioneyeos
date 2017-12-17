@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PERL_XML_LIBXML
+	bool "perl-xml-libxml"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_PERL_XML_NAMESPACESUPPORT
+	select BR2_PACKAGE_PERL_XML_SAX
+	select BR2_PACKAGE_PERL_XML_SAX_BASE
+	help
+	  Interface to Gnome libxml2 xml parsing and DOM library
+
+	  https://github.com/shlomif/perl-XML-LibXML
+
+comment "perl-xml-libxml needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

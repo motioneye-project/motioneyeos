@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# Starts darkhttpd.
+#
+
+# Allow a few customizations from a config file
+test -r /etc/default/darkhttpd && . /etc/default/darkhttpd
+
+DARKHTTPD_PROG=/usr/sbin/darkhttpd
+DARKHTTPD_PIDFILE=/var/run/darkhttpd.pid
+DARKHTTPD_ARGS="${DARKHTTPD_ROOT:-/var/www} --log /var/log/darkhttpd.log $DARKHTTPD_FLAGS --chroot --uid nobody --gid www-data"
+
+start() {
+    printf "Starting darkhttpd: "
+    start-stop-daemon -S -q -b -p $DARKHTTPD_PIDFILE -m --exec $DARKHTTPD_PROG -- $DARKHTTPD_ARGS
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+    printf "Stopping darkhttpd: "
+    start-stop-daemon -K -q -p $DARKHTTPD_PIDFILE
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

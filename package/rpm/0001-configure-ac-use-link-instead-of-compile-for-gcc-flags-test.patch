@@ -1,0 +1,33 @@
+From b5f1895aae096836d6e8e155ee289e1b10fcabcb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sat, 10 Oct 2015 23:17:44 +0200
+Subject: [PATCH] configure.ac: use link instead of compile for gcc flags test
+
+The logic that tests whether gcc supports or not certain flags uses
+AC_COMPILE_IFELSE(). However, when checking for stack smashing
+protection support, an AC_LINK_IFELSE() test is needed, since the
+build might work but not the link stage if certain libraries are
+missing for proper stack smashing protection support.
+
+Therefore, this commit switches to use AC_LINK_IFELSE().
+
+[Upstream commit: https://github.com/rpm-software-management/rpm/commit/b5f1895aae096836d6e8e155ee289e1b10fcabcb]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: James Knight <james.d.knight@live.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6ece8c9fd..822294c3f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -43,7 +43,7 @@ if test "$GCC" = yes; then
+     echo
+     for flag in $cflags_to_try; do
+         CFLAGS="$CFLAGS $flag -Werror"
+-        AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[return 0;]])],[
++        AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[return 0;]])],[
+                 echo "   $flag"
+                 RPMCFLAGS="$RPMCFLAGS $flag"
+         ],[])

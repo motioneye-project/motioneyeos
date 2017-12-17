@@ -1,0 +1,35 @@
+From a874ba472151c6811018de322a5787d0ca6148c9 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 9 Aug 2016 11:52:51 +0200
+Subject: [PATCH] ext/fileinfo/config.m4: allow cache answer for strcasestr
+ discovery
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+---
+ ext/fileinfo/config.m4 | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/ext/fileinfo/config.m4 b/ext/fileinfo/config.m4
+index 7e98d62..8561962 100644
+--- a/ext/fileinfo/config.m4
++++ b/ext/fileinfo/config.m4
+@@ -14,6 +14,7 @@ if test "$PHP_FILEINFO" != "no"; then
+     libmagic/readcdf.c libmagic/softmagic.c"
+ 
+   AC_MSG_CHECKING([for strcasestr])
++  AC_CACHE_VAL(ac_cv_func_strcasestr,
+   AC_TRY_RUN([
+ #include <string.h>
+ #include <strings.h>
+@@ -46,7 +47,7 @@ int main(void)
+     AC_MSG_RESULT(no)
+     AC_MSG_NOTICE(using libmagic strcasestr implementation)
+     libmagic_sources="$libmagic_sources libmagic/strcasestr.c"
+-  ])
++  ]))
+ 
+   PHP_NEW_EXTENSION(fileinfo, fileinfo.c $libmagic_sources, $ext_shared,,-I@ext_srcdir@/libmagic)
+   PHP_ADD_BUILD_DIR($ext_builddir/libmagic)
+-- 
+2.7.4
+

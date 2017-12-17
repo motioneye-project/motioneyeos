@@ -1,0 +1,35 @@
+#!/bin/sh
+
+start() {
+  printf "Starting stunnel: "
+  start-stop-daemon -S -q -p /var/run/stunnel.pid --exec /usr/bin/stunnel
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+  printf "Stopping stunnel: "
+  start-stop-daemon -K -q -p /var/run/stunnel.pid
+  [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+  stop
+  start
+}
+
+case "$1" in
+  start)
+    start
+    ;;
+  stop)
+    stop
+    ;;
+  restart|reload)
+    restart
+    ;;
+  *)
+    echo "Usage: $0 {start|stop|restart}"
+    exit 1
+esac
+
+exit $?

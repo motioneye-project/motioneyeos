@@ -1,0 +1,51 @@
+#
+# Automatically generated make config: don't edit
+# Mon Feb 18 09:11:56 2008
+#
+BR2_HAVE_DOT_CONFIG=y
+# BR2_alpha is not set
+# BR2_arm is not set
+# BR2_armeb is not set
+# BR2_cris is not set
+# BR2_ia64 is not set
+BR2_i386=y
+# BR2_m68k is not set
+# BR2_mips is not set
+# BR2_mipsel is not set
+# BR2_nios2 is not set
+# BR2_powerpc is not set
+# BR2_sh is not set
+# BR2_sparc is not set
+# BR2_sparc64 is not set
+# BR2_x86_64 is not set
+# BR2_x86_i486 is not set
+# BR2_x86_i586 is not set
+BR2_x86_i686=y
+# BR2_x86_pentiumpro is not set
+# BR2_x86_pentium_mmx is not set
+# BR2_x86_pentium_m is not set
+# BR2_x86_pentium2 is not set
+# BR2_x86_pentium3 is not set
+# BR2_x86_pentium4 is not set
+# BR2_x86_prescott is not set
+# BR2_x86_nocona is not set
+# BR2_x86_core2 is not set
+# BR2_x86_k6 is not set
+# BR2_x86_k6_2 is not set
+# BR2_x86_athlon is not set
+# BR2_x86_athlon_4 is not set
+# BR2_x86_opteron is not set
+# BR2_x86_opteron_sse3 is not set
+# BR2_x86_barcelona is not set
+# BR2_x86_geode is not set
+# BR2_x86_c3 is not set
+# BR2_x86_winchip_c6 is not set
+# BR2_x86_winchip2 is not set
+BR2_ARCH="i686"
+BR2_ENDIAN="LITTLE"
+BR2_GCC_TARGET_TUNE="i686"
+BR2_GCC_TARGET_ARCH="i686"
+
+#
+# Target options
+#

@@ -1,0 +1,28 @@
+config BR2_PACKAGE_CRACKLIB
+	bool "cracklib"
+	help
+	  CrackLib tests passwords to determine whether they match
+	  certain security-oriented characteristics, with the purpose
+	  of stopping users from choosing passwords that are easy to
+	  guess. CrackLib performs several tests on passwords: it
+	  tries to generate words from a username and gecos entry and
+	  checks those words against the password; it checks for
+	  simplistic patterns in passwords; and it checks for the
+	  password in a dictionary.
+
+	  https://github.com/cracklib/cracklib
+
+if BR2_PACKAGE_CRACKLIB
+
+config BR2_PACKAGE_CRACKLIB_TOOLS
+	bool "install tools"
+	help
+	  Install cracklib command line tools for creating dicts.
+
+config BR2_PACKAGE_CRACKLIB_FULL_DICT
+	bool "full dict"
+	help
+	  Install the full cracklib dict (requires about 8Mb extra
+	  target space).
+
+endif

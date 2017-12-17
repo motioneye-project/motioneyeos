@@ -1,0 +1,4 @@
+# From http://lists.gnu.org/archive/html/bug-ed/2017-01/msg00002.html
+sha1	a91f785f7e16dc68e1c9c86d532ebd9698171ba0	ed-1.14.1.tar.lz
+# Locally computed
+sha256	ffb97eb8f2a2b5a71a9b97e3872adce953aa1b8958e04c5b7bf11d556f32552a	ed-1.14.1.tar.lz

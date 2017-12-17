@@ -1,0 +1,30 @@
+The package attempts to build a statically-linked host binary, futility_s,
+which is not used anywhere in buildroot but may be causing build failures
+if the build host lacks static libc.
+
+Signed-off-by: Alex Suykov <alex.suykov@gmail.com>
+
+--- a/Makefile
++++ b/Makefile
+@@ -1079,7 +1079,7 @@
+ # new Firmware Utility
+ 
+ .PHONY: futil
+-futil: ${FUTIL_STATIC_BIN} ${FUTIL_BIN}
++futil: ${FUTIL_BIN}
+ 
+ ${FUTIL_STATIC_BIN}: ${FUTIL_STATIC_OBJS} ${UTILLIB}
+ 	@${PRINTF} "    LD            $(subst ${BUILD}/,,$@)\n"
+@@ -1091,10 +1091,10 @@
+ 	${Q}${LD} -o $@ ${CFLAGS} ${LDFLAGS} $^ ${LDLIBS}
+ 
+ .PHONY: futil_install
+-futil_install: ${FUTIL_BIN} ${FUTIL_STATIC_BIN}
++futil_install: ${FUTIL_BIN}
+ 	@${PRINTF} "    INSTALL       futility\n"
+ 	${Q}mkdir -p ${UB_DIR}
+-	${Q}${INSTALL} -t ${UB_DIR} ${FUTIL_BIN} ${FUTIL_STATIC_BIN}
++	${Q}${INSTALL} -t ${UB_DIR} ${FUTIL_BIN}
+ 	${Q}for prog in ${FUTIL_SYMLINKS}; do \
+ 		ln -sf futility "${UB_DIR}/$$prog"; done
+ 

@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LIBIDN
 	bool "libidn"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Libidn's purpose is to encode and decode internationalized
 	  domain names.

@@ -1,0 +1,15 @@
+config BR2_PACKAGE_FINDUTILS
+	bool "findutils"
+	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  Basic directory searching utilities. Provides the
+	  common 'find', 'xargs', 'locate', and 'updatedb' binaries.
+
+	  http://www.gnu.org/software/findutils/findutils.html
+
+comment "findutils needs a toolchain w/ wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

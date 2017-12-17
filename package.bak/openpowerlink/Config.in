@@ -1,0 +1,128 @@
+comment "openpowerlink needs a toolchain w/ C++, threads"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_OPENPOWERLINK
+	bool "openpowerlink"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_i386 || BR2_x86_64
+	help
+	  openPOWERLINK is an Open Source Industrial Ethernet stack
+	  implementing the POWERLINK protocol for Managing Node (MN,
+	  POWERLINK Master) and Controlled Node (CN, POWERLINK Slave).
+
+	  It is provided by
+	  SYSTEC electronic (http://www.systec-electronic.com),
+	  B&R (http://www.br-automation.com) and
+	  Kalycito (http://www.kalycito.com).
+
+	  http://openpowerlink.sourceforge.net/web/
+
+if BR2_PACKAGE_OPENPOWERLINK
+
+choice
+	prompt "MN/CN mode"
+
+config BR2_PACKAGE_OPENPOWERLINK_MN
+	bool "Managing Node"
+	help
+	  Enable Managing Node (master) mode
+
+config BR2_PACKAGE_OPENPOWERLINK_CN
+	bool "Controlled Node"
+	help
+	  Enable Controlled Node (slave) mode
+
+endchoice
+
+choice
+	prompt "stack type"
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_MONOLITHIC_USER_STACK_LIB
+	bool "linked into application"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  Compile a monolithic openPOWERLINK library. The library
+	  contains an Ethernet driver which is using the PCAP library
+	  for accessing the network. No kernel-side driver is needed.
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_USERSPACE_DAEMON_LIB
+	bool "user-space pcap daemon"
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_OPENPOWERLINK_PCAP_DAEMON
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux user space driver, and the Linux user
+	  space driver. It is used for implementing a multi-process
+	  solution where the openPOWERLINK layer is running as a
+	  separate Linux user space daemon (i.e. a PCAP based user
+	  space daemon).  No kernel-side stack is needed.
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+	bool "kernel-space driver"
+	depends on BR2_LINUX_KERNEL
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux kernel space driver. This will also
+	  build and install a Linux kernel module openPOWERLINK
+	  driver.
+
+config BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_PCIE_STACK_LIB
+	bool "kernel-space PCIe driver"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN # MN support only
+	help
+	  Compile openPOWERLINK application library which contains the
+	  interface to a Linux kernel PCIe interface driver. The kernel
+	  part of the openPOWERLINK stack is located on an external PCIe
+	  device. The status/control and data exchange between the
+	  application and kernel stack is handled by the PCIe interface
+	  driver.
+
+comment "openpowerlink kernel stack needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+endchoice
+
+if BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+
+menu "Ethernet drivers"
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_82573
+	bool "Intel 82573"
+	default y
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_8255x
+	bool "Intel 8255x"
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_I210
+	bool "Intel I210"
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_RTL8111
+	bool "Realtek RTL-8111/8168"
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_DRIVER_RTL8139
+	bool "Realtek RTL-8139"
+
+endmenu
+
+endif # BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_STACK_LIB
+
+config BR2_PACKAGE_OPENPOWERLINK_KERNEL_PCIE_DRIVER
+	depends on BR2_PACKAGE_OPENPOWERLINK_STACK_KERNEL_PCIE_STACK_LIB
+	bool "PCIe Powerlink Driver"
+
+menu "demos"
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_MN_CONSOLE
+	bool "console MN demo"
+	depends on BR2_PACKAGE_OPENPOWERLINK_MN
+
+config BR2_PACKAGE_OPENPOWERLINK_DEMO_CN_CONSOLE
+	bool "console CN demo"
+	depends on BR2_PACKAGE_OPENPOWERLINK_CN
+
+endmenu
+
+endif # BR2_PACKAGE_OPENPOWERLINK

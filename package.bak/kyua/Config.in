@@ -1,0 +1,22 @@
+config BR2_PACKAGE_KYUA
+	bool "kyua"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER # lutok
+	depends on !BR2_PACKAGE_LUAJIT # lutok
+	depends on BR2_USE_MMU # atf
+	select BR2_PACKAGE_ATF
+	select BR2_PACKAGE_LUTOK
+	select BR2_PACKAGE_SQLITE
+	help
+	  Kyua is a testing framework for infrastructure software,
+	  originally designed to equip BSD-based operating systems
+	  with a test suite. This means that Kyua is lightweight
+	  and simple, and that Kyua integrates well with various build
+	  systems and continuous integration frameworks.
+
+	  https://github.com/jmmv/kyua
+
+comment "kyua needs a toolchain w/ C++ and full Lua"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_PACKAGE_LUAJIT
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	depends on BR2_USE_MMU

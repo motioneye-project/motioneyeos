@@ -1,0 +1,72 @@
+From f447db18b389050ecc5e66dbf549d5953633e23e Mon Sep 17 00:00:00 2001
+From: Jan Stancek <jstancek@redhat.com>
+Date: Mon, 7 Nov 2016 12:50:27 +0100
+Subject: [PATCH] fix build when USE_BPF is not defined
+
+net/bpf.o: In function `bpf_gen_filter': bpf.c:852: undefined reference to `get_rand_bpf_fd'
+
+Signed-off-by: Jan Stancek <jstancek@redhat.com>
+[Upstream commit: https://github.com/kernelslacker/trinity/commit/f447db18b389050ecc5e66dbf549d5953633e23e]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ net/bpf.c             | 3 +++
+ syscalls/prctl.c      | 4 +++-
+ syscalls/setsockopt.c | 2 ++
+ 3 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/net/bpf.c b/net/bpf.c
+index 4fe94173..d6ca14bd 100644
+--- a/net/bpf.c
++++ b/net/bpf.c
+@@ -8,6 +8,7 @@
+ #include <string.h>
+ 
+ #include "bpf.h"
++#include "config.h"
+ #include "debug.h"
+ #include "log.h"
+ #include "net.h"
+@@ -17,6 +18,7 @@
+ #include "utils.h"
+ #include "compat.h"
+ 
++#ifdef USE_BPF
+ /**
+  * BPF filters are used in networking such as in pf_packet, but also
+  * in seccomp for application sand-boxing. Additionally, with arch
+@@ -885,3 +887,4 @@ void bpf_gen_filter(unsigned long **addr, unsigned long *addrlen)
+ 	if (dump_bpf)
+ 		bpf_disasm_all(bpf->filter, bpf->len);
+ }
++#endif
+diff --git a/syscalls/prctl.c b/syscalls/prctl.c
+index 02d2dbc6..cdbcdc21 100644
+--- a/syscalls/prctl.c
++++ b/syscalls/prctl.c
+@@ -45,9 +45,11 @@ static int prctl_opts[] = {
+ #ifdef USE_SECCOMP
+ static void do_set_seccomp(struct syscallrecord *rec)
+ {
+-	unsigned long *optval = NULL, optlen = 0;
++	unsigned long *optval = NULL, __unused__ optlen = 0;
+ 
++#ifdef USE_BPF
+ 	bpf_gen_seccomp(&optval, &optlen);
++#endif
+ 
+ 	rec->a2 = SECCOMP_MODE_FILTER;
+ 	rec->a3 = (unsigned long) optval;
+diff --git a/syscalls/setsockopt.c b/syscalls/setsockopt.c
+index 8189b7a8..d395e54e 100644
+--- a/syscalls/setsockopt.c
++++ b/syscalls/setsockopt.c
+@@ -48,7 +48,9 @@ static void socket_setsockopt(struct sockopt *so, __unused__ struct socket_tripl
+ 	case SO_ATTACH_FILTER: {
+ 		unsigned long *optval = NULL, optlen = 0;
+ 
++#ifdef USE_BPF
+ 		bpf_gen_filter(&optval, &optlen);
++#endif
+ 
+ 		so->optval = (unsigned long) optval;
+ 		so->optlen = optlen;

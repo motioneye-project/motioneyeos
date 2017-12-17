@@ -1,0 +1,132 @@
+From 450dfb09ee72ffedea8f2a25fdce17295f01f62f Mon Sep 17 00:00:00 2001
+From: Stephan Mueller <smueller@chronox.de>
+Date: Tue, 8 Aug 2017 10:04:06 +0200
+Subject: [PATCH] Unify code to read from seed sources
+
+Remove the code duplication for FD reads and syscall reads.
+
+This patch also fixes the use of __NR_getrandom resolution.
+
+[Upstream commit: https://github.com/smuellerDD/libkcapi/commit/450dfb09ee72ffedea8f2a25fdce17295f01f62f]
+Signed-off-by: Marcin Nowakowski <marcin.nowakowski@imgtec.com>
+
+---
+ apps/kcapi-rng.c | 71 +++++++++++++++++++++++++-------------------------------
+ 1 file changed, 32 insertions(+), 39 deletions(-)
+
+diff --git a/apps/kcapi-rng.c b/apps/kcapi-rng.c
+index e15edf9..96da111 100644
+--- a/apps/kcapi-rng.c
++++ b/apps/kcapi-rng.c
+@@ -17,7 +17,9 @@
+  * DAMAGE.
+  */
+ 
++#define _GNU_SOURCE
+ #include <unistd.h>
++#include <sys/syscall.h>
+ #include <errno.h>
+ #include <limits.h>
+ #include <stdint.h>
+@@ -41,56 +43,48 @@
+ /* Minimum seed is 256 bits. */
+ #define KCAPI_RNG_MINSEEDSIZE 32
+ 
+-struct kcapi_handle *rng = NULL;
+-unsigned int Verbosity = 0;
+-char *rng_name = NULL;
++static struct kcapi_handle *rng = NULL;
++static unsigned int Verbosity = 0;
++static char *rng_name = NULL;
+ 
+-#ifndef HAVE_GETRANDOM
+-static int read_complete(int fd, uint8_t *buf, uint32_t buflen)
++#if !defined(HAVE_GETRANDOM) && !defined(__NR_getrandom)
++static int random_fd = -1;
++static int open_random(void)
+ {
+-	ssize_t ret;
++	random_fd = open("/dev/urandom", O_RDONLY|O_CLOEXEC);
++	if (0 > random_fd)
++		return random_fd;
+ 
+-	do {
+-		ret = read(fd, buf, buflen);
+-		if (0 < ret) {
+-			buflen -= ret;
+-			buf += ret;
+-		}
+-	} while ((0 < ret || EINTR == errno || ERESTART == errno)
+-		 && buflen > 0);
+-
+-	if (buflen == 0)
+-		return 0;
+-	return 1;
++	return 0;
+ }
+ 
+-static int read_random(uint8_t *buf, uint32_t buflen)
++static void close_random(void)
+ {
+-	int fd;
+-	int ret = 0;
+-
+-	fd = open("/dev/urandom", O_RDONLY|O_CLOEXEC);
+-	if (0 > fd)
+-		return fd;
+-
+-	ret = read_complete(fd, buf, buflen);
+-	close(fd);
+-	return ret;
++	close(random_fd);
+ }
+ #endif
+ 
+ static int get_random(uint8_t *buf, uint32_t buflen)
+ {
++	ssize_t ret;
++
+ 	if (buflen > INT_MAX)
+ 		return 1;
+ 
++#if (!defined(HAVE_GETRANDOM) && !defined(__NR_getrandom))
++	ret = open_random();
++	if (ret)
++		return ret;
++#endif
++
++	do {
+ #ifdef HAVE_GETRANDOM
+-	return getrandom(buf, buflen, 0);
++		ret = getrandom(buf, buflen, 0);
++#elif defined __NR_getrandom
++		ret = syscall(__NR_getrandom, buf, buflen, 0);
+ #else
+-# ifdef __NR_getrandom
+-	do {
+-		int ret = syscall(__NR_getrandom, buf, buflen, 0);
+-
++		ret = read(random_fd, buf, buflen);
++#endif
+ 		if (0 < ret) {
+ 			buflen -= ret;
+ 			buf += ret;
+@@ -98,14 +92,13 @@ static int get_random(uint8_t *buf, uint32_t buflen)
+ 	} while ((0 < ret || EINTR == errno || ERESTART == errno)
+ 		 && buflen > 0);
+ 
++#if (!defined(HAVE_GETRANDOM) && !defined(__NR_getrandom))
++	close_random();
++#endif
++
+ 	if (buflen == 0)
+ 		return 0;
+-
+ 	return 1;
+-# else
+-	return read_random(buf, buflen);
+-# endif
+-#endif
+ }
+ 
+ static void usage(void)

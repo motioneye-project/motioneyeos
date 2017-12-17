@@ -1,0 +1,12 @@
+config BR2_PACKAGE_F2FS_TOOLS
+	bool "f2fs-tools"
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	depends on BR2_USE_WCHAR # uses wchar_t
+	help
+	  Tools for Flash-Friendly File System (F2FS)
+
+	  http://sourceforge.net/projects/f2fs-tools/
+
+comment "f2fs-tools needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

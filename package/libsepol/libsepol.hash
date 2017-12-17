@@ -1,2 +1,2 @@
-# From https://github.com/SELinuxProject/selinux/wiki/Releases
-sha256 d856d6506054f52abeaa3543ea2f2344595a3dc05d0d873ed7f724f7a16b1874  libsepol-2.6.tar.gz
+# From: https://github.com/SELinuxProject/selinux/wiki/Releases
+sha256 d69d3bd8ec901a3bd5adf2be2fb47fb1a685ed73066ab482e7e505371a48f9e7  libsepol-2.7.tar.gz

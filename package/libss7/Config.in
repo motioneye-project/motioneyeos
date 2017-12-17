@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBSS7
+	bool "libss7"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_DAHDI_LINUX
+	select BR2_PACKAGE_DAHDI_TOOLS
+	help
+	  libss7 is an open source library that encapsulates the
+	  protocols used to communicate using Signaling System 7
+	  over ISDN (T1, E1).
+
+	  http://www.asterisk.org/downloads/libss7
+
+comment "libss7 needs a kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+comment "libss7 needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,33 @@
+From 6d42be24b62b94df8e2f01956842b7ee4b640e97 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 11 Jul 2016 22:07:42 +0200
+Subject: [PATCH] Fix musl compile.
+
+Unconditional include <asm/types.h> for __u32 type.
+
+Fixes:
+
+  error: unknown type name '__u32'
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ fbset.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/fbset.h b/fbset.h
+index 9b1d2ac..3c511e1 100644
+--- a/fbset.h
++++ b/fbset.h
+@@ -15,9 +15,7 @@
+ #include <stdio.h>
+ #include <sys/types.h>
+ 
+-#ifdef __GLIBC__
+ #include <asm/types.h>
+-#endif
+ 
+ #define VERSION         "Linux Frame Buffer Device Configuration " \
+ 			"Version 2.1 (23/06/1999)\n"  \
+-- 
+2.8.1
+

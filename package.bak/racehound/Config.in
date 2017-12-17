@@ -1,0 +1,35 @@
+config BR2_PACKAGE_RACEHOUND
+	bool "racehound"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR # elfutils
+	depends on !BR2_STATIC_LIBS # elfutils
+	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # elfutils
+	# only x86/x86_64 supported
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_ELFUTILS
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
+	help
+	  RaceHound can be used to detect data races in the Linux
+	  kernel on x86.
+
+	  RaceHound needs the following kernel configurations enabled:
+	  - CONFIG_X86_32 or CONFIG_X86_64
+	  - CONFIG_MODULES
+	  - CONFIG_MODULE_UNLOAD
+	  - CONFIG_SYSFS
+	  - CONFIG_DEBUG_FS
+	  - CONFIG_KALLSYMS
+	  - CONFIG_KALLSYMS_ALL
+	  - CONFIG_KPROBES
+
+	  https://github.com/winnukem/racehound
+
+comment "racehound needs an Linux kernel >= 3.14 to be built"
+	depends on !BR2_LINUX_KERNEL
+	depends on BR2_i386 || BR2_x86_64
+
+comment "racehound needs a uClibc or glibc toolchain w/ C++, wchar, dynamic library"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)

@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBSIGROK_VERSION = 0.4.0
+LIBSIGROK_VERSION = 0.5.0
 LIBSIGROK_SITE = http://sigrok.org/download/source/libsigrok
-LIBSIGROK_LICENSE = GPLv3+
+LIBSIGROK_LICENSE = GPL-3.0+
 LIBSIGROK_LICENSE_FILES = COPYING
 LIBSIGROK_INSTALL_STAGING = YES
 LIBSIGROK_DEPENDENCIES = libglib2 libzip host-pkgconf
@@ -39,7 +39,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBSIGROKCXX),y)
 LIBSIGROK_CONF_OPTS += --enable-cxx
-LIBSIGROK_AUTORECONF_OPTS += -I $(HOST_DIR)/usr/share/autoconf-archive
+LIBSIGROK_AUTORECONF_OPTS += -I $(HOST_DIR)/share/autoconf-archive
 LIBSIGROK_DEPENDENCIES += \
 	host-autoconf-archive \
 	glibmm \

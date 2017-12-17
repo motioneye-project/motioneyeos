@@ -1,0 +1,66 @@
+Discover monotonic clock using compile-time check
+
+monotonic clock check does not work when cross-compiling.
+
+Upstream-Status: Denied [Does not work on OpenBSD]
+Signed-off-by: Jussi Kukkonen <jussi.kukkonen@intel.com>
+
+
+
+Original patch follows:
+
+When xorg-xserver is being cross-compiled, there is currently no way
+for us to detect whether the monotonic clock is available on the
+target system, because we aren't able to run a test program on the host
+system. Currently, in this situation, we default to not use the
+monotonic clock. One problem with this situation is that the user will
+be treated as idle when the date is updated.
+
+To fix this situation, we now use a compile-time check to detect whether the
+monotonic clock is available. This check can run just fine when we are
+cross-compiling.
+
+Signed-off-by: David James <davidjames at google.com>
+
+Downloaded from
+https://github.com/openembedded/openembedded-core/blob/master/meta/recipes-graphics/xorg-xserver/xserver-xorg/0001-configure.ac-Fix-check-for-CLOCK_MONOTONIC.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index f7ab48c..26e85cd 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1048,19 +1048,16 @@ if ! test "x$have_clock_gettime" = xno; then
+         CPPFLAGS="$CPPFLAGS -D_POSIX_C_SOURCE=200112L"
+     fi
+ 
+-    AC_RUN_IFELSE([AC_LANG_SOURCE([
++    AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+ #include <time.h>
+-
+-int main(int argc, char *argv[[]]) {
+-    struct timespec tp;
+-
+-    if (clock_gettime(CLOCK_MONOTONIC, &tp) == 0)
++#include <unistd.h>
++int main() {
++#if !(defined(_POSIX_MONOTONIC_CLOCK) && _POSIX_MONOTONIC_CLOCK >= 0 && defined(CLOCK_MONOTONIC))
++        #error No monotonic clock
++#endif
+         return 0;
+-    else
+-        return 1;
+ }
+-    ])], [MONOTONIC_CLOCK=yes], [MONOTONIC_CLOCK=no],
+-       [MONOTONIC_CLOCK="cross compiling"])
++]])],[MONOTONIC_CLOCK=yes], [MONOTONIC_CLOCK=no])
+ 
+     LIBS="$LIBS_SAVE"
+     CPPFLAGS="$CPPFLAGS_SAVE"
+-- 
+2.1.4
+

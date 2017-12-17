@@ -66,15 +66,3 @@ index e797b11..828f435 100644
  
  /* Internal routines.  */
  extern void _argp_fmtstream_update (argp_fmtstream_t __fs);
-@@ -216,7 +220,11 @@
- #endif
- 
- #ifndef ARGP_FS_EI
-+#if defined(__GNUC__) && !defined(__GNUC_STDC_INLINE__)
- #define ARGP_FS_EI extern inline
-+#else
-+#define ARGP_FS_EI inline
-+#endif
- #endif
- 
- ARGP_FS_EI size_t

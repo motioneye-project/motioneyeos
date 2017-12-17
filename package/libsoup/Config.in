@@ -22,10 +22,14 @@ config BR2_PACKAGE_LIBSOUP_GNOME
 
 config BR2_PACKAGE_LIBSOUP_SSL
 	bool "https support"
+	depends on !BR2_STATIC_LIBS # gnutls
 	select BR2_PACKAGE_GLIB_NETWORKING
 	select BR2_PACKAGE_GNUTLS
 	help
 	  Enable HTTPS (SSL) support.
+
+comment "libsoup https support needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif
 

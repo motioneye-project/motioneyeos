@@ -1,0 +1,176 @@
+comment "GCC Options"
+
+choice
+	prompt "GCC compiler Version"
+	default BR2_GCC_VERSION_ARC if BR2_arc
+	default BR2_GCC_VERSION_OR1K if BR2_or1k
+	default BR2_GCC_VERSION_5_X
+	help
+	  Select the version of gcc you wish to use.
+
+	config BR2_GCC_VERSION_4_8_X
+		bool "gcc 4.8.x"
+		# Broken or unsupported architectures
+		depends on !BR2_microblaze && !BR2_arc && !BR2_or1k \
+			&& !BR2_powerpc64le && !BR2_nios2 && !BR2_bfin
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a12 && !BR2_cortex_a17 && !BR2_ARM_CPU_ARMV8
+		# Broken or unsupported PPC cores
+		depends on !BR2_powerpc_power8
+		# Unsupported MIPS cores
+		depends on !BR2_mips_interaptiv
+		# gcc-4.8.x + binutils-2.25 is broken for MIPS
+		depends on !((BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el) && BR2_BINUTILS_VERSION_2_25_X)
+		# Unsupported for MIPS R5
+		depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
+		# Unsupported for MIPS R6
+		depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
+		# musl ppc64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
+		# musl mips64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+	config BR2_GCC_VERSION_ARC
+		bool "gcc arc (6.x)"
+		# Only supported architecture
+		depends on BR2_arc
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
+	config BR2_GCC_VERSION_OR1K
+		bool "gcc or1k (5.x)"
+		# Only supported architecture
+		depends on BR2_or1k
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
+	config BR2_GCC_VERSION_4_9_X
+		bool "gcc 4.9.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc && !BR2_bfin && !BR2_or1k
+		# Broken or unsupported ARM cores
+		depends on !BR2_cortex_a17 && !BR2_cortex_a72
+		# Unsupported MIPS cores
+		depends on !BR2_mips_interaptiv
+		# Unsupported for MIPS R5
+		depends on !BR2_MIPS_CPU_MIPS32R5 && !BR2_MIPS_CPU_MIPS64R5
+		# Unsupported for MIPS R6
+		depends on !BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6
+		# musl microblaze unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
+		# musl ppc64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
+		# musl mips64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
+		# PR60102 https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60102
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+	config BR2_GCC_VERSION_5_X
+		bool "gcc 5.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc && !BR2_bfin && !BR2_or1k
+		# musl ppc64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
+		# Unsupported MIPS cores
+		depends on !BR2_mips_interaptiv && !BR2_mips_m5150 && \
+			!BR2_mips_m6250 && !BR2_mips_i6400 && !BR2_mips_p6600
+		# musl mips64 unsupported
+		depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
+	config BR2_GCC_VERSION_6_X
+		bool "gcc 6.x"
+		# Broken or unsupported architectures
+		depends on !BR2_arc
+		depends on !BR2_microblaze
+		depends on !BR2_or1k
+		# Unsupported MIPS cores
+		depends on !BR2_mips_m6250 && !BR2_mips_p6600
+		select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
+endchoice
+
+# Indicates if GCC for architecture supports --with-{arch,cpu,..}  to
+# set default CFLAGS, otherwise values will be used by toolchain
+# wrapper.
+config BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS
+	bool
+	default y if !BR2_bfin
+
+config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
+	bool
+	default y
+
+config BR2_GCC_VERSION
+	string
+	default "4.8.5"     if BR2_GCC_VERSION_4_8_X
+	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
+	default "5.4.0"     if BR2_GCC_VERSION_5_X
+	default "6.3.0"     if BR2_GCC_VERSION_6_X
+	default "arc-2016.09-release" if BR2_GCC_VERSION_ARC
+	default "musl-5.4.0" if BR2_GCC_VERSION_OR1K
+
+config BR2_EXTRA_GCC_CONFIG_OPTIONS
+	string "Additional gcc options"
+	default ""
+	help
+	  Any additional gcc configure options you may want to
+	  include. Those options are applied for all of the gcc
+	  initial, gcc intermediate and gcc final passes.
+
+config BR2_TOOLCHAIN_BUILDROOT_CXX
+	bool "Enable C++ support"
+	select BR2_INSTALL_LIBSTDCPP
+	help
+	  Enable this option if you want your toolchain to support the
+	  C++ language and you want C++ libraries to be installed on
+	  your target system.
+
+comment "Fortran support needs a toolchain w/ wchar"
+	depends on BR2_TOOLCHAIN_HAS_LIBQUADMATH
+	depends on !BR2_USE_WCHAR # libquadmath
+
+config BR2_TOOLCHAIN_BUILDROOT_FORTRAN
+	bool "Enable Fortran support"
+	# on architecture building libquadmath, wchar is required
+	depends on !BR2_TOOLCHAIN_HAS_LIBQUADMATH || \
+		(BR2_TOOLCHAIN_HAS_LIBQUADMATH && BR2_USE_WCHAR)
+	select BR2_TOOLCHAIN_HAS_FORTRAN
+	help
+	  Enable this option if you want your toolchain to support the
+	  Fortran language and you want Fortran libraries to be
+	  installed on your target system.
+
+config BR2_GCC_ENABLE_LTO
+	bool "Enable compiler link-time-optimization support"
+	select BR2_BINUTILS_ENABLE_LTO
+	help
+	  This option enables link-time optimization (LTO) support in
+	  gcc.
+
+config BR2_GCC_ENABLE_OPENMP
+	bool "Enable compiler OpenMP support"
+	depends on !BR2_PTHREADS_NONE && !BR2_arc && !BR2_microblaze
+	help
+	  Enable OpenMP support for the compiler
+
+config BR2_GCC_ENABLE_LIBMUDFLAP
+	bool "Enable libmudflap support"
+	# There are architectures, or specific configurations for
+	# which mudflap is not supported.
+	depends on !BR2_ARM_INSTRUCTIONS_THUMB && !BR2_powerpc_SPE
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  libmudflap is a gcc library used for the mudflap pointer
+	  debugging functionality. It is only needed if you intend to
+	  use the -fmudflap gcc flag.
+
+	  See http://gcc.gnu.org/wiki/Mudflap_Pointer_Debugging and
+	  the help of the gcc -fmudflap option for more details.
+
+	  If you're unsure, leave this option disabled.
+
+config BR2_GCC_ENABLE_GRAPHITE
+	bool "Enable graphite support"
+	help
+	  This option enables the graphite optimizations in the
+	  compiler.

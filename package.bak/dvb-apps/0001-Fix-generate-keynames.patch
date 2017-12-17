@@ -1,0 +1,30 @@
+Fix generate-keynames.sh script for cross-compilation
+
+generate-keynames.sh reads /usr/include/linux to find the keyname
+symbols. However, when cross-compiling, the include path points
+somewhere else. Allow the user to pass CROSS_ROOT to point to the
+root of the cross-compilation environment.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+diff -rup dvb-apps-83c746462ccb.orig/util/av7110_loadkeys/generate-keynames.sh dvb-apps-83c746462ccb/util/av7110_loadkeys/generate-keynames.sh
+--- dvb-apps-83c746462ccb.orig/util/av7110_loadkeys/generate-keynames.sh	2012-12-06 10:38:07.000000000 +0100
++++ dvb-apps-83c746462ccb/util/av7110_loadkeys/generate-keynames.sh	2013-08-29 21:47:09.717991439 +0200
+@@ -18,7 +18,7 @@ echo "};" >> $1
+ echo >> $1
+ echo >> $1
+ echo "static struct input_key_name key_name [] = {" >> $1
+-for x in $(cat /usr/include/linux/input.h input_fake.h | \
++for x in $(cat ${CROSS_ROOT}/usr/include/linux/input.h input_fake.h | \
+            egrep "#define[ \t]+KEY_" | grep -v KEY_MAX | \
+            cut -f 1 | cut -f 2 -d " " | sort -u) ; do
+     echo "        { \"$(echo $x | cut -b 5-)\", $x }," >> $1
+@@ -26,7 +26,7 @@ done
+ echo "};" >> $1
+ echo >> $1
+ echo "static struct input_key_name btn_name [] = {" >> $1
+-for x in $(cat /usr/include/linux/input.h input_fake.h | \
++for x in $(cat ${CROSS_ROOT}/usr/include/linux/input.h input_fake.h | \
+            egrep "#define[ \t]+BTN_" | \
+            cut -f 1 | cut -f 2 -d " " | sort -u) ; do
+      echo "        { \"$(echo $x | cut -b 5-)\", $x }," >> $1

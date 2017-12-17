@@ -1,0 +1,81 @@
+#! /bin/sh
+
+OPTIONS="-c -l -s /var/lib/tftpboot"
+
+set -e
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DESC="HPA's tftpd"
+NAME=tftpd
+DAEMON=/usr/sbin/$NAME
+PIDFILE=/var/run/$NAME.pid
+SCRIPTNAME=/etc/init.d/S80tftpd-hpa
+
+#
+#	Function that starts the daemon/service.
+#
+d_start() {
+	mkdir -p /var/lib/tftpboot
+	chmod 1777 /var/lib/tftpboot
+	$DAEMON $OPTIONS
+}
+
+#
+#	Function that stops the daemon/service.
+#
+d_stop() {
+	killall -q $NAME
+}
+
+#
+#	Function that sends a SIGHUP to the daemon/service.
+#
+d_reload() {
+	d_start
+	d_stop
+}
+
+case "$1" in
+  start)
+	printf "Starting $DESC: "
+	d_start
+	echo "done"
+	;;
+  stop)
+	printf "Stopping $DESC: "
+	d_stop
+	echo "done"
+	;;
+  #reload)
+	#
+	#	If the daemon can reload its configuration without
+	#	restarting (for example, when it is sent a SIGHUP),
+	#	then implement that here.
+	#
+	#	If the daemon responds to changes in its config file
+	#	directly anyway, make this an "exit 0".
+	#
+	# printf "Reloading $DESC configuration..."
+	# d_reload
+	# echo "done."
+  #;;
+  restart|force-reload)
+	#
+	#	If the "reload" option is implemented, move the "force-reload"
+	#	option to the "reload" entry above. If not, "force-reload" is
+	#	just the same as "restart".
+	#
+	printf "Restarting $DESC: "
+	d_stop
+	sleep 1
+	d_start
+	echo "done"
+	;;
+  *)
+	# echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

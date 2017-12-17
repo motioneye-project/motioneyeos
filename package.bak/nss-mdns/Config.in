@@ -1,0 +1,19 @@
+config BR2_PACKAGE_NSS_MDNS
+	bool "nss-mdns"
+	# libdaemon->avahi uses fork()
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_PACKAGE_AVAHI_DAEMON
+	help
+	  nss-mdns is a plugin for the GNU Name Service Switch (NSS)
+	  functionality of the GNU C Library (glibc) providing host
+	  name resolution via Multicast DNS (aka Zeroconf, aka Apple
+	  Rendezvous, aka Apple Bonjour), effectively allowing name
+	  resolution by common Unix/Linux programs in the ad-hoc
+	  mDNS domain .local.
+
+	  http://0pointer.de/lennart/projects/nss-mdns/
+
+comment "nss-mdns needs a glibc toolchain"
+	depends on BR2_USE_MMU && BR2_PACKAGE_AVAHI_DAEMON
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

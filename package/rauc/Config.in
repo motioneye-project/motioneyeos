@@ -1,0 +1,37 @@
+config BR2_PACKAGE_RAUC
+	bool "rauc"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_DBUS # run-time dependency
+	help
+	  RAUC is the Robust Auto-Update Controller developed by
+	  Pengutronix. It supports updating embedded Linux
+	  systems over the network or from disks and provides a
+	  d-bus interface.
+
+	  http://rauc.io/
+
+if BR2_PACKAGE_RAUC
+
+config BR2_PACKAGE_RAUC_NETWORK
+	bool "network support"
+	select BR2_PACKAGE_LIBCURL
+	help
+	  This option enables support for updating firmware over
+	  the network using libcurl.
+
+config BR2_PACKAGE_RAUC_JSON
+	bool "JSON output support"
+	select BR2_PACKAGE_JSON_GLIB
+	help
+	  This option enables support for providing output in
+	  JSON format.
+
+endif
+
+comment "rauc needs a toolchain w/ wchar, threads"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU

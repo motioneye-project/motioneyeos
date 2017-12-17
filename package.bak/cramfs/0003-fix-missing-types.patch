@@ -1,0 +1,17 @@
+mkcramfs; loff_t is guarded by _GNU_SOURCE
+
+Although already properly done in cramfsck, it was missing in mkcramfs.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN cramfs-1.1.orig/mkcramfs.c cramfs-1.1/mkcramfs.c
+--- cramfs-1.1.orig/mkcramfs.c	2015-08-05 22:31:16.830543096 +0200
++++ cramfs-1.1/mkcramfs.c	2015-08-05 22:33:33.136289744 +0200
+@@ -22,6 +22,7 @@
+  * If you change the disk format of cramfs, please update fs/cramfs/README.
+  */
+ 
++#define _GNU_SOURCE
+ #include <sys/types.h>
+ #include <stdio.h>
+ #include <sys/stat.h>

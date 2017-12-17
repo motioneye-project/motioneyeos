@@ -1,0 +1,15 @@
+config BR2_PACKAGE_BCTOOLBOX
+	bool "bctoolbox"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Utilities library used by Belledonne Communications
+	  softwares like belle-sip, mediastreamer2 and linphone.
+
+	  Select BR2_PACKAGE_MBEDTLS (preferred) or
+	  BR2_PACKAGE_POLARSSL for crypto support.
+
+	  https://github.com/BelledonneCommunications/bctoolbox
+
+comment "bctoolbox needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

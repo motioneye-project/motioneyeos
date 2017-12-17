@@ -1,0 +1,4 @@
+config BR2_PACKAGE_TZ
+	bool
+	help
+	  Timezone info for uClibc.

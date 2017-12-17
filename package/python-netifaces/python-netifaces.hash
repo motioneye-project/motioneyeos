@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/netifaces/json, sha256 locally computed
-md5     5b4d1f1310ed279e6df27ef3a9b71519                                  netifaces-0.10.5.tar.gz
-sha256  59d8ad52dd3116fcb6635e175751b250dc783fb011adba539558bd764e5d628b  netifaces-0.10.5.tar.gz
+md5	1d424cb5ef52907c5ab913011122a98b  netifaces-0.10.6.tar.gz
+sha256	0c4da523f36d36f1ef92ee183f2512f3ceb9a9d2a45f7d19cda5a42c6689ebe0  netifaces-0.10.6.tar.gz

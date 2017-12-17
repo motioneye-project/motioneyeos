@@ -1,0 +1,11 @@
+config BR2_PACKAGE_MULTICAT
+	bool "multicat"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_BITSTREAM
+	help
+	  Simple and efficient multicast and transport stream manipulation.
+
+	  http://www.videolan.org/projects/multicat.html
+
+comment "multicat needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

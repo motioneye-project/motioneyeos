@@ -11,109 +11,109 @@ comment "Adapters"
 
 config BR2_PACKAGE_OPENOCD_FTDI
 	bool "MPSSE mode of FTDI based devices"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the MPSSE mode of FTDI
 	  (FT2xxx/FT4xxx) based devices (default is auto)
 
 config BR2_PACKAGE_OPENOCD_STLINK
 	bool "ST-Link JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the ST-Link JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_TI_ICDI
 	bool "TI ICDI JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the TI ICDI JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_ULINK
 	bool "Keil ULINK JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the Keil ULINK JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_UBLASTER2
 	bool "Altera USB-Blaster II Compatible"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the Altera USB-Blaster
 	  II Compatible (default is auto)
 
 config BR2_PACKAGE_OPENOCD_JLINK
 	bool "Segger J-Link JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Segger J-Link JTAG Programmer and clone such as Atmel
 	  SAM-ICE
 
 config BR2_PACKAGE_OPENOCD_OSDBM
 	bool "OSDBM JTAG (only) Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the OSBDM (JTAG only)
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_OPENDOUS
 	bool "eStick/opendous JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the eStick/opendous JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_AICE
 	bool "Andes JTAG Programmer"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_USE_MMU # use fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Enable building support for the Andes JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_VSLLINK
 	bool "Versaloon-Link JTAG Programmer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
 	  Enable building support for the Versaloon-Link JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_USBPROG
 	bool "USBProg JTAG Programmer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
 	  Enable building support for the USBProg JTAG
 	  Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_RLINK
 	bool "Raisonance RLink JTAG Programmer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
 	  Enable building support for the Raisonance RLink
 	  JTAG Programmer (default is auto)
 
 config BR2_PACKAGE_OPENOCD_ARMEW
 	bool "Olimex ARM-JTAG-EW Programmer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb-compat -> libusb
 	help
 	  Enable building support for the Olimex ARM-JTAG-EW
 	  Programmer (default is auto)
@@ -123,14 +123,6 @@ config BR2_PACKAGE_OPENOCD_PARPORT
 	help
 	  Enable building the pc parallel port driver
 
-config BR2_PACKAGE_OPENOCD_FT2XXX
-	bool "FT2232 based devices (DEPRECATED)"
-	select BR2_PACKAGE_LIBFTDI1
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
-	help
-	  (DEPRECATED) Enable building support for FT2232
-	  based devices using the libftdi library
-
 config BR2_PACKAGE_OPENOCD_VPI
 	bool "JTAG VPI"
 	help
@@ -138,8 +130,8 @@ config BR2_PACKAGE_OPENOCD_VPI
 
 config BR2_PACKAGE_OPENOCD_UBLASTER
 	bool "Altera USB-Blaster"
-	select BR2_PACKAGE_LIBFTDI1
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
+	select BR2_PACKAGE_LIBFTDI1
 	help
 	  Enable building support for the Altera USB-Blaster
 	  using the libftdi driver, opensource alternate of
@@ -178,18 +170,18 @@ config BR2_PACKAGE_OPENOCD_GW16012
 
 config BR2_PACKAGE_OPENOCD_PRESTO
 	bool "ASIX Presto Programmer"
-	select BR2_PACKAGE_LIBFTDI1
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
+	select BR2_PACKAGE_LIBFTDI1
 	help
 	  Enable building support for ASIX Presto Programmer
 	  using the libftdi driver
 
 config BR2_PACKAGE_OPENOCD_OPENJTAG
 	bool "OpenJTAG Programmer"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
 	select BR2_PACKAGE_LIBFTDI1
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT # needs usb.h
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi -> libusb
 	help
 	  Enable building support for the OpenJTAG Programmer
 	  with ftdi driver

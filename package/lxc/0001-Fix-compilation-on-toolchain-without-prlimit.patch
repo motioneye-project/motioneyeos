@@ -1,0 +1,98 @@
+From f48b5fd8ab03c200eaf5e3a9b03bcd01b2659cf3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 2 Nov 2017 16:00:33 +0100
+Subject: [PATCH] Fix compilation on toolchain without prlimit
+
+Some toolchains which are not bionic like uclibc does not support
+prlimit or prlimit64. In this case, return an error.
+Moreover, if prlimit64 is available, use lxc implementation of prlimit.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ configure.ac        |  4 ++++
+ src/lxc/Makefile.am |  6 ++++++
+ src/lxc/conf.c      | 12 +++++++++---
+ 3 files changed, 19 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 642b78e7..63df7466 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -671,6 +671,10 @@ AC_CHECK_FUNCS([prlimit],
+ 	AM_CONDITIONAL(HAVE_PRLIMIT, true)
+ 	AC_DEFINE(HAVE_PRLIMIT,1,[Have prlimit]),
+ 	AM_CONDITIONAL(HAVE_PRLIMIT, false))
++AC_CHECK_FUNCS([prlimit64],
++	AM_CONDITIONAL(HAVE_PRLIMIT64, true)
++	AC_DEFINE(HAVE_PRLIMIT64,1,[Have prlimit64]),
++	AM_CONDITIONAL(HAVE_PRLIMIT64, false))
+ 
+ # Check for some libraries
+ AC_SEARCH_LIBS(sem_open, [rt pthread])
+diff --git a/src/lxc/Makefile.am b/src/lxc/Makefile.am
+index fff32ae4..8f0c11ec 100644
+--- a/src/lxc/Makefile.am
++++ b/src/lxc/Makefile.am
+@@ -45,7 +45,10 @@ noinst_HEADERS += \
+ 	../include/ifaddrs.h \
+ 	../include/openpty.h \
+ 	../include/lxcmntent.h
++endif
++
+ if !HAVE_PRLIMIT
++if HAVE_PRLIMIT64
+ noinst_HEADERS += ../include/prlimit.h
+ endif
+ endif
+@@ -143,7 +146,10 @@ liblxc_la_SOURCES += \
+ 	../include/ifaddrs.c ../include/ifaddrs.h \
+ 	../include/openpty.c ../include/openpty.h \
+ 	../include/lxcmntent.c ../include/lxcmntent.h
++endif
++
+ if !HAVE_PRLIMIT
++if HAVE_PRLIMIT64
+ liblxc_la_SOURCES += ../include/prlimit.c ../include/prlimit.h
+ endif
+ endif
+diff --git a/src/lxc/conf.c b/src/lxc/conf.c
+index 44d97843..8a66f2d0 100644
+--- a/src/lxc/conf.c
++++ b/src/lxc/conf.c
+@@ -97,13 +97,14 @@
+ 
+ #if IS_BIONIC
+ #include <../include/lxcmntent.h>
+-#ifndef HAVE_PRLIMIT
+-#include <../include/prlimit.h>
+-#endif
+ #else
+ #include <mntent.h>
+ #endif
+ 
++#if !defined(HAVE_PRLIMIT) && defined(HAVE_PRLIMIT64)
++#include <../include/prlimit.h>
++#endif
++
+ lxc_log_define(lxc_conf, lxc);
+ 
+ #if HAVE_LIBCAP
+@@ -2399,10 +2400,15 @@ int setup_resource_limits(struct lxc_list *limits, pid_t pid) {
+ 			return -1;
+ 		}
+ 
++#if HAVE_PRLIMIT || HAVE_PRLIMIT64
+ 		if (prlimit(pid, resid, &lim->limit, NULL) != 0) {
+ 			ERROR("failed to set limit %s: %s", lim->resource, strerror(errno));
+ 			return -1;
+ 		}
++#else
++		ERROR("Cannot set limit %s as prlimit is missing", lim->resource);
++		return -1;
++#endif
+ 	}
+ 	return 0;
+ }
+-- 
+2.14.1
+

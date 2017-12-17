@@ -1,6 +1,6 @@
-From fe05ccf80afe5de33d4f9c5e5545390c450bcd2d Mon Sep 17 00:00:00 2001
+From fb158af083e72c9aa0a8dfd4c6965f950192a230 Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
-Date: Thu, 24 Apr 2014 23:27:32 +0200
+Date: Tue, 4 Jul 2017 11:09:20 -0400
 Subject: [PATCH] auto/type/sizeof: rework autotest to be cross-compilation
  friendly
 
@@ -15,12 +15,14 @@ Refresh for 1.8.0.
 Signed-off-by: Danomi Manchego <danomimanchego123@gmail.com>
 [martin@barkynet.com: Updated for 1.10.0]
 Signed-off-by: Martin Bark <martin@barkynet.com>
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Refresh for 1.12.0
 ---
- auto/types/sizeof | 42 ++++++++++++++++++++++++++++--------------
- 1 file changed, 28 insertions(+), 14 deletions(-)
+ auto/types/sizeof | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
 diff --git a/auto/types/sizeof b/auto/types/sizeof
-index a5f66bb..c6f31ec 100644
+index 480d8cf..61dcd2d 100644
 --- a/auto/types/sizeof
 +++ b/auto/types/sizeof
 @@ -14,7 +14,7 @@ END
@@ -32,11 +34,11 @@ index a5f66bb..c6f31ec 100644
  
  #include <sys/types.h>
  #include <sys/time.h>
-@@ -25,22 +25,40 @@ $NGX_INCLUDE_UNISTD_H
+@@ -25,22 +25,41 @@ $NGX_INCLUDE_UNISTD_H
  $NGX_INCLUDE_INTTYPES_H
  $NGX_INCLUDE_AUTO_CONFIG_H
  
--int main() {
+-int main(void) {
 -    printf("%d", (int) sizeof($ngx_type));
 +#if !defined( PASTE)
 +#define PASTE2( x, y) x##y
@@ -55,8 +57,8 @@ index a5f66bb..c6f31ec 100644
  }
  
 -END
--
 +_EOF
+ 
  
 -ngx_test="$CC $CC_TEST_FLAGS $CC_AUX_FLAGS \
 -          -o $NGX_AUTOTEST $NGX_AUTOTEST.c $NGX_LD_OPT $ngx_feature_libs"
@@ -83,5 +85,5 @@ index a5f66bb..c6f31ec 100644
  fi
  
 -- 
-1.9.1
+2.9.4
 

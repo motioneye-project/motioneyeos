@@ -4,7 +4,8 @@ config BR2_PACKAGE_LIBNFC
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
-	  Public platform independent Near Field Communication (NFC) library.
+	  Public platform independent Near Field Communication (NFC)
+	  library.
 
 	  http://www.libnfc.org/
 

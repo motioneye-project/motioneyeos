@@ -1,0 +1,60 @@
+comment "gpu-amd-bin-mx51 needs a glibc EABI toolchain w/ C++"
+	depends on BR2_arm
+	depends on !BR2_ARM_EABI || !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_GPU_AMD_BIN_MX51
+	bool "gpu-amd-bin-mx51 (also imx53)"
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	select BR2_PACKAGE_HAS_LIBOPENVG
+	depends on BR2_ARM_EABI
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Freescale libraries, headers and executables for the
+	  AMD GPU on i.MX5x, containing OpenGL/ES, OpenVG
+	  and EGL support.
+
+if BR2_PACKAGE_GPU_AMD_BIN_MX51
+
+choice
+	prompt "Output option"
+	help
+	  There are two versions of this library: one for
+	  direct framebuffer access, one for X11 rendering.
+	  Choose here which version to install.
+
+config BR2_PACKAGE_GPU_AMD_BIN_MX51_OUTPUT_X11
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBXCB
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXDMCP
+	select BR2_PACKAGE_XLIB_LIBXAU
+	bool "X11"
+
+comment "X11 backend needs X.org enabled"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_GPU_AMD_BIN_MX51_OUTPUT_FB
+	bool "Framebuffer"
+
+endchoice
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "gpu-amd-bin-mx51"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "gpu-amd-bin-mx51"
+
+config BR2_PACKAGE_PROVIDES_LIBOPENVG
+	default "gpu-amd-bin-mx51"
+
+config BR2_PACKAGE_GPU_AMD_BIN_MX51_EXAMPLES
+	bool "install examples"
+	help
+	  Copy the examples to the target.
+
+endif

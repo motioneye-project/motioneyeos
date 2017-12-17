@@ -1,0 +1,50 @@
+From af3098e05535ddb93bb065770d87738e46089efc Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 20 Aug 2017 15:06:01 +0200
+Subject: [PATCH] Makefile.am: do not overwrite LIBS
+
+LIBS is meant to be passed on the command line with additional
+libraries, it should not be overwritten by Makefile.am.
+
+Instead:
+
+ - Use LDADD to link with external libraries
+
+ - Use <target>_LDFLAGS for additional, non-libraries, linker flags
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Upstream: https://github.com/dashesy/cc-tool/commit/553f9c601646af0c6e3f6150d0fa3bc63ff56416
+---
+ Makefile.am | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index e79e47b..ed83d91 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -10,14 +10,12 @@ AM_LDFLAGS = \
+ 
+ #	$(BOOST_THREADS_LDFLAGS)
+       
+-LDADD = $(LIBUSB_LIBS) 
+-
+-LIBS = -s \
++LDADD = $(LIBUSB_LIBS) \
+ 	$(BOOST_FILESYSTEM_LIBS) \
+ 	$(BOOST_REGEX_LIBS) \
+ 	$(BOOST_SYSTEM_LIBS) \
+ 	$(BOOST_PROGRAM_OPTIONS_LIBS)
+-   
++
+ #	$(BOOST_THREADS_LIBS)
+ 
+ bin_PROGRAMS=cc-tool
+@@ -30,4 +28,4 @@ cc_tool_SOURCES=src/main.cpp src/application/cc_flasher.cpp src/application/cc_b
+ 		src/programmer/cc_253x_254x.cpp src/programmer/cc_251x_111x.cpp \
+ 		src/programmer/cc_243x.cpp src/programmer/cc_programmer.cpp \
+ 		src/programmer/cc_unit_driver.cpp src/programmer/cc_unit_info.cpp
+-
++cc_tool_LDFLAGS=-s
+-- 
+2.9.4
+

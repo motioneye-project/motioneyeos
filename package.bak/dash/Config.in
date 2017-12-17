@@ -1,0 +1,9 @@
+config BR2_PACKAGE_DASH
+	bool "dash"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  The Debian/Linux port of the NetBSD version of
+	  ash (the Almquist SHell).
+
+	  http://gondor.apana.org.au/~herbert/dash

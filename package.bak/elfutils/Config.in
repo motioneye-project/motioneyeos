@@ -1,0 +1,36 @@
+comment "elfutils needs a uClibc or glibc toolchain w/ wchar, dynamic library"
+	depends on !BR2_bfin
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)
+
+config BR2_PACKAGE_ELFUTILS
+	bool "elfutils"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS
+	# Only glibc and uClibc implement the myriad of required GNUisms
+	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC
+	# build issue caused by the _ prefix used on blackfin for
+	# assembly symbols
+	depends on !BR2_bfin
+	help
+	  Libraries/utilities to handle ELF objects (drop in
+	  replacement for libelf).
+
+	  Note that this option only installs the libraries, and not
+	  the programs.
+
+	  https://fedorahosted.org/elfutils
+
+if BR2_PACKAGE_ELFUTILS
+
+config BR2_PACKAGE_ELFUTILS_PROGS
+	bool "Install programs"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  This option tells elfutils to not only install the libelf
+	  libraries, but also the elfutils programs.
+
+endif

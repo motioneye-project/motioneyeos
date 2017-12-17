@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-NODM_VERSION = 0.12-1
-NODM_SITE = $(call github,spanezz,nodm,debian/$(NODM_VERSION))
-NODM_LICENSE = GPLv2+
+NODM_VERSION = 0.13
+NODM_SITE = $(call github,spanezz,nodm,$(NODM_VERSION))
+NODM_LICENSE = GPL-2.0+
 NODM_LICENSE_FILES = COPYING
 NODM_AUTORECONF = YES
 

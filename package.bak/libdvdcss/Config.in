@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBDVDCSS
+	bool "libdvdcss"
+	help
+	  libdvdcss is a simple library designed for accessing DVDs like
+	  a block device without having to bother about the decryption.
+
+	  http://www.videolan.org/developers/libdvdcss.html

@@ -1,0 +1,37 @@
+config BR2_PACKAGE_LIBFTDI1
+	bool "libftdi1"
+	select BR2_PACKAGE_LIBUSB
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	help
+	  Userspace access to FTDI USB interface chips (version 1.x)
+
+	  http://www.intra2net.com/en/developer/libftdi/index.php
+
+if BR2_PACKAGE_LIBFTDI1
+
+config BR2_PACKAGE_LIBFTDI1_LIBFTDIPP1
+	bool "libftdipp1"
+	select BR2_PACKAGE_BOOST
+	depends on BR2_INSTALL_LIBSTDCPP # boost
+	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
+	depends on BR2_USE_WCHAR # boost
+	help
+	  C++ bindings for libftdi
+
+comment "libftdipp1 needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+
+config BR2_PACKAGE_LIBFTDI1_PYTHON_BINDINGS
+	bool "python bindings"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	help
+	  Python bindings for libftdi
+
+config BR2_PACKAGE_LIBFTDI1_FDTI_EEPROM
+	select BR2_PACKAGE_LIBCONFUSE
+	bool "ftdi_eeprom tool"
+
+endif # BR2_PACKAGE_LIBFTDI1
+
+comment "libftdi1 needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,39 @@
+config BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386 || \
+		(BR2_x86_64 && BR2_HOSTARCH='x86_64') || \
+		BR2_powerpc || BR2_arm || BR2_armeb || \
+		((BR2_mips || BR2_mipsel) && !BR2_MIPS_SOFT_FLOAT && \
+		!BR2_MIPS_CPU_MIPS32R6 && !BR2_MIPS_CPU_MIPS64R6)
+
+config BR2_PACKAGE_LUAJIT
+	bool "luajit"
+	select BR2_PACKAGE_HAS_LUAINTERPRETER
+	depends on !BR2_STATIC_LIBS # dlopen
+	# Luajit is only available for some target architectures, and
+	# has some complexity wrt 32/64. See luajit.mk for details.
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	# luajit.mk uses the "-m32" compiler option to build 32bit
+	# binaries, so check if that option is supported. See
+	# luajit.mk for details.
+	select BR2_HOSTARCH_NEEDS_IA32_COMPILER if !BR2_ARCH_IS_64
+	help
+	  LuaJIT implements the full set of language features defined
+	  by Lua 5.1. The virtual machine (VM) is API- and
+	  ABI-compatible to the standard Lua interpreter and can be
+	  deployed as a drop-in replacement.
+
+	  http://luajit.org/
+
+if BR2_PACKAGE_LUAJIT
+
+config BR2_PACKAGE_PROVIDES_LUAINTERPRETER
+	default "luajit"
+
+config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
+	default "5.1"
+
+endif
+
+comment "luajit needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

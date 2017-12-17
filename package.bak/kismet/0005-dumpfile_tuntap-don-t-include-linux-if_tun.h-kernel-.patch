@@ -1,0 +1,51 @@
+From 1466cbbdef835634366b2eb3a284fdff5833338c Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Fri, 19 Aug 2016 23:30:06 +0200
+Subject: [PATCH] dumpfile_tuntap: don't include linux/if_tun.h kernel header
+
+dumpfile_tuntap.h mixes userspace and kernel headers.
+
+As suggested in the musl wiki [1], remove the linux/include directives
+and copy the required definitions.
+
+[1] http://wiki.musl-libc.org/wiki/FAQ
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ dumpfile_tuntap.h | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/dumpfile_tuntap.h b/dumpfile_tuntap.h
+index 37f50b6..8b23a2a 100644
+--- a/dumpfile_tuntap.h
++++ b/dumpfile_tuntap.h
+@@ -64,17 +64,18 @@
+ #include "packetchain.h"
+ #include "dumpfile.h"
+ 
+-#ifdef SYS_LINUX 
+-#include <linux/if_tun.h>
++#ifdef SYS_LINUX
++/* TUNSETIFF ifr flags */
++#define IFF_TUN		0x0001
++#define IFF_TAP		0x0002
++#define IFF_NO_PI	0x1000
+ 
+ // Linux IEEE80211 link typ to set
+ #define LNX_LINKTYPE_80211		801
+-// If the system headers don't have the TUNSETLINK ioctl, define it here,
+-// and we'll figure it out at runtime
+-#ifndef TUNSETLINK
+-#define TUNSETLINK				_IOW('T', 205, int)
+-#endif
+-
++/* Ioctl defines */
++#define TUNSETNOCSUM	_IOW('T', 200, int)
++#define TUNSETIFF		_IOW('T', 202, int)
++#define TUNSETLINK		_IOW('T', 205, int)
+ #endif
+ 
+ struct ipc_dft_open {
+-- 
+2.5.5
+

@@ -1,0 +1,228 @@
+comment "Kernel Header Options"
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS
+	bool
+
+choice
+	prompt "Kernel Headers"
+	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
+	default BR2_KERNEL_HEADERS_4_9
+	help
+	  Select the kernel version to get headers from.
+
+	  The kernel headers must be at least as old as the oldest kernel
+	  you intend to run on your target.
+
+	  If you use Buildroot to build a kernel, then you can use
+	  the sources from that kernel as source for the headers.
+
+	  If you choose a custom version of the kernel headers, or choose
+	  to use the same sources as the kernel, you'll have to select
+	  (below) the series of that kernel, so that Buildroot can show
+	  or hide packages that have strong requirements on the kernel
+	  headers.
+
+	config BR2_KERNEL_HEADERS_AS_KERNEL
+		bool "Same as kernel being built"
+		depends on BR2_LINUX_KERNEL
+
+	config BR2_KERNEL_HEADERS_3_2
+		bool "Linux 3.2.x kernel headers"
+		depends on !BR2_arc && !BR2_nios2
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+	config BR2_KERNEL_HEADERS_3_4
+		bool "Linux 3.4.x kernel headers"
+		depends on !BR2_arc && !BR2_nios2
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+
+	config BR2_KERNEL_HEADERS_3_10
+		bool "Linux 3.10.x kernel headers"
+		depends on !BR2_nios2
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+
+	config BR2_KERNEL_HEADERS_3_12
+		bool "Linux 3.12.x kernel headers"
+		depends on !BR2_nios2
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+
+	config BR2_KERNEL_HEADERS_3_18
+		bool "Linux 3.18.x kernel headers"
+		depends on !BR2_nios2
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+
+	config BR2_KERNEL_HEADERS_4_1
+		bool "Linux 4.1.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+
+	config BR2_KERNEL_HEADERS_4_4
+		bool "Linux 4.4.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+
+	config BR2_KERNEL_HEADERS_4_8
+		bool "Linux 4.8.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+
+	config BR2_KERNEL_HEADERS_4_9
+		bool "Linux 4.9.x kernel headers"
+		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+
+	config BR2_KERNEL_HEADERS_VERSION
+		bool "Manually specified Linux version"
+endchoice
+
+config BR2_DEFAULT_KERNEL_VERSION
+	string "linux version"
+	depends on BR2_KERNEL_HEADERS_VERSION
+	help
+	  Specify the version you want to use.
+	  E.G.: 3.6.10
+
+choice
+	bool "Custom kernel headers series"
+	depends on BR2_KERNEL_HEADERS_VERSION || BR2_KERNEL_HEADERS_AS_KERNEL
+	help
+	  Specify the kernel headers series you manually selected, above.
+
+	  This is used to hide/show some packages that have strict
+	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_9
+	bool "4.9.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_8
+	bool "4.8.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_7
+	bool "4.7.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_6
+	bool "4.6.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_6
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_5
+	bool "4.5.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_5
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_4
+	bool "4.4.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_3
+	bool "4.3.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_3
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_2
+	bool "4.2.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_1
+	bool "4.1.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_0
+	bool "4.0.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_0
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_19
+	bool "3.19.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_19
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_18
+	bool "3.18.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_17
+	bool "3.17.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_16
+	bool "3.16.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_15
+	bool "3.15.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_14
+	bool "3.14.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_14
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_13
+	bool "3.13.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_12
+	bool "3.12.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_11
+	bool "3.11.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_10
+	bool "3.10.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_9
+	bool "3.9.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_8
+	bool "3.8.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_8
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_7
+	bool "3.7.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_6
+	bool "3.6.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_6
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_5
+	bool "3.5.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_4
+	bool "3.4.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_3
+	bool "3.3.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_2
+	bool "3.2.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_1
+	bool "3.1.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_1
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_0
+	bool "3.0.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_REALLY_OLD
+	bool "2.6.x"
+
+endchoice
+
+config BR2_DEFAULT_KERNEL_HEADERS
+	string
+	default "3.2.85"	if BR2_KERNEL_HEADERS_3_2
+	default "3.4.113"	if BR2_KERNEL_HEADERS_3_4
+	default "3.10.105"	if BR2_KERNEL_HEADERS_3_10
+	default "3.12.70"	if BR2_KERNEL_HEADERS_3_12
+	default "3.18.48"	if BR2_KERNEL_HEADERS_3_18
+	default "3.19.8"	if BR2_KERNEL_HEADERS_3_19
+	default "4.0.9"		if BR2_KERNEL_HEADERS_4_0
+	default "4.1.38"	if BR2_KERNEL_HEADERS_4_1
+	default "4.4.52"	if BR2_KERNEL_HEADERS_4_4
+	default "4.8.17"	if BR2_KERNEL_HEADERS_4_8
+	default "4.9.13"	if BR2_KERNEL_HEADERS_4_9
+	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION

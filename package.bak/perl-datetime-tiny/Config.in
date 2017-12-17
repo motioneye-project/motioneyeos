@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_DATETIME_TINY
+	bool "perl-datetime-tiny"
+	help
+	  A date object, with as little code as possible
+
+	  https://github.com/dagolden/DateTime-Tiny

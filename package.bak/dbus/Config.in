@@ -1,0 +1,14 @@
+config BR2_PACKAGE_DBUS
+	bool "dbus"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# uses fork()
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_EXPAT
+	help
+	  The D-Bus message bus system.
+
+	  http://www.freedesktop.org/wiki/Software/dbus
+
+comment "dbus needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

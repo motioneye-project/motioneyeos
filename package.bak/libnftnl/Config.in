@@ -1,0 +1,35 @@
+comment "libnftnl needs a toolchain w/ headers >= 3.12"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+
+config BR2_PACKAGE_LIBNFTNL
+	bool "libnftnl"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	select BR2_PACKAGE_LIBMNL
+	help
+	  libnftnl is a userspace library providing a low-level
+	  netlink programming interface (API) to the in-kernel
+	  nf_tables subsystem. The library libnftnl has been
+	  previously known as libnftables. This library is
+	  currently used by nftables.
+
+	  http://netfilter.org/projects/libnftnl/index.html
+
+if BR2_PACKAGE_LIBNFTNL
+
+config BR2_PACKAGE_LIBNFTNL_JSON
+	bool "enable JSON support"
+	select BR2_PACKAGE_JANSSON
+	help
+	  Enable JSON parsing support
+
+config BR2_PACKAGE_LIBNFTNL_XML
+	bool "enable XML support"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_MXML
+	help
+	  Enable XML parsing support
+
+comment "libnftnl XML parsing support needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+endif

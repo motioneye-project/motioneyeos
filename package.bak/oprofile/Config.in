@@ -1,0 +1,49 @@
+# memory barrier function implemented only for some architectures
+config BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
+	bool
+	default y
+	depends on BR2_arceb || BR2_arcle || BR2_arm || BR2_armeb || \
+		BR2_aarch64 || BR2_aarch64_be || BR2_i386 || BR2_mips || \
+		BR2_mipsel || BR2_mips64 || BR2_mips64el || BR2_powerpc || \
+		BR2_powerpc64 || BR2_powerpc64le || BR2_sh || \
+		BR2_sparc || BR2_sparc64 || BR2_x86_64
+
+config BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	bool
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+
+config BR2_PACKAGE_OPROFILE
+	bool "oprofile"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_BINUTILS
+	select BR2_PACKAGE_LIBPFM4 if BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR # binutils
+	depends on BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
+	# libpfm4 is needed on PowerPC, and requires thread support
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	help
+	  OProfile is a system-wide profiler for Linux systems,
+	  capable of profiling all running code at low overhead.
+	  OProfile is released under the GNU GPL.
+
+	  It consists of a kernel driver and a daemon for collecting
+	  sample data, and several post-profiling tools for turning
+	  data into information.
+
+	  OProfile leverages the hardware performance counters of the
+	  CPU to enable profiling of a wide variety of interesting
+	  statistics, which can also be used for basic time-spent
+	  profiling. All code is profiled: hardware and software
+	  interrupt handlers, kernel modules, the kernel, shared
+	  libraries, and applications.
+
+comment "oprofile needs a toolchain w/ C++, wchar"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR
+
+comment "oprofile needs a toolchain w/ NPTL on PowerPC(64)"
+	depends on BR2_USE_MMU && BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

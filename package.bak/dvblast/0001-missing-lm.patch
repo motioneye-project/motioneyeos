@@ -1,0 +1,29 @@
+dvblast: fix static linking
+
+dvblast links to -lev, wihch uses functions from the maths library,
+like floor().
+
+When linking to a shared libev.so, that dependency is automatically
+pulled in because libev as a DT_NEEDED ELF tag on libm.so.
+
+But when lnking to the static libev.a, since there is no way to express
+such dependencies in static libraries, libm is not pulled in, which
+leads to build failures such as;
+    http://autobuild.buildroot.org/results/1f0/1f02f84fb926839a1adbe3af457bb909fdc44433/build-end.log
+
+Fix that by always linking to -lm (which must come *after* -lev).
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN dvblast-3.0.orig/Makefile dvblast-3.0/Makefile
+--- dvblast-3.0.orig/Makefile	2015-10-05 17:51:14.000000000 +0200
++++ dvblast-3.0/Makefile	2015-10-30 15:57:19.547123894 +0100
+@@ -28,7 +28,7 @@
+ LDLIBS += -lstreammaster
+ endif
+ 
+-LDLIBS_DVBLAST += -lpthread -lev
++LDLIBS_DVBLAST += -lpthread -lev -lm
+ 
+ OBJ_DVBLAST = dvblast.o util.o dvb.o udp.o asi.o demux.o output.o en50221.o comm.o mrtg-cnt.o asi-deltacast.o
+ OBJ_DVBLASTCTL = util.o dvblastctl.o

@@ -1,0 +1,52 @@
+From 3e8a9e9a1c7eae515eb628778c3c8a04338b3bb3 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 27 Dec 2016 11:21:09 +0100
+Subject: [PATCH] sounds: do not download and check sha1s
+
+To validate the sound archives, the corresponding sha1s are also
+downloaded from the same location, and that download is done at install
+time.
+
+However, that poses at least two problems:
+
+  - in Buildroot, we already have validated the downloads with the sha1s
+    anyway, and trying to download anything at install time is not
+    always possible (e.g. for off-line builds);
+
+  - since the download scheme is not secured (plain http), a
+    man-in-the-middle for the sounds will also be able to MITM the
+    download of the sha1s, so there is absolutely no additional safety
+    in doing so.
+
+So we just do without the sha1 download and checks.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ sounds/Makefile | 10 ----------
+ 1 file changed, 10 deletions(-)
+
+diff --git a/sounds/Makefile b/sounds/Makefile
+index 84d0f45..7a80d56 100644
+--- a/sounds/Makefile
++++ b/sounds/Makefile
+@@ -100,17 +100,7 @@ ifneq ($(SOUNDS_CACHE_DIR),)
+ 	  if test ! -f "$$(SOUNDS_CACHE_DIR)/$$@"; then \
+ 	    (cd "$$(SOUNDS_CACHE_DIR)"; $$(DOWNLOAD) $$(SOUNDS_URL)/$$@); \
+ 	  fi; \
+-	  if test ! -f "$$(SOUNDS_CACHE_DIR)/$$@.sha1"; then \
+-	    (cd "$$(SOUNDS_CACHE_DIR)"; $$(DOWNLOAD) $$(SOUNDS_URL)/$$@.sha1); \
+-	  fi; \
+ 	  $$(LN) -sf "$$(SOUNDS_CACHE_DIR)/$$@" .; \
+-	  $$(LN) -sf "$$(SOUNDS_CACHE_DIR)/$$@.sha1" .; \
+-	  $$(SHA1SUM) -c --status $$@.sha1 || \
+-	    ( \
+-	      rm -f "$$(SOUNDS_CACHE_DIR)/$$@" "$$(SOUNDS_CACHE_DIR)/$$@.sha1" $$@ $$@.sha1; \
+-	      echo "Bad checksum: $$@" 1>&2; \
+-	      exit 1; \
+-	    ) || exit 1; \
+ 	fi
+ else
+ 	$(CMD_PREFIX) \
+-- 
+2.7.4
+

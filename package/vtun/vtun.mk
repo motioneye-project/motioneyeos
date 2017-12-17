@@ -6,7 +6,7 @@
 
 VTUN_VERSION = 3.0.3
 VTUN_SITE = http://downloads.sourceforge.net/project/vtun/vtun/$(VTUN_VERSION)
-VTUN_LICENSE = GPLv2+ with OpenSSL exception
+VTUN_LICENSE = GPL-2.0+ with OpenSSL exception
 VTUN_LICENSE_FILES = README.OpenSSL
 VTUN_DEPENDENCIES = host-bison host-flex zlib lzo openssl
 VTUN_AUTORECONF = YES

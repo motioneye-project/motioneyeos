@@ -1,0 +1,16 @@
+Fix misdetection while nios2 cross-compile
+
+Signed-off-bye: Waldemar Brodkorb <wbx@openadk.org>
+ 
+diff -Nur libdvdnav-5.0.3.orig/configure.ac libdvdnav-5.0.3/configure.ac
+--- libdvdnav-5.0.3.orig/configure.ac	2015-01-27 16:57:43.000000000 +0100
++++ libdvdnav-5.0.3/configure.ac	2016-07-31 11:48:09.312947473 +0200
+@@ -73,7 +73,7 @@
+   [*mingw32* | *cygwin*], [AC_CHECK_FUNCS(gettimeofday)])
+ 
+ AS_CASE([$host],
+-  [*os2*], [LDFLAGS="$LDFLAGS -no-undefined"])
++  [*-os2*], [LDFLAGS="$LDFLAGS -no-undefined"])
+ 
+ dnl ---------------------------------------------
+ dnl threads

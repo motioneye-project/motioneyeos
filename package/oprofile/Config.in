@@ -15,14 +15,14 @@ config BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 config BR2_PACKAGE_OPROFILE
 	bool "oprofile"
 	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_POPT
-	select BR2_PACKAGE_BINUTILS
-	select BR2_PACKAGE_LIBPFM4 if BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR # binutils
 	depends on BR2_PACKAGE_OPROFILE_ARCH_SUPPORTS
 	# libpfm4 is needed on PowerPC, and requires thread support
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL || !BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_BINUTILS
+	select BR2_PACKAGE_LIBPFM4 if BR2_PACKAGE_OPROFILE_NEEDS_LIBPFM4
 	help
 	  OProfile is a system-wide profiler for Linux systems,
 	  capable of profiling all running code at low overhead.

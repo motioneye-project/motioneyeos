@@ -1,0 +1,21 @@
+commit ce62c00ea5f9bf2f0740ecde5b245c9b7edc80ff
+Author: Curtis William Arnold <carnold@apache.org>
+Date:   Mon Apr 27 03:53:50 2009 +0000
+
+    LOGCXX-332: fails to build with gcc 4.4
+    
+    git-svn-id: https://svn.apache.org/repos/asf/logging/log4cxx/trunk@768863 13f79535-47bb-0310-9956-ffa450edef68
+
+diff --git a/src/examples/cpp/console.cpp b/src/examples/cpp/console.cpp
+index a673a10..f44c944 100755
+--- a/src/examples/cpp/console.cpp
++++ b/src/examples/cpp/console.cpp
+@@ -23,6 +23,8 @@
+ #include <iostream>
+ #include <locale.h>
+ #include <cstring>
++#include <cstdio>
++#include <stdint.h>
+ 
+ using namespace log4cxx;
+ using namespace log4cxx::helpers;

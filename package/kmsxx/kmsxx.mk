@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-KMSXX_VERSION = bd5f6471e619a6ba2987bc7f66ef78a531f94d6c
+KMSXX_VERSION = cb0786049f960f2bd383617151b01318e02e9ff9
 KMSXX_SITE = $(call github,tomba,kmsxx,$(KMSXX_VERSION))
-KMSXX_LICENSE = MPLv2.0
+KMSXX_LICENSE = MPL-2.0
 KMSXX_LICENSE_FILES = LICENSE
 KMSXX_INSTALL_STAGING = YES
 KMSXX_DEPENDENCIES = libdrm host-pkgconf
@@ -20,8 +20,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_KMSXX_INSTALL_TESTS),y)
 KMSXX_TESTS = \
-	fbtestpat kmsblank kmscapture \
-	kmsprint kmsview testpat wbcap \
+	fbtest kmsblank kmscapture \
+	kmsprint kmstest kmsview wbcap \
 	wbm2m
 
 define KMSXX_INSTALL_TARGET_TESTS

@@ -27,8 +27,8 @@ config BR2_PACKAGE_NEON_XML
 
 config BR2_PACKAGE_NEON_EXPAT
 	bool "XML support with expat"
-	select BR2_PACKAGE_EXPAT
 	depends on !BR2_PACKAGE_NEON_LIBXML2
+	select BR2_PACKAGE_EXPAT
 	help
 	  Enable XML support in neon, using the Expat XML library.
 

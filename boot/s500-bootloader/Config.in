@@ -1,0 +1,17 @@
+config BR2_TARGET_S500_BOOTLOADER
+	bool "s500-bootloader"
+	depends on BR2_arm
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	select BR2_HOSTARCH_NEEDS_IA32_LIBS
+	help
+	  1st level bootloader for Actions Semiconductor S500 SoC.
+
+	  https://github.com/xapp-le/owl
+
+config BR2_TARGET_S500_BOOTLOADER_BOARD
+	string "board to configure for"
+	depends on BR2_TARGET_S500_BOOTLOADER
+	help
+	  Specify the board to configure the bootloader for.
+	  This should be the name of a directory under s500/boards
+	  containing a suitable bootloader.ini file.

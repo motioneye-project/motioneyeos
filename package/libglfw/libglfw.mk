@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-LIBGLFW_VERSION = 3.1.2
+LIBGLFW_VERSION = 3.2.1
 LIBGLFW_SITE = $(call github,glfw,glfw,$(LIBGLFW_VERSION))
 LIBGLFW_INSTALL_STAGING = YES
 LIBGLFW_DEPENDENCIES = libgl xlib_libXcursor xlib_libXext \
 	xlib_libXinerama xlib_libXrandr
-LIBGLFW_LICENSE = zlib
+LIBGLFW_LICENSE = Zlib
 LIBGLFW_LICENSE_FILES = COPYING.txt
 
 LIBGLFW_CONF_OPTS += \

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_RAMSPEED
+	bool "ramspeed"
+	help
+	  RAMspeed is a free open source command line utility
+	  to measure cache and memory performance.
+
+	  http://alasir.com/software/ramspeed/

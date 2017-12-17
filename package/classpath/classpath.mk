@@ -4,22 +4,21 @@
 #
 ################################################################################
 
-CLASSPATH_VERSION = 0.98
+CLASSPATH_VERSION = 0.99
 CLASSPATH_SITE = $(BR2_GNU_MIRROR)/classpath
 CLASSPATH_CONF_OPTS = \
 	--disable-examples \
-	--disable-plugin \
 	--disable-rpath \
 	--disable-Werror \
 	--disable-gconf-peer \
-	--disable-tools
+	--disable-gjdoc \
+	--enable-tools
 
 # classpath assumes qt runs on top of X11, but we
 # don't support qt4 on X11
 CLASSPATH_CONF_OPTS += --disable-qt-peer
 CLASSPATH_DEPENDENCIES = host-pkgconf
-CLASSPATH_AUTORECONF = YES
-CLASSPATH_LICENSE = GPLv2+ with exception
+CLASSPATH_LICENSE = GPL-2.0+ with exception
 CLASSPATH_LICENSE_FILES = COPYING
 
 # Needs ALSA pcm and sequencer (midi) support
@@ -53,7 +52,7 @@ else
 CLASSPATH_CONF_OPTS += --disable-gtk-peer --disable-gstreamer-peer
 endif
 
-ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT),yy)
+ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT)$(BR2_TOOLCHAIN_HAS_THREADS),yyy)
 CLASSPATH_CONF_OPTS += --enable-xmlj
 CLASSPATH_DEPENDENCIES += libxml2 libxslt
 else

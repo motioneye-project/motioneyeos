@@ -1,0 +1,10 @@
+[Unit]
+Description=Domoticz Home Automation System
+After=network.target
+
+[Service]
+ExecStart=/opt/domoticz/domoticz -daemon -www 8080 -sslwww 443
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

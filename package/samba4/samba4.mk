@@ -4,18 +4,30 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.5.5
+SAMBA4_VERSION = 4.6.11
 SAMBA4_SITE = https://download.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_INSTALL_STAGING = YES
-SAMBA4_LICENSE = GPLv3+
+SAMBA4_LICENSE = GPL-3.0+
 SAMBA4_LICENSE_FILES = COPYING
 SAMBA4_DEPENDENCIES = \
 	host-e2fsprogs host-heimdal host-python \
 	e2fsprogs popt python zlib \
 	$(if $(BR2_PACKAGE_LIBAIO),libaio) \
 	$(if $(BR2_PACKAGE_LIBCAP),libcap) \
-	$(if $(BR2_PACKAGE_READLINE),readline)
+	$(if $(BR2_PACKAGE_READLINE),readline) \
+	$(TARGET_NLS_DEPENDENCIES)
+SAMBA4_CFLAGS = $(TARGET_CFLAGS)
+SAMBA4_LDFLAGS = $(TARGET_LDFLAGS)
+SAMBA4_CONF_ENV = \
+	CFLAGS="$(SAMBA4_CFLAGS)" \
+	LDFLAGS="$(SAMBA4_LDFLAGS)"
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+SAMBA4_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`
+SAMBA4_LDFLAGS += `$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`
+SAMBA4_DEPENDENCIES += libtirpc host-pkgconf
+endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 SAMBA4_CONF_OPTS += --with-acl-support
@@ -32,6 +44,10 @@ else
 SAMBA4_CONF_OPTS += --disable-cups
 endif
 
+ifeq ($(BR2_PACKAGE_DBUS),y)
+SAMBA4_DEPENDENCIES += dbus
+endif
+
 ifeq ($(BR2_PACKAGE_DBUS)$(BR2_PACKAGE_AVAHI_DAEMON),yy)
 SAMBA4_CONF_OPTS += --enable-avahi
 SAMBA4_DEPENDENCIES += avahi
@@ -44,12 +60,6 @@ SAMBA4_CONF_OPTS += --with-fam
 SAMBA4_DEPENDENCIES += gamin
 else
 SAMBA4_CONF_OPTS += --without-fam
-endif
-
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-SAMBA4_DEPENDENCIES += gettext
-else
-SAMBA4_CONF_OPTS += --without-gettext
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
@@ -76,7 +86,7 @@ endef
 SAMBA4_POST_INSTALL_TARGET_HOOKS += SAMBA4_REMOVE_CTDB_TESTS
 
 define SAMBA4_CONFIGURE_CMDS
-	cp package/samba4/samba4-cache.txt $(@D)/cache.txt;
+	$(INSTALL) -m 0644 package/samba4/samba4-cache.txt $(@D)/cache.txt;
 	echo 'Checking uname machine type: $(BR2_ARCH)' >>$(@D)/cache.txt;
 	(cd $(@D); \
 		PYTHON_CONFIG="$(STAGING_DIR)/usr/bin/python-config" \

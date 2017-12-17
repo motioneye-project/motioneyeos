@@ -1,0 +1,35 @@
+config BR2_PACKAGE_DHCP
+	bool "dhcp (ISC)"
+	# fork()
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  DHCP relay agent from the ISC DHCP distribution.
+
+	  http://www.isc.org/products/DHCP
+
+if BR2_PACKAGE_DHCP
+
+config BR2_PACKAGE_DHCP_SERVER
+	bool "dhcp server"
+	help
+	  DHCP server from the ISC DHCP distribution.
+
+config BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK
+	bool "Enable delayed ACK feature"
+	depends on BR2_PACKAGE_DHCP_SERVER
+	help
+	  Enable delayed ACK feature in the ISC DHCP server.
+
+config BR2_PACKAGE_DHCP_RELAY
+	bool "dhcp relay"
+	help
+	  DHCP relay agent from the ISC DHCP distribution.
+
+
+config BR2_PACKAGE_DHCP_CLIENT
+	bool "dhcp client"
+	help
+	  DHCP client from the ISC DHCP distribution.
+
+endif

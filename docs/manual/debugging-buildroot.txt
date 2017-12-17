@@ -1,0 +1,43 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[debugging-buildroot]]
+
+== Debugging Buildroot
+
+It is possible to instrument the steps +Buildroot+ does when building
+packages. Define the variable +BR2_INSTRUMENTATION_SCRIPTS+ to contain
+the path of one or more scripts (or other executables), in a
+space-separated list, you want called before and after each step. The
+scripts are called in sequence, with three parameters:
+
+  - +start+ or +end+ to denote the start (resp. the end) of a step;
+  - the name of the step about to be started, or which just ended;
+  - the name of the package.
+
+For example :
+
+----
+make BR2_INSTRUMENTATION_SCRIPTS="/path/to/my/script1 /path/to/my/script2"
+----
+
+The list of steps is:
+
+  - +extract+
+  - +patch+
+  - +configure+
+  - +build+
+  - +install-host+, when a host-package is installed in +$(HOST_DIR)+
+  - +install-target+, when a target-package is installed in +$(TARGET_DIR)+
+  - +install-staging+, when a target-package is installed in +$(STAGING_DIR)+
+  - +install-image+, when a target-package installs files in +$(BINARIES_DIR)+
+
+The script has access to the following variables:
+
+  - +BR2_CONFIG+: the path to the Buildroot .config file
+  - +HOST_DIR+, +STAGING_DIR+, +TARGET_DIR+: see
+    xref:generic-package-reference[]
+  - +BUILD_DIR+: the directory where packages are extracted and built
+  - +BINARIES_DIR+: the place where all binary files (aka images) are
+    stored
+  - +BASE_DIR+: the base output directory

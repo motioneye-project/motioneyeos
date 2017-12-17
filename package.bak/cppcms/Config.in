@@ -1,0 +1,39 @@
+config BR2_PACKAGE_CPPCMS
+	bool "cppcms"
+	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_LIBGCRYPT
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !BR2_STATIC_LIBS # dlopen()
+	depends on BR2_USE_WCHAR
+	help
+	  CppCMS is a Free High Performance Web Development Framework
+	  (not a CMS) aimed for Rapid Web Application Development. It
+	  differs from most of other web development frameworks like:
+	  Python Django or Java Servlets on  the following aspects:
+
+	   - It is designed and tuned to handle extremely high loads.
+	   - It uses modern C++ as primary development language in
+	     order to achieve the above goal.
+	   - It is aimed on development of both Web Sites and Web
+	     Services.
+
+	  http://cppcms.com
+
+if BR2_PACKAGE_CPPCMS
+
+config BR2_PACKAGE_CPPCMS_ICU
+	bool "enable icu support"
+	depends on !BR2_BINFMT_FLAT # icu
+	select BR2_PACKAGE_ICU
+	help
+	  Using ICU allows advanced localization features into CppCMS,
+	  in another hand ICU is heavier than iconv.
+
+endif
+
+comment "cppcms needs a toolchain w/ C++, NPTL, wchar, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		!BR2_USE_WCHAR || BR2_STATIC_LIBS

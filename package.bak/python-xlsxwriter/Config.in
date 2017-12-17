@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_XLSXWRITER
+	bool "python-xlsxwriter"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
+	help
+	  A Python module for creating Excel XLSX files.
+
+	  https://github.com/jmcnamara/XlsxWriter

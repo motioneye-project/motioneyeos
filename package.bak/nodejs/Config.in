@@ -1,0 +1,103 @@
+comment "nodejs needs a toolchain w/ C++, dynamic library, threads, gcc >= 4.8, wchar"
+	depends on BR2_USE_MMU
+	depends on BR2_arm || BR2_aarch64 || BR2_i386 || BR2_x86_64 || BR2_mipsel
+	depends on !BR2_MIPS_SOFT_FLOAT
+	depends on !BR2_ARM_CPU_ARMV4
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_USE_WCHAR
+
+config BR2_PACKAGE_NODEJS
+	bool "nodejs"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_arm || BR2_aarch64 || BR2_i386 || BR2_x86_64 || BR2_mipsel
+	depends on !BR2_MIPS_SOFT_FLOAT
+	# ARM needs BLX, so v5t+
+	depends on !BR2_ARM_CPU_ARMV4
+	# 0.10.x could be built without the following toolchain dependencies but
+	# simplify things by requiring these basic dependencies for all versions.
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_USE_WCHAR
+	# uses fork()
+	depends on BR2_USE_MMU
+	# uses dlopen(). On ARMv5, we could technically support static
+	# linking, but that's too much of a corner case to support it.
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_ZLIB
+	help
+	  Event-driven I/O server-side JavaScript environment based on V8.
+
+	  http://nodejs.org/
+
+if BR2_PACKAGE_NODEJS
+
+# Starting with 0.12.x, on ARM, V8 (the JS engine)
+# now requires an armv6+ and a VFPv2+.
+config BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
+	bool
+	# On supported architectures other than ARM, no special requirement
+	default y if !BR2_arm
+	# On ARM, at least ARMv6+ with VFPv2+ is needed
+	default y if !BR2_ARM_CPU_ARMV5 && BR2_ARM_CPU_HAS_VFPV2
+
+config BR2_PACKAGE_NODEJS_VERSION_STRING
+	string
+	default "6.9.4"		if BR2_PACKAGE_NODEJS_V8_ARCH_SUPPORTS
+	default "0.10.48"
+
+config BR2_PACKAGE_NODEJS_NPM
+	bool "NPM for the target"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  NPM is the package manager for the Node JavaScript platform.
+	  Note that enabling NPM on the target also selects OpenSSL for the
+	  target.
+
+	  http://www.npmjs.org
+
+	  Note that NPM is always built for the buildroot host.
+
+config BR2_PACKAGE_NODEJS_MODULES_EXPRESS
+	bool "Express web application framework"
+	help
+	  Express is a minimal and flexible node.js web application
+	  framework, providing a robust set of features for building
+	  single and multi-page, and hybrid web applications.
+
+	  http://www.expressjs.com
+	  https://github.com/visionmedia/express
+
+config BR2_PACKAGE_NODEJS_MODULES_COFFEESCRIPT
+	bool "CoffeeScript"
+	help
+	  CoffeeScript is a little language that compiles into JavaScript.
+
+	  http://www.coffeescript.org
+
+config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL
+	string "Additional modules"
+	help
+	  List of space-separated nodejs modules to install via npm.
+	  See https://npmjs.org/ to find modules and 'npm help install'
+	  for available installation methods. For repeatable builds,
+	  download and save tgz files or clone git repos for the
+	  components you care about.
+
+	  Example: serialport uglify-js@1.3.4 /my/module/mymodule.tgz git://github.com/someuser/somemodule.git#v1.2
+
+	  This would install the serialport module (at the newest version),
+	  the uglify-js module at 1.3.4, a module from a filesystem path,
+	  and a module from a git repository.
+
+config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS
+	string "Additional module dependencies"
+	help
+	  List of space-separated buildroot recipes which must be built before
+	  your npms can be installed. For example, if in 'Additional modules'
+	  you specified 'node-curl' (see:
+	  https://github.com/jiangmiao/node-curl), you could then specify
+	  'libcurl' here, to ensure that buildroot builds the libcurl package,
+	  and does so before building your node modules.
+
+endif

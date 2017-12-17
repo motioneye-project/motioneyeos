@@ -12,8 +12,8 @@ config BR2_PACKAGE_CRDA
 
 	  This package provides a Central Regulatory Domain Agent (CRDA)
 	  to be used by the Linux kernel cf80211 wireless subsystem to
-	  query and apply the regulatory domain settings wireless devices
-	  may operate within for a given location.
+	  query and apply the regulatory domain settings wireless
+	  devices may operate within for a given location.
 
 	  http://linuxwireless.org/en/developers/Regulatory/CRDA
 

@@ -8,7 +8,7 @@ config BR2_PACKAGE_PYTHON_PYASN
 	  perform very fast IP address to Autonomous System Number
 	  lookups.
 
-	  https://code.google.com/p/pyasn/
+	  https://github.com/hadiasghari/pyasn
 
 comment "python-pyasn needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP

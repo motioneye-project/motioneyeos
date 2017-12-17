@@ -1,0 +1,52 @@
+From ca6e99d9fa4bf503a883407e964eaad5e18d51c7 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 22 Jul 2015 07:04:33 +0300
+Subject: [PATCH] Avoid searching host library path
+
+The $(libdir) variable points to the location of the directory on the target
+system, /usr/lib by default. When cross compiling this directory contains the
+host libraries which may be different than target libraries. Don't use
+$(libdir) in the library search path.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ cmdlang/Makefile.am | 2 +-
+ unix/Makefile.am    | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/cmdlang/Makefile.am b/cmdlang/Makefile.am
+index e80090dd0c6f..b59ff244b9a8 100644
+--- a/cmdlang/Makefile.am
++++ b/cmdlang/Makefile.am
+@@ -16,7 +16,7 @@ libOpenIPMIcmdlang_la_LIBADD = -lm \
+ 	$(top_builddir)/utils/libOpenIPMIutils.la \
+ 	$(top_builddir)/lib/libOpenIPMI.la
+ libOpenIPMIcmdlang_la_LDFLAGS = -rdynamic -version-info $(LD_VERSION) \
+-	-Wl,-Map -Wl,libOpenIPMIcmdlang.map -L$(libdir)
++	-Wl,-Map -Wl,libOpenIPMIcmdlang.map
+ 
+ bin_PROGRAMS = openipmish
+ 
+diff --git a/unix/Makefile.am b/unix/Makefile.am
+index a7921477e1c4..a108bc679c9a 100644
+--- a/unix/Makefile.am
++++ b/unix/Makefile.am
+@@ -11,13 +11,13 @@ libOpenIPMIpthread_la_SOURCES = posix_thread_os_hnd.c selector.c
+ libOpenIPMIpthread_la_LIBADD = -lpthread $(GDBM_LIB) \
+ 	$(top_builddir)/utils/libOpenIPMIutils.la
+ libOpenIPMIpthread_la_LDFLAGS = -rdynamic -version-info $(LD_VERSION) \
+-	-Wl,-Map -Wl,libOpenIPMIpthread.map -L$(libdir)
++	-Wl,-Map -Wl,libOpenIPMIpthread.map
+ 
+ libOpenIPMIposix_la_SOURCES = posix_os_hnd.c selector.c
+ libOpenIPMIposix_la_LIBADD = $(top_builddir)/utils/libOpenIPMIutils.la \
+ 	$(GDBM_LIB)
+ libOpenIPMIposix_la_LDFLAGS = -rdynamic -version-info $(LD_VERSION) \
+-	-Wl,-Map -Wl,libOpenIPMIposix.map -L$(libdir)
++	-Wl,-Map -Wl,libOpenIPMIposix.map
+ 
+ noinst_HEADERS = heap.h
+ 
+-- 
+2.1.4
+

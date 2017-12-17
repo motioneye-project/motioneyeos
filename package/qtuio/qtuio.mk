@@ -9,7 +9,7 @@ QTUIO_SITE = $(call github,x29a,qTUIO,$(QTUIO_VERSION))
 QTUIO_INSTALL_STAGING = YES
 QTUIO_DEPENDENCIES = qt
 
-QTUIO_LICENSE = GPLv3+
+QTUIO_LICENSE = GPL-3.0+
 QTUIO_LICENSE_FILES = COPYING
 
 # The pong example needs QtOpenGL support, which might become available

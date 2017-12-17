@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBDVDNAV
+	bool "libdvdnav"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBDVDREAD
+	help
+	  libdvdnav is a library that allows easy use of sophisticated
+	  DVD navigation features such as DVD menus, multiangle
+	  playback and even interactive DVD games.
+
+	  http://www.mplayerhq.hu
+
+comment "libdvdnav needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

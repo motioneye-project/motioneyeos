@@ -1,0 +1,12 @@
+config BR2_PACKAGE_QT5SVG
+	bool "qt5svg"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  Qt SVG provides classes for rendering and displaying SVG
+	  drawings in widgets and on other paint devices.
+
+	  http://doc.qt.io/qt-5/qtsvg-index.html

@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/pyopenssl/json, sha256 locally computed
-md5     6635503758c65ea6f70d18d1b18e46d5  pyOpenSSL-16.2.0.tar.gz
-sha256  7779a3bbb74e79db234af6a08775568c6769b5821faecf6e2f4143edb227516e  pyOpenSSL-16.2.0.tar.gz
+md5 0704ca95106960375cfe78259453094a  pyOpenSSL-17.0.0.tar.gz
+sha256 48abfe9d2bb8eb8d8947c8452b0223b7b1be2383b332f3b4f248fe59ef0bafdd  pyOpenSSL-17.0.0.tar.gz

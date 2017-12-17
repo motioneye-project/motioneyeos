@@ -1,0 +1,32 @@
+From 66429b5f6986bde1f491699216f095c5e25023cf Mon Sep 17 00:00:00 2001
+From: Allan Sandfeld Jensen <allan.jensen@qt.io>
+Date: Mon, 25 Sep 2017 16:53:24 +0200
+Subject: [PATCH] Fix no-opengl builds
+
+The qquickwidgets examples uses OpenGL directly
+
+Change-Id: I1cc8cfbcf249abc98473287a9d499032232828c7
+Reviewed-by: Simon Hausmann <simon.hausmann@qt.io>
+
+Upstream: https://code.qt.io/cgit/qt/qtdeclarative.git/patch/?id=fa52bb665d6beb77a951c14c8edcba3541850afc
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ examples/quick/quick.pro | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/examples/quick/quick.pro b/examples/quick/quick.pro
+index 445dfb0f..7da255e9 100644
+--- a/examples/quick/quick.pro
++++ b/examples/quick/quick.pro
+@@ -36,7 +36,7 @@ qtConfig(opengl(es1|es2)?) {
+ # Widget dependent examples
+ qtHaveModule(widgets) {
+     SUBDIRS += embeddedinwidgets
+-    qtHaveModule(quickwidgets): SUBDIRS += quickwidgets
++    qtHaveModule(quickwidgets):qtConfig(opengl(es1|es2)?): SUBDIRS += quickwidgets
+ }
+ 
+ EXAMPLE_FILES = \
+-- 
+2.15.0
+

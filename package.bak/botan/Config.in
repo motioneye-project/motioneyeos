@@ -1,0 +1,20 @@
+config BR2_PACKAGE_BOTAN_ARCH_SUPPORTS
+	bool
+	default y if BR2_arm || BR2_armeb || BR2_i386 || BR2_m68k    || \
+		BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || \
+		BR2_powerpc || BR2_powerpc64 || BR2_sparc || BR2_sh  || \
+		BR2_x86_64
+
+config BR2_PACKAGE_BOTAN
+	bool "botan"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_BOTAN_ARCH_SUPPORTS
+	help
+	  Botan is a crypto library for C++
+
+	  http://botan.randombit.net
+
+comment "botan needs a toolchain w/ C++, threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_BOTAN_ARCH_SUPPORTS

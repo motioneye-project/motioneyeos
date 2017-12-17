@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SCRYPT
+	bool "scrypt"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  A password-based key derivation function specifically
+	  designed to make it costly to perform large-scale custom
+	  hardware attacks by requiring large amounts of memory.
+
+	  http://www.tarsnap.com/scrypt.html

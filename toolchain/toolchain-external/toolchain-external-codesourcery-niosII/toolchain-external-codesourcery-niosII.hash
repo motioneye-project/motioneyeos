@@ -1,3 +1,6 @@
+# From https://sourcery.mentor.com/GNUToolchain/release3302
+md5 54b7f7056c2159f3a9ddeca8ca775ed1 sourceryg++-2017.05-4-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+md5 529a7fecf33d0d113a446413b9d1e173 sourceryg++-2017.05-4-nios2-linux-gnu.src.tar.bz2
 # Locally calculated
-sha256 97e3b878c67e46430f2b9a42b11bc95b1ef9fef263e6b5ee9103d1239c9e847d  sourceryg++-2016.11-32-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
-sha256 ee2c4391137be8fee987411301bbf9f0e4a823400e37c9f8c1cae9900485cbca  sourceryg++-2016.11-32-nios2-linux-gnu.src.tar.bz2
+sha256 3f0307da3c0770b7cc3ed4a845038e6e438d3e3a96ce880f9a86b3d35f948a07  sourceryg++-2017.05-4-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 6e65878d0453708ee19098d3d68985bda244938d35999f3859915a2f5574fa08  sourceryg++-2017.05-4-nios2-linux-gnu.src.tar.bz2

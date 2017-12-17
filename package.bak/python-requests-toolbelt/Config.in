@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_REQUESTS_TOOLBELT
+	bool "python-requests-toolbelt"
+	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
+	help
+	  A utility belt for advanced users of python-requests.
+
+	  https://toolbelt.readthedocs.org

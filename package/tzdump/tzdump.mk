@@ -13,9 +13,9 @@ define HOST_TZDUMP_BUILD_CMDS
 endef
 
 define HOST_TZDUMP_INSTALL_CMDS
-	$(INSTALL) -m 0755 -D $(@D)/tzdump $(HOST_DIR)/usr/sbin/tzdump
+	$(INSTALL) -m 0755 -D $(@D)/tzdump $(HOST_DIR)/sbin/tzdump
 endef
 
 $(eval $(host-generic-package))
 
-TZDUMP = $(HOST_DIR)/usr/sbin/tzdump
+TZDUMP = $(HOST_DIR)/sbin/tzdump

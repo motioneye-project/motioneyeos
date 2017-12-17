@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Starts rpcbind.
+#
+
+start() {
+	printf "Starting rpcbind: "
+	umask 077
+	start-stop-daemon -S -q -p /var/run/rpcbind.pid --exec /usr/bin/rpcbind
+	echo "OK"
+}
+stop() {
+	printf "Stopping rpcbind daemon: "
+	start-stop-daemon -K -q -p /var/run/rpcbind.pid
+	echo "OK"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?
+

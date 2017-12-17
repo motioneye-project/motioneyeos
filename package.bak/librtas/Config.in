@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBRTAS
+	bool "librtas"
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  The librtas package provides an interface for Run-Time Abstraction
+	  Services (RTAS) calls on PAPR platforms. The libraries allow users to
+	  examine and manipulate hardware, and parse RTAS events.
+
+	  http://librtas.sourceforge.net/
+
+comment "librtas needs a glibc toolchain"
+	depends on BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

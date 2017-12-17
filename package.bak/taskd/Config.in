@@ -1,0 +1,16 @@
+config BR2_PACKAGE_TASKD
+	bool "taskd"
+	depends on BR2_USE_WCHAR # gnutls
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Task management synchronization daemon.
+
+	  http://taskwarrior.org/
+
+comment "taskd needs a toolchain w/ C++, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP

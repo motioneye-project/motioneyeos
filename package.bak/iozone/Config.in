@@ -1,0 +1,13 @@
+config BR2_PACKAGE_IOZONE
+	bool "iozone"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	help
+	  IOzone is a filesystem benchmark tool.
+	  The benchmark generates and measures a variety of file operations
+
+	  http://www.iozone.org/
+
+comment "iozone needs a toolchain w/ NPTL"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

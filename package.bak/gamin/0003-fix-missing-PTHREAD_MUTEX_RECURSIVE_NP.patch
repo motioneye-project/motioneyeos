@@ -1,0 +1,39 @@
+Fix missing PTHREAD_MUTEX_RECURSIVE_NP
+
+The musl C library does not provide the non portable
+PTHREAD_MUTEX_RECURSIVE_NP. In addition, uClibc does not define it as
+a #define, but as an enum value, so doing a #if defined() check
+doesn't work properly. Instead, add a AC_CHECK_DECL() autoconf check.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[Thomas: switch to an autoconf check.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/configure.in
+===================================================================
+--- a/configure.in
++++ b/configure.in
+@@ -294,6 +294,10 @@
+ 	   AC_DEFINE([HAVE_LIBPTHREAD], [], [Define if pthread library is there (-lpthread)])
+ 	   AC_DEFINE([HAVE_PTHREAD_H], [], [Define if <pthread.h> is there])
+ 	   WITH_THREADS="1"]))
++
++    AC_CHECK_DECL([PTHREAD_MUTEX_RECURSIVE_NP],
++		[AC_DEFINE([HAVE_PTHREAD_MUTEX_RECURSIVE_NP], [], [whether HAVE_PTHREAD_MUTEX_RECURSIVE_NP is defined])],
++		[], [#include <pthread.h>])
+ fi
+ 
+ dnl Use weak symbols on linux/gcc to avoid imposing libpthreads to apps
+Index: b/libgamin/gam_data.c
+===================================================================
+--- a/libgamin/gam_data.c
++++ b/libgamin/gam_data.c
+@@ -470,7 +470,7 @@
+     }
+     if (is_threaded > 0) {
+ 	pthread_mutexattr_init(&attr);
+-#if defined(linux) || defined(PTHREAD_MUTEX_RECURSIVE_NP)
++#if defined(HAVE_PTHREAD_MUTEX_RECURSIVE_NP)
+ 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE_NP);
+ #else
+ 	pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);

@@ -1,0 +1,44 @@
+config BR2_PACKAGE_PYTHON_CROSSBAR
+	bool "python-crossbar"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # python-psutil
+	# All the following dependencies are runtime dependencies
+	select BR2_PACKAGE_PYTHON_AUTOBAHN
+	select BR2_PACKAGE_PYTHON_CBOR
+	select BR2_PACKAGE_PYTHON_CLICK
+	select BR2_PACKAGE_PYTHON_PYCPARSER
+	select BR2_PACKAGE_PYTHON_CRYPTOGRAPHY
+	select BR2_PACKAGE_PYTHON_JINJA2
+	select BR2_PACKAGE_PYTHON_LMDB
+	select BR2_PACKAGE_PYTHON_MISTUNE
+	select BR2_PACKAGE_PYTHON_NETADDR
+	select BR2_PACKAGE_PYTHON_PSUTIL
+	select BR2_PACKAGE_PYTHON_PYASN
+	select BR2_PACKAGE_PYTHON_PYASN_MODULES
+	select BR2_PACKAGE_PYTHON_PYGMENTS
+	select BR2_PACKAGE_PYTHON_PYINOTIFY
+	select BR2_PACKAGE_PYTHON_PYNACL
+	select BR2_PACKAGE_PYTHON_PYOPENSSL
+	select BR2_PACKAGE_PYTHON_PYTRIE
+	select BR2_PACKAGE_PYTHON_PYYAML
+	select BR2_PACKAGE_PYTHON_SDNOTIFY
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS
+	select BR2_PACKAGE_PYTHON_SERVICE_IDENTITY
+	select BR2_PACKAGE_PYTHON_SETPROCTITLE
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS
+	select BR2_PACKAGE_PYTHON_SHUTILWHICH if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_TREQ
+	select BR2_PACKAGE_PYTHON_TWISTED
+	select BR2_PACKAGE_PYTHON_U_MSGPACK
+	select BR2_PACKAGE_PYTHON_UBJSON
+	select BR2_PACKAGE_PYTHON_WATCHDOG
+	select BR2_PACKAGE_PYTHON_WSACCEL
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyasn
+	help
+	  Crossbar.io is an open-source WAMP application router that
+	  allows to build advanced applications from loosely-coupled
+	  components that can talk in real-time with each other.
+
+	  https://pypi.python.org/pypi/crossbar
+
+comment "python-crossbar needs a uClibc or glibc toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_TOOLCHAIN_USES_MUSL

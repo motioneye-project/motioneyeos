@@ -1,0 +1,38 @@
+config BR2_PACKAGE_RRDTOOL
+	bool "rrdtool"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  RRDtool is the OpenSource industry standard, high performance
+	  data logging and graphing system for time series data.
+
+	  http://oss.oetiker.ch/rrdtool/
+
+if BR2_PACKAGE_RRDTOOL
+
+config BR2_PACKAGE_RRDTOOL_RRDGRAPH
+	bool "rrd_graph"
+	default y
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pango -> harfbuzz
+	depends on BR2_INSTALL_LIBSTDCPP # freetype support from pango
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PDF
+	select BR2_PACKAGE_CAIRO_PNG
+	select BR2_PACKAGE_CAIRO_PS
+	select BR2_PACKAGE_CAIRO_SVG
+	select BR2_PACKAGE_PANGO
+	help
+	  This enables the graphing capabilities ('rrdgraph').
+	  Without this it will only act as a database backend.
+
+comment "rrd_graph support needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+endif
+
+comment "rrdtool needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

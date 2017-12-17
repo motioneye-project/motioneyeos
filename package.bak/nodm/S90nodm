@@ -1,0 +1,49 @@
+#!/bin/sh
+#
+# Starts nodm
+#
+
+NODM_FIRST_VT=7
+NODM_XSESSION=/etc/X11/Xsession
+NODM_OPTIONS=
+NODM_X_OPTIONS="-nolisten tcp"
+NODM_USER=root
+NODM_MIN_SESSION_TIME=60
+NODM_X_TIMEOUT=300
+
+[ -r /etc/default/nodm ] && . /etc/default/nodm
+
+export NODM_XSESSION NODM_X_OPTIONS NODM_USER NODM_MIN_SESSION_TIME NODM_FIRST_VT NODM_X_TIMEOUT
+
+start() {
+	printf "Starting nodm: "
+	start-stop-daemon -S -q -p /var/run/nodm.pid --exec /usr/sbin/nodm -b -m -S -- ${NODM_OPTIONS}
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	printf "Stopping nodm: "
+	start-stop-daemon -K -q -p /var/run/nodm.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

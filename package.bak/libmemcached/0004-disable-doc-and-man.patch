@@ -1,0 +1,37 @@
+From 6c01bd3562cc18fbafdf950bbeb73a399c1adcdd Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Tue, 12 May 2015 00:00:02 +0200
+Subject: [PATCH] disable doc and man
+
+WARNING: master file /home/naourr/git/buildroot/test/libmemcached-bfin/build/libmemcached-1.0.18/docs/index.rst not found
+
+Exception occurred:
+  File "/usr/lib/python2.7/site-packages/sphinx/environment.py", line 1213, in get_doctree
+    f = open(doctree_filename, 'rb')
+IOError: [Errno 2] No such file or directory: '/home/naourr/buildroot-test/test/libmemcached-bfin/build/libmemcached-1.0.18/man/.doctrees/hashkit_create.doctree'
+The full traceback has been saved in /tmp/sphinx-err-JCIsnB.log, if you want to report the issue to the developers.
+Please also report this if it was a user error, so that a better error message can be provided next time.
+Either send bugs to the mailing list at <http://groups.google.com/group/sphinx-dev/>,
+or report them in the tracker at <http://bitbucket.org/birkenfeld/sphinx/issues/>. Thanks!
+
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 7f44102..cb7d058 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -55,8 +55,6 @@ endif
+ include libmemcachedutil-1.0/include.am
+ 
+ include clients/include.am
+-include docs/include.am
+-include man/include.am
+ 
+ if BUILD_LIBMEMCACHED_PROTOCOL
+ include example/include.am
+-- 
+1.9.3
+

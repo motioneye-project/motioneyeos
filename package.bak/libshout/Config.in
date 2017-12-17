@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LIBSHOUT
+	bool "libshout"
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBVORBIS
+	help
+	  Libshout is a library for communicating with and sending data to an
+	  icecast server. It handles the socket connection, the timing of the
+	  data, and prevents bad data from getting to the icecast server.
+
+	  http://icecast.org/download/

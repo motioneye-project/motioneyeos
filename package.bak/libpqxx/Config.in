@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBPQXX
+	bool "libpqxx"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_POSTGRESQL
+	help
+	  libpqxx is the official C++ client API for PostgreSQL, the
+	  enterprise-strength open-source relational database.
+
+	  http://pqxx.org/development/libpqxx/
+
+comment "libpqxx needs toolchain w/ C++ support"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_POSTGRESQL

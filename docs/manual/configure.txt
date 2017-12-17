@@ -1,0 +1,384 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[configure]]
+== Buildroot configuration
+
+All the configuration options in +make *config+ have a help text
+providing details about the option.
+
+The +make *config+ commands also offer a search tool. Read the help
+message in the different frontend menus to know how to use it:
+
+* in _menuconfig_, the search tool is called by pressing +/+;
+* in _xconfig_, the search tool is called by pressing +Ctrl+ + +f+.
+
+The result of the search shows the help message of the matching items.
+In _menuconfig_, numbers in the left column provide a shortcut to the
+corresponding entry. Just type this number to directly jump to the
+entry, or to the containing menu in case the entry is not selectable due
+to a missing dependency.
+
+Although the menu structure and the help text of the entries should be
+sufficiently self-explanatory, a number of topics require additional
+explanation that cannot easily be covered in the help text and are
+therefore covered in the following sections.
+
+=== Cross-compilation toolchain
+
+A compilation toolchain is the set of tools that allows you to compile
+code for your system. It consists of a compiler (in our case, +gcc+),
+binary utils like assembler and linker (in our case, +binutils+) and a
+C standard library (for example
+http://www.gnu.org/software/libc/libc.html[GNU Libc],
+http://www.uclibc-ng.org/[uClibc-ng]).
+
+The system installed on your development station certainly already has
+a compilation toolchain that you can use to compile an application
+that runs on your system. If you're using a PC, your compilation
+toolchain runs on an x86 processor and generates code for an x86
+processor. Under most Linux systems, the compilation toolchain uses
+the GNU libc (glibc) as the C standard library. This compilation
+toolchain is called the "host compilation toolchain". The machine on
+which it is running, and on which you're working, is called the "host
+system" footnote:[This terminology differs from what is used by GNU
+configure, where the host is the machine on which the application will
+run (which is usually the same as target)].
+
+The compilation toolchain is provided by your distribution, and
+Buildroot has nothing to do with it (other than using it to build a
+cross-compilation toolchain and other tools that are run on the
+development host).
+
+As said above, the compilation toolchain that comes with your system
+runs on and generates code for the processor in your host system. As
+your embedded system has a different processor, you need a
+cross-compilation toolchain - a compilation toolchain that runs on
+your _host system_ but generates code for your _target system_ (and
+target processor). For example, if your host system uses x86 and your
+target system uses ARM, the regular compilation toolchain on your host
+runs on x86 and generates code for x86, while the cross-compilation
+toolchain runs on x86 and generates code for ARM.
+
+Buildroot provides two solutions for the cross-compilation toolchain:
+
+ * The *internal toolchain backend*, called +Buildroot toolchain+ in
+   the configuration interface.
+
+ * The *external toolchain backend*, called +External toolchain+ in
+   the configuration interface.
+
+The choice between these two solutions is done using the +Toolchain
+Type+ option in the +Toolchain+ menu. Once one solution has been
+chosen, a number of configuration options appear, they are detailed in
+the following sections.
+
+[[internal-toolchain-backend]]
+==== Internal toolchain backend
+
+The _internal toolchain backend_ is the backend where Buildroot builds
+by itself a cross-compilation toolchain, before building the userspace
+applications and libraries for your target embedded system.
+
+This backend supports several C libraries:
+http://www.uclibc-ng.org[uClibc-ng],
+http://www.gnu.org/software/libc/libc.html[glibc] and
+http://www.musl-libc.org[musl].
+
+Once you have selected this backend, a number of options appear. The
+most important ones allow to:
+
+ * Change the version of the Linux kernel headers used to build the
+   toolchain. This item deserves a few explanations. In the process of
+   building a cross-compilation toolchain, the C library is being
+   built. This library provides the interface between userspace
+   applications and the Linux kernel. In order to know how to "talk"
+   to the Linux kernel, the C library needs to have access to the
+   _Linux kernel headers_ (i.e. the +.h+ files from the kernel), which
+   define the interface between userspace and the kernel (system
+   calls, data structures, etc.). Since this interface is backward
+   compatible, the version of the Linux kernel headers used to build
+   your toolchain do not need to match _exactly_ the version of the
+   Linux kernel you intend to run on your embedded system. They only
+   need to have a version equal or older to the version of the Linux
+   kernel you intend to run. If you use kernel headers that are more
+   recent than the Linux kernel you run on your embedded system, then
+   the C library might be using interfaces that are not provided by
+   your Linux kernel.
+
+ * Change the version of the GCC compiler, binutils and the C library.
+
+ * Select a number of toolchain options (uClibc only): whether the
+   toolchain should have RPC support (used mainly for NFS),
+   wide-char support, locale support (for internationalization),
+   C++ support or thread support. Depending on which options you choose,
+   the number of userspace applications and libraries visible in
+   Buildroot menus will change: many applications and libraries require
+   certain toolchain options to be enabled. Most packages show a comment
+   when a certain toolchain option is required to be able to enable
+   those packages. If needed, you can further refine the uClibc
+   configuration by running +make uclibc-menuconfig+. Note however that
+   all packages in Buildroot are tested against the default uClibc
+   configuration bundled in Buildroot: if you deviate from this
+   configuration by removing features from uClibc, some packages may no
+   longer build.
+
+It is worth noting that whenever one of those options is modified,
+then the entire toolchain and system must be rebuilt. See
+xref:full-rebuild[].
+
+Advantages of this backend:
+
+* Well integrated with Buildroot
+* Fast, only builds what's necessary
+
+Drawbacks of this backend:
+
+* Rebuilding the toolchain is needed when doing +make clean+, which
+  takes time. If you're trying to reduce your build time, consider
+  using the _External toolchain backend_.
+
+[[external-toolchain-backend]]
+==== External toolchain backend
+
+The _external toolchain backend_ allows to use existing pre-built
+cross-compilation toolchains. Buildroot knows about a number of
+well-known cross-compilation toolchains (from
+http://www.linaro.org[Linaro] for ARM,
+http://www.mentor.com/embedded-software/sourcery-tools/sourcery-codebench/editions/lite-edition/[Sourcery
+CodeBench] for ARM, x86-64, PowerPC, and MIPS, and is capable of
+downloading them automatically, or it can be pointed to a custom
+toolchain, either available for download or installed locally.
+
+Then, you have three solutions to use an external toolchain:
+
+* Use a predefined external toolchain profile, and let Buildroot
+  download, extract and install the toolchain. Buildroot already knows
+  about a few CodeSourcery and Linaro toolchains. Just select the
+  toolchain profile in +Toolchain+ from the available ones. This is
+  definitely the easiest solution.
+
+* Use a predefined external toolchain profile, but instead of having
+  Buildroot download and extract the toolchain, you can tell Buildroot
+  where your toolchain is already installed on your system. Just
+  select the toolchain profile in +Toolchain+ through the available
+  ones, unselect +Download toolchain automatically+, and fill the
+  +Toolchain path+ text entry with the path to your cross-compiling
+  toolchain.
+
+* Use a completely custom external toolchain. This is particularly
+  useful for toolchains generated using crosstool-NG or with Buildroot
+  itself. To do this, select the +Custom toolchain+ solution in the
+  +Toolchain+ list. You need to fill the +Toolchain path+, +Toolchain
+  prefix+ and +External toolchain C library+ options. Then, you have
+  to tell Buildroot what your external toolchain supports. If your
+  external toolchain uses the 'glibc' library, you only have to tell
+  whether your toolchain supports C\++ or not and whether it has
+  built-in RPC support. If your external toolchain uses the 'uClibc'
+  library, then you have to tell Buildroot if it supports RPC,
+  wide-char, locale, program invocation, threads and C++.
+  At the beginning of the execution, Buildroot will tell you if
+  the selected options do not match the toolchain configuration.
+
+Our external toolchain support has been tested with toolchains from
+CodeSourcery and Linaro, toolchains generated by
+http://crosstool-ng.org[crosstool-NG], and toolchains generated by
+Buildroot itself. In general, all toolchains that support the
+'sysroot' feature should work. If not, do not hesitate to contact the
+developers.
+
+We do not support toolchains or SDK generated by OpenEmbedded or
+Yocto, because these toolchains are not pure toolchains (i.e. just the
+compiler, binutils, the C and C++ libraries). Instead these toolchains
+come with a very large set of pre-compiled libraries and
+programs. Therefore, Buildroot cannot import the 'sysroot' of the
+toolchain, as it would contain hundreds of megabytes of pre-compiled
+libraries that are normally built by Buildroot.
+
+We also do not support using the distribution toolchain (i.e. the
+gcc/binutils/C library installed by your distribution) as the
+toolchain to build software for the target. This is because your
+distribution toolchain is not a "pure" toolchain (i.e. only with the
+C/C++ library), so we cannot import it properly into the Buildroot
+build environment. So even if you are building a system for a x86 or
+x86_64 target, you have to generate a cross-compilation toolchain with
+Buildroot or crosstool-NG.
+
+If you want to generate a custom toolchain for your project, that can
+be used as an external toolchain in Buildroot, our recommendation is
+definitely to build it with http://crosstool-ng.org[crosstool-NG]. We
+recommend to build the toolchain separately from Buildroot, and then
+_import_ it in Buildroot using the external toolchain backend.
+
+Advantages of this backend:
+
+* Allows to use well-known and well-tested cross-compilation
+  toolchains.
+
+* Avoids the build time of the cross-compilation toolchain, which is
+  often very significant in the overall build time of an embedded
+  Linux system.
+
+Drawbacks of this backend:
+
+* If your pre-built external toolchain has a bug, may be hard to get a
+  fix from the toolchain vendor, unless you build your external
+  toolchain by yourself using Crosstool-NG.
+
+===== External toolchain wrapper
+
+When using an external toolchain, Buildroot generates a wrapper program,
+that transparently passes the appropriate options (according to the
+configuration) to the external toolchain programs. In case you need to
+debug this wrapper to check exactly what arguments are passed, you can
+set the environment variable +BR2_DEBUG_WRAPPER+ to either one of:
+
+* +0+, empty or not set: no debug
+
+* +1+: trace all arguments on a single line
+
+* +2+: trace one argument per line
+
+=== /dev management
+
+On a Linux system, the +/dev+ directory contains special files, called
+_device files_, that allow userspace applications to access the
+hardware devices managed by the Linux kernel. Without these _device
+files_, your userspace applications would not be able to use the
+hardware devices, even if they are properly recognized by the Linux
+kernel.
+
+Under +System configuration+, +/dev management+, Buildroot offers four
+different solutions to handle the +/dev+ directory :
+
+ * The first solution is *Static using device table*. This is the old
+   classical way of handling device files in Linux. With this method,
+   the device files are persistently stored in the root filesystem
+   (i.e. they persist across reboots), and there is nothing that will
+   automatically create and remove those device files when hardware
+   devices are added or removed from the system. Buildroot therefore
+   creates a standard set of device files using a _device table_, the
+   default one being stored in +system/device_table_dev.txt+ in the
+   Buildroot source code. This file is processed when Buildroot
+   generates the final root filesystem image, and the _device files_
+   are therefore not visible in the +output/target+ directory. The
+   +BR2_ROOTFS_STATIC_DEVICE_TABLE+ option allows to change the
+   default device table used by Buildroot, or to add an additional
+   device table, so that additional _device files_ are created by
+   Buildroot during the build. So, if you use this method, and a
+   _device file_ is missing in your system, you can for example create
+   a +board/<yourcompany>/<yourproject>/device_table_dev.txt+ file
+   that contains the description of your additional _device files_,
+   and then you can set +BR2_ROOTFS_STATIC_DEVICE_TABLE+ to
+   +system/device_table_dev.txt
+   board/<yourcompany>/<yourproject>/device_table_dev.txt+. For more
+   details about the format of the device table file, see
+   xref:makedev-syntax[].
+
+ * The second solution is *Dynamic using devtmpfs only*. _devtmpfs_ is
+   a virtual filesystem inside the Linux kernel that has been
+   introduced in kernel 2.6.32 (if you use an older kernel, it is not
+   possible to use this option). When mounted in +/dev+, this virtual
+   filesystem will automatically make _device files_ appear and
+   disappear as hardware devices are added and removed from the
+   system. This filesystem is not persistent across reboots: it is
+   filled dynamically by the kernel. Using _devtmpfs_ requires the
+   following kernel configuration options to be enabled:
+   +CONFIG_DEVTMPFS+ and +CONFIG_DEVTMPFS_MOUNT+. When Buildroot is in
+   charge of building the Linux kernel for your embedded device, it
+   makes sure that those two options are enabled. However, if you
+   build your Linux kernel outside of Buildroot, then it is your
+   responsibility to enable those two options (if you fail to do so,
+   your Buildroot system will not boot).
+
+ * The third solution is *Dynamic using devtmpfs + mdev*. This method
+   also relies on the _devtmpfs_ virtual filesystem detailed above (so
+   the requirement to have +CONFIG_DEVTMPFS+ and
+   +CONFIG_DEVTMPFS_MOUNT+ enabled in the kernel configuration still
+   apply), but adds the +mdev+ userspace utility on top of it. +mdev+
+   is a program part of BusyBox that the kernel will call every time a
+   device is added or removed. Thanks to the +/etc/mdev.conf+
+   configuration file, +mdev+ can be configured to for example, set
+   specific permissions or ownership on a device file, call a script
+   or application whenever a device appears or disappear,
+   etc. Basically, it allows _userspace_ to react on device addition
+   and removal events. +mdev+ can for example be used to automatically
+   load kernel modules when devices appear on the system. +mdev+ is
+   also important if you have devices that require a firmware, as it
+   will be responsible for pushing the firmware contents to the
+   kernel. +mdev+ is a lightweight implementation (with fewer
+   features) of +udev+. For more details about +mdev+ and the syntax
+   of its configuration file, see
+   http://git.busybox.net/busybox/tree/docs/mdev.txt.
+
+ * The fourth solution is *Dynamic using devtmpfs + eudev*. This
+   method also relies on the _devtmpfs_ virtual filesystem detailed
+   above, but adds the +eudev+ userspace daemon on top of it. +eudev+
+   is a daemon that runs in the background, and gets called by the
+   kernel when a device gets added or removed from the system. It is a
+   more heavyweight solution than +mdev+, but provides higher
+   flexibility.  +eudev+ is a standalone version of +udev+, the
+   original userspace daemon used in most desktop Linux distributions,
+   which is now part of Systemd. For more details, see
+   http://en.wikipedia.org/wiki/Udev.
+
+The Buildroot developers recommendation is to start with the *Dynamic
+using devtmpfs only* solution, until you have the need for userspace
+to be notified when devices are added/removed, or if firmwares are
+needed, in which case *Dynamic using devtmpfs + mdev* is usually a
+good solution.
+
+Note that if +systemd+ is chosen as init system, /dev management will
+be performed by the +udev+ program provided by +systemd+.
+
+=== init system
+
+The _init_ program is the first userspace program started by the
+kernel (it carries the PID number 1), and is responsible for starting
+the userspace services and programs (for example: web server,
+graphical applications, other network servers, etc.).
+
+Buildroot allows to use three different types of init systems, which
+can be chosen from +System configuration+, +Init system+:
+
+ * The first solution is *BusyBox*. Amongst many programs, BusyBox has
+   an implementation of a basic +init+ program, which is sufficient
+   for most embedded systems. Enabling the +BR2_INIT_BUSYBOX+ will
+   ensure BusyBox will build and install its +init+ program. This is
+   the default solution in Buildroot. The BusyBox +init+ program will
+   read the +/etc/inittab+ file at boot to know what to do. The syntax
+   of this file can be found in
+   http://git.busybox.net/busybox/tree/examples/inittab (note that
+   BusyBox +inittab+ syntax is special: do not use a random +inittab+
+   documentation from the Internet to learn about BusyBox
+   +inittab+). The default +inittab+ in Buildroot is stored in
+   +system/skeleton/etc/inittab+. Apart from mounting a few important
+   filesystems, the main job the default inittab does is to start the
+   +/etc/init.d/rcS+ shell script, and start a +getty+ program (which
+   provides a login prompt).
+
+ * The second solution is *systemV*. This solution uses the old
+   traditional _sysvinit_ program, packed in Buildroot in
+   +package/sysvinit+. This was the solution used in most desktop
+   Linux distributions, until they switched to more recent
+   alternatives such as Upstart or Systemd. +sysvinit+ also works with
+   an +inittab+ file (which has a slightly different syntax than the
+   one from BusyBox). The default +inittab+ installed with this init
+   solution is located in +package/sysvinit/inittab+.
+
+ * The third solution is *systemd*. +systemd+ is the new generation
+   init system for Linux. It does far more than traditional _init_
+   programs: aggressive parallelization capabilities, uses socket and
+   D-Bus activation for starting services, offers on-demand starting
+   of daemons, keeps track of processes using Linux control groups,
+   supports snapshotting and restoring of the system state,
+   etc. +systemd+ will be useful on relatively complex embedded
+   systems, for example the ones requiring D-Bus and services
+   communicating between each other. It is worth noting that +systemd+
+   brings a fairly big number of large dependencies: +dbus+, +udev+
+   and more. For more details about +systemd+, see
+   http://www.freedesktop.org/wiki/Software/systemd.
+
+The solution recommended by Buildroot developers is to use the
+*BusyBox init* as it is sufficient for most embedded
+systems. *systemd* can be used for more complex situations.

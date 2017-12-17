@@ -1,0 +1,11 @@
+config BR2_PACKAGE_DEBIANUTILS
+	bool "debianutils"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  Miscellaneous utilities specific to Debian.
+
+	  The specific utilities included are: add-shell installkernel
+	  ischroot remove-shell run-parts savelog tempfile which.
+
+	  https://tracker.debian.org/pkg/debianutils

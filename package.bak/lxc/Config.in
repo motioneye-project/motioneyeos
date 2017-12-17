@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LXC
+	bool "lxc"
+	select BR2_PACKAGE_LIBCAP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	# build system forcefully builds a shared library
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # setns() system call
+	help
+	  Linux Containers (LXC), provides the ability to group and isolate
+	  of a set of processes in a jail by virtualizing and accounting the
+	  kernel resources. It is similar to Linux-Vserver or Openvz.
+
+	  https://linuxcontainers.org/
+
+comment "lxc needs a toolchain w/ threads, headers >= 3.0, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 \
+		|| BR2_STATIC_LIBS

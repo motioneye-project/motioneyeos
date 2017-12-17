@@ -45,7 +45,7 @@ if test ! -d ${project_directory}/host ; then
     exit 1
 fi
 
-if test ! -e ${project_directory}/host/usr/bin/${toolchain_prefix}gcc ; then
+if test ! -e ${project_directory}/host/bin/${toolchain_prefix}gcc ; then
     echo "Cannot find the cross-compiler in the project directory"
     exit 1
 fi

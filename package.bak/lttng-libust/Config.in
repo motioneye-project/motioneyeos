@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LTTNG_LIBUST
+	bool "lttng-libust"
+	select BR2_PACKAGE_LIBURCU
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	depends on BR2_USE_WCHAR # uses wchar_t
+	# liburcu only works on some architectures and requires threads support"
+	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  Userspace tracing library for the LTTng 2.x tracing
+	  infrastructure. It allows userspace programs to create
+	  custom trace events that are integrated with all other
+	  events gathered by LTTng.
+
+	  http://lttng.org
+
+comment "lttng-libust needs a toolchain w/ dynamic library, wchar, threads"
+	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

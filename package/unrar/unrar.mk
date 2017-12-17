@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UNRAR_VERSION = 5.4.5
+UNRAR_VERSION = 5.5.8
 UNRAR_SOURCE = unrarsrc-$(UNRAR_VERSION).tar.gz
 UNRAR_SITE = http://www.rarlab.com/rar
 UNRAR_LICENSE = unrar

@@ -1,0 +1,31 @@
+NAME="owserver"
+DAEMON="/usr/bin/${NAME}"
+PID_F="/run/${NAME}.pid"
+
+OWSERVER_ARGS=
+[ -r /etc/default/${NAME} ] && . /etc/default/${NAME}
+
+case "$1" in
+start)
+	printf "Starting ${NAME}: "
+	if [ -z "${OWSERVER_ARGS}" ]; then
+		echo "OWSERVER_ARGS must be set in defaults file" 1>&2
+		exit 1
+	fi
+	start-stop-daemon -S -x ${DAEMON} -- \
+		--pid_file ${PID_F} ${OWSERVER_ARGS}
+	[ $? -eq 0 ] && echo "OK" || echo "FAIL"
+	;;
+stop)
+	printf "Stopping ${NAME}: "
+	start-stop-daemon -K -p ${PID_F}
+	[ $? -eq 0 ] && echo "OK" || echo "FAIL"
+	;;
+restart|reload)
+	$0 stop
+	$0 start
+	;;
+*)
+	echo "Usage: $0 {start|stop|restart|reload}"
+	exit 1
+esac

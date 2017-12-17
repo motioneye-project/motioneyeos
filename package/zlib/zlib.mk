@@ -7,7 +7,7 @@
 ZLIB_VERSION = 1.2.11
 ZLIB_SOURCE = zlib-$(ZLIB_VERSION).tar.xz
 ZLIB_SITE = http://www.zlib.net
-ZLIB_LICENSE = zlib license
+ZLIB_LICENSE = Zlib
 ZLIB_LICENSE_FILES = README
 ZLIB_INSTALL_STAGING = YES
 
@@ -38,7 +38,7 @@ define HOST_ZLIB_CONFIGURE_CMDS
 		$(HOST_CONFIGURE_ARGS) \
 		$(HOST_CONFIGURE_OPTS) \
 		./configure \
-		--prefix="$(HOST_DIR)/usr" \
+		--prefix="$(HOST_DIR)" \
 		--sysconfdir="$(HOST_DIR)/etc" \
 	)
 endef

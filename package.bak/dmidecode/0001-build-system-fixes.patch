@@ -1,0 +1,35 @@
+Minor build system fixes
+
+Usual build system fixes to allow CC/CFLAGS/LDFLAGS to be overriden
+from the command line, and completed by additional flags from the
+Makefile.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -12,9 +12,10 @@
+ #   (at your option) any later version.
+ #
+ 
+-CC      = gcc
+-CFLAGS  = -W -Wall -Wshadow -Wstrict-prototypes -Wpointer-arith -Wcast-qual \
+-          -Wcast-align -Wwrite-strings -Wmissing-prototypes -Winline -Wundef
++CC      ?= gcc
++override CFLAGS  += \
++	-W -Wall -Wshadow -Wstrict-prototypes -Wpointer-arith -Wcast-qual \
++        -Wcast-align -Wwrite-strings -Wmissing-prototypes -Winline -Wundef
+ 
+ # Let lseek and mmap support 64-bit wide offsets
+ CFLAGS += -D_FILE_OFFSET_BITS=64
+@@ -27,7 +28,7 @@ CFLAGS += -O2
+ #CFLAGS += -g
+ 
+ # Pass linker flags here
+-LDFLAGS =
++override LDFLAGS +=
+ 
+ DESTDIR =
+ prefix  = /usr/local

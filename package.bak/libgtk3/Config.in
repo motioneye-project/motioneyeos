@@ -1,0 +1,106 @@
+comment "libgtk3 needs a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS
+
+comment "libgtk3 needs an OpenGL or an OpenGL-EGL/wayland backend"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_PACKAGE_HAS_LIBEGL_WAYLAND && \
+		!BR2_PACKAGE_HAS_LIBGL
+
+config BR2_PACKAGE_LIBGTK3
+	bool "libgtk3"
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_CAIRO
+	select BR2_PACKAGE_CAIRO_PS
+	select BR2_PACKAGE_CAIRO_PDF
+	select BR2_PACKAGE_CAIRO_SVG
+	select BR2_PACKAGE_LIBEPOXY
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PANGO
+	select BR2_PACKAGE_GDK_PIXBUF
+	# At least one backend is required
+	select BR2_PACKAGE_LIBGTK3_BROADWAY if \
+		!(BR2_PACKAGE_LIBGTK3_X11 || BR2_PACKAGE_LIBGTK3_WAYLAND)
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_INSTALL_LIBSTDCPP # pango
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pango -> harfbuzz
+	depends on BR2_PACKAGE_HAS_LIBEGL_WAYLAND || \
+		BR2_PACKAGE_HAS_LIBGL
+	help
+	  The GTK+ version 3 graphical user interface library
+
+	  http://www.gtk.org/
+
+if BR2_PACKAGE_LIBGTK3
+
+config BR2_PACKAGE_LIBGTK3_BROADWAY
+	bool "Broadway GDK backend"
+	default y
+	  help
+	  This enables the Broadway backend for GDK, which provides support
+	  for displaying GTK+ applications in a web browser, using HTML5 and
+	  web sockets.
+
+	  For example, to run gtk3-demo on a target which IP address is
+	  192.168.0.1 and use it from a web browser, execute the following
+	  commands:
+
+	  $ broadwayd -a 192.168.0.1 -p 8080 :2 &
+	  $ export GDK_BACKEND=broadway
+	  $ export BROADWAY_DISPLAY=:2
+	  $ gtk3-demo
+
+	  Then open a web browser at address http://192.168.0.1:8080.
+	  Javascript and web sockets should be enabled.
+
+comment "Wayland GDK backend needs an OpenGL EGL backend provided by mesa3d w/ headers >= 3.17"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+
+config BR2_PACKAGE_LIBGTK3_WAYLAND
+	bool "Wayland GDK backend"
+	default y
+	depends on BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_WAYLAND_PROTOCOLS
+	select BR2_PACKAGE_LIBXKBCOMMON
+	help
+	  This enables the Wayland backend for GDK.
+
+comment "X11 GDK backend needs an OpenGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGL
+
+config BR2_PACKAGE_LIBGTK3_X11
+	bool "X11 GDK backend"
+	default y
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXI
+	help
+	  This enables the X11 backend for GDK.
+
+config BR2_PACKAGE_LIBGTK3_DEMO
+	bool "Install libgtk3 demo program"
+	select BR2_PACKAGE_SHARED_MIME_INFO
+	select BR2_PACKAGE_HICOLOR_ICON_THEME
+	help
+	  The GTK+ source base contains a demo program. This
+	  option allows to install this program to the target.
+
+config BR2_PACKAGE_LIBGTK3_TESTS
+	bool "Install libgtk3 tests"
+	help
+	  The GTK+ source base contains tests. This option
+	  allows to install them to the target.
+
+endif

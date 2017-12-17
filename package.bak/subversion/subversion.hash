@@ -1,0 +1,5 @@
+# From http://subversion.apache.org/download.cgi#recommended-release
+sha1 8bd6a44a1aed30c4c6b6b068488dafb44eaa6adf  subversion-1.9.5.tar.bz2
+# Locally calculated after checking PGP signature
+# https://www.apache.org/dist/subversion/subversion-1.9.5.tar.bz2.asc
+sha256 8a4fc68aff1d18dcb4dd9e460648d24d9e98657fbed496c582929c6b3ce555e5  subversion-1.9.5.tar.bz2

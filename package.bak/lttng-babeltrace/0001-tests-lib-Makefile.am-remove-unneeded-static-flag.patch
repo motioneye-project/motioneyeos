@@ -1,0 +1,36 @@
+From 27e37d2621317d25e08ba0683bf8540b05b9347d Mon Sep 17 00:00:00 2001
+From: Philippe Proulx <eeppeliteloop@gmail.com>
+Date: Fri, 28 Oct 2016 02:09:20 -0400
+Subject: [PATCH] tests/lib/Makefile.am: remove unneeded -static flag
+
+Having those -static flags breaks the build in shared-only builds.
+
+Signed-off-by: Philippe Proulx <eeppeliteloop@gmail.com>
+[Philippe: grabbed from this pull request:
+    https://github.com/efficios/babeltrace/pull/49
+]
+---
+ tests/lib/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tests/lib/Makefile.am b/tests/lib/Makefile.am
+index 33ada16..c685e77 100644
+--- a/tests/lib/Makefile.am
++++ b/tests/lib/Makefile.am
+@@ -31,13 +31,11 @@ check_SCRIPTS = test_seek_big_trace \
+ 		test_ctf_writer_complete
+ 
+ if ENABLE_DEBUG_INFO
+-test_dwarf_LDFLAGS = -static
+ test_dwarf_LDADD = $(LIBTAP) \
+ 	$(top_builddir)/lib/libbabeltrace.la \
+ 	$(top_builddir)/lib/libdebug-info.la
+ test_dwarf_SOURCES = test_dwarf.c
+ 
+-test_bin_info_LDFLAGS = -static
+ test_bin_info_LDADD = $(LIBTAP) \
+ 	$(top_builddir)/lib/libbabeltrace.la \
+ 	$(top_builddir)/lib/libdebug-info.la
+-- 
+2.9.3
+

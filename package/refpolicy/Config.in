@@ -1,0 +1,69 @@
+config BR2_PACKAGE_REFPOLICY
+	bool "refpolicy"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # policycoreutils
+	depends on BR2_TOOLCHAIN_USES_GLIBC # policycoreutils
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS # policycoreutils
+	depends on !BR2_STATIC_LIBS # policycoreutils
+	depends on !BR2_arc # policycoreutils
+	select BR2_PACKAGE_POLICYCOREUTILS
+	select BR2_PACKAGE_BUSYBOX_SELINUX if BR2_PACKAGE_BUSYBOX
+	help
+	  The SELinux Reference Policy project (refpolicy) is a
+	  complete SELinux policy that can be used as the system
+	  policy for a variety of systems and used as the basis for
+	  creating other policies. Reference Policy was originally
+	  based on the NSA example policy, but aims to accomplish many
+	  additional goals.
+
+	  The current refpolicy does not fully support Buildroot and
+	  needs modifications to work with the default system file
+	  layout. These changes should be added as patches to the
+	  refpolicy that modify a single SELinux policy.
+
+	  The refpolicy works for the most part in permissive
+	  mode. Only the basic set of utilities are enabled in the
+	  example policy config and some of the pathing in the
+	  policies is not correct.  Individual policies would need to
+	  be tweaked to get everything functioning properly.
+
+	  https://github.com/TresysTechnology/refpolicy
+
+comment "refpolicy needs a glibc toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
+	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_USES_GLIBC
+
+if BR2_PACKAGE_REFPOLICY
+
+config BR2_PACKAGE_REFPOLICY_POLICY_VERSION
+	string "Policy version"
+	default "30"
+
+choice
+	prompt "SELinux default state"
+	default BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_ENFORCING
+	bool "Enforcing"
+	help
+	  SELinux security policy is enforced
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+	bool "Permissive"
+	help
+	  SELinux prints warnings instead of enforcing
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE_DISABLED
+	bool "Disabled"
+	help
+	  No SELinux policy is loaded
+endchoice
+
+config BR2_PACKAGE_REFPOLICY_POLICY_STATE
+	string
+	default "permissive" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_PERMISSIVE
+	default "enforcing" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_ENFORCING
+	default "disabled" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_DISABLED
+
+endif

@@ -1,0 +1,25 @@
+config BR2_PACKAGE_QT53D
+	bool "qt53d"
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5declarative
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative_quick
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  This package corresponds to the qt53d module.
+
+
+	  This module was in tech preview in Qt 5.6, and promoted
+	  to a core module in Qt 5.7.0.
+
+	  Enable the assimp package to gain the assimp sceneparser plugin.
+
+	  http://doc.qt.io/qt-5/qt3d-index.html
+
+comment "qt53d module needs an OpenGL-capable backend"
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE

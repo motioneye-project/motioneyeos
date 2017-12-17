@@ -1,0 +1,125 @@
+From: Maarten ter Huurne <maarten@treewalker.org>
+Date: Sat, 13 Sep 2014 12:04:41 +0200
+Subject: Provide cross compilation alternatives for all AC_TRY_RUN uses
+
+Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
+[Ricardo: rebase on top of 4.3.1]
+Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+---
+ configure.ac | 30 +++++++++++++++++++-----------
+ 1 file changed, 19 insertions(+), 11 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index b8e3bec..c4b7cd4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -348,7 +348,8 @@ main()
+   exit(0);
+ }
+ ], AC_NOTE(- your fifos are usable) fifo=1,
+-AC_NOTE(- your fifos are not usable))
++AC_NOTE(- your fifos are not usable),
++AC_NOTE(- skipping check because we are cross compiling; assuming fifos are usable) fifo=1)
+ rm -f /tmp/conftest*
+ 
+ if test -n "$fifo"; then
+@@ -396,7 +397,8 @@ main()
+   exit(0);
+ }
+ ], AC_NOTE(- your implementation is ok), 
+-AC_NOTE(- you have a broken implementation) AC_DEFINE(BROKEN_PIPE) fifobr=1)
++AC_NOTE(- you have a broken implementation) AC_DEFINE(BROKEN_PIPE) fifobr=1,
++AC_NOTE(- skipping check because we are cross compiling; assuming fifo implementation is ok))
+ rm -f /tmp/conftest*
+ fi
+ 
+@@ -458,7 +460,8 @@ main()
+   exit(0);
+ }
+ ], AC_NOTE(- your sockets are usable) sock=1,
+-AC_NOTE(- your sockets are not usable))
++AC_NOTE(- your sockets are not usable),
++AC_NOTE(- skipping check because we are cross compiling; assuming sockets are usable) sock=1)
+ rm -f /tmp/conftest*
+ 
+ if test -n "$sock"; then
+@@ -497,7 +500,8 @@ main()
+ }
+ ],AC_NOTE(- you are normal),
+ AC_NOTE(- unix domain sockets are not kept in the filesystem)
+-AC_DEFINE(SOCK_NOT_IN_FS) socknofs=1)
++AC_DEFINE(SOCK_NOT_IN_FS) socknofs=1,
++AC_NOTE(- skipping check because we are cross compiling; assuming sockets are normal))
+ rm -f /tmp/conftest*
+ fi
+ 
+@@ -624,7 +628,8 @@ main()
+   exit(0);
+ }
+ ],AC_NOTE(- select is ok),
+-AC_NOTE(- select can't count) AC_DEFINE(SELECT_BROKEN))
++AC_NOTE(- select can't count) AC_DEFINE(SELECT_BROKEN),
++AC_NOTE(- skipping check because we are cross compiling; assuming select is ok))
+ 
+ dnl
+ dnl    ****  termcap or terminfo  ****
+@@ -666,7 +671,8 @@ main()
+ {
+  exit(strcmp(tgoto("%p1%d", 0, 1), "1") ? 0 : 1);
+ }], AC_NOTE(- you use the termcap database),
+-AC_NOTE(- you use the terminfo database) AC_DEFINE(TERMINFO))
++AC_NOTE(- you use the terminfo database) AC_DEFINE(TERMINFO),
++AC_NOTE(- skipping check because we are cross compiling; assuming terminfo database is used) AC_DEFINE(TERMINFO))
+ AC_CHECKING(ospeed)
+ AC_TRY_LINK(extern short ospeed;,ospeed=5;,,AC_DEFINE(NEED_OSPEED))
+ 
+@@ -801,7 +807,8 @@ main()
+     else
+       AC_NOTE(- can't determine - assume ptys are world accessable)
+     fi
+-  ]
++  ],
++  AC_NOTE(- skipping check because we are cross compiling; assuming ptys are world accessable)
+ )
+ rm -f conftest_grp
+ fi
+@@ -885,7 +892,7 @@ AC_EGREP_CPP(yes,
+ #endif
+ ], load=1)
+ fi
+-if test -z "$load" ; then
++if test -z "$load" && test "$cross_compiling" = no ; then
+ AC_CHECKING(for kernelfile)
+ for core in /unix /vmunix /dynix /hp-ux /xelos /dev/ksyms /kernel/unix /kernel/genunix /unicos /mach /netbsd /386bsd /dgux /bsd /stand/vmunix; do
+   if test -f $core || test -c $core; then
+@@ -1078,7 +1085,7 @@ main()
+ #endif
+   exit(0);
+ }
+-],,AC_DEFINE(SYSVSIGS))
++],,AC_DEFINE(SYSVSIGS),:)
+ 
+ fi
+ 
+@@ -1158,7 +1165,7 @@ main() {
+   if (strncmp(buf, "cdedef", 6))
+     exit(1);
+   exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEBCOPY))
++}], AC_DEFINE(USEBCOPY),,:)
+ 
+ AC_TRY_RUN([
+ #define bcopy(s,d,l) memmove(d,s,l)
+@@ -1173,7 +1180,8 @@ main() {
+   if (strncmp(buf, "cdedef", 6))
+     exit(1);
+   exit(0); /* libc version works properly.  */
+-}], AC_DEFINE(USEMEMMOVE))
++}], AC_DEFINE(USEMEMMOVE),,
++  AC_NOTE(- skipping check because we are cross compiling; use memmove) AC_DEFINE(USEMEMMOVE))
+ 
+ AC_SYS_LONG_FILE_NAMES
+ 
+-- 
+1.8.4.5
+

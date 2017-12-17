@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XAPP_RGB
+	bool "rgb"
+	select BR2_PACKAGE_XPROTO_XPROTO
+	help
+	  uncompile an rgb color-name database

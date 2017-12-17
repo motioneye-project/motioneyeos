@@ -1,0 +1,25 @@
+config BR2_PACKAGE_ALLJOYN
+	bool "alljoyn"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBCAP
+	select BR2_PACKAGE_OPENSSL
+	help
+	  The AllJoyn framework defines a common way for devices and
+	  apps to communicate with one another regardless of brands,
+	  categories, transports, and OSes. Developers write
+	  applications that discover nearby devices, and communicate
+	  with each other directly and through the cloud, unleashing
+	  new possibilities in the Internet of Things.
+
+	  https://allseenalliance.org
+
+comment "alljoyn needs a toolchain w/ C++, threads, wchar and dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR || BR2_STATIC_LIBS

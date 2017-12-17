@@ -1,0 +1,33 @@
+From 6cc73bcad19da2cd2e95671173f2e0d203a57e9b Mon Sep 17 00:00:00 2001
+From: Francois Cartegnie <fcvlcdev@free.fr>
+Date: Thu, 29 Jun 2017 09:45:20 +0200
+Subject: [PATCH] codec: avcodec: check avcodec visible sizes
+
+refs #18467
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ modules/codec/avcodec/video.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/modules/codec/avcodec/video.c b/modules/codec/avcodec/video.c
+index 1bcad21..ce52544 100644
+--- a/modules/codec/avcodec/video.c
++++ b/modules/codec/avcodec/video.c
+@@ -137,9 +137,11 @@ static inline picture_t *ffmpeg_NewPictBuf( decoder_t *p_dec,
+     }
+ 
+ 
+-    if( width == 0 || height == 0 || width > 8192 || height > 8192 )
++    if( width == 0 || height == 0 || width > 8192 || height > 8192 ||
++        width < p_context->width || height < p_context->height )
+     {
+-        msg_Err( p_dec, "Invalid frame size %dx%d.", width, height );
++        msg_Err( p_dec, "Invalid frame size %dx%d. vsz %dx%d",
++                 width, height, p_context->width, p_context->height );
+         return NULL; /* invalid display size */
+     }
+     p_dec->fmt_out.video.i_width = width;
+-- 
+2.1.4
+

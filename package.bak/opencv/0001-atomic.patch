@@ -1,0 +1,259 @@
+From f71c288c6d853e623461f97cd72e6a9e6541f61a Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Tue, 1 Nov 2016 09:25:30 +0100
+Subject: [PATCH 1/4] Bug#714923: opencv FTBFS on sparc64
+ https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=714923
+
+opencv uses functions from <ext/atomicity.h>, but it wrongly assumes
+this functions apply to an int type. While it is true for some
+architectures, some architectures are using a long type there. The
+correct type to use is _Atomic_word.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+[Samuel Martin: convert to git diff]
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ modules/core/include/opencv2/core/core.hpp       | 10 +++++-----
+ modules/core/include/opencv2/core/gpumat.hpp     |  2 +-
+ modules/core/include/opencv2/core/operations.hpp |  4 ++--
+ modules/core/src/gpumat.cpp                      |  2 +-
+ modules/core/src/matrix.cpp                      |  4 ++--
+ modules/core/src/system.cpp                      |  8 ++++----
+ modules/gpu/include/opencv2/gpu/gpu.hpp          |  2 +-
+ modules/ocl/include/opencv2/ocl/ocl.hpp          |  2 +-
+ modules/ocl/src/matrix_operations.cpp            |  2 +-
+ modules/python/src2/cv2.cpp                      |  8 ++++----
+ 10 files changed, 22 insertions(+), 22 deletions(-)
+
+diff --git a/modules/core/include/opencv2/core/core.hpp b/modules/core/include/opencv2/core/core.hpp
+index 591d50a..5b4261e 100644
+--- a/modules/core/include/opencv2/core/core.hpp
++++ b/modules/core/include/opencv2/core/core.hpp
+@@ -1290,7 +1290,7 @@ public:
+     operator const _Tp*() const;
+ 
+     _Tp* obj; //< the object pointer.
+-    int* refcount; //< the associated reference counter
++    _Atomic_word* refcount; //< the associated reference counter
+ };
+ 
+ template<typename T>
+@@ -1490,9 +1490,9 @@ class CV_EXPORTS MatAllocator
+ public:
+     MatAllocator() {}
+     virtual ~MatAllocator() {}
+-    virtual void allocate(int dims, const int* sizes, int type, int*& refcount,
++    virtual void allocate(int dims, const int* sizes, int type, _Atomic_word*& refcount,
+                           uchar*& datastart, uchar*& data, size_t* step) = 0;
+-    virtual void deallocate(int* refcount, uchar* datastart, uchar* data) = 0;
++    virtual void deallocate(_Atomic_word* refcount, uchar* datastart, uchar* data) = 0;
+ };
+ 
+ /*!
+@@ -1985,7 +1985,7 @@ public:
+ 
+     //! pointer to the reference counter;
+     // when matrix points to user-allocated data, the pointer is NULL
+-    int* refcount;
++    _Atomic_word* refcount;
+ 
+     //! helper fields used in locateROI and adjustROI
+     uchar* datastart;
+@@ -3449,7 +3449,7 @@ public:
+     {
+         Hdr(int _dims, const int* _sizes, int _type);
+         void clear();
+-        int refcount;
++        _Atomic_word refcount;
+         int dims;
+         int valueOffset;
+         size_t nodeSize;
+diff --git a/modules/core/include/opencv2/core/gpumat.hpp b/modules/core/include/opencv2/core/gpumat.hpp
+index 68647d9..d488c27 100644
+--- a/modules/core/include/opencv2/core/gpumat.hpp
++++ b/modules/core/include/opencv2/core/gpumat.hpp
+@@ -301,7 +301,7 @@ namespace cv { namespace gpu
+ 
+         //! pointer to the reference counter;
+         // when GpuMatrix points to user-allocated data, the pointer is NULL
+-        int* refcount;
++        _Atomic_word* refcount;
+ 
+         //! helper fields used in locateROI and adjustROI
+         uchar* datastart;
+diff --git a/modules/core/include/opencv2/core/operations.hpp b/modules/core/include/opencv2/core/operations.hpp
+index 0ae51c6..a455502 100644
+--- a/modules/core/include/opencv2/core/operations.hpp
++++ b/modules/core/include/opencv2/core/operations.hpp
+@@ -2589,7 +2589,7 @@ template<typename _Tp> inline Ptr<_Tp>::Ptr(_Tp* _obj) : obj(_obj)
+ {
+     if(obj)
+     {
+-        refcount = (int*)fastMalloc(sizeof(*refcount));
++        refcount = (_Atomic_word*)fastMalloc(sizeof(*refcount));
+         *refcount = 1;
+     }
+     else
+@@ -2628,7 +2628,7 @@ template<typename _Tp> inline Ptr<_Tp>& Ptr<_Tp>::operator = (const Ptr<_Tp>& _p
+ {
+     if (this != &_ptr)
+     {
+-      int* _refcount = _ptr.refcount;
++      _Atomic_word* _refcount = _ptr.refcount;
+       if( _refcount )
+           CV_XADD(_refcount, 1);
+       release();
+diff --git a/modules/core/src/gpumat.cpp b/modules/core/src/gpumat.cpp
+index 9669191..0bd2568 100644
+--- a/modules/core/src/gpumat.cpp
++++ b/modules/core/src/gpumat.cpp
+@@ -716,7 +716,7 @@ void cv::gpu::GpuMat::create(int _rows, int _cols, int _type)
+         datastart = data = static_cast<uchar*>(devPtr);
+         dataend = data + nettosize;
+ 
+-        refcount = static_cast<int*>(fastMalloc(sizeof(*refcount)));
++        refcount = static_cast<_Atomic_word*>(fastMalloc(sizeof(*refcount)));
+         *refcount = 1;
+     }
+ }
+diff --git a/modules/core/src/matrix.cpp b/modules/core/src/matrix.cpp
+index 57abffc..7b840a0 100644
+--- a/modules/core/src/matrix.cpp
++++ b/modules/core/src/matrix.cpp
+@@ -213,7 +213,7 @@ void Mat::create(int d, const int* _sizes, int _type)
+         {
+             size_t totalsize = alignSize(step.p[0]*size.p[0], (int)sizeof(*refcount));
+             data = datastart = (uchar*)fastMalloc(totalsize + (int)sizeof(*refcount));
+-            refcount = (int*)(data + totalsize);
++            refcount = (_Atomic_word*)(data + totalsize);
+             *refcount = 1;
+         }
+         else
+@@ -228,7 +228,7 @@ void Mat::create(int d, const int* _sizes, int _type)
+                 allocator = 0;
+                 size_t totalSize = alignSize(step.p[0]*size.p[0], (int)sizeof(*refcount));
+                 data = datastart = (uchar*)fastMalloc(totalSize + (int)sizeof(*refcount));
+-                refcount = (int*)(data + totalSize);
++                refcount = (_Atomic_word*)(data + totalSize);
+                 *refcount = 1;
+             }
+ #else
+diff --git a/modules/core/src/system.cpp b/modules/core/src/system.cpp
+index f5a1af2..9a7b262 100644
+--- a/modules/core/src/system.cpp
++++ b/modules/core/src/system.cpp
+@@ -892,7 +892,7 @@ struct Mutex::Impl
+     void unlock() { LeaveCriticalSection(&cs); }
+ 
+     CRITICAL_SECTION cs;
+-    int refcount;
++    _Atomic_word refcount;
+ };
+ 
+ #ifndef __GNUC__
+@@ -920,7 +920,7 @@ struct Mutex::Impl
+     void unlock() { OSSpinLockUnlock(&sl); }
+ 
+     OSSpinLock sl;
+-    int refcount;
++    _Atomic_word refcount;
+ };
+ 
+ #elif defined __linux__ && !defined ANDROID && !defined __LINUXTHREADS_OLD__
+@@ -935,7 +935,7 @@ struct Mutex::Impl
+     void unlock() { pthread_spin_unlock(&sl); }
+ 
+     pthread_spinlock_t sl;
+-    int refcount;
++    _Atomic_word refcount;
+ };
+ 
+ #else
+@@ -950,7 +950,7 @@ struct Mutex::Impl
+     void unlock() { pthread_mutex_unlock(&sl); }
+ 
+     pthread_mutex_t sl;
+-    int refcount;
++    _Atomic_word refcount;
+ };
+ 
+ #endif
+diff --git a/modules/gpu/include/opencv2/gpu/gpu.hpp b/modules/gpu/include/opencv2/gpu/gpu.hpp
+index de16982..266fa2f 100644
+--- a/modules/gpu/include/opencv2/gpu/gpu.hpp
++++ b/modules/gpu/include/opencv2/gpu/gpu.hpp
+@@ -125,7 +125,7 @@ public:
+     size_t step;
+ 
+     uchar* data;
+-    int* refcount;
++    _Atomic_word* refcount;
+ 
+     uchar* datastart;
+     uchar* dataend;
+diff --git a/modules/ocl/include/opencv2/ocl/ocl.hpp b/modules/ocl/include/opencv2/ocl/ocl.hpp
+index e8eb3e8..5ea05fc 100644
+--- a/modules/ocl/include/opencv2/ocl/ocl.hpp
++++ b/modules/ocl/include/opencv2/ocl/ocl.hpp
+@@ -404,7 +404,7 @@ namespace cv
+ 
+             //! pointer to the reference counter;
+             // when oclMatrix points to user-allocated data, the pointer is NULL
+-            int *refcount;
++            _Atomic_word *refcount;
+ 
+             //! helper fields used in locateROI and adjustROI
+             //datastart and dataend are not used in current version
+diff --git a/modules/ocl/src/matrix_operations.cpp b/modules/ocl/src/matrix_operations.cpp
+index 331e432..c61dca4 100644
+--- a/modules/ocl/src/matrix_operations.cpp
++++ b/modules/ocl/src/matrix_operations.cpp
+@@ -591,7 +591,7 @@ void cv::ocl::oclMat::createEx(int _rows, int _cols, int _type, DevMemRW rw_type
+         datastart = data = (uchar *)dev_ptr;
+         dataend = data + nettosize;
+ 
+-        refcount = (int *)fastMalloc(sizeof(*refcount));
++        refcount = (_Atomic_word *)fastMalloc(sizeof(*refcount));
+         *refcount = 1;
+     }
+ }
+diff --git a/modules/python/src2/cv2.cpp b/modules/python/src2/cv2.cpp
+index 04cea39..40e5d43 100644
+--- a/modules/python/src2/cv2.cpp
++++ b/modules/python/src2/cv2.cpp
+@@ -157,12 +157,12 @@ static PyObject* failmsgp(const char *fmt, ...)
+ static size_t REFCOUNT_OFFSET = (size_t)&(((PyObject*)0)->ob_refcnt) +
+     (0x12345678 != *(const size_t*)"\x78\x56\x34\x12\0\0\0\0\0")*sizeof(int);
+ 
+-static inline PyObject* pyObjectFromRefcount(const int* refcount)
++static inline PyObject* pyObjectFromRefcount(const _Atomic_word* refcount)
+ {
+     return (PyObject*)((size_t)refcount - REFCOUNT_OFFSET);
+ }
+ 
+-static inline int* refcountFromPyObject(const PyObject* obj)
++static inline _Atomic_word* refcountFromPyObject(const PyObject* obj)
+ {
+     return (int*)((size_t)obj + REFCOUNT_OFFSET);
+ }
+@@ -173,7 +173,7 @@ public:
+     NumpyAllocator() {}
+     ~NumpyAllocator() {}
+ 
+-    void allocate(int dims, const int* sizes, int type, int*& refcount,
++    void allocate(int dims, const int* sizes, int type, _Atomic_word*& refcount,
+                   uchar*& datastart, uchar*& data, size_t* step)
+     {
+         PyEnsureGIL gil;
+@@ -206,7 +206,7 @@ public:
+         datastart = data = (uchar*)PyArray_DATA((PyArrayObject*) o);
+     }
+ 
+-    void deallocate(int* refcount, uchar*, uchar*)
++    void deallocate(_Atomic_word* refcount, uchar*, uchar*)
+     {
+         PyEnsureGIL gil;
+         if( !refcount )
+-- 
+2.10.2
+

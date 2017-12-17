@@ -1,0 +1,32 @@
+From c0287594239d5af2082cac20817f8e8b11a4b1b2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Beno=C3=AEt=20Allard?= <benoit.allard@greenbone.net>
+Date: Wed, 5 Apr 2017 14:18:09 +0200
+Subject: [PATCH] memdisk: Force ld output format to 32-bits
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+On toolchains where the default output is x86_64, we need to be
+consistent with the other .o files
+
+Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
+---
+ memdisk/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/memdisk/Makefile b/memdisk/Makefile
+index e6557d8..06613ff 100644
+--- a/memdisk/Makefile
++++ b/memdisk/Makefile
+@@ -78,7 +78,7 @@ memdisk16.o: memdisk16.asm
+ 	$(NASM) -f bin $(NASMOPT) $(NFLAGS) $(NINCLUDE) -o $@ -l $*.lst $<
+ 
+ memdisk_%.o: memdisk_%.bin
+-	$(LD) -r -b binary -o $@ $<
++	$(LD) --oformat elf32-i386 -r -b binary -o $@ $<
+ 
+ memdisk16.elf: $(OBJS16)
+ 	$(LD) -Ttext 0 -o $@ $^
+-- 
+2.7.4
+

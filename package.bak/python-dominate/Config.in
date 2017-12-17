@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_DOMINATE
+	bool "python-dominate"
+	help
+	  Dominate is a Python library for creating and manipulating
+	  HTML documents using an elegant DOM API.
+
+	  http://github.com/Knio/dominate/

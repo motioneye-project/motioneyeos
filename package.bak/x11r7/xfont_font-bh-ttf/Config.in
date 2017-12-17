@@ -1,0 +1,5 @@
+config BR2_PACKAGE_XFONT_FONT_BH_TTF
+	bool "font-bh-ttf"
+	select BR2_PACKAGE_XFONT_FONT_UTIL
+	help
+	  No description available

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XSETROOT
+	bool "xsetroot"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XDATA_XBITMAPS
+	help
+	  X.Org xsetroot application

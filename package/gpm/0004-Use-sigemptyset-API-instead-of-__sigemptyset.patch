@@ -1,0 +1,33 @@
+From fdc42770596e25749f7e2ce0ea97882177397167 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Sun, 25 Jun 2017 07:25:33 -0700
+Subject: [PATCH] Use sigemptyset API instead of __sigemptyset
+
+__sigemptyset has been removed from glibc public
+API headers in upcoming (2.26) release onwards
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+ src/prog/gpm-root.y | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/src/prog/gpm-root.y b/src/prog/gpm-root.y
+index 5126c65..76c896c 100644
+--- a/src/prog/gpm-root.y
++++ b/src/prog/gpm-root.y
+@@ -1196,11 +1196,7 @@ int main(int argc, char **argv)
+                                                         LOG_DAEMON : LOG_USER);
+    /* reap your zombies */
+    childaction.sa_handler=reap_children;
+-#if defined(__GLIBC__)
+-   __sigemptyset(&childaction.sa_mask);
+-#else /* __GLIBC__ */
+    sigemptyset(&childaction.sa_mask);
+-#endif /* __GLIBC__ */
+    childaction.sa_flags=0;
+    sigaction(SIGCHLD,&childaction,NULL);
+ 
+-- 
+2.14.2
+

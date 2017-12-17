@@ -1,0 +1,39 @@
+From 08c7ebec7c58fbc9c1cc0542863b34119c75c91f Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Thu, 15 Sep 2016 06:19:57 +0200
+Subject: [PATCH] Serial driver: add missing header to C and C++ serial driver
+
+Fixes:
+  http://autobuild.buildroot.net/results/cd7/cd76699188d2ee99b5f2d32b6a797de0d832a192/
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ src/c/connection/serial_ctrl_lin.c      | 1 +
+ src/cpp/connection/SerialDevice_lin.cpp | 1 +
+ 2 files changed, 2 insertions(+)
+
+Index: b/src/c/connection/serial_ctrl_lin.c
+===================================================================
+--- a/src/c/connection/serial_ctrl_lin.c
++++ b/src/c/connection/serial_ctrl_lin.c
+@@ -18,6 +18,7 @@
+ #include <errno.h>
+ #include <string.h>
+ 
++#include <sys/select.h>
+ //#include <ctype.h>
+ 
+ enum {
+Index: b/src/cpp/connection/SerialDevice_lin.cpp
+===================================================================
+--- a/src/cpp/connection/SerialDevice_lin.cpp
++++ b/src/cpp/connection/SerialDevice_lin.cpp
+@@ -13,7 +13,7 @@
+ #include <cerrno>
+ #include <cstring>
+ #include <cstdio>
+-
++#include <sys/select.h>
+ 
+ class RawSerialDevice
+ {

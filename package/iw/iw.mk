@@ -13,7 +13,7 @@ IW_DEPENDENCIES = host-pkgconf libnl
 IW_MAKE_OPTS = CC="$(TARGET_CC)" LD="$(TARGET_LD)" LDFLAGS="$(TARGET_LDFLAGS)"
 IW_MAKE_ENV = \
 	$(TARGET_MAKE_ENV) \
-	PKG_CONFIG="$(HOST_DIR)/usr/bin/pkg-config" \
+	PKG_CONFIG="$(HOST_DIR)/bin/pkg-config" \
 	GIT_DIR=$(IW_DIR)
 
 define IW_BUILD_CMDS

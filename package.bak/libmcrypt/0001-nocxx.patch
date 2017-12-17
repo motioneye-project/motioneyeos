@@ -1,0 +1,15 @@
+libmcrypt doesn't use C++ so remove the check.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+
+diff -Nura libmcrypt-2.5.8.orig/configure.in libmcrypt-2.5.8/configure.in
+--- libmcrypt-2.5.8.orig/configure.in	2013-01-07 12:20:44.332200669 -0300
++++ libmcrypt-2.5.8/configure.in	2013-01-07 12:20:50.405390565 -0300
+@@ -19,7 +19,6 @@
+ 
+ AC_PROG_MAKE_SET
+ 
+-AC_PROG_CXX
+ AC_PROG_CC
+ AC_PROG_CPP
+ AC_PROG_INSTALL

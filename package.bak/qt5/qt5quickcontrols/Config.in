@@ -1,0 +1,18 @@
+config BR2_PACKAGE_QT5QUICKCONTROLS
+	bool "qt5quickcontrols"
+	select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	help
+	  Qt is a cross-platform application and UI framework for
+	  developers using C++.
+
+	  The Qt Quick Controls module provides a set of controls
+	  that can be used to build complete interfaces in Qt Quick.
+
+	  http://doc.qt.io/qt-5/qtquickcontrols-index.html
+
+comment "qt5quickcontrols needs an OpenGL-capable backend"
+	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE

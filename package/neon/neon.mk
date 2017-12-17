@@ -6,7 +6,7 @@
 
 NEON_VERSION = 0.30.2
 NEON_SITE = http://www.webdav.org/neon
-NEON_LICENSE = LGPLv2+ (library), GPLv2+ (manual and tests)
+NEON_LICENSE = LGPL-2.0+ (library), GPL-2.0+ (manual and tests)
 NEON_LICENSE_FILES = src/COPYING.LIB test/COPYING README
 NEON_INSTALL_STAGING = YES
 NEON_CONF_OPTS = --without-gssapi --disable-rpath

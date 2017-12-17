@@ -1,0 +1,38 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[adding-board-support]]
+== Adding support for a particular board
+
+Buildroot contains basic configurations for several publicly available
+hardware boards, so that users of such a board can easily build a system
+that is known to work. You are welcome to add support for other boards
+to Buildroot too.
+
+To do so, you need to create a normal Buildroot configuration that
+builds a basic system for the hardware: toolchain, kernel, bootloader,
+filesystem and a simple BusyBox-only userspace. No specific package
+should be selected: the configuration should be as minimal as
+possible, and should only build a working basic BusyBox system for the
+target platform. You can of course use more complicated configurations
+for your internal projects, but the Buildroot project will only
+integrate basic board configurations. This is because package
+selections are highly application-specific.
+
+Once you have a known working configuration, run +make
+savedefconfig+. This will generate a minimal +defconfig+ file at the
+root of the Buildroot source tree. Move this file into the +configs/+
+directory, and rename it +<boardname>_defconfig+.
+
+It is recommended to use as much as possible upstream versions of the
+Linux kernel and bootloaders, and to use as much as possible default
+kernel and bootloader configurations. If they are incorrect for your
+board, or no default exists, we encourage you to send fixes to the
+corresponding upstream projects.
+
+However, in the mean time, you may want to store kernel or bootloader
+configuration or patches specific to your target platform. To do so,
+create a directory +board/<manufacturer>+ and a subdirectory
++board/<manufacturer>/<boardname>+. You can then store your patches
+and configurations in these directories, and reference them from the main
+Buildroot configuration. Refer to xref:customize[] for more details.

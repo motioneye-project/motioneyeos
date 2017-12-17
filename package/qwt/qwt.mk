@@ -16,7 +16,7 @@ QWT_DEPENDENCIES += qt5base
 QWT_QMAKE = $(QT5_QMAKE)
 endif
 
-QWT_LICENSE = LGPLv2.1 with exceptions
+QWT_LICENSE = LGPL-2.1 with exceptions
 QWT_LICENSE_FILES = COPYING
 
 QWT_CONFIG = 's%QWT_INSTALL_PREFIX.*/usr/local/.*%QWT_INSTALL_PREFIX = /usr%'
@@ -39,6 +39,12 @@ ifeq ($(BR2_PACKAGE_QWT_OPENGL),y)
 QWT_CONFIG += -e 's/^.*QWT_CONFIG.*QwtOpenGL.*$$/QWT_CONFIG += QwtOpenGL/'
 else
 QWT_CONFIG += -e 's/^.*QWT_CONFIG.*QwtOpenGL.*$$/\# QWT_CONFIG += QwtOpenGL/'
+endif
+
+ifeq ($(BR2_STATIC_LIBS),y)
+QWT_CONFIG += -e 's/^.*QWT_CONFIG.*QwtDll.*$$/\# QWT_CONFIG += QwtDll/'
+else
+QWT_CONFIG += -e 's/^.*QWT_CONFIG.*QwtDll.*$$/QWT_CONFIG += QwtDll/'
 endif
 
 define QWT_CONFIGURE_CMDS

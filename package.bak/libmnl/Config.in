@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBMNL
+	bool "libmnl"
+	help
+	  libmnl is a minimalistic user-space library oriented
+	  to Netlink developers.
+
+	  http://netfilter.org/projects/libmnl/

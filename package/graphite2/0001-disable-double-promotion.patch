@@ -5,14 +5,16 @@ so just disable it.
 
 Signed-off-by: Gustavo Zacarias <gustavo.zacarias@free-electrons.com>
 [Gustavo: update for 1.3.5]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Bernd: update for 1.3.10]
 
 diff -Nura graphite2-1.3.5.orig/src/CMakeLists.txt graphite2-1.3.5/src/CMakeLists.txt
 --- graphite2-1.3.5.orig/src/CMakeLists.txt	2016-02-15 11:46:45.941906112 -0300
 +++ graphite2-1.3.5/src/CMakeLists.txt	2016-02-15 11:46:54.237194222 -0300
 @@ -111,9 +111,6 @@
-         COMPILE_FLAGS   "-Wall -Wextra -Wno-unknown-pragmas -Wendif-labels -Wshadow -Wctor-dtor-privacy -Wnon-virtual-dtor -fno-rtti -fno-exceptions -fvisibility=hidden -fvisibility-inlines-hidden -fno-stack-protector"
-         LINK_FLAGS      "-nodefaultlibs ${GRAPHITE_LINK_FLAGS}" 
-         LINKER_LANGUAGE C)
+     if (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86|i.86")
+         add_definitions(-mfpmath=sse -msse2)
+     endif (${CMAKE_SYSTEM_PROCESSOR} MATCHES "x86|i.86")
 -    if (CMAKE_COMPILER_IS_GNUCXX)
 -        add_definitions(-Wdouble-promotion)
 -    endif (CMAKE_COMPILER_IS_GNUCXX)

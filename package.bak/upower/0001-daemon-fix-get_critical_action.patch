@@ -1,0 +1,34 @@
+From 28cee8e2845b094488c337c4ecfa84ada0b6be60 Mon Sep 17 00:00:00 2001
+From: Martin Pitt <martin.pitt@ubuntu.com>
+Date: Tue, 23 Feb 2016 09:51:07 +0100
+Subject: [PATCH] daemon: fix get_critical_action()
+
+Fix copy&paste error from e7e9156f that called the wrong _complete_ function
+for up_daemon_get_critical_action().
+
+https://bugs.freedesktop.org/show_bug.cgi?id=94262
+
+[rebase on 0.99.4]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/up-daemon.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/up-daemon.c b/src/up-daemon.c
+index be14cbe..e95f904 100644
+--- a/src/up-daemon.c
++++ b/src/up-daemon.c
+@@ -435,8 +435,8 @@ up_daemon_get_critical_action (UpExportedDaemon *skeleton,
+ 			       GDBusMethodInvocation *invocation,
+ 			       UpDaemon *daemon)
+ {
+-	up_exported_daemon_complete_get_display_device (skeleton, invocation,
+-							up_backend_get_critical_action (daemon->priv->backend));
++	up_exported_daemon_complete_get_critical_action (skeleton, invocation,
++							 up_backend_get_critical_action (daemon->priv->backend));
+ 	return TRUE;
+ }
+ 
+-- 
+2.9.3
+

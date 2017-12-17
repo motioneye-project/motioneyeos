@@ -10,10 +10,6 @@ config BR2_PACKAGE_TVHEADEND
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_DTV_SCAN_TABLES
-	select BR2_PACKAGE_FFMPEG_AVRESAMPLE if BR2_PACKAGE_FFMPEG
-	select BR2_PACKAGE_FFMPEG_SWSCALE if BR2_PACKAGE_FFMPEG
-	select BR2_PACKAGE_LIBVPX if BR2_PACKAGE_FFMPEG && !BR2_bfin # libvpx
-	select BR2_PACKAGE_X264 if BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_OPENSSL
 	help
@@ -28,3 +24,19 @@ config BR2_PACKAGE_TVHEADEND
 	      is available on port 9981.
 	    - if you want Avahi support, you'll need to enable:
 	          Avahi, D-Bus, libdaemon
+
+if BR2_PACKAGE_TVHEADEND
+
+config BR2_PACKAGE_TVHEADEND_TRANSCODING
+	bool "transcoding support"
+	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_AVRESAMPLE
+	select BR2_PACKAGE_FFMPEG_GPL # needed for x264 support
+	select BR2_PACKAGE_FFMPEG_SWSCALE
+	select BR2_PACKAGE_LIBVPX if !BR2_bfin # libvpx
+	select BR2_PACKAGE_X264
+	help
+	  Enable transcoding support.
+
+endif

@@ -1,0 +1,70 @@
+From 8a6ddd1cb2b55c234f1a97f7e5d996f24f46b6f8 Mon Sep 17 00:00:00 2001
+From: Felix Janda <felix.janda@posteo.de>
+Date: Sat, 16 May 2015 17:43:23 +0200
+Subject: [PATCH] ulogd: Use /dev/null as dummy logfile when logging to
+ syslog
+
+Fixes compilation error with musl libc:
+
+ulogd.c:86:13: error: storage size of 'syslog_dummy' isn't known
+ static FILE syslog_dummy;
+
+Signed-off-by: Felix Janda <felix.janda@posteo.de>
+[Rahul Bedarkar: Backported from https://git.netfilter.org/ulogd2/commit/?id=8a6ddd1cb2b55c234f1a97f7e5d996f24f46b6f8]
+Signed-off-by: Rahul Bedarkar <rahul.bedarkar@imgtec.com>
+---
+ src/ulogd.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/ulogd.c b/src/ulogd.c
+index e7cde39..958c30a 100644
+--- a/src/ulogd.c
++++ b/src/ulogd.c
+@@ -83,7 +83,7 @@ static char *ulogd_logfile = NULL;
+ static const char *ulogd_configfile = ULOGD_CONFIGFILE;
+ static const char *ulogd_pidfile = NULL;
+ static int ulogd_pidfile_fd = -1;
+-static FILE syslog_dummy;
++static FILE *syslog_dummy;
+ 
+ static int info_mode = 0;
+ 
+@@ -427,7 +427,7 @@ void __ulogd_log(int level, char *file, int line, const char *format, ...)
+ 	if (level < loglevel_ce.u.value)
+ 		return;
+ 
+-	if (logfile == &syslog_dummy) {
++	if (logfile == syslog_dummy) {
+ 		/* FIXME: this omits the 'file' string */
+ 		va_start(ap, format);
+ 		vsyslog(ulogd2syslog_level(level), format, ap);
+@@ -950,7 +950,7 @@ static int logfile_open(const char *name)
+ 		logfile = stdout;
+ 	} else if (!strcmp(name, "syslog")) {
+ 		openlog("ulogd", LOG_PID, LOG_DAEMON);
+-		logfile = &syslog_dummy;
++		logfile = syslog_dummy = fopen("/dev/null", "w");
+ 	} else {
+ 		logfile = fopen(ulogd_logfile, "a");
+ 		if (!logfile) {
+@@ -1240,7 +1240,7 @@ static void sigterm_handler(int signal)
+ 	unload_plugins();
+ #endif
+ 
+-	if (logfile != NULL  && logfile != stdout && logfile != &syslog_dummy) {
++	if (logfile != NULL  && logfile != stdout) {
+ 		fclose(logfile);
+ 		logfile = NULL;
+ 	}
+@@ -1262,7 +1262,7 @@ static void signal_handler(int signal)
+ 	switch (signal) {
+ 	case SIGHUP:
+ 		/* reopen logfile */
+-		if (logfile != stdout && logfile != &syslog_dummy) {
++		if (logfile != stdout && logfile != syslog_dummy) {
+ 			fclose(logfile);
+ 			logfile = fopen(ulogd_logfile, "a");
+  			if (!logfile) {
+-- 
+2.6.2
+

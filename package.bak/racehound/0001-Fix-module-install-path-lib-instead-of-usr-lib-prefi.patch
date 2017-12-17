@@ -1,0 +1,26 @@
+From 4f8ed39ddaf17c7dd4ddbdb88e67097f00c98173 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 16 Jul 2015 23:11:25 +0200
+Subject: [PATCH] Fix module install path (/lib instead of /usr/lib prefix)
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ cmake/modules/path_prefixes.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/modules/path_prefixes.cmake b/cmake/modules/path_prefixes.cmake
+index 3cb1fe2..9dc50a4 100644
+--- a/cmake/modules/path_prefixes.cmake
++++ b/cmake/modules/path_prefixes.cmake
+@@ -113,7 +113,7 @@ set(RH_INSTALL_PREFIX_DOC
+ # Set derivative prefixes
+ 
+ # additional, 1
+-set(RH_INSTALL_PREFIX_KMODULE "${RH_INSTALL_PREFIX_LIB}/modules/${KBUILD_VERSION_STRING}/misc")
++set(RH_INSTALL_PREFIX_KMODULE "/lib/modules/${KBUILD_VERSION_STRING}/misc")
+ # Another variant
+ #"${RH_INSTALL_PREFIX_LIB}/modules/${KBUILD_VERSION_STRING}/extra")
+ # additional, 2
+-- 
+2.1.4
+

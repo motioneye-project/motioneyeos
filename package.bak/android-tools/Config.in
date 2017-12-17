@@ -1,0 +1,82 @@
+config BR2_PACKAGE_ANDROID_TOOLS
+	bool "android-tools"
+	# Technically, fastboot could build on noMMU systems. But
+	# since we need at least one of the three sub-options enabled,
+	# and adb/adbd can't be built on noMMU systems, and fastboot
+	# has some complicated dependencies, we simply make the whole
+	# package not available on noMMU platforms.
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_ANDROID_TOOLS_ADBD if \
+	      !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT && \
+	      !BR2_PACKAGE_ANDROID_TOOLS_ADB
+	help
+	  This package contains the fastboot and adb utilities, that
+	  can be used to interact with target devices using of these
+	  protocols.
+
+if BR2_PACKAGE_ANDROID_TOOLS
+
+# We need kernel headers that support the __SANE_USERSPACE_TYPES__
+# mechanism for 64 bits architectures, so that u64 gets defined as
+# "unsigned long long" and not "unsigned long". We know that >= 3.16
+# is needed for MIPS64 (kernel commit
+# f4b3aa7cd9d32407670e67238c5ee752bb98f481) and >= 3.10 is needed for
+# PowerPC64 (kernel commit
+# 2c9c6ce0199a4d252e20c531cfdc9d24e39235c0). Without this, the build
+# fails with a bad redefinition of u64 (the android-tools fastboot
+# code defines it as "unsigned long long").
+config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT_GOOD_KERNEL_HEADERS
+	bool
+	default y if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 && (BR2_powerpc64 || BR2_powerpc64le)
+	default y if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16 && (BR2_mips64 || BR2_mips64el)
+	default y if !BR2_powerpc64 && !BR2_powerpc64le && !BR2_mips64 && !BR2_mips64el
+
+config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
+	bool "fastboot"
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_ZLIB
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libselinux
+	depends on !BR2_STATIC_LIBS # libselinux
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libselinux
+	depends on !BR2_arc # libselinux
+	depends on BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT_GOOD_KERNEL_HEADERS
+	help
+	  This option will build and install the fastboot utility for
+	  the target, which can be used to reflash other target devices
+	  implementing the fastboot protocol.
+
+comment "fastboot needs a glibc toolchain w/ threads, dynamic library"
+	depends on !BR2_arc
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_USES_GLIBC
+
+comment "fastboot needs headers >= 3.10 (PowerPC64), headers >= 3.16 (MIPS64)"
+	depends on !BR2_arc
+	depends on !BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT_GOOD_KERNEL_HEADERS
+
+config BR2_PACKAGE_ANDROID_TOOLS_ADB
+	bool "adb"
+	depends on BR2_USE_MMU # uses fork()
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	help
+	  This option will build and install the adb utility for the
+	  target, which can be used to interact with other target
+	  devices implementing the ADB protocol.
+
+config BR2_PACKAGE_ANDROID_TOOLS_ADBD
+	bool "adbd"
+	depends on BR2_USE_MMU # uses fork()
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_ZLIB
+	help
+	  This option will build and install the adbd utility for the
+	  target, which can be used to interact with a host machine
+	  implementing the ADB protocol.
+
+endif
+
+comment "android-tools needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,45 @@
+From 91c3b111e45dd476aba057836b1b618eacf90f3f Mon Sep 17 00:00:00 2001
+From: Julien Corjon <corjon.j@ecagroup.com>
+Date: Tue, 21 Jul 2015 09:58:14 +0200
+Subject: [PATCH] eglfs - fix rasp-pi header inclusion
+
+eglplateform.h include headers for low level instruction and fail on brcm
+headers inclusion
+  For the brcm presence test we use egl pkg-config file
+  For the eglfs-plugin compilation we use the egl configuration
+
+Upstream-Status: https://bugreports.qt.io/browse/QTBUG-47339
+Signed-off-by: Julien Corjon <corjon.j@ecagroup.com>
+---
+ config.tests/qpa/eglfs-brcm/eglfs-brcm.pro   | 2 ++
+ src/plugins/platforms/eglfs/eglfs-plugin.pro | 1 +
+ 2 files changed, 3 insertions(+)
+
+diff --git a/config.tests/qpa/eglfs-brcm/eglfs-brcm.pro b/config.tests/qpa/eglfs-brcm/eglfs-brcm.pro
+index ce16a3a..192a8ad 100644
+--- a/config.tests/qpa/eglfs-brcm/eglfs-brcm.pro
++++ b/config.tests/qpa/eglfs-brcm/eglfs-brcm.pro
+@@ -1,6 +1,8 @@
+ SOURCES = eglfs-brcm.cpp
+ 
+ CONFIG -= qt
++CONFIG += link_pkgconfig
++PKGCONFIG += egl
+ 
+ INCLUDEPATH += $$QMAKE_INCDIR_EGL
+ 
+diff --git a/src/plugins/platforms/eglfs/eglfs-plugin.pro b/src/plugins/platforms/eglfs/eglfs-plugin.pro
+index 0f493fd..8479496 100644
+--- a/src/plugins/platforms/eglfs/eglfs-plugin.pro
++++ b/src/plugins/platforms/eglfs/eglfs-plugin.pro
+@@ -6,6 +6,7 @@ PLUGIN_CLASS_NAME = QEglFSIntegrationPlugin
+ load(qt_plugin)
+ 
+ QT += platformsupport-private eglfs_device_lib-private
++CONFIG += egl
+ 
+ SOURCES += $$PWD/qeglfsmain.cpp
+ 
+-- 
+2.1.0
+

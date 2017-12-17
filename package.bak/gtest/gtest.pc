@@ -1,0 +1,11 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${prefix}/lib/
+includedir=${prefix}/include
+
+Name: gtest
+Description: Google C++ Testing Framework
+Version: 1.7.0
+Libs: -L${libdir} -lgtest
+Libs.private: -lpthread
+Cflags: -I${includedir}

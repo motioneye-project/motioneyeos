@@ -1,0 +1,33 @@
+From e0dad4bb237f1155e920c30c6fd3412e96a3e84d Mon Sep 17 00:00:00 2001
+From: Olivier Schonken <olivier.schonken@gmail.com>
+Date: Sun, 24 Jan 2016 17:14:21 +0200
+Subject: [PATCH 1/1] print-olympus.c: fix endianness detection
+
+The __LITTLE_ENDIAN__ and __BIG_ENDIAN__ macros are not a reliable way to
+detect endianness. Instead, rely on __BYTE_ORDER like we do in the rest of
+the code.
+
+Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
+---
+ src/main/print-olympus.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/main/print-olympus.c b/src/main/print-olympus.c
+index 42c4897..8b2aa80 100644
+--- a/src/main/print-olympus.c
++++ b/src/main/print-olympus.c
+@@ -4901,9 +4901,9 @@ dyesub_do_print(stp_vars_t *v, stp_image_t *image)
+   }
+ 
+   if (pv.bytes_per_ink_channel > 1) {
+-#if defined(__LITTLE_ENDIAN) || defined(__LITTLE_ENDIAN__)
++#if (__BYTE_ORDER == __LITTLE_ENDIAN)
+     pv.byteswap = dyesub_feature(caps, DYESUB_FEATURE_BIGENDIAN);
+-#elif defined (__BIG_ENDIAN) || defined(__BIG_ENDIAN__)
++#elif (__BYTE_ORDER == __BIG_ENDIAN)
+     pv.byteswap = !dyesub_feature(caps, DYESUB_FEATURE_BIGENDIAN);
+ #else
+ #error "Unable to determine endianness, aborting compilation!"
+-- 
+1.9.1
+

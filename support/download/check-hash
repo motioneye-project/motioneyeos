@@ -42,8 +42,9 @@ if [ ! -f "${h_file}" ]; then
 fi
 
 # Check one hash for a file
-# $1: known hash
-# $2: file (full path)
+# $1: algo hash
+# $2: known hash
+# $3: file (full path)
 check_one_hash() {
     _h="${1}"
     _known="${2}"

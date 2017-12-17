@@ -1,0 +1,59 @@
+From dba12f15baad06cc7e17a275201cc022bb6c84f7 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:29:06 +0100
+Subject: [PATCH] Add an option to disable the curses module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile.pre.in | 6 +++++-
+ configure.ac    | 9 +++++++++
+ 2 files changed, 14 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index f7f025f..bd537d9 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1050,7 +1050,7 @@ LIBSUBDIRS=	site-packages \
+ 		multiprocessing multiprocessing/dummy \
+ 		unittest \
+ 		lib-old \
+-		curses $(MACHDEPS)
++		$(MACHDEPS)
+ 
+ TESTSUBDIRS = test test/audiodata test/capath test/data \
+ 	test/cjkencodings test/decimaltestdata test/xmltestdata \
+@@ -1092,6 +1092,10 @@ TESTSUBDIRS += lib-tk/test lib-tk/test/test_tkinter	\
+ 	      lib-tk/test/test_ttk
+ endif
+ 
++ifeq (@CURSES@,yes)
++LIBSUBDIRS += curses
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+diff --git a/configure.ac b/configure.ac
+index d0f032c..ab081bc 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2823,6 +2823,15 @@ if test "$TK" = "no"; then
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
+ fi
+ 
++AC_SUBST(CURSES)
++AC_ARG_ENABLE(curses,
++	AS_HELP_STRING([--disable-curses], [disable curses]),
++	[ CURSES="${enableval}" ], [ CURSES=yes ])
++
++if test "$CURSES" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _curses _curses_panel"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+-- 
+2.7.4
+

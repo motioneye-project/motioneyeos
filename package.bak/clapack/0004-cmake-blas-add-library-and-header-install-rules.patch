@@ -1,0 +1,23 @@
+From 675111e8ffc179276a7e4950fe4a4eda4d38a703 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Sat, 11 Jan 2014 21:48:32 +0100
+Subject: [PATCH 4/6] cmake: blas: add library and header install rules
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ BLAS/SRC/CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/BLAS/SRC/CMakeLists.txt b/BLAS/SRC/CMakeLists.txt
+index d1caff8..a5de5a1 100644
+--- a/BLAS/SRC/CMakeLists.txt
++++ b/BLAS/SRC/CMakeLists.txt
+@@ -141,3 +141,5 @@ if(UNIX)
+   target_link_libraries(blas m)
+ endif()
+ target_link_libraries(blas f2c)
++install(TARGETS blas LIBRARY DESTINATION lib ARCHIVE DESTINATION lib)
++install(FILES "${CLAPACK_SOURCE_DIR}/INCLUDE/blaswrap.h" DESTINATION include)
+-- 
+1.8.5.3
+

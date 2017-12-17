@@ -1,0 +1,10 @@
+config BR2_PACKAGE_FCGIWRAP
+	bool "fcgiwrap"
+	depends on BR2_USE_MMU # libfcgi
+	select BR2_PACKAGE_LIBFCGI
+	help
+	  fcgiwrap is a simple server for running CGI applications
+	  over FastCGI. It hopes to provide clean CGI support to Nginx
+	  (and other web servers that may need it).
+
+	  https://github.com/gnosek/fcgiwrap

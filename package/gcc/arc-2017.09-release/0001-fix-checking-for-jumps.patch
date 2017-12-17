@@ -1,0 +1,49 @@
+From c2694d3739d90ea3350b42252638b604a2c122b7 Mon Sep 17 00:00:00 2001
+From: Claudiu Zissulescu <claziss@gmail.com>
+Date: Tue, 7 Nov 2017 20:16:41 +0200
+Subject: [PATCH] [FIX][ZOL] fix checking for jumps
+
+Signed-off-by: Evgeniy Didin <didin@synopsys.com>
+---
+ gcc/config/arc/arc.c                  |  3 ++-
+ gcc/testsuite/gcc.target/arc/loop-4.c | 14 ++++++++++++++
+ 2 files changed, 16 insertions(+), 1 deletion(-)
+ create mode 100644 gcc/testsuite/gcc.target/arc/loop-4.c
+
+diff --git a/gcc/config/arc/arc.c b/gcc/config/arc/arc.c
+index 22eeb34a371..5d367499d03 100644
+--- a/gcc/config/arc/arc.c
++++ b/gcc/config/arc/arc.c
+@@ -7505,7 +7505,8 @@ hwloop_optimize (hwloop_info loop)
+       && INSN_P (last_insn)
+       && (JUMP_P (last_insn) || CALL_P (last_insn)
+ 	  || GET_CODE (PATTERN (last_insn)) == SEQUENCE
+-	  || JUMP_P (prev_active_insn (last_insn))
++	  || (prev_active_insn (last_insn)
++	      && JUMP_P (prev_active_insn (last_insn)))
+ 	  /* At this stage we can have (insn (clobber (mem:BLK
+ 	     (reg)))) instructions, ignpre them.  */
+ 	  || (GET_CODE (PATTERN (last_insn)) != CLOBBER
+diff --git a/gcc/testsuite/gcc.target/arc/loop-4.c b/gcc/testsuite/gcc.target/arc/loop-4.c
+new file mode 100644
+index 00000000000..99a93a74d1e
+--- /dev/null
++++ b/gcc/testsuite/gcc.target/arc/loop-4.c
+@@ -0,0 +1,14 @@
++/* { dg-do assemble } */
++/* { dg-do compile } */
++/* { dg-options "-Os" } */
++
++
++void fn1(void *p1, int p2, int p3)
++{
++  char *d = p1;
++  do
++    *d++ = p2;
++  while (--p3);
++}
++
++/* { dg-final { scan-assembler "lp_count" } } */
+-- 
+2.11.0
+

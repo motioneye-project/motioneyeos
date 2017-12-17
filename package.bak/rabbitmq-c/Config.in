@@ -1,0 +1,11 @@
+config BR2_PACKAGE_RABBITMQ_C
+	bool "rabbitmq-c"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  This is a C-language AMQP client library for use with v2.0+
+	  of the RabbitMQ broker.
+
+	  https://github.com/alanxz/rabbitmq-c
+
+comment "rabbitmq-c needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_IO_HTML
+	bool "perl-io-html"
+	help
+	  Perl module that opens a file and performs automatic charset detection
+
+	  https://github.com/madsen/io-html

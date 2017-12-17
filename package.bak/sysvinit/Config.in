@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SYSVINIT
+	bool "sysvinit"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INIT_SYSV
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  /sbin/init - parent of all processes
+
+	  http://savannah.nongnu.org/projects/sysvinit

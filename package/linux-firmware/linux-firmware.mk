@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUX_FIRMWARE_VERSION = 6d3bc8886517d171068fd1263176b8b5c51df204
+LINUX_FIRMWARE_VERSION = a3a26af24e29c818ef9b5661856018e21a5c49fb
 LINUX_FIRMWARE_SITE = http://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 LINUX_FIRMWARE_SITE_METHOD = git
 
@@ -30,6 +30,18 @@ LINUX_FIRMWARE_FILES += intel/ibt-*
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ibt_firmware
 endif
 
+# Qualcomm Atheros Rome 6174A Bluetooth
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174A_BT),y)
+LINUX_FIRMWARE_FILES += qca/rampatch_usb_00000302.bin qca/nvm_usb_00000302.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.qcom
+endif
+
+# Freescale i.MX SDMA
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_IMX_SDMA),y)
+LINUX_FIRMWARE_FILES += imx/sdma/sdma-imx6q.bin imx/sdma/sdma-imx7d.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.sdma_firmware
+endif
+
 # rt2501/rt61
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61),y)
 LINUX_FIRMWARE_FILES += rt2561.bin rt2561s.bin rt2661.bin
@@ -53,11 +65,11 @@ endif
 # rtl81xx
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX),y)
 LINUX_FIRMWARE_FILES += \
-	rtlwifi/rtl8192cfw.bin rtlwifi/rtl8192cfwU.bin 		\
-	rtlwifi/rtl8192cfwU_B.bin rtlwifi/rtl8192cufw.bin	\
-	rtlwifi/rtl8192defw.bin rtlwifi/rtl8192sefw.bin		\
-	rtlwifi/rtl8188efw.bin rtlwifi/rtl8188eufw.bin		\
-	rtlwifi/rtl8192cufw_A.bin				\
+	rtlwifi/rtl8192cfw.bin rtlwifi/rtl8192cfwU.bin \
+	rtlwifi/rtl8192cfwU_B.bin rtlwifi/rtl8192cufw.bin \
+	rtlwifi/rtl8192defw.bin rtlwifi/rtl8192sefw.bin \
+	rtlwifi/rtl8188efw.bin rtlwifi/rtl8188eufw.bin \
+	rtlwifi/rtl8192cufw_A.bin \
 	rtlwifi/rtl8192cufw_B.bin rtlwifi/rtl8192cufw_TMSC.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.rtlwifi_firmware.txt
 endif
@@ -104,7 +116,7 @@ endif
 
 # ar9170
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9170),y)
-LINUX_FIRMWARE_FILES += ar9170-1.fw ar9170-2.fw
+LINUX_FIRMWARE_FILES += ar9170-1.fw ar9170-2.fw carl9170-1.fw
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware
 endif
 
@@ -188,23 +200,29 @@ LINUX_FIRMWARE_FILES += mt7601u.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ralink_a_mediatek_company_firmware
 endif
 
+# qca6174
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174),y)
+LINUX_FIRMWARE_FILES += ath10k/QCA6174
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.QualcommAtheros_ath10k
+endif
+
 # wl127x
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X),y)
 # wl1271-nvs.bin is a symlink to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
-	ti-connectivity/wl1271-fw-2.bin				\
-	ti-connectivity/wl1271-fw-ap.bin			\
-	ti-connectivity/wl1271-fw.bin				\
-	ti-connectivity/wl1271-nvs.bin				\
-	ti-connectivity/wl127x-fw-3.bin				\
-	ti-connectivity/wl127x-fw-plt-3.bin			\
-	ti-connectivity/wl127x-nvs.bin				\
-	ti-connectivity/wl127x-fw-4-mr.bin			\
-	ti-connectivity/wl127x-fw-4-plt.bin			\
-	ti-connectivity/wl127x-fw-4-sr.bin			\
-	ti-connectivity/wl127x-fw-5-mr.bin			\
-	ti-connectivity/wl127x-fw-5-plt.bin			\
-	ti-connectivity/wl127x-fw-5-sr.bin			\
+	ti-connectivity/wl1271-fw-2.bin \
+	ti-connectivity/wl1271-fw-ap.bin \
+	ti-connectivity/wl1271-fw.bin \
+	ti-connectivity/wl1271-nvs.bin \
+	ti-connectivity/wl127x-fw-3.bin \
+	ti-connectivity/wl127x-fw-plt-3.bin \
+	ti-connectivity/wl127x-nvs.bin \
+	ti-connectivity/wl127x-fw-4-mr.bin \
+	ti-connectivity/wl127x-fw-4-plt.bin \
+	ti-connectivity/wl127x-fw-4-sr.bin \
+	ti-connectivity/wl127x-fw-5-mr.bin \
+	ti-connectivity/wl127x-fw-5-plt.bin \
+	ti-connectivity/wl127x-fw-5-sr.bin \
 	ti-connectivity/TIInit_7.2.31.bts
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
@@ -213,20 +231,20 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X),y)
 # wl1271-nvs.bin and wl12xx-nvs.bin are symlinks to wl127x-nvs.bin
 LINUX_FIRMWARE_FILES += \
-	ti-connectivity/wl128x-fw-3.bin				\
-	ti-connectivity/wl128x-fw-ap.bin			\
-	ti-connectivity/wl128x-fw-plt-3.bin			\
-	ti-connectivity/wl128x-fw.bin				\
-	ti-connectivity/wl1271-nvs.bin				\
-	ti-connectivity/wl128x-nvs.bin				\
-	ti-connectivity/wl12xx-nvs.bin				\
-	ti-connectivity/wl127x-nvs.bin				\
-	ti-connectivity/wl128x-fw-4-mr.bin			\
-	ti-connectivity/wl128x-fw-4-plt.bin			\
-	ti-connectivity/wl128x-fw-4-sr.bin			\
-	ti-connectivity/wl128x-fw-5-mr.bin			\
-	ti-connectivity/wl128x-fw-5-plt.bin			\
-	ti-connectivity/wl128x-fw-5-sr.bin			\
+	ti-connectivity/wl128x-fw-3.bin \
+	ti-connectivity/wl128x-fw-ap.bin \
+	ti-connectivity/wl128x-fw-plt-3.bin \
+	ti-connectivity/wl128x-fw.bin \
+	ti-connectivity/wl1271-nvs.bin \
+	ti-connectivity/wl128x-nvs.bin \
+	ti-connectivity/wl12xx-nvs.bin \
+	ti-connectivity/wl127x-nvs.bin \
+	ti-connectivity/wl128x-fw-4-mr.bin \
+	ti-connectivity/wl128x-fw-4-plt.bin \
+	ti-connectivity/wl128x-fw-4-sr.bin \
+	ti-connectivity/wl128x-fw-5-mr.bin \
+	ti-connectivity/wl128x-fw-5-plt.bin \
+	ti-connectivity/wl128x-fw-5-sr.bin \
 	ti-connectivity/TIInit_7.2.31.bts
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.ti-connectivity
 endif
@@ -306,14 +324,14 @@ LINUX_FIRMWARE_FILES += bnx2x/*
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4),y)
-# cxgb4/t4fw.bin is a symlink to cxgb4/t4fw-1.14.4.0.bin
-LINUX_FIRMWARE_FILES += cxgb4/t4fw-1.14.4.0.bin cxgb4/t4fw.bin
+# cxgb4/t4fw.bin is a symlink to cxgb4/t4fw-1.16.26.0.bin
+LINUX_FIRMWARE_FILES += cxgb4/t4fw-1.16.26.0.bin cxgb4/t4fw.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.chelsio_firmware
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5),y)
-# cxgb4/t5fw.bin is a symlink to cxgb4/t5fw-1.14.4.0.bin
-LINUX_FIRMWARE_FILES += cxgb4/t5fw-1.14.4.0.bin cxgb4/t5fw.bin
+# cxgb4/t5fw.bin is a symlink to cxgb4/t5fw-1.16.26.0.bin
+LINUX_FIRMWARE_FILES += cxgb4/t5fw-1.16.26.0.bin cxgb4/t5fw.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.chelsio_firmware
 endif
 
@@ -394,6 +412,14 @@ LINUX_FIRMWARE_FILES += \
 	brcm/brcmfmac43602-pcie.ap.bin brcm/brcmfmac43602-pcie.bin \
 	brcm/brcmfmac43430-sdio.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.broadcom_bcm43xx
+endif
+
+# ql2xxx
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX),y)
+LINUX_FIRMWARE_FILES += \
+	ql2100_fw.bin ql2200_fw.bin ql2300_fw.bin ql2322_fw.bin \
+	ql2400_fw.bin ql2500_fw.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.qla2xxx
 endif
 
 ifneq ($(LINUX_FIRMWARE_FILES),)

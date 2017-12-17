@@ -1,0 +1,7 @@
+config BR2_PACKAGE_BRIDGE_UTILS
+	bool "bridge-utils"
+	help
+	  Manage ethernet bridging; a way to connect networks together to
+	  form a larger network.
+
+	  https://git.kernel.org/cgit/linux/kernel/git/shemminger/bridge-utils.git/

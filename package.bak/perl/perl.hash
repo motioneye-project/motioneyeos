@@ -1,0 +1,7 @@
+# Hashes from: http://www.cpan.org/src/5.0/perl-5.24.1.tar.xz.{md5,sha1,sha256}.txt
+md5    af6a84c7c3e2b8b269c105a5db2f6d53                                 perl-5.24.1.tar.xz
+sha1   5bec25d8821b81a5939ee220997f4c8ab1c13e31                         perl-5.24.1.tar.xz
+sha256 03a77bac4505c270f1890ece75afc7d4b555090b41aa41ea478747e23b2afb3f perl-5.24.1.tar.xz
+
+# Hashes from: http://github.com/arsv/perl-cross/releases/download/1.1.3/perl-cross-1.1.3.hash
+sha256 181b24ff71815fb2c8065e6ea139d106796eee0964aebfd8081f0b7f69e0696d perl-cross-1.1.3.tar.gz

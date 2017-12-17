@@ -1,0 +1,326 @@
+config BR2_PACKAGE_KODI_ARCH_SUPPORTS
+	bool
+	depends on BR2_USE_MMU # libcdio, and others
+	default y if (BR2_arm || (BR2_mipsel && BR2_TOOLCHAIN_USES_GLIBC) || BR2_i386 || BR2_x86_64) \
+		&& BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS \
+		&& BR2_TOOLCHAIN_HAS_SYNC_8
+
+comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library, gcc >= 4.7, host gcc >= 4.6"
+	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !BR2_HOST_GCC_AT_LEAST_4_6 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| BR2_TOOLCHAIN_USES_MUSL \
+		|| !BR2_PACKAGE_PYTHON \
+		|| BR2_PACKAGE_PYTHON_PYC_ONLY
+
+config BR2_PACKAGE_KODI_EGL_GLES
+	bool
+	default y
+	depends on BR2_PACKAGE_HAS_LIBEGL
+	depends on BR2_PACKAGE_HAS_LIBGLES
+	depends on !BR2_PACKAGE_KODI_GL # prefer GL if available
+
+config BR2_PACKAGE_KODI_GL
+	bool
+	default y
+	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on !BR2_arm # kodi needs egl/gles on arm
+
+comment "kodi needs an OpenGL or an openGL ES and EGL backend"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_PACKAGE_KODI_GL && !BR2_PACKAGE_KODI_EGL_GLES
+
+comment "kodi requires an OpenGL ES and EGL backend"
+	depends on BR2_arm
+	depends on !BR2_PACKAGE_KODI_EGL_GLES
+
+menuconfig BR2_PACKAGE_KODI
+	bool "kodi"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_HOST_GCC_AT_LEAST_4_6
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
+	depends on BR2_USE_WCHAR
+	depends on !BR2_STATIC_LIBS # libsquish, and others
+	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_PYTHON
+	depends on !BR2_PACKAGE_PYTHON_PYC_ONLY
+	select BR2_NEEDS_HOST_JAVA
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_THREAD
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_GPL
+	select BR2_PACKAGE_FFMPEG_POSTPROC # postproc depends on GPL
+	select BR2_PACKAGE_FFMPEG_SWSCALE
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_GIFLIB
+	select BR2_PACKAGE_JASPER
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBASS
+	select BR2_PACKAGE_LIBCDIO
+	select BR2_PACKAGE_LIBCROSSGUID
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBDCADEC
+	select BR2_PACKAGE_LIBFRIBIDI
+	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_LIBMPEG2
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBPLIST
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBSAMPLERATE
+	select BR2_PACKAGE_LIBSQUISH
+	select BR2_PACKAGE_LIBVORBIS
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_LIBXSLT
+	select BR2_PACKAGE_LZO
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_PCRE_UCP
+	select BR2_PACKAGE_PYTHON_BSDDB
+	select BR2_PACKAGE_PYTHON_BZIP2
+	select BR2_PACKAGE_PYTHON_CURSES
+	select BR2_PACKAGE_PYTHON_PYEXPAT
+	select BR2_PACKAGE_PYTHON_READLINE
+	select BR2_PACKAGE_PYTHON_SQLITE
+	select BR2_PACKAGE_PYTHON_SSL
+	select BR2_PACKAGE_PYTHON_UNICODEDATA
+	select BR2_PACKAGE_PYTHON_ZLIB
+	select BR2_PACKAGE_READLINE
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_TAGLIB
+	select BR2_PACKAGE_TIFF
+	select BR2_PACKAGE_TINYXML
+	select BR2_PACKAGE_LIBDRM if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_YAJL
+	select BR2_PACKAGE_ZLIB
+	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC # runtime UTF conversion support
+	help
+	  Kodi is an award-winning free and open source (GPL) software
+	  media player and entertainment hub for digital media.
+
+	  http://kodi.tv
+
+if BR2_PACKAGE_KODI
+
+source "package/kodi-platform/Config.in"
+
+config BR2_PACKAGE_KODI_ALSA_LIB
+	bool "alsa"
+	select BR2_PACKAGE_ALSA_LIB
+	help
+	  Enable alsa support.
+
+config BR2_PACKAGE_KODI_AVAHI
+	bool "avahi"
+	select BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_AVAHI_DAEMON
+	help
+	  Enable Avahi support.
+	  Select this if you want Kodi to support Bonjour protocol.
+
+config BR2_PACKAGE_KODI_DBUS
+	bool "dbus"
+	select BR2_PACKAGE_DBUS
+	help
+	  Enable D-Bus support
+
+config BR2_PACKAGE_KODI_LIBBLURAY
+	bool "blu-ray"
+	select BR2_PACKAGE_LIBBLURAY
+	help
+	  Enable Blu-ray input support.
+	  Select this if you want to play back Blu-ray content.
+
+config BR2_PACKAGE_KODI_LIBCEC
+	bool "hdmi cec"
+	depends on BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_LIBCEC
+	help
+	  Enable CEC (Consumer Electronics Control) support.
+	  Select this if you want Kodi to support HDMI CEC.
+
+comment "hdmi cec support needs udev /dev management"
+	depends on !BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_KODI_LIRC
+	bool "lirc"
+	help
+	  Enable lirc support
+
+config BR2_PACKAGE_KODI_LIBMICROHTTPD
+	bool "web server"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, libmicrohttpd
+	select BR2_PACKAGE_LIBMICROHTTPD
+	help
+	  Enable webserver feature
+
+config BR2_PACKAGE_KODI_LIBNFS
+	bool "nfs"
+	# libnfs -> libtirpc
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC || BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBNFS
+	help
+	  Enable NFS server support.
+
+comment "nfs support needs a toolchain w/ threads support"
+	depends on !(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)
+
+config BR2_PACKAGE_KODI_MYSQL
+	bool "mysql"
+	select BR2_PACKAGE_MYSQL
+	help
+	  Enable MySQL support
+
+config BR2_PACKAGE_KODI_NONFREE
+	bool "nonfree components"
+	help
+	  Enable components with non-free licenses. This option
+	  currently only controls support for RAR archives.
+
+config BR2_PACKAGE_KODI_RTMPDUMP
+	bool "rtmp"
+	select BR2_PACKAGE_RTMPDUMP
+	help
+	  Enable RTMP input support.
+	  Select this if you want to play back rtmp stream.
+
+config BR2_PACKAGE_KODI_LIBSHAIRPLAY
+	bool "shairport"
+	select BR2_PACKAGE_LIBSHAIRPLAY
+	help
+	  Enable Shairport support.
+	  Select this if you want to stream content from an Apple device.
+
+config BR2_PACKAGE_KODI_LIBSMBCLIENT
+	bool "samba"
+	depends on BR2_PACKAGE_SAMBA4
+	help
+	  Enable Samba support
+
+config BR2_PACKAGE_KODI_LIBSSH
+	bool "ssh"
+	select BR2_PACKAGE_LIBSSH
+	help
+	  Enable sftp virtual filesystem using libssh.
+
+config BR2_PACKAGE_KODI_LIBTHEORA
+	bool "theora"
+	select BR2_PACKAGE_LIBTHEORA
+	help
+	  Enable Theora input support.
+	  Select this if you want to play back OGG/OGV files (Video).
+
+config BR2_PACKAGE_KODI_LIBUSB
+	bool "usb"
+	# https://github.com/xbmc/xbmc/blob/Jarvis/configure.ac#L1554
+	# "if libudev is available, we don't need libusb"
+	depends on !BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
+	help
+	  Enable libusb support.
+
+config BR2_PACKAGE_KODI_LIBVA
+	bool "va"
+	select BR2_PACKAGE_LIBVA
+	help
+	  Enable libva support.
+
+config BR2_PACKAGE_KODI_LIBVDPAU
+	bool "vdpau"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_LIBVDPAU
+	help
+	  Enable libvdpau support.
+
+comment "libvdpau support needs X.org"
+	depends on !BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_KODI_UPNP
+	bool "upnp"
+	help
+	  Enable UPnP support
+
+config BR2_PACKAGE_KODI_OPTICALDRIVE
+	bool
+
+menu "Audio decoder addons"
+	source "package/kodi-audiodecoder-modplug/Config.in"
+	source "package/kodi-audiodecoder-nosefart/Config.in"
+	source "package/kodi-audiodecoder-opus/Config.in"
+	source "package/kodi-audiodecoder-sidplay/Config.in"
+	source "package/kodi-audiodecoder-snesapu/Config.in"
+	source "package/kodi-audiodecoder-stsound/Config.in"
+	source "package/kodi-audiodecoder-timidity/Config.in"
+	source "package/kodi-audiodecoder-vgmstream/Config.in"
+endmenu
+
+menu "Audio DSP addons"
+	source "package/kodi-adsp-basic/Config.in"
+	source "package/kodi-adsp-freesurround/Config.in"
+endmenu
+
+menu "Audio encoder addons"
+	source "package/kodi-audioencoder-flac/Config.in"
+	source "package/kodi-audioencoder-lame/Config.in"
+	source "package/kodi-audioencoder-vorbis/Config.in"
+	source "package/kodi-audioencoder-wav/Config.in"
+endmenu
+
+menu "PVR addons"
+	source "package/kodi-pvr-argustv/Config.in"
+	source "package/kodi-pvr-dvblink/Config.in"
+	source "package/kodi-pvr-dvbviewer/Config.in"
+	source "package/kodi-pvr-filmon/Config.in"
+	source "package/kodi-pvr-hdhomerun/Config.in"
+	source "package/kodi-pvr-hts/Config.in"
+	source "package/kodi-pvr-iptvsimple/Config.in"
+	source "package/kodi-pvr-mediaportal-tvserver/Config.in"
+	source "package/kodi-pvr-mythtv/Config.in"
+	source "package/kodi-pvr-nextpvr/Config.in"
+	source "package/kodi-pvr-njoy/Config.in"
+	source "package/kodi-pvr-pctv/Config.in"
+	source "package/kodi-pvr-stalker/Config.in"
+	source "package/kodi-pvr-vbox/Config.in"
+	source "package/kodi-pvr-vdr-vnsi/Config.in"
+	source "package/kodi-pvr-vuplus/Config.in"
+	source "package/kodi-pvr-wmc/Config.in"
+endmenu
+
+menu "Screensavers"
+	source "package/kodi-screensaver-asteroids/Config.in"
+	source "package/kodi-screensaver-asterwave/Config.in"
+	source "package/kodi-screensaver-biogenesis/Config.in"
+	source "package/kodi-screensaver-cpblobs/Config.in"
+	source "package/kodi-screensaver-crystalmorph/Config.in"
+	source "package/kodi-screensaver-greynetic/Config.in"
+	source "package/kodi-screensaver-matrixtrails/Config.in"
+	source "package/kodi-screensaver-pingpong/Config.in"
+	source "package/kodi-screensaver-planestate/Config.in"
+	source "package/kodi-screensaver-pyro/Config.in"
+	source "package/kodi-screensaver-rsxs/Config.in"
+	source "package/kodi-screensaver-stars/Config.in"
+endmenu
+
+menu "Visualisations"
+	source "package/kodi-visualisation-fishbmc/Config.in"
+	source "package/kodi-visualisation-fountain/Config.in"
+	source "package/kodi-visualisation-goom/Config.in"
+	source "package/kodi-visualisation-shadertoy/Config.in"
+	source "package/kodi-visualisation-spectrum/Config.in"
+	source "package/kodi-visualisation-waveforhue/Config.in"
+	source "package/kodi-visualisation-waveform/Config.in"
+endmenu
+
+endif # BR2_PACKAGE_KODI

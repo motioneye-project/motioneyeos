@@ -11,8 +11,8 @@ config BR2_PACKAGE_LIBEDIT
 	  http://ftp.netbsd.org/pub/NetBSD/NetBSD-release-5-0/src/lib/libedit/
 
 	  Jess Thrysoee maintains an autotoolified package, which we use
-	  in Buildroot as it makes it much simpler than using the upstream
-	  sources which require pmake.
+	  in Buildroot as it makes it much simpler than using the
+	  upstream sources which require pmake.
 
 	  http://www.thrysoee.dk/editline
 

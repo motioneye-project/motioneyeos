@@ -47,7 +47,7 @@ endef
 
 define HOST_ZIP_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) -f unix/Makefile install \
-		prefix=$(HOST_DIR)/usr
+		prefix=$(HOST_DIR)
 endef
 
 $(eval $(generic-package))

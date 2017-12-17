@@ -1,0 +1,18 @@
+comment "rp-pppoe needs a uClibc or glibc toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS || BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_USE_MMU
+
+config BR2_PACKAGE_RP_PPPOE
+	bool "rp-pppoe"
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_TOOLCHAIN_USES_MUSL # pppd
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_PPPD
+	help
+	  An implementation of the Point-to-point protocol over Ethernet.
+	  Has userspace client and server deamons. You likely only need
+	  this package if you are implementing the pppoe server that will
+	  service other pppoe client devices. Otherwise the normal client
+	  functionality already exists in the pppd package (and kernel).
+
+	  http://www.roaringpenguin.com/pppoe.html

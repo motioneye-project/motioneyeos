@@ -1,0 +1,20 @@
+lib/rc-md5: fix build when nettle is enabled
+
+rc-md5 uses size_t, which is defined in string.h. This include is
+missing when built against nettle.
+
+Just add it.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN freeradius-client-1.1.7.orig/lib/rc-md5.h freeradius-client-1.1.7/lib/rc-md5.h
+--- freeradius-client-1.1.7.orig/lib/rc-md5.h	2015-01-19 17:18:26.000000000 +0100
++++ freeradius-client-1.1.7/lib/rc-md5.h	2015-01-25 22:56:07.815626476 +0100
+@@ -13,6 +13,7 @@
+ 
+ #ifdef HAVE_NETTLE
+ 
++#include <string.h> /* size_t */
+ #include <nettle/md5-compat.h>
+ 
+ #else

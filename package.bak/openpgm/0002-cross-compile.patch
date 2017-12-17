@@ -1,0 +1,38 @@
+configure.ac: cross-compilation fix
+
+This patch enables to configure the package when cross-compiling in a way
+recommended by Autoconf manual (see manual for version 2.69, Section 6.6
+Checking Runtime Behavior).
+
+Signed-off-by: Alexander Lukichev <alexander.lukichev@gmail.com>
+
+--- a/openpgm/pgm/configure.ac	2011-09-27 20:59:08.000000000 +0300
++++ b/openpgm/pgm/configure.ac	2013-02-12 10:33:53.000000000 +0200
+@@ -272,14 +272,19 @@ uint32_t add32_with_carry (uint32_t a, u
+ 	;;
+ esac
+ # ticket spinlock friendly: unaligned pointers & atomic ops (excl. Sun Pro)
+-AC_MSG_CHECKING([for unaligned pointers])
+-AC_RUN_IFELSE(
+-	[AC_LANG_PROGRAM([[char* nezumi = "mouse";]],
+-		[[short x = *(short*)(nezumi + 2)]])],
+-	[AC_MSG_RESULT([yes])
+-		pgm_unaligned_pointers=yes],
+-	[AC_MSG_RESULT([no])
+-		pgm_unaligned_pointers=no])
++AC_CACHE_CHECK([if unaligned access fails], [ac_cv_lbl_unaligned_fail],
++	[AC_RUN_IFELSE(
++		[AC_LANG_PROGRAM([[char* nezumi = "mouse";]],
++			[[short x = *(short*)(nezumi + 2)]])],
++		[ac_cv_lbl_unaligned_fail=no],
++		[ac_cv_lbl_unaligned_fail=yes],
++		[ac_cv_lbl_unaligned_fail=yes])
++	])
++if test "$ac_cv_lbl_unaligned_fail" = yes; then
++	pgm_unaligned_pointers=no
++else
++	pgm_unaligned_pointers=yes
++fi
+ AC_MSG_CHECKING([for intrinsic atomic ops])
+ # AC_PREPROC_IFELSE not always portable
+ AC_COMPILE_IFELSE(

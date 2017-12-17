@@ -1,0 +1,142 @@
+From 2512c3ba608077db3a5e0286b976fadc8a04a5c4 Mon Sep 17 00:00:00 2001
+From: rpm-build <rpm-build>
+Date: Thu, 23 Feb 2017 08:17:07 +0100
+Subject: [PATCH] Do not export/use setools.InfoFlowAnalysis and
+ setools.DomainTransitionAnalysis
+
+dta and infoflow modules require networkx which brings lot of dependencies.
+These dependencies are not necessary for setools module itself as it's
+used in policycoreutils.
+
+Therefore it's better to use setools.infoflow.InfoFlowAnalysis and
+setools.dta.DomainTransitionAnalysis and let the package containing
+sedta and seinfoflow to require python3-networkx
+
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+---
+ sedta                       | 3 ++-
+ seinfoflow                  | 3 ++-
+ setools/__init__.py         | 4 ++--
+ setoolsgui/apol/dta.py      | 2 +-
+ setoolsgui/apol/infoflow.py | 2 +-
+ tests/dta.py                | 3 ++-
+ tests/infoflow.py           | 3 ++-
+ 7 files changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/sedta b/sedta
+index 1c76ebb..255ad49 100755
+--- a/sedta
++++ b/sedta
+@@ -23,6 +23,7 @@ import argparse
+ import logging
+ 
+ import setools
++import setools.dta
+ 
+ 
+ def print_transition(trans):
+@@ -111,7 +112,7 @@ else:
+ 
+ try:
+     p = setools.SELinuxPolicy(args.policy)
+-    g = setools.DomainTransitionAnalysis(p, reverse=args.reverse, exclude=args.exclude)
++    g = setools.dta.DomainTransitionAnalysis(p, reverse=args.reverse, exclude=args.exclude)
+ 
+     if args.shortest_path or args.all_paths:
+         if args.shortest_path:
+diff --git a/seinfoflow b/seinfoflow
+index b287921..d53bdef 100755
+--- a/seinfoflow
++++ b/seinfoflow
+@@ -19,6 +19,7 @@
+ 
+ from __future__ import print_function
+ import setools
++import setools.infoflow
+ import argparse
+ import sys
+ import logging
+@@ -79,7 +80,7 @@ else:
+ try:
+     p = setools.SELinuxPolicy(args.policy)
+     m = setools.PermissionMap(args.map)
+-    g = setools.InfoFlowAnalysis(p, m, min_weight=args.min_weight, exclude=args.exclude)
++    g = setools.infoflow.InfoFlowAnalysis(p, m, min_weight=args.min_weight, exclude=args.exclude)
+ 
+     if args.shortest_path or args.all_paths:
+         if args.shortest_path:
+diff --git a/setools/__init__.py b/setools/__init__.py
+index a84c846..a53c5a7 100644
+--- a/setools/__init__.py
++++ b/setools/__init__.py
+@@ -74,11 +74,11 @@ from .pcideviceconquery import PcideviceconQuery
+ from .devicetreeconquery import DevicetreeconQuery
+ 
+ # Information Flow Analysis
+-from .infoflow import InfoFlowAnalysis
++# from .infoflow import InfoFlowAnalysis
+ from .permmap import PermissionMap
+ 
+ # Domain Transition Analysis
+-from .dta import DomainTransitionAnalysis
++# from .dta import DomainTransitionAnalysis
+ 
+ # Policy difference
+ from .diff import PolicyDifference
+diff --git a/setoolsgui/apol/dta.py b/setoolsgui/apol/dta.py
+index 0aaf13f..5b1ea20 100644
+--- a/setoolsgui/apol/dta.py
++++ b/setoolsgui/apol/dta.py
+@@ -23,7 +23,7 @@ from PyQt5.QtCore import pyqtSignal, Qt, QStringListModel, QThread
+ from PyQt5.QtGui import QPalette, QTextCursor
+ from PyQt5.QtWidgets import QCompleter, QHeaderView, QMessageBox, QProgressDialog, \
+                             QTreeWidgetItem
+-from setools import DomainTransitionAnalysis
++from setools.dta import DomainTransitionAnalysis
+ 
+ from ..logtosignal import LogHandlerToSignal
+ from .analysistab import AnalysisTab
+diff --git a/setoolsgui/apol/infoflow.py b/setoolsgui/apol/infoflow.py
+index 1ae16de..fdf8f7b 100644
+--- a/setoolsgui/apol/infoflow.py
++++ b/setoolsgui/apol/infoflow.py
+@@ -25,7 +25,7 @@ from PyQt5.QtCore import pyqtSignal, Qt, QStringListModel, QThread
+ from PyQt5.QtGui import QPalette, QTextCursor
+ from PyQt5.QtWidgets import QCompleter, QHeaderView, QMessageBox, QProgressDialog, \
+                             QTreeWidgetItem
+-from setools import InfoFlowAnalysis
++from setools.infoflow import InfoFlowAnalysis
+ from setools.exception import UnmappedClass, UnmappedPermission
+ 
+ from ..logtosignal import LogHandlerToSignal
+diff --git a/tests/dta.py b/tests/dta.py
+index 32b9271..2bdd052 100644
+--- a/tests/dta.py
++++ b/tests/dta.py
+@@ -17,7 +17,8 @@
+ #
+ import unittest
+ 
+-from setools import SELinuxPolicy, DomainTransitionAnalysis
++from setools import SELinuxPolicy
++from setools.dta import DomainTransitionAnalysis
+ from setools import TERuletype as TERT
+ from setools.policyrep.exception import InvalidType
+ from setools.policyrep.typeattr import Type
+diff --git a/tests/infoflow.py b/tests/infoflow.py
+index 7751dda..a21c683 100644
+--- a/tests/infoflow.py
++++ b/tests/infoflow.py
+@@ -17,7 +17,8 @@
+ #
+ import unittest
+ 
+-from setools import SELinuxPolicy, InfoFlowAnalysis
++from setools import SELinuxPolicy
++from setools.infoflow import InfoFlowAnalysis
+ from setools import TERuletype as TERT
+ from setools.permmap import PermissionMap
+ from setools.policyrep.exception import InvalidType
+-- 
+2.9.3
+

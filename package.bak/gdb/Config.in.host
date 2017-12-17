@@ -1,0 +1,63 @@
+comment "Host GDB Options"
+
+config BR2_PACKAGE_HOST_GDB
+	bool "Build cross gdb for the host"
+	# When the external toolchain gdbserver is used, we shouldn't
+	# allow to build a cross-gdb, as the one of the external
+	# toolchain should be used.
+	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
+	depends on !BR2_nios2
+	help
+	  Build a cross gdb that runs on the host machine and debugs
+	  programs running on the target. It requires 'gdbserver'
+	  installed on the target, see BR2_PACKAGE_GDB_SERVER to
+	  enable it.
+
+if BR2_PACKAGE_HOST_GDB
+
+config BR2_PACKAGE_HOST_GDB_TUI
+	bool "TUI support"
+	help
+	  This option enables terminal user interface (TUI) for gdb
+
+config BR2_PACKAGE_HOST_GDB_PYTHON
+	bool "Python support"
+	help
+	  This option enables the Python support in the cross gdb.
+
+config BR2_PACKAGE_HOST_GDB_SIM
+	bool "Simulator support"
+	depends on !BR2_arc && !BR2_microblaze
+	help
+	  This option enables the simulator support in the cross gdb.
+
+choice
+	prompt "GDB debugger Version"
+	depends on !BR2_arc
+	depends on !BR2_microblaze
+	default BR2_GDB_VERSION_7_11
+	help
+	  Select the version of gdb you wish to use.
+
+	config BR2_GDB_VERSION_7_10
+		bool "gdb 7.10.x"
+
+	config BR2_GDB_VERSION_7_11
+		bool "gdb 7.11.x"
+
+	config BR2_GDB_VERSION_7_12
+		bool "gdb 7.12.x"
+
+endchoice
+
+endif
+
+# If cross-gdb is not enabled, the latest working version is chosen.
+config BR2_GDB_VERSION
+	string
+	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
+	default "arc-2016.09-release-gdb" if BR2_arc
+	default "6be65fb56ea6694a9260733a536a023a1e2d4d57" if BR2_microblaze
+	default "7.10.1"   if BR2_GDB_VERSION_7_10
+	default "7.11.1"   if BR2_GDB_VERSION_7_11 || !BR2_PACKAGE_HOST_GDB
+	default "7.12.1"   if BR2_GDB_VERSION_7_12

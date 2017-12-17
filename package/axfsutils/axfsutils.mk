@@ -6,7 +6,7 @@
 
 AXFSUTILS_VERSION = 64886703fdff6cfc64eb20fbe7d7295bbeec867b
 AXFSUTILS_SITE = $(call github,jaredeh,axfs,$(AXFSUTILS_VERSION))
-AXFSUTILS_LICENSE = GPLv2
+AXFSUTILS_LICENSE = GPL-2.0
 AXFSUTILS_LICENSE_FILES = mkfs.axfs-legacy/COPYING
 HOST_AXFSUTILS_DEPENDENCIES = host-zlib
 
@@ -18,7 +18,7 @@ endef
 
 define HOST_AXFSUTILS_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/mkfs.axfs-legacy/mkfs.axfs \
-		$(HOST_DIR)/usr/bin/mkfs.axfs
+		$(HOST_DIR)/bin/mkfs.axfs
 endef
 
 $(eval $(host-generic-package))

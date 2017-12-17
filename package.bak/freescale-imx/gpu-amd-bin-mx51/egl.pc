@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: egl
+Description: Freescale amd-gpu-bin-mx51 implementation of EGL
+Version: 7.11.0
+Libs: -L${libdir} -lEGL
+Cflags: -I${includedir}

@@ -8,8 +8,9 @@ RAPTOR_VERSION = 2.0.15
 RAPTOR_SOURCE = raptor2-$(RAPTOR_VERSION).tar.gz
 RAPTOR_SITE = http://download.librdf.org/source
 RAPTOR_DEPENDENCIES = libxml2 libxslt
-RAPTOR_LICENSE = GPLv2+ or LGPLv2.1+ or Apache-2.0+
+RAPTOR_LICENSE = GPL-2.0+ or LGPL-2.1+ or Apache-2.0+
 RAPTOR_LICENSE_FILES = LICENSE.txt
+RAPTOR_INSTALL_STAGING = YES
 
 # Flag is added to make sure the patch is applied for the configure.ac of raptor.
 RAPTOR_AUTORECONF = YES

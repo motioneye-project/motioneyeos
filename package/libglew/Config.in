@@ -7,11 +7,12 @@ config BR2_PACKAGE_LIBGLEW
 	select BR2_PACKAGE_XLIB_LIBXI
 	select BR2_PACKAGE_XLIB_LIBXMU
 	help
-	  The OpenGL Extension Wrangler Library (GLEW) is a cross-platform C/C++
-	  extension loading library. GLEW provides efficient run-time mechanisms
-	  for determining which OpenGL extensions are supported on the target
-	  platform. OpenGL core and extension functionality is exposed in a
-	  single header file.
+	  The OpenGL Extension Wrangler Library (GLEW) is a
+	  cross-platform C/C++ extension loading library. GLEW provides
+	  efficient run-time mechanisms for determining which OpenGL
+	  extensions are supported on the target platform. OpenGL core
+	  and extension functionality is exposed in a single header
+	  file.
 
 	  http://glew.sourceforge.net
 

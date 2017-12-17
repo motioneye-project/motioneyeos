@@ -1,0 +1,41 @@
+if BR2_PACKAGE_VLC
+comment "vlc is known not to work in all configurations"
+comment "If you can fix it, please inform buildroot@buildroot.org"
+endif
+
+config BR2_PACKAGE_VLC
+	bool "vlc"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
+	# ARC toolchain issue
+	depends on !BR2_arc
+	select BR2_PACKAGE_LIBVORBIS if BR2_PACKAGE_OPUS
+	select BR2_PACKAGE_VLC_OPENCV_BACKEND if BR2_PACKAGE_OPENCV
+	select BR2_PACKAGE_VLC_OPENCV3_BACKEND if BR2_PACKAGE_OPENCV3
+	select BR2_PACKAGE_ZLIB if BR2_PACKAGE_TAGLIB
+	help
+	  VLC is a free and open source cross-platform multimedia player
+	  and framework that plays most multimedia files as well as DVD,
+	  Audio CD, VCD, and various streaming protocols.
+
+	  http://www.videolan.org/vlc/
+
+config BR2_PACKAGE_VLC_OPENCV_BACKEND
+	bool
+	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV_LIB_OBJDETECT
+
+config BR2_PACKAGE_VLC_OPENCV3_BACKEND
+	bool
+	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
+	select BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
+
+comment "vlc needs a toolchain w/ C++, dynamic library, wchar, threads, headers >= 3.7"
+	depends on BR2_USE_MMU
+	depends on !BR2_arc
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_USE_WCHAR \
+		|| !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7

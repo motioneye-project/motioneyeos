@@ -1,0 +1,37 @@
+comment "Binutils Options"
+
+choice
+	prompt "Binutils Version"
+	depends on !BR2_arc
+	default BR2_BINUTILS_VERSION_2_26_X
+	help
+	  Select the version of binutils you wish to use.
+
+	config BR2_BINUTILS_VERSION_2_25_X
+		bool "binutils 2.25.1"
+		# supported but broken on Blackfin
+		depends on !BR2_bfin
+
+	config BR2_BINUTILS_VERSION_2_26_X
+		bool "binutils 2.26.1"
+
+	config BR2_BINUTILS_VERSION_2_27_X
+		bool "binutils 2.27"
+
+endchoice
+
+config BR2_BINUTILS_VERSION
+	string
+	default "arc-2016.09-release"	if BR2_arc
+	default "2.25.1"	if BR2_BINUTILS_VERSION_2_25_X
+	default "2.26.1"	if BR2_BINUTILS_VERSION_2_26_X
+	default "2.27"		if BR2_BINUTILS_VERSION_2_27_X
+
+config BR2_BINUTILS_ENABLE_LTO
+	bool
+
+config BR2_BINUTILS_EXTRA_CONFIG_OPTIONS
+	string "Additional binutils options"
+	default ""
+	help
+	  Any additional binutils options you may want to include.

@@ -1,0 +1,86 @@
+menu "Linux Kernel Tools"
+
+# No prompt, this is sourced by linux/Config.in as this
+# is no real package and really belongs to the kernel.
+config BR2_PACKAGE_LINUX_TOOLS
+	bool
+
+config BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
+	bool "cpupower"
+	depends on !BR2_bfin # pciutils
+	depends on BR2_USE_WCHAR || !BR2_NEEDS_GETTEXT # gettext
+	select BR2_PACKAGE_LINUX_TOOLS
+	select BR2_PACKAGE_PCIUTILS
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
+	help
+	  cpupower is a collection of tools to examine and tune power
+	  saving related features of your processor.
+
+comment "cpupower needs a toolchain w/ wchar"
+	depends on !BR2_bfin
+	depends on !BR2_USE_WCHAR && BR2_NEEDS_GETTEXT
+
+config BR2_PACKAGE_LINUX_TOOLS_GPIO
+	bool "gpio"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  gpio is a collection of tools to get information about,
+	  control and monitor gpios present on system.
+
+	  These tools use new gpio ABI which will deprecate sysfs gpio
+	  interface in the future.
+
+	  These tools are available only from kernel version 4.8.
+
+config BR2_PACKAGE_LINUX_TOOLS_IIO
+	bool "iio"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  iio is a collection of tools to get information about,
+	  control and monitor iio devices present on system.
+
+	  These tools are available only from kernel version 4.7.
+
+config BR2_PACKAGE_LINUX_TOOLS_PERF
+	bool "perf"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  perf (sometimes "Perf Events" or perf tools, originally
+	  "Performance Counters for Linux") - is a performance
+	  analyzing tool in Linux, available from kernel version
+	  2.6.31. User-space controlling utility, called 'perf' has
+	  git-like interface with subcommands. It is capable of
+	  statistical profiling of entire system (both kernel and user
+	  code), single CPU or severals threads.
+
+	  This will build and install the userspace 'perf'
+	  command. It is up to the user to ensure that the kernel
+	  configuration has all the suitable options enabled to allow a
+	  proper operation of 'perf'.
+
+	  https://perf.wiki.kernel.org/
+
+config BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
+	bool"selftests"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # bash
+	depends on BR2_USE_MMU  # bash
+	select BR2_PACKAGE_LINUX_TOOLS
+	select BR2_PACKAGE_BASH # runtime
+	select BR2_PACKAGE_POPT
+	select BR2_PACKAGE_LIBCAP_NG
+	help
+	  Build and install (to /usr/lib/kselftests) kernel selftests.
+
+	  Use of this option implies you know the process of using and
+	  compiling the kernel selftests. The Makefile to build and
+	  install these is very noisy and may appear to cause your
+	  build to fail for strange reasons.
+
+	  This is very much a use at your risk option and may not work
+	  for every setup or every architecture.
+
+comment "selftests needs BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+
+endmenu

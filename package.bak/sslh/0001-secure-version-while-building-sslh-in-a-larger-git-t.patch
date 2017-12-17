@@ -1,0 +1,45 @@
+From 0c39699da9a3d6534b6d26e7c9686ee76d81b64a Mon Sep 17 00:00:00 2001
+From: David Bachelart <david.bachelart@bbright.com>
+Date: Thu, 26 Jan 2017 10:07:47 +0100
+Subject: [PATCH] fix version extraction when building in a larger git tree
+
+sslh uses host git to extract its own version number. In buildroot, this
+is an issue since extracted information is conflicting with buildroot git
+status if we use git as VCS for buildroot.
+
+Since these git calls are legitimate only if git is used for the sslh
+subtree only, this patch adds a check : a .git directory has to exist at
+the root of the project to enable git-extracted version string.
+
+Signed-off-by: David Bachelart <david.bachelart@bbright.com>
+[yann.morin.1998@free.fr: fix troll character U+c2a0]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ genver.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/genver.sh b/genver.sh
+index 79fd0a0..051e57b 100755
+--- a/genver.sh
++++ b/genver.sh
+@@ -7,7 +7,7 @@ else
+ 	QUIET=0
+ fi
+ 
+-if ! `(git status | grep -q "On branch") 2> /dev/null`; then
++if [ ! -d .git ] || ! `(git status | grep -q "On branch") 2> /dev/null`; then
+         # If we don't have git, we can't work out what
+         # version this is. It must have been downloaded as a
+         # zip file. 
+@@ -25,7 +25,7 @@ if ! `(git status | grep -q "On branch") 2> /dev/null`; then
+         fi
+ fi
+ 
+-if head=`git rev-parse --verify HEAD 2>/dev/null`; then
++if [ -d .git ] && head=`git rev-parse --verify HEAD 2>/dev/null`; then
+ 	# generate the version info based on the tag
+ 	release=`(git describe --tags || git --describe || git describe --all --long) \
+ 		2>/dev/null | tr -d '\n'`
+-- 
+2.1.4
+

@@ -1,0 +1,43 @@
+From 106aa50d4e5b336f7dd2d5cf4d882e692d205e91 Mon Sep 17 00:00:00 2001
+From: Vincent Bernat <vincent@bernat.im>
+Date: Sat, 18 Jun 2016 22:18:41 +0200
+Subject: [PATCH] build: make generation of atom-glue compatible with older gcc
+ versions
+
+With old versions, cpp doesn't accept several files as input. See #186.
+
+Signed-off-by: Vivien Didelot <vivien.didelot@savoirfairelinux.com>
+---
+ src/lib/Makefile.am | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/lib/Makefile.am b/src/lib/Makefile.am
+index 250e32a..2a5cdb3 100644
+--- a/src/lib/Makefile.am
++++ b/src/lib/Makefile.am
+@@ -20,8 +20,9 @@ nodist_liblldpctl_la_SOURCES = atom-glue.c
+ liblldpctl_la_LIBADD  = $(top_builddir)/src/libcommon-daemon-lib.la libfixedpoint.la
+ 
+ atom-glue.c: $(ATOM_FILES) Makefile
+-	$(AM_V_GEN)($(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+-		$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) $(ATOM_FILES:%=$(srcdir)/%) | \
++	$(AM_V_GEN)(for f in $(ATOM_FILES:%=$(srcdir)/%); do \
++		$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
++		$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) $$f; done | \
+ 		$(SED) -n 's+^void init_atom_builder_\([^(]*\)().*, \([0-9]*\)).*+\2 \1+p' | \
+ 		sort | \
+ 		$(AWK) '{ atoms[$$2] = 1 } \
+@@ -30,8 +31,9 @@ atom-glue.c: $(ATOM_FILES) Makefile
+                                print " static int init = 0; if (init) return; init++;"; \
+ 			       for (atom in atoms) { print " init_atom_builder_"atom"();" } \
+ 			       print "}"; }' && \
++		for f in $(ATOM_FILES:%=$(srcdir)/%); do \
+ 		$(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
+-		$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) $(ATOM_FILES:%=$(srcdir)/%) | \
++		$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS) $$f; done | \
+ 		$(SED) -n 's+^void init_atom_map_\([^(]*\)().*, \([0-9]*\)).*+\2 \1+p' | \
+ 		sort -n | \
+ 		$(AWK) '{ atoms[$$2] = 1 } \
+-- 
+2.9.0
+

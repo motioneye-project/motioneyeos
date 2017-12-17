@@ -7,7 +7,7 @@
 TINC_VERSION = 1.0.30
 TINC_SITE = http://www.tinc-vpn.org/packages
 TINC_DEPENDENCIES = lzo openssl zlib
-TINC_LICENSE = GPLv2+ with OpenSSL exception
+TINC_LICENSE = GPL-2.0+ with OpenSSL exception
 TINC_LICENSE_FILES = COPYING COPYING.README
 TINC_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=c99"
 

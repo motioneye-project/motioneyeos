@@ -1,0 +1,36 @@
+From 2a310549aaeaba05f640ade43488bb893101ce4a Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 29 Oct 2016 16:35:26 +0200
+Subject: [PATCH] xen/Rules.mk: fix build with CFLAGS from environment
+
+When CFLAGS are passed from the environment, the first-level make
+invocation will append -D__OBJECT_FILE__ to it, then call a second
+make invocation, that will have those new CFLAGS in its environment,
+but will also append -D__OBJECT_FILE__ to those.
+
+Then, the compiler fails because __OBEJECT_FILE__ is defined twice.
+
+Just undefine it before defining it again, as a *workaround* to this
+issue.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ xen/Rules.mk | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/xen/Rules.mk b/xen/Rules.mk
+index a9fda71..09ccbfa 100644
+--- a/xen/Rules.mk
++++ b/xen/Rules.mk
+@@ -49,7 +49,7 @@ ALL_OBJS-$(CONFIG_CRYPTO)   += $(BASEDIR)/crypto/built_in.o
+ CFLAGS += -nostdinc -fno-builtin -fno-common
+ CFLAGS += -Werror -Wredundant-decls -Wno-pointer-arith
+ CFLAGS += -pipe -g -D__XEN__ -include $(BASEDIR)/include/xen/config.h
+-CFLAGS += '-D__OBJECT_FILE__="$@"'
++CFLAGS += -U__OBJECT_FILE__ '-D__OBJECT_FILE__="$@"'
+ 
+ ifneq ($(clang),y)
+ # Clang doesn't understand this command line argument, and doesn't appear to
+-- 
+2.7.4
+

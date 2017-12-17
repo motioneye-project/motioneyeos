@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_SETUPTOOLS
+	bool "python-setuptools"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
+	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Download, build, install, upgrade, and uninstall Python packages.
+
+	  http://pypi.python.org/pypi/setuptools

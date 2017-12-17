@@ -1,0 +1,3 @@
+# md5 from https://pypi.python.org/pypi/requests/json, sha256 locally computed
+md5	ad5f9c47b5c5dfdb28363ad7546b0763  requests-2.11.1.tar.gz
+sha256	5acf980358283faba0b897c73959cecf8b841205bb4b2ad3ef545f46eae1a133  requests-2.11.1.tar.gz

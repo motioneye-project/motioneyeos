@@ -1,0 +1,12 @@
+config BR2_PACKAGE_IPTRAF_NG
+	bool "iptraf-ng"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NCURSES
+	help
+	  IPTraf-ng is a ncurses-based network monitoring utility. It gathers
+	  data like TCP connection packet and byte counts, interface statistics
+	  and activity indicators.
+
+	  https://fedorahosted.org/iptraf-ng/
+
+	  IPTraf-ng is a fork of original IPTraf v3.0.0 (http://iptraf.seul.org).

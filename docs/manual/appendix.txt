@@ -1,0 +1,6 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+include::makedev-syntax.txt[]
+include::makeusers-syntax.txt[]
+include::migrating.txt[]

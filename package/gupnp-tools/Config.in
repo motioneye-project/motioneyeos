@@ -1,5 +1,6 @@
 config BR2_PACKAGE_GUPNP_TOOLS
 	bool "gupnp-tools"
+	depends on BR2_PACKAGE_LIBGTK3
 	# gssdp, gupnp, libsoup all select on libglib2, so they have
 	# the same dependencies as libgtk3, which we depend on. So for
 	# the same of simplicity, we don't replicate all those
@@ -8,7 +9,6 @@ config BR2_PACKAGE_GUPNP_TOOLS
 	select BR2_PACKAGE_GUPNP
 	select BR2_PACKAGE_LIBSOUP
 	select BR2_PACKAGE_LIBXML2
-	depends on BR2_PACKAGE_LIBGTK3
 	help
 	  GUPnP Tools are free replacements of Intel UPnP tools that
 	  use GUPnP. They provides client and server side tools which

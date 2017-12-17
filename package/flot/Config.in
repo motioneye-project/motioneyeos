@@ -44,7 +44,8 @@ config BR2_PACKAGE_FLOT_ERRORBARS
 config BR2_PACKAGE_FLOT_FILLBETWEEN
 	bool "fillbetween"
 	help
-	  Flot plugin for computing bottoms for filled line and bar charts
+	  Flot plugin for computing bottoms for filled line and bar
+	  charts
 
 config BR2_PACKAGE_FLOT_IMAGE
 	bool "image"
@@ -54,7 +55,8 @@ config BR2_PACKAGE_FLOT_IMAGE
 config BR2_PACKAGE_FLOT_NAVIGATE
 	bool "navigate"
 	help
-	  Flot plugin for adding panning and zooming capabilities to a plot
+	  Flot plugin for adding panning and zooming capabilities to a
+	  plot
 
 config BR2_PACKAGE_FLOT_PIE
 	bool "pie"

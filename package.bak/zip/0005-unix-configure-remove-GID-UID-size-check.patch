@@ -1,0 +1,85 @@
+From d8da4e5f0ebed000f880e60b6cca7c575f7ed1c7 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@openwide.fr>
+Date: Fri, 23 Jan 2015 22:13:14 +0100
+Subject: [PATCH 5/6] unix/configure: remove GID/UID size check
+
+This check can't work for cross-compilation since it
+try to run a target's binary on the host system.
+
+Reported-by: Richard Genoud <richard.genoud@gmail.com>
+Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+---
+ unix/configure | 57 ---------------------------------------------------------
+ 1 file changed, 57 deletions(-)
+
+diff --git a/unix/configure b/unix/configure
+index de9fd68..7bfc9eb 100644
+--- a/unix/configure
++++ b/unix/configure
+@@ -237,63 +237,6 @@ _EOF_
+ $CC $CFLAGS -c conftest.c >/dev/null 2>/dev/null
+ [ $? -ne 0 ] && CFLAGS="${CFLAGS} -DNO_OFF_T"
+ 
+-
+-echo Check size of UIDs and GIDs
+-echo "(Now zip stores variable size UIDs/GIDs using a new extra field.  This"
+-echo " tests if this OS uses 16-bit UIDs/GIDs and so if the old 16-bit storage"
+-echo " should also be used for backward compatibility.)"
+-# Added 2008-04-15 CS
+-cat > conftest.c << _EOF_
+-# define _LARGEFILE_SOURCE          /* some OSes need this for fseeko */
+-# define _LARGEFILE64_SOURCE
+-# define _FILE_OFFSET_BITS 64       /* select default interface as 64 bit */
+-# define _LARGE_FILES               /* some OSes need this for 64-bit off_t */
+-#include <sys/types.h>
+-#include <sys/stat.h>
+-#include <unistd.h>
+-#include <stdio.h>
+-int main()
+-{
+-  struct stat s;
+-
+-  printf("  s.st_uid is %u bytes\n", sizeof(s.st_uid));
+-  printf("  s.st_gid is %u bytes\n", sizeof(s.st_gid));
+-
+-  /* see if have 16-bit UID */
+-  if (sizeof(s.st_uid) != 2) {
+-    return 1;
+-  }
+-  /* see if have 16-bit GID */
+-  if (sizeof(s.st_gid) != 2) {
+-    return 2;
+-  }
+-  return 3;
+-}
+-_EOF_
+-# compile it
+-$CC -o conftest conftest.c >/dev/null 2>/dev/null
+-if [ $? -ne 0 ]; then
+-  echo -- UID/GID test failed on compile - disabling old 16-bit UID/GID support
+-  CFLAGS="${CFLAGS} -DUIDGID_NOT_16BIT"
+-else
+-# run it
+-  ./conftest
+-  r=$?
+-  if [ $r -eq 1 ]; then
+-    echo -- UID not 2 bytes - disabling old 16-bit UID/GID support
+-    CFLAGS="${CFLAGS} -DUIDGID_NOT_16BIT"
+-  elif [ $r -eq 2 ]; then
+-    echo -- GID not 2 bytes - disabling old 16-bit UID/GID support
+-    CFLAGS="${CFLAGS} -DUIDGID_NOT_16BIT"
+-  elif [ $r -eq 3 ]; then
+-    echo -- 16-bit UIDs and GIDs - keeping old 16-bit UID/GID support
+-  else
+-    echo -- test failed - conftest returned $r - disabling old 16-bit UID/GID support
+-    CFLAGS="${CFLAGS} -DUIDGID_NOT_16BIT"
+-  fi
+-fi
+-
+-
+ # Now we set the 64-bit file environment and check the size of off_t
+ # Added 11/4/2003 EG
+ # Revised 8/12/2004 EG
+-- 
+1.9.3
+

@@ -1,0 +1,29 @@
+From bb16ccd14deb3a01049daec37b6d2e7711ef4738 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 13 May 2017 20:22:08 +0200
+Subject: [PATCH] src/CWatchdog.h: Fix gcc7 build
+
+Building with gcc7 is broken:
+
+src/CWatchdog.h:31:58: error: 'std::function' has not been declared
+    CWatchdog(unsigned int interval, SAPI *api, std::function<void(SError)> errorCallback);
+                                                     ^~~~~~~~
+
+Submitted-upstream: https://github.com/kodi-pvr/pvr.stalker/pull/93
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/CWatchdog.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/CWatchdog.h b/src/CWatchdog.h
+index c465e91..239d95d 100644
+--- a/src/CWatchdog.h
++++ b/src/CWatchdog.h
+@@ -22,6 +22,7 @@
+  */
+ 
+ #include <thread>
++#include <functional>
+ 
+ #include "SAPI.h"
+ 

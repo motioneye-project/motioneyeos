@@ -1,0 +1,12 @@
+config BR2_PACKAGE_USTREAM_SSL
+	bool "ustream-ssl"
+	depends on !BR2_STATIC_LIBS #libubox
+	select BR2_PACKAGE_LIBUBOX
+	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_MBEDTLS
+	help
+	  ustream SSL wrapper
+
+	  https://git.openwrt.org/?p=project/ustream-ssl.git;a=summary
+
+comment "ustream-ssl needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

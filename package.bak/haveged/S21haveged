@@ -1,0 +1,25 @@
+#!/bin/sh
+
+[ -x /usr/sbin/haveged ] || exit 0
+
+case "$1" in
+	start)
+		printf "Starting haveged: "
+		start-stop-daemon -S -x /usr/sbin/haveged -- -w 1024 -r 0
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		printf "Stopping haveged: "
+		start-stop-daemon -K -x /usr/sbin/haveged
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	restart|reload)
+		$0 stop
+		$0 start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit 0

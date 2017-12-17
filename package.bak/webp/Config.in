@@ -1,0 +1,18 @@
+config BR2_PACKAGE_WEBP
+	bool "webp"
+	help
+	  WebP is a new image format that provides lossless and lossy
+	  compression for images on the web
+
+	  https://developers.google.com/speed/webp/
+
+if BR2_PACKAGE_WEBP
+
+config BR2_PACKAGE_WEBP_DEMUX
+	bool "webpdemux"
+	help
+	  Demux is a part of WebPMux for extraction and manipulation
+	  of an extended format WebP file, which can have features
+	  like color profile, metadata and animation.
+
+endif

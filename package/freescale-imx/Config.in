@@ -2,8 +2,9 @@ menuconfig BR2_PACKAGE_FREESCALE_IMX
 	bool "Freescale i.MX libraries"
 	depends on BR2_arm
 	help
-	  Those packages provide hardware acceleration for GPU or VPU, hardware
-	  optimization or some hardware tools for Freescale i.MX platforms.
+	  Those packages provide hardware acceleration for GPU or VPU,
+	  hardware optimization or some hardware tools for Freescale
+	  i.MX platforms.
 
 if BR2_PACKAGE_FREESCALE_IMX
 choice
@@ -30,6 +31,9 @@ config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
 	bool "imx6q"
 
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6UL
+	bool "imx6ul"
+
 endchoice
 
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM
@@ -41,6 +45,7 @@ config BR2_PACKAGE_FREESCALE_IMX_PLATFORM
 	default "IMX51" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51
 	default "IMX53" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
 	default "IMX6Q" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+	default "IMX6UL" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6UL
 
 config BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 	bool

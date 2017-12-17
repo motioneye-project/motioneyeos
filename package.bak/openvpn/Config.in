@@ -1,0 +1,31 @@
+config BR2_PACKAGE_OPENVPN
+	bool "openvpn"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_OPENSSL
+	help
+	  OpenVPN is a full-featured SSL VPN solution which can
+	  accomodate a wide range of configurations, including road
+	  warrior access, home/office/campus telecommuting, WiFi
+	  security, secure branch office linking, and enterprise-scale
+	  remote access solutions with load balancing, failover, and
+	  fine-grained access-controls.
+
+	  http://openvpn.net/
+
+if BR2_PACKAGE_OPENVPN
+
+config BR2_PACKAGE_OPENVPN_LZO
+	bool "LZO compression"
+	default y
+	select BR2_PACKAGE_LZO
+	help
+	  Enable LZO compression.
+
+config BR2_PACKAGE_OPENVPN_SMALL
+	bool "Optimize for small size"
+	help
+	  Make OpenVPN as small as possible.
+	  You loose eurephia, debugging info, help messages and more.
+	  It saves around 100 KiB in binary file size.
+
+endif

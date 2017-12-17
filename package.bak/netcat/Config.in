@@ -1,0 +1,13 @@
+config BR2_PACKAGE_NETCAT
+	bool "netcat"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  Netcat is a featured networking utility which reads and writes data
+	  across network connections, using the TCP/IP protocol.
+	  It is designed to be a reliable "back-end" tool that can be used
+	  directly or easily driven by other programs and scripts. At the
+	  same time, it is a feature-rich network debugging and exploration
+	  tool, since it can create almost any kind of connection you would
+	  need and has several interesting built-in capabilities.
+
+	  http://netcat.sourceforge.net/download.php

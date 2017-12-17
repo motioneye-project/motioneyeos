@@ -1,0 +1,8 @@
+config BR2_PACKAGE_XAPP_XFS
+	bool "xfs"
+	select BR2_PACKAGE_XLIB_LIBFS
+	select BR2_PACKAGE_XLIB_LIBXFONT
+	select BR2_PACKAGE_XPROTO_FONTSPROTO
+	depends on BR2_USE_MMU # fork()
+	help
+	  X font server

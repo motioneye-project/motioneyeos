@@ -1,0 +1,13 @@
+config BR2_PACKAGE_DIFFUTILS
+	bool "diffutils"
+	depends on BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
+	help
+	  GNU diff. Compare files per line.
+
+	  http://www.gnu.org/software/diffutils/diffutils.html
+
+comment "diffutils needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

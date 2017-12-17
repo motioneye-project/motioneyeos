@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_WEBPY
+	bool "python-webpy"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  web.py is a web framework for Python that is as simple as it is
+	  powerful.
+
+	  http://webpy.org/

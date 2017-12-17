@@ -1,0 +1,241 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== Frequently Asked Questions & Troubleshooting
+
+[[faq-boot-hang-after-starting]]
+=== The boot hangs after 'Starting network...'
+
+If the boot process seems to hang after the following messages
+(messages not necessarily exactly similar, depending on the list of
+packages selected):
+
+------------------------
+Freeing init memory: 3972K
+Initializing random number generator... done.
+Starting network...
+Starting dropbear sshd: generating rsa key... generating dsa key... OK
+------------------------
+
+then it means that your system is running, but didn't start a shell on
+the serial console. In order to have the system start a shell on your
+serial console, you have to go into the Buildroot configuration, in
++System configuration+, modify +Run a getty (login prompt) after boot+
+and set the appropriate port and baud rate in the +getty options+
+submenu. This will automatically tune the +/etc/inittab+ file of the
+generated system so that a shell starts on the correct serial port.
+
+[[faq-no-compiler-on-target]]
+=== Why is there no compiler on the target?
+
+It has been decided that support for the _native compiler on the
+target_ would be stopped from the Buildroot-2012.11 release because:
+
+* this feature was neither maintained nor tested, and often broken;
+* this feature was only available for Buildroot toolchains;
+* Buildroot mostly targets _small_ or _very small_ target hardware
+  with limited resource onboard (CPU, ram, mass-storage), for which
+  compiling on the target does not make much sense;
+* Buildroot aims at easing the cross-compilation, making native
+  compilation on the target unnecessary.
+
+If you need a compiler on your target anyway, then Buildroot is not
+suitable for your purpose. In such case, you need a _real
+distribution_ and you should opt for something like:
+
+* http://www.openembedded.org[openembedded]
+* https://www.yoctoproject.org[yocto]
+* http://www.emdebian.org[emdebian]
+* https://fedoraproject.org/wiki/Architectures[Fedora]
+* http://en.opensuse.org/Portal:ARM[openSUSE ARM]
+* http://archlinuxarm.org[Arch Linux ARM]
+* ...
+
+[[faq-no-dev-files-on-target]]
+=== Why are there no development files on the target?
+
+Since there is no compiler available on the target (see
+xref:faq-no-compiler-on-target[]), it does not make sense to waste
+space with headers or static libraries.
+
+Therefore, those files are always removed from the target since the
+Buildroot-2012.11 release.
+
+[[faq-no-doc-on-target]]
+=== Why is there no documentation on the target?
+
+Because Buildroot mostly targets _small_ or _very small_ target
+hardware with limited resource onboard (CPU, ram, mass-storage), it
+does not make sense to waste space with the documentation data.
+
+If you need documentation data on your target anyway, then Buildroot
+is not suitable for your purpose, and you should look for a _real
+distribution_ (see: xref:faq-no-compiler-on-target[]).
+
+[[faq-why-not-visible-package]]
+=== Why are some packages not visible in the Buildroot config menu?
+
+If a package exists in the Buildroot tree and does not appear in the
+config menu, this most likely means that some of the package's
+dependencies are not met.
+
+To know more about the dependencies of a package, search for the
+package symbol in the config menu (see xref:make-tips[]).
+
+Then, you may have to recursively enable several options (which
+correspond to the unmet dependencies) to finally be able to select
+the package.
+
+If the package is not visible due to some unmet toolchain options,
+then you should certainly run a full rebuild (see xref:make-tips[] for
+more explanations).
+
+[[faq-why-not-use-target-as-chroot]]
+=== Why not use the target directory as a chroot directory?
+
+There are plenty of reasons to *not* use the target directory a chroot
+one, among these:
+
+* file ownerships, modes and permissions are not correctly set in the
+  target directory;
+* device nodes are not created in the target directory.
+
+For these reasons, commands run through chroot, using the target
+directory as the new root, will most likely fail.
+
+If you want to run the target filesystem inside a chroot, or as an NFS
+root, then use the tarball image generated in +images/+ and extract it
+as root.
+
+[[faq-no-binary-packages]]
+=== Why doesn't Buildroot generate binary packages (.deb, .ipkg...)?
+
+One feature that is often discussed on the Buildroot list is the
+general topic of "package management". To summarize, the idea
+would be to add some tracking of which Buildroot package installs
+what files, with the goals of:
+
+ * being able to remove files installed by a package when this package
+   gets unselected from the menuconfig;
+
+ * being able to generate binary packages (ipk or other format) that
+   can be installed on the target without re-generating a new root
+   filesystem image.
+
+In general, most people think it is easy to do: just track which package
+installed what and remove it when the package is unselected. However, it
+is much more complicated than that:
+
+ * It is not only about the +target/+ directory, but also the sysroot in
+   +host/<tuple>/sysroot+ and the +host/+ directory itself. All files
+   installed in those directories by various packages must be tracked.
+
+ * When a package is unselected from the configuration, it is not
+   sufficient to remove just the files it installed. One must also
+   remove all its reverse dependencies (i.e. packages relying on it)
+   and rebuild all those packages. For example, package A depends
+   optionally on the OpenSSL library. Both are selected, and Buildroot
+   is built. Package A is built with crypto support using OpenSSL.
+   Later on, OpenSSL gets unselected from the configuration, but
+   package A remains (since OpenSSL is an optional dependency, this
+   is possible.) If only OpenSSL files are removed, then the files
+   installed by package A are broken: they use a library that is no
+   longer present on the target. Although this is technically doable,
+   it adds a lot of complexity to Buildroot, which goes against the
+   simplicity we try to stick to.
+
+ * In addition to the previous problem, there is the case where the
+   optional dependency is not even known to Buildroot. For example,
+   package A in version 1.0 never used OpenSSL, but in version 2.0 it
+   automatically uses OpenSSL if available. If the Buildroot .mk file
+   hasn't been updated to take this into account, then package A will
+   not be part of the reverse dependencies of OpenSSL and will not be
+   removed and rebuilt when OpenSSL is removed. For sure, the .mk file
+   of package A should be fixed to mention this optional dependency,
+   but in the mean time, you can have non-reproducible behaviors.
+
+ * The request is to also allow changes in the menuconfig to be
+   applied on the output directory without having to rebuild
+   everything from scratch. However, this is very difficult to achieve
+   in a reliable way: what happens when the suboptions of a package
+   are changed (we would have to detect this, and rebuild the package
+   from scratch and potentially all its reverse dependencies), what
+   happens if toolchain options are changed, etc. At the moment, what
+   Buildroot does is clear and simple so its behaviour is very
+   reliable and it is easy to support users. If configuration changes
+   done in menuconfig are applied after the next make, then it has to
+   work correctly and properly in all situations, and not have some
+   bizarre corner cases. The risk is to get bug reports like "I have
+   enabled package A, B and C, then ran make, then disabled package
+   C and enabled package D and ran make, then re-enabled package C
+   and enabled package E and then there is a build failure". Or worse
+   "I did some configuration, then built, then did some changes,
+   built, some more changes, built, some more changes, built, and now
+   it fails, but I don't remember all the changes I did and in which
+   order". This will be impossible to support.
+
+For all these reasons, the conclusion is that adding tracking of
+installed files to remove them when the package is unselected, or to
+generate a repository of binary packages, is something that is very
+hard to achieve reliably and will add a lot of complexity.
+
+On this matter, the Buildroot developers make this position statement:
+
+ * Buildroot strives to make it easy to generate a root filesystem (hence
+   the name, by the way.) That is what we want to make Buildroot good at:
+   building root filesystems.
+
+ * Buildroot is not meant to be a distribution (or rather, a distribution
+   generator.) It is the opinion of most Buildroot developers that this
+   is not a goal we should pursue. We believe that there are other tools
+   better suited to generate a distro than Buildroot is. For example,
+   http://openembedded.org/[Open Embedded], or https://openwrt.org/[openWRT],
+   are such tools.
+
+ * We prefer to push Buildroot in a direction that makes it easy (or even
+   easier) to generate complete root filesystems. This is what makes
+   Buildroot stands out in the crowd (among other things, of course!)
+
+ * We believe that for most embedded Linux systems, binary packages are
+   not necessary, and potentially harmful. When binary packages are
+   used, it means that the system can be partially upgraded, which
+   creates an enormous number of possible combinations of package
+   versions that should be tested before doing the upgrade on the
+   embedded device. On the other hand, by doing complete system
+   upgrades by upgrading the entire root filesystem image at once,
+   the image deployed to the embedded system is guaranteed to really
+   be the one that has been tested and validated.
+
+[[faq-speeding-up-build]]
+=== How to speed-up the build process?
+
+Since Buildroot often involves doing full rebuilds of the entire
+system that can be quite long, we provide below a number of tips to
+help reduce the build time:
+
+ * Use a pre-built external toolchain instead of the default Buildroot
+   internal toolchain. By using a pre-built Linaro toolchain (on ARM)
+   or a Sourcery CodeBench toolchain (for ARM, x86, x86-64, MIPS,
+   etc.), you will save the build time of the toolchain at each
+   complete rebuild, approximately 15 to 20 minutes. Note that
+   temporarily using an external toolchain does not prevent you to
+   switch back to an internal toolchain (that may provide a higher
+   level of customization) once the rest of your system is working;
+
+ * Use the +ccache+ compiler cache (see: xref:ccache[]);
+
+ * Learn about rebuilding only the few packages you actually care
+   about (see xref:rebuild-pkg[]), but beware that sometimes full
+   rebuilds are anyway necessary (see xref:full-rebuild[]);
+
+ * Make sure you are not using a virtual machine for the Linux system
+   used to run Buildroot. Most of the virtual machine technologies are
+   known to cause a significant performance impact on I/O, which is
+   really important for building source code;
+
+ * Make sure that you're using only local files: do not attempt to do
+   a build over NFS, which significantly slows down the build. Having
+   the Buildroot download folder available locally also helps a bit.
+
+ * Buy new hardware. SSDs and lots of RAM are key to speeding up the
+   builds.

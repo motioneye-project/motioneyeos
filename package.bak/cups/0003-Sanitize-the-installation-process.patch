@@ -1,0 +1,131 @@
+From e35f809c435c224954a5c7bff3f5729c5b3bc0ba Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Thu, 21 Jan 2016 23:21:06 +0100
+Subject: [PATCH] Sanitize the installation process
+
+The installation process does two things that are not convenient when
+cross-compiling:
+
+ - It uses install's -s option to strip binaries, but this option uses
+   the host strip and not the cross strip, which fails at stripping
+   binaries. In addition, we do not necessarily want cups to strip its
+   binaries, we may want to keep the debugging symbols.
+
+ - It enforces ownership (user, group) which isn't possible since
+   "make install" isn't executed as root when cross-compiling.
+
+ - It installs many files and directories with permissions that
+   prevent overwriting those files/directories, which meant calling
+   "make install" twice was failing.
+
+[Vincent: tweak the patch for 2.2.2 release]
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ Makedefs.in        | 12 ++++++------
+ conf/Makefile      |  6 +++---
+ notifier/Makefile  |  2 +-
+ scheduler/Makefile | 15 +++++++--------
+ 4 files changed, 17 insertions(+), 18 deletions(-)
+
+diff --git a/Makedefs.in b/Makedefs.in
+index 3afef0a..3e4f1bd 100644
+--- a/Makedefs.in
++++ b/Makedefs.in
+@@ -40,14 +40,14 @@ SHELL		=	/bin/sh
+ # Installation programs...
+ #
+ 
+-INSTALL_BIN	=	$(LIBTOOL) $(INSTALL) -c -m 555 @INSTALL_STRIP@
+-INSTALL_COMPDATA =	$(INSTALL) -c -m 444 @INSTALL_GZIP@
++INSTALL_BIN	=	$(LIBTOOL) $(INSTALL) -c -m 755
++INSTALL_COMPDATA =	$(INSTALL) -c -m 644 @INSTALL_GZIP@
+ INSTALL_CONFIG	=	$(INSTALL) -c -m @CUPS_CONFIG_FILE_PERM@
+-INSTALL_DATA	=	$(INSTALL) -c -m 444
++INSTALL_DATA	=	$(INSTALL) -c -m 644
+ INSTALL_DIR	=	$(INSTALL) -d
+-INSTALL_LIB	=	$(LIBTOOL) $(INSTALL) -c -m 555 @INSTALL_STRIP@
+-INSTALL_MAN	=	$(INSTALL) -c -m 444
+-INSTALL_SCRIPT	=	$(INSTALL) -c -m 555
++INSTALL_LIB	=	$(LIBTOOL) $(INSTALL) -c -m 755
++INSTALL_MAN	=	$(INSTALL) -c -m 644
++INSTALL_SCRIPT	=	$(INSTALL) -c -m 755
+ 
+ #
+ # Default user, group, and system groups for the scheduler...
+diff --git a/conf/Makefile b/conf/Makefile
+index 933d7d9..6ac5e19 100644
+--- a/conf/Makefile
++++ b/conf/Makefile
+@@ -72,11 +72,11 @@ install:	all install-data install-headers install-libs install-exec
+ install-data:
+ 	for file in $(KEEP); do \
+ 		if test -r $(SERVERROOT)/$$file ; then \
+-			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.N ; \
++			$(INSTALL_CONFIG) $$file $(SERVERROOT)/$$file.N ; \
+ 		else \
+-			$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT) ; \
++			$(INSTALL_CONFIG) $$file $(SERVERROOT) ; \
+ 		fi ; \
+-		$(INSTALL_CONFIG) -g $(CUPS_GROUP) $$file $(SERVERROOT)/$$file.default; \
++		$(INSTALL_CONFIG) $$file $(SERVERROOT)/$$file.default; \
+ 	done
+ 	$(INSTALL_DIR) -m 755 $(DATADIR)/mime
+ 	for file in $(REPLACE); do \
+diff --git a/notifier/Makefile b/notifier/Makefile
+index 3206dd0..c34a4d7 100644
+--- a/notifier/Makefile
++++ b/notifier/Makefile
+@@ -62,7 +62,7 @@ install:	all install-data install-headers install-libs install-exec
+ #
+ 
+ install-data:
+-	$(INSTALL_DIR) -m 775 -g $(CUPS_GROUP) $(CACHEDIR)/rss
++	$(INSTALL_DIR) -m 775 $(CACHEDIR)/rss
+ 
+ 
+ #
+diff --git a/scheduler/Makefile b/scheduler/Makefile
+index 251f017..25f2f5f 100644
+--- a/scheduler/Makefile
++++ b/scheduler/Makefile
+@@ -146,28 +146,27 @@ install-data:
+ 	echo Creating $(SERVERBIN)/driver...
+ 	$(INSTALL_DIR) -m 755 $(SERVERBIN)/driver
+ 	echo Creating $(SERVERROOT)...
+-	$(INSTALL_DIR) -m 755 -g $(CUPS_GROUP) $(SERVERROOT)
++	$(INSTALL_DIR) -m 755 $(SERVERROOT)
+ 	echo Creating $(SERVERROOT)/ppd...
+-	$(INSTALL_DIR) -m 755 -g $(CUPS_GROUP) $(SERVERROOT)/ppd
++	$(INSTALL_DIR) -m 755 $(SERVERROOT)/ppd
+ 	if test "x`uname`" != xDarwin; then \
+ 		echo Creating $(SERVERROOT)/ssl...; \
+-		$(INSTALL_DIR) -m 700 -g $(CUPS_GROUP) $(SERVERROOT)/ssl; \
++		$(INSTALL_DIR) -m 700 $(SERVERROOT)/ssl; \
+ 	fi
+ 	if test "$(STATEDIR)" != "$(SERVERROOT)"; then \
+ 		echo Creating $(STATEDIR)...; \
+ 		$(INSTALL_DIR) -m 755 $(STATEDIR); \
+ 	fi
+ 	echo Creating $(STATEDIR)/certs...
+-	$(INSTALL_DIR) -m 511 -o $(CUPS_USER) -g $(CUPS_PRIMARY_SYSTEM_GROUP) \
+-		$(STATEDIR)/certs
++	$(INSTALL_DIR) -m 711 $(STATEDIR)/certs
+ 	echo Creating $(LOGDIR)...
+ 	$(INSTALL_DIR) -m 755 $(LOGDIR)
+ 	echo Creating $(REQUESTS)...
+-	$(INSTALL_DIR) -m 710 -g $(CUPS_GROUP) $(REQUESTS)
++	$(INSTALL_DIR) -m 710 $(REQUESTS)
+ 	echo Creating $(REQUESTS)/tmp...
+-	$(INSTALL_DIR) -m 1770 -g $(CUPS_GROUP) $(REQUESTS)/tmp
++	$(INSTALL_DIR) -m 1770 $(REQUESTS)/tmp
+ 	echo Creating $(CACHEDIR)...
+-	$(INSTALL_DIR) -m 770 -g $(CUPS_GROUP) $(CACHEDIR)
++	$(INSTALL_DIR) -m 770 $(CACHEDIR)
+ 	if test "x$(INITDIR)" != x; then \
+ 		echo Installing init scripts...; \
+ 		$(INSTALL_DIR) -m 755 $(BUILDROOT)$(INITDIR)/init.d; \
+-- 
+2.6.4
+

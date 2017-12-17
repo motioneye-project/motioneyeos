@@ -1,0 +1,3 @@
+# md5 from https://pypi.python.org/pypi/txaio/json, sha256 locally computed.
+md5	7b0f5321515d380ad5d32f01666b6ee7  txaio-2.5.1.tar.gz
+sha256	625076477182e2dde78b79d0b2b0d6b3cecb0e24fe0ea7eaf2abd26a4c0dd1de  txaio-2.5.1.tar.gz

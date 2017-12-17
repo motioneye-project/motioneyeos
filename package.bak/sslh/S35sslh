@@ -1,0 +1,48 @@
+#!/bin/sh
+#
+# Starts the SSLH server
+#
+
+# default setup : listen on port 8090 forward ssh traffic to
+# localhost:22 and http traffic to localhost:80
+SSLH_ARGS="--listen 0.0.0.0:8090 --ssh 127.0.0.1:22 --http 127.0.0.1:80"
+
+# Allow a few customizations from a config file (overrides
+# default setup)
+test -r /etc/default/sslh && . /etc/default/sslh
+
+start() {
+	SSLH_ARGS="$SSLH_ARGS --user root"
+	echo -n "Starting sslh: "
+	start-stop-daemon -S -q -p /var/run/sslh.pid \
+		--exec /usr/sbin/sslh -- $SSLH_ARGS
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+	printf "Stopping sslh: "
+	start-stop-daemon -K -q -p /var/run/sslh.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+  start)
+	start
+	;;
+  stop)
+	stop
+	;;
+  restart|reload)
+	restart
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac
+
+exit $?

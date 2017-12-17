@@ -1,6 +1,6 @@
 config BR2_PACKAGE_RPI_FIRMWARE
 	bool "rpi-firmware"
-	depends on BR2_arm
+	depends on BR2_arm || BR2_aarch64
 	help
 	  RaspberryPi Firmware
 	  Pre-compiled binaries of the current bootloader and GPU firmware
@@ -47,8 +47,8 @@ config BR2_PACKAGE_RPI_FIRMWARE_BOOT
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 	bool "Install Device Tree Blobs (DTBs)"
-	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
 	default y
+	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
 	help
 	  If you are using a Linux kernel <= 3.18, you should say 'y' here.
 
@@ -58,15 +58,16 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	bool "Install DTB overlays"
+	default y
 	depends on BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS \
 		|| BR2_LINUX_KERNEL_DTS_SUPPORT
-	default y
 	help
 	  Say 'y' here if you need to load one or more of the DTB overlays,
 	  to support HATs (Hardware Attached on Top, add-on modules).
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	bool "vcdbg"
+	depends on BR2_arm # prebuilt arm binary, rpi-userland
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_INSTALL_LIBSTDCPP # rpi-userland
 	select BR2_PACKAGE_RPI_USERLAND
@@ -74,6 +75,7 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	  Install vcdbg, to help debug communication with the GPU.
 
 comment "vcdbg needs a glibc toolchain w/ C++"
+	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_INSTALL_LIBSTDCPP
 
 endif # BR2_PACKAGE_RPI_FIRMWARE

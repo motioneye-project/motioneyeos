@@ -73,7 +73,7 @@ endef
 
 define HOST_ANDROID_TOOLS_INSTALL_CMDS
 	$(foreach t,$(HOST_ANDROID_TOOLS_TARGETS),\
-		$(INSTALL) -D -m 0755 $(@D)/build-$(t)/$(t) $(HOST_DIR)/usr/bin/$(t)$(sep))
+		$(INSTALL) -D -m 0755 $(@D)/build-$(t)/$(t) $(HOST_DIR)/bin/$(t)$(sep))
 endef
 
 define ANDROID_TOOLS_INSTALL_TARGET_CMDS

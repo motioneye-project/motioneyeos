@@ -1,0 +1,58 @@
+config BR2_PACKAGE_DROPBEAR
+	bool "dropbear"
+	select BR2_PACKAGE_ZLIB if !BR2_PACKAGE_DROPBEAR_SMALL
+	help
+	  A small SSH 2 server designed for small memory environments.
+
+	  Note that dropbear requires a per-device unique host key. The
+	  key will be generated when dropbear starts, but it is not
+	  persistent over reboot (if you have a read-only rootfs) or
+	  upgrade (if you have a read-write rootfs). To make the key
+	  persistent, replace /etc/dropbear with a symlink to a
+	  directory on a persistent, writeable filesystem.
+	  Alternatively, mount a persistent unionfs over your root
+	  filesystem.
+
+	  http://matt.ucc.asn.au/dropbear/dropbear.html
+
+if BR2_PACKAGE_DROPBEAR
+
+config BR2_PACKAGE_DROPBEAR_CLIENT
+	bool "client programs"
+	default y
+	help
+	  Provides the programs: dbclient, ssh
+
+	  Note that the following programs are also used server-side
+	  and are therefore always build regardless this setting:
+	  dropbear, dropbearkey, dropbearconvert, scp
+
+config BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS
+	bool "disable reverse DNS lookups"
+	help
+	  Disable reverse DNS lookups on connection. This can be handy
+	  on systems without working DNS, as connections otherwise
+	  stall until DNS times out.
+
+config BR2_PACKAGE_DROPBEAR_SMALL
+	bool "optimize for size"
+	default y
+	help
+	  Compile dropbear for the smallest possible binary size.
+
+	  Tradeoffs are slower hashes and ciphers, and disabling of the
+	  blowfish cipher and zlib.
+
+config BR2_PACKAGE_DROPBEAR_WTMP
+	bool "log dropbear access to wtmp"
+	help
+	  Enable logging of dropbear access to wtmp. Notice that
+	  Buildroot does not generate wtmp by default.
+
+config BR2_PACKAGE_DROPBEAR_LASTLOG
+	bool "log dropbear access to lastlog"
+	help
+	  Enable logging of dropbear access to lastlog. Notice that
+	  Buildroot does not generate lastlog by default.
+
+endif

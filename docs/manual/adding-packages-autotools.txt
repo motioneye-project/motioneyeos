@@ -1,0 +1,175 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for autotools-based packages
+
+[[autotools-package-tutorial]]
+
+==== +autotools-package+ tutorial
+
+First, let's see how to write a +.mk+ file for an autotools-based
+package, with an example :
+
+------------------------
+01: ################################################################################
+02: #
+03: # libfoo
+04: #
+05: ################################################################################
+06:
+07: LIBFOO_VERSION = 1.0
+08: LIBFOO_SOURCE = libfoo-$(LIBFOO_VERSION).tar.gz
+09: LIBFOO_SITE = http://www.foosoftware.org/download
+10: LIBFOO_INSTALL_STAGING = YES
+11: LIBFOO_INSTALL_TARGET = NO
+12: LIBFOO_CONF_OPTS = --disable-shared
+13: LIBFOO_DEPENDENCIES = libglib2 host-pkgconf
+14:
+15: $(eval $(autotools-package))
+------------------------
+
+On line 7, we declare the version of the package.
+
+On line 8 and 9, we declare the name of the tarball (xz-ed tarball recommended)
+and the location of the tarball on the Web. Buildroot will automatically
+download the tarball from this location.
+
+On line 10, we tell Buildroot to install the package to the staging
+directory. The staging directory, located in +output/staging/+
+is the directory where all the packages are installed, including their
+development files, etc. By default, packages are not installed to the
+staging directory, since usually, only libraries need to be installed in
+the staging directory: their development files are needed to compile
+other libraries or applications depending on them. Also by default, when
+staging installation is enabled, packages are installed in this location
+using the +make install+ command.
+
+On line 11, we tell Buildroot to not install the package to the
+target directory. This directory contains what will become the root
+filesystem running on the target. For purely static libraries, it is
+not necessary to install them in the target directory because they will
+not be used at runtime. By default, target installation is enabled; setting
+this variable to NO is almost never needed. Also by default, packages are
+installed in this location using the +make install+ command.
+
+On line 12, we tell Buildroot to pass a custom configure option, that
+will be passed to the +./configure+ script before configuring
+and building the package.
+
+On line 13, we declare our dependencies, so that they are built
+before the build process of our package starts.
+
+Finally, on line line 15, we invoke the +autotools-package+
+macro that generates all the Makefile rules that actually allows the
+package to be built.
+
+[[autotools-package-reference]]
+
+==== +autotools-package+ reference
+
+The main macro of the autotools package infrastructure is
++autotools-package+. It is similar to the +generic-package+ macro. The ability to
+have target and host packages is also available, with the
++host-autotools-package+ macro.
+
+Just like the generic infrastructure, the autotools infrastructure
+works by defining a number of variables before calling the
++autotools-package+ macro.
+
+First, all the package metadata information variables that exist in the
+generic infrastructure also exist in the autotools infrastructure:
++LIBFOO_VERSION+, +LIBFOO_SOURCE+,
++LIBFOO_PATCH+, +LIBFOO_SITE+,
++LIBFOO_SUBDIR+, +LIBFOO_DEPENDENCIES+,
++LIBFOO_INSTALL_STAGING+, +LIBFOO_INSTALL_TARGET+.
+
+A few additional variables, specific to the autotools infrastructure,
+can also be defined. Many of them are only useful in very specific
+cases, typical packages will therefore only use a few of them.
+
+* +LIBFOO_SUBDIR+ may contain the name of a subdirectory
+  inside the package that contains the configure script. This is useful,
+  if for example, the main configure script is not at the root of the
+  tree extracted by the tarball. If +HOST_LIBFOO_SUBDIR+ is
+  not specified, it defaults to +LIBFOO_SUBDIR+.
+
+* +LIBFOO_CONF_ENV+, to specify additional environment
+  variables to pass to the configure script. By default, empty.
+
+* +LIBFOO_CONF_OPTS+, to specify additional configure
+  options to pass to the configure script. By default, empty.
+
+* +LIBFOO_MAKE+, to specify an alternate +make+
+  command. This is typically useful when parallel make is enabled in
+  the configuration (using +BR2_JLEVEL+) but that this
+  feature should be disabled for the given package, for one reason or
+  another. By default, set to +$(MAKE)+. If parallel building
+  is not supported by the package, then it should be set to
+  +LIBFOO_MAKE=$(MAKE1)+.
+
+* +LIBFOO_MAKE_ENV+, to specify additional environment
+  variables to pass to make in the build step. These are passed before
+  the +make+ command. By default, empty.
+
+* +LIBFOO_MAKE_OPTS+, to specify additional variables to
+  pass to make in the build step. These are passed after the
+  +make+ command. By default, empty.
+
+* +LIBFOO_AUTORECONF+, tells whether the package should
+  be autoreconfigured or not (i.e. if the configure script and
+  Makefile.in files should be re-generated by re-running autoconf,
+  automake, libtool, etc.). Valid values are +YES+ and
+  +NO+. By default, the value is +NO+
+
+* +LIBFOO_AUTORECONF_ENV+, to specify additional environment
+  variables to pass to the 'autoreconf' program if
+  +LIBFOO_AUTORECONF=YES+. These are passed in the environment of
+  the 'autoreconf' command. By default, empty.
+
+* +LIBFOO_AUTORECONF_OPTS+ to specify additional options
+  passed to the 'autoreconf' program if
+  +LIBFOO_AUTORECONF=YES+. By default, empty.
+
+* +LIBFOO_GETTEXTIZE+, tells whether the package should be
+  gettextized or not (i.e. if the package uses a different gettext
+  version than Buildroot provides, and it is needed to run
+  'gettextize'.) Only valid when +LIBFOO_AUTORECONF=YES+. Valid
+  values are +YES+ and +NO+. The default is +NO+.
+
+* +LIBFOO_GETTEXTIZE_OPTS+, to specify additional options passed to
+  the 'gettextize' program, if +LIBFOO_GETTEXTIZE=YES+. You may
+  use that if, for example, the +.po+ files are not located in the
+  standard place (i.e. in +po/+ at the root of the package.) By
+  default, '-f'.
+
+* +LIBFOO_LIBTOOL_PATCH+ tells whether the Buildroot
+  patch to fix libtool cross-compilation issues should be applied or
+  not. Valid values are +YES+ and +NO+. By
+  default, the value is +YES+
+
+* +LIBFOO_INSTALL_STAGING_OPTS+ contains the make options
+  used to install the package to the staging directory. By default, the
+  value is +DESTDIR=$(STAGING_DIR) install+, which is
+  correct for most autotools packages. It is still possible to override
+  it.
+
+* +LIBFOO_INSTALL_TARGET_OPTS+ contains the make options
+  used to install the package to the target directory. By default, the
+  value is +DESTDIR=$(TARGET_DIR) install+. The default
+  value is correct for most autotools packages, but it is still possible
+  to override it if needed.
+
+With the autotools infrastructure, all the steps required to build
+and install the packages are already defined, and they generally work
+well for most autotools-based packages. However, when required, it is
+still possible to customize what is done in any particular step:
+
+* By adding a post-operation hook (after extract, patch, configure,
+  build or install). See xref:hooks[] for details.
+
+* By overriding one of the steps. For example, even if the autotools
+  infrastructure is used, if the package +.mk+ file defines its
+  own +LIBFOO_CONFIGURE_CMDS+ variable, it will be used
+  instead of the default autotools one. However, using this method
+  should be restricted to very specific cases. Do not use it in the
+  general case.

@@ -1,0 +1,46 @@
+config BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	bool
+	# see HOWTO/INSTALL.md for Erlang's supported platforms
+	# when using its native atomic ops implementation
+	default y if BR2_i386 || BR2_x86_64 || BR2_powerpc || \
+		BR2_sparc_v9 || BR2_arm || BR2_aarch64 || BR2_mipsel
+
+comment "erlang needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_ERLANG
+	bool "erlang"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	help
+	  Erlang is a programming language used to build massively scalable
+	  soft real-time systems with requirements on high availability.
+	  Some of its uses are in telecoms, banking, e-commerce, computer
+	  telephony and instant messaging. Erlang's runtime system has
+	  built-in support for concurrency, distribution and fault tolerance.
+
+	  http://www.erlang.org
+
+if BR2_PACKAGE_ERLANG
+
+config BR2_PACKAGE_ERLANG_SMP
+	bool "enable SMP support"
+	help
+	  Erlang provides both a UP and an SMP emulator. The UP emulator
+	  is always built, and this option enables compilation of the SMP
+	  emulator. The choice of which emulator to use is made at runtime.
+	  If you do not need SMP support, turning this option off reduces
+	  compile time and the size of the Erlang installation.
+
+config BR2_PACKAGE_ERLANG_MEGACO
+	bool "install megaco application"
+	help
+	  The Megaco application is a framework for building applications
+	  on top of the Megaco/H.248 protocol. It is approximately 14MB in
+	  size so if you do not need it then it is recommended not to
+	  enable it.
+
+endif # BR2_PACKAGE_ERLANG

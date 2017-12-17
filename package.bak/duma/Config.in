@@ -1,0 +1,29 @@
+config BR2_PACKAGE_DUMA
+	bool "duma"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# By design, duma uses page mapping to isolate
+	# allocations. Non-MMU platforms cannot perform such
+	# things.
+	depends on BR2_USE_MMU
+	# duma works using LD_PRELOAD, so it always needs to build a
+	# shared library
+	depends on !BR2_STATIC_LIBS
+	help
+	  D.U.M.A. - Detect Unintended Memory Access. A fork of the
+	  Electric Fence library. Detects buffer overflow and
+	  underflow, and also memory leaks.
+
+	  http://duma.sourceforge.net
+
+if BR2_PACKAGE_DUMA
+
+config BR2_PACKAGE_DUMA_NO_LEAKDETECTION
+	bool "disable memory leak detection"
+
+endif # BR2_PACKAGE_DUMA
+
+comment "duma needs a toolchain w/ C++, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS

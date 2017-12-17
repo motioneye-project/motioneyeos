@@ -1,0 +1,6 @@
+config BR2_PACKAGE_XAPP_XFSINFO
+	bool "xfsinfo"
+	select BR2_PACKAGE_XLIB_LIBFS
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  X font server information utility

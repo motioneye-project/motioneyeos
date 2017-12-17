@@ -1,7 +1,9 @@
 config BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
 	bool
-	# libbsd does not support the MicroBlaze ELF machine type (see local-elf.h)
-	default y if !BR2_microblaze
+	default y
+	# libbsd does not support those architectures (see src/local-elf.h)
+	depends on !BR2_microblaze
+	depends on !BR2_arc
 
 config BR2_PACKAGE_LIBBSD
 	bool "libbsd"

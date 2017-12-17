@@ -1,0 +1,4 @@
+config BR2_PACKAGE_FIS
+	bool "fis"
+	help
+	  fis - manipulate RedBoot partition table from Linux.

@@ -1,0 +1,106 @@
+config BR2_PACKAGE_LIBIIO
+	bool "libiio"
+	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND if !BR2_PACKAGE_LIBIIO_XML_BACKEND
+	help
+	  Libiio is a library to ease the development of software
+	  interfacing Linux Industrial I/O (IIO) devices.
+
+	  http://wiki.analog.com/resources/tools-software/linux-software/libiio
+
+if BR2_PACKAGE_LIBIIO
+
+config BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
+	bool "Local backend"
+	default y
+	help
+	  Enable the local backend of the library.
+
+config BR2_PACKAGE_LIBIIO_XML_BACKEND
+	bool "XML backend"
+	select BR2_PACKAGE_LIBXML2
+	default y
+	help
+	  Enable the XML backend of the library.
+
+config BR2_PACKAGE_LIBIIO_NETWORK_BACKEND
+	bool "Network backend"
+	select BR2_PACKAGE_LIBIIO_XML_BACKEND
+	default y
+	help
+	  Enable the network backend of the library.
+
+config BR2_PACKAGE_LIBIIO_USB_BACKEND
+	bool "USB backend"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # from libusb
+	select BR2_PACKAGE_LIBIIO_XML_BACKEND
+	select BR2_PACKAGE_LIBUSB
+	default y
+	help
+	  Enable the USB backend of the library.
+
+comment "The USB backend needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBIIO_SERIAL_BACKEND
+	bool "Serial backend"
+	select BR2_PACKAGE_LIBIIO_XML_BACKEND
+	select BR2_PACKAGE_LIBSERIALPORT
+	default y
+	help
+	  Enable the serial backend of the library.
+
+config BR2_PACKAGE_LIBIIO_IIOD
+	bool "IIO Daemon"
+	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_bfin
+	default y
+	help
+	  Install the IIO Daemon.
+
+config BR2_PACKAGE_LIBIIO_IIOD_USBD
+	bool "USB support in the IIO Daemon (FunctionFS)"
+	depends on BR2_PACKAGE_LIBIIO_IIOD
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18 # usb_functionfs_descs_head_v2
+	select BR2_PACKAGE_LIBAIO
+	help
+	  Add support for USB through FunctionFS with IIOD.
+
+comment "USB support in the IIO Daemon requires libaio, headers >= 3.18"
+	depends on BR2_PACKAGE_LIBIIO_IIOD
+	depends on !BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS || \
+		   !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+
+comment "IIO Daemon needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_bfin
+
+comment "IIO Daemon is not yet available on Blackfin"
+	depends on BR2_bfin
+
+config BR2_PACKAGE_LIBIIO_TESTS
+	bool "Install test programs"
+	select BR2_PACKAGE_LIBIIO_LOCAL_BACKEND
+	select BR2_PACKAGE_LIBIIO_XML_BACKEND
+	select BR2_PACKAGE_LIBIIO_NETWORK_BACKEND
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Install the test programs (iio_info, iio_genxml, iio_readdev).
+
+comment "IIO test programs need a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBIIO_BINDINGS_CSHARP
+	bool "Install C# bindings"
+	depends on BR2_PACKAGE_MONO
+	help
+	  Install the C# bindings.
+
+config BR2_PACKAGE_LIBIIO_BINDINGS_PYTHON
+	bool "Install Python bindings"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Install the Python bindings.
+
+endif

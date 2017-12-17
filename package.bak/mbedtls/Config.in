@@ -1,0 +1,32 @@
+config BR2_PACKAGE_MBEDTLS
+	bool "mbedtls"
+	help
+	  mbed TLS (formerly known as PolarSSL) makes it trivially easy
+	  for developers to include cryptographic and SSL/TLS
+	  capabilities in their (embedded) products, facilitating this
+	  functionality with a minimal coding footprint.
+
+	  https://tls.mbed.org/
+
+if BR2_PACKAGE_MBEDTLS
+
+config BR2_PACKAGE_MBEDTLS_PROGRAMS
+	bool "mbedtls programs"
+	depends on BR2_USE_MMU # fork()
+	help
+	  This option enables the installation and the build of
+	  mbed TLS companion programs.
+
+config BR2_PACKAGE_MBEDTLS_COMPRESSION
+	bool "enable compression support"
+	select BR2_PACKAGE_ZLIB
+	help
+	  Enable support for compression of the content data before it
+	  enters the secure channel as described in RFC 3749.
+	  
+	  Warning: TLS compression may make you vulnerable to the CRIME
+	  attack. You should not enable it unless you know for sure CRIME
+	  and similar attacks are not applicable to your particular
+	  situation.
+
+endif

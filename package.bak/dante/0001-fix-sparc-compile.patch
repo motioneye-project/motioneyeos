@@ -1,0 +1,24 @@
+Signal handling for sparc is broken, fix it.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+--- dante-1.4.1.orig/lib/tostring.c	2014-08-21 18:21:50.000000000 +0200
++++ dante-1.4.1/lib/tostring.c	2016-07-10 10:08:39.785662622 +0200
+@@ -1526,7 +1526,7 @@ signal2string(sig)
+          return "SIGKILL";
+ #endif /* SIGKILL */
+ 
+-#if (defined SIGLOST) && (!defined SIGABRT || SIGLOST != SIGABRT)
++#if (defined SIGLOST) && (!defined SIGABRT || SIGLOST != SIGABRT || SIGLOST != SIGPWR)
+       case SIGLOST:
+          return "SIGLOST";
+ #endif /* SIGLOST */
+@@ -1551,7 +1551,7 @@ signal2string(sig)
+          return "SIGPROF";
+ #endif /* SIGPROF */
+ 
+-#ifdef SIGPWR
++#if (defined SIGPWR) && SIGPWR != SIGLOST
+       case SIGPWR:
+          return "SIGPWR";
+ #endif /* SIGPWR */

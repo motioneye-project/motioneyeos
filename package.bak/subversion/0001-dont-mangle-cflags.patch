@@ -1,0 +1,24 @@
+[PATCH] configure.ac: don't mangle CFLAGS
+
+Ensure that the sed expression to strip debugging options from CFLAGS
+doesn't mangle flags like -mfloat-gprs=double, breaking the build.
+
+[Vincent: adapt to 1.9.2 and patch configure.ac instead of configure]
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -Nrup a/configure.ac b/configure.ac
+--- a/configure.ac	2015-07-27 00:03:10.000000000 +0100
++++ b/configure.ac	2015-09-28 10:33:39.175048493 +0100
+@@ -1110,8 +1110,8 @@ if test "$enable_debugging" = "yes" ; th
+   CXXFLAGS="$CXXFLAGS -DSVN_DEBUG -DAP_DEBUG"
+ elif test "$enable_debugging" = "no" ; then
+   AC_MSG_NOTICE([Disabling debugging])
+-  CFLAGS=["`echo $CFLAGS' ' | $SED -e 's/-g[0-9] //g' -e 's/-g //g'`"]
+-  CXXFLAGS=["`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9] //g' -e 's/-g //g'`"]
++  CFLAGS=["`echo $CFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"]
++  CXXFLAGS=["`echo $CXXFLAGS' ' | $SED -e 's/-g[0-9]* //g'`"]
+   dnl Compile with NDEBUG to get rid of assertions
+   CFLAGS="$CFLAGS -DNDEBUG"
+   CXXFLAGS="$CXXFLAGS -DNDEBUG"

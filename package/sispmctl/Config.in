@@ -1,10 +1,10 @@
 config BR2_PACKAGE_SISPMCTL
 	bool "sispmctl"
-	select BR2_PACKAGE_LIBUSB
-	select BR2_PACKAGE_LIBUSB_COMPAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	depends on BR2_USE_WCHAR
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBUSB_COMPAT
 	help
 	  sispmctl is an application enabling the use of the GEMBIRD
 	  SiS-PM and mSiS(sispm) USB-controlled power-outlet device

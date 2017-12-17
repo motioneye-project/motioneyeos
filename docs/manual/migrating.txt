@@ -1,0 +1,58 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[migrating-from-ol-versions]]
+== Migrating from older Buildroot versions
+
+Some versions have introduced backward incompatibilities. This section
+explains those incompatibilities, and for each explains what to do to
+complete the migration.
+
+[[br2-external-converting]]
+=== Migrating to 2016.11
+
+Before Buildroot 2016.11, it was possible to use only one br2-external
+tree at once. With Buildroot 2016.11 came the possibility to use more
+than one simultaneously (for details, see xref:outside-br-custom[]).
+
+This however means that older br2-external trees are not usable as-is.
+A minor change has to be made: adding a name to your br2-external tree.
+
+This can be done very easily in just a few steps:
+
+ * First, create a new file named +external.desc+, at the root of your
+   br2-external tree, with a single line defining the name of your
+   br2-external tree:
++
+----
+$ echo 'name: NAME_OF_YOUR_TREE' >external.desc
+----
++
+.Note
+Be careful when choosing a name: It has to be unique and be made
+with only ASCII characters from the set +[A-Za-z0-9_]+.
+
+ * Then, change every occurence of +BR2_EXTERNAL+ in your br2-external
+   tree with the new variable:
++
+----
+$ find . -type f | xargs sed -i 's/BR2_EXTERNAL/BR2_EXTERNAL_NAME_OF_YOUR_TREE_PATH/g'
+----
+
+Now, your br2-external tree can be used with Buildroot 2016.11 onward.
+
+.Note:
+This change makes your br2-external tree incompatible with Buildroot
+before 2016.11.
+
+[[migrating-host-usr]]
+=== Migrating to 2017.08
+
+Before Buildroot 2017.08, host packages were installed in +$(HOST_DIR)/usr+
+(with e.g. the autotools' +--prefix=$(HOST_DIR)/usr+). With Buildroot
+2017.08, they are now installed directly in +$(HOST_DIR)+.
+
+Whenever a package installs an executable that is linked with a library
+in +$(HOST_DIR)/lib+, it must have an RPATH pointing to that directory.
+
+An RPATH pointing to +$(HOST_DIR)/usr/lib+ is no longer accepted.

@@ -1,0 +1,83 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for packages using kconfig for configuration files
+
+A popular way for a software package to handle user-specified
+configuration is +kconfig+. Among others, it is used by the Linux
+kernel, Busybox, and Buildroot itself. The presence of a .config file
+and a +menuconfig+ target are two well-known symptoms of kconfig being
+used.
+
+Buildroot features an infrastructure for packages that use kconfig for
+their configuration. This infrastructure provides the necessary logic to
+expose the package's +menuconfig+ target as +foo-menuconfig+ in
+Buildroot, and to handle the copying back and forth of the configuration
+file in a correct way.
+
+The +kconfig-package+ infrastructure is based on the +generic-package+
+infrastructure. All variables supported by +generic-package+ are
+available in +kconfig-package+ as well. See
+xref:generic-package-reference[] for more details.
+
+In order to use the +kconfig-package+ infrastructure for a Buildroot
+package, the minimally required lines in the +.mk+ file, in addition to
+the variables required by the +generic-package+ infrastructure, are:
+
+------------------------------
+FOO_KCONFIG_FILE = reference-to-source-configuration-file
+
+$(eval $(kconfig-package))
+------------------------------
+
+This snippet creates the following make targets:
+
+* +foo-menuconfig+, which calls the package's +menuconfig+ target
+
+* +foo-update-config+, which copies the configuration back to the
+  source configuration file. It is not possible to use this target
+  when fragment files are set.
+
+* +foo-update-defconfig+, which copies the configuration back to the
+  source configuration file. The configuration file will only list the
+  options that differ from the default values. It is not possible to
+  use this target when fragment files are set.
+
+and ensures that the source configuration file is copied to the build
+directory at the right moment.
+
+There are two options to specify a configuration file to use, either
++FOO_KCONFIG_FILE+ (as in the example, above) or +FOO_KCONFIG_DEFCONFIG+.
+It is mandatory to provide either, but not both:
+
+* +FOO_KCONFIG_FILE+ specifies the path to a defconfig or full-config file
+  to be used to configure the package.
+
+* +FOO_KCONFIG_DEFCONFIG+ specifies the defconfig 'make' rule to call to
+  configure the package.
+
+In addition to these minimally required lines, several optional variables can
+be set to suit the needs of the package under consideration:
+
+* +FOO_KCONFIG_EDITORS+: a space-separated list of kconfig editors to
+  support, for example 'menuconfig xconfig'. By default, 'menuconfig'.
+
+* +FOO_KCONFIG_FRAGMENT_FILES+: a space-separated list of configuration
+  fragment files that are merged to the main configuration file.
+  Fragment files are typically used when there is a desire to stay in sync
+  with an upstream (def)config file, with some minor modifications.
+
+* +FOO_KCONFIG_OPTS+: extra options to pass when calling the kconfig
+  editors. This may need to include '$(FOO_MAKE_OPTS)', for example. By
+  default, empty.
+
+* +FOO_KCONFIG_FIXUP_CMDS+: a list of shell commands needed to fixup the
+  configuration file after copying it or running a kconfig editor. Such
+  commands may be needed to ensure a configuration consistent with other
+  configuration of Buildroot, for example. By default, empty.
+
+* +FOO_KCONFIG_DOTCONFIG+: path (with filename) of the +.config+ file,
+  relative to the package source tree. The default, +.config+, should
+  be well suited for all packages that use the standard kconfig
+  infrastructure as inherited from the Linux kernel; some packages use
+  a derivative of kconfig that use a different location.

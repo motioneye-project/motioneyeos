@@ -1,4 +1,7 @@
-Fix AM_PATH_LIBGCRYPT not found
+From cb47c1da9c4a8f69662f9c17497aeeb8a922d41a Mon Sep 17 00:00:00 2001
+From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+Date: Fri, 28 Jul 2017 07:13:51 -0400
+Subject: [PATCH] Fix AM_PATH_LIBGCRYPT not found
 
 This patch installs a copy of libgcrypt.m4 from the libgcrypt source tarball
 to systemd m4 directory.
@@ -15,10 +18,18 @@ machine or adding libgcrypt as a build dependency to systemd is not
 acceptable, the required file is added to the m4 directory.
 
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-Index: systemd-213/m4/libgcrypt.m4
-===================================================================
---- /dev/null	1970-01-01 00:00:00.000000000 +0000
-+++ systemd-213/m4/libgcrypt.m4	2014-06-11 10:41:11.749305509 +0200
+[Adam: Refresh for 234]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ m4/libgcrypt.m4 | 123 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 123 insertions(+)
+ create mode 100644 m4/libgcrypt.m4
+
+diff --git a/m4/libgcrypt.m4 b/m4/libgcrypt.m4
+new file mode 100644
+index 0000000..831dc0c
+--- /dev/null
++++ b/m4/libgcrypt.m4
 @@ -0,0 +1,123 @@
 +dnl Autoconf macros for libgcrypt
 +dnl       Copyright (C) 2002, 2004 Free Software Foundation, Inc.
@@ -143,3 +154,6 @@ Index: systemd-213/m4/libgcrypt.m4
 +  AC_SUBST(LIBGCRYPT_CFLAGS)
 +  AC_SUBST(LIBGCRYPT_LIBS)
 +])
+-- 
+2.13.3
+

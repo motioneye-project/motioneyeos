@@ -1,0 +1,14 @@
+config BR2_PACKAGE_TIME
+	bool "time"
+	depends on BR2_USE_MMU # fork()
+	# See https://savannah.gnu.org/bugs/index.php?48000
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  The GNU time utility.
+
+	  http://savannah.gnu.org/projects/time/
+
+comment "time needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

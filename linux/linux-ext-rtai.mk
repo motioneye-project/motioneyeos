@@ -20,8 +20,8 @@ endif
 define RTAI_PREPARE_KERNEL
 	kver=`$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) --no-print-directory -s kernelversion` ; \
 	if test -f $(RTAI_DIR)/base/arch/$(RTAI_ARCH)/patches/hal-linux-$${kver}-*patch ; then \
-		$(APPLY_PATCHES) $(LINUX_DIR)		 		\
-			$(RTAI_DIR)/base/arch/$(RTAI_ARCH)/patches/ 	\
+		$(APPLY_PATCHES) $(LINUX_DIR)				\
+			$(RTAI_DIR)/base/arch/$(RTAI_ARCH)/patches/	\
 			hal-linux-$${kver}-*patch ; \
 	else \
 		echo "No RTAI patch for your kernel version" ; \

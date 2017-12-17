@@ -1,0 +1,7 @@
+config BR2_PACKAGE_CJSON
+	bool "cJSON"
+	help
+	  An ultra-lightweight, portable, single-file, simple-as-can-be ANSI-C
+	  compliant JSON parser, under MIT license.
+
+	  https://github.com/DaveGamble/cJSON

@@ -1,0 +1,35 @@
+config BR2_PACKAGE_SDL2
+	bool "sdl2"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Simple DirectMedia Layer 2 - SDL2 is a library that allows
+	  programs portable low level access to a video framebuffer,
+	  audio output, mouse, and keyboard. It is not compatible with
+	  SDL1.
+
+	  http://www.libsdl.org/
+
+if BR2_PACKAGE_SDL2
+
+config BR2_PACKAGE_SDL2_DIRECTFB
+	bool "DirectFB video driver"
+	depends on BR2_PACKAGE_DIRECTFB
+
+comment "DirectFB video driver needs directfb"
+	depends on !BR2_PACKAGE_DIRECTFB
+
+config BR2_PACKAGE_SDL2_X11
+	bool "X11 video driver"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXEXT
+
+comment "X11 video driver needs X.org"
+	depends on !BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU
+
+endif
+
+comment "sdl2 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

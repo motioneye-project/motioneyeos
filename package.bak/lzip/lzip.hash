@@ -1,0 +1,4 @@
+# From http://lists.nongnu.org/archive/html/lzip-bug/2016-06/msg00002.html
+sha1	ef42f3209d02c3b3c217a61c8f127bcb8747b128	lzip-1.18.tar.gz
+# Locally calculated after checking pgp signature
+sha256	47f9882a104ab05532f467a7b8f4ddbb898fa2f1e8d9d468556d6c2d04db14dd	lzip-1.18.tar.gz

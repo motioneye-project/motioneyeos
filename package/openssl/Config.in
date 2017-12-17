@@ -1,28 +1,86 @@
+config BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
+	bool
+
 config BR2_PACKAGE_OPENSSL
+	bool "openssl support"
+	select BR2_PACKAGE_HAS_OPENSSL
+	help
+	  Select the desired ssl library provider.
+
+if BR2_PACKAGE_OPENSSL
+
+choice
+	prompt "ssl library"
+	default BR2_PACKAGE_LIBOPENSSL
+	help
+	  Select OpenSSL or LibreSSL.
+
+config BR2_PACKAGE_LIBOPENSSL
 	bool "openssl"
 	select BR2_PACKAGE_ZLIB
 	help
-	  A collaborative effort to develop a robust, commercial-grade, fully
-	  featured, and Open Source toolkit implementing the Secure Sockets
-	  Layer (SSL v2/v3) and Transport Security (TLS v1) as well as a
-	  full-strength general-purpose cryptography library.
+	  A collaborative effort to develop a robust, commercial-grade,
+	  fully featured, and Open Source toolkit implementing the
+	  Secure Sockets Layer (SSL v2/v3) and Transport Security
+	  (TLS v1) as well as a full-strength general-purpose
+	  cryptography library.
 
 	  http://www.openssl.org/
 
 	  Note: Some helper scripts need perl.
 
-if BR2_PACKAGE_OPENSSL
+if BR2_PACKAGE_LIBOPENSSL
 
-config BR2_PACKAGE_OPENSSL_BIN
+config BR2_PACKAGE_LIBOPENSSL_BIN
 	bool "openssl binary"
 	help
-	  Install the openssl binary and the associated helper scripts to the
-	  target file system. This is a command line tool for doing various
-	  cryptographic stuff.
+	  Install the openssl binary and the associated helper scripts
+	  to the target file system. This is a command line tool for
+	  doing various cryptographic stuff.
 
-config BR2_PACKAGE_OPENSSL_ENGINES
+config BR2_PACKAGE_LIBOPENSSL_ENGINES
 	bool "openssl additional engines"
 	help
 	  Install additional encryption engine libraries.
 
 endif
+
+config BR2_PACKAGE_LIBRESSL
+	bool "libressl"
+	depends on !BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
+	# uClibc on noMMU doesn't provide __register_atfork()
+	depends on !(BR2_TOOLCHAIN_USES_UCLIBC && !BR2_USE_MMU)
+	help
+	  LibreSSL is a version of the TLS/crypto stack forked from
+	  OpenSSL in 2014, with goals of modernizing the codebase,
+	  improving security, and applying best practice development
+	  processes.
+
+	  http://www.libressl.org/
+
+if BR2_PACKAGE_LIBRESSL
+
+config BR2_PACKAGE_LIBRESSL_BIN
+	bool "openssl binary"
+	help
+	  Install the openssl binary to the target file system. This is
+	  a command line tool for doing various cryptographic stuff.
+
+endif
+
+endchoice
+
+config BR2_PACKAGE_HAS_OPENSSL
+	bool
+
+config BR2_PACKAGE_PROVIDES_OPENSSL
+	string
+	default "libopenssl"  if BR2_PACKAGE_LIBOPENSSL
+	default "libressl"  if BR2_PACKAGE_LIBRESSL
+
+endif
+
+# ensure libopenssl is used for the host variant
+config BR2_PACKAGE_PROVIDES_HOST_OPENSSL
+	string
+	default "host-libopenssl"

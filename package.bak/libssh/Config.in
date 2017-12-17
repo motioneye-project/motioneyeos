@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBSSH
+	bool "libssh"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	# Either OpenSSL or libgcrypt are mandatory
+	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_LIBGCRYPT
+	help
+	  libssh is a multiplatform C library implementing the SSHv2
+	  and SSHv1 protocol on client and server side. With libssh,
+	  you can remotely execute programs, transfer files, use a
+	  secure and transparent tunnel for your remote applications.
+
+	  http://www.libssh.org/
+
+comment "libssh needs a toolchain w/ dynamic library, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

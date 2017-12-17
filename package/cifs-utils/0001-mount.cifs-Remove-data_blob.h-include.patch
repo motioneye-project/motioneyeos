@@ -1,0 +1,32 @@
+From 272d523a57a4e8791d625a479128613be5e401f5 Mon Sep 17 00:00:00 2001
+From: Thomas Witt <pyromaniac@exherbo.org>
+Date: Wed, 15 Mar 2017 20:20:44 +0000
+Subject: [PATCH] mount.cifs: Remove data_blob.h include
+
+data_blob.h includes talloc.h from libtalloc, but that is only marked as
+a dependency for cifs.upcall. No symbols from that header are used by
+cifs.mount, so remove it to avoid the libtalloc dependency
+
+Signed-off-by: Thomas Witt <pyromaniac@exherbo.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 272d523a57a4
+
+ mount.cifs.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/mount.cifs.c b/mount.cifs.c
+index 13b71ef50303..2612feb4d591 100644
+--- a/mount.cifs.c
++++ b/mount.cifs.c
+@@ -61,7 +61,6 @@
+ #include "mount.h"
+ #include "util.h"
+ #include "resolve_host.h"
+-#include "data_blob.h"
+ 
+ #ifndef MS_MOVE 
+ #define MS_MOVE 8192 
+-- 
+2.11.0
+

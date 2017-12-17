@@ -1,0 +1,15 @@
+config BR2_PACKAGE_GIT_CRYPT
+	bool "git-crypt"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU # git
+	select BR2_PACKAGE_GIT # runtime
+	select BR2_PACKAGE_OPENSSL
+	help
+	  git-crypt enables transparent encryption and decryption of
+	  files in a git repository.
+
+	  https://www.agwa.name/projects/git-crypt/
+
+comment "git-crypt needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_MMU

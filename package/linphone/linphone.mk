@@ -13,7 +13,7 @@ LINPHONE_CONF_OPTS = \
 LINPHONE_AUTORECONF = YES
 LINPHONE_INSTALL_STAGING = YES
 LINPHONE_DEPENDENCIES = host-pkgconf libeXosip2 speex
-LINPHONE_LICENSE = GPLv2+
+LINPHONE_LICENSE = GPL-2.0+
 LINPHONE_LICENSE_FILES = COPYING
 LINPHONE_PATCH = \
 	https://sources.debian.net/data/main/l/linphone/3.6.1-2.5/debian/patches/libav9.patch \
@@ -48,6 +48,13 @@ LINPHONE_CONF_OPTS += --enable-libv4l1 --enable-libv4l2
 LINPHONE_DEPENDENCIES += libv4l
 else
 LINPHONE_CONF_OPTS += --disable-libv4l1 --disable-libv4l2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBUPNP),y)
+LINPHONE_DEPENDENCIES += libupnp
+LINPHONE_CONF_OPTS += --enable-upnp
+else
+LINPHONE_CONF_OPTS += --disable-upnp
 endif
 
 $(eval $(autotools-package))

@@ -1,0 +1,104 @@
+Fetched from: http://sourceforge.net/p/trousers/mailman/message/34728585/
+Upstream status: Submitted
+
+From 924cbdfc67ca405aa4df2f9d3787365618b58630 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Wed, 30 Dec 2015 00:06:33 +0100
+Subject: [PATCH] Makefile.am: make sure libintl is in LDFLAGS when needed
+
+The build-system internally builds a couple of static libraries used to
+build the final programs.
+
+When linking these libraries and the final programs, we need to
+explicitly tell libtool to link with libintl in order to resolve all the
+missing symbols.
+
+This is done in the appropriate LDADD/LIBADD variables (or the per-target
+*_LDADD/*_LIBADD ones when they do not default to LDADD or LIBADD), for
+any sources using gettext/libintl functionalities.
+
+This change fixes build failures [2,3] in cross-compilation, triggered by
+Buildroot buildfarms [1].
+
+[1] http://autobuild.buildroot.org/
+[2] http://autobuild.buildroot.org/?reason=tpm-tools-1.3.8
+[3] http://autobuild.buildroot.org/results/c82/c82a6c1f41c561b15f10e7b7ffcaed15fa0ec895/build-end.log
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ lib/Makefile.am           | 6 +++---
+ src/cmds/Makefile.am      | 2 +-
+ src/data_mgmt/Makefile.am | 2 +-
+ src/tpm_mgmt/Makefile.am  | 2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index cef6a2f..c1d7009 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -44,7 +44,7 @@ libtpm_utils_la_SOURCES	=	tpm_utils.c \
+ #
+ # TSPI interface library
+ libtpm_tspi_la_SOURCES	=	tpm_tspi.c
+-libtpm_tspi_la_LIBADD	=	libtpm_utils.la -ldl
++libtpm_tspi_la_LIBADD	=	libtpm_utils.la -ldl @INTLLIBS@
+ 
+ #
+ # PKCS#11 interface library
+@@ -52,7 +52,7 @@ if P11_SUPPORT
+ noinst_LTLIBRARIES	+=	libtpm_pkcs11.la
+ 
+ libtpm_pkcs11_la_SOURCES=	tpm_pkcs11.c
+-libtpm_pkcs11_la_LIBADD	=	libtpm_utils.la
++libtpm_pkcs11_la_LIBADD	=	libtpm_utils.la @INTLLIBS@
+ endif
+ 
+ #
+@@ -80,4 +80,4 @@ endif
+ # Unseal library - for addition to existing apps, counter part of seal cmd
+ libtpm_unseal_la_SOURCES =	tpm_unseal.c
+ libtpm_unseal_la_LDFLAGS =	-shared -version-info 1:0:0
+-libtpm_unseal_la_LIBADD  =	-ltspi  libtpm_tspi.la
++libtpm_unseal_la_LIBADD  =	-ltspi  libtpm_tspi.la @INTLLIBS@
+diff --git a/src/cmds/Makefile.am b/src/cmds/Makefile.am
+index de73ecf..27fc9ef 100644
+--- a/src/cmds/Makefile.am
++++ b/src/cmds/Makefile.am
+@@ -30,7 +30,7 @@ else
+ AM_CPPFLAGS	=	-I$(top_srcdir)/include -D_LINUX
+ endif
+ 
+-LDADD		=	$(top_builddir)/lib/libtpm_tspi.la -ltspi $(top_builddir)/lib/libtpm_unseal.la -ltpm_unseal -lcrypto
++LDADD		=	$(top_builddir)/lib/libtpm_tspi.la -ltspi $(top_builddir)/lib/libtpm_unseal.la -ltpm_unseal -lcrypto @INTLLIBS@
+ 
+ tpm_sealdata_SOURCES = tpm_sealdata.c
+ tpm_unsealdata_SOURCES = tpm_unsealdata.c
+diff --git a/src/data_mgmt/Makefile.am b/src/data_mgmt/Makefile.am
+index f8bf41c..de505e4 100644
+--- a/src/data_mgmt/Makefile.am
++++ b/src/data_mgmt/Makefile.am
+@@ -38,7 +38,7 @@ noinst_HEADERS =	data_common.h \
+ # Common build flags
+ AM_CPPFLAGS	=	-I$(top_srcdir)/include -D_LINUX
+ 
+-LDADD		=	$(top_builddir)/lib/libtpm_pkcs11.la -ltspi -ldl
++LDADD		=	$(top_builddir)/lib/libtpm_pkcs11.la -ltspi -ldl @INTLLIBS@
+ 
+ 
+ #
+diff --git a/src/tpm_mgmt/Makefile.am b/src/tpm_mgmt/Makefile.am
+index 195fba9..7ca47c9 100644
+--- a/src/tpm_mgmt/Makefile.am
++++ b/src/tpm_mgmt/Makefile.am
+@@ -55,7 +55,7 @@ else
+ AM_CPPFLAGS	=	-I$(top_srcdir)/include -D_LINUX
+ endif
+ 
+-LDADD		=	$(top_builddir)/lib/libtpm_tspi.la -ltspi
++LDADD		=	$(top_builddir)/lib/libtpm_tspi.la -ltspi @INTLLIBS@
+ 
+ tpm_startup_SOURCES =		tpm_startup.c
+ tpm_reset_SOURCES =		tpm_reset.c
+-- 
+2.6.4
+

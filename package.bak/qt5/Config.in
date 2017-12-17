@@ -1,0 +1,84 @@
+config BR2_PACKAGE_QT5_GL_AVAILABLE
+	bool
+	depends on BR2_PACKAGE_HAS_LIBGL || BR2_PACKAGE_HAS_LIBGLES
+	default y
+
+config BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	bool
+	# Javascript engine is only available on certain architectures
+	depends on BR2_arm || BR2_i386 || BR2_x86_64 || BR2_mipsel
+	# ARM needs BLX, so v5t+
+	depends on !BR2_ARM_CPU_ARMV4
+	default y
+
+comment "Qt5 needs a toolchain w/ wchar, NPTL, C++, dynamic library"
+	depends on !BR2_PACKAGE_QT
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+
+menuconfig BR2_PACKAGE_QT5
+	bool "Qt5"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT5BASE
+	help
+	  This option enables the Qt5 framework. Sub-options allow to
+	  select which modules should be built.
+
+	  http://qt.io
+
+if BR2_PACKAGE_QT5
+
+choice
+	prompt "Qt5 version"
+
+config BR2_PACKAGE_QT5_VERSION_LATEST
+	bool "Latest (5.8)"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
+	depends on !BR2_ARM_CPU_ARMV4 # needs ARMv5+
+	# no built-in double-conversion support
+	depends on !BR2_arc && !BR2_nios2 && !BR2_xtensa
+	help
+	  This option builds Qt 5.8, which is licensed under
+	  (L)GPLv3+.
+
+comment "Latest Qt version needs host/toolchain w/ gcc >= 4.8"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_HOST_GCC_AT_LEAST_4_8
+	depends on !BR2_ARM_CPU_ARMV4
+	depends on !BR2_arc && !BR2_nios2 && !BR2_xtensa
+
+config BR2_PACKAGE_QT5_VERSION_5_6
+	bool "LTS (5.6)"
+	help
+	  This option builds Qt 5.6, which is licensed under
+	  (L)GPLv2+.
+
+endchoice
+
+source "package/qt5/qt53d/Config.in"
+source "package/qt5/qt5base/Config.in"
+source "package/qt5/qt5canvas3d/Config.in"
+source "package/qt5/qt5connectivity/Config.in"
+source "package/qt5/qt5declarative/Config.in"
+source "package/qt5/qt5enginio/Config.in"
+source "package/qt5/qt5graphicaleffects/Config.in"
+source "package/qt5/qt5imageformats/Config.in"
+source "package/qt5/qt5location/Config.in"
+source "package/qt5/qt5multimedia/Config.in"
+source "package/qt5/qt5quickcontrols/Config.in"
+source "package/qt5/qt5quickcontrols2/Config.in"
+source "package/qt5/qt5script/Config.in"
+source "package/qt5/qt5sensors/Config.in"
+source "package/qt5/qt5serialbus/Config.in"
+source "package/qt5/qt5serialport/Config.in"
+source "package/qt5/qt5svg/Config.in"
+source "package/qt5/qt5tools/Config.in"
+source "package/qt5/qt5webchannel/Config.in"
+source "package/qt5/qt5webkit/Config.in"
+source "package/qt5/qt5websockets/Config.in"
+source "package/qt5/qt5x11extras/Config.in"
+source "package/qt5/qt5xmlpatterns/Config.in"
+endif

@@ -5,10 +5,10 @@ config BR2_PACKAGE_IPERF3
 	  iperf is a tool for active measurements of the maximum
 	  achievable bandwidth on IP networks.
 	  It supports tuning of various parameters related to timing,
-	  protocols, and buffers. For each test it reports the bandwidth,
-	  loss, and other parameters.
-	  It's a redesign of the NLANR/DAST iperf(2) and is not
-	  backward compatible.
+	  protocols, and buffers. For each test it reports the
+	  bandwidth, loss, and other parameters.
+	  It's a redesign of the NLANR/DAST iperf(2) and is not backward
+	  compatible.
 
 	  http://software.es.net/iperf/index.html
 

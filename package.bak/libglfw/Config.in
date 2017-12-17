@@ -1,0 +1,16 @@
+config BR2_PACKAGE_LIBGLFW
+	bool "libglfw"
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_HAS_LIBGL
+	select BR2_PACKAGE_XLIB_LIBXCURSOR
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXINERAMA
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	help
+	  GLFW is an Open Source, multi-platform library for creating
+	  windows with OpenGL contexts and receiving input and events.
+
+	  http://www.glfw.org
+
+comment "libglfw depends on X.org and needs an OpenGL backend"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_HAS_LIBGL

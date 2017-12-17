@@ -1,0 +1,19 @@
+This patch uses system include files instead of a hard coded system path to fixe
+potential compilation failure on systems that do not populate system header
+files in /usr/include/..
+
+Signed-off-by: Eric Jarrige <eric.jarrige@armadeus.org>
+---
+Index: host-elftosb-10.12.01/common/stdafx.h
+===================================================================
+--- host-elftosb-10.12.01.orig/common/stdafx.h	2012-01-30 12:43:35.000000000 +0100
++++ host-elftosb-10.12.01/common/stdafx.h	2012-01-30 12:43:54.000000000 +0100
+@@ -27,7 +27,7 @@
+ // For Linux systems only, types.h only defines the signed
+ // integer types.  This is not professional code.
+ // Update: They are defined in the header files in the more recent version of redhat enterprise gcc.
+-#include "/usr/include/sys/types.h"
++#include <sys/types.h>
+ #include <stdint.h>
+ //typedef unsigned long uint32_t;
+ //typedef unsigned short uint16_t;

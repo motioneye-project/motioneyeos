@@ -1,0 +1,29 @@
+From da0969b26ad4bb839bcb88362c8f41aaf0eb8363 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 11 Oct 2016 12:05:36 +0200
+Subject: [PATCH] client/ups: add missing include
+
+struct timeval is declared in sys/time.h, so we need to #include it.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+Backported from upstream commit da0969b26ad4bb839bcb88362c8f41aaf0eb8363
+---
+ clients/upsclient.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/clients/upsclient.c b/clients/upsclient.c
+index 43c0e79..dfadd0d 100644
+--- a/clients/upsclient.c
++++ b/clients/upsclient.c
+@@ -37,6 +37,7 @@
+ #include <netinet/in.h>
+ #include <arpa/inet.h>
+ #include <fcntl.h>
++#include <sys/time.h>
+ 
+ #include "upsclient.h"
+ #include "common.h"
+-- 
+2.7.4
+

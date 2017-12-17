@@ -1,0 +1,32 @@
+From a8fd708ce89d5ffb64a5e8873d49a55094dde898 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Mon, 2 Oct 2017 10:16:36 -0500
+Subject: [PATCH] strongswan: add missing include of stdint.h
+
+Recent releases of glibc don't include the full stdint.h
+header in some network headers included by utils.h.
+Upstream is targetting a 5.6.1 release of the fix.
+
+Ustream: https://wiki.strongswan.org/issues/2425
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ src/libstrongswan/utils/utils/memory.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/libstrongswan/utils/utils/memory.h b/src/libstrongswan/utils/utils/memory.h
+index aef318f..c11624d 100644
+--- a/src/libstrongswan/utils/utils/memory.h
++++ b/src/libstrongswan/utils/utils/memory.h
+@@ -14,6 +14,8 @@
+  * for more details.
+  */
+ 
++#include <stdint.h> /* for uintptr_t */
++
+ /**
+  * @defgroup memory_i memory
+  * @{ @ingroup utils_i
+-- 
+1.9.1
+

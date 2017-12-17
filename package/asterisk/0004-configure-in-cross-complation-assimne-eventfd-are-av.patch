@@ -1,0 +1,37 @@
+From e7de812c979d219765fbf1292f0e150bfa087716 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 18 Jun 2017 21:54:16 +0200
+Subject: [PATCH] configure: in cross-complation, assume eventfd are available
+
+eventfd have been in the kernel since 2.6.22, and in glibc since 2.8,
+repectively released in July 2007 and April 2008, almost a decade ago
+now.
+
+Assume that no one building from now on for cross-compilation will be
+unlucky enough to get versions older than that...
+
+As such, in cross-compilation, assume eventfd are available.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure.ac | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 1c20517864..474d17ae55 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1107,7 +1107,9 @@ AC_RUN_IFELSE(
+       [return eventfd(0, EFD_NONBLOCK | EFD_SEMAPHORE) == -1;])],
+   AC_MSG_RESULT(yes)
+   AC_DEFINE([HAVE_EVENTFD], 1, [Define to 1 if your system supports eventfd and the EFD_NONBLOCK and EFD_SEMAPHORE flags.]),
+-  AC_MSG_RESULT(no)
++  AC_MSG_RESULT(no),
++  AC_MSG_RESULT([cross-compile; assume yes])
++  AC_DEFINE([HAVE_EVENTFD], 1, [Define to 1 if your system supports eventfd and the EFD_NONBLOCK and EFD_SEMAPHORE flags.])
+ )
+ 
+ AST_GCC_ATTRIBUTE(pure)
+-- 
+2.11.0
+

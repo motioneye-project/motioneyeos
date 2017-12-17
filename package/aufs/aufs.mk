@@ -5,7 +5,7 @@
 ################################################################################
 
 AUFS_VERSION = $(call qstrip,$(BR2_PACKAGE_AUFS_VERSION))
-AUFS_LICENSE = GPLv2
+AUFS_LICENSE = GPL-2.0
 AUFS_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_AUFS_SERIES),3)

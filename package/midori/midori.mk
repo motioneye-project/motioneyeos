@@ -7,7 +7,7 @@
 MIDORI_VERSION = 0.5.11
 MIDORI_SOURCE = midori_$(MIDORI_VERSION)_all_.tar.bz2
 MIDORI_SITE = http://midori-browser.org/downloads
-MIDORI_LICENSE = LGPLv2.1+
+MIDORI_LICENSE = LGPL-2.1+
 MIDORI_LICENSE_FILES = COPYING
 MIDORI_DEPENDENCIES = \
 	host-intltool \
@@ -22,7 +22,7 @@ MIDORI_DEPENDENCIES = \
 	libxml2 \
 	sqlite \
 	webkitgtk \
-	$(if $(BR2_NEEDS_GETTEXT_IF_LOCALE),gettext) \
+	$(TARGET_NLS_DEPENDENCIES) \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 MIDORI_CONF_OPTS = \

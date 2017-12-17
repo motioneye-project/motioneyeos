@@ -1,0 +1,56 @@
+comment "linux-zigbee needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+
+config BR2_PACKAGE_LINUX_ZIGBEE
+	bool "linux-zigbee"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
+	help
+	  IEEE 802.15.4 is a standard for communication in small
+	  low-rate wireless personal area networks (WPAN). While
+	  802.15.4 is a MAC- and PHY- layer standard only, several
+	  common protocols commonly sit on top of it such as ZigBee,
+	  MiWi, and 6LoWPAN. The goal of this project is to create an
+	  implementation of 802.15.4 and several of the protocols
+	  which run on top of it (primarily 6LoWPAN) for Linux.
+
+	  It's worth noting that the name linux-zigbee is somewhat of
+	  a misnomer. While this project was originally started to
+	  create a ZigBee implementation for Linux, licensing
+	  restrictions put in place by the ZigBee Alliance make it
+	  impossible for an implementation of ZigBee to ever become
+	  part of the Linux kernel. Once this licensing issue was
+	  discovered, this project's primary focus shifted to IEEE
+	  802.15.4 and 6LoWPAN. Other higher-layer standards may be
+	  added at a future time.
+
+	  The 802.15.4 stack contains kernel components, which are
+	  part of the mainline Linux kernel, and userspace components,
+	  available in this package.
+
+	  http://sourceforge.net/apps/trac/linux-zigbee/
+
+if BR2_PACKAGE_LINUX_ZIGBEE
+
+config BR2_PACKAGE_LINUX_ZIGBEE_TESTS
+	bool "tests programs"
+	help
+	  Enable this option to install the Linux-ZigBee test programs
+	  to the target.
+
+
+config BR2_PACKAGE_LINUX_ZIGBEE_OLD_KERNEL_COMPAT
+	bool "compatibility with older kernels"
+	help
+	  Enable this option to get compatibility of the Linux-ZigBee
+	  userspace tools with old kernels. Recent kernels know the
+	  802.15.4 line discipline as N_IEEE802154 with the value 25,
+	  but some older kernels had it with the values 22 or 19.
+
+config BR2_PACKAGE_LINUX_ZIGBEE_LEASEFILE
+	string "path for persistent lease storage"
+	default "/var/run/izcoordinator.leases"
+
+endif

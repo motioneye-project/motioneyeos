@@ -1,0 +1,15 @@
+config BR2_PACKAGE_LUA_SAILOR
+	bool "lua-sailor"
+	# These are runtime dependencies
+	select BR2_PACKAGE_CGILUA
+	select BR2_PACKAGE_LBASE64
+	select BR2_PACKAGE_LUAFILESYSTEM
+	select BR2_PACKAGE_LUA_DATAFILE
+	select BR2_PACKAGE_LUA_VALUA
+	select BR2_PACKAGE_XAVANTE
+	select BR2_PACKAGE_WSAPI_XAVANTE
+	help
+	  Sailor is a web framework written in Lua that follows the MVC
+	  design pattern.
+
+	  http://sailorproject.org/

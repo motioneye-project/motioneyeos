@@ -8,7 +8,6 @@ config BR2_PACKAGE_MIRACLECAST
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_READLINE
-	select BR2_PACKAGE_SYSTEMD_KDBUS
 	help
 	  The MiracleCast project provides software to connect external
 	  monitors to your system via Wifi. It is compatible to the

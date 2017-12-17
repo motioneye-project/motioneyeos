@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_SHUTILWHICH
+	bool "python-shutilwhich"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  shutil.which for those not using Python 3.3 yet.
+
+	  https://pypi.python.org/pypi/shutilwhich/

@@ -1,0 +1,11 @@
+config BR2_PACKAGE_KODI_SCREENSAVER_MATRIXTRAILS
+	bool "kodi-screensaver-matrixtrails"
+	depends on BR2_PACKAGE_HAS_LIBGL # libsoil
+	select BR2_PACKAGE_LIBSOIL
+	help
+	  Matrix trails screensaver for Kodi
+
+	  https://github.com/notspiff/screensaver.matrixtrails
+
+comment "kodi-screensaver-matrixtrails needs OpenGL"
+	depends on !BR2_PACKAGE_HAS_LIBGL

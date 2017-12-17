@@ -1,2 +1,4 @@
 # Locally calculated
 sha256	bb2748eaed6164812555b4a1e186c4f2820c5ef9ce30f12d7aac28a452719bbd	ussp-push-0.11.tar.gz
+# License files, locally calculated
+sha256	204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994	COPYING

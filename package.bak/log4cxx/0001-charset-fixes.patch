@@ -1,0 +1,43 @@
+Fix build when iconv support is not available
+
+When iconv support is not available, the apr-util library does not
+provide character set conversion features, and therefore APR_HAS_XLATE
+is false.
+
+However, on Linux !defined(_WIN32) is always true, but the part of the
+code that defines the APRCharsetDecoder and APRCharsetEncoder are only
+enclosed in a #if APR_HAS_XLATE, without the "|| defined(_WIN32)"
+which leads to build failures: the APRCharsetEncoder and
+APRCharsetDecoder classes are used without being defined.
+
+This patch removes the || !defined(_WIN32) so that when iconv support
+is not here, we fall back to raising an exception at runtime.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/src/main/cpp/charsetdecoder.cpp
+===================================================================
+--- a/src/main/cpp/charsetdecoder.cpp
++++ b/src/main/cpp/charsetdecoder.cpp
+@@ -476,7 +476,7 @@
+         StringHelper::equalsIgnoreCase(charset, LOG4CXX_STR("ISO-LATIN-1"), LOG4CXX_STR("iso-latin-1"))) {
+         return new ISOLatinCharsetDecoder();
+     }
+-#if APR_HAS_XLATE || !defined(_WIN32)
++#if APR_HAS_XLATE
+     return new APRCharsetDecoder(charset);
+ #else    
+     throw IllegalArgumentException(charset);
+Index: b/src/main/cpp/charsetencoder.cpp
+===================================================================
+--- a/src/main/cpp/charsetencoder.cpp
++++ b/src/main/cpp/charsetencoder.cpp
+@@ -484,7 +484,7 @@
+     } else if (StringHelper::equalsIgnoreCase(charset, LOG4CXX_STR("UTF-16LE"), LOG4CXX_STR("utf-16le"))) {
+         return new UTF16LECharsetEncoder();
+     }
+-#if APR_HAS_XLATE || !defined(_WIN32)
++#if APR_HAS_XLATE
+     return new APRCharsetEncoder(charset);
+ #else    
+     throw IllegalArgumentException(charset);

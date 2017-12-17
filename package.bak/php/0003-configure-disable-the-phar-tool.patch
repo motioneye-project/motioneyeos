@@ -1,0 +1,39 @@
+From 5ba6355e489f647c88ca48afbc75965468193181 Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Tue, 9 Aug 2016 11:51:53 +0200
+Subject: [PATCH] configure: disable the 'phar' tool
+
+Disable the 'phar' command-line tool build/installation since it requires
+php to run and pack up phar itself in phar format. This would require
+a host-php instance and really probably nobody needs the phar tool
+on the target.
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Gustavo: update for autoreconf/configure.in]
+---
+ configure.in | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 25c8abf..4dc8a09 100644
+--- a/configure.in
++++ b/configure.in
+@@ -1445,13 +1445,8 @@ CFLAGS="\$(CFLAGS_CLEAN) $standard_libtool_flag"
+ INLINE_CFLAGS="$INLINE_CFLAGS $standard_libtool_flag"
+ CXXFLAGS="$CXXFLAGS $standard_libtool_flag \$(PROF_FLAGS)"
+ 
+-if test "$PHP_PHAR" != "no" && test "$PHP_CLI" != "no"; then
+-  pharcmd=pharcmd
+-  pharcmd_install=install-pharcmd
+-else
+-  pharcmd=
+-  pharcmd_install=
+-fi;
++pharcmd=
++pharcmd_install=
+ 
+ all_targets="$lcov_target \$(OVERALL_TARGET) \$(PHP_MODULES) \$(PHP_ZEND_EX) \$(PHP_BINARIES) $pharcmd"
+ install_targets="$install_sapi $install_modules $install_binaries install-build install-headers install-programs $install_pear $pharcmd_install"
+-- 
+2.7.4
+

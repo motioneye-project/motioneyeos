@@ -1,0 +1,68 @@
+config BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
+	bool
+	default y
+	depends on BR2_USE_MMU
+	depends on BR2_arm || BR2_aarch64 || BR2_x86_64
+	depends on !BR2_ARM_CPU_ARMV4 && !BR2_ARM_CPU_ARMV7M
+
+menuconfig BR2_PACKAGE_XVISOR
+	bool "xvisor"
+	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  Xvisor is an open-source type-1 hypervisor, which aims at providing
+	  a monolithic, light-weight, portable, and flexible virtualization
+	  solution.
+
+	  http://www.xhypervisor.org/
+
+if BR2_PACKAGE_XVISOR
+
+choice
+	prompt "Xvisor configuration"
+	default BR2_PACKAGE_XVISOR_USE_DEFCONFIG
+
+config BR2_PACKAGE_XVISOR_USE_DEFCONFIG
+	bool "Using an in-tree defconfig file"
+
+config BR2_PACKAGE_XVISOR_USE_CUSTOM_CONFIG
+	bool "Using a custom (def)config file"
+
+endchoice
+
+config BR2_PACKAGE_XVISOR_DEFCONFIG
+	string "Defconfig name"
+	depends on BR2_PACKAGE_XVISOR_USE_DEFCONFIG
+	default "generic-v5" if BR2_ARM_CPU_ARMV5
+	default "generic-v6" if BR2_ARM_CPU_ARMV6
+	default "generic-v7" if BR2_ARM_CPU_ARMV7A
+	default "generic-v8" if BR2_AARCH64
+	default "x86_64_generic" if BR2_x86_64
+	help
+	  Name of the Xvisor defconfig file to use, without the
+	  trailing -defconfig. The defconfig is located in
+	  arch/<arch>/configs in the source tree.
+
+config BR2_PACKAGE_XVISOR_CUSTOM_CONFIG_FILE
+	string "Configuration file path"
+	depends on BR2_PACKAGE_XVISOR_USE_CUSTOM_CONFIG
+	help
+	  Path to the Xvisor configuration file
+
+config BR2_PACKAGE_XVISOR_CREATE_UBOOT_IMAGE
+	bool "Create U-Boot image of Xvisor"
+	depends on BR2_arm
+	select BR2_PACKAGE_HOST_UBOOT_TOOLS
+	help
+	  Create an image file of Xvisor loadable from Das U-Boot.
+
+config BR2_PACKAGE_XVISOR_BUILD_TEST_DTB
+	bool "Build test device-tree blobs"
+	help
+	  Build test device-tree blobs for popular boards.
+
+endif
+
+comment "xvisor needs a toolchain w/ gcc >= 4.9"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS

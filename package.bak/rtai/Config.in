@@ -1,0 +1,8 @@
+config BR2_PACKAGE_RTAI
+	bool "rtai"
+	depends on BR2_LINUX_KERNEL_EXT_RTAI
+	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
+	help
+	  RTAI - the RealTime Application Interface for Linux.
+
+	  http://www.rtai.org
