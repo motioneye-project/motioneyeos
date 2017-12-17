@@ -1,7 +1,0 @@
-config BR2_PACKAGE_KODI_PVR_MEDIAPORTAL_TVSERVER
-	bool "kodi-pvr-mediaportal-tvserver"
-	select BR2_PACKAGE_KODI_PLATFORM
-	help
-	  MediaPortal TVServer PVR client addon for Kodi
-
-	  https://github.com/kodi-pvr/pvr.mediaportal.tvserver

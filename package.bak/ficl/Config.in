@@ -1,9 +1,0 @@
-config BR2_PACKAGE_FICL
-	bool "ficl"
-	help
-	  Ficl is a programming language interpreter designed to be embedded
-	  into other systems as a command, macro, and development
-	  prototyping language.
-	  Ficl is an acronym for "Forth Inspired Command Language".
-
-	  http://ficl.sourceforge.net

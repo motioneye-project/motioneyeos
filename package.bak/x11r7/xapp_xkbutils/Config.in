@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_XKBUTILS
-	bool "xkbutils"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	select BR2_PACKAGE_XLIB_LIBXKBFILE
-	help
-	  X.Org xkbutils application

@@ -1,4 +1,0 @@
-# From http://sourceforge.net/projects/faac/files/faad2-src/faad2-2.7/ (used by upstream):
-sha1	80eaaa5cc576c35dd28863767b795c50cbcc0511  faad2-2.7.tar.gz
-# Locally computed
-sha256  ee26ed1e177c0cd8fa8458a481b14a0b24ca0b51468c8b4c8b676fd3ceccd330  faad2-2.7.tar.gz

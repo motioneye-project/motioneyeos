@@ -1,9 +1,0 @@
-config BR2_PACKAGE_TWOLAME
-	bool "twolame"
-	select BR2_PACKAGE_LIBSNDFILE
-	help
-	  TwoLAME is an optimised MPEG Audio Layer 2 (MP2) encoder based on
-	  tooLAME by Mike Cheng, which in turn is based upon the ISO dist10
-	  code and portions of LAME.
-
-	  http://www.twolame.org/

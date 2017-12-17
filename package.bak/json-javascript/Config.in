@@ -1,6 +1,0 @@
-config BR2_PACKAGE_JSON_JAVASCRIPT
-	bool "json-javascript"
-	help
-	  JSON in JavaScript
-
-	  https://github.com/douglascrockford/JSON-js/

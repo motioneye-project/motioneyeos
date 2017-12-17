@@ -1,7 +1,0 @@
-config BR2_PACKAGE_HOST_LPC3250LOADER
-	bool "host lpc3250loader"
-	help
-	  lpc3250loader is a tool to load/burn programs (in particular kickstart
-	  and S1L) on an LPC3250 platform.
-
-	  https://github.com/alexandrebelloni/lpc3250loader

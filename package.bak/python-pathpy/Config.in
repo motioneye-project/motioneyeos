@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_PATHPY
-	bool "python-pathpy"
-	help
-	  path.py implements a path objects as first-class
-	  entities, allowing common operations on files to
-	  be invoked on those path objects directly.
-
-	  https://github.com/jaraco/path.py

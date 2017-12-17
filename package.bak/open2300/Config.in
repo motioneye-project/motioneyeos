@@ -1,7 +1,0 @@
-config BR2_PACKAGE_OPEN2300
-	bool "open2300"
-	help
-	  open2300 reads (and writes) data from a Lacrosse
-	  WS2300/WS2305/WS2310/WS2315 Weather Station
-
-	  http://www.lavrsen.dk/foswiki/bin/view/Open2300/WebHome

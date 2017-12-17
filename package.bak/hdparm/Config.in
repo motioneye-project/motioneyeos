@@ -1,7 +1,0 @@
-config BR2_PACKAGE_HDPARM
-	bool "hdparm"
-	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	help
-	  hdparm - get/set hard disk parameters for Linux IDE drives.
-
-	  http://www.ibiblio.org/pub/Linux/system/hardware/

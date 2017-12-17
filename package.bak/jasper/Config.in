@@ -1,6 +1,0 @@
-config BR2_PACKAGE_JASPER
-	bool "jasper"
-	help
-	  JPEG-2000 decoder
-
-	  http://www.ece.uvic.ca/~mdadams/jasper/

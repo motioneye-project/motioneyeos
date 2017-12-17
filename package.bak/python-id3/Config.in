@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_ID3
-	bool "python-id3"
-	depends on BR2_PACKAGE_PYTHON
-	help
-	  This module allows one to read and manipulate so-called ID3
-	  informational tags on MP3 files through an object-oriented
-	  Python interface.
-
-	  http://id3-py.sourceforge.net/

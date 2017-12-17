@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LUA_COAT
-	bool "lua-coat"
-	help
-	  Yet Another Lua Object-Oriented Model
-
-	  http://fperrad.github.io/lua-Coat/

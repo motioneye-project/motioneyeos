@@ -1,8 +1,0 @@
-config BR2_PACKAGE_MTR
-	bool "mtr"
-	depends on BR2_USE_MMU # fork()
-	help
-	  mtr combines the functionality of the 'traceroute' and 'ping'
-	  programs in a single network diagnostic tool.
-
-	  http://www.bitwizard.nl/mtr/

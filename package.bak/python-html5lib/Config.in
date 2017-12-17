@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_HTML5LIB
-	bool "python-html5lib"
-	help
-	  HTML parser based on the WHATWG HTML specification.
-
-	  https://github.com/html5lib/html5lib-python

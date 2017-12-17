@@ -1,9 +1,0 @@
-config BR2_PACKAGE_TCPREPLAY
-	bool "tcpreplay"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_LIBPCAP
-	help
-	  Tcpreplay is a tool for replaying network traffic from files saved
-	  with tcpdump or other tools which write pcap(3) files.
-
-	  http://tcpreplay.appneta.com/

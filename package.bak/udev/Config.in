@@ -1,6 +1,0 @@
-config BR2_PACKAGE_HAS_UDEV
-	bool
-
-config BR2_PACKAGE_PROVIDES_UDEV
-	depends on BR2_PACKAGE_HAS_UDEV
-	string

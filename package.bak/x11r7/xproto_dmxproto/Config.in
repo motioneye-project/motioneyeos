@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_DMXPROTO
-	bool "dmxproto"
-	help
-	  X.Org DMX protocol headers

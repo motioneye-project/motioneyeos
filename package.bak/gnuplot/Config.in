@@ -1,6 +1,0 @@
-config BR2_PACKAGE_GNUPLOT
-	bool "gnuplot"
-	help
-	  A portable command-line driven graphing utility.
-
-	  http://www.gnuplot.info/

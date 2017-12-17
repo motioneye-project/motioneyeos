@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XFONT_FONT_DAEWOO_MISC
-	bool "font-daewoo-misc"
-	select BR2_PACKAGE_XFONT_FONT_UTIL
-	help
-	  No description available

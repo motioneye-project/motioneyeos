@@ -1,6 +1,0 @@
-config BR2_PACKAGE_MEMTESTER
-	bool "memtester"
-	help
-	  A userspace utility for testing the memory subsystem for faults.
-
-	  http://pyropus.ca/software/memtester/

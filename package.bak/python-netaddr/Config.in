@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_NETADDR
-	bool "python-netaddr"
-	help
-	  A network address manipulation library for Python.
-
-	  https://pypi.python.org/pypi/netaddr

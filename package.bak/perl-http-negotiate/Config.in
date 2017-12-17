@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PERL_HTTP_NEGOTIATE
-	bool "perl-http-negotiate"
-	select BR2_PACKAGE_PERL_HTTP_MESSAGE
-	help
-	  This module provides a complete implementation of the HTTP content
-	  negotiation algorithm specified in draft-ietf-http-v11-spec-00.ps
-	  chapter 12.
-
-	  http://github.com/gisle/http-negotiate

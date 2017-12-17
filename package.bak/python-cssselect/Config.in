@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_CSSSELECT
-	bool "python-cssselect"
-	help
-	  cssselect parses CSS3 Selectors and translates them to XPath 1.0
-
-	  http://packages.python.org/cssselect/

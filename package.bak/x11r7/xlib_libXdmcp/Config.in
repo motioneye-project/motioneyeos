@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBXDMCP
-	bool "libXdmcp"
-	select BR2_PACKAGE_XUTIL_UTIL_MACROS
-	select BR2_PACKAGE_XPROTO_XPROTO
-	help
-	  X.Org Xdmcp library

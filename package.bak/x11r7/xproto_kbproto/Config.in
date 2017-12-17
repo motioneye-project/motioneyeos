@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_KBPROTO
-	bool "kbproto"
-	help
-	  X.Org KB protocol headers

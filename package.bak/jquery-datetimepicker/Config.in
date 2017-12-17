@@ -1,7 +1,0 @@
-config BR2_PACKAGE_JQUERY_DATETIMEPICKER
-	bool "jquery-datetimepicker"
-	help
-	  Use this plugin to unobtrusively add a datetimepicker,
-	  datepicker or timepicker dropdown to your forms.
-
-	  http://xdsoft.net/jqplugins/datetimepicker

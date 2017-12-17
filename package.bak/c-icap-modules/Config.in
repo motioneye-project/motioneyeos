@@ -1,7 +1,0 @@
-config BR2_PACKAGE_C_ICAP_MODULES
-	bool "c-icap-modules"
-	depends on BR2_PACKAGE_C_ICAP
-	help
-	  Additionals modules for c-icap server.
-
-	  http://c-icap.sourceforge.net/

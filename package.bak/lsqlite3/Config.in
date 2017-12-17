@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LSQLITE3
-	bool "lsqlite3"
-	select BR2_PACKAGE_SQLITE
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
-	help
-	  a thin Lua wrapper for the SQLite3 library.
-
-	  http://lua.sqlite.org/

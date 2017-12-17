@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_XMORE
-	bool "xmore"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	help
-	  plain text display program for the X Window System

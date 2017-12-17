@@ -1,6 +1,0 @@
-config BR2_PACKAGE_MOBILE_BROADBAND_PROVIDER_INFO
-	bool "mobile-broadband-provider-info"
-	help
-	  Mobile broadband provider database.
-
-	  http://live.gnome.org/NetworkManager/MobileBroadband/ServiceProviders

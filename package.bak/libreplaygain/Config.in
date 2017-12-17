@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBREPLAYGAIN
-	bool "libreplaygain"
-	help
-	  Replay Gain library from Musepack
-
-	  http://www.musepack.net/

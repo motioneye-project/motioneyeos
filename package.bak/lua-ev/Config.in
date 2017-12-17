@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LUA_EV
-	bool "lua-ev"
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
-	select BR2_PACKAGE_LIBEV
-	depends on !BR2_bfin # libev
-	help
-	  Get access to the libev library from Lua.
-
-	  https://github.com/brimworks/lua-ev

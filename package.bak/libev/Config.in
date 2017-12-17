@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBEV
-	bool "libev"
-	# needs memory fences
-	depends on !BR2_bfin
-	help
-	  Userspace library for handling asynchronous notifications
-
-	  http://software.schmorp.de/pkg/libev.html

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_BZIP2
-	bool "bzip2"
-	help
-	  Freely available, patent free, high-quality data compressor.
-	  It typically compresses files to within 10% to 15% of the best
-	  available techniques, while being around twice as fast at
-	  compression and six times faster at decompression.
-
-	  http://www.bzip.org

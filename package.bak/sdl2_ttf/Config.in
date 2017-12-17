@@ -1,9 +1,0 @@
-config BR2_PACKAGE_SDL2_TTF
-	bool "sdl2_ttf"
-	depends on BR2_PACKAGE_SDL2
-	select BR2_PACKAGE_FREETYPE
-	help
-	  SDL2_ttf is a sample TrueType font library. It allows you to
-	  use TrueType fonts in your SDL2 applications.
-
-	  http://www.libsdl.org/projects/SDL_ttf/

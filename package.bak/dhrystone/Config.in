@@ -1,6 +1,0 @@
-config BR2_PACKAGE_DHRYSTONE
-	bool "dhrystone"
-	help
-	  easy-to-use integer benchmark
-
-	  http://www.netlib.org/benchmark/dhry-c

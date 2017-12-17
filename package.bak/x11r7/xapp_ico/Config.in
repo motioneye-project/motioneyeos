@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_ICO
-	bool "ico"
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  animate an icosahedron or other polyhedron

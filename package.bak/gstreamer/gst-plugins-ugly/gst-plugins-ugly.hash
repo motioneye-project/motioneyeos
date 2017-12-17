@@ -1,5 +1,0 @@
-# From http://gstreamer.freedesktop.org/src/gst-plugins-ugly/gst-plugins-ugly-0.10.19.tar.xz.md5
-md5	ba26045c8c8c91f0d48d327ccf53ac0c	gst-plugins-ugly-0.10.19.tar.xz
-# Locally computed
-sha256	4934f65ff892637e7efaf1cfe635779189dde429d0706f40c86a3aac476ea873	gst-plugins-ugly-0.10.19.tar.xz
-sha256	2a8aa4cd019fab333f1f8377bf7afa426d3038a033361d90fab70c335e9a53e7	cdio-cd-text-api.patch

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_TI_UIM
-	bool "ti-uim"
-	help
-	  User Mode Initialization Manager for TI wl12xx connectivity
-	  chip shared transport drivers. This daemon is needed to get
-	  the btwilink driver to work.
-
-	  http://omappedia.org/wiki/Device_Driver_Interface_of_WiLink_Solution

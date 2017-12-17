@@ -1,7 +1,0 @@
-config BR2_PACKAGE_DOOM_WAD
-	bool "shareware Doom WAD file"
-	depends on BR2_PACKAGE_CHOCOLATE_DOOM || BR2_PACKAGE_PRBOOM
-	help
-	  This will install the shareware wad data file for the doom game.
-
-	  The wad file will be placed in the /usr/share/games/doom directory.

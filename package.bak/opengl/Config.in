@@ -1,5 +1,0 @@
-source "package/opengl/libgl/Config.in"
-source "package/opengl/libegl/Config.in"
-source "package/opengl/libgles/Config.in"
-source "package/opengl/libopenvg/Config.in"
-source "package/opengl/libopenmax/Config.in"

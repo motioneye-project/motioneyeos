@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PUTTY
-	bool "putty"
-	depends on BR2_USE_MMU # fork()
-	help
-	  PuTTY is a free SSH and Telnet client. Without GTK2 activated,
-	  only the commandline tools plink, pscp, psftp, and puttygen are
-	  built; enable GTK2 for the graphical client.
-
-	  http://www.chiark.greenend.org.uk/~sgtatham/putty/

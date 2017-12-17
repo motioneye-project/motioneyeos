@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XFONT_FONT_CRONYX_CYRILLIC
-	bool "font-cronyx-cyrillic"
-	select BR2_PACKAGE_XFONT_FONT_UTIL
-	help
-	  No description available

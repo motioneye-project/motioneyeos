@@ -1,7 +1,0 @@
-config BR2_PACKAGE_JANSSON
-	bool "jansson"
-	help
-	  Jansson is a C library for encoding, decoding and manipulating JSON
-	  data.
-
-	  http://www.digip.org/jansson/

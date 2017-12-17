@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LOGSURFER
-	bool "logsurfer"
-	depends on BR2_USE_MMU # fork()
-	help
-	  Logsurfer is a program for monitoring system logs in real-time,
-	  and reporting on the occurrence of events.
-
-	  http://www.crypt.gen.nz/logsurfer/

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_XLUTILS
-	bool "python-xlutils"
-	select BR2_PACKAGE_PYTHON_XLRD # runtime
-	select BR2_PACKAGE_PYTHON_XLWT # runtime
-	help
-	  Utilities for working with Excel files that require both
-	  xlrd and xlwt.
-
-	  http://www.python-excel.org

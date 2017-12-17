@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_THRIFT
-	bool "python-thrift"
-	depends on BR2_PACKAGE_PYTHON
-	help
-	  python-thrift is a Python bindings for the Apache Thrift RPC system.
-
-	  http://thrift.apache.org/

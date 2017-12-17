@@ -1,7 +1,0 @@
-config BR2_PACKAGE_NVME
-	bool "nvme"
-	help
-	  NVME utility, a utility for interacting with standard NVM
-	  Express (optimized PCI Express SSD interface) devices.
-
-	  https://github.com/linux-nvme/nvme-cli

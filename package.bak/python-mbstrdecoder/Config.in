@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_MBSTRDECODER
-	bool "python-mbstrdecoder"
-	help
-	  multi-byte character string decoder.
-
-	  https://github.com/thombashi/mbstrdecoder

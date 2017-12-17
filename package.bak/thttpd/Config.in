@@ -1,7 +1,0 @@
-config BR2_PACKAGE_THTTPD
-	bool "thttpd"
-	depends on BR2_USE_MMU # fork()
-	help
-	  thttpd is a simple, small, portable, fast, and secure HTTP server
-
-	  http://www.acme.com/software/thttpd/

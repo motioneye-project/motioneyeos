@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_ENGINEIO
-	bool "python-engineio"
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
-	help
-	  Engine.IO server.
-
-	  http://github.com/miguelgrinberg/python-engineio/

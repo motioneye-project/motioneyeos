@@ -1,9 +1,0 @@
-config BR2_PACKAGE_STRESS
-	bool "stress"
-	depends on BR2_USE_MMU # fork()
-	help
-	  A deliberately simple workload generator for POSIX systems.
-	  It imposes a configurable amount of CPU, memory, I/O, and
-	  disk stress on the system.
-
-	  http://people.seas.harvard.edu/~apw/stress/

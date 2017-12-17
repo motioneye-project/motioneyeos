@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_SPIDEV
-	bool "python-spidev"
-	help
-	  Python module for interfacing with SPI devices from user
-	  space via the spidev linux kernel driver.
-
-	  https://pypi.python.org/pypi/spidev

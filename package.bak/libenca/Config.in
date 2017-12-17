@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBENCA
-	bool "libenca"
-	help
-	  Extremely Naive Charset Analyser
-
-	  http://cihar.com/software/enca/

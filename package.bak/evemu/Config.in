@@ -1,7 +1,0 @@
-config BR2_PACKAGE_EVEMU
-	bool "evemu"
-	select BR2_PACKAGE_LIBEVDEV
-	help
-	  evemu records and replays device descriptions and events
-
-	  http://www.freedesktop.org/wiki/Evemu/

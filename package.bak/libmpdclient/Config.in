@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBMPDCLIENT
-	bool "libmpdclient"
-	help
-	  A stable, documented, asynchronous API library for interfacing MPD
-	  in the C, C++ & Objective C languages.
-
-	  http://www.musicpd.org/libs/libmpdclient/

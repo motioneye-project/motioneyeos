@@ -1,8 +1,0 @@
-config BR2_PACKAGE_NGIRCD
-	bool "ngircd"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_ZLIB
-	help
-	  Next Generation IRC server deamon.
-
-	  http://ngircd.barton.de

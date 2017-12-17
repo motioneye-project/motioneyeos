@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_JSONSCHEMA
-	bool "python-jsonschema"
-	help
-	  An implementation of JSON Schema validation for Python.
-
-	  http://github.com/Julian/jsonschema

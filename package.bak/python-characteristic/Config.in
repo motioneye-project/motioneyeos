@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_CHARACTERISTIC
-	bool "python-characteristic"
-	help
-	  Python attributes without boilerplate.
-
-	  https://pypi.python.org/pypi/characteristic

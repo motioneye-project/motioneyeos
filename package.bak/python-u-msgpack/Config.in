@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_U_MSGPACK
-	bool "python-u-msgpack"
-	help
-	  A portable, lightweight MessagePack serializer and deserializer
-	  written in pure Python.
-
-	  https://github.com/vsergeev/u-msgpack-python

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBCUE
-	bool "libcue"
-	select BR2_PACKAGE_FLEX
-	help
-	  CUE Sheet Parser Library
-
-	  https://github.com/lipnitsk/libcue

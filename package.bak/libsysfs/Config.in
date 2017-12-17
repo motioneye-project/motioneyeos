@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBSYSFS
-	bool "libsysfs"
-	help
-	These are a set of utilities built upon sysfs, a filesystem in
-	Linux 2.6 kernels that exposes a system's device tree.
-
-	http://linux-diag.sourceforge.net/Sysfsutils.html

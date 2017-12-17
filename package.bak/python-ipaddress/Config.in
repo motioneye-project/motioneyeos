@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_IPADDRESS
-	bool "python-ipaddress"
-	depends on BR2_PACKAGE_PYTHON
-	help
-	  Python 3.3's ipaddress for older Python versions.
-
-	  https://github.com/phihag/ipaddress

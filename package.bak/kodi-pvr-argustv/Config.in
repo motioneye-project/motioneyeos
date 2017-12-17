@@ -1,8 +1,0 @@
-config BR2_PACKAGE_KODI_PVR_ARGUSTV
-	bool "kodi-pvr-argustv"
-	select BR2_PACKAGE_JSONCPP
-	select BR2_PACKAGE_KODI_PLATFORM
-	help
-	  Kodi's ARGUS TV client addon
-
-	  https://github.com/kodi-pvr/pvr.argustv

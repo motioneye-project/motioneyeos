@@ -1,9 +1,0 @@
-config BR2_PACKAGE_MINISSDPD
-	bool "minissdpd"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_LIBNFNETLINK
-	help
-	  SSDP managing daemon. Designed to work with miniupnpc,
-	  miniupnpd, minidlna, etc.
-
-	  http://miniupnp.free.fr/

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_OPUSFILE
-	bool "opusfile"
-	select BR2_PACKAGE_LIBOGG
-	select BR2_PACKAGE_OPUS
-	help
-	  A convenient high-level API for decoding and basic manipulation
-	  of all Ogg Opus audio streams.
-
-	  http://opus-codec.org

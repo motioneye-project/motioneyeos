@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_XKBEVD
-	bool "xkbevd"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_XLIB_LIBXKBFILE
-	help
-	  XKB event daemon

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LOCKDEV
-	bool "lockdev"
-	help
-	  Library for locking devices.
-
-	  No upstream site, primary site is Debian.

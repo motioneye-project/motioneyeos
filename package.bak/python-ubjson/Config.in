@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_UBJSON
-	bool "python-ubjson"
-	help
-	  This is a Python v3.2+ (and 2.7+) Universal Binary JSON
-	  encoder/decoder based on the draft-12 specification.
-
-	  https://pypi.python.org/pypi/py-ubjson

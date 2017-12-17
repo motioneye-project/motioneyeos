@@ -1,6 +1,0 @@
-config BR2_PACKAGE_C_ARES
-	bool "c-ares"
-	help
-	  C library for asynchronous DNS requests.
-
-	  http://c-ares.haxx.se/

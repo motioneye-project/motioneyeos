@@ -1,3 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYCURL
-	bool "python-pycurl"
-

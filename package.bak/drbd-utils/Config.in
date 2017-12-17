@@ -1,7 +1,0 @@
-config BR2_PACKAGE_DRBD_UTILS
-	bool "drbd-utils"
-	depends on BR2_USE_MMU # needs fork()
-	help
-	  DRBD utilities to manage the DRBD kernel module.
-
-	  http://oss.linbit.com/drbd/

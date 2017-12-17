@@ -1,1 +1,0 @@
-include package/gstreamer/*/*.mk

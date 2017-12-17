@@ -1,9 +1,0 @@
-config BR2_PACKAGE_MCELOG
-	bool "mcelog"
-	depends on BR2_i386 || BR2_x86_64
-	depends on BR2_USE_MMU # fork()
-	help
-	  mcelog processes machine checks (in particular memory and CPU hardware
-	  errors) on modern x86 Linux systems.
-
-	  http://www.mcelog.org/

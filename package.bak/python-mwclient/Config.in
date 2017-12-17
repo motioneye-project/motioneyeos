@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_MWCLIENT
-	bool "python-mwclient"
-	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	help
-	  MediaWiki API client.
-
-	  https://github.com/btongminh/mwclient

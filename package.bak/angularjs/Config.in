@@ -1,6 +1,0 @@
-config BR2_PACKAGE_ANGULARJS
-	bool "angularjs"
-	help
-	  AngularJS web application framework.
-
-	  http://angularjs.org

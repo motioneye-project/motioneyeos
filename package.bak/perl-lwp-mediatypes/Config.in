@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PERL_LWP_MEDIATYPES
-	bool "perl-lwp-mediatypes"
-	help
-	  This module provides functions for handling media (also known as MIME)
-	  types and encodings.
-
-	  https://github.com/gisle/lwp-mediatypes

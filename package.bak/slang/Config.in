@@ -1,7 +1,0 @@
-config BR2_PACKAGE_SLANG
-	bool "slang"
-	depends on BR2_USE_MMU # fork()
-	help
-	  Multi-platform console display library.
-
-	  http://www.jedsoft.org/slang/index.html

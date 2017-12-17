@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_RSTART
-	bool "rstart"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  X.Org rstart application

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PERL_NET_HTTP
-	bool "perl-net-http"
-	select BR2_PACKAGE_PERL_URI
-	help
-	  Low-level HTTP connection (client)
-
-	  https://github.com/libwww-perl/Net-HTTP

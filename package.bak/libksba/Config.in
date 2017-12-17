@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBKSBA
-	bool "libksba"
-	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpg-error
-	select BR2_PACKAGE_LIBGPG_ERROR
-	help
-	  CMS and X.509 library
-
-	  https://www.gnupg.org/related_software/libksba/

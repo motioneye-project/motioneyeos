@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PERL_XML_SAX
-	bool "perl-xml-sax"
-	select BR2_PACKAGE_PERL_XML_NAMESPACESUPPORT
-	select BR2_PACKAGE_PERL_XML_SAX_BASE
-	help
-	  Simple API for XML
-
-	  https://metacpan.org/release/XML-SAX

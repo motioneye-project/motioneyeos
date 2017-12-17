@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBRAW1394
-	bool "libraw1394"
-	help
-	  libraw1394 provides direct access to the IEEE 1394 bus through
-	  the Linux 1394 subsystem's raw1394 user space interface.
-
-	  http://sourceforge.net/projects/libraw1394/

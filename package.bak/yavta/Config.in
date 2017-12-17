@@ -1,6 +1,0 @@
-config BR2_PACKAGE_YAVTA
-	bool "yavta"
-	help
-	  Yet Another V4L2 Test Application
-
-	  http://git.ideasonboard.org/yavta.git

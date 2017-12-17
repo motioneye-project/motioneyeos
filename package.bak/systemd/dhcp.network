@@ -1,4 +1,0 @@
-[Match]
-Name=SYSTEMD_NETWORKD_DHCP_IFACE
-[Network]
-DHCP=ipv4

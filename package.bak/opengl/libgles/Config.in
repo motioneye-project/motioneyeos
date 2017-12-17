@@ -1,6 +1,0 @@
-config BR2_PACKAGE_HAS_LIBGLES
-	bool
-
-config BR2_PACKAGE_PROVIDES_LIBGLES
-	depends on BR2_PACKAGE_HAS_LIBGLES
-	string

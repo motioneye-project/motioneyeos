@@ -1,6 +1,0 @@
-config BR2_PACKAGE_OBSIDIAN_CURSORS
-	bool "obsidian-cursors"
-	help
-	  Obsidian Cursors is a shiny and clean cursor set.
-
-	  http://kde-look.org/content/show.php/Obsidian+Cursors?content=73135

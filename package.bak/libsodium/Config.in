@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBSODIUM
-	bool "libsodium"
-	help
-	  A modern and easy-to-use crypto library.
-
-	  http://libsodium.org/

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_EDID_DECODE
-	bool "edid-decode"
-	help
-	  Decode EDID data in human-readable format.
-
-	  http://cgit.freedesktop.org/xorg/app/edid-decode/

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_SHAPELIB
-	bool "shapelib"
-	help
-	  The Shapefile C Library provides the ability to write simple
-	  C programs for reading, writing and updating (to a limited
-	  extent) ESRI Shapefiles, and the associated attribute file
-	  (.dbf).
-
-	  http://shapelib.maptools.org/

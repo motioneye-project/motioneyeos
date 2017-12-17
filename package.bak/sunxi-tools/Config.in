@@ -1,9 +1,0 @@
-config BR2_PACKAGE_SUNXI_TOOLS
-	bool "sunxi nand-part"
-	depends on BR2_arm
-	help
-	  nand-part is part of sunxi-tools for Allwinner A10 (aka sun4i) and
-	  A13 (aka sun5i) based devices. It is a tool to repartition the
-	  internal NAND on sunxi devices.
-
-	  http://linux-sunxi.org/Sunxi-tools

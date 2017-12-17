@@ -1,6 +1,0 @@
-config BR2_PACKAGE_FB_TEST_APP
-	bool "fb-test-app"
-	help
-	  Test suite for Linux framebuffer.
-
-	  https://github.com/prpplague/fb-test-app

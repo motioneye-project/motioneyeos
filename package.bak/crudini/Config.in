@@ -1,9 +1,0 @@
-config BR2_PACKAGE_CRUDINI
-	bool "crudini"
-	depends on BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON_INIPARSE # runtime
-	help
-	  A utility for handling ini files from the command line and
-	  shell scripts
-
-	  https://pypi.python.org/pypi/crudini

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_FILE
-	bool "file"
-	select BR2_PACKAGE_ZLIB
-	help
-	  Program to identify a file's format by scanning binary data
-	  for known patterns.
-
-	  http://www.darwinsys.com/file/

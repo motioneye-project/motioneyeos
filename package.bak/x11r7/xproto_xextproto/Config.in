@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_XEXTPROTO
-	bool "xextproto"
-	help
-	  X.Org XExt protocol headers

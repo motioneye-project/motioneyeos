@@ -1,7 +1,0 @@
-config BR2_PACKAGE_IFENSLAVE
-	bool "ifenslave"
-	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	help
-	  Configure network interfaces for parallel routing (bonding)
-
-	  http://anonscm.debian.org/cgit/collab-maint/ifenslave.git

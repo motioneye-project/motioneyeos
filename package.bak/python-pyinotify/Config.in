@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYINOTIFY
-	bool "python-pyinotify"
-	help
-	  Monitoring filesystems events with inotify on Linux.
-
-	  https://github.com/seb-m/pyinotify

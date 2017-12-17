@@ -1,9 +1,0 @@
-config BR2_PACKAGE_CGILUA
-	bool "cgilua"
-	# Runtime dependency only
-	select BR2_PACKAGE_LUAFILESYSTEM
-	help
-	  CGILua is a tool for creating dynamic HTML pages
-	  and manipulating input data from Web forms.
-
-	  http://keplerproject.github.com/cgilua

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_EXPAT
-	bool "expat"
-	help
-	  The Expat XML Parser.
-
-	  http://expat.sourceforge.net

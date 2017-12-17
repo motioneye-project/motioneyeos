@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBLOGGING
-	bool "liblogging"
-	help
-	  Liblogging is an easy to use library for
-	  logging. It offers an enhanced replacement
-	  for the syslog() call, but retains its ease of use.
-
-	  http://www.liblogging.org/

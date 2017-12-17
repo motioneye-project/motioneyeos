@@ -1,6 +1,0 @@
-config BR2_PACKAGE_GIFLIB
-	bool "giflib"
-	help
-	  giflib is a library for reading and writing gif images.
-
-	  http://sourceforge.net/projects/giflib

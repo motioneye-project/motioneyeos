@@ -1,6 +1,0 @@
-config BR2_PACKAGE_JQUERY_SIDEBAR
-	bool "jquery-sidebar"
-	help
-	  A stupid simple sidebar jQuery plugin.
-
-	  http://jillix.github.io/jQuery-sidebar/

@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XFONT_FONT_MISC_ETHIOPIC
-	bool "font-misc-ethiopic"
-	select BR2_PACKAGE_XFONT_FONT_UTIL
-	help
-	  No description available

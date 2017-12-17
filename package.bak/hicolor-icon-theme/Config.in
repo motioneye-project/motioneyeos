@@ -1,8 +1,0 @@
-config BR2_PACKAGE_HICOLOR_ICON_THEME
-	bool "hicolor icon theme"
-	help
-	  Freedesktop Hicolor icon theme
-
-	  This is the fallback icon theme, which only creates the
-	  standard directory structure for storing icons of third-party
-	  applications (i.e. the ones not available in usual icon themes).

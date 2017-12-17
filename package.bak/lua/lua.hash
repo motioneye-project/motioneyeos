@@ -1,9 +1,0 @@
-# Hashes from: http://www.lua.org/ftp/
-md5 53a9c68bcc0eda58bdc2095ad5cdfc63           lua-5.3.4.tar.gz
-sha1 79790cfd40e09ba796b01a571d4d63b52b1cd950  lua-5.3.4.tar.gz
-
-md5 913fdb32207046b273fdb17aad70be13           lua-5.2.4.tar.gz
-sha1 ef15259421197e3d85b7d6e4871b8c26fd82c1cf  lua-5.2.4.tar.gz
-
-md5 2e115fe26e435e33b0d5c022e4490567           lua-5.1.5.tar.gz
-sha1 b3882111ad02ecc6b972f8c1241647905cb2e3fc  lua-5.1.5.tar.gz

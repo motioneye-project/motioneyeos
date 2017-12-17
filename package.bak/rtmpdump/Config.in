@@ -1,8 +1,0 @@
-config BR2_PACKAGE_RTMPDUMP
-	bool "librtmp"
-	select BR2_PACKAGE_ZLIB
-	help
-	  rtmpdump - RTMPDump Real-Time Messaging Protocol API
-	  Only librtmp is installed by this package.
-
-	  http://rtmpdump.mplayerhq.hu

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_PATH_TINY
-	bool "perl-path-tiny"
-	help
-	  File path utility
-
-	  https://github.com/dagolden/Path-Tiny

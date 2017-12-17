@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XFONT_ENCODINGS
-	bool "encodings"
-	select BR2_PACKAGE_XUTIL_UTIL_MACROS
-	help
-	  No description available

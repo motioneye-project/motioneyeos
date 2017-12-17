@@ -1,6 +1,0 @@
-config BR2_PACKAGE_ERLANG_P1_UTILS
-	bool "erlang-p1-utils"
-	help
-	  Set of small Erlang libraries
-
-	  https://github.com/processone/p1_utils

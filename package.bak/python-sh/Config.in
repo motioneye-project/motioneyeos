@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_SH
-	bool "python-sh"
-	help
-	  Python subprocess replacement that allows you to call any
-	  program as if it were a function.
-
-	  https://github.com/amoffat/sh

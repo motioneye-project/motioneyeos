@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBDVBCSA
-	bool "libdvbcsa"
-	help
-	  libdvbcsa is a free implementation of the DVB Common Scrambling
-	  Algorithm - DVB/CSA - with encryption and decryption capabilities
-
-	  As libdvbcsa implements a standard, it is completely legal to use it.
-
-	  http://www.videolan.org/developers/libdvbcsa.html

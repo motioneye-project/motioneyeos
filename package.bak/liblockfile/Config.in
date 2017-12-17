@@ -1,4 +1,0 @@
-config BR2_PACKAGE_LIBLOCKFILE
-	bool "liblockfile"
-	help
-	  NFS-safe locking library.

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_UEMACS
-	bool "uemacs"
-	select BR2_PACKAGE_NCURSES
-	help
-	  A small emacs.
-
-	  https://git.kernel.org/cgit/editors/uemacs/uemacs.git/

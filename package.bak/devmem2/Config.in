@@ -1,7 +1,0 @@
-config BR2_PACKAGE_DEVMEM2
-	bool "devmem2"
-	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
-	help
-	  Simple program to read/write from/to any location in memory.
-
-	  http://free-electrons.com/pub/mirror/devmem2.c

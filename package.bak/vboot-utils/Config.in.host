@@ -1,7 +1,0 @@
-config BR2_PACKAGE_HOST_VBOOT_UTILS
-	bool "host vboot utils"
-	select BR2_PACKAGE_HOST_UTIL_LINUX
-	help
-	  Chromium OS verified boot utilities: futility and cgpt.
-
-	  https://www.chromium.org/chromium-os/chromiumos-design-docs/verified-boot

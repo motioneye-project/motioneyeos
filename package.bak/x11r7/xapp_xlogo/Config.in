@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XAPP_XLOGO
-	bool "xlogo"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	select BR2_PACKAGE_XLIB_LIBXRENDER
-	select BR2_PACKAGE_XLIB_LIBXFT
-	help
-	  X Window System logo

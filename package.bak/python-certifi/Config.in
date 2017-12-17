@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_CERTIFI
-	bool "python-certifi"
-	help
-	  Python package for providing Mozilla's CA Bundle.
-
-	  https://pypi.python.org/pypi/certifi

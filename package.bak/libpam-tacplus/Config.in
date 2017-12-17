@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBPAM_TACPLUS
-	bool "libpam-tacplus"
-	help
-	  TACACS+ protocol client library and PAM module in C. This
-	  PAM module support authentication, authorization (account
-	  management) and accounting (session management)performed
-	  using TACACS+ protocol designed by Cisco.
-
-	  https://github.com/jeroennijhof/pam_tacplus

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PICOCOM
-	bool "picocom"
-	depends on BR2_USE_MMU # fork()
-	help
-	  picocom is a minimal dumb-terminal emulation program. It is, in
-	  principle, very much like minicom, only it's pico instead of mini!
-
-	  https://github.com/npat-efault/picocom/

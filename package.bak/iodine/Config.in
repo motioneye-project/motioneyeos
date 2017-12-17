@@ -1,9 +1,0 @@
-config BR2_PACKAGE_IODINE
-	bool "iodine"
-	select BR2_PACKAGE_ZLIB
-	help
-	  iodine lets you tunnel IPv4 data through a DNS server.
-	  This can be usable in different situations where
-	  internet access is firewalled, but DNS queries are allowed.
-
-	  http://code.kryo.se/iodine/

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_JSMN
-	bool "jsmn"
-	help
-	  jsmn (pronounced like 'jasmine') is a minimalistic JSON
-	  parser in C. It can be easily integrated into
-	  resource-limited or embedded projects.
-
-	  https://github.com/zserge/jsmn/

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_GDTEXTUTIL
-	bool "perl-gdtextutil"
-	help
-	  Text utilities for use with GD
-
-	  https://metacpan.org/release/GDTextUtil

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_ERLANG_P1_SIP
-	bool "erlang-p1-sip"
-	select BR2_PACKAGE_ERLANG_P1_STUN
-	select BR2_PACKAGE_ERLANG_P1_TLS
-	select BR2_PACKAGE_ERLANG_P1_UTILS
-	help
-	  SIP library for Erlang
-
-	  https://github.com/processone/p1_sip

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_LOGBOOK
-	bool "python-logbook"
-	help
-	  A logging replacement for Python.
-
-	  http://logbook.pocoo.org/

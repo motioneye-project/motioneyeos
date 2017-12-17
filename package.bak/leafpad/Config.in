@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LEAFPAD
-	bool "leafpad"
-	depends on BR2_PACKAGE_LIBGTK2
-	help
-	  GTK+ based simple text editor
-
-	  http://savannah.nongnu.org/download/leafpad

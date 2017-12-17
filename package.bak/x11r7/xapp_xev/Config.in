@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_XEV
-	bool "xev"
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXRANDR
-	help
-	  print contents of X events

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_ERLANG_P1_CACHE_TAB
-	bool "erlang-p1-cache-tab"
-	select BR2_PACKAGE_ERLANG_P1_UTILS
-	help
-	  Erlang library implementing cache tables
-
-	  https://github.com/processone/cache_tab

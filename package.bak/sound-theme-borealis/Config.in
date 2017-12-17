@@ -1,6 +1,0 @@
-config BR2_PACKAGE_SOUND_THEME_BOREALIS
-	bool "sound-theme-borealis"
-	help
-	  Borealis sound theme.
-
-	  http://kde-look.org/content/show.php?content=12584

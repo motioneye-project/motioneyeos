@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBSEPOL
-	bool "libsepol"
-	help
-	  Libsepol is the binary policy manipulation library. It doesn't
-	  depend upon or use any of the other SELinux components.
-
-	  http://selinuxproject.org/page/Main_Page

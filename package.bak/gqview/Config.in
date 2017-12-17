@@ -1,7 +1,0 @@
-config BR2_PACKAGE_GQVIEW
-	bool "gqview"
-	depends on BR2_PACKAGE_LIBGTK2
-	help
-	  GQview is an image viewer for Unix operating systems
-
-	  http://prdownloads.sourceforge.net/gqview

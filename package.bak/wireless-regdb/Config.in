@@ -1,9 +1,0 @@
-config BR2_PACKAGE_WIRELESS_REGDB
-	bool "wireless-regdb"
-	help
-	  Wireless regulatory database.
-
-	  Wireless regulatory database for CRDA. The database lists the
-	  allowed radio frequencies for each local jurisdiction.
-
-	  http://linuxwireless.org/en/developers/Regulatory

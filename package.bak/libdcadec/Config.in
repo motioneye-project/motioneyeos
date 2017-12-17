@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBDCADEC
-	bool "libdcadec"
-	help
-	  dcadec is a free DTS Coherent Acoustics decoder with support
-	  for HD extensions.
-
-	  https://github.com/foo86/dcadec

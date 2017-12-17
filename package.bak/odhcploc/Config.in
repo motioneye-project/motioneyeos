@@ -1,8 +1,0 @@
-config BR2_PACKAGE_ODHCPLOC
-	bool "odhcploc"
-	help
-	  Open DHCP Locate (ODHCPLoc) is program to locate and
-	  display active DHCP servers on a subnet.
-	  Can be used to scan for rogue DHCP servers.
-
-	  http://odhcploc.sourceforge.net/

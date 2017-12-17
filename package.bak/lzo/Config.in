@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LZO
-	bool "lzo"
-	help
-	  Portable lossless data compression library written in ANSI C.
-
-	  http://www.oberhumer.com/opensource/lzo/

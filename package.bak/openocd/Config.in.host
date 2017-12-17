@@ -1,6 +1,0 @@
-config BR2_PACKAGE_HOST_OPENOCD
-	bool "host openocd"
-	help
-	  OpenOCD - Open On-Chip Debugger
-
-	  http://openocd.org/

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_UNIXODBC
-	bool "unixodbc"
-	help
-	  The unixODBC Project goals are to develop and promote unixODBC
-	  to be the definitive standard for ODBC on non MS Windows platforms.
-
-	  http://www.unixodbc.org

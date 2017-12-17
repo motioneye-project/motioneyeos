@@ -1,7 +1,0 @@
-config BR2_PACKAGE_ANGULAR_WEBSOCKET
-	bool "angular-websocket"
-	help
-	  An AngularJS WebSocket service for connecting client
-	  applications to servers.
-
-	  https://github.com/AngularClass/angular-websocket

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_IPY
-	bool "python-ipy"
-	depends on BR2_PACKAGE_PYTHON
-	help
-	  IPy - class and tools for handling of IPv4 and
-	  IPv6 addresses and networks.
-
-	  https://github.com/haypo/python-ipy/

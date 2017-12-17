@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PERL_HTTP_COOKIES
-	bool "perl-http-cookies"
-	select BR2_PACKAGE_PERL_HTTP_DATE
-	select BR2_PACKAGE_PERL_HTTP_MESSAGE
-	help
-	  Objects that represent a "cookie jar"
-
-	  http://github.com/gisle/http-cookies

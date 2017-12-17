@@ -1,9 +1,0 @@
-config BR2_PACKAGE_DIRECTFB_EXAMPLES
-	bool "directfb examples"
-	depends on BR2_PACKAGE_DIRECTFB
-	help
-	  The DirectFB-examples package contains a set of simple DirectFB
-	  applications that can be used to test and demonstrate various
-	  DirectFB features.
-
-	  http://directfb.org/downloads/Extras/README.DirectFB-examples

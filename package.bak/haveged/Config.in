@@ -1,9 +1,0 @@
-config BR2_PACKAGE_HAVEGED
-	bool "haveged"
-	depends on BR2_USE_MMU # fork()
-	help
-	  The haveged project is an attempt to provide an easy-to-use,
-	  unpredictable random number generator based upon an adaptation
-	  of the HAVEGE algorithm.
-
-	  http://www.issihosts.com/haveged/

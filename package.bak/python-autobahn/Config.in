@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_AUTOBAHN
-	bool "python-autobahn"
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	select BR2_PACKAGE_PYTHON_TXAIO # runtime
-	help
-	  WebSocket client Hhh server library, WAMP real-time
-	  framework.
-
-	  https://pypi.python.org/pypi/autobahn

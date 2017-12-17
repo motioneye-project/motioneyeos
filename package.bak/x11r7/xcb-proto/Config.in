@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XCB_PROTO
-	bool "xcb-proto"
-	help
-		The protocol headers that define XCB.
-
-		http://xcb.freedesktop.org/

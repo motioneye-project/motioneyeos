@@ -1,6 +1,0 @@
-config BR2_PACKAGE_SOUND_THEME_FREEDESKTOP
-	bool "sound-theme-freedesktop"
-	help
-	  Default theme for the XDG Sound Theme Specification.
-
-	  http://freedesktop.org/wiki/Specifications/sound-theme-spec

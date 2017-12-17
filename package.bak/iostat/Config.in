@@ -1,6 +1,0 @@
-config BR2_PACKAGE_IOSTAT
-	bool "iostat"
-	help
-	  An I/O performance monitoring utility.
-
-	  http://www.linuxinsight.com/iostat_utility.html

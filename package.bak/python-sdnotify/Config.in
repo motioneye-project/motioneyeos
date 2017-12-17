@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_SDNOTIFY
-	bool "python-sdnotify"
-	help
-	  A pure Python implementation of systemd's service notification
-	  protocol (sd_notify).
-
-	  https://github.com/bb4242/sdnotify

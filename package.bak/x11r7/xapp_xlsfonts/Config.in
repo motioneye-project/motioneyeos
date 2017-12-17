@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_XLSFONTS
-	bool "xlsfonts"
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  X.Org xlsfonts application

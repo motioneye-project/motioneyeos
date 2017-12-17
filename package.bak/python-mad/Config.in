@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_MAD
-	bool "python-mad"
-	depends on BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_LIBMAD
-	help
-	  python-mad is a Python binding for the MAD library, a
-	  high-quality integer-only MPEG decoder.
-
-	  http://spacepants.org/src/pymad/

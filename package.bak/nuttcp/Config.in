@@ -1,7 +1,0 @@
-config BR2_PACKAGE_NUTTCP
-	bool "nuttcp"
-	depends on BR2_USE_MMU # fork()
-	help
-	  nuttcp is a TCP/UDP network testing tool, much like iperf
-
-	  http://nuttcp.net

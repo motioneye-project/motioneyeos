@@ -1,2 +1,0 @@
-config BR2_PACKAGE_HOST_MKPASSWD
-	bool "host mkpasswd"

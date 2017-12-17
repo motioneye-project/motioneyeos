@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBLLCP
-	bool "libllcp"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
-	select BR2_PACKAGE_LIBNFC
-	help
-	  Library extending libnfc with support for Logical Link Control
-	  Protocol.
-
-	  https://code.google.com/p/libllcp/

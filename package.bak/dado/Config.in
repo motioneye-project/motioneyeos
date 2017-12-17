@@ -1,6 +1,0 @@
-config BR2_PACKAGE_DADO
-	bool "dado"
-	help
-	  Database Facilities for LuaSQL.
-
-	  http://www.ccpa.puc-rio.br/software/dado/

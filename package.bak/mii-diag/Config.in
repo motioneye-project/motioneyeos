@@ -1,5 +1,0 @@
-config BR2_PACKAGE_MII_DIAG
-	bool "mii-diag"
-	help
-	  mii-diag allows you to manipulate the MII registers of
-	  network cards.

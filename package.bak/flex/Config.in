@@ -1,8 +1,0 @@
-config BR2_PACKAGE_FLEX
-	bool "flex"
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
-	help
-	  A fast lexical analyser generator. A tool for generating
-	  programs that perform pattern-matching on text.
-
-	  http://flex.sourceforge.net/

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_FCONFIG
-	bool "fconfig"
-	help
-	  fconfig - get/set RedBoot configuration parameters from Linux.
-
-	  http://andrzejekiert.ovh.org/software.html.en

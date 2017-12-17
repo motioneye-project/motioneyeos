@@ -1,9 +1,0 @@
-config BR2_PACKAGE_EVTEST
-	bool "evtest"
-	help
-	  evtest displays information on the input device specified on
-	  the command line, including all the events supported by the
-	  device. It then monitors the device and displays all the
-	  events layer events generated.
-
-	  http://cgit.freedesktop.org/evtest

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LUA_ICONV
-	bool "lua-iconv"
-	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	help
-	  Lua binding to the POSIX 'iconv' library
-
-	  http://ittner.github.io/lua-iconv/

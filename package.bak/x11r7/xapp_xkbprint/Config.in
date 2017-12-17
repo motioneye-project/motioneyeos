@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_XKBPRINT
-	bool "xkbprint"
-	select BR2_PACKAGE_XLIB_LIBXKBFILE
-	help
-	  print an XKB keyboard description

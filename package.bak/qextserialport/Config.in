@@ -1,7 +1,0 @@
-config BR2_PACKAGE_QEXTSERIALPORT
-	bool "qextserialport"
-	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
-	help
-	  A Qt library to manage serial ports
-
-	  http://code.google.com/p/qextserialport/

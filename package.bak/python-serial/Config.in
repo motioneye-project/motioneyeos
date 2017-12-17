@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_SERIAL
-	bool "python-serial"
-	help
-	  python-serial is a Python library to access serial ports.
-
-	  https://github.com/pyserial/pyserial

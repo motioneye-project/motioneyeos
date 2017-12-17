@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBGEOTIFF
-	bool "libgeotiff"
-	select BR2_PACKAGE_TIFF
-	help
-	  Libgeotiff is an open source library normally hosted on top of
-	  libtiff for reading, and writing GeoTIFF information tags.
-
-	  http://geotiff.osgeo.org

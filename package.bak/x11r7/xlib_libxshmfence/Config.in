@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBXSHMFENCE
-	bool "libxshmfence"
-	select BR2_PACKAGE_XPROTO_XPROTO
-	help
-	  X.Org shmfence library

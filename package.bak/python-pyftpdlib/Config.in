@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYFTPDLIB
-	bool "python-pyftpdlib"
-	help
-	  Extremely fast and scalable Python FTP server library.
-
-	  https://github.com/giampaolo/pyftpdlib

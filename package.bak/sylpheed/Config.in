@@ -1,7 +1,0 @@
-config BR2_PACKAGE_SYLPHEED
-	bool "sylpheed"
-	depends on BR2_PACKAGE_LIBGTK2
-	help
-	  lightweight and user-friendly e-mail client.
-
-	  http://sylpheed.sraoss.jp/en/

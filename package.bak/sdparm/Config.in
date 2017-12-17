@@ -1,6 +1,0 @@
-config BR2_PACKAGE_SDPARM
-	bool "sdparm"
-	help
-	  Utility to accesses SCSI device parameters.
-
-	  http://sg.danny.cz/sg/sdparm.html

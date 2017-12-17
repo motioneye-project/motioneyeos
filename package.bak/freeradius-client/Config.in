@@ -1,7 +1,0 @@
-config BR2_PACKAGE_FREERADIUS_CLIENT
-	bool "freeradius-client"
-	help
-	  FreeRADIUS Client is a framework and library for
-	  writing RADIUS Clients.
-
-	  http://wiki.freeradius.org/project/Radiusclient

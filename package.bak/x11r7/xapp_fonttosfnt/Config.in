@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XAPP_FONTTOSFNT
-	bool "fonttosfnt"
-	select BR2_PACKAGE_FREETYPE
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBFONTENC
-	help
-	  X.Org fonttosfnt application

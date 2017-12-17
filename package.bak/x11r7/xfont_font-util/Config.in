@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XFONT_FONT_UTIL
-	bool "font-util"
-	help
-	  No description available

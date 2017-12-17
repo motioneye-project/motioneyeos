@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LUAJSON
-	bool "luajson"
-	# run-time dependency
-	select BR2_PACKAGE_LPEG
-	help
-	  LuaJSON is a customizable JSON decoder/encoder
-	  using LPEG for parsing.
-
-	  http://github.com/harningt/luajson

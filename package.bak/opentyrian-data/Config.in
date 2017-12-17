@@ -1,9 +1,0 @@
-config BR2_PACKAGE_OPENTYRIAN_DATA
-	bool "OpenTyrian data"
-	depends on BR2_PACKAGE_OPENTYRIAN
-	help
-	  Data files to use with OpenTyrian game. Currently only the original
-	  Tyrian 2.1 data files, that have been released as Freeware in 2004,
-	  are compatible.
-
-	  http://code.google.com/p/opentyrian/wiki/FAQ

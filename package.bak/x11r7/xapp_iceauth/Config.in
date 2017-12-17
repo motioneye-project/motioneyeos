@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_ICEAUTH
-	bool "iceauth"
-	select BR2_PACKAGE_XLIB_LIBICE
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  ICE authority file utility

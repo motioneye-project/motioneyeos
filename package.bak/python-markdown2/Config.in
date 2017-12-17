@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_MARKDOWN2
-	bool "python-markdown2"
-	help
-	  A fast and complete Python implementation of Markdown.
-
-	  https://github.com/trentm/python-markdown2

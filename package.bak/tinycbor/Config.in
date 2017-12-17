@@ -1,6 +1,0 @@
-config BR2_PACKAGE_TINYCBOR
-	bool "tinycbor"
-	help
-	  Concise Binary Object Representation (CBOR) Library
-
-	  https://github.com/01org/tinycbor

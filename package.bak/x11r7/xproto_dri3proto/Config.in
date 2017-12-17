@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_DRI3PROTO
-	bool "dri3proto"
-	help
-	  X.Org DRI3 protocol headers

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_MATCHBOX_STARTUP_MONITOR
-	bool "matchbox-startup-monitor"
-	select BR2_PACKAGE_MATCHBOX_LIB
-	select BR2_PACKAGE_STARTUP_NOTIFICATION
-	help
-	  Matchbox Panel Startup Monitor Applet.

@@ -1,9 +1,0 @@
-[Unit]
-Description=Input Event Daemon
-
-[Service]
-ExecStart=/usr/bin/input-event-daemon --no-daemon
-Restart=always
-
-[Install]
-WantedBy=multi-user.target

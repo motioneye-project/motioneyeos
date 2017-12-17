@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBID3TAG
-	bool "libid3tag"
-	select BR2_PACKAGE_ZLIB
-	help
-	  ID3 tag reading library from the MAD project.
-
-	  http://www.underbit.com/products/mad/

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_IMX_PARSER
-	bool "imx-parser"
-	depends on BR2_arm # Only relevant for i.MX
-	help
-	  Binary parser libraries for the NXP i.MX SoCs.
-
-	  This library is provided by NXP as-is and doesn't have
-	  an upstream.

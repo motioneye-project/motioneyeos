@@ -1,9 +1,0 @@
-config BR2_PACKAGE_RS485CONF
-	bool "rs485conf"
-	help
-	  rs485conf is intended to be used on embedded boards with RS485
-	  interface. It can show as well as modify RS485 configuration
-	  parameters of TTY device with easy to use command line
-	  options.
-
-	  https://github.com/mniestroj/rs485conf

@@ -1,2 +1,0 @@
-#!/bin/sh
-exec /usr/share/Qt5/CinematicExperience/Qt5_CinematicExperience "$@"

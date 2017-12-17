@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XLIB_LIBFS
-	bool "libFS"
-	select BR2_PACKAGE_XLIB_XTRANS
-	select BR2_PACKAGE_XPROTO_XPROTO
-	select BR2_PACKAGE_XPROTO_FONTSPROTO
-	help
-	  X.Org FS library

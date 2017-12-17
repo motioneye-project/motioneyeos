@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_DICTTOXML
-	bool "python-dicttoxml"
-	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3
-	help
-	  Converts a Python dictionary or other native data type into a valid
-	  XML string.
-
-	  https://github.com/quandyfactory/dicttoxml

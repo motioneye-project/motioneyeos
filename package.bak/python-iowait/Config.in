@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_IOWAIT
-	bool "python-iowait"
-	help
-	  Platform-independent module for I/O completion events.
-
-	  https://launchpad.net/python-iowait

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XCURSOR_TRANSPARENT_THEME
-	bool "xcursor-transparent-theme"
-	select BR2_PACKAGE_XLIB_LIBXCURSOR
-	help
-	  Completely transparent theme for hiding the X11 cursor.
-
-	  No upstream site.

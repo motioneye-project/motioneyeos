@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBURIPARSER
-	bool "liburiparser"
-	help
-	  uriparser is a strictly RFC 3986 compliant URI parsing and handling
-	  library written in C.
-
-	  http://uriparser.sourceforge.net

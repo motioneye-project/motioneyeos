@@ -1,6 +1,0 @@
-config BR2_PACKAGE_BITSTREAM_VERA
-	bool "Bitstream Vera"
-	help
-	  Bitstream Vera font family.
-
-	  https://www.gnome.org/fonts/

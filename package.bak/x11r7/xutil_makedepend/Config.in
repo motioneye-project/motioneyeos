@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XUTIL_MAKEDEPEND
-	bool "makedepend"
-	help
-	  No description available

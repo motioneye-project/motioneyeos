@@ -1,7 +1,0 @@
-config BR2_PACKAGE_HOST_CRAMFS
-	bool "host cramfs"
-	help
-	  cramfs is a compressed read-only filesystem. This package
-	  contains the tools to generate and check a cramfs filesystem.
-
-	  http://sourceforge.net/projects/cramfs/

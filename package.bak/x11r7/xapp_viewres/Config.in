@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_VIEWRES
-	bool "viewres"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	help
-	  graphical class browser for Xt

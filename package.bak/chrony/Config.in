@@ -1,8 +1,0 @@
-config BR2_PACKAGE_CHRONY
-	bool "chrony"
-	depends on BR2_USE_MMU # fork()
-	help
-	  Chrony is a pair of programs which are used to maintain the
-	  accuracy of the system clock.
-
-	  http://chrony.tuxfamily.org/

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_XDRIVER_XF86_INPUT_VMMOUSE
-	bool "xf86-input-vmmouse"
-	depends on BR2_i386 || BR2_x86_64
-	select BR2_PACKAGE_XPROTO_INPUTPROTO
-	select BR2_PACKAGE_XPROTO_RANDRPROTO
-	select BR2_PACKAGE_XPROTO_XPROTO
-	help
-	  VMWare mouse input driver

@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_XGC
-	bool "xgc"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	help
-	  X graphics demo

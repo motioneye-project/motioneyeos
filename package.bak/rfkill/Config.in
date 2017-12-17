@@ -1,7 +1,0 @@
-config BR2_PACKAGE_RFKILL
-	bool "rfkill"
-	help
-	  rfkill is a small userspace tool to query the state of the
-	  rfkill switches.
-
-	  https://wireless.wiki.kernel.org/en/users/documentation/rfkill

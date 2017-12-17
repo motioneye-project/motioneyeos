@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_RENDERPROTO
-	bool "renderproto"
-	help
-	  X.Org Render protocol headers

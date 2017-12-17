@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYCPARSER
-	bool "python-pycparser"
-	help
-	  C parser in Python
-
-	  https://github.com/eliben/pycparser

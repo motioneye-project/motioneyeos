@@ -1,5 +1,0 @@
-config BR2_PACKAGE_SKELETON
-	bool
-	default y
-	help
-	  The basic skeleton for your rootfs.

@@ -1,6 +1,0 @@
-config BR2_PACKAGE_MXML
-	bool "Mini-XML"
-	help
-	  Lightweight XML Library
-
-	  http://www.minixml.org

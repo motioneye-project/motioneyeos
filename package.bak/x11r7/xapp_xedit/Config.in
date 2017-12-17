@@ -1,6 +1,0 @@
-config BR2_PACKAGE_XAPP_XEDIT
-	bool "xedit"
-	select BR2_PACKAGE_XLIB_LIBXAW
-	depends on BR2_USE_MMU # fork()
-	help
-	  simple text editor for X

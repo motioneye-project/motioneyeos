@@ -1,7 +1,0 @@
-config BR2_PACKAGE_XDRIVER_XF86_INPUT_MOUSE
-	bool "xf86-input-mouse"
-	select BR2_PACKAGE_XPROTO_INPUTPROTO
-	select BR2_PACKAGE_XPROTO_RANDRPROTO
-	select BR2_PACKAGE_XPROTO_XPROTO
-	help
-	  X.Org driver for mouse input devices

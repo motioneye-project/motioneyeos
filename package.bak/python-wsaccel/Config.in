@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_WSACCEL
-	bool "python-wsaccel"
-	help
-	  Accelerator for ws4py and AutobahnPython.
-
-	  https://pypi.python.org/pypi/wsaccel

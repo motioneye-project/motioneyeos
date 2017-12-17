@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYMONGO
-	bool "python-pymongo"
-	depends on BR2_PACKAGE_PYTHON
-	help
-	  Python driver for MongoDB
-
-	  http://www.mongodb.org

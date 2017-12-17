@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_WS4PY
-	bool "python-ws4py"
-	help
-	  ws4py is a Python package implementing the WebSocket protocol
-	  as defined in RFC 6455.
-
-	  https://ws4py.readthedocs.org

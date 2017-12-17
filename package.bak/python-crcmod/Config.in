@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_CRCMOD
-	bool "python-crcmod"
-	help
-	  The software in this package is a Python module for
-	  generating objects that compute the Cyclic Redundancy
-	  Check (CRC).
-
-	  http://crcmod.sourceforge.net/

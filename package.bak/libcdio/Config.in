@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBCDIO
-	bool "libcdio"
-	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
-	help
-	  The GNU Compact Disc Input and Control library.
-
-	  http://www.gnu.org/software/libcdio/

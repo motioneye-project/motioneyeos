@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LINUX_SYSCALL_SUPPORT
-	bool "linux-syscall-support (lss)"
-	help
-	  This project provides a header file that can be included into
-	  your application whenever you need to make direct system
-	  calls.
-
-	  https://chromium.googlesource.com/linux-syscall-support/

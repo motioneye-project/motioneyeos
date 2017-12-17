@@ -1,7 +1,0 @@
-config BR2_PACKAGE_MDADM
-	bool "mdadm"
-	depends on BR2_USE_MMU # fork()
-	help
-	  Utility for managing Linux Software RAID arrays.
-
-	  http://neil.brown.name/blog/mdadm

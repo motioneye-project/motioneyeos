@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBCONFIG
-	bool "libconfig"
-	help
-	  Libconfig is a simple library for manipulating structured
-	  configuration files. The file format is more compact and more
-	  readable than XML. And unlike XML, it is type-aware, so it is
-	  not necessary to do string parsing in application code.
-
-	  http://www.hyperrealm.com/libconfig/

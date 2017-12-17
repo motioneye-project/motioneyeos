@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_CAN
-	bool "python-can"
-	help
-	  This module provides controller area network support for Python.
-
-	  https://bitbucket.org/hardbyte/python-can

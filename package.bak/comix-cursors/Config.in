@@ -1,6 +1,0 @@
-config BR2_PACKAGE_COMIX_CURSORS
-	bool "comix-cursors"
-	help
-	  X11 mouse theme with a comics feeling.
-
-	  http://kde-look.org/content/show.php/ComixCursors?content=32627

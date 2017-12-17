@@ -1,7 +1,0 @@
-config BR2_PACKAGE_ERLANG_P1_ZLIB
-	bool "erlang-p1-zlib"
-	select BR2_PACKAGE_ZLIB
-	help
-	  Erlang interface to zlib
-
-	  https://github.com/processone/zlib

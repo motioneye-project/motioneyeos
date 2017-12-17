@@ -1,9 +1,0 @@
-config BR2_PACKAGE_LIBSHA1
-	bool "libsha1"
-	help
-	  libsha1 is a tiny library providing SHA1 implementation,
-	  created for facilitating X server compilation on devices
-	  when larger libraries containing SHA1 implementations
-	  (OpenSSL, Mozilla NSS) are not needed.
-
-	  https://github.com/dottedmag/libsha1

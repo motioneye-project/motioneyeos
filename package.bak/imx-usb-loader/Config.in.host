@@ -1,9 +1,0 @@
-config BR2_PACKAGE_HOST_IMX_USB_LOADER
-	bool "host imx-usb-loader"
-	depends on BR2_arm
-	help
-	  This package contains tools to download and execute code
-	  on Freescale i.MX5/i.MX6 and Vybrid SoCs through the
-	  Serial Download Protocol.
-
-	  https://github.com/boundarydevices/imx_usb_loader

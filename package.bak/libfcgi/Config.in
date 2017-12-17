@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBFCGI
-	bool "libfcgi"
-	depends on BR2_USE_MMU # fork()
-	help
-	  FCGI, a fastcgi developer library for C/C++
-
-	  http://www.fastcgi.com/

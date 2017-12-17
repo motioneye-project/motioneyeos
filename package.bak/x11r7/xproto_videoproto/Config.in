@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_VIDEOPROTO
-	bool "videoproto"
-	help
-	  X.Org Video protocol headers

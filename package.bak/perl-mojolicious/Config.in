@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_MOJOLICIOUS
-	bool "perl-mojolicious"
-	help
-	  Real-time web framework
-
-	  http://mojolicious.org

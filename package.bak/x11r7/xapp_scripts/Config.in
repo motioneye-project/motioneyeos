@@ -1,5 +1,0 @@
-config BR2_PACKAGE_XAPP_SCRIPTS
-	bool "scripts"
-	select BR2_PACKAGE_XLIB_LIBX11
-	help
-	  start an X program on a remote machine

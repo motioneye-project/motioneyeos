@@ -1,6 +1,0 @@
-config BR2_PACKAGE_LIBTPL
-	bool "libtpl"
-	help
-	  Easily store and retrieve binary data in C
-
-	  http://troydhanson.github.io/tpl/

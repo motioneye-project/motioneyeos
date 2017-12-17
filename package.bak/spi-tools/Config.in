@@ -1,7 +1,0 @@
-config BR2_PACKAGE_SPI_TOOLS
-	bool "spi-tools"
-	help
-	  This package contains some simple command line tools to help
-	  using Linux spidev devices.
-
-	  https://github.com/cpb-/spi-tools

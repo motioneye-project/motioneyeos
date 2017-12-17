@@ -1,7 +1,0 @@
-config BR2_PACKAGE_LIBTOMMATH
-	bool "libtommath"
-	help
-	  LibTomMath is a free open source portable number theoretic
-	  multiple-precision integer library written entirely in C.
-
-	  http://www.libtom.net

@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PERL_HTTP_DATE
-	bool "perl-http-date"
-	help
-	  This module provides functions that deal the date formats used by the
-	  HTTP protocol (and then some more)
-
-	  https://github.com/gisle/http-date

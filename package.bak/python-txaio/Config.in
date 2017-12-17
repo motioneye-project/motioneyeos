@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_TXAIO
-	bool "python-txaio"
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	help
-	  Compatibility API between asyncio/Twisted/Trollius.
-
-	  https://pypi.python.org/pypi/txaio

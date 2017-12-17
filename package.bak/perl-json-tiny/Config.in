@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_JSON_TINY
-	bool "perl-json-tiny"
-	help
-	  Minimalistic JSON. No dependencies.
-
-	  https://metacpan.org/release/JSON-Tiny

@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LIBSRTP
-	bool "libsrtp"
-	help
-	  This package provides an implementation of the Secure
-	  Real-time Transport Protocol (SRTP), the Universal Security
-	  Transform (UST), and a supporting cryptographic kernel.
-
-	  https://github.com/cisco/libsrtp

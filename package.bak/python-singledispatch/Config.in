@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_SINGLEDISPATCH
-	bool "python-singledispatch"
-	depends on BR2_PACKAGE_PYTHON
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	help
-	  This library brings functools.singledispatch from
-	  Python 3.4 to Python 2.6-3.3
-
-	  https://pypi.python.org/pypi/singledispatch

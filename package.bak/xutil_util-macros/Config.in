@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XUTIL_UTIL_MACROS
-	bool "util-macros"
-	help
-	  No description available

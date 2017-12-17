@@ -1,8 +1,0 @@
-config BR2_PACKAGE_LUA_PERIPHERY
-	bool "lua-periphery"
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
-	help
-	  A library for GPIO, SPI, I2C, MMIO, and Serial peripheral I/O
-	  interface access in userspace Linux with Lua.
-
-	  https://github.com/vsergeev/lua-periphery

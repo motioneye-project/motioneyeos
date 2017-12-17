@@ -1,7 +1,0 @@
-config BR2_PACKAGE_FONT_AWESOME
-	bool "font-awesome"
-	help
-	  Font Awesome is a full suite of 605 pictographic icons for
-	  easy scalable vector graphics on websites.
-
-	  https://github.com/FortAwesome/Font-Awesome

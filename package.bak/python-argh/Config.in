@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_ARGH
-	bool "python-argh"
-	help
-	  An unobtrusive argparse wrapper with natural syntax.
-
-	  http://github.com/neithere/argh/

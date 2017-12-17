@@ -1,8 +1,0 @@
-config BR2_PACKAGE_PYTHON_MAKO
-	bool "python-mako"
-	help
-	  Mako is a template library written in Python. It provides a
-	  familiar, non-XML syntax which compiles into Python modules
-	  for maximum performance.
-
-	  https://pypi.python.org/pypi/Mako

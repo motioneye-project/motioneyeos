@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYSOCKS
-	bool "python-pysocks"
-	help
-	  A Python SOCKS client module.
-
-	  https://github.com/Anorov/PySocks

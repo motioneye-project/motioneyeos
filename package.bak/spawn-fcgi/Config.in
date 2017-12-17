@@ -1,8 +1,0 @@
-config BR2_PACKAGE_SPAWN_FCGI
-	bool "spawn-fcgi"
-	depends on BR2_USE_MMU # fork()
-	help
-	  FastCGI process spawner.
-	  Project split from lighttpd.
-
-	  http://redmine.lighttpd.net/projects/spawn-fcgi

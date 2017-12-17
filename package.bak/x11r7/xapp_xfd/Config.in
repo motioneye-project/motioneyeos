@@ -1,8 +1,0 @@
-config BR2_PACKAGE_XAPP_XFD
-	bool "xfd"
-	select BR2_PACKAGE_FREETYPE
-	select BR2_PACKAGE_FONTCONFIG
-	select BR2_PACKAGE_XLIB_LIBXAW
-	select BR2_PACKAGE_XLIB_LIBXFT
-	help
-	  X.Org xfd application

@@ -1,9 +1,0 @@
-config BR2_PACKAGE_PYTHON_JINJA2
-	bool "python-jinja2"
-	select BR2_PACKAGE_PYTHON_MARKUPSAFE # runtime
-	help
-	  Jinja2 is a template engine written in pure Python. It
-	  provides a Django inspired non-XML syntax but supports
-	  inline expressions and an optional sandboxed environment.
-
-	  http://jinja.pocoo.org/
