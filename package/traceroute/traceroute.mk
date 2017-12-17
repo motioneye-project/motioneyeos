@@ -5,7 +5,6 @@
 ################################################################################
 
 TRACEROUTE_VERSION = 2.1.0
-TRACEROUTE_SOURCE = traceroute-$(TRACEROUTE_VERSION).tar.gz
 TRACEROUTE_SITE = http://downloads.sourceforge.net/traceroute/traceroute/traceroute-$(TRACEROUTE_VERSION)
 
 TRACEROUTE_LICENSE = GPL-2.0+, LGPL-2.1+

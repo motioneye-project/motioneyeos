@@ -5,7 +5,6 @@
 ################################################################################
 
 PIMD_VERSION = 2.3.2
-PIMD_SOURCE = pimd-$(PIMD_VERSION).tar.gz
 PIMD_SITE = https://github.com/troglobit/pimd/releases/download/$(PIMD_VERSION)
 
 PIMD_LICENSE = BSD-3-Clause
