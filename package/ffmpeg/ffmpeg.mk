@@ -53,7 +53,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-libdc1394 \
 	--disable-libgsm \
 	--disable-libilbc \
-	--disable-libopenjpeg \
 	--disable-libvo-amrwbenc \
 	--disable-symver \
 	--disable-doc
@@ -367,6 +366,13 @@ FFMPEG_CONF_OPTS += --enable-fontconfig
 FFMPEG_DEPENDENCIES += fontconfig
 else
 FFMPEG_CONF_OPTS += --disable-fontconfig
+endif
+
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+FFMPEG_CONF_OPTS += --enable-libopenjpeg
+FFMPEG_DEPENDENCIES += openjpeg
+else
+FFMPEG_CONF_OPTS += --disable-libopenjpeg
 endif
 
 ifeq ($(BR2_PACKAGE_X264)$(BR2_PACKAGE_FFMPEG_GPL),yy)
