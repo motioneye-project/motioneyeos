@@ -218,7 +218,6 @@ comment "gstreamer-0.10 support needs a toolchain w/ wchar, threads, dynamic lib
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_STATIC_LIBS
 
-
 config BR2_PACKAGE_OPENCV_WITH_GSTREAMER1
 	bool "gstreamer-1.x"
 	depends on BR2_USE_MMU # gstreamer1 -> libglib2
