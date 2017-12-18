@@ -608,9 +608,9 @@ def main():
                 else:
                     raise
                 continue
-            except AttributeError:
-                print('Error: Could not install package {pkg}'.format(
-                    pkg=package.real_name))
+            except AttributeError as error:
+                print('Error: Could not install package {pkg}: {error}'.format(
+                    pkg=package.real_name, error=error))
                 continue
 
             # Package requirement are an argument of the setup function
