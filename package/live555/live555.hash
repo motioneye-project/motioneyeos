@@ -1,4 +1,5 @@
 # From http://live555.com/liveMedia/public/live555-latest-md5.txt
-md5 890ee3a3ea7a1df5843df9f9429170d7 live.2017.07.18.tar.gz
+md5 a5acd14c4fa7b50f7270304d3b4a70ae live.2017.10.28.tar.gz
 # Locally generated
-sha256 b2e857e47a9bac09958cbf313f160265067555f66f9282f10c6419d63c620ab6  live.2017.07.18.tar.gz
+sha256 d8eaec9ded34321aa655d3c9007217dd447218c54cb48c97827e58ecd5edb338  live.2017.10.28.tar.gz
+sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
