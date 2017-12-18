@@ -18,13 +18,30 @@ BRLTTY_CONF_OPTS = \
 	--disable-lisp-bindings \
 	--disable-ocaml-bindings \
 	--disable-python-bindings \
-	--disable-tcl-bindings
+	--disable-tcl-bindings \
+	--without-midi-package \
+	--without-mikropuhe --without-speechd --without-swift \
+	--without-theta --without-viavoice
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 BRLTTY_DEPENDENCIES += bluez5_utils
 BRLTTY_CONF_OPTS += --with-bluetooth-package
 else
 BRLTTY_CONF_OPTS += --without-bluetooth-package
+endif
+
+ifeq ($(BR2_PACKAGE_ESPEAK),y)
+BRLTTY_DEPENDENCIES += espeak
+BRLTTY_CONF_OPTS += --with-espeak=$(TARGET_DIR)/usr
+else
+BRLTTY_CONF_OPTS += --without-espeak
+endif
+
+ifeq ($(BR2_PACKAGE_FLITE),y)
+BRLTTY_DEPENDENCIES += flite
+BRLTTY_CONF_OPTS += --with-flite=$(STAGING_DIR)/usr
+else
+BRLTTY_CONF_OPTS += --without-flite
 endif
 
 ifeq ($(BR2_PACKAGE_ICU),y)
