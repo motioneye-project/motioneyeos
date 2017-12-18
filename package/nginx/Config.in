@@ -3,8 +3,8 @@ menuconfig BR2_PACKAGE_NGINX
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_LIBATOMIC_OPS if BR2_sparc_v8 || BR2_sparc_leon3
 	help
-	  nginx is an HTTP and reverse proxy server, as well as a mail proxy
-	  server.
+	  nginx is an HTTP and reverse proxy server, as well as a mail
+	  proxy server.
 
 	  http://nginx.org/
 

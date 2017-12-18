@@ -5,8 +5,8 @@ menuconfig BR2_PACKAGE_OPENCV
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_ZLIB
 	help
-	  OpenCV (Open Source Computer Vision) is a library of programming
-	  functions for real time computer vision.
+	  OpenCV (Open Source Computer Vision) is a library of
+	  programming functions for real time computer vision.
 
 	  http://opencv.org/
 
@@ -135,8 +135,8 @@ config BR2_PACKAGE_OPENCV_LIB_SUPERRES
 	select BR2_PACKAGE_OPENCV_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV_LIB_VIDEO
 	help
-	  Include opencv_superres "super resolution" - module into the OpenCV
-	  build.
+	  Include opencv_superres "super resolution" - module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV_LIB_TS
 	bool "ts (touchscreen)"
@@ -290,7 +290,8 @@ config BR2_PACKAGE_OPENCV_WITH_V4L
 	help
 	  Enable Video 4 Linux support.
 
-	  If the package libv4l is enabled, its support is automatically enabled.
+	  If the package libv4l is enabled, its support is
+	  automatically enabled.
 
 comment "Install options"
 

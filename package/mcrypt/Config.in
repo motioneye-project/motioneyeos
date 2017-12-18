@@ -4,9 +4,9 @@ config BR2_PACKAGE_MCRYPT
 	select BR2_PACKAGE_LIBMCRYPT
 	select BR2_PACKAGE_LIBMHASH
 	help
-	  MCrypt is a replacement for the old crypt() package and crypt(1)
-	  command, with extensions.
-	  It allows developers to use a wide range of encryption functions,
-	  without making drastic changes to their code.
+	  MCrypt is a replacement for the old crypt() package and
+	  crypt(1) command, with extensions.
+	  It allows developers to use a wide range of encryption
+	  functions, without making drastic changes to their code.
 
 	  http://mcrypt.sourceforge.net/

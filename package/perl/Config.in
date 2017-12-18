@@ -3,8 +3,8 @@ config BR2_PACKAGE_PERL
 	depends on BR2_USE_MMU # fork()
 	help
 	  Larry Wall's Practical Extraction and Report Language
-	  An interpreted scripting language, known among some as "Unix's Swiss
-	  Army Chainsaw".
+	  An interpreted scripting language, known among some as
+	  "Unix's Swiss Army Chainsaw".
 
 	  http://www.perl.org/
 
@@ -13,8 +13,8 @@ if BR2_PACKAGE_PERL
 config BR2_PACKAGE_PERL_MODULES
 	string "custom module selection"
 	help
-	  List of space-separated perl modules (without .pm) to copy to the
-	  rootfs.
+	  List of space-separated perl modules (without .pm) to copy
+	  to the rootfs.
 
 	  Examples: constant Getopt/Std Time/Local
 

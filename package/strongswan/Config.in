@@ -15,11 +15,13 @@ menuconfig BR2_PACKAGE_STRONGSWAN
 	  FreeS/WAN project and the X.509 patch.
 
 	  The focus is on:
-	     - simplicity of configuration
-	     - strong encryption and authentication methods
-	     - powerful IPsec policies supporting large and complex VPN networks
+	   - simplicity of configuration
+	   - strong encryption and authentication methods
+	   - powerful IPsec policies supporting large and complex
+	     VPN networks
 
-	  strongSwan provide many plugins. Only a few are presented here.
+	  strongSwan provide many plugins. Only a few are presented
+	  here.
 
 	  http://www.strongswan.org/
 

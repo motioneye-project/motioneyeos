@@ -2,7 +2,8 @@ config BR2_PACKAGE_RAPIDJSON
 	bool "rapidjson"
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
-	  A fast JSON parser/generator for C++ with both SAX/DOM style API.
+	  A fast JSON parser/generator for C++ with both SAX/DOM style
+	  API.
 
 	  http://rapidjson.org/
 

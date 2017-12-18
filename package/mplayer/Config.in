@@ -16,8 +16,8 @@ config BR2_PACKAGE_MPLAYER
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  MPlayer is a movie player which runs on many systems and supports
-	  many different file formats.
+	  MPlayer is a movie player which runs on many systems and
+	  supports many different file formats.
 
 	  http://www.mplayerhq.hu/
 

@@ -5,14 +5,15 @@ config BR2_PACKAGE_PHIDGETWEBSERVICE
 	select BR2_PACKAGE_LIBPHIDGET
 	help
 	  phidgetwebservice (the Phidget WebService) provides an HTTP
-	  front-end to the libphidget device control API. This provides
-	  an alternative to the libphidget C linkage interface for
-	  controlling locally attached Phidgets USB devices and it also
-	  allows you to control Phidget USB devices remotely when the host
-	  running the phidgetwebservice has an exposed network interface.
+	  front-end to the libphidget device control API. This
+	  provides an alternative to the libphidget C linkage
+	  interface for controlling locally attached Phidgets USB
+	  devices and it also allows you to control Phidget USB
+	  devices remotely when the host running the phidgetwebservice
+	  has an exposed network interface.
 
-	  The phidgetwebservice client program uses the libphidget HTTP
-	  functions to send commands to the phidgetwebservice.
+	  The phidgetwebservice client program uses the libphidget
+	  HTTP functions to send commands to the phidgetwebservice.
 
 	  http://phidgets.com/
 

@@ -6,9 +6,9 @@ config BR2_PACKAGE_UHTTPD
 	select BR2_PACKAGE_LIBUBOX
 	select BR2_PACKAGE_JSON_C
 	help
-	  uHTTPd is a tiny single threaded HTTP server with TLS, CGI and Lua
-	  support. It is intended as a drop-in replacement for the Busybox
-	  HTTP daemon.
+	  uHTTPd is a tiny single threaded HTTP server with TLS, CGI
+	  and Lua support. It is intended as a drop-in replacement for
+	  the Busybox HTTP daemon.
 
 	  https://wiki.openwrt.org/doc/howto/http.uhttpd
 

@@ -7,13 +7,14 @@ config BR2_PACKAGE_UPOWER
 	select BR2_PACKAGE_LIBGUDEV
 	select BR2_PACKAGE_LIBUSB
 	help
-	  UPower is an abstraction for enumerating power devices, listening
-	  to device events and querying history and statistics. Any
-	  application or service on the system can access the
-	  org.freedesktop.UPower service via the system message bus.
+	  UPower is an abstraction for enumerating power devices,
+	  listening to device events and querying history and
+	  statistics. Any application or service on the system can
+	  access the org.freedesktop.UPower service via the system
+	  message bus.
 
-	  Note: upowerd require CONFIG_TIMER_STATS enabled in the Linux
-	  kernel.
+	  Note: upowerd require CONFIG_TIMER_STATS enabled in the
+	  Linux kernel.
 
 	  https://upower.freedesktop.org/
 

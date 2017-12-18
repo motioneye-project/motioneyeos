@@ -7,8 +7,8 @@ config BR2_PACKAGE_SLIRP
 	  and the front-end. Interaction between front-end and
 	  back-end is done using VD-Interfaces.
 
-	  This package implements the slirp-part for Spice.
-	  Slirp emulates a PPP or SLIP connection over a normal terminal.
+	  This package implements the slirp-part for Spice. Slirp
+	  emulates a PPP or SLIP connection over a normal terminal.
 
 	  http://www.spice-space.org/
 

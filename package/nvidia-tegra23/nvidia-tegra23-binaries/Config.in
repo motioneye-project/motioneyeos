@@ -7,8 +7,8 @@ config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_LIBOPENMAX
 	help
-	  Those packages provide libraries, drivers and firmware that comes from
-	  NVIDIA Linux For Tegra.
+	  Those packages provide libraries, drivers and firmware that
+	  comes from NVIDIA Linux For Tegra.
 
 	  https://developer.nvidia.com/linux-tegra
 

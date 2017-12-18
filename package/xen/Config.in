@@ -13,9 +13,9 @@ if BR2_PACKAGE_XEN
 config BR2_PACKAGE_XEN_HYPERVISOR
 	bool "Xen hypervisor"
 	help
-	  The Xen binaries are avaliable in /usr/lib/xen/
-	  See http://wiki.xenproject.org/wiki/Getting_Started for using the
-	  Xen hypervisor.
+	  The Xen binaries are avaliable in /usr/lib/xen/ See
+	  http://wiki.xenproject.org/wiki/Getting_Started for using
+	  the Xen hypervisor.
 
 config BR2_PACKAGE_XEN_TOOLS
 	bool "Xen tools"

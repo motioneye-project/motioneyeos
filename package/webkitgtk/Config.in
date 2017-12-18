@@ -45,7 +45,8 @@ config BR2_PACKAGE_WEBKITGTK
 	select BR2_PACKAGE_XLIB_LIBXRENDER if BR2_PACKAGE_LIBGTK3_X11
 	select BR2_PACKAGE_XLIB_LIBXT if BR2_PACKAGE_LIBGTK3_X11
 	help
-	  WebKit is an open source, standards compliant web browser engine.
+	  WebKit is an open source, standards compliant web browser
+	  engine.
 
 	  http://www.webkitgtk.org/
 

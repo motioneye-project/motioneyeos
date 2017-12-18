@@ -3,8 +3,8 @@ config BR2_PACKAGE_PATCH
 	depends on BR2_USE_WCHAR
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
-	  Take patch files (containing difference listings) and apply them
-	  to original files, producing patched versions.
+	  Take patch files (containing difference listings) and apply
+	  them to original files, producing patched versions.
 
 	  http://www.gnu.org/software/patch/
 

@@ -4,8 +4,9 @@ config BR2_PACKAGE_SMSTOOLS3
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  The SMS Server Tools 3 is a SMS Gateway software which can send and
-	  receive short messages through GSM modems and mobile phones.
+	  The SMS Server Tools 3 is a SMS Gateway software which can
+	  send and receive short messages through GSM modems and
+	  mobile phones.
 
 	  http://smstools3.kekekasvi.com/
 
@@ -15,9 +16,9 @@ config BR2_PACKAGE_SMSTOOLS3_NB_MODEMS
 	int "Number of modems to support"
 	default 1
 	help
-	  To reduce memory footprint of SMS Server Tools, you can specify the
-	  exact number of modems connected to your board. By default only 1
-	  modem is used.
+	  To reduce memory footprint of SMS Server Tools, you can
+	  specify the exact number of modems connected to your
+	  board. By default only 1 modem is used.
 
 endif
 

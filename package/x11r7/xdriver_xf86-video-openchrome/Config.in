@@ -12,8 +12,8 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_OPENCHROME
 	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
-	  Openchrome, A free and Open Source video driver for the VIA/S3G
-	  UniChrome and UniChrome Pro graphics chipsets.
+	  Openchrome, A free and Open Source video driver for the
+	  VIA/S3G UniChrome and UniChrome Pro graphics chipsets.
 
 	  https://www.freedesktop.org/wiki/Openchrome/
 

@@ -2,8 +2,8 @@ menuconfig BR2_PACKAGE_GST_PLUGINS_GOOD
 	bool "gst-plugins-good"
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
-	  A set of well-supported plug-ins for GStreamer under the preferred
-	  license.
+	  A set of well-supported plug-ins for GStreamer under the
+	  preferred license.
 
 	  http://gstreamer.freedesktop.org/
 

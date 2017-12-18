@@ -19,9 +19,9 @@ config BR2_PACKAGE_OMXPLAYER
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_ZLIB
 	help
-	  OMXPlayer is a commandline OMX player for the Raspberry Pi. It was
-	  developed as a testbed for the XBMC Raspberry PI implementation
-	  and is quite handy to use standalone.
+	  OMXPlayer is a commandline OMX player for the Raspberry
+	  Pi. It was developed as a testbed for the XBMC Raspberry PI
+	  implementation and is quite handy to use standalone.
 
 	  https://github.com/popcornmix/omxplayer
 

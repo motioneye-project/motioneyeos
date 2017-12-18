@@ -24,9 +24,9 @@ config BR2_PACKAGE_MARIADB
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_HAS_MYSQL
 	help
-	  MariaDB is one of the most popular database servers in the world.
-	  It's made by the original developers of MySQL and guaranteed to
-	  stay open source.
+	  MariaDB is one of the most popular database servers in the
+	  world.  It's made by the original developers of MySQL and
+	  guaranteed to stay open source.
 
 	  http://www.mariadb.org/
 

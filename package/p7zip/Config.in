@@ -4,8 +4,8 @@ config BR2_PACKAGE_P7ZIP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_WCHAR
 	help
-	  p7zip is a quick port of the command line version of 7-zip for Unix.
-	  (see http://www.7-zip.org)
+	  p7zip is a quick port of the command line version of 7-zip
+	  for Unix (see http://www.7-zip.org)
 
 	  7-Zip is a file archiver with highest compression ratio.
 

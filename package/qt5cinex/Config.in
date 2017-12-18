@@ -17,8 +17,8 @@ config BR2_PACKAGE_QT5CINEX
 	select BR2_PACKAGE_QT5BASE_EGLFS
 	select BR2_PACKAGE_QT5GRAPHICALEFFECTS
 	help
-	  This application demonstrates the power of Qt5 and few of the new
-	  additions available in QtQuick 2.0.
+	  This application demonstrates the power of Qt5 and few of
+	  the new additions available in QtQuick 2.0.
 
 	  http://quitcoding.com/?page=work#cinex
 

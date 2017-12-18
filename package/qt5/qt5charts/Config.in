@@ -11,6 +11,7 @@ config BR2_PACKAGE_QT5CHARTS
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
 
-	  Qt Charts module provides a set of easy to use chart components.
+	  Qt Charts module provides a set of easy to use chart
+	  components.
 
 	  https://doc.qt.io/qt-5/qtcharts-index.html

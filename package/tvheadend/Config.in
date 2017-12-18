@@ -13,15 +13,16 @@ config BR2_PACKAGE_TVHEADEND
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Tvheadend is a TV streaming server for Linux supporting DVB-S,
-	  DVB-S2, DVB-C, DVB-T, ATSC, IPTV, and Analog video (V4L) as
-	  input sources.
+
+	  Tvheadend is a TV streaming server for Linux supporting
+	  DVB-S, DVB-S2, DVB-C, DVB-T, ATSC, IPTV, and Analog video
+	  (V4L) as input sources.
 
 	  https://www.lonelycoder.com/redmine/projects/tvheadend/
 
 	  Note:
-	    - on first run, tvheadend will start in wizard mode; the webUI
-	      is available on port 9981.
+	    - on first run, tvheadend will start in wizard mode; the
+	      webUI is available on port 9981.
 	    - if you want Avahi support, you'll need to enable:
 	          Avahi, D-Bus, libdaemon
 

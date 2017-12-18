@@ -5,8 +5,9 @@ menuconfig BR2_PACKAGE_SCONESERVER
 	depends on !BR2_STATIC_LIBS # dlopen()
 	select BR2_PACKAGE_PCRE
 	help
-	  Sconeserver is a modular, object-orientated and extremely versatile
-	  network server framework for GNU/Linux and UNIX-like platforms.
+	  Sconeserver is a modular, object-orientated and extremely
+	  versatile network server framework for GNU/Linux and
+	  UNIX-like platforms.
 
 	  http://www.sconemad.com/sconeserver/
 

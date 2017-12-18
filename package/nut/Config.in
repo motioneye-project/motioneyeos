@@ -9,9 +9,10 @@ config BR2_PACKAGE_NUT
 	help
 	  Network UPS tools
 
-	  The primary goal of the Network UPS Tools (NUT) project is to provide
-	  support for Power Devices, such as Uninterruptible Power Supplies,
-	  Power Distribution Units and Solar Controllers.
+	  The primary goal of the Network UPS Tools (NUT) project is
+	  to provide support for Power Devices, such as
+	  Uninterruptible Power Supplies, Power Distribution Units and
+	  Solar Controllers.
 
 	  http://www.networkupstools.org/
 
@@ -20,7 +21,7 @@ if BR2_PACKAGE_NUT
 config BR2_PACKAGE_NUT_DRIVERS
 	string "drivers"
 	help
-	  Select the individual drivers to enable, in a comma-separated list.
-	  Leave empty for all.
+	  Select the individual drivers to enable, in a
+	  comma-separated list. Leave empty for all.
 
 endif # BR2_PACKAGE_NUT

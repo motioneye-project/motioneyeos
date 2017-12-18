@@ -3,7 +3,8 @@ config BR2_PACKAGE_MULTICAT
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_BITSTREAM
 	help
-	  Simple and efficient multicast and transport stream manipulation.
+	  Simple and efficient multicast and transport stream
+	  manipulation.
 
 	  http://www.videolan.org/projects/multicat.html
 

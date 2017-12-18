@@ -15,8 +15,8 @@ config BR2_PACKAGE_SYSDIG
 	select BR2_PACKAGE_LIBB64
 	help
 	  Sysdig is open source, system-level exploration:
-	  capture system state and activity from a running Linux instance,
-	  then save, filter and analyze.
+	  capture system state and activity from a running Linux
+	  instance, then save, filter and analyze.
 	  Think of it as strace + tcpdump + lsof + awesome sauce.
 	  With a little Lua cherry on top.
 

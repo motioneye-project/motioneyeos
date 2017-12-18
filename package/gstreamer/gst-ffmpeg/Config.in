@@ -7,12 +7,12 @@ config BR2_PACKAGE_GST_FFMPEG
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_sh
 	select BR2_PACKAGE_GST_PLUGINS_BASE
 	help
-	  GStreamer plugin containing one plugin with a set of elements using
-	  the Libav library. It contains most popular decoders as well as
-	  colorspace conversion elements.
+	  GStreamer plugin containing one plugin with a set of
+	  elements using the Libav library. It contains most popular
+	  decoders as well as colorspace conversion elements.
 
-	  This package is configured to use an internal copy of the Libav
-	  library.
+	  This package is configured to use an internal copy of the
+	  Libav library.
 
 	  http://gstreamer.freedesktop.org/modules/gst-ffmpeg.html
 

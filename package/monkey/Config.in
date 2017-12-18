@@ -4,7 +4,8 @@ config BR2_PACKAGE_MONKEY
 	depends on !BR2_STATIC_LIBS # dlopen()
 	depends on BR2_USE_MMU # fork()
 	help
-	  Monkey Server is a fast and lightweight web server for Linux platforms.
+	  Monkey Server is a fast and lightweight web server for Linux
+	  platforms.
 
 	  http://monkey-project.com/
 

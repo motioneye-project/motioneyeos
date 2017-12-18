@@ -16,11 +16,12 @@ config BR2_PACKAGE_MEMTEST86
 
 	  Memtest86+ will only work on 32-bit or 64-bit x86 targets.
 	  It boots as an i486 program and autodetects hardware. It can
-	  be added to the grub2 boot menu by adding the following lines
-	  to the bottom of /boot/grub/grub.cfg - note the use of linux16.
+	  be added to the grub2 boot menu by adding the following
+	  lines to the bottom of /boot/grub/grub.cfg - note the use of
+	  linux16.
 
 	  menuentry "Memtest86+" {
-		 linux16 /boot/memtest86+.bin
+	    linux16 /boot/memtest86+.bin
 	  }
 
 	  Other boot loaders will have similar requirements.

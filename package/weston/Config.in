@@ -67,9 +67,9 @@ config BR2_PACKAGE_WESTON_RDP
 	    --rdp-tls-cert=/path/to/server.crt
 	    --rdp-tls-key=/path/to/server.key
 
-	  By default, Buildroot installs such files in /etc/freerdp/server/
-	  so you may want to change them in a post-build script or a rootfs
-	  overlay.
+	  By default, Buildroot installs such files in
+	  /etc/freerdp/server/ so you may want to change them in a
+	  post-build script or a rootfs overlay.
 
 comment "RDP compositor needs a toolchain w/ wchar, C++"
 	depends on BR2_USE_MMU

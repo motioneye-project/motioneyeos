@@ -2,8 +2,9 @@ config BR2_PACKAGE_OPENCORE_AMR
 	bool "opencore-amr"
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
-	  Library of OpenCORE Framework implementation of Adaptive Multi Rate
-	  Narrowband and Wideband (AMR-NB and AMR-WB) speech codec.
+	  Library of OpenCORE Framework implementation of Adaptive
+	  Multi Rate Narrowband and Wideband (AMR-NB and AMR-WB)
+	  speech codec.
 
 	  http://opencore-amr.sourceforge.net/
 

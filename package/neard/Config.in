@@ -9,8 +9,9 @@ config BR2_PACKAGE_NEARD
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBNL
 	help
-	  Near Field Communication (NFC) manager. This userspace daemon is
-	  a part of the NFC stack provided by the Linux NFC project.
+	  Near Field Communication (NFC) manager. This userspace
+	  daemon is a part of the NFC stack provided by the Linux NFC
+	  project.
 
 	  http://git.kernel.org/?p=network/nfc/neard.git;a=summary
 

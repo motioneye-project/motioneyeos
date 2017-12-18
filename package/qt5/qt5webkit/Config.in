@@ -21,10 +21,11 @@ config BR2_PACKAGE_QT5WEBKIT
 	  allows QML applications to render regions of dynamic
 	  web content.
 
-	  This package has been removed from the official release packages
-	  since Qt5.6.0, but it is still available for users to build it
-	  from source. This is useful for platforms without GPU since the
-	  successor (QtWebEngine) requires OpenGL support.
+	  This package has been removed from the official release
+	  packages since Qt5.6.0, but it is still available for users
+	  to build it from source. This is useful for platforms
+	  without GPU since the successor (QtWebEngine) requires
+	  OpenGL support.
 
 	  http://doc.qt.io/archives/qt-5.5/qtwebkit-index.html
 

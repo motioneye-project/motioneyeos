@@ -8,8 +8,8 @@ config BR2_PACKAGE_USHARE
 	select BR2_PACKAGE_LIBUPNP
 	help
 	  uShare is a UPnP (TM) A/V & DLNA Media Server.
-	  It implements the server component that provides UPnP media devices
-	  with information on available multimedia files.
+	  It implements the server component that provides UPnP media
+	  devices with information on available multimedia files.
 
 	  http://ushare.geexbox.org/
 

@@ -8,8 +8,9 @@ menuconfig BR2_PACKAGE_GST1_IMX
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	help
-	  This is a set of GStreamer 1.0 plugins for plugins for Freescale's
-	  i.MX platforms, which make use of the i.MX multimedia capabilities.
+	  This is a set of GStreamer 1.0 plugins for plugins for
+	  Freescale's i.MX platforms, which make use of the i.MX
+	  multimedia capabilities.
 
 	  https://github.com/Freescale/gstreamer-imx
 

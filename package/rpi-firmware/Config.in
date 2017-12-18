@@ -3,7 +3,9 @@ config BR2_PACKAGE_RPI_FIRMWARE
 	depends on BR2_arm || BR2_aarch64
 	help
 	  RaspberryPi Firmware
-	  Pre-compiled binaries of the current bootloader and GPU firmware
+
+	  Pre-compiled binaries of the current bootloader and GPU
+	  firmware
 
 	  https://github.com/raspberrypi/firmware
 
@@ -14,11 +16,12 @@ choice
 	default BR2_PACKAGE_RPI_FIRMWARE_DEFAULT
 	help
 	  There are three different firmware files:
-	    - the default firmware, that enables standard GPU features;
-	    - the extended firmware, that enables additional GPU features
-	      (eg. more audio/video codecs);
-	    - the cut-down firmware, for emergency situations, with only
-	      features required to boot a Linux kernel.
+	    - the default firmware, that enables standard GPU
+	      features;
+	    - the extended firmware, that enables additional GPU
+	      features (eg. more audio/video codecs);
+	    - the cut-down firmware, for emergency situations, with
+	      only features required to boot a Linux kernel.
 
 config BR2_PACKAGE_RPI_FIRMWARE_DEFAULT
 	bool "default"
@@ -50,11 +53,12 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS
 	default y
 	depends on !BR2_LINUX_KERNEL_DTS_SUPPORT
 	help
-	  If you are using a Linux kernel <= 3.18, you should say 'y' here.
+	  If you are using a Linux kernel <= 3.18, you should say 'y'
+	  here.
 
-	  If you are using a Linux kernel >= 3.19, you should say 'n' here,
-	  and enable BR2_LINUX_KERNEL_DTS_SUPPORT to let the kernel build
-	  the DTB.
+	  If you are using a Linux kernel >= 3.19, you should say 'n'
+	  here, and enable BR2_LINUX_KERNEL_DTS_SUPPORT to let the
+	  kernel build the DTB.
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	bool "Install DTB overlays"
@@ -62,8 +66,9 @@ config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 	depends on BR2_PACKAGE_RPI_FIRMWARE_INSTALL_DTBS \
 		|| BR2_LINUX_KERNEL_DTS_SUPPORT
 	help
-	  Say 'y' here if you need to load one or more of the DTB overlays,
-	  to support HATs (Hardware Attached on Top, add-on modules).
+	  Say 'y' here if you need to load one or more of the DTB
+	  overlays, to support HATs (Hardware Attached on Top, add-on
+	  modules).
 
 config BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG
 	bool "vcdbg"

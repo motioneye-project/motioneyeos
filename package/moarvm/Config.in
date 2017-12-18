@@ -14,8 +14,9 @@ config BR2_PACKAGE_MOARVM
 	# See: https://github.com/MoarVM/MoarVM/issues/222
 	select BR2_PACKAGE_LIBFFI if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	help
-	  Short for "Metamodel On A Runtime", MoarVM is a virtual machine
-	  built especially for Rakudo Perl 6 and the NQP Compiler Toolchain.
+	  Short for "Metamodel On A Runtime", MoarVM is a virtual
+	  machine built especially for Rakudo Perl 6 and the NQP
+	  Compiler Toolchain.
 
 	  http://moarvm.com
 

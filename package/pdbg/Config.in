@@ -5,6 +5,7 @@ config BR2_PACKAGE_PDBG
 	  Power8 and Power9 CPU over FSI.
 
 	  pdbg runs on a BMC, which is generally an ARM-powered system
-	  monitoring/controlling a host CPU. It can also run on the host.
+	  monitoring/controlling a host CPU. It can also run on the
+	  host.
 
 	  https://github.com/open-power/pdbg

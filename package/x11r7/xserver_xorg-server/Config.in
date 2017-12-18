@@ -156,7 +156,8 @@ config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_EVDEV
 	  This driver can then be enabled by running the X server
 	  using:
 
-	  Xfbdev -keybd evdev,,device=/dev/input/eventX -mouse evdev,,device=/dev/input/eventY.
+	  Xfbdev -keybd evdev,,device=/dev/input/eventX
+	         -mouse evdev,,device=/dev/input/eventY
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_KDRIVE_KBD
 	bool "Enable KDrive/TinyX kbd input driver"

@@ -9,6 +9,7 @@ config BR2_PACKAGE_SQUID
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBCAP
 	help
-	  Caching proxy for the Web supporting HTTP, HTTPS, FTP, and more.
+	  Caching proxy for the Web supporting HTTP, HTTPS, FTP, and
+	  more.
 
 	  http://www.squid-cache.org/

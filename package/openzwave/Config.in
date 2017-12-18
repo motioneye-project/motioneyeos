@@ -5,10 +5,10 @@ config BR2_PACKAGE_OPENZWAVE
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on BR2_USE_WCHAR
 	help
-	  Free software library that interfaces with selected Z-Wave PC
-	  controllers, allowing anyone to create applications that manipulate
-	  and respond to devices on a Z-Wave network, without requiring
-	  in-depth knowledge of the Z-Wave protocol
+	  Free software library that interfaces with selected Z-Wave
+	  PC controllers, allowing anyone to create applications that
+	  manipulate and respond to devices on a Z-Wave network,
+	  without requiring in-depth knowledge of the Z-Wave protocol
 
 	  http://www.openzwave.net
 

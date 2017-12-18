@@ -6,6 +6,7 @@ config BR2_PACKAGE_WSAPI_FCGI
 	select BR2_PACKAGE_WSAPI
 	help
 	  WSAPI is an API that abstracts the web server from Lua web
-	  applications. This is the rock that contains the FCGI module lfcgi.
+	  applications. This is the rock that contains the FCGI module
+	  lfcgi.
 
 	  http://keplerproject.github.com/wsapi/

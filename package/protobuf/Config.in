@@ -34,8 +34,9 @@ config BR2_PACKAGE_PROTOBUF
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	depends on !BR2_STATIC_LIBS
 	help
-	  Protocol buffers are Google's language-neutral, platform-neutral,
-	  extensible mechanism for serializing structured data.
+	  Protocol buffers are Google's language-neutral,
+	  platform-neutral, extensible mechanism for serializing
+	  structured data.
 
 	  https://developers.google.com/protocol-buffers
 

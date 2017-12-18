@@ -2,8 +2,8 @@ config BR2_PACKAGE_QUAGGA
 	bool "quagga"
 	depends on BR2_USE_MMU # fork()
 	help
-	  Routing software suite, providing implementations of
-	  OSPFv2, OSPFv3 (IPv6), RIP v1 and v2, RIPng (IPv6) and BGPv4+.
+	  Routing software suite, providing implementations of OSPFv2,
+	  OSPFv3 (IPv6), RIP v1 and v2, RIPng (IPv6) and BGPv4+.
 
 	  http://www.quagga.net/
 
@@ -18,11 +18,11 @@ config BR2_PACKAGE_QUAGGA_TCP_ZEBRA
 	bool "Use TCP sockets between zebra and protocol daemons"
 	depends on BR2_PACKAGE_QUAGGA_ZEBRA
 	help
-	  Use a TCP socket to communicate between zebra (supervisor) and
-	  the different protocol daemons.
+	  Use a TCP socket to communicate between zebra (supervisor)
+	  and the different protocol daemons.
 
-	  You'll want this enabled if zebra and the protocol daemon(s) run
-	  on different hosts.
+	  You'll want this enabled if zebra and the protocol daemon(s)
+	  run on different hosts.
 
 config BR2_PACKAGE_QUAGGA_BGPD
 	bool "BGPv4+ protocol"
@@ -66,7 +66,8 @@ config BR2_PACKAGE_QUAGGA_PIMD
 config BR2_PACKAGE_QUAGGA_WATCHQUAGGA
 	bool "Build watchquagga"
 	help
-	  Build and install watchquagga, a zebra/protocol daemon supervisor.
+	  Build and install watchquagga, a zebra/protocol daemon
+	  supervisor.
 
 config BR2_PACKAGE_QUAGGA_VTYSH
 	bool "Build vtysh"

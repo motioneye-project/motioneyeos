@@ -8,8 +8,8 @@ config BR2_PACKAGE_ZMQPP
 	help
 	  C++ binding for zeromq (ZeroMQ, 0MQ, zmq).
 
-	  This C++ binding is a 'high-level' library that hides most of the
-	  C-style interface core zeromq provides.
+	  This C++ binding is a 'high-level' library that hides most
+	  of the C-style interface core zeromq provides.
 
 	  http://github.com/benjamg/zmqpp
 
@@ -27,8 +27,8 @@ config BR2_PACKAGE_ZMQPP_CLIENT
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
 	help
-	  Build and install the zmqpp client, a command line tool that can be
-	  used to listen or send to zeromq sockets.
+	  Build and install the zmqpp client, a command line tool that
+	  can be used to listen or send to zeromq sockets.
 
 comment "zmqpp client needs a toolchain w/ dynamic library, threads, wchar"
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS \

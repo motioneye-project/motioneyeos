@@ -7,7 +7,7 @@ config BR2_PACKAGE_PYTHON_TYPEPY
 	select BR2_PACKAGE_PYTHON_PYTZ # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
-	  A Python library for variable type checker/validator/converter at a
-	  run time.
+	  A Python library for variable type
+	  checker/validator/converter at a run time.
 
 	  https://github.com/thombashi/typepy

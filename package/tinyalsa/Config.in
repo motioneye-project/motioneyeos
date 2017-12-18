@@ -8,8 +8,8 @@ config BR2_PACKAGE_TINYALSA
 
 	  - Provide a basic pcm and mixer API
 	  - If it's not absolutely needed, don't add it to the API
-	  - Avoid supporting complex and unnecessary operations that could be dealt
-	    with at a higher level
+	  - Avoid supporting complex and unnecessary operations that
+	    could be dealt with at a higher level
 
 	  https://github.com/tinyalsa/tinyalsa
 

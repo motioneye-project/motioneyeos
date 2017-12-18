@@ -2,7 +2,8 @@ config BR2_PACKAGE_NDISC6
 	bool "ndisc6 tools"
 	depends on BR2_USE_MMU # fork()
 	help
-	  NDisc6 is a small collection of useful tools for IPv6 networking
+	  NDisc6 is a small collection of useful tools for IPv6
+	  networking
 
 	  http://www.remlab.net/ndisc6/
 

@@ -2,8 +2,8 @@ menuconfig BR2_PACKAGE_GST1_PLUGINS_BAD
 	bool "gst1-plugins-bad"
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	help
-	  A set of plug-ins for GStreamer that may be of poor quality or
-	  lacking some features.
+	  A set of plug-ins for GStreamer that may be of poor quality
+	  or lacking some features.
 
 	  http://gstreamer.freedesktop.org/
 
@@ -217,7 +217,8 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COLOREFFECTS
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DEBUGUTILS
 	bool "debugutils"
 	help
-	  Collection of elements that may or may not be useful for debugging
+	  Collection of elements that may or may not be useful for
+	  debugging
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DVBSUBOVERLAY
 	bool "dvdsuboverlay"

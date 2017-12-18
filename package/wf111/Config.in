@@ -13,8 +13,8 @@ config BR2_PACKAGE_WF111
 	  options (i.e. not selectable directly) so they cannot be
 	  enabled by a change in linux/linux.mk. There are two choices
 	  to enable these options:
-	  - By making them non blind, with a "WF111 support" configuration
-	    entry that selects them, for example.
+	  - By making them non blind, with a "WF111 support"
+	    configuration entry that selects them, for example.
 	  - By enabling another random WiFi driver that select them.
 
 	  http://www.bluegiga.com/en-US/products/wifi-modules/wf111-wifi-module/

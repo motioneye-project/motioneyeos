@@ -170,8 +170,9 @@ config BR2_PACKAGE_QT5BASE_OPENGL_LIB
 	bool "opengl module"
 	select BR2_PACKAGE_QT5BASE_WIDGETS
 	help
-	  This option enables the Qt5OpenGL library. This library includes
-	  OpenGL support classes provided to ease porting from Qt 4.x.
+	  This option enables the Qt5OpenGL library. This library
+	  includes OpenGL support classes provided to ease porting
+	  from Qt 4.x.
 
 endif
 
@@ -211,12 +212,14 @@ config BR2_PACKAGE_QT5BASE_DEFAULT_QPA
 	string "Default graphical platform"
 	help
 	  Choose the default platform abstraction to use for graphical
-	  applications (e.g xcb, linuxfb, eglfs, ...). If this is empty, the
-	  default for your architecture will be used (usually this is eglfs).
+	  applications (e.g xcb, linuxfb, eglfs, ...). If this is
+	  empty, the default for your architecture will be used
+	  (usually this is eglfs).
 
-	  You can get a list of supported platforms by running a Qt application
-	  with the option "-platform help" on your target. You can choose a
-	  different platform at runtime with the -platform option.
+	  You can get a list of supported platforms by running a Qt
+	  application with the option "-platform help" on your
+	  target. You can choose a different platform at runtime with
+	  the -platform option.
 
 config BR2_PACKAGE_QT5BASE_PRINTSUPPORT
 	depends on BR2_PACKAGE_QT5BASE_WIDGETS

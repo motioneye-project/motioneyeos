@@ -3,8 +3,8 @@ config BR2_PACKAGE_TI_UTILS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
 	select BR2_PACKAGE_LIBNL
 	help
-	  The calibrator and other useful utilities for TI wireless solution,
-	  based on wl12xx driver.
+	  The calibrator and other useful utilities for TI wireless
+	  solution, based on wl12xx driver.
 
 	  http://linuxwireless.org/en/users/Drivers/wl12xx/calibrator
 

@@ -13,7 +13,7 @@ config BR2_PACKAGE_XTABLES_ADDONS
 	select BR2_LINUX_NEEDS_MODULES # not using kernel-module infra
 	help
 	  Xtables-addons is the successor to patch-o-matic(-ng).
-	  Likewise, it contains extensions that were not, or are not yet,
-	  accepted in the main kernel/iptables packages.
+	  Likewise, it contains extensions that were not, or are not
+	  yet, accepted in the main kernel/iptables packages.
 
 	  http://xtables-addons.sourceforge.net/

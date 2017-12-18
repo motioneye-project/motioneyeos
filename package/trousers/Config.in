@@ -10,9 +10,9 @@ config BR2_PACKAGE_TROUSERS
 	help
 	  The open-source TCG Software Stack (TSS).
 
-	  This library enables the use of a Trusted Platform Module that
-	  complies with the TPM specification, version 1.2. It implements the
-	  TSS specification, version 1.2.
+	  This library enables the use of a Trusted Platform Module
+	  that complies with the TPM specification, version 1.2. It
+	  implements the TSS specification, version 1.2.
 
 	  http://trousers.sourceforge.net/
 

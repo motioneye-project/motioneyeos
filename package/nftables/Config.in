@@ -8,9 +8,9 @@ config BR2_PACKAGE_NFTABLES
 	help
 	  nftables is the project that aims to replace the existing
 	  {ip,ip6,arp,eb}tables framework.
-	  Basically, this project provides a new packet filtering framework,
-	  a new userspace utility and also a compatibility layer
-	  for {ip,ip6}tables.
+	  Basically, this project provides a new packet filtering
+	  framework, a new userspace utility and also a compatibility
+	  layer for {ip,ip6}tables.
 
 	  http://www.netfilter.org/projects/nftables/index.html
 

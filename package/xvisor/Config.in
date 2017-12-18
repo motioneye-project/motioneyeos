@@ -10,9 +10,9 @@ menuconfig BR2_PACKAGE_XVISOR
 	depends on BR2_PACKAGE_XVISOR_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
-	  Xvisor is an open-source type-1 hypervisor, which aims at providing
-	  a monolithic, light-weight, portable, and flexible virtualization
-	  solution.
+	  Xvisor is an open-source type-1 hypervisor, which aims at
+	  providing a monolithic, light-weight, portable, and flexible
+	  virtualization solution.
 
 	  http://www.xhypervisor.org/
 
