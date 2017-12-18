@@ -3,10 +3,10 @@ comment "qt5charts needs at least qt-5.7"
 
 config BR2_PACKAGE_QT5CHARTS
 	bool "qt5charts"
+	depends on BR2_PACKAGE_QT5_VERSION_LATEST
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_WIDGETS
-	depends on BR2_PACKAGE_QT5_VERSION_LATEST
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
