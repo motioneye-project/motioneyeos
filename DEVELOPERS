@@ -1045,10 +1045,8 @@ F:	package/sg3_utils/
 F:	package/udisks/
 
 N:	Mario Lang <mlang@blind.guru>
-F:	package/lynx/
-
-N:	Mario Lang <mlang@blind.guru>
 F:	package/brltty/
+F:	package/lynx/
 
 N:	Mario Rugiero <mrugiero@gmail.com>
 F:	package/ratpoison/
