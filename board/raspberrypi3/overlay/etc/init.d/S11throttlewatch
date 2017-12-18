@@ -46,7 +46,7 @@ case "$1" in
         msg_begin "Starting throttle watcher"
         watch_now &
         watch_since_boot &
-10        test $? == 0 && msg_done || msg_fail
+        test $? == 0 && msg_done || msg_fail
         ;;
 
     stop)
