@@ -140,11 +140,17 @@ else
 PULSEAUDIO_CONF_OPTS += --disable-x11
 endif
 
+# ConsoleKit module init failure breaks user daemon startup
+define PULSEAUDIO_REMOVE_CONSOLE_KIT
+	rm -f $(TARGET_DIR)/usr/lib/pulse-$(PULSEAUDIO_VERSION)/modules/module-console-kit.so
+endef
+
 define PULSEAUDIO_REMOVE_VALA
 	rm -rf $(TARGET_DIR)/usr/share/vala
 endef
 
-PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA
+PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA \
+	PULSEAUDIO_REMOVE_CONSOLE_KIT
 
 ifeq ($(BR2_PACKAGE_PULSEAUDIO_DAEMON),y)
 define PULSEAUDIO_USERS
