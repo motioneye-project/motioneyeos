@@ -15,13 +15,14 @@ diff --git a/auto/lib/openssl/conf b/auto/lib/openssl/conf
 index 39d9602..995c6f3 100644
 --- a/auto/lib/openssl/conf
 +++ b/auto/lib/openssl/conf
-@@ -58,8 +58,8 @@ else
+@@ -58,8 +58,9 @@ else
          ngx_feature_name="NGX_OPENSSL"
          ngx_feature_run=no
          ngx_feature_incs="#include <openssl/ssl.h>"
 -        ngx_feature_path=
 -        ngx_feature_libs="-lssl -lcrypto $NGX_LIBDL"
-+        ngx_feature_path="$(${PKG_CONFIG:=pkg-config} --cflags-only-I openssl|sed 's/-I//g')"
++        ngx_feature_path="$(${PKG_CONFIG:=pkg-config} --cflags-only-I openssl|
++			     sed -re 's/(^|\s)-I\s*(\S+)/\1\2/g')"
 +        ngx_feature_libs="$(${PKG_CONFIG:=pkg-config} --libs openssl)"
          ngx_feature_test="SSL_CTX_set_options(NULL, 0)"
          . auto/feature
