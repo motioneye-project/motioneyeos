@@ -19,6 +19,7 @@ BRLTTY_CONF_OPTS = \
 	--disable-ocaml-bindings \
 	--disable-python-bindings \
 	--disable-tcl-bindings \
+	--disable-x \
 	--without-midi-package \
 	--without-mikropuhe --without-speechd --without-swift \
 	--without-theta --without-viavoice
