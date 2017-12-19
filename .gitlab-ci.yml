@@ -225,6 +225,7 @@ snps_aarch64_vdk_defconfig: *defconfig
 snps_arc700_axs101_defconfig: *defconfig
 snps_archs38_axs103_defconfig: *defconfig
 snps_archs38_haps_defconfig: *defconfig
+snps_archs38_hsdk_defconfig: *defconfig
 snps_archs38_vdk_defconfig: *defconfig
 socrates_cyclone5_defconfig: *defconfig
 solidrun_macchiatobin_mainline_defconfig: *defconfig
