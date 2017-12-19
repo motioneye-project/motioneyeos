@@ -4,11 +4,12 @@ config BR2_PACKAGE_DVDAUTHOR
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBPNG
 	help
-	  DVDAuthor is a set of tools to help you author the file and directory
-	  structure of a DVD-Video disc, including programmatic commands for
-	  implementing interactive behaviour. It is driven by command lines and
-	  XML control files, though there are other programs that provide
-	  GUI-based front ends if you prefer
+	  DVDAuthor is a set of tools to help you author the file and
+	  directory structure of a DVD-Video disc, including
+	  programmatic commands for implementing interactive behaviour.
+	  It is driven by command lines and XML control files, though
+	  there are other programs that provide GUI-based front ends
+	  if you prefer
 
 	  http://dvdauthor.sourceforge.net
 

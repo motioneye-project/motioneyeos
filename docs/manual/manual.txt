@@ -1,0 +1,71 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+= The Buildroot user manual
+:toc:
+
+Buildroot {sys:echo $\{BR2_VERSION%%-git*\}} manual generated on {localdate}
+{localtime} from git revision {sys:git rev-parse --short HEAD}
+
+The Buildroot manual is written by the Buildroot developers.
+It is licensed under the GNU General Public License, version 2. Refer to the
+http://git.buildroot.org/buildroot/tree/COPYING[COPYING] file in the Buildroot
+sources for the full text of this license.
+
+Copyright (C) 2004-2017 The Buildroot developers
+
+image::logo.png[]
+
+= Getting started
+
+include::introduction.txt[]
+
+include::prerequisite.txt[]
+
+include::getting.txt[]
+
+include::quickstart.txt[]
+
+include::resources.txt[]
+
+= User guide
+
+include::configure.txt[]
+
+include::configure-other-components.txt[]
+
+include::common-usage.txt[]
+
+include::customize.txt[]
+
+include::faq-troubleshooting.txt[]
+
+include::known-issues.txt[]
+
+include::legal-notice.txt[]
+
+include::beyond-buildroot.txt[]
+
+= Developer guide
+
+include::how-buildroot-works.txt[]
+
+include::writing-rules.txt[]
+
+include::adding-board-support.txt[]
+
+include::adding-packages.txt[]
+
+include::patch-policy.txt[]
+
+include::download-infra.txt[]
+
+include::debugging-buildroot.txt[]
+
+include::contribute.txt[]
+
+include::developers.txt[]
+
+= Appendix
+
+include::appendix.txt[]

@@ -16,7 +16,7 @@ HOST_LOCALEDEF_CONF_ENV = CFLAGS="$(HOST_CFLAGS) -fgnu89-inline"
 
 # The makefile does not implement an install target
 define HOST_LOCALEDEF_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/localedef $(HOST_DIR)/usr/bin/localedef
+	$(INSTALL) -D -m 0755 $(@D)/localedef $(HOST_DIR)/bin/localedef
 endef
 
 $(eval $(host-autotools-package))

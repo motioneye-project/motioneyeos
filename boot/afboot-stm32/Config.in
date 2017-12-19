@@ -1,0 +1,7 @@
+config BR2_TARGET_AFBOOT_STM32
+	bool "afboot-stm32"
+	depends on BR2_arm
+	help
+	  afboot-stm32 is a very small bootloader for STM32 platforms
+
+	  https://github.com/mcoquelin-stm32/afboot-stm32

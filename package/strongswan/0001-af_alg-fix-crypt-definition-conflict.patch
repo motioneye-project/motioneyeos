@@ -1,0 +1,55 @@
+From 0b906cb025a506be1b73e5b485179585d1a90be2 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 11 May 2017 14:04:47 +0300
+Subject: [PATCH] af_alg: fix crypt() definition conflict
+
+Rename the crypt() method to avoid conflict with POSIX crypt(). Fixes the
+following build failure with musl libc:
+
+In file included from ../../../../src/libstrongswan/utils/utils.h:53:0,
+                 from ../../../../src/libstrongswan/library.h:101,
+                 from af_alg_ops.h:24,
+                 from af_alg_ops.c:16:
+af_alg_ops.c:110:22: error: conflicting types for 'crypt'
+ METHOD(af_alg_ops_t, crypt, bool,
+                      ^
+../../../../src/libstrongswan/utils/utils/object.h:99:13: note: in definition of macro 'METHOD'
+  static ret name(union {iface *_public; this;} \
+             ^
+In file included from af_alg_ops.c:18:0:
+.../host/usr/x86_64-buildroot-linux-musl/sysroot/usr/include/unistd.h:144:7: note: previous declaration of 'crypt' was here
+ char *crypt(const char *, const char *);
+       ^
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/strongswan/strongswan/pull/72
+
+ src/libstrongswan/plugins/af_alg/af_alg_ops.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/libstrongswan/plugins/af_alg/af_alg_ops.c b/src/libstrongswan/plugins/af_alg/af_alg_ops.c
+index 331d1e8010aa..452cd1ac30c9 100644
+--- a/src/libstrongswan/plugins/af_alg/af_alg_ops.c
++++ b/src/libstrongswan/plugins/af_alg/af_alg_ops.c
+@@ -107,7 +107,7 @@ METHOD(af_alg_ops_t, hash, bool,
+ 	return TRUE;
+ }
+ 
+-METHOD(af_alg_ops_t, crypt, bool,
++METHOD(af_alg_ops_t, crypt_, bool,
+ 	private_af_alg_ops_t *this, u_int32_t type, chunk_t iv, chunk_t data,
+ 	char *out)
+ {
+@@ -224,7 +224,7 @@ af_alg_ops_t *af_alg_ops_create(char *type, char *alg)
+ 		.public = {
+ 			.hash = _hash,
+ 			.reset = _reset,
+-			.crypt = _crypt,
++			.crypt = _crypt_,
+ 			.set_key = _set_key,
+ 			.destroy = _destroy,
+ 		},
+-- 
+2.11.0
+

@@ -23,7 +23,7 @@ LIBSVGTINY_COMPONENT_TYPE = lib-static
 endif
 
 define LIBSVGTINY_CONFIGURE_CMDS
-	ln -sf $(HOST_DIR)/usr/share/netsurf-buildsystem $(@D)/build
+	ln -sf $(HOST_DIR)/share/netsurf-buildsystem $(@D)/build
 endef
 
 define LIBSVGTINY_BUILD_CMDS

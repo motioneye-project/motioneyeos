@@ -13,7 +13,7 @@ LIBARGTABLE2_CONF_OPTS = \
 	--disable-kernel-module \
 	--enable-lib \
 	--enable-util
-LIBARGTABLE2_LICENSE = LGPLv2+
+LIBARGTABLE2_LICENSE = LGPL-2.0+
 LIBARGTABLE2_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_MINETEST_GAME
+	bool "minetest-game"
+	depends on BR2_PACKAGE_MINETEST
+	help
+	  The main subgame for the Minetest engine.
+
+	  https://github.com/minetest/minetest_game

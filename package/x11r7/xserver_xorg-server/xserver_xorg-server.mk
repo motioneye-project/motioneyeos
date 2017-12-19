@@ -6,53 +6,53 @@
 
 XSERVER_XORG_SERVER_VERSION = $(call qstrip,$(BR2_PACKAGE_XSERVER_XORG_SERVER_VERSION))
 XSERVER_XORG_SERVER_SOURCE = xorg-server-$(XSERVER_XORG_SERVER_VERSION).tar.bz2
-XSERVER_XORG_SERVER_SITE = http://xorg.freedesktop.org/releases/individual/xserver
+XSERVER_XORG_SERVER_SITE = https://xorg.freedesktop.org/archive/individual/xserver
 XSERVER_XORG_SERVER_LICENSE = MIT
 XSERVER_XORG_SERVER_LICENSE_FILES = COPYING
 XSERVER_XORG_SERVER_INSTALL_STAGING = YES
 # xfont_font-util is needed only for autoreconf
 XSERVER_XORG_SERVER_AUTORECONF = YES
-XSERVER_XORG_SERVER_DEPENDENCIES = 	\
-	xfont_font-util			\
-	xutil_util-macros 		\
-	xlib_libX11 			\
-	xlib_libXau 			\
-	xlib_libXdmcp 			\
-	xlib_libXext 			\
-	xlib_libXfixes 			\
-	xlib_libXi 			\
-	xlib_libXrender 		\
-	xlib_libXres 			\
-	xlib_libXft 			\
-	xlib_libXcursor 		\
-	xlib_libXinerama 		\
-	xlib_libXrandr 			\
-	xlib_libXdamage 		\
-	xlib_libXxf86vm 		\
-	xlib_libxkbfile 		\
-	xlib_xtrans 			\
-	xdata_xbitmaps 			\
-	xproto_bigreqsproto 		\
-	xproto_compositeproto 		\
-	xproto_damageproto 		\
-	xproto_fixesproto 		\
-	xproto_fontsproto 		\
-	xproto_glproto 			\
-	xproto_inputproto 		\
-	xproto_kbproto 			\
-	xproto_randrproto 		\
-	xproto_renderproto 		\
-	xproto_resourceproto 		\
-	xproto_videoproto 		\
-	xproto_xcmiscproto 		\
-	xproto_xextproto 		\
-	xproto_xf86bigfontproto 	\
-	xproto_xf86dgaproto 		\
-	xproto_xf86vidmodeproto 	\
-	xproto_xproto 			\
-	xkeyboard-config		\
-	pixman 				\
-	mcookie 			\
+XSERVER_XORG_SERVER_DEPENDENCIES = \
+	xfont_font-util \
+	xutil_util-macros \
+	xlib_libX11 \
+	xlib_libXau \
+	xlib_libXdmcp \
+	xlib_libXext \
+	xlib_libXfixes \
+	xlib_libXi \
+	xlib_libXrender \
+	xlib_libXres \
+	xlib_libXft \
+	xlib_libXcursor \
+	xlib_libXinerama \
+	xlib_libXrandr \
+	xlib_libXdamage \
+	xlib_libXxf86vm \
+	xlib_libxkbfile \
+	xlib_xtrans \
+	xdata_xbitmaps \
+	xproto_bigreqsproto \
+	xproto_compositeproto \
+	xproto_damageproto \
+	xproto_fixesproto \
+	xproto_fontsproto \
+	xproto_glproto \
+	xproto_inputproto \
+	xproto_kbproto \
+	xproto_randrproto \
+	xproto_renderproto \
+	xproto_resourceproto \
+	xproto_videoproto \
+	xproto_xcmiscproto \
+	xproto_xextproto \
+	xproto_xf86bigfontproto \
+	xproto_xf86dgaproto \
+	xproto_xf86vidmodeproto \
+	xproto_xproto \
+	xkeyboard-config \
+	pixman \
+	mcookie \
 	host-pkgconf
 
 # We force -O2 regardless of the optimization level chosen by the
@@ -220,10 +220,10 @@ XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri2
 else
 XSERVER_XORG_SERVER_CONF_OPTS += --disable-dri2
 endif
-ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO),y)
+ifeq ($(BR2_PACKAGE_XLIB_LIBXSHMFENCE)$(BR2_PACKAGE_XPROTO_DRI3PROTO),yy)
 XSERVER_XORG_SERVER_DEPENDENCIES += xlib_libxshmfence xproto_dri3proto
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-dri3
-ifeq ($(BR2_PACKAGE_HAS_LIBGL)$(BR2_PACKAGE_LIBEPOXY),yy)
+ifeq ($(BR2_PACKAGE_HAS_LIBEGL)$(BR2_PACKAGE_HAS_LIBGL)$(BR2_PACKAGE_LIBEPOXY),yyy)
 XSERVER_XORG_SERVER_DEPENDENCIES += libepoxy
 XSERVER_XORG_SERVER_CONF_OPTS += --enable-glamor
 else

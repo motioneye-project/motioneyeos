@@ -8,8 +8,10 @@ LIBMAD_VERSION = 0.15.1b
 LIBMAD_SITE = http://downloads.sourceforge.net/project/mad/libmad/$(LIBMAD_VERSION)
 LIBMAD_INSTALL_STAGING = YES
 LIBMAD_LIBTOOL_PATCH = NO
-LIBMAD_LICENSE = GPLv2+
+LIBMAD_LICENSE = GPL-2.0+
 LIBMAD_LICENSE_FILES = COPYING
+LIBMAD_PATCH = \
+	https://sources.debian.net/data/main/libm/libmad/0.15.1b-8/debian/patches/frame_length.diff
 
 define LIBMAD_PREVENT_AUTOMAKE
 	# Prevent automake from running.
@@ -21,14 +23,8 @@ define LIBMAD_INSTALL_STAGING_PC
 		$(STAGING_DIR)/usr/lib/pkgconfig/mad.pc
 endef
 
-define LIBMAD_INSTALL_TARGET_PC
-	$(INSTALL) -D package/libmad/mad.pc \
-		$(TARGET_DIR)/usr/lib/pkgconfig/mad.pc
-endef
-
 LIBMAD_POST_PATCH_HOOKS += LIBMAD_PREVENT_AUTOMAKE
 LIBMAD_POST_INSTALL_STAGING_HOOKS += LIBMAD_INSTALL_STAGING_PC
-LIBMAD_POST_INSTALL_TARGET_HOOKS += LIBMAD_INSTALL_TARGET_PC
 
 LIBMAD_CONF_OPTS = \
 	--disable-debugging \

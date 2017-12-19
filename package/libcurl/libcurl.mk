@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-LIBCURL_VERSION = 7.53.0
-LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.bz2
+LIBCURL_VERSION = 7.57.0
+LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.xz
 LIBCURL_SITE = https://curl.haxx.se/download
 LIBCURL_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_ZLIB),zlib) \
 	$(if $(BR2_PACKAGE_LIBIDN),libidn) \
 	$(if $(BR2_PACKAGE_RTMPDUMP),rtmpdump)
-LIBCURL_LICENSE = ISC
+LIBCURL_LICENSE = curl
 LIBCURL_LICENSE_FILES = COPYING
 LIBCURL_INSTALL_STAGING = YES
 
@@ -21,6 +21,12 @@ LIBCURL_INSTALL_STAGING = YES
 # http://curl.haxx.se/docs/manpage.html#--ntlm.
 LIBCURL_CONF_OPTS = --disable-manual --disable-ntlm-wb \
 	--enable-hidden-symbols --with-random=/dev/urandom --disable-curldebug
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBCURL_CONF_OPTS += --enable-threaded-resolver
+else
+LIBCURL_CONF_OPTS += --disable-threaded-resolver
+endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL_VERBOSE),y)
 LIBCURL_CONF_OPTS += --enable-verbose

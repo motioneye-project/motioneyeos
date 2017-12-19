@@ -10,7 +10,7 @@ GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.xz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
 GVFS_INSTALL_STAGING = YES
 GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info
-GVFS_LICENSE = LGPLv2+
+GVFS_LICENSE = LGPL-2.0+
 GVFS_LICENSE_FILES = COPYING
 
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
@@ -128,12 +128,12 @@ define GVFS_REMOVE_TARGET_SCHEMAS
 endef
 
 define GVFS_COMPILE_SCHEMAS
-	$(HOST_DIR)/usr/bin/glib-compile-schemas --targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas $(STAGING_DIR)/usr/share/glib-2.0/schemas
+	$(HOST_DIR)/bin/glib-compile-schemas --targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas $(STAGING_DIR)/usr/share/glib-2.0/schemas
 endef
 
 GVFS_POST_INSTALL_TARGET_HOOKS += \
-	GVFS_REMOVE_USELESS_BINARY	\
-	GVFS_REMOVE_TARGET_SCHEMAS	\
+	GVFS_REMOVE_USELESS_BINARY \
+	GVFS_REMOVE_TARGET_SCHEMAS \
 	GVFS_COMPILE_SCHEMAS
 
 $(eval $(autotools-package))

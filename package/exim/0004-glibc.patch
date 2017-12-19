@@ -1,0 +1,27 @@
+uClibc does not contain gnu/libc-version.h
+
+Patch sent upstream: https://bugs.exim.org/show_bug.cgi?id=2070
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr exim-4.88.org/src/exim.c exim-4.88/src/exim.c
+--- exim-4.88.org/src/exim.c	2016-12-18 15:02:28.000000000 +0100
++++ exim-4.88/src/exim.c	2016-12-26 12:12:57.000000000 +0100
+@@ -12,7 +12,7 @@
+ 
+ #include "exim.h"
+ 
+-#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
+ # include <gnu/libc-version.h>
+ #endif
+ 
+@@ -1044,7 +1044,7 @@
+   fprintf(f, "Compiler: <unknown>\n");
+ #endif
+ 
+-#ifdef __GLIBC__
++#if defined(__GLIBC__) && !defined(__UCLIBC__)
+   fprintf(f, "Library version: Glibc: Compile: %d.%d\n",
+ 	       	__GLIBC__, __GLIBC_MINOR__);
+   if (__GLIBC_PREREQ(2, 1))

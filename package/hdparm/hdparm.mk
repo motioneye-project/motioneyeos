@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HDPARM_VERSION = 9.51
+HDPARM_VERSION = 9.52
 HDPARM_SITE = http://downloads.sourceforge.net/project/hdparm/hdparm
 HDPARM_LICENSE = BSD-Style
 HDPARM_LICENSE_FILES = LICENSE.TXT

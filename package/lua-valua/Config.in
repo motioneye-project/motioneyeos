@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LUA_VALUA
+	bool "lua-valua"
+	help
+	  This module provides tools for validating values, very useful
+	  in forms, but also usable elsewhere. It works in appended
+	  chains. Create a new validation object and start chaining
+	  your test functions.
+
+	  https://github.com/sailorproject/valua

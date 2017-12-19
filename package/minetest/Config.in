@@ -1,0 +1,66 @@
+config BR2_PACKAGE_MINETEST
+	bool "minetest"
+	depends on BR2_INSTALL_LIBSTDCPP # irrlicht
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # jsoncpp
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_XORG7 # irrlicht
+	depends on BR2_PACKAGE_HAS_LIBGL # irrlicht
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	select BR2_PACKAGE_IRRLICHT
+	select BR2_PACKAGE_GMP
+	select BR2_PACKAGE_JSONCPP
+	select BR2_PACKAGE_LUAJIT
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZLIB
+	# At least one option must be enabled
+	select BR2_PACKAGE_MINETEST_CLIENT if !BR2_PACKAGE_MINETEST_SERVER
+	help
+	  Minetest is a near-infinite-world block sandbox game and a
+	  game engine, inspired by InfiniMiner, Minecraft, and the
+	  like.
+
+	  http://www.minetest.net
+
+if BR2_PACKAGE_MINETEST
+
+config BR2_PACKAGE_MINETEST_CLIENT
+	bool "minetest client"
+	select BR2_PACKAGE_BZIP2
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_XLIB_LIBXXF86VM
+	help
+	  Build Minetest client.
+
+config BR2_PACKAGE_MINETEST_SERVER
+	bool "minetest server"
+	help
+	  Build Minetest server.
+
+config BR2_PACKAGE_MINETEST_SOUND
+	bool "enable sound"
+	depends on BR2_PACKAGE_MINETEST_CLIENT
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
+	select BR2_PACKAGE_LIBVORBIS
+	select BR2_PACKAGE_OPENAL
+
+comment "sound support needs a toolchain w/ threads NPTL"
+	depends on BR2_PACKAGE_MINETEST_CLIENT
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
+endif
+
+comment "minetest needs a toolchain w/ C++, gcc >= 4.7, threads"
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "minetest needs X11 and an OpenGL provider"
+	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
+	depends on (BR2_INSTALL_LIBSTDCPP \
+		&& BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		&& BR2_TOOLCHAIN_HAS_THREADS)
+	depends on !BR2_PACKAGE_HAS_LIBGL || !BR2_PACKAGE_XORG7

@@ -24,7 +24,7 @@ FLITE_SITE = http://www.speech.cs.cmu.edu/flite/packed/flite-$(FLITE_VERSION)
 # build in flite-1.4-release/
 FLITE_STRIP_COMPONENTS = 0
 FLITE_SUBDIR = flite-$(FLITE_VERSION)-release
-FLITE_LICENSE = BSD-4c
+FLITE_LICENSE = BSD-4-Clause
 FLITE_LICENSE_FILES = $(FLITE_SUBDIR)/COPYING
 
 FLITE_INSTALL_STAGING = YES

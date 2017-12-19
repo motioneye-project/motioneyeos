@@ -11,7 +11,7 @@ ULOGD_CONF_OPTS = --with-dbi=no --with-pgsql=no
 ULOGD_DEPENDENCIES = host-pkgconf \
 	libmnl libnetfilter_acct libnetfilter_conntrack libnetfilter_log \
 	libnfnetlink
-ULOGD_LICENSE = GPLv2
+ULOGD_LICENSE = GPL-2.0
 ULOGD_LICENSE_FILES = COPYING
 
 # DB backends need threads

@@ -1,2 +1,4 @@
-# From http://www.fftw.org/fftw-3.3.4.tar.gz.md5sum
-md5	2edab8c06b24feeb3b82bbb3ebf3e7b3	fftw-3.3.4.tar.gz
+# From http://www.fftw.org/fftw-3.3.6-pl2.tar.gz.md5sum
+md5 927e481edbb32575397eb3d62535a856  fftw-3.3.6-pl2.tar.gz
+# Locally computed
+sha256 a5de35c5c824a78a058ca54278c706cdf3d4abba1c56b63531c2cb05f5d57da2  fftw-3.3.6-pl2.tar.gz

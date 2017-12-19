@@ -10,7 +10,7 @@ ATTR_SITE = http://download.savannah.gnu.org/releases/attr
 ATTR_INSTALL_STAGING = YES
 ATTR_CONF_OPTS = --enable-gettext=no
 HOST_ATTR_CONF_OPTS = --enable-gettext=no
-ATTR_LICENSE = GPLv2+ (programs), LGPLv2.1+ (libraries)
+ATTR_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 ATTR_LICENSE_FILES = doc/COPYING doc/COPYING.LGPL
 
 # While the configuration system uses autoconf, the Makefiles are
@@ -28,8 +28,8 @@ ATTR_INSTALL_TARGET_OPTS = \
 	install install-lib
 
 HOST_ATTR_INSTALL_OPTS = \
-	prefix=$(HOST_DIR)/usr \
-	exec_prefix=$(HOST_DIR)/usr \
+	prefix=$(HOST_DIR) \
+	exec_prefix=$(HOST_DIR) \
 	install-dev install-lib
 
 # The libdir variable in libattr.la is empty, so let's fix it. This is

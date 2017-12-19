@@ -1,4 +1,4 @@
-# From http://cairographics.org/releases/cairo-1.14.8.tar.xz.sha1
-sha1	c6f7b99986f93c9df78653c3e6a3b5043f65145e	cairo-1.14.8.tar.xz
+# From http://cairographics.org/releases/cairo-1.14.10.tar.xz.sha1
+sha1	28c59d85d6b790c21b8b59ece73a6a1dda28d69a	cairo-1.14.10.tar.xz
 # Calculated based on the hash above
-sha256	d1f2d98ae9a4111564f6de4e013d639cf77155baf2556582295a0f00a9bc5e20	cairo-1.14.8.tar.xz
+sha256	7e87878658f2c9951a14fc64114d4958c0e65ac47530b8ac3078b2ce41b66a09	cairo-1.14.10.tar.xz

@@ -1,1 +1,1 @@
-include package/gstreamer1/*/*.mk
+include $(sort $(wildcard package/gstreamer1/*/*.mk))

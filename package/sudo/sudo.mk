@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SUDO_VERSION = 1.8.19p2
-SUDO_SITE = http://www.sudo.ws/sudo/dist
-SUDO_LICENSE = ISC, BSD-3c
+SUDO_VERSION = 1.8.21p2
+SUDO_SITE = https://www.sudo.ws/sudo/dist
+SUDO_LICENSE = ISC, BSD-3-Clause
 SUDO_LICENSE_FILES = doc/LICENSE
 # This is to avoid sudo's make install from chown()ing files which fails
 SUDO_INSTALL_TARGET_OPTS = INSTALL_OWNER="" DESTDIR="$(TARGET_DIR)" install
@@ -40,6 +40,13 @@ endif
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
 SUDO_DEPENDENCIES += openldap
 SUDO_CONF_OPTS += --with-ldap
+# If we are building sudo statically and openldap was linked with openssl, then
+# when we link sudo with openldap we need to specify the openssl libs, otherwise
+# it will fail with "undefined reference" errors.
+ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_OPENSSL),yy)
+SUDO_DEPENDENCIES += host-pkgconf
+SUDO_CONF_ENV = LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libssl libcrypto`"
+endif
 else
 SUDO_CONF_OPTS += --without-ldap
 endif

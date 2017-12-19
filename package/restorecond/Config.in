@@ -1,0 +1,24 @@
+config BR2_PACKAGE_RESTORECOND
+	bool "restorecond"
+	depends on !BR2_arc
+	depends on BR2_USE_MMU # libglib2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on !BR2_STATIC_LIBS # libselinux
+	depends on BR2_TOOLCHAIN_USES_GLIBC # libselinux
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_DBUS_GLIB
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_LIBSEPOL
+	help
+	  restorecond is a daemon that watches for file creation and
+	  then sets the default SELinux file context for that file.
+
+	  https://github.com/SELinuxProject/selinux/wiki/Releases
+
+comment "restorecond needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_arc
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		BR2_STATIC_LIBS || !BR2_TOOLCHAIN_USES_GLIBC

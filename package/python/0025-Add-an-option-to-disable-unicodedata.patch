@@ -1,0 +1,30 @@
+From aa78e3684c0e8f7a5e910e838f9eca2631262048 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:29:52 +0100
+Subject: [PATCH] Add an option to disable unicodedata
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 4c2cbc1..09cb3de 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2834,6 +2834,12 @@ AC_ARG_ENABLE(nis,
+     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
+   	  fi])
+ 
++AC_ARG_ENABLE(unicodedata,
++	AS_HELP_STRING([--disable-unicodedata], [disable unicodedata]),
++	[ if test "$enableval" = "no"; then
++    	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} unicodedata"
++  	  fi])
++
+ AC_SUBST(TK)
+ AC_ARG_ENABLE(tk,
+ 	AS_HELP_STRING([--disable-tk], [disable tk]),
+-- 
+2.7.4
+

@@ -1,0 +1,71 @@
+From 05fbe2527b6f87edeef11f288c36bcbaa378ca02 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:28:57 +0100
+Subject: [PATCH] Add an option to disable the tk module
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile.pre.in | 11 ++++++++---
+ configure.ac    |  9 +++++++++
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 974a052..f7f025f 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1038,7 +1038,7 @@ PLATMACDIRS= plat-mac plat-mac/Carbon plat-mac/lib-scriptpackages \
+ 	plat-mac/lib-scriptpackages/SystemEvents \
+ 	plat-mac/lib-scriptpackages/Terminal
+ PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
+-LIBSUBDIRS=	lib-tk site-packages \
++LIBSUBDIRS=	site-packages \
+ 		encodings compiler hotshot \
+ 		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+@@ -1052,8 +1052,7 @@ LIBSUBDIRS=	lib-tk site-packages \
+ 		lib-old \
+ 		curses $(MACHDEPS)
+ 
+-TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
+-	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
++TESTSUBDIRS = test test/audiodata test/capath test/data \
+ 	test/cjkencodings test/decimaltestdata test/xmltestdata \
+ 	test/imghdrdata \
+ 	test/subprocessdata \
+@@ -1087,6 +1086,12 @@ LIBSUBDIRS += sqlite3
+ TESTSUBDIRS += sqlite3/test
+ endif
+ 
++ifeq (@TK@,yes)
++LIBSUBDIRS += lib-tk
++TESTSUBDIRS += lib-tk/test lib-tk/test/test_tkinter	\
++	      lib-tk/test/test_ttk
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+diff --git a/configure.ac b/configure.ac
+index e9e1897..d0f032c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2814,6 +2814,15 @@ if test "$SQLITE3" = "no" ; then
+    DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _sqlite3"
+ fi
+ 
++AC_SUBST(TK)
++AC_ARG_ENABLE(tk,
++	AS_HELP_STRING([--disable-tk], [disable tk]),
++	[ TK="${enableval}" ], [ TK=yes ])
++
++if test "$TK" = "no"; then
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
++fi
++
+ AC_SUBST(PYDOC)
+ 
+ AC_ARG_ENABLE(pydoc,
+-- 
+2.7.4
+

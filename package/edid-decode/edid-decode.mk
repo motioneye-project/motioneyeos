@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EDID_DECODE_VERSION = 681153145d5e05ee15032ea792e967cda06e7622
+EDID_DECODE_VERSION = f56f329ed23a25d002352dedba1e8f092a47286f
 EDID_DECODE_SITE = git://anongit.freedesktop.org/git/xorg/app/edid-decode.git
 EDID_DECODE_LICENSE = MIT
 EDID_DECODE_LICENSE_FILES = edid-decode.c

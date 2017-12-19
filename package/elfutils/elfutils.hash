@@ -1,2 +1,2 @@
-# Locally calculated
-sha256 3c056914c8a438b210be0d790463b960fc79d234c3f05ce707cbff80e94cba30  elfutils-0.166.tar.bz2
+# From https://sourceware.org/elfutils/ftp/0.169/sha512.sum
+sha512 0a81a20bb2aff533d035d6b76f1403437b2e11bce390db57e34b8c26e4b9b3150346d83dddcbfbbdc58063f046ca3223508dba35c6ce88e375d201e7a777a8b9  elfutils-0.169.tar.bz2

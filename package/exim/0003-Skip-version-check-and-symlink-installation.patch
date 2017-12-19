@@ -9,6 +9,8 @@ Inspired by:
 http://patch-tracker.debian.org/patch/series/view/exim4/4.76-2/35_install.dpatch
 
 Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+(rebased against exim 4.89)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  scripts/exim_install |    7 +++++--
  1 files changed, 5 insertions(+), 2 deletions(-)
@@ -17,7 +19,7 @@ diff --git a/scripts/exim_install b/scripts/exim_install
 index e68e7d5..487a4e1 100755
 --- a/scripts/exim_install
 +++ b/scripts/exim_install
-@@ -59,6 +59,8 @@ while [ $# -gt 0 ] ; do
+@@ -58,6 +58,8 @@
    shift
  done
  
@@ -26,15 +28,14 @@ index e68e7d5..487a4e1 100755
  # Get the values of BIN_DIRECTORY, CONFIGURE_FILE, INFO_DIRECTORY, NO_SYMLINK,
  # SYSTEM_ALIASES_FILE, and EXE from the global Makefile (in the build
  # directory). EXE is empty except in the Cygwin environment. In each case, keep
-@@ -218,8 +220,9 @@ while [ $# -gt 0 ]; do
+@@ -217,9 +219,7 @@
    # The exim binary is handled specially
  
    if [ $name = exim${EXE} ]; then
--    version=exim-`./exim -bV -C /dev/null | \
+-    exim="./exim -bV -C /dev/null"
+-    version=exim-`$exim 2>/dev/null | \
 -      awk '/Exim version/ { OFS=""; print $3,"-",substr($4,2,length($4)-1) }'`${EXE}
 +    version=exim
-+#    version=exim-`./exim -bV -C /dev/null | \
-+#      awk '/Exim version/ { OFS=""; print $3,"-",substr($4,2,length($4)-1) }'`${EXE}
  
      if [ "${version}" = "exim-${EXE}" ]; then
        echo $com ""

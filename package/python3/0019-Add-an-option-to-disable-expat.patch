@@ -1,0 +1,92 @@
+From 63fc5bc90cb57460552b544cbed0c2939759ab9e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 22 Feb 2017 17:40:45 -0800
+Subject: [PATCH] Add an option to disable expat
+
+This patch replaces the existing --with-system-expat option with a
+--with-expat={system,builtin,none} option, which allows to tell Python
+whether we want to use the system expat (already installed), the expat
+builtin the Python sources, or no expat at all (which disables the
+installation of XML modules).
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Makefile.pre.in |  6 +++++-
+ configure.ac    | 18 +++++++++++++-----
+ setup.py        |  2 +-
+ 3 files changed, 19 insertions(+), 7 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 6a6bc082cd..dc4b92b6fe 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1208,7 +1208,7 @@ LIBSUBDIRS=	site-packages \
+ 		logging csv wsgiref urllib \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+-		distutils distutils/command $(XMLLIBSUBDIRS) \
++		distutils distutils/command \
+ 		importlib \
+ 		turtledemo \
+ 		multiprocessing multiprocessing/dummy \
+@@ -1271,6 +1271,10 @@ ifeq (@CURSES@,yes)
+ LIBSUBDIRS += curses
+ endif
+ 
++ifeq (@EXPAT@,yes)
++LIBSUBDIRS += $(XMLLIBSUBDIRS)
++endif
++
+ ifeq (@LIB2TO3@,yes)
+ LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
+ TESTSUBDIRS += lib2to3/tests			\
+diff --git a/configure.ac b/configure.ac
+index 5896b39ff9..6f21482207 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2813,13 +2813,21 @@ PKG_PROG_PKG_CONFIG
+ AC_SUBST(DISABLED_EXTENSIONS)
+ 
+ # Check for use of the system expat library
+-AC_MSG_CHECKING(for --with-system-expat)
+-AC_ARG_WITH(system_expat,
+-            AS_HELP_STRING([--with-system-expat], [build pyexpat module using an installed expat library]),
++AC_MSG_CHECKING(for --with-expat)
++AC_ARG_WITH(expat,
++            AS_HELP_STRING([--with-expat], [select which expat version to use: system, builtin, none]),
+             [],
+-            [with_system_expat="no"])
++            [with_expat="builtin"])
+ 
+-AC_MSG_RESULT($with_system_expat)
++AC_MSG_RESULT($with_expat)
++
++if test "$with_expat" != "none"; then
++   EXPAT=yes
++else
++   DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} pyexpat"
++   EXPAT=no
++fi
++AC_SUBST(EXPAT)
+ 
+ # Check for use of the system libffi library
+ AC_MSG_CHECKING(for --with-system-ffi)
+diff --git a/setup.py b/setup.py
+index 76429e1326..38aa5e605e 100644
+--- a/setup.py
++++ b/setup.py
+@@ -1495,7 +1495,7 @@ class PyBuildExt(build_ext):
+         #
+         # More information on Expat can be found at www.libexpat.org.
+         #
+-        if '--with-system-expat' in sysconfig.get_config_var("CONFIG_ARGS"):
++        if '--with-expat=system' in sysconfig.get_config_var("CONFIG_ARGS"):
+             expat_inc = []
+             define_macros = []
+             expat_lib = ['expat']
+-- 
+2.13.5
+

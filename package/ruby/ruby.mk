@@ -5,7 +5,7 @@
 ################################################################################
 
 RUBY_VERSION_MAJOR = 2.4
-RUBY_VERSION = $(RUBY_VERSION_MAJOR).0
+RUBY_VERSION = $(RUBY_VERSION_MAJOR).2
 RUBY_VERSION_EXT = 2.4.0
 RUBY_SITE = http://cache.ruby-lang.org/pub/ruby/$(RUBY_VERSION_MAJOR)
 RUBY_SOURCE = ruby-$(RUBY_VERSION).tar.xz
@@ -17,7 +17,7 @@ HOST_RUBY_CONF_OPTS = \
 	--disable-install-doc \
 	--with-out-ext=curses,openssl,readline \
 	--without-gmp
-RUBY_LICENSE = Ruby or BSD-2c, BSD-3c, others
+RUBY_LICENSE = Ruby or BSD-2-Clause, BSD-3-Clause, others
 RUBY_LICENSE_FILES = LEGAL COPYING BSDL
 
 RUBY_CFLAGS = $(TARGET_CFLAGS)

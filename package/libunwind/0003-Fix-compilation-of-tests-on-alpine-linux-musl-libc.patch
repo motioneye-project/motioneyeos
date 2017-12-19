@@ -1,0 +1,88 @@
+From 5dcb7cd3cb63bf8a3a5f7531d10f937053930a25 Mon Sep 17 00:00:00 2001
+From: Tony Kelman <tony@kelman.net>
+Date: Sun, 31 Jan 2016 08:31:04 +0000
+Subject: [PATCH] Fix compilation of tests on alpine linux (musl libc)
+
+If we don't link to libexecinfo, as detected by the
+AC_SEARCH_LIBS(backtrace, execinfo) configure probe, we get
+
+```
+test-coredump-unwind.o: In function `handle_sigsegv':
+/home/libunwind/tests/test-coredump-unwind.c:246: undefined reference to
+`backtrace_symbols_fd'
+collect2: error: ld returned 1 exit status
+Makefile:1187: recipe for target 'test-coredump-unwind' failed
+```
+
+and
+
+```
+Gtest-init.o: In function `do_backtrace()':
+Gtest-init.cxx:(.text+0x2f): undefined reference to `_Ux86_64_getcontext'
+Gtest-init.cxx:(.text+0x48): undefined reference to `_Ux86_64_init_local'
+Gtest-init.cxx:(.text+0x63): undefined reference to `_Ux86_64_get_reg'
+Gtest-init.cxx:(.text+0x96): undefined reference to `_Ux86_64_get_proc_name'
+Gtest-init.cxx:(.text+0x171): undefined reference to `_Ux86_64_step'
+collect2: error: ld returned 1 exit status
+Makefile:1063: recipe for target 'Gtest-init' failed
+```
+
+There are 2 XFAIL and 6 FAIL tests, but it's a start
+
+Backported from upstream master branch:
+https://github.com/libunwind/libunwind/commit/5dcb7cd3cb63bf8a3a5f7531d10f937053930a25
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac      | 5 +++++
+ tests/Makefile.am | 4 ++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 6c46cf3..21bae90 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -373,6 +373,10 @@ old_LIBS="$LIBS"
+ LIBS=""
+ AC_SEARCH_LIBS(backtrace, execinfo)
+ LIBS="$old_LIBS"
++case "$ac_cv_search_backtrace" in
++  -l*) BACKTRACELIB=$ac_cv_search_backtrace;;
++  *) BACKTRACELIB="";;
++esac
+ 
+ AC_SUBST(build_arch)
+ AC_SUBST(target_os)
+@@ -388,6 +392,7 @@ AC_SUBST(PKG_MAINTAINER)
+ AC_SUBST(enable_cxx_exceptions)
+ AC_SUBST(enable_debug_frame)
+ AC_SUBST(DLLIB)
++AC_SUBST(BACKTRACELIB)
+ 
+ AC_PATH_PROG([LATEX2MAN],[latex2man])
+ if test "x$LATEX2MAN" = "x"; then
+diff --git a/tests/Makefile.am b/tests/Makefile.am
+index 0a74881..cd3e589 100644
+--- a/tests/Makefile.am
++++ b/tests/Makefile.am
+@@ -179,7 +179,7 @@ Gtest_bt_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+ Gtest_concurrent_LDADD = $(LIBUNWIND) $(LIBUNWIND_local) -lpthread
+ Gtest_dyn1_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+ Gtest_exc_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+-Gtest_init_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
++Gtest_init_LDADD = $(LIBUNWIND) $(LIBUNWIND_local) @BACKTRACELIB@
+ Gtest_resume_sig_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+ Gtest_resume_sig_rt_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+ Gperf_simple_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+@@ -203,7 +203,7 @@ test_setjmp_LDADD = $(LIBUNWIND_setjmp)
+ ia64_test_setjmp_LDADD = $(LIBUNWIND_setjmp)
+ 
+ if BUILD_COREDUMP
+-test_coredump_unwind_LDADD = $(LIBUNWIND_coredump) $(LIBUNWIND)
++test_coredump_unwind_LDADD = $(LIBUNWIND_coredump) $(LIBUNWIND) @BACKTRACELIB@
+ endif
+ 
+ Gia64_test_nat_LDADD = $(LIBUNWIND) $(LIBUNWIND_local)
+-- 
+2.11.0
+

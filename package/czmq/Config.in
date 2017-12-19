@@ -1,9 +1,9 @@
 config BR2_PACKAGE_CZMQ
 	bool "czmq"
-	select BR2_PACKAGE_ZEROMQ
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_INSTALL_LIBSTDCPP # zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	select BR2_PACKAGE_ZEROMQ
 	help
 	  High-level C Binding for 0MQ
 

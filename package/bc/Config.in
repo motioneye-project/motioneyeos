@@ -6,9 +6,10 @@ config BR2_PACKAGE_BC
 	  areas. It supports interactive execution of statements. 'Bc'
 	  is a utility included in the POSIX P1003.2/D11 draft standard.
 	  This version does not use the historical method of having bc
-	  be a compiler for the dc calculator (the POSIX document doesn't
-	  specify how bc must be implemented). This version has a single
-	  executable that both compiles the language and runs the resulting
-	  'byte code.' The byte code is not the dc language.
+	  be a compiler for the dc calculator (the POSIX document
+	  doesn't specify how bc must be implemented).
+	  This version has a single executable that both compiles the
+	  language and runs the resulting 'byte code.' The byte code is
+	  not the dc language.
 
 	  http://www.gnu.org/software/bc

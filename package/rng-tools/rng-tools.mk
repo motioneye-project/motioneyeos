@@ -6,7 +6,7 @@
 
 RNG_TOOLS_VERSION = 5
 RNG_TOOLS_SITE = http://downloads.sourceforge.net/project/gkernel/rng-tools/$(RNG_TOOLS_VERSION)
-RNG_TOOLS_LICENSE = GPLv2
+RNG_TOOLS_LICENSE = GPL-2.0
 RNG_TOOLS_LICENSE_FILES = COPYING
 
 # Work around for uClibc or musl toolchains which lack argp_*()

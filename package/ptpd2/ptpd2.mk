@@ -10,7 +10,7 @@ PTPD2_DEPENDENCIES = libpcap
 PTPD2_CONF_OPTS = --with-pcap-config=$(STAGING_DIR)/usr/bin/pcap-config
 # configure not shipped
 PTPD2_AUTORECONF = YES
-PTPD2_LICENSE = BSD-2c
+PTPD2_LICENSE = BSD-2-Clause
 PTPD2_LICENSE_FILES = COPYRIGHT
 
 ifeq ($(BR2_STATIC_LIBS),y)

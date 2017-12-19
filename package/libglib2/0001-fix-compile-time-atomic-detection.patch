@@ -1,4 +1,7 @@
-[PATCH] Fix compilation issues on architectures with limited atomic support
+From d5c628a6179b99705fa05ab87437321b132c81bc Mon Sep 17 00:00:00 2001
+From: Brendan Heading <brendanheading@gmail.com>
+Date: Wed, 21 Jun 2017 16:36:15 -0400
+Subject: [PATCH] Fix compile time atomic detection
 
 Improved compile-time detection of atomic support in the compiler.
 
@@ -6,15 +9,16 @@ Upstream-Status: submitted
 See : https://bugzilla.gnome.org/show_bug.cgi?id=752731
 
 Signed-off-by: Brendan Heading <brendanheading@gmail.com>
+Signed-off-by: Adam Duskett <aduskett@codeblue.com>
 ---
  glib/gthread-posix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/glib/gthread-posix.c b/glib/gthread-posix.c
-index ae5d805..8db8557 100644
+index 71a6b7b..d09d029 100644
 --- a/glib/gthread-posix.c
 +++ b/glib/gthread-posix.c
-@@ -67,7 +67,7 @@
+@@ -65,7 +65,7 @@
  #endif
  
  /* clang defines __ATOMIC_SEQ_CST but doesn't support the GCC extension */
@@ -24,5 +28,5 @@ index ae5d805..8db8557 100644
  #endif
  
 -- 
-2.4.3
+2.9.4
 

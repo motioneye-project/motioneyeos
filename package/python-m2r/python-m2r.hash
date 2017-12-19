@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/m2r/json, sha256 locally computed
+md5	906eb6dabb0295c93881f32d0a1c0919  m2r-0.1.12.tar.gz
+sha256	adfb86ebb7ff3fcd3ebb27ce8cd6f795c409a13f0c03363e265f17419ce5b9ab  m2r-0.1.12.tar.gz
+sha256  28728ec0ecbd8c171ebaeccebf69e3961282fd81f06abc7424c65546b6ae6f27  LICENSE

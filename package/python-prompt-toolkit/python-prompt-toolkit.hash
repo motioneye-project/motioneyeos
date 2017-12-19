@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi/prompt-toolkit/json, sha256 locally computed
-md5	f74cd8ac84176fac1cdb136843ccb0d6  prompt_toolkit-1.0.7.tar.gz
-sha256	ef0b8188179fe7d052161ed274b43e18f5a680ff84d01462293b327e1668d2ef  prompt_toolkit-1.0.7.tar.gz
+# md5 from https://pypi.python.org/pypi/prompt_toolkit/json, sha256 locally computed
+md5 427b496d2c147bd3819bc3a7f6e0d493 prompt_toolkit-1.0.13.tar.gz
+sha256 33d68ca09f76cd73287fde7df5748ffacf26a8238dd61ee81ac50860ea7c6776 prompt_toolkit-1.0.13.tar.gz

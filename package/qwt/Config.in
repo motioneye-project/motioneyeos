@@ -1,10 +1,6 @@
-comment "qwt needs a toolchain not affected by Binutils bug 19405"
-	depends on BR2_PACKAGE_QT && BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
-
 config BR2_PACKAGE_QWT
 	bool "qwt"
-	depends on (BR2_PACKAGE_QT && !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405) || \
-		BR2_PACKAGE_QT5
+	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
 	select BR2_PACKAGE_QT_GUI_MODULE if BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT5BASE_GUI if BR2_PACKAGE_QT5
 	select BR2_PACKAGE_QT5BASE_WIDGETS if BR2_PACKAGE_QT5 # printsupport

@@ -1,0 +1,27 @@
+From a628c90bdbf397465ac2ab2b11f14eb2e853651c Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 6 Aug 2016 23:24:35 +0200
+Subject: [PATCH] configure: match uclinux pattern
+
+BDWGC does not recognize "uclinux" as a valid OS part of the target
+tuple which is used by some arm cortex-M toolchains.
+
+* configure.ac [$THREADS=pthreads] (GC_LINUX_THREADS, _REENTRANT): Define
+for hosts matching "*-*-*linux*" (instead of "*-*-linux*").
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 22353547..fa745b56 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -190,7 +190,7 @@ case "$THREADS" in
+         AC_DEFINE(THREAD_LOCAL_ALLOC)
+         AC_MSG_WARN("Explicit GC_INIT() calls may be required.");
+         ;;
+-     *-*-linux* | *-*-nacl*)
++     *-*-*linux* | *-*-nacl*)
+         AC_DEFINE(GC_LINUX_THREADS)
+         AC_DEFINE(_REENTRANT)
+         ;;

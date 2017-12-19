@@ -42,7 +42,7 @@ Depending on your ucl2.xml file, the sample doesn't flash anything.
 
 6. Run the MfgTools client:
 
-$ ./host/usr/bin/mfgtoolcli -l mmc -s uboot_defconfig=imx \
+$ ./host/bin/mfgtoolcli -l mmc -s uboot_defconfig=imx \
   -s dtbname=imx6q-sabrelite.dtb -s initramfs=rootfs.cpio.uboot \
   -s mmc=1 -p 1
 

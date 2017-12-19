@@ -7,7 +7,7 @@
 LIBCAP_VERSION = 2.25
 LIBCAP_SITE = https://www.kernel.org/pub/linux/libs/security/linux-privs/libcap2
 LIBCAP_SOURCE = libcap-$(LIBCAP_VERSION).tar.xz
-LIBCAP_LICENSE = GPLv2 or BSD-3c
+LIBCAP_LICENSE = GPL-2.0 or BSD-3-Clause
 LIBCAP_LICENSE_FILES = License
 
 LIBCAP_DEPENDENCIES = host-libcap host-gperf
@@ -63,8 +63,8 @@ define HOST_LIBCAP_BUILD_CMDS
 endef
 
 define HOST_LIBCAP_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) \
-		RAISE_SETFCAP=no prefix=/usr lib=lib install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) prefix=$(HOST_DIR) \
+		RAISE_SETFCAP=no lib=lib install
 endef
 
 $(eval $(generic-package))

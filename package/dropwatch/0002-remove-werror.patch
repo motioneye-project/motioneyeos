@@ -1,0 +1,31 @@
+From 2462baf55939ee53bb28ff5f9474761f2a888add Mon Sep 17 00:00:00 2001
+From: Markos Chandras <markos.chandras@imgtec.com>
+Date: Fri, 16 Jun 2017 08:53:31 +0200
+Subject: [PATCH] remove werror
+
+-Werror shouldn't be used in released code since it can
+cause random build failures on moderate warnings. It also
+depends on the used toolchain since different toolchains may
+or may not print the same warnings.
+
+Signed-off-by: Markos Chandras <markos.chandras@imgtec.com>
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index 5bc6aaa..527c1da 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -1,7 +1,7 @@
+ all: dropwatch
+ 
+ CPPFLAGS += -D_GNU_SOURCE
+-CFLAGS += -g -Wall -Werror $(shell pkg-config --cflags libnl-3.0)
++CFLAGS += -g -Wall $(shell pkg-config --cflags libnl-3.0)
+ LDLIBS += -lbfd -lreadline -lnl-3 -lnl-genl-3
+ 
+ OBJFILES := main.o lookup.o\
+-- 
+2.1.4
+

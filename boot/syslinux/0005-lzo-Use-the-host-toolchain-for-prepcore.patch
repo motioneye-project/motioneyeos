@@ -1,0 +1,44 @@
+From 83e1f00990c25554723609bb549e18b987034317 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Beno=C3=AEt=20Allard?= <benoit.allard@greenbone.net>
+Date: Thu, 6 Apr 2017 09:43:46 +0200
+Subject: [PATCH] lzo: Use the host toolchain for prepcore
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
+---
+ lzo/Makefile | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
+
+diff --git a/lzo/Makefile b/lzo/Makefile
+index 29f1fa6..c016e5a 100644
+--- a/lzo/Makefile
++++ b/lzo/Makefile
+@@ -11,10 +11,13 @@
+ ## -----------------------------------------------------------------------
+ 
+ VPATH = $(SRC)
+-include $(MAKEDIR)/build.mk
++include $(MAKEDIR)/syslinux.mk
+ 
+ INCLUDES += -I$(SRC)/include
+ 
++%.o: %.c
++	$(CC_FOR_BUILD) $(UMAKEDEPS) $(CFLAGS_FOR_BUILD) $(INCLUDES) -c -o $@ $<
++
+ LIBOBJS = $(patsubst %.c,%.o,$(subst $(SRC)/,,$(wildcard $(SRC)/src/*.c)))
+ LIB     = lzo.a
+ BINS    = prepcore
+@@ -30,7 +33,7 @@ $(LIB) : $(LIBOBJS)
+ 	$(RANLIB) $@
+ 
+ prepcore : prepcore.o $(LIB)
+-	$(CC) $(LDFLAGS) -o $@ $^ $(LIBS)
++	$(CC_FOR_BUILD) $(LDFLAGS_FOR_BUILD) -o $@ $^ $(LIBS)
+ 
+ tidy dist clean spotless:
+ 	rm -f $(BINS)
+-- 
+2.1.4
+

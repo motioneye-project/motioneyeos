@@ -16,8 +16,8 @@ if BR2_PACKAGE_FASTD
 config BR2_PACKAGE_FASTD_STATUS_SOCKET
 	bool "status socket support"
 	default y
-	select BR2_PACKAGE_JSON_C
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # json-c
+	select BR2_PACKAGE_JSON_C
 	help
 	  Enable support for a socket to get fastd's status.
 

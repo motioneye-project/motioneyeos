@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LUA_CQUEUES
+	bool "lua-cqueues"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Continuation Queues: Embeddable asynchronous networking,
+	  threading, and notification framework for Lua on Unix.
+
+	  http://25thandclement.com/~william/projects/cqueues.html
+
+comment "lua-cqueues needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -85,6 +85,15 @@ config BR2_bfin
 	  http://www.analog.com/
 	  http://en.wikipedia.org/wiki/Blackfin
 
+config BR2_csky
+	bool "csky"
+	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	help
+	  csky is processor IP from china.
+	  http://www.c-sky.com/
+	  http://www.github.com/c-sky
+
 config BR2_i386
 	bool "i386"
 	select BR2_ARCH_HAS_MMU_MANDATORY
@@ -242,6 +251,16 @@ config BR2_xtensa
 
 endchoice
 
+# For some architectures or specific cores, our internal toolchain
+# backend is not suitable (like, missing support in upstream gcc, or
+# no ChipCo fork exists...)
+config BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+	bool
+
+config BR2_ARCH_HAS_TOOLCHAIN_BUILDROOT
+	bool
+	default y if !BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
+
 # The following string values are defined by the individual
 # Config.in.$ARCH files
 config BR2_ARCH
@@ -254,6 +273,12 @@ config BR2_GCC_TARGET_ARCH
 	string
 
 config BR2_GCC_TARGET_ABI
+	string
+
+config BR2_GCC_TARGET_NAN
+	string
+
+config BR2_GCC_TARGET_FP32_MODE
 	string
 
 config BR2_GCC_TARGET_CPU
@@ -283,6 +308,12 @@ config BR2_GCC_TARGET_MODE
 # Must be selected by binary formats that support shared libraries.
 config BR2_BINFMT_SUPPORTS_SHARED
 	bool
+
+# Must match the name of the architecture from readelf point of view,
+# i.e the "Machine:" field of readelf output. See get_machine_name()
+# in binutils/readelf.c for the list of possible values.
+config BR2_READELF_ARCH_NAME
+	string
 
 # Set up target binary format
 choice
@@ -367,6 +398,10 @@ endif
 
 if BR2_bfin
 source "arch/Config.in.bfin"
+endif
+
+if BR2_csky
+source "arch/Config.in.csky"
 endif
 
 if BR2_m68k

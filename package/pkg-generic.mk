@@ -57,13 +57,21 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_time
 
 # Hooks to collect statistics about installed files
 
+define _step_pkg_size_get_file_list
+	(cd $(TARGET_DIR) ; \
+		( \
+			find . -xtype f -print0 | xargs -0 md5sum ; \
+			find . -xtype d -print0 | xargs -0 -I{} printf 'directory  {}\n'; \
+		) \
+	) | sort > $1
+endef
+
 # This hook will be called before the target installation of a
 # package. We store in a file named .br_filelist_before the list of
 # files currently installed in the target. Note that the MD5 is also
 # stored, in order to identify if the files are overwritten.
 define step_pkg_size_start
-	(cd $(TARGET_DIR) ; find . -type f -print0 | xargs -0 md5sum) | sort > \
-		$($(PKG)_DIR)/.br_filelist_before
+	$(call _step_pkg_size_get_file_list,$($(PKG)_DIR)/.br_filelist_before)
 endef
 
 # This hook will be called after the target installation of a
@@ -72,8 +80,7 @@ endef
 # a diff with the .br_filelist_before to compute the list of files
 # installed by this package.
 define step_pkg_size_end
-	(cd $(TARGET_DIR); find . -type f -print0 | xargs -0 md5sum) | sort > \
-		$($(PKG)_DIR)/.br_filelist_after
+	$(call _step_pkg_size_get_file_list,$($(PKG)_DIR)/.br_filelist_after)
 	comm -13 $($(PKG)_DIR)/.br_filelist_before $($(PKG)_DIR)/.br_filelist_after | \
 		while read hash file ; do \
 			echo "$(1),$${file}" >> $(BUILD_DIR)/packages-file-list.txt ; \
@@ -86,6 +93,17 @@ define step_pkg_size
 		$(if $(filter end,$(1)),$(call step_pkg_size_end,$(3))))
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
+
+# Relies on step_pkg_size, so must be after
+define check_bin_arch
+	$(if $(filter end-install-target,$(1)-$(2)),\
+		support/scripts/check-bin-arch -p $(3) \
+			-l $(BUILD_DIR)/packages-file-list.txt \
+			-r $(TARGET_READELF) \
+			-a $(BR2_READELF_ARCH_NAME))
+endef
+
+GLOBAL_INSTRUMENTATION_HOOKS += check_bin_arch
 
 # This hook checks that host packages that need libraries that we build
 # have a proper DT_RPATH or DT_RUNPATH tag
@@ -423,7 +441,7 @@ endif
 
 $(2)_BASE_NAME	= $$(if $$($(2)_VERSION),$(1)-$$($(2)_VERSION),$(1))
 $(2)_RAW_BASE_NAME = $$(if $$($(2)_VERSION),$$($(2)_RAWNAME)-$$($(2)_VERSION),$$($(2)_RAWNAME))
-$(2)_DL_DIR	=  $$(DL_DIR)/$$($(2)_BASE_NAME)
+$(2)_DL_DIR	=  $$(DL_DIR)
 $(2)_DIR	=  $$(BUILD_DIR)/$$($(2)_BASE_NAME)
 
 ifndef $(2)_SUBDIR
@@ -531,11 +549,14 @@ $(2)_REDIST_SOURCES_DIR = $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))/$$($(2)
 
 # When a target package is a toolchain dependency set this variable to
 # 'NO' so the 'toolchain' dependency is not added to prevent a circular
-# dependency
+# dependency.
+# Similarly for the skeleton.
 $(2)_ADD_TOOLCHAIN_DEPENDENCY	?= YES
+$(2)_ADD_SKELETON_DEPENDENCY	?= YES
+
 
 ifeq ($(4),target)
-ifneq ($(1),skeleton)
+ifeq ($$($(2)_ADD_SKELETON_DEPENDENCY),YES)
 $(2)_DEPENDENCIES += skeleton
 endif
 ifeq ($$($(2)_ADD_TOOLCHAIN_DEPENDENCY),YES)
@@ -598,6 +619,8 @@ $(2)_POST_INSTALL_IMAGES_HOOKS  ?=
 $(2)_PRE_LEGAL_INFO_HOOKS       ?=
 $(2)_POST_LEGAL_INFO_HOOKS      ?=
 $(2)_TARGET_FINALIZE_HOOKS      ?=
+$(2)_ROOTFS_PRE_CMD_HOOKS       ?=
+$(2)_ROOTFS_POST_CMD_HOOKS      ?=
 
 # human-friendly targets and target sequencing
 $(1):			$(1)-install
@@ -631,7 +654,7 @@ else
 $(1)-install-images:
 endif
 
-$(1)-install-host:      	$$($(2)_TARGET_INSTALL_HOST)
+$(1)-install-host:		$$($(2)_TARGET_INSTALL_HOST)
 $$($(2)_TARGET_INSTALL_HOST):	$$($(2)_TARGET_BUILD)
 
 $(1)-build:		$$($(2)_TARGET_BUILD)
@@ -683,6 +706,7 @@ $(1)-legal-source:	$$($(2)_TARGET_ACTUAL_SOURCE)
 endif # actual sources != sources
 endif # actual sources != ""
 
+$(1)-source-check: PKG=$(2)
 $(1)-source-check:
 	$$(foreach p,$$($(2)_ALL_DOWNLOADS),$$(call SOURCE_CHECK,$$(p))$$(sep))
 
@@ -725,6 +749,9 @@ $(1)-show-depends:
 
 $(1)-show-rdepends:
 			@echo $$($(2)_RDEPENDENCIES)
+
+$(1)-show-build-order: $$(patsubst %,%-show-build-order,$$($(2)_FINAL_ALL_DEPENDENCIES))
+	$$(info $(1))
 
 $(1)-graph-depends: graph-depends-requirements
 	$(call pkg-graph-depends,$(1),--direct)
@@ -820,7 +847,9 @@ endif
 endif
 
 # legal-info: produce legally relevant info.
+$(1)-legal-info: PKG=$(2)
 $(1)-legal-info:
+	@$$(call MESSAGE,"Collecting legal info")
 # Packages without a source are assumed to be part of Buildroot, skip them.
 	$$(foreach hook,$$($(2)_PRE_LEGAL_INFO_HOOKS),$$(call $$(hook))$$(sep))
 ifneq ($$(call qstrip,$$($(2)_SOURCE)),)
@@ -832,9 +861,9 @@ ifneq ($$(call qstrip,$$($(2)_SOURCE)),)
 # is that the license still applies to the files distributed as part
 # of the rootfs, even if the sources are not themselves redistributed.
 ifeq ($$(call qstrip,$$($(2)_LICENSE_FILES)),)
-	@$$(call legal-warning-pkg,$$($(2)_RAW_BASE_NAME),cannot save license ($(2)_LICENSE_FILES not defined))
+	$(Q)$$(call legal-warning-pkg,$$($(2)_RAW_BASE_NAME),cannot save license ($(2)_LICENSE_FILES not defined))
 else
-	@$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAW_BASE_NAME),$$(F),$$($(2)_DIR)/$$(F),$$(call UPPERCASE,$(4)))$$(sep))
+	$(Q)$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$($(2)_RAW_BASE_NAME),$$($(2)_PKGDIR),$$(F),$$($(2)_DIR)/$$(F),$$(call UPPERCASE,$(4)))$$(sep))
 endif # license files
 
 ifeq ($$($(2)_SITE_METHOD),local)
@@ -911,6 +940,8 @@ ifneq ($$($(2)_USERS),)
 PACKAGES_USERS += $$($(2)_USERS)$$(sep)
 endif
 TARGET_FINALIZE_HOOKS += $$($(2)_TARGET_FINALIZE_HOOKS)
+ROOTFS_PRE_CMD_HOOKS += $$($(2)_ROOTFS_PRE_CMD_HOOKS)
+ROOTFS_POST_CMD_HOOKS += $$($(2)_ROOTFS_POST_CMD_HOOKS)
 
 ifeq ($$($(2)_SITE_METHOD),svn)
 DL_TOOLS_DEPENDENCIES += svn

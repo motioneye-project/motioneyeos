@@ -1,0 +1,63 @@
+From afc3e31b637db9dae106d4fad78f7b481c8c24e3 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Tue, 20 Jun 2017 16:42:28 +0100
+Subject: [PATCH] configure.ac: properly set seccomp_audit_arch for MIPS64
+
+Currently seccomp_audit_arch is set to AUDIT_ARCH_MIPS64 or
+AUDIT_ARCH_MIPSEL64 (depending on the endinness) when openssh is built
+for MIPS64. However, that's only valid for n64 ABI. The right macros for
+n32 ABI defined in seccomp.h are AUDIT_ARCH_MIPS64N32 and
+AUDIT_ARCH_MIPSEL64N32, for big and little endian respectively.
+
+Because of that an sshd built for MIPS64 n32 rejects connection attempts
+and the output of strace reveals that the problem is related to seccomp
+audit:
+
+[pid   194] prctl(PR_SET_SECCOMP, SECCOMP_MODE_FILTER, {len=57,
+filter=0x555d5da0}) = 0
+[pid   194] write(7, "\0\0\0]\0\0\0\5\0\0\0Ulist_hostkey_types: "..., 97) = ?
+[pid   193] <... poll resumed> )        = 2 ([{fd=5, revents=POLLIN|POLLHUP},
+{fd=6, revents=POLLHUP}])
+[pid   194] +++ killed by SIGSYS +++
+
+This patch fixes that problem by setting the right value to
+seccomp_audit_arch taking into account the MIPS64 ABI.
+
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[Upstream commit: https://github.com/openssh/openssh-portable/commit/afc3e31b637db9dae106d4fad78f7b481c8c24e3]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index f990cfe08..5d640f679 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -801,10 +801,24 @@ main() { if (NSVersionOfRunTimeLibrary("System") >= (60 << 16))
+ 		seccomp_audit_arch=AUDIT_ARCH_MIPSEL
+ 		;;
+ 	mips64-*)
+-		seccomp_audit_arch=AUDIT_ARCH_MIPS64
++		case "$mips_abi" in
++		"n32")
++			seccomp_audit_arch=AUDIT_ARCH_MIPS64N32
++			;;
++		"n64")
++			seccomp_audit_arch=AUDIT_ARCH_MIPS64
++			;;
++		esac
+ 		;;
+ 	mips64el-*)
+-		seccomp_audit_arch=AUDIT_ARCH_MIPSEL64
++		case "$mips_abi" in
++		"n32")
++			seccomp_audit_arch=AUDIT_ARCH_MIPSEL64N32
++			;;
++		"n64")
++			seccomp_audit_arch=AUDIT_ARCH_MIPSEL64
++			;;
++		esac
+ 		;;
+ 	esac
+ 	if test "x$seccomp_audit_arch" != "x" ; then

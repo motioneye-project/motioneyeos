@@ -12,11 +12,11 @@ GST_FFMPEG_DEPENDENCIES = host-pkgconf gstreamer gst-plugins-base
 
 ifeq ($(BR2_PACKAGE_GST_FFMPEG_GPL),y)
 GST_FFMPEG_CONF_OPTS += --disable-lgpl
-GST_FFMPEG_LICENSE = GPLv2+ (gst-ffmpeg), GPLv2+/GPLv3+ (libav)
+GST_FFMPEG_LICENSE = GPL-2.0+ (gst-ffmpeg), GPL-2.0+/GPL-3.0+ (libav)
 GST_FFMPEG_LICENSE_FILES = COPYING gst-libs/ext/libav/COPYING.GPLv2 gst-libs/ext/libav/COPYING.GPLv3
 else
 GST_FFMPEG_CONF_OPTS += --enable-lgpl
-GST_FFMPEG_LICENSE = LGPLv2+ (gst-ffmpeg), LGPLv2.1+/LGPLv3+ (libav)
+GST_FFMPEG_LICENSE = LGPL-2.0+ (gst-ffmpeg), LGPL-2.1+/LGPL-3.0+ (libav)
 GST_FFMPEG_LICENSE_FILES = COPYING.LIB gst-libs/ext/libav/COPYING.LGPLv2.1 gst-libs/ext/libav/COPYING.LGPLv3
 endif
 
@@ -78,6 +78,12 @@ ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 GST_FFMPEG_CONF_EXTRA_OPTS += --enable-altivec
 else
 GST_FFMPEG_CONF_EXTRA_OPTS += --disable-altivec
+endif
+
+# libav configure script misdetects the VIS optimizations as being
+# available, so forcefully disable them.
+ifeq ($(BR2_sparc_v8)$(BR2_sparc_leon3),y)
+GST_FFMPEG_CONF_EXTRA_OPTS += --disable-vis
 endif
 
 ifeq ($(BR2_STATIC_LIBS),)

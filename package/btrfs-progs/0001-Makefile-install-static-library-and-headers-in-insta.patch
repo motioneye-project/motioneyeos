@@ -1,0 +1,49 @@
+From ff93866eb119cedb791894814780c0e44db35715 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Fri, 10 Mar 2017 14:56:17 +0000
+Subject: [PATCH] Makefile: install static library and headers in
+ install-static
+
+Currently, the install-static target only installs the statically
+compiled tools. However, some programs outside of btrfs-progs (for
+example docker) link with the btrfs libraries. If such programs want to
+link statically against the btrfs-progs library, then this library
+should be installed by "install-static". Indeed, "make install" cannot
+be used if the support for shared library is not enabled.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Gustavo: Rebase for btrfs-progs 4.7.2]
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Vincent: Rebase for btrfs-progs 4.10]
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 67fbc48..d9e34be 100644
+--- a/Makefile
++++ b/Makefile
+@@ -308,7 +308,7 @@ test: test-fsck test-mkfs test-convert test-misc test-fuzz test-cli
+ # NOTE: For static compiles, you need to have all the required libs
+ # 	static equivalent available
+ #
+-static: $(progs_static)
++static: $(progs_static) $(libs_static)
+ 
+ version.h: version.sh version.h.in configure.ac
+ 	@echo "    [SH]     $@"
+@@ -537,6 +537,10 @@ install-static: $(progs_static) $(INSTALLDIRS)
+ 	$(INSTALL) $(progs_static) $(DESTDIR)$(bindir)
+ 	# btrfsck is a link to btrfs in the src tree, make it so for installed file as well
+ 	$(LN_S) -f btrfs.static $(DESTDIR)$(bindir)/btrfsck.static
++	$(INSTALL) -m755 -d $(DESTDIR)$(libdir)
++	$(INSTALL) $(libs_static) $(DESTDIR)$(libdir)
++	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)
++	$(INSTALL) -m644 $(headers) $(DESTDIR)$(incdir)
+ 
+ $(INSTALLDIRS):
+ 	@echo "Making install in $(patsubst install-%,%,$@)"
+-- 
+2.10.2
+

@@ -10,10 +10,11 @@ menuconfig BR2_PACKAGE_GPSD
 	# Always tries to build a shared library
 	depends on !BR2_STATIC_LIBS
 	help
-	  gpsd is a service daemon that monitors one or more GPSes or AIS
-	  receivers attached to a host computer through serial or USB ports,
-	  making all data on the location/course/velocity of the sensors
-	  available to be queried on TCP port 2947 of the host computer.
+	  gpsd is a service daemon that monitors one or more GPSes or
+	  AIS receivers attached to a host computer through serial or
+	  USB ports, making all data on the location/course/velocity of
+	  the sensors available to be queried on TCP port 2947 of the
+	  host computer.
 
 	  The D-Bus interface is included if dbus-glib is enabled.
 

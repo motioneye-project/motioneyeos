@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/pymysql/json, sha256 locally computed
-md5	bf82311ac2df4c43adad003a8c805b90  PyMySQL-0.7.9.tar.gz
-sha256	2331f82b7b85d407c8d9d7a8d7901a6abbeb420533e5d5d64ded5009b5c6dcc3  PyMySQL-0.7.9.tar.gz
+md5 fc96ba7c76c01ff0613b0cca9c40df75 PyMySQL-0.7.10.tar.gz
+sha256 9468bd7d54df68e49c39e91d7c223d13dedf9e4284173cb5d761673e6275024e PyMySQL-0.7.10.tar.gz

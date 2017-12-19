@@ -7,7 +7,7 @@
 ATF_VERSION = 0.21
 ATF_SITE = https://github.com/jmmv/atf/releases/download/atf-$(ATF_VERSION)
 ATF_INSTALL_STAGING = YES
-ATF_LICENSE = BSD-2c, BSD-3c
+ATF_LICENSE = BSD-2-Clause, BSD-3-Clause
 ATF_LICENSE_FILES = COPYING
 # Ships a beta libtool version hence our patch doesn't apply.
 ATF_AUTORECONF = YES

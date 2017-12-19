@@ -1,8 +1,9 @@
 config BR2_PACKAGE_CPULOAD
 	bool "cpuload"
 	help
-	  cpuload is a simple tool to obtain intuitive vision of CPU load
-	  (including total, user, system, irq and softirq) within a certain
-	  time, which is especially useful for embedded system without GUI.
+	  cpuload is a simple tool to obtain intuitive vision of CPU
+	  load (including total, user, system, irq and softirq) within a
+	  certain time, which is especially useful for embedded system
+	  without GUI.
 
 	  https://github.com/kelvincheung/cpuload

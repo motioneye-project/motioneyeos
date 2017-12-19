@@ -1,0 +1,47 @@
+From fd1694c9d85666a39fe39e76518581b1ccd5a6c5 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Stefan=20S=C3=B8rensen?= <stefan.sorensen@spectralink.com>
+Date: Thu, 2 Feb 2017 11:16:49 +0100
+Subject: [PATCH] Fix build with --disable-nls on platforms without libintl
+ included in libc.
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+
+---
+
+Status: accepted upstream, not yet released.
+
+diff --git a/src/pwmake.c b/src/pwmake.c
+index 5b8cfb8..81f7cd3 100644
+--- a/src/pwmake.c
++++ b/src/pwmake.c
+@@ -33,9 +33,11 @@ main(int argc, char *argv[])
+         int bits;
+         void *auxerror;
+ 
++#ifdef ENABLE_NLS
+         setlocale(LC_ALL, "");
+         bindtextdomain("libpwquality", "/usr/share/locale");
+         textdomain("libpwquality");
++#endif
+ 
+         if (argc != 2) {
+                 usage(basename(argv[0]));
+diff --git a/src/pwscore.c b/src/pwscore.c
+index 219a175..24c13f2 100644
+--- a/src/pwscore.c
++++ b/src/pwscore.c
+@@ -34,9 +34,11 @@ main(int argc, char *argv[])
+         size_t len;
+         char *user = NULL;
+ 
++#ifdef ENABLE_NLS
+         setlocale(LC_ALL, "");
+         bindtextdomain("libpwquality", "/usr/share/locale");
+         textdomain("libpwquality");
++#endif
+ 
+         if (argc > 2) {
+                 usage(basename(argv[0]));
+-- 
+2.9.3
+

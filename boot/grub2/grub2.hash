@@ -1,2 +1,2 @@
-# Locally calculated after checking pgp signature
-sha256	784ec38e7edc32239ad75b8e66df04dc8bfb26d88681bc9f627133a6eb85c458	grub-2.00.tar.xz
+# Locally computed:
+sha256 810b3798d316394f94096ec2797909dbf23c858e48f7b3830826b8daa06b7b0f grub-2.02.tar.xz

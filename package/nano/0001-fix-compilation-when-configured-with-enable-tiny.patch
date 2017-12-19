@@ -1,0 +1,43 @@
+From 28cfab7580c42a6d6c9c5d787ce736094fd51a0c Mon Sep 17 00:00:00 2001
+From: Benno Schulenberg <bensberg@telfort.nl>
+Date: Tue, 29 Aug 2017 19:28:44 +0200
+Subject: tweaks: fix compilation when configured with --enable-tiny
+
+When moving the cursor to the top-left corner, it is not necessary
+to compute leftedge because firstcolumn IS the relevant leftedge.
+
+Reported-by: Jordi Mallach <jordi@debian.org>
+
+Downloaded from upstream master branch:
+http://git.savannah.gnu.org/cgit/nano.git/commit/?id=28cfab7580c42a6d6c9c5d787ce736094fd51a0c
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/move.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/move.c b/src/move.c
+index d138356..ce276e4 100644
+--- a/src/move.c
++++ b/src/move.c
+@@ -121,7 +121,7 @@ void do_page_up(void)
+ 	openfile->current = openfile->edittop;
+ 	openfile->current_y = 0;
+ 
+-	leftedge = leftedge_for(openfile->firstcolumn, openfile->edittop);
++	leftedge = openfile->firstcolumn;
+ 	target_column = 0;
+     } else
+ 	get_edge_and_target(&leftedge, &target_column);
+@@ -152,7 +152,7 @@ void do_page_down(void)
+ 	openfile->current = openfile->edittop;
+ 	openfile->current_y = 0;
+ 
+-	leftedge = leftedge_for(openfile->firstcolumn, openfile->edittop);
++	leftedge = openfile->firstcolumn;
+ 	target_column = 0;
+     } else
+ 	get_edge_and_target(&leftedge, &target_column);
+-- 
+cgit v1.0-41-gc330
+

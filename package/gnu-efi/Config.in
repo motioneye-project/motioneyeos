@@ -1,9 +1,10 @@
 config BR2_PACKAGE_GNU_EFI
 	bool "gnu-efi"
-	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_ARM_CPU_HAS_ARM || BR2_aarch64 || \
+		BR2_aarch64_be || BR2_i386 || BR2_x86_64
 	help
-	  Develop EFI applications for IA-64 (IPF), IA-32 (x86), and
-	  x86_64 platforms using the GNU toolchain and the EFI
-	  development environment.
+	  Develop EFI applications for ARM-64, ARM-32, x86_64, IA-64
+	  (IPF), IA-32 (x86), and MIPS platforms using the GNU toolchain
+	  and the EFI development environment.
 
 	  http://gnu-efi.sourceforge.net/

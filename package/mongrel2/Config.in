@@ -14,12 +14,12 @@ comment "mongrel2 needs a uClibc or glibc toolchain w/ C++, threads, dynamic lib
 
 config BR2_PACKAGE_MONGREL2
 	bool "mongrel2"
-	select BR2_PACKAGE_SQLITE
-	select BR2_PACKAGE_ZEROMQ
 	depends on BR2_INSTALL_LIBSTDCPP # zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
 	depends on !BR2_STATIC_LIBS # uses dlopen()
 	depends on BR2_PACKAGE_MONGREL2_LIBC_SUPPORTS
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZEROMQ
 	help
 	  Mongrel2 is an application, language, and network architecture
 	  agnostic web server that focuses on web applications using

@@ -5,8 +5,8 @@ config BR2_PACKAGE_LIBICAL
 	depends on BR2_USE_WCHAR
 	select BR2_TARGET_TZ_INFO
 	help
-	  libical is an Open Source (MPL/LGPL) implementation of the IETF's
-	  iCalendar Calendaring and Scheduling protocols.
+	  libical is an Open Source (MPL/LGPL) implementation of the
+	  IETF's iCalendar Calendaring and Scheduling protocols.
 
 	  http://libical.github.io/libical
 

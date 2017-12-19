@@ -2,7 +2,7 @@ config BR2_PACKAGE_COXPCALL
 	bool "coxpcall"
 	help
 	  Coxpcall encapsulates the protected calls with a coroutine
-	  based loop, so errors can be dealed without the usual
-	  pcall/xpcall issues with coroutines.
+	  based loop, so errors can be handled without the usual
+	  pcall/xpcall issues with coroutines for Lua 5.1.
 
-	  http://coxpcall.luaforge.net/
+	  http://keplerproject.github.io/coxpcall/

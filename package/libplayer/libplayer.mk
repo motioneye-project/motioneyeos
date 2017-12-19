@@ -7,7 +7,7 @@
 LIBPLAYER_VERSION = 2.0.1
 LIBPLAYER_SITE = http://libplayer.geexbox.org/releases
 LIBPLAYER_SOURCE = libplayer-$(LIBPLAYER_VERSION).tar.bz2
-LIBPLAYER_LICENSE = LGPLv2.1+
+LIBPLAYER_LICENSE = LGPL-2.1+
 LIBPLAYER_LICENSE_FILES = COPYING
 
 # When passing the standard buildroot configure arguments, the configure script
@@ -37,11 +37,6 @@ LIBPLAYER_DEPENDENCIES += gstreamer
 LIBPLAYER_CONF_OPTS += --enable-gstreamer
 else
 LIBPLAYER_CONF_OPTS += --disable-gstreamer
-endif
-
-ifeq ($(BR2_PACKAGE_LIBPLAYER_PYTHON),y)
-LIBPLAYER_DEPENDENCIES += python
-LIBPLAYER_CONF_OPTS += --enable-binding-python
 endif
 
 $(eval $(autotools-package))

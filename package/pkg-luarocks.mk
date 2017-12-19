@@ -34,9 +34,10 @@
 define inner-luarocks-package
 
 $(2)_BUILD_OPTS		?=
-$(2)_SUBDIR		?= $(1)-$$(shell echo "$$($(3)_VERSION)" | sed -e "s/-[0-9]$$$$//")
-$(2)_ROCKSPEC		?= $(1)-$$($(3)_VERSION).rockspec
-$(2)_SOURCE		?= $(1)-$$($(3)_VERSION).src.rock
+$(2)_NAME_UPSTREAM	?= $(1)
+$(2)_SUBDIR		?= $$($(2)_NAME_UPSTREAM)-$$(shell echo "$$($(2)_VERSION)" | sed -e "s/-[0-9]$$$$//")
+$(2)_ROCKSPEC		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).rockspec
+$(2)_SOURCE		?= $$(call LOWERCASE,$$($(2)_NAME_UPSTREAM))-$$($(2)_VERSION).src.rock
 $(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
 
 # Since we do not support host-luarocks-package, we know this is
@@ -44,12 +45,15 @@ $(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
 $(2)_DEPENDENCIES	+= host-luarocks luainterpreter
 
 #
-# Extract step
+# Extract step. Extract into a temporary dir and move the relevant part to the
+# source dir.
 #
 ifndef $(2)_EXTRACT_CMDS
 define $(2)_EXTRACT_CMDS
-	cd $$($(2)_DIR)/.. && \
+	mkdir -p $$($(2)_DIR)/luarocks-extract
+	cd $$($(2)_DIR)/luarocks-extract && \
 		$$(LUAROCKS_RUN_ENV) $$(LUAROCKS_RUN_CMD) unpack --force $$(DL_DIR)/$$($(2)_SOURCE)
+	mv $$($(2)_DIR)/luarocks-extract/*/* $$($(2)_DIR)
 endef
 endif
 

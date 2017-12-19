@@ -11,7 +11,7 @@ RDESKTOP_DEPENDENCIES = host-pkgconf openssl xlib_libX11 xlib_libXt \
 	$(if $(BR2_PACKAGE_LIBAO),libao) \
 	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate)
 RDESKTOP_CONF_OPTS = --with-openssl=$(STAGING_DIR)/usr --disable-credssp
-RDESKTOP_LICENSE = GPLv3+
+RDESKTOP_LICENSE = GPL-3.0+
 RDESKTOP_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_PCSC_LITE),y)

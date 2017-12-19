@@ -4,13 +4,18 @@
 #
 ################################################################################
 
-TRINITY_VERSION = v1.6
-TRINITY_SITE = $(call github,kernelslacker,trinity,$(TRINITY_VERSION))
-TRINITY_LICENSE = GPLv2
+TRINITY_VERSION = 1.7
+TRINITY_SITE = http://codemonkey.org.uk/projects/trinity
+TRINITY_SOURCE = trinity-$(TRINITY_VERSION).tar.xz
+TRINITY_LICENSE = GPL-2.0
 TRINITY_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_BTRFS_PROGS),y)
+TRINITY_DEPENDENCIES += btrfs-progs
+endif
+
 define TRINITY_CONFIGURE_CMDS
-	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure.sh)
+	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure)
 endef
 
 define TRINITY_BUILD_CMDS

@@ -29,6 +29,18 @@ if test -n "$LD_LIBRARY_PATH" ; then
 	fi
 fi;
 
+# PATH should not contain a newline, otherwise it fails in spectacular ways
+# as soon as PATH is referenced in a package rule
+case "${PATH}" in
+(*"
+"*)	printf "\n"
+	# Break the '\n' sequence, or a \n is printed (which is not what we want).
+	printf "Your PATH contains a newline (%sn) character.\n" "\\"
+	printf "This doesn't work. Fix you PATH.\n"
+	exit 1
+	;;
+esac
+
 # sanity check for CWD in PATH. Having the current working directory
 # in the PATH makes the toolchain build process break.
 # try not to rely on egrep..

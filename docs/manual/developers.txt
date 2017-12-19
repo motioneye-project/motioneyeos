@@ -1,0 +1,48 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[DEVELOPERS]]
+== DEVELOPERS file and get-developers
+
+The main Buildroot directory contains a file named +DEVELOPERS+ that
+lists the developers involved with various areas of Buildroot. Thanks
+to this file, the +get-developer+ tool allows to:
+
+- Calculate the list of developers to whom patches should be sent, by
+  parsing the patches and matching the modified files with the
+  relevant developers. See xref:submitting-patches[] for details.
+
+- Find which developers are taking care of a given architecture or
+  package, so that they can be notified when a build failure occurs on
+  this architecture or package. This is done in interaction with
+  Buildroot's autobuild infrastructure.
+
+We ask developers adding new packages, new boards, or generally new
+functionality in Buildroot, to register themselves in the +DEVELOPERS+
+file. As an example, we expect a developer contributing a new package
+to include in his patch the appropriate modification to the
++DEVELOPERS+ file.
+
+The +DEVELOPERS+ file format is documented in detail inside the file
+itself.
+
+The +get-developer+ tool, located in +utils/+ allows to use
+the +DEVELOPERS+ file for various tasks:
+
+- When passing one or several patches as command line argument,
+  +get-developer+ will return the appropriate +git send-email+
+  command.
+
+- When using the +-a <arch>+ command line option, +get-developer+ will
+  return the list of developers in charge of the given architecture.
+
+- When using the +-p <package>+ command line option, +get-developer+
+  will return the list of developers in charge of the given package.
+
+- When using the +-c+ command line option, +get-developer+ will look
+  at all files under version control in the Buildroot repository, and
+  list the ones that are not handled by any developer. The purpose of
+  this option is to help completing the +DEVELOPERS+ file.
+
+- When using without any arguments, it validates the integrity of the
+  DEVELOPERS file and will note WARNINGS for items that don't match.

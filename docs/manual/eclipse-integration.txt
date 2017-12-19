@@ -1,0 +1,30 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Integration with Eclipse
+
+While a part of the embedded Linux developers like classical text
+editors like Vim or Emacs, and command-line based interfaces, a number
+of other embedded Linux developers like richer graphical interfaces to
+do their development work. Eclipse being one of the most popular
+Integrated Development Environment, Buildroot integrates with Eclipse
+in order to ease the development work of Eclipse users.
+
+Our integration with Eclipse simplifies the compilation, remote
+execution and remote debugging of applications and libraries that are
+built on top of a Buildroot system. It does not integrate the
+Buildroot configuration and build processes themselves with
+Eclipse. Therefore, the typical usage model of our Eclipse integration
+would be:
+
+* Configure your Buildroot system with +make menuconfig+, +make
+  xconfig+ or any other configuration interface provided with
+  Buildroot.
+* Build your Buildroot system by running +make+.
+* Start Eclipse to develop, execute and debug your own custom
+  applications and libraries, that will rely on the libraries built
+  and installed by Buildroot.
+
+The Buildroot Eclipse integration installation process and usage is
+described in detail at
+https://github.com/mbats/eclipse-buildroot-bundle/wiki.

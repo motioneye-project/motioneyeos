@@ -1,2 +1,4 @@
-# From https://lists.freedesktop.org/archives/wayland-devel/2016-August/030606.html
-sha256	635f2a937d318f1fecb97b54074ca211486e38af943868dd0fa82ea38d091c1f	wayland-protocols-1.7.tar.xz
+# From https://lists.freedesktop.org/archives/wayland-devel/2017-July/034706.html
+md5 84a7846c2b6a6a3e265fc9be36453e60  wayland-protocols-1.10.tar.xz
+sha1 4f1322f03fa8b2e6467b8f71471f53eff82728a4  wayland-protocols-1.10.tar.xz
+sha256 5719c51d7354864983171c5083e93a72ac99229e2b460c4bb10513de08839c0a  wayland-protocols-1.10.tar.xz

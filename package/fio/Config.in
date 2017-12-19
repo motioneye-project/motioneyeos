@@ -4,12 +4,6 @@ config BR2_PACKAGE_FIO
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# fio uses posix_madvise(), which is not part of any official
-	# release of uClibc, but is part of uClibc Git, and backported
-	# in Buildroot patch set of uClibc 0.9.33. Therefore, we
-	# disable the build of fio for external uClibc toolchains
-	# (which use an unknown uClibc version)
-	depends on !BR2_TOOLCHAIN_EXTERNAL_UCLIBC
 	# fio uses fallocate() which becomes fallocate64() while compiling with
 	# largefile support, but fallocate64() is not available on nios2
 	depends on !BR2_nios2

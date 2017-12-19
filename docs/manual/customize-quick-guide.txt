@@ -1,0 +1,66 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Quick guide to storing your project-specific customizations
+
+Earlier in this chapter, the different methods for making
+project-specific customizations have been described. This section will
+now summarize all this by providing step-by-step instructions to storing your
+project-specific customizations. Clearly, the steps that are not relevant to
+your project can be skipped.
+
+1. +make menuconfig+ to configure toolchain, packages and kernel.
+1. +make linux-menuconfig+ to update the kernel config, similar for
+   other configuration like busybox, uclibc, ...
+1. +mkdir -p board/<manufacturer>/<boardname>+
+1. Set the following options to +board/<manufacturer>/<boardname>/<package>.config+
+   (as far as they are relevant):
+   * +BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE+
+   * +BR2_PACKAGE_BUSYBOX_CONFIG+
+   * +BR2_UCLIBC_CONFIG+
+   * +BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE+
+   * +BR2_TARGET_BAREBOX_CUSTOM_CONFIG_FILE+
+   * +BR2_TARGET_UBOOT_CUSTOM_CONFIG_FILE+
+1. Write the configuration files:
+   * +make linux-update-defconfig+
+   * +make busybox-update-config+
+   * +make uclibc-update-config+
+   * +cp <output>/build/at91bootstrap3-*/.config
+     board/<manufacturer>/<boardname>/at91bootstrap3.config+
+   * +make barebox-update-defconfig+
+   * +make uboot-update-defconfig+
+1. Create +board/<manufacturer>/<boardname>/rootfs-overlay/+ and fill it
+   with additional files you need on your rootfs, e.g.
+   +board/<manufacturer>/<boardname>/rootfs-overlay/etc/inittab+.
+   Set +BR2_ROOTFS_OVERLAY+
+   to +board/<manufacturer>/<boardname>/rootfs-overlay+.
+1. Create a post-build script
+   +board/<manufacturer>/<boardname>/post_build.sh+. Set
+   +BR2_ROOTFS_POST_BUILD_SCRIPT+ to
+   +board/<manufacturer>/<boardname>/post_build.sh+
+1. If additional setuid permissions have to be set or device nodes have
+   to be created, create +board/<manufacturer>/<boardname>/device_table.txt+
+   and add that path to +BR2_ROOTFS_DEVICE_TABLE+.
+1. If additional user accounts have to be created, create
+   +board/<manufacturer>/<boardname>/users_table.txt+ and add that path
+   to +BR2_ROOTFS_USERS_TABLES+.
+1. To add custom patches to certain packages, set +BR2_GLOBAL_PATCH_DIR+
+   to +board/<manufacturer>/<boardname>/patches/+ and add your patches
+   for each package in a subdirectory named after the package. Each
+   patch should be called +<packagename>-<num>-<description>.patch+.
+1. Specifically for the Linux kernel, there also exists the option
+   +BR2_LINUX_KERNEL_PATCH+ with as main advantage that it can also
+   download patches from a URL. If you do not need this,
+   +BR2_GLOBAL_PATCH_DIR+ is preferred. U-Boot, Barebox, at91bootstrap
+   and at91bootstrap3 also have separate options, but these do not
+   provide any advantage over +BR2_GLOBAL_PATCH_DIR+ and will likely be
+   removed in the future.
+1. If you need to add project-specific packages, create
+   +package/<manufacturer>/+ and place your packages in that
+   directory. Create an overall +<manufacturer>.mk+ file that
+   includes the +.mk+ files of all your packages. Create an overall
+   +Config.in+ file that sources the +Config.in+ files of all your
+   packages. Include this +Config.in+ file from Buildroot's
+   +package/Config.in+ file.
+1. +make savedefconfig+ to save the buildroot configuration.
+1. +cp defconfig configs/<boardname>_defconfig+

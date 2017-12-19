@@ -4,4 +4,3 @@ config BR2_PACKAGE_PYTHON_CBOR
 	  RFC 7049 - Concise Binary Object Representation.
 
 	  https://pypi.python.org/pypi/cbor
-

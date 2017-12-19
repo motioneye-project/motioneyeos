@@ -44,5 +44,5 @@ endef
 
 define TOOLCHAIN_WRAPPER_INSTALL
 	$(INSTALL) -D -m 0755 $(@D)/toolchain-wrapper \
-		$(HOST_DIR)/usr/bin/toolchain-wrapper
+		$(HOST_DIR)/bin/toolchain-wrapper
 endef

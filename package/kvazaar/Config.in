@@ -1,0 +1,16 @@
+config BR2_PACKAGE_KVAZAAR
+	bool "kvazaar"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	# use deprecated altivec vec_lvsl()
+	depends on !BR2_powerpc && !BR2_powerpc64 && !BR2_powerpc64le
+	help
+	  An open-source HEVC encoder licensed under LGPLv2.1
+
+	  https://github.com/ultravideo/kvazaar
+
+comment "kvazaar needs a toolchain w/ C++, threads"
+	depends on !BR2_powerpc && !BR2_powerpc64 && !BR2_powerpc64le
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

@@ -8,7 +8,7 @@ SYSVINIT_VERSION = 2.88
 SYSVINIT_SOURCE = sysvinit_$(SYSVINIT_VERSION)dsf.orig.tar.gz
 SYSVINIT_PATCH = sysvinit_$(SYSVINIT_VERSION)dsf-13.1+squeeze1.diff.gz
 SYSVINIT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/s/sysvinit
-SYSVINIT_LICENSE = GPLv2+
+SYSVINIT_LICENSE = GPL-2.0+
 SYSVINIT_LICENSE_FILES = COPYING
 
 SYSVINIT_MAKE_OPTS = SYSROOT=$(STAGING_DIR)
@@ -46,5 +46,15 @@ define SYSVINIT_INSTALL_TARGET_CMDS
 	ln -sf /sbin/halt $(TARGET_DIR)/sbin/poweroff
 	ln -sf killall5 $(TARGET_DIR)/sbin/pidof
 endef
+
+ifeq ($(BR2_TARGET_GENERIC_GETTY),y)
+define SYSVINIT_SET_GETTY
+	$(SED) '/# GENERIC_SERIAL$$/s~^.*#~$(shell echo $(SYSTEM_GETTY_PORT) | tail -c+4)::respawn:/sbin/getty -L $(SYSTEM_GETTY_OPTIONS) $(SYSTEM_GETTY_PORT) $(SYSTEM_GETTY_BAUDRATE) $(SYSTEM_GETTY_TERM) #~' \
+		$(TARGET_DIR)/etc/inittab
+endef
+SYSVINIT_TARGET_FINALIZE_HOOKS += SYSVINIT_SET_GETTY
+endif # BR2_TARGET_GENERIC_GETTY
+
+SYSVINIT_TARGET_FINALIZE_HOOKS += SYSTEM_REMOUNT_ROOT_INITTAB
 
 $(eval $(generic-package))

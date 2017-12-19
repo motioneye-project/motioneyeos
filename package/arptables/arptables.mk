@@ -7,7 +7,7 @@
 ARPTABLES_VERSION = 0.0.4
 ARPTABLES_SOURCE = arptables-v$(ARPTABLES_VERSION).tar.gz
 ARPTABLES_SITE = http://downloads.sourceforge.net/project/ebtables/arptables/arptables-v$(ARPTABLES_VERSION)
-ARPTABLES_LICENSE = GPLv2+
+ARPTABLES_LICENSE = GPL-2.0+
 
 define ARPTABLES_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \

@@ -1,11 +1,7 @@
 config BR2_PACKAGE_PAX_UTILS
 	bool "pax-utils"
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5 # needs PR_SET_NO_NEW_PRIVS
 	help
 	  ELF related utils for ELF 32/64 binaries that can check files
 	  for security relevant properties.
 
 	  http://www.gentoo.org/proj/en/hardened/pax-utils.xml
-
-comment "pax-utils needs a toolchain w/ headers >= 3.5"
-	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_5

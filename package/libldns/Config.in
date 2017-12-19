@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBLDNS
 	bool "libldns"
+	select BR2_PACKAGE_OPENSSL
 	help
 	  The goal of ldns is to simplify DNS programming, it supports
 	  recent RFCs like the DNSSEC documents, and allows developers

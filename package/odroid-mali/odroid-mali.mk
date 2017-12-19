@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ODROID_MALI_VERSION = 46fe49f37e3506c6205ad8c50980eca9bfff11e3
+ODROID_MALI_VERSION = 4f8a541693fee5fdcaa162a7fd8922861a4ba0a9
 ODROID_MALI_SITE = $(call github,mdrjr,c2_mali,$(ODROID_MALI_VERSION))
 ODROID_MALI_LICENSE = Hardkernel EULA
 ODROID_MALI_LICENSE_FILES = README.md
@@ -21,6 +21,10 @@ ODROID_MALI_DEPENDENCIES += \
 	libdrm xlib_libX11 xlib_libXdamage \
 	xlib_libXext xlib_libXfixes
 else
+define ODROID_MALI_FIX_EGL_PC
+	$(SED) "s/Cflags: /Cflags: -DMESA_EGL_NO_X11_HEADERS /" \
+		$(STAGING_DIR)/usr/lib/pkgconfig/egl.pc
+endef
 ODROID_MALI_HEADERS_SUBDIR = fbdev/mali_headers/
 ifeq ($(BR2_aarch64),y)
 ODROID_MALI_LIBS_SUBDIR = fbdev/mali_libs/
@@ -38,6 +42,7 @@ define ODROID_MALI_INSTALL_STAGING_CMDS
 	mkdir -p $(STAGING_DIR)/usr/lib/pkgconfig
 	cp -dpfr $(@D)/pkgconfig/*.pc $(STAGING_DIR)/usr/lib/pkgconfig/
 	cp -dpfr $(@D)/$(ODROID_MALI_HEADERS_SUBDIR)/* $(STAGING_DIR)/usr/include
+	$(ODROID_MALI_FIX_EGL_PC)
 endef
 
 define ODROID_MALI_INSTALL_TARGET_CMDS

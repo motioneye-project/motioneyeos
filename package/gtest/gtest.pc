@@ -5,7 +5,7 @@ includedir=${prefix}/include
 
 Name: gtest
 Description: Google C++ Testing Framework
-Version: 1.7.0
+Version: 1.8.0
 Libs: -L${libdir} -lgtest
 Libs.private: -lpthread
 Cflags: -I${includedir}

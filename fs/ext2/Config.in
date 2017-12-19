@@ -1,6 +1,6 @@
 config BR2_TARGET_ROOTFS_EXT2
 	bool "ext2/3/4 root filesystem"
-	select BR2_PACKAGE_HOST_MKE2IMG
+	select BR2_PACKAGE_HOST_E2FSPROGS
 	help
 	  Build an ext2/3/4 root filesystem
 
@@ -44,33 +44,48 @@ config BR2_TARGET_ROOTFS_EXT2_REV
 config BR2_TARGET_ROOTFS_EXT2_LABEL
 	string "filesystem label"
 
-config BR2_TARGET_ROOTFS_EXT2_BLOCKS
-	int "exact size in blocks (leave at 0 for auto calculation)"
-	default 0
+config BR2_TARGET_ROOTFS_EXT2_SIZE
+	string "exact size"
+	default BR2_TARGET_ROOTFS_EXT2_BLOCKS if BR2_TARGET_ROOTFS_EXT2_BLOCKS_WRAP # legacy 2017.08
+	default "60M"
+	help
+	  The size of the filesystem image. If it does not have a suffix,
+	  it is interpreted as power-of-two kilobytes. If it is suffixed
+	  by 'k', 'm', 'g', 't' (either upper-case or lower-case), then
+	  it is interpreted in power-of-two kilobytes, megabytes,
+	  gigabytes, terabytes, etc.
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "exact number of inodes (leave at 0 for auto calculation)"
 	default 0
 
-config BR2_TARGET_ROOTFS_EXT2_EXTRA_BLOCKS
-	int "extra size in blocks" if BR2_TARGET_ROOTFS_EXT2_BLOCKS = 0
-	default 0
-	help
-	  Enter here the number of extra blocks of free space you
-	  want on your filesystem. By default, Buildroot will not
-	  leave much space free.
-
-config BR2_TARGET_ROOTFS_EXT2_EXTRA_INODES
-	int "extra inodes" if BR2_TARGET_ROOTFS_EXT2_INODES = 0
-	default 0
-	help
-	  Enter here the number of extra free inodes you want on
-	  your filesystem. By default, Buildroot will not leave
-	  many free inodes.
-
 config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	int "reserved blocks percentage"
-	default 0
+	default 5
+	help
+	  The number of blocks on the filesystem (as a percentage of the
+	  total number of blocks), that are reserved for use by root.
+	  Traditionally, this has been 5%, and all ext-related tools still
+	  default to reserving 5% when creating a new ext filesystem.
+
+config BR2_TARGET_ROOTFS_EXT2_MKFS_OPTIONS
+	string "additional mke2fs options"
+	default "-O ^64bit"
+	help
+	  Specify a space-separated list of mke2fs options, including any
+	  ext2/3/4 filesystem features.
+
+	  For more information about the mke2fs options, see the manual
+	  page mke2fs(8).
+
+	  For more information about the ext2/3/4 features which can be
+	  set, see the manual page ext4(5).
+
+	  The default is "-O ^64bit", i.e. disable 64-bit filesystem
+	  support. This default value has been chosen because U-Boot
+	  versions before 2017.02 don't support this filesystem
+	  option: using it may make the filesystem unreadable by
+	  U-Boot.
 
 choice
 	prompt "Compression method"

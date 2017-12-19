@@ -1,0 +1,68 @@
+From ea6a86d8e792430faa3a8161ee99f2bc392875d1 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@chromium.org>
+Date: Fri, 3 Feb 2017 15:44:18 -1000
+Subject: [PATCH] fix builds with newer compilers & C standards
+
+The meaning of "inline" has changed when "static" is not used.
+Since none of these functions are used outside of their respective
+files, mark them as static to avoid build errors where funcs are
+not inlined (based on compiler flags too).
+
+Upstream status: pull request #38
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+---
+ src/rtl_adsb.c  | 8 ++++----
+ src/rtl_power.c | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/rtl_adsb.c b/src/rtl_adsb.c
+index e611e78..a3bfa7f 100644
+--- a/src/rtl_adsb.c
++++ b/src/rtl_adsb.c
+@@ -182,7 +182,7 @@ int magnitute(uint8_t *buf, int len)
+ 	return len/2;
+ }
+ 
+-inline uint16_t single_manchester(uint16_t a, uint16_t b, uint16_t c, uint16_t d)
++static inline uint16_t single_manchester(uint16_t a, uint16_t b, uint16_t c, uint16_t d)
+ /* takes 4 consecutive real samples, return 0 or 1, BADSAMPLE on error */
+ {
+ 	int bit, bit_p;
+@@ -223,17 +223,17 @@ inline uint16_t single_manchester(uint16_t a, uint16_t b, uint16_t c, uint16_t d
+ 	return BADSAMPLE;
+ }
+ 
+-inline uint16_t min16(uint16_t a, uint16_t b)
++static inline uint16_t min16(uint16_t a, uint16_t b)
+ {
+ 	return a<b ? a : b;
+ }
+ 
+-inline uint16_t max16(uint16_t a, uint16_t b)
++static inline uint16_t max16(uint16_t a, uint16_t b)
+ {
+ 	return a>b ? a : b;
+ }
+ 
+-inline int preamble(uint16_t *buf, int i)
++static inline int preamble(uint16_t *buf, int i)
+ /* returns 0/1 for preamble at index i */
+ {
+ 	int i2;
+diff --git a/src/rtl_power.c b/src/rtl_power.c
+index aa7a138..a7a43bb 100644
+--- a/src/rtl_power.c
++++ b/src/rtl_power.c
+@@ -249,7 +249,7 @@ void sine_table(int size)
+ 	}
+ }
+ 
+-inline int16_t FIX_MPY(int16_t a, int16_t b)
++static inline int16_t FIX_MPY(int16_t a, int16_t b)
+ /* fixed point multiply and scale */
+ {
+ 	int c = ((int)a * (int)b) >> 14;
+-- 
+2.13.0
+

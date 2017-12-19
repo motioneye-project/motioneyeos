@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBNPTH
+	bool "libnpth"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU # fork()
+	help
+	  nPth is a library to provide the GNU Pth API and thus a
+	  non-preemptive threads implementation.
+
+	  https://www.gnupg.org/related_software/npth/index.html
+
+comment "libnpth needs a toolchain w/ threads support"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU

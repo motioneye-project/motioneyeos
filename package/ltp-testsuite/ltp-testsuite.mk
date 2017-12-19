@@ -4,13 +4,21 @@
 #
 ################################################################################
 
-LTP_TESTSUITE_VERSION = 20170116
+LTP_TESTSUITE_VERSION = 20170929
 LTP_TESTSUITE_SOURCE = ltp-full-$(LTP_TESTSUITE_VERSION).tar.xz
 LTP_TESTSUITE_SITE = https://github.com/linux-test-project/ltp/releases/download/$(LTP_TESTSUITE_VERSION)
-LTP_TESTSUITE_LICENSE = GPLv2, GPLv2+
+LTP_TESTSUITE_LICENSE = GPL-2.0, GPL-2.0+
 LTP_TESTSUITE_LICENSE_FILES = COPYING
+
+# Do not enable Open POSIX testsuite as it doesn't cross-compile
+# properly: t0 program is built for the host machine. Notice that due
+# to a bug, --without-open-posix-testsuite actually enables the test
+# suite.
+# See https://github.com/linux-test-project/ltp/issues/143 (invalid
+# autoconf test) and
+# https://github.com/linux-test-project/ltp/issues/144 (Open POSIX
+# testsuite not cross-compiling).
 LTP_TESTSUITE_CONF_OPTS += \
-	--with-open-posix-testsuite \
 	--with-realtime-testsuite
 
 ifeq ($(BR2_LINUX_KERNEL),y)
@@ -60,5 +68,12 @@ endef
 LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_UNSUPPORTED
 endif
 
+# ldd command build system tries to build a shared library unconditionally.
+ifeq ($(BR2_STATIC_LIBS),y)
+define LTP_TESTSUITE_REMOVE_LDD
+	rm -rf $(@D)/testcases/commands/ldd
+endef
+LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_LDD
+endif
 
 $(eval $(autotools-package))

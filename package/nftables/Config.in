@@ -5,7 +5,6 @@ config BR2_PACKAGE_NFTABLES
 	select BR2_PACKAGE_GMP
 	select BR2_PACKAGE_LIBMNL
 	select BR2_PACKAGE_LIBNFTNL
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT
 	help
 	  nftables is the project that aims to replace the existing
 	  {ip,ip6,arp,eb}tables framework.

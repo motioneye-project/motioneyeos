@@ -39,12 +39,12 @@ config BR2_PACKAGE_TRANSMISSION_REMOTE
 
 config BR2_PACKAGE_TRANSMISSION_GTK
 	bool "transmission-gtk"
-	depends on BR2_PACKAGE_LIBGTK2 && BR2_ENABLE_LOCALE
+	depends on BR2_PACKAGE_LIBGTK3 && BR2_SYSTEM_ENABLE_NLS
 	help
 	  Install transmission GTK-based GUI interface.
 
-comment "transmission-gtk needs a toolchain w/ locale"
-	depends on BR2_PACKAGE_LIBGTK2 && !BR2_ENABLE_LOCALE
+comment "transmission-gtk needs NLS enabled"
+	depends on BR2_PACKAGE_LIBGTK3 && !BR2_SYSTEM_ENABLE_NLS
 endif
 
 comment "transmission needs a toolchain w/ threads"

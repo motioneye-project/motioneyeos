@@ -10,7 +10,8 @@ config BR2_PACKAGE_LIBFASTJSON
 	  Its aim is to provide:
 
 	  - a small library with essential json handling functions
-	  - sufficiently good json support (not 100% standards compliant)
+	  - sufficiently good json support (not 100% standards
+	    compliant)
 	  - be very fast in processing
 
 	  https://github.com/rsyslog/libfastjson/

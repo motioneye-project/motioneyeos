@@ -1,0 +1,15 @@
+config BR2_PACKAGE_DC3DD
+	bool "dc3dd"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	help
+	  dc3dd is a patch to the GNU dd program, this version has
+	  several features intended for forensic acquisition of data.
+	  Highlights include hashing on-the-fly, split output files,
+	  pattern writing, a progress meter, and file verification.
+
+	  https://sourceforge.net/projects/dc3dd/
+
+comment "dc3dd needs a glibc or uClibc toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_TOOLCHAIN_USES_MUSL

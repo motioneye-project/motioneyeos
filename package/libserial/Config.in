@@ -5,8 +5,8 @@ config BR2_PACKAGE_LIBSERIAL
 	depends on BR2_USE_WCHAR # boost
 	select BR2_PACKAGE_BOOST
 	help
-	  Simplified serial port programming in C++ under POSIX operating
-	  systems.
+	  Simplified serial port programming in C++ under POSIX
+	  operating systems.
 
 	  http://libserial.sourceforge.net/
 

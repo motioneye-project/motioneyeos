@@ -1,0 +1,28 @@
+From d92eb36658af05286c5aac7e1cc8a5013f766cb4 Mon Sep 17 00:00:00 2001
+From: Hans Verkuil <hans.verkuil@cisco.com>
+Date: Mon, 29 May 2017 07:55:18 +0200
+Subject: [PATCH] configure.ac: add USE_LIBV4L to summary
+
+This was missing, so add it.
+
+Signed-off-by: Hans Verkuil <hans.verkuil@cisco.com>
+Signed-off-by: Hugues Fruchet <hugues.fruchet@st.com>
+---
+ configure.ac | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configure.ac b/configure.ac
+index 8dc676e..9031b42 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -500,6 +500,7 @@ compile time options summary
+ 
+     gconv                      : $USE_GCONV
+ 
++    libv4l                     : $USE_LIBV4L
+     dynamic libv4l             : $USE_DYN_LIBV4L
+     v4l_plugins                : $USE_V4L_PLUGINS
+     v4l_wrappers               : $USE_V4L_WRAPPERS
+-- 
+1.9.1
+

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LUA_FIFO
+	bool "lua-fifo"
+	help
+	  A lua library/'class' that implements a FIFO.
+
+	  https://github.com/daurnimator/fifo.lua

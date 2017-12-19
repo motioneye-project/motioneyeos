@@ -8,7 +8,7 @@ DIRECTFB_VERSION_MAJOR = 1.7
 DIRECTFB_VERSION = $(DIRECTFB_VERSION_MAJOR).7
 DIRECTFB_SITE = http://www.directfb.org/downloads/Core/DirectFB-$(DIRECTFB_VERSION_MAJOR)
 DIRECTFB_SOURCE = DirectFB-$(DIRECTFB_VERSION).tar.gz
-DIRECTFB_LICENSE = LGPLv2.1+
+DIRECTFB_LICENSE = LGPL-2.1+
 DIRECTFB_LICENSE_FILES = COPYING
 DIRECTFB_INSTALL_STAGING = YES
 DIRECTFB_AUTORECONF = YES
@@ -70,7 +70,7 @@ DIRECTFB_GFX = \
 	$(if $(BR2_PACKAGE_DIRECTFB_CYBER5K),cyber5k) \
 	$(if $(BR2_PACKAGE_DIRECTFB_MATROX),matrox) \
 	$(if $(BR2_PACKAGE_DIRECTFB_PXA3XX),pxa3xx) \
-	$(if $(BR2_PACKAGE_DIRECTFB_I830),i830)	\
+	$(if $(BR2_PACKAGE_DIRECTFB_I830),i830) \
 	$(if $(BR2_PACKAGE_DIRECTFB_EP9X),ep9x)
 
 ifeq ($(strip $(DIRECTFB_GFX)),)
@@ -164,10 +164,10 @@ HOST_DIRECTFB_BUILD_CMDS = \
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)/tools directfb-csource
 
 HOST_DIRECTFB_INSTALL_CMDS = \
-	$(INSTALL) -m 0755 $(@D)/tools/directfb-csource $(HOST_DIR)/usr/bin
+	$(INSTALL) -m 0755 $(@D)/tools/directfb-csource $(HOST_DIR)/bin
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # directfb-csource for the host
-DIRECTFB_HOST_BINARY = $(HOST_DIR)/usr/bin/directfb-csource
+DIRECTFB_HOST_BINARY = $(HOST_DIR)/bin/directfb-csource

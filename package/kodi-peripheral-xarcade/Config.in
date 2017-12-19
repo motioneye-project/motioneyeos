@@ -1,0 +1,6 @@
+config BR2_PACKAGE_KODI_PERIPHERAL_XARCADE
+	bool "kodi-peripheral-xarcade"
+	help
+	  X-Arcade Tankstick support for Kodi
+
+	  https://github.com/kodi-game/peripheral.xarcade

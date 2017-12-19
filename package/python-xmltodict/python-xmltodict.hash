@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/xmltodict/json, sha256 locally computed
+md5	9f955947db085485873ac68154e88069  xmltodict-0.11.0.tar.gz
+sha256	8f8d7d40aa28d83f4109a7e8aa86e67a4df202d9538be40c0cb1d70da527b0df  xmltodict-0.11.0.tar.gz
+sha256  d66d5eb8f83a0ba21d3dd04318b8817588e8764daabea852d1035e3f07ffda55  LICENSE

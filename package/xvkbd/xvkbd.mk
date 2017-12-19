@@ -6,7 +6,7 @@
 
 XVKBD_VERSION = 3.7
 XVKBD_SITE = http://t-sato.in.coocan.jp/xvkbd
-XVKBD_LICENSE = GPLv2+
+XVKBD_LICENSE = GPL-2.0+
 XVKBD_LICENSE_FILES = README
 
 # Passing USRLIBDIR ensures that the stupid Makefile doesn't add

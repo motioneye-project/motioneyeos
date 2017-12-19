@@ -1,0 +1,58 @@
+From cc5daff874779475742bdb89a9328bb4fc4c4e09 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 27 Dec 2016 11:20:19 +0100
+Subject: [PATCH] configure: do not configure in menuselect
+
+When cross-compiling, the arguments and environment for ./configure are
+different for the host and the target, and we want menuselect to be
+compiled for the build machine, not the target.
+
+Although we do not pass any option to ./configure for menuselect, the
+environment may still reference variables for the target, like CC or
+CFLAGS and so on... We can not build menuselect with those variables.
+
+Instead, just assume that menuselect will be pre-compiled.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure    | 16 ----------------
+ configure.ac | 16 ----------------
+ 2 files changed, 32 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 66c8971..121dd93 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2662,12 +2662,6 @@ fi
+ 
+ AC_SUBST([PBX_SYSLOG])
+ 
+-if test -f makeopts; then
+-	${ac_cv_path_EGREP} 'CURSES|GTK2|OSARCH|NEWT' makeopts > makeopts.acbak
+-else
+-	touch makeopts.acbak
+-fi
+-
+ AC_CONFIG_FILES([build_tools/menuselect-deps makeopts])
+ AST_CHECK_MANDATORY
+ 
+@@ -2683,16 +2677,6 @@ fi
+ 
+ AC_OUTPUT
+ 
+-${ac_cv_path_EGREP} 'CURSES|GTK2|OSARCH|NEWT' makeopts > makeopts.acbak2
+-if test "x${ac_cv_path_CMP}" = "x:"; then
+-	( cd `pwd`/menuselect && ./configure )
+-else if ${ac_cv_path_CMP} -s makeopts.acbak makeopts.acbak2; then : ; else
+-	( cd `pwd`/menuselect && ./configure )
+-fi ; fi
+-
+-rm makeopts.acbak makeopts.acbak2
+-
+-
+ if test "x${silent}" != "xyes" ; then
+ echo
+ echo "               .\$\$\$\$\$\$\$\$\$\$\$\$\$\$\$=..      "
+-- 
+2.7.4
+

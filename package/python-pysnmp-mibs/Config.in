@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PYTHON_PYSNMP_MIBS
 	bool "python-pysnmp-mibs"
-	select BR2_PACKAGE_PYTHON_PYSNMP
 	depends on BR2_INSTALL_LIBSTDCPP # pysnmp -> pyasn
+	select BR2_PACKAGE_PYTHON_PYSNMP
 	help
 	  PySNMP MIBs is a set of IETF & IANA MIBs pre-compiled and
 	  packaged to simplify their use with the PySNMP library.

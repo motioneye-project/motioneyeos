@@ -1,4 +1,7 @@
-Add an implementation of the fts_*() functions
+From 098760f7eac1fb86b3f6871d5bb10f9f44468f2d Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Mon, 29 May 2017 23:08:05 +0300
+Subject: [PATCH] Add an implementation of the fts_*() functions
 
 The fts_*() functions are optional in uClibc, and not compiled in our
 default configuration. The best option would be to migrate this
@@ -28,11 +31,21 @@ Based on the former patch by Thomas Petazzoni.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ configure.ac                   |    4 +
+ libdwfl/Makefile.am            |    3 +
+ libdwfl/fts.c                  | 1095 ++++++++++++++++++++++++++++++++++++++++
+ libdwfl/fts_.h                 |  131 +++++
+ libdwfl/linux-kernel-modules.c |    4 +
+ 5 files changed, 1237 insertions(+)
+ create mode 100644 libdwfl/fts.c
+ create mode 100644 libdwfl/fts_.h
 
-diff -Nrup a/configure.ac b/configure.ac
---- a/configure.ac	2016-06-17 14:47:03.561704498 +0100
-+++ b/configure.ac	2016-06-17 14:52:35.038200412 +0100
-@@ -259,6 +259,10 @@ AC_ARG_ENABLE([progs],
+diff --git a/configure.ac b/configure.ac
+index 7b4c38381cca..bcebb05fa532 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -265,6 +265,10 @@ AC_ARG_ENABLE([progs],
  	enable_progs=yes)
  AM_CONDITIONAL(ENABLE_PROGS, test "$enable_progs" = yes)
  
@@ -43,9 +56,25 @@ diff -Nrup a/configure.ac b/configure.ac
  dnl zlib is mandatory.
  save_LIBS="$LIBS"
  LIBS=
-diff -Nrup a/libdwfl/fts.c b/libdwfl/fts.c
---- a/libdwfl/fts.c	1970-01-01 01:00:00.000000000 +0100
-+++ b/libdwfl/fts.c	2016-06-17 14:57:26.649912084 +0100
+diff --git a/libdwfl/Makefile.am b/libdwfl/Makefile.am
+index 89ca92ed8110..a5a5615c5f94 100644
+--- a/libdwfl/Makefile.am
++++ b/libdwfl/Makefile.am
+@@ -77,6 +77,9 @@ endif
+ if LZMA
+ libdwfl_a_SOURCES += lzma.c
+ endif
++if !HAVE_FTS
++libdwfl_a_SOURCES += fts.c
++endif
+ 
+ libdwfl = $(libdw)
+ libdw = ../libdw/libdw.so
+diff --git a/libdwfl/fts.c b/libdwfl/fts.c
+new file mode 100644
+index 000000000000..f34cc03bd963
+--- /dev/null
++++ b/libdwfl/fts.c
 @@ -0,0 +1,1095 @@
 +/*-
 + * Copyright (c) 1990, 1993, 1994
@@ -1142,9 +1171,11 @@ diff -Nrup a/libdwfl/fts.c b/libdwfl/fts.c
 +	errno = oerrno;
 +	return (ret);
 +}
-diff -Nrup a/libdwfl/fts_.h b/libdwfl/fts_.h
---- a/libdwfl/fts_.h	1970-01-01 01:00:00.000000000 +0100
-+++ b/libdwfl/fts_.h	2016-06-17 14:58:42.003387566 +0100
+diff --git a/libdwfl/fts_.h b/libdwfl/fts_.h
+new file mode 100644
+index 000000000000..0a070ba8dce5
+--- /dev/null
++++ b/libdwfl/fts_.h
 @@ -0,0 +1,131 @@
 +/*
 + * Copyright (c) 1989, 1993
@@ -1277,31 +1308,25 @@ diff -Nrup a/libdwfl/fts_.h b/libdwfl/fts_.h
 +__END_DECLS
 +
 +#endif /* fts.h */
-diff -Nrup a/libdwfl/linux-kernel-modules.c b/libdwfl/linux-kernel-modules.c
---- a/libdwfl/linux-kernel-modules.c	2016-03-02 16:25:38.000000000 +0000
-+++ b/libdwfl/linux-kernel-modules.c	2016-06-17 14:59:50.267724089 +0100
-@@ -29,7 +29,11 @@
- /* We include this before config.h because it can't handle _FILE_OFFSET_BITS.
-    Everything we need here is fine if its declarations just come first.  */
- 
+diff --git a/libdwfl/linux-kernel-modules.c b/libdwfl/linux-kernel-modules.c
+index 9d0fef2cf260..47f0e3892294 100644
+--- a/libdwfl/linux-kernel-modules.c
++++ b/libdwfl/linux-kernel-modules.c
+@@ -31,10 +31,14 @@
+    Everything we need here is fine if its declarations just come first.
+    Also, include sys/types.h before fts. On some systems fts.h is not self
+    contained. */
 +#ifdef HAVE_FTS_H
- #include <fts.h>
+ #ifdef BAD_FTS
+   #include <sys/types.h>
+   #include <fts.h>
+ #endif
 +#else
 +#include <fts_.h>
 +#endif
  
  #include <config.h>
- 
-diff -Nrup a/libdwfl/Makefile.am b/libdwfl/Makefile.am
---- a/libdwfl/Makefile.am	2016-01-12 12:49:19.000000000 +0000
-+++ b/libdwfl/Makefile.am	2016-06-17 15:01:03.492157569 +0100
-@@ -77,6 +77,9 @@ endif
- if LZMA
- libdwfl_a_SOURCES += lzma.c
- endif
-+if !HAVE_FTS
-+libdwfl_a_SOURCES += fts.c
-+endif
- 
- libdwfl = $(libdw)
- libdw = ../libdw/libdw.so
+ #include <system.h>
+-- 
+2.11.0
+

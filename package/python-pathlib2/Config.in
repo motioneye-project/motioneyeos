@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PYTHON_PATHLIB2
+	bool "python-pathlib2"
+	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_SCANDIR # runtime
+	help
+	  Object-oriented filesystem paths.
+
+	  The goal of pathlib2 is to provide a backport of standard
+	  pathlib module which tracks the standard library module, so
+	  all the newest features of the standard pathlib can be used
+	  also on older Python versions.
+
+	  https://pypi.python.org/pypi/pathlib2

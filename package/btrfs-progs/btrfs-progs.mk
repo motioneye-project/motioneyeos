@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-BTRFS_PROGS_VERSION = 4.9.1
+BTRFS_PROGS_VERSION = 4.13.3
 BTRFS_PROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/kdave/btrfs-progs
 BTRFS_PROGS_SOURCE = btrfs-progs-v$(BTRFS_PROGS_VERSION).tar.xz
 BTRFS_PROGS_DEPENDENCIES = host-pkgconf e2fsprogs lzo util-linux zlib
 BTRFS_PROGS_CONF_OPTS = --disable-backtrace
-BTRFS_PROGS_LICENSE = GPLv2
+BTRFS_PROGS_LICENSE = GPL-2.0
 BTRFS_PROGS_LICENSE_FILES = COPYING
 BTRFS_PROGS_INSTALL_STAGING = YES
 

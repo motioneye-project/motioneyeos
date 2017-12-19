@@ -3,6 +3,7 @@ config BR2_PACKAGE_QPDF
 	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_JPEG
 	help
 	  QPDF is a command-line program that does structural, content-
 	  preserving transformations on PDF files. It could have been called

@@ -1,28 +1,31 @@
-comment "ltp-testsuite needs specific uClibc options, see help"
-	depends on BR2_PACKAGE_LTP_TESTSUITE
-	depends on BR2_TOOLCHAIN_USES_UCLIBC
+config BR2_PACKAGE_LTP_TESTSUITE_ARCH_SUPPORTS
+	bool
+	# Needs __sync*() built-ins for 4-byte data, except on a few
+	# architectures for which a specific implementation is
+	# provided in ltp-testsuite
+	default y if BR2_TOOLCHAIN_HAS_SYNC_4
+	default y if BR2_arc
+	default y if BR2_i386
+	default y if BR2_powerpc
+	default y if BR2_powepc64
+	default y if BR2_powerpc64le
+	default y if BR2_x86_64
+	# does not build on nios2, cachectl.h issue
+	depends on !BR2_nios2
 
 config BR2_PACKAGE_LTP_TESTSUITE
 	bool "ltp-testsuite"
 	depends on BR2_USE_MMU # fork()
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on !BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_PACKAGE_LTP_TESTSUITE_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	# does not build, cachectl.h issue
-	depends on !BR2_nios2
 	help
 	  The Linux Test Project provides a huge testsuite for Linux.
 
-	  The LTP testsuite uses several functions that are considered
-	  obsolete, such as sigset() and others. Therefore, the LTP
-	  testsuite does not build with Buildroot's default uClibc
-	  configuration, and options such as DO_XSI_MATH,
-	  UCLIBC_HAS_OBSOLETE_BSD_SIGNAL and UCLIBC_SV4_DEPRECATED
-	  are needed.
-
 	  http://linux-test-project.github.io
 
-comment "ltp-testsuite needs a glibc or uClibc toolchain w/ threads"
-	depends on !BR2_nios2
+comment "ltp-testsuite needs a glibc or uClibc toolchain w/ NPTL"
+	depends on BR2_PACKAGE_LTP_TESTSUITE_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_TOOLCHAIN_USES_MUSL

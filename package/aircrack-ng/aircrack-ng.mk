@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-AIRCRACK_NG_VERSION = 1.2-rc1
+AIRCRACK_NG_VERSION = 1.2-rc4
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
-AIRCRACK_NG_LICENSE = GPLv2+
+AIRCRACK_NG_LICENSE = GPL-2.0+
 AIRCRACK_NG_LICENSE_FILES = LICENSE
 AIRCRACK_NG_DEPENDENCIES = openssl zlib host-pkgconf
 # Enable buddy-ng, easside-ng, tkiptun-ng, wesside-ng
@@ -22,6 +22,12 @@ AIRCRACK_NG_MAKE_OPTS += libnl=false
 else
 AIRCRACK_NG_MAKE_OPTS += libnl=true
 AIRCRACK_NG_DEPENDENCIES += libnl
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
+AIRCRACK_NG_MAKE_OPTS += STACK_PROTECTOR=true
+else
+AIRCRACK_NG_MAKE_OPTS += STACK_PROTECTOR=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
@@ -45,6 +51,12 @@ AIRCRACK_NG_DEPENDENCIES += sqlite
 AIRCRACK_NG_MAKE_OPTS += sqlite=true LIBSQL="-lsqlite3 $(if $(BR2_STATIC_LIBS),-lpthread)"
 else
 AIRCRACK_NG_MAKE_OPTS += sqlite=false
+endif
+
+ifeq ($(BR2_X86_CPU_HAS_SSE),y)
+AIRCRACK_NG_MAKE_OPTS += NEWSSE=true
+else
+AIRCRACK_NG_MAKE_OPTS += NEWSSE=false
 endif
 
 define AIRCRACK_NG_BUILD_CMDS

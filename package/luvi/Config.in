@@ -8,15 +8,16 @@ config BR2_PACKAGE_LUVI
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_LUV
 	help
-	  A project in-between luv and luvit. The goal of this is to make
-	  building luvit and derivatives much easier.
+	  A project in-between luv and luvit. The goal of this is to
+	  make building luvit and derivatives much easier.
 
 	  luvi extends LuaJIT with asynchronous I/O and several optional
-	  modules to run Lua applications and build self-contained binaries
-	  on systems that don't have a compiler.
+	  modules to run Lua applications and build self-contained
+	  binaries on systems that don't have a compiler.
 
-	  The luvi core can be extended with several Lua modules by adding its
-	  bundled Lua binding libraries. To get the Lua module...
+	  The luvi core can be extended with several Lua modules by
+	  adding its bundled Lua binding libraries.
+	  To get the Lua module...
 	    * 'rex' select PCRE (BR2_PACKAGE_PCRE)
 	    * 'ssl' select OpenSSL (BR2_PACKAGE_OPENSSL)
 	    * 'zlib' select zlib (BR2_PACKAGE_ZLIB)

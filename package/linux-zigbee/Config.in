@@ -40,7 +40,6 @@ config BR2_PACKAGE_LINUX_ZIGBEE_TESTS
 	  Enable this option to install the Linux-ZigBee test programs
 	  to the target.
 
-
 config BR2_PACKAGE_LINUX_ZIGBEE_OLD_KERNEL_COMPAT
 	bool "compatibility with older kernels"
 	help

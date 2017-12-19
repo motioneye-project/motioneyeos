@@ -5,7 +5,8 @@ config BR2_PACKAGE_CVS
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_NCURSES
 	help
-	  Concurrent Versions System - source code revision control tools.
+	  Concurrent Versions System - source code revision control
+	  tools.
 
 	  http://www.nongnu.org/cvs/
 

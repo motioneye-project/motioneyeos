@@ -4,14 +4,6 @@ choice
 	default BR2_bf532
 	help
 	  Specify target CPU
-config BR2_bf606
-	bool "bf606"
-config BR2_bf607
-	bool "bf607"
-config BR2_bf608
-	bool "bf608"
-config BR2_bf609
-	bool "bf609"
 config BR2_bf512
 	bool "bf512"
 config BR2_bf514
@@ -105,3 +97,6 @@ config BR2_GCC_TARGET_CPU_REVISION
 	  value of the -mcpu option. For example, if the selected CPU is
 	  bf609, and then selected CPU revision is "0.0", then gcc will
 	  receive the -mcpu=bf609-0.0 option.
+
+config BR2_READELF_ARCH_NAME
+	default "Analog Devices Blackfin"

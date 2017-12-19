@@ -14,10 +14,12 @@ at the *front* of the list, not at the end.
 Reported-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 Cc: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[bernd.kuhls@t-online.de: update for 2016-07-R1]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff -durN kismet-Kismet-2014-02-R1.orig/configure.in kismet-Kismet-2014-02-R1/configure.in
---- kismet-Kismet-2014-02-R1.orig/configure.in	2014-02-19 05:37:43.000000000 +0100
-+++ kismet-Kismet-2014-02-R1/configure.in	2014-12-26 16:46:55.770692349 +0100
+--- kismet-Kismet-2014-02-R1.orig/configure.ac	2014-02-19 05:37:43.000000000 +0100
++++ kismet-Kismet-2014-02-R1/configure.ac	2014-12-26 16:46:55.770692349 +0100
 @@ -437,10 +434,10 @@
  		AC_MSG_ERROR(Failed to find curses.h or ncurses.h.  You probably need to install the curses-devel package from your distribution)
  	fi
@@ -25,7 +27,7 @@ diff -durN kismet-Kismet-2014-02-R1.orig/configure.in kismet-Kismet-2014-02-R1/c
 -	LIBS="$LIBS $curseaux"
 +	LIBS="$curseaux $LIBS"
  	AC_CHECK_LIB([panel], [new_panel],
- 				 AC_DEFINE(HAVE_LIBPANEL, 1, Panel terminal lib) 
+ 				 AC_DEFINE(HAVE_LIBPANEL, 1, Panel terminal lib)
 -				 curseaux="$curseaux -lpanel",
 +				 curseaux="-lpanel $curseaux",
  				 AC_MSG_ERROR(Failed to find libpanel extension to curses/ncurses.  Install it, or disable building the Kismet client with --disable-client.  Disabling the client is probably not something you want to do normally.))

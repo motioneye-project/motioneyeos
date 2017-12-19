@@ -1,0 +1,87 @@
+config BR2_TARGET_AT91BOOTSTRAP3
+	depends on BR2_arm926t || BR2_cortex_a5
+	bool "AT91 Bootstrap 3"
+	help
+	  AT91Bootstrap is a first level bootloader for the Atmel AT91
+	  devices. It integrates algorithms for:
+	  - Device initialization such as clock configuration, PIO settings...
+	  - Peripheral drivers such as PIO, PMC or SDRAMC...
+	  - Physical media algorithm such as DataFlash, NandFlash, NOR Flash...
+
+if BR2_TARGET_AT91BOOTSTRAP3
+
+choice
+
+	prompt "AT91 Bootstrap 3 version"
+
+config BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
+	bool "3.8.6"
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
+	bool "Custom Git repository"
+	help
+	  This option allows Buildroot to get the AT91 Bootstrap 3 source
+	  code from a Git repository.
+
+endchoice
+
+if BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_URL
+	string "URL of custom repository"
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION
+	string "Custom repository version"
+	help
+	  Revision to use in the typical format used by Git
+	  E.G. a sha id, a tag, branch, ..
+
+endif
+
+config BR2_TARGET_AT91BOOTSTRAP3_VERSION
+	string
+	default "v3.8.6" if BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
+	default BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_REPO_VERSION \
+		if BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_PATCH_DIR
+	string "custom patch dir"
+	help
+	  If your board requires custom patches, add the path to the
+	  directory containing the patches here. The patches must be
+	  named at91bootstrap3-<something>.patch.
+
+	  Most users may leave this empty
+
+#
+# Configuration selection
+#
+
+choice
+	prompt "AT91 Bootstrap 3 configuration"
+	default BR2_TARGET_AT91BOOTSTRAP3_USE_DEFCONFIG
+
+config BR2_TARGET_AT91BOOTSTRAP3_USE_DEFCONFIG
+	bool "Using a defconfig"
+
+config BR2_TARGET_AT91BOOTSTRAP3_USE_CUSTOM_CONFIG
+	bool "Using a custom config file"
+
+endchoice
+
+config BR2_TARGET_AT91BOOTSTRAP3_DEFCONFIG
+	string "Defconfig name"
+	depends on BR2_TARGET_AT91BOOTSTRAP3_USE_DEFCONFIG
+	help
+	  Name of the at91bootstrap3 defconfig file to use, without the
+	  trailing _defconfig.  The defconfig is located at
+	  board/<processor>/<board>_defconfig in the at91bootstrap3
+	  tree.
+
+config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_CONFIG_FILE
+	string "Configuration file path"
+	depends on BR2_TARGET_AT91BOOTSTRAP3_USE_CUSTOM_CONFIG
+	help
+	  Path to the at91bootstrap3 configuration file
+
+endif # BR2_TARGET_AT91BOOTSTRAP3

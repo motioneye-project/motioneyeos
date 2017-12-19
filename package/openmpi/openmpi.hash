@@ -1,3 +1,5 @@
 # From: https://www.open-mpi.org/software/ompi/v1.10/
-md5 b2f43d9635d2d52826e5ef9feb97fd4c  openmpi-1.10.2.tar.bz2
-sha1 03934fc0a2dd0d0d2d0459d714a976eabca938fb  openmpi-1.10.2.tar.bz2
+md5 c87c613f9acb1a4eee21fa1ac8042579  openmpi-1.10.7.tar.bz2
+sha1 fe359d8caa4888625308cf03343d913dd5ac6198  openmpi-1.10.7.tar.bz2
+# Locally computed
+sha256 a089ece151fec974905caa35b0a59039b227bdea4e7933069e94bee4ed0e5a90  openmpi-1.10.7.tar.bz2

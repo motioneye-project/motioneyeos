@@ -1,12 +1,12 @@
-#######################################################################################
+################################################################################
 #
 # cxxtest
 #
-#######################################################################################
+################################################################################
 
 CXXTEST_VERSION = 4.4
 CXXTEST_SITE = https://github.com/CxxTest/cxxtest/releases/download/$(CXXTEST_VERSION)
-CXXTEST_LICENSE = LGPLv3
+CXXTEST_LICENSE = LGPL-3.0
 CXXTEST_LICENSE_FILES = COPYING
 CXXTEST_INSTALL_STAGING = YES
 CXXTEST_INSTALL_TARGET = NO

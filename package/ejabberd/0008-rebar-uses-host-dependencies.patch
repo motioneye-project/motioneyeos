@@ -1,0 +1,33 @@
+Fix location of rebar dependencies.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/rebar.config.script b/rebar.config.script
+index 19142b9e..9107af26 100644
+--- a/rebar.config.script
++++ b/rebar.config.script
+@@ -218,20 +218,10 @@ TestConfig = case file:read_file_info(TestConfigFile) of
+ 		     ""
+ 	     end,
+
+-ResolveDepPath = case IsRebar3 of
+-		     true ->
+-			 fun("deps/" ++ Rest) ->
+-				 Slash = string:str(Rest, "/"),
+-				 Dir = "_build/default/lib/" ++
+-				     string:sub_string(Rest, 1, Slash - 1),
+-				 Dir ++ string:sub_string(Rest, Slash);
+-			    (Path) ->
+-				 Path
+-			 end;
+-		     _ ->
+-			 fun(P) ->
+-				 P
+-			 end
++ResolveDepPath = fun("deps/fast_xml/include") -> code:lib_dir(p1_xml) ++ "/include";
++		    ("deps/xmpp/include") -> code:lib_dir(p1_xmpp) ++ "/include";
++		    ("deps/p1_utils/include") -> code:lib_dir(p1_utils) ++ "/include";
++		    (Path) -> Path
+ 		 end,
+
+ CtParams = fun(CompileOpts) ->

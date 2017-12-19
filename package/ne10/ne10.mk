@@ -6,7 +6,7 @@
 
 NE10_VERSION = v1.2.0
 NE10_SITE = $(call github,projectNe10,Ne10,$(NE10_VERSION))
-NE10_LICENSE = BSD-3c or Apache-2.0
+NE10_LICENSE = BSD-3-Clause or Apache-2.0
 NE10_LICENSE_FILES = doc/LICENSE
 NE10_INSTALL_STAGING = YES
 
@@ -31,7 +31,6 @@ define NE10_INSTALL_STAGING_CMDS
 	cp -dpf $(@D)/modules/libNE10.a $(STAGING_DIR)/usr/lib/
 	$(NE10_INSTALL_STAGING_SHARED_LIB)
 endef
-
 
 define NE10_INSTALL_TARGET_CMDS
 	cp -dpf $(@D)/modules/libNE10*.so* $(TARGET_DIR)/usr/lib/

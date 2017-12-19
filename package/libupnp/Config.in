@@ -2,10 +2,11 @@ config BR2_PACKAGE_LIBUPNP
 	bool "libupnp"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  The portable SDK for UPnP(tm) Devices (libupnp) provides developers
-	  with an API and open source code for building control points,
-	  devices, and bridges that are compliant with Version 1.0 of the
-	  Universal Plug and Play Device Architecture Specification
+	  The portable SDK for UPnP(tm) Devices (libupnp) provides
+	  developers with an API and open source code for building
+	  control points, devices, and bridges that are compliant with
+	  Version 1.0 of the Universal Plug and Play Device Architecture
+	  Specification
 
 	  http://pupnp.sourceforge.net/
 

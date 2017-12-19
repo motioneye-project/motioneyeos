@@ -12,8 +12,8 @@ config BR2_PACKAGE_IPSEC_TOOLS
 if BR2_PACKAGE_IPSEC_TOOLS
 
 config BR2_PACKAGE_IPSEC_TOOLS_ADMINPORT
-	default y
 	bool "Enable racoonctl(8)"
+	default y
 	help
 	  Lets racoon to listen to racoon admin port, which is to
 	  be contacted by racoonctl(8).
@@ -42,12 +42,12 @@ config BR2_PACKAGE_IPSEC_TOOLS_DPD
 	  Enable dead peer detection support
 
 config BR2_PACKAGE_IPSEC_TOOLS_STATS
-	default y
 	bool "Enable statistics logging function"
+	default y
 
 config BR2_PACKAGE_IPSEC_TOOLS_READLINE
-	select BR2_PACKAGE_READLINE
 	bool "Enable readline input support"
+	select BR2_PACKAGE_READLINE
 
 config BR2_PACKAGE_IPSEC_TOOLS_HYBRID
 	bool "Enable hybrid, both mode-cfg and xauth support"

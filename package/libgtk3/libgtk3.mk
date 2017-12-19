@@ -5,24 +5,22 @@
 ################################################################################
 
 LIBGTK3_VERSION_MAJOR = 3.22
-LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).7
+LIBGTK3_VERSION = $(LIBGTK3_VERSION_MAJOR).15
 LIBGTK3_SOURCE = gtk+-$(LIBGTK3_VERSION).tar.xz
 LIBGTK3_SITE = http://ftp.gnome.org/pub/gnome/sources/gtk+/$(LIBGTK3_VERSION_MAJOR)
-LIBGTK3_LICENSE = LGPLv2+
+LIBGTK3_LICENSE = LGPL-2.0+
 LIBGTK3_LICENSE_FILES = COPYING
 LIBGTK3_INSTALL_STAGING = YES
 LIBGTK3_AUTORECONF = YES
 
 LIBGTK3_CONF_ENV = \
-	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/usr/bin/gtk-update-icon-cache \
-	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/usr/bin/gdk-pixbuf-csource \
-	PKG_CONFIG_FOR_BUILD=$(HOST_DIR)/usr/bin/pkgconf
+	ac_cv_path_GTK_UPDATE_ICON_CACHE=$(HOST_DIR)/bin/gtk-update-icon-cache \
+	ac_cv_path_GDK_PIXBUF_CSOURCE=$(HOST_DIR)/bin/gdk-pixbuf-csource \
+	PKG_CONFIG_FOR_BUILD=$(HOST_DIR)/bin/pkgconf
 
 LIBGTK3_CONF_OPTS = \
 	--disable-glibtest \
-	--enable-explicit-deps=no \
-	--enable-gtk2-dependency \
-	--disable-introspection
+	--enable-explicit-deps=no
 
 # Override pkg-config pkgdatadir variable, it needs the prefix
 LIBGTK3_MAKE_OPTS = \
@@ -125,7 +123,7 @@ LIBGTK3_CONF_OPTS += --disable-installed-tests
 endif
 
 define LIBGTK3_COMPILE_GLIB_SCHEMAS
-	$(HOST_DIR)/usr/bin/glib-compile-schemas \
+	$(HOST_DIR)/bin/glib-compile-schemas \
 		$(TARGET_DIR)/usr/share/glib-2.0/schemas
 endef
 
@@ -153,8 +151,8 @@ HOST_LIBGTK3_DEPENDENCIES = \
 	host-librsvg
 
 HOST_LIBGTK3_CFLAGS = \
-	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gdk-pixbuf-2.0` \
-	`$(HOST_DIR)/usr/bin/pkgconf --cflags --libs gio-2.0`
+	`$(HOST_DIR)/bin/pkgconf --cflags --libs gdk-pixbuf-2.0` \
+	`$(HOST_DIR)/bin/pkgconf --cflags --libs gio-2.0`
 
 define HOST_LIBGTK3_CONFIGURE_CMDS
 	echo "#define GETTEXT_PACKAGE \"gtk30\"" >> $(@D)/gtk/config.h
@@ -175,16 +173,16 @@ endef
 
 define HOST_LIBGTK3_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-update-icon-cache \
-		$(HOST_DIR)/usr/bin/gtk-update-icon-cache
+		$(HOST_DIR)/bin/gtk-update-icon-cache
 	$(INSTALL) -D -m 0755 $(@D)/gtk/gtk-encode-symbolic-svg \
-		$(HOST_DIR)/usr/bin/gtk-encode-symbolic-svg
+		$(HOST_DIR)/bin/gtk-encode-symbolic-svg
 endef
 
 # Create icon-theme.cache for each of the icon directories/themes
 # It's not strictly necessary but speeds up lookups
 define LIBGTK3_UPDATE_ICON_CACHE
 	find $(TARGET_DIR)/usr/share/icons -maxdepth 1 -mindepth 1 -type d \
-		-exec $(HOST_DIR)/usr/bin/gtk-update-icon-cache {} \;
+		-exec $(HOST_DIR)/bin/gtk-update-icon-cache {} \;
 endef
 LIBGTK3_TARGET_FINALIZE_HOOKS += LIBGTK3_UPDATE_ICON_CACHE
 

@@ -1,0 +1,141 @@
+#!/usr/bin/env bash
+
+# Copyright (C) 2016 Samuel Martin <s.martin49@gmail.com>
+# Copyright (C) 2017 Wolfgang Grandegger <wg@grandegger.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+usage() {
+  cat <<EOF >&2
+Usage:  ${0} TREE_KIND
+
+Description:
+
+    This script scans a tree and sanitize ELF files' RPATH found in there.
+
+    Sanitization behaves the same whatever the kind of the processed tree,
+    but the resulting RPATH differs. The rpath sanitization is done using
+    "patchelf --make-rpath-relative".
+
+Arguments:
+
+    TREE_KIND    Kind of tree to be processed.
+                 Allowed values: host, target, staging
+
+Environment:
+
+    PATCHELF     patchelf program to use
+                 (default: HOST_DIR/bin/patchelf)
+
+    HOST_DIR     host directory
+    STAGING_DIR  staging directory
+    TARGET_DIR   target directory
+
+    TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR
+                 (default HOST_DIR/opt/ext-toolchain)
+
+Returns:         0 if success or 1 in case of error
+
+EOF
+}
+
+: ${PATCHELF:=${HOST_DIR}/bin/patchelf}
+
+# ELF files should not be in these sub-directories
+HOST_EXCLUDEPATHS="/share/terminfo"
+STAGING_EXCLUDEPATHS="/usr/include /usr/share/terminfo"
+
+main() {
+    local rootdir
+    local tree="${1}"
+    local find_args=( )
+    local sanitize_extra_args=( )
+
+    if ! "${PATCHELF}" --version > /dev/null 2>&1; then
+	echo "Error: can't execute patchelf utility '${PATCHELF}'"
+	exit 1
+    fi
+
+    case "${tree}" in
+        host)
+            rootdir="${HOST_DIR}"
+
+            # do not process the sysroot (only contains target binaries)
+            find_args+=( "-path" "${STAGING_DIR}" "-prune" "-o" )
+
+            # do not process the external toolchain installation directory to
+            # avoid breaking it.
+            test "${TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR}" != "" && \
+                find_args+=( "-path" "${TOOLCHAIN_EXTERNAL_DOWNLOAD_INSTALL_DIR}" "-prune" "-o" )
+
+            for excludepath in ${HOST_EXCLUDEPATHS}; do
+                find_args+=( "-path" "${HOST_DIR}""${excludepath}" "-prune" "-o" )
+            done
+
+            # do not process the patchelf binary but a copy to work-around "file in use"
+            find_args+=( "-path" "${PATCHELF}" "-prune" "-o" )
+            cp "${PATCHELF}" "${PATCHELF}.__to_be_patched"
+
+            # we always want $ORIGIN-based rpaths to make it relocatable.
+            sanitize_extra_args+=( "--relative-to-file" )
+            ;;
+
+        staging)
+            rootdir="${STAGING_DIR}"
+
+            # ELF files should not be in these sub-directories
+            for excludepath in ${STAGING_EXCLUDEPATHS}; do
+                find_args+=( "-path" "${STAGING_DIR}""${excludepath}" "-prune" "-o" )
+            done
+
+            # should be like for the target tree below
+            sanitize_extra_args+=( "--no-standard-lib-dirs" )
+            ;;
+
+        target)
+            rootdir="${TARGET_DIR}"
+            # we don't want $ORIGIN-based rpaths but absolute paths without rootdir.
+            # we also want to remove rpaths pointing to /lib or /usr/lib.
+            sanitize_extra_args+=( "--no-standard-lib-dirs" )
+            ;;
+
+        *)
+            usage
+            exit 1
+            ;;
+    esac
+
+    find_args+=( "-type" "f" "-print" )
+
+    while read file ; do
+        # check if it's an ELF file
+        if ${PATCHELF} --print-rpath "${file}" > /dev/null 2>&1; then
+            # make files writable if necessary
+            changed=$(chmod -c u+w "${file}")
+            # call patchelf to sanitize the rpath
+            ${PATCHELF} --make-rpath-relative "${rootdir}" ${sanitize_extra_args[@]} "${file}"
+            # restore the original permission
+            test "${changed}" != "" && chmod u-w "${file}"
+        fi
+    done < <(find "${rootdir}" ${find_args[@]})
+
+    # Restore patched patchelf utility
+    test "${tree}" = "host" && mv "${PATCHELF}.__to_be_patched" "${PATCHELF}"
+
+    # ignore errors
+    return 0
+}
+
+main ${@}

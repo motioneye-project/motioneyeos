@@ -1,13 +1,8 @@
 config BR2_PACKAGE_PYTHON_PSUTIL
 	bool "python-psutil"
-	# sys/sysinfo.h conflict with kernel headers
-	depends on !BR2_TOOLCHAIN_USES_MUSL
 	help
 	  psutil is a cross-platform library for retrieving
 	  information on running processes and system utilization
 	  (CPU, memory, disks, network) in Python.
 
 	  https://pypi.python.org/pypi/psutil
-
-comment "python-psutil needs a uClibc or glibc toolchain"
-	depends on BR2_TOOLCHAIN_USES_MUSL

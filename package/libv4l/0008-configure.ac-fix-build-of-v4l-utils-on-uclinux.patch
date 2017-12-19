@@ -1,0 +1,30 @@
+From f66141af12fe45af4ef3bba26e8f300fb203203a Mon Sep 17 00:00:00 2001
+From: Hugues Fruchet <hugues.fruchet@st.com>
+Date: Wed, 17 May 2017 10:03:12 +0200
+Subject: [PATCH] configure.ac: fix build of v4l-utils on uclinux
+
+Build of v4-utils is conditional to "linux_os=yes" which was
+not set in case of uclinux, fix this.
+
+Signed-off-by: Hugues Fruchet <hugues.fruchet@st.com>
+Signed-off-by: Hans Verkuil <hans.verkuil@cisco.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index b9fc59a..8dc676e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -149,7 +149,7 @@ AC_CHECK_FUNCS([__secure_getenv secure_getenv])
+ 
+ # Check host os
+ case "$host_os" in
+-  linux*)
++  *linux*)
+     linux_os="yes"
+     ;;
+   *freebsd*)
+-- 
+1.9.1
+

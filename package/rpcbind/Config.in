@@ -3,9 +3,8 @@ config BR2_PACKAGE_RPCBIND
 	# We really need libtirpc and can't work with the native RPC
 	# implementation of toolchains.
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libtirpc
+	depends on BR2_USE_MMU 	# fork()
 	select BR2_PACKAGE_LIBTIRPC
-	# fork()
-	depends on BR2_USE_MMU
 	help
 	  The rpcbind utility is a server that converts RPC program numbers
 	  into universal addresses.

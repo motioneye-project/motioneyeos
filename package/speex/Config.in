@@ -16,8 +16,8 @@ config BR2_PACKAGE_SPEEX_ARM4
 	depends on BR2_ARM_CPU_ARMV4
 
 config BR2_PACKAGE_SPEEX_ARM5E
-	default y
 	bool
+	default y
 	depends on BR2_arm && !BR2_PACKAGE_SPEEX_ARM4
 
 endif

@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-SLANG_VERSION = 2.3.0
+SLANG_VERSION = 2.3.1a
+SLANG_SOURCE = slang-$(SLANG_VERSION).tar.bz2
 SLANG_SITE = http://www.jedsoft.org/releases/slang
-SLANG_LICENSE = GPLv2+
+SLANG_LICENSE = GPL-2.0+
 SLANG_LICENSE_FILES = COPYING
 SLANG_INSTALL_STAGING = YES
 SLANG_CONF_OPTS = --with-onig=no
@@ -40,7 +41,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 SLANG_DEPENDENCIES += ncurses
-SLANG_CONF_ENV += ac_cv_path_nc5config=$(STAGING_DIR)/usr/bin/ncurses5-config
+SLANG_CONF_ENV += ac_cv_path_nc5config=$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)
 else
 SLANG_CONF_OPTS += ac_cv_path_nc5config=no
 endif
@@ -49,7 +50,7 @@ ifeq ($(BR2_PACKAGE_READLINE),y)
 SLANG_CONF_OPTS += --with-readline=gnu
 SLANG_DEPENDENCIES += readline
 ifeq ($(BR2_STATIC_LIBS),y)
-SLANG_CONF_ENV += LIBS="`$(STAGING_DIR)/usr/bin/ncurses5-config --libs`"
+SLANG_CONF_ENV += LIBS="`$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS) --libs`"
 endif
 endif
 

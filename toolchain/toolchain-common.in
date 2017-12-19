@@ -7,6 +7,11 @@ source "package/gdb/Config.in.host"
 
 comment "Toolchain Generic Options"
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=19615
+# Affect toolchains built with binutils 2.26 (fixed in binutils 2.26.1).
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19615
+	bool
+
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=64735
 # exception_ptr, nested_exception, and future from libstdc++ are not
 # available for architectures not supporting always lock-free atomic
@@ -17,10 +22,7 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 	default y if BR2_ARM_CPU_ARMV4
 	default y if BR2_ARM_CPU_ARMV5
 	default y if BR2_sparc_v8
-
-# https://sourceware.org/bugzilla/show_bug.cgi?id=19405
-config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
-	bool
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
@@ -77,19 +79,11 @@ config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
 
 	  Note: the full set of gconv libs are ~8MiB (on ARM).
 
-# glibc and eglibc directly include gettext, so a separatly compiled
-# gettext isn't needed and shouldn't be built to avoid conflicts. Some
-# packages always need gettext, other packages only need gettext when
-# locale support is enabled. See the documentation for how packages
-# should rely on the following two options.
-
-config BR2_NEEDS_GETTEXT
+# This boolean is true if the toolchain provides a built-in full
+# featured gettext implementation (glibc), and false if only a stub
+# gettext implementation is provided (uclibc, musl)
+config BR2_TOOLCHAIN_HAS_FULL_GETTEXT
 	bool
-	default y if BR2_TOOLCHAIN_USES_UCLIBC
-
-config BR2_NEEDS_GETTEXT_IF_LOCALE
-	bool
-	default y if (BR2_NEEDS_GETTEXT && BR2_ENABLE_LOCALE)
 
 config BR2_USE_MMU
 	bool "Enable MMU support" if BR2_ARCH_HAS_MMU_OPTIONAL
@@ -243,10 +237,30 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_13
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "4.13" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_13
+	default "4.12" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+	default "4.11" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
+	default "4.10" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 	default "4.9"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
 	default "4.8"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
 	default "4.7"  if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
@@ -314,10 +328,15 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	bool
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
+config BR2_TOOLCHAIN_GCC_AT_LEAST_7
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_GCC_AT_LEAST
 	string
+	default "7"	if BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	default "6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	default "5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_5
 	default "4.9"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
@@ -327,6 +346,14 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST
 	default "4.5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	default "4.4"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
 	default "4.3"	if BR2_TOOLCHAIN_GCC_AT_LEAST_4_3
+
+config BR2_TOOLCHAIN_HAS_MNAN_OPTION
+	bool
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+config BR2_TOOLCHAIN_HAS_MFPXX_OPTION
+	bool
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
 config BR2_TOOLCHAIN_HAS_SYNC_1
 	bool

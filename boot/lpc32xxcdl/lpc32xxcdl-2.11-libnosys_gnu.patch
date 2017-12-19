@@ -1,0 +1,188 @@
+Fix compilation and eabi issues
+
+Since we are not linking with libc anymore, we need to define our own memset,
+strlen and memcpy. Also, as we are using a *libc compiler, we need to "handle"
+exceptions (mostly division by 0) by defining raise() and
+__aeabi_unwind_cpp_pr0.
+
+Signed-off-by: Alexandre Belloni <abelloni@adeneo-embedded.com>
+---
+ csps/lpc32xx/bsps/ea3250/source/libnosys_gnu.c  |   41 +++++++++++++++++++++++
+ csps/lpc32xx/bsps/fdi3250/source/libnosys_gnu.c |   41 +++++++++++++++++++++++
+ csps/lpc32xx/bsps/phy3250/source/libnosys_gnu.c |   41 +++++++++++++++++++++++
+ 3 files changed, 123 insertions(+), 0 deletions(-)
+
+diff --git a/csps/lpc32xx/bsps/ea3250/source/libnosys_gnu.c b/csps/lpc32xx/bsps/ea3250/source/libnosys_gnu.c
+index 385b0ab..f1f0a0a 100644
+--- a/csps/lpc32xx/bsps/ea3250/source/libnosys_gnu.c
++++ b/csps/lpc32xx/bsps/ea3250/source/libnosys_gnu.c
+@@ -25,6 +25,7 @@
+ #include <errno.h>
+ #include <sys/times.h>
+ #include <sys/stat.h>
++#include <sys/types.h>
+ 
+ /* errno definition */
+ #undef errno
+@@ -125,4 +126,44 @@ int _write(int file, char *ptr, int len){
+     return 0;
+ }
+ 
++void * memset(void * s,int c,size_t count)
++{
++        char *xs = (char *) s;
++
++        while (count--)
++                *xs++ = c;
++
++        return s;
++}
++
++
++size_t strlen(const char * s)
++{
++        const char *sc;
++
++        for (sc = s; *sc != '\0'; ++sc)
++                /* nothing */;
++        return sc - s;
++}
++
++void * memcpy(void * dest,const void *src,size_t count)
++{
++        char *tmp = (char *) dest, *s = (char *) src;
++
++        while (count--)
++                *tmp++ = *s++;
++
++        return dest;
++}
++
++
++/* Dummy functions to avoid linker complaints */
++void __aeabi_unwind_cpp_pr0(void)
++{
++};
++
++void raise(void)
++{
++};
++
+ #endif /*__GNUC__*/
+diff --git a/csps/lpc32xx/bsps/fdi3250/source/libnosys_gnu.c b/csps/lpc32xx/bsps/fdi3250/source/libnosys_gnu.c
+index 385b0ab..f1f0a0a 100644
+--- a/csps/lpc32xx/bsps/fdi3250/source/libnosys_gnu.c
++++ b/csps/lpc32xx/bsps/fdi3250/source/libnosys_gnu.c
+@@ -25,6 +25,7 @@
+ #include <errno.h>
+ #include <sys/times.h>
+ #include <sys/stat.h>
++#include <sys/types.h>
+ 
+ /* errno definition */
+ #undef errno
+@@ -125,4 +126,44 @@ int _write(int file, char *ptr, int len){
+     return 0;
+ }
+ 
++void * memset(void * s,int c,size_t count)
++{
++        char *xs = (char *) s;
++
++        while (count--)
++                *xs++ = c;
++
++        return s;
++}
++
++
++size_t strlen(const char * s)
++{
++        const char *sc;
++
++        for (sc = s; *sc != '\0'; ++sc)
++                /* nothing */;
++        return sc - s;
++}
++
++void * memcpy(void * dest,const void *src,size_t count)
++{
++        char *tmp = (char *) dest, *s = (char *) src;
++
++        while (count--)
++                *tmp++ = *s++;
++
++        return dest;
++}
++
++
++/* Dummy functions to avoid linker complaints */
++void __aeabi_unwind_cpp_pr0(void)
++{
++};
++
++void raise(void)
++{
++};
++
+ #endif /*__GNUC__*/
+diff --git a/csps/lpc32xx/bsps/phy3250/source/libnosys_gnu.c b/csps/lpc32xx/bsps/phy3250/source/libnosys_gnu.c
+index cfdb674..6b50c60 100644
+--- a/csps/lpc32xx/bsps/phy3250/source/libnosys_gnu.c
++++ b/csps/lpc32xx/bsps/phy3250/source/libnosys_gnu.c
+@@ -25,6 +25,7 @@
+ #include <errno.h>
+ #include <sys/times.h>
+ #include <sys/stat.h>
++#include <sys/types.h>
+ 
+ /* errno definition */
+ #undef errno
+@@ -125,4 +126,44 @@ int _write(int file, char *ptr, int len){
+     return 0;
+ }
+ 
++void * memset(void * s,int c,size_t count)
++{
++        char *xs = (char *) s;
++
++        while (count--)
++                *xs++ = c;
++
++        return s;
++}
++
++
++size_t strlen(const char * s)
++{
++        const char *sc;
++
++        for (sc = s; *sc != '\0'; ++sc)
++                /* nothing */;
++        return sc - s;
++}
++
++void * memcpy(void * dest,const void *src,size_t count)
++{
++        char *tmp = (char *) dest, *s = (char *) src;
++
++        while (count--)
++                *tmp++ = *s++;
++
++        return dest;
++}
++
++
++/* Dummy functions to avoid linker complaints */
++void __aeabi_unwind_cpp_pr0(void)
++{
++};
++
++void raise(void)
++{
++};
++
+ #endif /*__GNUC__*/
+-- 
+1.7.7.3
+

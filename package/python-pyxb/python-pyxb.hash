@@ -1,3 +1,4 @@
-# md5 from https://pypi.python.org/pypi/pyxb/json, sha256 locally computed
-md5	197c462ab8427ea197313ca3776b252a  PyXB-1.2.5.tar.gz
-sha256	4e8f62ee2cfffc37e4f40634ab9c79e0311cfaf28cf4ce5e7f4828ec56e4ff67  PyXB-1.2.5.tar.gz
+# md5 from https://pypi.python.org/pypi/PyXB/json, sha256 locally computed
+md5	4303573fc7094ce4664c5b71cd4bdb48  PyXB-1.2.6.tar.gz
+sha256	2a00f38dd1d87b88f92d79bc5a09718d730419b88e814545f472bbd5a3bf27b4  PyXB-1.2.6.tar.gz
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE

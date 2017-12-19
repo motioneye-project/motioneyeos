@@ -1,0 +1,62 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Gettext integration and interaction with packages
+
+Many packages that support internationalization use the gettext
+library. Dependencies for this library are fairly complicated and
+therefore, deserve some explanation.
+
+The 'glibc' C library integrates a full-blown implementation of
+'gettext', supporting translation. Native Language Support is
+therefore built-in in 'glibc'.
+
+On the other hand, the 'uClibc' and 'musl' C libraries only provide a
+stub implementation of the gettext functionality, which allows to
+compile libraries and programs using gettext functions, but without
+providing the translation capabilities of a full-blown gettext
+implementation. With such C libraries, if real Native Language Support
+is necessary, it can be provided by the +libintl+ library of the
++gettext+ package.
+
+Due to this, and in order to make sure that Native Language Support is
+properly handled, packages in Buildroot that can use NLS support
+should:
+
+1. Ensure NLS support is enabled when +BR2_SYSTEM_ENABLE_NLS=y+. This
+   is done automatically for 'autotools' packages and therefore should
+   only be done for packages using other package infrastructures.
+
+1. Add +$(TARGET_NLS_DEPENDENCIES)+ to the package
+   +<pkg>_DEPENDENCIES+ variable. This addition should be done
+   unconditionally: the value of this variable is automatically
+   adjusted by the core infrastructure to contain the relevant list of
+   packages. If NLS support is disabled, this variable is empty. If
+   NLS support is enabled, this variable contains +host-gettext+ so
+   that tools needed to compile translation files are available on the
+   host. In addition, if 'uClibc' or 'musl' are used, this variable
+   also contains +gettext+ in order to get the full-blown 'gettext'
+   implementation.
+
+1. If needed, add +$(TARGET_NLS_LIBS)+ to the linker flags, so that
+   the package gets linked with +libintl+. This is generally not
+   needed with 'autotools' packages as they usually detect
+   automatically that they should link with +libintl+. However,
+   packages using other build systems, or problematic autotools-based
+   packages may need this. +$(TARGET_NLS_LIBS)+ should be added
+   unconditionally to the linker flags, as the core automatically
+   makes it empty or defined to +-lintl+ depending on the
+   configuration.
+
+No changes should be made to the +Config.in+ file to support NLS.
+
+Finally, certain packages need some gettext utilities on the target,
+such as the +gettext+ program itself, which allows to retrieve
+translated strings, from the command line. In such a case, the package
+should:
+
+* use +select BR2_PACKAGE_GETTEXT+ in their +Config.in+ file,
+  indicating in a comment above that it's a runtime dependency only.
+
+* not add any +gettext+ dependency in the +DEPENDENCIES+ variable of
+  their +.mk+ file.

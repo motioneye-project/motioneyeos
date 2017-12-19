@@ -4,19 +4,16 @@
 #
 ################################################################################
 
-POWERTOP_VERSION = 2.7
+POWERTOP_VERSION = 2.9
 POWERTOP_SITE = https://01.org/sites/default/files/downloads/powertop
-POWERTOP_DEPENDENCIES = pciutils ncurses libnl host-gettext host-pkgconf
-POWERTOP_LICENSE = GPLv2
+POWERTOP_SOURCE = powertop-v$(POWERTOP_VERSION).tar.gz
+POWERTOP_DEPENDENCIES = pciutils ncurses libnl host-pkgconf \
+	$(TARGET_NLS_DEPENDENCIES)
+POWERTOP_LICENSE = GPL-2.0
 POWERTOP_LICENSE_FILES = COPYING
-# We're patching Makefile.am
+POWERTOP_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
+# 0001-dont-force-stack-smashing-protection.patch
 POWERTOP_AUTORECONF = YES
-POWERTOP_GETTEXTIZE = YES
-
-ifeq ($(BR2_NEEDS_GETTEXT),y)
-POWERTOP_DEPENDENCIES += gettext
-POWERTOP_CONF_ENV += LIBS='-lintl'
-endif
 
 # Help powertop at finding the right ncurses library depending on
 # which one is available.

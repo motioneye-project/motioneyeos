@@ -1,0 +1,6 @@
+config BR2_PACKAGE_ERLANG_P1_OAUTH2
+	bool "erlang-p1-oauth2"
+	help
+	  OAuth2 library for Erlang
+
+	  https://github.com/processone/p1_oauth2

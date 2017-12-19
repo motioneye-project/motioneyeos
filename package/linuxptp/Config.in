@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LINUXPTP
+	bool "linuxptp"
+	help
+	  The Linux PTP Project is the Precision Time Protocol
+	  implementation according to IEEE standard 1588 for Linux.
+
+	  The dual design goals are to provide a robust implementation
+	  of the standard and to use the most relevant and modern
+	  Application Programming Interfaces (API) offered by the
+	  Linux kernel. Supporting legacy APIs and other platforms is
+	  not a goal.
+
+	  http://linuxptp.sourceforge.net/

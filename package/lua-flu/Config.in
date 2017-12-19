@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LUA_FLU
+	bool "lua-flu"
+	depends on !BR2_STATIC_LIBS # libfuse
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
+	depends on BR2_USE_MMU # libfuse
+	select BR2_PACKAGE_ATTR
+	select BR2_PACKAGE_LIBFUSE
+	help
+	  Flu is a Lua binding for FUSE, which is a library allowing
+	  creation of filesystem drivers run in userspace. Flu is a high
+	  level binding, using basic Lua types rather than userdata
+	  whenever possible.
+
+	  http://piratery.net/flu/
+
+comment "lua-flu needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

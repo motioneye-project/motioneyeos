@@ -1,0 +1,57 @@
+From 5bf4d4f9c759fdb3c0db61a781042223236169c6 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Mon, 5 Jun 2017 12:40:16 +0200
+Subject: [PATCH] fix conflicting data types between GLES2/gl2.h and GLES/gl.h
+
+When OpenGL ES 1.1 and OpenGL ES 2.0 are used at the same time, the
+build fail since GLintptr and GLsizeiptr data type are not the same in
+GLES2/gl2.h and GLES/gl.h.
+
+Also sync the data type of GLbyte, GLubyte, GLfloat, GLclampf and
+GLfixed.
+
+Fixes:
+http://autobuild.buildroot.net/results/258/25898b45cefde9661d8ac87dd84bc883bb5283d1
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ include/GLES/gl.h | 15 +++++++--------
+ 1 file changed, 7 insertions(+), 8 deletions(-)
+
+diff --git a/include/GLES/gl.h b/include/GLES/gl.h
+index a6bb591..799408b 100644
+--- a/include/GLES/gl.h
++++ b/include/GLES/gl.h
+@@ -18,22 +18,21 @@ typedef void             GLvoid;
+ typedef unsigned int     GLenum;
+ typedef unsigned char    GLboolean;
+ typedef unsigned int     GLbitfield;
+-typedef signed char		   GLbyte;
++typedef khronos_int8_t   GLbyte;
+ typedef short            GLshort;
+ typedef int              GLint;
+ typedef int              GLsizei;
+-typedef unsigned char			GLubyte;
++typedef khronos_uint8_t  GLubyte;
+ typedef unsigned short   GLushort;
+ typedef unsigned int     GLuint;
+-typedef float  GLfloat;
+-typedef float  GLclampf;
+-typedef signed int  GLfixed;
++typedef khronos_float_t  GLfloat;
++typedef khronos_float_t  GLclampf;
++typedef khronos_int32_t  GLfixed;
+ typedef signed int  GLclampx;
+ typedef char GLchar;
+ 
+-typedef int * GLintptr;
+-typedef int *  GLsizeiptr;
+-
++typedef khronos_intptr_t GLintptr;
++typedef khronos_ssize_t  GLsizeiptr;
+ 
+ /*************************************************************/
+ 
+-- 
+2.9.4
+

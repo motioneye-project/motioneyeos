@@ -1,8 +1,8 @@
 config BR2_PACKAGE_LIBMATROSKA
 	bool "libmatroska"
-	select BR2_PACKAGE_LIBEBML
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBEBML
 	help
 	  Extensible open standard audio/video container format access
 	  library.

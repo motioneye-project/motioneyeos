@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PNGQUANT
+	bool "pngquant"
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_ZLIB
+	help
+	  Lossy PNG compressor — pngquant command and libimagequant
+	  library
+
+	  https://pngquant.org

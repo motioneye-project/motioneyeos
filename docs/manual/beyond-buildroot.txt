@@ -1,0 +1,66 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== Beyond Buildroot
+
+=== Boot the generated images
+
+==== NFS boot
+
+To achieve NFS-boot, enable _tar root filesystem_ in the _Filesystem
+images_ menu.
+
+After a complete build, just run the following commands to setup the
+NFS-root directory:
+
+-------------------
+sudo tar -xavf /path/to/output_dir/rootfs.tar -C /path/to/nfs_root_dir
+-------------------
+
+Remember to add this path to +/etc/exports+.
+
+Then, you can execute a NFS-boot from your target.
+
+==== Live CD
+
+To build a live CD image, enable the _iso image_ option in the
+_Filesystem images_ menu. Note that this option is only available on
+the x86 and x86-64 architectures, and if you are building your kernel
+with Buildroot.
+
+You can build a live CD image with either IsoLinux, Grub or Grub 2 as
+a bootloader, but only Isolinux supports making this image usable both
+as a live CD and live USB (through the _Build hybrid image_ option).
+
+You can test your live CD image using QEMU:
+
+-------------------
+qemu-system-i386 -cdrom output/images/rootfs.iso9660
+-------------------
+
+Or use it as a hard-drive image if it is a hybrid ISO:
+
+-------------------
+qemu-system-i386 -hda output/images/rootfs.iso9660
+-------------------
+
+It can be easily flashed to a USB drive with +dd+:
+
+-------------------
+dd if=output/images/rootfs.iso9660 of=/dev/sdb
+-------------------
+
+=== Chroot
+
+If you want to chroot in a generated image, then there are few thing
+you should be aware of:
+
+* you should setup the new root from the _tar root filesystem_ image;
+
+* either the selected target architecture is compatible with your host
+  machine, or you should use some +qemu-*+ binary and correctly set it
+  within the +binfmt+ properties to be able to run the binaries built
+  for the target on your host machine;
+
+* Buildroot does not currently provide +host-qemu+ and +binfmt+
+  correctly built and set for that kind of use.

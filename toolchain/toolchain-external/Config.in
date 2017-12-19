@@ -33,12 +33,8 @@ source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Confi
 # NIOSII
 source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Config.in"
 
-# SH4a
-source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in"
-
-# x86/x86_64 (use amd64 toolchain by default for AMD64)
+# x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in"
-source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in"
 
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
@@ -71,10 +67,14 @@ endchoice
 
 config BR2_TOOLCHAIN_EXTERNAL_PATH
 	string "Toolchain path"
-	default "/path/to/toolchain/usr"
+	default ""
 	depends on BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED
 	help
-	  Path to where the external toolchain is installed.
+	  Path to where the external toolchain is installed. The
+	  compiler itself is expected to be in the "bin" subdirectory
+	  of this path.
+
+	  If empty, the compiler will be searched in $PATH.
 
 config BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	bool
@@ -127,12 +127,8 @@ source "toolchain/toolchain-external/toolchain-external-codescape-mti-mips/Confi
 # NIOSII
 source "toolchain/toolchain-external/toolchain-external-codesourcery-niosII/Config.in.options"
 
-# SH4a
-source "toolchain/toolchain-external/toolchain-external-codesourcery-sh/Config.in.options"
-
-# x86/x86_64
+# x86_64
 source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Config.in.options"
-source "toolchain/toolchain-external/toolchain-external-codesourcery-x86/Config.in.options"
 
 # Custom toolchains
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in.options"

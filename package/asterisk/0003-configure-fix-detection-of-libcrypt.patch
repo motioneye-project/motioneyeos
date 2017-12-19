@@ -1,0 +1,43 @@
+From 8996503f6c55e55f326ab11c18278954ad7abaf3 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Tue, 27 Dec 2016 11:21:57 +0100
+Subject: [PATCH] configure: fix detection of libcrypt
+
+The crypt() function is searched in two locations: -lcrypt and the
+standard C library.
+
+The result of the former is stored in the LIBCRYPT 'scheme' while that
+of the latter is stored in the 'SYSCRYPT' scheme.
+
+However, the check for mandatory modules looks at the CRYPT 'scheme',
+and thus concludes that crypt is missing when it was successfully found.
+
+Fix that by also storing the result of either check in the 'CRYPT'
+scheme.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure    | 2 ++
+ configure.ac | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 121dd93..d459ff5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2406,10 +2406,12 @@ AC_CHECK_FUNC([crypt], [SYSCRYPT=true], [SYSCRYPT=""])
+ if test "x$LIBCRYPT_LIB" != "x" ; then
+     CRYPT_LIB="$LIBCRYPT_LIB"
+     CRYPT_INCLUDE="$LIBCRYPT_INCLUDE"
++    PBX_CRYPT=1
+     AC_DEFINE([HAVE_CRYPT], [1], [Define to 1 if you have the 'crypt' function.])
+ elif test "x$SYSCRYPT" != "x" ; then
+     CRYPT_LIB=""
+     CRYPT_INCLUDE=""
++    PBX_CRYPT=1
+     AC_DEFINE([HAVE_CRYPT], [1], [Define to 1 if you have the 'crypt' function.])
+ fi
+ 
+-- 
+2.7.4
+

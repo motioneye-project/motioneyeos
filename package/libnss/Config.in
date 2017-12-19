@@ -1,11 +1,11 @@
 config BR2_PACKAGE_LIBNSS
 	bool "libnss"
-	select BR2_PACKAGE_LIBNSPR
-	select BR2_PACKAGE_SQLITE
-	select BR2_PACKAGE_ZLIB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libnspr
 	depends on BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT # libnspr
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBNSPR
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_ZLIB
 	help
 	  Network Security Services (NSS) is a set of libraries designed
 	  to support development of security-enabled client and server

@@ -1,0 +1,65 @@
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE
+	bool "ARM Trusted Firmware (ATF)"
+	depends on BR2_aarch64 && BR2_TARGET_UBOOT
+	help
+	  Enable this option if you want to build the ATF for your ARM
+	  based embedded device.
+
+	  https://github.com/ARM-software/arm-trusted-firmware
+
+if BR2_TARGET_ARM_TRUSTED_FIRMWARE
+choice
+	prompt "ATF Version"
+	help
+	  Select the specific ATF version you want to use
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_LATEST_VERSION
+	bool "v1.4"
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_TARBALL
+	bool "Custom tarball"
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_GIT
+	bool "Custom Git repository"
+
+endchoice
+
+if BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_TARBALL
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_TARBALL_LOCATION
+	string "URL of custom ATF tarball"
+
+endif
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_VERSION
+	string
+	default "v1.4"		if BR2_TARGET_ARM_TRUSTED_FIRMWARE_LATEST_VERSION
+	default "custom"	if BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_TARBALL
+	default BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_REPO_VERSION \
+				if BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_GIT
+
+if BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_GIT
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_REPO_URL
+	string "URL of custom repository"
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_CUSTOM_REPO_VERSION
+	string "Custom repository version"
+	help
+	  Revision to use in the typical format used by Git
+	  E.G. a sha id, a tag, ..
+
+endif
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_PLATFORM
+	string "ATF platform"
+	help
+	  Target plaform to build for.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
+	string "Additional ATF build variables"
+	help
+	  Additional parameters for the ATF build
+	  E.G. 'DEBUG=1 LOG_LEVEL=20'
+
+endif

@@ -1,6 +1,6 @@
-From fba2627bebc7d497f64827a0517316e9b5c64c0a Mon Sep 17 00:00:00 2001
+From ef1cffc526d3cf9562d50efbf8addc2aa4c06b52 Mon Sep 17 00:00:00 2001
 From: Sergio Prado <sergio.prado@e-labworks.com>
-Date: Tue, 26 Jul 2016 13:24:00 -0300
+Date: Sun, 30 Jul 2017 18:23:23 -0300
 Subject: [PATCH 1/2] Add cross-compilation support
 
 Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
@@ -9,10 +9,10 @@ Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
  1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/configure b/configure
-index 0d90a4f0acde..a4afea8e1880 100755
+index c2f304729651..b05321aac3da 100755
 --- a/configure
 +++ b/configure
-@@ -502,8 +502,9 @@ if test -n "$_host"; then
+@@ -499,8 +499,9 @@ if test -n "$_host"; then
  			_host_os=win32
  			;;
  		*)
@@ -23,7 +23,7 @@ index 0d90a4f0acde..a4afea8e1880 100755
 +			_host_os=unix
  			;;
  	esac
- 	
+ 
 -- 
 1.9.1
 

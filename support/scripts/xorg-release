@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 # This script generates a report on the packaging status of X.org
 # releases in Buildroot. It does so by downloading the list of

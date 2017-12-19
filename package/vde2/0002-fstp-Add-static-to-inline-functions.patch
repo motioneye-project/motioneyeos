@@ -1,0 +1,44 @@
+From 67bc8443ac7e8144a78d84dee30a5cac3b5c99a4 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 27 Aug 2017 23:56:05 +0200
+Subject: [PATCH] fstp: Add static to inline functions
+
+From [1]
+"This is needed to avoid a link error where the inline functions appear
+missing at link time.
+From c99 standard inline function should either be declared static or
+have an extern instance in a c file for linking.
+This fix is necessary to build with gcc 7; for some reason it was not
+trigerred before."
+
+[1] https://git.buildroot.net/buildroot/commit/?id=21133ada326c87627f7bdee4493d8086587c3cca
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/vde_switch/fstp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/vde_switch/fstp.c b/src/vde_switch/fstp.c
+index aab7324..b1e7ee8 100644
+--- a/src/vde_switch/fstp.c
++++ b/src/vde_switch/fstp.c
+@@ -30,14 +30,14 @@ static int numports;
+ #ifdef FSTP
+ #include <fstp.h>
+ /*********************** sending macro used by FSTP & Core ******************/
+-void inline ltonstring(unsigned long l,unsigned char *s) {
++static void inline ltonstring(unsigned long l,unsigned char *s) {
+ 	s[3]=l; l>>=8;
+ 	s[2]=l; l>>=8;
+ 	s[1]=l; l>>=8;
+ 	s[0]=l;
+ }
+ 
+-unsigned long inline nstringtol(unsigned char *s) {
++static unsigned long inline nstringtol(unsigned char *s) {
+ 	return (s[0]<<24)+(s[1]<<16)+(s[2]<<8)+s[3];
+ }
+ 
+-- 
+2.9.5
+

@@ -1,8 +1,8 @@
 config BR2_PACKAGE_MTDEV2TUIO
 	bool "mtdev2tuio"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # liblo
 	select BR2_PACKAGE_LIBLO
 	select BR2_PACKAGE_MTDEV
-	depends on BR2_TOOLCHAIN_HAS_THREADS # liblo
 	help
 	  mtdev2tuio is a simple application for converting touch
 	  events captured from libmtdev to TUIO 1.1

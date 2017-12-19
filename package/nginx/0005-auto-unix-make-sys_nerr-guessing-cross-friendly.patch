@@ -109,7 +109,7 @@ diff --git a/auto/unix b/auto/unix
 index 7dbf9d1..00a7370 100755
 --- a/auto/unix
 +++ b/auto/unix
-@@ -595,6 +595,10 @@ ngx_feature_incs='#include <errno.h>
+@@ -708,6 +708,10 @@ ngx_feature_incs='#include <errno.h>
                    #include <stdio.h>'
  ngx_feature_path=
  ngx_feature_libs=
@@ -120,7 +120,7 @@ index 7dbf9d1..00a7370 100755
  ngx_feature_test='printf("%d", sys_nerr);'
  . auto/feature
  
-@@ -643,6 +647,12 @@ if [ $ngx_found = no ]; then
+@@ -756,6 +760,12 @@ if [ $ngx_found = no ]; then
      . auto/feature
  fi
  

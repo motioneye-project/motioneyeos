@@ -1,0 +1,547 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Package directory
+
+First of all, create a directory under the +package+ directory for
+your software, for example +libfoo+.
+
+Some packages have been grouped by topic in a sub-directory:
++x11r7+, +qt5+ and +gstreamer+. If your package fits in
+one of these categories, then create your package directory in these.
+New subdirectories are discouraged, however.
+
+=== Config files
+
+For the package to be displayed in the configuration tool, you need to
+create a Config file in your package directory. There are two types:
++Config.in+ and +Config.in.host+.
+
+==== +Config.in+ file
+
+For packages used on the target, create a file named +Config.in+. This
+file will contain the option descriptions related to our +libfoo+ software
+that will be used and displayed in the configuration tool. It should basically
+contain:
+
+---------------------------
+config BR2_PACKAGE_LIBFOO
+	bool "libfoo"
+	help
+	  This is a comment that explains what libfoo is. The help text
+	  should be wrapped.
+
+	  http://foosoftware.org/libfoo/
+---------------------------
+
+The +bool+ line, +help+ line and other metadata information about the
+configuration option must be indented with one tab. The help text
+itself should be indented with one tab and two spaces, lines should
+be wrapped to fit 72 columns, where tab counts for 8, so 62 characters
+in the text itself. The help text must mention the upstream URL of the
+project after an empty line.
+
+As a convention specific to Buildroot, the ordering of the attributes
+is as follows:
+
+1. The type of option: +bool+, +string+... with the prompt
+2. If needed, the +default+ value(s)
+3. Any dependency of the +depends on+ form
+4. Any dependency of the +select+ form
+5. The help keyword and help text.
+
+You can add other sub-options into a +if BR2_PACKAGE_LIBFOO...endif+
+statement to configure particular things in your software. You can look at
+examples in other packages. The syntax of the +Config.in+ file is the same
+as the one for the kernel Kconfig file. The documentation for this syntax is
+available at http://kernel.org/doc/Documentation/kbuild/kconfig-language.txt[]
+
+Finally you have to add your new +libfoo/Config.in+ to
++package/Config.in+ (or in a category subdirectory if you decided to
+put your package in one of the existing categories). The files
+included there are 'sorted alphabetically' per category and are 'NOT'
+supposed to contain anything but the 'bare' name of the package.
+
+--------------------------
+source "package/libfoo/Config.in"
+--------------------------
+
+
+==== +Config.in.host+ file
+
+Some packages also need to be built for the host system. There are two
+options here:
+
+* The host package is only required to satisfy build-time
+  dependencies of one or more target packages. In this case, add
+  +host-foo+ to the target package's +BAR_DEPENDENCIES+ variable. No
+  +Config.in.host+ file should be created.
+
+* The host package should be explicitly selectable by the user from
+  the configuration menu. In this case, create a +Config.in.host+ file
+  for that host package:
++
+---------------------------
+config BR2_PACKAGE_HOST_FOO
+	bool "host foo"
+	help
+	  This is a comment that explains what foo for the host is.
+
+	  http://foosoftware.org/foo/
+---------------------------
++
+The same coding style and options as for the +Config.in+ file are valid.
++
+Finally you have to add your new +libfoo/Config.in.host+ to
++package/Config.in.host+. The files included there are 'sorted alphabetically'
+and are 'NOT' supposed to contain anything but the 'bare' name of the package.
++
+--------------------------
+source "package/foo/Config.in.host"
+--------------------------
++
+The host package will then be available from the +Host utilities+ menu.
+
+[[depends-on-vs-select]]
+==== Choosing +depends on+ or +select+
+
+The +Config.in+ file of your package must also ensure that
+dependencies are enabled. Typically, Buildroot uses the following
+rules:
+
+* Use a +select+ type of dependency for dependencies on
+  libraries. These dependencies are generally not obvious and it
+  therefore make sense to have the kconfig system ensure that the
+  dependencies are selected. For example, the _libgtk2_ package uses
+  +select BR2_PACKAGE_LIBGLIB2+ to make sure this library is also
+  enabled.
+  The +select+ keyword expresses the dependency with a backward
+  semantic.
+
+* Use a +depends on+ type of dependency when the user really needs to
+  be aware of the dependency. Typically, Buildroot uses this type of
+  dependency for dependencies on target architecture, MMU support and
+  toolchain options (see xref:dependencies-target-toolchain-options[]),
+  or for dependencies on "big" things, such as the X.org system.
+  The +depends on+ keyword expresses the dependency with a forward
+  semantic.
+
+.Note
+The current problem with the _kconfig_ language is that these two
+dependency semantics are not internally linked. Therefore, it may be
+possible to select a package, whom one of its dependencies/requirement
+is not met.
+
+An example illustrates both the usage of +select+ and +depends on+.
+
+--------------------------
+config BR2_PACKAGE_RRDTOOL
+	bool "rrdtool"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LIBART
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_ZLIB
+        help
+	  RRDtool is the OpenSource industry standard, high performance
+	  data logging and graphing system for time series data.
+
+	  http://oss.oetiker.ch/rrdtool/
+
+comment "rrdtool needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR
+--------------------------
+
+
+Note that these two dependency types are only transitive with the
+dependencies of the same kind.
+
+This means, in the following example:
+
+--------------------------
+config BR2_PACKAGE_A
+        bool "Package A"
+
+config BR2_PACKAGE_B
+        bool "Package B"
+        depends on BR2_PACKAGE_A
+
+config BR2_PACKAGE_C
+        bool "Package C"
+        depends on BR2_PACKAGE_B
+
+config BR2_PACKAGE_D
+        bool "Package D"
+        select BR2_PACKAGE_B
+
+config BR2_PACKAGE_E
+        bool "Package E"
+        select BR2_PACKAGE_D
+--------------------------
+
+* Selecting +Package C+ will be visible if +Package B+ has been
+  selected, which in turn is only visible if +Package A+ has been
+  selected.
+
+* Selecting +Package E+ will select +Package D+, which will select
+  +Package B+, it will not check for the dependencies of +Package B+,
+  so it will not select +Package A+.
+
+* Since +Package B+ is selected but +Package A+ is not, this violates
+  the dependency of +Package B+ on +Package A+. Therefore, in such a
+  situation, the transitive dependency has to be added explicitly:
+
+--------------------------
+config BR2_PACKAGE_D
+	bool "Package D"
+	select BR2_PACKAGE_B
+	depends on BR2_PACKAGE_A
+
+config BR2_PACKAGE_E
+	bool "Package E"
+	select BR2_PACKAGE_D
+	depends on BR2_PACKAGE_A
+--------------------------
+
+Overall, for package library dependencies, +select+ should be
+preferred.
+
+Note that such dependencies will ensure that the dependency option
+is also enabled, but not necessarily built before your package. To do
+so, the dependency also needs to be expressed in the +.mk+ file of the
+package.
+
+Further formatting details: see xref:writing-rules-config-in[the
+coding style].
+
+[[dependencies-target-toolchain-options]]
+==== Dependencies on target and toolchain options
+
+Many packages depend on certain options of the toolchain: the choice of
+C library, C++ support, thread support, RPC support, wchar support,
+or dynamic library support. Some packages can only be built on certain
+target architectures, or if an MMU is available in the processor.
+
+These dependencies have to be expressed with the appropriate 'depends
+on' statements in the Config.in file. Additionally, for dependencies on
+toolchain options, a +comment+ should be displayed when the option is
+not enabled, so that the user knows why the package is not available.
+Dependencies on target architecture or MMU support should not be
+made visible in a comment: since it is unlikely that the user can
+freely choose another target, it makes little sense to show these
+dependencies explicitly.
+
+The +comment+ should only be visible if the +config+ option itself would
+be visible when the toolchain option dependencies are met. This means
+that all other dependencies of the package (including dependencies on
+target architecture and MMU support) have to be repeated on the
++comment+ definition. To keep it clear, the +depends on+ statement for
+these non-toolchain option should be kept separate from the +depends on+
+statement for the toolchain options.
+If there is a dependency on a config option in that same file (typically
+the main package) it is preferable to have a global +if ... endif+
+construct rather than repeating the +depends on+ statement on the
+comment and other config options.
+
+The general format of a dependency +comment+ for package foo is:
+
+--------------------------
+foo needs a toolchain w/ featA, featB, featC
+--------------------------
+
+for example:
+
+--------------------------
+mpd needs a toolchain w/ C++, threads, wchar
+--------------------------
+
+or
+
+--------------------------
+crda needs a toolchain w/ threads
+--------------------------
+
+Note that this text is kept brief on purpose, so that it will fit on a
+80-character terminal.
+
+The rest of this section enumerates the different target and toolchain
+options, the corresponding config symbols to depend on, and the text to
+use in the comment.
+
+* Target architecture
+** Dependency symbol: +BR2_powerpc+, +BR2_mips+, ... (see +arch/Config.in+)
+** Comment string: no comment to be added
+
+* MMU support
+** Dependency symbol: +BR2_USE_MMU+
+** Comment string: no comment to be added
+
+* Gcc +__sync_*+ built-ins used for atomic operations. They are
+  available in variants operating on 1 byte, 2 bytes, 4 bytes and 8
+  bytes. Since different architectures support atomic operations on
+  different sizes, one dependency symbol is available for each size:
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_SYNC_1+ for 1 byte,
+   +BR2_TOOLCHAIN_HAS_SYNC_2+ for 2 bytes,
+   +BR2_TOOLCHAIN_HAS_SYNC_4+ for 4 bytes, +BR2_TOOLCHAIN_HAS_SYNC_8+
+   for 8 bytes.
+** Comment string: no comment to be added
+
+* Gcc +__atomic_*+ built-ins used for atomic operations.
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_ATOMIC+.
+** Comment string: no comment to be added
+
+* Kernel headers
+** Dependency symbol: +BR2_TOOLCHAIN_HEADERS_AT_LEAST_X_Y+, (replace
+   +X_Y+ with the proper version, see +toolchain/toolchain-common.in+)
+** Comment string: +headers >= X.Y+ and/or `headers <= X.Y` (replace
+   +X.Y+ with the proper version)
+
+* GCC version
+** Dependency symbol: +BR2_TOOLCHAIN_GCC_AT_LEAST_X_Y+, (replace
+   +X_Y+ with the proper version, see +toolchain/toolchain-common.in+)
+** Comment string: +gcc >= X.Y+ and/or `gcc <= X.Y` (replace
+   +X.Y+ with the proper version)
+
+* Host GCC version
+** Dependency symbol: +BR2_HOST_GCC_AT_LEAST_X_Y+, (replace
+   +X_Y+ with the proper version, see +Config.in+)
+** Comment string: no comment to be added
+** Note that it is usually not the package itself that has a minimum
+   host GCC version, but rather a host-package on which it depends.
+
+* C library
+** Dependency symbol: +BR2_TOOLCHAIN_USES_GLIBC+,
+   +BR2_TOOLCHAIN_USES_MUSL+, +BR2_TOOLCHAIN_USES_UCLIBC+
+** Comment string: for the C library, a slightly different comment text
+   is used: +foo needs a glibc toolchain+, or `foo needs a glibc
+   toolchain w/ C++`
+
+* C++ support
+** Dependency symbol: +BR2_INSTALL_LIBSTDCPP+
+** Comment string: `C++`
+
+* Fortran support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_FORTRAN+
+** Comment string: `fortran`
+
+* thread support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_THREADS+
+** Comment string: +threads+ (unless +BR2_TOOLCHAIN_HAS_THREADS_NPTL+
+   is also needed, in which case, specifying only +NPTL+ is sufficient)
+
+* NPTL thread support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_THREADS_NPTL+
+** Comment string: +NPTL+
+
+* RPC support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_NATIVE_RPC+
+** Comment string: +RPC+
+
+* wchar support
+** Dependency symbol: +BR2_USE_WCHAR+
+** Comment string: +wchar+
+
+* dynamic library
+** Dependency symbol: +!BR2_STATIC_LIBS+
+** Comment string: +dynamic library+
+
+==== Dependencies on a Linux kernel built by buildroot
+
+Some packages need a Linux kernel to be built by buildroot. These are
+typically kernel modules or firmware. A comment should be added in the
+Config.in file to express this dependency, similar to dependencies on
+toolchain options. The general format is:
+
+--------------------------
+foo needs a Linux kernel to be built
+--------------------------
+
+If there is a dependency on both toolchain options and the Linux
+kernel, use this format:
+
+--------------------------
+foo needs a toolchain w/ featA, featB, featC and a Linux kernel to be built
+--------------------------
+
+==== Dependencies on udev /dev management
+
+If a package needs udev /dev management, it should depend on symbol
++BR2_PACKAGE_HAS_UDEV+, and the following comment should be added:
+
+--------------------------
+foo needs udev /dev management
+--------------------------
+
+If there is a dependency on both toolchain options and udev /dev
+management, use this format:
+
+--------------------------
+foo needs udev /dev management and a toolchain w/ featA, featB, featC
+--------------------------
+
+==== Dependencies on features provided by virtual packages
+
+Some features can be provided by more than one package, such as the
+openGL libraries.
+
+See xref:virtual-package-tutorial[] for more on the virtual packages.
+
+=== The +.mk+ file
+
+[[adding-packages-mk]]
+
+Finally, here's the hardest part. Create a file named +libfoo.mk+. It
+describes how the package should be downloaded, configured, built,
+installed, etc.
+
+Depending on the package type, the +.mk+ file must be written in a
+different way, using different infrastructures:
+
+* *Makefiles for generic packages* (not using autotools or CMake):
+  These are based on an infrastructure similar to the one used for
+  autotools-based packages, but require a little more work from the
+  developer. They specify what should be done for the configuration,
+  compilation and installation of the package. This
+  infrastructure must be used for all packages that do not use the
+  autotools as their build system. In the future, other specialized
+  infrastructures might be written for other build systems. We cover
+  them through in a xref:generic-package-tutorial[tutorial] and a
+  xref:generic-package-reference[reference].
+
+* *Makefiles for autotools-based software* (autoconf, automake, etc.):
+  We provide a dedicated infrastructure for such packages, since
+  autotools is a very common build system. This infrastructure 'must'
+  be used for new packages that rely on the autotools as their build
+  system. We cover them through a xref:autotools-package-tutorial[tutorial]
+  and xref:autotools-package-reference[reference].
+
+* *Makefiles for cmake-based software*: We provide a dedicated
+   infrastructure for such packages, as CMake is a more and more
+   commonly used build system and has a standardized behaviour. This
+   infrastructure 'must' be used for new packages that rely on
+   CMake. We cover them through a xref:cmake-package-tutorial[tutorial]
+   and xref:cmake-package-reference[reference].
+
+* *Makefiles for Python modules*: We have a dedicated infrastructure
+   for Python modules that use either the +distutils+ or the
+   +setuptools+ mechanism. We cover them through a
+   xref:python-package-tutorial[tutorial] and a
+   xref:python-package-reference[reference].
+
+* *Makefiles for Lua modules*: We have a dedicated infrastructure for
+   Lua modules available through the LuaRocks web site. We cover them
+   through a xref:luarocks-package-tutorial[tutorial] and a
+   xref:luarocks-package-reference[reference].
+
+Further formatting details: see xref:writing-rules-mk[the writing
+rules].
+
+[[adding-packages-hash]]
+=== The +.hash+ file
+
+When possible, you must add a third file, named +libfoo.hash+, that
+contains the hashes of the downloaded files for the +libfoo+
+package. The only reason for not adding a +.hash+ file is when hash
+checking is not possible due to how the package is downloaded.
+
+The hashes stored in that file are used to validate the integrity of the
+downloaded files and of the license files.
+
+The format of this file is one line for each file for which to check the
+hash, each line being space-separated, with these three fields:
+
+* the type of hash, one of:
+** +md5+, +sha1+, +sha224+, +sha256+, +sha384+, +sha512+, +none+
+* the hash of the file:
+** for +none+, one or more non-space chars, usually just the string +xxx+
+** for +md5+, 32 hexadecimal characters
+** for +sha1+, 40 hexadecimal characters
+** for +sha224+, 56 hexadecimal characters
+** for +sha256+, 64 hexadecimal characters
+** for +sha384+, 96 hexadecimal characters
+** for +sha512+, 128 hexadecimal characters
+* the name of the file:
+** for a source archive: the basename of the file, without any directory
+   component,
+** for a license file: the path as it appears in +FOO_LICENSE_FILES+.
+
+Lines starting with a +#+ sign are considered comments, and ignored. Empty
+lines are ignored.
+
+There can be more than one hash for a single file, each on its own line. In
+this case, all hashes must match.
+
+.Note
+Ideally, the hashes stored in this file should match the hashes published by
+upstream, e.g. on their website, in the e-mail announcement... If upstream
+provides more than one type of hash (e.g. +sha1+ and +sha512+), then it is
+best to add all those hashes in the +.hash+ file. If upstream does not
+provide any hash, or only provides an +md5+ hash, then compute at least one
+strong hash yourself (preferably +sha256+, but not +md5+), and mention
+this in a comment line above the hashes.
+
+.Note
+The hashes for license files are used to detect a license change when a
+package version is bumped. The hashes are checked during the make legal-info
+target run. For a package with multiple versions (like Qt5),
+create the hash file in a subdirectory +<packageversion>+ of that package
+(see also xref:patch-apply-order[]).
+
+.Note
+The number of spaces does not matter, so one can use spaces (or tabs) to
+properly align the different fields.
+
+The +none+ hash type is reserved to those archives downloaded from a
+repository, like a 'git clone', a 'subversion checkout'...
+
+The example below defines a +sha1+ and a +sha256+ published by upstream for
+the main +libfoo-1.2.3.tar.bz2+ tarball, an +md5+ from upstream and a
+locally-computed +sha256+ hashes for a binary blob, a +sha256+ for a
+downloaded patch, and an archive with no hash:
+
+----
+# Hashes from: http://www.foosoftware.org/download/libfoo-1.2.3.tar.bz2.{sha1,sha256}:
+sha1   486fb55c3efa71148fe07895fd713ea3a5ae343a                         libfoo-1.2.3.tar.bz2
+sha256 efc8103cc3bcb06bda6a781532d12701eb081ad83e8f90004b39ab81b65d4369 libfoo-1.2.3.tar.bz2
+
+# md5 from: http://www.foosoftware.org/download/libfoo-1.2.3.tar.bz2.md5, sha256 locally computed:
+md5    2d608f3c318c6b7557d551a5a09314f03452f1a1                         libfoo-data.bin
+sha256 01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b libfoo-data.bin
+
+# Locally computed:
+sha256 ff52101fb90bbfc3fe9475e425688c660f46216d7e751c4bbdb1dc85cdccacb9 libfoo-fix-blabla.patch
+
+# No hash for 1234:
+none   xxx                                                              libfoo-1234.tar.gz
+
+# Hash for license files:
+sha256 a45a845012742796534f7e91fe623262ccfb99460a2bd04015bd28d66fba95b8  COPYING
+sha256 01b1f9f2c8ee648a7a596a1abe8aa4ed7899b1c9e5551bda06da6e422b04aa55  doc/COPYING.LGPL
+----
+
+If the +.hash+ file is present, and it contains one or more hashes for a
+downloaded file, the hash(es) computed by Buildroot (after download) must
+match the hash(es) stored in the +.hash+ file. If one or more hashes do
+not match, Buildroot considers this an error, deletes the downloaded file,
+and aborts.
+
+If the +.hash+ file is present, but it does not contain a hash for a
+downloaded file, Buildroot considers this an error and aborts. However,
+the downloaded file is left in the download directory since this
+typically indicates that the +.hash+ file is wrong but the downloaded
+file is probably OK.
+
+Hashes are currently checked for files fetched from http/ftp servers,
+Git repositories, files copied using scp and local files. Hashes are
+not checked for other version control systems (such as Subversion,
+CVS, etc.) because Buildroot currently does not generate reproducible
+tarballs when source code is fetched from such version control
+systems.
+
+Hashes should only be added in +.hash+ files for files that are
+guaranteed to be stable. For example, patches auto-generated by Github
+are not guaranteed to be stable, and therefore their hashes can change
+over time. Such patches should not be downloaded, and instead be added
+locally to the package folder.
+
+If the +.hash+ file is missing, then no check is done at all.

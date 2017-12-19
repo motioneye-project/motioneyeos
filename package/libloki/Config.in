@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBLOKI
+	bool "libloki"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  A C++ library of designs, containing flexible
+	  implementations of common design patterns and idioms.
+
+	  http://sourceforge.net/projects/loki-lib
+
+comment "libloki needs a toolchain w/ C++, threads"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

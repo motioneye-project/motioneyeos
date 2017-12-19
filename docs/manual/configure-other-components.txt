@@ -1,0 +1,60 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== Configuration of other components
+
+Before attempting to modify any of the components below, make sure you
+have already configured Buildroot itself, and have enabled the
+corresponding package.
+
+BusyBox::
++
+If you already have a BusyBox configuration file, you can directly
+specify this file in the Buildroot configuration, using
++BR2_PACKAGE_BUSYBOX_CONFIG+. Otherwise, Buildroot will start from a
+default BusyBox configuration file.
++
+To make subsequent changes to the configuration, use +make
+busybox-menuconfig+ to open the BusyBox configuration editor.
++
+It is also possible to specify a BusyBox configuration file through an
+environment variable, although this is not recommended. Refer to
+xref:env-vars[] for more details.
+
+uClibc::
++
+Configuration of uClibc is done in the same way as for BusyBox. The
+configuration variable to specify an existing configuration file is
++BR2_UCLIBC_CONFIG+. The command to make subsequent changes is +make
+uclibc-menuconfig+.
+
+Linux kernel::
++
+If you already have a kernel configuration file, you can directly
+specify this file in the Buildroot configuration, using
++BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG+.
++
+If you do not yet have a kernel configuration file, you can either start
+by specifying a defconfig in the Buildroot configuration, using
++BR2_LINUX_KERNEL_USE_DEFCONFIG+, or start by creating an empty file and
+specifying it as custom configuration file, using
++BR2_LINUX_KERNEL_USE_CUSTOM_CONFIG+.
++
+To make subsequent changes to the configuration, use +make
+linux-menuconfig+ to open the Linux configuration editor.
+
+Barebox::
++
+Configuration of Barebox is done in the same way as for the Linux
+kernel. The corresponding configuration variables are
++BR2_TARGET_BAREBOX_USE_CUSTOM_CONFIG+ and
++BR2_TARGET_BAREBOX_USE_DEFCONFIG+. To open the configuration editor,
+use +make barebox-menuconfig+.
+
+U-Boot::
++
+Configuration of U-Boot (version 2015.04 or newer) is done in the same
+way as for the Linux kernel. The corresponding configuration variables
+are +BR2_TARGET_UBOOT_USE_CUSTOM_CONFIG+ and
++BR2_TARGET_UBOOT_USE_DEFCONFIG+. To open the configuration editor,
+use +make uboot-menuconfig+.

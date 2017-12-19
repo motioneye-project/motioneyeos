@@ -4,19 +4,17 @@
 #
 ################################################################################
 
-LIBVA_VERSION = 1.7.3
+LIBVA_VERSION = 1.8.3
 LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
-LIBVA_SITE = http://www.freedesktop.org/software/vaapi/releases/libva
+LIBVA_SITE = https://github.com/01org/libva/releases/download/$(LIBVA_VERSION)
 LIBVA_LICENSE = MIT
 LIBVA_LICENSE_FILES = COPYING
-LIBVA_AUTORECONF = YES
 LIBVA_INSTALL_STAGING = YES
 LIBVA_DEPENDENCIES = host-pkgconf libdrm
 
 # libdrm is a hard-dependency
 LIBVA_CONF_OPTS = \
 	--enable-drm \
-	--disable-dummy-driver \
 	--with-drivers-path="/usr/lib/va"
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),y)
@@ -46,11 +44,5 @@ LIBVA_CONF_OPTS += --enable-egl
 else
 LIBVA_CONF_OPTS += --disable-egl
 endif
-
-# Autoreconf requires an m4 directory to exist
-define LIBVA_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-LIBVA_POST_PATCH_HOOKS += LIBVA_PATCH_M4
 
 $(eval $(autotools-package))

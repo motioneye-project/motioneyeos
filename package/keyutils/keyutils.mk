@@ -4,18 +4,18 @@
 #
 ################################################################################
 
-KEYUTILS_VERSION = 1.5.9
+KEYUTILS_VERSION = 1.5.10
 KEYUTILS_SOURCE = keyutils-$(KEYUTILS_VERSION).tar.bz2
 KEYUTILS_SITE = http://people.redhat.com/~dhowells/keyutils
-KEYUTILS_LICENSE = GPLv2+, LGPLv2.1+
+KEYUTILS_LICENSE = GPL-2.0+, LGPL-2.1+
 KEYUTILS_LICENSE_FILES = LICENCE.GPL LICENCE.LGPL
 KEYUTILS_INSTALL_STAGING = YES
 
-KEYUTILS_MAKE_PARAMS =                    \
-	INSTALL=$(INSTALL)                \
-	LIBDIR=/usr/lib                   \
-	USRLIBDIR=/usr/lib                \
-	CFLAGS="$(TARGET_CFLAGS)"         \
+KEYUTILS_MAKE_PARAMS = \
+	INSTALL=$(INSTALL) \
+	LIBDIR=/usr/lib \
+	USRLIBDIR=/usr/lib \
+	CFLAGS="$(TARGET_CFLAGS)" \
 	CPPFLAGS="$(TARGET_CPPFLAGS) -I." \
 	LNS="$(HOSTLN) -sf"
 

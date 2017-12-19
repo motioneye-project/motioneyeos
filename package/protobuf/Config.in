@@ -11,11 +11,7 @@
 #
 # Since protobuf most likely only uses the 1, 2 and 4-byte variants, it
 # *could* technically build with gcc 4.7. This is probably not a big deal,
-# and we can live with requiring gcc 4.8 on PowerPC to build protobuf. 
-#
-# The SPARC64 build fails due to a missing definition of Atomic64. This
-# has been fixed on the master branch but the build still breaks due to
-# undefined references to internal NoBarrier_Atomic*() functions.
+# and we can live with requiring gcc 4.8 on PowerPC to build protobuf.
 #
 # host-protobuf only builds on certain architectures
 config BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
@@ -24,8 +20,8 @@ config BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
 	default y if BR2_i386
 	default y if BR2_mipsel
 	default y if BR2_x86_64
+	default y if BR2_sparc64
 	default y if BR2_TOOLCHAIN_HAS_ATOMIC
-	depends on !BR2_sparc64 # missing definition of Atomic64
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_USE_MMU # fork()
 
@@ -34,6 +30,8 @@ config BR2_PACKAGE_PROTOBUF
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+	depends on BR2_HOST_GCC_AT_LEAST_4_5
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	depends on !BR2_STATIC_LIBS
 	help
 	  Protocol buffers are Google's language-neutral, platform-neutral,
@@ -41,7 +39,8 @@ config BR2_PACKAGE_PROTOBUF
 
 	  https://developers.google.com/protocol-buffers
 
-comment "protobuf needs a toolchain w/ C++, threads, dynamic library"
+comment "protobuf needs a toolchain w/ C++, threads, dynamic library, host and target gcc >= 4.5"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
-		|| BR2_STATIC_LIBS
+		|| BR2_STATIC_LIBS || !BR2_HOST_GCC_AT_LEAST_4_5 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_5
 	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS

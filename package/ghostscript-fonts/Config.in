@@ -1,8 +1,8 @@
 config BR2_PACKAGE_GHOSTSCRIPT_FONTS
 	bool "ghostscript-fonts"
 	help
-	  Fonts and font metrics customarily distributed with Ghostscript.
-	  Currently includes the 35 standard PostScript fonts and a
-	  grab-bag of others.
+	  Fonts and font metrics customarily distributed with
+	  Ghostscript. Currently includes the 35 standard PostScript
+	  fonts and a grab-bag of others.
 
 	  http://sourceforge.net/projects/gs-fonts

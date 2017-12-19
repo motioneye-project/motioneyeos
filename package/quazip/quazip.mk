@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-QUAZIP_VERSION = 0.7.2
+QUAZIP_VERSION = 0.7.3
 QUAZIP_SITE = http://sourceforge.net/projects/quazip/files/quazip/$(QUAZIP_VERSION)
 QUAZIP_INSTALL_STAGING = YES
 QUAZIP_DEPENDENCIES = \
 	zlib \
 	$(if $(BR2_PACKAGE_QT),qt) \
 	$(if $(BR2_PACKAGE_QT5),qt5base)
-QUAZIP_LICENSE = LGPLv2.1
+QUAZIP_LICENSE = LGPL-2.1
 QUAZIP_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_QT5),y)

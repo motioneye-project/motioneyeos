@@ -1,13 +1,13 @@
 config BR2_PACKAGE_LIBSELINUX
 	bool "libselinux"
-	select BR2_PACKAGE_LIBSEPOL
-	select BR2_PACKAGE_PCRE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	# Uses <fts.h>, not available in musl or uClibc
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	# Toolchain issue: "fixup not contained within frag"
 	depends on !BR2_arc
+	select BR2_PACKAGE_LIBSEPOL
+	select BR2_PACKAGE_PCRE
 	help
 	  libselinux is the runtime SELinux library that provides
 	  interfaces (e.g. library functions for the SELinux kernel

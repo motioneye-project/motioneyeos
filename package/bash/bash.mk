@@ -9,8 +9,8 @@ BASH_SITE = $(BR2_GNU_MIRROR)/bash
 # Build after since bash is better than busybox shells
 BASH_DEPENDENCIES = ncurses readline host-bison \
 	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
-BASH_CONF_OPTS = --with-installed-readline
-BASH_LICENSE = GPLv3+
+BASH_CONF_OPTS = --with-installed-readline --without-bash-malloc
+BASH_LICENSE = GPL-3.0+
 BASH_LICENSE_FILES = COPYING
 
 BASH_CONF_ENV += \
@@ -24,7 +24,8 @@ BASH_CONF_ENV += \
 
 # The static build needs some trickery
 ifeq ($(BR2_STATIC_LIBS),y)
-BASH_CONF_OPTS += --enable-static-link --without-bash-malloc
+BASH_CONF_OPTS += --enable-static-link
+BASH_CONF_ENV += SHOBJ_STATUS=unsupported
 # bash wants to redefine the getenv() function. To check whether this is
 # possible, AC_TRY_RUN is used which is not possible in
 # cross-compilation.

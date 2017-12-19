@@ -25,7 +25,7 @@ define HOST_ERLANG_REBAR_BUILD_CMDS
 endef
 
 define HOST_ERLANG_REBAR_INSTALL_CMDS
-	$(INSTALL) -m 0755 -D $(@D)/rebar $(HOST_DIR)/usr/bin/rebar
+	$(INSTALL) -m 0755 -D $(@D)/rebar $(HOST_DIR)/bin/rebar
 endef
 
 $(eval $(host-generic-package))

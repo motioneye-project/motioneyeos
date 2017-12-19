@@ -1,0 +1,37 @@
+From 39274503292a6003b1b0c93f694e34f11e85ea44 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Beno=C3=AEt=20Allard?= <benoit.allard@greenbone.net>
+Date: Fri, 9 Jun 2017 11:55:14 +0200
+Subject: [PATCH] The VPrint definition is now part of the exports of
+ gnu-efi
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Benoît Allard <benoit.allard@greenbone.net>
+---
+ efi/fio.h | 9 ---------
+ 1 file changed, 9 deletions(-)
+
+diff --git a/efi/fio.h b/efi/fio.h
+index 65fff8d..a1bfe68 100644
+--- a/efi/fio.h
++++ b/efi/fio.h
+@@ -11,15 +11,6 @@
+ #define MAX_EFI_ARGS		64
+ #define WS(c16)         (c16 == L' ' || c16 == CHAR_TAB)
+ 
+-/* VPrint is not in export declarations in gnu-efi lib yet
+- * although it is a global function; declare it here
+- */
+-extern UINTN
+-VPrint (
+-    IN CHAR16   *fmt,
+-    va_list     args
+-    );
+-
+ extern EFI_STATUS efi_errno;
+ 
+ void efi_memcpy(unsigned char *dst, unsigned char *src, size_t len);
+-- 
+2.1.4
+

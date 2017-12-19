@@ -1,0 +1,36 @@
+config BR2_PACKAGE_LINUXCONSOLETOOLS
+	bool "linuxconsoletools"
+	select BR2_PACKAGE_LINUXCONSOLETOOLS_INPUTATTACH if \
+	       !BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK && \
+	       !BR2_PACKAGE_LINUXCONSOLETOOLS_FORCEFEEDBACK
+	help
+	  Linuxconsoletools contains the inputattach utility
+	  to attach legacy serial devices to the Linux kernel
+	  input layer and joystick utilities to calibrate and
+	  test joysticks and joypads.
+
+	  http://sf.net/projects/linuxconsole/
+
+if BR2_PACKAGE_LINUXCONSOLETOOLS
+
+config BR2_PACKAGE_LINUXCONSOLETOOLS_INPUTATTACH
+	bool "inputattach"
+	default y
+	help
+	  The inputattach utility attaches legacy serial devices
+	  to the Linux kernel input layer.
+
+config BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK
+	bool "joystick utilities"
+	help
+	  Joystick utilities (jstest, jscal, jscal-store,
+	  jscal-restore, evdev-joystick).
+
+config BR2_PACKAGE_LINUXCONSOLETOOLS_FORCEFEEDBACK
+	bool "force-feedback utilities"
+	select BR2_PACKAGE_SDL
+	help
+	  Build force-feedback driver utilities (fftest,
+	  ffmvforce, ffset, ffcfstress).
+
+endif

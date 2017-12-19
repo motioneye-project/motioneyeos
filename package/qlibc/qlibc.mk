@@ -6,7 +6,7 @@
 
 QLIBC_VERSION = v2.4.1
 QLIBC_SITE = $(call github,wolkykim,qlibc,$(QLIBC_VERSION))
-QLIBC_LICENSE = BSD-2c
+QLIBC_LICENSE = BSD-2-Clause
 QLIBC_LICENSE_FILES = LICENSE
 
 # We're patching configure.ac

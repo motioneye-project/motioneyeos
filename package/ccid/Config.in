@@ -1,10 +1,10 @@
 config BR2_PACKAGE_CCID
 	bool "ccid"
-	select BR2_PACKAGE_PCSC_LITE
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
 	depends on BR2_USE_MMU # pcsc-lite
 	depends on !BR2_STATIC_LIBS # pcsc-lite
+	select BR2_PACKAGE_PCSC_LITE
+	select BR2_PACKAGE_LIBUSB
 	help
 	  PC/SC driver for USB CCID smart card readers
 

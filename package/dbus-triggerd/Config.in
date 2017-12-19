@@ -4,8 +4,8 @@ config BR2_PACKAGE_DBUS_TRIGGERD
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
 	depends on BR2_PACKAGE_DBUS
 	help
-	  dbus-triggerd is a tool to trigger shell-commands upon receiving
-	  a given dbus-signal.
+	  dbus-triggerd is a tool to trigger shell-commands upon
+	  receiving a given dbus-signal.
 
 	  http://gareus.org/oss/dbustriggerd/start
 

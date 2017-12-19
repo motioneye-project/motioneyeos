@@ -37,8 +37,8 @@ config BR2_PACKAGE_TIFF_MDI
 
 config BR2_PACKAGE_TIFF_ZLIB
 	bool "Zlib usage (required for Deflate compression)"
-	select BR2_PACKAGE_ZLIB
 	default y
+	select BR2_PACKAGE_ZLIB
 
 config BR2_PACKAGE_TIFF_XZ
 	bool "XZ compression"
@@ -46,13 +46,13 @@ config BR2_PACKAGE_TIFF_XZ
 
 config BR2_PACKAGE_TIFF_PIXARLOG
 	bool "Pixar log-format algorithm (requires Zlib)"
-	select BR2_PACKAGE_TIFF_ZLIB
 	default y
+	select BR2_PACKAGE_TIFF_ZLIB
 
 config BR2_PACKAGE_TIFF_JPEG
 	bool "JPEG compression"
-	select BR2_PACKAGE_JPEG
 	default y
+	select BR2_PACKAGE_JPEG
 
 config BR2_PACKAGE_TIFF_OLD_JPEG
 	bool "Old JPEG decompression"

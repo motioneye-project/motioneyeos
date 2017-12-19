@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-PYTHON3_VERSION_MAJOR = 3.5
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).2
+PYTHON3_VERSION_MAJOR = 3.6
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).3
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
-PYTHON3_SITE = http://python.org/ftp/python/$(PYTHON3_VERSION)
-PYTHON3_LICENSE = Python software foundation license v2, others
+PYTHON3_SITE = https://python.org/ftp/python/$(PYTHON3_VERSION)
+PYTHON3_LICENSE = Python-2.0, others
 PYTHON3_LICENSE_FILES = LICENSE
 
 # Python itself doesn't use libtool, but it includes the source code
@@ -18,25 +18,22 @@ PYTHON3_LICENSE_FILES = LICENSE
 # the Python sources, but instead use an external libffi library.
 PYTHON3_LIBTOOL_PATCH = NO
 
-# Python needs itself and a "pgen" program to build itself, both being
-# provided in the Python sources. So in order to cross-compile Python,
-# we need to build a host Python first. This host Python is also
-# installed in $(HOST_DIR), as it is needed when cross-compiling
-# third-party Python modules.
+# This host Python is installed in $(HOST_DIR), as it is needed when
+# cross-compiling third-party Python modules.
 
-HOST_PYTHON3_CONF_OPTS += 	\
-	--without-ensurepip	\
-	--without-cxx-main 	\
-	--disable-sqlite3	\
-	--disable-tk		\
-	--with-expat=system	\
-	--disable-curses	\
-	--disable-codecs-cjk	\
-	--disable-nis		\
-	--enable-unicodedata	\
-	--disable-test-modules	\
-	--disable-idle3		\
-	--disable-ossaudiodev	\
+HOST_PYTHON3_CONF_OPTS += \
+	--without-ensurepip \
+	--without-cxx-main \
+	--disable-sqlite3 \
+	--disable-tk \
+	--with-expat=system \
+	--disable-curses \
+	--disable-codecs-cjk \
+	--disable-nis \
+	--enable-unicodedata \
+	--disable-test-modules \
+	--disable-idle3 \
+	--disable-ossaudiodev \
 	--disable-openssl
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
@@ -56,6 +53,8 @@ PYTHON3_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_PYTHON3_READLINE),y)
 PYTHON3_DEPENDENCIES += readline
+else
+PYTHON3_CONF_OPTS += --disable-readline
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_CURSES),y)
@@ -90,6 +89,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_SSL),y)
 PYTHON3_DEPENDENCIES += openssl
+else
+PYTHON3_CONF_OPTS += --disable-openssl
 endif
 
 ifneq ($(BR2_PACKAGE_PYTHON3_CODECSCJK),y)
@@ -102,14 +103,20 @@ endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_BZIP2),y)
 PYTHON3_DEPENDENCIES += bzip2
+else
+PYTHON3_CONF_OPTS += --disable-bzip2
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_XZ),y)
 PYTHON3_DEPENDENCIES += xz
+else
+PYTHON3_CONF_OPTS += --disable-xz
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_ZLIB),y)
 PYTHON3_DEPENDENCIES += zlib
+else
+PYTHON3_CONF_OPTS += --disable-zlib
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_OSSAUDIODEV),y)
@@ -141,32 +148,59 @@ PYTHON3_CONF_ENV += ac_cv_func_wcsftime=no
 endif
 
 PYTHON3_CONF_OPTS += \
-	--without-ensurepip	\
-	--without-cxx-main 	\
-	--with-system-ffi	\
-	--disable-pydoc		\
-	--disable-test-modules	\
-	--disable-lib2to3	\
-	--disable-tk		\
-	--disable-nis		\
-	--disable-idle3		\
+	--without-ensurepip \
+	--without-cxx-main \
+	--with-system-ffi \
+	--disable-pydoc \
+	--disable-test-modules \
+	--disable-lib2to3 \
+	--disable-tk \
+	--disable-nis \
+	--disable-idle3 \
 	--disable-pyc-build
 
-# Python builds two tools to generate code: 'pgen' and
-# '_freeze_importlib'. Unfortunately, for the target Python, they are
-# built for the target, while we need to run them at build time. So
-# when installing host-python, we copy them to
-# $(HOST_DIR)/usr/bin. And then, when building the target python
-# package, we tell the configure script where they are located.
-define HOST_PYTHON3_INSTALL_TOOLS
-	cp $(@D)/Parser/pgen $(HOST_DIR)/usr/bin/python-pgen
-	cp $(@D)/Programs/_freeze_importlib $(HOST_DIR)/usr/bin/python-freeze-importlib
-endef
-HOST_PYTHON3_POST_INSTALL_HOOKS += HOST_PYTHON3_INSTALL_TOOLS
 
-PYTHON3_CONF_ENV += \
-	PGEN_FOR_BUILD=$(HOST_DIR)/usr/bin/python-pgen \
-	FREEZE_IMPORTLIB_FOR_BUILD=$(HOST_DIR)/usr/bin/python-freeze-importlib
+#
+# Some of CPython's source code is generated using Python interpreter
+# and some helper tools such as "Programs/_freeze_importlib" or
+# "Parser/pgen" (look for regen-* targets in Makefile.pre.in for more
+# info). Normally CPython codebase ships with those files
+# pre-generated, so just regular "make" with no additional steps
+# should be sufficient for a succesfull build, however due to
+# Buildroot's "Add importlib fix for PEP 3147 issue" custom patch we
+# end up modifying "Lib/importlib/_bootstrap_external.py" which means
+# we have to do "regen-importlib" step before building CPython
+# (Importlib is a builtin module that needs to be "frozen"/converted
+# to a C array of bytecode using "Programs/_freeze_importlib")
+#
+# To achive that we add pre-build steps to host-python3 as well as
+# python3 that execute "regen-importlib" target.
+#
+# Unfortunately, for the target Python, "Programs/_freeze_importlib"
+# is built for the target, while we need to run them at build time. So
+# when installing host-python3, we copy them to $(HOST_DIR)/bin...
+#
+define HOST_PYTHON3_MAKE_REGEN_IMPORTLIB
+	$(HOST_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(HOST_CONFIGURE_OPTS) -C $(@D) regen-importlib
+	cp $(@D)/Programs/_freeze_importlib $(HOST_DIR)/bin/python-freeze-importlib
+endef
+
+HOST_PYTHON3_PRE_BUILD_HOOKS += HOST_PYTHON3_MAKE_REGEN_IMPORTLIB
+#
+# ... And then, when building the target python we first buid
+# 'Programs/_freeze_importlib' to force GNU Make to update all of the
+# prerequisites of 'Programs/_freeze_importlib', then copy our stashed
+# "host-usable" version over the one that was just build and then
+# build "regen-importlib" target
+#
+define PYTHON3_MAKE_REGEN_IMPORTLIB
+	$(TARGET_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) Programs/_freeze_importlib
+	cp $(HOST_DIR)/bin/python-freeze-importlib $(@D)/Programs/_freeze_importlib
+	$(TARGET_MAKE_ENV) $(PYTHON3_CONF_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) regen-importlib
+endef
+
+PYTHON3_PRE_BUILD_HOOKS += PYTHON3_MAKE_REGEN_IMPORTLIB
+
 
 #
 # Remove useless files. In the config/ directory, only the Makefile
@@ -214,24 +248,33 @@ endif
 # for the target.
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
 define HOST_PYTHON3_INSTALL_SYMLINK
-	ln -fs python3 $(HOST_DIR)/usr/bin/python
-	ln -fs python3-config $(HOST_DIR)/usr/bin/python-config
+	ln -fs python3 $(HOST_DIR)/bin/python
+	ln -fs python3-config $(HOST_DIR)/bin/python-config
 endef
 
 HOST_PYTHON3_POST_INSTALL_HOOKS += HOST_PYTHON3_INSTALL_SYMLINK
 endif
 
 # Provided to other packages
-PYTHON3_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/sysconfigdata/:$(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages/
+PYTHON3_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
+ifeq ($(BR2_REPRODUCIBLE),y)
+define PYTHON3_FIX_TIME
+	find $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR) -name '*.py' -print0 | \
+		xargs -0 --no-run-if-empty touch -d @$(SOURCE_DATE_EPOCH)
+endef
+endif
+
 define PYTHON3_CREATE_PYC_FILES
+	$(PYTHON3_FIX_TIME)
 	PYTHONPATH="$(PYTHON3_PATH)" \
-	$(HOST_DIR)/usr/bin/python$(PYTHON3_VERSION_MAJOR) \
-		support/scripts/pycompile.py \
-		$(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)
+	cd $(TARGET_DIR) && $(HOST_DIR)/bin/python$(PYTHON3_VERSION_MAJOR) \
+		$(TOPDIR)/support/scripts/pycompile.py \
+		$(if $(BR2_REPRODUCIBLE),--force) \
+		usr/lib/python$(PYTHON3_VERSION_MAJOR)
 endef
 
 ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY)$(BR2_PACKAGE_PYTHON3_PY_PYC),y)

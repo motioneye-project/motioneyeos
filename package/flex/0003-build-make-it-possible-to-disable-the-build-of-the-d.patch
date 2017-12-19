@@ -1,0 +1,58 @@
+From b89b8475a5b2f9444c32f7d254b35968da3c8a23 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Fri, 29 Sep 2017 18:03:51 +0200
+Subject: [PATCH] build: make it possible to disable the build of the
+ documentation
+
+When targetting embedded evices, the documentation is not needed.
+
+Building the documentation default to whether the program is built.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ Makefile.am  | 8 +++++++-
+ configure.ac | 6 ++++++
+ 2 files changed, 13 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index fce30b2..ee75b64 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -41,9 +41,15 @@ EXTRA_DIST = \
+ 	.indent.pro \
+ 	autogen.sh
+ 
++MAYBE_SUBDIRS =
++
++if ENABLE_DOC
++MAYBE_SUBDIRS += doc
++endif
++
+ SUBDIRS = \
+ 	src \
+-	doc \
++	$(MAYBE_SUBDIRS) \
+ 	examples \
+ 	po \
+ 	tests \
+diff --git a/configure.ac b/configure.ac
+index c54e98f..b3ae450 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -80,6 +80,12 @@ AC_ARG_ENABLE([program],
+   [], [enable_program=yes])
+ AM_CONDITIONAL([ENABLE_PROGRAM], [test "x$enable_program" = xyes])
+ 
++AC_ARG_ENABLE([doc],
++  [AS_HELP_STRING([--disable-doc],
++                  [do not build the documentation])],
++  [], [enable_doc=${enable_program}])
++AM_CONDITIONAL([ENABLE_DOC], [test "x$enable_doc" = xyes -a "x$enable_program" = xyes])
++
+ # --disable-bootstrap is intended only to workaround problems with bootstrap
+ # (e.g. when cross-compiling flex or when bootstrapping has bugs).
+ # Ideally we should be able to bootstrap even when cross-compiling.
+-- 
+2.11.0
+

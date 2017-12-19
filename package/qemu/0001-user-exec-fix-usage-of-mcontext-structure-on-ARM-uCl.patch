@@ -1,0 +1,35 @@
+From d3f1e7e9ff9aae3f770b0bcb9aa3c2f787f76a1b Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 5 May 2017 09:07:15 +0200
+Subject: [PATCH] user-exec: fix usage of mcontext structure on ARM/uClibc
+
+user-exec.c has some conditional code to decide how to use the
+mcontext structure. Unfortunately, since uClibc defines __GLIBC__, but
+with old versions of __GLIBC__ and __GLIBC_MINOR__, an old code path
+gets used, which doesn't apply to uClibc.
+
+Fix this by excluding __UCLIBC__, which ensures we fall back to the
+general case of using uc_mcontext.arm_pc, which works fine with
+uClibc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ user-exec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/user-exec.c b/user-exec.c
+index 6db0758..2b3d116 100644
+--- a/user-exec.c
++++ b/user-exec.c
+@@ -409,7 +409,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+ 
+ #if defined(__NetBSD__)
+     pc = uc->uc_mcontext.__gregs[_REG_R15];
+-#elif defined(__GLIBC__) && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 3))
++#elif defined(__GLIBC__) && !defined(__UCLIBC__) && (__GLIBC__ < 2 || (__GLIBC__ == 2 && __GLIBC_MINOR__ <= 3))
+     pc = uc->uc_mcontext.gregs[R15];
+ #else
+     pc = uc->uc_mcontext.arm_pc;
+-- 
+2.7.4
+

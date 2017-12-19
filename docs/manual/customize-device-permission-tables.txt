@@ -1,0 +1,30 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[customize-device-permission]]
+==== Setting file permissions and ownership and adding custom devices nodes
+
+Sometimes it is needed to set specific permissions or ownership on files
+or device nodes. For example, certain files may need to be owned by
+root. Since the post-build scripts are not run as root, you cannot do
+such changes from there unless you use an explicit fakeroot from the
+post-build script.
+
+Instead, Buildroot provides support for so-called _permission tables_.
+To use this feature, set config option +BR2_ROOTFS_DEVICE_TABLE+ to a
+space-separated list of permission tables, regular text files following
+the xref:makedev-syntax[makedev syntax].
+
+If you are using a static device table (i.e. not using +devtmpfs+,
++mdev+, or +(e)udev+) then you can add device nodes using the same
+syntax, in so-called _device tables_. To use this feature, set config
+option +BR2_ROOTFS_STATIC_DEVICE_TABLE+ to a space-separated list of
+device tables.
+
+As shown in xref:customize-dir-structure[], the recommended location for
+such files is +board/<company>/<boardname>/+.
+
+It should be noted that if the specific permissions or device nodes are
+related to a specific application, you should set variables
++FOO_PERMISSIONS+ and +FOO_DEVICES+ in the package's +.mk+ file instead
+(see xref:generic-package-reference[]).

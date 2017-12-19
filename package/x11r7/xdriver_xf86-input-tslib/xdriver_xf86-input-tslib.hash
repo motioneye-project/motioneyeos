@@ -1,2 +1,5 @@
-# Locally calculated
-sha256 5f46fdef095a6e44a69e0f0b57c7d665224b26d990d006611236d8332e85b105  xf86-input-tslib-0.0.6.tar.bz2
+# https://github.com/merge/xf86-input-tslib/releases/download/1.1.1/xf86-input-tslib-1.1.1.tar.bz2.sha256
+sha256 8b6a9f2ad73598a3619e66e252bd54b1792c4deba0213101fa4d272b5e9217ec  xf86-input-tslib-1.1.1.tar.bz2
+
+# Locally computed
+sha256  edfc46c9b91499699fc54d39e986756a2dcce8a919c6066be177123441532856  COPYING

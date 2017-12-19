@@ -1,2 +1,5 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002229.html
-sha256	9bc6acb21ca14da51bda5bc912c8955bc6e5e433f0ab00c5e8bef842596c33df	libXcursor-1.1.14.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-November/002823.html
+md5  58fe3514e1e7135cf364101e714d1a14  libXcursor-1.1.15.tar.bz2
+sha1 3e19f991f244b7fa31566adce7ead078424296cf  libXcursor-1.1.15.tar.bz2
+sha256 294e670dd37cd23995e69aae626629d4a2dfe5708851bbc13d032401b7a3df6b  libXcursor-1.1.15.tar.bz2
+sha512 53ad0fa2afd7b4cf1108b560e44ea71abdf5c55a18df243d7123942513589c927f5c105395f790d8769959e0129db54264e6aac7efd51a5f1aec270379b1f2f5  libXcursor-1.1.15.tar.bz2

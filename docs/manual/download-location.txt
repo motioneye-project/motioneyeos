@@ -1,0 +1,27 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[download-location]]
+
+==== Location of downloaded packages
+
+The various tarballs that are downloaded by Buildroot are all stored
+in +BR2_DL_DIR+, which by default is the +dl+ directory. If you want
+to keep a complete version of Buildroot which is known to be working
+with the associated tarballs, you can make a copy of this directory.
+This will allow you to regenerate the toolchain and the target
+filesystem with exactly the same versions.
+
+If you maintain several Buildroot trees, it might be better to have a
+shared download location. This can be achieved by pointing the
++BR2_DL_DIR+ environment variable to a directory. If this is
+set, then the value of +BR2_DL_DIR+ in the Buildroot configuration is
+overridden. The following line should be added to +<~/.bashrc>+.
+
+-----------------
+ export BR2_DL_DIR=<shared download location>
+-----------------
+
+The download location can also be set in the +.config+ file, with the
++BR2_DL_DIR+ option. Unlike most options in the .config file, this value
+is overridden by the +BR2_DL_DIR+ environment variable.

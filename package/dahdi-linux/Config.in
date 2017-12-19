@@ -1,0 +1,19 @@
+config BR2_PACKAGE_DAHDI_LINUX
+	bool "dhadi-linux"
+	depends on BR2_LINUX_KERNEL
+	help
+	  DAHDI (Digium/Asterisk Hardware Device Interface) is the open
+	  source device interface technology used to control Digium and
+	  other legacy telephony interface cards.
+
+	  DAHDI Linux is the open source device driver framework used to
+	  interface Asterisk with telephony hardware.
+
+	  http://www.asterisk.org/downloads/dahdi
+
+	  Note: DAHDI Linux drivers won't build on a kernel v4.0 or more
+	  recent, because they use internals that have been removed in
+	  v4.0.
+
+comment "dahdi-linux needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL

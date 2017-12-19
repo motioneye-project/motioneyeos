@@ -1,0 +1,15 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== Known issues
+
+* It is not possible to pass extra linker options via +BR2_TARGET_LDFLAGS+
+  if such options contain a +$+ sign. For example, the following is known
+  to break: +BR2_TARGET_LDFLAGS="-Wl,-rpath=\'$ORIGIN/../lib'"+
+
+* The +libffi+ package is not supported on the SuperH 2 and ARC
+  architectures.
+
+* The +prboom+ package triggers a compiler failure with the SuperH 4
+  compiler from Sourcery CodeBench, version 2012.09.
+

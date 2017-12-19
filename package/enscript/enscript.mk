@@ -6,7 +6,7 @@
 
 ENSCRIPT_VERSION = 1.6.6
 ENSCRIPT_SITE = $(BR2_GNU_MIRROR)/enscript
-ENSCRIPT_LICENSE = GPLv3+
+ENSCRIPT_LICENSE = GPL-3.0+
 ENSCRIPT_LICENSE_FILES = COPYING
 
 # Enable pthread threads if toolchain supports threads

@@ -57,8 +57,8 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DEBUGUTILS
 	bool "debugutils"
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DECKLINK
-	depends on BR2_INSTALL_LIBSTDCPP
 	bool "decklink"
+	depends on BR2_INSTALL_LIBSTDCPP
 
 comment "decklink needs a toolchain w/ C++"
 	depends on !BR2_INSTALL_LIBSTDCPP
@@ -261,8 +261,8 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_CURL
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DIRECTFB
 	bool "directfb"
-	depends on BR2_PACKAGE_DIRECTFB
 	default y
+	depends on BR2_PACKAGE_DIRECTFB
 
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_DVB
 	bool "dvb"

@@ -1,0 +1,29 @@
+From 2d971c3cdca9ecc55f2da8aba12ca89e1a66519a Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:19:47 +0100
+Subject: [PATCH] Adjust getaddrinfo() test for cross-compilation
+
+The getaddrinfo() test in configure.ac uses AC_RUN_IFELSE(), which isn't
+cross-compilation friendly.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 4aafc82..63e6918 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3527,7 +3527,7 @@ fi
+ 
+ AC_MSG_RESULT($ac_cv_buggy_getaddrinfo)
+ 
+-if test $have_getaddrinfo = no -o "$ac_cv_buggy_getaddrinfo" = yes
++if test $have_getaddrinfo = no || test "$cross_compiling" != "yes" -a "$ac_cv_buggy_getaddrinfo" = yes
+ then
+ 	if test $ipv6 = yes
+ 	then
+-- 
+2.7.4
+

@@ -4,8 +4,8 @@ config BR2_PACKAGE_MODEM_MANAGER
 	depends on BR2_USE_WCHAR # libglib2 and gnutls
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus
-	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_DBUS_GLIB
+	select BR2_PACKAGE_DBUS # runtime dependency
+	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBGUDEV
 	help
 	  ModemManager is a DBus-activated daemon which controls mobile

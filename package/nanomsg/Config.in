@@ -1,0 +1,23 @@
+config BR2_PACKAGE_NANOMSG
+	bool "nanomsg"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  nanomsg is a socket library that provides several common
+	  communication patterns. It aims to make the networking layer
+	  fast, scalable, and easy to use. Implemented in C, it works
+	  on a wide range of operating systems with no further
+	  dependencies.
+
+	  http://nanomsg.org/
+
+if BR2_PACKAGE_NANOMSG
+
+config BR2_PACKAGE_NANOMSG_TOOLS
+	bool "Build nanomsg tools"
+	help
+	  Build nanomsg tools
+
+endif
+
+comment "nanomsg needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

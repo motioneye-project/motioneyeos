@@ -1,0 +1,15 @@
+config BR2_PACKAGE_ATEST
+	bool "atest"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	depends on !BR2_bfin # libev
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_LIBEV
+	help
+	  atest is a test software for checking ALSA Asoc drivers
+	  concerning the proper frame generation and capture.
+
+	  https://github.com/amouiche/atest
+
+comment "atest needs a toolchain w/ threads"
+	depends on !BR2_bfin
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

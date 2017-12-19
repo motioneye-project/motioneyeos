@@ -9,7 +9,7 @@ GSTREAMER_SOURCE = gstreamer-$(GSTREAMER_VERSION).tar.xz
 GSTREAMER_SITE = http://gstreamer.freedesktop.org/src/gstreamer
 GSTREAMER_INSTALL_STAGING = YES
 # COPYING is in fact v2, but most of the code is v2.1+
-GSTREAMER_LICENSE = LGPLv2.1+
+GSTREAMER_LICENSE = LGPL-2.1+
 GSTREAMER_LICENSE_FILES = COPYING
 
 # Checking if unaligned memory access works correctly cannot be done when cross

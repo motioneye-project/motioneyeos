@@ -1,8 +1,6 @@
 config BR2_PACKAGE_PERL_URI
 	bool "perl-uri"
 	help
-	  The module implements the URI class. Objects of this class represent
-	  Uniform Resource Identifier references as specified in RFC 2396 and
-	  updated by RFC 2732.
+	  Uniform Resource Identifiers (absolute and relative)
 
-	  https://github.com/libwww-perl/uri
+	  https://github.com/libwww-perl/URI

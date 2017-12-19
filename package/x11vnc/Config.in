@@ -2,6 +2,8 @@ config BR2_PACKAGE_X11VNC
 	bool "x11vnc"
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_nios2 # libvncserver
+	select BR2_PACKAGE_LIBVNCSERVER
 	select BR2_PACKAGE_XLIB_LIBXT
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXTST

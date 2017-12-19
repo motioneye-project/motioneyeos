@@ -178,9 +178,17 @@ def gen_files_csv(filesdict, pkgsizes, outputf):
                      "File size in system (%)"])
         for f, (pkgname, filesize) in filesdict.items():
             pkgsize = pkgsizes[pkgname]
+
+            if pkgsize == 0:
+                percent_pkg = 0
+            else:
+                percent_pkg = float(filesize) / pkgsize * 100
+
+            percent_total = float(filesize) / total * 100
+
             wr.writerow([f, pkgname, filesize, pkgsize,
-                         "%.1f" % (float(filesize) / pkgsize * 100),
-                         "%.1f" % (float(filesize) / total * 100)])
+                         "%.1f" % percent_pkg,
+                         "%.1f" % percent_total])
 
 
 #

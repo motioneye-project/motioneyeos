@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256 0c950b9671881222a4d385b013c9604e98a8025d1988529dfca0e93617744cd2  wget-1.19.1.tar.xz
+sha256 d59a745ad2c522970660bb30d38601f9457b151b322e01fa20a5a0da0f55df07  wget-1.19.2.tar.lz
+# Locally calculated
+sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING

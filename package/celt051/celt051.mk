@@ -9,7 +9,7 @@
 CELT051_VERSION = 0.5.1.3
 CELT051_SOURCE = celt-$(CELT051_VERSION).tar.gz
 CELT051_SITE = http://downloads.xiph.org/releases/celt
-CELT051_LICENSE = BSD-2c
+CELT051_LICENSE = BSD-2-Clause
 CELT051_LICENSE_FILES = COPYING
 CELT051_INSTALL_STAGING = YES
 CELT051_DEPENDENCIES = libogg
@@ -18,13 +18,13 @@ CELT051_DEPENDENCIES = libogg
 # if target is the same kind as host (ie. same arch, same bitness,
 # same endianness, so that /usr/lib contains libraries linkable by
 # our cross-compiler)
-CELT051_CONF_OPTS =                       \
-	--enable-fixed-point              \
-	--disable-fixed-point-debug       \
+CELT051_CONF_OPTS = \
+	--enable-fixed-point \
+	--disable-fixed-point-debug \
 	--disable-experimental-postfilter \
-	--disable-static-modes            \
-	--disable-assertions              \
-	--disable-oggtest                 \
-	--with-ogg=$(STAGING_DIR)/usr     \
+	--disable-static-modes \
+	--disable-assertions \
+	--disable-oggtest \
+	--with-ogg=$(STAGING_DIR)/usr
 
 $(eval $(autotools-package))

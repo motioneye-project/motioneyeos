@@ -7,6 +7,8 @@ This allows installing rpiboot outside of /usr if needed.
 
 Submitted-upstream: https://github.com/raspberrypi/usbboot/pull/2
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Arnout: remove /usr]
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
 ---
  Makefile | 20 ++++++++++----------
  1 file changed, 10 insertions(+), 10 deletions(-)
@@ -24,11 +26,11 @@ index d9a7220..7835b7f 100755
 -	cp usbbootcode.bin /usr/share/rpiboot
 -	cp msd.elf /usr/share/rpiboot
 -	cp buildroot.elf /usr/share/rpiboot
-+	cp rpiboot $(DESTDIR)/usr/bin
-+	mkdir -p $(DESTDIR)//usr/share/rpiboot
-+	cp usbbootcode.bin $(DESTDIR)/usr/share/rpiboot
-+	cp msd.elf $(DESTDIR)/usr/share/rpiboot
-+	cp buildroot.elf $(DESTDIR)/usr/share/rpiboot
++	cp rpiboot $(DESTDIR)bin
++	mkdir -p $(DESTDIR)/share/rpiboot
++	cp usbbootcode.bin $(DESTDIR)/share/rpiboot
++	cp msd.elf $(DESTDIR)/share/rpiboot
++	cp buildroot.elf $(DESTDIR)/share/rpiboot
  
  uninstall:
 -	rm -f /usr/bin/rpiboot
@@ -36,11 +38,11 @@ index d9a7220..7835b7f 100755
 -	rm -f /usr/share/rpiboot/msd.elf
 -	rm -f /usr/share/rpiboot/buildroot.elf
 -	rmdir --ignore-fail-on-non-empty /usr/share/rpiboot/
-+	rm -f $(DESTDIR)/usr/bin/rpiboot
-+	rm -f $(DESTDIR)/usr/share/rpiboot/usbbootcode.bin
-+	rm -f $(DESTDIR)/usr/share/rpiboot/msd.elf
-+	rm -f $(DESTDIR)/usr/share/rpiboot/buildroot.elf
-+	rmdir --ignore-fail-on-non-empty $(DESTDIR)/usr/share/rpiboot/
++	rm -f $(DESTDIR)/bin/rpiboot
++	rm -f $(DESTDIR)/share/rpiboot/usbbootcode.bin
++	rm -f $(DESTDIR)/share/rpiboot/msd.elf
++	rm -f $(DESTDIR)/share/rpiboot/buildroot.elf
++	rmdir --ignore-fail-on-non-empty $(DESTDIR)/share/rpiboot/
  
  clean: 
  	rm rpiboot
