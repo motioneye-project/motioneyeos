@@ -1,0 +1,33 @@
+From 47a63d90e71d3e19e0e96052bb8c6b9cb140ecc1 Mon Sep 17 00:00:00 2001
+From: Wayne Davison <wayned@samba.org>
+Date: Sun, 5 Nov 2017 11:33:15 -0800
+Subject: [PATCH] Enforce trailing \0 when receiving xattr name values. Fixes
+ bug 13112.
+
+Fixes CVE-2017-16548
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+Patch status: upstream commit 47a63d90e7
+
+ xattrs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/xattrs.c b/xattrs.c
+index 68305d75..4867e6f5 100644
+--- a/xattrs.c
++++ b/xattrs.c
+@@ -824,6 +824,10 @@ void receive_xattr(int f, struct file_struct *file)
+ 			out_of_memory("receive_xattr");
+ 		name = ptr + dget_len + extra_len;
+ 		read_buf(f, name, name_len);
++		if (name_len < 1 || name[name_len-1] != '\0') {
++			rprintf(FERROR, "Invalid xattr name received (missing trailing \\0).\n");
++			exit_cleanup(RERR_FILEIO);
++		}
+ 		if (dget_len == datum_len)
+ 			read_buf(f, ptr, dget_len);
+ 		else {
+-- 
+2.11.0
+
