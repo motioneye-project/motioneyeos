@@ -169,6 +169,7 @@ orangepi_one_defconfig: *defconfig
 orangepi_pc_defconfig: *defconfig
 orangepi_pc_plus_defconfig: *defconfig
 orangepi_plus_defconfig: *defconfig
+orangepi_win_defconfig: *defconfig
 orangepi_zero_defconfig: *defconfig
 pandaboard_defconfig: *defconfig
 pc_x86_64_bios_defconfig: *defconfig
