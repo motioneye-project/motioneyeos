@@ -123,6 +123,7 @@ freescale_imx6ulevk_defconfig: *defconfig
 freescale_imx7dsabresd_defconfig: *defconfig
 freescale_mpc8315erdb_defconfig: *defconfig
 freescale_p1010rdb_pa_defconfig: *defconfig
+friendlyarm_nanopi_a64_defconfig: *defconfig
 galileo_defconfig: *defconfig
 gdb_bfin_bf512_defconfig: *defconfig
 grinn_chiliboard_defconfig: *defconfig
