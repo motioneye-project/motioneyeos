@@ -1,0 +1,30 @@
+From f88e9301948173dd35afad4a6939092c7f269aed Mon Sep 17 00:00:00 2001
+From: Sergey Matyukevich <geomatsi@gmail.com>
+Date: Fri, 3 Nov 2017 22:58:54 +0300
+Subject: [PATCH] arm64: dts: orange-pi-zero-plus2: fix sdcard detect
+
+The sdcard detect pin on orange-pi-zero-plus2 is pulled up.
+Fix cd-gpio description to enable sdcard detect.
+
+Signed-off-by: Sergey Matyukevich <geomatsi@gmail.com>
+Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
+---
+ arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
+index b6b7a56..a42fd79 100644
+--- a/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
++++ b/arch/arm64/boot/dts/allwinner/sun50i-h5-orangepi-zero-plus2.dts
+@@ -71,7 +71,7 @@
+ 	pinctrl-0 = <&mmc0_pins_a>, <&mmc0_cd_pin>;
+ 	vmmc-supply = <&reg_vcc3v3>;
+ 	bus-width = <4>;
+-	cd-gpios = <&pio 5 6 GPIO_ACTIVE_HIGH>;
++	cd-gpios = <&pio 5 6 GPIO_ACTIVE_LOW>;
+ 	status = "okay";
+ };
+ 
+-- 
+1.9.1
+
