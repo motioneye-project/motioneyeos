@@ -67,6 +67,27 @@ class TestIso9660Grub2External(infra.basetest.BRTest):
         self.assertEqual(exit_code, 1)
 
 
+class TestIso9660Grub2ExternalCompress(infra.basetest.BRTest):
+    config = BASIC_CONFIG + \
+        """
+        BR2_TARGET_ROOTFS_ISO9660=y
+        # BR2_TARGET_ROOTFS_ISO9660_INITRD is not set
+        BR2_TARGET_ROOTFS_ISO9660_TRANSPARENT_COMPRESSION=y
+        BR2_TARGET_GRUB2=y
+        BR2_TARGET_GRUB2_BOOT_PARTITION="cd"
+        BR2_TARGET_GRUB2_BUILTIN_MODULES="boot linux ext2 fat part_msdos part_gpt normal biosdisk iso9660"
+        BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
+        """.format(infra.filepath("conf/grub2.cfg"))
+
+    def test_run(self):
+        exit_code = test_mount_internal_external(self.emulator,
+                                                 self.builddir, internal=False)
+        self.assertEqual(exit_code, 0)
+
+        exit_code = test_touch_file(self.emulator)
+        self.assertEqual(exit_code, 1)
+
+
 class TestIso9660Grub2Internal(infra.basetest.BRTest):
     config = BASIC_CONFIG + \
         """
@@ -95,6 +116,26 @@ class TestIso9660SyslinuxExternal(infra.basetest.BRTest):
         """
         BR2_TARGET_ROOTFS_ISO9660=y
         # BR2_TARGET_ROOTFS_ISO9660_INITRD is not set
+        BR2_TARGET_ROOTFS_ISO9660_HYBRID=y
+        BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
+        BR2_TARGET_SYSLINUX=y
+        """.format(infra.filepath("conf/isolinux.cfg"))
+
+    def test_run(self):
+        exit_code = test_mount_internal_external(self.emulator,
+                                                 self.builddir, internal=False)
+        self.assertEqual(exit_code, 0)
+
+        exit_code = test_touch_file(self.emulator)
+        self.assertEqual(exit_code, 1)
+
+
+class TestIso9660SyslinuxExternalCompress(infra.basetest.BRTest):
+    config = BASIC_CONFIG + \
+        """
+        BR2_TARGET_ROOTFS_ISO9660=y
+        # BR2_TARGET_ROOTFS_ISO9660_INITRD is not set
+        BR2_TARGET_ROOTFS_ISO9660_TRANSPARENT_COMPRESSION=y
         BR2_TARGET_ROOTFS_ISO9660_HYBRID=y
         BR2_TARGET_ROOTFS_ISO9660_BOOT_MENU="{}"
         BR2_TARGET_SYSLINUX=y
