@@ -1,0 +1,67 @@
+From 08b0d67ba7eceb862cb17f52eb1911e9579726ea Mon Sep 17 00:00:00 2001
+From: Jean Delvare <jdelvare@suse.de>
+Date: Thu, 14 Dec 2017 08:52:26 +0100
+Subject: [PATCH] tools/Module.mk: Add missing dependencies
+
+Better build the library before building the tools which link against
+it, otherwise parallel builds could run into a race and break.
+
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Tested-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+Acked-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+---
+ lib/Module.mk   |  7 +++++++
+ tools/Module.mk | 10 +++++-----
+ 2 files changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/lib/Module.mk b/lib/Module.mk
+index 8a58f5b..67afe91 100644
+--- a/lib/Module.mk
++++ b/lib/Module.mk
+@@ -37,6 +37,13 @@ ifeq ($(BUILD_STATIC_LIB),1)
+ LIB_TARGETS	+= $(LIB_STLIBNAME)
+ endif
+ 
++# Library file to link against (static or dynamic)
++ifeq ($(USE_STATIC_LIB),1)
++LIB_DEPS	:= $(LIB_DIR)/$(LIB_STLIBNAME)
++else
++LIB_DEPS	:= $(LIB_DIR)/$(LIB_SHBASENAME)
++endif
++
+ #
+ # Libraries
+ #
+diff --git a/tools/Module.mk b/tools/Module.mk
+index 6421a23..609de7a 100644
+--- a/tools/Module.mk
++++ b/tools/Module.mk
+@@ -24,19 +24,19 @@ TOOLS_TARGETS	:= i2cdetect i2cdump i2cset i2cget i2ctransfer
+ # Programs
+ #
+ 
+-$(TOOLS_DIR)/i2cdetect: $(TOOLS_DIR)/i2cdetect.o $(TOOLS_DIR)/i2cbusses.o
++$(TOOLS_DIR)/i2cdetect: $(TOOLS_DIR)/i2cdetect.o $(TOOLS_DIR)/i2cbusses.o $(LIB_DEPS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
+ 
+-$(TOOLS_DIR)/i2cdump: $(TOOLS_DIR)/i2cdump.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
++$(TOOLS_DIR)/i2cdump: $(TOOLS_DIR)/i2cdump.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o $(LIB_DEPS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
+ 
+-$(TOOLS_DIR)/i2cset: $(TOOLS_DIR)/i2cset.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
++$(TOOLS_DIR)/i2cset: $(TOOLS_DIR)/i2cset.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o $(LIB_DEPS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
+ 
+-$(TOOLS_DIR)/i2cget: $(TOOLS_DIR)/i2cget.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
++$(TOOLS_DIR)/i2cget: $(TOOLS_DIR)/i2cget.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o $(LIB_DEPS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
+ 
+-$(TOOLS_DIR)/i2ctransfer: $(TOOLS_DIR)/i2ctransfer.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o
++$(TOOLS_DIR)/i2ctransfer: $(TOOLS_DIR)/i2ctransfer.o $(TOOLS_DIR)/i2cbusses.o $(TOOLS_DIR)/util.o $(LIB_DEPS)
+ 	$(CC) $(LDFLAGS) -o $@ $^ $(TOOLS_LDFLAGS)
+ 
+ #
+-- 
+2.7.4
+

@@ -1,0 +1,34 @@
+From de278d0933e3caea2508f95fd00e7e338bc12e8f Mon Sep 17 00:00:00 2001
+From: Angelo Compagnucci <angelo@amarulasolutions.com>
+Date: Thu, 14 Dec 2017 13:34:29 +0100
+Subject: lib/Module.mk: Fix LIB_LINKS dependency
+
+LIB_LINKS should be added as a dependency only when
+BUILD_DYNAMIC_LIB is enabled.
+
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Fixes: 9906b2ecb6ae ("Makefile: Add flag to disable dynamic library"
+---
+ lib/Module.mk | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/lib/Module.mk b/lib/Module.mk
+index 67afe91..2ebc70d 100644
+--- a/lib/Module.mk
++++ b/lib/Module.mk
+@@ -27,10 +27,9 @@ LIB_SHSONAME	:= $(LIB_SHBASENAME).$(LIB_MAINVER)
+ LIB_SHLIBNAME	:= $(LIB_SHBASENAME).$(LIB_VER)
+ LIB_STLIBNAME	:= libi2c.a
+ 
+-LIB_LINKS	:= $(LIB_SHSONAME) $(LIB_SHBASENAME)
+-
+ LIB_TARGETS	:=
+ ifeq ($(BUILD_DYNAMIC_LIB),1)
++LIB_LINKS	:= $(LIB_SHSONAME) $(LIB_SHBASENAME)
+ LIB_TARGETS	+= $(LIB_SHLIBNAME)
+ endif
+ ifeq ($(BUILD_STATIC_LIB),1)
+-- 
+2.7.4
+

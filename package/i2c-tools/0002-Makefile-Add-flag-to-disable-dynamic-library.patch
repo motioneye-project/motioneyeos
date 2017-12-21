@@ -1,0 +1,64 @@
+From 9906b2ecb6aec02d6348d6237b784135e6930d0b Mon Sep 17 00:00:00 2001
+From: Angelo Compagnucci <angelo@amarulasolutions.com>
+Date: Wed, 6 Dec 2017 10:12:07 +0100
+Subject: Makefile: Add flag to disable dynamic library
+
+In such cases where you need to disable entirely the dynamic
+library compilation, now you can use the BUILD_DYNAMIC_LIB=0
+flag.
+
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+---
+ Makefile      | 10 +++++++++-
+ lib/Module.mk |  6 +++++-
+ 2 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index c85317c..1bb5572 100644
+--- a/Makefile
++++ b/Makefile
+@@ -32,12 +32,20 @@ CFLAGS		?= -O2
+ CFLAGS		+= -Wall
+ SOCFLAGS	:= -fpic -D_REENTRANT $(CFLAGS)
+ 
+-USE_STATIC_LIB ?= 0
++BUILD_DYNAMIC_LIB ?= 1
+ BUILD_STATIC_LIB ?= 1
++USE_STATIC_LIB ?= 0
++
+ ifeq ($(USE_STATIC_LIB),1)
+ BUILD_STATIC_LIB := 1
+ endif
+ 
++ifeq ($(BUILD_DYNAMIC_LIB),0)
++ifeq ($(BUILD_STATIC_LIB),0)
++$(error BUILD_DYNAMIC_LIB and BUILD_STATIC_LIB cannot be disabled at the same time)
++endif
++endif
++
+ KERNELVERSION	:= $(shell uname -r)
+ 
+ .PHONY: all strip clean install uninstall
+diff --git a/lib/Module.mk b/lib/Module.mk
+index fd2c8c4..44fa938 100644
+--- a/lib/Module.mk
++++ b/lib/Module.mk
+@@ -27,9 +27,13 @@ LIB_SHSONAME	:= $(LIB_SHBASENAME).$(LIB_MAINVER)
+ LIB_SHLIBNAME	:= $(LIB_SHBASENAME).$(LIB_VER)
+ LIB_STLIBNAME	:= libi2c.a
+ 
+-LIB_TARGETS	:= $(LIB_SHLIBNAME)
+ LIB_LINKS	:= $(LIB_SHSONAME) $(LIB_SHBASENAME)
+ LIB_OBJECTS	:= smbus.o
++
++LIB_TARGETS	:=
++ifeq ($(BUILD_DYNAMIC_LIB),1)
++LIB_TARGETS	+= $(LIB_SHLIBNAME)
++endif
+ ifeq ($(BUILD_STATIC_LIB),1)
+ LIB_TARGETS	+= $(LIB_STLIBNAME)
+ LIB_OBJECTS	+= smbus.ao
+-- 
+2.7.4
+
