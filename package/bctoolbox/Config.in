@@ -6,8 +6,7 @@ config BR2_PACKAGE_BCTOOLBOX
 	  Utilities library used by Belledonne Communications
 	  softwares like belle-sip, mediastreamer2 and linphone.
 
-	  Select BR2_PACKAGE_MBEDTLS (preferred) or
-	  BR2_PACKAGE_POLARSSL for crypto support.
+	  Select BR2_PACKAGE_MBEDTLS for crypto support.
 
 	  https://github.com/BelledonneCommunications/bctoolbox
 

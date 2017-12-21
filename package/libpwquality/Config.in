@@ -1,0 +1,20 @@
+config BR2_PACKAGE_LIBPWQUALITY
+	bool "libpwquality"
+	select BR2_PACKAGE_CRACKLIB
+	help
+	  This is a library for password quality checks and generation
+	  of random passwords that pass the checks.  This library uses
+	  the cracklib and cracklib dictionaries to perform some of
+	  the checks.
+
+	  https://github.com/libpwquality/libpwquality
+
+if BR2_PACKAGE_LIBPWQUALITY
+
+config BR2_PACKAGE_LIBPWQUALITY_TOOLS
+	bool "install tools"
+	help
+	  Install libpwquality command line tools generating/checking
+	  passwords.
+
+endif

@@ -8,6 +8,8 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 [joerg.krause@embedded.rocks: musl fix]
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+[bernd.kuhls@t-online.de: update for 1.0.2]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  tirpc/rpc/rpcent.h | 5 +++--
  1 file changed, 3 insertions(+), 2 deletions(-)
@@ -21,7 +23,7 @@ index 147f909..4a58180 100644
  #endif
  
 -/* These are defined in /usr/include/rpc/netdb.h */
--#if !defined(__GLIBC__)
+-#if !defined(__GLIBC__) || defined(__UCLIBC__)
 +/* These are defined in /usr/include/rpc/netdb.h, unless we are using
 +   the C library without RPC support. */
 +#if defined(__UCLIBC__) && !defined(__UCLIBC_HAS_RPC__) || !defined(__GLIBC__)

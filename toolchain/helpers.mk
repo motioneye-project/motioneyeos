@@ -6,31 +6,26 @@
 # toolchain logic, and the glibc package, so care must be taken when
 # changing this function.
 #
-# $1: library name
+# $1: library name pattern (can include glob wildcards)
 #
 copy_toolchain_lib_root = \
-	LIB="$(strip $1)"; \
-\
-	LIBPATHS=`find $(STAGING_DIR)/ -name "$${LIB}" 2>/dev/null` ; \
+	LIBPATTERN="$(strip $1)"; \
+	LIBPATHS=`find $(STAGING_DIR)/ -name "$${LIBPATTERN}" 2>/dev/null` ; \
 	for LIBPATH in $${LIBPATHS} ; do \
-		DESTDIR=`echo $${LIBPATH} | sed "s,^$(STAGING_DIR)/,," | xargs dirname` ; \
-		mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 		while true ; do \
 			LIBNAME=`basename $${LIBPATH}`; \
-			LIBDIR=`dirname $${LIBPATH}` ; \
-			LINKTARGET=`readlink $${LIBPATH}` ; \
+			DESTDIR=`echo $${LIBPATH} | sed "s,^$(STAGING_DIR)/,," | xargs dirname` ; \
+			mkdir -p $(TARGET_DIR)/$${DESTDIR}; \
 			rm -fr $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
 			if test -h $${LIBPATH} ; then \
-				ln -sf `basename $${LINKTARGET}` $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME} ; \
+				cp -d $${LIBPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
+				LIBPATH="`readlink -f $${LIBPATH}`"; \
 			elif test -f $${LIBPATH}; then \
 				$(INSTALL) -D -m0755 $${LIBPATH} $(TARGET_DIR)/$${DESTDIR}/$${LIBNAME}; \
+				break ; \
 			else \
 				exit -1; \
 			fi; \
-			if test -z "$${LINKTARGET}" ; then \
-				break ; \
-			fi ; \
-			LIBPATH="`readlink -f $${LIBPATH}`"; \
 		done; \
 	done
 
@@ -39,16 +34,37 @@ copy_toolchain_lib_root = \
 # dir. The operation of this function is rendered a little bit
 # complicated by the support for multilib toolchains.
 #
-# We start by copying etc, lib, sbin and usr from the sysroot of the
-# selected architecture variant (as pointed by ARCH_SYSROOT_DIR). This
-# allows to import into the staging directory the C library and
-# companion libraries for the correct architecture variant. We
-# explictly only copy etc, lib, sbin and usr since other directories
+# We start by copying etc, 'lib', sbin, usr and usr/'lib' from the
+# sysroot of the selected architecture variant (as pointed to by
+# ARCH_SYSROOT_DIR). This allows to import into the staging directory
+# the C library and companion libraries for the correct architecture
+# variant. 'lib' may not be literally 'lib' but could be something else,
+# e.g. lib32-fp (as determined by ARCH_LIB_DIR) and we only want to copy
+# that lib directory and no other. When copying usr, we therefore need
+# to be extra careful not to include usr/lib* but we _do_ want to
+# include usr/libexec.
+# We are selective in the directories we copy since other directories
 # might exist for other architecture variants (on Codesourcery
 # toolchain, the sysroot for the default architecture variant contains
 # the armv4t and thumb2 subdirectories, which are the sysroot for the
 # corresponding architecture variants), and we don't want to import
 # them.
+#
+# If ARCH_LIB_DIR is not a singular directory component, e.g.
+# 'lib32/octeon2', then symbolic links in ARCH_LIB_DIR and
+# usr/ARCH_LIB_DIR may be broken because Buildroot will flatten the
+# directory structure (e.g. lib32/octeon2/foo is actually stored in
+# lib/foo). This is only relevant for links that contain one or more ../
+# components, as links to the current directory are always fine.
+# We need to fix the broken links by removing the right amount of ../
+# dots from the link destination.
+# Once the link destination is valid again, it can be simplified to
+# remove the dependency on intermediate directory symlinks.
+#
+# It is possible that ARCH_LIB_DIR does not contain the dynamic loader
+# (ld*.so or similar) because it (or the main symlink to it) normally
+# resides in /lib while ARCH_LIB_DIR may be something else (e.g. lib64,
+# lib/<tuple>, ...). Therefore, copy the dynamic loader separately.
 #
 # Then, if the selected architecture variant is not the default one
 # (i.e, if SYSROOT_DIR != ARCH_SYSROOT_DIR), then we :
@@ -89,22 +105,47 @@ copy_toolchain_sysroot = \
 	ARCH_LIB_DIR="$(strip $4)" ; \
 	SUPPORT_LIB_DIR="$(strip $5)" ; \
 	for i in etc $${ARCH_LIB_DIR} sbin usr usr/$${ARCH_LIB_DIR}; do \
-		if [ -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
-			rsync -au --chmod=u=rwX,go=rX --exclude 'usr/lib/locale' \
+		if [ ! -d $${ARCH_SYSROOT_DIR}/$$i ] ; then \
+			continue ; \
+		fi ; \
+		if [ "$$i" = "usr" ]; then \
+			rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
 				--include '/libexec*/' --exclude '/lib*/' \
+				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
+		else \
+			rsync -au --chmod=u=rwX,go=rX --exclude 'locale/' \
 				$${ARCH_SYSROOT_DIR}/$$i/ $(STAGING_DIR)/$$i/ ; \
 		fi ; \
 	done ; \
+	for link in $$(find $(STAGING_DIR) -type l); do \
+		target=$$(readlink $${link}) ; \
+		if [ "$${target}" == "$${target\#/}" ] ; then \
+			continue ; \
+		fi ; \
+		relpath="$(call relpath_prefix,$${target\#/})" ; \
+		echo "Fixing symlink $${link} from $${target} to $${relpath}$${target\#/}" ; \
+		ln -sf $${relpath}$${target\#/} $${link} ; \
+	done ; \
+	relpath="$(call relpath_prefix,$${ARCH_LIB_DIR})" ; \
+	if [ "$${relpath}" != "" ]; then \
+		for i in $$(find -H $(STAGING_DIR)/$${ARCH_LIB_DIR} $(STAGING_DIR)/usr/$${ARCH_LIB_DIR} -type l -xtype l); do \
+			LINKTARGET=`readlink $$i` ; \
+			NEWLINKTARGET=$${LINKTARGET\#$$relpath} ; \
+			ln -sf $${NEWLINKTARGET} $$i ; \
+			$(call simplify_symlink,$$i,$(STAGING_DIR)) ; \
+		done ; \
+	fi ; \
+	if [ ! -e $(STAGING_DIR)/lib/ld*.so.* ]; then \
+		if [ -e $${ARCH_SYSROOT_DIR}/lib/ld*.so.* ]; then \
+			cp -a $${ARCH_SYSROOT_DIR}/lib/ld*.so.* $(STAGING_DIR)/lib/ ; \
+		fi ; \
+	fi ; \
 	if [ `readlink -f $${SYSROOT_DIR}` != `readlink -f $${ARCH_SYSROOT_DIR}` ] ; then \
 		if [ ! -d $${ARCH_SYSROOT_DIR}/usr/include ] ; then \
 			cp -a $${SYSROOT_DIR}/usr/include $(STAGING_DIR)/usr ; \
 		fi ; \
 		mkdir -p `dirname $(STAGING_DIR)/$${ARCH_SUBDIR}` ; \
-		relpath="./" ; \
-		nbslashs=`printf $${ARCH_SUBDIR} | sed 's%[^/]%%g' | wc -c` ; \
-		for slash in `seq 1 $${nbslashs}` ; do \
-			relpath=$${relpath}"../" ; \
-		done ; \
+		relpath="$(call relpath_prefix,$${ARCH_SUBDIR})./" ; \
 		ln -s $${relpath} $(STAGING_DIR)/$${ARCH_SUBDIR} ; \
 		echo "Symlinking $(STAGING_DIR)/$${ARCH_SUBDIR} -> $${relpath}" ; \
 	fi ; \
@@ -132,22 +173,12 @@ check_kernel_headers_version = \
 # $1: path to gcc
 # $2: expected gcc version
 #
-# Some details about the sed expression:
-# - 1!d
-#   - delete if not line 1
-#
-# - s/^[^)]+\) ([^[:space:]]+).*/\1/
-#   - eat all until the first ')' character followed by a space
-#   - match as many non-space chars as possible
-#   - eat all the remaining chars on the line
-#   - replace by the matched expression
-#
 check_gcc_version = \
 	expected_version="$(strip $2)" ; \
 	if [ -z "$${expected_version}" ]; then \
 		exit 0 ; \
 	fi; \
-	real_version=`$(1) --version | sed -r -e '1!d; s/^[^)]+\) ([^[:space:]]+).*/\1/;'` ; \
+	real_version=`$(1) -dumpversion` ; \
 	if [[ ! "$${real_version}" =~ ^$${expected_version}\. ]] ; then \
 		printf "Incorrect selection of gcc version: expected %s.x, got %s\n" \
 			"$${expected_version}" "$${real_version}" ; \
@@ -196,7 +227,7 @@ check_glibc_rpc_feature = \
 #
 check_glibc = \
 	SYSROOT_DIR="$(strip $1)"; \
-	if test `find $${SYSROOT_DIR}/ -maxdepth 2 -name 'ld-linux*.so.*' -o -name 'ld.so.*' -o -name 'ld64.so.*' | wc -l` -eq 0 ; then \
+	if test `find -L $${SYSROOT_DIR}/ -maxdepth 2 -name 'ld-linux*.so.*' -o -name 'ld.so.*' -o -name 'ld64.so.*' | wc -l` -eq 0 ; then \
 		echo "Incorrect selection of the C library"; \
 		exit -1; \
 	fi; \
@@ -206,13 +237,18 @@ check_glibc = \
 #
 # Check that the selected C library really is musl
 #
-# $1: sysroot directory
+# $1: cross-gcc path
+# $2: cross-readelf path
 check_musl = \
-	SYSROOT_DIR="$(strip $1)"; \
-	if test ! -f $${SYSROOT_DIR}/lib/libc.so -o -e $${SYSROOT_DIR}/lib/libm.so ; then \
+	__CROSS_CC=$(strip $1) ; \
+	__CROSS_READELF=$(strip $2) ; \
+	echo 'void main(void) {}' | $${__CROSS_CC} -x c -o $(BUILD_DIR)/.br-toolchain-test.tmp - >/dev/null 2>&1; \
+	if ! $${__CROSS_READELF} -l $(BUILD_DIR)/.br-toolchain-test.tmp 2> /dev/null | grep 'program interpreter: /lib/ld-musl' -q; then \
+		rm -f $(BUILD_DIR)/.br-toolchain-test.tmp*; \
 		echo "Incorrect selection of the C library" ; \
 		exit -1; \
-	fi
+	fi ; \
+	rm -f $(BUILD_DIR)/.br-toolchain-test.tmp*
 
 #
 # Check the conformity of Buildroot configuration with regard to the
@@ -281,7 +317,6 @@ check_uclibc = \
 #
 check_arm_abi = \
 	__CROSS_CC=$(strip $1) ; \
-	__CROSS_READELF=$(strip $2) ; \
 	EXT_TOOLCHAIN_TARGET=`LANG=C $${__CROSS_CC} -v 2>&1 | grep ^Target | cut -f2 -d ' '` ; \
 	if ! echo $${EXT_TOOLCHAIN_TARGET} | grep -qE 'eabi(hf)?$$' ; then \
 		echo "External toolchain uses the unsuported OABI" ; \
@@ -403,3 +438,49 @@ check_toolchain_ssp = \
 gen_gdbinit_file = \
 	mkdir -p $(STAGING_DIR)/usr/share/buildroot/ ; \
 	echo "set sysroot $(STAGING_DIR)" > $(STAGING_DIR)/usr/share/buildroot/gdbinit
+
+# Given a path, determine the relative prefix (../) needed to return to the
+# root level. Note that the last component is treated as a file component; use a
+# trailing slash to force treating it as a directory. Examples:
+#     relpath_prefix(lib32) = ""
+#     relpath_prefix(lib32/octeon2) = "../"
+#     relpath_prefix(lib32/octeon2/) = "../../"
+#
+# $1: input path
+define relpath_prefix
+$$( \
+	prefix="" ; \
+	nbslashs=`printf $1 | sed 's%[^/]%%g' | wc -c` ; \
+	for slash in `seq 1 $${nbslashs}` ; do \
+		prefix=$${prefix}"../" ; \
+	done ; \
+	printf "$$prefix" ; \
+)
+endef
+
+# Replace the destination of a symbolic link with a simpler version
+# For example,
+#     usr/lib/libfoo.so -> ../../lib32/libfoo.so.1
+# becomes
+#     usr/lib/libfoo.so -> ../../lib/libfoo.so.1
+# since 'lib32' is a symlink to 'lib'.
+#
+# Likewise,
+#     usr/lib/octeon2/libbar.so -> ../../../lib32/octeon2/libbar.so.1
+# becomes
+#     usr/lib/octeon2/libbar.so -> ../../lib/libbar.so.1
+# assuming lib32->lib and lib/octeon2->lib.
+#
+# $1: symlink
+# $2: base path
+define simplify_symlink
+( \
+	FULL_SRC="$$(readlink -f $$(dirname $1))/$$(basename $1)" ; \
+	FULL_DEST="$$(readlink -f $1)" ; \
+	FULL_BASE="$$(readlink -f $2)" ; \
+	REL_SRC="$${FULL_SRC#$${FULL_BASE}/}" ; \
+	REL_DEST="$${FULL_DEST#$${FULL_BASE}/}" ; \
+	DOTS="$(call relpath_prefix,$${REL_SRC})" ; \
+	ln -sf "$${DOTS}$${REL_DEST}" "$${FULL_SRC}" ; \
+)
+endef

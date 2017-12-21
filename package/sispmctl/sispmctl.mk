@@ -6,7 +6,7 @@
 
 SISPMCTL_VERSION = 3.1
 SISPMCTL_SITE = http://downloads.sourceforge.net/project/sispmctl/sispmctl/sispmctl-$(SISPMCTL_VERSION)
-SISPMCTL_LICENSE = GPLv2+
+SISPMCTL_LICENSE = GPL-2.0+
 SISPMCTL_LICENSE_FILES = LICENCE
 SISPMCTL_DEPENDENCIES = libusb-compat
 

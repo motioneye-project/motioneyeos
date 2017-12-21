@@ -6,7 +6,8 @@ config BR2_PACKAGE_GSSDP
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBSOUP
 	help
-	  GSSDP implements resource discovery and announcement over SSDP.
+	  GSSDP implements resource discovery and announcement over
+	  SSDP.
 
 	  http://www.gupnp.org
 

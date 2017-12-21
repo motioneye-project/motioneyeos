@@ -4,15 +4,14 @@
 #
 ################################################################################
 
-HWLOC_VERSION_MAJOR = 1.10
-HWLOC_VERSION = $(HWLOC_VERSION_MAJOR).1
+HWLOC_VERSION_MAJOR = 1.11
+HWLOC_VERSION = $(HWLOC_VERSION_MAJOR).7
 HWLOC_SOURCE = hwloc-$(HWLOC_VERSION).tar.bz2
 HWLOC_SITE = http://www.open-mpi.org/software/hwloc/v$(HWLOC_VERSION_MAJOR)/downloads
-HWLOC_LICENSE = BSD-3c
+HWLOC_LICENSE = BSD-3-Clause
 HWLOC_LICENSE_FILES = COPYING
 HWLOC_DEPENDENCIES = host-pkgconf
-# 0001-utils-hwloc-Makefile.am-fix-install-man-race-conditi.patch touches Makefile.am
-HWLOC_AUTORECONF = YES
+HWLOC_INSTALL_STAGING = YES
 
 HWLOC_CONF_OPTS = \
 	--disable-opencl \

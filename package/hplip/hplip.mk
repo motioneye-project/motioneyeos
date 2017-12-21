@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-HPLIP_VERSION = 3.16.11
+HPLIP_VERSION = 3.17.10
 HPLIP_SITE = http://downloads.sourceforge.net/hplip/hplip
 HPLIP_AUTORECONF = YES
 HPLIP_DEPENDENCIES = cups libusb jpeg host-pkgconf
-HPLIP_LICENSE = GPLv2, BSD-3c, MIT
+HPLIP_LICENSE = GPL-2.0, BSD-3-Clause, MIT
 HPLIP_LICENSE_FILES = COPYING
 
 HPLIP_CONF_OPTS = \

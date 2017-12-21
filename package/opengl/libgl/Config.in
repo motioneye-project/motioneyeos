@@ -2,5 +2,5 @@ config BR2_PACKAGE_HAS_LIBGL
 	bool
 
 config BR2_PACKAGE_PROVIDES_LIBGL
-	depends on BR2_PACKAGE_HAS_LIBGL
 	string
+	depends on BR2_PACKAGE_HAS_LIBGL

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # vim: set sw=4 expandtab:
 #
 # This program is free software; you can redistribute it and/or modify
@@ -18,18 +18,12 @@
 # Copyright (C) 2016 Jérôme Pouiller <jezz@sysmic.org>
 #
 
-# Sanity check
-if ! readlink -f "$0" | grep -q fakedate; then
-    echo "fakedate: Please name this script \`fakedate'"
-    exit 1
-fi
-
 DATE_BIN=false
 # Do not call `date' directly since it will produce an infinite recursion.
 # Instead, find path of true `date' binary.
 for P in `echo $PATH | tr ':' ' '`; do
     if [ -x "$P/date" ]; then
-        if readlink -f "$P/date" | grep -qv fakedate; then
+        if ! [ "$P/date" -ef "$0" ]; then
             DATE_BIN="$P/date"
             break;
         fi
@@ -50,8 +44,8 @@ if [ -n "$SOURCE_DATE_EPOCH" ]; then
     done
     if [ $FORCE_EPOCH -eq 1 ]; then
         echo "date: Warning: using \$SOURCE_DATE_EPOCH instead of true time" >&2
-        exec $DATE_BIN -d "@$SOURCE_DATE_EPOCH" "$@"
+        ARGS="-d @$SOURCE_DATE_EPOCH"
     fi
 fi
 
-exec $DATE_BIN "$@"
+exec $DATE_BIN $ARGS "$@"

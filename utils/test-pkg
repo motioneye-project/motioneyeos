@@ -1,0 +1,197 @@
+#!/usr/bin/env bash
+set -e
+
+TOOLCHAINS_CSV='support/config-fragments/autobuild/toolchain-configs.csv'
+
+main() {
+    local o O opts
+    local cfg dir pkg random toolchains_dir toolchain
+    local ret nb nb_skip nb_fail nb_legal nb_tc build_dir
+    local -a toolchains
+
+    o='hc:d:p:r:t:'
+    O='help,config-snippet:build-dir:package:,random:,toolchains-dir:'
+    opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
+    eval set -- "${opts}"
+
+    random=0
+    toolchains_csv="${TOOLCHAINS_CSV}"
+    while [ ${#} -gt 0 ]; do
+        case "${1}" in
+        (-h|--help)
+            help; exit 0
+            ;;
+        (-c|--config-snippet)
+            cfg="${2}"; shift 2
+            ;;
+        (-d|--build-dir)
+            dir="${2}"; shift 2
+            ;;
+        (-p|--package)
+            pkg="${2}"; shift 2
+            ;;
+        (-r|--random)
+            random="${2}"; shift 2
+            ;;
+        (-t|--toolchains-csv)
+            toolchains_csv="${2}"; shift 2
+            ;;
+        (--)
+            shift; break
+            ;;
+        esac
+    done
+    if [ -z "${cfg}" ]; then
+        printf "error: no config snippet specified\n" >&2; exit 1
+    fi
+    if [ ! -e "${cfg}" ]; then
+        printf "error: %s: no such file\n" "${cfg}" >&2; exit 1
+    fi
+    if [ -z "${dir}" ]; then
+        dir="${HOME}/br-test-pkg"
+    fi
+
+    # Extract the URLs of the toolchains; drop internal toolchains
+    # E.g.: http://server/path/to/name.config,arch,libc
+    #  -->  http://server/path/to/name.config
+    toolchains=($(sed -r -e 's/,.*//; /internal/d;' "${toolchains_csv}" \
+                  |if [ ${random} -gt 0 ]; then \
+                      sort -R |head -n ${random}
+                   else
+                      cat
+                   fi |sort
+                 )
+               )
+
+    nb_tc="${#toolchains[@]}"
+    if [ ${nb_tc} -eq 0 ]; then
+        printf "error: no toolchain found (networking issue?)\n" >&2; exit 1
+    fi
+
+    nb=0
+    nb_skip=0
+    nb_fail=0
+    nb_legal=0
+    for toolchainconfig in "${toolchains[@]}"; do
+        : $((nb++))
+        toolchain="$(basename "${toolchainconfig}" .config)"
+        build_dir="${dir}/${toolchain}"
+        printf "%40s [%*d/%d]: " "${toolchain}" ${#nb_tc} ${nb} ${nb_tc}
+        build_one "${build_dir}" "${toolchainconfig}" "${cfg}" "${pkg}" && ret=0 || ret=${?}
+        case ${ret} in
+        (0) printf "OK\n";;
+        (1) : $((nb_skip++)); printf "SKIPPED\n";;
+        (2) : $((nb_fail++)); printf "FAILED\n";;
+        (3) : $((nb_legal++)); printf "FAILED\n";;
+        esac
+    done
+
+    printf "%d builds, %d skipped, %d build failed, %d legal-info failed\n" \
+        ${nb} ${nb_skip} ${nb_fail} ${nb_legal}
+}
+
+build_one() {
+    local dir="${1}"
+    local toolchainconfig="${2}"
+    local cfg="${3}"
+    local pkg="${4}"
+
+    mkdir -p "${dir}"
+
+    support/kconfig/merge_config.sh -O "${dir}" \
+        "${toolchainconfig}" "support/config-fragments/minimal.config" "${cfg}" \
+        > /dev/null
+    # We want all the options from the snippet to be present as-is (set
+    # or not set) in the actual .config; if one of them is not, it means
+    # some dependency from the toolchain or arch is not available, in
+    # which case this config is untestable and we skip it.
+    # We don't care about the locale to sort in, as long as both sort are
+    # done in the same locale.
+    comm -23 <(sort "${cfg}") <(sort "${dir}/.config") >"${dir}/missing.config"
+    if [ -s "${dir}/missing.config" ]; then
+        return 1
+    fi
+    # Remove file, it's empty anyway.
+    rm -f "${dir}/missing.config"
+
+    if [ -n "${pkg}" ]; then
+        if ! make O="${dir}" "${pkg}-dirclean" >> "${dir}/logfile" 2>&1; then
+            return 2
+        fi
+    fi
+
+    # shellcheck disable=SC2086
+    if ! make O="${dir}" ${pkg} >> "${dir}/logfile" 2>&1; then
+        return 2
+    fi
+
+    # legal-info done systematically, because some packages have different
+    # sources depending on the configuration (e.g. lua-5.2 vs. lua-5.3)
+    if [ -n "${pkg}" ]; then
+        if ! make O="${dir}" "${pkg}-legal-info" >> "${dir}/logfile" 2>&1; then
+            return 3
+        fi
+    fi
+}
+
+help() {
+    cat <<_EOF_
+test-pkg: test-build a package against various toolchains and architectures
+
+The supplied config snippet is appended to each toolchain config, the
+resulting configuration is checked to ensure it still contains all options
+specified in the snippet; if any is missing, the build is skipped, on the
+assumption that the package under test requires a toolchain or architecture
+feature that is missing.
+
+In case failures are noticed, you can fix the package and just re-run the
+same command again; it will re-run the test where it failed. If you did
+specify a package (with -p), the package build dir will be removed first.
+
+The list of toolchains is retrieved from ${TOOLCHAINS_CSV}.
+Only the external toolchains are tried, because building a Buildroot toolchain
+would take too long. An alternative toolchains CSV file can be specified with
+the -t option. This file should have lines consisting of the path to the
+toolchain config fragment and the required host architecture, separated by a
+comma. The config fragments should contain only the toolchain and architecture
+settings.
+
+Options:
+
+    -h, --help
+        Print this help.
+
+    -c CFG, --config-snippet CFG
+        Use the CFG file as the source for the config snippet. This file
+        should contain all the config options required to build a package.
+
+    -d DIR, --build-dir DIR
+        Do the builds in directory DIR, one sub-dir per toolchain.
+
+    -p PKG, --package PKG
+        Test-build the package PKG, by running 'make PKG'; if not specified,
+        just runs 'make'.
+
+    -r N, --random N
+        Limit the tests to the N randomly selected toolchains, instead of
+        building with all toolchains.
+
+    -t CSVFILE, --toolchains-csv CSVFILE
+        CSV file containing the paths to config fragments of toolchains to
+        try. If not specified, the toolchains in ${TOOLCHAINS_CSV} will be
+        used.
+
+Example:
+
+    Testing libcec would require a config snippet that contains:
+        BR2_PACKAGE_LIBCEC=y
+
+    Testing libcurl with openSSL support would require a snippet such as:
+        BR2_PACKAGE_OPENSSL=y
+        BR2_PACKAGE_LIBCURL=y
+
+_EOF_
+}
+
+my_name="${0##*/}"
+main "${@}"

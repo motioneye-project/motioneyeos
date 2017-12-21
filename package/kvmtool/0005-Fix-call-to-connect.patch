@@ -1,0 +1,34 @@
+From d375235f49184371026791ae8f6f9dc307de8a61 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Fri, 17 Jul 2015 17:02:14 +0100
+Subject: [PATCH] Fix call to connect()
+
+According to the manpage and the prototype the second argument to
+connect(2) is a "const struct sockaddr*", so cast our protocol
+specific type back to the super type.
+This fixes compilation on musl-libc.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Will Deacon <will.deacon@arm.com>
+[backport from upstream commit d77bd4f466f341d4b35fe8b91176ef8a37160e19.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ kvm-ipc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/kvm-ipc.c b/kvm-ipc.c
+index b1c43dd..5a0b6e0 100644
+--- a/kvm-ipc.c
++++ b/kvm-ipc.c
+@@ -99,7 +99,7 @@ int kvm__get_sock_by_instance(const char *name)
+ 	strlcpy(local.sun_path, sock_file, sizeof(local.sun_path));
+ 	len = strlen(local.sun_path) + sizeof(local.sun_family);
+ 
+-	r = connect(s, &local, len);
++	r = connect(s, (struct sockaddr *)&local, len);
+ 	if (r < 0 && errno == ECONNREFUSED) {
+ 		/* Tell the user clean ghost socket file */
+ 		pr_err("\"%s\" could be a ghost socket file, please remove it",
+-- 
+2.9.4
+

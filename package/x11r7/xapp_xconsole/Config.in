@@ -1,10 +1,10 @@
 config BR2_PACKAGE_XAPP_XCONSOLE
 	bool "xconsole"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXT
 	select BR2_PACKAGE_XPROTO_XPROTO
 	select BR2_PACKAGE_XLIB_LIBXMU
-	depends on BR2_USE_MMU # fork()
 	help
 	  xconsole - monitor system console messages with X

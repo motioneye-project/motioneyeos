@@ -1,0 +1,32 @@
+This patch is taken from the Arch Linux User Repository, see:
+https://aur.archlinux.org/packages/sdl_sound-patched-hg/
+
+Signed-off-by: Sam Bobroff <sam.bobroff@au1.ibm.com>
+
+diff -ru SDL_sound.orig/playsound/physfsrwops.h SDL_sound/playsound/physfsrwops.h
+--- SDL_sound.orig/playsound/physfsrwops.h	2014-01-11 06:28:35.494936000 +0100
++++ SDL_sound/playsound/physfsrwops.h	2014-01-11 06:31:38.315675483 +0100
+@@ -29,6 +29,11 @@
+ extern "C" {
+ #endif
+ 
++/* renamed in physfs dev, add alias */
++#ifdef PHYSFS_DECL
++#define __EXPORT__ PHYSFS_DECL
++#endif
++
+ /**
+  * Open a platform-independent filename for reading, and make it accessible
+  *  via an SDL_RWops structure. The file will be closed in PhysicsFS when the
+@@ -77,6 +82,11 @@
+  */
+ __EXPORT__ SDL_RWops *PHYSFSRWOPS_makeRWops(PHYSFS_file *handle);
+ 
++/* renamed in physfs dev, remove alias */
++#ifdef PHYSFS_DECL
++#undef __EXPORT__
++#endif
++
+ #ifdef __cplusplus
+ }
+ #endif

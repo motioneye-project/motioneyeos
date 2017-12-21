@@ -1,7 +1,6 @@
 config BR2_PACKAGE_PYTHON_SIMPLEJSON
 	bool "python-simplejson"
-	depends on BR2_PACKAGE_PYTHON
 	help
-	  Simple, fast, extensible JSON encoder/decoder for Python
+	  Simple, fast, extensible JSON encoder/decoder for Python.
 
 	  https://pypi.python.org/pypi/simplejson/

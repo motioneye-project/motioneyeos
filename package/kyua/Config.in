@@ -3,6 +3,7 @@ config BR2_PACKAGE_KYUA
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER # lutok
 	depends on !BR2_PACKAGE_LUAJIT # lutok
+	depends on !BR2_STATIC_LIBS # lutok
 	depends on BR2_USE_MMU # atf
 	select BR2_PACKAGE_ATF
 	select BR2_PACKAGE_LUTOK
@@ -16,7 +17,7 @@ config BR2_PACKAGE_KYUA
 
 	  https://github.com/jmmv/kyua
 
-comment "kyua needs a toolchain w/ C++ and full Lua"
-	depends on !BR2_INSTALL_LIBSTDCPP || BR2_PACKAGE_LUAJIT
+comment "kyua needs a toolchain w/ C++, dynamic library and full Lua"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_PACKAGE_LUAJIT || BR2_STATIC_LIBS
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	depends on BR2_USE_MMU

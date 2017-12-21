@@ -6,7 +6,7 @@
 
 RTL8723BS_VERSION = 11ab92d8ccd71c80f0102828366b14ef6b676fb2
 RTL8723BS_SITE = $(call github,hadess,rtl8723bs,$(RTL8723BS_VERSION))
-RTL8723BS_LICENSE = GPLv2, proprietary (*.bin firmware blobs)
+RTL8723BS_LICENSE = GPL-2.0, proprietary (*.bin firmware blobs)
 
 RTL8723BS_MODULE_MAKE_OPTS = \
 	CONFIG_RTL8723BS=m \

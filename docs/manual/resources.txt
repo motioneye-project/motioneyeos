@@ -1,0 +1,73 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[community-resources]]
+== Community resources
+
+Like any open source project, Buildroot has different ways to share
+information in its community and outside.
+
+Each of those ways may interest you if you are looking for some help,
+want to understand Buildroot or contribute to the project.
+
+Mailing List::
++
+Buildroot has a mailing list for discussion and development. It is the
+main method of interaction for Buildroot users and developers.
++
+Only subscribers to the Buildroot mailing list are allowed to post to
+this list. You can subscribe via the
+http://lists.buildroot.org/mailman/listinfo/buildroot[mailing list info
+page].
++
+Mails that are sent to the mailing list are also available in the
+http://lists.buildroot.org/pipermail/buildroot[mailing list archives] and
+via http://gmane.org[Gmane], at
+http://dir.gmane.org/gmane.comp.lib.uclibc.buildroot[+gmane.comp.lib.uclibc.buildroot+].
+Please search the mailing list archives before asking questions, since
+there is a good chance someone else has asked the same question before.
+
+IRC::
++
+The Buildroot IRC channel irc://freenode.net/#buildroot[#buildroot] is
+hosted on http://webchat.freenode.net[Freenode]. It is a useful place to
+ask quick questions or discuss on certain topics.
++
+When asking for help on IRC, share relevant logs or pieces of code
+using a code sharing website, such as http://code.bulix.org.
++
+Note that for certain questions, posting to the mailing list may be
+better as it will reach more people, both developers and users.
+
+Bug tracker::
++
+Bugs in Buildroot can be reported via the mailing list or alternatively
+via the https://bugs.buildroot.org/buglist.cgi?product=buildroot[Buildroot
+bugtracker]. Please refer to xref:reporting-bugs[] before creating a bug
+report.
+
+Wiki::
++
+http://elinux.org/Buildroot[The Buildroot wiki page] is hosted on
+the http://elinux.org[eLinux] wiki. It contains some useful links, an
+overview of past and upcoming events, and a TODO list.
+
+Patchwork::
++
+Patchwork is a web-based patch tracking system designed to facilitate
+the contribution and management of contributions to an open-source
+project. Patches that have been sent to a mailing list are \'caught' by
+the system, and appear on a web page. Any comments posted that
+reference the patch are appended to the patch page too. For more
+information on Patchwork see
+http://jk.ozlabs.org/projects/patchwork/[].
++
+Buildroot's Patchwork website is mainly for use by Buildroot's
+maintainer to ensure patches aren't missed. It is also used by Buildroot
+patch reviewers (see also xref:apply-patches-patchwork[]).
+However, since the website exposes patches and their corresponding
+review comments in a clean and concise web interface, it can be useful
+for all Buildroot developers.
++
+The Buildroot patch management interface is available at
+http://patchwork.buildroot.org[].

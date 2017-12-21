@@ -2,3 +2,5 @@
 md5		93f90d2ccc36e784407c5282ef6bd2cb	urg-0.8.18.zip
 # Locally calculated
 sha256	b2cab7e539c90c60fc99a2350a42b5d5390ff952b694b196c3cbb54623cfee7f	urg-0.8.18.zip
+# License files, locally calculated
+sha256	9ccf26cfe845e0eb8bb58053e47366e7ab6b697ae010f7650978d4b71b7d1fc1	COPYING

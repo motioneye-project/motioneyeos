@@ -1,0 +1,62 @@
+From fbc9b7c3b83a99ac996c0a268487d1f800630328 Mon Sep 17 00:00:00 2001
+From: Julien Viard de Galbert <julien@vdg.name>
+Date: Wed, 8 Feb 2017 21:26:58 +0100
+Subject: [PATCH] Do not use includedir as include search path for build
+
+--includedir is not used to specify where a program should
+look for headers of libraries, but to tell where it should
+install its own headers.
+
+Signed-off-by: Julien Viard de Galbert <julien@vdg.name>
+---
+ configure.ac             | 6 +++---
+ dieharder/Makefile.am    | 2 +-
+ libdieharder/Makefile.am | 2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index b336115..91f7c64 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -96,9 +96,9 @@ AC_TYPE_SIZE_T
+ AC_C_VOLATILE
+ AC_C_INLINE
+ 
+-DIEHARDER_CFLAGS="-I$includedir"
+-dieharder_CFLAGS="-std=c99 -Wall -pedantic -I$includedir"
+-libdieharder_lo_CFLAGS="-Wall -pedantic -I$includedir"
++DIEHARDER_CFLAGS=""
++dieharder_CFLAGS="-std=c99 -Wall -pedantic"
++libdieharder_lo_CFLAGS="-Wall -pedantic"
+ DIEHARDER_LIBS="-L$libdir -ldieharder"
+ ACLOCAL_AMFLAGS="-I m4"
+ 
+diff --git a/dieharder/Makefile.am b/dieharder/Makefile.am
+index e6fbff2..7bdac5c 100644
+--- a/dieharder/Makefile.am
++++ b/dieharder/Makefile.am
+@@ -64,7 +64,7 @@ DEFINES = -DVERSION=$(VERSION)
+ # CC = gcc
+ 
+ # Compile flags (use fairly standard -O3 as default)
+-AM_CPPFLAGS = -I ${top_srcdir}/include $(DEFINES) -I ${includedir}
++AM_CPPFLAGS = -I ${top_srcdir}/include $(DEFINES)
+ AM_CFLAGS = -O3
+ 
+ # Load flags (optional)
+diff --git a/libdieharder/Makefile.am b/libdieharder/Makefile.am
+index 5fd3396..0873f9c 100644
+--- a/libdieharder/Makefile.am
++++ b/libdieharder/Makefile.am
+@@ -114,7 +114,7 @@ DEFINES = -DVERSION=$(VERSION) -DLITTLE_ENDIAN=$(LITTLE_ENDIAN)
+ # CC = gcc
+ 
+ # Compile flags (use fairly standard -O3 as default)
+-AM_CPPFLAGS = $(DEFINES) -I ${top_srcdir}/include -I ${includedir}
++AM_CPPFLAGS = $(DEFINES) -I ${top_srcdir}/include
+ AM_CFLAGS = -O3 -Wall -pedantic -Wno-unused-variable 
+ 
+ #========================================================================
+-- 
+2.1.4
+

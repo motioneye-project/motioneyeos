@@ -1,0 +1,49 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[adding-packages]]
+== Adding new packages to Buildroot
+
+This section covers how new packages (userspace libraries or
+applications) can be integrated into Buildroot. It also shows how
+existing packages are integrated, which is needed for fixing issues or
+tuning their configuration.
+
+When you add a new package, be sure to test it in various conditions;
+see xref:testing-package[]
+
+include::adding-packages-directory.txt[]
+
+include::adding-packages-generic.txt[]
+
+include::adding-packages-autotools.txt[]
+
+include::adding-packages-cmake.txt[]
+
+include::adding-packages-python.txt[]
+
+include::adding-packages-luarocks.txt[]
+
+include::adding-packages-perl.txt[]
+
+include::adding-packages-virtual.txt[]
+
+include::adding-packages-kconfig.txt[]
+
+include::adding-packages-rebar.txt[]
+
+include::adding-packages-waf.txt[]
+
+include::adding-packages-kernel-module.txt[]
+
+include::adding-packages-asciidoc.txt[]
+
+include::adding-packages-linux-kernel-spec-infra.txt[]
+
+include::adding-packages-hooks.txt[]
+
+include::adding-packages-gettext.txt[]
+
+include::adding-packages-tips.txt[]
+
+include::adding-packages-conclusion.txt[]

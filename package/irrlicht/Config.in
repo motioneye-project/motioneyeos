@@ -1,0 +1,17 @@
+config BR2_PACKAGE_IRRLICHT
+	bool "irrlicht"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_HAS_LIBGL # use GLX
+	select BR2_PACKAGE_XLIB_LIBXXF86VM # libXxf86vm
+	help
+	  An open source high performance realtime 3D graphics engine.
+
+	  http://irrlicht.sourceforge.net/
+
+comment "irrlicht needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+comment "irrlicht needs X11 and an OpenGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGL || !BR2_PACKAGE_XORG7
+	depends on BR2_INSTALL_LIBSTDCPP

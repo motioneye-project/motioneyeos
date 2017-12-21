@@ -1,2 +1,3 @@
-# Locally computed (after checking the signature from http://www.intra2net.com/en/developer/libftdi/download.php)
-sha256  9a8c95c94bfbcf36584a0a58a6e2003d9b133213d9202b76aec76302ffaa81f4  libftdi1-1.3.tar.bz2
+# Locally computed after checking the signature
+# https://www.intra2net.com/en/developer/libftdi/download/libftdi1-1.4.tar.bz2.sig
+sha256  ec36fb49080f834690c24008328a5ef42d3cf584ef4060f3a35aa4681cb31b74  libftdi1-1.4.tar.bz2

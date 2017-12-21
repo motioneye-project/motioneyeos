@@ -1,15 +1,24 @@
 menu "System configuration"
 
+# Note: usually, it is not possible to select a provider of a virtual
+# package. But here we have an exception: there are only four providers
+# and they only get selected by separate entries in this choice and
+# under different, exclusive conditions. So this is a safe situation.
 choice
 	prompt "Root FS skeleton"
 
 config BR2_ROOTFS_SKELETON_DEFAULT
 	bool "default target skeleton"
+	select BR2_PACKAGE_SKELETON_INIT_SYSV if BR2_INIT_SYSV
+	select BR2_PACKAGE_SKELETON_INIT_SYSV if BR2_INIT_BUSYBOX
+	select BR2_PACKAGE_SKELETON_INIT_SYSTEMD if BR2_INIT_SYSTEMD
+	select BR2_PACKAGE_SKELETON_INIT_NONE if BR2_INIT_NONE
 	help
 	  Use default target skeleton
 
 config BR2_ROOTFS_SKELETON_CUSTOM
 	bool "custom target skeleton"
+	select BR2_PACKAGE_SKELETON_CUSTOM
 	help
 	  Use custom target skeleton.
 
@@ -127,7 +136,6 @@ config BR2_INIT_SYSTEMD
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 	select BR2_ROOTFS_MERGED_USR
 	select BR2_PACKAGE_SYSTEMD
-	select BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW if BR2_ROOTFS_SKELETON_DEFAULT
 
 comment "systemd needs a glibc toolchain, headers >= 3.10"
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC \
@@ -218,6 +226,7 @@ config BR2_ROOTFS_MERGED_USR
 config BR2_TARGET_ENABLE_ROOT_LOGIN
 	bool "Enable root login with password"
 	default y
+	select BR2_PACKAGE_HOST_MKPASSWD if BR2_TARGET_GENERIC_ROOT_PASSWD != ""
 	help
 	  Allow root to log in with a password.
 
@@ -298,7 +307,6 @@ endchoice # /bin/sh
 
 config BR2_SYSTEM_BIN_SH
 	string
-	default "busybox" if BR2_SYSTEM_BIN_SH_BUSYBOX
 	default "bash"    if BR2_SYSTEM_BIN_SH_BASH
 	default "dash"    if BR2_SYSTEM_BIN_SH_DASH
 	default "mksh"    if BR2_SYSTEM_BIN_SH_MKSH
@@ -421,6 +429,25 @@ config BR2_GENERATE_LOCALE
 	  specified, UTF-8 is assumed. Examples of locales: en_US,
 	  fr_FR.UTF-8.
 
+config BR2_SYSTEM_ENABLE_NLS
+	bool "Enable Native Language Support (NLS)"
+	depends on BR2_USE_WCHAR
+	#  - glibc has built-in NLS support, but anyway doesn't
+	#    support static linking
+	#  - musl and uclibc support static linking, but they don't
+	#    have built-in NLS support, which is provided by the
+	#    libintl library from gettext. The fact that it is a
+	#    separate library causes too many problems for static
+	#    linking.
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_GETTEXT if !BR2_TOOLCHAIN_HAS_FULL_GETTEXT
+	help
+	  This option will enable Native Language Support, which will
+	  allow software packages to support translations.
+
+comment "NLS support needs a toolchain w/ wchar, dynamic library"
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+
 config BR2_TARGET_TZ_INFO
 	bool "Install timezone info"
 	select BR2_PACKAGE_TZDATA if BR2_TOOLCHAIN_USES_GLIBC
@@ -449,14 +476,12 @@ config BR2_TARGET_LOCALTIME
 	help
 	  The time zone to install as the default local time, expressed as a
 	  tzdata location, such as:
+	    Etc/UTC             (the default)
 	    GMT
 	    Europe/Paris
 	    America/New_York
 	    Pacific/Wallis
 	    ...
-
-	  If empty, no local time will be set, and the dates will be
-	  expressed in UTC.
 
 endif # BR2_TARGET_TZ_INFO
 

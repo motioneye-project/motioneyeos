@@ -1,2 +1,5 @@
 # Hash from: http://ftp.gnome.org/pub/gnome/sources/gupnp-av/0.12/gupnp-av-0.12.10.sha256sum:
 sha256	8038ef84dddbe7ad91c205bf91dddf684f072df8623f39b6555a6bb72837b85a	gupnp-av-0.12.10.tar.xz
+
+# Hash for license file:
+sha256 d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5  COPYING

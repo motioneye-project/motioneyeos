@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LSSCSI
+	bool "lsscsi"
+	help
+	  lsscsi - list SCSI devices (or hosts) and their attributes
+
+	  http://sg.danny.cz/scsi/lsscsi.html

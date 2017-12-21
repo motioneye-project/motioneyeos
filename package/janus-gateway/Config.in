@@ -1,14 +1,14 @@
 menuconfig BR2_PACKAGE_JANUS_GATEWAY
 	bool "janus-gateway"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_WCHAR # libnice -> libglib2
+	depends on BR2_USE_MMU # libnice
+	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_JANSSON
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBNICE
 	select BR2_PACKAGE_LIBSRTP
 	select BR2_PACKAGE_OPENSSL
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
-	depends on BR2_USE_WCHAR # libnice -> libglib2
-	depends on BR2_USE_MMU # libnice
-	depends on !BR2_STATIC_LIBS # dlopen
 	help
 	  Janus is an open source, general purpose, WebRTC gateway
 	  designed and developed by Meetecho.
@@ -53,6 +53,42 @@ config BR2_PACKAGE_JANUS_VIDEO_ROOM
 config BR2_PACKAGE_JANUS_VOICE_MAIL
 	bool "voice mail"
 	select BR2_PACKAGE_LIBOGG
+
+comment "transports"
+
+config BR2_PACKAGE_JANUS_MQTT
+	bool "MQTT"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_PAHO_MQTT_C
+
+comment "MQTT transport needs a toolchain w/ threads and dynamic library support"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_JANUS_RABBITMQ
+	bool "RabbitMQ"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_RABBITMQ_C
+
+comment "RabbitMQ transport needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_JANUS_REST
+	bool "REST (HTTP/HTTPS)"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBMICROHTTPD
+
+comment "REST transport needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_JANUS_UNIX_SOCKETS
+	bool "Unix Sockets"
+	default y
+
+config BR2_PACKAGE_JANUS_WEBSOCKETS
+	bool "WebSockets"
+	depends on BR2_USE_MMU
+	select BR2_PACKAGE_LIBWEBSOCKETS
 
 endif
 

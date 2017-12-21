@@ -1,0 +1,21 @@
+Needed to fix broken autoreconf
+
+Downloaded from
+https://sources.debian.net/src/ipsec-tools/1:0.8.2%2B20140711-8/debian/patches/automake-options/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+Index: pkg-ipsec-tools/configure.ac
+===================================================================
+--- pkg-ipsec-tools.orig/configure.ac	2014-06-28 17:25:22.000000000 +0200
++++ pkg-ipsec-tools/configure.ac	2014-06-28 17:28:13.818373322 +0200
+@@ -6,7 +6,8 @@ AC_INIT(ipsec-tools, 0.8.2)
+ AC_CONFIG_SRCDIR([configure.ac])
+ AC_CONFIG_HEADERS(config.h)
+ 
+-AM_INIT_AUTOMAKE(dist-bzip2)
++AC_CONFIG_MACRO_DIR([.])
++AM_INIT_AUTOMAKE([dist-bzip2 foreign serial-tests])
+ 
+ AC_ENABLE_SHARED(no)
+ 

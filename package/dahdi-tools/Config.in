@@ -1,0 +1,23 @@
+config BR2_PACKAGE_DAHDI_TOOLS
+	bool "dahdi-tools"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_LINUX_KERNEL # dahdi-linux
+	depends on BR2_USE_MMU # perl
+	select BR2_PACKAGE_DAHDI_LINUX
+	select BR2_PACKAGE_PERL
+	help
+	  DAHDI (Digium/Asterisk Hardware Device Interface) is the open
+	  source device interface technology used to control Digium and
+	  other legacy telephony interface cards.
+
+	  DAHDI Tools is a package of utilities for managing and
+	  monitoring DAHDI devices.
+
+	  http://www.asterisk.org/downloads/dahdi
+
+# Two comments, otherwise it may not fit in menuconfig for narrow terminals
+comment "dahdi-tools needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_LINUX_KERNEL
+
+comment "dahdi-tools needs a Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL

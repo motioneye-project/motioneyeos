@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_H2
+	bool "python-h2"
+	select BR2_PACKAGE_PYTHON_HYPERFRAME # runtime
+	select BR2_PACKAGE_PYTHON_HPACK # runtime
+	help
+	  HTTP/2 State-Machine based protocol implementation.
+
+	  http://hyper.rtfd.org

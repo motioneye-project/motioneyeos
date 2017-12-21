@@ -1,16 +1,25 @@
+config BR2_PACKAGE_GDB_ARCH_SUPPORTS
+	bool
+	default y
+	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
+	depends on !BR2_bfin
+	depends on !BR2_microblaze
+	depends on !BR2_nios2
+	depends on !BR2_or1k
+
 comment "gdb/gdbserver needs a toolchain w/ threads, threads debug"
-	depends on !BR2_nios2 && !BR2_bfin
+	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 
 config BR2_PACKAGE_GDB
 	bool "gdb"
+	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_HAS_THREADS_DEBUG
+	depends on BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	# When the external toolchain gdbserver is copied to the
 	# target, we don't allow building a separate gdbserver. The
 	# one from the external toolchain should be used.
 	select BR2_PACKAGE_GDB_SERVER if \
 		(!BR2_PACKAGE_GDB_DEBUGGER && !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY)
-	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_HAS_THREADS_DEBUG
-	depends on !BR2_nios2 && !BR2_bfin
 	help
 	  GDB, the GNU Project debugger, allows you to see what is
 	  going on `inside' another program while it executes -- or
@@ -38,12 +47,12 @@ config BR2_PACKAGE_GDB_SERVER
 
 config BR2_PACKAGE_GDB_DEBUGGER
 	bool "full debugger"
-	select BR2_PACKAGE_NCURSES
 	depends on BR2_USE_WCHAR
-	depends on !BR2_sh && !BR2_microblaze
+	depends on !BR2_sh
+	select BR2_PACKAGE_NCURSES
 
 comment "full gdb on target needs a toolchain w/ wchar"
-	depends on !BR2_sh && !BR2_microblaze
+	depends on !BR2_sh
 	depends on !BR2_USE_WCHAR
 
 if BR2_PACKAGE_GDB_DEBUGGER

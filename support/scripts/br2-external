@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -e
 
 # This script must be able to run with bash-3.1, so it can't use
@@ -39,6 +39,9 @@ main() {
     fi
 
     exec >"${ofile}"
+
+    # Trap any unexpected error to generate a meaningful error message
+    trap "error 'unexpected error while generating ${ofile}\n'" ERR
 
     do_validate ${@//:/ }
 

@@ -50,13 +50,6 @@ config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_LAME
 	help
 	  Encode MP3s with LAME
 
-config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MAD
-	bool "mad (*.mp3 audio)"
-	select BR2_PACKAGE_LIBID3TAG
-	select BR2_PACKAGE_LIBMAD
-	help
-	  mp3 decoding based on the mad library
-
 config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPG123
 	bool "mpg123 (*.mp3 audio)"
 	select BR2_PACKAGE_MPG123

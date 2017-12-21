@@ -23,7 +23,7 @@ index 8b06428..680cad5 100755
 @@ -27,8 +27,7 @@
  
  #AC_PREREQ(2.59)
- AC_INIT([HP Linux Imaging and Printing], [3.16.11], [3.16.11], [hplip])
+ AC_INIT([HP Linux Imaging and Printing], [3.17.10], [3.17.10], [hplip])
 -#AM_INIT_AUTOMAKE([1.9 foreign])
 -AM_INIT_AUTOMAKE
 +AM_INIT_AUTOMAKE([1.9 foreign subdir-objects])

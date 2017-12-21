@@ -6,3 +6,5 @@ config BR2_PACKAGE_TREMOR
 	  decoder. It provides a decoding API similar to libvorbis,
 	  but gives much better performance on systems without a
 	  floating-point unit.
+
+	  https://wiki.xiph.org/Tremor

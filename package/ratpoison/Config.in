@@ -1,0 +1,17 @@
+config BR2_PACKAGE_RATPOISON
+	bool "ratpoison"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_LIBERATION
+	select BR2_PACKAGE_XLIB_LIBX11
+	help
+	  Ratpoison is a simple Window Manager. It is largely modelled
+	  after GNU Screen and focuses on the keyboard instead of a
+	  mouse.
+
+	  The screen can be split into non-overlapping frames.  All
+	  windows are kept maximized inside their frames to take full
+	  advantage of your precious screen real estate.
+
+	  http://www.nongnu.org/ratpoison/

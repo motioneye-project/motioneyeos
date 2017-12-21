@@ -1,4 +1,5 @@
 /output
+/dl
 /.auto.deps
 /.config.cmd
 /.config.old
@@ -12,6 +13,7 @@
 *.rej
 *~
 *.pyc
-/.download
 /.buildroot-ccache-*
 *.img.gz
+*.img.xz
+*.img.zip

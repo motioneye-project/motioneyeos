@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PHYSFS
+	bool "physfs"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  PhysicsFS; a portable, flexible file i/o abstraction.
+
+	  http://icculus.org/physfs
+
+comment "physfs needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

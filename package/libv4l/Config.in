@@ -1,16 +1,15 @@
 config BR2_PACKAGE_LIBV4L
 	bool "libv4l"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_USE_MMU # fork()
-	depends on !BR2_STATIC_LIBS # dlopen()
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # media headers
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
-	  libv4l is a collection of libraries which adds a thin abstraction
-	  layer on top of video4linux2 devices. libv4l consists of 3 different
-	  libraries: libv4lconvert, libv4l1 and libv4l2.
+	  libv4l is a collection of libraries which adds a thin
+	  abstraction layer on top of video4linux2 devices. libv4l
+	  consists of 3 different libraries: libv4lconvert, libv4l1 and
+	  libv4l2.
 
 	  http://linuxtv.org/wiki/index.php/V4l-utils
 
@@ -21,10 +20,9 @@ comment "libv4l JPEG support not enabled"
 
 config BR2_PACKAGE_LIBV4L_UTILS
 	bool "v4l-utils tools"
-	depends on BR2_ENABLE_LOCALE
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
-	  v4l-utils is a collection of various video4linux and DVB utilities.
+	  v4l-utils is a collection of various video4linux and DVB
+	  utilities.
 	  Enable this if you want to build the following tools:
 	  - cx18-ctl
 	  - dvb-fe-tool, dvbv5-zap, dvbv5-scan, dvb-format-convert
@@ -37,12 +35,8 @@ config BR2_PACKAGE_LIBV4L_UTILS
 	  - rds-ctl
 	  - qv4l2 (if Qt is enabled)
 
-comment "libv4l-utils tools need a toolchain w/ locale"
-	depends on !BR2_ENABLE_LOCALE
-
 endif
 
-comment "libv4l needs a toolchain w/ threads, dynamic library, C++ and headers >= 3.0"
-	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
+comment "libv4l needs a toolchain w/ threads, C++ and headers >= 3.0"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
 		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0

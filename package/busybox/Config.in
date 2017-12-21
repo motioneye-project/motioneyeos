@@ -2,8 +2,8 @@ config BR2_PACKAGE_BUSYBOX
 	bool "BusyBox"
 	default y
 	help
-	  The Swiss Army Knife of embedded Linux. It slices, it dices, it
-	  makes Julian Fries.
+	  The Swiss Army Knife of embedded Linux. It slices, it dices,
+	  it makes Julian Fries.
 
 	  http://busybox.net/
 
@@ -15,10 +15,12 @@ config BR2_PACKAGE_BUSYBOX_CONFIG
 	string "BusyBox configuration file to use?"
 	default "package/busybox/busybox.config"
 	help
-	  Some people may wish to use their own modified BusyBox configuration
-	  file, and will specify their config file location with this option.
+	  Some people may wish to use their own modified BusyBox
+	  configuration file, and will specify their config file
+	  location with this option.
 
-	  Most people will just use the default BusyBox configuration file.
+	  Most people will just use the default BusyBox configuration
+	  file.
 
 config BR2_PACKAGE_BUSYBOX_CONFIG_FRAGMENT_FILES
 	string "Additional BusyBox configuration fragment files"
@@ -35,12 +37,12 @@ config BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	  by busybox.
 
 config BR2_PACKAGE_BUSYBOX_SELINUX
-	select BR2_PACKAGE_LIBSELINUX
+	bool "Enable SELinux support"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on !BR2_arc
-	bool "Enable SELinux support"
+	select BR2_PACKAGE_LIBSELINUX
 	help
 	  Enable SELinux support in BusyBox. Please note that
 	  depending on your BusyBox configuration and the SELinux
@@ -53,6 +55,22 @@ config BR2_PACKAGE_BUSYBOX_SELINUX
 	  to save space. If BusyBox provides more features, such as
 	  crond, then individual binaries have to be enabled for the
 	  SELinux type transitions to occur properly.
+
+config BR2_PACKAGE_BUSYBOX_INDIVIDUAL_BINARIES
+	bool "Individual binaries"
+	depends on !BR2_STATIC_LIBS
+	depends on !BR2_bfin # libbusybox.so link issue
+	help
+	  By default (i.e with this option disabled), Busybox is
+	  installed as a single binary in /bin/busybox and all applets
+	  are a symbolic link to /bin/busybox.
+
+	  With this option enabled, each applet is a separate binary,
+	  which is needed for proper operation with SELinux.
+
+comment "Busybox individual binaries need a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+	depends on !BR2_bfin
 
 config BR2_PACKAGE_BUSYBOX_WATCHDOG
 	bool "Install the watchdog daemon startup script"

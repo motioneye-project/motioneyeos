@@ -1,0 +1,3 @@
+# md5 from https://pypi.python.org/pypi/systemd-python/, sha256 locally computed
+md5 5071ea5bcb976186e92a3f5e75df221d systemd-python-234.tar.gz
+sha256 fd0e44bf70eadae45aadc292cb0a7eb5b0b6372cd1b391228047d33895db83e7 systemd-python-234.tar.gz

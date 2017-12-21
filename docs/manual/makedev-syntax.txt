@@ -1,0 +1,103 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[makedev-syntax]]
+== Makedev syntax documentation
+
+The makedev syntax is used in several places in Buildroot to
+define changes to be made for permissions, or which device files to
+create and how to create them, in order to avoid calls to mknod.
+
+This syntax is derived from the makedev utility, and more complete
+documentation can be found in the +package/makedevs/README+ file.
+
+It takes the form of a space separated list of fields, one file per
+line; the fields are:
+
+|===========================================================
+|name |type |mode |uid |gid |major |minor |start |inc |count
+|===========================================================
+
+There are a few non-trivial blocks:
+
+- +name+ is the path to the file you want to create/modify
+- +type+ is the type of the file, being one of:
+  * f: a regular file
+  * d: a directory
+  * r: a directory recursively
+  * c: a character device file
+  * b: a block device file
+  * p: a named pipe
+- +mode+ are the usual permissions settings (only numerical values
+  are allowed)
+- +uid+ and +gid+ are the UID and GID to set on this file; can be
+  either numerical values or actual names
+- +major+ and +minor+ are here for device files, set to +-+ for other
+  files
+- +start+, +inc+ and +count+ are for when you want to create a batch
+  of files, and can be reduced to a loop, beginning at +start+,
+  incrementing its counter by +inc+ until it reaches +count+
+
+Let's say you want to change the permissions of a given file; using
+this syntax, you will need to write:
+
+----
+/usr/bin/foo f 755 0 0 - - - - -
+/usr/bin/bar f 755 root root - - - - -
+/data/buz f 644 buz-user buz-group - - - - -
+----
+
+Alternatively, if you want to change owner/permission of a directory
+recursively, you can write (to set UID to foo, GID to bar and access
+rights to rwxr-x--- for the directory /usr/share/myapp and all files
+and directories below it):
+
+----
+/usr/share/myapp r 750 foo bar - - - - -
+----
+
+On the other hand, if you want to create the device file +/dev/hda+
+and the corresponding 15 files for the partitions, you will need for
++/dev/hda+:
+
+----
+/dev/hda b 640 root root 3 0 0 0 -
+----
+
+and then for device files corresponding to the partitions of
++/dev/hda+, +/dev/hdaX+, +X+ ranging from 1 to 15:
+
+----
+/dev/hda b 640 root root 3 1 1 1 15
+----
+
+Extended attributes are supported if
++BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES+ is enabled.
+This is done by adding a line starting with +|xattr+ after
+the line describing the file. Right now, only capability
+is supported as extended attribute.
+
+|=====================
+| \|xattr | capability
+|=====================
+
+- +|xattr+ is a "flag" that indicate an extended attribute
+- +capability+ is a capability to add to the previous file
+
+If you want to add the capability cap_sys_admin to the binary foo,
+you will write :
+
+----
+/usr/bin/foo f 755 root root - - - - -
+|xattr cap_sys_admin+eip
+----
+
+You can add several capabilities to a file by using several +|xattr+ lines.
+If you want to add the capability cap_sys_admin and cap_net_admin to the
+binary foo, you will write :
+
+----
+/usr/bin/foo f 755 root root - - - - -
+|xattr cap_sys_admin+eip
+|xattr cap_net_admin+eip
+----

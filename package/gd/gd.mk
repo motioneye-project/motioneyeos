@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GD_VERSION = 2.2.4
+GD_VERSION = 2.2.5
 GD_SOURCE = libgd-$(GD_VERSION).tar.xz
 GD_SITE = https://github.com/libgd/libgd/releases/download/gd-$(GD_VERSION)
 GD_INSTALL_STAGING = YES

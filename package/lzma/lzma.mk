@@ -10,4 +10,4 @@ LZMA_SITE = http://tukaani.org/lzma
 
 $(eval $(host-autotools-package))
 
-LZMA = $(HOST_DIR)/usr/bin/lzma
+LZMA = $(HOST_DIR)/bin/lzma

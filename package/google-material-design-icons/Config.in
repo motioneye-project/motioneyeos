@@ -1,8 +1,8 @@
 config BR2_PACKAGE_GOOGLE_MATERIAL_DESIGN_ICONS
 	bool "google-material-design-icons"
 	help
-	  Material design icons are the official icon set from Google that
-	  are designed under the material design guidelines.
+	  Material design icons are the official icon set from Google
+	  that are designed under the material design guidelines.
 
 	  https://github.com/google/material-design-icons
 

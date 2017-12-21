@@ -1,0 +1,12 @@
+config BR2_PACKAGE_FSCRYPTCTL
+	bool "fscryptctl"
+	help
+	  fscryptctl is a low-level tool written in C that handles raw
+	  keys and manages policies for Linux filesystem encryption.
+
+	  Notice: Fscrypt support on EXT4 requires a kernel with
+	  CONFIG_EXT4_ENCRYPTION=y and a file system with the
+	  encryption option and block size equal to CPU page size
+	  (BR2_TARGET_ROOTFS_EXT2_MKFS_OPTIONS="-O encrypt -b 4096")
+
+	  https://github.com/google/fscryptctl

@@ -1,0 +1,15 @@
+# Locally computed
+sha256  c122fbe88e089737fa2c80356762ceed38498aa26da1dfdd4da5506f9b135696  asterisk-14.5.0.tar.gz
+
+# sha1 from: http://downloads.asterisk.org/pub/telephony/sounds/releases
+# sha256 locally computed
+sha1    65ee068462c6645ed14a28d6b34eb0e9aa7a6c8d                          asterisk-core-sounds-en-gsm-1.5.tar.gz
+sha256  8d1118c6e0a0c614fafe297e3789f924ef5b04285cf6a8cffb8501dfcf5bbf07  asterisk-core-sounds-en-gsm-1.5.tar.gz
+sha1    f40fd6ea03dfe8d72ada2540b2288bfdc006381d                          asterisk-moh-opsound-wav-2.03.tar.gz
+sha256  449fb810d16502c3052fedf02f7e77b36206ac5a145f3dacf4177843a2fcb538  asterisk-moh-opsound-wav-2.03.tar.gz
+
+# License files, locally computed
+sha256  82af40ed7f49c08685360811993d9396320842f021df828801d733e8fdc0312f  COPYING
+sha256  ac5571f00e558e3b7c9b3f13f421b874cc12cf4250c4f70094c71544cf486312  main/sha1.c
+sha256  0fcdb946955d20c2819a51f3fe613d8f22da2ea793bd50acb30ce156499acc88  codecs/speex/speex_resampler.h
+sha256  e6e7b7204d34a3dcdf17389a9c8cf64721ec0d15a797fd51c8c1ed8517cc3038  utils/db1-ast/include/db.h

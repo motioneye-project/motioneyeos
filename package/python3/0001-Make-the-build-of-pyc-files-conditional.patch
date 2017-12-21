@@ -1,0 +1,56 @@
+From e568f4deb7c648e3265154574db753601636cdda Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 22 Feb 2017 16:21:31 -0800
+Subject: [PATCH] Make the build of pyc files conditional
+
+This commit adds a new configure option --disable-pyc-build to disable
+the compilation of pyc.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[ Andrey Smrinov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Makefile.pre.in | 2 ++
+ configure.ac    | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 82e830727e..b38bd79121 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1311,6 +1311,7 @@ libinstall:	build_all $(srcdir)/Modules/xxmodule.c
+ 		$(INSTALL_DATA) $(srcdir)/Modules/xxmodule.c \
+ 			$(DESTDIR)$(LIBDEST)/distutils/tests ; \
+ 	fi
++ifeq (@PYC_BUILD@,yes)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST)  $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -Wi $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST) -f \
+@@ -1338,6 +1339,7 @@ libinstall:	build_all $(srcdir)/Modules/xxmodule.c
+ 		$(PYTHON_FOR_BUILD) -Wi -OO $(DESTDIR)$(LIBDEST)/compileall.py \
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
++endif
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+diff --git a/configure.ac b/configure.ac
+index 962006704f..a76b5444df 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1113,6 +1113,12 @@ fi
+ 
+ AC_MSG_CHECKING(LDLIBRARY)
+ 
++AC_SUBST(PYC_BUILD)
++
++AC_ARG_ENABLE(pyc-build,
++	AS_HELP_STRING([--disable-pyc-build], [disable build of pyc files]),
++	[ PYC_BUILD="${enableval}" ], [ PYC_BUILD=yes ])
++
+ # MacOSX framework builds need more magic. LDLIBRARY is the dynamic
+ # library that we build, but we do not want to link against it (we
+ # will find it with a -framework option). For this reason there is an
+-- 
+2.13.5
+

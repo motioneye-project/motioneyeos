@@ -6,7 +6,7 @@
 
 IPMIUTIL_VERSION = 2.9.9
 IPMIUTIL_SITE = http://sourceforge.net/projects/ipmiutil/files
-IPMIUTIL_LICENSE = BSD-3c
+IPMIUTIL_LICENSE = BSD-3-Clause
 IPMIUTIL_LICENSE_FILES = COPYING
 # We're patching configure.ac
 IPMIUTIL_AUTORECONF = YES

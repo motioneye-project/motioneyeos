@@ -1,0 +1,22 @@
+Fix type conversion
+
+Fixes the following build error with gcc 6.x:
+
+protocol.cc:27:40: error: narrowing conversion of ''\37777777776'' from 'char' to 'uchar {aka unsigned char}' inside { } [-Wnarrowing]
+ static uchar eof_buff[1]= { (char) 254 }; /* Marker for end of fields */
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+Index: b/server-tools/instance-manager/protocol.cc
+===================================================================
+--- a/server-tools/instance-manager/protocol.cc
++++ b/server-tools/instance-manager/protocol.cc
+@@ -24,7 +24,7 @@
+ #include <m_string.h>
+ 
+ 
+-static uchar eof_buff[1]= { (char) 254 }; /* Marker for end of fields */
++static uchar eof_buff[1]= { (uchar) 254 }; /* Marker for end of fields */
+ static const char ERROR_PACKET_CODE= (char) 255;
+ 
+ 

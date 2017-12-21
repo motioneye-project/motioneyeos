@@ -27,7 +27,7 @@ diff -uNr screensavers.rsxs-195e0ec3fbbcb2ee2012cd560e42d05167f0f259.org/CMakeLi
  endif()
  externalproject_add(rsxs SOURCE_DIR ${PROJECT_SOURCE_DIR}/${rsxs_dir}
 -                    CONFIGURE_COMMAND ${configure_start}
-+                    CONFIGURE_COMMAND gl_cv_func_gettimeofday_clobber=no
++                    CONFIGURE_COMMAND gl_cv_func_gettimeofday_clobber=no ac_cv_type__Bool=yes
 +                                      ac_cv_func_malloc_0_nonnull=yes
 +                                      ${configure_start}
                                        --prefix=<INSTALL_DIR>

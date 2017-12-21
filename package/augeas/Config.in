@@ -1,0 +1,20 @@
+config BR2_PACKAGE_AUGEAS
+	bool "augeas"
+	# ARC toolchain issue:
+	# https://github.com/foss-for-synopsys-dwc-arc-processors/toolchain/issues/108
+	depends on !BR2_arc
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_READLINE
+	help
+	  Augeas is a configuration editing tool. It parses
+	  configuration files in their native formats and transforms
+	  them into a tree. Configuration changes are made by
+	  manipulating this tree and saving it back into native config
+	  files.
+
+	  http://augeas.net
+
+comment "augeas needs a toolchain w/ wchar"
+	depends on !BR2_arc
+	depends on !BR2_USE_WCHAR

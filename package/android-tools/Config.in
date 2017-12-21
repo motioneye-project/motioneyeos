@@ -34,13 +34,13 @@ config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT_GOOD_KERNEL_HEADERS
 
 config BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT
 	bool "fastboot"
-	select BR2_PACKAGE_LIBSELINUX
-	select BR2_PACKAGE_ZLIB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libselinux
 	depends on !BR2_STATIC_LIBS # libselinux
 	depends on BR2_TOOLCHAIN_USES_GLIBC # libselinux
 	depends on !BR2_arc # libselinux
 	depends on BR2_PACKAGE_ANDROID_TOOLS_FASTBOOT_GOOD_KERNEL_HEADERS
+	select BR2_PACKAGE_LIBSELINUX
+	select BR2_PACKAGE_ZLIB
 	help
 	  This option will build and install the fastboot utility for
 	  the target, which can be used to reflash other target devices

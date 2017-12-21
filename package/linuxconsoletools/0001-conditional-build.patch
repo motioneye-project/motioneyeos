@@ -1,0 +1,58 @@
+Selectively build groups of tools (inputattach,
+joystick tools and/or force-feedback tools).
+
+Signed-off-by: Koen Martens <gmc@sonologic.nl>
+
+diff -Naur a/utils/Makefile b/utils/Makefile
+--- a/utils/Makefile	2016-04-19 23:28:36.000000000 +0200
++++ b/utils/Makefile	2017-06-19 08:54:20.152184000 +0200
+@@ -27,8 +27,26 @@
+ 
+ CFLAGS		?= -g -O2 -Wall
+ 
+-PROGRAMS	= inputattach jstest jscal fftest ffmvforce ffset \
+-		  ffcfstress jscal-restore jscal-store evdev-joystick
++PROGRAMS    =
++
++ifdef ENABLE_INPUTATTACH
++PROGRAMS	+= inputattach
++endif
++
++ifdef ENABLE_JOYSTICK
++PROGRAMS    += jstest
++PROGRAMS    += jscal
++PROGRAMS    += jscal-restore
++PROGRAMS    += jscal-store
++PROGRAMS    += evdev-joystick
++endif
++
++ifdef ENABLE_FORCEFEEDBACK
++PROGRAMS    += fftest
++PROGRAMS    += ffmvforce
++PROGRAMS    += ffset
++PROGRAMS    += ffcfstress
++endif
+ 
+ PREFIX          ?= /usr/local
+ 
+@@ -79,13 +97,20 @@
+ 80-stelladaptor-joystick.rules: 80-stelladaptor-joystick.rules.in
+ 	sed "s^@@PREFIX@@^$(PREFIX)^g" < $^ > $@
+ 
++INSTALL_DEP = compile
++ifdef ENABLE_JOYSTICK
++INSTALL_DEP +=  80-stelladaptor-joystick.rules
++endif
++
+ install: compile 80-stelladaptor-joystick.rules
+ 	install -d $(DESTDIR)$(PREFIX)/bin
+ 	install $(PROGRAMS) $(DESTDIR)$(PREFIX)/bin
++ifdef ENABLE_JOYSTICK
+ 	install -d $(DESTDIR)$(PREFIX)/share/joystick
+ 	install extract filter ident $(DESTDIR)$(PREFIX)/share/joystick
+ 	install -d $(DESTDIR)/lib/udev/rules.d
+ 	install js-set-enum-leds $(DESTDIR)/lib/udev
+ 	install -m 644 80-stelladaptor-joystick.rules $(DESTDIR)/lib/udev/rules.d
++endif
+ 
+ .PHONY: compile clean distclean install

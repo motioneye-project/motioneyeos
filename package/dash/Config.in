@@ -3,7 +3,9 @@ config BR2_PACKAGE_DASH
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
-	  The Debian/Linux port of the NetBSD version of
-	  ash (the Almquist SHell).
+	  DASH is a POSIX-compliant implementation of /bin/sh that aims to be
+	  as small as possible. It does this without sacrificing speed where
+	  possible. In fact, it is significantly faster than bash (the GNU
+	  Bourne-Again SHell) for most tasks. 
 
 	  http://gondor.apana.org.au/~herbert/dash

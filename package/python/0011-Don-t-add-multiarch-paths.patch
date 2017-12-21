@@ -1,0 +1,36 @@
+From 50a243a9c90f95e9248ac720e42e802b5922ab90 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:24:28 +0100
+Subject: [PATCH] Don't add multiarch paths
+
+The add_multiarch_paths() function leads, in certain build
+environments, to the addition of host header paths to the CFLAGS,
+which is not appropriate for cross-compilation. This patch fixes that
+by simply removing the call to add_multiarch_paths() when we're
+cross-compiling.
+
+Investigation done by David <buildroot-2014@inbox.com>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ setup.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index fa32532..0b9ea57 100644
+--- a/setup.py
++++ b/setup.py
+@@ -461,9 +461,9 @@ class PyBuildExt(build_ext):
+         if not cross_compiling:
+             add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
+             add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
++            self.add_multiarch_paths()
+         if cross_compiling:
+             self.add_gcc_paths()
+-        self.add_multiarch_paths()
+ 
+         # Add paths specified in the environment variables LDFLAGS and
+         # CPPFLAGS for header and library files.
+-- 
+2.7.4
+

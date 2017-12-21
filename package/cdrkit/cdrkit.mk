@@ -9,7 +9,7 @@ CDRKIT_SOURCE = cdrkit_$(CDRKIT_VERSION).orig.tar.gz
 CDRKIT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/c/cdrkit
 CDRKIT_DEPENDENCIES = libcap bzip2 zlib
 HOST_CDRKIT_DEPENDENCIES = host-libcap host-bzip2 host-zlib
-CDRKIT_LICENSE = GPLv2
+CDRKIT_LICENSE = GPL-2.0
 CDRKIT_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_ENDIAN),"BIG")

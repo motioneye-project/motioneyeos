@@ -1,0 +1,110 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[customize-dir-structure]]
+=== Recommended directory structure
+
+When customizing Buildroot for your project, you will be creating one or
+more project-specific files that need to be stored somewhere. While most
+of these files could be placed in _any_ location as their path is to be
+specified in the Buildroot configuration, the Buildroot developers
+recommend a specific directory structure which is described in this
+section.
+
+Orthogonal to this directory structure, you can choose _where_ you place
+this structure itself: either inside the Buildroot tree, or outside of
+it using a br2-external tree. Both options are valid, the choice is up
+to you.
+
+-----
++-- board/
+|   +-- <company>/
+|       +-- <boardname>/
+|           +-- linux.config
+|           +-- busybox.config
+|           +-- <other configuration files>
+|           +-- post_build.sh
+|           +-- post_image.sh
+|           +-- rootfs_overlay/
+|           |   +-- etc/
+|           |   +-- <some file>
+|           +-- patches/
+|               +-- foo/
+|               |   +-- <some patch>
+|               +-- libbar/
+|                   +-- <some other patches>
+|
++-- configs/
+|   +-- <boardname>_defconfig
+|
++-- package/
+|   +-- <company>/
+|       +-- Config.in (if not using a br2-external tree)
+|       +-- <company>.mk (if not using a br2-external tree)
+|       +-- package1/
+|       |    +-- Config.in
+|       |    +-- package1.mk
+|       +-- package2/
+|           +-- Config.in
+|           +-- package2.mk
+|
++-- Config.in (if using a br2-external tree)
++-- external.mk (if using a br2-external tree)
+------
+
+Details on the files shown above are given further in this chapter.
+
+Note: if you choose to place this structure outside of the Buildroot
+tree but in a br2-external tree, the <company> and possibly <boardname>
+components may be superfluous and can be left out.
+
+==== Implementing layered customizations
+
+It is quite common for a user to have several related projects that partly
+need the same customizations. Instead of duplicating these
+customizations for each project, it is recommended to use a layered
+customization approach, as explained in this section.
+
+Almost all of the customization methods available in Buildroot, like
+post-build scripts and root filesystem overlays, accept a
+space-separated list of items. The specified items are always treated in
+order, from left to right. By creating more than one such item, one for
+the common customizations and another one for the really
+project-specific customizations, you can avoid unnecessary duplication.
+Each layer is typically embodied by a separate directory inside
++board/<company>/+. Depending on your projects, you could even introduce
+more than two layers.
+
+An example directory structure for where a user has two customization
+layers 'common' and 'fooboard' is:
+
+-----
++-- board/
+    +-- <company>/
+        +-- common/
+        |   +-- post_build.sh
+        |   +-- rootfs_overlay/
+        |   |   +-- ...
+        |   +-- patches/
+        |       +-- ...
+        |
+        +-- fooboard/
+            +-- linux.config
+            +-- busybox.config
+            +-- <other configuration files>
+            +-- post_build.sh
+            +-- rootfs_overlay/
+            |   +-- ...
+            +-- patches/
+                +-- ...
+-----
+
+For example, if the user has the +BR2_GLOBAL_PATCH_DIR+ configuration
+option set as:
+
+-----
+BR2_GLOBAL_PATCH_DIR="board/<company>/common/patches board/<company>/fooboard/patches"
+-----
+
+then first the patches from the 'common' layer would be applied,
+followed by the patches from the 'fooboard' layer.

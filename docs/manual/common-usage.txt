@@ -1,0 +1,334 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== General Buildroot usage
+
+include::make-tips.txt[]
+
+include::rebuilding-packages.txt[]
+
+=== Offline builds
+
+If you intend to do an offline build and just want to download
+all sources that you previously selected in the configurator
+('menuconfig', 'nconfig', 'xconfig' or 'gconfig'), then issue:
+
+--------------------
+ $ make source
+--------------------
+
+You can now disconnect or copy the content of your +dl+
+directory to the build-host.
+
+=== Building out-of-tree
+
+As default, everything built by Buildroot is stored in the directory
++output+ in the Buildroot tree.
+
+Buildroot also supports building out of tree with a syntax similar to
+the Linux kernel. To use it, add +O=<directory>+ to the make command
+line:
+
+--------------------
+ $ make O=/tmp/build
+--------------------
+
+Or:
+
+--------------------
+ $ cd /tmp/build; make O=$PWD -C path/to/buildroot
+--------------------
+
+All the output files will be located under +/tmp/build+. If the +O+
+path does not exist, Buildroot will create it.
+
+*Note:* the +O+ path can be either an absolute or a relative path, but if it's
+passed as a relative path, it is important to note that it is interpreted
+relative to the main Buildroot source directory, *not* the current working
+directory.
+
+When using out-of-tree builds, the Buildroot +.config+ and temporary
+files are also stored in the output directory. This means that you can
+safely run multiple builds in parallel using the same source tree as
+long as they use unique output directories.
+
+For ease of use, Buildroot generates a Makefile wrapper in the output
+directory - so after the first run, you no longer need to pass +O=<...>+
+and +-C <...>+, simply run (in the output directory):
+
+--------------------
+ $ make <target>
+--------------------
+
+[[env-vars]]
+
+=== Environment variables
+
+Buildroot also honors some environment variables, when they are passed
+to +make+ or set in the environment:
+
+* +HOSTCXX+, the host C++ compiler to use
+* +HOSTCC+, the host C compiler to use
+* +UCLIBC_CONFIG_FILE=<path/to/.config>+, path to
+  the uClibc configuration file, used to compile uClibc, if an
+  internal toolchain is being built.
+  +
+  Note that the uClibc configuration file can also be set from the
+  configuration interface, so through the Buildroot +.config+ file; this
+  is the recommended way of setting it.
+  +
+* +BUSYBOX_CONFIG_FILE=<path/to/.config>+, path to
+  the BusyBox configuration file.
+  +
+  Note that the BusyBox configuration file can also be set from the
+  configuration interface, so through the Buildroot +.config+ file; this
+  is the recommended way of setting it.
+  +
+* +BR2_CCACHE_DIR+ to override the directory where
+  Buildroot stores the cached files when using ccache.
+  +
+* +BR2_DL_DIR+ to override the directory in which
+  Buildroot stores/retrieves downloaded files
+  +
+  Note that the Buildroot download directory can also be set from the
+  configuration interface, so through the Buildroot +.config+ file. See
+  xref:download-location[] for more details on how you can set the download
+  directory.
+* +BR2_GRAPH_ALT+, if set and non-empty, to use an alternate color-scheme in
+  build-time graphs
+* +BR2_GRAPH_OUT+ to set the filetype of generated graphs, either +pdf+ (the
+  default), or +png+.
+* +BR2_GRAPH_DEPS_OPTS+ to pass extra options to the dependency graph; see
+  xref:graph-depends[] for the accepted options
+* +BR2_GRAPH_DOT_OPTS+ is passed verbatim as options to the +dot+ utility to
+  draw the dependency graph.
+
+An example that uses config files located in the toplevel directory and
+in your $HOME:
+
+--------------------
+ $ make UCLIBC_CONFIG_FILE=uClibc.config BUSYBOX_CONFIG_FILE=$HOME/bb.config
+--------------------
+
+If you want to use a compiler other than the default +gcc+
+or +g+++ for building helper-binaries on your host, then do
+
+--------------------
+ $ make HOSTCXX=g++-4.3-HEAD HOSTCC=gcc-4.3-HEAD
+--------------------
+
+=== Dealing efficiently with filesystem images
+
+Filesystem images can get pretty big, depending on the filesystem you choose,
+the number of packages, whether you provisioned free space... Yet, some
+locations in the filesystems images may just be _empty_ (e.g. a long run of
+'zeroes'); such a file is called a _sparse_ file.
+
+Most tools can handle sparse files efficiently, and will only store or write
+those parts of a sparse file that are not empty.
+
+For example:
+
+* +tar+ accepts the +-S+ option to tell it to only store non-zero blocks
+  of sparse files:
+** +tar cf archive.tar -S [files...]+ will efficiently store sparse files
+   in a tarball
+** +tar xf archive.tar -S+ will efficiently store sparse files extracted
+   from a tarball
+
+* +cp+ accepts the +--sparse=WHEN+ option (+WHEN+ is one of +auto+,
+  +never+ or +always+):
+** +cp --sparse=always source.file dest.file+ will make +dest.file+ a
+   sparse file if +source.file+ has long runs of zeroes
+
+Other tools may have similar options. Please consult their respective man
+pages.
+
+You can use sparse files if you need to store the filesystem images (e.g.
+to transfer from one machine to another), or if you need to send them (e.g.
+to the Q&A team).
+
+Note however that flashing a filesystem image to a device while using the
+sparse mode of +dd+ may result in a broken filesystem (e.g. the block bitmap
+of an ext2 filesystem may be corrupted; or, if you have sparse files in
+your filesystem, those parts may not be all-zeroes when read back). You
+should only use sparse files when handling files on the build machine, not
+when transferring them to an actual device that will be used on the target.
+
+=== Graphing the dependencies between packages
+
+[[graph-depends]]
+
+One of Buildroot's jobs is to know the dependencies between packages,
+and make sure they are built in the right order. These dependencies
+can sometimes be quite complicated, and for a given system, it is
+often not easy to understand why such or such package was brought into
+the build by Buildroot.
+
+In order to help understanding the dependencies, and therefore better
+understand what is the role of the different components in your
+embedded Linux system, Buildroot is capable of generating dependency
+graphs.
+
+To generate a dependency graph of the full system you have compiled,
+simply run:
+
+------------------------
+make graph-depends
+------------------------
+
+You will find the generated graph in
++output/graphs/graph-depends.pdf+.
+
+If your system is quite large, the dependency graph may be too complex
+and difficult to read. It is therefore possible to generate the
+dependency graph just for a given package:
+
+------------------------
+make <pkg>-graph-depends
+------------------------
+
+You will find the generated graph in
++output/graph/<pkg>-graph-depends.pdf+.
+
+Note that the dependency graphs are generated using the +dot+ tool
+from the _Graphviz_ project, which you must have installed on your
+system to use this feature. In most distributions, it is available as
+the +graphviz+ package.
+
+By default, the dependency graphs are generated in the PDF
+format. However, by passing the +BR2_GRAPH_OUT+ environment variable, you
+can switch to other output formats, such as PNG, PostScript or
+SVG. All formats supported by the +-T+ option of the +dot+ tool are
+supported.
+
+--------------------------------
+BR2_GRAPH_OUT=svg make graph-depends
+--------------------------------
+
+The +graph-depends+ behaviour can be controlled by setting options in the
++BR2_GRAPH_DEPS_OPTS+ environment variable. The accepted options are:
+
+* +--depth N+, +-d N+, to limit the dependency depth to +N+ levels. The
+  default, +0+, means no limit.
+
+* +--stop-on PKG+, +-s PKG+, to stop the graph on the package +PKG+.
+  +PKG+ can be an actual package name, a glob, the keyword 'virtual'
+  (to stop on virtual packages), or the keyword 'host' (to stop on
+  host packages). The package is still present on the graph, but its
+  dependencies are not.
+
+* +--exclude PKG+, +-x PKG+, like +--stop-on+, but also omits +PKG+ from
+  the graph.
+
+* +--transitive+, +--no-transitive+, to draw (or not) the transitive
+  dependencies. The default is to not draw transitive dependencies.
+
+* +--colours R,T,H+, the comma-separated list of colours to draw the
+  root package (+R+), the target packages (+T+) and the host packages
+  (+H+). Defaults to: +lightblue,grey,gainsboro+
+
+--------------------------------
+BR2_GRAPH_DEPS_OPTS='-d 3 --no-transitive --colours=red,green,blue' make graph-depends
+--------------------------------
+
+=== Graphing the build duration
+
+[[graph-duration]]
+
+When the build of a system takes a long time, it is sometimes useful
+to be able to understand which packages are the longest to build, to
+see if anything can be done to speed up the build. In order to help
+such build time analysis, Buildroot collects the build time of each
+step of each package, and allows to generate graphs from this data.
+
+To generate the build time graph after a build, run:
+
+----------------
+make graph-build
+----------------
+
+This will generate a set of files in +output/graphs+ :
+
+* +build.hist-build.pdf+, a histogram of the build time for each
+  package, ordered in the build order.
+
+* +build.hist-duration.pdf+, a histogram of the build time for each
+  package, ordered by duration (longest first)
+
+* +build.hist-name.pdf+, a histogram of the build time for each
+  package, order by package name.
+
+* +build.pie-packages.pdf+, a pie chart of the build time per package
+
+* +build.pie-steps.pdf+, a pie chart of the global time spent in each
+  step of the packages build process.
+
+This +graph-build+ target requires the Python Matplotlib and Numpy
+libraries to be installed (+python-matplotlib+ and +python-numpy+ on
+most distributions), and also the +argparse+ module if you're using a
+Python version older than 2.7 (+python-argparse+ on most
+distributions).
+
+By default, the output format for the graph is PDF, but a different
+format can be selected using the +BR2_GRAPH_OUT+ environment variable. The
+only other format supported is PNG:
+
+----------------
+BR2_GRAPH_OUT=png make graph-build
+----------------
+
+=== Graphing the filesystem size contribution of packages
+
+When your target system grows, it is sometimes useful to understand
+how much each Buildroot package is contributing to the overall root
+filesystem size. To help with such an analysis, Buildroot collects
+data about files installed by each package and using this data,
+generates a graph and CSV files detailing the size contribution of
+the different packages.
+
+To generate these data after a build, run:
+
+----------------
+make graph-size
+----------------
+
+This will generate:
+
+* +output/graphs/graph-size.pdf+, a pie chart of the contribution of
+  each package to the overall root filesystem size
+
+* +output/graphs/package-size-stats.csv+, a CSV file giving the size
+  contribution of each package to the overall root filesystem size
+
+* +output/graphs/file-size-stats.csv+, a CSV file giving the size
+  contribution of each installed file to the package it belongs, and
+  to the overall filesystem size.
+
+This +graph-size+ target requires the Python Matplotlib library to be
+installed (+python-matplotlib+ on most distributions), and also the
++argparse+ module if you're using a Python version older than 2.7
+(+python-argparse+ on most distributions).
+
+Just like for the duration graph, a +BR2_GRAPH_OUT+ environment is
+supported to adjust the output file format. See xref:graph-depends[]
+for details about this environment variable.
+
+.Note
+The collected filesystem size data is only meaningful after a complete
+clean rebuild. Be sure to run +make clean all+ before using +make
+graph-size+.
+
+To compare the root filesystem size of two different Buildroot compilations,
+for example after adjusting the configuration or when switching to another
+Buildroot release, use the +size-stats-compare+ script. It takes two
++file-size-stats.csv+ files (produced by +make graph-size+) as input.
+Refer to the help text of this script for more details:
+
+----------------
+utils/size-stats-compare -h
+----------------
+
+include::eclipse-integration.txt[]
+
+include::advanced.txt[]

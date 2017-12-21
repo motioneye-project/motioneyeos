@@ -1,8 +1,8 @@
 config BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	bool
+	default y
 	depends on BR2_arm || BR2_armeb || BR2_aarch64 || BR2_i386 || BR2_powerpc || BR2_x86_64
 	depends on BR2_USE_MMU # fork() in test
-	default y
 
 config BR2_PACKAGE_LIBURCU
 	bool "liburcu"
@@ -16,8 +16,8 @@ config BR2_PACKAGE_LIBURCU
 
 	  On ARM, because of bug:
 	    http://gcc.gnu.org/bugzilla/show_bug.cgi?id=58854
-	  liburcu cannot be built using gcc 4.8.0, 4.8.1 or 4.8.2 without the
-	  following bug fix:
+	  liburcu cannot be built using gcc 4.8.0, 4.8.1 or 4.8.2
+	  without the following bug fix:
 	    http://gcc.gnu.org/viewcvs/gcc?view=revision&revision=204665
 
 	  http://lttng.org/urcu

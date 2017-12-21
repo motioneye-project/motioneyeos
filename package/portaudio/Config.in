@@ -14,8 +14,8 @@ if BR2_PACKAGE_PORTAUDIO
 
 config BR2_PACKAGE_PORTAUDIO_ALSA
 	bool "alsa support"
-	select BR2_PACKAGE_ALSA_LIB
 	default y
+	select BR2_PACKAGE_ALSA_LIB
 	help
 	  Compile with ALSA support.
 

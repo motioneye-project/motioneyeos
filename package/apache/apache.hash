@@ -1,2 +1,2 @@
-# From http://www.apache.org/dist/httpd/httpd-2.4.23.tar.bz2.sha1
-sha1 bd6d138c31c109297da2346c6e7b93b9283993d2  httpd-2.4.25.tar.bz2
+# From http://www.apache.org/dist/httpd/httpd-2.4.29.tar.bz2.sha256
+sha256 777753a5a25568a2a27428b2214980564bc1c38c1abf9ccc7630b639991f7f00 httpd-2.4.29.tar.bz2

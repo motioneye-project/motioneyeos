@@ -1,0 +1,30 @@
+From 63ab4a20076740bd39985c7dee3d6231cdc74c75 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 23 Dec 2015 11:43:24 +0100
+Subject: [PATCH] Abort on failed module build
+
+When building a Python module fails, the setup.py script currently
+doesn't exit with an error, and simply continues. This is not a really
+nice behavior, so this patch changes setup.py to abort with an error,
+so that the build issue is clearly noticeable.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ setup.py | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/setup.py b/setup.py
+index c956fa08d1..b3add2be76 100644
+--- a/setup.py
++++ b/setup.py
+@@ -312,6 +312,7 @@ class PyBuildExt(build_ext):
+             print("Failed to build these modules:")
+             print_three_column(failed)
+             print()
++            sys.exit(1)
+ 
+         if self.failed_on_import:
+             failed = self.failed_on_import[:]
+-- 
+2.13.5
+

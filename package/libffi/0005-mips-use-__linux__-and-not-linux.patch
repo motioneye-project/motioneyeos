@@ -1,0 +1,37 @@
+From 1f43e5edfd91bee80e518432b80db01f1bf226e3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 22 Oct 2017 15:02:11 +0200
+Subject: [PATCH] mips: use __linux__ and not linux
+
+The "linux" symbol is not POSIX compliant [1], and therefore not
+defined when building with -std=c99. Due to this, the linux
+conditional block doesn't get used on Linux when building Python 3.x
+(which is built with -std=c99). To fix this, we use the POSIX
+compliant __linux__ symbol, which is defined when -std=c99 is used.
+
+This fixes the build of Python 3.x on MIPS/musl configuration, as it
+makes sures that <asm/sgidefs.h> gets included and not <sgidefs.h>.
+
+[1] https://sourceforge.net/p/predef/wiki/OperatingSystems/
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/mips/ffitarget.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mips/ffitarget.h b/src/mips/ffitarget.h
+index 717d659..6faa358 100644
+--- a/src/mips/ffitarget.h
++++ b/src/mips/ffitarget.h
+@@ -32,7 +32,7 @@
+ #error "Please do not include ffitarget.h directly into your source.  Use ffi.h instead."
+ #endif
+ 
+-#ifdef linux
++#ifdef __linux__
+ # include <asm/sgidefs.h>
+ #elif defined(__rtems__)
+ /*
+-- 
+2.13.6
+

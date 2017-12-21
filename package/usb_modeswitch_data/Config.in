@@ -1,7 +1,7 @@
 config BR2_PACKAGE_USB_MODESWITCH_DATA
 	bool "usb_modeswitch_data"
-	select BR2_PACKAGE_USB_MODESWITCH
 	depends on BR2_TOOLCHAIN_HAS_THREADS # usb_modeswitch -> libusb
+	select BR2_PACKAGE_USB_MODESWITCH
 	help
 	  USB mode switch data
 	  Contains udev rules and events to allow usb_modeswitch to

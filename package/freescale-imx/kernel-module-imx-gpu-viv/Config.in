@@ -9,6 +9,8 @@ config BR2_PACKAGE_KERNEL_MODULE_IMX_GPU_VIV
 
 	  This package uses an exact copy of the GPU kernel driver source code
 	  of the same version as base and include fixes and improvements
-	  developed by FSL Community
+	  developed by FSL Community.
+
+	  This module is only meant for NXP-based kernel up to 4.1.x.
 
 	  https://github.com/Freescale/kernel-module-imx-gpu-viv

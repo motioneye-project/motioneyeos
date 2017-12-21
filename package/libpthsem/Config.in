@@ -2,8 +2,8 @@ config BR2_PACKAGE_LIBPTHSEM
 	bool "libpthsem"
 	depends on BR2_USE_MMU # fork()
 	help
-	  GNU pth is a user mode multi threading library. pthsem is an extend
-	  version, with support for semaphores added.
+	  GNU pth is a user mode multi threading library. pthsem is an
+	  extend version, with support for semaphores added.
 
 	  http://www.auto.tuwien.ac.at/~mkoegler/pth/
 

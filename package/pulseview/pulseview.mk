@@ -4,11 +4,9 @@
 #
 ################################################################################
 
-# TODO Pulseview can be built and linked against Qt4 as well.
-
-PULSEVIEW_VERSION = 0.3.0
+PULSEVIEW_VERSION = 0.4.0
 PULSEVIEW_SITE = http://sigrok.org/download/source/pulseview
-PULSEVIEW_LICENSE = GPLv3+
+PULSEVIEW_LICENSE = GPL-3.0+
 PULSEVIEW_LICENSE_FILES = COPYING
 PULSEVIEW_DEPENDENCIES = libsigrok qt5base qt5svg boost
 PULSEVIEW_CONF_OPTS = -DDISABLE_WERROR=TRUE

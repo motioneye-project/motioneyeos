@@ -8,15 +8,12 @@ files with incompatible permissions for ejabberd, which run as an
 ejabberd user.
 
 Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
----
- Makefile.in | 38 +++++---------------------------------
- 1 file changed, 5 insertions(+), 33 deletions(-)
 
 diff --git a/Makefile.in b/Makefile.in
-index 2a6457c..0be4c50 100644
+index a0b4553d..2cae2db4 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -155,10 +155,8 @@ copy-files-sub: copy-files-sub2
+@@ -169,10 +169,8 @@ copy-files-sub: copy-files-sub2
  install: all copy-files
  	#
  	# Configuration files
@@ -26,12 +23,12 @@ index 2a6457c..0be4c50 100644
 -		|| $(INSTALL) -b -m 640 $(G_USER) ejabberd.yml.example $(ETCDIR)/ejabberd.yml
 +	$(INSTALL) -d $(ETCDIR)
 +	$(INSTALL) -b -m 644 ejabberd.yml.example $(ETCDIR)/ejabberd.yml
- 	$(SED) -e "s*{{rootdir}}*@prefix@*" \
- 		-e "s*{{installuser}}*@INSTALLUSER@*" \
- 		-e "s*{{bindir}}*@bindir@*" \
-@@ -168,14 +166,11 @@ install: all copy-files
- 		-e "s*{{docdir}}*@docdir@*" \
- 		-e "s*{{erl}}*@ERL@*" ejabberdctl.template \
+ 	$(SED) -e "s*{{rootdir}}*@prefix@*g" \
+ 		-e "s*{{installuser}}*@INSTALLUSER@*g" \
+ 		-e "s*{{bindir}}*@bindir@*g" \
+@@ -183,53 +181,16 @@ install: all copy-files
+ 		-e "s*{{erl}}*@ERL@*g" \
+ 		-e "s*{{epmd}}*@EPMD@*g" ejabberdctl.template \
  		> ejabberdctl.example
 -	[ -f $(ETCDIR)/ejabberdctl.cfg ] \
 -		&& $(INSTALL) -b -m 640 $(G_USER) ejabberdctl.cfg.example $(ETCDIR)/ejabberdctl.cfg-new \
@@ -47,10 +44,19 @@ index 2a6457c..0be4c50 100644
  	# Elixir binaries
  	[ -d $(BINDIR) ] || $(INSTALL) -d -m 755 $(BINDIR)
  	[ -f deps/elixir/bin/iex ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/iex $(BINDIR)/iex || true
-@@ -187,29 +182,6 @@ install: all copy-files
- 		-e "s*@installuser@*$(INIT_USER)*" ejabberd.init.template \
- 		> ejabberd.init
- 	chmod 755 ejabberd.init
+ 	[ -f deps/elixir/bin/elixir ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/elixir $(BINDIR)/elixir || true
+ 	[ -f deps/elixir/bin/mix ] && $(INSTALL) -m 550 $(G_USER) deps/elixir/bin/mix $(BINDIR)/mix || true
+-	#
+-	# Init script
+-	$(SED) -e "s*@ctlscriptpath@*$(SBINDIR)*g" \
+-		-e "s*@installuser@*$(INIT_USER)*g" ejabberd.init.template \
+-		> ejabberd.init
+-	chmod 755 ejabberd.init
+-	#
+-	# Service script
+-	$(SED) -e "s*@ctlscriptpath@*$(SBINDIR)*g" ejabberd.service.template \
+-		> ejabberd.service
+-	chmod 644 ejabberd.service
 -	#
 -	# Spool directory
 -	$(INSTALL) -d -m 750 $(O_USER) $(SPOOLDIR)
@@ -74,9 +80,5 @@ index 2a6457c..0be4c50 100644
 -		&& $(INSTALL) -m 644 doc/guide.html $(DOCDIR) \
 -		|| echo "Documentation not included in sources"
 -	$(INSTALL) -m 644 COPYING $(DOCDIR)
- 
- uninstall: uninstall-binary
- 
--- 
-2.5.0
 
+ uninstall: uninstall-binary

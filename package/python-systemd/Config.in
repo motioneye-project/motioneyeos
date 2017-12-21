@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_SYSTEMD
+	bool "python-systemd"
+	depends on BR2_PACKAGE_SYSTEMD
+	help
+	  Python module for native access to the systemd facilities.
+
+	  https://github.com/systemd/python-systemd
+
+comment "python-systemd needs systemd"
+	depends on !BR2_PACKAGE_SYSTEMD

@@ -1,4 +1,4 @@
-config BR2_PACKAGE_E2FSPROGS
+menuconfig BR2_PACKAGE_E2FSPROGS
 	bool "e2fsprogs"
 	depends on BR2_USE_MMU # util-linux/libblkid
 	select BR2_PACKAGE_UTIL_LINUX
@@ -7,95 +7,63 @@ config BR2_PACKAGE_E2FSPROGS
 	help
 	  The EXT2 file system utilities.
 
-	  http://e2fsprogs.sf.net
+	  The following programs are always built and installed:
+	  badblocks chattr debugfs dumpe2fs e2freefrag e2fsck e2image
+	  e2undo e4crypt e4defrag filefrag fsck fuse2fs logsave lsattr
+	  mke2fs mklost+found resize2fs tune2fs
+
+	  The uuid utilities (uuidd, uuidgen) are not built. Use the
+	  ones from util-linux, instead.
+
+	  Other programs can be selected individually.
+
+	  http://e2fsprogs.sourceforge.net
 
 if BR2_PACKAGE_E2FSPROGS
 
-config BR2_PACKAGE_E2FSPROGS_BADBLOCKS
-	bool "badblocks"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_CHATTR
-	bool "chattr"
-	default y
-
 config BR2_PACKAGE_E2FSPROGS_DEBUGFS
 	bool "debugfs"
-
-config BR2_PACKAGE_E2FSPROGS_DUMPE2FS
-	bool "dumpe2fs"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_E2FREEFRAG
-	bool "e2freefrag"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_E2FSCK
-	bool "e2fsck"
-	default y
+	help
+	  ext2/ext3/ext4 file system debugger
 
 config BR2_PACKAGE_E2FSPROGS_E2IMAGE
 	bool "e2image"
-
-config BR2_PACKAGE_E2FSPROGS_E2LABEL
-	bool "e2label"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_E2UNDO
-	bool "e2undo"
-	default y
+	help
+	  Save critical ext2/ext3/ext4 filesystem metadata to a file
 
 config BR2_PACKAGE_E2FSPROGS_E4DEFRAG
 	bool "e4defrag"
 	depends on !BR2_nios2 # fallocate not implemented
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC # sync_file_range not impl
+	help
+	  Online defragmenter for ext4 filesystem
 
 comment "e4defrag needs a glibc or musl toolchain"
+	depends on !BR2_nios2
 	depends on BR2_TOOLCHAIN_USES_UCLIBC
-
-config BR2_PACKAGE_E2FSPROGS_FILEFRAG
-	bool "filefrag"
-	default y
 
 config BR2_PACKAGE_E2FSPROGS_FSCK
 	bool "fsck"
 	default y
+	depends on !BR2_PACKAGE_UTIL_LINUX_FSCK
+	help
+	  Check and repair a Linux file system. This is a wrapper around
+	  the filesystem-specific fsck tools.
 
 config BR2_PACKAGE_E2FSPROGS_FUSE2FS
 	bool "fuse2fs"
 	depends on !BR2_STATIC_LIBS # libfuse
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libfuse
 	select BR2_PACKAGE_LIBFUSE
+	help
+	  FUSE file system client for ext2/ext3/ext4 file systems
 
 comment "fuse2fs needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
-config BR2_PACKAGE_E2FSPROGS_LOGSAVE
-	bool "logsave"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_LSATTR
-	bool "lsattr"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_MKE2FS
-	bool "mke2fs"
-	default y
-
-config BR2_PACKAGE_E2FSPROGS_MKLOSTFOUND
-	bool "mklost+found"
-	default y
-
 config BR2_PACKAGE_E2FSPROGS_RESIZE2FS
 	bool "resize2fs"
-
-config BR2_PACKAGE_E2FSPROGS_TUNE2FS
-	bool "tune2fs"
-	default y
-	select BR2_PACKAGE_E2FSPROGS_E2LABEL
-
-config BR2_PACKAGE_E2FSPROGS_UUIDGEN
-	bool "uuidgen"
-	default y
+	help
+	  ext2/ext3/ext4 file system resizer
 
 endif

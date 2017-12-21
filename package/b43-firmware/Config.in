@@ -14,11 +14,11 @@ choice
 	  kernel >= 3.2 need a different firmware than the b43 drivers
 	  from kernel < 3.2.
 
-	config BR2_PACKAGE_B43_FIRMWARE_KERNEL_AFTER_3_2
-		bool ">= 3.2"
+config BR2_PACKAGE_B43_FIRMWARE_KERNEL_AFTER_3_2
+	bool ">= 3.2"
 
-	config BR2_PACKAGE_B43_FIRMWARE_KERNEL_BEFORE_3_2
-		bool "< 3.2"
+config BR2_PACKAGE_B43_FIRMWARE_KERNEL_BEFORE_3_2
+	bool "< 3.2"
 
 endchoice
 

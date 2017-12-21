@@ -1,0 +1,89 @@
+// -*- mode:doc -*- ;
+// vim: set syntax=asciidoc:
+
+[[makeuser-syntax]]
+== Makeusers syntax documentation
+
+The syntax to create users is inspired by the makedev syntax, above, but
+is specific to Buildroot.
+
+The syntax for adding a user is a space-separated list of fields, one
+user per line; the fields are:
+
+|=================================================================
+|username |uid |group |gid |password |home |shell |groups |comment
+|=================================================================
+
+Where:
+
+- +username+ is the desired user name (aka login name) for the user.
+  It can not be +root+, and must be unique. If set to +-+, then just a
+  group will be created.
+- +uid+ is the desired UID for the user. It must be unique, and not
+  +0+. If set to +-1+, then a unique UID will be computed by Buildroot
+  in the range [1000...1999]
+- +group+ is the desired name for the user's main group. It can not
+  be +root+. If the group does not exist, it will be created.
+- +gid+ is the desired GID for the user's main group. It must be unique,
+  and not +0+. If set to +-1+, and the group does not already exist, then
+  a unique GID will be computed by Buildroot in the range [1000..1999]
+- +password+ is the crypt(3)-encoded password. If prefixed with +!+,
+  then login is disabled. If prefixed with +=+, then it is interpreted
+  as clear-text, and will be crypt-encoded (using MD5). If prefixed with
+  +!=+, then the password will be crypt-encoded (using MD5) and login
+  will be disabled. If set to +*+, then login is not allowed. If set to 
+  +-+, then no password value will be set.
+- +home+ is the desired home directory for the user. If set to '-', no
+  home directory will be created, and the user's home will be +/+.
+  Explicitly setting +home+ to +/+ is not allowed.
+- +shell+ is the desired shell for the user. If set to +-+, then
+  +/bin/false+ is set as the user's shell.
+- +groups+ is the comma-separated list of additional groups the user
+  should be part of. If set to +-+, then the user will be a member of
+  no additional group. Missing groups will be created with an arbitrary
+  +gid+.
+- +comment+ (aka https://en.wikipedia.org/wiki/Gecos_field[GECOS]
+  field) is an almost-free-form text.
+
+There are a few restrictions on the content of each field:
+
+* except for +comment+, all fields are mandatory.
+* except for +comment+, fields may not contain spaces.
+* no field may contain a colon (+:+).
+
+If +home+ is not +-+, then the home directory, and all files below,
+will belong to the user and its main group.
+
+Examples:
+
+----
+foo -1 bar -1 !=blabla /home/foo /bin/sh alpha,bravo Foo user
+----
+
+This will create this user:
+
+- +username+ (aka login name) is: +foo+
+- +uid+ is computed by Buildroot
+- main +group+ is: +bar+
+- main group +gid+ is computed by Buildroot
+- clear-text +password+ is: +blabla+, will be crypt(3)-encoded, and login is disabled.
+- +home+ is: +/home/foo+
+- +shell+ is: +/bin/sh+
+- +foo+ is also a member of +groups+: +alpha+ and +bravo+
+- +comment+ is: +Foo user+
+
+----
+test 8000 wheel -1 = - /bin/sh - Test user
+----
+
+This will create this user:
+
+- +username+ (aka login name) is: +test+
+- +uid+ is : +8000+
+- main +group+ is: +wheel+
+- main group +gid+ is computed by Buildroot, and will use the value defined in the rootfs skeleton
+- +password+ is empty (aka no password).
+- +home+ is +/+ but will not belong to +test+
+- +shell+ is: +/bin/sh+
+- +test+ is not a member of any additional +groups+
+- +comment+ is: +Test user+

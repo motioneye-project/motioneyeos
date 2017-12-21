@@ -7,7 +7,7 @@
 RAPIDXML_VERSION = 1.13
 RAPIDXML_SOURCE = rapidxml-$(RAPIDXML_VERSION).zip
 RAPIDXML_SITE = http://downloads.sourceforge.net/project/rapidxml/rapidxml/rapidxml%20$(RAPIDXML_VERSION)
-RAPIDXML_LICENSE = Boost Software License 1.0 or MIT
+RAPIDXML_LICENSE = BSL-1.0 or MIT
 RAPIDXML_LICENSE_FILES = license.txt
 
 # C++ headers only

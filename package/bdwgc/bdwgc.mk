@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BDWGC_VERSION = 7.4.2
+BDWGC_VERSION = 7.6.0
 BDWGC_SOURCE = gc-$(BDWGC_VERSION).tar.gz
 BDWGC_SITE = http://www.hboehm.info/gc/gc_source
 BDWGC_INSTALL_STAGING = YES

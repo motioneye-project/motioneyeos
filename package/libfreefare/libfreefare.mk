@@ -10,7 +10,7 @@ LIBFREEFARE_SOURCE = libfreefare-$(LIBFREEFARE_VERSION).tar.bz2
 # the same as the one uploaded by upstream for the release.
 LIBFREEFARE_SITE = https://github.com/nfc-tools/libfreefare/releases/download/libfreefare-$(LIBFREEFARE_VERSION)
 LIBFREEFARE_DEPENDENCIES = libnfc openssl
-LIBFREEFARE_LICENSE = LGPLv3+ with exception
+LIBFREEFARE_LICENSE = LGPL-3.0+ with exception
 LIBFREEFARE_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_STATIC_LIBS),y)

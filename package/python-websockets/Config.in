@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_WEBSOCKETS
+	bool "python-websockets"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON3_ZLIB
+	select BR2_PACKAGE_PYTHON3_SSL
+	help
+	  An implementation of the WebSocket Protocol (RFC 6455)
+
+	  https://github.com/aaugustin/websockets

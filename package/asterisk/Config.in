@@ -1,0 +1,26 @@
+config BR2_PACKAGE_ASTERISK
+	bool "asterisk"
+	# Uses glibc resolver function res_nsearch()
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBILBC
+	select BR2_PACKAGE_LIBXML2
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Asterisk is an open source framework for building
+	  communications applications. Asterisk turns an ordinary
+	  computer into a communications server. Asterisk powers IP PBX
+	  systems, VoIP gateways, conference servers and other custom
+	  solutions. It is used by small businesses, large businesses,
+	  call centers, carriers and government agencies, worldwide.
+	  Asterisk is free and open source.
+
+	  http://www.asterisk.org/
+
+comment "asterisk needs a glibc toolchain w/ C++"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_INSTALL_LIBSTDCPP

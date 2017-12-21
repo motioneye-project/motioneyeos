@@ -1,4 +1,4 @@
-From b3958317c5ee2940e7024bec2e7f288b5a6a26c3 Mon Sep 17 00:00:00 2001
+From 7697d9c54e489b32b82c01f17db04f8b51857e51 Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Mon, 30 Jun 2014 10:09:04 -0300
 Subject: [PATCH] configure.ac: uclinux is also linux
@@ -29,5 +29,5 @@ index 436d0e2..50ad478 100644
  AC_SUBST([OS])
  
 -- 
-1.8.5.5
+2.14.2
 

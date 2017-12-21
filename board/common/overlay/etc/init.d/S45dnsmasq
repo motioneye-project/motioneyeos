@@ -1,0 +1,59 @@
+#!/bin/bash
+
+sys_conf="/etc/dnsmasq.conf"
+boot_conf="/boot/dnsmasq.conf"
+conf="/data/etc/dnsmasq.conf"
+
+log="/var/log/dnsmasq.log"
+prog="/usr/sbin/dnsmasq"
+
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
+fi
+
+test -f $conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+start() {
+    msg_begin "Starting dnsmasq"
+    
+    iface=$(cat $conf | grep interface | cut -d '=' -f 2)
+    ip=$(cat $conf | grep range | cut -d '=' -f 2 | cut -d '.' -f 1,2,3).1
+    
+    ifconfig $iface $ip
+
+    $prog -C $conf --log-facility=$log
+
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping dnsmasq"
+    killall dnsmasq &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+        
+    stop)
+        stop
+        ;;
+        
+    restart)
+        stop
+        start
+        ;;
+    
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+

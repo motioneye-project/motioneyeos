@@ -4,12 +4,14 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.50
+LIBGLIB2_VERSION_MAJOR = 2.54
 LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).2
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
-LIBGLIB2_LICENSE = LGPLv2+
+LIBGLIB2_LICENSE = LGPL-2.0+
 LIBGLIB2_LICENSE_FILES = COPYING
+# 0002-disable-tests.patch
+LIBGLIB2_AUTORECONF = YES
 
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
@@ -65,7 +67,7 @@ LIBGLIB2_CONF_ENV = \
 	jm_cv_func_working_re_compile_pattern=yes \
 	ac_use_included_regex=no \
 	gl_cv_c_restrict=no \
-	ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/usr/bin/glib-genmarshal \
+	ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/bin/glib-genmarshal \
 	ac_cv_prog_F77=no \
 	ac_cv_func_posix_getgrgid_r=no \
 	glib_cv_long_long_format=ll \
@@ -101,8 +103,8 @@ HOST_LIBGLIB2_CONF_OPTS = \
 	--with-pcre=system
 
 LIBGLIB2_DEPENDENCIES = \
-	host-pkgconf host-libglib2 host-gettext \
-	libffi pcre util-linux zlib $(if $(BR2_NEEDS_GETTEXT),gettext)
+	host-pkgconf host-libglib2 \
+	libffi pcre util-linux zlib $(TARGET_NLS_DEPENDENCIES)
 
 HOST_LIBGLIB2_DEPENDENCIES = \
 	host-gettext \
@@ -113,7 +115,8 @@ HOST_LIBGLIB2_DEPENDENCIES = \
 	host-zlib
 
 LIBGLIB2_CONF_OPTS = \
-	--with-pcre=system
+	--with-pcre=system \
+	--disable-compile-warnings
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
@@ -160,7 +163,7 @@ endef
 # them as well, and better do it in a central place.
 # It's used at run time so it doesn't matter defering it.
 define LIBGLIB2_COMPILE_SCHEMAS
-	$(HOST_DIR)/usr/bin/glib-compile-schemas \
+	$(HOST_DIR)/bin/glib-compile-schemas \
 		$(STAGING_DIR)/usr/share/glib-2.0/schemas \
 		--targetdir=$(TARGET_DIR)/usr/share/glib-2.0/schemas
 endef
@@ -171,4 +174,4 @@ LIBGLIB2_TARGET_FINALIZE_HOOKS += LIBGLIB2_COMPILE_SCHEMAS
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
-LIBGLIB2_HOST_BINARY = $(HOST_DIR)/usr/bin/glib-genmarshal
+LIBGLIB2_HOST_BINARY = $(HOST_DIR)/bin/glib-genmarshal

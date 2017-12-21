@@ -1,0 +1,67 @@
+#!/usr/bin/env bash
+
+while getopts p:l:r:a: OPT ; do
+	case "${OPT}" in
+	p) package="${OPTARG}";;
+	l) pkg_list="${OPTARG}";;
+	r) readelf="${OPTARG}";;
+	a) arch_name="${OPTARG}";;
+	:) error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
+	\?) error "unknown option '%s'\n" "${OPTARG}";;
+	esac
+done
+
+if test -z "${package}" -o -z "${pkg_list}" -o -z "${readelf}" -o -z "${arch_name}" ; then
+	echo "Usage: $0 -p <pkg> -l <pkg-file-list> -r <readelf> -a <arch name>"
+	exit 1
+fi
+
+exitcode=0
+
+# Only split on new lines, for filenames-with-spaces
+IFS="
+"
+
+while read f; do
+	# Skip firmware files, they could be ELF files for other
+	# architectures
+	if [[ "${f}" =~ ^/(usr/)?lib/firmware/.* ]]; then
+		continue
+	fi
+
+	# Skip files in /usr/share, several packages (qemu,
+	# pru-software-support) legitimately install ELF binaries that
+	# are not for the target architecture
+	if [[ "${f}" =~ ^/usr/share/.* ]]; then
+		continue
+	fi
+
+	# Skip symlinks. Some symlinks may have absolute paths as
+	# target, pointing to host binaries while we're building.
+	if [[ -L "${TARGET_DIR}/${f}" ]]; then
+		continue
+	fi
+
+	# Get architecture using readelf. We pipe through 'head -1' so
+	# that when the file is a static library (.a), we only take
+	# into account the architecture of the first object file.
+	arch=$(LC_ALL=C ${readelf} -h "${TARGET_DIR}/${f}" 2>&1 | \
+		       sed -r -e '/^  Machine: +(.+)/!d; s//\1/;' | head -1)
+
+	# If no architecture found, assume it was not an ELF file
+	if test "${arch}" = "" ; then
+		continue
+	fi
+
+	# Architecture is correct
+	if test "${arch}" = "${arch_name}" ; then
+		continue
+	fi
+
+	printf 'ERROR: architecture for "%s" is "%s", should be "%s"\n' \
+	       "${f}" "${arch}" "${arch_name}"
+
+	exitcode=1
+done < <( sed -r -e "/^${package},\.(.+)$/!d; s//\1/;" ${pkg_list} )
+
+exit ${exitcode}

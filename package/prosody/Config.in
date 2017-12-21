@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PROSODY
+	bool "prosody"
+	depends on BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
+	select BR2_PACKAGE_LUAEXPAT # runtime
+	select BR2_PACKAGE_LUASEC # runtime
+	select BR2_PACKAGE_LUASOCKET # runtime
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBIDN
+	select BR2_PACKAGE_LUAFILESYSTEM # runtime
+	help
+	  Prosody is a modern XMPP communication server. It aims to be
+	  easy to set up and configure, and efficient with system
+	  resources.
+
+	  https://prosody.im
+
+comment "prosody needs the lua interpreter"
+	depends on !BR2_PACKAGE_LUA_5_1 && !BR2_PACKAGE_LUAJIT

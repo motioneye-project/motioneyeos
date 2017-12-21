@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBWEBSOCKETS_VERSION = v2.1.0
+LIBWEBSOCKETS_VERSION = v2.2.1
 LIBWEBSOCKETS_SITE = $(call github,warmcat,libwebsockets,$(LIBWEBSOCKETS_VERSION))
-LIBWEBSOCKETS_LICENSE = LGPLv2.1 with exceptions
+LIBWEBSOCKETS_LICENSE = LGPL-2.1 with exceptions
 LIBWEBSOCKETS_LICENSE_FILES = LICENSE
 LIBWEBSOCKETS_DEPENDENCIES = zlib
 LIBWEBSOCKETS_INSTALL_STAGING = YES

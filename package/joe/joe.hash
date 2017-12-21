@@ -1,2 +1,5 @@
+# From https://sourceforge.net/projects/joe-editor/files/JOE%20sources/joe-4.4/
+sha1 aedf1ac9e6b91053aa26c70e7bba5bbd8136f033  joe-4.4.tar.gz
+md5 59e63debe60b456a6ee5c0c27a756a47  joe-4.4.tar.gz
 # Locally computed:
-sha256  cae456e1ad5a8c1d3c94920a3416c2347277739b260e3494d3bc0f2b9b73106f  joe-3.7.tar.gz
+sha256 a5704828bbca29acb9e200414fef522c66cdf9ce28150f402d6767da43460979  joe-4.4.tar.gz

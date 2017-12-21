@@ -8,7 +8,7 @@ LIBSVG_VERSION = 0.1.4
 LIBSVG_SITE = http://cairographics.org/snapshots
 LIBSVG_DEPENDENCIES = host-pkgconf libpng jpeg
 LIBSVG_INSTALL_STAGING = YES
-LIBSVG_LICENSE = LGPLv2+
+LIBSVG_LICENSE = LGPL-2.0+
 LIBSVG_LICENSE_FILES = COPYING
 
 # libsvg needs at last a XML parser

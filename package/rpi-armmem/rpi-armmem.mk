@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPI_ARMMEM_VERSION = 3aee5f40c201b9fd50d6f79b8db89f4343820f2c
+RPI_ARMMEM_VERSION = c06d1f1bc2736d91597282d6c189065e4ba66e31
 RPI_ARMMEM_SITE = $(call github,bavison,arm-mem,$(RPI_ARMMEM_VERSION))
 CFLAGS = -fPIC -std=gnu99 -O2
 

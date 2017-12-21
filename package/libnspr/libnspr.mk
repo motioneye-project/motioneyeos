@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-LIBNSPR_VERSION = 4.13.1
+LIBNSPR_VERSION = 4.17
 LIBNSPR_SOURCE = nspr-$(LIBNSPR_VERSION).tar.gz
 LIBNSPR_SITE = https://ftp.mozilla.org/pub/mozilla.org/nspr/releases/v$(LIBNSPR_VERSION)/src
 LIBNSPR_SUBDIR = nspr
 LIBNSPR_INSTALL_STAGING = YES
 LIBNSPR_CONFIG_SCRIPTS = nspr-config
-LIBNSPR_LICENSE = MPLv2.0
+LIBNSPR_LICENSE = MPL-2.0
 LIBNSPR_LICENSE_FILES = nspr/LICENSE
 
 # Set the host CFLAGS and LDFLAGS so NSPR does not guess wrongly

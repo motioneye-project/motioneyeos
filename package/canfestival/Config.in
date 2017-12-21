@@ -16,8 +16,8 @@ config BR2_PACKAGE_CANFESTIVAL
 	depends on !BR2_STATIC_LIBS
 	help
 	  CanFestival is an OpenSource CANOpen framework, licensed under
-	  LGPLv2.1 and GPLv2 for some drivers (virtual_kernel, lincan and
-	  copcican_comedi).
+	  LGPLv2.1 and GPLv2 for some drivers (virtual_kernel, lincan
+	  and copcican_comedi).
 
 	  http://www.canfestival.org
 
@@ -78,9 +78,9 @@ config BR2_PACKAGE_CANFESTIVAL_DRIVER
 config BR2_PACKAGE_CANFESTIVAL_ADDITIONAL_OPTIONS
 	string "additional configure options"
 	help
-	  Additional options can be passed directly to the configure script
-	  (e.g.: --MAX_CAN_BUS_ID=..., --SDO_MAX_LENGTH_TRANSFER=...,
-	  --SDO_BLOCK_SIZE=...).
+	  Additional options can be passed directly to the configure
+	  script (e.g.: --MAX_CAN_BUS_ID=...,
+	  --SDO_MAX_LENGTH_TRANSFER=..., --SDO_BLOCK_SIZE=...).
 
 config BR2_PACKAGE_CANFESTIVAL_INSTALL_EXAMPLES
 	bool "install examples"

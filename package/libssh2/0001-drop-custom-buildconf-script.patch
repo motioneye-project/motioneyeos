@@ -1,0 +1,121 @@
+From 39a2a444a32896bd2dab37c9b247ccfd11ff4693 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Mon, 30 Oct 2017 19:29:12 +0100
+Subject: [PATCH] buildsystem: drop custom buildconf script, rely on autoreconf
+
+The buildconf script is currently required, because we need to copy a
+header around, because it is used both from the library and the examples
+sources.
+
+However, having a custom 'buildconf'-like script is not needed if we can
+ensure that the header / exists by the time it is needed. For That, we
+can just append the src/ directory to the headers search path for the
+examples.
+
+And then it means we no longer need to generate the same header twice,
+so we remove the second one from configure.ac.
+
+Now, we can just call "autoreconf -fi" to generate the autotools files,
+instead of relying on the canned sequence in "buildconf", since
+autoreconf has now long known what to do at the correct moment (future
+versions of autotools, automake, autopoint, autoheader etc... may
+require an other ordering, or other intermediate steps, etc...).
+
+Eventually, get rid of buildconf now it is no longer needed. In fact, we
+really keep it for legacy, but have it just call autoreconf (and print a
+nice user-friendly warning).
+
+Update gitignore accordingly, too.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Cc: Sam Voss <sam.voss@rockwellcollins.com>
+---
+ .gitignore          |  2 ++
+ buildconf           | 24 +++++-------------------
+ configure.ac        |  2 +-
+ example/.gitignore  |  2 --
+ example/Makefile.am |  2 +-
+ 5 files changed, 9 insertions(+), 23 deletions(-)
+
+diff --git a/.gitignore b/.gitignore
+index 997e51e1..b6d6b5cb 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -13,6 +13,8 @@ Makefile
+ Makefile.in
+ aclocal.m4
+ autom4te.cache
++compile
++test-driver
+ config.guess
+ config.log
+ config.status
+diff --git a/buildconf b/buildconf
+index 558dcb66..728b3397 100755
+--- a/buildconf
++++ b/buildconf
+@@ -1,22 +1,8 @@
+ #!/bin/sh
+ 
+-LIBTOOLIZE="libtoolize"
++echo "***" >&2
++echo "*** Do not use buildconf. Instead, just use: autoreconf -fi" >&2
++echo "*** Doing it for you now, but buildconf may disapear in the future." >&2
++echo "***" >&2
+ 
+-if [ "x`which $LIBTOOLIZE`" = "x" ]; then
+-    LIBTOOLIZE="glibtoolize"
+-fi
+-
+-if [ "x`which $LIBTOOLIZE`" = "x" ]; then
+-    echo "Neither libtoolize nor glibtoolize could be found!"
+-    exit 1
+-fi
+-
+-${LIBTOOLIZE} --copy --automake --force
+-${ACLOCAL:-aclocal} -I m4 $ACLOCAL_FLAGS
+-${AUTOHEADER:-autoheader}
+-# copy the private libssh2_config.h.in to the examples dir so that
+-# it can be included without pointing the include path to the private
+-# source dir
+-cp src/libssh2_config.h.in example/libssh2_config.h.in
+-${AUTOCONF:-autoconf}
+-${AUTOMAKE:-automake} --add-missing --copy
++${AUTORECONF:-autoreconf} -fi "${@}"
+diff --git a/configure.ac b/configure.ac
+index c6ff7535..6939d0d6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2,7 +2,7 @@
+ AC_INIT(libssh2, [-], libssh2-devel@cool.haxx.se)
+ AC_CONFIG_MACRO_DIR([m4])
+ AC_CONFIG_SRCDIR([src])
+-AC_CONFIG_HEADERS([src/libssh2_config.h example/libssh2_config.h])
++AC_CONFIG_HEADERS([src/libssh2_config.h])
+ AM_MAINTAINER_MODE
+ m4_ifdef([AM_SILENT_RULES], [AM_SILENT_RULES([yes])])
+ 
+diff --git a/example/.gitignore b/example/.gitignore
+index 13448191..cac152b8 100644
+--- a/example/.gitignore
++++ b/example/.gitignore
+@@ -20,8 +20,6 @@ sftp_write_nonblock
+ config.h.in
+ ssh2_exec
+ ssh2_agent
+-libssh2_config.h
+-libssh2_config.h.in
+ stamp-h2
+ sftp_append
+ sftp_write_sliding
+diff --git a/example/Makefile.am b/example/Makefile.am
+index 5cf5f071..41f65b12 100644
+--- a/example/Makefile.am
++++ b/example/Makefile.am
+@@ -13,5 +13,5 @@ if HAVE_SYS_UN_H
+ noinst_PROGRAMS += x11
+ endif
+ 
+-AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_builddir)/example
++AM_CPPFLAGS = -I$(top_srcdir)/include -I$(top_builddir)/example -I../src
+ LDADD = $(top_builddir)/src/libssh2.la

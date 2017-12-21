@@ -1,0 +1,4 @@
+# From https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922/SHA256SUMS
+sha256 c1f862e6f40f997dbe3feba89355e8cb05d55818994e10f4932b0dd9b627d1bb  ghostscript-9.22.tar.xz
+# From https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922/SHA512SUMS
+sha512 67739ace64090ab1951cba4cb011a5a6829ee60b32ba4157d0f17e744e345ea268335304db6722677ae33565ea5b696c2ff7b889d42a463acf2933c8230523d4  ghostscript-9.22.tar.xz

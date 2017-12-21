@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_ZOPE_INTERFACE
 	bool "python-zope-interface"
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
 	help
 	  This package provides an implementation of "object interfaces" for
 	  Python. Interfaces are a mechanism for labeling objects as conforming

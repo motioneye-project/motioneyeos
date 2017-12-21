@@ -28,7 +28,8 @@ config BR2_PACKAGE_BATMAN_ADV_BATMAN_V
 	bool "enable B.A.T.M.A.N. V protocol (experimental)"
 	help
 	  Enables B.A.T.M.A.N. V network protocol.
-	  This is the next-gen protocol and is experimental at this time.
+	  This is the next-gen protocol and is experimental at this
+	  time.
 
 	  https://www.open-mesh.org/projects/batman-adv/wiki/BATMAN_V
 

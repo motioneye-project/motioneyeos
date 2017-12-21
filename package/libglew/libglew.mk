@@ -7,7 +7,7 @@
 LIBGLEW_VERSION = 2.0.0
 LIBGLEW_SOURCE = glew-$(LIBGLEW_VERSION).tgz
 LIBGLEW_SITE = http://sourceforge.net/projects/glew/files/glew/$(LIBGLEW_VERSION)
-LIBGLEW_LICENSE = BSD-3c, MIT
+LIBGLEW_LICENSE = BSD-3-Clause, MIT
 LIBGLEW_LICENSE_FILES = LICENSE.txt
 LIBGLEW_INSTALL_STAGING = YES
 LIBGLEW_DEPENDENCIES = libgl xlib_libX11 xlib_libXext xlib_libXi xlib_libXmu

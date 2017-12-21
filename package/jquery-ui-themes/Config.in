@@ -13,77 +13,77 @@ choice
 	help
 	  Specify the jQuery UI theme to install.
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE
-		bool "black-tie"
+config BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE
+	bool "black-tie"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_BLITZER
-		bool "blitzer"
+config BR2_PACKAGE_JQUERY_UI_THEME_BLITZER
+	bool "blitzer"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_CUPERTINO
-		bool "cupertino"
+config BR2_PACKAGE_JQUERY_UI_THEME_CUPERTINO
+	bool "cupertino"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_DARK_HIVE
-		bool "dark-hive"
+config BR2_PACKAGE_JQUERY_UI_THEME_DARK_HIVE
+	bool "dark-hive"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_DOT_LUV
-		bool "dot-luv"
+config BR2_PACKAGE_JQUERY_UI_THEME_DOT_LUV
+	bool "dot-luv"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_EGGPLANT
-		bool "eggplant"
+config BR2_PACKAGE_JQUERY_UI_THEME_EGGPLANT
+	bool "eggplant"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_EXCITE_BIKE
-		bool "excite-bike"
+config BR2_PACKAGE_JQUERY_UI_THEME_EXCITE_BIKE
+	bool "excite-bike"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_FLICK
-		bool "flick"
+config BR2_PACKAGE_JQUERY_UI_THEME_FLICK
+	bool "flick"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_HOT_SNEAKS
-		bool "hot-sneaks"
+config BR2_PACKAGE_JQUERY_UI_THEME_HOT_SNEAKS
+	bool "hot-sneaks"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_HUMANITY
-		bool "humanity"
+config BR2_PACKAGE_JQUERY_UI_THEME_HUMANITY
+	bool "humanity"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_LE_FROG
-		bool "le-frog"
+config BR2_PACKAGE_JQUERY_UI_THEME_LE_FROG
+	bool "le-frog"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_MINT_CHOC
-		bool "mint-choc"
+config BR2_PACKAGE_JQUERY_UI_THEME_MINT_CHOC
+	bool "mint-choc"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_OVERCAST
-		bool "overcast"
+config BR2_PACKAGE_JQUERY_UI_THEME_OVERCAST
+	bool "overcast"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_PEPPER_GRINDER
-		bool "pepper-grinder"
+config BR2_PACKAGE_JQUERY_UI_THEME_PEPPER_GRINDER
+	bool "pepper-grinder"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_REDMOND
-		bool "redmond"
+config BR2_PACKAGE_JQUERY_UI_THEME_REDMOND
+	bool "redmond"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_SMOOTHNESS
-		bool "smoothness"
+config BR2_PACKAGE_JQUERY_UI_THEME_SMOOTHNESS
+	bool "smoothness"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_SOUTH_STREET
-		bool "south-street"
+config BR2_PACKAGE_JQUERY_UI_THEME_SOUTH_STREET
+	bool "south-street"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_START
-		bool "start"
+config BR2_PACKAGE_JQUERY_UI_THEME_START
+	bool "start"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_SUNNY
-		bool "sunny"
+config BR2_PACKAGE_JQUERY_UI_THEME_SUNNY
+	bool "sunny"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_SWANKY_PURSE
-		bool "swanky-purse"
+config BR2_PACKAGE_JQUERY_UI_THEME_SWANKY_PURSE
+	bool "swanky-purse"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_TRONTASTIC
-		bool "trontastic"
+config BR2_PACKAGE_JQUERY_UI_THEME_TRONTASTIC
+	bool "trontastic"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_UI_DARKNESS
-		bool "ui-darkness"
+config BR2_PACKAGE_JQUERY_UI_THEME_UI_DARKNESS
+	bool "ui-darkness"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_UI_LIGHTNESS
-		bool "ui-lightness"
+config BR2_PACKAGE_JQUERY_UI_THEME_UI_LIGHTNESS
+	bool "ui-lightness"
 
-	config BR2_PACKAGE_JQUERY_UI_THEME_VADER
-		bool "vader"
+config BR2_PACKAGE_JQUERY_UI_THEME_VADER
+	bool "vader"
 
 endchoice
 

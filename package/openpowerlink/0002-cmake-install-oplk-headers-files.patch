@@ -1,4 +1,4 @@
-From 8cb39257e12d6b82190aec8ab9ad89a9ee13af71 Mon Sep 17 00:00:00 2001
+From f7679a4083de3a9dba80cd719ad4904fbade349b Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 15:57:29 +0200
 Subject: [PATCH] cmake: install oplk headers files
@@ -15,10 +15,10 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  1 file changed, 5 insertions(+)
 
 diff --git a/stack/CMakeLists.txt b/stack/CMakeLists.txt
-index 3b11c54..4eadf44 100644
+index 69454f2..45f131d 100644
 --- a/stack/CMakeLists.txt
 +++ b/stack/CMakeLists.txt
-@@ -105,3 +105,8 @@ ELSEIF((CMAKE_SYSTEM_NAME STREQUAL "Generic") AND (CMAKE_SYSTEM_PROCESSOR STREQU
+@@ -110,3 +110,8 @@ ELSEIF((CMAKE_SYSTEM_NAME STREQUAL "Generic") AND (CMAKE_SYSTEM_PROCESSOR STREQU
  ELSE()
      MESSAGE(FATAL_ERROR "Unknown Platform and processor combination ${CMAKE_SYSTEM_NAME} and ${CMAKE_SYSTEM_PROCESSOR}!!")
  ENDIF()
@@ -28,5 +28,5 @@ index 3b11c54..4eadf44 100644
 +################################################################################
 +INSTALL(DIRECTORY ${STACK_INCLUDE_DIR}/oplk DESTINATION "include")
 -- 
-2.8.1
+2.9.4
 

@@ -16,7 +16,6 @@ AMD_CATALYST_SUFFIX = $(if $(BR2_x86_64),_64)
 AMD_CATALYST_ARCH_DIR = $(@D)/arch/x86$(AMD_CATALYST_SUFFIX)
 AMD_CATALYST_LIB_SUFFIX = $(if $(BR2_x86_64),64)
 
-
 define AMD_CATALYST_EXTRACT_CMDS
 	unzip -q $(DL_DIR)/$(AMD_CATALYST_SOURCE) -d $(@D)
 	$(SHELL) $(@D)/AMD-Catalyst-$(AMD_CATALYST_VERSION)-Linux-installer-$(AMD_CATALYST_VERBOSE_VER)-x86.x86_64.run --extract $(@D)
@@ -24,7 +23,7 @@ endef
 
 ifeq ($(BR2_PACKAGE_AMD_CATALYST_MODULE),y)
 AMD_CATALYST_MODULE_SUBDIRS = common/lib/modules/fglrx/build_mod/2.6.x
-AMD_CATALYST_MODULE_MAKE_OPTS =  \
+AMD_CATALYST_MODULE_MAKE_OPTS = \
 	CFLAGS_MODULE="-DCOMPAT_ALLOC_USER_SPACE=arch_compat_alloc_user_space"
 
 define AMD_CATALYST_PREPARE_MODULE
@@ -101,7 +100,6 @@ define AMD_CATALYST_INSTALL_XORG
 	# Xorg is not able to detect the driver automatically
 	$(INSTALL) -D -m 0644 package/amd-catalyst/20-fglrx.conf \
 		$(TARGET_DIR)/etc/X11/xorg.conf.d/20-fglrx.conf
-
 
 	# Common files: containing binary profiles about GPUs,
 	# required by the fglrx_drv xorg driver

@@ -1,7 +1,7 @@
 config BR2_PACKAGE_XCB_UTIL_RENDERUTIL
 	bool "xcb-util-renderutil"
-	select BR2_PACKAGE_XCB_UTIL
 	depends on BR2_PACKAGE_LIBXCB # xcb-util
+	select BR2_PACKAGE_XCB_UTIL
 	help
 	  The XCB util modules provides a number of libraries which
 	  sit on top of libxcb, the core X protocol library, and some

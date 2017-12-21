@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-RPI_USERLAND_VERSION = 3caf0cd4a61f46b71eff49422c36e1cd2727ab45
+RPI_USERLAND_VERSION = 3cd60d45bc7c9d3ec8daee574bc99027cb1bab9e
 RPI_USERLAND_SITE = $(call github,raspberrypi,userland,$(RPI_USERLAND_VERSION))
-RPI_USERLAND_LICENSE = BSD-3c
+RPI_USERLAND_LICENSE = BSD-3-Clause
 RPI_USERLAND_LICENSE_FILES = LICENCE
 RPI_USERLAND_INSTALL_STAGING = YES
 RPI_USERLAND_CONF_OPTS = -DVMCS_INSTALL_PREFIX=/usr \

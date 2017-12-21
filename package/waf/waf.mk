@@ -13,7 +13,7 @@ define HOST_WAF_EXTRACT_CMDS
 endef
 
 define HOST_WAF_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/waf $(HOST_DIR)/usr/bin/waf
+	$(INSTALL) -D -m 0755 $(@D)/waf $(HOST_DIR)/bin/waf
 endef
 
 $(eval $(host-generic-package))

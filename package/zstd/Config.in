@@ -1,0 +1,12 @@
+config BR2_PACKAGE_ZSTD
+	bool "zstd"
+	help
+	  Zstandard, or zstd as short version, is a fast lossless
+	  compression algorithm, targeting real-time compression
+	  scenarios at zlib-level and better compression ratios
+
+	  The selection of other packages will enable some features:
+	  xz, lz4 and/or zlib will enable support for corresponding
+	  compression formats
+
+	  https://facebook.github.io/zstd

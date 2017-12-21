@@ -1,0 +1,16 @@
+Without this patch, dependencies would be downloaded and compiled
+by rebar at build time.
+
+diff --git a/rebar.config b/rebar.config
+index 94ee830..d0af863 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -22,9 +22,6 @@
+
+ {erl_opts, [debug_info, {i, "include"}]}.
+
+-{deps, [{fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.11"}}},
+-	{p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.7"}}}]}.
+-
+ {cover_enabled, true}.
+ {cover_export_enabled, true}.

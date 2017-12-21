@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PRIORITY
+	bool "python-priority"
+	help
+	  A pure-Python implementation of the HTTP/2 priority tree.
+
+	  http://python-hyper.org/priority/

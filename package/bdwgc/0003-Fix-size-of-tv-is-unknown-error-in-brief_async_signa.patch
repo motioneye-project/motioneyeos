@@ -1,0 +1,35 @@
+From 31eef02317d59b4d204624efbddaea641e861390 Mon Sep 17 00:00:00 2001
+From: Mikael Djurfeldt <mikael@djurfeldt.com>
+Date: Sun, 26 Feb 2017 20:09:56 +0100
+Subject: [PATCH] Fix 'size of tv is unknown' error in
+ brief_async_signal_safe_sleep (musl) (fix commits 62097c3, 9f48082)
+
+Include <sys/time.h> to get struct timeval defined and select() declared.
+
+* pthread_stop_world.c [GC_ENABLE_SUSPEND_THREAD]: Include sys/time.h
+before GC_brief_async_signal_safe_sleep definition.
+
+Upstream status: upstream
+commit ffad61d3bbe86c09ffe062dab393fcb0e4940580
+
+[Romain: backported to 7.6.0]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ pthread_stop_world.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/pthread_stop_world.c b/pthread_stop_world.c
+index dad1fdc..8c76944 100644
+--- a/pthread_stop_world.c
++++ b/pthread_stop_world.c
+@@ -391,6 +391,7 @@ STATIC void GC_restart_handler(int sig)
+ #   ifndef GC_TIME_LIMIT
+ #     define GC_TIME_LIMIT 50
+ #   endif
++#   include <sys/time.h>
+ 
+     STATIC void GC_brief_async_signal_safe_sleep(void)
+     {
+-- 
+2.9.4
+

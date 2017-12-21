@@ -1,0 +1,40 @@
+From 3bc4b9c0d60a735b1d63e52f74492ace39f02824 Mon Sep 17 00:00:00 2001
+From: Yegor Yefremov <yegorslists@googlemail.com>
+Date: Thu, 27 Jul 2017 09:46:07 +0200
+Subject: [PATCH] Determine boost_python name depending on current Python
+ version
+
+Python2 requires boost_python and Python3 requires boost_python3.
+
+Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
+---
+ setup.py | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index fdf5c27..4b38569 100644
+--- a/setup.py
++++ b/setup.py
+@@ -3,6 +3,10 @@
+ from setuptools import setup, find_packages, Extension
+ import sys, os
+ 
++boostlib = "boost_python3"
++if sys.version_info < (3, 0):
++    boostlib = "boost_python"
++
+ setup(
+     name				= 'pylibconfig',
+     description			= "libconfig bindings for Python",
+@@ -19,7 +23,7 @@ setup(
+         Extension(
+             "pylibconfig",
+             ["src/pylibconfig.cc"],
+-            libraries=["boost_python", "config++"]
++            libraries=[boostlib, "config++"]
+             #include_dirs=includes,
+             #extra_link_args=lflags
+                  )
+-- 
+2.11.0
+

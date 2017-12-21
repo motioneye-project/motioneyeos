@@ -1,0 +1,55 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[ccache]]
+==== Using +ccache+ in Buildroot
+
+http://ccache.samba.org[ccache] is a compiler cache. It stores the
+object files resulting from each compilation process, and is able to
+skip future compilation of the same source file (with same compiler
+and same arguments) by using the pre-existing object files. When doing
+almost identical builds from scratch a number of times, it can nicely
+speed up the build process.
+
++ccache+ support is integrated in Buildroot. You just have to enable
++Enable compiler cache+ in +Build options+. This will automatically
+build +ccache+ and use it for every host and target compilation.
+
+The cache is located in +$HOME/.buildroot-ccache+. It is stored
+outside of Buildroot output directory so that it can be shared by
+separate Buildroot builds. If you want to get rid of the cache, simply
+remove this directory.
+
+You can get statistics on the cache (its size, number of hits,
+misses, etc.) by running +make ccache-stats+.
+
+The make target +ccache-options+ and the +CCACHE_OPTIONS+ variable
+provide more generic access to the ccache. For example
+
+-----------------
+# set cache limit size
+make CCACHE_OPTIONS="--max-size=5G" ccache-options
+
+# zero statistics counters
+make CCACHE_OPTIONS="--zero-stats" ccache-options
+-----------------
+
++ccache+ makes a hash of the source files and of the compiler options.
+If a compiler option is different, the cached object file will not be
+used. Many compiler options, however, contain an absolute path to the
+staging directory. Because of this, building in a different output
+directory would lead to many cache misses.
+
+To avoid this issue, buildroot has the +Use relative paths+ option
+(+BR2_CCACHE_USE_BASEDIR+). This will rewrite all absolute paths that
+point inside the output directory into relative paths. Thus, changing
+the output directory no longer leads to cache misses.
+
+A disadvantage of the relative paths is that they also end up to be
+relative paths in the object file. Therefore, for example, the debugger
+will no longer find the file, unless you cd to the output directory
+first.
+
+See https://ccache.samba.org/manual.html#_compiling_in_different_directories[the
+ccache manual's section on "Compiling in different directories"] for
+more details about this rewriting of absolute paths.

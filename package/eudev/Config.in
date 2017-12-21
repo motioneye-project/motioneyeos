@@ -9,10 +9,10 @@ config BR2_PACKAGE_EUDEV
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_KMOD
 	help
-	  eudev is a fork of systemd-udev with the goal of obtaining better
-	  compatibility with existing software such as OpenRC and Upstart,
-	  older kernels, various toolchains and anything else required by
-	  users and various distributions.
+	  eudev is a fork of systemd-udev with the goal of obtaining
+	  better compatibility with existing software such as OpenRC and
+	  Upstart, older kernels, various toolchains and anything else
+	  required by users and various distributions.
 
 	  https://wiki.gentoo.org/wiki/Project:Eudev
 

@@ -9,7 +9,7 @@ PSEUDO_SITE = https://git.yoctoproject.org/git/pseudo
 PSEUDO_SITE_METHOD = git
 
 # No "or later" clause.
-PSEUDO_LICENSE = LGPLv2.1
+PSEUDO_LICENSE = LGPL-2.1
 PSEUDO_LICENSE_FILES = COPYING
 
 HOST_PSEUDO_DEPENDENCIES = host-attr host-sqlite
@@ -21,9 +21,9 @@ HOST_PSEUDO_DEPENDENCIES = host-attr host-sqlite
 # a warning at configure time.
 HOST_PSEUDO_CONF_OPTS = \
 	--cflags="$(HOSTCFLAGS)" \
-	--with-rpath=$(HOST_DIR)/usr/lib \
+	--with-rpath=$(HOST_DIR)/lib \
 	--bits=$(if $(filter %64,$(HOSTARCH)),64,32) \
-	--libdir=$(HOST_DIR)/usr/lib \
-	--with-sqlite=$(HOST_DIR)/usr
+	--libdir=$(HOST_DIR)/lib \
+	--with-sqlite=$(HOST_DIR)
 
 $(eval $(host-autotools-package))

@@ -10,26 +10,26 @@
 config BR2_PACKAGE_LIBUNWIND_ARCH_SUPPORTS
 	bool
 	default y if BR2_TOOLCHAIN_USES_GLIBC && \
-		(((BR2_arm || BR2_armeb) && BR2_ARM_CPU_HAS_ARM) || \
-		 BR2_mips || BR2_mipsel || BR2_mips64 || \
+		(BR2_ARM_CPU_HAS_ARM || BR2_mips || BR2_mipsel || BR2_mips64 || \
 		 BR2_mips64el || BR2_powerpc || BR2_sh || BR2_i386 || BR2_x86_64)
 	default y if BR2_TOOLCHAIN_USES_UCLIBC && \
-		(((BR2_arm || BR2_armeb) && BR2_ARM_CPU_HAS_ARM) || \
-		 BR2_i386 || BR2_mips || BR2_mipsel || \
+		(BR2_ARM_CPU_HAS_ARM || BR2_mips || BR2_mipsel || \
 		 BR2_mips64 || BR2_mips64el || BR2_x86_64)
 	default y if BR2_TOOLCHAIN_USES_MUSL && \
-		(((BR2_arm || BR2_armeb) && BR2_ARM_CPU_HAS_ARM) || \
-		 BR2_i386 || BR2_x86_64)
+		(BR2_ARM_CPU_HAS_ARM || BR2_x86_64)
 
 config BR2_PACKAGE_LIBUNWIND
 	bool "libunwind"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_LIBUNWIND_ARCH_SUPPORTS
+	# forcefully links against libgcc_s, only available in dynamic
+	# linking configurations
+	depends on !BR2_STATIC_LIBS
 	help
 	  C API to determine the call-chain of a program.
 
 	  http://www.nongnu.org/libunwind/index.html
 
-comment "libunwind needs a toolchain w/ threads"
+comment "libunwind needs a toolchain w/ threads, dynamic library"
 	depends on BR2_PACKAGE_LIBUNWIND_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

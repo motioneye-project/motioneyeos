@@ -1,8 +1,8 @@
 config BR2_PACKAGE_NBD
 	bool "nbd"
-	depends on BR2_USE_WCHAR # glib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
-	depends on BR2_USE_MMU # glib2
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  NBD is a set of utilities to configure network block devices,
@@ -12,16 +12,21 @@ config BR2_PACKAGE_NBD
 
 if BR2_PACKAGE_NBD
 
-config BR2_NBD_CLIENT
+config BR2_PACKAGE_NBD_CLIENT
 	bool "nbd client"
 	default y
 	help
-	  the client part of NBD.
+	  The client part of NBD.
 
-config BR2_NBD_SERVER
+config BR2_PACKAGE_NBD_SERVER
 	bool "nbd server"
 	help
-	  the server part of NBD.
+	  The server part of NBD.
+
+config BR2_PACKAGE_NBD_TRDUMP
+	bool "nbd trdump"
+	help
+	  Utility to dump server logs in human-readable form.
 
 endif
 

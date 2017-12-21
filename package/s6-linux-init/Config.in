@@ -1,0 +1,12 @@
+config BR2_PACKAGE_S6_LINUX_INIT
+	bool "s6-linux-init"
+	depends on BR2_USE_MMU # s6
+	select BR2_PACKAGE_S6
+	select BR2_PACKAGE_S6_LINUX_UTILS
+	select BR2_PACKAGE_S6_PORTABLE_UTILS
+	help
+	  s6-linux-init is a set of minimalistic tools to create a
+	  s6-based init system, including a /sbin/init binary, on a
+	  Linux kernel.
+
+	  http://skarnet.org/software/s6-linux-init/

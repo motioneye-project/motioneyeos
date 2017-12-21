@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_PYTHON_LXML
+	bool "host python-lxml"
+	help
+	  The lxml XML toolkit is a Pythonic binding for the C libraries
+	  libxml2 and libxslt.
+
+	  http://lxml.de/

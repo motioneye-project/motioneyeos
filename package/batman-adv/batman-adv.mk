@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-BATMAN_ADV_VERSION = 2016.1
+BATMAN_ADV_VERSION = 2017.0.1
 BATMAN_ADV_SITE = https://downloads.open-mesh.org/batman/stable/sources/batman-adv
-BATMAN_ADV_LICENSE = GPLv2
+BATMAN_ADV_LICENSE = GPL-2.0
 
 # Bridge Loop Avoidance, Distributed Arp Table are always enabled
 BATMAN_ADV_CFLAGS = \

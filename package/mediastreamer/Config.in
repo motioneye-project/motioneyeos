@@ -1,8 +1,8 @@
 config BR2_PACKAGE_MEDIASTREAMER
 	bool "mediastreamer"
-	select BR2_PACKAGE_ORTP
 	depends on BR2_INSTALL_LIBSTDCPP # ortp
 	depends on BR2_TOOLCHAIN_HAS_THREADS # ortp
+	select BR2_PACKAGE_ORTP
 	help
 	  Mediastreamer is a powerful and lightweighted streaming
 	  engine specialized for voice/video telephony applications.

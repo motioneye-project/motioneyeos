@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZIC_VERSION = 2016j
+ZIC_VERSION = 2017c
 ZIC_SOURCE = tzcode$(ZIC_VERSION).tar.gz
 ZIC_SITE = http://www.iana.org/time-zones/repository/releases
 ZIC_STRIP_COMPONENTS = 0
@@ -15,10 +15,10 @@ define HOST_ZIC_BUILD_CMDS
 endef
 
 define HOST_ZIC_INSTALL_CMDS
-	$(INSTALL) -D -m 755 $(@D)/zic $(HOST_DIR)/usr/sbin/zic
-	$(INSTALL) -D -m 644 $(@D)/tzfile.h $(HOST_DIR)/usr/include/tzfile.h
+	$(INSTALL) -D -m 755 $(@D)/zic $(HOST_DIR)/sbin/zic
+	$(INSTALL) -D -m 644 $(@D)/tzfile.h $(HOST_DIR)/include/tzfile.h
 endef
 
 $(eval $(host-generic-package))
 
-ZIC = $(HOST_DIR)/usr/sbin/zic
+ZIC = $(HOST_DIR)/sbin/zic

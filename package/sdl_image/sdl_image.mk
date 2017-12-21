@@ -8,7 +8,7 @@ SDL_IMAGE_VERSION = 1.2.12
 SDL_IMAGE_SOURCE = SDL_image-$(SDL_IMAGE_VERSION).tar.gz
 SDL_IMAGE_SITE = http://www.libsdl.org/projects/SDL_image/release
 SDL_IMAGE_INSTALL_STAGING = YES
-SDL_IMAGE_LICENSE = zlib
+SDL_IMAGE_LICENSE = Zlib
 SDL_IMAGE_LICENSE_FILES = COPYING
 
 SDL_IMAGE_CONF_OPTS = \
@@ -37,8 +37,8 @@ SDL_IMAGE_DEPENDENCIES = sdl \
 	$(if $(BR2_PACKAGE_SDL_IMAGE_WEBP),webp)
 
 HOST_SDL_IMAGE_CONF_OPTS = \
-	--with-sdl-prefix=$(HOST_DIR)/usr \
-	--with-sdl-exec-prefix=$(HOST_DIR)/usr \
+	--with-sdl-prefix=$(HOST_DIR) \
+	--with-sdl-exec-prefix=$(HOST_DIR) \
 	--disable-sdltest \
 	--disable-static \
 	--disable-jpg-shared \

@@ -4,15 +4,15 @@
 #
 ################################################################################
 
-LIBBLURAY_VERSION = 0.9.3
+LIBBLURAY_VERSION = 1.0.1
 LIBBLURAY_SITE = http://get.videolan.org/libbluray/$(LIBBLURAY_VERSION)
 LIBBLURAY_SOURCE = libbluray-$(LIBBLURAY_VERSION).tar.bz2
 LIBBLURAY_INSTALL_STAGING = YES
-LIBBLURAY_LICENSE = LGPLv2.1+
+LIBBLURAY_LICENSE = LGPL-2.1+
 LIBBLURAY_LICENSE_FILES = COPYING
 LIBBLURAY_DEPENDENCIES = host-pkgconf
 
-LIBBLURAY_CONF_OPTS = --enable-udf --disable-bdjava
+LIBBLURAY_CONF_OPTS = --disable-bdjava-jar
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 LIBBLURAY_DEPENDENCIES += libiconv

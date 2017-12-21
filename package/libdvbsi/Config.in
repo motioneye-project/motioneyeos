@@ -4,9 +4,10 @@ config BR2_PACKAGE_LIBDVBSI
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  C++ parsing library for Service Information (SI) in DVB systems.
-	  With libdvbsi++ you can convert raw DVB service information to
-	  a set of C++ objects, removing the need to parse data manually.
+	  C++ parsing library for Service Information (SI) in DVB
+	  systems. With libdvbsi++ you can convert raw DVB service
+	  information to a set of C++ objects, removing the need to
+	  parse data manually.
 
 	  http://www.saftware.de/
 

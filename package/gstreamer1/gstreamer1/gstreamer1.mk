@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-GSTREAMER1_VERSION = 1.10.4
+GSTREAMER1_VERSION = 1.12.3
 GSTREAMER1_SOURCE = gstreamer-$(GSTREAMER1_VERSION).tar.xz
 GSTREAMER1_SITE = https://gstreamer.freedesktop.org/src/gstreamer
 GSTREAMER1_INSTALL_STAGING = YES
 GSTREAMER1_LICENSE_FILES = COPYING
-GSTREAMER1_LICENSE = LGPLv2+, LGPLv2.1+
+GSTREAMER1_LICENSE = LGPL-2.0+, LGPL-2.1+
 
 GSTREAMER1_CONF_OPTS = \
 	--disable-examples \

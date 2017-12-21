@@ -21,14 +21,20 @@ else ifeq ($(BR2_SHARED_LIBS),y)
 RABBITMQ_C_CONF_OPTS += -DBUILD_SHARED_LIBS=ON -DBUILD_STATIC_LIBS=OFF
 endif
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
+# CMake OpenSSL detection is buggy, and doesn't properly use
+# pkg-config, so it fails when statically linking. See
+# https://gitlab.kitware.com/cmake/cmake/issues/16885.
+ifeq ($(BR2_PACKAGE_OPENSSL):$(BR2_STATIC_LIBS),y:)
 RABBITMQ_C_CONF_OPTS += -DENABLE_SSL_SUPPORT=ON
 RABBITMQ_C_DEPENDENCIES += openssl
 else
 RABBITMQ_C_CONF_OPTS += -DENABLE_SSL_SUPPORT=OFF
 endif
 
-ifeq ($(BR2_PACKAGE_POPT), y)
+# Popt is sometimes linked against libintl, but CMake doesn't know
+# about that, and there's no way to tell manually CMake to link
+# against an additional library.
+ifeq ($(BR2_PACKAGE_POPT):$(BR2_STATIC_LIBS),y:)
 RABBITMQ_C_CONF_OPTS += -DBUILD_TOOLS=ON
 RABBITMQ_C_DEPENDENCIES += popt
 else

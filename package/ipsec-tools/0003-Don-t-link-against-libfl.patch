@@ -1,0 +1,92 @@
+From e48b9097dce7bc2bfbb9e9c542124d3b5cebab39 Mon Sep 17 00:00:00 2001
+From: Paul Barker <paul@paulbarker.me.uk>
+Date: Wed, 5 Mar 2014 13:39:14 +0000
+Subject: [PATCH] Don't link against libfl
+
+We can remove all references to yywrap by adding "%option noyywrap" statements
+to each flex source file that doesn't override yywrap. After this, we no longer
+need to link against libfl and so no longer get errors about undefined
+references to yylex.
+
+Signed-off-by: Paul Barker <paul@paulbarker.me.uk>
+Upstream-status: Submitted 2014-03-11
+    see http://sourceforge.net/p/ipsec-tools/mailman/ipsec-tools-devel/thread/CANyK_8ewmxGA3vBVJW6s1APXPmxPR%2BDFWZ61EL8pCt288aKQ6w%40mail.gmail.com/#msg32088797
+
+Downloaded from
+http://cgit.openembedded.org/meta-openembedded/tree/meta-networking/recipes-support/ipsec-tools/ipsec-tools/0002-Don-t-link-against-libfl.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/libipsec/Makefile.am | 1 -
+ src/racoon/Makefile.am   | 2 +-
+ src/racoon/cftoken.l     | 2 ++
+ src/setkey/Makefile.am   | 1 -
+ src/setkey/token.l       | 2 ++
+ 5 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/libipsec/Makefile.am b/src/libipsec/Makefile.am
+index 6a4e3b3..df1e106 100644
+--- a/src/libipsec/Makefile.am
++++ b/src/libipsec/Makefile.am
+@@ -26,7 +26,6 @@ libipsec_la_SOURCES = \
+ # version is current:revision:age.
+ # See: http://www.gnu.org/manual/libtool-1.4.2/html_chapter/libtool_6.html#SEC32
+ libipsec_la_LDFLAGS = -version-info 0:1:0
+-libipsec_la_LIBADD = $(LEXLIB)
+ 
+ noinst_HEADERS = ipsec_strerror.h
+ 
+diff --git a/src/racoon/Makefile.am b/src/racoon/Makefile.am
+index dbaded9..0662957 100644
+--- a/src/racoon/Makefile.am
++++ b/src/racoon/Makefile.am
+@@ -38,7 +38,7 @@ racoon_SOURCES = \
+ 	cftoken.l cfparse.y prsa_tok.l prsa_par.y 
+ EXTRA_racoon_SOURCES = isakmp_xauth.c isakmp_cfg.c isakmp_unity.c throttle.c \
+ 	isakmp_frag.c nattraversal.c security.c $(MISSING_ALGOS)
+-racoon_LDADD = $(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) $(LEXLIB) \
++racoon_LDADD = $(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) \
+ 	 $(SECCTX_OBJS) vmbuf.o sockmisc.o misc.o ../libipsec/libipsec.la
+ racoon_DEPENDENCIES = \
+ 	$(CRYPTOBJS) $(HYBRID_OBJS) $(NATT_OBJS) $(FRAG_OBJS) $(SECCTX_OBJS) \
+diff --git a/src/racoon/cftoken.l b/src/racoon/cftoken.l
+index 490242c..1701922 100644
+--- a/src/racoon/cftoken.l
++++ b/src/racoon/cftoken.l
+@@ -106,6 +106,8 @@ static int incstackp = 0;
+ static int yy_first_time = 1;
+ %}
+ 
++%option noyywrap
++
+ /* common seciton */
+ nl		\n
+ ws		[ \t]+
+diff --git a/src/setkey/Makefile.am b/src/setkey/Makefile.am
+index 746c1f1..389e6cf 100644
+--- a/src/setkey/Makefile.am
++++ b/src/setkey/Makefile.am
+@@ -13,7 +13,6 @@ setkey_SOURCES = \
+ 
+ setkey_LDFLAGS = ../libipsec/libipsec.la
+ setkey_DEPENDENCIES = ../libipsec/libipsec.la
+-setkey_LDADD = $(LEXLIB)
+ 
+ noinst_HEADERS = vchar.h extern.h
+ man8_MANS = setkey.8
+diff --git a/src/setkey/token.l b/src/setkey/token.l
+index ad3d843..eb23b76 100644
+--- a/src/setkey/token.l
++++ b/src/setkey/token.l
+@@ -88,6 +88,8 @@
+ #endif
+ %}
+ 
++%option noyywrap
++
+ /* common section */
+ nl		\n
+ ws		[ \t]+
+-- 
+1.9.0
+

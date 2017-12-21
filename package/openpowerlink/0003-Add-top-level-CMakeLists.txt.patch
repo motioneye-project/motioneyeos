@@ -1,4 +1,4 @@
-From 7f81c74726aec4aef6bd93ee644200ab34375437 Mon Sep 17 00:00:00 2001
+From cd0945a323cecb638ce56f2e3d7fb4e8c004b98b Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Wed, 25 May 2016 15:59:20 +0200
 Subject: [PATCH] Add top level CMakeLists.txt
@@ -174,10 +174,10 @@ index 49aab66..d9fd418 100644
              TARGET_LINK_LIBRARIES(${EXECUTABLE_NAME} optimized ${OPLKLIB})
          ENDIF()
 diff --git a/drivers/linux/drv_daemon_pcap/CMakeLists.txt b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
-index 1ef9353..e720834 100644
+index 2b4a2c1..ecceb4c 100644
 --- a/drivers/linux/drv_daemon_pcap/CMakeLists.txt
 +++ b/drivers/linux/drv_daemon_pcap/CMakeLists.txt
-@@ -104,9 +104,15 @@ ENDIF()
+@@ -109,9 +109,15 @@ ENDIF()
  SET(OPLKLIB_DIR ${OPLK_BASE_DIR}/stack/lib/${SYSTEM_NAME_DIR}/${SYSTEM_PROCESSOR_DIR})
  SET(OPLKLIB_INCDIR ${OPLK_BASE_DIR}/stack/proj/${SYSTEM_NAME_DIR}/lib${LIB_NAME})
  
@@ -197,5 +197,5 @@ index 1ef9353..e720834 100644
  
  SET(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -Wextra -pedantic -std=c99 -pthread -fno-strict-aliasing")
 -- 
-2.8.1
+2.9.4
 

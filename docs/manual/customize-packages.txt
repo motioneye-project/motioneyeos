@@ -1,0 +1,56 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[customize-packages]]
+=== Adding project-specific packages
+
+In general, any new package should be added directly in the +package+
+directory and submitted to the Buildroot upstream project. How to add
+packages to Buildroot in general is explained in full detail in
+xref:adding-packages[] and will not be repeated here. However, your
+project may need some proprietary packages that cannot be upstreamed.
+This section will explain how you can keep such project-specific
+packages in a project-specific directory.
+
+As shown in xref:customize-dir-structure[], the recommended location for
+project-specific packages is +package/<company>/+. If you are using the
+br2-external tree feature (see xref:outside-br-custom[]) the recommended
+location is to put them in a sub-directory named +package/+ in your
+br2-external tree.
+
+However, Buildroot will not be aware of the packages in this location,
+unless we perform some additional steps. As explained in
+xref:adding-packages[], a package in Buildroot basically consists of two
+files: a +.mk+ file (describing how to build the package) and a
++Config.in+ file (describing the configuration options for this
+package).
+
+Buildroot will automatically include the +.mk+ files in first-level
+subdirectories of the +package+ directory (using the pattern
++package/\*/*.mk+). If we want Buildroot to include +.mk+ files from
+deeper subdirectories (like +package/<company>/package1/+) then we
+simply have to add a +.mk+ file in a first-level subdirectory that
+includes these additional +.mk+ files. Therefore, create a file
++package/<company>/<company>.mk+ with following contents (assuming you
+have only one extra directory level below +package/<company>/+):
+
+-----
+include $(sort $(wildcard package/<company>/*/*.mk))
+-----
+
+For the +Config.in+ files, create a file +package/<company>/Config.in+
+that includes the +Config.in+ files of all your packages. An exhaustive
+list has to be provided since wildcards are not supported in the source command of kconfig.
+For example:
+
+-----
+source "package/<company>/package1/Config.in"
+source "package/<company>/package2/Config.in"
+-----
+
+Include this new file +package/<company>/Config.in+ from
++package/Config.in+, preferably in a company-specific menu to make
+merges with future Buildroot versions easier.
+
+If using a br2-external tree, refer to xref:outside-br-custom[] for how
+to fill in those files.

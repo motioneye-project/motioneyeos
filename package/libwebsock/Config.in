@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBWEBSOCK
 	bool "libwebsock"
-	select BR2_PACKAGE_LIBEVENT
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBEVENT
 	help
 	  C library for easy WebSockets servers.
 

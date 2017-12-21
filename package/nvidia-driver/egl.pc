@@ -1,0 +1,10 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: egl
+Description: Nvidia OpenGL library
+Version: 1
+Cflags: -I${includedir}
+Libs: -L${libdir} -lEGL

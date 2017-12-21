@@ -1,10 +1,10 @@
 config BR2_PACKAGE_ODROID_MALI
 	bool "odroid-mali"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_aarch64 || BR2_ARM_EABIHF
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_ODROID_SCRIPTS # runtime
-	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_aarch64 || BR2_ARM_EABIHF
 	help
 	  Install the ARM Mali drivers for odroidc2 based systems.
 

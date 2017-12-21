@@ -1,0 +1,151 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+== Coding style
+
+Overall, these coding style rules are here to help you to add new files in
+Buildroot or refactor existing ones.
+
+If you slightly modify some existing file, the important thing is
+to keep the consistency of the whole file, so you can:
+
+* either follow the potentially deprecated coding style used in this
+file,
+
+* or entirely rework it in order to make it comply with these rules.
+
+[[writing-rules-config-in]]
+
+=== +Config.in+ file
+
++Config.in+ files contain entries for almost anything configurable in
+Buildroot.
+
+An entry has the following pattern:
+
+---------------------
+config BR2_PACKAGE_LIBFOO
+	bool "libfoo"
+	depends on BR2_PACKAGE_LIBBAZ
+	select BR2_PACKAGE_LIBBAR
+	help
+	  This is a comment that explains what libfoo is. The help text
+	  should be wrapped.
+
+	  http://foosoftware.org/libfoo/
+---------------------
+
+* The +bool+, +depends on+, +select+ and +help+ lines are indented
+  with one tab.
+
+* The help text itself should be indented with one tab and two
+  spaces.
+
+* The help text should be wrapped to fit 72 columns, where tab counts
+  for 8, so 62 characters in the text itself.
+
+The +Config.in+ files are the input for the configuration tool
+used in Buildroot, which is the regular _Kconfig_. For further
+details about the _Kconfig_ language, refer to
+http://kernel.org/doc/Documentation/kbuild/kconfig-language.txt[].
+
+[[writing-rules-mk]]
+
+=== The +.mk+ file
+
+* Header: The file starts with a header. It contains the module name,
+preferably in lowercase, enclosed between separators made of 80 hashes. A
+blank line is mandatory after the header:
++
+---------------------
+################################################################################
+#
+# libfoo
+#
+################################################################################
+---------------------
++
+* Assignment: use +=+ preceded and followed by one space:
++
+---------------------
+LIBFOO_VERSION = 1.0
+LIBFOO_CONF_OPTS += --without-python-support
+---------------------
++
+Do not align the +=+ signs.
+
+* Indentation: use tab only:
++
+---------------------
+define LIBFOO_REMOVE_DOC
+	$(RM) -fr $(TARGET_DIR)/usr/share/libfoo/doc \
+		$(TARGET_DIR)/usr/share/man/man3/libfoo*
+endef
+---------------------
++
+Note that commands inside a +define+ block should always start with a tab,
+so _make_ recognizes them as commands.
+
+* Optional dependency:
+
+** Prefer multi-line syntax.
++
+YES:
++
+---------------------
+ifeq ($(BR2_PACKAGE_PYTHON),y)
+LIBFOO_CONF_OPTS += --with-python-support
+LIBFOO_DEPENDENCIES += python
+else
+LIBFOO_CONF_OPTS += --without-python-support
+endif
+---------------------
++
+NO:
++
+---------------------
+LIBFOO_CONF_OPTS += --with$(if $(BR2_PACKAGE_PYTHON),,out)-python-support
+LIBFOO_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON),python,)
+---------------------
+
+** Keep configure options and dependencies close together.
+
+* Optional hooks: keep hook definition and assignment together in one
+  if block.
++
+YES:
++
+---------------------
+ifneq ($(BR2_LIBFOO_INSTALL_DATA),y)
+define LIBFOO_REMOVE_DATA
+	$(RM) -fr $(TARGET_DIR)/usr/share/libfoo/data
+endef
+LIBFOO_POST_INSTALL_TARGET_HOOKS += LIBFOO_REMOVE_DATA
+endif
+---------------------
++
+NO:
++
+---------------------
+define LIBFOO_REMOVE_DATA
+	$(RM) -fr $(TARGET_DIR)/usr/share/libfoo/data
+endef
+
+ifneq ($(BR2_LIBFOO_INSTALL_DATA),y)
+LIBFOO_POST_INSTALL_TARGET_HOOKS += LIBFOO_REMOVE_DATA
+endif
+---------------------
+
+=== The documentation
+
+The documentation uses the
+http://www.methods.co.nz/asciidoc/[asciidoc] format.
+
+For further details about the http://www.methods.co.nz/asciidoc/[asciidoc]
+syntax, refer to http://www.methods.co.nz/asciidoc/userguide.html[].
+
+=== Support scripts
+
+Some scripts in the +support/+ and +utils/+ directories are written in
+Python and should follow the
+https://www.python.org/dev/peps/pep-0008/[PEP8 Style Guide for Python Code].

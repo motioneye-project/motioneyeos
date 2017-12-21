@@ -1,0 +1,10 @@
+config BR2_PACKAGE_ARP_SCAN
+	bool "arp-scan"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  The ARP scanner
+
+	  arp-scan is a command-line tool that uses the ARP protocol to
+	  discover and fingerprint IP hosts on the local network.
+
+	  http://www.nta-monitor.com/wiki/index.php/Arp-scan_Documentation

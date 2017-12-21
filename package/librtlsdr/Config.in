@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBRTLSDR
 	bool "librtlsdr"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Library and command line programs for accessing
 	  RTL2832U SDR dongles.

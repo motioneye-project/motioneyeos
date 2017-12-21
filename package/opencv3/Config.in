@@ -1,12 +1,12 @@
 menuconfig BR2_PACKAGE_OPENCV3
 	bool "opencv3"
-	select BR2_PACKAGE_ZLIB
 	depends on BR2_TOOLCHAIN_HAS_ATOMIC
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS # include dlfcn.h
 	depends on !BR2_PACKAGE_OPENCV
+	select BR2_PACKAGE_ZLIB
 	help
 	  OpenCV (Open Source Computer Vision) is a library of programming
 	  functions for real time computer vision.
@@ -85,16 +85,15 @@ comment "gtk3 support needs libgtk3"
 config BR2_PACKAGE_OPENCV3_WITH_QT
 	bool "qt4"
 	depends on BR2_PACKAGE_QT
-	depends on !BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # Qt GUI module
 	select BR2_PACKAGE_QT_STL
 	select BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_TEST
 	help
 	  Use Qt4 with QtTest and QtGui modules and STL support, as GUI toolkit.
 
-comment "qt4 support needs qt and a toolchain not affected by Binutils bug 19405"
+comment "qt4 support needs qt"
 	depends on BR2_USE_MMU # qt
-	depends on (!BR2_PACKAGE_QT && !BR2_PACKAGE_QT5) || BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405
+	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
 
 config BR2_PACKAGE_OPENCV3_WITH_QT5
 	bool "qt5"
@@ -129,7 +128,6 @@ comment "opengl support needs an OpenGL provider"
 		!BR2_PACKAGE_HAS_LIBGL
 
 endif # BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
-
 
 config BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
 	bool "imgcodecs"

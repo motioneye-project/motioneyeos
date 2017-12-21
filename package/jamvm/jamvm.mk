@@ -6,7 +6,7 @@
 
 JAMVM_VERSION = 2.0.0
 JAMVM_SITE = http://downloads.sourceforge.net/project/jamvm/jamvm/JamVM%20$(JAMVM_VERSION)
-JAMVM_LICENSE = GPLv2+
+JAMVM_LICENSE = GPL-2.0+
 JAMVM_LICENSE_FILES = COPYING
 JAMVM_DEPENDENCIES = zlib classpath
 # For 0001-Use-fenv.h-when-available-instead-of-fpu_control.h.patch

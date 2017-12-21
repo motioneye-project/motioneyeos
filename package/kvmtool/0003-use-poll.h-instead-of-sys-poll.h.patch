@@ -1,0 +1,33 @@
+From 19490e24895df95253e43a7aacf3ef408b830bd5 Mon Sep 17 00:00:00 2001
+From: Andre Przywara <andre.przywara@arm.com>
+Date: Fri, 17 Jul 2015 17:02:15 +0100
+Subject: [PATCH] use <poll.h> instead of <sys/poll.h>
+
+The manpage of poll(2) states that the prototype of poll is defined
+in <poll.h>. Use that header file instead of <sys/poll.h> to allow
+compilation against musl-libc.
+
+Signed-off-by: Andre Przywara <andre.przywara@arm.com>
+Signed-off-by: Will Deacon <will.deacon@arm.com>
+[backport from upstream commit 52c22e6e64a94cc701d86587d32cd3822ac5c293.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ disk/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/disk/core.c b/disk/core.c
+index 309e16c..dd2f258 100644
+--- a/disk/core.c
++++ b/disk/core.c
+@@ -5,7 +5,7 @@
+ 
+ #include <linux/err.h>
+ #include <sys/eventfd.h>
+-#include <sys/poll.h>
++#include <poll.h>
+ 
+ #define AIO_MAX 256
+ 
+-- 
+2.9.4
+

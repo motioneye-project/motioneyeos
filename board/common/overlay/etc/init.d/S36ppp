@@ -28,7 +28,7 @@ test -n "$os_debug" || source /etc/init.d/conf
 test "$os_networkless" == "true" && exit 0
 
 connected() {
-    ifconfig | grep $os_ppp &>/dev/null 2>&1 && return 0 || return 1
+    ifconfig | grep $os_ppp &>/dev/null && return 0 || return 1
 }
 
 watch() {

@@ -1,6 +1,12 @@
 config BR2_PACKAGE_SUNXI_MALI
 	bool "sunxi-mali"
 	depends on BR2_arm
+	# libump package only provide libUMP.so.3 which is used by
+	# libMali for r3p0 and r3p1 Mali kernel module. This version
+	# is only available for ARM EABIhf.
+	# libMali for r2p4 Mali kernel module (available for ARM EABI)
+	# requires libUMP.so.2.
+	depends on BR2_ARM_EABIHF # libUMP.so.3 only
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
@@ -36,31 +42,16 @@ choice
 	  appropriate version number is r3p0. For other kernels, use the maliver
 	  application to determine the appropriate version.
 
-config BR2_PACKAGE_SUNXI_MALI_R2P4
-	bool "r2p4"
-	depends on BR2_ARM_EABI
-
-comment "r2p4 requires an EABI toolchain"
-	depends on !BR2_ARM_EABI
-
 config BR2_PACKAGE_SUNXI_MALI_R3P0
 	bool "r3p0"
-	depends on BR2_ARM_EABIHF
-
-comment "r3p0 requires an EABIhf toolchain"
-	depends on !BR2_ARM_EABIHF
 
 config BR2_PACKAGE_SUNXI_MALI_R3P1
-	depends on BR2_ARM_EABIHF
 	bool "r3p1"
-
-comment "r3p1 requires an EABIhf toolchain"
-	depends on !BR2_ARM_EABIHF
 
 endchoice
 
 endif
 
-comment "sunxi-mali needs a glibc toolchain"
+comment "sunxi-mali needs an EABIhf glibc toolchain"
 	depends on BR2_arm
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF

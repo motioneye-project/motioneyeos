@@ -1,2 +1,4 @@
+# From http://lftp.yar.ru/ftp/lftp-4.8.0.md5sum
+md5 468558412ad3575ef8e98547c41339f4  lftp-4.8.0.tar.xz
 # Locally calculated after checking gpg signature
-sha256 bf67c4d128b6f769a4082947376a9679c5ee3463a24ab761a0757f75d70bd92c  lftp-4.7.4.tar.xz
+sha256 7a2880968088b4aeec43b6b6680fef0e065e1dddcce9b409390157e9766b690f  lftp-4.8.0.tar.xz

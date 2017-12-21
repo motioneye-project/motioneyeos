@@ -1,0 +1,39 @@
+From 31dc2951c758698bff060aeae8ffd8854616183b Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Fri, 12 Feb 2016 19:25:02 +0100
+Subject: [PATCH] Fix usage of __GLIBC_PREREQ for non-glibc toolchains
+
+The way __GLIBC_PREREQ() is currently used means that it's evaluated
+even if __GLIBC__ is not defined. But obviously, __GLIBC_PREREQ will
+not exist if __GLIBC__ is not defined, causing build failures on C
+libraries not defining __GLIBC__ such as the musl C library.
+
+Patch originally taken from:
+https://github.com/voidlinux/void-packages/blob/master/srcpkgs/numactl/patches/musl.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Bernd: Reworked to fix uClibc]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Thomas: improve patch description.]
+[Upstream commit: https://github.com/numactl/numactl/commit/31dc2951c758698bff060aeae8ffd8854616183b]
+---
+ syscall.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/syscall.c b/syscall.c
+index 37782d9..255853d 100644
+--- a/syscall.c
++++ b/syscall.c
+@@ -115,7 +115,11 @@
+ 
+ #endif
+ 
+-#if defined(__GLIBC_PREREQ) && __GLIBC_PREREQ(2, 11)
++#ifndef __GLIBC_PREREQ
++# define __GLIBC_PREREQ(x,y) 0
++#endif
++
++#if defined(__GLIBC__) && __GLIBC_PREREQ(2, 11)
+ 
+ /* glibc 2.11 seems to have working 6 argument sycall. Use the
+    glibc supplied syscall in this case.

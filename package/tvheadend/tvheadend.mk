@@ -4,13 +4,14 @@
 #
 ################################################################################
 
-TVHEADEND_VERSION = e5f5a4278949afc96e26d6cd50cf968e0e92d7b6
+TVHEADEND_VERSION = a234e2ff6d140e6ffceb7057bf18a8fdd927a5ac
 TVHEADEND_SITE = $(call github,tvheadend,tvheadend,$(TVHEADEND_VERSION))
-TVHEADEND_LICENSE = GPLv3+
+TVHEADEND_LICENSE = GPL-3.0+
 TVHEADEND_LICENSE_FILES = LICENSE.md
 TVHEADEND_DEPENDENCIES = \
 	host-gettext \
 	host-pkgconf \
+	host-pngquant \
 	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python) \
 	openssl
 
@@ -25,11 +26,41 @@ else
 TVHEADEND_CONF_OPTS += --disable-dbus-1
 endif
 
-ifeq ($(BR2_PACKAGE_FFMPEG),y)
-TVHEADEND_DEPENDENCIES += ffmpeg
-TVHEADEND_CONF_OPTS += --enable-libav
+ifeq ($(BR2_PACKAGE_TVHEADEND_TRANSCODING),y)
+TVHEADEND_CONF_OPTS += --enable-libav --enable-libx264
+TVHEADEND_DEPENDENCIES += ffmpeg x264
+ifeq ($(BR2_PACKAGE_LIBVA)$(BR2_PACKAGE_XORG7),yy)
+TVHEADEND_CONF_OPTS += --enable-vaapi
+TVHEADEND_DEPENDENCIES += libva
 else
-TVHEADEND_CONF_OPTS += --disable-libav
+TVHEADEND_CONF_OPTS += --disable-vaapi
+endif
+ifeq ($(BR2_PACKAGE_OPUS),y)
+TVHEADEND_CONF_OPTS += --enable-libopus
+TVHEADEND_DEPENDENCIES += opus
+else
+TVHEADEND_CONF_OPTS += --disable-libopus
+endif
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+TVHEADEND_CONF_OPTS += --enable-omx
+TVHEADEND_DEPENDENCIES += rpi-userland
+else
+TVHEADEND_CONF_OPTS += --disable-omx
+endif
+ifeq ($(BR2_PACKAGE_X265),y)
+TVHEADEND_CONF_OPTS += --enable-libx265
+TVHEADEND_DEPENDENCIES += x265
+else
+TVHEADEND_CONF_OPTS += --disable-libx265
+endif
+else
+TVHEADEND_CONF_OPTS += \
+	--disable-libav \
+	--disable-libopus \
+	--disable-omx \
+	--disable-vaapi \
+	--disable-libx264 \
+	--disable-libx265
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDVBCSA),y)
@@ -56,6 +87,13 @@ TVHEADEND_DEPENDENCIES += liburiparser
 TVHEADEND_CFLAGS += $(if $(BR2_USE_WCHAR),,-DURI_NO_UNICODE)
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE),y)
+TVHEADEND_DEPENDENCIES += pcre
+TVHEADEND_CONF_OPTS += --enable-pcre
+else
+TVHEADEND_CONF_OPTS += --disable-pcre
+endif
+
 TVHEADEND_DEPENDENCIES += dtv-scan-tables
 
 # The tvheadend build system expects the transponder data to be present inside
@@ -69,23 +107,30 @@ endef
 TVHEADEND_PRE_CONFIGURE_HOOKS += TVHEADEND_INSTALL_DTV_SCAN_TABLES
 
 define TVHEADEND_CONFIGURE_CMDS
-	(cd $(@D);						\
-		$(TARGET_CONFIGURE_OPTS)			\
-		$(TARGET_CONFIGURE_ARGS)			\
-		CFLAGS="$(TVHEADEND_CFLAGS)"			\
-		./configure					\
-			--prefix=/usr				\
-			--arch="$(ARCH)"			\
-			--cpu="$(BR2_GCC_TARGET_CPU)"		\
-			--nowerror				\
-			--python="$(HOST_DIR)/usr/bin/python"	\
-			--enable-dvbscan			\
-			--enable-bundle				\
-			--disable-ffmpeg_static			\
-			--disable-hdhomerun_static		\
-			$(TVHEADEND_CONF_OPTS)			\
+	(cd $(@D); \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
+		CFLAGS="$(TVHEADEND_CFLAGS)" \
+		./configure \
+			--prefix=/usr \
+			--arch="$(ARCH)" \
+			--cpu="$(BR2_GCC_TARGET_CPU)" \
+			--nowerror \
+			--python="$(HOST_DIR)/bin/python" \
+			--enable-dvbscan \
+			--enable-bundle \
+			--enable-pngquant \
+			--disable-ffmpeg_static \
+			--disable-hdhomerun_static \
+			$(TVHEADEND_CONF_OPTS) \
 	)
 endef
+
+define TVHEADEND_FIX_PNGQUANT_PATH
+	$(SED) "s%^pngquant_bin =.*%pngquant_bin = '$(HOST_DIR)/bin/pngquant'%" \
+		$(@D)/support/mkbundle
+endef
+TVHEADEND_POST_CONFIGURE_HOOKS += TVHEADEND_FIX_PNGQUANT_PATH
 
 define TVHEADEND_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)

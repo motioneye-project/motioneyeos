@@ -1,7 +1,7 @@
-From 2e9b6bbebb7cf1ef0095516ec6d5203deb3822e8 Mon Sep 17 00:00:00 2001
+From 87adda6abc3467ede45a6d2a87df2b9efdf5bb33 Mon Sep 17 00:00:00 2001
 From: Nathan Hjelm <hjelmn@me.com>
 Date: Fri, 9 Oct 2015 15:03:10 -0600
-Subject: [PATCH 1/1] Use C99 standard fixed width integer types in usb.h
+Subject: [PATCH] Use C99 standard fixed width integer types in usb.h
 
 This patch modifies the integer types in usb.h of the form u_int* to the
 C99 standard uint* types.
@@ -13,6 +13,7 @@ https://github.com/libusb/libusb-compat-0.1/commit/2e9b6bbebb7cf1ef0095516ec6d52
 
 Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 Signed-off-by: Nathan Hjelm <hjelmn@me.com>
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
 ---
  libusb/usb.h | 130 ++++++++++++++++++++++++++++++++---------------------------
  1 file changed, 70 insertions(+), 60 deletions(-)
@@ -232,5 +233,5 @@ index 84e730f..d2c30aa 100644
    struct usb_device *root_dev;
  };
 -- 
-2.4.9
+2.9.3
 

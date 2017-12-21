@@ -1,0 +1,9 @@
+config BR2_PACKAGE_LIBBSON
+	bool "libbson"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  libbson is a library providing useful routines related to
+	  building, parsing, and iterating BSON documents.
+
+comment "libbson needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

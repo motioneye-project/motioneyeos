@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBMAXMINDDB
+	bool "libmaxminddb"
+	help
+	  C library for the MaxMind DB file format
+
+	  The libmaxminddb library provides a C library for reading
+	  MaxMind DB files, including the GeoIP2 databases from
+	  MaxMind.  This is a custom binary format designed to
+	  facilitate fast lookups of IP addresses while allowing for
+	  great flexibility in the type of data associated with an
+	  address.
+
+	  The MaxMind DB format is an open format. The spec is
+	  available at http://maxmind.github.io/MaxMind-DB/. This spec
+	  is licensed under the Creative Commons
+	  Attribution-ShareAlike 3.0 Unported License.
+
+	  http://maxmind.github.io/libmaxminddb

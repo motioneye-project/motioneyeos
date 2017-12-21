@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LIBFTDI1
 	bool "libftdi1"
-	select BR2_PACKAGE_LIBUSB
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
 	help
 	  Userspace access to FTDI USB interface chips (version 1.x)
 
@@ -11,10 +11,10 @@ if BR2_PACKAGE_LIBFTDI1
 
 config BR2_PACKAGE_LIBFTDI1_LIBFTDIPP1
 	bool "libftdipp1"
-	select BR2_PACKAGE_BOOST
 	depends on BR2_INSTALL_LIBSTDCPP # boost
 	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
 	depends on BR2_USE_WCHAR # boost
+	select BR2_PACKAGE_BOOST
 	help
 	  C++ bindings for libftdi
 
@@ -28,8 +28,8 @@ config BR2_PACKAGE_LIBFTDI1_PYTHON_BINDINGS
 	  Python bindings for libftdi
 
 config BR2_PACKAGE_LIBFTDI1_FDTI_EEPROM
-	select BR2_PACKAGE_LIBCONFUSE
 	bool "ftdi_eeprom tool"
+	select BR2_PACKAGE_LIBCONFUSE
 
 endif # BR2_PACKAGE_LIBFTDI1
 

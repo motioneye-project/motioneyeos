@@ -1,0 +1,87 @@
+From 52463745b6c46a46a6f2e2bc17983bb3f7bdac6e Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:27:34 +0100
+Subject: [PATCH] Add an option to disable pydoc
+
+It removes 0.5 MB of data from the target plus the pydoc script
+itself.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ Makefile.pre.in |  6 +++++-
+ configure.ac    |  5 +++++
+ setup.py        | 10 +++++++---
+ 3 files changed, 17 insertions(+), 4 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 280cc4e..84d5fc6 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1052,7 +1052,7 @@ LIBSUBDIRS=	lib-tk site-packages \
+ 		multiprocessing multiprocessing/dummy \
+ 		unittest \
+ 		lib-old \
+-		curses pydoc_data $(MACHDEPS)
++		curses $(MACHDEPS)
+ 
+ TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
+ 	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
+@@ -1075,6 +1075,10 @@ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+ 
++ifeq (@PYDOC@,yes)
++LIBSUBDIRS += pydoc_data
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+diff --git a/configure.ac b/configure.ac
+index a1a35f6..8bab160 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2805,6 +2805,11 @@ if test "$posix_threads" = "yes"; then
+       AC_CHECK_FUNCS(pthread_atfork)
+ fi
+ 
++AC_SUBST(PYDOC)
++
++AC_ARG_ENABLE(pydoc,
++	AS_HELP_STRING([--disable-pydoc], [disable pydoc]),
++	[ PYDOC="${enableval}" ], [ PYDOC=yes ])
+ 
+ AC_SUBST(TEST_MODULES)
+ 
+diff --git a/setup.py b/setup.py
+index 9a5c2b8..69771e2 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2233,6 +2233,12 @@ def main():
+     # turn off warnings when deprecated modules are imported
+     import warnings
+     warnings.filterwarnings("ignore",category=DeprecationWarning)
++
++    scripts = ['Tools/scripts/idle', 'Tools/scripts/2to3',
++               'Lib/smtpd.py']
++    if not '--disable-pydoc' in sysconfig.get_config_var("CONFIG_ARGS"):
++        scripts += [ 'Tools/scripts/pydoc' ]
++
+     setup(# PyPI Metadata (PEP 301)
+           name = "Python",
+           version = sys.version.split()[0],
+@@ -2253,9 +2259,7 @@ def main():
+           ext_modules=[Extension('_struct', ['_struct.c'])],
+ 
+           # Scripts to install
+-          scripts = ['Tools/scripts/pydoc', 'Tools/scripts/idle',
+-                     'Tools/scripts/2to3',
+-                     'Lib/smtpd.py']
++          scripts = scripts,
+         )
+ 
+ # --install-platlib
+-- 
+2.7.4
+

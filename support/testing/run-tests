@@ -1,0 +1,123 @@
+#!/usr/bin/env python2
+import argparse
+import sys
+import os
+import nose2
+import multiprocessing
+
+from infra.basetest import BRTest
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Run Buildroot tests')
+    parser.add_argument('testname', nargs='*',
+                        help='list of test cases to execute')
+    parser.add_argument('-l', '--list', action='store_true',
+                        help='list of available test cases')
+    parser.add_argument('-a', '--all', action='store_true',
+                        help='execute all test cases')
+    parser.add_argument('-s', '--stdout', action='store_true',
+                        help='log everything to stdout')
+    parser.add_argument('-o', '--output',
+                        help='output directory')
+    parser.add_argument('-d', '--download',
+                        help='download directory')
+    parser.add_argument('-k', '--keep',
+                        help='keep build directories',
+                        action='store_true')
+    parser.add_argument('-t', '--testcases', type=int, default=1,
+                        help='number of testcases to run simultaneously')
+    parser.add_argument('-j', '--jlevel', type=int,
+                        help='BR2_JLEVEL to use for each testcase')
+    parser.add_argument('--timeout-multiplier', type=int, default=1,
+                        help='increase timeouts (useful for slow machines)')
+
+    args = parser.parse_args()
+
+    script_path = os.path.realpath(__file__)
+    test_dir = os.path.dirname(script_path)
+
+    if args.stdout:
+        BRTest.logtofile = False
+
+    if args.list:
+        print "List of tests"
+        nose2.discover(argv=[script_path,
+                             "-s", test_dir,
+                             "-v",
+                             "--collect-only"],
+                       plugins=["nose2.plugins.collect"])
+        return 0
+
+    if args.download is None:
+        args.download = os.getenv("BR2_DL_DIR")
+        if args.download is None:
+            print "Missing download directory, please use -d/--download"
+            print ""
+            parser.print_help()
+            return 1
+
+    BRTest.downloaddir = os.path.abspath(args.download)
+    os.putenv("BR2_DL_DIR", BRTest.downloaddir)
+
+    if args.output is None:
+        print "Missing output directory, please use -o/--output"
+        print ""
+        parser.print_help()
+        return 1
+
+    if not os.path.exists(args.output):
+        os.mkdir(args.output)
+
+    BRTest.outputdir = os.path.abspath(args.output)
+
+    if args.all is False and len(args.testname) == 0:
+        print "No test selected"
+        print ""
+        parser.print_help()
+        return 1
+
+    BRTest.keepbuilds = args.keep
+
+    if args.testcases != 1:
+        if args.testcases < 1:
+            print "Invalid number of testcases to run simultaneously"
+            print ""
+            parser.print_help()
+            return 1
+        # same default BR2_JLEVEL as package/Makefile.in
+        br2_jlevel = 1 + multiprocessing.cpu_count()
+        each_testcase = br2_jlevel / args.testcases
+        if each_testcase < 1:
+            each_testcase = 1
+        BRTest.jlevel = each_testcase
+
+    if args.jlevel:
+        if args.jlevel < 0:
+            print "Invalid BR2_JLEVEL to use for each testcase"
+            print ""
+            parser.print_help()
+            return 1
+        # the user can override the auto calculated value
+        BRTest.jlevel = args.jlevel
+
+    if args.timeout_multiplier < 1:
+        print "Invalid multiplier for timeout values"
+        print ""
+        parser.print_help()
+        return 1
+    BRTest.timeout_multiplier = args.timeout_multiplier
+
+    nose2_args = ["-v",
+                  "-N", str(args.testcases),
+                  "-s", test_dir,
+                  "-c", os.path.join(test_dir, "conf/unittest.cfg")]
+
+    if len(args.testname) != 0:
+        nose2_args += args.testname
+
+    nose2.discover(argv=nose2_args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

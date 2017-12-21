@@ -5,14 +5,14 @@
 ################################################################################
 
 OLSR_VERSION_MAJOR = 0.9
-OLSR_VERSION = $(OLSR_VERSION_MAJOR).0.3
+OLSR_VERSION = $(OLSR_VERSION_MAJOR).6.1
 OLSR_SOURCE = olsrd-$(OLSR_VERSION).tar.bz2
 OLSR_SITE = http://www.olsr.org/releases/$(OLSR_VERSION_MAJOR)
 OLSR_PLUGINS = arprefresh bmf dot_draw dyn_gw dyn_gw_plain httpinfo jsoninfo \
 	mdns nameservice p2pd pgraph secure txtinfo watchdog
 # Doesn't really need quagga but not very useful without it
 OLSR_PLUGINS += $(if $(BR2_PACKAGE_QUAGGA),quagga)
-OLSR_LICENSE = BSD-3c, LGPLv2.1+
+OLSR_LICENSE = BSD-3-Clause, LGPL-2.1+
 OLSR_LICENSE_FILES = license.txt lib/pud/nmealib/LICENSE
 OLSR_DEPENDENCIES = host-flex host-bison
 

@@ -1,0 +1,43 @@
+From d960f93fb52e373f76cfedbee5f4fb0c5276856a Mon Sep 17 00:00:00 2001
+From: RJ Ascani <rj.ascani@gmail.com>
+Date: Thu, 20 Jul 2017 15:53:40 -0700
+Subject: [PATCH] Conditionally disable test and doc builds
+
+Signed-off-by: RJ Ascani <rj.ascani@gmail.com>
+---
+ CMakeLists.txt | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 5b5b9cc..97006a4 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -49,7 +49,9 @@ include_directories(${Boost_INCLUDE_DIRS}
+                     ${ZeroMQ_INCLUDE_DIRS}
+                     ${PROJECT_SOURCE_DIR})
+
+-enable_testing()
++if (BUILD_TESTING)
++    enable_testing()
++endif()
+
+ macro(add_catch_test name)
+     if (TEST_REPORT_FORMAT)
+@@ -59,8 +61,12 @@ macro(add_catch_test name)
+     endif()
+ endmacro()
+
+-add_subdirectory(test)
+-add_subdirectory(doc)
++if (BUILD_TESTING)
++    add_subdirectory(test)
++endif()
++if (BUILD_DOC)
++    add_subdirectory(doc)
++endif()
+
+ install(DIRECTORY ${PROJECT_SOURCE_DIR}/azmq
+         DESTINATION include)
+--
+2.13.3
+

@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PHYTOOL
+	bool "phytool"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7 # linux/mdio.h
+	help
+	  Linux MDIO register access utility.
+
+	  https://github.com/wkz/phytool
+
+comment "phytool needs a toolchain w/ headers >= 3.7"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7

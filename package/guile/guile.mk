@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-GUILE_VERSION = 2.0.13
+GUILE_VERSION = 2.0.14
 GUILE_SOURCE = guile-$(GUILE_VERSION).tar.xz
 GUILE_SITE = $(BR2_GNU_MIRROR)/guile
 GUILE_INSTALL_STAGING = YES
 # For 0002-calculate-csqrt_manually.patch
 GUILE_AUTORECONF = YES
-GUILE_LICENSE = LGPLv3+
+GUILE_LICENSE = LGPL-3.0+
 GUILE_LICENSE_FILES = LICENSE COPYING COPYING.LESSER
 
 # libtool dependency is needed because guile uses libltdl
@@ -47,7 +47,7 @@ else
 GUILE_CONF_OPTS += --without-libreadline-prefix
 endif
 
-GUILE_CONF_ENV += GUILE_FOR_BUILD=$(HOST_DIR)/usr/bin/guile \
+GUILE_CONF_ENV += GUILE_FOR_BUILD=$(HOST_DIR)/bin/guile \
 	CFLAGS="$(TARGET_CFLAGS) $(GUILE_CFLAGS)"
 
 GUILE_CONF_OPTS += \

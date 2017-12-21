@@ -1,0 +1,99 @@
+From 9db508467be41bc35f06c0076c855b99a1519d24 Mon Sep 17 00:00:00 2001
+From: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+Date: Wed, 22 Feb 2017 16:48:49 -0800
+Subject: [PATCH] Add importlib fix for PEP 3147 issue
+
+Python 3 has a new standard for installing .pyc file, called PEP
+3147. Unfortunately, this standard requires both the .py and .pyc
+files to be installed for a Python module to be found. This is quite
+annoying on space-constrained embedded systems, since the .py file is
+technically not required for execution.
+
+This patch changes cache_from_source() and source_from_cache() in
+importlib to get rid of the "__pycache__" directory.
+This effectively disables PEP 3147 for:
+
+* The python standard library
+* Packages built with distutils or setuptools
+* Packages built with automake that use the `py-compile` helper
+
+Signed-off-by: Christophe Vu-Brugier <cvubrugier@fastmail.fm>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Lib/importlib/_bootstrap_external.py | 38 +++++-------------------------------
+ 1 file changed, 5 insertions(+), 33 deletions(-)
+
+diff --git a/Lib/importlib/_bootstrap_external.py b/Lib/importlib/_bootstrap_external.py
+index 9feec50842..3550013d58 100644
+--- a/Lib/importlib/_bootstrap_external.py
++++ b/Lib/importlib/_bootstrap_external.py
+@@ -275,8 +275,6 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+     a True value is the same as setting 'optimization' to the empty string
+     while a False value is equivalent to setting 'optimization' to '1'.
+ 
+-    If sys.implementation.cache_tag is None then NotImplementedError is raised.
+-
+     """
+     if debug_override is not None:
+         _warnings.warn('the debug_override parameter is deprecated; use '
+@@ -288,10 +286,7 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+     path = _os.fspath(path)
+     head, tail = _path_split(path)
+     base, sep, rest = tail.rpartition('.')
+-    tag = sys.implementation.cache_tag
+-    if tag is None:
+-        raise NotImplementedError('sys.implementation.cache_tag is None')
+-    almost_filename = ''.join([(base if base else rest), sep, tag])
++    almost_filename = ''.join([(base if base else rest)])
+     if optimization is None:
+         if sys.flags.optimize == 0:
+             optimization = ''
+@@ -302,40 +297,17 @@ def cache_from_source(path, debug_override=None, *, optimization=None):
+         if not optimization.isalnum():
+             raise ValueError('{!r} is not alphanumeric'.format(optimization))
+         almost_filename = '{}.{}{}'.format(almost_filename, _OPT, optimization)
+-    return _path_join(head, _PYCACHE, almost_filename + BYTECODE_SUFFIXES[0])
++    return _path_join(head, almost_filename + BYTECODE_SUFFIXES[0])
+ 
+ 
+ def source_from_cache(path):
+     """Given the path to a .pyc. file, return the path to its .py file.
+ 
+     The .pyc file does not need to exist; this simply returns the path to
+-    the .py file calculated to correspond to the .pyc file.  If path does
+-    not conform to PEP 3147/488 format, ValueError will be raised. If
+-    sys.implementation.cache_tag is None then NotImplementedError is raised.
+-
++    the .py file calculated to correspond to the .pyc file.
+     """
+-    if sys.implementation.cache_tag is None:
+-        raise NotImplementedError('sys.implementation.cache_tag is None')
+-    path = _os.fspath(path)
+-    head, pycache_filename = _path_split(path)
+-    head, pycache = _path_split(head)
+-    if pycache != _PYCACHE:
+-        raise ValueError('{} not bottom-level directory in '
+-                         '{!r}'.format(_PYCACHE, path))
+-    dot_count = pycache_filename.count('.')
+-    if dot_count not in {2, 3}:
+-        raise ValueError('expected only 2 or 3 dots in '
+-                         '{!r}'.format(pycache_filename))
+-    elif dot_count == 3:
+-        optimization = pycache_filename.rsplit('.', 2)[-2]
+-        if not optimization.startswith(_OPT):
+-            raise ValueError("optimization portion of filename does not start "
+-                             "with {!r}".format(_OPT))
+-        opt_level = optimization[len(_OPT):]
+-        if not opt_level.isalnum():
+-            raise ValueError("optimization level {!r} is not an alphanumeric "
+-                             "value".format(optimization))
+-    base_filename = pycache_filename.partition('.')[0]
++    head, filename = _path_split(path)
++    base_filename = filename.partition('.')[0]
+     return _path_join(head, base_filename + SOURCE_SUFFIXES[0])
+ 
+ 
+-- 
+2.13.5
+

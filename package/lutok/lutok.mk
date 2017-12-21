@@ -10,7 +10,7 @@ LUTOK_INSTALL_STAGING = YES
 LUTOK_DEPENDENCIES = host-pkgconf lua
 # --without-atf disables the atf-based lutok tests
 LUTOK_CONF_OPTS = --without-doxygen --without-atf
-LUTOK_LICENSE = BSD-3c
+LUTOK_LICENSE = BSD-3-Clause
 LUTOK_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))

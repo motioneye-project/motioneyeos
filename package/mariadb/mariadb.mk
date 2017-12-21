@@ -4,10 +4,12 @@
 #
 ################################################################################
 
-MARIADB_VERSION = 10.1.21
+MARIADB_VERSION = 10.1.28
 MARIADB_SITE = https://downloads.mariadb.org/interstitial/mariadb-$(MARIADB_VERSION)/source
-MARIADB_LICENSE = GPLv2 (server), GPLv2 with FLOSS exception (GPL client library), LGPLv2 (LGPL client library)
-MARIADB_LICENSE_FILES = README COPYING COPYING.LESSER
+MARIADB_LICENSE = GPL-2.0 (server), GPL-2.0 with FLOSS exception (GPL client library), LGPL-2.0 (LGPL client library)
+# Tarball no longer contains LGPL license text
+# https://jira.mariadb.org/browse/MDEV-12297
+MARIADB_LICENSE_FILES = README COPYING
 MARIADB_INSTALL_STAGING = YES
 MARIADB_PROVIDES = mysql
 
@@ -64,6 +66,8 @@ MARIADB_CONF_OPTS += \
 	-DINSTALL_SUPPORTFILESDIR=share/mysql \
 	-DMYSQL_DATADIR=/var/lib/mysql \
 	-DMYSQL_UNIX_ADDR=$(MYSQL_SOCKET)
+
+HOST_MARIADB_CONF_OPTS += -DWITH_SSL=bundled
 
 # Some helpers must be compiled for host in order to crosscompile mariadb for
 # the target. They are then included by import_executables.cmake which is

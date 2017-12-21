@@ -7,7 +7,7 @@
 BSDIFF_VERSION = 4.3
 BSDIFF_SITE = http://www.daemonology.net/bsdiff
 BSDIFF_DEPENDENCIES = bzip2
-BSDIFF_LICENSE = BSD-2c
+BSDIFF_LICENSE = BSD-2-Clause
 BSDIFF_LICENSE_FILES = bsdiff.c
 
 define BSDIFF_BUILD_CMDS

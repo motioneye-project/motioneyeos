@@ -1,0 +1,8 @@
+config BR2_PACKAGE_KODI_PERIPHERAL_STEAMCONTROLLER
+	bool "kodi-peripheral-steamcontroller"
+	select BR2_PACKAGE_KODI_PLATFORM
+	select BR2_PACKAGE_LIBUSB
+	help
+	  Steam controller driver for Kodi
+
+	  https://github.com/kodi-game/peripheral.steamcontroller

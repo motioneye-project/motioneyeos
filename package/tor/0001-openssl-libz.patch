@@ -3,15 +3,15 @@ and remove host paths when looking for openssl.
 
 [Vincent:
  - Adapt the patch to make it apply on the new version.]
-[Bernd: rebased for tor-0.2.7.6, 0.2.8.10 & 0.2.9.9]
+[Bernd: rebased for tor-0.2.7.6, 0.2.8.10, 0.2.9.9 & 0.3.1.7]
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 
-diff -uNr tor-0.2.7.6.org/configure.ac tor-0.2.7.6/configure.ac
---- tor-0.2.7.6.org/configure.ac	2015-12-10 16:15:25.000000000 +0100
-+++ tor-0.2.7.6/configure.ac	2016-01-31 20:21:34.850408145 +0100
-@@ -612,11 +612,11 @@
+diff -uNr tor-0.3.1.7.org/configure.ac tor-0.3.1.7/configure.ac
+--- tor-0.3.1.7.org/configure.ac	2017-09-15 15:34:06.000000000 +0200
++++ tor-0.3.1.7/configure.ac	2017-09-19 19:40:17.090538467 +0200
+@@ -709,11 +709,11 @@
        fi
    ])
  
@@ -25,78 +25,100 @@ diff -uNr tor-0.2.7.6.org/configure.ac tor-0.2.7.6/configure.ac
  
  dnl XXXX check for OPENSSL_VERSION_NUMBER == SSLeay()
  
-diff -uNr tor-0.2.7.6.org/src/or/include.am tor-0.2.7.6/src/or/include.am
---- tor-0.2.7.6.org/src/or/include.am	2015-12-08 18:35:17.000000000 +0100
-+++ tor-0.2.7.6/src/or/include.am	2016-01-31 20:22:09.322777527 +0100
-@@ -108,7 +108,7 @@
- src_or_tor_LDADD = src/or/libtor.a src/common/libor.a src/common/libor-ctime.a \
+diff -uNr tor-0.3.1.7.org/src/or/include.am tor-0.3.1.7/src/or/include.am
+--- tor-0.3.1.7.org/src/or/include.am	2017-06-19 17:56:51.000000000 +0200
++++ tor-0.3.1.7/src/or/include.am	2017-09-19 19:41:02.015861546 +0200
+@@ -122,7 +122,7 @@
  	src/common/libor-crypto.a $(LIBKECCAK_TINY) $(LIBDONNA) \
  	src/common/libor-event.a src/trunnel/libor-trunnel.a \
+ 	src/trace/libor-trace.a \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ @TOR_OPENSSL_LIBS@ \
 +	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
- 	@TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ @TOR_SYSTEMD_LIBS@
- 
- if COVERAGE_ENABLED
-diff -uNr tor-0.2.7.6.org/src/test/include.am tor-0.2.7.6/src/test/include.am
---- tor-0.2.7.6.org/src/test/include.am	2015-12-08 18:35:17.000000000 +0100
-+++ tor-0.2.7.6/src/test/include.am	2016-01-31 20:25:59.673127854 +0100
-@@ -177,8 +177,8 @@
- 	src/common/libor-ctime-testing.a \
+ 	@TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ @TOR_SYSTEMD_LIBS@ \
+ 	@TOR_LZMA_LIBS@ @TOR_ZSTD_LIBS@ \
+ 	$(rust_ldadd)
+diff -uNr tor-0.3.1.7.org/src/test/include.am tor-0.3.1.7/src/test/include.am
+--- tor-0.3.1.7.org/src/test/include.am	2017-08-29 17:01:19.000000000 +0200
++++ tor-0.3.1.7/src/test/include.am	2017-09-19 19:42:39.103903406 +0200
+@@ -206,8 +206,8 @@
  	src/common/libor-event-testing.a \
  	src/trunnel/libor-trunnel-testing.a \
+ 	src/trace/libor-trace.a \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
 -	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
 +	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
 +	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
- 	@TOR_SYSTEMD_LIBS@
+ 	@TOR_SYSTEMD_LIBS@ @TOR_LZMA_LIBS@ @TOR_ZSTD_LIBS@ \
+ 	$(rust_ldadd)
  
- src_test_test_slow_CPPFLAGS = $(src_test_test_CPPFLAGS)
-@@ -200,8 +200,8 @@
- 	src/common/libor-ctime.a \
+@@ -231,8 +231,8 @@
  	src/common/libor-crypto.a $(LIBKECCAK_TINY) $(LIBDONNA) \
  	src/common/libor-event.a src/trunnel/libor-trunnel.a \
+ 	src/trace/libor-trace.a \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
 -	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
 +	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
 +	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
- 	@TOR_SYSTEMD_LIBS@
+ 	@TOR_SYSTEMD_LIBS@ @TOR_LZMA_LIBS@ @TOR_ZSTD_LIBS@ \
+ 	$(rust_ldadd)
  
- src_test_test_workqueue_LDFLAGS = @TOR_LDFLAGS_zlib@ @TOR_LDFLAGS_openssl@ \
-@@ -211,8 +211,8 @@
- 	src/common/libor-ctime-testing.a \
+@@ -244,8 +244,8 @@
  	src/common/libor-crypto-testing.a $(LIBKECCAK_TINY) $(LIBDONNA) \
  	src/common/libor-event-testing.a \
+ 	src/trace/libor-trace.a \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
--	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
 +	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
-+	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	@TOR_LZMA_LIBS@ @TOR_ZSTD_LIBS@ \
+ 	$(rust_ldadd)
  
- src_test_test_timers_CPPFLAGS = $(src_test_test_CPPFLAGS)
- src_test_test_timers_CFLAGS = $(src_test_test_CFLAGS)
-@@ -245,8 +245,8 @@
- src_test_test_ntor_cl_LDADD = src/or/libtor.a src/common/libor.a \
+@@ -256,8 +256,8 @@
+ 	src/common/libor-ctime-testing.a \
+ 	src/common/libor-event-testing.a \
+ 	src/common/libor-crypto-testing.a $(LIBKECCAK_TINY) $(LIBDONNA) \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
++	@TOR_LIB_MATH@ @TOR_LIBEVENT_LIBS@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	@TOR_LZMA_LIBS@ \
+ 	$(rust_ldadd)
+ src_test_test_timers_LDFLAGS = $(src_test_test_LDFLAGS)
+@@ -286,8 +286,8 @@
+ 	src/common/libor-ctime.a \
+ 	src/common/libor-crypto.a $(LIBKECCAK_TINY) $(LIBDONNA) \
+ 	src/trace/libor-trace.a \
+-	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ \
+-	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
++	@TOR_LIB_MATH@ \
++	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	@TOR_LZMA_LIBS@ \
+ 	$(rust_ldadd)
+ src_test_test_ntor_cl_AM_CPPFLAGS =	       \
+@@ -298,8 +298,8 @@
+ src_test_test_hs_ntor_cl_LDADD = src/or/libtor.a src/common/libor.a \
  	src/common/libor-ctime.a \
  	src/common/libor-crypto.a $(LIBKECCAK_TINY) $(LIBDONNA) \
 -	@TOR_ZLIB_LIBS@ @TOR_LIB_MATH@ \
 -	@TOR_OPENSSL_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
 +	@TOR_LIB_MATH@ \
 +	@TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
- src_test_test_ntor_cl_AM_CPPFLAGS =	       \
+ src_test_test_hs_ntor_cl_AM_CPPFLAGS =	       \
  	-I"$(top_srcdir)/src/or"
  
-diff -uNr tor-0.2.7.6.org/src/tools/include.am tor-0.2.7.6/src/tools/include.am
---- tor-0.2.7.6.org/src/tools/include.am	2015-11-13 14:33:26.000000000 +0100
-+++ tor-0.2.7.6/src/tools/include.am	2016-01-31 20:27:29.954004495 +0100
+diff -uNr tor-0.3.1.7.org/src/tools/include.am tor-0.3.1.7/src/tools/include.am
+--- tor-0.3.1.7.org/src/tools/include.am	2017-06-19 17:56:51.000000000 +0200
++++ tor-0.3.1.7/src/tools/include.am	2017-09-19 19:43:08.880223260 +0200
 @@ -26,7 +26,7 @@
-     src/common/libor-ctime.a \
-     $(LIBKECCAK_TINY) \
-     $(LIBDONNA) \
--    @TOR_LIB_MATH@ @TOR_ZLIB_LIBS@ @TOR_OPENSSL_LIBS@ \
-+    @TOR_LIB_MATH@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
-     @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
+ 	src/common/libor-ctime.a \
+ 	$(LIBKECCAK_TINY) \
+ 	$(LIBDONNA) \
+-	@TOR_LIB_MATH@ @TOR_ZLIB_LIBS@ @TOR_OPENSSL_LIBS@ \
++	@TOR_LIB_MATH@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
+ 	@TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@ \
+ 	$(rust_ldadd)
  
- if COVERAGE_ENABLED
-@@ -39,7 +39,7 @@
+@@ -40,7 +40,7 @@
      src/common/libor-ctime-testing.a \
      $(LIBKECCAK_TINY) \
      $(LIBDONNA) \
@@ -105,12 +127,3 @@ diff -uNr tor-0.2.7.6.org/src/tools/include.am tor-0.2.7.6/src/tools/include.am
      @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
  endif
  
-@@ -50,7 +50,7 @@
-     src/common/libor-crypto.a \
-     $(LIBKECCAK_TINY) \
-     $(LIBDONNA) \
--    @TOR_LIB_MATH@ @TOR_ZLIB_LIBS@ @TOR_OPENSSL_LIBS@ \
-+    @TOR_LIB_MATH@ @TOR_OPENSSL_LIBS@ @TOR_ZLIB_LIBS@ \
-     @TOR_LIB_WS32@ @TOR_LIB_GDI@ @CURVE25519_LIBS@
- 
- EXTRA_DIST += src/tools/tor-fw-helper/README

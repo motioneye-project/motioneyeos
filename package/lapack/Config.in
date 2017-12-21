@@ -15,7 +15,7 @@ config BR2_PACKAGE_LAPACK
 
 config BR2_PACKAGE_LAPACK_COMPLEX
 	bool "Complex/Complex16 support"
-	depends on BR2_PACKAGE_LAPACK
 	default y
+	depends on BR2_PACKAGE_LAPACK
 	help
 	  Builds support for COMPLEX and COMPLEX16 data types.

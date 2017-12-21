@@ -21,7 +21,7 @@ HOST_THRIFT_CONF_OPTS = --with-sysroot=$(HOST_DIR) \
 	--disable-tests \
 	--disable-tutorial
 THRIFT_AUTORECONF = YES
-THRIFT_AUTORECONF_OPTS = -I $(HOST_DIR)/usr/share/autoconf-archive
+THRIFT_AUTORECONF_OPTS = -I $(HOST_DIR)/share/autoconf-archive
 THRIFT_LICENSE = Apache-2.0
 THRIFT_LICENSE_FILES = LICENSE
 
@@ -63,7 +63,7 @@ endef
 THRIFT_POST_PATCH_HOOKS += THRIFT_TOOL_NO_HARDCODE
 
 define THRIFT_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) THRIFT=$(HOST_DIR)/usr/bin/thrift -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) THRIFT=$(HOST_DIR)/bin/thrift -C $(@D)
 endef
 
 # Install runtime only
@@ -75,4 +75,4 @@ $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
 # to be used by other packages
-THRIFT = $(HOST_DIR)/usr/bin/thrift
+THRIFT = $(HOST_DIR)/bin/thrift

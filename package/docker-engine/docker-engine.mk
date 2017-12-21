@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DOCKER_ENGINE_VERSION = v1.12.6
-DOCKER_ENGINE_COMMIT = 78d18021ecba00c00730dec9d56de6896f9e708d
+DOCKER_ENGINE_VERSION = v17.05.0-ce
+DOCKER_ENGINE_COMMIT = 89658bed64c2a8fe05a978e5b87dbec409d57a0f
 DOCKER_ENGINE_SITE = $(call github,docker,docker,$(DOCKER_ENGINE_VERSION))
 
 DOCKER_ENGINE_LICENSE = Apache-2.0
@@ -13,7 +13,7 @@ DOCKER_ENGINE_LICENSE_FILES = LICENSE
 
 DOCKER_ENGINE_DEPENDENCIES = host-go host-pkgconf
 
-DOCKER_ENGINE_GOPATH = "$(@D)/vendor"
+DOCKER_ENGINE_GOPATH = "$(@D)/gopath"
 DOCKER_ENGINE_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
 	CGO_ENABLED=1 \
 	CGO_NO_EMULATION=1 \
@@ -28,6 +28,10 @@ DOCKER_ENGINE_GLDFLAGS = \
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DOCKER_ENGINE_GLDFLAGS += -extldflags '-static'
+else
+ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT),y)
+DOCKER_ENGINE_GLDFLAGS_DOCKER += -extldflags '-static'
+endif
 endif
 
 DOCKER_ENGINE_BUILD_TAGS = cgo exclude_graphdriver_zfs autogen
@@ -36,6 +40,11 @@ DOCKER_ENGINE_BUILD_TARGETS = docker
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
 DOCKER_ENGINE_BUILD_TAGS += seccomp
 DOCKER_ENGINE_DEPENDENCIES += libseccomp
+endif
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+DOCKER_ENGINE_BUILD_TAGS += journald
+DOCKER_ENGINE_DEPENDENCIES += systemd
 endif
 
 ifeq ($(BR2_PACKAGE_DOCKER_ENGINE_DAEMON),y)
@@ -66,6 +75,7 @@ DOCKER_ENGINE_BUILD_TAGS += exclude_graphdriver_vfs
 endif
 
 define DOCKER_ENGINE_CONFIGURE_CMDS
+	mkdir -p $(DOCKER_ENGINE_GOPATH)/src/github.com/docker
 	ln -fs $(@D) $(DOCKER_ENGINE_GOPATH)/src/github.com/docker/docker
 	cd $(@D) && \
 		GITCOMMIT="$$(echo $(DOCKER_ENGINE_COMMIT) | head -c7)" \
@@ -95,12 +105,13 @@ endif
 
 define DOCKER_ENGINE_BUILD_CMDS
 	$(foreach target,$(DOCKER_ENGINE_BUILD_TARGETS), \
-		cd $(@D); $(DOCKER_ENGINE_MAKE_ENV) \
-		$(HOST_DIR)/usr/bin/go build -v \
+		cd $(@D)/gopath/src/github.com/docker/docker; \
+		$(DOCKER_ENGINE_MAKE_ENV) \
+		$(HOST_DIR)/bin/go build -v \
 			-o $(@D)/bin/$(target) \
 			-tags "$(DOCKER_ENGINE_BUILD_TAGS)" \
-			-ldflags "$(DOCKER_ENGINE_GLDFLAGS)" \
-			./cmd/$(target)
+			-ldflags "$(DOCKER_ENGINE_GLDFLAGS) $(DOCKER_ENGINE_GLDFLAGS_$(call UPPERCASE,$(target)))" \
+			github.com/docker/docker/cmd/$(target)
 	)
 endef
 

@@ -1,0 +1,32 @@
+From 5fed765abb8ff07c381cc3ebb9367e9560f7a658 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 20 Mar 2017 23:43:03 +0100
+Subject: [PATCH] Fix cross compilation issue
+
+Without this patch unsafe paths are used:
+x86_64-linux-gcc: ERROR: unsafe header/library path used in cross-compilation: '/libtiff'
+
+Downloaded from
+http://bugs.ghostscript.com/show_bug.cgi?id=696508#c3
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index d0f62d7..0d49344 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1173,7 +1173,7 @@ XPSWRITEDEVICE=''
+ 
+ 
+ LIBTIFFDIR='src'
+-LIBTIFFCONFDIR=''
++LIBTIFFCONFDIR='src'
+ 
+ TIFFDEVS_ALL='tiffs tiff12nc tiff24nc tiff48nc tiff32nc tiff64nc tiffcrle tifflzw tiffpack tiffgray tiffsep tiffsep1 tiffscaled tiffscaled4 tiffscaled8 tiffscaled24 tiffscaled32'
+ FAX_DEVS_ALL='cfax dfaxlow dfaxhigh fax faxg3 faxg32d faxg4 tiffg3 tiffg32d tiffg4 tfax'
+-- 
+2.7.4
+

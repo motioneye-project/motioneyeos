@@ -1,8 +1,8 @@
 config BR2_PACKAGE_LIBSTROPHE
 	bool "libstrophe"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBXML2 if !BR2_PACKAGE_EXPAT
-	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  libstrophe is a lightweight XMPP client library written in C.
 	  It has minimal dependencies and is configurable for various

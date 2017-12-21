@@ -23,7 +23,6 @@ config BR2_PACKAGE_RT_TESTS
 
 	  http://rt.wiki.kernel.org
 
-
 comment "rt-tests may not work on MIPS with an external uClibc toolchain"
 	depends on BR2_PACKAGE_RT_TESTS
 	depends on BR2_TOOLCHAIN_EXTERNAL_UCLIBC

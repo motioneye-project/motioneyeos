@@ -5,7 +5,7 @@ config BR2_PACKAGE_INOTIFY_TOOLS
 	  inotify-tools is a C library and a set of command-line
 	  programs for Linux providing a simple interface to inotify.
 	  These programs can be used to monitor and act upon
-	  filesystem events. Provides the 'inotifywait' and 'inotifywatch'
-	  binaries.
+	  filesystem events. Provides the 'inotifywait' and
+	  'inotifywatch' binaries.
 
 	  https://github.com/rvoicilas/inotify-tools

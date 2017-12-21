@@ -4,12 +4,14 @@
 #
 ################################################################################
 
-LIBGPIOD_VERSION = v0.1.3
-LIBGPIOD_SITE = $(call github,brgl,libgpiod,$(LIBGPIOD_VERSION))
-LIBGPIOD_LICENSE = GPLv3+
+LIBGPIOD_VERSION = 0.3.2
+LIBGPIOD_SOURCE = libgpiod-$(LIBGPIOD_VERSION).tar.xz
+LIBGPIOD_SITE = https://www.kernel.org/pub/software/libs/libgpiod
+LIBGPIOD_LICENSE = LGPL-2.1+
 LIBGPIOD_LICENSE_FILES = COPYING
-# fetched from github, no configure script provided
-LIBGPIOD_AUTORECONF = YES
+LIBGPIOD_INSTALL_STAGING = YES
+
+LIBGPIOD_DEPENDENCIES = host-pkgconf
 
 ifeq ($(BR2_PACKAGE_LIBGPIOD_TOOLS),y)
 LIBGPIOD_CONF_OPTS += --enable-tools

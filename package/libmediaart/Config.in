@@ -1,0 +1,44 @@
+comment "libmediaart needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_LIBMEDIAART
+	bool "libmediaart"
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  Library tasked with managing, extracting and handling media
+	  art caches
+
+	  https://github.com/GNOME/libmediaart
+
+if BR2_PACKAGE_LIBMEDIAART
+
+choice
+	prompt "media art backend"
+	default BR2_PACKAGE_LIBMEDIAART_BACKEND_NONE
+
+config BR2_PACKAGE_MEDIAART_BACKEND_NONE
+	bool "none"
+	help
+	  With no backend, libmediaart will not be able to process MP3
+	  album art.
+
+config BR2_PACKAGE_MEDIAART_BACKEND_GDK_PIXBUF
+	bool "gdk-pixbuf"
+	select BR2_PACKAGE_GDK_PIXBUF
+
+config BR2_PACKAGE_MEDIAART_BACKEND_QT
+	bool "Qt"
+	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT_GUI_MODULE if BR2_PACKAGE_QT
+	select BR2_PACKAGE_QT5BASE_GUI if BR2_PACKAGE_QT5
+
+comment "Qt backend depends on Qt or Qt5"
+	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
+
+endchoice
+
+endif # BR2_PACKAGE_MEDIAART

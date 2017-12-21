@@ -7,10 +7,11 @@ config BR2_PACKAGE_LFTP
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_GNUTLS
 	help
-	  LFTP is a sophisticated ftp/http client, and a file transfer program
-	  supporting a number of network protocols. Like BASH, it has job
-	  control and uses the readline library for input. It has bookmarks,
-	  a built-in mirror command, and can transfer several files in parallel.
+	  LFTP is a sophisticated ftp/http client, and a file transfer
+	  program supporting a number of network protocols. Like BASH,
+	  it has job control and uses the readline library for input. It
+	  has bookmarks, a built-in mirror command, and can transfer
+	  several files in parallel.
 	  It was designed with reliability in mind.
 
 	  http://lftp.yar.ru/

@@ -170,7 +170,7 @@ start() {
     ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
     test -n "$ssid" && start_wlan && wlan_ok="ok"
     
-    test -r /data/etc/ppp/modem && ppp_ok="ok" # TODO actually test the ppp link
+    test -r /data/etc/ppp/modem && ifconfig | grep $os_ppp &>/dev/null && ppp_ok="ok"
     
     # if wifi or ppp link ok, start eth in background
     if [ "$wlan_ok" == "ok" ] || [ "$ppp_ok" == "ok" ]; then
@@ -181,11 +181,11 @@ start() {
     
     if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
         if [ "$link_watch" == "true" ]; then
-            logger -t ethernet -s "no network connection available, rebooting"
+            logger -t network -s "no network connection available, rebooting"
             reboot
             return 1
         else
-            logger -t ethernet -s "no network connection available"
+            logger -t network -s "no network connection available"
             return 0
         fi
     fi

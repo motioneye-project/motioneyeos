@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 2.2.4
+WIRESHARK_VERSION = 2.2.10
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
 WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
@@ -44,9 +44,9 @@ WIRESHARK_DEPENDENCIES += qt5base qt5tools
 WIRESHARK_CONF_ENV += ac_cv_path_QTCHOOSER=""
 # Seems it expects wrappers and passes a -qt=X parameter for version
 WIRESHARK_MAKE_OPTS += \
-	MOC="$(HOST_DIR)/usr/bin/moc" \
-	RCC="$(HOST_DIR)/usr/bin/rcc" \
-	UIC="$(HOST_DIR)/usr/bin/uic"
+	MOC="$(HOST_DIR)/bin/moc" \
+	RCC="$(HOST_DIR)/bin/rcc" \
+	UIC="$(HOST_DIR)/bin/uic"
 else
 WIRESHARK_CONF_OPTS += --with-qt=no
 endif

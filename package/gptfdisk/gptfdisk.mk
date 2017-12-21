@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-GPTFDISK_VERSION = 1.0.0
+GPTFDISK_VERSION = 1.0.1
 GPTFDISK_SITE = http://downloads.sourceforge.net/sourceforge/gptfdisk
-GPTFDISK_LICENSE = GPLv2+
+GPTFDISK_LICENSE = GPL-2.0+
 GPTFDISK_LICENSE_FILES = COPYING
 
 GPTFDISK_TARGETS_$(BR2_PACKAGE_GPTFDISK_GDISK) += gdisk
@@ -22,13 +22,8 @@ GPTFDISK_DEPENDENCIES += ncurses
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
-# gptfdisk dependencies may link against libintl/libiconv, so we need
-# to do so as well when linking statically
-ifeq ($(BR2_PACKAGE_GETTEXT),y)
-GPTFDISK_DEPENDENCIES += gettext
-GPTFDISK_LDLIBS += -lintl
-endif
-
+# gptfdisk dependencies may link against libiconv, so we need to do so
+# as well when linking statically
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 GPTFDISK_DEPENDENCIES += libiconv
 GPTFDISK_LDLIBS += -liconv
@@ -53,7 +48,7 @@ define HOST_GPTFDISK_BUILD_CMDS
 endef
 
 define HOST_GPTFDISK_INSTALL_CMDS
-	$(INSTALL) -D -m 0755 $(@D)/sgdisk $(HOST_DIR)/usr/sbin/sgdisk
+	$(INSTALL) -D -m 0755 $(@D)/sgdisk $(HOST_DIR)/sbin/sgdisk
 endef
 
 $(eval $(generic-package))

@@ -1,0 +1,35 @@
+From 6bd1b4958e949d83468e053c34bf6c89d14d687a Mon Sep 17 00:00:00 2001
+From: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+Date: Fri, 25 Aug 2017 23:01:14 +0200
+Subject: [PATCH] eibd: drop local clock_gettime in USB backends
+
+clock_gettime is defined locally, and calls pth_int_time, which
+in turn calls clock_gettime.
+The USB backend shouldn't overrule clock_gettime in the first place.
+This patch fixes this endless recursion by removing the local defition.
+
+Signed-off-by: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+---
+ eibd/usb/linux_usbfs.c | 6 ------
+ 1 file changed, 6 deletions(-)
+
+diff --git a/eibd/usb/linux_usbfs.c b/eibd/usb/linux_usbfs.c
+index c3ec410..957b908 100644
+--- a/eibd/usb/linux_usbfs.c
++++ b/eibd/usb/linux_usbfs.c
+@@ -52,12 +52,6 @@ int pthread_mutex_trylock(pthread_mutex_t *mutex)
+ 	return 0;
+ }
+ 
+-int clock_gettime(clockid_t clk_id, struct timespec *tp)
+-{
+-	pth_int_time (tp);
+-	return 0;
+-}
+-
+ /* sysfs vs usbfs:
+  * opening a usbfs node causes the device to be resumed, so we attempt to
+  * avoid this during enumeration.
+-- 
+1.8.5.rc3
+
