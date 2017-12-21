@@ -25,6 +25,7 @@ rm -f $TARGET/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
 rm -f $TARGET/etc/motion-dist.conf
 rm -f $TARGET/etc/hostname
 rm -f $TARGET/etc/os-release
+rm -f $TARGET/etc/hostapd.conf
 
 # /usr/share stuff
 rm -rf $TARGET/usr/share/bash-completion/
@@ -182,12 +183,13 @@ rm -rf $TARGET/usr/lib/python2.7/ensurepip/
 rm -f $TARGET/etc/init.d/S01logging
 rm -f $TARGET/etc/init.d/S10udev
 rm -f $TARGET/etc/init.d/S15watchdog
+rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S49ntp
 rm -f $TARGET/etc/init.d/S50sshd
 rm -f $TARGET/etc/init.d/S50proftpd
-rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S80dhcp-relay
 rm -f $TARGET/etc/init.d/S80dhcp-server
+rm -f $TARGET/etc/init.d/S80dnsmasq
 rm -f $TARGET/etc/init.d/S91smb
 
 # other unwanted dirs

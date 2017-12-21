@@ -1,0 +1,96 @@
+#!/bin/bash
+
+sys_conf="/etc/hostapd.conf"
+boot_conf="/boot/hostapd.conf"
+conf="/data/etc/hostapd.conf"
+
+log="/var/log/hostapd.log"
+prog="/usr/sbin/hostapd"
+
+watch_conf="/data/etc/watch.conf"
+
+link_watch=yes
+link_watch_timeout=20
+
+test -f $watch_conf && source $watch_conf
+
+if ! [ -f $conf ]; then
+    if [ -f $boot_conf ]; then
+        cp $boot_conf $conf
+    elif [ -f $sys_conf ]; then
+        cp $sys_conf $conf
+    fi
+fi
+
+test -f $conf || exit 0
+
+test -n "$os_version" || source /etc/init.d/base
+
+running() {
+    killall -0 hostapd &> /dev/null
+}
+
+watch() {
+    while true; do
+        sleep 5
+        if ! running; then
+            logger -t hostapd -s "dead, rebooting"
+            reboot
+            break
+        fi
+    done
+}
+
+start() {
+    msg_begin "Starting hostapd"
+
+    # wait up to 5 seconds for interface
+    count=0
+    while ! ifconfig $iface >/dev/null 2>&1; do
+        sleep 1
+        count=$(($count + 1))
+        if [ $count -ge 5 ]; then
+            msg_fail "no device"
+            return 1
+        fi
+    done
+
+    iface=$(cat $conf | grep interface | cut -d '=' -f 2)
+    module=$(basename $(readlink /sys/class/net/$iface/device/driver/module 2>/dev/null) 2>/dev/null)
+
+    iwconfig $iface power off &> /dev/null
+    $prog $conf &> $log &
+
+    if [ "$link_watch" == "yes" ]; then
+        watch &
+    fi
+
+    test -n "$module" && msg_done "done ($module)"|| msg_done
+}
+
+stop() {
+    msg_begin "Stopping hostpad"
+    killall hostapd &>/dev/null
+    ps | grep hostapd | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    msg_done
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+        
+    stop)
+        stop
+        ;;
+        
+    restart)
+        stop
+        start
+        ;;
+    
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
