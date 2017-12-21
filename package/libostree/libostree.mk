@@ -27,7 +27,11 @@ else
 LIBOSTREE_CONF_OPTS += --without-openssl
 endif
 
-ifeq ($(BR2_PACKAGE_AVAHI),y)
+# Avahi support needs libavahi-client, which is built by avahi if avahi-daemon
+# and dbus is selected. Since there is no BR2_PACKAGE_LIBAVAHI_CLIENT config
+# option yet, use the avahi-daemon and dbus config symbols to check for
+# libavahi-client.
+ifeq ($(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yy)
 LIBOSTREE_CONF_OPTS += --with-avahi
 LIBOSTREE_DEPENDENCIES += avahi
 else
