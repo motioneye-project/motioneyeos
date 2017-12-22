@@ -12,4 +12,4 @@ config BR2_PACKAGE_XFSPROGS
 	help
 	  The XFS file system utilities and libraries
 
-	  http://oss.sgi.com/projects/xfs/
+	  http://xfs.org
