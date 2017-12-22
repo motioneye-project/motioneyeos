@@ -1466,6 +1466,7 @@ F:	package/libspatialindex/
 F:	package/linux-syscall-support/
 F:	package/lugaru/
 F:	package/mcelog/
+F:	package/mesa3d/
 F:	package/minetest/
 F:	package/minetest-game/
 F:	package/openpowerlink/
