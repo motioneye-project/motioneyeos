@@ -11,7 +11,9 @@ JSON_C_MAKE = $(MAKE1)
 JSON_C_CONF_OPTS = --disable-oldname-compat
 # AUTORECONF is needed because of Makefile.am.inc patch.
 JSON_C_AUTORECONF = YES
+HOST_JSON_C_AUTORECONF = YES
 JSON_C_LICENSE = MIT
 JSON_C_LICENSE_FILES = COPYING
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
