@@ -33,6 +33,7 @@ HOST_CRYPTSETUP_DEPENDENCIES = \
 	host-lvm2 \
 	host-popt \
 	host-util-linux \
+	host-json-c \
 	host-openssl
 
 HOST_CRYPTSETUP_CONF_OPTS = --with-crypto-backend=openssl
