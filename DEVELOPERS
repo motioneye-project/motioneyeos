@@ -1845,6 +1845,7 @@ F:	package/libpri/
 F:	package/libseccomp/
 F:	package/libss7/
 F:	package/linux-tools/
+F:	package/matchbox*
 F:	package/mesa3d-headers/
 F:	package/nbd/
 F:	package/nut/
