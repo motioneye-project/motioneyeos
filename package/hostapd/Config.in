@@ -43,6 +43,29 @@ config BR2_PACKAGE_HOSTAPD_WPS
 	help
 	  Enable support for Wi-Fi Protected Setup.
 
+config BR2_PACKAGE_HOSTAPD_VLAN
+	bool "Enable VLAN support"
+	default y
+	help
+	  Enable support for VLANs.
+
+config BR2_PACKAGE_HOSTAPD_VLAN_DYNAMIC
+	bool "Enable dynamic VLAN support"
+	default y
+	depends on BR2_PACKAGE_HOSTAPD_VLAN
+	help
+	  Enable support for fully dynamic VLANs.
+	  This enables hostapd to automatically create
+	  bridge and VLAN interfaces if necessary.
+
+config BR2_PACKAGE_HOSTAPD_VLAN_NETLINK
+	bool "Use netlink-based API for VLAN operations"
+	default y
+	depends on BR2_PACKAGE_HOSTAPD_VLAN
+	help
+	  Use netlink-based kernel API for VLAN operations
+	  instead of ioctl().
+
 endif
 
 comment "hostapd needs a toolchain w/ threads"
