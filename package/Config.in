@@ -1051,6 +1051,7 @@ menu "Crypto"
 	source "package/tinydtls/Config.in"
 	source "package/trousers/Config.in"
 	source "package/ustream-ssl/Config.in"
+	source "package/wolfssl/Config.in"
 endmenu
 
 menu "Database"

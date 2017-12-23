@@ -1574,6 +1574,7 @@ F:	package/stella/
 F:	package/traceroute/
 F:	package/tunctl/
 F:	package/ubus/
+F:	package/wolfssl/
 
 N:	Simon Dawson <spdawson@gmail.com>
 F:	boot/at91bootstrap3/

@@ -1,0 +1,27 @@
+config BR2_PACKAGE_WOLFSSL
+	bool "wolfssl"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  The wolfSSL embedded SSL library (formerly CyaSSL) is a
+	  lightweight, portable, C-language-based SSL/TLS library
+	  targeted at IoT, embedded, and RTOS environments primarily
+	  because of its size, speed, and feature set.
+
+	  https://www.wolfssl.com/
+
+if BR2_PACKAGE_WOLFSSL
+
+config BR2_PACKAGE_WOLFSSL_ALL
+	bool "enable all features, except SSLv3"
+	help
+	  Enable all wolfSSL features, except SSL version 3.0 support.
+
+config BR2_PACKAGE_WOLFSSL_SSLV3
+	bool "enable SSLv3"
+	help
+	  Enable SSL version 3.0 support.
+
+endif
+
+comment "wolfssl needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
