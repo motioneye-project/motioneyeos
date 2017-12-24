@@ -1,4 +1,6 @@
 # From http://sourceforge.net/projects/faac/files/faad2-src/faad2-2.8.0/ (used by upstream):
-sha1	a5caa71cd915acd502d96cba56f38296277f2350  faad2-2.8.1.tar.bz2
+md5	28f6116efdbe9378269f8a6221767d1f  faad2-2.8.8.tar.gz
+sha1	0d49c516d4a83c39053a9bd214fddba72cbc34ad  faad2-2.8.8.tar.gz
 # Locally computed
-sha256  f4042496f6b0a60f5ded6acd11093230044ef8a2fd965360c1bbd5b58780933d  faad2-2.8.1.tar.bz2
+sha256  985c3fadb9789d2815e50f4ff714511c79c2710ac27a4aaaf5c0c2662141426d  faad2-2.8.8.tar.gz
+sha256  d3baf3a54943cf12a994c85867a18dec84f810901b2f2878ddfd77efcc3c150f  COPYING
