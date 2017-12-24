@@ -1,0 +1,29 @@
+From d3eec1a3b7c67a5e6f524c65608fd2eacac3782b Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Sun, 24 Dec 2017 12:58:49 -0200
+Subject: [PATCH] Fix build against the musl C library
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ os-daq-modules/daq_ipfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/os-daq-modules/daq_ipfw.c b/os-daq-modules/daq_ipfw.c
+index 016beb06ad61..c2a41759bb04 100644
+--- a/os-daq-modules/daq_ipfw.c
++++ b/os-daq-modules/daq_ipfw.c
+@@ -23,10 +23,10 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdio.h>
++#include <unistd.h>
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+-#include <sys/unistd.h>
+ 
+ #include <netinet/in.h>
+ #include <sys/socket.h>
+-- 
+1.9.1
+
