@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBV4L_VERSION = 1.12.5
+LIBV4L_VERSION = 1.12.6
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
-LIBV4L_SITE = http://linuxtv.org/downloads/v4l-utils
+LIBV4L_SITE = https://linuxtv.org/downloads/v4l-utils
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc
