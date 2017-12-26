@@ -1466,6 +1466,7 @@ F:	package/iqvlinux/
 F:	package/irrlicht/
 F:	package/liblinear/
 F:	package/lensfun/
+F:	package/libgta/
 F:	package/libspatialindex/
 F:	package/linux-syscall-support/
 F:	package/lugaru/
