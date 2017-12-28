@@ -17,7 +17,7 @@ ROOTFS_UBI_DEPENDENCIES = rootfs-ubifs
 ifeq ($(BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG),y)
 UBINIZE_CONFIG_FILE_PATH = $(call qstrip,$(BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE))
 else
-UBINIZE_CONFIG_FILE_PATH = fs/ubifs/ubinize.cfg
+UBINIZE_CONFIG_FILE_PATH = fs/ubi/ubinize.cfg
 endif
 
 # don't use sed -i as it misbehaves on systems with SELinux enabled when this is
