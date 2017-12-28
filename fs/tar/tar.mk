@@ -11,4 +11,4 @@ define ROOTFS_TAR_CMD
 		tar $(TAR_OPTS) -cf $@ --null --no-recursion -T - --numeric-owner)
 endef
 
-$(eval $(call ROOTFS_TARGET,tar))
+$(eval $(rootfs))

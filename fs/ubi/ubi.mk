@@ -29,4 +29,4 @@ define ROOTFS_UBI_CMD
 	rm $(BUILD_DIR)/ubinize.cfg
 endef
 
-$(eval $(call ROOTFS_TARGET,ubi))
+$(eval $(rootfs))

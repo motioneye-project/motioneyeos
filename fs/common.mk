@@ -37,7 +37,7 @@ ROOTFS_USERS_TABLES = $(call qstrip,$(BR2_ROOTFS_USERS_TABLES))
 
 # Since this function will be called from within an $(eval ...)
 # all variable references except the arguments must be $$-quoted.
-define ROOTFS_TARGET_INTERNAL
+define inner-rootfs
 
 # extra deps
 ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs \
@@ -128,8 +128,7 @@ endif
 
 endef
 
-define ROOTFS_TARGET
-	$(call ROOTFS_TARGET_INTERNAL,$(1),$(call UPPERCASE,$(1)))
-endef
+# $(pkgname) also works well to return the filesystem name
+rootfs = $(call inner-rootfs,$(pkgname),$(call UPPERCASE,$(pkgname)))
 
 include $(sort $(wildcard fs/*/*.mk))

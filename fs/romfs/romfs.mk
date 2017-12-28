@@ -10,4 +10,4 @@ define ROOTFS_ROMFS_CMD
 	$(HOST_DIR)/bin/genromfs -d $(TARGET_DIR) -f $@
 endef
 
-$(eval $(call ROOTFS_TARGET,romfs))
+$(eval $(rootfs))

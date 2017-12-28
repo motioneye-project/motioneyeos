@@ -11,4 +11,4 @@ define ROOTFS_CLOOP_CMD
 		$(HOST_DIR)/bin/create_compressed_fs - 65536 > $@
 endef
 
-$(eval $(call ROOTFS_TARGET,cloop))
+$(eval $(rootfs))

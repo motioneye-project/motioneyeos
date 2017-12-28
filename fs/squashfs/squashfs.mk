@@ -24,4 +24,4 @@ define ROOTFS_SQUASHFS_CMD
 	$(HOST_DIR)/bin/mksquashfs $(TARGET_DIR) $@ $(ROOTFS_SQUASHFS_ARGS)
 endef
 
-$(eval $(call ROOTFS_TARGET,squashfs))
+$(eval $(rootfs))

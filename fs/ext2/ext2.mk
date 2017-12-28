@@ -43,4 +43,4 @@ endef
 ROOTFS_EXT2_POST_GEN_HOOKS += ROOTFS_EXT2_SYMLINK
 endif
 
-$(eval $(call ROOTFS_TARGET,ext2))
+$(eval $(rootfs))

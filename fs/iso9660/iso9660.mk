@@ -144,4 +144,4 @@ endef
 ROOTFS_ISO9660_POST_GEN_HOOKS += ROOTFS_ISO9660_GEN_HYBRID
 endif
 
-$(eval $(call ROOTFS_TARGET,iso9660))
+$(eval $(rootfs))

@@ -16,4 +16,4 @@ endef
 
 ROOTFS_CRAMFS_DEPENDENCIES = host-cramfs
 
-$(eval $(call ROOTFS_TARGET,cramfs))
+$(eval $(rootfs))

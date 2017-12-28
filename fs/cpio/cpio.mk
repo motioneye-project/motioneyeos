@@ -40,4 +40,4 @@ endef
 ROOTFS_CPIO_POST_GEN_HOOKS += ROOTFS_CPIO_UBOOT_MKIMAGE
 endif
 
-$(eval $(call ROOTFS_TARGET,cpio))
+$(eval $(rootfs))

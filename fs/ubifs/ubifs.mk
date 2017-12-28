@@ -27,4 +27,4 @@ define ROOTFS_UBIFS_CMD
 	$(HOST_DIR)/sbin/mkfs.ubifs -d $(TARGET_DIR) $(UBIFS_OPTS) -o $@
 endef
 
-$(eval $(call ROOTFS_TARGET,ubifs))
+$(eval $(rootfs))

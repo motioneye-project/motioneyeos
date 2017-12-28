@@ -49,4 +49,4 @@ define ROOTFS_JFFS2_CMD
 endef
 endif
 
-$(eval $(call ROOTFS_TARGET,jffs2))
+$(eval $(rootfs))
