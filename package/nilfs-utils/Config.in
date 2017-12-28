@@ -1,0 +1,11 @@
+config BR2_PACKAGE_NILFS_UTILS
+	bool "nilfs-utils"
+	depends on BR2_USE_MMU # util-linux libmount, libblkid
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
+	select BR2_PACKAGE_UTIL_LINUX
+	help
+	  Tools for creating and managing NILFS2 filesystems.
+
+	  https://github.com/nilfs-dev/nilfs-utils
