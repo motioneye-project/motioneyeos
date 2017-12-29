@@ -44,4 +44,7 @@ define HOST_TAR_EXTRACT_CMDS
 	mv $(@D)/tar-$(TAR_VERSION)/* $(@D)
 	rmdir $(@D)/tar-$(TAR_VERSION)
 endef
+
+HOST_TAR_CONF_OPTS = --without-selinux
+
 $(eval $(host-autotools-package))
