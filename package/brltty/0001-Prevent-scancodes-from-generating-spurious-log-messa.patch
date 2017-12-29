@@ -1,0 +1,28 @@
+From 3ea213e47c6771b7e2481f64a98f30c02fcb4867 Mon Sep 17 00:00:00 2001
+From: Mario Lang <mlang@delysid.org>
+Date: Thu, 30 Nov 2017 13:14:47 +0100
+Subject: [PATCH] Prevent scancodes from generating spurious log messages. (ml)
+
+Signed-off-by: Mario Lang <mlang@blind.guru>
+---
+This patch was taken from upstream, and can be removed when 5.6 is out.
+
+ Drivers/Braille/HandyTech/braille.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Drivers/Braille/HandyTech/braille.c b/Drivers/Braille/HandyTech/braille.c
+index ef95fd15b..f7e605c1a 100644
+--- a/Drivers/Braille/HandyTech/braille.c
++++ b/Drivers/Braille/HandyTech/braille.c
+@@ -1560,7 +1560,7 @@ brl_readCommand (BrailleDisplay *brl, KeyTableCommandContext context) {
+                   case HT_EXTPKT_Scancode: {
+                     while (length--)
+                       enqueueCommand(BRL_CMD_BLK(PASSAT) | BRL_ARG_PUT(*bytes++));
+-                    break;
++                    continue;
+                   }
+ 
+                   case HT_EXTPKT_GetRTC: {
+-- 
+2.15.0
+
