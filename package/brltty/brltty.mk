@@ -11,7 +11,7 @@ BRLTTY_INSTALL_STAGING_OPTS = INSTALL_ROOT=$(STAGING_DIR) install
 BRLTTY_INSTALL_TARGET_OPTS = INSTALL_ROOT=$(TARGET_DIR) install
 BRLTTY_LICENSE_FILES = LICENSE-GPL LICENSE-LGPL
 
-BRLTTY_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
+BRLTTY_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES) host-autoconf
 
 BRLTTY_CONF_OPTS = \
 	--disable-java-bindings \
@@ -23,6 +23,16 @@ BRLTTY_CONF_OPTS = \
 	--without-midi-package \
 	--without-mikropuhe --without-speechd --without-swift \
 	--without-theta --without-viavoice
+
+# Autoreconf is needed because we're patching configure.ac in
+# 0002-Check-for-ioperm-to-make-sure-the-platform-supports-.patch. However,
+# a plain autoreconf doesn't work, because this package is only
+# autoconf-based.
+define BRLTTY_AUTOCONF
+	cd $(BRLTTY_SRCDIR) && $(AUTOCONF)
+endef
+
+BRLTTY_PRE_CONFIGURE_HOOKS += BRLTTY_AUTOCONF
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 BRLTTY_DEPENDENCIES += bluez5_utils

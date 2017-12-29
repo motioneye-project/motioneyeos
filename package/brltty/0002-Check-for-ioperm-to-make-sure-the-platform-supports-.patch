@@ -1,0 +1,31 @@
+From 28dde6749327fd15a1b8b7bcf5cc74a95598582a Mon Sep 17 00:00:00 2001
+From: Mario Lang <mlang@delysid.org>
+Date: Fri, 29 Dec 2017 10:35:05 +0100
+Subject: [PATCH] Check for ioperm to make sure the platform supports ports
+ I/O. (ml)
+
+Signed-off-by: Mario Lang <mlang@blind.guru>
+---
+This patch was taken from upstream, and can be removed when 5.6 is out.
+
+ configure.ac | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5e94d33bd..07119dd9f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1446,7 +1446,9 @@ BRLTTY_ARG_PACKAGE([ports], [I/O ports], [], [dnl
+       ports_package="kfreebsd"
+       ;;
+    linux*)
+-      ports_package="glibc"
++      AC_CHECK_FUNC([ioperm], [
++         ports_package="glibc"
++      ])
+       ;;
+    mingw*)
+       ports_package="windows"
+-- 
+2.15.0
+
