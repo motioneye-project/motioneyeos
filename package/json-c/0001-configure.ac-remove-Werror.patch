@@ -1,0 +1,32 @@
+From 79d862ccaabc6620ce4b2783a44d6014ae837df9 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sun, 31 Dec 2017 00:01:37 +0200
+Subject: [PATCH] configure.ac: remove -Werror
+
+The unconditional _REENTRANT macro causes a warning when building with a
+no-threads toolchain. Remove -Werror to fix the build.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: not upstreamable
+Issue reported upstream: https://github.com/json-c/json-c/issues/396
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 024c5aa0d687..74caa4d99e15 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -165,7 +165,7 @@ AS_IF([test "x$enable_Bsymbolic" = "xcheck"],
+ AS_IF([test "x$enable_Bsymbolic" = "xyes"], [JSON_BSYMBOLIC_LDFLAGS=-Wl[,]-Bsymbolic-functions])
+ AC_SUBST(JSON_BSYMBOLIC_LDFLAGS)
+ 
+-AX_APPEND_COMPILE_FLAGS([-Wall -Werror -Wcast-qual -Wno-error=deprecated-declarations])
++AX_APPEND_COMPILE_FLAGS([-Wall -Wcast-qual -Wno-error=deprecated-declarations])
+ AX_APPEND_COMPILE_FLAGS([-Wextra -Wwrite-string -Wno-unused-parameter])
+ AX_APPEND_COMPILE_FLAGS([-D_GNU_SOURCE -D_REENTRANT])
+ 
+-- 
+2.15.1
+
