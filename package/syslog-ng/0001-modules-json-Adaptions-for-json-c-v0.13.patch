@@ -1,0 +1,39 @@
+From 1b824dd6389e209eab752d5a698c6093f311e3e3 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bj=C3=B6rn=20Esser?= <besser82@fedoraproject.org>
+Date: Mon, 11 Dec 2017 15:46:06 +0100
+Subject: [PATCH] modules/json: Adaptions for json-c v0.13
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 1b824dd6389e
+
+ modules/json/json-parser.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/modules/json/json-parser.c b/modules/json/json-parser.c
+index 0368ed8f7ffe..356df48b9fc7 100644
+--- a/modules/json/json-parser.c
++++ b/modules/json/json-parser.c
+@@ -20,6 +20,8 @@
+  * COPYING for details.
+  */
+ 
++#define JSON_C_VER_013 (13 << 8)
++
+ #include "json-parser.h"
+ #include "dot-notation.h"
+ #include "scratch-buffers.h"
+@@ -28,7 +30,10 @@
+ #include <ctype.h>
+ 
+ #include <json.h>
++
++#if (!defined(JSON_C_VERSION_NUM)) || (JSON_C_VERSION_NUM < JSON_C_VER_013)
+ #include <json_object_private.h>
++#endif
+ 
+ typedef struct _JSONParser
+ {
+-- 
+2.15.1
+
