@@ -11,24 +11,15 @@ HOSTAPD_PATCH = \
 	http://w1.fi/security/2017-1/rebased-v2.6-0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
-HOSTAPD_DEPENDENCIES = host-pkgconf libnl
-HOSTAPD_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
+HOSTAPD_DEPENDENCIES = host-pkgconf
+HOSTAPD_CFLAGS = $(TARGET_CFLAGS)
 HOSTAPD_LICENSE = BSD-3-Clause
 HOSTAPD_LICENSE_FILES = README
 HOSTAPD_CONFIG_SET =
 
-HOSTAPD_CONFIG_ENABLE = \
-	CONFIG_INTERNAL_LIBTOMMATH \
-	CONFIG_LIBNL32
+HOSTAPD_CONFIG_ENABLE = CONFIG_INTERNAL_LIBTOMMATH
 
 HOSTAPD_CONFIG_DISABLE =
-
-# libnl-3 needs -lm (for rint) and -lpthread if linking statically
-# And library order matters hence stick -lnl-3 first since it's appended
-# in the hostapd Makefiles as in LIBS+=-lnl-3 ... thus failing
-ifeq ($(BR2_STATIC_LIBS),y)
-HOSTAPD_LIBS += -lnl-3 -lm -lpthread
-endif
 
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
@@ -103,6 +94,19 @@ endif
 
 ifeq ($(BR2_PACKAGE_HOSTAPD_VLAN_NETLINK),y)
 HOSTAPD_CONFIG_ENABLE += CONFIG_VLAN_NETLINK
+endif
+
+# Options for building with libnl
+ifeq ($(BR2_PACKAGE_LIBNL),y)
+HOSTAPD_DEPENDENCIES += libnl
+HOSTAPD_CFLAGS += -I$(STAGING_DIR)/usr/include/libnl3/
+HOSTAPD_CONFIG_ENABLE += CONFIG_LIBNL32
+# libnl-3 needs -lm (for rint) and -lpthread if linking statically
+# And library order matters hence stick -lnl-3 first since it's appended
+# in the hostapd Makefiles as in LIBS+=-lnl-3 ... thus failing
+ifeq ($(BR2_STATIC_LIBS),y)
+HOSTAPD_LIBS += -lnl-3 -lm -lpthread
+endif
 endif
 
 define HOSTAPD_CONFIGURE_CMDS
