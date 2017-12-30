@@ -43,6 +43,7 @@ F:	package/gstreamer1/gst1-plugins-ugly/
 F:	package/gstreamer1/gst1-vaapi/
 F:	package/imx-usb-loader/
 F:	package/janus-gateway/
+F:	package/json-for-modern-cpp/
 F:	package/libressl/
 F:	package/libselinux/
 F:	package/libsemanage/

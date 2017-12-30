@@ -1,0 +1,29 @@
+config BR2_PACKAGE_JSON_FOR_MODERN_CPP
+	bool "json-for-modern-cpp"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++11
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  Json for modern c++ has the following desing goals in mind:
+
+	  - Intuitive syntax. In languages such as Python, JSON feels
+	    like a first class data type. All the operator magic of
+	    modern C++ is used to achieve the same feeling in c++.
+
+	  - Trivial integration. The whole code consists of a single
+	    header file json.hpp. That's it. No library, no
+	    subproject, no dependencies, no complex build system. The
+	    class is written in vanilla C++11. All in all, everything
+	    should require no adjustment of compiler flags or project
+	    settings.
+
+	  - Serious testing. The class is heavily unit-tested and
+	    covers 100% of the code, including all exceptional
+	    behavior.  Furthermore, it is checked with Valgrind that
+	    there are no memory leaks. To maintain high quality, the
+	    project is following the Core Infrastructure Initiative
+	    (CII) best practices.
+
+	  https://github.com/nlohmann/json
+
+comment "json-for-modern-cpp needs a toolchain w/ C++, gcc >= 4.9"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
