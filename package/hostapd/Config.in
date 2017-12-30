@@ -14,10 +14,41 @@ config BR2_PACKAGE_HOSTAPD
 
 if BR2_PACKAGE_HOSTAPD
 
+config BR2_PACKAGE_HOSTAPD_DRIVER_HOSTAP
+	bool "Enable hostap driver"
+	default y
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	help
+	  Enable support for Host AP driver.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
+	bool "Enable nl80211 driver"
+	default y
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	help
+	  Enable support for drivers using the nl80211 kernel interface.
+
 config BR2_PACKAGE_HOSTAPD_DRIVER_RTW
 	bool "Enable rtl871xdrv driver"
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
 	help
 	  Enable support for Realtek wireless chips.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_WIRED
+	bool "Enable wired driver"
+	help
+	  Enable support for wired authenticator.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_NONE
+	bool
+	default y
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_HOSTAP
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_RTW
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_WIRED
+
+config BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	bool
 
 config BR2_PACKAGE_HOSTAPD_ACS
 	bool "Enable ACS"
