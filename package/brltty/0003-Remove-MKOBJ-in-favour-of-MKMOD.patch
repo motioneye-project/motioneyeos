@@ -1,0 +1,64 @@
+From b3b0e47015e9162f519730789976157c7cc38178 Mon Sep 17 00:00:00 2001
+From: Mario Lang <mlang@delysid.org>
+Date: Fri, 29 Dec 2017 14:52:37 +0100
+Subject: [PATCH] Remove MKOBJ in favour of MKMOD. (ml)
+
+Calling ld directly can lead to problems when cross-compiling.
+
+Upstream: https://github.com/brltty/brltty/commit/4c8aba42e246b96d10ffcbd57653682375499e46
+Signed-off-by: Mario Lang <mlang@blind.guru>
+---
+ Drivers/Braille/EuroBraille/Makefile.in |  2 +-
+ config.mk.in                            |  1 -
+ configure.ac                            | 10 ----------
+ 3 files changed, 1 insertion(+), 12 deletions(-)
+
+diff --git a/Drivers/Braille/EuroBraille/Makefile.in b/Drivers/Braille/EuroBraille/Makefile.in
+index 0500aa70e..ce8a3d1a4 100644
+--- a/Drivers/Braille/EuroBraille/Makefile.in
++++ b/Drivers/Braille/EuroBraille/Makefile.in
+@@ -28,7 +28,7 @@ SRC_FILES = eu_braille.c eu_clio.c eu_esysiris.c
+ OBJ_FILES = $(SRC_FILES:.c=.$O)
+ 
+ braille.$O: $(OBJ_FILES)
+-	$(MKOBJ)  $@ $(OBJ_FILES)
++	$(MKMOD)  $@ $(OBJ_FILES)
+ 
+ %.$O: $(SRC_DIR)/%.c
+ 	$(CC) $(BRL_CFLAGS) -o $@ -c $<
+diff --git a/config.mk.in b/config.mk.in
+index 686f547e6..8d1da79b4 100644
+--- a/config.mk.in
++++ b/config.mk.in
+@@ -250,7 +250,6 @@ LD = @LD@
+ LDFLAGS = @LDFLAGS@
+ LDLIBS = $(ICU_LIBS) $(POLKIT_LIBS) $(SYSTEM_LIBS) @LIBS@
+ 
+-MKOBJ = @MKOBJ@
+ MKMOD = @MKMOD@
+ MKLIB = @MKLIB@
+ CONFLIBDIR = @CONFLIBDIR@
+diff --git a/configure.ac b/configure.ac
+index 07119dd9f..ad80b8d60 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -428,16 +428,6 @@ AC_SUBST([can_make_manual])
+ test "${DOXYGEN}" = "false" && can_make_BrlAPIref=no || can_make_BrlAPIref=yes
+ AC_SUBST([can_make_BrlAPIref])
+ 
+-AC_CACHE_CHECK([for make relocatable object command], [brltty_cv_prog_mkobj], [dnl
+-case "${host_os}"
+-in
+-   *)
+-      brltty_cv_prog_mkobj="\$(LD) -r -o"
+-      ;;
+-esac])
+-MKOBJ="${brltty_cv_prog_mkobj}"
+-AC_SUBST([MKOBJ])
+-
+ AC_CACHE_CHECK([for loadable module creation command], [brltty_cv_prog_mkmod], [dnl
+ case "${host_os}"
+ in
+-- 
+2.15.0
+
