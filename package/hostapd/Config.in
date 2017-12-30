@@ -53,12 +53,16 @@ config BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
 config BR2_PACKAGE_HOSTAPD_ACS
 	bool "Enable ACS"
 	default y
+	depends on BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
 	help
 	  Enable support for standard ACS (Automatic Channel Selection).
 	  Some propietary drivers use a custom algorithm which requires
 	  channel to be set to '0' (which enables ACS in the config),
 	  causing hostapd to use the standard one which doesn't work
 	  for those cases.
+
+comment "ACS is currently only supported through the nl80211 driver"
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
 
 config BR2_PACKAGE_HOSTAPD_EAP
 	bool "Enable EAP"
