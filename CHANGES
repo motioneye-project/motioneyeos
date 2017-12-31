@@ -1,3 +1,15 @@
+2017.11.1, Released December 31th, 2017
+
+	Important / security related fixes.
+
+	Updated/fixed packages: asterisk, checkpolicy, dhcp, flann,
+	gdb, glibc, heimdal, kodi-pvr-mediaportal-tvserver,
+	kodi-pvr-stalker, libcue, libopenssl, libpqxx, libsoxr,
+	linknx, linux-tools, lldpd, ltp-testsuite, mariadb, mfgtools,
+	nodejs, nut, pulseaudio, python-cffi, qemu, rsync, tor, uboot,
+	uboot-tools, vlc, webkitgtk, weston, wireguard, wireshark,
+	xenomai, xfsprogs
+
 2017.11, Released November 30, 2017
 
 	Fixes all over the tree.
