@@ -61,11 +61,8 @@ define I2C_TOOLS_BUILD_CMDS
 endef
 
 define I2C_TOOLS_INSTALL_TARGET_CMDS
-	for i in i2cdump i2cget i2cset i2cdetect i2ctransfer; \
-	do \
-		$(INSTALL) -m 755 -D $(@D)/tools/$$i $(TARGET_DIR)/usr/sbin/$$i; \
-	done
-	$(INSTALL) -m 755 -D $(@D)/eeprog/eeprog $(TARGET_DIR)/usr/bin/eeprog;
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(I2C_TOOLS_MAKE_OPTS) \
+		DESTDIR="$(TARGET_DIR)" prefix=/usr -C $(@D) install
 	$(I2C_TOOLS_INSTALL_PYSMBUS)
 endef
 
