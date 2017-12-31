@@ -1,4 +1,7 @@
 #!/bin/bash
 
-sed -r -i 's/#initrd_filename=.*/initrd_filename=fwupdater.img/' /boot/uEnv.txt
+if [ -f /boot/boot-fwupdater.scr ]; then
+    mv /boot/boot.scr /boot/boot-normal.scr
+    mv /boot/boot-fwupdater.scr /boot/boot.scr
+fi
 
