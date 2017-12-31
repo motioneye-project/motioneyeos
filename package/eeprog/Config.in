@@ -3,4 +3,4 @@ config BR2_PACKAGE_EEPROG
 	help
 	  Simple tool to read/write i2c eeprom chips.
 
-	  http://codesink.org/eeprog.html
+	  http://www.codesink.org/eeprog.html
