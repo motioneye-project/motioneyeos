@@ -1,5 +1,5 @@
 #!/bin/bash
 
-sn=$(cat /sys/class/net/eth0/address 2>/dev/null | tr -d ':')
+sn=$(cat /proc/cpuinfo | grep Serial | tr -d ' ' | cut -d ':' -f 2)
 echo ${sn: -8}
 
