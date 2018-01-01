@@ -171,7 +171,7 @@ endif
 # Raspberry Pi support
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 MPV_CONF_OPTS += --enable-rpi --enable-gl
-FFMPEG_DEPENDENCIES += rpi-userland
+MPV_DEPENDENCIES += rpi-userland
 else
 MPV_CONF_OPTS += --disable-rpi
 endif
