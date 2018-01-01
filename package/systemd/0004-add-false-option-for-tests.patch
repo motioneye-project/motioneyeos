@@ -1,0 +1,150 @@
+From ebeb780df4ca5a8e5a43da1b38492964d8817455 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Mon, 1 Jan 2018 08:01:01 -0500
+Subject: [PATCH] add false option for tests
+
+Currently there is no way to not build tests. This introduces two problems:
+
+1) It adds a extra 381 files to compile.
+2) One of these tests explicitly requires libgcrypt to be built even if systemd
+   is not using it.
+
+This patch adds the option "false" to tests, adds a check around the
+foreach loop that compiles the tests to see if tests is set to false,
+and adds a check around finding g++ as it's only used for tests and
+is not needed.
+
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+---
+ meson.build       | 91 +++++++++++++++++++++++++++++--------------------------
+ meson_options.txt |  2 +-
+ 2 files changed, 49 insertions(+), 44 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index ddc061c..4dcdd41 100644
+--- a/meson.build
++++ b/meson.build
+@@ -260,10 +260,12 @@ cc = meson.get_compiler('c')
+ pkgconfig = import('pkgconfig')
+ check_compilation_sh = find_program('tools/meson-check-compilation.sh')
+ 
+-cxx = find_program('c++', required : false)
+-if cxx.found()
+-        #  Used only for tests
+-        add_languages('cpp')
++if get_option('tests') != 'false'
++	cxx = find_program('c++', required : false)
++	if cxx.found()
++            #  Used only for tests
++            add_languages('cpp')
++    endif
+ endif
+ 
+ foreach arg : ['-Wextra',
+@@ -2388,48 +2390,51 @@ executable('systemd-sulogin-shell',
+            install_dir : rootlibexecdir)
+ 
+ ############################################################
++if want_tests == 'false'
++        message('Not compiling because tests is set to false')
++else
++        foreach tuple : tests
++                sources = tuple[0]
++                link_with = tuple[1].length() > 0 ? tuple[1] : [libshared]
++                dependencies = tuple[2]
++                condition = tuple.length() >= 4 ? tuple[3] : ''
++                type = tuple.length() >= 5 ? tuple[4] : ''
++                defs = tuple.length() >= 6 ? tuple[5] : []
++                incs = tuple.length() >= 7 ? tuple[6] : includes
++                timeout = 30
++
++                name = sources[0].split('/')[-1].split('.')[0]
++                if type.startswith('timeout=')
++                        timeout = type.split('=')[1].to_int()
++                        type = ''
++                endif
+ 
+-foreach tuple : tests
+-        sources = tuple[0]
+-        link_with = tuple[1].length() > 0 ? tuple[1] : [libshared]
+-        dependencies = tuple[2]
+-        condition = tuple.length() >= 4 ? tuple[3] : ''
+-        type = tuple.length() >= 5 ? tuple[4] : ''
+-        defs = tuple.length() >= 6 ? tuple[5] : []
+-        incs = tuple.length() >= 7 ? tuple[6] : includes
+-        timeout = 30
+-
+-        name = sources[0].split('/')[-1].split('.')[0]
+-        if type.startswith('timeout=')
+-                timeout = type.split('=')[1].to_int()
+-                type = ''
+-        endif
+-
+-        if condition == '' or conf.get(condition) == 1
+-                exe = executable(
+-                        name,
+-                        sources,
+-                        include_directories : incs,
+-                        link_with : link_with,
+-                        dependencies : dependencies,
+-                        c_args : defs,
+-                        install_rpath : rootlibexecdir,
+-                        install : install_tests,
+-                        install_dir : join_paths(testsdir, type))
+-
+-                if type == 'manual'
+-                        message('@0@ is a manual test'.format(name))
+-                elif type == 'unsafe' and want_tests != 'unsafe'
+-                        message('@0@ is an unsafe test'.format(name))
++                if condition == '' or conf.get(condition) == 1
++                        exe = executable(
++                                name,
++                                sources,
++                                include_directories : incs,
++                                link_with : link_with,
++                                dependencies : dependencies,
++                                c_args : defs,
++                                install_rpath : rootlibexecdir,
++                                install : install_tests,
++                                install_dir : join_paths(testsdir, type))
++
++                        if type == 'manual'
++                                message('@0@ is a manual test'.format(name))
++                        elif type == 'unsafe' and want_tests != 'unsafe'
++                                message('@0@ is an unsafe test'.format(name))
++                        else
++                                test(name, exe,
++                                     env : test_env,
++                                     timeout : timeout)
++                        endif
+                 else
+-                        test(name, exe,
+-                             env : test_env,
+-                             timeout : timeout)
++                        message('Not compiling @0@ because @1@ is not true'.format(name, condition))
+                 endif
+-        else
+-                message('Not compiling @0@ because @1@ is not true'.format(name, condition))
+-        endif
+-endforeach
++        endforeach
++endif
+ 
+ test_libsystemd_sym = executable(
+         'test-libsystemd-sym',
+diff --git a/meson_options.txt b/meson_options.txt
+index f0c0506..0caba0c 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -284,7 +284,7 @@ option('bashcompletiondir', type : 'string',
+ option('zshcompletiondir', type : 'string',
+        description : 'directory for zsh completion scripts ["no" disables]')
+ 
+-option('tests', type : 'combo', choices : ['true', 'unsafe'],
++option('tests', type : 'combo', choices : ['true', 'unsafe', 'false'],
+        description : 'enable extra tests with =unsafe')
+ option('slow-tests', type : 'boolean', value : 'false',
+        description : 'run the slow tests by default')
+-- 
+2.14.3
+

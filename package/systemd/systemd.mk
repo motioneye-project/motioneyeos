@@ -4,20 +4,20 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 234
+SYSTEMD_VERSION = 236
 SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
 SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
+	host-gperf \
 	host-intltool \
-	libcap \
-	util-linux \
+	host-meson \
 	kmod \
-	host-gperf
+	libcap \
+	util-linux
 
 SYSTEMD_PROVIDES = udev
-SYSTEMD_AUTORECONF = YES
 
 # Make sure that systemd will always be built after busybox so that we have
 # a consistent init setup between two builds
@@ -26,268 +26,249 @@ SYSTEMD_DEPENDENCIES += busybox
 endif
 
 SYSTEMD_CONF_OPTS += \
-	--with-rootprefix= \
-	--enable-blkid \
-	--enable-static=no \
-	--disable-manpages \
-	--disable-ima \
-	--disable-libcryptsetup \
-	--disable-efi \
-	--disable-gnuefi \
-	--disable-ldconfig \
-	--disable-tests \
-	--disable-coverage \
-	--with-default-dnssec=no \
-	--without-python
-
-SYSTEMD_CFLAGS = $(TARGET_CFLAGS) -fno-lto
-
-# Override paths to a few utilities needed at runtime, to
-# avoid finding those we would install in $(HOST_DIR).
-SYSTEMD_CONF_ENV = \
-	CFLAGS="$(SYSTEMD_CFLAGS)" \
-	ac_cv_path_KILL=/usr/bin/kill \
-	ac_cv_path_KMOD=/usr/bin/kmod \
-	ac_cv_path_KEXEC=/usr/sbin/kexec \
-	ac_cv_path_SULOGIN=/usr/sbin/sulogin \
-	ac_cv_path_MOUNT_PATH=/usr/bin/mount \
-	ac_cv_path_UMOUNT_PATH=/usr/bin/umount
-
-define SYSTEMD_RUN_INTLTOOLIZE
-	cd $(@D) && $(HOST_DIR)/bin/intltoolize --force --automake
-endef
-SYSTEMD_PRE_CONFIGURE_HOOKS += SYSTEMD_RUN_INTLTOOLIZE
+	--prefix=/usr \
+	--libdir='/usr/lib' \
+	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
+	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf \
+	-Drootlibdir='/usr/lib' \
+	-Dblkid=true \
+	-Dman=false \
+	-Dima=false \
+	-Dlibcryptsetup=false \
+	-Defi=false \
+	-Dgnu-efi=false \
+	-Dldconfig=false \
+	-Ddefault-dnssec=no \
+	-Dtests=false \
+	-Dtelinit-path=$(TARGET_DIR)/sbin/telinit \
+	-Dkill-path=/usr/bin/kill \
+	-Dkmod-path=/usr/bin/kmod \
+	-Dkexec-path=/usr/sbin/kexec \
+	-Dsulogin-path=/usr/sbin/sulogin \
+	-Dmount-path=/usr/bin/mount \
+	-Dumount-path=/usr/bin/umount
 
 ifeq ($(BR2_PACKAGE_ACL),y)
-SYSTEMD_CONF_OPTS += --enable-acl
 SYSTEMD_DEPENDENCIES += acl
+SYSTEMD_CONF_OPTS += -Dacl=true
 else
-SYSTEMD_CONF_OPTS += --disable-acl
+SYSTEMD_CONF_OPTS += -Dacl=false
 endif
 
 ifeq ($(BR2_PACKAGE_AUDIT),y)
-SYSTEMD_CONF_OPTS += --enable-audit
 SYSTEMD_DEPENDENCIES += audit
+SYSTEMD_CONF_OPTS += -Daudit=true
 else
-SYSTEMD_CONF_OPTS += --disable-audit
+SYSTEMD_CONF_OPTS += -Daudit=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBIDN),y)
-SYSTEMD_CONF_OPTS += --enable-libidn
 SYSTEMD_DEPENDENCIES += libidn
+SYSTEMD_CONF_OPTS += -Dlibidn=true
 else
-SYSTEMD_CONF_OPTS += --disable-libidn
+SYSTEMD_CONF_OPTS += -Dlibidn=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
-SYSTEMD_CONF_OPTS += --enable-seccomp
 SYSTEMD_DEPENDENCIES += libseccomp
+SYSTEMD_CONF_OPTS += -Dseccomp=true
 else
-SYSTEMD_CONF_OPTS += --disable-seccomp
+SYSTEMD_CONF_OPTS += -Dseccomp=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXKBCOMMON),y)
-SYSTEMD_CONF_OPTS += --enable-xkbcommon
 SYSTEMD_DEPENDENCIES += libxkbcommon
+SYSTEMD_CONF_OPTS += -Dxkbcommon=true
 else
-SYSTEMD_CONF_OPTS += --disable-xkbcommon
+SYSTEMD_CONF_OPTS += -Dxkbcommon=false
 endif
 
 ifeq ($(BR2_PACKAGE_BZIP2),y)
 SYSTEMD_DEPENDENCIES += bzip2
-SYSTEMD_CONF_OPTS += --enable-bzip2
+SYSTEMD_CONF_OPTS += -Dbzip2=true
 else
-SYSTEMD_CONF_OPTS += --disable-bzip2
+SYSTEMD_CONF_OPTS += -Dbzip2=false
 endif
 
 ifeq ($(BR2_PACKAGE_LZ4),y)
 SYSTEMD_DEPENDENCIES += lz4
-SYSTEMD_CONF_OPTS += --enable-lz4
+SYSTEMD_CONF_OPTS += -Dlz4=true
 else
-SYSTEMD_CONF_OPTS += --disable-lz4
+SYSTEMD_CONF_OPTS += -Dlz4=false
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 SYSTEMD_DEPENDENCIES += linux-pam
-SYSTEMD_CONF_OPTS += --enable-pam
+SYSTEMD_CONF_OPTS += -Dpam=true
 else
-SYSTEMD_CONF_OPTS += --disable-pam
+SYSTEMD_CONF_OPTS += -Dpam=false
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)
 SYSTEMD_DEPENDENCIES += xz
-SYSTEMD_CONF_OPTS += --enable-xz
+SYSTEMD_CONF_OPTS += -Dxz=true
 else
-SYSTEMD_CONF_OPTS += --disable-xz
+SYSTEMD_CONF_OPTS += -Dxz=false
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 SYSTEMD_DEPENDENCIES += zlib
-SYSTEMD_CONF_OPTS += --enable-zlib
+SYSTEMD_CONF_OPTS += -Dzlib=true
 else
-SYSTEMD_CONF_OPTS += --disable-zlib
+SYSTEMD_CONF_OPTS += -Dzlib=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
 SYSTEMD_DEPENDENCIES += libcurl
-SYSTEMD_CONF_OPTS += --enable-libcurl
+SYSTEMD_CONF_OPTS += -Dlibcurl=true
 else
-SYSTEMD_CONF_OPTS += --disable-libcurl
+SYSTEMD_CONF_OPTS += -Dlibcurl=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 SYSTEMD_DEPENDENCIES += libgcrypt
-SYSTEMD_CONF_OPTS += \
-	--enable-gcrypt \
-	--with-libgcrypt-prefix=$(STAGING_DIR)/usr \
-	--with-libgpg-error-prefix=$(STAGING_DIR)/usr
+SYSTEMD_CONF_OPTS += -Dgcrypt=true
 else
-SYSTEMD_CONF_OPTS += --disable-gcrypt
+SYSTEMD_CONF_OPTS += -Dgcrypt=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
 SYSTEMD_DEPENDENCIES += libmicrohttpd
-SYSTEMD_CONF_OPTS += --enable-microhttpd
+SYSTEMD_CONF_OPTS += -Dmicrohttpd=true
 ifeq ($(BR2_PACKAGE_LIBQRENCODE),y)
-SYSTEMD_CONF_OPTS += --enable-qrencode
+SYSTEMD_CONF_OPTS += -Dqrencode=true
 SYSTEMD_DEPENDENCIES += libqrencode
 else
-SYSTEMD_CONF_OPTS += --disable-qrencode
+SYSTEMD_CONF_OPTS += -Dqrencode=false
 endif
 else
-SYSTEMD_CONF_OPTS += --disable-microhttpd --disable-qrencode
+SYSTEMD_CONF_OPTS += -Dmicrohttpd=false -Dqrencode=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 SYSTEMD_DEPENDENCIES += libselinux
-SYSTEMD_CONF_OPTS += --enable-selinux
+SYSTEMD_CONF_OPTS += -Dselinux=true
 else
-SYSTEMD_CONF_OPTS += --disable-selinux
+SYSTEMD_CONF_OPTS += -Dselinux=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
-SYSTEMD_CONF_OPTS += --enable-hwdb
+SYSTEMD_CONF_OPTS += -Dhwdb=true
 else
-SYSTEMD_CONF_OPTS += --disable-hwdb
+SYSTEMD_CONF_OPTS += -Dhwdb=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_BINFMT),y)
-SYSTEMD_CONF_OPTS += --enable-binfmt
+SYSTEMD_CONF_OPTS += -Dbinfmt=true
 else
-SYSTEMD_CONF_OPTS += --disable-binfmt
+SYSTEMD_CONF_OPTS += -Dbinfmt=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_VCONSOLE),y)
-SYSTEMD_CONF_OPTS += --enable-vconsole
+SYSTEMD_CONF_OPTS += -Dvconsole=true
 else
-SYSTEMD_CONF_OPTS += --disable-vconsole
+SYSTEMD_CONF_OPTS += -Dvconsole=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_QUOTACHECK),y)
-SYSTEMD_CONF_OPTS += --enable-quotacheck
-SYSTEMD_CONF_ENV += \
-	ac_cv_path_QUOTAON=/usr/sbin/quotaon \
-	ac_cv_path_QUOTACHECK=/usr/sbin/quotacheck
+SYSTEMD_CONF_OPTS += -Dquotacheck=true
 else
-SYSTEMD_CONF_OPTS += --disable-quotacheck
-SYSTEMD_CONF_ENV += \
-	ac_cv_path_QUOTAON=/.missing \
-	ac_cv_path_QUOTACHECK=/.missing
+SYSTEMD_CONF_OPTS += -Dquotacheck=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TMPFILES),y)
-SYSTEMD_CONF_OPTS += --enable-tmpfiles
+SYSTEMD_CONF_OPTS += -Dtmpfiles=true
 else
-SYSTEMD_CONF_OPTS += --disable-tmpfiles
+SYSTEMD_CONF_OPTS += -Dtmpfiles=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS),y)
-SYSTEMD_CONF_OPTS += --enable-sysusers
+SYSTEMD_CONF_OPTS += -Dsysusers=true
 else
-SYSTEMD_CONF_OPTS += --disable-sysusers
+SYSTEMD_CONF_OPTS += -Dsysusers=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_FIRSTBOOT),y)
-SYSTEMD_CONF_OPTS += --enable-firstboot
+SYSTEMD_CONF_OPTS += -Dfirstboot=true
 else
-SYSTEMD_CONF_OPTS += --disable-firstboot
+SYSTEMD_CONF_OPTS += -Dfirstboot=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_RANDOMSEED),y)
-SYSTEMD_CONF_OPTS += --enable-randomseed
+SYSTEMD_CONF_OPTS += -Drandomseed=true
 else
-SYSTEMD_CONF_OPTS += --disable-randomseed
+SYSTEMD_CONF_OPTS += -Drandomseed=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_BACKLIGHT),y)
-SYSTEMD_CONF_OPTS += --enable-backlight
+SYSTEMD_CONF_OPTS += -Dbacklight=true
 else
-SYSTEMD_CONF_OPTS += --disable-backlight
+SYSTEMD_CONF_OPTS += -Dbacklight=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_RFKILL),y)
-SYSTEMD_CONF_OPTS += --enable-rfkill
+SYSTEMD_CONF_OPTS += -Drfkill=true
 else
-SYSTEMD_CONF_OPTS += --disable-rfkill
+SYSTEMD_CONF_OPTS += -Drfkill=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_LOGIND),y)
-SYSTEMD_CONF_OPTS += --enable-logind
+SYSTEMD_CONF_OPTS += -Dlogind=true
 else
-SYSTEMD_CONF_OPTS += --disable-logind
+SYSTEMD_CONF_OPTS += -Dlogind=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_MACHINED),y)
-SYSTEMD_CONF_OPTS += --enable-machined
+SYSTEMD_CONF_OPTS += -Dmachined=true
 else
-SYSTEMD_CONF_OPTS += --disable-machined
+SYSTEMD_CONF_OPTS += -Dmachined=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_IMPORTD),y)
-SYSTEMD_CONF_OPTS += --enable-importd
+SYSTEMD_CONF_OPTS += -Dimportd=true
 else
-SYSTEMD_CONF_OPTS += --disable-importd
+SYSTEMD_CONF_OPTS += -Dimportd=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HOSTNAMED),y)
-SYSTEMD_CONF_OPTS += --enable-hostnamed
+SYSTEMD_CONF_OPTS += -Dhostnamed=true
 else
-SYSTEMD_CONF_OPTS += --disable-hostnamed
+SYSTEMD_CONF_OPTS += -Dhostnamed=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_MYHOSTNAME),y)
-SYSTEMD_CONF_OPTS += --enable-myhostname
+SYSTEMD_CONF_OPTS += -Dmyhostname=true
 else
-SYSTEMD_CONF_OPTS += --disable-myhostname
+SYSTEMD_CONF_OPTS += -Dmyhostname=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMEDATED),y)
-SYSTEMD_CONF_OPTS += --enable-timedated
+SYSTEMD_CONF_OPTS += -Dtimedated=true
 else
-SYSTEMD_CONF_OPTS += --disable-timedated
+SYSTEMD_CONF_OPTS += -Dtimedated=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_LOCALED),y)
-SYSTEMD_CONF_OPTS += --enable-localed
+SYSTEMD_CONF_OPTS += -Dlocaled=true
 else
-SYSTEMD_CONF_OPTS += --disable-localed
+SYSTEMD_CONF_OPTS += -Dlocaled=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COREDUMP),y)
-SYSTEMD_CONF_OPTS += --enable-coredump
+SYSTEMD_CONF_OPTS += -Dcoredump=true
 SYSTEMD_COREDUMP_USER = systemd-coredump -1 systemd-coredump -1 * /var/lib/systemd/coredump - - Core Dumper
 else
-SYSTEMD_CONF_OPTS += --disable-coredump
+SYSTEMD_CONF_OPTS += -Dcoredump=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_POLKIT),y)
-SYSTEMD_CONF_OPTS += --enable-polkit
+SYSTEMD_CONF_OPTS += -Dpolkit=true
 else
-SYSTEMD_CONF_OPTS += --disable-polkit
+SYSTEMD_CONF_OPTS += -Dpolkit=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
-SYSTEMD_CONF_OPTS += --enable-networkd
+SYSTEMD_CONF_OPTS += -Dnetworkd=true
 SYSTEMD_NETWORKD_USER = systemd-network -1 systemd-network -1 * - - - Network Manager
 define SYSTEMD_INSTALL_RESOLVCONF_HOOK
 	ln -sf ../run/systemd/resolve/resolv.conf \
@@ -302,18 +283,18 @@ define SYSTEMD_INSTALL_NETWORK_CONFS
 endef
 endif
 else
-SYSTEMD_CONF_OPTS += --disable-networkd
+SYSTEMD_CONF_OPTS += -Dnetworkd=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_RESOLVED),y)
-SYSTEMD_CONF_OPTS += --enable-resolved
+SYSTEMD_CONF_OPTS += -Dresolved=true
 SYSTEMD_RESOLVED_USER = systemd-resolve -1 systemd-resolve -1 * - - - Network Name Resolution Manager
 else
-SYSTEMD_CONF_OPTS += --disable-resolved
+SYSTEMD_CONF_OPTS += -Dresolved=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
-SYSTEMD_CONF_OPTS += --enable-timesyncd
+SYSTEMD_CONF_OPTS += -Dtimesyncd=true
 SYSTEMD_TIMESYNCD_USER = systemd-timesync -1 systemd-timesync -1 * - - - Network Time Synchronization
 define SYSTEMD_INSTALL_SERVICE_TIMESYNC
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/sysinit.target.wants
@@ -321,19 +302,19 @@ define SYSTEMD_INSTALL_SERVICE_TIMESYNC
 		$(TARGET_DIR)/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service
 endef
 else
-SYSTEMD_CONF_OPTS += --disable-timesyncd
+SYSTEMD_CONF_OPTS += -Dtimesyncd=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT),y)
-SYSTEMD_CONF_OPTS += --enable-smack
+SYSTEMD_CONF_OPTS += -Dsmack=true
 else
-SYSTEMD_CONF_OPTS += --disable-smack
+SYSTEMD_CONF_OPTS += -Dsmack=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HIBERNATE),y)
-SYSTEMD_CONF_OPTS += --enable-hibernate
+SYSTEMD_CONF_OPTS += -Dhibernate=true
 else
-SYSTEMD_CONF_OPTS += --disable-hibernate
+SYSTEMD_CONF_OPTS += -Dhibernate=false
 endif
 
 define SYSTEMD_INSTALL_INIT_HOOK
@@ -341,7 +322,6 @@ define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/poweroff
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/reboot
-
 	ln -fs ../../../lib/systemd/system/multi-user.target \
 		$(TARGET_DIR)/etc/systemd/system/default.target
 endef
@@ -398,4 +378,26 @@ define SYSTEMD_INSTALL_INIT_SYSTEMD
 	$(SYSTEMD_INSTALL_NETWORK_CONFS)
 endef
 
-$(eval $(autotools-package))
+SYSTEMD_NINJA_OPTS = $(if $(VERBOSE),-v) -j$(PARALLEL_JOBS)
+
+define SYSTEMD_CONFIGURE_CMDS
+	rm -rf $(@D)/build
+	mkdir -p $(@D)/build
+	$(TARGET_MAKE_ENV) meson $(SYSTEMD_CONF_OPTS) $(@D) $(@D)/build
+endef
+
+define SYSTEMD_BUILD_CMDS
+	$(TARGET_MAKE_ENV) ninja $(SYSTEMD_NINJA_OPTS) -C $(@D)/build
+endef
+
+define SYSTEMD_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) DESTDIR=$(TARGET_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
+		-C $(@D)/build install
+endef
+
+define SYSTEMD_INSTALL_STAGING_CMDS
+	$(TARGET_MAKE_ENV) DESTDIR=$(STAGING_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
+		-C $(@D)/build install
+endef
+
+$(eval $(generic-package))
