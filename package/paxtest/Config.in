@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PAXTEST
+	bool "paxtest"
+	# No UCLIBC or MUSL because __NO_A_OUT_SUPPORT
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	help
+	  PaX regression test suite
+
+	  http://pax.grsecurity.net/docs
+
+comment "paxtest needs a glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC

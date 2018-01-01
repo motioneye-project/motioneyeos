@@ -22,9 +22,9 @@ rm -rf $TARGET/etc/logrotate.d
 
 rm -f $TARGET/etc/rc_maps.cfg
 rm -f $TARGET/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
-rm -f $TARGET/etc/motion-dist.conf
 rm -f $TARGET/etc/hostname
 rm -f $TARGET/etc/os-release
+rm -f $TARGET/etc/hostapd.conf
 
 # /usr/share stuff
 rm -rf $TARGET/usr/share/bash-completion/
@@ -118,16 +118,15 @@ rm -f $TARGET/bin/zmore
 rm -f $TARGET/bin/znew
 rm -f $TARGET/bin/gzexe
 rm -f $TARGET/bin/uncompress
-rm -f $TARGET/usr/bin/v4l2-compliance
 rm -f $TARGET/usr/bin/slogin
 rm -f $TARGET/usr/bin/ssh-keyscan
 rm -f $TARGET/usr/bin/ssh-add
 rm -f $TARGET/usr/bin/ssh-agent
+rm -f $TARGET/usr/bin/xmllint
 
 rm -f $TARGET/usr/libexec/ssh-keysign
 rm -f $TARGET/usr/libexec/ssh-pkcs11-helper
 rm -f $TARGET/usr/libexec/rmt
-rm -rf $TARGET/libexec
 
 # samba4 unneeded stuff
 rm -f $TARGET/usr/bin/cifsdd
@@ -135,6 +134,7 @@ rm -f $TARGET/usr/bin/containers_*
 rm -f $TARGET/usr/bin/ctdb*
 rm -f $TARGET/usr/bin/dbwrap_tool
 rm -f $TARGET/usr/bin/eventlogadm
+rm -f $TARGET/usr/bin/event_rpcgen.py
 rm -f $TARGET/usr/bin/gentest
 rm -f $TARGET/usr/bin/ldb*
 rm -f $TARGET/usr/bin/locktest
@@ -152,6 +152,7 @@ rm -f $TARGET/usr/bin/ping_pong
 rm -f $TARGET/usr/bin/profiles
 rm -f $TARGET/usr/bin/reg*
 rm -f $TARGET/usr/bin/rpcclient
+rm -f $TARGET/usr/bin/samba-regedit
 rm -f $TARGET/usr/bin/sharesec
 rm -f $TARGET/usr/bin/smbcacls
 rm -f $TARGET/usr/bin/smbcontrol
@@ -166,28 +167,44 @@ rm -f $TARGET/usr/bin/smnotify
 rm -f $TARGET/usr/bin/tdb*
 rm -f $TARGET/usr/bin/testparm
 rm -f $TARGET/usr/bin/wbinfo
-rm -f $TARGET/usr/sbin/ctdb*
 rm -f $TARGET/usr/sbin/winbindd
-rm -f $TARGET/usr/share/perl5
+rm -rf $TARGET/usr/share/ctdb
 
 # useless mongodb binaries
 rm -f $TARGET/usr/bin/mongos
 rm -f $TARGET/usr/bin/mongoperf
 
+# v4l-utils
+rm -f $TARGET/usr/bin/cec-compliance
+rm -f $TARGET/usr/bin/cec-ctl
+rm -f $TARGET/usr/bin/cec-follower
+rm -f $TARGET/usr/bin/dvb-fe-tool
+rm -f $TARGET/usr/bin/dvb-format-convert
+rm -f $TARGET/usr/bin/dvbv5-daemon
+rm -f $TARGET/usr/bin/dvbv5-scan
+rm -f $TARGET/usr/bin/dvbv5-zap
+rm -f $TARGET/usr/bin/media-ctl
+rm -f $TARGET/usr/bin/rds-ctl
+rm -f $TARGET/usr/bin/v4l2-compliance
+
 # unused python folders
 rm -rf $TARGET/usr/lib/python2.7/site-packages/samba/
 rm -rf $TARGET/usr/lib/python2.7/ensurepip/
+rm -rf $TARGET/usr/lib/python2.7/config/
+rm -rf $TARGET/usr/lib/python2.7/distutils/
+rm -rf $TARGET/usr/lib/python2.7/unittest/
 
 # buildroot default startup scripts
 rm -f $TARGET/etc/init.d/S01logging
 rm -f $TARGET/etc/init.d/S10udev
 rm -f $TARGET/etc/init.d/S15watchdog
+rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S49ntp
 rm -f $TARGET/etc/init.d/S50sshd
 rm -f $TARGET/etc/init.d/S50proftpd
-rm -f $TARGET/etc/init.d/S20urandom
 rm -f $TARGET/etc/init.d/S80dhcp-relay
 rm -f $TARGET/etc/init.d/S80dhcp-server
+rm -f $TARGET/etc/init.d/S80dnsmasq
 rm -f $TARGET/etc/init.d/S91smb
 rm -f $TARGET/etc/init.d/S99motion
 

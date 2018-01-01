@@ -11,7 +11,7 @@ GZIP_SITE = $(BR2_GNU_MIRROR)/gzip
 GZIP_CONF_OPTS = --exec-prefix=/
 # Prefer full gzip over potentially lightweight/slower from busybox
 GZIP_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
-GZIP_LICENSE = GPLv3+
+GZIP_LICENSE = GPL-3.0+
 GZIP_LICENSE_FILES = COPYING
 GZIP_CONF_ENV += gl_cv_func_fflush_stdin=yes
 # configure substitutes $(SHELL) for the shell shebang in scripts like

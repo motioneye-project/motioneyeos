@@ -5,7 +5,6 @@ config BR2_PACKAGE_USSP_PUSH
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_OPENOBEX
-	select BR2_PACKAGE_OPENOBEX_BLUEZ
 	select BR2_PACKAGE_BLUEZ_UTILS
 	help
 	  ussp-push is an OBEX object pusher for Linux, using the BlueZ

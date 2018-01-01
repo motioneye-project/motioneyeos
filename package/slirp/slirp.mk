@@ -9,7 +9,7 @@
 # of today)
 SLIRP_VERSION = 8c2da74c1385242f20799fec8c04f8378edc6550
 SLIRP_SITE = git://anongit.freedesktop.org/spice/slirp
-SLIRP_LICENSE = BSD-4c, BSD-2c
+SLIRP_LICENSE = BSD-4-Clause, BSD-2-Clause
 # Note: The license file 'COPYRIGHT' is missing from the sources,
 # although some files refer to it.
 SLIRP_INSTALL_STAGING = YES

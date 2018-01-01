@@ -7,7 +7,7 @@
 TREE_VERSION = 1.7.0
 TREE_SOURCE = tree-$(TREE_VERSION).tgz
 TREE_SITE = http://mama.indstate.edu/users/ice/tree/src
-TREE_LICENSE = GPLv2+
+TREE_LICENSE = GPL-2.0+
 TREE_LICENSE_FILES = LICENSE
 
 define TREE_BUILD_CMDS

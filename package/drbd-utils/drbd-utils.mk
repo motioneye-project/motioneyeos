@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-DRBD_UTILS_VERSION = 8.9.4
+DRBD_UTILS_VERSION = 8.9.6
 DRBD_UTILS_SITE = http://oss.linbit.com/drbd
-DRBD_UTILS_LICENSE = GPLv2+
+DRBD_UTILS_LICENSE = GPL-2.0+
 DRBD_UTILS_LICENSE_FILES = COPYING
 DRBD_UTILS_DEPENDENCIES = host-flex
 

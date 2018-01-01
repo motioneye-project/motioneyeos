@@ -8,7 +8,7 @@ SDL2_IMAGE_VERSION = 2.0.1
 SDL2_IMAGE_SOURCE = SDL2_image-$(SDL2_IMAGE_VERSION).tar.gz
 SDL2_IMAGE_SITE = http://www.libsdl.org/projects/SDL_image/release
 SDL2_IMAGE_INSTALL_STAGING = YES
-SDL2_IMAGE_LICENSE = zlib
+SDL2_IMAGE_LICENSE = Zlib
 SDL2_IMAGE_LICENSE_FILES = COPYING.txt
 
 # Unconditionally enable support for image formats that don't require

@@ -1,0 +1,36 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[getting-buildroot]]
+== Getting Buildroot
+
+Buildroot releases are made every 3 months, in February, May, August and
+November. Release numbers are in the format YYYY.MM, so for example
+2013.02, 2014.08.
+
+Release tarballs are available at http://buildroot.org/downloads/[].
+
+For your convenience, a https://www.vagrantup.com/[Vagrantfile] is
+available in `support/misc/Vagrantfile` in the Buildroot source tree
+to quickly set up a virtual machine with the needed dependencies to
+get started.
+
+If you want to setup an isolated buildroot environment on Linux or Mac
+Os X, paste this line onto your terminal:
+
+--------------------
+curl -O https://buildroot.org/downloads/Vagrantfile; vagrant up
+--------------------
+
+If you are on Windows, paste this into your powershell:
+
+--------------------
+(new-object System.Net.WebClient).DownloadFile(
+"https://buildroot.org/downloads/Vagrantfile","Vagrantfile");
+vagrant up
+--------------------
+
+If you want to follow development, you can use the daily snapshots or
+make a clone of the Git repository. Refer to the
+http://buildroot.org/download[Download page] of the Buildroot website
+for more details.

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PERL_LIBWWW_PERL_VERSION = 6.16
+PERL_LIBWWW_PERL_VERSION = 6.26
 PERL_LIBWWW_PERL_SOURCE = libwww-perl-$(PERL_LIBWWW_PERL_VERSION).tar.gz
 PERL_LIBWWW_PERL_SITE = $(BR2_CPAN_MIRROR)/authors/id/O/OA/OALDERS
 PERL_LIBWWW_PERL_DEPENDENCIES = \
@@ -18,9 +18,10 @@ PERL_LIBWWW_PERL_DEPENDENCIES = \
 	perl-http-negotiate \
 	perl-lwp-mediatypes \
 	perl-net-http \
+	perl-try-tiny \
 	perl-uri \
 	perl-www-robotrules
-PERL_LIBWWW_PERL_LICENSE = Artistic or GPLv1+
+PERL_LIBWWW_PERL_LICENSE = Artistic or GPL-1.0+
 PERL_LIBWWW_PERL_LICENSE_FILES = LICENSE
 
 $(eval $(perl-package))

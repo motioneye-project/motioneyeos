@@ -1,0 +1,48 @@
+choice
+	prompt "Target Architecture Variant"
+	default BR2_ck610
+	help
+	  Specific CPU variant to use
+
+config BR2_ck610
+	bool "ck610"
+
+config BR2_ck807
+	bool "ck807"
+
+config BR2_ck810
+	bool "ck810"
+
+endchoice
+
+config BR2_CSKY_FPU
+	bool "Enable FPU coprocessor"
+	depends on BR2_ck810 || BR2_ck807
+	help
+	  You can say N here if your C-SKY CPU doesn't have a
+	  Floating-Point Coprocessor or if you don't need FPU support
+	  for your user-space programs.
+
+config BR2_CSKY_DSP
+	bool "Enable DSP enhanced instructions"
+	depends on BR2_ck810 || BR2_ck807
+
+config BR2_ARCH
+	default "csky"
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_GCC_TARGET_CPU
+	default "ck610"		if (BR2_ck610 && !BR2_CSKY_FPU && !BR2_CSKY_DSP)
+	default "ck807"		if (BR2_ck807 && !BR2_CSKY_FPU && !BR2_CSKY_DSP)
+	default "ck807e"	if (BR2_ck807 && !BR2_CSKY_FPU &&  BR2_CSKY_DSP)
+	default "ck807f"	if (BR2_ck807 &&  BR2_CSKY_FPU && !BR2_CSKY_DSP)
+	default "ck807ef"	if (BR2_ck807 &&  BR2_CSKY_FPU &&  BR2_CSKY_DSP)
+	default "ck810"		if (BR2_ck810 && !BR2_CSKY_FPU && !BR2_CSKY_DSP)
+	default "ck810e"	if (BR2_ck810 && !BR2_CSKY_FPU &&  BR2_CSKY_DSP)
+	default "ck810f"	if (BR2_ck810 &&  BR2_CSKY_FPU && !BR2_CSKY_DSP)
+	default "ck810ef"	if (BR2_ck810 &&  BR2_CSKY_FPU &&  BR2_CSKY_DSP)
+
+config BR2_READELF_ARCH_NAME
+	default "CSKY"

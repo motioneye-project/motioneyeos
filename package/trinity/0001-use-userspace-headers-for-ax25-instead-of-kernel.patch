@@ -1,0 +1,26 @@
+From b0e66a2d084ffc210bc1fc247efb4d177e9f7e3d Mon Sep 17 00:00:00 2001
+From: Dave Jones <davej@codemonkey.org.uk>
+Date: Mon, 5 Dec 2016 12:46:14 -0500
+Subject: [PATCH] use userspace headers for ax25 instead of kernel.
+
+This should solve https://bugzilla.redhat.com/show_bug.cgi?id=1400720
+
+[Upstream commit: https://github.com/kernelslacker/trinity/commit/b0e66a2d084ffc210bc1fc247efb4d177e9f7e3d]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ net/proto-rose.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/net/proto-rose.c b/net/proto-rose.c
+index ccbf294f..b277f839 100644
+--- a/net/proto-rose.c
++++ b/net/proto-rose.c
+@@ -6,7 +6,7 @@
+ #include <sys/un.h>
+ #include <netinet/in.h>
+ #include <bits/sockaddr.h>
+-#include <linux/ax25.h> /* for ax25_address in rose.h */
++#include <netax25/ax25.h> /* for ax25_address in rose.h */
+ #include <netrose/rose.h>
+ #include <stdlib.h>
+ #include "net.h"

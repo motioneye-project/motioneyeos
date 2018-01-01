@@ -1,6 +1,6 @@
-From 7f99a727cdb8160d49bb0d0554fc88787980c971 Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Aduskett@gmail.com>
-Date: Thu, 14 Jul 2016 13:16:03 -0400
+From a221304344b3f9db7e86d928cf97d77542bcf456 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Mon, 9 Oct 2017 16:47:19 -0400
 Subject: [PATCH] Add PREFIX to host paths
 
 Updates the remaining hardcoded host paths used in the build to be
@@ -11,201 +11,59 @@ Updated to work with version 2.5
 Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 Signed-off-by: Niranjan Reddy <niranjan.reddy@rockwellcollins.com>
 Signed-off-by: Adam Duskett <AdamDuskett@outlook.com>
-Signed-off-by: Adam Duskett <Aduskett@gmail.com>
 ---
- policycoreutils/Makefile              |  4 +++-
- policycoreutils/audit2allow/Makefile  |  2 +-
- policycoreutils/load_policy/Makefile  |  2 +-
- policycoreutils/mcstrans/src/Makefile | 17 +++++++++--------
- policycoreutils/newrole/Makefile      |  8 ++++----
- policycoreutils/run_init/Makefile     |  8 ++++----
- policycoreutils/sepolicy/Makefile     |  2 +-
- policycoreutils/setfiles/Makefile     |  4 ++--
- 8 files changed, 25 insertions(+), 22 deletions(-)
+ load_policy/Makefile | 2 +-
+ newrole/Makefile     | 6 +++---
+ run_init/Makefile    | 6 +++---
+ 3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 0634a2a..bd99b1c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,8 +1,10 @@
-+PREFIX  ?= $(DESTDIR)/usr
-+
- SUBDIRS = sepolicy setfiles semanage load_policy newrole run_init sandbox secon audit2allow sestatus semodule_package semodule semodule_link semodule_expand semodule_deps sepolgen-ifgen setsebool scripts po man gui hll
- 
- INOTIFYH = $(shell ls $(DESTDIR)/usr/include/sys/inotify.h 2>/dev/null)
- 
--ifeq (${INOTIFYH}, /usr/include/sys/inotify.h)
-+ifeq (${INOTIFYH}, $(PREFIX)/include/sys/inotify.h)
- 	SUBDIRS += restorecond
- endif
- 
-diff --git a/audit2allow/Makefile b/audit2allow/Makefile
-index 87d2502..d4108fe 100644
---- a/audit2allow/Makefile
-+++ b/audit2allow/Makefile
-@@ -5,7 +5,7 @@ PREFIX ?= $(DESTDIR)/usr
- BINDIR ?= $(PREFIX)/bin
- LIBDIR ?= $(PREFIX)/lib
- MANDIR ?= $(PREFIX)/share/man
--LOCALEDIR ?= /usr/share/locale
-+LOCALEDIR ?= $(PREFIX)/share/locale
- 
- all: audit2why
- 
 diff --git a/load_policy/Makefile b/load_policy/Makefile
-index 7c5bab0..5cd0bbb 100644
+index b85833c..6a45f31 100644
 --- a/load_policy/Makefile
 +++ b/load_policy/Makefile
-@@ -3,7 +3,7 @@ PREFIX ?= $(DESTDIR)/usr
+@@ -2,7 +2,7 @@
+ PREFIX ?= $(DESTDIR)/usr
  SBINDIR ?= $(DESTDIR)/sbin
- USRSBINDIR ?= $(PREFIX)/sbin
  MANDIR ?= $(PREFIX)/share/man
 -LOCALEDIR ?= /usr/share/locale
 +LOCALEDIR ?= $(PREFIX)/share/locale
  
  CFLAGS ?= -Werror -Wall -W
- override CFLAGS += $(LDFLAGS) -I$(PREFIX)/include -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
-diff --git a/mcstrans/src/Makefile b/mcstrans/src/Makefile
-index 907a1f1..6fda57e 100644
---- a/mcstrans/src/Makefile
-+++ b/mcstrans/src/Makefile
-@@ -1,23 +1,24 @@
- ARCH = $(shell uname -i)
-+# Installation directories.
-+PREFIX  ?= $(DESTDIR)/usr
-+SBINDIR ?= $(DESTDIR)/sbin
-+INITDIR ?= $(DESTDIR)/etc/rc.d/init.d
-+SYSTEMDDIR ?= $(DESTDIR)/usr/lib/systemd
-+
- ifeq "$(ARCH)" "x86_64"
- 	# In case of 64 bit system, use these lines
--	LIBDIR=/usr/lib64
-+	LIBDIR=$(PREFIX)/lib64
- else 
- ifeq "$(ARCH)" "i686"
- 	# In case of 32 bit system, use these lines
--	LIBDIR=/usr/lib
-+	LIBDIR=$(PREFIX)/lib
- else
- ifeq "$(ARCH)" "i386"
- 	# In case of 32 bit system, use these lines
--	LIBDIR=/usr/lib
-+	LIBDIR=$(PREFIX)/lib
- endif
- endif
- endif
--# Installation directories.
--PREFIX  ?= $(DESTDIR)/usr
--SBINDIR ?= $(DESTDIR)/sbin
--INITDIR ?= $(DESTDIR)/etc/rc.d/init.d
--SYSTEMDDIR ?= $(DESTDIR)/usr/lib/systemd
- 
- PROG_SRC=mcstrans.c  mcscolor.c  mcstransd.c  mls_level.c
- PROG_OBJS= $(patsubst %.c,%.o,$(PROG_SRC))
+ override CFLAGS += $(LDFLAGS) -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
 diff --git a/newrole/Makefile b/newrole/Makefile
-index f124a6a..b687a09 100644
+index 196af92..896708f 100644
 --- a/newrole/Makefile
 +++ b/newrole/Makefile
-@@ -3,7 +3,7 @@ PREFIX ?= $(DESTDIR)/usr
+@@ -3,9 +3,9 @@ PREFIX ?= $(DESTDIR)/usr
  BINDIR ?= $(PREFIX)/bin
  MANDIR ?= $(PREFIX)/share/man
  ETCDIR ?= $(DESTDIR)/etc
 -LOCALEDIR = /usr/share/locale
-+LOCALEDIR =  $(PREFIX)/share/locale
- PAMH = $(shell ls $(DESTDIR)/usr/include/security/pam_appl.h 2>/dev/null)
- AUDITH = $(shell ls $(DESTDIR)/usr/include/libaudit.h 2>/dev/null)
+-PAMH ?= $(shell test -f /usr/include/security/pam_appl.h && echo y)
+-AUDITH ?= $(shell test -f /usr/include/libaudit.h && echo y)
++LOCALEDIR = $(PREFIX)/share/locale
++PAMH ?= $(shell test -f $(PREFIX)/include/security/pam_appl.h && echo y)
++AUDITH ?= $(shell test -f $(PREFIX)/include/libaudit.h && echo y)
  # Enable capabilities to permit newrole to generate audit records.
-@@ -24,7 +24,7 @@ CFLAGS ?= -Werror -Wall -W
- EXTRA_OBJS =
- override CFLAGS += -DVERSION=\"$(VERSION)\" $(LDFLAGS) -I$(PREFIX)/include -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
- LDLIBS += -lselinux -L$(PREFIX)/lib
--ifeq ($(PAMH), /usr/include/security/pam_appl.h)
-+ifeq ($(PAMH), $(PREFIX)/include/security/pam_appl.h)
- 	override CFLAGS += -DUSE_PAM
- 	EXTRA_OBJS += hashtab.o
- 	LDLIBS += -lpam -lpam_misc
-@@ -32,7 +32,7 @@ else
- 	override CFLAGS += -D_XOPEN_SOURCE=500
- 	LDLIBS += -lcrypt
- endif
--ifeq ($(AUDITH), /usr/include/libaudit.h)
-+ifeq ($(AUDITH), $(PREFIX)/include/libaudit.h)
- 	override CFLAGS += -DUSE_AUDIT
- 	LDLIBS += -laudit
- endif
-@@ -66,7 +66,7 @@ install: all
- 	test -d $(MANDIR)/man1 || install -m 755 -d $(MANDIR)/man1
- 	install -m $(MODE) newrole $(BINDIR)
- 	install -m 644 newrole.1 $(MANDIR)/man1/
--ifeq ($(PAMH), /usr/include/security/pam_appl.h)
-+ifeq ($(PAMH), $(PREFIX)/include/security/pam_appl.h)
- 	test -d $(ETCDIR)/pam.d || install -m 755 -d $(ETCDIR)/pam.d
- ifeq ($(LSPP_PRIV),y)
- 	install -m 644 newrole-lspp.pamd $(ETCDIR)/pam.d/newrole
+ # This will make newrole a setuid root program.
+ # The capabilities used are: CAP_AUDIT_WRITE.
 diff --git a/run_init/Makefile b/run_init/Makefile
-index c81179b..ce0df9f 100644
+index 921f0b0..e1566fc 100644
 --- a/run_init/Makefile
 +++ b/run_init/Makefile
-@@ -4,21 +4,21 @@ PREFIX ?= $(DESTDIR)/usr
+@@ -4,9 +4,9 @@ PREFIX ?= $(DESTDIR)/usr
  SBINDIR ?= $(PREFIX)/sbin
  MANDIR ?= $(PREFIX)/share/man
  ETCDIR ?= $(DESTDIR)/etc
 -LOCALEDIR ?= /usr/share/locale
+-PAMH ?= $(shell test -f /usr/include/security/pam_appl.h && echo y)
+-AUDITH ?= $(shell test -f /usr/include/libaudit.h && echo y)
 +LOCALEDIR ?= $(PREFIX)/share/locale
- PAMH = $(shell ls $(DESTDIR)/usr/include/security/pam_appl.h 2>/dev/null)
- AUDITH = $(shell ls $(DESTDIR)/usr/include/libaudit.h 2>/dev/null)
++PAMH ?= $(shell test -f $(PREFIX)/include/security/pam_appl.h && echo y)
++AUDITH ?= $(shell test -f $(PREFIX)/include/libaudit.h && echo y)
  
  CFLAGS ?= -Werror -Wall -W
- override CFLAGS += -I$(PREFIX)/include -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
- LDLIBS += -lselinux -L$(PREFIX)/lib
--ifeq ($(PAMH), /usr/include/security/pam_appl.h)
-+ifeq ($(PAMH), $(PREFIX)/include/security/pam_appl.h)
- 	override CFLAGS += -DUSE_PAM
- 	LDLIBS += -lpam -lpam_misc
- else
- 	override CFLAGS += -D_XOPEN_SOURCE=500
- 	LDLIBS += -lcrypt
- endif
--ifeq ($(AUDITH), /usr/include/libaudit.h)
-+ifeq ($(AUDITH), $(PREFIX)/include/libaudit.h)
- 	override CFLAGS += -DUSE_AUDIT
- 	LDLIBS += -laudit
- endif
-@@ -38,7 +38,7 @@ install: all
- 	install -m 755 open_init_pty $(SBINDIR)
- 	install -m 644 run_init.8 $(MANDIR)/man8/
- 	install -m 644 open_init_pty.8 $(MANDIR)/man8/
--ifeq ($(PAMH), /usr/include/security/pam_appl.h)
-+ifeq ($(PAMH), $(PREFIX)/include/security/pam_appl.h)
- 	install -m 644 run_init.pamd $(ETCDIR)/pam.d/run_init
- endif
- 
-diff --git a/sepolicy/Makefile b/sepolicy/Makefile
-index 6624373..a16f8de 100644
---- a/sepolicy/Makefile
-+++ b/sepolicy/Makefile
-@@ -8,7 +8,7 @@ BINDIR ?= $(PREFIX)/bin
- SBINDIR ?= $(PREFIX)/sbin
- DATADIR ?= $(PREFIX)/share
- MANDIR ?= $(PREFIX)/share/man
--LOCALEDIR ?= /usr/share/locale
-+LOCALEDIR ?= $(PREFIX)/share/locale
- BASHCOMPLETIONDIR ?= $(DESTDIR)/usr/share/bash-completion/completions
- SHAREDIR ?= $(PREFIX)/share/sandbox
- CFLAGS ?= -Wall -Werror -Wextra -W
-diff --git a/setfiles/Makefile b/setfiles/Makefile
-index eb26ed0..3c6b80d 100644
---- a/setfiles/Makefile
-+++ b/setfiles/Makefile
-@@ -12,7 +12,7 @@ CFLAGS ?= -g -Werror -Wall -W
- override CFLAGS += -I$(DESTDIR)/usr/include
- LDLIBS = -lselinux -lsepol -L$(LIBDIR)
- 
--ifeq ($(AUDITH), /usr/include/libaudit.h)
-+ifeq ($(AUDITH), $(PREFIX)/include/libaudit.h)
- 	override CFLAGS += -DUSE_AUDIT
- 	LDLIBS += -laudit
- endif
+ override CFLAGS += -DUSE_NLS -DLOCALEDIR="\"$(LOCALEDIR)\"" -DPACKAGE="\"policycoreutils\""
 -- 
-2.7.4
+2.13.6
 

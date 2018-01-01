@@ -6,7 +6,7 @@ DAEMON=/usr/bin/$NAME
 case "$1" in
     start)
 	printf "Starting $NAME: "
-	start-stop-daemon -S -q -b -p /var/run/${NAME}.pid -x $DAEMON
+	start-stop-daemon -S -q -b -m -p /var/run/${NAME}.pid -x $DAEMON
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     stop)

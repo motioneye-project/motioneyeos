@@ -1,0 +1,21 @@
+config BR2_PACKAGE_LIBPRI
+	bool "libpri"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_DAHDI_LINUX
+	select BR2_PACKAGE_DAHDI_TOOLS
+	help
+	  libpri is an open source library that encapsulates the
+	  protocols used to communicate over ISDN Primary Rate
+	  Interfaces (T1, E1, J1).
+
+	  http://www.asterisk.org/downloads/libpri
+
+comment "libpri needs a kernel to be built"
+	depends on BR2_USE_MMU
+	depends on !BR2_LINUX_KERNEL
+
+comment "libpri needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

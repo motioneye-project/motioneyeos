@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2016.10
+SWUPDATE_VERSION = 2017.07
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
-SWUPDATE_LICENSE = GPLv2+, MIT, Public Domain
+SWUPDATE_LICENSE = GPL-2.0+, MIT, Public Domain
 SWUPDATE_LICENSE_FILES = COPYING
 
 # swupdate bundles its own version of mongoose (version 3.8)
@@ -39,8 +39,8 @@ else
 SWUPDATE_MAKE_ENV += HAVE_LIBCURL=n
 endif
 
-ifeq ($(BR2_PACKAGE_HAS_LUAINTERPRETER),y)
-SWUPDATE_DEPENDENCIES += luainterpreter host-pkgconf
+ifeq ($(BR2_PACKAGE_LUA_5_2)$(BR2_PACKAGE_LUA_5_3),y)
+SWUPDATE_DEPENDENCIES += lua host-pkgconf
 SWUPDATE_MAKE_ENV += HAVE_LUA=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LUA=n
@@ -69,6 +69,13 @@ SWUPDATE_DEPENDENCIES += uboot-tools
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=n
+endif
+
+ifeq ($(BR2_PACKAGE_ZEROMQ),y)
+SWUPDATE_DEPENDENCIES += zeromq
+SWUPDATE_MAKE_ENV += HAVE_LIBZEROMQ=y
+else
+SWUPDATE_MAKE_ENV += HAVE_LIBZEROMQ=n
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)

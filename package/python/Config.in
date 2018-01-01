@@ -39,14 +39,14 @@ menu "core python modules"
 comment "The following modules are unusual or require extra libraries"
 
 config BR2_PACKAGE_PYTHON_BZIP2
-	select BR2_PACKAGE_BZIP2
 	bool "bzip2 module"
+	select BR2_PACKAGE_BZIP2
 	help
 	  bzip2 module for Python
 
 config BR2_PACKAGE_PYTHON_BSDDB
-	select BR2_PACKAGE_BERKELEYDB
 	bool "bsddb module"
+	select BR2_PACKAGE_BERKELEYDB
 	help
 	  bsddb module for Python.
 
@@ -56,8 +56,8 @@ config BR2_PACKAGE_PYTHON_CODECSCJK
 	  Chinese/Japanese/Korean codecs module for Python (large).
 
 config BR2_PACKAGE_PYTHON_CURSES
-	select BR2_PACKAGE_NCURSES
 	bool "curses module"
+	select BR2_PACKAGE_NCURSES
 	help
 	  curses module for Python.
 
@@ -67,15 +67,15 @@ config BR2_PACKAGE_PYTHON_OSSAUDIODEV
 	  ossaudiodev module for Python.
 
 config BR2_PACKAGE_PYTHON_READLINE
-	select BR2_PACKAGE_READLINE
 	bool "readline"
+	select BR2_PACKAGE_READLINE
 	help
 	  readline module for Python (required for command-line
 	  editing in the Python shell).
 
 config BR2_PACKAGE_PYTHON_SSL
-	select BR2_PACKAGE_OPENSSL
 	bool "ssl"
+	select BR2_PACKAGE_OPENSSL
 	help
 	  _ssl module for Python (required for https in urllib etc).
 
@@ -110,8 +110,8 @@ config BR2_PACKAGE_PYTHON_SQLITE
 	  SQLite database support
 
 config BR2_PACKAGE_PYTHON_PYEXPAT
-	select BR2_PACKAGE_EXPAT
 	bool "xml module"
+	select BR2_PACKAGE_EXPAT
 	help
 	  pyexpat and xml libraries for Python
 

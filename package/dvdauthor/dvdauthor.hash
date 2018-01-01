@@ -1,2 +1,5 @@
+# From https://sourceforge.net/projects/dvdauthor/files
+md5 1173dcb8d40e74fc90c0f3a25dbd642d  dvdauthor-0.7.2.tar.gz
+sha1 0e605642140576bfb3e963414d77630d1c073a51  dvdauthor-0.7.2.tar.gz
 # Locally computed
-sha256 501fb11b09c6eb9c5a229dcb400bd81e408cc78d34eab6749970685023c51fe9 dvdauthor-0.7.1.tar.gz
+sha256 3020a92de9f78eb36f48b6f22d5a001c47107826634a785a62dfcd080f612eb7  dvdauthor-0.7.2.tar.gz

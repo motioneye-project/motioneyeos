@@ -4,17 +4,16 @@
 #
 ################################################################################
 
-SNGREP_VERSION = v1.4.2
+SNGREP_VERSION = v1.4.4
 SNGREP_SITE = $(call github,irontec,sngrep,$(SNGREP_VERSION))
-SNGREP_LICENSE = GPLv3+
+SNGREP_LICENSE = GPL-3.0+
 SNGREP_LICENSE_FILES = LICENSE
 SNGREP_AUTORECONF = YES
-SNGREP_DEPENDENCIES = libpcap ncurses
+SNGREP_DEPENDENCIES = libpcap ncurses host-pkgconf
 
 SNGREP_CONF_ENV += \
 	$(if $(BR2_STATIC_LIBS),LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --libs`")
 
-# our ncurses wchar support is not properly detected
 SNGREP_CONF_OPTS += --disable-unicode
 
 # openssl and gnutls can't be enabled at the same time.

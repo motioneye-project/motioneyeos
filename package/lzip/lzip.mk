@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LZIP_VERSION = 1.18
+LZIP_VERSION = 1.19
 LZIP_SITE = http://download.savannah.gnu.org/releases/lzip
-LZIP_LICENSE = GPLv2+
+LZIP_LICENSE = GPL-2.0+
 LZIP_LICENSE_FILES = COPYING
 
 define LZIP_CONFIGURE_CMDS
@@ -15,7 +15,7 @@ define LZIP_CONFIGURE_CMDS
 endef
 
 define HOST_LZIP_CONFIGURE_CMDS
-	(cd $(@D); $(HOST_MAKE_ENV) ./configure --prefix=/usr \
+	(cd $(@D); $(HOST_MAKE_ENV) ./configure --prefix=$(HOST_DIR) \
 		$(HOST_CONFIGURE_OPTS) )
 endef
 
@@ -32,7 +32,7 @@ define LZIP_INSTALL_TARGET_CMDS
 endef
 
 define HOST_LZIP_INSTALL_CMDS
-	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) install
+	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install
 endef
 
 # It's not autotools-based

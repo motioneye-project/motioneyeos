@@ -1,0 +1,18 @@
+daemon: fix build with musl
+
+musl requires the ttydefaults.h to be included explicitly for CEOF.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+
+diff -Nuar daemon-0.6.4-orig/daemon.c daemon-0.6.4/daemon.c
+--- daemon-0.6.4-orig/daemon.c	2010-06-12 16:37:00.000000000 +0300
++++ daemon-0.6.4/daemon.c	2017-05-01 22:02:17.721413468 +0300
+@@ -665,6 +665,7 @@
+ #ifdef _RESTORE_POSIX_SOURCE
+ #define _POSIX_SOURCE
+ #endif
++#include <sys/ttydefaults.h>
+ #include <sys/wait.h>
+ #include <sys/stat.h>
+ #include <sys/select.h>

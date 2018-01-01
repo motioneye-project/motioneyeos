@@ -20,7 +20,7 @@ FLANNEL_MAKE_ENV = \
 	CGO_ENABLED=1
 
 FLANNEL_GLDFLAGS = \
-	-X github.com/coreos/flannel/version.Version=$(FLANNEL_VERSION) \
+	-X github.com/coreos/flannel/version.Version=$(FLANNEL_VERSION)
 
 ifeq ($(BR2_STATIC_LIBS),y)
 FLANNEL_GLDFLAGS += -extldflags '-static'
@@ -33,7 +33,7 @@ define FLANNEL_CONFIGURE_CMDS
 endef
 
 define FLANNEL_BUILD_CMDS
-	cd $(@D) && $(FLANNEL_MAKE_ENV) $(HOST_DIR)/usr/bin/go \
+	cd $(@D) && $(FLANNEL_MAKE_ENV) $(HOST_DIR)/bin/go \
 		build -v -o $(@D)/bin/flanneld -ldflags "$(FLANNEL_GLDFLAGS)" .
 endef
 

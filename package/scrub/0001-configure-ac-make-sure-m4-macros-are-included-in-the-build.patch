@@ -1,0 +1,45 @@
+From 11d30916dd9c11a26c7c8a0f6db9e6ebca301594 Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Mon, 18 Jan 2016 21:45:23 +0100
+Subject: [PATCH] configure.ac: make sure m4 macros are included in the build
+
+This change prevents the following error to occur when calling
+autoreconf:
+
+  >>> scrub 2.6.1 Autoreconfiguring
+  cd /work/build/scrub/build/scrub-2.6.1/ &&  PATH="/work/build/scrub/host/bin:/work/build/scrub/host/sbin:/work/build/scrub/host/usr/bin:/work/build/scrub/host/usr/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/lib/jvm/default/bin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/sbin:/usr/sbin" AR="/usr/bin/ar" AS="/usr/bin/as" LD="/usr/bin/ld" NM="/usr/bin/nm" CC="/usr/bin/gcc" GCC="/usr/bin/gcc" CXX="/usr/bin/g++" CPP="/usr/bin/cpp" OBJCOPY="/usr/bin/objcopy" RANLIB="/usr/bin/ranlib" CPPFLAGS="-I/work/build/scrub/host/usr/include" CFLAGS="-O2 -I/work/build/scrub/host/usr/include" CXXFLAGS="-O2 -I/work/build/scrub/host/usr/include" LDFLAGS="-L/work/build/scrub/host/lib -L/work/build/scrub/host/usr/lib -Wl,-rpath,/work/build/scrub/host/usr/lib" PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 PKG_CONFIG="/work/build/scrub/host/usr/bin/pkg-config" PKG_CONFIG_SYSROOT_DIR="/" PKG_CONFIG_LIBDIR="/work/build/scrub/host/usr/lib/pkgconfig:/work/build/scrub/host/usr/share/pkgconfig" INTLTOOL_PERL=/usr/bin/perl ACLOCAL="/work/build/scrub/host/usr/bin/aclocal -I /work/build/scrub/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/share/aclocal" AUTOCONF="/work/build/scrub/host/usr/bin/autoconf" AUTOHEADER="/work/build/scrub/host/usr/bin/autoheader" AUTOMAKE="/work/build/scrub/host/usr/bin/automake" AUTOPOINT=/bin/true /work/build/scrub/host/usr/bin/autoreconf -f -i -I "/work/build/scrub/host/usr/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/share/aclocal" -I "/work/build/scrub/host/usr/share/aclocal"
+  libtoolize: putting auxiliary files in AC_CONFIG_AUX_DIR, 'config'.
+  libtoolize: copying file 'config/ltmain.sh'
+  libtoolize: Consider adding 'AC_CONFIG_MACRO_DIRS([m4])' to configure.ac,
+  libtoolize: and rerunning libtoolize and aclocal.
+  libtoolize: Consider adding '-I m4' to ACLOCAL_AMFLAGS in Makefile.am.
+  configure.ac:10: error possibly undefined macro: X_AC_META
+        If this token and others are legitimate, please use m4_pattern_allow.
+        See the Autoconf documentation.
+  configure.ac:11: error possibly undefined macro: X_AC_EXPAND_INSTALL_DIRS
+  configure.ac:51: error possibly undefined macro: AC_PKGCONFIG
+  configure.ac:70: error possibly undefined macro: X_AC_CHECK_PTHREADS
+  autoreconf: /work/build/scrub/host/usr/bin/autoconf failed with exit status: 1
+  package/pkg-generic.mk:185: recipe for target '/work/build/scrub/build/scrub-2.6.1/.stamp_configured' failed
+  make: *** [/work/build/scrub/build/scrub-2.6.1/.stamp_configured] Error 1
+  make: Leaving directory '/work/repos/buildroot'
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Upstream commit: https://github.com/chaos/scrub/commit/11d30916dd9c11a26c7c8a0f6db9e6ebca301594]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/configure.ac b/configure.ac
+index 3d71289..07eaf33 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -7,6 +7,7 @@ AC_INIT(m4_esyscmd([awk '/Name:/ {printf "%s",$2; exit}' META]),
+ AC_CONFIG_AUX_DIR([config])
+ AC_CONFIG_SRCDIR([NEWS])
+ AC_CANONICAL_SYSTEM
++AC_CONFIG_MACRO_DIR([config])
+ X_AC_META
+ X_AC_EXPAND_INSTALL_DIRS
+ 

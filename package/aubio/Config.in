@@ -3,10 +3,10 @@ config BR2_PACKAGE_AUBIO
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  aubio is a tool designed for the extraction of annotations from
-	  audio signals. Its features include segmenting a sound file
-	  before each of its attacks, performing pitch detection, tapping
-	  the beat and producing midi streams from live audio.
+	  aubio is a tool designed for the extraction of annotations
+	  from audio signals. Its features include segmenting a sound
+	  file before each of its attacks, performing pitch detection,
+	  tapping the beat and producing midi streams from live audio.
 
 	  Because these tasks are difficult, we thought it was important
 	  to gather them in a dedicated library. To increase the fun, we

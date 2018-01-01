@@ -2,12 +2,16 @@ config BR2_PACKAGE_PYTHON_PYTABLEWRITER
 	bool "python-pytablewriter"
 	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
 	select BR2_PACKAGE_PYTHON_DOMINATE # runtime
+	select BR2_PACKAGE_PYTHON_LOGBOOK # runtime
+	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
 	select BR2_PACKAGE_PYTHON_PATHVALIDATE # runtime
+	select BR2_PACKAGE_PYTHON_PYTABLEREADER # runtime
+	select BR2_PACKAGE_PYTHON_SIMPLESQLITE # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_TOML # runtime
+	select BR2_PACKAGE_PYTHON_TYPEPY # runtime
 	select BR2_PACKAGE_PYTHON_XLSXWRITER # runtime
 	select BR2_PACKAGE_PYTHON_XLWT # runtime
-	select BR2_PACKAGE_PYTHON_TOML # runtime
-	select BR2_PACKAGE_PYTHON_PYTABLEREADER # runtime
 	help
 	  pytablewriter is a python library to write a table in various
 	  formats: CSV, HTML, JavaScript, JSON, Markdown, Excel, Pandas,

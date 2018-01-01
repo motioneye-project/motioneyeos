@@ -1,9 +1,9 @@
 config BR2_PACKAGE_XORRISO
 	bool "xorriso"
-	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  xorriso copies file objects from POSIX compliant
 	  filesystems into Rock Ridge enhanced ISO 9660 filesystems

@@ -7,7 +7,7 @@
 WEBP_VERSION = 0.5.2
 WEBP_SOURCE = libwebp-$(WEBP_VERSION).tar.gz
 WEBP_SITE = http://downloads.webmproject.org/releases/webp
-WEBP_LICENSE = BSD-3c
+WEBP_LICENSE = BSD-3-Clause
 WEBP_LICENSE_FILES = COPYING
 WEBP_INSTALL_STAGING = YES
 

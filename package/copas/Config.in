@@ -1,10 +1,12 @@
 config BR2_PACKAGE_COPAS
 	bool "copas"
 	# Runtime dependency only
-	select BR2_PACKAGE_COXPCALL
+	select BR2_PACKAGE_COXPCALL if BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
 	select BR2_PACKAGE_LUASOCKET
 	help
-	  Copas is a dispatcher based on coroutines that
-	  can be used by TCP/IP servers.
+	  Copas is a dispatcher based on coroutines that can be used
+	  for asynchronous networking. For example TCP or UDP based
+	  servers. But it also features timers and client support for
+	  http(s), ftp and smtp requests.
 
 	  http://keplerproject.github.com/copas/

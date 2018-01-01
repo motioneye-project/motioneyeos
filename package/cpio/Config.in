@@ -1,8 +1,8 @@
 config BR2_PACKAGE_CPIO
 	bool "cpio"
+	depends on BR2_USE_WCHAR
 	# Need argp.h support
 	select BR2_PACKAGE_ARGP_STANDALONE if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL
-	depends on BR2_USE_WCHAR
 	help
 	  cpio archive utility for creation and extraction.
 

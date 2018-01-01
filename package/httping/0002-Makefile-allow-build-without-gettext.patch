@@ -1,0 +1,48 @@
+From fe7d6c5a0e5dfe129f228498037393d23d6ae890 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 18 Jul 2017 19:09:03 +0300
+Subject: [PATCH] Makefile: allow build without gettext
+
+The msgfmt command is part of the gettext package, and is used to generate
+binary translation files. When gettext is not installed, build fails.
+Translation files are not always needed on size constrained embedded targets.
+Add an option to disable translation files generation using the NO_GETTEXT
+variable.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/flok99/httping/pull/36
+
+ Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 46127f4cdde1..160cc1794ec8 100644
+--- a/Makefile
++++ b/Makefile
+@@ -55,7 +55,9 @@ MKDIR=/bin/mkdir
+ ARCHIVE=/bin/tar cf -
+ COMPRESS=/bin/gzip -9
+ 
++ifneq ($(NO_GETTEXT),yes)
+ TRANSLATIONS=nl.mo ru.mo
++endif
+ 
+ OBJS=gen.o http.o io.o error.o utils.o main.o tcp.o res.o socks5.o kalman.o cookies.o help.o colors.o
+ 
+@@ -118,10 +120,12 @@ install: $(TARGET) $(TRANSLATIONS)
+ ifneq ($(DEBUG),yes)
+ 	$(STRIP) $(DESTDIR)/$(BINDIR)/$(TARGET)
+ endif
++ifneq ($(NO_GETTEXT),yes)
+ 	mkdir -p $(DESTDIR)/$(PREFIX)/share/locale/nl/LC_MESSAGES
+ 	cp nl.mo $(DESTDIR)/$(PREFIX)/share/locale/nl/LC_MESSAGES/httping.mo
+ 	mkdir -p $(DESTDIR)/$(PREFIX)/share/locale/ru/LC_MESSAGES
+ 	cp ru.mo $(DESTDIR)/$(PREFIX)/share/locale/ru/LC_MESSAGES/httping.mo
++endif
+ 
+ 
+ makefile.inc:
+-- 
+2.13.2
+

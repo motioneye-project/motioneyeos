@@ -39,6 +39,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IBT
 	  Firmware files for Intel 3160/7260/7265/8260/8265 Wireless
 	  bluetooth support.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174A_BT
+	bool "Qualcomm Atheros Rome 6174A Bluetooth"
+	help
+	  Firmware files for QCA Rome 6174A bluetooth support.
+
 endmenu # Bluetooth
 
 menu "WiFi firmware"
@@ -206,6 +211,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_MEDIATEK_MT7601U
 	help
 	  MediaTek MT7601U
 
+config BR2_PACKAGE_LINUX_FIRMWARE_QUALCOMM_6174
+	bool "Qualcomm Atheros 6174"
+	help
+	  Firmware files for the Qualcomm Atheros QCA6174 chip
+
 config BR2_PACKAGE_LINUX_FIRMWARE_RALINK_RT61
 	bool "Ralink rt2501/rt61"
 	help
@@ -239,7 +249,8 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
 	bool "TI wl127x"
 	help
-	  Firmware files for WLAN and Bluetooth modules wl1271 and wl1273
+	  Firmware files for WLAN and Bluetooth modules wl1271 and
+	  wl1273
 
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL128X
 	bool "TI wl128x"
@@ -258,17 +269,20 @@ menu "Ethernet firmware"
 config BR2_PACKAGE_LINUX_FIRMWARE_BNX2X
 	bool "Broadcom NetXtremeII"
 	help
-	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards (bnx2x)
+	  Firmware files for Broadcom NetXtreme 10Gb ethernet cards
+	  (bnx2x)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T4
 	bool "Chelsio T4"
 	help
-	  Firmware files for Chelsio T4 1Gb and 10Gb ethernet cards (cxgb4)
+	  Firmware files for Chelsio T4 1Gb and 10Gb ethernet cards
+	  (cxgb4)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5
 	bool "Chelsio T5"
 	help
-	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards (cxgb4)
+	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards
+	  (cxgb4)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
 	bool "Realtek 8169"
@@ -303,6 +317,24 @@ config BR2_PACKAGE_LINUX_FIRMWARE_XCx000
 	bool "Xceive/Cresta xc4000/xc5000/xc500c"
 	help
 	  Firmware file for xc4000/xc5000/xc5000c based DVB tuner driver
+
+endmenu
+
+menu "SoC Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IMX_SDMA
+	bool "Freescale i.MX SDMA"
+	help
+	  Firmware files for i.MX SDMA.
+
+endmenu
+
+menu "Fibre Channel Adapter Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX
+	bool "QLogic 2xxx Fibre Channel Adapters"
+	help
+	  Firmware files for ql2xxx adapters
 
 endmenu
 

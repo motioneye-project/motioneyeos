@@ -4,4 +4,4 @@ config BR2_PACKAGE_WHICH
 	help
 	  The standard 'which' utility.
 
-	  http://www.xs4all.nl/~carlo17/which/
+	  http://carlowood.github.io/which/index.html

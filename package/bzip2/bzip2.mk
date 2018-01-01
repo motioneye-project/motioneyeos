@@ -12,13 +12,13 @@ BZIP2_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_STATIC_LIBS),)
 define BZIP2_BUILD_SHARED_CMDS
-	$(TARGET_MAKE_ENV)
+	$(TARGET_MAKE_ENV) \
 		$(MAKE) -C $(@D) -f Makefile-libbz2_so $(TARGET_CONFIGURE_OPTS)
 endef
 endif
 
 define BZIP2_BUILD_CMDS
-	$(TARGET_MAKE_ENV)
+	$(TARGET_MAKE_ENV) \
 		$(MAKE) -C $(@D) libbz2.a bzip2 bzip2recover $(TARGET_CONFIGURE_OPTS)
 	$(BZIP2_BUILD_SHARED_CMDS)
 endef
@@ -60,9 +60,9 @@ endef
 
 define HOST_BZIP2_INSTALL_CMDS
 	$(HOST_MAKE_ENV) \
-		$(MAKE) PREFIX=$(HOST_DIR)/usr -C $(@D) install
+		$(MAKE) PREFIX=$(HOST_DIR) -C $(@D) install
 	$(HOST_MAKE_ENV) \
-		$(MAKE) -f Makefile-libbz2_so PREFIX=$(HOST_DIR)/usr -C $(@D) install
+		$(MAKE) -f Makefile-libbz2_so PREFIX=$(HOST_DIR) -C $(@D) install
 endef
 
 $(eval $(generic-package))

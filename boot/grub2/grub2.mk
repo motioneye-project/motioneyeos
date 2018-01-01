@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-GRUB2_VERSION = 2.00
-GRUB2_SITE = $(BR2_GNU_MIRROR)/grub
+GRUB2_VERSION = 2.02
+GRUB2_SITE = http://ftp.gnu.org/gnu/grub
 GRUB2_SOURCE = grub-$(GRUB2_VERSION).tar.xz
-GRUB2_LICENSE = GPLv3+
+GRUB2_LICENSE = GPL-3.0+
 GRUB2_LICENSE_FILES = COPYING
 GRUB2_DEPENDENCIES = host-bison host-flex
 
@@ -46,14 +46,14 @@ endif
 # bootloader itself; none of these are used to build the native
 # tools.
 #
-# NOTE: TARGET_STRIP is overridden by BR2_STRIP_none, so always
+# NOTE: TARGET_STRIP is overridden by !BR2_STRIP_strip, so always
 # use the cross compile variant to ensure grub2 builds
 
 GRUB2_CONF_ENV = \
 	$(HOST_CONFIGURE_OPTS) \
 	CPP="$(HOSTCC) -E" \
 	TARGET_CC="$(TARGET_CC)" \
-	TARGET_CFLAGS="$(TARGET_CFLAGS)" \
+	TARGET_CFLAGS="$(TARGET_CFLAGS) -fno-stack-protector" \
 	TARGET_CPPFLAGS="$(TARGET_CPPFLAGS)" \
 	TARGET_LDFLAGS="$(TARGET_LDFLAGS)" \
 	NM="$(TARGET_NM)" \
@@ -63,6 +63,8 @@ GRUB2_CONF_ENV = \
 GRUB2_CONF_OPTS = \
 	--target=$(GRUB2_TARGET) \
 	--with-platform=$(GRUB2_PLATFORM) \
+	--prefix=/ \
+	--exec-prefix=/ \
 	--disable-grub-mkfont \
 	--enable-efiemu=no \
 	ac_cv_lib_lzma_lzma_code=no \
@@ -79,15 +81,15 @@ GRUB2_INSTALL_TARGET_OPTS = DESTDIR=$(HOST_DIR) install
 
 ifeq ($(BR2_TARGET_GRUB2_I386_PC),y)
 define GRUB2_IMAGE_INSTALL_ELTORITO
-	cat $(HOST_DIR)/usr/lib/grub/$(GRUB2_TUPLE)/cdboot.img $(GRUB2_IMAGE) > \
+	cat $(HOST_DIR)/lib/grub/$(GRUB2_TUPLE)/cdboot.img $(GRUB2_IMAGE) > \
 		$(BINARIES_DIR)/grub-eltorito.img
 endef
 endif
 
 define GRUB2_IMAGE_INSTALLATION
 	mkdir -p $(dir $(GRUB2_IMAGE))
-	$(HOST_DIR)/usr/bin/grub-mkimage \
-		-d $(HOST_DIR)/usr/lib/grub/$(GRUB2_TUPLE) \
+	$(HOST_DIR)/bin/grub-mkimage \
+		-d $(HOST_DIR)/lib/grub/$(GRUB2_TUPLE) \
 		-O $(GRUB2_TUPLE) \
 		-o $(GRUB2_IMAGE) \
 		-p "$(GRUB2_PREFIX)" \

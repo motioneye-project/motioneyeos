@@ -1,3 +1,5 @@
+# From https://sourceforge.net/projects/gauche/files/Gauche/
+sha1 c3e1ea21f3acc66fd26eced117caab3f86531db4  Gauche-0.9.5.tgz
+md5 8bac7cbd99a91f6f2c037ac6988db14d  Gauche-0.9.5.tgz
 # Locally calculated
-sha256 7b18bcd70beaced1e004594be46c8cff95795318f6f5830dd2a8a700410fc149  Gauche-0.9.4.tgz
-sha256 0ff5986540d8ad89eee595de766810f09e489a6a3363b47a65ce7ad18701ee01  13a196557848f22a1607a300643131345e9f32b3.patch
+sha256 4c8a53213de112708bbda5fa9648c21497d43ebf809ed5b32b15f21266b4e73c  Gauche-0.9.5.tgz

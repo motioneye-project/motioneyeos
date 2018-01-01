@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_MARKDOWN
+	bool "lua-markdown"
+	help
+	  A pure-lua implementation of the Markdown text-to-html
+	  markup system.
+
+	  https://github.com/mpeterv/markdown

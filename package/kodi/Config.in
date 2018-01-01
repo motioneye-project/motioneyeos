@@ -1,16 +1,17 @@
 config BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	bool
+	default y if BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
+	# i386: needs sse (see upstream PR 10351)
+	depends on !(BR2_i386 && !BR2_X86_CPU_HAS_SSE)
 	depends on BR2_USE_MMU # libcdio, and others
-	default y if (BR2_arm || (BR2_mipsel && BR2_TOOLCHAIN_USES_GLIBC) || BR2_i386 || BR2_x86_64) \
-		&& BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS \
-		&& BR2_TOOLCHAIN_HAS_SYNC_8
 
-comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, threads, wchar, dynamic library, gcc >= 4.7, host gcc >= 4.6"
+comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, locale, threads, wchar, dynamic library, gcc >= 4.8, host gcc >= 4.6"
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS \
 		|| !BR2_USE_WCHAR || BR2_STATIC_LIBS \
+		|| !BR2_ENABLE_LOCALE \
 		|| !BR2_HOST_GCC_AT_LEAST_4_6 \
-		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 \
 		|| BR2_TOOLCHAIN_USES_MUSL \
 		|| !BR2_PACKAGE_PYTHON \
 		|| BR2_PACKAGE_PYTHON_PYC_ONLY
@@ -20,38 +21,32 @@ config BR2_PACKAGE_KODI_EGL_GLES
 	default y
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGLES
-	depends on !BR2_PACKAGE_KODI_GL # prefer GL if available
+	depends on !BR2_PACKAGE_KODI_GL_EGL # prefer GL if available
 
-config BR2_PACKAGE_KODI_GL
+config BR2_PACKAGE_KODI_GL_EGL
 	bool
 	default y
+	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGL
-	depends on !BR2_arm # kodi needs egl/gles on arm
 
-comment "kodi needs an OpenGL or an openGL ES and EGL backend"
-	depends on BR2_i386 || BR2_x86_64
-	depends on !BR2_PACKAGE_KODI_GL && !BR2_PACKAGE_KODI_EGL_GLES
-
-comment "kodi requires an OpenGL ES and EGL backend"
-	depends on BR2_arm
-	depends on !BR2_PACKAGE_KODI_EGL_GLES
+comment "kodi needs an OpenGL EGL with either an openGL or an OpenGL ES backend"
+	depends on !BR2_PACKAGE_KODI_GL_EGL && !BR2_PACKAGE_KODI_EGL_GLES
 
 menuconfig BR2_PACKAGE_KODI
 	bool "kodi"
+	depends on BR2_ENABLE_LOCALE
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOST_GCC_AT_LEAST_4_6
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_TOOLCHAIN_USES_MUSL
-	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL
+	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL_EGL
 	depends on BR2_USE_WCHAR
-	depends on !BR2_STATIC_LIBS # libsquish, and others
+	depends on !BR2_STATIC_LIBS # python and others
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_PACKAGE_PYTHON_PYC_ONLY
 	select BR2_NEEDS_HOST_JAVA
-	select BR2_PACKAGE_BOOST
-	select BR2_PACKAGE_BOOST_THREAD
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_FFMPEG
@@ -60,27 +55,14 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
-	select BR2_PACKAGE_GIFLIB
-	select BR2_PACKAGE_JASPER
-	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBASS
 	select BR2_PACKAGE_LIBCDIO
 	select BR2_PACKAGE_LIBCROSSGUID
 	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBDCADEC
 	select BR2_PACKAGE_LIBFRIBIDI
-	select BR2_PACKAGE_LIBGLEW if BR2_PACKAGE_KODI_GL
-	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL
-	select BR2_PACKAGE_LIBGCRYPT
-	select BR2_PACKAGE_LIBMPEG2
-	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL_EGL
 	select BR2_PACKAGE_LIBPLIST
-	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_LIBSAMPLERATE
-	select BR2_PACKAGE_LIBSQUISH
-	select BR2_PACKAGE_LIBVORBIS
-	select BR2_PACKAGE_LIBXML2
-	select BR2_PACKAGE_LIBXSLT
 	select BR2_PACKAGE_LZO
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_OPENSSL
@@ -98,10 +80,9 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_TAGLIB
-	select BR2_PACKAGE_TIFF
 	select BR2_PACKAGE_TINYXML
-	select BR2_PACKAGE_LIBDRM if BR2_PACKAGE_KODI_GL
-	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_KODI_GL
+	select BR2_PACKAGE_LIBDRM if BR2_PACKAGE_KODI_GL_EGL
+	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_KODI_GL_EGL
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC # runtime UTF conversion support
@@ -129,11 +110,27 @@ config BR2_PACKAGE_KODI_AVAHI
 	  Enable Avahi support.
 	  Select this if you want Kodi to support Bonjour protocol.
 
+config BR2_PACKAGE_KODI_BLUEZ
+	bool "bluetooth"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5_utils
+	depends on !BR2_PACKAGE_BLUEZ_UTILS # bluez5_utils
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5_utils
+	select BR2_PACKAGE_BLUEZ5_UTILS
+	help
+	    Enable bluetooth support
+
 config BR2_PACKAGE_KODI_DBUS
 	bool "dbus"
 	select BR2_PACKAGE_DBUS
 	help
 	  Enable D-Bus support
+
+config BR2_PACKAGE_KODI_EVENTCLIENTS
+	bool "eventclients"
+	help
+	  Enable event clients support
+
+	  https://github.com/xbmc/xbmc/blob/master/tools/EventClients/README.txt
 
 config BR2_PACKAGE_KODI_LIBBLURAY
 	bool "blu-ray"
@@ -152,6 +149,12 @@ config BR2_PACKAGE_KODI_LIBCEC
 
 comment "hdmi cec support needs udev /dev management"
 	depends on !BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_KODI_LCMS2
+	bool "lcms2"
+	select BR2_PACKAGE_LCMS2
+	help
+	  Enable color management support.
 
 config BR2_PACKAGE_KODI_LIRC
 	bool "lirc"
@@ -188,19 +191,23 @@ config BR2_PACKAGE_KODI_NONFREE
 	  Enable components with non-free licenses. This option
 	  currently only controls support for RAR archives.
 
-config BR2_PACKAGE_KODI_RTMPDUMP
-	bool "rtmp"
-	select BR2_PACKAGE_RTMPDUMP
+config BR2_PACKAGE_KODI_PULSEAUDIO
+	bool "pulseaudio"
+	# Pulseaudio support in kodi needs glib support in Pulseaudio,
+	# see FindPulseAudio.cmake. Kodi meets all dependencies of
+	# libglib2, so there is no need to propagate them here.
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PULSEAUDIO
 	help
-	  Enable RTMP input support.
-	  Select this if you want to play back rtmp stream.
+	  Enable Pulseaudio support.
 
 config BR2_PACKAGE_KODI_LIBSHAIRPLAY
 	bool "shairport"
 	select BR2_PACKAGE_LIBSHAIRPLAY
 	help
 	  Enable Shairport support.
-	  Select this if you want to stream content from an Apple device.
+	  Select this if you want to stream content from an Apple
+	  device.
 
 config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	bool "samba"
@@ -233,19 +240,25 @@ config BR2_PACKAGE_KODI_LIBUSB
 
 config BR2_PACKAGE_KODI_LIBVA
 	bool "va"
+	depends on BR2_PACKAGE_KODI_GL_EGL
+	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBVA
 	help
 	  Enable libva support.
 
+comment "libva support needs X.org with an openGL backend"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_GL_EGL
+
 config BR2_PACKAGE_KODI_LIBVDPAU
 	bool "vdpau"
+	depends on BR2_PACKAGE_KODI_GL_EGL
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBVDPAU
 	help
 	  Enable libvdpau support.
 
-comment "libvdpau support needs X.org"
-	depends on !BR2_PACKAGE_XORG7
+comment "libvdpau support needs X.org with an openGL backend"
+	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_GL_EGL
 
 config BR2_PACKAGE_KODI_UPNP
 	bool "upnp"
@@ -253,7 +266,9 @@ config BR2_PACKAGE_KODI_UPNP
 	  Enable UPnP support
 
 config BR2_PACKAGE_KODI_OPTICALDRIVE
-	bool
+	bool "optical drives"
+	help
+	  Add support for optical drives, to read e.g. DVDs...
 
 menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-modplug/Config.in"
@@ -276,6 +291,17 @@ menu "Audio encoder addons"
 	source "package/kodi-audioencoder-lame/Config.in"
 	source "package/kodi-audioencoder-vorbis/Config.in"
 	source "package/kodi-audioencoder-wav/Config.in"
+endmenu
+
+menu "Peripheral addons"
+	source "package/kodi-peripheral-joystick/Config.in"
+	source "package/kodi-peripheral-steamcontroller/Config.in"
+	source "package/kodi-peripheral-xarcade/Config.in"
+endmenu
+
+menu "Inputstream addons"
+	source "package/kodi-inputstream-adaptive/Config.in"
+	source "package/kodi-inputstream-rtmp/Config.in"
 endmenu
 
 menu "PVR addons"
@@ -313,9 +339,12 @@ menu "Screensavers"
 	source "package/kodi-screensaver-stars/Config.in"
 endmenu
 
+menu "Skins"
+	source "package/kodi-skin-confluence/Config.in"
+endmenu
+
 menu "Visualisations"
 	source "package/kodi-visualisation-fishbmc/Config.in"
-	source "package/kodi-visualisation-fountain/Config.in"
 	source "package/kodi-visualisation-goom/Config.in"
 	source "package/kodi-visualisation-shadertoy/Config.in"
 	source "package/kodi-visualisation-spectrum/Config.in"

@@ -9,7 +9,7 @@ E2TOOLS_SITE = $(call github,ndim,e2tools,$(E2TOOLS_VERSION))
 
 # Source coming from GitHub, no configure included.
 E2TOOLS_AUTORECONF = YES
-E2TOOLS_LICENSE = GPLv2
+E2TOOLS_LICENSE = GPL-2.0
 E2TOOLS_LICENSE_FILES = COPYING
 E2TOOLS_DEPENDENCIES = e2fsprogs
 E2TOOLS_CONF_ENV = LIBS="-lpthread"

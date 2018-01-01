@@ -1,6 +1,6 @@
-From a86140353cb2e162d88da9caa1716915be2f6893 Mon Sep 17 00:00:00 2001
+From d506a586b299682a425d3c3de68baefb7221fa9a Mon Sep 17 00:00:00 2001
 From: Sergio Prado <sergio.prado@e-labworks.com>
-Date: Tue, 26 Jul 2016 13:25:12 -0300
+Date: Sun, 30 Jul 2017 18:25:12 -0300
 Subject: [PATCH 2/2] Do not strip when installing
 
 Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
@@ -9,10 +9,10 @@ Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 6dd0129587b3..b1aea5eed4a1 100644
+index 346640e53bea..fedaed05a4d6 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -172,7 +172,7 @@ config.mak: $(srcdir)/configure
+@@ -173,7 +173,7 @@ config.mak: $(srcdir)/configure
  
  install: all
  	$(INSTALL) -d "$(DESTDIR)$(BINDIR)"

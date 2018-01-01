@@ -14,8 +14,9 @@ config BR2_PACKAGE_SNMPPP_LOGGING
 	bool "enable logging"
 	help
 	  Enable logging output for SNMP++.
-	  According to the SNMP++ documentation, disabling logging "increases
-	  performance drastically and minimizes memory consumption".
+	  According to the SNMP++ documentation, disabling logging
+	  "increases performance drastically and minimizes memory
+	  consumption".
 
 config BR2_PACKAGE_SNMPPP_SNMPV3
 	bool "enable SNMPv3"

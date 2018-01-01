@@ -1,4 +1,3 @@
-# From https://pypi.python.org/pypi/flup/1.0.3.dev-20110405
-md5	a005b072d144fc0e44b0fa4c5a9ba029	flup-1.0.3.dev-20110405.tar.gz
-# Calculated based on the hash above
-sha256	6649cf41854ea8782c795cdde64fdf79a90db821533d3652f91d21b0a7f39c79	flup-1.0.3.dev-20110405.tar.gz
+# md5 from https://pypi.python.org/pypi/flup/json, sha256 locally computed
+md5 bc104a7444bfac36fc2146a356de4c11 flup-1.0.3.dev20161029.tar.gz
+sha256 3dc5620b77a6a4cd0afb556626eb0ce85708e513f9c50dc5e982190e3d5f9e26 flup-1.0.3.dev20161029.tar.gz

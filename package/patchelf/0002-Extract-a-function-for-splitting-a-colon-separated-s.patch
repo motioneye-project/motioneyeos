@@ -1,0 +1,63 @@
+From a8452dc7e80eb17572c7458e33a4f4d609e6a3da Mon Sep 17 00:00:00 2001
+From: Tuomas Tynkkynen <tuomas@tuxera.com>
+Date: Fri, 3 Jun 2016 23:03:51 +0300
+Subject: [PATCH] Extract a function for splitting a colon-separated string
+
+We're going to need this logic in another place, so make a function of
+this.
+
+[Upstream-commit: https://github.com/NixOS/patchelf/commit/2e3fdc2030c75c19df6fc2924083cfad53856562]
+Signed-off-by: Wolfgang Grandegger <wg@grandegger.com>
+---
+ src/patchelf.cc | 28 +++++++++++++++++++---------
+ 1 file changed, 19 insertions(+), 9 deletions(-)
+
+diff --git a/src/patchelf.cc b/src/patchelf.cc
+index c870638..1d9a772 100644
+--- a/src/patchelf.cc
++++ b/src/patchelf.cc
+@@ -57,6 +57,22 @@ unsigned char * contents = 0;
+ #define ElfFileParamNames Elf_Ehdr, Elf_Phdr, Elf_Shdr, Elf_Addr, Elf_Off, Elf_Dyn, Elf_Sym
+ 
+ 
++static vector<string> splitColonDelimitedString(const char * s){
++    vector<string> parts;
++    const char * pos = s;
++    while (*pos) {
++        const char * end = strchr(pos, ':');
++        if (!end) end = strchr(pos, 0);
++
++        parts.push_back(string(pos, end - pos));
++        if (*end == ':') ++end;
++        pos = end;
++    }
++
++    return parts;
++}
++
++
+ static unsigned int getPageSize(){
+     return pageSize;
+ }
+@@ -1093,15 +1109,9 @@ void ElfFile<ElfFileParamNames>::modifyRPath(RPathOp op, string newRPath)
+ 
+         newRPath = "";
+ 
+-        char * pos = rpath;
+-        while (*pos) {
+-            char * end = strchr(pos, ':');
+-            if (!end) end = strchr(pos, 0);
+-
+-            /* Get the name of the directory. */
+-            string dirName(pos, end - pos);
+-            if (*end == ':') ++end;
+-            pos = end;
++        vector<string> rpathDirs = splitColonDelimitedString(rpath);
++        for (vector<string>::iterator it = rpathDirs.begin(); it != rpathDirs.end(); ++it) {
++            const string & dirName = *it;
+ 
+             /* Non-absolute entries are allowed (e.g., the special
+                "$ORIGIN" hack). */
+-- 
+1.9.1
+

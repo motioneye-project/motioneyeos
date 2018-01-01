@@ -1,0 +1,29 @@
+From b8f98d956501dfa4ce03a137f15d404930a56066 Mon Sep 17 00:00:00 2001
+From: Dmitry Shachnev <mitya57@gmail.com>
+Date: Sat, 5 Mar 2016 10:25:33 +0300
+Subject: [PATCH] alsatest: Fix the check to treat alsalib 1.1.x as correct
+ version
+
+Task-number: QTBUG-51681
+Change-Id: I63266c33342f02f4d1a5ea5786f5fbc5a1b421b3
+Reviewed-by: Oswald Buddenhagen <oswald.buddenhagen@theqtcompany.com>
+[Upstream commit: https://github.com/qtproject/qtbase/commit/b8f98d956501dfa4ce03a137f15d404930a56066]
+[Patch fixing ALSA detection. Taken from Qt5, but applies fine to Qt4.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ config.tests/unix/alsa/alsatest.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/config.tests/unix/alsa/alsatest.cpp b/config.tests/unix/alsa/alsatest.cpp
+index cab6533977..0b45819b61 100644
+--- a/config.tests/unix/alsa/alsatest.cpp
++++ b/config.tests/unix/alsa/alsatest.cpp
+@@ -32,7 +32,7 @@
+ ****************************************************************************/
+ 
+ #include <alsa/asoundlib.h>
+-#if(!(SND_LIB_MAJOR == 1 && SND_LIB_MINOR == 0 && SND_LIB_SUBMINOR >= 10))
++#if SND_LIB_VERSION < 0x1000a  // 1.0.10
+ #error "Alsa version found too old, require >= 1.0.10"
+ #endif
+ 

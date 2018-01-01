@@ -107,7 +107,7 @@ ifeq ($(BR2_arc)$(BR2_ARC_ATOMIC_EXT),yy)
 TARGET_ABI += -matomic
 endif
 
-STAGING_SUBDIR = usr/$(GNU_TARGET_NAME)/sysroot
+STAGING_SUBDIR = $(GNU_TARGET_NAME)/sysroot
 STAGING_DIR    = $(HOST_DIR)/$(STAGING_SUBDIR)
 
 ifeq ($(BR2_OPTIMIZE_0),y)
@@ -182,9 +182,9 @@ TARGET_FCFLAGS += -fstack-protector-all
 endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
-TARGET_CROSS = $(HOST_DIR)/usr/bin/$(GNU_TARGET_NAME)-
+TARGET_CROSS = $(HOST_DIR)/bin/$(GNU_TARGET_NAME)-
 else
-TARGET_CROSS = $(HOST_DIR)/usr/bin/$(TOOLCHAIN_EXTERNAL_PREFIX)-
+TARGET_CROSS = $(HOST_DIR)/bin/$(TOOLCHAIN_EXTERNAL_PREFIX)-
 endif
 
 # Define TARGET_xx variables for all common binutils/gcc
@@ -205,9 +205,8 @@ ifeq ($(BR2_STRIP_strip),y)
 STRIP_STRIP_DEBUG := --strip-debug
 TARGET_STRIP = $(TARGET_CROSS)strip
 STRIPCMD = $(TARGET_CROSS)strip --remove-section=.comment --remove-section=.note
-endif
-ifeq ($(BR2_STRIP_none),y)
-TARGET_STRIP = true
+else
+TARGET_STRIP = /bin/true
 STRIPCMD = $(TARGET_STRIP)
 endif
 INSTALL := $(shell which install || type -p install)
@@ -215,24 +214,45 @@ FLEX := $(shell which flex || type -p flex)
 BISON := $(shell which bison || type -p bison)
 UNZIP := $(shell which unzip || type -p unzip) -q
 
-APPLY_PATCHES = PATH=$(HOST_DIR)/usr/bin:$$PATH support/scripts/apply-patches.sh $(if $(QUIET),-s)
+APPLY_PATCHES = PATH=$(HOST_DIR)/bin:$$PATH support/scripts/apply-patches.sh $(if $(QUIET),-s)
 
-HOST_CPPFLAGS  = -I$(HOST_DIR)/usr/include
+HOST_CPPFLAGS  = -I$(HOST_DIR)/include
 HOST_CFLAGS   ?= -O2
 HOST_CFLAGS   += $(HOST_CPPFLAGS)
 HOST_CXXFLAGS += $(HOST_CFLAGS)
-HOST_LDFLAGS  += -L$(HOST_DIR)/lib -L$(HOST_DIR)/usr/lib -Wl,-rpath,$(HOST_DIR)/usr/lib
+HOST_LDFLAGS  += -L$(HOST_DIR)/lib -Wl,-rpath,$(HOST_DIR)/lib
+
+# The macros below are taken from linux 4.11 and adapted slightly.
+# Copy more when needed.
+
+# try-run
+# Usage: option = $(call try-run, $(CC)...-o "$$TMP",option-ok,otherwise)
+# Exit code chooses option. "$$TMP" is can be used as temporary file and
+# is automatically cleaned up.
+try-run = $(shell set -e;               \
+	TMP="$$(tempfile)";             \
+	if ($(1)) >/dev/null 2>&1;      \
+	then echo "$(2)";               \
+	else echo "$(3)";               \
+	fi;                             \
+	rm -f "$$TMP")
+
+# host-cc-option
+# Usage: HOST_FOO_CFLAGS += $(call host-cc-option,-no-pie,)
+host-cc-option = $(call try-run,\
+        $(HOSTCC) $(HOST_CFLAGS) $(1) -c -x c /dev/null -o "$$TMP",$(1),$(2))
+
 
 # host-intltool should be executed with the system perl, so we save
 # the path to the system perl, before a host-perl built by Buildroot
-# might get installed into $(HOST_DIR)/usr/bin and therefore appears
+# might get installed into $(HOST_DIR)/bin and therefore appears
 # in our PATH. This system perl will be used as INTLTOOL_PERL.
 export PERL=$(shell which perl)
 
 # host-intltool needs libxml-parser-perl, which Buildroot installs in
-# $(HOST_DIR)/usr/lib/perl, so we must make sure that the system perl
+# $(HOST_DIR)/lib/perl, so we must make sure that the system perl
 # finds this perl module by exporting the proper value for PERL5LIB.
-export PERL5LIB=$(HOST_DIR)/usr/lib/perl
+export PERL5LIB=$(HOST_DIR)/lib/perl
 
 TARGET_MAKE_ENV = PATH=$(BR_PATH)
 
@@ -283,7 +303,7 @@ HOST_MAKE_ENV = \
 	PKG_CONFIG_SYSROOT_DIR="/" \
 	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
 	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-	PKG_CONFIG_LIBDIR="$(HOST_DIR)/usr/lib/pkgconfig:$(HOST_DIR)/usr/share/pkgconfig"
+	PKG_CONFIG_LIBDIR="$(HOST_DIR)/lib/pkgconfig:$(HOST_DIR)/share/pkgconfig"
 
 HOST_CONFIGURE_OPTS = \
 	$(HOST_MAKE_ENV) \
@@ -310,7 +330,8 @@ HOST_CONFIGURE_OPTS = \
 EXTRA_ENV = \
 	PATH=$(BR_PATH) \
 	BR2_DL_DIR=$(BR2_DL_DIR) \
-	BUILD_DIR=$(BUILD_DIR)
+	BUILD_DIR=$(BUILD_DIR) \
+	O=$(CANONICAL_O)
 
 ################################################################################
 # settings we need to pass to configure
@@ -339,7 +360,12 @@ endif
 # AM_GNU_GETTEXT misdetects musl gettext support.
 # musl currently implements api level 1 and 2 (basic + ngettext)
 # http://www.openwall.com/lists/musl/2015/04/16/3
-ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+#
+# These autoconf variables should only be pre-seeded when the minimal
+# gettext implementation of musl is used. When the full blown
+# implementation provided by gettext libintl is used, auto-detection
+# works fine, and pre-seeding those values is actually wrong.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL):$(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y:)
 BR2_GT_CV_FUNC_GNUGETTEXT_LIBC = \
 	gt_cv_func_gnugettext1_libc=yes \
 	gt_cv_func_gnugettext2_libc=yes
@@ -360,10 +386,15 @@ TARGET_CONFIGURE_ARGS = \
 
 ################################################################################
 
-ifeq ($(BR2_ENABLE_LOCALE),y)
-DISABLE_NLS :=
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)
+NLS_OPTS = --enable-nls
+TARGET_NLS_DEPENDENCIES = host-gettext
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
+TARGET_NLS_DEPENDENCIES += gettext
+TARGET_NLS_LIBS += -lintl
+endif
 else
-DISABLE_NLS :=--disable-nls
+NLS_OPTS = --disable-nls
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)

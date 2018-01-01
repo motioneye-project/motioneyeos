@@ -1,0 +1,116 @@
+From c2d279b4a19de7a32e8a73e320423f699d408380 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Wed, 22 Feb 2017 17:15:31 -0800
+Subject: [PATCH] Add an option to disable lib2to3
+
+lib2to3 is a library to convert Python 2.x code to Python 3.x. As
+such, it is probably not very useful on embedded system targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[ Andrey Smirnov: ported to Python 3.6 ]
+Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
+---
+ Makefile.pre.in | 16 ++++++++++++----
+ configure.ac    |  6 ++++++
+ setup.py        |  5 +++--
+ 3 files changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index badb2af35d..931cc3ed07 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1168,7 +1168,9 @@ ifeq (@PYDOC@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pydoc$(VERSION) pydoc3)
+ endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/2to3
++ifeq (@LIB2TO3@,yes)
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
++endif
+ 	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
+ 	(cd $(DESTDIR)$(BINDIR); $(LN) -s pyvenv-$(VERSION) pyvenv)
+ 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
+@@ -1205,7 +1207,6 @@ LIBSUBDIRS=	tkinter site-packages \
+ 		html json http dbm xmlrpc \
+ 		sqlite3 \
+ 		logging csv wsgiref urllib \
+-		lib2to3 lib2to3/fixes lib2to3/pgen2 \
+ 		ctypes ctypes/macholib \
+ 		idlelib idlelib/Icons \
+ 		distutils distutils/command $(XMLLIBSUBDIRS) \
+@@ -1255,9 +1256,6 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_email test/test_email/data \
+ 		test/test_json \
+ 		sqlite3/test \
+-		lib2to3/tests \
+-		lib2to3/tests/data lib2to3/tests/data/fixers \
+-		lib2to3/tests/data/fixers/myfixes \
+ 		ctypes/test \
+ 		idlelib/idle_test \
+ 		distutils/tests \
+@@ -1267,6 +1265,14 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_tools test/test_warnings test/test_warnings/data \
+ 		unittest/test unittest/test/testmock
+ 
++ifeq (@LIB2TO3@,yes)
++LIBSUBDIRS += lib2to3 lib2to3/fixes lib2to3/pgen2
++TESTSUBDIRS += lib2to3/tests			\
++	lib2to3/tests/data			\
++	lib2to3/tests/data/fixers		\
++	lib2to3/tests/data/fixers/myfixes
++endif
++
+ ifeq (@TEST_MODULES@,yes)
+ LIBSUBDIRS += $(TESTSUBDIRS)
+ endif
+@@ -1366,10 +1372,12 @@ ifeq (@PYC_BUILD@,yes)
+ 		-d $(LIBDEST)/site-packages -f \
+ 		-x badsyntax $(DESTDIR)$(LIBDEST)/site-packages
+ endif
++ifeq (@LIB2TO3@,yes)
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/Grammar.txt
+ 	-PYTHONPATH=$(DESTDIR)$(LIBDEST) $(RUNSHARED) \
+ 		$(PYTHON_FOR_BUILD) -m lib2to3.pgen2.driver $(DESTDIR)$(LIBDEST)/lib2to3/PatternGrammar.txt
++endif
+ 
+ python-config: $(srcdir)/Misc/python-config.in Misc/python-config.sh
+ 	# Substitution happens here, as the completely-expanded BINDIR
+diff --git a/configure.ac b/configure.ac
+index 1621fa1611..13b2edf8b7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -3124,6 +3124,12 @@ AC_ARG_ENABLE(test-modules,
+ 	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
+ 	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
+ 
++AC_SUBST(LIB2TO3)
++
++AC_ARG_ENABLE(lib2to3,
++	AS_HELP_STRING([--disable-lib2to3], [disable lib2to3]),
++	[ LIB2TO3="${enableval}" ], [ LIB2TO3=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])
+diff --git a/setup.py b/setup.py
+index 94dd337fef..76429e1326 100644
+--- a/setup.py
++++ b/setup.py
+@@ -2282,10 +2282,11 @@ def main():
+     import warnings
+     warnings.filterwarnings("ignore",category=DeprecationWarning)
+ 
+-    scripts = ['Tools/scripts/idle3', 'Tools/scripts/2to3',
+-               'Lib/smtpd.py']
++    scripts = ['Tools/scripts/idle3', 'Lib/smtpd.py']
+     if not '--disable-pydoc' in sysconfig.get_config_var("CONFIG_ARGS"):
+         scripts += [ 'Tools/scripts/pydoc3' ]
++    if not '--disable-lib2to3' in sysconfig.get_config_var("CONFIG_ARGS"):
++        scripts += [ 'Tools/scripts/2to3' ]
+ 
+     setup(# PyPI Metadata (PEP 301)
+           name = "Python",
+-- 
+2.13.5
+

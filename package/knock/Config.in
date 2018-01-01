@@ -1,7 +1,7 @@
 config BR2_PACKAGE_KNOCK
 	bool "knock"
-	select BR2_PACKAGE_LIBPCAP
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBPCAP
 	help
 	  A port knocking implementation.
 	  Provides a daemon and a user application. Port knocking can be

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_DAEMON
+	bool "daemon"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Daemon turns other process into daemons.
+
+	  http://www.libslack.org/daemon/
+
+comment "daemon needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

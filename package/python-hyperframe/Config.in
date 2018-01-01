@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_HYPERFRAME
+	bool "python-hyperframe"
+	help
+	  HTTP/2 framing layer for Python.
+
+	  http://hyper.rtfd.org

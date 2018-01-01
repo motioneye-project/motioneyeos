@@ -1,0 +1,30 @@
+From c2773170a1b0e2728f71f2275a99fd177ba2cef4 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Tue, 2 May 2017 23:25:17 +0200
+Subject: [PATCH] fix m68k uclinux avoids internal compiler error while
+ compiling linux-atomic.c See here:
+ https://gcc.gnu.org/bugzilla/show_bug.cgi?id=53833
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+[Romain: convert to git patch]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ libgcc/config.host | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libgcc/config.host b/libgcc/config.host
+index b279a64..04fe183 100644
+--- a/libgcc/config.host
++++ b/libgcc/config.host
+@@ -820,7 +820,7 @@ m68k*-*-netbsdelf*)
+ m68k*-*-openbsd*)
+ 	;;
+ m68k-*-uclinux*)	# Motorola m68k/ColdFire running uClinux with uClibc
+-	tmake_file="$tmake_file m68k/t-floatlib m68k/t-linux"
++	tmake_file="$tmake_file m68k/t-floatlib"
+ 	md_unwind_header=m68k/linux-unwind.h
+ 	;;
+ m68k-*-linux*)			# Motorola m68k's running GNU/Linux
+-- 
+2.9.3
+

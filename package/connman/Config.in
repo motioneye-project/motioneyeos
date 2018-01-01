@@ -1,14 +1,14 @@
 config BR2_PACKAGE_CONNMAN
 	bool "connman"
-	select BR2_PACKAGE_DBUS
-	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_IPTABLES
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
 	depends on BR2_USE_MMU # dbus, libglib2
 	depends on !BR2_STATIC_LIBS # needs dlopen()
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
-	depends on !BR2_TOOLCHAIN_USES_MUSL # mixes userspace and kernel headers
+	depends on !BR2_TOOLCHAIN_USES_MUSL # missing res_ninit()
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_IPTABLES
 	help
 	  The Connection Manager (ConnMan) project provides a daemon
 	  for managing internet connections within embedded devices
@@ -33,11 +33,15 @@ config BR2_PACKAGE_CONNMAN_WIFI
 
 config BR2_PACKAGE_CONNMAN_WISPR
 	bool "enable WISPr support"
+	depends on !BR2_STATIC_LIBS # gnutls
 	select BR2_PACKAGE_GNUTLS
 	help
 	  Enable support for Wireless Internet Service Provider
 	  roaming (WISPr). A RADIUS server is used to authenticate the
 	  subscriber's credentials.
+
+comment "connman WISPr needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_CONNMAN_BLUETOOTH
 	bool "enable Bluetooth support"
@@ -50,8 +54,8 @@ config BR2_PACKAGE_CONNMAN_LOOPBACK
 
 config BR2_PACKAGE_CONNMAN_NEARD
 	bool "enable neard support"
-	select BR2_PACKAGE_NEARD
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # neard
+	select BR2_PACKAGE_NEARD
 
 config BR2_PACKAGE_CONNMAN_OFONO
 	bool "enable ofono support"

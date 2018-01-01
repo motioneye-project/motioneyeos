@@ -4,14 +4,19 @@
 #
 ################################################################################
 
-GNUPG_VERSION = 1.4.21
+GNUPG_VERSION = 1.4.22
 GNUPG_SOURCE = gnupg-$(GNUPG_VERSION).tar.bz2
-GNUPG_SITE = ftp://ftp.gnupg.org/gcrypt/gnupg
-GNUPG_LICENSE = GPLv3+
+GNUPG_SITE = https://gnupg.org/ftp/gcrypt/gnupg
+GNUPG_LICENSE = GPL-3.0+
 GNUPG_LICENSE_FILES = COPYING
 GNUPG_DEPENDENCIES = zlib ncurses $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 GNUPG_CONF_ENV = ac_cv_sys_symbol_underscore=no
-GNUPG_CONF_OPTS = --disable-rpath --enable-minimal --disable-regex
+GNUPG_CONF_OPTS = \
+	--disable-rpath \
+	--enable-minimal \
+	--disable-regex \
+	--enable-sha256 \
+	--enable-sha512
 
 # gnupg doesn't support assembly for coldfire
 ifeq ($(BR2_m68k_cf),y)

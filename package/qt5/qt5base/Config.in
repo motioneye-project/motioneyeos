@@ -1,9 +1,11 @@
 config BR2_PACKAGE_QT5BASE
 	bool "qt5base"
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_PCRE
-	select BR2_PACKAGE_PCRE_16
-	select BR2_PACKAGE_PCRE_UTF
+	select BR2_PACKAGE_PCRE if BR2_PACKAGE_QT5_VERSION_5_6
+	select BR2_PACKAGE_PCRE_16 if BR2_PACKAGE_QT5_VERSION_5_6
+	select BR2_PACKAGE_PCRE_UTF if BR2_PACKAGE_QT5_VERSION_5_6
+	select BR2_PACKAGE_PCRE2 if BR2_PACKAGE_QT5_VERSION_LATEST
+	select BR2_PACKAGE_PCRE2_16 if BR2_PACKAGE_QT5_VERSION_LATEST
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -26,18 +28,6 @@ config BR2_PACKAGE_QT5BASE_CUSTOM_CONF_OPTS
 
 	  E.g. to remove the Windows Vista style option, add the option
 	  -no-feature-style_windowsvista.
-
-config BR2_PACKAGE_QT5BASE_LICENSE_APPROVED
-	bool "Approve free license"
-	help
-	  Select this if you approve one of the available free licenses for the
-	  Qt5 library.
-	  By doing this you will not be asked while the library is compiled.
-	  Please read and understand the license terms before approving this.
-
-	  LGPL: http://doc.qt.io/qt-5/lgpl.html
-
-	  See also http://doc.qt.io/qt-5/licensing.html
 
 config BR2_PACKAGE_QT5BASE_CONFIG_FILE
 	string "Config file"
@@ -73,19 +63,19 @@ config BR2_PACKAGE_QT5BASE_SQL
 if BR2_PACKAGE_QT5BASE_SQL
 config BR2_PACKAGE_QT5BASE_MYSQL
 	bool "MySQL Plugin"
+	depends on BR2_USE_MMU # mysql
 	select BR2_PACKAGE_MYSQL
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_READLINE
-	depends on BR2_USE_MMU # mysql
 	help
 	  Build MySQL plugin
 	  If unsure, say n.
 
 config BR2_PACKAGE_QT5BASE_PSQL
 	bool "PostgreSQL Plugin"
-	select BR2_PACKAGE_POSTGRESQL
 	depends on BR2_USE_MMU # postgresql
 	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_POSTGRESQL
 	help
 	  Build PostgreSQL plugin
 	  If unsure, say n.
@@ -210,9 +200,9 @@ comment "X.org XCB backend available if X.org is enabled"
 
 config BR2_PACKAGE_QT5BASE_EGLFS
 	bool "eglfs support"
-	select BR2_PACKAGE_QT5BASE_OPENGL
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	select BR2_PACKAGE_QT5BASE_OPENGL
 
 comment "eglfs backend available if OpenGL and EGL are enabled"
 	depends on !BR2_PACKAGE_HAS_LIBEGL || !BR2_PACKAGE_QT5_GL_AVAILABLE
@@ -239,6 +229,14 @@ config BR2_PACKAGE_QT5BASE_FONTCONFIG
 	  This option enables Fontconfig and Freetype support using
 	  the system fontconfig and freetype2 libraries.
 
+config BR2_PACKAGE_QT5BASE_HARFBUZZ
+	bool "harfbuzz support"
+	select BR2_PACKAGE_HARFBUZZ if BR2_TOOLCHAIN_HAS_SYNC_4
+	help
+	  This option enables HarfBuzz support (either system harfbuzz
+	  if the toolchain supports __sync for 4 bytes, or the qt
+	  provided one which avoids this dependency by using QAtomic).
+
 config BR2_PACKAGE_QT5BASE_GIF
 	bool "GIF support"
 	help
@@ -262,28 +260,31 @@ endif
 
 config BR2_PACKAGE_QT5BASE_DBUS
 	bool "DBus module"
-	select BR2_PACKAGE_DBUS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU
+	select BR2_PACKAGE_DBUS
 	help
 	  This option enables the D-Bus module.
 
 config BR2_PACKAGE_QT5BASE_ICU
 	bool "Enable ICU support"
-	select BR2_PACKAGE_ICU
+	depends on BR2_HOST_GCC_AT_LEAST_4_8 # icu
 	depends on !BR2_BINFMT_FLAT # icu
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # icu
+	select BR2_PACKAGE_ICU
 	help
 	  This option enables ICU support in Qt5. This is for example
 	  needed for Qt5Webkit.
 
+comment "icu support needs a toolchain w/ gcc >= 4.8, host gcc >= 4.8"
+	depends on !BR2_BINFMT_FLAT
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || \
+		!BR2_HOST_GCC_AT_LEAST_4_8
+
 config BR2_PACKAGE_QT5BASE_TSLIB
 	bool "Enable Tslib support"
-	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_TSLIB
 	help
 	  This options enables the Tslib plugin
-
-comment "tslib support needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
 
 endif

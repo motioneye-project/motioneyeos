@@ -25,5 +25,5 @@ can extract as root:
 
 Those image files are created using the contents of the target/
 directory, but there is a post-processing step to create device files
-and set owernship/permissions properly even if Buildroot does not run
+and set ownership/permissions properly even if Buildroot does not run
 as root.

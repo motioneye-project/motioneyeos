@@ -8,7 +8,8 @@ config BR2_PACKAGE_LINUX_BACKPORTS
 	  The linux-backports package includes many Linux drivers from
 	  recent kernels, backported to older ones.
 
-	  This version of linux-backports supports kernels starting from 3.0.
+	  This version of linux-backports supports kernels starting
+	  from 3.0.
 
 	  https://backports.wiki.kernel.org
 
@@ -40,8 +41,9 @@ config BR2_PACKAGE_LINUX_BACKPORTS_CUSTOM_CONFIG_FILE
 	help
 	  Path to the backports configuration file
 
-	  Note: this can be a defconfig file or a complete .config file,
-	  which can later be saved back with make linux-update-(def)config.
+	  Note: this can be a defconfig file or a complete .config
+	  file, which can later be saved back with make
+	  linux-update-(def)config.
 
 config BR2_PACKAGE_LINUX_BACKPORTS_CONFIG_FRAGMENT_FILES
 	string "Additional configuration fragment files"

@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-STELLA_VERSION = 4.7.2
+STELLA_VERSION = 5.0.2
 STELLA_SOURCE = stella-$(STELLA_VERSION)-src.tar.xz
-STELLA_SITE = http://downloads.sourceforge.net/stella
-STELLA_LICENSE = GPLv2+
+STELLA_SITE = https://github.com/stella-emu/stella/releases/download/$(STELLA_VERSION)
+STELLA_LICENSE = GPL-2.0+
 STELLA_LICENSE_FILES = Copyright.txt License.txt
 
 STELLA_DEPENDENCIES = sdl2 libpng zlib

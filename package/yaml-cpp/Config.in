@@ -8,7 +8,7 @@ config BR2_PACKAGE_YAML_CPP
 	  yaml-cpp is a YAML parser and emitter in C++ matching
 	  the YAML 1.2 spec.
 
-	  https://code.google.com/p/yaml-cpp/
+	  https://github.com/jbeder/yaml-cpp
 
 comment "yaml-cpp needs a toolchain w/ C++, threads, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR

@@ -1,5 +1,5 @@
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
-	bool "Sourcery CodeBench Nios-II 2016.11"
+	bool "Sourcery CodeBench Nios-II 2017.05"
 	depends on BR2_nios2
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on !BR2_STATIC_LIBS
@@ -10,8 +10,7 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII
 	select BR2_HOSTARCH_NEEDS_IA32_LIBS
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
-	select BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19405 # based-on binutils-2.26
 	help
 	  Sourcery CodeBench toolchain for the Nios-II architecture,
-	  from Mentor Graphics. It uses gcc 6.2, binutils 2.26,
-	  glibc 2.24, gdb 7.11 and kernel headers 4.7.
+	  from Mentor Graphics. It uses gcc 6.3, binutils 2.26,
+	  glibc 2.25, gdb 7.11 and kernel headers 4.7.

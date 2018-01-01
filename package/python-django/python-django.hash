@@ -1,3 +1,3 @@
 # md5 from https://pypi.python.org/pypi/django/json, sha256 locally computed
-md5	5342e77374b2acd2eafa86d2bb68f8c9  Django-1.10.2.tar.gz
-sha256	e127f12a0bfb34843b6e8c82f91e26fff6445a7ca91d222c0794174cf97cbce1  Django-1.10.2.tar.gz
+md5	693dfeabad62c561cb205900d32c2a98  Django-1.10.7.tar.gz
+sha256	593d779dbc2350a245c4f76d26bdcad58a39895e87304fe6d725bbdf84b5b0b8  Django-1.10.7.tar.gz

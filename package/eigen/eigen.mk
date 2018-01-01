@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-EIGEN_VERSION = 3.2.5
-EIGEN_SITE = https://bitbucket.org/eigen/eigen
-EIGEN_SITE_METHOD = hg
-EIGEN_LICENSE = MPL2, BSD-3c, LGPLv2.1
+EIGEN_VERSION = 3.3.4
+EIGEN_SOURCE = $(EIGEN_VERSION).tar.bz2
+EIGEN_SITE = https://bitbucket.org/eigen/eigen/get
+EIGEN_LICENSE = MPL2, BSD-3-Clause, LGPL-2.1
 EIGEN_LICENSE_FILES = COPYING.MPL2 COPYING.BSD COPYING.LGPL COPYING.README
 EIGEN_INSTALL_STAGING = YES
 EIGEN_INSTALL_TARGET = NO

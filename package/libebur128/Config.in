@@ -3,7 +3,6 @@ config BR2_PACKAGE_LIBEBUR128
 	# build system has no support to disable shared linking
 	# leading to a build error with a static-only toolchain
 	depends on !BR2_STATIC_LIBS
-	select BR2_PACKAGE_SPEEX
 	help
 	  libebur128 is a library that implements the EBU R 128 standard
 	  for loudness normalization.

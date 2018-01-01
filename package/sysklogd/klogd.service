@@ -1,0 +1,11 @@
+[Unit]
+Description=Kernel Log Daemon
+
+[Service]
+ExecStart=/usr/sbin/klogd -n
+StandardOutput=null
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+WantedBy=syslogd.service

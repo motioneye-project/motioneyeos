@@ -1,9 +1,0 @@
-if BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_SH
-
-config BR2_TOOLCHAIN_EXTERNAL_PREFIX
-	default "sh-linux-gnu"
-
-config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
-	default "toolchain-external-codesourcery-sh"
-
-endif

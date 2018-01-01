@@ -11,26 +11,26 @@ GOOGLE_BREAKPAD_CONF_OPTS = --disable-processor --disable-tools
 # Only a static library is installed
 GOOGLE_BREAKPAD_INSTALL_TARGET = NO
 GOOGLE_BREAKPAD_INSTALL_STAGING = YES
-GOOGLE_BREAKPAD_LICENSE = BSD-3c
+GOOGLE_BREAKPAD_LICENSE = BSD-3-Clause
 GOOGLE_BREAKPAD_LICENSE_FILES = LICENSE
 GOOGLE_BREAKPAD_DEPENDENCIES = host-google-breakpad linux-syscall-support
 
-HOST_GOOGLE_BREAKPAD_DEPENDENCIES = host-linux-syscall-support 
+HOST_GOOGLE_BREAKPAD_DEPENDENCIES = host-linux-syscall-support
 
 # Avoid using depot-tools to download this file.
 define HOST_GOOGLE_BREAKPAD_LSS
 	$(INSTALL) -D -m 0644 \
-		$(HOST_DIR)/usr/include/linux_syscall_support.h \
+		$(HOST_DIR)/include/linux_syscall_support.h \
 		$(@D)/src/third_party/lss/linux_syscall_support.h
 endef
-HOST_GOOGLE_BREAKPAD_POST_EXTRACT_HOOKS += HOST_GOOGLE_BREAKPAD_LSS
+HOST_GOOGLE_BREAKPAD_PRE_CONFIGURE_HOOKS += HOST_GOOGLE_BREAKPAD_LSS
 
 define GOOGLE_BREAKPAD_LSS
 	$(INSTALL) -D -m 0644 \
 		$(STAGING_DIR)/usr/include/linux_syscall_support.h \
 		$(@D)/src/third_party/lss/linux_syscall_support.h
 endef
-GOOGLE_BREAKPAD_POST_EXTRACT_HOOKS += GOOGLE_BREAKPAD_LSS
+GOOGLE_BREAKPAD_PRE_CONFIGURE_HOOKS += GOOGLE_BREAKPAD_LSS
 
 define GOOGLE_BREAKPAD_EXTRACT_SYMBOLS
 	$(EXTRA_ENV) package/google-breakpad/gen-syms.sh $(STAGING_DIR) \

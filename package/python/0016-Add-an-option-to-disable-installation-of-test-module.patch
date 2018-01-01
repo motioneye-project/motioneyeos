@@ -1,0 +1,103 @@
+From 0eac7789c0dd4aebe9e69d3c73d0c95e96922ea3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 7 Mar 2017 22:27:16 +0100
+Subject: [PATCH] Add an option to disable installation of test modules
+
+The Python standard distribution comes with many test modules, that
+are not necessarly useful on embedded targets.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Bernd: rebased against version 2.7.14]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ Makefile.pre.in | 48 ++++++++++++++++++++++++++++++++----------------
+ configure.ac    |  6 ++++++
+ 2 files changed, 38 insertions(+), 16 deletions(-)
+
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index dedcf61..280cc4e 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1032,28 +1032,44 @@
+ 	plat-mac/lib-scriptpackages/SystemEvents \
+ 	plat-mac/lib-scriptpackages/Terminal
+ PLATMACPATH=:plat-mac:plat-mac/lib-scriptpackages
+-LIBSUBDIRS=	lib-tk lib-tk/test lib-tk/test/test_tkinter \
+-		lib-tk/test/test_ttk site-packages test test/audiodata test/capath \
+-		test/data test/cjkencodings test/decimaltestdata test/xmltestdata \
+-		test/imghdrdata \
+-		test/subprocessdata \
+-		test/support \
+-		test/tracedmodules \
++LIBSUBDIRS=	lib-tk site-packages \
+ 		encodings compiler hotshot \
+-		email email/mime email/test email/test/data \
++		email email/mime \
+ 		ensurepip ensurepip/_bundled \
+-		json json/tests \
+-		sqlite3 sqlite3/test \
+-		logging bsddb bsddb/test csv importlib wsgiref \
+-		lib2to3 lib2to3/fixes lib2to3/pgen2 lib2to3/tests \
+-		lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
+-		ctypes ctypes/test ctypes/macholib \
+-		idlelib idlelib/Icons idlelib/idle_test \
+-		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
++		json \
++		sqlite3  \
++		logging bsddb csv importlib wsgiref \
++		lib2to3 lib2to3/fixes lib2to3/pgen2 \
++		ctypes ctypes/macholib \
++		idlelib idlelib/Icons \
++		distutils distutils/command $(XMLLIBSUBDIRS) \
+ 		multiprocessing multiprocessing/dummy \
+-		unittest unittest/test \
++		unittest \
+ 		lib-old \
+ 		curses pydoc_data $(MACHDEPS)
++
++TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
++	lib-tk/test/test_ttk test test/audiodata test/capath test/data \
++	test/cjkencodings test/decimaltestdata test/xmltestdata \
++	test/imghdrdata \
++	test/subprocessdata \
++	test/support \
++	test/tracedmodules \
++	email/test email/test/data \
++	json/tests \
++	sqlite3/test \
++	bsddb/test \
++	lib2to3/tests \
++ 	lib2to3/tests/data lib2to3/tests/data/fixers lib2to3/tests/data/fixers/myfixes \
++	ctypes/test \
++	idlelib/idle_test \
++	distutils/tests \
++	unittest/test
++
++ifeq (@TEST_MODULES@,yes)
++LIBSUBDIRS += $(TESTSUBDIRS)
++endif
++
+ libinstall:	build_all $(srcdir)/Lib/$(PLATDIR) $(srcdir)/Modules/xxmodule.c
+ 	@for i in $(SCRIPTDIR) $(LIBDEST); \
+ 	do \
+diff --git a/configure.ac b/configure.ac
+index 183a903..a1a35f6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2806,6 +2806,12 @@ if test "$posix_threads" = "yes"; then
+ fi
+ 
+ 
++AC_SUBST(TEST_MODULES)
++
++AC_ARG_ENABLE(test-modules,
++	AS_HELP_STRING([--disable-test-modules], [disable test modules]),
++	[ TEST_MODULES="${enableval}" ], [ TEST_MODULES=yes ])
++
+ # Check for enable-ipv6
+ AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
+ AC_MSG_CHECKING([if --enable-ipv6 is specified])
+-- 
+2.7.4
+

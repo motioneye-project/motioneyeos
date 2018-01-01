@@ -6,7 +6,7 @@
 
 EEPROG_VERSION = 0.7.6
 EEPROG_SITE = http://www.codesink.org/download
-EEPROG_LICENSE = GPLv2+
+EEPROG_LICENSE = GPL-2.0+
 EEPROG_LICENSE_FILES = eeprog.c
 
 define EEPROG_BUILD_CMDS

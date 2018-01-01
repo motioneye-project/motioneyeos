@@ -1,0 +1,40 @@
+From d858ce52d1971cb4e8500b0ebc0472fdae4686ec Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Sun, 7 May 2017 23:12:04 +0200
+Subject: [PATCH] mpn/arm/udiv.asm: workaround binutils bug #14887
+
+Old binutils versions are affected by bug #14887,
+https://sourceware.org/bugzilla/show_bug.cgi?id=14887, which causes a
+build failure when a register specification is surrounded by
+whitespaces. Removing those whitespaces works around the issue.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ mpn/arm/udiv.asm | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mpn/arm/udiv.asm b/mpn/arm/udiv.asm
+index 25197a6..ed11eb3 100644
+--- a/mpn/arm/udiv.asm
++++ b/mpn/arm/udiv.asm
+@@ -50,7 +50,7 @@ L(oop):	divstep(n1,n0,d)
+ 	teq	r12, #0
+ 	bne	L(oop)
+ 
+-	str	n1, [ rem_ptr ]		C store remainder
++	str	n1, [rem_ptr]		C store remainder
+ 	adc	r0, n0, n0		C quotient: add last carry from divstep
+ 	mov	pc, lr
+ 
+@@ -89,7 +89,7 @@ L(oop2):
+ 	addcs	n0, n0, #1		C adjust quotient
+ 
+ L(_even_divisor):
+-	str	n1, [ rem_ptr ]		C store remainder
++	str	n1, [rem_ptr]		C store remainder
+ 	mov	r0, n0			C quotient
+ 	ldmfd	sp!, { r8, pc }
+ EPILOGUE(mpn_udiv_qrnnd)
+-- 
+2.7.4
+

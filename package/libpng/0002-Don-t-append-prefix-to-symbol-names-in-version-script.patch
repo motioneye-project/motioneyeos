@@ -15,6 +15,9 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Julien: update for 1.6.25]
 Signed-off-by: Julien Boibessot <julien.boibessot@armadeus.com>
 
+[Bernd: update for 1.6.29]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
  Makefile.am | 2 +-
@@ -44,7 +47,7 @@ index 4e67782..5f468d9 100644
  	-DPNGLIB_VERSION='@PNGLIB_VERSION@' \
 -	-DSYMBOL_PREFIX='$(SYMBOL_PREFIX)' -DPNG_NO_USE_READ_MACROS \
 +	-DSYMBOL_PREFIX='' -DPNG_NO_USE_READ_MACROS \
- 	-DPNG_BUILDING_SYMBOL_TABLE $(am__append_7)
+ 	-DPNG_BUILDING_SYMBOL_TABLE $(am__append_9)
  
  # EXT_LIST is a list of the possibly library directory extensions, this exists
 -- 

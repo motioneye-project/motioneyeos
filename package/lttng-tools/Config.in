@@ -17,7 +17,7 @@ config BR2_PACKAGE_LTTNG_TOOLS
 	  and stop tracing sessions. Analysis of the trace can be done
 	  on the host machine using the babeltrace utility. This
 	  utility is automatically built by Buildroot in
-	  $(O)/host/usr/bin/babeltrace, as a dependency of
+	  $(O)/host/bin/babeltrace, as a dependency of
 	  lttng-tools. However, there is also a lttng-babeltrace
 	  package for the target, if babeltrace on the target is
 	  interesting.

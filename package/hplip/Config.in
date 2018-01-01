@@ -8,11 +8,12 @@ config BR2_PACKAGE_HPLIP
 	select BR2_PACKAGE_JPEG
 	help
 	  HP Linux Imaging and Printing (HPLIP)
-	  HPLIP is an HP-developed solution for printing, scanning, and faxing
-	  with HP inkjet and laser based printers in Linux. The HPLIP project
-	  provides printing support for 2,211 printer models, including
-	  Deskjet, Officejet, Photosmart, PSC (Print Scan Copy), Business
-	  Inkjet, LaserJet, Edgeline MFP, and LaserJet MFP.
+	  HPLIP is an HP-developed solution for printing, scanning, and
+	  faxing with HP inkjet and laser based printers in Linux. The
+	  HPLIP project provides printing support for 2,211 printer
+	  models, including Deskjet, Officejet, Photosmart, PSC
+	  (Print Scan Copy), Business Inkjet, LaserJet, Edgeline MFP,
+	  and LaserJet MFP.
 
 	  http://hplipopensource.com/
 

@@ -7,9 +7,10 @@ config BR2_PACKAGE_CPPDB
 	# Can be built without them but it's useless
 	depends on BR2_PACKAGE_MYSQL || BR2_PACKAGE_POSTGRESQL || BR2_PACKAGE_SQLITE
 	help
-	  CppDB is an SQL connectivity library that is designed to provide
-	  platform and Database independent connectivity API similarly
-	  to what JDBC, ODBC and other connectivity libraries do.
+	  CppDB is an SQL connectivity library that is designed to
+	  provide platform and Database independent connectivity API
+	  similarly to what JDBC, ODBC and other connectivity libraries
+	  do.
 
 	  http://cppcms.com/sql/cppdb/
 

@@ -1,12 +1,12 @@
 config BR2_PACKAGE_TROUSERS
 	bool "trousers"
-	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# doesn't build properly in static only configurations
 	depends on !BR2_STATIC_LIBS
 	# ARC toolchain issue
 	depends on !BR2_arc
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
 	  The open-source TCG Software Stack (TSS).
 

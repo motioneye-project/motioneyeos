@@ -31,7 +31,8 @@ config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
 	default "SICORTEX"     if BR2_MIPS_CPU_MIPS64
 	# I6400 is built with MSA support which is only available in Codescape toolchains
 	default "I6400"        if BR2_mips_i6400 && BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
-	default "SPARC"        if BR2_sparc
+	# OpenBLAS assumes SPARC=Sparc v9
+	default "SPARC"        if BR2_sparc_v9
 	# Cortex-A15 always have a VFPv4
 	default "CORTEXA15"    if (BR2_cortex_a15 && BR2_ARM_EABIHF)
 	# Cortex-A9 have an optional VFPv3, so we need to make sure it

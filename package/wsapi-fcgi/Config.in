@@ -1,0 +1,11 @@
+config BR2_PACKAGE_WSAPI_FCGI
+	bool "wsapi-fcgi"
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBFCGI
+	# Runtime dependency only
+	select BR2_PACKAGE_WSAPI
+	help
+	  WSAPI is an API that abstracts the web server from Lua web
+	  applications. This is the rock that contains the FCGI module lfcgi.
+
+	  http://keplerproject.github.com/wsapi/

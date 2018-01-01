@@ -1,0 +1,106 @@
+From 47e5dec521ab6243c9b249dd65b93d232d90d6b1 Mon Sep 17 00:00:00 2001
+From: Jan Dittberner <jan@dittberner.info>
+Date: Thu, 25 Aug 2016 17:13:49 +0200
+Subject: [PATCH] Apply patch to fix CVE-2016-6318
+
+This patch fixes an issue with a stack-based buffer overflow whne
+parsing large GECOS field. See
+https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2016-6318 and
+https://security-tracker.debian.org/tracker/CVE-2016-6318 for more
+information.
+
+Signed-off-by: Stefan Sørensen <stefan.sorensen@spectralink.com>
+---
+
+Status: upstream, not yet released.
+
+ lib/fascist.c | 57 ++++++++++++++++++++++++++++++++-----------------------
+ 2 files changed, 34 insertions(+), 24 deletions(-)
+
+diff --git a/lib/fascist.c b/lib/fascist.c
+index a996509..d4deb15 100644
+--- a/lib/fascist.c
++++ b/lib/fascist.c
+@@ -502,7 +502,7 @@ FascistGecosUser(char *password, const char *user, const char *gecos)
+     char gbuffer[STRINGSIZE];
+     char tbuffer[STRINGSIZE];
+     char *uwords[STRINGSIZE];
+-    char longbuffer[STRINGSIZE * 2];
++    char longbuffer[STRINGSIZE];
+ 
+     if (gecos == NULL)
+ 	gecos = "";
+@@ -583,38 +583,47 @@ FascistGecosUser(char *password, const char *user, const char *gecos)
+     {
+ 	for (i = 0; i < j; i++)
+ 	{
+-	    strcpy(longbuffer, uwords[i]);
+-	    strcat(longbuffer, uwords[j]);
+-
+-	    if (GTry(longbuffer, password))
++	    if (strlen(uwords[i]) + strlen(uwords[j]) < STRINGSIZE)
+ 	    {
+-		return _("it is derived from your password entry");
+-	    }
++		strcpy(longbuffer, uwords[i]);
++		strcat(longbuffer, uwords[j]);
+ 
+-	    strcpy(longbuffer, uwords[j]);
+-	    strcat(longbuffer, uwords[i]);
++		if (GTry(longbuffer, password))
++		{
++		    return _("it is derived from your password entry");
++		}
+ 
+-	    if (GTry(longbuffer, password))
+-	    {
+-		return _("it's derived from your password entry");
+-	    }
++		strcpy(longbuffer, uwords[j]);
++		strcat(longbuffer, uwords[i]);
+ 
+-	    longbuffer[0] = uwords[i][0];
+-	    longbuffer[1] = '\0';
+-	    strcat(longbuffer, uwords[j]);
++		if (GTry(longbuffer, password))
++		{
++		   return _("it's derived from your password entry");
++		}
++	    }
+ 
+-	    if (GTry(longbuffer, password))
++	    if (strlen(uwords[j]) < STRINGSIZE - 1)
+ 	    {
+-		return _("it is derivable from your password entry");
++		longbuffer[0] = uwords[i][0];
++		longbuffer[1] = '\0';
++		strcat(longbuffer, uwords[j]);
++
++		if (GTry(longbuffer, password))
++		{
++		    return _("it is derivable from your password entry");
++		}
+ 	    }
+ 
+-	    longbuffer[0] = uwords[j][0];
+-	    longbuffer[1] = '\0';
+-	    strcat(longbuffer, uwords[i]);
+-
+-	    if (GTry(longbuffer, password))
++	    if (strlen(uwords[i]) < STRINGSIZE - 1)
+ 	    {
+-		return _("it's derivable from your password entry");
++		longbuffer[0] = uwords[j][0];
++		longbuffer[1] = '\0';
++		strcat(longbuffer, uwords[i]);
++
++		if (GTry(longbuffer, password))
++		{
++		    return _("it's derivable from your password entry");
++		}
+ 	    }
+ 	}
+     }
+-- 
+2.9.3
+

@@ -1,0 +1,38 @@
+config BR2_PACKAGE_LUGARU
+	bool "lugaru"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_HAS_LIBGL # libglu
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_XORG7 # SDL2 OpenGL (GLX)
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 # C++11
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
+	depends on BR2_USE_MMU # SDL2 OpenGL (GLX)
+	depends on !BR2_STATIC_LIBS # SDL2
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBGLU # GL/glu.h
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBVORBIS
+	select BR2_PACKAGE_OPENAL
+	select BR2_PACKAGE_SDL2
+	select BR2_PACKAGE_SDL2_OPENGL
+	select BR2_PACKAGE_ZLIB
+	help
+	  Lugaru (pronounced Loo-GAH-roo) is a cross-platform
+	  third-person action game. The main character, Turner, is an
+	  anthropomorphic rebel bunny rabbit with impressive combat
+	  skills. In his quest to find those responsible for
+	  slaughtering his village, he uncovers a far-reaching
+	  conspiracy involving the corrupt leaders of the rabbit
+	  republic and the starving wolves from a nearby den. Turner
+	  takes it upon himself to fight against their plot and save
+	  his fellow rabbits from slavery.
+
+	  https://osslugaru.gitlab.io/
+
+comment "lugaru needs X11 and a toolchain w/ C++, OpenGL backend, gcc >= 4.7, NPTL, dynamic library"
+	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_PACKAGE_HAS_LIBGL || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		BR2_STATIC_LIBS

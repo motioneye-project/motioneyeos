@@ -4,17 +4,18 @@
 #
 ################################################################################
 
-VDR_VERSION = 2.3.2
+VDR_VERSION = 2.3.5
 VDR_SOURCE = vdr-$(VDR_VERSION).tar.bz2
 VDR_SITE = ftp://ftp.tvdr.de/vdr/Developer
-VDR_LICENSE = GPLv2+
+VDR_LICENSE = GPL-2.0+
 VDR_LICENSE_FILES = COPYING
 VDR_INSTALL_STAGING = YES
 VDR_DEPENDENCIES = \
 	freetype \
 	fontconfig \
 	jpeg \
-	libcap
+	libcap \
+	$(TARGET_NLS_DEPENDENCIES)
 
 VDR_INCLUDE_DIRS = -I$(STAGING_DIR)/usr/include/freetype2
 VDR_MAKE_FLAGS = \
@@ -22,11 +23,7 @@ VDR_MAKE_FLAGS = \
 	PLUGINLIBDIR=/usr/lib/vdr \
 	PREFIX=/usr \
 	VIDEODIR=/var/lib/vdr
-
-ifeq ($(BR2_NEEDS_GETTEXT),y)
-VDR_DEPENDENCIES += gettext
-VDR_LDFLAGS += -lintl
-endif
+VDR_LDFLAGS = $(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
 VDR_DEPENDENCIES += libfribidi

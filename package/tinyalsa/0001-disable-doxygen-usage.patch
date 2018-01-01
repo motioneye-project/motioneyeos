@@ -4,29 +4,32 @@ In order to avoid a dependency on doxygen on the build machine, this
 patch adjusts the main Makefile to not build and install the
 documentation.
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Vincent: tweak patch for 1.1.1 version]
 
-Index: b/Makefile
-===================================================================
---- a/Makefile
-+++ b/Makefile
-@@ -13,13 +13,11 @@
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+
+diff -rup a/Makefile b/Makefile
+--- a/Makefile	2017-05-24 05:23:57.000000000 +0100
++++ b/Makefile	2017-05-25 10:35:20.781747053 +0100
+@@ -11,14 +11,12 @@ export MANDIR ?= $(PREFIX)/share/man
  all:
  	$(MAKE) -C src
  	$(MAKE) -C utils
 -	$(MAKE) -C doxygen
+ 	$(MAKE) -C examples
  
  .PHONY: clean
  clean:
  	$(MAKE) -C src clean
  	$(MAKE) -C utils clean
 -	$(MAKE) -C doxygen clean
+ 	$(MAKE) -C examples clean
  
  .PHONY: install
- install:
-@@ -27,5 +25,3 @@
- 	cp -Ru include/tinyalsa $(DESTDIR)$(INCDIR)/
+@@ -30,5 +28,4 @@ install:
+ 	install include/tinyalsa/version.h $(DESTDIR)$(INCDIR)/
  	$(MAKE) -C src install
  	$(MAKE) -C utils install
 -	$(MAKE) -C doxygen install
--
+ 

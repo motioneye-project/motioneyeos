@@ -1,0 +1,86 @@
+From cb6b00947ea125c3246654bb3dd3986b64e974d4 Mon Sep 17 00:00:00 2001
+From: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
+Date: Mon, 27 Mar 2017 21:51:59 +0200
+Subject: [PATCH] allow building of synergy without tests
+
+Upstream status: https://github.com/symless/synergy/pull/5943
+
+Signed-off-by: Pieterjan Camerlynck <pieterjan.camerlynck@gmail.com>
+---
+ CMakeLists.txt                             | 2 ++
+ src/CMakeLists.txt                         | 2 +-
+ src/lib/synergy/KeyMap.h                   | 4 ++++
+ src/test/unittests/synergy/KeyMapTests.cpp | 2 ++
+ 4 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 94c474e..cceac45 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -39,6 +39,8 @@ endif()
+ # First, declare project (important for prerequisite checks).
+ project(synergy C CXX)
+ 
++option(BUILD_TESTS "Override building of tests" ON)
++
+ # put binaries in a different dir to make them easier to find.
+ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
+ set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index 237ba48..96dadd2 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -50,6 +50,6 @@ add_subdirectory(lib)
+ add_subdirectory(cmd)
+ add_subdirectory(micro)
+ 
+-if (NOT ${CMAKE_SYSTEM_NAME} MATCHES "IRIX")
++if (BUILD_TESTS AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "IRIX")
+ 	add_subdirectory(test)
+ endif()
+diff --git a/src/lib/synergy/KeyMap.h b/src/lib/synergy/KeyMap.h
+index de869e6..51e7e07 100644
+--- a/src/lib/synergy/KeyMap.h
++++ b/src/lib/synergy/KeyMap.h
+@@ -24,7 +24,9 @@
+ #include "common/stdset.h"
+ #include "common/stdvector.h"
+ 
++#ifdef TEST_ENV
+ #include "gtest/gtest_prod.h"
++#endif
+ 
+ namespace synergy {
+ 
+@@ -326,6 +328,7 @@ public:
+ 
+ 	//@}
+ 
++#ifdef TEST_ENV
+ private:
+ 	FRIEND_TEST(KeyMapTests,
+ 				findBestKey_requiredDown_matchExactFirstItem);
+@@ -340,6 +343,7 @@ private:
+ 	FRIEND_TEST(KeyMapTests,
+ 				findBestKey_onlyOneRequiredDown_matchTwoRequiredChangesItem);
+ 	FRIEND_TEST(KeyMapTests, findBestKey_noRequiredDown_cannotMatch);
++#endif
+ 
+ private:
+ 	//! Ways to synthesize a key
+diff --git a/src/test/unittests/synergy/KeyMapTests.cpp b/src/test/unittests/synergy/KeyMapTests.cpp
+index 1a195af..fe2a5e4 100644
+--- a/src/test/unittests/synergy/KeyMapTests.cpp
++++ b/src/test/unittests/synergy/KeyMapTests.cpp
+@@ -15,6 +15,8 @@
+  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#define TEST_ENV
++
+ #include "synergy/KeyMap.h"
+ 
+ #include "test/global/gtest.h"
+-- 
+2.7.4
+

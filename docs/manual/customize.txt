@@ -1,0 +1,60 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[customize]]
+== Project-specific customization
+
+Typical actions you may need to perform for a given project are:
+
+* configuring Buildroot (including build options and toolchain,
+  bootloader, kernel, package and filesystem image type selection)
+* configuring other components, like the Linux kernel and BusyBox
+* customizing the generated target filesystem
+  ** adding or overwriting files on the target filesystem (using
+     +BR2_ROOTFS_OVERLAY+)
+  ** modifying or deleting files on the target filesystem (using
+     +BR2_ROOTFS_POST_BUILD_SCRIPT+)
+  ** running arbitrary commands prior to generating the filesystem image
+     (using +BR2_ROOTFS_POST_BUILD_SCRIPT+)
+  ** setting file permissions and ownership (using
+     +BR2_ROOTFS_DEVICE_TABLE+)
+  ** adding custom devices nodes (using
+     +BR2_ROOTFS_STATIC_DEVICE_TABLE+)
+* adding custom user accounts (using +BR2_ROOTFS_USERS_TABLES+)
+* running arbitrary commands after generating the filesystem image
+  (using +BR2_ROOTFS_POST_IMAGE_SCRIPT+)
+* adding project-specific patches to some packages (using
+  +BR2_GLOBAL_PATCH_DIR+)
+* adding project-specific packages
+
+An important note regarding such 'project-specific' customizations:
+please carefully consider which changes are indeed project-specific and
+which changes are also useful to developers outside your project. The
+Buildroot community highly recommends and encourages the upstreaming of
+improvements, packages and board support to the official Buildroot
+project. Of course, it is sometimes not possible or desirable to
+upstream because the changes are highly specific or proprietary.
+
+This chapter describes how to make such project-specific customizations
+in Buildroot and how to store them in a way that you can build the same
+image in a reproducible way, even after running 'make clean'. By
+following the recommended strategy, you can even use the same Buildroot
+tree to build multiple distinct projects!
+
+include::customize-directory-structure.txt[]
+
+include::customize-outside-br.txt[]
+
+include::customize-configuration.txt[]
+
+include::customize-rootfs.txt[]
+
+include::customize-users-tables.txt[]
+
+include::customize-post-image.txt[]
+
+include::customize-patches.txt[]
+
+include::customize-packages.txt[]
+
+include::customize-quick-guide.txt[]

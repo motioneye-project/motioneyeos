@@ -1,0 +1,32 @@
+From d6bf0c57a6bf361ac53887653aa1878e60d56335 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 9 Jun 2017 10:19:32 +0200
+Subject: [PATCH] Fix gdbserver build on uClibc/noMMU
+
+The noMMU specific code requires including <sched.h>.
+
+Originally from
+https://cgit.openadk.org/cgi/cgit/openadk.git/plain/package/gdbserver/patches/nommu.patch.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ gdb/nat/linux-ptrace.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/gdb/nat/linux-ptrace.h b/gdb/nat/linux-ptrace.h
+index 0a23bcb..35b7cbb 100644
+--- a/gdb/nat/linux-ptrace.h
++++ b/gdb/nat/linux-ptrace.h
+@@ -23,7 +23,8 @@ struct buffer;
+ #include "nat/gdb_ptrace.h"
+ 
+ #ifdef __UCLIBC__
+-#if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_HAS_MMU__))
++#include <sched.h>
++#if !(defined(__UCLIBC_HAS_MMU__) || defined(__ARCH_USE_MMU__))
+ /* PTRACE_TEXT_ADDR and friends.  */
+ #include <asm/ptrace.h>
+ #define HAS_NOMMU
+-- 
+2.7.4
+

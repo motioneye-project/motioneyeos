@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_SORTEDCONTAINERS
+	bool "python-sortedcontainers"
+	help
+	  Python Sorted Container Types: SortedList, SortedDict, and
+	  SortedSet.
+
+	  http://www.grantjenks.com/docs/sortedcontainers/

@@ -7,8 +7,8 @@ config BR2_PACKAGE_GUPNP_AV
 	select BR2_PACKAGE_GUPNP
 	select BR2_PACKAGE_LIBXML2
 	help
-	  GUPnP-AV is a collection of helpers for building AV (audio/video)
-	  applications using GUPnP.
+	  GUPnP-AV is a collection of helpers for building AV
+	  (audio/video) applications using GUPnP.
 
 	  http://www.gupnp.org/
 

@@ -33,11 +33,11 @@ comment "procps support needs BR2_PACKAGE_BUSYBOX_SHOW_OTHERS"
 
 config BR2_PACKAGE_OPENVMTOOLS_PAM
 	bool "PAM support"
-	select BR2_PACKAGE_LINUX_PAM
 	# linux-pam needs locale and wchar, but we already have this
 	# dependency on the main symbol, above.
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
+	select BR2_PACKAGE_LINUX_PAM
 	help
 	  Support for PAM in openvmtools
 

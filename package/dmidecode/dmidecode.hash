@@ -1,2 +1,2 @@
-# http://http.debian.net/debian/pool/main/d/dmidecode/dmidecode_3.0-2.dsc
-sha256	7ec35bb193729c1d593a1460b59d82d24b89102ab23fd0416e6cf4325d077e45	dmidecode-3.0.tar.xz
+# Locally computed
+sha256 d766ce9b25548c59b1e7e930505b4cad9a7bb0b904a1a391fbb604d529781ac0  dmidecode-3.1.tar.xz

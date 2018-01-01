@@ -1,5 +1,6 @@
 config BR2_PACKAGE_XLIB_LIBXSHMFENCE
 	bool "libxshmfence"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_XPROTO_XPROTO
 	help
 	  X.Org shmfence library

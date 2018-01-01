@@ -5,7 +5,7 @@
 ################################################################################
 
 IOSTAT_VERSION = 2.2
-IOSTAT_SITE = http://www.linuxinsight.com/files
+IOSTAT_SITE = http://linuxinsight.com/sites/default/files
 IOSTAT_LICENSE = GPL
 IOSTAT_LICENSE_FILES = LICENSE
 

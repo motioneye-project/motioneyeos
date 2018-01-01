@@ -1,0 +1,16 @@
+Do not build the documentation.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durN dahdi-tools-2.11.0.orig/Makefile.am dahdi-tools-2.11.0/Makefile.am
+--- dahdi-tools-2.11.0.orig/Makefile.am	2015-12-22 21:19:12.000000000 +0100
++++ dahdi-tools-2.11.0/Makefile.am	2016-01-04 23:23:34.201304133 +0100
+@@ -17,7 +17,7 @@
+ 	#-Wformat=2
+ endif
+ 
+-SUBDIRS	= xpp doc hotplug
++SUBDIRS	= xpp hotplug
+ 
+ if PPPD
+ SUBDIRS	+= ppp

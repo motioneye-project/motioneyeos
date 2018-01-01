@@ -22,7 +22,7 @@ define HOST_JSMIN_BUILD_CMDS
 endef
 
 define HOST_JSMIN_INSTALL_CMDS
-	$(INSTALL) -m 0755 -D $(@D)/jsmin $(HOST_DIR)/usr/bin/jsmin
+	$(INSTALL) -m 0755 -D $(@D)/jsmin $(HOST_DIR)/bin/jsmin
 endef
 
 $(eval $(generic-package))

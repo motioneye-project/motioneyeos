@@ -1,0 +1,18 @@
+Without this patch, dependencies would be downloaded and compiled
+by rebar at build time.
+
+Signed-off-by: Christophe Romain <cromain@process-one.net>
+
+diff --git a/rebar.config b/rebar.config
+index 79494b7..8d769f1 100644
+--- a/rebar.config
++++ b/rebar.config
+@@ -24,9 +24,6 @@
+ 	    {i, "../fast_xml/include"},
+ 	    {i, "deps/fast_xml/include"}]}.
+
+-{deps, [{fast_xml, ".*", {git, "https://github.com/processone/fast_xml", {tag, "1.1.22"}}},
+-	{stringprep, ".*", {git, "https://github.com/processone/stringprep", {tag, "1.0.8"}}}]}.
+-
+ {cover_enabled, true}.
+ {cover_export_enabled, true}.

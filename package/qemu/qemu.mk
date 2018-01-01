@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.7.0
-QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.bz2
-QEMU_SITE = http://wiki.qemu.org/download
-QEMU_LICENSE = GPLv2, LGPLv2.1, MIT, BSD-3c, BSD-2c, Others/BSD-1c
+QEMU_VERSION = 2.10.1
+QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.xz
+QEMU_SITE = http://download.qemu.org
+QEMU_LICENSE = GPL-2.0, LGPL-2.1, MIT, BSD-3-Clause, BSD-2-Clause, Others/BSD-1c
 QEMU_LICENSE_FILES = COPYING COPYING.LIB
 # NOTE: there is no top-level license file for non-(L)GPL licenses;
 #       the non-(L)GPL license texts are specified in the affected
@@ -126,11 +126,11 @@ define HOST_QEMU_CONFIGURE_CMDS
 	cd $(@D); $(HOST_CONFIGURE_OPTS) CPP="$(HOSTCC) -E" \
 		./configure \
 		--target-list="$(HOST_QEMU_TARGETS)" \
-		--prefix="$(HOST_DIR)/usr" \
+		--prefix="$(HOST_DIR)" \
 		--interp-prefix=$(STAGING_DIR) \
 		--cc="$(HOSTCC)" \
 		--host-cc="$(HOSTCC)" \
-		--python=$(HOST_DIR)/usr/bin/python2 \
+		--python=$(HOST_DIR)/bin/python2 \
 		--extra-cflags="$(HOST_CFLAGS)" \
 		--extra-ldflags="$(HOST_LDFLAGS)" \
 		$(HOST_QEMU_OPTS)
@@ -147,7 +147,7 @@ endef
 $(eval $(host-generic-package))
 
 # variable used by other packages
-QEMU_USER = $(HOST_DIR)/usr/bin/qemu-$(HOST_QEMU_ARCH)
+QEMU_USER = $(HOST_DIR)/bin/qemu-$(HOST_QEMU_ARCH)
 
 #-------------------------------------------------------------
 # Target-qemu
@@ -161,8 +161,8 @@ QEMU_LIBS = -lrt -lm
 QEMU_OPTS =
 
 QEMU_VARS = \
-	LIBTOOL=$(HOST_DIR)/usr/bin/libtool \
-	PYTHON=$(HOST_DIR)/usr/bin/python2 \
+	LIBTOOL=$(HOST_DIR)/bin/libtool \
+	PYTHON=$(HOST_DIR)/bin/python2 \
 	PYTHONPATH=$(TARGET_DIR)/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
 
 # If we want to specify only a subset of targets, we must still enable all
@@ -215,42 +215,41 @@ endif
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define QEMU_CONFIGURE_CMDS
-	( cd $(@D);                                     \
-		LIBS='$(QEMU_LIBS)'                     \
-		$(TARGET_CONFIGURE_OPTS)                \
-		$(TARGET_CONFIGURE_ARGS)                \
-		CPP="$(TARGET_CC) -E"			\
-		$(QEMU_VARS)                            \
-		./configure                             \
-			--prefix=/usr                   \
-			--cross-prefix=$(TARGET_CROSS)  \
-			--with-system-pixman            \
-			--audio-drv-list=               \
-			--enable-kvm                    \
-			--enable-attr                   \
-			--enable-vhost-net              \
-			--disable-bsd-user              \
-			--disable-xen                   \
-			--disable-slirp                 \
-			--disable-vnc                   \
-			--disable-virtfs                \
-			--disable-brlapi                \
-			--disable-curses                \
-			--disable-curl                  \
-			--disable-bluez                 \
-			--disable-uuid                  \
-			--disable-vde                   \
-			--disable-linux-aio             \
-			--disable-cap-ng                \
-			--disable-docs                  \
-			--disable-spice                 \
-			--disable-rbd                   \
-			--disable-libiscsi              \
-			--disable-usb-redir             \
-			--disable-strip                 \
-			--disable-seccomp               \
-			--disable-sparse                \
-			$(QEMU_OPTS)                    \
+	( cd $(@D); \
+		LIBS='$(QEMU_LIBS)' \
+		$(TARGET_CONFIGURE_OPTS) \
+		$(TARGET_CONFIGURE_ARGS) \
+		CPP="$(TARGET_CC) -E" \
+		$(QEMU_VARS) \
+		./configure \
+			--prefix=/usr \
+			--cross-prefix=$(TARGET_CROSS) \
+			--with-system-pixman \
+			--audio-drv-list= \
+			--enable-kvm \
+			--enable-attr \
+			--enable-vhost-net \
+			--disable-bsd-user \
+			--disable-xen \
+			--disable-slirp \
+			--disable-vnc \
+			--disable-virtfs \
+			--disable-brlapi \
+			--disable-curses \
+			--disable-curl \
+			--disable-bluez \
+			--disable-vde \
+			--disable-linux-aio \
+			--disable-cap-ng \
+			--disable-docs \
+			--disable-spice \
+			--disable-rbd \
+			--disable-libiscsi \
+			--disable-usb-redir \
+			--disable-strip \
+			--disable-seccomp \
+			--disable-sparse \
+			$(QEMU_OPTS) \
 	)
 endef
 

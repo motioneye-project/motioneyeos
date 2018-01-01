@@ -23,9 +23,9 @@ index 8b084cf..81bbe27 100644
  
 -  include_directories(${OpenGL_INCLUDE_DIR}
 +  include_directories(${OpenGL_INCLUDE_DIR} ${OpenGLES2_INCLUDE_DIRS}
-                       ${GLEW_INCLUDE_DIR}
                        ${KODI_INCLUDE_DIR}
-                       ${platform_INCLUDE_DIRS}
+                       ${p8-platform_INCLUDE_DIRS}
+                       ${PROJECT_SOURCE_DIR}/lib/kissfft
 diff --git a/FindOpenGLES2.cmake b/FindOpenGLES2.cmake
 index e1b7d21..2a9ce0d 100644
 --- a/FindOpenGLES2.cmake

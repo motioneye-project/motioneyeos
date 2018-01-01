@@ -1,0 +1,8 @@
+config BR2_PACKAGE_RPI_BT_FIRMWARE
+	bool "rpi-bt-firmware"
+	depends on BR2_arm || BR2_aarch64
+	help
+	  Raspberry Pi 3 and Zero W Broadcom BCM43438 Bluetooth module
+	  firmware.
+
+	  https://aur.archlinux.org/packages/pi-bluetooth

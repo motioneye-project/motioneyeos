@@ -1,0 +1,102 @@
+From e7e421526b17c179d5ac33a982b180ff5f7ef7a7 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 27 May 2017 23:51:41 +0200
+Subject: [PATCH] use contrib getopt() only on Windows
+
+Otherwise, contrib getopt will clash with the one from the libc when
+building statically.
+
+lib64/libc.a(getopt.os):(.data+0x8): multiple definition of `optind'
+CMakeFiles/demo_mn_console.dir/__/__/contrib/getopt/getopt.c.o:(.data+0x8): first defined here
+lib64/libc.a(getopt.os):(.data+0x4): multiple definition of `opterr'
+CMakeFiles/demo_mn_console.dir/__/__/contrib/getopt/getopt.c.o:(.data+0xc): first defined here
+/lib64/libc.a(getopt.os): In function `__GI_getopt':
+getopt.c:(.text+0x76e): multiple definition of `getopt'
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ apps/demo_cn_console/CMakeLists.txt | 2 +-
+ apps/demo_cn_console/src/main.c     | 6 ++++++
+ apps/demo_mn_console/CMakeLists.txt | 2 +-
+ apps/demo_mn_console/src/main.c     | 6 ++++++
+ 4 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/apps/demo_cn_console/CMakeLists.txt b/apps/demo_cn_console/CMakeLists.txt
+index 3bb8f25..800797a 100644
+--- a/apps/demo_cn_console/CMakeLists.txt
++++ b/apps/demo_cn_console/CMakeLists.txt
+@@ -61,7 +61,6 @@ SET(DEMO_SOURCES
+     ${COMMON_SOURCE_DIR}/eventlog/eventlog.c
+     ${COMMON_SOURCE_DIR}/eventlog/eventlogstring.c
+     ${CONTRIB_SOURCE_DIR}/console/printlog.c
+-    ${CONTRIB_SOURCE_DIR}/getopt/getopt.c
+     )
+ 
+ INCLUDE_DIRECTORIES(
+@@ -114,6 +113,7 @@ ENDIF (CFG_KERNEL_STACK_DIRECTLINK)
+ IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+     include(linux.cmake)
+ ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++    SET(DEMO_SOURCES ${DEMO_SOURCES} ${CONTRIB_SOURCE_DIR}/getopt/getopt.c)
+     include (windows.cmake)
+ ELSE()
+     MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
+diff --git a/apps/demo_cn_console/src/main.c b/apps/demo_cn_console/src/main.c
+index d64536c..f790570 100644
+--- a/apps/demo_cn_console/src/main.c
++++ b/apps/demo_cn_console/src/main.c
+@@ -50,7 +50,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ #include <system/system.h>
+ #include <obdcreate/obdcreate.h>
++
++#if (TARGET_SYSTEM == _WIN32_)
+ #include <getopt/getopt.h>
++#else
++#include <unistd.h>
++#endif
++
+ #include <console/console.h>
+ #include <eventlog/eventlog.h>
+ 
+diff --git a/apps/demo_mn_console/CMakeLists.txt b/apps/demo_mn_console/CMakeLists.txt
+index 6f9c5a1..2e74529 100644
+--- a/apps/demo_mn_console/CMakeLists.txt
++++ b/apps/demo_mn_console/CMakeLists.txt
+@@ -68,7 +68,6 @@ SET(DEMO_SOURCES
+     ${COMMON_SOURCE_DIR}/eventlog/eventlog.c
+     ${COMMON_SOURCE_DIR}/eventlog/eventlogstring.c
+     ${CONTRIB_SOURCE_DIR}/console/printlog.c
+-    ${CONTRIB_SOURCE_DIR}/getopt/getopt.c
+     ${FIRMWARE_MANAGER_SOURCES}
+     )
+ 
+@@ -131,6 +130,7 @@ ENDIF()
+ IF(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+     include(linux.cmake)
+ ELSEIF(CMAKE_SYSTEM_NAME STREQUAL "Windows")
++    SET(DEMO_SOURCES ${DEMO_SOURCES} ${CONTRIB_SOURCE_DIR}/getopt/getopt.c)
+     include (windows.cmake)
+ ELSE()
+     MESSAGE(FATAL_ERROR "System ${CMAKE_SYSTEM_NAME} is not supported!")
+diff --git a/apps/demo_mn_console/src/main.c b/apps/demo_mn_console/src/main.c
+index cba747d..b766ed1 100644
+--- a/apps/demo_mn_console/src/main.c
++++ b/apps/demo_mn_console/src/main.c
+@@ -50,7 +50,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ 
+ #include <system/system.h>
+ #include <obdcreate/obdcreate.h>
++
++#if (TARGET_SYSTEM == _WIN32_)
+ #include <getopt/getopt.h>
++#else
++#include <unistd.h>
++#endif
++
+ #include <console/console.h>
+ #include <eventlog/eventlog.h>
+ #include <firmwaremanager/firmwaremanager.h>
+-- 
+2.9.4
+

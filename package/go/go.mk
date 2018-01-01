@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-GO_VERSION = 1.7.4
+GO_VERSION = 1.9
 GO_SITE = https://storage.googleapis.com/golang
 GO_SOURCE = go$(GO_VERSION).src.tar.gz
 
-GO_LICENSE = BSD-3c
+GO_LICENSE = BSD-3-Clause
 GO_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_arm),y)
@@ -37,7 +37,7 @@ GO_GOARCH = mips64le
 endif
 
 HOST_GO_DEPENDENCIES = host-go-bootstrap
-HOST_GO_ROOT = $(HOST_DIR)/usr/lib/go
+HOST_GO_ROOT = $(HOST_DIR)/lib/go
 
 # For the convienience of target packages.
 HOST_GO_TOOLDIR = $(HOST_GO_ROOT)/pkg/tool/linux_$(GO_GOARCH)
@@ -52,7 +52,7 @@ HOST_GO_TARGET_ENV = \
 # set, build in cgo support for any go programs that may need it.  Note that
 # any target package needing cgo support must include
 # 'depends on BR2_TOOLCHAIN_HAS_THREADS' in its config file.
-ifeq (BR2_TOOLCHAIN_HAS_THREADS,y)
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 HOST_GO_CGO_ENABLED = 1
 else
 HOST_GO_CGO_ENABLED = 0
@@ -74,8 +74,8 @@ HOST_GO_MAKE_ENV = \
 	GOARCH=$(GO_GOARCH) \
 	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
 	GOOS=linux \
-	CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
-	CC=$(HOSTCC_NOCCACHE)
+	CC=$(HOSTCC_NOCCACHE) \
+	CXX=$(HOSTCXX_NOCCACHE)
 
 HOST_GO_TARGET_CC = \
 	CC_FOR_TARGET="$(TARGET_CC)" \
@@ -83,24 +83,26 @@ HOST_GO_TARGET_CC = \
 
 HOST_GO_HOST_CC = \
 	CC_FOR_TARGET=$(HOSTCC_NOCCACHE) \
-	CXX_FOR_TARGET=$(HOSTCC_NOCCACHE)
+	CXX_FOR_TARGET=$(HOSTCXX_NOCCACHE)
 
 HOST_GO_TMP = $(@D)/host-go-tmp
 
 define HOST_GO_BUILD_CMDS
-	cd $(@D)/src && $(HOST_GO_MAKE_ENV) $(HOST_GO_HOST_CC) ./make.bash
+	cd $(@D)/src && \
+		$(HOST_GO_MAKE_ENV) $(HOST_GO_HOST_CC) CGO_ENABLED=0 ./make.bash
 	mkdir -p $(HOST_GO_TMP)
 	mv $(@D)/pkg/tool $(HOST_GO_TMP)/
 	mv $(@D)/bin/ $(HOST_GO_TMP)/
-	cd $(@D)/src && $(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) ./make.bash
+	cd $(@D)/src && \
+		$(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) CGO_ENABLED=$(HOST_GO_CGO_ENABLED) ./make.bash
 endef
 
 define HOST_GO_INSTALL_CMDS
 	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/go $(HOST_GO_ROOT)/bin/go
 	$(INSTALL) -D -m 0755 $(HOST_GO_TMP)/bin/gofmt $(HOST_GO_ROOT)/bin/gofmt
 
-	ln -sf ../lib/go/bin/go $(HOST_DIR)/usr/bin/
-	ln -sf ../lib/go/bin/gofmt $(HOST_DIR)/usr/bin/
+	ln -sf ../lib/go/bin/go $(HOST_DIR)/bin/
+	ln -sf ../lib/go/bin/gofmt $(HOST_DIR)/bin/
 
 	cp -a $(@D)/lib $(HOST_GO_ROOT)/
 

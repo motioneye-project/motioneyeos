@@ -1,2 +1,2 @@
-# From http://www.openntpd.org/txt/release-6.0p1.txt
-sha256	b1ab80094788912adb12b33cb1f251cc58db39294c1b5c6376972f5f7ba577e8	openntpd-6.0p1.tar.gz
+# Locally computed
+sha256 5808a4137b008a4db20907e1a482f474734b120f254e3c5feb90db15e0820fb2  openntpd-6.2p2.tar.gz

@@ -1,0 +1,28 @@
+From 526510a27ef47a16699dd34a2373ad9b6bb5e8f3 Mon Sep 17 00:00:00 2001
+From: Julien Viard de Galbert <julien@vdg.name>
+Date: Sat, 14 Jan 2017 14:19:47 +0100
+Subject: [PATCH] Add _GNU_SOURCE for uint and M_PI with musl libc
+
+When building with musl libc _GNU_SOURCE need to be defined
+to provide uint type and M_PI macro
+
+Signed-off-by: Julien Viard de Galbert <julien@vdg.name>
+---
+ include/dieharder/libdieharder.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/dieharder/libdieharder.h b/include/dieharder/libdieharder.h
+index d98b758..c1a5023 100644
+--- a/include/dieharder/libdieharder.h
++++ b/include/dieharder/libdieharder.h
+@@ -17,6 +17,7 @@
+ 
+ /* This turns on uint macro in c99 */
+ #define __USE_MISC 1
++#define _GNU_SOURCE 1
+ #include <stdint.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-- 
+2.1.4
+

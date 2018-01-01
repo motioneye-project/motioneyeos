@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RUNC_VERSION = 50a19c6ff828c58e5dab13830bd3dacde268afe5
+RUNC_VERSION = 9c2d8d184e5da67c95d601382adf14862e4f2228
 RUNC_SITE = $(call github,opencontainers,runc,$(RUNC_VERSION))
 RUNC_LICENSE = Apache-2.0
 RUNC_LICENSE_FILES = LICENSE
@@ -38,7 +38,7 @@ define RUNC_CONFIGURE_CMDS
 endef
 
 define RUNC_BUILD_CMDS
-	cd $(@D) && $(RUNC_MAKE_ENV) $(HOST_DIR)/usr/bin/go \
+	cd $(@D) && $(RUNC_MAKE_ENV) $(HOST_DIR)/bin/go \
 		build -v -o $(@D)/bin/runc \
 		-tags "$(RUNC_GOTAGS)" -ldflags "$(RUNC_GLDFLAGS)" .
 endef

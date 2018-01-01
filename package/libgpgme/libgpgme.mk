@@ -4,17 +4,16 @@
 #
 ################################################################################
 
-LIBGPGME_VERSION = 1.7.1
+LIBGPGME_VERSION = 1.9.0
 LIBGPGME_SITE = ftp://ftp.gnupg.org/gcrypt/gpgme
 LIBGPGME_SOURCE = gpgme-$(LIBGPGME_VERSION).tar.bz2
-LIBGPGME_LICENSE = LGPLv2.1+
+LIBGPGME_LICENSE = LGPL-2.1+
 LIBGPGME_LICENSE_FILES = COPYING.LESSER
 LIBGPGME_INSTALL_STAGING = YES
 LIBGPGME_DEPENDENCIES = libassuan libgpg-error
 LIBGPGME_LANGUAGE_BINDINGS = cl
 
-# libgpgme, needs to know the gpg binary path on the target.
-LIBGPGME_CONF_OPTS = --with-gpg=/usr/bin/gpg \
+LIBGPGME_CONF_OPTS = \
 	--with-gpg-error-prefix=$(STAGING_DIR)/usr \
 	--with-libassuan-prefix=$(STAGING_DIR)/usr \
 	--disable-gpgsm-test \

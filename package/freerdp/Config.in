@@ -81,6 +81,7 @@ config BR2_PACKAGE_FREERDP_CLIENT_WL
 	bool "wayland client"
 	default y
 	depends on BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_LIBXKBCOMMON
 
 endif
 

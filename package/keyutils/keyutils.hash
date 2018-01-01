@@ -1,3 +1,2 @@
-# From http://people.redhat.com/~dhowells/keyutils/
-md5	7f8ac985c45086b5fbcd12cecd23cf07	keyutils-1.5.9.tar.bz2
-sha1	cf040adebe25eb466760f34752f4100fd5acb5e7	keyutils-1.5.9.tar.bz2
+# Locally computed
+sha256 115c3deae7f181778fd0e0ffaa2dad1bf1fe2f5677cf2e0e348cdb7a1c93afb6  keyutils-1.5.10.tar.bz2

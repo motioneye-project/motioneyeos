@@ -1,0 +1,50 @@
+From 6267665454501512ac054202b38e4e6a72fa284b Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 8 Sep 2017 14:19:11 +0300
+Subject: [PATCH] Add missing ioctl header
+
+The spidev.h header uses macros from linux/ioctl.h. Add this header
+explicitly since some libc, like musl, do not include it implicitly.
+This fixes the following build failure:
+
+In file included from .../sysroot/usr/include/sys/ioctl.h:7:0,
+                 from hd44780-spi.c:31:
+hd44780-spi.c: In function ‘spi_transfer’:
+hd44780-spi.c:89:24: error: ‘_IOC_SIZEBITS’ undeclared (first use in this function)
+  status = ioctl(p->fd, SPI_IOC_MESSAGE(1), &xfer);
+                        ^
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/lcdproc/lcdproc/pull/90
+
+ server/drivers/hd44780-pifacecad.c | 1 +
+ server/drivers/hd44780-spi.c       | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/server/drivers/hd44780-pifacecad.c b/server/drivers/hd44780-pifacecad.c
+index a73b9f9b1f82..55139124d852 100644
+--- a/server/drivers/hd44780-pifacecad.c
++++ b/server/drivers/hd44780-pifacecad.c
+@@ -54,6 +54,7 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
++#include <linux/ioctl.h>
+ #include <stdint.h>
+ #include <linux/spi/spidev.h>
+ 
+diff --git a/server/drivers/hd44780-spi.c b/server/drivers/hd44780-spi.c
+index 791156f87a26..74c85fb014aa 100644
+--- a/server/drivers/hd44780-spi.c
++++ b/server/drivers/hd44780-spi.c
+@@ -29,6 +29,7 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ #include <sys/ioctl.h>
++#include <linux/ioctl.h>
+ #include <stdint.h>
+ #include <linux/spi/spidev.h>
+ 
+-- 
+2.14.1
+

@@ -4,8 +4,8 @@ config BR2_PACKAGE_LIBMINIUPNPC
 	depends on !BR2_STATIC_LIBS
 	help
 	  The UPnP protocol is supported by most home adsl/cable routers
-	  and Microsoft Windows 2K/XP. The aim of the MiniUPnP project is
-	  to bring a free software solution to support the "Internet
+	  and Microsoft Windows 2K/XP. The aim of the MiniUPnP project
+	  is to bring a free software solution to support the "Internet
 	  Gateway Device" part of the protocol.
 
 	  Miniupnpc aims at the simplest library possible, with the

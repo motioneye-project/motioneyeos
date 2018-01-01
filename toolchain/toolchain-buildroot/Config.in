@@ -47,9 +47,11 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 		   BR2_mipsel      || BR2_mips64     || BR2_mips64el|| \
 		   BR2_powerpc     || BR2_powerpc64  || BR2_powerpc64le || \
 		   BR2_sh          || BR2_sparc64    || BR2_x86_64 || \
-		   BR2_microblaze || BR2_nios2
+		   BR2_microblaze  || BR2_nios2      || BR2_archs38
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 || !BR2_powerpc64le
 	depends on !BR2_powerpc_SPE
 	select BR2_TOOLCHAIN_USES_GLIBC
 	# our glibc.mk enables RPC support
@@ -60,9 +62,14 @@ config BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
 	  http://www.gnu.org/software/libc/
 
-comment "glibc only available with shared lib support"
+comment "glibc needs a toolchain w/ dynamic library, kernel headers >= 3.2"
 	depends on BR2_USE_MMU
-	depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+
+# glibc >= 2.26 require kernel headers >= 3.10 on powerpc64le.
+comment "glibc on powerpc64le needs a toolchain w/ headers >= 3.10"
+	depends on BR2_powerpc64le
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
 config BR2_TOOLCHAIN_BUILDROOT_MUSL
 	bool "musl"

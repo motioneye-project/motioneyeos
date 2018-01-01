@@ -3,7 +3,7 @@ config BR2_PACKAGE_LIBTHEORA
 	select BR2_PACKAGE_LIBOGG
 	select BR2_PACKAGE_LIBVORBIS
 	help
-	  A library for the free and open video compression format "Theora"
-	  from the Xiph.org Foundation.
+	  A library for the free and open video compression format
+	  "Theora" from the Xiph.org Foundation.
 
 	  http://www.theora.org/

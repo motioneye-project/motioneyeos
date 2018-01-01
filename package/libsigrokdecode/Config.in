@@ -1,12 +1,12 @@
 config BR2_PACKAGE_LIBSIGROKDECODE
 	bool "libsigrokdecode"
-	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_PYTHON3
 	depends on !BR2_PACKAGE_PYTHON # python3
 	depends on BR2_USE_WCHAR # libglib2/python3
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2/python3
 	depends on BR2_USE_MMU # libglib2/python3
 	depends on !BR2_STATIC_LIBS # python3
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_PYTHON3
 	help
 	  Libsigrokdecode is a shared library written in C, which
 	  provides (streaming) protocol decoding functionality. Say

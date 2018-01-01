@@ -1,0 +1,19 @@
+config BR2_PACKAGE_SEMODULE_UTILS
+	bool "semodule-utils"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libsepol
+	select BR2_PACKAGE_LIBSEPOL
+	help
+	  semodule-utils is a package that contains tools for handling
+	  selinux modules.
+
+	  The package will install the following utilities:
+	  * semodule_deps - Show the dependencies between SELinux
+	    policy packages.
+	  * semodule_expand - Expand a SELinux policy module package.
+	  * semodule_link - Link SELinux policy module packages together
+	  * semodule_package - Create a SELinux policy module package.
+
+	  https://github.com/SELinuxProject/selinux/wiki/Releases
+
+comment "semodule-utils needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -2,7 +2,6 @@ config BR2_PACKAGE_MADPLAY
 	bool "madplay"
 	select BR2_PACKAGE_LIBMAD
 	select BR2_PACKAGE_LIBID3TAG
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  Command-line front-end to libmad, a high-quality MPEG audio decoder.
 	  It currently supports MPEG-1 and the MPEG-2 extension to lower

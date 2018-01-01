@@ -4,10 +4,14 @@
 #
 ################################################################################
 
-OPENSSH_VERSION = 7.4p1
+OPENSSH_VERSION = 7.6p1
 OPENSSH_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
-OPENSSH_LICENSE = BSD-3c, BSD-2c, Public Domain
+OPENSSH_LICENSE = BSD-3-Clause, BSD-2-Clause, Public Domain
 OPENSSH_LICENSE_FILES = LICENCE
+# Autoreconf needed due to the following patches modifying configure.ac:
+# 0001-configure-ac-detect-mips-abi.patch
+# 0002-configure-ac-properly-set-seccomp-audit-arch-for-mips64.patch
+OPENSSH_AUTORECONF = YES
 OPENSSH_CONF_ENV = LD="$(TARGET_CC)" LDFLAGS="$(TARGET_CFLAGS)"
 OPENSSH_CONF_OPTS = \
 	--sysconfdir=/data/etc \
@@ -27,6 +31,13 @@ OPENSSH_CONF_OPTS += --without-pie
 endif
 
 OPENSSH_DEPENDENCIES = zlib openssl
+
+ifeq ($(BR2_PACKAGE_CRYPTODEV_LINUX),y)
+OPENSSH_DEPENDENCIES += cryptodev-linux
+OPENSSH_CONF_OPTS += --with-ssl-engine
+else
+OPENSSH_CONF_OPTS += --without-ssl-engine
+endif
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 define OPENSSH_INSTALL_PAM_CONF

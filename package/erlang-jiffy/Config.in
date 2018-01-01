@@ -1,0 +1,10 @@
+comment "erlang-jiffy needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+config BR2_PACKAGE_ERLANG_JIFFY
+	bool "erlang-jiffy"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  JSON NIFs for Erlang.
+
+	  https://github.com/davisp/jiffy

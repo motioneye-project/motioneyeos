@@ -1,0 +1,15 @@
+config BR2_TARGET_XLOADER
+	bool "X-loader"
+	depends on BR2_cortex_a8 || BR2_cortex_a9
+	help
+	  The x-loader bootloader. It is mainly used on OMAP-based
+	  platforms.
+
+if BR2_TARGET_XLOADER
+config BR2_TARGET_XLOADER_BOARDNAME
+	string "x-loader board name"
+	help
+	  One of x-loader supported boards to be built.
+	  This will be suffixed with _config to meet x-loader
+	  standard naming.
+endif

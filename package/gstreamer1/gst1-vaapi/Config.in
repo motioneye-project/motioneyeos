@@ -1,0 +1,50 @@
+config BR2_PACKAGE_GST1_VAAPI
+	bool "gst1-vaapi"
+	depends on !BR2_STATIC_LIBS # dlopen(), libva
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libva, libdrm
+	depends on BR2_PACKAGE_HAS_UDEV
+	select BR2_PACKAGE_LIBVA
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BAD # gstreamer-codecparsers
+	help
+	  gstreamer-vaapi consists in a collection of VA-API based
+	  plugins for GStreamer and helper libraries.
+
+	  vaapi<CODEC>dec is used to decode JPEG, MPEG-2, MPEG-4:2,
+	  H.264 AVC, H.264 MVC, VP8, VC-1, WMV3, HEVC videos to VA
+	  surfaces, depending on the actual value of <CODEC> and the
+	  underlying hardware capabilities.  This plugin is also able
+	  to implicitly download the decoded surface to raw YUV
+	  buffers.
+
+	  vaapi<CODEC>enc is used to encode into MPEG-2, H.264 AVC,
+	  H.264 MVC, JPEG, VP8, HEVC videos, depending on the actual
+	  value of <CODEC> (mpeg2, h264, etc.) and the hardware
+	  capabilities. By default, raw format bitstreams are
+	  generated, so the result may be piped to a muxer, e.g. qtmux
+	  for MP4 containers.
+
+	  vaapipostproc is used to filter VA surfaces, for
+	  e.g. scaling, deinterlacing (bob, motion-adaptive,
+	  motion-compensated), noise reduction or sharpening. This
+	  plugin is also used to upload raw YUV pixels into VA
+	  surfaces.
+
+	  vaapisink is used to render VA surfaces to an X11 or Wayland
+	  display. This plugin also features a "headless" mode (DRM)
+	  more suited to remote transcode scenarios, with faster
+	  throughput.
+
+	  https://cgit.freedesktop.org/gstreamer/gstreamer-vaapi
+
+if BR2_PACKAGE_GST1_VAAPI
+
+config BR2_PACKAGE_GST1_VAAPI_ENCODERS
+	bool "enable encoders"
+
+endif
+
+comment "gst1-vaapi needs udev /dev management and a toolchain w/ threads, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
+		!BR2_PACKAGE_HAS_UDEV

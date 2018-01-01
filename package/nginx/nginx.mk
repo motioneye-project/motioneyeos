@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.10.3
+NGINX_VERSION = 1.12.1
 NGINX_SITE = http://nginx.org/download
-NGINX_LICENSE = BSD-2c
+NGINX_LICENSE = BSD-2-Clause
 NGINX_LICENSE_FILES = LICENSE
 NGINX_DEPENDENCIES = host-pkgconf
 

@@ -1,0 +1,36 @@
+From 167042116f523f90911f3a28c4ec065918d56cc9 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Tue, 22 Aug 2017 00:02:52 +0200
+Subject: [PATCH] src/pipe.c: fix build error with gcc 7.x
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The write function takes a char* as argument, not a char.
+
+Fixes:
+
+pipe.cpp: In member function ‘void DBus::Pipe::signal()’:
+pipe.cpp:86:29: error: invalid conversion from ‘char’ to ‘const void*’ [-fpermissive]
+   ::write(_fd_write, '\0', 1);
+                             ^
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ src/pipe.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/pipe.cpp b/src/pipe.cpp
+index 01211b3..d0572c7 100644
+--- a/src/pipe.cpp
++++ b/src/pipe.cpp
+@@ -83,5 +83,5 @@ ssize_t Pipe::read(void *buffer, unsigned int &nbytes)
+ void Pipe::signal()
+ {
+   // TODO: ignoring return of read/write generates warning; maybe relevant for eventloop work...
+-  ::write(_fd_write, '\0', 1);
++  ::write(_fd_write, "\0", 1);
+ }
+-- 
+2.9.4
+

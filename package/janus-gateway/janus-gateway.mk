@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-JANUS_GATEWAY_VERSION = v0.2.1
+JANUS_GATEWAY_VERSION = v0.2.5
 JANUS_GATEWAY_SITE = $(call github,meetecho,janus-gateway,$(JANUS_GATEWAY_VERSION))
-JANUS_GATEWAY_LICENSE = GPLv3
+JANUS_GATEWAY_LICENSE = GPL-3.0
 JANUS_GATEWAY_LICENSE_FILES = COPYING
 
 # ding-libs provides the ini_config library
 JANUS_GATEWAY_DEPENDENCIES = host-pkgconf jansson libnice \
-	libsrtp host-gengetopt libglib2 openssl 
+	libsrtp host-gengetopt libglib2 openssl
 
 # Straight out of the repository, no ./configure, and we also patch
 # configure.ac.
@@ -24,7 +24,7 @@ JANUS_GATEWAY_POST_PATCH_HOOKS += JANUS_GATEWAY_M4
 
 JANUS_GATEWAY_CONF_OPTS = \
 	--disable-data-channels \
-	--disable-rabbitmq
+	--disable-sample-event-handler
 
 ifeq ($(BR2_PACKAGE_JANUS_AUDIO_BRIDGE),y)
 JANUS_GATEWAY_DEPENDENCIES += opus
@@ -83,7 +83,34 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-plugin-voicemail
 endif
 
-ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
+ifeq ($(BR2_PACKAGE_JANUS_MQTT),y)
+JANUS_GATEWAY_DEPENDENCIES += paho-mqtt-c
+JANUS_GATEWAY_CONF_OPTS += --enable-mqtt
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-mqtt
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_RABBITMQ),y)
+JANUS_GATEWAY_DEPENDENCIES += rabbitmq-c
+JANUS_GATEWAY_CONF_OPTS += --enable-rabbitmq
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-rabbitmq
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_REST),y)
+JANUS_GATEWAY_DEPENDENCIES += libmicrohttpd
+JANUS_GATEWAY_CONF_OPTS += --enable-rest
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-rest
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_UNIX_SOCKETS),y)
+JANUS_GATEWAY_CONF_OPTS += --enable-unix-sockets
+else
+JANUS_GATEWAY_CONF_OPTS += --disable-unix-sockets
+endif
+
+ifeq ($(BR2_PACKAGE_JANUS_WEBSOCKETS),y)
 JANUS_GATEWAY_DEPENDENCIES += libwebsockets
 JANUS_GATEWAY_CONF_OPTS += --enable-websockets
 else

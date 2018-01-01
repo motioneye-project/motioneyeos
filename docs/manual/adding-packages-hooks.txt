@@ -1,0 +1,87 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[hooks]]
+=== Hooks available in the various build steps
+
+The generic infrastructure (and as a result also the derived autotools
+and cmake infrastructures) allow packages to specify hooks.
+These define further actions to perform after existing steps.
+Most hooks aren't really useful for generic packages, since the +.mk+
+file already has full control over the actions performed in each step
+of the package construction.
+
+The following hook points are available:
+
+* +LIBFOO_PRE_DOWNLOAD_HOOKS+
+* +LIBFOO_POST_DOWNLOAD_HOOKS+
+
+* +LIBFOO_PRE_EXTRACT_HOOKS+
+* +LIBFOO_POST_EXTRACT_HOOKS+
+
+* +LIBFOO_PRE_RSYNC_HOOKS+
+* +LIBFOO_POST_RSYNC_HOOKS+
+
+* +LIBFOO_PRE_PATCH_HOOKS+
+* +LIBFOO_POST_PATCH_HOOKS+
+
+* +LIBFOO_PRE_CONFIGURE_HOOKS+
+* +LIBFOO_POST_CONFIGURE_HOOKS+
+
+* +LIBFOO_PRE_BUILD_HOOKS+
+* +LIBFOO_POST_BUILD_HOOKS+
+
+* +LIBFOO_PRE_INSTALL_HOOKS+ (for host packages only)
+* +LIBFOO_POST_INSTALL_HOOKS+ (for host packages only)
+
+* +LIBFOO_PRE_INSTALL_STAGING_HOOKS+ (for target packages only)
+* +LIBFOO_POST_INSTALL_STAGING_HOOKS+ (for target packages only)
+
+* +LIBFOO_PRE_INSTALL_TARGET_HOOKS+ (for target packages only)
+* +LIBFOO_POST_INSTALL_TARGET_HOOKS+ (for target packages only)
+
+* +LIBFOO_PRE_INSTALL_IMAGES_HOOKS+
+* +LIBFOO_POST_INSTALL_IMAGES_HOOKS+
+
+* +LIBFOO_PRE_LEGAL_INFO_HOOKS+
+* +LIBFOO_POST_LEGAL_INFO_HOOKS+
+
+These variables are 'lists' of variable names containing actions to be
+performed at this hook point. This allows several hooks to be
+registered at a given hook point. Here is an example:
+
+----------------------
+define LIBFOO_POST_PATCH_FIXUP
+	action1
+	action2
+endef
+
+LIBFOO_POST_PATCH_HOOKS += LIBFOO_POST_PATCH_FIXUP
+----------------------
+
+[[hooks-rsync]]
+==== Using the +POST_RSYNC+ hook
+The +POST_RSYNC+ hook is run only for packages that use a local source,
+either through the +local+ site method or the +OVERRIDE_SRCDIR+
+mechanism. In this case, package sources are copied using +rsync+ from
+the local location into the buildroot build directory. The +rsync+
+command does not copy all files from the source directory, though.
+Files belonging to a version control system, like the directories
++.git+, +.hg+, etc. are not copied. For most packages this is
+sufficient, but a given package can perform additional actions using
+the +POST_RSYNC+ hook.
+
+In principle, the hook can contain any command you want. One specific
+use case, though, is the intentional copying of the version control
+directory using +rsync+. The +rsync+ command you use in the hook can, among
+others, use the following variables:
+
+* +$(SRCDIR)+: the path to the overridden source directory
+* +$(@D)+: the path to the build directory
+
+==== Target-finalize hook
+
+Packages may also register hooks in +LIBFOO_TARGET_FINALIZE_HOOKS+.
+These hooks are run after all packages are built, but before the
+filesystem images are generated. They are seldom used, and your
+package probably do not need them.

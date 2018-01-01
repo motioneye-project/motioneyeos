@@ -7,7 +7,7 @@
 QUAGGA_VERSION = 1.1.1
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk host-pkgconf
-QUAGGA_LICENSE = GPLv2+
+QUAGGA_LICENSE = GPL-2.0+
 QUAGGA_LICENSE_FILES = COPYING
 
 # We need to override the sysconf and localstate directories so that

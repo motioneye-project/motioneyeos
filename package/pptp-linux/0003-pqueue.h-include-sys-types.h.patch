@@ -7,8 +7,8 @@ We're using u_int32_t here, this breaks on musl libc builds otherwise.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 ---
-Patch status: sent upstream to the devel mailing list
-(moderated, no archive link yet)
+Patch status: applied upstream:
+https://sourceforge.net/p/pptpclient/git/ci/ee8ef349d9543cb48045a27d1cdd801fc6e910e8/
 
  pqueue.h | 1 +
  1 file changed, 1 insertion(+)

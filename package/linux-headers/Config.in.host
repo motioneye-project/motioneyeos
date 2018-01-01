@@ -6,69 +6,77 @@ config BR2_PACKAGE_HOST_LINUX_HEADERS
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
-	default BR2_KERNEL_HEADERS_4_9
+	default BR2_KERNEL_HEADERS_4_13
 	help
 	  Select the kernel version to get headers from.
 
-	  The kernel headers must be at least as old as the oldest kernel
-	  you intend to run on your target.
+	  The kernel headers must be at least as old as the oldest
+	  kernel you intend to run on your target.
 
 	  If you use Buildroot to build a kernel, then you can use
 	  the sources from that kernel as source for the headers.
 
-	  If you choose a custom version of the kernel headers, or choose
-	  to use the same sources as the kernel, you'll have to select
-	  (below) the series of that kernel, so that Buildroot can show
-	  or hide packages that have strong requirements on the kernel
-	  headers.
+	  If you choose a custom version of the kernel headers, or
+	  choose to use the same sources as the kernel, you'll have to
+	  select (below) the series of that kernel, so that Buildroot
+	  can show or hide packages that have strong requirements on the
+	  kernel headers.
 
-	config BR2_KERNEL_HEADERS_AS_KERNEL
-		bool "Same as kernel being built"
-		depends on BR2_LINUX_KERNEL
+config BR2_KERNEL_HEADERS_AS_KERNEL
+	bool "Same as kernel being built"
+	depends on BR2_LINUX_KERNEL
 
-	config BR2_KERNEL_HEADERS_3_2
-		bool "Linux 3.2.x kernel headers"
-		depends on !BR2_arc && !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
+config BR2_KERNEL_HEADERS_3_2
+	bool "Linux 3.2.x kernel headers"
+	depends on !BR2_aarch64 && !BR2_arc && !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
-	config BR2_KERNEL_HEADERS_3_4
-		bool "Linux 3.4.x kernel headers"
-		depends on !BR2_arc && !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+config BR2_KERNEL_HEADERS_3_4
+	bool "Linux 3.4.x kernel headers"
+	depends on !BR2_aarch64 && !BR2_arc && !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
 
-	config BR2_KERNEL_HEADERS_3_10
-		bool "Linux 3.10.x kernel headers"
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+config BR2_KERNEL_HEADERS_3_10
+	bool "Linux 3.10.x kernel headers"
+	depends on !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
-	config BR2_KERNEL_HEADERS_3_12
-		bool "Linux 3.12.x kernel headers"
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+config BR2_KERNEL_HEADERS_3_12
+	bool "Linux 3.12.x kernel headers"
+	depends on !BR2_nios2
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 
-	config BR2_KERNEL_HEADERS_3_18
-		bool "Linux 3.18.x kernel headers"
-		depends on !BR2_nios2
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+config BR2_KERNEL_HEADERS_4_1
+	bool "Linux 4.1.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
 
-	config BR2_KERNEL_HEADERS_4_1
-		bool "Linux 4.1.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
+config BR2_KERNEL_HEADERS_4_4
+	bool "Linux 4.4.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
 
-	config BR2_KERNEL_HEADERS_4_4
-		bool "Linux 4.4.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_4
+config BR2_KERNEL_HEADERS_4_9
+	bool "Linux 4.9.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
 
-	config BR2_KERNEL_HEADERS_4_8
-		bool "Linux 4.8.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_8
+config BR2_KERNEL_HEADERS_4_10
+	bool "Linux 4.10.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 
-	config BR2_KERNEL_HEADERS_4_9
-		bool "Linux 4.9.x kernel headers"
-		select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_9
+config BR2_KERNEL_HEADERS_4_11
+	bool "Linux 4.11.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
 
-	config BR2_KERNEL_HEADERS_VERSION
-		bool "Manually specified Linux version"
+config BR2_KERNEL_HEADERS_4_12
+	bool "Linux 4.12.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+
+config BR2_KERNEL_HEADERS_4_13
+	bool "Linux 4.13.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_13
+
+config BR2_KERNEL_HEADERS_VERSION
+	bool "Manually specified Linux version"
+
 endchoice
 
 config BR2_DEFAULT_KERNEL_VERSION
@@ -82,10 +90,27 @@ choice
 	bool "Custom kernel headers series"
 	depends on BR2_KERNEL_HEADERS_VERSION || BR2_KERNEL_HEADERS_AS_KERNEL
 	help
-	  Specify the kernel headers series you manually selected, above.
+	  Specify the kernel headers series you manually selected,
+	  above.
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_13
+	bool "4.13.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_13
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_12
+	bool "4.12.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_11
+	bool "4.11.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_11
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_10
+	bool "4.10.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_9
 	bool "4.9.x"
@@ -214,15 +239,15 @@ endchoice
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "3.2.85"	if BR2_KERNEL_HEADERS_3_2
+	default "3.2.96"	if BR2_KERNEL_HEADERS_3_2
 	default "3.4.113"	if BR2_KERNEL_HEADERS_3_4
-	default "3.10.105"	if BR2_KERNEL_HEADERS_3_10
-	default "3.12.70"	if BR2_KERNEL_HEADERS_3_12
-	default "3.18.48"	if BR2_KERNEL_HEADERS_3_18
-	default "3.19.8"	if BR2_KERNEL_HEADERS_3_19
-	default "4.0.9"		if BR2_KERNEL_HEADERS_4_0
-	default "4.1.38"	if BR2_KERNEL_HEADERS_4_1
-	default "4.4.52"	if BR2_KERNEL_HEADERS_4_4
-	default "4.8.17"	if BR2_KERNEL_HEADERS_4_8
-	default "4.9.13"	if BR2_KERNEL_HEADERS_4_9
+	default "3.10.108"	if BR2_KERNEL_HEADERS_3_10
+	default "3.12.74"	if BR2_KERNEL_HEADERS_3_12
+	default "4.1.46"	if BR2_KERNEL_HEADERS_4_1
+	default "4.4.102"	if BR2_KERNEL_HEADERS_4_4
+	default "4.9.65"	if BR2_KERNEL_HEADERS_4_9
+	default "4.10.17"	if BR2_KERNEL_HEADERS_4_10
+	default "4.11.12"	if BR2_KERNEL_HEADERS_4_11
+	default "4.12.14"	if BR2_KERNEL_HEADERS_4_12
+	default "4.13.16"	if BR2_KERNEL_HEADERS_4_13
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION

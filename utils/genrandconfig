@@ -1,0 +1,430 @@
+#!/usr/bin/env python
+
+# Copyright (C) 2014 by Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+#
+# This program is free software; you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation; either version 2 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
+# General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+
+# This script generates a random configuration for testing Buildroot.
+
+from __future__ import print_function
+
+import contextlib
+import csv
+import os
+from random import randint
+import subprocess
+import sys
+from distutils.version import StrictVersion
+import platform
+
+if sys.hexversion >= 0x3000000:
+    import urllib.request as _urllib
+else:
+    import urllib2 as _urllib
+
+
+def urlopen_closing(uri):
+    return contextlib.closing(_urllib.urlopen(uri))
+
+
+if sys.hexversion >= 0x3000000:
+    def decode_byte_list(bl):
+        return [b.decode() for b in bl]
+else:
+    def decode_byte_list(e):
+        return e
+
+
+class SystemInfo:
+    DEFAULT_NEEDED_PROGS = ["make", "git", "gcc", "timeout"]
+    DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar"]
+
+    def __init__(self):
+        self.needed_progs = list(self.__class__.DEFAULT_NEEDED_PROGS)
+        self.optional_progs = list(self.__class__.DEFAULT_OPTIONAL_PROGS)
+        self.progs = {}
+
+    def find_prog(self, name, flags=os.X_OK, env=os.environ):
+        if not name or name[0] == os.sep:
+            raise ValueError(name)
+
+        prog_path = env.get("PATH", None)
+        # for windows compatibility, we'd need to take PATHEXT into account
+
+        if prog_path:
+            for prog_dir in filter(None, prog_path.split(os.pathsep)):
+                # os.join() not necessary: non-empty prog_dir
+                # and name[0] != os.sep
+                prog = prog_dir + os.sep + name
+                if os.access(prog, flags):
+                    return prog
+        # --
+        return None
+
+    def has(self, prog):
+        """Checks whether a program is available.
+        Lazily evaluates missing entries.
+
+        Returns: None if prog not found, else path to the program [evaluates
+        to True]
+        """
+        try:
+            return self.progs[prog]
+        except KeyError:
+            pass
+
+        have_it = self.find_prog(prog)
+        # java[c] needs special care
+        if have_it and prog in ('java', 'javac'):
+            with open(os.devnull, "w") as devnull:
+                if subprocess.call("%s -version | grep gcj" % prog,
+                                   shell=True,
+                                   stdout=devnull, stderr=devnull) != 1:
+                    have_it = False
+        # --
+        self.progs[prog] = have_it
+        return have_it
+
+    def check_requirements(self):
+        """Checks program dependencies.
+
+        Returns: True if all mandatory programs are present, else False.
+        """
+        do_check_has_prog = self.has
+
+        missing_requirements = False
+        for prog in self.needed_progs:
+            if not do_check_has_prog(prog):
+                print("ERROR: your system lacks the '%s' program" % prog)
+                missing_requirements = True
+
+        # check optional programs here,
+        # else they'd get checked by each worker instance
+        for prog in self.optional_progs:
+            do_check_has_prog(prog)
+
+        return not missing_requirements
+
+
+def get_toolchain_configs(toolchains_csv, buildrootdir):
+    """Fetch and return the possible toolchain configurations
+
+    This function returns an array of toolchain configurations. Each
+    toolchain configuration is itself an array of lines of the defconfig.
+    """
+
+    with open(toolchains_csv) as r:
+        toolchains = decode_byte_list(r.readlines())
+    configs = []
+
+    (_, _, _, _, hostarch) = os.uname()
+    # ~2015 distros report x86 when on a 32bit install
+    if hostarch == 'i686' or hostarch == 'i386' or hostarch == 'x86':
+        hostarch = 'x86'
+
+    for row in csv.reader(toolchains):
+        config = {}
+        configfile = row[0]
+        config_hostarch = row[1]
+        keep = False
+
+        # Keep all toolchain configs that work regardless of the host
+        # architecture
+        if config_hostarch == "any":
+            keep = True
+
+        # Keep all toolchain configs that can work on the current host
+        # architecture
+        if hostarch == config_hostarch:
+            keep = True
+
+        # Assume that x86 32 bits toolchains work on x86_64 build
+        # machines
+        if hostarch == 'x86_64' and config_hostarch == "x86":
+            keep = True
+
+        if not keep:
+            continue
+
+        if not os.path.isabs(configfile):
+            configfile = os.path.join(buildrootdir, configfile)
+
+        with open(configfile) as r:
+            config = r.readlines()
+        configs.append(config)
+    return configs
+
+
+def is_toolchain_usable(configfile, config):
+    """Check if the toolchain is actually usable."""
+
+    with open(configfile) as configf:
+        configlines = configf.readlines()
+
+    # Check that the toolchain configuration is still present
+    for toolchainline in config:
+        if toolchainline not in configlines:
+            print("WARN: toolchain can't be used", file=sys.stderr)
+            print("      Missing: %s" % toolchainline.strip(), file=sys.stderr)
+            return False
+
+    # The latest Linaro toolchains on x86-64 hosts requires glibc
+    # 2.14+ on the host.
+    if platform.machine() == 'x86_64':
+        if 'BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM=y\n' in configlines or \
+           'BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64=y\n' in configlines or \
+           'BR2_TOOLCHAIN_EXTERNAL_LINARO_ARMEB=y\n' in configlines:
+            ldd_version_output = subprocess.check_output(['ldd', '--version'])
+            glibc_version = ldd_version_output.splitlines()[0].split()[-1]
+            if StrictVersion('2.14') > StrictVersion(glibc_version):
+                print("WARN: ignoring the Linaro ARM toolchains because too old host glibc", file=sys.stderr)
+                return False
+
+    return True
+
+
+def fixup_config(configfile):
+    """Finalize the configuration and reject any problematic combinations
+
+    This function returns 'True' when the configuration has been
+    accepted, and 'False' when the configuration has not been accepted because
+    it is known to fail (in which case another random configuration will be
+    generated).
+    """
+
+    sysinfo = SystemInfo()
+    with open(configfile) as configf:
+        configlines = configf.readlines()
+
+    if "BR2_NEEDS_HOST_JAVA=y\n" in configlines and not sysinfo.has("java"):
+        return False
+    if "BR2_NEEDS_HOST_JAVAC=y\n" in configlines and not sysinfo.has("javac"):
+        return False
+    if "BR2_NEEDS_HOST_JAR=y\n" in configlines and not sysinfo.has("jar"):
+        return False
+    # python-nfc needs bzr
+    if 'BR2_PACKAGE_PYTHON_NFC=y\n' in configlines and not sysinfo.has("bzr"):
+        return False
+    # The ctng toolchain is affected by PR58854
+    if 'BR2_PACKAGE_LTTNG_TOOLS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/armv5-ctng-linux-gnueabi.tar.xz"\n' in configlines:
+        return False
+    # The ctng toolchain tigger an assembler error with guile package when compiled with -Os (same issue as for CS ARM 2014.05-29)
+    if 'BR2_PACKAGE_GUILE=y\n' in configlines and \
+       'BR2_OPTIMIZE_S=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/armv5-ctng-linux-gnueabi.tar.xz"\n' in configlines:
+        return False
+    # The ctng toolchain is affected by PR58854
+    if 'BR2_PACKAGE_LTTNG_TOOLS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/armv6-ctng-linux-uclibcgnueabi.tar.xz"\n' in configlines:
+        return False
+    # The ctng toolchain is affected by PR58854
+    if 'BR2_PACKAGE_LTTNG_TOOLS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/armv7-ctng-linux-gnueabihf.tar.xz"\n' in configlines:
+        return False
+    # The ctng toolchain is affected by PR60155
+    if 'BR2_PACKAGE_SDL=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/powerpc-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # The ctng toolchain is affected by PR60155
+    if 'BR2_PACKAGE_LIBMPEG2=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/powerpc-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS toolchain uses eglibc-2.18 which lacks SYS_getdents64
+    if 'BR2_PACKAGE_STRONGSWAN=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mips64el-ctng_n64-linux-gnu.tar.xz"\n' in configlines:
+        return False
+    # This MIPS toolchain uses eglibc-2.18 which lacks SYS_getdents64
+    if 'BR2_PACKAGE_PYTHON3=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mips64el-ctng_n64-linux-gnu.tar.xz"\n' in configlines:
+        return False
+    # libffi not available on sh2a and ARMv7-M, but propagating libffi
+    # arch dependencies in Buildroot is really too much work, so we
+    # handle this here.
+    if 'BR2_sh2a=y\n' in configlines and \
+       'BR2_PACKAGE_LIBFFI=y\n' in configlines:
+        return False
+    if 'BR2_ARM_CPU_ARMV7M=y\n' in configlines and \
+       'BR2_PACKAGE_LIBFFI=y\n' in configlines:
+        return False
+    if 'BR2_PACKAGE_SUNXI_BOARDS=y\n' in configlines:
+        configlines.remove('BR2_PACKAGE_SUNXI_BOARDS_FEX_FILE=""\n')
+        configlines.append('BR2_PACKAGE_SUNXI_BOARDS_FEX_FILE="a10/hackberry.fex"\n')
+    # This MIPS uClibc toolchain fails to build the gdb package
+    if 'BR2_PACKAGE_GDB=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS uClibc toolchain fails to build the rt-tests package
+    if 'BR2_PACKAGE_RT_TESTS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS uClibc toolchain fails to build the civetweb package
+    if 'BR2_PACKAGE_CIVETWEB=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS ctng toolchain fails to build the python3 package
+    if 'BR2_PACKAGE_PYTHON3=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mips64el-ctng_n64-linux-gnu.tar.xz"\n' in configlines:
+        return False
+    # This MIPS uClibc toolchain fails to build the strace package
+    if 'BR2_PACKAGE_STRACE=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS uClibc toolchain fails to build the cdrkit package
+    if 'BR2_PACKAGE_CDRKIT=y\n' in configlines and \
+       'BR2_STATIC_LIBS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # uClibc vfork static linking issue
+    if 'BR2_PACKAGE_ALSA_LIB=y\n' in configlines and \
+       'BR2_STATIC_LIBS=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/i486-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # This MIPS uClibc toolchain fails to build the weston package
+    if 'BR2_PACKAGE_WESTON=y\n' in configlines and \
+       'BR2_TOOLCHAIN_EXTERNAL_URL="http://autobuild.buildroot.org/toolchains/tarballs/mipsel-ctng-linux-uclibc.tar.xz"\n' in configlines:
+        return False
+    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
+    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
+       'BR2_PACKAGE_BOOST=y\n' in configlines:
+        return False
+    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
+    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
+       'BR2_PACKAGE_QT5BASE_GUI=y\n' in configlines:
+        return False
+    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
+    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
+       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
+        return False
+    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
+    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
+       'BR2_PACKAGE_FLANN=y\n' in configlines:
+        return False
+    # or1k affected by binutils PR21464
+    if 'BR2_or1k=y\n' in configlines and \
+       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
+        return False
+
+    with open(configfile, "w+") as configf:
+        configf.writelines(configlines)
+
+    return True
+
+
+def gen_config(args):
+    """Generate a new random configuration
+
+    This function generates the configuration, by choosing a random
+    toolchain configuration and then generating a random selection of
+    packages.
+    """
+
+    # Select a random toolchain configuration
+    configs = get_toolchain_configs(args.toolchains_csv, args.buildrootdir)
+
+    i = randint(0, len(configs) - 1)
+    toolchainconfig = configs[i]
+
+    configlines = list(toolchainconfig)
+
+    # Combine with the minimal configuration
+    minimalconfigfile = os.path.join(args.buildrootdir,
+                                     'support/config-fragments/minimal.config')
+    with open(minimalconfigfile) as minimalf:
+        configlines += minimalf.readlines()
+
+    # Amend the configuration with a few things.
+    if randint(0, 20) == 0:
+        configlines.append("BR2_ENABLE_DEBUG=y\n")
+    if randint(0, 1) == 0:
+        configlines.append("BR2_INIT_BUSYBOX=y\n")
+    elif randint(0, 15) == 0:
+        configlines.append("BR2_INIT_SYSTEMD=y\n")
+    elif randint(0, 10) == 0:
+        configlines.append("BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV=y\n")
+    if randint(0, 20) == 0:
+        configlines.append("BR2_STATIC_LIBS=y\n")
+    if randint(0, 20) == 0:
+        configlines.append("BR2_PACKAGE_PYTHON_PY_ONLY=y\n")
+
+    # Write out the configuration file
+    if not os.path.exists(args.outputdir):
+        os.makedirs(args.outputdir)
+    if args.outputdir == os.path.abspath(os.path.join(args.buildrootdir, "output")):
+        configfile = os.path.join(args.buildrootdir, ".config")
+    else:
+        configfile = os.path.join(args.outputdir, ".config")
+    with open(configfile, "w+") as configf:
+        configf.writelines(configlines)
+
+    subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
+                           "olddefconfig"])
+
+    if not is_toolchain_usable(configfile, toolchainconfig):
+        return 2
+
+    # Now, generate the random selection of packages, and fixup
+    # things if needed.
+    # Safe-guard, in case we can not quickly come to a valid
+    # configuration: allow at most 100 (arbitrary) iterations.
+    bounded_loop = 100
+    while True:
+        if bounded_loop == 0:
+            print("ERROR: cannot generate random configuration after 100 iterations",
+                  file=sys.stderr)
+            return 1
+        bounded_loop -= 1
+        subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
+                               "KCONFIG_PROBABILITY=%d" % randint(1, 30),
+                               "randpackageconfig"])
+
+        if fixup_config(configfile):
+            break
+
+    subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
+                           "olddefconfig"])
+
+    subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
+                           "savedefconfig"])
+
+    return 0
+
+
+if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description="Generate a random configuration")
+    parser.add_argument("--outputdir", "-o",
+                        help="Output directory (relative to current directory)",
+                        type=str, default='output')
+    parser.add_argument("--buildrootdir", "-b",
+                        help="Buildroot directory (relative to current directory)",
+                        type=str, default='.')
+    parser.add_argument("--toolchains-csv",
+                        help="Path of the toolchain configuration file",
+                        type=str,
+                        default="support/config-fragments/autobuild/toolchain-configs.csv")
+    args = parser.parse_args()
+
+    # We need the absolute path to use with O=, because the relative
+    # path to the output directory here is not relative to the
+    # Buildroot sources, but to the current directory.
+    args.outputdir = os.path.abspath(args.outputdir)
+
+    try:
+        ret = gen_config(args)
+    except Exception as e:
+        print(str(e), file=sys.stderr)
+        parser.exit(1)
+    parser.exit(ret)

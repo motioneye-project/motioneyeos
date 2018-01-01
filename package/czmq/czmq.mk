@@ -11,7 +11,7 @@ CZMQ_SITE = $(call github,zeromq,czmq,$(CZMQ_VERSION))
 CZMQ_AUTORECONF = YES
 CZMQ_INSTALL_STAGING = YES
 CZMQ_DEPENDENCIES = zeromq host-pkgconf
-CZMQ_LICENSE = MPLv2.0
+CZMQ_LICENSE = MPL-2.0
 CZMQ_LICENSE_FILES = LICENSE
 
 # asciidoc is a python script that imports unicodedata, which is not in

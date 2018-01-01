@@ -1,0 +1,28 @@
+Fix X include path to prevent error during configure
+
+Downloaded from
+https://github.com/LibreELEC/LibreELEC.tv/blob/master/packages/mediacenter/kodi-binary-addons/screensavers.rsxs/patches/screensavers.rsxs-0002-fix-default-include-dir.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -Naur screensavers.rsxs-3241d29.orig/CMakeLists.txt screensavers.rsxs-3241d29/CMakeLists.txt
+--- screensavers.rsxs-3241d29.orig/CMakeLists.txt	2015-10-22 23:59:38.187280475 -0700
++++ screensavers.rsxs-3241d29/CMakeLists.txt	2015-10-23 00:00:27.228113829 -0700
+@@ -17,7 +17,7 @@
+ include_directories(${OpenGL_INCLUDE_DIR}
+                     ${PNG_INCLUDE_DIR}
+                     ${KODI_INCLUDE_DIR}
+-                    ${X_INCLUDE_DIRS}
++                    ${X_INCLUDE_DIR}
+                     ${CMAKE_BINARY_DIR}/rsxs-prefix/src/rsxs-build
+                     ${PROJECT_SOURCE_DIR}/${rsxs_dir}/src
+                     ${PROJECT_SOURCE_DIR}/${rsxs_dir}/lib
+@@ -67,7 +67,7 @@
+                                       --disable-skyrocket
+                                       --disable-solarwinds
+                                       --disable-sound
+-                                      --x-includes=${X_INCLUDE_DIRS}
++                                      --x-includes=${X_INCLUDE_DIR}
+                                       --x-libraries=${X_LIBRARIES}
+                                       ${PNG_PATH}
+                                       ${EXTRA_FLAGS}

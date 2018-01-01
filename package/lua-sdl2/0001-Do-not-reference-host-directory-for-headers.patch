@@ -1,0 +1,29 @@
+From 07309a49ad6c3e18c8c84fe54f1fdb9e103c4cc5 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sun, 22 Oct 2017 13:00:01 +0200
+Subject: [PATCH] Do not reference host directory for headers
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ cmake/FindSDL2.cmake | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/cmake/FindSDL2.cmake b/cmake/FindSDL2.cmake
+index 5cf4115..5e17919 100644
+--- a/cmake/FindSDL2.cmake
++++ b/cmake/FindSDL2.cmake
+@@ -73,11 +73,6 @@ find_path(SDL2_INCLUDE_DIR SDL.h
+   PATH_SUFFIXES include/SDL2 include
+ )
+ 
+-# On FreeBSD SDL depends on libiconv and SDL_stdinc.h includes iconv.h, which is
+-# located in ${LOCALBASE}/include. Append {LOCALBASE}/include to
+-# the SDL_INCLUDE_DIR, thus allow to build SDL apps out of box.
+-list(APPEND SDL2_INCLUDE_DIR /usr/local/include)
+-
+ find_library(SDL_LIBRARY_TEMP
+   NAMES SDL2 SDL2-2.0
+   HINTS
+-- 
+2.13.6
+

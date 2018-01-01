@@ -1,0 +1,13 @@
+config BR2_PACKAGE_DFU_UTIL
+	bool "dfu-util"
+	select BR2_PACKAGE_LIBUSB
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Dfu-util is the host side implementation of the DFU 1.0
+	  specification of the USB forum. DFU is intended to download
+	  and upload firmware to devices connected over USB.
+
+	  http://dfu-util.sourceforge.net/
+
+comment "dfu-util needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

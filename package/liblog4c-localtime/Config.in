@@ -4,8 +4,8 @@ config BR2_PACKAGE_LIBLOG4C_LOCALTIME
 	help
 	  Log4c is a library of C for flexible logging to files, syslog
 	  and other destinations.
-	  This version is with localtime patch, to make lib show times in
-	  local timezone.
+	  This version is with localtime patch, to make lib show times
+	  in local timezone.
 
 	  https://github.com/rcmadruga/log4c-localtime
 	  http://log4c.sourceforge.net/

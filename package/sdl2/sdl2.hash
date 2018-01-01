@@ -1,2 +1,4 @@
-# Locally calculated after checking http://www.libsdl.org/release/SDL2-2.0.5.tar.gz.sig
-sha256 442038cf55965969f2ff06d976031813de643af9c9edc9e331bd761c242e8785  SDL2-2.0.5.tar.gz
+# Locally calculated after checking http://www.libsdl.org/release/SDL2-2.0.7.tar.gz.sig
+sha256 ee35c74c4313e2eda104b14b1b86f7db84a04eeab9430d56e001cea268bf4d5e  SDL2-2.0.7.tar.gz
+# Locally calculated
+sha256 bbd2edb1789c33de29bb9f8d1dbe2774584a9ce8c4e3162944b7a3a447f5e85d  COPYING.txt

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SKALIBS_VERSION = 2.4.0.2
+SKALIBS_VERSION = 2.6.0.1
 SKALIBS_SITE = http://skarnet.org/software/skalibs
 SKALIBS_LICENSE = ISC
 SKALIBS_LICENSE_FILES = COPYING
@@ -33,7 +33,7 @@ define SKALIBS_INSTALL_STAGING_CMDS
 endef
 
 HOST_SKALIBS_CONF_OPTS = \
-	--prefix=$(HOST_DIR)/usr \
+	--prefix=$(HOST_DIR) \
 	--disable-static \
 	--enable-shared \
 	--disable-allstatic

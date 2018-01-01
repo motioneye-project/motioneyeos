@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LUAEXPAT
 	bool "luaexpat"
-	select BR2_PACKAGE_EXPAT
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	select BR2_PACKAGE_EXPAT
 	help
 	  LuaExpat is a SAX XML parser based on the Expat library.
 

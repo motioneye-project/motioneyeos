@@ -1,0 +1,59 @@
+// -*- mode:doc -*- ;
+// vim: set syntax=asciidoc:
+
+[[customize-patches]]
+=== Adding project-specific patches
+
+It is sometimes useful to apply 'extra' patches to packages - on top of
+those provided in Buildroot. This might be used to support custom
+features in a project, for example, or when working on a new
+architecture.
+
+The +BR2_GLOBAL_PATCH_DIR+ configuration option can be used to specify
+a space separated list of one or more directories containing package
+patches.
+
+For a specific version +<packageversion>+ of a specific package
++<packagename>+, patches are applied from +BR2_GLOBAL_PATCH_DIR+ as
+follows:
+
+. For every directory - +<global-patch-dir>+ - that exists in
+  +BR2_GLOBAL_PATCH_DIR+, a +<package-patch-dir>+ will be determined as
+  follows:
++
+* +<global-patch-dir>/<packagename>/<packageversion>/+ if the
+  directory exists.
++
+* Otherwise, +<global-patch-dir>/<packagename>+ if the directory
+  exists.
+
+. Patches will then be applied from a +<package-patch-dir>+ as
+  follows:
++
+* If a +series+ file exists in the package directory, then patches are
+  applied according to the +series+ file;
++
+* Otherwise, patch files matching +*.patch+ are applied in
+  alphabetical order.  So, to ensure they are applied in the right
+  order, it is highly recommended to name the patch files like this:
+  +<number>-<description>.patch+, where +<number>+ refers to the
+  'apply order'.
+
+For information about how patches are applied for a package, see
+xref:patch-apply-order[]
+
+The +BR2_GLOBAL_PATCH_DIR+ option is the preferred method for
+specifying a custom patch directory for packages. It can be used to
+specify a patch directory for any package in buildroot. It should also
+be used in place of the custom patch directory options that are
+available for packages such as U-Boot and Barebox. By doing this, it
+will allow a user to manage their patches from one top-level
+directory.
+
+The exception to +BR2_GLOBAL_PATCH_DIR+ being the preferred method for
+specifying custom patches is +BR2_LINUX_KERNEL_PATCH+.
++BR2_LINUX_KERNEL_PATCH+ should be used to specify kernel patches that
+are available at an URL. *Note:* +BR2_LINUX_KERNEL_PATCH+ specifies kernel
+patches that are applied after patches available in +BR2_GLOBAL_PATCH_DIR+,
+as it is done from a post-patch hook of the Linux package.
+

@@ -1,0 +1,38 @@
+From 26f884bf977977041fe6f98a0af186be1580bf22 Mon Sep 17 00:00:00 2001
+From: Simon Morlat <simon.morlat@linphone.org>
+Date: Thu, 29 Sep 2016 15:26:18 +0200
+Subject: [PATCH] fix compilation issue with latest bctoobox
+
+[Upstream commit https://github.com/BelledonneCommunications/mediastreamer2/commit/26f884bf977977041fe6f98a0af186be1580bf22]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ configure.ac           | 2 +-
+ src/crypto/dtls_srtp.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7ab20a08f..244d87275 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1116,7 +1116,7 @@ fi
+ 
+ 
+ dnl check bctoolbox library
+-PKG_CHECK_MODULES(BCTOOLBOX, bctoolbox >= 0.0.0, found_bctoolbox=true, found_bctoolbox=false)
++PKG_CHECK_MODULES(BCTOOLBOX, bctoolbox >= 0.4.0, found_bctoolbox=true, found_bctoolbox=false)
+ if test "$found_bctoolbox" = "true" ; then
+ 	LIBS="$LIBS $BCTOOLBOX_LIBS"
+ 	CFLAGS="$CFLAGS $BCTOOLBOX_CFLAGS"
+diff --git a/src/crypto/dtls_srtp.c b/src/crypto/dtls_srtp.c
+index e2c8e1c44..fd37eb5cb 100644
+--- a/src/crypto/dtls_srtp.c
++++ b/src/crypto/dtls_srtp.c
+@@ -705,7 +705,7 @@ static int ms_dtls_srtp_initialise_bctbx_dtls_context(DtlsBcToolBoxContext *dtls
+ 	bctbx_ssl_config_set_authmode(dtlsContext->ssl_config, BCTBX_SSL_VERIFY_OPTIONAL);
+ 	bctbx_ssl_config_set_own_cert( dtlsContext->ssl_config, dtlsContext->crt, dtlsContext->pkey );
+ 	/* This is useless as peer would certainly be a self signed certificate and we won't verify it but avoid runtime warnings */
+-	bctbx_ssl_config_set_ca_chain(dtlsContext->ssl_config, dtlsContext->crt, NULL);
++	bctbx_ssl_config_set_ca_chain(dtlsContext->ssl_config, dtlsContext->crt);
+ 
+ 	/* we are not ready yet to actually start the ssl context, this will be done by calling bctbx_ssl_setup when stream starts */
+ 	return 0;

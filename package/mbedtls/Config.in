@@ -23,7 +23,7 @@ config BR2_PACKAGE_MBEDTLS_COMPRESSION
 	help
 	  Enable support for compression of the content data before it
 	  enters the secure channel as described in RFC 3749.
-	  
+
 	  Warning: TLS compression may make you vulnerable to the CRIME
 	  attack. You should not enable it unless you know for sure CRIME
 	  and similar attacks are not applicable to your particular

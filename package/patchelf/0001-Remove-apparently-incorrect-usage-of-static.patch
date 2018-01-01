@@ -1,0 +1,56 @@
+From 2480efa8411523cf046094492192a5ee451aae5d Mon Sep 17 00:00:00 2001
+From: Eelco Dolstra <eelco.dolstra@logicblox.com>
+Date: Mon, 19 Sep 2016 17:31:37 +0200
+Subject: [PATCH] Remove apparently incorrect usage of "static"
+
+[Upstream-commit: https://github.com/NixOS/patchelf/commit/a365bcb7d7025da51b33165ef7ebc7180199a05e
+This patch also removes the DT_INIT symbols from needed_libs (DT_INIT
+points to library initialisation function, not to needed libraries...)]
+Signed-off-by: Wolfgang Grandegger <wg@grandegger.com>
+---
+ src/patchelf.cc | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/src/patchelf.cc b/src/patchelf.cc
+index 136098f..c870638 100644
+--- a/src/patchelf.cc
++++ b/src/patchelf.cc
+@@ -941,7 +941,6 @@ void ElfFile<ElfFileParamNames>::modifySoname(sonameMode op, const string & newS
+     assert(strTabAddr == rdi(shdrDynStr.sh_addr));
+ 
+     /* Walk through the dynamic section, look for the DT_SONAME entry. */
+-    static vector<string> neededLibs;
+     dyn = (Elf_Dyn *) (contents + rdi(shdrDynamic.sh_offset));
+     Elf_Dyn * dynSoname = 0;
+     char * soname = 0;
+@@ -949,8 +948,7 @@ void ElfFile<ElfFileParamNames>::modifySoname(sonameMode op, const string & newS
+         if (rdi(dyn->d_tag) == DT_SONAME) {
+             dynSoname = dyn;
+             soname = strTab + rdi(dyn->d_un.d_val);
+-        } else if (rdi(dyn->d_tag) == DT_INIT)
+-            neededLibs.push_back(string(strTab + rdi(dyn->d_un.d_val)));
++        }
+     }
+ 
+     if (op == printSoname) {
+@@ -1058,7 +1056,7 @@ void ElfFile<ElfFileParamNames>::modifyRPath(RPathOp op, string newRPath)
+        unless you use its `--enable-new-dtag' option, in which case it
+        generates a DT_RPATH and DT_RUNPATH pointing at the same
+        string. */
+-    static vector<string> neededLibs;
++    vector<string> neededLibs;
+     dyn = (Elf_Dyn *) (contents + rdi(shdrDynamic.sh_offset));
+     Elf_Dyn * dynRPath = 0, * dynRunPath = 0;
+     char * rpath = 0;
+@@ -1091,7 +1089,7 @@ void ElfFile<ElfFileParamNames>::modifyRPath(RPathOp op, string newRPath)
+     /* For each directory in the RPATH, check if it contains any
+        needed library. */
+     if (op == rpShrink) {
+-        static vector<bool> neededLibFound(neededLibs.size(), false);
++        vector<bool> neededLibFound(neededLibs.size(), false);
+ 
+         newRPath = "";
+ 
+-- 
+1.9.1
+

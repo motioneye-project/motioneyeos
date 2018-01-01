@@ -10,7 +10,7 @@ CLAPACK_SOURCE = clapack-$(CLAPACK_VERSION)-CMAKE.tgz
 # - libf2c.a (not installed)
 # - libblas (statically linked with libf2c.a)
 # - liblapack (statically linked with libf2c.a)
-CLAPACK_LICENSE = HPND (libf2c), BSD-3c (libblas and liblapack)
+CLAPACK_LICENSE = HPND (libf2c), BSD-3-Clause (libblas and liblapack)
 CLAPACK_LICENSE_FILES = F2CLIBS/libf2c/Notice COPYING
 CLAPACK_SITE = http://www.netlib.org/clapack
 CLAPACK_INSTALL_STAGING = YES

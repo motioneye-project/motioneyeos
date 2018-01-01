@@ -1,0 +1,14 @@
+config BR2_PACKAGE_LIBGPHOTO2
+	bool "libgphoto2"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBTOOL
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_LIBXML2
+	help
+	  libgphoto2 is the core library designed to allow access to
+	  digital camera by external programs.
+
+	  http://gphoto.org/proj/libgphoto2/
+
+comment "libgphoto needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

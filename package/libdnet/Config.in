@@ -1,7 +1,8 @@
 config BR2_PACKAGE_LIBDNET
 	bool "libdnet"
 	help
-	  libdnet - simplified interface to low-level networking routines.
+	  libdnet - simplified interface to low-level networking
+	  routines.
 
 	  http://libdnet.sourceforge.net/
 

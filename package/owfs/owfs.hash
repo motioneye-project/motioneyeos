@@ -1,4 +1,5 @@
-# From https://sourceforge.net/projects/owfs/files/owfs/3.1p1/
-sha1  80892ca3e72fef2979b8f0a04db15fd24a2cbda6  owfs-3.1p1.tar.gz
+# From https://sourceforge.net/projects/owfs/files/owfs/3.2p1/
+md5 fb42ce3b8a49f0b62711d8e3f5f04880  owfs-3.2p1.tar.gz
+sha1 4ee76e686bec769acde5bfbda148a8693df244c6  owfs-3.2p1.tar.gz
 # Locally calculated
-sha256  e69421ae534565c1f8530a2447f583401f4d0d4b1cf3cb8cf399a57133ed7f81  owfs-3.1p1.tar.gz
+sha256 33220b25db36969a717cd27e750d73dee376795e13a5f3677f05111b745832ea  owfs-3.2p1.tar.gz

@@ -22,13 +22,6 @@ config BR2_UCLIBC_CONFIG_FRAGMENT_FILES
 	  A space-separated list of configuration fragment files,
 	  that will be merged to the main uClibc configuration file.
 
-config BR2_TOOLCHAIN_BUILDROOT_INET_RPC
-	bool "Enable RPC support"
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	help
-	  Enable this option if you want your toolchain to support
-	  RPC (needed for NFS, for example).
-
 config BR2_TOOLCHAIN_BUILDROOT_WCHAR
 	bool "Enable WCHAR support"
 	select BR2_USE_WCHAR
@@ -52,20 +45,20 @@ choice
 	  Use this option to select the thread library implementation
 	  that should be used in your toolchain.
 
-	config BR2_PTHREADS_NATIVE
-		bool "Native POSIX Threading (NPTL)"
-		select BR2_TOOLCHAIN_HAS_THREADS
-		select BR2_TOOLCHAIN_HAS_THREADS_NPTL
-		depends on BR2_USE_MMU
-		depends on !BR2_m68k && !BR2_microblaze && !BR2_or1k
+config BR2_PTHREADS_NATIVE
+	bool "Native POSIX Threading (NPTL)"
+	depends on BR2_USE_MMU
+	depends on !BR2_m68k && !BR2_microblaze && !BR2_or1k
+	select BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
-	config BR2_PTHREADS
-		bool "linuxthreads"
-		select BR2_TOOLCHAIN_HAS_THREADS
-		depends on BR2_bfin || BR2_m68k || BR2_microblaze || BR2_or1k || BR2_arm || BR2_armeb || BR2_xtensa
+config BR2_PTHREADS
+	bool "linuxthreads"
+	depends on BR2_bfin || BR2_m68k || BR2_microblaze || BR2_or1k || BR2_arm || BR2_armeb || BR2_xtensa
+	select BR2_TOOLCHAIN_HAS_THREADS
 
-	config BR2_PTHREADS_NONE
-		bool "none"
+config BR2_PTHREADS_NONE
+	bool "none"
 
 endchoice
 
@@ -116,45 +109,44 @@ config BR2_UCLIBC_TARGET_ARCH
 
 config BR2_UCLIBC_ARC_TYPE
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "arc"
 	default "ARC_CPU_700"	if BR2_arc750d
 	default "ARC_CPU_700"	if BR2_arc770d
 	default "ARC_CPU_HS"	if BR2_archs38
+	depends on BR2_UCLIBC_TARGET_ARCH = "arc"
 
 config BR2_UCLIBC_MIPS_ABI
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
 	default "O32" if BR2_MIPS_OABI32
 	default "N32" if BR2_MIPS_NABI32
 	default "N64" if BR2_MIPS_NABI64
+	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
 
 config BR2_UCLIBC_MIPS_NAN
 	string
+	default "LEGACY" if BR2_MIPS_NAN_LEGACY
+	default "2008" if BR2_MIPS_NAN_2008
 	depends on BR2_UCLIBC_TARGET_ARCH = "mips"
-	default "LEGACY" if BR2_MIPS_CPU_MIPS32 || BR2_MIPS_CPU_MIPS64
-	default "2008" if BR2_MIPS_CPU_MIPS32R6 || BR2_MIPS_CPU_MIPS64R6
 
 config BR2_UCLIBC_SH_TYPE
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "sh"
 	default "SH2A" if BR2_sh2a
 	default "SH4"  if BR2_sh4 || BR2_sh4eb
+	depends on BR2_UCLIBC_TARGET_ARCH = "sh"
 
 config BR2_UCLIBC_SPARC_TYPE
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "sparc"
 	default "V7"	if BR2_sparc_v7 || BR2_sparc_sparchfleon || BR2_sparc_sparcsfleon
 	default "V8"	if BR2_sparc_v8 || BR2_sparc_sparchfleonv8 || BR2_sparc_sparcsfleonv8
+	depends on BR2_UCLIBC_TARGET_ARCH = "sparc"
 
 config BR2_UCLIBC_POWERPC_TYPE
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "powerpc"
 	default "CLASSIC" if !BR2_powerpc_8540 && !BR2_powerpc_8548
 	default "E500"    if BR2_powerpc_8540 || BR2_powerpc_8548
+	depends on BR2_UCLIBC_TARGET_ARCH = "powerpc"
 
 config BR2_UCLIBC_X86_TYPE
 	string
-	depends on BR2_UCLIBC_TARGET_ARCH = "i386"
 	default "486"        if BR2_x86_i486
 	default "586"        if BR2_x86_i586
 	default "586MMX"     if BR2_x86_pentium_mmx
@@ -163,5 +155,6 @@ config BR2_UCLIBC_X86_TYPE
 	default "PENTIUMIII" if BR2_x86_pentium3
 	default "PENTIUM4"   if BR2_x86_pentium4 || BR2_x86_pentium_m || \
 	                        BR2_x86_nocona || BR2_x86_core2 || BR2_x86_corei7
+	depends on BR2_UCLIBC_TARGET_ARCH = "i386"
 
 endif # BR2_TOOLCHAIN_BUILDROOT_UCLIBC

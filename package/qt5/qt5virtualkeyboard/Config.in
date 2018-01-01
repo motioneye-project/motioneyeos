@@ -1,0 +1,58 @@
+comment "qt5virtualkeyboard needs at least qt-5.7 and an OpenGL backend"
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE
+	depends on !BR2_PACKAGE_QT5_VERSION_LATEST || !BR2_PACKAGE_QT5_GL_AVAILABLE
+
+config BR2_PACKAGE_QT5VIRTUALKEYBOARD
+	bool "qt5virtualkeyboard"
+	# needs at least Qt 5.7
+	depends on BR2_PACKAGE_QT5_VERSION_LATEST
+	depends on BR2_PACKAGE_QT5_JSCORE_AVAILABLE # qt5declarative
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative quick
+	select BR2_PACKAGE_QT5DECLARATIVE
+	select BR2_PACKAGE_QT5DECLARATIVE_QUICK
+	select BR2_PACKAGE_QT5SVG
+	help
+	  Qt Virtual Keyboard is a virtual keyboard framework that
+	  consists of a C++ backend supporting custom input methods as
+	  well as a UI frontend implemented in QML.
+
+if BR2_PACKAGE_QT5VIRTUALKEYBOARD
+
+config BR2_PACKAGE_QT5VIRTUALKEYBOARD_LANGUAGE_LAYOUTS
+	string "language layouts"
+	default "en_GB"
+	help
+	  The Virtual Keyboard supports the following languages:
+	  - Arabic (ar_AR)
+	  - Danish (da_DK)
+	  - English (en_GB)
+	  - Finnish (fi_FI)
+	  - French (fr_FR)
+	  - German (de_DE)
+	  - Hindi (hi_IN)
+	  - Italian (it_IT)
+	  - Japanese (ja_JP)
+	  - Korean (ko_KR)
+	  - Norwegian (nb_NO)
+	  - Persian/Farsi (fa_FA)
+	  - Polish (pl_PL)
+	  - Portugese (pt_PT)
+	  - Romanian (ro_RO)
+	  - Russian (ru_RU)
+	  - Simplified Chinese (zh_CN)
+	  - Traditional Chinese (zh_TW)
+	  - Spanish (es_ES)
+	  - Swedish (sv_SE)
+
+	  Note: the special value "all" can be used to install support
+	  for all supported languages.
+
+config BR2_PACKAGE_QT5VIRTUALKEYBOARD_HANDWRITING
+	bool "handwriting"
+	help
+	  Handwriting support, with gestures for fullscreen input.
+
+	  Lipi Toolkit (LipiTk) is an open source toolkit for online
+	  Handwriting Recognition.
+
+endif

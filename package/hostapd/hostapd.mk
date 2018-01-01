@@ -5,12 +5,15 @@
 ################################################################################
 
 HOSTAPD_VERSION = 2.6
-HOSTAPD_SITE = http://hostap.epitest.fi/releases
+HOSTAPD_SITE = http://w1.fi/releases
+HOSTAPD_PATCH = \
+	http://w1.fi/security/2017-1/rebased-v2.6-0001-hostapd-Avoid-key-reinstallation-in-FT-handshake.patch \
+	http://w1.fi/security/2017-1/rebased-v2.6-0005-Fix-PTK-rekeying-to-generate-a-new-ANonce.patch
 HOSTAPD_SUBDIR = hostapd
 HOSTAPD_CONFIG = $(HOSTAPD_DIR)/$(HOSTAPD_SUBDIR)/.config
 HOSTAPD_DEPENDENCIES = host-pkgconf libnl
 HOSTAPD_CFLAGS = $(TARGET_CFLAGS) -I$(STAGING_DIR)/usr/include/libnl3/
-HOSTAPD_LICENSE = BSD-3c
+HOSTAPD_LICENSE = BSD-3-Clause
 HOSTAPD_LICENSE_FILES = README
 HOSTAPD_CONFIG_SET =
 
@@ -35,8 +38,8 @@ HOSTAPD_LIBS += -lnl-3 -lm -lpthread
 endif
 
 # Try to use openssl if it's already available
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-HOSTAPD_DEPENDENCIES += openssl
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+HOSTAPD_DEPENDENCIES += libopenssl
 HOSTAPD_LIBS += $(if $(BR2_STATIC_LIBS),-lcrypto -lz)
 HOSTAPD_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
@@ -51,7 +54,7 @@ endif
 ifeq ($(BR2_PACKAGE_HOSTAPD_EAP),y)
 HOSTAPD_CONFIG_ENABLE += \
 	CONFIG_EAP \
-	CONFIG_RADIUS_SERVER \
+	CONFIG_RADIUS_SERVER
 
 # Enable both TLS v1.1 (CONFIG_TLSV11) and v1.2 (CONFIG_TLSV12)
 HOSTAPD_CONFIG_ENABLE += CONFIG_TLSV1

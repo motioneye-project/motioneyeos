@@ -1,0 +1,162 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+[[patch-policy]]
+
+== Patching a package
+
+While integrating a new package or updating an existing one, it may be
+necessary to patch the source of the software to get it cross-built within
+Buildroot.
+
+Buildroot offers an infrastructure to automatically handle this during
+the builds. It supports three ways of applying patch sets: downloaded patches,
+patches supplied within buildroot and patches located in a user-defined
+global patch directory.
+
+=== Providing patches
+
+==== Downloaded
+
+If it is necessary to apply a patch that is available for download, then add it
+to the +<packagename>_PATCH+ variable. If an entry contains +://+,
+then Buildroot will assume it is a full URL and download the patch
+from this location. Otherwise, Buildroot will assume that the patch should be
+downloaded from +<packagename>_SITE+. It can be a single patch,
+or a tarball containing a patch series.
+
+Like for all downloads, a hash should be added to the +<packagename>.hash+
+file.
+
+This method is typically used for packages from Debian.
+
+==== Within Buildroot
+
+Most patches are provided within Buildroot, in the package
+directory; these typically aim to fix cross-compilation, libc support,
+or other such issues.
+
+These patch files should be named +<number>-<description>.patch+.
+
+.Notes
+- The patch files coming with Buildroot should not contain any package version
+  reference in their filename.
+- The field +<number>+ in the patch file name refers to the 'apply order',
+  and shall start at 1; It is preferred to pad the number with zeros up to 4
+  digits, like 'git-format-patch' does. E.g.: +0001-foobar-the-buz.patch+
+- Previously, it was mandatory for patches to be prefixed with the name of
+  the package, like +<package>-<number>-<description>.patch+, but that is
+  no longer the case. Existing packages will be fixed as time passes. 'Do
+  not prefix patches with the package name.'
+- Previously, a +series+ file, as used by +quilt+, could also be added in
+  the package directory. In that case, the +series+ file defines the patch
+  application order. This is deprecated, and will be removed in the future.
+  'Do not use a series file.'
+
+
+==== Global patch directory
+
+The +BR2_GLOBAL_PATCH_DIR+ configuration file option can be
+used to specify a space separated list of one or more directories
+containing global package patches. See xref:customize-patches[] for
+details.
+
+[[patch-apply-order]]
+=== How patches are applied
+
+. Run the +<packagename>_PRE_PATCH_HOOKS+ commands if defined;
+
+. Cleanup the build directory, removing any existing +*.rej+ files;
+
+. If +<packagename>_PATCH+ is defined, then patches from these
+  tarballs are applied;
+
+. If there are some +*.patch+ files in the package's Buildroot
+  directory or in a package subdirectory named +<packageversion>+,
+  then:
++
+* If a +series+ file exists in the package directory, then patches are
+  applied according to the +series+ file;
++
+* Otherwise, patch files matching +*.patch+ are applied in alphabetical
+  order.
+  So, to ensure they are applied in the right order, it is highly
+  recommended to name the patch files like this:
+  +<number>-<description>.patch+, where +<number>+ refers to the
+  'apply order'.
+
+. If +BR2_GLOBAL_PATCH_DIR+ is defined, the directories will be
+  enumerated in the order they are specified. The patches are applied
+  as described in the previous step.
+
+. Run the +<packagename>_POST_PATCH_HOOKS+ commands if defined.
+
+If something goes wrong in the steps _3_ or _4_, then the build fails.
+
+=== Format and licensing of the package patches
+
+Patches are released under the same license as the software they apply
+to (see xref:legal-info-buildroot[]).
+
+A message explaining what the patch does, and why it is needed, should
+be added in the header commentary of the patch.
+
+You should add a +Signed-off-by+ statement in the header of the each
+patch to help with keeping track of the changes and to certify that the
+patch is released under the same license as the software that is modified.
+
+If the software is under version control, it is recommended to use the
+upstream SCM software to generate the patch set.
+
+Otherwise, concatenate the header with the output of the
++diff -purN package-version.orig/ package-version/+ command.
+
+If you update an existing patch (e.g. when bumping the package version),
+make sure the existing From header and Signed-off-by tags are not
+removed, but do update the rest of the patch comment when appropriate.
+
+At the end, the patch should look like:
+
+---------------
+configure.ac: add C++ support test
+
+Signed-off-by: John Doe <john.doe@noname.org>
+
+--- configure.ac.orig
++++ configure.ac
+@@ -40,2 +40,12 @@
+
+AC_PROG_MAKE_SET
++
++AC_CACHE_CHECK([whether the C++ compiler works],
++               [rw_cv_prog_cxx_works],
++               [AC_LANG_PUSH([C++])
++                AC_LINK_IFELSE([AC_LANG_PROGRAM([], [])],
++                               [rw_cv_prog_cxx_works=yes],
++                               [rw_cv_prog_cxx_works=no])
++                AC_LANG_POP([C++])])
++
++AM_CONDITIONAL([CXX_WORKS], [test "x$rw_cv_prog_cxx_works" = "xyes"])
+---------------
+
+=== Integrating patches found on the Web
+
+When integrating a patch of which you are not the author, you have to
+add a few things in the header of the patch itself.
+
+Depending on whether the patch has been obtained from the project
+repository itself, or from somewhere on the web, add one of the
+following tags:
+
+---------------
+Backported from: <some commit id>
+---------------
+
+or
+
+---------------
+Fetch from: <some url>
+---------------
+
+It is also sensible to add a few words about any changes to the patch
+that may have been necessary.

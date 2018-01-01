@@ -20,7 +20,7 @@ diff -uNr w_scan-20141122.org/version.h w_scan-20141122/version.h
  /* AUTOMATICALLY GENERATED - DO NOT EDIT MANUALLY */
  #ifndef W_SCAN_VERSION_H
  #define W_SCAN_VERSION_H
--uint version=20141122;
-+unsigned int version=20141122;
+-uint version=20170107;
++unsigned int version=20170107;
  #endif
  

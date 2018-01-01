@@ -1,0 +1,11 @@
+[Unit]
+Description=Precision Time Protocol daemon
+After=syslog.target network.target
+Wants=linuxptp-system-clock.service
+
+[Service]
+ExecStart=/usr/sbin/ptp4l -f /etc/linuxptp.cfg
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

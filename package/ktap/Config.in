@@ -5,21 +5,22 @@ config BR2_PACKAGE_KTAP
 	help
 	  ktap is a script-based dynamic tracing tool for Linux
 
-	  It uses a scripting language and lets users trace the Linux kernel
-	  dynamically. ktap is designed to give operational insights with
-	  interoperability that allows users to tune, troubleshoot and extend
-	  kernel and application. It's similar to Linux Systemtap and
-	  Solaris Dtrace.
+	  It uses a scripting language and lets users trace the Linux
+	  kernel dynamically. ktap is designed to give operational
+	  insights with interoperability that allows users to tune,
+	  troubleshoot and extend kernel and application.
+	  It's similar to Linux Systemtap and Solaris Dtrace.
 
 	  ktap doesn't support kernels older than 3.1.
 
-	  To be able to resolve symbols in DSO and for sdt, you need to enable
-	  elfutils.
+	  To be able to resolve symbols in DSO and for sdt, you need to
+	  enable elfutils.
 
 	  Your kernel must have CONFIG_EVENT_TRACING,
 	  CONFIG_PERF_EVENTS, and CONFIG_DEBUG_FS enabled to compile.
 
-	  Buildroot automatically enables these in the kernel configuration.
+	  Buildroot automatically enables these in the kernel
+	  configuration.
 
 	  http://www.ktap.org
 

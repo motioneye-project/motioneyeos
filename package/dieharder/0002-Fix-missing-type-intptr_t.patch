@@ -1,0 +1,27 @@
+From 6f550841943f19612af064b3d3a1db134078e03c Mon Sep 17 00:00:00 2001
+From: Julien Viard de Galbert <julien@vdg.name>
+Date: Sat, 14 Jan 2017 14:18:10 +0100
+Subject: [PATCH] Fix missing type intptr_t
+
+With glibc-2.23 unistd.h need intptr_t when __USE_MISC is defined.
+
+Signed-off-by: Julien Viard de Galbert <julien@vdg.name>
+---
+ include/dieharder/libdieharder.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/include/dieharder/libdieharder.h b/include/dieharder/libdieharder.h
+index 2138ebf..d98b758 100644
+--- a/include/dieharder/libdieharder.h
++++ b/include/dieharder/libdieharder.h
+@@ -17,6 +17,7 @@
+ 
+ /* This turns on uint macro in c99 */
+ #define __USE_MISC 1
++#include <stdint.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <unistd.h>
+-- 
+2.1.4
+

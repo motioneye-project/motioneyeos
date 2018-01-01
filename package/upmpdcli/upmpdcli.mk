@@ -4,15 +4,15 @@
 #
 ################################################################################
 
-UPMPDCLI_VERSION = 1.2.12
+UPMPDCLI_VERSION = 1.2.15
 UPMPDCLI_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
-UPMPDCLI_LICENSE = GPLv2+
+UPMPDCLI_LICENSE = GPL-2.0+
 UPMPDCLI_LICENSE_FILES = COPYING
 UPMPDCLI_DEPENDENCIES = host-pkgconf libmpdclient libupnpp libmicrohttpd jsoncpp
 
 # Upmpdcli only runs if user upmpdcli exists
 define UPMPDCLI_USERS
-	upmpdcli -1 upmpdcli -1 * - - - Upmpdcli MPD UPnP Renderer Front-End
+	upmpdcli -1 upmpdcli -1 * - - audio Upmpdcli MPD UPnP Renderer Front-End
 endef
 
 define UPMPDCLI_INSTALL_INIT_SYSV

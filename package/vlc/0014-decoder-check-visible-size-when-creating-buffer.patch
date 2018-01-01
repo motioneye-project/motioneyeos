@@ -1,0 +1,33 @@
+From a38a85db58c569cc592d9380cc07096757ef3d49 Mon Sep 17 00:00:00 2001
+From: Francois Cartegnie <fcvlcdev@free.fr>
+Date: Thu, 29 Jun 2017 11:09:02 +0200
+Subject: [PATCH] decoder: check visible size when creating buffer
+
+early reject invalid visible size
+mishandled by filters.
+
+refs #18467
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/input/decoder.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/input/decoder.c b/src/input/decoder.c
+index 2c0823f..a216165 100644
+--- a/src/input/decoder.c
++++ b/src/input/decoder.c
+@@ -2060,7 +2060,9 @@ static picture_t *vout_new_buffer( decoder_t *p_dec )
+         vout_thread_t *p_vout;
+ 
+         if( !p_dec->fmt_out.video.i_width ||
+-            !p_dec->fmt_out.video.i_height )
++            !p_dec->fmt_out.video.i_height ||
++            p_dec->fmt_out.video.i_width < p_dec->fmt_out.video.i_visible_width ||
++            p_dec->fmt_out.video.i_height < p_dec->fmt_out.video.i_visible_height )
+         {
+             /* Can't create a new vout without display size */
+             return NULL;
+-- 
+2.1.4
+

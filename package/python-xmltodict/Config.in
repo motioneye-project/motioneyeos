@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_XMLTODICT
+	bool "python-xmltodict"
+	select BR2_PACKAGE_PYTHON_PYEXPAT if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_PYEXPAT if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  Makes working with XML feel like you are working with JSON.
+
+	  https://github.com/martinblech/xmltodict

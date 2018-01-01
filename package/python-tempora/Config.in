@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_TEMPORA
+	bool "python-tempora"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_PYTZ # runtime
+	help
+	  Objects and routines pertaining to date and time.
+
+	  https://github.com/jaraco/tempora

@@ -9,6 +9,6 @@ XAPP_XDRIINFO_SOURCE = xdriinfo-$(XAPP_XDRIINFO_VERSION).tar.bz2
 XAPP_XDRIINFO_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XDRIINFO_LICENSE = MIT
 XAPP_XDRIINFO_LICENSE_FILES = COPYING
-XAPP_XDRIINFO_DEPENDENCIES = xlib_libX11 xproto_glproto mesa3d
+XAPP_XDRIINFO_DEPENDENCIES = libgl xlib_libX11 xproto_glproto
 
 $(eval $(autotools-package))

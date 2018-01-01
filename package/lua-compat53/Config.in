@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LUA_COMPAT53
+	bool "lua-compat53"
+	depends on !BR2_PACKAGE_LUA_5_3
+	help
+	  Compatibility module providing Lua-5.3-style APIs for Lua 5.2
+	  and 5.1
+
+	  https://github.com/keplerproject/lua-compat-5.3

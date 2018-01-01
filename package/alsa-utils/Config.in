@@ -8,7 +8,6 @@ menuconfig BR2_PACKAGE_ALSA_UTILS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	depends on !BR2_STATIC_LIBS # uses dlfcn.h
 	select BR2_PACKAGE_ALSA_LIB
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  This package contains the command line utilities for the ALSA
 	  project.
@@ -33,10 +32,10 @@ config BR2_PACKAGE_ALSA_UTILS_ALSALOOP
 
 config BR2_PACKAGE_ALSA_UTILS_ALSAMIXER
 	bool "alsamixer"
+	default y
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_ALSA_LIB_MIXER
-	depends on BR2_USE_WCHAR
-	default y
 
 comment "alsamixer needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
@@ -50,7 +49,6 @@ config BR2_PACKAGE_ALSA_UTILS_ALSATPLG
 config BR2_PACKAGE_ALSA_UTILS_AMIDI
 	bool "amidi"
 	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
-	select BR2_PACKAGE_ALSA_LIB_SEQ
 
 config BR2_PACKAGE_ALSA_UTILS_AMIXER
 	bool "amixer"

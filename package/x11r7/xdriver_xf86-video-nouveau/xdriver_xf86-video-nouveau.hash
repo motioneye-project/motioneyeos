@@ -1,4 +1,4 @@
-# Locally computed
-sha256 6d9242ba139c3df7afefffb455573b52f4427920b978161c00483c64a6da47cb  xf86-video-nouveau-1.0.13.tar.bz2
-# From http://www.linuxfromscratch.org/blfs/view/svn/x/x7driver.html#xorg-nouveau-driver
-md5 2d7b2917ef18c6e97a6f3817c3e9387b  xf86-video-nouveau-1.0.13.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-April/002796.html
+md5 717203cb87029cddcbccf7398f9ad8c3  xf86-video-nouveau-1.0.15.tar.bz2
+sha1 ed699a59ea509550f60019eef1e092ed0ccdea08  xf86-video-nouveau-1.0.15.tar.bz2
+sha256 aede10fd395610a328697adca3434fb14e9afbd79911d6c8545cfa2c0e541d4c  xf86-video-nouveau-1.0.15.tar.bz2

@@ -12,6 +12,14 @@ config BR2_PACKAGE_GETTEXT
 
 	  http://www.gnu.org/software/gettext/
 
+if BR2_PACKAGE_GETTEXT
+
+config BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL
+	bool
+	depends on !BR2_TOOLCHAIN_HAS_FULL_GETTEXT
+	default y if BR2_SYSTEM_ENABLE_NLS
+
+endif
+
 comment "gettext needs a toolchain w/ wchar"
-	depends on BR2_NEEDS_GETTEXT
 	depends on !BR2_USE_WCHAR

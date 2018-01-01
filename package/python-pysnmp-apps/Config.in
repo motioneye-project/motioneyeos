@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PYTHON_PYSNMP_APPS
 	bool "python-pysnmp-apps"
-	select BR2_PACKAGE_PYTHON_PYSNMP
 	depends on BR2_INSTALL_LIBSTDCPP # pysnmp -> pyasn
+	select BR2_PACKAGE_PYTHON_PYSNMP
 	help
 	  A collection of command-line tools for SNMP management
 	  purposes built on top of the PySNMP package.

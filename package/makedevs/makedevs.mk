@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MAKEDEVS_LICENSE = GPLv2
+MAKEDEVS_LICENSE = GPL-2.0
 
 HOST_MAKEDEVS_CFLAGS = $(HOST_CFLAGS)
 HOST_MAKEDEVS_LDFLAGS = $(HOST_LDFLAGS)
@@ -21,7 +21,7 @@ define HOST_MAKEDEVS_BUILD_CMDS
 endef
 
 define HOST_MAKEDEVS_INSTALL_CMDS
-	$(INSTALL) -D -m 755 $(@D)/makedevs $(HOST_DIR)/usr/bin/makedevs
+	$(INSTALL) -D -m 755 $(@D)/makedevs $(HOST_DIR)/bin/makedevs
 endef
 
 $(eval $(host-generic-package))

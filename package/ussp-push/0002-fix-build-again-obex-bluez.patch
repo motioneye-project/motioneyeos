@@ -1,0 +1,28 @@
+From 2d732026044d8e6cd16465ee87a73ac9692c021b Mon Sep 17 00:00:00 2001
+From: Samuel Martin <s.martin49@gmail.com>
+Date: Fri, 3 Nov 2017 09:04:12 +0100
+Subject: [PATCH] fix build again obex/bluez
+
+[fetch from debian source: http://http.debian.net/debian/pool/main/u/ussp-push/ussp-push_0.11-4.debian.tar.xz]
+
+Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+---
+ src/obex_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/obex_main.c b/src/obex_main.c
+index a7126e6..6233d7e 100644
+--- a/src/obex_main.c
++++ b/src/obex_main.c
+@@ -197,7 +197,7 @@ obex_t *__obex_connect(int devid, void *addr, int timeout, int *err)
+ 		*err = -1;
+ 		return NULL;
+ 	}
+-	if (!(handle = OBEX_Init(OBEX_TRANS_CUST, obex_event, 0))) {
++	if (!(handle = OBEX_Init(OBEX_TRANS_CUSTOM, obex_event, 0))) {
+ 		BTERROR("OBEX_Init failed: %s\n", strerror(errno));
+ 		obex_free(gt);
+ 		*err = -1;
+-- 
+2.15.0
+

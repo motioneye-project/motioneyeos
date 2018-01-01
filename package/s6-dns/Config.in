@@ -1,0 +1,10 @@
+config BR2_PACKAGE_S6_DNS
+	bool "s6-dns"
+	depends on BR2_USE_MMU # skalibs
+	select BR2_PACKAGE_SKALIBS
+	help
+	  s6-dns is a suite of DNS client programs and libraries for
+	  Unix systems, as an alternative to the BIND, djbdns or other
+	  DNS clients.
+
+	  http://skarnet.org/software/s6-dns/

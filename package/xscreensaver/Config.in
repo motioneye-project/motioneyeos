@@ -11,7 +11,6 @@ config BR2_PACKAGE_XSCREENSAVER
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXT
-	select BR2_PACKAGE_GETTEXT if BR2_NEEDS_GETTEXT_IF_LOCALE
 	help
 	  XScreenSaver is the standard screen saver collection shipped on most
 	  Linux and Unix systems running the X11 Window System.

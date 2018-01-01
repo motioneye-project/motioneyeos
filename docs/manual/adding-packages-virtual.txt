@@ -1,0 +1,144 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for virtual packages
+
+[[virtual-package-tutorial]]
+
+In Buildroot, a virtual package is a package whose functionalities are
+provided by one or more packages, referred to as 'providers'. The virtual
+package management is an extensible mechanism allowing the user to choose
+the provider used in the rootfs.
+
+For example, 'OpenGL ES' is an API for 2D and 3D graphics on embedded systems.
+The implementation of this API is different for the 'Allwinner Tech Sunxi' and
+the 'Texas Instruments OMAP35xx' platforms. So +libgles+ will be a virtual
+package and +sunxi-mali+ and +ti-gfx+ will be the providers.
+
+==== +virtual-package+ tutorial
+
+In the following example, we will explain how to add a new virtual package
+('something-virtual') and a provider for it ('some-provider').
+
+First, let's create the virtual package.
+
+==== Virtual package's +Config.in+ file
+
+The +Config.in+ file of virtual package 'something-virtual' should contain:
+
+---------------------------
+01: config BR2_PACKAGE_HAS_SOMETHING_VIRTUAL
+02:	bool
+03:
+04: config BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL
+05:	depends on BR2_PACKAGE_HAS_SOMETHING_VIRTUAL
+06:	string
+---------------------------
+
+In this file, we declare two options, +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+ and
++BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+, whose values will be used by the
+providers.
+
+==== Virtual package's +.mk+ file
+
+The +.mk+ for the virtual package should just evaluate the +virtual-package+ macro:
+
+---------------------------
+01: ################################################################################
+02: #
+03: # something-virtual
+04: #
+05: ################################################################################
+06:
+07: $(eval $(virtual-package))
+---------------------------
+
+The ability to have target and host packages is also available, with the
++host-virtual-package+ macro.
+
+==== Provider's +Config.in+ file
+
+When adding a package as a provider, only the +Config.in+ file requires some
+modifications.
+
+The +Config.in+ file of the package 'some-provider', which provides the
+functionalities of 'something-virtual', should contain:
+
+---------------------------
+01: config BR2_PACKAGE_SOME_PROVIDER
+02:	bool "some-provider"
+03:	select BR2_PACKAGE_HAS_SOMETHING_VIRTUAL
+04:	help
+05:	  This is a comment that explains what some-provider is.
+06:
+07:	  http://foosoftware.org/some-provider/
+08:
+09: if BR2_PACKAGE_SOME_PROVIDER
+10: config BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL
+11:	default "some-provider"
+12: endif
+---------------------------
+
+On line 3, we select +BR2_PACKAGE_HAS_SOMETHING_VIRTUAL+, and on line 11, we
+set the value of +BR2_PACKAGE_PROVIDES_SOMETHING_VIRTUAL+ to the name of the
+provider, but only if it is selected.
+
+==== Provider's +.mk+ file
+
+The +.mk+ file should also declare an additional variable
++SOME_PROVIDER_PROVIDES+ to contain the names of all the virtual
+packages it is an implementation of:
+
+---------------------------
+01: SOME_PROVIDER_PROVIDES = something-virtual
+---------------------------
+
+Of course, do not forget to add the proper build and runtime dependencies for
+this package!
+
+==== Notes on depending on a virtual package
+
+When adding a package that requires a certain +FEATURE+ provided by a virtual
+package, you have to use +depends on BR2_PACKAGE_HAS_FEATURE+, like so:
+
+---------------------------
+config BR2_PACKAGE_HAS_FEATURE
+    bool
+
+config BR2_PACKAGE_FOO
+    bool "foo"
+    depends on BR2_PACKAGE_HAS_FEATURE
+---------------------------
+
+==== Notes on depending on a specific provider
+
+If your package really requires a specific provider, then you'll have to
+make your package +depends on+ this provider; you can _not_ +select+ a
+provider.
+
+Let's take an example with two providers for a +FEATURE+:
+
+---------------------------
+config BR2_PACKAGE_HAS_FEATURE
+    bool
+
+config BR2_PACKAGE_FOO
+    bool "foo"
+    select BR2_PACKAGE_HAS_FEATURE
+
+config BR2_PACKAGE_BAR
+    bool "bar"
+    select BR2_PACKAGE_HAS_FEATURE
+---------------------------
+
+And you are adding a package that needs +FEATURE+ as provided by +foo+,
+but not as provided by +bar+.
+
+If you were to use +select BR2_PACKAGE_FOO+, then the user would still
+be able to select +BR2_PACKAGE_BAR+ in the menuconfig. This would create
+a configuration inconsistency, whereby two providers of the same +FEATURE+
+would be enabled at once, one explicitly set by the user, the other
+implicitly by your +select+.
+
+Instead, you have to use +depends on BR2_PACKAGE_FOO+, which avoids any
+implicit configuration inconsistency.

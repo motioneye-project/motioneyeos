@@ -1,0 +1,11 @@
+config BR2_PACKAGE_FMT
+	bool "fmt"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_USE_WCHAR
+	help
+	  fmt is an open-source formatting library for C++. It can be
+	  used as a safe alternative to printf or as a fast alternative
+	  to IOStreams.
+
+comment "fmt needs a toolchain w/ C++, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

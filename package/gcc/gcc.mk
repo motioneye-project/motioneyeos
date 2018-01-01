@@ -18,17 +18,20 @@ GCC_SITE = $(call github,openrisc,or1k-gcc,$(GCC_VERSION))
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.gz
 else
 GCC_SITE = $(BR2_GNU_MIRROR:/=)/gcc/gcc-$(GCC_VERSION)
+# From version 5.5.0, 6.4.0 and 7.2.0 a bz2 release tarball is not
+# provided anymore. Use the xz tarball instead.
+ifeq ($(BR2_GCC_VERSION_5_X)$(BR2_GCC_VERSION_6_X)$(BR2_GCC_VERSION_7_X),y)
+GCC_SOURCE = gcc-$(GCC_VERSION).tar.xz
+else
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.bz2
+endif # BR2_GCC_VERSION_6_X
 endif
 
 #
 # Xtensa special hook
 #
-
-HOST_GCC_XTENSA_OVERLAY_TAR = $(BR2_XTENSA_OVERLAY_DIR)/xtensa_$(call qstrip,$(BR2_XTENSA_CORE_NAME)).tar
-
 define HOST_GCC_XTENSA_OVERLAY_EXTRACT
-	tar xf $(HOST_GCC_XTENSA_OVERLAY_TAR) -C $(@D) --strip-components=1 gcc
+	$(call arch-xtensa-overlay-extract,$(@D),gcc)
 endef
 
 #
@@ -95,9 +98,9 @@ HOST_GCC_COMMON_CONF_OPTS = \
 	--with-gnu-ld \
 	--disable-libssp \
 	--disable-multilib \
-	--with-gmp=$(HOST_DIR)/usr \
-	--with-mpc=$(HOST_DIR)/usr \
-	--with-mpfr=$(HOST_DIR)/usr \
+	--with-gmp=$(HOST_DIR) \
+	--with-mpc=$(HOST_DIR) \
+	--with-mpfr=$(HOST_DIR) \
 	--with-pkgversion="Buildroot $(BR2_VERSION_FULL)" \
 	--with-bugurl="http://bugs.buildroot.net/"
 
@@ -170,15 +173,12 @@ else
 HOST_GCC_COMMON_CONF_OPTS += --enable-threads
 endif
 
+# gcc 5 doesn't need cloog any more, see
+# https://gcc.gnu.org/gcc-5/changes.html and we don't support graphite
+# on GCC 4.9.x, so only isl is needed.
 ifeq ($(BR2_GCC_ENABLE_GRAPHITE),y)
 HOST_GCC_COMMON_DEPENDENCIES += host-isl
-HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)/usr
-# gcc 5 doesn't need cloog any more, see
-# https://gcc.gnu.org/gcc-5/changes.html
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_5),)
-HOST_GCC_COMMON_DEPENDENCIES += host-cloog
-HOST_GCC_COMMON_CONF_OPTS += --with-cloog=$(HOST_DIR)/usr
-endif
+HOST_GCC_COMMON_CONF_OPTS += --with-isl=$(HOST_DIR)
 else
 HOST_GCC_COMMON_CONF_OPTS += --without-isl --without-cloog
 endif
@@ -206,6 +206,12 @@ HOST_GCC_COMMON_CONF_OPTS += --with-arch=$(BR2_GCC_TARGET_ARCH)
 endif
 ifneq ($(call qstrip,$(BR2_GCC_TARGET_ABI)),)
 HOST_GCC_COMMON_CONF_OPTS += --with-abi=$(BR2_GCC_TARGET_ABI)
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_NAN)),)
+HOST_GCC_COMMON_CONF_OPTS += --with-nan=$(BR2_GCC_TARGET_NAN)
+endif
+ifneq ($(call qstrip,$(BR2_GCC_TARGET_FP32_MODE)),)
+HOST_GCC_COMMON_CONF_OPTS += --with-fp-32=$(BR2_GCC_TARGET_FP32_MODE)
 endif
 ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
 ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
@@ -248,6 +254,14 @@ HOST_GCC_COMMON_CONF_OPTS += \
 	--without-long-double-128
 endif
 
+# Since glibc >= 2.26, poerpc64le requires double/long double which
+# requires at least gcc 6.2.
+# See sysdeps/powerpc/powerpc64le/configure.ac
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC)$(BR2_TOOLCHAIN_GCC_AT_LEAST_6)$(BR2_powerpc64le),yyy)
+HOST_GCC_COMMON_CONF_OPTS += \
+	--with-long-double-128
+endif
+
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CROSS_PATH_SUFFIX='".br_real"'
 ifeq ($(BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS),)
 ifeq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
@@ -257,6 +271,8 @@ HOST_GCC_COMMON_WRAPPER_TARGET_CPU := $(call qstrip,$(BR2_GCC_TARGET_CPU)-$(BR2_
 endif
 HOST_GCC_COMMON_WRAPPER_TARGET_ARCH := $(call qstrip,$(BR2_GCC_TARGET_ARCH))
 HOST_GCC_COMMON_WRAPPER_TARGET_ABI := $(call qstrip,$(BR2_GCC_TARGET_ABI))
+HOST_GCC_COMMON_WRAPPER_TARGET_NAN := $(call qstrip,$(BR2_GCC_TARGET_NAN))
+HOST_GCC_COMMON_WRAPPER_TARGET_FP32_MODE := $(call qstrip,$(BR2_GCC_TARGET_FP32_MODE))
 HOST_GCC_COMMON_WRAPPER_TARGET_FPU := $(call qstrip,$(BR2_GCC_TARGET_FPU))
 HOST_GCC_COMMON_WRAPPER_TARGET_FLOAT_ABI := $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
 HOST_GCC_COMMON_WRAPPER_TARGET_MODE := $(call qstrip,$(BR2_GCC_TARGET_MODE))
@@ -269,6 +285,12 @@ HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_CPU='"$(HOST_GCC_COMMON_WRAPPER_T
 endif
 ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_ABI),)
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_ABI='"$(HOST_GCC_COMMON_WRAPPER_TARGET_ABI)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_NAN),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_NAN='"$(HOST_GCC_COMMON_WRAPPER_TARGET_NAN)"'
+endif
+ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_FP32_MODE),)
+HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_FP32_MODE='"$(HOST_GCC_COMMON_WRAPPER_TARGET_FP32_MODE)"'
 endif
 ifneq ($(HOST_GCC_COMMON_WRAPPER_TARGET_FPU),)
 HOST_GCC_COMMON_TOOLCHAIN_WRAPPER_ARGS += -DBR_FPU='"$(HOST_GCC_COMMON_WRAPPER_TARGET_FPU)"'
@@ -307,7 +329,7 @@ HOST_GCC_COMMON_CCACHE_HASH_FILES += \
 		$(addsuffix /gcc/$(GCC_VERSION)/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))) \
 		$(addsuffix /gcc/*.patch,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR)))))
 ifeq ($(BR2_xtensa),y)
-HOST_GCC_COMMON_CCACHE_HASH_FILES += $(HOST_GCC_XTENSA_OVERLAY_TAR)
+HOST_GCC_COMMON_CCACHE_HASH_FILES += $(ARCH_XTENSA_OVERLAY_TAR)
 endif
 ifeq ($(ARCH),powerpc)
 ifneq ($(BR2_SOFT_FLOAT),)
@@ -336,7 +358,7 @@ endif # BR2_CCACHE
 # Avoid that a .br_real is symlinked a second time.
 # Also create <arch>-linux-<tool> symlinks.
 define HOST_GCC_INSTALL_WRAPPER_AND_SIMPLE_SYMLINKS
-	$(Q)cd $(HOST_DIR)/usr/bin; \
+	$(Q)cd $(HOST_DIR)/bin; \
 	for i in $(GNU_TARGET_NAME)-*; do \
 		case "$$i" in \
 		*.br_real) \

@@ -13,17 +13,23 @@ if BR2_PACKAGE_DOCKER_ENGINE
 
 config BR2_PACKAGE_DOCKER_ENGINE_DAEMON
 	bool "docker daemon"
+	default y
 	depends on BR2_USE_MMU # docker-containerd
 	select BR2_PACKAGE_DOCKER_CONTAINERD # runtime dependency
 	select BR2_PACKAGE_IPTABLES # runtime dependency
 	select BR2_PACKAGE_SQLITE # runtime dependency
-	default y
 	help
 	  Build the Docker system daemon.
 	  If not selected, will build client only.
 
 config BR2_PACKAGE_DOCKER_ENGINE_EXPERIMENTAL
 	bool "build experimental features"
+
+config BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT
+	bool "build static client"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Build a static docker client.
 
 if BR2_PACKAGE_DOCKER_ENGINE_DAEMON
 

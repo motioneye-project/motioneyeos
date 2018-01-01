@@ -1,0 +1,7 @@
+config BR2_TARGET_TS4800_MBRBOOT
+	bool "ts4800-mbrboot"
+	depends on BR2_ARM_CPU_ARMV7A
+	help
+	  First level bootloader for TS4800 board
+
+	  https://github.com/embeddedarm/ts4800-mbrboot

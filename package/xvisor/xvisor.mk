@@ -4,12 +4,13 @@
 #
 ################################################################################
 
-XVISOR_VERSION = 0.2.8
+XVISOR_VERSION = 0.2.9
 XVISOR_SITE = http://www.xhypervisor.org/tarball
-XVISOR_LICENSE = GPLv2+
+XVISOR_LICENSE = GPL-2.0+
 XVISOR_LICENSE_FILES = COPYING
 XVISOR_INSTALL_IMAGES = YES
 XVISOR_INSTALL_TARGET = NO
+XVISOR_DEPENDENCIES = host-bison host-flex
 
 XVISOR_MAKE_TARGETS = all
 
@@ -26,8 +27,20 @@ XVISOR_KCONFIG_FILE = $(call qstrip,$(BR2_PACKAGE_XVISOR_CUSTOM_CONFIG_FILE))
 endif
 XVISOR_KCONFIG_EDITORS = menuconfig
 
+ifeq ($(BR2_x86_64),y)
+XVISOR_ARCH = x86
+else ifeq ($(BR2_arm)$(BR2_aarch64),y)
+XVISOR_ARCH = arm
+endif
+
+ifeq ($(BR2_PACKAGE_XVISOR)$(BR_BUILDING),yy)
+ifeq ($(XVISOR_ARCH),)
+$(error "Architecture not supported by XVisor")
+endif
+endif
+
 XVISOR_MAKE_ENV = \
-	ARCH=$(if $(BR2_x86_64),x86,$(BR2_ARCH)) \
+	ARCH=$(XVISOR_ARCH) \
 	CROSS_COMPILE=$(TARGET_CROSS)
 
 XVISOR_MAKE_OPTS = $(if $(VERBOSE),VERBOSE=1)

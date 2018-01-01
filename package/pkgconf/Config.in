@@ -6,4 +6,4 @@ config BR2_PACKAGE_PKGCONF
 	  but was written from scratch in the summer of 2011 to replace
 	  pkg-config, which now needs itself to build itself
 
-	  https://github.com/nenolod/pkgconf
+	  https://github.com/pkgconf/pkgconf

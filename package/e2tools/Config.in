@@ -1,9 +1,9 @@
 config BR2_PACKAGE_E2TOOLS
 	bool "e2tools"
-	select BR2_PACKAGE_E2FSPROGS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_WCHAR # uses wchar_t
 	depends on BR2_USE_MMU # e2fsprogs
+	select BR2_PACKAGE_E2FSPROGS
 	help
 	  E2tools is a simple set of GPL'ed utilities to read, write,
 	  and manipulate files in an ext2/ext3 filesystem. These

@@ -12,7 +12,7 @@ MSMTP_CONF_OPTS = \
 	--without-libidn \
 	--disable-gai-idn \
 	--without-libgsasl
-MSMTP_LICENSE = GPLv3+
+MSMTP_LICENSE = GPL-3.0+
 MSMTP_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBSECRET),y)

@@ -1,0 +1,51 @@
+From 732fd31610a6790a927ea9ed6d660796a1641254 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 7 Sep 2017 08:12:01 +0200
+Subject: [PATCH] build: Fix lirc version detection when cross compiling.
+
+The setup.py script that runs on the host can't use the client library
+built for target. So setup.py falls back to a wrong hard-coded VERSION
+value.
+
+Instead of importing the target library, use exec() to read
+lirc/config.py directly for its VERSION value.
+
+Fixes build failure:
+
+/usr/bin/install -c -m 644 ./python-pkg/dist/lirc-0.10.0.tar.gz \
+    '.../output/host/arm-buildroot-linux-musleabihf/sysroot/usr/share/lirc'
+/usr/bin/install: cannot stat './python-pkg/dist/lirc-0.10.0.tar.gz': \
+    No such file or directory
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 732fd31610a6
+
+ python-pkg/setup.py | 9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
+
+diff --git a/python-pkg/setup.py b/python-pkg/setup.py
+index e9b33690f828..a2d92e0432aa 100644
+--- a/python-pkg/setup.py
++++ b/python-pkg/setup.py
+@@ -6,14 +6,11 @@ import subprocess
+ import os.path
+ import os
+ 
+-try:
+-    import lirc.config
+-    VERSION = lirc.config.VERSION.replace('-devel','')
+-except ImportError:
+-    VERSION='0.0.0'
+-
+ from setuptools import setup, Extension
+ 
++exec(open("lirc/config.py").read())
++VERSION = VERSION.replace('-devel','')
++
+ if 'CFLAGS' in os.environ:
+     cflags = os.environ['CFLAGS'].split()
+     if 'LDFLAGS' in os.environ:
+-- 
+2.14.1
+

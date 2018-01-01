@@ -7,7 +7,10 @@ Generating a statically linked binary built with PIE requires the
 Scrt1.o file, which isn't part of Buildroot uClibc toolchains. To
 solve this, we simply disable the PIE flags.
 
+[olivier tweak patch for 2.2.4]
+
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
 ---
  Makedefs.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -16,13 +19,13 @@ diff --git a/Makedefs.in b/Makedefs.in
 index 3afef0a..299b297 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
-@@ -142,7 +142,7 @@ IPPFIND_BIN	=	@IPPFIND_BIN@
+@@ -148,7 +148,7 @@ IPPFIND_BIN	=	@IPPFIND_BIN@
  IPPFIND_MAN	=	@IPPFIND_MAN@
  LDFLAGS		=	-L../cgi-bin -L../cups -L../filter -L../ppdc \
  			-L../scheduler @LDARCHFLAGS@ \
 -			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
 +			@LDFLAGS@ @RELROFLAGS@ $(OPTIM)
- LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(DNSSDLIBS) $(LIBZ)
+ LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(DNSSDLIBS) $(SSLLIBS) $(LIBZ)
  LINKCUPSIMAGE	=	@LINKCUPSIMAGE@
  LIBS		=	$(LINKCUPS) $(COMMONLIBS)
 -- 

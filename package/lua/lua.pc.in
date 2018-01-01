@@ -1,0 +1,26 @@
+# lua.pc -- pkg-config data for Lua
+
+V= @ABI@
+R= @VERSION@
+
+prefix= /usr
+INSTALL_BIN= ${prefix}/bin
+INSTALL_INC= ${prefix}/include
+INSTALL_LIB= ${prefix}/lib
+INSTALL_MAN= ${prefix}/man/man1
+INSTALL_LMOD= ${prefix}/share/lua/${V}
+INSTALL_CMOD= ${prefix}/lib/lua/${V}
+
+# canonical vars
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: Lua
+Description: An Extensible Extension Language
+Version: ${R}
+Requires:
+Libs: -L${libdir} -llua -lm @MYLIBS@
+Cflags: -I${includedir}
+
+# (end of lua.pc)

@@ -1,8 +1,5 @@
 config BR2_PACKAGE_PYTHON_PATHVALIDATE
 	bool "python-pathvalidate"
-	select BR2_PACKAGE_PYTHON_SIX # runtime
-	select BR2_PACKAGE_PYTHON_MBSTRDECODER # runtime
-	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
 	help
 	  pathvalidate is a python library to validate/sanitize a string
 	  such as filename/variable-name.

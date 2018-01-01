@@ -4,7 +4,4 @@ config BR2_PACKAGE_MROUTED
 	help
 	  An implementation of the DVMRP multicast routing protocol.
 
-	  If built with uClibc, then UCLIBC_SUPPORT_AI_ADDRCONFIG is
-	  needed in uClibc configuration.
-
 	  http://github.com/troglobit/mrouted

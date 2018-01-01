@@ -1,0 +1,39 @@
+From f406041b58eadc716d6227408d3af553d566ffeb Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Tue, 4 Apr 2017 17:31:29 +0200
+Subject: [PATCH] configure: try linking to detect stack-protector support
+
+Even if gcc accepts the -fstack-protector argument, it is possible that
+the libssp support library is missing. Detect this by linking instead
+of just compiling.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ acinclude.m4 | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index 3c84118..4725154 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -243,7 +243,7 @@ AC_DEFUN([GCC_STACK_PROTECT_CC],[
+     AC_MSG_CHECKING([whether ${CC} accepts -fstack-protector])
+     ssp_old_cflags="$CFLAGS"
+     CFLAGS="$CFLAGS -fstack-protector"
+-    AC_TRY_COMPILE(,,, ssp_cc=no)
++    AC_TRY_LINK(,,, ssp_cc=no)
+     echo $ssp_cc
+     if test "X$ssp_cc" = "Xno"; then
+       CFLAGS="$ssp_old_cflags"
+@@ -259,7 +259,7 @@ AC_DEFUN([GCC_STACK_PROTECT_CXX],[
+     AC_MSG_CHECKING([whether ${CXX} accepts -fstack-protector])
+     ssp_old_cxxflags="$CXXFLAGS"
+     CXXFLAGS="$CXXFLAGS -fstack-protector"
+-    AC_TRY_COMPILE(,,, ssp_cxx=no)
++    AC_TRY_LINK(,,, ssp_cxx=no)
+     echo $ssp_cxx
+     if test "X$ssp_cxx" = "Xno"; then
+         CXXFLAGS="$ssp_old_cxxflags"
+-- 
+2.11.0
+

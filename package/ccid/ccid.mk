@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-CCID_VERSION = 1.4.18
-CCID_SOURCE = ccid_$(CCID_VERSION).orig.tar.bz2
-CCID_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/c/ccid
-CCID_LICENSE = LGPLv2.1+
+CCID_VERSION = 1.4.27
+CCID_SOURCE = ccid_$(CCID_VERSION).tar.bz2
+CCID_SITE = https://alioth.debian.org/frs/download.php/file/4218
+CCID_LICENSE = LGPL-2.1+
 CCID_LICENSE_FILES = COPYING
 CCID_INSTALL_STAGING = YES
 CCID_DEPENDENCIES = pcsc-lite host-pkgconf libusb

@@ -26,6 +26,7 @@
 #
 
 echo "<head>
+<script src=\"https://www.kryogenix.org/code/browser/sorttable/sorttable.js\"></script>
 <style type=\"text/css\">
 table {
   width: 100%;
@@ -59,7 +60,9 @@ td.lotsofpatches {
 
 <a href=\"#results\">Results</a><br/>
 
-<table>
+<p id=\"sortable_hint\"></p>
+
+<table class=\"sortable\">
 <tr>
 <td>Id</td>
 <td>Package</td>
@@ -68,6 +71,7 @@ td.lotsofpatches {
 <td class=\"centered\">License</td>
 <td class=\"centered\">License files</td>
 <td class=\"centered\">Hash file</td>
+<td class=\"centered\">Warnings</td>
 </tr>
 "
 
@@ -80,6 +84,7 @@ python_packages=0
 rebar_packages=0
 virtual_packages=0
 generic_packages=0
+waf_packages=0
 manual_packages=0
 packages_with_licence=0
 packages_without_licence=0
@@ -90,7 +95,7 @@ packages_without_hash_file=0
 total_patch_count=0
 cnt=0
 
-for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
+for i in $(find boot/ linux/ package/ toolchain/ -name '*.mk' | sort) ; do
 
     if test \
 	$i = "boot/common.mk" -o \
@@ -118,7 +123,15 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	$i = "package/pkg-virtual.mk" -o \
 	$i = "package/pkg-download.mk" -o \
 	$i = "package/pkg-generic.mk" -o \
-	$i = "package/pkg-utils.mk" ; then
+	$i = "package/pkg-waf.mk" -o \
+	$i = "package/pkg-kernel-module.mk" -o \
+	$i = "package/pkg-utils.mk" -o \
+	$i = "package/nvidia-tegra23/nvidia-tegra23.mk" -o \
+	$i = "toolchain/toolchain-external/pkg-toolchain-external.mk" -o \
+	$i = "toolchain/toolchain-external/toolchain-external.mk" -o \
+	$i = "toolchain/toolchain.mk" -o \
+	$i = "toolchain/helpers.mk" -o \
+	$i = "toolchain/toolchain-wrapper.mk" ; then
 	echo "skipping $i" 1>&2
 	continue
     fi
@@ -215,6 +228,16 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	hastarget=1
     fi
 
+    if grep -E "\(toolchain-external-package\)" $i > /dev/null ; then
+	infratype="toolchain-external"
+	hastarget=1
+    fi
+
+    if grep -E "\(waf-package\)" $i > /dev/null ; then
+	infratype="waf"
+	hastarget=1
+    fi
+
     pkg=$(basename $i)
     dir=$(dirname $i)
     pkg=${pkg%.mk}
@@ -243,6 +266,8 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	virtual_packages=$(($virtual_packages+1))
     elif [ ${infratype} = "generic" ]; then
 	generic_packages=$(($generic_packages+1))
+    elif [ ${infratype} = "waf" ]; then
+	waf_packages=$(($waf_packages+1))
     fi
 
     if grep -qE "^${pkgvariable}_LICENSE[ ]*=" $i ; then
@@ -323,6 +348,14 @@ for i in $(find boot/ linux/ package/ -name '*.mk' | sort) ; do
 	echo "<td class=\"centered correct\">Yes</td>"
     fi
 
+    file_list=$(find ${package_dir} -name '*.mk' -o -name '*.in*' -o -name '*.hash')
+    nwarnings=$(./utils/check-package ${file_list} 2>&1 | sed '/\([0-9]*\) warnings generated/!d; s//\1/')
+    if [ ${nwarnings} -eq 0 ] ; then
+	echo "<td class=\"centered correct\">${nwarnings}</td>"
+    else
+	echo "<td class=\"centered wrong\">${nwarnings}</td>"
+    fi
+
     echo "</tr>"
 
 done
@@ -367,6 +400,10 @@ echo "<td>Packages using the <i>virtual</i> infrastructure</td>"
 echo "<td>$virtual_packages</td>"
 echo "</tr>"
 echo "<tr>"
+echo "<td>Packages using the <i>waf</i> infrastructure</td>"
+echo "<td>$waf_packages</td>"
+echo "</tr>"
+echo "<tr>"
 echo "<td>Packages not using any infrastructure</td>"
 echo "<td>$manual_packages</td>"
 echo "</tr>"
@@ -407,4 +444,12 @@ echo "</table>"
 echo "<hr/>"
 echo "<i>Updated on $(LANG=C date), Git commit $(git log master -n 1 --pretty=format:%H)</i>"
 echo "</body>"
+
+echo "<script>
+if (typeof sorttable === \"object\") {
+  document.getElementById(\"sortable_hint\").innerHTML =
+  \"hint: the table can be sorted by clicking the column headers\"
+}
+</script>
+"
 echo "</html>"

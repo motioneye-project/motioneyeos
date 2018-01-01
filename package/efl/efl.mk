@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.18.4
+EFL_VERSION = 1.20.5
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
-EFL_LICENSE = BSD-2c, LGPLv2.1+, GPLv2+
+EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+
 EFL_LICENSE_FILES = \
 	COMPLIANCE \
 	COPYING \
@@ -24,26 +24,28 @@ EFL_DEPENDENCIES = host-pkgconf host-efl host-luajit dbus freetype \
 
 # Configure options:
 # --disable-lua-old: build elua for the target.
-# --disable-poppler: disable poppler image loader.
 # --disable-sdl: disable sdl2 support.
 # --disable-spectre: disable spectre image loader.
 # --disable-xinput22: disable X11 XInput v2.2+ support.
+# --disable-vnc-server: remove libvncserver dependency.
 # --enable-liblz4: use liblz4 from lz4 package.
+# --with-net-control=none: disable connman networkmanager.
 # --with-doxygen: disable doxygen documentation
 EFL_CONF_OPTS = \
-	--with-edje-cc=$(HOST_DIR)/usr/bin/edje_cc \
-	--with-eet-eet=$(HOST_DIR)/usr/bin/eet \
-	--with-eldbus_codegen=$(HOST_DIR)/usr/bin/eldbus-codegen \
-	--with-elementary-codegen=$(HOST_DIR)/usr/bin/elementary_codegen \
-	--with-elm-prefs-cc=$(HOST_DIR)/usr/bin/elm_prefs_cc \
-	--with-elua=$(HOST_DIR)/usr/bin/elua \
-	--with-eolian-gen=$(HOST_DIR)/usr/bin/eolian_gen \
+	--with-edje-cc=$(HOST_DIR)/bin/edje_cc \
+	--with-eet-eet=$(HOST_DIR)/bin/eet \
+	--with-eldbus_codegen=$(HOST_DIR)/bin/eldbus-codegen \
+	--with-elementary-codegen=$(HOST_DIR)/bin/elementary_codegen \
+	--with-elm-prefs-cc=$(HOST_DIR)/bin/elm_prefs_cc \
+	--with-elua=$(HOST_DIR)/bin/elua \
+	--with-eolian-gen=$(HOST_DIR)/bin/eolian_gen \
+	--disable-image-loader-jp2k \
+	--with-net-control=none \
 	--disable-lua-old \
-	--disable-poppler \
 	--disable-sdl \
 	--disable-spectre \
 	--disable-xinput22 \
-	--disable-wayland \
+	--disable-vnc-server \
 	--enable-liblz4 \
 	--with-doxygen=no
 
@@ -54,7 +56,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_EFL_EOLIAN_CPP),y)
 EFL_CONF_OPTS += --enable-cxx-bindings \
-	--with-eolian-cxx=$(HOST_DIR)/usr/bin/eolian_cxx
+	--with-eolian-cxx=$(HOST_DIR)/bin/eolian_cxx
 else
 EFL_CONF_OPTS += --disable-cxx-bindings
 endif
@@ -212,7 +214,7 @@ endif
 # which depends on wayland-client to build.
 # So enable gl_drm only when wayland support is selected.
 ifeq ($(BR2_PACKAGE_EFL_WAYLAND),y)
-EFL_DEPENDENCIES += wayland
+EFL_DEPENDENCIES += wayland wayland-protocols
 EFL_CONF_OPTS += --enable-wayland --enable-gl-drm
 else
 EFL_CONF_OPTS += --disable-wayland --disable-gl-drm
@@ -251,18 +253,18 @@ else
 EFL_CONF_OPTS += --disable-image-loader-tiff
 endif
 
-ifeq ($(BR2_PACKAGE_EFL_JP2K),y)
-EFL_CONF_OPTS += --enable-image-loader-jp2k=yes
-EFL_DEPENDENCIES += openjpeg
-else
-EFL_CONF_OPTS += --disable-image-loader-jp2k
-endif
-
 ifeq ($(BR2_PACKAGE_EFL_WEBP),y)
 EFL_CONF_OPTS += --enable-image-loader-webp=yes
 EFL_DEPENDENCIES += webp
 else
 EFL_CONF_OPTS += --disable-image-loader-webp
+endif
+
+ifeq ($(BR2_PACKAGE_POPPLER),y)
+EFL_DEPENDENCIES += poppler
+EFL_CONF_OPTS += --enable-poppler
+else
+EFL_CONF_OPTS += --disable-poppler
 endif
 
 ifeq ($(BR2_PACKAGE_EFL_LIBRAW),y)
@@ -289,6 +291,10 @@ define EFL_HOOK_REMOVE_UPOWER
 	rm -fr $(TARGET_DIR)/usr/lib/ecore/system/upower
 endef
 EFL_POST_INSTALL_TARGET_HOOKS = EFL_HOOK_REMOVE_UPOWER
+endif
+
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+EFL_DEPENDENCIES += libunwind
 endif
 
 $(eval $(autotools-package))
@@ -330,10 +336,13 @@ HOST_EFL_DEPENDENCIES = \
 # --disable-physics: remove Bullet dependency.
 # --disable-poppler: disable poppler image loader.
 # --disable-spectre: disable spectre image loader.
+# --disable-systemd: disable systemd dependency.
+# --disable-vnc-server: remove libvncserver dependency.
 # --enable-image-loader-gif=no: disable Gif dependency.
 # --enable-image-loader-tiff=no: disable Tiff dependency.
 # --with-crypto=none: remove dependencies on openssl or gnutls.
 # --with-doxygen: disable doxygen documentation
+# --with-net-control=none: disable connman networkmanager.
 # --with-x11=none: remove dependency on X.org.
 #   Yes I really know what I am doing.
 HOST_EFL_CONF_OPTS += \
@@ -350,7 +359,9 @@ HOST_EFL_CONF_OPTS += \
 	--disable-physics \
 	--disable-poppler \
 	--disable-spectre \
+	--disable-systemd \
 	--disable-xcf \
+	--disable-vnc-server \
 	--enable-image-loader-gif=no \
 	--enable-image-loader-jpeg=yes \
 	--enable-image-loader-png=yes \
@@ -358,6 +369,7 @@ HOST_EFL_CONF_OPTS += \
 	--with-crypto=none \
 	--with-doxygen=no \
 	--with-glib=yes \
+	--with-net-control=none \
 	--with-opengl=none \
 	--with-x11=none \
 	--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
@@ -376,7 +388,7 @@ endif
 # system bus which is non-existent and does not contain
 # any upower service in it.
 define HOST_EFL_HOOK_REMOVE_UPOWER
-	rm -fr $(HOST_DIR)/usr/lib/ecore/system/upower
+	rm -fr $(HOST_DIR)/lib/ecore/system/upower
 endef
 HOST_EFL_POST_INSTALL_HOOKS = HOST_EFL_HOOK_REMOVE_UPOWER
 

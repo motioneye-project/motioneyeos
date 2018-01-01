@@ -28,7 +28,7 @@ Index: kconfig/mconf.c
  	"<Enter> selects submenus ---> (or empty submenus ----).  "
  	"Highlighted letters are hotkeys.  "
 -	"Pressing <Y> includes, <N> excludes, <M> modularizes features.  "
-+	"Pressing <Y> selectes a feature, while <N> will exclude a feature.  "
++	"Pressing <Y> selects a feature, while <N> excludes a feature.  "
  	"Press <Esc><Esc> to exit, <?> for Help, </> for Search.  "
 -	"Legend: [*] built-in  [ ] excluded  <M> module  < > module capable"),
 +	"Legend: [*] feature is selected  [ ] feature is excluded"),
