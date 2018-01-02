@@ -184,7 +184,7 @@ def pkg_pie_time_per_package(data, output):
     labels = []
     values = []
     other_value = 0
-    for p in data:
+    for p in sorted(data, key=lambda p: p.get_duration()):
         if p.get_duration() < (total * 0.01):
             other_value += p.get_duration()
         else:

@@ -127,7 +127,7 @@ def draw_graph(pkgsize, outputf):
     labels = []
     values = []
     other_value = 0
-    for (p, sz) in pkgsize.items():
+    for (p, sz) in sorted(pkgsize.items(), key=lambda x: x[1]):
         if sz < (total * 0.01):
             other_value += sz
         else:
