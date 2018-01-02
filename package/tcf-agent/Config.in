@@ -1,0 +1,41 @@
+config BR2_PACKAGE_TCF_AGENT
+	bool "tcf-agent"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_PACKAGE_TCF_AGENT_ARCH_SUPPORTS
+	depends on BR2_USE_MMU # util-linux
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	help
+	  Target Communication Framework Agent is an example
+	  application using the Target Communication Framework
+	  Library.
+
+	  Target Communication Framework is universal, extensible,
+	  simple, lightweight, vendor agnostic framework for tools and
+	  targets to communicate for purpose of debugging, profiling,
+	  code patching and other device software development needs.
+
+	  tcf-agent is a daemon, which provides TCF services that can
+	  be used by local and remote clients.
+
+	  https://wiki.eclipse.org/TCF
+
+config BR2_PACKAGE_TCF_AGENT_ARCH
+	string
+	default "arm"        if BR2_arm || BR2_armeb
+	default "a64"        if BR2_aarch64 || BR2_aarch64_be
+	default "i686"       if BR2_i386 && BR2_ARCH="i686"
+	default "i386"       if BR2_i386 && !BR2_ARCH="i686"
+	default "x86_64"     if BR2_x86_64
+	default "powerpc"    if BR2_powerpc || BR2_powerpcle
+	default "ppc64"      if BR2_powerpc64 || BR2_powerpc64le
+	default "microblaze" if BR2_microblaze || BR2_microblazeel
+
+config BR2_PACKAGE_TCF_AGENT_ARCH_SUPPORTS
+	bool
+	default y if BR2_PACKAGE_TCF_AGENT_ARCH != ""
+
+comment "tcf-agent needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_TCF_AGENT_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

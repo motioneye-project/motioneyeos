@@ -1285,6 +1285,9 @@ N:	Noé Rubinstein <noe.rubinstein@gmail.com>
 F:	package/tpm-tools/
 F:	package/trousers/
 
+N:	Norbert Lange <nolange79@gmail.com>
+F:	package/tcf-agent/
+
 N:	Olaf Rempel <razzor@kopf-tisch.de>
 F:	package/ctorrent/
 

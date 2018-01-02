@@ -1,0 +1,48 @@
+From 96c43b223c90746cb2f680d6d5e198afc690dd4d Mon Sep 17 00:00:00 2001
+From: Norbert Lange <nolange79@gmail.com>
+Date: Mon, 4 Dec 2017 10:56:45 +0100
+Subject: [PATCH] agent: add install target to the CMakeLists
+
+It is common for CMake packages to make sure that 'make install'
+works properly, and that's what most users expect.
+
+More specifically, build systems such as Buildroot also expect
+'make install' to do the right thing for CMake-based packages
+
+Signed-off-by: Norbert Lange <nolange79@gmail.com>
+---
+ agent/CMakeLists.txt | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/agent/CMakeLists.txt b/agent/CMakeLists.txt
+index aef15b96..605862b2 100644
+--- a/agent/CMakeLists.txt
++++ b/agent/CMakeLists.txt
+@@ -1,6 +1,8 @@
+ # -*- cmake -*-
+ 
+ cmake_minimum_required(VERSION 2.8)
++project(tcfagent C)
++include(GNUInstallDirs)
+ 
+ set(CMAKE_COLOR_MAKEFILE OFF)
+ 
+@@ -43,3 +45,15 @@ message(STATUS "machine:" ${TCF_MACHINE})
+ 
+ add_executable(agent tcf/main/main.c)
+ target_link_libraries(agent ${TCF_LIB_NAME})
++
++# executable and library cant have the same target name,
++# but we can rename the output
++set_target_properties(agent
++        PROPERTIES OUTPUT_NAME tcf-agent)
++
++# add target to install all outputs
++install(TARGETS agent ${TCF_LIB_NAME}
++  RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR}
++  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
++  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
++)
+-- 
+2.15.1
+
