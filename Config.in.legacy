@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.02"
 
+config BR2_PACKAGE_EEPROG
+	bool "eeprog package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_I2C_TOOLS
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  The eeprog program is now provided by the i2c-tools package.
+
 config BR2_PACKAGE_GNUPG2_GPGV2
 	bool "gnupg2 gpgv2 option removed"
 	select BR2_LEGACY

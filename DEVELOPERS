@@ -1116,7 +1116,6 @@ F:	package/crda/
 F:	package/devmem2/
 F:	package/dnsmasq/
 F:	package/dosfstools/
-F:	package/eeprog/
 F:	package/eigen/
 F:	package/ethtool/
 F:	package/flashbench/
