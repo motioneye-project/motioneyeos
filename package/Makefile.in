@@ -398,7 +398,7 @@ NLS_OPTS = --disable-nls
 endif
 
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
-TARGET_CONFIGURE_OPTS += CXX=false
+TARGET_CONFIGURE_OPTS += CXX=false CXXCPP=cpp
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
