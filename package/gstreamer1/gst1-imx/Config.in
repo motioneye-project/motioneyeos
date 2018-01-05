@@ -27,12 +27,12 @@ comment "imxeglvivsink needs the Vivante 3D libraries"
 
 config BR2_PACKAGE_GST1_IMX_G2D
 	bool "imxg2d"
-	depends on BR2_PACKAGE_IMX_GPU_VIV_G2D
+	depends on BR2_PACKAGE_IMX_GPU_G2D
 	help
 	  Elements leveraging the 2D GPU
 
-comment "imxg2d needs the Vivante 2D libraries"
-	depends on !BR2_PACKAGE_IMX_GPU_VIV_G2D
+comment "imxg2d needs the G2D libraries"
+	depends on !BR2_PACKAGE_IMX_GPU_G2D
 
 config BR2_PACKAGE_GST1_IMX_IPU
 	bool "imxipu"

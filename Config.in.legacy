@@ -161,6 +161,20 @@ config BR2_PACKAGE_GNUPG2_GPGV2
 	  The gpgv2 executable is now named gpgv. The config option
 	  has been renamed accordingly.
 
+config BR2_PACKAGE_IMX_GPU_VIV_APITRACE
+	bool "Vivante apitrace tool option removed"
+	select BR2_LEGACY
+	help
+	  The apitrace tool for Vivante is not provided by the
+	  imx-gpu-viv package any longer.
+
+config BR2_PACKAGE_IMX_GPU_VIV_G2D
+	bool "Vivante G2D libraries from imx-gpu-viv removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_IMX_GPU_G2D
+	help
+	  The G2D libraries are now provided by the imx-gpu-g2d package.
+
 ###############################################################################
 comment "Legacy options removed in 2017.11"
 

@@ -60,28 +60,12 @@ config BR2_PACKAGE_PROVIDES_LIBGLES
 config BR2_PACKAGE_PROVIDES_LIBOPENVG
 	default "imx-gpu-viv"
 
-config BR2_PACKAGE_IMX_GPU_VIV_APITRACE
-	bool "install apitrace tools"
-	select BR2_PACKAGE_IMX_GPU_VIV_G2D
-	select BR2_PACKAGE_LIBPNG
-	help
-	  Copy the apitrace tool to the target. Apitrace consists
-	  of a set of tools to trace, replay and/or inspect OpenGL,
-	  OpenGL ES APIs calls
-
-	  http://apitrace.github.io/
-
 config BR2_PACKAGE_IMX_GPU_VIV_EXAMPLES
 	bool "install examples"
 	help
 	  Copy the Vivante examples to the target.
 
 	  Warning: examples take approximately 150 MB of disk space.
-
-config BR2_PACKAGE_IMX_GPU_VIV_G2D
-	bool "install G2D libraries"
-	help
-	  Copy the GPU2D libraries to the target.
 
 config BR2_PACKAGE_IMX_GPU_VIV_GMEM_INFO
 	bool "install gmem_info tool"

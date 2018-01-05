@@ -33,6 +33,10 @@ ifeq ($(BR2_PACKAGE_IMX_GPU_VIV),y)
 GST1_IMX_DEPENDENCIES += imx-gpu-viv
 endif
 
+ifeq ($(BR2_PACKAGE_IMX_GPU_G2D),y)
+GST1_IMX_DEPENDENCIES += imx-gpu-g2d
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_IMX_EGLVISINK),y)
 # There's no --enable-eglvivsink option
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
