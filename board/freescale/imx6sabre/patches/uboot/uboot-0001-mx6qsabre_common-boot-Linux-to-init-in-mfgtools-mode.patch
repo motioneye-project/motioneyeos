@@ -22,10 +22,10 @@ diff --git a/include/configs/mx6sabre_common.h b/include/configs/mx6sabre_common
 index 93d4c4b..d2e7efd 100644
 --- a/include/configs/mx6sabre_common.h
 +++ b/include/configs/mx6sabre_common.h
-@@ -106,7 +106,7 @@
+@@ -52,7 +52,7 @@
  
  #define CONFIG_MFG_ENV_SETTINGS \
- 	"mfgtool_args=setenv bootargs console=" CONFIG_CONSOLE_DEV ",115200 " \
+ 	"mfgtool_args=setenv bootargs console=" CONSOLE_DEV ",115200 " \
 -		"rdinit=/linuxrc " \
 +		"rdinit=/init " \
  		"g_mass_storage.stall=0 g_mass_storage.removable=1 " \
