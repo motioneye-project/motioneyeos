@@ -29,7 +29,8 @@ config BR2_PACKAGE_TCF_AGENT_ARCH
 	default "x86_64"     if BR2_x86_64
 	default "powerpc"    if BR2_powerpc || BR2_powerpcle
 	default "ppc64"      if BR2_powerpc64 || BR2_powerpc64le
-	default "microblaze" if BR2_microblaze || BR2_microblazeel
+#	fails to build currently
+#	default "microblaze" if BR2_microblaze || BR2_microblazeel
 
 config BR2_PACKAGE_TCF_AGENT_ARCH_SUPPORTS
 	bool
