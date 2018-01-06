@@ -28,3 +28,10 @@ RUN apt-get -q -y clean
 RUN sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen
 RUN /usr/sbin/locale-gen
 
+RUN useradd -ms /bin/bash br-user
+RUN chown -R br-user:br-user /home/br-user
+
+USER br-user
+WORKDIR /home/br-user
+ENV HOME /home/br-user
+ENV LC_ALL en_US.UTF-8
