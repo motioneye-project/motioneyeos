@@ -10,11 +10,20 @@ DAQ_SOURCE = daq-$(DAQ_VERSION).tar.gz
 DAQ_LICENSE = GPL-2.0
 DAQ_LICENSE_FILES = COPYING
 DAQ_INSTALL_STAGING = YES
-DAQ_DEPENDENCIES = libdnet
 
 # package does not build in parallel due to improper make rules
 # related to the generation of the tokdefs.h header file
 DAQ_MAKE = $(MAKE1)
+
+# disable ipq module as libipq is deprecated
+DAQ_CONF_OPTS += --disable-ipq-module
+
+ifeq ($(BR2_PACKAGE_LIBDNET)$(BR2_PACKAGE_LIBNETFILTER_QUEUE),yy)
+DAQ_DEPENDENCIES += libdnet libnetfilter_queue
+DAQ_CONF_OPTS += --enable-nfq-module
+else
+DAQ_CONF_OPTS += --disable-nfq-module
+endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
 DAQ_DEPENDENCIES += libpcap
