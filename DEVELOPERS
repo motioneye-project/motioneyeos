@@ -1826,9 +1826,6 @@ F:	package/libmicrohttpd/
 F:	package/sysprof/
 F:	package/time/
 
-N:	Will Newton <will.newton@imgtec.com>
-F:	package/numactl/
-
 N:	Will Wagner <will_wagner@carallon.com>
 F:	package/yaffs2utils/
 
