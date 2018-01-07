@@ -127,10 +127,8 @@ build_one() {
 
     # legal-info done systematically, because some packages have different
     # sources depending on the configuration (e.g. lua-5.2 vs. lua-5.3)
-    if [ -n "${pkg}" ]; then
-        if ! make O="${dir}" "${pkg}-legal-info" >> "${dir}/logfile" 2>&1; then
-            return 3
-        fi
+    if ! make O="${dir}" legal-info >> "${dir}/logfile" 2>&1; then
+        return 3
     fi
 }
 
