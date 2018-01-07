@@ -1,0 +1,31 @@
+From d16133e3e293fe16b291114d344fbd5a61d5ed65 Mon Sep 17 00:00:00 2001
+From: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
+Date: Thu, 20 Jul 2017 19:48:26 -0700
+Subject: [PATCH] glx: Only include compositeext.h if COMPOSITE is
+ supported
+
+Regressed-in: ea483af99a6351323afe00a0b630cd63310efdb1
+Signed-off-by: Jeremy Huddleston Sequoia <jeremyhu@apple.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ glx/glxscreens.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/glx/glxscreens.c b/glx/glxscreens.c
+index 78e0aaff9..609661274 100644
+--- a/glx/glxscreens.c
++++ b/glx/glxscreens.c
+@@ -43,7 +43,10 @@
+ #include "glxutil.h"
+ #include "glxext.h"
+ #include "protocol-versions.h"
++
++#ifdef COMPOSITE
+ #include "compositeext.h"
++#endif
+ 
+ static DevPrivateKeyRec glxScreenPrivateKeyRec;
+ 
+-- 
+2.11.0
+
