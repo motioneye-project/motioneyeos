@@ -23,6 +23,8 @@ and we don't link against it.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Bernd: PKG_CHECK_MODULES should not fail when libatomic_ops is missing]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  amdgpu/Makefile.am    | 2 +-
  configure.ac          | 2 +-
@@ -57,7 +59,7 @@ index 35378b33..501d0871 100644
  
  	if test "x$drm_cv_atomic_primitives" = "xnone"; then
 -		AC_CHECK_HEADER([atomic_ops.h], drm_cv_atomic_primitives="libatomic-ops")
-+		PKG_CHECK_MODULES(ATOMIC_OPS, [atomic_ops], drm_cv_atomic_primitives="libatomic-ops")
++		PKG_CHECK_MODULES(ATOMIC_OPS, [atomic_ops], drm_cv_atomic_primitives="libatomic-ops", true)
  	fi
  
  	# atomic functions defined in <atomic.h> & libc on Solaris
