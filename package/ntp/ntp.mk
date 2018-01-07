@@ -23,7 +23,7 @@ NTP_CONF_OPTS = \
 # 0003-ntpq-fpic.patch
 NTP_AUTORECONF = YES
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
 NTP_CONF_OPTS += --with-crypto
 NTP_DEPENDENCIES += openssl
 else
