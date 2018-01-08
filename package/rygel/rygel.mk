@@ -16,6 +16,8 @@ RYGEL_DEPENDENCIES = \
 	libmediaart \
 	sqlite
 RYGEL_INSTALL_STAGING = YES
+# We're patching configure.ac
+RYGEL_AUTORECONF = YES
 
 RYGEL_CONF_OPTS += \
 	--disable-apidocs \
