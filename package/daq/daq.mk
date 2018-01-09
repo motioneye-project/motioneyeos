@@ -6,7 +6,6 @@
 
 DAQ_VERSION = 2.0.6
 DAQ_SITE = https://www.snort.org/downloads/snort
-DAQ_SOURCE = daq-$(DAQ_VERSION).tar.gz
 DAQ_LICENSE = GPL-2.0
 DAQ_LICENSE_FILES = COPYING
 DAQ_INSTALL_STAGING = YES
