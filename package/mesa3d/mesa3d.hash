@@ -1,8 +1,8 @@
-# From https://lists.freedesktop.org/archives/mesa-announce/2017-December/000385.html
-md5 b4b021279ea21e1eb8a1369afa6f19a0  mesa-17.3.1.tar.xz
-sha1 1bda76199addb01946e5a6cd35e00a05540b7eb0  mesa-17.3.1.tar.xz
-sha256 9ae607e0998a586fb2c866cfc8e45e6f52d1c56cb1b41288253ea83eada824c1  mesa-17.3.1.tar.xz
-sha512 a2bd0123bf2df0db03197001a9e001b25f2609f3c6bf1bae66f3bc50c51d2558b5b77e232e81c1658c3a4dec88eda32a8b5a85c1fedc937a7441476228ef8238  mesa-17.3.1.tar.xz
+# From https://lists.freedesktop.org/archives/mesa-announce/2018-January/000388.html
+md5  5c59b779925f504ffd0f13c7dcd29ac6  mesa-17.3.2.tar.xz
+sha1 d3fd1b57a5b853d91150aea8db033e6c995fd9e9  mesa-17.3.2.tar.xz
+sha256 e2844a13f2d6f8f24bee65804a51c42d8dc6ae9c36cff7ee61d0940e796d64c6  mesa-17.3.2.tar.xz
+sha512 46a85f5f5f9a503bc0e3f8c4469ffaa5cec3861070321d5d9cb5805c6d3ea50ae2a5438f012f467cb57d7e3b7c1e67ddabbfbf44e0fabb5856802454c576a5d3  mesa-17.3.2.tar.xz
 # License
 sha256 630e75b4fdeb75ee2bf9e55db54dd1e3ff7353d52d9314ca8512bfd460f8e24c  docs/license.html
 sha256 a75ee0cec909515ff80a3ec07155b7fb0aafe8051abe1f0e45d5c4c5e2539366  docs/patents.txt
