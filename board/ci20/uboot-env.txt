@@ -1,0 +1,10 @@
+baudrate=115200
+board_mfr=NP
+bootargs=console=ttyS4,115200 console=tty0 mem=256M@0x0 mem=768M@0x30000000 rootwait root=/dev/mmcblk0p1 devtmpfs.mount=1 ip=dhcp
+bootcmd=run ethargs; ext4load mmc 0:1 0x88000000 /boot/uImage; bootm 0x88000000
+bootdelay=1
+ethargs=env set bootargs ${bootargs}
+loads_echo=1
+stderr=eserial0,eserial4
+stdin=eserial0,eserial4
+stdout=eserial0,eserial4
