@@ -4,7 +4,7 @@ config BR2_PACKAGE_SWUPDATE
 	depends on BR2_USE_MMU # fork()
 	# swupdate requires a parser and uses libconfig as default
 	select BR2_PACKAGE_LIBCONFIG if !BR2_PACKAGE_JSON_C && \
-		!BR2_PACKAGE_LUA_5_2 && !BR2_PACKAGE_LUA_5_3
+		!BR2_PACKAGE_HAS_LUAINTERPRETER
 	help
 	  swupdate provides a reliable way to update the software on
 	  an embedded system.
@@ -16,11 +16,11 @@ config BR2_PACKAGE_SWUPDATE
 	  handler for raw NAND or NOR flash.
 
 	  The default configuration file builds a reasonable firmware
-	  update system with minimal external dependencies in my
-	  mind. If you like to use your own modified configuration,
+	  update system with minimal external dependencies in mind.
+	  If you like to use your own modified configuration,
 	  you have to select the necessary packages manually:
 
-	  * Select BR2_PACKAGE_LUA_5_2 or BR2_PACKAGE_LUA_5_3 if you
+	  * Select BR2_PACKAGE_LUA or BR2_PACKAGE_LUAJIT if you want
 	    want to have Lua support.
 	  * Select BR2_LIBCURL if you want to use the download
 	    feature.
