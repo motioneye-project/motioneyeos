@@ -10,7 +10,7 @@ linking for libuuid only. Otherwise the build will fail like this:
 ld: attempted static link of dynamic object `/usr/lib/libuuid.so'
 
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
-[Sent upstream: http://oss.sgi.com/pipermail/xfs/2015-November/045136.html]
+[Sent upstream: https://www.spinics.net/lists/xfs/msg36149.html]
 ---
  mdrestore/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
