@@ -44,12 +44,15 @@ define KMSXX_INSTALL_TARGET_CMDS
 	$(KMSXX_INSTALL_TARGET_TESTS)
 endef
 
+# kmsxx only builds shared or static libraries, so when
+# BR2_SHARED_STATIC_LIBS=y, we don't have any static library to
+# install
 define KMSXX_INSTALL_STAGING_CMDS
 	$(foreach l,$(KMSXX_LIBS),\
 		$(if $(BR2_SHARED_LIBS)$(BR2_SHARED_STATIC_LIBS),
 			$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).so \
 				$(STAGING_DIR)/usr/lib/lib$(l).so)
-		$(if $(BR2_STATIC_LIBS)$(BR2_SHARED_STATIC_LIBS),
+		$(if $(BR2_STATIC_LIBS),
 			$(INSTALL) -D -m 0755 $(@D)/lib/lib$(l).a \
 				$(STAGING_DIR)/usr/lib/lib$(l).a)
 		mkdir -p $(STAGING_DIR)/usr/include/$(l)
