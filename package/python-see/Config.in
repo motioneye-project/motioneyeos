@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_SEE
+	bool "python-see"
+	help
+	  dir for humans.
+
+	  https://ljcooke.github.io/see/
