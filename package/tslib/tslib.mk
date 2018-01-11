@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TSLIB_VERSION = 1.14
+TSLIB_VERSION = 1.15
 TSLIB_SITE = https://github.com/kergoth/tslib/releases/download/$(TSLIB_VERSION)
 TSLIB_SOURCE = tslib-$(TSLIB_VERSION).tar.xz
 TSLIB_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
@@ -27,7 +27,8 @@ TSLIB_CONF_OPTS += \
 	--enable-dejitter=static \
 	--enable-debounce=static \
 	--enable-skip=static \
-	--enable-lowpass=static
+	--enable-lowpass=static \
+	--enable-invert=static
 endif
 
 $(eval $(autotools-package))
