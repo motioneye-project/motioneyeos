@@ -30,4 +30,10 @@ config BR2_PACKAGE_PURE_FTPD_QUOTAS
 	  his account. In addition, restrictions can also be placed on
 	  the total size.
 
+config BR2_PACKAGE_PURE_FTPD_UPLOADSCRIPT
+	bool "uploadscript"
+	help
+	  Enable pure-upload script. Automatically run an external program
+	  after a successful upload.
+
 endif

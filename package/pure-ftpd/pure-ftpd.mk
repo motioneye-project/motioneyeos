@@ -53,4 +53,8 @@ ifeq ($(BR2_PACKAGE_PURE_FTPD_QUOTAS),y)
 PURE_FTPD_CONF_OPTS += --with-quotas
 endif
 
+ifeq ($(BR2_PACKAGE_PURE_FTPD_UPLOADSCRIPT),y)
+PURE_FTPD_CONF_OPTS += --with-uploadscript
+endif
+
 $(eval $(autotools-package))
