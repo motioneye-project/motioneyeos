@@ -1862,6 +1862,7 @@ F:	package/libiscsi/
 F:	package/libpri/
 F:	package/libseccomp/
 F:	package/libss7/
+F:	package/linux-firmware/
 F:	package/linux-tools/
 F:	package/matchbox*
 F:	package/mesa3d-headers/
