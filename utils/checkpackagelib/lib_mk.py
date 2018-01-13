@@ -99,6 +99,30 @@ class PackageHeader(_CheckFunction):
                         text]
 
 
+class RemoveDefaultPackageSourceVariable(_CheckFunction):
+    packages_that_may_contain_default_source = ["binutils", "gcc", "gdb"]
+    PACKAGE_NAME = re.compile("/([^/]+)\.mk")
+
+    def before(self):
+        package = self.PACKAGE_NAME.search(self.filename).group(1)
+        package_upper = package.replace("-", "_").upper()
+        self.package = package
+        self.FIND_SOURCE = re.compile(
+            "^{}_SOURCE\s*=\s*{}-\$\({}_VERSION\)\.tar\.gz"
+            .format(package_upper, package, package_upper))
+
+    def check_line(self, lineno, text):
+        if self.FIND_SOURCE.search(text):
+
+            if self.package in self.packages_that_may_contain_default_source:
+                return
+
+            return ["{}:{}: remove default value of _SOURCE variable "
+                    "({}#generic-package-reference)"
+                    .format(self.filename, lineno, self.url_to_manual),
+                    text]
+
+
 class SpaceBeforeBackslash(_CheckFunction):
     TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH = re.compile(r"^.*(  |\t)\\$")
 
