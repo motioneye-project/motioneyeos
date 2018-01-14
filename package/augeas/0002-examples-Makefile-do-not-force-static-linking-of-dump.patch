@@ -1,0 +1,33 @@
+From c50b793f6ab17c192e048b4a06421be7c6381998 Mon Sep 17 00:00:00 2001
+From: David Lutterkort <lutter@watzmann.net>
+Date: Fri, 5 Jan 2018 14:48:15 -0800
+Subject: [PATCH] * examples/Makefile.am: do not force static linking of dump
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Forcing static linking of 'dump' was accidentally left in from some
+testing; there is no reason to force that specifically for dump.
+
+Thanks to Jörg Krause for reporting the issue and verifying the fix.
+
+Fixes https://github.com/hercules-team/augeas/issues/535
+
+Backported from: c50b793f6ab17c192e048b4a06421be7c6381998
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ examples/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/examples/Makefile.am b/examples/Makefile.am
+index a19597bf..928eb517 100644
+--- a/examples/Makefile.am
++++ b/examples/Makefile.am
+@@ -12,6 +12,5 @@ fadot_SOURCES = fadot.c
+ fadot_LDADD = $(top_builddir)/src/libfa.la $(GNULIB)
+ 
+ dump_sources = dump.c
+-dump_LDFLAGS = -static
+ dump_LDADD =  $(top_builddir)/src/libaugeas.la $(top_builddir)/src/libfa.la \
+ 	          $(GNULIB)
