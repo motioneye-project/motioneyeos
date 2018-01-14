@@ -1,6 +1,6 @@
 # Architecture
 BR2_x86_64=y
-BR2_x86_atom=y
+BR2_x86_silvermont=y
 
 # Misc
 BR2_SYSTEM_DHCP="eth0"

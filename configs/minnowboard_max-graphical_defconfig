@@ -1,6 +1,6 @@
 # Architecture
 BR2_x86_64=y
-BR2_x86_atom=y
+BR2_x86_silvermont=y
 
 # Toolchain
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_14=y
