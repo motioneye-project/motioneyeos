@@ -9,4 +9,4 @@ printf "HOST_DIR,%s\n" "${HOST_DIR}"
 printf "STAGING_DIR,%s\n" "${STAGING_DIR}"
 printf "BINARIES_DIR,%s\n" "${BINARIES_DIR}"
 printf "BR2_CONFIG,%s\n" "${BR2_CONFIG}"
-) > ${BUILD_DIR}/post-build.log
+) > ${BUILD_DIR}/$(basename "${0}" .sh).log
