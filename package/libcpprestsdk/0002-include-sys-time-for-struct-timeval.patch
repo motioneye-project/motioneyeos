@@ -1,0 +1,28 @@
+From 25453f9c186cf441881b06bc5503d979acb0ab75 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Mon, 23 Oct 2017 09:38:11 -0400
+Subject: [PATCH] Include sys/time.h for struct timeval
+
+This is needed with musl.
+
+Upstream-Status: Accepted
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ Release/include/cpprest/asyncrt_utils.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/Release/include/cpprest/asyncrt_utils.h b/Release/include/cpprest/asyncrt_utils.h
+index 8faa2dc..aab87a5 100644
+--- a/Release/include/cpprest/asyncrt_utils.h
++++ b/Release/include/cpprest/asyncrt_utils.h
+@@ -28,6 +28,7 @@
+ #endif
+ 
+ #ifndef _WIN32
++#include <sys/time.h>
+ #include <boost/algorithm/string.hpp>
+ #if !defined(ANDROID) && !defined(__ANDROID__) && defined(HAVE_XLOCALE_H) // CodePlex 269
+ /* Systems using glibc: xlocale.h has been removed from glibc 2.26
+-- 
+2.13.6
+

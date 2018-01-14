@@ -1,0 +1,28 @@
+From e75d642726c4c78c368e74660ef4bc5503f3ec12 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@codeblue.com>
+Date: Sun, 14 Jan 2018 14:44:02 -0500
+Subject: [PATCH] fix strand
+
+From upstream, fixes compiling against boost 1.66 strand.
+
+Commit IDs 6b2e0480018530b616f61d5cdc786c92ba148bb7
+
+Signed-off-by: Adam Duskett <aduskett@codeblue.com>
+---
+ Release/include/pplx/threadpool.h                                  | 2 +-
+ Release/libs/websocketpp/websocketpp/transport/asio/connection.hpp | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Release/libs/websocketpp/websocketpp/transport/asio/connection.hpp b/Release/libs/websocketpp/websocketpp/transport/asio/connection.hpp
+index 0be40f6b..395632c3 100644
+--- a/Release/libs/websocketpp/websocketpp/transport/asio/connection.hpp
++++ b/Release/libs/websocketpp/websocketpp/transport/asio/connection.hpp
+@@ -422,7 +422,7 @@ class connection : public config::socket_type::socket_con_type {
+         m_io_service = io_service;
+ 
+         if (config::enable_multithreading) {
+-            m_strand = lib::make_shared<boost::asio::strand>(
++            m_strand = lib::make_shared<boost::asio::io_service::strand>(
+                 lib::ref(*io_service));
+ 
+             m_async_read_handler = m_strand->wrap(lib::bind(
