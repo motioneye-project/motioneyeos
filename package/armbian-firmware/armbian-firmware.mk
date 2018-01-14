@@ -23,9 +23,9 @@ endif
 
 ifneq ($(ARMBIAN_FIRMWARE_FILES),)
 define ARMBIAN_FIRMWARE_INSTALL_FILES
-	cd $(@D) ; \
-	$(TAR) c $(sort $(ARMBIAN_FIRMWARE_FILES)) | \
-		$(TAR) x -C $(TARGET_DIR)/lib/firmware
+	cd $(@D) && \
+		$(TAR) cf install.tar $(sort $(ARMBIAN_FIRMWARE_FILES)) && \
+		$(TAR) xf install.tar -C $(TARGET_DIR)/lib/firmware
 endef
 endif
 
