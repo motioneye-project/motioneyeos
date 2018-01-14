@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/mwclient/json, sha256 locally computed
-md5	a73687e8caa4248e9f48caece76592ff  mwclient-0.8.6.tar.gz
-sha256	08f917b995b331b937ed8c7e297406e3c8d33b80234679ee7fbfeeafd7570a8e  mwclient-0.8.6.tar.gz
+md5	486d3109e73d298d512d967501b23647  mwclient-0.8.7.tar.gz
+sha256	3bdaaa48fda6386b190651e49484a549bd0c48b97573dbda34a8b7c4c80430ed  mwclient-0.8.7.tar.gz
+sha256	d29eaa80939b6d8fc3ab458bab90f4af879fa9e0430ed7e0fb2b94752e7eb33f  mwclient/__init__.py
