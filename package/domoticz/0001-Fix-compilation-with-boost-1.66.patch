@@ -1,0 +1,56 @@
+From b9481d3382d416d72f523a0442d662e49b4192d1 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 14 Jan 2018 18:18:32 +0100
+Subject: [PATCH] Fix compilation with boost 1.66
+
+Patch fetch from one of the answer of
+ https://github.com/domoticz/domoticz/issues/2034
+(issue still opened, no official PR sent upstream)
+
+Boost asio changed its API:
+ - http://www.boost.org/doc/libs/1_66_0/doc/html/boost_asio/net_ts.html
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ webserver/proxyclient.cpp | 2 +-
+ webserver/server.cpp      | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/webserver/proxyclient.cpp b/webserver/proxyclient.cpp
+index 203ee619..efc9815a 100644
+--- a/webserver/proxyclient.cpp
++++ b/webserver/proxyclient.cpp
+@@ -639,7 +639,7 @@ namespace http {
+ 		void CProxyManager::StartThread()
+ 		{
+ 			try {
+-				boost::asio::ssl::context ctx(io_service, boost::asio::ssl::context::sslv23);
++				boost::asio::ssl::context ctx(boost::asio::ssl::context::sslv23);
+ 				ctx.set_verify_mode(boost::asio::ssl::verify_none);
+ 
+ 				proxyclient.reset(new CProxyClient(io_service, ctx, m_pWebEm));
+diff --git a/webserver/server.cpp b/webserver/server.cpp
+index 5255aa34..0c1af08a 100644
+--- a/webserver/server.cpp
++++ b/webserver/server.cpp
+@@ -148,7 +148,7 @@ void server::handle_accept(const boost::system::error_code& e) {
+ ssl_server::ssl_server(const ssl_server_settings & ssl_settings, request_handler & user_request_handler) :
+ 		server_base(ssl_settings, user_request_handler),
+ 		settings_(ssl_settings),
+-		context_(io_service_, ssl_settings.get_ssl_method())
++		context_(ssl_settings.get_ssl_method())
+ {
+ #ifdef DEBUG_WWW
+ 	_log.Log(LOG_STATUS, "[web:%s] create ssl_server using ssl_server_settings : %s", ssl_settings.listening_port.c_str(), ssl_settings.to_string().c_str());
+@@ -161,7 +161,7 @@ ssl_server::ssl_server(const ssl_server_settings & ssl_settings, request_handler
+ ssl_server::ssl_server(const server_settings & settings, request_handler & user_request_handler) :
+ 		server_base(settings, user_request_handler),
+ 		settings_(dynamic_cast<ssl_server_settings const &>(settings)),
+-		context_(io_service_, dynamic_cast<ssl_server_settings const &>(settings).get_ssl_method()) {
++		context_(dynamic_cast<ssl_server_settings const &>(settings).get_ssl_method()) {
+ #ifdef DEBUG_WWW
+ 	_log.Log(LOG_STATUS, "[web:%s] create ssl_server using server_settings : %s", settings.listening_port.c_str(), settings.to_string().c_str());
+ #endif
+-- 
+2.14.1
+
