@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_UTF8
+	bool "lua-utf8"
+	help
+	  This module adds UTF-8 support to Lua.
+	  It's compatible with Lua "string" module.
+
+	  http://github.com/starwing/luautf8
