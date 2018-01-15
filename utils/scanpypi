@@ -24,6 +24,8 @@ import tempfile
 import imp
 from functools import wraps
 
+BUF_SIZE = 65536
+
 try:
     import spdx_lookup as liclookup
 except ImportError:
@@ -132,6 +134,7 @@ class BuildrootPackage():
         self.filename = None
         self.url = None
         self.version = None
+        self.license_files = []
 
     def fetch_package_info(self):
         """
@@ -439,12 +442,12 @@ class BuildrootPackage():
 
         filenames = ['LICENCE', 'LICENSE', 'LICENSE.RST', 'LICENSE.TXT',
                      'COPYING', 'COPYING.TXT']
-        license_files = list(find_file_upper_case(filenames, self.tmp_extract))
+        self.license_files = list(find_file_upper_case(filenames, self.tmp_extract))
 
-        lines.append(self.__get_license_names(license_files))
+        lines.append(self.__get_license_names(self.license_files))
 
         license_files = [license.replace(self.tmp_extract, '')[1:]
-                         for license in license_files]
+                         for license in self.license_files]
         if len(license_files) > 0:
             if len(license_files) > 1:
                 print('More than one file found for license:',
@@ -508,7 +511,7 @@ class BuildrootPackage():
         lines = []
         if self.used_url['md5_digest']:
             md5_comment = '# md5 from {url}, sha256 locally computed\n'.format(
-		url=self.metadata_url)
+                url=self.metadata_url)
             lines.append(md5_comment)
             hash_line = '{method}\t{digest}  {filename}\n'.format(
                 method='md5',
@@ -521,6 +524,20 @@ class BuildrootPackage():
             digest=digest,
             filename=self.filename)
         lines.append(hash_line)
+
+        for license_file in self.license_files:
+            sha256 = hashlib.sha256()
+            with open(license_file, 'rb') as lic_f:
+                while True:
+                    data = lic_f.read(BUF_SIZE)
+                    if not data:
+                        break
+                    sha256.update(data)
+            hash_line = '{method}\t{digest}  {filename}\n'.format(
+                method='sha256',
+                digest=sha256.hexdigest(),
+                filename=os.path.basename(license_file))
+            lines.append(hash_line)
 
         with open(path_to_hash, 'w') as hash_file:
             hash_file.writelines(lines)
