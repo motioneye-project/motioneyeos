@@ -29,10 +29,7 @@ else
 WOLFSSL_CONF_OPTS += --disable-sslv3
 endif
 
-ifeq ($(BR2_ARM_CPU_ARMV8A),y)
-WOLFSSL_CONF_OPTS += --enable-armasm
-else
+# build fails when ARMv8 hardware acceleration is enabled
 WOLFSSL_CONF_OPTS += --disable-armasm
-endif
 
 $(eval $(autotools-package))
