@@ -1,0 +1,118 @@
+libsemanage: build: follow standard semantics for DESTDIR and PREFIX
+
+This patch solves the following issues:
+- DESTDIR is needed during compile time to compute library and header paths which it should not.
+- Installing with both DESTDIR and PREFIX set gives us odd paths
+- Make usage of DESTDIR and PREFIX more standard
+
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+
+diff -durN libsemanage.orig/include/Makefile libsemanage/include/Makefile
+--- libsemanage.orig/include/Makefile	2018-01-12 12:42:30.915376458 +0100
++++ libsemanage/include/Makefile	2018-01-12 10:04:18.632144240 +0100
+@@ -1,6 +1,6 @@
+ # Installation directories.
+-PREFIX ?= $(DESTDIR)/usr
+-INCDIR ?= $(PREFIX)/include/semanage
++PREFIX ?= /usr
++INCDIR ?= $(DESTDIR)$(PREFIX)/include/semanage
+ 
+ all:
+ 
+diff -durN libsemanage.orig/man/Makefile libsemanage/man/Makefile
+--- libsemanage.orig/man/Makefile	2018-01-12 12:42:30.915376458 +0100
++++ libsemanage/man/Makefile	2018-01-12 10:04:18.632144240 +0100
+@@ -1,6 +1,7 @@
+ # Installation directories.
+-MAN3DIR ?= $(DESTDIR)/usr/share/man/man3
+-MAN5DIR ?= $(DESTDIR)/usr/share/man/man5
++PREFIX ?= /usr
++MAN3DIR ?= $(DESTDIR)$(PREFIX)/share/man/man3
++MAN5DIR ?= $(DESTDIR)$(PREFIX)/share/man/man5
+ 
+ all:
+ 
+diff -durN libsemanage.orig/src/libsemanage.pc.in libsemanage/src/libsemanage.pc.in
+--- libsemanage.orig/src/libsemanage.pc.in	2018-01-12 12:42:30.918709792 +0100
++++ libsemanage/src/libsemanage.pc.in	2018-01-12 10:04:18.632144240 +0100
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/@libdir@
++libdir=@libdir@
+ includedir=@includedir@
+ 
+ Name: libsemanage
+diff -durN libsemanage.orig/src/Makefile libsemanage/src/Makefile
+--- libsemanage.orig/src/Makefile	2018-01-12 12:42:30.918709792 +0100
++++ libsemanage/src/Makefile	2018-01-12 10:04:18.632144240 +0100
+@@ -8,10 +8,10 @@
+ PKG_CONFIG ?= pkg-config
+ 
+ # Installation directories.
+-PREFIX ?= $(DESTDIR)/usr
++PREFIX ?= /usr
+ LIBDIR ?= $(PREFIX)/lib
+-SHLIBDIR ?= $(DESTDIR)/lib
+ INCLUDEDIR ?= $(PREFIX)/include
++LIBINSTALL = $(DESTDIR)$(LIBDIR)
+ PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+ PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
+ PYSITEDIR ?= $(DESTDIR)$(shell $(PYTHON) -c 'import site; print(site.getsitepackages()[0])')
+@@ -20,8 +20,6 @@
+ RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" + RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] + " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
+ RUBYINSTALL ?= $(DESTDIR)$(shell $(RUBY) -e 'puts RbConfig::CONFIG["vendorarchdir"]')
+ 
+-LIBBASE=$(shell basename $(LIBDIR))
+-
+ DEFAULT_SEMANAGE_CONF_LOCATION=$(DESTDIR)/etc/selinux/semanage.conf
+ 
+ ifeq ($(DEBUG),1)
+@@ -95,7 +93,7 @@
+ 	ln -sf $@ $(TARGET)
+ 
+ $(LIBPC): $(LIBPC).in ../VERSION
+-	sed -e 's/@VERSION@/$(VERSION)/; s:@prefix@:$(PREFIX):; s:@libdir@:$(LIBBASE):; s:@includedir@:$(INCLUDEDIR):' < $< > $@
++	sed -e 's/@VERSION@/$(VERSION)/; s:@prefix@:$(PREFIX):; s:@libdir@:$(LIBDIR):; s:@includedir@:$(INCLUDEDIR):' < $< > $@
+ 
+ semanageswig_python_exception.i: ../include/semanage/semanage.h
+ 	bash -e exception.sh > $@ || (rm -f $@ ; false)
+@@ -136,13 +134,13 @@
+ 	$(SWIG) $<
+ 
+ install: all 
+-	test -d $(LIBDIR) || install -m 755 -d $(LIBDIR)
+-	install -m 644 $(LIBA) $(LIBDIR)
+-	install -m 755 $(LIBSO) $(LIBDIR)
+-	test -d $(LIBDIR)/pkgconfig || install -m 755 -d $(LIBDIR)/pkgconfig
+-	install -m 644 $(LIBPC) $(LIBDIR)/pkgconfig
++	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
++	install -m 644 $(LIBA) $(LIBINSTALL)
++	install -m 755 $(LIBSO) $(LIBINSTALL)
++	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
++	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
+ 	test -f $(DEFAULT_SEMANAGE_CONF_LOCATION) || install -m 644 -D semanage.conf $(DEFAULT_SEMANAGE_CONF_LOCATION)
+-	cd $(LIBDIR) && ln -sf $(LIBSO) $(TARGET)
++	cd $(LIBINSTALL) && ln -sf $(LIBSO) $(TARGET)
+ 
+ install-pywrap: pywrap 
+ 	test -d $(PYSITEDIR) || install -m 755 -d $(PYSITEDIR)
+@@ -155,7 +153,7 @@
+ 	install -m 755 $(SWIGRUBYSO) $(RUBYINSTALL)/semanage.so
+ 
+ relabel:
+-	/sbin/restorecon $(LIBDIR)/$(LIBSO)
++	/sbin/restorecon $(LIBINSTALL)/$(LIBSO)
+ 
+ clean: 
+ 	-rm -f $(LIBPC) $(OBJS) $(LOBJS) $(LIBA) $(LIBSO) $(SWIGLOBJ) $(SWIGSO) $(SWIGRUBYSO) $(TARGET) conf-parse.c conf-parse.h conf-scan.c *.o *.lo *~
+diff -durN libsemanage.orig/tests/Makefile libsemanage/tests/Makefile
+--- libsemanage.orig/tests/Makefile	2018-01-12 12:42:30.922043125 +0100
++++ libsemanage/tests/Makefile	2018-01-12 10:04:18.632144240 +0100
+@@ -1,6 +1,3 @@
+-PREFIX ?= $(DESTDIR)/usr
+-LIBDIR ?= $(PREFIX)/lib
+-
+ # Add your test source files here:
+ SOURCES = $(sort $(wildcard *.c))
+ 
