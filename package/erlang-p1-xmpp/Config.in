@@ -6,6 +6,7 @@ config BR2_PACKAGE_ERLANG_P1_XMPP
 	depends on BR2_INSTALL_LIBSTDCPP # erlang-p1-stringprep
 	select BR2_PACKAGE_ERLANG_P1_XML
 	select BR2_PACKAGE_ERLANG_P1_STRINGPREP
+	select BR2_PACKAGE_ERLANG_P1_UTILS
 	help
 	  XMPP library for Erlang.
 
