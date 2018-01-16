@@ -1,0 +1,27 @@
+From 3c7887bb8a61a3b49a2989329c756a038023c544 Mon Sep 17 00:00:00 2001
+From: Laurent Charpentier <laurent_pubs@yahoo.com>
+Date: Fri, 12 Jan 2018 12:25:41 +0100
+Subject: [PATCH] vdptool: fixed compile error for getline()
+
+vdptool.c was generating an error: implicit declaration for the getline() function.
+
+Signed-off-by: Laurent Charpentier <laurent_pubs@yahoo.com>
+---
+ vdptool.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/vdptool.c b/vdptool.c
+index b805372..4930f6a 100644
+--- a/vdptool.c
++++ b/vdptool.c
+@@ -36,6 +36,7 @@
+  * set and query VSI profile settings.
+  */
+ 
++#define _GNU_SOURCE
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <unistd.h>
+-- 
+2.14.3
+

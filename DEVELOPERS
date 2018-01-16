@@ -931,6 +931,9 @@ F:	package/qt5/
 N:	Julien Floret <julien.floret@6wind.com>
 F:	package/lldpd/
 
+N:	Laurent Charpentier <laurent_pubs@yahoo.com>
+F:	package/open-lldp/
+
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/
 F:	package/easy-rsa/
