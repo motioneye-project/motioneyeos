@@ -20,9 +20,7 @@ LIBSEPOL_MAKE_FLAGS += STATIC=1
 endif
 
 define LIBSEPOL_BUILD_CMDS
-	# DESTDIR is needed during the compile to compute library and
-	# header paths.
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(LIBSEPOL_MAKE_FLAGS) DESTDIR=$(STAGING_DIR)
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(LIBSEPOL_MAKE_FLAGS)
 endef
 
 define LIBSEPOL_INSTALL_STAGING_CMDS
@@ -35,7 +33,6 @@ endef
 
 HOST_LIBSEPOL_MAKE_ENV = \
 	$(HOST_MAKE_ENV) \
-	DESTDIR=$(HOST_DIR) \
 	PREFIX=$(HOST_DIR)
 
 define HOST_LIBSEPOL_BUILD_CMDS

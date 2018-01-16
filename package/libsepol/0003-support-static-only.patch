@@ -15,11 +15,10 @@ Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
  src/Makefile | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/src/Makefile b/src/Makefile
-index 819d261..040921d 100644
---- a/src/Makefile
-+++ b/src/Makefile
-@@ -40,7 +40,12 @@ LDFLAGS += -undefined dynamic_lookup
+diff -durNw libsepol-2.7.orig/src/Makefile libsepol-2.7/src/Makefile
+--- libsepol-2.7.orig/src/Makefile	2018-01-15 21:07:51.285183415 +0100
++++ libsepol-2.7/src/Makefile	2018-01-15 21:08:56.515182717 +0100
+@@ -39,7 +39,12 @@
  LN=gln
  endif
  
@@ -33,22 +32,14 @@ index 819d261..040921d 100644
  
  
  $(LIBA):  $(OBJS)
-@@ -82,11 +87,13 @@ endif
+@@ -81,8 +86,10 @@
  install: all
- 	test -d $(LIBDIR) || install -m 755 -d $(LIBDIR)
- 	install -m 644 $(LIBA) $(LIBDIR)
--	test -d $(SHLIBDIR) || install -m 755 -d $(SHLIBDIR)
--	install -m 755 $(LIBSO) $(SHLIBDIR)
- 	test -d $(LIBDIR)/pkgconfig || install -m 755 -d $(LIBDIR)/pkgconfig
- 	install -m 644 $(LIBPC) $(LIBDIR)/pkgconfig
+ 	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
+ 	install -m 644 $(LIBA) $(LIBINSTALL)
 +ifeq ($(STATIC),)
-+	test -d $(SHLIBDIR) || install -m 755 -d $(SHLIBDIR)
-+	install -m 755 $(LIBSO) $(SHLIBDIR)
- 	$(LN) -sf --relative $(SHLIBDIR)/$(LIBSO) $(LIBDIR)/$(TARGET)
+ 	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
+ 	install -m 755 $(LIBSO) $(LIBINSTALL)
 +endif
- 
- relabel:
- 	/sbin/restorecon $(SHLIBDIR)/$(LIBSO)
--- 
-2.13.6
-
+ 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
+ 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
+ 	$(LN) -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)

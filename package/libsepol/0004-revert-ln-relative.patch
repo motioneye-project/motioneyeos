@@ -12,23 +12,16 @@ they are maintained (up to 10 years in some cases?).
 For the sake of Buildroot, revert the upstream patch.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
----
- src/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/Makefile b/src/Makefile
-index 040921d..e811c9e 100644
---- a/src/Makefile
-+++ b/src/Makefile
-@@ -92,7 +92,7 @@ install: all
- ifeq ($(STATIC),)
- 	test -d $(SHLIBDIR) || install -m 755 -d $(SHLIBDIR)
- 	install -m 755 $(LIBSO) $(SHLIBDIR)
--	$(LN) -sf --relative $(SHLIBDIR)/$(LIBSO) $(LIBDIR)/$(TARGET)
-+	cd $(LIBDIR) && ln -sf ../../`basename $(SHLIBDIR)`/$(LIBSO) $(TARGET)
+diff -durNw libsepol-2.7.orig/src/Makefile libsepol-2.7/src/Makefile
+--- libsepol-2.7.orig/src/Makefile	2018-01-15 21:37:12.821831315 +0100
++++ libsepol-2.7/src/Makefile	2018-01-15 21:38:03.838497434 +0100
+@@ -92,7 +92,7 @@
  endif
+ 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
+ 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
+-	$(LN) -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
++	cd $(LIBINSTALL) && ln -sf $(LIBSO) $(TARGET)
  
  relabel:
--- 
-2.13.6
-
+ 	/sbin/restorecon $(LIBINSTALL)/$(LIBSO)
