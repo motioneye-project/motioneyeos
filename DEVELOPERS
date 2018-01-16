@@ -1768,6 +1768,7 @@ N:	Stefan Fröberg <stefan.froberg@petroprogram.com>
 F:	package/elfutils/
 F:	package/libtasn1/
 F:	package/proxychains-ng/
+F:	package/vte/
 F:	package/yasm/
 F:	package/zlib-ng/
 
