@@ -4,16 +4,16 @@ by rebar at build time.
 Signed-off-by: Christophe Romain <cromain@process-one.net>
 
 diff --git a/rebar.config b/rebar.config
-index fbc69a1..6250420 100644
+index ed93134..5b32788 100644
 --- a/rebar.config
 +++ b/rebar.config
-@@ -29,10 +29,6 @@
+@@ -31,10 +31,6 @@
 
  {port_specs, [{"priv/lib/esip_drv.so", ["c_src/esip_codec.c"]}]}.
 
--{deps, [{stun, ".*", {git, "https://github.com/processone/stun", {tag, "1.0.10"}}},
--	{fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.11"}}},
--	{p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.7"}}}]}.
+-{deps, [{stun, ".*", {git, "https://github.com/processone/stun", {tag, "1.0.16"}}},
+-	{fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.17"}}},
+-	{p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.10"}}}]}.
 -
  {clean_files, ["c_src/esip_codec.gcda", "c_src/esip_codec.gcno"]}.
 
