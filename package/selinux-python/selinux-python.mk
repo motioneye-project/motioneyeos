@@ -36,7 +36,7 @@ endif
 define SELINUX_PYTHON_BUILD_CMDS
 	$(foreach d,$(SELINUX_PYTHON_MAKE_DIRS),
 		$(MAKE) -C $(@D)/$(d) $(SELINUX_PYTHON_MAKE_OPTS) \
-			DESTDIR=$(STAGING_DIR) all
+			all
 	)
 endef
 
