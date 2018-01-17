@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POCO_VERSION = poco-1.8.0.1-release
+POCO_VERSION = poco-1.8.1-release
 POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
 POCO_LICENSE = BSL-1.0
 POCO_LICENSE_FILES = LICENSE
