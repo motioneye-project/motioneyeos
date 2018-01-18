@@ -1,0 +1,31 @@
+From d3f1f55e50e3c436a2ea91d60da84c3a94e6c53f Mon Sep 17 00:00:00 2001
+From: Steve Dickson <steved@redhat.com>
+Date: Thu, 18 Jan 2018 17:41:49 +0000
+Subject: [PATCH] pmapproc_dump: Fixed typo in memory leak patch
+
+commit 7ea36eee introduce a typo that caused
+NIS (aka ypbind) to fail.
+
+Signed-off-by: Steve Dickson <steved@redhat.com>
+(cherry picked from commit c49a7ea639eb700823e174fd605bbbe183e229aa)
+Signed-off-by: Ed Blake <ed.blake@sondrel.com>
+---
+ src/pmap_svc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/pmap_svc.c b/src/pmap_svc.c
+index bb57b05..ffca7df 100644
+--- a/src/pmap_svc.c
++++ b/src/pmap_svc.c
+@@ -384,7 +384,7 @@ pmapproc_dump(struct svc_req *rqstp /*__unused*/, SVCXPRT *xprt)
+ 	}
+ 
+ done:
+-	if (!svc_freeargs(xprt, (xdrproc_t) xdr_pmap, (char *)NULL)) {
++	if (!svc_freeargs(xprt, (xdrproc_t) xdr_void, (char *)NULL)) {
+ 		if (debugging) {
+ 			(void) xlog(LOG_DEBUG, "unable to free arguments\n");
+ 			if (doabort) {
+-- 
+2.11.0
+
