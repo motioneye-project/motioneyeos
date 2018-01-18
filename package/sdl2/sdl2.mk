@@ -19,7 +19,6 @@ SDL2_CONF_OPTS += \
 	--disable-dbus \
 	--disable-pulseaudio \
 	--disable-video-wayland \
-	--disable-video-rpi
 
 # We must enable static build to get compilation successful.
 SDL2_CONF_OPTS += --enable-static
@@ -37,6 +36,13 @@ SDL2_CONF_OPTS += --enable-video-directfb
 SDL2_CONF_ENV = ac_cv_path_DIRECTFBCONFIG=$(STAGING_DIR)/usr/bin/directfb-config
 else
 SDL2_CONF_OPTS += --disable-video-directfb
+endif
+
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+SDL2_DEPENDENCIES += rpi-userland
+SDL2_CONF_OPTS += --enable-video-rpi
+else
+SDL2_CONF_OPTS += --disable-video-rpi
 endif
 
 # x-includes and x-libraries must be set for cross-compiling
