@@ -28,4 +28,12 @@ define DASH_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 $(@D)/src/dash $(TARGET_DIR)/bin/dash
 endef
 
+# Add /bin/dash to /etc/shells otherwise some login tools like dropbear
+# can reject the user connection. See man shells.
+define DASH_ADD_DASH_TO_SHELLS
+	grep -qsE '^/bin/dash$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/dash" >> $(TARGET_DIR)/etc/shells
+endef
+DASH_TARGET_FINALIZE_HOOKS += DASH_ADD_DASH_TO_SHELLS
+
 $(eval $(autotools-package))
