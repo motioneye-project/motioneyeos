@@ -1,0 +1,32 @@
+From d0bfcbbfd8a6e7ee6213112e4078b020e4e1d15d Mon Sep 17 00:00:00 2001
+From: Paweł Chmielowski <pchmielowski@process-one.net>
+Date: Wed, 10 Jan 2018 16:34:01 +0100
+Subject: [PATCH] Handle error case from code:lib_dir in ResolveDepPath in
+ rebar.config.script
+
+This patch have already been applied in upstream/master.
+
+Signed-off-by: Paweł Chmielowski <pchmielowski@process-one.net>
+
+---
+ rebar.config.script | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/rebar.config.script b/rebar.config.script
+index 85f918fffd..ba374e5c5f 100644
+--- a/rebar.config.script
++++ b/rebar.config.script
+@@ -233,9 +233,10 @@ ResolveDepPath = case {SystemDeps, IsRebar3} of
+ 		     {true, _} ->
+ 			 fun("deps/" ++ Rest) ->
+ 				 Slash = string:str(Rest, "/"),
+-				 code:lib_dir(
+-				   string:sub_string(Rest, 1, Slash -1)) ++
+-				     string:sub_string(Rest, Slash);
++				 case code:lib_dir(string:sub_string(Rest, 1, Slash -1)) of
++				     {error, _} -> Rest;
++				     V -> V ++ string:sub_string(Rest, Slash)
++				 end;
+ 			    (Path) ->
+ 				 Path
+ 			 end;

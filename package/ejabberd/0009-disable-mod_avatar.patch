@@ -1,0 +1,32 @@
+From e6eac74e82975e7d87b1f59c50eb007ab04c1392 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Tue, 16 Jan 2018 14:29:56 +0100
+Subject: [PATCH] disable mod_avatar
+
+This module requires to compile with graphics enabled.
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+---
+ ejabberd.yml.example | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/ejabberd.yml.example b/ejabberd.yml.example
+index e178e956..7c12b76c 100644
+--- a/ejabberd.yml.example
++++ b/ejabberd.yml.example
+@@ -796,9 +796,9 @@ modules:
+     search: false
+   mod_vcard_xupdate: {}
+   ## Convert all avatars posted by Android clients from WebP to JPEG
+-  mod_avatar:
+-    convert:
+-      webp: jpeg
++  ## mod_avatar:
++  ##   convert:
++  ##     webp: jpeg
+   mod_version: {}
+   mod_stream_mgmt: {}
+   ##   Non-SASL Authentication (XEP-0078) is now disabled by default
+-- 
+2.14.1
+
