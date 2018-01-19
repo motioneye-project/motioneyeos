@@ -35,6 +35,14 @@ else
 ZSH_CONF_OPTS += --disable-pcre
 endif
 
+# Add /bin/zsh to /etc/shells otherwise some login tools like dropbear
+# can reject the user connection. See man shells.
+define ZSH_ADD_ZSH_TO_SHELLS
+	grep -qsE '^/bin/zsh$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/zsh" >> $(TARGET_DIR)/etc/shells
+endef
+ZSH_TARGET_FINALIZE_HOOKS += ZSH_ADD_ZSH_TO_SHELLS
+
 # Remove versioned zsh-x.y.z binary taking up space
 define ZSH_TARGET_INSTALL_FIXUPS
 	rm -f $(TARGET_DIR)/bin/zsh-$(ZSH_VERSION)
