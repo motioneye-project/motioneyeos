@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_TXTORCON
 	bool "python-txtorcon"
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyopenssl, python-service-identity
 	select BR2_PACKAGE_PYTHON_AUTOMAT # runtime
 	select BR2_PACKAGE_PYTHON_IDNA # runtime
 	select BR2_PACKAGE_PYTHON_INCREMENTAL # runtime
@@ -13,3 +14,6 @@ config BR2_PACKAGE_PYTHON_TXTORCON
 	  configuration abstractions.
 
 	  https://github.com/meejah/txtorcon
+
+comment "python-txtorcon needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
