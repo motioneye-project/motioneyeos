@@ -1,0 +1,31 @@
+From 8232b83d3fa47a1399f155cb829db829369fbae9 Mon Sep 17 00:00:00 2001
+From: squidadm <squidadm@users.noreply.github.com>
+Date: Sun, 21 Jan 2018 08:07:08 +1300
+Subject: [PATCH] Fix indirect IP logging for transactions without a client
+ connection (#129) (#136)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/client_side_request.cc | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/client_side_request.cc b/src/client_side_request.cc
+index be124f355..203f89d46 100644
+--- a/src/client_side_request.cc
++++ b/src/client_side_request.cc
+@@ -488,9 +488,9 @@ clientFollowXForwardedForCheck(allow_t answer, void *data)
+         * Ensure that the access log shows the indirect client
+         * instead of the direct client.
+         */
+-        ConnStateData *conn = http->getConn();
+-        conn->log_addr = request->indirect_client_addr;
+-        http->al->cache.caddr = conn->log_addr;
++        http->al->cache.caddr = request->indirect_client_addr;
++        if (ConnStateData *conn = http->getConn())
++            conn->log_addr = request->indirect_client_addr;
+     }
+     request->x_forwarded_for_iterator.clean();
+     request->flags.done_follow_x_forwarded_for = true;
+-- 
+2.11.0
+

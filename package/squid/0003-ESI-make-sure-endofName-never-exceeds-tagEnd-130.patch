@@ -1,0 +1,35 @@
+From eb2db98a676321b814fc4a51c4fb7928a8bb45d9 Mon Sep 17 00:00:00 2001
+From: Amos Jeffries <yadij@users.noreply.github.com>
+Date: Fri, 19 Jan 2018 13:54:14 +1300
+Subject: [PATCH] ESI: make sure endofName never exceeds tagEnd (#130)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/esi/CustomParser.cc | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/esi/CustomParser.cc b/src/esi/CustomParser.cc
+index d86d2d309..db634d921 100644
+--- a/src/esi/CustomParser.cc
++++ b/src/esi/CustomParser.cc
+@@ -121,7 +121,7 @@ ESICustomParser::parse(char const *dataToParse, size_t const lengthOfData, bool
+ 
+             char * endofName = strpbrk(const_cast<char *>(tag), w_space);
+ 
+-            if (endofName > tagEnd)
++            if (!endofName || endofName > tagEnd)
+                 endofName = const_cast<char *>(tagEnd);
+ 
+             *endofName = '\0';
+@@ -214,7 +214,7 @@ ESICustomParser::parse(char const *dataToParse, size_t const lengthOfData, bool
+ 
+             char * endofName = strpbrk(const_cast<char *>(tag), w_space);
+ 
+-            if (endofName > tagEnd)
++            if (!endofName || endofName > tagEnd)
+                 endofName = const_cast<char *>(tagEnd);
+ 
+             *endofName = '\0';
+-- 
+2.11.0
+
