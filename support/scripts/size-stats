@@ -35,6 +35,7 @@ except ImportError:
 colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
           '#0068b5', '#f28e00', '#940084', '#97c000']
 
+
 #
 # This function adds a new file to 'filesdict', after checking its
 # size. The 'filesdict' contain the relative path of the file as the
@@ -54,6 +55,7 @@ def add_file(filesdict, relpath, abspath, pkg):
     sz = os.stat(abspath).st_size
     filesdict[relpath] = (pkg, sz)
 
+
 #
 # This function returns a dict where each key is the path of a file in
 # the root filesystem, and the value is a tuple containing two
@@ -72,6 +74,7 @@ def build_package_dict(builddir):
             fullpath = os.path.join(builddir, "target", fpath)
             add_file(filesdict, fpath, fullpath, pkg)
     return filesdict
+
 
 #
 # This function builds a dictionary that contains the name of a
@@ -103,7 +106,7 @@ def build_package_size(filesdict, builddir):
                 seeninodes.add(st.st_ino)
 
             frelpath = os.path.relpath(fpath, os.path.join(builddir, "target"))
-            if not frelpath in filesdict:
+            if frelpath not in filesdict:
                 print("WARNING: %s is not part of any package" % frelpath)
                 pkg = "unknown"
             else:
@@ -112,6 +115,7 @@ def build_package_size(filesdict, builddir):
             pkgsize[pkg] += st.st_size
 
     return pkgsize
+
 
 #
 # Given a dict returned by build_package_size(), this function
@@ -149,6 +153,7 @@ def draw_graph(pkgsize, outputf):
     plt.suptitle("Filesystem size per package", fontsize=18, y=.97)
     plt.title("Total filesystem size: %d kB" % (total / 1000.), fontsize=10, y=.96)
     plt.savefig(outputf)
+
 
 #
 # Generate a CSV file with statistics about the size of each file, its
@@ -207,6 +212,7 @@ def gen_packages_csv(pkgsizes, outputf):
         wr.writerow(["Package name", "Package size", "Package size in system (%)"])
         for (pkg, size) in pkgsizes.items():
             wr.writerow([pkg, size, "%.1f" % (float(size) / total * 100)])
+
 
 parser = argparse.ArgumentParser(description='Draw size statistics graphs')
 
