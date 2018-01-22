@@ -7,10 +7,11 @@ from collections import defaultdict
 
 warn = 'Warning: {} file "{}" is touched by more than one package: {}\n'
 
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('packages_file_list', nargs='*',
-                    help='The packages-file-list to check from')
+                        help='The packages-file-list to check from')
     parser.add_argument('-t', '--type', metavar="TYPE",
                         help='Report as a TYPE file (TYPE is either target, staging, or host)')
 
@@ -35,6 +36,7 @@ def main():
     for file in file_to_pkg:
         if len(file_to_pkg[file]) > 1:
             sys.stderr.write(warn.format(args.type, file, file_to_pkg[file]))
+
 
 if __name__ == "__main__":
     sys.exit(main())
