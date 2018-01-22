@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-REFPOLICY_VERSION = 2.20170805
+REFPOLICY_VERSION = 2.20180114
 REFPOLICY_SOURCE = refpolicy-$(REFPOLICY_VERSION).tar.bz2
 REFPOLICY_SITE = https://raw.githubusercontent.com/wiki/TresysTechnology/refpolicy/files
 REFPOLICY_LICENSE = GPL-2.0
