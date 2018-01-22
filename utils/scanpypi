@@ -35,6 +35,7 @@ except ImportError:
           'pip install spdx_lookup')
     liclookup = None
 
+
 def setup_decorator(func, method):
     """
     Decorator for distutils.core.setup and setuptools.setup.
@@ -55,10 +56,11 @@ def setup_decorator(func, method):
     return closure
 
 # monkey patch
-import setuptools
+import setuptools  # noqa E402
 setuptools.setup = setup_decorator(setuptools.setup, 'setuptools')
-import distutils
+import distutils   # noqa E402
 distutils.core.setup = setup_decorator(setuptools.setup, 'distutils')
+
 
 def find_file_upper_case(filenames, path='./'):
     """
@@ -91,8 +93,10 @@ def pkg_buildroot_name(pkg_name):
     name = pattern.sub(r'python-\1', name)
     return name
 
+
 class DownloadFailed(Exception):
     pass
+
 
 class BuildrootPackage():
     """This class's methods are not meant to be used individually please
@@ -267,14 +271,14 @@ class BuildrootPackage():
             # called through the if __name__ == '__main__' directive.
             # In this case, we can only pray that it is called through a
             # function called main() in setup.py.
-            setup.main() # Will raise AttributeError if not found
+            setup.main()  # Will raise AttributeError if not found
             self.setup_metadata = self.setup_args[self.metadata_name]
         # Here we must remove the module the hard way.
         # We must do this because of a very specific case: if a package calls
         # setup from the __main__ but does not come with a 'main()' function,
         # for some reason setup.main() will successfully call the main
         # function of a previous package...
-        sys.modules.pop('setup',None)
+        sys.modules.pop('setup', None)
         del setup
         os.chdir(current_dir)
         sys.path.remove(self.tmp_extract)
@@ -694,6 +698,7 @@ def main():
             # printing an empty line for visual confort
     finally:
         shutil.rmtree(tmp_path)
+
 
 if __name__ == "__main__":
     main()
