@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/certifi/json, sha256 locally computed
-md5	db40445044feda1437ce3ccd5fc28a57  certifi-2017.4.17.tar.gz
-sha256	f7527ebf7461582ce95f7a9e03dd141ce810d40590834f4ec20cddd54234c10a  certifi-2017.4.17.tar.gz
+md5	068fd5c3c690ae47504b3e0bf4e56c4c  certifi-2018.1.18.tar.gz
+sha256	edbc3f203427eef571f79a7692bb160a2b0f7ccaa31953e99bd17e307cf63f7d  certifi-2018.1.18.tar.gz
+sha256	6a70a4bf6b010016d59a64b8ae4ad8dc7f5ef16f1fb453cc2ecd771c5a341131  LICENSE
