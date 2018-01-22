@@ -28,8 +28,6 @@ Some hints when changing this code:
 - when there is no other reason for ordering, use alphabetical order (e.g. keep
   the check functions in alphabetical order, keep the imports in alphabetical
   order, and so on).
-- use pyflakes to detect and fix potential problems.
-- use pep8 formatting.
 - keep in mind that for every class the method before() will be called before
   any line is served to be checked by the method check_line(). A class that
   checks the filename should only implement the method before(). A function that

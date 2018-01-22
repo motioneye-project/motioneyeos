@@ -7,11 +7,10 @@
 import re
 
 from base import _CheckFunction
-# Notice: ignore 'imported but unused' from pyflakes for check functions.
-from lib import ConsecutiveEmptyLines
-from lib import EmptyLastLine
-from lib import NewlineAtEof
-from lib import TrailingSpace
+from lib import ConsecutiveEmptyLines  # noqa: F401
+from lib import EmptyLastLine          # noqa: F401
+from lib import NewlineAtEof           # noqa: F401
+from lib import TrailingSpace          # noqa: F401
 
 
 class Indent(_CheckFunction):
