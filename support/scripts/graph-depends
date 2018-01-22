@@ -30,7 +30,7 @@ import brpkgutil
 
 # Modes of operation:
 MODE_FULL = 1   # draw full dependency graph for all selected packages
-MODE_PKG  = 2   # draw dependency graph for a given package
+MODE_PKG = 2    # draw dependency graph for a given package
 mode = 0
 
 # Limit drawing the dependency graph to this depth. 0 means 'no limit'.
@@ -49,18 +49,18 @@ parser.add_argument("--package", '-p', metavar="PACKAGE",
 parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
                     help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
 parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
-                    help="Do not graph past this package (can be given multiple times)." \
-                       + " Can be a package name or a glob, " \
-                       + " 'virtual' to stop on virtual packages, or " \
-                       + "'host' to stop on host packages.")
+                    help="Do not graph past this package (can be given multiple times)." +
+                         " Can be a package name or a glob, " +
+                         " 'virtual' to stop on virtual packages, or " +
+                         "'host' to stop on host packages.")
 parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
                     help="Like --stop-on, but do not add PACKAGE to the graph.")
 parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
                     default="lightblue,grey,gainsboro",
-                    help="Comma-separated list of the three colours to use" \
-                       + " to draw the top-level package, the target" \
-                       + " packages, and the host packages, in this order." \
-                       + " Defaults to: 'lightblue,grey,gainsboro'")
+                    help="Comma-separated list of the three colours to use" +
+                         " to draw the top-level package, the target" +
+                         " packages, and the host packages, in this order." +
+                         " Defaults to: 'lightblue,grey,gainsboro'")
 parser.add_argument("--transitive", dest="transitive", action='store_true',
                     default=False)
 parser.add_argument("--no-transitive", dest="transitive", action='store_false',
@@ -114,7 +114,7 @@ else:
 # Get the colours: we need exactly three colours,
 # so no need not split more than 4
 # We'll let 'dot' validate the colours...
-colours = args.colours.split(',',4)
+colours = args.colours.split(',', 4)
 if len(colours) != 3:
     sys.stderr.write("Error: incorrect colour list '%s'\n" % args.colours)
     sys.exit(1)
@@ -123,6 +123,7 @@ target_colour = colours[1]
 host_colour = colours[2]
 
 allpkgs = []
+
 
 # Execute the "make show-targets" command to get the list of the main
 # Buildroot PACKAGES and return it formatted as a Python list. This
@@ -137,6 +138,7 @@ def get_targets():
     if output == '':
         return []
     return output.split(' ')
+
 
 # Recursive function that builds the tree of dependencies for a given
 # list of packages. The dependencies are built in a list called
@@ -179,10 +181,12 @@ def get_all_depends(pkgs):
 
     return dependencies
 
+
 # The Graphviz "dot" utility doesn't like dashes in node names. So for
 # node names, we strip all dashes.
 def pkg_node_name(pkg):
-    return pkg.replace("-","")
+    return pkg.replace("-", "")
+
 
 TARGET_EXCEPTIONS = [
     "target-finalize",
@@ -225,11 +229,13 @@ for dep in dependencies:
 # sub-dicts is "pkg2".
 is_dep_cache = {}
 
+
 def is_dep_cache_insert(pkg, pkg2, val):
     try:
         is_dep_cache[pkg].update({pkg2: val})
     except KeyError:
         is_dep_cache[pkg] = {pkg2: val}
+
 
 # Retrieves from the cache whether pkg2 is a transitive dependency
 # of pkg.
@@ -237,29 +243,32 @@ def is_dep_cache_insert(pkg, pkg2, val):
 def is_dep_cache_lookup(pkg, pkg2):
     return is_dep_cache[pkg][pkg2]
 
+
 # This function return True if pkg is a dependency (direct or
 # transitive) of pkg2, dependencies being listed in the deps
 # dictionary. Returns False otherwise.
 # This is the un-cached version.
-def is_dep_uncached(pkg,pkg2,deps):
+def is_dep_uncached(pkg, pkg2, deps):
     try:
         for p in deps[pkg2]:
             if pkg == p:
                 return True
-            if is_dep(pkg,p,deps):
+            if is_dep(pkg, p, deps):
                 return True
     except KeyError:
         pass
     return False
 
+
 # See is_dep_uncached() above; this is the cached version.
-def is_dep(pkg,pkg2,deps):
+def is_dep(pkg, pkg2, deps):
     try:
         return is_dep_cache_lookup(pkg, pkg2)
     except KeyError:
         val = is_dep_uncached(pkg, pkg2, deps)
         is_dep_cache_insert(pkg, pkg2, val)
         return val
+
 
 # This function eliminates transitive dependencies; for example, given
 # these dependency chain: A->{B,C} and B->{C}, the A->{C} dependency is
@@ -269,30 +278,32 @@ def is_dep(pkg,pkg2,deps):
 #     - if d[i] is a dependency of any of the other dependencies d[j]
 #       - do not keep d[i]
 #     - otherwise keep d[i]
-def remove_transitive_deps(pkg,deps):
+def remove_transitive_deps(pkg, deps):
     d = deps[pkg]
     new_d = []
     for i in range(len(d)):
         keep_me = True
         for j in range(len(d)):
-            if j==i:
+            if j == i:
                 continue
-            if is_dep(d[i],d[j],deps):
+            if is_dep(d[i], d[j], deps):
                 keep_me = False
         if keep_me:
             new_d.append(d[i])
     return new_d
 
+
 # This function removes the dependency on some 'mandatory' package, like the
 # 'toolchain' package, or the 'skeleton' package
-def remove_mandatory_deps(pkg,deps):
+def remove_mandatory_deps(pkg, deps):
     return [p for p in deps[pkg] if p not in ['toolchain', 'skeleton']]
+
 
 # This function will check that there is no loop in the dependency chain
 # As a side effect, it builds up the dependency cache.
 def check_circular_deps(deps):
     def recurse(pkg):
-        if not pkg in list(deps.keys()):
+        if pkg not in list(deps.keys()):
             return
         if pkg in not_loop:
             return
@@ -314,16 +325,18 @@ def check_circular_deps(deps):
     for pkg in list(deps.keys()):
         recurse(pkg)
 
+
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
 def remove_extra_deps(deps):
     for pkg in list(deps.keys()):
         if not pkg == 'all':
-            deps[pkg] = remove_mandatory_deps(pkg,deps)
+            deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
         if not transitive or pkg == 'all':
-            deps[pkg] = remove_transitive_deps(pkg,deps)
+            deps[pkg] = remove_transitive_deps(pkg, deps)
     return deps
+
 
 check_circular_deps(dict_deps)
 if check_only:
@@ -331,7 +344,8 @@ if check_only:
 
 dict_deps = remove_extra_deps(dict_deps)
 dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
-                                if pkg != "all" and not pkg.startswith("root")])
+                                      if pkg != "all" and not pkg.startswith("root")])
+
 
 # Print the attributes of a node: label and fill-color
 def print_attrs(pkg):
@@ -344,8 +358,8 @@ def print_attrs(pkg):
         color = root_colour
     else:
         if pkg.startswith('host') \
-        or pkg.startswith('toolchain') \
-        or pkg.startswith('rootfs'):
+                or pkg.startswith('toolchain') \
+                or pkg.startswith('rootfs'):
             color = host_colour
         else:
             color = target_colour
@@ -355,6 +369,7 @@ def print_attrs(pkg):
     else:
         outfile.write("%s [label = \"%s\"]\n" % (name, label))
     outfile.write("%s [color=%s,style=filled]\n" % (name, color))
+
 
 # Print the dependency graph of a package
 def print_pkg_deps(depth, pkg):
@@ -381,12 +396,13 @@ def print_pkg_deps(depth, pkg):
                 continue
             add = True
             for p in exclude_list:
-                if fnmatch(d,p):
+                if fnmatch(d, p):
                     add = False
                     break
             if add:
                 outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
-                print_pkg_deps(depth+1, d)
+                print_pkg_deps(depth + 1, d)
+
 
 # Start printing the graph data
 outfile.write("digraph G {\n")
