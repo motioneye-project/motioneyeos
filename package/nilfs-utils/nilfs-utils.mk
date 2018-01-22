@@ -10,7 +10,7 @@ NILFS_UTILS_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 NILFS_UTILS_LICENSE_FILES = COPYING
 
 # need libuuid, libblkid, libmount
-NILFS_UTILS_DEPENDENCIES = util-linux
+NILFS_UTILS_DEPENDENCIES = host-pkgconf util-linux
 
 # we're fetching from github
 NILFS_UTILS_AUTORECONF = YES
