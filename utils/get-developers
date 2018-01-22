@@ -5,6 +5,7 @@ import getdeveloperlib
 import sys
 import os
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('patches', metavar='P', type=argparse.FileType('r'), nargs='*',
@@ -18,6 +19,7 @@ def parse_args():
     parser.add_argument('-c', dest='check', action='store_const',
                         const=True, help='list files not handled by any developer')
     return parser.parse_args()
+
 
 def __main__():
     devs = getdeveloperlib.parse_developers()
@@ -95,5 +97,5 @@ def __main__():
         if result != "":
             print("git send-email %s" % result)
 
-__main__()
 
+__main__()
