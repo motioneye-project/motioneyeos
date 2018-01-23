@@ -4,25 +4,12 @@
 #
 ################################################################################
 
-LIBV4L_VERSION = 1.12.6
+LIBV4L_VERSION = 1.14.1
 LIBV4L_SOURCE = v4l-utils-$(LIBV4L_VERSION).tar.bz2
 LIBV4L_SITE = https://linuxtv.org/downloads/v4l-utils
 LIBV4L_INSTALL_STAGING = YES
 LIBV4L_DEPENDENCIES = host-pkgconf
 LIBV4L_CONF_OPTS = --disable-doxygen-doc
-
-# below patches requires autoreconf:
-# 0004-configure.ac-clarify-configure-summary.patch
-# 0005-configure.ac-revisit-v4l2-ctl-compliance-using-libv4.patch
-# 0006-configure.ac-revisit-disable-libv4l-to-disable-dyn-l.patch
-# 0007-configure.ac-add-disable-libv4l-option.patch
-# 0008-configure.ac-fix-build-of-v4l-utils-on-uclinux.patch
-# 0009-configure.ac-add-USE_LIBV4L-to-summary.patch
-# 0010-Build-libv4lconvert-helper-support-only-when-fork-is.patch
-# 0011-configure.ac-drop-disable-libv4l-disable-plugin-supp.patch
-LIBV4L_AUTORECONF = YES
-# host-gettext needed for autoreconf to work
-LIBV4L_DEPENDENCIES += host-gettext
 
 # fix uclibc-ng configure/compile
 LIBV4L_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
