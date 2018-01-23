@@ -9,6 +9,7 @@ DAQ_SITE = https://www.snort.org/downloads/snort
 DAQ_LICENSE = GPL-2.0
 DAQ_LICENSE_FILES = COPYING
 DAQ_INSTALL_STAGING = YES
+DAQ_DEPENDENCIES = host-bison host-flex
 
 # package does not build in parallel due to improper make rules
 # related to the generation of the tokdefs.h header file
