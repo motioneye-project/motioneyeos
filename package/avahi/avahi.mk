@@ -125,6 +125,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
 AVAHI_DEPENDENCIES += dbus
+AVAHI_CONF_OPTS += --with-dbus-sys=/usr/share/dbus-1/system.d
 else
 AVAHI_CONF_OPTS += --disable-dbus
 endif
