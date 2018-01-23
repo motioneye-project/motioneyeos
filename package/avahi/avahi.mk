@@ -190,6 +190,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_AVAHI_DAEMON),y)
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_SYSUSERS),y)
+define AVAHI_INSTALL_SYSTEMD_SYSUSERS
+	$(INSTALL) -D -m 644 package/avahi/avahi_sysusers.conf \
+		$(TARGET_DIR)/usr/lib/sysusers.d/avahi.conf
+endef
+endif
+
 define AVAHI_INSTALL_INIT_SYSTEMD
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 
@@ -201,6 +208,8 @@ define AVAHI_INSTALL_INIT_SYSTEMD
 
 	$(INSTALL) -D -m 644 package/avahi/avahi_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/avahi.conf
+
+	$(AVAHI_INSTALL_SYSTEMD_SYSUSERS)
 endef
 
 define AVAHI_INSTALL_DAEMON_INIT_SYSV
