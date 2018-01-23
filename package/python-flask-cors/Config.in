@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_FLASK_CORS
+	bool "python-flask-cors"
+	select BR2_PACKAGE_PYTHON_FLASK # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  A Flask extension adding a decorator for CORS support.
+
+	  https://github.com/corydolphin/flask-cors
