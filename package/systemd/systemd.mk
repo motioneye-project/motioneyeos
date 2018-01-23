@@ -317,6 +317,11 @@ else
 SYSTEMD_CONF_OPTS += -Dhibernate=false
 endif
 
+SYSTEMD_FALLBACK_HOSTNAME = $(call qstrip,$(BR2_TARGET_GENERIC_HOSTNAME))
+ifneq ($(SYSTEMD_FALLBACK_HOSTNAME),)
+SYSTEMD_CONF_OPTS += --with-fallback-hostname=$(SYSTEMD_FALLBACK_HOSTNAME)
+endif
+
 define SYSTEMD_INSTALL_INIT_HOOK
 	ln -fs ../lib/systemd/systemd $(TARGET_DIR)/sbin/init
 	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
