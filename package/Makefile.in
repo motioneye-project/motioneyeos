@@ -138,11 +138,37 @@ ifeq ($(BR2_DEBUG_3),y)
 TARGET_DEBUGGING = -g3
 endif
 
+TARGET_CFLAGS_RELRO = -Wl,-z,relro
+TARGET_CFLAGS_RELRO_FULL = -Wl,-z,now $(TARGET_CFLAGS_RELRO)
+
+TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
+
+ifeq ($(BR2_SSP_REGULAR),y)
+TARGET_CPPFLAGS += -fstack-protector
+else ifeq ($(BR2_SSP_STRONG),y)
+TARGET_CPPFLAGS += -fstack-protector-strong
+else ifeq ($(BR2_SSP_ALL),y)
+TARGET_CPPFLAGS += -fstack-protector-all
+endif
+
+ifeq ($(BR2_RELRO_PARTIAL),y)
+TARGET_CPPFLAGS += $(TARGET_CFLAGS_RELRO)
+TARGET_LDFLAGS += $(TARGET_CFLAGS_RELRO)
+else ifeq ($(BR2_RELRO_FULL),y)
+TARGET_CPPFLAGS += -fPIE $(TARGET_CFLAGS_RELRO_FULL)
+TARGET_LDFLAGS += -pie
+endif
+
+ifeq ($(BR2_FORTIFY_SOURCE_1),y)
+TARGET_CPPFLAGS += -D_FORTIFY_SOURCE=1
+else ifeq ($(BR2_FORTIFY_SOURCE_2),y)
+TARGET_CPPFLAGS += -D_FORTIFY_SOURCE=2
+endif
+
 TARGET_CPPFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 TARGET_CFLAGS = $(TARGET_CPPFLAGS) $(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 TARGET_CXXFLAGS = $(TARGET_CFLAGS)
 TARGET_FCFLAGS = $(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
-TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
 
 ifeq ($(BR2_BINFMT_FLAT),y)
 TARGET_CFLAGS += $(if $($(PKG)_FLAT_STACKSIZE),-Wl$(comma)-elf2flt=-s$($(PKG)_FLAT_STACKSIZE),\
@@ -165,20 +191,6 @@ TARGET_LDFLAGS += -msep-data
 TARGET_CFLAGS += -msep-data
 TARGET_FCFLAGS += -msep-data
 TARGET_CXXFLAGS += -msep-data
-endif
-
-ifeq ($(BR2_SSP_REGULAR),y)
-TARGET_CFLAGS += -fstack-protector
-TARGET_CXXFLAGS += -fstack-protector
-TARGET_FCFLAGS += -fstack-protector
-else ifeq ($(BR2_SSP_STRONG),y)
-TARGET_CFLAGS += -fstack-protector-strong
-TARGET_CXXFLAGS += -fstack-protector-strong
-TARGET_FCFLAGS += -fstack-protector-strong
-else ifeq ($(BR2_SSP_ALL),y)
-TARGET_CFLAGS += -fstack-protector-all
-TARGET_CXXFLAGS += -fstack-protector-all
-TARGET_FCFLAGS += -fstack-protector-all
 endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
