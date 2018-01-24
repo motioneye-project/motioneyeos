@@ -12,7 +12,7 @@ FIS_LICENSE_FILES = fis.c
 
 define FIS_BUILD_CMDS
 	$(TARGET_CC) $(TARGET_CFLAGS) -std=c99 -o $(@D)/fis \
-		$(@D)/fis.c $(@D)/crc.c $(TARGE_LDFLAGS)
+		$(@D)/fis.c $(@D)/crc.c $(TARGET_LDFLAGS)
 endef
 
 define FIS_INSTALL_TARGET_CMDS
