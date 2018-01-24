@@ -1,0 +1,8 @@
+config BR2_PACKAGE_IMX_M4FWLOADER
+	bool "imx-m4fwloader"
+	depends on BR2_arm # Only relevant for i.MX
+	help
+	  This package provides a tool to load a firmware to the
+	  Cortex-M4 core available in some i.MX processors.
+
+	  https://github.com/codeauroraforum/imx-m4fwloader
