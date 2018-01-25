@@ -354,4 +354,23 @@ config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX
 
 endmenu
 
+menu "Intel QuickAssist Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_DH895XCC
+	bool "Support for DH895xCC"
+	help
+	  Firmware files for Intel DH895xCC devices
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_C3XXX
+	bool "Support for C3XXX"
+	help
+	  Firmware files for Intel C3XXX devices
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_C62X
+	bool "Support for C62X"
+	help
+	  Firmware files for Intel C62X devices
+
+endmenu
+
 endif
