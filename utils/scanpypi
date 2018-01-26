@@ -295,7 +295,8 @@ class BuildrootPackage():
                         for req in self.pkg_req]
 
         # get rid of commented lines and also strip the package strings
-        self.pkg_req = [item.strip() for item in self.pkg_req if item[0] != '#']
+        self.pkg_req = [item.strip() for item in self.pkg_req
+                        if len(item) > 0 and item[0] != '#']
 
         req_not_found = self.pkg_req
         self.pkg_req = map(pkg_buildroot_name, self.pkg_req)
