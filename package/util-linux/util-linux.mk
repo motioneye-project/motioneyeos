@@ -172,8 +172,37 @@ HOST_UTIL_LINUX_CONF_OPTS += \
 
 ifeq ($(BR2_PACKAGE_HOST_UTIL_LINUX),y)
 HOST_UTIL_LINUX_CONF_OPTS += --disable-makeinstall-chown
-# disable more command because of ncurses dependency
-HOST_UTIL_LINUX_CONF_OPTS += --disable-more
+# disable commands that have ncurses dependency, as well as
+# other ones that are useless on the host
+HOST_UTIL_LINUX_CONF_OPTS += \
+	--disable-agetty \
+	--disable-chfn-chsh \
+	--disable-chmem \
+	--disable-login \
+	--disable-lslogins \
+	--disable-mesg \
+	--disable-more \
+	--disable-newgrp \
+	--disable-nologin \
+	--disable-nsenter \
+	--disable-pg \
+	--disable-rfkill \
+	--disable-schedutils \
+	--disable-setpriv \
+	--disable-setterm \
+	--disable-su \
+	--disable-sulogin \
+	--disable-tunelp \
+	--disable-ul \
+	--disable-unshare \
+	--disable-uuidd \
+	--disable-vipw \
+	--disable-wall \
+	--disable-wdctl \
+	--disable-write \
+	--disable-zramctl
+# Used by cramfs utils
+HOST_UTIL_LINUX_DEPENDENCIES += host-zlib
 else
 HOST_UTIL_LINUX_CONF_OPTS += --disable-all-programs
 endif
