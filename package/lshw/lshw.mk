@@ -23,6 +23,7 @@ endef
 define LSHW_INSTALL_TARGET_CMDS
 	$(LSHW_MAKE_ENV) $(MAKE) -C $(@D)/src DESTDIR=$(TARGET_DIR) \
 		$(LSHW_MAKE_OPTS) install
+	$(RM) -rf $(TARGET_DIR)/usr/share/lshw
 endef
 
 $(eval $(generic-package))
