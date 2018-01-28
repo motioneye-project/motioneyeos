@@ -1,2 +1,6 @@
-# From http://www.netfilter.org/projects/nftables/downloads.html#nftables-0.7
-sha1	c003fa8b63b1b44c52de345a4d84487d81865a98	nftables-0.7.tar.bz2
+# From http://www.netfilter.org/projects/nftables/downloads.html
+sha1	51fd436845718f1221ee198128656ef9055c2588	nftables-0.8.1.tar.bz2
+# Locally calculated after checking pgp signature
+# http://www.netfilter.org/projects/nftables/files/nftables-0.8.1.tar.bz2.sig
+sha256	8aead66cce70d68c70e4be917813abcbcf62811ee6de4c7761d0e34391772fc4	nftables-0.8.1.tar.bz2
+sha256	c17bc4fa5b2434c6f283ffcb2312e5bf3c7cdf5787b79505f094d8de734ac53e	COPYING
