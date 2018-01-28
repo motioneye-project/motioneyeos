@@ -342,6 +342,7 @@ F:	package/python-pylru/
 F:	package/python-requests-oauthlib/
 F:	package/python-slob/
 F:	package/rtmpdump/
+F:	package/samba4/
 F:	package/softether/
 F:	package/taglib/
 F:	package/tinyxml2/
