@@ -1,0 +1,33 @@
+From 1a29ed2f96da1be22fa5a4d96c7583aa81b8b060 Mon Sep 17 00:00:00 2001
+From: Timo Sirainen <timo.sirainen@dovecot.fi>
+Date: Mon, 18 Dec 2017 16:50:51 +0200
+Subject: [PATCH] lib-auth: Fix memory leak in auth_client_request_abort()
+
+This caused memory leaks when authentication was aborted. For example
+with IMAP:
+
+a AUTHENTICATE PLAIN
+*
+
+Broken by 9137c55411aa39d41c1e705ddc34d5bd26c65021
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/lib-auth/auth-client-request.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/lib-auth/auth-client-request.c b/src/lib-auth/auth-client-request.c
+index 480fb42b3..046f7c307 100644
+--- a/src/lib-auth/auth-client-request.c
++++ b/src/lib-auth/auth-client-request.c
+@@ -186,6 +186,7 @@ void auth_client_request_abort(struct auth_client_request **_request)
+ 
+ 	auth_client_send_cancel(request->conn->client, request->id);
+ 	call_callback(request, AUTH_REQUEST_STATUS_ABORT, NULL, NULL);
++	pool_unref(&request->pool);
+ }
+ 
+ unsigned int auth_client_request_get_id(struct auth_client_request *request)
+-- 
+2.11.0
+
