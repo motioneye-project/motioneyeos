@@ -22,9 +22,6 @@ endif
 ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_LIBNFTNL_JSON),yy)
 NFTABLES_LIBS += -ljansson -lm
 endif
-ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_LIBNFTNL_XML),yy)
-NFTABLES_LIBS += -lmxml -lpthread
-endif
 
 NFTABLES_CONF_ENV = \
 	ac_cv_prog_CONFIG_PDF=no \
