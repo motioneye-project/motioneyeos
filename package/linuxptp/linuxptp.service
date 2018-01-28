@@ -1,6 +1,8 @@
 [Unit]
 Description=Precision Time Protocol daemon
 After=syslog.target network.target
+Before=time-sync.target
+Wants=time-sync.target
 Wants=linuxptp-system-clock.service
 
 [Service]

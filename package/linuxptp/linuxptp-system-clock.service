@@ -1,6 +1,6 @@
 [Unit]
 Description=Precision Time Protocol system clock synchronization
-After=syslog.target network.target
+After=linuxptp.service
 
 [Service]
 ExecStart=/usr/sbin/phc2sys -s /dev/ptp0 -c CLOCK_REALTIME -w -S 1.0
