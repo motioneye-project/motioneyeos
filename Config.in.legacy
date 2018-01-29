@@ -145,6 +145,14 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.02"
 
+config BR2_BINUTILS_VERSION_2_27_X
+	bool "binutils version 2.27 support removed"
+	select BR2_LEGACY
+	help
+	  Support for binutils version 2.27 has been removed. The
+	  current default version (2.29 or later) has been selected
+	  instead.
+
 config BR2_PACKAGE_EEPROG
 	bool "eeprog package removed"
 	select BR2_LEGACY
