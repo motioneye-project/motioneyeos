@@ -145,6 +145,36 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.02"
 
+config BR2_KERNEL_HEADERS_3_4
+	bool "kernel headers version 3.4.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 3.4.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_10
+	bool "kernel headers version 3.10.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 3.10.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_3_12
+	bool "kernel headers version 3.12.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_1
+	select BR2_LEGACY
+	help
+	  Version 3.12.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.1.x of the headers have been automatically
+	  selected in your configuration.
+
 config BR2_BINUTILS_VERSION_2_27_X
 	bool "binutils version 2.27 support removed"
 	select BR2_LEGACY

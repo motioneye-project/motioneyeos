@@ -31,21 +31,6 @@ config BR2_KERNEL_HEADERS_3_2
 	depends on !BR2_aarch64 && !BR2_arc && !BR2_nios2
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
-config BR2_KERNEL_HEADERS_3_4
-	bool "Linux 3.4.x kernel headers"
-	depends on !BR2_aarch64 && !BR2_arc && !BR2_nios2
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
-
-config BR2_KERNEL_HEADERS_3_10
-	bool "Linux 3.10.x kernel headers"
-	depends on !BR2_nios2
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
-
-config BR2_KERNEL_HEADERS_3_12
-	bool "Linux 3.12.x kernel headers"
-	depends on !BR2_nios2
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
-
 config BR2_KERNEL_HEADERS_4_1
 	bool "Linux 4.1.x kernel headers"
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
@@ -256,9 +241,6 @@ endchoice
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
 	default "3.2.98"	if BR2_KERNEL_HEADERS_3_2
-	default "3.4.113"	if BR2_KERNEL_HEADERS_3_4
-	default "3.10.108"	if BR2_KERNEL_HEADERS_3_10
-	default "3.12.74"	if BR2_KERNEL_HEADERS_3_12
 	default "4.1.49"	if BR2_KERNEL_HEADERS_4_1
 	default "4.4.115"	if BR2_KERNEL_HEADERS_4_4
 	default "4.9.80"	if BR2_KERNEL_HEADERS_4_9
