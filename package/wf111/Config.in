@@ -6,7 +6,7 @@ config BR2_PACKAGE_WF111
 	# dynamically linked against the glibc.
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	help
-	  BlueGiga WF111 WiFi driver and utilities.
+	  Silicon Labs WF111 WiFi driver and utilities.
 
 	  Warning: CONFIG_WIRELESS_EXT and CONFIG_WEXT_PRIV must be
 	  selected in the Linux kernel configuration. These are blind
@@ -17,16 +17,16 @@ config BR2_PACKAGE_WF111
 	    configuration entry that selects them, for example.
 	  - By enabling another random WiFi driver that select them.
 
-	  http://www.bluegiga.com/en-US/products/wifi-modules/wf111-wifi-module/
+	  https://www.silabs.com/products/wireless/wi-fi/wf111-bluegiga-module
 
 if BR2_PACKAGE_WF111
 
 config BR2_PACKAGE_WF111_TARBALL_PATH
 	string "Local tarball location"
 	help
-	  The WF111 tarball can be retrieved on the BlueGiga website
-	  after registration. This option specifies the path where the
-	  tarball is locally saved.
+	  The WF111 tarball can be retrieved on the Silicon Labs
+	  website after registration. This option specifies the path
+	  where the tarball is locally saved.
 
 endif
 
