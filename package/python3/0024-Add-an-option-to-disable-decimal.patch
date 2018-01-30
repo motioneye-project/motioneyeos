@@ -9,6 +9,8 @@ Python whether we want to use the system libmpdec (already installed),
 the libmpdec builtin the Python sources, or no libmpdec at all.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[aduskett@gmail.com: Update for python 3.6.4]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  configure.ac | 17 ++++++++++++-----
  setup.py     |  2 +-
@@ -48,7 +50,7 @@ diff --git a/setup.py b/setup.py
 index d642825c1e..5b98255857 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2058,7 +2058,7 @@ class PyBuildExt(build_ext):
+@@ -2100,7 +2100,7 @@ class PyBuildExt(build_ext):
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []

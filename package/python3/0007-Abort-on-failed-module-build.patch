@@ -9,6 +9,8 @@ nice behavior, so this patch changes setup.py to abort with an error,
 so that the build issue is clearly noticeable.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[aduskett@gmail.com: Update for python 3.6.4]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  setup.py | 1 +
  1 file changed, 1 insertion(+)
@@ -17,7 +19,7 @@ diff --git a/setup.py b/setup.py
 index c956fa08d1..b3add2be76 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -312,6 +312,7 @@ class PyBuildExt(build_ext):
+@@ -337,6 +337,7 @@ class PyBuildExt(build_ext):
              print("Failed to build these modules:")
              print_three_column(failed)
              print()
