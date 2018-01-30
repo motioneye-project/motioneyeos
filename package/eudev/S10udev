@@ -27,7 +27,7 @@ test -r $UDEV_CONFIG || exit 6
 
 case "$1" in
     start)
-        printf "Populating ${udev_root:-/dev} using udev: "
+        printf "Populating %s using udev: " "${udev_root:-/dev}"
         printf '\000\000\000\000' > /proc/sys/kernel/hotplug
         $UDEV_BIN -d || { echo "FAIL"; exit 1; }
         udevadm trigger --type=subsystems --action=add
