@@ -19,6 +19,7 @@ while we do :  /usr/sbin/foo -> ../../usr/bin/foo
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 [aduskett@gmail.com: Added meson.build section and dirname wrapper in add-wants]
+[aduskett@gmail.com: Update for systemd v237]
 Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
 ---
  meson.build                 | 2 +-
@@ -30,8 +31,7 @@ diff --git a/meson.build b/meson.build
 index ddc061c..614201a 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -531,7 +531,7 @@ foreach prog : progs
- endforeach
+@@ -572,6 +572,6 @@ conf.set_quoted('TELINIT', get_option('telinit-path'))
  
  if run_command('ln', '--relative', '--help').returncode() != 0
 -        error('ln does not support --relative')
@@ -43,7 +43,7 @@ diff --git a/tools/meson-make-symlink.sh b/tools/meson-make-symlink.sh
 index 47a5e70..e9002ad 100755
 --- a/tools/meson-make-symlink.sh
 +++ b/tools/meson-make-symlink.sh
-@@ -7,5 +7,6 @@ mkdir -vp "$(dirname "${DESTDIR:-}$2")"
+@@ -8,5 +8,6 @@ mkdir -vp "$(dirname "${DESTDIR:-}$2")"
  if [ "$(dirname $1)" = . ]; then
          ln -vfs -T "$1" "${DESTDIR:-}$2"
  else
@@ -55,7 +55,7 @@ diff --git a/units/meson-add-wants.sh b/units/meson-add-wants.sh
 index dfd287e..8c08283 100755
 --- a/units/meson-add-wants.sh
 +++ b/units/meson-add-wants.sh
-@@ -13,7 +13,7 @@ case "$target" in
+@@ -14,7 +14,7 @@ case "$target" in
                  ;;
  esac
  
@@ -64,7 +64,7 @@ index dfd287e..8c08283 100755
  
  case "$target" in
          */)
-@@ -24,4 +24,5 @@ case "$target" in
+@@ -25,4 +25,5 @@ case "$target" in
                  ;;
  esac
  
