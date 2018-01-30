@@ -783,9 +783,11 @@ F:	package/axel/
 
 N:	Jagan Teki <jagan@amarulasolutions.com>
 F:	board/amarula/
+F:	board/asus/
 F:	board/bananapi/
 F:	board/engicam/
 F:	configs/amarula_vyasa_rk3288_defconfig
+F:	configs/asus_tinker_rk3288_defconfig
 F:	board/friendlyarm/nanopi-a64/
 F:	board/friendlyarm/nanopi-neo2/
 F:	board/olimex/a64-olinuxino/
