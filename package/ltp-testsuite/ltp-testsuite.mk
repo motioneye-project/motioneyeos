@@ -56,8 +56,10 @@ LTP_TESTSUITE_CONF_ENV += \
 	CFLAGS="$(LTP_TESTSUITE_CFLAGS)" \
 	CPPFLAGS="$(LTP_TESTSUITE_CPPFLAGS)" \
 	LIBS="$(LTP_TESTSUITE_LIBS)" \
-	SYSROOT="$(STAGING_DIR)" \
-	have_numa_headers=no
+	SYSROOT="$(STAGING_DIR)"
+
+# Required by patch 0002-numa-Fix-numa-v2-detection-for-cross-compilation.patch
+LTP_TESTSUITE_AUTORECONF = YES
 
 # Requires uClibc fts and bessel support, normally not enabled
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
