@@ -17,7 +17,6 @@ LIBVA_CONF_OPTS = \
 	--enable-drm \
 	--with-drivers-path="/usr/lib/va"
 
-
 ifeq ($(BR2_PACKAGE_XORG7),y)
 LIBVA_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXfixes
 LIBVA_CONF_OPTS += --enable-x11
