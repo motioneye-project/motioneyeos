@@ -15,8 +15,8 @@ How to build
 There are two build options: mainline support and vendor support.
 
 For the mainline BSP, we use:
- - Linux v4.14.4
- - U-Boot v2017.11
+ - Linux v4.15
+ - U-Boot v2018.01
 
 For the vendor BSP, we use the sources available from Marvell Github
 page at https://github.com/MarvellEmbeddedProcessors, which uses:
@@ -24,10 +24,10 @@ page at https://github.com/MarvellEmbeddedProcessors, which uses:
  - U-Boot v2017.03
 
 At the moment mainline support for the board is a work in progress.
-Mainline kernel 4.14 with provided patches enables eth2 in 1Gb (RJ45
-connector J5) and eth0 in 10Gb (SFP connector J15). The vendor BSP
-enables more hardware features out of the box, e.g. all the network
-interfaces.
+Mainline kernel 4.15 enables eth2 in 1Gb (RJ45 connector J5) and
+eth0 in 10Gb (SFP connector CON15 and RJ45 connector CON16).
+The vendor BSP enables more hardware features out of the box,
+e.g. all the network interfaces.
 
 To use the mainline BSP run the following commands:
 
@@ -54,12 +54,20 @@ How to boot the board
 =====================
 
 The MacchiatoBin board can be setup to load the bootloader from
-different sources including eMMC, SPI flash, and SD-card. In order to
-select boot from SD-card DIP switches SW1 and SW2 should be configured
-as follows:
+different sources including eMMC, SPI flash, and SD-card.
+
+On Rev 1.2 board to select boot from SD-card the DIP switches
+SW1 and SW2 should be configured as follows:
 
 SW2: 01110
 SW1: 1xxxx
+
+The upcoming Rev 1.3 board will have a single pins header J1 instead
+of the SW1/2 DIP switches. To boot from SD-card the setting of J1
+jumpers should match the DIP switches of Rev v1.2 board
+from left to right:
+
+J1: 011101xxxx
 
 Insert the micro SDcard in the MacchiatoBin board and power it up.
 The serial console is accessible at the micro-USB Type-B connector
