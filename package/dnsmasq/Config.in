@@ -4,7 +4,7 @@ config BR2_PACKAGE_DNSMASQ
 	  A lightweight DNS and DHCP server. It is intended to provide
 	  coupled DNS and DHCP service to a LAN.
 
-	  http://www.thekelleys.org.uk/dnsmasq/
+	  http://www.thekelleys.org.uk/dnsmasq/doc.html
 
 if BR2_PACKAGE_DNSMASQ
 
