@@ -12,7 +12,7 @@ It is licensed under the GNU General Public License, version 2. Refer to the
 http://git.buildroot.org/buildroot/tree/COPYING[COPYING] file in the Buildroot
 sources for the full text of this license.
 
-Copyright (C) 2004-2017 The Buildroot developers
+Copyright (C) 2004-2018 The Buildroot developers
 
 image::logo.png[]
 

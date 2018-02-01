@@ -1,6 +1,6 @@
 
 The code and graphics on this website (and it's mirror sites, if any) are
-Copyright (c) 1999-2005 by Erik Andersen, 2006-2014 The Buildroot
+Copyright (c) 1999-2005 by Erik Andersen, 2006-2018 The Buildroot
 developers. All rights reserved.
 
 Documents on this Web site including their graphical elements, design, and
