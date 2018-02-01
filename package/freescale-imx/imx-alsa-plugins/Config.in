@@ -1,0 +1,22 @@
+config BR2_PACKAGE_IMX_ALSA_PLUGINS
+	bool "imx-alsa-plugins"
+	depends on BR2_arm # Only relevant for i.MX
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	select BR2_PACKAGE_ALSA_LIB
+	help
+	  ALSA plugins specific for the Freescale i.MX platform. It
+	  requires a kernel that includes the i.MX specific headers
+	  to be built.
+
+	  The following plugins are provided so far:
+	    * Rate Converter Plugin Using Freescale ASRC Hardware
+	      Resampler (i.MX53 and most i.MX6)
+
+comment "imx-alsa-libs needs an imx-specific Linux kernel to be built"
+	depends on BR2_arm
+	depends on !BR2_LINUX_KERNEL
+
+comment "imx-alsa-libs needs a toolchain w/ threads"
+	depends on BR2_arm
+	depends on BR2_LINUX_KERNEL && !BR2_TOOLCHAIN_HAS_THREADS
