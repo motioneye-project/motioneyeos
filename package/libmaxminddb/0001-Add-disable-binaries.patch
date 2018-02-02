@@ -1,0 +1,53 @@
+From 501f85fa729d08b90f0e1ff6f9378a0864f722a7 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 2 Feb 2018 13:19:18 +0100
+Subject: [PATCH] Add --disable-binaries
+
+mmdblookup now depends on pthread.h which can be disabled on some
+toolchains so add an option to be able to compile libmaxminddb without
+this binary
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ Makefile.am  | 6 +++++-
+ configure.ac | 6 ++++++
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index cebcd31..cfbfd77 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -4,8 +4,12 @@ include_HEADERS = include/maxminddb.h
+ nodist_include_HEADERS = include/maxminddb_config.h
+ 
+ SUBDIRS = \
+-  src     \
++  src
++
++if BINARIES
++SUBDIRS += \
+   bin
++endif
+ 
+ if TESTS
+ SUBDIRS += \
+diff --git a/configure.ac b/configure.ac
+index c494746..4d1beb4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -119,6 +119,12 @@ AC_ARG_ENABLE(
+         esac],[debug=false])
+ AM_CONDITIONAL([DEBUG], [test x$debug = xtrue])
+ 
++AC_ARG_ENABLE([binaries],
++        AS_HELP_STRING([--enable-binaries], [Compilation of binaries code]),
++        [enable_binaries=${enableval}],
++        [enable_binaries=yes])
++AM_CONDITIONAL([BINARIES], [test "${enable_binaries}" = "yes"])
++
+ AC_ARG_ENABLE([tests],
+         AS_HELP_STRING([--enable-tests], [Compilation of tests code]),
+         [enable_tests=${enableval}],
+-- 
+2.7.4
+

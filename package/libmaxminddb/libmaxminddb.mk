@@ -13,4 +13,11 @@ LIBMAXMINDDB_LICENSE_FILES = LICENSE
 LIBMAXMINDDB_AUTORECONF = YES
 LIBMAXMINDDB_CONF_OPTS = --disable-tests
 
+# mmdblookup binary depends on pthreads
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBMAXMINDDB_CONF_OPTS += --enable-binaries
+else
+LIBMAXMINDDB_CONF_OPTS += --disable-binaries
+endif
+
 $(eval $(autotools-package))
