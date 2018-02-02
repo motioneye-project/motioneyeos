@@ -15,6 +15,8 @@ httpd.conf will only be correct in the staging directory.
 To fix this, add -S PREFIX='$(INSTALL_ROOT)/usr' to apxs call in configure
 
 Signed-off-by: Fabrice Fontaine <fabrice.fontaine@orange.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[aduskett@gmail.com: Update for 7.2.2]
 ---
  sapi/apache2handler/config.m4 | 3 +++
  1 file changed, 3 insertions(+)
