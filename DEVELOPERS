@@ -1459,6 +1459,7 @@ F:	package/libevdev/
 F:	package/log4cplus/
 F:	package/postgresql/
 F:	package/qt5/
+F:	package/quotatool/
 F:	package/racehound/
 F:	package/wiringpi/
 

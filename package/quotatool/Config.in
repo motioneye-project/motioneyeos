@@ -1,0 +1,7 @@
+config BR2_PACKAGE_QUOTATOOL
+	bool "quotatool"
+	help
+	  Quotatool is a utility to manipulate filesystem quotas from
+	  the commandline.
+
+	  http://quotatool.ekenberg.se/
