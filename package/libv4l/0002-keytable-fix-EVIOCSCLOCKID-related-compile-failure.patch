@@ -1,0 +1,35 @@
+From 663b7be9d27c979c914011a3ce707e227987bc59 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 3 Feb 2018 22:47:18 +0100
+Subject: [PATCH] keytable: fix EVIOCSCLOCKID related compile failure
+
+Fixes:
+
+  keytable.c: In function 'test_event':
+  keytable.c:1351:12: error: 'EVIOCSCLOCKID' undeclared (first use in this function)
+    ioctl(fd, EVIOCSCLOCKID, &mode);
+              ^~~~~~~~~~~~~
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ utils/keytable/keytable.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/utils/keytable/keytable.c b/utils/keytable/keytable.c
+index 34a1522e..925eab00 100644
+--- a/utils/keytable/keytable.c
++++ b/utils/keytable/keytable.c
+@@ -55,6 +55,10 @@ struct input_keymap_entry_v2 {
+ 	u_int8_t  scancode[32];
+ };
+ 
++#ifndef EVIOCSCLOCKID
++#define EVIOCSCLOCKID		_IOW('E', 0xa0, int)
++#endif
++
+ #ifndef EVIOCGKEYCODE_V2
+ #define EVIOCGKEYCODE_V2	_IOR('E', 0x04, struct input_keymap_entry_v2)
+ #define EVIOCSKEYCODE_V2	_IOW('E', 0x04, struct input_keymap_entry_v2)
+-- 
+2.16.1
+
