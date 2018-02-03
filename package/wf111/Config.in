@@ -19,17 +19,6 @@ config BR2_PACKAGE_WF111
 
 	  https://www.silabs.com/products/wireless/wi-fi/wf111-bluegiga-module
 
-if BR2_PACKAGE_WF111
-
-config BR2_PACKAGE_WF111_TARBALL_PATH
-	string "Local tarball location"
-	help
-	  The WF111 tarball can be retrieved on the Silicon Labs
-	  website after registration. This option specifies the path
-	  where the tarball is locally saved.
-
-endif
-
 comment "wf111 needs a glibc toolchain"
 	depends on BR2_LINUX_KERNEL
 	depends on BR2_ARM_CPU_ARMV5 || BR2_ARM_CPU_ARMV7A || BR2_i386
