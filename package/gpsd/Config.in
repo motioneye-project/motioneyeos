@@ -152,6 +152,11 @@ config BR2_PACKAGE_GPSD_GPSCLOCK
 	help
 	  GPSClock support
 
+config BR2_PACKAGE_GPSD_ISYNC
+	bool "iSync"
+	help
+	  Spectratime iSync LNRClok/GRCLOK support
+
 config BR2_PACKAGE_GPSD_ITRAX
 	bool "iTrax"
 	help
