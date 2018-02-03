@@ -39,7 +39,6 @@ BASH_CONF_ENV += bash_cv_getenv_redef=yes
 endif
 endif
 
-# Make /bin/sh -> bash (no other shell, better than busybox shells)
 # Add /bin/bash to /etc/shells otherwise some login tools like dropbear
 # can reject the user connexion. See man shells.
 define BASH_INSTALL_TARGET_CMDS
