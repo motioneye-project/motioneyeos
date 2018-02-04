@@ -1,7 +1,7 @@
 # This Dockerfile generates the docker image that gets used by Gitlab CI
-# To build it:
-#   sudo docker build -t buildroot/base support/docker
-#   sudo docker push buildroot/base
+# To build it (YYYYMMDD.HHMM is the current date and time in UTC):
+#   sudo docker build -t buildroot/base:YYYYMMDD.HHMM support/docker
+#   sudo docker push buildroot/base:YYYYMMDD.HHMM
 
 # We use a specific tag for the base image *and* the corresponding date
 # for the repository., so do not forget to update the apt-sources.list
