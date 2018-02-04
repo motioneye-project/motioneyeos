@@ -550,6 +550,7 @@ F:	package/jemalloc/
 F:	package/meson/
 F:	package/ninja/
 F:	package/rust-bin/
+F:	package/rust/
 F:	package/s6/
 F:	package/s6-dns/
 F:	package/s6-linux-init/
