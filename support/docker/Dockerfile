@@ -3,13 +3,20 @@
 #   sudo docker build -t buildroot/base support/docker
 #   sudo docker push buildroot/base
 
+# We use a specific tag for the base image *and* the corresponding date
+# for the repository., so do not forget to update the apt-sources.list
+# file that is shipped next to this Dockerfile.
 FROM debian:stretch-20171210
+
 LABEL maintainer="Buildroot mailing list <buildroot@buildroot.org>" \
       vendor="Buildroot" \
 description="Container with everything needed to run Buildroot"
 
 # Setup environment
 ENV DEBIAN_FRONTEND noninteractive
+
+# This repository can be a bit slow at times. Don't panic...
+COPY apt-sources.list /etc/apt/sources.list
 
 # The container has no package lists, so need to update first
 RUN dpkg --add-architecture i386 && \
