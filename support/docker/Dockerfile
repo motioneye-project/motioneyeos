@@ -13,16 +13,16 @@ ENV DEBIAN_FRONTEND noninteractive
 
 # The container has no package lists, so need to update first
 RUN dpkg --add-architecture i386 && \
-    apt-get update -y -qq && \
-    apt-get install -y -qq --no-install-recommends \
+    apt-get update -y && \
+    apt-get install -y --no-install-recommends \
         build-essential cmake libc6:i386 gcc-multilib \
         bc ca-certificates file locales rsync \
         cvs bzr git mercurial subversion wget \
         cpio unzip \
         libncurses5-dev \
         python-nose2 python-pexpect qemu-system-arm qemu-system-x86 && \
-    apt-get -q -y autoremove && \
-    apt-get -q -y clean
+    apt-get -y autoremove && \
+    apt-get -y clean
 
 # To be able to generate a toolchain with locales, enable one UTF-8 locale
 RUN sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen && \
