@@ -3,7 +3,7 @@
 #   sudo docker build -t buildroot/base support/docker
 #   sudo docker push buildroot/base
 
-FROM debian:stable
+FROM debian:stretch-20171210
 LABEL maintainer="Buildroot mailing list <buildroot@buildroot.org>" \
       vendor="Buildroot" \
 description="Container with everything needed to run Buildroot"
