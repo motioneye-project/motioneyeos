@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2014-October/002489.html
 sha256	2db96a37d78831d643538dd1b595d7d712e04bdccf8896a5e18ce0f398ea2ffc	xcb-util-image-0.4.0.tar.bz2
+# License file, locally calculated
+sha256	19672c6153d8c4870abe734fa4dd2197481a311f4788d02ad729be07e116b26b	COPYING
