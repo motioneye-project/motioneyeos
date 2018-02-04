@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2014-February/002401.html
 sha256	28bf8179640eaa89276d2b0f1ce4285103d136be6c98262b6151aaee1d3c2a3f	xcb-util-wm-0.4.1.tar.bz2
+# License file, locally calculated
+sha256	12ab3559977a4b22ae3030b90c64a386e6ec51ab0e4eab1ff530f81a2639400a	COPYING
