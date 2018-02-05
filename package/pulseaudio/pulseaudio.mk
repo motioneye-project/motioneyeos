@@ -15,6 +15,9 @@ PULSEAUDIO_CONF_OPTS = \
 	--disable-legacy-database-entry-format \
 	--disable-manpages
 
+# 0001-memfd-wrappers-only-define-memfd_create-if-not-alrea.patch
+PULSEAUDIO_AUTORECONF = YES
+
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkgconf libtool libsndfile speex host-intltool \
 	$(if $(BR2_PACKAGE_LIBGLIB2),libglib2) \
