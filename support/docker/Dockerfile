@@ -22,7 +22,7 @@ COPY apt-sources.list /etc/apt/sources.list
 RUN dpkg --add-architecture i386 && \
     apt-get update -y && \
     apt-get install -y --no-install-recommends \
-        build-essential cmake libc6:i386 gcc-multilib \
+        build-essential cmake libc6:i386 g++-multilib \
         bc ca-certificates file locales rsync \
         cvs bzr git mercurial subversion wget \
         cpio unzip \

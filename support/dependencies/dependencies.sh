@@ -249,6 +249,14 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_COMPILER=y $BR2_CONFIG ; then
 		echo "For other distributions, refer to their documentation."
 		exit 1
 	fi
+
+	if ! echo "int main(void) {}" | g++ -m32 -x c++ - -o /dev/null 2>/dev/null; then
+		echo
+		echo "Your Buildroot configuration needs a compiler capable of building 32 bits binaries."
+		echo "If you're running a Debian/Ubuntu distribution, install the g++-multilib package."
+		echo "For other distributions, refer to their documentation."
+		exit 1
+	fi
 fi
 
 # Check that the Perl installation is complete enough for Buildroot.
