@@ -49,19 +49,22 @@
 	Zlib is now a virtual package, provided by either libzlib or
 	zlib-ng, similar to openssl.
 
+	Support for the Rust programming language.
+
 	New packages: aoetools, armbian-firmware, binaries-marvell,
-	brltty, cups-filters, curlpp, daq, flatbuffers, gconf,
-	glorytun, gstreamer1-mm, imx-m4fwloader, imx-gpu-g2d,
-	json-for-modern-cpp, libcpprestsdk, libgta, libostree,
-	libupnp18, luadbi, luadbi-sqlite3, lua-utf8, lynx, meson,
-	mv-ddr-marvell, nilfs-utils, opentracing-cpp, open-lldp, pimd,
-	proj, python-flask-cors, python-jaraco-classes,
-	python-more-itertools, python-oauthlib, python-raven,
-	python-remi, python-requests-oauthlib, python-schedule,
-	python-secretstorage, python-see, python-tabledata,
-	python-txtorcon, python-xlib, qt5charts, rtl8189fs, rtl8723bu,
-	rygel, safeclib, solatus, tcf-agent, traceroute, waylandpp,
-	wolfssl, zisofs-tools, zlib-ng
+	brltty, cargo, cargo-bin, cups-filters, curlpp, daq,
+	flatbuffers, gconf, glorytun, gstreamer1-mm, imx-m4fwloader,
+	imx-gpu-g2d, json-for-modern-cpp, libcpprestsdk, libgta,
+	libostree, libupnp18, luadbi, luadbi-sqlite3, lua-utf8, lynx,
+	meson, mv-ddr-marvell, nilfs-utils, opentracing-cpp,
+	open-lldp, pimd, proj, python-flask-cors,
+	python-jaraco-classes, python-more-itertools, python-oauthlib,
+	python-raven, python-remi, python-requests-oauthlib,
+	python-schedule, python-secretstorage, python-see,
+	python-tabledata, python-txtorcon, python-xlib, qt5charts,
+	rtl8189fs, rtl8723bu, rust, rustc, rust-bin, rygel, safeclib,
+	solatus, tcf-agent, traceroute, waylandpp, wolfssl,
+	zisofs-tools, zlib-ng
 
 	Removed packages: eeprog
 
