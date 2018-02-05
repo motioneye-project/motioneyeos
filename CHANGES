@@ -1,4 +1,4 @@
-2018.02-rc1, To be released
+2018.02-rc1, Released February 5th, 2018
 
 	The global source-check and per-package <pkg>-source-check
 	targets have been removed.
