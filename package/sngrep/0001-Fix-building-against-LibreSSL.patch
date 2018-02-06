@@ -1,0 +1,78 @@
+From 05d110ef57e9647b84c9656e746f72a76ea8c758 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Tue, 6 Feb 2018 12:47:43 -0500
+Subject: [PATCH] Fix building against LibreSSL
+
+LibreSSL declares OPENSSL_VERSION_NUMBER == 2.0 but does not include most
+changes from OpenSSL >= 1.1.
+
+To work around this:
+
+- Check to see if LIBRESSL_VERSION_NUMBER is defined.
+- If so, define MODSSL_USE_OPENSSL_PRE_1_1_API.
+- Change all checks for OPENSSL_VERSION_NUMBER < 0x10100000L to
+  '#if MODSSL_USE_OPENSSL_PRE_1_1_API'
+
+Upstream-Status: Committed
+https://github.com/irontec/sngrep/commit/0ee014d497986c40de264f6392b01fdf4e337fd5
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ src/capture_openssl.c | 6 +++---
+ src/capture_openssl.h | 9 +++++++++
+ 2 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/src/capture_openssl.c b/src/capture_openssl.c
+index 0a052c3..a4e1de0 100644
+--- a/src/capture_openssl.c
++++ b/src/capture_openssl.c
+@@ -94,7 +94,7 @@ P_hash(const char *digest, unsigned char *dest, int dlen, unsigned char *secret,
+ 
+     // Calculate enough data to fill destination
+     while (pending > 0) {
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if MODSSL_USE_OPENSSL_PRE_1_1_API
+         HMAC_CTX hm;
+         HMAC_Init(&hm, secret, sslen, md);
+         HMAC_Update(&hm, tmpseed, tmpslen);
+@@ -495,7 +495,7 @@ tls_process_record(struct SSLConnection *conn, const uint8_t *payload,
+                 break;
+             case change_cipher_spec:
+                 // From now on, this connection will be encrypted using MasterSecret
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if MODSSL_USE_OPENSSL_PRE_1_1_API
+                 if (conn->client_cipher_ctx->cipher && conn->server_cipher_ctx->cipher)
+                     conn->encrypted = 1;
+ #else
+@@ -588,7 +588,7 @@ tls_process_record_handshake(struct SSLConnection *conn, const opaque *fragment,
+                 // Decrypt PreMasterKey
+                 clientkeyex = (struct ClientKeyExchange *) body;
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if MODSSL_USE_OPENSSL_PRE_1_1_API
+                 RSA_private_decrypt(UINT16_INT(clientkeyex->length),
+                                     (const unsigned char *) &clientkeyex->exchange_keys,
+                                     (unsigned char *) &conn->pre_master_secret,
+diff --git a/src/capture_openssl.h b/src/capture_openssl.h
+index 31f48ce..b3e88fe 100644
+--- a/src/capture_openssl.h
++++ b/src/capture_openssl.h
+@@ -65,6 +65,15 @@
+ #define OLD_OPENSSL_VERSION 1
+ #endif
+ 
++/* LibreSSL declares OPENSSL_VERSION_NUMBER == 2.0 but does not include most
++ * changes from OpenSSL >= 1.1 (new functions, macros, deprecations, ...)
++ */
++#if defined(LIBRESSL_VERSION_NUMBER)
++#define MODSSL_USE_OPENSSL_PRE_1_1_API (1)
++#else
++#define MODSSL_USE_OPENSSL_PRE_1_1_API (OPENSSL_VERSION_NUMBER < 0x10100000L)
++#endif
++
+ //! Three bytes unsigned integer
+ typedef struct uint16 {
+     unsigned char x[2];
+-- 
+2.14.3
+
