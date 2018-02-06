@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/visitor/json, sha256 locally computed
+md5    94a024ed0ec1b02b4497c15267d319ca  visitor-0.1.3.tar.gz
+sha256 2c737903b2b6864ebc6167eef7cf3b997126f1aa94bdf590f90f1436d23e480a  visitor-0.1.3.tar.gz
+sha256 184d1ebb65da97ada36447f3c028f2fd4890b874f17b18c023ce200dd96639af  LICENSE
