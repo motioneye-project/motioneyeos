@@ -40,6 +40,13 @@ else
 LTP_TESTSUITE_CONF_ENV += ac_cv_lib_cap_cap_compare=no
 endif
 
+# No explicit enable/disable options
+ifeq ($(BR2_PACKAGE_NUMACTL),y)
+LTP_TESTSUITE_DEPENDENCIES += numactl
+else
+LTP_TESTSUITE_CONF_ENV += have_numa_headers=no
+endif
+
 # ltp-testsuite uses <fts.h>, which isn't compatible with largefile
 # support.
 LTP_TESTSUITE_CFLAGS = $(filter-out -D_FILE_OFFSET_BITS=64,$(TARGET_CFLAGS))
