@@ -12,7 +12,7 @@ diff --git a/Makefile.flags b/Makefile.flags
 index 307afa7..885e323 100644
 --- a/Makefile.flags
 +++ b/Makefile.flags
-@@ -141,7 +141,9 @@ ifeq ($(CONFIG_SELINUX),y)
+@@ -153,7 +153,9 @@ ifeq ($(CONFIG_SELINUX),y)
  SELINUX_PC_MODULES = libselinux libsepol
  $(eval $(call pkg_check_modules,SELINUX,$(SELINUX_PC_MODULES)))
  CPPFLAGS += $(SELINUX_CFLAGS)
