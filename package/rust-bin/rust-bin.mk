@@ -24,7 +24,7 @@ define HOST_RUST_BIN_LIBSTD_EXTRACT
 	$(foreach f,$(HOST_RUST_BIN_EXTRA_DOWNLOADS), \
 		$(call suitable-extractor,$(f)) $(DL_DIR)/$(f) | \
 			$(TAR) -C $(@D)/std $(TAR_OPTIONS) -
-        )
+	)
 	cd $(@D)/rustc/lib/rustlib; \
 		ln -sf ../../../std/$(HOST_RUST_BIN_LIBSTD_HOST_PREFIX)/lib/rustlib/$(RUST_HOST_NAME)
 endef
