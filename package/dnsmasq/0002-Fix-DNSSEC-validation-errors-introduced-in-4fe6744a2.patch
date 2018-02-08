@@ -1,0 +1,29 @@
+From cd7df612b14ec1bf831a966ccaf076be0dae7404 Mon Sep 17 00:00:00 2001
+From: Simon Kelley <simon@thekelleys.org.uk>
+Date: Sat, 20 Jan 2018 00:10:55 +0000
+Subject: [PATCH] Fix DNSSEC validation errors introduced in
+ 4fe6744a220eddd3f1749b40cac3dfc510787de6
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: upstream commit cd7df612b14ec
+
+ src/dnssec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/dnssec.c b/src/dnssec.c
+index a54a0b4f14cf..c47e33569f96 100644
+--- a/src/dnssec.c
++++ b/src/dnssec.c
+@@ -1610,7 +1610,7 @@ static int prove_non_existence(struct dns_header *header, size_t plen, char *key
+ 		       int type_covered;
+ 		       unsigned char *psav = p1;
+ 		       
+-		       if (rdlen < 18)
++		       if (rdlen1 < 18)
+ 			 return 0; /* bad packet */
+ 
+ 		       GETSHORT(type_covered, p1);
+-- 
+2.15.1
+
