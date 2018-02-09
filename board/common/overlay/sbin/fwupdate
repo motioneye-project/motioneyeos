@@ -115,7 +115,7 @@ function do_download() {
     version=$1
 
     if ! [[ "$url" == http* ]]; then  # a version was given
-        url=$(show_versions true | sed -rn '/^'"$version"' http.*\.img\.[a-z]+$/ {; /.*\.xz$/ {;s/^'"$version"' (.*)/\1/ p;q;}; /.*\.gz$/ {;h;b;};}; $ {;x;s/^'"$version"' (.*)/\1/ p;}')
+        url=$(show_versions true | sed -rn '/^'"$version"' http.*\.img\.[a-z]+$/ {; /.*\.xz$/ {;s/^'"$version"' (.*)/\1/ p;q;}; /.*\.gz$/ {;h;b finish;};}; :finish; $ {;x;s/^'"$version"' (.*)/\1/ p;}')
     else
         version="custom"
     fi
