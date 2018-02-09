@@ -1,0 +1,38 @@
+From 381eaa40735385a1a60e5ab0a7daf4bb847fc2ab Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 9 Feb 2018 14:42:31 +0200
+Subject: [PATCH] src: fix build with older glibc
+
+glibc before 2.19 missed the definition of IPPROTO_MH. This leads to
+build failure:
+
+parser_bison.y: In function 'nft_parse':
+parser_bison.y:3793:21: error: 'IPPROTO_MH' undeclared (first use in this function)
+    | MH { $$ = IPPROTO_MH; }
+                     ^
+
+Since we have a local definition of IPPROTO_MH in headers.h use that to
+fix the build.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://marc.info/?l=netfilter-devel&m=151818061103886&w=2
+
+ src/parser_bison.y | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/parser_bison.y b/src/parser_bison.y
+index 2e79109f4da3..578bfdc10429 100644
+--- a/src/parser_bison.y
++++ b/src/parser_bison.y
+@@ -29,6 +29,7 @@
+ #include <rule.h>
+ #include <statement.h>
+ #include <expression.h>
++#include <headers.h>
+ #include <utils.h>
+ #include <parser.h>
+ #include <erec.h>
+-- 
+2.15.1
+
