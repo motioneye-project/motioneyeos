@@ -13,7 +13,7 @@ config BR2_PACKAGE_DROPBEAR
 	  Alternatively, mount a persistent unionfs over your root
 	  filesystem.
 
-	  http://matt.ucc.asn.au/dropbear/dropbear.html
+	  https://matt.ucc.asn.au/dropbear/dropbear.html
 
 if BR2_PACKAGE_DROPBEAR
 
