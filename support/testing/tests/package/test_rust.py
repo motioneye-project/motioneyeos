@@ -53,12 +53,6 @@ class TestRustBase(infra.basetest.BRTest):
         self.b.build()
         shutil.rmtree(workdir)
 
-    def test_run(self):
-        self.build_test_prog()
-        self.login()
-        _, exit_code = self.emulator.run(self.crate)
-        self.assertEqual(exit_code, 0)
-
 
 class TestRustBin(TestRustBase):
     config = \
@@ -81,6 +75,12 @@ class TestRustBin(TestRustBase):
              BR2_PACKAGE_HOST_CARGO=y
              BR2_PACKAGE_HOST_RUSTC=y
              """
+
+    def test_run(self):
+        self.build_test_prog()
+        self.login()
+        _, exit_code = self.emulator.run(self.crate)
+        self.assertEqual(exit_code, 0)
 
 
 class TestRust(TestRustBase):
@@ -105,3 +105,9 @@ class TestRust(TestRustBase):
              BR2_PACKAGE_HOST_RUSTC=y
              BR2_PACKAGE_HOST_RUST=y
              """
+
+    def test_run(self):
+        self.build_test_prog()
+        self.login()
+        _, exit_code = self.emulator.run(self.crate)
+        self.assertEqual(exit_code, 0)
