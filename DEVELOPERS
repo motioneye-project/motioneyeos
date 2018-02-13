@@ -1515,9 +1515,6 @@ F:	package/terminology/
 F:	package/upower/
 F:	package/xenomai/
 
-N:	Romain Perier <romain.perier@free-electrons.com>
-F:	package/amd-catalyst/
-
 N:	Ryan Barnett <ryan.barnett@rockwellcollins.com>
 F:	package/atftp/
 F:	package/miraclecast/
