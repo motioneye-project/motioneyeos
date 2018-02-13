@@ -48,7 +48,7 @@ HOST_RUST_POST_EXTRACT_HOOKS += HOST_RUST_EXCLUDE_ORIG_FILES
 define HOST_RUST_CONFIGURE_CMDS
 	( \
 		echo '[build]'; \
-		echo 'target = ["$(RUST_TARGET_NAME)"]'; \
+		echo 'target = ["$(RUSTC_TARGET_NAME)"]'; \
 		echo 'cargo = "$(HOST_CARGO_BIN_DIR)/cargo/bin/cargo"'; \
 		echo 'rustc = "$(HOST_RUST_BIN_DIR)/rustc/bin/rustc"'; \
 		echo 'python = "$(HOST_DIR)/bin/python2"'; \
@@ -61,7 +61,7 @@ define HOST_RUST_CONFIGURE_CMDS
 		echo 'prefix = "$(HOST_DIR)"'; \
 		echo '[rust]'; \
 		echo 'use-jemalloc = $(HOST_RUST_JEMALLOC_ENABLED)'; \
-		echo '[target.$(RUST_TARGET_NAME)]'; \
+		echo '[target.$(RUSTC_TARGET_NAME)]'; \
 		echo 'cc = "$(TARGET_CROSS)gcc"'; \
 		echo $(HOST_RUST_JEMALLOC_CONF); \
 	) > $(@D)/config.toml

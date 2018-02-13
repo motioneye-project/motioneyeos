@@ -49,11 +49,11 @@ package. Let's start with an example:
 15: FOO_CARGO_ENV = CARGO_HOME=$(HOST_DIR)/share/cargo
 16: FOO_CARGO_MODE = $(if $(BR2_ENABLE_DEBUG),debug,release)
 17:
-18: FOO_BIN_DIR = target/$(RUST_TARGET_NAME)/$(FOO_CARGO_MODE)
+18: FOO_BIN_DIR = target/$(RUSTC_TARGET_NAME)/$(FOO_CARGO_MODE)
 19:
 20: FOO_CARGO_OPTS = \
 21:   --$(FOO_CARGO_MODE) \
-22: 	--target=$(RUST_TARGET_NAME) \
+22: 	--target=$(RUSTC_TARGET_NAME) \
 23: 	--manifest-path=$(@D)/Cargo.toml
 24:
 25: define FOO_BUILD_CMDS

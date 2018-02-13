@@ -1,2 +1,2 @@
-[target.@RUST_TARGET_NAME@]
+[target.@RUSTC_TARGET_NAME@]
 linker = "@CROSS_PREFIX@gcc"
