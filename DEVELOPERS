@@ -91,7 +91,7 @@ F:	package/hostapd/
 N:	Alexander Varnin <fenixk19@mail.ru>
 F:	package/liblog4c-localtime/
 
-N:	Alexandre Belloni <alexandre.belloni@free-electrons.com>
+N:	Alexandre Belloni <alexandre.belloni@bootlin.com>
 F:	package/tz/
 
 N:	Alexandre Esse <alexandre.esse.dev@gmail.com>
@@ -150,7 +150,7 @@ F:	package/lsscsi/
 N:	Anthony Viallard <viallard@syscom-instruments.com>
 F:	package/gnuplot/
 
-N:	Antoine Ténart <antoine.tenart@free-electrons.com>
+N:	Antoine Ténart <antoine.tenart@bootlin.com>
 F:	package/wf111/
 
 N:	ARC Maintainers <arc-buildroot@synopsys.com>
@@ -1251,7 +1251,7 @@ F:	package/systemd-bootchart/
 F:	package/tinyalsa/
 F:	package/tinyxml/
 
-N:	Maxime Ripard <maxime.ripard@free-electrons.com>
+N:	Maxime Ripard <maxime.ripard@bootlin.com>
 F:	package/kmsxx/
 
 N:	Michael Rommel <rommel@layer-7.net>
@@ -1280,7 +1280,7 @@ N:	Mike Harmony <mike.harmony@snapav.com>
 F:	board/sinovoip/m2-plus/
 F:	configs/bananapi_m2_plus_defconfig
 
-N:	Mylène Josserand <mylene.josserand@free-electrons.com>
+N:	Mylène Josserand <mylene.josserand@bootlin.com>
 F:	package/rtl8723bu/
 
 N:	Nathan Lynch <ntl@pobox.com>
@@ -1735,7 +1735,7 @@ F:	support/scripts/size-stats
 F:	utils/size-stats-compare
 F:	toolchain/
 
-N:	Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+N:	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 F:	arch/Config.in.arm
 F:	boot/boot-wrapper-aarch64/
 F:	boot/grub2/
