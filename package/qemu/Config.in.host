@@ -9,7 +9,8 @@ config BR2_PACKAGE_HOST_QEMU
 	select BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE \
 		if !BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE
 	help
-	  QEMU is a generic and open source machine emulator and virtualizer.
+	  QEMU is a generic and open source machine emulator and
+	  virtualizer.
 
 	  This option builds an emulator for your selected architecture.
 
