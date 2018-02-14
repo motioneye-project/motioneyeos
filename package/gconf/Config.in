@@ -9,9 +9,9 @@ config BR2_PACKAGE_GCONF
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBXML2
 	help
-	  GConf was a system used by the GNOME desktop environment for storing
-	  configuration settings for the desktop and applications. It is similar
-	  to the Windows Registry.
+	  GConf was a system used by the GNOME desktop environment for
+	  storing configuration settings for the desktop and
+	  applications. It is similar to the Windows Registry.
 
 	  https://projects.gnome.org/gconf/
 
