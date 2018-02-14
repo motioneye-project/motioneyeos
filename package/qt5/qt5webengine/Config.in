@@ -81,4 +81,14 @@ config BR2_PACKAGE_QT5WEBENGINE_PROPRIETARY_CODECS
 	  which includes required proprietary audio and video codecs,
 	  such as H.264 and MPEG layer-3 (MP3).
 
+config BR2_PACKAGE_QT5WEBENGINE_ALSA
+	bool "alsa"
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_HWDEP
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	help
+	  Enable ALSA support.
+
 endif

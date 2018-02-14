@@ -28,6 +28,12 @@ ifeq ($(BR2_PACKAGE_QT5WEBENGINE_PROPRIETARY_CODECS),y)
 QT5WEBENGINE_QMAKEFLAGS += WEBENGINE_CONFIG+=use_proprietary_codecs
 endif
 
+ifeq ($(BR2_PACKAGE_QT5WEBENGINE_ALSA),y)
+QT5WEBENGINE_DEPENDENCIES += alsa-lib
+else
+QT5WEBENGINE_QMAKEFLAGS += QT_CONFIG-=alsa
+endif
+
 # QtWebengine's build system uses python, but only supports python2. We work
 # around this by forcing python2 early in the PATH, via a python->python2
 # symlink.
