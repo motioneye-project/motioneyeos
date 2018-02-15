@@ -1,0 +1,10 @@
+config BR2_PACKAGE_KF5_EXTRA_CMAKE_MODULES
+	bool "kf5-extra-cmake-modules"
+	help
+	  KF5 is a set of Qt framework addons, extending Qt in various
+	  ways, not only restricted in helping integration in KDE.
+
+	  This package corresponds to the extra CMake modules,
+	  required for most KF5 libraries.
+
+	  https://api.kde.org/frameworks/extra-cmake-modules/html/index.html

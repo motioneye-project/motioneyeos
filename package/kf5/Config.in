@@ -7,4 +7,5 @@ menuconfig BR2_PACKAGE_KF5
 	  allow to select which modules should be built.
 
 if BR2_PACKAGE_KF5
+source "package/kf5/kf5-extra-cmake-modules/Config.in"
 endif
