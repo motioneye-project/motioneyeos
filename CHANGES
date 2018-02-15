@@ -1,3 +1,25 @@
+2018.02-rc2, Released February 15th, 2018
+
+	Fixes all over the tree.
+
+	Dependencies: Ensure C++ support is available like for C
+	support for packages needing 32bit host support.
+
+	utils/genrandconfig: Check host dependencies for config.
+
+	Updated/fixed packages: busybox, dnsmasq, dropbear, ffmpeg,
+	glibc, keepalived, libcpprestsdk, libgpiod, libmaxminddb,
+	librsvg, libtasn1, libv4l, libxml2, lightning, ltp-testsuite,
+	mesa3d, mesa3d-demos, mesa3d-headers, nftables, open-lldp,
+	php, postgresql, python-crossbar, qt5, qt53d, qt5enginio,
+	qt5tools, qt5webengine, qt5webkit, rsync, rust-bin, rustc,
+	systemd
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#9781: ti-sgx-km build on kernel >4.1
+	#10141: Squashfs extended attribute failures
+
 2018.02-rc1, Released February 5th, 2018
 
 	The global source-check and per-package <pkg>-source-check
