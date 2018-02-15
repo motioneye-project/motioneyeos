@@ -732,6 +732,7 @@ F:	package/webp/
 
 N:	Giulio Benetti <giulio.benetti@micronovasrl.com>
 F:	package/sunxi-mali-mainline/
+F:	package/sunxi-mali-mainline-driver/
 
 N:	Gregory Dymarek <gregd72002@gmail.com>
 F:	package/ding-libs/
