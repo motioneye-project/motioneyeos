@@ -1727,6 +1727,10 @@ F:	package/lttng-tools/
 F:	package/python-ipython/
 F:	package/liburcu/
 
+N:	Pierre Crokaert <pct@crookies.net>
+F:	board/hardkernel/odroidxu4/
+F:	configs/odroidxu4_defconfig
+
 N:	Pierre Ducroquet <pinaraf@pinaraf.info>
 F:	package/kf5/
 
