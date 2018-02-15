@@ -1,4 +1,8 @@
 bootpart=0:1
+devtype=mmc
 bootdir=
-bootargs=console=ttyO0,115200n8 root=/dev/mmcblk0p2 rw rootfstype=ext4 rootwait
-uenvcmd=run loadimage;run loadfdt;printenv bootargs;bootz ${loadaddr} - ${fdtaddr};
+bootfile=zImage
+bootpartition=mmcblk0p2
+set_mmc1=if test $board_name = A33515BB; then setenv bootpartition mmcblk1p2; fi
+set_bootargs=setenv bootargs console=ttyO0,115200n8 root=/dev/${bootpartition} rw rootfstype=ext4 rootwait
+uenvcmd=run set_mmc1; run set_bootargs;run loadimage;run loadfdt;printenv bootargs;bootz ${loadaddr} - ${fdtaddr}
