@@ -18,6 +18,9 @@ if BR2_PACKAGE_POCO
 
 comment "poco components"
 
+config BR2_PACKAGE_POCO_JSON
+	bool "json"
+
 config BR2_PACKAGE_POCO_XML
 	bool "xml"
 	select BR2_PACKAGE_EXPAT
@@ -45,6 +48,20 @@ config BR2_PACKAGE_POCO_ZIP
 	select BR2_PACKAGE_POCO_XML
 	select BR2_PACKAGE_POCO_NET
 	select BR2_PACKAGE_POCO_UTIL
+
+config BR2_PACKAGE_POCO_CPP_PARSER
+	bool "cpp_parser"
+
+config BR2_PACKAGE_POCO_PDF
+	bool "pdf"
+
+config BR2_PACKAGE_POCO_REDIS
+	bool "redis"
+	select BR2_PACKAGE_POCO_NET
+
+config BR2_PACKAGE_POCO_MONGODB
+	bool "mongodb"
+	select BR2_PACKAGE_POCO_NET
 
 config BR2_PACKAGE_POCO_DATA
 	bool
