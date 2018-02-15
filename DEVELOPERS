@@ -2141,3 +2141,6 @@ F:	package/qjson/
 F:	package/quazip/
 F:	package/shapelib/
 F:	package/tinc/
+
+N:	Pierre Ducroquet <pinaraf@pinaraf.info>
+F:	package/kf5/
