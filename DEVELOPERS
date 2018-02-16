@@ -196,6 +196,7 @@ F:	package/dehydrated/
 F:	package/freescale-imx/firmware-imx/
 F:	package/freescale-imx/imx-lib/
 F:	package/gstreamer/gst-fsl-plugins/
+F:	package/libpagekite/
 F:	package/lua-bit32/
 F:	package/owfs/
 F:	package/python-bottle/

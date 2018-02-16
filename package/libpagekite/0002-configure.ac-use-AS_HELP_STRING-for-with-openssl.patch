@@ -1,0 +1,28 @@
+From cb20efae0e2ca86dd48c603b61d9c20225ebcd3d Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Fri, 16 Feb 2018 12:06:28 +0100
+Subject: [PATCH] configure.ac: use AS_HELP_STRING for --with-openssl
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ configure.ac | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 130752a..4874c0b 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -17,7 +17,9 @@ use_openssl="yes"
+ use_libev="yes"
+ 
+ specialssldir=""
+-AC_ARG_WITH(openssl,[  --with-openssl=DIR    Use optional openssl libs and includes from [DIR]/lib/ and [DIR]/include/openssl/],
++AC_ARG_WITH(openssl,
++	[AS_HELP_STRING([--with-openssl=DIR],
++		[Use optional openssl libs and includes from [DIR]/lib/ and [DIR]/include/openssl/])],
+ [  case "$with_openssl" in
+   yes)
+   ;;
+-- 
+2.15.1
+

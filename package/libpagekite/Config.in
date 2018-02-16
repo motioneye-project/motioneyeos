@@ -1,0 +1,24 @@
+config BR2_PACKAGE_LIBPAGEKITE
+	bool "libpagekite"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBEV
+	select BR2_PACKAGE_OPENSSL
+	help
+	  PageKite is a protocol for dynamic, tunneled reverse proxying
+	  of arbitrary TCP byte streams. It is particularly well suited
+	  for making a HTTP server on a device without a public IP
+	  address visible to the wider Internet, but can also be used
+	  for a variety of other things, including SSH access.
+
+	  libpagekite is a tight, fast implementation of the PageKite
+	  protocol in C, suitable for high-performance or embedded
+	  applications.
+
+	  In addition to the libpagekite library, this package installs
+	  the pagekitec, sshkite and httpkite tools.
+
+	  https://pagekite.net
+	  https://github.com/pagekite/libpagekite
+
+comment "libpagekite needs a toolchain with threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
