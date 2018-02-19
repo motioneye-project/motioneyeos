@@ -1,0 +1,37 @@
+From 062990cc1b2f9e5d82a413b53c8f0569075de700 Mon Sep 17 00:00:00 2001
+From: "Heiko Schlittermann (HS12-RIPE)" <hs@schlittermann.de>
+Date: Mon, 5 Feb 2018 22:23:32 +0100
+Subject: [PATCH] Fix base64d() buffer size (CVE-2018-6789)
+
+Credits for discovering this bug: Meh Chang <meh@devco.re>
+
+[Peter: Drop ChangeLog change, fix path]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/base64.c      | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
+
+diff --git a/src/base64.c b/src/base64.c
+index f6f187f0..e58ca6c7 100644
+--- a/src/base64.c
++++ b/src/base64.c
+@@ -152,10 +152,14 @@ static uschar dec64table[] = {
+ int
+ b64decode(const uschar *code, uschar **ptr)
+ {
++
+ int x, y;
+-uschar *result = store_get(3*(Ustrlen(code)/4) + 1);
++uschar *result;
+ 
+-*ptr = result;
++{
++  int l = Ustrlen(code);
++  *ptr = result = store_get(1 + l/4 * 3 + l%4);
++}
+ 
+ /* Each cycle of the loop handles a quantum of 4 input bytes. For the last
+ quantum this may decode to 1, 2, or 3 output bytes. */
+-- 
+2.11.0
+
