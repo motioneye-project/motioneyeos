@@ -363,24 +363,12 @@ config BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT
 config BR2_LINUX_KERNEL_APPENDED_DTB
 	bool
 
-choice
-	prompt "Device tree source"
-	default BR2_LINUX_KERNEL_USE_INTREE_DTS
-
 config BR2_LINUX_KERNEL_USE_INTREE_DTS
 	bool "Use a device tree present in the kernel"
 	help
 	  Use a device tree source distributed with
 	  the kernel sources. The dts files are located
 	  in the arch/<arch>/boot/dts folder.
-
-config BR2_LINUX_KERNEL_USE_CUSTOM_DTS
-	bool "Use a custom device tree file"
-	help
-	  Use a custom device tree file, i.e, a device
-	  tree file that does not belong to the kernel
-	  source tree.
-endchoice
 
 config BR2_LINUX_KERNEL_INTREE_DTS_NAME
 	string "Device Tree Source file names"
@@ -389,6 +377,13 @@ config BR2_LINUX_KERNEL_INTREE_DTS_NAME
 	  Name of the device tree source file, without
 	  the trailing .dts. You can provide a list of
 	  dts files to build, separated by spaces.
+
+config BR2_LINUX_KERNEL_USE_CUSTOM_DTS
+	bool "Use a custom device tree file"
+	help
+	  Use a custom device tree file, i.e, a device
+	  tree file that does not belong to the kernel
+	  source tree.
 
 config BR2_LINUX_KERNEL_CUSTOM_DTS_PATH
 	string "Device Tree Source file paths"
