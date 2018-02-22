@@ -8,7 +8,7 @@ fi
 test "root" != "$USER" && exec sudo -E $0 "$@"
 
 function msg() {
-    echo ":: $1"
+    echo " * $1"
 }
 
 function cleanup {
