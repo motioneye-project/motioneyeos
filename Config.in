@@ -94,6 +94,11 @@ config BR2_HOSTARCH_NEEDS_IA32_COMPILER
 config BR2_NEEDS_HOST_UTF8_LOCALE
 	bool
 
+# Hidden boolean selected by packages that explicitly need C.UTF-8 locale
+# to be available on host system.
+config BR2_NEEDS_HOST_C_UTF8_LOCALE
+	bool
+
 source "arch/Config.in"
 
 menu "Build options"

@@ -207,6 +207,19 @@ if grep ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG > /dev/null; then
 	fi
 fi
 
+if grep -q ^BR2_NEEDS_HOST_C_UTF8_LOCALE=y $BR2_CONFIG; then
+	if ! which locale > /dev/null ; then
+		echo
+		echo "You need locale support on your build machine"
+		exit 1 ;
+	fi
+	if ! LC_ALL=C.UTF-8 locale -c charmap | grep -q '^UTF-8$'; then
+		echo
+		echo "You need C.UTF-8 locale suppport on the host system"
+		exit 1 ;
+	fi
+fi
+
 if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
 	check_prog_host "java"
 	JAVA_GCJ=$(java -version 2>&1 | grep gcj)
