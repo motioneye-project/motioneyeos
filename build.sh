@@ -47,7 +47,7 @@ elif [ "$target" == "mkrelease" ]; then
     cp $outputdir/images/$osname-$board.img $basedir
     mv $basedir/$osname-$board.img  $basedir/$osname-$board-$osversion.img
     rm -f $basedir/$osname-$board-$osversion.img.xz
-    xz -6ek $basedir/$osname-$board-$osversion.img
+    xz -6ek -T 0 $basedir/$osname-$board-$osversion.img
     echo "your xz image is ready at $basedir/$osname-$board-$osversion.img.xz"
     rm -f $basedir/$osname-$board-$osversion.img.gz
     $gzip $basedir/$osname-$board-$osversion.img
