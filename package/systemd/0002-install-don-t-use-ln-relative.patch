@@ -1,4 +1,4 @@
-From ecf3b9baaebda1d9182c22dc504e32ed275d4abb Mon Sep 17 00:00:00 2001
+From 17560d52e9ec0afebbfe31e694870c6433b36f60 Mon Sep 17 00:00:00 2001
 From: Adam Duskett <Adamduskett@outlook.com>
 Date: Sun, 31 Dec 2017 12:46:04 -0500
 Subject: [PATCH] install: don't use ln --relative
@@ -21,17 +21,20 @@ Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 [aduskett@gmail.com: Added meson.build section and dirname wrapper in add-wants]
 [aduskett@gmail.com: Update for systemd v237]
 Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+[tpiepho@impinj.com: Fix add-wants wrapper]
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
 ---
  meson.build                 | 2 +-
  tools/meson-make-symlink.sh | 3 ++-
- units/meson-add-wants.sh    | 5 +++--
- 3 files changed, 6 insertions(+), 4 deletions(-)
+ units/meson-add-wants.sh    | 6 ++++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index ddc061c..614201a 100644
+index d4af95a44..d75f2b34c 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -572,6 +572,6 @@ conf.set_quoted('TELINIT', get_option('telinit-path'))
+@@ -586,7 +586,7 @@ endforeach
+ conf.set_quoted('TELINIT', get_option('telinit-path'))
  
  if run_command('ln', '--relative', '--help').returncode() != 0
 -        error('ln does not support --relative')
@@ -40,7 +43,7 @@ index ddc061c..614201a 100644
  
  ############################################################
 diff --git a/tools/meson-make-symlink.sh b/tools/meson-make-symlink.sh
-index 47a5e70..e9002ad 100755
+index 501cd43d4..25e7f89fd 100755
 --- a/tools/meson-make-symlink.sh
 +++ b/tools/meson-make-symlink.sh
 @@ -8,5 +8,6 @@ mkdir -vp "$(dirname "${DESTDIR:-}$2")"
@@ -52,7 +55,7 @@ index 47a5e70..e9002ad 100755
 +        ln -vfs -T "${dds}$1" "${DESTDIR:-}$2"
  fi
 diff --git a/units/meson-add-wants.sh b/units/meson-add-wants.sh
-index dfd287e..8c08283 100755
+index 70f7172ae..bb8155075 100755
 --- a/units/meson-add-wants.sh
 +++ b/units/meson-add-wants.sh
 @@ -14,7 +14,7 @@ case "$target" in
@@ -64,12 +67,13 @@ index dfd287e..8c08283 100755
  
  case "$target" in
          */)
-@@ -25,4 +25,5 @@ case "$target" in
+@@ -25,4 +25,6 @@ case "$target" in
                  ;;
  esac
  
 -ln -vfs --relative "$unitpath" "$dir"
-+dds="$( dirname `printf "%s" "${dir#${DESTDIR:-}}" |sed -r -e 's:/+[^/]+:../:g; s:/$::'` )"
++[ ! -d "${dir}" ] && linkdir=`dirname "${dir}"` || linkdir="${dir}"
++dds="$(printf "%s" "${linkdir#${DESTDIR:-}}" |sed -r -e 's:/+[^/]+:../:g; s:/$::')"
 +ln -vfs "$dds$unitpath" "$dir"
 -- 
 2.14.3
