@@ -1,0 +1,33 @@
+From 129f50838bf14f4e1319f06f41c827fae9cc4b73 Mon Sep 17 00:00:00 2001
+From: Jaeden Amero <jaeden.amero@arm.com>
+Date: Thu, 8 Feb 2018 14:25:36 +0000
+Subject: [PATCH] dhm: Fix typo in RFC 5114 constants
+
+We accidentally named the constant MBEDTLS_DHM_RFC5114_MODP_P instead of
+MBEDTLS_DHM_RFC5114_MODP_2048_P.
+
+Fixes #1358
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit 129f50838bf
+
+ include/mbedtls/dhm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/mbedtls/dhm.h b/include/mbedtls/dhm.h
+index da2e66b111b6..00fafd8d16f4 100644
+--- a/include/mbedtls/dhm.h
++++ b/include/mbedtls/dhm.h
+@@ -372,7 +372,7 @@ MBEDTLS_DEPRECATED typedef char const * mbedtls_deprecated_constant_t;
+  * in <em>RFC-5114: Additional Diffie-Hellman Groups for Use with
+  * IETF Standards</em>.
+  */
+-#define MBEDTLS_DHM_RFC5114_MODP_P                              \
++#define MBEDTLS_DHM_RFC5114_MODP_2048_P                         \
+     MBEDTLS_DEPRECATED_STRING_CONSTANT(                         \
+         "AD107E1E9123A9D0D660FAA79559C51FA20D64E5683B9FD1"      \
+         "B54B1597B61D0A75E6FA141DF95A56DBAF9A3C407BA1DF15"      \
+-- 
+2.16.1
+
