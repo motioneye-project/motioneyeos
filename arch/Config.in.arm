@@ -267,6 +267,7 @@ config BR2_cortex_m3
 config BR2_cortex_m4
 	bool "cortex-M4"
 	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_MAYBE_HAS_FPV4
 	select BR2_ARM_CPU_ARMV7M
 config BR2_cortex_m7
 	bool "cortex-M7"
