@@ -11,6 +11,13 @@ STRACE_LICENSE = BSD-3-Clause
 STRACE_LICENSE_FILES = COPYING
 STRACE_CONF_OPTS = --enable-mpers=check
 
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+STRACE_DEPENDENCIES += libunwind
+STRACE_CONF_OPTS += --with-libunwind
+else
+STRACE_CONF_OPTS += --without-libunwind
+endif
+
 define STRACE_REMOVE_STRACE_GRAPH
 	rm -f $(TARGET_DIR)/usr/bin/strace-graph
 endef
