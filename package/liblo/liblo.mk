@@ -12,6 +12,9 @@ LIBLO_LICENSE_FILES = COPYING
 LIBLO_INSTALL_STAGING = YES
 
 # IPv6 support broken, issue known upstream
-LIBLO_CONF_OPTS = --disable-ipv6
+# werror - not needed for release.
+LIBLO_CONF_OPTS += \
+	--disable-ipv6 \
+	--disable-werror
 
 $(eval $(autotools-package))
