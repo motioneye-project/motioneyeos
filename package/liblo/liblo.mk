@@ -17,4 +17,10 @@ LIBLO_CONF_OPTS += \
 	--disable-ipv6 \
 	--disable-werror
 
+# Liblo uses atomic builtins, so we need to link with libatomic for
+# the architectures who explicitly need libatomic.
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+LIBLO_CONF_ENV += LIBS="-latomic"
+endif
+
 $(eval $(autotools-package))
