@@ -1,3 +1,10 @@
+config BR2_PACKAGE_ZLIB_NG_ARCH_SUPPORTS
+	bool
+	default y if BR2_arm
+	default y if BR2_aarch64
+	default y if BR2_i386
+	default y if BR2_x86_64
+
 config BR2_PACKAGE_ZLIB
 	bool "zlib support"
 	help
@@ -22,6 +29,7 @@ config BR2_PACKAGE_LIBZLIB
 
 config BR2_PACKAGE_ZLIB_NG
 	bool "zlib-ng"
+	depends on BR2_PACKAGE_ZLIB_NG_ARCH_SUPPORTS
 	select BR2_PACKAGE_HAS_ZLIB
 	help
 	  Zlib replacement with optimizations for
