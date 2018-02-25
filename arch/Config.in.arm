@@ -40,6 +40,15 @@ config BR2_ARM_CPU_HAS_VFPV4
 	bool
 	select BR2_ARM_CPU_HAS_VFPV3
 
+# FPv4 is always optional
+config BR2_ARM_CPU_MAYBE_HAS_FPV4
+	bool
+	select BR2_ARM_CPU_MAYBE_HAS_FPU
+
+config BR2_ARM_CPU_HAS_FPV4
+	bool
+	select BR2_ARM_CPU_HAS_FPU
+
 config BR2_ARM_CPU_HAS_FP_ARMV8
 	bool
 	select BR2_ARM_CPU_HAS_VFPV4
@@ -460,6 +469,7 @@ config BR2_ARM_ENABLE_NEON
 config BR2_ARM_ENABLE_VFP
 	bool "Enable VFP extension support"
 	depends on BR2_ARM_CPU_MAYBE_HAS_FPU
+	select BR2_ARM_CPU_HAS_FPV4 if BR2_ARM_CPU_MAYBE_HAS_FPV4
 	select BR2_ARM_CPU_HAS_VFPV4 if BR2_ARM_CPU_MAYBE_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_VFPV3 if BR2_ARM_CPU_MAYBE_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_VFPV2 if BR2_ARM_CPU_MAYBE_HAS_VFPV2
@@ -526,6 +536,7 @@ endchoice
 choice
 	prompt "Floating point strategy"
 	default BR2_ARM_FPU_FP_ARMV8 if BR2_ARM_CPU_HAS_FP_ARMV8
+	default BR2_ARM_FPU_FPV4D16 if BR2_ARM_CPU_HAS_FPV4
 	default BR2_ARM_FPU_VFPV4D16 if BR2_ARM_CPU_HAS_VFPV4
 	default BR2_ARM_FPU_VFPV3D16 if BR2_ARM_CPU_HAS_VFPV3
 	default BR2_ARM_FPU_VFPV2 if BR2_ARM_CPU_HAS_VFPV2
@@ -635,6 +646,14 @@ config BR2_ARM_FPU_NEON_VFPV4
 	  cores do not necessarily have VFPv4 and/or NEON support, for
 	  example on Cortex-A5 and Cortex-A7, support for VFPv4 and
 	  NEON is optional.
+
+config BR2_ARM_FPU_FPV4D16
+	bool "FPv4-D16"
+	depends on BR2_ARM_CPU_HAS_FPV4
+	help
+	  This option allows to use the FPv4-SP (single precision)
+	  floating point unit, as available in some ARMv7m processors
+	  (Cortex-M4).
 
 config BR2_ARM_FPU_FP_ARMV8
 	bool "FP-ARMv8"
@@ -768,6 +787,7 @@ config BR2_GCC_TARGET_FPU
 	default "vfpv4-d16"	if BR2_ARM_FPU_VFPV4D16
 	default "neon"		if BR2_ARM_FPU_NEON
 	default "neon-vfpv4"	if BR2_ARM_FPU_NEON_VFPV4
+	default "fpv4-sp-d16"   if BR2_ARM_FPU_FPV4D16
 	default "fp-armv8"	if BR2_ARM_FPU_FP_ARMV8
 	default "neon-fp-armv8"	if BR2_ARM_FPU_NEON_FP_ARMV8
 	depends on BR2_arm || BR2_armeb
