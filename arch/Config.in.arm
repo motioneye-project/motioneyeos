@@ -6,12 +6,21 @@ config BR2_ARM_CPU_HAS_NEON
 config BR2_ARM_CPU_MAYBE_HAS_NEON
 	bool
 
+# For some cores, the FPU is optional
+config BR2_ARM_CPU_MAYBE_HAS_FPU
+	bool
+
+config BR2_ARM_CPU_HAS_FPU
+	bool
+
 # for some cores, VFPv2 is optional
 config BR2_ARM_CPU_MAYBE_HAS_VFPV2
 	bool
+	select BR2_ARM_CPU_MAYBE_HAS_FPU
 
 config BR2_ARM_CPU_HAS_VFPV2
 	bool
+	select BR2_ARM_CPU_HAS_FPU
 
 # for some cores, VFPv3 is optional
 config BR2_ARM_CPU_MAYBE_HAS_VFPV3
@@ -450,7 +459,7 @@ config BR2_ARM_ENABLE_NEON
 
 config BR2_ARM_ENABLE_VFP
 	bool "Enable VFP extension support"
-	depends on BR2_ARM_CPU_MAYBE_HAS_VFPV2
+	depends on BR2_ARM_CPU_MAYBE_HAS_FPU
 	select BR2_ARM_CPU_HAS_VFPV4 if BR2_ARM_CPU_MAYBE_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_VFPV3 if BR2_ARM_CPU_MAYBE_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_VFPV2 if BR2_ARM_CPU_MAYBE_HAS_VFPV2
@@ -461,7 +470,7 @@ config BR2_ARM_ENABLE_VFP
 
 choice
 	prompt "Target ABI"
-	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_VFPV2
+	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_FPU
 	default BR2_ARM_EABI
 	depends on BR2_arm || BR2_armeb
 	help
@@ -496,7 +505,7 @@ config BR2_ARM_EABI
 
 config BR2_ARM_EABIHF
 	bool "EABIhf"
-	depends on BR2_ARM_CPU_HAS_VFPV2
+	depends on BR2_ARM_CPU_HAS_FPU
 	help
 	  The EABIhf is an extension of EABI which supports the 'hard'
 	  floating point model. This model uses the floating point
@@ -520,7 +529,7 @@ choice
 	default BR2_ARM_FPU_VFPV4D16 if BR2_ARM_CPU_HAS_VFPV4
 	default BR2_ARM_FPU_VFPV3D16 if BR2_ARM_CPU_HAS_VFPV3
 	default BR2_ARM_FPU_VFPV2 if BR2_ARM_CPU_HAS_VFPV2
-	default BR2_ARM_SOFT_FLOAT if !BR2_ARM_CPU_HAS_VFPV2
+	default BR2_ARM_SOFT_FLOAT if !BR2_ARM_CPU_HAS_FPU
 
 config BR2_ARM_SOFT_FLOAT
 	bool "Soft float"
