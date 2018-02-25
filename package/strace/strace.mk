@@ -18,6 +18,14 @@ else
 STRACE_CONF_OPTS += --without-libunwind
 endif
 
+# Demangling symbols in stack trace needs libunwind and libiberty.
+ifeq ($(BR2_PACKAGE_BINUTILS)$(BR2_PACKAGE_LIBUNWIND),yy)
+STRACE_DEPENDENCIES += binutils
+STRACE_CONF_OPTS += --with-libiberty=check
+else
+STRACE_CONF_OPTS += --without-libiberty
+endif
+
 define STRACE_REMOVE_STRACE_GRAPH
 	rm -f $(TARGET_DIR)/usr/bin/strace-graph
 endef
