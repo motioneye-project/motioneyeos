@@ -188,7 +188,7 @@ class BuildrootPackage():
                 'md5_digest': None}]
             # In this case, we can't get the name of the downloaded file
             # from the pypi api, so we need to find it, this should work
-            urlpath = urllib2.urlparse.urlparse(
+            urlpath = six.moves.urllib.parse.urlparse(
                 self.metadata['info']['download_url']).path
             # urlparse().path give something like
             # /path/to/file-version.tar.gz
