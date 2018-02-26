@@ -436,7 +436,7 @@ class BuildrootPackage():
             for license_file in license_files:
                 with open(license_file) as lic_file:
                     match = liclookup.match(lic_file.read())
-                if match.confidence >= 90.0:
+                if match is not None and match.confidence >= 90.0:
                     license_names.append(match.license.id)
 
             if len(license_names) > 0:
