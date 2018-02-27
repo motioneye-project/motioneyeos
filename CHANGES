@@ -1,3 +1,27 @@
+2018.02-rc3, Released February 27th, 2018
+
+	Fixes all over the tree.
+
+	check-bin-arch: skip /lib/modules to allow 32-bit userland
+	with 64bit kernel.
+
+	dependencies: Blacklist tar 1.30+ and build our own host-tar
+	if needed as tar 1.30+ changed the --numeric-owner output for
+	long path names. Build host-tar before other host-dependencies
+	as they need it to extract their source tarballs.
+
+	Update/fixed packages: asterisk, azmq, bluez5_utils, domoticz,
+	e2fsprogs, erlang, exim, glibc, gpsd, jq, libglib2, libvorbis,
+	mariadb, mbedtls, mesa3d, mesa3d-headers, mpv, patch, pcre2,
+	php, qt5, qt5multimedia, qt5wayland, qt5webengine, qt5webkit,
+	systemd, quagga, rustc, uboot, wireguard, zic, zlib-ng
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10726: Current libglib2.mk creates broken libglib2 binary...
+	#10786: Linux fails to build unless make linux-menuconfig...
+	#10796: Cannot generate cpio image without selecting CON...
+
 2018.02-rc2, Released February 15th, 2018
 
 	Fixes all over the tree.
