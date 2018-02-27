@@ -93,11 +93,11 @@ endef
 
 ifeq ($(BR2_PACKAGE_BIND_SERVER),y)
 define BIND_INSTALL_INIT_SYSV
-	$(INSTALL) -m 0755 -D package/bind/S81named \
+	$(INSTALL) -m 0755 -D $(BIND_PKGDIR)/S81named \
 		$(TARGET_DIR)/etc/init.d/S81named
 endef
 define BIND_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/bind/named.service \
+	$(INSTALL) -D -m 644 $(BIND_PKGDIR)/named.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/named.service
 
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
