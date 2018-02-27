@@ -30,13 +30,28 @@ fi
 # containing hard-links if the --strip-components option is used).
 major_min=1
 minor_min=17
-if [ $major -gt $major_min ]; then
-	echo $tar
-else
-	if [ $major -eq $major_min -a $minor -ge $minor_min ]; then
-		echo $tar
-	else
-		# echo nothing: no suitable tar found
-		exit 1
-	fi
+
+# Maximal version = 1.29 (1.30 changed --numeric-owner output for
+# filenames > 100 characters). This is really a fix for a bug in
+# earlier tar versions regarding deterministic output so it is
+# unlikely to be reverted in later versions.
+major_max=1
+minor_max=29
+
+if [ $major -lt $major_min -o $major -gt $major_max ]; then
+	# echo nothing: no suitable tar found
+	exit 1
 fi
+
+if [ $major -eq $major_min -a $minor -lt $minor_min ]; then
+	# echo nothing: no suitable tar found
+	exit 1
+fi
+
+if [ $major -eq $major_max -a $minor -gt $minor_max ]; then
+	# echo nothing: no suitable tar found
+	exit 1
+fi
+
+# valid
+echo $tar
