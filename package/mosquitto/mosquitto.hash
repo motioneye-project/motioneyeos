@@ -1,5 +1,5 @@
-# From http://www.eclipse.org/downloads/download.php?file=/mosquitto/source/mosquitto-1.4.14.tar.gz
-sha512 dc75a971354f87deeb79f32435acfae9bc561a1a24a75ee4940a35176ff91758071930d2105d8dee2a090e07527dbfaa5692bece67e03cc87e8b4b8b46f846c2  mosquitto-1.4.14.tar.gz
+# Locally calculated after checking gpg signature
+sha256 7d3b3e245a3b4ec94b05678c8199c806359737949f4cfe0bf936184f6ca89a83  mosquitto-1.4.15.tar.gz
 
 # License files
 sha256 cc77e25bafd40637b7084f04086d606f0a200051b61806f97c93405926670bc1  LICENSE.txt
