@@ -1,0 +1,14 @@
+config BR2_PACKAGE_18XX_TI_UTILS
+	bool "18xx-ti-utils"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
+	help
+	  TI Wilink calibration utilities.
+
+	  CONFIG_NL80211_TESTMODE must be enabled in the kernel
+	  configuration for this package to work.
+
+	  http://processors.wiki.ti.com/index.php/WL18xx_TX_Testing
+
+comment "18xx-ti-utils needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
