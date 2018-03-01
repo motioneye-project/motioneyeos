@@ -7,7 +7,7 @@
 EFL_VERSION = 1.20.6
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
-EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+
+EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+, FTL, MIT
 EFL_LICENSE_FILES = \
 	COMPLIANCE \
 	COPYING \
@@ -15,6 +15,7 @@ EFL_LICENSE_FILES = \
 	licenses/COPYING.FTL \
 	licenses/COPYING.GPL \
 	licenses/COPYING.LGPL \
+	licenses/COPYING.NGINX-MIT \
 	licenses/COPYING.SMALL
 
 EFL_INSTALL_STAGING = YES
