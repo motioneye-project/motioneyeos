@@ -35,6 +35,10 @@ define QT5SCXML_INSTALL_TARGET_LIBS
 endef
 endif
 
+define QT5SCXML_INSTALL_TARGET_QMLS
+	cp -dpfr $(STAGING_DIR)/usr/qml/QtScxml/ $(TARGET_DIR)/usr/qml/
+endef
+
 ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
 define QT5SCXML_INSTALL_TARGET_EXAMPLES
 	cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/scxml $(TARGET_DIR)/usr/lib/qt/examples/
@@ -43,6 +47,7 @@ endif
 
 define QT5SCXML_INSTALL_TARGET_CMDS
 	$(QT5SCXML_INSTALL_TARGET_LIBS)
+	$(QT5SCXML_INSTALL_TARGET_QMLS)
 	$(QT5SCXML_INSTALL_TARGET_EXAMPLES)
 endef
 
