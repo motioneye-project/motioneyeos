@@ -207,7 +207,7 @@ class BuildrootPackage():
         else:
             if download.__class__ == urllib2.HTTPError:
                 raise download
-            raise DownloadFailed('Failed to downloas package {pkg}'
+            raise DownloadFailed('Failed to download package {pkg}'
                                  .format(pkg=self.real_name))
         self.filename = self.used_url['filename']
         self.url = self.used_url['url']
