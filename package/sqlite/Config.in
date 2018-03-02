@@ -16,6 +16,13 @@ config BR2_PACKAGE_SQLITE_STAT3
 	  query planner that can help SQLite to choose a better query
 	  plan under certain situations.
 
+config BR2_PACKAGE_SQLITE_ENABLE_COLUMN_METADATA
+	bool "Enable convenient access to meta-data about tables and queries"
+	help
+	  When this option is defined there are some additional APIs
+	  enabled to acces meta-data about tables and queries (see
+	  https://sqlite.org/compile.html).
+
 config BR2_PACKAGE_SQLITE_ENABLE_FTS3
 	bool "Enable version 3 of the full-text search engine"
 	help
