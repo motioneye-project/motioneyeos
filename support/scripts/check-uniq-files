@@ -5,7 +5,7 @@ import csv
 import argparse
 from collections import defaultdict
 
-warn = 'Warning: {} file "{}" is touched by more than one package: {}\n'
+warn = 'Warning: {0} file "{1}" is touched by more than one package: {2}\n'
 
 
 def main():
