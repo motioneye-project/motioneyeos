@@ -1,6 +1,6 @@
 Run the emulation with:
 
-qemu-system-ppc64le -M pseries -nographic \
+qemu-system-ppc64 -M pseries -nographic \
 		-kernel output/images/vmlinux \
 		-initrd output/images/rootfs.ext2
 
