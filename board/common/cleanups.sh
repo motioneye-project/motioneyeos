@@ -191,7 +191,6 @@ rm -f $TARGET/usr/bin/v4l2-compliance
 rm -rf $TARGET/usr/lib/python2.7/site-packages/samba/
 rm -rf $TARGET/usr/lib/python2.7/ensurepip/
 rm -rf $TARGET/usr/lib/python2.7/config/
-rm -rf $TARGET/usr/lib/python2.7/distutils/
 rm -rf $TARGET/usr/lib/python2.7/unittest/
 
 # buildroot default startup scripts
