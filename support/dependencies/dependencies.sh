@@ -301,3 +301,8 @@ if [ -n "$missing_perl_modules" ] ; then
 	echo
 	exit 1
 fi
+
+if ! python -c "import argparse" > /dev/null 2>&1 ; then
+	echo "Your Python installation is not complete enough: argparse module is missing"
+	exit 1
+fi
