@@ -1,8 +1,6 @@
 Run the emulation with:
 
-qemu-system-ppc64 -M pseries -nographic \
-		-kernel output/images/vmlinux \
-		-initrd output/images/rootfs.ext2
+qemu-system-ppc64 -M pseries -nographic -kernel output/images/vmlinux -initrd output/images/rootfs.ext2
 
 The login prompt will appear in the terminal window.
 
