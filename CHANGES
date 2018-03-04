@@ -1,3 +1,24 @@
+2018.02, Released March 4th, 2018
+
+	Fixes all over the tree.
+
+	Issues with systemd with a readonly rootfs and DBus fixed.
+
+	Instructure:
+	- check-uniq-files: fix Python 2.6 compatibility.
+	- dependencies.sh: check for external argparse module for
+	  Python 2.6.
+	- Add infrastructure to detect and use a UTF-8 locale on the
+	  host, needed by systemd.
+
+	Update/fixed packages: clamav, dash, dhcp, dovecot, efl,
+	ffmpeg, libv4l, mono, mosquitto, php, postgresql, qt,
+	scanpypi, sdl2, systemd, tor, tvheadend, uboot, wavpack
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10831: qemu_x86_64_defconfig build fails on linux-headers..
+
 2018.02-rc3, Released February 27th, 2018
 
 	Fixes all over the tree.
