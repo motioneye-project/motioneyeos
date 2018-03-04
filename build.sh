@@ -1,7 +1,12 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <board|all> [mkimage|mkrelease|make_targets...]"
+    echo "Usage: $0 <board|all> [mkimage|mkrelease|clean-target|make-targets...]"
+    echo "    mkimage - creates the OS image (.img)"
+    echo "    mkrelease - creates the compressed OS image (.img.gz, .img.xz)"
+    echo "    clean-target - removes the target dir, preserving the package build dirs"
+    echo ""
+    echo "    for other make targets, see the BuildRoot manual"
     exit 1
 fi
 
@@ -44,6 +49,7 @@ fi
 
 if [ "$target" == "mkimage" ]; then
     $boarddir/mkimage.sh
+
 elif [ "$target" == "mkrelease" ]; then
     $boarddir/mkimage.sh
     cp $outputdir/images/$osname-$board.img $basedir
@@ -54,8 +60,23 @@ elif [ "$target" == "mkrelease" ]; then
     rm -f $basedir/$osname-$board-$osversion.img.gz
     $gzip $basedir/$osname-$board-$osversion.img
     echo "your gz image is ready at $basedir/$osname-$board-$osversion.img.gz"
+
+elif [ "$target" == "clean-target" ]; then
+    if [ -d $outputdir/build ]; then
+        echo "removing .stamp_target_installed files"
+        find $outputdir/build -name .stamp_target_installed | xargs -r rm
+    fi
+
+    if [ -d $outputdir/target ]; then
+        echo "removing target directory"
+        rm -rf $outputdir/target
+    fi
+
+    echo "target is clean"
+
 elif [ -n "$target" ]; then
     make O=$outputdir $target
+
 else
     make O=$outputdir all
     echo "build successful"
