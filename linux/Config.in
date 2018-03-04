@@ -420,6 +420,19 @@ config BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL
 	  such as "scripts/extract-cert.c:21:25: fatal error:
 	  openssl/bio.h: No such file or directory".
 
+config BR2_LINUX_KERNEL_NEEDS_HOST_LIBELF
+	bool "Needs host libelf"
+	help
+	  Some Linux kernel configuration options (such as
+	  CONFIG_UNWINDER_ORC) require building a host program that
+	  needs libelf. Enabling this option will ensure host-elfutils
+	  (which provides libelf) gets built before the Linux kernel.
+
+	  Enable this option if you get a Linux kernel build failure
+	  such as "Cannot generate ORC metadata for
+	  CONFIG_UNWINDER_ORC=y, please install libelf-dev,
+	  libelf-devel or elfutils-libelf-devel".
+
 # Linux extensions
 source "linux/Config.ext.in"
 
