@@ -200,7 +200,7 @@ if grep ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG > /dev/null; then
 		echo "You need locale support on your build machine to build a toolchain supporting locales"
 		exit 1 ;
 	fi
-	if ! locale -a | grep -q -i utf8$ ; then
+	if ! locale -a | grep -q -i -E 'utf-?8$' ; then
 		echo
 		echo "You need at least one UTF8 locale to build a toolchain supporting locales"
 		exit 1 ;
