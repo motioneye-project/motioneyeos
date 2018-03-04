@@ -62,14 +62,23 @@ elif [ "$target" == "mkrelease" ]; then
     echo "your gz image is ready at $basedir/$osname-$board-$osversion.img.gz"
 
 elif [ "$target" == "clean-target" ]; then
+    if [ -d $outputdir/target ]; then
+        echo "removing target directory"
+        rm -rf $outputdir/target/*
+
+        echo "removing staging directory"
+        rm -rf $outputdir/staging/*
+    fi
+
     if [ -d $outputdir/build ]; then
         echo "removing .stamp_target_installed files"
         find $outputdir/build -name .stamp_target_installed | xargs -r rm
-    fi
 
-    if [ -d $outputdir/target ]; then
-        echo "removing target directory"
-        rm -rf $outputdir/target
+        echo "removing .stamp_staging_installed files"
+        find $outputdir/build -name .stamp_staging_installed | xargs -r rm
+
+        echo "removing .stamp_host_installed files"
+        find $outputdir/build -name .stamp_host_installed | xargs -r rm
     fi
 
     echo "target is clean"
