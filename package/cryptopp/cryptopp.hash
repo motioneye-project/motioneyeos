@@ -1,2 +1,5 @@
-# Locally computed
-sha256  a75ef486fe3128008bbb201efee3dcdcffbe791120952910883b26337ec32c34  cryptopp565.zip
+# Hash from: https://www.cryptopp.com/release610.html:
+sha256  21289d2511101a9350c87c8eb1f4982d4a266e8037b19dab79a32cc13ea108c7  cryptopp610.zip
+
+# Hash for license file:
+sha256  fe5f5f187e6e38ac2f833956fc5c4cab2df08797cff07f540e4ee74f12f7ee5b  License.txt
