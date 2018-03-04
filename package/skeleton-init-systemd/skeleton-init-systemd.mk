@@ -40,7 +40,10 @@ endef
 define SKELETON_INIT_SYSTEMD_PRE_ROOTFS_VAR
 	rm -f $(TARGET_DIR)/var
 	mkdir $(TARGET_DIR)/var
-	for i in $(TARGET_DIR)/usr/share/factory/var/*; do \
+	for i in $(TARGET_DIR)/usr/share/factory/var/* \
+		 $(TARGET_DIR)/usr/share/factory/var/lib/* \
+		 $(TARGET_DIR)/usr/share/factory/var/lib/systemd/*; do \
+		[ -e "$${i}" ] || continue; \
 		j="$${i#$(TARGET_DIR)/usr/share/factory}"; \
 		if [ -L "$${i}" ]; then \
 			printf "L+! %s - - - - %s\n" \
