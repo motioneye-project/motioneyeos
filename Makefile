@@ -363,6 +363,22 @@ ifneq ($(firstword $(HOSTCC_VERSION)),4)
 HOSTCC_VERSION := $(firstword $(HOSTCC_VERSION))
 endif
 
+ifeq ($(BR2_NEEDS_HOST_UTF8_LOCALE),y)
+# First, we try to use the user's configured locale (as that's the
+# language they'd expect messages to be displayed), then we favour
+# a non language-specific locale like C.UTF-8 if one is available,
+# so we sort with the C locale to get it at the top.
+# This is guaranteed to not be empty, because of the check in
+# support/dependencies/dependencies.sh
+HOST_UTF8_LOCALE := $(shell \
+			( echo $${LC_ALL:-$${LC_MESSAGES:-$${LANG}}}; \
+			  locale -a 2>/dev/null | LC_ALL=C sort \
+			) \
+			| grep -i -E 'utf-?8$$' \
+			| head -n 1)
+HOST_UTF8_LOCALE_ENV := LC_ALL=$(HOST_UTF8_LOCALE)
+endif
+
 # Make sure pkg-config doesn't look outside the buildroot tree
 HOST_PKG_CONFIG_PATH := $(PKG_CONFIG_PATH)
 unexport PKG_CONFIG_PATH
