@@ -427,6 +427,7 @@ F:	package/aufs-util/
 F:	package/batman-adv/
 F:	package/docker-containerd/
 F:	package/docker-engine/
+F:	package/docker-proxy/
 F:	package/mosh/
 F:	package/rtl8821au/
 F:	package/runc/
