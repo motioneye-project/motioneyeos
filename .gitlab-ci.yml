@@ -111,8 +111,6 @@ engicam_imx6qdl_icore_qt5_defconfig: *defconfig
 engicam_imx6qdl_icore_rqs_defconfig: *defconfig
 engicam_imx6ul_geam_defconfig: *defconfig
 engicam_imx6ul_isiot_defconfig: *defconfig
-firefly_rk3288_defconfig: *defconfig
-firefly_rk3288_demo_defconfig: *defconfig
 freescale_imx28evk_defconfig: *defconfig
 freescale_imx31_3stack_defconfig: *defconfig
 freescale_imx6dlsabreauto_defconfig: *defconfig
