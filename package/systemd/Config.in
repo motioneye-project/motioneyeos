@@ -191,6 +191,7 @@ config BR2_PACKAGE_SYSTEMD_MACHINED
 
 config BR2_PACKAGE_SYSTEMD_MYHOSTNAME
 	bool "enable myhostname NSS plugin"
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # needs nss.h
 	default y
 	help
 	  nss-myhostname is a plug-in module for the GNU Name Service
@@ -246,6 +247,7 @@ config BR2_PACKAGE_SYSTEMD_RANDOMSEED
 
 config BR2_PACKAGE_SYSTEMD_RESOLVED
 	bool "enable resolve daemon"
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # needs nss.h
 	default y
 	help
 	  systemd-resolved is a system service that provides network
@@ -279,6 +281,7 @@ config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
 
 config BR2_PACKAGE_SYSTEMD_SYSUSERS
 	bool "enable sysusers support"
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC # needs gshadow.h
 	help
 	  systemd-sysusers creates system users and groups, based on
 	  the file format and location specified in sysusers.d(5).

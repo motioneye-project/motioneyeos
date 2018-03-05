@@ -4,4 +4,4 @@ config BR2_PACKAGE_LIBURIPARSER
 	  uriparser is a strictly RFC 3986 compliant URI parsing and
 	  handling library written in C.
 
-	  http://uriparser.sourceforge.net
+	  https://uriparser.github.io

@@ -9,7 +9,7 @@ AUTOFS_SOURCE = autofs-$(AUTOFS_VERSION).tar.xz
 AUTOFS_SITE = $(BR2_KERNEL_MIRROR)/linux/daemons/autofs/v5
 AUTOFS_LICENSE = GPL-2.0+
 AUTOFS_LICENSE_FILES = COPYING COPYRIGHT
-AUTOFS_DEPENDENCIES = host-flex host-bison
+AUTOFS_DEPENDENCIES = host-flex host-bison host-pkgconf
 
 # autofs looks on the build machine for the path of modprobe, so tell
 # it explicitly where it will be located on the target.
@@ -30,5 +30,12 @@ AUTOFS_CONF_OPTS = \
 	--with-hesiod=no
 
 AUTOFS_MAKE_ENV = DONTSTRIP=1
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+AUTOFS_CONF_OPTS += --with-libtirpc
+AUTOFS_DEPENDENCIES += libtirpc
+else
+AUTOFS_CONF_OPTS += --without-libtirpc
+endif
 
 $(eval $(autotools-package))

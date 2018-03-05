@@ -1,0 +1,3 @@
+# Currently mainline kernel exhibits issues when running rockchip gmac
+# on the board, so enable it as loadable module and insert it later
+CONFIG_DWMAC_ROCKCHIP=m

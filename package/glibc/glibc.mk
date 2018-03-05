@@ -10,7 +10,7 @@ GLIBC_SITE = $(call github,foss-for-synopsys-dwc-arc-processors,glibc,$(GLIBC_VE
 else
 # Generate version string using:
 #   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master
-GLIBC_VERSION = glibc-2.26-146-gd300041c533a3d837c9f37a099bcc95466860e98
+GLIBC_VERSION = glibc-2.27
 # Upstream doesn't officially provide an https download link.
 # There is one (https://sourceware.org/git/glibc.git) but it's not reliable,
 # sometimes the connection times out. So use an unofficial github mirror.
@@ -20,17 +20,15 @@ GLIBC_VERSION = glibc-2.26-146-gd300041c533a3d837c9f37a099bcc95466860e98
 GLIBC_SITE = $(call github,bminor,glibc,$(GLIBC_VERSION))
 endif
 
-GLIBC_SRC_SUBDIR = .
-
 GLIBC_LICENSE = GPL-2.0+ (programs), LGPL-2.1+, BSD-3-Clause, MIT (library)
-GLIBC_LICENSE_FILES = $(addprefix $(GLIBC_SRC_SUBDIR)/,COPYING COPYING.LIB LICENSES)
+GLIBC_LICENSE_FILES = COPYING COPYING.LIB LICENSES
 
 # glibc is part of the toolchain so disable the toolchain dependency
 GLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 
 # Before glibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
-GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-gawk
+GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-bison host-gawk
 
 GLIBC_SUBDIR = build
 
@@ -86,7 +84,7 @@ define GLIBC_CONFIGURE_CMDS
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="-O2 $(GLIBC_EXTRA_CFLAGS)" CPPFLAGS="" \
 		CXXFLAGS="-O2 $(GLIBC_EXTRA_CFLAGS)" \
-		$(SHELL) $(@D)/$(GLIBC_SRC_SUBDIR)/configure \
+		$(SHELL) $(@D)/configure \
 		ac_cv_path_BASH_SHELL=/bin/bash \
 		libc_cv_forced_unwind=yes \
 		libc_cv_ssp=no \

@@ -48,6 +48,17 @@ SYSTEMD_CONF_OPTS += \
 	-Dmount-path=/usr/bin/mount \
 	-Dumount-path=/usr/bin/umount
 
+# disable unsupported features for non-glibc toolchains
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+SYSTEMD_CONF_OPTS += \
+	-Didn=true \
+	-Dnss-systemd=true
+else
+SYSTEMD_CONF_OPTS += \
+	-Didn=false \
+	-Dnss-systemd=false
+endif
+
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_DEPENDENCIES += acl
 SYSTEMD_CONF_OPTS += -Dacl=true

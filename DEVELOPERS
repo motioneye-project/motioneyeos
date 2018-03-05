@@ -51,7 +51,9 @@ F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/nginx-naxsi/
 F:	package/policycoreutils/
+F:	package/python-flask-sqlalchemy/
 F:	package/python-mutagen/
+F:	package/python-sqlalchemy/
 F:	package/restorecond/
 F:	package/refpolicy/
 F:	package/selinux-python/
@@ -203,6 +205,7 @@ F:	package/pulseview/
 F:	package/sigrok-cli/
 
 N:	Baruch Siach <baruch@tkos.co.il>
+F:	package/18xx-ti-utils/
 F:	package/daemon/
 F:	package/dropbear/
 F:	package/ebtables/
@@ -728,6 +731,10 @@ F:	package/ocrad/
 F:	package/tesseract-ocr/
 F:	package/webp/
 
+N:	Giulio Benetti <giulio.benetti@micronovasrl.com>
+F:	package/sunxi-mali-mainline/
+F:	package/sunxi-mali-mainline-driver/
+
 N:	Gregory Dymarek <gregd72002@gmail.com>
 F:	package/ding-libs/
 F:	package/gengetopt/
@@ -782,8 +789,12 @@ N:	Ismael Luceno <ismael@iodev.co.uk>
 F:	package/axel/
 
 N:	Jagan Teki <jagan@amarulasolutions.com>
+F:	board/amarula/
+F:	board/asus/
 F:	board/bananapi/
 F:	board/engicam/
+F:	configs/amarula_vyasa_rk3288_defconfig
+F:	configs/asus_tinker_rk3288_defconfig
 F:	board/friendlyarm/nanopi-a64/
 F:	board/friendlyarm/nanopi-neo2/
 F:	board/olimex/a64-olinuxino/
@@ -1686,6 +1697,7 @@ F:	package/dvdrw-tools/
 F:	package/memtest86/
 F:	package/mjpegtools/
 F:	package/tovid/
+F:	package/udftools/
 F:	package/xorriso/
 
 N:	Steve Thomas <scjthm@live.com>

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_FLASK_SQLALCHEMY
+	bool "python-flask-sqlalchemy"
+	select BR2_PACKAGE_PYTHON_FLASK # runtime
+	select BR2_PACKAGE_PYTHON_SQLALCHEMY # runtime
+	help
+	  Flask-SQLAlchemy is a Flask microframework extension which
+	  adds support for the SQLAlchemy SQL toolkit/ORM.
+
+	  http://github.com/mitsuhiko/flask-sqlalchemy

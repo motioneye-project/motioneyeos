@@ -1,0 +1,58 @@
+From ca5562864f3c45557ee96a6fd6036150066c6b58 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Thu, 15 Feb 2018 07:39:52 +0200
+Subject: [PATCH] ss: add local PF_VSOCK/AF_VSOCK definitions
+
+uclibc-ng does not provide these definitions yet. Add them locally to
+fix the build.
+
+Increase AF_MAX to cover AF_VSOCK.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: not upstreamable. uclibc-ng needs to update its Linux
+socket.h.
+---
+ misc/ss.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
+
+diff --git a/misc/ss.c b/misc/ss.c
+index 29a250704c2d..b3f289ae358e 100644
+--- a/misc/ss.c
++++ b/misc/ss.c
+@@ -50,6 +50,14 @@
+ #define BUF_CHUNK (1024 * 1024)
+ #define LEN_ALIGN(x) (((x) + 1) & ~1)
+ 
++#ifndef PF_VSOCK
++#define PF_VSOCK 40
++#endif
++
++#ifndef AF_VSOCK
++#define AF_VSOCK PF_VSOCK
++#endif
++
+ #define DIAG_REQUEST(_req, _r)						    \
+ 	struct {							    \
+ 		struct nlmsghdr nlh;					    \
+@@ -298,7 +306,7 @@ static const struct filter default_dbs[MAX_DB] = {
+ 	},
+ };
+ 
+-static const struct filter default_afs[AF_MAX] = {
++static const struct filter default_afs[AF_MAX+1] = {
+ 	[AF_INET] = {
+ 		.dbs    = INET_DBM,
+ 		.states = SS_CONN,
+@@ -383,7 +391,7 @@ static void filter_merge_defaults(struct filter *f)
+ 		if (!(default_dbs[db].families & f->families))
+ 			f->families |= default_dbs[db].families;
+ 	}
+-	for (af = 0; af < AF_MAX; af++) {
++	for (af = 0; af < AF_MAX+1; af++) {
+ 		if (!(f->families & FAMILY_MASK(af)))
+ 			continue;
+ 
+-- 
+2.15.1
+

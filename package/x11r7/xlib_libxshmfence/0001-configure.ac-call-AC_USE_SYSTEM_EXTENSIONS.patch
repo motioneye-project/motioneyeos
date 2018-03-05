@@ -1,0 +1,31 @@
+From 0b550a4e7acf02d3478602848f6afbfcbfb0d4b2 Mon Sep 17 00:00:00 2001
+From: Ross Burton <ross.burton@intel.com>
+Date: Mon, 29 Jan 2018 16:24:36 +0000
+Subject: [PATCH] configure.ac: call AC_USE_SYSTEM_EXTENSIONS
+
+With glibc 2.27 memfd_create() is inside a _GNU_SOURCE guard, so call
+AC_USE_SYSTEM_EXTENSIONS to get this defined.
+
+Signed-off-by: Ross Burton <ross.burton@intel.com>
+Upstream: https://cgit.freedesktop.org/xorg/lib/libxshmfence/commit/?id=0b550a4e7acf02d3478602848f6afbfcbfb0d4b2
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index 55772d0..ed77e6d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -28,6 +28,8 @@ AC_INIT([libxshmfence], [1.2],
+ AC_CONFIG_SRCDIR([Makefile.am])
+ AC_CONFIG_HEADERS([config.h])
+ 
++AC_USE_SYSTEM_EXTENSIONS
++
+ # Initialize Automake
+ AM_INIT_AUTOMAKE([foreign dist-bzip2])
+ 
+-- 
+2.14.3
+

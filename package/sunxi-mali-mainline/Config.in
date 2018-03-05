@@ -1,0 +1,40 @@
+config BR2_PACKAGE_SUNXI_MALI_MAINLINE
+	bool "sunxi-mali-mainline"
+	depends on BR2_arm
+	depends on BR2_ARM_EABIHF
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_HAS_LIBEGL
+	select BR2_PACKAGE_HAS_LIBGLES
+	help
+	  Install userspace Allwinner OpenGL libraries.
+
+	  https://github.com/free-electrons/mali-blobs
+
+if BR2_PACKAGE_SUNXI_MALI_MAINLINE
+
+config BR2_PACKAGE_PROVIDES_LIBEGL
+	default "sunxi-mali-mainline"
+
+config BR2_PACKAGE_PROVIDES_LIBGLES
+	default "sunxi-mali-mainline"
+
+choice
+	prompt "Version"
+	default BR2_PACKAGE_SUNXI_MALI_MAINLINE_R6P2
+	help
+	  Select the version of the userspace module.
+
+config BR2_PACKAGE_SUNXI_MALI_MAINLINE_R6P2
+	bool "r6p2"
+
+endchoice
+
+config BR2_PACKAGE_SUNXI_MALI_MAINLINE_REVISION
+	string
+	default "r6p2"	if BR2_PACKAGE_SUNXI_MALI_MAINLINE_R6P2
+
+endif
+
+comment "sunxi-mali needs an EABIhf glibc toolchain"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF
