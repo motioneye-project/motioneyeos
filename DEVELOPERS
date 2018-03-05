@@ -74,6 +74,8 @@ F:	package/libqmi/
 F:	package/modem-manager/
 
 N:	Alex Suykov <alex.suykov@gmail.com>
+F:	board/chromebook/snow/
+F:	configs/chromebook_snow_defconfig
 F:	package/vboot-utils/
 
 N:	Alexander Clouter <alex+buildroot@digriz.org.uk>
