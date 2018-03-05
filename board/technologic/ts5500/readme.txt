@@ -13,7 +13,7 @@ and additional sysfs attributes under /sys/devices/platform/).
 
 To build the default configuration you only have to:
 
-    $ make ts5x00_defconfig
+    $ make ts5500_defconfig
     $ make
 
 You will need a Compact Flash card of sufficient size and the first or only
