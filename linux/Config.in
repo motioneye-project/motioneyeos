@@ -284,7 +284,7 @@ endchoice
 choice
 	prompt "Kernel compression format"
 	help
-	  This selection will just ensure that the correct host tools are build.
+	  This selection will just ensure that the correct host tools are built.
 	  The actual compression for the kernel should be selected in the
 	  kernel configuration menu.
 
