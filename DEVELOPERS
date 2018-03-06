@@ -178,6 +178,9 @@ F:	package/python-bottle/
 F:	package/sqlcipher/
 F:	package/stress/
 
+N:	Asaf Kahlon <asafka7@gmail.com>
+F:	package/python-jsonmodels/
+
 N:	Ash Charles <ash.charles@savoirfairelinux.com>
 F:	package/pru-software-support/
 F:	package/ti-cgt-pru/

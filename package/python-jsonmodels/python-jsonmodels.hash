@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/jsonmodels/json, sha256 locally computed
+md5	e42b6c0078e731035ec3f1bf8a6cdc92  jsonmodels-2.3.tar.gz
+sha256	09e9639c85531e0f37991bb23a363494e37a2e89fb480dbc03d9556258f4ea47  jsonmodels-2.3.tar.gz
+sha256	3b1219763eec6924ddd4c4d61dee6a53c5fc9ab62707a9ad763ee363d3050cc5  LICENSE
