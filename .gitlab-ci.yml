@@ -214,7 +214,6 @@ raspberrypi3_64_defconfig: *defconfig
 raspberrypi3_defconfig: *defconfig
 raspberrypi3_qt5we_defconfig: *defconfig
 raspberrypi_defconfig: *defconfig
-riotboard_defconfig: *defconfig
 roseapplepi_defconfig: *defconfig
 s6lx9_microboard_defconfig: *defconfig
 sheevaplug_defconfig: *defconfig
