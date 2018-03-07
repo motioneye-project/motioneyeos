@@ -464,6 +464,8 @@ F:	arch/Config.in.powerpc
 F:	package/kvm-unit-tests
 
 N:	Dagg Stompler <daggs@gmx.com>
+F:	board/hardkernel/odroidc2
+F:	configs/odroidc2_defconfig
 F:	package/libamcodec/
 F:	package/odroid-mali/
 F:	package/odroid-scripts/
