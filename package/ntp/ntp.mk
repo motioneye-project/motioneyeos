@@ -30,9 +30,9 @@ NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
-NTP_CONF_OPTS += --with-locfile=linux
+NTP_CONF_OPTS += --with-hardenfile=linux
 else
-NTP_CONF_OPTS += --with-locfile=default
+NTP_CONF_OPTS += --with-hardenfile=default
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
