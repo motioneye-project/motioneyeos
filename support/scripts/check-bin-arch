@@ -1,18 +1,45 @@
 #!/usr/bin/env bash
 
-while getopts p:l:r:a: OPT ; do
+# List of hardcoded paths that should be ignored, as they may
+# contain binaries for an architecture different from the
+# architecture of the target.
+declare -a IGNORES=(
+	# Skip firmware files, they could be ELF files for other
+	# architectures
+	"/lib/firmware"
+	"/usr/lib/firmware"
+
+	# Skip kernel modules
+	# When building a 32-bit userland on 64-bit architectures, the kernel
+	# and its modules may still be 64-bit. To keep the basic
+	# check-bin-arch logic simple, just skip this directory.
+	"/lib/modules"
+
+	# Skip files in /usr/share, several packages (qemu,
+	# pru-software-support) legitimately install ELF binaries that
+	# are not for the target architecture
+	"/usr/share"
+)
+
+while getopts p:l:r:a:i: OPT ; do
 	case "${OPT}" in
 	p) package="${OPTARG}";;
 	l) pkg_list="${OPTARG}";;
 	r) readelf="${OPTARG}";;
 	a) arch_name="${OPTARG}";;
+	i)
+		# Ensure we do have single '/' as separators,
+		# and that we have a leading and a trailing one.
+		pattern="$(sed -r -e 's:/+:/:g; s:^/*:/:; s:/*$:/:;' <<<"${OPTARG}")"
+		IGNORES+=("${pattern}")
+		;;
 	:) error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
 	\?) error "unknown option '%s'\n" "${OPTARG}";;
 	esac
 done
 
 if test -z "${package}" -o -z "${pkg_list}" -o -z "${readelf}" -o -z "${arch_name}" ; then
-	echo "Usage: $0 -p <pkg> -l <pkg-file-list> -r <readelf> -a <arch name>"
+	echo "Usage: $0 -p <pkg> -l <pkg-file-list> -r <readelf> -a <arch name> [-i PATH ...]"
 	exit 1
 fi
 
@@ -23,26 +50,11 @@ IFS="
 "
 
 while read f; do
-	# Skip firmware files, they could be ELF files for other
-	# architectures
-	if [[ "${f}" =~ ^/(usr/)?lib/firmware/.* ]]; then
-		continue
-	fi
-
-	# Skip kernel modules
-	# When building a 32-bit userland on 64-bit architectures, the kernel
-	# and its modules may still be 64-bit. To keep the basic
-	# check-bin-arch logic simple, just skip this directory.
-	if [[ "${f}" =~ ^/lib/modules/.* ]]; then
-		continue
-	fi
-
-	# Skip files in /usr/share, several packages (qemu,
-	# pru-software-support) legitimately install ELF binaries that
-	# are not for the target architecture
-	if [[ "${f}" =~ ^/usr/share/.* ]]; then
-		continue
-	fi
+	for ignore in "${IGNORES[@]}"; do
+		if [[ "${f}" =~ ^"${ignore}" ]]; then
+			continue 2
+		fi
+	done
 
 	# Skip symlinks. Some symlinks may have absolute paths as
 	# target, pointing to host binaries while we're building.

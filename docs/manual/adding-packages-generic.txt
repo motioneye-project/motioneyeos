@@ -453,6 +453,13 @@ information is (assuming the package name is +libfoo+) :
   FLAT binary format is only 4k bytes. If the application consumes more stack,
   append the required number here.
 
+* +LIBFOO_BIN_ARCH_EXCLUDE+ is a space-separated list of paths (relative
+  to the target directory) to ignore when checking that the package
+  installs correctly cross-compiled binaries. You seldom need to set this
+  variable, unless the package installs binary blobs outside the default
+  locations, `/lib/firmware`, `/usr/lib/firmware`, `/lib/modules`, and
+  `/usr/share`, which are automatically excluded.
+
 The recommended way to define these variables is to use the following
 syntax:
 
