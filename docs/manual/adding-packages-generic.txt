@@ -457,8 +457,8 @@ information is (assuming the package name is +libfoo+) :
   to the target directory) to ignore when checking that the package
   installs correctly cross-compiled binaries. You seldom need to set this
   variable, unless the package installs binary blobs outside the default
-  locations, `/lib/firmware`, `/usr/lib/firmware`, `/lib/modules`, and
-  `/usr/share`, which are automatically excluded.
+  locations, `/lib/firmware`, `/usr/lib/firmware`, `/lib/modules`,
+  `/usr/lib/modules`, and `/usr/share`, which are automatically excluded.
 
 The recommended way to define these variables is to use the following
 syntax:

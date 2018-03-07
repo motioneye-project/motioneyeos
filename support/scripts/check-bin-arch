@@ -14,6 +14,7 @@ declare -a IGNORES=(
 	# and its modules may still be 64-bit. To keep the basic
 	# check-bin-arch logic simple, just skip this directory.
 	"/lib/modules"
+	"/usr/lib/modules"
 
 	# Skip files in /usr/share, several packages (qemu,
 	# pru-software-support) legitimately install ELF binaries that
