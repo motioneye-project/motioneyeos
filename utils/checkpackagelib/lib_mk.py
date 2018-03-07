@@ -123,7 +123,7 @@ class RemoveDefaultPackageSourceVariable(_CheckFunction):
 
 
 class SpaceBeforeBackslash(_CheckFunction):
-    TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH = re.compile(r"^.*(  |\t)\\$")
+    TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH = re.compile(r"^.*(  |\t ?)\\$")
 
     def check_line(self, lineno, text):
         if self.TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH.match(text.rstrip()):
