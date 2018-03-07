@@ -597,6 +597,8 @@ N:	Evan Zelkowitz <evan.zelkowitz@gmail.com>
 F:	package/sdl_gfx/
 
 N:	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
+F:	board/ci20/
+F:	configs/ci20_defconfig
 F:	arch/Config.in.nios2
 F:	package/fio/
 F:	package/iptraf-ng/
