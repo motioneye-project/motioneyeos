@@ -663,6 +663,7 @@ F:	package/libupnp/
 F:	package/libupnp18/
 F:	package/minissdpd/
 F:	package/motion/
+F:	package/ncmpc/
 F:	package/rygel/
 F:	package/safeclib/
 F:	package/tinycbor/
