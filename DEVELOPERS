@@ -476,7 +476,6 @@ F:	package/log4cpp/
 
 N:	Daniel Nyström <daniel.nystrom@timeterminal.se>
 F:	package/e2tools/
-F:	package/fbgrab/
 
 N:	Daniel Price <daniel.price@gmail.com>
 F:	package/nodejs/
@@ -1818,6 +1817,9 @@ F:	toolchain/
 
 N:	Tiago Brusamarello <tiago.brusamarello@datacom.ind.br>
 F:	package/aer-inject/
+
+N:	Timo Ketola <timo.ketola@exertus.fi>
+F:	package/fbgrab/
 
 N:	Tzu-Jung Lee <roylee17@gmail.com>
 F:	package/dropwatch/
