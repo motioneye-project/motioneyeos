@@ -652,6 +652,7 @@ F:	package/gupnp-dlna/
 F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/igd2-for-linux/
+F:	package/libmpdclient/
 F:	package/libupnp/
 F:	package/libupnp18/
 F:	package/minissdpd/
