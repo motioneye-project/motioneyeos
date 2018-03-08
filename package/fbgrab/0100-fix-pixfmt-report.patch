@@ -4,7 +4,9 @@ When fbgrab tells about the framebuffer pixel format, blue and green
 are accidentally swapped in 'length' and 'msb_right' columns. Let's
 order everything as RGB.
 
-Signed-off-by timo.ketola@exertus.fi
+Upstream-Status: Submitted [Gunnar Monell <gmo@linux.nu>]
+
+Signed-off-by: Timo Ketola <timo.ketola@exertus.fi>
 
 diff -u a/fbgrab.c b/fbgrab.c
 --- a/fbgrab.c	2018-03-07 11:42:04.739250433 +0200
