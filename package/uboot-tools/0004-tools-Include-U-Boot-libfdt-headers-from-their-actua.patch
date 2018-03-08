@@ -1,0 +1,33 @@
+From e0d20dc1521e74b82dbd69be53a048847798a90a Mon Sep 17 00:00:00 2001
+From: Paul Kocialkowski <contact@paulk.fr>
+Date: Fri, 2 Mar 2018 23:13:42 +0100
+Subject: [PATCH] tools: Include U-Boot libfdt headers from their actual path
+
+There are no headers for libfdt in lib/libfdt, as they are instead
+located in scripts/dtc/libfdt. Specifying lib/libfdt for headers
+inclusion in host tools results in using the system libfdt headers,
+which is not what we want. Change this to the proper path.
+
+Signed-off-by: Paul Kocialkowski <contact@paulk.fr>
+[Backport from upstream commit e0d20dc1521e74b82dbd69be53a048847798a90a]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+---
+ tools/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/Makefile b/tools/Makefile
+index d3387fad69..f38f68ee47 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -244,7 +244,7 @@ endif # !LOGO_BMP
+ #
+ HOST_EXTRACFLAGS += -include $(srctree)/include/compiler.h \
+ 		$(patsubst -I%,-idirafter%, $(filter -I%, $(UBOOTINCLUDE))) \
+-		-I$(srctree)/lib/libfdt \
++		-I$(srctree)/scripts/dtc/libfdt \
+ 		-I$(srctree)/tools \
+ 		-DUSE_HOSTCC \
+ 		-D__KERNEL_STRICT_NAMES \
+-- 
+2.14.3
+
