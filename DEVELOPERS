@@ -1368,6 +1368,7 @@ F:	package/mosquitto/
 F:	package/python-alsaaudio/
 F:	package/python-enum/
 F:	package/python-enum34/
+F:	package/python-functools32/
 F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
