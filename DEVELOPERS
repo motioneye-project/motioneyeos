@@ -1388,6 +1388,7 @@ F:	package/python-alsaaudio/
 F:	package/python-backports-ssl-match-hostname/
 F:	package/python-cached-property/
 F:	package/python-docker/
+F:	package/python-dockerpty/
 F:	package/python-docker-pycreds/
 F:	package/python-enum/
 F:	package/python-enum34/
