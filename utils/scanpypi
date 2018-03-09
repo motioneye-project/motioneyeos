@@ -554,7 +554,7 @@ class BuildrootPackage():
             hash_line = '{method}\t{digest}  {filename}\n'.format(
                 method='sha256',
                 digest=sha256.hexdigest(),
-                filename=os.path.basename(license_file))
+                filename=license_file.replace(self.tmp_extract, '')[1:])
             lines.append(hash_line)
 
         with open(path_to_hash, 'w') as hash_file:
