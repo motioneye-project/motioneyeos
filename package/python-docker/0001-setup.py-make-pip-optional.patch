@@ -1,0 +1,50 @@
+From 978643b7222db66837d39037f884be01fb9af234 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Fri, 9 Mar 2018 18:40:16 +0100
+Subject: [PATCH] setup.py: make pip optional
+
+pip may not be available on the build host, and it is only used to check if
+docker-py is already installed, so skip the check if pip isn't available.
+
+[Upstream-status: submitted (https://github.com/docker/docker-py/pull/1948)]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ setup.py | 20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 271d94f..c9b91a3 100644
+--- a/setup.py
++++ b/setup.py
+@@ -5,16 +5,20 @@ import codecs
+ import os
+ import sys
+ 
+-import pip
+-
+ from setuptools import setup, find_packages
+ 
+-if 'docker-py' in [x.project_name for x in pip.get_installed_distributions()]:
+-    print(
+-        'ERROR: "docker-py" needs to be uninstalled before installing this'
+-        ' package:\npip uninstall docker-py', file=sys.stderr
+-    )
+-    sys.exit(1)
++try:
++    import pip
++
++    if 'docker-py' in \
++            [x.project_name for x in pip.get_installed_distributions()]:
++        print(
++            'ERROR: "docker-py" needs to be uninstalled before installing this'
++            ' package:\npip uninstall docker-py', file=sys.stderr
++        )
++        sys.exit(1)
++except ImportError:
++    pass
+ 
+ ROOT_DIR = os.path.dirname(__file__)
+ SOURCE_DIR = os.path.join(ROOT_DIR)
+-- 
+2.11.0
+
