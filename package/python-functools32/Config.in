@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_FUNCTOOLS32
+	bool "python-functools32"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Backport of the functools module from Python 3.2.3 for use on 2.7
+	  and PyPy.
+
+	  https://github.com/MiCHiLU/python-functools32

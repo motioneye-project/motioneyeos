@@ -1392,6 +1392,7 @@ F:	package/python-dockerpty/
 F:	package/python-docker-pycreds/
 F:	package/python-enum/
 F:	package/python-enum34/
+F:	package/python-functools32/
 F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
