@@ -1150,6 +1150,8 @@ F:	configs/ts4900_defconfig
 F:	package/ts4900-fpga/
 
 N:	Matt Weber <matthew.weber@rockwellcollins.com>
+F:	board/freescale/p*
+F:	configs/freescale_p*
 F:	package/argp-standalone/
 F:	package/aufs/
 F:	package/aufs-util/
