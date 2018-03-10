@@ -601,6 +601,9 @@ F:	package/spi-tools/
 F:	package/xdotool/
 F:	configs/pc_x86_64_*
 
+N:	Erik Larsson <karl.erik.larsson@gmail.com>
+F:	package/imx-mkimage/
+
 N:	Erik Stromdahl <erik.stromdahl@gmail.com>
 F:	package/mxsldr/
 
