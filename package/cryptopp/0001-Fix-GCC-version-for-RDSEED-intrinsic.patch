@@ -1,0 +1,49 @@
+From 31465400675c75d8ea0556d708a7efbf915bc366 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 10 Mar 2018 12:14:23 +0100
+Subject: [PATCH] Fix GCC version for RDSEED intrinsic
+
+rdseed is only available on gcc 4.8.x, not on gcc 4.7.x
+
+Fixes:
+ - http://autobuild.buildroot.org/results/9ab386124e4a09b50598c6f95ad40b25a83d227e
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ rdrand.cpp | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/rdrand.cpp b/rdrand.cpp
+index 900fcd96..64b12208 100644
+--- a/rdrand.cpp
++++ b/rdrand.cpp
+@@ -74,7 +74,7 @@
+ #  else
+ #    define GCC_RDRAND_ASM_AVAILABLE 1
+ #  endif
+-#  if defined(__RDSEED__) && (CRYPTOPP_GCC_VERSION >= 40700) && !defined(__OPTIMIZE__)
++#  if defined(__RDSEED__) && (CRYPTOPP_GCC_VERSION >= 40800) && !defined(__OPTIMIZE__)
+ #    define ALL_RDSEED_INTRIN_AVAILABLE 1
+ #  else
+ #    define GCC_RDSEED_ASM_AVAILABLE 1
+@@ -291,7 +291,7 @@ inline void RDSEED32(void* output)
+         : "=a" (*reinterpret_cast<word32*>(output))
+         : : "cc"
+     );
+-#elif defined(GCC_RDSEED_ASM_AVAILABLE) && (CRYPTOPP_GCC_VERSION >= 40700)
++#elif defined(GCC_RDSEED_ASM_AVAILABLE) && (CRYPTOPP_GCC_VERSION >= 40800)
+     __asm__ __volatile__
+     (
+         INTEL_NOPREFIX
+@@ -333,7 +333,7 @@ inline void RDSEED64(void* output)
+         : "=a" (*reinterpret_cast<word64*>(output))
+         : : "cc"
+     );
+-#elif defined(GCC_RDSEED_ASM_AVAILABLE) && (CRYPTOPP_GCC_VERSION >= 40700)
++#elif defined(GCC_RDSEED_ASM_AVAILABLE) && (CRYPTOPP_GCC_VERSION >= 40800)
+     __asm__ __volatile__
+     (
+         INTEL_NOPREFIX
+-- 
+2.11.0
+
