@@ -16,6 +16,7 @@ LIBMPDCLIENT_DEPENDENCIES = host-meson
 LIBMPDCLIENT_CONF_OPTS += \
 	--prefix=/usr \
 	--libdir=/usr/lib \
+	--default-library $(if $(BR2_STATIC_LIBS),static,shared) \
 	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
 	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf
 
