@@ -67,15 +67,20 @@ if [ "$target" == "mkimage" ]; then
     $boarddir/mkimage.sh
 
 elif [ "$target" == "mkrelease" ]; then
-    $boarddir/mkimage.sh
-    cp $outputdir/images/$osname-$board.img $basedir
-    mv $basedir/$osname-$board.img  $basedir/$osname-$board-$osversion.img
-    rm -f $basedir/$osname-$board-$osversion.img.xz
-    xz -6ek -T 0 $basedir/$osname-$board-$osversion.img
-    echo "your xz image is ready at $basedir/$osname-$board-$osversion.img.xz"
-    rm -f $basedir/$osname-$board-$osversion.img.gz
-    $gzip $basedir/$osname-$board-$osversion.img
-    echo "your gz image is ready at $basedir/$osname-$board-$osversion.img.gz"
+    test -f $outputdir/images/$osname-$board.img || $boarddir/mkimage.sh
+    cp $outputdir/images/$osname-$board.img $outputdir/images/$osname-$board-$osversion.img
+    
+    echo "preparing compressed xz image"
+    rm -f $outputdir/images/$osname-$board-$osversion.img.xz
+    xz -6ek -T 0 $outputdir/images/$osname-$board-$osversion.img
+    echo "your xz image is ready at $outputdir/images/$osname-$board-$osversion.img.xz"
+    
+    echo "preparing compressed gz image"
+    rm -f $outputdir/images/$osname-$board-$osversion.img.gz
+    $gzip $outputdir/images/$osname-$board-$osversion.img
+    echo "your gz image is ready at $outputdir/images/$osname-$board-$osversion.img.gz"
+    
+    rm -f $outputdir/images/$osname-$board-$osversion.img
 
 elif [ "$target" == "clean-target" ]; then
     if [ -d $outputdir/target ]; then
