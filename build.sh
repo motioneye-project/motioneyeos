@@ -16,12 +16,28 @@ board=$1
 target=${*:2}
 cd $(dirname $0)
 basedir=$(pwd)
-osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
-osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 gzip=$(which pigz || which gzip)
 
+# extra environment from local file
 test -f $basedir/.build-env && source $basedir/.build-env
 
+# OS name
+
+if [ -n "$THINGOS_NAME" ]; then
+    osname=$THINGOS_NAME
+else
+    osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
+fi
+
+# OS version
+if [ -n "$THINGOS_VERSION" ]; then
+    osversion=$THINGOS_VERSION
+else
+    osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
+fi
+
+# when the special "all" keyword is used for board,
+# all boards are processed, in turn
 if [ "$board" == "all" ]; then
     boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
     for b in $boards; do
