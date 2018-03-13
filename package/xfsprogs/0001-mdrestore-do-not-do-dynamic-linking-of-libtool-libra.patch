@@ -11,23 +11,25 @@ ld: attempted static link of dynamic object `/usr/lib/libuuid.so'
 
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 [Sent upstream: https://www.spinics.net/lists/xfs/msg36149.html]
+[baruch: update for v4.15.1]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
  mdrestore/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mdrestore/Makefile b/mdrestore/Makefile
-index 5171306..1b34a0e 100644
+index 136ae716d691..75ff1bad78e9 100644
 --- a/mdrestore/Makefile
 +++ b/mdrestore/Makefile
 @@ -10,7 +10,7 @@ CFILES = xfs_mdrestore.c
  
- LLDLIBS = $(LIBXFS) $(LIBRT) $(LIBPTHREAD) $(LIBUUID)
- LTDEPENDENCIES = $(LIBXFS)
+ LLDLIBS = $(LIBXFS) $(LIBFROG) $(LIBRT) $(LIBPTHREAD) $(LIBUUID)
+ LTDEPENDENCIES = $(LIBXFS) $(LIBFROG)
 -LLDFLAGS = -static
 +LLDFLAGS = -static-libtool-libs
  
  default: depend $(LTCOMMAND)
  
 -- 
-2.7.4
+2.16.1
 
