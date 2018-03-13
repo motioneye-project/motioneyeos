@@ -27,9 +27,18 @@ RUN dpkg --add-architecture i386 && \
         cvs bzr git mercurial subversion wget \
         cpio unzip \
         libncurses5-dev \
-        python-nose2 python-pexpect qemu-system-arm qemu-system-x86 && \
+        python-nose2 python-pexpect qemu-system-arm qemu-system-x86 \
+        python-pip && \
     apt-get -y autoremove && \
     apt-get -y clean
+
+# For check-flake8
+RUN python -m pip install --upgrade pip setuptools wheel && \
+    pip install -q \
+        flake8==3.5.0 \
+        mccabe==0.6.1 \
+        pycodestyle==2.3.1 \
+        pyflakes==1.6.0
 
 # To be able to generate a toolchain with locales, enable one UTF-8 locale
 RUN sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen && \
