@@ -1,4 +1,4 @@
 # md5 from https://pypi.python.org/pypi/docker-compose/json, sha256 locally computed
-md5	bd703d931f159b08ed5fe4fadcb12652  docker-compose-1.20.0rc1.tar.gz
-sha256	ad14f8dda3eb5c999f6195bf88420dafd1aada80535dab3afd3350fe8438e0a3  docker-compose-1.20.0rc1.tar.gz
+md5	0c62ffccfbf22195dc8f168d7ce104b0  docker-compose-1.20.0rc2.tar.gz
+sha256	8f4c7d1d8bef2f137f28332f13187af159ea55ceb58338dfc70cda3800f65d11  docker-compose-1.20.0rc2.tar.gz
 sha256	552a739c3b25792263f731542238b92f6f8d07e9a488eae27e6c4690038a8243  LICENSE
