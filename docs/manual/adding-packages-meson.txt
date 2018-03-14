@@ -35,7 +35,7 @@ package. Let's start with an example:
 18: 	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
 19: 	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf
 20:
-21: FOO_NINJA_OPTS = $(if $(VERBOSE),-v)
+21: FOO_NINJA_OPTS = $(if $(VERBOSE),-v) -j$(PARALLEL_JOBS)
 22:
 23: ifeq ($(BR2_PACKAGE_BAZ),y)
 24: FOO_CONF_OPTS += -Dbaz
