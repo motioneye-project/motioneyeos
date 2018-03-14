@@ -668,6 +668,9 @@ F:	package/safeclib/
 F:	package/tinycbor/
 F:	package/tinydtls/
 
+N:	Falco Hyfing <hyfinglists@gmail.com>
+F:	package/python-pymodbus/
+
 N:	Floris Bos <bos@je-eigen-domein.nl>
 F:	package/ipmitool/
 F:	package/odhcploc/
