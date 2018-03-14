@@ -17,7 +17,7 @@ MPD_MPC_CONF_OPTS += \
 	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
 	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf
 
-MPD_MPC_NINJA_OPTS = $(if $(VERBOSE),-v)
+MPD_MPC_NINJA_OPTS = $(if $(VERBOSE),-v) -j$(PARALLEL_JOBS)
 
 define MPD_MPC_CONFIGURE_CMDS
 	rm -rf $(@D)/build
