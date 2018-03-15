@@ -26,6 +26,9 @@ ENLIGHTENMENT_MESON_OPTS += \
 	-Deldbus-codegen=$(HOST_DIR)/bin/eldbus-codegen \
 	-Dpam=false
 
+# enlightenment.pc and /usr/lib/enlightenment/modules/*.so
+ENLIGHTENMENT_INSTALL_STAGING = YES
+
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 ENLIGHTENMENT_MESON_OPTS += -Dsystemd=true
 ENLIGHTENMENT_DEPENDENCIES += systemd
