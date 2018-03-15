@@ -332,6 +332,9 @@ config BR2_CCACHE_DIR
 	default "$(HOME)/.buildroot-ccache"
 	help
 	  Where ccache should store cached files.
+	  If the Linux shell environment has defined the BR2_CCACHE_DIR
+	  environment variable, then this overrides this configuration
+	  item.
 
 config BR2_CCACHE_INITIAL_SETUP
 	string "Compiler cache initial setup"
