@@ -1,7 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2018-March/002844.html
-md5 24b2c9dc27a6083289bc86023eb3b1fe  xf86-video-amdgpu-18.0.0.tar.bz2
-sha1 360d619de1629913d356c60f1e155553e0e55dbb  xf86-video-amdgpu-18.0.0.tar.bz2
-sha256 e909b9707d2562dfc36d8075a8cbddbc93901aaa8f2522d9a429c3fc5ad66d94  xf86-video-amdgpu-18.0.0.tar.bz2
-sha512 5f9fa173c1b2f90878a9cc961e49abb0ad56db16fd80ec9fe6788fcc90eaa1906f3bff74437cb9afa95b9212ff946e1558736739f27e959a3848e77e4dabbd17  xf86-video-amdgpu-18.0.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002883.html
+md5 d8368d204cb98d4387c8890562db1143  xf86-video-amdgpu-18.0.1.tar.bz2
+sha1 a9c7125eae9870f26afa5167d5683f8d5e1b43c0  xf86-video-amdgpu-18.0.1.tar.bz2
+sha256 7484682ccb403b3ca9e26d1c980572f08cdfa3469e2b2c9a9affc3d51b52691b  xf86-video-amdgpu-18.0.1.tar.bz2
+sha512 eb3b76240d4e5084d68b5063b5b19ad5f5bb1f93ea9929301d9e17a48ddc1cb713b76529cb93d133b3547fe78ae8a4455f6b15f6ddf88c29349f82bb1a0db1c4  xf86-video-amdgpu-18.0.1.tar.bz2
 # Locally computed
 sha256 58847c8e97190c401afa84b3f0b8b147379c876a184e99af2cb51bfd40ac8936  COPYING
