@@ -394,6 +394,9 @@ F:	package/libpam-radius-auth/
 F:	package/libpam-tacplus/
 F:	package/perl-file-util/
 F:	package/util-linux/
+F:	package/tpm2-abrmd/
+F:	package/tpm2-tools/
+F:	package/tpm2-tss/
 
 N:	Carsten Schoenert <c.schoenert@gmail.com>
 F:	package/dvbsnoop/
