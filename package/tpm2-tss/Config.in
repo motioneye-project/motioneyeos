@@ -1,6 +1,5 @@
 config BR2_PACKAGE_TPM2_TSS
 	bool "tpm2-tss"
-	depends on BR2_i386 || BR2_x86_64
 	select BR2_PACKAGE_LIBURIPARSER
 	help
 	  OSS implementation of the Trusted Computing Group's (TCG) TPM2
