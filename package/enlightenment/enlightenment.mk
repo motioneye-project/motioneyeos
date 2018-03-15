@@ -41,6 +41,10 @@ else
 ENLIGHTENMENT_MESON_OPTS += -Dmixer=false
 endif
 
+ifeq ($(BR2_PACKAGE_XKEYBOARD_CONFIG),y)
+ENLIGHTENMENT_DEPENDENCIES += xkeyboard-config
+endif
+
 define ENLIGHTENMENT_CONFIGURE_CMDS
 	rm -rf $(@D)/build
 	mkdir -p $(@D)/build
