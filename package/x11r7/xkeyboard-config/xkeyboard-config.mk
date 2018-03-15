@@ -10,6 +10,9 @@ XKEYBOARD_CONFIG_SITE = http://www.x.org/releases/individual/data/xkeyboard-conf
 XKEYBOARD_CONFIG_LICENSE = MIT
 XKEYBOARD_CONFIG_LICENSE_FILES = COPYING
 
+# xkeyboard-config.pc
+XKEYBOARD_CONFIG_INSTALL_STAGING = YES
+
 XKEYBOARD_CONFIG_CONF_OPTS = --disable-runtime-deps
 XKEYBOARD_CONFIG_DEPENDENCIES = host-gettext host-intltool host-xapp_xkbcomp
 
