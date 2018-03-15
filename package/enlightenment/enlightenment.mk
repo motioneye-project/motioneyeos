@@ -22,10 +22,9 @@ ENLIGHTENMENT_MESON_OPTS += \
 	--buildtype=$(if $(BR2_ENABLE_DEBUG),debug,release) \
 	--cross-file=$(HOST_DIR)/etc/meson/cross-compilation.conf \
 	-Dedje-cc=$(HOST_DIR)/bin/edje_cc \
-	-Deet-eet=$(HOST_DIR)/bin/eet \
-	-Deldbus_codegen=$(HOST_DIR)/bin/eldbus-codegen \
-	-Dpam=false \
-	-Drpath=false
+	-Deet=$(HOST_DIR)/bin/eet \
+	-Deldbus-codegen=$(HOST_DIR)/bin/eldbus-codegen \
+	-Dpam=false
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 ENLIGHTENMENT_MESON_OPTS += -Dsystemd=true
