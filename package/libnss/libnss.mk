@@ -92,4 +92,52 @@ define LIBNSS_INSTALL_TARGET_CMDS
 		$(TARGET_DIR)/usr/lib/pkgconfig/nss.pc
 endef
 
+HOST_LIBNSS_BUILD_VARS = \
+	MOZILLA_CLIENT=1 \
+	NSPR_INCLUDE_DIR=$(HOST_DIR)/include/nspr \
+	NSPR_LIB_DIR=$(HOST_DIR)/lib \
+	BUILD_OPT=1 \
+	NS_USE_GCC=1 \
+	NSS_DISABLE_GTESTS=1 \
+	NSS_USE_SYSTEM_SQLITE=1 \
+	SQLITE_INCLUDE_DIR=$(HOST_DIR)/include \
+	ZLIB_INCLUDE_DIR=$(HOST_DIR)/include \
+	NSS_ENABLE_ECC=1
+
+HOST_LIBNSS_DEPENDENCIES = host-libnspr host-sqlite host-zlib
+
+ifneq ($(filter %64,$(HOSTARCH)),)
+HOST_LIBNSS_BUILD_VARS += USE_64=1
+endif
+
+define HOST_LIBNSS_BUILD_CMDS
+	$(HOST_CONFIGURE_OPTS) $(MAKE1) -C $(@D)/nss coreconf \
+		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
+		DIST=$(@D)/$(LIBNSS_DISTDIR) \
+		CHECKLOC= \
+		$(HOST_LIBNSS_BUILD_VARS)
+	$(HOST_CONFIGURE_OPTS) $(MAKE1) -C $(@D)/nss lib/dbm all \
+		SOURCE_MD_DIR=$(@D)/$(LIBNSS_DISTDIR) \
+		DIST=$(@D)/$(LIBNSS_DISTDIR) \
+		CHECKLOC= \
+		$(HOST_LIBNSS_BUILD_VARS)
+endef
+
+define HOST_LIBNSS_INSTALL_CMDS
+	$(INSTALL) -m 755 -t $(HOST_DIR)/lib/ \
+		$(@D)/$(LIBNSS_DISTDIR)/lib/*.so
+	$(INSTALL) -m 755 -d $(HOST_DIR)/include/nss
+	$(INSTALL) -m 644 -t $(HOST_DIR)/include/nss \
+		$(@D)/$(LIBNSS_DISTDIR)/public/nss/*
+	$(INSTALL) -m 755 -t $(HOST_DIR)/lib/ \
+		$(@D)/$(LIBNSS_DISTDIR)/lib/*.a
+	$(INSTALL) -D -m 0644 $(TOPDIR)/package/libnss/nss.pc.in \
+		$(HOST_DIR)/lib/pkgconfig/nss.pc
+	$(SED) 's/@VERSION@/$(LIBNSS_VERSION)/g;' \
+		$(HOST_DIR)/lib/pkgconfig/nss.pc
+	$(SED) '/^prefix/s,=.*,=$(HOST_DIR),g;' \
+		$(HOST_DIR)/lib/pkgconfig/nss.pc
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
