@@ -1,0 +1,41 @@
+From c05fc32d43b3870b63539c57428e1c52e3e7c3cd Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 16 Mar 2018 07:14:56 +0200
+Subject: [PATCH] workqueue: add missing pthreads header
+
+Fix the following build failure with musl libc:
+
+In file included from read_verify.c:25:0:
+../include/workqueue.h:39:2: error: unknown type name 'pthread_t'
+  pthread_t  *threads;
+  ^~~~~~~~~
+../include/workqueue.h:42:2: error: unknown type name 'pthread_mutex_t'
+  pthread_mutex_t  lock;
+  ^~~~~~~~~~~~~~~
+../include/workqueue.h:43:2: error: unknown type name 'pthread_cond_t'
+  pthread_cond_t  wakeup;
+  ^~~~~~~~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://marc.info/?l=linux-xfs&m=152117771313565&w=2
+
+ include/workqueue.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/workqueue.h b/include/workqueue.h
+index b4b3541701df..edb2f8ac5991 100644
+--- a/include/workqueue.h
++++ b/include/workqueue.h
+@@ -22,6 +22,8 @@
+ #ifndef	_WORKQUEUE_H_
+ #define	_WORKQUEUE_H_
+ 
++#include <pthread.h>
++
+ struct workqueue;
+ 
+ typedef void workqueue_func_t(struct workqueue *wq, uint32_t index, void *arg);
+-- 
+2.16.2
+
