@@ -102,6 +102,11 @@ elif [ "$target" == "clean-target" ]; then
         find $outputdir/build -name .stamp_host_installed | xargs -r rm
     fi
 
+    if [ -f $outputdir/.config ]; then
+        echo "removing .config file"
+        rm -f $outputdir/.config
+    fi
+
     echo "target is clean"
 
 elif [ -n "$target" ]; then
