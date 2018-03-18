@@ -4,28 +4,26 @@
 #
 ################################################################################
 
-PROSODY_VERSION = 0.9.12
+PROSODY_VERSION = 0.10.0
 PROSODY_SITE = https://prosody.im/downloads/source
 PROSODY_LICENSE = MIT
 PROSODY_LICENSE_FILES = COPYING
-PROSODY_DEPENDENCIES = openssl libidn
-
-ifeq ($(BR2_PACKAGE_LUA_5_1),y)
-PROSODY_DEPENDENCIES += lua
-endif
-
-ifeq ($(BR2_PACKAGE_LUAJIT),y)
-PROSODY_DEPENDENCIES += luajit
-endif
+PROSODY_DEPENDENCIES = host-luainterpreter luainterpreter libidn openssl
 
 PROSODY_CONF_OPTS = \
+	--with-lua-bin=$(HOST_DIR)/usr/bin \
 	--with-lua=$(STAGING_DIR)/usr \
+	--lua-version=$(LUAINTERPRETER_ABIVER) \
 	--c-compiler=$(TARGET_CC) \
-	--cflags="$(TARGET_CFLAGS) -fPIC" \
+	--cflags="$(TARGET_CFLAGS) -fPIC -std=c99" \
 	--linker=$(TARGET_CC) \
 	--ldflags="$(TARGET_LDFLAGS) -shared" \
 	--sysconfdir=/etc/prosody \
 	--prefix=/usr
+
+ifeq ($(BR2_PACKAGE_LUAJIT),y)
+PROSODY_CONF_OPTS += --runwith=luajit
+endif
 
 define PROSODY_CONFIGURE_CMDS
 	cd $(@D) && \

@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PROSODY
 	bool "prosody"
-	depends on BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
+	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	select BR2_PACKAGE_LUAEXPAT # runtime
 	select BR2_PACKAGE_LUASEC # runtime
 	select BR2_PACKAGE_LUASOCKET # runtime
@@ -15,4 +15,4 @@ config BR2_PACKAGE_PROSODY
 	  https://prosody.im
 
 comment "prosody needs the lua interpreter"
-	depends on !BR2_PACKAGE_LUA_5_1 && !BR2_PACKAGE_LUAJIT
+	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER
