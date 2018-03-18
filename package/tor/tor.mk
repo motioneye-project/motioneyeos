@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TOR_VERSION = 0.3.1.10
+TOR_VERSION = 0.3.2.10
 TOR_SITE = https://dist.torproject.org
 TOR_LICENSE = BSD-3-Clause
 TOR_LICENSE_FILES = LICENSE
