@@ -56,15 +56,4 @@ endef
 
 PROSODY_POST_INSTALL_TARGET_HOOKS += PROSODY_REMOVE_CERT_GENERATOR
 
-# 1. Enable posix functionality
-# 2. Log to syslog
-# 3. Specify pid file write location
-# 4. Enable virtual host example.com
-define PROSODY_TWEAK_DEFAULT_CONF
-	$(INSTALL) -D package/prosody/prosody.cfg.lua \
-		$(TARGET_DIR)/etc/prosody/prosody.cfg.lua
-endef
-
-PROSODY_POST_INSTALL_TARGET_HOOKS += PROSODY_TWEAK_DEFAULT_CONF
-
 $(eval $(generic-package))

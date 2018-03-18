@@ -1,0 +1,25 @@
+From 267b5d195be0f3a8f00ccf4ccb62e25a9c4e48eb Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sun, 22 Oct 2017 08:44:01 +0200
+Subject: [PATCH] enable syslog
+
+note: the posix module is auto-loaded by default
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+diff --git a/prosody.cfg.lua.dist b/prosody.cfg.lua.dist
+index a0fc6c9e..af3cc0e4 100644
+--- a/prosody.cfg.lua.dist
++++ b/prosody.cfg.lua.dist
+@@ -163,7 +163,7 @@ archive_expires_after = "1w" -- Remove archived messages after 1 week
+ log = {
+ 	info = "prosody.log"; -- Change 'info' to 'debug' for verbose logging
+ 	error = "prosody.err";
+-	-- "*syslog"; -- Uncomment this for logging to syslog
++	"*syslog"; -- Uncomment this for logging to syslog
+ 	-- "*console"; -- Log to the console, useful for debugging with daemonize=false
+ }
+ 
+-- 
+2.11.0
+
