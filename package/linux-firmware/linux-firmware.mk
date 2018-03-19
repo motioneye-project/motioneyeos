@@ -149,7 +149,9 @@ LINUX_FIRMWARE_FILES += ath10k/QCA6174/hw3.0/board.bin \
 			ath10k/QCA6174/hw3.0/board-2.bin \
 			ath10k/QCA6174/hw3.0/firmware-4.bin \
 			ath10k/QCA6174/hw3.0/firmware-6.bin
-LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware \
+				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-4.txt \
+				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-6.txt
 endif
 
 # sd8686 v8
