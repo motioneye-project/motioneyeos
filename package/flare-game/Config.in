@@ -1,0 +1,13 @@
+config BR2_PACKAGE_FLARE_GAME
+	bool "flare-game"
+	depends on BR2_PACKAGE_FLARE_ENGINE
+	help
+	  Flare is an open source, 2D action RPG licensed under the
+	  GPL3 license. Its game play can be likened to the games in
+	  the Diablo series.
+
+	  This package, flare-game, only contains the game data. The
+	  game engine itself is part of a separate package,
+	  flame-engine.
+
+	  http://flarerpg.org
