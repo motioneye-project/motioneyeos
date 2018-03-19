@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-TREMOR_SITE = http://svn.xiph.org/trunk/Tremor
-TREMOR_SITE_METHOD = svn
-TREMOR_VERSION = 19427
+TREMOR_VERSION = 7c30a66346199f3f09017a09567c6c8a3a0eedc8
+TREMOR_SITE = https://git.xiph.org/tremor.git
+TREMOR_SITE_METHOD = git
 TREMOR_LICENSE = BSD-3-Clause
 TREMOR_LICENSE_FILES = COPYING
 
