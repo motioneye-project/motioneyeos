@@ -20,6 +20,10 @@ XFSPROGS_CONF_OPTS = \
 	INSTALL_GROUP=root \
 	--enable-static
 
+ifeq ($(BR2_PACKAGE_LIBUNISTRING),y)
+XFSPROGS_DEPENDENCIES += libunistring
+endif
+
 XFSPROGS_INSTALL_TARGET_OPTS = DIST_ROOT=$(TARGET_DIR) install
 
 $(eval $(autotools-package))
