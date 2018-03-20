@@ -8,6 +8,7 @@ config BR2_PACKAGE_SETOOLS
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_ENUM34 if !BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_NETWORKX # runtime
 	select BR2_PACKAGE_PYTHON_SETUPTOOLS
 	select BR2_PACKAGE_LIBSELINUX
 	help
@@ -16,6 +17,7 @@ config BR2_PACKAGE_SETOOLS
 	   * apol - analyze a SELinux policy. (requires python-qt5)
 	   * sediff - semantic policy difference tool for SELinux.
 	   * sedta - Perform domain transition analyses
+	   * seinfoflow - information flow analysis for SELinux
 	   * sesearch - Search rules (allow, type_transition, etc.)
 
 	  https://github.com/TresysTechnology/setools

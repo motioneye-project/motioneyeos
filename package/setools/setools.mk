@@ -11,7 +11,7 @@ SETOOLS_INSTALL_STAGING = YES
 SETOOLS_LICENSE = GPL-2.0+, LGPL-2.1+
 SETOOLS_LICENSE_FILES = COPYING COPYING.GPL COPYING.LGPL
 SETOOLS_SETUP_TYPE = setuptools
-HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol
+HOST_SETOOLS_DEPENDENCIES = host-libselinux host-libsepol host-python-networkx
 
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
 SETOOLS_PYLIBVER = python$(PYTHON3_VERSION_MAJOR)
@@ -36,14 +36,6 @@ define HOST_SETOOLS_FIX_SETUP
 endef
 HOST_SETOOLS_POST_PATCH_HOOKS += HOST_SETOOLS_FIX_SETUP
 
-# sedta and seinfoflow depend on python-networkx. This package is not
-# available in buildroot.
-define SETOOLS_REMOVE_BROKEN_SCRIPTS
-	$(RM) $(TARGET_DIR)/usr/bin/sedta
-	$(RM) $(TARGET_DIR)/usr/bin/seinfoflow
-endef
-SETOOLS_POST_INSTALL_TARGET_HOOKS += SETOOLS_REMOVE_BROKEN_SCRIPTS
-
 # apol requires pyqt5. However, the setools installation
 # process will install apol even if pyqt5 is missing.
 # Remove these scripts from the target it pyqt5 is not selected.
@@ -55,12 +47,8 @@ endef
 SETOOLS_POST_INSTALL_TARGET_HOOKS += SETOOLS_REMOVE_QT_SCRIPTS
 endif
 
-# sedta and seinfoflow depend on python-networkx. This package is not
-# available in buildroot. pyqt5 is not a host-package, remove apol
-# from the host directory as well.
+# pyqt5 is not a host-package, remove apol from the host directory.
 define HOST_SETOOLS_REMOVE_BROKEN_SCRIPTS
-	$(RM) $(HOST_DIR)/bin/sedta
-	$(RM) $(HOST_DIR)/bin/seinfoflow
 	$(RM) $(HOST_DIR)/bin/apol
 endef
 HOST_SETOOLS_POST_INSTALL_HOOKS += HOST_SETOOLS_REMOVE_BROKEN_SCRIPTS
