@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-February/002163.html
-sha256	ad9dee2847a683841f73518a83014b0accae60e9eff7e96752a0dbc412867b4a	xsm-1.0.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002875.html
+md5 bd32c14f09d58f46084b6a8f20e6e8f1  xsm-1.0.4.tar.bz2
+sha1 dd41234e276fe8b2d0a853879568f73b6d98812a  xsm-1.0.4.tar.bz2
+sha256 9934b6893a4e52cf7435368fc8d425c371b5e32d96e420ead30166eb82d64425  xsm-1.0.4.tar.bz2
+sha512 d4e4da7c309a4eae126d2b58a13684f4dbc06b09f76dde9c89c707375df2843614f3d83bc44f9cd02f239200db3397abd86796dca0dbafc69f60482b0af5a176  xsm-1.0.4.tar.bz2
+# Locally computed
+sha256 27d8cbdcde7a0bd062ce49cdf8c672201452a64e3e6823f09b1beffe2c4b8eff COPYING
