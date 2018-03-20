@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-August/002291.html
-sha256	4382f4fb29b88647e13f3b4bc29263134270747fc159cfc5f7e3af23588c8063	xset-1.2.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002873.html
+md5 70ea7bc7bacf1a124b1692605883f620  xset-1.2.4.tar.bz2
+sha1 41a857f30ff5bb0dfbda1549bb703984344ea228  xset-1.2.4.tar.bz2
+sha256 e4fd95280df52a88e9b0abc1fee11dcf0f34fc24041b9f45a247e52df941c957  xset-1.2.4.tar.bz2
+sha512 f24714c9a82081a09d3054bbad98553de9366992f22eaf3e2bcadbb58fad1d3dad2547fef6fa9898d8a9df064573c29df9d82a5c801fa92248604c95f65dc83d  xset-1.2.4.tar.bz2
+# Locally computed
+sha256 6bfc619b6d37dd0e6ca575edcb3a05194136e04d1d9989b8e14e6f7850587382 COPYING
