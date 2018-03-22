@@ -1,5 +1,9 @@
 config BR2_PACKAGE_TPM2_TOOLS
 	bool "tpm2-tools"
+	depends on BR2_INSTALL_LIBSTDCPP # tpm2-tss
+	depends on BR2_USE_MMU # dbus, libglib
+	depends on BR2_USE_WCHAR # libglib -> gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBGLIB2
@@ -14,3 +18,8 @@ config BR2_PACKAGE_TPM2_TOOLS
 	  implementation.
 
 	  https://github.com/tpm2-software/tpm2-tools
+
+comment "tpm2-tools needs a toolchain w/ C++, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR \
+		|| !BR2_TOOLCHAIN_HAS_THREADS
