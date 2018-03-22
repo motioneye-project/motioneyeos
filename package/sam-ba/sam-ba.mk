@@ -23,10 +23,16 @@ endef
 # then create a symbolic link from $(HOST_DIR)/bin to the
 # application binary, for easier usage.
 
+ifeq ($(HOSTARCH),x86_64)
+SAM_BA_BIN_NAME = sam-ba_64
+else
+SAM_BA_BIN_NAME = sam-ba
+endif
+
 define HOST_SAM_BA_INSTALL_CMDS
 	mkdir -p $(HOST_DIR)/opt/sam-ba/
 	cp -a $(@D)/* $(HOST_DIR)/opt/sam-ba/
-	ln -sf ../../opt/sam-ba/sam-ba $(HOST_DIR)/bin/sam-ba
+	ln -sf ../opt/sam-ba/$(SAM_BA_BIN_NAME) $(HOST_DIR)/bin/sam-ba
 endef
 
 $(eval $(host-generic-package))
