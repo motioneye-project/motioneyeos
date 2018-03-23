@@ -14,7 +14,7 @@ config BR2_TOOLCHAIN_EXTERNAL_URL
 
 config BR2_TOOLCHAIN_EXTERNAL_BIN_PATH
     string "Toolchain bin path"
-    default "/bin"
+    default "bin"
     depends on BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
     help
       Path to where the binaries (e.g. the compiler) can be found,
