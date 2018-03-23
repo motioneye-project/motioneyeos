@@ -20,7 +20,7 @@ index 7f2d4dd..72c02d1 100644
  #include <stdlib.h>
 -#include <uchar.h>
  
- #include <efivar.h>
+ #include <efivar/efivar.h>
  #include "lib.h"
  
 +#ifdef __UCLIBC__
