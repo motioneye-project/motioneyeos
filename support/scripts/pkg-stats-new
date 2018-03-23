@@ -23,6 +23,7 @@ import os
 from collections import defaultdict
 import re
 import subprocess
+import sys
 
 INFRA_RE = re.compile("\$\(eval \$\(([a-z-]*)-package\)\)")
 
@@ -116,11 +117,14 @@ class Package:
             (self.name, self.path, self.has_license, self.has_license_files, self.has_hash, self.patch_count)
 
 
-def get_pkglist():
+def get_pkglist(npackages, package_list):
     """
     Builds the list of Buildroot packages, returning a list of Package
     objects. Only the .name and .path fields of the Package object are
     initialized.
+
+    npackages: limit to N packages
+    package_list: limit to those packages in this list
     """
     WALK_USEFUL_SUBDIRS = ["boot", "linux", "package", "toolchain"]
     WALK_EXCLUDES = ["boot/common.mk",
@@ -143,6 +147,7 @@ def get_pkglist():
                      "toolchain/helpers.mk",
                      "toolchain/toolchain-wrapper.mk"]
     packages = list()
+    count = 0
     for root, dirs, files in os.walk("."):
         rootdir = root.split("/")
         if len(rootdir) < 2:
@@ -154,6 +159,8 @@ def get_pkglist():
                 continue
             # Strip ending ".mk"
             pkgname = f[:-3]
+            if package_list and pkgname not in package_list:
+                continue
             pkgpath = os.path.join(root, f)
             skip = False
             for exclude in WALK_EXCLUDES:
@@ -165,6 +172,9 @@ def get_pkglist():
                 continue
             p = Package(pkgname, pkgpath)
             packages.append(p)
+            count += 1
+            if npackages and count == npackages:
+                return packages
     return packages
 
 
@@ -434,13 +444,24 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', dest='output', action='store', required=True,
                         help='HTML output file')
+    parser.add_argument('-n', dest='npackages', type=int, action='store',
+                        help='Number of packages')
+    parser.add_argument('-p', dest='packages', action='store',
+                        help='List of packages (comma separated)')
     return parser.parse_args()
 
 
 def __main__():
     args = parse_args()
+    if args.npackages and args.packages:
+        print "ERROR: -n and -p are mutually exclusive"
+        sys.exit(1)
+    if args.packages:
+        package_list = args.packages.split(",")
+    else:
+        package_list = None
     print "Build package list ..."
-    packages = get_pkglist()
+    packages = get_pkglist(args.npackages, package_list)
     print "Getting package make info ..."
     package_init_make_info()
     print "Getting package details ..."
