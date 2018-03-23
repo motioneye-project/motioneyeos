@@ -1,0 +1,9 @@
+config BR2_PACKAGE_WOFF2
+	bool "woff2"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_BROTLI
+	help
+	  Reference implementation for the WOFF2 font file format,
+	  typically used for Web fonts
+
+	  https://github.com/google/woff2

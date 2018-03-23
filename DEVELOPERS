@@ -65,6 +65,7 @@ N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/brotli/
 F:	package/libepoxy/
 F:	package/webkitgtk/
+F:	package/woff2/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
 F:	package/glorytun/
