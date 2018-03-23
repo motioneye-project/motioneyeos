@@ -77,9 +77,14 @@ and what package to test:
 $ ./utils/test-pkg -c libcurl.config -p libcurl
 ----
 
-This will try to build your package against all the toolchains used
-by the autobuilders (except for the internal toolchains, because it takes
-too long to do so). The output lists all toolchains and the corresponding
+By default, +test-pkg+ will build your package against a subset of the
+toolchains used by the autobuilders, which has been selected by the
+Buildroot developers as being the most useful and representative
+subset. If you want to test all toolchains, pass the +-a+ option. Note
+that in any case, internal toolchains are excluded as they take too
+long to build.
+
+The output lists all toolchains that are tested and the corresponding
 result (excerpt, results are fake):
 
 ----
