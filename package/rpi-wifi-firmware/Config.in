@@ -1,10 +1,13 @@
 config BR2_PACKAGE_RPI_WIFI_FIRMWARE
 	bool "rpi-wifi-firmware"
 	depends on BR2_arm || BR2_aarch64
-	select BR2_PACKAGE_LINUX_FIRMWARE
-	select BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX # runtime
+	depends on !BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
 	help
 	  Raspberry Pi 3 and Zero W Broadcom BCM43430 wifi module
-	  NVRAM data.
+	  NVRAM data. Raspberry Pi 3 Model B+ Broadcom BCM43455
+	  wifi module NVRAM data.
 
-	  https://github.com/RPi-Distro/firmware-nonfree/
+	  https://github.com/LibreELEC/brcmfmac_sdio-firmware-rpi
+
+comment "rpi-wifi-firmware conflicts with linux-firmware Broadcom BRCM bcm43xx"
+	depends on BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XXX
