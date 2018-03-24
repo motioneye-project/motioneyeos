@@ -47,4 +47,9 @@ endef
 
 HOST_TAR_CONF_OPTS = --without-selinux
 
+# we are built before ccache
+HOST_TAR_CONF_ENV = \
+	CC="$(HOSTCC_NOCCACHE)" \
+	CXX="$(HOSTCXX_NOCCACHE)"
+
 $(eval $(host-autotools-package))
