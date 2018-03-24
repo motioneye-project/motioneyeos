@@ -71,6 +71,11 @@ else
 TOOLCHAIN_EXTERNAL_INSTALL_DIR = $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PATH))
 endif
 
+# if binary path unset (non-custom external toolchains), use "bin"
+ifeq ($(BR2_TOOLCHAIN_EXTERNAL_BIN_PATH),)
+BR2_TOOLCHAIN_EXTERNAL_BIN_PATH = bin
+endif
+
 ifeq ($(TOOLCHAIN_EXTERNAL_INSTALL_DIR),)
 ifneq ($(TOOLCHAIN_EXTERNAL_PREFIX),)
 # if no path set, figure it out from path
