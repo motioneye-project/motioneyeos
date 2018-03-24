@@ -559,8 +559,12 @@ ifeq ($(filter host-tar host-skeleton,$(1)),)
 $(2)_EXTRACT_DEPENDENCIES += $(BR2_TAR_HOST_DEPENDENCY)
 endif
 
-ifeq ($(filter host-tar host-skeleton host-xz,$(1)),)
+ifeq ($(filter host-tar host-skeleton host-xz host-lzip,$(1)),)
 $(2)_EXTRACT_DEPENDENCIES += $(BR2_XZCAT_HOST_DEPENDENCY)
+endif
+
+ifeq ($(filter host-tar host-skeleton host-xz host-lzip,$(1)),)
+$(2)_EXTRACT_DEPENDENCIES += $(BR2_LZIP_HOST_DEPENDENCY)
 endif
 
 # Eliminate duplicates in dependencies

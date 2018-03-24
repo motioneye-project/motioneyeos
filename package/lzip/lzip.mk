@@ -16,7 +16,7 @@ endef
 
 define HOST_LZIP_CONFIGURE_CMDS
 	(cd $(@D); $(HOST_MAKE_ENV) ./configure --prefix=$(HOST_DIR) \
-		$(HOST_CONFIGURE_OPTS) )
+		$(HOST_CONFIGURE_OPTS) CC="$(HOSTCC_NOCCACHE)" CXX="$(HOSTCXX_NOCCACHE)")
 endef
 
 define LZIP_BUILD_CMDS
