@@ -347,6 +347,13 @@ information is (assuming the package name is +libfoo+) :
   a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
 
+* +LIBFOO_EXTRACT_DEPENDENCIES+ lists the dependencies (in terms of
+  package name) that are required for the current target package to be
+  extracted. These dependencies are guaranteed to be compiled and
+  installed before the extract step of the current package
+  starts. This is only used internally by the package infrastructure,
+  and should typically not be used directly by packages.
+
 * +LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current package to be
   patched. These dependencies are guaranteed to be extracted and
