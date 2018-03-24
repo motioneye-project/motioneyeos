@@ -1,2 +1,3 @@
-# From http://www.apache.org/dist/httpd/httpd-2.4.29.tar.bz2.sha256
-sha256 777753a5a25568a2a27428b2214980564bc1c38c1abf9ccc7630b639991f7f00 httpd-2.4.29.tar.bz2
+# From http://archive.apache.org/dist/httpd/httpd-2.4.33.tar.bz2.sha256
+sha256 de02511859b00d17845b9abdd1f975d5ccb5d0b280c567da5bf2ad4b70846f05 httpd-2.4.33.tar.bz2
+sha256 c49c0819a726b70142621715dae3159c47b0349c2bc9db079070f28dadac0229 LICENSE
