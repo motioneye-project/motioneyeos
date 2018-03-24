@@ -30,7 +30,7 @@ For model 2 B:
 
   $ make raspberrypi2_defconfig
 
-For model 3 B:
+For model 3 B and B+:
 
   $ make raspberrypi3_defconfig
 
@@ -56,6 +56,7 @@ After building, you should obtain this tree:
     +-- bcm2708-rpi-b-plus.dtb      [1]
     +-- bcm2709-rpi-2-b.dtb         [1]
     +-- bcm2710-rpi-3-b.dtb         [1]
+    +-- bcm2710-rpi-3-b-plus.dtb    [1]
     +-- boot.vfat
     +-- rootfs.ext4
     +-- rpi-firmware/
