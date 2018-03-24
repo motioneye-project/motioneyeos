@@ -17,19 +17,13 @@ endef
 include support/dependencies/check-host-tar.mk
 -include $(sort $(filter-out %-tar.mk,$(wildcard support/dependencies/check-host-*.mk)))
 
-core-dependencies:
+dependencies:
 	@MAKE="$(MAKE)" DL_TOOLS="$(sort $(DL_TOOLS_DEPENDENCIES))" \
 		$(TOPDIR)/support/dependencies/dependencies.sh
-
-$(DEPENDENCIES_HOST_PREREQ): HOSTCC=$(HOSTCC_NOCCACHE)
-$(DEPENDENCIES_HOST_PREREQ): HOSTCXX=$(HOSTCXX_NOCCACHE)
-$(DEPENDENCIES_HOST_PREREQ): core-dependencies
-
-dependencies: core-dependencies $(DEPENDENCIES_HOST_PREREQ)
 
 ################################################################################
 #
 # Toplevel Makefile options
 #
 ################################################################################
-.PHONY: dependencies core-dependencies
+.PHONY: dependencies

@@ -501,8 +501,6 @@ include package/Makefile.in
 -include $(sort $(wildcard arch/arch.mk.*))
 include support/dependencies/dependencies.mk
 
-PACKAGES += $(DEPENDENCIES_HOST_PREREQ)
-
 include $(sort $(wildcard toolchain/*.mk))
 include $(sort $(wildcard toolchain/*/*.mk))
 
