@@ -9,7 +9,7 @@ This causes redefinition conflicts for link(2) when both standard
 unistd.h and bsd/unistd.h get included.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
-(rebased for version 4.7.3)
+(rebased for versions 4.7.3 & 4.8.0)
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  lib/replace/wscript | 12 ------------
@@ -19,7 +19,7 @@ diff --git a/lib/replace/wscript b/lib/replace/wscript
 index 1dfd902..456be9b 100644
 --- a/lib/replace/wscript
 +++ b/lib/replace/wscript
-@@ -253,19 +253,6 @@
+@@ -296,21 +296,6 @@
  
      strlcpy_in_bsd = False
  
@@ -32,6 +32,8 @@ index 1dfd902..456be9b 100644
 -        conf.CHECK_FUNCS_IN('getpeereid', 'bsd', headers='sys/types.h bsd/unistd.h')
 -    if not conf.CHECK_FUNCS_IN('setproctitle', 'setproctitle', headers='setproctitle.h'):
 -        conf.CHECK_FUNCS_IN('setproctitle', 'bsd', headers='sys/types.h bsd/unistd.h')
+-    if not conf.CHECK_FUNCS('setproctitle_init'):
+-        conf.CHECK_FUNCS_IN('setproctitle_init', 'bsd', headers='sys/types.h bsd/unistd.h')
 -
 -    if not conf.CHECK_FUNCS('closefrom'):
 -        conf.CHECK_FUNCS_IN('closefrom', 'bsd', headers='bsd/unistd.h')
