@@ -17,10 +17,6 @@ endef
 include support/dependencies/check-host-tar.mk
 -include $(sort $(filter-out %-tar.mk,$(wildcard support/dependencies/check-host-*.mk)))
 
-ifeq ($(BR2_CCACHE),y)
-DEPENDENCIES_HOST_PREREQ += host-ccache
-endif
-
 core-dependencies:
 	@MAKE="$(MAKE)" DL_TOOLS="$(sort $(DL_TOOLS_DEPENDENCIES))" \
 		$(TOPDIR)/support/dependencies/dependencies.sh

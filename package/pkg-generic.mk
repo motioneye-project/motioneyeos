@@ -567,6 +567,12 @@ ifeq ($(filter host-tar host-skeleton host-xz host-lzip,$(1)),)
 $(2)_EXTRACT_DEPENDENCIES += $(BR2_LZIP_HOST_DEPENDENCY)
 endif
 
+ifeq ($(BR2_CCACHE),y)
+ifeq ($(filter host-tar host-skeleton host-xz host-lzip host-ccache,$(1)),)
+$(2)_DEPENDENCIES += host-ccache
+endif
+endif
+
 # Eliminate duplicates in dependencies
 $(2)_FINAL_DEPENDENCIES = $$(sort $$($(2)_DEPENDENCIES))
 $(2)_FINAL_EXTRACT_DEPENDENCIES = $$(sort $$($(2)_EXTRACT_DEPENDENCIES))
