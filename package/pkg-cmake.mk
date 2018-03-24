@@ -253,8 +253,8 @@ endif
 # based on the toolchainfile.cmake file's location: $(HOST_DIR)/share/buildroot
 # In all the other variables, HOST_DIR will be replaced by RELOCATED_HOST_DIR,
 # so we have to strip "$(HOST_DIR)/" from the paths that contain it.
-$(HOST_DIR)/share/buildroot/toolchainfile.cmake:
-	@mkdir -p $(@D)
+define TOOLCHAIN_CMAKE_INSTALL_FILES
+	@mkdir -p $(HOST_DIR)/share/buildroot
 	sed \
 		-e 's#@@STAGING_SUBDIR@@#$(call qstrip,$(STAGING_SUBDIR))#' \
 		-e 's#@@TARGET_CFLAGS@@#$(call qstrip,$(TARGET_CFLAGS))#' \
@@ -268,7 +268,9 @@ $(HOST_DIR)/share/buildroot/toolchainfile.cmake:
 		-e 's#@@TOOLCHAIN_HAS_FORTRAN@@#$(if $(BR2_TOOLCHAIN_HAS_FORTRAN),1,0)#' \
 		-e 's#@@CMAKE_BUILD_TYPE@@#$(if $(BR2_ENABLE_DEBUG),Debug,Release)#' \
 		$(TOPDIR)/support/misc/toolchainfile.cmake.in \
-		> $@
+		> $(HOST_DIR)/share/buildroot/toolchainfile.cmake
+	$(Q)$(INSTALL) -D -m 0644 support/misc/Buildroot.cmake \
+		$(HOST_DIR)/share/buildroot/Platform/Buildroot.cmake
+endef
 
-$(HOST_DIR)/share/buildroot/Platform/Buildroot.cmake:
-	$(Q)$(INSTALL) -D -m 0644 support/misc/Buildroot.cmake $(@)
+TOOLCHAIN_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_CMAKE_INSTALL_FILES
