@@ -551,6 +551,10 @@ $(2)_DEPENDENCIES += toolchain
 endif
 endif
 
+ifneq ($(1),host-skeleton)
+$(2)_DEPENDENCIES += host-skeleton
+endif
+
 # Eliminate duplicates in dependencies
 $(2)_FINAL_DEPENDENCIES = $$(sort $$($(2)_DEPENDENCIES))
 $(2)_FINAL_PATCH_DEPENDENCIES = $$(sort $$($(2)_PATCH_DEPENDENCIES))
