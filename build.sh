@@ -88,6 +88,9 @@ elif [ "$target" == "clean-target" ]; then
 
         echo "removing staging directory"
         rm -rf $outputdir/staging/*
+
+        echo "removing images directory"
+        rm -rf $outputdir/images/*
     fi
 
     if [ -d $outputdir/build ]; then
