@@ -1,0 +1,36 @@
+From e15b01a1eb27e31964308892fcaa9c7d4f17f181 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.ind.br>
+Date: Sat, 24 Mar 2018 22:46:46 -0300
+Subject: [PATCH] tpm2_certify: fix "'type' may be used uninitialized" warning
+
+get_key_type does not assign a value to 'type' on error conditions,
+which makes the compiler believe that it will be used uninitialized in
+the LOG_ERR call, in set_scheme. In practice this will never happen
+because set_scheme returns immediately if get_key_type retuns false but
+the compiler does not understand that logic and fails because warnings
+are treated as errors.
+
+Adapted for version 3.0.3 from the change submitted upstream:
+
+  https://github.com/tpm2-software/tpm2-tools/pull/954
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ tools/tpm2_certify.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tools/tpm2_certify.c b/tools/tpm2_certify.c
+index eaac02f..cbc42a9 100644
+--- a/tools/tpm2_certify.c
++++ b/tools/tpm2_certify.c
+@@ -107,6 +107,7 @@ static bool get_key_type(TSS2_SYS_CONTEXT *sapi_context, TPMI_DH_OBJECT object_h
+             &out_public, &name, &qualified_name, &sessions_data_out));
+     if (rval != TPM_RC_SUCCESS) {
+         LOG_ERR("TPM2_ReadPublic failed. Error Code: 0x%x", rval);
++        *type = TPM_ALG_ERROR;
+         return false;
+     }
+ 
+-- 
+2.14.3
+
