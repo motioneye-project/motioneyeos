@@ -1,4 +1,4 @@
-gpu_mem=128
+gpu_mem=256
 
 dtparam=i2c_arm=on
 dtparam=i2s=on
