@@ -115,10 +115,10 @@ elif [ "$target" == "all" ]; then
     make O=$outputdir all
 
 elif [ -n "$target" ]; then
-    $0 $b all
+    make O=$outputdir $target
 
-else
-    make O=$outputdir all
+else  # if [ -z "$target ]
+    $0 $b all
     echo "build successful"
 fi
 
