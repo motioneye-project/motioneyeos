@@ -20,7 +20,7 @@ fi
 if [[ $(id -u) -ne 0 ]]; then echo "please run as root"; exit 1; fi
 
 function msg() {
-    echo ":: $1"
+    echo " * $1"
 }
 
 while getopts "a:d:f:h:i:lm:n:o:p:s:w" o; do
@@ -76,11 +76,24 @@ if ! [ -f $DISK_IMG ]; then
     exit 1
 fi
 
-gunzip=$(which unpigz 2> /dev/null || which gunzip 2> /dev/null)
+gunzip=$(which unpigz 2> /dev/null || which gunzip 2> /dev/null || true)
+unxz=$(which unxz 2> /dev/null || true)
 
 if [[ $DISK_IMG == *.gz ]]; then
-    msg "decompressing the gzipped image"
+    if [ -z "$gunzip" ]; then
+        msg "make sure you have the gzip package installed"
+        exit 1
+    fi
+    msg "decompressing the .gz compressed image"
     $gunzip -c $DISK_IMG > ${DISK_IMG%???}
+    DISK_IMG=${DISK_IMG%???}
+elif [[ $DISK_IMG == *.xz ]]; then
+    if [ -z "$unxz" ]; then
+        msg "make sure you have the xz package installed"
+        exit 1
+    fi
+    msg "decompressing the .xz compressed image"
+    $unxz -T 0 -c $DISK_IMG > ${DISK_IMG%???}
     DISK_IMG=${DISK_IMG%???}
 fi
 

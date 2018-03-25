@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_REDIS
+	bool "python-redis"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Python driver for Redis
+

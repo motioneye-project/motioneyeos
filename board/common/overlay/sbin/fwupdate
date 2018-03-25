@@ -44,7 +44,8 @@ ROOT_INFO_FILE=root_info
 BOOT_READY_FILE=boot_flash_ready
 
 FW_DIR=/data/.fwupdate
-FW_FILE=firmware.img.gz
+FW_FILE_GZ=firmware.img.gz
+FW_FILE_XZ=firmware.img.xz
 FW_FILE_EXTR=firmware.img
 
 CURL_LOG_FILE=curl.log
@@ -52,6 +53,9 @@ CURL_PID_FILE=curl.pid
 
 GUNZIP_LOG_FILE=gunzip.log
 GUNZIP_PID_FILE=gunzip.pid
+
+XZCAT_LOG_FILE=xzcat.log
+XZCAT_PID_FILE=xzcat.pid
 
 DD_LOG_FILE=dd.log
 DD_PID_FILE=dd.pid
@@ -101,7 +105,7 @@ function show_current() {
 function do_download() {
     echo "downloading..."
 
-    rm -f $FW_DIR/$FW_FILE 
+    rm -f $FW_DIR/$FW_FILE_GZ $FW_DIR/$FW_FILE_XZ
     rm -f $FW_DIR/$FW_FILE_EXTR
     rm -f $FW_DIR/$BOOT_READY_FILE
 
@@ -111,7 +115,7 @@ function do_download() {
     version=$1
 
     if ! [[ "$url" == http* ]]; then  # a version was given
-        url=$(show_versions true | grep "^$1" | cut -d ' ' -f 2)
+        url=$(show_versions true | sed -rn '/^'"$version"' http.*\.img\.[a-z]+$/ {; /.*\.xz$/ {;s/^'"$version"' (.*)/\1/ p;q;}; /.*\.gz$/ {;h;b finish;};}; :finish; $ {;x;s/^'"$version"' (.*)/\1/ p;}')
     else
         version="custom"
     fi
@@ -127,6 +131,12 @@ function do_download() {
         exit 1
     fi
 
+    outfile=$FW_DIR/$FW_FILE_GZ
+    format=$(echo $url | sed -rn 's/.*\.img\.([a-z]+)$/\1/ p')
+    if [ "$format" == "xz" ]; then
+        outfile=$FW_DIR/$FW_FILE_XZ
+    fi
+
     rm -rf $FW_DIR/*
     mkdir -p $FW_DIR
     echo $version > $FW_DIR/$VER_FILE
@@ -136,10 +146,15 @@ function do_download() {
         curl_opts+=" --user $os_firmware_username:$os_firmware_password"
     fi
 
-    curl $curl_opts -o $FW_DIR/$FW_FILE "$url" &> $FW_DIR/$CURL_LOG_FILE &
+    curl $curl_opts -o $outfile "$url" &> $FW_DIR/$CURL_LOG_FILE &
     pid=$!
     echo $pid > $FW_DIR/$CURL_PID_FILE
     wait $pid
+    
+    if [ "$?" != 0 ]; then
+        cat $FW_DIR/$CURL_LOG_FILE
+        exit 1
+    fi
 }
 
 function download_status() {
@@ -151,7 +166,7 @@ function download_status() {
         fi
     fi
 
-    if [ -f $FW_DIR/$FW_FILE ]; then
+    if [ -f $FW_DIR/$FW_FILE_GZ -o -f $FW_DIR/$FW_FILE_XZ ]; then
         echo "done"
     fi
 }
@@ -165,23 +180,52 @@ function do_extract() {
     rm -f $FW_DIR/$FW_FILE_EXTR
     rm -f $FW_DIR/$BOOT_READY_FILE
 
-    if ! [ -f $FW_DIR/$FW_FILE ]; then
+    if ! [ -f $FW_DIR/$FW_FILE_GZ -o -f $FW_DIR/$FW_FILE_XZ ]; then
         echo "firmware file not downloaded" 1>&2
         exit 1
     fi
 
-    rm -f $FW_DIR/$FW_FILE_EXTR
+    format="gz"
+    if [ -f $FW_DIR/$FW_FILE_XZ ]; then
+        format="xz"
+    fi
 
-    gunzip -k -c $FW_DIR/$FW_FILE > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$GUNZIP_LOG_FILE &
+    rm -f $FW_DIR/$FW_FILE_EXTR
+    rm -f $FW_DIR/$GUNZIP_PID_FILE $FW_DIR/$XZCAT_PID_FILE
+
+    if [ "$format" == "xz" ]; then
+        DECOMPRESS_LOG_FILE=$FW_DIR/$XZCAT_LOG_FILE
+        DECOMPRESS_PID_FILE=$FW_DIR/$XZCAT_PID_FILE
+        xzcat $FW_DIR/$FW_FILE_XZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$XZCAT_LOG_FILE &
+    elif [ "$format" == "gz" ]; then
+        DECOMPRESS_LOG_FILE=$FW_DIR/$GUNZIP_LOG_FILE
+        DECOMPRESS_PID_FILE=$FW_DIR/$GUNZIP_PID_FILE
+        gunzip -k -c $FW_DIR/$FW_FILE_GZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$GUNZIP_LOG_FILE &
+    else
+        echo "firmware compression format $format not supported" 1>&2
+        exit 1
+    fi
+    
     pid=$!
-    echo $pid > $FW_DIR/$GUNZIP_PID_FILE
+    echo $pid > $DECOMPRESS_PID_FILE
     wait $pid
+
+    if [ "$?" != 0 ]; then
+        cat $DECOMPRESS_LOG_FILE
+        exit 1
+    fi
 
     # TODO verify hash
 }
 
 function extract_status() {
-    if [ -f $FW_DIR/$GUNZIP_PID_FILE ]; then
+    if [ -f $FW_DIR/$XZCAT_PID_FILE ]; then
+        pid=$(cat $FW_DIR/$XZCAT_PID_FILE)
+        if kill -0 $pid &>/dev/null; then
+            echo "running"
+            return
+        fi
+    elif [ -f $FW_DIR/$GUNZIP_PID_FILE ]; then
         pid=$(cat $FW_DIR/$GUNZIP_PID_FILE)
         if kill -0 $pid &>/dev/null; then
             echo "running"
