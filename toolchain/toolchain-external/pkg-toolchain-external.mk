@@ -71,10 +71,10 @@ else
 TOOLCHAIN_EXTERNAL_INSTALL_DIR = $(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_PATH))
 endif
 
-# if binary path unset (non-custom external toolchains), use "bin"
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_BIN_PATH),)
-BR2_TOOLCHAIN_EXTERNAL_BIN_PATH = bin
-endif
+# If binary path unset (known, supported external toolchains), use "bin".
+TOOLCHAIN_EXTERNAL_REL_BIN_PATH = $(or \
+	$(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_REL_BIN_PATH)), \
+	bin)
 
 ifeq ($(TOOLCHAIN_EXTERNAL_INSTALL_DIR),)
 ifneq ($(TOOLCHAIN_EXTERNAL_PREFIX),)
@@ -82,7 +82,7 @@ ifneq ($(TOOLCHAIN_EXTERNAL_PREFIX),)
 TOOLCHAIN_EXTERNAL_BIN := $(dir $(shell which $(TOOLCHAIN_EXTERNAL_PREFIX)-gcc))
 endif
 else
-TOOLCHAIN_EXTERNAL_BIN := $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)/$(call qstrip,$(BR2_TOOLCHAIN_EXTERNAL_BIN_PATH))
+TOOLCHAIN_EXTERNAL_BIN := $(TOOLCHAIN_EXTERNAL_INSTALL_DIR)/$(TOOLCHAIN_EXTERNAL_REL_BIN_PATH)
 endif
 
 # If this is a buildroot toolchain, it already has a wrapper which we want to
