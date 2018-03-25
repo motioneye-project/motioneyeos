@@ -1,7 +1,4 @@
-# From https://sourceforge.net/projects/strace/files/strace/4.20/
-md5	f2271ab0fac49ebee9cbd7f3469227cb	strace-4.20.tar.xz
-sha1	9cebc754af3434e4027a07745770892f685c0316	strace-4.20.tar.xz
 # Locally calculated after checking signature
-# https://sourceforge.net/projects/strace/files/strace/4.20/strace-4.20.tar.xz.asc
-sha256	5bf3148dd17306a42566f7da17368fdd781afa147db05ea63a4ca2b50f58c523	strace-4.20.tar.xz
+# https://strace.io/files/4.21/strace-4.21.tar.xz.asc
+sha256	5c7688db44073e94c59a5627744e5699454419824cc8166e8bcfd7ec58375c37	strace-4.21.tar.xz
 sha256	ea7ff222f36c9df0aa2924a8f7c7d2aec3ea11e752feba4b15ec79b695b6236a	COPYING
