@@ -81,6 +81,26 @@ mount -o loop $loop_dev $ROOT
 msg "copying root filesystem contents"
 tar -xpsf $ROOT_SRC -C $ROOT
 
+# set internal OS name, prefix and version according to env variables
+if [ -f $ROOT/etc/version ]; then
+    if [ -n "$THINGOS_NAME" ]; then
+        msg "setting OS name to $THINGOS_NAME"
+        sed -ri "s/os_name=\".*\"/os_name=\"$THINGOS_NAME\"/" $ROOT/etc/version
+    fi
+    if [ -n "$THINGOS_SHORT_NAME" ]; then
+        msg "setting OS short name to $THINGOS_SHORT_NAME"
+        sed -ri "s/os_short_name=\".*\"/os_short_name=\"$THINGOS_SHORT_NAME\"/" $ROOT/etc/version
+    fi
+    if [ -n "$THINGOS_PREFIX" ]; then
+        msg "setting OS prefix to $THINGOS_PREFIX"
+        sed -ri "s/os_prefix=\".*\"/os_prefix=\"$THINGOS_PREFIX\"/" $ROOT/etc/version
+    fi
+    if [ -n "$THINGOS_VERSION" ]; then
+        msg "setting OS version to $THINGOS_VERSION"
+        sed -ri "s/os_version=\".*\"/os_version=\"$THINGOS_VERSION\"/" $ROOT/etc/version
+    fi
+fi
+
 msg "unmounting root filesystem"
 umount $ROOT
 
