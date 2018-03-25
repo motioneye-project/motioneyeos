@@ -12,6 +12,15 @@ config BR2_TOOLCHAIN_EXTERNAL_URL
 	help
 	  URL of the custom toolchain tarball to download and install.
 
+config BR2_TOOLCHAIN_EXTERNAL_REL_BIN_PATH
+	string "Toolchain relative binary path"
+	default "bin"
+	depends on BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	help
+	  Path to where the binaries (e.g. the compiler) can be found,
+	  relative to the downloaded toolchain root directory. The
+	  default is "bin" and is correct for most toolchains.
+
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
 	string "Toolchain prefix"
 	default "$(ARCH)-linux"
