@@ -1,0 +1,59 @@
+From 791177de023574223eddf7288eb7c5a0721ac623 Mon Sep 17 00:00:00 2001
+From: Werner Koch <wk@gnupg.org>
+Date: Sun, 18 Mar 2018 17:39:43 +0100
+Subject: [PATCH] core: Fix regression on arm64 due to invalid use of va_list.
+
+* src/logging.c (_gpgrt_log_printhex): Provide a dummy arg instead of
+NULL.
+--
+
+Fix
+Suggested-by: Jakub Wilk <jwilk@jwilk.net>
+
+Signed-off-by: Werner Koch <wk@gnupg.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 791177de023
+
+ src/logging.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/src/logging.c b/src/logging.c
+index 1a4f6203d16d..d01f974e4545 100644
+--- a/src/logging.c
++++ b/src/logging.c
+@@ -1090,9 +1090,10 @@ _gpgrt_log_flush (void)
+ 
+ 
+ /* Print a hexdump of (BUFFER,LENGTH).  With FMT passed as NULL print
+- * just the raw dump, with FMT being an empty string, print a trailing
+- * linefeed, otherwise print an entire debug line with the expanded
+- * FMT followed by a possible wrapped hexdump and a final LF.  */
++ * just the raw dump (in this case ARG_PTR is not used), with FMT
++ * being an empty string, print a trailing linefeed, otherwise print
++ * an entire debug line with the expanded FMT followed by a possible
++ * wrapped hexdump and a final LF.  */
+ void
+ _gpgrt_logv_printhex (const void *buffer, size_t length,
+                       const char *fmt, va_list arg_ptr)
+@@ -1150,7 +1151,16 @@ _gpgrt_log_printhex (const void *buffer, size_t length,
+       va_end (arg_ptr);
+     }
+   else
+-    _gpgrt_logv_printhex (buffer, length, NULL, NULL);
++    {
++      /* va_list is not necessary a pointer and thus we can't use NULL
++       * because that would conflict with platforms using a straight
++       * struct for it (e.g. arm64).  We use a dummy variable instead;
++       * the static is a simple way zero it out so to not get
++       * complains about uninitialized use.  */
++      static va_list dummy_argptr;
++
++      _gpgrt_logv_printhex (buffer, length, NULL, dummy_argptr);
++    }
+ }
+ 
+ 
+-- 
+2.16.2
+
