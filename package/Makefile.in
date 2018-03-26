@@ -128,6 +128,9 @@ endif
 ifeq ($(BR2_OPTIMIZE_S),y)
 TARGET_OPTIMIZATION = -Os
 endif
+ifeq ($(BR2_OPTIMIZE_FAST),y)
+TARGET_OPTIMIZATION = -Ofast
+endif
 ifeq ($(BR2_DEBUG_1),y)
 TARGET_DEBUGGING = -g1
 endif
