@@ -660,6 +660,7 @@ F:	package/gupnp/
 F:	package/gupnp-dlna/
 F:	package/gupnp-tools/
 F:	package/hiredis/
+F:	package/i2pd/
 F:	package/igd2-for-linux/
 F:	package/libcdio-paranoia/
 F:	package/libmpdclient/
