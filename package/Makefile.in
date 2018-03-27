@@ -412,8 +412,16 @@ else
 NLS_OPTS = --disable-nls
 endif
 
+# We need anything that is invalid. Traditionally, we'd have used 'false' (and
+# we did so in the past). However, that breaks libtool for packages that have
+# optional C++ support (e.g. gnutls), because libtool will *require* a *valid*
+# C++ preprocessor as long as CXX is not 'no'.
+# Now, whether we use 'no' or 'false' for CXX as the same side effect: it is an
+# invalid C++ compiler, and thus will cause detection of C++ to fail (which is
+# expected and what we want), while at the same time taming libtool into
+# silence.
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
-TARGET_CONFIGURE_OPTS += CXX=false CXXCPP=cpp
+TARGET_CONFIGURE_OPTS += CXX=no
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
