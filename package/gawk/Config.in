@@ -2,7 +2,6 @@ config BR2_PACKAGE_GAWK
 	bool "gawk"
 	depends on BR2_USE_WCHAR
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_STATIC_LIBS
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
 	  A special-purpose programming language which is data driven
@@ -11,7 +10,7 @@ config BR2_PACKAGE_GAWK
 
 	  http://www.gnu.org/software/gawk/
 
-comment "gawk needs a toolchain w/ wchar, dynamic library"
+comment "gawk needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+	depends on !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
