@@ -16,6 +16,7 @@ http://autobuild.buildroot.net/results/e27/e27a9a95f72dba3076549beb2a2ccfdbea2fc
 
 Patch sent upstream: https://patchwork.freedesktop.org/patch/119961/
 
+[Bernd: rebase on mesa 18.0.0]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 [Romain: rebase on mesa 17.3.1]
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
@@ -41,14 +42,16 @@ diff --git a/src/amd/Makefile.addrlib.am b/src/amd/Makefile.addrlib.am
 index 46689637f9..508edfd0d5 100644
 --- a/src/amd/Makefile.addrlib.am
 +++ b/src/amd/Makefile.addrlib.am
-@@ -30,6 +30,7 @@ addrlib_libamdgpu_addrlib_la_CPPFLAGS = \
+@@ -29,7 +29,8 @@
+ 	-I$(srcdir)/addrlib/inc/chip/gfx9 \
  	-I$(srcdir)/addrlib/inc/chip/r800 \
  	-I$(srcdir)/addrlib/gfx9/chip \
- 	-I$(srcdir)/addrlib/r800/chip \
-+	$(DEFINES) \
- 	-DBRAHMA_BUILD=1
+-	-I$(srcdir)/addrlib/r800/chip
++	-I$(srcdir)/addrlib/r800/chip \
++	$(DEFINES)
  
  addrlib_libamdgpu_addrlib_la_CXXFLAGS = \
+ 	$(VISIBILITY_CXXFLAGS) $(CXX11_CXXFLAGS)
 diff --git a/src/util/u_endian.h b/src/util/u_endian.h
 index 9e09f80181..038a28fac9 100644
 --- a/src/util/u_endian.h
