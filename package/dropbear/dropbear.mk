@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DROPBEAR_VERSION = 2017.75
+DROPBEAR_VERSION = 2018.76
 DROPBEAR_SITE = https://matt.ucc.asn.au/dropbear/releases
 DROPBEAR_SOURCE = dropbear-$(DROPBEAR_VERSION).tar.bz2
 DROPBEAR_LICENSE = MIT, BSD-2-Clause-like, BSD-2-Clause
@@ -23,32 +23,30 @@ DROPBEAR_MAKE = \
 	PROGRAMS="$(DROPBEAR_PROGRAMS)"
 
 ifeq ($(BR2_STATIC_LIBS),y)
-DROPBEAR_MAKE += STATIC=1
+DROPBEAR_CONF_OPTS += --enable-static
 endif
 
-define DROPBEAR_FIX_XAUTH
-	$(SED) 's,^#define XAUTH_COMMAND.*/xauth,#define XAUTH_COMMAND "/usr/bin/xauth,g' $(@D)/options.h
+# Ensure that dropbear doesn't use crypt() when it's not available
+define DROPBEAR_SVR_PASSWORD_AUTH
+	echo '#if !HAVE_CRYPT'                          >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_SVR_PASSWORD_AUTH 0'     >> $(@D)/localoptions.h
+	echo '#endif'                                   >> $(@D)/localoptions.h
 endef
-
-DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_FIX_XAUTH
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_SVR_PASSWORD_AUTH
 
 define DROPBEAR_ENABLE_REVERSE_DNS
-	$(SED) 's:.*\(#define DO_HOST_LOOKUP\).*:\1:' $(@D)/options.h
-endef
-
-define DROPBEAR_BUILD_SMALL
-	$(SED) 's:.*\(#define NO_FAST_EXPTMOD\).*:\1:' $(@D)/options.h
+	echo '#define DO_HOST_LOOKUP 1'                 >> $(@D)/localoptions.h
 endef
 
 define DROPBEAR_BUILD_FEATURED
-	$(SED) 's:^#define DROPBEAR_SMALL_CODE::' $(@D)/options.h
-	$(SED) 's:.*\(#define DROPBEAR_BLOWFISH\).*:\1:' $(@D)/options.h
-	$(SED) 's:.*\(#define DROPBEAR_TWOFISH128\).*:\1:' $(@D)/options.h
-	$(SED) 's:.*\(#define DROPBEAR_TWOFISH256\).*:\1:' $(@D)/options.h
+	echo '#define DROPBEAR_SMALL_CODE 0'            >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_BLOWFISH 1'              >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_TWOFISH128 1'            >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_TWOFISH256 1'            >> $(@D)/localoptions.h
 endef
 
 define DROPBEAR_DISABLE_STANDALONE
-	$(SED) 's:\(#define NON_INETD_MODE\):/*\1 */:' $(@D)/options.h
+	echo '#define NON_INETD_MODE 0'                 >> $(@D)/localoptions.h
 endef
 
 define DROPBEAR_INSTALL_INIT_SYSTEMD
@@ -73,7 +71,6 @@ DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_ENABLE_REVERSE_DNS
 endif
 
 ifeq ($(BR2_PACKAGE_DROPBEAR_SMALL),y)
-DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_SMALL
 DROPBEAR_CONF_OPTS += --disable-zlib
 else
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_FEATURED
