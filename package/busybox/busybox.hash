@@ -1,6 +1,6 @@
-# From https://busybox.net/downloads/busybox-1.28.1.tar.bz2.sign
-md5 928919a21e34d5c5507d872a4fb7b9f4  busybox-1.28.1.tar.bz2
-sha1 932e2a77c3ddaa7f0915ed6fe9232041d261f86b  busybox-1.28.1.tar.bz2
+# From https://busybox.net/downloads/busybox-1.28.2.tar.bz2.sign
+md5 5db059384469827ab19dac69d3fcd092  busybox-1.28.2.tar.bz2
+sha1 5ddba42aa14b875688727f0a3a9973e42fc51c23  busybox-1.28.2.tar.bz2
 # Locally calculated
-sha256 98fe1d3c311156c597cd5cfa7673bb377dc552b6fa20b5d3834579da3b13652e  busybox-1.28.1.tar.bz2
+sha256 b64a94a60877c96838ee60e75765576ecc8756bf3636485117637604acb84b0d  busybox-1.28.2.tar.bz2
 sha256	bbfc9843646d483c334664f651c208b9839626891d8f17604db2146962f43548	LICENSE
