@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BASH_VERSION = 4.4.12
+BASH_VERSION = 4.4.18
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
 # Build after since bash is better than busybox shells
 BASH_DEPENDENCIES = ncurses readline host-bison \
