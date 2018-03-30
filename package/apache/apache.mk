@@ -40,7 +40,6 @@ APACHE_CONF_OPTS = \
 	--without-suexec-bin \
 	--enable-mods-shared=all \
 	--with-mpm=$(APACHE_MPM) \
-	--disable-lua \
 	--disable-luajit
 
 ifeq ($(BR2_PACKAGE_LIBXML2),y)
@@ -55,6 +54,15 @@ else
 APACHE_CONF_OPTS += \
 	--disable-xml2enc \
 	--disable-proxy-html
+endif
+
+ifeq ($(BR2_PACKAGE_LUA),y)
+APACHE_CONF_OPTS += \
+	--enable-lua \
+	--with-lua=$(STAGING_DIR)/usr
+APACHE_DEPENDENCIES += lua
+else
+APACHE_CONF_OPTS += --disable-lua
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
