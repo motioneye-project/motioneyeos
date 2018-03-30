@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DOVECOT_VERSION_MAJOR = 2.2
-DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).35
+DOVECOT_VERSION_MAJOR = 2.3
+DOVECOT_VERSION = $(DOVECOT_VERSION_MAJOR).1
 DOVECOT_SITE = http://www.dovecot.org/releases/$(DOVECOT_VERSION_MAJOR)
 DOVECOT_INSTALL_STAGING = YES
 DOVECOT_LICENSE = LGPL-2.1, MIT, Public Domain, BSD-3-Clause, Unicode-DFS-2015
