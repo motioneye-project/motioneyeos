@@ -404,7 +404,7 @@ def gen_config(args):
                            "savedefconfig"])
 
     return subprocess.call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
-                            "core-dependencies"])
+                            "dependencies"])
 
 
 if __name__ == '__main__':
