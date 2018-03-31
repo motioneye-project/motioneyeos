@@ -105,6 +105,9 @@ elif [ "$target" == "clean-target" ]; then
 
         echo "removing .stamp_images_installed files"
         find $outputdir/build -name .stamp_images_installed | xargs -r rm
+
+        echo "removing linux kernel build dir"
+        make O=$outputdir linux-dirclean
     fi
 
     if [ -f $outputdir/.config ]; then
