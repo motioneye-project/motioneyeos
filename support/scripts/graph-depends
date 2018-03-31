@@ -248,11 +248,14 @@ done_deps = []
 
 # Print the dependency graph of a package
 def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
-                   arrow_dir, depth, max_depth, pkg, colors):
+                   arrow_dir, draw_graph, depth, max_depth, pkg, colors):
     if pkg in done_deps:
         return
     done_deps.append(pkg)
-    print_attrs(outfile, pkg, dict_version.get(pkg), depth, colors)
+    if draw_graph:
+        print_attrs(outfile, pkg, dict_version.get(pkg), depth, colors)
+    elif depth != 0:
+        outfile.write("%s " % pkg)
     if pkg not in dict_deps:
         return
     for p in stop_list:
@@ -276,9 +279,10 @@ def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
                     add = False
                     break
             if add:
-                outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
+                if draw_graph:
+                    outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
                 print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
-                               arrow_dir, depth + 1, max_depth, d, colors)
+                               arrow_dir, draw_graph, depth + 1, max_depth, d, colors)
 
 
 def parse_args():
@@ -314,6 +318,8 @@ def parse_args():
                         help="Draw reverse dependencies")
     parser.add_argument("--quiet", '-q', dest="quiet", action='store_true',
                         help="Quiet")
+    parser.add_argument("--flat-list", '-f', dest="flat_list", action='store_true', default=False,
+                        help="Do not draw graph, just print a flat list")
     return parser.parse_args()
 
 
@@ -358,6 +364,8 @@ def main():
             sys.exit(1)
         get_depends_func = brpkgutil.get_rdepends
         arrow_dir = "back"
+
+    draw_graph = not args.flat_list
 
     # Get the colors: we need exactly three colors,
     # so no need not split more than 4
@@ -406,12 +414,16 @@ def main():
                                           if pkg != "all" and not pkg.startswith("root")])
 
     # Start printing the graph data
-    outfile.write("digraph G {\n")
+    if draw_graph:
+        outfile.write("digraph G {\n")
 
     print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
-                   arrow_dir, 0, args.depth, rootpkg, colors)
+                   arrow_dir, draw_graph, 0, args.depth, rootpkg, colors)
 
-    outfile.write("}\n")
+    if draw_graph:
+        outfile.write("}\n")
+    else:
+        outfile.write("\n")
 
 
 if __name__ == "__main__":
