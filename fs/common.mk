@@ -58,17 +58,20 @@ endef
 .PHONY: rootfs-common
 rootfs-common: $(ROOTFS_COMMON_TAR)
 
+# Emulate being in a filesystem, so that we can have our own TARGET_DIR.
+ROOTFS_COMMON_TARGET_DIR = $(FS_DIR)/target
+
 ROOTFS_COMMON_DEPENDENCIES = \
 	host-fakeroot host-makedevs \
 	$(if $(PACKAGES_USERS)$(ROOTFS_USERS_TABLES),host-mkpasswd)
 
-# When doing the common tarball, we're not really doing a rootfs.
-$(ROOTFS_COMMON_TAR): ROOTFS=
+$(ROOTFS_COMMON_TAR): ROOTFS=COMMON
 $(ROOTFS_COMMON_TAR): FAKEROOT_SCRIPT=$(FS_DIR)/fakeroot.fs
 $(ROOTFS_COMMON_TAR): $(ROOTFS_COMMON_DEPENDENCIES) target-finalize
 	@$(call MESSAGE,"Generating common rootfs tarball")
 	rm -rf $(FS_DIR)
 	mkdir -p $(FS_DIR)
+	rsync -au $(BASE_TARGET_DIR)/ $(TARGET_DIR)
 	echo '#!/bin/sh' > $(FAKEROOT_SCRIPT)
 	echo "set -e" >> $(FAKEROOT_SCRIPT)
 	echo "chown -h -R 0:0 $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
