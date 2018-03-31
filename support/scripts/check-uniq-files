@@ -26,16 +26,23 @@ def main():
         return False
 
     file_to_pkg = defaultdict(list)
-    with open(args.packages_file_list[0], 'r') as pkg_file_list:
-        r = csv.reader(pkg_file_list, delimiter=',')
-        for row in r:
-            pkg = row[0]
-            file = row[1]
+    with open(args.packages_file_list[0], 'rb') as pkg_file_list:
+        for line in pkg_file_list.readlines():
+            pkg, _, file = line.rstrip(b'\n').partition(b',')
             file_to_pkg[file].append(pkg)
 
     for file in file_to_pkg:
         if len(file_to_pkg[file]) > 1:
-            sys.stderr.write(warn.format(args.type, file, file_to_pkg[file]))
+            # If possible, try to decode the binary strings with
+            # the default user's locale
+            try:
+                sys.stderr.write(warn.format(args.type, file.decode(),
+                                             [p.decode() for p in file_to_pkg[file]]))
+            except UnicodeDecodeError:
+                # ... but fallback to just dumping them raw if they
+                # contain non-representable chars
+                sys.stderr.write(warn.format(args.type, file,
+                                             file_to_pkg[file]))
 
 
 if __name__ == "__main__":
