@@ -1399,8 +1399,20 @@ N:	Pedro Aguilar <paguilar@paguilar.org>
 F:	package/libunistring/
 
 N:	Peter Korsgaard <peter@korsgaard.com>
+F:	board/minnowboard/
+F:	board/nexbox/a95x/
+F:	board/openblocks/a6/
 F:	board/orangepi/
+F:	board/pandaboard/
+F:	board/roseapplepi/
+F:	configs/minnowboard_max-graphical_defconfig
+F:	configs/minnowboard_max_defconfig
+F:	configs/nexbox_a95x_defconfig
+F:	configs/openblocks_a6_defconfig
 F:	configs/orangepi_pc_defconfig
+F:	configs/pandaboard_defconfig
+F:	configs/roseapplepi_defconfig
+F:	configs/sheevaplug_defconfig
 F:	package/docker-compose/
 F:	package/dump1090/
 F:	package/flickcurl/
