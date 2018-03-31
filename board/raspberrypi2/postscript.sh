@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 RPI_FW_DIR=$TARGET/../images/rpi-firmware
 
 cp $BOARD_DIR/config.txt $BOOT_DIR
