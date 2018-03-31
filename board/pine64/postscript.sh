@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # boot directory
 mkdir -p $BOOT_DIR/pine64
 

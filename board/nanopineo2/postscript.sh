@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 $HOST_DIR/bin/mkimage -C none -A arm -T script -d $BOARD_DIR/boot.cmd $BOOT_DIR/boot.scr
 $HOST_DIR/bin/mkimage -C none -A arm -T script -d $BOARD_DIR/boot-fwupdater.cmd $BOOT_DIR/boot-fwupdater.scr
 

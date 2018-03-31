@@ -104,6 +104,9 @@ elif [ "$target" == "clean-target" ]; then
 
         echo "removing .stamp_host_installed files"
         find $outputdir/build -name .stamp_host_installed | xargs -r rm
+
+        echo "removing .stamp_images_installed files"
+        find $outputdir/build -name .stamp_images_installed | xargs -r rm
     fi
 
     if [ -f $outputdir/.config ]; then
@@ -120,7 +123,7 @@ elif [ -n "$target" ]; then
     make O=$outputdir $target
 
 else  # if [ -z "$target ]
-    $0 $b all
+    $0 $board all
     echo "build successful"
 fi
 
