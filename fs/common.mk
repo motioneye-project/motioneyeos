@@ -39,6 +39,7 @@ ROOTFS_USERS_TABLES = $(call qstrip,$(BR2_ROOTFS_USERS_TABLES))
 define inner-rootfs
 
 ROOTFS_$(2)_DIR = $$(FS_DIR)/$(1)
+ROOTFS_$(2)_TARGET_DIR = $$(BASE_TARGET_DIR)
 
 # extra deps
 ROOTFS_$(2)_DEPENDENCIES += host-fakeroot host-makedevs \
