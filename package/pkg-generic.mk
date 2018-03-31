@@ -762,8 +762,16 @@ $(1)-show-version:
 $(1)-show-depends:
 			@echo $$($(2)_FINAL_ALL_DEPENDENCIES)
 
+$(1)-show-recursive-depends:
+			@cd "$$(CONFIG_DIR)" && \
+			$$(TOPDIR)/support/scripts/graph-depends -p $(1) -f -q
+
 $(1)-show-rdepends:
 			@echo $$($(2)_RDEPENDENCIES)
+
+$(1)-show-recursive-rdepends:
+			@cd "$$(CONFIG_DIR)" && \
+			$$(TOPDIR)/support/scripts/graph-depends -p $(1) --reverse -f -q
 
 $(1)-show-build-order: $$(patsubst %,%-show-build-order,$$($(2)_FINAL_ALL_DEPENDENCIES))
 	$$(info $(1))
