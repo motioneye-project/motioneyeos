@@ -27,8 +27,6 @@ endif
 define DOCKER_CONTAINERD_CONFIGURE_CMDS
 	mkdir -p $(DOCKER_CONTAINERD_GOPATH)/src/github.com/docker
 	ln -s $(@D) $(DOCKER_CONTAINERD_GOPATH)/src/github.com/docker/containerd
-	mkdir -p $(DOCKER_CONTAINERD_GOPATH)/src/github.com/opencontainers
-	ln -s $(RUNC_SRCDIR) $(DOCKER_CONTAINERD_GOPATH)/src/github.com/opencontainers/runc
 endef
 
 define DOCKER_CONTAINERD_BUILD_CMDS
