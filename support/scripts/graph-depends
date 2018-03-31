@@ -297,9 +297,9 @@ def parse_args():
                         "'host' to stop on host packages.")
     parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
                         help="Like --stop-on, but do not add PACKAGE to the graph.")
-    parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
+    parser.add_argument("--colors", "-c", metavar="COLOR_LIST", dest="colors",
                         default="lightblue,grey,gainsboro",
-                        help="Comma-separated list of the three colours to use" +
+                        help="Comma-separated list of the three colors to use" +
                         " to draw the top-level package, the target" +
                         " packages, and the host packages, in this order." +
                         " Defaults to: 'lightblue,grey,gainsboro'")
@@ -353,12 +353,12 @@ def main():
         get_depends_func = brpkgutil.get_rdepends
         arrow_dir = "back"
 
-    # Get the colours: we need exactly three colours,
+    # Get the colors: we need exactly three colors,
     # so no need not split more than 4
-    # We'll let 'dot' validate the colours...
-    colours = args.colours.split(',', 4)
-    if len(colours) != 3:
-        sys.stderr.write("Error: incorrect colour list '%s'\n" % args.colours)
+    # We'll let 'dot' validate the colors...
+    colors = args.colors.split(',', 4)
+    if len(colors) != 3:
+        sys.stderr.write("Error: incorrect color list '%s'\n" % args.colors)
         sys.exit(1)
 
     # In full mode, start with the result of get_targets() to get the main
@@ -403,7 +403,7 @@ def main():
     outfile.write("digraph G {\n")
 
     print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
-                   arrow_dir, 0, args.depth, rootpkg, colours)
+                   arrow_dir, 0, args.depth, rootpkg, colors)
 
     outfile.write("}\n")
 
