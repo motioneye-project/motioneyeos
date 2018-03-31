@@ -94,8 +94,6 @@ endif
 	$(foreach hook,$(ROOTFS_PRE_CMD_HOOKS),\
 		$(call PRINTF,$($(hook))) >> $(FAKEROOT_SCRIPT)$(sep))
 	$(call PRINTF,$(ROOTFS_COMMON_TAR_CMD)) >> $(FAKEROOT_SCRIPT)
-	$(foreach hook,$(ROOTFS_POST_CMD_HOOKS),\
-		$(call PRINTF,$($(hook))) >> $(FAKEROOT_SCRIPT)$(sep))
 	chmod a+x $(FAKEROOT_SCRIPT)
 	PATH=$(BR_PATH) $(HOST_DIR)/bin/fakeroot -- $(FAKEROOT_SCRIPT)
 
