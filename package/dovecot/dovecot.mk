@@ -57,6 +57,13 @@ else
 DOVECOT_CONF_OPTS += --without-libcap
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSODIUM),y)
+DOVECOT_CONF_OPTS += --with-sodium
+DOVECOT_DEPENDENCIES += libsodium
+else
+DOVECOT_CONF_OPTS += --without-sodium
+endif
+
 ifeq ($(BR2_PACKAGE_DOVECOT_MYSQL),y)
 DOVECOT_CONF_ENV += MYSQL_CONFIG="$(STAGING_DIR)/usr/bin/mysql_config"
 DOVECOT_CONF_OPTS += --with-mysql
