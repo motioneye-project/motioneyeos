@@ -82,6 +82,9 @@ static char *predef_args[] = {
 #ifdef BR_NO_FUSED_MADD
 	"-mno-fused-madd",
 #endif
+#ifdef BR_FP_CONTRACT_OFF
+	"-ffp-contract=off",
+#endif
 #ifdef BR_BINFMT_FLAT
 	"-Wl,-elf2flt",
 #endif
