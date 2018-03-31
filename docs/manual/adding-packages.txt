@@ -38,6 +38,8 @@ include::adding-packages-meson.txt[]
 
 include::adding-packages-cargo.txt[]
 
+include::adding-packages-golang.txt[]
+
 include::adding-packages-kernel-module.txt[]
 
 include::adding-packages-asciidoc.txt[]
