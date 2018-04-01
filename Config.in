@@ -424,8 +424,8 @@ endif
 
 config BR2_STRIP_strip
 	bool "strip target binaries"
-	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	default y
+	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	help
 	  Binaries and libraries in the target filesystem will be
 	  stripped using the normal 'strip' command. This allows to save
@@ -435,16 +435,16 @@ config BR2_STRIP_strip
 
 config BR2_STRIP_EXCLUDE_FILES
 	string "executables that should not be stripped"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of binaries and
 	  libraries here that should not be stripped on the target.
 
 config BR2_STRIP_EXCLUDE_DIRS
 	string "directories that should be skipped when stripping"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of directories that
 	  should be skipped when stripping. Binaries and libraries in
@@ -545,7 +545,6 @@ endchoice
 
 config BR2_GOOGLE_BREAKPAD_ENABLE
 	bool "Enable google-breakpad support"
-	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
@@ -554,6 +553,7 @@ config BR2_GOOGLE_BREAKPAD_ENABLE
 	depends on (BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC)
 	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_HOST_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	help
 	  This option will enable the use of google breakpad, a library
 	  and tool suite that allows you to distribute an application to

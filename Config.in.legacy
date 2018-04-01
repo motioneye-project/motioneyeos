@@ -1970,8 +1970,8 @@ config BR2_PACKAGE_GPU_VIV_BIN_MX6Q
 	  name.
 
 config BR2_PACKAGE_LIBSEMANAGE_PYTHON_BINDINGS
-	depends on BR2_PACKAGE_PYTHON
 	bool "libsemanage python bindings removed"
+	depends on BR2_PACKAGE_PYTHON
 	select BR2_LEGACY
 	help
 	  This option has been removed, since the libsemanage Python
