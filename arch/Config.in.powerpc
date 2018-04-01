@@ -71,12 +71,12 @@ config BR2_powerpc_740
 	depends on !BR2_ARCH_IS_64
 config BR2_powerpc_7400
 	bool "7400"
-	select BR2_POWERPC_CPU_HAS_ALTIVEC
 	depends on !BR2_ARCH_IS_64
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_7450
 	bool "7450"
-	select BR2_POWERPC_CPU_HAS_ALTIVEC
 	depends on !BR2_ARCH_IS_64
+	select BR2_POWERPC_CPU_HAS_ALTIVEC
 config BR2_powerpc_750
 	bool "750"
 	depends on !BR2_ARCH_IS_64

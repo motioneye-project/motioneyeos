@@ -1,7 +1,7 @@
 choice
 	prompt "Target CPU"
-	depends on BR2_arc
 	default BR2_arc770d
+	depends on BR2_arc
 	help
 	    Specific CPU to use
 

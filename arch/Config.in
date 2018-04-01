@@ -376,8 +376,8 @@ endchoice
 # Set up flat binary type
 choice
 	prompt "FLAT Binary type"
-	depends on BR2_BINFMT_FLAT
 	default BR2_BINFMT_FLAT_ONE
+	depends on BR2_BINFMT_FLAT
 
 config BR2_BINFMT_FLAT_ONE
 	bool "One memory region"

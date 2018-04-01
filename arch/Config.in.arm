@@ -456,9 +456,9 @@ config BR2_ARM_ENABLE_VFP
 
 choice
 	prompt "Target ABI"
-	depends on BR2_arm || BR2_armeb
 	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_VFPV2
 	default BR2_ARM_EABI
+	depends on BR2_arm || BR2_armeb
 	help
 	  Application Binary Interface to use. The Application Binary
 	  Interface describes the calling conventions (how arguments
@@ -746,7 +746,6 @@ config BR2_GCC_TARGET_ABI
 	default "lp64"		if BR2_aarch64 || BR2_aarch64_be
 
 config BR2_GCC_TARGET_FPU
-	depends on BR2_arm || BR2_armeb
 	default "vfp"		if BR2_ARM_FPU_VFPV2
 	default "vfpv3"		if BR2_ARM_FPU_VFPV3
 	default "vfpv3-d16"	if BR2_ARM_FPU_VFPV3D16
@@ -756,6 +755,7 @@ config BR2_GCC_TARGET_FPU
 	default "neon-vfpv4"	if BR2_ARM_FPU_NEON_VFPV4
 	default "fp-armv8"	if BR2_ARM_FPU_FP_ARMV8
 	default "neon-fp-armv8"	if BR2_ARM_FPU_NEON_FP_ARMV8
+	depends on BR2_arm || BR2_armeb
 
 config BR2_GCC_TARGET_FLOAT_ABI
 	default "soft"		if BR2_ARM_SOFT_FLOAT
