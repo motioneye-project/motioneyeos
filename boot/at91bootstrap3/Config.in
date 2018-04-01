@@ -4,9 +4,11 @@ config BR2_TARGET_AT91BOOTSTRAP3
 	help
 	  AT91Bootstrap is a first level bootloader for the Atmel AT91
 	  devices. It integrates algorithms for:
-	  - Device initialization such as clock configuration, PIO settings...
+	  - Device initialization such as clock configuration, PIO
+	    settings...
 	  - Peripheral drivers such as PIO, PMC or SDRAMC...
-	  - Physical media algorithm such as DataFlash, NandFlash, NOR Flash...
+	  - Physical media algorithm such as DataFlash, NandFlash, NOR
+	    Flash...
 
 if BR2_TARGET_AT91BOOTSTRAP3
 
@@ -20,8 +22,8 @@ config BR2_TARGET_AT91BOOTSTRAP3_LATEST_VERSION
 config BR2_TARGET_AT91BOOTSTRAP3_CUSTOM_GIT
 	bool "Custom Git repository"
 	help
-	  This option allows Buildroot to get the AT91 Bootstrap 3 source
-	  code from a Git repository.
+	  This option allows Buildroot to get the AT91 Bootstrap 3
+	  source code from a Git repository.
 
 endchoice
 
