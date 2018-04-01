@@ -82,9 +82,7 @@ ifeq ($(BR2_ENABLE_LOCALE),)
 KODI_DEPENDENCIES += libiconv
 endif
 
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-KODI_CONF_OPTS += -DCORE_SYSTEM_NAME=rbpi
-KODI_DEPENDENCIES += rpi-userland
+ifeq ($(BR2_PACKAGE_KODI_PLATFORM_RBPI),y)
 # These CPU-specific options are only used on rbpi:
 # https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L13
 ifeq ($(BR2_arm1176jzf_s)$(BR2_cortex_a7)$(BR2_cortex_a53),y)
@@ -165,6 +163,28 @@ ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 KODI_CXX_FLAGS += -latomic
 endif
 
+ifeq ($(BR2_PACKAGE_KODI_PLATFORM_AML),y)
+KODI_CONF_OPTS += -DENABLE_AML=ON -DENABLE_OPENGLES=ON
+# The following line can be removed when bumping to 18.0-Leia,
+# see upstream PR 13425
+KODI_CXX_FLAGS += -DMESA_EGL_NO_X11_HEADERS
+KODI_DEPENDENCIES += libamcodec odroid-mali
+else
+KODI_CONF_OPTS += -DENABLE_AML=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_PLATFORM_RBPI),y)
+KODI_CONF_OPTS += -DCORE_SYSTEM_NAME=rbpi -DENABLE_OPENGLES=ON
+KODI_DEPENDENCIES += rpi-userland
+else
+# Kodi considers "rpbi" and "linux" as two separate platforms. The
+# below options, defined in
+# project/cmake/scripts/linux/ArchSetup.cmake are only valid for the
+# "linux" platforms. The "rpbi" platform has a different set of
+# options, defined in project/cmake/scripts/rbpi/
+KODI_CONF_OPTS += -DENABLE_LDGOLD=OFF
+endif
+
 ifeq ($(BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL),y)
 KODI_CONF_OPTS += \
 	-DENABLE_OPENGL=ON \
@@ -189,24 +209,6 @@ KODI_LICENSE := $(KODI_LICENSE), unrar
 KODI_LICENSE_FILES += lib/UnrarXLib/license.txt
 else
 KODI_CONF_OPTS += -DENABLE_NONFREE=OFF
-endif
-
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-KODI_CONF_OPTS += -DCORE_SYSTEM_NAME=rbpi
-KODI_DEPENDENCIES += rpi-userland
-else
-# Kodi considers "rpbi" and "linux" as two separate platforms. The
-# below options, defined in
-# project/cmake/scripts/linux/ArchSetup.cmake are only valid for the
-# "linux" platforms. The "rpbi" platform has a different set of
-# options, defined in project/cmake/scripts/rbpi/
-KODI_CONF_OPTS += -DENABLE_LDGOLD=OFF
-ifeq ($(BR2_PACKAGE_LIBAMCODEC),y)
-KODI_CONF_OPTS += -DENABLE_AML=ON
-KODI_DEPENDENCIES += libamcodec
-else
-KODI_CONF_OPTS += -DENABLE_AML=OFF
-endif
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)

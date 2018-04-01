@@ -18,6 +18,22 @@ comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, t
 config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 	bool
 
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
+	bool
+	default y
+	depends on BR2_PACKAGE_LIBAMCODEC
+	depends on BR2_PACKAGE_ODROID_MALI
+	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
+
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
+	bool
+	default y
+	# List of valid CPUs can be found here:
+	# https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L12
+	depends on BR2_arm1176jzf_s || BR2_cortex_a7 || BR2_cortex_a53
+	depends on BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
+
 config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_X11_OPENGL
 	bool
 	default y
@@ -185,6 +201,14 @@ config BR2_PACKAGE_KODI_NONFREE
 choice
 	prompt "platform"
 	default BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
+
+config BR2_PACKAGE_KODI_PLATFORM_AML
+	bool "AMLogic"
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
+
+config BR2_PACKAGE_KODI_PLATFORM_RBPI
+	bool "Raspberry Pi"
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
 
 config BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 	bool "X11/OpenGL"
