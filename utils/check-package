@@ -143,7 +143,7 @@ def __main__():
 
     if flags.intree_only:
         # change all paths received to be relative to the base dir
-        base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        base_dir = os.path.dirname(os.path.dirname(os.path.realpath(__file__)))
         files_to_check = [os.path.relpath(os.path.abspath(f), base_dir) for f in flags.files]
         # move current dir so the script find the files
         os.chdir(base_dir)
