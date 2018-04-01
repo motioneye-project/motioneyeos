@@ -46,7 +46,9 @@ def parse_args():
 
 CONFIG_IN_FILENAME = re.compile("/Config\.\S*$")
 DO_CHECK_INTREE = re.compile("|".join([
+    "arch/",
     "package/",
+    "system/",
     ]))
 DO_NOT_CHECK_INTREE = re.compile("|".join([
     "package/doc-asciidoc\.mk$",
