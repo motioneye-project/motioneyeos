@@ -1,7 +1,6 @@
 ################################################################################
 #
-# Build a kernel with an integrated initial ramdisk
-# filesystem based on cpio.
+# Build a kernel with an integrated initial ramdisk filesystem based on cpio.
 #
 ################################################################################
 
