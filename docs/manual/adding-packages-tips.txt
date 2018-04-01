@@ -32,6 +32,38 @@ using the following rules:
   with `.` and `-` characters substituted with `_` (e.g.:
   +FOO_BAR_BOO_VERSION+).
 
+[[check-package]]
+==== How to check the coding style
+
+Buildroot provides a script in +utils/check-package+ that checks new or
+changed files for coding style. It is not a complete language validator,
+but it catches many common mistakes. It is meant to run in the actual
+files you created or modified, before creating the patch for submission.
+
+This script can be used for packages, filesystem makefiles, Config.in
+files, etc. It does not check the files defining the package
+infrastructures and some other files containing similar common code.
+
+To use it, run the +check-package+ script, by telling which files you
+created or changed:
+
+----
+$ ./utils/check-package package/new-package/*
+----
+
+If you have the +utils+ directory in your path you can also run:
+
+----
+$ cd package/new-package/
+$ check-package *
+----
+
+The tool can also be used for packages in a br2-external:
+
+----
+$ check-package -b /path/to/br2-ext-tree/package/my-package/*
+----
+
 [[testing-package]]
 ==== How to test your package
 
