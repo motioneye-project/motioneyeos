@@ -21,6 +21,7 @@
 #
 # Copyright (C) 2010-2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
+import logging
 import sys
 import subprocess
 import argparse
@@ -39,7 +40,7 @@ allpkgs = []
 # Buildroot PACKAGES and return it formatted as a Python list. This
 # list is used as the starting point for full dependency graphs
 def get_targets():
-    sys.stderr.write("Getting targets\n")
+    logging.info("Getting targets")
     cmd = ["make", "-s", "--no-print-directory", "show-targets"]
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     output = p.communicate()[0].strip()
@@ -192,10 +193,10 @@ def check_circular_deps(deps):
         chain.append(pkg)
         for p in deps[pkg]:
             if p in chain:
-                sys.stderr.write("\nRecursion detected for  : %s\n" % (p))
+                logging.warning("\nRecursion detected for  : %s" % (p))
                 while True:
                     _p = chain.pop()
-                    sys.stderr.write("which is a dependency of: %s\n" % (_p))
+                    logging.warning("which is a dependency of: %s" % (_p))
                     if p == _p:
                         sys.exit(1)
             recurse(p)
@@ -319,11 +320,14 @@ def main():
 
     check_only = args.check_only
 
+    logging.basicConfig(stream=sys.stderr, format='%(message)s',
+                        level=logging.INFO)
+
     if args.outfile is None:
         outfile = sys.stdout
     else:
         if check_only:
-            sys.stderr.write("don't specify outfile and check-only at the same time\n")
+            logging.error("don't specify outfile and check-only at the same time")
             sys.exit(1)
         outfile = open(args.outfile, "w")
 
@@ -348,7 +352,7 @@ def main():
         arrow_dir = "forward"
     else:
         if mode == MODE_FULL:
-            sys.stderr.write("--reverse needs a package\n")
+            logging.error("--reverse needs a package")
             sys.exit(1)
         get_depends_func = brpkgutil.get_rdepends
         arrow_dir = "back"
@@ -358,7 +362,7 @@ def main():
     # We'll let 'dot' validate the colors...
     colors = args.colors.split(',', 4)
     if len(colors) != 3:
-        sys.stderr.write("Error: incorrect color list '%s'\n" % args.colors)
+        logging.error("Error: incorrect color list '%s'" % args.colors)
         sys.exit(1)
 
     # In full mode, start with the result of get_targets() to get the main
