@@ -280,11 +280,6 @@ menu "Audio decoder addons"
 	source "package/kodi-audiodecoder-vgmstream/Config.in"
 endmenu
 
-menu "Audio DSP addons"
-	source "package/kodi-adsp-basic/Config.in"
-	source "package/kodi-adsp-freesurround/Config.in"
-endmenu
-
 menu "Audio encoder addons"
 	source "package/kodi-audioencoder-flac/Config.in"
 	source "package/kodi-audioencoder-lame/Config.in"

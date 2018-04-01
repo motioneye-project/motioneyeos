@@ -143,6 +143,21 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2018.05"
+
+config BR2_PACKAGE_KODI_ADSP_BASIC
+	bool "kodi-adsp-basic package removed"
+	select BR2_LEGACY
+	help
+	  kodi-adsp-basic is unmaintained
+
+config BR2_PACKAGE_KODI_ADSP_FREESURROUND
+	bool "kodi-adsp-freesurround package removed"
+	select BR2_LEGACY
+	help
+	  kodi-adsp-freesurround is unmaintained
+
+###############################################################################
 comment "Legacy options removed in 2018.02"
 
 config BR2_KERNEL_HEADERS_3_4
