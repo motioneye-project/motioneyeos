@@ -44,8 +44,9 @@ def parse_args():
     return parser.parse_args()
 
 
-CONFIG_IN_FILENAME = re.compile("/Config\.\S*$")
+CONFIG_IN_FILENAME = re.compile("Config\.\S*$")
 DO_CHECK_INTREE = re.compile("|".join([
+    "Config.in",
     "arch/",
     "boot/",
     "fs/",
