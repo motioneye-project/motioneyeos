@@ -26,9 +26,8 @@ BR2_TARGET_UBOOT_NEEDS_DTC=y
 
 # Kernel
 BR2_LINUX_KERNEL=y
-BR2_LINUX_KERNEL_CUSTOM_GIT=y
-BR2_LINUX_KERNEL_CUSTOM_REPO_URL="https://github.com/MarvellEmbeddedProcessors/linux-marvell"
-BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION="linux-4.4.52-armada-17.10"
+BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
+BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="$(call github,MarvellEmbeddedProcessors,linux-marvell,linux-4.4.52-armada-17.10)/linux-linux-4.4.52-armada-17.10.tar.gz"
 BR2_LINUX_KERNEL_DEFCONFIG="mvebu_v8_lsp"
 BR2_LINUX_KERNEL_DTS_SUPPORT=y
 BR2_LINUX_KERNEL_INTREE_DTS_NAME="marvell/armada-8040-mcbin"
