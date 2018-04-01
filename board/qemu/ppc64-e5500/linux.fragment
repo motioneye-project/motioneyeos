@@ -1,0 +1,10 @@
+# Enables generic PPC e500 base arch support for QEMU.
+# The e5500 is a variant of the e500 arch.
+CONFIG_PPC_QEMU_E500=y
+
+# Enable virtio (blk, rng and net devices)
+CONFIG_VIRTIO=y
+CONFIG_VIRTIO_PCI=y
+CONFIG_HW_RANDOM_VIRTIO=y
+CONFIG_VIRTIO_BLK=y
+CONFIG_VIRTIO_NET=y
