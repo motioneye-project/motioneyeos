@@ -70,7 +70,6 @@ ifeq ($$($(2)_BUILD_TARGETS),.)
 $(2)_BIN_NAME ?= $(1)
 endif
 
-$(2)_BINDIR = bin
 $(2)_INSTALL_BINS ?= $(1)
 
 # Source files in Go should be extracted in a precise folder in the hierarchy
@@ -103,7 +102,7 @@ define $(2)_BUILD_CMDS
 			GOPATH="$$(@D)/$$($(2)_WORKSPACE)" \
 			$$($(2)_GO_ENV) \
 			$$(GO_BIN) build -v $$($(2)_BUILD_OPTS) \
-			-o $$(@D)/$$($(2)_BINDIR)/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
+			-o $$(@D)/bin/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
 			./$$(d)
 	)
 endef
@@ -114,7 +113,7 @@ endif
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
 	$$(foreach d,$$($(2)_INSTALL_BINS),\
-		$(INSTALL) -D -m 0755 $$(@D)/$$($(2)_BINDIR)/$$(d) $(TARGET_DIR)/usr/bin/$$(d)
+		$(INSTALL) -D -m 0755 $$(@D)/bin/$$(d) $(TARGET_DIR)/usr/bin/$$(d)
 	)
 endef
 endif
