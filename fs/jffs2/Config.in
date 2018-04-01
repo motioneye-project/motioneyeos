@@ -98,7 +98,6 @@ config BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
 	  the flash memory page size.  Using this option is only needed if Linux is
 	  configured to use a page size different than 4kB.
 
-
 config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE
 	hex "Virtual memory page size"
 	depends on BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE

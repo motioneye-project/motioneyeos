@@ -1164,7 +1164,6 @@ config BR2_PACKAGE_OPENVPN_CRYPTO_POLARSSL
 	  version provided in buildroot. And both can't coexist.
 	  It now uses OpenSSL as the only option.
 
-
 config BR2_PACKAGE_NGINX_HTTP_SPDY_MODULE
 	bool "nginx http spdy module removed"
 	select BR2_LEGACY

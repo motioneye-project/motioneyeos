@@ -115,7 +115,6 @@ config BR2_mips_p6600
 	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
-
 choice
 	prompt "Target ABI"
 	default BR2_MIPS_NABI32
