@@ -15,21 +15,14 @@ comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, t
 		|| !BR2_PACKAGE_PYTHON \
 		|| BR2_PACKAGE_PYTHON_PYC_ONLY
 
-config BR2_PACKAGE_KODI_EGL_GLES
-	bool
-	default y
-	depends on BR2_PACKAGE_HAS_LIBEGL
-	depends on BR2_PACKAGE_HAS_LIBGLES
-	depends on !BR2_PACKAGE_KODI_GL_EGL # prefer GL if available
-
 config BR2_PACKAGE_KODI_GL_EGL
 	bool
 	default y
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGL
 
-comment "kodi needs an OpenGL EGL with either an openGL or an OpenGL ES backend"
-	depends on !BR2_PACKAGE_KODI_GL_EGL && !BR2_PACKAGE_KODI_EGL_GLES
+comment "kodi needs an OpenGL EGL backend with OpenGL support"
+	depends on !BR2_PACKAGE_KODI_GL_EGL
 
 menuconfig BR2_PACKAGE_KODI
 	bool "kodi"
@@ -38,7 +31,7 @@ menuconfig BR2_PACKAGE_KODI
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_TOOLCHAIN_USES_MUSL
-	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL_EGL
+	depends on BR2_PACKAGE_KODI_GL_EGL
 	depends on BR2_USE_WCHAR
 	depends on !BR2_STATIC_LIBS # gnutls, python and others
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
