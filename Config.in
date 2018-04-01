@@ -175,8 +175,8 @@ config BR2_TAR_OPTIONS
 	default ""
 	help
 	  Options to pass to tar when extracting the sources.
-	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
-	  and to be verbose.
+	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal
+	  files and to be verbose.
 
 endmenu
 
@@ -667,7 +667,8 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 
 	  Note that this mechanism is available for both the internal
 	  toolchain (through the toolchain wrapper and binutils patches)
-	  and external toolchain backends (through the toolchain wrapper).
+	  and external toolchain backends (through the toolchain
+	  wrapper).
 
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
@@ -751,9 +752,9 @@ choice
 	bool "RELRO Protection"
 	depends on BR2_SHARED_LIBS
 	help
-	  Enable a link-time protection know as RELRO (RELocation Read Only)
-	  which helps to protect from certain type of exploitation techniques
-	  altering the content of some ELF sections.
+	  Enable a link-time protection know as RELRO (RELocation Read
+	  Only) which helps to protect from certain type of exploitation
+	  techniques altering the content of some ELF sections.
 
 config BR2_RELRO_NONE
 	bool "None"
@@ -769,9 +770,9 @@ config BR2_RELRO_PARTIAL
 config BR2_RELRO_FULL
 	bool "Full"
 	help
-	  This option includes the partial configuration, but also
-	  marks the GOT as read-only at the cost of initialization time
-	  during program loading, i.e every time an executable is started.
+	  This option includes the partial configuration, but also marks
+	  the GOT as read-only at the cost of initialization time during
+	  program loading, i.e every time an executable is started.
 
 endchoice
 
@@ -784,10 +785,10 @@ choice
 	depends on !BR2_OPTIMIZE_0
 	help
 	  Enable the _FORTIFY_SOURCE macro which introduces additional
-	  checks to detect buffer-overflows in the following standard library
-	  functions: memcpy, mempcpy, memmove, memset, strcpy, stpcpy,
-	  strncpy, strcat, strncat, sprintf, vsprintf, snprintf, vsnprintf,
-	  gets.
+	  checks to detect buffer-overflows in the following standard
+	  library functions: memcpy, mempcpy, memmove, memset, strcpy,
+	  stpcpy, strncpy, strcat, strncat, sprintf, vsprintf, snprintf,
+	  vsnprintf, gets.
 
 	  NOTE: This feature requires an optimization level of s/1/2/3/g
 
