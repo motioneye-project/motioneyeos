@@ -4,6 +4,7 @@ config BR2_PACKAGE_SNORT
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS # daq
 	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC || BR2_TOOLCHAIN_HAS_THREADS # libtirpc
+	select BR2_PACKAGE_LIBDNET
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_DAQ
 	select BR2_PACKAGE_PCRE
