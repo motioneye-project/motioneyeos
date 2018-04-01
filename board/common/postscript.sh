@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 export TARGET="$1"
 export BOARD=$(basename $(dirname $TARGET))
 export COMMON_DIR=$(dirname $0)
@@ -9,7 +11,9 @@ export IMG_DIR=$TARGET/../images
 
 mkdir -p $BOOT_DIR
 
-test -x $BOARD_DIR/postscript.sh && $BOARD_DIR/postscript.sh
+if [ -x $BOARD_DIR/postscript.sh ]; then
+    $BOARD_DIR/postscript.sh
+fi
 
 # transform /var contents as needed
 rm -rf $TARGET/var/cache
@@ -30,7 +34,9 @@ ln -s /tmp $TARGET/var/tmp
 
 # cleanups
 $COMMON_DIR/cleanups.sh
-test -x $BOARD_DIR/cleanups.sh && test -x $BOARD_DIR/cleanups.sh || true
+if [ -x $BOARD_DIR/cleanups.sh ]; then
+    $BOARD_DIR/cleanups.sh
+fi
 
 # board-specific os.conf
 if [ -r $BOARD_DIR/os.conf ]; then

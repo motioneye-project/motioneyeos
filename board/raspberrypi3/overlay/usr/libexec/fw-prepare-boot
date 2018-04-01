@@ -1,4 +1,5 @@
 #!/bin/bash
 
+echo >> /boot/config.txt
 echo "initramfs fwupdater.gz" >> /boot/config.txt
 
