@@ -14,6 +14,7 @@ NCMPC_LICENSE_FILES = COPYING
 
 NCMPC_CONF_OPTS += \
 	--prefix=/usr \
+	-Dcurses=ncurses \
 	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
 	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf
 
