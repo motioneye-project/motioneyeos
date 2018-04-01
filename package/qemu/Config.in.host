@@ -9,8 +9,6 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 	default y if BR2_microblazebe
 	default y if BR2_mips
 	default y if BR2_mipsel
-	default y if BR2_mips64
-	default y if BR2_mips64el
 	default y if BR2_powerpc
 	default y if BR2_powerpc64
 	default y if BR2_powerpc64le
@@ -22,6 +20,8 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 config BR2_PACKAGE_HOST_QEMU_SYSTEM_ARCH_SUPPORTS
 	bool
 	default y if BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
+	default y if BR2_mips64
+	default y if BR2_mips64el
 
 config BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
 	bool
