@@ -1,7 +1,7 @@
 ################################################################################
-# Linux Adeos/Xenomai extensions
 #
-# Patch the linux kernel with xenomai extension
+# Patch the linux kernel with Adeos/Xenomai extension
+#
 ################################################################################
 
 LINUX_EXTENSIONS += xenomai
