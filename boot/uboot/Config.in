@@ -199,23 +199,23 @@ config BR2_TARGET_UBOOT_FORMAT_NAND_BIN
 	bool "u-boot-nand.bin"
 
 config BR2_TARGET_UBOOT_FORMAT_KWB
-	depends on BR2_arm
 	bool "u-boot.kwb (Marvell)"
+	depends on BR2_arm
 
 config BR2_TARGET_UBOOT_FORMAT_LDR
-	depends on BR2_bfin
 	bool "u-boot.ldr"
+	depends on BR2_bfin
 
 config BR2_TARGET_UBOOT_FORMAT_ELF
 	bool "u-boot.elf"
 
 config BR2_TARGET_UBOOT_FORMAT_SB
-	depends on BR2_arm
 	bool "u-boot.sb (Freescale i.MX28)"
+	depends on BR2_arm
 
 config BR2_TARGET_UBOOT_FORMAT_SD
-	depends on BR2_arm
 	bool "u-boot.sd (Freescale i.MX28)"
+	depends on BR2_arm
 	help
 	  This is Freescale i.MX28 SB format, with a header for booting
 	  from an SD card.
@@ -226,8 +226,8 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
 
 config BR2_TARGET_UBOOT_FORMAT_NAND
-	depends on BR2_arm
 	bool "u-boot.nand (Freescale i.MX28)"
+	depends on BR2_arm
 	help
 	  This is Freescale i.MX28 BootStream format (.sb), with a header
 	  for booting from a NAND flash.
@@ -303,10 +303,10 @@ config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
 endmenu
 
 config BR2_TARGET_UBOOT_OMAP_IFT
+	bool "produce a .ift signed image (OMAP)"
 	depends on BR2_TARGET_UBOOT_FORMAT_BIN
 	depends on BR2_arm || BR2_armeb
 	select BR2_PACKAGE_HOST_OMAP_U_BOOT_UTILS
-	bool "produce a .ift signed image (OMAP)"
 	help
 	  Use gpsign to produce an image of u-boot.bin signed with
 	  a Configuration Header for booting on OMAP processors.
