@@ -312,6 +312,8 @@ def parse_args():
                         help="Draw direct dependencies (the default)")
     parser.add_argument("--reverse", dest="direct", action='store_false',
                         help="Draw reverse dependencies")
+    parser.add_argument("--quiet", '-q', dest="quiet", action='store_true',
+                        help="Quiet")
     return parser.parse_args()
 
 
@@ -321,7 +323,7 @@ def main():
     check_only = args.check_only
 
     logging.basicConfig(stream=sys.stderr, format='%(message)s',
-                        level=logging.INFO)
+                        level=logging.WARNING if args.quiet else logging.INFO)
 
     if args.outfile is None:
         outfile = sys.stdout
