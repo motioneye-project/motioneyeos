@@ -583,7 +583,7 @@ class BuildrootPackage():
 
         lines.append('\thelp\n')
 
-        help_lines = textwrap.wrap(self.metadata['info']['summary'],
+        help_lines = textwrap.wrap(self.metadata['info']['summary'], 62,
                                    initial_indent='\t  ',
                                    subsequent_indent='\t  ')
 
