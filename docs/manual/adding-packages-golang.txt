@@ -86,7 +86,18 @@ therefore only use a few of them, or none.
 
 * +FOO_BUILD_TARGETS+ can be used to pass the list of targets that
   should be built. If +FOO_BUILD_TARGETS+ is not specified, it
-  defaults to +.+.
+  defaults to +.+. We then have two cases:
+
+** +FOO_BUILD_TARGETS+ is +.+. In this case, we assume only one binary
+   will be produced, and that by default we name it after the package
+   name. If that is not appropriate, the name of the produced binary
+   can be overridden using +FOO_BIN_NAME+.
+
+** +FOO_BUILD_TARGETS+ is not +.+. In this case, we iterate over the
+   values to build each target, and for each produced a binary that is
+   the non-directory component of the target. For example if
+   +FOO_BUILD_TARGETS = cmd/docker cmd/dockerd+ the binaries produced
+   are +docker+ and +dockerd+.
 
 * +FOO_INSTALL_BINS+ can be used to pass the list of binaries that
   should be installed in +/usr/bin+ on the target. If

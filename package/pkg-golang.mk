@@ -62,12 +62,16 @@ $(2)_DEPENDENCIES += host-go
 
 $(2)_BUILD_TARGETS ?= .
 
-$(2)_INSTALL_BINS ?= $(1)
+# If the build target is just ".", then we assume the binary to be
+# produced is named after the package. If however, a build target has
+# been specified, we assume that the binaries to be produced are named
+# after each build target building them (below in <pkg>_BUILD_CMDS).
+ifeq ($$($(2)_BUILD_TARGETS),.)
+$(2)_BIN_NAME ?= $(1)
+endif
 
-# The go build/install command installs the binaries inside
-# gopath/bin/linux_GOARCH/ when cross compilation is enabled. We set this
-# variable here to be used by packages if needed.
-$(2)_BINDIR = $$($(2)_WORKSPACE)/bin/linux_$$(GO_GOARCH)
+$(2)_BINDIR = bin
+$(2)_INSTALL_BINS ?= $(1)
 
 # Source files in Go should be extracted in a precise folder in the hierarchy
 # of GOPATH. It usually resolves around domain/vendor/software. By default, we
@@ -84,17 +88,13 @@ $(2)_SRC_PATH = $$(@D)/$$($(2)_WORKSPACE)/src/$$($(2)_SRC_SUBDIR)
 # file.
 ifndef $(2)_CONFIGURE_CMDS
 define $(2)_CONFIGURE_CMDS
-	mkdir -p $$(@D)/$$($(2)_WORKSPACE)/bin
 	mkdir -p $$(dir $$($(2)_SRC_PATH))
 	ln -sf $$(@D) $$($(2)_SRC_PATH)
 endef
 endif
 
-# Build step. Only define it if not already defined by the package .mk file. We
-# use the install command instead of build command here because the install
-# command just moves the package binaries into <workspace>/bin/linux_GOARCH/.
-# This leverages the go build infrastructure for building and installing
-# multiple binaries.
+# Build step. Only define it if not already defined by the package .mk
+# file.
 ifndef $(2)_BUILD_CMDS
 define $(2)_BUILD_CMDS
 	$$(foreach d,$$($(2)_BUILD_TARGETS),\
@@ -102,7 +102,9 @@ define $(2)_BUILD_CMDS
 		$$(GO_TARGET_ENV) \
 			GOPATH="$$(@D)/$$($(2)_WORKSPACE)" \
 			$$($(2)_GO_ENV) \
-			$$(GO_BIN) install -v $$($(2)_BUILD_OPTS) ./$$(d)
+			$$(GO_BIN) build -v $$($(2)_BUILD_OPTS) \
+			-o $$(@D)/$$($(2)_BINDIR)/$$(or $$($(2)_BIN_NAME),$$(notdir $$(d))) \
+			./$$(d)
 	)
 endef
 endif
