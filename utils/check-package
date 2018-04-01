@@ -49,6 +49,7 @@ DO_CHECK_INTREE = re.compile("|".join([
     "arch/",
     "boot/",
     "fs/",
+    "linux/",
     "package/",
     "system/",
     ]))

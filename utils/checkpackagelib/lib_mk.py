@@ -160,6 +160,7 @@ class TypoInPackageVariable(_CheckFunction):
         "ACLOCAL_HOST_DIR",
         "BR_CCACHE_INITIAL_SETUP",
         "BR_NO_CHECK_HASH_FOR",
+        "LINUX_EXTENSIONS",
         "LINUX_POST_PATCH_HOOKS",
         "LINUX_TOOLS",
         "LUA_RUN",
@@ -179,6 +180,8 @@ class TypoInPackageVariable(_CheckFunction):
         package = package.replace("-", "_").upper()
         # linux tools do not use LINUX_TOOL_ prefix for variables
         package = package.replace("LINUX_TOOL_", "")
+        # linux extensions do not use LINUX_EXT_ prefix for variables
+        package = package.replace("LINUX_EXT_", "")
         self.package = package
         self.REGEX = re.compile("^(HOST_|ROOTFS_)?({}_[A-Z0-9_]+)".format(package))
         self.FIND_VIRTUAL = re.compile(
