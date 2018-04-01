@@ -165,8 +165,11 @@ class TypoInPackageVariable(_CheckFunction):
         "LUA_RUN",
         "MKFS_JFFS2",
         "MKIMAGE_ARCH",
+        "PACKAGES_PERMISSIONS_TABLE",
         "PKG_CONFIG_HOST_BINARY",
+        "SUMTOOL",
         "TARGET_FINALIZE_HOOKS",
+        "TARGETS_ROOTFS",
         "XTENSA_CORE_NAME"]))
     PACKAGE_NAME = re.compile("/([^/]+)\.mk")
     VARIABLE = re.compile("^([A-Z0-9_]+_[A-Z0-9_]+)\s*(\+|)=")
@@ -177,7 +180,7 @@ class TypoInPackageVariable(_CheckFunction):
         # linux tools do not use LINUX_TOOL_ prefix for variables
         package = package.replace("LINUX_TOOL_", "")
         self.package = package
-        self.REGEX = re.compile("^(HOST_)?({}_[A-Z0-9_]+)".format(package))
+        self.REGEX = re.compile("^(HOST_|ROOTFS_)?({}_[A-Z0-9_]+)".format(package))
         self.FIND_VIRTUAL = re.compile(
             "^{}_PROVIDES\s*(\+|)=\s*(.*)".format(package))
         self.virtual = []
