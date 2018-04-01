@@ -19,11 +19,21 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 	default y if BR2_x86_64
 	depends on !BR2_powerpc_620 && !BR2_powerpc_630 && !BR2_powerpc_970
 
+config BR2_PACKAGE_HOST_QEMU_SYSTEM_ARCH_SUPPORTS
+	bool
+	default y if BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
+
+config BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
+	bool
+	default y if BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
+
 config BR2_PACKAGE_HOST_QEMU
 	bool "host qemu"
-	depends on BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_QEMU_SYSTEM_ARCH_SUPPORTS || BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
 	select BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE \
-		if !BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE
+		if !BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE && BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
+	select BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE \
+		if !BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
 	help
 	  QEMU is a generic and open source machine emulator and
 	  virtualizer.
@@ -38,12 +48,14 @@ comment "Emulators selection"
 
 config BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE
 	bool "Enable system emulation"
+	depends on BR2_PACKAGE_HOST_QEMU_SYSTEM_ARCH_SUPPORTS
 	help
 	  Enables the build of the system emulator, which allows to
 	  boot an entire system in Qemu.
 
 config BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 	bool "Enable Linux user-land emulation"
+	depends on BR2_PACKAGE_HOST_QEMU_USER_ARCH_SUPPORTS
 	help
 	  Enables the build of the user-land emulator, which allows to
 	  run user-space applications.
