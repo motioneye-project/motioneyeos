@@ -57,9 +57,7 @@ APACHE_CONF_OPTS += \
 endif
 
 ifeq ($(BR2_PACKAGE_LUA),y)
-APACHE_CONF_OPTS += \
-	--enable-lua \
-	--with-lua=$(STAGING_DIR)/usr
+APACHE_CONF_OPTS += --enable-lua
 APACHE_DEPENDENCIES += lua
 else
 APACHE_CONF_OPTS += --disable-lua
