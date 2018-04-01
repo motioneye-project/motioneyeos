@@ -124,7 +124,8 @@ config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY
 	  The gconv libraries are used to convert between different
 	  character sets (charsets).
 
-	  Say 'y' if you need to store and/or display different charsets.
+	  Say 'y' if you need to store and/or display different
+	  charsets.
 
 config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
 	string "Gconv libraries to copy"
@@ -162,10 +163,11 @@ config BR2_TARGET_OPTIMIZATION
 config BR2_TARGET_LDFLAGS
 	string "Target linker options"
 	help
-	  Extra options to pass to the linker when building for the target.
+	  Extra options to pass to the linker when building for the
+	  target.
 
-	  Note that options with a '$' sign (eg. -Wl,-rpath='$ORIGIN/../lib')
-	  are not supported.
+	  Note that options with a '$' sign (eg.
+	  -Wl,-rpath='$ORIGIN/../lib') are not supported.
 
 config BR2_ECLIPSE_REGISTER
 	bool "Register toolchain within Eclipse Buildroot plug-in"
