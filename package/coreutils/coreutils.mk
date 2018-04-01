@@ -104,9 +104,9 @@ endif
 ifeq ($(BR2_ROOTFS_MERGED_USR),)
 define COREUTILS_CLEANUP_BIN
 	# some things go in root rather than usr
-	for f in $(COREUTILS_BIN_PROGS); do \
-		mv -f $(TARGET_DIR)/usr/bin/$$f $(TARGET_DIR)/bin/$$f || exit 1; \
-	done
+	$(foreach f,$(COREUTILS_BIN_PROGS), \
+		mv -f $(TARGET_DIR)/usr/bin/$(f) $(TARGET_DIR)/bin/$(f)
+	)
 endef
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP_BIN
 endif
