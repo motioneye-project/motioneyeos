@@ -159,6 +159,7 @@ class TypoInPackageVariable(_CheckFunction):
         "ACLOCAL_DIR",
         "ACLOCAL_HOST_DIR",
         "BR_CCACHE_INITIAL_SETUP",
+        "BR_LIBC",
         "BR_NO_CHECK_HASH_FOR",
         "LINUX_EXTENSIONS",
         "LINUX_POST_PATCH_HOOKS",

@@ -52,12 +52,15 @@ DO_CHECK_INTREE = re.compile("|".join([
     "linux/",
     "package/",
     "system/",
+    "toolchain/",
     ]))
 DO_NOT_CHECK_INTREE = re.compile("|".join([
     "boot/barebox/barebox\.mk$",
     "fs/common\.mk$",
     "package/doc-asciidoc\.mk$",
     "package/pkg-\S*\.mk$",
+    "toolchain/helpers\.mk$",
+    "toolchain/toolchain-external/pkg-toolchain-external\.mk$",
     ]))
 
 
