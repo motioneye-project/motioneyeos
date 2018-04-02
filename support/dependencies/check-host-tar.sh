@@ -26,10 +26,11 @@ if [ ! -z "${version_bsd}" ] ; then
   minor=0
 fi
 
-# Minimal version = 1.17 (previous versions do not correctly unpack archives
-# containing hard-links if the --strip-components option is used).
+# Minimal version = 1.27 (previous versions do not correctly unpack archives
+# containing hard-links if the --strip-components option is used or create
+# different gnu long link headers for path elements > 100 characters).
 major_min=1
-minor_min=17
+minor_min=27
 
 # Maximal version = 1.29 (1.30 changed --numeric-owner output for
 # filenames > 100 characters). This is really a fix for a bug in
