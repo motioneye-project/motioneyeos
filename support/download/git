@@ -5,32 +5,33 @@ set -e
 
 # Download helper for git, to be called from the download wrapper script
 #
-# Call it as:
-#   .../git [-q] [-r] OUT_FILE REPO_URL CSET BASENAME
-#
-#   -q  Be quiet.
-#   -r  Clone and archive sub-modules.
+# Options:
+#   -q          Be quiet.
+#   -r          Clone and archive sub-modules.
+#   -o FILE     Generate archive in FILE.
+#   -u URI      Clone from repository at URI.
+#   -c CSET     Use changeset CSET.
+#   -n NAME     Use basename NAME.
 #
 # Environment:
 #   GIT      : the git command to call
 
 verbose=
 recurse=0
-while getopts :qr OPT; do
+while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-q; exec >/dev/null;;
     r)  recurse=1;;
+    o)  output="${OPTARG}";;
+    u)  uri="${OPTARG}";;
+    c)  cset="${OPTARG}";;
+    n)  basename="${OPTARG}";;
+    :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
-shift $((OPTIND-1))
 
-output="${1}"
-repo="${2}"
-cset="${3}"
-basename="${4}"
-
-shift 4 # Get rid of our options
+shift $((OPTIND-1)) # Get rid of our options
 
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
@@ -46,9 +47,9 @@ _git() {
 # Messages for the type of clone used are provided to ease debugging in case of
 # problems
 git_done=0
-if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
+if [ -n "$(_git ls-remote "'${uri}'" "'${cset}'" 2>&1)" ]; then
     printf "Doing shallow clone\n"
-    if _git clone ${verbose} "${@}" --depth 1 -b "'${cset}'" "'${repo}'" "'${basename}'"; then
+    if _git clone ${verbose} "${@}" --depth 1 -b "'${cset}'" "'${uri}'" "'${basename}'"; then
         git_done=1
     else
         printf "Shallow clone failed, falling back to doing a full clone\n"
@@ -56,7 +57,7 @@ if [ -n "$(_git ls-remote "'${repo}'" "'${cset}'" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Doing full clone\n"
-    _git clone ${verbose} "${@}" "'${repo}'" "'${basename}'"
+    _git clone ${verbose} "${@}" "'${uri}'" "'${basename}'"
 fi
 
 pushd "${basename}" >/dev/null

@@ -19,6 +19,8 @@
 # We want to catch any unexpected failure, and exit immediately.
 set -e
 
+export BR_BACKEND_DL_GETOPTS=":hc:o:n:N:H:ru:q"
+
 main() {
     local OPT OPTARG
     local backend output hfile recurse quiet rc
@@ -83,7 +85,10 @@ main() {
     # If the backend fails, we can just remove the temporary directory to
     # remove all the cruft it may have left behind. Then we just exit in
     # error too.
-    if ! "${OLDPWD}/support/download/${backend}" ${quiet} ${recurse} "${tmpf}" "${@}"; then
+    if ! "${OLDPWD}/support/download/${backend}" \
+            ${quiet} ${recurse} \
+            -o "${tmpf}" "${@}"
+    then
         rm -rf "${tmpd}"
         exit 1
     fi

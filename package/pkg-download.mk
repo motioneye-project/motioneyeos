@@ -77,9 +77,9 @@ define DOWNLOAD_GIT
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		$($(PKG)_SITE) \
-		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASENAME_RAW) \
+		-u $($(PKG)_SITE) \
+		-c $($(PKG)_DL_VERSION) \
+		-n $($(PKG)_BASENAME_RAW) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -88,9 +88,9 @@ define DOWNLOAD_BZR
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		$(QUIET) \
 		-- \
-		$($(PKG)_SITE) \
-		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASENAME_RAW) \
+		-u $($(PKG)_SITE) \
+		-c $($(PKG)_DL_VERSION) \
+		-n $($(PKG)_BASENAME_RAW) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -99,10 +99,10 @@ define DOWNLOAD_CVS
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		$(QUIET) \
 		-- \
-		$(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
-		$($(PKG)_DL_VERSION) \
-		$($(PKG)_RAWNAME) \
-		$($(PKG)_BASENAME_RAW) \
+		-u $(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
+		-c $($(PKG)_DL_VERSION) \
+		-N $($(PKG)_RAWNAME) \
+		-n $($(PKG)_BASENAME_RAW) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -111,9 +111,9 @@ define DOWNLOAD_SVN
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		$(QUIET) \
 		-- \
-		$($(PKG)_SITE) \
-		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASENAME_RAW) \
+		-u $($(PKG)_SITE) \
+		-c $($(PKG)_DL_VERSION) \
+		-n $($(PKG)_BASENAME_RAW) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -126,7 +126,7 @@ define DOWNLOAD_SCP
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		'$(call stripurischeme,$(call qstrip,$(1)))' \
+		-u '$(call stripurischeme,$(call qstrip,$(1)))' \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -135,9 +135,9 @@ define DOWNLOAD_HG
 		-o $(DL_DIR)/$($(PKG)_SOURCE) \
 		$(QUIET) \
 		-- \
-		$($(PKG)_SITE) \
-		$($(PKG)_DL_VERSION) \
-		$($(PKG)_BASENAME_RAW) \
+		-u $($(PKG)_SITE) \
+		-c $($(PKG)_DL_VERSION) \
+		-n $($(PKG)_BASENAME_RAW) \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -147,7 +147,7 @@ define DOWNLOAD_WGET
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		'$(call qstrip,$(1))' \
+		-u '$(call qstrip,$(1))' \
 		$($(PKG)_DL_OPTS)
 endef
 
@@ -157,7 +157,7 @@ define DOWNLOAD_LOCALFILES
 		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
 		$(QUIET) \
 		-- \
-		$(call stripurischeme,$(call qstrip,$(1))) \
+		-u $(call stripurischeme,$(call qstrip,$(1))) \
 		$($(PKG)_DL_OPTS)
 endef
 
