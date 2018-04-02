@@ -8,7 +8,9 @@ set -e
 # Options:
 #   -q          Be quiet.
 #   -o FILE     Save into file FILE.
+#   -f FILENAME The filename of the tarball to get at URL
 #   -u URL      Download file at URL.
+#   -e ENCODE   Tell wget to urlencode the filename passed to it
 #
 # Environment:
 #   WGET     : the wget command to call
@@ -18,7 +20,9 @@ while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-q;;
     o)  output="${OPTARG}";;
+    f)  filename="${OPTARG}";;
     u)  url="${OPTARG}";;
+    e)  encode="-e";;
     :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
@@ -32,4 +36,8 @@ _wget() {
     eval ${WGET} "${@}"
 }
 
-_wget ${verbose} "${@}" -O "'${output}'" "'${url}'"
+# Replace every '?' with '%3F' in the filename; only for the PRIMARY and BACKUP
+# mirror
+[ -n "${encode}" ] && filename=${filename//\?/%3F}
+
+_wget ${verbose} "${@}" -O "'${output}'" "'${url}/${filename}'"

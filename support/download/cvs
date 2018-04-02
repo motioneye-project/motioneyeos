@@ -21,7 +21,7 @@ while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-Q;;
     o)  output="${OPTARG}";;
-    u)  uri="${OPTARG}";;
+    u)  uri="${OPTARG#*://}";;
     c)  rev="${OPTARG}";;
     N)  rawname="${OPTARG}";;
     n)  basename="${OPTARG}";;

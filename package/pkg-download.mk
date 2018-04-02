@@ -42,6 +42,8 @@ DL_DIR := $(shell mkdir -p $(DL_DIR) && cd $(DL_DIR) >/dev/null && pwd)
 #
 # geturischeme: http
 geturischeme = $(firstword $(subst ://, ,$(call qstrip,$(1))))
+# getschemeplusuri: git|parameter+http://example.com
+getschemeplusuri = $(call geturischeme,$(1))$(if $(2),\|$(2))+$(1)
 # stripurischeme: www.example.com/dir/file
 stripurischeme = $(lastword $(subst ://, ,$(call qstrip,$(1))))
 # domain: www.example.com
@@ -61,152 +63,42 @@ github = https://github.com/$(1)/$(2)/archive/$(3)
 export BR_NO_CHECK_HASH_FOR =
 
 ################################################################################
-# The DOWNLOAD_* helpers are in charge of getting a working copy
-# of the source repository for their corresponding SCM,
-# checking out the requested version / commit / tag, and create an
-# archive out of it. DOWNLOAD_SCP uses scp to obtain a remote file with
-# ssh authentication. DOWNLOAD_WGET is the normal wget-based download
-# mechanism.
-#
-################################################################################
-
-define DOWNLOAD_GIT
-	$(EXTRA_ENV) $(DL_WRAPPER) -b git \
-		-o $(DL_DIR)/$($(PKG)_SOURCE) \
-		$(if $($(PKG)_GIT_SUBMODULES),-r) \
-		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
-		$(QUIET) \
-		-- \
-		-u $($(PKG)_SITE) \
-		-c $($(PKG)_DL_VERSION) \
-		-n $($(PKG)_BASENAME_RAW) \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_BZR
-	$(EXTRA_ENV) $(DL_WRAPPER) -b bzr \
-		-o $(DL_DIR)/$($(PKG)_SOURCE) \
-		$(QUIET) \
-		-- \
-		-u $($(PKG)_SITE) \
-		-c $($(PKG)_DL_VERSION) \
-		-n $($(PKG)_BASENAME_RAW) \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_CVS
-	$(EXTRA_ENV) $(DL_WRAPPER) -b cvs \
-		-o $(DL_DIR)/$($(PKG)_SOURCE) \
-		$(QUIET) \
-		-- \
-		-u $(call stripurischeme,$(call qstrip,$($(PKG)_SITE))) \
-		-c $($(PKG)_DL_VERSION) \
-		-N $($(PKG)_RAWNAME) \
-		-n $($(PKG)_BASENAME_RAW) \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_SVN
-	$(EXTRA_ENV) $(DL_WRAPPER) -b svn \
-		-o $(DL_DIR)/$($(PKG)_SOURCE) \
-		$(QUIET) \
-		-- \
-		-u $($(PKG)_SITE) \
-		-c $($(PKG)_DL_VERSION) \
-		-n $($(PKG)_BASENAME_RAW) \
-		$($(PKG)_DL_OPTS)
-endef
-
-# SCP URIs should be of the form scp://[user@]host:filepath
-# Note that filepath is relative to the user's home directory, so you may want
-# to prepend the path with a slash: scp://[user@]host:/absolutepath
-define DOWNLOAD_SCP
-	$(EXTRA_ENV) $(DL_WRAPPER) -b scp \
-		-o $(DL_DIR)/$(2) \
-		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
-		$(QUIET) \
-		-- \
-		-u '$(call stripurischeme,$(call qstrip,$(1)))' \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_HG
-	$(EXTRA_ENV) $(DL_WRAPPER) -b hg \
-		-o $(DL_DIR)/$($(PKG)_SOURCE) \
-		$(QUIET) \
-		-- \
-		-u $($(PKG)_SITE) \
-		-c $($(PKG)_DL_VERSION) \
-		-n $($(PKG)_BASENAME_RAW) \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_WGET
-	$(EXTRA_ENV) $(DL_WRAPPER) -b wget \
-		-o $(DL_DIR)/$(2) \
-		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
-		$(QUIET) \
-		-- \
-		-u '$(call qstrip,$(1))' \
-		$($(PKG)_DL_OPTS)
-endef
-
-define DOWNLOAD_LOCALFILES
-	$(EXTRA_ENV) $(DL_WRAPPER) -b cp \
-		-o $(DL_DIR)/$(2) \
-		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
-		$(QUIET) \
-		-- \
-		-u $(call stripurischeme,$(call qstrip,$(1))) \
-		$($(PKG)_DL_OPTS)
-endef
-
-################################################################################
-# DOWNLOAD -- Download helper. Will try to download source from:
+# DOWNLOAD -- Download helper. Will call DL_WRAPPER which will try to download
+# source from:
 # 1) BR2_PRIMARY_SITE if enabled
 # 2) Download site, unless BR2_PRIMARY_SITE_ONLY is set
 # 3) BR2_BACKUP_SITE if enabled, unless BR2_PRIMARY_SITE_ONLY is set
 #
 # Argument 1 is the source location
 #
-# E.G. use like this:
-# $(call DOWNLOAD,$(FOO_SITE))
-#
-# For PRIMARY and BACKUP site, any ? in the URL is replaced by %3F. A ? in
-# the URL is used to separate query arguments, but the PRIMARY and BACKUP
-# sites serve just plain files.
 ################################################################################
 
-define DOWNLOAD
-	$(call DOWNLOAD_INNER,$(1),$(notdir $(1)),DOWNLOAD)
-endef
+ifneq ($(call qstrip,$(BR2_PRIMARY_SITE)),)
+DOWNLOAD_URIS += \
+	-u $(call getschemeplusuri,$(BR2_PRIMARY_SITE),urlencode)
+endif
 
-define DOWNLOAD_INNER
-	$(Q)$(if $(filter bzr cvs hg svn,$($(PKG)_SITE_METHOD)),export BR_NO_CHECK_HASH_FOR=$(2);) \
-	if test -n "$(call qstrip,$(BR2_PRIMARY_SITE))" ; then \
-		case "$(call geturischeme,$(BR2_PRIMARY_SITE))" in \
-			file) $(call $(3)_LOCALFILES,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
-			scp) $(call $(3)_SCP,$(BR2_PRIMARY_SITE)/$(2),$(2)) && exit ;; \
-			*) $(call $(3)_WGET,$(BR2_PRIMARY_SITE)/$(subst ?,%3F,$(2)),$(2)) && exit ;; \
-		esac ; \
-	fi ; \
-	if test "$(BR2_PRIMARY_SITE_ONLY)" = "y" ; then \
-		exit 1 ; \
-	fi ; \
-	if test -n "$(1)" ; then \
-		case "$($(PKG)_SITE_METHOD)" in \
-			git) $($(3)_GIT) && exit ;; \
-			svn) $($(3)_SVN) && exit ;; \
-			cvs) $($(3)_CVS) && exit ;; \
-			bzr) $($(3)_BZR) && exit ;; \
-			file) $($(3)_LOCALFILES) && exit ;; \
-			scp) $($(3)_SCP) && exit ;; \
-			hg) $($(3)_HG) && exit ;; \
-			*) $(call $(3)_WGET,$(1),$(2)) && exit ;; \
-		esac ; \
-	fi ; \
-	if test -n "$(call qstrip,$(BR2_BACKUP_SITE))" ; then \
-		$(call $(3)_WGET,$(BR2_BACKUP_SITE)/$(subst ?,%3F,$(2)),$(2)) && exit ; \
-	fi ; \
-	exit 1
+ifeq ($(BR2_PRIMARY_SITE_ONLY),)
+DOWNLOAD_URIS += \
+	-u $($(PKG)_SITE_METHOD)+$(dir $(1))
+ifneq ($(call qstrip,$(BR2_BACKUP_SITE)),)
+DOWNLOAD_URIS += \
+	-u $(call getschemeplusuri,$(BR2_BACKUP_SITE),urlencode)
+endif
+endif
+
+define DOWNLOAD
+	$(Q)$(if $(filter bzr cvs hg svn,$($(PKG)_SITE_METHOD)),BR_NO_CHECK_HASH_FOR=$(notdir $(1))) \
+	$(EXTRA_ENV) $(DL_WRAPPER) \
+		-c $($(PKG)_DL_VERSION) \
+		-f $(notdir $(1)) \
+		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
+		-n $($(PKG)_BASENAME_RAW) \
+		-N $($(PKG)_RAWNAME) \
+		-o $(DL_DIR)/$(notdir $(1)) \
+		$(if $($(PKG)_GIT_SUBMODULES),-r) \
+		$(DOWNLOAD_URIS) \
+		$(QUIET) \
+		-- \
+		$($(PKG)_DL_OPTS)
 endef
