@@ -49,7 +49,6 @@ FFMPEG_CONF_OPTS = \
 	--disable-frei0r \
 	--disable-libopencore-amrnb \
 	--disable-libopencore-amrwb \
-	--disable-libcdio \
 	--disable-libdc1394 \
 	--disable-libgsm \
 	--disable-libilbc \
@@ -201,6 +200,13 @@ FFMPEG_CONF_OPTS += --enable-libfdk-aac
 FFMPEG_DEPENDENCIES += fdk-aac
 else
 FFMPEG_CONF_OPTS += --disable-libfdk-aac
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG_GPL)$(BR2_PACKAGE_LIBCDIO_PARANOIA),yy)
+FFMPEG_CONF_OPTS += --enable-libcdio
+FFMPEG_DEPENDENCIES += libcdio-paranoia
+else
+FFMPEG_CONF_OPTS += --disable-libcdio
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
