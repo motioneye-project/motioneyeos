@@ -13,7 +13,7 @@ SAM_BA_LICENSE_FILES = doc/license.txt tcl_lib/boards.tcl \
 		applets/sam4c/libraries/libchip_sam4c/include/sam4c/sam4c32e-1.h
 
 define HOST_SAM_BA_EXTRACT_CMDS
-	$(UNZIP) -d $(BUILD_DIR) $(SAM_BA_DL_DIR)/$(SAM_BA_SOURCE)
+	$(UNZIP) -d $(BUILD_DIR) $(HOST_SAM_BA_DL_DIR)/$(SAM_BA_SOURCE)
 	mv $(BUILD_DIR)/sam-ba_cdc_linux/* $(@D)
 	rmdir $(BUILD_DIR)/sam-ba_cdc_linux/
 endef
