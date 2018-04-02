@@ -22,7 +22,7 @@ NTP_CONF_OPTS = \
 # 0002-ntp-syscalls-fallback.patch
 NTP_AUTORECONF = YES
 
-ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
 NTP_CONF_OPTS += --with-crypto --enable-openssl-random
 NTP_DEPENDENCIES += openssl
 else
