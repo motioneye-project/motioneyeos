@@ -19,7 +19,7 @@
 # We want to catch any unexpected failure, and exit immediately.
 set -e
 
-export BR_BACKEND_DL_GETOPTS=":hc:o:n:N:H:ru:qf:e"
+export BR_BACKEND_DL_GETOPTS=":hc:d:o:n:N:H:ru:qf:e"
 
 main() {
     local OPT OPTARG
@@ -27,10 +27,11 @@ main() {
     local -a uris
 
     # Parse our options; anything after '--' is for the backend
-    while getopts ":hc:o:n:N:H:rf:u:q" OPT; do
+    while getopts ":hc:d:o:n:N:H:rf:u:q" OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
         c)  cset="${OPTARG}";;
+        d)  dl_dir="${OPTARG}";;
         o)  output="${OPTARG}";;
         n)  raw_base_name="${OPTARG}";;
         N)  base_name="${OPTARG}";;
@@ -109,6 +110,7 @@ main() {
         if ! "${OLDPWD}/support/download/${backend}" \
                 $([ -n "${urlencode}" ] && printf %s '-e') \
                 -c "${cset}" \
+                -d "${dl_dir}" \
                 -n "${raw_base_name}" \
                 -N "${raw_name}" \
                 -f "${filename}" \
