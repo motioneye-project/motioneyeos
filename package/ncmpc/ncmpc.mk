@@ -18,6 +18,13 @@ NCMPC_CONF_OPTS += \
 	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
 	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf
 
+ifeq ($(BR2_PACKAGE_LIRC_TOOLS),y)
+NCMPC_DEPENDENCIES += lirc-tools
+NCMPC_CONF_OPTS += -Dlirc=true
+else
+NCMPC_CONF_OPTS += -Dlirc=false
+endif
+
 NCMPC_NINJA_OPTS = $(if $(VERBOSE),-v)
 
 define NCMPC_CONFIGURE_CMDS
