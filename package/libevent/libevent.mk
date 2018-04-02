@@ -24,8 +24,8 @@ ifneq ($(BR2_PACKAGE_PYTHON),y)
 LIBEVENT_POST_INSTALL_TARGET_HOOKS += LIBEVENT_REMOVE_PYSCRIPT
 endif
 
-ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
-LIBEVENT_DEPENDENCIES += host-pkgconf libopenssl
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LIBEVENT_DEPENDENCIES += host-pkgconf openssl
 LIBEVENT_CONF_OPTS += --enable-openssl
 else
 LIBEVENT_CONF_OPTS += --disable-openssl
