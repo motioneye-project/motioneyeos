@@ -19,6 +19,7 @@ SSH := $(call qstrip,$(BR2_SSH))
 export LOCALFILES := $(call qstrip,$(BR2_LOCALFILES))
 
 DL_WRAPPER = support/download/dl-wrapper
+FLOCK = flock $($(PKG)_DL_DIR)/
 
 # DL_DIR may have been set already from the environment
 ifeq ($(origin DL_DIR),undefined)
@@ -93,7 +94,7 @@ define DOWNLOAD
 	$(Q)mkdir -p $($(PKG)_DL_DIR)
 	$(Q)$(if $(filter bzr cvs hg svn,$($(PKG)_SITE_METHOD)),
 		BR_NO_CHECK_HASH_FOR=$(notdir $(call qstrip,$(1)))) \
-	$(EXTRA_ENV) $(DL_WRAPPER) \
+	$(EXTRA_ENV) $(FLOCK) $(DL_WRAPPER) \
 		-c '$($(PKG)_DL_VERSION)' \
 		-f '$(notdir $(1))' \
 		-H '$(PKGDIR)/$($(PKG)_RAWNAME).hash' \
