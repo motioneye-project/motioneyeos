@@ -37,7 +37,7 @@ HOST_CARGO_HOME = $(HOST_DIR)/share/cargo
 define HOST_CARGO_EXTRACT_DEPS
 	@mkdir -p $(@D)/vendor
 	$(call suitable-extractor,$(CARGO_DEPS_SOURCE)) \
-		$(DL_DIR)/$(CARGO_DEPS_SOURCE) | \
+		$(CARGO_DL_DIR)/$(CARGO_DEPS_SOURCE) | \
 		$(TAR) --strip-components=1 -C $(@D)/vendor $(TAR_OPTIONS) -
 endef
 
@@ -46,7 +46,7 @@ HOST_CARGO_POST_EXTRACT_HOOKS += HOST_CARGO_EXTRACT_DEPS
 define HOST_CARGO_EXTRACT_INSTALLER
 	@mkdir -p $(@D)/src/rust-installer
 	$(call suitable-extractor,$(CARGO_INSTALLER_SOURCE)) \
-		$(DL_DIR)/$(CARGO_INSTALLER_SOURCE) | \
+		$(CARGO_DL_DIR)/$(CARGO_INSTALLER_SOURCE) | \
 		$(TAR) --strip-components=1 -C $(@D)/src/rust-installer $(TAR_OPTIONS) -
 endef
 

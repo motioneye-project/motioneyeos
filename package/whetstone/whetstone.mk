@@ -9,7 +9,7 @@ WHETSTONE_SOURCE = whetstone.c
 WHETSTONE_SITE = http://www.netlib.org/benchmark
 
 define WHETSTONE_EXTRACT_CMDS
-	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/
+	cp $(WHETSTONE_DL_DIR)/$($(PKG)_SOURCE) $(@D)/
 endef
 
 define WHETSTONE_BUILD_CMDS

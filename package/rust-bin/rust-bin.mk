@@ -22,7 +22,7 @@ HOST_RUST_BIN_LIBSTD_HOST_PREFIX = rust-std-$(RUST_BIN_VERSION)-$(RUSTC_HOST_NAM
 define HOST_RUST_BIN_LIBSTD_EXTRACT
 	mkdir -p $(@D)/std
 	$(foreach f,$(HOST_RUST_BIN_EXTRA_DOWNLOADS), \
-		$(call suitable-extractor,$(f)) $(DL_DIR)/$(f) | \
+		$(call suitable-extractor,$(f)) $(RUST_BIN_DL_DIR)/$(f) | \
 			$(TAR) -C $(@D)/std $(TAR_OPTIONS) -
 	)
 	cd $(@D)/rustc/lib/rustlib; \

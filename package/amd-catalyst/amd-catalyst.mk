@@ -17,7 +17,7 @@ AMD_CATALYST_ARCH_DIR = $(@D)/arch/x86$(AMD_CATALYST_SUFFIX)
 AMD_CATALYST_LIB_SUFFIX = $(if $(BR2_x86_64),64)
 
 define AMD_CATALYST_EXTRACT_CMDS
-	unzip -q $(DL_DIR)/$(AMD_CATALYST_SOURCE) -d $(@D)
+	unzip -q $(AMD_CATALYST_DL_DIR)/$(AMD_CATALYST_SOURCE) -d $(@D)
 	$(SHELL) $(@D)/AMD-Catalyst-$(AMD_CATALYST_VERSION)-Linux-installer-$(AMD_CATALYST_VERBOSE_VER)-x86.x86_64.run --extract $(@D)
 endef
 

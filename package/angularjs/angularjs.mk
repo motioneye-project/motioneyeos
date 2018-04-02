@@ -12,7 +12,7 @@ ANGULARJS_LICENSE = MIT
 ANGULARJS_LICENSE_FILES = angular.js
 
 define ANGULARJS_EXTRACT_CMDS
-	unzip $(DL_DIR)/$(ANGULARJS_SOURCE) -d $(@D)
+	unzip $(ANGULARJS_DL_DIR)/$(ANGULARJS_SOURCE) -d $(@D)
 	mv $(@D)/angular-$(ANGULARJS_VERSION)/* $(@D)
 	rmdir $(@D)/angular-$(ANGULARJS_VERSION)
 endef

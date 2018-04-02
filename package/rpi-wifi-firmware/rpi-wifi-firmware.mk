@@ -12,7 +12,7 @@ RPI_WIFI_FIRMWARE_SITE = https://raw.githubusercontent.com/RPi-Distro/firmware-n
 RPI_WIFI_FIRMWARE_LICENSE = PROPRIETARY
 
 define RPI_WIFI_FIRMWARE_EXTRACT_CMDS
-	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/
+	cp $(RPI_WIFI_FIRMWARE_DL_DIR)/$($(PKG)_SOURCE) $(@D)/
 endef
 
 define RPI_WIFI_FIRMWARE_INSTALL_TARGET_CMDS

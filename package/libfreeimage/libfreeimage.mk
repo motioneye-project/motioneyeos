@@ -12,7 +12,7 @@ LIBFREEIMAGE_LICENSE_FILES = license-gplv2.txt license-gplv3.txt license-fi.txt
 LIBFREEIMAGE_INSTALL_STAGING = YES
 
 define LIBFREEIMAGE_EXTRACT_CMDS
-	$(UNZIP) $(DL_DIR)/$(LIBFREEIMAGE_SOURCE) -d $(@D)
+	$(UNZIP) $(LIBFREEIMAGE_DL_DIR)/$(LIBFREEIMAGE_SOURCE) -d $(@D)
 	mv $(@D)/FreeImage/* $(@D)
 	rmdir $(@D)/FreeImage
 endef
