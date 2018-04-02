@@ -15,6 +15,8 @@ SNORT_DEPENDENCIES = libpcap libdnet daq pcre
 SNORT_AUTORECONF = YES
 
 SNORT_CONF_OPTS = \
+	--with-libpcre-includes=$(STAGING_DIR)/usr/include \
+	--with-libpcre-libraries=$(STAGING_DIR)/usr/lib \
 	--with-libpcap-includes=$(STAGING_DIR)/usr/include/pcap \
 	--disable-static-daq
 
