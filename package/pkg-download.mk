@@ -97,6 +97,7 @@ define DOWNLOAD
 	$(EXTRA_ENV) $(FLOCK) $(DL_WRAPPER) \
 		-c '$($(PKG)_DL_VERSION)' \
 		-d '$($(PKG)_DL_DIR)' \
+		-D '$(DL_DIR)' \
 		-f '$(notdir $(1))' \
 		-H '$(PKGDIR)/$($(PKG)_RAWNAME).hash' \
 		-n '$($(PKG)_BASENAME_RAW)' \
