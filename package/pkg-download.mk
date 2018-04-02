@@ -75,12 +75,12 @@ export BR_NO_CHECK_HASH_FOR =
 
 ifneq ($(call qstrip,$(BR2_PRIMARY_SITE)),)
 DOWNLOAD_URIS += \
-	-u $(call getschemeplusuri,$(BR2_PRIMARY_SITE),urlencode)
+	-u $(call getschemeplusuri,$(call qstrip,$(BR2_PRIMARY_SITE)),urlencode)
 endif
 
 ifeq ($(BR2_PRIMARY_SITE_ONLY),)
 DOWNLOAD_URIS += \
-	-u $($(PKG)_SITE_METHOD)+$(dir $(1))
+	-u $($(PKG)_SITE_METHOD)+$(dir $(call qstrip,$(1)))
 ifneq ($(call qstrip,$(BR2_BACKUP_SITE)),)
 DOWNLOAD_URIS += \
 	-u $(call getschemeplusuri,$(BR2_BACKUP_SITE),urlencode)
@@ -88,14 +88,15 @@ endif
 endif
 
 define DOWNLOAD
-	$(Q)$(if $(filter bzr cvs hg svn,$($(PKG)_SITE_METHOD)),BR_NO_CHECK_HASH_FOR=$(notdir $(1))) \
+	$(Q)$(if $(filter bzr cvs hg svn,$($(PKG)_SITE_METHOD)),
+		BR_NO_CHECK_HASH_FOR=$(notdir $(call qstrip,$(1)))) \
 	$(EXTRA_ENV) $(DL_WRAPPER) \
-		-c $($(PKG)_DL_VERSION) \
-		-f $(notdir $(1)) \
-		-H $(PKGDIR)/$($(PKG)_RAWNAME).hash \
-		-n $($(PKG)_BASENAME_RAW) \
-		-N $($(PKG)_RAWNAME) \
-		-o $(DL_DIR)/$(notdir $(1)) \
+		-c '$($(PKG)_DL_VERSION)' \
+		-f '$(notdir $(1))' \
+		-H '$(PKGDIR)/$($(PKG)_RAWNAME).hash' \
+		-n '$($(PKG)_BASENAME_RAW)' \
+		-N '$($(PKG)_RAWNAME)' \
+		-o '$(DL_DIR)/$(notdir $(1))' \
 		$(if $($(PKG)_GIT_SUBMODULES),-r) \
 		$(DOWNLOAD_URIS) \
 		$(QUIET) \
