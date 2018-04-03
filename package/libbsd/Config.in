@@ -4,6 +4,8 @@ config BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
 	# libbsd does not support those architectures (see src/local-elf.h)
 	depends on !BR2_microblaze
 	depends on !BR2_arc
+	depends on !BR2_xtensa
+	depends on !BR2_bfin
 
 config BR2_PACKAGE_LIBBSD
 	bool "libbsd"
