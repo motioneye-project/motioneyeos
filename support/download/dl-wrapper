@@ -56,8 +56,13 @@ main() {
     # Legacy handling: check if the file already exists in the global
     # download directory. If it does, hard-link it. If it turns out it
     # was an incorrect download, we'd still check it below anyway.
+    # If we can neither link nor copy, fallback to doing a download.
+    # NOTE! This is not atomic, is subject to TOCTTOU, but the whole
+    # dl-wrapper runs under an flock, so we're safe.
     if [ ! -e "${output}" -a -e "${old_dl_dir}/${filename}" ]; then
-        ln "${old_dl_dir}/${filename}" "${output}"
+        ln "${old_dl_dir}/${filename}" "${output}" || \
+        cp "${old_dl_dir}/${filename}" "${output}" || \
+        true
     fi
 
     # If the output file already exists and:
