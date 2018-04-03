@@ -10,12 +10,15 @@ PROSODY_LICENSE = MIT
 PROSODY_LICENSE_FILES = COPYING
 PROSODY_DEPENDENCIES = host-luainterpreter luainterpreter libidn openssl
 
+PROSODY_CFLAGS = $(TARGET_CFLAGS) -fPIC -std=c99 \
+	$(if BR2_TOOLCHAIN_USES_MUSL,-DWITHOUT_MALLINFO)
+
 PROSODY_CONF_OPTS = \
 	--with-lua-bin=$(HOST_DIR)/usr/bin \
 	--with-lua=$(STAGING_DIR)/usr \
 	--lua-version=$(LUAINTERPRETER_ABIVER) \
 	--c-compiler=$(TARGET_CC) \
-	--cflags="$(TARGET_CFLAGS) -fPIC -std=c99" \
+	--cflags="$(PROSODY_CFLAGS)" \
 	--linker=$(TARGET_CC) \
 	--ldflags="$(TARGET_LDFLAGS) -shared" \
 	--sysconfdir=/etc/prosody \
