@@ -45,6 +45,15 @@ LLVM_CONF_OPTS = -DLLVM_TARGETS_TO_BUILD="$(subst $(space),;,$(LLVM_TARGETS_TO_B
 HOST_LLVM_CONF_OPTS += -DLLVM_TARGET_ARCH=$(LLVM_TARGET_ARCH)
 LLVM_CONF_OPTS += -DLLVM_TARGET_ARCH=$(LLVM_TARGET_ARCH)
 
+# Build AMDGPU backend
+# We need to build AMDGPU backend for both host and target because
+# llvm-config --targets built (host variant installed in STAGING) will
+# output only $(LLVM_TARGET_ARCH) if not, and mesa3d won't build as
+# it thinks AMDGPU backend is not installed on the target.
+ifeq ($(BR2_PACKAGE_LLVM_AMDGPU),y)
+LLVM_TARGETS_TO_BUILD += AMDGPU
+endif
+
 # Use native llvm-tblgen from host-llvm (needed for cross-compilation)
 LLVM_CONF_OPTS += -DLLVM_TABLEGEN=$(HOST_DIR)/bin/llvm-tblgen
 
