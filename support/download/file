@@ -2,13 +2,15 @@
 
 # We want to catch any unexpected failure, and exit immediately
 set -e
+set -x
 
 # Download helper for cp, to be called from the download wrapper script
 #
 # Options:
 #   -q          Be quiet.
 #   -o FILE     Copy to file FILE.
-#   -u FILE     Copy from file FILE.
+#   -f FILE     Copy from basename file FILE.
+#   -u DIR      Copy from FILE in DIR.
 #
 # Environment:
 #   LOCALFILES: the cp command to call
@@ -23,7 +25,8 @@ while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=;;
     o)  output="${OPTARG}";;
-    u)  source="${OPTARG}";;
+    f)  file="${OPTARG}";;
+    u)  dir="${OPTARG}";;
     :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
@@ -37,4 +40,4 @@ _localfiles() {
     eval ${LOCALFILES} "${@}"
 }
 
-_localfiles ${verbose} "${@}""'${source}'" "'${output}'"
+_localfiles ${verbose} "'${dir}${file}'" "'${output}'"
