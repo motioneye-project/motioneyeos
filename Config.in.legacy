@@ -145,6 +145,23 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_IQVLINUX
+	bool "iqvlinux package removed"
+	select BR2_LEGACY
+	help
+	  This package contained a kernel module from Intel, which
+	  could only be used together with Intel userspace tools
+	  provided under NDA, which also come with the same kernel
+	  module. The copy of the kernel module available on
+	  SourceForge is provided only to comply with the GPLv2
+	  requirement. Intel engineers were even surprised it even
+	  built and were not willing to make any effort to fix their
+	  tarball naming to contain a version number. Therefore, it
+	  does not make sense for Buildroot to provide such a package.
+
+	  See https://sourceforge.net/p/e1000/bugs/589/ for the
+	  discussion.
+
 config BR2_PACKAGE_KODI_ADSP_BASIC
 	bool "kodi-adsp-basic package removed"
 	select BR2_LEGACY
