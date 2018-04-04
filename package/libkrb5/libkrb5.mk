@@ -25,7 +25,8 @@ LIBKRB5_CONF_OPTS = \
 	--without-system-db \
 	--without-system-et \
 	--without-system-ss \
-	--without-system-verto
+	--without-system-verto \
+	--without-tcl
 
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
 LIBKRB5_CONF_OPTS += --with-ldap
