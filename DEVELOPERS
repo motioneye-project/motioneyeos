@@ -1891,6 +1891,9 @@ N:	Tzu-Jung Lee <roylee17@gmail.com>
 F:	package/dropwatch/
 F:	package/tstools/
 
+N:	Valentin Korenblit <valentin.korenblit@smile.fr>
+F:	package/llvm/
+
 N:	Vanya Sergeev <vsergeev@gmail.com>
 F:	package/lua-periphery/
 
