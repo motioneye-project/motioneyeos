@@ -162,6 +162,14 @@ config BR2_PACKAGE_IQVLINUX
 	  See https://sourceforge.net/p/e1000/bugs/589/ for the
 	  discussion.
 
+config BR2_bfin
+	bool "Blackfin architecture support removed"
+	select BR2_LEGACY
+	help
+	  Following the removal of Blackfin support for the upstream
+	  Linux kernel, Buildroot has removed support for this CPU
+	  architecture.
+
 config BR2_PACKAGE_KODI_ADSP_BASIC
 	bool "kodi-adsp-basic package removed"
 	select BR2_LEGACY

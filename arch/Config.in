@@ -78,16 +78,6 @@ config BR2_aarch64_be
 	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
 	  http://en.wikipedia.org/wiki/ARM
 
-config BR2_bfin
-	bool "Blackfin"
-	select BR2_ARCH_HAS_FDPIC_SUPPORT
-	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
-	help
-	  The Blackfin is a family of 16 or 32-bit microprocessors
-	  developed, manufactured and marketed by Analog Devices.
-	  http://www.analog.com/
-	  http://en.wikipedia.org/wiki/Blackfin
-
 config BR2_csky
 	bool "csky"
 	select BR2_ARCH_HAS_NO_TOOLCHAIN_BUILDROOT
@@ -400,14 +390,14 @@ config BR2_BINFMT_FLAT_SEP_DATA
 	# big functions cannot be built in this mode. They cause build
 	# failures such as "Tried to convert PC relative branch to
 	# absolute jump" or "error: value -yyyyy out of range".
-	depends on BR2_bfin
+	depends on BR2_BROKEN
 	help
 	  Allow for the data and text segments to be separated and
 	  placed in different regions of memory.
 
 config BR2_BINFMT_FLAT_SHARED
 	bool "Shared binary"
-	depends on BR2_m68k || BR2_bfin
+	depends on BR2_m68k
 	# Even though this really generates shared binaries, there is no libdl
 	# and dlopen() cannot be used. So packages that require shared
 	# libraries cannot be built. Therefore, we don't select
@@ -425,10 +415,6 @@ endif
 
 if BR2_arm || BR2_armeb || BR2_aarch64 || BR2_aarch64_be
 source "arch/Config.in.arm"
-endif
-
-if BR2_bfin
-source "arch/Config.in.bfin"
 endif
 
 if BR2_csky
