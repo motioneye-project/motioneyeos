@@ -41,7 +41,7 @@ package. Let's start with an example:
 07: FOO_VERSION = 1.0
 08: FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
 09: FOO_SITE = http://www.foosoftware.org/download
-10: FOO_LICENSE = GPLv3+
+10: FOO_LICENSE = GPL-3.0+
 11: FOO_LICENSE_FILES = COPYING
 12:
 13: FOO_DEPENDENCIES = host-cargo
