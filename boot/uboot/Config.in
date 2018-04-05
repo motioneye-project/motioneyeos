@@ -202,10 +202,6 @@ config BR2_TARGET_UBOOT_FORMAT_KWB
 	bool "u-boot.kwb (Marvell)"
 	depends on BR2_arm
 
-config BR2_TARGET_UBOOT_FORMAT_LDR
-	bool "u-boot.ldr"
-	depends on BR2_bfin
-
 config BR2_TARGET_UBOOT_FORMAT_ELF
 	bool "u-boot.elf"
 

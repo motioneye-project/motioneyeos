@@ -61,10 +61,6 @@ UBOOT_BINS += u-boot.ais
 UBOOT_MAKE_TARGET += u-boot.ais
 endif
 
-ifeq ($(BR2_TARGET_UBOOT_FORMAT_LDR),y)
-UBOOT_BINS += u-boot.ldr
-endif
-
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_NAND_BIN),y)
 UBOOT_BINS += u-boot-nand.bin
 endif
