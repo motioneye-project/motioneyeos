@@ -162,6 +162,13 @@ config BR2_PACKAGE_IQVLINUX
 	  See https://sourceforge.net/p/e1000/bugs/589/ for the
 	  discussion.
 
+config BR2_BINFMT_FLAT_SEP_DATA
+	bool "binfmt FLAT with separate code and data removed"
+	select BR2_LEGACY
+	help
+	  This FLAT binary format was only used on Blackfin, which has
+	  been removed.
+
 config BR2_bfin
 	bool "Blackfin architecture support removed"
 	select BR2_LEGACY

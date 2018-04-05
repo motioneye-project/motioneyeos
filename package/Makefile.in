@@ -189,12 +189,6 @@ TARGET_CFLAGS += -mid-shared-library -mshared-library-id=0
 TARGET_FCFLAGS += -mid-shared-library -mshared-library-id=0
 TARGET_CXXFLAGS += -mid-shared-library -mshared-library-id=0
 endif
-ifeq ($(BR2_BINFMT_FLAT_SEP_DATA),y)
-TARGET_LDFLAGS += -msep-data
-TARGET_CFLAGS += -msep-data
-TARGET_FCFLAGS += -msep-data
-TARGET_CXXFLAGS += -msep-data
-endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
 TARGET_CROSS = $(HOST_DIR)/bin/$(GNU_TARGET_NAME)-
