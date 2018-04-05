@@ -431,7 +431,6 @@ config BR2_TOOLCHAIN_HAS_MNAN_OPTION
 config BR2_TOOLCHAIN_HAS_SYNC_1
 	bool
 	default y
-	depends on !BR2_bfin
 	depends on !BR2_m68k_cf
 	depends on !BR2_microblaze
 	depends on !BR2_sparc

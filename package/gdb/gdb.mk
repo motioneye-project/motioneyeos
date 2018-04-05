@@ -215,16 +215,8 @@ else
 HOST_GDB_CONF_OPTS += --without-python
 endif
 
-# workaround a bug if in-tree build is used for bfin sim
-define HOST_GDB_BFIN_SIM_WORKAROUND
-	$(RM) $(@D)/sim/common/tconfig.h
-endef
-
 ifeq ($(BR2_PACKAGE_HOST_GDB_SIM),y)
 HOST_GDB_CONF_OPTS += --enable-sim
-ifeq ($(BR2_bfin),y)
-HOST_GDB_PRE_CONFIGURE_HOOKS += HOST_GDB_BFIN_SIM_WORKAROUND
-endif
 else
 HOST_GDB_CONF_OPTS += --disable-sim
 endif

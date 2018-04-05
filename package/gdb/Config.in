@@ -2,7 +2,6 @@ config BR2_PACKAGE_GDB_ARCH_SUPPORTS
 	bool
 	default y
 	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
-	depends on !BR2_bfin
 	depends on !BR2_microblaze
 	depends on !BR2_nios2
 	depends on !BR2_or1k

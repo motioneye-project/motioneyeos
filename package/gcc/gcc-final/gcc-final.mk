@@ -76,10 +76,6 @@ HOST_GCC_FINAL_CONF_OPTS += "--with-multilib-list=m4a,m4a-nofpu"
 HOST_GCC_FINAL_GCC_LIB_DIR = $(HOST_DIR)/$(GNU_TARGET_NAME)/lib/!m4*
 endif
 
-ifeq ($(BR2_bfin),y)
-HOST_GCC_FINAL_CONF_OPTS += --disable-symvers
-endif
-
 # libcilkrts does not support v8
 ifeq ($(BR2_sparc),y)
 HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
