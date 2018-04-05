@@ -130,7 +130,6 @@ if [[ $BOARD == "*pda4" ]]; then
 	video_mode="video=LVDS-1:480x272-16"
 fi
 
-echo "Executing: ${!F} O=$1/images $1/host/opt/sam-ba/sam-ba $TTY ${!M} $(dirname $0)/nandflash.tcl -- ${!F} ${!D} $video_mode"
+echo "Executing: ${!F} O=$1/images $1/host/bin/sam-ba $TTY ${!M} $(dirname $0)/nandflash.tcl -- ${!F} ${!D} $video_mode"
 export O=$1/images
-$1/host/opt/sam-ba/sam-ba $TTY ${!M} $(dirname $0)/nandflash.tcl -- ${!F} ${!D} $video_mode
-
+$1/host/bin/sam-ba $TTY ${!M} $(dirname $0)/nandflash.tcl -- ${!F} ${!D} $video_mode
