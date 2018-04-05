@@ -24,12 +24,6 @@ else
 PTPD2_CONF_OPTS += --disable-snmp
 endif
 
-# GCC bug with Os/O1/O2/O3
-# internal compiler error: in gen_add2_insn, at optabs.c:4454
-ifeq ($(BR2_bfin),y)
-PTPD2_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O0"
-endif
-
 define PTPD2_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/ptpd2/S65ptpd2 \
 		$(TARGET_DIR)/etc/init.d/S65ptpd2
