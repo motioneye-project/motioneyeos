@@ -15,9 +15,6 @@ support/config-fragments/autobuild/br-arm-cortex-m4-full.config,x86_64
 # Test a musl toolchain
 support/config-fragments/autobuild/br-x86-64-musl.config,x86_64
 
-# Test a noMMU toolchain with dynamic library support
-support/config-fragments/autobuild/br-bfin-full.config,x86_64
-
 # Test a MMU toolchain without dynamic library support
 support/config-fragments/autobuild/br-arm-full-static.config,x86_64
 

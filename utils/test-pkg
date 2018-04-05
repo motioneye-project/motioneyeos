@@ -75,7 +75,7 @@ main() {
     # Default mode is to test the N first toolchains, which have been
     # chosen to be a good selection of toolchains.
     if [ ${mode} -eq 0 ] ; then
-        number=7
+        number=6
     elif [ ${mode} -gt 1 ] ; then
         printf "error: --all, --number and --random are mutually exclusive\n" >&2; exit 1
     fi
