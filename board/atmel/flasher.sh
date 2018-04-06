@@ -4,6 +4,10 @@ BUILDIR=$1
 TTY=$2
 BOARD=$3
 
+family_at91sam9260ek="at91sam9260ek"
+mach_at91sam9260ek="at91sam9260-ek"
+dtb_at91sam9260ek="at91sam9260ek.dtb"
+
 family_at91sam9g45m10ek="at91sam9m10g45ek"
 mach_at91sam9g45m10ek="at91sam9m10-g45-ek"
 dtb_at91sam9g45m10ek="at91sam9m10g45ek.dtb"
@@ -90,6 +94,7 @@ Usage:
   $0 <builddir_path> <interface> <board>
 
 Available boards:
+  at91sam9260ek
   at91sam9g45m10ek
   at91sam9rlek
   at91sam9g15ek
