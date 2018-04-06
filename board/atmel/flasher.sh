@@ -20,6 +20,10 @@ family_at91sam9g15ek="at91sam9x5ek"
 mach_at91sam9g15ek="at91sam9g15-ek"
 dtb_at91sam9g15ek="at91sam9g15ek.dtb"
 
+family_at91sam9g20ek="at91sam9g20ek"
+mach_at91sam9g20ek="at91sam9g20-ek"
+dtb_at91sam9g20ek="at91sam9g20ek.dtb"
+
 family_at91sam9g25ek="at91sam9x5ek"
 mach_at91sam9g25ek="at91sam9g25-ek"
 dtb_at91sam9g25ek="at91sam9g25ek.dtb"
@@ -98,6 +102,7 @@ Available boards:
   at91sam9g45m10ek
   at91sam9rlek
   at91sam9g15ek
+  at91sam9g20ek
   at91sam9g25ek
   at91sam9x25ek
   at91sam9g35ek
