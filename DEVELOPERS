@@ -669,6 +669,7 @@ F:	package/hiredis/
 F:	package/i2pd/
 F:	package/igd2-for-linux/
 F:	package/libcdio-paranoia/
+F:	package/libglib2/
 F:	package/libmpdclient/
 F:	package/libupnp/
 F:	package/libupnp18/
