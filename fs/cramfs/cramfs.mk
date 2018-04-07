@@ -5,9 +5,9 @@
 ################################################################################
 
 ifeq ($(BR2_ENDIAN),"BIG")
-CRAMFS_OPTS = -b
+CRAMFS_OPTS = -B
 else
-CRAMFS_OPTS = -l
+CRAMFS_OPTS = -L
 endif
 
 define ROOTFS_CRAMFS_CMD
