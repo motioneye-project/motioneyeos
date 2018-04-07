@@ -180,6 +180,12 @@ config BR2_PACKAGE_MPD_CURL
 	help
 	  Enable curl streaming (http) support.
 
+config BR2_PACKAGE_MPD_LIBMMS
+	bool "mms"
+	select BR2_PACKAGE_LIBMMS
+	help
+	  Enable MMS support.
+
 config BR2_PACKAGE_MPD_LIBNFS
 	bool "nfs"
 	# libnfs -> libtirpc
