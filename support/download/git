@@ -47,7 +47,9 @@ git_cache="${dl_dir}/git"
 # fetch'ed later.
 if [ ! -d "${git_cache}" ]; then
     _git init "'${git_cache}'"
-    _git -C "'${git_cache}'" remote add origin "'${uri}'"
+    pushd "${git_cache}" >/dev/null
+    _git remote add origin "'${uri}'"
+    popd >/dev/null
 fi
 
 pushd "${git_cache}" >/dev/null
