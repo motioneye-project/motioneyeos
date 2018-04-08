@@ -1,0 +1,32 @@
+From d59f2e6f42a9e4f8a9184d7ed75546f47dc50123 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 8 Apr 2018 11:09:02 +0200
+Subject: [PATCH] server: use correct poll.h header
+
+Fixes build with the musl C library:
+    http://autobuild.buildroot.net/results/000a46954d0c6d3dbc4b4634a0d3a3c955fac679
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+Upstream status:
+  PR sent: https://github.com/radarsat1/liblo/pull/66
+---
+ src/server.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/server.c b/src/server.c
+index 01fa08f..11c62d2 100644
+--- a/src/server.c
++++ b/src/server.c
+@@ -51,7 +51,7 @@
+ #include <netdb.h>
+ #include <sys/socket.h>
+ #ifdef HAVE_POLL
+-#include <sys/poll.h>
++#include <poll.h>
+ #endif
+ #include <sys/un.h>
+ #include <arpa/inet.h>
+-- 
+2.14.1
+
