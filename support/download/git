@@ -47,12 +47,14 @@ git_cache="${dl_dir}/git"
 # fetch'ed later.
 if [ ! -d "${git_cache}" ]; then
     _git init "'${git_cache}'"
-    pushd "${git_cache}" >/dev/null
-    _git remote add origin "'${uri}'"
-    popd >/dev/null
 fi
 
 pushd "${git_cache}" >/dev/null
+
+# Ensure the repo has an origin (in case a previous run was killed).
+if ! git remote |grep -q -E '^origin$'; then
+    _git remote add origin "'${uri}'"
+fi
 
 _git remote set-url origin "'${uri}'"
 
