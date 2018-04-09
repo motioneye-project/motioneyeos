@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PATCH
 	bool "patch"
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
 	help
@@ -10,4 +11,5 @@ config BR2_PACKAGE_PATCH
 
 comment "patch needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
