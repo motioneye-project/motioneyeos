@@ -205,6 +205,7 @@ F:	package/python-bcrypt/
 F:	package/python-bitstring/
 F:	package/python-constantly/
 F:	package/python-engineio/
+F:	package/python-fastentrypoints/
 F:	package/python-fire/
 F:	package/python-h2/
 F:	package/python-idna/

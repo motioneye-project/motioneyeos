@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_PYTHON_FASTENTRYPOINTS
+	bool "host python-fastentrypoints"
+	help
+	  Makes entry_points specified in setup.py load more quickly.
+
+	  https://github.com/ninjaaron/fast-entry_points
