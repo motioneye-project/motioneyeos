@@ -671,6 +671,7 @@ F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/i2pd/
 F:	package/igd2-for-linux/
+F:	package/libcap-ng/
 F:	package/libcdio-paranoia/
 F:	package/libglib2/
 F:	package/libmpdclient/
