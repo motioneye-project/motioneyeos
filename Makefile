@@ -247,8 +247,6 @@ export TZ = UTC
 export LANG = C
 export LC_ALL = C
 export GZIP = -n
-BR2_VERSION_GIT_EPOCH = $(shell GIT_DIR=$(TOPDIR)/.git $(GIT) log -1 --format=%at)
-export SOURCE_DATE_EPOCH ?= $(if $(wildcard $(TOPDIR)/.git),$(BR2_VERSION_GIT_EPOCH),$(BR2_VERSION_EPOCH))
 endif
 
 # To put more focus on warnings, be less verbose as default
@@ -503,6 +501,14 @@ include support/dependencies/dependencies.mk
 
 include $(sort $(wildcard toolchain/*.mk))
 include $(sort $(wildcard toolchain/*/*.mk))
+
+ifeq ($(BR2_REPRODUCIBLE),y)
+# If SOURCE_DATE_EPOCH has not been set then use the commit date, or the last
+# release date if the source tree is not within a Git repository.
+# See: https://reproducible-builds.org/specs/source-date-epoch/
+BR2_VERSION_GIT_EPOCH := $(shell $(GIT) --git-dir=$(TOPDIR)/.git log -1 --format=%at 2> /dev/null)
+export SOURCE_DATE_EPOCH ?= $(or $(BR2_VERSION_GIT_EPOCH),$(BR2_VERSION_EPOCH))
+endif
 
 # Include the package override file if one has been provided in the
 # configuration.
