@@ -4,22 +4,14 @@
 #
 ################################################################################
 
-NMAP_VERSION = 7.60
+NMAP_VERSION = 7.70
 NMAP_SITE = https://nmap.org/dist
 NMAP_SOURCE = nmap-$(NMAP_VERSION).tar.bz2
-NMAP_DEPENDENCIES = libpcap host-autoconf
+NMAP_DEPENDENCIES = libpcap
 NMAP_CONF_OPTS = --without-liblua --without-zenmap \
 	--with-libdnet=included --with-liblinear=included
 NMAP_LICENSE = GPL-2.0
 NMAP_LICENSE_FILES = COPYING
-
-# nmap doesn't autoreconf properly, so we just re-generate the
-# top-level configure script, since we are patching configure.ac.
-define NMAP_DO_AUTOCONF
-	(cd $(@D); $(HOST_DIR)/bin/autoconf)
-endef
-
-NMAP_PRE_CONFIGURE_HOOKS += NMAP_DO_AUTOCONF
 
 # needed by libpcap
 NMAP_LIBS_FOR_STATIC_LINK += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
