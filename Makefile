@@ -506,7 +506,7 @@ ifeq ($(BR2_REPRODUCIBLE),y)
 # If SOURCE_DATE_EPOCH has not been set then use the commit date, or the last
 # release date if the source tree is not within a Git repository.
 # See: https://reproducible-builds.org/specs/source-date-epoch/
-BR2_VERSION_GIT_EPOCH := $(shell $(GIT) --git-dir=$(TOPDIR)/.git log -1 --format=%at 2> /dev/null)
+BR2_VERSION_GIT_EPOCH := $(shell $(GIT) log -1 --format=%at 2> /dev/null)
 export SOURCE_DATE_EPOCH ?= $(or $(BR2_VERSION_GIT_EPOCH),$(BR2_VERSION_EPOCH))
 endif
 
