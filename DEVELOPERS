@@ -610,6 +610,9 @@ F:	package/mxsldr/
 N:	Ernesto L. Williams Jr <realcontrols@gmail.com>
 F:	package/szip/
 
+N:	Eugene Tarassov <eugene@largest.net>
+F:	package/tcf-agent/
+
 N:	Evan Zelkowitz <evan.zelkowitz@gmail.com>
 F:	package/sdl_gfx/
 
