@@ -125,7 +125,7 @@ main() {
                 -c "${cset}" \
                 -d "${dl_dir}" \
                 -n "${raw_base_name}" \
-                -N "${raw_name}" \
+                -N "${base_name}" \
                 -f "${filename}" \
                 -u "${uri}" \
                 -o "${tmpf}" \
