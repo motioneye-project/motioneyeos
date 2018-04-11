@@ -29,6 +29,16 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	help
 	  Firmware files for AMD Radeon video cards.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_VENUS
+	bool "Qualcomm Venus video codec accelerator"
+	help
+	  Firmware files for Qualcomm Venus video codec accelerator
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_ADRENO
+	bool "Qualcomm Adreno GPU firmware"
+	help
+	  Firmware files for Qualcomm Adreno GPU firmware
+
 endmenu # Video
 
 menu "Bluetooth firmware"
