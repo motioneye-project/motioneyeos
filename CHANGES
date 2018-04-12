@@ -907,6 +907,26 @@
 	#9846: musl libc not installed correctly in target folder
 	#9856: build libubox failed on ubuntu 17.04 64bit
 
+2017.02.11, Released April 11th, 2018
+
+	Important / security related fixes.
+
+	dependencies: Blacklist tar 1.30+ and build our own host-tar
+	if needed as tar 1.30+ changed the --numeric-owner output for
+	long path names. Build host-tar before other host-dependencies
+	as they need it to extract their source tarballs.
+
+	Updated/fixed packages: apache, busybox, clamav, dhcp,
+	dnsmasq, dovecot, exim, imagemagick, irssi, jq, libcurl,
+	libpjsip, librsvg, libtasn1, libvorbis, libxml2, lz4, mariadb,
+	mbedtls, mosquitto, ntp, openblas, opencv3, openssl, patch,
+	postgresql, python-webpy, qt53d, qt5tools, quagga, rsync,
+	samba4, sngrep, tremor, wavpack, wireshark, xerces, xterm
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10856: openblas on qemu_x86_64_defconfig fails with "sgemm_..
+
 2017.02.10, Released January 31st, 2018
 
 	Important / security related fixes.
