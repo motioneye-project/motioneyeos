@@ -25,6 +25,11 @@ LLVM_CONF_OPTS += -DLLVM_ENABLE_PROJECTS=""
 HOST_LLVM_CONF_OPTS += -DLLVM_CCACHE_BUILD=$(if $(BR2_CCACHE),ON,OFF)
 LLVM_CONF_OPTS += -DLLVM_CCACHE_BUILD=$(if $(BR2_CCACHE),ON,OFF)
 
+# This option prevents AddLLVM.cmake from adding $ORIGIN/../lib to
+# binaries. Otherwise, llvm-config (host variant installed in STAGING)
+# will try to use target's libc.
+HOST_LLVM_CONF_OPTS += -DCMAKE_INSTALL_RPATH="$(HOST_DIR)/lib"
+
 # Disable experimental Global Instruction Selection support.
 # https://llvm.org/docs/GlobalISel.html
 HOST_LLVM_CONF_OPTS += -DLLVM_BUILD_GLOBAL_ISEL=OFF
