@@ -1,0 +1,9 @@
+config BR2_PACKAGE_REAVER
+	bool "reaver"
+	select BR2_PACKAGE_LIBPCAP
+	help
+	  Reaver is a tool to audit networks against brute WPS pins
+	  attacks. It is complementary to "Aircrack-ng".
+
+	  https://code.google.com/archive/p/reaver-wps/wikis/README.wiki
+	  https://github.com/t6x/reaver-wps-fork-t6x
