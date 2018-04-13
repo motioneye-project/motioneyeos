@@ -39,7 +39,10 @@ ifeq ($(BR2_PACKAGE_SQLITE_NO_SYNC),y)
 SQLITE_CFLAGS += -DSQLITE_NO_SYNC
 endif
 
-SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
+# fallback to standard -O3 when -Ofast is present to avoid -ffast-math
+SQLITE_CFLAGS += $(subst -Ofast,-O3,$(TARGET_CFLAGS))
+
+SQLITE_CONF_ENV = CFLAGS="$(SQLITE_CFLAGS)"
 
 ifeq ($(BR2_STATIC_LIBS),y)
 SQLITE_CONF_OPTS += --enable-dynamic-extensions=no
