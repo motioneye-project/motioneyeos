@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2017.11
+SWUPDATE_VERSION = 2018.03
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
-SWUPDATE_LICENSE = GPL-2.0+, MIT, Public Domain
+SWUPDATE_LICENSE = GPL-2.0+, LGPL-2.1+, MIT
 SWUPDATE_LICENSE_FILES = COPYING
 
-# swupdate bundles its own version of mongoose (version 3.8)
+# swupdate bundles its own version of mongoose (version 6.11)
 
 ifeq ($(BR2_PACKAGE_JSON_C),y)
 SWUPDATE_DEPENDENCIES += json-c
