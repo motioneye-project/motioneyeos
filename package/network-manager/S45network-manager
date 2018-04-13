@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# Allow a few customizations from a config file
+test -r /etc/default/NetworkManager && . /etc/default/NetworkManager
+
 prefix=/usr
 exec_prefix=/usr
 sbindir=${exec_prefix}/sbin
@@ -14,7 +17,7 @@ case "$1" in
 		printf "Starting NetworkManager ... "
 		[ ! -d /var/run/NetworkManager ] && install -d /var/run/NetworkManager
 		if [ -z "$PID" ]; then
-			$NETWORKMANAGER_BIN
+			$NETWORKMANAGER_BIN $NETWORKMANAGER_ARGS
 		fi
 		if [ ! -z "$PID" -o $? -gt 0 ]; then
 			echo "failed!"
