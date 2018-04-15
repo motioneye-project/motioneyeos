@@ -499,6 +499,7 @@ ifneq ($(LINUX_FIRMWARE_DIRS),)
 define LINUX_FIRMWARE_INSTALL_DIRS
 	$(foreach d,$(LINUX_FIRMWARE_DIRS), \
 		rm -rf $(TARGET_DIR)/lib/firmware/$(d); \
+		mkdir -p $(dir $(TARGET_DIR)/lib/firmware/$(d)); \
 		cp -a $(@D)/$(d) $(TARGET_DIR)/lib/firmware/$(d)$(sep))
 endef
 endif
