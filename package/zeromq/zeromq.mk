@@ -51,4 +51,11 @@ else
 ZEROMQ_CONF_OPTS += --without-libsodium
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
+ZEROMQ_DEPENDENCIES += libunwind
+ZEROMQ_CONF_OPTS += --enable-libunwind
+else
+ZEROMQ_CONF_OPTS += --disable-libunwind
+endif
+
 $(eval $(autotools-package))
