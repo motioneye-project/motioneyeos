@@ -46,4 +46,16 @@ define ZSTD_INSTALL_TARGET_CMDS
 		DESTDIR=$(TARGET_DIR) PREFIX=/usr -C $(@D)/programs install
 endef
 
+# note: no 'HAVE_...' options for host library build only
+define HOST_ZSTD_BUILD_CMDS
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
+		-C $(@D)/lib
+endef
+
+define HOST_ZSTD_INSTALL_CMDS
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
+		DESTDIR=$(HOST_DIR) PREFIX=/usr -C $(@D)/lib install
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
