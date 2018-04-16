@@ -1,6 +1,5 @@
 #!/bin/sh
 
-[ -x /usr/sbin/dnsmasq ] || exit 0
 [ -f /etc/dnsmasq.conf ] || exit 0
 
 case "$1" in
