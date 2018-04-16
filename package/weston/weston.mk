@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WESTON_VERSION = 3.0.0
+WESTON_VERSION = 4.0.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
