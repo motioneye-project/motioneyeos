@@ -1,6 +1,6 @@
-From 33b025e04bf3fa94b74ea3325b3fd7c3f546bcb1 Mon Sep 17 00:00:00 2001
+From 55ae8e1103f4697bfa01a84301a6560b89de5248 Mon Sep 17 00:00:00 2001
 From: "Yann E. MORIN" <yann.morin.1998@free.fr>
-Date: Sun, 5 Mar 2017 10:06:02 +0100
+Date: Mon, 16 Apr 2018 19:52:34 +0300
 Subject: [PATCH] configure: add option to disable tests
 
 When building for a product, tests are not needed.
@@ -11,40 +11,45 @@ available.
 So, add an option to configure to disable building tests altogether.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Reviewed-by: Eric Engestrom <eric.engestrom@imgtec.com>
+Tested-by: Eric Engestrom <eric.engestrom@imgtec.com>
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+
 ---
-Patch submitted upstream:
-https://lists.freedesktop.org/archives/wayland-devel/2017-March/033359.html
+Changes v1 -> v2:
+  - fix typo in yes-check  (Eric)
 ---
- Makefile.am  | 3 ++-
+ Makefile.am  | 2 ++
  configure.ac | 8 ++++++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ 2 files changed, 10 insertions(+)
 
 diff --git a/Makefile.am b/Makefile.am
-index d0c8bd3..9c2541d 100644
+index 741db5ebf9d9..4862d42959f0 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -143,7 +143,7 @@ libwayland_cursor_la_CFLAGS =			\
- 	-I$(top_srcdir)/src			\
- 	-DICONDIR=\"$(ICONDIR)\"
+@@ -160,6 +160,7 @@ pkgconfig_DATA += egl/wayland-egl.pc
+ include_HEADERS += egl/wayland-egl-backend.h
+ pkgconfig_DATA += egl/wayland-egl-backend.pc
  
--
 +if ENABLE_TESTS
  built_test_programs =				\
  	array-test				\
  	client-test				\
-@@ -258,6 +258,7 @@ os_wrappers_test_LDADD = libtest-runner.la
+@@ -287,6 +288,7 @@ os_wrappers_test_LDADD = libtest-runner.la
  
  exec_fd_leak_checker_SOURCES = tests/exec-fd-leak-checker.c
  exec_fd_leak_checker_LDADD = libtest-runner.la
 +endif
  
  EXTRA_DIST += tests/scanner-test.sh			\
- 	tests/data/example.xml				\
+ 	protocol/tests.xml				\
 diff --git a/configure.ac b/configure.ac
-index b583bef..96a5575 100644
+index c74ee97b24a2..5c94b7b76b06 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -87,10 +87,18 @@ AC_ARG_ENABLE([dtd-validation],
+@@ -89,10 +89,18 @@ AC_ARG_ENABLE([dtd-validation],
  	      [],
  	      [enable_dtd_validation=yes])
  
@@ -58,11 +63,11 @@ index b583bef..96a5575 100644
  
  AM_CONDITIONAL(ENABLE_LIBRARIES, test "x$enable_libraries" = xyes)
  
-+AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = "yes")
++AM_CONDITIONAL(ENABLE_TESTS, test "x$enable_tests" = xyes)
 +
  AC_ARG_WITH(icondir, [  --with-icondir=<dir>    Look for cursor icons here],
  		     [  ICONDIR=$withval],
  		     [  ICONDIR=${datadir}/icons])
 -- 
-2.7.4
+2.14.3
 
