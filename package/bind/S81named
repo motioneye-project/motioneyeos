@@ -3,7 +3,6 @@
 CONFIG=/etc/bind/named.conf
 DAEMON=/usr/sbin/named
 
-[ -x $DAEMON ] || exit 0
 [ -f $CONFIG ] || exit 0
 
 case "$1" in
