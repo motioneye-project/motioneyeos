@@ -32,8 +32,6 @@ elif [ ! -f /etc/network/interfaces ]; then
 	exit 0
 fi
 
-[ -x /sbin/netplugd ] || exit 0
-
 if [ -f /etc/sysconfig/netplugd ]; then
     . /etc/sysconfig/netplugd
 fi
