@@ -3188,23 +3188,6 @@ config BR2_HAVE_DEVFILES
 	  completely from Buildroot.
 	  See Buildroot's documentation for more explanations.
 
-###############################################################################
-comment "Legacy options removed in 2013.05"
-
-config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8192
-	bool "Realtek 8192 replaced by Realtek 81xx"
-	select BR2_LEGACY
-	select BR2_PACKAGE_LINUX_FIRMWARE_RTL_81XX
-	help
-	  Now covers the whole Realtek 81xx familly: 8188/8192.
-
-config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8712
-	bool "Realtek 8712 replaced by Realtek 87xx"
-	select BR2_LEGACY
-	select BR2_PACKAGE_LINUX_FIRMWARE_RTL_87XX
-	help
-	  Now covers the whole Realtek 87xx familly: 8712/8723.
-
 endmenu
 
 endif # !SKIP_LEGACY
