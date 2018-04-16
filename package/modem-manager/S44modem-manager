@@ -5,8 +5,6 @@
 
 PIDFILE=/var/run/ModemManager.pid
 
-[ -x $MODEMMANAGER_BIN ] || exit 0
-
 start() {
 	printf "Starting ModemManager: "
 	umask 077
