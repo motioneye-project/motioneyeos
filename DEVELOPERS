@@ -1522,10 +1522,6 @@ F:	package/psplash/
 F:	package/sispmctl/
 F:	package/zsh/
 
-N:	Philipp Claves <claves@budelmann-elektronik.com>
-F:	package/libassuan/
-F:	package/libgpgme/
-
 N:	Philippe Proulx <eeppeliteloop@gmail.com>
 F:	package/lttng-babeltrace/
 F:	package/lttng-libust/
