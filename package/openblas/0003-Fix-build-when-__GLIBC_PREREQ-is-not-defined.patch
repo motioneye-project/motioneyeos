@@ -1,0 +1,45 @@
+From 84eaad62e95b9a80df2138db3fed2a186ef00b62 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 17 Apr 2018 18:46:29 +0300
+Subject: [PATCH] Fix build when __GLIBC_PREREQ is not defined
+
+Rearrange the code so that __GLIBC_PREREQ is not used when not defined.
+This fixes build with musl libc.
+
+[baruch: backport to v0.2.20]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: combines upstream commits 480e69768176 and c4af196a2d
+---
+ driver/others/init.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/driver/others/init.c b/driver/others/init.c
+index 4c75d72e4075..adce075f0ac0 100644
+--- a/driver/others/init.c
++++ b/driver/others/init.c
+@@ -838,7 +838,11 @@ void gotoblas_affinity_init(void) {
+ 
+     nums = sysconf(_SC_NPROCESSORS_CONF);
+      
+-#if !defined(__GLIBC_PREREQ) || !__GLIBC_PREREQ(2, 3)
++#if !defined(__GLIBC_PREREQ)
++    common->num_procs = nums;
++#else
++
++#if !__GLIBC_PREREQ(2, 3)
+     common->num_procs = nums;
+ #elif __GLIBC_PREREQ(2, 7)
+     cpusetp = CPU_ALLOC(nums);
+@@ -872,6 +876,8 @@ void gotoblas_affinity_init(void) {
+ 
+ #endif 
+ 
++#endif
++
+     if(common -> num_procs > MAX_CPUS) {
+       fprintf(stderr, "\nOpenBLAS Warning : The number of CPU/Cores(%d) is beyond the limit(%d). Terminated.\n", common->num_procs, MAX_CPUS);
+       exit(1);
+-- 
+2.17.0
+
