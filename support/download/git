@@ -34,25 +34,28 @@ done
 
 shift $((OPTIND-1)) # Get rid of our options
 
+# We want to check if a cache of the git clone of this repo already exists.
+git_cache="${dl_dir}/git"
+
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
 _git() {
-    eval ${GIT} "${@}"
+    eval GIT_DIR="${git_cache}/.git" ${GIT} "${@}"
 }
-
-# We want to check if a cache of the git clone of this repo already exists.
-git_cache="${dl_dir}/git"
 
 # If the cache directory doesn't exists, init a new repo, which will be
 # fetch'ed later.
 if [ ! -d "${git_cache}" ]; then
+    # We can still go through the wrapper, because 'init' does not use
+    # the path pointed to by GIT_DIR, but really uses the directory
+    # passed as argument.
     _git init "'${git_cache}'"
 fi
 
 pushd "${git_cache}" >/dev/null
 
 # Ensure the repo has an origin (in case a previous run was killed).
-if ! git remote |grep -q -E '^origin$'; then
+if ! _git remote |grep -q -E '^origin$'; then
     _git remote add origin "'${uri}'"
 fi
 
