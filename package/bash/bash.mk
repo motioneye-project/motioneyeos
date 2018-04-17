@@ -39,14 +39,10 @@ BASH_CONF_ENV += bash_cv_getenv_redef=yes
 endif
 endif
 
-# Add /bin/bash to /etc/shells otherwise some login tools like dropbear
-# can reject the user connexion. See man shells.
 define BASH_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		DESTDIR=$(TARGET_DIR) exec_prefix=/ install
 	rm -f $(TARGET_DIR)/bin/bashbug
-	grep -qsE '^/bin/bash' $(TARGET_DIR)/etc/shells \
-		|| echo "/bin/bash" >> $(TARGET_DIR)/etc/shells
 endef
 
 $(eval $(autotools-package))
