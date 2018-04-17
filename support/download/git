@@ -43,14 +43,16 @@ _git() {
     eval GIT_DIR="${git_cache}/.git" ${GIT} "${@}"
 }
 
-# If the cache directory doesn't exists, init a new repo, which will be
-# fetch'ed later.
-if [ ! -d "${git_cache}" ]; then
-    # We can still go through the wrapper, because 'init' does not use
-    # the path pointed to by GIT_DIR, but really uses the directory
-    # passed as argument.
-    _git init "'${git_cache}'"
-fi
+# Initialise a repository in the git cache. If the repository already
+# existed, this is a noop, unless the repository was broken, in which
+# case this magically restores it to working conditions. In the latter
+# case, we might be missing blobs, but that's not a problem: we'll
+# fetch what we need later anyway.
+#
+# We can still go through the wrapper, because 'init' does not use the
+# path pointed to by GIT_DIR, but really uses the directory passed as
+# argument.
+_git init "'${git_cache}'"
 
 pushd "${git_cache}" >/dev/null
 
