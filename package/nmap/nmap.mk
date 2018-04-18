@@ -85,7 +85,7 @@ endif
 # Add a symlink to "nc" if none of the competing netcats is selected
 ifeq ($(BR2_PACKAGE_NMAP_NCAT):$(BR2_PACKAGE_NETCAT)$(BR2_PACKAGE_NETCAT_OPENBSD),y:)
 define NMAP_INSTALL_NCAT_SYMLINK
-        ln -fs ncat $(TARGET_DIR)/usr/bin/nc
+	ln -fs ncat $(TARGET_DIR)/usr/bin/nc
 endef
 NMAP_POST_INSTALL_TARGET_HOOKS += NMAP_INSTALL_NCAT_SYMLINK
 endif
