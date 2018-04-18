@@ -2,6 +2,7 @@ config BR2_PACKAGE_PROSODY
 	bool "prosody"
 	depends on BR2_USE_MMU # fork
 	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
+	depends on !BR2_STATIC_LIBS # luaexpat, luasec, luasocket, luafilesystem
 	select BR2_PACKAGE_LUAEXPAT # runtime
 	select BR2_PACKAGE_LUASEC # runtime
 	select BR2_PACKAGE_LUASOCKET # runtime
@@ -15,6 +16,6 @@ config BR2_PACKAGE_PROSODY
 
 	  https://prosody.im
 
-comment "prosody needs the lua interpreter"
-	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER
+comment "prosody needs the lua interpreter, dynamic library"
+	depends on !BR2_PACKAGE_HAS_LUAINTERPRETER || BR2_STATIC_LIBS
 	depends on BR2_USE_MMU
