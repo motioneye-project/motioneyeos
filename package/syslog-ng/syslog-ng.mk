@@ -4,6 +4,8 @@
 #
 ################################################################################
 
+# When updating the version, please check at runtime if the version in
+# syslog-ng.conf header needs to be updated
 SYSLOG_NG_VERSION = 3.10.1
 SYSLOG_NG_SITE = https://github.com/balabit/syslog-ng/releases/download/syslog-ng-$(SYSLOG_NG_VERSION)
 SYSLOG_NG_LICENSE = LGPL-2.1+ (syslog-ng core), GPL-2.0+ (modules)
