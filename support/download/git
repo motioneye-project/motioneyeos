@@ -81,6 +81,7 @@ if [ -n "$(_git ls-remote origin "'${cset}'" 2>&1)" ]; then
 fi
 if [ ${git_done} -eq 0 ]; then
     printf "Fetching all references\n"
+    _git fetch origin
     _git fetch origin -t
 fi
 
