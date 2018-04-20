@@ -1,0 +1,18 @@
+config BR2_PACKAGE_TK
+	bool "tk"
+	depends on BR2_USE_MMU # tcl
+	depends on BR2_TOOLCHAIN_HAS_THREADS # tcl
+	depends on !BR2_STATIC_LIBS # tcl
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_TCL
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXFT
+	help
+	  A windowing toolkit for use with tcl
+
+	  http://www.tcl.tk
+
+comment "tk needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_XORG7
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
