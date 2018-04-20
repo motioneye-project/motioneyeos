@@ -1,0 +1,32 @@
+From 654444dd8faf02b46f41d81f3d9c623d57bdd399 Mon Sep 17 00:00:00 2001
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Date: Fri, 20 Apr 2018 16:04:17 +0200
+Subject: [PATCH] bt_shell APIs shall only be build if readline is present on
+ the system since it currently depend on it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Upstream-status: https://marc.info/?l=linux-bluetooth&m=152422938306592&w=2
+---
+ Makefile.am | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index daf34b6ca..9c3c17139 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -119,7 +119,11 @@ shared_sources = src/shared/io.h src/shared/timeout.h \
+ 			src/shared/gatt-server.h src/shared/gatt-server.c \
+ 			src/shared/gatt-db.h src/shared/gatt-db.c \
+ 			src/shared/gap.h src/shared/gap.c \
+-			src/shared/tty.h src/shared/shell.c src/shared/shell.h
++			src/shared/tty.h
++
++if READLINE
++shared_sources += src/shared/shell.c src/shared/shell.h
++endif
+ 
+ src_libshared_glib_la_SOURCES = $(shared_sources) \
+ 				src/shared/io-glib.c \
+-- 
+2.14.3
+
