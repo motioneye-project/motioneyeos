@@ -11,10 +11,7 @@ LZ4_LICENSE = BSD-2-Clause (library), GPL-2.0+ (programs)
 LZ4_LICENSE_FILES = lib/LICENSE programs/COPYING
 
 ifeq ($(BR2_STATIC_LIBS),y)
-define LZ4_DISABLE_SHARED
-	$(SED) '/SHARED/d' $(@D)/lib/Makefile
-endef
-LZ4_POST_PATCH_HOOKS += LZ4_DISABLE_SHARED
+LZ4_MAKE_OPTS += BUILD_SHARED=no
 endif
 
 define HOST_LZ4_BUILD_CMDS
@@ -27,17 +24,18 @@ define HOST_LZ4_INSTALL_CMDS
 endef
 
 define LZ4_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) lib lz4
+	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) $(LZ4_MAKE_OPTS) \
+		-C $(@D) lib lz4
 endef
 
 define LZ4_INSTALL_STAGING_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) DESTDIR=$(STAGING_DIR) \
-		PREFIX=/usr install -C $(@D)
+		PREFIX=/usr $(LZ4_MAKE_OPTS) install -C $(@D)
 endef
 
 define LZ4_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(TARGET_CONFIGURE_OPTS) $(MAKE) DESTDIR=$(TARGET_DIR) \
-		PREFIX=/usr install -C $(@D)
+		PREFIX=/usr $(LZ4_MAKE_OPTS) install -C $(@D)
 endef
 
 $(eval $(generic-package))
