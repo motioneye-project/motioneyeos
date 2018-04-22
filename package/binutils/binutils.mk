@@ -130,5 +130,17 @@ ifeq ($(BR2_BINUTILS_ENABLE_LTO),y)
 HOST_BINUTILS_CONF_OPTS += --enable-plugins --enable-lto
 endif
 
+# Hardlinks between binaries in different directories cause a problem
+# with rpath fixup, so we de-hardlink those binaries, and replace them
+# with symbolic links.
+BINUTILS_TOOLS = ar as ld ld.bfd nm objcopy objdump ranlib readelf strip
+define HOST_BINUTILS_FIXUP_HARDLINKS
+	$(foreach tool,$(BINUTILS_TOOLS),\
+		rm -f $(HOST_DIR)/$(GNU_TARGET_NAME)/bin/$(tool) ; \
+		ln -s ../../bin/$(GNU_TARGET_NAME)-$(tool) $(HOST_DIR)/$(GNU_TARGET_NAME)/bin/$(tool)
+	)
+endef
+HOST_BINUTILS_POST_INSTALL_HOOKS += HOST_BINUTILS_FIXUP_HARDLINKS
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
