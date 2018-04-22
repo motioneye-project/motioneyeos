@@ -8,7 +8,7 @@ config BR2_PACKAGE_CCID
 	help
 	  PC/SC driver for USB CCID smart card readers
 
-	  http://pcsclite.alioth.debian.org/ccid.html
+	  https://ccid.apdu.fr/
 
 comment "ccid needs a toolchain w/ threads, dynamic library"
 	depends on BR2_USE_MMU
