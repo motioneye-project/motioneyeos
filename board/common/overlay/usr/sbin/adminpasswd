@@ -23,8 +23,8 @@ rm -f /data/etc/shadow-
 
 # set root and admin passwords (admin is just an alias for root)
 
-echo -en "$PASSWORD\n$PASSWORD\n" | passwd &>/dev/null # root
-echo -en "$PASSWORD\n$PASSWORD\n" | passwd admin &>/dev/null # admin
+echo -en "$PASSWORD\n$PASSWORD\n" | passwd -a md5 &>/dev/null # root
+echo -en "$PASSWORD\n$PASSWORD\n" | passwd -a md5 admin &>/dev/null # admin
 
 sed -r -i 's/root:([^:]+):[[:digit:]]+:/root:\1::/' /data/etc/shadow # removes pwd expiration
 sed -r -i 's/admin:([^:]+):[[:digit:]]+:/admin:\1::/' /data/etc/shadow # removes pwd expiration

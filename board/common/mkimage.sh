@@ -11,18 +11,6 @@ function msg() {
     echo " * $1"
 }
 
-function cleanup {
-    set +e
-
-    # unmount loop mounts
-    mount | grep /dev/loop | cut -d ' ' -f 3 | xargs -r umount
-
-    # remove loop devices
-    losetup -a | cut -d ':' -f 1 | xargs -r losetup -d
-}
-
-trap cleanup EXIT
-
 PART_START=${PART_START:-2048} # 2048 sectors = 1MB
 
 BOOT_SRC=$IMG_DIR/boot
@@ -43,8 +31,7 @@ OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $os_short_name)
 # boot filesystem
 msg "creating boot loop device"
 dd if=/dev/zero of=$BOOT_IMG bs=1M count=$BOOT_SIZE
-loop_dev=$(losetup -f)
-losetup -f $BOOT_IMG
+loop_dev=$(losetup -f --show $BOOT_IMG)
 
 msg "creating boot filesystem"
 mkfs.vfat -F16 $loop_dev
@@ -60,15 +47,14 @@ sync
 msg "unmounting boot filesystem"
 umount $BOOT
 
-msg "destroying boot loop device"
+msg "destroying boot loop device ($loop_dev)"
 losetup -d $loop_dev
 sync
 
 # root filesystem
 msg "creating root loop device"
 dd if=/dev/zero of=$ROOT_IMG bs=1M count=$ROOT_SIZE
-loop_dev=$(losetup -f)
-losetup -f $ROOT_IMG
+loop_dev=$(losetup -f --show $ROOT_IMG)
 
 msg "creating root filesystem"
 mkfs.ext4 $loop_dev
@@ -104,7 +90,7 @@ fi
 msg "unmounting root filesystem"
 umount $ROOT
 
-msg "destroying root loop device"
+msg "destroying root loop device ($loop_dev)"
 losetup -d $loop_dev
 sync
 
@@ -129,8 +115,7 @@ if [ -n "$UBOOT_BIN" ] && [ -n "$UBOOT_SEEK" ]; then
     msg "copying u-boot image"
     dd conv=notrunc if=$UBOOT_BIN of=$DISK_IMG bs=512 seek=$UBOOT_SEEK
 fi
-loop_dev=$(losetup -f)
-losetup -f $DISK_IMG
+loop_dev=$(losetup -f --show $DISK_IMG)
 
 msg "partitioning disk"
 root_part_start=$(($PART_START + $BOOT_SIZE * 2048))
@@ -159,33 +144,31 @@ set -e
 sync
 
 msg "reading partition offsets"
-boot_offs=$(fdisk -u=sectors -l $loop_dev | grep -E 'loop[[:digit:]]p1' | tr -d '*' | tr -s ' ' | cut -d ' ' -f 2)
-root_offs=$(fdisk -u=sectors -l $loop_dev | grep -E 'loop[[:digit:]]p2' | tr -d '*' | tr -s ' ' | cut -d ' ' -f 2)
+boot_offs=$(fdisk -u=sectors -l $loop_dev | grep -E 'loop([[:digit:]])+p1' | tr -d '*' | tr -s ' ' | cut -d ' ' -f 2)
+root_offs=$(fdisk -u=sectors -l $loop_dev | grep -E 'loop([[:digit:]])+p2' | tr -d '*' | tr -s ' ' | cut -d ' ' -f 2)
 
-msg "destroying disk loop device"
+msg "destroying disk loop device ($loop_dev)"
 losetup -d $loop_dev
 
 msg "creating boot loop device"
-loop_dev=$(losetup -f)
-losetup -f -o $(($boot_offs * 512)) $DISK_IMG
+loop_dev=$(losetup -f --show -o $(($boot_offs * 512)) $DISK_IMG)
 
 msg "copying boot image"
 dd if=$BOOT_IMG of=$loop_dev
 sync
 
-msg "destroying boot loop device"
+msg "destroying boot loop device ($loop_dev)"
 losetup -d $loop_dev
 
 msg "creating root loop device"
-loop_dev=$(losetup -f)
-losetup -f -o $(($root_offs * 512)) $DISK_IMG
+loop_dev=$(losetup -f --show -o $(($root_offs * 512)) $DISK_IMG)
 sync
 
 msg "copying root image"
 dd if=$ROOT_IMG of=$loop_dev
 sync
 
-msg "destroying root loop device"
+msg "destroying root loop device ($loop_dev)"
 losetup -d $loop_dev
 sync
 
