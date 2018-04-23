@@ -150,6 +150,11 @@ function do_download() {
     pid=$!
     echo $pid > $FW_DIR/$CURL_PID_FILE
     wait $pid
+    
+    if [ "$?" != 0 ]; then
+        cat $FW_DIR/$CURL_LOG_FILE
+        exit 1
+    fi
 }
 
 function download_status() {
@@ -189,20 +194,26 @@ function do_extract() {
     rm -f $FW_DIR/$GUNZIP_PID_FILE $FW_DIR/$XZCAT_PID_FILE
 
     if [ "$format" == "xz" ]; then
+        DECOMPRESS_LOG_FILE=$FW_DIR/$XZCAT_LOG_FILE
+        DECOMPRESS_PID_FILE=$FW_DIR/$XZCAT_PID_FILE
         xzcat $FW_DIR/$FW_FILE_XZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$XZCAT_LOG_FILE &
     elif [ "$format" == "gz" ]; then
+        DECOMPRESS_LOG_FILE=$FW_DIR/$GUNZIP_LOG_FILE
+        DECOMPRESS_PID_FILE=$FW_DIR/$GUNZIP_PID_FILE
         gunzip -k -c $FW_DIR/$FW_FILE_GZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$GUNZIP_LOG_FILE &
     else
         echo "firmware compression format $format not supported" 1>&2
         exit 1
     fi
+    
     pid=$!
-    if [ "$format" == "xz" ]; then
-        echo $pid > $FW_DIR/$XZCAT_PID_FILE
-    elif [ "$format" == "gz" ]; then
-        echo $pid > $FW_DIR/$GUNZIP_PID_FILE
-    fi
+    echo $pid > $DECOMPRESS_PID_FILE
     wait $pid
+
+    if [ "$?" != 0 ]; then
+        cat $DECOMPRESS_LOG_FILE
+        exit 1
+    fi
 
     # TODO verify hash
 }
