@@ -6,19 +6,20 @@ config BR2_TARGET_UBOOT
 if BR2_TARGET_UBOOT
 choice
 	prompt "Build system"
+	default BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
-
-config BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
-	bool "Legacy"
-	help
-	  Select this option if you use an old U-Boot (older than
-	  2015.04), so that we use the old build system.
 
 config BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
 	bool "Kconfig"
 	help
 	  Select this option if you use a recent U-Boot version (2015.04
 	  or newer), so that we use the Kconfig build system.
+
+config BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
+	bool "Legacy"
+	help
+	  Select this option if you use an old U-Boot (older than
+	  2015.04), so that we use the old build system.
 
 endchoice
 
