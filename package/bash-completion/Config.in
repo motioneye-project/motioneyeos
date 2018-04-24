@@ -1,0 +1,15 @@
+config BR2_PACKAGE_BASH_COMPLETION
+	bool "bash completion"
+	depends on BR2_PACKAGE_BASH
+	help
+	  Add bash completion infrastructure.
+
+	  The bash completion infrastructure is enabled by
+	  /etc/profile.d/bash_completion.sh, which is normally
+	  sourced by /etc/profile.
+
+	  If the system does not use the /etc/profile.d directory
+	  mechanism, the /etc/profile.d/bash_completion.sh script can
+	  be sourced from /etc/bashrc or ~/.bashrc.
+
+	  https://github.com/scop/bash-completion
