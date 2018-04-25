@@ -483,6 +483,10 @@ ifndef $(2)_PATCH
  endif
 endif
 
+ifneq ($$(filter bzr cvs hg svn,$$($(2)_SITE)),)
+BR_NO_CHECK_HASH_FOR += $$($(2)_SOURCE)
+endif
+
 $(2)_ALL_DOWNLOADS = \
 	$$(foreach p,$$($(2)_SOURCE) $$($(2)_PATCH) $$($(2)_EXTRA_DOWNLOADS),\
 		$$(if $$(findstring ://,$$(p)),$$(p),\
