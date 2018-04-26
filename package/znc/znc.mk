@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ZNC_VERSION = 1.6.5
-ZNC_SITE = http://znc.in/releases
+ZNC_VERSION = 1.6.6
+ZNC_SITE = http://znc.in/releases/archive
 ZNC_LICENSE = Apache-2.0
 ZNC_LICENSE_FILES = LICENSE
 ZNC_DEPENDENCIES = host-pkgconf
