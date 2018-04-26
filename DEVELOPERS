@@ -143,6 +143,7 @@ N:	Andy Kennedy <andy.kennedy@adtran.com>
 F:	package/libunwind/
 
 N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
+F:	package/corkscrew/
 F:	package/i2c-tools/
 F:	package/mono/
 F:	package/mono-gtksharp3/
