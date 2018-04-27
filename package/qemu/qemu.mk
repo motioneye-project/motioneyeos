@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QEMU_VERSION = 2.10.2
+QEMU_VERSION = 2.12.0
 QEMU_SOURCE = qemu-$(QEMU_VERSION).tar.xz
 QEMU_SITE = http://download.qemu.org
 QEMU_LICENSE = GPL-2.0, LGPL-2.1, MIT, BSD-3-Clause, BSD-2-Clause, Others/BSD-1c
@@ -95,7 +95,6 @@ define QEMU_CONFIGURE_CMDS
 		./configure \
 			--prefix=/usr \
 			--cross-prefix=$(TARGET_CROSS) \
-			--with-system-pixman \
 			--audio-drv-list= \
 			--enable-kvm \
 			--enable-attr \
@@ -120,6 +119,16 @@ define QEMU_CONFIGURE_CMDS
 			--disable-strip \
 			--disable-seccomp \
 			--disable-sparse \
+			--disable-mpath \
+			--disable-sanitizers \
+			--disable-hvf \
+			--disable-whpx \
+			--disable-malloc-trim \
+			--disable-membarrier \
+			--disable-vhost-crypto \
+			--disable-libxml2 \
+			--disable-capstone \
+			--disable-git-update \
 			$(QEMU_OPTS) \
 	)
 endef

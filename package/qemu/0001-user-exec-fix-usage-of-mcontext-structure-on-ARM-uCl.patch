@@ -17,11 +17,11 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  user-exec.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/user-exec.c b/user-exec.c
+diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
 index 6db0758..2b3d116 100644
---- a/user-exec.c
-+++ b/user-exec.c
-@@ -409,7 +409,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+--- a/accel/tcg/user-exec.c
++++ b/accel/tcg/user-exec.c
+@@ -463,7 +463,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
  
  #if defined(__NetBSD__)
      pc = uc->uc_mcontext.__gregs[_REG_R15];
