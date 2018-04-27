@@ -40,6 +40,10 @@ PROCPS_NG_CONF_OPTS += \
 	--enable-watch8bit
 endif
 
+ifeq ($(BR2_USE_WCHAR),)
+PROCPS_NG_CONF_OPTS += CPPFLAGS=-DOFF_XTRAWIDE
+endif
+
 # numa support requires libdl, so explicitly disable it when
 # BR2_STATIC_LIBS=y
 ifeq ($(BR2_STATIC_LIBS),y)
