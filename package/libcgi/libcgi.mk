@@ -9,5 +9,6 @@ LIBCGI_SITE = https://github.com/rafaelsteil/libcgi/releases/download/v$(LIBCGI_
 
 LIBCGI_INSTALL_STAGING = YES
 LIBCGI_LICENSE = LGPL-2.1+
+LIBCGI_LICENSE_FILES = COPYING
 
 $(eval $(cmake-package))
