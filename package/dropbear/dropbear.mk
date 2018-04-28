@@ -12,6 +12,11 @@ DROPBEAR_LICENSE_FILES = LICENSE
 DROPBEAR_TARGET_BINS = dropbearkey dropbearconvert scp
 DROPBEAR_PROGRAMS = dropbear $(DROPBEAR_TARGET_BINS)
 
+# Disable hardening flags added by dropbear configure.ac, and let
+# Buildroot add them when the relevant options are enabled. This
+# prevents dropbear from using SSP support when not available.
+DROPBEAR_CONF_OPTS = --disable-harden
+
 ifeq ($(BR2_PACKAGE_DROPBEAR_CLIENT),y)
 # Build dbclient, and create a convenience symlink named ssh
 DROPBEAR_PROGRAMS += dbclient
