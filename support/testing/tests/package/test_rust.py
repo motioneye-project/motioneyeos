@@ -21,6 +21,7 @@ class TestRustBase(infra.basetest.BRTest):
     def build_test_prog(self):
         hostdir = os.path.join(self.builddir, 'host')
         env = os.environ.copy()
+        env["USER"] = "br-user"
         env["PATH"] = "{}:".format(os.path.join(hostdir, 'bin')) + env["PATH"]
         env["CARGO_HOME"] = os.path.join(hostdir, 'usr', 'share', 'cargo')
         env["RUST_TARGET_PATH"] = os.path.join(hostdir, 'etc', 'rustc')
