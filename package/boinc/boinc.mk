@@ -44,14 +44,16 @@ endef
 
 BOINC_POST_INSTALL_TARGET_HOOKS += BOINC_REMOVE_UNNEEDED_FILE
 
+define BOINC_USERS
+	boinc -1 boinc -1 * /var/lib/boinc - BOINC user
+endef
+
 define BOINC_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/boinc/S99boinc-client \
 		$(TARGET_DIR)/etc/init.d/S99boinc-client
 endef
 
 define BOINC_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/boinc/boinc-client.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/boinc-client.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -sf ../../../../usr/lib/systemd/system/boinc-client.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/boinc-client.service
