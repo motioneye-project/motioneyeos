@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SUBPROCESS32
+	bool "python-subprocess32"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  A backport of the Python 3 subprocess module for use
+	  on Python 2.
+
+	  https://github.com/google/python-subprocess32
