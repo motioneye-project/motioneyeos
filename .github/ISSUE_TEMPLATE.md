@@ -18,6 +18,10 @@ I am using the following type of camera: (choose from V4L2, MMAL, Network Camera
 
 My camera model is: (insert your camera model, e.g. Logitech C290).
 
+### Network Connection
+
+My motionEyeOS unit is connected to the network via: (choose your network connection, e.g. WiFi, Ethernet).
+
 ### Peripherals
 
 I am using the following peripherals that I consider relevant to this issue:
