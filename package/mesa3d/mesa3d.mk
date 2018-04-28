@@ -43,6 +43,10 @@ else
 MESA3D_CONF_OPTS += --disable-llvm
 endif
 
+ifeq ($(BR2_PACKAGE_MESA3D_NEEDS_ELFUTILS),y)
+MESA3D_DEPENDENCIES += elfutils
+endif
+
 # The Sourcery MIPS toolchain has a special (non-upstream) feature to
 # have "compact exception handling", which unfortunately breaks with
 # mesa3d, so we disable it here by passing -mno-compact-eh.
