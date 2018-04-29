@@ -679,7 +679,12 @@ F:	package/i2pd/
 F:	package/igd2-for-linux/
 F:	package/libcap-ng/
 F:	package/libcdio-paranoia/
+F:	package/libcgicc/
+F:	package/libconfig/
+F:	package/libcue/
+F:	package/libebml/
 F:	package/libglib2/
+F:	package/libmatroska/
 F:	package/libmpdclient/
 F:	package/libupnp/
 F:	package/libupnp18/
