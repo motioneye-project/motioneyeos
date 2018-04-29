@@ -31,5 +31,5 @@ else
 LCMS2_CONF_OPTS += --without-zlib
 endif
 
-$(eval $(host-autotools-package))
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

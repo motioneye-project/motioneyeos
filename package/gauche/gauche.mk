@@ -29,5 +29,5 @@ endif
 # here.
 GAUCHE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
 
-$(eval $(host-autotools-package))
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
