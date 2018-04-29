@@ -1,3 +1,6 @@
-# From https://sourceforge.net/projects/lxde/files/menu-cache/1.0/
-md5	a856ba860b16fdc8c69ee784bc4ade36	menu-cache-1.0.1.tar.xz
-sha1	58862c665f2ae56870a9937cdcd643674b2ac8ba	menu-cache-1.0.1.tar.xz
+# From https://sourceforge.net/projects/lxde/files/menu-cache/1.1/
+md5	99999a0bca48b980105208760c8fd893	menu-cache-1.1.0.tar.xz
+sha1	01e6035aa1fe76d7047bdec235254aa5ce17394a	menu-cache-1.1.0.tar.xz
+
+# Hash for license file:
+sha256	7459fbad62653e4061dbfde3b0cad7c72777838beb10d2d11d969fac6226e7de	COPYING
