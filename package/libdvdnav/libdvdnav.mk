@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBDVDNAV_VERSION = 5.0.3
+LIBDVDNAV_VERSION = 6.0.0
 LIBDVDNAV_SOURCE = libdvdnav-$(LIBDVDNAV_VERSION).tar.bz2
 LIBDVDNAV_SITE = http://www.videolan.org/pub/videolan/libdvdnav/$(LIBDVDNAV_VERSION)
 LIBDVDNAV_INSTALL_STAGING = YES
