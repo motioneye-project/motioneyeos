@@ -179,8 +179,10 @@ some tools to be installed on the host. If the package name is
 variables of other packages, if they depend on +libfoo+ or
 +host-libfoo+.
 
-The call to the +generic-package+ and/or +host-generic-package+ macro *must* be
-at the end of the +.mk+ file, after all variable definitions.
+The call to the +generic-package+ and/or +host-generic-package+ macro
+*must* be at the end of the +.mk+ file, after all variable definitions.
+The call to +host-generic-package+ *must* be after the call to
++generic-package+, if any.
 
 For the target package, the +generic-package+ uses the variables defined by
 the .mk file and prefixed by the uppercased package name:

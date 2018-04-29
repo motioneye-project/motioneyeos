@@ -646,6 +646,12 @@ $(2)_POST_LEGAL_INFO_HOOKS      ?=
 $(2)_TARGET_FINALIZE_HOOKS      ?=
 $(2)_ROOTFS_PRE_CMD_HOOKS       ?=
 
+ifeq ($$($(2)_TYPE),target)
+ifneq ($$(HOST_$(2)_KCONFIG_VAR),)
+$$(error "Package $(1) defines host variant before target variant!")
+endif
+endif
+
 # human-friendly targets and target sequencing
 $(1):			$(1)-install
 
