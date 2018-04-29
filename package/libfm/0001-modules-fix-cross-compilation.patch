@@ -1,0 +1,27 @@
+From 3bc935b732d1ff448727e90340e4be40ef6fc000 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 29 Apr 2018 20:22:29 +0200
+Subject: [PATCH] modules: fix cross-compilation
+
+Do not add -L$(libdir) to AM_LDFLAGS
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/modules/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/modules/Makefile.am b/src/modules/Makefile.am
+index e61f4e01..01c15bd4 100644
+--- a/src/modules/Makefile.am
++++ b/src/modules/Makefile.am
+@@ -11,7 +11,6 @@ AM_CPPFLAGS = \
+ # tell libtool we compile module not library
+ AM_LDFLAGS = \
+ 	-no-undefined -module -avoid-version -shared -export-dynamic \
+-	-L$(libdir) \
+ 	$(GIO_LIBS)
+ 
+ # the module should be linked only with libfm, not libfm-gtk or whatever
+-- 
+2.14.1
+
