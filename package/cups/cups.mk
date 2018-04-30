@@ -24,6 +24,7 @@ CUPS_CONF_OPTS = \
 	--without-java \
 	--without-php \
 	--disable-gssapi \
+	--disable-pam \
 	--libdir=/usr/lib
 CUPS_CONFIG_SCRIPTS = cups-config
 CUPS_DEPENDENCIES = \
