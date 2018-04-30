@@ -683,7 +683,10 @@ F:	package/libcgicc/
 F:	package/libconfig/
 F:	package/libcue/
 F:	package/libebml/
+F:	package/libgee/
 F:	package/libglib2/
+F:	package/libgtk2/
+F:	package/libgtk3/
 F:	package/libmatroska/
 F:	package/libmpdclient/
 F:	package/libupnp/
@@ -691,6 +694,7 @@ F:	package/libupnp18/
 F:	package/minissdpd/
 F:	package/motion/
 F:	package/ncmpc/
+F:	package/pcmanfm/
 F:	package/rygel/
 F:	package/safeclib/
 F:	package/tinycbor/
