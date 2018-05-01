@@ -152,12 +152,39 @@ if ! _git rev-parse --quiet --verify "'${cset}^{commit}'" >/dev/null 2>&1; then
     exit 1
 fi
 
+# The new cset we want to checkout might have different submodules, or
+# have sub-dirs converted to/from a submodule. So we would need to
+# deregister _current_ submodules before we checkout.
+#
+# Using "git submodule deinit --all" would remove all the files for
+# all submodules, including the corresponding .git files or directories.
+# However, it  was only introduced with git-1.8.3, which is too recent
+# for some enterprise-grade distros.
+#
+# So, we fall-back to just removing all submodules directories. We do
+# not need to be recursive, as removing a submodule will de-facto remove
+# its own submodules.
+#
+# For recent git versions, the repository for submodules is stored
+# inside the repository of the super repository, so the following will
+# only remove the working copies of submodules, effectively caching the
+# submodules.
+#
+# For older versions however, the repository is stored in the .git/ of
+# the submodule directory, so the following will effectively remove the
+# the working copy as well as the repository, which means submodules
+# will not be cached for older versions.
+#
+cmd='printf "Deregistering submodule \"%s\"\n" "${path}" && cd .. && rm -rf "${path##*/}"'
+_git submodule --quiet foreach "'${cmd}'"
+
 # Checkout the required changeset, so that we can update the required
 # submodules.
 _git checkout -f -q "'${cset}'"
 
 # Get rid of now-untracked directories (in case a git operation was
-# interrupted in a previous run).
+# interrupted in a previous run, or to get rid of empty directories
+# that were parents of submodules removed above).
 _git clean -ffdx
 
 # Get date of commit to generate a reproducible archive.
