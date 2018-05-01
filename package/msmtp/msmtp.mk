@@ -10,10 +10,16 @@ MSMTP_SOURCE = msmtp-$(MSMTP_VERSION).tar.xz
 MSMTP_DEPENDENCIES = host-pkgconf
 MSMTP_CONF_OPTS = \
 	--without-libidn \
-	--disable-gai-idn \
-	--without-libgsasl
+	--disable-gai-idn
 MSMTP_LICENSE = GPL-3.0+
 MSMTP_LICENSE_FILES = COPYING
+
+ifeq ($(BR2_PACKAGE_LIBGSASL),y)
+MSMTP_CONF_OPTS += --with-libgsasl
+MSMTP_DEPENDENCIES += libgsasl
+else
+MSMTP_CONF_OPTS += --without-libgsasl
+endif
 
 ifeq ($(BR2_PACKAGE_LIBSECRET),y)
 MSMTP_CONF_OPTS += --with-libsecret
