@@ -75,11 +75,15 @@ else
 SYSTEMD_CONF_OPTS += -Daudit=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
+# Both options can't be selected at the same time so prefer libidn2
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+SYSTEMD_DEPENDENCIES += libidn2
+SYSTEMD_CONF_OPTS += -Dlibidn2=true -Dlibidn=false
+else ifeq ($(BR2_PACKAGE_LIBIDN),y)
 SYSTEMD_DEPENDENCIES += libidn
-SYSTEMD_CONF_OPTS += -Dlibidn=true
+SYSTEMD_CONF_OPTS += -Dlibidn=true -Dlibidn2=false
 else
-SYSTEMD_CONF_OPTS += -Dlibidn=false
+SYSTEMD_CONF_OPTS += -Dlibidn=false -Dlibidn2=true
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
