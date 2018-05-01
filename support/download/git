@@ -111,27 +111,9 @@ fi
 
 _git remote set-url origin "'${uri}'"
 
-# Try to fetch with limited depth, since it is faster than a full clone - but
-# that only works if the version is a ref (tag or branch). Before trying to do
-# a shallow clone we check if ${cset} is in the list provided by git ls-remote.
-# If not we fallback to a full fetch.
-#
-# Messages for the type of clone used are provided to ease debugging in
-# case of problems
-git_done=0
-if [ -n "$(_git ls-remote origin "'${cset}'" 2>&1)" ]; then
-    printf "Doing a shallow fetch\n"
-    if _git fetch "${@}" --depth 1 origin "'${cset}'"; then
-        git_done=1
-    else
-        printf "Shallow fetch failed, falling back to fetching all refs\n"
-    fi
-fi
-if [ ${git_done} -eq 0 ]; then
-    printf "Fetching all references\n"
-    _git fetch origin
-    _git fetch origin -t
-fi
+printf "Fetching all references\n"
+_git fetch origin
+_git fetch origin -t
 
 # Try to get the special refs exposed by some forges (pull-requests for
 # github, changes for gerrit...). There is no easy way to know whether
