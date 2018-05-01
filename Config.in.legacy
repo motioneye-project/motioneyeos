@@ -156,6 +156,24 @@ config BR2_PACKAGE_LIBKCAPI_APPS
 	  Test applications (hasher, rng read, speed-test, test) now
 	  have their own configuration options in the libkcapi menu.
 
+config BR2_PACKAGE_MPLAYER
+	bool "mplayer package removed"
+	select BR2_LEGACY
+	help
+	  The mplayer package was removed.
+
+config BR2_PACKAGE_MPLAYER_MPLAYER
+	bool "mplayer package removed"
+	select BR2_LEGACY
+	help
+	  The mplayer package was removed.
+
+config BR2_PACKAGE_MPLAYER_MENCODER
+	bool "mplayer package removed"
+	select BR2_LEGACY
+	help
+	  The mplayer package was removed.
+
 config BR2_PACKAGE_LIBPLAYER_MPLAYER
 	bool "mplayer support in libplayer removed"
 	select BR2_LEGACY
