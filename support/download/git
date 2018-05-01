@@ -154,7 +154,11 @@ fi
 
 # Checkout the required changeset, so that we can update the required
 # submodules.
-_git checkout -q "'${cset}'"
+_git checkout -f -q "'${cset}'"
+
+# Get rid of now-untracked directories (in case a git operation was
+# interrupted in a previous run).
+_git clean -ffdx
 
 # Get date of commit to generate a reproducible archive.
 # %cD is RFC2822, so it's fully qualified, with TZ and all.
