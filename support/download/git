@@ -43,6 +43,24 @@ _git() {
     eval GIT_DIR="${git_cache}/.git" ${GIT} "${@}"
 }
 
+# Create a warning file, that the user should not use the git cache.
+# It's ours. Our precious.
+cat <<-_EOF_ >"${dl_dir}/git.readme"
+	IMPORTANT NOTE!
+
+	The git tree located in this directory is for the exclusive use
+	by Buildroot, which uses it as a local cache to reduce bandwidth
+	usage.
+
+	Buildroot *will* trash any changes in that tree whenever it needs
+	to use it. Buildroot may even remove it in case it detects the
+	repository may have been damaged or corrupted.
+
+	Do *not* work in that directory; your changes will eventually get
+	lost. Do *not* even use it as a remote, or as the source for new
+	worktrees; your commits will eventually get lost.
+_EOF_
+
 # Initialise a repository in the git cache. If the repository already
 # existed, this is a noop, unless the repository was broken, in which
 # case this magically restores it to working conditions. In the latter
