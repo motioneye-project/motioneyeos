@@ -1,4 +1,4 @@
-From 0c8d631f4f9fa24f1bbd56a4dbe9d6f1e2360685 Mon Sep 17 00:00:00 2001
+From 7ce9c408aea03da5787d952747df3be687c92da1 Mon Sep 17 00:00:00 2001
 From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 Date: Sun, 17 Dec 2017 12:26:33 +0100
 Subject: [PATCH] Fix build with libupnp above 1.6.23
@@ -60,5 +60,5 @@ index 23fe4db9ab..c369a04da6 100644
  class Container;
  
 -- 
-2.14.1
+2.14.3
 

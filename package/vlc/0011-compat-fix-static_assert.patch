@@ -1,7 +1,10 @@
+From 6b9c7e7595f8e36d3b221bedb623fa5334f62ce0 Mon Sep 17 00:00:00 2001
 From: Thomas Guillem <thomas@gllm.fr>
-Date: Mon, 14 Dec 2015 09:08:25 +0000 (+0100)
-Subject: compat: fix static_assert
-X-Git-Url: http://git.videolan.org/?p=vlc.git;a=commitdiff_plain;h=6faf9066670db6e0d241ead6a3926b2d9cc6a041
+Date: Mon, 14 Dec 2015 09:08:25 +0100
+Subject: [PATCH] compat: fix static_assert
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
 compat: fix static_assert
 
@@ -10,12 +13,14 @@ It was not possible to use it outside of functions.
 Signed-off-by: Rémi Denis-Courmont <remi@remlab.net>
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
+ include/vlc_fixups.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/include/vlc_fixups.h b/include/vlc_fixups.h
-index 213d3f3..bd798d0 100644
+index 0d4fcd0c8d..0990915e5f 100644
 --- a/include/vlc_fixups.h
 +++ b/include/vlc_fixups.h
-@@ -273,7 +273,9 @@ static inline locale_t newlocale(int mask, const char * locale, locale_t base)
+@@ -240,7 +240,9 @@ static inline locale_t newlocale(int mask, const char * locale, locale_t base)
  #endif
  
  #if !defined (HAVE_STATIC_ASSERT) && !defined(__cpp_static_assert)
@@ -26,3 +31,6 @@ index 213d3f3..bd798d0 100644
  # define static_assert _Static_assert
  #endif
  
+-- 
+2.14.3
+

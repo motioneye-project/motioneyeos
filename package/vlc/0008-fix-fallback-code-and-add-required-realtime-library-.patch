@@ -1,4 +1,4 @@
-From 381bcb7cb03bb602351a323daf3b69b2d4f45e77 Mon Sep 17 00:00:00 2001
+From b5d4edd81bcb685cbea61b01d54afa1fe200b7d2 Mon Sep 17 00:00:00 2001
 From: Waldemar Brodkorb <wbx@openadk.org>
 Date: Fri, 26 Aug 2016 15:11:25 +0200
 Subject: [PATCH] fix fallback code and add required realtime library to link
@@ -11,7 +11,7 @@ Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
  2 files changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index cb1de25..018c11c 100644
+index 15cb4edcfd..16e44a8c61 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -121,6 +121,7 @@ case "${host_os}" in
@@ -23,7 +23,7 @@ index cb1de25..018c11c 100644
    bsdi*)
      SYS=bsdi
 diff --git a/src/posix/thread.c b/src/posix/thread.c
-index 07fa71e..8b8595f 100644
+index 07fa71eb3e..8b8595fcb8 100644
 --- a/src/posix/thread.c
 +++ b/src/posix/thread.c
 @@ -85,7 +85,7 @@ static clockid_t vlc_clock_id;
@@ -36,5 +36,5 @@ index 07fa71e..8b8595f 100644
      assert (val != 0);
      vlc_clock_id = (val < 0) ? CLOCK_REALTIME : CLOCK_MONOTONIC;
 -- 
-2.1.4
+2.14.3
 
