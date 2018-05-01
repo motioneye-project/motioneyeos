@@ -689,6 +689,7 @@ F:	package/libglib2/
 F:	package/libgtk2/
 F:	package/libgtk3/
 F:	package/libidn/
+F:	package/libidn2/
 F:	package/libjpeg/
 F:	package/libmatroska/
 F:	package/libmpdclient/
