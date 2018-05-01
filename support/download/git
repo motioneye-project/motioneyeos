@@ -114,6 +114,13 @@ if ! _git fetch origin "'${cset}:${cset}'" >/dev/null 2>&1; then
     printf "Could not fetch special ref '%s'; assuming it is not special.\n" "${cset}"
 fi
 
+# Check that the changeset does exist. If it does not, no reason to go
+# on, we can fast-track to the exit path.
+if ! _git rev-parse --quiet --verify "'${cset}^{commit}'" >/dev/null 2>&1; then
+    printf "Commit '%s' does not exist in this repository\n." "${cset}"
+    exit 1
+fi
+
 # Checkout the required changeset, so that we can update the required
 # submodules.
 _git checkout -q "'${cset}'"
