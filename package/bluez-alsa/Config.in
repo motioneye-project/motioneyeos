@@ -21,7 +21,7 @@ if BR2_PACKAGE_BLUEZ_ALSA
 config BR2_PACKAGE_BLUEZ_ALSA_HCITOP
 	bool "hcitop"
 	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
-	select BR2_PACKAGE_BSD
+	select BR2_PACKAGE_LIBBSD
 	select BR2_PACKAGE_NCURSES
 	help
 	  Enable top-like monitoring tool for HCI.
