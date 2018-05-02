@@ -267,9 +267,9 @@ endef
 HOST_LLVM_POST_INSTALL_HOOKS = HOST_LLVM_COPY_LLVM_CONFIG_TO_STAGING_DIR
 
 # By default llvm-tblgen is built and installed on the target but it is
-# not necessary.
+# not necessary. Also erase LLVMHello.so from /usr/lib
 define LLVM_DELETE_LLVM_TBLGEN_TARGET
-	rm -f $(TARGET_DIR)/usr/bin/llvm-tblgen
+	rm -f $(TARGET_DIR)/usr/bin/llvm-tblgen $(TARGET_DIR)/usr/lib/LLVMHello.so
 endef
 LLVM_POST_INSTALL_TARGET_HOOKS = LLVM_DELETE_LLVM_TBLGEN_TARGET
 
