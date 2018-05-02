@@ -44,6 +44,11 @@
 #include <sys/time.h>
 #endif
 
+/* glibc without crypt() */
+#ifndef _XOPEN_CRYPT
+#include <crypt.h>
+#endif
+
 /* Application-specific */
 #include "utils.h"
 
