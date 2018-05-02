@@ -677,6 +677,7 @@ F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/i2pd/
 F:	package/igd2-for-linux/
+F:	package/lftp/
 F:	package/libcap-ng/
 F:	package/libcdio-paranoia/
 F:	package/libcgicc/
@@ -687,12 +688,15 @@ F:	package/libgee/
 F:	package/libglib2/
 F:	package/libgtk2/
 F:	package/libgtk3/
+F:	package/libidn/
+F:	package/libjpeg/
 F:	package/libmatroska/
 F:	package/libmpdclient/
 F:	package/libupnp/
 F:	package/libupnp18/
 F:	package/minissdpd/
 F:	package/motion/
+F:	package/mutt/
 F:	package/ncmpc/
 F:	package/pcmanfm/
 F:	package/rygel/
