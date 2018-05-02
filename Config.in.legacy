@@ -145,6 +145,17 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.02"
 
+config BR2_PACKAGE_TRANSMISSION_REMOTE
+	bool "transmission remote tool option removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_TRANSMISSION_DAEMON
+	help
+	  Upstream does not provide a separate configure option for
+	  the tool transmission-remote, it is built when the
+	  transmission daemon has been enabled. Therefore, Buildroot
+	  has automatically enabled BR2_PACKAGE_TRANSMISSION_DAEMON
+	  for you.
+
 config BR2_KERNEL_HEADERS_3_4
 	bool "kernel headers version 3.4.x are no longer supported"
 	select BR2_KERNEL_HEADERS_4_1

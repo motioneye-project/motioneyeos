@@ -75,12 +75,6 @@ else
 TRANSMISSION_CONF_OPTS += --disable-daemon
 endif
 
-ifeq ($(BR2_PACKAGE_TRANSMISSION_REMOTE),y)
-TRANSMISSION_CONF_OPTS += --enable-remote
-else
-TRANSMISSION_CONF_OPTS += --disable-remote
-endif
-
 ifeq ($(BR2_PACKAGE_TRANSMISSION_GTK),y)
 TRANSMISSION_CONF_OPTS += --with-gtk
 TRANSMISSION_DEPENDENCIES += libgtk3
