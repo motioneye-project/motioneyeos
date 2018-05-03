@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBLOGGING_VERSION = 1.0.5
+LIBLOGGING_VERSION = 1.0.6
 LIBLOGGING_SITE = http://download.rsyslog.com/liblogging
 LIBLOGGING_LICENSE = BSD-2-Clause
 LIBLOGGING_LICENSE_FILES = COPYING
