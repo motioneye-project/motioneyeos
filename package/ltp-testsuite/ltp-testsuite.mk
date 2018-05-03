@@ -10,16 +10,8 @@ LTP_TESTSUITE_SITE = https://github.com/linux-test-project/ltp/releases/download
 LTP_TESTSUITE_LICENSE = GPL-2.0, GPL-2.0+
 LTP_TESTSUITE_LICENSE_FILES = COPYING
 
-# Do not enable Open POSIX testsuite as it doesn't cross-compile
-# properly: t0 program is built for the host machine. Notice that due
-# to a bug, --without-open-posix-testsuite actually enables the test
-# suite.
-# See https://github.com/linux-test-project/ltp/issues/143 (invalid
-# autoconf test) and
-# https://github.com/linux-test-project/ltp/issues/144 (Open POSIX
-# testsuite not cross-compiling).
 LTP_TESTSUITE_CONF_OPTS += \
-	--with-realtime-testsuite
+	--with-realtime-testsuite --with-open-posix-testsuite
 
 ifeq ($(BR2_LINUX_KERNEL),y)
 LTP_TESTSUITE_DEPENDENCIES += linux
