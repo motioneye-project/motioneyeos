@@ -9,7 +9,10 @@ x86_64-linux-gcc: ERROR: unsafe header/library path used in cross-compilation: '
 Downloaded from
 http://bugs.ghostscript.com/show_bug.cgi?id=696508#c3
 
+Slightly updated to work with 9.23
+
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -24,6 +27,7 @@ index d0f62d7..0d49344 100644
  LIBTIFFDIR='src'
 -LIBTIFFCONFDIR=''
 +LIBTIFFCONFDIR='src'
+ TIFFCFLAGS=''
  
  TIFFDEVS_ALL='tiffs tiff12nc tiff24nc tiff48nc tiff32nc tiff64nc tiffcrle tifflzw tiffpack tiffgray tiffsep tiffsep1 tiffscaled tiffscaled4 tiffscaled8 tiffscaled24 tiffscaled32'
  FAX_DEVS_ALL='cfax dfaxlow dfaxhigh fax faxg3 faxg32d faxg4 tiffg3 tiffg32d tiffg4 tfax'
