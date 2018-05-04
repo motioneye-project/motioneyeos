@@ -47,6 +47,16 @@ else
 APR_UTIL_CONF_OPTS += --without-sqlite3
 endif
 
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+APR_UTIL_CONF_OPTS += \
+	--with-ldap \
+	--with-ldap-include="$(STAGING_DIR)/usr/include/" \
+	--with-ldap-lib="$(STAGING_DIR)/usr/lib"
+APR_UTIL_DEPENDENCIES += openldap
+else
+APR_UTIL_CONF_OPTS += --without-ldap
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 APR_UTIL_CONF_OPTS += --with-crypto --with-openssl="$(STAGING_DIR)/usr"
 APR_UTIL_DEPENDENCIES += openssl
