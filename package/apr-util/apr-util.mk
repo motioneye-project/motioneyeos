@@ -54,6 +54,13 @@ else
 APR_UTIL_CONF_OPTS += --without-crypto
 endif
 
+ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
+APR_UTIL_CONF_OPTS += --with-pgsql="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += postgresql
+else
+APR_UTIL_CONF_OPTS += --without-pgsql
+endif
+
 ifeq ($(BR2_PACKAGE_UNIXODBC),y)
 APR_UTIL_CONF_OPTS += --with-odbc="$(STAGING_DIR)/usr"
 # avoid using target binary $(STAGING_DIR)/usr/bin/odbc_config
