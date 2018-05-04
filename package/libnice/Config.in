@@ -1,8 +1,10 @@
 config BR2_PACKAGE_LIBNICE
 	bool "libnice"
+	depends on !BR2_STATIC_LIBS # gnutls
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_GNUTLS
 	select BR2_PACKAGE_LIBGLIB2
 	help
 	  Libnice is an implementation of the IETF's Interactive
@@ -15,6 +17,7 @@ config BR2_PACKAGE_LIBNICE
 
 	  http://nice.freedesktop.org/wiki/
 
-comment "libnice needs a toolchain w/ wchar, threads"
+comment "libnice needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
