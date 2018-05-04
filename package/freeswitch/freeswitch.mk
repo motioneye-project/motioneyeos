@@ -275,6 +275,17 @@ FREESWITCH_DEPENDENCIES += opencv
 FREESWITCH_ENABLED_MODULES += applications/mod_cv
 endif
 
+ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
+FREESWITCH_CONF_ENV += \
+	ac_cv_path_PG_CONFIG=$(STAGING_DIR)/usr/bin/pg_config
+FREESWITCH_CONF_OPTS += \
+	--enable-core-pgsql-pkgconfig \
+	--enable-core-pgsql-support
+FREESWITCH_DEPENDENCIES += postgresql
+else
+FREESWITCH_CONF_OPTS += --disable-core-pgsql-support
+endif
+
 ifeq ($(BR2_PACKAGE_UNIXODBC),y)
 FREESWITCH_DEPENDENCIES += unixodbc
 FREESWITCH_CONF_OPTS += \
