@@ -1,3 +1,34 @@
+2018.02.2, Released May 4th, 2018
+
+	Important / security related fixes.
+
+	Tweak package size/file instrumentation to better handle
+	package rebuilds.
+
+	Revert /etc/shells creation when bash is enabled.
+
+	Exclude /lib/firmware from the rpath fixup logic, as it may
+	contain non-native ELF files.
+
+	Scanpypi: Support the new PyPi infrastructure.
+
+	Handle GCC 8.x on the host.
+
+	Ensure timestamp of /usr is updated to support the systemd
+	ConditionNeedsUpdate option.
+
+	Updated/fixed packages: bluez5_utils, flann, gdb, gnupg2,
+	grub2, libcec, libcgi, libglib2, libgpg-error, libgpgme,
+	libtomcrypt, mbedtls, mkpasswd, php, python, python-requests,
+	python-watchdog, qt53d, qt5websockets, sdl2, sdl2_image,
+	syslog-ng, systemd, tcl, tcllib, uclibc, usb_modeswitch,
+	wireguard, wmctrl
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10896: /bin/sh not in /etc/shells
+	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is enabled
+
 2018.02.1, Released April 9th, 2018
 
 	Important / security related fixes.
