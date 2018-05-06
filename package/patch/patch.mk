@@ -11,10 +11,10 @@ PATCH_LICENSE = GPL-3.0+
 PATCH_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_ATTR),y)
-PATCH_CONF_OPTS += --enable-attr
+PATCH_CONF_OPTS += --enable-xattr
 PATCH_DEPENDENCIES += attr
 else
-PATCH_CONF_OPTS += --disable-attr
+PATCH_CONF_OPTS += --disable-xattr
 endif
 
 $(eval $(autotools-package))
