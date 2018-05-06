@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/libmng/files/libmng-devel/2.0.3/
 md5	e9e899adb1b681b17f14d91e261878c5	libmng-2.0.3.tar.xz
 sha1	0f141482ffcef6f8cd4413f945a59310ac2e49af	libmng-2.0.3.tar.xz
+
+# Hash for license file:
+sha256	ba280734838eb3f22a85b92a7e62de357d4d4c325029dce723b0cb125c417c35	LICENSE
