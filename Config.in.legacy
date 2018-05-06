@@ -145,6 +145,17 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_LIBKCAPI_APPS
+	bool "libkcapi test applications removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBKCAPI_HASHER if !BR2_STATIC_LIBS
+	select BR2_PACKAGE_LIBKCAPI_RNGAPP
+	select BR2_PACKAGE_LIBKCAPI_SPEED
+	select BR2_PACKAGE_LIBKCAPI_TEST
+	help
+	  Test applications (hasher, rng read, speed-test, test) now
+	  have their own configuration options in the libkcapi menu.
+
 config BR2_PACKAGE_IQVLINUX
 	bool "iqvlinux package removed"
 	select BR2_LEGACY

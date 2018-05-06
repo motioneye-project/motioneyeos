@@ -12,18 +12,28 @@ LIBKCAPI_INSTALL_STAGING = YES
 LIBKCAPI_LICENSE = BSD-3-Clause (library), BSD-3-Clause or GPL-2.0 (programs)
 LIBKCAPI_LICENSE_FILES = COPYING COPYING.gplv2 COPYING.bsd
 
-ifeq ($(BR2_PACKAGE_LIBKCAPI_APPS),y)
-LIBKCAPI_CONF_OPTS += \
-	--enable-kcapi-speed \
-	--enable-kcapi-test \
-	--enable-kcapi-hasher \
-	--enable-kcapi-rngapp
+ifeq ($(BR2_PACKAGE_LIBKCAPI_HASHER),y)
+LIBKCAPI_CONF_OPTS += --enable-kcapi-hasher
 else
-LIBKCAPI_CONF_OPTS += \
-	--disable-kcapi-speed \
-	--disable-kcapi-test \
-	--disable-kcapi-hasher \
-	--disable-kcapi-rngapp
+LIBKCAPI_CONF_OPTS += --disable-kcapi-hasher
+endif
+
+ifeq ($(BR2_PACKAGE_LIBKCAPI_RNGAPP),y)
+LIBKCAPI_CONF_OPTS += --enable-kcapi-rngapp
+else
+LIBKCAPI_CONF_OPTS += --disable-kcapi-rngapp
+endif
+
+ifeq ($(BR2_PACKAGE_LIBKCAPI_SPEED),y)
+LIBKCAPI_CONF_OPTS += --enable-kcapi-speed
+else
+LIBKCAPI_CONF_OPTS += --disable-kcapi-speed
+endif
+
+ifeq ($(BR2_PACKAGE_LIBKCAPI_TEST),y)
+LIBKCAPI_CONF_OPTS += --enable-kcapi-test
+else
+LIBKCAPI_CONF_OPTS += --disable-kcapi-test
 endif
 
 $(eval $(autotools-package))
