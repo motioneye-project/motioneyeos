@@ -16,6 +16,8 @@ CLAMAV_DEPENDENCIES = \
 	openssl \
 	zlib \
 	$(TARGET_NLS_DEPENDENCIES)
+# 0003-m4-reorganization-libs-curl.m4-fix-curl-config-detec.patch
+CLAMAV_AUTORECONF = YES
 
 # mmap cannot be detected when cross-compiling, needed for mempool support
 CLAMAV_CONF_ENV = \
