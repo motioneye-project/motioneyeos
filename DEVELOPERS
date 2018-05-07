@@ -191,6 +191,7 @@ F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/python-jsonmodels/
+F:	package/python-reentry/
 F:	package/python-subprocess32/
 F:	package/python-yieldfrom/
 F:	package/zeromq/

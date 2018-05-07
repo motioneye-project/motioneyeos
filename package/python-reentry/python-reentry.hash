@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/pypi/reentry/json
+sha256	00df980d8c61713f5002d4d893ba6ea38e9a721cd04aef5a520b974e700ab550  reentry-1.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256	4ae7f3216208a7e2327236e95bcd2397b2495f1c2298c708986c893bea608509  LICENSE
