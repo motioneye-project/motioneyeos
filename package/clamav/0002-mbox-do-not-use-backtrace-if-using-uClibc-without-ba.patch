@@ -1,4 +1,8 @@
-mbox: do not use backtrace if using uClibc without backtrace support
+From 053bac34b9f0f947c58fcdf80ac03d5a6b05aa12 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Mon, 7 May 2018 23:15:58 +0200
+Subject: [PATCH] mbox: do not use backtrace if using uClibc without backtrace
+ support
 
 Since uClibc can be configured without support for backtrace, disable
 the backtrace if we are building with a uClibc that was built without
@@ -8,10 +12,15 @@ This is a bit hacky, and would greatly benefit from a test in ./configure
 instead, but does nicely as a quick fix for now.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
-diff -durN clamav-0.98.4.orig/libclamav/mbox.c clamav-0.98.4/libclamav/mbox.c
---- clamav-0.98.4.orig/libclamav/mbox.c	2014-05-21 17:25:05.000000000 +0200
-+++ clamav-0.98.4/libclamav/mbox.c	2014-11-16 17:21:04.885383286 +0100
-@@ -83,7 +83,7 @@
+---
+ libclamav/mbox.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libclamav/mbox.c b/libclamav/mbox.c
+index 71f540c0a..4851297a9 100644
+--- a/libclamav/mbox.c
++++ b/libclamav/mbox.c
+@@ -98,7 +98,7 @@
  #include <features.h>
  #endif
  
@@ -20,3 +29,6 @@ diff -durN clamav-0.98.4.orig/libclamav/mbox.c clamav-0.98.4/libclamav/mbox.c
  #define HAVE_BACKTRACE
  #endif
  #endif
+-- 
+2.14.3
+
