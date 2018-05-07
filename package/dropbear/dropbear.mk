@@ -27,8 +27,11 @@ DROPBEAR_MAKE = \
 	$(MAKE) MULTI=1 SCPPROGRESS=1 \
 	PROGRAMS="$(DROPBEAR_PROGRAMS)"
 
-ifeq ($(BR2_STATIC_LIBS),y)
-DROPBEAR_CONF_OPTS += --enable-static
+# With BR2_SHARED_STATIC_LIBS=y the generic infrastructure adds a
+# --enable-static flags causing dropbear to be built as a static
+# binary. Adding a --disable-static reverts this
+ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+DROPBEAR_CONF_OPTS += --disable-static
 endif
 
 # Ensure that dropbear doesn't use crypt() when it's not available
