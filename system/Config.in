@@ -31,10 +31,6 @@ config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 	help
 	  Path to custom target skeleton.
 
-# dummy config so merged /usr workarounds can also be activated for
-# custom rootfs skeleton
-config BR2_ROOTFS_MERGED_USR
-
 endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
@@ -192,8 +188,6 @@ config BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES
 	help
 	  Support extended attributes handling in device tables
 
-if BR2_ROOTFS_SKELETON_DEFAULT
-
 config BR2_ROOTFS_MERGED_USR
 	bool "Use symlinks to /usr for /bin, /sbin and /lib"
 	help
@@ -205,6 +199,8 @@ config BR2_ROOTFS_MERGED_USR
 	  If you say 'y' here, then /bin, /sbin and /lib will be
 	  symlinks to their counterparts in /usr. In this case, /usr can
 	  not be a separate filesystem.
+
+if BR2_ROOTFS_SKELETON_DEFAULT
 
 config BR2_TARGET_ENABLE_ROOT_LOGIN
 	bool "Enable root login with password"
