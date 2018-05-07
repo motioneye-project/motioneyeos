@@ -782,6 +782,22 @@ endif
 	@$(call MESSAGE,"Sanitizing RPATH in target tree")
 	$(TOPDIR)/support/scripts/fix-rpath target
 
+# For a merged /usr, ensure that /lib, /bin and /sbin and their /usr
+# counterparts are appropriately setup as symlinks ones to the others.
+ifeq ($(BR2_ROOTFS_MERGED_USR),y)
+
+	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
+		$(call MESSAGE,"Sanity check in overlay $(d)"); \
+		not_merged_dirs="$$(support/scripts/check-merged-usr.sh $(d))"; \
+		test -n "$$not_merged_dirs" && { \
+			echo "ERROR: The overlay in $(d) is not" \
+				"using a merged /usr for the following directories:" \
+				$$not_merged_dirs; \
+			exit 1; \
+		} || true$(sep))
+
+endif # merged /usr
+
 	@$(foreach d, $(call qstrip,$(BR2_ROOTFS_OVERLAY)), \
 		$(call MESSAGE,"Copying overlay $(d)"); \
 		rsync -a --ignore-times --keep-dirlinks $(RSYNC_VCS_EXCLUSIONS) \
