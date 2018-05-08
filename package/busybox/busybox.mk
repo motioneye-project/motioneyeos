@@ -156,21 +156,6 @@ define BUSYBOX_INTERNAL_SHADOW_PASSWORDS
 endef
 endif
 
-# We also need to use internal shadow password functions when using
-# the musl C library, since some of them are not yet implemented by
-# musl.
-#
-# Do not use utmp/wmtp support. wmtp support is not available in musl,
-# and utmp support is not sufficient for Busybox.
-ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-define BUSYBOX_MUSL_TWEAKS
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_PWD_GRP,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_SHADOW,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_DISABLE_OPT,CONFIG_FEATURE_UTMP,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_DISABLE_OPT,CONFIG_FEATURE_WTMP,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
 define BUSYBOX_INSTALL_UDHCPC_SCRIPT
 	if grep -q CONFIG_UDHCPC=y $(@D)/.config; then \
 		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
@@ -293,7 +278,6 @@ define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_SET_WATCHDOG)
 	$(BUSYBOX_SET_SELINUX)
 	$(BUSYBOX_SET_INDIVIDUAL_BINARIES)
-	$(BUSYBOX_MUSL_TWEAKS)
 endef
 
 define BUSYBOX_CONFIGURE_CMDS
