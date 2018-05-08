@@ -40,4 +40,4 @@ _localfiles() {
     eval ${LOCALFILES} "${@}"
 }
 
-_localfiles ${verbose} "'${dir}${file}'" "'${output}'"
+_localfiles ${verbose} "'${dir##file://}/${file}'" "'${output}'"
