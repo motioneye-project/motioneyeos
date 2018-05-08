@@ -2,7 +2,6 @@
 
 # We want to catch any unexpected failure, and exit immediately
 set -e
-set -x
 
 # Download helper for cp, to be called from the download wrapper script
 #
