@@ -48,6 +48,7 @@ APR_UTIL_CONF_OPTS += --without-sqlite3
 endif
 
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+APR_UTIL_CONF_ENV += ac_cv_ldap_set_rebind_proc_style=three
 APR_UTIL_CONF_OPTS += \
 	--with-ldap \
 	--with-ldap-include="$(STAGING_DIR)/usr/include/" \
