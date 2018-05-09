@@ -1541,6 +1541,7 @@ F:	package/modem-manager/
 F:	package/network-manager/
 F:	package/ofono/
 F:	package/python-networkmanager/
+F:	support/kconfig/
 
 N:	Phil Eichinger <phil.eichinger@gmail.com>
 F:	package/libqrencode/
