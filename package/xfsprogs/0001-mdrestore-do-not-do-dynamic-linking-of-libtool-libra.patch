@@ -14,6 +14,8 @@ Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 [Sent upstream: https://www.spinics.net/lists/xfs/msg36149.html]
 [baruch: update for v4.15.1; extend to include scrub]
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[matt: update for v4.16.1; adjusted libunistring -> libicu]
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
 ---
  mdrestore/Makefile | 2 +-
  scrub/Makefile     | 2 +-
@@ -38,8 +40,8 @@ index 063279400262..949f6fd8ba94 100644
 +++ b/scrub/Makefile
 @@ -70,7 +70,7 @@ xfs_scrub.c
  
- LLDLIBS += $(LIBHANDLE) $(LIBFROG) $(LIBPTHREAD) $(LIBUNISTRING) $(LIBRT)
- LTDEPENDENCIES += $(LIBHANDLE) $(LIBFROG) $(LIBUNISTRING) $(LIBRT)
+ LLDLIBS += $(LIBHANDLE) $(LIBFROG) $(LIBPTHREAD) $(LIBICU_LIBS) $(LIBRT)
+ LTDEPENDENCIES += $(LIBHANDLE) $(LIBFROG)
 -LLDFLAGS = -static
 +LLDFLAGS = -static-libtool-libs
  
