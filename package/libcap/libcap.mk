@@ -18,6 +18,9 @@ HOST_LIBCAP_DEPENDENCIES = host-gperf
 ifeq ($(BR2_STATIC_LIBS),y)
 LIBCAP_MAKE_TARGET = libcap.a libcap.pc
 LIBCAP_MAKE_INSTALL_TARGET = install-static
+else ifeq ($(BR2_SHARED_LIBS),y)
+LIBCAP_MAKE_TARGET = all
+LIBCAP_MAKE_INSTALL_TARGET = install-shared
 else
 LIBCAP_MAKE_TARGET = all
 LIBCAP_MAKE_INSTALL_TARGET = install
