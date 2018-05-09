@@ -11,27 +11,30 @@ if test $? != 0 ; then
 	exit 1
 fi
 
-# sanity check for CWD in LD_LIBRARY_PATH
-# try not to rely on egrep..
-if test -n "$LD_LIBRARY_PATH" ; then
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep '::' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep ':\.:' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep 'TRiGGER_start:' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep 'TRiGGER_start\.:' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep ':TRiGGER_end' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep ':\.TRiGGER_end' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$LD_LIBRARY_PATH"TRiGGER_end | grep 'TRiGGER_start\.TRiGGER_end' >/dev/null 2>&1
-	if test $? = 0; then
-		echo
-		echo "You seem to have the current working directory in your"
-		echo "LD_LIBRARY_PATH environment variable. This doesn't work."
-		exit 1;
-	fi
-fi;
+# Sanity check for CWD in LD_LIBRARY_PATH
+case ":${LD_LIBRARY_PATH:-unset}:" in
+(*::*|*:.:*)
+	echo
+	echo "You seem to have the current working directory in your"
+	echo "LD_LIBRARY_PATH environment variable. This doesn't work."
+	exit 1
+	;;
+esac
 
-# PATH should not contain a newline, otherwise it fails in spectacular ways
-# as soon as PATH is referenced in a package rule
-case "${PATH}" in
+# Sanity check for CWD in PATH. Having the current working directory
+# in the PATH makes various packages (e.g. toolchain, coreutils...)
+# build process break.
+# PATH should not contain a newline, otherwise it fails in spectacular
+# ways as soon as PATH is referenced in a package rule
+# An empty PATH is technically possible, but in practice we would not
+# even arrive here if that was the case.
+case ":${PATH:-unset}:" in
+(*::*|*:.:*)
+	echo
+	echo "You seem to have the current working directory in your"
+	echo "PATH environment variable. This doesn't work."
+	exit 1
+	;;
 (*"
 "*)	printf "\n"
 	# Break the '\n' sequence, or a \n is printed (which is not what we want).
@@ -40,22 +43,6 @@ case "${PATH}" in
 	exit 1
 	;;
 esac
-
-# sanity check for CWD in PATH. Having the current working directory
-# in the PATH makes the toolchain build process break.
-# try not to rely on egrep..
-if test -n "$PATH" ; then
-	echo TRiGGER_start"$PATH"TRiGGER_end | grep ':\.:' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$PATH"TRiGGER_end | grep 'TRiGGER_start\.:' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$PATH"TRiGGER_end | grep ':\.TRiGGER_end' >/dev/null 2>&1 ||
-	echo TRiGGER_start"$PATH"TRiGGER_end | grep 'TRiGGER_start\.TRiGGER_end' >/dev/null 2>&1
-	if test $? = 0; then
-		echo
-		echo "You seem to have the current working directory in your"
-		echo "PATH environment variable. This doesn't work."
-		exit 1;
-	fi
-fi;
 
 if test -n "$PERL_MM_OPT" ; then
 	echo
