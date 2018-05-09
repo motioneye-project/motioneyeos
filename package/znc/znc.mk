@@ -32,7 +32,8 @@ else
 ZNC_CONF_OPTS += --disable-zlib
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON3),y)
+# python support depends on icu
+ifeq ($(BR2_PACKAGE_ICU)$(BR2_PACKAGE_PYTHON3),yy)
 ZNC_DEPENDENCIES += python3 host-swig
 ZNC_CONF_OPTS += --enable-python=python3
 else
