@@ -4,7 +4,8 @@
 	uClibc-ng 1.0.30, Linux kernel headers bumped to 4.16.x.
 
 	Architecture: support for the Blackfin architecture has been
-	removed.
+	removed, as it was removed from Linux upstream, poorly
+	maintained in binutils/gdb, and abandoned by Analog Devices.
 
 	Numerous packages updated to have hashes for their license
 	files.
@@ -94,6 +95,19 @@
 	Removed defconfigs: ci40, firefly_rk3288,
 	freescale_p1010rdb_pa, freescale_mpc8315erdb, riotboard,
 	teliv_evk_pro3
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10151: toolchain eclipse register : fails with a custom
+		BR2_HOST_DIR
+	#10511: Packages get downloaded uncompressed with wget
+	#10531: QtWebengine doesn't build if the host hasn't a 32 bits
+		C++ compiler working
+	#10846: error in compiling gnutls
+	#10886: openssl-1.0.2n fails to build
+	#10896: /bin/sh not in /etc/shells
+	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is
+		enabled
 
 2018.02.1, Released April 9th, 2018
 
