@@ -11,6 +11,14 @@ STRACE_LICENSE = BSD-3-Clause
 STRACE_LICENSE_FILES = COPYING
 STRACE_CONF_OPTS = --enable-mpers=check
 
+# strace bundle some kernel headers to build libmpers, this mixes userspace
+# headers and kernel headers which break the build with musl.
+# The stddef.h from gcc is used instead of the one from musl.
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+STRACE_CONF_OPTS += st_cv_m32_mpers=no \
+	st_cv_mx32_mpers=no
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 STRACE_DEPENDENCIES += libunwind
 STRACE_CONF_OPTS += --with-libunwind
