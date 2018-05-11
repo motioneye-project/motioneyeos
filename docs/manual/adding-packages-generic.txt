@@ -197,12 +197,12 @@ information is (assuming the package name is +libfoo+) :
 * +LIBFOO_VERSION+, mandatory, must contain the version of the
   package. Note that if +HOST_LIBFOO_VERSION+ doesn't exist, it is
   assumed to be the same as +LIBFOO_VERSION+. It can also be a
-  revision number, branch or tag for packages that are fetched
-  directly from their revision control system. +
-  Examples: +
-    +LIBFOO_VERSION = 0.1.2+ +
-    +LIBFOO_VERSION = cb9d6aa9429e838f0e54faa3d455bcbab5eef057+ +
-    +LIBFOO_VERSION = stable+
+  revision number or a tag for packages that are fetched directly
+  from their version control system. Do not use a branch name as
+  version; it does not work. Examples:
+  ** a version for a release tarball: +LIBFOO_VERSION = 0.1.2+
+  ** a sha1 for a git tree: +LIBFOO_VERSION = cb9d6aa9429e838f0e54faa3d455bcbab5eef057+
+  ** a tag for a git tree +LIBFOO_VERSION = v0.1.2+
 
 * +LIBFOO_SOURCE+ may contain the name of the tarball of the package,
   which Buildroot will use to download the tarball from
