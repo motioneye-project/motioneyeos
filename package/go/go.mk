@@ -78,7 +78,8 @@ HOST_GO_TARGET_CC = \
 
 define HOST_GO_BUILD_CMDS
 	cd $(@D)/src && \
-		$(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) CGO_ENABLED=$(HOST_GO_CGO_ENABLED) ./make.bash
+		$(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
+		./make.bash $(if $(VERBOSE),-v)
 endef
 
 define HOST_GO_INSTALL_CMDS
