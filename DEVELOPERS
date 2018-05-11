@@ -153,6 +153,9 @@ F:	package/python-pydal/
 F:	package/python-web2py/
 F:	package/sysdig/
 
+N:	Anisse Astier <anisse@astier.eu>
+F:	package/go/
+
 N:	Antony Pavlov <antonynpavlov@gmail.com>
 F:	package/lsscsi/
 
