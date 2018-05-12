@@ -70,3 +70,5 @@ class TestGitRefs(GitTestBase):
         self.check_download("git-partial-sha1-reachable-by-branch")
         self.check_download("git-sha1-branch-head")
         self.check_download("git-sha1-reachable-by-branch")
+        self.check_download("git-submodule-disabled")
+        self.check_download("git-submodule-enabled")
