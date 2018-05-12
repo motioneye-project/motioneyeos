@@ -33,6 +33,15 @@ class GitTestBase(infra.basetest.BRTest):
                       "{}-source".format(package)],
                      env)
 
+    def check_download(self, package):
+        # store downloaded tarball inside the output dir so the test infra
+        # cleans it up at the end
+        env = {"BR2_DL_DIR": os.path.join(self.builddir, "dl"),
+               "GITREMOTE_PORT_NUMBER": str(self.gitremote.port)}
+        self.b.build(["{}-dirclean".format(package),
+                      "{}-legal-info".format(package)],
+                     env)
+
 
 class TestGitHash(GitTestBase):
     br2_external = [infra.filepath("tests/download/br2-external/git-hash")]
@@ -42,3 +51,13 @@ class TestGitHash(GitTestBase):
             self.check_hash("bad")
         self.check_hash("good")
         self.check_hash("nohash")
+
+
+class TestGitRefs(GitTestBase):
+    br2_external = [infra.filepath("tests/download/br2-external/git-refs")]
+
+    def test_run(self):
+        with self.assertRaises(SystemError):
+            self.check_download("git-wrong-content")
+        with self.assertRaises(SystemError):
+            self.check_download("git-wrong-sha1")
