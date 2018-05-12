@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from gitremote import GitRemote
 
@@ -36,7 +37,11 @@ class GitTestBase(infra.basetest.BRTest):
     def check_download(self, package):
         # store downloaded tarball inside the output dir so the test infra
         # cleans it up at the end
-        env = {"BR2_DL_DIR": os.path.join(self.builddir, "dl"),
+        dl_dir = os.path.join(self.builddir, "dl")
+        # enforce we test the download
+        if os.path.exists(dl_dir):
+            shutil.rmtree(dl_dir)
+        env = {"BR2_DL_DIR": dl_dir,
                "GITREMOTE_PORT_NUMBER": str(self.gitremote.port)}
         self.b.build(["{}-dirclean".format(package),
                       "{}-legal-info".format(package)],
@@ -61,3 +66,7 @@ class TestGitRefs(GitTestBase):
             self.check_download("git-wrong-content")
         with self.assertRaises(SystemError):
             self.check_download("git-wrong-sha1")
+        self.check_download("git-partial-sha1-branch-head")
+        self.check_download("git-partial-sha1-reachable-by-branch")
+        self.check_download("git-sha1-branch-head")
+        self.check_download("git-sha1-reachable-by-branch")
