@@ -145,6 +145,30 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_IPSEC_SECCTX_DISABLE
+	bool "ipsec-tools security context disable option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_IPSEC_SECCTX_DISABLE was renamed to
+	  BR2_PACKAGE_IPSEC_TOOLS_SECCTX_DISABLE.
+
+config BR2_PACKAGE_IPSEC_SECCTX_ENABLE
+	bool "ipsec-tools SELinux security context enable option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_IPSEC_SECCTX_ENABLE was renamed to
+	  BR2_PACKAGE_IPSEC_TOOLS_SECCTX_ENABLE.
+
+config BR2_PACKAGE_IPSEC_SECCTX_KERNEL
+	bool "ipsec-tools kernel security context enable option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_IPSEC_SECCTX_KERNEL was renamed to
+	  BR2_PACKAGE_IPSEC_TOOLS_SECCTX_KERNEL.
+
 config BR2_PACKAGE_LIBTFDI_CPP
 	bool "libftdi C++ bindings option renamed"
 	select BR2_LEGACY
