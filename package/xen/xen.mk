@@ -17,7 +17,9 @@ else ifeq ($(ARCH),arm)
 XEN_ARCH = arm32
 endif
 
-XEN_CONF_OPTS = --disable-ocamltools
+XEN_CONF_OPTS = \
+	--disable-ocamltools \
+	--with-initddir=/etc/init.d
 
 XEN_CONF_ENV = PYTHON=$(HOST_DIR)/bin/python2
 XEN_MAKE_ENV = \
