@@ -145,6 +145,123 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_JANUS_AUDIO_BRIDGE
+	bool "janus-gateway audio-bridge option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_AUDIO_BRIDGE
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_AUDIO_BRIDGE has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_AUDIO_BRIDGE.
+
+config BR2_PACKAGE_JANUS_ECHO_TEST
+	bool "janus-gateway echo-test option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_ECHO_TEST
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_ECHO_TEST has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_ECHO_TEST.
+
+config BR2_PACKAGE_JANUS_RECORDPLAY
+	bool "janus-gateway recordplay option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_RECORDPLAY
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_RECORDPLAY has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_RECORDPLAY.
+
+config BR2_PACKAGE_JANUS_SIP_GATEWAY
+	bool "janus-gateway sip-gateway option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_SIP_GATEWAY
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_SIP_GATEWAY has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_SIP_GATEWAY.
+
+config BR2_PACKAGE_JANUS_STREAMING
+	bool "janus-gateway streaming option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_STREAMING
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_STREAMING has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_STREAMING.
+
+config BR2_PACKAGE_JANUS_TEXT_ROOM
+	bool "janus-gateway text-room option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_TEXT_ROOM
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_TEXT_ROOM has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_TEXT_ROOM.
+
+config BR2_PACKAGE_JANUS_VIDEO_CALL
+	bool "janus-gateway video-call option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_VIDEO_CALL
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_VIDEO_CALL has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_VIDEO_CALL.
+
+config BR2_PACKAGE_JANUS_VIDEO_ROOM
+	bool "janus-gateway video-room option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_VIDEO_ROOM
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_VIDEO_ROOM has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_VIDEO_ROOM.
+
+config BR2_PACKAGE_JANUS_MQTT
+	bool "janus-gateway mqtt option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_MQTT
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_MQTT has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_MQTT.
+
+config BR2_PACKAGE_JANUS_RABBITMQ
+	bool "janus-gateway rabbitmq option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_RABBITMQ
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_RABBITMQ has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_RABBITMQ.
+
+config BR2_PACKAGE_JANUS_REST
+	bool "janus-gateway rest option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_REST
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_REST has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_REST.
+
+config BR2_PACKAGE_JANUS_UNIX_SOCKETS
+	bool "janus-gateway unix-sockets option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_UNIX_SOCKETS
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_UNIX_SOCKETS has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_UNIX_SOCKETS.
+
+config BR2_PACKAGE_JANUS_WEBSOCKETS
+	bool "janus-gateway websockets option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_JANUS_GATEWAY_WEBSOCKETS
+	help
+	  For consistency reasons, the janus-gateway option
+	  BR2_PACKAGE_JANUS_WEBSOCKETS has been renamed to
+	  BR2_PACKAGE_JANUS_GATEWAY_WEBSOCKETS.
+
 config BR2_PACKAGE_IPSEC_SECCTX_DISABLE
 	bool "ipsec-tools security context disable option renamed"
 	select BR2_LEGACY
