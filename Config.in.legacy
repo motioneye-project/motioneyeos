@@ -145,6 +145,222 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE
+	bool "jquery-ui-themes option black-tie renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  black-tie theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_BLACK_TIE.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_BLITZER
+	bool "jquery-ui-themes option blitzer renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  blitzer theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_BLITZER to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_BLITZER.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_CUPERTINO
+	bool "jquery-ui-themes option cupertino renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  cupertino theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_CUPERTINO to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_CUPERTINO.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_DARK_HIVE
+	bool "jquery-ui-themes option dark-hive renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  dark-hive theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_DARK_HIVE to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_DARK_HIVE.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_DOT_LUV
+	bool "jquery-ui-themes option dot-luv renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  dot-luv theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_DOT_LUV to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_DOT_LUV.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_EGGPLANT
+	bool "jquery-ui-themes option eggplant renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  eggplant theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_EGGPLANT to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_EGGPLANT.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_EXCITE_BIKE
+	bool "jquery-ui-themes option excite-bike renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  excite-bike theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_EXCITE_BIKE to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_EXCITE_BIKE.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_FLICK
+	bool "jquery-ui-themes option flick renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  flick theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_FLICK to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_FLICK.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_HOT_SNEAKS
+	bool "jquery-ui-themes option hot-sneaks renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  hot-sneaks theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_HOT_SNEAKS to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_HOT_SNEAKS.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_HUMANITY
+	bool "jquery-ui-themes option humanity renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  humanity theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_HUMANITY to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_HUMANITY.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_LE_FROG
+	bool "jquery-ui-themes option le-frog renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  le-frog theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_LE_FROG to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_LE_FROG.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_MINT_CHOC
+	bool "jquery-ui-themes option mint-choc renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  mint-choc theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_MINT_CHOC to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_MINT_CHOC.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_OVERCAST
+	bool "jquery-ui-themes option overcast renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  overcast theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_OVERCAST to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_OVERCAST.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_PEPPER_GRINDER
+	bool "jquery-ui-themes option pepper-grinder renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  pepper-grinder theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_PEPPER_GRINDER to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_PEPPER_GRINDER.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_REDMOND
+	bool "jquery-ui-themes option redmond renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  redmond theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_REDMOND to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_REDMOND.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_SMOOTHNESS
+	bool "jquery-ui-themes option smoothness renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  smoothness theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_SMOOTHNESS to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_SMOOTHNESS.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_SOUTH_STREET
+	bool "jquery-ui-themes option south-street renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  south-street theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_SOUTH_STREET to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_SOUTH_STREET.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_START
+	bool "jquery-ui-themes option start renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  start theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_START to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_START.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_SUNNY
+	bool "jquery-ui-themes option sunny renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  sunny theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_SUNNY to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_SUNNY.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_SWANKY_PURSE
+	bool "jquery-ui-themes option swanky-purse renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  swanky-purse theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_SWANKY_PURSE to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_SWANKY_PURSE.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_TRONTASTIC
+	bool "jquery-ui-themes option trontastic renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  trontastic theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_TRONTASTIC to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_TRONTASTIC.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_UI_DARKNESS
+	bool "jquery-ui-themes option ui-darkness renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  ui-darkness theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_UI_DARKNESS to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_UI_DARKNESS.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_UI_LIGHTNESS
+	bool "jquery-ui-themes option ui-lightness renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  ui-lightness theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_UI_LIGHTNESS to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_UI_LIGHTNESS.
+
+config BR2_PACKAGE_JQUERY_UI_THEME_VADER
+	bool "jquery-ui-themes option vader renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the jquery-ui-themes option for the
+	  vader theme has been renamed from
+	  BR2_PACKAGE_JQUERY_UI_THEME_VADER to
+	  BR2_PACKAGE_JQUERY_UI_THEMES_VADER.
+
 config BR2_PACKAGE_BLUEZ5_PLUGINS_HEALTH
 	bool "bluez5-utils health plugin option renamed"
 	select BR2_LEGACY
