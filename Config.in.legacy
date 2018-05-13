@@ -145,6 +145,51 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_BLUEZ5_PLUGINS_HEALTH
+	bool "bluez5-utils health plugin option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_HEALTH
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_BLUEZ5_PLUGINS_HEALTH has been renamed to
+	  BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_HEALTH.
+
+config BR2_PACKAGE_BLUEZ5_PLUGINS_MIDI
+	bool "bluez5-utils midi plugin option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MIDI
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_BLUEZ5_PLUGINS_MIDI has been renamed to
+	  BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_MIDI.
+
+config BR2_PACKAGE_BLUEZ5_PLUGINS_NFC
+	bool "bluez5-utils nfc plugin option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_NFC
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_BLUEZ5_PLUGINS_NFC has been renamed to
+	  BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_NFC.
+
+config BR2_PACKAGE_BLUEZ5_PLUGINS_SAP
+	bool "bluez5-utils sap plugin option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SAP
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_BLUEZ5_PLUGINS_SAP has been renamed to
+	  BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SAP.
+
+config BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS
+	bool "bluez5-utils sixaxis plugin option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SIXAXIS
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_BLUEZ5_PLUGINS_SIXAXIS has been renamed to
+	  BR2_PACKAGE_BLUEZ5_UTILS_PLUGINS_SIXAXIS.
+
 config BR2_PACKAGE_TRANSMISSION_REMOTE
 	bool "transmission remote tool option removed"
 	select BR2_LEGACY
