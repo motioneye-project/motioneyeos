@@ -145,6 +145,38 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_TI_SGX_AM335X
+	bool "ti-sgx-km AM335X option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_TI_SGX_AM335X has been renamed to
+	  BR2_PACKAGE_TI_SGX_KM_AM335X.
+
+config BR2_PACKAGE_TI_SGX_AM437X
+	bool "ti-sgx-km AM437X option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_TI_SGX_AM437X has been renamed to
+	  BR2_PACKAGE_TI_SGX_KM_AM437X.
+
+config BR2_PACKAGE_TI_SGX_AM4430
+	bool "ti-sgx-km AM4430 option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_TI_SGX_AM4430 has been renamed to
+	  BR2_PACKAGE_TI_SGX_KM_AM4430.
+
+config BR2_PACKAGE_TI_SGX_AM5430
+	bool "ti-sgx-km AM5430 option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_TI_SGX_AM5430 has been renamed to
+	  BR2_PACKAGE_TI_SGX_KM_AM5430.
+
 config BR2_PACKAGE_JANUS_AUDIO_BRIDGE
 	bool "janus-gateway audio-bridge option renamed"
 	select BR2_LEGACY
