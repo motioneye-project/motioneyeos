@@ -2,7 +2,8 @@ config BR2_PACKAGE_JAMVM_ARCH_SUPPORTS
 	bool
 	default y if BR2_arm || BR2_armeb
 	default y if BR2_i386 || BR2_x86_64
-	default y if BR2_mips || BR2_mipsel
+	default y if (BR2_mips || BR2_mipsel) \
+		&& (BR2_MIPS_FP32_MODE_32 || BR2_MIPS_SOFT_FLOAT)
 	default y if BR2_powerpc
 
 config BR2_PACKAGE_JAMVM
