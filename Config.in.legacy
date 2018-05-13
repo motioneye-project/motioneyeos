@@ -145,6 +145,30 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_MEDIAART_BACKEND_NONE
+	bool "libmediaart none backend option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_MEDIAART_BACKEND_NONE has been renamed to
+	  BR2_PACKAGE_LIBMEDIAART_BACKEND_NONE
+
+config BR2_PACKAGE_MEDIAART_BACKEND_GDK_PIXBUF
+	bool "libmediaart gdk-pixbuf backend option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_MEDIAART_BACKEND_GDK_PIXBUF has been renamed to
+	  BR2_PACKAGE_LIBMEDIAART_BACKEND_GDK_PIXBUF
+
+config BR2_PACKAGE_MEDIAART_BACKEND_GDK_PIXBUF
+	bool "libmediaart qt backend option renamed"
+	select BR2_LEGACY
+	help
+	  For consistency reasons, the option
+	  BR2_PACKAGE_MEDIAART_BACKEND_QT has been renamed to
+	  BR2_PACKAGE_LIBMEDIAART_BACKEND_QT
+
 config BR2_PACKAGE_TI_SGX_AM335X
 	bool "ti-sgx-km AM335X option renamed"
 	select BR2_LEGACY
