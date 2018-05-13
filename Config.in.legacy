@@ -145,6 +145,15 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.05"
 
+config BR2_PACKAGE_LIBTFDI_CPP
+	bool "libftdi C++ bindings option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LIBFTDI_CPP
+	help
+	  The option BR2_PACKAGE_LIBTFDI_CPP was renamed to
+	  BR2_PACKAGE_LIBFTDI_CPP in order to fix a typo in the option
+	  name.
+
 config BR2_PACKAGE_JQUERY_UI_THEME_BLACK_TIE
 	bool "jquery-ui-themes option black-tie renamed"
 	select BR2_LEGACY
