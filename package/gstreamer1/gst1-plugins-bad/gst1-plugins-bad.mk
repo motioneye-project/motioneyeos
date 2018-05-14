@@ -8,7 +8,7 @@ GST1_PLUGINS_BAD_VERSION = 1.12.4
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_INSTALL_STAGING = YES
-# Unknown and GPL licensed plugins will append to GST1_PLUGINS_BAD_LICENSE and
+# Additional plugin licenses will be appended to GST1_PLUGINS_BAD_LICENSE and
 # GST1_PLUGINS_BAD_LICENSE_FILES if enabled.
 GST1_PLUGINS_BAD_LICENSE_FILES = COPYING.LIB
 GST1_PLUGINS_BAD_LICENSE := LGPL-2.0+, LGPL-2.1+
@@ -198,7 +198,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOVISUALIZERS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiovisualizers
-GST1_PLUGINS_BAD_HAS_GPL_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiovisualizers
 endif
@@ -514,6 +513,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_YADIF),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-yadif
+GST1_PLUGINS_BAD_HAS_GPL_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-yadif
 endif
@@ -585,7 +585,6 @@ endif
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_FDK_AAC),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-fdk_aac
 GST1_PLUGINS_BAD_DEPENDENCIES += fdk-aac
-GST1_PLUGINS_BAD_HAS_UNKNOWN_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-fdk_aac
 endif
@@ -632,6 +631,7 @@ endif
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_DTLS),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-dtls
 GST1_PLUGINS_BAD_DEPENDENCIES += openssl
+GST1_PLUGINS_BAD_HAS_BSD2C_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-dtls
 endif
@@ -682,6 +682,7 @@ endif
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENH264),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-openh264
 GST1_PLUGINS_BAD_DEPENDENCIES += libopenh264
+GST1_PLUGINS_BAD_HAS_BSD2C_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-openh264
 endif
@@ -771,8 +772,13 @@ endif
 
 # Add GPL license if GPL licensed plugins enabled.
 ifeq ($(GST1_PLUGINS_BAD_HAS_GPL_LICENSE),y)
-GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), GPL
+GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), GPL-2.0+
 GST1_PLUGINS_BAD_LICENSE_FILES += COPYING
+endif
+
+# Add BSD license if BSD licensed plugins enabled.
+ifeq ($(GST1_PLUGINS_BAD_HAS_BSD2C_LICENSE),y)
+GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), BSD-2-Clause
 endif
 
 # Add Unknown license if Unknown licensed plugins enabled.
