@@ -941,6 +941,7 @@ F:	configs/qemu_ppc64le_pseries_defconfig
 
 N:	Joseph Kogut <joseph.kogut@gmail.com>
 F:	package/gconf/
+F:	package/libnss/
 F:	package/python-cython/
 F:	package/python-raven/
 F:	package/python-schedule/
