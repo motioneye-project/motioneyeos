@@ -578,6 +578,7 @@ F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
 F:	package/meson/
 F:	package/ninja/
+F:	package/pkg-meson.mk
 F:	package/rust-bin/
 F:	package/rust/
 F:	package/s6/
