@@ -4,9 +4,16 @@
 #
 ################################################################################
 
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL),y)
+WESTON_VERSION = rel_imx_4.9.51_8mq_ga
+WESTON_SITE = https://source.codeaurora.org/external/imx/weston-imx
+WESTON_SITE_METHOD = git
+WESTON_AUTORECONF = YES
+else
 WESTON_VERSION = 5.0.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
+endif
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
 
@@ -48,6 +55,15 @@ WESTON_CONF_OPTS += --enable-weston-launch
 WESTON_DEPENDENCIES += linux-pam
 else
 WESTON_CONF_OPTS += --disable-weston-launch
+endif
+
+ifeq ($(BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL),y)
+ifeq ($(BR2_PACKAGE_IMX_GPU_G2D),y)
+WESTON_DEPENDENCIES += imx-gpu-g2d
+# --enable-imxg2d actually disables it, so no CONF_OPTS
+else
+WESTON_CONF_OPTS += --disable-imxg2d
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBEGL_WAYLAND)$(BR2_PACKAGE_HAS_LIBGLES),yy)
