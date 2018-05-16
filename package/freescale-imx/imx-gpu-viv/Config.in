@@ -12,7 +12,7 @@ config BR2_PACKAGE_IMX_GPU_VIV
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_LIBOPENVG
 	help
-	  Userspace libraries for Vivante GPU on i.MX6 platforms
+	  Userspace libraries for Vivante GPU on i.MX platforms
 
 	  It contains libraries and headers for GLES, OpenCL, and
 	  OpenVG. It also contains a DRI plugin for X11. It also
@@ -44,12 +44,20 @@ comment "X11 backend needs Xorg package"
 config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
 	bool "Framebuffer"
 
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL
+	bool "Wayland"
+	# libdrm needed by gbm_viv.so
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+
 endchoice
 
 config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT
 	string
 	default "x11" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
 	default "fb" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
+	default "wl" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL
 
 config BR2_PACKAGE_PROVIDES_LIBEGL
 	default "imx-gpu-viv"
