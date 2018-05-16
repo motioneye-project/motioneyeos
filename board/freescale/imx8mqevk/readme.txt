@@ -63,6 +63,9 @@ Boot the i.MX8mq EVK board
 
 To boot your newly created system:
 - insert the SD card in the SD slot of the board;
+- Configure the switches as follows:
+SW801:	ON	ON	OFF	OFF
+SW802:	ON	OFF
 - put a micro USB cable into the Debug USB Port and connect using a terminal
   emulator at 115200 bps, 8n1;
 - power on the board.
