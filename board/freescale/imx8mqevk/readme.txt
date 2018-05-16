@@ -1,8 +1,8 @@
 ***************************
-Freescale i.MX8mq EVK board
+Freescale i.MX8MQ EVK board
 ***************************
 
-This file documents the Buildroot support for the Freescale i.MX8mq
+This file documents the Buildroot support for the Freescale i.MX8MQ
 EVK board.
 
 Hardware support
@@ -14,7 +14,7 @@ support for GPU, VPU and other HW features.
 Build
 =====
 
-First, configure Buildroot for the i.MX8mq EVK board:
+First, configure Buildroot for the i.MX8MQ EVK board:
 
   make freescale_imx8mqevk_defconfig
 
@@ -58,7 +58,7 @@ command as root:
 For details about the medium image layout, see the definition in
 board/freescale/common/imx/genimage.cfg.template_imx8.
 
-Boot the i.MX8mq EVK board
+Boot the i.MX8MQ EVK board
 ==========================
 
 To boot your newly created system:
