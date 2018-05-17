@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-# v0.2.7
-LIBUIO_VERSION = 940861de278cb794bf9d775b76a4d1d4f9108607
+# v0.2.8
+LIBUIO_VERSION = ca28ff0f69d89a789a47552c72db5a43d280710b
 LIBUIO_SITE = $(call github,Linutronix,libuio,$(LIBUIO_VERSION))
 LIBUIO_LICENSE = LGPL-2.1 (library), GPL-2.0 (programs)
 LIBUIO_LICENSE_FILES = COPYING
