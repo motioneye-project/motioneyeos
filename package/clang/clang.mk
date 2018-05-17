@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CLANG_VERSION = 5.0.1
+CLANG_VERSION = 5.0.2
 CLANG_SITE = http://llvm.org/releases/$(CLANG_VERSION)
 CLANG_SOURCE = cfe-$(CLANG_VERSION).src.tar.xz
 CLANG_LICENSE = NCSA
