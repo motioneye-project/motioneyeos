@@ -741,6 +741,7 @@ F:	package/cairo/
 F:	package/duktape/
 F:	package/expat/
 F:	package/flatbuffers/
+F:	package/gerbera/
 F:	package/gtksourceview/
 F:	package/gssdp/
 F:	package/gupnp/
