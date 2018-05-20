@@ -378,7 +378,7 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-mxf
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_NETSIM),y)
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_NETSIM),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-netsim
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-netsim
