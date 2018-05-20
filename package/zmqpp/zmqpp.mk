@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZMQPP_VERSION = 4.1.2
+ZMQPP_VERSION = 4.2.0
 ZMQPP_SITE = $(call github,zeromq,zmqpp,$(ZMQPP_VERSION))
 ZMQPP_INSTALL_STAGING = YES
 ZMQPP_DEPENDENCIES = zeromq
