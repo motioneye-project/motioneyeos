@@ -1,0 +1,64 @@
+From 26cb47f99d481ad9b93eeff80d26e6b63bbd7e15 Mon Sep 17 00:00:00 2001
+From: David Bryant <david@wavpack.com>
+Date: Tue, 24 Apr 2018 22:18:07 -0700
+Subject: [PATCH] issue #30 issue #31 issue #32: no multiple format chunks in
+ WAV or W64
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ cli/riff.c   | 7 ++++++-
+ cli/wave64.c | 6 ++++++
+ 2 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/cli/riff.c b/cli/riff.c
+index 7bddf63..5d6452e 100644
+--- a/cli/riff.c
++++ b/cli/riff.c
+@@ -53,7 +53,7 @@ extern int debug_logging_mode;
+ 
+ int ParseRiffHeaderConfig (FILE *infile, char *infilename, char *fourcc, WavpackContext *wpc, WavpackConfig *config)
+ {
+-    int is_rf64 = !strncmp (fourcc, "RF64", 4), got_ds64 = 0;
++    int is_rf64 = !strncmp (fourcc, "RF64", 4), got_ds64 = 0, format_chunk = 0;
+     int64_t total_samples = 0, infilesize;
+     RiffChunkHeader riff_chunk_header;
+     ChunkHeader chunk_header;
+@@ -140,6 +140,11 @@ int ParseRiffHeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpack
+         else if (!strncmp (chunk_header.ckID, "fmt ", 4)) {     // if it's the format chunk, we want to get some info out of there and
+             int supported = TRUE, format;                        // make sure it's a .wav file we can handle
+ 
++            if (format_chunk++) {
++                error_line ("%s is not a valid .WAV file!", infilename);
++                return WAVPACK_SOFT_ERROR;
++            }
++
+             if (chunk_header.ckSize < 16 || chunk_header.ckSize > sizeof (WaveHeader) ||
+                 !DoReadFile (infile, &WaveHeader, chunk_header.ckSize, &bcount) ||
+                 bcount != chunk_header.ckSize) {
+diff --git a/cli/wave64.c b/cli/wave64.c
+index fa928a0..0388dc7 100644
+--- a/cli/wave64.c
++++ b/cli/wave64.c
+@@ -53,6 +53,7 @@ int ParseWave64HeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpa
+     Wave64ChunkHeader chunk_header;
+     Wave64FileHeader filehdr;
+     WaveHeader WaveHeader;
++    int format_chunk = 0;
+     uint32_t bcount;
+ 
+     infilesize = DoGetFileSize (infile);
+@@ -104,6 +105,11 @@ int ParseWave64HeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpa
+         if (!memcmp (chunk_header.ckID, fmt_guid, sizeof (fmt_guid))) {
+             int supported = TRUE, format;
+ 
++            if (format_chunk++) {
++                error_line ("%s is not a valid .W64 file!", infilename);
++                return WAVPACK_SOFT_ERROR;
++            }
++
+             chunk_header.ckSize = (chunk_header.ckSize + 7) & ~7L;
+ 
+             if (chunk_header.ckSize < 16 || chunk_header.ckSize > sizeof (WaveHeader) ||
+-- 
+2.11.0
+
