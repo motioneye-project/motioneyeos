@@ -15,9 +15,6 @@ config BR2_ARCH_HAS_MMU_MANDATORY
 config BR2_ARCH_HAS_MMU_OPTIONAL
 	bool
 
-config BR2_ARCH_HAS_FDPIC_SUPPORT
-	bool
-
 choice
 	prompt "Target Architecture"
 	default BR2_i386
@@ -344,7 +341,6 @@ config BR2_READELF_ARCH_NAME
 choice
 	prompt "Target Binary Format"
 	default BR2_BINFMT_ELF if BR2_USE_MMU
-	default BR2_BINFMT_FDPIC if BR2_ARCH_HAS_FDPIC_SUPPORT
 	default BR2_BINFMT_FLAT
 
 config BR2_BINFMT_ELF
@@ -355,16 +351,6 @@ config BR2_BINFMT_ELF
 	  ELF (Executable and Linkable Format) is a format for libraries
 	  and executables used across different architectures and
 	  operating systems.
-
-config BR2_BINFMT_FDPIC
-	bool "FDPIC"
-	depends on BR2_ARCH_HAS_FDPIC_SUPPORT
-	select BR2_BINFMT_SUPPORTS_SHARED
-	help
-	  ELF FDPIC binaries are based on ELF, but allow the individual
-	  load segments of a binary to be located in memory
-	  independently of each other. This makes this format ideal for
-	  use in environments where no MMU is available.
 
 config BR2_BINFMT_FLAT
 	bool "FLAT"
