@@ -1,3 +1,46 @@
+2018.05-rc2, Released May 22nd, 2018
+
+	Fixes all over the tree.
+
+	Dependencies: Check that the current working directory (.)
+	isn't listed in PATH as that causes various build issues.
+
+	Manual: Clarify that git branch names may not be used as
+	version identifiers. This has never been supported, but was
+	kind of working (with some limitations) before the git
+	download rework - Now it does not work at all.
+
+	Linux: Ensure host version of ncurses is picked up and not
+	host-ncurses built by buildroot, as that otherwise causes
+	widechar/non-widechar conflicts and corrupted menuconfig
+	menus.
+
+	Packages: Renamed a number of package options not prefixed
+	with BR2_PACKAGE_<pkg> for consstency.
+
+	Download infrastructure: Fix file:// protocol handling after
+	download rework.
+
+	Updated/fixed packages: acl, apr-util, asterisk, attr,
+	bluez5_utils, cifs-utils, clamav, clang, cups-filters,
+	dahdi-linux, exim, faketime, gdb, go, gst1-plugins-bad,
+	imx-mkimage, ipsec-tools, jamvm, janus-gateway,
+	jquery-ui-themes, libcap, libcurl, libftdi, libkcapi, libkrb5,
+	libmediaart, libmodbus, libmodplug, libmpd,
+	libnetfilter_cthelper, libnetfilter_cttimeout, libnfc,
+	libnfnetlink, libnss, liboauth, libogg, libosip2,
+	libpam-radius-auth, libpcap, libpciaccess, llvm, log4cplus,
+	ltrace, lynx, mbedtls, modem-manager, nfs-utils,
+	python-cython, python-websockets, qt5cinex, qt5wayland, rauc,
+	snort, strace, ti-sgx-km, transmission, wavpack, wget, woff2,
+	xen, zmqpp, znc, zstd
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10986: Installing package attr when already supplied by...
+	#11011: BUildroot for Raspberry Pi 2
+	#11016: Wrong compiler used for external user host packages
+
 2018.05-rc1, Released May 9th, 2018
 
 	Toolchain: glibc bumped to 2.27, musl bumped to 1.1.19,
