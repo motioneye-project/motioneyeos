@@ -408,6 +408,7 @@ N:	Carlos Santos <casantos@datacom.ind.br>
 F:	package/gtest/
 F:	package/libpam-radius-auth/
 F:	package/libpam-tacplus/
+F:	package/modem-manager/
 F:	package/perl-file-util/
 F:	package/util-linux/
 F:	package/tpm2-abrmd/
