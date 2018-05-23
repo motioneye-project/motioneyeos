@@ -10,6 +10,7 @@ LIBTIRPC_SITE = http://downloads.sourceforge.net/project/libtirpc/libtirpc/$(LIB
 LIBTIRPC_LICENSE = BSD-3-Clause
 LIBTIRPC_LICENSE_FILES = COPYING
 
+LIBTIRPC_DEPENDENCIES = host-nfs-utils
 LIBTIRPC_INSTALL_STAGING = YES
 LIBTIRPC_AUTORECONF = YES
 
