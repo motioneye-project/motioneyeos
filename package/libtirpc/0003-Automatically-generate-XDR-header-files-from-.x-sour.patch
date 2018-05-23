@@ -1,4 +1,4 @@
-From eba198c27f2b8d3f0b27ea4a42f3dc79d397440c Mon Sep 17 00:00:00 2001
+From 001e3f26dc80b8f21bed7d9b5872fe10e8b4af04 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Sat, 10 Nov 2012 17:29:53 +0100
 Subject: [PATCH] Automatically generate XDR header files from .x sources using
@@ -8,21 +8,23 @@ Subject: [PATCH] Automatically generate XDR header files from .x sources using
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 [yann.morin.1998@free.fr: update for 0.3.1]
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[baruch: use external rpcgen]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
- Makefile.am           |  19 +-
+ Makefile.am           |  16 +-
  src/Makefile.am       |   2 +-
- tirpc/rpc/rpcb_prot.h | 797 --------------------------------------------------
- tirpc/rpcsvc/crypt.h  | 109 -------
- 4 files changed, 17 insertions(+), 910 deletions(-)
+ tirpc/rpc/rpcb_prot.h | 797 ------------------------------------------
+ tirpc/rpcsvc/crypt.h  | 109 ------
+ 4 files changed, 14 insertions(+), 910 deletions(-)
  delete mode 100644 tirpc/rpc/rpcb_prot.h
  delete mode 100644 tirpc/rpcsvc/crypt.h
 
 diff --git a/Makefile.am b/Makefile.am
-index 8558289..aa5908e 100644
+index 3f6063771faf..368fb8a1aed2 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -1,6 +1,9 @@
- SUBDIRS = src man doc rpcgen
+ SUBDIRS = src man doc
  ACLOCAL_AMFLAGS = -I m4
  
 +GENFILES	       = tirpc/rpcsvc/crypt.h \
@@ -39,7 +41,7 @@ index 8558289..aa5908e 100644
  			 tirpc/rpc/xdr.h \
  			 tirpc/rpc/types.h \
  			 tirpc/rpc/svc_soc.h \
-@@ -20,7 +22,6 @@ nobase_include_HEADERS = tirpc/netconfig.h \
+@@ -21,7 +23,6 @@ nobase_include_HEADERS = tirpc/netconfig.h \
  			 tirpc/rpc/rpcent.h \
  			 tirpc/rpc/rpc_com.h \
  			 tirpc/rpc/rpcb_prot.x \
@@ -47,7 +49,7 @@ index 8558289..aa5908e 100644
  			 tirpc/rpc/rpcb_clnt.h \
  			 tirpc/rpc/raw.h \
  			 tirpc/rpc/pmap_rmt.h \
-@@ -51,5 +52,17 @@ endif
+@@ -48,5 +49,14 @@ endif
  pkgconfigdir=$(libdir)/pkgconfig
  pkgconfig_DATA = libtirpc.pc
  
@@ -55,19 +57,16 @@ index 8558289..aa5908e 100644
 +nobase_nodist_include_HEADERS = $(GENFILES)
 +BUILT_SOURCES = $(GENFILES)
 +
-+$(GENFILES): %.h: %.x $(top_builddir)/rpcgen/rpcgen
++$(GENFILES): %.h: %.x
 +	mkdir -p $(dir $@)
-+	$(top_builddir)/rpcgen/rpcgen -h -o $@ $<
-+
-+$(top_builddir)/rpcgen/rpcgen: force
-+	cd rpcgen && $(MAKE)
++	rpcgen -h -o $@ $<
 +
 +force:
 +
 +CLEANFILES	       = cscope.* *~ $(GENFILES)
  DISTCLEANFILES	       = Makefile.in libtirpc*.tar.gz
 diff --git a/src/Makefile.am b/src/Makefile.am
-index 7428e92..0356171 100644
+index 2af40f16d03a..0b7e23835c36 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -8,7 +8,7 @@
@@ -81,7 +80,7 @@ index 7428e92..0356171 100644
  
 diff --git a/tirpc/rpc/rpcb_prot.h b/tirpc/rpc/rpcb_prot.h
 deleted file mode 100644
-index 7ae48b8..0000000
+index 7ae48b805370..000000000000
 --- a/tirpc/rpc/rpcb_prot.h
 +++ /dev/null
 @@ -1,797 +0,0 @@
@@ -884,7 +883,7 @@ index 7ae48b8..0000000
 -#endif /* !_RPCB_PROT_H_RPCGEN */
 diff --git a/tirpc/rpcsvc/crypt.h b/tirpc/rpcsvc/crypt.h
 deleted file mode 100644
-index da1f9cc..0000000
+index da1f9ccb56ea..000000000000
 --- a/tirpc/rpcsvc/crypt.h
 +++ /dev/null
 @@ -1,109 +0,0 @@
@@ -998,5 +997,5 @@ index da1f9cc..0000000
 -
 -#endif /* !_CRYPT_H_RPCGEN */
 -- 
-1.9.1
+2.17.0
 
