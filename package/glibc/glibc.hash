@@ -1,7 +1,7 @@
 # Locally calculated (fetched from Github)
 sha256  a74489d14f4017bee6a6c6fe76f1de0dbf7d66c8695116de5aadd141c4757892     glibc-glibc-2.27.tar.gz
 # Locally calculated (fetched from Github)
-sha256  d88f60081285b639122a49425e5fcf8c8cbb0f05efde7a3cb206089fae53c232     glibc-arc-2018.03-rc1.tar.gz
+sha256  ddc63360393ab88ab6a4a0c81d33481f34c5a9ebd758eec2e6bb35385058b4cb     glibc-arc-2018.03-rc2.tar.gz
 
 sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
 sha256  dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING.LIB
