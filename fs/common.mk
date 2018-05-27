@@ -71,7 +71,7 @@ $(ROOTFS_COMMON_TAR): $(ROOTFS_COMMON_DEPENDENCIES) target-finalize
 	@$(call MESSAGE,"Generating common rootfs tarball")
 	rm -rf $(FS_DIR)
 	mkdir -p $(FS_DIR)
-	rsync -au $(BASE_TARGET_DIR)/ $(TARGET_DIR)
+	rsync -auH $(BASE_TARGET_DIR)/ $(TARGET_DIR)
 	echo '#!/bin/sh' > $(FAKEROOT_SCRIPT)
 	echo "set -e" >> $(FAKEROOT_SCRIPT)
 	echo "chown -h -R 0:0 $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
