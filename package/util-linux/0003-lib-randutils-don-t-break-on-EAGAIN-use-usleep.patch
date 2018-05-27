@@ -1,0 +1,71 @@
+From edc1c90cb972fdca1f66be5a8e2b0706bd2a4949 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Tue, 20 Mar 2018 14:17:24 +0100
+Subject: [PATCH] lib/randutils: don't break on EAGAIN, use usleep()
+
+The current code uses lose_counter to make more attempts to read
+random numbers. It seems better to wait a moment between attempts to
+avoid busy loop (we do the same in all-io.h).
+
+The worst case is 1 second delay for all random_get_bytes() on systems
+with uninitialized entropy pool -- for example you call sfdisk (MBR Id
+or GPT UUIDs) on very first boot, etc. In this case it will use libc
+rand() as a fallback solution.
+
+Note that we do not use random numbers for security sensitive things
+like keys or so. It's used for random based UUIDs etc.
+
+Addresses: https://github.com/karelzak/util-linux/pull/603
+Signed-off-by: Karel Zak <kzak@redhat.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ lib/randutils.c | 17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
+
+diff --git a/lib/randutils.c b/lib/randutils.c
+index 02c3d9eb0..de4279530 100644
+--- a/lib/randutils.c
++++ b/lib/randutils.c
+@@ -95,6 +95,9 @@ int random_get_fd(void)
+  * Use /dev/urandom if possible, and if not,
+  * use glibc pseudo-random functions.
+  */
++#define UL_RAND_READ_ATTEMPTS	8
++#define UL_RAND_READ_DELAY	125000	/* microseconds */
++
+ void random_get_bytes(void *buf, size_t nbytes)
+ {
+ 	unsigned char *cp = (unsigned char *)buf;
+@@ -111,11 +114,14 @@ void random_get_bytes(void *buf, size_t nbytes)
+ 		       n -= x;
+ 		       cp += x;
+ 		       lose_counter = 0;
+-		} else if (errno == ENOSYS)	/* kernel without getrandom() */
+-			break;
+-		else if (errno == EAGAIN)
++
++		} else if (errno == ENOSYS) {	/* kernel without getrandom() */
+ 			break;
+-		else if (lose_counter++ > 16)	/* entropy problem? */
++
++		} else if (errno == EAGAIN && lose_counter < UL_RAND_READ_ATTEMPTS) {
++			xusleep(UL_RAND_READ_DELAY);	/* no etropy, wait and try again */
++			lose_counter++;
++		} else
+ 			break;
+ 	}
+ 
+@@ -134,8 +140,9 @@ void random_get_bytes(void *buf, size_t nbytes)
+ 			while (n > 0) {
+ 				ssize_t x = read(fd, cp, n);
+ 				if (x <= 0) {
+-					if (lose_counter++ > 16)
++					if (lose_counter++ > UL_RAND_READ_ATTEMPTS)
+ 						break;
++					xusleep(UL_RAND_READ_DELAY);
+ 					continue;
+ 				}
+ 				n -= x;
+-- 
+2.11.0
+
