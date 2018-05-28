@@ -1,3 +1,31 @@
+2018.05-rc3, Released May 28th, 2018
+
+	Fixes all over the tree.
+
+	Toolchain: ARC tools updated to arc-2018.03-rc2.
+
+	Fs: Ensure hard links in TARGET_DIR are correctly copied for
+	filesystem input. With the recent changes to the file system
+	generation logic, hard links were "expanded" in file system
+	images leading to bloated rootfs images for setups with hard
+	links.
+
+	Infrastructure: Error out for packages using the 'local'
+	method but forgetting to specify <pkg>_SITE.
+
+	Build rpcgen for the host when needed to support distributions
+	no longer shipping rpcgen with glibc (E.G. recent Fedora).
+
+	Updated/fixed packages: autofs, bash-completion, binutils,
+	busybox, cjson, elf2flt, libcoap, libcurl, libtirpc, lrzsz,
+	poppler, procps-ng, qt-webkit-kiosk, quota, samba4, xfsprogs
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11031: ld-elf2flt: host/bin/ld.real': execvp: No such file..
+	#11036: C compiler cannot create executables
+	#11046: Git package binaries are ~180MB (compared to ~20MB in..
+
 2018.05-rc2, Released May 22nd, 2018
 
 	Fixes all over the tree.
