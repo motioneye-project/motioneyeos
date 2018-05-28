@@ -4,8 +4,6 @@
 
 [ -r /etc/default/chrony ] && . /etc/default/chrony
 
-[ -f /etc/chrony.conf ] || exit 0
-
 case "$1" in
   start)
 	printf "Starting chrony: "
