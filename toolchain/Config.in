@@ -84,6 +84,12 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 	default y if BR2_m68k_cf5208
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85180. This bug no
+# longer exists in gcc 8.x.
+config BR2_TOOLCHAIN_HAS_GCC_BUG_85180
+	bool
+	default y if BR2_microblaze
+
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=85862
 # An infinite loop exists in the find_base_term() logic of 6.x
 # on microblaze.  http://autobuild.buildroot.net/results/158e8ebb39713e1b436a5cc1a1916f46c30694df/

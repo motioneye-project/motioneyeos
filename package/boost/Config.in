@@ -104,11 +104,15 @@ config BR2_PACKAGE_BOOST_FIBER
 	# mips support uses the "pause" instruction, only available
 	# since mips32r2/mips64r2.
 	depends on !BR2_MIPS_CPU_MIPS32 && !BR2_MIPS_CPU_MIPS64
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_85180
 	help
 	  C++11 userland threads library.
 
 comment "boost-fiber needs a toolchain w/ NPTL"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
+comment "boost-fiber needs a toolchain not affected by GCC bug 85180"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_85180
 
 config BR2_PACKAGE_BOOST_FILESYSTEM
 	bool "boost-filesystem"
