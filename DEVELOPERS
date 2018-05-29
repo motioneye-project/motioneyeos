@@ -2139,6 +2139,9 @@ F:	package/openmpi/
 F:	package/pinentry/
 F:	package/trinity/
 
+N:	Vincent Prince <vincent.prince.fr@gmail.com>
+F:	package/nss-myhostname/
+
 N:	Vincent Stehlé <vincent.stehle@laposte.net>
 F:	package/i7z/
 F:	package/msr-tools/
