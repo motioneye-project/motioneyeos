@@ -16,8 +16,8 @@ ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 USBUTILS_DEPENDENCIES += busybox
 endif
 
-# Nice lsusb.py script only if there's python
-ifeq ($(BR2_PACKAGE_PYTHON),)
+# Nice lsusb.py script only if there's python 3.x
+ifeq ($(BR2_PACKAGE_PYTHON3),)
 define USBUTILS_REMOVE_PYTHON
 	rm -f $(TARGET_DIR)/usr/bin/lsusb.py
 endef
