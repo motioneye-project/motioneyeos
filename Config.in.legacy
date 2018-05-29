@@ -169,6 +169,8 @@ config BR2_PACKAGE_MEDIAART_BACKEND_GDK_PIXBUF
 	  BR2_PACKAGE_MEDIAART_BACKEND_QT has been renamed to
 	  BR2_PACKAGE_LIBMEDIAART_BACKEND_QT
 
+# Note: BR2_PACKAGE_TI_SGX_AM335X is still referenced from
+# package/ti-sgx-km/Config.in
 config BR2_PACKAGE_TI_SGX_AM335X
 	bool "ti-sgx-km AM335X option renamed"
 	select BR2_LEGACY
@@ -177,6 +179,8 @@ config BR2_PACKAGE_TI_SGX_AM335X
 	  BR2_PACKAGE_TI_SGX_AM335X has been renamed to
 	  BR2_PACKAGE_TI_SGX_KM_AM335X.
 
+# Note: BR2_PACKAGE_TI_SGX_AM437X is still referenced from
+# package/ti-sgx-km/Config.in
 config BR2_PACKAGE_TI_SGX_AM437X
 	bool "ti-sgx-km AM437X option renamed"
 	select BR2_LEGACY
@@ -185,6 +189,8 @@ config BR2_PACKAGE_TI_SGX_AM437X
 	  BR2_PACKAGE_TI_SGX_AM437X has been renamed to
 	  BR2_PACKAGE_TI_SGX_KM_AM437X.
 
+# Note: BR2_PACKAGE_TI_SGX_AM4430 is still referenced from
+# package/ti-sgx-km/Config.in
 config BR2_PACKAGE_TI_SGX_AM4430
 	bool "ti-sgx-km AM4430 option renamed"
 	select BR2_LEGACY
@@ -193,6 +199,8 @@ config BR2_PACKAGE_TI_SGX_AM4430
 	  BR2_PACKAGE_TI_SGX_AM4430 has been renamed to
 	  BR2_PACKAGE_TI_SGX_KM_AM4430.
 
+# Note: BR2_PACKAGE_TI_SGX_AM5430 is still referenced from
+# package/ti-sgx-km/Config.in
 config BR2_PACKAGE_TI_SGX_AM5430
 	bool "ti-sgx-km AM5430 option renamed"
 	select BR2_LEGACY

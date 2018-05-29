@@ -20,6 +20,10 @@ if BR2_PACKAGE_TI_SGX_KM
 
 choice
 	prompt "Target"
+	default BR2_PACKAGE_TI_SGX_KM_AM335X if BR2_PACKAGE_TI_SGX_AM335X # legacy
+	default BR2_PACKAGE_TI_SGX_KM_AM437X if BR2_PACKAGE_TI_SGX_AM437X # legacy
+	default BR2_PACKAGE_TI_SGX_KM_AM4430 if BR2_PACKAGE_TI_SGX_AM4430 # legacy
+	default BR2_PACKAGE_TI_SGX_KM_AM5430 if BR2_PACKAGE_TI_SGX_AM5430 # legacy
 	default BR2_PACKAGE_TI_SGX_KM_AM335X
 	help
 	  Select the SOC for which you would like to install drivers.
