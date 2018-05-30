@@ -1,6 +1,6 @@
-# From https://sourcery.mentor.com/GNUToolchain/release3302
-md5 54b7f7056c2159f3a9ddeca8ca775ed1 sourceryg++-2017.05-4-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
-md5 529a7fecf33d0d113a446413b9d1e173 sourceryg++-2017.05-4-nios2-linux-gnu.src.tar.bz2
+# From https://sourcery.mentor.com/GNUToolchain/release3374
+md5 4f536b3b9b4e00f483e82e304c0a27ae sourceryg++-2018.05-5-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+md5 be42ab83da2e8db7b73dc890c2549570 sourceryg++-2018.05-5-nios2-linux-gnu.src.tar.bz2
 # Locally calculated
-sha256 3f0307da3c0770b7cc3ed4a845038e6e438d3e3a96ce880f9a86b3d35f948a07  sourceryg++-2017.05-4-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
-sha256 6e65878d0453708ee19098d3d68985bda244938d35999f3859915a2f5574fa08  sourceryg++-2017.05-4-nios2-linux-gnu.src.tar.bz2
+sha256 c19afb432b5b23f8d5d639831d3a423a3ea3c9cc62e0015020d20ea2eb36dd1b  sourceryg++-2018.05-5-nios2-linux-gnu-i686-pc-linux-gnu.tar.bz2
+sha256 d73a6364106dd62352711f932d3be8e97fdaaa548995678b5d38d9f21e22437a  sourceryg++-2018.05-5-nios2-linux-gnu.src.tar.bz2
