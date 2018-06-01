@@ -9,7 +9,7 @@ config BR2_LINUX_KERNEL
 if BR2_LINUX_KERNEL
 
 comment "Linux kernel may fail to boot with binutils >= 2.29"
-	depends on BR2_ARM_CPU_ARMV7M
+	depends on BR2_arm || BR2_armeb
 	depends on !BR2_BINUTILS_VERSION_2_28_X
 
 # Packages that need to have a kernel with support for loadable modules,
