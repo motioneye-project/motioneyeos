@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGIT2_VERSION = v0.26.0
+LIBGIT2_VERSION = v0.27.1
 LIBGIT2_SITE = $(call github,libgit2,libgit2,$(LIBGIT2_VERSION))
 LIBGIT2_LICENSE = GPL-2.0 with linking exception
 LIBGIT2_LICENSE_FILES = COPYING
@@ -36,9 +36,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBGIT2_DEPENDENCIES += openssl
-LIBGIT2_CONF_OPTS += -DUSE_OPENSSL=ON
+LIBGIT2_CONF_OPTS += -DUSE_HTTPS=OpenSSL
 else
-LIBGIT2_CONF_OPTS += -DUSE_OPENSSL=OFF
+LIBGIT2_CONF_OPTS += -DUSE_HTTPS=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
