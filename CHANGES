@@ -1,3 +1,17 @@
+2018.05, Released June 1st, 2018
+
+	Minor fixes.
+
+	Download: Work around for hanging connections for packages
+	from CVS, by adding a 10 minute max timeout.
+
+	Updated/fixed packages: binutils, clang, dash, expect, git,
+	glibc, jpeg-turbo, libjpeg, log4cplus, openvmtools, xen,
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11051: runtime issue on STM32 with usage of binutils 2.29.x
+
 2018.05-rc3, Released May 28th, 2018
 
 	Fixes all over the tree.
