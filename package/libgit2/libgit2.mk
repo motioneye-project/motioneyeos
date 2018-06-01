@@ -16,6 +16,8 @@ LIBGIT2_CONF_OPTS = \
 	-DUSE_ICONV=ON \
 	-DTHREADSAFE=$(if $(BR2_TOOLCHAIN_HAS_THREADS),ON,OFF)
 
+LIBGIT2_DEPENDENCIES = zlib
+
 # If libiconv is available (for !locale toolchains), then we can use
 # it for iconv support. Note that USE_ICONV=ON is still correct even
 # without libiconv because (1) most toolchain have iconv support
@@ -23,11 +25,6 @@ LIBGIT2_CONF_OPTS = \
 # not available, libgit2 simply avoids using iconv.
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 LIBGIT2_DEPENDENCIES += libiconv
-endif
-
-# No option to explicitly enable/disable zlib
-ifeq ($(BR2_PACKAGE_ZLIB),y)
-LIBGIT2_DEPENDENCIES += zlib
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
