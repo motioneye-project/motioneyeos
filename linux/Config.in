@@ -8,7 +8,7 @@ config BR2_LINUX_KERNEL
 
 if BR2_LINUX_KERNEL
 
-comment "Linux kernel may fail to boot with binutils >= 2.29"
+comment "Linux kernel in thumb mode may be broken with binutils >= 2.29"
 	depends on BR2_arm || BR2_armeb
 	depends on !BR2_BINUTILS_VERSION_2_28_X
 
