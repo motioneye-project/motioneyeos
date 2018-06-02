@@ -1,4 +1,4 @@
-From 11a759c33160db6e887e7640071ba84482e6164f Mon Sep 17 00:00:00 2001
+From ef96bac7cbbb11b98606864ead0f731dd5b71d5a Mon Sep 17 00:00:00 2001
 From: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Date: Thu, 17 Nov 2016 15:36:54 -0300
 Subject: [PATCH] configure.ac: invert order for wayland-scanner check
@@ -13,32 +13,32 @@ pkg-config.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
-[Romain: rebase on 17.3.1]
+[Romain: rebase on 18.1]
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
  configure.ac | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index ee03d6f582..786b7214b9 100644
+index f1fbdcc6c7..dcf87e7dd6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1695,11 +1695,11 @@ if test "x$with_platforms" = xauto; then
-     with_platforms=$with_egl_platforms
- fi
+@@ -1796,11 +1796,11 @@ for plat in $platforms; do
+         PKG_CHECK_MODULES([WAYLAND_PROTOCOLS], [wayland-protocols >= $WAYLAND_PROTOCOLS_REQUIRED])
+         WAYLAND_PROTOCOLS_DATADIR=`$PKG_CONFIG --variable=pkgdatadir wayland-protocols`
  
--PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
--        WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
--        WAYLAND_SCANNER='')
-+AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
- if test "x$WAYLAND_SCANNER" = x; then
--    AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
-+	PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
-+		WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
-+		WAYLAND_SCANNER='')
- fi
+-        PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
+-                          WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
+-                          WAYLAND_SCANNER='')
++        AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
+         if test "x$WAYLAND_SCANNER" = x; then
+-            AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
++		PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
++			WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
++			WAYLAND_SCANNER='')
+         fi
  
- PKG_CHECK_EXISTS([wayland-protocols >= $WAYLAND_PROTOCOLS_REQUIRED], [have_wayland_protocols=yes], [have_wayland_protocols=no])
+         if test "x$WAYLAND_SCANNER" = "x:"; then
 -- 
 2.14.3
 
