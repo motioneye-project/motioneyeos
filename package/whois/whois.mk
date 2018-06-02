@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-WHOIS_VERSION = 5.2.17
-WHOIS_SITE = http://snapshot.debian.org/archive/debian/20170727T214450Z/pool/main/w/whois
+WHOIS_VERSION = 5.3.0
+WHOIS_SITE = http://snapshot.debian.org/archive/debian/20180121T094839Z/pool/main/w/whois
 WHOIS_SOURCE = whois_$(WHOIS_VERSION).tar.xz
 # take precedence over busybox implementation
 WHOIS_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox) $(TARGET_NLS_DEPENDENCIES)
@@ -22,9 +22,9 @@ WHOIS_EXTRA_LIBS += -liconv
 WHOIS_MAKE_ENV += HAVE_ICONV=1
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
-WHOIS_DEPENDENCIES += libidn
-WHOIS_MAKE_ENV += HAVE_LIBIDN=1
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+WHOIS_DEPENDENCIES += libidn2
+WHOIS_MAKE_ENV += HAVE_LIBIDN2=1
 endif
 
 ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)

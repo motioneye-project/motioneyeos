@@ -68,6 +68,13 @@ else
 GNUTLS_CONF_OPTS += --without-idn
 endif
 
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+GNUTLS_CONF_OPTS += --with-libidn2
+GNUTLS_DEPENDENCIES += libidn2
+else
+GNUTLS_CONF_OPTS += --without-libidn2
+endif
+
 ifeq ($(BR2_PACKAGE_P11_KIT),y)
 GNUTLS_CONF_OPTS += --with-p11-kit
 GNUTLS_DEPENDENCIES += p11-kit

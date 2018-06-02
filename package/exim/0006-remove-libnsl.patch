@@ -1,0 +1,37 @@
+From b722f8fc01f6b1d71c98c0c66f759935b0dac136 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 19 May 2018 20:36:41 +0200
+Subject: [PATCH] remove libnsl
+
+glibc now considers its built-in libnsl as being obsolete, and requires
+passing --enable-obsolete-libnsl to have it built and installed. libnsl
+is now provided as a separate project [1], but it isn't packaged yet in
+Buildroot.
+
+Exim's nis.so and nisplus.so lookup modules require libnsl,
+but they are not build by default. So we can safely remove -lnsl
+from the Makefile-Linux.
+
+[1] https://github.com/thkukuk/libnsl.git
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ OS/Makefile-Linux | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/OS/Makefile-Linux b/OS/Makefile-Linux
+index 990f884..ea5644b 100644
+--- a/OS/Makefile-Linux
++++ b/OS/Makefile-Linux
+@@ -19,7 +19,7 @@ CFLAGS_DYNAMIC ?= -shared -rdynamic
+ DBMLIB = -ldb
+ USE_DB = yes
+ 
+-LIBS = -lnsl -lcrypt -lm
++LIBS = -lcrypt -lm
+ LIBRESOLV = -lresolv
+ 
+ X11=/usr/X11R6
+-- 
+2.14.3
+

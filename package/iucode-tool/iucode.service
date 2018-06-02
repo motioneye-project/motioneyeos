@@ -1,0 +1,10 @@
+[Unit]
+Description=Upload microcode into the processor
+
+[Service]
+Type=oneshot
+ExecStart=/usr/sbin/iucode_tool -k /usr/share/misc/intel-microcode.dat
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target

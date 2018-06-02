@@ -15,7 +15,6 @@ config BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
-	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 	select BR2_TOOLCHAIN_SUPPORTS_PIE
 
 config BR2_TOOLCHAIN_USES_UCLIBC
@@ -43,7 +42,6 @@ choice
 config BR2_TOOLCHAIN_BUILDROOT
 	bool "Buildroot toolchain"
 	depends on BR2_ARCH_HAS_TOOLCHAIN_BUILDROOT
-	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 
 config BR2_TOOLCHAIN_EXTERNAL
 	bool "External toolchain"
@@ -120,9 +118,6 @@ config BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	bool
 
 config BR2_TOOLCHAIN_HAS_THREADS_NPTL
-	bool
-
-config BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 	bool
 
 config BR2_TOOLCHAIN_HAS_SSP
@@ -423,10 +418,15 @@ config BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	bool
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
+config BR2_TOOLCHAIN_GCC_AT_LEAST_8
+	bool
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_GCC_AT_LEAST
 	string
+	default "8"	if BR2_TOOLCHAIN_GCC_AT_LEAST_8
 	default "7"	if BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	default "6"	if BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	default "5"	if BR2_TOOLCHAIN_GCC_AT_LEAST_5

@@ -1,0 +1,17 @@
+config BR2_PACKAGE_LIBIDN2
+	bool "libidn2"
+	help
+	  Libidn2 is an implementation of the IDNA2008 + TR46
+	  specifications (RFC 5890, RFC 5891, RFC 5892, RFC 5893,
+	  TR 46).
+
+	  http://www.gnu.org/software/libidn/
+
+if BR2_PACKAGE_LIBIDN2
+
+config BR2_PACKAGE_LIBIDN2_BINARY
+	bool "idn2 binary"
+	help
+	  Install idn2 command line tool
+
+endif

@@ -143,6 +143,7 @@ N:	Andy Kennedy <andy.kennedy@adtran.com>
 F:	package/libunwind/
 
 N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
+F:	package/corkscrew/
 F:	package/i2c-tools/
 F:	package/mono/
 F:	package/mono-gtksharp3/
@@ -194,6 +195,7 @@ F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/python-jsonmodels/
+F:	package/python-reentry/
 F:	package/python-subprocess32/
 F:	package/python-yieldfrom/
 F:	package/zeromq/
@@ -580,6 +582,7 @@ F:	package/hicolor-icon-theme/
 F:	package/jemalloc/
 F:	package/meson/
 F:	package/ninja/
+F:	package/pkg-meson.mk
 F:	package/rust-bin/
 F:	package/rust/
 F:	package/s6/
@@ -693,6 +696,7 @@ F:	package/libglib2/
 F:	package/libgtk2/
 F:	package/libgtk3/
 F:	package/libidn/
+F:	package/libidn2/
 F:	package/libjpeg/
 F:	package/liblockfile/
 F:	package/libmatroska/
@@ -1055,6 +1059,7 @@ F:	configs/bananapro_defconfig
 F:	package/augeas/
 F:	package/bctoolbox/
 F:	package/freescale-imx/imx-alsa-plugins/
+F:	package/libopusenc/
 F:	package/libshout/
 F:	package/libupnpp/
 F:	package/luv/
@@ -1401,6 +1406,9 @@ N:	Naumann Andreas <ANaumann@ultratronik.de>
 F:	package/evemu/
 F:	package/libevdev/
 
+N:	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
+F:	package/libgit2/
+
 N:	Nicolas Serafini <nicolas.serafini@sensefly.com>
 F:	package/exiv2/
 F:	package/nvidia-tegra23/nvidia-tegra23-binaries/
@@ -1496,7 +1504,9 @@ F:	package/python-functools32/
 F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
+F:	package/python-request-id/
 F:	package/python-texttable/
+F:	package/python-webob/
 F:	package/python-websocket-client/
 F:	package/triggerhappy/
 

@@ -12,7 +12,6 @@ SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
 	host-gperf \
 	host-intltool \
-	host-meson \
 	kmod \
 	libcap \
 	util-linux
@@ -26,10 +25,6 @@ SYSTEMD_DEPENDENCIES += busybox
 endif
 
 SYSTEMD_CONF_OPTS += \
-	--prefix=/usr \
-	--libdir='/usr/lib' \
-	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
-	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf \
 	-Drootlibdir='/usr/lib' \
 	-Dblkid=true \
 	-Dman=false \
@@ -75,11 +70,15 @@ else
 SYSTEMD_CONF_OPTS += -Daudit=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
+# Both options can't be selected at the same time so prefer libidn2
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+SYSTEMD_DEPENDENCIES += libidn2
+SYSTEMD_CONF_OPTS += -Dlibidn2=true -Dlibidn=false
+else ifeq ($(BR2_PACKAGE_LIBIDN),y)
 SYSTEMD_DEPENDENCIES += libidn
-SYSTEMD_CONF_OPTS += -Dlibidn=true
+SYSTEMD_CONF_OPTS += -Dlibidn=true -Dlibidn2=false
 else
-SYSTEMD_CONF_OPTS += -Dlibidn=false
+SYSTEMD_CONF_OPTS += -Dlibidn=false -Dlibidn2=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
@@ -399,28 +398,7 @@ define SYSTEMD_INSTALL_INIT_SYSTEMD
 	$(SYSTEMD_INSTALL_NETWORK_CONFS)
 endef
 
-SYSTEMD_NINJA_OPTS = $(if $(VERBOSE),-v) -j$(PARALLEL_JOBS)
+SYSTEMD_CONF_ENV = $(HOST_UTF8_LOCALE_ENV)
+SYSTEMD_NINJA_ENV = $(HOST_UTF8_LOCALE_ENV)
 
-SYSTEMD_ENV = $(TARGET_MAKE_ENV) $(HOST_UTF8_LOCALE_ENV)
-
-define SYSTEMD_CONFIGURE_CMDS
-	rm -rf $(@D)/build
-	mkdir -p $(@D)/build
-	$(SYSTEMD_ENV) meson $(SYSTEMD_CONF_OPTS) $(@D) $(@D)/build
-endef
-
-define SYSTEMD_BUILD_CMDS
-	$(SYSTEMD_ENV) ninja $(SYSTEMD_NINJA_OPTS) -C $(@D)/build
-endef
-
-define SYSTEMD_INSTALL_TARGET_CMDS
-	$(SYSTEMD_ENV) DESTDIR=$(TARGET_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
-		-C $(@D)/build install
-endef
-
-define SYSTEMD_INSTALL_STAGING_CMDS
-	$(SYSTEMD_ENV) DESTDIR=$(STAGING_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
-		-C $(@D)/build install
-endef
-
-$(eval $(generic-package))
+$(eval $(meson-package))

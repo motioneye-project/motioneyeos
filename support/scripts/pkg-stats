@@ -499,17 +499,17 @@ def parse_args():
 def __main__():
     args = parse_args()
     if args.npackages and args.packages:
-        print "ERROR: -n and -p are mutually exclusive"
+        print("ERROR: -n and -p are mutually exclusive")
         sys.exit(1)
     if args.packages:
         package_list = args.packages.split(",")
     else:
         package_list = None
-    print "Build package list ..."
+    print("Build package list ...")
     packages = get_pkglist(args.npackages, package_list)
-    print "Getting package make info ..."
+    print("Getting package make info ...")
     package_init_make_info()
-    print "Getting package details ..."
+    print("Getting package details ...")
     for pkg in packages:
         pkg.set_infra()
         pkg.set_license()
@@ -517,9 +517,9 @@ def __main__():
         pkg.set_patch_count()
         pkg.set_check_package_warnings()
         pkg.set_current_version()
-    print "Calculate stats"
+    print("Calculate stats")
     stats = calculate_stats(packages)
-    print "Write HTML"
+    print("Write HTML")
     dump_html(packages, stats, args.output)
 
 

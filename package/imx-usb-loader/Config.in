@@ -1,0 +1,9 @@
+config BR2_PACKAGE_IMX_USB_LOADER
+	bool "imx-usb-loader"
+	select BR2_PACKAGE_LIBUSB
+	help
+	  This package contains tools to download and execute code
+	  on Freescale i.MX5/i.MX6 and Vybrid SoCs through the
+	  Serial Download Protocol.
+
+	  https://github.com/boundarydevices/imx_usb_loader

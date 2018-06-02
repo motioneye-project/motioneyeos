@@ -23,24 +23,15 @@ ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 EJABBERD_DEPENDENCIES += linux-pam
 endif
 
-# Install check-erlang-lib script to the directory in which the
-# package has been uncompressed, so it is available during the
-# configure step.
-define EJABBERD_INSTALL_CHECK_ERLANG_LIB
-	$(INSTALL) -m 0755 $(EJABBERD_PKGDIR)/check-erlang-lib \
-		$(@D)/check-erlang-lib
-endef
-
-EJABBERD_POST_EXTRACT_HOOKS += EJABBERD_INSTALL_CHECK_ERLANG_LIB
-
 EJABBERD_ERLANG_LIBS = sasl public_key mnesia inets compiler
 
 # Guess answers for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling.
+EJABBERD_CHECK_LIB = $(TOPDIR)/$(EJABBERD_PKGDIR)/check-erlang-lib
 EJABBERD_CONF_ENV = \
 	ac_cv_erlang_root_dir="$(HOST_DIR)/lib/erlang" \
 	$(foreach lib,$(EJABBERD_ERLANG_LIBS), \
-		ac_cv_erlang_lib_dir_$(lib)="`./check-erlang-lib $(lib)`")
+		ac_cv_erlang_lib_dir_$(lib)="`$(EJABBERD_CHECK_LIB) $(lib)`")
 
 EJABBERD_CONF_OPTS = \
 	--enable-system-deps \

@@ -16,6 +16,7 @@ SKELETON_ADD_SKELETON_DEPENDENCY = NO
 define HOST_SKELETON_INSTALL_CMDS
 	$(Q)ln -snf . $(HOST_DIR)/usr
 	$(Q)mkdir -p $(HOST_DIR)/lib
+	$(Q)mkdir -p $(HOST_DIR)/include
 	$(Q)case $(HOSTARCH) in \
 		(*64) ln -snf lib $(HOST_DIR)/lib64;; \
 		(*)   ln -snf lib $(HOST_DIR)/lib32;; \

@@ -1,2 +1,5 @@
 # From http://noping.cc/#download
-sha256	44bb1d88b56b88fda5533edb3aa005c69b3cd396f20453a157d7e31e536f3530	liboping-1.9.0.tar.bz2
+sha256	eb38aa93f93e8ab282d97e2582fbaea88b3f889a08cbc9dbf20059c3779d5cd8	liboping-1.10.0.tar.bz2
+
+# Hash for license file:
+sha256	dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551	COPYING

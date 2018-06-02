@@ -18,13 +18,13 @@ GCC_SITE = $(call github,openrisc,or1k-gcc,$(GCC_VERSION))
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.gz
 else
 GCC_SITE = $(BR2_GNU_MIRROR:/=)/gcc/gcc-$(GCC_VERSION)
-# From version 5.5.0, 6.4.0 and 7.2.0 a bz2 release tarball is not
+# From version 5.5.0, 6.4.0, 7.2.0 and 8.1.0 a bz2 release tarball is not
 # provided anymore. Use the xz tarball instead.
-ifeq ($(BR2_GCC_VERSION_5_X)$(BR2_GCC_VERSION_6_X)$(BR2_GCC_VERSION_7_X),y)
-GCC_SOURCE = gcc-$(GCC_VERSION).tar.xz
-else
+ifeq ($(BR2_GCC_VERSION_4_9_X),y)
 GCC_SOURCE = gcc-$(GCC_VERSION).tar.bz2
-endif # BR2_GCC_VERSION_6_X
+else
+GCC_SOURCE = gcc-$(GCC_VERSION).tar.xz
+endif
 endif
 
 #
