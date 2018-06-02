@@ -1959,7 +1959,7 @@ F:	package/x11r7/xapp_xinput-calibrator/
 F:	package/zlog/
 F:	utils/scanpypi
 
-N:	Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+N:	Zoltan Gyarmati <zgyarmati@zgyarmati.de>
 F:	package/crudini/
 F:	package/grantlee/
 F:	package/proj/
