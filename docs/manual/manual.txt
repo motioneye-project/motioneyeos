@@ -9,8 +9,8 @@ Buildroot {sys:echo $\{BR2_VERSION%%-git*\}} manual generated on {localdate}
 
 The Buildroot manual is written by the Buildroot developers.
 It is licensed under the GNU General Public License, version 2. Refer to the
-http://git.buildroot.org/buildroot/tree/COPYING[COPYING] file in the Buildroot
-sources for the full text of this license.
+http://git.buildroot.org/buildroot/tree/COPYING?id={sys:git rev-parse HEAD}[COPYING]
+file in the Buildroot sources for the full text of this license.
 
 Copyright (C) 2004-2018 The Buildroot developers
 
