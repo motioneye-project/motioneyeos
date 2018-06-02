@@ -4,4 +4,4 @@ qemu-system-ppc64 -M pseries -cpu POWER8 -m 256 -kernel output/images/vmlinux -a
 
 The login prompt will appear in the terminal window.
 
-Tested with QEMU 2.10.0
+Tested with QEMU 2.12.0

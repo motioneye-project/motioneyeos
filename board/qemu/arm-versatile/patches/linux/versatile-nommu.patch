@@ -1,30 +1,84 @@
-From b7c1666813424d329868335c8faf8886b0f85b6c Mon Sep 17 00:00:00 2001
-From: Greg Ungerer <gerg@linux-m68k.org>
-Date: Thu, 11 Aug 2016 21:33:11 +1000
-Subject: [PATCH] arm: fix versatile platform to work in no-MMU mode
+Signed-Off-by: Waldemar Brodkorb <wbx@openadk.org>
+From LKML.
 
-If CONFIG_MMU is disabled then do not carry out the virtual memory address
-translation for IO devices.
-
-With this fix in place we can run the ARM Versatile board (including its
-qemu emulation) as a no-MMU Linux system.
-
-Signed-off-by: Greg Ungerer <gerg@linux-m68k.org>
-Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
-
-diff -Nur linux-4.4.17.orig/arch/arm/mach-versatile/include/mach/hardware.h linux-4.4.17/arch/arm/mach-versatile/include/mach/hardware.h
---- linux-4.4.17.orig/arch/arm/mach-versatile/include/mach/hardware.h	2016-08-10 11:49:43.000000000 +0200
-+++ linux-4.4.17/arch/arm/mach-versatile/include/mach/hardware.h	2016-08-25 23:19:03.691716292 +0200
-@@ -30,8 +30,12 @@
- #define VERSATILE_PCI_VIRT_BASE		(void __iomem *)0xe8000000ul
- #define VERSATILE_PCI_CFG_VIRT_BASE	(void __iomem *)0xe9000000ul
+diff -Nur linux-4.15.13.orig/arch/arm/Kconfig linux-4.15.13/arch/arm/Kconfig
+--- linux-4.15.13.orig/arch/arm/Kconfig	2018-03-24 11:02:53.000000000 +0100
++++ linux-4.15.13/arch/arm/Kconfig	2018-04-01 03:47:33.415078244 +0100
+@@ -355,6 +355,17 @@
+ 	select SPARSE_IRQ
+ 	select USE_OF
  
-+#ifdef CONFIG_MMU
++config ARM_SINGLE_ARCH_VERSATILE
++	bool "ARM Ltd. Versatile family"
++	depends on !MMU
++	select AUTO_ZRELADDR
++	select CLKSRC_OF
++	select COMMON_CLK
++	select GENERIC_CLOCKEVENTS
++	select GPIOLIB
++	select SPARSE_IRQ
++	select USE_OF
++
+ config ARCH_EBSA110
+ 	bool "EBSA-110"
+ 	select ARCH_USES_GETTIMEOFFSET
+diff -Nur linux-4.15.13.orig/arch/arm/Kconfig.debug linux-4.15.13/arch/arm/Kconfig.debug
+--- linux-4.15.13.orig/arch/arm/Kconfig.debug	2018-03-24 11:02:53.000000000 +0100
++++ linux-4.15.13/arch/arm/Kconfig.debug	2018-04-01 03:47:33.416078232 +0100
+@@ -1795,7 +1795,8 @@
+ config UNCOMPRESS_INCLUDE
+ 	string
+ 	default "debug/uncompress.h" if ARCH_MULTIPLATFORM || ARCH_MSM || \
+-					PLAT_SAMSUNG || ARM_SINGLE_ARMV7M
++					PLAT_SAMSUNG || ARM_SINGLE_ARMV7M || \
++					ARM_SINGLE_ARCH_VERSATILE
+ 	default "mach/uncompress.h"
+ 
+ config EARLY_PRINTK
+diff -Nur linux-4.15.13.orig/arch/arm/include/asm/mach/map.h linux-4.15.13/arch/arm/include/asm/mach/map.h
+--- linux-4.15.13.orig/arch/arm/include/asm/mach/map.h	2018-03-24 11:02:53.000000000 +0100
++++ linux-4.15.13/arch/arm/include/asm/mach/map.h	2018-04-01 03:47:17.587276119 +0100
+@@ -62,6 +62,7 @@
+ #else
+ #define iotable_init(map,num)	do { } while (0)
+ #define vm_reserve_area_early(a,s,c)	do { } while (0)
++#define debug_ll_io_init()	do { } while (0)
+ #endif
+ 
+ #endif
+diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/Kconfig linux-4.15.13/arch/arm/mach-versatile/Kconfig
+--- linux-4.15.13.orig/arch/arm/mach-versatile/Kconfig	2018-03-24 11:02:53.000000000 +0100
++++ linux-4.15.13/arch/arm/mach-versatile/Kconfig	2018-04-01 03:47:33.417078219 +0100
+@@ -1,7 +1,8 @@
+ # SPDX-License-Identifier: GPL-2.0
+ config ARCH_VERSATILE
+-	bool "ARM Ltd. Versatile family"
+-	depends on ARCH_MULTI_V5
++	bool "ARM Ltd. Versatile family" if ARCH_MULTI_V5
++	depends on ARCH_MULTI_V5 || ARM_SINGLE_ARCH_VERSATILE
++	default y if ARM_SINGLE_ARCH_VERSATILE
+ 	select ARM_AMBA
+ 	select ARM_TIMER_SP804
+ 	select ARM_VIC
+diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/Makefile.boot linux-4.15.13/arch/arm/mach-versatile/Makefile.boot
+--- linux-4.15.13.orig/arch/arm/mach-versatile/Makefile.boot	1970-01-01 01:00:00.000000000 +0100
++++ linux-4.15.13/arch/arm/mach-versatile/Makefile.boot	2018-04-01 03:47:25.644175394 +0100
+@@ -0,0 +1,3 @@
++# Empty file waiting for deletion once Makefile.boot isn't needed any more.
++# Patch waits for application at
++# http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=7889/1 .
+diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/versatile_dt.c linux-4.15.13/arch/arm/mach-versatile/versatile_dt.c
+--- linux-4.15.13.orig/arch/arm/mach-versatile/versatile_dt.c	2018-03-24 11:02:53.000000000 +0100
++++ linux-4.15.13/arch/arm/mach-versatile/versatile_dt.c	2018-04-01 03:47:10.913359555 +0100
+@@ -37,7 +37,11 @@
+ #include <asm/mach/map.h>
+ 
  /* macro to get at MMIO space when running virtually */
++#ifdef CONFIG_MMU
  #define IO_ADDRESS(x)		(((x) & 0x0fffffff) + (((x) >> 4) & 0x0f000000) + 0xf0000000)
 +#else
 +#define IO_ADDRESS(x)		(x)
 +#endif
- 
  #define __io_address(n)		((void __iomem __force *)IO_ADDRESS(n))
  
+ /*

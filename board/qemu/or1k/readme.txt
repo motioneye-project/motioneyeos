@@ -6,4 +6,4 @@ The login prompt will appear in the terminal that started Qemu.
 
 Ethernet support is not working, yet.
 
-Tested with QEMU 2.9.0.
+Tested with QEMU 2.12.0.

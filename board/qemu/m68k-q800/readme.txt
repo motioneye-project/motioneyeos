@@ -4,5 +4,5 @@ Run the emulation with:
 
 The login prompt will appear in the terminal that started Qemu.
 
-Tested with QEMU 2.4.0 from https://github.com/vivier/qemu-m68k
-You need following branch: q800-v2.4.0
+Tested with QEMU 2.11.0 from https://github.com/vivier/qemu-m68k
+You need following branch: q800-v2.11.0
