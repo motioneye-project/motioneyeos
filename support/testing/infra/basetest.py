@@ -46,8 +46,8 @@ class BRTest(unittest.TestCase):
         self.config += "\nBR2_JLEVEL={}\n".format(self.jlevel)
 
     def show_msg(self, msg):
-        print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
-                                    self.testname, msg)
+        print("{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
+                                    self.testname, msg))
 
     def setUp(self):
         self.show_msg("Starting")
