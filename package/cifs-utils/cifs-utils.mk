@@ -15,7 +15,7 @@ CIFS_UTILS_DEPENDENCIES = host-pkgconf
 
 # Let's disable PIE unconditionally. We want PIE to be enabled only by
 # the global BR2_RELRO_FULL option.
-CIFS_UTILS_CONF_OPTS = --disable-pie
+CIFS_UTILS_CONF_OPTS = --disable-pie --disable-man
 
 ifeq ($(BR2_PACKAGE_KEYUTILS),y)
 CIFS_UTILS_DEPENDENCIES += keyutils
