@@ -1391,6 +1391,9 @@ F:	configs/socrates_cyclone5_defconfig
 N:	Mikhail Boiko <mikhailboiko85@gmail.com>
 F:	package/libfribidi/
 
+N:	Min Xu <xuminready@gmail.com>
+F:	package/shadowsocks-libev/
+
 N:	Morgan Delestre <m.delestre@sinters.fr>
 F:	package/monkey/
 
