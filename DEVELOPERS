@@ -1029,6 +1029,7 @@ F:	package/tegrarcm/
 N:	Julien Boibessot <julien.boibessot@armadeus.com>
 F:	board/armadeus/
 F:	configs/armadeus*
+F:	package/abootimg/
 F:	package/gpm/
 F:	package/lbreakout2/
 F:	package/libcddb/
