@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBUCL_VERSION = 0.7.3
+LIBUCL_VERSION = 0.8.1
 LIBUCL_SITE = $(call github,vstakhov,libucl,$(LIBUCL_VERSION))
 LIBUCL_INSTALL_STAGING = YES
 LIBUCL_AUTORECONF = YES
