@@ -1,2 +1,5 @@
 # Locally calculated after checking pgp signature
-sha256	b5976e3857837e7617b29f2249ebb5eeac34e249208d31f1fbf7a6ba7a4090ce	libxslt-1.1.29.tar.gz
+sha256	526ecd0abaf4a7789041622c3950c0e7f2c4c8835471515fd77eec684a355460	libxslt-1.1.32.tar.gz
+
+# Hash for license file:
+sha256	7e48e290b6bfccc2ec1b297023a1d77f2fd87417f71fbb9f50aabef40a851819	COPYING
