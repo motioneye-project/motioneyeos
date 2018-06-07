@@ -99,7 +99,9 @@ OPENCV3_CONF_OPTS += \
 # * PowerPC support is turned off since its only effect is altering CFLAGS,
 #   adding '-mcpu=G3 -mtune=G5' to them, which is already handled by Buildroot.
 OPENCV3_CONF_OPTS += \
-	-DENABLE_POWERPC=OFF
+	-DENABLE_POWERPC=OFF \
+	-DENABLE_NEON=$(if $(BR2_ARM_CPU_HAS_NEON),ON,OFF) \
+	-DENABLE_VFPV3=$(if $(BR2_ARM_CPU_HAS_VFPV3),ON,OFF)
 
 # Cuda stuff
 OPENCV3_CONF_OPTS += \
