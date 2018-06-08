@@ -1,2 +1,6 @@
-# From https://sourceware.org/elfutils/ftp/0.169/sha512.sum
-sha512 0a81a20bb2aff533d035d6b76f1403437b2e11bce390db57e34b8c26e4b9b3150346d83dddcbfbbdc58063f046ca3223508dba35c6ce88e375d201e7a777a8b9  elfutils-0.169.tar.bz2
+# From https://sourceware.org/elfutils/ftp/0.171/sha512.sum
+sha512 777be2d63ca9b11440bf358a33428d9ca974e2612a880934156c9f7194af596ed627c1ed2d48dbd47a3761c94913b8f39565f9dcb6b62c92bf229f04c96d5ee3  elfutils-0.171.tar.bz2
+# Locally calculated
+sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING-GPLV2
+sha256 da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768  COPYING-LGPLV3
