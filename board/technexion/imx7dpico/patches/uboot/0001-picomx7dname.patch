@@ -1,0 +1,31 @@
+From 6d298b0fcacfc555f93864fa45fb612140902388 Mon Sep 17 00:00:00 2001
+From: Fabio Estevam <festevam@gmail.com>
+Date: Tue, 5 Jun 2018 22:12:48 -0300
+Subject: [PATCH] pico-imx7d: Adjust the dtb name
+
+Since kernel commit 41bbeadceb03 ("ARM: dts: imx7d-pico-pi: Separate
+into cpu and baseboard dts") the dtb name has changed.
+
+Fix it accordingly.
+
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+---
+ include/configs/pico-imx7d.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/configs/pico-imx7d.h b/include/configs/pico-imx7d.h
+index b208d7f..d2ffa70 100644
+--- a/include/configs/pico-imx7d.h
++++ b/include/configs/pico-imx7d.h
+@@ -41,7 +41,7 @@
+ 	"console=ttymxc4\0" \
+ 	"fdt_high=0xffffffff\0" \
+ 	"initrd_high=0xffffffff\0" \
+-	"fdt_file=imx7d-pico.dtb\0" \
++	"fdt_file=imx7d-pico-pi.dtb\0" \
+ 	"fdt_addr=0x83000000\0" \
+ 	"ip_dyn=yes\0" \
+ 	"mmcdev="__stringify(CONFIG_SYS_MMC_ENV_DEV)"\0" \
+-- 
+2.7.4
+
