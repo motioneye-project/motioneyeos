@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SPEEX_VERSION = 1.2rc1
-SPEEX_SITE = http://downloads.us.xiph.org/releases/speex
+SPEEX_VERSION = 1.2.0
+SPEEX_SITE = https://downloads.xiph.org/releases/speex
 SPEEX_LICENSE = BSD-3-Clause
 SPEEX_LICENSE_FILES = COPYING
 SPEEX_INSTALL_STAGING = YES
