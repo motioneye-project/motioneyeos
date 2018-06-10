@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DTV_SCAN_TABLES_VERSION = 07b18ecef17493ac0908a2e112eae3fe269da7fa
+DTV_SCAN_TABLES_VERSION = c2b6af67f7d8620acbf052fc754ec831ed2188ba
 DTV_SCAN_TABLES_SITE = http://git.linuxtv.org/cgit.cgi/dtv-scan-tables.git
 DTV_SCAN_TABLES_SITE_METHOD = git
 
