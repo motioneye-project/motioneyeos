@@ -1,0 +1,57 @@
+From 2bef718d1ade8dd20f431ac2eef9fdf58d96842f Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 1 Jun 2018 20:58:25 +0200
+Subject: [PATCH] Add RUST_TARGET variable
+
+Add RUST_TARGET environment variable through AC_ARG_VAR to allow the
+user to override the rust target name. Indeed, using $host when
+cross-compiling is not always the good option especially when vendor
+part of target is not set to unknown but to another value such as
+buildroot.
+Indeed, in this case aarch64-buildroot-linux-gnu won't be recognised as
+a valid target by rust/cargo.
+
+[Upstream status: merged (https://github.com/GNOME/librsvg/commit/f0b76ab6f003b8e05d4caab2b6d844e97b97796f)]
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ Makefile.am  | 2 +-
+ configure.ac | 7 ++++++-
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index f21b58e2..0b5b906f 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -136,7 +136,7 @@ CARGO_RELEASE_ARGS=--release
+ endif
+ 
+ if CROSS_COMPILING
+-CARGO_TARGET_ARGS=--target=$(host)
++CARGO_TARGET_ARGS=--target=$(RUST_TARGET)
+ endif
+ 
+ CARGO_VERBOSE = $(cargo_verbose_$(V))
+diff --git a/configure.ac b/configure.ac
+index c9666757..50ca9f0f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -286,9 +286,14 @@ else
+ fi
+ AM_CONDITIONAL([DEBUG_RELEASE], [test "x$debug_release" = "xyes"])
+ 
++AC_ARG_VAR(RUST_TARGET, [Set rust target (default=$host)])
++if test "x$RUST_TARGET" == x; then
++	RUST_TARGET=$host
++fi
++
+ AM_CONDITIONAL(CROSS_COMPILING, test $cross_compiling = yes)
+ if test "x$cross_compiling" = "xyes" ; then
+-	RUST_TARGET_SUBDIR="$host/$RUST_TARGET_SUBDIR"
++	RUST_TARGET_SUBDIR="$RUST_TARGET/$RUST_TARGET_SUBDIR"
+ fi
+ AC_SUBST([RUST_TARGET_SUBDIR])
+ 
+-- 
+2.14.1
+
