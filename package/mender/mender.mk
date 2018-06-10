@@ -5,7 +5,6 @@
 ################################################################################
 
 MENDER_VERSION = 1.4.0
-MENDER_SOURCE = mender-$(MENDER_VERSION).tar.gz
 MENDER_SITE = $(call github,mendersoftware,mender,$(MENDER_VERSION))
 
 define MENDER_INSTALL_CONFIG_FILES
