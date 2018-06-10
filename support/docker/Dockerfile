@@ -36,9 +36,9 @@ RUN apt-get install -y --no-install-recommends \
         libncurses5-dev \
         locales \
         mercurial \
+        python-flake8 \
         python-nose2 \
         python-pexpect \
-        python-pip \
         qemu-system-arm \
         qemu-system-x86 \
         rsync \
@@ -48,14 +48,6 @@ RUN apt-get install -y --no-install-recommends \
         && \
     apt-get -y autoremove && \
     apt-get -y clean
-
-# For check-flake8
-RUN python -m pip install --upgrade pip setuptools wheel && \
-    pip install -q \
-        flake8==3.5.0 \
-        mccabe==0.6.1 \
-        pycodestyle==2.3.1 \
-        pyflakes==1.6.0
 
 # To be able to generate a toolchain with locales, enable one UTF-8 locale
 RUN sed -i 's/# \(en_US.UTF-8\)/\1/' /etc/locale.gen && \
