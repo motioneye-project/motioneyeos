@@ -25,5 +25,15 @@ else
 LIBUSB_CONF_OPTS += --disable-udev
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUSB_EXAMPLES),y)
+LIBUSB_CONF_OPTS += --enable-examples-build
+define LIBUSB_INSTALL_TARGET_EXAMPLES
+	$(foreach example,listdevs xusb fxload hotplugtest testlibusb dpfp dpfp_threaded sam3u_benchmark,
+		$(INSTALL) -D -m0755 $(@D)/examples/$(example) $(TARGET_DIR)/usr/bin/$(example)
+	)
+endef
+LIBUSB_POST_INSTALL_TARGET_HOOKS += LIBUSB_INSTALL_TARGET_EXAMPLES
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
