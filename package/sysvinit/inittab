@@ -6,8 +6,7 @@ id:3:initdefault:
 
 si0::sysinit:/bin/mount -t proc proc /proc
 si1::sysinit:/bin/mount -o remount,rw /
-si2::sysinit:/bin/mkdir -p /dev/pts
-si3::sysinit:/bin/mkdir -p /dev/shm
+si2::sysinit:/bin/mkdir -p /dev/pts /dev/shm
 si4::sysinit:/bin/mount -a
 si5::sysinit:/bin/ln -sf /proc/self/fd /dev/fd 2>/dev/null
 si6::sysinit:/bin/ln -sf /proc/self/fd/0 /dev/stdin 2>/dev/null
