@@ -1,5 +1,5 @@
 # Locally calculated after checking gpg signature
-sha256 7d3b3e245a3b4ec94b05678c8199c806359737949f4cfe0bf936184f6ca89a83  mosquitto-1.4.15.tar.gz
+sha256 80c9606a906c736fe582b67bdfb650ee45239fea058fe34927f81277d3486e21  mosquitto-1.5.tar.gz
 
 # License files
 sha256 cc77e25bafd40637b7084f04086d606f0a200051b61806f97c93405926670bc1  LICENSE.txt
