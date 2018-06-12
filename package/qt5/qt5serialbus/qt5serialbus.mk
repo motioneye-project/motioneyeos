@@ -36,8 +36,15 @@ define QT5SERIALBUS_INSTALL_TARGET_LIBS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
+define QT5SERIALBUS_INSTALL_TARGET_EXAMPLES
+	cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/serialbus $(TARGET_DIR)/usr/lib/qt/examples/
+endef
+endif
+
 define QT5SERIALBUS_INSTALL_TARGET_CMDS
 	$(QT5SERIALBUS_INSTALL_TARGET_LIBS)
+	$(QT5SERIALBUS_INSTALL_TARGET_EXAMPLES)
 	$(INSTALL) -m 0755 -D $(@D)/bin/canbusutil \
 		$(TARGET_DIR)/usr/bin/canbusutil
 endef
