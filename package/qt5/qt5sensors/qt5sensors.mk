@@ -48,9 +48,16 @@ define QT5SENSORS_INSTALL_TARGET_QMLS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
+define QT5SENSORS_INSTALL_TARGET_EXAMPLES
+	cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/sensors $(TARGET_DIR)/usr/lib/qt/examples/
+endef
+endif
+
 define QT5SENSORS_INSTALL_TARGET_CMDS
 	$(QT5SENSORS_INSTALL_TARGET_LIBS)
 	$(QT5SENSORS_INSTALL_TARGET_QMLS)
+	$(QT5SENSORS_INSTALL_TARGET_EXAMPLES)
 endef
 
 $(eval $(generic-package))
