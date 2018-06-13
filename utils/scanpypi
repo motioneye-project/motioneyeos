@@ -178,6 +178,7 @@ class BuildrootPackage():
         """
         Download a package using metadata from pypi
         """
+        download = None
         try:
             self.metadata['urls'][0]['filename']
         except IndexError:
@@ -201,7 +202,7 @@ class BuildrootPackage():
                 continue
             try:
                 print('Downloading package {pkg} from {url}...'.format(
-                      pkg=self.real_name, url=download_url['url']))
+                    pkg=self.real_name, url=download_url['url']))
                 download = six.moves.urllib.request.urlopen(download_url['url'])
             except six.moves.urllib.error.HTTPError as http_error:
                 download = http_error
@@ -213,11 +214,14 @@ class BuildrootPackage():
                 self.md5_sum = hashlib.md5(self.as_string).hexdigest()
                 if self.md5_sum == download_url['digests']['md5']:
                     break
-        else:
-            if download.__class__ == six.moves.urllib.error.HTTPError:
-                raise download
-            raise DownloadFailed('Failed to download package {pkg}'
+
+        if download is None:
+            raise DownloadFailed('Failed to download package {pkg}: '
+                                 'No source archive available'
                                  .format(pkg=self.real_name))
+        elif download.__class__ == six.moves.urllib.error.HTTPError:
+            raise download
+
         self.filename = self.used_url['filename']
         self.url = self.used_url['url']
 
