@@ -13,6 +13,10 @@ SPEEX_DEPENDENCIES = host-pkgconf libogg
 SPEEX_CONF_OPTS = \
 	--enable-fixed-point
 
+ifeq ($(BR2_PACKAGE_SPEEXDSP),y)
+SPEEX_DEPENDENCIES += speexdsp
+endif
+
 ifeq ($(BR2_PACKAGE_SPEEX_ARM4),y)
 SPEEX_CONF_OPTS += --enable-arm4-asm
 endif
