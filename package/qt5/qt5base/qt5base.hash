@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtbase-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 fef48529a6fc2617a30d75d952cb327c6be341fd104154993922184b3b3b4da1 qtbase-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.10/5.10.1/submodules/qtbase-everywhere-src-5.10.1.tar.xz.mirrorlist
-sha256 d8660e189caa5da5142d5894d328b61a4d3ee9750b76d61ad74e4eee8765a969  qtbase-everywhere-src-5.10.1.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.0/submodules/qtbase-everywhere-src-5.11.0.tar.xz.mirrorlist
+sha256 ed6e46db84f7d34923ab4eae165c63e05ab3cfa9d19a73d3f57b4e7bfd41de66  qtbase-everywhere-src-5.11.0.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2
