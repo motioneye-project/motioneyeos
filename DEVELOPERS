@@ -1827,14 +1827,6 @@ F:	package/mesa3d-demos/
 F:	package/sunxi-mali/
 F:	package/ti-gfx/
 
-N:	Stefan Fröberg <stefan.froberg@petroprogram.com>
-F:	package/elfutils/
-F:	package/libtasn1/
-F:	package/proxychains-ng/
-F:	package/vte/
-F:	package/yasm/
-F:	package/zlib-ng/
-
 N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
 F:	package/cracklib/
 F:	package/libpwquality/
