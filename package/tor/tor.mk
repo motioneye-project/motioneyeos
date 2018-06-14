@@ -47,6 +47,10 @@ endif
 # uses gnu extensions
 TOR_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+TOR_CONF_ENV += LIBS=-latomic
+endif
+
 define TOR_INSTALL_CONF
 	$(INSTALL) -D -m 644 $(@D)/src/config/torrc.minimal \
 		$(TARGET_DIR)/etc/tor/torrc
