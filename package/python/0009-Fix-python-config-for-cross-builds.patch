@@ -12,6 +12,8 @@ doesn't depend on the sysconfig import that usually leads to bad
 data/results.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Bernd: rebased for Python 2.7.15]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  Makefile.pre.in          |  13 +++---
  Misc/python-config.sh.in | 102 +++++++++++++++++++++++++++++++++++++++++++++++
@@ -36,8 +38,8 @@ index 33b994d..beb0837 100644
  
  # Default target
  all:		@DEF_MAKE_ALL_RULE@
--build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
-+build_all:	$(BUILDPYTHON) oldsharedmods sharedmods gdbhooks python-config
+-build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks
++build_all:	check-clean-src $(BUILDPYTHON) oldsharedmods sharedmods gdbhooks python-config
  
  # Compile a binary with profile guided optimization.
  profile-opt:
