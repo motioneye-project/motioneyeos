@@ -1,4 +1,4 @@
 # From https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/SHA256
-sha256 917a8779c342177ff3751a2bf955d0262d1d8916a4b408930c45cef326700995  libressl-2.7.2.tar.gz
+sha256 1e3a9fada06c1c060011470ad0ff960de28f9a0515277d7336f7e09362517da6  libressl-2.7.4.tar.gz
 # Locally computed
 sha256 5c63613f008f16a9c0025c096bbd736cecf720494d121b5c5203e0ec6e5955b1  COPYING
