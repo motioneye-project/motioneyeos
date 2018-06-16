@@ -33,11 +33,15 @@ define CA_CERTIFICATES_INSTALL_TARGET_CMDS
 	cd $(TARGET_DIR) ;\
 	for i in `find usr/share/ca-certificates -name "*.crt"` ; do \
 		ln -sf ../../../$$i etc/ssl/certs/`basename $${i} .crt`.pem ;\
-		cat $$i >>etc/ssl/certs/ca-certificates.crt ;\
-	done
+		cat $$i ;\
+	done >$(@D)/ca-certificates.crt
 
 	# Create symlinks to the certificates by their hash values
 	$(HOST_DIR)/bin/c_rehash $(TARGET_DIR)/etc/ssl/certs
+
+	# Install the certificates bundle
+	$(INSTALL) -D -m 644 $(@D)/ca-certificates.crt \
+		$(TARGET_DIR)/etc/ssl/certs/ca-certificates.crt
 endef
 
 $(eval $(generic-package))
