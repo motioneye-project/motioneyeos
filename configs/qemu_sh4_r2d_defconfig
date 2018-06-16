@@ -3,6 +3,7 @@ BR2_sh=y
 BR2_sh4=y
 
 # System
+BR2_GLOBAL_PATCH_DIR="board/qemu/sh4-r2d/patches"
 BR2_SYSTEM_DHCP="eth0"
 BR2_TARGET_GENERIC_GETTY_PORT="ttySC1"
 
