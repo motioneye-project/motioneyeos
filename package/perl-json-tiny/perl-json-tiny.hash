@@ -1,3 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
 md5    aa006882222e17a94295b3a655aab91b JSON-Tiny-0.58.tar.gz
 sha256 ad42e9137f5148df7fdb22aa52186b306032977bcd70d49f44a288070e4f0f23 JSON-Tiny-0.58.tar.gz
+
+# computed by scancpan
+sha256 19e2e0f2079ea1ce1576eb4ecc0575b33fe45b2b8e71f4aa589d6bedd1da4e0a LICENSE
