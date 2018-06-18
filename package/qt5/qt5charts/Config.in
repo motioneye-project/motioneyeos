@@ -1,9 +1,5 @@
-comment "qt5charts needs at least qt-5.7"
-	depends on !BR2_PACKAGE_QT5_VERSION_LATEST
-
 config BR2_PACKAGE_QT5CHARTS
 	bool "qt5charts"
-	depends on BR2_PACKAGE_QT5_VERSION_LATEST
 	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_WIDGETS
