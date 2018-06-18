@@ -150,6 +150,7 @@ FREESWITCH_ENABLED_MODULES += \
 	say/mod_say_sv \
 	say/mod_say_th \
 	say/mod_say_zh \
+	timers/mod_timerfd \
 	xml_int/mod_xml_cdr \
 	xml_int/mod_xml_rpc \
 	xml_int/mod_xml_scgi
