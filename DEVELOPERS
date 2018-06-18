@@ -695,6 +695,7 @@ F:	package/gupnp-tools/
 F:	package/hiredis/
 F:	package/i2pd/
 F:	package/igd2-for-linux/
+F:	package/json-c/
 F:	package/lcms2/
 F:	package/lftp/
 F:	package/libcap-ng/
@@ -722,8 +723,11 @@ F:	package/libraw1394/
 F:	package/libroxml/
 F:	package/librsvg/
 F:	package/librsync/
+F:	package/libsoup/
+F:	package/libsoxr/
 F:	package/libupnp/
 F:	package/libupnp18/
+F:	package/libxslt/
 F:	package/mbedtls/
 F:	package/minissdpd/
 F:	package/motion/
@@ -735,6 +739,7 @@ F:	package/rygel/
 F:	package/safeclib/
 F:	package/tinycbor/
 F:	package/tinydtls/
+F:	package/tinymembench/
 F:	package/whois/
 
 N:	Falco Hyfing <hyfinglists@gmail.com>
