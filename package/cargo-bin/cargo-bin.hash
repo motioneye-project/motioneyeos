@@ -1,5 +1,7 @@
 # From https://static.rust-lang.org/dist/cargo-0.26.0-i686-unknown-linux-gnu.tar.xz.sha256
 sha256 bc5f5aa32d2f4ba26abf79a900231d06eecc7f1f2e125ed51bf71766550d1879  cargo-0.26.0-i686-unknown-linux-gnu.tar.xz
+# From https://static.rust-lang.org/dist/cargo-0.26.0-powerpc64le-unknown-linux-gnu.tar.xz.sha256
+sha256 b14b47f59b436d07e57c5eab5bdd7378842b8ef4873d5836e08f0391e743f516  cargo-0.26.0-powerpc64le-unknown-linux-gnu.tar.xz
 # From https://static.rust-lang.org/dist/cargo-0.26.0-x86_64-unknown-linux-gnu.tar.xz.sha256
 sha256 aeaa5813aa6615dd7fdde6d870ca257c5b2e9da5e308f8242a08b231605bce0e  cargo-0.26.0-x86_64-unknown-linux-gnu.tar.xz
 # Locally generated
