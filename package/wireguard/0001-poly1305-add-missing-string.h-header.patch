@@ -1,0 +1,26 @@
+From ed04799b1868f45e05d788e614b9b8cfa4fcab46 Mon Sep 17 00:00:00 2001
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Wed, 20 Jun 2018 14:55:24 +0200
+Subject: [PATCH] poly1305: add missing string.h header
+
+Reported-by: Peter Korsgaard <peter@korsgaard.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/crypto/poly1305.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/crypto/poly1305.c b/src/crypto/poly1305.c
+index 26af4ad..65a37d9 100644
+--- a/src/crypto/poly1305.c
++++ b/src/crypto/poly1305.c
+@@ -7,6 +7,7 @@
+ #include "poly1305.h"
+ 
+ #include <linux/kernel.h>
++#include <linux/string.h>
+ 
+ #if defined(CONFIG_X86_64)
+ #include <asm/fpu/api.h>
+-- 
+2.11.0
+
