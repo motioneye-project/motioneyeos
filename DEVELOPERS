@@ -968,6 +968,7 @@ N:	Jeremy Rosen <jeremy.rosen@openwide.fr>
 F:	package/fxload/
 
 N:	Joel Carlson <JoelsonCarl@gmail.com>
+F:	package/cmocka/
 F:	package/flatcc/
 
 N:	Joel Stanley <joel@jms.id.au>
