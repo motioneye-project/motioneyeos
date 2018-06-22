@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRACE_VERSION = 4.22
+STRACE_VERSION = 4.23
 STRACE_SOURCE = strace-$(STRACE_VERSION).tar.xz
 STRACE_SITE = https://strace.io/files/$(STRACE_VERSION)
 STRACE_LICENSE = BSD-3-Clause
