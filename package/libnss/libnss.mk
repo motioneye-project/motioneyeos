@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-LIBNSS_VERSION_MAJOR = 3.37
-LIBNSS_VERSION = $(LIBNSS_VERSION_MAJOR).3
+LIBNSS_VERSION = 3.38
 LIBNSS_SOURCE = nss-$(LIBNSS_VERSION).tar.gz
 LIBNSS_SITE = https://ftp.mozilla.org/pub/mozilla.org/security/nss/releases/NSS_$(subst .,_,$(LIBNSS_VERSION))_RTM/src
 LIBNSS_DISTDIR = dist
