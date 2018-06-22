@@ -1,3 +1,3 @@
 # From https://kernel.org/pub/linux/utils/net/iproute2/sha256sums.asc
-sha256	0c5c24020fd7349fe25728c5edee9fb6a1bc8a38f08e23be5c57a6301e55ee0a	iproute2-4.16.0.tar.xz
+sha256	6fa991b092315887775b9e47dc6a89af7ae09dd3ad4ccff754d055c566b4be6e	iproute2-4.17.0.tar.xz
 sha256	e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4	COPYING
