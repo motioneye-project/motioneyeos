@@ -1665,6 +1665,9 @@ F:	package/chocolate-doom/
 F:	package/irssi/
 F:	package/vnstat/
 
+N:	Roman Gorbenkov <roman.gorbenkov@ens2m.org>
+F:	package/davfs2/
+
 N:	Romain Naour <romain.naour@gmail.com>
 F:	package/aubio/
 F:	package/bullet/
