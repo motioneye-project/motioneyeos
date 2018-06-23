@@ -195,6 +195,7 @@ F:	package/sqlcipher/
 F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
+F:	package/libuv
 F:	package/python-jsonmodels/
 F:	package/python-reentry/
 F:	package/python-subprocess32/
