@@ -1,0 +1,35 @@
+From 73e31146a5c6bcd48eb3089a2a140833a401623b Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?V=C3=ADctor=20Manuel=20J=C3=A1quez=20Leal?=
+ <vjaquez@igalia.com>
+Date: Mon, 21 May 2018 13:27:14 +0200
+Subject: [PATCH] plugins: guard GstGL code
+
+Upstream: https://cgit.freedesktop.org/gstreamer/gstreamer-vaapi/patch/?id=45fb111850955d9192e43b9dbcb2ef8e3974e58d
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ gst/vaapi/gstvaapipluginutil.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/gst/vaapi/gstvaapipluginutil.c b/gst/vaapi/gstvaapipluginutil.c
+index fa25131..648c91b 100644
+--- a/gst/vaapi/gstvaapipluginutil.c
++++ b/gst/vaapi/gstvaapipluginutil.c
+@@ -246,6 +246,7 @@ gst_vaapi_create_display_from_gl_context (GstObject * gl_context_object)
+ static void
+ gst_vaapi_find_gl_context (GstElement * element)
+ {
++#if USE_GST_GL_HELPERS
+   GstVaapiPluginBase *const plugin = GST_VAAPI_PLUGIN_BASE (element);
+ 
+   /* if the element is vaapisink or any vaapi encoder it doesn't need
+@@ -282,6 +283,7 @@ no_valid_gl_display:
+     gst_object_replace (&plugin->gl_other_context, NULL);
+     return;
+   }
++#endif
+ }
+ 
+ gboolean
+-- 
+2.17.1
+
