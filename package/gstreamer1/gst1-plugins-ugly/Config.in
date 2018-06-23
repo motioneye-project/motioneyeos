@@ -44,18 +44,6 @@ config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_DVDREAD
 	help
 	  Access a DVD with dvdread
 
-config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_LAME
-	bool "lame (*.mp3 audio encoder)"
-	select BR2_PACKAGE_LAME
-	help
-	  Encode MP3s with LAME
-
-config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPG123
-	bool "mpg123 (*.mp3 audio)"
-	select BR2_PACKAGE_MPG123
-	help
-	  mp3 decoding based on the mpg123 library
-
 config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPEG2DEC
 	bool "mpeg2dec"
 	select BR2_PACKAGE_LIBMPEG2

@@ -9,134 +9,6 @@ menuconfig BR2_PACKAGE_GST1_PLUGINS_BAD
 
 if BR2_PACKAGE_GST1_PLUGINS_BAD
 
-comment "libraries with external dependencies"
-
-menuconfig BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL
-	bool "opengl"
-	depends on BR2_PACKAGE_HAS_LIBGL || BR2_PACKAGE_HAS_LIBGLES
-
-if BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
-	def_bool BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_WINDOW
-
-comment "The opengl library needs an API, a platform and a window system"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
-
-comment "APIs"
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API
-	bool
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL
-	bool "opengl"
-	default y
-	depends on BR2_PACKAGE_HAS_LIBGL
-	select BR2_PACKAGE_LIBGLU
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API
-
-comment "opengl needs an OpenGL backend"
-	depends on !BR2_PACKAGE_HAS_LIBGL
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLES2
-	bool "gles2"
-	default y
-	depends on BR2_PACKAGE_HAS_LIBGLES
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API
-
-comment "gles2 needs an OpenGL ES backend"
-	depends on !BR2_PACKAGE_HAS_LIBGLES
-
-comment "Platforms"
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM
-	bool
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLX
-	bool "glx"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL
-	depends on BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR # mesa needs big X
-	depends on !BR2_PACKAGE_RPI_USERLAND # x11
-	select BR2_PACKAGE_XLIB_LIBXRENDER
-	select BR2_PACKAGE_XPROTO_GLPROTO
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_X11
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM
-	help
-	  OpenGL Extension to the X Window System
-
-comment "glx not supported with rpi-userland"
-	depends on BR2_PACKAGE_RPI_USERLAND
-
-comment "glx needs the opengl API and modular X.org"
-	depends on !BR2_PACKAGE_RPI_USERLAND && \
-		(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL || \
-		!BR2_PACKAGE_XSERVER_XORG_SERVER_MODULAR)
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL
-	bool "egl"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API
-	depends on BR2_PACKAGE_HAS_LIBEGL
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM
-
-comment "egl needs an API and an EGL backend"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_API || \
-		!BR2_PACKAGE_HAS_LIBEGL
-
-comment "Window systems"
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_WINDOW
-	bool
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_X11
-	bool "x11"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM
-	depends on !BR2_PACKAGE_RPI_USERLAND
-	depends on BR2_PACKAGE_XORG7
-	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XLIB_LIBXEXT
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_WINDOW
-
-comment "x11 not supported with rpi-userland"
-	depends on BR2_PACKAGE_RPI_USERLAND
-
-comment "x11 needs a platform and X.org"
-	depends on !BR2_PACKAGE_RPI_USERLAND && \
-		(!BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_PLATFORM || \
-		!BR2_PACKAGE_XORG7)
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_WAYLAND
-	bool "wayland"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL
-	depends on BR2_PACKAGE_WAYLAND
-	select BR2_PACKAGE_WAYLAND_PROTOCOLS
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_WINDOW
-
-comment "wayland needs the egl platform and the wayland package"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL || \
-		!BR2_PACKAGE_WAYLAND
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_DISPMANX
-	bool "dispmanx"
-	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL
-	depends on BR2_PACKAGE_RPI_USERLAND
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_HAS_WINDOW
-	help
-	  Raspberry Pi's Dispmanx windowing system
-
-comment "dispmanx needs the egl platform and rpi-userland"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL || \
-		!BR2_PACKAGE_RPI_USERLAND
-
-endif
-
-comment "opengl needs an OpenGL or OpenGL ES backend"
-	depends on !BR2_PACKAGE_HAS_LIBGL && !BR2_PACKAGE_HAS_LIBGLES
-
 comment "dependency-less plugins"
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_ACCURIP
@@ -173,11 +45,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD
 	bool "audiofxbad"
 	help
 	  Audio filters plugin
-
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER
-	bool "audiomixer"
-	help
-	  Audio mixer plugin
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX
 	bool "audiomixmatrix"
@@ -513,10 +380,10 @@ comment "fdk-aac needs a toolchain w/ C++"
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
 	bool "gl"
 	default y
-	depends on BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
+	depends on BR2_PACKAGE_GST1_PLUGINS_BASE_HAS_LIB_OPENGL
 
-comment "gl needs the gst1-plugins-bad opengl library"
-	depends on !BR2_PACKAGE_GST1_PLUGINS_BAD_HAS_LIB_OPENGL
+comment "gl needs the gst1-plugins-base opengl library"
+	depends on !BR2_PACKAGE_GST1_PLUGINS_BASE_HAS_LIB_OPENGL
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_HLS
 	bool "hls"
