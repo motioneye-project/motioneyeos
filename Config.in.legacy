@@ -143,6 +143,16 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2018.08"
+
+config BR2_GDB_VERSION_7_10
+	bool "gdb 7.10 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.10 version of gdb has been removed. Use a newer version
+	  instead.
+
+###############################################################################
 comment "Legacy options removed in 2018.05"
 
 config BR2_PACKAGE_MEDIAART_BACKEND_NONE
