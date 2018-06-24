@@ -77,6 +77,16 @@ config BR2_PACKAGE_BOOST_CONTEXT
 	help
 	  C++11 context switching library.
 
+config BR2_PACKAGE_BOOST_CONTRACT
+	bool "boost-contract"
+	# pthread_condattr_setclock
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	help
+	  Contract programming for C++.
+
+comment "boost-contract needs a toolchain w/ NPTL"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
+
 config BR2_PACKAGE_BOOST_COROUTINE
 	bool "boost-coroutine"
 	depends on BR2_PACKAGE_BOOST_CONTEXT
