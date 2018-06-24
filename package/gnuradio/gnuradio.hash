@@ -1,2 +1,5 @@
 # From http://gnuradio.org/releases/gnuradio/sha256sums
-sha256 87d9ba3183858efdbb237add3f9de40f7d65f25e16904a9bc8d764a7287252d4  gnuradio-3.7.11.tar.gz
+sha256 1e07ce40fa3c3eede1fb54e320dad8a221a3c01de341e9cef2d7b265ed06a6e9  gnuradio-3.7.13.3.tar.gz
+
+# Hash for license file:
+sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
