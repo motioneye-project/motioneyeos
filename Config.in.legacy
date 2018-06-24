@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
+config BR2_GDB_VERSION_7_11
+	bool "gdb 7.11 has been removed"
+	select BR2_LEGACY
+	help
+	  The 7.11 version of gdb has been removed. Use a newer version
+	  instead.
+
 config BR2_GDB_VERSION_7_10
 	bool "gdb 7.10 has been removed"
 	select BR2_LEGACY
