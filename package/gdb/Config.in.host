@@ -64,6 +64,11 @@ config BR2_GDB_VERSION_8_0
 	# Needs a C++11 compiler
 	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
+config BR2_GDB_VERSION_8_1
+	bool "gdb 8.1.x"
+	# Needs a C++11 compiler
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+
 endchoice
 
 endif
@@ -71,14 +76,15 @@ endif
 # Tells whether the currently selected gdb version requires C++11
 # support in the toolchain. When host-gdb is not enabled, the target
 # gdb built is 7.11, which doesn't require C++11 support. So it's only
-# if host-gdb is built, with the version set to 8.0 that C++11 support
-# is needed in the toolchain to build gdb for the target.
+# if host-gdb is built, with the version set to 8.0 or 8.1 that C++11
+# support is needed in the toolchain to build gdb for the target.
 #
 # Even though this option is related to target gdb dependencies, we
 # keep it next to the BR2_GDB_VERSION so that they are kept in sync.
 config BR2_PACKAGE_GDB_NEEDS_CXX11
 	bool
 	default y if BR2_GDB_VERSION_8_0
+	default y if BR2_GDB_VERSION_8_1
 
 # If cross-gdb is not enabled, the latest working version is chosen.
 config BR2_GDB_VERSION
@@ -88,4 +94,5 @@ config BR2_GDB_VERSION
 	default "7.11.1"   if BR2_GDB_VERSION_7_11 || !BR2_PACKAGE_HOST_GDB
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
 	default "8.0.1"    if BR2_GDB_VERSION_8_0
+	default "8.1"      if BR2_GDB_VERSION_8_1
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
