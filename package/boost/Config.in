@@ -97,11 +97,17 @@ comment "boost-contract needs a toolchain w/ NPTL"
 
 config BR2_PACKAGE_BOOST_COROUTINE
 	bool "boost-coroutine"
-	depends on BR2_PACKAGE_BOOST_CONTEXT
+	depends on BR2_PACKAGE_BOOST_CONTEXT_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # boost-context
+	select BR2_PACKAGE_BOOST_CONTEXT
 	help
 	  deprecated coroutine library, the non-depricated coroutine2
 	  library is a header-only library and does not need to be
 	  selected.
+
+comment "boost-coroutine needs a toolchain not affected by GCC bug 64735"
+	depends on BR2_PACKAGE_BOOST_CONTEXT_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 
 config BR2_PACKAGE_BOOST_DATE_TIME
 	bool "boost-date_time"
