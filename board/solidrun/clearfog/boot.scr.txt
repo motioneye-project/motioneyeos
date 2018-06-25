@@ -1,5 +1,0 @@
-setenv fdtfile armada-388-clearfog-base.dtb
-setenv bootargs root=/dev/mmcblk0p1
-load ${devtype} ${devnum}:${distro_bootpart} ${fdt_addr_r} ${prefix}/${fdtfile}
-load ${devtype} ${devnum}:${distro_bootpart} ${kernel_addr_r} ${prefix}/zImage
-bootz ${kernel_addr_r} - ${fdt_addr_r}

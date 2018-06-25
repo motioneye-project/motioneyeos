@@ -1,3 +1,5 @@
 #!/bin/sh
 
-install -m 0644 -D $BINARIES_DIR/boot.scr $TARGET_DIR/boot/boot.scr
+BOARD_DIR="$(dirname $0)"
+
+install -m 0644 -D $BOARD_DIR/extlinux.conf $TARGET_DIR/boot/extlinux/extlinux.conf

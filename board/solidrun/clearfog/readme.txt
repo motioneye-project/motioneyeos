@@ -47,7 +47,7 @@ Buildroot prepares a bootable "sdcard.img" image in the output/images/
 directory, ready to be dumped on a microSD card. Launch the following
 command as root:
 
-  dd if=./output/images/sdcard.img of=/dev/<your-microsd-device>
+  dd if=output/images/sdcard.img of=/dev/<your-microsd-device> conv=fdatasync
 
 *** WARNING! The script will destroy all the card content. Use with care! ***
 
