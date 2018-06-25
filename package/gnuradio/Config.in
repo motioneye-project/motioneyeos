@@ -69,6 +69,13 @@ config BR2_PACKAGE_GNURADIO_UTILS
 	help
 	  Misc python utilities
 
+config BR2_PACKAGE_GNURADIO_ZEROMQ
+	bool "gr-zeromq support"
+	select BR2_PACKAGE_CPPZMQ
+	select BR2_PACKAGE_PYTHON_PYZMQ if BR2_PACKAGE_GNURADIO_PYTHON
+	help
+	  zeromq communication support
+
 comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager, -qtgui depends fftw's single precision"
 	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
 
