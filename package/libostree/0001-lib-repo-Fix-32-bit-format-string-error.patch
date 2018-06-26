@@ -1,0 +1,35 @@
+From 1174d9f5ba537562c67084caf0214544fbb14ffc Mon Sep 17 00:00:00 2001
+From: Colin Walters <walters@verbum.org>
+Date: Thu, 21 Jun 2018 14:17:28 +0000
+Subject: [PATCH] lib/repo: Fix 32 bit format string error
+
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+---
+ src/libostree/ostree-repo-commit.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/libostree/ostree-repo-commit.c b/src/libostree/ostree-repo-commit.c
+index 37be748b..7e1d707b 100644
+--- a/src/libostree/ostree-repo-commit.c
++++ b/src/libostree/ostree-repo-commit.c
+@@ -903,7 +903,7 @@ write_content_object (OstreeRepo         *self,
+             return glnx_throw (error, "min-free-space-percent '%u%%' would be exceeded, %s more required",
+                                self->min_free_space_percent, formatted_required);
+           else
+-            return glnx_throw (error, "min-free-space-size %luMB would be exceeded, %s more required",
++            return glnx_throw (error, "min-free-space-size %" G_GUINT64_FORMAT "MB would be exceeded, %s more required",
+                                self->min_free_space_mb, formatted_required);
+         }
+       /* This is the main bit that needs mutex protection */
+@@ -1617,7 +1617,7 @@ ostree_repo_prepare_transaction (OstreeRepo     *self,
+             return glnx_throw (error, "min-free-space-percent '%u%%' would be exceeded, %s available",
+                                self->min_free_space_percent, formatted_free);
+           else
+-            return glnx_throw (error, "min-free-space-size %luMB would be exceeded, %s available",
++            return glnx_throw (error, "min-free-space-size %" G_GUINT64_FORMAT "MB would be exceeded, %s available",
+                                self->min_free_space_mb, formatted_free);
+         }
+       g_mutex_unlock (&self->txn_lock);
+-- 
+2.18.0
+
