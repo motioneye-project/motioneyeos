@@ -11,10 +11,8 @@ GNURADIO_LICENSE_FILES = COPYING
 
 GNURADIO_SUPPORTS_IN_SOURCE_BUILD = NO
 
-# host-python-cheetah, host-python-mako and host-python-six are needed for volk
-# to compile
+# host-python-mako and host-python-six are needed for volk to compile
 GNURADIO_DEPENDENCIES = \
-	host-python-cheetah \
 	host-python-mako \
 	host-python-six \
 	host-swig \
