@@ -1,5 +1,5 @@
 config BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
-	bool "Synopsys ARC 2017.09 toolchain"
+	bool "Synopsys ARC 2018.03 toolchain"
 	depends on BR2_arc
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	depends on BR2_HOSTARCH = "x86_64"
@@ -11,7 +11,7 @@ config BR2_TOOLCHAIN_EXTERNAL_SYNOPSYS_ARC
 	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_SSP
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_15
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	help
 	  Toolchain for the ARC cores, from
