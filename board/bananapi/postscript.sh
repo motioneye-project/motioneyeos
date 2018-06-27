@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 UBOOT_HOST_DIR=$TARGET/../build/host-uboot-tools-*
 
 cp $IMG_DIR/uImage $BOOT_DIR

@@ -4,7 +4,7 @@
 #
 #############################################################
 
-MOTIONEYE_VERSION = c337b3a05a072aa06a97429b604882e9cb52bf8a
+MOTIONEYE_VERSION = 8d718c31387c6d9cdda2ef1358ebb05d075f178e
 MOTIONEYE_SITE = $(call github,ccrisan,motioneye,$(MOTIONEYE_VERSION))
 MOTIONEYE_SOURCE = $(MOTIONEYE_VERSION).tar.gz
 MOTIONEYE_LICENSE = GPLv3
@@ -15,8 +15,6 @@ MOTIONEYE_SETUP_TYPE = setuptools
 DST_DIR = $(TARGET_DIR)/usr/lib/python2.7/site-packages/motioneye
 SHARE_DIR = $(TARGET_DIR)/usr/share/motioneye
 BOARD = $(shell basename $(BASE_DIR))
-BOARD_DIR = $(BASE_DIR)/../../board/$(BOARD)
-COMMON_DIR = $(BASE_DIR)/../../board/common
 
 
 define MOTIONEYE_INSTALL_TARGET_CMDS
@@ -33,7 +31,7 @@ define MOTIONEYE_INSTALL_TARGET_CMDS
     cp package/motioneye/servicectl.py $(DST_DIR)
     cp package/motioneye/watchctl.py $(DST_DIR)
     cp package/motioneye/extractl.py $(DST_DIR)
-    test -d $(BOARD_DIR)/motioneye-modules && cp $(BOARD_DIR)/motioneye-modules/*.py $(DST_DIR) || true
+    test -d board/$(BOARD)/motioneye-modules && cp board/$(BOARD)/motioneye-modules/*.py $(DST_DIR) || true
     grep servicectl $(DST_DIR)/config.py &>/dev/null || echo -e '\nimport ipctl\nimport servicectl\nimport watchctl\nimport extractl\ntry:\n    import boardctl\nexcept ImportError:\n    pass' >> $(DST_DIR)/config.py
     
     # log files
