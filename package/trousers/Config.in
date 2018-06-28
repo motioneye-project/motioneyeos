@@ -3,8 +3,6 @@ config BR2_PACKAGE_TROUSERS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	# doesn't build properly in static only configurations
 	depends on !BR2_STATIC_LIBS
-	# ARC toolchain issue
-	depends on !BR2_arc
 	select BR2_PACKAGE_OPENSSL
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
@@ -18,4 +16,3 @@ config BR2_PACKAGE_TROUSERS
 
 comment "trousers needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
-	depends on !BR2_arc
