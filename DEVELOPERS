@@ -1883,6 +1883,7 @@ F:	package/python-influxdb/
 
 N:	Sven Neumann <neumann@teufel.de>
 F:	package/gstreamer1/gst1-libav/
+F:	package/wampcc/
 
 N:	Sven Neumann <s.neumann@raumfeld.com>
 F:	package/glib-networking/
