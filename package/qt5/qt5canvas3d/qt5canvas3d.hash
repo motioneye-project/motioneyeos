@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtcanvas3d-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 e99e0e159f2fba539b7947a1921072f6807f20958d32809edbf12aac571f56ff qtcanvas3d-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.0/submodules/qtcanvas3d-everywhere-src-5.11.0.tar.xz.mirrorlist
-sha256 3fc60eafbe8737a8ff126eb9e2becc010d94f3db99dfa1d365e84f6af4540ccf  qtcanvas3d-everywhere-src-5.11.0.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.1/submodules/qtcanvas3d-everywhere-src-5.11.1.tar.xz.mirrorlist
+sha256 0fb51102bdd595673e2cc4f4878b8fb8b7da4c8b1f026885a75912e2421d2ede  qtcanvas3d-everywhere-src-5.11.1.tar.xz
 
 # Hashes for license files:
 sha256 edfe70e99be2a7c109d860b19204609e582720b211c50caedac729da372a1253 LICENSE.GPLv2
