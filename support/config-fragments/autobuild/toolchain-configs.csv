@@ -58,6 +58,7 @@ support/config-fragments/autobuild/br-xtensa-full.config,x86_64
 support/config-fragments/autobuild/br-xtensa-full-internal.config,any
 support/config-fragments/autobuild/i686-ctng-linux-gnu.config,x86
 support/config-fragments/autobuild/linaro-aarch64.config,x86
+support/config-fragments/autobuild/linaro-aarch64-be.config,x86
 support/config-fragments/autobuild/linaro-arm.config,x86
 support/config-fragments/autobuild/mips64el-ctng_n32-linux-gnu.config,x86
 support/config-fragments/autobuild/mips64el-ctng_n64-linux-gnu.config,x86
