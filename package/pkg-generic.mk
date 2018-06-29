@@ -489,10 +489,6 @@ ifndef $(2)_PATCH
  endif
 endif
 
-ifneq ($$(filter bzr cvs hg svn,$$($(2)_SITE_METHOD)),)
-BR_NO_CHECK_HASH_FOR += $$($(2)_SOURCE)
-endif
-
 $(2)_ALL_DOWNLOADS = \
 	$$(if $$($(2)_SOURCE),$$($(2)_SITE_METHOD)+$$($(2)_SITE)/$$($(2)_SOURCE)) \
 	$$(foreach p,$$($(2)_PATCH) $$($(2)_EXTRA_DOWNLOADS),\
@@ -512,6 +508,10 @@ ifndef $(2)_SITE_METHOD
 	# Try automatic detection using the scheme part of the URI
 	$(2)_SITE_METHOD = $$(call geturischeme,$$($(2)_SITE))
  endif
+endif
+
+ifneq ($$(filter bzr cvs hg svn,$$($(2)_SITE_METHOD)),)
+BR_NO_CHECK_HASH_FOR += $$($(2)_SOURCE)
 endif
 
 # Do not accept to download git submodule if not using the git method
