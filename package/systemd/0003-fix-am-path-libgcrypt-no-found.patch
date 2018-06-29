@@ -1,4 +1,4 @@
-From cb47c1da9c4a8f69662f9c17497aeeb8a922d41a Mon Sep 17 00:00:00 2001
+From 621d9b32d0a5598ea7f258b96f7110de4d1c48b6 Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 Date: Fri, 28 Jul 2017 07:13:51 -0400
 Subject: [PATCH] Fix AM_PATH_LIBGCRYPT not found
@@ -27,7 +27,7 @@ Signed-off-by: Adam Duskett <aduskett@gmail.com>
 
 diff --git a/m4/libgcrypt.m4 b/m4/libgcrypt.m4
 new file mode 100644
-index 0000000..831dc0c
+index 000000000..831dc0c6f
 --- /dev/null
 +++ b/m4/libgcrypt.m4
 @@ -0,0 +1,123 @@
@@ -155,5 +155,5 @@ index 0000000..831dc0c
 +  AC_SUBST(LIBGCRYPT_LIBS)
 +])
 -- 
-2.13.3
+2.14.4
 

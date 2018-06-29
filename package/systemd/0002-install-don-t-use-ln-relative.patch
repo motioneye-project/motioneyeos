@@ -1,4 +1,4 @@
-From 17560d52e9ec0afebbfe31e694870c6433b36f60 Mon Sep 17 00:00:00 2001
+From 7f4a12d25bbb5859d266f32f7a3d794bb62c354e Mon Sep 17 00:00:00 2001
 From: Adam Duskett <Adamduskett@outlook.com>
 Date: Sun, 31 Dec 2017 12:46:04 -0500
 Subject: [PATCH] install: don't use ln --relative
@@ -30,15 +30,15 @@ Signed-off-by: Trent Piepho <tpiepho@impinj.com>
  3 files changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index d4af95a44..d75f2b34c 100644
+index 04331dd41..359042c04 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -586,7 +586,7 @@ endforeach
+@@ -559,7 +559,7 @@ endforeach
  conf.set_quoted('TELINIT', get_option('telinit-path'))
  
  if run_command('ln', '--relative', '--help').returncode() != 0
--        error('ln does not support --relative')
-+        message('ln does not support --relative')
+-        error('ln does not support --relative (added in coreutils 8.16)')
++        message('ln does not support --relative (added in coreutils 8.16)')
  endif
  
  ############################################################
@@ -76,5 +76,5 @@ index 70f7172ae..bb8155075 100755
 +dds="$(printf "%s" "${linkdir#${DESTDIR:-}}" |sed -r -e 's:/+[^/]+:../:g; s:/$::')"
 +ln -vfs "$dds$unitpath" "$dir"
 -- 
-2.14.3
+2.14.4
 
