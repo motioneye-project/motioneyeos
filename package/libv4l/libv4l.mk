@@ -73,6 +73,10 @@ else
 LIBV4L_CONF_OPTS += --disable-v4l-utils
 endif
 
+ifeq ($(BR2_PACKAGE_SDL2_IMAGE),y)
+LIBV4L_DEPENDENCIES += sdl2_image
+endif
+
 LIBV4L_CONF_ENV += LIBS="$(LIBV4L_LIBS)"
 
 $(eval $(autotools-package))
