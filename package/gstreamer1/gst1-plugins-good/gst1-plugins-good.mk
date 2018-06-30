@@ -190,7 +190,6 @@ else
 GST1_PLUGINS_GOOD_CONF_OPTS += --disable-mpg123
 endif
 
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_LAW),y)
 GST1_PLUGINS_GOOD_CONF_OPTS += --enable-law
 else
