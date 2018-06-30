@@ -24,7 +24,10 @@ HOST_HEIMDAL_CONF_OPTS = \
 	--without-libedit \
 	--without-hesiod \
 	--without-x \
+	--disable-mdb-db \
+	--disable-ndbm-db \
 	--disable-heimdal-documentation
+
 HOST_HEIMDAL_CONF_ENV = MAKEINFO=true
 HEIMDAL_LICENSE = BSD-3-Clause
 HEIMDAL_LICENSE_FILES = LICENSE
