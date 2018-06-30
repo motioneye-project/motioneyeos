@@ -21,7 +21,7 @@ CONFIG                 += nostrip
 QMAKE_LIBS             += -lrt -lpthread -ldl
 QMAKE_CFLAGS_ISYSTEM   =
 
-# Architecturespecific configuration
+# Architecture specific configuration
 include(arch.conf)
 
 @EGLFS_DEVICE@
