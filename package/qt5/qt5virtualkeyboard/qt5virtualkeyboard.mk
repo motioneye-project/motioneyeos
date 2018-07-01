@@ -4,7 +4,12 @@
 #
 ################################################################################
 
+# Module does not follow Qt versionning for 5.6
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 QT5VIRTUALKEYBOARD_VERSION = $(QT5_VERSION)
+else
+QT5VIRTUALKEYBOARD_VERSION = 2.0
+endif
 QT5VIRTUALKEYBOARD_SITE = $(QT5_SITE)
 QT5VIRTUALKEYBOARD_SOURCE = qtvirtualkeyboard-$(QT5_SOURCE_TARBALL_PREFIX)-$(QT5VIRTUALKEYBOARD_VERSION).tar.xz
 QT5VIRTUALKEYBOARD_DEPENDENCIES = qt5base qt5declarative qt5svg
