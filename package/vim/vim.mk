@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VIM_VERSION = v8.0.0329
+VIM_VERSION = v8.1.0133
 VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
 # Win over busybox vi since vim is more feature-rich
 VIM_DEPENDENCIES = \
@@ -14,6 +14,7 @@ VIM_SUBDIR = src
 VIM_CONF_ENV = \
 	vim_cv_toupper_broken=no \
 	vim_cv_terminfo=yes \
+	vim_cv_tgetent=zero \
 	vim_cv_tty_group=world \
 	vim_cv_tty_mode=0620 \
 	vim_cv_getcwd_broken=no \
