@@ -12,4 +12,11 @@ LIBUCL_LICENSE = BSD-2-Clause
 LIBUCL_LICENSE_FILES = COPYING
 LIBUCL_DEPENDENCIES = host-pkgconf
 
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+LIBUCL_DEPENDENCIES += libcurl
+LIBUCL_CONF_OPTS += --enable-urls
+else
+LIBUCL_CONF_OPTS += --disable-urls
+endif
+
 $(eval $(autotools-package))
