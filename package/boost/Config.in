@@ -300,6 +300,8 @@ config BR2_PACKAGE_BOOST_THREAD
 
 config BR2_PACKAGE_BOOST_TIMER
 	bool "boost-timer"
+	select BR2_PACKAGE_BOOST_CHRONO
+	select BR2_PACKAGE_BOOST_SYSTEM
 	help
 	  Event timer, progress timer, and progress display classes.
 
