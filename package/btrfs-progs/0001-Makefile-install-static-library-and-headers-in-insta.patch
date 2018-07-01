@@ -41,8 +41,8 @@ index 67fbc48..d9e34be 100644
  	$(LN_S) -f btrfs.static $(DESTDIR)$(bindir)/btrfsck.static
 +	$(INSTALL) -m755 -d $(DESTDIR)$(libdir)
 +	$(INSTALL) $(libs_static) $(DESTDIR)$(libdir)
-+	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)
-+	$(INSTALL) -m644 $(libbtrfs_headers) $(DESTDIR)$(incdir)
++	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)/btrfs
++	$(INSTALL) -m644 $(libbtrfs_headers) $(DESTDIR)$(incdir)/btrfs
  
  $(INSTALLDIRS):
  	@echo "Making install in $(patsubst install-%,%,$@)"
