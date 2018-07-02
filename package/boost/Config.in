@@ -134,6 +134,8 @@ config BR2_PACKAGE_BOOST_FIBER
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # boost-context
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_85180
 	select BR2_PACKAGE_BOOST_CONTEXT
+	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_BOOST_SYSTEM
 	help
 	  C++11 userland threads library.
 
