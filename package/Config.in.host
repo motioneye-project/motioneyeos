@@ -62,5 +62,6 @@ menu "Host utilities"
 	source "package/vboot-utils/Config.in.host"
 	source "package/xorriso/Config.in.host"
 	source "package/zip/Config.in.host"
+	source "package/zstd/Config.in.host"
 
 endmenu

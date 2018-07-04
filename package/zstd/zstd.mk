@@ -72,11 +72,15 @@ endef
 define HOST_ZSTD_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
 		-C $(@D)/lib
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
+		-C $(@D) zstd
 endef
 
 define HOST_ZSTD_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
 		DESTDIR=$(HOST_DIR) PREFIX=/usr -C $(@D)/lib install
+	$(HOST_MAKE_ENV) $(HOST_CONFIGURE_OPTS) $(MAKE) \
+		DESTDIR=$(HOST_DIR) PREFIX=/usr -C $(@D)/programs install
 endef
 
 $(eval $(generic-package))
