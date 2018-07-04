@@ -1,0 +1,21 @@
+################################################################################
+#
+# pigz
+#
+################################################################################
+
+PIGZ_VERSION = 2.4
+PIGZ_SITE = http://www.zlib.net/pigz
+PIGZ_DEPENDENCIES = zlib
+PIGZ_LICENSE = Zlib
+PIGZ_LICENSE_FILES = README
+
+define PIGZ_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+endef
+
+define PIGZ_INSTALL_TARGET_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/pigz $(TARGET_DIR)/usr/bin/pigz
+endef
+
+$(eval $(generic-package))

@@ -1914,6 +1914,7 @@ F:	package/civetweb/
 N:	Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
 F:	docs/manual/
 F:	package/opkg-utils/
+F:	package/pigz/
 F:	support/scripts/size-stats
 F:	utils/size-stats-compare
 F:	toolchain/
