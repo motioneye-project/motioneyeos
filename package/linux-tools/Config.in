@@ -47,9 +47,11 @@ config BR2_PACKAGE_LINUX_TOOLS_PERF
 	  code), single CPU or severals threads.
 
 	  This will build and install the userspace 'perf'
-	  command. It is up to the user to ensure that the kernel
-	  configuration has all the suitable options enabled to allow a
-	  proper operation of 'perf'.
+	  command.
+
+	  Your kernel must have CONFIG_PERF_EVENTS enabled to use perf
+	  profiling. Buildroot automatically enables this in the kernel
+	  configuration.
 
 	  https://perf.wiki.kernel.org/
 
