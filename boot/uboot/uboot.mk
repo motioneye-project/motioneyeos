@@ -70,6 +70,11 @@ UBOOT_BINS += u-boot-dtb.img
 UBOOT_MAKE_TARGET += u-boot-dtb.img
 endif
 
+ifeq ($(BR2_TARGET_UBOOT_FORMAT_DTB_IMX),y)
+UBOOT_BINS += u-boot-dtb.imx
+UBOOT_MAKE_TARGET += u-boot-dtb.imx
+endif
+
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_DTB_BIN),y)
 UBOOT_BINS += u-boot-dtb.bin
 UBOOT_MAKE_TARGET += u-boot-dtb.bin

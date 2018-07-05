@@ -190,6 +190,9 @@ config BR2_TARGET_UBOOT_FORMAT_DTB_BIN
 config BR2_TARGET_UBOOT_FORMAT_DTB_IMG
 	bool "u-boot-dtb.img"
 
+config BR2_TARGET_UBOOT_FORMAT_DTB_IMX
+	bool "u-boot-dtb.imx"
+
 config BR2_TARGET_UBOOT_FORMAT_IMG
 	bool "u-boot.img"
 
