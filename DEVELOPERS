@@ -1609,6 +1609,9 @@ F:	package/lttng-tools/
 F:	package/python-ipython/
 F:	package/liburcu/
 
+N:	Pierre Ducroquet <pinaraf@pinaraf.info>
+F:	package/kf5/
+
 N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
 
@@ -2143,6 +2146,3 @@ F:	package/qjson/
 F:	package/quazip/
 F:	package/shapelib/
 F:	package/tinc/
-
-N:	Pierre Ducroquet <pinaraf@pinaraf.info>
-F:	package/kf5/
