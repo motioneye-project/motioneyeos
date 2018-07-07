@@ -159,6 +159,24 @@ define BOOST_INSTALL_STAGING_CMDS
 	--layout=$(BOOST_LAYOUT) install)
 endef
 
+# These hooks will help us to detect missing select in Config.in
+# Indeed boost buildsystem can select a library even if the user has
+# disable it
+define BOOST_REMOVE_TARGET_LIBRARIES
+	rm -rf $(TARGET_DIR)/usr/lib/libboost_*
+endef
+
+BOOST_PRE_INSTALL_TARGET_HOOKS += BOOST_REMOVE_TARGET_LIBRARIES
+
+define BOOST_CHECK_TARGET_LIBRARIES
+	@$(foreach disabled,$(BOOST_WITHOUT_FLAGS),\
+		! ls $(TARGET_DIR)/usr/lib/libboost_$(disabled)* 1>/dev/null 2>&1 || \
+			! echo "libboost_$(disabled) shouldn't have been installed: missing select in boost/Config.in" || \
+			exit 1;)
+endef
+
+BOOST_POST_INSTALL_TARGET_HOOKS += BOOST_CHECK_TARGET_LIBRARIES
+
 define HOST_BOOST_CONFIGURE_CMDS
 	(cd $(@D) && ./bootstrap.sh $(HOST_BOOST_FLAGS))
 	echo "using gcc : `$(HOST_CC) -dumpversion` : $(HOSTCXX) : <cxxflags>\"$(HOST_CXXFLAGS)\" <linkflags>\"$(HOST_LDFLAGS)\" ;" > $(@D)/user-config.jam
