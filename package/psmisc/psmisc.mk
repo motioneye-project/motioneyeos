@@ -23,9 +23,4 @@ ifeq ($(BR2_TOOLCHAIN_HAS_SSP),)
 PSMISC_CONF_OPTS = --disable-harden-flags
 endif
 
-# build after busybox, we prefer fat versions while we're at it
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-PSMISC_DEPENDENCIES += busybox
-endif
-
 $(eval $(autotools-package))
