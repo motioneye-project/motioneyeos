@@ -13,9 +13,6 @@ LSOF_LICENSE = lsof license
 # It is also defined in 00README, but that contains a lot of other cruft.
 LSOF_LICENSE_FILES = dialects/linux/dproto.h
 
-# Make certain full-blown lsof gets built after the busybox version (1.20+)
-LSOF_DEPENDENCIES += $(if $(BR2_PACKAGE_BUSYBOX),busybox)
-
 ifeq ($(BR2_USE_WCHAR),)
 define LSOF_CONFIGURE_WCHAR_FIXUPS
 	$(SED) 's,^#define[[:space:]]*HASWIDECHAR.*,#undef HASWIDECHAR,' \
