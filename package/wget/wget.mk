@@ -11,11 +11,6 @@ WGET_DEPENDENCIES = host-pkgconf
 WGET_LICENSE = GPL-3.0+
 WGET_LICENSE_FILES = COPYING
 
-# Prefer full-blown wget over busybox
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-WGET_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 WGET_CONF_OPTS += --with-ssl=gnutls
 WGET_DEPENDENCIES += gnutls
