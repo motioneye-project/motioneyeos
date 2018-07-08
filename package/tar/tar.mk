@@ -8,15 +8,10 @@ TAR_VERSION = 1.29
 TAR_SOURCE = tar-$(TAR_VERSION).tar.xz
 TAR_SITE = $(BR2_GNU_MIRROR)/tar
 # busybox installs in /bin, so we need tar to install as well in /bin
-# so that it overrides the Busybox symlinks.
+# so that we don't end up with two different tar
 TAR_CONF_OPTS = --exec-prefix=/
 TAR_LICENSE = GPL-3.0+
 TAR_LICENSE_FILES = COPYING
-
-# Prefer full-blown tar over buybox's version
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-TAR_DEPENDENCIES += busybox
-endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 TAR_DEPENDENCIES += acl
