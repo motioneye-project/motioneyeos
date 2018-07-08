@@ -147,6 +147,7 @@ imx6slevk_defconfig: *defconfig
 imx6sx-sdb_defconfig: *defconfig
 imx6ulevk_defconfig: *defconfig
 imx6ulpico_defconfig: *defconfig
+imx7d-sdb_defconfig: *defconfig
 imx7dpico_defconfig: *defconfig
 lego_ev3_defconfig: *defconfig
 linksprite_pcduino_defconfig: *defconfig
