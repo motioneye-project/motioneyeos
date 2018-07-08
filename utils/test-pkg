@@ -131,7 +131,7 @@ build_one() {
 
     support/kconfig/merge_config.sh -O "${dir}" \
         "${toolchainconfig}" "support/config-fragments/minimal.config" "${cfg}" \
-        > /dev/null
+        >> "${dir}/logfile" 2>&1
     # We want all the options from the snippet to be present as-is (set
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
