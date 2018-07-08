@@ -31,10 +31,6 @@ else
 MTD_CONF_OPTS += --disable-tests --disable-install-tests
 endif
 
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-MTD_DEPENDENCIES += busybox
-endif
-
 # If extended attributes are required, the acl package must
 # also be enabled which will also include the attr package.
 ifeq ($(BR2_PACKAGE_ACL),y)
