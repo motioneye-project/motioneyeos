@@ -17,8 +17,4 @@ ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 DIFFUTILS_CONF_ENV += gl_cv_func_getopt_gnu=yes
 endif
 
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-DIFFUTILS_DEPENDENCIES += busybox
-endif
-
 $(eval $(autotools-package))
