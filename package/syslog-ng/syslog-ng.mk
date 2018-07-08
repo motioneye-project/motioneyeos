@@ -17,11 +17,6 @@ SYSLOG_NG_CONF_ENV = LIBS=-lrt
 SYSLOG_NG_CONF_OPTS = --disable-manpages --localstatedir=/var/run \
 	--disable-java --disable-java-modules --disable-mongodb
 
-# We override busybox's S01logging init script
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-SYSLOG_NG_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_GEOIP),y)
 SYSLOG_NG_DEPENDENCIES += geoip
 SYSLOG_NG_CONF_OPTS += --enable-geoip
