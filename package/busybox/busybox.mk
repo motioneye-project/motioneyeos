@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BUSYBOX_VERSION = 1.28.4
+BUSYBOX_VERSION = 1.29.0
 BUSYBOX_SITE = http://www.busybox.net/downloads
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_LICENSE = GPL-2.0
@@ -253,12 +253,6 @@ define BUSYBOX_INSTALL_ADD_TO_SHELLS
 endef
 BUSYBOX_TARGET_FINALIZE_HOOKS += BUSYBOX_INSTALL_ADD_TO_SHELLS
 
-# Enable "noclobber" in install.sh, to prevent BusyBox from overwriting any
-# full-blown versions of apps installed by other packages with sym/hard links.
-define BUSYBOX_NOCLOBBER_INSTALL
-	$(SED) 's/^noclobber="0"$$/noclobber="1"/' $(@D)/applets/install.sh
-endef
-
 define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_SET_MMU)
 	$(BUSYBOX_PREFER_STATIC)
@@ -280,7 +274,9 @@ define BUSYBOX_BUILD_CMDS
 endef
 
 define BUSYBOX_INSTALL_TARGET_CMDS
-	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install
+	# Use the 'noclobber' install rule, to prevent BusyBox from overwriting
+	# any full-blown versions of apps installed by other packages.
+	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install-noclobber
 	$(BUSYBOX_INSTALL_INITTAB)
 	$(BUSYBOX_INSTALL_UDHCPC_SCRIPT)
 	$(BUSYBOX_INSTALL_MDEV_CONF)

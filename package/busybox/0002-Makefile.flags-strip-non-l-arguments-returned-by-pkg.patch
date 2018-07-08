@@ -4,6 +4,8 @@ Date: Mon, 25 Nov 2013 22:51:53 +0100
 Subject: [PATCH] Makefile.flags: strip non -l arguments returned by pkg-config
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[yann.morin.1998@free.fr: refresh for 1.29.0]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 ---
  Makefile.flags | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
@@ -22,7 +24,7 @@ index 307afa7..885e323 100644
 +       $(SELINUX_PC_MODULES:lib%=%))
  endif
  
- ifeq ($(CONFIG_EFENCE),y)
+ ifeq ($(CONFIG_FEATURE_NSLOOKUP_BIG),y)
 -- 
 1.8.1.2
 
