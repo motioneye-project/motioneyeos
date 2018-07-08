@@ -17,12 +17,6 @@ E2FSPROGS_INSTALL_STAGING = YES
 E2FSPROGS_DEPENDENCIES = host-pkgconf util-linux
 HOST_E2FSPROGS_DEPENDENCIES = host-pkgconf host-util-linux
 
-# If both e2fsprogs and busybox are selected, make certain e2fsprogs
-# wins the fight over who gets to have their utils actually installed
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-E2FSPROGS_DEPENDENCIES += busybox
-endif
-
 # e4defrag doesn't build on older systems like RHEL5.x, and we don't
 # need it on the host anyway.
 # Disable fuse2fs as well to avoid carrying over deps, and it's unused
@@ -35,8 +29,8 @@ HOST_E2FSPROGS_CONF_OPTS = \
 	--enable-symlink-install \
 	--disable-testio-debug
 
-# Set the binary directories to "/bin" and "/sbin" to override programs
-# installed by busybox.
+# Set the binary directories to "/bin" and "/sbin", as busybox does,
+# so that we do not end up with two versions of e2fs tools.
 E2FSPROGS_CONF_OPTS = \
 	--bindir=/bin \
 	--sbindir=/sbin \
