@@ -22,7 +22,7 @@ image sdcard.img {
 
   partition u-boot {
     in-partition-table = "no"
-    image = "u-boot.imx"
+    image = "%UBOOTBIN%"
     offset = 1024
   }
 
