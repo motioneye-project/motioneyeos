@@ -20,6 +20,10 @@ BUSYBOX_CFLAGS = \
 BUSYBOX_LDFLAGS = \
 	$(TARGET_LDFLAGS)
 
+# Packages that provide commands that may also be busybox applets:
+BUSYBOX_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_WHOIS),whois)
+
 # Link against libtirpc if available so that we can leverage its RPC
 # support for NFS mounting with BusyBox
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
