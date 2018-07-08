@@ -11,11 +11,6 @@ GAWK_DEPENDENCIES = host-gawk
 GAWK_LICENSE = GPL-3.0+
 GAWK_LICENSE_FILES = COPYING
 
-# Prefer full-blown gawk over busybox awk
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-GAWK_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_LIBSIGSEGV),y)
 GAWK_DEPENDENCIES += libsigsegv
 endif
