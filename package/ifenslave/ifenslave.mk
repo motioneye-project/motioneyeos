@@ -9,7 +9,6 @@ IFENSLAVE_SOURCE = ifenslave_$(IFENSLAVE_VERSION).tar.xz
 IFENSLAVE_SITE = http://snapshot.debian.org/archive/debian/20170102T091407Z/pool/main/i/ifenslave
 IFENSLAVE_LICENSE = GPL-3.0+
 IFENSLAVE_LICENSE_FILES = debian/copyright
-IFENSLAVE_DEPENDENCIES = $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 
 # shell script, so nothing to build
 
