@@ -72,11 +72,6 @@ ifeq ($(BR2_ARM_CPU_ARMV7M)$(BR2_OPTIMIZE_S),yy)
 BINUTILS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O2"
 endif
 
-# Install binutils after busybox to prefer full-blown utilities
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-BINUTILS_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 BINUTILS_DEPENDENCIES += zlib
 endif
