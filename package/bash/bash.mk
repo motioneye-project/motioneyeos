@@ -6,9 +6,7 @@
 
 BASH_VERSION = 4.4.18
 BASH_SITE = $(BR2_GNU_MIRROR)/bash
-# Build after since bash is better than busybox shells
-BASH_DEPENDENCIES = ncurses readline host-bison \
-	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
+BASH_DEPENDENCIES = ncurses readline host-bison
 BASH_CONF_OPTS = --with-installed-readline --without-bash-malloc
 BASH_LICENSE = GPL-3.0+
 BASH_LICENSE_FILES = COPYING
