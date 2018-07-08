@@ -12,12 +12,6 @@ IPROUTE2_DEPENDENCIES = host-bison host-flex host-pkgconf \
 IPROUTE2_LICENSE = GPL-2.0+
 IPROUTE2_LICENSE_FILES = COPYING
 
-# If both iproute2 and busybox are selected, make certain we win
-# the fight over who gets to have their utils actually installed.
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-IPROUTE2_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 IPROUTE2_DEPENDENCIES += elfutils
 endif
