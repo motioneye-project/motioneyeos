@@ -25,9 +25,4 @@ else
 GREP_CONF_OPTS += --disable-perl-regexp
 endif
 
-# Full grep preferred over busybox grep
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-GREP_DEPENDENCIES += busybox
-endif
-
 $(eval $(autotools-package))
