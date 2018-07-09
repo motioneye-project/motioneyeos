@@ -158,14 +158,14 @@ F:	package/sysdig/
 N:	Anisse Astier <anisse@astier.eu>
 F:	package/go/
 
-N:	Antony Pavlov <antonynpavlov@gmail.com>
-F:	package/lsscsi/
-
 N:	Anthony Viallard <viallard@syscom-instruments.com>
 F:	package/gnuplot/
 
 N:	Antoine Ténart <antoine.tenart@bootlin.com>
 F:	package/wf111/
+
+N:	Antony Pavlov <antonynpavlov@gmail.com>
+F:	package/lsscsi/
 
 N:	ARC Maintainers <arc-buildroot@synopsys.com>
 F:	arch/Config.in.arc
@@ -436,6 +436,9 @@ F:	package/libdvbsi/
 F:	package/libsvg/
 F:	package/libsvg-cairo/
 
+N:	Cédric Chépied <cedric.chepied@gmail.com>
+F:	package/znc/
+
 N:	Chakra Divi <chakra@openedev.com>
 F:	board/friendlyarm/nanopi-m1
 F:	board/friendlyarm/nanopi-m1-plus
@@ -491,9 +494,6 @@ F:	package/ustr/
 
 N:	Corentin Guillevic <corentin.guillevic@smile.fr>
 F:	package/libloki/
-
-N:	Cédric Chépied <cedric.chepied@gmail.com>
-F:	package/znc/
 
 N:	Cyril Bur <cyrilbur@gmail.com>
 F:	arch/Config.in.powerpc
@@ -937,13 +937,13 @@ F:	package/yad/
 N:	Jan Heylen <jan.heylen@nokia.com>
 F:	package/opentracing-cpp/
 
-N:	Jan Kundrát <jan.kundrat@cesnet.cz>
-F:	configs/solidrun_clearfog_defconfig
-F:	board/solidrun/clearfog/
-
 N:	Jan Kraval <jan.kraval@gmail.com>
 F:	board/orangepi/orangepi-lite
 F:	configs/orangepi_lite_defconfig
+
+N:	Jan Kundrát <jan.kundrat@cesnet.cz>
+F:	configs/solidrun_clearfog_defconfig
+F:	board/solidrun/clearfog/
 
 N:	Jan Pedersen <jp@jp-embedded.com>
 F:	package/zip/
@@ -968,6 +968,20 @@ F:	package/batctl/
 N:	Jeremy Rosen <jeremy.rosen@openwide.fr>
 F:	package/fxload/
 
+N:	Jérôme Oufella <jerome.oufella@savoirfairelinux.com>
+F:	package/libdri2/
+F:	package/qt-webkit-kiosk/
+
+N:	Jérôme Pouiller <jezz@sysmic.org>
+F:	package/apitrace/
+F:	package/freescale-imx/gpu-amd-bin-mx51/
+F:	package/freescale-imx/libz160/
+F:	package/lxc/
+F:	package/strongswan/
+F:	package/wmctrl/
+F:	package/x11r7/xdriver_xf86-video-imx/
+F:	package/x11r7/xdriver_xf86-video-imx-viv/
+
 N:	Joel Carlson <JoelsonCarl@gmail.com>
 F:	package/cmocka/
 F:	package/flatcc/
@@ -976,17 +990,6 @@ N:	Joel Stanley <joel@jms.id.au>
 F:	package/pdbg/
 F:	board/qemu/ppc64le-pseries/
 F:	configs/qemu_ppc64le_pseries_defconfig
-
-N:	Joseph Kogut <joseph.kogut@gmail.com>
-F:	package/at-spi2-atk/
-F:	package/at-spi2-core/
-F:	package/gconf/
-F:	package/libnss/
-F:	package/python-cython/
-F:	package/python-raven/
-F:	package/python-schedule/
-F:	package/python-websockets/
-F:	package/python-xlib/
 
 N:	Johan Derycke <johanderycke@gmail.com>
 F:	package/python-libconfig/
@@ -1026,6 +1029,24 @@ N:	Jonathan Liu <net147@gmail.com>
 F:	package/python-meld3/
 F:	package/supervisor/
 
+N:	Jörg Krause <joerg.krause@embedded.rocks>
+F:	board/lemaker/bananapro/
+F:	configs/bananapro_defconfig
+F:	package/augeas/
+F:	package/bctoolbox/
+F:	package/freescale-imx/imx-alsa-plugins/
+F:	package/libopusenc/
+F:	package/libshout/
+F:	package/libupnpp/
+F:	package/luv/
+F:	package/luvi/
+F:	package/mp4v2/
+F:	package/mpd/
+F:	package/shairport-sync/
+F:	package/swupdate/
+F:	package/upmpdcli/
+F:	package/wavemon/
+
 N:	Joris Lijssens <joris.lijssens@gmail.com>
 F:	package/emlog/
 F:	package/libcoap/
@@ -1033,6 +1054,17 @@ F:	package/libnet/
 F:	package/libuio/
 F:	package/netsniff-ng/
 F:	package/rabbitmq-c/
+
+N:	Joseph Kogut <joseph.kogut@gmail.com>
+F:	package/at-spi2-atk/
+F:	package/at-spi2-core/
+F:	package/gconf/
+F:	package/libnss/
+F:	package/python-cython/
+F:	package/python-raven/
+F:	package/python-schedule/
+F:	package/python-websockets/
+F:	package/python-xlib/
 
 N:	Joshua Henderson <joshua.henderson@microchip.com>
 F:	package/qt5/qt5wayland/
@@ -1065,47 +1097,12 @@ F:	package/qt5/
 N:	Julien Floret <julien.floret@6wind.com>
 F:	package/lldpd/
 
-N:	Laurent Charpentier <laurent_pubs@yahoo.com>
-F:	package/open-lldp/
-
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/
 F:	package/easy-rsa/
 
 N:	Justin Maggard <jmaggard@netgear.com>
 F:	package/dtach/
-
-N:	Jérôme Oufella <jerome.oufella@savoirfairelinux.com>
-F:	package/libdri2/
-F:	package/qt-webkit-kiosk/
-
-N:	Jérôme Pouiller <jezz@sysmic.org>
-F:	package/apitrace/
-F:	package/freescale-imx/gpu-amd-bin-mx51/
-F:	package/freescale-imx/libz160/
-F:	package/lxc/
-F:	package/strongswan/
-F:	package/wmctrl/
-F:	package/x11r7/xdriver_xf86-video-imx/
-F:	package/x11r7/xdriver_xf86-video-imx-viv/
-
-N:	Jörg Krause <joerg.krause@embedded.rocks>
-F:	board/lemaker/bananapro/
-F:	configs/bananapro_defconfig
-F:	package/augeas/
-F:	package/bctoolbox/
-F:	package/freescale-imx/imx-alsa-plugins/
-F:	package/libopusenc/
-F:	package/libshout/
-F:	package/libupnpp/
-F:	package/luv/
-F:	package/luvi/
-F:	package/mp4v2/
-F:	package/mpd/
-F:	package/shairport-sync/
-F:	package/swupdate/
-F:	package/upmpdcli/
-F:	package/wavemon/
 
 N:	Karoly Kasza <kaszak@gmail.com>
 F:	package/irqbalance/
@@ -1129,6 +1126,9 @@ F:	package/nilfs-utils/
 
 N:	Laurent Cans <laurent.cans@gmail.com>
 F:	package/aircrack-ng/
+
+N:	Laurent Charpentier <laurent_pubs@yahoo.com>
+F:	package/open-lldp/
 
 N:	Lee Jones <lee.jones@linaro.org>
 F:	boot/afboot-stm32/
@@ -1414,6 +1414,10 @@ N:	Michał Łyszczek <michal.lyszczek@bofc.pl>
 F:	board/altera/socrates_cyclone5/
 F:	configs/socrates_cyclone5_defconfig
 
+N:	Mike Harmony <mike.harmony@snapav.com>
+F:	board/sinovoip/m2-plus/
+F:	configs/bananapi_m2_plus_defconfig
+
 N:	Mikhail Boiko <mikhailboiko85@gmail.com>
 F:	package/libfribidi/
 
@@ -1426,10 +1430,6 @@ F:	package/monkey/
 N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
-
-N:	Mike Harmony <mike.harmony@snapav.com>
-F:	board/sinovoip/m2-plus/
-F:	configs/bananapi_m2_plus_defconfig
 
 N:	Mylène Josserand <mylene.josserand@bootlin.com>
 F:	package/rtl8723bu/
@@ -1643,6 +1643,9 @@ N:	Rahul Jain <rahul.jain@imgtec.com>
 F:	package/uhttpd/
 F:	package/ustream-ssl/
 
+N:	Rémi Rérolle <remi.rerolle@gmail.com>
+F:	package/libfreeimage/
+
 N:	Renaud Aubin <root@renaud.io>
 F:	package/libhttpparser/
 
@@ -1672,9 +1675,6 @@ N:	Rodrigo Rebello <rprebello@gmail.com>
 F:	package/chocolate-doom/
 F:	package/irssi/
 F:	package/vnstat/
-
-N:	Roman Gorbenkov <roman.gorbenkov@ens2m.org>
-F:	package/davfs2/
 
 N:	Romain Naour <romain.naour@gmail.com>
 F:	package/aubio/
@@ -1706,6 +1706,9 @@ F:	package/tk/
 F:	package/upower/
 F:	package/xenomai/
 
+N:	Roman Gorbenkov <roman.gorbenkov@ens2m.org>
+F:	package/davfs2/
+
 N:	Ryan Barnett <ryan.barnett@rockwellcollins.com>
 F:	package/atftp/
 F:	package/miraclecast/
@@ -1723,9 +1726,6 @@ F:	package/mariadb/
 
 N:	Ryan Wilkins <ryan@deadfrog.net>
 F:	package/biosdevname/
-
-N:	Rémi Rérolle <remi.rerolle@gmail.com>
-F:	package/libfreeimage/
 
 N:	Sam Bobroff <sam.bobroff@au1.ibm.com>
 F:	arch/Config.in.powerpc
@@ -1761,6 +1761,12 @@ F:	package/cppunit/
 F:	package/kyua/
 F:	package/lutok/
 F:	package/yaml-cpp/
+
+N:	Sébastien Szymanski <sebastien.szymanski@armadeus.com>
+F:	package/mmc-utils/
+F:	package/python-flask-jsonrpc/
+F:	package/python-flask-login/
+F:	package/qt5/qt5charts/
 
 N:	Semyon Kolganov <semenak94@mail.ru>
 F:	package/fmt/
@@ -1891,12 +1897,6 @@ F:	package/gstreamer1/gst1-libav/
 F:	package/libmms/
 F:	package/orc/
 F:	package/wampcc/
-
-N:	Sébastien Szymanski <sebastien.szymanski@armadeus.com>
-F:	package/mmc-utils/
-F:	package/python-flask-jsonrpc/
-F:	package/python-flask-login/
-F:	package/qt5/qt5charts/
 
 N:	Theo Debrouwere <t.debrouwere@televic.com>
 F:	package/pugixml/
