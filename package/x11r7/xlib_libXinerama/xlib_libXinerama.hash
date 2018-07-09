@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002231.html
-sha256	7a45699f1773095a3f821e491cbd5e10c887c5a5fce5d8d3fced15c2ff7698e2	libXinerama-1.1.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-July/002905.html
+md5 0d5f826a197dae74da67af4a9ef35885  libXinerama-1.1.4.tar.bz2
+sha1 34a1d9908ffbd46805d2357c6b05f5e341a8dc7c  libXinerama-1.1.4.tar.bz2
+sha256 0008dbd7ecf717e1e507eed1856ab0d9cf946d03201b85d5dcf61489bb02d720  libXinerama-1.1.4.tar.bz2
+sha512 cff777ad942614fbf6bc6d8529f399e62debf3ecbf6cc0694a94e38c022bf929ffd5636fb59f55533c394d89b23af3ea51fa5128927f12a85787e16239330f14  libXinerama-1.1.4.tar.bz2
+# Locally computed
+sha256 f661fd883b6e980b3b118e0fbe230fbf10eef8d4d4a35931355f29ed647ddbe3  COPYING
