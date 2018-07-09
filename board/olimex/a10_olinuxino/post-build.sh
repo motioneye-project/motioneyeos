@@ -1,0 +1,1 @@
+../a20_olinuxino/post-build.sh
