@@ -251,3 +251,13 @@ class UselessFlag(_CheckFunction):
                     "({}#_infrastructure_for_autotools_based_packages)"
                     .format(self.filename, lineno, self.url_to_manual),
                     text]
+
+
+class VariableWithBraces(_CheckFunction):
+    VARIABLE_WITH_BRACES = re.compile(r"^[^#].*[^$]\${\w+}")
+
+    def check_line(self, lineno, text):
+        if self.VARIABLE_WITH_BRACES.match(text.rstrip()):
+            return ["{}:{}: use $() to delimit variables, not ${{}}"
+                    .format(self.filename, lineno),
+                    text]
