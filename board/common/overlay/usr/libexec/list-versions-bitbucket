@@ -7,8 +7,8 @@ fi
 
 function check_prerelease() {
     read line
-    if [[ "$line" =~ ^[0-9] ]]; then
-        echo "$line"                     
+    if [[ "$line" =~ ^[0-9._]+\| ]]; then
+        echo "$line"
     else
         echo "$line" | sed 's/|false|/|true|/'
     fi
