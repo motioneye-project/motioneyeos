@@ -153,6 +153,7 @@ HOST_NCURSES_CONF_OPTS = \
 	--without-cxx \
 	--without-cxx-binding \
 	--without-ada \
+	--with-default-terminfo-dir=/usr/share/terminfo \
 	--without-normal
 
 $(eval $(autotools-package))
