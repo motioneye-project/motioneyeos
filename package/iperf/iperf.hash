@@ -1,5 +1,5 @@
 # From https://sourceforge.net/projects/iperf2/files/
-sha1	8b44a23385044bb454e7891966c37339d3bb3711	iperf-2.0.10.tar.gz
+sha1	909b469bbbc38508cd268e334a6ec319c3116f15	iperf-2.0.12.tar.gz
 # Locally computed:
-sha256  7fe4348dcca313b74e0aa9c34a8ccd713b84a5615b8578f4aa94cedce9891ef2  iperf-2.0.10.tar.gz
+sha256  367f651fb1264b13f6518e41b8a7e08ce3e41b2a1c80e99ff0347561eed32646  iperf-2.0.12.tar.gz
 sha256  5f9f5c4feca3347c3b3c0ada8b16b4e6b698aac4e6f016a24adf61a5915336d1  COPYING
