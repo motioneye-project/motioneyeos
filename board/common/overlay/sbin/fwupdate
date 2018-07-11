@@ -4,7 +4,7 @@
 #### usage ####
 
 function exit_usage() {
-    echo "Usage: fwupdate versions                  (lists available versions)"
+    echo "Usage: fwupdate versions [-u]             (lists available versions, optionally showing the URL)"
     echo "       fwupdate current                   (shows the current version"
     echo "       fwupdate download <version|url>    (downloads a firmware version)"
     echo "       fwupdate extract                   (extracts the downloaded firmware archive)"
@@ -394,7 +394,9 @@ function new_version() {
 
 case "$1" in
     versions)
-        show_versions
+        show_url="false"
+        test "$2" == "-u" && show_url="true"
+        show_versions $show_url
         ;;
 
     current)
