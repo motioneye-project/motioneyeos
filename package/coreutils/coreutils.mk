@@ -112,7 +112,7 @@ endif
 
 define COREUTILS_CLEANUP
 	# link for archaic shells
-	ln -fs test $(TARGET_DIR)/usr/bin/[
+	ln -fs coreutils $(TARGET_DIR)/usr/bin/[
 	# gnu thinks chroot is in bin, debian thinks it's in sbin
 	rm -f $(TARGET_DIR)/usr/bin/chroot
 	ln -sf ../bin/coreutils $(TARGET_DIR)/usr/sbin/chroot
