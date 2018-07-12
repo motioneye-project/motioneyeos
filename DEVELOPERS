@@ -1923,6 +1923,7 @@ F:	docs/manual/
 F:	package/opkg-utils/
 F:	package/perl-convert-asn1/
 F:	package/perl-crypt-blowfish/
+F:	package/perl-crypt-cbc/
 F:	package/pigz/
 F:	support/scripts/size-stats
 F:	utils/size-stats-compare
