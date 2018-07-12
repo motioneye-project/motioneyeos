@@ -1,0 +1,48 @@
+From b9160d951b9af647b97766c57295ca4f45cf9521 Mon Sep 17 00:00:00 2001
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Tue, 3 Oct 2017 10:45:55 +0300
+Subject: [PATCH] Do not hardcode python path into various tools
+
+Upstream-Status: Inappropriate [oe-core specific]
+Signed-off-by: Alexander Kanavin <alex.kanavin@gmail.com>
+Fetch from: http://cgit.openembedded.org/openembedded-core/tree/meta/recipes-core/glib-2.0/glib-2.0/0010-Do-not-hardcode-python-path-into-various-tools.patch?id=eef7883587acc933d6f34b559ec03ff84d18573b
+Signed-off-by: David Owens <david.owens@rockwellcollins.com>
+---
+ gio/gdbus-2.0/codegen/gdbus-codegen.in | 2 +-
+ gobject/glib-genmarshal.in             | 2 +-
+ gobject/glib-mkenums.in                | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gio/gdbus-2.0/codegen/gdbus-codegen.in b/gio/gdbus-2.0/codegen/gdbus-codegen.in
+index 8050981..e693ef3 100644
+--- a/gio/gdbus-2.0/codegen/gdbus-codegen.in
++++ b/gio/gdbus-2.0/codegen/gdbus-codegen.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env @PYTHON@
++#!/usr/bin/env python
+ 
+ # GDBus - GLib D-Bus Library
+ #
+diff --git a/gobject/glib-genmarshal.in b/gobject/glib-genmarshal.in
+index 09e8408..b2f9d99 100755
+--- a/gobject/glib-genmarshal.in
++++ b/gobject/glib-genmarshal.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env @PYTHON@
++#!/usr/bin/env python
+ 
+ # pylint: disable=too-many-lines, missing-docstring, invalid-name
+ 
+diff --git a/gobject/glib-mkenums.in b/gobject/glib-mkenums.in
+index d4bfd11..051fce4 100755
+--- a/gobject/glib-mkenums.in
++++ b/gobject/glib-mkenums.in
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env @PYTHON@
++#!/usr/bin/env python
+ 
+ # If the code below looks horrible and unpythonic, do not panic.
+ #
+-- 
+2.14.1
+
