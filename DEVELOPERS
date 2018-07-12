@@ -1930,6 +1930,7 @@ F:	package/perl-mojolicious-plugin-authentication/
 F:	package/perl-net-ping/
 F:	package/perl-net-snmp/
 F:	package/perl-net-ssh2/
+F:	package/perl-net-telnet/
 F:	package/pigz/
 F:	support/scripts/size-stats
 F:	utils/size-stats-compare
