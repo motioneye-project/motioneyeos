@@ -1,5 +1,2 @@
-# From http://ftp.gnome.org/pub/gnome/sources/librsvg/2.42/librsvg-2.42.5.sha256sum
-sha256	d4dd51a492a2022c07dec385e22947190fe70410928c471934ff3399f20935ec	librsvg-2.42.5.tar.xz
-
-# Hash for license file:
-sha256	d7bf9d064ac3e5840f9dd02422b7eeec4f1fd03f37fadbd043602be5e882304f	COPYING.LIB
+# From http://ftp.gnome.org/pub/gnome/sources/librsvg/2.40/librsvg-2.40.20.sha256sum
+sha256	cff4dd3c3b78bfe99d8fcfad3b8ba1eee3289a0823c0e118d78106be6b84c92b	librsvg-2.40.20.tar.xz

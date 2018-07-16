@@ -289,7 +289,6 @@ config BR2_PACKAGE_EFL_LIBRAW
 
 config BR2_PACKAGE_EFL_SVG
 	bool "SVG loader"
-	depends on BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS # librsvg
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
 	select BR2_PACKAGE_LIBRSVG
 	select BR2_PACKAGE_CAIRO
