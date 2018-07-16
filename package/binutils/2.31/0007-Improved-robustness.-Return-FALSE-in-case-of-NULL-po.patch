@@ -1,0 +1,35 @@
+From 955176bd999fe80c5b937ab8786665079e35c387 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Fri, 2 Mar 2018 17:33:48 +0100
+Subject: [PATCH] Improved robustness. Return FALSE in case of NULL pointer.
+
+bfd/
+2018-03-01  Cupertino Miranda <cmiranda@synopsys.com>
+
+	* elf32-arc.c (elf_arc_finish_dynamic_symbol) Return FALSE in case
+	arc_htab is NULL.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+[Romain: rebase on top of 2.31]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ bfd/elf32-arc.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index ab84de43815..33fc72cff6e 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -2420,6 +2420,9 @@ elf_arc_finish_dynamic_symbol (bfd * output_bfd,
+     {
+       struct elf_arc_link_hash_table *arc_htab = elf_arc_hash_table (info);
+ 
++      if(arc_htab == NULL)
++	return FALSE;
++
+       if (h->dynindx == -1
+ 	  || (h->root.type != bfd_link_hash_defined
+ 	      && h->root.type != bfd_link_hash_defweak)
+-- 
+2.14.4
+
