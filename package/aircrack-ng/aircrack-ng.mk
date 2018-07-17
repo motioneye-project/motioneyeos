@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AIRCRACK_NG_VERSION = 1.2
+AIRCRACK_NG_VERSION = 1.3
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
 AIRCRACK_NG_LICENSE = GPL-2.0+
 AIRCRACK_NG_LICENSE_FILES = LICENSE
@@ -29,6 +29,13 @@ AIRCRACK_NG_DEPENDENCIES += duma
 AIRCRACK_NG_CONF_OPTS += --with-duma
 else
 AIRCRACK_NG_CONF_OPTS += --without-duma
+endif
+
+ifeq ($(BR2_PACKAGE_JEMALLOC),y)
+AIRCRACK_NG_DEPENDENCIES += jemalloc
+AIRCRACK_NG_CONF_OPTS += --with-jemalloc
+else
+AIRCRACK_NG_CONF_OPTS += --without-jemalloc
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
