@@ -510,6 +510,9 @@ N:	Damien Lanson <damien@kal-host.com>
 F:	package/libvdpau/
 F:	package/log4cpp/
 
+N:	Daniel Nicoletti <dantti12@gmail.com>
+F:	package/cutelyst/
+
 N:	Daniel Nyström <daniel.nystrom@timeterminal.se>
 F:	package/e2tools/
 

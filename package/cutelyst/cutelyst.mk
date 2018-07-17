@@ -1,0 +1,36 @@
+################################################################################
+#
+# cutelyst
+#
+################################################################################
+
+CUTELYST_VERSION = 2.5.1
+CUTELYST_SITE = https://github.com/cutelyst/cutelyst/archive/v$(CUTELYST_VERSION)
+CUTELYST_INSTALL_STAGING = YES
+CUTELYST_SUPPORTS_IN_SOURCE_BUILD = NO
+CUTELYST_LICENSE = LGPL-2.1+
+CUTELYST_LICENSE_FILES = COPYING
+CUTELYST_DEPENDENCIES = qt5base
+
+CUTELYST_CONF_OPTS += \
+	-DPLUGIN_CSRFPROTECTION=ON
+
+ifeq ($(BR2_PACKAGE_GRANTLEE),y)
+CUTELYST_CONF_OPTS += -DPLUGIN_VIEW_GRANTLEE=ON
+else
+CUTELYST_CONF_OPTS += -DPLUGIN_VIEW_GRANTLEE=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBPWQUALITY),y)
+CUTELYST_CONF_OPTS += -DPLUGIN_VALIDATOR_PWQUALITY=ON
+else
+CUTELYST_CONF_OPTS += -DPLUGIN_VALIDATOR_PWQUALITY=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_JEMALLOC),y)
+CUTELYST_CONF_OPTS += -DUSE_JEMALLOC=ON
+else
+CUTELYST_CONF_OPTS += -DUSE_JEMALLOC=OFF
+endif
+
+$(eval $(cmake-package))

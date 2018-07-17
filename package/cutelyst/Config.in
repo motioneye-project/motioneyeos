@@ -1,0 +1,10 @@
+config BR2_PACKAGE_CUTELYST
+	bool "cutelyst"
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_QT5BASE_GUI
+	help
+	  A C++ Web Framework built on top of Qt, using
+	  the simple approach of Catalyst (Perl) framework.
+
+	  https://cutelyst.org
