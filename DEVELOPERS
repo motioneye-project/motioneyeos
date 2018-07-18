@@ -1038,6 +1038,7 @@ N:	Jörg Krause <joerg.krause@embedded.rocks>
 F:	board/lemaker/bananapro/
 F:	configs/bananapro_defconfig
 F:	package/augeas/
+F:	package/bluez-alsa/
 F:	package/freescale-imx/imx-alsa-plugins/
 F:	package/libopusenc/
 F:	package/libupnpp/
