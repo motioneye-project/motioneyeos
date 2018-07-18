@@ -61,7 +61,9 @@ BIND_CONF_ENV += \
 	ac_cv_func_EVP_sha512=yes
 BIND_CONF_OPTS += \
 	--with-openssl=$(STAGING_DIR)/usr LIBS="-lz" \
-	--with-ecdsa=yes
+	--with-ecdsa=yes \
+	--with-eddsa=no \
+	--with-aes=yes
 # GOST cipher support requires openssl extra engines
 ifeq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 BIND_CONF_OPTS += --with-gost=yes
