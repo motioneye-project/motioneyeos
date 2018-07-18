@@ -1038,14 +1038,11 @@ N:	Jörg Krause <joerg.krause@embedded.rocks>
 F:	board/lemaker/bananapro/
 F:	configs/bananapro_defconfig
 F:	package/augeas/
-F:	package/bctoolbox/
 F:	package/freescale-imx/imx-alsa-plugins/
 F:	package/libopusenc/
-F:	package/libshout/
 F:	package/libupnpp/
 F:	package/luv/
 F:	package/luvi/
-F:	package/mp4v2/
 F:	package/mpd/
 F:	package/shairport-sync/
 F:	package/swupdate/
