@@ -88,6 +88,13 @@ else
 LIBCURL_CONF_OPTS += --without-brotli
 endif
 
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+LIBCURL_DEPENDENCIES += nghttp2
+LIBCURL_CONF_OPTS += --with-nghttp2
+else
+LIBCURL_CONF_OPTS += --without-nghttp2
+endif
+
 define LIBCURL_FIX_DOT_PC
 	printf 'Requires: openssl\n' >>$(@D)/libcurl.pc.in
 endef
