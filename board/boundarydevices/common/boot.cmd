@@ -2,6 +2,8 @@ setenv bootargs ''
 
 setenv initrd_high 0xffffffff
 m4=''
+kernelimage=zImage
+bootcommand=bootz
 a_base=0x10000000
 if itest.s x51 == "x${imx_cpu}" ; then
 	a_base=0x90000000
@@ -9,10 +11,14 @@ elif itest.s x53 == "x${imx_cpu}"; then
 	a_base=0x70000000
 elif itest.s x6SX == "x${imx_cpu}" || itest.s x7D == "x${imx_cpu}"; then
 	a_base=0x80000000
-	if itest.s "x1" == "x$m4enabled" ; then
-		run m4boot;
-		m4='-m4';
-	fi
+elif itest.s x8MQ == "x${imx_cpu}"; then
+	a_base=0x40000000
+	kernelimage=Image
+	bootcommand=booti
+fi
+if itest.s "x1" == "x${m4enabled}" ; then
+	run m4boot;
+	m4='-m4';
 fi
 
 setexpr a_script  ${a_base} + 0x00800000
@@ -39,10 +45,12 @@ if itest.s "x" == "x${fdt_file}" ; then
 		fdt_file=imx6sx-${board}${m4}.dtb;
 	elif itest.s x7D == "x${imx_cpu}" ; then
 		fdt_file=imx7d-${board}${m4}.dtb;
+	elif itest.s x8MQ == "x${imx_cpu}" ; then
+		fdt_file=imx8mq-${board}${m4}.dtb;
 	elif itest.s x51 == "x${imx_cpu}" ; then
-		fdt_file=imx51-${board}${m4}.dtb;
+		fdt_file=imx51-${board}.dtb;
 	elif itest.s x53 == "x${imx_cpu}" ; then
-		fdt_file=imx53-${board}${m4}.dtb;
+		fdt_file=imx53-${board}.dtb;
 	else
 		fdt_file=imx6q-${board}.dtb;
 	fi
@@ -66,16 +74,12 @@ else
 	exit;
 fi
 
-cmd_xxx_present=
 fdt resize
 if itest.s "x" != "x${cmd_custom}" ; then
 	run cmd_custom
-	cmd_xxx_present=1;
 fi
-
 if itest.s "x" != "x${cmd_hdmi}" ; then
 	run cmd_hdmi
-	cmd_xxx_present=1;
 	if itest.s x == x${allow_noncea} ; then
 		setenv bootargs ${bootargs} mxc_hdmi.only_cea=1;
 		echo "only CEA modes allowed on HDMI port";
@@ -87,25 +91,18 @@ fi
 
 if itest.s "x" != "x${cmd_lcd}" ; then
 	run cmd_lcd
-	cmd_xxx_present=1;
 fi
 if itest.s "x" != "x${cmd_lcd2}" ; then
 	run cmd_lcd2
-	cmd_xxx_present=1;
 fi
 if itest.s "x" != "x${cmd_lvds}" ; then
 	run cmd_lvds
-	cmd_xxx_present=1;
 fi
 if itest.s "x" != "x${cmd_lvds2}" ; then
 	run cmd_lvds2
-	cmd_xxx_present=1;
 fi
-
-if itest.s "x" == "x${cmd_xxx_present}" ; then
-	echo "!!!!!!!!!!!!!!!!"
-	echo "warning: your u-boot may be outdated, please upgrade"
-	echo "!!!!!!!!!!!!!!!!"
+if itest.s "x" != "x${cmd_mipi}" ; then
+	run cmd_mipi
 fi
 
 if test "sata" = "${devtype}" ; then
@@ -126,7 +123,6 @@ fi
 
 if itest.s "x" != "x${wlmac}" ; then
 	setenv bootargs ${bootargs} wlcore.mac=${wlmac}
-	setenv bootargs ${bootargs} wlan.mac=${wlmac}
 fi
 
 if itest.s "x" != "x${gpumem}" ; then
@@ -149,7 +145,7 @@ if itest.s "x" != "x${show_env}" ; then
 	printenv
 fi
 
-if load ${devtype} ${devnum}:${distro_bootpart} ${a_zImage} ${prefix}zImage ; then
-	bootz ${a_zImage} - ${a_fdt}
+if load ${devtype} ${devnum}:${distro_bootpart} ${a_zImage} ${prefix}${kernelimage} ; then
+	${bootcommand} ${a_zImage} - ${a_fdt}
 fi
 echo "Error loading kernel image"
