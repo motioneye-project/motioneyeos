@@ -1,3 +1,35 @@
+2018.05.1, Released July 20th, 2018
+
+	Important / security related fixes.
+
+	U-Boot: Ensure host version of ncurses is picked up and not
+	host-ncurses built by buildroot, as that otherwise causes
+	widechar/non-widechar conflicts and corrupted menuconfig
+	menus.
+
+	Linux: Enable CONFIG_PERF_EVENTS when perf is enabled.
+
+	Toolchain: ARC tools updated to arc-2018.03.
+
+	pkg-stats: Fix python 3.x compatibility.
+
+	dl-wrapper: Fix support for URIs containing '+', fix
+	no-check-hash for inferred site method.
+
+	Defconfigs: Raspberrypi3: Bump rootfs size, Minnowboard-max:
+	Support ethernet on Turbot variant.
+
+	Updated/fixed packages: audit, bind, btrfs-progs, cifs-utils,
+	clamav, collectd, coreutils, docker-containerd, dos2unix,
+	edid-decode, file, gcc, gdb, gnupg, gnupg2, heimdal, hidapi,
+	imagemagick, libcurl, libgcrypt, libglib2, liblogging,
+	libostree, libressl, libsoup, libv4l, libvncserver, libvorbis,
+	libwebsockets, libxslt, lm-sensors, mariadb, mpg123, ncurses,
+	network-manager, nodejs, patchelf, perl, php-amqp, pinentry,
+	pixiewps, qpdf, qt53d, qt5base, qt5charts, qt5script, redis,
+	systemd, triggerhappy, uboot, wireguard, wireless-regdb,
+	wireshark
+
 2018.05, Released June 1st, 2018
 
 	Minor fixes.
