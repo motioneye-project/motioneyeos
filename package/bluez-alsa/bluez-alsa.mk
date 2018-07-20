@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BLUEZ_ALSA_VERSION = 9045edb436ea755f395a2e09e4525b5defad286a
+BLUEZ_ALSA_VERSION = v1.3.0
 BLUEZ_ALSA_SITE = $(call github,Arkq,bluez-alsa,$(BLUEZ_ALSA_VERSION))
 BLUEZ_ALSA_LICENSE = MIT
 BLUEZ_ALSA_LICENSE_FILES = LICENSE.txt
@@ -38,6 +38,13 @@ BLUEZ_ALSA_DEPENDENCIES += libbsd ncurses
 BLUEZ_ALSA_CONF_OPTS += --enable-hcitop
 else
 BLUEZ_ALSA_CONF_OPTS += --disable-hcitop
+endif
+
+ifeq ($(BR2_PACKAGE_BLUEZ_ALSA_RFCOMM),y)
+BLUEZ_ALSA_DEPENDENCIES += readline
+BLUEZ_ALSA_CONF_OPTS += --enable-rfcomm
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-rfcomm
 endif
 
 $(eval $(autotools-package))

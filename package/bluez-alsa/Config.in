@@ -26,6 +26,12 @@ config BR2_PACKAGE_BLUEZ_ALSA_HCITOP
 	help
 	  Enable top-like monitoring tool for HCI.
 
+config BR2_PACKAGE_BLUEZ_ALSA_RFCOMM
+	bool "rfcomm"
+	select BR2_PACKAGE_READLINE
+	help
+	  Simple tool for sending RFCOMM commands.
+
 endif
 
 comment "bluez-alsa needs a toolchain w/ wchar, NPTL, headers >= 3.4, dynamic library"
