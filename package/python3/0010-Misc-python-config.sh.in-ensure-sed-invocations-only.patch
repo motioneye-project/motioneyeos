@@ -21,40 +21,47 @@ Submitted upstream: http://bugs.python.org/issue22907
 
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
- Misc/python-config.sh.in | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Misc/python-config.sh.in | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
 diff --git a/Misc/python-config.sh.in b/Misc/python-config.sh.in
-index 30c6927871..f905a7132f 100644
+index d1d3275..9e259c0 100644
 --- a/Misc/python-config.sh.in
 +++ b/Misc/python-config.sh.in
-@@ -29,12 +29,12 @@ prefix_real=$(installed_prefix "$0")
+@@ -24,18 +24,19 @@ installed_prefix ()
+     echo $RESULT
+ }
+ 
++prefix_build="@prefix@"
+ prefix_real=$(installed_prefix "$0")
  
  # Use sed to fix paths from their built-to locations to their installed-to
- # locations.
--prefix=$(echo "$prefix_build" | sed "s#$prefix_build#$prefix_real#")
+ # locations. Keep prefix & exec_prefix using their original values in case
+ # they are referenced in other configure variables, to prevent double
+ # substitution, issue #22140.
+-prefix="@prefix@"
+-exec_prefix="@exec_prefix@"
 +prefix=$(echo "$prefix_build" | sed "s#^$prefix_build#$prefix_real#")
- exec_prefix_build="@exec_prefix@"
--exec_prefix=$(echo "$exec_prefix_build" | sed "s#$exec_prefix_build#$prefix_real#")
--includedir=$(echo "@includedir@" | sed "s#$prefix_build#$prefix_real#")
--libdir=$(echo "@libdir@" | sed "s#$prefix_build#$prefix_real#")
--CFLAGS=$(echo "@CFLAGS@" | sed "s#$prefix_build#$prefix_real#")
 +exec_prefix=$(echo "$exec_prefix_build" | sed "s#^$exec_prefix_build#$prefix_real#")
+ exec_prefix_real=${prefix_real}
+-includedir=$(echo "@includedir@" | sed "s#$prefix#$prefix_real#")
+-libdir=$(echo "@libdir@" | sed "s#$prefix#$prefix_real#")
+-CFLAGS=$(echo "@CFLAGS@" | sed "s#$prefix#$prefix_real#")
 +includedir=$(echo "@includedir@" | sed "s#^$prefix_build#$prefix_real#")
 +libdir=$(echo "@libdir@" | sed "s#^$prefix_build#$prefix_real#")
 +CFLAGS=$(echo "@CFLAGS@" | sed "s#^$prefix_build#$prefix_real#")
  VERSION="@VERSION@"
  LIBM="@LIBM@"
  LIBC="@LIBC@"
-@@ -48,7 +48,7 @@ OPT="@OPT@"
+@@ -49,7 +50,7 @@ OPT="@OPT@"
  PY_ENABLE_SHARED="@PY_ENABLE_SHARED@"
  LDVERSION="@LDVERSION@"
- LIBDEST=${prefix}/lib/python${VERSION}
--LIBPL=$(echo "@LIBPL@" | sed "s#$prefix_build#$prefix_real#")
+ LIBDEST=${prefix_real}/lib/python${VERSION}
+-LIBPL=$(echo "@LIBPL@" | sed "s#$prefix#$prefix_real#")
 +LIBPL=$(echo "@LIBPL@" | sed "s#^$prefix_build#$prefix_real#")
  SO="@EXT_SUFFIX@"
  PYTHONFRAMEWORK="@PYTHONFRAMEWORK@"
  INCDIR="-I$includedir/python${VERSION}${ABIFLAGS}"
 -- 
-2.13.5
+2.14.3
 

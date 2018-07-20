@@ -1,4 +1,5 @@
-# From https://www.python.org/downloads/release/python-363/
-md5 b9c2c36c33fb89bda1fefd37ad5af9be Python-3.6.3.tar.xz
+# From https://www.python.org/downloads/release/python-370/
+md5		eb8c2a6b1447d50813c02714af4681f3 Python-3.7.0.tar.xz
 # Locally computed
-sha256 cda7d967c9a4bfa52337cdf551bcc5cff026b6ac50a8834e568ce4a794ca81da Python-3.6.3.tar.xz
+sha256 0382996d1ee6aafe59763426cf0139ffebe36984474d0ec4126dd1c40a8b3549 Python-3.7.0.tar.xz
+sha256 b9a6d9320b8f2693e8d41e496ce56caadacaddcca9be2a64a61749278f425cf2 LICENSE

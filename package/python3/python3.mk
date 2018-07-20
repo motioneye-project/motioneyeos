@@ -4,19 +4,12 @@
 #
 ################################################################################
 
-PYTHON3_VERSION_MAJOR = 3.6
-PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).3
+PYTHON3_VERSION_MAJOR = 3.7
+PYTHON3_VERSION = $(PYTHON3_VERSION_MAJOR).0
 PYTHON3_SOURCE = Python-$(PYTHON3_VERSION).tar.xz
 PYTHON3_SITE = https://python.org/ftp/python/$(PYTHON3_VERSION)
 PYTHON3_LICENSE = Python-2.0, others
 PYTHON3_LICENSE_FILES = LICENSE
-
-# Python itself doesn't use libtool, but it includes the source code
-# of libffi, which uses libtool. Unfortunately, it uses a beta version
-# of libtool for which we don't have a matching patch. However, this
-# is not a problem, because we don't use the libffi copy included in
-# the Python sources, but instead use an external libffi library.
-PYTHON3_LIBTOOL_PATCH = NO
 
 # This host Python is installed in $(HOST_DIR), as it is needed when
 # cross-compiling third-party Python modules.
@@ -47,7 +40,7 @@ HOST_PYTHON3_CONF_ENV += \
 
 PYTHON3_DEPENDENCIES = host-python3 libffi
 
-HOST_PYTHON3_DEPENDENCIES = host-expat host-zlib
+HOST_PYTHON3_DEPENDENCIES = host-expat host-zlib host-libffi
 
 PYTHON3_INSTALL_STAGING = YES
 
@@ -99,6 +92,12 @@ endif
 
 ifneq ($(BR2_PACKAGE_PYTHON3_UNICODEDATA),y)
 PYTHON3_CONF_OPTS += --disable-unicodedata
+endif
+
+ifeq ($(BR2_PACKAGE_PYTHON3_UUID),y)
+PYTHON3_DEPENDENCIES += util-linux
+else
+PYTHON3_CONF_OPTS += --disable-uuid
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_BZIP2),y)

@@ -18,7 +18,7 @@ diff --git a/Modules/termios.c b/Modules/termios.c
 index b78d33e688..58b0444565 100644
 --- a/Modules/termios.c
 +++ b/Modules/termios.c
-@@ -9,7 +9,9 @@
+@@ -15,7 +15,9 @@
  #endif
  
  #include <termios.h>
