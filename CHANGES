@@ -226,6 +226,31 @@
 	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is
 		enabled
 
+2018.02.4, Released July 21th, 2018
+
+	Important / security related fixes.
+
+	U-Boot: Ensure host version of ncurses is picked up and not
+	host-ncurses built by buildroot, as that otherwise causes
+	widechar/non-widechar conflicts and corrupted menuconfig
+	menus.
+
+	Linux: Enable CONFIG_PERF_EVENTS when perf is enabled.
+
+	Defconfigs: Raspberrypi3: Bump rootfs size, Minnowboard-max:
+	Support ethernet on Turbot variant.
+
+	Updated/fixed packages: bind, clamav, collectd, dos2unix,
+	edid-decode, gcc, gdb, heimdal, hidapi, imx-gpu-viv, libcurl,
+	libglib2, liblogging, libostree, libsoup, libv4l, lm-sensors,
+	ncurses, network-manager, patchelf, pinentry, procps-ng, qpdf,
+	qt5, qt53d, qt5base, qt5charts, qt5script, qt5serialport,
+	systemd, wireguard, wireless-regdb
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11101: host-patchelf Endian Issue with relative RPATH
+
 2018.02.3, Released June 18th, 2018
 
 	Important / security related fixes.
