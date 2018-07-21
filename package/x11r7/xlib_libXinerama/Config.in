@@ -2,6 +2,6 @@ config BR2_PACKAGE_XLIB_LIBXINERAMA
 	bool "libXinerama"
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXEXT
-	select BR2_PACKAGE_XPROTO_XINERAMAPROTO
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  X.Org Xinerama library
