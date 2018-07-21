@@ -46,7 +46,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_LIB_OPENGL_GLX),y)
 GST1_PLUGINS_BASE_CONF_OPTS += --enable-glx
-GST1_PLUGINS_BASE_DEPENDENCIES += xproto_glproto xlib_libXrender
+GST1_PLUGINS_BASE_DEPENDENCIES += xorgproto xlib_libXrender
 else
 GST1_PLUGINS_BASE_CONF_OPTS += --disable-glx
 endif
