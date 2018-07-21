@@ -4,7 +4,7 @@ config BR2_PACKAGE_XAPP_XCONSOLE
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBXAW
 	select BR2_PACKAGE_XLIB_LIBXT
-	select BR2_PACKAGE_XPROTO_XPROTO
 	select BR2_PACKAGE_XLIB_LIBXMU
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  xconsole - monitor system console messages with X
