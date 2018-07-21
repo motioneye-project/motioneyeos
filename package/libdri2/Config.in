@@ -5,7 +5,7 @@ config BR2_PACKAGE_LIBDRI2
 	select BR2_PACKAGE_LIBDRM
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXEXT
-	select BR2_PACKAGE_XPROTO_DRI2PROTO
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  Library for the DRI2 extension to the X Window System.
 

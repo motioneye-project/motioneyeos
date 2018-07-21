@@ -6,7 +6,7 @@
 
 LIBDRI2_VERSION = 4f1eef3183df2b270c3d5cbef07343ee5127a6a4
 LIBDRI2_SITE = $(call github,robclark,libdri2,$(LIBDRI2_VERSION))
-LIBDRI2_DEPENDENCIES = xlib_libXext xproto_dri2proto xlib_libXdamage libdrm
+LIBDRI2_DEPENDENCIES = xlib_libXext xlib_libXdamage xorgproto libdrm
 LIBDRI2_LICENSE = MIT
 LIBDRI2_LICENSE_FILES = COPYING
 
