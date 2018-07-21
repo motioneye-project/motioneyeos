@@ -229,6 +229,7 @@ if BR2_PACKAGE_XORG7
 	endmenu
 	menu "X11R7 X protocols"
 		source package/x11r7/xcb-proto/Config.in
+		source package/x11r7/xorgproto/Config.in
 		source package/x11r7/xproto_applewmproto/Config.in
 		source package/x11r7/xproto_bigreqsproto/Config.in
 		source package/x11r7/xproto_compositeproto/Config.in
