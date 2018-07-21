@@ -8,7 +8,7 @@ XDRIVER_XF86_VIDEO_IMX_VIV_VERSION = rel_imx_4.9.x_1.0.0_ga
 XDRIVER_XF86_VIDEO_IMX_VIV_SITE = https://source.codeaurora.org/external/imx/xf86-video-imx-vivante
 XDRIVER_XF86_VIDEO_IMX_VIV_SITE_METHOD = git
 XDRIVER_XF86_VIDEO_IMX_VIV_DEPENDENCIES = imx-gpu-viv imx-gpu-g2d xserver_xorg-server \
-	xproto_xproto xproto_xf86driproto libdrm
+	xorgproto libdrm
 XDRIVER_XF86_VIDEO_IMX_VIV_LICENSE = MIT
 XDRIVER_XF86_VIDEO_IMX_VIV_LICENSE_FILES = COPYING-MIT
 XDRIVER_XF86_VIDEO_IMX_VIV_INSTALL_STAGING = YES

@@ -6,8 +6,7 @@ config BR2_PACKAGE_XDRIVER_XF86_VIDEO_IMX_VIV
 	select BR2_PACKAGE_MESA3D # Needed in order to compile xorg with glx/dri
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_LIBDRM
-	select BR2_PACKAGE_XPROTO_XPROTO
-	select BR2_PACKAGE_XPROTO_XF86DRIPROTO
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  X.Org driver for iMX6 GPU (Vivante)
 

@@ -12,17 +12,10 @@ XDRIVER_XF86_VIDEO_ATI_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_ATI_DEPENDENCIES = \
 	libdrm \
 	xlib_libXcomposite \
-	xproto_fontsproto \
-	xproto_glproto \
-	xproto_randrproto \
-	xproto_videoproto \
-	xproto_xextproto \
-	xproto_xf86driproto \
-	xproto_xineramaproto \
-	xproto_xproto \
+	xorgproto \
 	xserver_xorg-server
 
-ifeq ($(BR2_PACKAGE_XPROTO_DRI3PROTO)$(BR2_PACKAGE_LIBEPOXY),yy)
+ifeq ($(BR2_PACKAGE_LIBEPOXY),y)
 XDRIVER_XF86_VIDEO_ATI_CONF_OPTS = --enable-glamor
 else
 XDRIVER_XF86_VIDEO_ATI_CONF_OPTS = --disable-glamor

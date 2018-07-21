@@ -12,14 +12,7 @@ XDRIVER_XF86_VIDEO_AMDGPU_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_AMDGPU_DEPENDENCIES = \
 	libdrm \
 	xlib_libXcomposite \
-	xproto_dri3proto \
-	xproto_fontsproto \
-	xproto_glproto \
-	xproto_randrproto \
-	xproto_videoproto \
-	xproto_xextproto \
-	xproto_xf86driproto \
-	xproto_xproto \
+	xorgproto \
 	xserver_xorg-server
 
 # xdriver_xf86-video-amdgpu requires O_CLOEXEC
