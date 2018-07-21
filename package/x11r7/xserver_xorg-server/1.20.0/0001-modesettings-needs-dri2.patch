@@ -3,6 +3,7 @@ http://cgit.freedesktop.org/xorg/xserver/tree/hw/xfree86/drivers/modesetting/Mak
 
 Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=91584
 
+[rebased for version 1.20.0]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff -uNr xorg-server-1.17.2.org/configure.ac xorg-server-1.17.2/configure.ac
@@ -14,6 +15,6 @@ diff -uNr xorg-server-1.17.2.org/configure.ac xorg-server-1.17.2/configure.ac
  
 -	if test "x$DRM" = xyes; then
 +	if test "x$DRM" = xyes -a "x$DRI2" = xyes; then
- 		dnl 2.4.46 is required for cursor hotspot support.
- 		PKG_CHECK_EXISTS(libdrm >= 2.4.46)
  		XORG_DRIVER_MODESETTING=yes
+ 	fi
+ 

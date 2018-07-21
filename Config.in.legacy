@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
+config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_19
+	bool "Modular X.org server was updated to version 1.20.0"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_20
+	help
+	  Modular X.org server was updated to version 1.20.0
+
 config BR2_PACKAGE_XPROTO_APPLEWMPROTO
 	bool "xproto-applewmproto package replaced by xorgproto"
 	select BR2_LEGACY
