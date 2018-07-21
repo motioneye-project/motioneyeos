@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_APPLEWMPROTO
-	bool "applewmproto"
-	help
-	  No description available

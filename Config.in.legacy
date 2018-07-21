@@ -145,6 +145,247 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
+config BR2_PACKAGE_XPROTO_APPLEWMPROTO
+	bool "xproto-applewmproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-applewmproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_BIGREQSPROTO
+	bool "xproto-bigreqsproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-bigreqsproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_COMPOSITEPROTO
+	bool "xproto-compositeproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-compositeproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_DAMAGEPROTO
+	bool "xproto-dameproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-dameproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_DMXPROTO
+	bool "xproto-dmxproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-dmxproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_DRI2PROTO
+	bool "xproto-dri2proto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-dri2proto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_DRI3PROTO
+	bool "xproto-dri3proto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-dri3proto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_FIXESPROTO
+	bool "xproto-fixesproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-fixesproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_FONTCACHEPROTO
+	bool "xproto-fontcacheproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-fontcacheproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_FONTSPROTO
+	bool "xproto-fontsproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-fontsproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_GLPROTO
+	bool "xproto-glproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-glproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_INPUTPROTO
+	bool "xproto-inputproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-inputproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_KBPROTO
+	bool "xproto-kbproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-kbproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_PRESENTPROTO
+	bool "xproto-presentproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-presentproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_RANDRPROTO
+	bool "xproto-randrproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-randrproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_RECORDPROTO
+	bool "xproto-recordproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-recordproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_RENDERPROTO
+	bool "xproto-renderproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-renderproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_RESOURCEPROTO
+	bool "xproto-resourceproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-resourceproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_SCRNSAVERPROTO
+	bool "xproto-scrnsaverprot package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-scrnsaverprot package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_VIDEOPROTO
+	bool "xproto-videoproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-videoproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_WINDOWSWMPROTO
+	bool "xproto-windowswmproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-windowswmproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XCMISCPROTO
+	bool "xproto-xcmiscproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xcmiscproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XEXTPROTO
+	bool "xproto-xextproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xextproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XF86BIGFONTPROTO
+	bool "xproto-xf86bigfontproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xf86bigfontproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XF86DGAPROTO
+	bool "xproto-xf86dgaproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xf86dgaproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XF86DRIPROTO
+	bool "xproto-xf86driproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xf86driproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
+	bool "xproto-xf86vidmodeproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xf86vidmodeproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XINERAMAPROTO
+	bool "xproto-xineramaproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xineramaproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XPROTO
+	bool "xproto-xproto package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xproto package has been replaced by the
+	  xorgproto package, which combines all xproto_* packages.
+
+config BR2_PACKAGE_XPROTO_XPROXYMANAGEMENTPROTOCOL
+	bool "xproto-xproxymanagementprotocol package replaced by xorgproto"
+	select BR2_LEGACY
+	select BR2_PACKAGE_XORGPROTO
+	help
+	  The xproto-xproxymanagementprotocol package has been
+	  replaced by the xorgproto package, which combines all
+	  xproto_* packages.
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL
 	bool "gst1-plugins-bad opengl option moved to gst1-plugins-base"
 	select BR2_LEGACY
