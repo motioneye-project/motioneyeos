@@ -15,10 +15,8 @@ XDRIVER_XF86_INPUT_EVDEV_DEPENDENCIES = \
 	host-pkgconf \
 	libevdev \
 	mtdev \
-	xproto_inputproto \
+	xorgproto \
 	xserver_xorg-server \
-	xproto_randrproto \
-	xproto_xproto \
 	udev
 
 $(eval $(autotools-package))
