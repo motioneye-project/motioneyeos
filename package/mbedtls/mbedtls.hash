@@ -1,5 +1,5 @@
-# From https://tls.mbed.org/tech-updates/releases/mbedtls-2.9.0-2.7.3-and-2.1.12-released
-sha1	8352f6713a9ee695f6f19e893c0e85941af71967	mbedtls-2.7.3-apache.tgz
-sha256	05282af7d95fedb2430c248ffe3081646800b8dae9071f8da11a07100963d765	mbedtls-2.7.3-apache.tgz
+# From https://tls.mbed.org/tech-updates/releases/mbedtls-2.11.0-2.7.4-and-2.1.13-released
+sha1	20394e353050992c5f9699da7c9a336bd2ed2dea	mbedtls-2.7.4-apache.tgz
+sha256	34e164d49500e377970c5f6761a146078baae0e086ec88cdcfeb9c96878a38f5	mbedtls-2.7.4-apache.tgz
 # Locally calculated
 sha256	cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30	apache-2.0.txt
