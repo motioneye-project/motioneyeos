@@ -15,7 +15,7 @@ config BR2_PACKAGE_CRDA
 	  query and apply the regulatory domain settings wireless
 	  devices may operate within for a given location.
 
-	  http://linuxwireless.org/en/developers/Regulatory/CRDA
+	  https://wireless.wiki.kernel.org/en/developers/regulatory/crda
 
 comment "crda needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
