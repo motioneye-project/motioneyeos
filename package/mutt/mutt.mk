@@ -16,11 +16,15 @@ MUTT_DEPENDENCIES += libiconv
 MUTT_CONF_OPTS += --enable-iconv
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
+# Both options can't be selected at the same time so prefer libidn2
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+MUTT_DEPENDENCIES += libidn2
+MUTT_CONF_OPTS += --with-idn2 --without-idn
+else ifeq ($(BR2_PACKAGE_LIBIDN),y)
 MUTT_DEPENDENCIES += libidn
-MUTT_CONF_OPTS += --with-idn
+MUTT_CONF_OPTS += --with-idn --without-idn2
 else
-MUTT_CONF_OPTS += --without-idn
+MUTT_CONF_OPTS += --without-idn --without-idn2
 endif
 
 ifeq ($(BR2_PACKAGE_MUTT_IMAP),y)
