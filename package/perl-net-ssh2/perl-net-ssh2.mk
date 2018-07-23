@@ -15,4 +15,8 @@ PERL_NET_SSH2_CONF_OPTS += \
 	lib="$(STAGING_DIR)/usr/lib" \
 	inc="$(STAGING_DIR)/usr/include"
 
+ifeq ($(BR2_PACKAGE_LIBSSH2_LIBGCRYPT),y)
+PERL_NET_SSH2_CONF_OPTS += gcrypt
+endif
+
 $(eval $(perl-package))
