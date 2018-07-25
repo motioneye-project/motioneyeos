@@ -40,7 +40,7 @@ GHOSTSCRIPT_CONF_OPTS = \
 	--disable-compile-inits \
 	--disable-cups \
 	--enable-fontconfig \
-	--with-fontpath=$(GHOSTSCRIPT_FONTS_TARGET_DIR) \
+	--with-fontpath=/usr/share/fonts \
 	--enable-freetype \
 	--disable-gtk \
 	--without-jbig2dec \
