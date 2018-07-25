@@ -397,6 +397,33 @@ config BR2_TARGET_UBOOT_ZYNQMP_PMUFW
 
 	  This feature requires U-Boot >= 2018.07.
 
+config BR2_TARGET_UBOOT_ZYNQMP_PSU_INIT_FILE
+	string "Custom psu_init_gpl file"
+	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
+	help
+	  On ZynqMP the booloader is responsible for some basic
+	  initializations, such as enabling peripherals and
+	  configuring pinmuxes. The psu_init_gpl.c file (and,
+	  optionally, psu_init_gpl.h) contains the code for such
+	  initializations.
+
+	  Although U-Boot contains psu_init_gpl.c files for some
+	  boards, each of them describes only one specific
+	  configuration. Users of a different board, or needing a
+	  different configuration, can generate custom files using the
+	  Xilinx development tools.
+
+	  Set this variable to the path to your psu_init_gpl.c file
+	  (e.g. "board/myboard/psu_init_gpl.c"). psu_init_gpl.h, if
+	  needed, should be in the same directory. U-Boot will build
+	  and link the user-provided file instead of the built-in one.
+
+	  Leave empty to use the files provided by U-Boot.
+
+	  This feature requires commit
+	  6da4f67ad09cd8b311d77b2b04e557b7ef65b56c from upstream
+	  U-Boot, available from versions after 2018.07.
+
 endif
 
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC

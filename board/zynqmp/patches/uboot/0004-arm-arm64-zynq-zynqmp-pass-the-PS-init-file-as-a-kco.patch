@@ -1,0 +1,175 @@
+From 4c9d54ab5a41d65000c8d249b6fb1b76056f1812 Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca@lucaceresoli.net>
+Date: Wed, 20 Jun 2018 12:11:50 +0200
+Subject: [PATCH] arm/arm64: zynq/zynqmp: pass the PS init file as a kconfig
+ variable
+
+U-Boot needs to link ps7_init_gpl.c on Zynq or psu_init_gpl.c on
+ZynqMP (PS init for short). The current logic to locate this file for
+both platforms is:
+
+ 1. if a board-specific file exists in
+    board/xilinx/zynq[mp]/$(CONFIG_DEFAULT_DEVICE_TREE)/ps?_init_gpl.c
+    then use it
+ 2. otherwise use board/xilinx/zynq/ps?_init_gpl.c
+
+In the latter case the file does not exist in the U-Boot sources and
+must be copied in the source tree from the outside before starting the
+build. This is typical when it is generated from Xilinx tools while
+developing a custom hardware. However making sure that a
+board-specific file is _not_ found (and used) requires some trickery
+such as removing or overwriting all PS init files (e.g.: the current
+meta-xilinx yocto layer [0]).
+
+This generates a few problems:
+
+ * if the source tree is shared among different out-of-tree builds,
+   they will pollute (and potentially corrupt) each other
+ * the source tree cannot be read-only
+ * any buildsystem must add a command to copy the PS init file binary
+ * overwriting or deleting files in the source tree is ugly as hell
+
+Simplify usage by allowing to pass the path to the desired PS init
+file in kconfig variable XILINX_PS_INIT_FILE. It can be an absolute
+path or relative to $(srctree). If the variable is set, the
+user-specified file will always be used without being copied
+around. If the the variable is left empty, for backward compatibility
+fall back to the old behaviour.
+
+Since the issue is the same for Zynq and ZynqMP, add one kconfig
+variable in a common place and use it for both.
+
+Also use the new kconfig help text to document all the ways to give
+U-Boot the PS init file.
+
+Build-tested with all combinations of:
+ - platform: zynq or zynqmp
+ - PS init file: from XILINX_PS_INIT_FILE (absolute, relative path,
+   non-existing), in-tree board-specific, in board/xilinx/zynq[mp]/
+ - building in-tree, in subdir, in other directory
+
+[0] https://github.com/Xilinx/meta-xilinx/blob/b2f74cc7fe5c4881589d5e440a17cb51fc66a7ab/meta-xilinx-bsp/recipes-bsp/u-boot/u-boot-spl-zynq-init.inc#L9
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+Cc: Albert Aribaud <albert.u.boot@aribaud.net>
+Cc: Michal Simek <michal.simek@xilinx.com>
+Cc: Nathan Rossi <nathan@nathanrossi.com>
+Backported from upstream: https://git.denx.de/?p=u-boot.git;a=commit;h=6da4f67ad09cd8b311d77b2b04e557b7ef65b56c
+---
+ arch/arm/Kconfig             |  1 +
+ board/xilinx/Kconfig         | 41 +++++++++++++++++++++++++++++++++++++++++
+ board/xilinx/zynq/Makefile   | 10 +++++++++-
+ board/xilinx/zynqmp/Makefile | 10 +++++++++-
+ 4 files changed, 60 insertions(+), 2 deletions(-)
+ create mode 100644 board/xilinx/Kconfig
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 22234cde2ab6..e04979d0ef7e 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1293,4 +1293,5 @@ source "board/technologic/ts4600/Kconfig"
+ source "board/vscom/baltos/Kconfig"
+ source "board/woodburn/Kconfig"
+ source "board/work-microwave/work_92105/Kconfig"
++source "board/xilinx/Kconfig"
+ source "board/zipitz2/Kconfig"
+
+ source "arch/arm/Kconfig.debug"
+diff --git a/board/xilinx/Kconfig b/board/xilinx/Kconfig
+new file mode 100644
+index 000000000000..aa3fa061edef
+--- /dev/null
++++ b/board/xilinx/Kconfig
+@@ -0,0 +1,41 @@
++# Copyright (c) 2018, Luca Ceresoli <luca@lucaceresoli.net>
++#
++# SPDX-License-Identifier: GPL-2.0
++
++if ARCH_ZYNQ || ARCH_ZYNQMP
++
++config XILINX_PS_INIT_FILE
++	string "Zynq/ZynqMP PS init file(s) location"
++	help
++	  On Zynq and ZynqMP U-Boot SPL (or U-Boot proper if
++	  ZYNQMP_PSU_INIT_ENABLED is set) is responsible for some
++	  basic initializations, such as enabling peripherals and
++	  configuring pinmuxes. The PS init file (called
++	  psu_init_gpl.c on ZynqMP, ps7_init_gpl.c for Zynq-7000)
++	  contains the code for such initializations.
++
++	  U-Boot contains PS init files for some boards, but each of
++	  them describes only one specific configuration. Users of a
++	  different board, or needing a different configuration, can
++	  generate custom files using the Xilinx development tools.
++
++	  There are three ways to give a PS init file to U-Boot:
++
++	  1. Set this variable to the path, either relative to the
++	     source tree or absolute, where the psu_init_gpl.c or
++	     ps7_init_gpl.c file is located. U-Boot will build this
++	     file.
++
++	  2. If you leave an empty string here, U-Boot will use
++	     board/xilinx/zynq/$(CONFIG_DEFAULT_DEVICE_TREE)/ps7_init_gpl.c
++	     for Zynq-7000, or
++	     board/xilinx/zynqmp/$(CONFIG_DEFAULT_DEVICE_TREE)/psu_init_gpl.c
++	     for ZynqMP.
++
++	  3. If the above file does not exist, U-Boot will use
++	     board/xilinx/zynq/ps7_init_gpl.c for Zynq-7000, or
++	     board/xilinx/zynqmp/psu_init_gpl.c for ZynqMP. This file
++	     is not provided by U-Boot, you have to copy it there
++	     before the build.
++
++endif
+diff --git a/board/xilinx/zynq/Makefile b/board/xilinx/zynq/Makefile
+index 5a76a26720cd..03ad5f0532ee 100644
+--- a/board/xilinx/zynq/Makefile
++++ b/board/xilinx/zynq/Makefile
+@@ -5,10 +5,18 @@
+ 
+ obj-y	:= board.o
+ 
+-hw-platform-y :=$(shell echo $(CONFIG_DEFAULT_DEVICE_TREE))
++ifneq ($(CONFIG_XILINX_PS_INIT_FILE),"")
++PS_INIT_FILE := $(shell cd $(srctree); readlink -f $(CONFIG_XILINX_PS_INIT_FILE))
++init-objs := ps_init_gpl.o
++spl/board/xilinx/zynq/ps_init_gpl.o board/xilinx/zynq/ps_init_gpl.o: $(PS_INIT_FILE)
++	$(CC) $(c_flags) -I $(srctree)/$(src) -c -o $@ $^
++endif
+ 
++ifeq ($(init-objs),)
++hw-platform-y :=$(shell echo $(CONFIG_DEFAULT_DEVICE_TREE))
+ init-objs := $(if $(wildcard $(srctree)/$(src)/$(hw-platform-y)/ps7_init_gpl.c),\
+ 	$(hw-platform-y)/ps7_init_gpl.o)
++endif
+ 
+ ifeq ($(init-objs),)
+ ifneq ($(wildcard $(srctree)/$(src)/ps7_init_gpl.c),)
+diff --git a/board/xilinx/zynqmp/Makefile b/board/xilinx/zynqmp/Makefile
+index 05ccd25dcef3..960b81fc5853 100644
+--- a/board/xilinx/zynqmp/Makefile
++++ b/board/xilinx/zynqmp/Makefile
+@@ -5,10 +5,18 @@
+ 
+ obj-y	:= zynqmp.o
+ 
+-hw-platform-y :=$(shell echo $(CONFIG_DEFAULT_DEVICE_TREE))
++ifneq ($(CONFIG_XILINX_PS_INIT_FILE),"")
++PS_INIT_FILE := $(shell cd $(srctree); readlink -f $(CONFIG_XILINX_PS_INIT_FILE))
++init-objs := ps_init_gpl.o
++spl/board/xilinx/zynqmp/ps_init_gpl.o board/xilinx/zynqmp/ps_init_gpl.o: $(PS_INIT_FILE)
++	$(CC) $(c_flags) -I $(srctree)/$(src) -c -o $@ $^
++endif
+ 
++ifeq ($(init-objs),)
++hw-platform-y :=$(shell echo $(CONFIG_DEFAULT_DEVICE_TREE))
+ init-objs := $(if $(wildcard $(srctree)/$(src)/$(hw-platform-y)/psu_init_gpl.c),\
+ 	$(hw-platform-y)/psu_init_gpl.o)
++endif
+ 
+ ifeq ($(init-objs),)
+ ifneq ($(wildcard $(srctree)/$(src)/psu_init_gpl.c),)
+-- 
+2.7.4
+
