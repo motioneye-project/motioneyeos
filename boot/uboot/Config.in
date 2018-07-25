@@ -368,6 +368,37 @@ config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	  for u-boot-dtb.img file so this U-Boot format is required
 	  to be set.
 
+config BR2_TARGET_UBOOT_ZYNQMP
+	bool "Boot on the Xilinx ZynqMP SoCs"
+	depends on BR2_aarch64
+	help
+	  Enable options specific to the Xilinx ZynqMP family of SoCs.
+
+if BR2_TARGET_UBOOT_ZYNQMP
+
+config BR2_TARGET_UBOOT_ZYNQMP_PMUFW
+	string "PMU firmware location"
+	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
+	help
+	  Location of a PMU firmware binary.
+
+	  If not empty, instructs the U-Boot build process to generate
+	  a boot.bin (to be loaded by the ZynqMP boot ROM) containing
+	  both the U-Boot SPL and the PMU firmware in the
+	  Xilinx-specific boot format.
+
+	  The value can be an absolute or relative path, and will be
+	  used directly from where it is located, or an URI
+	  (e.g. http://...), and it will be downloaded and used from
+	  the download directory.
+
+	  If empty, the generated boot.bin will not contain a PMU
+	  firmware.
+
+	  This feature requires U-Boot >= 2018.07.
+
+endif
+
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
 	bool "CRC image for Altera SoC FPGA (mkpimage)"
 	depends on BR2_arm

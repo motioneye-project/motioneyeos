@@ -1,0 +1,68 @@
+From c7df098a71e05dc81cee818747759e8060b59626 Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca@lucaceresoli.net>
+Date: Mon, 4 Jun 2018 12:21:01 +0200
+Subject: [PATCH] arm64: zynqmp: accept an absolute path for PMUFW_INIT_FILE
+
+The value of PMUFW_INIT_FILE is prefixed with "$(srctree)/", thus
+forcing it to be a relative path inside the U-Boot source tree. Since
+the PMUFW is a binary file generated outside of U-Boot, the PMUFW
+binary must be copied inside the U-Boot source tree before the
+build.
+
+This generates a few problems:
+
+ * if the source tree is shared among different out-of-tree builds,
+   they will pollute (and potentially corrupt) each other
+ * the source tree cannot be read-only
+ * any buildsystem must add a command to copy the PMUFW binary
+ * putting an externally-generated binary in the source tree is ugly
+   as hell
+
+Avoid these problems by accepting an absolute path for
+PMUFW_INIT_FILE. This would be as simple as removing the "$(srctree)/"
+prefix, but in order to keep backward compatibility we rather use the
+shell and readlink to get the absolute path even when starting from a
+relative path.
+
+Since 'readlink -f' produces an empty string if the file does not
+exist, we also add a check to ensure the file configured in
+PMUFW_INIT_FILE exists. Otherwise the build would exit successfully,
+but produce a boot.bin without PMUFW as if PMUFW_INIT_FILE were empty.
+
+Tested in the 12 possible combinations of:
+ - PMUFW_INIT_FILE empty, relative, absolute, non-existing
+ - building in-tree, in subdir, in other directory
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+Cc: Michal Simek <michal.simek@xilinx.com>
+Cc: Simon Glass <sjg@chromium.org>
+Cc: Emmanuel Vadot <manu@bidouilliste.com>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Backported from upstream: https://git.denx.de/?p=u-boot.git;a=commit;h=c7df098a71e05dc81cee818747759e8060b59626
+---
+ scripts/Makefile.spl | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/scripts/Makefile.spl b/scripts/Makefile.spl
+index ef018b5b4056..252f13826d4c 100644
+--- a/scripts/Makefile.spl
++++ b/scripts/Makefile.spl
+@@ -167,8 +167,14 @@ ifdef CONFIG_ARCH_ZYNQ
+ MKIMAGEFLAGS_boot.bin = -T zynqimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE)
+ endif
+ ifdef CONFIG_ARCH_ZYNQMP
++ifneq ($(CONFIG_PMUFW_INIT_FILE),"")
++spl/boot.bin: zynqmp-check-pmufw
++zynqmp-check-pmufw: FORCE
++	( cd $(srctree) && test -r $(CONFIG_PMUFW_INIT_FILE) ) \
++		|| ( echo "Cannot read $(CONFIG_PMUFW_INIT_FILE)" && false )
++endif
+ MKIMAGEFLAGS_boot.bin = -T zynqmpimage -R $(srctree)/$(CONFIG_BOOT_INIT_FILE) \
+-	-n $(srctree)/$(CONFIG_PMUFW_INIT_FILE)
++	-n "$(shell cd $(srctree); readlink -f $(CONFIG_PMUFW_INIT_FILE))"
+ endif
+ 
+ spl/boot.bin: $(obj)/u-boot-spl.bin FORCE
+-- 
+2.7.4
+
