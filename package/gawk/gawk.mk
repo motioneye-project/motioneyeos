@@ -34,7 +34,7 @@ endif
 HOST_GAWK_CONF_OPTS = --without-readline --without-mpfr
 
 define GAWK_CREATE_SYMLINK
-	ln -sf /usr/bin/gawk $(TARGET_DIR)/usr/bin/awk
+	ln -sf gawk $(TARGET_DIR)/usr/bin/awk
 endef
 
 GAWK_POST_INSTALL_TARGET_HOOKS += GAWK_CREATE_SYMLINK
