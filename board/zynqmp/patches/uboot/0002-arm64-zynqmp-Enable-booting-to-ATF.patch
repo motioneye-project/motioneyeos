@@ -1,0 +1,114 @@
+From 5e3cac50cc981e01d9072241035a8d4162560c71 Mon Sep 17 00:00:00 2001
+From: Luca Ceresoli <luca@lucaceresoli.net>
+Date: Mon, 12 Mar 2018 17:18:38 +0100
+Subject: [PATCH] arm64: zynqmp: Enable booting to ATF
+
+U-Boot is now able to boot to ARM Trusted Firmware (ATF). The boot
+flow is SPL(EL3) loads ATF and full u-boot and jump to ATF(EL3) which
+pass control to full u-boot(EL2). This has been tested on zcu106, so
+enable it in this defconfig.
+
+To generate an image that triggers this booting flow, you need to pass
+'-O arm-trusted-firmware' to mkimage.
+
+Signed-off-by: Luca Ceresoli <luca@lucaceresoli.net>
+Signed-off-by: Michal Simek <michal.simek@xilinx.com>
+Backported from upstream: http://git.denx.de/?p=u-boot.git;a=commit;h=5e3cac50cc981e01d9072241035a8d4162560c71
+---
+
+ configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig | 1 +
+ configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig | 1 +
+ configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig | 1 +
+ configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig | 1 +
+ configs/xilinx_zynqmp_zcu102_rev1_0_defconfig    | 1 +
+ configs/xilinx_zynqmp_zcu102_revA_defconfig      | 1 +
+ configs/xilinx_zynqmp_zcu102_revB_defconfig      | 1 +
+ 7 files changed, 7 insertions(+)
+
+diff --git a/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig b/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
+index c5bfa2b12638..488c72258b0e 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm015_dc1_defconfig
+@@ -19,6 +19,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_FASTBOOT=y
+ CONFIG_FASTBOOT_FLASH=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig b/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
+index f86dce403a42..5d501eec0edd 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm016_dc2_defconfig
+@@ -20,6 +20,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_FASTBOOT=y
+ CONFIG_FASTBOOT_FLASH=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig b/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
+index 6e947cf56827..6f7eaebd7676 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm018_dc4_defconfig
+@@ -16,6 +16,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_CMD_MEMTEST=y
+ CONFIG_SYS_ALT_MEMTEST=y
+diff --git a/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig b/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
+index 1c934858c61c..7a3806cba4b5 100644
+--- a/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
++++ b/configs/xilinx_zynqmp_zc1751_xm019_dc5_defconfig
+@@ -17,6 +17,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_CMD_MEMTEST=y
+ CONFIG_SYS_ALT_MEMTEST=y
+diff --git a/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig b/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
+index e13c7c56f310..e4408f182ca0 100644
+--- a/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_rev1_0_defconfig
+@@ -19,6 +19,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_FASTBOOT=y
+ CONFIG_FASTBOOT_FLASH=y
+diff --git a/configs/xilinx_zynqmp_zcu102_revA_defconfig b/configs/xilinx_zynqmp_zcu102_revA_defconfig
+index 5b2cd495ee85..b52f6789fd4b 100644
+--- a/configs/xilinx_zynqmp_zcu102_revA_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_revA_defconfig
+@@ -19,6 +19,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_FASTBOOT=y
+ CONFIG_FASTBOOT_FLASH=y
+diff --git a/configs/xilinx_zynqmp_zcu102_revB_defconfig b/configs/xilinx_zynqmp_zcu102_revB_defconfig
+index e6530fbfe7ff..80592554f682 100644
+--- a/configs/xilinx_zynqmp_zcu102_revB_defconfig
++++ b/configs/xilinx_zynqmp_zcu102_revB_defconfig
+@@ -19,6 +19,7 @@ CONFIG_BOARD_EARLY_INIT_R=y
+ CONFIG_SPL_OS_BOOT=y
+ CONFIG_SPL_RAM_SUPPORT=y
+ CONFIG_SPL_RAM_DEVICE=y
++CONFIG_SPL_ATF=y
+ CONFIG_SYS_PROMPT="ZynqMP> "
+ CONFIG_FASTBOOT=y
+ CONFIG_FASTBOOT_FLASH=y
+-- 
+2.7.4
+
