@@ -1,6 +1,7 @@
 config BR2_PACKAGE_UDISKS
 	bool "udisks"
 	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS # lvm2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus-glib -> glib2
 	depends on BR2_TOOLCHAIN_USES_GLIBC # polkit, lvm2
 	depends on BR2_USE_MMU # lvm2
@@ -38,9 +39,11 @@ endif
 
 comment "udisks needs udev /dev management"
 	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on !BR2_PACKAGE_HAS_UDEV
 
 comment "udisks needs a glibc toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
+	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_STATIC_LIBS || !BR2_TOOLCHAIN_USES_GLIBC

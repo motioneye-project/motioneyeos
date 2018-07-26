@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LVM2_VERSION = 2.02.173
+LVM2_VERSION = 2.02.180
 LVM2_SOURCE = LVM2.$(LVM2_VERSION).tgz
-LVM2_SITE = ftp://sources.redhat.com/pub/lvm2/releases
+LVM2_SITE = ftp://sources.redhat.com/pub/lvm2
 LVM2_INSTALL_STAGING = YES
 LVM2_LICENSE = GPL-2.0, LGPL-2.1
 LVM2_LICENSE_FILES = COPYING COPYING.LIB
@@ -22,7 +22,7 @@ LVM2_CONF_OPTS += \
 	--disable-nls \
 	--disable-symvers
 
-LVM2_DEPENDENCIES += host-pkgconf
+LVM2_DEPENDENCIES += host-pkgconf libaio
 
 # LVM2 uses autoconf, but not automake, and the build system does not
 # take into account the toolchain passed at configure time.
