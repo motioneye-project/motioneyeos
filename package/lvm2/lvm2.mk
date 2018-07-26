@@ -19,7 +19,8 @@ LVM2_CONF_OPTS += \
 	--enable-pkgconfig \
 	--enable-cmdlib \
 	--enable-dmeventd \
-	--disable-nls
+	--disable-nls \
+	--disable-symvers
 
 LVM2_DEPENDENCIES += host-pkgconf
 
