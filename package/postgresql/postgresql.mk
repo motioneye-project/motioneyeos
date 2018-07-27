@@ -70,6 +70,14 @@ else
 POSTGRESQL_CONF_OPTS += --without-ldap
 endif
 
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+POSTGRESQL_DEPENDENCIES += libxml2
+POSTGRESQL_CONF_OPTS += --with-libxml
+POSTGRESQL_CONF_ENV += XML2_CONFIG=$(STAGING_DIR)/usr/bin/xml2-config
+else
+POSTGRESQL_CONF_OPTS += --without-libxml
+endif
+
 define POSTGRESQL_USERS
 	postgres -1 postgres -1 * /var/lib/pgsql /bin/sh - PostgreSQL Server
 endef
