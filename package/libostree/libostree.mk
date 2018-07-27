@@ -10,9 +10,11 @@ LIBOSTREE_SITE = https://github.com/ostreedev/ostree/releases/download/v$(LIBOST
 
 LIBOSTREE_LICENSE = LGPL-2.0+
 LIBOSTREE_LICENSE_FILES = COPYING
-LIBOSTREE_DEPENDENCIES = e2fsprogs host-bison host-pkgconf libfuse libglib2 libgpgme xz
+LIBOSTREE_DEPENDENCIES = e2fsprogs host-bison host-pkgconf libfuse libglib2 libgpg-error libgpgme xz
 LIBOSTREE_INSTALL_STAGING = YES
 
+LIBOSTREE_CONF_ENV = \
+	GPG_ERROR_CONFIG=$(STAGING_DIR)/usr/bin/gpg-error-config
 LIBOSTREE_CONF_OPTS += \
 	--with-gpgme-prefix=$(STAGING_DIR)/usr \
 	--disable-gtk-doc \
