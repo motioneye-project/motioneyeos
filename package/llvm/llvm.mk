@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LLVM_VERSION = 6.0.0
+LLVM_VERSION = 6.0.1
 LLVM_SITE = http://llvm.org/releases/$(LLVM_VERSION)
 LLVM_SOURCE = llvm-$(LLVM_VERSION).src.tar.xz
 LLVM_LICENSE = NCSA
