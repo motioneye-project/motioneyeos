@@ -1,0 +1,65 @@
+From bf08643583520b763150af9ed20166b7fe272fd5 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 29 Jul 2018 20:55:23 +0200
+Subject: [PATCH] Check for -fstack-protector
+
+Not all toolchains provide support for -fstack-protector. This patch
+provides a configure check to avoid build errors like
+
+/home/buildroot/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/x86_64-buildroot-linux-uclibc/6.4.0/../../../../x86_64-buildroot-linux-uclibc/bin/ld: cannot find -lssp_nonshared
+/home/buildroot/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/x86_64-buildroot-linux-uclibc/6.4.0/../../../../x86_64-buildroot-linux-uclibc/bin/ld: cannot find -lssp
+
+Patch sent upstream as PR 408.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac    | 17 +++++++++++++++++
+ src/Makefile.am |  5 ++++-
+ 2 files changed, 21 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index c76060c7..5471aee7 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -86,6 +86,23 @@ AC_SEARCH_LIBS([dlopen], [dl], [], [
+   AC_MSG_ERROR([unable to find the dlopen() function])
+ ])
+ 
++
++# Check for -fstack-protector
++ssp_cc=yes
++if test "X$CC-cc" != "X"; then
++    AC_MSG_CHECKING([whether ${CC-cc} accepts -fstack-protector])
++    ssp_old_cflags="$CFLAGS"
++    CFLAGS="$CFLAGS -fstack-protector"
++    AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[alloca(100);]])], [], [ssp_cc=no])
++    AC_MSG_RESULT([$ssp_cc])
++    if test "X$ssp_cc" = "Xno"; then
++        CFLAGS="$ssp_old_cflags"
++    else
++        AC_DEFINE([ENABLE_SSP_CC], 1, [Define if SSP C support is enabled.])
++    fi
++fi
++AM_CONDITIONAL(USE_SSP, test "$ssp_cc" = "yes")
++
+ dnl Check for recent enough DRM
+ LIBDRM_VERSION=libdrm_version
+ PKG_CHECK_MODULES([DRM], [libdrm >= $LIBDRM_VERSION libdrm_intel])
+diff --git a/src/Makefile.am b/src/Makefile.am
+index c26293dd..5c52658a 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -35,9 +35,12 @@ AM_CPPFLAGS = \
+ driver_cflags = \
+ 	-Wall			\
+ 	-fvisibility=hidden	\
+-	-fstack-protector	\
+ 	$(NULL)
+ 
++if USE_SSP
++driver_cflags += -fstack-protector
++endif
++
+ driver_ldflags = \
+ 	-avoid-version		\
+ 	-no-undefined		\
