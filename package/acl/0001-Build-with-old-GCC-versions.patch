@@ -1,0 +1,32 @@
+From a42519dceef0493ece45538375ae1791313f16d3 Mon Sep 17 00:00:00 2001
+From: Hollis Blanchard <hollis_blanchard@mentor.com>
+Date: Mon, 30 Jul 2018 14:29:46 -0700
+Subject: [PATCH] Remove pragmas inside functions
+
+GCC 4.4.7, as found in RHEL6, reports:
+    libacl/acl_from_text.c:307: error: #pragma GCC diagnostic not allowed inside functions
+
+Signed-off-by: Hollis Blanchard <hollis_blanchard@mentor.com>
+---
+ libacl/acl_from_text.c | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/libacl/acl_from_text.c b/libacl/acl_from_text.c
+index 09790c9..fb6bc07 100644
+--- a/libacl/acl_from_text.c
++++ b/libacl/acl_from_text.c
+@@ -304,11 +304,8 @@ parse_acl_entry(const char **text_p, acl_t *acl_p)
+ create_entry:
+ 	if (acl_create_entry(acl_p, &entry_d) != 0)
+ 		return -1;
+-#pragma GCC diagnostic push
+-#pragma GCC diagnostic ignored "-Waddress"
+ 	if (acl_copy_entry(entry_d, int2ext(&entry_obj)) != 0)
+ 		return -1;
+-#pragma GCC diagnostic pop
+ 	return 0;
+ 
+ fail:
+-- 
+2.13.0
+
