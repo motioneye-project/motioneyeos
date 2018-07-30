@@ -1,4 +1,3 @@
 # Locally calculated
-sha256 8bb312b9d9fd17336dc1f8b3ac82f021ca50e2034afc866098866176d985adc6  opencv3-3.3.0.tar.gz
-# License files, locally calculated
-sha256 e974db937899a2505f0eb43ece9d2f2eb36e8580ad88785e3ffac0d697ebaf5d  LICENSE
+sha256 81dbd5e7e9f8a4c936b94629bf4765745942a1d634ae38ec08bc57b73b28ffc5  opencv3-3.4.2.tar.gz
+sha256 fea311907cb6271b05ff5843b238e0f2edb6f204a3432975211030d20704b321  LICENSE
