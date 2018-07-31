@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/urllib3/json, sha256 locally computed
-md5	ef6c72c79b9c6bcd68c204f9b92abc86  urllib3-1.21.1.tar.gz
-sha256	b14486978518ca0901a76ba973d7821047409d7f726f22156b24e83fd71382a5  urllib3-1.21.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/urllib3/json
+md5	1ad43e4b5ab7a0794c89dc057e1d7179  urllib3-1.23.tar.gz
+sha256	a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf  urllib3-1.23.tar.gz
+# Locally computed sha256 checksums
+sha256	11db569430ca5ad793f1399297b8df5041a22137abaf90642ea71da21d59121c  LICENSE.txt
