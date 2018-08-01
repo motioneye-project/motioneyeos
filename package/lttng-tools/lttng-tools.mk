@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LTTNG_TOOLS_VERSION = 2.10.4
-LTTNG_TOOLS_SITE = http://lttng.org/files/lttng-tools
+LTTNG_TOOLS_VERSION = 2.10.5
+LTTNG_TOOLS_SITE = https://lttng.org/files/lttng-tools
 LTTNG_TOOLS_SOURCE = lttng-tools-$(LTTNG_TOOLS_VERSION).tar.bz2
 LTTNG_TOOLS_INSTALL_STAGING = YES
 LTTNG_TOOLS_LICENSE = GPL-2.0+, LGPL-2.1+ (include/lttng/*, src/lib/lttng-ctl/*)
