@@ -90,5 +90,5 @@ config BR2_GDB_VERSION
 	default "arc-2018.03-gdb" if BR2_arc
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
 	default "8.0.1"    if BR2_GDB_VERSION_8_0 || !BR2_PACKAGE_HOST_GDB
-	default "8.1"      if BR2_GDB_VERSION_8_1
+	default "8.1.1"    if BR2_GDB_VERSION_8_1
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
