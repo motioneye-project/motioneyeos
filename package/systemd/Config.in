@@ -216,6 +216,7 @@ config BR2_PACKAGE_SYSTEMD_NETWORKD
 
 config BR2_PACKAGE_SYSTEMD_POLKIT
 	bool "enable polkit support"
+	depends on BR2_TOOLCHAIN_USES_GLIBC # polkit
 	select BR2_PACKAGE_POLKIT
 	help
 	  If enabled, systemd is built with polkit support and policy
@@ -224,6 +225,9 @@ config BR2_PACKAGE_SYSTEMD_POLKIT
 	  systemd's many privileged processes.
 
 	  http://wiki.freedesktop.org/www/Software/polkit/
+
+comment "polkit support needs a glibc toolchain"
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_PACKAGE_SYSTEMD_QUOTACHECK
 	bool "enable quotacheck tools"
