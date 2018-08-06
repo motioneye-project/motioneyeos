@@ -510,7 +510,7 @@ int main(int argc, char **argv)
 
 		linenum++;
 
-		if (1 == sscanf(line, "|xattr %254s", xattr)) {
+		if (1 == sscanf(line, " |xattr %254s", xattr)) {
 #ifdef EXTENDED_ATTRIBUTES
 			if (!full_name)
 				bb_error_msg_and_die("line %d should be after a file\n", linenum);
