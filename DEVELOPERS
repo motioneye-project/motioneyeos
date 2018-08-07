@@ -1557,6 +1557,7 @@ F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
 F:	package/python-request-id/
+F:	package/python-semver/
 F:	package/python-texttable/
 F:	package/python-validators/
 F:	package/python-webob/
