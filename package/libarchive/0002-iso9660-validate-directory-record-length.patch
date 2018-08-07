@@ -1,0 +1,78 @@
+From f9569c086ff29259c73790db9cbf39fe8fb9d862 Mon Sep 17 00:00:00 2001
+From: John Starks <jostarks@microsoft.com>
+Date: Wed, 25 Jul 2018 12:16:34 -0700
+Subject: [PATCH] iso9660: validate directory record length
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit f9569c086ff
+
+ .../archive_read_support_format_iso9660.c       | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/libarchive/archive_read_support_format_iso9660.c b/libarchive/archive_read_support_format_iso9660.c
+index f01d37bf682e..089bb7236cd1 100644
+--- a/libarchive/archive_read_support_format_iso9660.c
++++ b/libarchive/archive_read_support_format_iso9660.c
+@@ -409,7 +409,8 @@ static int	next_entry_seek(struct archive_read *, struct iso9660 *,
+ 		    struct file_info **);
+ static struct file_info *
+ 		parse_file_info(struct archive_read *a,
+-		    struct file_info *parent, const unsigned char *isodirrec);
++		    struct file_info *parent, const unsigned char *isodirrec,
++		    size_t reclen);
+ static int	parse_rockridge(struct archive_read *a,
+ 		    struct file_info *file, const unsigned char *start,
+ 		    const unsigned char *end);
+@@ -1022,7 +1023,7 @@ read_children(struct archive_read *a, struct file_info *parent)
+ 			if (*(p + DR_name_len_offset) == 1
+ 			    && *(p + DR_name_offset) == '\001')
+ 				continue;
+-			child = parse_file_info(a, parent, p);
++			child = parse_file_info(a, parent, p, b - p);
+ 			if (child == NULL) {
+ 				__archive_read_consume(a, skip_size);
+ 				return (ARCHIVE_FATAL);
+@@ -1112,7 +1113,7 @@ choose_volume(struct archive_read *a, struct iso9660 *iso9660)
+ 	 */
+ 	seenJoliet = iso9660->seenJoliet;/* Save flag. */
+ 	iso9660->seenJoliet = 0;
+-	file = parse_file_info(a, NULL, block);
++	file = parse_file_info(a, NULL, block, vd->size);
+ 	if (file == NULL)
+ 		return (ARCHIVE_FATAL);
+ 	iso9660->seenJoliet = seenJoliet;
+@@ -1144,7 +1145,7 @@ choose_volume(struct archive_read *a, struct iso9660 *iso9660)
+ 			return (ARCHIVE_FATAL);
+ 		}
+ 		iso9660->seenJoliet = 0;
+-		file = parse_file_info(a, NULL, block);
++		file = parse_file_info(a, NULL, block, vd->size);
+ 		if (file == NULL)
+ 			return (ARCHIVE_FATAL);
+ 		iso9660->seenJoliet = seenJoliet;
+@@ -1749,7 +1750,7 @@ archive_read_format_iso9660_cleanup(struct archive_read *a)
+  */
+ static struct file_info *
+ parse_file_info(struct archive_read *a, struct file_info *parent,
+-    const unsigned char *isodirrec)
++    const unsigned char *isodirrec, size_t reclen)
+ {
+ 	struct iso9660 *iso9660;
+ 	struct file_info *file, *filep;
+@@ -1763,7 +1764,11 @@ parse_file_info(struct archive_read *a, struct file_info *parent,
+ 
+ 	iso9660 = (struct iso9660 *)(a->format->data);
+ 
+-	dr_len = (size_t)isodirrec[DR_length_offset];
++	if (reclen == 0 || reclen < (dr_len = (size_t)isodirrec[DR_length_offset])) {
++		archive_set_error(&a->archive, ARCHIVE_ERRNO_MISC,
++			"Invalid directory record length");
++		return (NULL);
++	}
+ 	name_len = (size_t)isodirrec[DR_name_len_offset];
+ 	location = archive_le32dec(isodirrec + DR_extent_offset);
+ 	fsize = toi(isodirrec + DR_size_offset, DR_size_size);
+-- 
+2.18.0
+
