@@ -1,3 +1,3 @@
-# From https://busybox.net/downloads/busybox-1.29.1.tar.bz2.sha256
-sha256 fc250730ea16d28839bfecda3c431683fa6bd4273ffca6b632cbeb3556c914c3  busybox-1.29.1.tar.bz2
+# From https://busybox.net/downloads/busybox-1.29.2.tar.bz2.sha256
+sha256 67d2fa6e147a45875fe972de62d907ef866fe784c495c363bf34756c444a5d61  busybox-1.29.2.tar.bz2
 sha256 bbfc9843646d483c334664f651c208b9839626891d8f17604db2146962f43548  LICENSE
