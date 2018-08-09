@@ -154,6 +154,7 @@ HOST_NCURSES_CONF_OPTS = \
 	--without-cxx-binding \
 	--without-ada \
 	--with-default-terminfo-dir=/usr/share/terminfo \
+	--disable-db-install \
 	--without-normal
 
 $(eval $(autotools-package))
