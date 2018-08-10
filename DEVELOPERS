@@ -491,6 +491,7 @@ F:	package/perl-device-serialport/
 F:	package/perl-file-slurp/
 F:	package/perl-io-interface/
 F:	package/perl-json-maybexs/
+F:	package/perl-module-runtime/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
