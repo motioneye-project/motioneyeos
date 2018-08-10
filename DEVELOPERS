@@ -493,6 +493,7 @@ F:	package/perl-io-interface/
 F:	package/perl-json-maybexs/
 F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
+F:	package/perl-params-util/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
