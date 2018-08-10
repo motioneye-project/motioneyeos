@@ -495,6 +495,7 @@ F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
 F:	package/perl-params-util/
 F:	package/perl-sub-install/
+F:	package/perl-sys-meminfo/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
