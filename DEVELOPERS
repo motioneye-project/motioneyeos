@@ -488,6 +488,7 @@ F:	package/perl-data-uuid/
 F:	package/perl-date-manip/
 F:	package/perl-dbi/
 F:	package/perl-device-serialport/
+F:	package/perl-file-slurp/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
