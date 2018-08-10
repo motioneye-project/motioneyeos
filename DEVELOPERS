@@ -480,6 +480,9 @@ F:	package/python-rtslib-fb/
 F:	package/python-urwid/
 F:	package/targetcli-fb/
 
+N:	Christopher McCrory <chrismcc@gmail.com>
+F:	package/perl-appconfig/
+
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
 F:	package/checkpolicy/
