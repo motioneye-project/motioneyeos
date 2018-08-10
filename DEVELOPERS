@@ -471,6 +471,7 @@ F:	package/docker-proxy/
 F:	package/mosh/
 F:	package/rtl8821au/
 F:	package/runc/
+F:	package/tini/
 
 N:	Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 F:	package/drbd-utils/
