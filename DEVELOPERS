@@ -482,6 +482,7 @@ F:	package/targetcli-fb/
 
 N:	Christopher McCrory <chrismcc@gmail.com>
 F:	package/perl-appconfig/
+F:	package/perl-astro-suntime/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
