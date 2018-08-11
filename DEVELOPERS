@@ -484,6 +484,7 @@ N:	Christopher McCrory <chrismcc@gmail.com>
 F:	package/perl-appconfig/
 F:	package/perl-astro-suntime/
 F:	package/perl-class-std/
+F:	package/perl-class-std-fast/
 F:	package/perl-data-uuid/
 F:	package/perl-date-manip/
 F:	package/perl-dbi/
