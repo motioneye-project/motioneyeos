@@ -38,7 +38,6 @@ class Builder(object):
         if "http_proxy" in os.environ:
             self.logfile.write("Using system proxy: " +
                                os.environ["http_proxy"] + "\n")
-            self.logfile.flush()
             env['http_proxy'] = os.environ["http_proxy"]
             env['https_proxy'] = os.environ["http_proxy"]
         cmd = ["make", "-C", self.builddir]
