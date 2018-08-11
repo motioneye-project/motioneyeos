@@ -13,8 +13,10 @@ IPERF3_LICENSE_FILES = LICENSE
 IPERF3_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-IPERF3_CONF_OPTS += --with-openssl=$(STAGING_DIR)/usr
-IPERF3_DEPENDENCIES += openssl
+# We intentionally don't pass --with-openssl, otherwise pkg-config is
+# not used, and indirect libraries are not picked up when static
+# linking.
+IPERF3_DEPENDENCIES += host-pkgconf openssl
 else
 IPERF3_CONF_OPTS += --without-openssl
 endif
