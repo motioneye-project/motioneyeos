@@ -6,6 +6,7 @@ import argparse
 import inspect
 import os
 import re
+import six
 import sys
 
 import checkpackagelib.lib_config
@@ -127,10 +128,15 @@ def check_file_using_lib(fname):
 
     for cf in objects:
         nwarnings += print_warnings(cf.before())
-    for lineno, text in enumerate(open(fname, "r").readlines()):
+    if six.PY3:
+        f = open(fname, "r", errors="surrogateescape")
+    else:
+        f = open(fname, "r")
+    for lineno, text in enumerate(f.readlines()):
         nlines += 1
         for cf in objects:
             nwarnings += print_warnings(cf.check_line(lineno + 1, text))
+    f.close()
     for cf in objects:
         nwarnings += print_warnings(cf.after())
 
