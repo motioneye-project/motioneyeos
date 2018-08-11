@@ -492,6 +492,7 @@ F:	package/perl-dbi/
 F:	package/perl-device-serialport/
 F:	package/perl-file-slurp/
 F:	package/perl-io-interface/
+F:	package/perl-io-socket-multicast/
 F:	package/perl-json-maybexs/
 F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
