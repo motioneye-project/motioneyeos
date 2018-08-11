@@ -495,6 +495,7 @@ F:	package/perl-io-interface/
 F:	package/perl-io-socket-multicast/
 F:	package/perl-json-maybexs/
 F:	package/perl-mime-tools/
+F:	package/perl-module-implementation/
 F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
 F:	package/perl-params-util/
