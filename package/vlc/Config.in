@@ -1,8 +1,3 @@
-if BR2_PACKAGE_VLC
-comment "vlc is known not to work in all configurations"
-comment "If you can fix it, please inform buildroot@buildroot.org"
-endif
-
 config BR2_PACKAGE_VLC
 	bool "vlc"
 	depends on BR2_USE_MMU # fork()
