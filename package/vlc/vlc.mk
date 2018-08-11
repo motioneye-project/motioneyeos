@@ -381,9 +381,9 @@ else
 VLC_CONF_OPTS += --disable-sdl-image
 endif
 
-ifeq ($(BR2_PACKAGE_SPEEX),y)
+ifeq ($(BR2_PACKAGE_SPEEX)$(BR2_PACKAGE_SPEEXDSP),yy)
 VLC_CONF_OPTS += --enable-speex
-VLC_DEPENDENCIES += speex
+VLC_DEPENDENCIES += speex speexdsp
 else
 VLC_CONF_OPTS += --disable-speex
 endif
