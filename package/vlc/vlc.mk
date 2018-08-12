@@ -362,6 +362,13 @@ else
 VLC_CONF_OPTS += --disable-ncurses
 endif
 
+ifeq ($(BR2_PACKAGE_PULSEAUDIO),y)
+VLC_CONF_OPTS += --enable-pulse
+VLC_DEPENDENCIES += pulseaudio
+else
+VLC_CONF_OPTS += --disable-pulse
+endif
+
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 VLC_CONF_OPTS += --enable-qt
 VLC_CONF_ENV += \
