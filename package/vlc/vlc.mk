@@ -216,6 +216,10 @@ else
 VLC_CONF_OPTS += --disable-libgcrypt
 endif
 
+ifeq ($(BR2_PACKAGE_LIBIDN),y)
+VLC_DEPENDENCIES += libidn
+endif
+
 ifeq ($(BR2_PACKAGE_LIBMAD),y)
 VLC_CONF_OPTS += --enable-mad
 VLC_DEPENDENCIES += libmad
