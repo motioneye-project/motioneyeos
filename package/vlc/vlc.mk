@@ -74,7 +74,6 @@ VLC_CONF_OPTS += \
 	--disable-schroedinger \
 	--disable-shine \
 	--disable-shout \
-	--disable-skins2 \
 	--disable-sndio \
 	--disable-spatialaudio \
 	--disable-srt \
@@ -558,6 +557,13 @@ VLC_CONF_OPTS += --with-x
 VLC_DEPENDENCIES += xlib_libX11
 else
 VLC_CONF_OPTS += --without-x
+endif
+
+ifeq ($(BR2_PACKAGE_XLIB_LIBXEXT)$(BR2_PACKAGE_XLIB_LIBXINERAMA)$(BR2_PACKAGE_XLIB_LIBXPM),yyy)
+VLC_CONF_OPTS += --enable-skins2
+VLC_DEPENDENCIES += xlib_libXext xlib_libXinerama xlib_libXpm
+else
+VLC_CONF_OPTS += --disable-skins2
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
