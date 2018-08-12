@@ -74,7 +74,6 @@ VLC_CONF_OPTS += \
 	--disable-notify \
 	--disable-projectm \
 	--disable-schroedinger \
-	--disable-soxr \
 	--disable-shine \
 	--disable-shout \
 	--disable-skins2 \
@@ -342,6 +341,13 @@ VLC_CONF_OPTS += --enable-secret
 VLC_DEPENDENCIES += libsecret
 else
 VLC_CONF_OPTS += --disable-secret
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSOXR),y)
+VLC_CONF_OPTS += --enable-soxr
+VLC_DEPENDENCIES += libsoxr
+else
+VLC_CONF_OPTS += --disable-soxr
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
