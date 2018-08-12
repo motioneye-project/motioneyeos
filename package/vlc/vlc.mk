@@ -68,7 +68,6 @@ VLC_CONF_OPTS += \
 	--disable-mfx \
 	--disable-microdns \
 	--disable-mmal \
-	--disable-mpg123 \
 	--disable-mtp \
 	--disable-notify \
 	--disable-projectm \
@@ -451,6 +450,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_MINIZIP),y)
 VLC_DEPENDENCIES += minizip
+endif
+
+ifeq ($(BR2_PACKAGE_MPG123),y)
+VLC_CONF_OPTS += --enable-mpg123
+VLC_DEPENDENCIES += mpg123
+else
+VLC_CONF_OPTS += --disable-mpg123
 endif
 
 ifeq ($(BR2_PACKAGE_MUSEPACK),y)
