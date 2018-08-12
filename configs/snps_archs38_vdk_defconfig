@@ -5,7 +5,7 @@ BR2_archs38=y
 # System
 BR2_TARGET_GENERIC_HOSTNAME="archs38_vdk"
 BR2_TARGET_GENERIC_ISSUE="Welcome to the HS38 VDK Software Development Platform"
-BR2_ROOTFS_OVERLAY="board/synopsys/axs10x/fs-overlay"
+BR2_ROOTFS_POST_BUILD_SCRIPT="board/synopsys/axs10x/post-build.sh"
 BR2_TARGET_ROOTFS_EXT2=y
 
 # Linux headers same as kernel, a 4.16 series
