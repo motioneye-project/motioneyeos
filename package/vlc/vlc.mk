@@ -409,6 +409,13 @@ else
 VLC_CONF_OPTS += --disable-udev
 endif
 
+ifeq ($(BR2_PACKAGE_X264),y)
+VLC_CONF_OPTS += --enable-x264
+VLC_DEPENDENCIES += x264
+else
+VLC_CONF_OPTS += --disable-x264
+endif
+
 ifeq ($(BR2_PACKAGE_XCB_UTIL_KEYSYMS),y)
 VLC_CONF_OPTS += --enable-xcb
 VLC_DEPENDENCIES += xcb-util-keysyms
