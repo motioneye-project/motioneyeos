@@ -56,7 +56,6 @@ VLC_CONF_OPTS += \
 	--disable-shout \
 	--disable-twolame \
 	--disable-vdpau \
-	--disable-vpx \
 	--disable-vsxu \
 	--disable-x262 \
 	--disable-zvbi \
@@ -306,6 +305,13 @@ VLC_CONF_OPTS += --enable-v4l2
 VLC_DEPENDENCIES += libv4l
 else
 VLC_CONF_OPTS += --disable-v4l2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVPX),y)
+VLC_CONF_OPTS += --enable-vpx
+VLC_DEPENDENCIES += libvpx
+else
+VLC_CONF_OPTS += --disable-vpx
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXCB),y)
