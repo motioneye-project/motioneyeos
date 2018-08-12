@@ -34,33 +34,33 @@ endef
 VLC_POST_PATCH_HOOKS += VLC_OVERRIDE_PKG_M4
 
 VLC_CONF_OPTS += \
-	--disable-gles1 \
 	--disable-a52 \
-	--disable-shout \
-	--disable-twolame \
-	--disable-dca \
-	--disable-schroedinger \
-	--disable-fluidsynth \
-	--disable-zvbi \
-	--disable-kate \
+	--disable-addonmanagermodules \
 	--disable-caca \
-	--disable-jack \
-	--disable-samplerate \
 	--disable-chromaprint \
+	--disable-dca \
+	--disable-dvdnav \
+	--disable-fluidsynth \
+	--disable-gles1 \
 	--disable-goom \
-	--disable-projectm \
-	--disable-vsxu \
-	--disable-mtp \
+	--disable-jack \
+	--disable-jpeg \
+	--disable-kate \
+	--disable-mfx \
 	--disable-mmal-codec \
 	--disable-mmal-vout \
-	--disable-dvdnav \
+	--disable-mtp \
+	--disable-projectm \
+	--disable-samplerate \
+	--disable-schroedinger \
+	--disable-shout \
+	--disable-twolame \
+	--disable-vdpau \
 	--disable-vpx \
-	--disable-jpeg \
+	--disable-vsxu \
 	--disable-x262 \
 	--disable-x265 \
-	--disable-mfx \
-	--disable-vdpau \
-	--disable-addonmanagermodules \
+	--disable-zvbi \
 	--enable-run-as-root
 
 # Uses __atomic_fetch_add_4
