@@ -387,6 +387,13 @@ else
 VLC_CONF_OPTS += --disable-sdl-image
 endif
 
+ifeq ($(BR2_PACKAGE_SAMBA4),y)
+VLC_CONF_OPTS += --enable-smbclient
+VLC_DEPENDENCIES += samba4
+else
+VLC_CONF_OPTS += --disable-smbclient
+endif
+
 ifeq ($(BR2_PACKAGE_SPEEX)$(BR2_PACKAGE_SPEEXDSP),yy)
 VLC_CONF_OPTS += --enable-speex
 VLC_DEPENDENCIES += speex speexdsp
