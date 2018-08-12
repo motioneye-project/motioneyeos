@@ -71,7 +71,6 @@ VLC_CONF_OPTS += \
 	--disable-mmal \
 	--disable-mpg123 \
 	--disable-mtp \
-	--disable-nfs \
 	--disable-notify \
 	--disable-projectm \
 	--disable-schroedinger \
@@ -309,6 +308,13 @@ VLC_CONF_OPTS += --enable-libmpeg2
 VLC_DEPENDENCIES += libmpeg2
 else
 VLC_CONF_OPTS += --disable-libmpeg2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBNFS),y)
+VLC_CONF_OPTS += --enable-nfs
+VLC_DEPENDENCIES += libnfs
+else
+VLC_CONF_OPTS += --disable-nfs
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
