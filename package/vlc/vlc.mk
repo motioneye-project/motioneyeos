@@ -41,7 +41,6 @@ VLC_CONF_OPTS += \
 	--disable-a52 \
 	--disable-addonmanagermodules \
 	--disable-aom \
-	--disable-archive \
 	--disable-aribb25 \
 	--disable-aribsub \
 	--disable-asdcp \
@@ -220,6 +219,13 @@ VLC_CONF_OPTS += --enable-opus
 VLC_DEPENDENCIES += libvorbis opus
 else
 VLC_CONF_OPTS += --disable-opus
+endif
+
+ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
+VLC_CONF_OPTS += --enable-archive
+VLC_DEPENDENCIES += libarchive
+else
+VLC_CONF_OPTS += --disable-archive
 endif
 
 ifeq ($(BR2_PACKAGE_LIBASS),y)
