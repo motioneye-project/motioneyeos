@@ -59,7 +59,6 @@ VLC_CONF_OPTS += \
 	--disable-vpx \
 	--disable-vsxu \
 	--disable-x262 \
-	--disable-x265 \
 	--disable-zvbi \
 	--enable-run-as-root
 
@@ -414,6 +413,13 @@ VLC_CONF_OPTS += --enable-x264
 VLC_DEPENDENCIES += x264
 else
 VLC_CONF_OPTS += --disable-x264
+endif
+
+ifeq ($(BR2_PACKAGE_X265),y)
+VLC_CONF_OPTS += --enable-x265
+VLC_DEPENDENCIES += x265
+else
+VLC_CONF_OPTS += --disable-x265
 endif
 
 ifeq ($(BR2_PACKAGE_XCB_UTIL_KEYSYMS),y)
