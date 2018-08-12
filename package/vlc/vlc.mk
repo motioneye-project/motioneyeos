@@ -74,7 +74,6 @@ VLC_CONF_OPTS += \
 	--disable-notify \
 	--disable-projectm \
 	--disable-schroedinger \
-	--disable-secret \
 	--disable-soxr \
 	--disable-shine \
 	--disable-shout \
@@ -336,6 +335,13 @@ VLC_CONF_OPTS += --enable-samplerate
 VLC_DEPENDENCIES += libsamplerate
 else
 VLC_CONF_OPTS += --disable-samplerate
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSECRET),y)
+VLC_CONF_OPTS += --enable-secret
+VLC_DEPENDENCIES += libsecret
+else
+VLC_CONF_OPTS += --disable-secret
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
