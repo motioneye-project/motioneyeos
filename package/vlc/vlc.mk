@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VLC_VERSION = 2.2.8
+VLC_VERSION = 3.0.3
 VLC_SITE = https://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPL-2.0+, LGPL-2.1+
@@ -22,6 +22,10 @@ VLC_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O0"
 VLC_CONF_OPTS += --disable-optimizations
 endif
 
+# configure check for -fstack-protector-strong is broken
+VLC_CONF_ENV += \
+	ax_cv_check_cflags___fstack_protector_strong=$(if $(BR2_TOOLCHAIN_HAS_SSP),yes,no)
+
 # VLC defines two autoconf functions which are also defined by our own pkg.m4
 # from pkgconf. Unfortunately, they are defined in a different way: VLC adds
 # --enable- options, but pkg.m4 adds --with- options. To make sure we use
@@ -36,25 +40,59 @@ VLC_POST_PATCH_HOOKS += VLC_OVERRIDE_PKG_M4
 VLC_CONF_OPTS += \
 	--disable-a52 \
 	--disable-addonmanagermodules \
+	--disable-aom \
+	--disable-archive \
+	--disable-aribb25 \
+	--disable-aribsub \
+	--disable-asdcp \
+	--disable-bpg \
 	--disable-caca \
 	--disable-chromaprint \
+	--disable-chromecast \
+	--disable-crystalhd \
+	--disable-dc1394 \
 	--disable-dca \
+	--disable-decklink \
+	--disable-dsm \
+	--disable-dv1394 \
+	--disable-fluidlite \
 	--disable-fluidsynth \
-	--disable-gles1 \
+	--disable-gme \
 	--disable-goom \
+	--disable-gst-decode \
+	--disable-harfbuzz \
 	--disable-jack \
 	--disable-jpeg \
+	--disable-kai \
 	--disable-kate \
+	--disable-kva \
+	--disable-libplacebo \
+	--disable-libva \
+	--disable-linsys \
 	--disable-mfx \
-	--disable-mmal-codec \
-	--disable-mmal-vout \
+	--disable-microdns \
+	--disable-mmal \
+	--disable-mpg123 \
 	--disable-mtp \
+	--disable-nfs \
+	--disable-notify \
 	--disable-projectm \
 	--disable-schroedinger \
+	--disable-secret \
+	--disable-soxr \
+	--disable-shine \
 	--disable-shout \
+	--disable-skins2 \
+	--disable-sndio \
+	--disable-spatialaudio \
+	--disable-srt \
+	--disable-telx \
+	--disable-tiger \
 	--disable-twolame \
 	--disable-vdpau \
 	--disable-vsxu \
+	--disable-wasapi \
+	--disable-wayland \
 	--disable-x262 \
 	--disable-zvbi \
 	--enable-run-as-root
@@ -88,12 +126,12 @@ else
 VLC_CONF_OPTS += --disable-alsa
 endif
 
-# bonjour support needs avahi-client, which needs avahi-daemon and dbus
+# avahi support needs avahi-client, which needs avahi-daemon and dbus
 ifeq ($(BR2_PACKAGE_AVAHI)$(BR2_PACKAGE_AVAHI_DAEMON)$(BR2_PACKAGE_DBUS),yyy)
-VLC_CONF_OPTS += --enable-bonjour
-VLC_DEPENDENCIES += avahi dbus
+VLC_CONF_OPTS += --enable-avahi
+VLC_DEPENDENCIES += avahi
 else
-VLC_CONF_OPTS += --disable-bonjour
+VLC_CONF_OPTS += --disable-avahi
 endif
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
@@ -101,14 +139,6 @@ VLC_CONF_OPTS += --enable-dbus
 VLC_DEPENDENCIES += dbus
 else
 VLC_CONF_OPTS += --disable-dbus
-endif
-
-ifeq ($(BR2_PACKAGE_DIRECTFB),y)
-VLC_CONF_OPTS += --enable-directfb
-VLC_CONF_ENV += ac_cv_path_DIRECTFB_CONFIG=$(STAGING_DIR)/usr/bin/directfb-config
-VLC_DEPENDENCIES += directfb
-else
-VLC_CONF_OPTS += --disable-directfb
 endif
 
 ifeq ($(BR2_PACKAGE_FAAD2),y)
@@ -145,7 +175,10 @@ VLC_CONF_OPTS += --disable-flac
 endif
 
 ifeq ($(BR2_PACKAGE_FREERDP),y)
+VLC_CONF_OPTS += --enable-freerdp
 VLC_DEPENDENCIES += freerdp
+else
+VLC_CONF_OPTS += --disable-freerdp
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
@@ -240,10 +273,10 @@ VLC_CONF_OPTS += --disable-mad
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMATROSKA),y)
-VLC_CONF_OPTS += --enable-mkv
+VLC_CONF_OPTS += --enable-matroska
 VLC_DEPENDENCIES += libmatroska
 else
-VLC_CONF_OPTS += --disable-mkv
+VLC_CONF_OPTS += --disable-matroska
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
@@ -398,22 +431,11 @@ else
 VLC_CONF_OPTS += --disable-pulse
 endif
 
-ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
+ifeq ($(BR2_PACKAGE_QT5BASE_WIDGETS)$(BR2_PACKAGE_QT5SVG),yy)
 VLC_CONF_OPTS += --enable-qt
-VLC_CONF_ENV += \
-	ac_cv_path_MOC=$(HOST_DIR)/bin/moc \
-	ac_cv_path_RCC=$(HOST_DIR)/bin/rcc \
-	ac_cv_path_UIC=$(HOST_DIR)/bin/uic
-VLC_DEPENDENCIES += qt
+VLC_DEPENDENCIES += qt5base qt5svg
 else
 VLC_CONF_OPTS += --disable-qt
-endif
-
-ifeq ($(BR2_PACKAGE_SDL_X11),y)
-VLC_CONF_OPTS += --enable-sdl
-VLC_DEPENDENCIES += sdl
-else
-VLC_CONF_OPTS += --disable-sdl
 endif
 
 ifeq ($(BR2_PACKAGE_SDL_IMAGE),y)
@@ -473,10 +495,7 @@ VLC_CONF_OPTS += --disable-x265
 endif
 
 ifeq ($(BR2_PACKAGE_XCB_UTIL_KEYSYMS),y)
-VLC_CONF_OPTS += --enable-xcb
 VLC_DEPENDENCIES += xcb-util-keysyms
-else
-VLC_CONF_OPTS += --disable-xcb
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)

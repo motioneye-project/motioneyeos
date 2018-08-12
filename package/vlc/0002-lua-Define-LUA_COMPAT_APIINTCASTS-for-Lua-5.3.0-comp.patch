@@ -1,0 +1,41 @@
+From 00135e21bec84a2fe5920d02fa0982ceb9f89a35 Mon Sep 17 00:00:00 2001
+From: Vinson Lee <vlee@freedesktop.org>
+Date: Thu, 5 Feb 2015 14:48:53 -0800
+Subject: [PATCH] lua: Define LUA_COMPAT_APIINTCASTS for Lua >= 5.3.0
+ compatibility.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In Lua 5.3.0, luaL_checkint was deprecated.
+
+This patch fixes this build error with Lua 5.3.0.
+
+lua/demux.c: In function ‘vlclua_demux_peek’:
+lua/demux.c:55:5: error: implicit declaration of function ‘luaL_checkint’ [-Werror=implicit-function-declaration]
+     int n = luaL_checkint( L, 1 );
+     ^
+
+Signed-off-by: Vinson Lee <vlee@freedesktop.org>
+Signed-off-by: Jean-Baptiste Kempf <jb@videolan.org>
+[Backport upstream commit 41caaa08cde60c4fec4bf2e5f9610e2a1b9e6a23]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ modules/lua/vlc.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/modules/lua/vlc.h b/modules/lua/vlc.h
+index 71f381d334..b46b5f67a1 100644
+--- a/modules/lua/vlc.h
++++ b/modules/lua/vlc.h
+@@ -38,6 +38,7 @@
+ #include <vlc_stream.h>
+ #include <vlc_demux.h>
+ 
++#define LUA_COMPAT_APIINTCASTS
+ #define LUA_COMPAT_MODULE
+ #include <lua.h>        /* Low level lua C API */
+ #include <lauxlib.h>    /* Higher level C API */
+-- 
+2.14.4
+
