@@ -59,7 +59,6 @@ VLC_CONF_OPTS += \
 	--disable-fluidsynth \
 	--disable-gme \
 	--disable-goom \
-	--disable-harfbuzz \
 	--disable-jack \
 	--disable-jpeg \
 	--disable-kai \
@@ -189,6 +188,13 @@ endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
 VLC_DEPENDENCIES += libgl
+endif
+
+ifeq ($(BR2_PACKAGE_HARFBUZZ),y)
+VLC_CONF_OPTS += --enable-harfbuzz
+VLC_DEPENDENCIES += harfbuzz
+else
+VLC_CONF_OPTS += --disable-harfbuzz
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
