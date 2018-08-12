@@ -84,7 +84,6 @@ VLC_CONF_OPTS += \
 	--disable-vdpau \
 	--disable-vsxu \
 	--disable-wasapi \
-	--disable-wayland \
 	--disable-x262 \
 	--disable-zvbi \
 	--enable-run-as-root
@@ -527,6 +526,13 @@ VLC_CONF_OPTS += --enable-udev
 VLC_DEPENDENCIES += udev
 else
 VLC_CONF_OPTS += --disable-udev
+endif
+
+ifeq ($(BR2_PACKAGE_WAYLAND),y)
+VLC_CONF_OPTS += --enable-wayland
+VLC_DEPENDENCIES += wayland
+else
+VLC_CONF_OPTS += --disable-wayland
 endif
 
 ifeq ($(BR2_PACKAGE_X264),y)
