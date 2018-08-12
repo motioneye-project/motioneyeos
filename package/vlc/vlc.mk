@@ -51,7 +51,6 @@ VLC_CONF_OPTS += \
 	--disable-mmal-vout \
 	--disable-mtp \
 	--disable-projectm \
-	--disable-samplerate \
 	--disable-schroedinger \
 	--disable-shout \
 	--disable-twolame \
@@ -260,6 +259,13 @@ VLC_CONF_OPTS += --enable-svg --enable-svgdec
 VLC_DEPENDENCIES += librsvg
 else
 VLC_CONF_OPTS += --disable-svg --disable-svgdec
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
+VLC_CONF_OPTS += --enable-samplerate
+VLC_DEPENDENCIES += libsamplerate
+else
+VLC_CONF_OPTS += --disable-samplerate
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
