@@ -355,6 +355,13 @@ else
 VLC_CONF_OPTS += --disable-mpc
 endif
 
+ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
+VLC_CONF_OPTS += --enable-ncurses
+VLC_DEPENDENCIES += ncurses
+else
+VLC_CONF_OPTS += --disable-ncurses
+endif
+
 ifeq ($(BR2_PACKAGE_QT_GUI_MODULE),y)
 VLC_CONF_OPTS += --enable-qt
 VLC_CONF_ENV += \
