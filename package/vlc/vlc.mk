@@ -39,7 +39,6 @@ VLC_CONF_OPTS += \
 	--disable-caca \
 	--disable-chromaprint \
 	--disable-dca \
-	--disable-dvdnav \
 	--disable-fluidsynth \
 	--disable-gles1 \
 	--disable-goom \
@@ -204,6 +203,13 @@ VLC_CONF_OPTS += --enable-dvbpsi
 VLC_DEPENDENCIES += libdvbpsi
 else
 VLC_CONF_OPTS += --disable-dvbpsi
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDVDNAV),y)
+VLC_CONF_OPTS += --enable-dvdnav
+VLC_DEPENDENCIES += libdvdnav
+else
+VLC_CONF_OPTS += --disable-dvdnav
 endif
 
 ifeq ($(BR2_PACKAGE_LIBDVDREAD),y)
