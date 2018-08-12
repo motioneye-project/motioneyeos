@@ -64,7 +64,6 @@ VLC_CONF_OPTS += \
 	--disable-kate \
 	--disable-kva \
 	--disable-libplacebo \
-	--disable-libva \
 	--disable-linsys \
 	--disable-mfx \
 	--disable-microdns \
@@ -376,6 +375,14 @@ VLC_CONF_OPTS += --enable-upnp
 VLC_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBUPNP),libupnp,libupnp18)
 else
 VLC_CONF_OPTS += --disable-upnp
+endif
+
+# libva support depends on ffmpeg
+ifeq ($(BR2_PACKAGE_FFMPEG)$(BR2_PACKAGE_LIBVA),yy)
+VLC_CONF_OPTS += --enable-libva
+VLC_DEPENDENCIES += libva
+else
+VLC_CONF_OPTS += --disable-libva
 endif
 
 ifeq ($(BR2_PACKAGE_LIBVNCSERVER),y)
