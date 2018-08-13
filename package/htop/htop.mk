@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-HTOP_VERSION = 2.1.0
+HTOP_VERSION = 2.2.0
 HTOP_SITE = http://hisham.hm/htop/releases/$(HTOP_VERSION)
 HTOP_DEPENDENCIES = ncurses
 # Prevent htop build system from searching the host paths
