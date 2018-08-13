@@ -526,6 +526,12 @@ my $mirror = 'http://cpan.metacpan.org';        # a CPAN mirror
 my $mcpan = MetaCPAN::API::Tiny->new(base_url => 'http://fastapi.metacpan.org/v1');
 my $ua = HTTP::Tiny->new();
 
+my %white_list = (
+    'Module-Build' => 1,
+    'Module-Build-Tiny' => 1,
+);
+my @info = ();
+
 sub get_checksum {
     my ($url) = @_;
     my ($path) = $url =~ m|^[^:/?#]+://[^/?#]*([^?#]*)|;
@@ -607,6 +613,8 @@ sub fetch {
             }
             else { # configure, build
                 $build{$distname} = 1;
+                push @info, qq{[$name] suspicious dependency on $distname}
+                    unless exists $white_list{$distname};
             }
         }
         $deps_build{$name} = [keys %build];
@@ -764,6 +772,8 @@ foreach my $distname (keys %need_target) {
 
 say qq{${cfgname} must contain the following lines:};
 say join qq{\n}, sort keys %pkg;
+
+say join qq{\n}, @info;
 
 __END__
 
