@@ -44,7 +44,6 @@ config BR2_PACKAGE_DOCKER_ENGINE_DRIVER_BTRFS
 
 config BR2_PACKAGE_DOCKER_ENGINE_DRIVER_DEVICEMAPPER
 	bool "devicemapper filesystem driver"
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS # lvm2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # lvm2
 	depends on BR2_USE_MMU # lvm2
 	depends on !BR2_STATIC_LIBS # lvm2

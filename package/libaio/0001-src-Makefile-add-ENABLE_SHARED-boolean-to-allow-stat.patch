@@ -1,4 +1,4 @@
-From 14dee5707716629b1bc8d06b93cdfe9ea1a3b813 Mon Sep 17 00:00:00 2001
+From 4dc04ef55710f7f5c1e55ebb5cba8e22a126404e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Mon, 29 Aug 2016 22:14:26 +0200
 Subject: [PATCH] src/Makefile: add ENABLE_SHARED boolean to allow static-only
@@ -52,5 +52,5 @@ index eadb336..cfab240 100644
  $(libaio_objs): libaio.h
  
 -- 
-2.7.4
+2.14.4
 

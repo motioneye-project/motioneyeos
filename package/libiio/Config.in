@@ -60,7 +60,6 @@ config BR2_PACKAGE_LIBIIO_IIOD
 config BR2_PACKAGE_LIBIIO_IIOD_USBD
 	bool "USB support in the IIO Daemon (FunctionFS)"
 	depends on BR2_PACKAGE_LIBIIO_IIOD
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18 # usb_functionfs_descs_head_v2
 	select BR2_PACKAGE_LIBAIO
 	help
