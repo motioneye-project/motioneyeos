@@ -1353,6 +1353,7 @@ F:	package/mtd/
 F:	package/mtools/
 F:	package/nginx-upload/
 F:	package/omniorb/
+F:	package/openresolv/
 F:	package/paxtest/
 F:	package/picocom/
 F:	package/policycoreutils/
