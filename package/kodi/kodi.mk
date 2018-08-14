@@ -50,7 +50,7 @@ KODI_SUBDIR = project/cmake
 # taken from tools/depends/target/ffmpeg/FFMPEG-VERSION
 KODI_FFMPEG_VERSION = 3.1.11-Krypton-17.5
 KODI_EXTRA_DOWNLOADS += \
-	https://github.com/xbmc/FFmpeg/archive/$(KODI_FFMPEG_VERSION).tar.gz \
+	https://github.com/xbmc/FFmpeg/archive/$(KODI_FFMPEG_VERSION).tar.gz
 
 KODI_LIBDVDCSS_VERSION = 2f12236
 KODI_LIBDVDNAV_VERSION = 981488f
