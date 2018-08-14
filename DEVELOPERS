@@ -1312,6 +1312,7 @@ F:	package/aufs-util/
 F:	package/bc/
 F:	package/bridge-utils/
 F:	package/checkpolicy/
+F:	package/checksec/
 F:	package/cgroupfs-mount/
 F:	package/crda/
 F:	package/devmem2/
@@ -1528,6 +1529,9 @@ F:	package/openjpeg/
 
 N:	Olivier Singla <olivier.singla@gmail.com>
 F:	package/shellinabox/
+
+N:	Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
+F:	package/checksec/
 
 N:	Parnell Springmeyer <parnell@digitalmentat.com>
 F:	package/scrypt/
