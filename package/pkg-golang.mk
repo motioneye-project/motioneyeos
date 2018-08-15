@@ -77,9 +77,9 @@ $(2)_INSTALL_BINS ?= $(1)
 # of GOPATH. It usually resolves around domain/vendor/software. By default, we
 # derive domain/vendor/software from the upstream URL of the project, but we
 # allow $(2)_SRC_SUBDIR to be overridden if needed.
-$(2)_SRC_DOMAIN = $$(call domain,$($(2)_SITE))
-$(2)_SRC_VENDOR = $$(word 1,$$(subst /, ,$$(call notdomain,$($(2)_SITE))))
-$(2)_SRC_SOFTWARE = $$(word 2,$$(subst /, ,$$(call notdomain,$($(2)_SITE))))
+$(2)_SRC_DOMAIN = $$(call domain,$$($(2)_SITE))
+$(2)_SRC_VENDOR = $$(word 1,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
+$(2)_SRC_SOFTWARE = $$(word 2,$$(subst /, ,$$(call notdomain,$$($(2)_SITE))))
 
 $(2)_SRC_SUBDIR ?= $$($(2)_SRC_DOMAIN)/$$($(2)_SRC_VENDOR)/$$($(2)_SRC_SOFTWARE)
 $(2)_SRC_PATH = $$(@D)/$$($(2)_WORKSPACE)/src/$$($(2)_SRC_SUBDIR)
