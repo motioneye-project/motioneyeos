@@ -88,7 +88,8 @@ main() {
     download_and_check=0
     rc=1
     for uri in "${uris[@]}"; do
-        backend=${uri%%+*}
+        backend_urlencode="${uri%%+*}"
+        backend="${backend_urlencode%|*}"
         case "${backend}" in
             git|svn|cvs|bzr|file|scp|hg) ;;
             *) backend="wget" ;;
