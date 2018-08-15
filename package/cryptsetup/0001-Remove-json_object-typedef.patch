@@ -1,0 +1,46 @@
+From 567e7f8664c621f8aeaa95d9f4ab4b590574f572 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 15 Aug 2018 14:13:46 +0300
+Subject: [PATCH] Remove json_object typedef
+
+The json-c header already defines the same typedef. While C11 allows
+typedef redefinition to the same type, older versions of gcc disallow
+that.
+
+In file included from lib/luks2/luks2_internal.h:32,
+                 from lib/luks2/luks2_disk_metadata.c:24:
+lib/luks2/luks2.h:86: error: redefinition of typedef 'json_object'
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+ lib/luks2/luks2.h | 1 -
+ lib/setup.c       | 1 +
+ 2 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/luks2/luks2.h b/lib/luks2/luks2.h
+index ee57b41ba974..25e36190da45 100644
+--- a/lib/luks2/luks2.h
++++ b/lib/luks2/luks2.h
+@@ -83,7 +83,6 @@ struct luks2_hdr_disk {
+ /*
+  * LUKS2 header in-memory.
+  */
+-typedef struct json_object json_object;
+ struct luks2_hdr {
+ 	size_t		hdr_size;
+ 	uint64_t	seqid;
+diff --git a/lib/setup.c b/lib/setup.c
+index fddbe7ef7897..856f6e80f465 100644
+--- a/lib/setup.c
++++ b/lib/setup.c
+@@ -28,6 +28,7 @@
+ #include <sys/utsname.h>
+ #include <fcntl.h>
+ #include <errno.h>
++#include <json-c/json.h>
+ 
+ #include "libcryptsetup.h"
+ #include "luks.h"
+-- 
+2.18.0
+
