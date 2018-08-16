@@ -6,6 +6,8 @@ Subject: [PATCH] allow libluajit detection
 This detection was done only if luarocks is runned by luajit.
 But on Buildroot, luarocks is always runned by lua.
 
+See https://github.com/luarocks/luarocks/pull/883
+
 Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
 ---
  src/luarocks/deps.lua | 4 +---
@@ -15,7 +17,7 @@ diff --git a/src/luarocks/deps.lua b/src/luarocks/deps.lua
 index 8403f12..c1c0220 100644
 --- a/src/luarocks/deps.lua
 +++ b/src/luarocks/deps.lua
-@@ -511,10 +511,8 @@ function deps.check_lua(vars)
+@@ -513,10 +513,8 @@ function deps.check_lua(vars)
        "lua-" .. cfg.lua_version,
        "lua-" .. shortv,
        "lua",
