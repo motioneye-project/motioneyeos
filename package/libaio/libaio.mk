@@ -35,4 +35,13 @@ define LIBAIO_INSTALL_TARGET_CMDS
 	$(LIBAIO_CONFIGURE_OPTS) $(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
+define HOST_LIBAIO_BUILD_CMDS
+	$(HOST_CONFIGURE_OPTS) $(HOST_MAKE_ENV) $(MAKE) -C $(@D)
+endef
+
+define HOST_LIBAIO_INSTALL_CMDS
+	$(HOST_CONFIGURE_OPTS) $(HOST_MAKE_ENV) $(MAKE) -C $(@D) prefix=$(HOST_DIR) install
+endef
+
 $(eval $(generic-package))
+$(eval $(host-generic-package))
