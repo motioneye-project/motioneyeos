@@ -59,7 +59,7 @@ ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 LVM2_CONF_ENV += ac_cv_flag_HAVE_PIE=no
 endif
 
-HOST_LVM2_DEPENDENCIES = host-pkgconf
+HOST_LVM2_DEPENDENCIES = host-pkgconf host-libaio
 HOST_LVM2_CONF_OPTS = \
 	--enable-write_install \
 	--enable-pkgconfig \
