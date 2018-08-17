@@ -1,3 +1,3 @@
-# md5 from https://pypi.python.org/pypi/django/json, sha256 locally computed
-md5	693dfeabad62c561cb205900d32c2a98  Django-1.10.7.tar.gz
-sha256	593d779dbc2350a245c4f76d26bdcad58a39895e87304fe6d725bbdf84b5b0b8  Django-1.10.7.tar.gz
+# From https://www.djangoproject.com/m/pgp/Django-1.11.15.checksum.txt
+sha256	b18235d82426f09733d2de9910cee975cf52ff05e5f836681eb957d105a05a40  Django-1.11.15.tar.gz
+sha256	b846415d1b514e9c1dff14a22deb906d794bc546ca6129f950a18cd091e2a669  LICENSE
