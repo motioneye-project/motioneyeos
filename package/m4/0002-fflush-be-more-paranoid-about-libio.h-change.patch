@@ -1,0 +1,151 @@
+From 74d9d6a293d7462dea8f83e7fc5ac792e956a0ad Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Thu, 8 Mar 2018 16:42:45 -0800
+Subject: [PATCH 2/2] fflush: be more paranoid about libio.h change
+
+Suggested by Eli Zaretskii in:
+https://lists.gnu.org/r/emacs-devel/2018-03/msg00270.html
+* lib/fbufmode.c (fbufmode):
+* lib/fflush.c (clear_ungetc_buffer_preserving_position)
+(disable_seek_optimization, rpl_fflush):
+* lib/fpending.c (__fpending):
+* lib/fpurge.c (fpurge):
+* lib/freadable.c (freadable):
+* lib/freadahead.c (freadahead):
+* lib/freading.c (freading):
+* lib/freadptr.c (freadptr):
+* lib/freadseek.c (freadptrinc):
+* lib/fseeko.c (fseeko):
+* lib/fseterr.c (fseterr):
+* lib/fwritable.c (fwritable):
+* lib/fwriting.c (fwriting):
+Look at _IO_ftrylockfile as well as at _IO_EOF_SEEN.
+---
+ lib/fflush.c     |  9 ++++++---
+ lib/fpending.c   |  3 ++-
+ lib/fpurge.c     |  3 ++-
+ lib/freadahead.c |  3 ++-
+ lib/freading.c   |  3 ++-
+ lib/fseeko.c     |  6 ++++--
+ 6 files changed, 18 insertions(+), 9 deletions(-)
+
+[yann.morin.1998@free.fr: partially backport from upstream gnulib]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/lib/fflush.c b/build-aux/gnulib/lib/fflush.c
+index a6edfa105..a140b7ad9 100644
+--- a/lib/fflush.c
++++ b/lib/fflush.c
+@@ -33,7 +33,8 @@
+ #undef fflush
+ 
+ 
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++/* GNU libc, BeOS, Haiku, Linux libc5 */
+ 
+ /* Clear the stream's ungetc buffer, preserving the value of ftello (fp).  */
+ static void
+@@ -72,7 +73,8 @@ clear_ungetc_buffer (FILE *fp)
+ 
+ #endif
+ 
+-#if ! (defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */)
++#if ! (defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1)
++/* GNU libc, BeOS, Haiku, Linux libc5 */
+ 
+ # if (defined __sferror || defined __DragonFly__ || defined __ANDROID__) && defined __SNPT
+ /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Minix 3, Android */
+@@ -148,7 +150,8 @@ rpl_fflush (FILE *stream)
+   if (stream == NULL || ! freading (stream))
+     return fflush (stream);
+ 
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+ 
+   clear_ungetc_buffer_preserving_position (stream);
+ 
+diff --git a/lib/fpending.c b/build-aux/gnulib/lib/fpending.c
+index 789f50e4e..7bc235ded 100644
+--- a/lib/fpending.c
++++ b/lib/fpending.c
+@@ -32,7 +32,8 @@ __fpending (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   return fp->_IO_write_ptr - fp->_IO_write_base;
+ #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+   /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Minix 3, Android */
+diff --git a/lib/fpurge.c b/build-aux/gnulib/lib/fpurge.c
+index 3aedcc373..554790b56 100644
+--- a/lib/fpurge.c
++++ b/lib/fpurge.c
+@@ -62,7 +62,8 @@ fpurge (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++# if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   fp->_IO_read_end = fp->_IO_read_ptr;
+   fp->_IO_write_ptr = fp->_IO_write_base;
+   /* Avoid memory leak when there is an active ungetc buffer.  */
+diff --git a/lib/freadahead.c b/build-aux/gnulib/lib/freadahead.c
+index 23ec76ee5..ed3dd0ebd 100644
+--- a/lib/freadahead.c
++++ b/lib/freadahead.c
+@@ -30,7 +30,8 @@ extern size_t __sreadahead (FILE *);
+ size_t
+ freadahead (FILE *fp)
+ {
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_write_ptr > fp->_IO_write_base)
+     return 0;
+   return (fp->_IO_read_end - fp->_IO_read_ptr)
+diff --git a/lib/freading.c b/build-aux/gnulib/lib/freading.c
+index c24d0c88a..790f92ca3 100644
+--- a/lib/freading.c
++++ b/lib/freading.c
+@@ -31,7 +31,8 @@ freading (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-# if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++# if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   return ((fp->_flags & _IO_NO_WRITES) != 0
+           || ((fp->_flags & (_IO_NO_READS | _IO_CURRENTLY_PUTTING)) == 0
+               && fp->_IO_read_base != NULL));
+diff --git a/lib/fseeko.c b/build-aux/gnulib/lib/fseeko.c
+index 193f4e8ce..e5c5172e7 100644
+--- a/lib/fseeko.c
++++ b/lib/fseeko.c
+@@ -47,7 +47,8 @@ fseeko (FILE *fp, off_t offset, int whence)
+ #endif
+ 
+   /* These tests are based on fpurge.c.  */
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   if (fp->_IO_read_end == fp->_IO_read_ptr
+       && fp->_IO_write_ptr == fp->_IO_write_base
+       && fp->_IO_save_base == NULL)
+@@ -123,7 +124,8 @@ fseeko (FILE *fp, off_t offset, int whence)
+           return -1;
+         }
+ 
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++      /* GNU libc, BeOS, Haiku, Linux libc5 */
+       fp->_flags &= ~_IO_EOF_SEEN;
+       fp->_offset = pos;
+ #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+-- 
+2.14.1
+
