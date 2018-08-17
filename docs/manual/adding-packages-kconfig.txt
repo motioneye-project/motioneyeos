@@ -81,3 +81,7 @@ be set to suit the needs of the package under consideration:
   be well suited for all packages that use the standard kconfig
   infrastructure as inherited from the Linux kernel; some packages use
   a derivative of kconfig that use a different location.
+
+* +FOO_KCONFIG_DEPENDENCIES+: the list of packages (most probably, host
+  packages) that need to be built before this package's kconfig is
+  interpreted. Seldom used. By default, empty.

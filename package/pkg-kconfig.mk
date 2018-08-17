@@ -41,6 +41,10 @@ endef
 
 define inner-kconfig-package
 
+# Register the kconfig dependencies as regular dependencies, so that
+# they are also accounted for in the generated graphs.
+$(2)_DEPENDENCIES += $$($(2)_KCONFIG_DEPENDENCIES)
+
 # Call the generic package infrastructure to generate the necessary
 # make targets.
 # Note: this must be done _before_ attempting to use $$($(2)_DIR) in a
@@ -120,6 +124,11 @@ $$($(2)_DIR)/$$($(2)_KCONFIG_DOTCONFIG): $$($(2)_KCONFIG_FILE) $$($(2)_KCONFIG_F
 # already implied, but if we only have a _KCONFIG_DEFCONFIG we have to add
 # it explicitly. It doesn't hurt to always have it though.
 $$($(2)_DIR)/$$($(2)_KCONFIG_DOTCONFIG): | $(1)-patch
+
+# Some packages may need additional tools to be present by the time their
+# kconfig structure is parsed (e.g. the linux kernel may need to call to
+# the compiler to test its features).
+$$($(2)_DIR)/$$($(2)_KCONFIG_DOTCONFIG): | $$($(2)_KCONFIG_DEPENDENCIES)
 
 # In order to get a usable, consistent configuration, some fixup may be needed.
 # The exact rules are specified by the package .mk file.
