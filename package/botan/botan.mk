@@ -40,6 +40,11 @@ else
 BOTAN_CONF_OPTS += --without-stack-protector
 endif
 
+ifeq ($(BR2_PACKAGE_BOOST),y)
+BOTAN_DEPENDENCIES += boost
+BOTAN_CONF_OPTS += --with-boost
+endif
+
 ifeq ($(BR2_PACKAGE_BZIP2),y)
 BOTAN_DEPENDENCIES += bzip2
 BOTAN_CONF_OPTS += --with-bzip2
