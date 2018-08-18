@@ -14,13 +14,13 @@ pthread_mutex_unlock() "synchronize memory with respect to other threads"...)
 
 Signed-off-by: Hollis Blanchard <hollis_blanchard@mentor.com>
 ---
- libselinux/src/label_file.h | 18 ++++++++++++++++++
+ src/label_file.h | 18 ++++++++++++++++++
  1 file changed, 18 insertions(+)
 
-diff --git a/libselinux/src/label_file.h b/libselinux/src/label_file.h
+diff --git a/src/label_file.h b/src/label_file.h
 index 2fa85474..47859baf 100644
---- a/libselinux/src/label_file.h
-+++ b/libselinux/src/label_file.h
+--- a/src/label_file.h
++++ b/src/label_file.h
 @@ -351,8 +351,14 @@ static inline int compile_regex(struct saved_data *data, struct spec *spec,
  	 * init_routine does not take a parameter, it's not possible
  	 * to use, so we generate the same effect with atomics and a
