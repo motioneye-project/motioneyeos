@@ -1,0 +1,32 @@
+Drop waitForEvents() method from qtestmouse
+
+This method was dropped in Qt 5.11:
+
+  https://github.com/qt/qtbase/commit/75e583b3fcbdbbb999633eb5f2267720dd695cfa
+
+However, Python PyQt5 still generates a wrapper for it, causing a
+build failure. The upstream PyQt5 maintainers have not kept
+waitForEvents() support for older Qt versions, and instead entirely
+dropped it unconditionally. This can be verified by diffing PyQt 5.10
+and PyQt 5.11. We take the same approach, and drop waitForEvents()
+unconditionally, even when PyQt5 is built against the older Qt 5.6.
+
+Fedora is using a similar solution:
+https://src.fedoraproject.org/rpms/python-qt5/c/47fb7fdc5d16582772f9c3fc8a6a674a41a7f605?branch=master.
+
+This patch can be dropped when PyQt5 is bumped to its 5.11 version.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+
+Index: b/sip/QtTest/qtestmouse.sip
+===================================================================
+--- a/sip/QtTest/qtestmouse.sip
++++ b/sip/QtTest/qtestmouse.sip
+@@ -41,7 +41,6 @@
+     void mousePress(QWidget *widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1);
+     void mouseRelease(QWidget *widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier = 0, QPoint pos = QPoint(), int delay = -1);
+     void mouseEvent(QTest::MouseAction action, QWidget *widget, Qt::MouseButton button, Qt::KeyboardModifiers modifier, QPoint pos, int delay = -1);
+-    void waitForEvents() /ReleaseGIL/;
+     void mouseEvent(QTest::MouseAction action, QWindow *window, Qt::MouseButton button, Qt::KeyboardModifiers modifier, QPoint pos, int delay = -1);
+     void mousePress(QWindow *window, Qt::MouseButton button, Qt::KeyboardModifiers modifier = Qt::KeyboardModifiers(), QPoint pos = QPoint(), int delay = -1);
+     void mouseRelease(QWindow *window, Qt::MouseButton button, Qt::KeyboardModifiers modifier = Qt::KeyboardModifiers(), QPoint pos = QPoint(), int delay = -1);
