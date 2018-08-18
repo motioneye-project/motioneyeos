@@ -60,6 +60,11 @@ BOTAN_DEPENDENCIES += sqlite
 BOTAN_CONF_OPTS += --with-sqlite
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+BOTAN_DEPENDENCIES += xz
+BOTAN_CONF_OPTS += --with-lzma
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 BOTAN_DEPENDENCIES += zlib
 BOTAN_CONF_OPTS += --with-zlib
