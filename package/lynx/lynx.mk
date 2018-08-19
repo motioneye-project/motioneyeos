@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LYNX_VERSION = 2.8.9dev.16
+LYNX_VERSION = 2.8.9rel.1
 LYNX_SOURCE = lynx$(LYNX_VERSION).tar.bz2
 LYNX_SITE = ftp://ftp.invisible-island.net/lynx/tarballs
 LYNX_LICENSE = GPL-2.0
