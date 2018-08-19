@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIT_CRYPT_VERSION = 0.5.0
+GIT_CRYPT_VERSION = 0.6.0
 GIT_CRYPT_SITE = https://www.agwa.name/projects/git-crypt/downloads
 GIT_CRYPT_DEPENDENCIES = host-pkgconf openssl
 GIT_CRYPT_LICENSE = GPL-3.0+, MIT
