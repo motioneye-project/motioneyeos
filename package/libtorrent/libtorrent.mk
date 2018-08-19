@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBTORRENT_VERSION = 0.13.6
+LIBTORRENT_VERSION = 0.13.7
 LIBTORRENT_SITE = http://rtorrent.net/downloads
 LIBTORRENT_DEPENDENCIES = host-pkgconf zlib \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl)

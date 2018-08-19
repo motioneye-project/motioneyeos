@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 2838a08c96edfd936aff8fbf99ecbb930c2bfca3337dd1482eb5fccdb80d5a04  libtorrent-0.13.6.tar.gz
+sha256 c738f60f4d7b6879cd2745fb4310bf24c9287219c1fd619706a9d5499ca7ecc1  libtorrent-0.13.7.tar.gz
+sha256 204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994  COPYING
