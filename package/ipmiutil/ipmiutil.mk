@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IPMIUTIL_VERSION = 2.9.9
-IPMIUTIL_SITE = http://sourceforge.net/projects/ipmiutil/files
+IPMIUTIL_VERSION = 3.1.2
+IPMIUTIL_SITE = https://sourceforge.net/projects/ipmiutil/files
 IPMIUTIL_LICENSE = BSD-3-Clause
 IPMIUTIL_LICENSE_FILES = COPYING
 # We're patching configure.ac
