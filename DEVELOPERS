@@ -487,6 +487,7 @@ F:	package/targetcli-fb/
 N:	Christopher McCrory <chrismcc@gmail.com>
 F:	package/perl-appconfig/
 F:	package/perl-astro-suntime/
+F:	package/perl-class-load/
 F:	package/perl-class-std/
 F:	package/perl-class-std-fast/
 F:	package/perl-data-dump/
