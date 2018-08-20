@@ -496,6 +496,7 @@ F:	package/perl-date-manip/
 F:	package/perl-dbd-mysql/
 F:	package/perl-dbi/
 F:	package/perl-device-serialport/
+F:	package/perl-dist-checkconflicts/
 F:	package/perl-file-slurp/
 F:	package/perl-io-interface/
 F:	package/perl-io-socket-multicast/
