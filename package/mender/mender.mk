@@ -8,6 +8,9 @@ MENDER_VERSION = 1.4.0
 MENDER_SITE = $(call github,mendersoftware,mender,$(MENDER_VERSION))
 
 define MENDER_INSTALL_CONFIG_FILES
+	$(INSTALL) -d -m 755 $(TARGET_DIR)/etc/mender/scripts
+	echo -n "2" > $(TARGET_DIR)/etc/mender/scripts/version
+
 	$(INSTALL) -D -m 0644 package/mender/mender.conf \
 		$(TARGET_DIR)/etc/mender/mender.conf
 	$(INSTALL) -D -m 0644 package/mender/tenant.conf \
