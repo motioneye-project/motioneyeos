@@ -8,8 +8,10 @@ MUTT_VERSION = 1.10.1
 MUTT_SITE = https://bitbucket.org/mutt/mutt/downloads
 MUTT_LICENSE = GPL-2.0+
 MUTT_LICENSE_FILES = GPL
-MUTT_DEPENDENCIES = ncurses
+MUTT_DEPENDENCIES = host-pkgconf ncurses
 MUTT_CONF_OPTS = --disable-doc --disable-smtp
+# We're patching configure.ac
+MUTT_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MUTT_DEPENDENCIES += libiconv
