@@ -38,10 +38,9 @@ define MENDER_INSTALL_CONFIG_FILES
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/etc/mender/scripts
 	echo -n "2" > $(TARGET_DIR)/etc/mender/scripts/version
 
-	$(INSTALL) -D -m 0644 package/mender/mender.conf \
+	$(INSTALL) -D -m 0644 $(MENDER_PKGDIR)/mender.conf \
 		$(TARGET_DIR)/etc/mender/mender.conf
-
-	$(INSTALL) -D -m 0644 package/mender/server.crt \
+	$(INSTALL) -D -m 0644 $(MENDER_PKGDIR)/server.crt \
 		$(TARGET_DIR)/etc/mender/server.crt
 
 	$(INSTALL) -D -m 0755 $(@D)/support/mender-device-identity \
@@ -55,7 +54,7 @@ endef
 MENDER_POST_INSTALL_TARGET_HOOKS += MENDER_INSTALL_CONFIG_FILES
 
 define MENDER_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 0644 package/mender/mender.service \
+	$(INSTALL) -D -m 0644 $(MENDER_PKGDIR)/mender.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/mender.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/mender.service \
