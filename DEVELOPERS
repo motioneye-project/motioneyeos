@@ -492,6 +492,7 @@ F:	package/perl-class-std-fast/
 F:	package/perl-data-optlist/
 F:	package/perl-data-uuid/
 F:	package/perl-date-manip/
+F:	package/perl-dbd-mysql/
 F:	package/perl-dbi/
 F:	package/perl-device-serialport/
 F:	package/perl-file-slurp/
