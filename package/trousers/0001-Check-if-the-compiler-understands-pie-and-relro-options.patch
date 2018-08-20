@@ -8,8 +8,10 @@ executables, and -Wl,-z,relro turns on read-only relocation support in gcc.
 Add checks to ensure that the compiler and linker understand these options.
 
 Signed-off-by: Lada Trimasova <ltrimas@synopsys.com>
+[Bernd: Rebased for version 0.3.14]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
- configure.in                |  5 +++
+ configure.ac                |  5 +++
  m4/ax_check_compile_flag.m4 | 72 ++++++++++++++++++++++++++++++++++++
  m4/ax_check_link_flag.m4    | 71 +++++++++++++++++++++++++++++++++++
  src/tcsd/Makefile.am        |  4 +-
@@ -19,12 +21,12 @@ Signed-off-by: Lada Trimasova <ltrimas@synopsys.com>
 
 diff --git a/configure.in b/configure.in
 index add23dc..9603353 100644
---- a/configure.in
-+++ b/configure.in
+--- a/configure.ac
++++ b/configure.ac
 @@ -12,6 +12,7 @@ TSS_VER_MINOR=3
  # compute $target
  AC_CANONICAL_TARGET
- AM_INIT_AUTOMAKE([foreign 1.6])
+ AM_INIT_AUTOMAKE([foreign subdir-objects 1.6])
 +AC_CONFIG_MACRO_DIR([m4])
  
  # Debugging support
@@ -205,11 +207,8 @@ index 2210734..6640ab2 100644
 -tcsd_CFLAGS=-DAPPID=\"TCSD\" -DVAR_PREFIX=\"@localstatedir@\" -DETC_PREFIX=\"@sysconfdir@\" -I${top_srcdir}/src/include -fPIE -DPIE
 +tcsd_CFLAGS=-DAPPID=\"TCSD\" -DVAR_PREFIX=\"@localstatedir@\" -DETC_PREFIX=\"@sysconfdir@\" -I${top_srcdir}/src/include $(PIE_CFLAGS)
  tcsd_LDADD=${top_builddir}/src/tcs/libtcs.a ${top_builddir}/src/tddl/libtddl.a -lpthread @CRYPTOLIB@
--tcsd_LDFLAGS=-pie -Wl,-z,relro -Wl,-z,now
+-tcsd_LDFLAGS=@TCSD_LDFLAGS@
 +tcsd_LDFLAGS=$(PIE_LDFLAGS) $(RELRO_LDFLAGS)
- 
  tcsd_SOURCES=svrside.c tcsd_conf.c tcsd_threads.c platform.c
  
--- 
-2.5.0
-
+ if TSS_BUILD_PS

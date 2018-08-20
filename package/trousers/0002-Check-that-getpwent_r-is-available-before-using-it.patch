@@ -6,15 +6,17 @@ Subject: [PATCH] Check that getpwent_r is available before using it
 This fixes building trousers with musl
 
 Signed-off-by: Noé Rubinstein <nrubinstein@aldebaran.com>
+[Bernd: Rebased for version 0.3.14]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
- configure.in        |  4 ++++
+ configure.ac        |  4 ++++
  src/tspi/ps/tspps.c | 10 +++++-----
  2 files changed, 9 insertions(+), 5 deletions(-)
 
 diff --git a/configure.in b/configure.in
 index fd3f5f1..e3d7acf 100644
---- a/configure.in
-+++ b/configure.in
+--- a/configure.ac
++++ b/configure.ac
 @@ -145,6 +145,10 @@ else
  	AC_MSG_ERROR(["gtk", "openssl" and "none" are the only supported gui options for trousers])
  fi
