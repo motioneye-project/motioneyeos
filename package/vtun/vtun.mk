@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VTUN_VERSION = 3.0.3
+VTUN_VERSION = 3.0.4
 VTUN_SITE = http://downloads.sourceforge.net/project/vtun/vtun/$(VTUN_VERSION)
 VTUN_LICENSE = GPL-2.0+ with OpenSSL exception
 VTUN_LICENSE_FILES = README.OpenSSL
