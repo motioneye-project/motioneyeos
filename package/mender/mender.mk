@@ -6,6 +6,31 @@
 
 MENDER_VERSION = 1.4.0
 MENDER_SITE = $(call github,mendersoftware,mender,$(MENDER_VERSION))
+MENDER_LICENSE = Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, MIT, OLDAP-2.8
+
+# Vendor license paths generated with:
+#    awk '{print $2}' LIC_FILES_CHKSUM.sha256 | grep vendor
+MENDER_LICENSE_FILES = \
+	LICENSE \
+	LIC_FILES_CHKSUM.sha256 \
+	vendor/github.com/mendersoftware/mendertesting/LICENSE \
+	vendor/github.com/mendersoftware/log/LICENSE \
+	vendor/github.com/mendersoftware/log/COPYING \
+	vendor/github.com/mendersoftware/scopestack/LICENSE \
+	vendor/github.com/mendersoftware/scopestack/COPYING \
+	vendor/github.com/mendersoftware/mender-artifact/LICENSE \
+	vendor/github.com/pkg/errors/LICENSE \
+	vendor/github.com/pmezard/go-difflib/LICENSE \
+	vendor/golang.org/x/sys/LICENSE \
+	vendor/golang.org/x/net/LICENSE \
+	vendor/github.com/bmatsuo/lmdb-go/LICENSE.md \
+	vendor/github.com/davecgh/go-spew/LICENSE \
+	vendor/github.com/Sirupsen/logrus/LICENSE \
+	vendor/github.com/stretchr/testify/LICENSE \
+	vendor/github.com/stretchr/testify/LICENCE.txt \
+	vendor/github.com/stretchr/objx/LICENSE.md \
+	vendor/github.com/ungerik/go-sysfs/LICENSE \
+	vendor/github.com/bmatsuo/lmdb-go/LICENSE.mdb.md
 
 define MENDER_INSTALL_CONFIG_FILES
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/etc/mender/scripts
