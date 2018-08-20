@@ -509,6 +509,7 @@ F:	package/perl-sub-install/
 F:	package/perl-sys-meminfo/
 F:	package/perl-sys-mmap/
 F:	package/perl-time-parsedate/
+F:	package/perl-x10/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
