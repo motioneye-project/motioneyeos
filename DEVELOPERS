@@ -505,6 +505,7 @@ F:	package/perl-mime-tools/
 F:	package/perl-module-implementation/
 F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
+F:	package/perl-package-stash/
 F:	package/perl-params-util/
 F:	package/perl-sub-install/
 F:	package/perl-sys-cpu/
