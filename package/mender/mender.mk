@@ -14,12 +14,13 @@ define MENDER_INSTALL_CONFIG_FILES
 		$(TARGET_DIR)/etc/mender/tenant.conf
 	$(INSTALL) -D -m 0644 package/mender/server.crt \
 		$(TARGET_DIR)/etc/mender/server.crt
+
 	$(INSTALL) -D -m 0755 package/mender/mender-device-identity \
-		$(TARGET_DIR)/var/share/mender/identity/mender-device-identity
+		$(TARGET_DIR)/usr/share/mender/identity/mender-device-identity
 	$(INSTALL) -D -m 0755 package/mender/mender-inventory-network \
-		$(TARGET_DIR)/var/share/mender/inventory/mender-inventory-network
+		$(TARGET_DIR)/usr/share/mender/inventory/mender-inventory-network
 	$(INSTALL) -D -m 0755 package/mender/mender-inventory-hostinfo \
-		$(TARGET_DIR)/var/share/mender/inventory/mender-inventory-hostinfo
+		$(TARGET_DIR)/usr/share/mender/inventory/mender-inventory-hostinfo
 endef
 
 MENDER_POST_INSTALL_TARGET_HOOKS += MENDER_INSTALL_CONFIG_FILES
