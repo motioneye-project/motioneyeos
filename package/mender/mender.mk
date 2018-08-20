@@ -32,6 +32,8 @@ MENDER_LICENSE_FILES = \
 	vendor/github.com/ungerik/go-sysfs/LICENSE \
 	vendor/github.com/bmatsuo/lmdb-go/LICENSE.mdb.md
 
+MENDER_LDFLAGS = -X main.Version=$(MENDER_VERSION)
+
 define MENDER_INSTALL_CONFIG_FILES
 	$(INSTALL) -d -m 755 $(TARGET_DIR)/etc/mender/scripts
 	echo -n "2" > $(TARGET_DIR)/etc/mender/scripts/version
