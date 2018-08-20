@@ -489,6 +489,7 @@ F:	package/perl-appconfig/
 F:	package/perl-astro-suntime/
 F:	package/perl-class-std/
 F:	package/perl-class-std-fast/
+F:	package/perl-data-dump/
 F:	package/perl-data-optlist/
 F:	package/perl-data-uuid/
 F:	package/perl-date-manip/
