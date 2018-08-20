@@ -1,0 +1,5 @@
+config BR2_PACKAGE_PERL_SYS_CPU
+	bool "perl-sys-cpu"
+	help
+	  perl-sys-cpu
+

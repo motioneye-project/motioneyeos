@@ -506,6 +506,7 @@ F:	package/perl-module-runtime/
 F:	package/perl-number-bytes-human/
 F:	package/perl-params-util/
 F:	package/perl-sub-install/
+F:	package/perl-sys-cpu/
 F:	package/perl-sys-meminfo/
 F:	package/perl-sys-mmap/
 F:	package/perl-time-parsedate/
