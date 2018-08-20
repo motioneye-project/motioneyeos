@@ -1,3 +1,34 @@
+2018.08-rc2, Released August 20th, 2018
+
+	Fixes all over the tree.
+
+	pkg-kconfig: Support dependencies needed to run the
+	configurator, E.G. recent Linux kernel versions needing flex
+	and bison.
+
+	Defconfigs: ARM Juno: Bump ATF to fix a build
+	issue. Raspberrypi2: Bump rootfs size. Snps_archs38_vdk:
+	Correct /etc/inittab. Technologic ts7680: Correct genimage
+	configuration. Orange PI PC / Zero, Sheevaplug: Bump U-boot to
+	2018.07 to fix build issue. Ensure host-openssl is pulled in
+	for kernel builds where needed.
+
+	Updated/fixed packages: aircrack-ng, bind, boost,
+	boot-wrapper-aarch64, bzip2, busybox, chrony, cryptsetup,
+	dahdi-tools, dbus, domoticz, eigen, ipsec-tools, libarchive,
+	libfuse, libgit2, libopenssl, libselinux, lighttpd, lvm2, m4,
+	makedevs, mariadb, mesa3d-headers, mono, ncmpc, ncurses,
+	nodejs, php, python-django, python-pyqt5, qt5base,
+	qt5serialbus, ruby, samba4, uboot-tools, uclibc, vlc,
+	waylandpp, wireless_tools, wireshark, wpa_supplicant, mtd,
+	xdriver_xf86-video-ati, xserver_xorg-server
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10781: cryptsetup luksOpen container_file container causes..
+	#10996: bogus musl ARM toolchain
+	#11191: xattr and check-package issue
+
 2018.08-rc1, Released August 5th, 2018
 
 	Toolchain:
