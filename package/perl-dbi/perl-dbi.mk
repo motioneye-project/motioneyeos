@@ -11,3 +11,4 @@ PERL_DBI_LICENSE = Artistic or GPL-1.0+
 PERL_DBI_LICENSE_FILES = LICENSE
 
 $(eval $(perl-package))
+$(eval $(host-perl-package))
