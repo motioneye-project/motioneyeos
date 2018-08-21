@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_BTRFS_PROGS
+	bool "host btrfs-progs"
+	help
+	  Btrfs filesystem utilities
+
+	  https://btrfs.wiki.kernel.org/index.php/Main_Page
