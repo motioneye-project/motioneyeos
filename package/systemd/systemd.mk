@@ -65,6 +65,13 @@ else
 SYSTEMD_CONF_OPTS += -Daudit=false
 endif
 
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+SYSTEMD_DEPENDENCIES += elfutils
+SYSTEMD_CONF_OPTS += -Delfutils=true
+else
+SYSTEMD_CONF_OPTS += -Delfutils=false
+endif
+
 # Both options can't be selected at the same time so prefer libidn2
 ifeq ($(BR2_PACKAGE_LIBIDN2),y)
 SYSTEMD_DEPENDENCIES += libidn2
