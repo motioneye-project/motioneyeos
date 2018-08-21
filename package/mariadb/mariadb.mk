@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-MARIADB_VERSION = 10.1.35
+MARIADB_VERSION = 10.2.17
 MARIADB_SITE = https://downloads.mariadb.org/interstitial/mariadb-$(MARIADB_VERSION)/source
 MARIADB_LICENSE = GPL-2.0 (server), GPL-2.0 with FLOSS exception (GPL client library), LGPL-2.0 (LGPL client library)
 # Tarball no longer contains LGPL license text
 # https://jira.mariadb.org/browse/MDEV-12297
-MARIADB_LICENSE_FILES = README COPYING
+MARIADB_LICENSE_FILES = README.md COPYING
 MARIADB_INSTALL_STAGING = YES
 MARIADB_PROVIDES = mysql
 
@@ -41,6 +41,14 @@ MARIADB_CONF_OPTS += -DSTACK_DIRECTION=-1
 # when it comes to cross-compilation we shall disable it and also disable TokuDB.
 MARIADB_CONF_OPTS += -DWITH_JEMALLOC=no -DWITHOUT_TOKUDB=1
 
+# RocksDB fails to build in some configurations with the following build error:
+# ./output/build/mariadb-10.2.17/storage/rocksdb/rocksdb/utilities/backupable/backupable_db.cc:327:38:
+# error: field 'result' has incomplete type 'std::promise<rocksdb::BackupEngineImpl::CopyOrCreateResult>'
+#     std::promise<CopyOrCreateResult> result;
+#
+# To work around the issue, we disable RocksDB
+MARIADB_CONF_OPTS += -DWITHOUT_ROCKSDB=1
+
 # Make it explicit that we are cross-compiling
 MARIADB_CONF_OPTS += -DCMAKE_CROSSCOMPILING=1
 
@@ -67,7 +75,7 @@ MARIADB_CONF_OPTS += \
 	-DMYSQL_DATADIR=/var/lib/mysql \
 	-DMYSQL_UNIX_ADDR=$(MYSQL_SOCKET)
 
-HOST_MARIADB_CONF_OPTS += -DWITH_SSL=bundled
+HOST_MARIADB_CONF_OPTS += -DWITH_SSL=OFF
 
 # Some helpers must be compiled for host in order to crosscompile mariadb for
 # the target. They are then included by import_executables.cmake which is
