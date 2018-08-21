@@ -21,8 +21,12 @@ BTRFS_PROGS_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-static
 BTRFS_PROGS_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) install-static
 endif
 
-HOST_BTRFS_PROGS_DEPENDENCIES = host-e2fsprogs host-lzo host-zlib
-HOST_BTRFS_PROGS_CONF_OPTS = --disable-backtrace --disable-zstd --disable-python
+HOST_BTRFS_PROGS_DEPENDENCIES = host-util-linux host-lzo host-zlib
+HOST_BTRFS_PROGS_CONF_OPTS = \
+	--disable-backtrace \
+	--disable-zstd \
+	--disable-python \
+	--disable-convert
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
