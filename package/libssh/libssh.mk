@@ -17,6 +17,9 @@ LIBSSH_CONF_OPTS = \
 	-DWITH_SERVER=OFF \
 	-DWITH_EXAMPLES=OFF
 
+# cmake older than 3.10 require this to avoid try_run() in FindThreads
+LIBSSH_CONF_OPTS += -DTHREADS_PTHREAD_ARG=OFF
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 LIBSSH_CONF_OPTS += -DWITH_ZLIB=ON
 LIBSSH_DEPENDENCIES += zlib
