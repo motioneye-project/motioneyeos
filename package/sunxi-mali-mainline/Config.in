@@ -7,7 +7,7 @@ config BR2_PACKAGE_SUNXI_MALI_MAINLINE
 	help
 	  Install userspace Allwinner OpenGL libraries.
 
-	  https://github.com/free-electrons/mali-blobs
+	  https://github.com/bootlin/mali-blobs
 
 if BR2_PACKAGE_SUNXI_MALI_MAINLINE
 
