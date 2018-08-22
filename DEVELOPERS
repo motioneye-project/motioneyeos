@@ -900,6 +900,10 @@ F:	arch/Config.in.csky
 F:	board/csky/
 F:	configs/csky_*
 
+N:	Gustavo Pimentel <gustavo.pimentel@synopsys.com>
+F:	configs/arm_juno_defconfig
+F:	board/arm/juno/
+
 N:	Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
 F:	package/gnuradio/
 F:	package/gqrx/
