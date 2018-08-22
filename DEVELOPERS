@@ -1437,6 +1437,9 @@ F:	package/libfribidi/
 N:	Min Xu <xuminready@gmail.com>
 F:	package/shadowsocks-libev/
 
+N:	Mirza Krak <mirza.krak@northern.tech>
+F:	package/mender/
+
 N:	Morgan Delestre <m.delestre@sinters.fr>
 F:	package/monkey/
 
