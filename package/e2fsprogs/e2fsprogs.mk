@@ -26,8 +26,8 @@ HOST_E2FSPROGS_CONF_OPTS = \
 	--disable-fuse2fs \
 	--disable-libblkid \
 	--disable-libuuid \
-	--enable-symlink-install \
 	--disable-testio-debug \
+	--enable-symlink-install \
 	--enable-elf-shlibs
 
 # Set the binary directories to "/bin" and "/sbin", as busybox does,
