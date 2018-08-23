@@ -1,0 +1,171 @@
+From 95b45d1c46b35232ee0b9bdb3135b080c164c7c6 Mon Sep 17 00:00:00 2001
+From: Alexander Traud <pabstraud@compuserve.com>
+Date: Wed, 18 Oct 2017 10:30:25 +0200
+Subject: [PATCH] res_srtp: Add support for libsrtp2 with AES-GCM.
+
+Beside allowing AES-GCM again, this adds AES-192 again.
+
+ASTERISK-27356
+
+Change-Id: Ia97a435faf26300335d9552fa676b5d17e5f7233
+[yann.morin.1998@free.fr: backport from upstream]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ configure              | 104 +++++++++++++++++++++++++++++++++++++++++++++++++
+ configure.ac           |   1 +
+ res/srtp/srtp_compat.h |  12 ++++++
+ 3 files changed, 117 insertions(+)
+
+diff --git a/configure b/configure
+index 59bc3b10b1..588fbfd0be 100755
+--- a/configure
++++ b/configure
+@@ -33793,6 +33793,110 @@ fi
+ 
+ 
+ 
++if test "x${PBX_SRTP_192}" != "x1" -a "${USE_SRTP_192}" != "no"; then
++   pbxlibdir=""
++   # if --with-SRTP_192=DIR has been specified, use it.
++   if test "x${SRTP_192_DIR}" != "x"; then
++      if test -d ${SRTP_192_DIR}/lib; then
++         pbxlibdir="-L${SRTP_192_DIR}/lib"
++      else
++         pbxlibdir="-L${SRTP_192_DIR}"
++      fi
++   fi
++   pbxfuncname="srtp_crypto_policy_set_aes_cm_192_hmac_sha1_80"
++   if test "x${pbxfuncname}" = "x" ; then   # empty lib, assume only headers
++      AST_SRTP_192_FOUND=yes
++   else
++      ast_ext_lib_check_save_CFLAGS="${CFLAGS}"
++      CFLAGS="${CFLAGS} "
++      as_ac_Lib=`$as_echo "ac_cv_lib_srtp2_${pbxfuncname}" | $as_tr_sh`
++{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for ${pbxfuncname} in -lsrtp2" >&5
++$as_echo_n "checking for ${pbxfuncname} in -lsrtp2... " >&6; }
++if eval \${$as_ac_Lib+:} false; then :
++  $as_echo_n "(cached) " >&6
++else
++  ac_check_lib_save_LIBS=$LIBS
++LIBS="-lsrtp2 ${pbxlibdir}  $LIBS"
++cat confdefs.h - <<_ACEOF >conftest.$ac_ext
++/* end confdefs.h.  */
++
++/* Override any GCC internal prototype to avoid an error.
++   Use char because int might match the return type of a GCC
++   builtin and then its argument prototype would still apply.  */
++#ifdef __cplusplus
++extern "C"
++#endif
++char ${pbxfuncname} ();
++int
++main ()
++{
++return ${pbxfuncname} ();
++  ;
++  return 0;
++}
++_ACEOF
++if ac_fn_c_try_link "$LINENO"; then :
++  eval "$as_ac_Lib=yes"
++else
++  eval "$as_ac_Lib=no"
++fi
++rm -f core conftest.err conftest.$ac_objext \
++    conftest$ac_exeext conftest.$ac_ext
++LIBS=$ac_check_lib_save_LIBS
++fi
++eval ac_res=\$$as_ac_Lib
++	       { $as_echo "$as_me:${as_lineno-$LINENO}: result: $ac_res" >&5
++$as_echo "$ac_res" >&6; }
++if eval test \"x\$"$as_ac_Lib"\" = x"yes"; then :
++  AST_SRTP_192_FOUND=yes
++else
++  AST_SRTP_192_FOUND=no
++fi
++
++      CFLAGS="${ast_ext_lib_check_save_CFLAGS}"
++   fi
++
++   # now check for the header.
++   if test "${AST_SRTP_192_FOUND}" = "yes"; then
++      SRTP_192_LIB="${pbxlibdir} -lsrtp2 "
++      # if --with-SRTP_192=DIR has been specified, use it.
++      if test "x${SRTP_192_DIR}" != "x"; then
++         SRTP_192_INCLUDE="-I${SRTP_192_DIR}/include"
++      fi
++      SRTP_192_INCLUDE="${SRTP_192_INCLUDE} "
++      if test "x" = "x" ; then	# no header, assume found
++         SRTP_192_HEADER_FOUND="1"
++      else				# check for the header
++         ast_ext_lib_check_saved_CPPFLAGS="${CPPFLAGS}"
++         CPPFLAGS="${CPPFLAGS} ${SRTP_192_INCLUDE}"
++         ac_fn_c_check_header_mongrel "$LINENO" "" "ac_cv_header_" "$ac_includes_default"
++if test "x$ac_cv_header_" = xyes; then :
++  SRTP_192_HEADER_FOUND=1
++else
++  SRTP_192_HEADER_FOUND=0
++fi
++
++
++         CPPFLAGS="${ast_ext_lib_check_saved_CPPFLAGS}"
++      fi
++      if test "x${SRTP_192_HEADER_FOUND}" = "x0" ; then
++         SRTP_192_LIB=""
++         SRTP_192_INCLUDE=""
++      else
++         if test "x${pbxfuncname}" = "x" ; then		# only checking headers -> no library
++            SRTP_192_LIB=""
++         fi
++         PBX_SRTP_192=1
++         cat >>confdefs.h <<_ACEOF
++#define HAVE_SRTP_192 1
++_ACEOF
++
++      fi
++   fi
++fi
++
++
++
+ if test "x${PBX_SRTP_GCM}" != "x1" -a "${USE_SRTP_GCM}" != "no"; then
+    pbxlibdir=""
+    # if --with-SRTP_GCM=DIR has been specified, use it.
+diff --git a/configure.ac b/configure.ac
+index 9f95786e11..c729b94aba 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -2520,6 +2520,7 @@ AST_EXT_LIB_CHECK_SHARED([SRTP], [srtp2], [srtp_init], [srtp2/srtp.h], [], [], [
+ if test "x$PBX_SRTP" = x1;
+ then
+     AST_EXT_LIB_CHECK([SRTP_256], [srtp2], [srtp_crypto_policy_set_aes_cm_256_hmac_sha1_80])
++    AST_EXT_LIB_CHECK([SRTP_192], [srtp2], [srtp_crypto_policy_set_aes_cm_192_hmac_sha1_80])
+     AST_EXT_LIB_CHECK([SRTP_GCM], [srtp2], [srtp_crypto_policy_set_aes_gcm_128_8_auth])
+     AST_EXT_LIB_CHECK([SRTP_SHUTDOWN], [srtp2], [srtp_shutdown], [srtp2/srtp.h])
+ 
+diff --git a/res/srtp/srtp_compat.h b/res/srtp/srtp_compat.h
+index 56ffca1cc2..dbd8ddee0f 100644
+--- a/res/srtp/srtp_compat.h
++++ b/res/srtp/srtp_compat.h
+@@ -16,6 +16,18 @@
+ #define crypto_policy_set_aes_gcm_128_8_auth srtp_crypto_policy_set_aes_gcm_128_8_auth
+ #define crypto_policy_set_aes_gcm_256_8_auth srtp_crypto_policy_set_aes_gcm_256_8_auth
+ 
++#if defined(SRTP_AES_GCM_128_KEY_LEN_WSALT)
++#define AES_128_GCM_KEYSIZE_WSALT SRTP_AES_GCM_128_KEY_LEN_WSALT
++#else
++#define AES_128_GCM_KEYSIZE_WSALT SRTP_AES_128_GCM_KEYSIZE_WSALT
++#endif
++
++#if defined(SRTP_AES_GCM_256_KEY_LEN_WSALT)
++#define AES_256_GCM_KEYSIZE_WSALT SRTP_AES_GCM_256_KEY_LEN_WSALT
++#else
++#define AES_256_GCM_KEYSIZE_WSALT SRTP_AES_256_GCM_KEYSIZE_WSALT
++#endif
++
+ #define err_status_t srtp_err_status_t
+ #define err_status_ok srtp_err_status_ok
+ #define err_status_fail srtp_err_status_fail
+-- 
+2.14.1
+
