@@ -77,6 +77,14 @@ config BR2_KERNEL_HEADERS_4_17
 
 config BR2_KERNEL_HEADERS_VERSION
 	bool "Manually specified Linux version"
+	help
+	  This option allows you to use a specific official version from
+	  kernel.org, like 2.6.x, 2.6.x.y, 3.x.y, ...
+
+	  Note: you cannot use this option to select a _longterm_ 2.6
+	  kernel, because these kernels are not located at the standard
+	  URL at kernel.org. Instead, select "Custom tarball" and
+	  specify the right URL directly.
 
 endchoice
 
