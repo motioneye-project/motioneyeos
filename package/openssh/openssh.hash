@@ -1,4 +1,4 @@
-# From http://www.openssh.com/txt/release-7.7 (base64 encoded)
-sha256 d73be7e684e99efcd024be15a30bffcbe41b012b2f7b3c9084aed621775e6b8f  openssh-7.7p1.tar.gz
+# From http://www.openssh.com/txt/release-7.8 (base64 encoded)
+sha256 1a484bb15152c183bb2514e112aa30dd34138c3cfb032eee5490a66c507144ca  openssh-7.8p1.tar.gz
 # Locally calculated
 sha256 05a4c25ef464e19656c5259bd4f4da8428efab01044f3541b79fbb3ff209350f  LICENCE
