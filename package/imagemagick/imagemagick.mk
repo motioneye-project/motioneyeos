@@ -143,4 +143,41 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-bzlib
 endif
 
+HOST_IMAGEMAGICK_CONF_OPTS = \
+	--disable-openmp \
+	--without-djvu \
+	--without-dps \
+	--without-flif \
+	--without-fpx \
+	--without-gslib \
+	--without-gvc \
+	--without-jbig \
+	--without-lqr \
+	--without-openexr \
+	--without-perl \
+	--without-raqm \
+	--without-wmf \
+	--without-x \
+	--without-bzlib \
+	--without-fftw \
+	--without-fontconfig \
+	--without-freetype \
+	--without-lcms \
+	--without-lzma \
+	--without-pango \
+	--without-rsvg \
+	--without-tiff \
+	--without-webp \
+	--without-xml \
+	--with-jpeg \
+	--with-png \
+	--with-zlib
+
+HOST_IMAGEMAGICK_DEPENDENCIES = \
+	host-libjpeg \
+	host-libpng \
+	host-pkgconf \
+	host-zlib
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
