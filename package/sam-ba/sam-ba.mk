@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SAM_BA_SITE = http://www.atmel.com/dyn/resources/prod_documents
-SAM_BA_VERSION = 2.16
-SAM_BA_SOURCE = sam-ba_$(SAM_BA_VERSION)_linux.zip
+SAM_BA_SITE = http://ww1.microchip.com/downloads/en/DeviceDoc
+SAM_BA_VERSION = 2.18
+SAM_BA_SOURCE = sam-ba_cdc_linux.zip
 SAM_BA_LICENSE = SAM-BA license (sam-ba executable), \
 		BSD-2-Clause like, BSD-4-Clause (TCL and applets code)
 SAM_BA_LICENSE_FILES = doc/license.txt tcl_lib/boards.tcl \
