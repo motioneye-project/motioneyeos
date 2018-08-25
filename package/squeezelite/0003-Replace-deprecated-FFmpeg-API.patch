@@ -1,17 +1,22 @@
-Fix compilation with ffmpeg >= 2.9
+From cce6a0378ac319b87d2545d73f593d440bf686f5 Mon Sep 17 00:00:00 2001
+From: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
+Date: Sat, 18 Aug 2018 13:25:23 +0200
+Subject: [PATCH] Replace deprecated FFmpeg API
+
+Fixes compilation with ffmpeg >= 2.9.
 
 Downloaded from Debian:
-https://sources.debian.net/src/squeezelite/1.8-3/debian/patches/ffmpeg_2.9.patch/
+https://sources.debian.org/src/squeezelite/1.8-4.1/debian/patches/ffmpeg_2.9.patch/
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ ffmpeg.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-
-Description: Replace deprecated FFmpeg API
-Author: Andreas Cadhalpun <Andreas.Cadhalpun@googlemail.com>
-Last-Update: <2015-11-02>
-
---- squeezelite-1.8.orig/ffmpeg.c
-+++ squeezelite-1.8/ffmpeg.c
+diff --git a/ffmpeg.c b/ffmpeg.c
+index 279f31d..bc9136c 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
 @@ -52,8 +52,8 @@ struct ff_s {
  	unsigned (* avcodec_version)(void);
  	AVCodec * (* avcodec_find_decoder)(int);
@@ -55,3 +60,6 @@ Last-Update: <2015-11-02>
  	ff->avcodec_decode_audio4 = dlsym(handle_codec, "avcodec_decode_audio4");
  	ff->av_init_packet = dlsym(handle_codec, "av_init_packet");
  	ff->av_free_packet = dlsym(handle_codec, "av_free_packet");
+-- 
+2.18.0
+

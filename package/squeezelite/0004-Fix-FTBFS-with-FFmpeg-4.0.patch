@@ -1,0 +1,31 @@
+From 4ad37284447e768d641768c7c8a69c4640c83181 Mon Sep 17 00:00:00 2001
+From: James Cowgill <jcowgill@debian.org>
+Date: Sat, 18 Aug 2018 13:26:59 +0200
+Subject: [PATCH] Fix FTBFS with FFmpeg 4.0
+
+Bug-Debian: https://bugs.debian.org/888335
+
+Downloaded from Debian:
+https://sources.debian.org/src/squeezelite/1.8-4.1/debian/patches/ffmpeg4.0.patch/
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ ffmpeg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ffmpeg.c b/ffmpeg.c
+index bc9136c..d51b08e 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -264,7 +264,7 @@ static decode_state ff_decode(void) {
+ 		ff->mmsh_bytes_left = ff->mmsh_bytes_pad = ff->mmsh_packet_len = 0;
+ 
+ 		if (!ff->readbuf) {
+-			ff->readbuf = AV(ff, malloc, READ_SIZE +  FF_INPUT_BUFFER_PADDING_SIZE);
++			ff->readbuf = AV(ff, malloc, READ_SIZE +  AV_INPUT_BUFFER_PADDING_SIZE);
+ 		}
+ 
+ 		avio = AVIO(ff, alloc_context, ff->readbuf, READ_SIZE, 0, NULL, _read_data, NULL, NULL);
+-- 
+2.18.0
+
