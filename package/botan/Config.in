@@ -12,6 +12,8 @@ config BR2_PACKAGE_BOTAN
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_BOTAN_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # std::future
+	select BR2_PACKAGE_BOOST_FILESYSTEM if BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_SYSTEM if BR2_PACKAGE_BOOST
 	help
 	  Botan is a crypto library for C++
 
