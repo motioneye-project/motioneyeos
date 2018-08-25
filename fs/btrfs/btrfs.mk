@@ -29,6 +29,7 @@ BTRFS_OPTS = \
 ROOTFS_BTRFS_DEPENDENCIES = host-btrfs-progs
 
 define ROOTFS_BTRFS_CMD
+	$(RM) -f $@
 	$(HOST_DIR)/bin/mkfs.btrfs $(BTRFS_OPTS) $@
 endef
 
