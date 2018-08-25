@@ -1,0 +1,32 @@
+From 5690daf759b473b9d13b4547ef37adc2695cf524 Mon Sep 17 00:00:00 2001
+From: James Cowgill <jcowgill@jcowgill.uk>
+Date: Sun, 25 Feb 2018 14:23:25 +0000
+Subject: [PATCH] Fix build with FFmpeg 4.0
+
+Downloaded from upstream commit
+https://git.aubio.org/?p=aubio.git;a=commitdiff;h=5690daf759b473b9d13b4547ef37adc2695cf524
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/io/source_avcodec.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/io/source_avcodec.c b/src/io/source_avcodec.c
+index ccdce807..8197445c 100644
+--- a/src/io/source_avcodec.c
++++ b/src/io/source_avcodec.c
+@@ -58,7 +58,11 @@
+ #include "fmat.h"
+ #include "source_avcodec.h"
+ 
++#if LIBAVCODEC_VERSION_INT < AV_VERSION_INT(56, 56, 0)
+ #define AUBIO_AVCODEC_MAX_BUFFER_SIZE FF_MIN_BUFFER_SIZE
++#else
++#define AUBIO_AVCODEC_MAX_BUFFER_SIZE AV_INPUT_BUFFER_MIN_SIZE
++#endif
+ 
+ struct _aubio_source_avcodec_t {
+   uint_t hop_size;
+-- 
+2.14.4
+
