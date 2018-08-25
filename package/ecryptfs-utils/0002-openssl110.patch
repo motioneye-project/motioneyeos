@@ -1,0 +1,173 @@
+Fix build with OpenSSL 1.1.x
+
+Downloaded from upstream commit
+https://code.launchpad.net/~jelle-vdwaa/ecryptfs/ecryptfs/+merge/319746
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+=== modified file 'src/key_mod/ecryptfs_key_mod_openssl.c'
+--- a/src/key_mod/ecryptfs_key_mod_openssl.c	2013-10-25 19:45:09 +0000
++++ b/src/key_mod/ecryptfs_key_mod_openssl.c	2017-06-02 18:27:28 +0000
+@@ -41,6 +41,7 @@
+ #include <stdlib.h>
+ #include <unistd.h>
+ #include <libgen.h>
++#include <openssl/bn.h>
+ #include <openssl/pem.h>
+ #include <openssl/rsa.h>
+ #include <openssl/err.h>
+@@ -55,6 +56,19 @@
+ 	char *passphrase;
+ };
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++static void RSA_get0_key(const RSA *r,
++                 const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
++{
++   if (n != NULL)
++       *n = r->n;
++   if (e != NULL)
++       *e = r->e;
++   if (d != NULL)
++       *d = r->d;
++}
++#endif
++
+ static void
+ ecryptfs_openssl_destroy_openssl_data(struct openssl_data *openssl_data)
+ {
+@@ -142,6 +156,7 @@
+ {
+ 	int len, nbits, ebits, i;
+ 	int nbytes, ebytes;
++	const BIGNUM *key_n, *key_e;
+ 	unsigned char *hash;
+ 	unsigned char *data = NULL;
+ 	int rc = 0;
+@@ -152,11 +167,13 @@
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	}
+-	nbits = BN_num_bits(key->n);
++	RSA_get0_key(key, &key_n, NULL, NULL);
++	nbits = BN_num_bits(key_n);
+ 	nbytes = nbits / 8;
+ 	if (nbits % 8)
+ 		nbytes++;
+-	ebits = BN_num_bits(key->e);
++	RSA_get0_key(key, NULL, &key_e, NULL);
++	ebits = BN_num_bits(key_e);
+ 	ebytes = ebits / 8;
+ 	if (ebits % 8)
+ 		ebytes++;
+@@ -179,11 +196,13 @@
+ 	data[i++] = '\02';
+ 	data[i++] = (nbits >> 8);
+ 	data[i++] = nbits;
+-	BN_bn2bin(key->n, &(data[i]));
++	RSA_get0_key(key, &key_n, NULL, NULL);
++	BN_bn2bin(key_n, &(data[i]));
+ 	i += nbytes;
+ 	data[i++] = (ebits >> 8);
+ 	data[i++] = ebits;
+-	BN_bn2bin(key->e, &(data[i]));
++	RSA_get0_key(key, NULL, &key_e, NULL);
++	BN_bn2bin(key_e, &(data[i]));
+ 	i += ebytes;
+ 	SHA1(data, len + 3, hash);
+ 	to_hex(sig, (char *)hash, ECRYPTFS_SIG_SIZE);
+@@ -278,7 +297,9 @@
+ 	BIO *in = NULL;
+ 	int rc;
+ 
++	#if OPENSSL_VERSION_NUMBER < 0x10100000L
+ 	CRYPTO_malloc_init();
++	#endif
+ 	ERR_load_crypto_strings();
+ 	OpenSSL_add_all_algorithms();
+ 	ENGINE_load_builtin_engines();
+
+=== modified file 'src/key_mod/ecryptfs_key_mod_pkcs11_helper.c'
+--- a/src/key_mod/ecryptfs_key_mod_pkcs11_helper.c	2013-10-25 19:45:09 +0000
++++ b/src/key_mod/ecryptfs_key_mod_pkcs11_helper.c	2017-06-02 18:27:28 +0000
+@@ -41,6 +41,7 @@
+ #include <errno.h>
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <openssl/bn.h>
+ #include <openssl/err.h>
+ #include <openssl/pem.h>
+ #include <openssl/x509.h>
+@@ -77,6 +78,19 @@
+ typedef const unsigned char *__pkcs11_openssl_d2i_t;
+ #endif
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++static void RSA_get0_key(const RSA *r,
++                 const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
++{
++   if (n != NULL)
++       *n = r->n;
++   if (e != NULL)
++       *e = r->e;
++   if (d != NULL)
++       *d = r->d;
++}
++#endif
++
+ /**
+  * ecryptfs_pkcs11h_deserialize
+  * @pkcs11h_data: The deserialized version of the key module data;
+@@ -282,7 +296,11 @@
+ 		goto out;
+ 	}
+ 	
++	#if OPENSSL_VERSION_NUMBER < 0x10100000L
+ 	if (pubkey->type != EVP_PKEY_RSA) {
++	#else
++	if (EVP_PKEY_base_id(pubkey) != EVP_PKEY_RSA) {
++	#endif
+ 		syslog(LOG_ERR, "PKCS#11: Invalid public key algorithm");
+ 		rc = -EIO;
+ 		goto out;
+@@ -318,6 +336,7 @@
+ 	int nbytes, ebytes;
+ 	char *hash = NULL;
+ 	char *data = NULL;
++	const BIGNUM *rsa_n, *rsa_e;
+ 	int rc;
+ 
+ 	if ((rc = ecryptfs_pkcs11h_get_public_key(&rsa, blob))) {
+@@ -331,11 +350,13 @@
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	}
+-	nbits = BN_num_bits(rsa->n);
++	RSA_get0_key(rsa, &rsa_n, NULL, NULL);
++	nbits = BN_num_bits(rsa_n);
+ 	nbytes = nbits / 8;
+ 	if (nbits % 8)
+ 		nbytes++;
+-	ebits = BN_num_bits(rsa->e);
++	RSA_get0_key(rsa, NULL, &rsa_e, NULL);
++	ebits = BN_num_bits(rsa_e);
+ 	ebytes = ebits / 8;
+ 	if (ebits % 8)
+ 		ebytes++;
+@@ -358,11 +379,13 @@
+ 	data[i++] = '\02';
+ 	data[i++] = (char)(nbits >> 8);
+ 	data[i++] = (char)nbits;
+-	BN_bn2bin(rsa->n, &(data[i]));
++	RSA_get0_key(rsa, &rsa_n, NULL, NULL);
++	BN_bn2bin(rsa_n, &(data[i]));
+ 	i += nbytes;
+ 	data[i++] = (char)(ebits >> 8);
+ 	data[i++] = (char)ebits;
+-	BN_bn2bin(rsa->e, &(data[i]));
++	RSA_get0_key(rsa, NULL, &rsa_e, NULL);
++	BN_bn2bin(rsa_e, &(data[i]));
+ 	i += ebytes;
+ 	SHA1(data, len + 3, hash);
+ 	to_hex(sig, hash, ECRYPTFS_SIG_SIZE);
+
