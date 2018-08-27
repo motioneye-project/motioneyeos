@@ -1,6 +1,5 @@
 config BR2_PACKAGE_ACPID
 	bool "acpid"
-	depends on BR2_x86_64 || BR2_i386
 	help
 	  Advanced Configuration and Power Interface event daemon.
 
