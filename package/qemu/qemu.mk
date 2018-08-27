@@ -55,6 +55,11 @@ endif
 
 endif
 
+# There is no "--enable-slirp"
+ifeq ($(BR2_PACKAGE_QEMU_SLIRP),)
+QEMU_OPTS += --disable-slirp
+endif
+
 ifeq ($(BR2_PACKAGE_QEMU_SDL),y)
 QEMU_OPTS += --enable-sdl
 QEMU_DEPENDENCIES += sdl
@@ -101,7 +106,6 @@ define QEMU_CONFIGURE_CMDS
 			--enable-vhost-net \
 			--disable-bsd-user \
 			--disable-xen \
-			--disable-slirp \
 			--disable-vnc \
 			--disable-virtfs \
 			--disable-brlapi \
