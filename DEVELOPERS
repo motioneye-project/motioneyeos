@@ -877,6 +877,7 @@ F:	package/libwebsock/
 F:	package/sofia-sip/
 
 N:	Grzegorz Blach <grzegorz@blach.pl>
+F:	package/python-falcon/
 F:	package/python-mimeparse/
 
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>
