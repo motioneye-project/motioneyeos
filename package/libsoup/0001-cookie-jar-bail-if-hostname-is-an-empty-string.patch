@@ -1,0 +1,35 @@
+From 3f5635028bbad44287511fcd3c99f2a2fddf01cd Mon Sep 17 00:00:00 2001
+From: Michael Catanzaro <mcatanzaro@igalia.com>
+Date: Sun, 24 Jun 2018 19:46:19 -0500
+Subject: [PATCH] cookie-jar: bail if hostname is an empty string
+
+There are several other ways to fix the problem with this function, but
+skipping over all of the code is probably the simplest.
+
+Fixes #3
+
+
+(cherry picked from commit db2b0d5809d5f8226d47312b40992cadbcde439f)
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit db2b0d5809d
+
+ libsoup/soup-cookie-jar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libsoup/soup-cookie-jar.c b/libsoup/soup-cookie-jar.c
+index d12bc85a8e60..365da6abf9f4 100644
+--- a/libsoup/soup-cookie-jar.c
++++ b/libsoup/soup-cookie-jar.c
+@@ -306,7 +306,7 @@ get_cookies (SoupCookieJar *jar, SoupURI *uri, gboolean for_http, gboolean copy_
+ 
+ 	priv = SOUP_COOKIE_JAR_GET_PRIVATE (jar);
+ 
+-	if (!uri->host)
++	if (!uri->host || !uri->host[0])
+ 		return NULL;
+ 
+ 	/* The logic here is a little weird, but the plan is that if
+-- 
+2.18.0
+
