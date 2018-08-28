@@ -10,5 +10,9 @@ JSON_C_INSTALL_STAGING = YES
 JSON_C_LICENSE = MIT
 JSON_C_LICENSE_FILES = COPYING
 
+# configure requires autoheader
+JSON_C_DEPENDENCIES = host-autoconf
+HOST_JSON_C_DEPENDENCIES = host-autoconf
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
