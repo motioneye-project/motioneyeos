@@ -876,6 +876,9 @@ F:	package/libsrtp/
 F:	package/libwebsock/
 F:	package/sofia-sip/
 
+N:	Grzegorz Blach <grzegorz@blach.pl>
+F:	package/python-mimeparse/
+
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>
 F:	package/c-icap/
 F:	package/c-icap-modules/
