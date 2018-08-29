@@ -10,9 +10,13 @@ JSON_C_INSTALL_STAGING = YES
 JSON_C_LICENSE = MIT
 JSON_C_LICENSE_FILES = COPYING
 
-# configure requires autoheader
-JSON_C_DEPENDENCIES = host-autoconf
-HOST_JSON_C_DEPENDENCIES = host-autoconf
+# update config.h.in timestamp to avoid autoheader run
+define JSON_C_UPDATE_CONFIG_TIMESTAMP
+	touch $(@D)/config.h.in
+endef
+
+JSON_C_POST_EXTRACT_HOOKS += JSON_C_UPDATE_CONFIG_TIMESTAMP
+HOST_JSON_C_POST_EXTRACT_HOOKS += JSON_C_UPDATE_CONFIG_TIMESTAMP
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
