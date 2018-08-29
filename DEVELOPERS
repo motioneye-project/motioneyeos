@@ -693,6 +693,7 @@ F:	package/alljoyn-tcl/
 F:	package/alljoyn-tcl-base/
 F:	package/boinc/
 F:	package/cairo/
+F:	package/expat/
 F:	package/flatbuffers/
 F:	package/gtksourceview/
 F:	package/gssdp/
@@ -734,9 +735,11 @@ F:	package/libsoup/
 F:	package/libsoxr/
 F:	package/libupnp/
 F:	package/libupnp18/
+F:	package/libv4l/
 F:	package/libxslt/
 F:	package/mbedtls/
 F:	package/minissdpd/
+F:	package/minizip/
 F:	package/motion/
 F:	package/mutt/
 F:	package/ncmpc/
