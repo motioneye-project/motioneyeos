@@ -351,6 +351,32 @@
 	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is
 		enabled
 
+2018.02.5, Released August 29th, 2018
+
+	Important / security related fixes.
+
+	Defconfigs: Raspberrypi2: Bump rootfs size, T7680: Fix
+	genimage.cfg issue, ARM Juno: Bump ATF to v1.3 to fix build
+	issue.
+
+	Updated/fixed packages: acl, apache, attr, bind,
+	boot-wrapper-aarch64, brltty, bzip2, chrony, crda, cryptsetup,
+	dahdi-tools, dmidecode, dropbear, eigen, erlang, ffmpeg, gawk,
+	gcc, ghostscript, gnutls, ipsec-tools, libarchive, libfuse,
+	libopenssl, libselinux, libsoup, lighttpd, linuxptp,
+	lttng-modules, lttng-tools, lua-flu, lvm2, m4, makedevs,
+	mariadb, mbedtls, mesa3d-headers, mtd, ncurses, nodejs,
+	openssh, php, postgresql, python-django, qt5xmlpatterns, ruby,
+	samba4, shairport-sync, stress-ng, ti-utils, uboot-tools, vim,
+	waylandpp, wireless_tools, wireshark, wpa_supplicant, xorriso,
+	znc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10781: cryptsetup luksOpen container_file container causes..
+	#10986: Installing package attr when already supplied by..
+	#11191: xattr and check-package issue
+
 2018.02.4, Released July 21th, 2018
 
 	Important / security related fixes.
