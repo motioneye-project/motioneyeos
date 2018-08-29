@@ -5,12 +5,6 @@ Freescale i.MX8MQ EVK board
 This file documents the Buildroot support for the Freescale i.MX8MQ
 EVK board.
 
-Hardware support
-================
-
-Currently only basic support for hardware is available, currently no
-support for GPU, VPU and other HW features.
-
 Build
 =====
 
