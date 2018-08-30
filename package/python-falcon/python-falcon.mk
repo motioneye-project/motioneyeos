@@ -11,4 +11,8 @@ PYTHON_FALCON_SETUP_TYPE = setuptools
 PYTHON_FALCON_LICENSE = Apache-2.0
 PYTHON_FALCON_LICENSE_FILES = LICENSE
 
+ifeq ($(BR2_PACKAGE_HOST_PYTHON_CYTHON),y)
+PYTHON_FALCON_DEPENDENCIES += host-python-cython
+endif
+
 $(eval $(python-package))
