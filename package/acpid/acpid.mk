@@ -15,9 +15,15 @@ define ACPID_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S02acpid
 endef
 
+ifeq ($(BR2_INIT_SYSV)$(BR2_INIT_SYSTEMD),y)
+ACPID_POWEROFF_CMD = /sbin/shutdown -hP now
+else
+ACPID_POWEROFF_CMD = /sbin/poweroff
+endif
+
 define ACPID_SET_EVENTS
 	mkdir -p $(TARGET_DIR)/etc/acpi/events
-	printf "event=button[ /]power\naction=/sbin/poweroff\n" \
+	printf 'event=button[ /]power\naction=%s\n' '$(ACPID_POWEROFF_CMD)' \
 		>$(TARGET_DIR)/etc/acpi/events/powerbtn
 endef
 
