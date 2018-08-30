@@ -54,6 +54,8 @@
 	- X.org server bumped to 1.20, and all X.org proto packages
 	  replaced by the single xorgproto package
 	- i.MX6 support packages bumped to 6.2.4
+	- i.MX Vivante graphics version bumped to 6.2.4.p1.2,
+	  adding support for Wayland and i.MX8MQ platforms
 
 	Linux: bumped to 4.17 by default.
 
