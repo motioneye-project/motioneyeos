@@ -944,6 +944,7 @@ F:	package/python-aioblescan/
 F:	package/python-falcon/
 F:	package/python-mimeparse/
 F:	package/python-pigpio/
+F:	package/python-pyjwt/
 F:	package/python-wtforms/
 
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>

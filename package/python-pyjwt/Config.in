@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYJWT
+	bool "python-pyjwt"
+	help
+	  JSON Web Token implementation in Python.
+
+	  http://github.com/jpadilla/pyjwt

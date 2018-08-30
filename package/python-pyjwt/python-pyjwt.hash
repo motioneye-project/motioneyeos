@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/PyJWT/json
+md5	a4712f980c008696e13e09504120b2a0  PyJWT-1.7.1.tar.gz
+sha256	8d59a976fb773f3e6a39c85636357c4f0e242707394cadadd9814f5cbaa20e96  PyJWT-1.7.1.tar.gz
+# Locally computed sha256 checksums
+sha256	ec82af815b5f9da8685afb300cc5beb7949e1c22b79b6c1c054796cefdf6cac6  LICENSE
