@@ -1,4 +1,4 @@
-CHROMIUM_LICENSE_FILES = \
+QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/url/third_party/mozilla/LICENSE.txt \
 	src/3rdparty/chromium/tools/symsrc/COPYING-pefile \
 	src/3rdparty/chromium/tools/win/ChromeDebug/ChromeDebug/LICENSE \
