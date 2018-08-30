@@ -32,6 +32,15 @@ QT_LDFLAGS = $(TARGET_LDFLAGS)
 # use an older c++ standard to prevent build failure
 QT_CXXFLAGS += -std=gnu++98
 
+# gcc bug internal compiler error: in validate_condition_mode, at
+# config/rs6000/rs6000.c:180744. Bug is fixed since gcc 7.
+# Workaround is to set -mno-isel, see
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60818 and
+# https://gcc.gnu.org/ml/gcc-patches/2016-02/msg01036.html
+ifeq ($(BR2_powerpc_8540)$(BR2_powerpc_8548)$(BR2_powerpc_e500mc)$(BR2_powerpc_e5500):$(BR2_TOOLCHAIN_GCC_AT_LEAST_7),y:)
+QT_CXXFLAGS += -mno-isel
+endif
+
 # Qt has some assembly function that are not present in thumb1 mode:
 # Error: selected processor does not support Thumb mode `swp r3,r7,[r4]'
 # so, we desactivate thumb mode
