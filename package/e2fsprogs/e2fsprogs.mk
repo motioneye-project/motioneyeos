@@ -70,7 +70,8 @@ E2FSPROGS_CONF_ENV += BUILD_CFLAGS="-DHAVE_SYS_STAT_H"
 # it doesn't provide definitions expected by e2fsprogs support lib.
 HOST_E2FSPROGS_CONF_ENV += \
 	ac_cv_header_magic_h=no \
-	ac_cv_lib_magic_magic_file=no
+	ac_cv_lib_magic_magic_file=no \
+	ac_cv_path_LDCONFIG=true
 
 E2FSPROGS_MAKE_OPTS = LDCONFIG=true
 
