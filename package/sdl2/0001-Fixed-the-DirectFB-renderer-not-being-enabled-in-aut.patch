@@ -1,0 +1,42 @@
+From a0acea5bcce3f47badbfeeab7bc2e36eba08fd84 Mon Sep 17 00:00:00 2001
+From: Sam Lantinga <slouken@libsdl.org>
+Date: Mon, 27 Aug 2018 11:51:05 -0700
+Subject: [PATCH] Fixed the DirectFB renderer not being enabled in autoconf
+ builds
+
+Upstream-url: https://hg.libsdl.org/SDL/raw-rev/751cdc74d55c
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ configure    | 3 +++
+ configure.in | 1 +
+ 2 files changed, 4 insertions(+)
+
+diff --git a/configure b/configure
+index e88b38001..40ac14d21 100755
+--- a/configure
++++ b/configure
+@@ -21501,6 +21501,9 @@ fi
+ 
+ $as_echo "#define SDL_VIDEO_DRIVER_DIRECTFB 1" >>confdefs.h
+ 
++
++$as_echo "#define SDL_VIDEO_RENDER_DIRECTFB 1" >>confdefs.h
++
+             SOURCES="$SOURCES $srcdir/src/video/directfb/*.c"
+             EXTRA_CFLAGS="$EXTRA_CFLAGS $DIRECTFB_CFLAGS"
+ 
+diff --git a/configure.in b/configure.in
+index 5bf5d717b..ce1d57ea1 100644
+--- a/configure.in
++++ b/configure.in
+@@ -2163,6 +2163,7 @@ AC_HELP_STRING([--enable-directfb-shared], [dynamically load directfb support [[
+                               , enable_directfb_shared=yes)
+ 
+             AC_DEFINE(SDL_VIDEO_DRIVER_DIRECTFB, 1, [ ])
++            AC_DEFINE(SDL_VIDEO_RENDER_DIRECTFB, 1, [ ])
+             SOURCES="$SOURCES $srcdir/src/video/directfb/*.c"
+             EXTRA_CFLAGS="$EXTRA_CFLAGS $DIRECTFB_CFLAGS"
+ 
+-- 
+2.11.0
+
