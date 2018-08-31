@@ -1,3 +1,32 @@
+2018.08-rc3, Released August 31th, 2018
+
+	Fixes all over the tree.
+
+	linux: additional improvements to the flex / bison dependency
+	handling, use system provided variant if available. Ensure
+	toolchain is available when configuring for 4.18+ support.
+
+	Download: Fix handling of primary sites using file://
+
+	Toolchain: Correct external toolchain musl detection for
+	static toolchains.
+
+	Updated/fixed packages: aircrack-ng, bison, brltty, busybox,
+	cutelyst, dropbear, gr-osmosdr, i2c-tools, json-c, libconfuse,
+	libkcapi, libsoup, libssh, liburiparser, mbedtls, mender,
+	mesa3d, minicom, mjpegtools, mutt, openpowerlink, openssh,
+	oracle-mysql, php, postgresql, pv, qt5base, qt5quickcontrols,
+	rauc, shairport-sync, systemd, xlib_libX11, zeromq,
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11091: BR2_PRIMARY_SITE doesn't work (wget is selected...
+	#11141: WF111 package no longer available
+	#11211: Internal compiler error: Killed (program cc1plus)..
+	#11236: util-linux fails to build on Travis CI when python..
+	#11246: Glibc 2.28 - fails to build host-bison and host-m4
+	#11256: Add python-falcon and python-mimeparse packages
+
 2018.08-rc2, Released August 20th, 2018
 
 	Fixes all over the tree.
