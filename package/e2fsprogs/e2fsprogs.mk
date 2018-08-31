@@ -64,7 +64,9 @@ endif
 # the configure script (i.e with the cross-compiler). Help them by
 # saying that <sys/stat.h> is available on the host, which is needed
 # for util/subst.c to build properly.
-E2FSPROGS_CONF_ENV += BUILD_CFLAGS="-DHAVE_SYS_STAT_H"
+E2FSPROGS_CONF_ENV += \
+	BUILD_CFLAGS="-DHAVE_SYS_STAT_H" \
+	ac_cv_path_LDCONFIG=true
 
 # Disable use of the host magic.h, as on older hosts (e.g. RHEL 5)
 # it doesn't provide definitions expected by e2fsprogs support lib.
@@ -73,17 +75,9 @@ HOST_E2FSPROGS_CONF_ENV += \
 	ac_cv_lib_magic_magic_file=no \
 	ac_cv_path_LDCONFIG=true
 
-E2FSPROGS_MAKE_OPTS = LDCONFIG=true
-
 E2FSPROGS_INSTALL_STAGING_OPTS = \
 	DESTDIR=$(STAGING_DIR) \
-	LDCONFIG=true \
 	install-libs
-
-E2FSPROGS_INSTALL_TARGET_OPTS = \
-	DESTDIR=$(TARGET_DIR) \
-	LDCONFIG=true \
-	install
 
 define HOST_E2FSPROGS_INSTALL_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) install install-libs
