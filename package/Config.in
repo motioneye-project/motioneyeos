@@ -1025,6 +1025,7 @@ menu "External python modules"
 	source "package/python-xlwt/Config.in"
 	source "package/python-xmltodict/Config.in"
 	source "package/python-yieldfrom/Config.in"
+	source "package/python-zeroconf/Config.in"
 	source "package/python-zope-interface/Config.in"
 endmenu
 endif

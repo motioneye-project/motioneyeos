@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/zeroconf/json
+md5	23124285dbdfcf3cb9cca11b98216cf7  zeroconf-0.20.0.tar.gz
+sha256	6e3f1e7b5871e3d1410ac29b9fb85aafc1e2d661ed596b07a6f84559a475efcb  zeroconf-0.20.0.tar.gz
+# Locally computed sha256 checksums
+sha256	bb117c0fbd7f57f64170b690285d7df07c2371b578e3b3cd3aa2e1155ef461a0  COPYING
