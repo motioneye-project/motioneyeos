@@ -9,7 +9,7 @@ config BR2_PACKAGE_MINICOM
 	  ANSI and VT102 terminals. It has a dialing directory and auto
 	  zmodem download.
 
-	  http://alioth.debian.org/projects/minicom/
+	  https://salsa.debian.org/minicom-team/minicom
 
 comment "minicom needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU

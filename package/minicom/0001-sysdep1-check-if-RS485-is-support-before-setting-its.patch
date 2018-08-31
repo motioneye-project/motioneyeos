@@ -1,0 +1,36 @@
+From 238bbe98558bcd5ed9ab73ef03db82b57ab056ab Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@micronovasrl.com>
+Date: Fri, 31 Aug 2018 15:18:22 +0200
+Subject: [PATCH] sysdep1: check if RS485 is support before setting its
+ parameters
+
+Not every kernel supports RS485, so better check it before setting its
+parameters.
+
+Test if RS485 is supported by checking if these 3 macros are defined:
+- SER_RS485_ENABLED
+- TIOCGRS485
+- TIOCSRS485
+If they're not defined m_set485parms becomes a dummy function.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ src/sysdep1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/sysdep1.c b/src/sysdep1.c
+index 798b006..b03b442 100644
+--- a/src/sysdep1.c
++++ b/src/sysdep1.c
+@@ -599,7 +599,7 @@ void m_set485parms(int fd, int en, int rts_on_snd, int rts_aft_snd,
+                    int rx_dur_tx, int term_bus, char *del_rts_bef_snd,
+                    char *del_rts_aft_snd)
+ {
+-#ifdef SER_RS485_ENABLED
++#if defined (SER_RS485_ENABLED) && defined (TIOCGRS485) && defined (TIOCSRS485)
+   struct serial_rs485 rs485conf;
+ 
+   if (ioctl(fd, TIOCGRS485, &rs485conf))
+-- 
+2.17.1
+
