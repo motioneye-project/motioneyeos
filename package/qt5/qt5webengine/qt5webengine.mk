@@ -13,7 +13,7 @@ QT5WEBENGINE_DEPENDENCIES = ffmpeg libglib2 libvpx opus webp qt5base \
 QT5WEBENGINE_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
-include package/qt5/qt5webengine/chromium.inc
+include package/qt5/qt5webengine/chromium-latest.inc
 else
 include package/qt5/qt5webengine/chromium-lts.inc
 endif
