@@ -76,6 +76,14 @@ get_gid() {
 }
 
 #----------------------------------------------------------------------------
+get_members() {
+    local group="${1}"
+
+    awk -F: -v group="${group}"                             \
+        '$1 == group { printf( "%s\n", $4 ); }' "${GROUP}"
+}
+
+#----------------------------------------------------------------------------
 get_username() {
     local uid="${1}"
 
@@ -211,16 +219,17 @@ generate_gid() {
 add_one_group() {
     local group="${1}"
     local gid="${2}"
-    local _f
+    local members
 
     # Generate a new GID if needed
     if [ ${gid} -eq -1 ]; then
         gid="$( generate_gid "${group}" )"
     fi
 
+    members=$(get_members "$group")
     # Remove any previous instance of this group, and re-add the new one
     sed -i --follow-symlinks -e '/^'"${group}"':.*/d;' "${GROUP}"
-    printf "%s:x:%d:\n" "${group}" "${gid}" >>"${GROUP}"
+    printf "%s:x:%d:%s\n" "${group}" "${gid}" "${members}" >>"${GROUP}"
 
     # Ditto for /etc/gshadow if it exists
     if [ -f "${GSHADOW}" ]; then
