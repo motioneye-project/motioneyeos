@@ -23,13 +23,13 @@ index 28cc4dc..0f71e0e 100644
      QTPLUGIN += qtvirtualkeyboardplugin
  }
 -android-no-sdk|!isEmpty(CROSS_COMPILE) {
--    TARGETPATH = /data/user/qt/virtualkeyboard
+-    TARGETPATH = /data/user/qt/virtualkeyboard/basic
 -} else {
--    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
+-    TARGETPATH = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard/basic
 -}
 -target.path = $$TARGETPATH
 +
-+target.path = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard
++target.path = $$[QT_INSTALL_EXAMPLES]/virtualkeyboard/basic
  INSTALLS += target
  
  RESOURCES += \
