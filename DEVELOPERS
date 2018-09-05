@@ -719,6 +719,7 @@ F:	package/alljoyn-tcl/
 F:	package/alljoyn-tcl-base/
 F:	package/boinc/
 F:	package/cairo/
+F:	package/duktape/
 F:	package/flatbuffers/
 F:	package/gtksourceview/
 F:	package/gssdp/

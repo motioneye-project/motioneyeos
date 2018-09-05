@@ -1,0 +1,16 @@
+config BR2_PACKAGE_DUKTAPE
+	bool "duktape"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Duktape is an embeddable Javascript engine, with a focus on
+	  portability and compact footprint.
+
+	  Duktape is easy to integrate into a C/C++ project: add
+	  duktape.c, duktape.h, and duk_config.h to your build, and use
+	  the Duktape API to call Ecmascript functions from C code and
+	  vice versa.
+
+	  http://www.duktape.org
+
+comment "duktape needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
