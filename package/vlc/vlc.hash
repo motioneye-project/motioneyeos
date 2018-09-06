@@ -1,9 +1,9 @@
-# From http://download.videolan.org/pub/videolan/vlc/3.0.3/vlc-3.0.3.tar.xz.sha256
-sha256 9ba8b04bdb13f7860a2041768ac83b47b397a36549c71c530b94028a3cfd5b51 vlc-3.0.3.tar.xz
-# From http://download.videolan.org/pub/videolan/vlc/3.0.3/vlc-3.0.3.tar.xz.sha1
-sha1 dd1b7350bb0a7848e172e9dbbe0705ec5bb3d48c vlc-3.0.3.tar.xz
-# From http://download.videolan.org/pub/videolan/vlc/3.0.3/vlc-3.0.3.tar.xz.md5
-md5 cf01d4755c719fe1c8605ceb40d8f1d2 vlc-3.0.3.tar.xz
+# From http://download.videolan.org/pub/videolan/vlc/3.0.4/vlc-3.0.4.tar.xz.sha256
+sha256 01f3db3790714038c01f5e23c709e31ecd6f1c046ac93d19e1dde38b3fc05a9e vlc-3.0.4.tar.xz
+# From http://download.videolan.org/pub/videolan/vlc/3.0.4/vlc-3.0.4.tar.xz.sha1
+sha1 218603f05ab5f30de0cc87b0ccceb57bb1efcfa4 vlc-3.0.4.tar.xz
+# From http://download.videolan.org/pub/videolan/vlc/3.0.4/vlc-3.0.4.tar.xz.md5
+md5 f5e49a0fb9594ab8debf934a710e92f1 vlc-3.0.4.tar.xz
 # Locally computed
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
 sha256 dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING.LIB
