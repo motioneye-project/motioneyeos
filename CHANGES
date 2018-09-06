@@ -1,3 +1,34 @@
+2018.08, Released September 6th, 2018
+
+	Minor fixes.
+
+	Known issues:
+
+	- Glibc 2.28 on the build host breaks compilation of a number
+	  of host packages. 2018.08 contains fixes for some of these
+	  packages, but not all. Consider building on hosts (or in
+	  containers) using older Glibc versions.
+
+	- host-dtc 1.4.7 breaks compilation of older U-Boot and Linux
+          kernel configurations using FDT/DTC. Consider updating the
+          Linux kernel to >= 4.17 and U-Boot to >= 2018.07 or
+          backporting commit 9130ba8846 (scripts/dtc: Update to
+          upstream version v1.4.6-9-gaadd0b65c987) for the Linux
+          kernel / commit db405d1980 for U-Boot.
+	  Alternatively revert commit 7b929ddcf0 (dtc: bump version to
+          1.4.7) and ensure your build host does not have the libfdt
+          development headers installed.
+
+	Updated/fixed packages: busybox, chipmunk, cutelyst,
+	domoticz, gcc, imagemagick, lcms2, libcurl, mediastreamer,
+	moarvm, php, qt, qt5virtualkeyboard, qt5webengine, screen,
+	sdl2, squashfs, uboot, xen
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11261: ccache using wrong cached objects
+	#11276: Understanding the patch for kernel-4.9 and other..
+
 2018.08-rc3, Released August 31th, 2018
 
 	Fixes all over the tree.
