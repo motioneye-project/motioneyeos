@@ -1,3 +1,3 @@
-# Verified against http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.14.tar.xz.sig, sha256 locally computed
-sha256  0a84e2791bfe3077cf22ee1784c805d5bb550803dffe56a39aa3690a38061372  libmpdclient-2.14.tar.xz
+# Verified against http://www.musicpd.org/download/libmpdclient/2/libmpdclient-2.15.tar.xz.sig, sha256 locally computed
+sha256  b4dbf6f9fd99e8e7c183cb3b7de75ee4ac14d92ca43e9a99bef09168b20246d1  libmpdclient-2.15.tar.xz
 sha256  9574c3b0a9c31723cc3d5f32af4655a015fff5ec6ec8115b7906cd7d9623cf32  COPYING
