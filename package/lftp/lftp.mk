@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LFTP_VERSION = 4.8.3
+LFTP_VERSION = 4.8.4
 LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
 LFTP_LICENSE = GPL-3.0+
