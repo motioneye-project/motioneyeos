@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUAROCKS_VERSION = 3.0.1
+LUAROCKS_VERSION = 3.0.2
 LUAROCKS_SITE = http://luarocks.org/releases
 LUAROCKS_LICENSE = MIT
 LUAROCKS_LICENSE_FILES = COPYING
@@ -31,8 +31,6 @@ define HOST_LUAROCKS_INSTALL_CMDS
 	rm -f $(LUAROCKS_CONFIG_FILE)
 	$(MAKE1) -C $(@D) install
 	echo "-- BR cross-compilation"                                  >> $(LUAROCKS_CONFIG_FILE)
-	echo "variables.LUA_DIR = [[$(STAGING_DIR)/usr]]"               >> $(LUAROCKS_CONFIG_FILE)
-	echo "variables.LUA_BINDIR = [[$(STAGING_DIR)/usr/bin]]"        >> $(LUAROCKS_CONFIG_FILE)
 	echo "variables.LUA_INCDIR = [[$(STAGING_DIR)/usr/include]]"    >> $(LUAROCKS_CONFIG_FILE)
 	echo "variables.LUA_LIBDIR = [[$(STAGING_DIR)/usr/lib]]"        >> $(LUAROCKS_CONFIG_FILE)
 	echo "variables.CC = [[$(TARGET_CC)]]"                          >> $(LUAROCKS_CONFIG_FILE)
