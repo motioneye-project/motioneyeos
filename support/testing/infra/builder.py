@@ -35,6 +35,11 @@ class Builder(object):
 
     def build(self):
         env = {"PATH": os.environ["PATH"]}
+        if "http_proxy" in os.environ:
+            self.logfile.write("Using system proxy: " +
+                               os.environ["http_proxy"] + "\n")
+            env['http_proxy'] = os.environ["http_proxy"]
+            env['https_proxy'] = os.environ["http_proxy"]
         cmd = ["make", "-C", self.builddir]
         ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
                               env=env)

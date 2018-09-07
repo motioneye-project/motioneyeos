@@ -1,5 +1,5 @@
-# From Calculated locally after checking signature
-sha256	644b6b03b285fb0ace02d241d59483d98bc462729d8bb3608d5cad5532f3d2f0	libidn2-2.0.4.tar.gz
+# Calculated locally after checking signature
+sha256	53f69170886f1fa6fa5b332439c7a77a7d22626a82ef17e2c1224858bb4ca2b8	libidn2-2.0.5.tar.gz
 
 # Hash for license files:
 sha256	4fa501e804195b4136c9cec4bc510365b8cbaf4bc075d6401a77ae0213370457	COPYING

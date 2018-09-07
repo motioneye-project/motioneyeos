@@ -53,6 +53,7 @@ F:	package/nginx-naxsi/
 F:	package/policycoreutils/
 F:	package/python-flask-sqlalchemy/
 F:	package/python-mutagen/
+F:	package/python-pip/
 F:	package/python-psycopg2/
 F:	package/python-sqlalchemy/
 F:	package/python-visitor/
@@ -330,6 +331,7 @@ F:	package/libyuv/
 F:	package/mesa3d/
 F:	package/minidlna/
 F:	package/mjpg-streamer/
+F:	package/perl-crypt-openssl-guess/
 F:	package/perl-crypt-openssl-random/
 F:	package/perl-crypt-openssl-rsa/
 F:	package/perl-digest-sha1/
@@ -470,6 +472,7 @@ F:	package/docker-proxy/
 F:	package/mosh/
 F:	package/rtl8821au/
 F:	package/runc/
+F:	package/tini/
 
 N:	Christophe Vu-Brugier <cvubrugier@fastmail.fm>
 F:	package/drbd-utils/
@@ -478,6 +481,29 @@ F:	package/python-configshell-fb/
 F:	package/python-rtslib-fb/
 F:	package/python-urwid/
 F:	package/targetcli-fb/
+
+N:	Christopher McCrory <chrismcc@gmail.com>
+F:	package/perl-appconfig/
+F:	package/perl-astro-suntime/
+F:	package/perl-class-std/
+F:	package/perl-class-std-fast/
+F:	package/perl-data-optlist/
+F:	package/perl-data-uuid/
+F:	package/perl-date-manip/
+F:	package/perl-dbi/
+F:	package/perl-device-serialport/
+F:	package/perl-file-slurp/
+F:	package/perl-io-interface/
+F:	package/perl-io-socket-multicast/
+F:	package/perl-json-maybexs/
+F:	package/perl-mime-tools/
+F:	package/perl-module-implementation/
+F:	package/perl-module-runtime/
+F:	package/perl-number-bytes-human/
+F:	package/perl-params-util/
+F:	package/perl-sub-install/
+F:	package/perl-sys-meminfo/
+F:	package/perl-sys-mmap/
 
 N:	Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 F:	package/audit/
@@ -693,6 +719,7 @@ F:	package/alljoyn-tcl/
 F:	package/alljoyn-tcl-base/
 F:	package/boinc/
 F:	package/cairo/
+F:	package/duktape/
 F:	package/expat/
 F:	package/flatbuffers/
 F:	package/gtksourceview/
@@ -852,6 +879,10 @@ F:	package/libnice/
 F:	package/libsrtp/
 F:	package/libwebsock/
 F:	package/sofia-sip/
+
+N:	Grzegorz Blach <grzegorz@blach.pl>
+F:	package/python-falcon/
+F:	package/python-mimeparse/
 
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>
 F:	package/c-icap/
@@ -1290,6 +1321,7 @@ F:	package/aufs-util/
 F:	package/bc/
 F:	package/bridge-utils/
 F:	package/checkpolicy/
+F:	package/checksec/
 F:	package/cgroupfs-mount/
 F:	package/crda/
 F:	package/devmem2/
@@ -1331,6 +1363,7 @@ F:	package/mtd/
 F:	package/mtools/
 F:	package/nginx-upload/
 F:	package/omniorb/
+F:	package/openresolv/
 F:	package/paxtest/
 F:	package/picocom/
 F:	package/policycoreutils/
@@ -1348,6 +1381,7 @@ F:	package/rsyslog/
 F:	package/setools/
 F:	package/smcroute/
 F:	package/tclap/
+F:	package/tini/
 F:	package/uboot-tools/
 F:	package/unionfs/
 F:	package/valijson/
@@ -1508,6 +1542,9 @@ F:	package/openjpeg/
 N:	Olivier Singla <olivier.singla@gmail.com>
 F:	package/shellinabox/
 
+N:	Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
+F:	package/checksec/
+
 N:	Parnell Springmeyer <parnell@digitalmentat.com>
 F:	package/scrypt/
 
@@ -1563,6 +1600,7 @@ F:	package/python-ipaddr/
 F:	package/python-pam/
 F:	package/python-psutil/
 F:	package/python-request-id/
+F:	package/python-semver/
 F:	package/python-texttable/
 F:	package/python-validators/
 F:	package/python-webob/

@@ -1,5 +1,6 @@
-# From http://www.squid-cache.org/Versions/v3/3.5/squid-3.5.27.tar.xz.asc
-md5 39ef8199675d48a314b540f92c00c545 squid-3.5.27.tar.xz
-sha1 1e69c96d13cd49844da3bcf33a0b428fbe7b6f77 squid-3.5.27.tar.xz
+# From http://www.squid-cache.org/Versions/v4/squid-4.2.tar.xz.asc
+md5 2cf3f5f183d04322d798f98ea5ead43f squid-4.2.tar.xz
+sha1 77fd6f06e6028780faf85ba7e7e9aef0922e9dc0 squid-4.2.tar.xz
 # Locally calculated
-sha256 58f5d05257af1fb964fde20e134d660fac9afa86b6fd8c70d63ead63068378fa COPYING
+sha256 994807762c59991b32449caf29418fd0ec9d2329746b18eb19bd930b6806d208 squid-4.2.tar.xz
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 COPYING

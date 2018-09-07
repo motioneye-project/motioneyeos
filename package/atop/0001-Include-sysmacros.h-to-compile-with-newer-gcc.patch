@@ -1,0 +1,52 @@
+From 414127c03669b4eedc85778a7bff80cf601311d8 Mon Sep 17 00:00:00 2001
+From: SjonHortensius <SjonHortensius@users.noreply.github.com>
+Date: Fri, 24 Aug 2018 18:26:58 +0200
+Subject: [PATCH] Include sysmacros.h to compile with newer gcc
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Older gcc throws a warning
+```
+photosyst.c: In function 'lvmmapname':
+photosyst.c:1465:13: warning: In the GNU C Library, "major" is defined
+ by <sys/sysmacros.h>. For historical compatibility, it is
+ currently defined by <sys/types.h> as well, but we plan to
+ remove this soon. To use "major", include <sys/sysmacros.h>
+ directly. If you did not intend to use a system-defined macro
+ "major", you should undefine it after including <sys/types.h>.
+     dmp->major  = major(statbuf.st_rdev);
+```
+
+Newer gcc throws an error:
+
+```
+photosyst.c: In function ‘lvmmapname’:
+photosyst.c:1482:19: error: called object ‘major’ is not a function or function pointer
+     dmp->major  = major(statbuf.st_rdev);
+                   ^~~~~
+photosyst.c:1437:25: note: declared here
+ lvmmapname(unsigned int major, unsigned int minor,
+            ~~~~~~~~~~~~~^~~~~
+```
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ photosyst.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/photosyst.c b/photosyst.c
+index 19cbbe1..50841a1 100644
+--- a/photosyst.c
++++ b/photosyst.c
+@@ -152,6 +152,7 @@
+ static const char rcsid[] = "$Id: photosyst.c,v 1.38 2010/11/19 07:40:40 gerlof Exp $";
+ 
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <unistd.h>
+-- 
+2.17.1
+

@@ -20,7 +20,6 @@ config BR2_PACKAGE_XEN_HYPERVISOR
 config BR2_PACKAGE_XEN_TOOLS
 	bool "Xen tools"
 	depends on !BR2_STATIC_LIBS # dtc (libfdt)
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
 	depends on BR2_USE_WCHAR # libglib2
 	select BR2_PACKAGE_DTC
@@ -37,7 +36,6 @@ config BR2_PACKAGE_XEN_TOOLS
 	  The Xen tools can be accessed by the xl command.
 
 comment "xen tools need a toolchain w/ wchar, threads, dynamic library"
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
 		BR2_STATIC_LIBS
 

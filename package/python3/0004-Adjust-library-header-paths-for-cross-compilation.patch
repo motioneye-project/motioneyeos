@@ -61,7 +61,7 @@ index 2bcd1dd288..422c13fa4f 100644
 +    BASE_EXEC_PREFIX = os.path.normpath(sys.base_exec_prefix)
  
  # Path to the base directory of the project. On Windows the binary may
- # live in project/PCBuild/win32 or project/PCBuild/amd64.
+ # live in project/PCbuild/win32 or project/PCbuild/amd64.
 -- 
 2.13.5
 

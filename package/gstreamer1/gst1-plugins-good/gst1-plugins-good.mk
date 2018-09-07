@@ -25,12 +25,18 @@ GST1_PLUGINS_GOOD_CONF_OPTS = \
 
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_GOOD_CONF_OPTS += \
-	--disable-jack \
 	--disable-libdv \
 	--disable-dv1394 \
 	--disable-shout2
 
 GST1_PLUGINS_GOOD_DEPENDENCIES = gstreamer1 gst1-plugins-base
+
+ifeq ($(BR2_PACKAGE_JACK2),y)
+GST1_PLUGINS_GOOD_CONF_OPTS += --enable-jack
+GST1_PLUGINS_GOOD_DEPENDENCIES += jack2
+else
+GST1_PLUGINS_GOOD_CONF_OPTS += --disable-jack
+endif
 
 ifeq ($(BR2_PACKAGE_LIBV4L),y)
 GST1_PLUGINS_GOOD_CONF_OPTS += --with-libv4l2

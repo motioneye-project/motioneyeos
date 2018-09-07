@@ -1,0 +1,38 @@
+From ad4537a75c798341824ab18bd1dc622f8dc2bc3a Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Fri, 20 Jul 2018 10:17:39 -0400
+Subject: [PATCH] Fix cross compiling the uuid module
+
+Python 3.7 has a new _uuid module, however, the include directory
+search path for uuid.h is hardcoded to /usr/include/uuid, which should
+not be used when cross-compiling.
+
+To fix this, use the same solution as the one used by the NIS
+detection: append "uuid" to each of the include directories in
+"inc_dirs", instead of hardcoding /usr/include/uuid.
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[Thomas: drop STAGING_DIR based solution, use a solution similar to
+the one used for the NIS detection.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ setup.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 1a7085c5c4..f33d0b57b8 100644
+--- a/setup.py
++++ b/setup.py
+@@ -1627,7 +1627,8 @@ class PyBuildExt(build_ext):
+             missing.append('_tkinter')
+ 
+         # Build the _uuid module if possible
+-        uuid_incs = find_file("uuid.h", inc_dirs, ["/usr/include/uuid"])
++        uuid_incs = find_file("uuid.h", inc_dirs,
++                              [os.path.join(inc_dir, 'uuid') for inc_dir in inc_dirs])
+         if uuid_incs is not None:
+             if self.compiler.find_library_file(lib_dirs, 'uuid'):
+                 uuid_libs = ['uuid']
+-- 
+2.14.4
+

@@ -444,6 +444,8 @@ class BuildrootPackage():
                     match = liclookup.match(lic_file.read())
                 if match is not None and match.confidence >= 90.0:
                     license_names.append(match.license.id)
+                else:
+                    license_names.append("FIXME: license id couldn't be detected")
 
             if len(license_names) > 0:
                 license_line = ('{name}_LICENSE ='

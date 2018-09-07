@@ -24,7 +24,7 @@ PROFTPD_CONF_OPTS = \
 	--with-gnu-ld
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
-PROFTPD_CONF_OPTS += --with-modules=mod_rewrite
+PROFTPD_MODULES += mod_rewrite
 endif
 
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REDIS),y)
@@ -33,6 +33,16 @@ PROFTPD_DEPENDENCIES += hiredis
 else
 PROFTPD_CONF_OPTS += --disable-redis
 endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_SFTP),y)
+PROFTPD_CONF_OPTS += --enable-openssl
+PROFTPD_MODULES += mod_sftp
+PROFTPD_DEPENDENCIES += openssl
+else
+PROFTPD_CONF_OPTS += --disable-openssl
+endif
+
+PROFTPD_CONF_OPTS += --with-modules=$(subst $(space),:,$(PROFTPD_MODULES))
 
 # configure script doesn't handle detection of %llu format string
 # support for printing the file size when cross compiling, breaking

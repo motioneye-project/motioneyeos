@@ -1,4 +1,4 @@
-From 418e5e692a1f975d41eab3bd15895b2ba0a7eee1 Mon Sep 17 00:00:00 2001
+From 6515c423f9e6b8b607678a260a16db2684d88a4e Mon Sep 17 00:00:00 2001
 From: Bernd Kuhls <bernd.kuhls@t-online.de>
 Date: Tue, 1 May 2018 22:30:09 +0200
 Subject: [PATCH] Don't hardcode the name of the vorbis and ogg libraries
@@ -14,10 +14,10 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/modules/codec/Makefile.am b/modules/codec/Makefile.am
-index bc39a4facc..c5cd2fb7f9 100644
+index 10132a92f3..2fb52a586e 100644
 --- a/modules/codec/Makefile.am
 +++ b/modules/codec/Makefile.am
-@@ -234,7 +234,7 @@ codec_LTLIBRARIES += $(LTLIBtheora)
+@@ -324,7 +324,7 @@ codec_LTLIBRARIES += $(LTLIBdaala)
  libtremor_plugin_la_SOURCES = codec/vorbis.c
  libtremor_plugin_la_CPPFLAGS = $(AM_CPPFLAGS) -DMODULE_NAME_IS_tremor
  libtremor_plugin_la_LDFLAGS = $(AM_LDFLAGS) -rpath '$(codecdir)'
@@ -27,5 +27,5 @@ index bc39a4facc..c5cd2fb7f9 100644
  codec_LTLIBRARIES += $(LTLIBtremor)
  
 -- 
-2.14.3
+2.14.4
 

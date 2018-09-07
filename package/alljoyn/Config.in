@@ -7,7 +7,6 @@ config BR2_PACKAGE_ALLJOYN
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_LIBCAP
-	select BR2_PACKAGE_OPENSSL
 	help
 	  The AllJoyn framework defines a common way for devices and
 	  apps to communicate with one another regardless of brands,

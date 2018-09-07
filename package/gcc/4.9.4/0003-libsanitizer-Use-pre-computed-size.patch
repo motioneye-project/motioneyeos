@@ -1,0 +1,71 @@
+From 61f38c64c01a15560026115a157b7021ec67bd3b Mon Sep 17 00:00:00 2001
+From: hjl <hjl@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Thu, 24 May 2018 20:21:54 +0000
+Subject: [PATCH] libsanitizer: Use pre-computed size of struct ustat for Linux
+
+Cherry-pick compiler-rt revision 333213:
+
+<sys/ustat.h> has been removed from glibc 2.28 by:
+
+commit cf2478d53ad7071e84c724a986b56fe17f4f4ca7
+Author: Adhemerval Zanella <adhemerval.zanella@linaro.org>
+Date:   Sun Mar 18 11:28:59 2018 +0800
+
+    Deprecate ustat syscall interface
+
+This patch uses pre-computed size of struct ustat for Linux.
+
+	PR sanitizer/85835
+	* sanitizer_common/sanitizer_platform_limits_posix.cc: Don't
+	include <sys/ustat.h> for Linux.
+	(SIZEOF_STRUCT_USTAT): New.
+	(struct_ustat_sz): Use SIZEOF_STRUCT_USTAT for Linux.
+
+
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/branches/gcc-7-branch@260688 138bc75d-0d04-0410-961f-82ee72b054a4
+
+Backported from upstream commit
+https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=61f38c64c01a15560026115a157b7021ec67bd3b
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ libsanitizer/ChangeLog                                    |  8 ++++++++
+ .../sanitizer_common/sanitizer_platform_limits_posix.cc   | 15 +++++++++++++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
+
+diff --git a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+index 31a5e69..8017afd 100644
+--- a/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
++++ b/libsanitizer/sanitizer_common/sanitizer_platform_limits_posix.cc
+@@ -81,7 +89,6 @@ typedef struct user_fpregs elf_fpregset_t;
+ # include <sys/procfs.h>
+ #endif
+ #include <sys/user.h>
+-#include <sys/ustat.h>
+ #include <linux/cyclades.h>
+ #include <linux/if_eql.h>
+ #include <linux/if_plip.h>
+@@ -163,7 +170,19 @@
+   unsigned struct_old_utsname_sz = sizeof(struct old_utsname);
+   unsigned struct_oldold_utsname_sz = sizeof(struct oldold_utsname);
+   unsigned struct_itimerspec_sz = sizeof(struct itimerspec);
+-  unsigned struct_ustat_sz = sizeof(struct ustat);
++  // Use pre-computed size of struct ustat to avoid <sys/ustat.h> which
++  // has been removed from glibc 2.28.
++#if defined(__aarch64__) || defined(__s390x__) || defined (__mips64) \
++  || defined(__powerpc64__) || defined(__arch64__) || defined(__sparcv9) \
++  || defined(__x86_64__)
++#define SIZEOF_STRUCT_USTAT 32
++#elif defined(__arm__) || defined(__i386__) || defined(__mips__) \
++  || defined(__powerpc__) || defined(__s390__)
++#define SIZEOF_STRUCT_USTAT 20
++#else
++#error Unknown size of struct ustat
++#endif
++  unsigned struct_ustat_sz = SIZEOF_STRUCT_USTAT;
+ #endif // SANITIZER_LINUX
+ 
+ #if SANITIZER_LINUX && !SANITIZER_ANDROID
+-- 
+2.9.3

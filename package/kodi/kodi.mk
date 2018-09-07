@@ -15,9 +15,9 @@ KODI_INSTALL_STAGING = YES
 KODI_DEPENDENCIES = \
 	bzip2 \
 	expat \
-	ffmpeg \
 	fontconfig \
 	freetype \
+	gnutls \
 	host-gawk \
 	host-gperf \
 	host-kodi-jsonschemabuilder \
@@ -47,11 +47,15 @@ KODI_DEPENDENCIES = \
 
 KODI_SUBDIR = project/cmake
 
+# taken from tools/depends/target/ffmpeg/FFMPEG-VERSION
+KODI_FFMPEG_VERSION = 3.1.11-Krypton-17.5
+KODI_EXTRA_DOWNLOADS += \
+	https://github.com/xbmc/FFmpeg/archive/$(KODI_FFMPEG_VERSION).tar.gz
+
 KODI_LIBDVDCSS_VERSION = 2f12236
 KODI_LIBDVDNAV_VERSION = 981488f
 KODI_LIBDVDREAD_VERSION = 17d99db
-
-KODI_EXTRA_DOWNLOADS = \
+KODI_EXTRA_DOWNLOADS += \
 	https://github.com/xbmc/libdvdcss/archive/$(KODI_LIBDVDCSS_VERSION).tar.gz \
 	https://github.com/xbmc/libdvdnav/archive/$(KODI_LIBDVDNAV_VERSION).tar.gz \
 	https://github.com/xbmc/libdvdread/archive/$(KODI_LIBDVDREAD_VERSION).tar.gz
@@ -62,12 +66,12 @@ KODI_CONF_OPTS += \
 	-DENABLE_CCACHE=OFF \
 	-DENABLE_DVDCSS=ON \
 	-DENABLE_INTERNAL_CROSSGUID=OFF \
-	-DENABLE_INTERNAL_FFMPEG=OFF \
+	-DENABLE_INTERNAL_FFMPEG=ON \
+	-DFFMPEG_URL=$(KODI_DL_DIR)/$(KODI_FFMPEG_VERSION).tar.gz \
 	-DKODI_DEPENDSBUILD=OFF \
 	-DENABLE_OPENSSL=ON \
 	-DNATIVEPREFIX=$(HOST_DIR) \
-	-DDEPENDS_PATH=$(@D) \
-	-DWITH_FFMPEG=$(STAGING_DIR)/usr \
+	-DDEPENDS_PATH=$(STAGING_DIR)/usr \
 	-DWITH_TEXTUREPACKER=$(HOST_DIR)/bin/TexturePacker \
 	-DLIBDVDCSS_URL=$(KODI_DL_DIR)/$(KODI_LIBDVDCSS_VERSION).tar.gz \
 	-DLIBDVDNAV_URL=$(KODI_DL_DIR)/$(KODI_LIBDVDNAV_VERSION).tar.gz \

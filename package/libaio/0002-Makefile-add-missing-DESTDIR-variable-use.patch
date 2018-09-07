@@ -1,0 +1,32 @@
+From 517d9fbe63fbd7e72445dce1cb3f3d8457d838cb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Tue, 14 Aug 2018 23:17:25 +0200
+Subject: [PATCH] Makefile: add missing DESTDIR variable use
+
+Patch borrowed from OpenEmbedded, available at
+recipes/libaio/libaio-0.3.106/destdir.patch in their source tree.
+
+It just adds support for the traditional DESTDIR variable to install
+the library in a different sysroot than the normal /.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e9dbdb0..c1fb831 100644
+--- a/Makefile
++++ b/Makefile
+@@ -14,7 +14,7 @@ all:
+ 	@$(MAKE) -C src
+ 
+ install:
+-	@$(MAKE) -C src install prefix=$(prefix) includedir=$(includedir) libdir=$(libdir)
++	@$(MAKE) -C src install prefix=$(DESTDIR)$(prefix) includedir=$(DESTDIR)$(includedir) libdir=$(DESTDIR)$(libdir)
+ 
+ check:
+ 	@$(MAKE) -C harness check
+-- 
+2.14.4
+

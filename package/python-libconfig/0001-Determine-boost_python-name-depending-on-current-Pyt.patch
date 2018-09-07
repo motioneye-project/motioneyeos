@@ -4,11 +4,13 @@ Date: Thu, 27 Jul 2017 09:46:07 +0200
 Subject: [PATCH] Determine boost_python name depending on current Python
  version
 
-Python2 requires boost_python27 and Python3 requires boost_python36
+Python2 requires boost_python27 and Python3 requires boost_python37
 (since boost 1.67).
 
 Signed-off-by: Yegor Yefremov <yegorslists@googlemail.com>
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Bernd: adapted for python-3.7]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  setup.py | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
@@ -21,7 +23,7 @@ index fdf5c27..4b38569 100644
  from setuptools import setup, find_packages, Extension
  import sys, os
  
-+boostlib = "boost_python36"
++boostlib = "boost_python37"
 +if sys.version_info < (3, 0):
 +    boostlib = "boost_python27"
 +

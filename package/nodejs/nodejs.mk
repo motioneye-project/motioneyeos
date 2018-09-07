@@ -10,7 +10,7 @@ NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs c-ares \
 	libhttpparser libuv zlib \
 	$(call qstrip,$(BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS))
-HOST_NODEJS_DEPENDENCIES = host-python host-zlib
+HOST_NODEJS_DEPENDENCIES = host-libopenssl host-python host-zlib
 NODEJS_LICENSE = MIT (core code); MIT, Apache and BSD family licenses (Bundled components)
 NODEJS_LICENSE_FILES = LICENSE
 
@@ -50,10 +50,6 @@ define HOST_NODEJS_CONFIGURE_CMDS
 	mkdir -p $(@D)/bin
 	ln -sf $(HOST_DIR)/bin/python2 $(@D)/bin/python
 
-	# Build with the static, built-in OpenSSL which is supplied as part of
-	# the nodejs source distribution.  This is needed on the host because
-	# NPM is non-functional without it, and host-openssl isn't part of
-	# buildroot.
 	(cd $(@D); \
 		$(HOST_CONFIGURE_OPTS) \
 		PATH=$(@D)/bin:$(BR_PATH) \
@@ -63,6 +59,9 @@ define HOST_NODEJS_CONFIGURE_CMDS
 		--without-snapshot \
 		--without-dtrace \
 		--without-etw \
+		--shared-openssl \
+		--shared-openssl-includes=$(HOST_DIR)/include/openssl \
+		--shared-openssl-libpath=$(HOST_DIR)/lib \
 		--shared-zlib \
 		--with-intl=none \
 	)

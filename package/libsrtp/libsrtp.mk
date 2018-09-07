@@ -4,18 +4,18 @@
 #
 ################################################################################
 
-LIBSRTP_VERSION = v1.5.4
+LIBSRTP_VERSION = v2.2.0
 LIBSRTP_SITE = $(call github,cisco,libsrtp,$(LIBSRTP_VERSION))
 LIBSRTP_INSTALL_STAGING = YES
 LIBSRTP_LICENSE = BSD-3-Clause
 LIBSRTP_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_STATIC_LIBS),y)
-LIBSRTP_MAKE_OPTS = libsrtp.a
+LIBSRTP_MAKE_OPTS = libsrtp2.a
 else ifeq ($(BR2_SHARED_LIBS),y)
 LIBSRTP_MAKE_OPTS = shared_library
 else
-LIBSRTP_MAKE_OPTS = libsrtp.a shared_library
+LIBSRTP_MAKE_OPTS = libsrtp2.a shared_library
 endif
 
 # While libsrtp is not using pkg-config itself, it checks if

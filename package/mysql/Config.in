@@ -16,7 +16,6 @@ choice
 
 config BR2_PACKAGE_MARIADB
 	bool "mariadb"
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBAIO
 	select BR2_PACKAGE_LIBXML2
@@ -32,7 +31,6 @@ config BR2_PACKAGE_MARIADB
 	  http://www.mariadb.org/
 
 comment "mariadb needs a toolchain w/ dynamic library"
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_ORACLE_MYSQL

@@ -4,27 +4,17 @@ Date: Mon, 5 Oct 2015 00:40:25 +0100
 Subject: [PATCH] Fix cross compilation, based on OpenWRT patch.
 
 [Vincent: tweak the patch for version 0.13.6]
+[Bernd: tweak the patch for version 0.13.7]
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  configure.ac      |    1 -
  scripts/checks.m4 |    2 +-
  scripts/common.m4 |    4 ++--
  3 files changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/configure.ac b/configure.ac
-index ba994ee..7696466 100644
---- a/configure.ac
-+++ b/configure.ac
-@@ -19,7 +19,6 @@ AC_SUBST(LIBTORRENT_INTERFACE_VERSION_NO)
- 
- AM_INIT_AUTOMAKE
- AC_CONFIG_HEADERS(config.h)
--AM_PATH_CPPUNIT(1.9.6)
- 
- AC_PROG_CXX
- 
 diff --git a/scripts/checks.m4 b/scripts/checks.m4
 index 598f39b..0e5abe0 100644
 --- a/scripts/checks.m4

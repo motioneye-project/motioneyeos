@@ -60,16 +60,14 @@ config BR2_PACKAGE_LIBIIO_IIOD
 config BR2_PACKAGE_LIBIIO_IIOD_USBD
 	bool "USB support in the IIO Daemon (FunctionFS)"
 	depends on BR2_PACKAGE_LIBIIO_IIOD
-	depends on BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18 # usb_functionfs_descs_head_v2
 	select BR2_PACKAGE_LIBAIO
 	help
 	  Add support for USB through FunctionFS with IIOD.
 
-comment "USB support in the IIO Daemon requires libaio, headers >= 3.18"
+comment "USB support in the IIO Daemon requires headers >= 3.18"
 	depends on BR2_PACKAGE_LIBIIO_IIOD
-	depends on !BR2_PACKAGE_LIBAIO_ARCH_SUPPORTS || \
-		   !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_18
 
 comment "IIO Daemon needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

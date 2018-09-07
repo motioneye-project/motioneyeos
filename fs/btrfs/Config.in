@@ -1,0 +1,50 @@
+config BR2_TARGET_ROOTFS_BTRFS
+	bool "btrfs root filesystem"
+	select BR2_PACKAGE_HOST_BTRFS_PROGS
+	help
+	  Build a btrfs root filesystem. If you enable this option, you
+	  probably want to enable the btrfs-progs package too.
+
+if BR2_TARGET_ROOTFS_BTRFS
+
+config BR2_TARGET_ROOTFS_BTRFS_LABEL
+	string "filesystem label"
+
+config BR2_TARGET_ROOTFS_BTRFS_SIZE
+	string "filesystem size"
+	default "100m"
+	help
+	  The size of the filesystem image in bytes.
+	  Suffix with k, m, g or t for power-of-two kilo-, mega-, giga-
+	  or terabytes.
+
+config BR2_TARGET_ROOTFS_BTRFS_SIZE_SECTOR
+	string "sector size"
+	default "4096"
+	help
+	  This value should be set to the page size in bytes. The
+	  default value of 4096 is the the most common page size for
+	  most systems.  If the sectorsize differs from the page size,
+	  the created filesystem may not be mountable by the kernel.
+	  Therefore it is recommended to leave this value at
+	  4096. Unless you know that your kernel uses a different page
+	  size.  Suffix with k for power-of-two kilobytes.
+
+config BR2_TARGET_ROOTFS_BTRFS_SIZE_NODE
+	string "btree node size"
+	default "16384"
+	help
+	  The tree block size in which btrfs stores metadata in bytes.
+	  This must be a multiple of the sectorsize, but not larger
+	  than 64KiB (65536).
+	  Suffix with k for power-of-two kilobytes.
+
+config BR2_TARGET_ROOTFS_BTRFS_FEATURES
+	string "Filesystem Features"
+	help
+	  A comma separated string of features that can be enabled
+	  during creation time.
+	  For a list of available options, use:
+	    `.../host/bin/mkfs.btrfs -O list-all`
+
+endif # BR2_TARGET_ROOTFS_BTRFS

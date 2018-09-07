@@ -143,6 +143,59 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2018.11"
+
+config BR2_KERNEL_HEADERS_4_10
+	bool "kernel headers version 4.10.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_9
+	select BR2_LEGACY
+	help
+	  Version 4.10.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.14.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_11
+	bool "kernel headers version 4.11.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_9
+	select BR2_LEGACY
+	help
+	  Version 4.11.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.14.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_12
+	bool "kernel headers version 4.12.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_19
+	select BR2_LEGACY
+	help
+	  Version 4.12.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.14.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_13
+	bool "kernel headers version 4.13.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_19
+	select BR2_LEGACY
+	help
+	  Version 4.13.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.14.x of the headers have been automatically
+	  selected in your configuration.
+
+config BR2_KERNEL_HEADERS_4_15
+	bool "kernel headers version 4.15.x are no longer supported"
+	select BR2_KERNEL_HEADERS_4_14
+	select BR2_LEGACY
+	help
+	  Version 4.15.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed. As an alternative,
+	  version 4.14.x of the headers have been automatically
+	  selected in your configuration.
+
+###############################################################################
 comment "Legacy options removed in 2018.08"
 
 config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_19

@@ -130,7 +130,7 @@ export BR2_VERSION_FULL := $(BR2_VERSION)$(shell $(TOPDIR)/support/scripts/setlo
 noconfig_targets := menuconfig nconfig gconfig xconfig config oldconfig randconfig \
 	defconfig %_defconfig allyesconfig allnoconfig alldefconfig silentoldconfig release \
 	randpackageconfig allyespackageconfig allnopackageconfig \
-	print-version olddefconfig distclean manual manual-%
+	print-version olddefconfig distclean manual manual-% check-package
 
 # Some global targets do not trigger a build, but are used to collect
 # metadata, or do various checks. When such targets are triggered,
@@ -573,14 +573,25 @@ prepare: $(BUILD_DIR)/buildroot-config/auto.conf
 .PHONY: world
 world: target-post-image
 
-.PHONY: sdk
-sdk: world
+.PHONY: prepare-sdk
+prepare-sdk: world
 	@$(call MESSAGE,"Rendering the SDK relocatable")
 	$(TOPDIR)/support/scripts/fix-rpath host
 	$(TOPDIR)/support/scripts/fix-rpath staging
 	$(INSTALL) -m 755 $(TOPDIR)/support/misc/relocate-sdk.sh $(HOST_DIR)/relocate-sdk.sh
 	mkdir -p $(HOST_DIR)/share/buildroot
 	echo $(HOST_DIR) > $(HOST_DIR)/share/buildroot/sdk-location
+
+BR2_SDK_PREFIX ?= $(GNU_TARGET_NAME)_sdk-buildroot
+.PHONY: sdk
+sdk: prepare-sdk $(BR2_TAR_HOST_DEPENDENCY)
+	@$(call MESSAGE,"Generating SDK tarball")
+	$(if $(BR2_SDK_PREFIX),,$(error BR2_SDK_PREFIX can not be empty))
+	$(Q)mkdir -p $(BINARIES_DIR)
+	$(TAR) czf "$(BINARIES_DIR)/$(BR2_SDK_PREFIX).tar.gz" \
+		--owner=0 --group=0 --numeric-owner \
+		--transform='s#^\.#$(BR2_SDK_PREFIX)#' \
+		-C $(HOST_DIR) "."
 
 # Populating the staging with the base directories is handled by the skeleton package
 $(STAGING_DIR):
@@ -1124,6 +1135,10 @@ release:
 
 print-version:
 	@echo $(BR2_VERSION_FULL)
+
+check-package:
+	find $(TOPDIR) -type f \( -name '*.mk' -o -name '*.hash' -o -name 'Config.*' \) \
+		-exec ./utils/check-package {} +
 
 .PHONY: .gitlab-ci.yml
 .gitlab-ci.yml: .gitlab-ci.yml.in

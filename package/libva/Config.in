@@ -13,7 +13,7 @@ config BR2_PACKAGE_LIBVA
 	  prevailing coding standards today (MPEG-2, MPEG-4 ASP/H.263,
 	  MPEG-4 AVC/H.264, and VC-1/VMW3).
 
-	  https://01.org/linuxmedia/vaapi
+	  https://01.org/vaapi
 
 comment "libva needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
