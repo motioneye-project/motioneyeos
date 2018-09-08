@@ -1512,6 +1512,10 @@ F:	package/exiv2/
 F:	package/nvidia-tegra23/nvidia-tegra23-binaries/
 F:	package/nvidia-tegra23/nvidia-tegra23-codecs/
 
+N:	Nikolay Dimitrov <nikolay.dimitrov@retrohub.org>
+F:	board/embest/riotboard/
+F:	configs/riotboard_defconfig
+
 N:	Nimai Mahajan <nimaim@gmail.com>
 F:	package/libucl/
 
