@@ -12,7 +12,7 @@ config BR2_PACKAGE_SYNERGY
 	  operating systems, each with its own display,
 	  without special hardware.
 
-	  https://github.com/symless/synergy/
+	  https://github.com/symless/synergy-core/
 
 comment "synergy needs a toolchain w/ C++, wchar"
 	depends on BR2_PACKAGE_XORG7
