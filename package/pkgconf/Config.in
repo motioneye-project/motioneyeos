@@ -7,4 +7,4 @@ config BR2_PACKAGE_PKGCONF
 	  2011 to replace pkg-config, which now needs itself to build
 	  itself
 
-	  https://github.com/pkgconf/pkgconf
+	  http://pkgconf.org/
