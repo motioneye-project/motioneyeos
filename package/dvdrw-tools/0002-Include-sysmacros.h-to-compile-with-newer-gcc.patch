@@ -1,0 +1,14 @@
+growisofs.c: include sysmacros.h to compile with glibc-2.28
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+
+diff -urpN dvd+rw-tools-7.1.orig/growisofs.c dvd+rw-tools-7.1/growisofs.c
+--- dvd+rw-tools-7.1.orig/growisofs.c	2018-09-08 01:56:11.686656819 +0200
++++ dvd+rw-tools-7.1/growisofs.c	2018-09-08 02:11:45.868778471 +0200
+@@ -441,6 +441,7 @@
+ #include <fcntl.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include <assert.h>
+ #include "mp.h"
