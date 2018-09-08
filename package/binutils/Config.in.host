@@ -1,5 +1,11 @@
 comment "Binutils Options"
 
+config BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
+	bool
+	default y
+	depends on !BR2_microblaze
+	depends on !(BR2_nios2 && (BR2_BINUTILS_VERSION_2_28_X || BR2_BINUTILS_VERSION_2_29_X))
+
 choice
 	prompt "Binutils Version"
 	default BR2_BINUTILS_VERSION_2_28_X if BR2_ARM_INSTRUCTIONS_THUMB
