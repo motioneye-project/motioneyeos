@@ -1,4 +1,4 @@
-From 7b29b6bd2547e72e22b9b7981df27092842d2a10 Mon Sep 17 00:00:00 2001
+From 9af3be81c75b44415a6e7efe19f8f89d55091f84 Mon Sep 17 00:00:00 2001
 From: rakshasa <sundell.software@gmail.com>
 Date: Tue, 20 Dec 2016 19:51:02 +0900
 Subject: [PATCH] Added support for openssl 1.1.
@@ -107,3 +107,6 @@ index aa653d45..7ec13165 100644
  #endif
  }
  
+-- 
+2.14.4
+
