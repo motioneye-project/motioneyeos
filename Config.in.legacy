@@ -167,7 +167,7 @@ config BR2_KERNEL_HEADERS_4_11
 
 config BR2_KERNEL_HEADERS_4_12
 	bool "kernel headers version 4.12.x are no longer supported"
-	select BR2_KERNEL_HEADERS_4_19
+	select BR2_KERNEL_HEADERS_4_9
 	select BR2_LEGACY
 	help
 	  Version 4.12.x of the Linux kernel headers are no longer
@@ -177,7 +177,7 @@ config BR2_KERNEL_HEADERS_4_12
 
 config BR2_KERNEL_HEADERS_4_13
 	bool "kernel headers version 4.13.x are no longer supported"
-	select BR2_KERNEL_HEADERS_4_19
+	select BR2_KERNEL_HEADERS_4_9
 	select BR2_LEGACY
 	help
 	  Version 4.13.x of the Linux kernel headers are no longer
