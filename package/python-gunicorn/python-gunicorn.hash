@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/gunicorn/json, sha256 locally computed
-md5	338e5e8a83ea0f0625f768dba4597530  gunicorn-19.6.0.tar.gz
-sha256	813f6916d18a4c8e90efde72f419308b357692f81333cb1125f80013d22fb618  gunicorn-19.6.0.tar.gz
+# md5, sha256 from https://pypi.python.org/pypi/gunicorn/json
+md5	f581937e9d8569ebd3fd6af1f9ab809f  gunicorn-19.9.0.tar.gz
+sha256	fa2662097c66f920f53f70621c6c58ca4a3c4d3434205e608e121b5b3b71f4f3  gunicorn-19.9.0.tar.gz
+# Locally computed sha256
+sha256	789fe11b92e1cabfbcf744b5fcc392c9bd5c6798603a4e89f925b6337984d1df  LICENSE
