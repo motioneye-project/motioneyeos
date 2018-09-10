@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.11"
 
+config BR2_PACKAGE_MESA3D_OPENGL_TEXTURE_FLOAT
+	bool "mesa3d opengl texture float option removed"
+	select BR2_LEGACY
+	help
+	  mesa3d now unconditionally enables floating-point textures,
+	  as the corresponding patent has expired.
+
 config BR2_KERNEL_HEADERS_4_10
 	bool "kernel headers version 4.10.x are no longer supported"
 	select BR2_KERNEL_HEADERS_4_9
