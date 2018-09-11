@@ -8,7 +8,6 @@ config BR2_PACKAGE_FEH
 	select BR2_PACKAGE_IMLIB2_PNG
 	select BR2_PACKAGE_IMLIB2_JPEG
 	select BR2_PACKAGE_IMLIB2_X
-	select BR2_PACKAGE_LIBCURL
 	help
 	  feh is an X11 image viewer aimed mostly at console users.
 
