@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSSH2_VERSION = 616fd4d1b3e4a55de67c48819fefca83132126b5
+LIBSSH2_VERSION = 8b870ad771cbd9cd29edbb3dbb0878e950f868ab
 LIBSSH2_SITE = $(call github,libssh2,libssh2,$(LIBSSH2_VERSION))
 LIBSSH2_LICENSE = BSD
 LIBSSH2_LICENSE_FILES = COPYING
