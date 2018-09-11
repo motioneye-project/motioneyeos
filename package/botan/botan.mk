@@ -40,6 +40,10 @@ else
 BOTAN_CONF_OPTS += --without-stack-protector
 endif
 
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+BOTAN_CONF_OPTS += --without-os-feature=getauxval
+endif
+
 ifeq ($(BR2_PACKAGE_BOOST),y)
 BOTAN_DEPENDENCIES += boost
 BOTAN_CONF_OPTS += --with-boost
