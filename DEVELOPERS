@@ -202,6 +202,7 @@ F:	package/libuv/
 F:	package/python-engineio/
 F:	package/python-jsonmodels/
 F:	package/python-pyroute2/
+F:	package/python-pytz/
 F:	package/python-reentry/
 F:	package/python-subprocess32/
 F:	package/python-yieldfrom/
