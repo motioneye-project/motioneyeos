@@ -1298,6 +1298,10 @@ F:	package/lynx/
 N:	Mario Rugiero <mrugiero@gmail.com>
 F:	package/ratpoison/
 
+N:	Mark Corbin <mark.corbin@embecosm.com>
+F:	arch/arch.mk.riscv
+F:	arch/Config.in.riscv
+
 N:	Markos Chandras <markos.chandras@imgtec.com>
 F:	package/harfbuzz/
 F:	package/libsecret/

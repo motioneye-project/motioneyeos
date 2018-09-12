@@ -76,6 +76,12 @@ GLIBC_CONF_ENV = \
 	libc_cv_forced_unwind=yes \
 	libc_cv_ssp=no
 
+# Override the default library locations of /lib64/<abi> and
+# /usr/lib64/<abi>/ for RISC-V.
+ifeq ($(BR2_riscv),y)
+GLIBC_CONF_ENV += libc_cv_slibdir=/lib64 libc_cv_rtlddir=/lib
+endif
+
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
 #

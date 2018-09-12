@@ -12,9 +12,11 @@ choice
 config BR2_BINUTILS_VERSION_2_28_X
 	bool "binutils 2.28.1"
 	depends on !BR2_arc
+	depends on !BR2_riscv
 
 config BR2_BINUTILS_VERSION_2_29_X
 	bool "binutils 2.29.1"
+	depends on !BR2_riscv
 
 config BR2_BINUTILS_VERSION_2_30_X
 	bool "binutils 2.30"
