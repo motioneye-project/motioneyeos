@@ -19,7 +19,7 @@ FEH_MAKE_OPTS += curl=0
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
-FEH_DEPENDENCIES += xlib_libXinemara
+FEH_DEPENDENCIES += xlib_libXinerama
 FEH_MAKE_OPTS += xinerama=1
 else
 FEH_MAKE_OPTS += xinerama=0
