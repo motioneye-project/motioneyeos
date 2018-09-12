@@ -215,6 +215,7 @@ qemu_ppc64le_pseries_defconfig: *defconfig
 qemu_ppc_g3beige_defconfig: *defconfig
 qemu_ppc_mpc8544ds_defconfig: *defconfig
 qemu_ppc_virtex_ml507_defconfig: *defconfig
+qemu_riscv64_virt_defconfig: *defconfig
 qemu_sh4_r2d_defconfig: *defconfig
 qemu_sh4eb_r2d_defconfig: *defconfig
 qemu_sparc64_sun4u_defconfig: *defconfig
