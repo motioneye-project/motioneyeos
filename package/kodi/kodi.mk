@@ -88,7 +88,7 @@ KODI_DEPENDENCIES += rpi-userland
 # These CPU-specific options are only used on rbpi:
 # https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L13
 ifeq ($(BR2_arm1176jzf_s)$(BR2_cortex_a7)$(BR2_cortex_a53),y)
-KODI_CONF_OPTS += -DWITH_CPU=$(BR2_GCC_TARGET_CPU)
+KODI_CONF_OPTS += -DWITH_CPU="$(GCC_TARGET_CPU)"
 endif
 else
 ifeq ($(BR2_arceb)$(BR2_arcle),y)

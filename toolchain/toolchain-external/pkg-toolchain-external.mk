@@ -151,18 +151,18 @@ TOOLCHAIN_EXTERNAL_LIBS += $(call qstrip,$(BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS))
 # Definition of the CFLAGS to use with the external toolchain, as well as the
 # common toolchain wrapper build arguments
 #
-ifeq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
-CC_TARGET_CPU_ := $(call qstrip,$(BR2_GCC_TARGET_CPU))
+ifeq ($(GCC_TARGET_CPU_REVISION),)
+CC_TARGET_CPU_ := $(GCC_TARGET_CPU)
 else
-CC_TARGET_CPU_ := $(call qstrip,$(BR2_GCC_TARGET_CPU)-$(BR2_GCC_TARGET_CPU_REVISION))
+CC_TARGET_CPU_ := $(GCC_TARGET_CPU)-$(GCC_TARGET_CPU_REVISION)
 endif
-CC_TARGET_ARCH_ := $(call qstrip,$(BR2_GCC_TARGET_ARCH))
-CC_TARGET_ABI_ := $(call qstrip,$(BR2_GCC_TARGET_ABI))
-CC_TARGET_NAN_ := $(call qstrip,$(BR2_GCC_TARGET_NAN))
-CC_TARGET_FP32_MODE_ := $(call qstrip,$(BR2_GCC_TARGET_FP32_MODE))
-CC_TARGET_FPU_ := $(call qstrip,$(BR2_GCC_TARGET_FPU))
-CC_TARGET_FLOAT_ABI_ := $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
-CC_TARGET_MODE_ := $(call qstrip,$(BR2_GCC_TARGET_MODE))
+CC_TARGET_ARCH_ := $(GCC_TARGET_ARCH)
+CC_TARGET_ABI_ := $(GCC_TARGET_ABI)
+CC_TARGET_NAN_ := $(GCC_TARGET_NAN)
+CC_TARGET_FP32_MODE_ := $(GCC_TARGET_FP32_MODE)
+CC_TARGET_FPU_ := $(GCC_TARGET_FPU)
+CC_TARGET_FLOAT_ABI_ := $(GCC_TARGET_FLOAT_ABI)
+CC_TARGET_MODE_ := $(GCC_TARGET_MODE)
 
 # march/mtune/floating point mode needs to be passed to the external toolchain
 # to select the right multilib variant

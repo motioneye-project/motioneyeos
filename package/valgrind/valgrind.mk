@@ -31,7 +31,7 @@ VALGRIND_CFLAGS = \
 # and pass the right -march option, so they take precedence over
 # Valgrind's wrongfully detected value.
 ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
-VALGRIND_CFLAGS += -march=$(BR2_GCC_TARGET_ARCH)
+VALGRIND_CFLAGS += -march="$(GCC_TARGET_ARCH)"
 endif
 
 VALGRIND_CONF_ENV = CFLAGS="$(VALGRIND_CFLAGS)"

@@ -114,7 +114,7 @@ define TVHEADEND_CONFIGURE_CMDS
 		./configure \
 			--prefix=/usr \
 			--arch="$(ARCH)" \
-			--cpu="$(BR2_GCC_TARGET_CPU)" \
+			--cpu="$(GCC_TARGET_CPU)" \
 			--nowerror \
 			--python="$(HOST_DIR)/bin/python" \
 			--enable-dvbscan \

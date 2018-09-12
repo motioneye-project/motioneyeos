@@ -200,39 +200,36 @@ HOST_GCC_COMMON_CONF_OPTS += --disable-decimal-float
 endif
 
 # Determine arch/tune/abi/cpu options
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
-HOST_GCC_COMMON_CONF_OPTS += --with-arch=$(BR2_GCC_TARGET_ARCH)
+ifneq ($(GCC_TARGET_ARCH),)
+HOST_GCC_COMMON_CONF_OPTS += --with-arch="$(GCC_TARGET_ARCH)"
 endif
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_ABI)),)
-HOST_GCC_COMMON_CONF_OPTS += --with-abi=$(BR2_GCC_TARGET_ABI)
+ifneq ($(GCC_TARGET_ABI),)
+HOST_GCC_COMMON_CONF_OPTS += --with-abi="$(GCC_TARGET_ABI)"
 endif
 ifeq ($(BR2_TOOLCHAIN_HAS_MNAN_OPTION),y)
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_NAN)),)
-HOST_GCC_COMMON_CONF_OPTS += --with-nan=$(BR2_GCC_TARGET_NAN)
+ifneq ($(GCC_TARGET_NAN),)
+HOST_GCC_COMMON_CONF_OPTS += --with-nan="$(GCC_TARGET_NAN)"
 endif
 endif
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_FP32_MODE)),)
-HOST_GCC_COMMON_CONF_OPTS += --with-fp-32=$(BR2_GCC_TARGET_FP32_MODE)
+ifneq ($(GCC_TARGET_FP32_MODE),)
+HOST_GCC_COMMON_CONF_OPTS += --with-fp-32="$(GCC_TARGET_FP32_MODE)"
 endif
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU_REVISION)),)
-HOST_GCC_COMMON_CONF_OPTS += --with-cpu=$(call qstrip,$(BR2_GCC_TARGET_CPU)-$(BR2_GCC_TARGET_CPU_REVISION))
+ifneq ($(GCC_TARGET_CPU),)
+ifneq ($(GCC_TARGET_CPU_REVISION),)
+HOST_GCC_COMMON_CONF_OPTS += --with-cpu=$(GCC_TARGET_CPU)-$(GCC_TARGET_CPU_REVISION)
 else
-HOST_GCC_COMMON_CONF_OPTS += --with-cpu=$(call qstrip,$(BR2_GCC_TARGET_CPU))
+HOST_GCC_COMMON_CONF_OPTS += --with-cpu=$(GCC_TARGET_CPU)
 endif
 endif
 
-GCC_TARGET_FPU = $(call qstrip,$(BR2_GCC_TARGET_FPU))
 ifneq ($(GCC_TARGET_FPU),)
 HOST_GCC_COMMON_CONF_OPTS += --with-fpu=$(GCC_TARGET_FPU)
 endif
 
-GCC_TARGET_FLOAT_ABI = $(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
 ifneq ($(GCC_TARGET_FLOAT_ABI),)
 HOST_GCC_COMMON_CONF_OPTS += --with-float=$(GCC_TARGET_FLOAT_ABI)
 endif
 
-GCC_TARGET_MODE = $(call qstrip,$(BR2_GCC_TARGET_MODE))
 ifneq ($(GCC_TARGET_MODE),)
 HOST_GCC_COMMON_CONF_OPTS += --with-mode=$(GCC_TARGET_MODE)
 endif

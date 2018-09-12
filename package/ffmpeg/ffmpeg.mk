@@ -511,10 +511,10 @@ endif
 # warning from ffmpeg's configure script.
 ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
 FFMPEG_CONF_OPTS += --cpu=generic
-else ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
-FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_CPU)
-else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
-FFMPEG_CONF_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
+else ifneq ($(GCC_TARGET_CPU),)
+FFMPEG_CONF_OPTS += --cpu="$(GCC_TARGET_CPU)"
+else ifneq ($(GCC_TARGET_ARCH),)
+FFMPEG_CONF_OPTS += --cpu="$(GCC_TARGET_ARCH)"
 endif
 
 FFMPEG_CONF_OPTS += $(call qstrip,$(BR2_PACKAGE_FFMPEG_EXTRACONF))
