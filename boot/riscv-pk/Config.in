@@ -1,0 +1,14 @@
+comment "riscv-pk needs a Linux kernel to be built"
+	depends on BR2_riscv
+	depends on !BR2_LINUX_KERNEL
+
+config BR2_TARGET_RISCV_PK
+	bool "riscv-pk"
+	depends on BR2_riscv
+	depends on BR2_LINUX_KERNEL
+	help
+	  The RISC-V Proxy Kernel (pk) package contains the Berkeley
+	  Boot Loader (BBL) which has been designed to boot a Linux
+	  kernel on a RISC-V processor.
+
+	  https://github.com/riscv/riscv-pk.git
