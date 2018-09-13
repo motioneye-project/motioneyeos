@@ -4,10 +4,9 @@
 #
 ################################################################################
 
-SYSVINIT_VERSION = 2.88
-SYSVINIT_SOURCE = sysvinit_$(SYSVINIT_VERSION)dsf.orig.tar.gz
-SYSVINIT_PATCH = sysvinit_$(SYSVINIT_VERSION)dsf-13.1+squeeze1.diff.gz
-SYSVINIT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/s/sysvinit
+SYSVINIT_VERSION = 2.90
+SYSVINIT_SOURCE = sysvinit-$(SYSVINIT_VERSION).tar.xz
+SYSVINIT_SITE = http://download.savannah.nongnu.org/releases/sysvinit
 SYSVINIT_LICENSE = GPL-2.0+
 SYSVINIT_LICENSE_FILES = COPYING
 
@@ -18,17 +17,7 @@ SYSVINIT_DEPENDENCIES += libselinux
 SYSVINIT_MAKE_OPTS += WITH_SELINUX="yes"
 endif
 
-define SYSVINIT_DEBIAN_PATCHES
-	if [ -d $(@D)/debian/patches ]; then \
-		$(APPLY_PATCHES) $(@D) $(@D)/debian/patches \*.patch; \
-	fi
-endef
-
-SYSVINIT_POST_PATCH_HOOKS = SYSVINIT_DEBIAN_PATCHES
-
 define SYSVINIT_BUILD_CMDS
-	# Force sysvinit to link against libcrypt as it otherwise
-	# use an incorrect test to see if it's available
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) $(SYSVINIT_MAKE_OPTS) -C $(@D)/src
 endef
 

@@ -1,3 +1,5 @@
-# From http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/s/sysvinit/sysvinit_2.88dsf-13.1%2Bsqueeze1.dsc
-sha256	b016f937958d2809a020d407e1287bdc09abf1d44efaa96530e2ea57f544f4e8	sysvinit_2.88dsf.orig.tar.gz
-sha256	26b456a31036b1e1c2486c22ca2b7fde6d723b7c63669604eacc61cfb6609ef8	sysvinit_2.88dsf-13.1+squeeze1.diff.gz
+# Locally computed:
+sha256	114cffc8ef514a38b9916de2050bb6d73b43dff7afd05aee6b09d2f6cea7664e  sysvinit-2.90.tar.xz
+
+# Hash for license files:
+sha256	ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING
