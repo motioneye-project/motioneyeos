@@ -199,6 +199,7 @@ F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/libuv/
+F:	package/python-bcrypt/
 F:	package/python-engineio/
 F:	package/python-fire/
 F:	package/python-jsonmodels/
