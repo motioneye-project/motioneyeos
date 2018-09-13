@@ -11,9 +11,11 @@ try fails, we try to link again with -latomic and add LIBS="-latomic" in case we
 succeeded.
 
 Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update to use LIBS: https://github.com/zeromq/libzmq/pull/3250]
 ---
- acinclude.m4 | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ acinclude.m4 | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
 
 diff --git a/acinclude.m4 b/acinclude.m4
 index f648ed0f..aa35195f 100644
@@ -28,7 +30,7 @@ index f648ed0f..aa35195f 100644
  /* atomic intrinsics test */
  int v = 0;
  int main (int, char **)
-@@ -677,9 +677,33 @@ int main (int, char **)
+@@ -677,9 +677,32 @@ int main (int, char **)
      return t;
  }
      ])],
@@ -39,8 +41,8 @@ index f648ed0f..aa35195f 100644
 +    [libzmq_cv_has_atomic_instrisics="no"])
 +
 +    if test "x$libzmq_cv_has_atomic_instrisics" = "xno"; then
-+        save_LDFLAGS=$LDFLAGS
-+        LDFLAGS="$LDFLAGS -latomic"
++        save_LIBS=$LIBS
++        LIBS="$LIBS -latomic"
 +        AC_LINK_IFELSE([AC_LANG_SOURCE([
 +        /* atomic intrinsics test */
 +        int v = 0;
@@ -50,9 +52,8 @@ index f648ed0f..aa35195f 100644
 +            return t;
 +        }
 +        ])],
-+        [libzmq_cv_has_atomic_instrisics="yes" LIBS="-latomic"],
-+        [libzmq_cv_has_atomic_instrisics="no"])
-+        LDFLAGS=$save_LDFLAGS
++        [libzmq_cv_has_atomic_instrisics="yes"],
++        [libzmq_cv_has_atomic_instrisics="no" LIBS=$save_LIBS])
 +    fi
 +
 +    if test "x$libzmq_cv_has_atomic_instrisics" = "xyes"; then
