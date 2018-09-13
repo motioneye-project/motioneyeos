@@ -890,6 +890,7 @@ F:	package/libwebsock/
 F:	package/sofia-sip/
 
 N:	Grzegorz Blach <grzegorz@blach.pl>
+F:	package/bluez5_utils-headers/
 F:	package/pigpio/
 F:	package/python-falcon/
 F:	package/python-mimeparse/

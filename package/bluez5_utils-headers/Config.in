@@ -1,0 +1,7 @@
+config BR2_PACKAGE_BLUEZ5_UTILS_HEADERS
+	bool
+	help
+	  Header files from bluez utils version 5.x
+
+	  http://www.bluez.org
+	  http://www.kernel.org/pub/linux/bluetooth
