@@ -3,8 +3,8 @@ and remove host paths when looking for openssl.
 
 [Vincent:
  - Adapt the patch to make it apply on the new version.]
-[Bernd: rebased for tor-0.2.7.6, 0.2.8.10, 0.2.9.9, 0.3.1.7 & 0.3.2.10]
-
+[Bernd: rebased for tor-0.2.7.6, 0.2.8.10, 0.2.9.9, 0.3.1.7, 0.3.2.10 &
+        0.3.4.8]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 
@@ -17,9 +17,9 @@ diff -uNr tor-0.3.1.7.org/configure.ac tor-0.3.1.7/configure.ac
  AC_MSG_NOTICE([Now, we'll look for OpenSSL >= 1.0.1])
 -TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto $TOR_LIB_GDI $TOR_LIB_WS32],
 +TOR_SEARCH_LIBRARY(openssl, $tryssldir, [-lssl -lcrypto -lz $TOR_LIB_GDI $TOR_LIB_WS32],
-     [#include <openssl/ssl.h>],
-     [struct ssl_method_st; const struct ssl_method_st *TLSv1_1_method(void);],
-     [TLSv1_1_method();], [],
+     [#include <openssl/ssl.h>
+      char *getenv(const char *);],
+     [struct ssl_cipher_st;
 diff -uNr tor-0.3.1.7.org/src/or/include.am tor-0.3.1.7/src/or/include.am
 --- tor-0.3.1.7.org/src/or/include.am	2017-06-19 17:56:51.000000000 +0200
 +++ tor-0.3.1.7/src/or/include.am	2017-09-19 19:41:02.015861546 +0200
