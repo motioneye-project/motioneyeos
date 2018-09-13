@@ -11,6 +11,7 @@ config BR2_PACKAGE_PYTHON3
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libffi
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBFFI
+	select BR2_PACKAGE_BLUEZ5_UTILS_HEADERS if BR2_PACKAGE_BLUEZ5_UTILS
 	help
 	  The python language interpreter.
 

@@ -255,6 +255,11 @@ endif
 # Provided to other packages
 PYTHON3_PATH = $(TARGET_DIR)/usr/lib/python$(PYTHON3_VERSION_MAJOR)/
 
+# Support for socket.AF_BLUETOOTH
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_HEADERS),y)
+PYTHON3_DEPENDENCIES += bluez5_utils-headers
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
 
