@@ -63,6 +63,11 @@ config BR2_GDB_VERSION_8_1
 	# Needs a C++11 compiler
 	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
+config BR2_GDB_VERSION_8_2
+	bool "gdb 8.2.x"
+	# Needs a C++11 compiler
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+
 endchoice
 
 endif
@@ -82,6 +87,7 @@ config BR2_PACKAGE_GDB_NEEDS_CXX11
 	default y if !BR2_PACKAGE_HOST_GDB
 	default y if BR2_GDB_VERSION_8_0
 	default y if BR2_GDB_VERSION_8_1
+	default y if BR2_GDB_VERSION_8_2
 	default y if BR2_arc
 
 # If cross-gdb is not enabled, the latest working version is chosen.
@@ -91,4 +97,5 @@ config BR2_GDB_VERSION
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
 	default "8.0.1"    if BR2_GDB_VERSION_8_0 || !BR2_PACKAGE_HOST_GDB
 	default "8.1.1"    if BR2_GDB_VERSION_8_1
+	default "8.2"      if BR2_GDB_VERSION_8_2
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB

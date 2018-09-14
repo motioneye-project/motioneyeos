@@ -1,0 +1,179 @@
+From d4b53d090e09f8929df0367e446569dc32cf269d Mon Sep 17 00:00:00 2001
+From: Sergio Durigan Junior <sergiodj@redhat.com>
+Date: Wed, 12 Sep 2018 13:16:02 -0400
+Subject: [PATCH] Move 'is_regular_file' from common-utils.c to filestuff.c
+
+There is no reason for 'is_regular_file' to be in common-utils.c; it
+belongs to 'filestuff.c'.  This commit moves the function definition
+and its prototype to the appropriate files.
+
+The motivation behind this move is a failure that happens on certain
+cross-compilation environments when compiling the IPA library, due to
+the way gnulib probes the need for a 'stat' call replacement.  Because
+configure checks when cross-compiling are more limited, gnulib decides
+that it needs to substitute the 'stat' calls its own 'rpl_stat';
+however, the IPA library doesn't link with gnulib, which leads to an
+error when compiling 'common-utils.c':
+
+  ...
+  /opt/x86-core2--musl--bleeding-edge-2018.09-1/bin/i686-buildroot-linux-musl-g++  -shared -fPIC -Wl,--soname=libinproctrace.so -Wl,--no-undefined -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64  -Os      -I. -I. -I./../common -I./../regformats -I./.. -I./../../include -I./../gnulib/import -Ibuild-gnulib-gdbserver/import -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Wall -Wpointer-arith -Wno-unused -Wunused-value -Wunused-function -Wno-switch -Wno-char-subscripts -Wempty-body -Wunused-but-set-parameter -Wunused-but-set-variable -Wno-sign-compare -Wno-narrowing -Wno-error=maybe-uninitialized  -DGDBSERVER \
+   -Wl,--dynamic-list=./proc-service.list -o libinproctrace.so ax-ipa.o common-utils-ipa.o errors-ipa.o format-ipa.o print-utils-ipa.o regcache-ipa.o remote-utils-ipa.o rsp-low-ipa.o tdesc-ipa.o tracepoint-ipa.o utils-ipa.o vec-ipa.o linux-i386-ipa.o linux-x86-tdesc-ipa.o arch/i386-ipa.o -ldl -pthread
+  /opt/x86-core2--musl--bleeding-edge-2018.09-1/lib/gcc/i686-buildroot-linux-musl/8.2.0/../../../../i686-buildroot-linux-musl/bin/ld: common-utils-ipa.o: in function `is_regular_file(char const*, int*)':
+  common-utils.c:(.text+0x695): undefined reference to `rpl_stat'
+  collect2: error: ld returned 1 exit status
+  Makefile:413: recipe for target 'libinproctrace.so' failed
+  make[1]: *** [libinproctrace.so] Error 1
+  ...
+
+More details can also be found at:
+
+  https://sourceware.org/ml/gdb-patches/2018-09/msg00304.html
+
+The most simple fix for this problem is to move 'is_regular_file' to
+'filestuff.c', which is not used by IPA.  This ends up making the
+files more logically organized as well, since 'is_regular_file' is a
+file operation.
+
+No regressions found.
+
+gdb/ChangeLog:
+2018-09-12  Sergio Durigan Junior  <sergiodj@redhat.com>
+
+	* common/common-utils.c: Don't include '<sys/stat.h>'.
+	(is_regular_file): Move to...
+	* common/filestuff.c (is_regular_file): ... here.
+	* common/common-utils.h (is_regular_file): Move to...
+	* common/filestuff.h (is_regular_file): ... here.
+
+(cherry picked from commit 3c025cfe5efc44eb4dfb03b53dca28e75096dd1e)
+[Romain: backport to gdb 8.2 and remove ChangeLog enty]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ gdb/common/common-utils.c | 32 --------------------------------
+ gdb/common/common-utils.h |  5 -----
+ gdb/common/filestuff.c    | 31 +++++++++++++++++++++++++++++++
+ gdb/common/filestuff.h    |  5 +++++
+ 4 files changed, 36 insertions(+), 37 deletions(-)
+
+diff --git a/gdb/common/common-utils.c b/gdb/common/common-utils.c
+index 8d839d10fa8..24b3936f3dc 100644
+--- a/gdb/common/common-utils.c
++++ b/gdb/common/common-utils.c
+@@ -20,7 +20,6 @@
+ #include "common-defs.h"
+ #include "common-utils.h"
+ #include "host-defs.h"
+-#include <sys/stat.h>
+ #include <ctype.h>
+ 
+ /* The xmalloc() (libiberty.h) family of memory management routines.
+@@ -412,37 +411,6 @@ stringify_argv (const std::vector<char *> &args)
+ 
+ /* See common/common-utils.h.  */
+ 
+-bool
+-is_regular_file (const char *name, int *errno_ptr)
+-{
+-  struct stat st;
+-  const int status = stat (name, &st);
+-
+-  /* Stat should never fail except when the file does not exist.
+-     If stat fails, analyze the source of error and return true
+-     unless the file does not exist, to avoid returning false results
+-     on obscure systems where stat does not work as expected.  */
+-
+-  if (status != 0)
+-    {
+-      if (errno != ENOENT)
+-	return true;
+-      *errno_ptr = ENOENT;
+-      return false;
+-    }
+-
+-  if (S_ISREG (st.st_mode))
+-    return true;
+-
+-  if (S_ISDIR (st.st_mode))
+-    *errno_ptr = EISDIR;
+-  else
+-    *errno_ptr = EINVAL;
+-  return false;
+-}
+-
+-/* See common/common-utils.h.  */
+-
+ ULONGEST
+ align_up (ULONGEST v, int n)
+ {
+diff --git a/gdb/common/common-utils.h b/gdb/common/common-utils.h
+index 7bc6e90f05c..a961514fd66 100644
+--- a/gdb/common/common-utils.h
++++ b/gdb/common/common-utils.h
+@@ -146,11 +146,6 @@ in_inclusive_range (T value, T low, T high)
+   return value >= low && value <= high;
+ }
+ 
+-/* Return true if the file NAME exists and is a regular file.
+-   If the result is false then *ERRNO_PTR is set to a useful value assuming
+-   we're expecting a regular file.  */
+-extern bool is_regular_file (const char *name, int *errno_ptr);
+-
+ /* Ensure that V is aligned to an N byte boundary (B's assumed to be a
+    power of 2).  Round up/down when necessary.  Examples of correct
+    use include:
+diff --git a/gdb/common/filestuff.c b/gdb/common/filestuff.c
+index f5a754ffa66..fa10165a7ca 100644
+--- a/gdb/common/filestuff.c
++++ b/gdb/common/filestuff.c
+@@ -417,3 +417,34 @@ make_cleanup_close (int fd)
+   *saved_fd = fd;
+   return make_cleanup_dtor (do_close_cleanup, saved_fd, xfree);
+ }
++
++/* See common/filestuff.h.  */
++
++bool
++is_regular_file (const char *name, int *errno_ptr)
++{
++  struct stat st;
++  const int status = stat (name, &st);
++
++  /* Stat should never fail except when the file does not exist.
++     If stat fails, analyze the source of error and return true
++     unless the file does not exist, to avoid returning false results
++     on obscure systems where stat does not work as expected.  */
++
++  if (status != 0)
++    {
++      if (errno != ENOENT)
++	return true;
++      *errno_ptr = ENOENT;
++      return false;
++    }
++
++  if (S_ISREG (st.st_mode))
++    return true;
++
++  if (S_ISDIR (st.st_mode))
++    *errno_ptr = EISDIR;
++  else
++    *errno_ptr = EINVAL;
++  return false;
++}
+diff --git a/gdb/common/filestuff.h b/gdb/common/filestuff.h
+index 0e46eb5da0b..21b4edd6bf6 100644
+--- a/gdb/common/filestuff.h
++++ b/gdb/common/filestuff.h
+@@ -98,4 +98,9 @@ struct gdb_dir_deleter
+ 
+ typedef std::unique_ptr<DIR, gdb_dir_deleter> gdb_dir_up;
+ 
++/* Return true if the file NAME exists and is a regular file.
++   If the result is false then *ERRNO_PTR is set to a useful value assuming
++   we're expecting a regular file.  */
++extern bool is_regular_file (const char *name, int *errno_ptr);
++
+ #endif /* FILESTUFF_H */
+-- 
+2.14.4
+
