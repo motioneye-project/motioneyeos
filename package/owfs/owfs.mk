@@ -21,6 +21,9 @@ OWFS_INSTALL_STAGING = YES
 # https://sourceforge.net/p/owfs/support-requests/32/
 OWFS_CONF_OPTS += --disable-owphp --without-php
 
+# Skip man pages processing
+OWFS_CONF_ENV += ac_cv_path_SOELIM=true
+
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
 OWFS_DEPENDENCIES += libfuse
 OWFS_CONF_OPTS += \
