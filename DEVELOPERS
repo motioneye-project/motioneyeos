@@ -203,6 +203,7 @@ F:	package/python-bcrypt/
 F:	package/python-engineio/
 F:	package/python-fire/
 F:	package/python-jsonmodels/
+F:	package/python-pyasn1/
 F:	package/python-pyroute2/
 F:	package/python-pytz/
 F:	package/python-reentry/
