@@ -1,5 +1,6 @@
 # From http://sourceforge.net/projects/hdparm/files/hdparm/
-md5 410539d0bf3cc247181594581edbfb53  hdparm-9.52.tar.gz
-sha1 c641429c5b5d0513acfc86dc31c6b3b35c070a70  hdparm-9.52.tar.gz
+md5 7900608e32834f65d2654fdb696e71a0  hdparm-9.56.tar.gz
+sha1 9e143065115229c4f929530157627dc92e5f6deb  hdparm-9.56.tar.gz
 # Locally computed
-sha256 c3429cd423e271fa565bf584598fd751dd2e773bb7199a592b06b5a61cec4fb6  hdparm-9.52.tar.gz
+sha256 6ff9ed695f1017396eec4101f990f114b7b0e0a04c5aa6369c0394053d16e4da  hdparm-9.56.tar.gz
+sha256  eae572b06d2733f5c65fbe81680ce2b8a109afee2bdd1a161343c772af0e82e1 LICENSE.TXT
