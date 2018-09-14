@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-BINARIES_MARVELL_VERSION = a8ac27b7884ed2c1efcf9f3326de3e0ed7b94e91
+# This is version binaries-marvell-armada-18.06
+BINARIES_MARVELL_VERSION = 14481806e699dcc6f7025dbe3e46cf26bb787791
 BINARIES_MARVELL_SITE = $(call github,MarvellEmbeddedProcessors,binaries-marvell,$(BINARIES_MARVELL_VERSION))
 
 BINARIES_MARVELL_LICENSE = GPL-2.0 with freertos-exception-2.0
