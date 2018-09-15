@@ -18,6 +18,13 @@ else
 FEH_MAKE_OPTS += curl=0
 endif
 
+ifeq ($(BR2_PACKAGE_LIBEXIF),y)
+FEH_DEPENDENCIES += libexif
+FEH_MAKE_OPTS += exif=1
+else
+FEH_MAKE_OPTS += exif=0
+endif
+
 ifeq ($(BR2_PACKAGE_XLIB_LIBXINERAMA),y)
 FEH_DEPENDENCIES += xlib_libXinerama
 FEH_MAKE_OPTS += xinerama=1
