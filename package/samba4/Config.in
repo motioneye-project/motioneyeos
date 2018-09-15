@@ -30,6 +30,7 @@ if BR2_PACKAGE_SAMBA4
 config BR2_PACKAGE_SAMBA4_AD_DC
 	bool "AD DC"
 	select BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_JANSSON
 	help
 	  Enable Active Directory Domain Controller functionality.
 

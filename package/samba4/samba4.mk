@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.8.5
+SAMBA4_VERSION = 4.9.0
 SAMBA4_SITE = https://download.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_INSTALL_STAGING = YES
@@ -69,6 +69,13 @@ else
 SAMBA4_CONF_OPTS += --disable-gnutls
 endif
 
+ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
+SAMBA4_CONF_OPTS += --with-libarchive
+SAMBA4_DEPENDENCIES += libarchive
+else
+SAMBA4_CONF_OPTS += --without-libarchive
+endif
+
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 SAMBA4_CONF_ENV += NCURSES_CONFIG="$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)"
 SAMBA4_DEPENDENCIES += ncurses
@@ -108,6 +115,8 @@ define SAMBA4_CONFIGURE_CMDS
 			--disable-iprint \
 			--without-pam \
 			--without-dmapi \
+			--without-gpgme \
+			--without-ldb-lmdb \
 			--disable-glusterfs \
 			--with-cluster-support \
 			--bundled-libraries='!asn1_compile,!compile_et' \
@@ -127,8 +136,10 @@ define SAMBA4_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
-ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),)
-SAMBA4_CONF_OPTS += --without-ad-dc
+ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),y)
+SAMBA4_DEPENDENCIES += jansson
+else
+SAMBA4_CONF_OPTS += --without-ad-dc --without-json-audit
 endif
 
 ifeq ($(BR2_PACKAGE_SAMBA4_ADS),y)
