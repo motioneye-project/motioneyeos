@@ -32,6 +32,8 @@ config BR2_GCC_VERSION_4_9_X
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
+	# glibc >= 2.27 needs gcc >= 5
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC && (BR2_aarch64 || BR2_aarch64_be))
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 
 config BR2_GCC_VERSION_5_X
