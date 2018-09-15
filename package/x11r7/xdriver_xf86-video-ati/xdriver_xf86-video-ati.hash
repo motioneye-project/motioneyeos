@@ -1,7 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2018-March/002884.html
-md5 40e7c0a5a69aba3d84e0958f58705ea7  xf86-video-ati-18.0.1.tar.bz2
-sha1 b5a0b6a2fa839d668a3fb90280fede95f0bc130d  xf86-video-ati-18.0.1.tar.bz2
-sha256 72ea3b8127d4550b64f797457f5a7851a541fa4ee2cc3f345b6c1886b81714a0  xf86-video-ati-18.0.1.tar.bz2
-sha512 b468a78503a596bbf71a1b91b231ce1fa32908f619ff2dfe249352d046696a3641f2a9ff065e32545fff77100134b4b237591215e78ef885b6509d6b16112d14  xf86-video-ati-18.0.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-September/002919.html
+md5  7910883fff7f4a462efac0fe059ed7e3  xf86-video-ati-18.1.0.tar.bz2
+sha1 87beb7d09f5b722570adda9a5a1822cbd19e7059  xf86-video-ati-18.1.0.tar.bz2
+sha256 6c335f423c1dc3d904550d41cb871ca4130ba7037dda67d82e3f1555e1bfb9ac  xf86-video-ati-18.1.0.tar.bz2
+sha512 7a58c9a6cb4876bd2ff37d837372b4e360e81fec7de6a6c7a48d70a5338d62745f734f5d4207f30aa368ff2d9ef44f5f1ef36afd73802a618998c16fe395ed53  xf86-video-ati-18.1.0.tar.bz2
 # Locally computed
 sha256 58847c8e97190c401afa84b3f0b8b147379c876a184e99af2cb51bfd40ac8936  COPYING
