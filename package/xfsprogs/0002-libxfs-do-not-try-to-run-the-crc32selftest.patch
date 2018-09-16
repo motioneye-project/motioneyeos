@@ -17,14 +17,16 @@ Note that there's a remaining bug-in-hiding, because the crc32 table
 generator is natively built, but with the target CFLAGS.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: "Fabrice Fontaine" <fontaine.fabrice@gmail.com>
+[Update for 4.18.0: crc32 has been moved from libxfs to libfrog]
 ---
  libxfs/Makefile | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/libxfs/Makefile b/libxfs/Makefile
+diff --git a/libfrog/Makefile b/libxfs/Makefile
 index 62608bd..e021625 100644
---- a/libxfs/Makefile
-+++ b/libxfs/Makefile
+--- a/libfrog/Makefile
++++ b/libfrog/Makefile
 @@ -112,9 +112,9 @@ LTLIBS = $(LIBPTHREAD) $(LIBRT)
  # don't try linking xfs_repair with a debug libxfs.
  DEBUG = -DNDEBUG
