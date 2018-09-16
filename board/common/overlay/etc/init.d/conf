@@ -14,16 +14,3 @@ fi
 
 source $_conf
 
-has_net_conn() {
-    test "$os_networkless" == "true" && return 1
-
-    addr_eth=$(ip addr show dev $os_eth 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
-    addr_wlan=$(ip addr show dev $os_wlan 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
-
-    if [ -n "$addr_eth" ] || [ -n "$addr_wlan" ]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
