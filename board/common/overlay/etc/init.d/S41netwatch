@@ -28,8 +28,8 @@ watch() {
                 count=$(($count + 1))
                 continue
             else
-                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, rebooting"
-                reboot
+                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, calling panic action"
+                panic_action netwatch
             fi
         fi
     done

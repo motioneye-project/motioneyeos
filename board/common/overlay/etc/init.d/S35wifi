@@ -57,8 +57,8 @@ watch() {
                 count=$(($count + 5))
                 logger -t wifi -s "disconnected"
             else
-                logger -t wifi -s "disconnected for $link_watch_timeout seconds, rebooting"
-                reboot
+                logger -t wifi -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                panic_action wifi
             fi
         fi
     done

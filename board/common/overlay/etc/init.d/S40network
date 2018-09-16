@@ -34,8 +34,8 @@ watch_eth() {
                 count=$(($count + 5))
                 logger -t ethernet -s "disconnected"
             else
-                logger -t ethernet -s "disconnected for $link_watch_timeout seconds, rebooting"
-                reboot
+                logger -t ethernet -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                panic_action network
             fi
         fi
     done
@@ -53,8 +53,8 @@ watch_ip() {
                 count=$(($count + 5))
                 logger -t network -s "$iface has no IP address"
             else
-                logger -t network -s "$iface had no IP address for $ip_watch_timeout seconds, rebooting"
-                reboot
+                logger -t network -s "$iface had no IP address for $ip_watch_timeout seconds, calling panic action"
+                panic_action network
             fi
         fi
     done
@@ -180,8 +180,8 @@ start() {
     
     if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
         if [ "$link_watch" == "true" ]; then
-            logger -t network -s "no network connection available, rebooting"
-            reboot
+            logger -t network -s "no network connection available, calling panic action"
+            panic_action network
             return 1
         else
             logger -t network -s "no network connection available"

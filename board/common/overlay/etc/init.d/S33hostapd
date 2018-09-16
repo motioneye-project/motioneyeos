@@ -34,8 +34,8 @@ watch() {
     while true; do
         sleep 5
         if ! running; then
-            logger -t hostapd -s "dead, rebooting"
-            reboot
+            logger -t hostapd -s "dead, calling panic action"
+            panic_action hostapd
             break
         fi
     done

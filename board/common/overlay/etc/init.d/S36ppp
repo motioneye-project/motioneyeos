@@ -41,8 +41,8 @@ watch() {
                 count=$(($count + 5))
                 logger -t ppp -s "disconnected"
             else
-                logger -t ppp -s "disconnected for $link_watch_timeout seconds, rebooting"
-                reboot
+                logger -t ppp -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                panic_action ppp
             fi
         fi
     done
