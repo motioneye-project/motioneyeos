@@ -12,7 +12,6 @@ if [ -z "$netwatch_host" ] || [ -z "$netwatch_port" ]; then
 fi
 
 test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
 test "$os_networkless" == "true" && exit 0
 

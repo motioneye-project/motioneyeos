@@ -29,6 +29,8 @@ mk_tty_login() {
 case "$1" in
     start)
         mount_fs
+
+        # we need to source conf again, now that /data is available
         test -n "$os_debug" || source /etc/init.d/conf
         test "$os_debug" == "true" && remount_rw
         mk_tty_login

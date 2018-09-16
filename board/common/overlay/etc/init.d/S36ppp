@@ -23,7 +23,6 @@ test -e $conf/modem || exit 0
 test -e $conf/apn || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
 test "$os_networkless" == "true" && exit 0
 
