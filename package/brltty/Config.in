@@ -8,7 +8,7 @@ config BR2_PACKAGE_BRLTTY
 	  A daemon providing access to the Linux console for a blind
 	  person using a refreshable braille display.
 
-	  http://brltty.com/
+	  http://brltty.app/
 
 if BR2_PACKAGE_BRLTTY
 
