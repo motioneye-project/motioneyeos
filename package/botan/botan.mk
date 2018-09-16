@@ -87,7 +87,7 @@ define BOTAN_CONFIGURE_CMDS
 endef
 
 define BOTAN_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) AR="$(TARGET_AR) crs"
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) AR="$(TARGET_AR)"
 endef
 
 define BOTAN_INSTALL_STAGING_CMDS
