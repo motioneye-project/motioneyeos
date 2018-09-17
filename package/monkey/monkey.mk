@@ -48,6 +48,11 @@ ifeq ($(BR2_ENABLE_DEBUG),y)
 MONKEY_CONF_OPTS += --debug
 endif
 
+ifeq ($(BR2_PACKAGE_MONKEY_SSL),y)
+MONKEY_CONF_OPTS += --enable-plugins=tls --mbedtls-shared
+MONKEY_DEPENDENCIES += mbedtls
+endif
+
 define MONKEY_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure $(MONKEY_CONF_OPTS))
 endef

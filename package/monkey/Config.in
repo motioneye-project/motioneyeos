@@ -17,6 +17,12 @@ config BR2_PACKAGE_MONKEY_SHARED
 	  Build Monkey as a shared library in addition to stand-alone
 	  server
 
+config BR2_PACKAGE_MONKEY_SSL
+	bool "enable SSL/TLS"
+	select BR2_PACKAGE_MBEDTLS
+	help
+	  Enable build of the SSL/TLS plugin.
+
 endif
 
 comment "monkey needs an toolchain w/ threads, dynamic library"
