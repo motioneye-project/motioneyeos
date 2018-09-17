@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MONKEY_VERSION_MAJOR = 1.5
-MONKEY_VERSION = $(MONKEY_VERSION_MAJOR).6
+MONKEY_VERSION_MAJOR = 1.6
+MONKEY_VERSION = $(MONKEY_VERSION_MAJOR).9
 MONKEY_SITE = http://monkey-project.com/releases/$(MONKEY_VERSION_MAJOR)
 MONKEY_LICENSE = Apache-2.0
 MONKEY_LICENSE_FILES = LICENSE
@@ -17,11 +17,10 @@ MONKEY_LICENSE_FILES = LICENSE
 MONKEY_CONF_OPTS = \
 	--prefix=/usr \
 	--sysconfdir=/etc/monkey \
-	--datadir=/var/www \
+	--webroot=/var/www \
 	--mandir=/usr/share/man \
 	--logdir=/var/log \
 	--pidfile=/var/run \
-	--plugdir=/usr/lib/monkey \
 	--malloc-libc
 
 # --uclib-mode is not a typo
