@@ -141,9 +141,6 @@ ifeq ($(BR2_DEBUG_3),y)
 TARGET_DEBUGGING = -g3
 endif
 
-TARGET_CFLAGS_RELRO = -Wl,-z,relro
-TARGET_CFLAGS_RELRO_FULL = -Wl,-z,now $(TARGET_CFLAGS_RELRO)
-
 TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
 
 ifeq ($(BR2_SSP_REGULAR),y)
@@ -152,14 +149,6 @@ else ifeq ($(BR2_SSP_STRONG),y)
 TARGET_HARDENED += -fstack-protector-strong
 else ifeq ($(BR2_SSP_ALL),y)
 TARGET_HARDENED += -fstack-protector-all
-endif
-
-ifeq ($(BR2_RELRO_PARTIAL),y)
-TARGET_HARDENED += $(TARGET_CFLAGS_RELRO)
-TARGET_LDFLAGS += $(TARGET_CFLAGS_RELRO)
-else ifeq ($(BR2_RELRO_FULL),y)
-TARGET_HARDENED += -fPIE $(TARGET_CFLAGS_RELRO_FULL)
-TARGET_LDFLAGS += -pie $(TARGET_CFLAGS_RELRO_FULL)
 endif
 
 ifeq ($(BR2_FORTIFY_SOURCE_1),y)
