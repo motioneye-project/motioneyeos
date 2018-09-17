@@ -1,0 +1,41 @@
+From 77062d4a76f5dbd8aee03a25e9eb514b7d924bcc Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@micronovasrl.com>
+Date: Mon, 17 Sep 2018 21:44:20 +0200
+Subject: [PATCH 3/3] configure: Invert AC_CHECK_LIB(EVP_md5,..) without -lz
+ with -lz
+
+First AC_CHECK_LIB(EVP_md5,...) is going to succeed due to
+[other-libraries] fields, but in that case it won't add -lz to LIBCRYPTO
+resulting in failing AC_CHECH_FUNCS() with LIBS=LIBCRYPTO.
+
+Try AC_CHECK_LIB(EVP_md5,..) where LIBS can miss -lz
+and in action-if-not-found try AC_CHECK_LIB(EVP_md5,...) without -lz.
+In the first case append -lz to LIBCRYPTO, in the second don't.
+This is done to check if -lz is present and used in -lcrypto.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ configure.d/config_os_libs2 | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/configure.d/config_os_libs2 b/configure.d/config_os_libs2
+index 81788a209..bfd14c191 100644
+--- a/configure.d/config_os_libs2
++++ b/configure.d/config_os_libs2
+@@ -307,11 +307,10 @@ if test "x$tryopenssl" != "xno" -a "x$tryopenssl" != "xinternal"; then
+ 
+         if test x$CRYPTO = x; then
+             AC_CHECK_LIB([crypto], [EVP_md5],
+-			 [CRYPTO="crypto"; LIBCRYPTO="-lcrypto"], [
++			 [CRYPTO="crypto"; LIBCRYPTO="-lcrypto -lz"], [
+ 		unset ac_cv_lib_crypto_EVP_md5
+ 		AC_CHECK_LIB([crypto], [EVP_md5],
+-			     [CRYPTO="crypto"; LIBCRYPTO="-lcrypto -lz"], [],
+-			     [-lz])
++			     [CRYPTO="crypto"; LIBCRYPTO="-lcrypto"], [])
+ 	    ])
+ 	else
+ 	    LIBCRYPTO="-l${CRYPTO}"
+-- 
+2.17.1
+
