@@ -265,6 +265,12 @@ tests.boot.test_atf.TestATFAllwinner: *runtime_test
 tests.boot.test_atf.TestATFMarvell: *runtime_test
 tests.boot.test_atf.TestATFVexpress: *runtime_test
 tests.core.test_file_capabilities.TestFileCapabilities: *runtime_test
+tests.core.test_hardening.TestFortifyConserv: *runtime_test
+tests.core.test_hardening.TestFortifyNone: *runtime_test
+tests.core.test_hardening.TestRelro: *runtime_test
+tests.core.test_hardening.TestRelroPartial: *runtime_test
+tests.core.test_hardening.TestSspNone: *runtime_test
+tests.core.test_hardening.TestSspStrong: *runtime_test
 tests.core.test_post_scripts.TestPostScripts: *runtime_test
 tests.core.test_rootfs_overlay.TestRootfsOverlay: *runtime_test
 tests.core.test_timezone.TestGlibcAllTimezone: *runtime_test
