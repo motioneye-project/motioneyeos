@@ -143,6 +143,15 @@ endif
 
 TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
 
+# By design, _FORTIFY_SOURCE requires gcc optimization to be enabled.
+# Therefore, we need to pass _FORTIFY_SOURCE and the optimization level
+# through the same mechanism, i.e currently through CFLAGS. Passing
+# _FORTIFY_SOURCE through the wrapper and the optimization level
+# through CFLAGS would not work, because CFLAGS are sometimes
+# ignored/overridden by packages, but the flags passed by the wrapper
+# are enforced: this would cause _FORTIFY_SOURCE to be used without any
+# optimization level, leading to a build / configure failure. So we keep
+# passing _FORTIFY_SOURCE and the optimization level both through CFLAGS.
 ifeq ($(BR2_FORTIFY_SOURCE_1),y)
 TARGET_HARDENED += -D_FORTIFY_SOURCE=1
 else ifeq ($(BR2_FORTIFY_SOURCE_2),y)
