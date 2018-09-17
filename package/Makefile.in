@@ -143,14 +143,6 @@ endif
 
 TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
 
-ifeq ($(BR2_SSP_REGULAR),y)
-TARGET_HARDENED += -fstack-protector
-else ifeq ($(BR2_SSP_STRONG),y)
-TARGET_HARDENED += -fstack-protector-strong
-else ifeq ($(BR2_SSP_ALL),y)
-TARGET_HARDENED += -fstack-protector-all
-endif
-
 ifeq ($(BR2_FORTIFY_SOURCE_1),y)
 TARGET_HARDENED += -D_FORTIFY_SOURCE=1
 else ifeq ($(BR2_FORTIFY_SOURCE_2),y)
