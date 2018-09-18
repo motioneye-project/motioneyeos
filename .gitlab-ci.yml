@@ -171,7 +171,7 @@ olimex_a10_olinuxino_lime_defconfig: *defconfig
 olimex_a13_olinuxino_defconfig: *defconfig
 olimex_a20_olinuxino_lime2_defconfig: *defconfig
 olimex_a20_olinuxino_lime_defconfig: *defconfig
-olimex_a20_olinuxino_lime_mali_defconfig: *defconfig
+olimex_a20_olinuxino_lime_legacy_defconfig: *defconfig
 olimex_a20_olinuxino_micro_defconfig: *defconfig
 olimex_a64_olinuxino_defconfig: *defconfig
 olimex_imx233_olinuxino_defconfig: *defconfig

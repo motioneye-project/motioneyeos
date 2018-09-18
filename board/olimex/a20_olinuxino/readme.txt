@@ -16,7 +16,7 @@ The following defconfigs are available:
    for the A20-OLinuXino-MICRO board using mainline kernel
  - olimex_a20_olinuxino_lime_defconfig
    for the A20-OLinuXino-LIME board using mainline kernel
- - olimex_a20_olinuxino_lime_mali_defconfig
+ - olimex_a20_olinuxino_lime_legacy_defconfig
    for the A20-OLinuXino-LIME board using legacy linux-sunxi kernel
  - olimex_a20_olinuxino_lime2_defconfig
    for the A20-OLinuXino-LIME2 board using mainline kernel
@@ -51,7 +51,7 @@ After building, you should get a tree like this:
     output/images/
     +-- rootfs.ext2
     +-- rootfs.ext4 -> rootfs.ext2
-    +-- script.bin (lime_mali)
+    +-- script.bin (lime_legacy)
     +-- sdcard.img
     +-- sun7i-a20-olinuxino-lime.dtb (lime, mainline)
     +-- sun7i-a20-olinuxino-lime2.dtb (lime2, mainline)
