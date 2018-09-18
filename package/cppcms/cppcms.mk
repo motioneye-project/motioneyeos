@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-CPPCMS_VERSION = 1.0.5
+CPPCMS_VERSION = 1.2.1
 CPPCMS_SOURCE = cppcms-$(CPPCMS_VERSION).tar.bz2
-CPPCMS_LICENSE = LGPL-3.0, BSL-1.0 (boost), MIT (base64.cpp), Public Domain (json2.js), Zlib (md5)
-CPPCMS_LICENSE_FILES = COPYING.TXT THIRD_PARTY_SOFTWARE.TXT
+CPPCMS_LICENSE = MIT, BSL-1.0 (boost), Public Domain (json2.js), Zlib (md5)
+CPPCMS_LICENSE_FILES = COPYING.TXT MIT.TXT THIRD_PARTY_SOFTWARE.TXT
 CPPCMS_SITE = http://downloads.sourceforge.net/project/cppcms/cppcms/$(CPPCMS_VERSION)
 CPPCMS_INSTALL_STAGING = YES
 CPPCMS_CXXFLAGS = $(TARGET_CXXFLAGS)
