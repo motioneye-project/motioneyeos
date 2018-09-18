@@ -1,7 +1,7 @@
 # From http://www.zsh.org/pub/MD5SUM
-md5	5c3b294e63b6cc8da8bcc364c72d954b	zsh-5.5.tar.xz
+md5	540673bf823d2e13806ac0395caa8345	zsh-5.6.2.tar.xz
 # Calculated based on the hash above and after checking signature
-# http://www.zsh.org/pub/zsh-5.5.tar.xz.asc
-sha256	a8359b81d090425d497c6f3c724a7c21a81c614b03e7662ed347705d86958e53	zsh-5.5.tar.xz
+# http://www.zsh.org/pub/zsh-5.6.2.tar.xz.asc
+sha256	a50bd66c0557e8eca3b8fa24e85d0de533e775d7a22df042da90488623752e9e	zsh-5.6.2.tar.xz
 # Locally calculated
 sha256	d06fdf3ef9b1ec69d6b9e170b0a9516fbad3523261ff1668bde3bfea6e0ef5f5  LICENCE
