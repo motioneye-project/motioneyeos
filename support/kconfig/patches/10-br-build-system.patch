@@ -3,10 +3,10 @@
  foo.h       |   12 ++++++++++++
  2 files changed, 65 insertions(+)
 
-Index: b/Makefile.br
+Index: kconfig/Makefile.br
 ===================================================================
 --- /dev/null
-+++ b/Makefile.br
++++ kconfig/Makefile.br
 @@ -0,0 +1,53 @@
 +src := .
 +top_srcdir=../../
@@ -61,10 +61,10 @@ Index: b/Makefile.br
 +
 +FORCE:
 +.PHONY: FORCE clean distclean
-Index: b/foo.h
+Index: kconfig/foo.h
 ===================================================================
 --- /dev/null
-+++ b/foo.h
++++ kconfig/foo.h
 @@ -0,0 +1,12 @@
 +#ifndef __KCONFIG_FOO_H
 +#define __KCONFIG_FOO_H

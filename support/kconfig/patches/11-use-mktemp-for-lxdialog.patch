@@ -2,11 +2,11 @@
  lxdialog/check-lxdialog.sh |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: b/lxdialog/check-lxdialog.sh
+Index: kconfig/lxdialog/check-lxdialog.sh
 ===================================================================
---- a/lxdialog/check-lxdialog.sh
-+++ b/lxdialog/check-lxdialog.sh
-@@ -36,7 +36,7 @@
+--- kconfig.orig/lxdialog/check-lxdialog.sh
++++ kconfig/lxdialog/check-lxdialog.sh
+@@ -41,7 +41,7 @@ ccflags()
  }
  
  # Temp file, try to clean up after us

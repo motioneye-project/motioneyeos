@@ -2,11 +2,11 @@
  gconf.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: b/gconf.c
+Index: kconfig/gconf.c
 ===================================================================
---- a/gconf.c
-+++ b/gconf.c
-@@ -1486,7 +1486,7 @@
+--- kconfig.orig/gconf.c
++++ kconfig/gconf.c
+@@ -1462,7 +1462,7 @@ int main(int ac, char *av[])
  	/* Determine GUI path */
  	env = getenv(SRCTREE);
  	if (env)
