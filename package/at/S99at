@@ -6,6 +6,15 @@
 umask 077
 
 start() {
+	# Since /var/spool can be linked to /tmp (tmpfs)
+	# /var/spool/cron/atjobs/.SEQ created could be not available
+	# Check if not exists otherwise create it
+	if [ ! -f /var/spool/cron/atjobs/.SEQ ]; then
+		mkdir -p /var/spool/cron/atjobs/
+		touch /var/spool/cron/atjobs/.SEQ
+		printf "atd: created missing .SEQ file (atjobs will be lost on reboot)\n"
+	fi
+
 	printf "Starting atd: "
 	start-stop-daemon --start --quiet --make-pidfile --pidfile /var/run/atd.pid --background --exec /usr/sbin/atd -- -f
 	echo "OK"
