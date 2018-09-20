@@ -15,6 +15,8 @@ config BR2_PACKAGE_ANDROID_TOOLS
 	  can be used to interact with target devices using of these
 	  protocols.
 
+	  https://wiki.debian.org/AndroidTools#Original_android-tools_package
+
 if BR2_PACKAGE_ANDROID_TOOLS
 
 # We need kernel headers that support the __SANE_USERSPACE_TYPES__
