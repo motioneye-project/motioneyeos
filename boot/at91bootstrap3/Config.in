@@ -10,6 +10,8 @@ config BR2_TARGET_AT91BOOTSTRAP3
 	  - Physical media algorithm such as DataFlash, NandFlash, NOR
 	    Flash...
 
+	  https://www.at91.com/linux4sam/bin/view/Linux4SAM/AT91Bootstrap
+
 if BR2_TARGET_AT91BOOTSTRAP3
 
 choice
