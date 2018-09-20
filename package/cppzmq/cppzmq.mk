@@ -4,15 +4,12 @@
 #
 ################################################################################
 
-CPPZMQ_VERSION = 68a7b09cfce01c4c279fba2cf91686fcfc566848
+CPPZMQ_VERSION = v4.3.0
 CPPZMQ_SITE = $(call github,zeromq,cppzmq,$(CPPZMQ_VERSION))
 CPPZMQ_INSTALL_STAGING = YES
-CPPZMQ_DEPENDENCIES = zeromq
+CPPZMQ_DEPENDENCIES = host-pkgconf zeromq
 CPPZMQ_LICENSE = MIT
 CPPZMQ_LICENSE_FILES = LICENSE
+CPPZMQ_CONF_OPTS = -DCPPZMQ_BUILD_TESTS=OFF
 
-define CPPZMQ_INSTALL_STAGING_CMDS
-	$(INSTALL) -m 0644 -D $(@D)/zmq.hpp $(STAGING_DIR)/usr/include/zmq.hpp
-endef
-
-$(eval $(generic-package))
+$(eval $(cmake-package))

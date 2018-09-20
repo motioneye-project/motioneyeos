@@ -1,0 +1,47 @@
+From bffb0eda34195339f2af49f2879d9d0b9dee5c28 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 20 Sep 2018 19:37:26 +0200
+Subject: [PATCH] fix install without static libzmq
+
+If libzmq is only available as a shared library and not a static one
+then cmake fails with:
+
+-- CMake libzmq package not found, trying again with pkg-config (normal install of zeromq)
+-- Found PkgConfig: /home/fabrice/buildroot/output/host/bin/pkg-config (found version "0.28")
+CMake Error at CMakeLists.txt:20 (message):
+  ZeroMQ was not found, neither as a CMake package nor via pkg-config
+
+This is due to the fact that ZeroMQ_FOUND is not set to ON even if
+ZEROMQ_LIBRARY is TRUE:
+
+if(ZeroMQ_LIBRARY AND ZeroMQ_STATIC_LIBRARY)
+    set(ZeroMQ_FOUND ON)
+endif()
+
+So change AND by OR as suggested in
+https://github.com/zeromq/cppzmq/issues/266
+
+Fix #266
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/zeromq/cppzmq/pull/267]
+---
+ libzmq-pkg-config/FindZeroMQ.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libzmq-pkg-config/FindZeroMQ.cmake b/libzmq-pkg-config/FindZeroMQ.cmake
+index 89d8236..1b84c95 100644
+--- a/libzmq-pkg-config/FindZeroMQ.cmake
++++ b/libzmq-pkg-config/FindZeroMQ.cmake
+@@ -8,7 +8,7 @@ find_library(ZeroMQ_LIBRARY NAMES libzmq.so libzmq.dylib libzmq.dll
+ find_library(ZeroMQ_STATIC_LIBRARY NAMES libzmq-static.a libzmq.a libzmq.dll.a
+              PATHS ${PC_LIBZMQ_LIBDIR} ${PC_LIBZMQ_LIBRARY_DIRS})
+ 
+-if(ZeroMQ_LIBRARY AND ZeroMQ_STATIC_LIBRARY)
++if(ZeroMQ_LIBRARY OR ZeroMQ_STATIC_LIBRARY)
+     set(ZeroMQ_FOUND ON)
+ endif()
+ 
+-- 
+2.17.1
+
