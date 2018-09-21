@@ -4,20 +4,24 @@
 #
 ################################################################################
 
-PYTHON_SETUPTOOLS_VERSION = v40.0.0
-PYTHON_SETUPTOOLS_SITE = $(call github,pypa,setuptools,$(PYTHON_SETUPTOOLS_VERSION))
+PYTHON_SETUPTOOLS_VERSION = 40.0.0
+PYTHON_SETUPTOOLS_SOURCE = setuptools-$(PYTHON_SETUPTOOLS_VERSION).zip
+PYTHON_SETUPTOOLS_SITE = https://files.pythonhosted.org/packages/d3/3e/1d74cdcb393b68ab9ee18d78c11ae6df8447099f55fe86ee842f9c5b166c
 PYTHON_SETUPTOOLS_LICENSE = MIT
 PYTHON_SETUPTOOLS_LICENSE_FILES = LICENSE
 PYTHON_SETUPTOOLS_SETUP_TYPE = setuptools
 
-# recent setuptools versions require bootstrap.py to be invoked
-# before the standard setup process.
-define PYTHON_SETUPTOOLS_RUN_BOOTSTRAP
-	cd  $(@D) && $(HOST_DIR)/bin/python ./bootstrap.py
+define PYTHON_SETUPTOOLS_EXTRACT_CMDS
+	$(UNZIP) -d $(@D) $(PYTHON_SETUPTOOLS_DL_DIR)/$(PYTHON_SETUPTOOLS_SOURCE)
+	mv $(@D)/setuptools-$(PYTHON_SETUPTOOLS_VERSION)/* $(@D)
+	$(RM) -r $(@D)/setuptools-$(PYTHON_SETUPTOOLS_VERSION)
 endef
 
-PYTHON_SETUPTOOLS_PRE_CONFIGURE_HOOKS = PYTHON_SETUPTOOLS_RUN_BOOTSTRAP
-HOST_PYTHON_SETUPTOOLS_PRE_CONFIGURE_HOOKS = PYTHON_SETUPTOOLS_RUN_BOOTSTRAP
+define HOST_PYTHON_SETUPTOOLS_EXTRACT_CMDS
+	$(UNZIP) -d $(@D) $(HOST_PYTHON_SETUPTOOLS_DL_DIR)/$(PYTHON_SETUPTOOLS_SOURCE)
+	mv $(@D)/setuptools-$(PYTHON_SETUPTOOLS_VERSION)/* $(@D)
+	$(RM) -r $(@D)/setuptools-$(PYTHON_SETUPTOOLS_VERSION)
+endef
 
 $(eval $(python-package))
 $(eval $(host-python-package))
