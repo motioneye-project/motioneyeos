@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IGMPPROXY_VERSION = f47644d8fa7266a784f3ec7b251e7d318bc2f0a9
+IGMPPROXY_VERSION = 0.2.1
 IGMPPROXY_SITE = $(call github,pali,igmpproxy,$(IGMPPROXY_VERSION))
 IGMPPROXY_AUTORECONF = YES
 IGMPPROXY_LICENSE = GPL-2.0+, BSD-3-Clause (mrouted)
