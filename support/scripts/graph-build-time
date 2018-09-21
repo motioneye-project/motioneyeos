@@ -260,7 +260,7 @@ def read_data(input_file):
         return None
 
     for row in reader:
-        time = int(row[0].strip())
+        time = float(row[0].strip())
         state = row[1].strip()
         step = row[2].strip()
         pkg = row[3].strip()

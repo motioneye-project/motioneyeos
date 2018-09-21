@@ -50,7 +50,7 @@ endef
 # Time steps
 define step_time
 	printf "%s:%-5.5s:%-20.20s: %s\n"           \
-	       "$$(date +%s)" "$(1)" "$(2)" "$(3)"  \
+	       "$$(date +%s.%N)" "$(1)" "$(2)" "$(3)"  \
 	       >>"$(BUILD_DIR)/build-time.log"
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_time
