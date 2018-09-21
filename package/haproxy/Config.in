@@ -1,0 +1,10 @@
+config BR2_PACKAGE_HAPROXY
+	bool "haproxy"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # __sync_*_4 intrisics
+	help
+	  HAProxy is a free, very fast and reliable solution offering
+	  high availability, load balancing, and proxying for TCP and
+	  HTTP-based applications.
+
+	  http://www.haproxy.org
