@@ -1,0 +1,40 @@
+From 8b0ae49c8bea78df73c3ecae0059d54a95c561fa Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sun, 24 Dec 2017 00:11:45 +0100
+Subject: [PATCH] cmake: forward cflags from *.pc files to waffle cflags
+
+When building mesa egl without x11 and gles2 the headers need a
+MESA_EGL_NO_X11_HEADERS define to avoid including X11 headers.
+
+This define MESA_EGL_NO_X11_HEADERS  is lost while building waffle
+since CGLAGS defined by pc files are not used.
+
+MESA_EGL_NO_X11_HEADERS is defined in CFLAGS from egl.pc.
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/waffle/CMakeLists.txt | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/waffle/CMakeLists.txt b/src/waffle/CMakeLists.txt
+index d76e029..2ff72c8 100644
+--- a/src/waffle/CMakeLists.txt
++++ b/src/waffle/CMakeLists.txt
+@@ -5,6 +5,14 @@
+ add_definitions(
+     -DWAFFLE_API_VERSION=${waffle_api_version}
+     -DWAFFLE_API_EXPERIMENTAL
++    ${egl_CFLAGS}
++    ${gbm_CFLAGS}
++    ${gl_CFLAGS}
++    ${GLEXT_CFLAGS}
++    ${libudev_CFLAGS}
++    ${wayland-client_CFLAGS}
++    ${wayland-egl_CFLAGS}
++    ${x11-xcb_CFLAGS}
+     )
+ 
+ include_directories(
+-- 
+2.14.3
+

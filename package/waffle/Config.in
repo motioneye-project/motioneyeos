@@ -1,0 +1,47 @@
+config BR2_PACKAGE_WAFFLE_SUPPORTS_GLX
+	bool
+	default y if BR2_PACKAGE_HAS_LIBGL && BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_WAFFLE_SUPPORTS_WAYLAND
+	bool
+	default y if BR2_PACKAGE_WAYLAND && BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+
+config BR2_PACKAGE_WAFFLE_SUPPORTS_X11_EGL
+	bool
+	default y if BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_XORG7
+
+config BR2_PACKAGE_WAFFLE_SUPPORTS_GBM
+	bool
+	# mesa3d is for now the only GBM provider, and it is enabled
+	# together with its EGL support
+	default y if BR2_PACKAGE_HAS_LIBEGL && BR2_PACKAGE_MESA3D_OPENGL_EGL && BR2_PACKAGE_HAS_UDEV
+
+config BR2_PACKAGE_WAFFLE
+	bool "waffle"
+	depends on BR2_PACKAGE_WAFFLE_SUPPORTS_GLX || \
+		BR2_PACKAGE_WAFFLE_SUPPORTS_WAYLAND || \
+		BR2_PACKAGE_WAFFLE_SUPPORTS_X11_EGL || \
+		BR2_PACKAGE_WAFFLE_SUPPORTS_GBM
+	select BR2_PACKAGE_XLIB_LIBX11 if BR2_PACKAGE_WAFFLE_SUPPORTS_GLX || BR2_PACKAGE_WAFFLE_SUPPORTS_X11_EGL
+	select BR2_PACKAGE_LIBXCB if BR2_PACKAGE_WAFFLE_SUPPORTS_GLX || BR2_PACKAGE_WAFFLE_SUPPORTS_X11_EGL
+	help
+	  Waffle is a cross-platform library that allows one to defer
+	  selection of an OpenGL API and of window system until
+	  runtime. For example, on Linux, Waffle enables an application
+	  to select X11/EGL with an OpenGL 3.3 core profile, Wayland
+	  with OpenGL ES2, and other window system / API combinations.
+
+	  Waffle's immediate goal is to enable Piglit [1] to test
+	  multiple OpenGL flavors in a cross-platform way, and to allow
+	  each Piglit test to choose its OpenGL API and window system
+	  at runtime. A future goal is to enable the ability to record
+	  (with another tool such APITrace [2]) an application's OpenGL
+	  calls on one operating system or window system, and then
+	  replay that trace on a different system.
+
+	  For more information, visit to Waffle's website.
+
+	  [1] http://piglit.freedesktop.org
+	  [2] http://github.com/apitrace/apitrace#readme
+
+	  http://www.waffle-gl.org

@@ -1817,6 +1817,7 @@ F:	package/supertuxkart/
 F:	package/terminology/
 F:	package/tk/
 F:	package/upower/
+F:	package/waffle/
 F:	package/xenomai/
 
 N:	Roman Gorbenkov <roman.gorbenkov@ens2m.org>
