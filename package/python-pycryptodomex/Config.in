@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PYCRYPTODOMEX
+	bool "python-pycryptodomex"
+	help
+	  Cryptographic library for Python.
+
+	  http://www.pycryptodome.org

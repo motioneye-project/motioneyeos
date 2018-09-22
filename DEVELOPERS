@@ -219,6 +219,7 @@ F:	package/python-ply/
 F:	package/python-priority/
 F:	package/python-pyasn1/
 F:	package/python-pyasn1-modules/
+F:	package/python-pycryptodomex/
 F:	package/python-pyhamcrest/
 F:	package/python-pyopenssl/
 F:	package/python-pyqrcode/
