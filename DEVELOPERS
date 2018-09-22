@@ -223,6 +223,7 @@ F:	package/python-pyhamcrest/
 F:	package/python-pyopenssl/
 F:	package/python-pyqrcode/
 F:	package/python-pyroute2/
+F:	package/python-pysmi/
 F:	package/python-pytz/
 F:	package/python-reentry/
 F:	package/python-sdnotify/
