@@ -31,3 +31,4 @@ endef
 PYTHON_NUMPY_INSTALL_STAGING = YES
 
 $(eval $(python-package))
+$(eval $(host-python-package))
