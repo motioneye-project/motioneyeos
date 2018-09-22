@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/ply/json
+md5	6465f602e656455affcd7c5734c638f8  ply-3.11.tar.gz
+sha256	00c7c1aaa88358b9c765b6d3000c6eec0ba42abca5351b095321aef446081da3  ply-3.11.tar.gz
+# Locally computed sha256 checksums
+sha256	1095b93b81d2043c5c55e0859875b416f75edb6d5eccb4bf2ace1b5445d1c84f  README.md

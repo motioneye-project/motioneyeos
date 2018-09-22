@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_PLY
+	bool "python-ply"
+	help
+	  Python Lex & Yacc.
+
+	  http://www.dabeaz.com/ply/

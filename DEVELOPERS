@@ -215,6 +215,7 @@ F:	package/python-logbook/
 F:	package/python-lxml/
 F:	package/python-paramiko/
 F:	package/python-passlib/
+F:	package/python-ply/
 F:	package/python-priority/
 F:	package/python-pyasn1/
 F:	package/python-pyasn1-modules/
