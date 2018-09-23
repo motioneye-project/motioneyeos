@@ -1,5 +1,9 @@
 config BR2_PACKAGE_IRQBALANCE
 	bool "irqbalance"
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
 	help
 	  Irqbalance is a daemon to help balance the cpu load generated
 	  by interrupts across all of a systems cpus.
@@ -9,3 +13,7 @@ config BR2_PACKAGE_IRQBALANCE
 	  minimizing cache hit rates for irq handlers.
 
 	  https://github.com/Irqbalance/irqbalance
+
+comment "irqbalance needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

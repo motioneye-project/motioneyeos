@@ -8,9 +8,12 @@ IRQBALANCE_VERSION = v1.0.9
 IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,$(IRQBALANCE_VERSION))
 IRQBALANCE_LICENSE = GPL-2.0
 IRQBALANCE_LICENSE_FILES = COPYING
-IRQBALANCE_DEPENDENCIES = host-pkgconf
+IRQBALANCE_DEPENDENCIES = host-pkgconf libglib2
 # Autoreconf needed because package is distributed without a configure script
 IRQBALANCE_AUTORECONF = YES
+
+# Local implementation of glib2 will be used if --without-glib2 is set
+IRQBALANCE_CONF_OPTS = --with-glib2
 
 ifeq ($(BR2_PACKAGE_NUMACTL),y)
 IRQBALANCE_DEPENDENCIES += numactl
