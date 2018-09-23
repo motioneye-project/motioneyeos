@@ -44,7 +44,7 @@ $(2)_NEEDS_EXTERNAL_WAF ?= NO
 # If the package does not have its own waf, use our own.
 ifeq ($$($(2)_NEEDS_EXTERNAL_WAF),YES)
 $(2)_DEPENDENCIES += host-waf
-$(2)_WAF = $(HOST_DIR)/bin/waf
+$(2)_WAF = $$(HOST_DIR)/bin/waf
 else
 $(2)_WAF = ./waf
 endif
