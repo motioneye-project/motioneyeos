@@ -71,6 +71,11 @@ define GLIBC_ADD_MISSING_STUB_H
 endef
 endif
 
+GLIBC_CONF_ENV = \
+	ac_cv_path_BASH_SHELL=/bin/bash \
+	libc_cv_forced_unwind=yes \
+	libc_cv_ssp=no
+
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
 #
@@ -89,10 +94,8 @@ define GLIBC_CONFIGURE_CMDS
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="-O2 $(GLIBC_EXTRA_CFLAGS)" CPPFLAGS="" \
 		CXXFLAGS="-O2 $(GLIBC_EXTRA_CFLAGS)" \
+		$(GLIBC_CONF_ENV) \
 		$(SHELL) $(@D)/configure \
-		ac_cv_path_BASH_SHELL=/bin/bash \
-		libc_cv_forced_unwind=yes \
-		libc_cv_ssp=no \
 		--target=$(GNU_TARGET_NAME) \
 		--host=$(GNU_TARGET_NAME) \
 		--build=$(GNU_HOST_NAME) \
