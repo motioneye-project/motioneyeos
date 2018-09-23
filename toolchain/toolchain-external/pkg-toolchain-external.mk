@@ -151,11 +151,7 @@ TOOLCHAIN_EXTERNAL_LIBS += $(call qstrip,$(BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS))
 # Definition of the CFLAGS to use with the external toolchain, as well as the
 # common toolchain wrapper build arguments
 #
-ifeq ($(GCC_TARGET_CPU_REVISION),)
 CC_TARGET_CPU_ := $(GCC_TARGET_CPU)
-else
-CC_TARGET_CPU_ := $(GCC_TARGET_CPU)-$(GCC_TARGET_CPU_REVISION)
-endif
 CC_TARGET_ARCH_ := $(GCC_TARGET_ARCH)
 CC_TARGET_ABI_ := $(GCC_TARGET_ABI)
 CC_TARGET_NAN_ := $(GCC_TARGET_NAN)

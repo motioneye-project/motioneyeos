@@ -317,9 +317,6 @@ config BR2_GCC_TARGET_FP32_MODE
 config BR2_GCC_TARGET_CPU
 	string
 
-config BR2_GCC_TARGET_CPU_REVISION
-	string
-
 # The value of this option will be passed as --with-fpu=<value> when
 # building gcc (internal backend) or -mfpu=<value> in the toolchain
 # wrapper (external toolchain)
