@@ -1,7 +1,8 @@
-# From https://sourceforge.net/projects/enlightenment/files/imlib2-src/1.4.10/
-md5 a0de8524592bbd9f24fcc6cb8352137c  imlib2-1.4.10.tar.bz2
-sha1 664df65c6265a2825d685d2f3a4f0d072eb626ac  imlib2-1.4.10.tar.bz2
+# From https://sourceforge.net/projects/enlightenment/files/imlib2-src/1.5.1/
+md5 390aa207693e051bb692f2db650c694b  imlib2-1.5.1.tar.bz2
+sha1 3e97e7157380f0cfbdf4f3c950a7a00bdfa6072c  imlib2-1.5.1.tar.bz2
 
 # Locally computed
+sha256 fa4e57452b8843f4a70f70fd435c746ae2ace813250f8c65f977db5d7914baae  imlib2-1.5.1.tar.bz2
 sha256 fb70339dd33a77b6213c7ae067fccf93d04af44ff3f937c61f8863f7970e73f6  COPYING
 sha256 8c9a2e92ed4937e2d30c2ea95439c36ed3002fc47e34efee43455a460fee8ef5  COPYING-PLAIN
