@@ -15,6 +15,13 @@ IRQBALANCE_AUTORECONF = YES
 # Local implementation of glib2 will be used if --without-glib2 is set
 IRQBALANCE_CONF_OPTS = --with-glib2
 
+ifeq ($(BR2_PACKAGE_LIBCAP_NG),y)
+IRQBALANCE_DEPENDENCIES += libcap-ng
+IRQBALANCE_CONF_OPTS += --with-libcap-ng
+else
+IRQBALANCE_CONF_OPTS += --without-libcap-ng
+endif
+
 ifeq ($(BR2_PACKAGE_NUMACTL),y)
 IRQBALANCE_DEPENDENCIES += numactl
 IRQBALANCE_CONF_OPTS += --enable-numa
