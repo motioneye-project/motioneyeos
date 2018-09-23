@@ -1,3 +1,9 @@
+################################################################################
+#
+# Architecture-specific definitions
+#
+################################################################################
+
 # Allow GCC target configuration settings to be optionally
 # overwritten by architecture specific makefiles.
 
