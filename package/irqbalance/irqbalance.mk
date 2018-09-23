@@ -12,6 +12,13 @@ IRQBALANCE_DEPENDENCIES = host-pkgconf
 # Autoreconf needed because package is distributed without a configure script
 IRQBALANCE_AUTORECONF = YES
 
+ifeq ($(BR2_PACKAGE_NUMACTL),y)
+IRQBALANCE_DEPENDENCIES += numactl
+IRQBALANCE_CONF_OPTS += --enable-numa
+else
+IRQBALANCE_CONF_OPTS += --disable-numa
+endif
+
 # This would be done by the package's autogen.sh script
 define IRQBALANCE_PRECONFIGURE
 	mkdir -p $(@D)/m4
