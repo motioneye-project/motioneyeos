@@ -292,7 +292,7 @@ HOST_ASTERISK_CONF_ENV = CONFIG_LIBXML2=$(HOST_DIR)/bin/xml2-config
 HOST_ASTERISK_CONF_OPTS = \
 	--without-newt \
 	--without-curses \
-	--with-ncurses=$(HOST_DIR)/usr
+	--with-ncurses=$(HOST_DIR)
 
 # Not an automake package, so does not inherit LDFLAGS et al. from
 # the configure run.

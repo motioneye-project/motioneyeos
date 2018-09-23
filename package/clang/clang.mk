@@ -51,8 +51,8 @@ CLANG_CONF_OPTS += \
 
 HOST_CLANG_CONF_OPTS += -DLLVM_CONFIG:FILEPATH=$(HOST_DIR)/bin/llvm-config
 CLANG_CONF_OPTS += -DLLVM_CONFIG:FILEPATH=$(STAGING_DIR)/usr/bin/llvm-config \
-	-DCLANG_TABLEGEN:FILEPATH=$(HOST_DIR)/usr/bin/clang-tblgen \
-	-DLLVM_TABLEGEN_EXE:FILEPATH=$(HOST_DIR)/usr/bin/llvm-tblgen
+	-DCLANG_TABLEGEN:FILEPATH=$(HOST_DIR)/bin/clang-tblgen \
+	-DLLVM_TABLEGEN_EXE:FILEPATH=$(HOST_DIR)/bin/llvm-tblgen
 
 # Clang can't be used as compiler on the target since there are no
 # development files (headers) and other build tools. So remove clang
@@ -81,7 +81,7 @@ CLANG_POST_INSTALL_TARGET_HOOKS += CLANG_CLEANUP_TARGET
 # for cross-compiling clang
 define HOST_CLANG_INSTALL_CLANG_TBLGEN
 	$(INSTALL) -D -m 0755 $(HOST_CLANG_BUILDDIR)/bin/clang-tblgen \
-		$(HOST_DIR)/usr/bin/clang-tblgen
+		$(HOST_DIR)/bin/clang-tblgen
 endef
 HOST_CLANG_POST_INSTALL_HOOKS = HOST_CLANG_INSTALL_CLANG_TBLGEN
 

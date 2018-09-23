@@ -27,8 +27,8 @@ endif
 HOST_XMLSTARLET_DEPENDENCIES += host-libxml2 host-libxslt
 
 HOST_XMLSTARLET_CONF_OPTS += \
-	--with-libxml-prefix=$(HOST_DIR)/usr \
-	--with-libxslt-prefix=$(HOST_DIR)/usr
+	--with-libxml-prefix=$(HOST_DIR) \
+	--with-libxslt-prefix=$(HOST_DIR)
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

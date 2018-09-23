@@ -42,7 +42,7 @@ endif
 
 HOST_LIBSSH2_DEPENDENCIES += host-openssl
 HOST_LIBSSH2_CONF_OPTS += --with-openssl \
-	--with-libssl-prefix=$(HOST_DIR)/usr \
+	--with-libssl-prefix=$(HOST_DIR) \
 	--without-libgcrypt
 
 $(eval $(autotools-package))
