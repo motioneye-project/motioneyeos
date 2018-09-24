@@ -1,0 +1,57 @@
+From 25899e849aa3abc1ad29ebf0b830262a859eaed5 Mon Sep 17 00:00:00 2001
+From: Petr Vorel <petr.vorel@gmail.com>
+Date: Sat, 21 Jul 2018 17:46:14 +0200
+Subject: [PATCH] ping: Fix AI_CANONIDN usage on some systems
+
+Commit 99f67db used AI_CANONIDN in a way, which broke compilation on
+systems where AI_CANONIDN is not defined in netdb.h (e.g. glibc < 2.3.4,
+alternative libcs that don't support IDN: e.g. current musl 1.1.19 and
+uClibc-ng 1.0.30) when not using the system libidn2.
+
+Fixes: 99f67db ping: Fix ping name encoded using ACE on C locale
+
+Reported-by: Nicholas Fish
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+ ping.c | 2 +-
+ ping.h | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ping.c b/ping.c
+index 733477f..b241815 100644
+--- a/ping.c
++++ b/ping.c
+@@ -207,9 +207,9 @@ main(int argc, char **argv)
+ 
+ #ifdef USE_IDN
+ 	setlocale(LC_ALL, "");
+-#endif
+ 	if (!strcmp(setlocale(LC_ALL, NULL), "C"))
+ 		hints.ai_flags &= ~ AI_CANONIDN;
++#endif
+ 
+ 	/* Support being called using `ping4` or `ping6` symlinks */
+ 	if (argv[0][strlen(argv[0])-1] == '4')
+diff --git a/ping.h b/ping.h
+index 3e09685..8a0c4ef 100644
+--- a/ping.h
++++ b/ping.h
+@@ -28,7 +28,6 @@
+ #include <netinet/icmp6.h>
+ #include <linux/filter.h>
+ #include <resolv.h>
+-#include <locale.h>
+ 
+ #ifdef CAPABILITIES
+ #include <sys/prctl.h>
+@@ -36,6 +35,7 @@
+ #endif
+ 
+ #ifdef USE_IDN
++#include <locale.h>
+ #include <idn2.h>
+ #define getaddrinfo_flags (AI_CANONNAME | AI_IDN | AI_CANONIDN)
+ #define getnameinfo_flags NI_IDN
+-- 
+2.19.0.rc2
+
