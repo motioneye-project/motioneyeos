@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/passlib/json
+md5	254869dae3fd9f09f0746a3cb29a0b15  passlib-1.7.1.tar.gz
+sha256	3d948f64138c25633613f303bcc471126eae67c04d5e3f6b7b8ce6242f8653e0  passlib-1.7.1.tar.gz
+# Locally computed sha256 checksums
+sha256	ae8cd74bd5be7be586c52def8bcddfe817872cf2e0782b159d37f88bf0ff11fc  LICENSE
