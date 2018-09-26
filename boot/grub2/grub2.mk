@@ -44,6 +44,27 @@ GRUB2_PREFIX = /EFI/BOOT
 GRUB2_TUPLE = x86_64-efi
 GRUB2_TARGET = x86_64
 GRUB2_PLATFORM = efi
+else ifeq ($(BR2_TARGET_GRUB2_ARM_UBOOT),y)
+GRUB2_IMAGE = $(BINARIES_DIR)/boot-part/grub/grub.img
+GRUB2_CFG = $(BINARIES_DIR)/boot-part/grub/grub.cfg
+GRUB2_PREFIX = ($(GRUB2_BOOT_PARTITION))/boot/grub
+GRUB2_TUPLE = arm-uboot
+GRUB2_TARGET = arm
+GRUB2_PLATFORM = uboot
+else ifeq ($(BR2_TARGET_GRUB2_ARM_EFI),y)
+GRUB2_IMAGE = $(BINARIES_DIR)/efi-part/EFI/BOOT/bootarm.efi
+GRUB2_CFG = $(BINARIES_DIR)/efi-part/EFI/BOOT/grub.cfg
+GRUB2_PREFIX = /EFI/BOOT
+GRUB2_TUPLE = arm-efi
+GRUB2_TARGET = arm
+GRUB2_PLATFORM = efi
+else ifeq ($(BR2_TARGET_GRUB2_ARM64_EFI),y)
+GRUB2_IMAGE = $(BINARIES_DIR)/efi-part/EFI/BOOT/bootaa64.efi
+GRUB2_CFG = $(BINARIES_DIR)/efi-part/EFI/BOOT/grub.cfg
+GRUB2_PREFIX = /EFI/BOOT
+GRUB2_TUPLE = arm64-efi
+GRUB2_TARGET = aarch64
+GRUB2_PLATFORM = efi
 endif
 
 # Grub2 is kind of special: it considers CC, LD and so on to be the
