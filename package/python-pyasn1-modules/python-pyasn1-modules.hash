@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/pyasn1-modules/json
+md5	65ce1ea1021679bffe96065baab232de  pyasn1-modules-0.2.2.tar.gz
+sha256	a0cf3e1842e7c60fde97cb22d275eb6f9524f5c5250489e292529de841417547  pyasn1-modules-0.2.2.tar.gz
+# Locally computed sha256 checksums
+sha256	f82128f64d567c333936a12b99a21d0e8cd66ce628d51ce0a7770cc38dc7fe43  LICENSE.txt
