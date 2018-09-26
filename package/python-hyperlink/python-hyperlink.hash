@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/hyperlink/json, sha256 locally computed
-md5	7a86b09d80b8f0c89f6b61efa0ebaab9  hyperlink-17.3.0.tar.gz
-sha256	ddadbbdda2b94182da14be1b5d26ec3188dfdf9687b9b8c8d810f52f79b7af1a  hyperlink-17.3.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/hyperlink/json
+md5	f41a96779b324d824864696a94b24823  hyperlink-18.0.0.tar.gz
+sha256	f01b4ff744f14bc5d0a22a6b9f1525ab7d6312cb0ff967f59414bbac52f0a306  hyperlink-18.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256	9577b66fb599aa5700b4981078ab0a319416a086beee646cd282aa9f33c8c74c  LICENSE
