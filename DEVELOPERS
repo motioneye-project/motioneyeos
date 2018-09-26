@@ -208,6 +208,7 @@ F:	package/python-paramiko/
 F:	package/python-passlib/
 F:	package/python-pyasn1/
 F:	package/python-pyasn1-modules/
+F:	package/python-pyhamcrest/
 F:	package/python-pyroute2/
 F:	package/python-pytz/
 F:	package/python-reentry/
