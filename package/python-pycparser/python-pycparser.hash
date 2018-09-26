@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pycparser/json, sha256 locally computed
-md5 ca98dcb50bc1276f230118f6af5a40c7 pycparser-2.17.tar.gz
-sha256 0aac31e917c24cb3357f5a4d5566f2cc91a19ca41862f6c3c22dc60a629673b6 pycparser-2.17.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pycparser/json
+md5	76396762adc3fa769c83d8e202d36b6f  pycparser-2.19.tar.gz
+sha256	a988718abfad80b6b157acce7bf130a30876d27603738ac39f140993246b25b3  pycparser-2.19.tar.gz
+# Locally computed sha256 checksums
+sha256	3c76629880aec2f8578ed914701a4ff9e5da8b60acb8b7ec675abf83c90c5168  LICENSE
