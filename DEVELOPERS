@@ -1636,6 +1636,7 @@ F:	package/python-texttable/
 F:	package/python-validators/
 F:	package/python-webob/
 F:	package/python-websocket-client/
+F:	package/sedutil/
 F:	package/triggerhappy/
 
 N:	Peter Seiderer <ps.report@gmx.net>
