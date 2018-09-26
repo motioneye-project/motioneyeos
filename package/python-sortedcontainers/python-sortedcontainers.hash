@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/sortedcontainers/json, sha256 locally computed
-md5	ad4f00e377ad934954ac90fcac0b185f  sortedcontainers-1.5.7.tar.gz
-sha256	0ff0442865e492bc50476b18000fb8400cf2472d14d21a92b27cd7c5184550ea  sortedcontainers-1.5.7.tar.gz
+# md5, sha256 from https://pypi.org/pypi/sortedcontainers/json
+md5	5f079b1131d8b1a3ed025e7e679b1497  sortedcontainers-2.0.5.tar.gz
+sha256	b74f2756fb5e23512572cc76f0fe0832fd86310f77dfee54335a35fb33f6b950  sortedcontainers-2.0.5.tar.gz
+# Locally computed sha256 checksums
+sha256	7dcf4a5137118a925727b8a1690bc6ea70b156ee6739dbb51fd4d386718d6ce5  LICENSE
