@@ -76,6 +76,15 @@ config BR2_TARGET_GRUB2_BUILTIN_CONFIG
 	  device and other configuration parameters, but however menu
 	  entries cannot be described in this embedded configuration.
 
+config BR2_TARGET_GRUB2_INSTALL_TOOLS
+	bool "install tools"
+	help
+	  Install support tools to interact with GNU GRUB Multiboot
+	  boot loader.
+
+	  This will also install the Grub 2 loadable modules to the
+	  target.
+
 endif # BR2_TARGET_GRUB2
 
 comment "grub2 needs a toolchain w/ wchar"
