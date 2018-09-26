@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/automat/json, sha256 locally computed
-md5	ad7bba58d262d8956d732330cb5ef53d  Automat-0.6.0.tar.gz
-sha256	3c1fd04ecf08ac87b4dd3feae409542e9bf7827257097b2b6ed5692f69d6f6a8  Automat-0.6.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/automat/json
+md5	b72d5b7a83c2b1bd6e9ec3614a69f9ea  Automat-0.7.0.tar.gz
+sha256	cbd78b83fa2d81fe2a4d23d258e1661dd7493c9a50ee2f1a5b2cac61c1793b0e  Automat-0.7.0.tar.gz
+# Locally computed sha256 checksums
+sha256	b2201301678d0a937d938543827ca1360712eb34e23de8ee3f3bfffbd4c0e376  LICENSE
