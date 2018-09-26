@@ -1,8 +1,8 @@
 config BR2_PACKAGE_NILFS_UTILS
 	bool "nilfs-utils"
+	depends on BR2_USE_MMU # util-linux libmount, libblkid
 	depends on BR2_TOOLCHAIN_HAS_THREADS # sem_open()
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # clock_nanosleep()
-	depends on BR2_USE_MMU # util-linux libmount, libblkid
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
@@ -13,5 +13,6 @@ config BR2_PACKAGE_NILFS_UTILS
 	  https://github.com/nilfs-dev/nilfs-utils
 
 comment "nilfs-utils needs a toolchain w/ threads, NPTL"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_TOOLCHAIN_HAS_THREADS_NPTL
