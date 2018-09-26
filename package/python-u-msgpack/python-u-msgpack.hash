@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/u-msgpack-python/json, sha256 locally computed
-md5	f5adfb3e19910d8a41e331d3b03aa7c6  u-msgpack-python-2.2.tar.gz
-sha256	cdd5a88f2313856a6a9f481f652dab9edd5731059badbb0111280f27249930d7  u-msgpack-python-2.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/u-msgpack-python/json
+md5	ba0ec9036933edbbf33a344a5c72dd14  u-msgpack-python-2.5.0.tar.gz
+sha256	7ff18ae3721fa75571f9329c08f7c0120416a6ae36194bd8674f65b3b78d0702  u-msgpack-python-2.5.0.tar.gz
+# Locally computed sha256
+sha256	0603a3e697a80b13640e3023bb534727f683ada5c4b0b0149d001ec5272d64f4  LICENSE
