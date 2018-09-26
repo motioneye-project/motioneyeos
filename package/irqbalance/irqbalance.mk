@@ -21,6 +21,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_NCURSES_WCHAR),y)
 IRQBALANCE_DEPENDENCIES += ncurses
+IRQBALANCE_CONF_OPTS += --with-irqbalance-ui
+else
+IRQBALANCE_CONF_OPTS += --without-irqbalance-ui
 endif
 
 ifeq ($(BR2_PACKAGE_NUMACTL),y)
