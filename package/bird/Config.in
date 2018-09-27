@@ -1,0 +1,23 @@
+config BR2_PACKAGE_BIRD
+	bool "bird"
+	depends on BR2_USE_MMU # fork()
+	help
+	  BIRD Internet Routing Daemon
+
+	  The BIRD project aims to develop a dynamic IP routing daemon
+	  with full support of all modern routing protocols, easy to
+	  use configuration interface and powerful route filtering
+	  language
+
+	  http://bird.network.cz/
+
+if BR2_PACKAGE_BIRD
+
+config BR2_PACKAGE_BIRD_CLIENT
+	bool "birdc"
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
+	help
+	  Enable the BIRD client
+
+endif

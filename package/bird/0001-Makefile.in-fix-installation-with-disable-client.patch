@@ -1,0 +1,41 @@
+From 6cb15abfc00cb5e492175a9efc71bfdfd1aa457c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Tue, 9 Oct 2018 12:51:08 +0200
+Subject: [PATCH] Makefile.in: fix installation with --disable-client
+
+The configure.ac script initializes the CLIENT variable this way:
+
+CLIENT=birdcl
+if client enabled
+ CLIENT=$CLIENT birdc
+fi
+
+This means that checking if @CLIENT@ is empty to decide whether birdc
+should be installed or not doesn't work, and causes a failure at
+installation time when --disable-client is passed.
+
+Instead, check if the birdc binary has been produced or not to decide
+whether it should be installed.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream-status: http://trubka.network.cz/pipermail/bird-users/2018-October/012763.html
+---
+ Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index c8168bbe..fea3683e 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -171,7 +171,7 @@ install: all
+ 	$(INSTALL) -d $(DESTDIR)/$(sbindir) $(DESTDIR)/$(sysconfdir) $(DESTDIR)/@runtimedir@
+ 	$(INSTALL_PROGRAM) $(exedir)/bird $(DESTDIR)/$(sbindir)/bird
+ 	$(INSTALL_PROGRAM) $(exedir)/birdcl $(DESTDIR)/$(sbindir)/birdcl
+-	if test -n "@CLIENT@" ; then								\
++	if test -f $(exedir)/birdc ; then							\
+ 		$(INSTALL_PROGRAM) $(exedir)/birdc $(DESTDIR)/$(sbindir)/birdc ;		\
+ 	fi
+ 	if ! test -f $(DESTDIR)/@CONFIG_FILE@ ; then						\
+-- 
+2.14.4
+

@@ -71,6 +71,7 @@ F:	package/webkitgtk/
 F:	package/woff2/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
+F:	package/bird/
 F:	package/glorytun/
 
 N:	Aleksander Morgado <aleksander@aleksander.es>
