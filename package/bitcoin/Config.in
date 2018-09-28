@@ -1,0 +1,45 @@
+config BR2_PACKAGE_BITCOIN_ARCH_SUPPORTS
+	bool
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	# bitcoin uses 8-byte __atomic intrinsics, which are not
+	# available on ARM noMMU platforms that we
+	# support. BR2_TOOLCHAIN_HAS_ATOMIC does not provide a
+	# size-level granularity to express this dependency.
+	depends on !(BR2_arm || BR2_armeb) || BR2_USE_MMU
+
+config BR2_PACKAGE_BITCOIN
+	bool "bitcoin"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # std::future
+	depends on BR2_PACKAGE_BITCOIN_ARCH_SUPPORTS
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_BOOST_THREAD
+	select BR2_PACKAGE_BOOST_CHRONO
+	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_LIBEVENT
+	help
+	  Bitcoin Core is an open source project which maintains and
+	  releases Bitcoin client software called “Bitcoin Core”.
+
+	  It is a direct descendant of the original Bitcoin software
+	  client released by Satoshi Nakamoto after he published the
+	  famous Bitcoin whitepaper.
+
+	  Bitcoin Core consists of both "full-node" software for fully
+	  validating the blockchain as well as a bitcoin wallet. The
+	  project also currently maintains related software such as
+	  the cryptography library libsecp256k1 and others located at
+	  GitHub.
+
+	  https://bitcoincore.org
+
+comment "bitcoin needs a toolchain w/ C++"
+	depends on BR2_PACKAGE_BITCOIN_ARCH_SUPPORTS
+	depends on !BR2_INSTALL_LIBSTDCPP
+
+comment "bitcoin needs a toolchain not affected by GCC bug 64735"
+	depends on BR2_PACKAGE_BITCOIN_ARCH_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735
