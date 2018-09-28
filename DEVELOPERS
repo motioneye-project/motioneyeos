@@ -924,6 +924,7 @@ N:	Grzegorz Blach <grzegorz@blach.pl>
 F:	package/pigpio/
 F:	package/python-falcon/
 F:	package/python-mimeparse/
+F:	package/python-pigpio/
 
 N:	Guillaume Gardet <guillaume.gardet@oliseo.fr>
 F:	package/c-icap/

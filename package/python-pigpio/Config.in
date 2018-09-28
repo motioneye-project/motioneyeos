@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PIGPIO
+	bool "python-pigpio"
+	help
+	  Pigpio is a Python module for the Raspberry Pi
+	  which talks to the pigpio daemon to allow control
+	  of the general purpose input outputs (GPIO).
+
+	  http://abyz.co.uk/rpi/pigpio/python.html
