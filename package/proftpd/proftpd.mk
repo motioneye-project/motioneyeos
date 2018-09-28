@@ -93,12 +93,16 @@ define PROFTPD_INSTALL_FTPQUOTA
 	$(INSTALL) -D -m 0755 $(@D)/contrib/ftpquota $(TARGET_DIR)/usr/sbin/ftpquota
 endef
 endif
+define PROFTPD_INSTALL_FTPASSWD
+	$(INSTALL) -D -m 0755 $(@D)/contrib/ftpasswd $(TARGET_DIR)/usr/sbin/ftpasswd
+endef
 endif
 
 define PROFTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/proftpd $(TARGET_DIR)/usr/sbin/proftpd
 	$(INSTALL) -m 0644 -D $(@D)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf
 	$(PROFTPD_INSTALL_FTPQUOTA)
+	$(PROFTPD_INSTALL_FTPASSWD)
 endef
 
 define PROFTPD_USERS
