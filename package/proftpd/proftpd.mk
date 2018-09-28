@@ -42,6 +42,30 @@ else
 PROFTPD_CONF_OPTS += --disable-openssl
 endif
 
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_SQL),y)
+PROFTPD_MODULES += mod_sql
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB),y)
+PROFTPD_MODULES += mod_quotatab
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_FILE),y)
+PROFTPD_MODULES += mod_quotatab_file
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_LDAP),y)
+PROFTPD_MODULES += mod_quotatab_ldap
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_RADIUS),y)
+PROFTPD_MODULES += mod_quotatab_radius
+endif
+
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_SQL),y)
+PROFTPD_MODULES += mod_quotatab_sql
+endif
+
 PROFTPD_CONF_OPTS += --with-modules=$(subst $(space),:,$(PROFTPD_MODULES))
 
 # configure script doesn't handle detection of %llu format string
@@ -62,9 +86,19 @@ PROFTPD_POST_CONFIGURE_HOOKS = PROFTPD_MAKENAMES
 
 PROFTPD_MAKE = $(MAKE1)
 
+# install Perl based scripts in target
+ifeq ($(BR2_PACKAGE_PERL),y)
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB),y)
+define PROFTPD_INSTALL_FTPQUOTA
+	$(INSTALL) -D -m 0755 $(@D)/contrib/ftpquota $(TARGET_DIR)/usr/sbin/ftpquota
+endef
+endif
+endif
+
 define PROFTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/proftpd $(TARGET_DIR)/usr/sbin/proftpd
 	$(INSTALL) -m 0644 -D $(@D)/sample-configurations/basic.conf $(TARGET_DIR)/etc/proftpd.conf
+	$(PROFTPD_INSTALL_FTPQUOTA)
 endef
 
 define PROFTPD_USERS

@@ -26,4 +26,43 @@ config BR2_PACKAGE_PROFTPD_MOD_SFTP
 	help
 	  Compile ProFTPD with mod_sftp support
 
+config BR2_PACKAGE_PROFTPD_MOD_SQL
+	bool "mod_sql support"
+	help
+	  Compile ProFTPD with mode_sql support.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
+	bool "mod_quotatab support"
+	help
+	  Compile ProFTPD with mode_quotatab support. This module
+	  is required in order to support quota tables:
+	        1. mod_quotatab_file
+	        2. mod_quotatab_ldap
+	        3. mod_quotatab_radius
+	        4. mod_quotatab_sql
+
+if BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_FILE
+	bool "mod_quotatab_file table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_file table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_LDAP
+	bool "mod_quotatab_ldap table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_ldap table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_RADIUS
+	bool "mod_quotatab_radius table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_radius table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_SQL
+	bool "mod_quotatab_sql table support"
+	select BR2_PACKAGE_PROFTPD_MOD_SQL
+	help
+	  Compile mod_quotatab with mod_quotatab_sql table.
+
+endif
 endif
