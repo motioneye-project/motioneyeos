@@ -16,12 +16,6 @@ ifeq ($(BR2_STATIC_LIBS),y)
 LIBAIO_CONFIGURE_OPTS += ENABLE_SHARED=0
 endif
 
-# On PowerPC, a weird toolchain issue causes -Os builds to produce
-# references to hidden symbols, so we're forcing -O2
-ifeq ($(BR2_powerpc),y)
-LIBAIO_CONFIGURE_OPTS += CFLAGS="$(subst -Os,-O2,$(TARGET_CFLAGS))"
-endif
-
 define LIBAIO_BUILD_CMDS
 	$(LIBAIO_CONFIGURE_OPTS) $(TARGET_MAKE_ENV) $(MAKE) -C $(@D)
 endef
