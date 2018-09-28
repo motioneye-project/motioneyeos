@@ -37,26 +37,15 @@ endif
 endif
 
 # pcre and pcre2 can't be enabled at the same time so prefer pcre2
-# Set PCRE2_DIR as haproxy will otherwise try to use pcre2-config and
-# will default to /usr/local
 ifeq ($(BR2_PACKAGE_PCRE2),y)
 HAPROXY_DEPENDENCIES += pcre2
 HAPROXY_MAKE_OPTS += \
-	PCRE2DIR=$(STAGING_DIR)/usr \
+	PCRE_CONFIGDIR=$(STAGING_DIR)/usr/bin/ \
 	USE_PCRE2=1
-
-# Again, set manually PCRE2_LDFLAGS or default will contain -L/usr/local
-ifeq ($(BR2_PACKAGE_PCRE2_32),y)
-HAPROXY_MAKE_OPTS += PCRE2_LDFLAGS=-lpcre2-32
-else ifeq ($(BR2_PACKAGE_PCRE2_16),y)
-HAPROXY_MAKE_OPTS += PCRE2_LDFLAGS=-lpcre2-16
-else
-HAPROXY_MAKE_OPTS += PCRE2_LDFLAGS=-lpcre2-8
-endif
 else ifeq ($(BR2_PACKAGE_PCRE),y)
 HAPROXY_DEPENDENCIES += pcre
 HAPROXY_MAKE_OPTS += \
-	PCREDIR=$(STAGING_DIR)/usr \
+	PCRE_CONFIGDIR=$(STAGING_DIR)/usr/bin/ \
 	USE_PCRE=1
 endif
 

@@ -1,0 +1,56 @@
+From f3dcdf6c9ffea4d9b89dca9706a48c44bd76c470 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 28 Sep 2018 19:21:26 +0200
+Subject: [PATCH] Allow configuration of pcre-config path
+
+Add PCRE_CONFIGDIR variable to allow the user to configure path of
+pcre-config or pcre-config2 instead of using the one in his path.
+This is particular useful when cross-compiling.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ Makefile | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 382f944f..7c31f1ba 100644
+--- a/Makefile
++++ b/Makefile
+@@ -78,6 +78,7 @@
+ # Other variables :
+ #   DLMALLOC_SRC   : build with dlmalloc, indicate the location of dlmalloc.c.
+ #   DLMALLOC_THRES : should match PAGE_SIZE on every platform (default: 4096).
++#   PCRE_CONFIGDIR : force the path to pcre-config or pcre-config2
+ #   PCREDIR        : force the path to libpcre.
+ #   PCRE_LIB       : force the lib path to libpcre (defaults to $PCREDIR/lib).
+ #   PCRE_INC       : force the include path to libpcre ($PCREDIR/inc)
+@@ -734,7 +735,7 @@ endif
+ # Forcing PCREDIR to an empty string will let the compiler use the default
+ # locations.
+ 
+-PCREDIR	        := $(shell pcre-config --prefix 2>/dev/null || echo /usr/local)
++PCREDIR	        := $(shell $(PCRE_CONFIGDIR)pcre-config --prefix 2>/dev/null || echo /usr/local)
+ ifneq ($(PCREDIR),)
+ PCRE_INC        := $(PCREDIR)/include
+ PCRE_LIB        := $(PCREDIR)/lib
+@@ -759,7 +760,7 @@ endif
+ endif
+ 
+ ifneq ($(USE_PCRE2)$(USE_STATIC_PCRE2)$(USE_PCRE2_JIT),)
+-PCRE2DIR	:= $(shell pcre2-config --prefix 2>/dev/null || echo /usr/local)
++PCRE2DIR	:= $(shell $(PCRE_CONFIGDIR)pcre2-config --prefix 2>/dev/null || echo /usr/local)
+ ifneq ($(PCRE2DIR),)
+ PCRE2_INC       := $(PCRE2DIR)/include
+ PCRE2_LIB       := $(PCRE2DIR)/lib
+@@ -777,7 +778,7 @@ endif
+ endif
+ 
+ 
+-PCRE2_LDFLAGS	:= $(shell pcre2-config --libs$(PCRE2_WIDTH) 2>/dev/null || echo -L/usr/local/lib -lpcre2-$(PCRE2_WIDTH))
++PCRE2_LDFLAGS	:= $(shell $(PCRE_CONFIGDIR)pcre2-config --libs$(PCRE2_WIDTH) 2>/dev/null || echo -L/usr/local/lib -lpcre2-$(PCRE2_WIDTH))
+ 
+ ifeq ($(PCRE2_LDFLAGS),)
+ $(error libpcre2-$(PCRE2_WIDTH) not found)
+-- 
+2.17.1
+
