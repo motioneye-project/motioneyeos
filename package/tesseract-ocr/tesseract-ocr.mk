@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TESSERACT_OCR_VERSION = 3.05.00
+TESSERACT_OCR_VERSION = 3.05.02
 TESSERACT_OCR_DATA_VERSION = 3.04.00
 TESSERACT_OCR_SITE = $(call github,tesseract-ocr,tesseract,$(TESSERACT_OCR_VERSION))
 TESSERACT_OCR_LICENSE = Apache-2.0
