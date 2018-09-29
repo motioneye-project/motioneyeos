@@ -9,7 +9,7 @@ Bare PC sample config
 
   $ make pc_x86_64_bios_defconfig
 
-  Or for EFI:
+  For EFI-based boot strategy on a GPT-partitioned disk:
 
   $ make pc_x86_64_efi_defconfig
 
