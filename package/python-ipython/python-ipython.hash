@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/ipython/json, sha256 locally computed
-md5 d8cc938f46801060239184a35ec9c5a6 ipython-5.4.0.tar.gz
-sha256 6907826c427c917bf0cdab71ee728288b1f1975c4b94b3ed608b67db3183c974 ipython-5.4.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/ipython/json
+md5 7014b8824981eef2cb893ea5398d6b8d ipython-5.8.0.tar.gz
+sha256 4bac649857611baaaf76bc82c173aa542f7486446c335fe1a6c05d0d491c8906 ipython-5.8.0.tar.gz
+# Locally computed sha256
+sha256 a5d87689342ec47cebdf623af06cec734c607666c696fe48271f2ff91752443d COPYING.rst
