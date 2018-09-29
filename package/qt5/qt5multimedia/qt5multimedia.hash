@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtmultimedia-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 ae36039ea8037742342f1615687e0ca2188f3ed0d700627a5e5be546c15e1b46 qtmultimedia-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.1/submodules/qtmultimedia-everywhere-src-5.11.1.tar.xz.mirrorlist
-sha256 f28bb57890b4666a9aafaa116a30c51dedb0f23b60a510280a27eb032b58c90c  qtmultimedia-everywhere-src-5.11.1.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.2/submodules/qtmultimedia-everywhere-src-5.11.2.tar.xz.mirrorlist
+sha256 25608f3d08636026387394956fe72cedcb78eb786fb32fd87deb41d574cf726d qtmultimedia-everywhere-src-5.11.2.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2
