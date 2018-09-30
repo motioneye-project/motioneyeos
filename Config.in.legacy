@@ -145,6 +145,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.11"
 
+config BR2_PACKAGE_BOOTUTILS
+	bool "bootutils package removed"
+	select BR2_LEGACY
+	help
+	  The bootutils package was removed.
+
 config BR2_PACKAGE_EXPEDITE
 	bool "expedite package has been removed"
 	select BR2_LEGACY
