@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_FUTURES_VERSION = 3.0.5
+PYTHON_FUTURES_VERSION = 3.2.0
 PYTHON_FUTURES_SOURCE = futures-$(PYTHON_FUTURES_VERSION).tar.gz
-PYTHON_FUTURES_SITE = https://pypi.python.org/packages/55/db/97c1ca37edab586a1ae03d6892b6633d8eaa23b23ac40c7e5bbc55423c78
+PYTHON_FUTURES_SITE = https://files.pythonhosted.org/packages/1f/9e/7b2ff7e965fc654592269f2906ade1c7d705f1bf25b7d469fa153f7d19eb
 PYTHON_FUTURES_SETUP_TYPE = setuptools
 PYTHON_FUTURES_LICENSE = BSD-2-Clause
 PYTHON_FUTURES_LICENSE_FILES = LICENSE
