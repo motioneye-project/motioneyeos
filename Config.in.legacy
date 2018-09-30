@@ -145,6 +145,13 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.11"
 
+config BR2_PACKAGE_EXPEDITE
+	bool "expedite package has been removed"
+	select BR2_LEGACY
+	help
+	  expedite is not actively maintained anymore.
+	  https://sourceforge.net/p/enlightenment/mailman/message/36428571
+
 config BR2_PACKAGE_MESA3D_OPENGL_TEXTURE_FLOAT
 	bool "mesa3d opengl texture float option removed"
 	select BR2_LEGACY
