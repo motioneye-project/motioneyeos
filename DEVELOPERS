@@ -1515,9 +1515,6 @@ F:	package/libgeotiff/
 N:	Mylène Josserand <mylene.josserand@bootlin.com>
 F:	package/rtl8723bu/
 
-N:	Nathan Lynch <ntl@pobox.com>
-F:	package/chrony/
-
 N:	Nathaniel Roach <nroach44@gmail.com>
 F:	package/bandwidthd/
 F:	package/libgudev/
