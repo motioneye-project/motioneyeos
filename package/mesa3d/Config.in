@@ -187,10 +187,15 @@ config BR2_PACKAGE_MESA3D_DRI_DRIVER_I915
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_I965
 	bool "DRI i965 driver"
 	depends on BR2_i386 || BR2_x86_64
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17 # memfd.h
 	select BR2_PACKAGE_MESA3D_DRI_DRIVER
 	select BR2_PACKAGE_LIBDRM_INTEL
 	help
 	  Support for i965-based Intel GPUs.
+
+comment "DRI i965 driver needs a toolchain w/ headers >= 3.17"
+	depends on BR2_i386 || BR2_x86_64
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 
 config BR2_PACKAGE_MESA3D_DRI_DRIVER_NOUVEAU
 	bool "DRI nouveau driver"
