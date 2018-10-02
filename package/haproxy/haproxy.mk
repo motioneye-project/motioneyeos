@@ -20,7 +20,13 @@ HAPROXY_LIBS += -latomic
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+# threads uses atomics on gcc >= 4.7 and sync otherwise (see
+# include/common/hathreads.h)
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_7):$(BR2_TOOLCHAIN_HAS_ATOMIC),y:y)
 HAPROXY_MAKE_OPTS += USE_THREAD=1
+else ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_7):$(BR2_TOOLCHAIN_HAS_SYNC_4),:y)
+HAPROXY_MAKE_OPTS += USE_THREAD=1
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_LUA_5_3),y)
