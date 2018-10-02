@@ -1,4 +1,5 @@
-BR2_aarch64=y
+BR2_arm=y
+BR2_cortex_a7=y
 BR2_ARM_FPU_VFPV4=y
 BR2_CCACHE=y
 BR2_CCACHE_DIR="$(TOPDIR)/.buildroot-ccache-nanopineo"
@@ -14,7 +15,7 @@ BR2_ROOTFS_POST_BUILD_SCRIPT="board/common/postscript.sh"
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL_LOCATION="https://github.com/friendlyarm/linux/archive/3f0ec3a78591ef3f0d06c59ae935de76d2c2de9b.tar.gz"
-BR2_LINUX_KERNEL_DEFCONFIG="sunxu"
+BR2_LINUX_KERNEL_DEFCONFIG="sunxi"
 BR2_PACKAGE_BUSYBOX_CONFIG="board/common/busybox.config"
 BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y
 BR2_PACKAGE_ALSA_UTILS=y
