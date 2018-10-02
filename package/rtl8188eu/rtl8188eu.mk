@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RTL8188EU_VERSION = ced2b64a1139dcaf86947e3a9f7617dffbd64239
+RTL8188EU_VERSION = 4b0ecca485b9f11f58670b69aa9f90ecad7da02f
 RTL8188EU_SITE = $(call github,lwfinger,rtl8188eu,$(RTL8188EU_VERSION))
 RTL8188EU_LICENSE = GPL-2.0, proprietary (rtl8188eufw.bin firmware blob)
 RTL8188EU_LICENSE_FILES = COPYING
