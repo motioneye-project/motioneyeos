@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-X264_VERSION = 303c484ec828ed0d8bfe743500e70314d026c3bd
-X264_SITE = git://git.videolan.org/x264.git
+X264_VERSION = 20181002-2245
+X264_SITE = http://download.videolan.org/x264/snapshots
+X264_SOURCE = x264-snapshot-$(X264_VERSION).tar.bz2
 X264_LICENSE = GPL-2.0+
 X264_DEPENDENCIES = host-pkgconf
 X264_LICENSE_FILES = COPYING
