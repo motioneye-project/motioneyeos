@@ -17,19 +17,6 @@ FREETYPE_CONFIG_SCRIPTS = freetype-config
 HOST_FREETYPE_DEPENDENCIES = host-pkgconf
 HOST_FREETYPE_CONF_OPTS = --without-zlib --without-bzip2 --without-png
 
-# Regen required because the tarball ships with an experimental ltmain.sh
-# that can't be patched by our infra.
-# autogen.sh is because autotools stuff lives in other directories and
-# even AUTORECONF with _OPTS doesn't do it properly.
-# POST_PATCH is because we still need to patch libtool after the regen.
-define FREETYPE_RUN_AUTOGEN
-	cd $(@D) && PATH=$(BR_PATH) ./autogen.sh
-endef
-FREETYPE_POST_PATCH_HOOKS += FREETYPE_RUN_AUTOGEN
-HOST_FREETYPE_POST_PATCH_HOOKS += FREETYPE_RUN_AUTOGEN
-FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
-HOST_FREETYPE_DEPENDENCIES += host-automake host-autoconf host-libtool
-
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 FREETYPE_DEPENDENCIES += zlib
 FREETYPE_CONF_OPTS += --with-zlib
@@ -72,8 +59,3 @@ FREETYPE_POST_INSTALL_STAGING_HOOKS += FREETYPE_FIX_CONFIG_FILE_LIBS
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
-
-# freetype-patch and host-freetype-patch use autogen.sh so add
-# host-automake as a order-only-prerequisite because it is a phony
-# target.
-$(FREETYPE_TARGET_PATCH) $(HOST_FREETYPE_TARGET_PATCH): | host-automake
