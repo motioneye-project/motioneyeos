@@ -405,6 +405,7 @@ F:	package/python-slob/
 F:	package/rtmpdump/
 F:	package/samba4/
 F:	package/softether/
+F:	package/spandsp/
 F:	package/sqlite/
 F:	package/taglib/
 F:	package/tinyxml2/

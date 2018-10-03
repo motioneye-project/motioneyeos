@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SPANDSP
+	bool "spandsp"
+	select BR2_PACKAGE_TIFF
+	help
+	  Spandsp is a library of many DSP functions for telephony.
+	  These range from simple modules, such as DTMF detection, to
+	  a complete software FAX machine.
+
+	  http://www.soft-switch.org/
