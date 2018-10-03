@@ -84,7 +84,6 @@ ASTERISK_CONF_OPTS = \
 	--without-resample \
 	--without-sdl \
 	--without-SDL_image \
-	--without-spandsp \
 	--without-sqlite \
 	--without-suppserv \
 	--without-tds \
@@ -227,6 +226,13 @@ ASTERISK_DEPENDENCIES += openssl
 ASTERISK_CONF_OPTS += --with-ssl
 else
 ASTERISK_CONF_OPTS += --without-ssl
+endif
+
+ifeq ($(BR2_PACKAGE_SPANDSP),y)
+ASTERISK_DEPENDENCIES += spandsp
+ASTERISK_CONF_OPTS += --with-spandsp
+else
+ASTERISK_CONF_OPTS += --without-spandsp
 endif
 
 ifeq ($(BR2_PACKAGE_SPEEX)$(BR2_PACKAGE_SPEEXDSP),yy)
