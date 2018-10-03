@@ -4,7 +4,7 @@
 #### usage ####
 
 function exit_usage() {
-    echo "Usage: fwupdate versions [-u]             (lists available versions, optionally showing the URL)"
+    echo "Usage: fwupdate versions [-j]             (lists available versions, optionally outputting json)"
     echo "       fwupdate current                   (shows the current version"
     echo "       fwupdate download <version|url>    (downloads a firmware version)"
     echo "       fwupdate extract                   (extracts the downloaded firmware archive)"
@@ -66,14 +66,14 @@ DD_PID_FILE=dd.pid
 function show_versions() {
     source $OS_CONF
     board=$(cat $SYS_BOARD_FILE)
-    show_url=$1
+    show_json=$1
   
     # the /usr/libexec/list-versions-* helpers return a table with the following format:
     #     <version>|<prerelease>|<board>|<url>
     versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
                /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
 
-    for version in $versions; do
+    for version in ${versions[@]}; do
         OIFS=$IFS
         IFS="|"
         varr=($version)
@@ -85,8 +85,12 @@ function show_versions() {
             continue  # skip other boards
         fi
 
-        if [ "$show_url" == "true" ]; then
-            echo ${varr[0]} ${varr[3]}
+        if [ "$show_json" == "true" ]; then
+            echo "{\"version\": \"${varr[0]}\"," \
+                  "\"url\": \"${varr[3]}\"," \
+                  "\"board\": \"${varr[2]}\"," \
+                  "\"prerelease\": ${varr[1]}," \
+                  "\"date\": \"${varr[4]}\"}"
         else
             echo ${varr[0]}
         fi
@@ -115,7 +119,7 @@ function do_download() {
     version=$1
 
     if ! [[ "$url" == http* ]]; then  # a version was given
-        url=$(show_versions true | sed -rn '/^'"$version"' http.*\.img\.[a-z]+$/ {; /.*\.xz$/ {;s/^'"$version"' (.*)/\1/ p;q;}; /.*\.gz$/ {;h;b finish;};}; :finish; $ {;x;s/^'"$version"' (.*)/\1/ p;}')
+        url=$(show_versions true | jq -r ". | select(.version==\"$version\") | .url")
     else
         version="custom"
     fi
@@ -394,9 +398,9 @@ function new_version() {
 
 case "$1" in
     versions)
-        show_url="false"
-        test "$2" == "-u" && show_url="true"
-        show_versions $show_url
+        show_json="false"
+        test "$2" == "-j" && show_json="true"
+        show_versions $show_json
         ;;
 
     current)
