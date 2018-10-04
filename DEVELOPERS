@@ -199,21 +199,38 @@ F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/libuv/
+F:	package/python-attrs/
 F:	package/python-bcrypt/
+F:	package/python-bitstring/
+F:	package/python-constantly/
 F:	package/python-engineio/
 F:	package/python-fire/
+F:	package/python-h2/
+F:	package/python-idna/
+F:	package/python-incremental/
+F:	package/python-jinja2/
 F:	package/python-jsonmodels/
+F:	package/python-logbook/
 F:	package/python-lxml/
 F:	package/python-paramiko/
 F:	package/python-passlib/
+F:	package/python-priority/
 F:	package/python-pyasn1/
 F:	package/python-pyasn1-modules/
 F:	package/python-pyhamcrest/
+F:	package/python-pyopenssl/
+F:	package/python-pyqrcode/
 F:	package/python-pyroute2/
 F:	package/python-pytz/
 F:	package/python-reentry/
+F:	package/python-sdnotify/
 F:	package/python-subprocess32/
+F:	package/python-txtorcon/
+F:	package/python-twisted/
+F:	package/python-u-msgpack/
+F:	package/python-ubjson/
 F:	package/python-yieldfrom/
+F:	package/python-zope-interface/
 F:	package/zeromq/
 
 N:	Ash Charles <ash.charles@savoirfairelinux.com>
