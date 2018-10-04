@@ -200,6 +200,13 @@ config BR2_KERNEL_HEADERS_4_15
 	  Version 4.15.x of the Linux kernel headers are no longer
 	  maintained upstream and are now removed.
 
+config BR2_KERNEL_HEADERS_4_17
+	bool "kernel headers version 4.17.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 4.17.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
