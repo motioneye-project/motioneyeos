@@ -530,6 +530,7 @@ my %white_list = (
     'ExtUtils-Config' => 1,
     'ExtUtils-InstallPaths' => 1,
     'ExtUtils-Helpers' => 1,
+    'File-ShareDir-Install' => 1,
     'Module-Build' => 1,
     'Module-Build-Tiny' => 1,
 );
