@@ -527,6 +527,7 @@ my $mcpan = MetaCPAN::API::Tiny->new(base_url => 'http://fastapi.metacpan.org/v1
 my $ua = HTTP::Tiny->new();
 
 my %white_list = (
+    'ExtUtils-Config' => 1,
     'Module-Build' => 1,
     'Module-Build-Tiny' => 1,
 );
