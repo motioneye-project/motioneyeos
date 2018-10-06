@@ -10,9 +10,7 @@ XERCES_SITE = http://archive.apache.org/dist/xerces/c/3/sources
 XERCES_LICENSE = Apache-2.0
 XERCES_LICENSE_FILES = LICENSE
 XERCES_INSTALL_STAGING = YES
-XERCES_CONF_OPTS = \
-	--disable-threads \
-	--with-gnu-ld
+XERCES_CONF_OPTS = --with-gnu-ld
 
 define XERCES_DISABLE_SAMPLES
 	$(SED) 's/ samples//' $(@D)/Makefile.in
@@ -37,6 +35,12 @@ XERCES_CONF_OPTS += --enable-netaccessor-curl --with-curl=$(STAGING_DIR)/usr/lib
 XERCES_DEPENDENCIES += libcurl
 else
 XERCES_CONF_OPTS += --disable-network
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+XERCES_CONF_OPTS += --enable-threads
+else
+XERCES_CONF_OPTS += --disable-threads
 endif
 
 $(eval $(autotools-package))
