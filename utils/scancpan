@@ -528,6 +528,7 @@ my $ua = HTTP::Tiny->new();
 
 my %white_list = (
     'ExtUtils-Config' => 1,
+    'ExtUtils-Helpers' => 1,
     'Module-Build' => 1,
     'Module-Build-Tiny' => 1,
 );
