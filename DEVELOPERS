@@ -903,6 +903,7 @@ F:	package/leptonica/
 F:	package/ocrad/
 F:	package/tesseract-ocr/
 F:	package/webp/
+F:	package/xapian/
 
 N:	Giulio Benetti <giulio.benetti@micronovasrl.com>
 F:	package/sunxi-mali-mainline/

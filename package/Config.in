@@ -1672,6 +1672,7 @@ endif
 	source "package/tinycbor/Config.in"
 	source "package/tz/Config.in"
 	source "package/tzdata/Config.in"
+	source "package/xapian/Config.in"
 endmenu
 
 menu "Security"

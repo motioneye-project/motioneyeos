@@ -1,0 +1,18 @@
+config BR2_PACKAGE_XAPIAN
+	bool "xapian"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_ZLIB
+	help
+	  Xapian is an open Source search engine Library
+	  It is a highly adaptable toolkit which allows developers
+	  to easily add advanced indexing and search facilities to
+	  their own applications.
+	  It has built-in support for several families of weighting
+	  models and supports a rich set of boolean query operators.
+
+	  https://xapian.org/
+
+comment "xapian needs a toolchain w/ C++"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP
