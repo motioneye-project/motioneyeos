@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIT_VERSION = 2.16.4
+GIT_VERSION = 2.16.5
 GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = $(BR2_KERNEL_MIRROR)/software/scm/git
 GIT_LICENSE = GPL-2.0, LGPL-2.1+
