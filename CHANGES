@@ -1,3 +1,26 @@
+2018.08.1, Released October 7th, 2018
+
+	Important / security related fixes.
+
+	Add a number of patches to fix build errors for host utilities
+	on modern distributions using glibc-2.28.
+
+	mkusers: Ensure existing group members are preserved when a
+	group is reprocessed.
+
+	printvars: Fix issue with exceeding shell command line length
+	limits for certain setups.
+
+	Updated/fixed packages: acpid, android-tools, apache,
+	arp-scan, bandwidthd, bind, brltty, clamav, connman, cppcms,
+	domoticz, dtc, fio, gcc, gdb, ghostscript, gnupg, httpping,
+	igmpproxy, imlib2, ipsec-tools, libesmtp, libnfs, libxslt,
+	links, lua, mosquitto, nilfs-utils, ocrad, parted, php,
+	python-django, screen, shairport-sync, strongswan,
+	vboot-utils, webkitgtk, wireguard, x265 xen, xlib_libXdmcp,
+	xlib_libXfont, xlib_libXft, xlib_libxshmfence,
+	xutil_makedepend, zeromq
+
 2018.08, Released September 6th, 2018
 
 	Minor fixes.
