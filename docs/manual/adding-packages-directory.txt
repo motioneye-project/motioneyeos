@@ -46,9 +46,11 @@ is as follows:
 
 1. The type of option: +bool+, +string+... with the prompt
 2. If needed, the +default+ value(s)
-3. Any dependency of the +depends on+ form
-4. Any dependency of the +select+ form
-5. The help keyword and help text.
+3. Any dependencies on the target in +depends on+ form
+4. Any dependencies on the toolchain in +depends on+ form
+5. Any dependencies on other packages in +depends on+ form
+6. Any dependency of the +select+ form
+7. The help keyword and help text.
 
 You can add other sub-options into a +if BR2_PACKAGE_LIBFOO...endif+
 statement to configure particular things in your software. You can look at
