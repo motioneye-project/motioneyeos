@@ -18,6 +18,8 @@ def parse_args():
                         help='find developers in charge of these files')
     parser.add_argument('-c', dest='check', action='store_const',
                         const=True, help='list files not handled by any developer')
+    parser.add_argument('-e', dest='email', action='store_const',
+                        const=True, help='only list affected developer email addresses')
     return parser.parse_args()
 
 
@@ -90,12 +92,16 @@ def __main__():
                 if i in dev.infras:
                     matching_devs.add(dev.name)
 
-        result = "--to buildroot@buildroot.org"
-        for dev in matching_devs:
-            result += " --cc \"%s\"" % dev
+        if args.email:
+            for dev in matching_devs:
+                print dev
+        else:
+            result = "--to buildroot@buildroot.org"
+            for dev in matching_devs:
+                result += " --cc \"%s\"" % dev
 
-        if result != "":
-            print("git send-email %s" % result)
+            if result != "":
+                print("git send-email %s" % result)
 
 
 __main__()
