@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TINC_VERSION = 1.0.34
+TINC_VERSION = 1.0.35
 TINC_SITE = http://www.tinc-vpn.org/packages
 TINC_DEPENDENCIES = lzo openssl zlib
 TINC_LICENSE = GPL-2.0+ with OpenSSL exception
