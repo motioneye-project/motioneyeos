@@ -11,6 +11,14 @@ config BR2_PACKAGE_WEBKITGTK_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt
 
+config BR2_PACKAGE_WEBKITGTK_ARCH_SUPPORTS_JIT
+	bool
+	# ARM needs NEON for JIT.
+	default y if BR2_ARM_CPU_HAS_NEON
+	# i386 & x86_64 don't have any special requirements.
+	default y if BR2_i386
+	default y if BR2_x86_64
+
 comment "webkitgtk needs libgtk3 and a glibc toolchain w/ C++, gcc >= 6, host gcc >= 4.8"
 	depends on BR2_PACKAGE_WEBKITGTK_ARCH_SUPPORTS
 	depends on !BR2_PACKAGE_LIBGTK3 || !BR2_INSTALL_LIBSTDCPP || \
