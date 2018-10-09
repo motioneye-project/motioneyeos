@@ -1,0 +1,35 @@
+From 4fc4f7b0ce0e6ee186a7d7fe9b5dd20e94efe432 Mon Sep 17 00:00:00 2001
+From: Thiago Macieira <thiago.macieira@intel.com>
+Date: Fri, 21 Sep 2018 09:04:24 -0700
+Subject: [PATCH] Export qt_open64 from QtCore
+
+Other libs use qcore_unix_p.h.
+
+qopenglprogrambinarycache.cpp:function QOpenGLProgramBinaryCache::load(QByteArray const&, unsigned int): error: undefined reference to 'qt_open64(char const*, int, unsigned int)'
+
+Change-Id: I44e7d800c68141bdaae0fffd155675d15eded2e4
+Reviewed-by: Simon Hausmann <simon.hausmann@qt.io>
+Reviewed-by: Eric Lemanissier <eric.lemanissier@gmail.com>
+
+Upstream: http://code.qt.io/cgit/qt/qtbase.git/commit/?id=4fc4f7b0ce0e6ee186a7d7fe9b5dd20e94efe432
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/corelib/kernel/qcore_unix_p.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/corelib/kernel/qcore_unix_p.h b/src/corelib/kernel/qcore_unix_p.h
+index cb98bef347..5a2a29a327 100644
+--- a/src/corelib/kernel/qcore_unix_p.h
++++ b/src/corelib/kernel/qcore_unix_p.h
+@@ -178,7 +178,7 @@ inline void qt_ignore_sigpipe()
+ 
+ #if defined(Q_PROCESSOR_X86_32) && defined(__GLIBC__)
+ #  if !__GLIBC_PREREQ(2, 22)
+-int qt_open64(const char *pathname, int flags, mode_t);
++Q_CORE_EXPORT int qt_open64(const char *pathname, int flags, mode_t);
+ #    undef QT_OPEN
+ #    define QT_OPEN qt_open64
+ #  endif
+-- 
+2.19.0
+
