@@ -34,7 +34,7 @@ ifeq ($(BR2_PACKAGE_LIBCURL),y)
 XERCES_CONF_OPTS += --enable-netaccessor-curl --with-curl=$(STAGING_DIR)/usr/lib
 XERCES_DEPENDENCIES += libcurl
 else
-XERCES_CONF_OPTS += --disable-network
+XERCES_CONF_OPTS += --disable-netaccessor-curl
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
