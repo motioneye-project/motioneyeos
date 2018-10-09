@@ -1,0 +1,4 @@
+# From https://developer.arm.com/-/media/Files/downloads/gnu-a/8.2-2018.08/gcc-arm-8.2-2018.08-x86_64-aarch64_be-linux-gnu.tar.xz.asc
+md5 789171dc11bc2e37e90ea3c6de46c719 gcc-arm-8.2-2018.08-x86_64-aarch64_be-linux-gnu.tar.xz
+# locally calculated
+sha256 2cd8a1a35a892db5f0cd738a8b17bd1563f6d6e4be43a2b527b355bcfb295df8 gcc-arm-8.2-2018.08-x86_64-aarch64_be-linux-gnu.tar.xz

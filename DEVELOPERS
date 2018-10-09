@@ -1823,6 +1823,7 @@ F:	package/upower/
 F:	package/waffle/
 F:	package/xenomai/
 F:	toolchain/toolchain-external/toolchain-external-arm-aarch64/
+F:	toolchain/toolchain-external/toolchain-external-arm-aarch64-be/
 F:	toolchain/toolchain-external/toolchain-external-arm-arm/
 
 N:	Roman Gorbenkov <roman.gorbenkov@ens2m.org>
