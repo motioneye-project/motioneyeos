@@ -31,7 +31,8 @@ the +DEVELOPERS+ file for various tasks:
 
 - When passing one or several patches as command line argument,
   +get-developer+ will return the appropriate +git send-email+
-  command.
+  command. If the +-e+ option is passed, only the email addresses are
+  printed in a format suitable for +git send-email --cc-cmd+.
 
 - When using the +-a <arch>+ command line option, +get-developer+ will
   return the list of developers in charge of the given architecture.
