@@ -11,7 +11,8 @@ comment "glibc toolchains only available with shared lib support"
 # Kept toolchains sorted by architecture in order to use some toolchain
 # as default choice
 
-# Aarch64 (use Linaro toolchain by default)
+# Aarch64 (use ARM toolchain by default)
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in"
 
@@ -111,6 +112,7 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 # BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL and BR2_TOOLCHAIN_EXTERNAL_PREFIX
 
 # Aarch64
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in.options"
 
