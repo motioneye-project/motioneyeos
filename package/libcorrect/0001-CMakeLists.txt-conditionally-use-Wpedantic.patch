@@ -1,0 +1,42 @@
+From 8fc28b4c4c01581b25220fdbc1eeda196e399256 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Wed, 10 Oct 2018 09:28:00 +0200
+Subject: [PATCH] CMakeLists.txt: conditionally use -Wpedantic
+
+-Wpedantic is only provided by gcc >= 4.8. Since showing pedantic
+warnings is not really mandatory, let's only use this option when the
+compiler supports it.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream: https://github.com/quiet/libcorrect/pull/25
+---
+ CMakeLists.txt | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 193f311..e570198 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3,13 +3,18 @@ project(Correct C)
+ include(CheckLibraryExists)
+ include(CheckIncludeFiles)
+ include(CheckCSourceCompiles)
++include(CheckCCompilerFlag)
+ 
+ if(MSVC)
+ set(LIBM "")
+ set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /W4")
+ else(MSVC)
+ set(LIBM "m")
+-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=c99 -Wpedantic -Wall")
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -fPIC -std=c99 -Wall")
++check_c_compiler_flag(-Wpedantic COMPILER_SUPPORTS_WPEDANTIC)
++if(COMPILER_SUPPORTS_WPEDANTIC)
++set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wpedantic")
++endif()
+ if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -g3 -O0 -fsanitize=address")
+     set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-no_pie,")
+-- 
+2.14.4
+

@@ -1073,6 +1073,7 @@ N:	Joel Carlson <JoelsonCarl@gmail.com>
 F:	package/capnproto/
 F:	package/cmocka/
 F:	package/flatcc/
+F:	package/libcorrect/
 
 N:	Joel Stanley <joel@jms.id.au>
 F:	package/pdbg/
