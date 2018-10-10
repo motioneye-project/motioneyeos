@@ -48,7 +48,7 @@ Fixes:
  - http://autobuild.buildroot.org/results/f46d38991385cbc2a4fa14eb31074e770cd79803
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-[Upstream status: https://github.com/boostorg/thread/pull/231]
+[Upstream status: https://github.com/boostorg/thread/commit/f7581a366294c6f5381e0371c242af327c6da655]
 ---
  build/Jamfile.v2 | 6 +++---
  1 file changed, 3 insertions(+), 3 deletions(-)
