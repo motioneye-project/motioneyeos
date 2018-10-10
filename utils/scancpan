@@ -767,10 +767,12 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{# retrieved by scancpan from ${mirror}/};
         say {$fh} qq{md5    ${md5} ${filename}};
         say {$fh} qq{sha256 ${sha256} ${filename}};
-        if (scalar keys %{$license_files{$distname}}) {
+        my %license_files =  %{$license_files{$distname}};
+        if (scalar keys %license_files) {
             say {$fh} q{};
             say {$fh} qq{# computed by scancpan};
-            while (my ($license, $digest) = each %{$license_files{$distname}}) {
+            foreach my $license (sort keys %license_files) {
+                my $digest = $license_files{$license};
                 say {$fh} qq{sha256 ${digest} ${license}};
             }
         }
