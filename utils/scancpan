@@ -717,10 +717,14 @@ while (my ($distname, $dist) = each %dist) {
         # the auth part is not used, because we use $(BR2_CPAN_MIRROR)
         my ($filename, $directories, $suffix) = fileparse( $path, q{tar.gz}, q{tgz} );
         $directories =~ s|/$||;
-        my $dependencies = join q{ }, map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} ),
-                                      map( { fsname( $_ ); } sort @{$deps_runtime{$distname}} );
-        my $host_dependencies = join q{ }, map { q{host-} . fsname( $_ ); } sort( @{$deps_build{$distname}},
-                                                                                  @{$deps_runtime{$distname}} );
+        my @dependencies = ( map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} ),
+                             map( { fsname( $_ ); } sort @{$deps_runtime{$distname}} ) );
+        my $dependencies = join qq{ \\\n\t}, @dependencies;
+        $dependencies = qq{\\\n\t} . $dependencies if scalar @dependencies > 1;
+        my @host_dependencies = map { q{host-} . fsname( $_ ); } sort( @{$deps_build{$distname}},
+                                                                       @{$deps_runtime{$distname}} );
+        my $host_dependencies = join qq{ \\\n\t}, @host_dependencies;
+        $host_dependencies = qq{\\\n\t} . $host_dependencies if scalar @host_dependencies > 1;
         my $license = brlicense( ref $dist->{license} eq 'ARRAY'
                                ? join q{ or }, @{$dist->{license}}
                                : $dist->{license} );
