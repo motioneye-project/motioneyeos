@@ -724,7 +724,7 @@ while (my ($distname, $dist) = each %dist) {
         my $license = brlicense( ref $dist->{license} eq 'ARRAY'
                                ? join q{ or }, @{$dist->{license}}
                                : $dist->{license} );
-        my $license_files = join q{ }, keys %{$license_files{$distname}};
+        my $license_files = join q{ }, sort keys %{$license_files{$distname}};
         if ($license_files && (!$license || $license eq q{unknown})) {
             push @info, qq{[$distname] undefined LICENSE, see $license_files};
             $license = q{???};
