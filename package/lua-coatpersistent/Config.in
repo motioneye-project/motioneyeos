@@ -7,7 +7,7 @@ config BR2_PACKAGE_LUA_COATPERSISTENT
 	help
 	  An ORM for lua-Coat.
 
-	  http://fperrad.github.io/lua-CoatPersistent/
+	  https://fperrad.frama.io/lua-CoatPersistent/
 
 comment "lua-coatpersistent needs lsqlite3 or luasql-sqlite3"
 	depends on !BR2_PACKAGE_LSQLITE3 && !BR2_PACKAGE_LUASQL_SQLITE3
