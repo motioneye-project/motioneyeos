@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_ROLE_TINY
+	bool "perl-role-tiny"
+	help
+	  Roles. Like a nouvelle cuisine portion size slice of Moose.
+
+	  https://metacpan.org/release/Role-Tiny
