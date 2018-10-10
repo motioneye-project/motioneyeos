@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_FILE_SHAREDIR
 	bool "perl-file-sharedir"
-	select BR2_PACKAGE_PERL_CLASS_INSPECTOR
+	select BR2_PACKAGE_PERL_CLASS_INSPECTOR # runtime
 	help
 	  Locate per-dist and per-module shared files
 

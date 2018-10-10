@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_MOJOLICIOUS_PLUGIN_AUTHENTICATION
 	bool "perl-mojolicious-plugin-authentication"
-	select BR2_PACKAGE_PERL_MOJOLICIOUS
+	select BR2_PACKAGE_PERL_MOJOLICIOUS # runtime
 	help
 	  A plugin to make authentication a bit easier
 

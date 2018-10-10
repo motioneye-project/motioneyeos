@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_APACHE_LOGFORMAT_COMPILER
 	bool "perl-apache-logformat-compiler"
-	select BR2_PACKAGE_PERL_POSIX_STRFTIME_COMPILER
+	select BR2_PACKAGE_PERL_POSIX_STRFTIME_COMPILER # runtime
 	help
 	  Compile a log format string to perl-code
 

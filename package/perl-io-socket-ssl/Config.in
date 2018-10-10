@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PERL_IO_SOCKET_SSL
 	bool "perl-io-socket-ssl"
 	depends on !BR2_STATIC_LIBS
-	select BR2_PACKAGE_PERL_NET_SSLEAY
+	select BR2_PACKAGE_PERL_NET_SSLEAY # runtime
 	help
 	  Nearly transparent SSL encapsulation for IO::Socket::INET.
 
