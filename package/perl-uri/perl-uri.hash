@@ -1,5 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
 md5    892f7183b178af40f205ba37128225db URI-1.74.tar.gz
 sha256 a9c254f45f89cb1dd946b689dfe433095404532a4543bdaab0b71ce0fdcdd53d URI-1.74.tar.gz
-# Locally computed
-sha256 65cd6f88516a30f56fd4e0080fb78ea69424fc89067470dc994e4abfba08664e  LICENSE
+
+# computed by scancpan
+sha256 65cd6f88516a30f56fd4e0080fb78ea69424fc89067470dc994e4abfba08664e LICENSE
