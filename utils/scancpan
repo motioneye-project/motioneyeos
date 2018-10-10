@@ -698,7 +698,7 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{\tdepends on !BR2_STATIC_LIBS} if $need_dlopen{$distname};
         foreach my $dep (sort @{$deps_runtime{$distname}}) {
             my $brdep = brname( fsname( $dep ) );
-            say {$fh} qq{\tselect BR2_PACKAGE_${brdep}};
+            say {$fh} qq{\tselect BR2_PACKAGE_${brdep} # runtime};
         }
         say {$fh} qq{\thelp};
         say {$fh} qq{\t  ${abstract}\n} if $abstract;
