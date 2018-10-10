@@ -5,7 +5,7 @@ config BR2_PACKAGE_PERL_CRYPT_OPENSSL_RANDOM
 	help
 	  OpenSSL/LibreSSL pseudo-random number generator access
 
-	  http://sourceforge.net/projects/perl-openssl/
+	  https://metacpan.org/release/Crypt-OpenSSL-Random
 
 comment "perl-crypt-openssl-random needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS

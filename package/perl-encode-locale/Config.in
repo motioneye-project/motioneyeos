@@ -3,4 +3,4 @@ config BR2_PACKAGE_PERL_ENCODE_LOCALE
 	help
 	  Determine the locale encoding
 
-	  https://github.com/gisle/encode-locale
+	  https://metacpan.org/release/Encode-Locale
