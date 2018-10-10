@@ -41,7 +41,6 @@ endef
 
 define HOST_LIBSEPOL_INSTALL_CMDS
 	$(HOST_LIBSEPOL_MAKE_ENV) $(MAKE) -C $(@D) install $(HOST_CONFIGURE_OPTS)
-	ln -sf libsepol.so.1 $(HOST_DIR)/lib/libsepol.so
 endef
 
 $(eval $(generic-package))
