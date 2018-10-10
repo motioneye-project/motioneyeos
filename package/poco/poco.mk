@@ -42,6 +42,11 @@ ifeq ($(BR2_sh4a)$(BR2_nios2),y)
 POCO_CONF_OPTS += --no-fpenvironment
 endif
 
+# disable fpenvironment for soft floating point configuration
+ifeq ($(BR2_SOFT_FLOAT),y)
+POCO_CONF_OPTS += --no-fpenvironment
+endif
+
 ifeq ($(BR2_STATIC_LIBS),y)
 POCO_MAKE_TARGET = static_release
 else ifeq ($(BR2_SHARED_LIBS),y)
