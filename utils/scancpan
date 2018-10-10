@@ -717,8 +717,7 @@ while (my ($distname, $dist) = each %dist) {
         # the auth part is not used, because we use $(BR2_CPAN_MIRROR)
         my ($filename, $directories, $suffix) = fileparse( $path, q{tar.gz}, q{tgz} );
         $directories =~ s|/$||;
-        my @dependencies = ( map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} ),
-                             map( { fsname( $_ ); } sort @{$deps_runtime{$distname}} ) );
+        my @dependencies = map( { q{host-} . fsname( $_ ); } sort @{$deps_build{$distname}} );
         my $dependencies = join qq{ \\\n\t}, @dependencies;
         $dependencies = qq{\\\n\t} . $dependencies if scalar @dependencies > 1;
         my @host_dependencies = map { q{host-} . fsname( $_ ); } sort( @{$deps_build{$distname}},
