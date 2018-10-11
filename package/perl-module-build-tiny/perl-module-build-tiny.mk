@@ -13,5 +13,6 @@ HOST_PERL_MODULE_BUILD_TINY_DEPENDENCIES = \
 	host-perl-extutils-installpaths
 PERL_MODULE_BUILD_TINY_LICENSE = Artistic or GPL-1.0+
 PERL_MODULE_BUILD_TINY_LICENSE_FILES = LICENSE
+PERL_MODULE_BUILD_TINY_DISTNAME = Module-Build-Tiny
 
 $(eval $(host-perl-package))

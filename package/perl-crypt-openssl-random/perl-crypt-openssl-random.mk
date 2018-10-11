@@ -12,6 +12,7 @@ PERL_CRYPT_OPENSSL_RANDOM_DEPENDENCIES = \
 	openssl
 PERL_CRYPT_OPENSSL_RANDOM_LICENSE = Artistic or GPL-1.0+
 PERL_CRYPT_OPENSSL_RANDOM_LICENSE_FILES = LICENSE
+PERL_CRYPT_OPENSSL_RANDOM_DISTNAME = Crypt-OpenSSL-Random
 
 # Try as hard as possible to remedy to the brain-damage their build-system
 # suffers from: don't search for openssl, they pick the host-system one.

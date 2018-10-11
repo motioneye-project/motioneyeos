@@ -12,6 +12,7 @@ PERL_CRYPT_OPENSSL_RSA_DEPENDENCIES = \
 	perl-crypt-openssl-random
 PERL_CRYPT_OPENSSL_RSA_LICENSE = Artistic or GPL-1.0+
 PERL_CRYPT_OPENSSL_RSA_LICENSE_FILES = LICENSE
+PERL_CRYPT_OPENSSL_RSA_DISTNAME = Crypt-OpenSSL-RSA
 
 # Try as hard as possible to remedy to the brain-damage their build-system
 # suffers from: don't search for openssl, they pick the host-system one.

@@ -12,6 +12,8 @@ PERL_DBD_MYSQL_DEPENDENCIES = \
 	mysql
 PERL_DBD_MYSQL_LICENSE = Artistic or GPL-1.0+
 PERL_DBD_MYSQL_LICENSE_FILES = LICENSE
+PERL_DBD_MYSQL_DISTNAME = DBD-mysql
+
 PERL_DBD_MYSQL_CONF_OPTS = --mysql_config=$(STAGING_DIR)/usr/bin/mysql_config
 
 $(eval $(perl-package))
