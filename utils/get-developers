@@ -94,7 +94,7 @@ def __main__():
 
         if args.email:
             for dev in matching_devs:
-                print dev
+                print(dev)
         else:
             result = "--to buildroot@buildroot.org"
             for dev in matching_devs:
