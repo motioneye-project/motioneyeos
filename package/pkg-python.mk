@@ -105,9 +105,6 @@ HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPTS = \
 
 define inner-python-package
 
-$(2)_SRCDIR	= $$($(2)_DIR)/$$($(2)_SUBDIR)
-$(2)_BUILDDIR	= $$($(2)_SRCDIR)
-
 $(2)_ENV         ?=
 $(2)_BUILD_OPTS   ?=
 $(2)_INSTALL_OPTS ?=
