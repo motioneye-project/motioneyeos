@@ -1,0 +1,39 @@
+From 26e3f1440bbc75c704fc93ff43a2abbfbe4c0203 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 11 Oct 2018 22:56:50 +0200
+Subject: [PATCH] fix static linking with curl
+
+When curl is statically built with openssl support, xerces needs to
+link with openssl libraries so use pkg_check_modules to get any
+needed dependencies
+
+Fixes:
+ - http://autobuild.buildroot.org/results/29ca90fff2c8e38f2edf7240eca3aa3fe7397c45
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ cmake/XercesNetAccessorSelection.cmake | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/cmake/XercesNetAccessorSelection.cmake b/cmake/XercesNetAccessorSelection.cmake
+index 7a63f1f6b..e90fcf034 100644
+--- a/cmake/XercesNetAccessorSelection.cmake
++++ b/cmake/XercesNetAccessorSelection.cmake
+@@ -31,7 +31,13 @@ if(network)
+ 
+   # Requires select() which is UNIX only
+   if(UNIX)
+-    find_package(CURL)
++    find_package(PkgConfig)
++    if (PkgConfig_FOUND)
++      pkg_check_modules(CURL libcurl)
++      if (NOT CURL_FOUND)
++        find_package(CURL)
++      endif()
++    endif()
+     if(CURL_FOUND)
+       list(APPEND netaccessors curl)
+     endif()
+-- 
+2.17.1
+
