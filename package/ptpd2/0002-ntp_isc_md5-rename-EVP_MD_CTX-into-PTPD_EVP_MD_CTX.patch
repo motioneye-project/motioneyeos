@@ -1,4 +1,4 @@
-From 838b985510c360e651d18134e64f258f2f4c6e7c Mon Sep 17 00:00:00 2001
+From af1d16d90ff273413a57cd02689f4fb005403609 Mon Sep 17 00:00:00 2001
 From: Giulio Benetti <giulio.benetti@micronovasrl.com>
 Date: Fri, 31 Aug 2018 18:46:56 +0200
 Subject: [PATCH] ntp_isc_md5: rename EVP_MD_CTX into PTPD_EVP_MD_CTX
@@ -16,7 +16,7 @@ Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/src/dep/ntpengine/ntp_isc_md5.c b/src/dep/ntpengine/ntp_isc_md5.c
-index 7d04467..e4e34ac 100644
+index 850d004..3216de8 100644
 --- a/src/dep/ntpengine/ntp_isc_md5.c
 +++ b/src/dep/ntpengine/ntp_isc_md5.c
 @@ -262,7 +262,7 @@ MD5authencrypt(
@@ -25,7 +25,7 @@ index 7d04467..e4e34ac 100644
  	u_int	len;
 -	EVP_MD_CTX ctx;
 +	PTPD_EVP_MD_CTX ctx;
-         pkt[length / 4] = htonl(keyid);
+         pkt[length / 4] = htonl(keyid); 
  	EVP_DigestInit(&ctx);
  	EVP_DigestUpdate(&ctx, (u_char *)key, (u_int)strlen(key));
 diff --git a/src/dep/ntpengine/ntp_isc_md5.h b/src/dep/ntpengine/ntp_isc_md5.h
@@ -42,5 +42,5 @@ index fa6e2ee..236c0e4 100644
  # define EVP_DigestUpdate(c, p, s)      MD5Update(c, p, s)
  # define EVP_DigestFinal(c, d, pdl)     \
 -- 
-2.17.1
+2.14.4
 
