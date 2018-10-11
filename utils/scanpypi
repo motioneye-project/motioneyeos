@@ -395,7 +395,7 @@ class BuildrootPackage():
         """
         Try to determine the related license name.
 
-        There are two possibilities. Either the scripts tries to
+        There are two possibilities. Either the script tries to
         get license name from package's metadata or, if spdx_lookup
         package is available, the script compares license files with
         SPDX database.
@@ -404,7 +404,7 @@ class BuildrootPackage():
         if liclookup is None:
             license_dict = {
                 'Apache Software License': 'Apache-2.0',
-                'BSD License': 'BSD',
+                'BSD License': 'FIXME: please specify the exact BSD version',
                 'European Union Public Licence 1.0': 'EUPL-1.0',
                 'European Union Public Licence 1.1': 'EUPL-1.1',
                 "GNU General Public License": "GPL",
