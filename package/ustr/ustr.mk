@@ -28,5 +28,12 @@ USTR_MAKE_OPTS = all all-shared
 USTR_CONF_OPTS += LDCONFIG=/bin/true
 HOST_USTR_CONF_OPTS += LDCONFIG=/bin/true
 
+# for some reason, ustr finds it useful to install its source code in
+# /usr/share, which is totally useless on the target
+define USTR_REMOVE_SOURCE_CODE
+	$(RM) -rf $(TARGET_DIR)/usr/share/ustr-$(USTR_VERSION)
+endef
+USTR_POST_INSTALL_TARGET_HOOKS += USTR_REMOVE_SOURCE_CODE
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
