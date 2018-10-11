@@ -13,6 +13,8 @@ accomodate version 2.5
 Signed-off-by: Clayton Shotwell <clayton.shotwell@rockwellcollins.com>
 Signed-off-by: Niranjan Reddy <niranjan.reddy@rockwellcollins.com>
 Signed-off-by: Adam Duskett <AdamDuskett@outlook.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update for 2.8]
 ---
  setfiles/Makefile | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -22,11 +24,11 @@ index c08e2dd..36c0638 100644
 --- a/setfiles/Makefile
 +++ b/setfiles/Makefile
 @@ -3,7 +3,7 @@ PREFIX ?= $(DESTDIR)/usr
- SBINDIR ?= $(DESTDIR)/sbin
+ PREFIX ?= /usr
+ SBINDIR ?= /sbin
  MANDIR = $(PREFIX)/share/man
- LIBDIR ?= $(PREFIX)/lib
 -AUDITH ?= $(shell test -f /usr/include/libaudit.h && echo y)
-+AUDITH ?= $(shell test -f $(DESTDIR)/include/libaudit.h && echo y)
++AUDITH ?= $(shell test -f $(DESTDIR)$(PREFIX)/include/libaudit.h && echo y)
  
  ABORT_ON_ERRORS=$(shell grep "^\#define ABORT_ON_ERRORS" setfiles.c | awk -S '{ print $$3 }')
  
