@@ -48,7 +48,6 @@ define inner-meson-package
 $(2)_CONF_ENV		?=
 $(2)_CONF_OPTS		?=
 $(2)_NINJA_ENV		?=
-$(2)_SRCDIR		= $$($(2)_DIR)/$$($(2)_SUBDIR)
 
 #
 # Configure step. Only define it if not already defined by the package
