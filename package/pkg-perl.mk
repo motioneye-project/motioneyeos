@@ -197,6 +197,14 @@ endif
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
 
+# Upgrade helper
+ifneq ($$($(3)_DISTNAME),)
+$(1)-upgrade:
+	utils/scancpan -force -$(4) $$($(3)_DISTNAME)
+
+.PHONY: $(1)-upgrade
+endif
+
 endef
 
 ################################################################################
