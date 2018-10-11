@@ -11,6 +11,8 @@ does not have support for shared libraries.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update for 2.8]
 ---
  src/Makefile | 13 ++++++++++---
  1 file changed, 10 insertions(+), 3 deletions(-)
@@ -34,12 +36,12 @@ diff -durNw libsepol-2.7.orig/src/Makefile libsepol-2.7/src/Makefile
  $(LIBA):  $(OBJS)
 @@ -81,8 +86,10 @@
  install: all
- 	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
- 	install -m 644 $(LIBA) $(LIBINSTALL)
+	test -d $(DESTDIR)$(LIBDIR) || install -m 755 -d $(DESTDIR)$(LIBDIR)
+	install -m 644 $(LIBA) $(DESTDIR)$(LIBDIR)
 +ifeq ($(STATIC),)
- 	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
- 	install -m 755 $(LIBSO) $(LIBINSTALL)
+	test -d $(DESTDIR)$(SHLIBDIR) || install -m 755 -d $(DESTDIR)$(SHLIBDIR)
+	install -m 755 $(LIBSO) $(DESTDIR)$(SHLIBDIR)
 +endif
- 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
- 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
- 	$(LN) -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
+	test -d $(DESTDIR)$(LIBDIR)/pkgconfig || install -m 755 -d $(DESTDIR)$(LIBDIR)/pkgconfig
+	install -m 644 $(LIBPC) $(DESTDIR)$(LIBDIR)/pkgconfig
+	$(LN) -sf --relative $(DESTDIR)$(SHLIBDIR)/$(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)

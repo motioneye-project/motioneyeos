@@ -12,16 +12,18 @@ they are maintained (up to 10 years in some cases?).
 For the sake of Buildroot, revert the upstream patch.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update for 2.8 (with assumption that SHLIBDIR=LIBDIR)]
 
 diff -durNw libsepol-2.7.orig/src/Makefile libsepol-2.7/src/Makefile
 --- libsepol-2.7.orig/src/Makefile	2018-01-15 21:37:12.821831315 +0100
 +++ libsepol-2.7/src/Makefile	2018-01-15 21:38:03.838497434 +0100
 @@ -92,7 +92,7 @@
  endif
- 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
- 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
--	$(LN) -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
-+	cd $(LIBINSTALL) && ln -sf $(LIBSO) $(TARGET)
+	test -d $(DESTDIR)$(LIBDIR)/pkgconfig || install -m 755 -d $(DESTDIR)$(LIBDIR)/pkgconfig
+	install -m 644 $(LIBPC) $(DESTDIR)$(LIBDIR)/pkgconfig
+-	$(LN) -sf --relative $(DESTDIR)$(SHLIBDIR)/$(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)
++	cd $(DESTDIR)$(LIBDIR) && ln -sf $(LIBSO) $(TARGET)
  
  relabel:
  	/sbin/restorecon $(LIBINSTALL)/$(LIBSO)
