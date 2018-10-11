@@ -17,7 +17,8 @@ BOTAN_CONF_OPTS = \
 	--os=linux \
 	--cc=gcc \
 	--cc-bin="$(TARGET_CXX)" \
-	--prefix=/usr
+	--prefix=/usr \
+	--without-documentation
 
 ifeq ($(BR2_SHARED_LIBS),y)
 BOTAN_CONF_OPTS += \
