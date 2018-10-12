@@ -15,7 +15,6 @@ SPANDSP_INSTALL_STAGING = YES
 SPANDSP_CONF_ENV = LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
 
 SPANDSP_CONF_OPTS = \
-	--disable-doc \
 	--disable-builtin-tiff \
 	$(if $(BR2_X86_CPU_HAS_MMX),--enable-mmx,--disable-mmx) \
 	$(if $(BR2_X86_CPU_HAS_SSE),--enable-sse,--disable-sse) \
