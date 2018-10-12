@@ -1,0 +1,22 @@
+Fix no-MMU build
+
+The detach_from_terminal() is unused for no-MMU, but it depends on symbols
+that are not defined for no-MMU. Don't define detach_from_terminal() when
+HAVE_WORKING_FORK is not defined.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: http://bugs.ntp.org/show_bug.cgi?id=3538
+
+diff -Nuar ntp-4.2.8p12.orig/ntpd/ntpd.c ntp-4.2.8p12/ntpd/ntpd.c
+--- ntp-4.2.8p12.orig/ntpd/ntpd.c	2018-08-14 14:51:30.000000000 +0300
++++ ntp-4.2.8p12/ntpd/ntpd.c	2018-10-12 08:19:01.291781773 +0300
+@@ -529,7 +529,7 @@
+ }
+ #endif	/* !SIM */
+ 
+-#if !defined(SIM) && !defined(SYS_WINNT)
++#if !defined(SIM) && !defined(SYS_WINNT) && defined(HAVE_WORKING_FORK)
+ /*
+  * Detach from terminal (much like daemon())
+  * Nothe that this function calls exit()
