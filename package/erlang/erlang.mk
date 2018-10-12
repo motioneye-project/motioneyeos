@@ -64,10 +64,9 @@ else
 ERLANG_CONF_OPTS += --without-odbc
 endif
 
-ifeq ($(BR2_PACKAGE_ZLIB),y)
+# Always use Buildroot's zlib
 ERLANG_CONF_OPTS += --enable-shared-zlib
 ERLANG_DEPENDENCIES += zlib
-endif
 
 # Remove source, example, gs and wx files from staging and target.
 ERLANG_REMOVE_PACKAGES = gs wx

@@ -23,6 +23,7 @@ config BR2_PACKAGE_ERLANG
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	select BR2_PACKAGE_ZLIB
 	help
 	  Erlang is a programming language used to build massively
 	  scalable soft real-time systems with requirements on high
