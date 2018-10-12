@@ -11,7 +11,7 @@ PYTHON_PYCRYPTODOMEX_SETUP_TYPE = setuptools
 PYTHON_PYCRYPTODOMEX_LICENSE = \
 	BSD-2-Clause, \
 	Public Domain (pycrypto original code), \
-	OCB license (OCB cypher)
-PYTHON_PYCRYPTODOMEX_LICENSE_FILES = LICENSE.rst
+	OCB patent license (OCB mode)
+PYTHON_PYCRYPTODOMEX_LICENSE_FILES = LICENSE.rst Doc/LEGAL/COPYRIGHT.pycrypto
 
 $(eval $(python-package))
