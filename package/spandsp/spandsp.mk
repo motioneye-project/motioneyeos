@@ -10,8 +10,9 @@ SPANDSP_SITE = https://www.soft-switch.org/downloads/spandsp/snapshots
 SPANDSP_LICENSE = LGPL-2.1 (library), GPL-2.0 (test suite)
 SPANDSP_LICENSE_FILES = COPYING
 
-SPANDSP_DEPENDENCIES = tiff
+SPANDSP_DEPENDENCIES = tiff host-pkgconf
 SPANDSP_INSTALL_STAGING = YES
+SPANDSP_CONF_ENV = LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libtiff-4`"
 
 SPANDSP_CONF_OPTS = \
 	--disable-doc \
