@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/wrapt/json
+md5	e1346f31782d50401f81c2345b037076  wrapt-1.10.11.tar.gz
+sha256	d4d560d479f2c21e1b5443bbd15fe7ec4b37fe7e53d335d3b9b0a7b1226fe3c6  wrapt-1.10.11.tar.gz
+# Locally computed sha256 checksums
+sha256	b6d2e5d228202a11bc5e5988661fc5d8acc1ba4f27256c37e19029131a30b1f2  LICENSE
