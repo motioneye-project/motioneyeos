@@ -1,4 +1,4 @@
-From 67924a43d52862a7b4c9076d49071449313fea85 Mon Sep 17 00:00:00 2001
+From 8275a380658070336df0c404f0ff585d27681836 Mon Sep 17 00:00:00 2001
 From: Peter Seiderer <ps.report@gmx.net>
 Date: Thu, 22 Sep 2016 22:59:11 +0200
 Subject: [PATCH] Disable Werror everywhere
@@ -11,6 +11,9 @@ Ditch -Werror altoghether.
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
 [Rebased for rpi-userland-a1b89e91f393c7134b4cdc36431f863bb3333163]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+
+[Rebased for rpi-userland-8f0abfb07b96e7ee85f46e59d895014ec5e25f5e]
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
  host_applications/android/apps/vidtex/CMakeLists.txt | 2 +-
@@ -27,17 +30,17 @@ Signed-off-by: Peter Seiderer <ps.report@gmx.net>
  11 files changed, 11 insertions(+), 11 deletions(-)
 
 diff --git a/host_applications/android/apps/vidtex/CMakeLists.txt b/host_applications/android/apps/vidtex/CMakeLists.txt
-index 1f705ef..37d037d 100644
+index 6d66d69..06a3192 100644
 --- a/host_applications/android/apps/vidtex/CMakeLists.txt
 +++ b/host_applications/android/apps/vidtex/CMakeLists.txt
 @@ -1,6 +1,6 @@
  cmake_minimum_required(VERSION 2.8)
  
 -SET(COMPILE_DEFINITIONS -Werror -Wall)
-+SET(COMPILE_DEFINITIONS  -Wall)
- include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
++SET(COMPILE_DEFINITIONS -Wall)
  
- set (VIDTEX_SOURCES
+ # Set --no-as-needed to stop the linker discarding mmal_vc_client
+ # as it can't see that the constructor registers a load of functionality
 diff --git a/host_applications/linux/apps/gencmd/CMakeLists.txt b/host_applications/linux/apps/gencmd/CMakeLists.txt
 index f95d1a1..034bf20 100644
 --- a/host_applications/linux/apps/gencmd/CMakeLists.txt
@@ -52,7 +55,7 @@ index f95d1a1..034bf20 100644
  
  include_directories( ../../../.. 
 diff --git a/host_applications/linux/apps/raspicam/CMakeLists.txt b/host_applications/linux/apps/raspicam/CMakeLists.txt
-index 2afc145..04e446f 100644
+index 42636e8..d778f09 100644
 --- a/host_applications/linux/apps/raspicam/CMakeLists.txt
 +++ b/host_applications/linux/apps/raspicam/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -62,8 +65,8 @@ index 2afc145..04e446f 100644
 -SET(COMPILE_DEFINITIONS -Werror)
 +SET(COMPILE_DEFINITIONS )
  
- include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/libs/bcm_host/include)
- include_directories(${PROJECT_SOURCE_DIR}/host_applications/linux/apps/raspicam/)
+ # Set --no-as-needed to stop the linker discarding mmal_vc_client
+ # as it can't see that the constructor registers a load of functionality
 diff --git a/host_applications/linux/apps/smem/CMakeLists.txt b/host_applications/linux/apps/smem/CMakeLists.txt
 index 0fa8328..f0d1e77 100644
 --- a/host_applications/linux/apps/smem/CMakeLists.txt
@@ -78,7 +81,7 @@ index 0fa8328..f0d1e77 100644
  
  include_directories (
 diff --git a/host_applications/linux/libs/bcm_host/CMakeLists.txt b/host_applications/linux/libs/bcm_host/CMakeLists.txt
-index 1f29ead..fb78cea 100644
+index 2154e53..c23779b 100644
 --- a/host_applications/linux/libs/bcm_host/CMakeLists.txt
 +++ b/host_applications/linux/libs/bcm_host/CMakeLists.txt
 @@ -3,7 +3,7 @@ if (WIN32)
@@ -89,9 +92,9 @@ index 1f29ead..fb78cea 100644
 +   add_definitions(-Wall )
  endif ()
  
- include_directories( ../../../.. 
+ # set this as we want all the source of vchostif to be available in libbcm_host
 diff --git a/host_applications/linux/libs/sm/CMakeLists.txt b/host_applications/linux/libs/sm/CMakeLists.txt
-index c6bf764..4bca0b0 100644
+index 5ce5aca..02aea7c 100644
 --- a/host_applications/linux/libs/sm/CMakeLists.txt
 +++ b/host_applications/linux/libs/sm/CMakeLists.txt
 @@ -3,7 +3,7 @@ if (WIN32)
@@ -143,7 +146,7 @@ index 1d81ca3..b35cd8e 100644
  endif ()
  
 diff --git a/interface/vmcs_host/CMakeLists.txt b/interface/vmcs_host/CMakeLists.txt
-index 0b3adc9..c5156d8 100755
+index fde18da..802c158 100755
 --- a/interface/vmcs_host/CMakeLists.txt
 +++ b/interface/vmcs_host/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -167,5 +170,5 @@ index aed0e83..d834b3f 100644
  # vcfiled - serves files to videocore. used for media handlers from
  # OpenMAX/IL and loading VLLs.
 -- 
-2.8.1
+2.19.0
 
