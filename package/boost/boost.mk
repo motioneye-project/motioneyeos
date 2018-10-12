@@ -61,11 +61,6 @@ else
 BOOST_FLAGS += --without-icu
 endif
 
-# boost-context needs C++11
-ifeq ($(BR2_PACKAGE_BOOST_CONTEXT)$(BR2_TOOLCHAIN_GCC_AT_LEAST_4_7),yy)
-BOOST_TARGET_CXXFLAGS += -std=c++11
-endif
-
 ifeq ($(BR2_PACKAGE_BOOST_IOSTREAMS),y)
 BOOST_DEPENDENCIES += bzip2 zlib
 endif
