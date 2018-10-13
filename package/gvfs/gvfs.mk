@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GVFS_VERSION_MAJOR = 1.30
-GVFS_VERSION = $(GVFS_VERSION_MAJOR).3
+GVFS_VERSION_MAJOR = 1.31
+GVFS_VERSION = $(GVFS_VERSION_MAJOR).4
 GVFS_SOURCE = gvfs-$(GVFS_VERSION).tar.xz
 GVFS_SITE = http://ftp.gnome.org/pub/GNOME/sources/gvfs/$(GVFS_VERSION_MAJOR)
 GVFS_INSTALL_STAGING = YES
@@ -21,14 +21,12 @@ GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-con
 GVFS_CONF_OPTS = \
 	--disable-afc \
 	--disable-admin \
-	--disable-bash-completion \
 	--disable-cdda \
 	--disable-gcr \
 	--disable-gdu \
 	--disable-goa \
 	--disable-google \
 	--disable-gphoto2 \
-	--disable-hal \
 	--disable-keyring \
 	--disable-libmtp \
 	--disable-udisks2
