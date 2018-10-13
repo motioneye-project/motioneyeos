@@ -1,0 +1,66 @@
+From 76f3dcb8f11a240fc7147ab556c57f10abc9e957 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Tim-Philipp=20M=C3=BCller?= <tim@centricular.com>
+Date: Sun, 20 May 2018 23:46:42 +0100
+Subject: [PATCH] examples: ges-ui: fix some gtk2-ism
+
+Still lots of deprecated API to update.
+
+https://bugzilla.gnome.org/show_bug.cgi?id=796243
+
+Upstream: https://cgit.freedesktop.org/gstreamer/gst-editing-services/commit/?id=76f3dcb8f11a240fc7147ab556c57f10abc9e957
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ examples/c/ges-ui.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/examples/c/ges-ui.c b/examples/c/ges-ui.c
+index 4acd1ee9..45694a6b 100644
+--- a/examples/c/ges-ui.c
++++ b/examples/c/ges-ui.c
+@@ -106,7 +106,7 @@ static int n_instances = 0;
+  * These are declared non-static for signal auto-connection
+  */
+ 
+-gboolean window_delete_event_cb (GtkObject * window, GdkEvent * event,
++gboolean window_delete_event_cb (GtkWidget * window, GdkEvent * event,
+     App * app);
+ void new_activate_cb (GtkMenuItem * item, App * app);
+ void open_activate_cb (GtkMenuItem * item, App * app);
+@@ -1076,14 +1076,14 @@ gboolean
+ add_effect_dlg_delete_event_cb (GtkWidget * widget, GdkEvent * event,
+     gpointer * app)
+ {
+-  gtk_widget_hide_all (((App *) app)->add_effect_dlg);
++  gtk_widget_hide (((App *) app)->add_effect_dlg);
+   return TRUE;
+ }
+ 
+ void
+ on_cancel_add_effect_cb (GtkButton * button, App * app)
+ {
+-  gtk_widget_hide_all (app->add_effect_dlg);
++  gtk_widget_hide (app->add_effect_dlg);
+ }
+ 
+ void
+@@ -1103,7 +1103,7 @@ on_apply_effect_cb (GtkButton * button, App * app)
+ 
+   gtk_entry_set_text (GTK_ENTRY (app->audio_effect_entry), "");
+ 
+-  gtk_widget_hide_all (app->add_effect_dlg);
++  gtk_widget_hide (app->add_effect_dlg);
+ }
+ 
+ static void
+@@ -1347,7 +1347,7 @@ app_new_from_uri (gchar * uri)
+ /* UI callbacks  ************************************************************/
+ 
+ gboolean
+-window_delete_event_cb (GtkObject * window, GdkEvent * event, App * app)
++window_delete_event_cb (GtkWidget * window, GdkEvent * event, App * app)
+ {
+   app_dispose (app);
+   return FALSE;
+-- 
+2.19.0
+
