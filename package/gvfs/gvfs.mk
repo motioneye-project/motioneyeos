@@ -23,7 +23,6 @@ GVFS_CONF_OPTS = \
 	--disable-admin \
 	--disable-bash-completion \
 	--disable-cdda \
-	--disable-gconf \
 	--disable-gcr \
 	--disable-gdu \
 	--disable-goa \
