@@ -10,13 +10,20 @@ Upstream status: http://bugs.ntp.org/show_bug.cgi?id=3538
 
 diff -Nuar ntp-4.2.8p12.orig/ntpd/ntpd.c ntp-4.2.8p12/ntpd/ntpd.c
 --- ntp-4.2.8p12.orig/ntpd/ntpd.c	2018-08-14 14:51:30.000000000 +0300
-+++ ntp-4.2.8p12/ntpd/ntpd.c	2018-10-12 08:19:01.291781773 +0300
-@@ -529,7 +529,7 @@
- }
- #endif	/* !SIM */
- 
--#if !defined(SIM) && !defined(SYS_WINNT)
-+#if !defined(SIM) && !defined(SYS_WINNT) && defined(HAVE_WORKING_FORK)
- /*
++++ ntp-4.2.8p12/ntpd/ntpd.c	2018-10-13 21:25:25.858261249 +0300
+@@ -534,6 +534,7 @@
   * Detach from terminal (much like daemon())
   * Nothe that this function calls exit()
+  */
++# ifdef HAVE_WORKING_FORK
+ static void
+ detach_from_terminal(
+ 	int pipe_fds[2],
+@@ -617,6 +618,7 @@
+ 
+ 	return;
+ }
++# endif /* HAVE_WORKING_FORK */
+ 
+ #ifdef HAVE_DROPROOT
+ /*
