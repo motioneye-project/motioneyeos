@@ -10,14 +10,19 @@ MDADM_SITE = $(BR2_KERNEL_MIRROR)/linux/utils/raid/mdadm
 MDADM_LICENSE = GPL-2.0+
 MDADM_LICENSE_FILES = COPYING
 
-MDADM_MAKE_OPTS = \
-	CFLAGS="$(TARGET_CFLAGS) -DNO_COROSYNC -DNO_DLM" CC="$(TARGET_CC)" CHECK_RUN_DIR=0 -C $(MDADM_DIR) mdadm
-
-MDADM_INSTALL_TARGET_OPTS = \
-	DESTDIR=$(TARGET_DIR)/usr -C $(MDADM_DIR) install-mdadm
-
-define MDADM_CONFIGURE_CMDS
-	# Do nothing
+define MDADM_BUILD_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		$(TARGET_CONFIGURE_OPTS) \
+		CFLAGS="$(TARGET_CFLAGS) -DNO_COROSYNC -DNO_DLM" \
+		CPPFLAGS="$(TARGET_CPPFLAGS) -DBINDIR=\\\"/usr/sbin\\\"" \
+		CHECK_RUN_DIR=0 \
+		mdadm
 endef
 
-$(eval $(autotools-package))
+define MDADM_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+		DESTDIR=$(TARGET_DIR)/usr \
+		install-mdadm
+endef
+
+$(eval $(generic-package))
