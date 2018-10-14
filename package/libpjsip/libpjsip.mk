@@ -67,4 +67,7 @@ ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
 LIBPJSIP_DEPENDENCIES += util-linux
 endif
 
+# disable build of test binaries
+LIBPJSIP_MAKE_OPTS = lib
+
 $(eval $(autotools-package))
