@@ -97,7 +97,7 @@ define DOWNLOAD
 		-d '$($(PKG)_DL_DIR)' \
 		-D '$(DL_DIR)' \
 		-f '$(notdir $(1))' \
-		-H '$(PKGDIR)/$($(PKG)_RAWNAME).hash' \
+		-H '$($(PKG)_HASH_FILE)' \
 		-n '$($(PKG)_BASENAME_RAW)' \
 		-N '$($(PKG)_RAWNAME)' \
 		-o '$($(PKG)_DL_DIR)/$(notdir $(1))' \
