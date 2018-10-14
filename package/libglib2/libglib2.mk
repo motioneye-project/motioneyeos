@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.56
+LIBGLIB2_VERSION_MAJOR = 2.58
 LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).1
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
@@ -12,6 +12,15 @@ LIBGLIB2_LICENSE = LGPL-2.1+
 LIBGLIB2_LICENSE_FILES = COPYING
 # 0002-disable-tests.patch
 LIBGLIB2_AUTORECONF = YES
+
+# Copy what is done in autogen.sh when gtk-doc is not available
+define LIBGLIB2_GTK_DOC_HOOK
+	echo "EXTRA_DIST=" > $(@D)/gtk-doc.make
+	echo "CLEANFILES=" >> $(@D)/gtk-doc.make
+endef
+
+LIBGLIB2_PRE_CONFIGURE_HOOKS += LIBGLIB2_GTK_DOC_HOOK
+HOST_LIBGLIB2_PRE_CONFIGURE_HOOKS += LIBGLIB2_GTK_DOC_HOOK
 
 LIBGLIB2_INSTALL_STAGING = YES
 LIBGLIB2_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
