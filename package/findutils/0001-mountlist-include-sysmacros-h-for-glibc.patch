@@ -1,0 +1,81 @@
+From 4da63c5881f60f71999a943612da9112232b9161 Mon Sep 17 00:00:00 2001
+From: Eric Blake <eblake@redhat.com>
+Date: Wed, 14 Sep 2016 19:21:42 -0500
+Subject: [PATCH] mountlist: include sysmacros.h for glibc
+
+On Fedora rawhide (glibc 2.25), './gnulib-tool --test mountlist'
+reports:
+../../gllib/mountlist.c: In function 'read_file_system_list':
+../../gllib/mountlist.c:534:13: warning: '__makedev_from_sys_types' is deprecated:
+  In the GNU C Library, `makedev' is defined by <sys/sysmacros.h>.
+  For historical compatibility, it is currently defined by
+  <sys/types.h> as well, but we plan to remove this soon.
+  To use `makedev', include <sys/sysmacros.h> directly.
+  If you did not intend to use a system-defined macro `makedev',
+  you should #undef it after including <sys/types.h>.
+  [-Wdeprecated-declarations]
+             me->me_dev = makedev (devmaj, devmin);
+             ^~
+In file included from /usr/include/features.h:397:0,
+                 from /usr/include/sys/types.h:25,
+                 from ./sys/types.h:28,
+                 from ../../gllib/mountlist.h:23,
+                 from ../../gllib/mountlist.c:20:
+/usr/include/sys/sysmacros.h:89:1: note: declared here
+ __SYSMACROS_DEFINE_MAKEDEV (__SYSMACROS_FST_IMPL_TEMPL)
+ ^
+
+Fix it by including the right headers.  We also need a fix to
+autoconf's AC_HEADER_MAJOR, but that's a separate patch.
+
+* m4/mountlist.m4 (gl_PREREQ_MOUTLIST_EXTRA): Include
+AC_HEADER_MAJOR.
+* lib/mountlist.c (includes): Use correct headers.
+
+Signed-off-by: Eric Blake <eblake@redhat.com>
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Backported on version 4.6 after being retrieved from
+http://git.savannah.gnu.org/gitweb/?p=gnulib.git;a=patch;h=4da63c58]
+---
+ gl/lib/mountlist.c | 6 ++++++
+ m4/mountlist.m4 | 3 ++-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/gl/lib/mountlist.c b/lib/mountlist.c
+index bb4e4ee..cf4020e 100644
+--- a/gl/lib/mountlist.c
++++ b/gl/lib/mountlist.c
+@@ -37,6 +37,12 @@
+ # include <sys/param.h>
+ #endif
+ 
++#if MAJOR_IN_MKDEV
++# include <sys/mkdev.h>
++#elif MAJOR_IN_SYSMACROS
++# include <sys/sysmacros.h>
++#endif
++
+ #if defined MOUNTED_GETFSSTAT   /* OSF_1 and Darwin1.3.x */
+ # if HAVE_SYS_UCRED_H
+ #  include <grp.h> /* needed on OSF V4.0 for definition of NGROUPS,
+diff --git a/m4/mountlist.m4 b/m4/mountlist.m4
+index 2e2ca37..b6724fa 100644
+--- a/gl/m4/mountlist.m4
++++ b/gl/m4/mountlist.m4
+@@ -1,4 +1,4 @@
+-# serial 11
++# serial 12
+ dnl Copyright (C) 2002-2006, 2009-2015 Free Software Foundation, Inc.
+ dnl This file is free software; the Free Software Foundation
+ dnl gives unlimited permission to copy and/or distribute it,
+@@ -15,5 +15,6 @@ AC_DEFUN([gl_PREREQ_MOUNTLIST_EXTRA],
+ [
+   dnl Note gl_LIST_MOUNTED_FILE_SYSTEMS checks for mntent.h, not sys/mntent.h.
+   AC_CHECK_HEADERS([sys/mntent.h])
++  AC_HEADER_MAJOR()dnl for use of makedev ()
+   gl_FSTYPENAME
+ ])
+-- 
+1.9.1
+
