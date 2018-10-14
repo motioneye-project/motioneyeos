@@ -1,5 +1,7 @@
 config BR2_PACKAGE_PYTHON_LOGBOOK
 	bool "python-logbook"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
 	help
 	  A logging replacement for Python.
 
