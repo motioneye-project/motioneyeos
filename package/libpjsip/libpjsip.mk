@@ -26,7 +26,6 @@ LIBPJSIP_CONF_ENV = \
 
 LIBPJSIP_CONF_OPTS = \
 	--disable-sound \
-	--disable-gsm-codec \
 	--disable-resample \
 	--disable-video \
 	--disable-opencore-amr \
@@ -53,6 +52,16 @@ LIBPJSIP_CONF_OPTS = \
 # both enable it. But that's OK, epoll is better than the alternative,
 # so we want to use it.
 LIBPJSIP_CONF_OPTS += --enable-epoll
+
+ifeq ($(BR2_PACKAGE_LIBGSM),y)
+LIBPJSIP_CONF_OPTS += \
+	--enable-gsm-codec \
+	--with-external-gsm
+LIBPJSIP_DEPENDENCIES += libgsm
+else
+LIBPJSIP_CONF_OPTS += \
+	--disable-gsm-codec
+endif
 
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
 LIBPJSIP_DEPENDENCIES += libopenssl
