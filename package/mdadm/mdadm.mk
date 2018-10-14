@@ -14,14 +14,14 @@ define MDADM_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(TARGET_CONFIGURE_OPTS) \
 		CFLAGS="$(TARGET_CFLAGS) -DNO_COROSYNC -DNO_DLM" \
-		CPPFLAGS="$(TARGET_CPPFLAGS) -DBINDIR=\\\"/usr/sbin\\\"" \
+		CPPFLAGS="$(TARGET_CPPFLAGS) -DBINDIR=\\\"/sbin\\\"" \
 		CHECK_RUN_DIR=0 \
 		mdadm
 endef
 
 define MDADM_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		DESTDIR=$(TARGET_DIR)/usr \
+		DESTDIR=$(TARGET_DIR) \
 		install-mdadm
 endef
 
