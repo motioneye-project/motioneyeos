@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-ASTERISK_VERSION = 14.7.8
+ASTERISK_VERSION = 16.0.0
 # Use the github mirror: it's an official mirror maintained by Digium, and
 # provides tarballs, which the main Asterisk git tree (behind Gerrit) does not.
 ASTERISK_SITE = $(call github,asterisk,asterisk,$(ASTERISK_VERSION))
 
 ASTERISK_SOUNDS_BASE_URL = http://downloads.asterisk.org/pub/telephony/sounds/releases
 ASTERISK_EXTRA_DOWNLOADS = \
-	$(ASTERISK_SOUNDS_BASE_URL)/asterisk-core-sounds-en-gsm-1.5.tar.gz \
+	$(ASTERISK_SOUNDS_BASE_URL)/asterisk-core-sounds-en-gsm-1.6.1.tar.gz \
 	$(ASTERISK_SOUNDS_BASE_URL)/asterisk-moh-opsound-wav-2.03.tar.gz
 
 ASTERISK_LICENSE = GPL-2.0, BSD-3c (SHA1, resample), BSD-4c (db1-ast)
@@ -21,7 +21,7 @@ ASTERISK_LICENSE_FILES = \
 	codecs/speex/speex_resampler.h \
 	utils/db1-ast/include/db.h
 
-# For patches 0001, 0003 and 0004
+# For patches 0002 and 0003
 ASTERISK_AUTORECONF = YES
 ASTERISK_AUTORECONF_OPTS = -Iautoconf -Ithird-party -Ithird-party/pjproject
 
@@ -29,8 +29,8 @@ ASTERISK_DEPENDENCIES = \
 	host-asterisk \
 	jansson \
 	libcurl \
+	libedit \
 	libxml2 \
-	ncurses \
 	sqlite \
 	util-linux
 
@@ -54,7 +54,6 @@ ASTERISK_CONF_OPTS = \
 	--without-curses \
 	--without-gtk2 \
 	--without-gmime \
-	--without-h323 \
 	--without-hoard \
 	--without-iconv \
 	--without-iksemel \
@@ -67,7 +66,6 @@ ASTERISK_CONF_OPTS = \
 	--without-kqueue \
 	--without-libedit \
 	--without-libxslt \
-	--without-ltdl \
 	--without-lua \
 	--without-misdn \
 	--without-mysqlclient \
@@ -79,8 +77,8 @@ ASTERISK_CONF_OPTS = \
 	--without-oss \
 	--without-postgres \
 	--without-pjproject \
+	--without-pjproject-bundled \
 	--without-popt \
-	--without-pwlib \
 	--without-resample \
 	--without-sdl \
 	--without-SDL_image \
@@ -99,7 +97,7 @@ ASTERISK_CONF_OPTS = \
 	--with-libcurl \
 	--with-ilbc \
 	--with-libxml2 \
-	--with-ncurses="$(STAGING_DIR)/usr" \
+	--with-libedit="$(STAGING_DIR)/usr" \
 	--with-sqlite3="$(STAGING_DIR)/usr" \
 	--with-sounds-cache=$(ASTERISK_DL_DIR)
 
@@ -110,7 +108,13 @@ ASTERISK_CONF_OPTS = \
 ASTERISK_CONF_OPTS += --without-avcodec
 
 ASTERISK_CONF_ENV = \
+	ac_cv_file_bridges_bridge_softmix_include_hrirs_h=true \
 	ac_cv_path_CONFIG_LIBXML2=$(STAGING_DIR)/usr/bin/xml2-config
+
+# Uses __atomic_fetch_add_4
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+ASTERISK_CONF_ENV += LIBS="-latomic"
+endif
 
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 ASTERISK_CONF_OPTS += --with-execinfo
@@ -271,6 +275,11 @@ ASTERISK_DIRS = \
 	ASTDBDIR="/usr/lib/asterisk"
 
 ASTERISK_MAKE_OPTS = $(ASTERISK_DIRS)
+
+# Uses __atomic_fetch_add_4
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+ASTERISK_MAKE_OPTS += ASTLDFLAGS="-latomic"
+endif
 
 # We want to install sample configuration files, too.
 ASTERISK_INSTALL_TARGET_OPTS = \
