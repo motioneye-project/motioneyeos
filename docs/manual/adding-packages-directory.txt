@@ -446,6 +446,13 @@ contains the hashes of the downloaded files for the +libfoo+
 package. The only reason for not adding a +.hash+ file is when hash
 checking is not possible due to how the package is downloaded.
 
+When a package has a version selection choice, then the hash file may be
+stored in a subdirectory named after the version, e.g.
++package/libfoo/1.2.3/libfoo.hash+. This is especially important if the
+different versions have different licensing terms, but they are stored
+in the same file. Otherwise, the hash file should stay in the package's
+directory.
+
 The hashes stored in that file are used to validate the integrity of the
 downloaded files and of the license files.
 
