@@ -267,7 +267,7 @@ define UBOOT_GENERATE_ENV_IMAGE
 		>$(@D)/buildroot-env.txt
 	$(HOST_DIR)/bin/mkenvimage -s $(BR2_TARGET_UBOOT_ENVIMAGE_SIZE) \
 		$(if $(BR2_TARGET_UBOOT_ENVIMAGE_REDUNDANT),-r) \
-		$(if $(filter BIG,$(BR2_ENDIAN)),-b) \
+		$(if $(filter "BIG",$(BR2_ENDIAN)),-b) \
 		-o $(BINARIES_DIR)/uboot-env.bin \
 		$(@D)/buildroot-env.txt
 endef
