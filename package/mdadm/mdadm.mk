@@ -16,13 +16,13 @@ define MDADM_BUILD_CMDS
 		CFLAGS="$(TARGET_CFLAGS) -DNO_COROSYNC -DNO_DLM" \
 		CPPFLAGS="$(TARGET_CPPFLAGS) -DBINDIR=\\\"/sbin\\\"" \
 		CHECK_RUN_DIR=0 \
-		mdadm
+		mdadm mdmon
 endef
 
 define MDADM_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		DESTDIR=$(TARGET_DIR) \
-		install-mdadm
+		install-mdadm install-mdmon
 endef
 
 $(eval $(generic-package))
