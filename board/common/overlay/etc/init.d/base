@@ -6,6 +6,8 @@ board_name=$(cat /etc/board)
 
 test -n "$os_debug" || source /etc/init.d/conf
 
+source /etc/init.d/panic
+
 msg_begin() {
     echo -n " * $1: "
 }
@@ -20,10 +22,5 @@ msg_fail() {
 
 msg_background() {
     test -n "$1" && echo $1 || echo "pending"
-}
-
-panic_action() {
-    logger -t panic -s "rebooting"
-    /sbin/reboot
 }
 
