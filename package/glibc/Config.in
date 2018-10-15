@@ -5,5 +5,6 @@ config BR2_PACKAGE_GLIBC
 	default y
 	select BR2_PACKAGE_LINUX_HEADERS
 	select BR2_TOOLCHAIN_HAS_SSP
-
+	help
+	  https://www.gnu.org/software/libc/
 endif
