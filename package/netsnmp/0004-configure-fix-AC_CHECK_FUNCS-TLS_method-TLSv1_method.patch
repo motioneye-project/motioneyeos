@@ -1,0 +1,39 @@
+From 1ab6e3fc3cf61fa5a7b7363e59095e868474524b Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@micronovasrl.com>
+Date: Mon, 15 Oct 2018 19:34:26 +0200
+Subject: [PATCH 2/2] configure: fix AC_CHECK_FUNCS(TLS_method TLSv1_method
+ ...) failure on static linking
+
+If building as static lib, AC_CHECK_FUNCS(TLS_method TLSv1_method ...)
+fails due to missing -lz in $LIBS.
+At the moment, $LIBS contains "-lssl $LIBCRYPTO" only discarding
+previous $LIBS content.
+
+Add $LIBS to:
+LIBS="-lssl $LIBCRYPTO"
+as:
+LIBS="-lssl $LIBCRYPTO $LIBS"
+This way $LIBS will contain -lz at the end of linking command that in
+static linking build is mandatory.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ configure.d/config_os_libs2 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.d/config_os_libs2 b/configure.d/config_os_libs2
+index 93044000b..c811c63ec 100644
+--- a/configure.d/config_os_libs2
++++ b/configure.d/config_os_libs2
+@@ -349,7 +349,7 @@ if test "x$tryopenssl" != "xno" -a "x$tryopenssl" != "xinternal"; then
+             LIBS="$netsnmp_save_LIBS"
+         fi
+         netsnmp_save_LIBS="$LIBS"
+-        LIBS="-lssl $LIBCRYPTO"
++        LIBS="-lssl $LIBCRYPTO $LIBS"
+         AC_CHECK_FUNCS([TLS_method TLSv1_method DTLS_method DTLSv1_method]dnl
+                        [SSL_library_init SSL_load_error_strings])
+         LIBS="$netsnmp_save_LIBS"
+-- 
+2.17.1
+
