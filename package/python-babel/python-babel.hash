@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/Babel/json, sha256 locally computed
-md5	afa20bc55b0e991833030129ad498f35  Babel-2.3.4.tar.gz
-sha256	c535c4403802f6eb38173cd4863e419e2274921a01a8aad8a5b497c131c62875  Babel-2.3.4.tar.gz
+# md5, sha256 from https://pypi.org/pypi/babel/json
+md5	c384ac03026e8fe6f9b90f55201f1bff  Babel-2.6.0.tar.gz
+sha256	8cba50f48c529ca3fa18cf81fa9403be176d374ac4d60738b839122dfaaa3d23  Babel-2.6.0.tar.gz
+# Locally computed sha256 checksums
+sha256	178b99c90df898d0bee84bd335f36b679c76fafa9d3c288b4eaea4ebd92d8602  LICENSE
