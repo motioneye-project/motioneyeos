@@ -145,6 +145,12 @@ endif
 ###############################################################################
 comment "Legacy options removed in 2018.11"
 
+config BR2_PACKAGE_GST_DSP
+	bool "gst-dsp package removed"
+	select BR2_LEGACY
+	help
+	  The gst-dsp package was removed.
+
 config BR2_PACKAGE_BOOTUTILS
 	bool "bootutils package removed"
 	select BR2_LEGACY
