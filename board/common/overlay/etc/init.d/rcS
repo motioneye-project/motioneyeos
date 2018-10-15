@@ -10,7 +10,7 @@ echo "---- booting $os_name $os_version ----" >> $tmp_boot_log
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
-(for i in /etc/init.d/S??*; do
+(for i in /etc/init.d/S??* /etc/init.d/bootdone; do
     [ ! -x "$i" ] && continue
     [ -f /data/etc/no_$(basename $i) ] && continue
     $i start || break
