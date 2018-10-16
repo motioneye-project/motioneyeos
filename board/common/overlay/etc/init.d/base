@@ -4,6 +4,10 @@ source /etc/version
 board_sn=$(/etc/init.d/boardsn)
 board_name=$(cat /etc/board)
 
+test -n "$os_debug" || source /etc/init.d/conf
+
+source /etc/init.d/panic
+
 msg_begin() {
     echo -n " * $1: "
 }

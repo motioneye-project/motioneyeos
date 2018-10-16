@@ -9,11 +9,11 @@ case "$1" in
     start)
         msg_begin "Loading kernel modules"
 
-        if [ -r $sys_modules_file ]; then
+        if [[ -r $sys_modules_file ]]; then
             cat $sys_modules_file | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
         fi
 
-        if [ -r $modules_file ]; then
+        if [[ -r $modules_file ]]; then
             cat $modules_file | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
         fi
 

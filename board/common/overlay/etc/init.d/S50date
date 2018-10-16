@@ -11,18 +11,18 @@ sys_ntp_conf="/etc/ntp.conf"
 boot_ntp_conf="/boot/ntp.conf"
 ntp_conf="/data/etc/ntp.conf"
 
-if ! [ -f $conf ]; then
-    if [ -f $boot_conf ]; then
+if ! [[ -f $conf ]]; then
+    if [[ -f $boot_conf ]]; then
         cp $boot_conf $conf
-    elif [ -f $sys_conf ]; then
+    elif [[ -f $sys_conf ]]; then
         cp $sys_conf $conf
     fi
 fi
 
-if ! [ -f $ntp_conf ]; then
-    if [ -f $boot_ntp_conf ]; then
+if ! [[ -f $ntp_conf ]]; then
+    if [[ -f $boot_ntp_conf ]]; then
         cp $boot_ntp_conf $ntp_conf
-    elif [ -f $sys_ntp_conf ]; then
+    elif [[ -f $sys_ntp_conf ]]; then
         cp $sys_ntp_conf $ntp_conf
     fi
 fi
@@ -30,7 +30,6 @@ fi
 test -f $conf || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
 test "$os_networkless" == "true" && exit 0
 
@@ -70,7 +69,7 @@ start_ntp() {
 
     cat $ntp_conf | grep -v iburst > ${ntp_conf}.tmp
 
-    if [ -n "$date_ntp_server" ]; then
+    if [[ -n "$date_ntp_server" ]]; then
         echo "server $date_ntp_server iburst" > $ntp_conf
     else
         cat $sys_ntp_conf | grep iburst > $ntp_conf
@@ -101,7 +100,7 @@ stop_ntp() {
 }
 
 start() {
-    if [ "$date_method" == "http" ]; then
+    if [[ "$date_method" == "http" ]]; then
         start_http
     else
         start_ntp
@@ -111,7 +110,7 @@ start() {
 }
 
 stop() {
-    if [ "$date_method" == "http" ]; then
+    if [[ "$date_method" == "http" ]]; then
         stop_http
     else
         stop_ntp
