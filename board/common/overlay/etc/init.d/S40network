@@ -11,10 +11,10 @@ link_nego_timeout=10
 
 source $watch_conf
 
-if ! [ -f $static_conf ]; then
-    if [ -f $boot_static_conf ]; then
+if ! [[ -f $static_conf ]]; then
+    if [[ -f $boot_static_conf ]]; then
         cp $boot_static_conf $static_conf
-    elif [ -f $sys_static_conf ]; then
+    elif [[ -f $sys_static_conf ]]; then
         cp $sys_static_conf $static_conf
     fi
 fi
@@ -27,10 +27,10 @@ watch_eth() {
     count=0
     while true; do
         sleep 5
-        if [ "$(cat /sys/class/net/$os_eth/operstate 2>/dev/null)" == "up" ]; then
+        if [[ "$(cat /sys/class/net/$os_eth/operstate 2>/dev/null)" == "up" ]]; then
             count=0
         else
-            if [ $count -lt $link_watch_timeout ]; then
+            if [[ $count -lt $link_watch_timeout ]]; then
                 count=$(($count + 5))
                 logger -t ethernet -s "disconnected"
             else
@@ -49,7 +49,7 @@ watch_ip() {
         if ip addr show dev $iface | grep inet &>/dev/null; then
             count=0
         else
-            if [ $count -lt $ip_watch_timeout ]; then
+            if [[ $count -lt $ip_watch_timeout ]]; then
                 count=$(($count + 5))
                 logger -t network -s "$iface has no IP address"
             else
@@ -71,16 +71,16 @@ start_wlan() {
         return 1
     fi
 
-    if [ "$(cat /sys/class/net/$os_wlan/carrier 2>/dev/null)" != "1" ]; then
+    if [[ "$(cat /sys/class/net/$os_wlan/carrier 2>/dev/null)" != "1" ]]; then
         msg_fail "no link"
         return 1
     fi
 
-    if [ -n "$mtu" ]; then
+    if [[ -n "$mtu" ]]; then
         ip link set mtu $mtu dev $os_wlan
     fi
 
-    if [ -n "$static_ip" ]; then
+    if [[ -n "$static_ip" ]]; then
         msg_done $static_ip
         ifconfig $os_wlan $static_ip up
         static_ip="" # won't be used again
@@ -89,7 +89,7 @@ start_wlan() {
         dhclient -cf "$dh_conf" $os_wlan
     fi
 
-    if [ "$ip_watch" == "true" ] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
+    if [[ "$ip_watch" == "true" ]] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
         watch_ip $os_wlan &
     fi
 }
@@ -103,7 +103,7 @@ start_eth() {
     while ! ifconfig $os_eth >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge $w ]; then
+        if [[ $count -ge $w ]]; then
             msg_done "no device"
             return 1
         fi
@@ -115,10 +115,10 @@ start_eth() {
     # wait for operstate
     w=3
     count=0
-    while [ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]; do
+    while [[ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]]; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge $w ]; then
+        if [[ $count -ge $w ]]; then
             msg_done "no link"
             return 1
         fi
@@ -127,20 +127,20 @@ start_eth() {
     # wait for link
     test "$link_watch" == "true" || link_nego_timeout=5
     count=0
-    while [ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]; do
+    while [[ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]]; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge $link_nego_timeout ]; then
+        if [[ $count -ge $link_nego_timeout ]]; then
             msg_done "no link"
             return 1
         fi
     done
     
-    if [ -n "$mtu" ]; then
+    if [[ -n "$mtu" ]]; then
         ip link set mtu $mtu dev $os_eth
     fi
 
-    if [ -n "$static_ip" ]; then
+    if [[ -n "$static_ip" ]]; then
         msg_done $static_ip
         ifconfig $os_eth $static_ip up
         static_ip="" # won't be used again
@@ -149,11 +149,11 @@ start_eth() {
         dhclient -cf "$dh_conf" $os_eth
     fi
 
-    if [ "$link_watch" == "true" ]; then
+    if [[ "$link_watch" == "true" ]]; then
         watch_eth &
     fi
 
-    if [ "$ip_watch" == "true" ] && ip addr show dev $os_eth | grep inet &>/dev/null; then
+    if [[ "$ip_watch" == "true" ]] && ip addr show dev $os_eth | grep inet &>/dev/null; then
         watch_ip $os_eth &
     fi
 }
@@ -172,14 +172,14 @@ start() {
     test -r /data/etc/ppp/modem && ifconfig | grep $os_ppp &>/dev/null && ppp_ok="ok"
     
     # if wifi or ppp link ok, start eth in background
-    if [ "$wlan_ok" == "ok" ] || [ "$ppp_ok" == "ok" ]; then
+    if [[ "$wlan_ok" == "ok" ]] || [[ "$ppp_ok" == "ok" ]]; then
         start_eth &>/dev/null &
     else
         start_eth && eth_ok="ok"
     fi
     
-    if [ "$eth_ok" != "ok" ] && [ "$wlan_ok" != "ok" ] && [ "$ppp_ok" != "ok" ]; then
-        if [ "$link_watch" == "true" ]; then
+    if [[ "$eth_ok" != "ok" ]] && [[ "$wlan_ok" != "ok" ]] && [[ "$ppp_ok" != "ok" ]]; then
+        if [[ "$link_watch" == "true" ]]; then
             logger -t network -s "no network connection available, calling panic action"
             panic_action network
             return 1
@@ -189,13 +189,13 @@ start() {
         fi
     fi
 
-    if [ -n "$static_gw" ]; then
+    if [[ -n "$static_gw" ]]; then
         msg_begin "Setting static gateway to $static_gw"
         ip route add default via $static_gw
         test $? == 0 && msg_done || msg_fail
     fi
 
-    if [ -n "$static_dns" ]; then
+    if [[ -n "$static_dns" ]]; then
         msg_begin "Setting static DNS server to $static_dns"
         echo "nameserver $static_dns" > /etc/resolv.conf
         test $? == 0 && msg_done || msg_fail

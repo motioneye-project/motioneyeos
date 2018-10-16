@@ -13,11 +13,11 @@ panic_action() {
     echo $((panic_counter + 1)) > ${_PANIC_COUNTER_FILE}
     
     delay=$((_PANIC_REBOOT_DELAY_FACTOR * panic_counter))
-    if [ "${delay}" -gt "${_PANIC_REBOOT_DELAY_MAX}" ]; then
+    if [[ "${delay}" -gt "${_PANIC_REBOOT_DELAY_MAX}" ]]; then
         delay=${_PANIC_REBOOT_DELAY_MAX}
     fi
     
-    if [ "${delay}" -gt 0 ]; then
+    if [[ "${delay}" -gt 0 ]]; then
         logger -t panic -s "rebooting in ${delay} seconds (caused by $1)"
         sleep ${delay}
     fi

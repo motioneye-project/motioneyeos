@@ -12,20 +12,20 @@ sys_watch_conf="/etc/watch.conf"
 boot_watch_conf="/boot/watch.conf"
 watch_conf="/data/etc/watch.conf"
 
-if ! [ -f $watch_conf ]; then
-    if [ -f $boot_watch_conf ]; then
+if ! [[ -f $watch_conf ]]; then
+    if [[ -f $boot_watch_conf ]]; then
         cp $boot_watch_conf $watch_conf
-    elif [ -f $sys_watch_conf ]; then
+    elif [[ -f $sys_watch_conf ]]; then
         cp $sys_watch_conf $watch_conf
     fi
 fi
 
 source $watch_conf
 
-if ! [ -f $conf ]; then
-    if [ -f $boot_conf ]; then
+if ! [[ -f $conf ]]; then
+    if [[ -f $boot_conf ]]; then
         cp $boot_conf $conf
-    elif [ -f $sys_conf ]; then
+    elif [[ -f $sys_conf ]]; then
         cp $sys_conf $conf
     fi
 fi
@@ -53,7 +53,7 @@ watch() {
         if connected; then
             count=0
         else
-            if [ $count -lt $link_watch_timeout ]; then
+            if [[ $count -lt $link_watch_timeout ]]; then
                 count=$(($count + 5))
                 logger -t wifi -s "disconnected"
             else
@@ -74,7 +74,7 @@ start() {
     while ! ifconfig $os_wlan >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge 5 ]; then
+        if [[ $count -ge 5 ]]; then
             msg_fail "no device"
             return 1
         fi
@@ -93,7 +93,7 @@ start() {
             break
         fi
 
-        if [ $count -gt $link_watch_timeout ] || ! pidof wpa_supplicant > /dev/null; then
+        if [[ $count -gt $link_watch_timeout ]] || ! pidof wpa_supplicant > /dev/null; then
             test -n "$module" && msg_fail "failed ($module)"|| msg_fail
             return 1
         fi
@@ -101,7 +101,7 @@ start() {
         count=$(($count + 1))
     done
 
-    if [ "$link_watch" == "true" ]; then
+    if [[ "$link_watch" == "true" ]]; then
         watch &
     fi
 
