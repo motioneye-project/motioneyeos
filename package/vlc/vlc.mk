@@ -512,7 +512,6 @@ VLC_CONF_OPTS += --disable-taglib
 endif
 
 ifeq ($(BR2_PACKAGE_TREMOR),y)
-VLC_CONF_ENV += VORBIS_LIBS="-lvorbisidec"
 VLC_CONF_OPTS += --enable-tremor
 VLC_DEPENDENCIES += tremor
 else
