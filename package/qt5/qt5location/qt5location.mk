@@ -44,6 +44,11 @@ define QT5LOCATION_INSTALL_TARGET_LOCATION
 	cp -dpf $(STAGING_DIR)/usr/lib/libQt5Location.so.* $(TARGET_DIR)/usr/lib
 	cp -dpfr $(STAGING_DIR)/usr/lib/qt/plugins/geoservices $(TARGET_DIR)/usr/lib/qt/plugins/
 endef
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+define QT5LOCATION_INSTALL_TARGET_POSITION_QUICK
+	cp -dpf $(STAGING_DIR)/usr/lib/libQt5PositioningQuick.so.* $(TARGET_DIR)/usr/lib
+endef
+endif
 ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
 define QT5LOCATION_INSTALL_TARGET_EXAMPLES
 	cp -dpfr $(STAGING_DIR)/usr/lib/qt/examples/location $(TARGET_DIR)/usr/lib/qt/examples/
@@ -59,6 +64,7 @@ endef
 
 define QT5LOCATION_INSTALL_TARGET_CMDS
 	$(QT5LOCATION_INSTALL_TARGET_POSITION)
+	$(QT5LOCATION_INSTALL_TARGET_POSITION_QUICK)
 	$(QT5LOCATION_INSTALL_TARGET_LOCATION)
 	$(QT5LOCATION_INSTALL_TARGET_QMLS)
 	$(QT5LOCATION_INSTALL_TARGET_EXAMPLES)
