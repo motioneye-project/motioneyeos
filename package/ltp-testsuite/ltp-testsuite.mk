@@ -75,4 +75,7 @@ endef
 LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_LDD
 endif
 
+# 0002-statx-fix-compile-errors.patch
+LTP_TESTSUITE_AUTORECONF = YES
+
 $(eval $(autotools-package))
