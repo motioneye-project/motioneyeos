@@ -20,7 +20,6 @@ GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-con
 # Most of these are missing library support
 GVFS_CONF_OPTS = \
 	--disable-afc \
-	--disable-admin \
 	--disable-cdda \
 	--disable-gcr \
 	--disable-gdu \
@@ -64,6 +63,13 @@ GVFS_DEPENDENCIES += libbluray
 GVFS_CONF_OPTS += --enable-bluray
 else
 GVFS_CONF_OPTS += --disable-bluray
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP)$(BR2_PACKAGE_POLKIT),yy)
+GVFS_DEPENDENCIES += libcap polkit
+GVFS_CONF_OPTS += --enable-admin
+else
+GVFS_CONF_OPTS += --disable-admin
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
