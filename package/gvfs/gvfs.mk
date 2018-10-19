@@ -20,7 +20,6 @@ GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-con
 # Most of these are missing library support
 GVFS_CONF_OPTS = \
 	--disable-afc \
-	--disable-cdda \
 	--disable-gcr \
 	--disable-gdu \
 	--disable-goa \
@@ -70,6 +69,13 @@ GVFS_DEPENDENCIES += libcap polkit
 GVFS_CONF_OPTS += --enable-admin
 else
 GVFS_CONF_OPTS += --disable-admin
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCDIO_PARANOIA)$(BR2_PACKAGE_LIBGUDEV),yy)
+GVFS_DEPENDENCIES += libcdio-paranoia libgudev
+GVFS_CONF_OPTS += --enable-cdda
+else
+GVFS_CONF_OPTS += --disable-cdda
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFUSE),y)
