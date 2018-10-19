@@ -23,7 +23,6 @@ GVFS_CONF_OPTS = \
 	--disable-gdu \
 	--disable-goa \
 	--disable-google \
-	--disable-gphoto2 \
 	--disable-keyring \
 	--disable-libmtp \
 	--disable-udisks2
@@ -97,6 +96,13 @@ GVFS_CONF_OPTS += --enable-afp
 GVFS_DEPENDENCIES += libgcrypt
 else
 GVFS_CONF_OPTS += --disable-afp
+endif
+
+ifeq ($(BR2_PACKAGE_LIBGPHOTO2)$(BR2_PACKAGE_LIBGUDEV),yy)
+GVFS_DEPENDENCIES += libgphoto2 libgudev
+GVFS_CONF_OPTS += --enable-gphoto2
+else
+GVFS_CONF_OPTS += --disable-gphoto2
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGTK3),y)
