@@ -99,6 +99,13 @@ else
 GVFS_CONF_OPTS += --disable-http
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUSB),y)
+GVFS_DEPENDENCIES += libusb
+GVFS_CONF_OPTS += --enable-libusb
+else
+GVFS_CONF_OPTS += --disable-libusb
+endif
+
 ifeq ($(BR2_PACKAGE_SAMBA4),y)
 GVFS_DEPENDENCIES += samba4
 GVFS_CONF_OPTS += \
