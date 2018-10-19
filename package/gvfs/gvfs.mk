@@ -44,6 +44,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBGUDEV),y)
 GVFS_DEPENDENCIES += libgudev
+GVFS_CONF_OPTS  += --enable-gudev
+else
+GVFS_CONF_OPTS += --disable-gudev
 endif
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
