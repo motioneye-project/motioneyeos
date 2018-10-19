@@ -20,7 +20,6 @@ GVFS_CONF_ENV = ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-con
 # Most of these are missing library support
 GVFS_CONF_OPTS = \
 	--disable-afc \
-	--disable-gcr \
 	--disable-gdu \
 	--disable-goa \
 	--disable-google \
@@ -34,6 +33,13 @@ GVFS_DEPENDENCIES += avahi
 GVFS_CONF_OPTS += --enable-avahi
 else
 GVFS_CONF_OPTS += --disable-avahi
+endif
+
+ifeq ($(BR2_PACKAGE_GCR),y)
+GVFS_DEPENDENCIES += gcr
+GVFS_CONF_OPTS += --enable-gcr
+else
+GVFS_CONF_OPTS += --disable-gcr
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
