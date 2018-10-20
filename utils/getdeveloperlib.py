@@ -158,6 +158,8 @@ def parse_developers(basepath=None):
     linen = 0
     if basepath is None:
         basepath = os.getcwd()
+    else:
+        basepath = os.path.abspath(basepath)
     with open(os.path.join(basepath, "DEVELOPERS"), "r") as f:
         files = []
         name = None
