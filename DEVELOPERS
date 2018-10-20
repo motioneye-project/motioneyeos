@@ -2125,6 +2125,7 @@ F:	package/tstools/
 
 N:	Valentin Korenblit <valentinkorenblit@gmail.com>
 F:	package/clang/
+F:	package/clinfo/
 F:	package/libclc/
 F:	package/llvm/
 
