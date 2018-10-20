@@ -94,11 +94,10 @@ ifneq ($(BR2_PACKAGE_PYTHON3_UNICODEDATA),y)
 PYTHON3_CONF_OPTS += --disable-unicodedata
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON3_UUID),y)
-PYTHON3_DEPENDENCIES += util-linux
-else
+# Disable auto-detection of uuid.h (util-linux)
+# which would add _uuid module support, instead
+# default to the pure python implementation
 PYTHON3_CONF_OPTS += --disable-uuid
-endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3_BZIP2),y)
 PYTHON3_DEPENDENCIES += bzip2

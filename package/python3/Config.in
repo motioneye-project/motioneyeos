@@ -89,16 +89,6 @@ config BR2_PACKAGE_PYTHON3_UNICODEDATA
 	  Unicode character database (used by stringprep module)
 	  (large).
 
-config BR2_PACKAGE_PYTHON3_UUID
-	bool "uuid module"
-	select BR2_PACKAGE_UTIL_LINUX
-	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
-	help
-	  This module provides immutable UUID objects (the UUID class)
-	  and the functions uuid1(), uuid3(), uuid4(), uuid5() for
-	  generating version 1, 3, 4, and 5 UUIDs as specified in RFC
-	  4122.
-
 config BR2_PACKAGE_PYTHON3_SQLITE
 	bool "sqlite module"
 	select BR2_PACKAGE_SQLITE
