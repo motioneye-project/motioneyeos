@@ -43,6 +43,9 @@ else
 MESA3D_CONF_OPTS += --disable-llvm
 endif
 
+# Disable opencl in case libclc is detected
+MESA3D_CONF_OPTS += --disable-opencl
+
 ifeq ($(BR2_PACKAGE_MESA3D_NEEDS_ELFUTILS),y)
 MESA3D_DEPENDENCIES += elfutils
 endif
