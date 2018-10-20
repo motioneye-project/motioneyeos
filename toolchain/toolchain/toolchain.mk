@@ -37,4 +37,14 @@ TOOLCHAIN_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_MUSL_KERNEL_HEADERS_COMPATIBIL
 TOOLCHAIN_INSTALL_STAGING = YES
 endif
 
+# Install default nsswitch.conf file if the skeleton doesn't provide it
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+define GLIBC_COPY_NSSWITCH_FILE
+	@if [ ! -f "$(TARGET_DIR)/etc/nsswitch.conf" ]; then \
+		$(INSTALL) -D -m 0644 package/glibc/nsswitch.conf $(TARGET_DIR)/etc/nsswitch.conf ; \
+	fi
+endef
+TOOLCHAIN_POST_INSTALL_TARGET_HOOKS += GLIBC_COPY_NSSWITCH_FILE
+endif
+
 $(eval $(virtual-package))
