@@ -22,6 +22,7 @@ support/config-fragments/autobuild/br-arm-full-static.config,x86_64
 support/config-fragments/autobuild/armv5-ctng-linux-gnueabi.config,x86
 
 # Toolchains used by test-pkg only when the '-a' option is passed:
+support/config-fragments/autobuild/arm-aarch64.config,x86_64
 support/config-fragments/autobuild/armv7-ctng-linux-gnueabihf.config,x86
 support/config-fragments/autobuild/br-aarch64-glibc.config,x86_64
 support/config-fragments/autobuild/br-arc-full-internal.config,any
