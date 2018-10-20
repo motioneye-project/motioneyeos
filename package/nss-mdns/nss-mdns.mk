@@ -9,8 +9,9 @@ NSS_MDNS_SITE = http://0pointer.de/lennart/projects/nss-mdns
 NSS_MDNS_LICENSE = LGPL-2.1+
 NSS_MDNS_LICENSE_FILES = LICENSE
 
+# add mdns4_minimal / mdns around the dns provider if missing
 define NSS_MDNS_INSTALL_CONFIG
-	sed -r -i -e 's/^(hosts:[[:space:]]+).*/\1files mdns4_minimal [NOTFOUND=return] dns mdns4/' \
+	$(SED) '/^hosts:/ {/mdns4/! s/dns/mdns4_minimal [NOTFOUND=return] dns mdns4/}' \
 		$(TARGET_DIR)/etc/nsswitch.conf
 endef
 
