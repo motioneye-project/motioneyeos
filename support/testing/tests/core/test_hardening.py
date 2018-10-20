@@ -22,7 +22,7 @@ class TestHardeningBase(infra.basetest.BRTest):
         # BR2_TARGET_ROOTFS_TAR is not set
         """
 
-    checksec_files = ["usr/sbin/lighttpd","bin/busybox"]
+    checksec_files = ["usr/sbin/lighttpd", "bin/busybox"]
 
     def checksec_run(self, target_file):
         filepath = os.path.join(self.builddir, "target", target_file)
