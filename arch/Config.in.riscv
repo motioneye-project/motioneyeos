@@ -65,14 +65,35 @@ config BR2_RISCV_ISA_CUSTOM_RVC
 	select BR2_RISCV_ISA_RVC
 endif
 
+choice
+	prompt "Target Architecture Size"
+	default BR2_RISCV_64
+
+config BR2_RISCV_32
+	bool "32-bit"
+
 config BR2_RISCV_64
-	bool
-	default y
+	bool "64-bit"
 	select BR2_ARCH_IS_64
+
+endchoice
 
 choice
 	prompt "Target ABI"
-	default BR2_RISCV_ABI_LP64
+	default BR2_RISCV_ABI_ILP32 if !BR2_ARCH_IS_64
+	default BR2_RISCV_ABI_LP64 if BR2_ARCH_IS_64
+
+config BR2_RISCV_ABI_ILP32
+	bool "ilp32"
+	depends on !BR2_ARCH_IS_64
+
+config BR2_RISCV_ABI_ILP32F
+	bool "ilp32f"
+	depends on !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVF
+
+config BR2_RISCV_ABI_ILP32D
+	bool "ilp32d"
+	depends on !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVD
 
 config BR2_RISCV_ABI_LP64
 	bool "lp64"
@@ -88,12 +109,16 @@ config BR2_RISCV_ABI_LP64D
 endchoice
 
 config BR2_ARCH
+	default "riscv32" if !BR2_ARCH_IS_64
 	default "riscv64" if BR2_ARCH_IS_64
 
 config BR2_ENDIAN
 	default "LITTLE"
 
 config BR2_GCC_TARGET_ABI
+	default "ilp32" if BR2_RISCV_ABI_ILP32
+	default "ilp32f" if BR2_RISCV_ABI_ILP32F
+	default "ilp32d" if BR2_RISCV_ABI_ILP32D
 	default "lp64" if BR2_RISCV_ABI_LP64
 	default "lp64f" if BR2_RISCV_ABI_LP64F
 	default "lp64d" if BR2_RISCV_ABI_LP64D

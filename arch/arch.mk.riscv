@@ -5,8 +5,10 @@
 
 ifeq ($(BR2_riscv),y)
 
-ifeq ($(BR2_ARCH_IS_64),y)
+ifeq ($(BR2_RISCV_64),y)
 GCC_TARGET_ARCH := rv64i
+else
+GCC_TARGET_ARCH := rv32i
 endif
 
 ifeq ($(BR2_RISCV_ISA_RVM),y)
