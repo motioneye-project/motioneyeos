@@ -81,6 +81,11 @@ ifeq ($(BR2_sparc),y)
 HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
 endif
 
+# Pthreads are required to build libcilkrts
+ifeq ($(BR2_PTHREADS_NONE),y)
+HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
+endif
+
 # Disable shared libs like libstdc++ if we do static since it confuses linking
 # In that case also disable libcilkrts as there is no static version
 ifeq ($(BR2_STATIC_LIBS),y)
