@@ -79,8 +79,8 @@ define legal-warning-nosource # pkg, {local|override}
 	$(call legal-warning-pkg,$(1),sources not saved ($(2) packages not handled))
 endef
 
-define legal-manifest # {HOST|TARGET}, pkg, version, license, license-files, source, url
-	echo '"$(2)","$(3)","$(4)","$(5)","$(6)","$(7)"' >>$(LEGAL_MANIFEST_CSV_$(1))
+define legal-manifest # {HOST|TARGET}, pkg, version, license, license-files, source, url, dependencies
+	echo '"$(2)","$(3)","$(4)","$(5)","$(6)","$(7)","$(8)"' >>$(LEGAL_MANIFEST_CSV_$(1))
 endef
 
 define legal-license-file # pkgname, pkgname-pkgver, pkg-hashfile, filename, file-fullpath, {HOST|TARGET}
@@ -91,3 +91,14 @@ define legal-license-file # pkgname, pkgname-pkgver, pkg-hashfile, filename, fil
 	} && \
 	cp $(5) $(LICENSE_FILES_DIR_$(6))/$(2)/$(4)
 endef
+
+non-virtual-deps = $(foreach p,$(1),$(if $($(call UPPERCASE,$(p))_IS_VIRTUAL),,$(p)))
+
+# Returns the list of recursive dependencies and their licensing terms
+# for the package specified in parameter (in lowercase). If that
+# package is a target package, remove host packages from the list.
+legal-deps = \
+    $(foreach p,\
+        $(filter-out $(if $(1:host-%=),host-%),\
+            $(call non-virtual-deps,\
+                $($(call UPPERCASE,$(1))_FINAL_RECURSIVE_DEPENDENCIES))),$(p) [$($(call UPPERCASE,$(p))_LICENSE)])
