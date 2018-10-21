@@ -76,6 +76,12 @@ config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
 	default y
 
+# libcilkrts was introduced in gcc 4.9 (oldest gcc version we
+# support), and removed in gcc 8.x
+config BR2_GCC_SUPPORTS_LIBCILKRTS
+	bool
+	default y if !BR2_TOOLCHAIN_GCC_AT_LEAST_8
+
 config BR2_GCC_VERSION
 	string
 	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
