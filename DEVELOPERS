@@ -1351,8 +1351,10 @@ F:	package/ratpoison/
 N:	Mark Corbin <mark.corbin@embecosm.com>
 F:	arch/arch.mk.riscv
 F:	arch/Config.in.riscv
+F:	board/qemu/riscv32-virt/
 F:	board/qemu/riscv64-virt/
 F:	boot/riscv-pk/
+F:	configs/qemu_riscv32_virt_defconfig
 F:	configs/qemu_riscv64_virt_defconfig
 
 N:	Markos Chandras <markos.chandras@imgtec.com>
