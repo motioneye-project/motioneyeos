@@ -62,6 +62,11 @@ check-package:
             - output/build/packages-file-list.txt
 
 .runtime_test: &runtime_test
+    # Running the runtime tests for every push is too much, so limit to
+    # explicit triggers through the API.
+    only:
+        - triggers
+        - tags
     # Keep build directories so the rootfs can be an artifact of the job. The
     # runner will clean up those files for us.
     # Multiply every emulator timeout by 10 to avoid sporadic failures in
