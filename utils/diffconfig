@@ -28,14 +28,14 @@ If no config files are specified, .config and .config.old are used.
 
 Example usage:
  $ diffconfig .config config-with-some-changes
--LINUX_KERNEL_INTREE_DTS_NAME "vexpress-v2p-ca9"
- LINUX_KERNEL_DTS_SUPPORT y -> n
- LINUX_KERNEL_USE_INTREE_DTS y -> n
- PACKAGE_DFU_UTIL n -> y
- PACKAGE_LIBUSB n -> y
- TARGET_GENERIC_HOSTNAME "buildroot" -> "Tuxie"
- TARGET_GENERIC_ISSUE "Welcome to Buildroot" -> "Welcome to CustomBoard"
-+PACKAGE_LIBUSB_COMPAT n
+-BR2_LINUX_KERNEL_INTREE_DTS_NAME "vexpress-v2p-ca9"
+ BR2_LINUX_KERNEL_DTS_SUPPORT y -> n
+ BR2_LINUX_KERNEL_USE_INTREE_DTS y -> n
+ BR2_PACKAGE_DFU_UTIL n -> y
+ BR2_PACKAGE_LIBUSB n -> y
+ BR2_TARGET_GENERIC_HOSTNAME "buildroot" -> "Tuxie"
+ BR2_TARGET_GENERIC_ISSUE "Welcome to Buildroot" -> "Welcome to CustomBoard"
++BR2_PACKAGE_LIBUSB_COMPAT n
 
 """)
     sys.exit(0)
@@ -44,12 +44,14 @@ Example usage:
 def readconfig(config_file):
     d = {}
     for line in config_file:
-        line = line[:-1]
-        if line[:4] == "BR2_":
-            name, val = line[4:].split("=", 1)
-            d[name] = val
+        line = line.strip()
+        if len(line) == 0:
+            continue
         if line[-11:] == " is not set":
-            d[line[6:-11]] = "n"
+            d[line[2:-11]] = "n"
+        elif line[0] != "#":
+            name, val = line.split("=", 1)
+            d[name] = val
     return d
 
 def print_config(op, config, value, new_value):
@@ -58,9 +60,9 @@ def print_config(op, config, value, new_value):
     if merge_style:
         if new_value:
             if new_value=="n":
-                print("# BR2_%s is not set" % config)
+                print("# %s is not set" % config)
             else:
-                print("BR2_%s=%s" % (config, new_value))
+                print("%s=%s" % (config, new_value))
     else:
         if op=="-":
             print("-%s %s" % (config, value))
