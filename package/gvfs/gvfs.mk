@@ -23,7 +23,6 @@ GVFS_CONF_OPTS = \
 	--disable-gdu \
 	--disable-goa \
 	--disable-google \
-	--disable-keyring \
 	--disable-libmtp \
 	--disable-udisks2
 
@@ -117,6 +116,13 @@ GVFS_CONF_OPTS += --enable-nfs
 GVFS_DEPENDENCIES += libnfs
 else
 GVFS_CONF_OPTS += --disable-nfs
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSECRET),y)
+GVFS_DEPENDENCIES += libsecret
+GVFS_CONF_OPTS += --enable-keyring
+else
+GVFS_CONF_OPTS += --disable-keyring
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSOUP)$(BR2_PACKAGE_LIBXML2),yy)
