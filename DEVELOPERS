@@ -978,6 +978,9 @@ F:	configs/orangepi_zero_plus2_defconfig
 F:	configs/pine64_defconfig
 F:	configs/pine64_sopine_defconfig
 
+N:	James Hilliard <james.hilliard1@gmail.com>
+F:	package/python-yarl/
+
 N:	James Knight <james.knight@rockwellcollins.com>
 F:	package/atkmm/
 F:	package/cairomm/
