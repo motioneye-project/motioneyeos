@@ -24,13 +24,14 @@ config BR2_PACKAGE_QT_ODBC
 config BR2_PACKAGE_QT_PSQL
 	bool "PostgreSQL Driver"
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_POSTGRESQL
 	help
 	  Build PostgreSQL driver
 	  If unsure, say n.
 
-comment "PostgreSQL driver needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
+comment "PostgreSQL driver needs a toolchain w/ wchar, dynamic library"
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
 
 choice
 	prompt "SQLite 3 support"

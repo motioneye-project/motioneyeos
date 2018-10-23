@@ -75,14 +75,15 @@ config BR2_PACKAGE_QT5BASE_PSQL
 	bool "PostgreSQL Plugin"
 	depends on BR2_USE_MMU # postgresql
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR # postgresql
 	select BR2_PACKAGE_POSTGRESQL
 	help
 	  Build PostgreSQL plugin
 	  If unsure, say n.
 
-comment "PostgreSQL plugin needs a toolchain w/ dynamic library"
+comment "PostgreSQL plugin needs a toolchain w/ wchar, dynamic library"
 	depends on BR2_USE_MMU
-	depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
 
 choice
 	prompt "SQLite 3 support"

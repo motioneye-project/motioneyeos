@@ -1,6 +1,7 @@
 config BR2_PACKAGE_POSTGRESQL
 	bool "postgresql"
 	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
 	# fails to build in a pure static linking scenario, and
 	# postgresql is unlikely to be used in a pure statically
 	# linked environment.
@@ -18,6 +19,6 @@ config BR2_PACKAGE_POSTGRESQL
 
 	  http://www.postgresql.org
 
-comment "postgresql needs a toolchain w/ dynamic library"
+comment "postgresql needs a toolchain w/ dynamic library, wchar"
 	depends on BR2_USE_MMU
-	depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
