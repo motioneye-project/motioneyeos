@@ -4,14 +4,12 @@
 #
 ################################################################################
 
-LIBVA_VERSION = 2.2.0
+LIBVA_VERSION = 2.3.0
 LIBVA_SOURCE = libva-$(LIBVA_VERSION).tar.bz2
 LIBVA_SITE = https://github.com/intel/libva/releases/download/$(LIBVA_VERSION)
 LIBVA_LICENSE = MIT
 LIBVA_LICENSE_FILES = COPYING
 LIBVA_INSTALL_STAGING = YES
-# 0001-check-ssp.patch
-LIBVA_AUTORECONF = YES
 LIBVA_DEPENDENCIES = host-pkgconf libdrm
 
 # libdrm is a hard-dependency

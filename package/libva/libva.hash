@@ -1,5 +1,5 @@
 # From https://github.com/intel/libva/releases
-sha1 5b19d2fbf532f14e24c3bedb4074238a1d7f1686  libva-2.2.0.tar.bz2
+sha1 e1138529355cce78fa2edc7c5b1c5aeb40dd0ce5  libva-2.3.0.tar.bz2
 # Locally computed
-sha256 6f6ca04c785544d30d315ef130a6aeb9435b75f934d7fbe0e4e9ba6084ce4ef2  libva-2.2.0.tar.bz2
+sha256 60840e50da6932ee2111e15fc8911180ff8a0d6f18bb9cc6ba8c1030098fdce4  libva-2.3.0.tar.bz2
 sha256 c86a782ee845b52472dae9b9d79fb915d333628ac0efe49cdce63644814931de  COPYING
