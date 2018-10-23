@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_PYSMI_VERSION = 0.3.1
+PYTHON_PYSMI_VERSION = 0.3.2
 PYTHON_PYSMI_SOURCE = pysmi-$(PYTHON_PYSMI_VERSION).tar.gz
-PYTHON_PYSMI_SITE = https://files.pythonhosted.org/packages/8f/14/68331f94a5cd94e00ff064c9a790e6d7b0a0ade8c66deafa543398ca72ee
+PYTHON_PYSMI_SITE = https://files.pythonhosted.org/packages/46/be/8c1b68ec30992dd9f5127fff7bf518110ad4de8ae8533f921ad605d09a01
 PYTHON_PYSMI_SETUP_TYPE = setuptools
 PYTHON_PYSMI_LICENSE = BSD-2-Clause
 PYTHON_PYSMI_LICENSE_FILES = LICENSE.rst
