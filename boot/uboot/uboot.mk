@@ -286,7 +286,7 @@ define UBOOT_INSTALL_IMAGES_CMDS
 	)
 	$(UBOOT_GENERATE_ENV_IMAGE)
 	$(if $(BR2_TARGET_UBOOT_BOOT_SCRIPT),
-		$(HOST_DIR)/bin/mkimage -C none -A $(MKIMAGE_ARCH) -T script \
+		$(MKIMAGE) -C none -A $(MKIMAGE_ARCH) -T script \
 			-d $(call qstrip,$(BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE)) \
 			$(BINARIES_DIR)/boot.scr)
 endef
