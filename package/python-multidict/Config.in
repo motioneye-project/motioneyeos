@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_MULTIDICT
+	bool "python-multidict"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Multidict is dict-like collection of key-value pairs where a
+	  key may occur more than once in the container.
+
+	  https://github.com/aio-libs/multidict
