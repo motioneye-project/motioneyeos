@@ -1,0 +1,18 @@
+comment "davici needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+
+config BR2_PACKAGE_DAVICI
+	bool "davici"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_STRONGSWAN
+	help
+	  davici is an alternative implementation of the VICI
+	  client protocol, targeting better integration in other
+	  software stacks.
+
+	  https://github.com/strongswan/davici

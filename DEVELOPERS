@@ -1014,6 +1014,9 @@ F:	package/python-pexpect/
 F:	package/python-ptyprocess/
 F:	package/zynq-boot-bin/
 
+N:	Jared Bents <jared.bents@rockwellcollins.com>
+F:	package/davici/
+
 N:	Jarkko Sakkinen <jarkko.sakkinen@intel.com>
 F:	package/quota/
 
