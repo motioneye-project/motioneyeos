@@ -81,7 +81,7 @@ define ARM_TRUSTED_FIRMWARE_BL31_UBOOT_BUILD
 	BASE_ADDR=$$($(TARGET_READELF) -h $(ARM_TRUSTED_FIRMWARE_IMG_DIR)/bl31/bl31.elf | \
 	             sed -r '/^  Entry point address:\s*(.*)/!d; s//\1/') && \
 	$(MKIMAGE) \
-		-A arm64 -O arm-trusted-firmware -C none \
+		-A $(MKIMAGE_ARCH) -O arm-trusted-firmware -C none \
 		-a $${BASE_ADDR} -e $${BASE_ADDR} \
 		-d $(ARM_TRUSTED_FIRMWARE_IMG_DIR)/bl31.bin \
 		$(ARM_TRUSTED_FIRMWARE_IMG_DIR)/atf-uboot.ub
