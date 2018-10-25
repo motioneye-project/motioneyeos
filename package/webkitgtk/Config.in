@@ -105,6 +105,21 @@ config BR2_PACKAGE_WEBKITGTK_MULTIMEDIA
 	  This option pulls in all of the required dependencies
 	  to enable multimedia (video/audio) support.
 
+if BR2_PACKAGE_WEBKITGTK_MULTIMEDIA
+
+config BR2_PACKAGE_WEBKITGTK_USE_GSTREAMER_GL
+	bool "use gstreamer-gl"
+	default y
+	depends on BR2_PACKAGE_GST1_PLUGINS_BASE_HAS_LIB_OPENGL
+	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_GL
+	help
+	  Use the GStreamer GL elements for handling video content.
+	  This is recommended as it improves performance of video
+	  playback. In some target configurations incorrect rendering
+	  might be produced, and disabling this option may help.
+
+endif
+
 config BR2_PACKAGE_WEBKITGTK_WEBDRIVER
 	bool "WebDriver support"
 	help
