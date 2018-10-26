@@ -9,6 +9,7 @@ F2FS_TOOLS_SITE = http://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-to
 F2FS_TOOLS_SITE_METHOD = git
 F2FS_TOOLS_CONF_ENV = ac_cv_file__git=no
 F2FS_TOOLS_DEPENDENCIES = host-pkgconf util-linux
+HOST_F2FS_TOOLS_DEPENDENCIES = host-pkgconf host-util-linux
 # GIT version, shipped without configure
 F2FS_TOOLS_AUTORECONF = YES
 F2FS_TOOLS_INSTALL_STAGING = YES
@@ -29,4 +30,12 @@ else
 F2FS_TOOLS_CONF_OPTS += --without-blkid
 endif
 
+# blkid is only used to detect if we're overwriting a filesystem
+# during mkfs, which only makes sense on the target, so we disable
+# blkid support even if we have host-util-linux
+HOST_F2FS_TOOLS_CONF_OPTS = \
+	--without-selinux \
+	--without-blkid
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_F2FS_TOOLS
+	bool "host f2fs-tools"
+	select BR2_PACKAGE_HOST_UTIL_LINUX
+	help
+	  Tools for Flash-Friendly File System (F2FS)
+
+	  https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git

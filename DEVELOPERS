@@ -891,6 +891,7 @@ F:	package/sofia-sip/
 
 N:	Grzegorz Blach <grzegorz@blach.pl>
 F:	package/bluez5_utils-headers/
+F:	package/f2fs-tools/
 F:	package/pigpio/
 F:	package/python-falcon/
 F:	package/python-mimeparse/
