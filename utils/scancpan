@@ -568,6 +568,9 @@ sub find_license_files {
     if (scalar @license_files == 0 && $manifest =~ m/(README)[\n\s]/i) {
         @license_files = ($1);
     }
+    if (scalar @license_files == 0 && $manifest =~ m/(README\.md)[\n\s]/i) {
+        @license_files = ($1);
+    }
     return @license_files;
 }
 
