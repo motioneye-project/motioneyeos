@@ -55,8 +55,8 @@ config BR2_PACKAGE_MARIADB_SERVER
 	  Install the mariadb server on the target.
 
 config BR2_PACKAGE_MARIADB_SERVER_EMBEDDED
-	depends on BR2_PACKAGE_MARIADB_SERVER
 	bool "mariadb embedded server"
+	depends on BR2_PACKAGE_MARIADB_SERVER
 	help
 	  Install the mariadb embedded server on the target.
 
