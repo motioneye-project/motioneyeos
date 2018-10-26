@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/scapy/json
+md5	d7d3c4294f5a718e234775d38dbeb7ec  scapy-2.4.0.tar.gz
+sha256	452f714f5c2eac6fd0a6146b1dbddfc24dd5f4103f3ed76227995a488cfb2b73  scapy-2.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256	7a49a7fdaf7b648e451dd01e4875cf4dbfa556c6359c6b97feed5047540ea989  PKG-INFO
