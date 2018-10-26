@@ -1,0 +1,21 @@
+config BR2_TARGET_ROOTFS_F2FS
+	bool "f2fs root filesystem"
+	select BR2_PACKAGE_HOST_F2FS_TOOLS
+	help
+	  Build a f2fs root filesystem. If you enable this option, you
+	  probably want to enable the f2fs-tools package too.
+
+if BR2_TARGET_ROOTFS_F2FS
+
+config BR2_TARGET_ROOTFS_F2FS_LABEL
+	string "filesystem label"
+
+config BR2_TARGET_ROOTFS_F2FS_SIZE
+	string "filesystem size"
+	default "100M"
+	help
+	  The size of the filesystem image in bytes.
+	  Suffix with K, M, G or T for power-of-two kilo-, mega-, giga-
+	  or terabytes.
+
+endif # BR2_TARGET_ROOTFS_F2FS
