@@ -76,6 +76,15 @@ capability of U-Boot. To achieve this:
     => mmc dev 1
     => ums 0 mmc 1
 
+WiFi
+====
+
+ # wpa_passphrase ACCESSPOINTNAME >> /etc/wpa_supplicant.conf
+   (type password and enter)
+ # wpa_supplicant -i wlan0 -c /etc/wpa_supplicant.conf -B
+ # udhcpc -i wlan0
+ # ping google.com
+
 --
 Jagan Teki <jagan@amarulasolutions.com>
 29-Jun-2018
