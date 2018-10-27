@@ -19,6 +19,7 @@ GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
 
 GPSD_SCONS_OPTS = \
 	arch=$(ARCH)\
+	manbuild=no \
 	prefix=/usr\
 	sysroot=$(STAGING_DIR)\
 	strip=no\
