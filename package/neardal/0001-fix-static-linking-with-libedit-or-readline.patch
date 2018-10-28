@@ -1,0 +1,45 @@
+From 62ae1bf0206960d0ba5ff8f90238030e67f1a5cd Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 28 Oct 2018 20:58:55 +0100
+Subject: [PATCH] fix static linking with libedit or readline
+
+Use PKG_CHECK_MODULES to find libedit or readline and continue to use
+AC_SEARCH_LIBS as a fallback
+
+By using PKG_CHECK_MODULES, static link will work as -lncurses or -lbsd
+will be automatically added
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/connectivity/neardal/pull/7]
+---
+ configure.ac | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index f0cebed..211b896 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -68,10 +68,16 @@ PKG_CHECK_MODULES(gio, gio-unix-2.0 >= 2.30,
+ 	AC_SUBST([gio_LIBS]),
+ 	AC_MSG_ERROR(gio-unix-2.0 >= 2.30 is required))
+ 
+-AC_SEARCH_LIBS([rl_initialize], [edit readline],
+-	[AS_IF([echo $LIBS | grep -q "-ledit"],
+-		[CPPFLAGS="-DHAVE_LIBEDIT $CPPFLAGS"])],
+-	[AC_MSG_ERROR(editline or readline is required)])
++PKG_CHECK_MODULES(libedit, libedit,
++	[CPPFLAGS="-DHAVE_LIBEDIT $libedit_CFLAGS $CPPFLAGS"
++	 LIBS="$libedit_LIBS $LIBS"],
++	[PKG_CHECK_MODULES(readline, readline,
++		[CPPFLAGS="$readline_CFLAGS $CPPFLAGS"
++		 LIBS="$readline_LIBS $LIBS"],
++		AC_SEARCH_LIBS([rl_initialize], [edit readline],
++			[AS_IF([echo $LIBS | grep -q "-ledit"],
++				[CPPFLAGS="-DHAVE_LIBEDIT $CPPFLAGS"])],
++			[AC_MSG_ERROR(editline or readline is required)]))])
+ 
+ AC_PATH_TOOL([DOXYGEN], [doxygen])
+ AM_CONDITIONAL([HAVE_DOXYGEN], [test ! -z "$DOXYGEN"])
+-- 
+2.17.1
+
