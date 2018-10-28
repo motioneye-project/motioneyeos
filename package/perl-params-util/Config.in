@@ -2,7 +2,7 @@ config BR2_PACKAGE_PERL_PARAMS_UTIL
 	bool "perl-params-util"
 	depends on !BR2_STATIC_LIBS
 	help
-	  Simple, compact and correct param-checking functions
+	  Simple, compact and correct param-checking functions.
 
 	  https://metacpan.org/release/Params-Util
 

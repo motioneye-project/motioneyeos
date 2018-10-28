@@ -3,6 +3,6 @@ config BR2_PACKAGE_PERL_HTTP_COOKIES
 	select BR2_PACKAGE_PERL_HTTP_DATE # runtime
 	select BR2_PACKAGE_PERL_HTTP_MESSAGE # runtime
 	help
-	  HTTP cookie jars
+	  HTTP cookie jars.
 
 	  https://github.com/libwww-perl/http-cookies

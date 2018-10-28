@@ -3,6 +3,6 @@ config BR2_PACKAGE_PERL_XML_SAX
 	select BR2_PACKAGE_PERL_XML_NAMESPACESUPPORT # runtime
 	select BR2_PACKAGE_PERL_XML_SAX_BASE # runtime
 	help
-	  Simple API for XML
+	  Simple API for XML.
 
 	  https://metacpan.org/release/XML-SAX

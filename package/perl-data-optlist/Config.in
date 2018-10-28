@@ -4,7 +4,7 @@ config BR2_PACKAGE_PERL_DATA_OPTLIST
 	select BR2_PACKAGE_PERL_PARAMS_UTIL # runtime
 	select BR2_PACKAGE_PERL_SUB_INSTALL # runtime
 	help
-	  parse and validate simple name/value option pairs
+	  parse and validate simple name/value option pairs.
 
 	  https://github.com/rjbs/Data-OptList
 

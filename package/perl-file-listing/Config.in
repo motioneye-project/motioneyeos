@@ -2,6 +2,6 @@ config BR2_PACKAGE_PERL_FILE_LISTING
 	bool "perl-file-listing"
 	select BR2_PACKAGE_PERL_HTTP_DATE # runtime
 	help
-	  parse directory listing
+	  parse directory listing.
 
 	  https://metacpan.org/release/File-Listing

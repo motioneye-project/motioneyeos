@@ -6,6 +6,6 @@ config BR2_PACKAGE_PERL_HTTP_ENTITY_PARSER
 	select BR2_PACKAGE_PERL_STREAM_BUFFERED # runtime
 	select BR2_PACKAGE_PERL_WWW_FORM_URLENCODED # runtime
 	help
-	  PSGI compliant HTTP Entity Parser
+	  PSGI compliant HTTP Entity Parser.
 
 	  https://github.com/kazeburo/HTTP-Entity-Parser

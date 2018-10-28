@@ -3,7 +3,7 @@ config BR2_PACKAGE_PERL_CRYPT_OPENSSL_RSA
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_PERL_CRYPT_OPENSSL_RANDOM # runtime
 	help
-	  RSA encoding and decoding, using the openSSL libraries
+	  RSA encoding and decoding, using the openSSL libraries.
 
 	  http://github.com/toddr/Crypt-OpenSSL-RSA
 

@@ -16,6 +16,6 @@ config BR2_PACKAGE_PERL_PLACK
 	select BR2_PACKAGE_PERL_WWW_FORM_URLENCODED # runtime
 	help
 	  Perl Superglue for Web frameworks and Web Servers (PSGI
-	  toolkit)
+	  toolkit).
 
 	  https://github.com/plack/Plack

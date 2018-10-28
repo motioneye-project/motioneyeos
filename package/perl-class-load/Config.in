@@ -7,7 +7,7 @@ config BR2_PACKAGE_PERL_CLASS_LOAD
 	select BR2_PACKAGE_PERL_PACKAGE_STASH # runtime
 	select BR2_PACKAGE_PERL_TRY_TINY # runtime
 	help
-	  A working (require "Class::Name") and more
+	  A working (require "Class::Name") and more.
 
 	  https://github.com/moose/Class-Load
 

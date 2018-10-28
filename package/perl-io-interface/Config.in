@@ -2,7 +2,7 @@ config BR2_PACKAGE_PERL_IO_INTERFACE
 	bool "perl-io-interface"
 	depends on !BR2_STATIC_LIBS
 	help
-	  Access and modify network interface card configuration
+	  Access and modify network interface card configuration.
 
 	  https://metacpan.org/release/IO-Interface
 

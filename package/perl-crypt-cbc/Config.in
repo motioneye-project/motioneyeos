@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_CRYPT_CBC
 	bool "perl-crypt-cbc"
 	help
-	  Encrypt Data with Cipher Block Chaining Mode
+	  Encrypt Data with Cipher Block Chaining Mode.
 
 	  https://metacpan.org/release/Crypt-CBC

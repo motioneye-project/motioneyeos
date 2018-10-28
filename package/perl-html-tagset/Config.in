@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_HTML_TAGSET
 	bool "perl-html-tagset"
 	help
-	  data tables useful in parsing HTML
+	  data tables useful in parsing HTML.
 
 	  https://metacpan.org/release/HTML-Tagset

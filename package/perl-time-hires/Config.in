@@ -2,7 +2,7 @@ config BR2_PACKAGE_PERL_TIME_HIRES
 	bool "perl-time-hires"
 	depends on !BR2_STATIC_LIBS
 	help
-	  High resolution alarm, sleep, gettimeofday, interval timers
+	  High resolution alarm, sleep, gettimeofday, interval timers.
 
 	  https://metacpan.org/release/Time-HiRes
 

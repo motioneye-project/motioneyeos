@@ -2,6 +2,6 @@ config BR2_PACKAGE_PERL_WWW_ROBOTRULES
 	bool "perl-www-robotrules"
 	select BR2_PACKAGE_PERL_URI # runtime
 	help
-	  database of robots.txt-derived permissions
+	  database of robots.txt-derived permissions.
 
 	  https://metacpan.org/release/WWW-RobotRules

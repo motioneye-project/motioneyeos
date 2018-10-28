@@ -2,6 +2,6 @@ config BR2_PACKAGE_PERL_COOKIE_BAKER
 	bool "perl-cookie-baker"
 	select BR2_PACKAGE_PERL_URI # runtime
 	help
-	  Cookie string generator / parser
+	  Cookie string generator / parser.
 
 	  https://github.com/kazeburo/Cookie-Baker

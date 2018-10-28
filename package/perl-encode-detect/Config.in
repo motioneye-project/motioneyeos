@@ -4,7 +4,7 @@ config BR2_PACKAGE_PERL_ENCODE_DETECT
 	depends on !BR2_STATIC_LIBS
 	help
 	  An Encode::Encoding subclass that detects the encoding of
-	  data
+	  data.
 
 	  https://metacpan.org/release/Encode-Detect
 

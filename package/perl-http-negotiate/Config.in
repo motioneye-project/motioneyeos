@@ -2,6 +2,6 @@ config BR2_PACKAGE_PERL_HTTP_NEGOTIATE
 	bool "perl-http-negotiate"
 	select BR2_PACKAGE_PERL_HTTP_MESSAGE # runtime
 	help
-	  choose a variant to serve
+	  choose a variant to serve.
 
 	  https://metacpan.org/release/HTTP-Negotiate

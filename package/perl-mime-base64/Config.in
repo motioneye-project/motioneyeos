@@ -2,7 +2,7 @@ config BR2_PACKAGE_PERL_MIME_BASE64
 	bool "perl-mime-base64"
 	depends on !BR2_STATIC_LIBS
 	help
-	  The RFC 2045 encodings; base64 and quoted-printable
+	  The RFC 2045 encodings; base64 and quoted-printable.
 
 	  https://metacpan.org/release/MIME-Base64
 

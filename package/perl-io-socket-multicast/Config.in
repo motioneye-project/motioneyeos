@@ -3,7 +3,7 @@ config BR2_PACKAGE_PERL_IO_SOCKET_MULTICAST
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_PERL_IO_INTERFACE # runtime
 	help
-	  Send and receive multicast messages
+	  Send and receive multicast messages.
 
 	  https://metacpan.org/release/IO-Socket-Multicast
 

@@ -5,7 +5,7 @@ config BR2_PACKAGE_PERL_X10
 	select BR2_PACKAGE_PERL_DEVICE_SERIALPORT # runtime
 	select BR2_PACKAGE_PERL_TIME_PARSEDATE # runtime
 	help
-	  creates a server used to receive events from an x10 client
+	  creates a server used to receive events from an x10 client.
 
 	  https://metacpan.org/release/X10
 

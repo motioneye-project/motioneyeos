@@ -7,7 +7,7 @@ config BR2_PACKAGE_PERL_DBD_MYSQL
 	select BR2_PACKAGE_MYSQL
 	select BR2_PACKAGE_PERL_DBI # runtime
 	help
-	  A MySQL driver for the Perl5 Database Interface (DBI)
+	  A MySQL driver for the Perl5 Database Interface (DBI).
 
 	  http://dbi.perl.org/
 

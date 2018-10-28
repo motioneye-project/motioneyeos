@@ -15,7 +15,7 @@ config BR2_PACKAGE_PERL_LIBWWW_PERL
 	select BR2_PACKAGE_PERL_URI # runtime
 	select BR2_PACKAGE_PERL_WWW_ROBOTRULES # runtime
 	help
-	  The World-Wide Web library for Perl
+	  The World-Wide Web library for Perl.
 
 	  https://github.com/libwww-perl/libwww-perl
 

@@ -5,7 +5,7 @@ config BR2_PACKAGE_PERL_MAIL_DKIM
 	select BR2_PACKAGE_PERL_MAILTOOLS # runtime
 	select BR2_PACKAGE_PERL_NET_DNS # runtime
 	help
-	  Signs/verifies Internet mail with DKIM/DomainKey signatures
+	  Signs/verifies Internet mail with DKIM/DomainKey signatures.
 
 	  https://metacpan.org/release/Mail-DKIM
 
