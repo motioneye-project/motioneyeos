@@ -6,3 +6,5 @@
 14-support-out-of-tree-config.patch
 16-fix-space-to-de-select-options.patch
 17-backport-kecho.patch
+18-merge-config.sh-create-temporary-files-in-tmp.patch
+19-merge_config.sh-add-br2-external-support.patch

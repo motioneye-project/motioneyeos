@@ -1,0 +1,27 @@
+commit 0f56304521db42bd2c05867fd78a247104a4ad95
+Author: Henrique Marks <henrique.marks@datacom.ind.br>
+Date: Mon, 7 Dec 2015 12:08:45 -0200
+
+    merge_config.sh: create temporary files in /tmp
+
+    Creating temporary files in /tmp (or the path pointed by $TMPDIR) allows the
+    buildroot top directory to be read-only and shareable between multible builds.
+    This follows what other scripts do, e.g. check-kernel-headers.sh.
+
+    Signed-off-by: Henrique Marks <henrique.marks@datacom.ind.br>
+    Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+    Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+Index: kconfig/merge_config.sh
+===================================================================
+--- kconfig.orig/merge_config.sh
++++ kconfig/merge_config.sh
+@@ -100,7 +100,7 @@ fi
+ 
+ MERGE_LIST=$*
+ SED_CONFIG_EXP="s/^\(# \)\{0,1\}\(CONFIG_[a-zA-Z0-9_]*\)[= ].*/\2/p"
+-TMP_FILE=$(mktemp ./.tmp.config.XXXXXXXXXX)
++TMP_FILE=$(mktemp -t .tmp.config.XXXXXXXXXX)
+ 
+ echo "Using $INITFILE as base"
+ cat $INITFILE > $TMP_FILE
