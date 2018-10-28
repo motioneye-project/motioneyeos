@@ -59,7 +59,7 @@ Index: kconfig/confdata.c
  	struct stat sb;
 @@ -851,8 +854,20 @@ static int conf_split_config(void)
  	conf_read_simple(name, S_DEF_AUTO);
-	sym_calc_value(modules_sym);
+ 	sym_calc_value(modules_sym);
  
 -	if (chdir("include/config"))
 -		return 1;

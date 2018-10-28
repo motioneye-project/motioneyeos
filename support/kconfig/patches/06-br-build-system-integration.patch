@@ -2,7 +2,7 @@ Index: kconfig/Makefile
 ===================================================================
 --- kconfig.orig/Makefile
 +++ kconfig/Makefile
-@@ -211,7 +211,35 @@ qconf-cxxobjs	:= qconf.o
+@@ -205,7 +205,35 @@ qconf-cxxobjs	:= qconf.o
  qconf-objs	:= zconf.tab.o
  gconf-objs	:= gconf.o zconf.tab.o
  
@@ -39,8 +39,8 @@ Index: kconfig/Makefile
  
  targets		+= zconf.lex.c
  clean-files	:= qconf.moc .tmp_qtcheck .tmp_gtkcheck
-@@ -243,7 +243,7 @@ HOSTLOADLIBES_nconf	= $(shell \
-				|| echo "-lmenu -lpanel -lncurses"  )
+@@ -243,7 +271,7 @@ HOSTLOADLIBES_nconf	= $(shell \
+ 				|| echo "-lmenu -lpanel -lncurses"  )
  $(obj)/qconf.o: $(obj)/.tmp_qtcheck
  
 -ifeq ($(MAKECMDGOALS),xconfig)
@@ -48,8 +48,8 @@ Index: kconfig/Makefile
  $(obj)/.tmp_qtcheck: $(src)/Makefile
  -include $(obj)/.tmp_qtcheck
  
-@@ -270,9 +276,8 @@
-	echo "KC_QT_MOC=$$moc" >> $@
+@@ -270,9 +298,8 @@ $(obj)/.tmp_qtcheck:
+ 	echo "KC_QT_MOC=$$moc" >> $@
  endif
  
 +ifeq ($(MAKECMDGOALS),gconf)
@@ -59,10 +59,10 @@ Index: kconfig/Makefile
  -include $(obj)/.tmp_gtkcheck
  
  # GTK+ needs some extra effort, too...
-@@ -300,11 +305,8 @@
+@@ -300,11 +327,8 @@ $(obj)/zconf.tab.o: $(obj)/zconf.lex.c
  
  $(obj)/qconf.o: $(obj)/qconf.moc
-
+ 
 -quiet_cmd_moc = MOC     $@
 -      cmd_moc = $(KC_QT_MOC) -i $< -o $@
 -
