@@ -36,6 +36,9 @@ endif
 
 VALGRIND_CONF_ENV = CFLAGS="$(VALGRIND_CFLAGS)"
 
+# fix uclibc configure c99 support detection
+VALGRIND_CONF_ENV += ac_cv_prog_cc_c99='-std=gnu99'
+
 # On ARM, Valgrind only supports ARMv7, and uses the arch part of the
 # host tuple to determine whether it's being built for ARMv7 or
 # not. Therefore, we adjust the host tuple to specify we're on
