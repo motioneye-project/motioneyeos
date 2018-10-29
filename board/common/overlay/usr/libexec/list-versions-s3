@@ -44,5 +44,5 @@ for file in ${files}; do
     date=$(echo ${dates[${i}]} | cut -d 'T' -f 1)
     
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
-done
+done | sort -t '|' -k 5,3 -r
 
