@@ -12,7 +12,6 @@ LIGHTTPD_LICENSE = BSD-3-Clause
 LIGHTTPD_LICENSE_FILES = COPYING
 LIGHTTPD_DEPENDENCIES = host-pkgconf
 LIGHTTPD_CONF_OPTS = \
-	--without-pam \
 	--without-wolfssl \
 	--libdir=/usr/lib/lighttpd \
 	--libexecdir=/usr/lib
@@ -22,6 +21,13 @@ LIGHTTPD_DEPENDENCIES += openssl
 LIGHTTPD_CONF_OPTS += --with-openssl
 else
 LIGHTTPD_CONF_OPTS += --without-openssl
+endif
+
+ifeq ($(BR2_PACKAGE_LIGHTTPD_PAM),y)
+LIGHTTPD_DEPENDENCIES += linux-pam
+LIGHTTPD_CONF_OPTS += --with-pam
+else
+LIGHTTPD_CONF_OPTS += --without-pam
 endif
 
 ifeq ($(BR2_PACKAGE_LIGHTTPD_ZLIB),y)
