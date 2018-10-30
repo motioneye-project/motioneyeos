@@ -23,6 +23,7 @@ define IFUPDOWN_SCRIPTS_DHCP
 		echo "iface $(IFUPDOWN_SCRIPTS_DHCP_IFACE) inet dhcp"; \
 		echo "  pre-up /etc/network/nfs_check"; \
 		echo "  wait-delay 15"; \
+		echo "  hostname \$$(hostname)"; \
 	) >> $(TARGET_DIR)/etc/network/interfaces
 	$(INSTALL) -m 0755 -D $(IFUPDOWN_SCRIPTS_PKGDIR)/nfs_check \
 		$(TARGET_DIR)/etc/network/nfs_check
