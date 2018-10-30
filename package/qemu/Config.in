@@ -118,7 +118,9 @@ comment "Frontends"
 
 config BR2_PACKAGE_QEMU_SDL
 	bool "Enable SDL frontend"
+	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_SDL
+	select BR2_PACKAGE_SDL_X11
 	help
 	  Say 'y' to enable the SDL frontend, that is, a graphical
 	  window presenting the VM's display.
