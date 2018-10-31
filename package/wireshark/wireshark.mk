@@ -22,7 +22,6 @@ WIRESHARK_CONF_OPTS = \
 	--without-krb5 \
 	--enable-static=no \
 	--with-libsmi=no \
-	--with-lua=no \
 	--with-pcap=$(STAGING_DIR)/usr \
 	--includedir=$(STAGING_DIR)/usr/include
 
@@ -97,6 +96,14 @@ WIRESHARK_CONF_OPTS += --with-libssh=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += libssh
 else
 WIRESHARK_CONF_OPTS += --without-libssh
+endif
+
+# no support for lua53 yet
+ifeq ($(BR2_PACKAGE_LUA_5_1)$(BR2_PACKAGE_LUA_5_2),y)
+WIRESHARK_CONF_OPTS += --with-lua
+WIRESHARK_DEPENDENCIES += lua
+else
+WIRESHARK_CONF_OPTS += --without-lua
 endif
 
 ifeq ($(BR2_PACKAGE_SBC),y)
