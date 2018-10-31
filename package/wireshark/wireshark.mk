@@ -92,6 +92,13 @@ else
 WIRESHARK_CONF_OPTS += --without-libnl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSSH),y)
+WIRESHARK_CONF_OPTS += --with-libssh=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libssh
+else
+WIRESHARK_CONF_OPTS += --without-libssh
+endif
+
 ifeq ($(BR2_PACKAGE_SBC),y)
 WIRESHARK_CONF_OPTS += --with-sbc=yes
 WIRESHARK_DEPENDENCIES += sbc
