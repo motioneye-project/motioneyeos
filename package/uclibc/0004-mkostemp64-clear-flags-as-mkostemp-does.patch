@@ -1,0 +1,38 @@
+From 09a776103e4aa75f95c9ad44554a9c2b56de3535 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.com.br>
+Date: Mon, 29 Oct 2018 01:17:38 -0300
+Subject: [PATCH] mkostemp64: clear flags, as mkostemp does
+
+This should have been made in commit 9649721950 but was forgotten.
+
+Signed-off-by: Carlos Santos <casantos@datacom.com.br>
+---
+ libc/stdlib/mkostemp64.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/libc/stdlib/mkostemp64.c b/libc/stdlib/mkostemp64.c
+index aa9736cd6..f4674bb0c 100644
+--- a/libc/stdlib/mkostemp64.c
++++ b/libc/stdlib/mkostemp64.c
+@@ -15,9 +15,9 @@
+    License along with the GNU C Library; if not, see
+    <http://www.gnu.org/licenses/>.  */
+ 
+-#include <fcntl.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <fcntl.h>
+ #include "../misc/internals/tempname.h"
+ 
+ /* Generate a unique temporary file name from TEMPLATE.
+@@ -27,6 +27,7 @@
+ int
+ mkostemp64 (char *template, int flags)
+ {
++  flags -= flags & O_ACCMODE; /* Remove O_RDONLY, O_WRONLY, and O_RDWR. */
+   return __gen_tempname (template, __GT_BIGFILE, flags | O_LARGEFILE, 0,
+                          S_IRUSR | S_IWUSR);
+ }
+-- 
+2.14.5
+
