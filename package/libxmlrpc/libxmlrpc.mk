@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBXMLRPC_VERSION = 1.39.12
+LIBXMLRPC_VERSION = 1.43.08
 LIBXMLRPC_SOURCE = xmlrpc-c-$(LIBXMLRPC_VERSION).tgz
 LIBXMLRPC_SITE = http://downloads.sourceforge.net/project/xmlrpc-c/Xmlrpc-c%20Super%20Stable/$(LIBXMLRPC_VERSION)
 LIBXMLRPC_LICENSE = BSD-3-Clause (xml-rpc main code and abyss web server), BSD like (lib/expat), Python 1.5.2 license (parts of xmlrpc_base64.c)
@@ -29,7 +29,7 @@ LIBXMLRPC_CONF_OPTS = \
 
 # Our package uses autoconf, but not automake, so we need to pass
 # those variables at compile time as well.
-LIBXMLRPC_MAKE_ENV = \
+LIBXMLRPC_MAKE_OPTS = \
 	CC_FOR_BUILD="$(HOSTCC)" \
 	LD_FOR_BUILD="$(HOSTLD)" \
 	CFLAGS_FOR_BUILD="$(HOST_CFLAGS)" \
@@ -39,7 +39,7 @@ ifeq ($(BR2_STATIC_LIBS),y)
 LIBXMLRPC_STATIC_OPTS = SHARED_LIB_TYPE=NONE MUST_BUILD_SHLIB=N
 endif
 
-LIBXMLRPC_MAKE_OPTS = $(LIBXMLRPC_STATIC_OPTS)
+LIBXMLRPC_MAKE_OPTS += $(LIBXMLRPC_STATIC_OPTS)
 LIBXMLRPC_INSTALL_STAGING_OPTS = $(LIBXMLRPC_STATIC_OPTS) \
 	DESTDIR=$(STAGING_DIR) install
 LIBXMLRPC_INSTALL_TARGET_OPTS = $(LIBXMLRPC_STATIC_OPTS) \
