@@ -115,6 +115,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBDRM_INSTALL_TESTS),y)
 LIBDRM_CONF_OPTS += --enable-install-test-programs
+ifeq ($(BR2_PACKAGE_CUNIT),y)
+LIBDRM_DEPENDENCIES += cunit
+endif
 endif
 
 $(eval $(autotools-package))
