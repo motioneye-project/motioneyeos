@@ -1372,6 +1372,7 @@ F:	package/checkpolicy/
 F:	package/checksec/
 F:	package/cgroupfs-mount/
 F:	package/crda/
+F:	package/cunit/
 F:	package/devmem2/
 F:	package/dnsmasq/
 F:	package/dosfstools/
