@@ -1,0 +1,29 @@
+From 4c9462a5ef2f680b24ddf6bae7ac7c693fa6a136 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Thu, 1 Nov 2018 15:15:31 +0100
+Subject: [PATCH] topology/topology.c: drop unneeded <dlfcn.h> include
+
+This include is not used/needed and prevents building on systems that
+don't provide <dlfcn.h>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream: http://mailman.alsa-project.org/pipermail/alsa-devel/2018-November/141375.html
+---
+ topology/topology.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/topology/topology.c b/topology/topology.c
+index 097c255..b72e341 100644
+--- a/topology/topology.c
++++ b/topology/topology.c
+@@ -27,7 +27,6 @@
+ #include <errno.h>
+ #include <string.h>
+ #include <sys/stat.h>
+-#include <dlfcn.h>
+ #include <getopt.h>
+ #include <assert.h>
+ 
+-- 
+2.14.4
+
