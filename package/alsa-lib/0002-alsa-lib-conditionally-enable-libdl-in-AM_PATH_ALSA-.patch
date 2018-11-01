@@ -17,6 +17,7 @@ result to conditionally add -ldl to the list of libraries.
 Signed-off-by: Thomas De Schampheleire <thomas.de.schampheleire@gmail.com>
 [Jörg: update for 1.1.6]
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Upstream: http://mailman.alsa-project.org/pipermail/alsa-devel/2018-November/141377.html
 ---
  utils/alsa.m4 | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)

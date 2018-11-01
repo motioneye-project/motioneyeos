@@ -1,14 +1,15 @@
 From 41c029755502acf01ed634db437ac06d09be6c41 Mon Sep 17 00:00:00 2001
-From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Date: Fri, 13 Apr 2018 09:02:37 +0200
 Subject: [PATCH] Don't use fork() on noMMU platforms
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 [Jörg: update patch for 1.1.6]
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+Upstream: http://mailman.alsa-project.org/pipermail/alsa-devel/2018-November/141376.html
 ---
  configure.ac         |  2 ++
  src/pcm/pcm_direct.c | 10 +++++++++-
