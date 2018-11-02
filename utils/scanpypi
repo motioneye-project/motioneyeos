@@ -243,13 +243,14 @@ class BuildrootPackage():
                     os.makedirs(tmp_pkg)
                 except OSError as exception:
                     if exception.errno != errno.EEXIST:
-                        print("ERROR: ", exception.message, file=sys.stderr)
-                        return None, None
-                    print('WARNING:', exception.message, file=sys.stderr)
+                        print("ERROR: ", exception.strerror, file=sys.stderr)
+                        return
+                    print('WARNING:', exception.strerror, file=sys.stderr)
                     print('Removing {pkg}...'.format(pkg=tmp_pkg))
                     shutil.rmtree(tmp_pkg)
                     os.makedirs(tmp_pkg)
                 as_zipfile.extractall(tmp_pkg)
+                pkg_filename = self.filename.split(".zip")[0]
         else:
             with tarfile.open(fileobj=as_file) as as_tarfile:
                 tmp_pkg = os.path.join(tmp_path, self.buildroot_name)
@@ -257,19 +258,19 @@ class BuildrootPackage():
                     os.makedirs(tmp_pkg)
                 except OSError as exception:
                     if exception.errno != errno.EEXIST:
-                        print("ERROR: ", exception.message, file=sys.stderr)
-                        return None, None
-                    print('WARNING:', exception.message, file=sys.stderr)
+                        print("ERROR: ", exception.strerror, file=sys.stderr)
+                        return
+                    print('WARNING:', exception.strerror, file=sys.stderr)
                     print('Removing {pkg}...'.format(pkg=tmp_pkg))
                     shutil.rmtree(tmp_pkg)
                     os.makedirs(tmp_pkg)
                 as_tarfile.extractall(tmp_pkg)
+                pkg_filename = self.filename.split(".tar")[0]
 
-        tmp_extract = '{folder}/{name}-{version}'
+        tmp_extract = '{folder}/{name}'
         self.tmp_extract = tmp_extract.format(
             folder=tmp_pkg,
-            name=self.metadata_name,
-            version=self.version)
+            name=pkg_filename)
 
     def load_setup(self):
         """
