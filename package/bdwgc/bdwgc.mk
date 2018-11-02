@@ -13,12 +13,6 @@ BDWGC_LICENSE_FILES = README.QUICK
 BDWGC_DEPENDENCIES = libatomic_ops host-pkgconf
 HOST_BDWGC_DEPENDENCIES = host-libatomic_ops host-pkgconf
 
-# The libtool shipped with the package is bogus and generates some
-# -L/usr/lib flags. It uses a version not supported by Buildroot
-# libtool patches, so autoreconfiguring the packages is the easiest
-# solution.
-BDWGC_AUTORECONF = YES
-
 BDWGC_CONF_OPTS = CFLAGS_EXTRA="$(BDWGC_CFLAGS_EXTRA)"
 ifeq ($(BR2_sparc),y)
 BDWGC_CFLAGS_EXTRA += -DAO_NO_SPARC_V9
