@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pip/json
-md5	52f75ceb21e96c258f289859a2996b60  pip-18.0.tar.gz
-sha256	a0e11645ee37c90b40c46d607070c4fd583e2cd46231b1c06e389c5e814eed76  pip-18.0.tar.gz
+md5	75cad449ad62c88b22de317a26781714  pip-18.1.tar.gz
+sha256	c0a292bd977ef590379a3f05d7b7f65135487b67470f6281289a94e015650ea1  pip-18.1.tar.gz
 # Locally computed sha256 checksums
 sha256	391a8784e319dae5431477d4cc9bc504fc5d71fd9e89e1c80f1cd3855f5d7cfa  LICENSE.txt
