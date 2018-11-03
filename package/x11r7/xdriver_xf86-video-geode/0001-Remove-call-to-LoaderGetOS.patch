@@ -1,0 +1,53 @@
+From 09aaa3d1fae4aeb099b16e7a046151761bcdea95 Mon Sep 17 00:00:00 2001
+From: Adam Jackson <ajax@redhat.com>
+Date: Tue, 24 Jan 2017 09:53:06 -0500
+Subject: Remove call to LoaderGetOS
+
+On OSes that don't have a /dev/videox we'll just fail the open() and not
+initialize the Xv adaptor.
+
+Signed-off-by: Adam Jackson <ajax@redhat.com>
+
+Downloaded from upstream commit
+https://cgit.freedesktop.org/xorg/driver/xf86-video-geode/commit/?id=09aaa3d1fae4aeb099b16e7a046151761bcdea95
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/z4l.c | 13 -------------
+ 1 file changed, 13 deletions(-)
+
+diff --git a/src/z4l.c b/src/z4l.c
+index eccefe8..be0d345 100644
+--- a/src/z4l.c
++++ b/src/z4l.c
+@@ -1709,7 +1709,6 @@ _X_EXPORT XF86ModuleData ztvModuleData = { &z4lVersionRec, z4lSetup, NULL };
+ static pointer
+ z4lSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+ {
+-    const char *osname;
+     static Bool setupDone = FALSE;
+ 
+     if (setupDone != FALSE) {
+@@ -1719,19 +1718,7 @@ z4lSetup(pointer module, pointer opts, int *errmaj, int *errmin)
+     }
+ 
+     setupDone = TRUE;
+-    LoaderGetOS(&osname, NULL, NULL, NULL);
+-
+-    if (osname == NULL || strcmp(osname, "linux") != 0) {
+-        if (errmaj)
+-            *errmaj = LDR_BADOS;
+-        if (errmin)
+-            *errmin = 0;
+-
+-        return NULL;
+-    }
+-
+     xf86AddDriver(&Z4l, module, 0);
+-
+     return (pointer) 1;
+ }
+ 
+-- 
+cgit v1.1
+
