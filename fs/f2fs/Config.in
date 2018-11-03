@@ -42,4 +42,11 @@ config BR2_TARGET_ROOTFS_F2FS_DISCARD
 	help
 	  Enable or disable discard policy.
 
+config BR2_TARGET_ROOTFS_F2FS_FEATURES
+	string "filesystem features"
+	help
+	  List of features that the F2FS filesystem should support
+	  (e.g "encrypt")
+
+
 endif # BR2_TARGET_ROOTFS_F2FS
