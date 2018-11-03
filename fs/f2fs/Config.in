@@ -36,4 +36,10 @@ config BR2_TARGET_ROOTFS_F2FS_OVERPROVISION
 	  Leave at 0 to use the default overprovision ratio of
 	  mkfs.f2fs.
 
+config BR2_TARGET_ROOTFS_F2FS_DISCARD
+	bool "discard policy"
+	default y
+	help
+	  Enable or disable discard policy.
+
 endif # BR2_TARGET_ROOTFS_F2FS
