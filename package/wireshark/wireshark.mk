@@ -19,7 +19,6 @@ WIRESHARK_AUTORECONF = YES
 # wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
 # Work around it by pointing includedir at staging
 WIRESHARK_CONF_OPTS = \
-	--without-krb5 \
 	--enable-static=no \
 	--with-libsmi=no \
 	--with-pcap=$(STAGING_DIR)/usr \
@@ -82,6 +81,13 @@ WIRESHARK_CONF_OPTS += --with-gcrypt=yes
 WIRESHARK_DEPENDENCIES += libgcrypt
 else
 WIRESHARK_CONF_OPTS += --with-gcrypt=no
+endif
+
+ifeq ($(BR2_PACKAGE_LIBKRB5),y)
+WIRESHARK_CONF_OPTS += --with-krb5=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libkrb5
+else
+WIRESHARK_CONF_OPTS += --without-krb5
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
