@@ -25,4 +25,15 @@ config BR2_TARGET_ROOTFS_F2FS_COLD_FILES
 	  cold files. The default list includes most of multimedia
 	  file extensions such as jpg, gif, mpeg, mkv, and so on.
 
+config BR2_TARGET_ROOTFS_F2FS_OVERPROVISION
+	int "overprovision ratio"
+	default 0
+	help
+	  The percentage over the volume size for overprovision
+	  area. This area is hidden to users, and utilized by F2FS
+	  cleaner.
+
+	  Leave at 0 to use the default overprovision ratio of
+	  mkfs.f2fs.
+
 endif # BR2_TARGET_ROOTFS_F2FS
