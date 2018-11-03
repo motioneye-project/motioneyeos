@@ -48,5 +48,4 @@ config BR2_TARGET_ROOTFS_F2FS_FEATURES
 	  List of features that the F2FS filesystem should support
 	  (e.g "encrypt")
 
-
 endif # BR2_TARGET_ROOTFS_F2FS
