@@ -18,4 +18,11 @@ config BR2_TARGET_ROOTFS_F2FS_SIZE
 	  Suffix with K, M, G or T for power-of-two kilo-, mega-, giga-
 	  or terabytes.
 
+config BR2_TARGET_ROOTFS_F2FS_COLD_FILES
+	string "extension list for cold files"
+	help
+	  Specify a file extension list in order f2fs to treat them as
+	  cold files. The default list includes most of multimedia
+	  file extensions such as jpg, gif, mpeg, mkv, and so on.
+
 endif # BR2_TARGET_ROOTFS_F2FS

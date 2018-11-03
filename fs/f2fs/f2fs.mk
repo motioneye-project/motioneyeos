@@ -13,10 +13,12 @@ endif
 # variable is not qstrip-ed to preserve the integrity of the string value.
 F2FS_LABEL := $(subst ",,$(BR2_TARGET_ROOTFS_F2FS_LABEL))
 # ")
+F2FS_COLD_FILES = $(call qstrip,$(BR2_TARGET_ROOTFS_F2FS_COLD_FILES))
 
 F2FS_OPTS = \
 	-f \
-	-l "$(F2FS_LABEL)"
+	-l "$(F2FS_LABEL)" \
+	$(if $(F2FS_COLD_FILES),-e "$(F2FS_COLD_FILES)")
 
 ROOTFS_F2FS_DEPENDENCIES = host-f2fs-tools
 
