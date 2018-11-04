@@ -4,25 +4,25 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 2.2.17
-WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
+WIRESHARK_VERSION = 2.6.4
+WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.xz
 WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
-WIRESHARK_DEPENDENCIES = host-pkgconf libpcap libglib2
+WIRESHARK_DEPENDENCIES = host-pkgconf libgcrypt libpcap libglib2
 WIRESHARK_CONF_ENV = \
+	LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
 	PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
 
-# patch touching configure.ac
-WIRESHARK_AUTORECONF = YES
-
-# wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
-# Work around it by pointing includedir at staging
 WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
+	--without-bcg729 \
+	--without-libxml2 \
+	--without-lz4 \
+	--without-nghttp2 \
+	--without-snappy \
 	--with-libsmi=no \
-	--with-pcap=$(STAGING_DIR)/usr \
-	--includedir=$(STAGING_DIR)/usr/include
+	--with-pcap=$(STAGING_DIR)/usr
 
 # wireshark GUI options
 ifeq ($(BR2_PACKAGE_LIBGTK3),y)
@@ -61,13 +61,6 @@ else
 WIRESHARK_CONF_OPTS += --without-c-ares
 endif
 
-ifeq ($(BR2_PACKAGE_GEOIP),y)
-WIRESHARK_CONF_OPTS += --with-geoip=$(STAGING_DIR)/usr
-WIRESHARK_DEPENDENCIES += geoip
-else
-WIRESHARK_CONF_OPTS += --without-geoip
-endif
-
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 WIRESHARK_CONF_OPTS += --with-gnutls=yes
 WIRESHARK_DEPENDENCIES += gnutls
@@ -75,19 +68,18 @@ else
 WIRESHARK_CONF_OPTS += --with-gnutls=no
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-WIRESHARK_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
-WIRESHARK_CONF_OPTS += --with-gcrypt=yes
-WIRESHARK_DEPENDENCIES += libgcrypt
-else
-WIRESHARK_CONF_OPTS += --with-gcrypt=no
-endif
-
 ifeq ($(BR2_PACKAGE_LIBKRB5),y)
 WIRESHARK_CONF_OPTS += --with-krb5=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += libkrb5
 else
 WIRESHARK_CONF_OPTS += --without-krb5
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMAXMINDDB),y)
+WIRESHARK_CONF_OPTS += --with-maxminddb=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libmaxminddb
+else
+WIRESHARK_CONF_OPTS += --without-maxminddb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
