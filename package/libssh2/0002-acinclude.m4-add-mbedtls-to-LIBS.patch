@@ -8,6 +8,10 @@ libssh2.pc contains correct info for the benefit of pkg-config users.
 Static link with libssh2 requires this information.
 
 Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[Fabrice: Replace $LIBMBEDCRYTO by -lmdedcrypto to avoid adding a full
+library path to libssh2.pc as it raises build failures on some packages
+such as xerces]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
 Upstream status: https://github.com/libssh2/libssh2/pull/242
 
@@ -22,7 +26,7 @@ index c0e89a1a0c98..02c70845d27c 100644
  [mbedtls], [
    LIBSSH2_LIB_HAVE_LINKFLAGS([mbedcrypto], [], [#include <mbedtls/version.h>], [
      AC_DEFINE(LIBSSH2_MBEDTLS, 1, [Use $1])
-+    LIBS="$LIBS $LIBMBEDCRYPTO"
++    LIBS="$LIBS -lmbedcrypto"
      found_crypto="$1"
      support_clear_memory=yes
    ])
