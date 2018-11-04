@@ -73,6 +73,10 @@ def get_lib_from_filename(fname):
             return None
         if DO_NOT_CHECK_INTREE.match(fname):
             return None
+    else:
+        if os.path.basename(fname) == "external.mk" and \
+           os.path.exists(fname[:-2] + "desc"):
+            return None
     if CONFIG_IN_FILENAME.search(fname):
         return checkpackagelib.lib_config
     if fname.endswith(".hash"):
