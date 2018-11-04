@@ -16,7 +16,6 @@ WIRESHARK_CONF_ENV = \
 
 WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
-	--without-bcg729 \
 	--without-lz4 \
 	--without-snappy \
 	--with-libsmi=no \
@@ -50,6 +49,13 @@ endif
 # No GUI at all
 ifeq ($(BR2_PACKAGE_WIRESHARK_GUI),)
 WIRESHARK_CONF_OPTS += --disable-wireshark
+endif
+
+ifeq ($(BR2_PACKAGE_BCG729),y)
+WIRESHARK_CONF_OPTS += --with-bcg729=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += bcg729
+else
+WIRESHARK_CONF_OPTS += --without-bcg729
 endif
 
 ifeq ($(BR2_PACKAGE_C_ARES),y)
