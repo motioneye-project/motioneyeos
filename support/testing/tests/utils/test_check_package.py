@@ -32,7 +32,8 @@ class TestCheckPackage(unittest.TestCase):
     When in in-tree mode (without -b) some in-tree files and also all
     out-of-tree files are ignored.
 
-    When in out-tree mode (with -b) the script does generate warnings for these.
+    When in out-tree mode (with -b) the script does generate warnings for these
+    but ignores external.mk.
     """
 
     WITH_EMPTY_PATH = {}
@@ -172,3 +173,30 @@ class TestCheckPackage(unittest.TestCase):
         self.assert_file_was_processed(m)
         self.assert_warnings_generated_for_file(m)
         self.assertIn("{}:1: empty line at end of file".format(abs_file), w)
+
+        # external.mk is ignored only when in the root path of a br2-external
+        rel_file = "external.mk"
+        abs_file = os.path.join(abs_path, rel_file)
+
+        _, m = call_script(["check-package", "-b", rel_file],
+                           self.WITH_UTILS_IN_PATH, abs_path)
+        self.assert_file_was_ignored(m)
+
+        _, m = call_script(["check-package", "-b", abs_file],
+                           self.WITH_UTILS_IN_PATH, infra.basepath())
+        self.assert_file_was_ignored(m)
+
+        abs_path = infra.filepath("tests/utils/br2-external/package/external")
+        abs_file = os.path.join(abs_path, rel_file)
+
+        w, m = call_script(["check-package", "-b", rel_file],
+                           self.WITH_UTILS_IN_PATH, abs_path)
+        self.assert_file_was_processed(m)
+        self.assert_warnings_generated_for_file(m)
+        self.assertIn("{}:1: should be 80 hashes (http://nightly.buildroot.org/#writing-rules-mk)".format(rel_file), w)
+
+        w, m = call_script(["check-package", "-b", abs_file],
+                           self.WITH_UTILS_IN_PATH, infra.basepath())
+        self.assert_file_was_processed(m)
+        self.assert_warnings_generated_for_file(m)
+        self.assertIn("{}:1: should be 80 hashes (http://nightly.buildroot.org/#writing-rules-mk)".format(abs_file), w)
