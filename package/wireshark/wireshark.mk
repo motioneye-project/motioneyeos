@@ -18,7 +18,6 @@ WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
 	--without-bcg729 \
 	--without-lz4 \
-	--without-nghttp2 \
 	--without-snappy \
 	--with-libsmi=no \
 	--with-pcap=$(STAGING_DIR)/usr
@@ -108,6 +107,13 @@ WIRESHARK_CONF_OPTS += --with-lua
 WIRESHARK_DEPENDENCIES += lua
 else
 WIRESHARK_CONF_OPTS += --without-lua
+endif
+
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+WIRESHARK_CONF_OPTS += --with-nghttp2=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += nghttp2
+else
+WIRESHARK_CONF_OPTS += --without-nghttp2
 endif
 
 ifeq ($(BR2_PACKAGE_SBC),y)
