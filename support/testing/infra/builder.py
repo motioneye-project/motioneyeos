@@ -43,7 +43,7 @@ class Builder(object):
         cmd += ["olddefconfig"]
 
         ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
-                              env=env)
+                              cwd=infra.basepath(), env=env)
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
 

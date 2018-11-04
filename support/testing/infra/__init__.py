@@ -6,6 +6,7 @@ import subprocess
 from urllib2 import urlopen, HTTPError, URLError
 
 ARTIFACTS_URL = "http://autobuild.buildroot.net/artefacts/"
+BASE_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../.."))
 
 
 def open_log_file(builddir, stage, logtofile=True):
@@ -21,8 +22,13 @@ def open_log_file(builddir, stage, logtofile=True):
     return fhandle
 
 
+def basepath(relpath=""):
+    """Return the absolute path for a file or directory relative to the Buildroot top directory."""
+    return os.path.join(BASE_DIR, relpath)
+
+
 def filepath(relpath):
-    return os.path.join(os.getcwd(), "support/testing", relpath)
+    return os.path.join(BASE_DIR, "support/testing", relpath)
 
 
 def download(dldir, filename):
