@@ -3,6 +3,7 @@
 # functions don't need to check for things already checked by running
 # "make package-dirclean package-patch".
 
+import os
 import re
 
 from checkpackagelib.base import _CheckFunction
@@ -10,10 +11,10 @@ from checkpackagelib.lib import NewlineAtEof           # noqa: F401
 
 
 class ApplyOrder(_CheckFunction):
-    APPLY_ORDER = re.compile("/\d{1,4}-[^/]*$")
+    APPLY_ORDER = re.compile("\d{1,4}-[^/]*$")
 
     def before(self):
-        if not self.APPLY_ORDER.search(self.filename):
+        if not self.APPLY_ORDER.match(os.path.basename(self.filename)):
             return ["{}:0: use name <number>-<description>.patch "
                     "({}#_providing_patches)"
                     .format(self.filename, self.url_to_manual)]
