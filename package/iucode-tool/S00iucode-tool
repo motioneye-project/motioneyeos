@@ -3,12 +3,12 @@
 # Upload microcode into the processor.
 #
 
-microcode_file="/usr/share/misc/intel-microcode.dat"
+MICROCODE_DIR="/lib/firmware/intel-ucode"
 
 case "$1" in
   start)
 	echo "Starting iucode-tool:"
-	/usr/sbin/iucode_tool -k $microcode_file
+	/usr/sbin/iucode_tool -k "$MICROCODE_DIR"
 	echo "done"
 	;;
   stop)
