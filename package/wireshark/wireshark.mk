@@ -16,7 +16,6 @@ WIRESHARK_CONF_ENV = \
 
 WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
-	--without-snappy \
 	--with-libsmi=no \
 	--with-pcap=$(STAGING_DIR)/usr
 
@@ -133,6 +132,13 @@ WIRESHARK_CONF_OPTS += --with-sbc=yes
 WIRESHARK_DEPENDENCIES += sbc
 else
 WIRESHARK_CONF_OPTS += --with-sbc=no
+endif
+
+ifeq ($(BR2_PACKAGE_SNAPPY),y)
+WIRESHARK_CONF_OPTS += --with-snappy=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += snappy
+else
+WIRESHARK_CONF_OPTS += --without-snappy
 endif
 
 define WIRESHARK_REMOVE_DOCS
