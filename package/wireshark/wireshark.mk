@@ -16,7 +16,6 @@ WIRESHARK_CONF_ENV = \
 
 WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
-	--without-lz4 \
 	--without-snappy \
 	--with-libsmi=no \
 	--with-pcap=$(STAGING_DIR)/usr
@@ -113,6 +112,13 @@ WIRESHARK_CONF_OPTS += --with-lua
 WIRESHARK_DEPENDENCIES += lua
 else
 WIRESHARK_CONF_OPTS += --without-lua
+endif
+
+ifeq ($(BR2_PACKAGE_LZ4),y)
+WIRESHARK_CONF_OPTS += --with-lz4=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += lz4
+else
+WIRESHARK_CONF_OPTS += --without-lz4
 endif
 
 ifeq ($(BR2_PACKAGE_NGHTTP2),y)
