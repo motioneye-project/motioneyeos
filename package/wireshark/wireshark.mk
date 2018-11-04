@@ -17,7 +17,6 @@ WIRESHARK_CONF_ENV = \
 WIRESHARK_CONF_OPTS = \
 	--enable-static=no \
 	--without-bcg729 \
-	--without-libxml2 \
 	--without-lz4 \
 	--without-nghttp2 \
 	--without-snappy \
@@ -94,6 +93,13 @@ WIRESHARK_CONF_OPTS += --with-libssh=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += libssh
 else
 WIRESHARK_CONF_OPTS += --without-libssh
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+WIRESHARK_CONF_OPTS += --with-libxml2
+WIRESHARK_DEPENDENCIES += libxml2
+else
+WIRESHARK_CONF_OPTS += --without-libxml2
 endif
 
 # no support for lua53 yet
