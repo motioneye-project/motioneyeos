@@ -13,7 +13,7 @@ NGREP_INSTALL_STAGING = YES
 NGREP_AUTORECONF = YES
 
 ifeq ($(BR2_STATIC_LIBS),y)
-NGREP_CONF_ENV += LIBS="$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs"
+NGREP_CONF_ENV += LIBS=`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 endif
 
 NGREP_CONF_OPTS = \
