@@ -1655,6 +1655,7 @@ F:	package/ddrescue/
 F:	package/dejavu/
 F:	package/dillo/
 F:	package/edid-decode/
+F:	package/ell/
 F:	package/ghostscript-fonts/
 F:	package/gstreamer1/gst1-interpipe/
 F:	package/gstreamer1/gst1-validate/

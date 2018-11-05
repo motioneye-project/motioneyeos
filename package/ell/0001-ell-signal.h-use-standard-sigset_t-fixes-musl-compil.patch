@@ -1,0 +1,57 @@
+From abff9db9a6e86e00613a420dd6a0ba3bc81e2b72 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Fri, 2 Nov 2018 12:58:57 +0100
+Subject: [PATCH] ell/signal.h: use standard sigset_t, fixes musl compile
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Use standard sigset_t (instead __sigset_t):
+
+- fixes musl compile
+- fies mismatch between header and implementation file
+
+Fixes:
+
+  In file included from ell/main.c:35:0:
+  ell/signal.h:39:40: error: unknown type name ‘__sigset_t’
+   struct l_signal *l_signal_create(const __sigset_t *mask,
+                                          ^~~~~~~~~~
+  In file included from ell/signal.c:35:0:
+  ell/signal.h:39:40: error: unknown type name ‘__sigset_t’
+   struct l_signal *l_signal_create(const __sigset_t *mask,
+                                          ^~~~~~~~~~
+  ell/signal.c:153:29: error: conflicting types for ‘l_signal_create’
+   LIB_EXPORT struct l_signal *l_signal_create(const sigset_t *mask,
+                               ^~~~~~~~~~~~~~~
+  In file included from ell/signal.c:35:0:
+  ell/signal.h:39:18: note: previous declaration of ‘l_signal_create’ was here
+   struct l_signal *l_signal_create(const __sigset_t *mask,
+                    ^~~~~~~~~~~~~~~
+
+Reverts upstream commit [1], superseeded in the next version by [2].
+
+[1] https://git.kernel.org/pub/scm/libs/ell/ell.git/commit/?id=7af8e3ba0ed522897f5a87e6c8f2980f82ff5012
+[2] https://git.kernel.org/pub/scm/libs/ell/ell.git/commit/?id=4a386a10d88ff52097a974167ab889b3fc2add70
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ ell/signal.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/ell/signal.h b/ell/signal.h
+index 0d4fdc8..98cf0fa 100644
+--- a/ell/signal.h
++++ b/ell/signal.h
+@@ -36,7 +36,7 @@ typedef void (*l_signal_notify_cb_t) (struct l_signal *signal,
+ 					uint32_t signo, void *user_data);
+ typedef void (*l_signal_destroy_cb_t) (void *user_data);
+ 
+-struct l_signal *l_signal_create(const __sigset_t *mask,
++struct l_signal *l_signal_create(const sigset_t *mask,
+ 			l_signal_notify_cb_t callback,
+ 			void *user_data, l_signal_destroy_cb_t destroy);
+ void l_signal_remove(struct l_signal *signal);
+-- 
+2.19.1
+

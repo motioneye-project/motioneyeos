@@ -1,0 +1,13 @@
+config BR2_PACKAGE_ELL
+	bool "ell"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR
+	help
+	  Embedded Linux library (ell)
+
+	  https://01.org/ell
+
+comment "ell needs a toolchain w/ dynamic library, wchar"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR
