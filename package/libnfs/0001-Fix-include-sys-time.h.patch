@@ -1,0 +1,41 @@
+From 9df082012cba1dc32d83e5e8b0bdc0892f250058 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Mon, 5 Nov 2018 00:43:07 +0100
+Subject: [PATCH] Fix include sys/time.h
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+POSIX says `struct timeval` is defined if <sys/time.h> is included.
+
+Instead of the mess that is currently done based on the system on which
+the stuff is being compiled, include it unconditionally.
+
+Reported upstream:
+https://github.com/sahlberg/libnfs/issues/272
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ include/nfsc/libnfs.h | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/include/nfsc/libnfs.h b/include/nfsc/libnfs.h
+index 09dcf1c..b6db58c 100755
+--- a/include/nfsc/libnfs.h
++++ b/include/nfsc/libnfs.h
+@@ -24,12 +24,7 @@
+ #define _LIBNFS_H_
+ 
+ #include <stdint.h>
+-#if defined(__ANDROID__) || defined(AROS) \
+- || ( defined(__APPLE__) && defined(__MACH__) )
+ #include <sys/time.h>
+-#else
+-#include <time.h>
+-#endif
+ 
+ #ifdef __cplusplus
+ extern "C" {
+-- 
+2.19.1
+
