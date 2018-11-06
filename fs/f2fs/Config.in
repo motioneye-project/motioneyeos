@@ -26,6 +26,13 @@ config BR2_TARGET_ROOTFS_F2FS_COLD_FILES
 	  of multimedia file extensions such as jpg, gif, mpeg, mkv,
 	  and so on.
 
+config BR2_TARGET_ROOTFS_F2FS_HOT_FILES
+	string "extension list for hot files"
+	help
+	  Specify a comma separated file extension list in order f2fs
+	  to treat them as hot files. The default list includes only
+	  a db extension.
+
 config BR2_TARGET_ROOTFS_F2FS_OVERPROVISION
 	int "overprovision ratio"
 	default 0
