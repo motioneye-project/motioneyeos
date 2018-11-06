@@ -1,6 +1,5 @@
 config BR2_PACKAGE_PYTHON_POSIX_IPC
 	bool "python-posix-ipc"
-	depends on BR2_PACKAGE_PYTHON
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  The Python extension module posix_ipc gives access to POSIX
