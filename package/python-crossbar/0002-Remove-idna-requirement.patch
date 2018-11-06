@@ -13,14 +13,17 @@ Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
  1 file changed, 1 deletion(-)
 
 diff --git a/requirements-min.txt b/requirements-min.txt
-index d7c2a562..84bf1878 100644
+index 92fb0f8f..13cdac87 100644
 --- a/requirements-min.txt
 +++ b/requirements-min.txt
-@@ -1,4 +1,3 @@
+@@ -6,7 +6,6 @@ click>=6.7
+ constantly>=15.1.0
+ cryptography>=1.9
+ h2>=3.0,<4.0
 -idna<2.6,>=2.5
- click>=6.7
- setuptools>=36.0.1
- zope.interface>=4.4.2
+ incremental>=17.5.0
+ jinja2>=2.9.6
+ lmdb>=0.92
 -- 
 2.17.1
 
