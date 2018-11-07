@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_WTFORMS
+	bool "python-wtforms"
+	help
+	  A flexible forms validation and rendering library for
+	  Python web development.
+
+	  https://wtforms.readthedocs.io/
