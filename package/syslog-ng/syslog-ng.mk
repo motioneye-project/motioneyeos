@@ -93,8 +93,8 @@ SYSLOG_NG_CONF_OPTS += --disable-systemd
 endif
 
 define SYSLOG_NG_INSTALL_INIT_SYSV
-	$(INSTALL) -m 0755 -D package/syslog-ng/S01logging \
-		$(TARGET_DIR)/etc/init.d/S01logging
+	$(INSTALL) -m 0755 -D package/syslog-ng/S01syslog-ng \
+		$(TARGET_DIR)/etc/init.d/S01syslog-ng
 endef
 
 # By default syslog-ng installs a number of sample configuration
