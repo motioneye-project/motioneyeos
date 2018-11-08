@@ -1,0 +1,86 @@
+From e1686b25acdedb34cc357f08f0dd3ca01c559dfd Mon Sep 17 00:00:00 2001
+From: Justin Chen <justinpopo6@gmail.com>
+Date: Thu, 1 Nov 2018 11:10:38 -0700
+Subject: [PATCH] rtcwake: use poweroff if shutdown is not found
+
+Some systems do not have the shutdown command. Use poweroff as an
+alternative.
+
+Signed-off-by: Justin Chen <justinpopo6@gmail.com>
+---
+ include/pathnames.h |  1 +
+ sys-utils/rtcwake.c | 39 +++++++++++++++++++++++++++------------
+ 2 files changed, 28 insertions(+), 12 deletions(-)
+
+diff --git a/include/pathnames.h b/include/pathnames.h
+index 3d5052e6f..ed8ea330d 100644
+--- a/include/pathnames.h
++++ b/include/pathnames.h
+@@ -53,6 +53,7 @@
+ # define _PATH_LOGIN		"/bin/login"
+ #endif
+ #define _PATH_SHUTDOWN		"/sbin/shutdown"
++#define _PATH_POWEROFF		"/sbin/poweroff"
+ 
+ #define _PATH_TERMCOLORS_DIRNAME "terminal-colors.d"
+ #define _PATH_TERMCOLORS_DIR	"/etc/" _PATH_TERMCOLORS_DIRNAME
+diff --git a/sys-utils/rtcwake.c b/sys-utils/rtcwake.c
+index b63c64627..029f00f9b 100644
+--- a/sys-utils/rtcwake.c
++++ b/sys-utils/rtcwake.c
+@@ -28,6 +28,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
++#include <sys/stat.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+ #include <termios.h>
+@@ -582,18 +583,32 @@ int main(int argc, char **argv)
+ 		char *arg[5];
+ 		int i = 0;
+ 
+-		if (ctl.verbose)
+-			printf(_("suspend mode: off; executing %s\n"),
+-						_PATH_SHUTDOWN);
+-		arg[i++] = _PATH_SHUTDOWN;
+-		arg[i++] = "-h";
+-		arg[i++] = "-P";
+-		arg[i++] = "now";
+-		arg[i]   = NULL;
+-		if (!ctl.dryrun) {
+-			execv(arg[0], arg);
+-			warn(_("failed to execute %s"), _PATH_SHUTDOWN);
+-			rc = EXIT_FAILURE;
++		if (!access(_PATH_SHUTDOWN, X_OK)) {
++			arg[i++] = _PATH_SHUTDOWN;
++			arg[i++] = "-h";
++			arg[i++] = "-P";
++			arg[i++] = "now";
++			arg[i]   = NULL;
++		} else if (!access(_PATH_POWEROFF, X_OK)) {
++			arg[i++] = _PATH_POWEROFF;
++			arg[i]   = NULL;
++		} else {
++			arg[i] 	 = NULL;
++		}
++
++		if (arg[0]) {
++			if (ctl.verbose)
++				printf(_("suspend mode: off; executing %s\n"),
++						arg[0]);
++			if (!ctl.dryrun) {
++				execv(arg[0], arg);
++				warn(_("failed to execute %s"), arg[0]);
++				rc = EX_EXEC_ENOENT;
++			}
++		} else {
++			/* Failed to find shutdown command */
++			warn(_("failed to find shutdown command"));
++			rc = EX_EXEC_ENOENT;
+ 		}
+ 		break;
+ 	}
+-- 
+2.17.1
+
