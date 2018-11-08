@@ -19,4 +19,36 @@ config BR2_PACKAGE_LIBCURL_VERBOSE
 	help
 	  Enable verbose text strings
 
+config BR2_PACKAGE_LIBCURL_TLS_SUPPORT
+	bool
+	default y if BR2_PACKAGE_OPENSSL
+	default y if BR2_PACKAGE_GNUTLS
+	default y if BR2_PACKAGE_LIBNSS
+	default y if BR2_PACKAGE_MBEDTLS
+
+choice
+	prompt "SSL/TLS library to use"
+	depends on BR2_PACKAGE_LIBCURL_TLS_SUPPORT
+
+config BR2_PACKAGE_LIBCURL_OPENSSL
+	bool "OpenSSL"
+	depends on BR2_PACKAGE_OPENSSL
+
+config BR2_PACKAGE_LIBCURL_GNUTLS
+	bool "GnuTLS"
+	depends on BR2_PACKAGE_GNUTLS
+
+config BR2_PACKAGE_LIBCURL_LIBNSS
+	bool "NSS"
+	depends on BR2_PACKAGE_LIBNSS
+
+config BR2_PACKAGE_LIBCURL_MBEDTLS
+	bool "mbed TLS"
+	depends on BR2_PACKAGE_MBEDTLS
+
+endchoice
+
+comment "A TLS library is needed for SSL/TLS support"
+	depends on !BR2_PACKAGE_LIBCURL_TLS_SUPPORT
+
 endif
