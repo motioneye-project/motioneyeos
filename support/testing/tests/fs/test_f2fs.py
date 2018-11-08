@@ -3,11 +3,13 @@ import subprocess
 
 import infra.basetest
 
+
 def dumpf2fs_getprop(out, prop):
     for line in out:
         fields = line.split(" = ")
         if fields[0] == prop:
             return fields[1].strip()
+
 
 class TestF2FS(infra.basetest.BRTest):
     config = infra.basetest.BASIC_TOOLCHAIN_CONFIG + \
@@ -35,8 +37,8 @@ class TestF2FS(infra.basetest.BRTest):
         self.assertEqual(prop, "262144 (128 MB)")
 
         kernel = os.path.join(self.builddir, "images", "zImage")
-        kernel_cmdline=["root=/dev/mmcblk0", "rootfstype=f2fs",
-                        "console=ttyAMA0"]
+        kernel_cmdline = ["root=/dev/mmcblk0", "rootfstype=f2fs",
+                          "console=ttyAMA0"]
         dtb = infra.download(self.downloaddir, "vexpress-v2p-ca9.dtb")
         options = ["-M", "vexpress-a9", "-dtb", dtb,
                    "-drive", "file={},if=sd,format=raw".format(img)]
