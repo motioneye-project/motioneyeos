@@ -15,6 +15,7 @@ WIRESHARK_CONF_ENV = \
 	PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
 
 WIRESHARK_CONF_OPTS = \
+	--disable-guides \
 	--enable-static=no \
 	--with-libsmi=no \
 	--with-pcap=$(STAGING_DIR)/usr
