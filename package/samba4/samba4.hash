@@ -1,4 +1,4 @@
 # Locally calculated after checking pgp signature
-# https://download.samba.org/pub/samba/stable/samba-4.9.1.tar.asc
-sha256 33118cbe83a87be085eba1aae6e597878b02d6ac9b2da67454ed33cf3e9853f2  samba-4.9.1.tar.gz
+# https://download.samba.org/pub/samba/stable/samba-4.9.2.tar.asc
+sha256 349c17b7bf1bf667167843470533da89ff1b2ca4a768b529aaacf5197af1efa2  samba-4.9.2.tar.gz
 sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
