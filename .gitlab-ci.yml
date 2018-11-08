@@ -287,6 +287,7 @@ tests.fs.test_ext.TestExt2: *runtime_test
 tests.fs.test_ext.TestExt2r1: *runtime_test
 tests.fs.test_ext.TestExt3: *runtime_test
 tests.fs.test_ext.TestExt4: *runtime_test
+tests.fs.test_f2fs.TestF2FS: *runtime_test
 tests.fs.test_iso9660.TestIso9660Grub2External: *runtime_test
 tests.fs.test_iso9660.TestIso9660Grub2ExternalCompress: *runtime_test
 tests.fs.test_iso9660.TestIso9660Grub2Internal: *runtime_test
