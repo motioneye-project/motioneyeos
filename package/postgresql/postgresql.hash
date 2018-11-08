@@ -1,7 +1,7 @@
-# From https://ftp.postgresql.org/pub/source/v11.0/postgresql-11.0.tar.bz2.md5
-md5 338ede84c0443db02ff6e8c4c8cbc5e9  postgresql-11.0.tar.bz2
-# From https://ftp.postgresql.org/pub/source/v11.0/postgresql-11.0.tar.bz2.sha256
-sha256 bf9bba03d0c3902c188af12e454b35343c4a9bf9e377ec2fe50132efb44ef36b  postgresql-11.0.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v11.1/postgresql-11.1.tar.bz2.md5
+md5 5e45f6d5b859cc76b5d62f1e328e9711  postgresql-11.1.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v11.1/postgresql-11.1.tar.bz2.sha256
+sha256 90815e812874831e9a4bf6e1136bf73bc2c5a0464ef142e2dfea40cda206db08  postgresql-11.1.tar.bz2
 
 # License file, Locally calculated
 sha256	24cfc70cf16b3a23242c49ffce39510683bdd48cbedb8a46fe03976ee5f5c21e	COPYRIGHT
