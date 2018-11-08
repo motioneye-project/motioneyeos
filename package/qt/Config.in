@@ -309,8 +309,12 @@ choice
 
 config BR2_PACKAGE_QT_QTZLIB
 	bool "Qt zlib"
+	depends on !BR2_STATIC_LIBS
 	help
 	  Use the zlib bundled with Qt.
+
+comment "Qt zlib needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_QT_SYSTEMZLIB
 	bool "System zlib"
