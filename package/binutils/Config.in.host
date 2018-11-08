@@ -31,13 +31,13 @@ config BR2_BINUTILS_VERSION_2_31_X
 	bool "binutils 2.31.1"
 
 config BR2_BINUTILS_VERSION_ARC
-	bool "binutils arc (2.29)"
+	bool "binutils arc (2.31)"
 	depends on BR2_arc
 endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "arc-2018.03"	if BR2_BINUTILS_VERSION_ARC
+	default "arc-2018.09-rc1"	if BR2_BINUTILS_VERSION_ARC
 	default "2.28.1"	if BR2_BINUTILS_VERSION_2_28_X
 	default "2.29.1"	if BR2_BINUTILS_VERSION_2_29_X
 	default "2.30"		if BR2_BINUTILS_VERSION_2_30_X
