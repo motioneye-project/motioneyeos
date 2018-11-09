@@ -1,0 +1,29 @@
+From bffafc1c3003c2ee05d28eaa345e5854bc36014d Mon Sep 17 00:00:00 2001
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Mon, 1 Oct 2018 14:16:14 +0200
+Subject: [PATCH] avoid truncation when logging message that includes target
+ name
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/sahlberg/libiscsi/commit/bffafc1c3003c2ee05d28eaa345e5854bc36014d]
+---
+ lib/logging.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lib/logging.c b/lib/logging.c
+index be518fc5..61c74407 100644
+--- a/lib/logging.c
++++ b/lib/logging.c
+@@ -73,9 +73,9 @@ iscsi_log_message(struct iscsi_context *iscsi, int level, const char *format, ..
+ 	}
+ 
+ 	if (iscsi->target_name[0]) {
+-		static char message2[1024];
++		static char message2[1282];
+ 
+-		snprintf(message2, 1024, "%s [%s]", message, iscsi->target_name);
++		snprintf(message2, 1282, "%s [%s]", message, iscsi->target_name);
+ 		iscsi->log_fn(level, message2);
+ 	}
+ 	else
