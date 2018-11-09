@@ -1,4 +1,4 @@
-From fd9885fe5fef5826034547ca6be7299863f99769 Mon Sep 17 00:00:00 2001
+From 0551f2e5eb4143be0aacc0185cdc4afc9ca80204 Mon Sep 17 00:00:00 2001
 From: Martin Bark <martin@barkynet.com>
 Date: Fri, 6 May 2016 14:48:49 +0100
 Subject: [PATCH] auto/lib/libgd/conf: use pkg-config
@@ -7,12 +7,14 @@ Change to using pkg-config to find the path to libgd and its
 dependencies.
 
 Signed-off-by: Martin Bark <martin@barkynet.com>
+[Peter: updated for 1.15.6]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  auto/lib/libgd/conf | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/auto/lib/libgd/conf b/auto/lib/libgd/conf
-index 6e4e91c..1c536a2 100644
+index 67863976..1a4379a5 100644
 --- a/auto/lib/libgd/conf
 +++ b/auto/lib/libgd/conf
 @@ -7,8 +7,8 @@
@@ -23,9 +25,9 @@ index 6e4e91c..1c536a2 100644
 -    ngx_feature_libs="-lgd"
 +    ngx_feature_path="$(${GDLIB_CONFIG:=gdlib-config} --includedir)"
 +    ngx_feature_libs="$(${GDLIB_CONFIG:=gdlib-config} --libs)"
-     ngx_feature_test="gdImagePtr img = gdImageCreateFromGifPtr(1, NULL);"
+     ngx_feature_test="gdImagePtr img = gdImageCreateFromGifPtr(1, NULL);
+                       (void) img"
      . auto/feature
- 
 -- 
-2.8.2
+2.11.0
 

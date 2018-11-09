@@ -1,4 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256	b0b58c9a3fd73aa8b89edf5cfadc6641a352e0e6d3071db1eb3215d72b7fb516	nginx-1.15.0.tar.gz
+sha256	a3d8c67c2035808c7c0d475fffe263db8c353b11521aa7ade468b780ed826cc6	nginx-1.15.6.tar.gz
 # License files, locally calculated
 sha256	e18f05bcaad47528f8b21861d4a0fb9815ca1bbb4be946c51a51d36623758bcc	LICENSE
