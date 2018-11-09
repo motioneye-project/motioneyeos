@@ -1,0 +1,45 @@
+From 9a09c89fdd0e0cebec48d1bb7bc187bf92ae361c Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 13 Mar 2018 12:58:59 +0200
+Subject: [PATCH] misc/tst-syscall6: fix build with musl and older kenrel
+ headers
+
+The RWF_DSYNC and RWF_HIPRI macros were introduced in kernel version 4.6
+with the preadv2/pwritev2 system calls. musl libc provides its own
+syscall definitions, even when the kernel headers are older. This leads
+to the following build failure:
+
+tst-syscall6.c: In function 'main':
+tst-syscall6.c:32:48: error: 'RWF_DSYNC' undeclared (first use in this function)
+  nio = syscall(SYS_pwritev2, fd, iov, 2, 0, 0, RWF_DSYNC);
+                                                ^~~~~~~~~
+tst-syscall6.c:32:48: note: each undeclared identifier is reported only once for each function it appears in
+tst-syscall6.c:42:58: error: 'RWF_HIPRI' undeclared (first use in this function)
+  nio = syscall(SYS_preadv2, fd, iov, 1, strlen(str0), 0, RWF_HIPRI);
+                                                          ^~~~~~~~~
+
+Make the code depend also on RWF_HIPRI to fix this failure.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: patch sent to Waldemar Brodkorb <wbx@openadk.org>
+
+ test/misc/tst-syscall6.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/test/misc/tst-syscall6.c b/test/misc/tst-syscall6.c
+index fa51c275e4a5..9ad2ddac2b8f 100644
+--- a/test/misc/tst-syscall6.c
++++ b/test/misc/tst-syscall6.c
+@@ -9,7 +9,7 @@
+ 
+ int main()
+ {
+-#if defined SYS_preadv2 && defined SYS_pwritev2
++#if defined SYS_preadv2 && defined SYS_pwritev2 && defined RWF_HIPRI
+ 	char tmp[] = "/tmp/tst-preadv2-XXXXXX";
+ 	int fd;
+ 	struct iovec iov[2];
+-- 
+2.16.1
+

@@ -10,11 +10,12 @@ config BR2_PACKAGE_SHAIRPORT_SYNC
 	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_MBEDTLS
 	select BR2_PACKAGE_POPT
 	help
-	  Shairport Sync emulates an AirPort Express for the purpose of
-	  streaming audio from iTunes, iPods, iPhones, iPads and AppleTVs.
-	  Audio played by a Shairport Sync-powered device stays in synchrony
-	  with the source and thus with other devices that are playing the same
-	  source synchronously. Thus, for example, synchronised multi-room
+	  Shairport Sync emulates an AirPort Express for the purpose
+	  of streaming audio from iTunes, iPods, iPhones, iPads and
+	  AppleTVs.  Audio played by a Shairport Sync-powered device
+	  stays in synchrony with the source and thus with other
+	  devices that are playing the same source
+	  synchronously. Thus, for example, synchronised multi-room
 	  audio is possible without difficulty.
 
 	  https://github.com/mikebrady/shairport-sync
@@ -27,11 +28,11 @@ config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 	help
 	  Enable support for libsoxr, the SoX Resampler library.
 
-	  Briefly, Shairport Sync keeps in step with the audio source by
-	  deleting or inserting frames of audio into the stream as needed. This
-	  "interpolation" is normally inaudible, but it can be heard in some
-	  circumstances. Libsoxr allows this interpolation to be done much more
-	  smoothly and subtly.
+	  Briefly, Shairport Sync keeps in step with the audio source
+	  by deleting or inserting frames of audio into the stream as
+	  needed. This "interpolation" is normally inaudible, but it
+	  can be heard in some circumstances. Libsoxr allows this
+	  interpolation to be done much more smoothly and subtly.
 
 endif
 

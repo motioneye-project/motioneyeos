@@ -1,0 +1,35 @@
+From 2da5b72c704fed10f1b04b5432ac6b078d016fae Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 2 Mar 2018 08:25:36 +0200
+Subject: [PATCH] histedit: fix build with musl libc
+
+musl libc defines the optreset BSD extension only in getopt.h. This
+fixes the following build failure:
+
+histedit.c: In function 'histcmd':
+histedit.c:220:2: error: 'optreset' undeclared (first use in this function)
+  optreset = 1; optind = 1; /* initialize getopt */
+  ^~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://www.mail-archive.com/dash@vger.kernel.org/msg01389.html
+
+ src/histedit.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/histedit.c b/src/histedit.c
+index 94465d785cc9..f5c90aba873b 100644
+--- a/src/histedit.c
++++ b/src/histedit.c
+@@ -39,6 +39,7 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
++#include <getopt.h>
+ /*
+  * Editline and history functions (and glue).
+  */
+-- 
+2.16.1
+

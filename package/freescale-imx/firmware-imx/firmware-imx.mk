@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FIRMWARE_IMX_VERSION = 5.4
+FIRMWARE_IMX_VERSION = 7.2
 FIRMWARE_IMX_SITE = $(FREESCALE_IMX_SITE)
 FIRMWARE_IMX_SOURCE = firmware-imx-$(FIRMWARE_IMX_VERSION).bin
 
@@ -26,7 +26,6 @@ define FIRMWARE_IMX_INSTALL_TARGET_CMDS
 	cp -r $(@D)/firmware/epdc $(TARGET_DIR)/lib/firmware/imx
 	mv $(TARGET_DIR)/lib/firmware/imx/epdc/epdc_ED060XH2C1.fw.nonrestricted \
 		$(TARGET_DIR)/lib/firmware/imx/epdc/epdc_ED060XH2C1.fw
-	rm $(TARGET_DIR)/lib/firmware/imx/epdc/fsl-epdc.mk
 endef
 
 $(eval $(generic-package))

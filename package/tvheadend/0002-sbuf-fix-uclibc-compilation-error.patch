@@ -1,0 +1,33 @@
+From b16ad4d258409fbd6acf843d62a7a84f621e3b70 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 18 Dec 2017 20:52:06 +0100
+Subject: [PATCH] sbuf: fix uclibc compilation error
+
+Fixes build error
+
+tvheadend-e06ffd87beff16103c47d6fa542df2374fca6fd3/src/sbuf.h:77:1:
+ error: unknown type name 'ssize_t'; did you mean 'size_t'?
+ ssize_t sbuf_read(sbuf_t *sb, int fd);
+
+Patch sent upstream: https://github.com/tvheadend/tvheadend/pull/1062
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/sbuf.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/sbuf.h b/src/sbuf.h
+index 78aa546b3..d5aa53042 100644
+--- a/src/sbuf.h
++++ b/src/sbuf.h
+@@ -23,6 +23,7 @@
+ #include <stddef.h>
+ #include <stdio.h>
+ #include <stdint.h>
++#include <unistd.h>
+ 
+ /**
+  * Simple dynamically growing buffer
+-- 
+2.11.0
+

@@ -1,0 +1,24 @@
+Makefile: revert libselinux: use ln --relative to create .so symlinks
+
+This reverts 71393a181d63c9baae5fe8dcaeb9411d1f253998
+
+ln --relative is too recent to be available in all distributions,
+especially enterprise-grade distros that can stick around as long as
+they are maintained (up to 10 years in some cases?).
+
+For the sake of Buildroot, revert the upstream patch.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff -durNw libselinux-2.7.orig/src/Makefile libselinux-2.7/src/Makefile
+--- libselinux-2.7.orig/src/Makefile	2018-01-15 20:53:50.168525700 +0100
++++ libselinux-2.7/src/Makefile	2018-01-15 20:55:27.061858005 +0100
+@@ -181,7 +181,7 @@
+ 	install -m 755 $(LIBSO) $(LIBINSTALL)
+ 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
+ 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
+-	ln -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
++	cd $(LIBINSTALL) && ln -sf $(LIBSO) $(TARGET)
+ 
+ install-pywrap: pywrap
+ 	test -d $(PYSITEDIR)/selinux || install -m 755 -d $(PYSITEDIR)/selinux

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBPQXX_VERSION = 4.0.1
-LIBPQXX_SITE = http://pqxx.org/download/software/libpqxx
+LIBPQXX_VERSION = 6.0.0
+LIBPQXX_SITE = $(call github,jtv,libpqxx,$(LIBPQXX_VERSION))
 LIBPQXX_INSTALL_STAGING = YES
 LIBPQXX_DEPENDENCIES = postgresql
 LIBPQXX_LICENSE = BSD-3-Clause

@@ -1,0 +1,75 @@
+From 6b6ff53b5931c162be13504a1efc53fc5212f9d1 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 7 May 2018 22:57:34 +0200
+Subject: [PATCH] m4/reorganization/libs/curl.m4: fix curl-config detection
+ logic
+
+The current logic in curl.m4 doesn't behave properly when
+--without-libcurl is passed to the ./configure script.
+
+Indeed, in this case what happens is that:
+
+ (1) Since --without-libcurl is passed, LIBCURL_HOME is set to nothing
+
+ (2) find_curl is set to "no"
+
+ (3) Due to find_curl being "no", LIBCURL_HOME is not set to
+     /usr/local and remains empty
+
+ (4) We test if $LIBCURL_HOME/bin/curl_config exists, which is
+     equivalent to testing if /bin/curl-config exists. So curl.m4 is
+     looking at /bin/curl-config, which is irrelevant in a
+     cross-compilation context: it is not because the build machine
+     has libcurl installed that it is available for the target.
+
+     Due to this mistake, it sets have_curl="yes"
+
+Due to this, the ./configure script assumes it can build the
+clamsubmit program, which fails at build time because curl/curl.h
+doesn't exist.
+
+To fix this, this commit rewrites the curl-config detection logic with
+a simpler loop. If find_curl=yes, it means we have to find libcurl
+ourselves, so we iterate over /usr/local and /usr, and check if a
+bin/curl-config binary is available there. If so, we use this path as
+LIBCURL_HOME and set have_curl="yes".
+
+This preserves the existing behavior, while fixing the situation where
+--without-libcurl is passed, but /bin/curl-config exists.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream-status: https://github.com/Cisco-Talos/clamav-devel/pull/87
+---
+ m4/reorganization/libs/curl.m4 | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
+
+diff --git a/m4/reorganization/libs/curl.m4 b/m4/reorganization/libs/curl.m4
+index 2a5966ee7..b6a9c2137 100644
+--- a/m4/reorganization/libs/curl.m4
++++ b/m4/reorganization/libs/curl.m4
+@@ -19,17 +19,12 @@ fi
+ [find_curl="yes"])
+ 
+ if test "X$find_curl" = "Xyes"; then
+-    LIBCURL_HOME=/usr/local
+-fi
+-if test -f "$LIBCURL_HOME/bin/curl-config"; then
+-    have_curl="yes"
+-else
+-    if test "X$find_curl" = "Xyes"; then
+-        LIBCURL_HOME=/usr
+-        if test -f "$LIBCURL_HOME/bin/curl-config"; then
+-            have_curl="yes"
++    for p in /usr/local /usr ; do
++        if test -f "${p}/bin/curl-config"; then
++           LIBCURL_HOME=$p
++           have_curl="yes"
+         fi
+-    fi
++    done
+ fi
+ 
+ if test "X$have_curl" = "Xyes"; then
+-- 
+2.14.3
+

@@ -12,7 +12,11 @@ QT5WEBENGINE_DEPENDENCIES = ffmpeg libglib2 libvpx opus webp qt5base \
 	host-pkgconf host-python
 QT5WEBENGINE_INSTALL_STAGING = YES
 
-include package/qt5/qt5webengine/chromium.inc
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+include package/qt5/qt5webengine/chromium-latest.inc
+else
+include package/qt5/qt5webengine/chromium-lts.inc
+endif
 QT5WEBENGINE_LICENSE = GPL-2.0 or LGPL-3.0 or GPL-3.0 or GPL-3.0 with exception
 QT5WEBENGINE_LICENSE_FILES = LICENSE.GPL2 LICENSE.GPL3 LICENSE.GPL3-EXCEPT \
 	LICENSE.GPLv3 LICENSE.LGPL3 $(CHROMIUM_LICENSE_FILES)
@@ -28,6 +32,12 @@ ifeq ($(BR2_PACKAGE_QT5WEBENGINE_PROPRIETARY_CODECS),y)
 QT5WEBENGINE_QMAKEFLAGS += WEBENGINE_CONFIG+=use_proprietary_codecs
 endif
 
+ifeq ($(BR2_PACKAGE_QT5WEBENGINE_ALSA),y)
+QT5WEBENGINE_DEPENDENCIES += alsa-lib
+else
+QT5WEBENGINE_QMAKEFLAGS += QT_CONFIG-=alsa
+endif
+
 # QtWebengine's build system uses python, but only supports python2. We work
 # around this by forcing python2 early in the PATH, via a python->python2
 # symlink.
@@ -39,7 +49,7 @@ endef
 QT5WEBENGINE_PRE_CONFIGURE_HOOKS += QT5WEBENGINE_PYTHON2_SYMLINK
 
 define QT5WEBENGINE_CONFIGURE_CMDS
-	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5WEBENGINE_ENV) $(HOST_DIR)/usr/bin/qmake $(QT5WEBENGINE_QMAKEFLAGS))
+	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5WEBENGINE_ENV) $(HOST_DIR)/bin/qmake $(QT5WEBENGINE_QMAKEFLAGS))
 endef
 
 define QT5WEBENGINE_BUILD_CMDS

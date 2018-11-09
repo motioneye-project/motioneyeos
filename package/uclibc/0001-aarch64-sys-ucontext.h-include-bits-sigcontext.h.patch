@@ -1,0 +1,49 @@
+From 1c27982bb8a007bb1a6a29db8e6efb1f40975879 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 28 Jan 2018 13:59:30 +0100
+Subject: [PATCH 1/1] aarch64/sys/ucontext.h: include bits/sigcontext.h
+
+Fixes a buildroot build error with ffmpeg
+
+In file included from /home/bernd/buildroot/output/host/aarch64-buildroot-linux-uclibc/sysroot/usr/include/signal.h:329:0,
+                 from fftools/ffmpeg.h:26,
+                 from fftools/ffmpeg_opt.c:23:
+/home/bernd/buildroot/output/host/aarch64-buildroot-linux-uclibc/sysroot/usr/include/sys/ucontext.h:52:16:
+ error: field 'uc_mcontext' has incomplete type
+     mcontext_t uc_mcontext;
+                ^~~~~~~~~~~
+
+using this defconfig:
+
+BR2_aarch64=y
+BR2_PACKAGE_FFMPEG=y
+
+sys/ucontext.h for other archs already include bits/sigcontext.h,
+on aarch64 this is needed as well.
+
+Patch sent upstream:
+https://mailman.uclibc-ng.org/pipermail/devel/2018-January/001622.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ libc/sysdeps/linux/aarch64/sys/ucontext.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/libc/sysdeps/linux/aarch64/sys/ucontext.h b/libc/sysdeps/linux/aarch64/sys/ucontext.h
+index d17458896..dc7303b54 100644
+--- a/libc/sysdeps/linux/aarch64/sys/ucontext.h
++++ b/libc/sysdeps/linux/aarch64/sys/ucontext.h
+@@ -26,6 +26,10 @@
+ 
+ #include <sys/procfs.h>
+ 
++/* We need the signal context definitions even if they are not used
++   included in <signal.h>.  */
++#include <bits/sigcontext.h>
++
+ typedef elf_greg_t greg_t;
+ 
+ /* Container for all general registers.  */
+-- 
+2.11.0
+

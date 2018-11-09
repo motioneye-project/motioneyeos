@@ -5,7 +5,7 @@ config BR2_PACKAGE_PYTHON_XLRD
 	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
 	help
-	  Library for developers to extract data from Microsoft Excel (tm)
-	  spreadsheet files.
+	  Library for developers to extract data from Microsoft
+	  Excel(tm) spreadsheet files.
 
 	  http://www.python-excel.org/

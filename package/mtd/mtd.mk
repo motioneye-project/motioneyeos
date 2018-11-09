@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MTD_VERSION = 2.0.1
+MTD_VERSION = 2.0.2
 MTD_SOURCE = mtd-utils-$(MTD_VERSION).tar.bz2
 MTD_SITE = ftp://ftp.infradead.org/pub/mtd-utils
 MTD_LICENSE = GPL-2.0
@@ -45,7 +45,10 @@ MTD_CONF_OPTS += --without-xattr
 endif
 
 HOST_MTD_DEPENDENCIES = host-zlib host-lzo host-util-linux
-HOST_MTD_CONF_OPTS = --disable-tests
+HOST_MTD_CONF_OPTS = \
+	--with-jffs \
+	--with-ubifs \
+	--disable-tests
 
 MKFS_JFFS2 = $(HOST_DIR)/sbin/mkfs.jffs2
 SUMTOOL = $(HOST_DIR)/sbin/sumtool

@@ -2,7 +2,7 @@ config BR2_PACKAGE_LIBSOXR
 	bool "libsoxr"
 	help
 	  The SoX Resampler library `libsoxr' performs one-dimensional
-	  sample-rate conversion—it may be used, for example, to
+	  sample-rate conversion. It may be used, for example, to
 	  resample PCM-encoded audio.
 
 	  It aims to give fast and high quality results for any constant

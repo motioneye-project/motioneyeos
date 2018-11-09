@@ -9,11 +9,12 @@ config BR2_PACKAGE_RPI_USERLAND
 	select BR2_PACKAGE_HAS_LIBOPENVG
 	select BR2_PACKAGE_HAS_LIBOPENMAX
 	help
-	  Raspberry Pi Userland contains the necessary library to use the
-	  VideoCore driver.
+	  Raspberry Pi Userland contains the necessary library to use
+	  the VideoCore driver.
 
-	  Includes source for the ARM side code to interface to:
-	  EGL, mmal, GLESv2, vcos, openmaxil, vchiq_arm, bcm_host, WFC, OpenVG.
+	  Includes source for the ARM side code to interface to: EGL,
+	  mmal, GLESv2, vcos, openmaxil, vchiq_arm, bcm_host, WFC,
+	  OpenVG.
 
 	  https://github.com/raspberrypi/userland/
 
@@ -35,8 +36,8 @@ config BR2_PACKAGE_RPI_USERLAND_START_VCFILED
 	bool "Start vcfiled"
 	depends on BR2_INIT_SYSV || BR2_INIT_BUSYBOX
 	help
-	  vcfiled is a daemon serving files to VideoCore from the host file
-	  system.
+	  vcfiled is a daemon serving files to VideoCore from the host
+	  file system.
 
 config BR2_PACKAGE_RPI_USERLAND_HELLO
 	bool "hello_pi examples"

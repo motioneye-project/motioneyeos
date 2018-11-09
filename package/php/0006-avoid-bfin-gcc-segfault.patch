@@ -1,0 +1,17 @@
+Avoid gcc segmentation fault
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[aduskett@gmail.com: Update for 7.2.2]
+diff -Nur php-7.0.12.orig/Zend/zend_portability.h php-7.0.12/Zend/zend_portability.h
+--- php-7.0.12.orig/Zend/zend_portability.h	2016-10-13 16:04:17.000000000 +0200
++++ php-7.0.12/Zend/zend_portability.h	2016-11-08 02:49:39.118388999 +0100
+@@ -95,7 +95,7 @@
+ 
+ #if defined(ZEND_WIN32) && !defined(__clang__)
+ # define ZEND_ASSUME(c)	__assume(c)
+-#elif ((defined(__GNUC__) && ZEND_GCC_VERSION >= 4005) || __has_builtin(__builtin_unreachable)) && PHP_HAVE_BUILTIN_EXPECT
++#elif ((defined(__GNUC__) && ZEND_GCC_VERSION >= 4005) || __has_builtin(__builtin_unreachable)) && PHP_HAVE_BUILTIN_EXPECT && !defined(__bfin__)
+ # define ZEND_ASSUME(c)	do { \
+ 		if (__builtin_expect(!(c), 0)) __builtin_unreachable(); \
+ 	} while (0)

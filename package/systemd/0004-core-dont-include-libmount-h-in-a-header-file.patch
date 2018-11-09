@@ -1,0 +1,75 @@
+From 227b8a762fea1458547be2cdf0e6e4aac0079730 Mon Sep 17 00:00:00 2001
+From: Michael Olbrich <m.olbrich@pengutronix.de>
+Date: Mon, 26 Mar 2018 17:34:53 +0200
+Subject: [PATCH] core: don't include libmount.h in a header file (#8580)
+
+linux/fs.h sys/mount.h, libmount.h and missing.h all include MS_*
+definitions.
+
+To avoid problems, only one of linux/fs.h, sys/mount.h and libmount.h
+should be included. And missing.h must be included last.
+
+Without this, building systemd may fail with:
+
+In file included from [...]/libmount/libmount.h:31:0,
+                 from ../systemd-238/src/core/manager.h:23,
+                 from ../systemd-238/src/core/emergency-action.h:37,
+                 from ../systemd-238/src/core/unit.h:34,
+                 from ../systemd-238/src/core/dbus-timer.h:25,
+                 from ../systemd-238/src/core/timer.c:26:
+[...]/sys/mount.h:57:2: error: expected identifier before numeric constant
+
+Upstream: https://github.com/systemd/systemd/pull/8580
+Signed-off-by: Stefan Becker <chemobejk@gmail.com>
+---
+ src/core/dbus-execute.c | 1 +
+ src/core/manager.h      | 3 ++-
+ src/core/mount.c        | 2 ++
+ 3 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/src/core/dbus-execute.c b/src/core/dbus-execute.c
+index 7344623ebf6..c342093bca4 100644
+--- a/src/core/dbus-execute.c
++++ b/src/core/dbus-execute.c
+@@ -18,6 +18,7 @@
+   along with systemd; If not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
++#include <sys/mount.h>
+ #include <sys/prctl.h>
+ #include <stdio_ext.h>
+ 
+diff --git a/src/core/manager.h b/src/core/manager.h
+index 28c5da225b1..e09e0cdf5e9 100644
+--- a/src/core/manager.h
++++ b/src/core/manager.h
+@@ -20,7 +20,6 @@
+   along with systemd; If not, see <http://www.gnu.org/licenses/>.
+ ***/
+ 
+-#include <libmount.h>
+ #include <stdbool.h>
+ #include <stdio.h>
+ 
+@@ -34,6 +33,8 @@
+ #include "list.h"
+ #include "ratelimit.h"
+ 
++struct libmnt_monitor;
++
+ /* Enforce upper limit how many names we allow */
+ #define MANAGER_MAX_NAMES 131072 /* 128K */
+ 
+diff --git a/src/core/mount.c b/src/core/mount.c
+index 0e755da5c02..0154ebda5d6 100644
+--- a/src/core/mount.c
++++ b/src/core/mount.c
+@@ -23,6 +23,8 @@
+ #include <stdio.h>
+ #include <sys/epoll.h>
+ 
++#include <libmount.h>
++
+ #include "sd-messages.h"
+ 
+ #include "alloc-util.h"

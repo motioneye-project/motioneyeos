@@ -6,6 +6,10 @@ config BR2_PACKAGE_PHP
 	       !BR2_PACKAGE_PHP_SAPI_FPM &&  \
 	       BR2_USE_MMU
 	select BR2_PACKAGE_PHP_SAPI_CLI if !BR2_USE_MMU
+	# PHP uses -export-dynamic, which breaks with elf2flt with a
+	# message like "ld.real: section .junk LMA [...,...] overlaps
+	# section .text LMA [...,...]"
+	depends on !BR2_BINFMT_FLAT
 	help
 	  PHP  is a widely-used general-purpose scripting
 	  language that is especially suited for Web development

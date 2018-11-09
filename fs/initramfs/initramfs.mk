@@ -5,17 +5,25 @@
 #
 ################################################################################
 
-ROOTFS_INITRAMFS_DEPENDENCIES += rootfs-cpio
-
-ROOTFS_INITRAMFS_POST_TARGETS += linux-rebuild-with-initramfs
-
-
 # The generic fs infrastructure isn't very useful here.
+#
+# The initramfs image does not actually build an image; its only purpose is:
+# 1- to ensure rootfs.cpio is generated,
+# 2- to then rebuild the kernel with rootfs.cpio as initramfs
+#
+# Note: ordering of the dependencies is not guaranteed here, but in
+# linux/linux.mk, via the linux-rebuild-with-initramfs rule, which depends
+# on the rootfs-cpio filesystem rule.
+#
+# Note: the trick here is that we directly depend on rebuilding the Linux
+# kernel image (which itself depends on the rootfs-cpio rule), while we
+# advertise that our dependency is on the rootfs-cpio rule, which is
+# cleaner in the dependency graph.
 
-rootfs-initramfs: $(ROOTFS_INITRAMFS_DEPENDENCIES) $(ROOTFS_INITRAMFS_POST_TARGETS)
+rootfs-initramfs: linux-rebuild-with-initramfs
 
 rootfs-initramfs-show-depends:
-	@echo $(ROOTFS_INITRAMFS_DEPENDENCIES)
+	@echo rootfs-cpio
 
 .PHONY: rootfs-initramfs rootfs-initramfs-show-depends
 

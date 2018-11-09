@@ -5,7 +5,7 @@
 ################################################################################
 
 NTP_VERSION_MAJOR = 4.2
-NTP_VERSION = $(NTP_VERSION_MAJOR).8p10
+NTP_VERSION = $(NTP_VERSION_MAJOR).8p12
 NTP_SITE = https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
 NTP_DEPENDENCIES = host-pkgconf libevent $(if $(BR2_PACKAGE_BUSYBOX),busybox)
 NTP_LICENSE = NTP
@@ -17,23 +17,22 @@ NTP_CONF_OPTS = \
 	--disable-tickadj \
 	--disable-debugging \
 	--with-yielding-select=yes \
-	--disable-local-libevent \
+	--disable-local-libevent
 
 # 0002-ntp-syscalls-fallback.patch
-# 0003-ntpq-fpic.patch
 NTP_AUTORECONF = YES
 
-ifeq ($(BR2_PACKAGE_OPENSSL),y)
-NTP_CONF_OPTS += --with-crypto
+ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
+NTP_CONF_OPTS += --with-crypto --enable-openssl-random
 NTP_DEPENDENCIES += openssl
 else
 NTP_CONF_OPTS += --without-crypto --disable-openssl-random
 endif
 
 ifeq ($(BR2_TOOLCHAIN_HAS_SSP),y)
-NTP_CONF_OPTS += --with-locfile=linux
+NTP_CONF_OPTS += --with-hardenfile=linux
 else
-NTP_CONF_OPTS += --with-locfile=default
+NTP_CONF_OPTS += --with-hardenfile=default
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)

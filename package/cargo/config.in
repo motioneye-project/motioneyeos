@@ -1,0 +1,2 @@
+[target.@RUSTC_TARGET_NAME@]
+linker = "@CROSS_PREFIX@gcc"

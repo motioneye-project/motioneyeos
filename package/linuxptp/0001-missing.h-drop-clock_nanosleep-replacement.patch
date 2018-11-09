@@ -1,0 +1,49 @@
+From 947bf03ec3d9eaa0bfc0269eed86b9364e94bc1a Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 5 Aug 2018 15:25:53 +0200
+Subject: [PATCH] missing.h: drop clock_nanosleep() replacement
+
+Since uClibc-ng commits 68628fe7d463541bf3c33da6b214e63c0cc9feed
+("librt: declare clock_nanosleep not only for NPTL") and
+ddbb03e77ac1a48740688814b82f45c97ee81f37 ("librt: clock_nanosleep
+could be even used without threads"), clock_nanosleep() is always
+provided by uClibc, regardless of the thread implementation (none,
+linuxthreads, nptl). These commits will be part of the upcoming 1.0.31
+release of uClibc-ng.
+
+Thanks to this, we can drop the replacement clock_nanosleep()
+implementation added by linuxptp. Without this, linuxptp fails to
+build with:
+
+missing.h:117:19: error: static declaration of 'clock_nanosleep' follows non-static declaration
+ static inline int clock_nanosleep(clockid_t clock_id, int flags,
+                   ^~~~~~~~~~~~~~~
+In file included from clockadj.h:24:0,
+                 from clockadj.c:24:
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ missing.h | 7 -------
+ 1 file changed, 7 deletions(-)
+
+diff --git a/missing.h b/missing.h
+index 2f7adb9..60f89a3 100644
+--- a/missing.h
++++ b/missing.h
+@@ -129,13 +129,6 @@ enum {
+ 
+ #define TFD_TIMER_ABSTIME (1 << 0)
+ 
+-static inline int clock_nanosleep(clockid_t clock_id, int flags,
+-				  const struct timespec *request,
+-				  struct timespec *remain)
+-{
+-	return syscall(__NR_clock_nanosleep, clock_id, flags, request, remain);
+-}
+-
+ static inline int timerfd_create(int clockid, int flags)
+ {
+ 	return syscall(__NR_timerfd_create, clockid, flags);
+-- 
+2.14.4
+

@@ -10,8 +10,9 @@ config BR2_PACKAGE_NETATALK
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBGPG_ERROR
 	help
-	  Netatalk can be used to turn a *NIX machine into an extremely
-	  high-performance and reliable file server for Macintosh computers.
+	  Netatalk can be used to turn a *NIX machine into an
+	  extremely high-performance and reliable file server for
+	  Macintosh computers.
 
 	  http://netatalk.sourceforge.net/
 

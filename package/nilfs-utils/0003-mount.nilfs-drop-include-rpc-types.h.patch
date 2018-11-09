@@ -1,0 +1,32 @@
+From a924a05ea6fd8c5284983a09d1ea8993124b6b77 Mon Sep 17 00:00:00 2001
+From: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+Date: Thu, 28 Dec 2017 20:26:09 +0100
+Subject: [PATCH] mount.nilfs: drop include rpc/types.h
+
+rpc/types.h does not exist on low-footprint musl toolchains,
+and is only required for the boolean types, which musl provides
+elsewhere.
+This commit drops the include completely.
+
+Signed-off-by: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+---
+ sbin/mount/sundries.h | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/sbin/mount/sundries.h b/sbin/mount/sundries.h
+index b3064a7..94d8ce4 100644
+--- a/sbin/mount/sundries.h
++++ b/sbin/mount/sundries.h
+@@ -15,9 +15,6 @@
+ #include <signal.h>
+ #include <stdarg.h>
+ #include <stdlib.h>
+-#if !defined(bool_t) && !defined(__GLIBC__)
+-#include <rpc/types.h>
+-#endif
+ 
+ extern int mount_quiet;
+ 
+-- 
+1.8.5.rc3
+

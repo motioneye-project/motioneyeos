@@ -7,3 +7,4 @@
 15-fix-qconf-moc-rule.patch
 16-fix-space-to-de-select-options.patch
 17-kconfig-lxdialog-get-ncurses-CFLAGS-with-pkg-config.patch
+18-kconfig-nconfig-fix-multi-byte-UTF-handling.patch

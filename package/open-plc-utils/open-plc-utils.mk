@@ -15,8 +15,14 @@ OPEN_PLC_UTILS_LICENSE_FILES = LICENSE
 # Yes, we're passing __UCLIBC__ in EXTRA_CFLAGS, as it fixes a build
 # issue for non-uClibc toolchains. It is the very crappy solution
 # suggested at https://github.com/qca/open-plc-utils/issues/36.
+OPEN_PLC_UTILS_MAKE_OPTS = \
+	EXTRA_CFLAGS="$(TARGET_CFLAGS) -D__UCLIBC__" \
+	EXTRA_CXXFLAGS="$(TARGET_CXXFLAGS)" \
+	EXTRA_LDFLAGS="$(TARGET_LDFLAGS)"
+
 define OPEN_PLC_UTILS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) CROSS=$(TARGET_CROSS) EXTRA_CFLAGS="-D__UCLIBC__" -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) CROSS=$(TARGET_CROSS) \
+		$(OPEN_PLC_UTILS_MAKE_OPTS) -C $(@D)
 endef
 
 define OPEN_PLC_UTILS_INSTALL_TARGET_CMDS

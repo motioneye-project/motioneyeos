@@ -4,17 +4,15 @@
 #
 ################################################################################
 
-MOTION_VERSION = release-4.0.1
+MOTION_VERSION = release-4.1.1
 MOTION_SITE = $(call github,Motion-Project,motion,$(MOTION_VERSION))
 MOTION_LICENSE = GPL-2.0
 MOTION_LICENSE_FILES = COPYING
 MOTION_DEPENDENCIES = host-pkgconf jpeg
-# From git and patched configure.ac
+# From git
 MOTION_AUTORECONF = YES
 
-# motion does not use any specific function of jpeg-turbo, so just relies on
-# jpeg selection
-MOTION_CONF_OPTS += --without-jpeg-turbo --without-optimizecpu
+MOTION_CONF_OPTS += --without-optimizecpu
 
 ifeq ($(BR2_PACKAGE_FFMPEG_SWSCALE),y)
 MOTION_DEPENDENCIES += ffmpeg
@@ -29,10 +27,6 @@ MOTION_CONF_OPTS += \
 	--with-mysql \
 	--with-mysql-include=$(STAGING_DIR)/usr/include/mysql \
 	--with-mysql-lib=$(STAGING_DIR)/usr/lib
-# static link of mysql needs -lz
-ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_ZLIB),yy)
-MOTION_CONF_ENV += LIBS="-lz"
-endif
 else
 MOTION_CONF_OPTS += --without-mysql
 endif
@@ -47,16 +41,6 @@ else
 MOTION_CONF_OPTS += --without-pgsql
 endif
 
-ifeq ($(BR2_PACKAGE_SDL),y)
-MOTION_DEPENDENCIES += sdl
-MOTION_CONF_OPTS += --with-sdl=$(STAGING_DIR)/usr
-# overwrite ac_cv_path_CONFIG_SDL in case sdl development is
-# installed on the host
-MOTION_CONF_ENV += ac_cv_path_CONFIG_SDL=$(STAGING_DIR)/usr/bin/sdl-config
-else
-MOTION_CONF_OPTS += --without-sdl
-endif
-
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 MOTION_DEPENDENCIES += sqlite
 MOTION_CONF_OPTS += --with-sqlite3
@@ -64,11 +48,18 @@ else
 MOTION_CONF_OPTS += --without-sqlite3
 endif
 
+ifeq ($(BR2_PACKAGE_WEBP_MUX),y)
+MOTION_DEPENDENCIES += webp
+MOTION_CONF_OPTS += --with-webp
+else
+MOTION_CONF_OPTS += --without-webp
+endif
+
 # Do not use default install target as it installs many unneeded files and
 # directories: docs, examples and init scripts
 define MOTION_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0644 $(@D)/motion-dist.conf \
-		$(TARGET_DIR)/etc/motion.conf
+		$(TARGET_DIR)/etc/motion/motion.conf
 	$(INSTALL) -D -m 0755 $(@D)/motion $(TARGET_DIR)/usr/bin/motion
 endef
 

@@ -131,8 +131,13 @@ endif
 UBOOT_MAKE_OPTS += \
 	CROSS_COMPILE="$(TARGET_CROSS)" \
 	ARCH=$(UBOOT_ARCH) \
-	HOSTCC="$(HOSTCC) $(HOST_CFLAGS)" \
+	HOSTCC="$(HOSTCC) $(subst -I/,-isystem /,$(subst -I /,-isystem /,$(HOST_CFLAGS)))" \
 	HOSTLDFLAGS="$(HOST_LDFLAGS)"
+
+ifeq ($(BR2_TARGET_UBOOT_NEEDS_ATF_BL31),y)
+UBOOT_DEPENDENCIES += arm-trusted-firmware
+UBOOT_MAKE_OPTS += BL31=$(BINARIES_DIR)/bl31.bin
+endif
 
 ifeq ($(BR2_TARGET_UBOOT_NEEDS_DTC),y)
 UBOOT_DEPENDENCIES += host-dtc
@@ -183,12 +188,17 @@ define UBOOT_APPLY_LOCAL_PATCHES
 endef
 UBOOT_POST_PATCH_HOOKS += UBOOT_APPLY_LOCAL_PATCHES
 
-# Bug: https://patchwork.ozlabs.org/patch/833760/
-define UBOOT_FIX_LIBFDT_SYSTEM_PATH
-	[ ! -e $(@D)/tools/fdtgrep.c ] || \
-	$(SED) 's%<../include/libfdt.h>%"../include/libfdt.h"%' $(@D)/tools/fdtgrep.c
+# This is equivalent to upstream commit
+# http://git.denx.de/?p=u-boot.git;a=commitdiff;h=e0d20dc1521e74b82dbd69be53a048847798a90a. It
+# fixes a build failure when libfdt-devel is installed system-wide.
+# This only works when scripts/dtc/libfdt exists (E.G. versions containing
+# http://git.denx.de/?p=u-boot.git;a=commitdiff;h=c0e032e0090d6541549b19cc47e06ccd1f302893)
+define UBOOT_FIXUP_LIBFDT_INCLUDE
+	if [ -d $(@D)/scripts/dtc/libfdt ]; then \
+		$(SED) 's%-I$$(srctree)/lib/libfdt%-I$$(srctree)/scripts/dtc/libfdt%' $(@D)/tools/Makefile; \
+	fi
 endef
-UBOOT_POST_PATCH_HOOKS += UBOOT_FIX_LIBFDT_SYSTEM_PATH
+UBOOT_POST_PATCH_HOOKS += UBOOT_FIXUP_LIBFDT_INCLUDE
 
 ifeq ($(BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY),y)
 define UBOOT_CONFIGURE_CMDS
@@ -205,7 +215,15 @@ endif # BR2_TARGET_UBOOT_USE_DEFCONFIG
 
 UBOOT_KCONFIG_FRAGMENT_FILES = $(call qstrip,$(BR2_TARGET_UBOOT_CONFIG_FRAGMENT_FILES))
 UBOOT_KCONFIG_EDITORS = menuconfig xconfig gconfig nconfig
-UBOOT_KCONFIG_OPTS = $(UBOOT_MAKE_OPTS)
+
+# UBOOT_MAKE_OPTS overrides HOSTCC / HOSTLDFLAGS to allow the build to
+# find our host-openssl. However, this triggers a bug in the kconfig
+# build script that causes it to build with /usr/include/ncurses.h
+# (which is typically wchar) but link with
+# $(HOST_DIR)/lib/libncurses.so (which is not).  We don't actually
+# need any host-package for kconfig, so remove the HOSTCC/HOSTLDFLAGS
+# override again.
+UBOOT_KCONFIG_OPTS = $(UBOOT_MAKE_OPTS) HOSTCC="$(HOSTCC)" HOSTLDFLAGS=""
 define UBOOT_HELP_CMDS
 	@echo '  uboot-menuconfig       - Run U-Boot menuconfig'
 	@echo '  uboot-savedefconfig    - Run U-Boot savedefconfig'
@@ -238,6 +256,18 @@ define UBOOT_BUILD_OMAP_IFT
 		-c $(call qstrip,$(BR2_TARGET_UBOOT_OMAP_IFT_CONFIG))
 endef
 
+ifneq ($(BR2_TARGET_UBOOT_ENVIMAGE),)
+define UBOOT_GENERATE_ENV_IMAGE
+	cat $(call qstrip,$(BR2_TARGET_UBOOT_ENVIMAGE_SOURCE)) \
+		>$(@D)/buildroot-env.txt
+	$(HOST_DIR)/bin/mkenvimage -s $(BR2_TARGET_UBOOT_ENVIMAGE_SIZE) \
+		$(if $(BR2_TARGET_UBOOT_ENVIMAGE_REDUNDANT),-r) \
+		$(if $(filter "BIG",$(BR2_ENDIAN)),-b) \
+		-o $(BINARIES_DIR)/uboot-env.bin \
+		$(@D)/buildroot-env.txt
+endef
+endif
+
 define UBOOT_INSTALL_IMAGES_CMDS
 	$(foreach f,$(UBOOT_BINS), \
 			cp -dpf $(@D)/$(f) $(BINARIES_DIR)/
@@ -249,12 +279,7 @@ define UBOOT_INSTALL_IMAGES_CMDS
 			cp -dpf $(@D)/$(f) $(BINARIES_DIR)/
 		)
 	)
-	$(if $(BR2_TARGET_UBOOT_ENVIMAGE),
-		cat $(call qstrip,$(BR2_TARGET_UBOOT_ENVIMAGE_SOURCE)) | \
-			$(HOST_DIR)/bin/mkenvimage -s $(BR2_TARGET_UBOOT_ENVIMAGE_SIZE) \
-			$(if $(BR2_TARGET_UBOOT_ENVIMAGE_REDUNDANT),-r) \
-			$(if $(filter BIG,$(BR2_ENDIAN)),-b) \
-			-o $(BINARIES_DIR)/uboot-env.bin -)
+	$(UBOOT_GENERATE_ENV_IMAGE)
 	$(if $(BR2_TARGET_UBOOT_BOOT_SCRIPT),
 		$(HOST_DIR)/bin/mkimage -C none -A $(MKIMAGE_ARCH) -T script \
 			-d $(call qstrip,$(BR2_TARGET_UBOOT_BOOT_SCRIPT_SOURCE)) \

@@ -5,6 +5,3 @@ config BR2_PACKAGE_EBTABLES
 	  Ethernet bridge frame table administration
 
 	  http://ebtables.netfilter.org/
-
-comment "ebtables needs a glibc or uClibc toolchain"
-	depends on BR2_USE_MMU

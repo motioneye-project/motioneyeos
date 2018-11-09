@@ -2,7 +2,7 @@ config BR2_PACKAGE_XAPP_XFS
 	bool "xfs"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_XLIB_LIBFS
-	select BR2_PACKAGE_XLIB_LIBXFONT
+	select BR2_PACKAGE_XLIB_LIBXFONT2
 	select BR2_PACKAGE_XPROTO_FONTSPROTO
 	help
 	  X font server

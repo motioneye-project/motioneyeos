@@ -1,2 +1,4 @@
 # Locally calculated
-sha256 91bb870c14d1c7c269213285eeed874fa3d28112077db061a3af8010d0885b76  alsa-lib-1.1.4.1.tar.bz2
+sha256 f4f68ad3c6da36b0b5241ac3c798a7a71e0e97d51f972e9f723b3f20a9650ae6  alsa-lib-1.1.5.tar.bz2
+sha256 a190dc9c8043755d90f8b0a75fa66b9e42d4af4c980bf5ddc633f0124db3cee7  COPYING
+sha256 bfe16cf823bcff261fc6a062c07ee96660e3c39678f42f39a788a68dbc234ced  aserver/COPYING

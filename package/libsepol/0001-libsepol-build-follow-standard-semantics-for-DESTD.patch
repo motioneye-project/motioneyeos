@@ -1,0 +1,109 @@
+libsepol: build: follow standard semantics for DESTDIR and PREFIX
+
+This patch solves the following issues:
+- The pkg-config files generates odd paths when using DESTDIR without PREFIX
+- DESTDIR is needed during compile time to compute library and header paths which it should not.
+- Installing with both DESTDIR and PREFIX set gives us odd paths
+- Make usage of DESTDIR and PREFIX more standard
+
+Signed-off-by: Marcus Folkesson <marcus.folkesson@gmail.com>
+
+diff -durN libsepol.orig/include/Makefile libsepol/include/Makefile
+--- libsepol.orig/include/Makefile	2018-01-12 12:42:30.908709792 +0100
++++ libsepol/include/Makefile	2018-01-12 09:58:04.322148228 +0100
+@@ -1,6 +1,6 @@
+ # Installation directories.
+-PREFIX ?= $(DESTDIR)/usr
+-INCDIR ?= $(PREFIX)/include/sepol
++PREFIX ?= /usr
++INCDIR = $(DESTDIR)$(PREFIX)/include/sepol
+ CILDIR ?= ../cil
+ 
+ all:
+diff -durN libsepol.orig/man/Makefile libsepol/man/Makefile
+--- libsepol.orig/man/Makefile	2018-01-12 12:42:30.912043126 +0100
++++ libsepol/man/Makefile	2018-01-12 09:58:04.322148228 +0100
+@@ -1,6 +1,7 @@
+ # Installation directories.
+-MAN8DIR ?= $(DESTDIR)/usr/share/man/man8
+-MAN3DIR ?= $(DESTDIR)/usr/share/man/man3
++PREFIX ?= /usr
++MAN8DIR ?= $(DESTDIR)$(PREFIX)/share/man/man8
++MAN3DIR ?= $(DESTDIR)$(PREFIX)/share/man/man3
+ 
+ all:
+ 
+diff -durN libsepol.orig/src/libsepol.pc.in libsepol/src/libsepol.pc.in
+--- libsepol.orig/src/libsepol.pc.in	2018-01-12 12:42:30.912043126 +0100
++++ libsepol/src/libsepol.pc.in	2018-01-12 09:58:04.322148228 +0100
+@@ -1,6 +1,6 @@
+ prefix=@prefix@
+ exec_prefix=${prefix}
+-libdir=${exec_prefix}/@libdir@
++libdir=@libdir@
+ includedir=@includedir@
+ 
+ Name: libsepol
+diff -durN libsepol.orig/src/Makefile libsepol/src/Makefile
+--- libsepol.orig/src/Makefile	2018-01-12 12:42:30.912043126 +0100
++++ libsepol/src/Makefile	2018-01-12 09:58:04.322148228 +0100
+@@ -1,11 +1,10 @@
+ # Installation directories.
+-PREFIX ?= $(DESTDIR)/usr
++PREFIX ?= /usr
+ INCLUDEDIR ?= $(PREFIX)/include
+ LIBDIR ?= $(PREFIX)/lib
+-SHLIBDIR ?= $(DESTDIR)/lib
+ RANLIB ?= ranlib
+-LIBBASE ?= $(shell basename $(LIBDIR))
+ CILDIR ?= ../cil
++LIBINSTALL = $(DESTDIR)$(LIBDIR)
+ 
+ VERSION = $(shell cat ../VERSION)
+ LIBVERSION = 1
+@@ -52,7 +51,7 @@
+ 	ln -sf $@ $(TARGET) 
+ 
+ $(LIBPC): $(LIBPC).in ../VERSION
+-	sed -e 's/@VERSION@/$(VERSION)/; s:@prefix@:$(PREFIX):; s:@libdir@:$(LIBBASE):; s:@includedir@:$(INCLUDEDIR):' < $< > $@
++	sed -e 's/@VERSION@/$(VERSION)/; s:@prefix@:$(PREFIX):; s:@libdir@:$(LIBDIR):; s:@includedir@:$(INCLUDEDIR):' < $< > $@
+ 
+ $(LIBMAP): $(LIBMAP).in
+ ifneq ($(DISABLE_CIL),y)
+@@ -80,16 +79,16 @@
+ 	$(CC) $(CFLAGS) -fPIC -DSHARED -c -o $@ $<
+ 
+ install: all
+-	test -d $(LIBDIR) || install -m 755 -d $(LIBDIR)
+-	install -m 644 $(LIBA) $(LIBDIR)
+-	test -d $(SHLIBDIR) || install -m 755 -d $(SHLIBDIR)
+-	install -m 755 $(LIBSO) $(SHLIBDIR)
+-	test -d $(LIBDIR)/pkgconfig || install -m 755 -d $(LIBDIR)/pkgconfig
+-	install -m 644 $(LIBPC) $(LIBDIR)/pkgconfig
+-	$(LN) -sf --relative $(SHLIBDIR)/$(LIBSO) $(LIBDIR)/$(TARGET)
++	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
++	install -m 644 $(LIBA) $(LIBINSTALL)
++	test -d $(LIBINSTALL) || install -m 755 -d $(LIBINSTALL)
++	install -m 755 $(LIBSO) $(LIBINSTALL)
++	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
++	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
++	$(LN) -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
+ 
+ relabel:
+-	/sbin/restorecon $(SHLIBDIR)/$(LIBSO)
++	/sbin/restorecon $(LIBINSTALL)/$(LIBSO)
+ 
+ clean: 
+ 	-rm -f $(LIBPC) $(LIBMAP) $(OBJS) $(LOBJS) $(LIBA) $(LIBSO) $(TARGET) $(CIL_GENERATED)
+diff -durN libsepol.orig/utils/Makefile libsepol/utils/Makefile
+--- libsepol.orig/utils/Makefile	2018-01-12 12:42:30.915376458 +0100
++++ libsepol/utils/Makefile	2018-01-12 09:58:04.322148228 +0100
+@@ -1,6 +1,6 @@
+ # Installation directories.
+-PREFIX ?= $(DESTDIR)/usr
+-BINDIR ?= $(PREFIX)/bin
++PREFIX ?= /usr
++BINDIR ?= $(DESTDIR)$(PREFIX)/bin
+ 
+ CFLAGS ?= -Wall -Werror
+ override CFLAGS += -I../include

@@ -17,14 +17,19 @@ PULSEAUDIO_CONF_OPTS = \
 
 PULSEAUDIO_DEPENDENCIES = \
 	host-pkgconf libtool libsndfile speex host-intltool \
-	$(if $(BR2_PACKAGE_LIBSAMPLERATE),libsamplerate) \
-	$(if $(BR2_PACKAGE_ALSA_LIB),alsa-lib) \
 	$(if $(BR2_PACKAGE_LIBGLIB2),libglib2) \
 	$(if $(BR2_PACKAGE_AVAHI_DAEMON),avahi) \
 	$(if $(BR2_PACKAGE_DBUS),dbus) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_FFTW),fftw) \
 	$(if $(BR2_PACKAGE_SYSTEMD),systemd)
+
+ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
+PULSEAUDIO_CONF_OPTS += --enable-samplerate
+PULSEAUDIO_DEPENDENCIES += libsamplerate
+else
+PULSEAUDIO_CONF_OPTS += --disable-samplerate
+endif
 
 ifeq ($(BR2_PACKAGE_GDBM),y)
 PULSEAUDIO_CONF_OPTS += --with-database=gdbm
@@ -119,7 +124,10 @@ PULSEAUDIO_CONF_OPTS += --enable-neon-opt=no
 endif
 
 # pulseaudio alsa backend needs pcm/mixer apis
-ifneq ($(BR2_PACKAGE_ALSA_LIB_PCM)$(BR2_PACKAGE_ALSA_LIB_MIXER),yy)
+ifeq ($(BR2_PACKAGE_ALSA_LIB_PCM)$(BR2_PACKAGE_ALSA_LIB_MIXER),yy)
+PULSEAUDIO_DEPENDENCIES += alsa-lib
+PULSEAUDIO_CONF_OPTS += --enable-alsa
+else
 PULSEAUDIO_CONF_OPTS += --disable-alsa
 endif
 
@@ -140,11 +148,17 @@ else
 PULSEAUDIO_CONF_OPTS += --disable-x11
 endif
 
+# ConsoleKit module init failure breaks user daemon startup
+define PULSEAUDIO_REMOVE_CONSOLE_KIT
+	rm -f $(TARGET_DIR)/usr/lib/pulse-$(PULSEAUDIO_VERSION)/modules/module-console-kit.so
+endef
+
 define PULSEAUDIO_REMOVE_VALA
 	rm -rf $(TARGET_DIR)/usr/share/vala
 endef
 
-PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA
+PULSEAUDIO_POST_INSTALL_TARGET_HOOKS += PULSEAUDIO_REMOVE_VALA \
+	PULSEAUDIO_REMOVE_CONSOLE_KIT
 
 ifeq ($(BR2_PACKAGE_PULSEAUDIO_DAEMON),y)
 define PULSEAUDIO_USERS

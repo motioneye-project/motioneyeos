@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GHOSTSCRIPT_VERSION = 9.22
-GHOSTSCRIPT_SITE = https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs922
+GHOSTSCRIPT_VERSION = 9.25
+GHOSTSCRIPT_SITE = https://github.com/ArtifexSoftware/ghostpdl-downloads/releases/download/gs925
 GHOSTSCRIPT_SOURCE = ghostscript-$(GHOSTSCRIPT_VERSION).tar.xz
 GHOSTSCRIPT_LICENSE = AGPL-3.0
 GHOSTSCRIPT_LICENSE_FILES = LICENSE
@@ -27,7 +27,8 @@ GHOSTSCRIPT_DEPENDENCIES = \
 # Inspired by linuxfromscratch:
 # http://www.linuxfromscratch.org/blfs/view/svn/pst/gs.html
 define GHOSTSCRIPT_REMOVE_LIBS
-	rm -rf $(@D)/freetype $(@D)/ijs $(@D)/jpeg $(@D)/lcms2 $(@D)/libpng $(@D)/tiff $(@D)/zlib
+	rm -rf $(@D)/freetype $(@D)/ijs $(@D)/jpeg $(@D)/lcms2mt \
+		$(@D)/libpng $(@D)/tiff $(@D)/zlib
 endef
 GHOSTSCRIPT_POST_PATCH_HOOKS += GHOSTSCRIPT_REMOVE_LIBS
 
@@ -39,7 +40,7 @@ GHOSTSCRIPT_CONF_OPTS = \
 	--disable-compile-inits \
 	--disable-cups \
 	--enable-fontconfig \
-	--with-fontpath=$(GHOSTSCRIPT_FONTS_TARGET_DIR) \
+	--with-fontpath=/usr/share/fonts \
 	--enable-freetype \
 	--disable-gtk \
 	--without-jbig2dec \

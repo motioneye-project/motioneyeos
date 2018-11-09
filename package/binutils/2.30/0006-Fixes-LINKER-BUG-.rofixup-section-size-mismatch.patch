@@ -1,0 +1,31 @@
+From c3bd478ac1b7e83765230505eb08a0acf2fe3867 Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Sat, 29 Jul 2017 14:08:20 +0200
+Subject: [PATCH] Fixes: LINKER BUG: .rofixup section size mismatch
+
+Workaround from adi-toolchain commit:
+af414ec1fb628ddb1562f062f3db49823ca14ca2
+[#6798] binutils-2.21/bfd: temp workaround for rofixup mismatch errors.
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+---
+ bfd/elf32-bfin.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-bfin.c b/bfd/elf32-bfin.c
+index 478b8d4731..a38519b585 100644
+--- a/bfd/elf32-bfin.c
++++ b/bfd/elf32-bfin.c
+@@ -4655,7 +4655,8 @@ bfinfdpic_check_relocs (bfd *abfd, struct bfd_link_info *info,
+ 
+ 	case R_BFIN_FUNCDESC:
+ 	  picrel->fd++;
+-	  picrel->relocsfd++;
++	  if (bfd_get_section_flags (abfd, sec) & SEC_ALLOC)
++	    picrel->relocsfd++;
+ 	  break;
+ 
+ 	/* This relocation describes the C++ object vtable hierarchy.
+-- 
+2.14.3
+

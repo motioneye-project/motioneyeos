@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256	fd95153655d6b95567e623843a0e77b81612d502ecf78a489a4aed7867caa299	patch-2.7.5.tar.xz
+sha256	ac610bda97abe0d9f6b7c963255a11dcb196c25e337c61f94e4778d632f1d8fd	patch-2.7.6.tar.xz
+# Locally calculated
+sha256	8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903	COPYING

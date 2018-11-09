@@ -8,8 +8,8 @@ menuconfig BR2_PACKAGE_OPENCV3
 	depends on !BR2_PACKAGE_OPENCV
 	select BR2_PACKAGE_ZLIB
 	help
-	  OpenCV (Open Source Computer Vision) is a library of programming
-	  functions for real time computer vision.
+	  OpenCV (Open Source Computer Vision) is a library of
+	  programming functions for real time computer vision.
 
 	  Note that the opencv_core module and the opencv_hal library
 	  are always built and installed, not matter which other
@@ -26,8 +26,8 @@ config BR2_PACKAGE_OPENCV3_LIB_CALIB3D
 	select BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	help
-	  Include opencv_calib3d (camera calibration and 3d reconstruction) module
-	  into the OpenCV build.
+	  Include opencv_calib3d (camera calibration and 3d
+	  reconstruction) module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
 	bool "features2d"
@@ -35,15 +35,15 @@ config BR2_PACKAGE_OPENCV3_LIB_FEATURES2D
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_ML
 	help
-	  Include opencv_features2d (2d features framework) module into the OpenCV
-	  build.
+	  Include opencv_features2d (2d features framework) module
+	  into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_FLANN
 	bool "flann"
 	# opencv_core dependency is already enabled
 	help
-	  Include opencv_flann (clustering and search in multi-dimensional spaces)
-	  module into the OpenCV build.
+	  Include opencv_flann (clustering and search in
+	  multi-dimensional spaces) module into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
 	bool "highgui"
@@ -51,8 +51,8 @@ config BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_VIDEOIO
 	help
-	  Include opencv_highgui (high-level gui and media i/o) module into the
-	  OpenCV build.
+	  Include opencv_highgui (high-level gui and media i/o) module
+	  into the OpenCV build.
 
 if BR2_PACKAGE_OPENCV3_LIB_HIGHGUI
 
@@ -89,7 +89,8 @@ config BR2_PACKAGE_OPENCV3_WITH_QT
 	select BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_TEST
 	help
-	  Use Qt4 with QtTest and QtGui modules and STL support, as GUI toolkit.
+	  Use Qt4 with QtTest and QtGui modules and STL support, as
+	  GUI toolkit.
 
 comment "qt4 support needs qt"
 	depends on BR2_USE_MMU # qt
@@ -103,8 +104,8 @@ config BR2_PACKAGE_OPENCV3_WITH_QT5
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_WIDGETS
 	help
-	  Use Qt5 with base, concurrent, test, gui and widgets components, as GUI
-	  toolkit.
+	  Use Qt5 with base, concurrent, test, gui and widgets
+	  components, as GUI toolkit.
 
 comment "qt5 support needs qt5"
 	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
@@ -133,19 +134,22 @@ config BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
 	bool "imgcodecs"
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	help
-	  Include opencv_imgcodecs (image codecs) module into the OpenCV build.
+	  Include opencv_imgcodecs (image codecs) module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	bool "imgproc"
 	# opencv_core dependency is already enabled
 	help
-	  Include opencv_imgproc (image processing) module into the OpenCV build.
+	  Include opencv_imgproc (image processing) module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_ML
 	bool "ml"
 	# opencv_core dependency is already enabled
 	help
-	  Include opencv_ml (machine learning) module into the OpenCV build.
+	  Include opencv_ml (machine learning) module into the OpenCV
+	  build.
 
 config BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
 	bool "objdetect"
@@ -153,14 +157,15 @@ config BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_ML
 	help
-	  Include opencv_objdetect (object detection) module into the OpenCV build.
+	  Include opencv_objdetect (object detection) module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_PHOTO
 	bool "photo"
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	help
-	  Include opencv_photo (computational photography) module into the OpenCV
-	  build.
+	  Include opencv_photo (computational photography) module into
+	  the OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_PYTHON
 	bool "python"
@@ -168,8 +173,8 @@ config BR2_PACKAGE_OPENCV3_LIB_PYTHON
 	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 	select BR2_PACKAGE_PYTHON_NUMPY
 	help
-	  Include opencv_python module into the OpenCV build.
-	  No python example is installed.
+	  Include opencv_python module into the OpenCV build.  No
+	  python example is installed.
 
 config BR2_PACKAGE_OPENCV3_LIB_SHAPE
 	bool "shape"
@@ -177,8 +182,8 @@ config BR2_PACKAGE_OPENCV3_LIB_SHAPE
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
 	help
-	  Include opencv_shape (shape descriptors and matchers) module into the
-	  OpenCV build.
+	  Include opencv_shape (shape descriptors and matchers) module
+	  into the OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_STITCHING
 	bool "stitching"
@@ -187,14 +192,16 @@ config BR2_PACKAGE_OPENCV3_LIB_STITCHING
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_OBJDETECT
 	help
-	  Include opencv_stitching (images stitching) module into the OpenCV build.
+	  Include opencv_stitching (images stitching) module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_SUPERRES
 	bool "superres"
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
 	help
-	  Include opencv_superres (super resolution) module into the OpenCV build.
+	  Include opencv_superres (super resolution) module into the
+	  OpenCV build.
 
 config BR2_PACKAGE_OPENCV3_LIB_TS
 	bool "ts"
@@ -211,13 +218,15 @@ config BR2_PACKAGE_OPENCV3_LIB_VIDEOIO
 	select BR2_PACKAGE_OPENCV3_LIB_IMGCODECS
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	help
-	  Include opencv_videoio (media i/o) module into the OpenCV build.
+	  Include opencv_videoio (media i/o) module into the OpenCV
+	  build.
 
 config BR2_PACKAGE_OPENCV3_LIB_VIDEO
 	bool "video"
 	select BR2_PACKAGE_OPENCV3_LIB_IMGPROC
 	help
-	  Include opencv_video (video analysis) module into the OpenCV build.
+	  Include opencv_video (video analysis) module into the OpenCV
+	  build.
 
 config BR2_PACKAGE_OPENCV3_LIB_VIDEOSTAB
 	bool "videostab"
@@ -227,8 +236,8 @@ config BR2_PACKAGE_OPENCV3_LIB_VIDEOSTAB
 	select BR2_PACKAGE_OPENCV3_LIB_PHOTO
 	select BR2_PACKAGE_OPENCV3_LIB_VIDEO
 	help
-	  Include opencv_videostab (video stabilization) module into the OpenCV
-	  build.
+	  Include opencv_videostab (video stabilization) module into
+	  the OpenCV build.
 
 comment "Test sets"
 config BR2_PACKAGE_OPENCV3_BUILD_TESTS
@@ -318,16 +327,17 @@ config BR2_PACKAGE_OPENCV3_WITH_V4L
 	help
 	  Enable Video 4 Linux support.
 
-	  If the package libv4l is enabled, its support is automatically enabled.
+	  If the package libv4l is enabled, its support is
+	  automatically enabled.
 
 comment "Install options"
 
 config BR2_PACKAGE_OPENCV3_INSTALL_DATA
 	bool "install extra data"
 	help
-	  Install various data that is used by cv libraries and/or demo
-	  applications, specifically for haarcascades and lbpcascades
-	  features.
+	  Install various data that is used by cv libraries and/or
+	  demo applications, specifically for haarcascades and
+	  lbpcascades features.
 
 	  For further information: see OpenCV documentation.
 

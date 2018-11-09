@@ -7,10 +7,10 @@ config BR2_PACKAGE_PYTHON_DJANGO
 	help
 	  Django is a high-level Python Web framework that encourages
 	  rapid development and clean, pragmatic design. It takes your
-	  Web applications from concept to launch in a matter of hours.
-	  Django takes care of user authentication, content administration,
-	  site maps, RSS feeds, user comments and many more tasks.
-	  Django takes security seriously and helps developers avoid
-	  many common security mistakes
+	  Web applications from concept to launch in a matter of
+	  hours.  Django takes care of user authentication, content
+	  administration, site maps, RSS feeds, user comments and many
+	  more tasks.  Django takes security seriously and helps
+	  developers avoid many common security mistakes
 
 	  https://www.djangoproject.com/

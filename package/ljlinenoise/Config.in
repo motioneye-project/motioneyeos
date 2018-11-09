@@ -8,7 +8,7 @@ config BR2_PACKAGE_LJLINENOISE
 	  ljlinenoise is a pure LuaJIT port of linenoise,
 	  a small alternative to readline and libedit.
 
-	  http://fperrad.github.io/ljlinenoise/
+	  https://fperrad.frama.io/ljlinenoise/
 
 comment "ljlinenoise needs LuaJIT"
 	depends on !BR2_PACKAGE_LUAJIT

@@ -1,0 +1,46 @@
+From 74d9d6a293d7462dea8f83e7fc5ac792e956a0ad Mon Sep 17 00:00:00 2001
+From: Paul Eggert <eggert@cs.ucla.edu>
+Date: Thu, 8 Mar 2018 16:42:45 -0800
+Subject: [PATCH 2/2] fflush: be more paranoid about libio.h change
+
+Suggested by Eli Zaretskii in:
+https://lists.gnu.org/r/emacs-devel/2018-03/msg00270.html
+* lib/fbufmode.c (fbufmode):
+* lib/fflush.c (clear_ungetc_buffer_preserving_position)
+(disable_seek_optimization, rpl_fflush):
+* lib/fpending.c (__fpending):
+* lib/fpurge.c (fpurge):
+* lib/freadable.c (freadable):
+* lib/freadahead.c (freadahead):
+* lib/freading.c (freading):
+* lib/freadptr.c (freadptr):
+* lib/freadseek.c (freadptrinc):
+* lib/fseeko.c (fseeko):
+* lib/fseterr.c (fseterr):
+* lib/fwritable.c (fwritable):
+* lib/fwriting.c (fwriting):
+Look at _IO_ftrylockfile as well as at _IO_EOF_SEEN.
+---
+ lib/fseterr.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+[yann.morin.1998@free.fr: partially backport from upstream gnulib]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+diff --git a/lib/fseterr.c b/lib/fseterr.c
+index adb637256..fd9da6338 100644
+--- a/lib/fseterr.c
++++ b/lib/fseterr.c
+@@ -29,7 +29,8 @@ fseterr (FILE *fp)
+   /* Most systems provide FILE as a struct and the necessary bitmask in
+      <stdio.h>, because they need it for implementing getc() and putc() as
+      fast macros.  */
+-#if defined _IO_EOF_SEEN || __GNU_LIBRARY__ == 1 /* GNU libc, BeOS, Haiku, Linux libc5 */
++#if defined _IO_EOF_SEEN || defined _IO_ftrylockfile || __GNU_LIBRARY__ == 1
++  /* GNU libc, BeOS, Haiku, Linux libc5 */
+   fp->_flags |= _IO_ERR_SEEN;
+ #elif defined __sferror || defined __DragonFly__ || defined __ANDROID__
+   /* FreeBSD, NetBSD, OpenBSD, DragonFly, Mac OS X, Cygwin, Minix 3, Android */
+-- 
+2.14.1
+

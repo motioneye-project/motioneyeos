@@ -1,3 +1,6 @@
-# From http://sourceforge.net/projects/net-snmp/files/net-snmp/5.7.3/
-md5	d4a3459e1577d0efa8d96ca70a885e53	net-snmp-5.7.3.tar.gz
-sha1	97dc25077257680815de44e34128d365c76bd839	net-snmp-5.7.3.tar.gz
+# From http://sourceforge.net/projects/net-snmp/files/net-snmp/5.8/
+md5	63bfc65fbb86cdb616598df1aff6458a		net-snmp-5.8.tar.gz
+sha1	78f70731df9dcdb13fe8f60eb7d80d7583da4d2c	net-snmp-5.8.tar.gz
+# Locally computed
+sha256 b2fc3500840ebe532734c4786b0da4ef0a5f67e51ef4c86b3345d697e4976adf  net-snmp-5.8.tar.gz
+sha256 ed869ea395a1f125819a56676385ab0557a21507764bf56f2943302011381e59  COPYING

@@ -1,8 +1,12 @@
 config BR2_PACKAGE_PYTHON_KEYRING
 	bool "python-keyring"
-	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_INSTALL_LIBSTDCPP # python-secretstorage
+	select BR2_PACKAGE_PYTHON_SECRETSTORAGE # runtime
 	help
 	  The Python keyring lib provides a easy way to access the
 	  system keyring service from Python.
 
 	  https://pypi.python.org/pypi/keyring
+
+comment "python-keyring needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

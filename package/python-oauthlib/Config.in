@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_OAUTHLIB
+	bool "python-oauthlib"
+	help
+	  A generic, spec-compliant, thorough implementation of the
+	  OAuth request-signing logic.
+
+	  https://github.com/idan/oauthlib

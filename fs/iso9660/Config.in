@@ -63,6 +63,15 @@ config BR2_TARGET_ROOTFS_ISO9660_INITRD
 	  contain a kernel image, an initrd image (unless an initramfs
 	  linked into the kernel is used) and the bootloader.
 
+config BR2_TARGET_ROOTFS_ISO9660_TRANSPARENT_COMPRESSION
+	bool "transparent compression"
+	depends on !BR2_TARGET_ROOTFS_ISO9660_INITRD
+	depends on !BR2_TARGET_ROOTFS_INITRAMFS
+	help
+	  Say 'y' to enable use of transparent (de)compression. Files
+	  are stored compressed and will be decompressed on-the-fly
+	  upon access at runtime.
+
 config BR2_TARGET_ROOTFS_ISO9660_HYBRID
 	bool "Build hybrid image"
 	depends on BR2_TARGET_ROOTFS_ISO9660_ISOLINUX

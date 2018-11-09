@@ -64,20 +64,21 @@ except ImportError:
 # Note: matplotlib.use() must be called *before* matplotlib.pyplot.
 mpl.use('Agg')
 
-import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
-import csv
-import argparse
+import matplotlib.pyplot as plt       # noqa: E402
+import matplotlib.font_manager as fm  # noqa: E402
+import csv                            # noqa: E402
+import argparse                       # noqa: E402
 
-steps = [ 'extract', 'patch', 'configure', 'build',
-          'install-target', 'install-staging', 'install-images',
-          'install-host']
+steps = ['extract', 'patch', 'configure', 'build',
+         'install-target', 'install-staging', 'install-images',
+         'install-host']
 
 default_colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
                   '#0068b5', '#f28e00', '#940084', '#97c000']
 
 alternate_colors = ['#00e0e0', '#3f7f7f', '#ff0000', '#00c000',
                     '#0080ff', '#c000ff', '#00eeee', '#e0e000']
+
 
 class Package:
     def __init__(self, name):
@@ -103,6 +104,7 @@ class Package:
         if step in self.steps_duration:
             return self.steps_duration[step]
         return 0
+
 
 # Generate an histogram of the time spent in each step of each
 # package.
@@ -132,10 +134,10 @@ def pkg_histogram(data, output, order="build"):
     for i in range(0, len(vals)):
         b = plt.bar(ind+0.1, vals[i], width=0.8, color=colors[i], bottom=bottom, linewidth=0.25)
         legenditems.append(b[0])
-        bottom = [ bottom[j] + vals[i][j] for j in range(0, len(vals[i])) ]
+        bottom = [bottom[j] + vals[i][j] for j in range(0, len(vals[i]))]
 
     # Draw the package names
-    plt.xticks(ind + .6, [ p.name for p in data ], rotation=-60, rotation_mode="anchor", fontsize=8, ha='left')
+    plt.xticks(ind + .6, [p.name for p in data], rotation=-60, rotation_mode="anchor", fontsize=8, ha='left')
 
     # Adjust size of graph depending on the number of packages
     # Ensure a minimal size twice as the default
@@ -172,6 +174,7 @@ def pkg_histogram(data, output, order="build"):
     # Save graph
     plt.savefig(output)
 
+
 # Generate a pie chart with the time spent building each package.
 def pkg_pie_time_per_package(data, output):
     # Compute total build duration
@@ -184,7 +187,7 @@ def pkg_pie_time_per_package(data, output):
     labels = []
     values = []
     other_value = 0
-    for p in data:
+    for p in sorted(data, key=lambda p: p.get_duration()):
         if p.get_duration() < (total * 0.01):
             other_value += p.get_duration()
         else:
@@ -209,6 +212,7 @@ def pkg_pie_time_per_package(data, output):
 
     plt.title('Build time per package')
     plt.savefig(output)
+
 
 # Generate a pie chart with a portion for the overall time spent in
 # each step for all packages.
@@ -235,6 +239,7 @@ def pkg_pie_time_per_step(data, output):
 
     plt.title('Build time per step')
     plt.savefig(output)
+
 
 # Parses the csv file passed on standard input and returns a list of
 # Package objects, filed with the duration of each step and the total
@@ -268,6 +273,7 @@ def read_data(input_file):
         p.add_step(step, state, time)
 
     return pkgs
+
 
 parser = argparse.ArgumentParser(description='Draw build time graphs')
 parser.add_argument("--type", '-t', metavar="GRAPH_TYPE",

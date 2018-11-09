@@ -17,7 +17,7 @@ index 29a6ad3..420ba60 100644
 -	@echo "$(CC) buildconfig.c"
 -	$(FE)$(CC) $(CFLAGS) $(INCLUDE) -o buildconfig buildconfig.c $(LIBS)
 +	@echo "$(HOSTCC) buildconfig.c"
-+	$(FE)$(HOSTCC) $(HOSTCFLAGS) $(INCLUDE) -o buildconfig buildconfig.c $(LIBS)
++	$(FE)$(HOSTCC) $(HOSTCFLAGS) $(INCLUDE) -o buildconfig buildconfig.c
  
  
  # Target for the exicyclog utility script

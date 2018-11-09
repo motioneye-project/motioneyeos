@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUA_COATPERSISTENT_VERSION_UPSTREAM = 0.2.1
+LUA_COATPERSISTENT_VERSION_UPSTREAM = 0.2.2
 ifeq ($(BR2_PACKAGE_LSQLITE3),y)
 LUA_COATPERSISTENT_VERSION = lsqlite3-$(LUA_COATPERSISTENT_VERSION_UPSTREAM)-1
 else

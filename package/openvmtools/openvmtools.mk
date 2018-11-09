@@ -17,7 +17,7 @@ OPENVMTOOLS_CONF_OPTS = --with-dnet \
 	--without-gtkmm --without-kernel-modules \
 	--disable-deploypkg --without-xerces
 OPENVMTOOLS_CONF_ENV += CUSTOM_DNET_CPPFLAGS=" "
-OPENVMTOOLS_DEPENDENCIES = libglib2 libdnet
+OPENVMTOOLS_DEPENDENCIES = host-nfs-utils libglib2 libdnet
 
 # When libfuse is available, openvmtools can build vmblock-fuse, so
 # make sure that libfuse gets built first

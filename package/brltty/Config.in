@@ -1,0 +1,22 @@
+config BR2_PACKAGE_BRLTTY
+	bool "brltty"
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU # fork()
+	help
+	  A daemon providing access to the Linux console for a blind
+	  person using a refreshable braille display.
+
+	  http://brltty.com/
+
+if BR2_PACKAGE_BRLTTY
+
+config BR2_PACKAGE_BRLTTY_TEXT_TABLE
+	string "text-table"
+
+endif
+
+comment "brltty needs a toolchain w/ dynamic lib, threads, wchar"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR

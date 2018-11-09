@@ -27,18 +27,20 @@ menuconfig BR2_PACKAGE_SYSTEMD
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # kmod-tools
 	select BR2_PACKAGE_KMOD_TOOLS
 	select BR2_TARGET_TZ_INFO
+	select BR2_NEEDS_HOST_UTF8_LOCALE
 	help
-	  systemd is a system and service manager for Linux, compatible with
-	  SysV and LSB init scripts. systemd provides aggressive parallelization
-	  capabilities, uses socket and D-Bus activation for starting services,
-	  offers on-demand starting of daemons, keeps track of processes using
-	  Linux cgroups, supports snapshotting and restoring of the system
-	  state, maintains mount and automount points and implements an
-	  elaborate transactional dependency-based service control logic.
-	  It can work as a drop-in replacement for sysvinit.
+	  systemd is a system and service manager for Linux,
+	  compatible with SysV and LSB init scripts. systemd provides
+	  aggressive parallelization capabilities, uses socket and
+	  D-Bus activation for starting services, offers on-demand
+	  starting of daemons, keeps track of processes using Linux
+	  cgroups, supports snapshotting and restoring of the system
+	  state, maintains mount and automount points and implements
+	  an elaborate transactional dependency-based service control
+	  logic.  It can work as a drop-in replacement for sysvinit.
 
-	  Systemd requires a Linux kernel >= 3.0 with the following options
-	  enabled:
+	  Systemd requires a Linux kernel >= 3.0 with the following
+	  options enabled:
 
 	  - CONFIG_CGROUPS
 	  - CONFIG_INOTIFY_USER
@@ -65,8 +67,8 @@ menuconfig BR2_PACKAGE_SYSTEMD
 
 	  Notice that systemd selects the fsck wrapper from util-linux
 	  but no particular fsck.<fstype> is selected. You must choose
-	  the apropriate ones (e.g. e2fsck, from the e2fsprogs package)
-	  according to the system configuration.
+	  the apropriate ones (e.g. e2fsck, from the e2fsprogs
+	  package) according to the system configuration.
 
 	  http://freedesktop.org/wiki/Software/systemd
 
@@ -203,11 +205,11 @@ config BR2_PACKAGE_SYSTEMD_NETWORKD
 	default y
 	help
 	  systemd-networkd is a system service that manages networks.
-	  It detects and configures network devices as they appear, as well as
-	  creating virtual network devices.
+	  It detects and configures network devices as they appear, as
+	  well as creating virtual network devices.
 
-	  This simple network configuration solution is an alternative to
-	  dhcpcd or ISC dhcp.
+	  This simple network configuration solution is an alternative
+	  to dhcpcd or ISC dhcp.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-networkd.html
 
@@ -266,14 +268,14 @@ config BR2_PACKAGE_SYSTEMD_SMACK_SUPPORT
 	select BR2_PACKAGE_ATTR
 	select BR2_PACKAGE_SMACK
 	help
-	  Enable support for SMACK, the Simple Mandatory Access Control
-	  Kernel, a minimal approach to Access Control implemented as a kernel
-	  LSM.
+	  Enable support for SMACK, the Simple Mandatory Access
+	  Control Kernel, a minimal approach to Access Control
+	  implemented as a kernel LSM.
 
 	  This feature requires a kernel >= 3.8.
 
-	  When this feature is enabled, Systemd mounts smackfs and manages
-	  security labels for sockets.
+	  When this feature is enabled, Systemd mounts smackfs and
+	  manages security labels for sockets.
 
 config BR2_PACKAGE_SYSTEMD_SYSUSERS
 	bool "enable sysusers support"
@@ -297,11 +299,12 @@ config BR2_PACKAGE_SYSTEMD_TIMESYNCD
 	bool "enable timesync daemon"
 	default y
 	help
-	  systemd-timesyncd is a service that may be used to synchronize the
-	  local system clock with a Network Time Protocol server.
+	  systemd-timesyncd is a service that may be used to
+	  synchronize the local system clock with a Network Time
+	  Protocol server.
 
-	  This simple NTP solution is an alternative to sntp/ntpd from the ntp
-	  package.
+	  This simple NTP solution is an alternative to sntp/ntpd from
+	  the ntp package.
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-timesyncd.html
 

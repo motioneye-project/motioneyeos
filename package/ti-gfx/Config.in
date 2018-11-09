@@ -32,8 +32,9 @@ config BR2_PACKAGE_PROVIDES_POWERVR
 config BR2_PACKAGE_TI_GFX_DEBUG
 	bool "enable debug support"
 	help
-	  Turns on debugging in the kernel module, install libraries built with
-	  debugging enabled, installs various tests and installs esrev script.
+	  Turns on debugging in the kernel module, install libraries
+	  built with debugging enabled, installs various tests and
+	  installs esrev script.
 
 config BR2_PACKAGE_TI_GFX_DEMOS
 	bool "install demos"
@@ -50,8 +51,8 @@ choice
 	prompt "Target"
 	default BR2_PACKAGE_TI_GFX_ES3
 	help
-	  Select the SOC for which you would like to install drivers. Please use the
-	  chart at
+	  Select the SOC for which you would like to install
+	  drivers. Please use the chart at
 	  http://processors.wiki.ti.com/index.php/OMAP35x_Graphics_SDK_Getting_Started_Guide
 
 config BR2_PACKAGE_TI_GFX_ES3

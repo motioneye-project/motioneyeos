@@ -1,0 +1,32 @@
+From da2793fcde5c4e3ff448b4b21348ef8b1482c678 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 16 Jan 2018 14:51:32 +0100
+Subject: [PATCH] fix build with g++5
+
+Patch needed to build domoticz
+
+Patch fetch from one of the answer of
+ https://github.com/domoticz/domoticz/issues/2034:
+ workaround suggested to the boost developers
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ boost/asio/detail/consuming_buffers.hpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/boost/asio/detail/consuming_buffers.hpp b/boost/asio/detail/consuming_buffers.hpp
+index a429f97..b7a887c 100644
+--- a/boost/asio/detail/consuming_buffers.hpp
++++ b/boost/asio/detail/consuming_buffers.hpp
+@@ -102,7 +102,7 @@ public:
+ 
+     std::advance(next, next_elem_);
+     std::size_t elem_offset = next_elem_offset_;
+-    while (next != end && max_size > 0 && result.count < result.max_buffers)
++    while (next != end && max_size > 0 && (result.count) < result.max_buffers)
+     {
+       Buffer next_buf = Buffer(*next) + elem_offset;
+       result.elems[result.count] = boost::asio::buffer(next_buf, max_size);
+-- 
+2.7.4
+

@@ -29,10 +29,16 @@ config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
 	bool "imx53"
 
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
-	bool "imx6q"
+	bool "imx6q/imx6dl"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6S
+	bool "imx6sl/imx6sx"
 
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6UL
-	bool "imx6ul"
+	bool "imx6ul/imx6ull"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX7
+	bool "imx7d/imx7ulp"
 
 endchoice
 
@@ -45,7 +51,9 @@ config BR2_PACKAGE_FREESCALE_IMX_PLATFORM
 	default "IMX51" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51
 	default "IMX53" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53
 	default "IMX6Q" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+	default "IMX6S" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6S
 	default "IMX6UL" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6UL
+	default "IMX7" if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX7
 
 config BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 	bool
@@ -54,9 +62,16 @@ config BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53 || \
 		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
 
+config BR2_PACKAGE_FREESCALE_IMX_HAS_VIV_GPU
+	bool
+	default y if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6S || \
+		BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX7
+
 source "package/freescale-imx/imx-codec/Config.in"
 source "package/freescale-imx/imx-kobs/Config.in"
 source "package/freescale-imx/imx-lib/Config.in"
+source "package/freescale-imx/imx-m4fwloader/Config.in"
 source "package/freescale-imx/imx-parser/Config.in"
 source "package/freescale-imx/imx-uuc/Config.in"
 source "package/freescale-imx/imx-vpu/Config.in"
@@ -66,7 +81,8 @@ if (BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51 || BR2_PACKAGE_FREESCALE_IMX_PLATFO
 source "package/freescale-imx/gpu-amd-bin-mx51/Config.in"
 source "package/freescale-imx/libz160/Config.in"
 endif
-if BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX6Q
+if BR2_PACKAGE_FREESCALE_IMX_HAS_VIV_GPU
+source "package/freescale-imx/imx-gpu-g2d/Config.in"
 source "package/freescale-imx/imx-gpu-viv/Config.in"
 source "package/freescale-imx/kernel-module-imx-gpu-viv/Config.in"
 endif

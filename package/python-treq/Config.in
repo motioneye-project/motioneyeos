@@ -1,14 +1,16 @@
 config BR2_PACKAGE_PYTHON_TREQ
 	bool "python-treq"
 	depends on BR2_INSTALL_LIBSTDCPP # python-pyopenssl
+	select BR2_PACKAGE_PYTHON_ATTRS # runtime
+	select BR2_PACKAGE_PYTHON_IDNA # runtime
+	select BR2_PACKAGE_PYTHON_PYOPENSSL # runtime
 	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
 	select BR2_PACKAGE_PYTHON_SERVICE_IDENTITY # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
 	select BR2_PACKAGE_PYTHON_TWISTED # runtime
-	select BR2_PACKAGE_PYTHON_PYOPENSSL # runtime
 	help
 	  treq is an HTTP library inspired by requests but written on
-	  top of Twisted's Agents.  It provides a simple, higher level
+	  top of Twisted's Agents. It provides a simple, higher level
 	  API for making HTTP requests when using Twisted.
 
 	  https://github.com/twisted/treq

@@ -11,16 +11,16 @@ config BR2_UCLIBC_CONFIG
 	string "uClibc configuration file to use?"
 	default "package/uclibc/uClibc-ng.config"
 	help
-	  Some people may wish to use their own modified uClibc configuration
-	  file and will specify their config file location with this option.
-	  See also docs/README in this package.
-	  If unsure, use the default.
+	  Some people may wish to use their own modified uClibc
+	  configuration file and will specify their config file
+	  location with this option.  See also docs/README in this
+	  package.  If unsure, use the default.
 
 config BR2_UCLIBC_CONFIG_FRAGMENT_FILES
 	string "Additional uClibc configuration fragment files"
 	help
-	  A space-separated list of configuration fragment files,
-	  that will be merged to the main uClibc configuration file.
+	  A space-separated list of configuration fragment files, that
+	  will be merged to the main uClibc configuration file.
 
 config BR2_TOOLCHAIN_BUILDROOT_WCHAR
 	bool "Enable WCHAR support"
@@ -48,7 +48,6 @@ choice
 config BR2_PTHREADS_NATIVE
 	bool "Native POSIX Threading (NPTL)"
 	depends on BR2_USE_MMU
-	depends on !BR2_m68k && !BR2_microblaze && !BR2_or1k
 	select BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
@@ -76,7 +75,8 @@ config BR2_TOOLCHAIN_BUILDROOT_USE_SSP
 	  Enable stack smashing protection support using GCCs
 	  -fstack-protector-all option in uClibc.
 
-	  See http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
+	  See
+	  http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
 	  for details.
 
 config BR2_UCLIBC_INSTALL_UTILS

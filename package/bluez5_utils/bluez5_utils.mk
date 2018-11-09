@@ -4,13 +4,15 @@
 #
 ################################################################################
 
-BLUEZ5_UTILS_VERSION = 5.47
+BLUEZ5_UTILS_VERSION = 5.48
 BLUEZ5_UTILS_SOURCE = bluez-$(BLUEZ5_UTILS_VERSION).tar.xz
 BLUEZ5_UTILS_SITE = $(BR2_KERNEL_MIRROR)/linux/bluetooth
 BLUEZ5_UTILS_INSTALL_STAGING = YES
 BLUEZ5_UTILS_DEPENDENCIES = dbus libglib2
 BLUEZ5_UTILS_LICENSE = GPL-2.0+, LGPL-2.1+
 BLUEZ5_UTILS_LICENSE_FILES = COPYING COPYING.LIB
+# 0001-bt_shell-APIs-shall-only-be-build-if-readline-is-pre.patch
+BLUEZ5_UTILS_AUTORECONF = YES
 
 BLUEZ5_UTILS_CONF_OPTS = \
 	--enable-tools \
@@ -116,7 +118,7 @@ define BLUEZ5_UTILS_INSTALL_INIT_SYSTEMD
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/bluetooth.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/bluetooth.service \
 		$(TARGET_DIR)/etc/systemd/system/bluetooth.target.wants/bluetooth.service
-	ln -fs ../../../../usr/lib/systemd/system/bluetooth.service \
+	ln -fs ../../../usr/lib/systemd/system/bluetooth.service \
 		$(TARGET_DIR)/etc/systemd/system/dbus-org.bluez.service
 endef
 

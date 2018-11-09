@@ -4,7 +4,7 @@ config BR2_PACKAGE_PERL_HTTP_DAEMON
 	select BR2_PACKAGE_PERL_HTTP_MESSAGE
 	select BR2_PACKAGE_PERL_LWP_MEDIATYPES
 	help
-	  Instances of the `HTTP::Daemon' class are HTTP/1.1 servers that listen
-	  on a socket for incoming requests.
+	  Instances of the `HTTP::Daemon' class are HTTP/1.1 servers
+	  that listen on a socket for incoming requests.
 
 	  http://github.com/gisle/http-daemon

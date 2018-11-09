@@ -1,3 +1,8 @@
 # From http://sourceforge.net/projects/procps-ng/files/Production/
-md5	957e42e8b193490b2111252e4a2b443c	procps-ng-3.3.12.tar.xz
-sha1	82c0745f150f1385ca01fe7d24f05f74e31c94c6	procps-ng-3.3.12.tar.xz
+md5	2b0717a7cb474b3d6dfdeedfbad2eccc	procps-ng-3.3.15.tar.xz
+sha1	2929bc64f0cf7b2db997eef79b7187658e47230d	procps-ng-3.3.15.tar.xz
+# Locally calculated after checking signature
+# http://downloads.sourceforge.net/project/procps-ng/Production/procps-ng-3.3.15.tar.xz.asc
+sha256 10bd744ffcb3de2d591d2f6acf1a54a7ba070fdcc432a855931a5057149f0465  procps-ng-3.3.15.tar.xz
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
+sha256 681e386e44a19d7d0674b4320272c90e66b6610b741e7e6305f8219c42e85366  COPYING.LIB

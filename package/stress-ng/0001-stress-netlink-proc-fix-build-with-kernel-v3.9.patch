@@ -1,0 +1,38 @@
+From f3aa381322a4b73b9ca4e7940f802d74324ef24b Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 2 Jul 2018 21:06:43 +0300
+Subject: [PATCH] stress-netlink-proc: fix build with kernel v3.9
+
+The PROC_EVENT_COREDUMP has been introduced in kernel version 3.10.
+Don't use it with 3.9 headers.
+
+Fixes build failure:
+
+stress-netlink-proc.c: In function 'monitor':
+stress-netlink-proc.c:108:8: error: 'PROC_EVENT_COREDUMP' undeclared (first use in this function)
+   case PROC_EVENT_COREDUMP:
+        ^
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/ColinIanKing/stress-ng/pull/24
+
+ stress-netlink-proc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/stress-netlink-proc.c b/stress-netlink-proc.c
+index 5845610dc816..6114a0b92af1 100644
+--- a/stress-netlink-proc.c
++++ b/stress-netlink-proc.c
+@@ -104,7 +104,7 @@ static int monitor(const args_t *args, const int sock)
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,31)
+ 		case PROC_EVENT_SID:
+ #endif
+-#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,9,0)
++#if LINUX_VERSION_CODE >= KERNEL_VERSION(3,10,0)
+ 		case PROC_EVENT_COREDUMP:
+ #endif
+ #if LINUX_VERSION_CODE >= KERNEL_VERSION(3,1,0)
+-- 
+2.18.0
+

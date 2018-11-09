@@ -10,14 +10,12 @@ config BR2_PACKAGE_TRINITY_ARCH_SUPPORTS
 config BR2_PACKAGE_TRINITY
 	bool "trinity"
 	depends on BR2_PACKAGE_TRINITY_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_USES_MUSL # FTW_ACTIONRETVAL
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # IPV6_UNICAST_IF
 	help
 	  A Linux System call fuzz tester
 
 	  http://codemonkey.org.uk/projects/trinity/
 
-comment "trinity needs a uClibc or glibc toolchain w/ headers >= 3.4"
+comment "trinity needs a toolchain w/ headers >= 3.4"
 	depends on BR2_PACKAGE_TRINITY_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_USES_MUSL || \
-		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4

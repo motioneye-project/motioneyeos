@@ -57,40 +57,28 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_time
 
 # Hooks to collect statistics about installed files
 
-define _step_pkg_size_get_file_list
-	(cd $(TARGET_DIR) ; \
-		( \
-			find . -xtype f -print0 | xargs -0 md5sum ; \
-			find . -xtype d -print0 | xargs -0 -I{} printf 'directory  {}\n'; \
-		) \
-	) | sort > $1
-endef
-
-# This hook will be called before the target installation of a
-# package. We store in a file named .br_filelist_before the list of
-# files currently installed in the target. Note that the MD5 is also
-# stored, in order to identify if the files are overwritten.
-define step_pkg_size_start
-	$(call _step_pkg_size_get_file_list,$($(PKG)_DIR)/.br_filelist_before)
-endef
-
-# This hook will be called after the target installation of a
-# package. We store in a file named .br_filelist_after the list of
-# files (and their MD5) currently installed in the target. We then do
-# a diff with the .br_filelist_before to compute the list of files
-# installed by this package.
-define step_pkg_size_end
-	$(call _step_pkg_size_get_file_list,$($(PKG)_DIR)/.br_filelist_after)
-	comm -13 $($(PKG)_DIR)/.br_filelist_before $($(PKG)_DIR)/.br_filelist_after | \
-		while read hash file ; do \
-			echo "$(1),$${file}" >> $(BUILD_DIR)/packages-file-list.txt ; \
-		done
+# The suffix is typically empty for the target variant, for legacy backward
+# compatibility.
+# $(1): package name
+# $(2): base directory to search in
+# $(3): suffix of file  (optional)
+define step_pkg_size_inner
+	@touch $(BUILD_DIR)/packages-file-list$(3).txt
+	$(SED) '/^$(1),/d' $(BUILD_DIR)/packages-file-list$(3).txt
+	cd $(2); \
+	find . \( -type f -o -type l \) \
+		-newer $($(PKG)_DIR)/.stamp_built \
+		-exec printf '$(1),%s\n' {} + \
+		>> $(BUILD_DIR)/packages-file-list$(3).txt
 endef
 
 define step_pkg_size
 	$(if $(filter install-target,$(2)),\
-		$(if $(filter start,$(1)),$(call step_pkg_size_start,$(3))) \
-		$(if $(filter end,$(1)),$(call step_pkg_size_end,$(3))))
+		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(TARGET_DIR))))
+	$(if $(filter install-staging,$(2)),\
+		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(STAGING_DIR),-staging)))
+	$(if $(filter install-host,$(2)),\
+		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(HOST_DIR),-host)))
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 
@@ -99,6 +87,7 @@ define check_bin_arch
 	$(if $(filter end-install-target,$(1)-$(2)),\
 		support/scripts/check-bin-arch -p $(3) \
 			-l $(BUILD_DIR)/packages-file-list.txt \
+			$(foreach i,$($(PKG)_BIN_ARCH_EXCLUDE),-i "$(i)") \
 			-r $(TARGET_READELF) \
 			-a $(BR2_READELF_ARCH_NAME))
 endef
@@ -439,10 +428,10 @@ ifdef $(3)_OVERRIDE_SRCDIR
   $(2)_OVERRIDE_SRCDIR ?= $$($(3)_OVERRIDE_SRCDIR)
 endif
 
-$(2)_BASE_NAME	= $$(if $$($(2)_VERSION),$(1)-$$($(2)_VERSION),$(1))
-$(2)_RAW_BASE_NAME = $$(if $$($(2)_VERSION),$$($(2)_RAWNAME)-$$($(2)_VERSION),$$($(2)_RAWNAME))
+$(2)_BASENAME	= $$(if $$($(2)_VERSION),$(1)-$$($(2)_VERSION),$(1))
+$(2)_BASENAME_RAW = $$(if $$($(2)_VERSION),$$($(2)_RAWNAME)-$$($(2)_VERSION),$$($(2)_RAWNAME))
 $(2)_DL_DIR	=  $$(DL_DIR)
-$(2)_DIR	=  $$(BUILD_DIR)/$$($(2)_BASE_NAME)
+$(2)_DIR	=  $$(BUILD_DIR)/$$($(2)_BASENAME)
 
 ifndef $(2)_SUBDIR
  ifdef $(3)_SUBDIR
@@ -471,7 +460,7 @@ ifndef $(2)_SOURCE
  ifdef $(3)_SOURCE
   $(2)_SOURCE = $$($(3)_SOURCE)
  else ifdef $(2)_VERSION
-  $(2)_SOURCE			?= $$($(2)_RAW_BASE_NAME).tar.gz
+  $(2)_SOURCE			?= $$($(2)_BASENAME_RAW).tar.gz
  endif
 endif
 
@@ -521,6 +510,9 @@ ifeq ($$($(2)_SITE_METHOD),local)
 ifeq ($$($(2)_OVERRIDE_SRCDIR),)
 $(2)_OVERRIDE_SRCDIR = $$($(2)_SITE)
 endif
+ifeq ($$($(2)_OVERRIDE_SRCDIR),)
+$$(error $(1) has local site method, but `$(2)_SITE` is not defined)
+endif
 endif
 
 ifndef $(2)_LICENSE
@@ -545,7 +537,7 @@ endif
 
 $(2)_REDISTRIBUTE		?= YES
 
-$(2)_REDIST_SOURCES_DIR = $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))/$$($(2)_RAW_BASE_NAME)
+$(2)_REDIST_SOURCES_DIR = $$(REDIST_SOURCES_DIR_$$(call UPPERCASE,$(4)))/$$($(2)_BASENAME_RAW)
 
 # When a target package is a toolchain dependency set this variable to
 # 'NO' so the 'toolchain' dependency is not added to prevent a circular
@@ -706,10 +698,6 @@ $(1)-legal-source:	$$($(2)_TARGET_ACTUAL_SOURCE)
 endif # actual sources != sources
 endif # actual sources != ""
 
-$(1)-source-check: PKG=$(2)
-$(1)-source-check:
-	$$(foreach p,$$($(2)_ALL_DOWNLOADS),$$(call SOURCE_CHECK,$$(p))$$(sep))
-
 $(1)-external-deps:
 	@for p in $$($(2)_SOURCE) $$($(2)_PATCH) $$($(2)_EXTRA_DOWNLOADS) ; do \
 		echo `basename $$$$p` ; \
@@ -733,9 +721,6 @@ $(1)-rsync:		$$($(2)_TARGET_RSYNC)
 
 $(1)-source:
 $(1)-legal-source:
-
-$(1)-source-check:
-	test -d $$($(2)_OVERRIDE_SRCDIR)
 
 $(1)-external-deps:
 	@echo "file://$$($(2)_OVERRIDE_SRCDIR)"
@@ -761,9 +746,6 @@ $(1)-graph-rdepends: graph-depends-requirements
 
 $(1)-all-source:	$(1)-source
 $(1)-all-source:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-source)
-
-$(1)-all-source-check:	$(1)-source-check
-$(1)-all-source-check:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-source-check)
 
 $(1)-all-external-deps:	$(1)-external-deps
 $(1)-all-external-deps:	$$(foreach p,$$($(2)_FINAL_ALL_DEPENDENCIES),$$(p)-all-external-deps)
@@ -861,9 +843,9 @@ ifneq ($$(call qstrip,$$($(2)_SOURCE)),)
 # is that the license still applies to the files distributed as part
 # of the rootfs, even if the sources are not themselves redistributed.
 ifeq ($$(call qstrip,$$($(2)_LICENSE_FILES)),)
-	$(Q)$$(call legal-warning-pkg,$$($(2)_RAW_BASE_NAME),cannot save license ($(2)_LICENSE_FILES not defined))
+	$(Q)$$(call legal-warning-pkg,$$($(2)_BASENAME_RAW),cannot save license ($(2)_LICENSE_FILES not defined))
 else
-	$(Q)$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$($(2)_RAW_BASE_NAME),$$($(2)_PKGDIR),$$(F),$$($(2)_DIR)/$$(F),$$(call UPPERCASE,$(4)))$$(sep))
+	$(Q)$$(foreach F,$$($(2)_LICENSE_FILES),$$(call legal-license-file,$$($(2)_RAWNAME),$$($(2)_BASENAME_RAW),$$($(2)_PKGDIR),$$(F),$$($(2)_DIR)/$$(F),$$(call UPPERCASE,$(4)))$$(sep))
 endif # license files
 
 ifeq ($$($(2)_SITE_METHOD),local)
@@ -964,7 +946,6 @@ DL_TOOLS_DEPENDENCIES += $$(call extractor-dependency,$$($(2)_SOURCE))
 	$(1)-all-external-deps \
 	$(1)-all-legal-info \
 	$(1)-all-source \
-	$(1)-all-source-check \
 	$(1)-build \
 	$(1)-clean-for-rebuild \
 	$(1)-clean-for-reconfigure \
@@ -989,8 +970,7 @@ DL_TOOLS_DEPENDENCIES += $$(call extractor-dependency,$$($(2)_SOURCE))
 	$(1)-rsync \
 	$(1)-show-depends \
 	$(1)-show-version \
-	$(1)-source \
-	$(1)-source-check
+	$(1)-source
 
 ifneq ($$($(2)_SOURCE),)
 ifeq ($$($(2)_SITE),)

@@ -19,7 +19,6 @@ ifeq ($(BR2_TARGET_GENERIC_REMOUNT_ROOTFS_RW),y)
 
 define SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW
 	echo "/dev/root / auto rw 0 1" >$(TARGET_DIR)/etc/fstab
-	mkdir -p $(TARGET_DIR)/var
 endef
 
 else
@@ -31,16 +30,18 @@ else
 # back there by the tmpfiles.d mechanism.
 define SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW
 	mkdir -p $(TARGET_DIR)/etc/systemd/tmpfiles.d
-	mkdir -p $(TARGET_DIR)/usr/share/factory/var
-	ln -s usr/share/factory/var $(TARGET_DIR)/var
 	echo "/dev/root / auto ro 0 1" >$(TARGET_DIR)/etc/fstab
 	echo "tmpfs /var tmpfs mode=1777 0 0" >>$(TARGET_DIR)/etc/fstab
 endef
 
 define SKELETON_INIT_SYSTEMD_PRE_ROOTFS_VAR
-	rm -f $(TARGET_DIR)/var
-	mkdir $(TARGET_DIR)/var
-	for i in $(TARGET_DIR)/usr/share/factory/var/*; do \
+	rm -rf $(TARGET_DIR)/usr/share/factory/var
+	mv $(TARGET_DIR)/var $(TARGET_DIR)/usr/share/factory/var
+	mkdir -p $(TARGET_DIR)/var
+	for i in $(TARGET_DIR)/usr/share/factory/var/* \
+		 $(TARGET_DIR)/usr/share/factory/var/lib/* \
+		 $(TARGET_DIR)/usr/share/factory/var/lib/systemd/*; do \
+		[ -e "$${i}" ] || continue; \
 		j="$${i#$(TARGET_DIR)/usr/share/factory}"; \
 		if [ -L "$${i}" ]; then \
 			printf "L+! %s - - - - %s\n" \
@@ -56,7 +57,7 @@ SKELETON_INIT_SYSTEMD_ROOTFS_PRE_CMD_HOOKS += SKELETON_INIT_SYSTEMD_PRE_ROOTFS_V
 
 define SKELETON_INIT_SYSTEMD_POST_ROOTFS_VAR
 	rm -rf $(TARGET_DIR)/var
-	ln -s usr/share/factory/var $(TARGET_DIR)/var
+	mv $(TARGET_DIR)/usr/share/factory/var $(TARGET_DIR)/var
 endef
 SKELETON_INIT_SYSTEMD_ROOTFS_POST_CMD_HOOKS += SKELETON_INIT_SYSTEMD_POST_ROOTFS_VAR
 
@@ -65,6 +66,8 @@ endif
 define SKELETON_INIT_SYSTEMD_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/home
 	mkdir -p $(TARGET_DIR)/srv
+	mkdir -p $(TARGET_DIR)/var
+	ln -s ../run $(TARGET_DIR)/var/run
 	$(SKELETON_INIT_SYSTEMD_ROOT_RO_OR_RW)
 endef
 

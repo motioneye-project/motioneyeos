@@ -1,0 +1,5 @@
+# md5 from https://pypi.python.org/pypi/schedule/json, sha256 locally computed
+md5	ab135a73458547d2b836beddd168528b  schedule-0.4.3.tar.gz
+sha256	31a160546a17838842199c792ba267575cf41339ca730aaf060567b798f4f46e  schedule-0.4.3.tar.gz
+# License file, locally calculated
+sha256	30a8352c318ce1b645acde0299697342d4380ed2637d7ca18a8ad25661e3b41b  LICENSE.txt

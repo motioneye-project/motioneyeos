@@ -1,0 +1,50 @@
+From 5991f0d4b86c02a3d7739509b96815ccfa734be7 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fabrice.fontaine@orange.com>
+Date: Mon, 18 Dec 2017 17:17:54 +0100
+Subject: [PATCH] Fix install when HAVE_WCHAR is unset
+
+Don't build WCSNORM_xxx man pages if HAVE_WHCAR is not set otherwise
+installation will fail as the wcsnorm_mode enum is not defined in
+safe_str_lib.h when SAFECLIB_DISABLE_WCHAR is set
+
+Signed-off-by: Fabrice Fontaine <fabrice.fontaine@orange.com>
+---
+ Makefile.am | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 31398d1..b7e65a5 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -142,12 +142,6 @@ dist_man_MANS += \
+ 	doc/man/man3/SAFE_STR_PASSWORD_MIN_LENGTH.3	\
+ 	doc/man/man3/STRTOK_DELIM_MAX_LEN.3	\
+ 	doc/man/man3/TMP_MAX_S.3	\
+-	doc/man/man3/WCSNORM_FCC.3	\
+-	doc/man/man3/WCSNORM_FCD.3	\
+-	doc/man/man3/WCSNORM_NFC.3	\
+-	doc/man/man3/WCSNORM_NFD.3	\
+-	doc/man/man3/WCSNORM_NFKC.3	\
+-	doc/man/man3/WCSNORM_NFKD.3	\
+ 	doc/man/man3/abort_handler_s.3	\
+ 	doc/man/man3/abort_handler_s.c.3	\
+ 	doc/man/man3/asctime_s.3	\
+@@ -461,6 +455,15 @@ dist_man_MANS += \
+ 	doc/man/man3/wprintf_s.c.3	\
+ 	doc/man/man3/wscanf_s.3	\
+ 	doc/man/man3/wscanf_s.c.3
++if ENABLE_WCHAR
++dist_man_MANS += \
++	doc/man/man3/WCSNORM_FCC.3      \
++	doc/man/man3/WCSNORM_FCD.3      \
++	doc/man/man3/WCSNORM_NFC.3      \
++	doc/man/man3/WCSNORM_NFD.3      \
++	doc/man/man3/WCSNORM_NFKC.3     \
++	doc/man/man3/WCSNORM_NFKD.3
++endif
+ CLEANFILES += Doxyfile doc/footer README.md
+ 
+ # avoid parallel doxygen
+-- 
+2.7.4
+

@@ -1,0 +1,33 @@
+Fix minor()/major() build failure due to glibc 2.28
+
+glibc 2.28 no longer includes <sys/sysmacros.h> from <sys/types.h>,
+and therefore <sys/sysmacros.h> must be included explicitly when
+major()/minor() are used.
+
+This commit directly includes <sys/sysmacros.h> into cramfsck.c and
+mkcramfs.c files where minor() and major() macros are used.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+diff -urpN host-cramfs-1.1.orig/cramfsck.c host-cramfs-1.1/cramfsck.c
+--- host-cramfs-1.1.orig/cramfsck.c	2018-09-27 16:48:09.704782201 +0200
++++ host-cramfs-1.1/cramfsck.c	2018-09-27 16:49:12.841138657 +0200
+@@ -38,6 +38,7 @@
+ 
+ #define _GNU_SOURCE
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <stdarg.h>
+ #include <sys/stat.h>
+diff -urpN host-cramfs-1.1.orig/mkcramfs.c host-cramfs-1.1/mkcramfs.c
+--- host-cramfs-1.1.orig/mkcramfs.c	2018-09-27 16:48:09.712782246 +0200
++++ host-cramfs-1.1/mkcramfs.c	2018-09-27 16:48:59.777064921 +0200
+@@ -24,6 +24,7 @@
+ 
+ #define _GNU_SOURCE
+ #include <sys/types.h>
++#include <sys/sysmacros.h>
+ #include <stdio.h>
+ #include <sys/stat.h>
+ #include <unistd.h>

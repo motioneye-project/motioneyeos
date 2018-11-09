@@ -192,14 +192,6 @@ config BR2_PACKAGE_BOOST_MATH
 	  Octonions, like quaternions, are a relative of complex
 	  numbers.
 
-config BR2_PACKAGE_BOOST_METAPARSE
-	bool "boost-metaparse"
-	depends on BR2_USE_MMU # boost-test
-	select BR2_PACKAGE_BOOST_TEST
-	help
-	  A library for generating compile time parsers parsing embedded
-	  DSL code as part of the C++ compilation process
-
 config BR2_PACKAGE_BOOST_MPI
 	bool "boost-mpi"
 	help

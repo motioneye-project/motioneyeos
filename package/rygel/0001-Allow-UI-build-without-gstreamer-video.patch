@@ -1,0 +1,37 @@
+From f3a49ad1a4ba172e97bd860bc067f7e9ebe69509 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 8 Jan 2018 13:27:42 +0100
+Subject: [PATCH] Allow UI build without gstreamer-video
+
+If EXAMPLE_UI dependencies are not met, only display a warning.
+Indeed, currently, we can't build rygel UI without gstreamer-video which
+is only a dependency of fullscreen-renderer application.
+
+fullscreen-renderer won't be build without gstreamer as HAVE_GSTREAMER
+has to be true to check HAVE_UI in examples/Makefile.am
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ configure.ac | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 00b94da..d140a27 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -359,7 +359,11 @@ if test x$try_ui = xyes ; then
+                           [$RYGEL_COMMON_MODULES gio-2.0 >= $GIO_REQUIRED
+                            gssdp-1.0 >= $GSSDP_REQUIRED
+                            gstreamer-video-1.0 >= $GSTREAMER_REQUIRED
+-                           gtk+-3.0 >= $GTK_REQUIRED])
++                           gtk+-3.0 >= $GTK_REQUIRED],,
++                          [
++                           AC_MSG_WARN([Example UI dependencies not found.])
++                           AC_MSG_WARN([Example UI applications will not be built.])
++                          ])
+       ],
+       [
+         AC_MSG_WARN([UI dependencies not found.])
+-- 
+2.7.4
+

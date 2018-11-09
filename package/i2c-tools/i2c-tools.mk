@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-I2C_TOOLS_VERSION = 3.1.2
+I2C_TOOLS_VERSION = 4.0
 I2C_TOOLS_SOURCE = i2c-tools-$(I2C_TOOLS_VERSION).tar.xz
 I2C_TOOLS_SITE = https://www.kernel.org/pub/software/utils/i2c-tools
 I2C_TOOLS_LICENSE = GPL-2.0+, GPL-2.0 (py-smbus)
 I2C_TOOLS_LICENSE_FILES = COPYING
+I2C_TOOLS_MAKE_OPTS = EXTRA=eeprog
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 I2C_TOOLS_DEPENDENCIES += python
@@ -20,6 +21,14 @@ endif
 
 ifeq ($(BR2_PACKAGE_BUSYBOX),y)
 I2C_TOOLS_DEPENDENCIES += busybox
+endif
+
+ifeq ($(BR2_STATIC_LIBS),y)
+I2C_TOOLS_MAKE_OPTS += BUILD_DYNAMIC_LIB=0 USE_STATIC_LIB=1
+endif
+
+ifeq ($(BR2_SHARED_LIBS),y)
+I2C_TOOLS_MAKE_OPTS += BUILD_STATIC_LIB=0
 endif
 
 # Build/install steps mirror the distutil python package type in the python package
@@ -47,15 +56,13 @@ endef
 endif # BR2_PACKAGE_PYTHON
 
 define I2C_TOOLS_BUILD_CMDS
-	$(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D)
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(I2C_TOOLS_MAKE_OPTS) -C $(@D)
 	$(I2C_TOOLS_BUILD_PYSMBUS)
 endef
 
 define I2C_TOOLS_INSTALL_TARGET_CMDS
-	for i in i2cdump i2cget i2cset i2cdetect; \
-	do \
-		$(INSTALL) -m 755 -D $(@D)/tools/$$i $(TARGET_DIR)/usr/sbin/$$i; \
-	done
+	$(MAKE) $(TARGET_CONFIGURE_OPTS) $(I2C_TOOLS_MAKE_OPTS) \
+		DESTDIR="$(TARGET_DIR)" prefix=/usr -C $(@D) install
 	$(I2C_TOOLS_INSTALL_PYSMBUS)
 endef
 

@@ -65,7 +65,7 @@ define BUSYBOX_PERMISSIONS
 # Set permissions on all applets with BB_SUID_REQUIRE and BB_SUID_MAYBE.
 # 12 Applets are pulled from applets.h using grep command :
 #  grep -r -e "APPLET.*BB_SUID_REQUIRE\|APPLET.*BB_SUID_MAYBE" \
-#  $(@D)/include/applets.h 
+#  $(@D)/include/applets.h
 # These applets are added to the device table and the makedev file
 # ignores the files with type 'F' ( optional files).
 	/usr/bin/wall 			 F 4755 0  0 - - - - -
@@ -221,7 +221,7 @@ define BUSYBOX_INSTALL_LOGGING_SCRIPT
 	if grep -q CONFIG_SYSLOGD=y $(@D)/.config; then \
 		$(INSTALL) -m 0755 -D package/busybox/S01logging \
 			$(TARGET_DIR)/etc/init.d/S01logging; \
-	else rm -f $(TARGET_DIR)/etc/init.d/S01logging; fi
+	fi
 endef
 
 ifeq ($(BR2_INIT_BUSYBOX),y)
@@ -248,6 +248,10 @@ define BUSYBOX_LINUX_PAM
 	$(call KCONFIG_ENABLE_OPT,CONFIG_PAM,$(BUSYBOX_BUILD_CONFIG))
 endef
 BUSYBOX_DEPENDENCIES += linux-pam
+else
+define BUSYBOX_LINUX_PAM
+	$(call KCONFIG_DISABLE_OPT,CONFIG_PAM,$(BUSYBOX_BUILD_CONFIG))
+endef
 endif
 
 # Telnet support

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETTLE_VERSION = 3.3
+NETTLE_VERSION = 3.4
 NETTLE_SITE = http://www.lysator.liu.se/~nisse/archive
 NETTLE_DEPENDENCIES = gmp
 NETTLE_INSTALL_STAGING = YES

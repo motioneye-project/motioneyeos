@@ -14,6 +14,9 @@ NUT_DEPENDENCIES = host-pkgconf
 # Our patch changes m4 macros, so we need to autoreconf
 NUT_AUTORECONF = YES
 
+# Race condition in tools generation
+NUT_MAKE = $(MAKE1)
+
 # Put the PID files in a read-write place (/var/run is a tmpfs)
 # since the default location (/var/state/ups) maybe readonly.
 NUT_CONF_OPTS = \

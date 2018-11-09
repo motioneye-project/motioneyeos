@@ -1,0 +1,54 @@
+From 42efa6d76a3b52f35e576a6b941a9afb5b3879e9 Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Tue, 9 Jan 2018 21:39:27 -0200
+Subject: [PATCH] Fix build against the musl C library
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ os-daq-modules/daq_ipfw.c | 2 +-
+ os-daq-modules/daq_ipq.c  | 2 +-
+ os-daq-modules/daq_nfq.c  | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/os-daq-modules/daq_ipfw.c b/os-daq-modules/daq_ipfw.c
+index 016beb06ad61..98f67717f646 100644
+--- a/os-daq-modules/daq_ipfw.c
++++ b/os-daq-modules/daq_ipfw.c
+@@ -26,7 +26,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+-#include <sys/unistd.h>
++#include <unistd.h>
+ 
+ #include <netinet/in.h>
+ #include <sys/socket.h>
+diff --git a/os-daq-modules/daq_ipq.c b/os-daq-modules/daq_ipq.c
+index 77ec6e9505e5..b15e5cf82af0 100644
+--- a/os-daq-modules/daq_ipq.c
++++ b/os-daq-modules/daq_ipq.c
+@@ -27,7 +27,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+-#include <sys/unistd.h>
++#include <unistd.h>
+ 
+ #include <netinet/ip.h>
+ 
+diff --git a/os-daq-modules/daq_nfq.c b/os-daq-modules/daq_nfq.c
+index 33021c0ec991..0df1e61c74c4 100644
+--- a/os-daq-modules/daq_nfq.c
++++ b/os-daq-modules/daq_nfq.c
+@@ -27,7 +27,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/time.h>
+-#include <sys/unistd.h>
++#include <unistd.h>
+ 
+ #include <netinet/ip.h>
+ 
+-- 
+1.9.1
+

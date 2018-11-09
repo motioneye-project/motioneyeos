@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AUDIT_VERSION = 2.7.8
+AUDIT_VERSION = 2.8.2
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
 AUDIT_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 AUDIT_LICENSE_FILES = COPYING COPYING.LIB
@@ -51,8 +51,8 @@ define AUDIT_INSTALL_INIT_SYSTEMD
 endef
 
 define AUDIT_INSTALL_CLEANUP
-	$(RM) -rf $(TARGET_DIR)/etc/rc.d
-	$(RM) -rf $(TARGET_DIR)/etc/sysconfig
+	$(RM) $(TARGET_DIR)/etc/rc.d/init.d/auditd
+	$(RM) $(TARGET_DIR)/etc/sysconfig/auditd
 endef
 AUDIT_POST_INSTALL_TARGET_HOOKS += AUDIT_INSTALL_CLEANUP
 

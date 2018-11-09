@@ -1,0 +1,59 @@
+From b8c29336bd5401a5f962bc6ddfa4ebb6f0274f3c Mon Sep 17 00:00:00 2001
+From: Thomas Markwalder <tmark@isc.org>
+Date: Sat, 10 Feb 2018 12:15:27 -0500
+Subject: [PATCH 1/2] Correct buffer overrun in pretty_print_option
+
+    Merges in rt47139.
+
+[baruch: drop RELNOTES and test; address CVE-2018-5732]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: backported from commit c5931725b48
+---
+ common/options.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/common/options.c b/common/options.c
+index 5547287fb6e5..2ed6b16c6412 100644
+--- a/common/options.c
++++ b/common/options.c
+@@ -1758,7 +1758,8 @@ format_min_length(format, oc)
+ 
+ 
+ /* Format the specified option so that a human can easily read it. */
+-
++/* Maximum pretty printed size */
++#define MAX_OUTPUT_SIZE 32*1024
+ const char *pretty_print_option (option, data, len, emit_commas, emit_quotes)
+ 	struct option *option;
+ 	const unsigned char *data;
+@@ -1766,8 +1767,9 @@ const char *pretty_print_option (option, data, len, emit_commas, emit_quotes)
+ 	int emit_commas;
+ 	int emit_quotes;
+ {
+-	static char optbuf [32768]; /* XXX */
+-	static char *endbuf = &optbuf[sizeof(optbuf)];
++	/* We add 128 byte pad so we don't have to add checks everywhere. */
++	static char optbuf [MAX_OUTPUT_SIZE + 128]; /* XXX */
++	static char *endbuf = optbuf + MAX_OUTPUT_SIZE;
+ 	int hunksize = 0;
+ 	int opthunk = 0;
+ 	int hunkinc = 0;
+@@ -2193,7 +2195,14 @@ const char *pretty_print_option (option, data, len, emit_commas, emit_quotes)
+ 				log_error ("Unexpected format code %c",
+ 					   fmtbuf [j]);
+ 			}
++
+ 			op += strlen (op);
++			if (op >= endbuf) {
++				log_error ("Option data exceeds"
++					   " maximum size %d", MAX_OUTPUT_SIZE);
++					   return ("<error>");
++			}
++
+ 			if (dp == data + len)
+ 				break;
+ 			if (j + 1 < numelem && comma != ':')
+-- 
+2.16.1
+

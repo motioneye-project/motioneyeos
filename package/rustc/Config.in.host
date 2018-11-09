@@ -1,0 +1,79 @@
+config BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
+	bool
+	# The pre-built Rust standard library is only available for the
+	# following architectures/ABIs, and is built against glibc.
+	default y if BR2_i386
+	default y if BR2_x86_64
+	default y if BR2_aarch64
+	default y if BR2_arm && !BR2_ARM_CPU_ARMV4 && !BR2_ARM_CPU_ARMV5 \
+	        && !(BR2_ARM_CPU_ARMV7A && BR2_ARM_EABI)
+	default y if BR2_powerpc || BR2_powerpc64
+	default y if (BR2_mips || BR2_mipsel) && !BR2_MIPS_CPU_MIPS32R6
+	default y if (BR2_mips64 || BR2_mips64el) && !BR2_MIPS_CPU_MIPS64R6 \
+		&& BR2_MIPS_NABI64
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+
+config BR2_PACKAGE_HOST_RUSTC_ARCH
+	string
+	default "armv7"  if BR2_ARM_CPU_ARMV7A
+	default BR2_ARCH if !BR2_ARM_CPU_ARMV7A
+
+config BR2_PACKAGE_HOST_RUSTC_ABI
+	string
+	default "eabi"   if BR2_ARM_EABI
+	default "eabihf" if BR2_ARM_EABIHF
+	default "abi64"  if BR2_MIPS_NABI64
+
+config BR2_PACKAGE_HOST_RUSTC
+	bool "host rustc"
+	depends on BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
+	help
+	  Compiler for the Rust language
+
+	  http://www.rust-lang.org
+
+if BR2_PACKAGE_HOST_RUSTC
+
+choice
+	prompt "Rust compiler variant"
+	default BR2_PACKAGE_HOST_RUST_BIN
+	help
+	  Select a Rust compiler
+
+config BR2_PACKAGE_HOST_RUST
+	bool "host rust"
+	depends on BR2_HOST_GCC_AT_LEAST_4_7 # required by LLVM
+	# triggers ICE on trunc_int_for_mode, at explow.c:56
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_aarch64
+	select BR2_PACKAGE_HAS_HOST_RUSTC
+	help
+	  This package will build the compiler for the host as well as
+	  two flavors of the standard library: one for the host, another
+	  for the target. Both are installed in the host directory.
+
+comment "host-rust needs a toolchain w/ gcc >= 5"
+	depends on BR2_aarch64
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_5
+
+comment "host-rust needs host gcc >= 4.7"
+	depends on !BR2_HOST_GCC_AT_LEAST_4_7
+
+config BR2_PACKAGE_HOST_RUST_BIN
+	bool "host rust (pre-built)"
+	select BR2_PACKAGE_HAS_HOST_RUSTC
+	help
+	  This package will install pre-built versions of the compiler
+	  for the host and the Rust standard library for the target.
+
+endchoice
+
+config BR2_PACKAGE_HAS_HOST_RUSTC
+	bool
+
+config BR2_PACKAGE_PROVIDES_HOST_RUSTC
+	string
+	default "host-rust" if BR2_PACKAGE_HOST_RUST
+	default "host-rust-bin" if BR2_PACKAGE_HOST_RUST_BIN
+
+endif

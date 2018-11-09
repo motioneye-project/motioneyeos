@@ -1,0 +1,21 @@
+config BR2_PACKAGE_ARMBIAN_FIRMWARE
+	bool "armbian-firmware"
+	help
+	  This package enables access to various firmware
+	  blobs from the Armbian firmware repository.
+
+	  https://github.com/armbian/firmware
+
+if BR2_PACKAGE_ARMBIAN_FIRMWARE
+
+config BR2_PACKAGE_ARMBIAN_FIRMWARE_XR819
+	bool "XR819 WiFi"
+	help
+	  Firmware files for XR819 WiFi SDIO chip.
+
+config BR2_PACKAGE_ARMBIAN_FIRMWARE_AP6212
+	bool "AP6212 WiFi/BT"
+	help
+	  Firmware files for AP6212 WiFi/BT combo chip.
+
+endif

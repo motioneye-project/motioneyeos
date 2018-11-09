@@ -1,0 +1,21 @@
+Do not access DB_CONFIG when db_home is not set
+
+Fixes CVE-2017-10140:
+https://bugzilla.redhat.com/show_bug.cgi?id=1464032#c9
+
+Downloaded from
+http://pkgs.fedoraproject.org/cgit/rpms/libdb.git/commit/?id=8047fa8580659fcae740c25e91b490539b8453eb
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- db-5.3.28/src/env/env_open.c.old	2017-06-26 10:32:11.011419981 +0200
++++ db-5.3.28/src/env/env_open.c	2017-06-26 10:32:46.893721233 +0200
+@@ -473,7 +473,7 @@
+ 	env->db_mode = mode == 0 ? DB_MODE_660 : mode;
+ 
+ 	/* Read the DB_CONFIG file. */
+-	if ((ret = __env_read_db_config(env)) != 0)
++	if (env->db_home != NULL && (ret = __env_read_db_config(env)) != 0)
+ 		return (ret);
+ 
+ 	/*

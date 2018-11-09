@@ -1,11 +1,10 @@
-comment "xfsprogs needs a glibc or uClibc toolchain w/ threads"
+comment "xfsprogs needs a toolchain w/ threads"
 	depends on BR2_USE_MMU
-	depends on BR2_TOOLCHAIN_USES_MUSL || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_XFSPROGS
 	bool "xfsprogs"
 	depends on BR2_USE_MMU # fork()
-	depends on !BR2_TOOLCHAIN_USES_MUSL # missing __[u]int*_t
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
@@ -13,4 +12,4 @@ config BR2_PACKAGE_XFSPROGS
 	help
 	  The XFS file system utilities and libraries
 
-	  http://oss.sgi.com/projects/xfs/
+	  http://xfs.org

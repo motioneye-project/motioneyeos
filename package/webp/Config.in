@@ -15,4 +15,11 @@ config BR2_PACKAGE_WEBP_DEMUX
 	  of an extended format WebP file, which can have features
 	  like color profile, metadata and animation.
 
+config BR2_PACKAGE_WEBP_MUX
+	bool "webpmux"
+	help
+	  Mux is a part of WebPMux for creation and manipulation
+	  of an extended format WebP file, which can have features
+	  like color profile, metadata and animation.
+
 endif

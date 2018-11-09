@@ -1,6 +1,38 @@
 config BR2_PACKAGE_HWDATA
 	bool "hwdata"
 	help
-	  Various hardware identification and configuration data,
-	  such as the pci.ids database, or the XFree86/xorg Cards
-	  database.
+	  Various hardware identification and configuration data
+
+	  - Individual Address Block (IAB) and Organizationally Unique
+	    Identifier (OUI) databases, from IEEE Registration Authority
+	  - PCI ID database
+	  - PNP ID database (from Microsoft)
+	  - USB ID database
+
+	  https://github.com/vcrhonek/hwdata
+
+if BR2_PACKAGE_HWDATA
+
+config BR2_PACKAGE_HWDATA_IAB_OUI_TXT
+	bool "install iab.txt and oui.txt"
+	help
+	  Install iab.txt and oui.txt
+
+config BR2_PACKAGE_HWDATA_PCI_IDS
+	bool "install pci.ids"
+	default y
+	help
+	  Install pci.ids
+
+config BR2_PACKAGE_HWDATA_PNP_IDS
+	bool "install pnp.ids"
+	help
+	  Install pnp.ids
+
+config BR2_PACKAGE_HWDATA_USB_IDS
+	bool "install usb.ids"
+	default y
+	help
+	  Install usb.ids
+
+endif

@@ -29,4 +29,20 @@ endif
 
 HOST_ELF2FLT_CONF_ENV = LIBS="$(HOST_ELF2FLT_LIBS)"
 
+# Hardlinks between binaries in different directories cause a problem
+# with rpath fixup, so we de-hardlink those binaries, and replace them
+# with copies instead. Note that elf2flt will rename ld to ld.real
+# before installing its own ld, but we already took care of the
+# original ld from binutils so that it is already de-hardlinked. So
+# ld is now the one from elf2flt, and we want to de-hardlinke it.
+ELF2FLT_TOOLS = elf2flt flthdr ld
+define HOST_ELF2FLT_FIXUP_HARDLINKS
+	$(foreach tool,$(ELF2FLT_TOOLS),\
+		rm -f $(HOST_DIR)/$(GNU_TARGET_NAME)/bin/$(tool) && \
+		cp -a $(HOST_DIR)/bin/$(GNU_TARGET_NAME)-$(tool) \
+			$(HOST_DIR)/$(GNU_TARGET_NAME)/bin/$(tool)
+	)
+endef
+HOST_ELF2FLT_POST_INSTALL_HOOKS += HOST_ELF2FLT_FIXUP_HARDLINKS
+
 $(eval $(host-autotools-package))

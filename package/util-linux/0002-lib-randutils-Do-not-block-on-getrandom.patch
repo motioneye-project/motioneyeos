@@ -1,0 +1,52 @@
+From a9cf659e0508c1f56813a7d74c64f67bbc962538 Mon Sep 17 00:00:00 2001
+From: Carlo Caione <carlo@endlessm.com>
+Date: Mon, 19 Mar 2018 10:31:07 +0000
+Subject: [PATCH] lib/randutils: Do not block on getrandom()
+
+In Endless we have hit a problem when using 'sfdisk' on the really first
+boot to automatically expand the rootfs partition. On this platform
+'sfdisk' is blocking on getrandom() because not enough random bytes are
+available. This is an ARM platform without a hwrng.
+
+We fix this passing GRND_NONBLOCK to getrandom(). 'sfdisk' will use the
+best entropy it has available and fallback only as necessary.
+
+Signed-off-by: Carlo Caione <carlo@endlessm.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ lib/randutils.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/lib/randutils.c b/lib/randutils.c
+index e1c4059e1..02c3d9eb0 100644
+--- a/lib/randutils.c
++++ b/lib/randutils.c
+@@ -36,6 +36,8 @@
+ 
+ #if !defined(HAVE_GETRANDOM) && defined(SYS_getrandom)
+ /* libc without function, but we have syscal */
++#define GRND_NONBLOCK 0x01
++#define GRND_RANDOM 0x02
+ static int getrandom(void *buf, size_t buflen, unsigned int flags)
+ {
+ 	return (syscall(SYS_getrandom, buf, buflen, flags));
+@@ -104,13 +106,15 @@ void random_get_bytes(void *buf, size_t nbytes)
+ 		int x;
+ 
+ 		errno = 0;
+-		x = getrandom(cp, n, 0);
++		x = getrandom(cp, n, GRND_NONBLOCK);
+ 		if (x > 0) {			/* success */
+ 		       n -= x;
+ 		       cp += x;
+ 		       lose_counter = 0;
+ 		} else if (errno == ENOSYS)	/* kernel without getrandom() */
+ 			break;
++		else if (errno == EAGAIN)
++			break;
+ 		else if (lose_counter++ > 16)	/* entropy problem? */
+ 			break;
+ 	}
+-- 
+2.11.0
+

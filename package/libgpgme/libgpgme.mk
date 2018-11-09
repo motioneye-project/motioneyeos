@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBGPGME_VERSION = 1.9.0
-LIBGPGME_SITE = ftp://ftp.gnupg.org/gcrypt/gpgme
+LIBGPGME_VERSION = 1.10.0
+LIBGPGME_SITE = https://gnupg.org/ftp/gcrypt/gpgme
 LIBGPGME_SOURCE = gpgme-$(LIBGPGME_VERSION).tar.bz2
 LIBGPGME_LICENSE = LGPL-2.1+
 LIBGPGME_LICENSE_FILES = COPYING.LESSER
@@ -33,6 +33,11 @@ ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
 # Assume we have error_t to avoid collision with the argp.h error_t.
 LIBGPGME_CONF_ENV += LIBS="-largp" ac_cv_type_error_t=yes
 LIBGPGME_DEPENDENCIES += argp-standalone
+endif
+
+# MIPS N64 (re)introduced getdents64 in kernel version 3.10
+ifeq ($(BR2_MIPS_NABI64)x$(BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10),yx)
+LIBGPGME_CONF_OPTS += --disable-linux-getdents
 endif
 
 $(eval $(autotools-package))

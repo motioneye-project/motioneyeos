@@ -1,0 +1,25 @@
+comment "imx-gpu-g2d needs a glibc toolchain with armhf enabled"
+	depends on BR2_arm
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF
+
+config BR2_PACKAGE_IMX_GPU_G2D
+	bool "imx-gpu-g2d"
+	# Pre-built binaries only available for ARM EABIhf
+	depends on BR2_ARM_EABIHF
+	# Library binaries are linked against libc.so.6
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	select BR2_PACKAGE_IMX_GPU_VIV
+	help
+	  Userspace 2D libraries for Vivante GPU on i.MX platforms.
+
+	  This library is provided by NXP as-is and doesn't have an
+	  upstream.
+
+if BR2_PACKAGE_IMX_GPU_G2D
+
+config BR2_PACKAGE_IMX_GPU_G2D_EXAMPLES
+	bool "install examples"
+	help
+	  Copy the Vivante G2D examples to the target.
+
+endif

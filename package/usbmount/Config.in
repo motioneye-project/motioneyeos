@@ -3,8 +3,9 @@ config BR2_PACKAGE_USBMOUNT
 	depends on BR2_PACKAGE_HAS_UDEV
 	select BR2_PACKAGE_LOCKFILE_PROGS
 	help
-	  The usbmount package automatically mounts USB mass storage devices
-	  when they are plugged in, and unmounts them when they are removed.
+	  The usbmount package automatically mounts USB mass storage
+	  devices when they are plugged in, and unmounts them when
+	  they are removed.
 
 	  http://usbmount.alioth.debian.org/
 

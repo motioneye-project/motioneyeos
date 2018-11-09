@@ -1,0 +1,40 @@
+From e9244b207c0fc883ff84c1fc46602feb1e2b0347 Mon Sep 17 00:00:00 2001
+From: Thomas Klausner <tk@giga.or.at>
+Date: Wed, 3 Jan 2018 11:41:57 +0100
+Subject: [PATCH] Use 'cmake -E tar' to extract test data.
+
+For easier cross-compilation (Github issue #21).
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Patch status: upstream commit e9244b207c0
+
+ regress/CMakeLists.txt | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
+
+diff --git a/regress/CMakeLists.txt b/regress/CMakeLists.txt
+index e2ce232c774a..3a0d4f77dcf6 100644
+--- a/regress/CMakeLists.txt
++++ b/regress/CMakeLists.txt
+@@ -51,15 +51,9 @@ ADD_CUSTOM_TARGET(cleanup
+ ADD_CUSTOM_TARGET(testinput
+   ALL
+   VERBATIM
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 0 > manyfiles.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 1 > manyfiles-133000.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 2 > manyfiles-65536.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 3 > manyfiles-zip64-modulo.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 4 > manyfiles-zip64.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 5 > manyfiles-fewer.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip cat 6 > manyfiles-more.zip
+-  COMMAND ziptool ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip cat 0 > bigzero.zip
+-  DEPENDS ziptool ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
++  COMMAND cmake -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip
++  COMMAND cmake -E tar x ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
++  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/manyfiles-zip.zip ${CMAKE_CURRENT_SOURCE_DIR}/bigzero-zip.zip
+ )
+ 
+ SET_PROPERTY(DIRECTORY PROPERTY ADDITIONAL_MAKE_CLEAN_FILES
+-- 
+2.15.1
+

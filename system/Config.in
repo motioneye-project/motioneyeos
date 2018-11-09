@@ -355,12 +355,16 @@ config BR2_TARGET_GENERIC_GETTY_BAUDRATE
 config BR2_TARGET_GENERIC_GETTY_TERM
 	string "TERM environment variable"
 	default "vt100"
+	# currently observed only by busybox and sysvinit
+	depends on BR2_INIT_BUSYBOX || BR2_INIT_SYSV
 	help
 	  Specify a TERM type.
 
 config BR2_TARGET_GENERIC_GETTY_OPTIONS
 	string "other options to pass to getty"
 	default ""
+	# currently observed only by busybox and sysvinit
+	depends on BR2_INIT_BUSYBOX || BR2_INIT_SYSV
 	help
 	  Any other flags you want to pass to getty,
 	  Refer to getty --help for details.

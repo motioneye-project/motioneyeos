@@ -1,0 +1,55 @@
+From a826b7b656c165bc35746d9af3ec371387d2bca1 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Mon, 23 Oct 2017 08:11:21 -0400
+Subject: [PATCH] fix xlocale header check
+
+asyncrt_utils.h checks if __GLIBC__ is not defined before including
+xlocal.h.  This will cause a compilation failure on uclibc and musl.
+
+Add a proper check in CMakeLists.txt and check for HAVE_XLOCALE_H
+instead of __GLIBC__
+
+Upstream-Status: Accepted
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ Release/CMakeLists.txt                  | 3 +++
+ Release/include/cpprest/asyncrt_utils.h | 2 +-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Release/CMakeLists.txt b/Release/CMakeLists.txt
+index d57aa3d..eefae75 100644
+--- a/Release/CMakeLists.txt
++++ b/Release/CMakeLists.txt
+@@ -42,6 +42,7 @@ include(cmake/cpprest_find_boost.cmake)
+ include(cmake/cpprest_find_zlib.cmake)
+ include(cmake/cpprest_find_openssl.cmake)
+ include(cmake/cpprest_find_websocketpp.cmake)
++include(CheckIncludeFiles)
+ 
+ find_package(Threads REQUIRED)
+ if(THREADS_HAVE_PTHREAD_ARG)
+@@ -56,6 +57,8 @@ if(CPPREST_EXCLUDE_WEBSOCKETS)
+   set(CPPREST_WEBSOCKETS_IMPL none CACHE STRING "Internal use.")
+ endif()
+ 
++CHECK_INCLUDE_FILES(xlocale.h HAVE_XLOCALE_H)
++
+ if(APPLE) # Note: also iOS
+   set(CPPREST_PPLX_IMPL apple CACHE STRING "Internal use.")
+   set(CPPREST_WEBSOCKETS_IMPL wspp CACHE STRING "Internal use.")
+diff --git a/Release/include/cpprest/asyncrt_utils.h b/Release/include/cpprest/asyncrt_utils.h
+index fac70a9..8faa2dc 100644
+--- a/Release/include/cpprest/asyncrt_utils.h
++++ b/Release/include/cpprest/asyncrt_utils.h
+@@ -29,7 +29,7 @@
+ 
+ #ifndef _WIN32
+ #include <boost/algorithm/string.hpp>
+-#if !defined(ANDROID) && !defined(__ANDROID__) && !defined(__GLIBC__) // CodePlex 269
++#if !defined(ANDROID) && !defined(__ANDROID__) && defined(HAVE_XLOCALE_H) // CodePlex 269
+ /* Systems using glibc: xlocale.h has been removed from glibc 2.26
+    The above include of locale.h is sufficient
+    Further details: https://sourceware.org/git/?p=glibc.git;a=commit;h=f0be25b6336db7492e47d2e8e72eb8af53b5506d */
+-- 
+2.13.6
+

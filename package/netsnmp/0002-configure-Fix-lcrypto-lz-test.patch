@@ -1,0 +1,41 @@
+From d8694929b12b47febb0f7f43f46041387874fe52 Mon Sep 17 00:00:00 2001
+From: Bart Van Assche <bvanassche@acm.org>
+Date: Mon, 17 Sep 2018 07:33:34 -0700
+Subject: [PATCH 2/3] configure: Fix -lcrypto -lz test
+
+Avoid that the second crypto library test uses the cached result from
+the first test by explicitly clearing the cached test result.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ configure                   | 1 +
+ configure.d/config_os_libs2 | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/configure b/configure
+index 1116cecaa..33b8c93e5 100755
+--- a/configure
++++ b/configure
+@@ -23231,6 +23231,7 @@ if test "x$ac_cv_lib_crypto_EVP_md5" = xyes; then :
+   CRYPTO="crypto"; LIBCRYPTO="-lcrypto"
+ else
+ 
++		unset ac_cv_lib_crypto_EVP_md5
+ 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for EVP_md5 in -lcrypto" >&5
+ $as_echo_n "checking for EVP_md5 in -lcrypto... " >&6; }
+ if ${ac_cv_lib_crypto_EVP_md5+:} false; then :
+diff --git a/configure.d/config_os_libs2 b/configure.d/config_os_libs2
+index 75214cfff..81788a209 100644
+--- a/configure.d/config_os_libs2
++++ b/configure.d/config_os_libs2
+@@ -308,6 +308,7 @@ if test "x$tryopenssl" != "xno" -a "x$tryopenssl" != "xinternal"; then
+         if test x$CRYPTO = x; then
+             AC_CHECK_LIB([crypto], [EVP_md5],
+ 			 [CRYPTO="crypto"; LIBCRYPTO="-lcrypto"], [
++		unset ac_cv_lib_crypto_EVP_md5
+ 		AC_CHECK_LIB([crypto], [EVP_md5],
+ 			     [CRYPTO="crypto"; LIBCRYPTO="-lcrypto -lz"], [],
+ 			     [-lz])
+-- 
+2.17.1
+

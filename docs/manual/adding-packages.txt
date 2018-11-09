@@ -34,6 +34,10 @@ include::adding-packages-rebar.txt[]
 
 include::adding-packages-waf.txt[]
 
+include::adding-packages-meson.txt[]
+
+include::adding-packages-cargo.txt[]
+
 include::adding-packages-kernel-module.txt[]
 
 include::adding-packages-asciidoc.txt[]

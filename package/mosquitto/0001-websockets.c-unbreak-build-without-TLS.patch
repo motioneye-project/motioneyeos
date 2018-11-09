@@ -1,0 +1,49 @@
+From 4822aa97da80a86033ec6e4a8b2f4ad0911235cf Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Sat, 3 Mar 2018 11:04:47 +0100
+Subject: [PATCH] websockets.c: unbreak build without TLS
+
+Commit 7943072b1f3b (Fix use_identity_as_username not working on websockets
+clients) added code which unconditionally accesses mosq-ssl, breaking the
+build when TLS support is disabled.
+
+Fix it by guarding this logic inside #ifdef WITH_TLS.
+
+[Upstream: https://dev.eclipse.org/mhonarc/lists/mosquitto-dev/msg01813.html]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/websockets.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/websockets.c b/src/websockets.c
+index d4d7961..a796f0a 100644
+--- a/src/websockets.c
++++ b/src/websockets.c
+@@ -201,12 +201,14 @@ static int callback_mqtt(struct libwebsocket_context *context,
+ 				mosq->ws_context = context;
+ #endif
+ 				mosq->wsi = wsi;
++#ifdef WITH_TLS
+ 				if(in){
+ 					mosq->ssl = (SSL *)in;
+ 					if(!mosq->listener->ssl_ctx){
+ 						mosq->listener->ssl_ctx = SSL_get_SSL_CTX(mosq->ssl);
+ 					}
+ 				}
++#endif
+ 				u->mosq = mosq;
+ 			}else{
+ 				return -1;
+@@ -240,7 +242,9 @@ static int callback_mqtt(struct libwebsocket_context *context,
+ 					mosq->pollfd_index = -1;
+ 				}
+ 				mosq->wsi = NULL;
++#ifdef WITH_TLS
+ 				mosq->ssl = NULL;
++#endif
+ 				do_disconnect(db, mosq);
+ 			}
+ 			break;
+-- 
+2.11.0
+

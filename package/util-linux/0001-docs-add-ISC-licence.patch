@@ -1,0 +1,38 @@
+From a9e4662d26b10789b28282d7e77ab189ef34cf5c Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.ind.br>
+Date: Sun, 14 Jan 2018 16:39:31 -0200
+Subject: [PATCH] docs: add ISC licence
+
+Save the top 21 lines of sys-utils/rfkill.c as COPYING.ISC. This is
+useful for Linux distributions an integration tools like Buildroot,
+to collect detailed legal information for each package.
+
+[kzak@redhat.com: - remove C-comments and rfkill header]
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ Documentation/licenses/COPYING.ISC | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+ create mode 100644 Documentation/licenses/COPYING.ISC
+
+diff --git a/Documentation/licenses/COPYING.ISC b/Documentation/licenses/COPYING.ISC
+new file mode 100644
+index 000000000..8351a30e3
+--- /dev/null
++++ b/Documentation/licenses/COPYING.ISC
+@@ -0,0 +1,11 @@
++Permission to use, copy, modify, and/or distribute this software for any
++purpose with or without fee is hereby granted, provided that the above
++copyright notice and this permission notice appear in all copies.
++
++THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
++WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
++MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
++ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
++WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
++ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
++OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-- 
+2.14.3
+

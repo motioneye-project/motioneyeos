@@ -1,0 +1,101 @@
+From 87fda0741d210727672cba5e54a37a189e8ac04e Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Sun, 17 Jun 2018 21:18:39 -0700
+Subject: [PATCH] xtensa: fix PR target/65416
+
+The issue is caused by reordering of stack pointer update after stack
+space allocation with instructions that write to the allocated stack
+space. In windowed ABI register spill area for the previous call frame
+is located just below the stack pointer and may be reloaded back into
+the register file on movsp.
+Implement allocate_stack pattern for windowed ABI configuration and
+insert an instruction that prevents reordering of frame memory access
+and stack pointer update.
+
+gcc/
+2018-06-19  Max Filippov  <jcmvbkbc@gmail.com>
+
+	* config/xtensa/xtensa.md (UNSPEC_FRAME_BLOCKAGE): New unspec
+	constant.
+	(allocate_stack, frame_blockage, *frame_blockage): New patterns.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Backported from: r261755
+---
+ gcc/config/xtensa/xtensa.md | 46 +++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 46 insertions(+)
+
+diff --git a/gcc/config/xtensa/xtensa.md b/gcc/config/xtensa/xtensa.md
+index 84967dbedc08..209f839cfb0f 100644
+--- a/gcc/config/xtensa/xtensa.md
++++ b/gcc/config/xtensa/xtensa.md
+@@ -38,6 +38,7 @@
+   (UNSPEC_MEMW		11)
+   (UNSPEC_LSETUP_START  12)
+   (UNSPEC_LSETUP_END    13)
++  (UNSPEC_FRAME_BLOCKAGE 14)
+ 
+   (UNSPECV_SET_FP	1)
+   (UNSPECV_ENTRY	2)
+@@ -1676,6 +1677,32 @@
+ 
+ ;; Miscellaneous instructions.
+ 
++;; In windowed ABI stack pointer adjustment must happen before any access
++;; to the space allocated on stack is allowed, otherwise register spill
++;; area may be clobbered.  That's what frame blockage is supposed to enforce.
++
++(define_expand "allocate_stack"
++  [(set (match_operand 0 "nonimmed_operand")
++        (minus (reg A1_REG) (match_operand 1 "add_operand")))
++   (set (reg A1_REG)
++        (minus (reg A1_REG) (match_dup 1)))]
++  "TARGET_WINDOWED_ABI"
++{
++  if (CONST_INT_P (operands[1]))
++    {
++      rtx neg_op0 = GEN_INT (-INTVAL (operands[1]));
++      emit_insn (gen_addsi3 (stack_pointer_rtx, stack_pointer_rtx, neg_op0));
++    }
++  else
++    {
++      emit_insn (gen_subsi3 (stack_pointer_rtx, stack_pointer_rtx,
++			     operands[1]));
++    }
++  emit_move_insn (operands[0], virtual_stack_dynamic_rtx);
++  emit_insn (gen_frame_blockage ());
++  DONE;
++})
++
+ (define_expand "prologue"
+   [(const_int 0)]
+   ""
+@@ -1767,6 +1794,25 @@
+   [(set_attr "length" "0")
+    (set_attr "type" "nop")])
+ 
++;; Do not schedule instructions accessing memory before this point.
++
++(define_expand "frame_blockage"
++  [(set (match_dup 0)
++        (unspec:BLK [(match_dup 1)] UNSPEC_FRAME_BLOCKAGE))]
++  ""
++{
++  operands[0] = gen_rtx_MEM (BLKmode, gen_rtx_SCRATCH (Pmode));
++  MEM_VOLATILE_P (operands[0]) = 1;
++  operands[1] = stack_pointer_rtx;
++})
++
++(define_insn "*frame_blockage"
++  [(set (match_operand:BLK 0 "" "")
++        (unspec:BLK [(match_operand:SI 1 "" "")] UNSPEC_FRAME_BLOCKAGE))]
++  ""
++  ""
++  [(set_attr "length" "0")])
++
+ (define_insn "trap"
+   [(trap_if (const_int 1) (const_int 0))]
+   ""
+-- 
+2.11.0
+

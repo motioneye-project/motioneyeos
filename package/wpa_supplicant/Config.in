@@ -34,10 +34,11 @@ config BR2_PACKAGE_WPA_SUPPLICANT_AP_SUPPORT
 	depends on BR2_PACKAGE_WPA_SUPPLICANT_NL80211
 	help
 	  With this option enabled, wpa_supplicant can act as an
-	  access point much like hostapd does with a limited feature set.
-	  This links in parts of hostapd functionality into wpa_supplicant,
-	  making it bigger but dispensing the need for a separate hostapd
-	  binary in some applications hence being smaller overall.
+	  access point much like hostapd does with a limited feature
+	  set.  This links in parts of hostapd functionality into
+	  wpa_supplicant, making it bigger but dispensing the need for
+	  a separate hostapd binary in some applications hence being
+	  smaller overall.
 
 config BR2_PACKAGE_WPA_SUPPLICANT_WIFI_DISPLAY
 	bool "Enable Wi-Fi Display"
@@ -67,7 +68,8 @@ config BR2_PACKAGE_WPA_SUPPLICANT_EAP
 config BR2_PACKAGE_WPA_SUPPLICANT_HOTSPOT
 	bool "Enable HS20"
 	help
-	  Enable Hotspot 2.0 and IEEE 802.11u interworking functionality.
+	  Enable Hotspot 2.0 and IEEE 802.11u interworking
+	  functionality.
 
 config BR2_PACKAGE_WPA_SUPPLICANT_DEBUG_SYSLOG
 	bool "Enable syslog support"
@@ -109,7 +111,8 @@ config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
 	bool "Enable support for new DBus control interface"
 	depends on BR2_PACKAGE_DBUS
 	help
-	  Enable support for new DBus control interface (fi.w1.wpa_supplicant1).
+	  Enable support for new DBus control interface
+	  (fi.w1.wpa_supplicant1).
 
 config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_INTROSPECTION
 	bool "Introspection support"

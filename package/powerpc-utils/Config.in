@@ -10,7 +10,7 @@ config BR2_PACKAGE_POWERPC_UTILS
 	help
 	  System utilities for PowerPC machines.
 
-	  https://github.com/nfont/powerpc-utils
+	  https://github.com/ibm-power-utilities/powerpc-utils.git
 
 if BR2_PACKAGE_POWERPC_UTILS
 

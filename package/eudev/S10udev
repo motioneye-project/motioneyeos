@@ -27,9 +27,9 @@ test -r $UDEV_CONFIG || exit 6
 
 case "$1" in
     start)
-        printf "Populating ${udev_root:-/dev} using udev: "
-        printf '\000\000\000\000' > /proc/sys/kernel/hotplug
-        $UDEV_BIN -d || (echo "FAIL" && exit 1)
+        printf "Populating %s using udev: " "${udev_root:-/dev}"
+        [ -e /proc/sys/kernel/hotplug ] && printf '\000\000\000\000' > /proc/sys/kernel/hotplug
+        $UDEV_BIN -d || { echo "FAIL"; exit 1; }
         udevadm trigger --type=subsystems --action=add
         udevadm trigger --type=devices --action=add
         udevadm settle --timeout=30 || echo "udevadm settle failed"

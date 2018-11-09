@@ -1,54 +1,61 @@
-From d399ecdd99e62b5554210a3b5c733e738e4d54be Mon Sep 17 00:00:00 2001
-From: Philipp Huebner <debalance@debian.org>
-Date: Wed, 20 Jan 2016 08:08:42 -0500
+From 8674f61701da41cc53c532b5fa3a516838a2c5d4 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Wed, 10 Jan 2018 15:14:56 +0100
 Subject: [PATCH] remove dependencies from rebar config
 
-Without this patch, dependencies would be downloaded and compiled
-by rebar at build time.
+Without this patch, dependencies would be downloaded and compiled by
+rebar at build time.
 
-Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+---
+ rebar.config | 72 ------------------------------------------------------------
+ 1 file changed, 72 deletions(-)
 
 diff --git a/rebar.config b/rebar.config
-index aef3a017..71937023 100644
+index d6ad5e7b..0b246b92 100644
 --- a/rebar.config
 +++ b/rebar.config
-@@ -18,63 +18,6 @@
+@@ -18,68 +18,6 @@
  %%%
  %%%----------------------------------------------------------------------
-
--{deps, [{lager, ".*", {git, "https://github.com/basho/lager", {tag, "3.2.1"}}},
--        {p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.8"}}},
--        {cache_tab, ".*", {git, "https://github.com/processone/cache_tab", {tag, "1.0.7"}}},
--        {fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.11"}}},
--        {stringprep, ".*", {git, "https://github.com/processone/stringprep", {tag, "1.0.8"}}},
--        {fast_xml, ".*", {git, "https://github.com/processone/fast_xml", {tag, "1.1.21"}}},
--        {xmpp, ".*", {git, "https://github.com/processone/xmpp", {tag, "1.1.9"}}},
--        {stun, ".*", {git, "https://github.com/processone/stun", {tag, "1.0.10"}}},
--        {esip, ".*", {git, "https://github.com/processone/esip", {tag, "1.0.11"}}},
--        {fast_yaml, ".*", {git, "https://github.com/processone/fast_yaml", {tag, "1.0.9"}}},
+ 
+-{deps, [{lager, ".*", {git, "https://github.com/erlang-lager/lager",
+-                       {tag, {if_version_above, "17", "3.4.2", "3.2.1"}}}},
+-        {p1_utils, ".*", {git, "https://github.com/processone/p1_utils", {tag, "1.0.10"}}},
+-        {cache_tab, ".*", {git, "https://github.com/processone/cache_tab", {tag, "1.0.12"}}},
+-        {fast_tls, ".*", {git, "https://github.com/processone/fast_tls", {tag, "1.0.17"}}},
+-        {stringprep, ".*", {git, "https://github.com/processone/stringprep", {tag, "1.0.10"}}},
+-        {fast_xml, ".*", {git, "https://github.com/processone/fast_xml", {tag, "1.1.25"}}},
+-        {xmpp, ".*", {git, "https://github.com/processone/xmpp", {tag, "1.1.16"}}},
+-        {fast_yaml, ".*", {git, "https://github.com/processone/fast_yaml", {tag, "1.0.12"}}},
 -        {jiffy, ".*", {git, "https://github.com/davisp/jiffy", {tag, "0.14.8"}}},
--        {p1_oauth2, ".*", {git, "https://github.com/processone/p1_oauth2", {tag, "0.6.1"}}},
+-        {p1_oauth2, ".*", {git, "https://github.com/processone/p1_oauth2", {tag, "0.6.2"}}},
 -        {luerl, ".*", {git, "https://github.com/rvirding/luerl", {tag, "v0.2"}}},
+-	{jose, ".*", {git, "git://github.com/potatosalad/erlang-jose.git", {tag, "1.8.4"}}},
+-	{fs, ".*", {git, "https://github.com/synrc/fs.git", {tag, "2.12.0"}}},
+-	{if_var_true, stun, {stun, ".*", {git, "https://github.com/processone/stun", {tag, "1.0.16"}}}},
+-	{if_var_true, sip, {esip, ".*", {git, "https://github.com/processone/esip", {tag, "1.0.17"}}}},
 -        {if_var_true, mysql, {p1_mysql, ".*", {git, "https://github.com/processone/p1_mysql",
--                                               {tag, "1.0.2"}}}},
+-                                               {tag, "1.0.4"}}}},
 -        {if_var_true, pgsql, {p1_pgsql, ".*", {git, "https://github.com/processone/p1_pgsql",
--                                               {tag, "1.1.2"}}}},
+-                                               {tag, "1.1.4"}}}},
 -        {if_var_true, sqlite, {sqlite3, ".*", {git, "https://github.com/processone/erlang-sqlite3",
 -                                               {tag, "1.1.5"}}}},
 -        {if_var_true, pam, {epam, ".*", {git, "https://github.com/processone/epam",
--                                           {tag, "1.0.2"}}}},
+-                                           {tag, "1.0.3"}}}},
 -        {if_var_true, zlib, {ezlib, ".*", {git, "https://github.com/processone/ezlib",
--                                           {tag, "1.0.2"}}}},
--        {if_var_true, riak, {riakc, ".*", {git, "https://github.com/basho/riak-erlang-client",
--                                           {tag, "2.4.1"}}}},
+-                                           {tag, "1.0.3"}}}},
+-        {if_var_true, riak, {riakc, ".*", {git, "https://github.com/processone/riak-erlang-client.git",
+-                                           {tag, {if_version_above, "19", "develop", "2.5.3"}}}}},
+-	{if_var_true, graphics, {eimp, ".*", {git, "https://github.com/processone/eimp.git", {tag, "1.0.2"}}}},
 -	%% Elixir support, needed to run tests
 -        {if_var_true, elixir, {elixir, ".*", {git, "https://github.com/elixir-lang/elixir",
--                                              {tag, {if_version_above, "17", "v1.2.6", "v1.1.1"}}}}},
+-                                              {tag, {if_version_above, "17", "v1.4.4", "v1.1.1"}}}}},
 -        %% TODO: When modules are fully migrated to new structure and mix, we will not need anymore rebar_elixir_plugin
 -	{if_not_rebar3, {if_var_true, elixir, {rebar_elixir_plugin, ".*",
 -					       {git, "https://github.com/processone/rebar_elixir_plugin", "0.1.0"}}}},
 -        {if_var_true, iconv, {iconv, ".*", {git, "https://github.com/processone/iconv",
--                                            {tag, "1.0.4"}}}},
+-                                            {tag, "1.0.6"}}}},
 -        {if_var_true, tools, {meck, "0.8.*", {git, "https://github.com/eproxus/meck",
 -                                              {tag, "0.8.4"}}}},
 -        {if_var_true, tools, {moka, ".*", {git, "https://github.com/processone/moka.git",
@@ -62,33 +69,38 @@ index aef3a017..71937023 100644
 -                  stringprep,
 -                  fast_xml,
 -                  esip,
--                  luerl,
 -                  stun,
 -                  fast_yaml,
 -		  xmpp,
 -                  p1_utils,
 -                  p1_mysql,
 -                  p1_pgsql,
+-                  p1_oauth2,
 -                  epam,
 -                  ezlib,
+-		  eimp,
 -                  iconv]}}.
 -
- {erl_first_files, ["src/ejabberd_config.erl", "src/gen_mod.erl", "src/mod_muc_room.erl"]}.
-
+ {erl_first_files, ["src/ejabberd_config.erl", "src/gen_mod.erl", "src/mod_muc_room.erl", "src/mod_push.erl"]}.
+ 
  {erl_opts, [nowarn_deprecated_function,
-@@ -142,15 +85,6 @@
+@@ -153,16 +91,6 @@
  {if_version_above, "17", {cover_enabled, true}}.
  {cover_export_enabled, true}.
-
+ 
 -{post_hook_configure, [{"fast_tls", []},
 -                       {"stringprep", []},
 -                       {"fast_yaml", []},
--                       {"esip", []},
+-                       {if_var_true, sip, {"esip", []}},
 -                       {"fast_xml", [{if_var_true, full_xml, "--enable-full-xml"}]},
 -                       {if_var_true, pam, {"epam", []}},
 -                       {if_var_true, zlib, {"ezlib", []}},
+-		       {if_var_true, graphics, {"eimp", []}},
 -                       {if_var_true, iconv, {"iconv", []}}]}.
 -
  {port_env, [{"CFLAGS", "-g -O2 -Wall"}]}.
-
+ 
  {port_specs, [{"priv/lib/jid.so", ["c_src/jid.c"]}]}.
+-- 
+2.14.1
+

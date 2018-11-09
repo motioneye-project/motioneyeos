@@ -1,8 +1,9 @@
 config BR2_PACKAGE_PYTHON_WATCHDOG
 	bool "python-watchdog"
-	select BR2_PACKAGE_PYTHON_PYYAML
-	select BR2_PACKAGE_PYTHON_ARGH
-	select BR2_PACKAGE_PYTHON_PATHTOOLS
+	select BR2_PACKAGE_PYTHON_ARGH # runtime
+	select BR2_PACKAGE_PYTHON_PATHTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_PYYAML # runtime
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
 	help
 	  Python API and shell utilities to monitor file system events.
 

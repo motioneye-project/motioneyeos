@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/cssselect/json, sha256 locally computed
-md5 3fa03bf82a9f0b1223c0f1eb1369e139 cssselect-1.0.1.tar.gz
-sha256 73db1c054b9348409e2862fc6c0dde5c4e4fbe4da64c5c5a9e05fbea45744077 cssselect-1.0.1.tar.gz
+md5	50422c9ec04b74cd60c571f74ddc1a80  cssselect-1.0.3.tar.gz
+sha256	066d8bc5229af09617e24b3ca4d52f1f9092d9e061931f4184cd572885c23204  cssselect-1.0.3.tar.gz
+sha256  5c8da9f744e0afba81a48c9b5dbe73048f798b3287d6f1af8a05ee08ebb10892  LICENSE

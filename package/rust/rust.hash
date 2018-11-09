@@ -1,0 +1,5 @@
+# From https://static.rust-lang.org/dist/rustc-1.23.0-src.tar.xz.sha256
+sha256 7196032371b50dd5582465b3bfa79ffd783b74f0711420d99b61b26c96fb3d80  rustc-1.23.0-src.tar.xz
+# Locally generated
+sha256 a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2  LICENSE-APACHE
+sha256 23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3  LICENSE-MIT

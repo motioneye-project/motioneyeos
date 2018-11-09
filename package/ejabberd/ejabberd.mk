@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EJABBERD_VERSION = 17.04
+EJABBERD_VERSION = 17.11
 EJABBERD_SOURCE = ejabberd-$(EJABBERD_VERSION).tgz
 EJABBERD_SITE = https://www.process-one.net/downloads/ejabberd/$(EJABBERD_VERSION)
 EJABBERD_LICENSE = GPL-2.0+ with OpenSSL exception
@@ -23,22 +23,38 @@ ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 EJABBERD_DEPENDENCIES += linux-pam
 endif
 
-EJABBERD_ERLANG_LIBS = sasl crypto public_key ssl mnesia inets compiler
+# Install check-erlang-lib script to the directory in which the
+# package has been uncompressed, so it is available during the
+# configure step.
+define EJABBERD_INSTALL_CHECK_ERLANG_LIB
+	$(INSTALL) -m 0755 $(EJABBERD_PKGDIR)/check-erlang-lib \
+		$(@D)/check-erlang-lib
+endef
+
+EJABBERD_POST_EXTRACT_HOOKS += EJABBERD_INSTALL_CHECK_ERLANG_LIB
+
+EJABBERD_ERLANG_LIBS = sasl public_key mnesia inets compiler
 
 # Guess answers for these tests, configure will bail out otherwise
 # saying error: cannot run test program while cross compiling.
 EJABBERD_CONF_ENV = \
 	ac_cv_erlang_root_dir="$(HOST_DIR)/lib/erlang" \
 	$(foreach lib,$(EJABBERD_ERLANG_LIBS), \
-		ac_cv_erlang_lib_dir_$(lib)="`package/ejabberd/check-erlang-lib $(lib)`")
+		ac_cv_erlang_lib_dir_$(lib)="`./check-erlang-lib $(lib)`")
+
+EJABBERD_CONF_OPTS = \
+	--enable-system-deps \
+	--disable-erlang-version-check \
+	--disable-graphics
 
 define EJABBERD_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) install -C $(@D)
 endef
 
-# Replace HOST_DIR prefix to /usr in ERL path of ejabberctl script.
+# Replace HOST_DIR prefix to /usr in environment variables of
+# ejabberctl script.
 define EJABBERD_FIX_EJABBERDCTL
-	$(SED) 's,ERL=$(HOST_DIR),ERL=/usr,' '$(TARGET_DIR)/usr/sbin/ejabberdctl'
+	$(SED) 's,="$(HOST_DIR),="/usr,' '$(TARGET_DIR)/usr/sbin/ejabberdctl'
 endef
 
 EJABBERD_POST_INSTALL_TARGET_HOOKS += EJABBERD_FIX_EJABBERDCTL

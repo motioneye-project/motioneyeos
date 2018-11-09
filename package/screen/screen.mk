@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SCREEN_VERSION = 4.5.1
+SCREEN_VERSION = 4.6.2
 SCREEN_SITE = $(BR2_GNU_MIRROR)/screen
 SCREEN_LICENSE = GPL-3.0+
 SCREEN_LICENSE_FILES = COPYING

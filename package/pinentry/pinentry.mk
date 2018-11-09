@@ -18,6 +18,10 @@ PINENTRY_CONF_OPTS += \
 	--with-libgpg-error-prefix=$(STAGING_DIR)/usr \
 	--without-libcap       # requires PAM
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+PINENTRY_CONF_ENV += LIBS=-latomic
+endif
+
 # build with X if available
 ifeq ($(BR2_PACKAGE_XORG7),y)
 PINENTRY_CONF_OPTS += --with-x

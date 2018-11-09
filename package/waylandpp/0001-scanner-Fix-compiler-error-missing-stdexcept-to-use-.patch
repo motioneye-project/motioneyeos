@@ -1,0 +1,28 @@
+From 85b61589b0c73f6c6974862af678ed2f82806ac5 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Thu, 9 Aug 2018 21:44:46 +0200
+Subject: [PATCH] [scanner] Fix compiler error: missing <stdexcept> to use
+ std::runtime_error
+
+Patch sent upstream as PR 50.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ scanner/scanner.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/scanner/scanner.cpp b/scanner/scanner.cpp
+index 9c97b7c..7019e0a 100644
+--- a/scanner/scanner.cpp
++++ b/scanner/scanner.cpp
+@@ -22,6 +22,7 @@
+ #include <sstream>
+ #include <cctype>
+ #include <cmath>
++#include <stdexcept>
+ 
+ #include "pugixml.hpp"
+ 
+-- 
+2.18.0
+

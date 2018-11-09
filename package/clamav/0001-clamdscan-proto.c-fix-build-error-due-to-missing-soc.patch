@@ -1,0 +1,34 @@
+From 52fda6e6689e22866a39ec4273713fb6035c38b2 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 7 May 2018 23:14:46 +0200
+Subject: [PATCH] clamdscan/proto.c: fix build error due to missing sockaddr_un
+ definition
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+proto.c: In function ‘dconnect’:
+proto.c:86:67: error: invalid application of ‘sizeof’ to incomplete type ‘struct sockaddr_un’
+             if (connect(sockd, (struct sockaddr *)&nixsock, sizeof(nixsock)) == 0)
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+Upstream-status: http://lurker.clamav.net/message/20140928.130829.5494fd68.en.html
+---
+ clamdscan/proto.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/clamdscan/proto.c b/clamdscan/proto.c
+index 0205f6da0..d3396732f 100644
+--- a/clamdscan/proto.c
++++ b/clamdscan/proto.c
+@@ -42,6 +42,7 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <sys/types.h>
++#include <sys/un.h>
+ #ifdef HAVE_SYS_SELECT_H
+ #include <sys/select.h>
+ #endif
+-- 
+2.14.3
+

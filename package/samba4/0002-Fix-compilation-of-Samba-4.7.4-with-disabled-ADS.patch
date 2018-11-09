@@ -1,0 +1,41 @@
+From da2f2cf8e7a1dfcb661b707e4649cec1e8a0e79c Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Thu, 9 Aug 2018 10:03:06 +0200
+Subject: [PATCH] Fix compilation of Samba 4.7.4 with disabled ADS
+
+Downloaded from upstream mailinglist
+https://lists.samba.org/archive/samba-technical/2017-December/124629.html
+
+Patch originates from FreeBSD:
+https://svnweb.freebsd.org/ports/head/net/samba47/files/patch-source3__libads__kerberos_keytab.c?revision=457119&view=markup
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ source3/libads/kerberos_keytab.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/source3/libads/kerberos_keytab.c b/source3/libads/kerberos_keytab.c
+index 37ac7ba985e..71250962090 100644
+--- a/source3/libads/kerberos_keytab.c
++++ b/source3/libads/kerberos_keytab.c
+@@ -32,8 +32,6 @@
+ 
+ #ifdef HAVE_KRB5
+ 
+-#ifdef HAVE_ADS
+-
+ /* This MAX_NAME_LEN is a constant defined in krb5.h */
+ #ifndef MAX_KEYTAB_NAME_LEN
+ #define MAX_KEYTAB_NAME_LEN 1100
+@@ -85,6 +83,8 @@ out:
+ 	return ret;
+ }
+ 
++#ifdef HAVE_ADS
++
+ /**********************************************************************
+  Adds a single service principal, i.e. 'host' to the system keytab
+ ***********************************************************************/
+-- 
+2.14.4
+

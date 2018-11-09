@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_BOOTCHART_VERSION = 231
+SYSTEMD_BOOTCHART_VERSION = 233
 SYSTEMD_BOOTCHART_SOURCE = systemd-bootchart-$(SYSTEMD_BOOTCHART_VERSION).tar.xz
 # Do not use the github helper here: the uploaded release tarball already
 # contains the generated autotools scripts. It also slightly differs with

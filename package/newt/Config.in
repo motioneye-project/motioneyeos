@@ -6,7 +6,8 @@ config BR2_PACKAGE_NEWT
 	select BR2_PACKAGE_SLANG
 	select BR2_PACKAGE_POPT
 	help
-	  Programming library for color text mode, widget based user interfaces.
+	  Programming library for color text mode, widget based user
+	  interfaces.
 
 	  http://www.redhat.com/
 

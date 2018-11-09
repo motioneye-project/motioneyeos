@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/txtorcon/json, sha256 locally computed
+md5	4d7380fa7e721c77cac103d971882374  txtorcon-0.19.3.tar.gz
+sha256	f73396667909a3c7a98f4dd865edf4ed6a2518ee5a935d92e18b8a479ec244fd  txtorcon-0.19.3.tar.gz
+sha256	3ada1c32ef38c23d96d7f4e8f4a226c527f51e0202883c7543b06f9cc5228a2b  LICENSE

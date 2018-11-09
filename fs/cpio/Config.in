@@ -31,6 +31,11 @@ config BR2_TARGET_ROOTFS_CPIO_BZIP2
 	help
 	  Do compress the cpio filesystem with bzip2.
 
+config BR2_TARGET_ROOTFS_CPIO_LZ4
+	bool "lz4"
+	help
+	  Do compress the cpio filesystem with lz4.
+
 config BR2_TARGET_ROOTFS_CPIO_LZMA
 	bool "lzma"
 	help
