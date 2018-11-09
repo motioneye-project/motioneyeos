@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ELL_VERSION = 0.13
+ELL_VERSION = 0.14
 ELL_SITE = https://git.kernel.org/pub/scm/libs/ell/ell.git
 ELL_SITE_METHOD = git
 ELL_LICENSE = LGPL-2.1+
