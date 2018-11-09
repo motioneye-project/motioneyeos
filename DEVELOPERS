@@ -1663,6 +1663,7 @@ F:	package/ghostscript-fonts/
 F:	package/gstreamer1/gst1-interpipe/
 F:	package/gstreamer1/gst1-validate/
 F:	package/gstreamer1/gstreamer1-editing-services/
+F:	package/iwd/
 F:	package/libevdev/
 F:	package/log4cplus/
 F:	package/postgresql/
