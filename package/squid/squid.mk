@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SQUID_VERSION = 4.3
+SQUID_VERSION = 4.4
 SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
 SQUID_SITE = http://www.squid-cache.org/Versions/v4
 SQUID_LICENSE = GPL-2.0+
