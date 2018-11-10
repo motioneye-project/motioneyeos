@@ -133,6 +133,7 @@ define QEMU_CONFIGURE_CMDS
 			--disable-libxml2 \
 			--disable-capstone \
 			--disable-git-update \
+			--disable-opengl \
 			$(QEMU_OPTS) \
 	)
 endef
