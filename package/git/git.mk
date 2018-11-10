@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GIT_VERSION = 2.15.0
+GIT_VERSION = 2.16.5
 GIT_SOURCE = git-$(GIT_VERSION).tar.xz
 GIT_SITE = $(BR2_KERNEL_MIRROR)/software/scm/git
 GIT_LICENSE = GPL-2.0, LGPL-2.1+
@@ -19,9 +19,12 @@ else
 GIT_CONF_OPTS += --without-openssl
 endif
 
-ifeq ($(BR2_PACKAGE_PCRE),y)
+ifeq ($(BR2_PACKAGE_PCRE2),y)
+GIT_DEPENDENCIES += pcre2
+GIT_CONF_OPTS += --with-libpcre2
+else ifeq ($(BR2_PACKAGE_PCRE),y)
 GIT_DEPENDENCIES += pcre
-GIT_CONF_OPTS += --with-libpcre
+GIT_CONF_OPTS += --with-libpcre1
 GIT_MAKE_OPTS += NO_LIBPCRE1_JIT=1
 else
 GIT_CONF_OPTS += --without-libpcre

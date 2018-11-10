@@ -1,3 +1,5 @@
-# From http://sourceforge.net/projects/uriparser/files/Sources/0.8.1/
-md5	4e4c5f0ee6abb111a431c45e144247aa		uriparser-0.8.1.tar.bz2
-sha1	4405d8baa0d9f5bc0319e6d5e68770acab67b602	uriparser-0.8.1.tar.bz2
+# From http://sourceforge.net/projects/uriparser/files/Sources/0.8.4/
+md5	9aabdc3611546f553f4af372167de6d6		uriparser-0.8.4.tar.bz2
+sha1	7a1948c20bed54b04dad0e1d7d2fa8f80fc7b2b3	uriparser-0.8.4.tar.bz2
+# Locally calculated
+sha256  c6ef125800c2ef13a41a22126bfc77e8b8c08993a6b96196117695988ea76249  COPYING

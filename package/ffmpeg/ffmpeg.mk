@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FFMPEG_VERSION = 3.3.5
+FFMPEG_VERSION = 3.4.4
 FFMPEG_SOURCE = ffmpeg-$(FFMPEG_VERSION).tar.xz
 FFMPEG_SITE = http://ffmpeg.org/releases
 FFMPEG_INSTALL_STAGING = YES
@@ -53,14 +53,11 @@ FFMPEG_CONF_OPTS = \
 	--disable-libdc1394 \
 	--disable-libgsm \
 	--disable-libilbc \
-	--disable-libnut \
-	--disable-libopenjpeg \
-	--disable-libschroedinger \
 	--disable-libvo-amrwbenc \
 	--disable-symver \
 	--disable-doc
 
-FFMPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBICONV),libiconv) host-pkgconf
+FFMPEG_DEPENDENCIES += host-pkgconf
 
 ifeq ($(BR2_PACKAGE_FFMPEG_GPL),y)
 FFMPEG_CONF_OPTS += --enable-gpl
@@ -161,7 +158,10 @@ endif
 ifeq ($(BR2_PACKAGE_FFMPEG_INDEVS),y)
 FFMPEG_CONF_OPTS += --enable-indevs
 ifeq ($(BR2_PACKAGE_ALSA_LIB),y)
+FFMPEG_CONF_OPTS += --enable-alsa
 FFMPEG_DEPENDENCIES += alsa-lib
+else
+FFMPEG_CONF_OPTS += --disable-alsa
 endif
 else
 FFMPEG_CONF_OPTS += --disable-indevs
@@ -225,6 +225,13 @@ ifeq ($(BR2_PACKAGE_FFMPEG_GPL)$(BR2_PACKAGE_LIBEBUR128),yy)
 FFMPEG_DEPENDENCIES += libebur128
 endif
 
+ifeq ($(BR2_PACKAGE_LIBDRM),y)
+FFMPEG_CONF_OPTS += --enable-libdrm
+FFMPEG_DEPENDENCIES += libdrm
+else
+FFMPEG_CONF_OPTS += --disable-libdrm
+endif
+
 ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
 FFMPEG_CONF_OPTS += --enable-libopenh264
 FFMPEG_DEPENDENCIES += libopenh264
@@ -254,10 +261,10 @@ else
 FFMPEG_CONF_OPTS += --disable-vdpau
 endif
 
-ifeq ($(BR2_PACKAGE_RPI_FIRMWARE)$(BR2_PACKAGE_RPI_USERLAND),yy)
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 FFMPEG_CONF_OPTS += --enable-mmal --enable-omx --enable-omx-rpi \
 	--extra-cflags=-I$(STAGING_DIR)/usr/include/IL
-FFMPEG_DEPENDENCIES += rpi-firmware rpi-userland
+FFMPEG_DEPENDENCIES += rpi-userland
 else
 FFMPEG_CONF_OPTS += --disable-mmal --disable-omx --disable-omx-rpi
 endif
@@ -344,6 +351,13 @@ else
 FFMPEG_CONF_OPTS += --disable-libwavpack
 endif
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+FFMPEG_CONF_OPTS += --enable-iconv
+FFMPEG_DEPENDENCIES += libiconv
+else
+FFMPEG_CONF_OPTS += --disable-iconv
+endif
+
 # ffmpeg freetype support require fenv.h which is only
 # available/working on glibc.
 # The microblaze variant doesn't provide the needed exceptions
@@ -361,6 +375,13 @@ else
 FFMPEG_CONF_OPTS += --disable-fontconfig
 endif
 
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+FFMPEG_CONF_OPTS += --enable-libopenjpeg
+FFMPEG_DEPENDENCIES += openjpeg
+else
+FFMPEG_CONF_OPTS += --disable-libopenjpeg
+endif
+
 ifeq ($(BR2_PACKAGE_X264)$(BR2_PACKAGE_FFMPEG_GPL),yy)
 FFMPEG_CONF_OPTS += --enable-libx264
 FFMPEG_DEPENDENCIES += x264
@@ -376,10 +397,10 @@ FFMPEG_CONF_OPTS += --disable-libx265
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
-FFMPEG_CONF_OPTS += --enable-yasm
-FFMPEG_DEPENDENCIES += host-yasm
+FFMPEG_CONF_OPTS += --enable-x86asm
+FFMPEG_DEPENDENCIES += host-nasm
 else
-FFMPEG_CONF_OPTS += --disable-yasm
+FFMPEG_CONF_OPTS += --disable-x86asm
 FFMPEG_CONF_OPTS += --disable-mmx
 endif
 

@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/oauthlib/json, sha256 locally computed
+md5	277a9a966cc8c72e492b4eeb41332445  oauthlib-2.0.6.tar.gz
+sha256	ce57b501e906ff4f614e71c36a3ab9eacbb96d35c24d1970d2539bbc3ec70ce1  oauthlib-2.0.6.tar.gz
+sha256	9e1ae8725f5815738dadb6cbb09f450453d94e07c7b5efaee864f546a6209a95  LICENSE

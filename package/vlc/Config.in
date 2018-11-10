@@ -11,8 +11,6 @@ config BR2_PACKAGE_VLC
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
-	# ARC toolchain issue
-	depends on !BR2_arc
 	select BR2_PACKAGE_LIBVORBIS if BR2_PACKAGE_OPUS
 	select BR2_PACKAGE_VLC_OPENCV_BACKEND if BR2_PACKAGE_OPENCV
 	select BR2_PACKAGE_VLC_OPENCV3_BACKEND if BR2_PACKAGE_OPENCV3
@@ -36,6 +34,5 @@ config BR2_PACKAGE_VLC_OPENCV3_BACKEND
 
 comment "vlc needs a toolchain w/ C++, dynamic library, wchar, threads, headers >= 3.7"
 	depends on BR2_USE_MMU
-	depends on !BR2_arc
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || !BR2_USE_WCHAR \
 		|| !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7

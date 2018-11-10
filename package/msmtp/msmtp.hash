@@ -1,3 +1,6 @@
-# From http://sourceforge.net/projects/msmtp/files/msmtp/1.6.5/
-md5	50a8c9bb72f8222779db6b4aae2965e0	msmtp-1.6.5.tar.xz
-sha1	27d1fc609cd453a7e4c55c4ec55d455949bc53f1	msmtp-1.6.5.tar.xz
+# From http://sourceforge.net/projects/msmtp/files/msmtp/1.6.6/
+md5	82b0520b57db4b2cf05333d11fb5974d	msmtp-1.6.6.tar.xz
+sha1	f997f40dfb3f882df837cfd9a63bd4d271dcdc41	msmtp-1.6.6.tar.xz
+# Locally calculated after checking signature
+# http://downloads.sourceforge.net/project/msmtp/msmtp/1.6.6/msmtp-1.6.6.tar.xz.sig
+sha256	da15db1f62bd0201fce5310adb89c86188be91cd745b7cb3b62b81a501e7fb5e	msmtp-1.6.6.tar.xz

@@ -1,0 +1,28 @@
+From 39c5f1c76f1fcef4b5958bf828a63f53426b6984 Mon Sep 17 00:00:00 2001
+From: Mike Gerwitz <mike@mikegerwitz.com>
+Date: Tue, 24 Dec 2013 22:16:31 -0500
+Subject: comm.h now depends on term.h
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Patch retrieved and updated from:
+http://git.savannah.gnu.org/cgit/screen.git/commit/?id=39c5f1c]
+---
+ src/Makefile.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index e791e79..d4f7c0b 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -113,7 +113,7 @@ term.h: term.c term.sh
+ 
+ kmapdef.c: term.h
+ 
+-comm.h: comm.c comm.sh config.h
++comm.h: comm.c comm.sh config.h term.h
+ 	AWK=$(AWK) CC="$(CC) $(CFLAGS)" srcdir=${srcdir} sh $(srcdir)/comm.sh
+ 
+ docs:
+-- 
+cgit v1.0-41-gc330
+

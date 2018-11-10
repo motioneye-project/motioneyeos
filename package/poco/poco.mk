@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POCO_VERSION = poco-1.7.9-release
+POCO_VERSION = poco-1.8.1-release
 POCO_SITE = $(call github,pocoproject,poco,$(POCO_VERSION))
 POCO_LICENSE = BSL-1.0
 POCO_LICENSE_FILES = LICENSE
@@ -34,6 +34,11 @@ endif
 
 # architectures missing some FE_* in their fenv.h
 ifeq ($(BR2_sh4a)$(BR2_nios2),y)
+POCO_CONF_OPTS += --no-fpenvironment
+endif
+
+# disable fpenvironment for soft floating point configuration
+ifeq ($(BR2_SOFT_FLOAT),y)
 POCO_CONF_OPTS += --no-fpenvironment
 endif
 

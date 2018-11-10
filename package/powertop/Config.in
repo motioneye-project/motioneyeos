@@ -8,7 +8,8 @@ config BR2_PACKAGE_POWERTOP
 	select BR2_PACKAGE_PCIUTILS
 	select BR2_PACKAGE_LIBNL
 	help
-	  A tool to diagnose issues with power consumption and power management
+	  A tool to diagnose issues with power consumption and power
+	  management
 
 	  https://01.org/powertop/
 

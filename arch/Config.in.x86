@@ -129,6 +129,15 @@ config BR2_x86_atom
 	select BR2_X86_CPU_HAS_SSE2
 	select BR2_X86_CPU_HAS_SSE3
 	select BR2_X86_CPU_HAS_SSSE3
+config BR2_x86_silvermont
+	bool "silvermont"
+	select BR2_X86_CPU_HAS_MMX
+	select BR2_X86_CPU_HAS_SSE
+	select BR2_X86_CPU_HAS_SSE2
+	select BR2_X86_CPU_HAS_SSE3
+	select BR2_X86_CPU_HAS_SSSE3
+	select BR2_X86_CPU_HAS_SSE4
+	select BR2_X86_CPU_HAS_SSE42
 config BR2_x86_k6
 	bool "k6"
 	select BR2_X86_CPU_HAS_MMX
@@ -229,6 +238,7 @@ config BR2_ARCH
 	default "i686"		if BR2_x86_corei7_avx && BR2_i386
 	default "i686"		if BR2_x86_corei7_avx2 && BR2_i386
 	default "i686"		if BR2_x86_atom && BR2_i386
+	default "i686"		if BR2_x86_silvermont && BR2_i386
 	default "i686"		if BR2_x86_opteron && BR2_i386
 	default "i686"		if BR2_x86_opteron_sse3 && BR2_i386
 	default "i686"		if BR2_x86_barcelona && BR2_i386
@@ -261,6 +271,7 @@ config BR2_GCC_TARGET_ARCH
 	default "corei7-avx"	if BR2_x86_corei7_avx
 	default "core-avx2"	if BR2_x86_core_avx2
 	default "atom"		if BR2_x86_atom
+	default "silvermont"	if BR2_x86_silvermont
 	default "k8"		if BR2_x86_opteron
 	default "k8-sse3"	if BR2_x86_opteron_sse3
 	default "barcelona"	if BR2_x86_barcelona

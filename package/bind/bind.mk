@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BIND_VERSION = 9.11.2
+BIND_VERSION = 9.11.4-P2
 BIND_SITE = http://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 # bind does not support parallel builds.
 BIND_MAKE = $(MAKE1)
@@ -33,7 +33,7 @@ BIND_CONF_OPTS = \
 	--enable-filter-aaaa
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
-BIND_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr/include
+BIND_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr
 BIND_DEPENDENCIES += zlib
 else
 BIND_CONF_OPTS += --without-zlib
@@ -61,7 +61,9 @@ BIND_CONF_ENV += \
 	ac_cv_func_EVP_sha512=yes
 BIND_CONF_OPTS += \
 	--with-openssl=$(STAGING_DIR)/usr LIBS="-lz" \
-	--with-ecdsa=yes
+	--with-ecdsa=yes \
+	--with-eddsa=no \
+	--with-aes=yes
 # GOST cipher support requires openssl extra engines
 ifeq ($(BR2_PACKAGE_OPENSSL_ENGINES),y)
 BIND_CONF_OPTS += --with-gost=yes

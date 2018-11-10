@@ -1,0 +1,9 @@
+config BR2_PACKAGE_SAFECLIB
+	bool "safeclib"
+	help
+	  safec fork with all C11 Annex K functions
+
+	  This library implements the secure C11 Annex K functions on
+	  top of most libc implementations, which are missing from them.
+
+	  https://rurban.github.io/safeclib/

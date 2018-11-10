@@ -7,11 +7,11 @@
 NMAP_VERSION = 7.60
 NMAP_SITE = https://nmap.org/dist
 NMAP_SOURCE = nmap-$(NMAP_VERSION).tar.bz2
-NMAP_DEPENDENCIES = libpcap pcre host-autoconf
+NMAP_DEPENDENCIES = libpcap liblinear pcre host-autoconf
 NMAP_CONF_OPTS = --without-liblua --without-zenmap \
-	--with-libdnet=included --with-liblinear=included \
+	--with-libdnet=included \
 	--with-libpcre="$(STAGING_DIR)/usr" --without-ncat
-NMAP_LICENSE = GPL-2.0
+NMAP_LICENSE = nmap license
 NMAP_LICENSE_FILES = COPYING
 
 # nmap doesn't autoreconf properly, so we just re-generate the

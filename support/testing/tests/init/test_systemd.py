@@ -21,6 +21,18 @@ class InitSystemSystemdBase(InitSystemBase):
     def check_init(self):
         super(InitSystemSystemdBase, self).check_init("/lib/systemd/systemd")
 
+        # Test all units are OK
+        output, _ = self.emulator.run("systemctl --no-pager --failed --no-legend")
+        self.assertEqual(len(output), 0)
+
+        # Test we can reach the DBus daemon
+        _, exit_code = self.emulator.run("busctl --no-pager")
+        self.assertEqual(exit_code, 0)
+
+        # Test we can read at least one line from the journal
+        output, _ = self.emulator.run("journalctl --no-pager --lines 1 --quiet")
+        self.assertEqual(len(output), 1)
+
 
 class TestInitSystemSystemdRoNetworkd(InitSystemSystemdBase):
     config = InitSystemSystemdBase.config + \

@@ -7,7 +7,7 @@ Prefer getty to agetty in console setup systemd units
 
 Signed-off-by: Maxime Ripard <maxime.ripard@free-electrons.com>
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-[Adam: Refresh for 234]
+[aduskett@gmail.com: Update for systemd v237]
 Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  units/getty@.service.m4        | 5 +----
@@ -18,7 +18,7 @@ diff --git a/units/getty@.service.m4 b/units/getty@.service.m4
 index 2a84061..7ad588f 100644
 --- a/units/getty@.service.m4
 +++ b/units/getty@.service.m4
-@@ -33,10 +33,7 @@ ConditionPathExists=/dev/tty0
+@@ -35,10 +35,7 @@ ConditionPathExists=/dev/tty0
  
  [Service]
  # the VT is cleared by TTYVTDisallocate
@@ -34,7 +34,7 @@ diff --git a/units/serial-getty@.service.m4 b/units/serial-getty@.service.m4
 index b7caeaf..c663612 100644
 --- a/units/serial-getty@.service.m4
 +++ b/units/serial-getty@.service.m4
-@@ -31,7 +31,7 @@ Before=rescue.service
+@@ -33,7 +33,7 @@ Before=rescue.service
  # The '-o' option value tells agetty to replace 'login' arguments with an
  # option to preserve environment (-p), followed by '--' for safety, and then
  # the entered username.

@@ -11,12 +11,13 @@ config BR2_PACKAGE_UBUS
 	help
 	  IPC/RPC bus that allows communication between processes.
 
-	  It consists of few parts including a daemon (ubusd), a library
-	  (libubus) and a command line interface (ubus). Although created
-	  for the OpenWRT project, it can be used as a general IPC/RPC
-	  mechanism in other projects.
+	  It consists of few parts including a daemon (ubusd), a
+	  library (libubus) and a command line interface
+	  (ubus). Although created for the OpenWRT project, it can be
+	  used as a general IPC/RPC mechanism in other projects.
 
-	  * Select BR2_PACKAGE_LUA_5_1 if you want to have Lua support.
+	  * Select BR2_PACKAGE_LUA_5_1 if you want to have Lua
+	    support.
 
 	  https://wiki.openwrt.org/doc/techref/ubus
 

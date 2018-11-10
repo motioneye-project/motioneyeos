@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KVMTOOL_VERSION = bed2bd9e1fbef5819090feeada7b86eed97ca5e2
+KVMTOOL_VERSION = f77d646ba01d04be5aad9449ac00719c043fe36e
 KVMTOOL_SITE = $(BR2_KERNEL_MIRROR)/scm/linux/kernel/git/will/kvmtool.git
 KVMTOOL_SITE_METHOD = git
 KVMTOOL_DEPENDENCIES = \
@@ -17,23 +17,6 @@ KVMTOOL_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_ZLIB),zlib)
 KVMTOOL_LICENSE = GPL-2.0
 KVMTOOL_LICENSE_FILES = COPYING
-
-# This is required to convert a static binary (init helper) back into
-# object-file format, and in multilib toolchains like CS 2012.09 for x86
-# the default is i386, hence when building for x86_64 things break since
-# LD doesn't autodetect the input file format.
-# GCC-as-linker can't accomplish this feat easily either since it's mixing
-# static content (guest_init.o) with dynamic one (lkvm) making
-# a relocatable output file.
-# The purpose of this trick is to embed the init helper into the main
-# binary to help users in guest system startup, which would otherwise
-# require more complex guest images.
-# This needs revisiting if/when X32 ABI support is added.
-#
-# If more packages need this (unlikely) an ld wrapper might be a better
-# solution, using gcc -dumpspecs information.
-KVMTOOL_EXTRA_LDFLAGS = \
-	$(if $(BR2_x86_64),-m elf_x86_64)
 
 # Disable -Werror, otherwise musl is not happy
 KVMTOOL_MAKE_OPTS = \

@@ -1,0 +1,19 @@
+config BR2_PACKAGE_PYTHON_TXTORCON
+	bool "python-txtorcon"
+	depends on BR2_INSTALL_LIBSTDCPP # python-pyopenssl, python-service-identity
+	select BR2_PACKAGE_PYTHON_AUTOMAT # runtime
+	select BR2_PACKAGE_PYTHON_IDNA # runtime
+	select BR2_PACKAGE_PYTHON_INCREMENTAL # runtime
+	select BR2_PACKAGE_PYTHON_IPADDRESS if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_PYOPENSSL # runtime
+	select BR2_PACKAGE_PYTHON_SERVICE_IDENTITY # runtime
+	select BR2_PACKAGE_PYTHON_TWISTED # runtime
+	select BR2_PACKAGE_PYTHON_ZOPE_INTERFACE # runtime
+	help
+	  Twisted-based Tor controller client, with state-tracking and
+	  configuration abstractions.
+
+	  https://github.com/meejah/txtorcon
+
+comment "python-txtorcon needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

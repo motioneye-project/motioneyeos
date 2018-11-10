@@ -1,0 +1,33 @@
+From 57d2c370493f2e9e33b30e8767624c648f138ec4 Mon Sep 17 00:00:00 2001
+From: Jean Delvare <jdelvare@suse.de>
+Date: Thu, 14 Dec 2017 13:34:34 +0100
+Subject: Makefile: Allow to really disable the dynamic library
+
+If the user disables the build of the dynamic library, we have to
+link the tools with the static library. If we don't, the dependencies
+will cause the dynamic library to be built regardless of the user's
+request.
+
+Signed-off-by: Jean Delvare <jdelvare@suse.de>
+Fixes: 9906b2ecb6ae ("Makefile: Add flag to disable dynamic library")
+Signed-off-by: Angelo Compagnucci <angelo@amarulasolutions.com>
+---
+ Makefile | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 1bb5572..6bb741f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -43,6 +43,8 @@ endif
+ ifeq ($(BUILD_DYNAMIC_LIB),0)
+ ifeq ($(BUILD_STATIC_LIB),0)
+ $(error BUILD_DYNAMIC_LIB and BUILD_STATIC_LIB cannot be disabled at the same time)
++else
++USE_STATIC_LIB := 1
+ endif
+ endif
+ 
+-- 
+2.7.4
+

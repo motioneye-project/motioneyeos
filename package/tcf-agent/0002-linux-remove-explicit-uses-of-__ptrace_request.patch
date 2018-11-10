@@ -1,0 +1,103 @@
+From 3e662598e1d9ad682e470988764c3af5b1a78cb7 Mon Sep 17 00:00:00 2001
+From: Norbert Lange <nolange79@gmail.com>
+Date: Fri, 1 Dec 2017 13:15:50 +0100
+Subject: [PATCH] linux: remove explicit uses of __ptrace_request
+
+This type is not to be used directly, and with musl it wont build
+
+Signed-off-by: Norbert Lange <nolange79@gmail.com>
+---
+ agent/machine/arm/tcf/cpudefs-mdep.c       |  4 ++--
+ agent/machine/arm/tcf/regset-mdep.h        |  4 ++--
+ agent/system/GNU/Linux/tcf/context-linux.c | 18 +++++++++---------
+ 3 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/agent/machine/arm/tcf/cpudefs-mdep.c b/agent/machine/arm/tcf/cpudefs-mdep.c
+index 27ab0129..0bc8b146 100644
+--- a/agent/machine/arm/tcf/cpudefs-mdep.c
++++ b/agent/machine/arm/tcf/cpudefs-mdep.c
+@@ -89,10 +89,10 @@ static RegisterDefinition * lr_def = NULL;
+ static RegisterDefinition * cpsr_def = NULL;
+ 
+ #if !defined(PTRACE_GETHBPREGS)
+-#define PTRACE_GETHBPREGS (enum __ptrace_request)29
++#define PTRACE_GETHBPREGS 29
+ #endif
+ #if !defined(PTRACE_SETHBPREGS)
+-#define PTRACE_SETHBPREGS (enum __ptrace_request)30
++#define PTRACE_SETHBPREGS 30
+ #endif
+ 
+ #define ARM_DEBUG_ARCH_V6       1
+diff --git a/agent/machine/arm/tcf/regset-mdep.h b/agent/machine/arm/tcf/regset-mdep.h
+index e5516042..893ba64f 100644
+--- a/agent/machine/arm/tcf/regset-mdep.h
++++ b/agent/machine/arm/tcf/regset-mdep.h
+@@ -28,11 +28,11 @@
+ #endif
+ 
+ #ifndef PTRACE_GETREGSET
+-#define PTRACE_GETREGSET (enum __ptrace_request)0x4204
++#define PTRACE_GETREGSET 0x4204
+ #endif
+ 
+ #ifndef PTRACE_SETREGSET
+-#define PTRACE_SETREGSET (enum __ptrace_request)0x4205
++#define PTRACE_SETREGSET 0x4205
+ #endif
+ 
+ struct regset_gp {
+diff --git a/agent/system/GNU/Linux/tcf/context-linux.c b/agent/system/GNU/Linux/tcf/context-linux.c
+index d4eb5e6b..4c86021e 100644
+--- a/agent/system/GNU/Linux/tcf/context-linux.c
++++ b/agent/system/GNU/Linux/tcf/context-linux.c
+@@ -60,10 +60,10 @@
+ #endif
+ 
+ #if !defined(PTRACE_SETOPTIONS)
+-#define PTRACE_SETOPTIONS       (enum __ptrace_request)0x4200
+-#define PTRACE_GETEVENTMSG      (enum __ptrace_request)0x4201
+-#define PTRACE_GETSIGINFO       (enum __ptrace_request)0x4202
+-#define PTRACE_SETSIGINFO       (enum __ptrace_request)0x4203
++#define PTRACE_SETOPTIONS       0x4200
++#define PTRACE_GETEVENTMSG      0x4201
++#define PTRACE_GETSIGINFO       0x4202
++#define PTRACE_SETSIGINFO       0x4203
+ 
+ #define PTRACE_O_TRACESYSGOOD   0x00000001
+ #define PTRACE_O_TRACEFORK      0x00000002
+@@ -85,8 +85,8 @@
+ 
+ #if defined(__arm__) || defined(__aarch64__)
+ #if !defined(PTRACE_GETVFPREGS)
+-#define PTRACE_GETVFPREGS       (enum __ptrace_request)27
+-#define PTRACE_SETVFPREGS       (enum __ptrace_request)28
++#define PTRACE_GETVFPREGS       27
++#define PTRACE_SETVFPREGS       28
+ #endif
+ #endif
+ 
+@@ -483,7 +483,7 @@ static const char * get_ptrace_cmd_name(int cmd) {
+ static int do_single_step(Context * ctx) {
+     uint32_t is_cont = 0;
+     ContextExtensionLinux * ext = EXT(ctx);
+-    enum __ptrace_request cmd = PTRACE_SINGLESTEP;
++    int cmd = PTRACE_SINGLESTEP;
+ 
+     assert(!ext->pending_step);
+ 
+@@ -540,9 +540,9 @@ int context_continue(Context * ctx) {
+     int signal = 0;
+     ContextExtensionLinux * ext = EXT(ctx);
+ #if USE_PTRACE_SYSCALL
+-    enum __ptrace_request cmd = PTRACE_SYSCALL;
++    int cmd = PTRACE_SYSCALL;
+ #else
+-    enum __ptrace_request cmd = PTRACE_CONT;
++    int cmd = PTRACE_CONT;
+ #endif
+ 
+     assert(is_dispatch_thread());
+-- 
+2.15.1
+

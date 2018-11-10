@@ -1,0 +1,31 @@
+From 5c407e130f8d0416f91f5a12bcdc2709f00dda65 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 29 Jun 2018 21:15:10 +0200
+Subject: [PATCH] Build sdlcam only if jpeg is enabled
+
+Fixes:
+ - http://autobuild.buildroot.net/results/1eded8b44cc369550566c6ce0b3c042f1aec8d44
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ contrib/test/Makefile.am | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/contrib/test/Makefile.am b/contrib/test/Makefile.am
+index 0188fe21..c7c38e7a 100644
+--- a/contrib/test/Makefile.am
++++ b/contrib/test/Makefile.am
+@@ -17,8 +17,10 @@ noinst_PROGRAMS += v4l2gl
+ endif
+ 
+ if HAVE_SDL
++if HAVE_JPEG
+ noinst_PROGRAMS += sdlcam
+ endif
++endif
+ 
+ driver_test_SOURCES = driver-test.c
+ driver_test_LDADD = ../../utils/libv4l2util/libv4l2util.la
+-- 
+2.14.1
+

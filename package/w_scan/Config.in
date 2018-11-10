@@ -6,9 +6,9 @@ config BR2_PACKAGE_W_SCAN
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_7
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	help
-	  w_scan is a small command line utility used to perform frequency
-	  scans for DVB and ATSC transmissions. It is capable of creating
-	  channels.conf files (in different output formats !) as well as
-	  initial tuning data for scan.
+	  w_scan is a small command line utility used to perform
+	  frequency scans for DVB and ATSC transmissions. It is
+	  capable of creating channels.conf files (in different output
+	  formats !) as well as initial tuning data for scan.
 
 	  http://wirbel.htpc-forum.de/w_scan/index_en.html

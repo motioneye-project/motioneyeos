@@ -1,2 +1,5 @@
-#From https://github.com/TresysTechnology/refpolicy/wiki/DownloadRelease
-sha256 08f9e2afc5e4939c23e56deeec7c47da029d7b85d82fb4ded01a36eb5da0651e  refpolicy-RELEASE_2_20170204.tar.gz
+# From https://github.com/TresysTechnology/refpolicy/wiki/DownloadRelease
+sha256 e826f7d7f899a548e538964487e9fc1bc67ca94756ebdce0bfb6532b4eb0d06b  refpolicy-2.20180114.tar.bz2
+
+# Locally computed
+sha256 204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994 COPYING

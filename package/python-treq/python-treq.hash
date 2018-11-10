@@ -1,3 +1,4 @@
 # md5 from https://pypi.python.org/pypi/treq/json, sha256 locally computed
-md5 421dea5bc8294c14aa24d64628a2eaea treq-16.12.0.tar.gz
-sha256 b008edc81157969ad2bf23bece083adedb0adf249368a3896bb5ac9a871b91a9 treq-16.12.0.tar.gz
+md5	7e1f5079b85ec104d4759fc0fb89071e  treq-17.8.0.tar.gz
+sha256	ef72d2d5e0b24bdf29267b608fa33df0ac401743af8524438b073e1fb2b66f16  treq-17.8.0.tar.gz
+sha256  7cc1b65e1937b1cc07052bb864ec96d8e5fd413400c0842e5b89a8201a600293  LICENSE

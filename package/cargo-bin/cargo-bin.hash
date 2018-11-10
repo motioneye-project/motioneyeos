@@ -1,0 +1,8 @@
+# From https://static.rust-lang.org/dist/cargo-0.24.0-i686-unknown-linux-gnu.tar.xz.sha256
+sha256 6ffc847e0ee2a1273223ce500f7b212d051e99a6d234e34585d0c55e21a963ea  cargo-0.24.0-i686-unknown-linux-gnu.tar.xz
+# From https://static.rust-lang.org/dist/cargo-0.24.0-x86_64-unknown-linux-gnu.tar.xz.sha256
+sha256 93b953c8c7a2088aef952de8dccd7f6ccf9b21bf94b735d3909961ffe831da8c  cargo-0.24.0-x86_64-unknown-linux-gnu.tar.xz
+# Locally generated
+sha256 a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2  LICENSE-APACHE
+sha256 23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3  LICENSE-MIT
+sha256 8bd89f9222dc80292f4107347103b693ac66f3a083371f0629ccf42338abe880  LICENSE-THIRD-PARTY

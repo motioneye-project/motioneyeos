@@ -38,7 +38,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2017.09"
+	bool "2018.01"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -86,7 +86,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2017.09"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2018.01"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -157,6 +157,18 @@ config BR2_TARGET_UBOOT_NEEDS_OPENSSL
 	  requires OpenSSL to be available on the host. This is
 	  typically the case when the board configuration has
 	  CONFIG_FIT_SIGNATURE enabled.
+
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31
+	bool "U-Boot needs ATF BL31"
+	depends on BR2_TARGET_ARM_TRUSTED_FIRMWARE
+	depends on !BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
+	select BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31
+	help
+	  Some specific platforms (such as Allwinner A64/H5)
+	  encapsulate the BL31 part of ATF inside U-Boot. This option
+	  makes sure ATF gets built prior to U-Boot, and that the BL31
+	  variable pointing to ATF's BL31 binary, is passed during the
+	  Buildroot build.
 
 menu "U-Boot binary format"
 
@@ -334,13 +346,14 @@ config BR2_TARGET_UBOOT_SPL
 	  into DDR.
 
 config BR2_TARGET_UBOOT_SPL_NAME
-	string "U-Boot SPL binary image name"
+	string "U-Boot SPL/TPL binary image name(s)"
 	default "spl/u-boot-spl.bin"
 	depends on BR2_TARGET_UBOOT_SPL
 	help
-	  A space-separated list of SPL binaries, generated during
-	  u-boot build. For most platform it is spl/u-boot-spl.bin but
-	  not always. It is MLO on OMAP and SPL on i.MX6 for example.
+	  A space-separated list of SPL/TPL binaries, generated during
+	  u-boot build. For most platform SPL name is spl/u-boot-spl.bin
+	  and TPL name is tpl/u-boot-tpl.bin but not always. SPL name is
+	  MLO on OMAP and SPL on i.MX6 for example.
 
 config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	bool "Generate image for Xilinx Zynq"

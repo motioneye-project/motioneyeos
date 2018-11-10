@@ -4,3 +4,5 @@ config BR2_TARGET_VEXPRESS_FIRMWARE
 	help
 	  Versatile Express firmware from ARM, with Linaro mods last
 	  change.
+
+	  https://git.linaro.org/arm/vexpress-firmware.git

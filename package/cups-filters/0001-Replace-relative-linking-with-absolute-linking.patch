@@ -1,0 +1,46 @@
+From c26b4c3550557442890f2f790d4f8b61a3734c1f Mon Sep 17 00:00:00 2001
+From: Olivier Schonken <olivier.schonken@gmail.com>
+Date: Thu, 8 Mar 2018 12:32:23 +0200
+Subject: [PATCH] install: don't use ln -r
+
+Oldish enterprise-class distributions have too old versions of
+coreutils, with ln not supporting -r.
+
+So we fake it.
+
+ln -r would create minimalist relative paths, but they are not
+trivial to generate. Instead, we always create paths relative to the
+root, i.e.:
+
+    ln -s -r /usr/bin/foo /usr/sbin/foo
+
+would create:  /usr/sbin/foo -> ../bin/foo
+while we do :  /usr/sbin/foo -> ../../usr/bin/foo
+
+Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
+---
+ Makefile.am | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index d959227..b49914a 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -998,11 +998,11 @@ install-exec-hook:
+ 	$(INSTALL) -d -m 755 $(DESTDIR)$(pkgfilterdir)
+ 	$(INSTALL) -d -m 755 $(DESTDIR)$(pkgbackenddir)
+ if ENABLE_FOOMATIC
+-	$(LN_S) -r -f $(DESTDIR)$(pkgfilterdir)/foomatic-rip $(DESTDIR)$(bindir)
++	$(LN_S) -f ../..$(pkgfilterdir)/foomatic-rip $(DESTDIR)$(bindir)
+ endif
+ if ENABLE_DRIVERLESS
+-	$(LN_S) -r -f $(DESTDIR)$(pkgppdgendir)/driverless $(DESTDIR)$(bindir)
+-	$(LN_S) -r -f $(DESTDIR)$(pkgppdgendir)/driverless $(DESTDIR)$(pkgbackenddir)
++	$(LN_S) -f ../..$(pkgppdgendir)/driverless $(DESTDIR)$(bindir)
++	$(LN_S) -f ../..$(pkgppdgendir)/driverless $(DESTDIR)$(pkgbackenddir)
+ endif
+ if ENABLE_BRAILLE
+ 	$(LN_S) -f imagetobrf $(DESTDIR)$(pkgfilterdir)/imagetoubrl
+-- 
+2.14.1
+

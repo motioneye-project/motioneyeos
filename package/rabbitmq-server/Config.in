@@ -5,7 +5,8 @@ config BR2_PACKAGE_RABBITMQ_SERVER
 	select BR2_PACKAGE_OPENSSL # Required to build Erlang's crypto and ssl
 	                           # applications
 	help
-	  High-performance AMQP-compliant message broker written in Erlang.
+	  High-performance AMQP-compliant message broker written in
+	  Erlang.
 
 	  http://www.rabbitmq.com
 

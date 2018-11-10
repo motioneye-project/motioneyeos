@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-JSON_C_VERSION = json-c-0.12.1-20160607
-JSON_C_SITE = $(call github,json-c,json-c,$(JSON_C_VERSION))
+JSON_C_VERSION = 0.13
+JSON_C_SITE = https://s3.amazonaws.com/json-c_releases/releases
 JSON_C_INSTALL_STAGING = YES
-JSON_C_MAKE = $(MAKE1)
-JSON_C_CONF_OPTS = --disable-oldname-compat
-# AUTORECONF is needed because of Makefile.am.inc patch.
-JSON_C_AUTORECONF = YES
 JSON_C_LICENSE = MIT
 JSON_C_LICENSE_FILES = COPYING
 
+# Patching configure.ac
+JSON_C_AUTORECONF = YES
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LCMS2_VERSION = 2.8
+LCMS2_VERSION = 2.9
 LCMS2_SITE = http://downloads.sourceforge.net/project/lcms/lcms/$(LCMS2_VERSION)
 LCMS2_LICENSE = MIT
 LCMS2_LICENSE_FILES = COPYING

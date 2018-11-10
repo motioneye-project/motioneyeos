@@ -62,6 +62,14 @@ config BR2_HOST_GCC_AT_LEAST_7
 	default y if BR2_HOST_GCC_VERSION = "7"
 	select BR2_HOST_GCC_AT_LEAST_6
 
+config BR2_HOST_GCC_AT_LEAST_8
+	bool
+	default y if BR2_HOST_GCC_VERSION = "8"
+	select BR2_HOST_GCC_AT_LEAST_7
+
+# When adding new entries above, be sure to update
+# the HOSTCC_MAX_VERSION variable in the Makefile.
+
 # Hidden boolean selected by packages in need of Java in order to build
 # (example: kodi)
 config BR2_NEEDS_HOST_JAVA
@@ -332,6 +340,9 @@ config BR2_CCACHE_DIR
 	default "$(HOME)/.buildroot-ccache"
 	help
 	  Where ccache should store cached files.
+	  If the Linux shell environment has defined the BR2_CCACHE_DIR
+	  environment variable, then this overrides this configuration
+	  item.
 
 config BR2_CCACHE_INITIAL_SETUP
 	string "Compiler cache initial setup"
@@ -458,7 +469,7 @@ choice
 config BR2_OPTIMIZE_0
 	bool "optimization level 0"
 	help
-	  Do not optimize. This is the default.
+	  Do not optimize.
 
 config BR2_OPTIMIZE_1
 	bool "optimization level 1"
@@ -525,6 +536,7 @@ config BR2_OPTIMIZE_S
 	  -falign-loops -falign-labels -freorder-blocks
 	  -freorder-blocks-and-partition -fprefetch-loop-arrays
 	  -ftree-vect-loop-version
+	  This is the default.
 
 endchoice
 
@@ -538,6 +550,7 @@ config BR2_GOOGLE_BREAKPAD_ENABLE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on (BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC)
 	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GOOGLE_BREAKPAD_ARCH_SUPPORTS
 	help
 	  This option will enable the use of google breakpad, a library
 	  and tool suite that allows you to distribute an application to
@@ -564,61 +577,6 @@ config BR2_GOOGLE_BREAKPAD_INCLUDE_FILES
 	  $(STAGING_DIR)/usr/share/google-breakpad-symbols
 
 endif
-
-choice
-	bool "build code with Stack Smashing Protection"
-	default BR2_SSP_ALL if BR2_ENABLE_SSP # legacy
-	depends on BR2_TOOLCHAIN_HAS_SSP
-	help
-	  Enable stack smashing protection support using GCC's
-	  -fstack-protector option family.
-
-	  See
-	  http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
-	  for details.
-
-	  Note that this requires the toolchain to have SSP support.
-	  This is always the case for glibc and eglibc toolchain, but is
-	  optional in uClibc toolchains.
-
-config BR2_SSP_NONE
-	bool "None"
-	help
-	  Disable stack-smashing protection.
-
-config BR2_SSP_REGULAR
-	bool "-fstack-protector"
-	help
-	  Emit extra code to check for buffer overflows, such as stack
-	  smashing attacks. This is done by adding a guard variable to
-	  functions with vulnerable objects. This includes functions
-	  that call alloca, and functions with buffers larger than 8
-	  bytes. The guards are initialized when a function is entered
-	  and then checked when the function exits. If a guard check
-	  fails, an error message is printed and the program exits.
-
-config BR2_SSP_STRONG
-	bool "-fstack-protector-strong"
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-	help
-	  Like -fstack-protector but includes additional functions to be
-	  protected - those that have local array definitions, or have
-	  references to local frame addresses.
-
-comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-
-config BR2_SSP_ALL
-	bool "-fstack-protector-all"
-	help
-	  Like -fstack-protector except that all functions are
-	  protected. This option might have a significant performance
-	  impact on the compiled binaries.
-
-endchoice
-
-comment "Stack Smashing Protection needs a toolchain w/ SSP"
-	depends on !BR2_TOOLCHAIN_HAS_SSP
 
 choice
 	bool "libraries"
@@ -730,6 +688,133 @@ config BR2_REPRODUCIBLE
 
 endmenu
 
+comment "Security Hardening Options"
+
+choice
+	bool "Stack Smashing Protection"
+	default BR2_SSP_ALL if BR2_ENABLE_SSP # legacy
+	depends on BR2_TOOLCHAIN_HAS_SSP
+	help
+	  Enable stack smashing protection support using GCC's
+	  -fstack-protector option family.
+
+	  See
+	  http://www.linuxfromscratch.org/hints/downloads/files/ssp.txt
+	  for details.
+
+	  Note that this requires the toolchain to have SSP support.
+	  This is always the case for glibc and eglibc toolchain, but is
+	  optional in uClibc toolchains.
+
+config BR2_SSP_NONE
+	bool "None"
+	help
+	  Disable stack-smashing protection.
+
+config BR2_SSP_REGULAR
+	bool "-fstack-protector"
+	help
+	  Emit extra code to check for buffer overflows, such as stack
+	  smashing attacks. This is done by adding a guard variable to
+	  functions with vulnerable objects. This includes functions
+	  that call alloca, and functions with buffers larger than 8
+	  bytes. The guards are initialized when a function is entered
+	  and then checked when the function exits. If a guard check
+	  fails, an error message is printed and the program exits.
+
+config BR2_SSP_STRONG
+	bool "-fstack-protector-strong"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	help
+	  Like -fstack-protector but includes additional functions to be
+	  protected - those that have local array definitions, or have
+	  references to local frame addresses.
+
+comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+
+config BR2_SSP_ALL
+	bool "-fstack-protector-all"
+	help
+	  Like -fstack-protector except that all functions are
+	  protected. This option might have a significant performance
+	  impact on the compiled binaries.
+
+endchoice
+
+comment "Stack Smashing Protection needs a toolchain w/ SSP"
+	depends on !BR2_TOOLCHAIN_HAS_SSP
+
+choice
+	bool "RELRO Protection"
+	depends on BR2_SHARED_LIBS
+	help
+	  Enable a link-time protection know as RELRO (RELocation Read Only)
+	  which helps to protect from certain type of exploitation techniques
+	  altering the content of some ELF sections.
+
+config BR2_RELRO_NONE
+	bool "None"
+	help
+	  Disables Relocation link-time protections.
+
+config BR2_RELRO_PARTIAL
+	bool "Partial"
+	help
+	  This option makes the dynamic section not writeable after
+	  initialization (with almost no performance penalty).
+
+config BR2_RELRO_FULL
+	bool "Full"
+	help
+	  This option includes the partial configuration, but also
+	  marks the GOT as read-only at the cost of initialization time
+	  during program loading, i.e every time an executable is started.
+
+endchoice
+
+comment "RELocation Read Only (RELRO) needs shared libraries"
+	depends on !BR2_SHARED_LIBS
+
+choice
+	bool "Buffer-overflow Detection (FORTIFY_SOURCE)"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_OPTIMIZE_0
+	help
+	  Enable the _FORTIFY_SOURCE macro which introduces additional
+	  checks to detect buffer-overflows in the following standard library
+	  functions: memcpy, mempcpy, memmove, memset, strcpy, stpcpy,
+	  strncpy, strcat, strncat, sprintf, vsprintf, snprintf, vsnprintf,
+	  gets.
+
+	  NOTE: This feature requires an optimization level of s/1/2/3/g
+
+	  Support for this feature has been present since GCC 4.x.
+
+config BR2_FORTIFY_SOURCE_NONE
+	bool "None"
+	help
+	  Disables additional checks to detect buffer-overflows.
+
+config BR2_FORTIFY_SOURCE_1
+	bool "Conservative"
+	help
+	  This option sets _FORTIFY_SOURCE to 1 and only introduces
+	  checks that shouldn't change the behavior of conforming
+	  programs.  Adds checks at compile-time only.
+
+config BR2_FORTIFY_SOURCE_2
+	bool "Aggressive"
+	help
+	  This option sets _FORTIFY_SOURCES to 2 and some more
+	  checking is added, but some conforming programs might fail.
+	  Also adds checks at run-time (detected buffer overflow
+	  terminates the program)
+
+endchoice
+
+comment "Fortify Source needs a glibc toolchain and optimization"
+	depends on (!BR2_TOOLCHAIN_USES_GLIBC || BR2_OPTIMIZE_0)
 endmenu
 
 source "toolchain/Config.in"

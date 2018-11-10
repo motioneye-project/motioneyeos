@@ -12,6 +12,8 @@ LIBCUE_DEPENDENCIES = host-bison host-flex flex
 LIBCUE_INSTALL_STAGING = YES
 LIBCUE_AUTORECONF = YES
 
+LIBCUE_MAKE = $(MAKE1)
+
 # Needed for autoreconf
 define LIBCUE_MAKE_CONFIG_DIR
 	mkdir $(@D)/config

@@ -11,7 +11,12 @@ OPENOCD_LICENSE = GPL-2.0+
 OPENOCD_LICENSE_FILES = COPYING
 # 0002-configure-enable-build-on-uclinux.patch patches configure.ac
 OPENOCD_AUTORECONF = YES
-OPENOCD_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
+
+# The bundled jimtcl really wants to find a existing $CXX, so feed it
+# false when we do not have one.
+OPENOCD_CONF_ENV = \
+	$(if $(BR2_INSTALL_LIBSTDCPP),,CXX=false) \
+	CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
 
 OPENOCD_CONF_OPTS = \
 	--oldincludedir=$(STAGING_DIR)/usr/include \

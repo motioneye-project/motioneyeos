@@ -4,14 +4,10 @@
 #
 ################################################################################
 
-OPENSSH_VERSION = 7.6p1
+OPENSSH_VERSION = 7.8p1
 OPENSSH_SITE = http://ftp.openbsd.org/pub/OpenBSD/OpenSSH/portable
 OPENSSH_LICENSE = BSD-3-Clause, BSD-2-Clause, Public Domain
 OPENSSH_LICENSE_FILES = LICENCE
-# Autoreconf needed due to the following patches modifying configure.ac:
-# 0001-configure-ac-detect-mips-abi.patch
-# 0002-configure-ac-properly-set-seccomp-audit-arch-for-mips64.patch
-OPENSSH_AUTORECONF = YES
 OPENSSH_CONF_ENV = LD="$(TARGET_CC)" LDFLAGS="$(TARGET_CFLAGS)"
 OPENSSH_CONF_OPTS = \
 	--sysconfdir=/data/etc \
@@ -72,5 +68,11 @@ define OPENSSH_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/openssh/S50sshd \
 		$(TARGET_DIR)/etc/init.d/S50sshd
 endef
+
+define OPENSSH_INSTALL_SSH_COPY_ID
+	$(INSTALL) -D -m 755 $(@D)/contrib/ssh-copy-id $(TARGET_DIR)/usr/bin/ssh-copy-id
+endef
+
+OPENSSH_POST_INSTALL_TARGET_HOOKS += OPENSSH_INSTALL_SSH_COPY_ID
 
 $(eval $(autotools-package))

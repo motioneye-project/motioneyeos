@@ -1,0 +1,51 @@
+config BR2_PACKAGE_RYGEL
+	bool "rygel"
+	depends on BR2_USE_WCHAR # gupnp-av
+	depends on BR2_TOOLCHAIN_HAS_THREADS # gupnp-av
+	depends on BR2_USE_MMU # gupnp-av
+	select BR2_PACKAGE_GUPNP_AV
+	select BR2_PACKAGE_LIBGEE
+	select BR2_PACKAGE_LIBMEDIAART
+	select BR2_PACKAGE_SQLITE
+	help
+	  Rygel is a home media solution (UPnP AV MediaServer) that
+	  allows you to easily share audio, video and pictures to other
+	  devices.
+
+	  Additionally, media player software may use Rygel to become a
+	  MediaRenderer that may be controlled remotely by a UPnP or
+	  DLNA Controller.
+
+	  Rygel achieves interoperability with other devices in the
+	  market by trying to conform to the very strict requirements of
+	  DLNA and by converting media on-the-fly to formats that client
+	  devices can handle.
+
+	  Most Rygel functionality is implemented through a plug-in
+	  mechanism.
+
+	  https://wiki.gnome.org/Projects/Rygel
+
+if BR2_PACKAGE_RYGEL
+
+choice
+	prompt "media engine"
+	default BR2_PACKAGE_RYGEL_MEDIA_ENGINE_SIMPLE
+
+config BR2_PACKAGE_RYGEL_MEDIA_ENGINE_SIMPLE
+	bool "simple"
+
+config BR2_PACKAGE_RYGEL_MEDIA_ENGINE_GSTREAMER1
+	bool "gstreamer1"
+	select BR2_PACKAGE_GDK_PIXBUF
+	select BR2_PACKAGE_GUPNP_DLNA
+	select BR2_PACKAGE_GSTREAMER1
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+
+endchoice
+
+comment "rygel needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+endif # BR2_PACKAGE_RYGEL

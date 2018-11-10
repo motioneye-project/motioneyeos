@@ -11,7 +11,7 @@ config BR2_PACKAGE_LIBSOUP
 	  and the GLib main loop, to integrate well with GNOME
 	  applications.
 
-	  http://live.gnome.org/LibSoup
+	  https://wiki.gnome.org/Projects/libsoup
 
 if BR2_PACKAGE_LIBSOUP
 

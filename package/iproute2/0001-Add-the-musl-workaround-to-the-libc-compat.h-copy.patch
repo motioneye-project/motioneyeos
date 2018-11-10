@@ -1,4 +1,4 @@
-From b4edb4eebbfd35934b8bc6d7ee0e00e76a01596c Mon Sep 17 00:00:00 2001
+From 909a6f10157114e09936d2dd545175d7ed84c0fb Mon Sep 17 00:00:00 2001
 From: Baruch Siach <baruch@tkos.co.il>
 Date: Thu, 22 Dec 2016 15:26:30 +0200
 Subject: [PATCH] Add the musl workaround to the libc-compat.h copy
@@ -12,14 +12,14 @@ Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 Upstream status: libc-compat.h is a local copy of a kernel headers. A proper
 musl fix must go to the kernel first.
 ---
- include/linux/libc-compat.h | 4 +++-
+ include/uapi/linux/libc-compat.h | 4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/libc-compat.h b/include/linux/libc-compat.h
-index f38571dabd8d..30f0b67c7a12 100644
---- a/include/linux/libc-compat.h
-+++ b/include/linux/libc-compat.h
-@@ -49,10 +49,12 @@
+diff --git a/include/uapi/linux/libc-compat.h b/include/uapi/linux/libc-compat.h
+index 9ab3ace08e2b..e768459d89f9 100644
+--- a/include/uapi/linux/libc-compat.h
++++ b/include/uapi/linux/libc-compat.h
+@@ -50,10 +50,12 @@
  #define _LIBC_COMPAT_H
  
  /* We have included glibc headers... */
@@ -34,5 +34,5 @@ index f38571dabd8d..30f0b67c7a12 100644
  /* GLIBC headers included first so don't define anything
   * that would already be defined. */
 -- 
-2.11.0
+2.15.0
 

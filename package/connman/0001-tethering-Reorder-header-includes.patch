@@ -1,0 +1,37 @@
+From bdfb3526466f8fb8f13d9259037d8f42c782ce24 Mon Sep 17 00:00:00 2001
+From: Daniel Wagner <wagi@monom.org>
+Date: Wed, 17 Jan 2018 23:42:50 +0100
+Subject: [PATCH] tethering: Reorder header includes
+
+Avoid compile errors due to unsupported header include order with
+newer kernels (>=4.15). We should import the libc header files first
+and then the Linux header files in user space applications.
+
+Reported by Neil MacLeod <neil@nmacleod.com>. Fix probosal by Jonas
+Bonn <jonas@southpole.se> and Hauke Mehrtens <hauke@hauke-m.de>.
+
+Signed-off-by: Martin Bark <martin@barkynet.com>
+---
+ src/tethering.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/tethering.c b/src/tethering.c
+index c929ba7..4b20236 100644
+--- a/src/tethering.c
++++ b/src/tethering.c
+@@ -31,11 +31,11 @@
+ #include <stdio.h>
+ #include <sys/ioctl.h>
+ #include <net/if.h>
+-#include <linux/sockios.h>
+ #include <string.h>
+ #include <fcntl.h>
+-#include <linux/if_tun.h>
+ #include <netinet/in.h>
++#include <linux/sockios.h>
++#include <linux/if_tun.h>
+ #include <linux/if_bridge.h>
+
+ #include "connman.h"
+--
+2.7.4

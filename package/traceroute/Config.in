@@ -1,0 +1,8 @@
+config BR2_PACKAGE_TRACEROUTE
+	bool "traceroute"
+	help
+	  A new modern implementation of the traceroute(8) utility for
+	  Linux systems. It tracks the route packets taken from an IP
+	  network on their way to a given host.
+
+	  http://traceroute.sourceforge.net/

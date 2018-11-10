@@ -9,6 +9,9 @@ config BR2_PACKAGE_OPENNTPD
 	  to remote NTP servers and can act as NTP server itself,
 	  redistributing the local clock. It just works.
 
+	  Crypto support is available if the LibreSSL library is
+	  enabled.
+
 	  http://www.openntpd.org/
 
 comment "openntpd needs a toolchain w/ NPTL"

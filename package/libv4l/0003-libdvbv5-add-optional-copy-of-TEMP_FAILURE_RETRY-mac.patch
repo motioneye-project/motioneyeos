@@ -1,0 +1,39 @@
+From abfe3e7b2b4af1de9b891f3a7a996b70533b0a27 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 4 Mar 2018 09:07:51 +0100
+Subject: [PATCH] libdvbv5: add optional copy of TEMP_FAILURE_RETRY macro (fix
+ musl compile)
+
+Fixes:
+
+  ../../lib/libdvbv5/.libs/libdvbv5.so: undefined reference to `TEMP_FAILURE_RETRY'
+
+[Upstream: https://www.mail-archive.com/linux-media@vger.kernel.org/msg127134.html]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ lib/libdvbv5/dvb-dev-local.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/lib/libdvbv5/dvb-dev-local.c b/lib/libdvbv5/dvb-dev-local.c
+index 8bc99d1..7a76d65 100644
+--- a/lib/libdvbv5/dvb-dev-local.c
++++ b/lib/libdvbv5/dvb-dev-local.c
+@@ -44,6 +44,15 @@
+ # define _(string) string
+ #endif
+ 
++/* taken from glibc unistd.h */
++#ifndef TEMP_FAILURE_RETRY
++#define TEMP_FAILURE_RETRY(expression) \
++    ({ long int __result;                                                     \
++       do __result = (long int) (expression);                                 \
++       while (__result == -1L && errno == EINTR);                             \
++       __result; })
++#endif
++
+ struct dvb_dev_local_priv {
+ 	dvb_dev_change_t notify_dev_change;
+ 
+-- 
+2.16.2
+

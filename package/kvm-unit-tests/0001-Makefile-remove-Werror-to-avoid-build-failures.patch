@@ -4,23 +4,24 @@ Date: Mon, 20 Nov 2017 22:09:39 +0100
 Subject: [PATCH] Makefile: remove -Werror to avoid build failures
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Matthew: Refactoring of Thomas Petazzoni's original.]
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
 ---
- Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ Makefile | 1 -
+ 1 file changed, 1 deletion(-)
 
 diff --git a/Makefile b/Makefile
-index 16ce297..909498e 100644
+index 7231334..d9ad42b 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -45,7 +45,7 @@ cc-option = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null \
-               > /dev/null 2>&1; then echo "$(1)"; else echo "$(2)"; fi ;)
- 
- CFLAGS += -g
--CFLAGS += $(autodepend-flags) -Wall -Werror
-+CFLAGS += $(autodepend-flags) -Wall
+@@ -53,7 +53,6 @@ cc-option = $(shell if $(CC) $(1) -S -o /dev/null -xc /dev/null \
+ COMMON_CFLAGS += -g $(autodepend-flags)
+ COMMON_CFLAGS += -Wall -Wwrite-strings -Wclobbered -Wempty-body -Wuninitialized
+ COMMON_CFLAGS += -Wignored-qualifiers -Wunused-but-set-parameter
+-COMMON_CFLAGS += -Werror
  frame-pointer-flag=-f$(if $(KEEP_FRAME_POINTER),no-,)omit-frame-pointer
  fomit_frame_pointer := $(call cc-option, $(frame-pointer-flag), "")
  fnostack_protector := $(call cc-option, -fno-stack-protector, "")
 -- 
-2.13.6
+2.14.2
 

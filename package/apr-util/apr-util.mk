@@ -47,11 +47,29 @@ else
 APR_UTIL_CONF_OPTS += --without-sqlite3
 endif
 
+ifeq ($(BR2_PACKAGE_OPENLDAP),y)
+APR_UTIL_CONF_ENV += ac_cv_ldap_set_rebind_proc_style=three
+APR_UTIL_CONF_OPTS += \
+	--with-ldap \
+	--with-ldap-include="$(STAGING_DIR)/usr/include/" \
+	--with-ldap-lib="$(STAGING_DIR)/usr/lib"
+APR_UTIL_DEPENDENCIES += openldap
+else
+APR_UTIL_CONF_OPTS += --without-ldap
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 APR_UTIL_CONF_OPTS += --with-crypto --with-openssl="$(STAGING_DIR)/usr"
 APR_UTIL_DEPENDENCIES += openssl
 else
 APR_UTIL_CONF_OPTS += --without-crypto
+endif
+
+ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
+APR_UTIL_CONF_OPTS += --with-pgsql="$(STAGING_DIR)/usr"
+APR_UTIL_DEPENDENCIES += postgresql
+else
+APR_UTIL_CONF_OPTS += --without-pgsql
 endif
 
 ifeq ($(BR2_PACKAGE_UNIXODBC),y)

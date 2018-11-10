@@ -1,0 +1,7 @@
+# <name>				<type>	<mode>	<uid>	<gid>	<major>	<minor>	<start>	<inc>	<count>
+/usr/sbin/getcap                        f       755     0       0	-	-	-	-	-
+|xattr cap_sys_nice+eip
+# leading spaces are ignored for xattr
+  |xattr cap_kill+eip
+# leading tabs are ignored for xattr
+	|xattr cap_sys_time+eip

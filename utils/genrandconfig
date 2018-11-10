@@ -126,7 +126,9 @@ def get_toolchain_configs(toolchains_csv, buildrootdir):
     """
 
     with open(toolchains_csv) as r:
-        toolchains = decode_byte_list(r.readlines())
+        # filter empty lines and comments
+        lines = [ t for t in r.readlines() if len(t.strip()) > 0 and t[0] != '#' ]
+        toolchains = decode_byte_list(lines)
     configs = []
 
     (_, _, _, _, hostarch) = os.uname()
@@ -345,6 +347,9 @@ def gen_config(args):
     with open(minimalconfigfile) as minimalf:
         configlines += minimalf.readlines()
 
+    # Allow hosts with old certificates to download over https
+    configlines.append("BR2_WGET=\"wget --passive-ftp -nd -t 3 --no-check-certificate\"")
+
     # Amend the configuration with a few things.
     if randint(0, 20) == 0:
         configlines.append("BR2_ENABLE_DEBUG=y\n")
@@ -399,7 +404,8 @@ def gen_config(args):
     subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
                            "savedefconfig"])
 
-    return 0
+    return subprocess.call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
+                            "core-dependencies"])
 
 
 if __name__ == '__main__':

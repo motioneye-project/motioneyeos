@@ -10,4 +10,4 @@ define ROOTFS_YAFFS2_CMD
 	$(HOST_DIR)/bin/mkyaffs2 --all-root $(TARGET_DIR) $@
 endef
 
-$(eval $(call ROOTFS_TARGET,yaffs2))
+$(eval $(rootfs))

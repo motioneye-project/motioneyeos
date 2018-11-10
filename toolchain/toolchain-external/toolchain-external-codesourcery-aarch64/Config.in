@@ -1,6 +1,7 @@
 config BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_AARCH64
 	bool "CodeSourcery AArch64 2014.11"
 	depends on BR2_aarch64
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	# a57/a53 and a72/a53 appeared in gcc-6 or were broken before
 	depends on !BR2_cortex_a57_a53 && !BR2_cortex_a72_a53
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"

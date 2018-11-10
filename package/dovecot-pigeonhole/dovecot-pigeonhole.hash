@@ -1,2 +1,3 @@
 # Locally computed after checking signature
-sha256 629204bfbdcd3480e1ebcdc246da438323c3ea5fea57480ab859e8b201ad8793  dovecot-2.2-pigeonhole-0.4.19.tar.gz
+sha256 4ae09cb788c5334d167f5a89ee70b0616c3231e5904ad258ce408e4953cfdd6a  dovecot-2.2-pigeonhole-0.4.21.tar.gz
+sha256 fc9e9522216f2a9a28b31300e3c73c1df56acc27dfae951bf516e7995366b51a  COPYING

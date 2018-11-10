@@ -9,7 +9,8 @@ config BR2_PACKAGE_SSHFS
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_OPENSSH
 	help
-	  FUSE filesystem client based on the SSH File Transfer Protocol.
+	  FUSE filesystem client based on the SSH File Transfer
+	  Protocol.
 
 	  https://github.com/libfuse/sshfs
 

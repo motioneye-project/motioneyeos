@@ -20,10 +20,6 @@ comment "qt5webengine needs an OpenGL and EGL-capable backend"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
 	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
 
-comment "qt5webengine is not available with Qt 5.6"
-	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
-	depends on BR2_PACKAGE_QT5_VERSION_5_6
-
 config BR2_PACKAGE_QT5WEBENGINE
 	bool "qt5webengine"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
@@ -35,7 +31,6 @@ config BR2_PACKAGE_QT5WEBENGINE
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative, qt5base-eglfs
 	depends on BR2_PACKAGE_HAS_LIBEGL # qt5base-eglfs
 	depends on BR2_PACKAGE_HAS_UDEV
-	depends on !BR2_PACKAGE_QT5_VERSION_5_6
 	# v8 (a chromium 3rd-party) compiles its internal host-tools with the
 	# same word size as the target. For 32-bits targets, it adds the -m32
 	# flag (for 64-bits, it adds the -m64 flag).
@@ -85,5 +80,15 @@ config BR2_PACKAGE_QT5WEBENGINE_PROPRIETARY_CODECS
 	  Qt WebEngine supports the MPEG-4 Part 14 (MP4) file format,
 	  which includes required proprietary audio and video codecs,
 	  such as H.264 and MPEG layer-3 (MP3).
+
+config BR2_PACKAGE_QT5WEBENGINE_ALSA
+	bool "alsa"
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_MIXER
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_HWDEP
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	help
+	  Enable ALSA support.
 
 endif

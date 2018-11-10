@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBTOMCRYPT_VERSION = 1.18.0
+LIBTOMCRYPT_VERSION = 1.18.1
 LIBTOMCRYPT_SITE = https://github.com/libtom/libtomcrypt/releases/download/v$(LIBTOMCRYPT_VERSION)
 LIBTOMCRYPT_SOURCE = crypt-$(LIBTOMCRYPT_VERSION).tar.xz
 LIBTOMCRYPT_LICENSE = WTFPL
@@ -20,7 +20,9 @@ define LIBTOMCRYPT_BUILD_CMDS
 endef
 
 define LIBTOMCRYPT_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)" NODOCS=1 INSTALL_USER=$(shell id -u) INSTALL_GROUP=$(shell id -g) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR="$(STAGING_DIR)" \
+		PREFIX=/usr NODOCS=1 INSTALL_USER=$(shell id -u) \
+		INSTALL_GROUP=$(shell id -g) install
 endef
 
 $(eval $(generic-package))

@@ -8,8 +8,9 @@ menuconfig BR2_PACKAGE_GST1_IMX
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	help
-	  This is a set of GStreamer 1.0 plugins for plugins for Freescale's
-	  i.MX platforms, which make use of the i.MX multimedia capabilities.
+	  This is a set of GStreamer 1.0 plugins for plugins for
+	  Freescale's i.MX platforms, which make use of the i.MX
+	  multimedia capabilities.
 
 	  https://github.com/Freescale/gstreamer-imx
 
@@ -26,12 +27,12 @@ comment "imxeglvivsink needs the Vivante 3D libraries"
 
 config BR2_PACKAGE_GST1_IMX_G2D
 	bool "imxg2d"
-	depends on BR2_PACKAGE_IMX_GPU_VIV_G2D
+	depends on BR2_PACKAGE_IMX_GPU_G2D
 	help
 	  Elements leveraging the 2D GPU
 
-comment "imxg2d needs the Vivante 2D libraries"
-	depends on !BR2_PACKAGE_IMX_GPU_VIV_G2D
+comment "imxg2d needs the G2D libraries"
+	depends on !BR2_PACKAGE_IMX_GPU_G2D
 
 config BR2_PACKAGE_GST1_IMX_IPU
 	bool "imxipu"
@@ -83,5 +84,15 @@ config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSRC
 	select BR2_PACKAGE_GST1_PLUGINS_BAD
 	help
 	  Elements for V4L2 capture
+
+config BR2_PACKAGE_GST1_IMX_V4L2VIDEOSINK
+	bool "imxv4l2videosink"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2 # V4L2_COLORSPACE_DEFAULT
+	select BR2_PACKAGE_GST1_PLUGINS_BAD
+	help
+	  Elements for V4L2 output
+
+comment "imxv4l2videosink needs a toolchain w/ headers >= 4.2"
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_2
 
 endif

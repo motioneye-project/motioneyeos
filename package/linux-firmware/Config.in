@@ -78,6 +78,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_9271
 	help
 	  Firmware files for the Atheros 9271 module
 
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA998X
+	bool "Atheros 10k (QCA998X)"
+	help
+	  Firmware files for the Atheros QCA988X module
+
 config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX
 	bool "Broadcom BRCM bcm43xx"
 	help
@@ -149,6 +154,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_8265
 	bool "Intel iwlwifi 8265"
 	help
 	  Firmware files for the Intel Wifi 8265 devices supported by
+	  the iwlwifi kernel driver.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_IWLWIFI_9XXX
+	bool "Intel iwlwifi 9xxx"
+	help
+	  Firmware files for the Intel Wifi 9xxx devices supported by
 	  the iwlwifi kernel driver.
 
 config BR2_PACKAGE_LINUX_FIRMWARE_LIBERTAS_SD8686_V8
@@ -246,6 +257,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RTL_88XX
 	help
 	  Realtek rtl8821ae
 
+config BR2_PACKAGE_LINUX_FIRMWARE_REDPINE_RS9113
+	bool "Redpine rs9113"
+	help
+	  Firmware files for WLAN and Bluetooth modules rs9113
+
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_WL127X
 	bool "TI wl127x"
 	help
@@ -335,6 +351,25 @@ config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_2XXX
 	bool "QLogic 2xxx Fibre Channel Adapters"
 	help
 	  Firmware files for ql2xxx adapters
+
+endmenu
+
+menu "Intel QuickAssist Firmware"
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_DH895XCC
+	bool "Support for DH895xCC"
+	help
+	  Firmware files for Intel DH895xCC devices
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_C3XXX
+	bool "Support for C3XXX"
+	help
+	  Firmware files for Intel C3XXX devices
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QAT_C62X
+	bool "Support for C62X"
+	help
+	  Firmware files for Intel C62X devices
 
 endmenu
 

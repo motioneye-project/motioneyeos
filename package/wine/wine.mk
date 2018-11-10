@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WINE_VERSION = 2.0.3
+WINE_VERSION = 3.0
 WINE_SOURCE = wine-$(WINE_VERSION).tar.xz
-WINE_SITE = https://dl.winehq.org/wine/source/2.0
+WINE_SITE = https://dl.winehq.org/wine/source/3.0
 WINE_LICENSE = LGPL-2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
@@ -23,6 +23,7 @@ WINE_CONF_OPTS = \
 	--without-gphoto \
 	--without-gsm \
 	--without-hal \
+	--without-krb5 \
 	--without-opencl \
 	--without-oss
 
@@ -347,6 +348,7 @@ HOST_WINE_CONF_OPTS += \
 	--without-gstreamer \
 	--without-hal \
 	--without-jpeg \
+	--without-krb5 \
 	--without-ldap \
 	--without-mpg123 \
 	--without-netapi \

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.27.0
+MPV_VERSION = 0.27.2
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
@@ -26,13 +26,13 @@ MPV_CONF_OPTS = \
 	--disable-cuda-hwaccel \
 	--disable-libv4l2 \
 	--disable-opensles \
-	--disable-rpi \
 	--disable-rsound \
 	--disable-rubberband \
 	--disable-uchardet \
 	--disable-vapoursynth \
 	--disable-vapoursynth-lazy \
-	--disable-vdpau
+	--disable-vdpau \
+	--disable-mali-fbdev
 
 # ALSA support requires pcm+mixer
 ifeq ($(BR2_PACKAGE_ALSA_LIB_MIXER)$(BR2_PACKAGE_ALSA_LIB_PCM),yy)
@@ -167,6 +167,14 @@ MPV_CONF_OPTS += --enable-sdl1 --disable-sdl2
 MPV_DEPENDENCIES += sdl
 else
 MPV_CONF_OPTS += --disable-sdl1 --disable-sdl2
+endif
+
+# Raspberry Pi support
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+MPV_CONF_OPTS += --enable-rpi --enable-gl
+MPV_DEPENDENCIES += rpi-userland
+else
+MPV_CONF_OPTS += --disable-rpi
 endif
 
 # va-api support

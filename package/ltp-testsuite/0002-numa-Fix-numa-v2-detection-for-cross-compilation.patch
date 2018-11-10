@@ -1,0 +1,37 @@
+From 01c134f30be755a43af12a4ae2c31177d04be790 Mon Sep 17 00:00:00 2001
+From: Petr Vorel <pvorel@suse.cz>
+Date: Mon, 29 Jan 2018 10:31:40 +0100
+Subject: [PATCH] numa: Fix numa v2 detection for cross compilation
+
+Changed to AC_COMPILE_IFELSE as AC_RUN_IFELSE cannot be run while
+cross compiling.
+
+Bug found by Buildroot project.
+
+Signed-off-by: Petr Vorel <pvorel@suse.cz>
+Reported-by: Baruch Siach <baruch@tkos.co.il>
+---
+ m4/ltp-numa.m4 | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/m4/ltp-numa.m4 b/m4/ltp-numa.m4
+index fc3383e97..633f54c18 100644
+--- a/m4/ltp-numa.m4
++++ b/m4/ltp-numa.m4
+@@ -28,11 +28,11 @@ AC_DEFUN([LTP_CHECK_SYSCALL_NUMA], [
+ 	AC_CHECK_HEADERS([numa.h numaif.h], [], [have_numa_headers=no])
+ 
+ 	if test "x$have_numa_headers" != "xno"; then
+-		AC_RUN_IFELSE([AC_LANG_PROGRAM([
++		AC_COMPILE_IFELSE([AC_LANG_PROGRAM([
+ #include <numa.h>
+ 		], [
+ #if LIBNUMA_API_VERSION < 2
+-exit(1);
++# error Required numa headers >= 2
+ #endif
+ 		])], [have_numa_headers_v2=yes])
+ 	fi
+-- 
+2.16.0
+

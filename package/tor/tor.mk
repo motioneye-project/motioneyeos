@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TOR_VERSION = 0.3.1.8
+TOR_VERSION = 0.3.1.10
 TOR_SITE = https://dist.torproject.org
 TOR_LICENSE = BSD-3-Clause
 TOR_LICENSE_FILES = LICENSE
@@ -46,5 +46,17 @@ endif
 
 # uses gnu extensions
 TOR_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
+
+define TOR_INSTALL_CONF
+	$(INSTALL) -D -m 644 $(@D)/src/config/torrc.minimal \
+		$(TARGET_DIR)/etc/tor/torrc
+endef
+
+TOR_POST_INSTALL_TARGET_HOOKS += TOR_INSTALL_CONF
+
+define TOR_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 644 $(@D)/contrib/dist/tor.service \
+		$(TARGET_DIR)/usr/lib/systemd/system/tor.service
+endef
 
 $(eval $(autotools-package))

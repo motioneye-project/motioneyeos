@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-MFGTOOLS_VERSION = b219fc219a35c365010897ed093c40750f8cdac6
-MFGTOOLS_SITE = $(call github,NXPmicro,mfgtools,$(MFGTOOLS_VERSION))
+MFGTOOLS_VERSION = v0.02
+MFGTOOLS_SITE = $(call github,codeauroraforum,mfgtools,$(MFGTOOLS_VERSION))
 MFGTOOLS_SUBDIR = MfgToolLib
 MFGTOOLS_LICENSE = BSD-3-Clause or CPOL
-MFGTOOLS_LICENSE_FILES = LICENSE CPOL.htm
+MFGTOOLS_LICENSE_FILES = LICENSE README.txt
 HOST_MFGTOOLS_DEPENDENCIES = host-libusb
 
 HOST_MFGTOOLS_CFLAGS = \
