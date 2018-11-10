@@ -1,34 +1,23 @@
-from tests.package.test_python import TestPythonBase
+from tests.package.test_python import TestPythonPackageBase
 
 
-class TestPythonIncremental(TestPythonBase):
-    def str_test(self):
-        cmd = self.interpreter + " -c 'import incremental;"
-        cmd += "v = incremental.Version(\"package\", 1, 2, 3, release_candidate=4);"
-        cmd += "assert(str(v) == \"[package, version 1.2.3rc4]\")'"
-        _, exit_code = self.emulator.run(cmd, timeout=30)
-        self.assertEqual(exit_code, 0)
-
-
-class TestPythonPy2Incremental(TestPythonIncremental):
-    config = TestPythonBase.config + \
+class TestPythonPy2Incremental(TestPythonPackageBase):
+    __test__ = True
+    config = TestPythonPackageBase.config + \
         """
         BR2_PACKAGE_PYTHON=y
         BR2_PACKAGE_PYTHON_INCREMENTAL=y
         """
-
-    def test_run(self):
-        self.login()
-        self.str_test()
+    sample_scripts = ["tests/package/sample_python_incremental.py"]
+    timeout = 30
 
 
-class TestPythonPy3Incremental(TestPythonIncremental):
-    config = TestPythonBase.config + \
+class TestPythonPy3Incremental(TestPythonPackageBase):
+    __test__ = True
+    config = TestPythonPackageBase.config + \
         """
         BR2_PACKAGE_PYTHON3=y
         BR2_PACKAGE_PYTHON_INCREMENTAL=y
         """
-
-    def test_run(self):
-        self.login()
-        self.str_test()
+    sample_scripts = ["tests/package/sample_python_incremental.py"]
+    timeout = 30
