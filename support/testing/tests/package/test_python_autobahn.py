@@ -1,32 +1,21 @@
-from tests.package.test_python import TestPythonBase
+from tests.package.test_python import TestPythonPackageBase
 
 
-class TestPythonAutobahn(TestPythonBase):
-    def import_test(self):
-        cmd = self.interpreter + " -c 'import autobahn.wamp'"
-        _, exit_code = self.emulator.run(cmd)
-        self.assertEqual(exit_code, 0)
-
-
-class TestPythonPy2Autobahn(TestPythonAutobahn):
-    config = TestPythonBase.config + \
+class TestPythonPy2Autobahn(TestPythonPackageBase):
+    __test__ = True
+    config = TestPythonPackageBase.config + \
         """
         BR2_PACKAGE_PYTHON=y
         BR2_PACKAGE_PYTHON_AUTOBAHN=y
         """
-
-    def test_run(self):
-        self.login()
-        self.import_test()
+    sample_scripts = ["tests/package/sample_python_autobahn.py"]
 
 
-class TestPythonPy3Autobahn(TestPythonAutobahn):
-    config = TestPythonBase.config + \
+class TestPythonPy3Autobahn(TestPythonPackageBase):
+    __test__ = True
+    config = TestPythonPackageBase.config + \
         """
         BR2_PACKAGE_PYTHON3=y
         BR2_PACKAGE_PYTHON_AUTOBAHN=y
         """
-
-    def test_run(self):
-        self.login()
-        self.import_test()
+    sample_scripts = ["tests/package/sample_python_autobahn.py"]
