@@ -179,6 +179,19 @@ config BR2_TARGET_UBOOT_NEEDS_ATF_BL31
 	  variable pointing to ATF's BL31 binary, is passed during the
 	  Buildroot build.
 
+choice
+	prompt "U-Boot ATF BL31 format"
+	depends on BR2_TARGET_UBOOT_NEEDS_ATF_BL31
+	default BR2_TARGET_UBOOT_NEEDS_ATF_BL31_BIN
+
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31_BIN
+	bool "bl31.bin"
+
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31_ELF
+	bool "bl31.elf"
+
+endchoice
+
 menu "U-Boot binary format"
 
 config BR2_TARGET_UBOOT_FORMAT_AIS
