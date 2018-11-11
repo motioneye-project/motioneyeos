@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_CCHARDET
+	bool "python-cchardet"
+	depends on BR2_INSTALL_LIBSTDCPP
+	help
+	  cChardet is high speed universal character encoding
+	  detector.
+
+	  https://github.com/PyYoshi/cChardet
+
+comment "python-cchardet needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
