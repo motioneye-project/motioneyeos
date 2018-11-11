@@ -12,7 +12,9 @@ NCMPC_DEPENDENCIES = host-pkgconf libglib2 libmpdclient ncurses
 NCMPC_LICENSE = GPL-2.0+
 NCMPC_LICENSE_FILES = COPYING
 
-NCMPC_CONF_OPTS = -Dcurses=ncurses
+NCMPC_CONF_OPTS = \
+	-Dcurses=ncurses \
+	-Ddocumentation=false
 
 ifeq ($(BR2_PACKAGE_LIRC_TOOLS),y)
 NCMPC_DEPENDENCIES += lirc-tools
