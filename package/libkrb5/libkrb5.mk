@@ -52,7 +52,14 @@ else
 LIBKRB5_CONF_OPTS += --without-readline
 endif
 
-ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+# gcc on riscv doesn't define _REENTRANT when -pthread is passed while
+# it should. Compensate this deficiency here otherwise libkrb5 configure
+# script doesn't find that thread support is enabled.
+ifeq ($(BR2_riscv),y)
+LIBKRB5_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D_REENTRANT"
+endif
+else
 LIBKRB5_CONF_OPTS += --disable-thread-support
 endif
 
