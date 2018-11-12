@@ -986,6 +986,7 @@ F:	configs/pine64_sopine_defconfig
 N:	James Hilliard <james.hilliard1@gmail.com>
 F:	package/python-async-timeout/
 F:	package/python-multidict/
+F:	package/python-pycares/
 F:	package/python-yarl/
 
 N:	James Knight <james.knight@rockwellcollins.com>
