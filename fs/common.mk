@@ -31,8 +31,10 @@ FS_DIR = $(BUILD_DIR)/buildroot-fs
 FULL_DEVICE_TABLE = $(FS_DIR)/device_table.txt
 ROOTFS_DEVICE_TABLES = $(call qstrip,$(BR2_ROOTFS_DEVICE_TABLE) \
 	$(BR2_ROOTFS_STATIC_DEVICE_TABLE))
-USERS_TABLE = $(FS_DIR)/users_table.txt
+
 ROOTFS_USERS_TABLES = $(call qstrip,$(BR2_ROOTFS_USERS_TABLES))
+
+ROOTFS_FULL_USERS_TABLE = $(FS_DIR)/full_users_table.txt
 
 ifeq ($(BR2_REPRODUCIBLE),y)
 define ROOTFS_REPRODUCIBLE
@@ -51,9 +53,9 @@ rootfs-common: $(ROOTFS_COMMON_DEPENDENCIES) target-finalize
 	rm -rf $(FS_DIR)
 	mkdir -p $(FS_DIR)
 
-	$(call PRINTF,$(PACKAGES_USERS)) >> $(USERS_TABLE)
+	$(call PRINTF,$(PACKAGES_USERS)) >> $(ROOTFS_FULL_USERS_TABLE)
 ifneq ($(ROOTFS_USERS_TABLES),)
-	cat $(ROOTFS_USERS_TABLES) >> $(USERS_TABLE)
+	cat $(ROOTFS_USERS_TABLES) >> $(ROOTFS_FULL_USERS_TABLE)
 endif
 ifneq ($(ROOTFS_DEVICE_TABLES),)
 	cat $(ROOTFS_DEVICE_TABLES) > $(FULL_DEVICE_TABLE)
@@ -122,7 +124,7 @@ $$(BINARIES_DIR)/$$(ROOTFS_$(2)_FINAL_IMAGE_NAME): $$(ROOTFS_$(2)_DEPENDENCIES)
 	echo "set -e" >> $$(FAKEROOT_SCRIPT)
 
 	echo "chown -h -R 0:0 $$(TARGET_DIR)" >> $$(FAKEROOT_SCRIPT)
-	PATH=$$(BR_PATH) $$(TOPDIR)/support/scripts/mkusers $$(USERS_TABLE) $$(TARGET_DIR) >> $$(FAKEROOT_SCRIPT)
+	PATH=$$(BR_PATH) $$(TOPDIR)/support/scripts/mkusers $$(ROOTFS_FULL_USERS_TABLE) $$(TARGET_DIR) >> $$(FAKEROOT_SCRIPT)
 	echo "$$(HOST_DIR)/bin/makedevs -d $$(FULL_DEVICE_TABLE) $$(TARGET_DIR)" >> $$(FAKEROOT_SCRIPT)
 	$$(foreach s,$$(call qstrip,$$(BR2_ROOTFS_POST_FAKEROOT_SCRIPT)),\
 		echo "echo '$$(TERM_BOLD)>>>   Executing fakeroot script $$(s)$$(TERM_RESET)'" >> $$(FAKEROOT_SCRIPT); \
