@@ -224,12 +224,12 @@ The +graph-depends+ behaviour can be controlled by setting options in the
 * +--transitive+, +--no-transitive+, to draw (or not) the transitive
   dependencies. The default is to not draw transitive dependencies.
 
-* +--colours R,T,H+, the comma-separated list of colours to draw the
+* +--colors R,T,H+, the comma-separated list of colors to draw the
   root package (+R+), the target packages (+T+) and the host packages
   (+H+). Defaults to: +lightblue,grey,gainsboro+
 
 --------------------------------
-BR2_GRAPH_DEPS_OPTS='-d 3 --no-transitive --colours=red,green,blue' make graph-depends
+BR2_GRAPH_DEPS_OPTS='-d 3 --no-transitive --colors=red,green,blue' make graph-depends
 --------------------------------
 
 === Graphing the build duration

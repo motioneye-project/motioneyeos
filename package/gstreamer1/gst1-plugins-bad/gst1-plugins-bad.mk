@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BAD_VERSION = 1.12.4
+GST1_PLUGINS_BAD_VERSION = 1.14.2
 GST1_PLUGINS_BAD_SOURCE = gst-plugins-bad-$(GST1_PLUGINS_BAD_VERSION).tar.xz
 GST1_PLUGINS_BAD_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-bad
 GST1_PLUGINS_BAD_INSTALL_STAGING = YES
@@ -21,7 +21,8 @@ GST1_PLUGINS_BAD_CONF_OPTS = \
 	--disable-winks \
 	--disable-android_media \
 	--disable-apple_media \
-	--disable-acm
+	--disable-acm \
+	--disable-introspection
 
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_BAD_CONF_OPTS += \
@@ -58,8 +59,7 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-schro \
 	--disable-zbar \
 	--disable-spandsp \
-	--disable-gtk3 \
-	--disable-qt
+	--disable-gtk3
 
 GST1_PLUGINS_BAD_DEPENDENCIES = gst1-plugins-base gstreamer1
 
@@ -72,56 +72,11 @@ GST1_PLUGINS_BAD_CONF_ENV += \
 	-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux"
 endif
 
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_OPENGL),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-opengl
-GST1_PLUGINS_BAD_DEPENDENCIES += libgl libglu
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-opengl
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLES2),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-gles2
-GST1_PLUGINS_BAD_DEPENDENCIES += libgles
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-gles2
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_GLX),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-glx
-GST1_PLUGINS_BAD_DEPENDENCIES += xproto_glproto xlib_libXrender
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-glx
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_EGL),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-egl
-GST1_PLUGINS_BAD_DEPENDENCIES += libegl
-GST1_PLUGINS_BAD_CONF_ENV += \
-	CPPFLAGS="$(TARGET_CPPFLAGS) `$(PKG_CONFIG_HOST_BINARY) --cflags egl`" \
-	LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs egl`"
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-egl
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_X11),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-x11
-GST1_PLUGINS_BAD_DEPENDENCIES += xlib_libX11 xlib_libXext
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-x11
-endif
-
-ifneq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_WAYLAND)$(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),)
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-wayland
 GST1_PLUGINS_BAD_DEPENDENCIES += wayland wayland-protocols
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-wayland
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_LIB_OPENGL_DISPMANX),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-dispmanx
-GST1_PLUGINS_BAD_DEPENDENCIES += rpi-userland
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-dispmanx
 endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
@@ -176,12 +131,6 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOFXBAD),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiofxbad
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiofxbad
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXER),y)
-GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiomixer
-else
-GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiomixer
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX),y)

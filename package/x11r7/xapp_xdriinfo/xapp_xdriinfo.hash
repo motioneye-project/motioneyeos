@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002570.html
-sha256	4cba3766ef89557422062287248adeb933999071bad6f3ef9c0a478a3c680119	xdriinfo-1.0.5.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002858.html
+md5 480e63cd365f03eb2515a6527d5f4ca6  xdriinfo-1.0.6.tar.bz2
+sha1 11682ae1f04a311b832651d78bbf4c6ac77f0ed9  xdriinfo-1.0.6.tar.bz2
+sha256 d9ccd2c3e87899417acc9ea1f3e319a4198112babe1dc711273584f607449d51  xdriinfo-1.0.6.tar.bz2
+sha512 7ddd9e19abaef93e4d85004293528ec3814ef84c470d496dbb8dc8313d804bb7520406de8d33d2bc2b3af942bd0a5d5032a109b2726438a966af63ea680a102f  xdriinfo-1.0.6.tar.bz2
+# Locally computed
+sha256 de2fbb160bbb64c48975d7a3ebe3636a312b73227df1efe37488a8cecb9c1932  COPYING

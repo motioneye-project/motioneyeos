@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-CARGO_VERSION = 0.24.0
+CARGO_VERSION = 0.26.0
 CARGO_SITE = $(call github,rust-lang,cargo,$(CARGO_VERSION))
 CARGO_LICENSE = Apache-2.0 or MIT
 CARGO_LICENSE_FILES = LICENSE-APACHE LICENSE-MIT
 
-CARGO_DEPS_SHA512 = 60c12ce49a53cf986490f5a5fdf606f0374677902edfdc4d48ab1ba6094f3f23efc59626cd3776649c9386a9cab2a60332e5693aad6acbcbb92132efdcf9fe21
+CARGO_DEPS_SHA512 = 6ed2a1644c9b18fc24ddad5350d41b6c36cd5b62de4cf0b748a57b589f4f0ac12f91461989158d58d0892bf6fc2c1626cf574e7e2b9da4b0e35f72dfd88f9048
 CARGO_DEPS_SITE = https://src.fedoraproject.org/repo/pkgs/cargo/$(CARGO_DEPS_SOURCE)/sha512/$(CARGO_DEPS_SHA512)
 CARGO_DEPS_SOURCE = cargo-$(CARGO_VERSION)-vendor.tar.xz
 
@@ -37,7 +37,7 @@ HOST_CARGO_HOME = $(HOST_DIR)/share/cargo
 define HOST_CARGO_EXTRACT_DEPS
 	@mkdir -p $(@D)/vendor
 	$(call suitable-extractor,$(CARGO_DEPS_SOURCE)) \
-		$(DL_DIR)/$(CARGO_DEPS_SOURCE) | \
+		$(HOST_CARGO_DL_DIR)/$(CARGO_DEPS_SOURCE) | \
 		$(TAR) --strip-components=1 -C $(@D)/vendor $(TAR_OPTIONS) -
 endef
 
@@ -46,7 +46,7 @@ HOST_CARGO_POST_EXTRACT_HOOKS += HOST_CARGO_EXTRACT_DEPS
 define HOST_CARGO_EXTRACT_INSTALLER
 	@mkdir -p $(@D)/src/rust-installer
 	$(call suitable-extractor,$(CARGO_INSTALLER_SOURCE)) \
-		$(DL_DIR)/$(CARGO_INSTALLER_SOURCE) | \
+		$(HOST_CARGO_DL_DIR)/$(CARGO_INSTALLER_SOURCE) | \
 		$(TAR) --strip-components=1 -C $(@D)/src/rust-installer $(TAR_OPTIONS) -
 endef
 

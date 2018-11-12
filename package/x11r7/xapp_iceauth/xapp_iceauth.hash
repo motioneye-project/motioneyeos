@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-January/002519.html
-sha256	1216af2dee99b318fcf8bf9a259915273bcb37a7f1e7859af4f15d0ebf6f3f0a	iceauth-1.0.7.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002850.html
+md5 3b9b79fa0f9928161f4bad94273de7ae  iceauth-1.0.8.tar.bz2
+sha1 2ce23c40a17d98badeb8ce70d26e81a5ac0e178c  iceauth-1.0.8.tar.bz2
+sha256 e6ee213a217265cc76050e4293ea70b98c32dce6505c6421227efbda62ab60c6  iceauth-1.0.8.tar.bz2
+sha512 9d4520adf951b16a3e784349dbb70d5d8176b74b956f8adc63abf55d049745c113b03ccfa60a281fc39b487db3742302dc6287c9985ce83a0157bf4674df2af1  iceauth-1.0.8.tar.bz2
+# Locally computed
+sha256 fdd9ba8ccb92af2f31f542e7b7a18c27257e6cdce147d231bc9ba3654ad84976  COPYING

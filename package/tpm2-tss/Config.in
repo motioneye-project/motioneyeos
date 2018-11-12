@@ -1,0 +1,35 @@
+config BR2_PACKAGE_TPM2_TSS
+	bool "tpm2-tss"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIBURIPARSER
+	help
+	  OSS implementation of the Trusted Computing Group's (TCG) TPM2
+	  Software Stack (TSS). This stack consists of the following
+	  layers from top to bottom:
+
+	  * System API (SAPI) as described in the system level API and
+	    TPM command transmission interface specification. This API
+	    is a 1-to-1 mapping of the TPM2 commands documented in Part
+	    3 of the TPM2 specification. Additionally there are
+	    asynchronous versions of each command. These asynchronous
+	    variants may be useful for integration into event-driven
+	    programming environments. Both the synchronous and
+	    asynchronous API are exposed through a single library:
+	    libsapi.
+
+	  * TPM Command Transmission Interface (TCTI) that is described
+	    in the same specification. This API provides a standard
+	    interface to transmit / receive TPM command / response
+	    buffers. It is expected that any number of libraries
+	    implementing the TCTI API will be implemented as a way to
+	    abstract various platform specific IPC mechanisms. Currently
+	    this repository provides two TCTI implementations:
+	    libtcti-device and libtcti-socket.  The prior should be used
+	    for direct access to the TPM through the Linux kernel
+	    driver. The later implements the protocol exposed by the
+	    Microsoft software TPM2 simulator.
+
+	  https://github.com/tpm2-software/tpm2-tss
+
+comment "tpm2-tss needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP

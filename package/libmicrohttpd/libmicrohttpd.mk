@@ -4,18 +4,17 @@
 #
 ################################################################################
 
-LIBMICROHTTPD_VERSION = 0.9.57
+LIBMICROHTTPD_VERSION = 0.9.59
 LIBMICROHTTPD_SITE = $(BR2_GNU_MIRROR)/libmicrohttpd
 LIBMICROHTTPD_LICENSE_FILES = COPYING
 LIBMICROHTTPD_INSTALL_STAGING = YES
 LIBMICROHTTPD_CONF_OPTS = --disable-curl --disable-examples
 LIBMICROHTTPD_CFLAGS = $(TARGET_CFLAGS) -std=c99
 
-# gcc on arc and bfin doesn't define _REENTRANT when -pthread is
-# passed while it should. Compensate this deficiency here otherwise
-# libmicrohttpd configure script doesn't find that thread support is
-# enabled.
-ifeq ($(BR2_arc)$(BR2_bfin),y)
+# gcc on arc doesn't define _REENTRANT when -pthread is passed while
+# it should. Compensate this deficiency here otherwise libmicrohttpd
+# configure script doesn't find that thread support is enabled.
+ifeq ($(BR2_arc),y)
 LIBMICROHTTPD_CFLAGS += -D_REENTRANT
 endif
 

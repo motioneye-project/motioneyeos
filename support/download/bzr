@@ -5,28 +5,31 @@ set -e
 
 # Download helper for bzr, to be called from the download wrapper script
 #
-# Call it as:
-#   .../bzr [-q] OUT_FILE REPO_URL REV BASENAME
+# Options:
+#   -q          Be quiet
+#   -o FILE     Generate archive in FILE.
+#   -u URI      Clone from repository at URI.
+#   -c CSET     Use changeset (or revision) CSET.
+#   -n NAME     Use basename NAME.
 #
 # Environment:
 #   BZR      : the bzr command to call
 
 
 verbose=
-while getopts :q OPT; do
+while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-q;;
+    o)  output="${OPTARG}";;
+    u)  uri="${OPTARG}";;
+    c)  cset="${OPTARG}";;
+    n)  basename="${OPTARG}";;
+    :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
-shift $((OPTIND-1))
 
-output="${1}"
-repo="${2}"
-rev="${3}"
-basename="${4}"
-
-shift 4 # Get rid of our options
+shift $((OPTIND-1)) # Get rid of our options
 
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
@@ -51,5 +54,5 @@ if [ ${bzr_version} -ge ${bzr_min_version} ]; then
 fi
 
 _bzr export ${verbose} --root="'${basename}/'" --format=tgz \
-    ${timestamp_opt} - "${@}" "'${repo}'" -r "'${rev}'" \
+    ${timestamp_opt} - "${@}" "'${uri}'" -r "'${cset}'" \
     >"${output}"

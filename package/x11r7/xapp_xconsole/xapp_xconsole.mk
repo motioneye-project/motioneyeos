@@ -10,7 +10,7 @@ XAPP_XCONSOLE_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XCONSOLE_LICENSE = MIT
 XAPP_XCONSOLE_LICENSE_FILES = COPYING
 XAPP_XCONSOLE_DEPENDENCIES = \
-	xlib_libX11 xlib_libXaw xlib_libXt xproto_xproto \
+	xlib_libX11 xlib_libXaw xlib_libXt xorgproto \
 	xlib_libXmu
 
 $(eval $(autotools-package))

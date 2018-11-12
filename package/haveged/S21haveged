@@ -1,7 +1,5 @@
 #!/bin/sh
 
-[ -x /usr/sbin/haveged ] || exit 0
-
 case "$1" in
 	start)
 		printf "Starting haveged: "

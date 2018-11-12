@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-MESA3D_DEMOS_VERSION = 8.3.0
+MESA3D_DEMOS_VERSION = 8.4.0
 MESA3D_DEMOS_SOURCE = mesa-demos-$(MESA3D_DEMOS_VERSION).tar.bz2
-MESA3D_DEMOS_SITE = ftp://ftp.freedesktop.org/pub/mesa/demos/$(MESA3D_DEMOS_VERSION)
+MESA3D_DEMOS_SITE = ftp://ftp.freedesktop.org/pub/mesa/demos
+# 0001-demos-makes-opengl-an-optional-component.patch
 MESA3D_DEMOS_AUTORECONF = YES
 MESA3D_DEMOS_DEPENDENCIES = host-pkgconf
 MESA3D_DEMOS_LICENSE = MIT

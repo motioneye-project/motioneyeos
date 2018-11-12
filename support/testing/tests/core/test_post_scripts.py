@@ -18,17 +18,17 @@ class TestPostScripts(infra.basetest.BRTest):
                    infra.filepath("tests/core/post-fakeroot.sh"),
                    infra.filepath("tests/core/post-image.sh"))
 
-    def check_post_log_file(self, path, what):
+    def check_post_log_file(self, f, what, target_dir):
         lines = {}
-        with open(path, 'rb') as csvfile:
+        with open(os.path.join(self.builddir, "build", f), 'rb') as csvfile:
             r = csv.reader(csvfile, delimiter=',')
             for row in r:
                 lines[row[0]] = row[1]
 
-        self.assertEqual(lines["arg1"], os.path.join(self.builddir, what))
+        self.assertEqual(lines["arg1"], what)
         self.assertEqual(lines["arg2"], "foobar")
         self.assertEqual(lines["arg3"], "baz")
-        self.assertEqual(lines["TARGET_DIR"], os.path.join(self.builddir, "target"))
+        self.assertEqual(lines["TARGET_DIR"], target_dir)
         self.assertEqual(lines["BUILD_DIR"], os.path.join(self.builddir, "build"))
         self.assertEqual(lines["HOST_DIR"], os.path.join(self.builddir, "host"))
         staging = os.readlink(os.path.join(self.builddir, "staging"))
@@ -37,9 +37,12 @@ class TestPostScripts(infra.basetest.BRTest):
         self.assertEqual(lines["BR2_CONFIG"], os.path.join(self.builddir, ".config"))
 
     def test_run(self):
-        f = os.path.join(self.builddir, "build", "post-build.log")
-        self.check_post_log_file(f, "target")
-        f = os.path.join(self.builddir, "build", "post-fakeroot.log")
-        self.check_post_log_file(f, "target")
-        f = os.path.join(self.builddir, "build", "post-image.log")
-        self.check_post_log_file(f, "images")
+        self.check_post_log_file("post-build.log",
+                                 os.path.join(self.builddir, "target"),
+                                 os.path.join(self.builddir, "target"))
+        self.check_post_log_file("post-fakeroot.log",
+                                 os.path.join(self.builddir, "build/buildroot-fs/target"),
+                                 os.path.join(self.builddir, "build/buildroot-fs/target"))
+        self.check_post_log_file("post-image.log",
+                                 os.path.join(self.builddir, "images"),
+                                 os.path.join(self.builddir, "target"))

@@ -132,6 +132,12 @@ class Indent(_CheckFunction):
                         text]
         elif entry in entries_that_should_not_be_indented:
             if not text.startswith(entry):
+                # four Config.in files have a special but legitimate indentation rule
+                if self.filename in ["package/Config.in",
+                                     "package/Config.in.host",
+                                     "package/kodi/Config.in",
+                                     "package/x11r7/Config.in"]:
+                    return
                 return ["{}:{}: should not be indented"
                         .format(self.filename, lineno),
                         text]

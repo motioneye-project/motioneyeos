@@ -1,3 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
 md5    b1d91153ac971347aee84292ed886c1c TimeDate-2.30.tar.gz
 sha256 75bd254871cb5853a6aa0403ac0be270cdd75c9d1b6639f18ecba63c15298e86 TimeDate-2.30.tar.gz
+
+# computed by scancpan
+sha256 e72e67533eb3ddd705ae718898945e2f3bf3702e91e85bb67824575706bd5bf9 README

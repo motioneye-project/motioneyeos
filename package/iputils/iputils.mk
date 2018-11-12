@@ -17,12 +17,6 @@ IPUTILS_LICENSE = GPL-2.0+, BSD-3-Clause, BSD-4-Clause
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
 
-# Build after busybox so target ends up with this package's full
-# versions of the applications instead of busybox applets.
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-IPUTILS_DEPENDENCIES += busybox
-endif
-
 IPUTILS_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) USE_SYSFS=no USE_IDN=no\
 	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 

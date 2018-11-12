@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/yieldfrom/json, sha256 locally computed
+md5	1a1c6fd152032d49ccd4ac250aad7746  yieldfrom-1.0.3.tar.gz
+sha256	388004d0ee8854c2ed7a2c87e664aad13acd70c9b33d7f3c441182d37357739b  yieldfrom-1.0.3.tar.gz
+sha256	3695faeb17a2507f445b7e0a454043671f646591795477ced20e29de2359d666  PKG-INFO

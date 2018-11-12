@@ -32,6 +32,38 @@ using the following rules:
   with `.` and `-` characters substituted with `_` (e.g.:
   +FOO_BAR_BOO_VERSION+).
 
+[[check-package]]
+==== How to check the coding style
+
+Buildroot provides a script in +utils/check-package+ that checks new or
+changed files for coding style. It is not a complete language validator,
+but it catches many common mistakes. It is meant to run in the actual
+files you created or modified, before creating the patch for submission.
+
+This script can be used for packages, filesystem makefiles, Config.in
+files, etc. It does not check the files defining the package
+infrastructures and some other files containing similar common code.
+
+To use it, run the +check-package+ script, by telling which files you
+created or changed:
+
+----
+$ ./utils/check-package package/new-package/*
+----
+
+If you have the +utils+ directory in your path you can also run:
+
+----
+$ cd package/new-package/
+$ check-package *
+----
+
+The tool can also be used for packages in a br2-external:
+
+----
+$ check-package -b /path/to/br2-ext-tree/package/my-package/*
+----
+
 [[testing-package]]
 ==== How to test your package
 
@@ -77,9 +109,14 @@ and what package to test:
 $ ./utils/test-pkg -c libcurl.config -p libcurl
 ----
 
-This will try to build your package against all the toolchains used
-by the autobuilders (except for the internal toolchains, because it takes
-too long to do so). The output lists all toolchains and the corresponding
+By default, +test-pkg+ will build your package against a subset of the
+toolchains used by the autobuilders, which has been selected by the
+Buildroot developers as being the most useful and representative
+subset. If you want to test all toolchains, pass the +-a+ option. Note
+that in any case, internal toolchains are excluded as they take too
+long to build.
+
+The output lists all toolchains that are tested and the corresponding
 result (excerpt, results are fake):
 
 ----

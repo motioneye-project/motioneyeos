@@ -15,7 +15,7 @@ LIBFTDI_AUTORECONF = YES
 LIBFTDI_CONF_OPTS = --without-examples
 
 # configure detect it automaticaly so we need to force it
-ifeq ($(BR2_PACKAGE_LIBTFDI_CPP),y)
+ifeq ($(BR2_PACKAGE_LIBFTDI_CPP),y)
 LIBFTDI_DEPENDENCIES += boost
 LIBFTDI_CONF_OPTS += --enable-libftdipp
 else

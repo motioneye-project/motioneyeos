@@ -1,0 +1,27 @@
+Rename __atomic_compare_exchange to not clash with gcc built-in
+
+Downloaded from
+https://src.fedoraproject.org/cgit/rpms/libdb.git/commit/?id=d6841b3b46a51db98c162347211a5a64d154ea37
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+--- db-5.3.28/src/dbinc/atomic.h.old	2018-05-23 09:20:04.216914922 +0200
++++ db-5.3.28/src/dbinc/atomic.h	2018-05-23 09:20:49.510057897 +0200
+@@ -144,7 +144,7 @@
+ #define	atomic_inc(env, p)	__atomic_inc(p)
+ #define	atomic_dec(env, p)	__atomic_dec(p)
+ #define	atomic_compare_exchange(env, p, o, n)	\
+-	__atomic_compare_exchange((p), (o), (n))
++	__db_atomic_compare_exchange((p), (o), (n))
+ static inline int __atomic_inc(db_atomic_t *p)
+ {
+ 	int	temp;
+@@ -176,7 +176,7 @@
+  * http://gcc.gnu.org/onlinedocs/gcc-4.1.0/gcc/Atomic-Builtins.html
+  * which configure could be changed to use.
+  */
+-static inline int __atomic_compare_exchange(
++static inline int __db_atomic_compare_exchange(
+ 	db_atomic_t *p, atomic_value_t oldval, atomic_value_t newval)
+ {
+ 	atomic_value_t was;

@@ -20,7 +20,6 @@ MPV_CONF_OPTS = \
 	--prefix=/usr \
 	--disable-android \
 	--disable-caca \
-	--disable-cdda \
 	--disable-cocoa \
 	--disable-coreaudio \
 	--disable-cuda-hwaccel \
@@ -97,6 +96,14 @@ MPV_CONF_OPTS += --enable-libbluray
 MPV_DEPENDENCIES += libbluray
 else
 MPV_CONF_OPTS += --disable-libbluray
+endif
+
+# libcdio-paranoia
+ifeq ($(BR2_PACKAGE_LIBCDIO_PARANOIA),y)
+MPV_CONF_OPTS += --enable-cdda
+MPV_DEPENDENCIES += libcdio-paranoia
+else
+MPV_CONF_OPTS += --disable-cdda
 endif
 
 # libdvdnav

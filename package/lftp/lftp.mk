@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LFTP_VERSION = 4.8.0
+LFTP_VERSION = 4.8.3
 LFTP_SOURCE = lftp-$(LFTP_VERSION).tar.xz
 LFTP_SITE = http://lftp.yar.ru/ftp
 LFTP_LICENSE = GPL-3.0+
@@ -41,11 +41,11 @@ else
 LFTP_CONF_OPTS += --without-openssl
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
-LFTP_DEPENDENCIES += libidn
-LFTP_CONF_OPTS += --with-libidn=$(STAGING_DIR)/usr
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+LFTP_DEPENDENCIES += libidn2
+LFTP_CONF_OPTS += --with-libidn2=$(STAGING_DIR)/usr
 else
-LFTP_CONF_OPTS += --without-libidn
+LFTP_CONF_OPTS += --without-libidn2
 endif
 
 # Remove /usr/share/lftp

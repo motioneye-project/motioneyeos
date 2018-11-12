@@ -20,12 +20,18 @@ comment "qt5webengine needs an OpenGL and EGL-capable backend"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
 	depends on !BR2_PACKAGE_QT5_GL_AVAILABLE || !BR2_PACKAGE_HAS_LIBEGL
 
+comment "qt5webengine needs a toolchain not affected by GCC bug 85862"
+	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
+	depends on !BR2_PACKAGE_QT5_VERSION_5_6
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_85862 # libnss
+
 config BR2_PACKAGE_QT5WEBENGINE
 	bool "qt5webengine"
 	depends on BR2_PACKAGE_QT5WEBENGINE_ARCH_SUPPORTS
 	depends on BR2_TOOLCHAIN_USES_GLIBC # execinfo.h, mallinfo
 	depends on BR2_HOST_GCC_AT_LEAST_4_8 # qt5base-icu
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # qt5base-icu
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_85862 || BR2_PACKAGE_QT5_VERSION_5_6 # libnss
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2, libvpx, qt5base-dbus
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_PACKAGE_QT5_GL_AVAILABLE # qt5declarative, qt5base-eglfs
@@ -38,6 +44,7 @@ config BR2_PACKAGE_QT5WEBENGINE
 	select BR2_HOSTARCH_NEEDS_IA32_COMPILER if !BR2_ARCH_IS_64 # v8/chromium
 	select BR2_PACKAGE_FFMPEG
 	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBNSS if !BR2_PACKAGE_QT5_VERSION_5_6
 	select BR2_PACKAGE_LIBVPX
 	select BR2_PACKAGE_OPUS
 	select BR2_PACKAGE_WEBP

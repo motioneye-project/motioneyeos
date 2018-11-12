@@ -3,4 +3,4 @@ config BR2_PACKAGE_FREETYPE
 	help
 	  a free, high-quality and portable font engine.
 
-	  http://www.freetype.org/
+	  https://www.freetype.org/

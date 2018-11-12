@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RUST_VERSION = 1.23.0
+RUST_VERSION = 1.27.1
 RUST_SOURCE = rustc-$(RUST_VERSION)-src.tar.xz
 RUST_SITE = https://static.rust-lang.org/dist
 RUST_LICENSE = Apache-2.0 or MIT

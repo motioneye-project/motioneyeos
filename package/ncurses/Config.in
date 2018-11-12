@@ -13,8 +13,6 @@ if BR2_PACKAGE_NCURSES
 config BR2_PACKAGE_NCURSES_WCHAR
 	bool "enable wide char support"
 	depends on BR2_USE_WCHAR
-	# Build broken @ curses.priv.h with bad declarations
-	depends on !(BR2_bfin && BR2_BINFMT_FLAT)
 	help
 	  Enable wide char & UTF-8 support in ncurses libraries
 
@@ -22,5 +20,15 @@ config BR2_PACKAGE_NCURSES_TARGET_PROGS
 	bool "ncurses programs"
 	help
 	  Include ncurses programs in target (clear, reset, tput, ...)
+
+config BR2_PACKAGE_NCURSES_ADDITIONAL_TERMINFO
+	string "additional terminfo files to install"
+	help
+	  Whitespace separated list of terminfo files to install on the
+	  target. A small number of vital terminfo files are always
+	  installed. This list is in addition to the vital ones.
+
+	  The terminfo filenames should have the single letter path
+	  prefix. e.g. t/tmux.
 
 endif

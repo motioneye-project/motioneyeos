@@ -1,0 +1,59 @@
+From 41c029755502acf01ed634db437ac06d09be6c41 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Date: Fri, 13 Apr 2018 09:02:37 +0200
+Subject: [PATCH] Don't use fork() on noMMU platforms
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Jörg: update patch for 1.1.6]
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ configure.ac         |  2 ++
+ src/pcm/pcm_direct.c | 10 +++++++++-
+ 2 files changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index cce195ae..0c852434 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -51,6 +51,8 @@ dnl Checks for library functions.
+ AC_PROG_GCC_TRADITIONAL
+ AC_CHECK_FUNCS([uselocale])
+ 
++AC_CHECK_FUNC([fork])
++
+ SAVE_LIBRARY_VERSION
+ AC_SUBST(LIBTOOL_VERSION_INFO)
+ 
+diff --git a/src/pcm/pcm_direct.c b/src/pcm/pcm_direct.c
+index 2b07eff9..4dc3ea26 100644
+--- a/src/pcm/pcm_direct.c
++++ b/src/pcm/pcm_direct.c
+@@ -431,13 +431,21 @@ int snd_pcm_direct_server_create(snd_pcm_direct_t *dmix)
+ 		close(dmix->server_fd);
+ 		return ret;
+ 	}
+-	
++
++#ifdef HAVE_FORK
+ 	ret = fork();
++#else
++	ret = vfork();
++#endif
+ 	if (ret < 0) {
+ 		close(dmix->server_fd);
+ 		return ret;
+ 	} else if (ret == 0) {
++#ifdef HAVE_FORK
+ 		ret = fork();
++#else
++		ret = vfork();
++#endif
+ 		if (ret == 0)
+ 			server_job(dmix);
+ 		_exit(EXIT_SUCCESS);
+-- 
+2.14.3
+

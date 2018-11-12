@@ -50,8 +50,8 @@ endchoice
 
 config BR2_TARGET_ROOTFS_TAR_OPTIONS
 	string "other random options to pass to tar"
-	depends on BR2_TARGET_ROOTFS_TAR
 	default ""
+	depends on BR2_TARGET_ROOTFS_TAR
 	help
 	  Any other flags you want to pass to tar
 	  Refer to tar --help for details

@@ -2,12 +2,12 @@
 #
 # Start chrony
 
-[ -f /etc/chrony.conf ] || exit 0
+[ -r /etc/default/chrony ] && . /etc/default/chrony
 
 case "$1" in
   start)
 	printf "Starting chrony: "
-	chronyd && echo "OK" || echo "FAIL"
+	chronyd $CHRONY_ARGS && echo "OK" || echo "FAIL"
 	;;
   stop)
 	printf "Stopping chrony: "

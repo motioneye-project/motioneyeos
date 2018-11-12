@@ -1,4 +1,4 @@
 # From https://github.com/json-c/json-c/wiki
-sha256 0316780be9ad16c42d7c26b015a784fd5df4b0909fef0aba51cfb13e492ac24d  json-c-0.13.tar.gz
+sha256 b87e608d4d3f7bfdd36ef78d56d53c74e66ab278d318b71e6002a369d36f4873  json-c-0.13.1.tar.gz
 # Locally calculated
 sha256 74c1e6ca5eba76b54d0ad00d4815c8315c1b3bc45ff99de61d103dc92486284c  COPYING

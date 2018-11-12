@@ -1,6 +1,5 @@
 #!/bin/sh
 
-[ -x /usr/sbin/ntpd ] || exit 0
 [ -f /etc/ntpd.conf ] || exit 0
 
 case "$1" in

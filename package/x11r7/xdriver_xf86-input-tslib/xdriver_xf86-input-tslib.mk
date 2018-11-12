@@ -10,10 +10,8 @@ XDRIVER_XF86_INPUT_TSLIB_SITE = https://github.com/merge/xf86-input-tslib/releas
 XDRIVER_XF86_INPUT_TSLIB_LICENSE = MIT
 XDRIVER_XF86_INPUT_TSLIB_LICENSE_FILES = COPYING
 XDRIVER_XF86_INPUT_TSLIB_DEPENDENCIES = \
-	xproto_inputproto \
 	xserver_xorg-server \
-	xproto_randrproto \
-	xproto_xproto \
+	xorgproto \
 	tslib
 
 $(eval $(autotools-package))

@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PYTHON_SUBPROCESS32
+	bool "python-subprocess32"
+	depends on BR2_PACKAGE_PYTHON
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10 || !BR2_MIPS_NABI64
+	help
+	  A backport of the Python 3 subprocess module for use
+	  on Python 2.
+
+	  https://github.com/google/python-subprocess32
+
+comment "python-subprocess32 needs a toolchain w/ headers >= 3.10 on MIPS N64"
+	depends on BR2_MIPS_NABI64
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10

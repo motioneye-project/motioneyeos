@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_BIGREQSPROTO
-	bool "bigreqsproto"
-	help
-	  X.Org BigReqs protocol headers

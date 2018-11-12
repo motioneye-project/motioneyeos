@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUDO_VERSION = 1.8.21p2
+SUDO_VERSION = 1.8.23
 SUDO_SITE = https://www.sudo.ws/sudo/dist
 SUDO_LICENSE = ISC, BSD-3-Clause
 SUDO_LICENSE_FILES = doc/LICENSE
@@ -45,7 +45,7 @@ SUDO_CONF_OPTS += --with-ldap
 # it will fail with "undefined reference" errors.
 ifeq ($(BR2_STATIC_LIBS)$(BR2_PACKAGE_OPENSSL),yy)
 SUDO_DEPENDENCIES += host-pkgconf
-SUDO_CONF_ENV = LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libssl libcrypto`"
+SUDO_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs libssl libcrypto`"
 endif
 else
 SUDO_CONF_OPTS += --without-ldap

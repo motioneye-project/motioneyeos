@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-# no 5.9.2 package available, fall back to 5.9.1 version
+# no 5.10 package available, fall back to 5.9.1 version
 ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
 QT5WEBKIT_EXAMPLES_VERSION = 5.9.1
 QT5WEBKIT_EXAMPLES_SITE = https://download.qt.io/official_releases/qt/5.9/5.9.1/submodules

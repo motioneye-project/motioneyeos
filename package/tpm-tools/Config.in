@@ -2,7 +2,6 @@ config BR2_PACKAGE_TPM_TOOLS
 	bool "tpm-tools"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # trousers
 	depends on !BR2_STATIC_LIBS # trousers
-	depends on !BR2_arc # trousers
 	select BR2_PACKAGE_TROUSERS
 	select BR2_PACKAGE_OPENSSL
 	help
@@ -12,4 +11,3 @@ config BR2_PACKAGE_TPM_TOOLS
 
 comment "tpm-tools needs a toolchain w/ threads, dynamic library"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
-	depends on !BR2_arc

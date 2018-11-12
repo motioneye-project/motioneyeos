@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_PYTHON_XLRD
+	bool "host python-xlrd"
+	help
+	  Library for developers to extract data from Microsoft
+	  Excel(tm) spreadsheet files.
+
+	  http://www.python-excel.org/

@@ -1,2 +1,6 @@
 # Locally calculated after checking pgp signature
-sha256	d94a2b5dec6d5eb6f05f114e2c7a64aeb7da71708ebe7b5f32bd6ebde1dfbc96	cgicc-3.2.16.tar.bz2
+sha256	2a17b976248de03447f9e36d6ce18a80749990d8543e2dfeea09c413eb67f7f0	cgicc-3.2.19.tar.gz
+
+# Hash for license files:
+sha256  a2e480f5e8afd7c587a3c0ac2ed3b73ed4b10fa3a553dea26e7b661c7cedda72  COPYING.LIB
+sha256  0fd15977dc962abf3eced509b1cf5356f9784939742d67a635671141023a11da  COPYING.DOC

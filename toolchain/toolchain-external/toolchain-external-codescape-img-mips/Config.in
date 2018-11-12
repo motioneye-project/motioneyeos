@@ -30,12 +30,14 @@ config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
 	      Enable 'Use soft-float'
-	    - MIPS32r6 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI, microMIPS
+	    - MIPS32r6 - Little-Endian, Hard-Float, 2008 NaN, o32 ABI,
+	      microMIPS
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
 	      Disable 'Use soft-float'
 	      Set BR2_TARGET_OPTIMIZATION to '-mmicromips'
-	    - MIPS32r6 - Little-Endian, Soft-Float, 2008 NaN, o32 ABI, microMIPS
+	    - MIPS32r6 - Little-Endian, Soft-Float, 2008 NaN, o32 ABI,
+	      microMIPS
 	      Select 'MIPS (little endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant
 	      Enable 'Use soft-float'

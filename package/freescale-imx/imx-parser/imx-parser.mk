@@ -24,7 +24,7 @@ IMX_PARSER_CONF_OPTS += --enable-fsw
 endif
 
 define IMX_PARSER_EXTRACT_CMDS
-	$(call FREESCALE_IMX_EXTRACT_HELPER,$(DL_DIR)/$(IMX_PARSER_SOURCE))
+	$(call FREESCALE_IMX_EXTRACT_HELPER,$(IMX_PARSER_DL_DIR)/$(IMX_PARSER_SOURCE))
 endef
 
 # The Makefile installs several versions of the libraries, but we only

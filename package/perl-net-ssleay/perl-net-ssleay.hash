@@ -1,3 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    cfbe968487149626978f427cc9fb8c77 Net-SSLeay-1.84.tar.gz
-sha256 823ec3cbb428309d6a9e56f362a9300693ce3215b7fede109adb7be361fff177 Net-SSLeay-1.84.tar.gz
+md5    d602bdce4e0531c6efc276e3e429ca69 Net-SSLeay-1.85.tar.gz
+sha256 9d8188b9fb1cae3bd791979c20554925d5e94a138d00414f1a6814549927b0c8 Net-SSLeay-1.85.tar.gz
+
+# computed by scancpan
+sha256 b55065185a2172d9f2ea2dd87c18c206ea3dc45a64e5f3deb3eee34d839dc822 LICENSE

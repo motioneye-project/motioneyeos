@@ -1,5 +1,6 @@
-# From https://lists.freedesktop.org/archives/pulseaudio-discuss/2017-September/028733.html
-md5 390de38231d5cdd6b43ada8939eb74f1  pulseaudio-11.1.tar.xz
-sha1 53bde72b6bfe715c19b1519db8845f7a58346b67  pulseaudio-11.1.tar.xz
+# From https://lists.freedesktop.org/archives/pulseaudio-discuss/2018-July/030280.html
+sha256 809668ffc296043779c984f53461c2b3987a45b7a25eb2f0a1d11d9f23ba4055  pulseaudio-12.2.tar.xz
 # Locally computed
-sha256 f2521c525a77166189e3cb9169f75c2ee2b82fa3fcf9476024fbc2c3a6c9cd9e  pulseaudio-11.1.tar.xz
+sha256 c38aee9e3c8c4d5d594ff548a1be05453023016d6286931f6512db215ec1fd42  GPL
+sha256 a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861  LGPL
+sha256 a1064b9838b6b4feee61eaeb0925da4b4834c984b77716558860c4294ed6c015  LICENSE

@@ -1,0 +1,15 @@
+config BR2_TOOLCHAIN_EXTERNAL_LINARO_AARCH64_BE
+	bool "Linaro AArch64 BE 2018.05"
+	depends on BR2_aarch64_be
+	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on !BR2_STATIC_LIBS
+	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	select BR2_TOOLCHAIN_HAS_SSP
+	select BR2_INSTALL_LIBSTDCPP
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
+	select BR2_TOOLCHAIN_HAS_FORTRAN
+	help
+	  Toolchain for the AArch64 Big Endian architecture, from
+	  http://www.linaro.org/engineering/armv8/

@@ -5,7 +5,7 @@ config BR2_PACKAGE_POCO
 	# pthread_condattr_setclock
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on !BR2_STATIC_LIBS # dlopen()
-	depends on !(BR2_arc || BR2_bfin || BR2_microblaze || BR2_mipsel \
+	depends on !(BR2_arc || BR2_microblaze || BR2_mipsel \
 		|| BR2_or1k || BR2_xtensa)
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_PCRE
@@ -17,6 +17,9 @@ config BR2_PACKAGE_POCO
 if BR2_PACKAGE_POCO
 
 comment "poco components"
+
+config BR2_PACKAGE_POCO_JSON
+	bool "json"
 
 config BR2_PACKAGE_POCO_XML
 	bool "xml"
@@ -46,6 +49,20 @@ config BR2_PACKAGE_POCO_ZIP
 	select BR2_PACKAGE_POCO_NET
 	select BR2_PACKAGE_POCO_UTIL
 
+config BR2_PACKAGE_POCO_CPP_PARSER
+	bool "cpp_parser"
+
+config BR2_PACKAGE_POCO_PDF
+	bool "pdf"
+
+config BR2_PACKAGE_POCO_REDIS
+	bool "redis"
+	select BR2_PACKAGE_POCO_NET
+
+config BR2_PACKAGE_POCO_MONGODB
+	bool "mongodb"
+	select BR2_PACKAGE_POCO_NET
+
 config BR2_PACKAGE_POCO_DATA
 	bool
 
@@ -65,5 +82,5 @@ endif # BR2_PACKAGE_POCO
 comment "poco needs a toolchain w/ wchar, NPTL, C++, dynamic library"
 	depends on !BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP \
 		|| !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
-	depends on !(BR2_arc || BR2_bfin || BR2_microblaze || BR2_mipsel \
+	depends on !(BR2_arc || BR2_microblaze || BR2_mipsel \
 		|| BR2_or1k || BR2_xtensa)

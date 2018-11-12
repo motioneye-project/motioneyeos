@@ -21,6 +21,7 @@ MYSQL_SOCKET = /run/mysql/mysql.sock
 ORACLE_MYSQL_CONF_ENV = \
 	ac_cv_sys_restartable_syscalls=yes \
 	ac_cv_path_PS=/bin/ps \
+	ac_cv_path_HOSTNAME=/bin/hostname \
 	ac_cv_FIND_PROC="/bin/ps p \$\$PID | grep -v grep | grep mysqld > /dev/null" \
 	ac_cv_have_decl_HAVE_IB_ATOMIC_PTHREAD_T_GCC=yes \
 	ac_cv_have_decl_HAVE_IB_ATOMIC_PTHREAD_T_SOLARIS=no \

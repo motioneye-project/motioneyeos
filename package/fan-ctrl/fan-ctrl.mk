@@ -12,7 +12,7 @@ FAN_CTRL_LICENSE = GPL-2.0+
 FAN_CTRL_LICENSE_FILES = fan-ctrl.c
 
 define FAN_CTRL_EXTRACT_CMDS
-	cp $(DL_DIR)/$(FAN_CTRL_SOURCE) $(@D)/fan-ctrl.c
+	cp $(FAN_CTRL_DL_DIR)/$(FAN_CTRL_SOURCE) $(@D)/fan-ctrl.c
 endef
 
 define FAN_CTRL_BUILD_CMDS

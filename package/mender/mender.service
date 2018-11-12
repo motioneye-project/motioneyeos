@@ -1,0 +1,14 @@
+[Unit]
+Description=Mender OTA update service
+After=systemd-resolved.service
+
+[Service]
+Type=idle
+User=root
+Group=root
+ExecStartPre=/bin/mkdir -p -m 0700 /data/mender
+ExecStart=/usr/bin/mender -daemon
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

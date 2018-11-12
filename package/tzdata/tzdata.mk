@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TZDATA_VERSION = 2018c
+TZDATA_VERSION = 2018e
 TZDATA_SOURCE = tzdata$(TZDATA_VERSION).tar.gz
 TZDATA_SITE = http://www.iana.org/time-zones/repository/releases
 TZDATA_STRIP_COMPONENTS = 0

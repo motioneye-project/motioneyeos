@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAPP_XEYES_VERSION = 1.1.1
+XAPP_XEYES_VERSION = 1.1.2
 XAPP_XEYES_SOURCE = xeyes-$(XAPP_XEYES_VERSION).tar.bz2
 XAPP_XEYES_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XEYES_LICENSE = MIT

@@ -1,2 +1,4 @@
-# From https://mmonit.com/monit/dist/monit-5.24.0.tar.gz.sha256:
-sha256  754d1f0e165e5a26d4639a6a83f44ccf839e381f2622e0946d5302fa1f2d2414  monit-5.24.0.tar.gz
+# From https://mmonit.com/monit/dist/monit-5.25.2.tar.gz.sha256:
+sha256  aa0ce6361d1155e43e30a86dcff00b2003d434f221c360981ced830275abc64a  monit-5.25.2.tar.gz
+# Locally computed
+sha256  d5a4f52b1a5e1e7fe14e01a76aac8b08dc6bbea15466058f271456c97aac1ada  COPYING

@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-June/002615.html
-sha256	7bddf4d879dd6f67088ecb203a31e12334aab980174bd0909930a21f32e251c1	xf86-video-vesa-2.3.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-February/002837.html
+md5 8134201beaf6f77150c7809c3cc802e6  xf86-video-vesa-2.4.0.tar.bz2
+sha1 99b69044c34292ba062e365c07dcd024462e794b  xf86-video-vesa-2.4.0.tar.bz2
+sha256 bf443c94d7bf6cd4e248f8a3147f4647be04dc4c80250d9405006263bbdee38c  xf86-video-vesa-2.4.0.tar.bz2
+sha512 4af5c0a7fd64eba503980198cf510688dff2f33482ceac446455d97255dcc828613387ac57828eb6dce080cb15a8644a2b2e278bf356705fdeaea873ab07c2de  xf86-video-vesa-2.4.0.tar.bz2
+# Locally computed
+sha256 bda49ba1e860501c20fd444423bc790f6da4f769561b69acc0cbe5abff9409b6  COPYING

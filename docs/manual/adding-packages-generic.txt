@@ -179,8 +179,10 @@ some tools to be installed on the host. If the package name is
 variables of other packages, if they depend on +libfoo+ or
 +host-libfoo+.
 
-The call to the +generic-package+ and/or +host-generic-package+ macro *must* be
-at the end of the +.mk+ file, after all variable definitions.
+The call to the +generic-package+ and/or +host-generic-package+ macro
+*must* be at the end of the +.mk+ file, after all variable definitions.
+The call to +host-generic-package+ *must* be after the call to
++generic-package+, if any.
 
 For the target package, the +generic-package+ uses the variables defined by
 the .mk file and prefixed by the uppercased package name:
@@ -276,7 +278,7 @@ not and can not work as people would expect it should:
   the file using this URL. Otherwise, Buildroot will assume the file
   to be downloaded is located at +LIBFOO_SITE+. Buildroot will not do
   anything with those additional files, except download them: it will
-  be up to the package recipe to use them from +$(DL_DIR)+.
+  be up to the package recipe to use them from +$(LIBFOO_DL_DIR)+.
 
 * +LIBFOO_SITE_METHOD+ determines the method used to fetch or copy the
   package source code. In many cases, Buildroot guesses the method
@@ -359,6 +361,13 @@ not and can not work as people would expect it should:
   installed before the configuration of the current package starts. In
   a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
+
+* +LIBFOO_EXTRACT_DEPENDENCIES+ lists the dependencies (in terms of
+  package name) that are required for the current target package to be
+  extracted. These dependencies are guaranteed to be compiled and
+  installed before the extract step of the current package
+  starts. This is only used internally by the package infrastructure,
+  and should typically not be used directly by packages.
 
 * +LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current package to be
@@ -560,8 +569,8 @@ In the action definitions, you can use the following variables:
 * +$(@D)+, which contains the directory in which the package source
   code has been uncompressed.
 
-* +$(DL_DIR)+ contains the path to the directory where all the downloads made
-  by Buildroot are stored.
+* +$(LIBFOO_DL_DIR)+ contains the path to the directory where all the downloads
+  made by Buildroot for +libfoo+ are stored in.
 
 * +$(TARGET_CC)+, +$(TARGET_LD)+, etc. to get the target
   cross-compilation utilities

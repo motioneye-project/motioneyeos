@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PIXIEWPS
+	bool "pixiewps"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	help
+	  Pixie WPS is a C based tool to audit networks against the so
+	  called "Pixie Dust" attack.
+
+	  https://github.com/wiire-a/pixiewps/wiki
+
+comment "pixiewps needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

@@ -11,7 +11,7 @@ DOOM_WAD_SOURCE = doom$(subst .,,$(DOOM_WAD_VERSION))s.zip
 DOOM_WAD_SITE = http://www.jbserver.com/downloads/games/doom/misc/shareware
 
 define DOOM_WAD_EXTRACT_CMDS
-	$(UNZIP) -p $(DL_DIR)/$($(PKG)_SOURCE) 'DOOMS_19.[12]' > \
+	$(UNZIP) -p $(DOOM_WAD_DL_DIR)/$($(PKG)_SOURCE) 'DOOMS_19.[12]' > \
 		$(@D)/doom-$(DOOM_WAD_VERSION).zip
 	$(UNZIP) -d $(@D) $(@D)/doom-$(DOOM_WAD_VERSION).zip DOOM1.WAD
 endef

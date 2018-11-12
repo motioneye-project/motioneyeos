@@ -1,0 +1,87 @@
+From c93bb184ce996c4d77eefbae2ab0bf74f396ec45 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 13 Mar 2018 06:53:06 +0200
+Subject: [PATCH] memfd: fix build with glibc 2.27
+
+glibc 2.27 added a wrapper for memfd_create(). This causes build
+failure:
+
+fds/memfd.c:19:12: error: static declaration of 'memfd_create' follows non-static declaration
+ static int memfd_create(__unused__ const char *uname, __unused__ unsigned int flag)
+            ^~~~~~~~~~~~
+
+Don't use the local definition when the libc provides one.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/kernelslacker/trinity/pull/23
+
+ configure   | 23 +++++++++++++++++++++++
+ fds/memfd.c |  3 +++
+ 2 files changed, 26 insertions(+)
+
+diff --git a/configure b/configure
+index dc0a87d8c1ad..c0166af33048 100755
+--- a/configure
++++ b/configure
+@@ -288,6 +288,29 @@ else
+ 	echo "#define USE_BTRFS 1" >> $CONFIGH
+ fi
+ 
++#############################################################################################
++# Does glibc provide memfd_create() syscall wrapper
++#
++echo -n "[*] Checking if glibc provides memfd_create.. "
++rm -f "$TMP" || exit 1
++
++cat >"$TMP.c" << EOF
++#include <sys/mman.h>
++
++void main()
++{
++	memfd_create();
++}
++EOF
++
++${CC} ${CFLAGS} "$TMP.c" -o "$TMP" &>"$TMP.log"
++if [ ! -x "$TMP" ]; then
++	echo $RED "[NO]" $COL_RESET
++else
++	echo $GREEN "[YES]" $COL_RESET
++	echo "#define USE_MEMFD_CREATE 1" >> $CONFIGH
++fi
++
+ #############################################################################################
+ 
+ check_header linux/caif/caif_socket.h USE_CAIF
+diff --git a/fds/memfd.c b/fds/memfd.c
+index 210678e4571c..aaaac2f78f54 100644
+--- a/fds/memfd.c
++++ b/fds/memfd.c
+@@ -5,6 +5,7 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <unistd.h>
++#include <sys/mman.h>
+ 
+ #include "fd.h"
+ #include "memfd.h"
+@@ -16,6 +17,7 @@
+ #include "trinity.h"
+ #include "udp.h"
+ 
++#ifndef USE_MEMFD_CREATE
+ static int memfd_create(__unused__ const char *uname, __unused__ unsigned int flag)
+ {
+ #ifdef SYS_memfd_create
+@@ -24,6 +26,7 @@ static int memfd_create(__unused__ const char *uname, __unused__ unsigned int fl
+ 	return -ENOSYS;
+ #endif
+ }
++#endif
+ 
+ static void memfd_destructor(struct object *obj)
+ {
+-- 
+2.16.1
+

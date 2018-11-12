@@ -1,0 +1,26 @@
+From 124d479195ac8ec1747b5b89fe4860d0e92c2aae Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sun, 22 Oct 2017 08:58:11 +0200
+Subject: [PATCH] add pidfile
+
+see https://prosody.im/doc/configure#posix-only_options
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+
+diff --git a/prosody.cfg.lua.dist b/prosody.cfg.lua.dist
+index af3cc0e4..675db12f 100644
+--- a/prosody.cfg.lua.dist
++++ b/prosody.cfg.lua.dist
+@@ -181,6 +181,9 @@ log = {
+ -- Location of directory to find certificates in (relative to main config file):
+ certificates = "certs"
+ 
++-- This must match the PIDFILE used in S50prosody
++pidfile = "/var/run/prosody/prosody.pid"
++
+ ----------- Virtual hosts -----------
+ -- You need to add a VirtualHost entry for each domain you wish Prosody to serve.
+ -- Settings under each VirtualHost entry apply *only* to that host.
+-- 
+2.11.0
+

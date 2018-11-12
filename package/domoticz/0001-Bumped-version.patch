@@ -1,0 +1,20 @@
+From 98723b7da9467a49222b8a7ffaae276c5bc075c1 Mon Sep 17 00:00:00 2001
+From: gizmocuz <gizmocuz@users.noreply.github.com>
+Date: Thu, 28 Jun 2018 08:00:58 +0200
+Subject: [PATCH] Bumped version
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from https://github.com/domoticz/domoticz/commit/98723b7da9467a49222b8a7ffaae276c5bc075c1]
+---
+ appversion.default | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/appversion.default b/appversion.default
+index beaa069bb..7d3530590 100644
+--- a/appversion.default
++++ b/appversion.default
+@@ -1,3 +1,3 @@
+-#define APPVERSION 5876
++#define APPVERSION 9700
+ #define APPHASH "b97777b"
+ #define APPDATE 1478691222

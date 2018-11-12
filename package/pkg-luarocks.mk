@@ -52,7 +52,7 @@ ifndef $(2)_EXTRACT_CMDS
 define $(2)_EXTRACT_CMDS
 	mkdir -p $$($(2)_DIR)/luarocks-extract
 	cd $$($(2)_DIR)/luarocks-extract && \
-		$$(LUAROCKS_RUN_ENV) $$(LUAROCKS_RUN_CMD) unpack --force $$(DL_DIR)/$$($(2)_SOURCE)
+		$$(LUAROCKS_RUN_ENV) $$(LUAROCKS_RUN_CMD) unpack --force $$($(2)_DL_DIR)/$$($(2)_SOURCE)
 	mv $$($(2)_DIR)/luarocks-extract/*/* $$($(2)_DIR)
 endef
 endif

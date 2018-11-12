@@ -6,19 +6,20 @@ config BR2_TARGET_UBOOT
 if BR2_TARGET_UBOOT
 choice
 	prompt "Build system"
+	default BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
-
-config BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
-	bool "Legacy"
-	help
-	  Select this option if you use an old U-Boot (older than 2015.04),
-	  so that we use the old build system.
 
 config BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
 	bool "Kconfig"
 	help
-	  Select this option if you use a recent U-Boot version (2015.04 or
-	  newer), so that we use the Kconfig build system.
+	  Select this option if you use a recent U-Boot version (2015.04
+	  or newer), so that we use the Kconfig build system.
+
+config BR2_TARGET_UBOOT_BUILD_SYSTEM_LEGACY
+	bool "Legacy"
+	help
+	  Select this option if you use an old U-Boot (older than
+	  2015.04), so that we use the old build system.
 
 endchoice
 
@@ -27,9 +28,9 @@ config BR2_TARGET_UBOOT_BOARDNAME
 	string "U-Boot board name"
 	help
 	  One of U-Boot supported boards to be built.
-	  This will be suffixed with _config to meet U-Boot standard naming.
-	  See boards.cfg in U-Boot source code for the list of available
-	  configurations.
+	  This will be suffixed with _config to meet U-Boot standard
+	  naming. See boards.cfg in U-Boot source code for the list of
+	  available configurations.
 endif
 
 choice
@@ -38,7 +39,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2018.01"
+	bool "2018.07"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -79,14 +80,14 @@ config BR2_TARGET_UBOOT_CUSTOM_REPO_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION \
 		if BR2_TARGET_UBOOT_CUSTOM_GIT_VERSION != ""  # legacy
 	help
-	  Revision to use in the typical format used by Git/Mercurial/Subversion
-	  E.G. a sha id, a tag, branch, ..
+	  Revision to use in the typical format used by
+	  Git/Mercurial/Subversion E.G. a sha id, a tag, branch, ..
 
 endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2018.01"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2018.07"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -189,6 +190,9 @@ config BR2_TARGET_UBOOT_FORMAT_DTB_BIN
 config BR2_TARGET_UBOOT_FORMAT_DTB_IMG
 	bool "u-boot-dtb.img"
 
+config BR2_TARGET_UBOOT_FORMAT_DTB_IMX
+	bool "u-boot-dtb.imx"
+
 config BR2_TARGET_UBOOT_FORMAT_IMG
 	bool "u-boot.img"
 
@@ -199,23 +203,19 @@ config BR2_TARGET_UBOOT_FORMAT_NAND_BIN
 	bool "u-boot-nand.bin"
 
 config BR2_TARGET_UBOOT_FORMAT_KWB
-	depends on BR2_arm
 	bool "u-boot.kwb (Marvell)"
-
-config BR2_TARGET_UBOOT_FORMAT_LDR
-	depends on BR2_bfin
-	bool "u-boot.ldr"
+	depends on BR2_arm
 
 config BR2_TARGET_UBOOT_FORMAT_ELF
 	bool "u-boot.elf"
 
 config BR2_TARGET_UBOOT_FORMAT_SB
-	depends on BR2_arm
 	bool "u-boot.sb (Freescale i.MX28)"
+	depends on BR2_arm
 
 config BR2_TARGET_UBOOT_FORMAT_SD
-	depends on BR2_arm
 	bool "u-boot.sd (Freescale i.MX28)"
+	depends on BR2_arm
 	help
 	  This is Freescale i.MX28 SB format, with a header for booting
 	  from an SD card.
@@ -226,28 +226,28 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
 
 config BR2_TARGET_UBOOT_FORMAT_NAND
-	depends on BR2_arm
 	bool "u-boot.nand (Freescale i.MX28)"
+	depends on BR2_arm
 	help
-	  This is Freescale i.MX28 BootStream format (.sb), with a header
-	  for booting from a NAND flash.
+	  This is Freescale i.MX28 BootStream format (.sb), with a
+	  header for booting from a NAND flash.
 
 	  U-boot includes an mxsboot tool to generate this format,
 	  starting from 2011.12.
 
-	  There are two possibilities when preparing an image writable to
-	  NAND flash:
-	  1) The NAND was not written at all yet or the BCB (Boot Control
-	  Blocks) is broken. In this case, the NAND image 'u-boot.nand'
-	  needs to written.
+	  There are two possibilities when preparing an image writable
+	  to NAND flash:
+	  1) The NAND was not written at all yet or the BCB (Boot
+	  Control Blocks) is broken. In this case, the NAND image
+	  'u-boot.nand' needs to written.
 	  2) The NAND flash was already written with a good BCB. This
 	  applies after 'u-boot.nand' was correctly written. There is no
-	  need to write the BCB again. In this case, the bootloader can be
-	  upgraded by writing 'u-boot.sb'.
+	  need to write the BCB again. In this case, the bootloader can
+	  be upgraded by writing 'u-boot.sb'.
 
 	  To satisfy both cases, the 'u-boot.nand' image obtained from
-	  mxsboot as well as the U-Boot make target 'u-boot.sb' are copied
-	  to the binaries directory.
+	  mxsboot as well as the U-Boot make target 'u-boot.sb' are
+	  copied to the binaries directory.
 
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
 
@@ -295,7 +295,8 @@ config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
 	depends on BR2_TARGET_UBOOT_FORMAT_CUSTOM
 	help
 	  In case the U-Boot binary for the target platform is not among
-	  the default names, one or more custom names can be listed here.
+	  the default names, one or more custom names can be listed
+	  here.
 	  Use space to separate multiple names.
 	  Example:
 	  u-boot_magic.bin
@@ -303,10 +304,10 @@ config BR2_TARGET_UBOOT_FORMAT_CUSTOM_NAME
 endmenu
 
 config BR2_TARGET_UBOOT_OMAP_IFT
+	bool "produce a .ift signed image (OMAP)"
 	depends on BR2_TARGET_UBOOT_FORMAT_BIN
 	depends on BR2_arm || BR2_armeb
 	select BR2_PACKAGE_HOST_OMAP_U_BOOT_UTILS
-	bool "produce a .ift signed image (OMAP)"
 	help
 	  Use gpsign to produce an image of u-boot.bin signed with
 	  a Configuration Header for booting on OMAP processors.
@@ -366,6 +367,64 @@ config BR2_TARGET_UBOOT_ZYNQ_IMAGE
 	  A bitstream can be loaded by the U-Boot. The SPL searchs
 	  for u-boot-dtb.img file so this U-Boot format is required
 	  to be set.
+
+config BR2_TARGET_UBOOT_ZYNQMP
+	bool "Boot on the Xilinx ZynqMP SoCs"
+	depends on BR2_aarch64
+	help
+	  Enable options specific to the Xilinx ZynqMP family of SoCs.
+
+if BR2_TARGET_UBOOT_ZYNQMP
+
+config BR2_TARGET_UBOOT_ZYNQMP_PMUFW
+	string "PMU firmware location"
+	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
+	help
+	  Location of a PMU firmware binary.
+
+	  If not empty, instructs the U-Boot build process to generate
+	  a boot.bin (to be loaded by the ZynqMP boot ROM) containing
+	  both the U-Boot SPL and the PMU firmware in the
+	  Xilinx-specific boot format.
+
+	  The value can be an absolute or relative path, and will be
+	  used directly from where it is located, or an URI
+	  (e.g. http://...), and it will be downloaded and used from
+	  the download directory.
+
+	  If empty, the generated boot.bin will not contain a PMU
+	  firmware.
+
+	  This feature requires U-Boot >= 2018.07.
+
+config BR2_TARGET_UBOOT_ZYNQMP_PSU_INIT_FILE
+	string "Custom psu_init_gpl file"
+	depends on BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG
+	help
+	  On ZynqMP the booloader is responsible for some basic
+	  initializations, such as enabling peripherals and
+	  configuring pinmuxes. The psu_init_gpl.c file (and,
+	  optionally, psu_init_gpl.h) contains the code for such
+	  initializations.
+
+	  Although U-Boot contains psu_init_gpl.c files for some
+	  boards, each of them describes only one specific
+	  configuration. Users of a different board, or needing a
+	  different configuration, can generate custom files using the
+	  Xilinx development tools.
+
+	  Set this variable to the path to your psu_init_gpl.c file
+	  (e.g. "board/myboard/psu_init_gpl.c"). psu_init_gpl.h, if
+	  needed, should be in the same directory. U-Boot will build
+	  and link the user-provided file instead of the built-in one.
+
+	  Leave empty to use the files provided by U-Boot.
+
+	  This feature requires commit
+	  6da4f67ad09cd8b311d77b2b04e557b7ef65b56c from upstream
+	  U-Boot, available from versions after 2018.07.
+
+endif
 
 config BR2_TARGET_UBOOT_ALTERA_SOCFPGA_IMAGE_CRC
 	bool "CRC image for Altera SoC FPGA (mkpimage)"

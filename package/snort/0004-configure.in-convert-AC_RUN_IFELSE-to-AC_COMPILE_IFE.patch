@@ -1,0 +1,48 @@
+From 075b5cf8d3940ed2c39fb37c1e14a652e4a6f2fc Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@smile.fr>
+Date: Sun, 1 Apr 2018 16:21:31 +0200
+Subject: [PATCH] configure.in: convert AC_RUN_IFELSE to AC_COMPILE_IFELSE
+
+Prevent configure script from trying to run programs in a cross
+compilation environment.
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Cc: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ configure.in | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 571322b..e489037 100644
+--- a/configure.in
++++ b/configure.in
+@@ -431,7 +431,7 @@ if test "x$LPCAP" = "xno"; then
+ fi
+ 
+ AC_MSG_CHECKING([for pcap_lex_destroy])
+-AC_RUN_IFELSE(
++AC_COMPILE_IFELSE(
+ [AC_LANG_PROGRAM(
+ [[
+ #include <pcap.h>
+@@ -823,7 +823,7 @@ if test "x$have_daq_data_channel_separate_ip_versions" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for DAQ_VERDICT_RETRY])
+-AC_RUN_IFELSE(
++AC_COMPILE_IFELSE(
+ [AC_LANG_PROGRAM(
+ [[
+ #include <daq.h>
+@@ -886,7 +886,7 @@ if eval "echo $host_cpu|grep -i sparc >/dev/null"; then
+     OLD_CFLAGS="$CFLAGS"
+     CFLAGS="$CFLAGS -mcpu=v9 "
+     AC_MSG_CHECKING([for sparc %time register])
+-    AC_RUN_IFELSE(
++    AC_COMPILE_IFELSE(
+     [AC_LANG_PROGRAM(
+     [[]],
+     [[
+-- 
+2.14.3
+

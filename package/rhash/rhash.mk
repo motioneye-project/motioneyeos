@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RHASH_VERSION = 1.3.4
+RHASH_VERSION = 1.3.5
 RHASH_SOURCE = rhash-$(RHASH_VERSION)-src.tar.gz
 RHASH_SITE = https://sourceforge.net/projects/rhash/files/rhash/$(RHASH_VERSION)
 RHASH_LICENSE = MIT

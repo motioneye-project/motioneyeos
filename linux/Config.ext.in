@@ -117,14 +117,17 @@ config BR2_LINUX_KERNEL_EXT_AUFS_VERSION
 	string "aufs-standalone version"
 	default ""
 	help
-	  The version you choose must match that of your kernel. Usually,
-	  the sha1 of the cset you want to use; avoid using a branch name
-	  as this yields non-reproducible builds.
+	  The version you choose must match that of your kernel.
+	  Usually, the sha1 of the cset you want to use; avoid using a
+	  branch name as this yields non-reproducible builds.
 
-	  See the following resources to see what versions are available:
+	  See the following resources to see what versions are
+	  available:
 
-	  For aufs3.x: https://sourceforge.net/p/aufs/aufs3-standalone/ref/master/branches/
-	  For aufs4.x: https://github.com/sfjro/aufs4-standalone/branches/all
+	  For aufs3.x:
+	  https://sourceforge.net/p/aufs/aufs3-standalone/ref/master/branches/
+	  For aufs4.x:
+	  https://github.com/sfjro/aufs4-standalone/branches/all
 
 endif # aufs
 

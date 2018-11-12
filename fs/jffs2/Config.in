@@ -38,8 +38,8 @@ endchoice
 
 config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_EBSIZE
 	hex "Erase block size"
-	depends on BR2_TARGET_ROOTFS_JFFS2_CUSTOM
 	default 0x20000
+	depends on BR2_TARGET_ROOTFS_JFFS2_CUSTOM
 	help
 	  Set to erase size of memory
 
@@ -68,8 +68,8 @@ config BR2_TARGET_ROOTFS_JFFS2_PAD
 
 config BR2_TARGET_ROOTFS_JFFS2_PADSIZE
 	hex "Pad output size (0x0 = to end of EB)"
-	depends on BR2_TARGET_ROOTFS_JFFS2_PAD
 	default 0x0
+	depends on BR2_TARGET_ROOTFS_JFFS2_PAD
 	help
 	  Set to 0x0 to pad to end of erase block.
 
@@ -94,19 +94,20 @@ config BR2_TARGET_ROOTFS_JFFS2_SUMMARY
 config BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
 	bool "Select custom virtual memory page size"
 	help
-	  Use a custom virtual memory page size.  Note that this is not related to
-	  the flash memory page size.  Using this option is only needed if Linux is
-	  configured to use a page size different than 4kB.
-
+	  Use a custom virtual memory page size. Note that this is not
+	  related to the flash memory page size. Using this option is
+	  only needed if Linux is configured to use a page size
+	  different than 4kB.
 
 config BR2_TARGET_ROOTFS_JFFS2_CUSTOM_PAGESIZE
 	hex "Virtual memory page size"
-	depends on BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
 	default 0x1000
+	depends on BR2_TARGET_ROOTFS_JFFS2_USE_CUSTOM_PAGESIZE
 	help
-	  Set to virtual memory page size of target system (in bytes).  This value
-	  should match the virtual page size in Linux (i.e. this should have the
-	  same value as the value of the PAGE_SIZE macro in Linux).  It is not
-	  related to the flash memory page size.
+	  Set to virtual memory page size of target system (in bytes).
+	  This value should match the virtual page size in Linux (i.e.
+	  this should have the same value as the value of the PAGE_SIZE
+	  macro in Linux). It is not related to the flash memory page
+	  size.
 
 endif

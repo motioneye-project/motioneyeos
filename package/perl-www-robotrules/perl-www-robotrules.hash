@@ -1,3 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
 md5    b7186e8b8b3701e70c22abf430742403 WWW-RobotRules-6.02.tar.gz
 sha256 46b502e7a288d559429891eeb5d979461dd3ecc6a5c491ead85d165b6e03a51e WWW-RobotRules-6.02.tar.gz
+
+# computed by scancpan
+sha256 fa375c4f771b92fc076b6c66e19440a0fff51dacf489fecd94bf560091279e05 README

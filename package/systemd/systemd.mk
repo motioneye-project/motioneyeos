@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 237
+SYSTEMD_VERSION = 239
 SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
@@ -12,24 +12,13 @@ SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
 	host-gperf \
 	host-intltool \
-	host-meson \
 	kmod \
 	libcap \
 	util-linux
 
 SYSTEMD_PROVIDES = udev
 
-# Make sure that systemd will always be built after busybox so that we have
-# a consistent init setup between two builds
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-SYSTEMD_DEPENDENCIES += busybox
-endif
-
 SYSTEMD_CONF_OPTS += \
-	--prefix=/usr \
-	--libdir='/usr/lib' \
-	--buildtype $(if $(BR2_ENABLE_DEBUG),debug,release) \
-	--cross-file $(HOST_DIR)/etc/meson/cross-compilation.conf \
 	-Drootlibdir='/usr/lib' \
 	-Dblkid=true \
 	-Dman=false \
@@ -51,6 +40,17 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup
 
+# disable unsupported features for non-glibc toolchains
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+SYSTEMD_CONF_OPTS += \
+	-Didn=true \
+	-Dnss-systemd=true
+else
+SYSTEMD_CONF_OPTS += \
+	-Didn=false \
+	-Dnss-systemd=false
+endif
+
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_DEPENDENCIES += acl
 SYSTEMD_CONF_OPTS += -Dacl=true
@@ -65,11 +65,22 @@ else
 SYSTEMD_CONF_OPTS += -Daudit=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
-SYSTEMD_DEPENDENCIES += libidn
-SYSTEMD_CONF_OPTS += -Dlibidn=true
+ifeq ($(BR2_PACKAGE_ELFUTILS),y)
+SYSTEMD_DEPENDENCIES += elfutils
+SYSTEMD_CONF_OPTS += -Delfutils=true
 else
-SYSTEMD_CONF_OPTS += -Dlibidn=false
+SYSTEMD_CONF_OPTS += -Delfutils=false
+endif
+
+# Both options can't be selected at the same time so prefer libidn2
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+SYSTEMD_DEPENDENCIES += libidn2
+SYSTEMD_CONF_OPTS += -Dlibidn2=true -Dlibidn=false
+else ifeq ($(BR2_PACKAGE_LIBIDN),y)
+SYSTEMD_DEPENDENCIES += libidn
+SYSTEMD_CONF_OPTS += -Dlibidn=true -Dlibidn2=false
+else
+SYSTEMD_CONF_OPTS += -Dlibidn=false -Dlibidn2=false
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
@@ -133,6 +144,13 @@ SYSTEMD_DEPENDENCIES += libgcrypt
 SYSTEMD_CONF_OPTS += -Dgcrypt=true
 else
 SYSTEMD_CONF_OPTS += -Dgcrypt=false
+endif
+
+ifeq ($(BR2_PACKAGE_PCRE2),y)
+SYSTEMD_DEPENDENCIES += pcre2
+SYSTEMD_CONF_OPTS += -Dpcre2=true
+else
+SYSTEMD_CONF_OPTS += -Dpcre2=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_GATEWAY),y)
@@ -390,28 +408,7 @@ define SYSTEMD_INSTALL_INIT_SYSTEMD
 	$(SYSTEMD_INSTALL_NETWORK_CONFS)
 endef
 
-SYSTEMD_NINJA_OPTS = $(if $(VERBOSE),-v) -j$(PARALLEL_JOBS)
+SYSTEMD_CONF_ENV = $(HOST_UTF8_LOCALE_ENV)
+SYSTEMD_NINJA_ENV = $(HOST_UTF8_LOCALE_ENV)
 
-SYSTEMD_ENV = $(TARGET_MAKE_ENV) $(HOST_UTF8_LOCALE_ENV)
-
-define SYSTEMD_CONFIGURE_CMDS
-	rm -rf $(@D)/build
-	mkdir -p $(@D)/build
-	$(SYSTEMD_ENV) meson $(SYSTEMD_CONF_OPTS) $(@D) $(@D)/build
-endef
-
-define SYSTEMD_BUILD_CMDS
-	$(SYSTEMD_ENV) ninja $(SYSTEMD_NINJA_OPTS) -C $(@D)/build
-endef
-
-define SYSTEMD_INSTALL_TARGET_CMDS
-	$(SYSTEMD_ENV) DESTDIR=$(TARGET_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
-		-C $(@D)/build install
-endef
-
-define SYSTEMD_INSTALL_STAGING_CMDS
-	$(SYSTEMD_ENV) DESTDIR=$(STAGING_DIR) ninja $(SYSTEMD_NINJA_OPTS) \
-		-C $(@D)/build install
-endef
-
-$(eval $(generic-package))
+$(eval $(meson-package))

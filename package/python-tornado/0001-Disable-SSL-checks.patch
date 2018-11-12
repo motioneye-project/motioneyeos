@@ -1,0 +1,45 @@
+From 82a3bbc2ac41b5a1b34a53f97459558efe131f14 Mon Sep 17 00:00:00 2001
+From: Jan Dohl <polygon@wh2.tu-dresden.de>
+Date: Sun, 24 Jun 2018 16:00:54 +0200
+Subject: [PATCH] Disable SSL checks
+
+Checking for SSL support in the Python used on the build system is not
+relevant, as we need SSL support in the Python on the target system.
+
+Signed-off-by: Jan Dohl <polygon@wh2.tu-dresden.de>
+---
+ setup.py | 11 -----------
+ 1 file changed, 11 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 6fbb10a8..1a9220c7 100644
+--- a/setup.py
++++ b/setup.py
+@@ -15,7 +15,6 @@
+ 
+ import os
+ import platform
+-import ssl
+ import sys
+ import warnings
+ 
+@@ -137,16 +136,6 @@ if setuptools is not None:
+     python_requires = '>= 2.7, !=3.0.*, !=3.1.*, !=3.2.*, != 3.3.*'
+     kwargs['python_requires'] = python_requires
+ 
+-# Verify that the SSL module has all the modern upgrades. Check for several
+-# names individually since they were introduced at different versions,
+-# although they should all be present by Python 3.4 or 2.7.9.
+-if (not hasattr(ssl, 'SSLContext') or
+-        not hasattr(ssl, 'create_default_context') or
+-        not hasattr(ssl, 'match_hostname')):
+-    raise ImportError("Tornado requires an up-to-date SSL module. This means "
+-                      "Python 2.7.9+ or 3.4+ (although some distributions have "
+-                      "backported the necessary changes to older versions).")
+-
+ setup(
+     name="tornado",
+     version=version,
+-- 
+2.14.4
+

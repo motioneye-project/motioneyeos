@@ -42,11 +42,12 @@ class BRTest(unittest.TestCase):
         self.testname = self.__class__.__name__
         self.builddir = self.outputdir and os.path.join(self.outputdir, self.testname)
         self.emulator = None
+        self.config += '\nBR2_DL_DIR="{}"\n'.format(self.downloaddir)
         self.config += "\nBR2_JLEVEL={}\n".format(self.jlevel)
 
     def show_msg(self, msg):
-        print "{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
-                                    self.testname, msg)
+        print("{} {:40s} {}".format(datetime.datetime.now().strftime("%H:%M:%S"),
+                                    self.testname, msg))
 
     def setUp(self):
         self.show_msg("Starting")
@@ -57,6 +58,7 @@ class BRTest(unittest.TestCase):
 
         if not self.b.is_finished():
             self.show_msg("Building")
+            self.b.configure()
             self.b.build()
             self.show_msg("Building done")
 

@@ -14,9 +14,6 @@
 
 export PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
-test -x /usr/sbin/snmpd || exit 0
-test -x /usr/sbin/snmptrapd || exit 0
-
 # Defaults
 export MIBDIRS=/usr/share/snmp/mibs
 SNMPDRUN=yes

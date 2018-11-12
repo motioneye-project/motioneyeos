@@ -1,3 +1,5 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    a00b9d3c3dec64bd15de8c50f1b73d05 MailTools-2.19.tar.gz
-sha256 c17ed702efea8eab56fe92961c07cd4980cee26ca6f13aff2688dc8af69c5e1a MailTools-2.19.tar.gz
+md5    53e9d35256c3fd7cef0e4a24b15e9512 MailTools-2.20.tar.gz
+sha256 f55606f7a9cc342ee9d5f996e2b6a4c0047e2ee47cd88c3250ecf0d0c5fb3196 MailTools-2.20.tar.gz
+# Locally computed
+sha256 734d5b1bd212de832aea99e94c98d56217ea9519d900a29c0547538f596a9b26  README

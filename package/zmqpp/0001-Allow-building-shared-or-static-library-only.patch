@@ -1,33 +1,42 @@
-From 02ad67e60ef698ee47f6ee53b36e5b89c2fd71e7 Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
-Date: Wed, 24 Feb 2016 10:07:11 -0300
-Subject: [PATCH 1/2] Allow building shared or static library only
+From 93005632eca13d8eda409f6e9496fd5dd69e75b0 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 4 May 2018 18:38:31 +0200
+Subject: [PATCH] Allow building shared or static library only
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-[Gustavo: update for 4.1.2]
+Patchs retrieved from:
+ - https://git.buildroot.net/buildroot/tree/package/zmqpp/0001-Allow-building-shared-or-static-library-only.patch
+ - https://git.buildroot.net/buildroot/tree/package/zmqpp/0002-Install-static-library-for-static-builds.patch
 
+Both patches have been merged in a single one and slightly updated to
+keep default behavior of building and installing static library
+(BUILD_STATIC is set to yes by default)
+
+[Upstream status: merged (https://github.com/zeromq/zmqpp/pull/218)]
 Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
- Makefile | 19 +++++++++++++++----
- 1 file changed, 15 insertions(+), 4 deletions(-)
+ Makefile | 24 ++++++++++++++++++++----
+ 1 file changed, 20 insertions(+), 4 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 9df5996..86c8fac 100644
+index 689acaa..e43054c 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -79,6 +79,8 @@ ifeq ($(UNAME_S),Darwin)
+@@ -81,6 +81,9 @@ ifeq ($(UNAME_S),Darwin)
  endif
  
  
 +BUILD_SHARED   ?= yes
++BUILD_STATIC   ?= yes
 +
  CONFIG_FLAGS =
  ifeq ($(CONFIG),debug)
  	CONFIG_FLAGS = -g -fno-inline -ftemplate-depth-1000
-@@ -93,13 +95,22 @@ ifneq (,$(findstring $(CONFIG),release loadtest))
+@@ -95,13 +98,22 @@ ifneq (,$(findstring $(CONFIG),release loadtest))
  	CONFIG_FLAGS = -O3 -funroll-loops -ffast-math -finline-functions -fomit-frame-pointer -DNO_DEBUG_LOG -DNO_TRACE_LOG -DNDEBUG
  endif
  
@@ -51,20 +60,25 @@ index 9df5996..86c8fac 100644
  COMMON_LIBS = -lzmq
  
  LIBRARY_LIBS =
-@@ -147,10 +158,11 @@ install:
- 	mkdir -p $(INCLUDEDIR)/$(LIBRARY_DIR)
+@@ -150,11 +162,15 @@ install:
  	mkdir -p $(LIBDIR)
+ 	mkdir -p $(PKGCONFIGDIR)
  	install -m 644 $(ALL_LIBRARY_INCLUDES) $(INCLUDEDIR)/$(LIBRARY_DIR)
-+ifeq ($(BUILD_SHARED),yes)
- 	install -m 755 $(BUILD_PATH)/$(LIBRARY_VERSION_SHARED) $(LIBDIR)/$(LIBRARY_FULL_VERSION_SHARED)
+-	install -m 755 $(BUILD_PATH)/$(LIBRARY_VERSION_SHARED) $(LIBDIR)/$(LIBRARY_FULL_VERSION_SHARED)
 -	install -m 755 $(BUILD_PATH)/$(LIBRARY_ARCHIVE) $(LIBDIR)/$(LIBRARY_ARCHIVE)
+ 	install -m 755 $(BUILD_PATH)/$(PKGCONFIG_FILE) $(PKGCONFIGDIR)/$(PKGCONFIG_FILE)
++ifeq ($(BUILD_SHARED),yes)
++	install -m 755 $(BUILD_PATH)/$(LIBRARY_VERSION_SHARED) $(LIBDIR)/$(LIBRARY_FULL_VERSION_SHARED)
  	ln -sf $(LIBRARY_FULL_VERSION_SHARED) $(LIBDIR)/$(LIBRARY_VERSION_SHARED)
  	ln -sf $(LIBRARY_FULL_VERSION_SHARED) $(LIBDIR)/$(LIBRARY_SHARED)
++endif
++ifeq ($(BUILD_STATIC),yes)
++	install -m 755 $(BUILD_PATH)/$(LIBRARY_ARCHIVE) $(LIBDIR)/$(LIBRARY_ARCHIVE)
 +endif
  	if [ -f $(BUILD_PATH)/$(CLIENT_TARGET) ]; then install -m 755 $(BUILD_PATH)/$(CLIENT_TARGET) $(BINDIR); fi
  	$(LDCONFIG)
  	@echo "use make installcheck to test the install"
-@@ -172,7 +184,7 @@ clean:
+@@ -176,7 +192,7 @@ clean:
  
  client: $(CLIENT_TARGET)
  
@@ -73,11 +87,6 @@ index 9df5996..86c8fac 100644
  
  #
  # BUILD Targets
-@@ -211,4 +223,3 @@ test: $(TESTS_TARGET)
- $(OBJECT_PATH)/%.o: $(SRC_PATH)/%.cpp
- 	-mkdir -p $(dir $@)
- 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) $(COMMON_FLAGS) $(CONFIG_FLAGS) -c -o $@ $<
--
 -- 
-2.4.10
+2.14.1
 

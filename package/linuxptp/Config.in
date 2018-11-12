@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LINUXPTP
 	bool "linuxptp"
-	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # clock_nanosleep()
 	help
 	  The Linux PTP Project is the Precision Time Protocol
 	  implementation according to IEEE standard 1588 for Linux.
@@ -12,6 +11,3 @@ config BR2_PACKAGE_LINUXPTP
 	  not a goal.
 
 	  http://linuxptp.sourceforge.net/
-
-comment "linuxptp needs a toolchain w/ NPTL"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

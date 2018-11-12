@@ -1,2 +1,5 @@
 # From https://launchpad.net/libmemcached/1.0/1.0.18/+download/libmemcached-1.0.18.tar.gz/+md5
 md5	b3958716b4e53ddc5992e6c49d97e819	libmemcached-1.0.18.tar.gz
+
+# Hash for license file:
+sha256	4e9032d0f539276db05519ee3d09ca6167d2134ec91c556e8c80ef3efe633fd2	COPYING

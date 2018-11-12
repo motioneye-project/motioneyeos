@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/texttable/json, sha256 locally computed
+md5	a712b5a5464d51c5fc43c64d9d2cd0de  texttable-0.9.1.tar.gz
+sha256	119041773ff03596b56392532f9315cb3a3116e404fd6f36e76a7dc088d95c79  texttable-0.9.1.tar.gz
+sha256	da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768  LICENSE

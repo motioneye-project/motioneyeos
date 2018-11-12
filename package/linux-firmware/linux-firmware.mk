@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LINUX_FIRMWARE_VERSION = 65b1c68c63f974d72610db38dfae49861117cae2
+LINUX_FIRMWARE_VERSION = 8d69bab7a3da1913113ea98cefb73d5fa6988286
 LINUX_FIRMWARE_SITE = http://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
 LINUX_FIRMWARE_SITE_METHOD = git
 
@@ -12,6 +12,11 @@ LINUX_FIRMWARE_SITE_METHOD = git
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_INTEL_SST_DSP),y)
 LINUX_FIRMWARE_FILES += intel/fw_sst_0f28.bin-48kHz_i2s_master
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.fw_sst_0f28
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_AMDGPU),y)
+LINUX_FIRMWARE_DIRS += amdgpu
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.amdgpu
 endif
 
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_I915),y)
@@ -22,6 +27,16 @@ endif
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RADEON),y)
 LINUX_FIRMWARE_DIRS += radeon
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.radeon
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QCOM_VENUS),y)
+LINUX_FIRMWARE_DIRS += qcom/venus-1.8 qcom/venus-4.2
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.qcom qcom/NOTICE.txt
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QCOM_ADRENO),y)
+LINUX_FIRMWARE_FILES += qcom/a*
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENSE.qcom qcom/NOTICE.txt
 endif
 
 # Intel Wireless Bluetooth
@@ -141,6 +156,17 @@ LINUX_FIRMWARE_FILES += ath10k/QCA988X/hw2.0/board.bin \
 			ath10k/QCA988X/hw2.0/firmware-4.bin \
 			ath10k/QCA988X/hw2.0/firmware-5.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware
+endif
+
+# ath10k-qca6174
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174),y)
+LINUX_FIRMWARE_FILES += ath10k/QCA6174/hw3.0/board.bin \
+			ath10k/QCA6174/hw3.0/board-2.bin \
+			ath10k/QCA6174/hw3.0/firmware-4.bin \
+			ath10k/QCA6174/hw3.0/firmware-6.bin
+LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.atheros_firmware \
+				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-4.txt \
+				ath10k/QCA6174/hw3.0/notice_ath10k_firmware-6.txt
 endif
 
 # sd8686 v8
@@ -355,6 +381,13 @@ LINUX_FIRMWARE_FILES += cxgb4/t5fw*.bin
 LINUX_FIRMWARE_ALL_LICENSE_FILES += LICENCE.chelsio_firmware
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_4X),y)
+LINUX_FIRMWARE_FILES += \
+	qed/qed_init_values_zipped-8.33.11.0.bin
+# No license file; the license is in the file WHENCE
+# which is installed unconditionally
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169),y)
 LINUX_FIRMWARE_FILES += \
 	rtl_nic/rtl8105e-1.fw \
@@ -478,6 +511,7 @@ ifneq ($(LINUX_FIRMWARE_DIRS),)
 define LINUX_FIRMWARE_INSTALL_DIRS
 	$(foreach d,$(LINUX_FIRMWARE_DIRS), \
 		rm -rf $(TARGET_DIR)/lib/firmware/$(d); \
+		mkdir -p $(dir $(TARGET_DIR)/lib/firmware/$(d)); \
 		cp -a $(@D)/$(d) $(TARGET_DIR)/lib/firmware/$(d)$(sep))
 endef
 endif

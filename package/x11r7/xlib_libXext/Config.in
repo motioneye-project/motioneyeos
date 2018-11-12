@@ -1,7 +1,6 @@
 config BR2_PACKAGE_XLIB_LIBXEXT
 	bool "libXext"
 	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_XPROTO_XEXTPROTO
-	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  X.Org Xext library

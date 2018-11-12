@@ -1,12 +1,14 @@
 config BR2_TARGET_AT91BOOTSTRAP
-	depends on BR2_arm926t
 	bool "AT91 Bootstrap"
+	depends on BR2_arm926t
 	help
 	  AT91Bootstrap is a first level bootloader for the Atmel AT91
 	  devices. It integrates algorithms for:
-	  - Device initialization such as clock configuration, PIO settings...
+	  - Device initialization such as clock configuration, PIO
+	    settings...
 	  - Peripheral drivers such as PIO, PMC or SDRAMC...
-	  - Physical media algorithm such as DataFlash, NandFlash, NOR Flash...
+	  - Physical media algorithm such as DataFlash, NandFlash, NOR
+	    Flash...
 
 if	BR2_TARGET_AT91BOOTSTRAP
 

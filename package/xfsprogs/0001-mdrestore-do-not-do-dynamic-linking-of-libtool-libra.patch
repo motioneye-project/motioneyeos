@@ -1,7 +1,8 @@
-From 770902a0a29fb4ac62358f7eacb3a83d0d9af1c7 Mon Sep 17 00:00:00 2001
+From d5cbb4f43cc9c30100fbf18a3e0d1fb95e1c1b0a Mon Sep 17 00:00:00 2001
 From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 Date: Wed, 25 Nov 2015 10:50:00 +0000
-Subject: [PATCH] mdrestore: do not do dynamic linking of libtool libraries
+Subject: [PATCH] mdrestore, scrub: do not do dynamic linking of libtool
+ libraries
 
 As explained in commit ece49daeff1a3cad765e106d678c608925c9d768, use
 -static-libtool-libs instead of -static to allow fallback to the dynamic
@@ -11,23 +12,41 @@ ld: attempted static link of dynamic object `/usr/lib/libuuid.so'
 
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 [Sent upstream: https://www.spinics.net/lists/xfs/msg36149.html]
+[baruch: update for v4.15.1; extend to include scrub]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+[matt: update for v4.16.1; adjusted libunistring -> libicu]
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
 ---
  mdrestore/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ scrub/Makefile     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/mdrestore/Makefile b/mdrestore/Makefile
-index 5171306..1b34a0e 100644
+index 136ae716d691..75ff1bad78e9 100644
 --- a/mdrestore/Makefile
 +++ b/mdrestore/Makefile
 @@ -10,7 +10,7 @@ CFILES = xfs_mdrestore.c
  
- LLDLIBS = $(LIBXFS) $(LIBRT) $(LIBPTHREAD) $(LIBUUID)
- LTDEPENDENCIES = $(LIBXFS)
+ LLDLIBS = $(LIBXFS) $(LIBFROG) $(LIBRT) $(LIBPTHREAD) $(LIBUUID)
+ LTDEPENDENCIES = $(LIBXFS) $(LIBFROG)
 -LLDFLAGS = -static
 +LLDFLAGS = -static-libtool-libs
  
  default: depend $(LTCOMMAND)
  
+diff --git a/scrub/Makefile b/scrub/Makefile
+index 063279400262..949f6fd8ba94 100644
+--- a/scrub/Makefile
++++ b/scrub/Makefile
+@@ -70,7 +70,7 @@ xfs_scrub.c
+ 
+ LLDLIBS += $(LIBHANDLE) $(LIBFROG) $(LIBPTHREAD) $(LIBICU_LIBS) $(LIBRT)
+ LTDEPENDENCIES += $(LIBHANDLE) $(LIBFROG)
+-LLDFLAGS = -static
++LLDFLAGS = -static-libtool-libs
+ 
+ ifeq ($(HAVE_MALLINFO),yes)
+ LCFLAGS += -DHAVE_MALLINFO
 -- 
-2.7.4
+2.16.2
 

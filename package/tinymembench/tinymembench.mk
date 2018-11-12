@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-TINYMEMBENCH_VERSION = v0.3
+TINYMEMBENCH_VERSION = v0.4
 TINYMEMBENCH_SITE = $(call github,ssvb,tinymembench,$(TINYMEMBENCH_VERSION))
 TINYMEMBENCH_LICENSE = MIT
-TINYMEMBENCH_LICENSE_FILES = main.c
+TINYMEMBENCH_LICENSE_FILES = LICENSE
 
 define TINYMEMBENCH_BUILD_CMDS
 	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D)

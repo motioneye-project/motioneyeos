@@ -13,12 +13,6 @@ PROCPS_NG_INSTALL_STAGING = YES
 PROCPS_NG_DEPENDENCIES = ncurses host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 PROCPS_NG_CONF_OPTS = LIBS=$(TARGET_NLS_LIBS)
 
-# If both procps-ng and busybox are selected, make certain procps-ng
-# wins the fight over who gets to have their utils actually installed.
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-PROCPS_NG_DEPENDENCIES += busybox
-endif
-
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 PROCPS_NG_DEPENDENCIES += systemd
 PROCPS_NG_CONF_OPTS += --with-systemd
@@ -26,8 +20,8 @@ else
 PROCPS_NG_CONF_OPTS += --without-systemd
 endif
 
-# Make sure binaries get installed in /bin, so that they overwrite
-# their busybox counterparts.
+# Make sure binaries get installed in /bin, as busybox does, so that we
+# don't end up with two versions.
 # Make sure libprocps.pc is installed in STAGING_DIR/usr/lib/pkgconfig/
 # otherwise it's installed in STAGING_DIR/lib/pkgconfig/ breaking
 # pkg-config --libs libprocps.

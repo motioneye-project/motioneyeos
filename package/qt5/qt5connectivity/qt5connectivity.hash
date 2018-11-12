@@ -1,5 +1,5 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtconnectivity-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 fa406e3d63fa4a2acc8ecae6d110f20c766f19a21c7061a12f3c167deb07ccde qtconnectivity-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.9/5.9.6/submodules/qtconnectivity-opensource-src-5.9.6.tar.xz.mirrorlist
-sha256 6c696855c2d4e63709ba81d22c85cab30f66418eac2fb2810a02a4b47a531c57  qtconnectivity-opensource-src-5.9.6.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.1/submodules/qtconnectivity-everywhere-src-5.11.1.tar.xz.mirrorlist
+sha256 738ed4eb058334fe7cfd6d68f2e2e7c9b2a97f3477b36ae26ed82703dcaae657  qtconnectivity-everywhere-src-5.11.1.tar.xz

@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/docker-pycreds/json, sha256 locally computed
+md5	ae63c7def3e58cb51a4d8f5810683030  docker-pycreds-0.2.2.tar.gz
+sha256	c7ab85de2894baff6ee8f15160cbbfa2fd3a04e56f0372c5793d24060687b299  docker-pycreds-0.2.2.tar.gz
+sha256	cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE

@@ -6,12 +6,21 @@ config BR2_ARM_CPU_HAS_NEON
 config BR2_ARM_CPU_MAYBE_HAS_NEON
 	bool
 
+# For some cores, the FPU is optional
+config BR2_ARM_CPU_MAYBE_HAS_FPU
+	bool
+
+config BR2_ARM_CPU_HAS_FPU
+	bool
+
 # for some cores, VFPv2 is optional
 config BR2_ARM_CPU_MAYBE_HAS_VFPV2
 	bool
+	select BR2_ARM_CPU_MAYBE_HAS_FPU
 
 config BR2_ARM_CPU_HAS_VFPV2
 	bool
+	select BR2_ARM_CPU_HAS_FPU
 
 # for some cores, VFPv3 is optional
 config BR2_ARM_CPU_MAYBE_HAS_VFPV3
@@ -30,6 +39,24 @@ config BR2_ARM_CPU_MAYBE_HAS_VFPV4
 config BR2_ARM_CPU_HAS_VFPV4
 	bool
 	select BR2_ARM_CPU_HAS_VFPV3
+
+# FPv4 is always optional
+config BR2_ARM_CPU_MAYBE_HAS_FPV4
+	bool
+	select BR2_ARM_CPU_MAYBE_HAS_FPU
+
+config BR2_ARM_CPU_HAS_FPV4
+	bool
+	select BR2_ARM_CPU_HAS_FPU
+
+# FPv5 is always optional
+config BR2_ARM_CPU_MAYBE_HAS_FPV5
+	bool
+	select BR2_ARM_CPU_MAYBE_HAS_FPV4
+
+config BR2_ARM_CPU_HAS_FPV5
+	bool
+	select BR2_ARM_CPU_HAS_FPV4
 
 config BR2_ARM_CPU_HAS_FP_ARMV8
 	bool
@@ -240,7 +267,14 @@ config BR2_cortex_m3
 config BR2_cortex_m4
 	bool "cortex-M4"
 	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_MAYBE_HAS_FPV4
 	select BR2_ARM_CPU_ARMV7M
+config BR2_cortex_m7
+	bool "cortex-M7"
+	select BR2_ARM_CPU_HAS_THUMB2
+	select BR2_ARM_CPU_MAYBE_HAS_FPV5
+	select BR2_ARM_CPU_ARMV7M
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 endif # !BR2_ARCH_IS_64
 
 comment "armv8 cores"
@@ -445,7 +479,9 @@ config BR2_ARM_ENABLE_NEON
 
 config BR2_ARM_ENABLE_VFP
 	bool "Enable VFP extension support"
-	depends on BR2_ARM_CPU_MAYBE_HAS_VFPV2
+	depends on BR2_ARM_CPU_MAYBE_HAS_FPU
+	select BR2_ARM_CPU_HAS_FPV5 if BR2_ARM_CPU_MAYBE_HAS_FPV5
+	select BR2_ARM_CPU_HAS_FPV4 if BR2_ARM_CPU_MAYBE_HAS_FPV4
 	select BR2_ARM_CPU_HAS_VFPV4 if BR2_ARM_CPU_MAYBE_HAS_VFPV4
 	select BR2_ARM_CPU_HAS_VFPV3 if BR2_ARM_CPU_MAYBE_HAS_VFPV3
 	select BR2_ARM_CPU_HAS_VFPV2 if BR2_ARM_CPU_MAYBE_HAS_VFPV2
@@ -456,9 +492,9 @@ config BR2_ARM_ENABLE_VFP
 
 choice
 	prompt "Target ABI"
-	depends on BR2_arm || BR2_armeb
-	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_VFPV2
+	default BR2_ARM_EABIHF if BR2_ARM_CPU_HAS_FPU
 	default BR2_ARM_EABI
+	depends on BR2_arm || BR2_armeb
 	help
 	  Application Binary Interface to use. The Application Binary
 	  Interface describes the calling conventions (how arguments
@@ -491,7 +527,7 @@ config BR2_ARM_EABI
 
 config BR2_ARM_EABIHF
 	bool "EABIhf"
-	depends on BR2_ARM_CPU_HAS_VFPV2
+	depends on BR2_ARM_CPU_HAS_FPU
 	help
 	  The EABIhf is an extension of EABI which supports the 'hard'
 	  floating point model. This model uses the floating point
@@ -512,10 +548,12 @@ endchoice
 choice
 	prompt "Floating point strategy"
 	default BR2_ARM_FPU_FP_ARMV8 if BR2_ARM_CPU_HAS_FP_ARMV8
+	default BR2_ARM_FPU_FPV5D16 if BR2_ARM_CPU_HAS_FPV5
+	default BR2_ARM_FPU_FPV4D16 if BR2_ARM_CPU_HAS_FPV4
 	default BR2_ARM_FPU_VFPV4D16 if BR2_ARM_CPU_HAS_VFPV4
 	default BR2_ARM_FPU_VFPV3D16 if BR2_ARM_CPU_HAS_VFPV3
 	default BR2_ARM_FPU_VFPV2 if BR2_ARM_CPU_HAS_VFPV2
-	default BR2_ARM_SOFT_FLOAT if !BR2_ARM_CPU_HAS_VFPV2
+	default BR2_ARM_SOFT_FLOAT if !BR2_ARM_CPU_HAS_FPU
 
 config BR2_ARM_SOFT_FLOAT
 	bool "Soft float"
@@ -622,6 +660,38 @@ config BR2_ARM_FPU_NEON_VFPV4
 	  example on Cortex-A5 and Cortex-A7, support for VFPv4 and
 	  NEON is optional.
 
+config BR2_ARM_FPU_FPV4D16
+	bool "FPv4-D16"
+	depends on BR2_ARM_CPU_HAS_FPV4
+	help
+	  This option allows to use the FPv4-SP (single precision)
+	  floating point unit, as available in some ARMv7m processors
+	  (Cortex-M4).
+
+config BR2_ARM_FPU_FPV5D16
+	bool "FPv5-D16"
+	depends on BR2_ARM_CPU_HAS_FPV5
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
+	help
+	  This option allows to use the FPv5-SP (single precision)
+	  floating point unit, as available in some ARMv7m processors
+	  (Cortex-M7).
+
+	  Note that if you want binary code that works on the earlier
+	  Cortex-M4, you should instead select FPv4-D16.
+
+config BR2_ARM_FPU_FPV5DPD16
+	bool "FPv5-DP-D16"
+	depends on BR2_ARM_CPU_HAS_FPV5
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
+	help
+	  This option allows to use the FPv5-DP (double precision)
+	  floating point unit, as available in some ARMv7m processors
+	  (Cortex-M7).
+
+	  Note that if you want binary code that works on the earlier
+	  Cortex-M4, you should instead select FPv4-D16.
+
 config BR2_ARM_FPU_FP_ARMV8
 	bool "FP-ARMv8"
 	depends on BR2_ARM_CPU_HAS_FP_ARMV8
@@ -716,6 +786,7 @@ config BR2_GCC_TARGET_CPU
 	# armv7m
 	default "cortex-m3"	if BR2_cortex_m3
 	default "cortex-m4"	if BR2_cortex_m4
+	default "cortex-m7"	if BR2_cortex_m7
 	# armv8a
 	default "cortex-a32"	if BR2_cortex_a32
 	default "cortex-a35"	if BR2_cortex_a35
@@ -746,7 +817,6 @@ config BR2_GCC_TARGET_ABI
 	default "lp64"		if BR2_aarch64 || BR2_aarch64_be
 
 config BR2_GCC_TARGET_FPU
-	depends on BR2_arm || BR2_armeb
 	default "vfp"		if BR2_ARM_FPU_VFPV2
 	default "vfpv3"		if BR2_ARM_FPU_VFPV3
 	default "vfpv3-d16"	if BR2_ARM_FPU_VFPV3D16
@@ -754,8 +824,12 @@ config BR2_GCC_TARGET_FPU
 	default "vfpv4-d16"	if BR2_ARM_FPU_VFPV4D16
 	default "neon"		if BR2_ARM_FPU_NEON
 	default "neon-vfpv4"	if BR2_ARM_FPU_NEON_VFPV4
+	default "fpv4-sp-d16"   if BR2_ARM_FPU_FPV4D16
+	default "fpv5-sp-d16"	if BR2_ARM_FPU_FPV5D16
+	default "fpv5-d16"	if BR2_ARM_FPU_FPV5DPD16
 	default "fp-armv8"	if BR2_ARM_FPU_FP_ARMV8
 	default "neon-fp-armv8"	if BR2_ARM_FPU_NEON_FP_ARMV8
+	depends on BR2_arm || BR2_armeb
 
 config BR2_GCC_TARGET_FLOAT_ABI
 	default "soft"		if BR2_ARM_SOFT_FLOAT

@@ -10,9 +10,6 @@ EUDEV_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 EUDEV_LICENSE_FILES = COPYING
 EUDEV_INSTALL_STAGING = YES
 
-# mq_getattr is in librt
-EUDEV_CONF_ENV += LIBS=-lrt
-
 EUDEV_CONF_OPTS = \
 	--disable-manpages \
 	--sbindir=/sbin \

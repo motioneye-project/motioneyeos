@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2017.11
+SWUPDATE_VERSION = 2018.03
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
-SWUPDATE_LICENSE = GPL-2.0+, MIT, Public Domain
+SWUPDATE_LICENSE = GPL-2.0+, LGPL-2.1+, MIT
 SWUPDATE_LICENSE_FILES = COPYING
 
-# swupdate bundles its own version of mongoose (version 3.8)
+# swupdate bundles its own version of mongoose (version 6.11)
 
 ifeq ($(BR2_PACKAGE_JSON_C),y)
 SWUPDATE_DEPENDENCIES += json-c
@@ -125,7 +125,7 @@ define SWUPDATE_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/swupdate $(TARGET_DIR)/usr/bin/swupdate
 	$(if $(BR2_PACKAGE_SWUPDATE_INSTALL_WEBSITE), \
 		mkdir -p $(TARGET_DIR)/var/www/swupdate; \
-		cp -dpf $(@D)/www/* $(TARGET_DIR)/var/www/swupdate)
+		cp -dpfr $(@D)/examples/www/v2/* $(TARGET_DIR)/var/www/swupdate)
 endef
 
 # Checks to give errors that the user can understand

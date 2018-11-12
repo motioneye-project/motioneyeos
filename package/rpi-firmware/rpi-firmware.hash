@@ -1,2 +1,6 @@
 # Locally computed
+<<<<<<< HEAD
 sha256 d1f9c58957dfe681fff7e1cf1eabb9e0f6fdc99720f1d059fb24a37750573310 rpi-firmware-5b49caa17e91d0e64024380119ad739bb201c674.tar.gz
+=======
+sha256 5edff641f216d2e09c75469dc2e9fc66aff290e212a1cd43ed31c499f99ea055 rpi-firmware-287af2a2be0787a5d45281d1d6183a2161c798d4.tar.gz
+>>>>>>> 2018.08.2

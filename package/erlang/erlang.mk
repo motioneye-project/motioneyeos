@@ -5,7 +5,7 @@
 ################################################################################
 
 # See note below when updating Erlang
-ERLANG_VERSION = 20.3
+ERLANG_VERSION = 21.0
 ERLANG_SITE = http://www.erlang.org/download
 ERLANG_SOURCE = otp_src_$(ERLANG_VERSION).tar.gz
 ERLANG_DEPENDENCIES = host-erlang
@@ -19,7 +19,7 @@ ERLANG_AUTORECONF = YES
 
 # Whenever updating Erlang, this value should be updated as well, to the
 # value of EI_VSN in the file lib/erl_interface/vsn.mk
-ERLANG_EI_VSN = 3.10.1
+ERLANG_EI_VSN = 3.10.3
 
 # The configure checks for these functions fail incorrectly
 ERLANG_CONF_ENV = ac_cv_func_isnan=yes ac_cv_func_isinf=yes
@@ -43,10 +43,6 @@ HOST_ERLANG_CONF_OPTS = --without-javac --with-ssl=$(HOST_DIR)
 
 HOST_ERLANG_CONF_OPTS += --without-termcap
 
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),)
-ERLANG_CONF_OPTS += --disable-threads
-endif
-
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 ERLANG_CONF_OPTS += --with-termcap
 ERLANG_DEPENDENCIES += ncurses
@@ -61,8 +57,7 @@ else
 ERLANG_CONF_OPTS += --without-ssl
 endif
 
-# ODBC support in erlang requires threads
-ifeq ($(BR2_PACKAGE_UNIXODBC)$(BR2_TOOLCHAIN_HAS_THREADS),yy)
+ifeq ($(BR2_PACKAGE_UNIXODBC),y)
 ERLANG_DEPENDENCIES += unixodbc
 ERLANG_CONF_OPTS += --with-odbc
 else

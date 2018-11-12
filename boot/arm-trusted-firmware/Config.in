@@ -71,6 +71,14 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31
 	  typically used on platforms where another bootloader (e.g
 	  U-Boot) encapsulates ATF BL31.
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31_UBOOT
+	bool "Build BL31 U-Boot image"
+	select BR2_TARGET_ARM_TRUSTED_FIRMWARE_BL31
+	help
+	  Generates a U-Boot image named atf-uboot.ub containing
+	  bl31.bin.  This is used for example by the Xilinx version of
+	  U-Boot SPL to load ATF on the ZynqMP SoC.
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
 	bool "Use U-Boot as BL33"
 	depends on BR2_TARGET_UBOOT

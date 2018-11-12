@@ -28,9 +28,9 @@ config BR2_MIPS_CPU_MIPS64R6
 
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	default BR2_mips_32 if BR2_mips || BR2_mipsel
 	default BR2_mips_64 if BR2_mips64 || BR2_mips64el
+	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	help
 	  Specific CPU variant to use
 
@@ -115,11 +115,10 @@ config BR2_mips_p6600
 	select BR2_MIPS_CPU_MIPS64R6
 endchoice
 
-
 choice
 	prompt "Target ABI"
-	depends on BR2_mips64 || BR2_mips64el
 	default BR2_MIPS_NABI32
+	depends on BR2_mips64 || BR2_mips64el
 
 	help
 	  Application Binary Interface to use
@@ -145,11 +144,11 @@ config BR2_MIPS_SOFT_FLOAT
 
 choice
 	prompt "FP mode"
-	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
 	default BR2_MIPS_FP32_MODE_XX
+	depends on !BR2_ARCH_IS_64 && !BR2_MIPS_SOFT_FLOAT
 	help
-	  MIPS32 supports different FP modes (32,xx,64). Information about FP
-	  modes can be found here:
+	  MIPS32 supports different FP modes (32,xx,64). Information
+	  about FP modes can be found here:
 	  https://sourceware.org/binutils/docs/as/MIPS-Options.html
 	  https://dmz-portal.imgtec.com/wiki/MIPS_O32_ABI_-_FR0_and_FR1_Interlinking#5._Generating_modeless_code
 
@@ -180,8 +179,8 @@ config BR2_MIPS_NAN_2008
 
 choice
 	prompt "Target NaN"
-	depends on BR2_mips_32r5 || BR2_mips_64r5
 	default BR2_MIPS_ENABLE_NAN_2008
+	depends on BR2_mips_32r5 || BR2_mips_64r5
 	help
 	  MIPS supports two different NaN encodings, legacy and 2008.
 	  Information about MIPS NaN encodings can be found here:

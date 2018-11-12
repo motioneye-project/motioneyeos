@@ -1,0 +1,28 @@
+config BR2_PACKAGE_TPM2_ABRMD
+	bool "tpm2-abrmd"
+	depends on BR2_INSTALL_LIBSTDCPP # tpm2-tss
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
+	depends on BR2_USE_MMU # dbus, libglib2
+	depends on !BR2_TOOLCHAIN_USES_MUSL # TEMP_FAILURE_RETRY(), etc
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_TPM2_TSS
+	help
+	  A system daemon implementing the TPM2 access broker (TAB) &
+	  Resource Manager (RM) spec from the TCG. It should be started
+	  during the OS boot process. Communication between the daemon
+	  and clients using the TPM is done with a combination of DBus
+	  and Unix pipes.
+
+	  The package also provides a client library for interacting
+	  with the daemon via TPM Command Transmission Interface (TCTI).
+	  It is intended for use with the SAPI library (libsapi) like
+	  any other TCTI.
+
+	  https://github.com/tpm2-software/tpm2-abrmd
+
+comment "tpm2-abrmd needs a uClibc or glibc toolchain w/ C++, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR \
+		|| !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL

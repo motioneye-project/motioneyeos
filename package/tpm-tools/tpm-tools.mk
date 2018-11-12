@@ -16,4 +16,8 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 TPM_TOOLS_CONF_ENV += LIBS='-liconv'
 endif
 
+ifeq ($(BR2_arc770d)$(BR2_arc750d),y)
+TPM_TOOLS_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -mno-compact-casesi"
+endif
+
 $(eval $(autotools-package))

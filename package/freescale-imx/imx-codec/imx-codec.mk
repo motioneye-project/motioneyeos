@@ -26,7 +26,7 @@ IMX_CODEC_CONF_OPTS += --enable-vpu
 endif
 
 define IMX_CODEC_EXTRACT_CMDS
-	$(call FREESCALE_IMX_EXTRACT_HELPER,$(DL_DIR)/$(IMX_CODEC_SOURCE))
+	$(call FREESCALE_IMX_EXTRACT_HELPER,$(IMX_CODEC_DL_DIR)/$(IMX_CODEC_SOURCE))
 endef
 
 # FIXME The Makefile installs both the arm9 and arm11 versions of the

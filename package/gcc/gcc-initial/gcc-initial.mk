@@ -8,6 +8,11 @@ GCC_INITIAL_VERSION = $(GCC_VERSION)
 GCC_INITIAL_SITE = $(GCC_SITE)
 GCC_INITIAL_SOURCE = $(GCC_SOURCE)
 
+# We do not have a 'gcc' package per-se; we only have two incarnations,
+# gcc-initial and gcc-final. gcc-initial is just am internal step that
+# users should not care about, while gcc-final is the one they shall see.
+HOST_GCC_INITIAL_DL_SUBDIR = gcc
+
 HOST_GCC_INITIAL_DEPENDENCIES = $(HOST_GCC_COMMON_DEPENDENCIES)
 
 HOST_GCC_INITIAL_EXCLUDES = $(HOST_GCC_EXCLUDES)

@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_XF86DGAPROTO
-	bool "xf86dgaproto"
-	help
-	  X.Org XF86DGA protocol headers

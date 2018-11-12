@@ -12,7 +12,7 @@ GR_OSMOSDR_LICENSE_FILES = COPYING
 # gr-osmosdr prevents doing an in-source-tree build
 GR_OSMOSDR_SUPPORTS_IN_SOURCE_BUILD = NO
 
-GR_OSMOSDR_DEPENDENCIES = gnuradio
+GR_OSMOSDR_DEPENDENCIES = gnuradio host-python-cheetah
 
 GR_OSMOSDR_CONF_OPTS = -DENABLE_DEFAULT=OFF
 

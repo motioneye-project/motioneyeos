@@ -15,6 +15,9 @@ comment "glibc toolchains only available with shared lib support"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in"
 
+# Aarch64 big-endian
+source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config.in"
+
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in"
 
@@ -53,15 +56,16 @@ choice
 config BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
 	bool "Toolchain to be downloaded and installed"
 	help
-	  Select this option if you want Buildroot to download and install the
-	  toolchain. If you have selected a custom toolchain, specify the URL
-	  in BR2_TOOLCHAIN_EXTERNAL_URL.
+	  Select this option if you want Buildroot to download and
+	  install the toolchain. If you have selected a custom
+	  toolchain, specify the URL in BR2_TOOLCHAIN_EXTERNAL_URL.
 
 config BR2_TOOLCHAIN_EXTERNAL_PREINSTALLED
 	bool "Pre-installed toolchain"
 	help
-	  Select this option if you want to use a pre-installed toolchain.
-	  Specify the path to this toolchain in BR2_TOOLCHAIN_EXTERNAL_PATH.
+	  Select this option if you want to use a pre-installed
+	  toolchain. Specify the path to this toolchain in
+	  BR2_TOOLCHAIN_EXTERNAL_PATH.
 
 endchoice
 
@@ -108,6 +112,9 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 # Aarch64
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in.options"
+
+# Aarch64 big-endian
+source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config.in.options"
 
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in.options"

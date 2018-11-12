@@ -292,13 +292,13 @@ use in the comment.
 
 * Kernel headers
 ** Dependency symbol: +BR2_TOOLCHAIN_HEADERS_AT_LEAST_X_Y+, (replace
-   +X_Y+ with the proper version, see +toolchain/toolchain-common.in+)
+   +X_Y+ with the proper version, see +toolchain/Config.in+)
 ** Comment string: +headers >= X.Y+ and/or `headers <= X.Y` (replace
    +X.Y+ with the proper version)
 
 * GCC version
 ** Dependency symbol: +BR2_TOOLCHAIN_GCC_AT_LEAST_X_Y+, (replace
-   +X_Y+ with the proper version, see +toolchain/toolchain-common.in+)
+   +X_Y+ with the proper version, see +toolchain/Config.in+)
 ** Comment string: +gcc >= X.Y+ and/or `gcc <= X.Y` (replace
    +X.Y+ with the proper version)
 

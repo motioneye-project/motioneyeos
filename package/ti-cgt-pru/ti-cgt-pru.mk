@@ -13,8 +13,8 @@ TI_CGT_PRU_LICENSE_FILES = PRU_Code_Generation_Tools_2.2.x_manifest.html \
 	pru_rts_2_2_0_82167478-F8C9-49b2-82BD-12F8550770F9.spdx
 
 define HOST_TI_CGT_PRU_EXTRACT_CMDS
-	chmod +x $(DL_DIR)/$(TI_CGT_PRU_SOURCE)
-	$(DL_DIR)/$(TI_CGT_PRU_SOURCE) --prefix $(@D) --mode unattended
+	chmod +x $(HOST_TI_CGT_PRU_DL_DIR)/$(TI_CGT_PRU_SOURCE)
+	$(HOST_TI_CGT_PRU_DL_DIR)/$(TI_CGT_PRU_SOURCE) --prefix $(@D) --mode unattended
 	mv $(@D)/ti-cgt-pru_$(TI_CGT_PRU_VERSION)/* $(@D)
 	rmdir $(@D)/ti-cgt-pru_$(TI_CGT_PRU_VERSION)/
 endef

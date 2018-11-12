@@ -183,8 +183,8 @@ config BR2_TAR_OPTIONS
 	default ""
 	help
 	  Options to pass to tar when extracting the sources.
-	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
-	  and to be verbose.
+	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal
+	  files and to be verbose.
 
 endmenu
 
@@ -208,6 +208,9 @@ config BR2_DL_DIR
 	  If the Linux shell environment has defined the BR2_DL_DIR
 	  environment variable, then this overrides this configuration
 	  item.
+	  The directory is organized with a subdirectory for each
+	  package. Each package has its own $(LIBFOO_DL_DIR) variable
+	  that can be used to find the correct path.
 
 	  The default is $(TOPDIR)/dl
 
@@ -432,8 +435,8 @@ endif
 
 config BR2_STRIP_strip
 	bool "strip target binaries"
-	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	default y
+	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	help
 	  Binaries and libraries in the target filesystem will be
 	  stripped using the normal 'strip' command. This allows to save
@@ -443,16 +446,16 @@ config BR2_STRIP_strip
 
 config BR2_STRIP_EXCLUDE_FILES
 	string "executables that should not be stripped"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of binaries and
 	  libraries here that should not be stripped on the target.
 
 config BR2_STRIP_EXCLUDE_DIRS
 	string "directories that should be skipped when stripping"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of directories that
 	  should be skipped when stripping. Binaries and libraries in
@@ -538,11 +541,21 @@ config BR2_OPTIMIZE_S
 	  -ftree-vect-loop-version
 	  This is the default.
 
+config BR2_OPTIMIZE_FAST
+	bool "optimize for fast"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	help
+	  Optimize for fast. Disregard strict standards
+	  compliance. -Ofast enables all -O3 optimizations. It also
+	  enables optimizations that are not valid for all
+	  standard-compliant programs. It turns on -ffast-math and the
+	  Fortran-specific -fstack-arrays, unless -fmax-stack-var-size
+	  is specified, and -fno-protect-parens.
+
 endchoice
 
 config BR2_GOOGLE_BREAKPAD_ENABLE
 	bool "Enable google-breakpad support"
-	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
@@ -551,6 +564,7 @@ config BR2_GOOGLE_BREAKPAD_ENABLE
 	depends on (BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC)
 	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_HOST_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	help
 	  This option will enable the use of google breakpad, a library
 	  and tool suite that allows you to distribute an application to
@@ -617,7 +631,6 @@ config BR2_SHARED_STATIC_LIBS
 
 endchoice
 
-
 config BR2_PACKAGE_OVERRIDE_FILE
 	string "location of a package override file"
 	default "$(CONFIG_DIR)/local.mk"
@@ -665,7 +678,8 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 
 	  Note that this mechanism is available for both the internal
 	  toolchain (through the toolchain wrapper and binutils patches)
-	  and external toolchain backends (through the toolchain wrapper).
+	  and external toolchain backends (through the toolchain
+	  wrapper).
 
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
@@ -749,9 +763,9 @@ choice
 	bool "RELRO Protection"
 	depends on BR2_SHARED_LIBS
 	help
-	  Enable a link-time protection know as RELRO (RELocation Read Only)
-	  which helps to protect from certain type of exploitation techniques
-	  altering the content of some ELF sections.
+	  Enable a link-time protection know as RELRO (RELocation Read
+	  Only) which helps to protect from certain type of exploitation
+	  techniques altering the content of some ELF sections.
 
 config BR2_RELRO_NONE
 	bool "None"
@@ -767,9 +781,9 @@ config BR2_RELRO_PARTIAL
 config BR2_RELRO_FULL
 	bool "Full"
 	help
-	  This option includes the partial configuration, but also
-	  marks the GOT as read-only at the cost of initialization time
-	  during program loading, i.e every time an executable is started.
+	  This option includes the partial configuration, but also marks
+	  the GOT as read-only at the cost of initialization time during
+	  program loading, i.e every time an executable is started.
 
 endchoice
 
@@ -782,10 +796,10 @@ choice
 	depends on !BR2_OPTIMIZE_0
 	help
 	  Enable the _FORTIFY_SOURCE macro which introduces additional
-	  checks to detect buffer-overflows in the following standard library
-	  functions: memcpy, mempcpy, memmove, memset, strcpy, stpcpy,
-	  strncpy, strcat, strncat, sprintf, vsprintf, snprintf, vsnprintf,
-	  gets.
+	  checks to detect buffer-overflows in the following standard
+	  library functions: memcpy, mempcpy, memmove, memset, strcpy,
+	  stpcpy, strncpy, strcat, strncat, sprintf, vsprintf, snprintf,
+	  vsnprintf, gets.
 
 	  NOTE: This feature requires an optimization level of s/1/2/3/g
 

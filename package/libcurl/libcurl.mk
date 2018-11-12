@@ -9,7 +9,6 @@ LIBCURL_SOURCE = curl-$(LIBCURL_VERSION).tar.xz
 LIBCURL_SITE = https://curl.haxx.se/download
 LIBCURL_DEPENDENCIES = host-pkgconf \
 	$(if $(BR2_PACKAGE_ZLIB),zlib) \
-	$(if $(BR2_PACKAGE_LIBIDN),libidn) \
 	$(if $(BR2_PACKAGE_RTMPDUMP),rtmpdump)
 LIBCURL_LICENSE = curl
 LIBCURL_LICENSE_FILES = COPYING
@@ -67,6 +66,13 @@ else
 LIBCURL_CONF_OPTS += --disable-ares
 endif
 
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
+LIBCURL_DEPENDENCIES += libidn2
+LIBCURL_CONF_OPTS += --with-libidn2
+else
+LIBCURL_CONF_OPTS += --without-libidn2
+endif
+
 # Configure curl to support libssh2
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
 LIBCURL_DEPENDENCIES += libssh2
@@ -80,6 +86,13 @@ LIBCURL_DEPENDENCIES += brotli
 LIBCURL_CONF_OPTS += --with-brotli
 else
 LIBCURL_CONF_OPTS += --without-brotli
+endif
+
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+LIBCURL_DEPENDENCIES += nghttp2
+LIBCURL_CONF_OPTS += --with-nghttp2
+else
+LIBCURL_CONF_OPTS += --without-nghttp2
 endif
 
 define LIBCURL_FIX_DOT_PC

@@ -1,3 +1,3 @@
 # Locally calculated
-sha256 3130033eaf18d7f7d775aa8ade1c7044683b0db6f332cae29cab7d1caaee97ed  gcc-linaro-7.2.1-2017.11-i686_aarch64-linux-gnu.tar.xz
-sha256 20181f828e1075f1a493947ff91e82dd578ce9f8638fbdfc39e24b62857d8f8d  gcc-linaro-7.2.1-2017.11-x86_64_aarch64-linux-gnu.tar.xz
+sha256 466b801a60491ae1e2ce9952e0615cf04cf611596c6ffd5bfe8a89ef5be47e03  gcc-linaro-7.3.1-2018.05-i686_aarch64-linux-gnu.tar.xz
+sha256 73eed74e593e2267504efbcf3678918bb22409ab7afa3dc7c135d2c6790c2345  gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz

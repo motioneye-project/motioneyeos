@@ -21,7 +21,7 @@ ESPEAK_DEPENDENCIES = pulseaudio
 endif
 
 define ESPEAK_EXTRACT_CMDS
-	$(UNZIP) -d $(@D) $(DL_DIR)/$(ESPEAK_SOURCE)
+	$(UNZIP) -d $(@D) $(ESPEAK_DL_DIR)/$(ESPEAK_SOURCE)
 	mv $(@D)/espeak-$(ESPEAK_VERSION)-source/* $(@D)
 	$(RM) -r $(@D)/espeak-$(ESPEAK_VERSION)-source
 endef

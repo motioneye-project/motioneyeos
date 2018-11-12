@@ -57,4 +57,11 @@ ifeq ($(BR2_PACKAGE_PURE_FTPD_UPLOADSCRIPT),y)
 PURE_FTPD_CONF_OPTS += --with-uploadscript
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+PURE_FTPD_CONF_OPTS += --with-pam
+PURE_FTPD_DEPENDENCIES += linux-pam
+else
+PURE_FTPD_CONF_OPTS += --without-pam
+endif
+
 $(eval $(autotools-package))

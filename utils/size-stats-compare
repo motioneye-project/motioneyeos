@@ -24,14 +24,15 @@ import csv
 import argparse
 import sys
 
+
 def read_file_size_csv(inputf, detail=None):
     """Extract package or file sizes from CSV file into size dictionary"""
     sizes = {}
     reader = csv.reader(inputf)
 
     header = next(reader)
-    if (header[0] != 'File name' or header[1] != 'Package name' or
-        header[2] != 'File size' or header[3] != 'Package size'):
+    if header[0] != 'File name' or header[1] != 'Package name' or \
+       header[2] != 'File size' or header[3] != 'Package size':
         print(("Input file %s does not contain the expected header. Are you "
                "sure this file corresponds to the file-size-stats.csv "
                "file created by 'make graph-size'?") % inputf.name)
@@ -44,6 +45,7 @@ def read_file_size_csv(inputf, detail=None):
             sizes[row[1]] = int(row[3])
 
     return sizes
+
 
 def compare_sizes(old, new):
     """Return delta/added/removed dictionaries based on two input size
@@ -63,6 +65,7 @@ def compare_sizes(old, new):
         delta[entry] = ('removed', -old[entry])
 
     return delta
+
 
 def print_results(result, threshold):
     """Print the given result dictionary sorted by size, ignoring any entries

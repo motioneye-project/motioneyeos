@@ -92,9 +92,9 @@ all:
 .PHONY: all
 
 # Set and export the version string
-export BR2_VERSION := 2018.02.7
+export BR2_VERSION := 2018.08.2
 # Actual time the release is cut (for reproducible builds)
-BR2_VERSION_EPOCH = 1540493000
+BR2_VERSION_EPOCH = 1540470000
 
 # Save running make version since it's clobbered by the make package
 RUNNING_MAKE_VERSION := $(MAKE_VERSION)
@@ -220,7 +220,10 @@ BR_GRAPH_OUT := $(or $(BR2_GRAPH_OUT),pdf)
 
 BUILD_DIR := $(BASE_DIR)/build
 BINARIES_DIR := $(BASE_DIR)/images
-TARGET_DIR := $(BASE_DIR)/target
+# The target directory is common to all packages,
+# but there is one that is specific to each filesystem.
+BASE_TARGET_DIR := $(BASE_DIR)/target
+TARGET_DIR = $(if $(ROOTFS),$(ROOTFS_$(ROOTFS)_TARGET_DIR),$(BASE_TARGET_DIR))
 # initial definition so that 'make clean' works for most users, even without
 # .config. HOST_DIR will be overwritten later when .config is included.
 HOST_DIR := $(BASE_DIR)/host
@@ -236,15 +239,6 @@ LEGAL_MANIFEST_CSV_HOST = $(LEGAL_INFO_DIR)/host-manifest.csv
 LEGAL_WARNINGS = $(LEGAL_INFO_DIR)/.warnings
 LEGAL_REPORT = $(LEGAL_INFO_DIR)/README
 
-################################################################################
-#
-# staging and target directories do NOT list these as
-# dependencies anywhere else
-#
-################################################################################
-$(BUILD_DIR) $(TARGET_DIR) $(HOST_DIR) $(BINARIES_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST):
-	@mkdir -p $@
-
 BR2_CONFIG = $(CONFIG_DIR)/.config
 
 # Pull in the user's configuration file
@@ -258,9 +252,6 @@ export TZ = UTC
 export LANG = C
 export LC_ALL = C
 export GZIP = -n
-BR2_VERSION_GIT_EPOCH = $(shell GIT_DIR=$(TOPDIR)/.git $(GIT) log -1 --format=%at)
-export SOURCE_DATE_EPOCH ?= $(if $(wildcard $(TOPDIR)/.git),$(BR2_VERSION_GIT_EPOCH),$(BR2_VERSION_EPOCH))
-DEPENDENCIES_HOST_PREREQ += host-fakedate
 endif
 
 # To put more focus on warnings, be less verbose as default
@@ -449,7 +440,6 @@ KERNEL_ARCH := $(shell echo "$(ARCH)" | sed -e "s/-.*//" \
 	-e s/arceb/arc/ \
 	-e s/arm.*/arm/ -e s/sa110/arm/ \
 	-e s/aarch64.*/arm64/ \
-	-e s/bfin/blackfin/ \
 	-e s/or1k/openrisc/ \
 	-e s/parisc64/parisc/ \
 	-e s/powerpc64.*/powerpc/ \
@@ -466,12 +456,18 @@ TAR_OPTIONS = $(call qstrip,$(BR2_TAR_OPTIONS)) -xf
 # packages compiled for the host go here
 HOST_DIR := $(call qstrip,$(BR2_HOST_DIR))
 
+ifneq ($(HOST_DIR),$(BASE_DIR)/host)
+HOST_DIR_SYMLINK = $(BASE_DIR)/host
+$(HOST_DIR_SYMLINK): $(BASE_DIR)
+	ln -snf $(HOST_DIR) $(BASE_DIR)/host
+endif
+
 # Quotes are needed for spaces and all in the original PATH content.
 BR_PATH = "$(HOST_DIR)/bin:$(HOST_DIR)/sbin:$(PATH)"
 
 # Location of a file giving a big fat warning that output/target
 # should not be used as the root filesystem.
-TARGET_DIR_WARNING_FILE = $(TARGET_DIR)/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
+TARGET_DIR_WARNING_FILE = $(BASE_TARGET_DIR)/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
 
 ifeq ($(BR2_CCACHE),y)
 CCACHE := $(HOST_DIR)/bin/ccache
@@ -513,10 +509,16 @@ include package/Makefile.in
 -include $(sort $(wildcard arch/arch.mk.*))
 include support/dependencies/dependencies.mk
 
-PACKAGES += $(DEPENDENCIES_HOST_PREREQ)
-
 include $(sort $(wildcard toolchain/*.mk))
 include $(sort $(wildcard toolchain/*/*.mk))
+
+ifeq ($(BR2_REPRODUCIBLE),y)
+# If SOURCE_DATE_EPOCH has not been set then use the commit date, or the last
+# release date if the source tree is not within a Git repository.
+# See: https://reproducible-builds.org/specs/source-date-epoch/
+BR2_VERSION_GIT_EPOCH := $(shell $(GIT) log -1 --format=%at 2> /dev/null)
+export SOURCE_DATE_EPOCH ?= $(or $(BR2_VERSION_GIT_EPOCH),$(BR2_VERSION_EPOCH))
+endif
 
 # Include the package override file if one has been provided in the
 # configuration.
@@ -570,8 +572,8 @@ $(foreach pkg,$(call UPPERCASE,$(PACKAGES)),\
 endif
 
 .PHONY: dirs
-dirs: $(BUILD_DIR) $(STAGING_DIR) $(TARGET_DIR) \
-	$(HOST_DIR) $(HOST_DIR)/usr $(HOST_DIR)/lib $(BINARIES_DIR)
+dirs: $(BUILD_DIR) $(STAGING_DIR) $(BASE_TARGET_DIR) \
+	$(HOST_DIR) $(HOST_DIR_SYMLINK) $(BINARIES_DIR)
 
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BR2_CONFIG)
 	$(MAKE1) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" silentoldconfig
@@ -588,18 +590,8 @@ sdk: world
 	$(TOPDIR)/support/scripts/fix-rpath host
 	$(TOPDIR)/support/scripts/fix-rpath staging
 	$(INSTALL) -m 755 $(TOPDIR)/support/misc/relocate-sdk.sh $(HOST_DIR)/relocate-sdk.sh
+	mkdir -p $(HOST_DIR)/share/buildroot
 	echo $(HOST_DIR) > $(HOST_DIR)/share/buildroot/sdk-location
-
-# Compatibility symlink in case a post-build script still uses $(HOST_DIR)/usr
-$(HOST_DIR)/usr: $(HOST_DIR)
-	@ln -snf . $@
-
-$(HOST_DIR)/lib: $(HOST_DIR)
-	@mkdir -p $@
-	@case $(HOSTARCH) in \
-		(*64) ln -snf lib $(@D)/lib64;; \
-		(*)   ln -snf lib $(@D)/lib32;; \
-	esac
 
 # Populating the staging with the base directories is handled by the skeleton package
 $(STAGING_DIR):
@@ -703,6 +695,9 @@ endif
 
 $(TARGETS_ROOTFS): target-finalize
 
+# Avoid the rootfs name leaking down the dependency chain
+target-finalize: ROOTFS=
+
 .PHONY: target-finalize
 target-finalize: $(PACKAGES)
 	@$(call MESSAGE,"Finalizing target directory")
@@ -776,6 +771,7 @@ endif
 
 .PHONY: target-post-image
 target-post-image: $(TARGETS_ROOTFS) target-finalize
+	@rm -f $(ROOTFS_COMMON_TAR)
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
 		$(call MESSAGE,"Executing post-image script $(s)"); \
 		$(EXTRA_ENV) $(s) $(BINARIES_DIR) $(call qstrip,$(BR2_ROOTFS_POST_SCRIPT_ARGS))$(sep))
@@ -965,6 +961,11 @@ savedefconfig: $(BUILD_DIR)/buildroot-config/conf prepare-kconfig
 #
 ################################################################################
 
+# staging and target directories do NOT list these as
+# dependencies anywhere else
+$(BUILD_DIR) $(BASE_TARGET_DIR) $(HOST_DIR) $(BINARIES_DIR) $(LEGAL_INFO_DIR) $(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST):
+	@mkdir -p $@
+
 # outputmakefile generates a Makefile in the output directory, if using a
 # separate output directory. This allows convenient use of make in the
 # output directory.
@@ -999,7 +1000,7 @@ printvars:
 
 .PHONY: clean
 clean:
-	rm -rf $(TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) \
+	rm -rf $(BASE_TARGET_DIR) $(BINARIES_DIR) $(HOST_DIR) $(HOST_DIR_SYMLINK) \
 		$(BUILD_DIR) $(BASE_DIR)/staging \
 		$(LEGAL_INFO_DIR) $(GRAPHS_DIR)
 
@@ -1051,6 +1052,10 @@ help:
 	@echo '  <pkg>-build            - Build <pkg> up to the build step'
 	@echo '  <pkg>-show-depends     - List packages on which <pkg> depends'
 	@echo '  <pkg>-show-rdepends    - List packages which have <pkg> as a dependency'
+	@echo '  <pkg>-show-recursive-depends'
+	@echo '                         - Recursively list packages on which <pkg> depends'
+	@echo '  <pkg>-show-recursive-rdepends'
+	@echo '                         - Recursively list packages which have <pkg> as a dependency'
 	@echo '  <pkg>-graph-depends    - Generate a graph of <pkg>'\''s dependencies'
 	@echo '  <pkg>-graph-rdepends   - Generate a graph of <pkg>'\''s reverse dependencies'
 	@echo '  <pkg>-dirclean         - Remove <pkg> build directory'

@@ -19,6 +19,11 @@ endmenu # Audio
 
 menu "Video firmware"
 
+config BR2_PACKAGE_LINUX_FIRMWARE_AMDGPU
+	bool "AMD GPU video card firmware"
+	help
+	  Firmware files for AMD GPU video cards.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_I915
 	bool "Intel i915 video card firmware"
 	help
@@ -28,6 +33,16 @@ config BR2_PACKAGE_LINUX_FIRMWARE_RADEON
 	bool "AMD Radeon video card firmware"
 	help
 	  Firmware files for AMD Radeon video cards.
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_VENUS
+	bool "Qualcomm Venus video codec accelerator"
+	help
+	  Firmware files for Qualcomm Venus video codec accelerator
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QCOM_ADRENO
+	bool "Qualcomm Adreno GPU firmware"
+	help
+	  Firmware files for Qualcomm Adreno GPU firmware
 
 endmenu # Video
 
@@ -82,6 +97,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA998X
 	bool "Atheros 10k (QCA998X)"
 	help
 	  Firmware files for the Atheros QCA988X module
+
+config BR2_PACKAGE_LINUX_FIRMWARE_ATHEROS_10K_QCA6174
+	bool "Atheros 10k (QCA6174)"
+	help
+	  Firmware files for the Atheros QCA6174 module
 
 config BR2_PACKAGE_LINUX_FIRMWARE_BRCM_BCM43XX
 	bool "Broadcom BRCM bcm43xx"
@@ -299,6 +319,12 @@ config BR2_PACKAGE_LINUX_FIRMWARE_CXGB4_T5
 	help
 	  Firmware files for Chelsio T5 1Gb and 10Gb ethernet cards
 	  (cxgb4)
+
+config BR2_PACKAGE_LINUX_FIRMWARE_QLOGIC_4X
+	bool "QLogic FastLinQ 4xxxx"
+	help
+	  Firmware files for QLogic FastLinQ 4xxxx ethernet devices
+	  (qede)
 
 config BR2_PACKAGE_LINUX_FIRMWARE_RTL_8169
 	bool "Realtek 8169"

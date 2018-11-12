@@ -1,3 +1,5 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    068fa02fd3c8a5b63316025b5a24844c Net-HTTP-6.17.tar.gz
-sha256 1e8624b1618dc6f7f605f5545643ebb9b833930f4d7485d4124aa2f2f26d1611 Net-HTTP-6.17.tar.gz
+md5    6da11a7db0e933b7684148e1fb32006a Net-HTTP-6.18.tar.gz
+sha256 7e42df2db7adce3e0eb4f78b88c450f453f5380f120fd5411232e03374ba951c Net-HTTP-6.18.tar.gz
+# Locally computed
+sha256 49fbcc80e17295888b909176a0029f275a8c17b6cbfaf8867fe571ebe9a9ca79  LICENSE

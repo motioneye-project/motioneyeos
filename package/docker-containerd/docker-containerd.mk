@@ -9,39 +9,21 @@ DOCKER_CONTAINERD_SITE = $(call github,docker,containerd,$(DOCKER_CONTAINERD_VER
 DOCKER_CONTAINERD_LICENSE = Apache-2.0
 DOCKER_CONTAINERD_LICENSE_FILES = LICENSE.code
 
-DOCKER_CONTAINERD_DEPENDENCIES = host-go
+DOCKER_CONTAINERD_WORKSPACE = vendor
 
-DOCKER_CONTAINERD_GOPATH = "$(@D)/vendor"
-DOCKER_CONTAINERD_MAKE_ENV = $(HOST_GO_TARGET_ENV) \
-	CGO_ENABLED=1 \
-	GOBIN="$(@D)/bin" \
-	GOPATH="$(DOCKER_CONTAINERD_GOPATH)"
-
-DOCKER_CONTAINERD_GLDFLAGS = \
+DOCKER_CONTAINERD_LDFLAGS = \
 	-X github.com/docker/containerd.GitCommit=$(DOCKER_CONTAINERD_VERSION)
 
-ifeq ($(BR2_STATIC_LIBS),y)
-DOCKER_CONTAINERD_GLDFLAGS += -extldflags '-static'
-endif
+DOCKER_CONTAINERD_BUILD_TARGETS = ctr containerd containerd-shim
 
-define DOCKER_CONTAINERD_CONFIGURE_CMDS
-	mkdir -p $(DOCKER_CONTAINERD_GOPATH)/src/github.com/docker
-	ln -s $(@D) $(DOCKER_CONTAINERD_GOPATH)/src/github.com/docker/containerd
-	mkdir -p $(DOCKER_CONTAINERD_GOPATH)/src/github.com/opencontainers
-	ln -s $(RUNC_SRCDIR) $(DOCKER_CONTAINERD_GOPATH)/src/github.com/opencontainers/runc
-endef
+DOCKER_CONTAINERD_INSTALL_BINS = containerd containerd-shim
 
-define DOCKER_CONTAINERD_BUILD_CMDS
-	$(foreach d,ctr containerd containerd-shim,\
-		cd $(@D); $(DOCKER_CONTAINERD_MAKE_ENV) $(HOST_DIR)/bin/go build \
-			-v -o $(@D)/bin/$(d) -ldflags "$(DOCKER_CONTAINERD_GLDFLAGS)" ./$(d)$(sep))
-endef
-
-define DOCKER_CONTAINERD_INSTALL_TARGET_CMDS
+define DOCKER_CONTAINERD_INSTALL_SYMLINKS
 	ln -fs runc $(TARGET_DIR)/usr/bin/docker-runc
-	$(INSTALL) -D -m 0755 $(@D)/bin/containerd $(TARGET_DIR)/usr/bin/docker-containerd
-	$(INSTALL) -D -m 0755 $(@D)/bin/containerd-shim $(TARGET_DIR)/usr/bin/containerd-shim
 	ln -fs containerd-shim $(TARGET_DIR)/usr/bin/docker-containerd-shim
+	ln -fs containerd $(TARGET_DIR)/usr/bin/docker-containerd
 endef
 
-$(eval $(generic-package))
+DOCKER_CONTAINERD_POST_INSTALL_TARGET_HOOKS += DOCKER_CONTAINERD_INSTALL_SYMLINKS
+
+$(eval $(golang-package))

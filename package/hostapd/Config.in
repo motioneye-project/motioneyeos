@@ -1,8 +1,6 @@
 config BR2_PACKAGE_HOSTAPD
 	bool "hostapd"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
 	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_LIBNL
 	help
 	  User space daemon for wireless access points.
 
@@ -14,20 +12,60 @@ config BR2_PACKAGE_HOSTAPD
 
 if BR2_PACKAGE_HOSTAPD
 
+config BR2_PACKAGE_HOSTAPD_DRIVER_HOSTAP
+	bool "Enable hostap driver"
+	default y
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	help
+	  Enable support for Host AP driver.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
+	bool "Enable nl80211 driver"
+	default y
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	help
+	  Enable support for drivers using the nl80211 kernel interface.
+
+comment "nl80211 driver needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
 config BR2_PACKAGE_HOSTAPD_DRIVER_RTW
 	bool "Enable rtl871xdrv driver"
+	select BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
 	help
 	  Enable support for Realtek wireless chips.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_WIRED
+	bool "Enable wired driver"
+	help
+	  Enable support for wired authenticator.
+
+config BR2_PACKAGE_HOSTAPD_DRIVER_NONE
+	bool
+	default y
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_HOSTAP
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_RTW
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_WIRED
+
+config BR2_PACKAGE_HOSTAPD_HAS_WIFI_DRIVERS
+	bool
 
 config BR2_PACKAGE_HOSTAPD_ACS
 	bool "Enable ACS"
 	default y
+	depends on BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
 	help
 	  Enable support for standard ACS (Automatic Channel Selection).
 	  Some propietary drivers use a custom algorithm which requires
 	  channel to be set to '0' (which enables ACS in the config),
 	  causing hostapd to use the standard one which doesn't work
 	  for those cases.
+
+comment "ACS is currently only supported through the nl80211 driver"
+	depends on !BR2_PACKAGE_HOSTAPD_DRIVER_NL80211
 
 config BR2_PACKAGE_HOSTAPD_EAP
 	bool "Enable EAP"
@@ -49,10 +87,11 @@ config BR2_PACKAGE_HOSTAPD_VLAN
 	help
 	  Enable support for VLANs.
 
+if BR2_PACKAGE_HOSTAPD_VLAN
+
 config BR2_PACKAGE_HOSTAPD_VLAN_DYNAMIC
 	bool "Enable dynamic VLAN support"
 	default y
-	depends on BR2_PACKAGE_HOSTAPD_VLAN
 	help
 	  Enable support for fully dynamic VLANs.
 	  This enables hostapd to automatically create
@@ -61,13 +100,15 @@ config BR2_PACKAGE_HOSTAPD_VLAN_DYNAMIC
 config BR2_PACKAGE_HOSTAPD_VLAN_NETLINK
 	bool "Use netlink-based API for VLAN operations"
 	default y
-	depends on BR2_PACKAGE_HOSTAPD_VLAN
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBNL
 	help
 	  Use netlink-based kernel API for VLAN operations
 	  instead of ioctl().
 
-endif
-
-comment "hostapd needs a toolchain w/ threads"
+comment "netlink-based VLAN support needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
-	depends on BR2_USE_MMU
+
+endif # BR2_PACKAGE_HOSTAPD_VLAN
+
+endif

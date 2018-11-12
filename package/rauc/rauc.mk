@@ -4,11 +4,13 @@
 #
 ################################################################################
 
-RAUC_VERSION = 0.3
+RAUC_VERSION = 0.4
 RAUC_SITE = https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)
 RAUC_SOURCE = rauc-$(RAUC_VERSION).tar.xz
 RAUC_LICENSE = LGPL-2.1
 RAUC_DEPENDENCIES = host-pkgconf openssl libglib2
+# 0002-build-make-eMMC-boot-partition-support-optional.patch
+RAUC_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_RAUC_NETWORK),y)
 RAUC_CONF_OPTS += --enable-network

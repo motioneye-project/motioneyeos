@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PYMODBUS
+	bool "python-pymodbus"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Pymodbus is a full Modbus protocol implementation.
+
+	  https://github.com/riptideio/pymodbus

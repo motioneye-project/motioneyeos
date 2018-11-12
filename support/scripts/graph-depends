@@ -21,6 +21,7 @@
 #
 # Copyright (C) 2010-2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 
+import logging
 import sys
 import subprocess
 import argparse
@@ -31,96 +32,6 @@ import brpkgutil
 # Modes of operation:
 MODE_FULL = 1   # draw full dependency graph for all selected packages
 MODE_PKG = 2    # draw dependency graph for a given package
-mode = 0
-
-# Limit drawing the dependency graph to this depth. 0 means 'no limit'.
-max_depth = 0
-
-# Whether to draw the transitive dependencies
-transitive = True
-
-parser = argparse.ArgumentParser(description="Graph packages dependencies")
-parser.add_argument("--check-only", "-C", dest="check_only", action="store_true", default=False,
-                    help="Only do the dependency checks (circular deps...)")
-parser.add_argument("--outfile", "-o", metavar="OUT_FILE", dest="outfile",
-                    help="File in which to generate the dot representation")
-parser.add_argument("--package", '-p', metavar="PACKAGE",
-                    help="Graph the dependencies of PACKAGE")
-parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
-                    help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
-parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
-                    help="Do not graph past this package (can be given multiple times)." +
-                         " Can be a package name or a glob, " +
-                         " 'virtual' to stop on virtual packages, or " +
-                         "'host' to stop on host packages.")
-parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
-                    help="Like --stop-on, but do not add PACKAGE to the graph.")
-parser.add_argument("--colours", "-c", metavar="COLOR_LIST", dest="colours",
-                    default="lightblue,grey,gainsboro",
-                    help="Comma-separated list of the three colours to use" +
-                         " to draw the top-level package, the target" +
-                         " packages, and the host packages, in this order." +
-                         " Defaults to: 'lightblue,grey,gainsboro'")
-parser.add_argument("--transitive", dest="transitive", action='store_true',
-                    default=False)
-parser.add_argument("--no-transitive", dest="transitive", action='store_false',
-                    help="Draw (do not draw) transitive dependencies")
-parser.add_argument("--direct", dest="direct", action='store_true', default=True,
-                    help="Draw direct dependencies (the default)")
-parser.add_argument("--reverse", dest="direct", action='store_false',
-                    help="Draw reverse dependencies")
-args = parser.parse_args()
-
-check_only = args.check_only
-
-if args.outfile is None:
-    outfile = sys.stdout
-else:
-    if check_only:
-        sys.stderr.write("don't specify outfile and check-only at the same time\n")
-        sys.exit(1)
-    outfile = open(args.outfile, "w")
-
-if args.package is None:
-    mode = MODE_FULL
-else:
-    mode = MODE_PKG
-    rootpkg = args.package
-
-max_depth = args.depth
-
-if args.stop_list is None:
-    stop_list = []
-else:
-    stop_list = args.stop_list
-
-if args.exclude_list is None:
-    exclude_list = []
-else:
-    exclude_list = args.exclude_list
-
-transitive = args.transitive
-
-if args.direct:
-    get_depends_func = brpkgutil.get_depends
-    arrow_dir = "forward"
-else:
-    if mode == MODE_FULL:
-        sys.stderr.write("--reverse needs a package\n")
-        sys.exit(1)
-    get_depends_func = brpkgutil.get_rdepends
-    arrow_dir = "back"
-
-# Get the colours: we need exactly three colours,
-# so no need not split more than 4
-# We'll let 'dot' validate the colours...
-colours = args.colours.split(',', 4)
-if len(colours) != 3:
-    sys.stderr.write("Error: incorrect colour list '%s'\n" % args.colours)
-    sys.exit(1)
-root_colour = colours[0]
-target_colour = colours[1]
-host_colour = colours[2]
 
 allpkgs = []
 
@@ -129,7 +40,7 @@ allpkgs = []
 # Buildroot PACKAGES and return it formatted as a Python list. This
 # list is used as the starting point for full dependency graphs
 def get_targets():
-    sys.stderr.write("Getting targets\n")
+    logging.info("Getting targets")
     cmd = ["make", "-s", "--no-print-directory", "show-targets"]
     p = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
     output = p.communicate()[0].strip()
@@ -145,7 +56,7 @@ def get_targets():
 # 'dependencies', which contains tuples of the form (pkg1 ->
 # pkg2_on_which_pkg1_depends, pkg3 -> pkg4_on_which_pkg3_depends) and
 # the function finally returns this list.
-def get_all_depends(pkgs):
+def get_all_depends(pkgs, get_depends_func):
     dependencies = []
 
     # Filter the packages for which we already have the dependencies
@@ -175,7 +86,7 @@ def get_all_depends(pkgs):
             deps.add(dep)
 
     if len(deps) != 0:
-        newdeps = get_all_depends(deps)
+        newdeps = get_all_depends(deps, get_depends_func)
         if newdeps is not None:
             dependencies += newdeps
 
@@ -193,35 +104,6 @@ TARGET_EXCEPTIONS = [
     "target-post-image",
 ]
 
-# In full mode, start with the result of get_targets() to get the main
-# targets and then use get_all_depends() for all targets
-if mode == MODE_FULL:
-    targets = get_targets()
-    dependencies = []
-    allpkgs.append('all')
-    filtered_targets = []
-    for tg in targets:
-        # Skip uninteresting targets
-        if tg in TARGET_EXCEPTIONS:
-            continue
-        dependencies.append(('all', tg))
-        filtered_targets.append(tg)
-    deps = get_all_depends(filtered_targets)
-    if deps is not None:
-        dependencies += deps
-    rootpkg = 'all'
-
-# In pkg mode, start directly with get_all_depends() on the requested
-# package
-elif mode == MODE_PKG:
-    dependencies = get_all_depends([rootpkg])
-
-# Make the dependencies a dictionnary { 'pkg':[dep1, dep2, ...] }
-dict_deps = {}
-for dep in dependencies:
-    if dep[0] not in dict_deps:
-        dict_deps[dep[0]] = []
-    dict_deps[dep[0]].append(dep[1])
 
 # Basic cache for the results of the is_dep() function, in order to
 # optimize the execution time. The cache is a dict of dict of boolean
@@ -311,10 +193,10 @@ def check_circular_deps(deps):
         chain.append(pkg)
         for p in deps[pkg]:
             if p in chain:
-                sys.stderr.write("\nRecursion detected for  : %s\n" % (p))
+                logging.warning("\nRecursion detected for  : %s" % (p))
                 while True:
                     _p = chain.pop()
-                    sys.stderr.write("which is a dependency of: %s\n" % (_p))
+                    logging.warning("which is a dependency of: %s" % (_p))
                     if p == _p:
                         sys.exit(1)
             recurse(p)
@@ -328,7 +210,7 @@ def check_circular_deps(deps):
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
-def remove_extra_deps(deps):
+def remove_extra_deps(deps, transitive):
     for pkg in list(deps.keys()):
         if not pkg == 'all':
             deps[pkg] = remove_mandatory_deps(pkg, deps)
@@ -338,32 +220,22 @@ def remove_extra_deps(deps):
     return deps
 
 
-check_circular_deps(dict_deps)
-if check_only:
-    sys.exit(0)
-
-dict_deps = remove_extra_deps(dict_deps)
-dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
-                                      if pkg != "all" and not pkg.startswith("root")])
-
-
 # Print the attributes of a node: label and fill-color
-def print_attrs(pkg):
+def print_attrs(outfile, pkg, version, depth, colors):
     name = pkg_node_name(pkg)
     if pkg == 'all':
         label = 'ALL'
     else:
         label = pkg
-    if pkg == 'all' or (mode == MODE_PKG and pkg == rootpkg):
-        color = root_colour
+    if depth == 0:
+        color = colors[0]
     else:
         if pkg.startswith('host') \
                 or pkg.startswith('toolchain') \
                 or pkg.startswith('rootfs'):
-            color = host_colour
+            color = colors[2]
         else:
-            color = target_colour
-    version = dict_version.get(pkg)
+            color = colors[1]
     if version == "virtual":
         outfile.write("%s [label = <<I>%s</I>>]\n" % (name, label))
     else:
@@ -371,12 +243,19 @@ def print_attrs(pkg):
     outfile.write("%s [color=%s,style=filled]\n" % (name, color))
 
 
+done_deps = []
+
+
 # Print the dependency graph of a package
-def print_pkg_deps(depth, pkg):
+def print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+                   arrow_dir, draw_graph, depth, max_depth, pkg, colors):
     if pkg in done_deps:
         return
     done_deps.append(pkg)
-    print_attrs(pkg)
+    if draw_graph:
+        print_attrs(outfile, pkg, dict_version.get(pkg), depth, colors)
+    elif depth != 0:
+        outfile.write("%s " % pkg)
     if pkg not in dict_deps:
         return
     for p in stop_list:
@@ -400,14 +279,152 @@ def print_pkg_deps(depth, pkg):
                     add = False
                     break
             if add:
-                outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
-                print_pkg_deps(depth + 1, d)
+                if draw_graph:
+                    outfile.write("%s -> %s [dir=%s]\n" % (pkg_node_name(pkg), pkg_node_name(d), arrow_dir))
+                print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+                               arrow_dir, draw_graph, depth + 1, max_depth, d, colors)
 
 
-# Start printing the graph data
-outfile.write("digraph G {\n")
+def parse_args():
+    parser = argparse.ArgumentParser(description="Graph packages dependencies")
+    parser.add_argument("--check-only", "-C", dest="check_only", action="store_true", default=False,
+                        help="Only do the dependency checks (circular deps...)")
+    parser.add_argument("--outfile", "-o", metavar="OUT_FILE", dest="outfile",
+                        help="File in which to generate the dot representation")
+    parser.add_argument("--package", '-p', metavar="PACKAGE",
+                        help="Graph the dependencies of PACKAGE")
+    parser.add_argument("--depth", '-d', metavar="DEPTH", dest="depth", type=int, default=0,
+                        help="Limit the dependency graph to DEPTH levels; 0 means no limit.")
+    parser.add_argument("--stop-on", "-s", metavar="PACKAGE", dest="stop_list", action="append",
+                        help="Do not graph past this package (can be given multiple times)." +
+                        " Can be a package name or a glob, " +
+                        " 'virtual' to stop on virtual packages, or " +
+                        "'host' to stop on host packages.")
+    parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
+                        help="Like --stop-on, but do not add PACKAGE to the graph.")
+    parser.add_argument("--colors", "-c", metavar="COLOR_LIST", dest="colors",
+                        default="lightblue,grey,gainsboro",
+                        help="Comma-separated list of the three colors to use" +
+                        " to draw the top-level package, the target" +
+                        " packages, and the host packages, in this order." +
+                        " Defaults to: 'lightblue,grey,gainsboro'")
+    parser.add_argument("--transitive", dest="transitive", action='store_true',
+                        default=False)
+    parser.add_argument("--no-transitive", dest="transitive", action='store_false',
+                        help="Draw (do not draw) transitive dependencies")
+    parser.add_argument("--direct", dest="direct", action='store_true', default=True,
+                        help="Draw direct dependencies (the default)")
+    parser.add_argument("--reverse", dest="direct", action='store_false',
+                        help="Draw reverse dependencies")
+    parser.add_argument("--quiet", '-q', dest="quiet", action='store_true',
+                        help="Quiet")
+    parser.add_argument("--flat-list", '-f', dest="flat_list", action='store_true', default=False,
+                        help="Do not draw graph, just print a flat list")
+    return parser.parse_args()
 
-done_deps = []
-print_pkg_deps(0, rootpkg)
 
-outfile.write("}\n")
+def main():
+    args = parse_args()
+
+    check_only = args.check_only
+
+    logging.basicConfig(stream=sys.stderr, format='%(message)s',
+                        level=logging.WARNING if args.quiet else logging.INFO)
+
+    if args.outfile is None:
+        outfile = sys.stdout
+    else:
+        if check_only:
+            logging.error("don't specify outfile and check-only at the same time")
+            sys.exit(1)
+        outfile = open(args.outfile, "w")
+
+    if args.package is None:
+        mode = MODE_FULL
+    else:
+        mode = MODE_PKG
+        rootpkg = args.package
+
+    if args.stop_list is None:
+        stop_list = []
+    else:
+        stop_list = args.stop_list
+
+    if args.exclude_list is None:
+        exclude_list = []
+    else:
+        exclude_list = args.exclude_list
+
+    if args.direct:
+        get_depends_func = brpkgutil.get_depends
+        arrow_dir = "forward"
+    else:
+        if mode == MODE_FULL:
+            logging.error("--reverse needs a package")
+            sys.exit(1)
+        get_depends_func = brpkgutil.get_rdepends
+        arrow_dir = "back"
+
+    draw_graph = not args.flat_list
+
+    # Get the colors: we need exactly three colors,
+    # so no need not split more than 4
+    # We'll let 'dot' validate the colors...
+    colors = args.colors.split(',', 4)
+    if len(colors) != 3:
+        logging.error("Error: incorrect color list '%s'" % args.colors)
+        sys.exit(1)
+
+    # In full mode, start with the result of get_targets() to get the main
+    # targets and then use get_all_depends() for all targets
+    if mode == MODE_FULL:
+        targets = get_targets()
+        dependencies = []
+        allpkgs.append('all')
+        filtered_targets = []
+        for tg in targets:
+            # Skip uninteresting targets
+            if tg in TARGET_EXCEPTIONS:
+                continue
+            dependencies.append(('all', tg))
+            filtered_targets.append(tg)
+        deps = get_all_depends(filtered_targets, get_depends_func)
+        if deps is not None:
+            dependencies += deps
+        rootpkg = 'all'
+
+    # In pkg mode, start directly with get_all_depends() on the requested
+    # package
+    elif mode == MODE_PKG:
+        dependencies = get_all_depends([rootpkg], get_depends_func)
+
+    # Make the dependencies a dictionnary { 'pkg':[dep1, dep2, ...] }
+    dict_deps = {}
+    for dep in dependencies:
+        if dep[0] not in dict_deps:
+            dict_deps[dep[0]] = []
+        dict_deps[dep[0]].append(dep[1])
+
+    check_circular_deps(dict_deps)
+    if check_only:
+        sys.exit(0)
+
+    dict_deps = remove_extra_deps(dict_deps, args.transitive)
+    dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
+                                          if pkg != "all" and not pkg.startswith("root")])
+
+    # Start printing the graph data
+    if draw_graph:
+        outfile.write("digraph G {\n")
+
+    print_pkg_deps(outfile, dict_deps, dict_version, stop_list, exclude_list,
+                   arrow_dir, draw_graph, 0, args.depth, rootpkg, colors)
+
+    if draw_graph:
+        outfile.write("}\n")
+    else:
+        outfile.write("\n")
+
+
+if __name__ == "__main__":
+    sys.exit(main())

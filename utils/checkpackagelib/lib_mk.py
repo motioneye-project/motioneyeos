@@ -123,7 +123,7 @@ class RemoveDefaultPackageSourceVariable(_CheckFunction):
 
 
 class SpaceBeforeBackslash(_CheckFunction):
-    TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH = re.compile(r"^.*(  |\t)\\$")
+    TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH = re.compile(r"^.*(  |\t ?)\\$")
 
     def check_line(self, lineno, text):
         if self.TAB_OR_MULTIPLE_SPACES_BEFORE_BACKSLASH.match(text.rstrip()):
@@ -159,14 +159,19 @@ class TypoInPackageVariable(_CheckFunction):
         "ACLOCAL_DIR",
         "ACLOCAL_HOST_DIR",
         "BR_CCACHE_INITIAL_SETUP",
+        "BR_LIBC",
         "BR_NO_CHECK_HASH_FOR",
+        "LINUX_EXTENSIONS",
         "LINUX_POST_PATCH_HOOKS",
         "LINUX_TOOLS",
         "LUA_RUN",
         "MKFS_JFFS2",
         "MKIMAGE_ARCH",
+        "PACKAGES_PERMISSIONS_TABLE",
         "PKG_CONFIG_HOST_BINARY",
+        "SUMTOOL",
         "TARGET_FINALIZE_HOOKS",
+        "TARGETS_ROOTFS",
         "XTENSA_CORE_NAME"]))
     PACKAGE_NAME = re.compile("/([^/]+)\.mk")
     VARIABLE = re.compile("^([A-Z0-9_]+_[A-Z0-9_]+)\s*(\+|)=")
@@ -176,8 +181,10 @@ class TypoInPackageVariable(_CheckFunction):
         package = package.replace("-", "_").upper()
         # linux tools do not use LINUX_TOOL_ prefix for variables
         package = package.replace("LINUX_TOOL_", "")
+        # linux extensions do not use LINUX_EXT_ prefix for variables
+        package = package.replace("LINUX_EXT_", "")
         self.package = package
-        self.REGEX = re.compile("^(HOST_)?({}_[A-Z0-9_]+)".format(package))
+        self.REGEX = re.compile("^(HOST_|ROOTFS_)?({}_[A-Z0-9_]+)".format(package))
         self.FIND_VIRTUAL = re.compile(
             "^{}_PROVIDES\s*(\+|)=\s*(.*)".format(package))
         self.virtual = []

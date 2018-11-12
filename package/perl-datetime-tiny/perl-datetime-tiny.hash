@@ -1,3 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    736be4b3e8171f4a029fb6ac3712a9b4 DateTime-Tiny-1.06.tar.gz
-sha256 bd725df481d7223ee787e154c116098b08a129f55e0763194b07ebea3dda33ec DateTime-Tiny-1.06.tar.gz
+md5    5ac2924652edb0cf5fda7c9d52162b3f DateTime-Tiny-1.07.tar.gz
+sha256 83568a22838cb518fbeb9e060460ec7f59d5a0b0a1cc06562954c3674d7cf7e4 DateTime-Tiny-1.07.tar.gz
+
+# computed by scancpan
+sha256 21cda7a55a8d4b32a43c654f0d4d4a1587096b35bf2a93ea12a2e3a8c2c0b88f LICENSE

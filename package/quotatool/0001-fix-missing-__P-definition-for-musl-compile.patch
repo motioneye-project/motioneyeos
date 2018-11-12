@@ -1,0 +1,36 @@
+From 0e096badc901f755f3bcefabdc57091725a5a0c5 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 1 Feb 2018 23:50:43 +0100
+Subject: [PATCH] fix missing __P definition for musl compile
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes:
+
+  In file included from src/quota.h:40:0,
+                   from src/parse.c:26:
+  src/linux/linux_quota.h:120:15: error: expected ‘=’, ‘,’, ‘;’, ‘asm’ or ‘__attribute__’ before ‘__P’
+   long quotactl __P((int, const char *, qid_t, caddr_t));
+                 ^~~
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ src/linux/linux_quota.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/linux/linux_quota.h b/src/linux/linux_quota.h
+index 11f9871..2b29a89 100644
+--- a/src/linux/linux_quota.h
++++ b/src/linux/linux_quota.h
+@@ -14,6 +14,7 @@
+ #ifndef LINUX_QUOTA_H
+ #define LINUX_QUOTA_H
+ 
++#include <sys/cdefs.h>
+ #include <sys/types.h>
+ #include "system.h"
+ 
+-- 
+2.16.1
+

@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-January/002128.html
-sha256	bcdf4b461c439bb3ade6e1e41c47d6218b912da8e9396b7ad70856db2f95ab68	xmessage-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002868.html
+md5 e50ffae17eeb3943079620cb78f5ce0b  xmessage-1.0.5.tar.bz2
+sha1 d3eca72c7173d0d9547c676a16bcec51ca1213a2  xmessage-1.0.5.tar.bz2
+sha256 373dfb81e7a6f06d3d22485a12fcde6e255d58c6dee1bbaeb00c7d0caa9b2029  xmessage-1.0.5.tar.bz2
+sha512 a8423c3986b1576fa67800c315a605a527bb9a8f594ac269a736ae7b91eed0d4d83deb89148197dc3cd3f0e51894146958ce2979f78e97dcdb99c5326e34dabe  xmessage-1.0.5.tar.bz2
+# Locally computed
+sha256 dfd5427188bd6d6647ad1a9a0644428403c6239f6aa7f9d1a17629d8cc0a4ecd COPYING

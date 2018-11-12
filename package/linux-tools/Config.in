@@ -7,7 +7,6 @@ config BR2_PACKAGE_LINUX_TOOLS
 
 config BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
 	bool "cpupower"
-	depends on !BR2_bfin # pciutils
 	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_PCIUTILS
 	help
@@ -55,6 +54,19 @@ config BR2_PACKAGE_LINUX_TOOLS_PERF
 	  configuration.
 
 	  https://perf.wiki.kernel.org/
+
+if BR2_PACKAGE_LINUX_TOOLS_PERF
+
+config BR2_PACKAGE_LINUX_TOOLS_PERF_TUI
+	bool "enable perf TUI"
+	depends on BR2_USE_MMU # slang
+	select BR2_PACKAGE_SLANG
+	help
+	  Enable the TUI interface for perf which requires a TTY and
+	  enables zooming into DSOs and threads as well as other
+	  features.
+
+endif
 
 config BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
 	bool"selftests"

@@ -1,0 +1,42 @@
+config BR2_PACKAGE_BLUEZ_ALSA
+	bool "bluez-alsa"
+	depends on !BR2_STATIC_LIBS # bluez5
+	depends on !BR2_PACKAGE_BLUEZ_UTILS # bluez5
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5
+	depends on BR2_USE_MMU # bluez5 -> dbus
+	depends on BR2_USE_WCHAR # libglib2
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_BLUEZ5_UTILS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_SBC
+	help
+	  Bluetooth Audio ALSA Backend.
+
+	  https://github.com/Arkq/bluez-alsa
+
+if BR2_PACKAGE_BLUEZ_ALSA
+
+config BR2_PACKAGE_BLUEZ_ALSA_HCITOP
+	bool "hcitop"
+	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
+	select BR2_PACKAGE_LIBBSD
+	select BR2_PACKAGE_NCURSES
+	help
+	  Enable top-like monitoring tool for HCI.
+
+config BR2_PACKAGE_BLUEZ_ALSA_RFCOMM
+	bool "rfcomm"
+	select BR2_PACKAGE_READLINE
+	help
+	  Simple tool for sending RFCOMM commands.
+
+endif
+
+comment "bluez-alsa needs a toolchain w/ wchar, NPTL, headers >= 3.4, dynamic library"
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_BLUEZ_UTILS

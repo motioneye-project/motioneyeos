@@ -1,0 +1,23 @@
+config BR2_PACKAGE_FLARE_ENGINE
+	bool "flare-engine"
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS # SDL2
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_85180
+	select BR2_PACKAGE_SDL2
+	select BR2_PACKAGE_SDL2_IMAGE
+	select BR2_PACKAGE_SDL2_MIXER
+	select BR2_PACKAGE_SDL2_TTF
+	help
+	  Flare (Free Libre Action Roleplaying Engine) is a simple game
+	  engine built to handle a very specific kind of game:
+	  single-player 2D action RPGs.
+	  Flare is not a reimplementation of an existing game or engine.
+	  It is a tribute to and exploration of the action RPG genre.
+
+	  http://flarerpg.org
+
+comment "flare-engine needs a toolchain w/ C++, dynamic library"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
+
+comment "flare-engine needs a toolchain not affected by GCC bug 85180"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_85180

@@ -34,6 +34,19 @@ ifeq ($(BR2_SHARED_STATIC_LIBS),y)
 DROPBEAR_CONF_OPTS += --disable-static
 endif
 
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+define DROPBEAR_SVR_PAM_AUTH
+	echo '#define DROPBEAR_SVR_PASSWORD_AUTH 0'     >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_SVR_PAM_AUTH 1'          >> $(@D)/localoptions.h
+endef
+define DROPBEAR_INSTALL_PAM_CONF
+	$(INSTALL) -D -m 644 package/dropbear/etc-pam.d-sshd $(TARGET_DIR)/etc/pam.d/sshd
+endef
+DROPBEAR_DEPENDENCIES += linux-pam
+DROPBEAR_CONF_OPTS += --enable-pam
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_SVR_PAM_AUTH
+DROPBEAR_POST_INSTALL_TARGET_HOOKS += DROPBEAR_INSTALL_PAM_CONF
+else
 # Ensure that dropbear doesn't use crypt() when it's not available
 define DROPBEAR_SVR_PASSWORD_AUTH
 	echo '#if !HAVE_CRYPT'                          >> $(@D)/localoptions.h
@@ -41,6 +54,18 @@ define DROPBEAR_SVR_PASSWORD_AUTH
 	echo '#endif'                                   >> $(@D)/localoptions.h
 endef
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_SVR_PASSWORD_AUTH
+endif
+
+define DROPBEAR_DISABLE_LEGACY_CRYPTO
+	echo '#define DROPBEAR_3DES 0'                  >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_ENABLE_CBC_MODE 0'       >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_SHA1_96_HMAC 0'          >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_DSS 0'                   >> $(@D)/localoptions.h
+	echo '#define DROPBEAR_DH_GROUP1 0'             >> $(@D)/localoptions.h
+endef
+ifneq ($(BR2_PACKAGE_DROPBEAR_LEGACY_CRYPTO),y)
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_LEGACY_CRYPTO
+endif
 
 define DROPBEAR_ENABLE_REVERSE_DNS
 	echo '#define DO_HOST_LOOKUP 1'                 >> $(@D)/localoptions.h
@@ -48,7 +73,6 @@ endef
 
 define DROPBEAR_BUILD_FEATURED
 	echo '#define DROPBEAR_SMALL_CODE 0'            >> $(@D)/localoptions.h
-	echo '#define DROPBEAR_BLOWFISH 1'              >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_TWOFISH128 1'            >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_TWOFISH256 1'            >> $(@D)/localoptions.h
 endef

@@ -76,7 +76,13 @@ config BR2_PACKAGE_ALSA_UTILS_ASEQNET
 
 config BR2_PACKAGE_ALSA_UTILS_BAT
 	bool "bat"
-	select BR2_PACKAGE_FFTW
+	help
+	  ALSABAT (ALSA Basic Audio Tester) is a simple command-line
+	  utility intended to help automate audio driver and sound
+	  server testing with little human interaction.
+
+	  Note that analysis support in alsabat requires fftw single
+	  precision.
 
 config BR2_PACKAGE_ALSA_UTILS_IECSET
 	bool "iecset"

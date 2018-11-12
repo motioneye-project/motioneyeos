@@ -15,7 +15,7 @@ NVIDIA_TEGRA23_CODECS_REDISTRIBUTE = NO
 define NVIDIA_TEGRA23_CODECS_EXTRACT_CMDS
 	$(INSTALL) -d $(@D)
 	$(call suitable-extractor,$(NVIDIA_TEGRA23_CODECS_SOURCE)) \
-		$(DL_DIR)/$(NVIDIA_TEGRA23_CODECS_SOURCE) | \
+		$(NVIDIA_TEGRA23_CODECS_DL_DIR)/$(NVIDIA_TEGRA23_CODECS_SOURCE) | \
 	$(TAR) --strip-components=0 -C $(@D) $(TAR_OPTIONS) -
 	$(INSTALL) -d $(@D)/restricted_codecs
 	$(call suitable-extractor,$(@D)/restricted_codecs.tbz2) \

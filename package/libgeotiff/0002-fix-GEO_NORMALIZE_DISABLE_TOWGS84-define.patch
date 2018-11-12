@@ -1,0 +1,20 @@
+Fix GEO_NORMALIZE_DISABLE_TOWGS84 definition
+
+Fix "missing template: GEO_NORMALIZE_DISABLE_TOWGS84" error by adding
+a non-empty description of GEO_NORMALIZE_DISABLE_TOWGS84 in AC_DEFINE
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+Index: libgeotiff/configure.ac
+===================================================================
+--- libgeotiff/configure.ac	(révision 2818)
++++ libgeotiff/configure.ac	(copie de travail)
+@@ -317,7 +317,7 @@
+ AM_CONDITIONAL([CSV_IS_CONFIG], [test ! x$CSV_CONFIG = xno])
+ 
+ 
+-AC_ARG_ENABLE(towgs84, [  --disable-towgs84       Disable WGS84 parameters for binary compatibility with pre-1.4.1], AC_DEFINE(GEO_NORMALIZE_DISABLE_TOWGS84))
++AC_ARG_ENABLE(towgs84, [  --disable-towgs84       Disable WGS84 parameters for binary compatibility with pre-1.4.1], AC_DEFINE(GEO_NORMALIZE_DISABLE_TOWGS84, [], [Disable WGS84 parameters]))
+ 
+ dnl #########################################################################
+ dnl Doxygen settings

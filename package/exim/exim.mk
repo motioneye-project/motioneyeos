@@ -72,14 +72,6 @@ define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
 endef
 endif
 
-# only glibc provides libnsl, remove -lnsl for all other toolchains
-# http://bugs.exim.org/show_bug.cgi?id=1564
-ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),)
-define EXIM_REMOVE_LIBNSL_FROM_MAKEFILE
-	$(SED) 's/-lnsl//g' $(@D)/OS/Makefile-Linux
-endef
-endif
-
 # musl does not provide struct ip_options nor struct ip_opts (but it is
 # available with both glibc and uClibc)
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
@@ -96,7 +88,6 @@ define EXIM_CONFIGURE_TOOLCHAIN
 	$(call exim-config-add,RANLIB,$(TARGET_RANLIB))
 	$(call exim-config-add,HOSTCC,$(HOSTCC))
 	$(call exim-config-add,HOSTCFLAGS,$(HOSTCFLAGS))
-	$(EXIM_REMOVE_LIBNSL_FROM_MAKEFILE)
 	$(EXIM_FIX_IP_OPTIONS_FOR_MUSL)
 endef
 

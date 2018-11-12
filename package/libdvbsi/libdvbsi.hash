@@ -1,2 +1,5 @@
 # From http://www.saftware.de/libdvbsi++/libdvbsi++-0.3.7.tar.bz2.md5
 md5	7eb50352c06b17c499a6d51e18e99ec5	libdvbsi++-0.3.7.tar.bz2
+
+# Hash for license file:
+sha256	6095e9ffa777dd22839f7801aa845b31c9ed07f3d6bf8a26dc5d2dec8ccc0ef3	COPYING

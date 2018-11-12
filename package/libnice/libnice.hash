@@ -1,2 +1,7 @@
 # Locally computed after checking pgp signature
-sha256 61112d9f3be933a827c8365f20551563953af6718057928f51f487bfe88419e1 libnice-0.1.13.tar.gz
+sha256 be120ba95d4490436f0da077ffa8f767bf727b82decf2bf499e39becc027809c libnice-0.1.14.tar.gz
+
+# Hash for license files:
+sha256 9246b2ee8b1db30cf03d5d9719ad8bb5edce1cadc85f8cfef319c23d24d950b5 COPYING
+sha256 3b3c75ae6c663c4f93987647eb5463d33dc1602a1aded3ac479773f2c3928e3a COPYING.MPL
+sha256 a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861 COPYING.LGPL

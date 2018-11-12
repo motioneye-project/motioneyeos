@@ -1,7 +1,7 @@
 ################################################################################
-# Linux ev3dev extensions
 #
 # Patch the linux kernel with ev3dev extension
+#
 ################################################################################
 
 LINUX_EXTENSIONS += ev3dev-linux-drivers

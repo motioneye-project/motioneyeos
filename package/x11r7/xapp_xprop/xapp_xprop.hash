@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-August/002290.html
-sha256	9bee88b1025865ad121f72d32576dd3027af1446774aa8300cce3c261d869bc6	xprop-1.2.2.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002870.html
+md5 4becb3ddc4674d741487189e4ce3d0b6  xprop-1.2.3.tar.bz2
+sha1 77062c08a23cfca76824b7e8f9860678255d6b1a  xprop-1.2.3.tar.bz2
+sha256 d22afb28c86d85fff10a50156a7d0fa930c80ae865d70b26d805fd28a17a521b  xprop-1.2.3.tar.bz2
+sha512 ad7987fec11ae19b7adc3b0f683fc393e95155f3b6c753d1d8744aedcfb360452eee5735a4c380152b286905931515f3e1a28676b5531001eb8dd93b7249916a  xprop-1.2.3.tar.bz2
+# Locally computed
+sha256 f19ff982936cca133b9593a6561c3817512207e0b4c951d0e4eb5956d30d4415 COPYING

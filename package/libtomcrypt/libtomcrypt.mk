@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBTOMCRYPT_VERSION = 1.18.1
+LIBTOMCRYPT_VERSION = 1.18.2
 LIBTOMCRYPT_SITE = https://github.com/libtom/libtomcrypt/releases/download/v$(LIBTOMCRYPT_VERSION)
 LIBTOMCRYPT_SOURCE = crypt-$(LIBTOMCRYPT_VERSION).tar.xz
 LIBTOMCRYPT_LICENSE = WTFPL

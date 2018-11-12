@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TINYCBOR_VERSION = v0.4.2
+TINYCBOR_VERSION = v0.5.1
 TINYCBOR_SITE = $(call github,intel,tinycbor,$(TINYCBOR_VERSION))
 TINYCBOR_LICENSE = MIT
 TINYCBOR_LICENSE_FILES = LICENSE
@@ -17,6 +17,14 @@ TINYCBOR_DEPENDENCIES += cjson
 endif
 
 TINYCBOR_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) V=1
+
+ifeq ($(BR2_STATIC_LIBS),y)
+TINYCBOR_MAKE_OPTS += BUILD_STATIC=1 BUILD_SHARED=0
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+TINYCBOR_MAKE_OPTS += BUILD_STATIC=1 BUILD_SHARED=1
+else ifeq ($(BR2_SHARED_LIBS),y)
+TINYCBOR_MAKE_OPTS += BUILD_STATIC=0 BUILD_SHARED=1
+endif
 
 # disabled parallel build because of build failures while
 # producing the .config file

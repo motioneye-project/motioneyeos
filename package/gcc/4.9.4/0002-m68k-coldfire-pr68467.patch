@@ -1,0 +1,48 @@
+Backport from upstream, see
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68467
+
+Signed-off-by: Waldemar Brodkorb <wbx@openadk.org>
+
+diff -Nur gcc-4.9.4.orig/gcc/config/m68k/m68k.c gcc-4.9.4/gcc/config/m68k/m68k.c
+--- gcc-4.9.4.orig/gcc/config/m68k/m68k.c	2014-02-27 12:10:55.000000000 +0100
++++ gcc-4.9.4/gcc/config/m68k/m68k.c	2018-02-17 21:28:53.430538916 +0100
+@@ -166,6 +166,8 @@
+ 			      const_tree, bool);
+ static bool m68k_cannot_force_const_mem (enum machine_mode mode, rtx x);
+ static bool m68k_output_addr_const_extra (FILE *, rtx);
++static machine_mode m68k_promote_function_mode (const_tree, machine_mode,
++						int *, const_tree, int);
+ static void m68k_init_sync_libfuncs (void) ATTRIBUTE_UNUSED;
+ 
+ /* Initialize the GCC target structure.  */
+@@ -308,6 +310,9 @@
+ #undef TARGET_ATOMIC_TEST_AND_SET_TRUEVAL
+ #define TARGET_ATOMIC_TEST_AND_SET_TRUEVAL 128
+ 
++#undef TARGET_PROMOTE_FUNCTION_MODE
++#define TARGET_PROMOTE_FUNCTION_MODE m68k_promote_function_mode
++
+ static const struct attribute_spec m68k_attribute_table[] =
+ {
+   /* { name, min_len, max_len, decl_req, type_req, fn_type_req, handler,
+@@ -6527,4 +6532,20 @@
+ 	      == m68k_fk_interrupt_handler));
+ }
+ 
++/* Implement TARGET_PROMOTE_FUNCTION_MODE.  */
++
++static machine_mode
++m68k_promote_function_mode (const_tree type, machine_mode mode,
++                            int *punsignedp ATTRIBUTE_UNUSED,
++                            const_tree fntype ATTRIBUTE_UNUSED,
++                            int for_return)
++{
++  /* Promote libcall arguments narrower than int to match the normal C
++     ABI (for which promotions are handled via
++     TARGET_PROMOTE_PROTOTYPES).  */
++  if (type == NULL_TREE && !for_return && (mode == QImode || mode == HImode))
++    return SImode;
++  return mode;
++}
++
+ #include "gt-m68k.h"

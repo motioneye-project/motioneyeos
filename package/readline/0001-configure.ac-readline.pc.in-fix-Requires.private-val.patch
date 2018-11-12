@@ -1,0 +1,62 @@
+From 7bbf2046fbcf4416ec226ecb3a2b4c6a5c263298 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 22 Apr 2018 23:06:28 +0200
+Subject: [PATCH] configure.ac, readline.pc.in: fix Requires.private value
+
+The provided readline.pc.in hardcodes the fact that readline depends
+on the tinfo library. However, different termcap implementation are
+supported beyond tinfo. This commit improves the configure.ac script
+to define a TERMCAP_PKG_CONFIG_LIB variable, which is then used in
+readline.pc.in.
+
+This for example allows the generated readline.pc to properly contain
+"Requires.private: ncurses" when ncurses is used as the termcap
+implementation.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ configure.ac   | 8 ++++++++
+ readline.pc.in | 2 +-
+ 2 files changed, 9 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index fd0cec4..9f85f37 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -276,6 +276,13 @@ case "$BUILD_DIR" in
+ *)	;;
+ esac
+ 
++case "$TERMCAP_LIB" in
++-ltinfo)  TERMCAP_PKG_CONFIG_LIB=tinfo ;;
++-lcurses) TERMCAP_PKG_CONFIG_LIB=ncurses ;;
++-lncurses) TERMCAP_PKG_CONFIG_LIB=ncurses ;;
++-ltermcap) TERMCAP_PKG_CONFIG_LIB=termcap ;;
++esac
++
+ AC_SUBST(BUILD_DIR)
+ 
+ AC_SUBST(CFLAGS)
+@@ -292,6 +299,7 @@ AC_SUBST(host_os)
+ AC_SUBST(LIBVERSION)
+ 
+ AC_SUBST(TERMCAP_LIB)
++AC_SUBST(TERMCAP_PKG_CONFIG_LIB)
+ 
+ AC_OUTPUT([Makefile doc/Makefile examples/Makefile shlib/Makefile readline.pc],
+ [
+diff --git a/readline.pc.in b/readline.pc.in
+index fbfca8a..a7f2cf3 100644
+--- a/readline.pc.in
++++ b/readline.pc.in
+@@ -7,6 +7,6 @@ Name: Readline
+ Description: Gnu Readline library for command line editing
+ URL: http://tiswww.cwru.edu/php/chet/readline/rltop.html
+ Version: @LIBVERSION@
+-Requires.private: tinfo
++Requires.private: @TERMCAP_PKG_CONFIG_LIB@
+ Libs: -L${libdir} -lreadline
+ Cflags: -I${includedir}/readline
+-- 
+2.14.3
+

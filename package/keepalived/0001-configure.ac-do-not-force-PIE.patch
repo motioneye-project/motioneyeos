@@ -1,0 +1,38 @@
+From 4da31a615412e15f7658d21770708e8084be149c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Wed, 4 Apr 2018 22:29:45 +0200
+Subject: [PATCH] configure.ac: do not force PIE
+
+PIE is not necessarily supported on all architectures, so leave it up
+to the user to pass the appropriate CFLAGS/LDFLAGS if he wants to use
+PIE.
+
+This fixes the build on the m68k and Microblaze architecture:
+
+  http://autobuild.buildroot.net/results/a536f5947b3b70fdaecad1af5542572c504ad046/
+  http://autobuild.buildroot.net/results/0ffbf1e8d181c9463847a5b2be6f9baa18face24/
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream-status: https://github.com/acassen/keepalived/pull/830
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index c344f07e..06545c91 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -233,8 +233,8 @@ AC_SUBST(ARFLAGS)
+ # AC_PROG_LIBTOOL
+ 
+ KA_CPPFLAGS="$kernelinc"
+-KA_CFLAGS="-Wall -Wunused -Wstrict-prototypes -Wextra -g -O2 -fPIE -D_GNU_SOURCE"
+-KA_LDFLAGS="-pie"
++KA_CFLAGS="-Wall -Wunused -Wstrict-prototypes -Wextra -g -O2 -D_GNU_SOURCE"
++KA_LDFLAGS=""
+ KA_LIBS=
+ NEED_LIBDL=No
+ #KA_LIBTOOLFLAGS =
+-- 
+2.14.3
+

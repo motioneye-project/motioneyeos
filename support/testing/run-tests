@@ -41,7 +41,7 @@ def main():
         BRTest.logtofile = False
 
     if args.list:
-        print "List of tests"
+        print("List of tests")
         nose2.discover(argv=[script_path,
                              "-s", test_dir,
                              "-v",
@@ -52,17 +52,16 @@ def main():
     if args.download is None:
         args.download = os.getenv("BR2_DL_DIR")
         if args.download is None:
-            print "Missing download directory, please use -d/--download"
-            print ""
+            print("Missing download directory, please use -d/--download")
+            print("")
             parser.print_help()
             return 1
 
     BRTest.downloaddir = os.path.abspath(args.download)
-    os.putenv("BR2_DL_DIR", BRTest.downloaddir)
 
     if args.output is None:
-        print "Missing output directory, please use -o/--output"
-        print ""
+        print("Missing output directory, please use -o/--output")
+        print("")
         parser.print_help()
         return 1
 
@@ -72,8 +71,8 @@ def main():
     BRTest.outputdir = os.path.abspath(args.output)
 
     if args.all is False and len(args.testname) == 0:
-        print "No test selected"
-        print ""
+        print("No test selected")
+        print("")
         parser.print_help()
         return 1
 
@@ -81,8 +80,8 @@ def main():
 
     if args.testcases != 1:
         if args.testcases < 1:
-            print "Invalid number of testcases to run simultaneously"
-            print ""
+            print("Invalid number of testcases to run simultaneously")
+            print("")
             parser.print_help()
             return 1
         # same default BR2_JLEVEL as package/Makefile.in
@@ -94,16 +93,16 @@ def main():
 
     if args.jlevel:
         if args.jlevel < 0:
-            print "Invalid BR2_JLEVEL to use for each testcase"
-            print ""
+            print("Invalid BR2_JLEVEL to use for each testcase")
+            print("")
             parser.print_help()
             return 1
         # the user can override the auto calculated value
         BRTest.jlevel = args.jlevel
 
     if args.timeout_multiplier < 1:
-        print "Invalid multiplier for timeout values"
-        print ""
+        print("Invalid multiplier for timeout values")
+        print("")
         parser.print_help()
         return 1
     BRTest.timeout_multiplier = args.timeout_multiplier

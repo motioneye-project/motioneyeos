@@ -15,9 +15,6 @@ config BR2_ARCH_HAS_MMU_MANDATORY
 config BR2_ARCH_HAS_MMU_OPTIONAL
 	bool
 
-config BR2_ARCH_HAS_FDPIC_SUPPORT
-	bool
-
 choice
 	prompt "Target Architecture"
 	default BR2_i386
@@ -28,24 +25,25 @@ config BR2_arcle
 	bool "ARC (little endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
-	  that can be used from deeply embedded to high performance host
-	  applications. Little endian.
+	  Synopsys' DesignWare ARC Processor Cores are a family of
+	  32-bit CPUs that can be used from deeply embedded to high
+	  performance host applications. Little endian.
 
 config BR2_arceb
 	bool "ARC (big endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  Synopsys' DesignWare ARC Processor Cores are a family of 32-bit CPUs
-	  that can be used from deeply embedded to high performance host
-	  applications. Big endian.
+	  Synopsys' DesignWare ARC Processor Cores are a family of
+	  32-bit CPUs that can be used from deeply embedded to high
+	  performance host applications. Big endian.
 
 config BR2_arm
 	bool "ARM (little endian)"
 	# MMU support is set by the subarchitecture file, arch/Config.in.arm
 	help
-	  ARM is a 32-bit reduced instruction set computer (RISC) instruction
-	  set architecture (ISA) developed by ARM Holdings. Little endian.
+	  ARM is a 32-bit reduced instruction set computer (RISC)
+	  instruction set architecture (ISA) developed by ARM Holdings.
+	  Little endian.
 	  http://www.arm.com/
 	  http://en.wikipedia.org/wiki/ARM
 
@@ -53,8 +51,9 @@ config BR2_armeb
 	bool "ARM (big endian)"
 	# MMU support is set by the subarchitecture file, arch/Config.in.arm
 	help
-	  ARM is a 32-bit reduced instruction set computer (RISC) instruction
-	  set architecture (ISA) developed by ARM Holdings. Big endian.
+	  ARM is a 32-bit reduced instruction set computer (RISC)
+	  instruction set architecture (ISA) developed by ARM Holdings.
+	  Big endian.
 	  http://www.arm.com/
 	  http://en.wikipedia.org/wiki/ARM
 
@@ -75,16 +74,6 @@ config BR2_aarch64_be
 	  Aarch64 is a 64-bit architecture developed by ARM Holdings.
 	  http://www.arm.com/products/processors/instruction-set-architectures/armv8-architecture.php
 	  http://en.wikipedia.org/wiki/ARM
-
-config BR2_bfin
-	bool "Blackfin"
-	select BR2_ARCH_HAS_FDPIC_SUPPORT
-	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
-	help
-	  The Blackfin is a family of 16 or 32-bit microprocessors developed,
-	  manufactured and marketed by Analog Devices.
-	  http://www.analog.com/
-	  http://en.wikipedia.org/wiki/Blackfin
 
 config BR2_csky
 	bool "csky"
@@ -113,8 +102,8 @@ config BR2_microblazeel
 	bool "Microblaze AXI (little endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  Soft processor core designed for Xilinx FPGAs from Xilinx. AXI bus
-	  based architecture (little endian)
+	  Soft processor core designed for Xilinx FPGAs from Xilinx. AXI
+	  bus based architecture (little endian)
 	  http://www.xilinx.com
 	  http://en.wikipedia.org/wiki/Microblaze
 
@@ -122,8 +111,8 @@ config BR2_microblazebe
 	bool "Microblaze non-AXI (big endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  Soft processor core designed for Xilinx FPGAs from Xilinx. PLB bus
-	  based architecture (non-AXI, big endian)
+	  Soft processor core designed for Xilinx FPGAs from Xilinx. PLB
+	  bus based architecture (non-AXI, big endian)
 	  http://www.xilinx.com
 	  http://en.wikipedia.org/wiki/Microblaze
 
@@ -131,7 +120,8 @@ config BR2_mips
 	bool "MIPS (big endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  MIPS is a RISC microprocessor from MIPS Technologies. Big endian.
+	  MIPS is a RISC microprocessor from MIPS Technologies. Big
+	  endian.
 	  http://www.mips.com/
 	  http://en.wikipedia.org/wiki/MIPS_Technologies
 
@@ -139,7 +129,8 @@ config BR2_mipsel
 	bool "MIPS (little endian)"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  MIPS is a RISC microprocessor from MIPS Technologies. Little endian.
+	  MIPS is a RISC microprocessor from MIPS Technologies. Little
+	  endian.
 	  http://www.mips.com/
 	  http://en.wikipedia.org/wiki/MIPS_Technologies
 
@@ -148,7 +139,8 @@ config BR2_mips64
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  MIPS is a RISC microprocessor from MIPS Technologies. Big endian.
+	  MIPS is a RISC microprocessor from MIPS Technologies. Big
+	  endian.
 	  http://www.mips.com/
 	  http://en.wikipedia.org/wiki/MIPS_Technologies
 
@@ -157,7 +149,8 @@ config BR2_mips64el
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  MIPS is a RISC microprocessor from MIPS Technologies. Little endian.
+	  MIPS is a RISC microprocessor from MIPS Technologies. Little
+	  endian.
 	  http://www.mips.com/
 	  http://en.wikipedia.org/wiki/MIPS_Technologies
 
@@ -180,8 +173,8 @@ config BR2_powerpc
 	bool "PowerPC"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
-	  Big endian.
+	  PowerPC is a RISC architecture created by Apple-IBM-Motorola
+	  alliance. Big endian.
 	  http://www.power.org/
 	  http://en.wikipedia.org/wiki/Powerpc
 
@@ -190,8 +183,8 @@ config BR2_powerpc64
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
-	  Big endian.
+	  PowerPC is a RISC architecture created by Apple-IBM-Motorola
+	  alliance. Big endian.
 	  http://www.power.org/
 	  http://en.wikipedia.org/wiki/Powerpc
 
@@ -200,8 +193,8 @@ config BR2_powerpc64le
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  PowerPC is a RISC architecture created by Apple-IBM-Motorola alliance.
-	  Little endian.
+	  PowerPC is a RISC architecture created by Apple-IBM-Motorola
+	  alliance. Little endian.
 	  http://www.power.org/
 	  http://en.wikipedia.org/wiki/Powerpc
 
@@ -209,8 +202,9 @@ config BR2_sh
 	bool "SuperH"
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	help
-	  SuperH (or SH) is a 32-bit reduced instruction set computer (RISC)
-	  instruction set architecture (ISA) developed by Hitachi.
+	  SuperH (or SH) is a 32-bit reduced instruction set computer
+	  (RISC) instruction set architecture (ISA) developed by
+	  Hitachi.
 	  http://www.hitachi.com/
 	  http://en.wikipedia.org/wiki/SuperH
 
@@ -218,8 +212,9 @@ config BR2_sparc
 	bool "SPARC"
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  SPARC (from Scalable Processor Architecture) is a RISC instruction
-	  set architecture (ISA) developed by Sun Microsystems.
+	  SPARC (from Scalable Processor Architecture) is a RISC
+	  instruction set architecture (ISA) developed by Sun
+	  Microsystems.
 	  http://www.oracle.com/sun
 	  http://en.wikipedia.org/wiki/Sparc
 
@@ -228,8 +223,9 @@ config BR2_sparc64
 	select BR2_ARCH_IS_64
 	select BR2_ARCH_HAS_MMU_MANDATORY
 	help
-	  SPARC (from Scalable Processor Architecture) is a RISC instruction
-	  set architecture (ISA) developed by Sun Microsystems.
+	  SPARC (from Scalable Processor Architecture) is a RISC
+	  instruction set architecture (ISA) developed by Sun
+	  Microsystems.
 	  http://www.oracle.com/sun
 	  http://en.wikipedia.org/wiki/Sparc
 
@@ -282,6 +278,10 @@ config BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	bool
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
+
+config BR2_ARCH_NEEDS_GCC_AT_LEAST_8
+	bool
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 
 # The following string values are defined by the individual
 # Config.in.$ARCH files
@@ -341,7 +341,6 @@ config BR2_READELF_ARCH_NAME
 choice
 	prompt "Target Binary Format"
 	default BR2_BINFMT_ELF if BR2_USE_MMU
-	default BR2_BINFMT_FDPIC if BR2_ARCH_HAS_FDPIC_SUPPORT
 	default BR2_BINFMT_FLAT
 
 config BR2_BINFMT_ELF
@@ -349,56 +348,34 @@ config BR2_BINFMT_ELF
 	depends on BR2_USE_MMU
 	select BR2_BINFMT_SUPPORTS_SHARED
 	help
-	  ELF (Executable and Linkable Format) is a format for libraries and
-	  executables used across different architectures and operating
-	  systems.
-
-config BR2_BINFMT_FDPIC
-	bool "FDPIC"
-	depends on BR2_ARCH_HAS_FDPIC_SUPPORT
-	select BR2_BINFMT_SUPPORTS_SHARED
-	help
-	  ELF FDPIC binaries are based on ELF, but allow the individual load
-	  segments of a binary to be located in memory independently of each
-	  other. This makes this format ideal for use in environments where no
-	  MMU is available.
+	  ELF (Executable and Linkable Format) is a format for libraries
+	  and executables used across different architectures and
+	  operating systems.
 
 config BR2_BINFMT_FLAT
 	bool "FLAT"
 	depends on !BR2_USE_MMU
 	help
-	  FLAT binary is a relatively simple and lightweight executable format
-	  based on the original a.out format. It is widely used in environment
-	  where no MMU is available.
+	  FLAT binary is a relatively simple and lightweight executable
+	  format based on the original a.out format. It is widely used
+	  in environment where no MMU is available.
 
 endchoice
 
 # Set up flat binary type
 choice
 	prompt "FLAT Binary type"
-	depends on BR2_BINFMT_FLAT
 	default BR2_BINFMT_FLAT_ONE
+	depends on BR2_BINFMT_FLAT
 
 config BR2_BINFMT_FLAT_ONE
 	bool "One memory region"
 	help
 	  All segments are linked into one memory region.
 
-config BR2_BINFMT_FLAT_SEP_DATA
-	bool "Separate data and code region"
-	# this FLAT binary type technically exists on m68k, but fails
-	# to build numerous packages: due to architecture limitation,
-	# big functions cannot be built in this mode. They cause build
-	# failures such as "Tried to convert PC relative branch to
-	# absolute jump" or "error: value -yyyyy out of range".
-	depends on BR2_bfin
-	help
-	  Allow for the data and text segments to be separated and placed in
-	  different regions of memory.
-
 config BR2_BINFMT_FLAT_SHARED
 	bool "Shared binary"
-	depends on BR2_m68k || BR2_bfin
+	depends on BR2_m68k
 	# Even though this really generates shared binaries, there is no libdl
 	# and dlopen() cannot be used. So packages that require shared
 	# libraries cannot be built. Therefore, we don't select
@@ -416,10 +393,6 @@ endif
 
 if BR2_arm || BR2_armeb || BR2_aarch64 || BR2_aarch64_be
 source "arch/Config.in.arm"
-endif
-
-if BR2_bfin
-source "arch/Config.in.bfin"
 endif
 
 if BR2_csky

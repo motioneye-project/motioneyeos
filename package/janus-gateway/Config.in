@@ -19,21 +19,21 @@ if BR2_PACKAGE_JANUS_GATEWAY
 
 comment "plugins"
 
-config BR2_PACKAGE_JANUS_AUDIO_BRIDGE
+config BR2_PACKAGE_JANUS_GATEWAY_AUDIO_BRIDGE
 	bool "audio bridge"
 	select BR2_PACKAGE_OPUS
 
-config BR2_PACKAGE_JANUS_ECHO_TEST
+config BR2_PACKAGE_JANUS_GATEWAY_ECHO_TEST
 	bool "echo test"
 
-config BR2_PACKAGE_JANUS_RECORDPLAY
+config BR2_PACKAGE_JANUS_GATEWAY_RECORDPLAY
 	bool "record and play"
 
-config BR2_PACKAGE_JANUS_SIP_GATEWAY
+config BR2_PACKAGE_JANUS_GATEWAY_SIP_GATEWAY
 	bool "sip gateway"
 	select BR2_PACKAGE_SOFIA_SIP
 
-config  BR2_PACKAGE_JANUS_STREAMING
+config BR2_PACKAGE_JANUS_GATEWAY_STREAMING
 	bool "streaming"
 	# SO_REUSEPORT
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
@@ -41,22 +41,22 @@ config  BR2_PACKAGE_JANUS_STREAMING
 comment "streaming plugin needs a toolchain w/ headers >= 3.9"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
 
-config BR2_PACKAGE_JANUS_TEXT_ROOM
+config BR2_PACKAGE_JANUS_GATEWAY_TEXT_ROOM
 	bool "text room"
 
-config BR2_PACKAGE_JANUS_VIDEO_CALL
+config BR2_PACKAGE_JANUS_GATEWAY_VIDEO_CALL
 	bool "video call"
 
-config BR2_PACKAGE_JANUS_VIDEO_ROOM
+config BR2_PACKAGE_JANUS_GATEWAY_VIDEO_ROOM
 	bool "video room"
 
-config BR2_PACKAGE_JANUS_VOICE_MAIL
+config BR2_PACKAGE_JANUS_GATEWAY_VOICE_MAIL
 	bool "voice mail"
 	select BR2_PACKAGE_LIBOGG
 
 comment "transports"
 
-config BR2_PACKAGE_JANUS_MQTT
+config BR2_PACKAGE_JANUS_GATEWAY_MQTT
 	bool "MQTT"
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -65,7 +65,7 @@ config BR2_PACKAGE_JANUS_MQTT
 comment "MQTT transport needs a toolchain w/ threads and dynamic library support"
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
-config BR2_PACKAGE_JANUS_RABBITMQ
+config BR2_PACKAGE_JANUS_GATEWAY_RABBITMQ
 	bool "RabbitMQ"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_RABBITMQ_C
@@ -73,7 +73,7 @@ config BR2_PACKAGE_JANUS_RABBITMQ
 comment "RabbitMQ transport needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
-config BR2_PACKAGE_JANUS_REST
+config BR2_PACKAGE_JANUS_GATEWAY_REST
 	bool "REST (HTTP/HTTPS)"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_LIBMICROHTTPD
@@ -81,11 +81,11 @@ config BR2_PACKAGE_JANUS_REST
 comment "REST transport needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
 
-config BR2_PACKAGE_JANUS_UNIX_SOCKETS
+config BR2_PACKAGE_JANUS_GATEWAY_UNIX_SOCKETS
 	bool "Unix Sockets"
 	default y
 
-config BR2_PACKAGE_JANUS_WEBSOCKETS
+config BR2_PACKAGE_JANUS_GATEWAY_WEBSOCKETS
 	bool "WebSockets"
 	depends on BR2_USE_MMU
 	select BR2_PACKAGE_LIBWEBSOCKETS

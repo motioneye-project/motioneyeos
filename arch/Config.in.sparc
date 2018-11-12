@@ -1,8 +1,8 @@
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_sparc || BR2_sparc64
 	default BR2_sparc_v8 if BR2_sparc
 	default BR2_sparc_v9 if BR2_sparc64
+	depends on BR2_sparc || BR2_sparc64
 	help
 	  Specific CPU variant to use
 

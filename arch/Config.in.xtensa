@@ -1,15 +1,15 @@
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_xtensa
 	default BR2_xtensa_fsf
+	depends on BR2_xtensa
 
 config BR2_XTENSA_CUSTOM
-	select BR2_ARCH_HAS_MMU_OPTIONAL
 	bool "Custom Xtensa processor configuration"
+	select BR2_ARCH_HAS_MMU_OPTIONAL
 
 config BR2_xtensa_fsf
-	select BR2_ARCH_HAS_MMU_MANDATORY
 	bool "fsf - Default configuration"
+	select BR2_ARCH_HAS_MMU_MANDATORY
 
 endchoice
 
@@ -20,18 +20,18 @@ config BR2_XTENSA_OVERLAY_FILE
 	  Enter the path to the overlay tarball for a custom processor
 	  configuration.
 
-	  These overlay files are tar packages with updated configuration
-	  files for various toolchain packages and Xtensa processor
-	  configurations. They are provided by the processor vendor or
-	  directly from Tensilica.
+	  These overlay files are tar packages with updated
+	  configuration files for various toolchain packages and Xtensa
+	  processor configurations. They are provided by the processor
+	  vendor or directly from Tensilica.
 
-	  The path can be either absolute, or relative to the top directory
-	  of buildroot.
+	  The path can be either absolute, or relative to the top
+	  directory of buildroot.
 
 choice
 	prompt "Target Architecture Endianness"
-	depends on BR2_XTENSA_CUSTOM
 	default BR2_XTENSA_LITTLE_ENDIAN
+	depends on BR2_XTENSA_CUSTOM
 
 config BR2_XTENSA_LITTLE_ENDIAN
 	bool "Little endian"

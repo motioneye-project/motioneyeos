@@ -1,4 +1,7 @@
-automake: add subdir-objects option
+From 7663c856db10274d8dfbf7fb4299d3f76e5847a8 Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Tue, 1 May 2018 22:28:52 +0200
+Subject: [PATCH] automake: add subdir-objects option
 
 Our version of automake warns if this option is enabled and source files
 in subdirectories are used.
@@ -7,10 +10,14 @@ It doesn't really seems to have a noticable effect on the build, but it
 does remove a lot of annoying warnings.
 
 Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff -Nrup vlc-2.1.2.orig/configure.ac vlc-2.1.2/configure.ac
---- vlc-2.1.2.orig/configure.ac	2014-02-27 00:22:19.512944952 +0100
-+++ vlc-2.1.2/configure.ac	2014-02-27 00:24:21.360940651 +0100
+diff --git a/configure.ac b/configure.ac
+index b3841ea77b..9a37656ddd 100644
+--- a/configure.ac
++++ b/configure.ac
 @@ -24,7 +24,7 @@ AC_CANONICAL_BUILD
  AC_CANONICAL_HOST
  AC_PRESERVE_HELP_ORDER
@@ -20,3 +27,6 @@ diff -Nrup vlc-2.1.2.orig/configure.ac vlc-2.1.2/configure.ac
  AC_CONFIG_HEADERS([config.h])
  
  # Disable with "./configure --disable-silent-rules" or "make V=1"
+-- 
+2.14.3
+

@@ -1,0 +1,239 @@
+From 1ef6bdaeb0463a208a14e5d90646ce337df738fc Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@smile.fr>
+Date: Sun, 1 Apr 2018 15:38:55 +0200
+Subject: [PATCH] configure.in: convert AC_RUN_IFELSE to AC_CHECK_MEMBERS
+
+With AC_CHECK_MEMBERS, we don't need to compile and run a test program
+to check if a daq structure element is defined.
+
+Also check DAQ_Data_Channel_Params_t with params.flags
+
+typedef struct _DAQ_Data_Channel_Params_t
+{
+    unsigned flags;     /* DAQ_DATA_CHANNEL_* flags*/
+    unsigned timeout_ms;/* timeout of the data channel in milliseconds */
+    unsigned length;    /* [Future] length of the data associated with the data channel */
+    uint8_t* data;      /* [Future] opaque data blob to return with the data channel */
+} DAQ_Data_Channel_Params_t;
+
+https://github.com/Xiche/libdaq/blob/master/api/daq_common.h
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Cc: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ configure.in | 143 +++++++++++++++++------------------------------------------
+ 1 file changed, 41 insertions(+), 102 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 938409f..571322b 100644
+--- a/configure.in
++++ b/configure.in
+@@ -718,17 +718,11 @@ fi
+ AC_CHECK_FUNCS([daq_hup_apply] [daq_acquire_with_meta] [daq_dp_add_dc])
+ 
+ AC_MSG_CHECKING([for daq real addresses])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_PktHdr_t hdr;
+-   hdr.n_real_dPort = 0;
+-]])],
+-[have_daq_real_addresses="yes"],
+-[have_daq_real_addresses="no"])
++
++AC_CHECK_MEMBERS([DAQ_PktHdr_t hdr.n_real_dPort],
++    [have_daq_real_addresses="yes"],
++    [have_daq_real_addresses="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_real_addresses)
+ if test "x$have_daq_real_addresses" = "xyes"; then
+     AC_DEFINE([HAVE_DAQ_REAL_ADDRESSES],[1],
+@@ -756,17 +750,11 @@ if test "x$ac_cv_func_daq_dp_add_dc" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq address space ID])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_PktHdr_t hdr;
+-   hdr.address_space_id = 0;
+-]])],
+-[have_daq_address_space_id="yes"],
+-[have_daq_address_space_id="no"])
++
++AC_CHECK_MEMBERS([DAQ_PktHdr_t hdr.address_space_id],
++    [have_daq_address_space_id="yes"],
++    [have_daq_address_space_id="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_address_space_id)
+ if test "x$have_daq_address_space_id" = "xyes"; then
+     AC_DEFINE([HAVE_DAQ_ADDRESS_SPACE_ID],[1],
+@@ -774,17 +762,10 @@ if test "x$have_daq_address_space_id" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq flow ID])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_PktHdr_t hdr;
+-   hdr.flow_id = 0;
+-]])],
+-[have_daq_flow_id="yes"],
+-[have_daq_flow_id="no"])
++AC_CHECK_MEMBERS([DAQ_PktHdr_t hdr.flow_id],
++    [have_daq_flow_id="yes"],
++    [have_daq_flow_id="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_flow_id)
+ if test "x$have_daq_flow_id" = "xyes"; then
+     AC_DEFINE([HAVE_DAQ_FLOW_ID],[1],
+@@ -792,19 +773,10 @@ if test "x$have_daq_flow_id" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq extended flow modifiers])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_ModFlow_t mod;
+-   mod.type = 0;
+-   mod.length = 0;
+-   mod.value = NULL;
+-]])],
+-[have_daq_ext_modflow="yes"],
+-[have_daq_ext_modflow="no"])
++AC_CHECK_MEMBERS([DAQ_ModFlow_t mod.type, DAQ_ModFlow_t mod.length, DAQ_ModFlow_t mod.value],
++    [have_daq_ext_modflow="yes"],
++    [have_daq_ext_modflow="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_ext_modflow)
+ if test "x$have_daq_ext_modflow" = "xyes"; then
+     CCONFIGFLAGS="${CCONFIGFLAGS} -DHAVE_DAQ_EXT_MODFLOW"
+@@ -813,19 +785,11 @@ if test "x$have_daq_ext_modflow" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq query flow])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_QueryFlow_t mod;
+-   mod.type = 0;
+-   mod.length = 0;
+-   mod.value = NULL;
+-]])],
+-[have_daq_queryflow="yes"],
+-[have_daq_queryflow="no"])
++
++AC_CHECK_MEMBERS([DAQ_QueryFlow_t mod.type, DAQ_QueryFlow_t mod.length, DAQ_QueryFlow_t mod.value],
++    [have_daq_queryflow="yes"],
++    [have_daq_queryflow="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_queryflow)
+ if test "x$have_daq_queryflow" = "xyes"; then
+     CCONFIGFLAGS="${CCONFIGFLAGS} -DHAVE_DAQ_QUERYFLOW"
+@@ -834,16 +798,11 @@ if test "x$have_daq_queryflow" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq data channel flags])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_Data_Channel_Params_t params;
+-]])],
+-[have_daq_data_channel_flags="yes"],
+-[have_daq_data_channel_flags="no"])
++
++AC_CHECK_MEMBERS([DAQ_Data_Channel_Params_t params.flags],
++    [have_daq_data_channel_flags="yes"],
++    [have_daq_data_channel_flags="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_data_channel_flags)
+ if test "x$have_daq_data_channel_flags" = "xyes"; then
+     CCONFIGFLAGS="${CCONFIGFLAGS} -DHAVE_DAQ_DATA_CHANNEL_PARAMS"
+@@ -852,17 +811,10 @@ if test "x$have_daq_data_channel_flags" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for separate IP versions on pinhole endpoints])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_DP_key_t dpKey;
+-   dpKey.src_af = 0;
+-]])],
+-[have_daq_data_channel_separate_ip_versions="yes"],
+-[have_daq_data_channel_separate_ip_versions="no"])
++AC_CHECK_MEMBERS([DAQ_DP_key_t dpKey.src_af],
++    [have_daq_data_channel_separate_ip_versions="yes"],
++    [have_daq_data_channel_separate_ip_versions="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_data_channel_separate_ip_versions)
+ if test "x$have_daq_data_channel_separate_ip_versions" = "xyes"; then
+     CCONFIGFLAGS="${CCONFIGFLAGS} -DHAVE_DAQ_DATA_CHANNEL_SEPARATE_IP_VERSIONS"
+@@ -889,17 +841,10 @@ if test "x$have_daq_verdict_retry" = "xyes"; then
+ fi
+ 
+ AC_MSG_CHECKING([for daq packet trace])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_PktHdr_t hdr;
+-   hdr.flags = DAQ_PKT_FLAG_TRACE_ENABLED;
+-]])],
+-[have_daq_packet_trace="yes"],
+-[have_daq_packet_trace="no"])
++AC_CHECK_MEMBERS([DAQ_PktHdr_t hdr.flags],
++    [have_daq_packet_trace="yes"],
++    [have_daq_packet_trace="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_packet_trace)
+ if test "x$have_daq_packet_trace" = "xyes"; then
+     AC_DEFINE([HAVE_DAQ_PKT_TRACE],[1],
+@@ -909,17 +854,11 @@ else
+ fi
+ 
+ AC_MSG_CHECKING([for daq verdict reason])
+-AC_RUN_IFELSE(
+-[AC_LANG_PROGRAM(
+-[[
+-#include <daq.h>
+-]],
+-[[
+-   DAQ_ModFlow_t fl;
+-   fl.type = DAQ_MODFLOW_TYPE_VER_REASON;
+-]])],
+-[have_daq_verdict_reason="yes"],
+-[have_daq_verdict_reason="no"])
++
++AC_CHECK_MEMBERS([DAQ_ModFlow_t fl.type],
++    [have_daq_verdict_reason="yes"],
++    [have_daq_verdict_reason="no"],
++    [[#include <daq.h>]])
+ AC_MSG_RESULT($have_daq_verdict_reason)
+ if test "x$have_daq_verdict_reason" = "xyes"; then
+     AC_DEFINE([HAVE_DAQ_VERDICT_REASON],[1],
+-- 
+2.14.3
+

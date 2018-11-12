@@ -4,7 +4,7 @@ choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_ARC if BR2_arc
 	default BR2_GCC_VERSION_OR1K if BR2_or1k
-	default BR2_GCC_VERSION_6_X
+	default BR2_GCC_VERSION_7_X
 	help
 	  Select the version of gcc you wish to use.
 
@@ -32,6 +32,8 @@ config BR2_GCC_VERSION_4_9_X
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
 	# glibc >= 2.26 needs gcc >= 6.2
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
+	# glibc >= 2.27 needs gcc >= 5
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC && (BR2_aarch64 || BR2_aarch64_be))
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 
 config BR2_GCC_VERSION_5_X
@@ -57,18 +59,18 @@ config BR2_GCC_VERSION_6_X
 
 config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	# Broken or unsupported architectures
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
-endchoice
+config BR2_GCC_VERSION_8_X
+	bool "gcc 8.x"
+	# Broken or unsupported architectures
+	depends on !BR2_or1k
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
-# Indicates if GCC for architecture supports --with-{arch,cpu,..}  to
-# set default CFLAGS, otherwise values will be used by toolchain
-# wrapper.
-config BR2_GCC_ARCH_HAS_CONFIGURABLE_DEFAULTS
-	bool
-	default y if !BR2_bfin
+endchoice
 
 config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
 	bool
@@ -80,7 +82,8 @@ config BR2_GCC_VERSION
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
 	default "6.4.0"     if BR2_GCC_VERSION_6_X
 	default "7.3.0"     if BR2_GCC_VERSION_7_X
-	default "arc-2017.09-release" if BR2_GCC_VERSION_ARC
+	default "8.2.0"     if BR2_GCC_VERSION_8_X
+	default "arc-2018.03" if BR2_GCC_VERSION_ARC
 	default "or1k-musl-5.4.0-20170218" if BR2_GCC_VERSION_OR1K
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS

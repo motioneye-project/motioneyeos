@@ -4,21 +4,16 @@
 #
 ################################################################################
 
-EFIVAR_VERSION = 30
-EFIVAR_SITE = $(call github,rhinstaller,efivar,$(EFIVAR_VERSION))
+EFIVAR_VERSION = 34
+EFIVAR_SITE = $(call github,rhboot,efivar,$(EFIVAR_VERSION))
 EFIVAR_LICENSE = LGPL-2.1
 EFIVAR_LICENSE_FILES = COPYING
-EFIVAR_DEPENDENCIES = popt
 EFIVAR_INSTALL_STAGING = YES
 
-# BINTARGETS is set to skip efivar-static which requires static popt,
-# and since we depend on dynamic libraries, efivar will never be built
-# in a static-only environment.
 # -fPIC is needed at least on MIPS, otherwise fails to build shared
 # -library.
 EFIVAR_MAKE_OPTS = \
 	libdir=/usr/lib \
-	BINTARGETS=efivar \
 	LDFLAGS="$(TARGET_LDFLAGS) -fPIC"
 
 define EFIVAR_BUILD_CMDS

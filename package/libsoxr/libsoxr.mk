@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSOXR_VERSION = 0.1.2
+LIBSOXR_VERSION = 0.1.3
 LIBSOXR_SOURCE = soxr-$(LIBSOXR_VERSION)-Source.tar.xz
 LIBSOXR_SITE = http://downloads.sourceforge.net/project/soxr
 LIBSOXR_LICENSE = LGPL-2.1+

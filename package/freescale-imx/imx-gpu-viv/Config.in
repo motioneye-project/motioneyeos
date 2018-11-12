@@ -2,17 +2,21 @@ comment "imx-gpu-viv needs a glibc toolchain with armhf enabled"
 	depends on BR2_arm
 	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_ARM_EABIHF
 
+comment "imx-gpu-viv needs a glibc toolchain"
+	depends on BR2_aarch64
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
+
 config BR2_PACKAGE_IMX_GPU_VIV
 	bool "imx-gpu-viv"
 	# Pre-built binaries only available for ARM EABIhf
-	depends on BR2_ARM_EABIHF
+	depends on (BR2_arm && BR2_ARM_EABIHF) || BR2_aarch64
 	# Library binaries are linked against libc.so.6
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_LIBOPENVG
 	help
-	  Userspace libraries for Vivante GPU on i.MX6 platforms
+	  Userspace libraries for Vivante GPU on i.MX platforms
 
 	  It contains libraries and headers for GLES, OpenCL, and
 	  OpenVG. It also contains a DRI plugin for X11. It also
@@ -34,15 +38,27 @@ choice
 config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
 	bool "X11"
 	depends on BR2_PACKAGE_XORG7
+	# The i.MX8 blob doesn't support X11 output
+	depends on !BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8M
 	select BR2_PACKAGE_XLIB_LIBXDAMAGE
 	select BR2_PACKAGE_XLIB_LIBXEXT
 	select BR2_PACKAGE_XLIB_LIBXFIXES
 
 comment "X11 backend needs Xorg package"
 	depends on !BR2_PACKAGE_XORG7
+	depends on !BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8M
 
 config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
 	bool "Framebuffer"
+	# The i.MX8 blob doesn't support FB output
+	depends on !BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8M
+
+config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL
+	bool "Wayland"
+	# libdrm needed by gbm_viv.so
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_WAYLAND
+	select BR2_PACKAGE_HAS_LIBEGL_WAYLAND
 
 endchoice
 
@@ -50,6 +66,7 @@ config BR2_PACKAGE_IMX_GPU_VIV_OUTPUT
 	string
 	default "x11" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_X11
 	default "fb" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_FB
+	default "wl" if BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL
 
 config BR2_PACKAGE_PROVIDES_LIBEGL
 	default "imx-gpu-viv"

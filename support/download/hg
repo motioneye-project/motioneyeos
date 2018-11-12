@@ -5,27 +5,30 @@ set -e
 
 # Download helper for hg, to be called from the download wrapper script
 #
-# Call it as:
-#   .../hg [-q] OUT_FILE REPO_URL CSET BASENAME
+# Options:
+#   -q          Be quiet.
+#   -o FILE     Generate archive in FILE.
+#   -u URI      Clone from repository at URI.
+#   -c CSET     Use changeset (or revision) CSET.
+#   -n NAME     Use basename NAME.
 #
 # Environment:
 #   HG       : the hg command to call
 
 verbose=
-while getopts :q OPT; do
+while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-q;;
+    o)  output="${OPTARG}";;
+    u)  uri="${OPTARG}";;
+    c)  cset="${OPTARG}";;
+    n)  basename="${OPTARG}";;
+    :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
-shift $((OPTIND-1))
 
-output="${1}"
-repo="${2}"
-cset="${3}"
-basename="${4}"
-
-shift 4 # Get rid of our options
+shift $((OPTIND-1)) # Get rid of our options
 
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
@@ -33,7 +36,7 @@ _hg() {
     eval ${HG} "${@}"
 }
 
-_hg clone ${verbose} "${@}" --noupdate "'${repo}'" "'${basename}'"
+_hg clone ${verbose} "${@}" --noupdate "'${uri}'" "'${basename}'"
 
 _hg archive ${verbose} --repository "'${basename}'" --type tgz \
             --prefix "'${basename}'" --rev "'${cset}'" \

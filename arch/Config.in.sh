@@ -1,7 +1,7 @@
 choice
 	prompt "Target Architecture Variant"
-	depends on BR2_sh
 	default BR2_sh4
+	depends on BR2_sh
 	help
 	  Specific CPU variant to use
 

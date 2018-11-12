@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PCSC_LITE_VERSION = 1.8.22
+PCSC_LITE_VERSION = 1.8.23
 PCSC_LITE_SOURCE = pcsc-lite-$(PCSC_LITE_VERSION).tar.bz2
-PCSC_LITE_SITE = http://alioth.debian.org/frs/download.php/file/4203
+PCSC_LITE_SITE = https://pcsclite.apdu.fr/files
 PCSC_LITE_INSTALL_STAGING = YES
 PCSC_LITE_DEPENDENCIES = host-pkgconf
 PCSC_LITE_LICENSE = BSD-3-Clause
@@ -27,6 +27,13 @@ PCSC_LITE_DEPENDENCIES += libusb
 else
 PCSC_LITE_CONF_OPTS += --disable-libusb --disable-libudev
 endif
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+PCSC_LITE_CONF_OPTS += --enable-libsystemd
+PCSC_LITE_DEPENDENCIES += systemd
+else
+PCSC_LITE_CONF_OPTS += --disable-libsystemd
 endif
 
 ifeq ($(PACKAGE_PCSC_LITE_DEBUGATR),y)

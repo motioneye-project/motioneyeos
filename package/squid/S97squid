@@ -1,6 +1,5 @@
 #!/bin/sh
 
-[ -x /usr/sbin/squid ] || exit 0
 [ -f /etc/squid.conf ] || exit 0
 
 case "$1" in

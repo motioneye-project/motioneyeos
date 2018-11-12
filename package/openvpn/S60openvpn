@@ -7,13 +7,11 @@
 
 test $DEBIAN_SCRIPT_DEBUG && set -v -x
 
-DAEMON=/usr/sbin/openvpn
 CONFIG_DIR=/etc/openvpn
-test -x $DAEMON || exit 0
 test -d $CONFIG_DIR || exit 0
 
 start_vpn () {
-    $DAEMON --daemon --writepid /var/run/openvpn.$NAME.pid \
+    /usr/sbin/openvpn --daemon --writepid /var/run/openvpn.$NAME.pid \
             --config $CONFIG_DIR/$NAME.conf --cd $CONFIG_DIR || printf " FAILED->"
     printf " $NAME"
 }
@@ -79,8 +77,6 @@ reload|force-reload)
       printf "(restarted)"
     else
       kill -HUP `cat $PIDFILE` || true
-#    start-stop-daemon --stop --signal HUP --quiet --oknodo \
-#      --exec $DAEMON --pidfile $PIDFILE
     printf " $NAME"
     fi
   done

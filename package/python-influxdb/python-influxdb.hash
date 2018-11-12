@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/influxdb/json
+md5	dec1e6fe9770c36290d38fb2a37fba25  influxdb-5.0.0.tar.gz
+sha256	6adba2ddfd5781a06b5204339e679d66645bf6cc2b7f493eb9d7c8986d714e80  influxdb-5.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256	70146f78d168b33ac5903490a918469e22a801a8d3a81103f3d8706dc0024c9a  LICENSE

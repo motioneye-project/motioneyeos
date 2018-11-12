@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ALSA_LIB_VERSION = 1.1.5
+ALSA_LIB_VERSION = 1.1.6
 ALSA_LIB_SOURCE = alsa-lib-$(ALSA_LIB_VERSION).tar.bz2
 ALSA_LIB_SITE = ftp://ftp.alsa-project.org/pub/lib
 ALSA_LIB_LICENSE = LGPL-2.1+ (library), GPL-2.0+ (aserver)
@@ -60,12 +60,6 @@ ALSA_LIB_CFLAGS += -I$(STAGING_DIR)/usr/include/python$(PYTHON_VERSION_MAJOR)
 ALSA_LIB_DEPENDENCIES = python
 else
 ALSA_LIB_CONF_OPTS += --disable-python
-endif
-
-ifeq ($(BR2_bfin),y)
-# blackfin external toolchains don't have versionsort. Fake it using alphasort
-# instead
-ALSA_LIB_CFLAGS += -Dversionsort=alphasort
 endif
 
 ALSA_LIB_CONF_ENV = \

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_UGLY_VERSION = 1.12.4
+GST1_PLUGINS_UGLY_VERSION = 1.14.2
 GST1_PLUGINS_UGLY_SOURCE = gst-plugins-ugly-$(GST1_PLUGINS_UGLY_VERSION).tar.xz
 GST1_PLUGINS_UGLY_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-ugly
 GST1_PLUGINS_UGLY_LICENSE_FILES = COPYING
@@ -68,20 +68,6 @@ GST1_PLUGINS_UGLY_DEPENDENCIES += libdvdread
 GST1_PLUGINS_UGLY_HAS_GPL_LICENSE = y
 else
 GST1_PLUGINS_UGLY_CONF_OPTS += --disable-dvdread
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_LAME),y)
-GST1_PLUGINS_UGLY_CONF_OPTS += --enable-lame
-GST1_PLUGINS_UGLY_DEPENDENCIES += lame
-else
-GST1_PLUGINS_UGLY_CONF_OPTS += --disable-lame
-endif
-
-ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPG123),y)
-GST1_PLUGINS_UGLY_CONF_OPTS += --enable-mpg123
-GST1_PLUGINS_UGLY_DEPENDENCIES += mpg123
-else
-GST1_PLUGINS_UGLY_CONF_OPTS += --disable-mpg123
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MPEG2DEC),y)

@@ -19,8 +19,7 @@ START_STOP_DAEMON_CONF_ENV = \
 	dpkg_cv_va_copy=yes \
 	dpkg_cv_c99_snprintf=yes \
 	DPKG_DEVEL_MODE=1
-START_STOP_DAEMON_DEPENDENCIES = host-pkgconf \
-	$(if $(BR2_PACKAGE_BUSYBOX),busybox)
+START_STOP_DAEMON_DEPENDENCIES = host-pkgconf
 # Patching m4/dpkg-arch.m4
 START_STOP_DAEMON_AUTORECONF = YES
 START_STOP_DAEMON_LICENSE = GPL-2.0+

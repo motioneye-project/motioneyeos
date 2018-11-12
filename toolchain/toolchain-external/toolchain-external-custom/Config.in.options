@@ -12,12 +12,22 @@ config BR2_TOOLCHAIN_EXTERNAL_URL
 	help
 	  URL of the custom toolchain tarball to download and install.
 
+config BR2_TOOLCHAIN_EXTERNAL_REL_BIN_PATH
+	string "Toolchain relative binary path"
+	default "bin"
+	depends on BR2_TOOLCHAIN_EXTERNAL_DOWNLOAD
+	help
+	  Path to where the binaries (e.g. the compiler) can be found,
+	  relative to the downloaded toolchain root directory. The
+	  default is "bin" and is correct for most toolchains.
+
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_PREFIX
 	string "Toolchain prefix"
 	default "$(ARCH)-linux"
 
 choice
 	bool "External toolchain gcc version"
+	default BR2_TOOLCHAIN_EXTERNAL_GCC_8   if BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	default BR2_TOOLCHAIN_EXTERNAL_GCC_7   if BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	default BR2_TOOLCHAIN_EXTERNAL_GCC_6   if BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	default BR2_TOOLCHAIN_EXTERNAL_GCC_5   if BR2_ARCH_NEEDS_GCC_AT_LEAST_5
@@ -28,8 +38,13 @@ choice
 	  Set to the gcc version that is used by your external
 	  toolchain.
 
+config BR2_TOOLCHAIN_EXTERNAL_GCC_8
+	bool "8.x"
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
+
 config BR2_TOOLCHAIN_EXTERNAL_GCC_7
 	bool "7.x"
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
 config BR2_TOOLCHAIN_EXTERNAL_GCC_6
@@ -107,6 +122,18 @@ choice
 	    M = ( LINUX_VERSION_CODE >> 16 ) & 0xFF
 	    m = ( LINUX_VERSION_CODE >> 8  ) & 0xFF
 	    p = ( LINUX_VERSION_CODE >> 0  ) & 0xFF
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_18
+	bool "4.18.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_17
+	bool "4.17.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_17
+
+config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_16
+	bool "4.16.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_16
 
 config BR2_TOOLCHAIN_EXTERNAL_HEADERS_4_15
 	bool "4.15.x"
@@ -264,9 +291,6 @@ choice
 config BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 	bool "uClibc/uClibc-ng"
 	select BR2_TOOLCHAIN_EXTERNAL_UCLIBC
-	# For the time being, we assume that all custom external
-	# toolchains have shadow password support.
-	select BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS
 	help
 	  Select this option if your external toolchain uses the
 	  uClibc (available from http://www.uclibc.org/)
@@ -320,8 +344,8 @@ config BR2_TOOLCHAIN_EXTERNAL_LOCALE
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 	bool "Toolchain has threads support?"
-	select BR2_TOOLCHAIN_HAS_THREADS
 	default y
+	select BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Select this option if your external toolchain has thread
 	  support. If you don't know, leave the default value,
@@ -331,8 +355,8 @@ if BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG
 	bool "Toolchain has threads debugging support?"
-	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	default y
+	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	help
 	  Select this option if your external toolchain has thread
 	  debugging support. If you don't know, leave the default
@@ -340,8 +364,8 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_DEBUG
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_THREADS_NPTL
 	bool "Toolchain has NPTL threads support?"
-	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	default y
+	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	help
 	  Select this option if your external toolchain uses the NPTL
 	  (Native Posix Thread Library) implementation of Posix
@@ -354,9 +378,9 @@ endif # BR2_TOOLCHAIN_EXTERNAL_CUSTOM_UCLIBC
 
 config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	bool "Toolchain has SSP support?"
-	select BR2_TOOLCHAIN_HAS_SSP
 	default y if BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	default y if BR2_TOOLCHAIN_EXTERNAL_MUSL
+	select BR2_TOOLCHAIN_HAS_SSP
 	help
 	  Selection this option if your external toolchain has Stack
 	  Smashing Protection support enabled. If you don't know,
@@ -365,9 +389,9 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
 	bool "Toolchain has RPC support?"
-	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
-	depends on !BR2_TOOLCHAIN_EXTERNAL_MUSL
 	default y if BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	depends on !BR2_TOOLCHAIN_EXTERNAL_MUSL
+	select BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	help
 	  Select this option if your external toolchain supports
 	  RPC. If you don't know, leave the default value, Buildroot

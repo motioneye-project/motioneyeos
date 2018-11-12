@@ -1,0 +1,44 @@
+From a6817677a42d1294f1a3ce7b9f46b10ec557ddfa Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@smile.fr>
+Date: Sun, 1 Apr 2018 15:23:59 +0200
+Subject: [PATCH] configure.in: Allow to override the INADDR_NONE check
+
+Prevent configure script from trying to run programs in a cross
+compilation environment to check if INADDR_NONE is defined.
+
+In the context of Buildroot, INADDR_NONE is always defined.
+The snort package will set have_inaddr_none=yes in
+SNORT_CONF_ENV.
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Cc: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ configure.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 1e940b1..938409f 100644
+--- a/configure.in
++++ b/configure.in
+@@ -284,8 +284,8 @@ AC_CHECK_TYPES([int8_t,int16_t,int32_t,int64_t])
+ AC_CHECK_TYPES([boolean])
+ 
+ # In case INADDR_NONE is not defined (like on Solaris)
++AC_CACHE_CHECK([for INADDR_NONE], [have_inaddr_none], [
+ have_inaddr_none="no"
+-AC_MSG_CHECKING([for INADDR_NONE])
+ AC_RUN_IFELSE(
+ [AC_LANG_PROGRAM(
+ [[
+@@ -298,7 +298,7 @@ AC_RUN_IFELSE(
+     return 0;
+ ]])],
+ [have_inaddr_none="yes"],
+-[have_inaddr_none="no"])
++[have_inaddr_none="no"])])
+ AC_MSG_RESULT($have_inaddr_none)
+ if test "x$have_inaddr_none" = "xno"; then
+ 	AC_DEFINE([INADDR_NONE],[-1],[For INADDR_NONE definition])
+-- 
+2.14.3
+

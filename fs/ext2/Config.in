@@ -49,11 +49,11 @@ config BR2_TARGET_ROOTFS_EXT2_SIZE
 	default BR2_TARGET_ROOTFS_EXT2_BLOCKS if BR2_TARGET_ROOTFS_EXT2_BLOCKS_WRAP # legacy 2017.08
 	default "60M"
 	help
-	  The size of the filesystem image. If it does not have a suffix,
-	  it is interpreted as power-of-two kilobytes. If it is suffixed
-	  by 'k', 'm', 'g', 't' (either upper-case or lower-case), then
-	  it is interpreted in power-of-two kilobytes, megabytes,
-	  gigabytes, terabytes, etc.
+	  The size of the filesystem image. If it does not have a
+	  suffix, it is interpreted as power-of-two kilobytes. If it is
+	  suffixed by 'k', 'm', 'g', 't' (either upper-case or
+	  lower-case), then it is interpreted in power-of-two kilobytes,
+	  megabytes, gigabytes, terabytes, etc.
 
 config BR2_TARGET_ROOTFS_EXT2_INODES
 	int "exact number of inodes (leave at 0 for auto calculation)"
@@ -65,15 +65,16 @@ config BR2_TARGET_ROOTFS_EXT2_RESBLKS
 	help
 	  The number of blocks on the filesystem (as a percentage of the
 	  total number of blocks), that are reserved for use by root.
-	  Traditionally, this has been 5%, and all ext-related tools still
-	  default to reserving 5% when creating a new ext filesystem.
+	  Traditionally, this has been 5%, and all ext-related tools
+	  still default to reserving 5% when creating a new ext
+	  filesystem.
 
 config BR2_TARGET_ROOTFS_EXT2_MKFS_OPTIONS
 	string "additional mke2fs options"
 	default "-O ^64bit"
 	help
-	  Specify a space-separated list of mke2fs options, including any
-	  ext2/3/4 filesystem features.
+	  Specify a space-separated list of mke2fs options, including
+	  any ext2/3/4 filesystem features.
 
 	  For more information about the mke2fs options, see the manual
 	  page mke2fs(8).
@@ -91,7 +92,8 @@ choice
 	prompt "Compression method"
 	default BR2_TARGET_ROOTFS_EXT2_NONE
 	help
-	  Select compressor for ext2/3/4 filesystem of the root filesystem
+	  Select compressor for ext2/3/4 filesystem of the root
+	  filesystem
 
 config BR2_TARGET_ROOTFS_EXT2_NONE
 	bool "no compression"

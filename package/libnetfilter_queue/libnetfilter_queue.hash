@@ -1,3 +1,6 @@
-# From ftp://ftp.netfilter.org/pub/libnetfilter_queue/libnetfilter_queue-1.0.2.tar.bz2.{md5sum,sha1sum}
-md5	df09befac35cb215865b39a36c96a3fa	libnetfilter_queue-1.0.2.tar.bz2
-sha1	8cc0b8ed33162281bc9fa8bcfa8c9dcb08848ff9	libnetfilter_queue-1.0.2.tar.bz2
+# From ftp://ftp.netfilter.org/pub/libnetfilter_queue/libnetfilter_queue-1.0.3.tar.bz2.{md5sum,sha1sum}
+md5	700ce0ae4784257ab5abe6fd1802f366	libnetfilter_queue-1.0.3.tar.bz2
+sha1	3d182e3211b633d0a0f8a2b12ef80dc2621f53cb	libnetfilter_queue-1.0.2.tar.bz2
+
+# Hash for license file:
+sha256	91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad	COPYING

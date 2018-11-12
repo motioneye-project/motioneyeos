@@ -12,6 +12,10 @@ Subject: [PATCH] Adjust for buildroot build.
  - add gpio-static linking target
 
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+
+ - Rebased for wiringpi-8d188fa0e00bb8c6ff6eddd07bf92857e9bd533a
+
+Signed-off-by: Atanas Palavrov <palavrov@gmail.com>
 ---
  devLib/Makefile   |  9 +++++----
  gpio/Makefile     | 14 +++++++++-----
@@ -54,7 +58,7 @@ index cf665d6..3fb41e8 100644
  
  .PHONY:	install-static
 diff --git a/gpio/Makefile b/gpio/Makefile
-index f41a005..7095fa5 100644
+index 9ec160d..360d64c 100644
 --- a/gpio/Makefile
 +++ b/gpio/Makefile
 @@ -32,11 +32,11 @@ endif
@@ -89,7 +93,7 @@ index f41a005..7095fa5 100644
  	$Q echo [Compile] $<
  	$Q $(CC) -c $(CFLAGS) $< -o $@
 diff --git a/wiringPi/Makefile b/wiringPi/Makefile
-index e1868b9..68c950e 100644
+index 287fa58..81595d3 100644
 --- a/wiringPi/Makefile
 +++ b/wiringPi/Makefile
 @@ -36,10 +36,10 @@ DYNAMIC=libwiringPi.so.$(VERSION)
@@ -102,10 +106,10 @@ index e1868b9..68c950e 100644
  DEFS	= -D_GNU_SOURCE
 -CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Winline $(INCLUDE) -pipe -fPIC
 +CFLAGS	+= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Winline $(INCLUDE) -pipe -fPIC
+ #CFLAGS	= $(DEBUG) $(DEFS) -Wformat=2 -Wall -Wextra -Wconversion -Winline $(INCLUDE) -pipe -fPIC
  
  LIBS    = -lm -lpthread -lrt -lcrypt
- 
-@@ -79,6 +79,7 @@ $(STATIC):	$(OBJ)
+@@ -76,6 +76,7 @@ static:
  $(DYNAMIC):	$(OBJ)
  	$Q echo "[Link (Dynamic)]"
  	$Q $(CC) -shared -Wl,-soname,libwiringPi.so$(WIRINGPI_SONAME_SUFFIX) -o libwiringPi.so.$(VERSION) $(LIBS) $(OBJ)
@@ -113,7 +117,7 @@ index e1868b9..68c950e 100644
  
  .c.o:
  	$Q echo [Compile] $<
-@@ -104,7 +105,7 @@ install:	$(DYNAMIC)
+@@ -101,7 +102,7 @@ install:	$(DYNAMIC)
  	$Q echo "[Install Dynamic Lib]"
  	$Q install -m 0755 -d						$(DESTDIR)$(PREFIX)/lib
  	$Q install -m 0755 libwiringPi.so.$(VERSION)			$(DESTDIR)$(PREFIX)/lib/libwiringPi.so.$(VERSION)
@@ -121,7 +125,7 @@ index e1868b9..68c950e 100644
 +	$Q ln -sf libwiringPi.so.$(VERSION)				$(DESTDIR)$(PREFIX)/lib/libwiringPi.so
  	$Q $(LDCONFIG)
  
- .PHONY:	install-static
+ .PHONY:	install-deb
 -- 
 2.11.0
 

@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002214.html
-sha256	3213671b0a8a9d1e8d1d5d9e3fd86842c894dd9acc1be2560eda50bc1fb791d6	xrefresh-1.0.5.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002872.html
+md5 c56fa4adbeed1ee5173f464a4c4a61a6  xrefresh-1.0.6.tar.bz2
+sha1 11eb5b3f905631281d2cedd86a0b666bab0d9bdc  xrefresh-1.0.6.tar.bz2
+sha256 287dfb9bb7e8d780d07e672e3252150850869cb550958ed5f8401f0835cd6353  xrefresh-1.0.6.tar.bz2
+sha512 361e97fecfc2706d5eeab69df0d4dd4baa55b6783cfddabf51d8561b7c930d71ce6c217e0512c6564208d69b04f89c69ea8c0bfb2e4f6cc25b062b55e4db3674  xrefresh-1.0.6.tar.bz2
+# Locally computed
+sha256 4f51c9a91cd277697cbea6604bf4cb240c1ed14cdba82550cb9cac8f1286f663 COPYING
