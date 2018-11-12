@@ -1,0 +1,66 @@
+From b3a1e97498e7987073775d49a703932c20f2df1d Mon Sep 17 00:00:00 2001
+From: Ezequiel Garcia <ezequiel@collabora.com>
+Date: Mon, 12 Nov 2018 14:04:46 -0300
+Subject: [PATCH] mips: Remove default endiannes
+
+Currently, trying to build ci20_mmc fails on little-endian
+toolchains. The problem seems to be that some targets don't
+have CONFIG_SYS_LITTLE_ENDIAN properly set, and therefore
+the default -EB switch is selected.
+
+Let's get rid of the default switch entirely, and fix this problem.
+While this may be a hack, it is a quick solution until
+U-Boot gets CI20 proper support.
+
+make ARCH=mips CROSS_COMPILE=mips-linux-gnu- ci20_mmc
+Configuring for ci20_mmc - Board: ci20, Options: SPL_MMC_SUPPORT,ENV_IS_IN_MMC
+make
+make[1]: Entering directory '/home/zeta/repos/u-boot-ci20'
+Generating include/autoconf.mk
+Generating include/autoconf.mk.dep
+mips-linux-gnu-gcc: error: may not use both -EB and -EL
+mips-linux-gnu-gcc: error: may not use both -EB and -EL
+Generating include/spl-autoconf.mk
+mips-linux-gnu-gcc: error: may not use both -EB and -EL
+Generating include/tpl-autoconf.mk
+mips-linux-gnu-gcc: error: may not use both -EB and -EL
+mips-linux-gnu-gcc -DDO_DEPS_ONLY \
+	-g  -Os   -ffunction-sections -fdata-sections -D__KERNEL__ -I/home/zeta/repos/u-boot-ci20/include -fno-builtin -ffreestanding -nostdinc -isystem /home/zeta/repos/buildroot/mips/output/host/opt/ext-toolchain/bin/../lib/gcc/mips-linux-gnu/5.3.0/include -pipe  -DCONFIG_MIPS -D__MIPS__ -G 0 -EB -msoft-float -fpic -mabicalls -march=mips32 -mabi=32 -DCONFIG_32BIT -mno-branch-likely -Wall -Wstrict-prototypes       \
+	-o lib/asm-offsets.s lib/asm-offsets.c -c -S
+if [ -f arch/mips/cpu/xburst/jz4780/asm-offsets.c ];then \
+	mips-linux-gnu-gcc -DDO_DEPS_ONLY \
+	-g  -Os   -ffunction-sections -fdata-sections -D__KERNEL__ -I/home/zeta/repos/u-boot-ci20/include -fno-builtin -ffreestanding -nostdinc -isystem /home/zeta/repos/buildroot/mips/output/host/opt/ext-toolchain/bin/../lib/gcc/mips-linux-gnu/5.3.0/include -pipe  -DCONFIG_MIPS -D__MIPS__ -G 0 -EB -msoft-float -fpic -mabicalls -march=mips32 -mabi=32 -DCONFIG_32BIT -mno-branch-likely -Wall -Wstrict-prototypes       \
+		-o arch/mips/cpu/xburst/jz4780/asm-offsets.s arch/mips/cpu/xburst/jz4780/asm-offsets.c -c -S; \
+else \
+	touch arch/mips/cpu/xburst/jz4780/asm-offsets.s; \
+fi
+mips-linux-gnu-gcc: error: may not use both -EB and -EL
+make[1]: *** [Makefile:747: lib/asm-offsets.s] Error 1
+make[1]: *** Waiting for unfinished jobs....
+make[1]: Leaving directory '/home/zeta/repos/u-boot-ci20'
+make: *** [.boards.depend:463: ci20_mmc] Error 2
+
+Signed-off-by: Ezequiel Garcia <ezequiel@collabora.com>
+---
+https://github.com/MIPS/CI20_u-boot/pull/19
+
+ arch/mips/config.mk | 3 ---
+ 1 file changed, 3 deletions(-)
+
+diff --git a/arch/mips/config.mk b/arch/mips/config.mk
+index c89279025507..43560abbc0e1 100644
+--- a/arch/mips/config.mk
++++ b/arch/mips/config.mk
+@@ -20,9 +20,6 @@ ifdef CONFIG_SYS_BIG_ENDIAN
+ ENDIANNESS := -EB
+ endif
+ 
+-# Default to EB if no endianess is configured
+-ENDIANNESS ?= -EB
+-
+ PLATFORM_CPPFLAGS += -DCONFIG_MIPS -D__MIPS__
+ 
+ #
+-- 
+2.19.1
+
