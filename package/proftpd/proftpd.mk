@@ -121,4 +121,8 @@ define PROFTPD_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/proftpd.service
 endef
 
+ifneq ($(BR2_PACKAGE_PROFTPD_BUFFER_SIZE),0)
+PROFTPD_CONF_OPTS += --enable-buffer-size=$(BR2_PACKAGE_PROFTPD_BUFFER_SIZE)
+endif
+
 $(eval $(autotools-package))
