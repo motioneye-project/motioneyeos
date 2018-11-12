@@ -40,48 +40,21 @@ define ROOTFS_REPRODUCIBLE
 endef
 endif
 
-ROOTFS_COMMON_TAR = $(FS_DIR)/rootfs.common.tar
-
-# Command to create the common tarball from the base target directory.
-define ROOTFS_COMMON_TAR_CMD
-	tar cf $(ROOTFS_COMMON_TAR) --numeric-owner \
-		--exclude=$(notdir $(TARGET_DIR_WARNING_FILE)) \
-		-C $(TARGET_DIR) .
-endef
-
-# Command to extract the common tarball into the per-rootfs target directory
-define ROOTFS_COMMON_UNTAR_CMD
-	mkdir -p $(TARGET_DIR)
-	tar xf $(ROOTFS_COMMON_TAR) -C $(TARGET_DIR)
-endef
-
-.PHONY: rootfs-common
-rootfs-common: $(ROOTFS_COMMON_TAR)
-
-# Emulate being in a filesystem, so that we can have our own TARGET_DIR.
-ROOTFS_COMMON_TARGET_DIR = $(FS_DIR)/target
-
 ROOTFS_COMMON_DEPENDENCIES = \
 	host-fakeroot host-makedevs \
 	$(BR2_TAR_HOST_DEPENDENCY) \
 	$(if $(PACKAGES_USERS)$(ROOTFS_USERS_TABLES),host-mkpasswd)
 
-$(ROOTFS_COMMON_TAR): ROOTFS=COMMON
-$(ROOTFS_COMMON_TAR): FAKEROOT_SCRIPT=$(FS_DIR)/fakeroot.fs
-$(ROOTFS_COMMON_TAR): $(ROOTFS_COMMON_DEPENDENCIES) target-finalize
-	@$(call MESSAGE,"Generating common rootfs tarball")
+.PHONY: rootfs-common
+rootfs-common: $(ROOTFS_COMMON_DEPENDENCIES) target-finalize
+	@$(call MESSAGE,"Generating root filesystems common tables")
 	rm -rf $(FS_DIR)
 	mkdir -p $(FS_DIR)
-	rsync -auH $(BASE_TARGET_DIR)/ $(TARGET_DIR)
-	echo '#!/bin/sh' > $(FAKEROOT_SCRIPT)
-	echo "set -e" >> $(FAKEROOT_SCRIPT)
-	echo "chown -h -R 0:0 $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
 
 	$(call PRINTF,$(PACKAGES_USERS)) >> $(USERS_TABLE)
 ifneq ($(ROOTFS_USERS_TABLES),)
 	cat $(ROOTFS_USERS_TABLES) >> $(USERS_TABLE)
 endif
-	PATH=$(BR_PATH) $(TOPDIR)/support/scripts/mkusers $(USERS_TABLE) $(TARGET_DIR) >> $(FAKEROOT_SCRIPT)
 ifneq ($(ROOTFS_DEVICE_TABLES),)
 	cat $(ROOTFS_DEVICE_TABLES) > $(FULL_DEVICE_TABLE)
 ifeq ($(BR2_ROOTFS_DEVICE_CREATION_STATIC),y)
@@ -89,16 +62,6 @@ ifeq ($(BR2_ROOTFS_DEVICE_CREATION_STATIC),y)
 endif
 endif
 	$(call PRINTF,$(PACKAGES_PERMISSIONS_TABLE)) >> $(FULL_DEVICE_TABLE)
-	echo "$(HOST_DIR)/bin/makedevs -d $(FULL_DEVICE_TABLE) $(TARGET_DIR)" >> $(FAKEROOT_SCRIPT)
-	$(foreach s,$(call qstrip,$(BR2_ROOTFS_POST_FAKEROOT_SCRIPT)),\
-		echo "echo '$(TERM_BOLD)>>>   Executing fakeroot script $(s)$(TERM_RESET)'" >> $(FAKEROOT_SCRIPT); \
-		echo $(EXTRA_ENV) $(s) $(TARGET_DIR) $(BR2_ROOTFS_POST_SCRIPT_ARGS) >> $(FAKEROOT_SCRIPT)$(sep))
-	$(foreach hook,$(ROOTFS_PRE_CMD_HOOKS),\
-		$(call PRINTF,$($(hook))) >> $(FAKEROOT_SCRIPT)$(sep))
-	$(call PRINTF,$(ROOTFS_COMMON_TAR_CMD)) >> $(FAKEROOT_SCRIPT)
-	chmod a+x $(FAKEROOT_SCRIPT)
-	PATH=$(BR_PATH) $(HOST_DIR)/bin/fakeroot -- $(FAKEROOT_SCRIPT)
-	$(Q)rm -rf $(TARGET_DIR)
 
 rootfs-common-show-depends:
 	@echo $(ROOTFS_COMMON_DEPENDENCIES)
@@ -147,9 +110,23 @@ $$(BINARIES_DIR)/rootfs.$(1): $$(ROOTFS_$(2)_DEPENDENCIES)
 	@$$(call MESSAGE,"Generating root filesystem image rootfs.$(1)")
 	rm -rf $$(ROOTFS_$(2)_DIR)
 	mkdir -p $$(ROOTFS_$(2)_DIR)
+	rsync -auH \
+		--exclude=/$$(notdir $$(TARGET_DIR_WARNING_FILE)) \
+		$$(BASE_TARGET_DIR)/ \
+		$$(TARGET_DIR)
+
 	echo '#!/bin/sh' > $$(FAKEROOT_SCRIPT)
 	echo "set -e" >> $$(FAKEROOT_SCRIPT)
-	$$(call PRINTF,$$(ROOTFS_COMMON_UNTAR_CMD)) >> $$(FAKEROOT_SCRIPT)
+
+	echo "chown -h -R 0:0 $$(TARGET_DIR)" >> $$(FAKEROOT_SCRIPT)
+	PATH=$$(BR_PATH) $$(TOPDIR)/support/scripts/mkusers $$(USERS_TABLE) $$(TARGET_DIR) >> $$(FAKEROOT_SCRIPT)
+	echo "$$(HOST_DIR)/bin/makedevs -d $$(FULL_DEVICE_TABLE) $$(TARGET_DIR)" >> $$(FAKEROOT_SCRIPT)
+	$$(foreach s,$$(call qstrip,$$(BR2_ROOTFS_POST_FAKEROOT_SCRIPT)),\
+		echo "echo '$$(TERM_BOLD)>>>   Executing fakeroot script $$(s)$$(TERM_RESET)'" >> $$(FAKEROOT_SCRIPT); \
+		echo $$(EXTRA_ENV) $$(s) $$(TARGET_DIR) $$(BR2_ROOTFS_POST_SCRIPT_ARGS) >> $$(FAKEROOT_SCRIPT)$$(sep))
+	$$(foreach hook,$$(ROOTFS_PRE_CMD_HOOKS),\
+		$$(call PRINTF,$$($$(hook))) >> $$(FAKEROOT_SCRIPT)$$(sep))
+
 	$$(foreach hook,$$(ROOTFS_$(2)_PRE_GEN_HOOKS),\
 		$$(call PRINTF,$$($$(hook))) >> $$(FAKEROOT_SCRIPT)$$(sep))
 	$$(call PRINTF,$$(ROOTFS_REPRODUCIBLE)) >> $$(FAKEROOT_SCRIPT)

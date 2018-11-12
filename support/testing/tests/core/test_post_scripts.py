@@ -41,8 +41,8 @@ class TestPostScripts(infra.basetest.BRTest):
                                  os.path.join(self.builddir, "target"),
                                  os.path.join(self.builddir, "target"))
         self.check_post_log_file("post-fakeroot.log",
-                                 os.path.join(self.builddir, "build/buildroot-fs/target"),
-                                 os.path.join(self.builddir, "build/buildroot-fs/target"))
+                                 os.path.join(self.builddir, "build/buildroot-fs/tar/target"),
+                                 os.path.join(self.builddir, "build/buildroot-fs/tar/target"))
         self.check_post_log_file("post-image.log",
                                  os.path.join(self.builddir, "images"),
                                  os.path.join(self.builddir, "target"))
