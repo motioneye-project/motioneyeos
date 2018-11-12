@@ -20,6 +20,7 @@ PROFTPD_CONF_OPTS = \
 	--disable-ncurses \
 	--disable-facl \
 	--disable-dso \
+	--enable-sendfile \
 	--enable-shadow \
 	--with-gnu-ld
 
