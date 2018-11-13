@@ -9,9 +9,9 @@ Index: b/nspr/pr/include/md/_linux.cfg
 ===================================================================
 --- a/nspr/pr/include/md/_linux.cfg
 +++ b/nspr/pr/include/md/_linux.cfg
-@@ -1017,6 +1017,51 @@
- #define PR_BYTES_PER_WORD_LOG2   2
- #define PR_BYTES_PER_DWORD_LOG2  3
+@@ -1112,6 +1112,51 @@
+ #define PR_BYTES_PER_WORD_LOG2  3
+ #define PR_BYTES_PER_DWORD_LOG2 3
  
 +#elif defined(__nios2__)
 +

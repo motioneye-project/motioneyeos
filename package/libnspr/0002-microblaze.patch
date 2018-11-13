@@ -9,7 +9,7 @@ Index: b/nspr/pr/include/md/_linux.cfg
 ===================================================================
 --- a/nspr/pr/include/md/_linux.cfg
 +++ b/nspr/pr/include/md/_linux.cfg
-@@ -1062,6 +1062,56 @@
+@@ -1157,6 +1157,56 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
  
