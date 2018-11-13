@@ -138,6 +138,9 @@ endif
 ifeq ($(BR2_PACKAGE_SNAPPY),y)
 WIRESHARK_CONF_OPTS += --with-snappy=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += snappy
+ifeq ($(BR2_STATIC_LIBS),y)
+WIRESHARK_CONF_ENV += LIBS=-lstdc++
+endif
 else
 WIRESHARK_CONF_OPTS += --without-snappy
 endif
