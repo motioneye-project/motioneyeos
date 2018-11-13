@@ -1,0 +1,79 @@
+From 4e6e6b52fe2f88584645a761bb342ac89d6c2860 Mon Sep 17 00:00:00 2001
+From: Bruno Haible <bruno@clisp.org>
+Date: Thu, 15 Mar 2018 19:01:27 +0100
+Subject: [PATCH] Improve support for Linux/RISC-V.
+
+[Thomas: backported from upstream commit
+671b2528b55c57eda1a8fe5872ff1ef61014235f, drop ChangeLog changes.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ configure.ac              |  3 +++
+ src/Makefile.am           |  1 +
+ src/fault-linux-riscv64.h | 29 +++++++++++++++++++++++++++++
+ 3 files changed, 33 insertions(+)
+ create mode 100644 src/fault-linux-riscv64.h
+
+diff --git a/configure.ac b/configure.ac
+index 74ce6b4..9775cfb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -428,6 +428,9 @@ if test -z "$CFG_FAULT" && test "$sv_cv_fault_posix" = yes; then
+             powerpc* | rs6000)
+               CFG_FAULT=fault-linux-powerpc.h
+               ;;
++            riscv64)
++              CFG_FAULT=fault-linux-riscv64.h
++              ;;
+             s390*)
+               CFG_FAULT=fault-linux-s390.h
+               ;;
+diff --git a/src/Makefile.am b/src/Makefile.am
+index 3afa398..9a9982f 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -42,6 +42,7 @@ noinst_HEADERS = \
+   fault-linux-m68k.h fault-linux-m68k-old.h fault-linux-m68k-old.c \
+   fault-linux-mips.h fault-linux-mips-old.h \
+   fault-linux-powerpc.h fault-linux-powerpc-old.h \
++  fault-linux-riscv64.h \
+   fault-linux-s390.h fault-linux-s390-old.h \
+   fault-linux-sh.h fault-linux-sh-old.h \
+   fault-linux-sparc.h fault-linux-sparc-old.h \
+diff --git a/src/fault-linux-riscv64.h b/src/fault-linux-riscv64.h
+new file mode 100644
+index 0000000..14831bf
+--- /dev/null
++++ b/src/fault-linux-riscv64.h
+@@ -0,0 +1,29 @@
++/* Fault handler information.  Linux/RISC-V 64-bit version.
++   Copyright (C) 2018  Bruno Haible <bruno@clisp.org>
++
++   This program is free software; you can redistribute it and/or modify
++   it under the terms of the GNU General Public License as published by
++   the Free Software Foundation; either version 2, or (at your option)
++   any later version.
++
++   This program is distributed in the hope that it will be useful,
++   but WITHOUT ANY WARRANTY; without even the implied warranty of
++   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++   GNU General Public License for more details.
++
++   You should have received a copy of the GNU General Public License
++   along with this program; if not, write to the Free Software Foundation,
++   Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.  */
++
++#include "fault-posix-ucontext.h"
++
++/* See glibc/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h
++   and the definition of GET_STACK in
++   glibc/sysdeps/unix/sysv/linux/riscv/sigcontextinfo.h.
++   Note that the 'mcontext_t' defined in
++   glibc/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h
++   and the 'struct sigcontext' defined in
++   glibc/sysdeps/unix/sysv/linux/riscv/bits/sigcontext.h
++   start with the same block of 32 general-purpose registers.  */
++
++#define SIGSEGV_FAULT_STACKPOINTER  ((ucontext_t *) ucp)->uc_mcontext.__gregs[REG_SP]
+-- 
+2.19.1
+
