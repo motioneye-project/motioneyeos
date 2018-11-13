@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBNFTNL_VERSION = 1.0.9
-LIBNFTNL_SITE = http://netfilter.org/projects/libnftnl/files
+LIBNFTNL_VERSION = 1.1.2
+LIBNFTNL_SITE = https://netfilter.org/projects/libnftnl/files
 LIBNFTNL_SOURCE = libnftnl-$(LIBNFTNL_VERSION).tar.bz2
 LIBNFTNL_LICENSE = GPL-2.0+
 LIBNFTNL_LICENSE_FILES = COPYING
