@@ -425,7 +425,6 @@ define UCLIBC_INSTALL_TARGET_CMDS
 		RUNTIME_PREFIX=/ \
 		install_runtime
 	$(UCLIBC_INSTALL_UTILS_TARGET)
-	$(UCLIBC_INSTALL_LDSO_SYMLINKS)
 endef
 
 # STATIC has no ld* tools, only getconf
