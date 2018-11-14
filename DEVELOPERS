@@ -1829,6 +1829,7 @@ F:	package/python-pysnmp/
 F:	package/python-pysnmp-apps/
 F:	package/python-pysnmp-mibs/
 F:	package/python-tornado/
+F:	package/websocketpp/
 
 N:	Ryan Coe <bluemrp9@gmail.com>
 F:	package/inadyn/
