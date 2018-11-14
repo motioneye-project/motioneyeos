@@ -9,3 +9,4 @@
 18-merge-config.sh-create-temporary-files-in-tmp.patch
 19-merge_config.sh-add-br2-external-support.patch
 20-merge_config.sh-Allow-to-define-config-prefix.patch
+21-Avoid-false-positive-matches-from-comment-lines.patch
