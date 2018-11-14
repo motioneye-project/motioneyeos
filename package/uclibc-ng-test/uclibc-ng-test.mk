@@ -13,6 +13,11 @@ UCLIBC_NG_TEST_LICENSE_FILES = COPYING.LIB
 # regular testing is possible
 UCLIBC_NG_TEST_MAKE_ENV += NO_MATH=1
 
+# obsolete encrypt and setkey functions are not available since glibc 2.28
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+UCLIBC_NG_TEST_MAKE_ENV += NO_CRYPT=1
+endif
+
 # locale tests are not compatible with musl, yet
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
 UCLIBC_NG_TEST_MAKE_ENV += NO_LOCALE=1

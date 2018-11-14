@@ -1,0 +1,43 @@
+From 164b1b5592ef6ad9fceba06bdfa31787e9c0329d Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 14 Nov 2018 21:26:54 +0100
+Subject: [PATCH] Add NO_CRYPT to fix build with glibc 2.28
+
+Since glibc 2.28
+(https://savannah.gnu.org/forum/forum.php?forum_id=9205), the obsolete
+functions encrypt, encrypt_r, setkey, setkey_r, cbc_crypt, ecb_crypt,
+and des_setparity are no longer available to newly linked binaries, and
+the headers <rpc/des_crypt.h> and <rpc/rpc_des.h> are no longer
+installed. These functions encrypted and decrypted data with the DES
+block cipher, which is no longer considered secure. Software that still
+uses these functions should switch to a modern cryptography library,
+such as libgcrypt.
+
+So add a NO_CRYPT variable to disable test/crypt
+
+Fixes:
+ - http://autobuild.buildroot.org/results/158438debb0ce313b012b871e199bed42ba38294
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ test/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/test/Makefile b/test/Makefile
+index 5a136ea..6690d25 100644
+--- a/test/Makefile
++++ b/test/Makefile
+@@ -39,6 +39,10 @@ ifeq ($(NO_MATH),1)
+ DIRS := $(filter-out math,$(DIRS))
+ endif
+ 
++ifeq ($(NO_CRYPT),1)
++DIRS := $(filter-out crypt,$(DIRS))
++endif
++
+ test check all: run
+ 
+ run: subdirs_run
+-- 
+2.14.1
+
