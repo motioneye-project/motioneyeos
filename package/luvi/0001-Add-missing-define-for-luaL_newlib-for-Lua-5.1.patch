@@ -1,0 +1,61 @@
+From 7f9fcbd827295df72b15466fd3c47589d52117b9 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?J=C3=B6rg=20Krause?= <joerg.krause@embedded.rocks>
+Date: Wed, 31 Oct 2018 18:22:31 +0100
+Subject: [PATCH] Add missing define for luaL_newlib for Lua 5.1
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Since commit c286f3b741d0968fd1c49c28da83bc723468ecba, which bumped the
+library luv to version 1.22.0-1, building luvi fails.
+
+The reason for this error is, that instead of defining Lua 5.3 API itself,
+luv now [1] uses lua-compat-5.3 [1,2] for providing a Lua 5.3 API.
+
+Unfortunately, upstreams "luv.h" now exposes "compat-5.3.h" directly, causing
+redefinition errors when building luvi 2.7.6 (as well as latest release 2.8.0)
+with luv 1.22.0-1. Instead, "compat-5.3.h" should only be included in "luv.c",
+which is addressed in patching luv (Patch: "Do not include compat-5.3.h in luv
+header file").
+
+Patching luv reveals an issue in luvi itself, as it is using the Lua 5.3 API,
+without defining the Lua 5.3 itself, nor using lua-compat-5.3. Instead, it was
+using the definition provided by the "luv.h" file in luv versions before 1.22.0.
+
+Correctly, luvi should define the necessary Lua 5.3 itself, which is done by
+this patch, by providing a definition for `luaL_newlib`.
+
+Note, that this patch is not upstreamable, as upstream already switched to
+using lua-compat-5.3 [3,4]. However, backporting this patch set is to much of a
+burden, so we keep it simple, by just defining `luaL_newlib`.
+
+[1] https://github.com/luvit/luv/commit/34ada3e1d75796d2295ec54f3f20b3e2abf93406
+[2] https://github.com/keplerproject/lua-compat-5.3
+[3] https://github.com/luvit/luvi/commit/3a444d183d2fde91b6c2f3798b37881cdaa29691
+[4] https://github.com/luvit/luvi/commit/0376894bae7c1c3bee42ddad65e824da9cccdada
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ src/luvi.h | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/luvi.h b/src/luvi.h
+index e7558b3..ceca2b9 100644
+--- a/src/luvi.h
++++ b/src/luvi.h
+@@ -52,6 +52,12 @@ int luaopen_lpeg(lua_State* L);
+ #endif
+ #endif
+ 
++#if LUA_VERSION_NUM < 502
++#ifndef luaL_newlib
++# define luaL_newlib(L,l) (lua_newtable(L), luaL_register(L,NULL,l))
++#endif
++#endif
++
+ #if (LUA_VERSION_NUM >= 502)
+ # undef luaL_register
+ # define luaL_register(L,n,f) \
+-- 
+2.19.1
+
