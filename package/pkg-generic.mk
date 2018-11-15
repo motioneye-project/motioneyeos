@@ -818,6 +818,7 @@ $(1)-show-recursive-rdepends:
 			$$(TOPDIR)/support/scripts/graph-depends -p $(1) --reverse -f -q
 
 $(1)-show-build-order: $$(patsubst %,%-show-build-order,$$($(2)_FINAL_ALL_DEPENDENCIES))
+	@:
 	$$(info $(1))
 
 $(1)-graph-depends: graph-depends-requirements
