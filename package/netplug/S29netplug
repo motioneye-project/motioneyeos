@@ -26,7 +26,7 @@ if [ -f /etc/default/network ]; then
 	. /etc/default/network
 
 	# Check that networking is up.
-	[ ${NETWORKING} = "no" ] && exit 0
+	[ "${NETWORKING}" = "no" ] && exit 0
 elif [ ! -f /etc/network/interfaces ]; then
 	# No network support
 	exit 0
