@@ -1,7 +1,7 @@
 config BR2_PACKAGE_TPM2_TSS
 	bool "tpm2-tss"
-	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_LIBURIPARSER
+	select BR2_PACKAGE_OPENSSL
 	help
 	  OSS implementation of the Trusted Computing Group's (TCG) TPM2
 	  Software Stack (TSS). This stack consists of the following
@@ -30,6 +30,3 @@ config BR2_PACKAGE_TPM2_TSS
 	    Microsoft software TPM2 simulator.
 
 	  https://github.com/tpm2-software/tpm2-tss
-
-comment "tpm2-tss needs a toolchain w/ C++"
-	depends on !BR2_INSTALL_LIBSTDCPP

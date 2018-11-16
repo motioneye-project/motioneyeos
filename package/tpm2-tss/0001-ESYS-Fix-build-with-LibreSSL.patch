@@ -1,0 +1,48 @@
+From e8b8ecd2f761430dd2e2c74505974b429fe6b40f Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.com.br>
+Date: Wed, 14 Nov 2018 23:31:25 -0200
+Subject: [PATCH] ESYS: Fix build with LibreSSL
+
+RAND_bytes() is declared in rand.h. Also, LibreSSL does not provide OAEP
+macros EVP_PKEY_CTX_set0_rsa_oaep_label and EVP_PKEY_CTX_set_rsa_oaep_md
+so use them conditionally.
+
+Signed-off-by: Carlos Santos <casantos@datacom.com.br>
+---
+ src/tss2-esys/esys_crypto_ossl.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/tss2-esys/esys_crypto_ossl.c b/src/tss2-esys/esys_crypto_ossl.c
+index 43088f4a..6c0c76fe 100644
+--- a/src/tss2-esys/esys_crypto_ossl.c
++++ b/src/tss2-esys/esys_crypto_ossl.c
+@@ -10,6 +10,7 @@
+ #include <openssl/aes.h>
+ #include <openssl/rsa.h>
+ #include <openssl/engine.h>
++#include <openssl/rand.h>
+ #include <stdio.h>
+ 
+ #include "tss2_esys.h"
+@@ -660,6 +661,8 @@ iesys_cryptossl_pk_encrypt(TPM2B_PUBLIC * pub_tpm_key,
+                    "Could not set RSA passing.", cleanup);
+     }
+ 
++/* LibreSSL does not provide these OAEP functions */
++#ifdef EVP_PKEY_CTX_set0_rsa_oaep_label
+     if (1 != EVP_PKEY_CTX_set0_rsa_oaep_label(ctx, label, strlen(label)+1)) {
+         goto_error(r, TSS2_ESYS_RC_GENERAL_FAILURE,
+                    "Could not set RSA label.", cleanup);
+@@ -669,6 +672,9 @@ iesys_cryptossl_pk_encrypt(TPM2B_PUBLIC * pub_tpm_key,
+         goto_error(r, TSS2_ESYS_RC_GENERAL_FAILURE,
+                    "Could not set hash algorithm.", cleanup);
+     }
++#else
++    (void) label;
++#endif
+ 
+     /* Determine out size */
+     if (1 != EVP_PKEY_encrypt(ctx, NULL, out_size, in_buffer, in_size)) {
+-- 
+2.19.1
+
