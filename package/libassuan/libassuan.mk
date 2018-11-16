@@ -13,5 +13,6 @@ LIBASSUAN_INSTALL_STAGING = YES
 LIBASSUAN_DEPENDENCIES = libgpg-error
 LIBASSUAN_CONF_OPTS = \
 	--with-gpg-error-prefix=$(STAGING_DIR)/usr
+LIBASSUAN_CONFIG_SCRIPTS = libassuan-config
 
 $(eval $(autotools-package))
