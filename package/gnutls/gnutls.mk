@@ -95,4 +95,11 @@ else
 GNUTLS_CONF_OPTS += --without-zlib
 endif
 
+# Provide a default CA cert location
+ifeq ($(BR2_PACKAGE_P11_KIT),y)
+GNUTLS_CONF_OPTS += --with-default-trust-store-pkcs11=pkcs11:model=p11-kit-trust
+else ifeq ($(BR2_PACKAGE_CA_CERTIFICATES),y)
+GNUTLS_CONF_OPTS += --with-default-trust-store-file=/etc/ssl/certs/ca-certificates.crt
+endif
+
 $(eval $(autotools-package))
