@@ -356,6 +356,8 @@ tests.package.test_python_txaio.TestPythonPy2Txaio: *runtime_test
 tests.package.test_python_txaio.TestPythonPy3Txaio: *runtime_test
 tests.package.test_python_txtorcon.TestPythonPy2Txtorcon: *runtime_test
 tests.package.test_python_txtorcon.TestPythonPy3Txtorcon: *runtime_test
+tests.package.test_python_ubjson.TestPythonPy2Ubjson: *runtime_test
+tests.package.test_python_ubjson.TestPythonPy3Ubjson: *runtime_test
 tests.package.test_rust.TestRust: *runtime_test
 tests.package.test_rust.TestRustBin: *runtime_test
 tests.package.test_syslog_ng.TestSyslogNg: *runtime_test
