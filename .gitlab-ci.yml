@@ -322,6 +322,8 @@ tests.package.test_python_attrs.TestPythonPy2Attrs: *runtime_test
 tests.package.test_python_attrs.TestPythonPy3Attrs: *runtime_test
 tests.package.test_python_autobahn.TestPythonPy2Autobahn: *runtime_test
 tests.package.test_python_autobahn.TestPythonPy3Autobahn: *runtime_test
+tests.package.test_python_automat.TestPythonPy2Automat: *runtime_test
+tests.package.test_python_automat.TestPythonPy3Automat: *runtime_test
 tests.package.test_python_crossbar.TestPythonPy3Crossbar: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy2Cryptography: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy3Cryptography: *runtime_test
