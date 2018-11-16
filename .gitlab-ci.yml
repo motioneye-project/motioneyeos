@@ -328,6 +328,8 @@ tests.package.test_python_bitstring.TestPythonPy2Bitstring: *runtime_test
 tests.package.test_python_bitstring.TestPythonPy3Bitstring: *runtime_test
 tests.package.test_python_cbor.TestPythonPy2Cbor: *runtime_test
 tests.package.test_python_cbor.TestPythonPy3Cbor: *runtime_test
+tests.package.test_python_click.TestPythonPy2Click: *runtime_test
+tests.package.test_python_click.TestPythonPy3Click: *runtime_test
 tests.package.test_python_crossbar.TestPythonPy3Crossbar: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy2Cryptography: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy3Cryptography: *runtime_test
