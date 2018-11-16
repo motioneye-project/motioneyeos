@@ -339,6 +339,8 @@ tests.package.test_python_incremental.TestPythonPy2Incremental: *runtime_test
 tests.package.test_python_incremental.TestPythonPy3Incremental: *runtime_test
 tests.package.test_python_passlib.TestPythonPy2Passlib: *runtime_test
 tests.package.test_python_passlib.TestPythonPy3Passlib: *runtime_test
+tests.package.test_python_pexpect.TestPythonPy2Pexpect: *runtime_test
+tests.package.test_python_pexpect.TestPythonPy3Pexpect: *runtime_test
 tests.package.test_python_twisted.TestPythonPy2Twisted: *runtime_test
 tests.package.test_python_twisted.TestPythonPy3Twisted: *runtime_test
 tests.package.test_python_txaio.TestPythonPy2Txaio: *runtime_test
