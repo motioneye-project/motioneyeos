@@ -131,6 +131,7 @@ menu "Debugging, profiling and benchmark"
 	source "package/trinity/Config.in"
 	source "package/uclibc-ng-test/Config.in"
 	source "package/valgrind/Config.in"
+	source "package/vmtouch/Config.in"
 	source "package/whetstone/Config.in"
 endmenu
 
