@@ -13,7 +13,7 @@ define RPI_ARMMEM_BUILD_CMDS
 endef
 
 define RPI_ARMMEM_INSTALL_TARGET_CMDS
-	if [ -n "$(BR2_cortex_a7)" ]; then suffix="v7l"; else suffix="v6l"; fi
+	if [ -n "$(BR2_cortex_a7)" ]; then suffix="v7l"; else suffix="v6l"; fi; \
 	$(INSTALL) -D -m 0755 $(@D)/libarmmem-$${suffix}.so $(TARGET_DIR)/usr/lib/libarmmem.so
 endef
 
