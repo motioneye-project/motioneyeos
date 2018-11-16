@@ -232,6 +232,12 @@ config BR2_KERNEL_HEADERS_4_17
 	  Version 4.17.x of the Linux kernel headers are no longer
 	  maintained upstream and are now removed.
 
+config BR2_PACKAGE_LIBNFTNL_XML
+	bool "libnftl no longer supports XML output"
+	select BR2_LEGACY
+	help
+	  libnftnl removed integration with libmxml.
+
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
