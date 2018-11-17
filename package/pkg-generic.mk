@@ -583,7 +583,9 @@ $(2)_DEPENDENCIES += host-skeleton
 endif
 
 ifneq ($$(filter cvs git svn,$$($(2)_SITE_METHOD)),)
-$(2)_DOWNLOAD_DEPENDENCIES += $(BR2_TAR_HOST_DEPENDENCY)
+$(2)_DOWNLOAD_DEPENDENCIES += \
+	$(BR2_GZIP_HOST_DEPENDENCY) \
+	$(BR2_TAR_HOST_DEPENDENCY)
 endif
 
 ifeq ($$(filter host-tar host-skeleton host-fakedate,$(1)),)
