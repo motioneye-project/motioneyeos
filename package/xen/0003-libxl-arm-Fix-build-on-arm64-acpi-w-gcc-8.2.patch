@@ -1,0 +1,37 @@
+From c8993743d611ed23ebded3168ac3ac6ff3e5d2fa Mon Sep 17 00:00:00 2001
+From: Christopher Clark <christopher.w.clark@gmail.com>
+Date: Thu, 16 Aug 2018 13:22:41 -0700
+Subject: [PATCH] libxl/arm: Fix build on arm64 + acpi w/ gcc 8.2
+
+Add zero-padding to #defined ACPI table strings that are copied.
+Provides sufficient characters to satisfy the length required to
+fully populate the destination and prevent array-bounds warnings.
+Add BUILD_BUG_ON sizeof checks for compile-time length checking.
+
+Signed-off-by: Christopher Clark <christopher.clark6@baesystems.com>
+Reviewed-by: Stefano Stabellini <sstabellini@kernel.org>
+Acked-by: Wei Liu <wei.liu2@citrix.com>
+---
+ tools/libxl/libxl_arm_acpi.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/tools/libxl/libxl_arm_acpi.c b/tools/libxl/libxl_arm_acpi.c
+index 636f724039..eeca1def06 100644
+--- a/tools/libxl/libxl_arm_acpi.c
++++ b/tools/libxl/libxl_arm_acpi.c
+@@ -48,9 +48,9 @@ extern const unsigned char dsdt_anycpu_arm[];
+ _hidden
+ extern const int dsdt_anycpu_arm_len;
+ 
+-#define ACPI_OEM_ID "Xen"
+-#define ACPI_OEM_TABLE_ID "ARM"
+-#define ACPI_ASL_COMPILER_ID "XL"
++#define ACPI_OEM_ID "Xen\0\0"
++#define ACPI_OEM_TABLE_ID "ARM\0\0\0\0"
++#define ACPI_ASL_COMPILER_ID "XL\0"
+ 
+ enum {
+     RSDP,
+-- 
+2.17.1
+
