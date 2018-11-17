@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PULSEVIEW_VERSION = 0.4.0
+PULSEVIEW_VERSION = 0.4.1
 PULSEVIEW_SITE = http://sigrok.org/download/source/pulseview
 PULSEVIEW_LICENSE = GPL-3.0+
 PULSEVIEW_LICENSE_FILES = COPYING
