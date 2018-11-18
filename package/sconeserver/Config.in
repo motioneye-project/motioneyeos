@@ -4,6 +4,7 @@ menuconfig BR2_PACKAGE_SCONESERVER
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on !BR2_STATIC_LIBS # dlopen()
 	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_ZLIB
 	help
 	  Sconeserver is a modular, object-orientated and extremely
 	  versatile network server framework for GNU/Linux and
