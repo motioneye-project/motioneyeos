@@ -43,9 +43,10 @@ SKELETON_INIT_COMMON_BIN_SH = $(call qstrip,$(BR2_SYSTEM_BIN_SH))
 ifneq ($(SKELETON_INIT_COMMON_HOSTNAME),)
 define SKELETON_INIT_COMMON_SET_HOSTNAME
 	mkdir -p $(TARGET_DIR)/etc
-	echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
-	test -f $(TARGET_DIR)/etc/hosts && $(SED) \
-		'$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTNAME)' \
+	test -f $(TARGET_DIR)/etc/hostname && \
+		echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname || true
+	test -f $(TARGET_DIR)/etc/hosts && \
+		$(SED) '$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTNAME)' \
 		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_HOSTNAME
