@@ -15,6 +15,12 @@ if [ -x $BOARD_DIR/postscript.sh ]; then
     $BOARD_DIR/postscript.sh
 fi
 
+# cleanups
+$COMMON_DIR/cleanups.sh
+if [ -x $BOARD_DIR/cleanups.sh ]; then
+    $BOARD_DIR/cleanups.sh
+fi
+
 # transform /var contents as needed
 rm -rf $TARGET/var/cache
 rm -rf $TARGET/var/lib
@@ -31,12 +37,7 @@ ln -s /data/log $TARGET/var/log
 ln -s /tmp $TARGET/var/run
 ln -s /tmp $TARGET/var/spool
 ln -s /tmp $TARGET/var/tmp
-
-# cleanups
-$COMMON_DIR/cleanups.sh
-if [ -x $BOARD_DIR/cleanups.sh ]; then
-    $BOARD_DIR/cleanups.sh
-fi
+ln -s /tmp $TARGET/run
 
 # board-specific os.conf
 if [ -r $BOARD_DIR/os.conf ]; then
