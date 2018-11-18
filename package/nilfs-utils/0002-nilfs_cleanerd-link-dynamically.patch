@@ -1,0 +1,32 @@
+From 7888f8f24ec08cdfd51929cde4e177396d7504e7 Mon Sep 17 00:00:00 2001
+From: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+Date: Thu, 28 Dec 2017 20:22:00 +0100
+Subject: [PATCH] nilfs_cleanerd: link dynamically
+
+When nilfs_cleanerd does not run due to shared object problems,
+nilfs2 filesystems may run out of space soon.
+This logic that justified linking nilfs_cleanerd statically
+does IMO not apply to embedded systems built by buildroot.
+This commit therefore drops the static linking.
+
+Signed-off-by: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+---
+ sbin/cleanerd/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/sbin/cleanerd/Makefile.am b/sbin/cleanerd/Makefile.am
+index 3a5335d..06f0847 100644
+--- a/sbin/cleanerd/Makefile.am
++++ b/sbin/cleanerd/Makefile.am
+@@ -9,8 +9,6 @@ nilfs_cleanerd_SOURCES = cleanerd.c cldconfig.c \
+ nilfs_cleanerd_CFLAGS = -Wall
+ nilfs_cleanerd_CPPFLAGS = -I$(top_srcdir)/include \
+ 	-DSYSCONFDIR=\"$(sysconfdir)\"
+-# Use -static option to make nilfs_cleanerd self-contained.
+-nilfs_cleanerd_LDFLAGS = -static
+ 
+ dist_sysconf_DATA = nilfs_cleanerd.conf
+ 
+-- 
+1.8.5.rc3
+

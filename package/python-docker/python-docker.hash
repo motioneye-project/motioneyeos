@@ -1,0 +1,4 @@
+# md5 from https://pypi.python.org/pypi/docker/json, sha256 locally computed
+md5	981b23b41fd2346efcae977244b7188e  docker-3.1.4.tar.gz
+sha256	753251b142d56f243fba53ba321a37740a6b6583c528437f45df4d28ba3d4d5d  docker-3.1.4.tar.gz
+sha256	f2f0b07fa5e492c11d27aa0d2f3f1a0e64b9d17f32d8aa489ae2af9609af33b2  LICENSE

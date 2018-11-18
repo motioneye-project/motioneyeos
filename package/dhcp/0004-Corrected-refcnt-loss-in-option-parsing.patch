@@ -1,0 +1,40 @@
+From 93b5b67dd31b9efcbfaabc2df1e1d9d164a5e04a Mon Sep 17 00:00:00 2001
+From: Thomas Markwalder <tmark@isc.org>
+Date: Fri, 9 Feb 2018 14:46:08 -0500
+Subject: [PATCH 2/2] Corrected refcnt loss in option parsing
+
+    Merges in 47140.
+
+[baruch: drop RELNOTES and tests; address CVE-2018-5733]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: backported from commit 197b26f25309
+---
+ common/options.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/common/options.c b/common/options.c
+index 2ed6b16c6412..25b29a6be7bb 100644
+--- a/common/options.c
++++ b/common/options.c
+@@ -3,7 +3,7 @@
+    DHCP options parsing and reassembly. */
+ 
+ /*
+- * Copyright (c) 2004-2017 by Internet Systems Consortium, Inc. ("ISC")
++ * Copyright (c) 2004-2018 by Internet Systems Consortium, Inc. ("ISC")
+  * Copyright (c) 1995-2003 by Internet Software Consortium
+  *
+  * Permission to use, copy, modify, and distribute this software for any
+@@ -177,6 +177,8 @@ int parse_option_buffer (options, buffer, length, universe)
+ 
+ 		/* If the length is outrageous, the options are bad. */
+ 		if (offset + len > length) {
++			/* Avoid reference count overflow */
++			option_dereference(&option, MDL);
+ 			reason = "option length exceeds option buffer length";
+ 		      bogus:
+ 			log_error("parse_option_buffer: malformed option "
+-- 
+2.16.1
+

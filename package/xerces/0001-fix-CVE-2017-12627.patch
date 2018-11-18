@@ -1,0 +1,22 @@
+XMLString: Don't call catString if relativePath is null
+
+https://xerces.apache.org/xerces-c/secadv/CVE-2017-12627.txt
+
+Upstream status: svn revision 1819998
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+--- trunk/src/xercesc/util/PlatformUtils.cpp	2018/01/03 18:58:30	1819997
++++ trunk/src/xercesc/util/PlatformUtils.cpp	2018/01/03 18:59:30	1819998
+@@ -920,7 +920,10 @@
+ 
+     XMLString::subString(tmpBuf, basePath, 0, (basePtr - basePath + 1), manager);
+     tmpBuf[basePtr - basePath + 1] = 0;
+-    XMLString::catString(tmpBuf, relativePath);
++    if (relativePath)
++    {
++        XMLString::catString(tmpBuf, relativePath);
++    }
+ 
+     removeDotSlash(tmpBuf, manager);
+ 

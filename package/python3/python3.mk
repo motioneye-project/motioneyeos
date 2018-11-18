@@ -159,7 +159,6 @@ PYTHON3_CONF_OPTS += \
 	--disable-idle3 \
 	--disable-pyc-build
 
-
 #
 # Some of CPython's source code is generated using Python interpreter
 # and some helper tools such as "Programs/_freeze_importlib" or
@@ -200,7 +199,6 @@ define PYTHON3_MAKE_REGEN_IMPORTLIB
 endef
 
 PYTHON3_PRE_BUILD_HOOKS += PYTHON3_MAKE_REGEN_IMPORTLIB
-
 
 #
 # Remove useless files. In the config/ directory, only the Makefile

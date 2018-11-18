@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TURBOLUA_VERSION = v2.1.0
+TURBOLUA_VERSION = v2.1.2
 TURBOLUA_SITE = $(call github,kernelsauce,turbo,$(TURBOLUA_VERSION))
 TURBOLUA_DEPENDENCIES = luajit
 TURBOLUA_LICENSE = Apache-2.0

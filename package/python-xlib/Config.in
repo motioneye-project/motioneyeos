@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_XLIB
+	bool "python-xlib"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  XLib in pure Python (Py2/Py3 compatible)
+
+	  https://github.com/python-xlib/python-xlib

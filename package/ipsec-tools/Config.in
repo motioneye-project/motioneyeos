@@ -57,17 +57,17 @@ config BR2_PACKAGE_IPSEC_TOOLS_HYBRID
 
 choice
 	prompt "Security context"
-	default BR2_PACKAGE_IPSEC_SECCTX_DISABLE
+	default BR2_PACKAGE_IPSEC_TOOLS_SECCTX_DISABLE
 	help
 	  Selects whether or not to enable security context support.
 
-config BR2_PACKAGE_IPSEC_SECCTX_DISABLE
+config BR2_PACKAGE_IPSEC_TOOLS_SECCTX_DISABLE
 	bool "Disable security context support"
 
-config BR2_PACKAGE_IPSEC_SECCTX_ENABLE
+config BR2_PACKAGE_IPSEC_TOOLS_SECCTX_ENABLE
 	bool "Enable SELinux security context support"
 
-config BR2_PACKAGE_IPSEC_SECCTX_KERNEL
+config BR2_PACKAGE_IPSEC_TOOLS_SECCTX_KERNEL
 	bool "Enable kernel security context"
 
 endchoice

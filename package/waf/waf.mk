@@ -9,7 +9,7 @@ WAF_SOURCE = waf-$(WAF_VERSION)
 WAF_SITE = https://waf.io/
 
 define HOST_WAF_EXTRACT_CMDS
-	$(INSTALL) -D -m 0755 $(DL_DIR)/waf-$(WAF_VERSION) $(@D)/waf
+	$(INSTALL) -D -m 0755 $(HOST_WAF_DL_DIR)/waf-$(WAF_VERSION) $(@D)/waf
 endef
 
 define HOST_WAF_INSTALL_CMDS

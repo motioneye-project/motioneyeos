@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WEBP_VERSION = 0.5.2
+WEBP_VERSION = 0.6.1
 WEBP_SOURCE = libwebp-$(WEBP_VERSION).tar.gz
 WEBP_SITE = http://downloads.webmproject.org/releases/webp
 WEBP_LICENSE = BSD-3-Clause
@@ -21,6 +21,26 @@ ifeq ($(BR2_PACKAGE_WEBP_DEMUX),y)
 WEBP_CONF_OPTS += --enable-libwebpdemux
 else
 WEBP_CONF_OPTS += --disable-libwebpdemux
+endif
+
+ifeq ($(BR2_PACKAGE_WEBP_MUX),y)
+WEBP_CONF_OPTS += --enable-libwebpmux
+else
+WEBP_CONF_OPTS += --disable-libwebpmux
+endif
+
+ifeq ($(BR2_PACKAGE_GIFLIB),y)
+WEBP_DEPENDENCIES += giflib
+WEBP_CONF_OPTS += --enable-gif
+else
+WEBP_CONF_OPTS += --disable-gif
+endif
+
+ifeq ($(BR2_PACKAGE_LIBFREEGLUT),y)
+WEBP_DEPENDENCIES += libfreeglut
+WEBP_CONF_OPTS += --enable-gl
+else
+WEBP_CONF_OPTS += --disable-gl
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)

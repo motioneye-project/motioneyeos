@@ -1,0 +1,40 @@
+From aa65a43516da1d48011ef621ed5988289711d99b Mon Sep 17 00:00:00 2001
+From: marxin <marxin@138bc75d-0d04-0410-961f-82ee72b054a4>
+Date: Fri, 29 Jun 2018 09:31:30 +0000
+Subject: [PATCH] Partial backport r256656
+
+2018-06-29  Martin Liska  <mliska@suse.cz>
+
+	Backport from mainline
+	2018-01-10  Kelvin Nilsen  <kelvin@gcc.gnu.org>
+
+	* lex.c (search_line_fast): Remove illegal coercion of an
+	unaligned pointer value to vector pointer type and replace with
+	use of __builtin_vec_vsx_ld () built-in function, which operates
+	on unaligned pointer values.
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/branches/gcc-6-branch@261621 138bc75d-0d04-0410-961f-82ee72b054a4
+
+
+git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/branches/gcc-7-branch@262243 138bc75d-0d04-0410-961f-82ee72b054a4
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ libcpp/lex.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libcpp/lex.c b/libcpp/lex.c
+index 097c78002cbb..e0fb9e822c44 100644
+--- a/libcpp/lex.c
++++ b/libcpp/lex.c
+@@ -568,7 +568,7 @@ search_line_fast (const uchar *s, const uchar *end ATTRIBUTE_UNUSED)
+     {
+       vc m_nl, m_cr, m_bs, m_qm;
+ 
+-      data = *((const vc *)s);
++      data = __builtin_vec_vsx_ld (0, s);
+       s += 16;
+ 
+       m_nl = (vc) __builtin_vec_cmpeq(data, repl_nl);
+-- 
+2.17.1
+

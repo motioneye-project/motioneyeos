@@ -18,5 +18,10 @@ else
 XZ_CONF_OPTS = --disable-threads
 endif
 
+# we are built before ccache
+HOST_XZ_CONF_ENV = \
+	CC="$(HOSTCC_NOCCACHE)" \
+	CXX="$(HOSTCXX_NOCCACHE)"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

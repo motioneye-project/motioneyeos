@@ -1,0 +1,36 @@
+From 7cc67ed294ad8566f2877d6f71649f1bd36f69a4 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 5 Jun 2018 14:22:21 +0300
+Subject: [PATCH] configure.ac: fix detection of clock_gettime library
+
+glibc before 2.17 requires link with librt for clock_gettime(). The
+AC_SEARCH_LIBS check in configure.ac should detect this dependency.
+Unfortunately commit cb77a25e51 (configure.ac: Remove obsolete AC_ERROR
+and make formatting consistent) inadvertently renamed to clock_gettime2,
+thus breaking librt detection.
+
+Restore the correct clock_gettime() name.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://github.com/libusb/libusb/pull/439
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 5b16c6825d4b..63590d1351a4 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -107,7 +107,7 @@ case $backend in
+ linux)
+ 	AC_DEFINE(OS_LINUX, 1, [Linux backend])
+ 	AC_SUBST(OS_LINUX)
+-	AC_SEARCH_LIBS([clock_gettime2], [rt], [], [], [-pthread])
++	AC_SEARCH_LIBS([clock_gettime], [rt], [], [], [-pthread])
+ 	AC_ARG_ENABLE([udev],
+ 		[AC_HELP_STRING([--enable-udev], [use udev for device enumeration and hotplug support (recommended) [default=yes]])],
+ 		[], [enable_udev=yes])
+-- 
+2.17.1
+

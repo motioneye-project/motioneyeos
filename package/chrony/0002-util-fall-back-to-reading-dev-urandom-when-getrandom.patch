@@ -1,0 +1,42 @@
+From 7c5bd948bb7e21fa0ee22f29e97748b2d0360319 Mon Sep 17 00:00:00 2001
+From: Miroslav Lichvar <mlichvar@redhat.com>
+Date: Thu, 17 May 2018 14:16:58 +0200
+Subject: [PATCH] util: fall back to reading /dev/urandom when getrandom()
+ blocks
+
+With recent changes in the Linux kernel, the getrandom() system call may
+block for a long time after boot on machines that don't have enough
+entropy. It blocks the chronyd's initialization before it can detach
+from the terminal and may cause a chronyd service to fail to start due
+to a timeout.
+
+At least for now, enable the GRND_NONBLOCK flag to make the system call
+non-blocking and let the code fall back to reading /dev/urandom (which
+never blocks) if the system call failed with EAGAIN or any other error.
+
+This makes the start of chronyd non-deterministic with respect to files
+that it needs to open and possibly also makes it slightly easier to
+guess the transmit/receive timestamp in client requests until the
+urandom source is fully initialized.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/util.c b/util.c
+index 4b3e455..76417d5 100644
+--- a/util.c
++++ b/util.c
+@@ -1224,7 +1224,7 @@ get_random_bytes_getrandom(char *buf, unsigned int len)
+       if (disabled)
+         break;
+ 
+-      if (getrandom(rand_buf, sizeof (rand_buf), 0) != sizeof (rand_buf)) {
++      if (getrandom(rand_buf, sizeof (rand_buf), GRND_NONBLOCK) != sizeof (rand_buf)) {
+         disabled = 1;
+         break;
+       }
+-- 
+2.11.0
+

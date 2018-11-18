@@ -3,11 +3,6 @@
 # nfs           This shell script takes care of starting and stopping
 #               the NFS services. Stolen from RedHat FC5.
 
-[ -x /usr/sbin/rpc.statd ] || exit 0
-[ -x /usr/sbin/rpc.nfsd ] || exit 0
-[ -x /usr/sbin/rpc.mountd ] || exit 0
-[ -x /usr/sbin/exportfs ] || exit 0
-
 mkdir -p /var/lock/subsys
 mkdir -p /run/nfs/sm
 mkdir -p /run/nfs/sm.bak

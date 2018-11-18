@@ -25,7 +25,7 @@ IRRLICHT_SUBDIR = source/Irrlicht
 IRRLICHT_DEPENDENCIES = libgl xlib_libXxf86vm
 
 define IRRLICHT_EXTRACT_CMDS
-	$(UNZIP) -d $(@D) $(DL_DIR)/$(IRRLICHT_SOURCE)
+	$(UNZIP) -d $(@D) $(IRRLICHT_DL_DIR)/$(IRRLICHT_SOURCE)
 	mv $(@D)/irrlicht-$(IRRLICHT_VERSION)/* $(@D)
 	$(RM) -r $(@D)/irrlicht-$(IRRLICHT_VERSION)
 endef

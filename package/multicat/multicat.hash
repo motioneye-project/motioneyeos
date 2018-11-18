@@ -1,4 +1,5 @@
-# from https://get.videolan.org/multicat/2.1/multicat-2.1.tar.bz2.md5
-md5 2e3ecd8dee64f5bd32a61733d4cc2226 multicat-2.1.tar.bz2
+# from https://get.videolan.org/multicat/2.2/multicat-2.2.tar.bz2.md5
+md5 91bd35aa5aa94c370664276bd5af6f48 multicat-2.2.tar.bz2
 # locally calculated
-sha256 5eabe8d9a3dde452b2d348683cc7da213680551a9d4059c356f7319c6aa9b3d1 multicat-2.1.tar.bz2
+sha256 fa4e48b38665658df7719293f9358df08f59f3eb7f7b77df510b35951e316b40 multicat-2.2.tar.bz2
+sha256 94f68aec169fb6c9937eade757251714d38a56812be5dbfc3973914a71ad8d2d COPYING

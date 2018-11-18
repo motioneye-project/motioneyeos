@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBCDIO_PARANOIA
+	bool "libcdio-paranoia"
+	depends on BR2_USE_MMU # libcdio
+	select BR2_PACKAGE_LIBCDIO
+	help
+	  CD paranoia on top of libcdio
+
+	  http://www.gnu.org/software/libcdio/

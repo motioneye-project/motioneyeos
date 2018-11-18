@@ -1,0 +1,54 @@
+From a0301bde126c2b08b50e789fd025a8c513c914c3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 28 Apr 2018 19:15:22 +0200
+Subject: [PATCH] Add --disable-doc option
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ Makefile.am  |  6 +++++-
+ configure.ac | 12 ++++++++++++
+ 2 files changed, 17 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index 50ef4fa..e94d3ec 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,7 +1,11 @@
+ 
+ ACLOCAL_AMFLAGS = -I m4
+ 
+-SUBDIRS = lib doc tinytest tests
++SUBDIRS = lib tinytest tests
++
++if BUILDDOC
++SUBDIRS += doc
++endif
+ 
+ if BUILDEXAMPLES
+ SUBDIRS += examples
+diff --git a/configure.ac b/configure.ac
+index 62c5c56..8a14855 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -99,6 +99,18 @@ docxx=yes
+ 
+ AM_CONDITIONAL(BUILDCXX, test x$docxx = xyes)
+ 
++dodoc=yes
++
++AC_ARG_ENABLE(doc,
++AS_HELP_STRING([--disable-doc], [Disable building of the documentation]),
++[if test "$enableval" = "no"; then dodoc="no"; fi],
++[
++dodoc=yes
++]
++)
++
++AM_CONDITIONAL(BUILDDOC, test x$dodoc = xyes)
++
+ doexamples=yes
+ 
+ AC_ARG_ENABLE(examples,
+-- 
+2.14.1
+

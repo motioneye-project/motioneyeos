@@ -6,11 +6,10 @@
 import re
 
 from base import _CheckFunction
-# Notice: ignore 'imported but unused' from pyflakes for check functions.
-from lib import ConsecutiveEmptyLines
-from lib import EmptyLastLine
-from lib import NewlineAtEof
-from lib import TrailingSpace
+from lib import ConsecutiveEmptyLines  # noqa: F401
+from lib import EmptyLastLine          # noqa: F401
+from lib import NewlineAtEof           # noqa: F401
+from lib import TrailingSpace          # noqa: F401
 
 
 def _empty_or_comment(text):
@@ -133,6 +132,12 @@ class Indent(_CheckFunction):
                         text]
         elif entry in entries_that_should_not_be_indented:
             if not text.startswith(entry):
+                # four Config.in files have a special but legitimate indentation rule
+                if self.filename in ["package/Config.in",
+                                     "package/Config.in.host",
+                                     "package/kodi/Config.in",
+                                     "package/x11r7/Config.in"]:
+                    return
                 return ["{}:{}: should not be indented"
                         .format(self.filename, lineno),
                         text]

@@ -62,7 +62,7 @@ TESSERACT_OCR_PRE_CONFIGURE_HOOKS += TESSERACT_OCR_PRECONFIGURE
 # Language data files installation
 define TESSERACT_OCR_INSTALL_LANG_DATA
 	$(foreach langfile,$(TESSERACT_OCR_DATA_FILES), \
-		$(INSTALL) -D -m 0644 $(DL_DIR)/$(langfile) \
+		$(INSTALL) -D -m 0644 $(TESSERACT_OCR_DL_DIR)/$(langfile) \
 			$(TARGET_DIR)/usr/share/tessdata/$(langfile)
 	)
 endef

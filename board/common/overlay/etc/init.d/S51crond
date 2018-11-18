@@ -8,7 +8,7 @@ test -n "$os_version" || source /etc/init.d/base
 start() {
     msg_begin "Starting crond"
     
-    if [ -d $sys_conf ];  then
+    if [[ -d $sys_conf ]];  then
         /usr/sbin/crond -c $sys_conf
     fi
 

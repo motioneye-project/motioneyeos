@@ -1,0 +1,32 @@
+From 5eb1838b4d3752fd863d19442943983a2a5ee87c Mon Sep 17 00:00:00 2001
+From: Cyrill Gorcunov <gorcunov@gmail.com>
+Date: Sat, 10 Feb 2018 00:33:41 +0300
+Subject: [PATCH] nasmlib: Drop unused seg_init
+
+The helper has been eliminated in 2c4a4d5810d0a59b033a07876a2648ef5d4c2859
+
+https://bugzilla.nasm.us/show_bug.cgi?id=3392461
+
+Signed-off-by: Cyrill Gorcunov <gorcunov@gmail.com>
+---
+ include/nasmlib.h | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/include/nasmlib.h b/include/nasmlib.h
+index 79e866b5..fee1b5ea 100644
+--- a/include/nasmlib.h
++++ b/include/nasmlib.h
+@@ -188,10 +188,8 @@ int64_t readnum(char *str, bool *error);
+ int64_t readstrnum(char *str, int length, bool *warn);
+ 
+ /*
+- * seg_init: Initialise the segment-number allocator.
+  * seg_alloc: allocate a hitherto unused segment number.
+  */
+-void pure_func seg_init(void);
+ int32_t pure_func seg_alloc(void);
+ 
+ /*
+-- 
+2.17.0
+

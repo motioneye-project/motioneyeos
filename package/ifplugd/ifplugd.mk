@@ -15,11 +15,6 @@ IFPLUGD_INSTALL_TARGET_OPTS = DESTDIR=$(TARGET_DIR) install-exec
 IFPLUGD_CONF_OPTS = --disable-lynx --with-initdir=/etc/init.d/
 IFPLUGD_DEPENDENCIES = libdaemon
 
-# Prefer big ifplugd
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-IFPLUGD_DEPENDENCIES += busybox
-endif
-
 define IFPLUGD_INSTALL_FIXUP
 	$(INSTALL) -D -m 0644 $(@D)/conf/ifplugd.conf $(TARGET_DIR)/etc/ifplugd/ifplugd.conf; \
 	$(SED) 's^\(ARGS=.*\)w^\1^' $(TARGET_DIR)/etc/ifplugd/ifplugd.conf; \

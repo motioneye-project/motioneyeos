@@ -12,6 +12,11 @@ config BR2_PACKAGE_MJPEGTOOLS
 
 	  http://mjpeg.sourceforge.net
 
+config BR2_PACKAGE_MJPEGTOOLS_SIMD_SUPPORT
+	bool
+	default y if BR2_X86_CPU_HAS_MMX
+	default y if BR2_POWERPC_CPU_HAS_ALTIVEC
+
 comment "mjpegtools needs a toolchain w/ C++, threads"
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS

@@ -41,6 +41,11 @@ $$(error No implementation selected for virtual package $(1). Configuration erro
 endif
 endif
 
+# explicitly set these so we do not get confused by environment
+# variables with the same names.
+$(2)_VERSION =
+$(2)_SOURCE =
+
 $(2)_IS_VIRTUAL = YES
 
 # Add dependency against the provider

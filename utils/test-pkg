@@ -5,27 +5,36 @@ TOOLCHAINS_CSV='support/config-fragments/autobuild/toolchain-configs.csv'
 
 main() {
     local o O opts
-    local cfg dir pkg random toolchains_dir toolchain
+    local cfg dir pkg random toolchains_dir toolchain all number mode
     local ret nb nb_skip nb_fail nb_legal nb_tc build_dir
     local -a toolchains
 
-    o='hc:d:p:r:t:'
+    o='hac:d:n:p:r:t:'
     O='help,config-snippet:build-dir:package:,random:,toolchains-dir:'
     opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
     eval set -- "${opts}"
 
     random=0
+    all=0
+    number=0
+    mode=0
     toolchains_csv="${TOOLCHAINS_CSV}"
     while [ ${#} -gt 0 ]; do
         case "${1}" in
         (-h|--help)
             help; exit 0
             ;;
+        (-a|--all)
+            all=1; shift 1
+            ;;
         (-c|--config-snippet)
             cfg="${2}"; shift 2
             ;;
         (-d|--build-dir)
             dir="${2}"; shift 2
+            ;;
+        (-n|--number)
+            number="${2}"; shift 2
             ;;
         (-p|--package)
             pkg="${2}"; shift 2
@@ -51,15 +60,37 @@ main() {
         dir="${HOME}/br-test-pkg"
     fi
 
+    if [ ${random} -gt 0 ]; then
+        mode=$((mode+1))
+    fi
+
+    if [ ${number} -gt 0 ]; then
+        mode=$((mode+1))
+    fi
+
+    if [ ${all} -eq 1 ]; then
+        mode=$((mode+1))
+    fi
+
+    # Default mode is to test the N first toolchains, which have been
+    # chosen to be a good selection of toolchains.
+    if [ ${mode} -eq 0 ] ; then
+        number=6
+    elif [ ${mode} -gt 1 ] ; then
+        printf "error: --all, --number and --random are mutually exclusive\n" >&2; exit 1
+    fi
+
     # Extract the URLs of the toolchains; drop internal toolchains
     # E.g.: http://server/path/to/name.config,arch,libc
     #  -->  http://server/path/to/name.config
-    toolchains=($(sed -r -e 's/,.*//; /internal/d;' "${toolchains_csv}" \
+    toolchains=($(sed -r -e 's/,.*//; /internal/d; /^#/d; /^$/d;' "${toolchains_csv}" \
                   |if [ ${random} -gt 0 ]; then \
                       sort -R |head -n ${random}
-                   else
-                      cat
-                   fi |sort
+                  elif [ ${number} -gt 0 ]; then \
+                      head -n ${number}
+                  else
+                      sort
+                  fi
                  )
                )
 
@@ -100,7 +131,7 @@ build_one() {
 
     support/kconfig/merge_config.sh -O "${dir}" \
         "${toolchainconfig}" "support/config-fragments/minimal.config" "${cfg}" \
-        > /dev/null
+        >> "${dir}/logfile" 2>&1
     # We want all the options from the snippet to be present as-is (set
     # or not set) in the actual .config; if one of them is not, it means
     # some dependency from the toolchain or arch is not available, in
@@ -127,10 +158,8 @@ build_one() {
 
     # legal-info done systematically, because some packages have different
     # sources depending on the configuration (e.g. lua-5.2 vs. lua-5.3)
-    if [ -n "${pkg}" ]; then
-        if ! make O="${dir}" "${pkg}-legal-info" >> "${dir}/logfile" 2>&1; then
-            return 3
-        fi
+    if ! make O="${dir}" legal-info >> "${dir}/logfile" 2>&1; then
+        return 3
     fi
 }
 
@@ -156,6 +185,10 @@ toolchain config fragment and the required host architecture, separated by a
 comma. The config fragments should contain only the toolchain and architecture
 settings.
 
+By default, a useful subset of toolchains is tested. If needed, all
+toolchains can be tested (-a), an arbitrary number of toolchains (-n
+in order, -r for random).
+
 Options:
 
     -h, --help
@@ -172,9 +205,16 @@ Options:
         Test-build the package PKG, by running 'make PKG'; if not specified,
         just runs 'make'.
 
+    -a, --all
+        Test all toolchains, instead of the default subset defined by
+        Buildroot developers.
+
+    -n N, --number N
+        Test N toolchains, in the order defined in the toolchain CSV
+        file.
+
     -r N, --random N
-        Limit the tests to the N randomly selected toolchains, instead of
-        building with all toolchains.
+        Limit the tests to the N randomly selected toolchains.
 
     -t CSVFILE, --toolchains-csv CSVFILE
         CSV file containing the paths to config fragments of toolchains to

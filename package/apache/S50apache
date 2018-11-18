@@ -1,0 +1,15 @@
+#!/bin/sh
+
+case "$1" in
+  start|restart|graceful|graceful-stop|stop)
+	apachectl -k $1
+	;;
+  reload)
+	apachectl -k restart
+	;;
+  *)
+	echo "Usage: $0 {start|restart|reload|graceful|graceful-stop|stop}"
+	exit 1
+esac
+
+exit $?

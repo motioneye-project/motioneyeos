@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PYTHON_DOCKER
+	bool "python-docker"
+	# docker-engine may be running on another host, so no dependency
+	select BR2_PACKAGE_PYTHON_SSL if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_SSL if BR2_PACKAGE_PYTHON3 # runtime
+	select BR2_PACKAGE_PYTHON_BACKPORTS_SSL_MATCH_HOSTNAME \
+	       if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_WEBSOCKET_CLIENT # runtime
+	select BR2_PACKAGE_PYTHON_DOCKER_PYCREDS # runtime
+	help
+	  A Python library for the Docker Engine API.
+
+	  https://github.com/docker/docker-py

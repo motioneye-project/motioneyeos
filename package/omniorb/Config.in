@@ -7,11 +7,13 @@ config BR2_PACKAGE_OMNIORB
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
-	  omniORB is a robust high performance CORBA ORB for C++ and Python.
-	  omniORB is largely CORBA 2.6 compliant. omniORB is one of only
-	  three ORBs to have been awarded the Open Group's Open Brand for
-	  CORBA. This means that omniORB has been tested and certified
-	  CORBA compliant, to version 2.1 of the CORBA specification.
+	  omniORB is a robust high performance CORBA ORB for C++ and
+	  Python.
+	  omniORB is largely CORBA 2.6 compliant. omniORB is one of
+	  only three ORBs to have been awarded the Open Group's Open
+	  Brand for CORBA. This means that omniORB has been tested and
+	  certified CORBA compliant, to version 2.1 of the CORBA
+	  specification.
 
 	  http://omniorb.sourceforge.net/
 

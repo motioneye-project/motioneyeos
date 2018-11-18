@@ -8,10 +8,6 @@ config BR2_PACKAGE_CLAPACK
 	# _fpu_control is used on PowerPC, but not available with
 	# uClibc or musl
 	depends on !BR2_powerpc || BR2_TOOLCHAIN_USES_GLIBC
-	# disable clapack on blackfin, it triggers "undefined symbol" failure
-	# because of the "_" symbol prefix:
-	# http://autobuild.buildroot.net/results/a28df0ba10803e6e54c2f8160bbd8190cba4d690/
-	depends on !BR2_bfin
 	# assembler: Error: value out of range
 	depends on !BR2_m68k_cf
 	help

@@ -4,9 +4,10 @@ config BR2_PACKAGE_OMXPLAYER
 	depends on BR2_USE_MMU # dbus
 	depends on BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS # ffmpeg
 	depends on BR2_INSTALL_LIBSTDCPP # boost
-	depends on BR2_TOOLCHAIN_HAS_THREADS # boost, libusb
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib, boost, libusb
 	depends on BR2_USE_WCHAR # boost
 	depends on BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_ALSA_LIB
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_DBUS
 	select BR2_PACKAGE_FFMPEG
@@ -18,9 +19,9 @@ config BR2_PACKAGE_OMXPLAYER
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_ZLIB
 	help
-	  OMXPlayer is a commandline OMX player for the Raspberry Pi. It was
-	  developed as a testbed for the XBMC Raspberry PI implementation
-	  and is quite handy to use standalone.
+	  OMXPlayer is a commandline OMX player for the Raspberry
+	  Pi. It was developed as a testbed for the XBMC Raspberry PI
+	  implementation and is quite handy to use standalone.
 
 	  https://github.com/popcornmix/omxplayer
 

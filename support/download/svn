@@ -5,27 +5,30 @@ set -e
 
 # Download helper for svn, to be called from the download wrapper script
 #
-# Call it as:
-#   .../svn [-q] OUT_FILE REPO_URL REV BASNAME
+# Options:
+#   -q          Be quiet.
+#   -o FILE     Generate archive in FILE.
+#   -u URI      Checkout from repository at URI.
+#   -c REV      Use revision REV.
+#   -n NAME     Use basename NAME.
 #
 # Environment:
 #   SVN      : the svn command to call
 
 verbose=
-while getopts :q OPT; do
+while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-q;;
+    o)  output="${OPTARG}";;
+    u)  uri="${OPTARG}";;
+    c)  rev="${OPTARG}";;
+    n)  basename="${OPTARG}";;
+    :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
-shift $((OPTIND-1))
 
-output="${1}"
-repo="${2}"
-rev="${3}"
-basename="${4}"
-
-shift 4 # Get rid of our options
+shift $((OPTIND-1)) # Get rid of our options
 
 # Caller needs to single-quote its arguments to prevent them from
 # being expanded a second time (in case there are spaces in them)
@@ -33,6 +36,6 @@ _svn() {
     eval ${SVN} "${@}"
 }
 
-_svn export ${verbose} "${@}" "'${repo}@${rev}'" "'${basename}'"
+_svn export ${verbose} "${@}" "'${uri}@${rev}'" "'${basename}'"
 
 tar czf "${output}" "${basename}"

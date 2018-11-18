@@ -2,9 +2,10 @@ config BR2_PACKAGE_PYTHON_PYGAME
 	bool "python-pygame"
 	select BR2_PACKAGE_SDL
 	help
-	  Pygame is a cross-platfrom library designed to make it easy to write
-	  multimedia software, such as games, in Python. Pygame requires the
-	  Python language and SDL multimedia library.
+	  Pygame is a cross-platfrom library designed to make it easy
+	  to write multimedia software, such as games, in
+	  Python. Pygame requires the Python language and SDL
+	  multimedia library.
 	  It can also make use of several other popular libraries.
 
 	  http://www.pygame.org/
@@ -23,7 +24,8 @@ config BR2_PACKAGE_PYTHON_PYGAME_EXAMPLES
 	bool "pygame.examples"
 	help
 	  Include examples.
-	  Selecting this option adds about 1.5 MB to the target file system.
+	  Selecting this option adds about 1.5 MB to the target file
+	  system.
 
 config BR2_PACKAGE_PYTHON_PYGAME_FONT
 	bool "pygame.font"

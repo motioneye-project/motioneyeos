@@ -17,12 +17,6 @@ IPUTILS_LICENSE = GPL-2.0+, BSD-3-Clause, BSD-4-Clause
 # Only includes a license file for BSD
 IPUTILS_LICENSE_FILES = ninfod/COPYING
 
-# Build after busybox so target ends up with this package's full
-# versions of the applications instead of busybox applets.
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-IPUTILS_DEPENDENCIES += busybox
-endif
-
 IPUTILS_MAKE_OPTS = $(TARGET_CONFIGURE_OPTS) USE_SYSFS=no USE_IDN=no\
 	CFLAGS="$(TARGET_CFLAGS) -D_GNU_SOURCE"
 
@@ -67,6 +61,11 @@ define IPUTILS_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 755 $(@D)/tftpd       $(TARGET_DIR)/usr/sbin/in.tftpd
 	$(INSTALL) -D -m 755 $(@D)/tracepath   $(TARGET_DIR)/bin/tracepath
 	$(INSTALL) -D -m 755 $(@D)/traceroute6 $(TARGET_DIR)/bin/traceroute6
+endef
+
+define IPUTILS_PERMISSIONS
+	/bin/ping        f 4755 0 0 - - - - -
+	/bin/traceroute6 f 4755 0 0 - - - - -
 endef
 
 $(eval $(generic-package))

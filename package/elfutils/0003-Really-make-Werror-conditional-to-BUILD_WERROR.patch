@@ -1,0 +1,36 @@
+From 2688a0238eaf825d6659c16c012db0c16f07e197 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Mon, 29 May 2017 23:24:42 +0300
+Subject: [PATCH] Really make -Werror conditional to BUILD_WERROR
+
+Otherwise it will fail with an error message like this one:
+
+elf_getarsym.c:290:9: error: 'n' may be used uninitialized in this
+function [-Werror=maybe-uninitialized]
+    arsym[n].as_name = NULL;
+	 ^
+cc1: all warnings being treated as errors
+
+[Vincent: tweak patch for 0.166]
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+---
+ config/eu.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/config/eu.am b/config/eu.am
+index c2cc349ce876..99b368e09060 100644
+--- a/config/eu.am
++++ b/config/eu.am
+@@ -73,7 +73,6 @@ AM_CFLAGS = -std=gnu99 -Wall -Wshadow -Wformat=2 \
+ 	    -Wold-style-definition -Wstrict-prototypes \
+ 	    $(LOGICAL_OP_WARNING) $(DUPLICATED_COND_WARNING) \
+ 	    $(NULL_DEREFERENCE_WARNING) $(IMPLICIT_FALLTHROUGH_WARNING) \
+-	    $(if $($(*F)_no_Werror),,-Werror) \
+ 	    $(if $($(*F)_no_Wunused),,-Wunused -Wextra) \
+ 	    $(if $($(*F)_no_Wstack_usage),,$(STACK_USAGE_WARNING)) \
+ 	    $(if $($(*F)_no_Wpacked_not_aligned),-Wno-packed-not-aligned,) \
+-- 
+2.17.1
+

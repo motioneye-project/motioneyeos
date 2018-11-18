@@ -11,7 +11,7 @@ TS4900_FPGA_SITE = ftp://ftp.embeddedarm.com/ts-socket-macrocontrollers/ts-4900-
 # https://github.com/embeddedarm/meta-ts/blob/f31860f1204b64f765a5380d3b93a2cf18234f90/recipes-extras/ts4900-fpga/ts4900-fpga.bb#L6
 
 define TS4900_FPGA_EXTRACT_CMDS
-	cp $(DL_DIR)/$(TS4900_FPGA_SOURCE) $(@D)
+	cp $(TS4900_FPGA_DL_DIR)/$(TS4900_FPGA_SOURCE) $(@D)
 endef
 
 define TS4900_FPGA_INSTALL_TARGET_CMDS

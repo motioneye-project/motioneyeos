@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.16
+GPSD_VERSION = 3.17
 GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3-Clause
 GPSD_LICENSE_FILES = COPYING
@@ -110,6 +110,9 @@ GPSD_SCONS_OPTS += geostar=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_GPSCLOCK),y)
 GPSD_SCONS_OPTS += gpsclock=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_ISYNC),y)
+GPSD_SCONS_OPTS += isync=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_ITRAX),y)
 GPSD_SCONS_OPTS += itrax=no

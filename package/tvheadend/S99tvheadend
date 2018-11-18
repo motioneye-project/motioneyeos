@@ -5,10 +5,7 @@
 
 PATH=/usr/sbin:/usr/bin:/sbin:/bin
 NAME=tvheadend
-DAEMON=/usr/bin/$NAME
 PIDFILE=/var/run/$NAME.pid
-
-[ -f "${DAEMON}" -a -x "${DAEMON}" ] || exit 0
 
 # Read configuration variable file if it is present
 [ -r "/etc/default/${NAME}" ] && . "/etc/default/${NAME}"
@@ -29,7 +26,7 @@ fi
 case "$1" in
     start)
         printf "Starting TVHeadend daemon: "
-        if start-stop-daemon -S -q -p ${PIDFILE} -m --exec "${DAEMON}" -- ${ARGS}; then
+        if start-stop-daemon -S -q -p ${PIDFILE} -m --exec /usr/bin/tvheadend -- ${ARGS}; then
             printf "OK\n"
         else
             printf "failed\n"

@@ -1,0 +1,38 @@
+From 8a9c3db14a390c0a8788405e52e9b8737a430191 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@gmail.com>
+Date: Mon, 12 Feb 2018 07:49:34 -0500
+Subject: [PATCH] libcpprestsdk: fix building as a static library
+
+Use pkg-config to find OpenSSL. This will automatically find any
+dependent libraries and put them in the correct order for linking.
+
+Upstream status: submitted
+https://github.com/Microsoft/cpprestsdk/pull/688
+
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ Release/cmake/cpprest_find_openssl.cmake | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
+
+diff --git a/Release/cmake/cpprest_find_openssl.cmake b/Release/cmake/cpprest_find_openssl.cmake
+index 0b49a7e..2be8afb 100644
+--- a/Release/cmake/cpprest_find_openssl.cmake
++++ b/Release/cmake/cpprest_find_openssl.cmake
+@@ -41,8 +41,12 @@ function(cpprest_find_openssl)
+       # This should prevent linking against the system provided 0.9.8y
+       set(_OPENSSL_VERSION "")
+     endif()
+-    find_package(OpenSSL 1.0.0 REQUIRED)
+-
++    if(UNIX)
++		find_package(PkgConfig REQUIRED)
++		pkg_search_module(OPENSSL openssl REQUIRED)
++    else()
++    	find_package(OpenSSL 1.0.0 REQUIRED)
++	endif()
+     INCLUDE(CheckCXXSourceCompiles)
+     set(CMAKE_REQUIRED_INCLUDES "${OPENSSL_INCLUDE_DIR}")
+     set(CMAKE_REQUIRED_LIBRARIES "${OPENSSL_LIBRARIES}")
+-- 
+2.14.3
+

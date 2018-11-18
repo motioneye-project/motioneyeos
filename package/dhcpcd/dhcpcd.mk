@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-DHCPCD_VERSION = 6.11.5
+DHCPCD_VERSION = 7.0.3
 DHCPCD_SOURCE = dhcpcd-$(DHCPCD_VERSION).tar.xz
 DHCPCD_SITE = http://roy.marples.name/downloads/dhcpcd
 DHCPCD_DEPENDENCIES = host-pkgconf
 DHCPCD_LICENSE = BSD-2-Clause
-DHCPCD_LICENSE_FILES = dhcpcd.c
+DHCPCD_LICENSE_FILES = LICENSE
 
 ifeq ($(BR2_STATIC_LIBS),y)
 DHCPCD_CONFIG_OPTS += --enable-static

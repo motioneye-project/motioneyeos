@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CCACHE_VERSION = 3.3.4
+CCACHE_VERSION = 3.3.5
 CCACHE_SITE = https://www.samba.org/ftp/ccache
 CCACHE_SOURCE = ccache-$(CCACHE_VERSION).tar.xz
 CCACHE_LICENSE = GPL-3.0+, others
@@ -20,6 +20,11 @@ CCACHE_LICENSE_FILES = LICENSE.txt GPL-3.0.txt
 # path: tell ccache to use its internal copy of zlib, so that ccache
 # has zero dependency besides the C library.
 HOST_CCACHE_CONF_OPTS += --with-bundled-zlib
+
+# We are ccache, so we can't use ccache
+HOST_CCACHE_CONF_ENV = \
+	CC="$(HOSTCC_NOCCACHE)" \
+	CXX="$(HOSTCXX_NOCCACHE)"
 
 # Patch host-ccache as follows:
 #  - Use BR_CACHE_DIR instead of CCACHE_DIR, because CCACHE_DIR

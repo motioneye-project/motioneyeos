@@ -1,0 +1,38 @@
+config BR2_PACKAGE_CUPS_FILTERS
+	bool "cups-filters"
+	# needs fork()
+	depends on BR2_USE_MMU
+	depends on BR2_INSTALL_LIBSTDCPP # qpdf
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_PACKAGE_CUPS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LCMS2
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_QPDF
+	help
+	  This project provides backends, filters, and other software
+	  that was once part of the core CUPS distribution but is no
+	  longer maintained by Apple Inc. In addition it contains
+	  additional filters and software developed independently of
+	  Apple, especially filters for the PDF-centric printing
+	  workflow introduced by OpenPrinting and a daemon to browse
+	  Bonjour broadcasts of remote CUPS printers to make these
+	  printers available locally and to provide backward
+	  compatibility to the old CUPS broadcasting and browsing of
+	  CUPS 1.5.x and older.  From CUPS 1.6.0 on, this package is
+	  required for using printer drivers with CUPS under Linux.
+	  With CUPS 1.5.x and earlier this package can be used
+	  optionally to switch over to PDF-based printing.
+
+	  http://www.linuxfoundation.org/collaborate/workgroups/openprinting/cups-filters
+
+comment "cups-filters needs a toolchain w/ wchar, C++, threads and dynamic library, gcc >= 4.8"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8

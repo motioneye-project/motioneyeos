@@ -179,8 +179,10 @@ some tools to be installed on the host. If the package name is
 variables of other packages, if they depend on +libfoo+ or
 +host-libfoo+.
 
-The call to the +generic-package+ and/or +host-generic-package+ macro *must* be
-at the end of the +.mk+ file, after all variable definitions.
+The call to the +generic-package+ and/or +host-generic-package+ macro
+*must* be at the end of the +.mk+ file, after all variable definitions.
+The call to +host-generic-package+ *must* be after the call to
++generic-package+, if any.
 
 For the target package, the +generic-package+ uses the variables defined by
 the .mk file and prefixed by the uppercased package name:
@@ -197,12 +199,25 @@ information is (assuming the package name is +libfoo+) :
 * +LIBFOO_VERSION+, mandatory, must contain the version of the
   package. Note that if +HOST_LIBFOO_VERSION+ doesn't exist, it is
   assumed to be the same as +LIBFOO_VERSION+. It can also be a
-  revision number, branch or tag for packages that are fetched
-  directly from their revision control system. +
-  Examples: +
-    +LIBFOO_VERSION = 0.1.2+ +
-    +LIBFOO_VERSION = cb9d6aa9429e838f0e54faa3d455bcbab5eef057+ +
-    +LIBFOO_VERSION = stable+
+  revision number or a tag for packages that are fetched directly
+  from their version control system. Examples:
+  ** a version for a release tarball: +LIBFOO_VERSION = 0.1.2+
+  ** a sha1 for a git tree: +LIBFOO_VERSION = cb9d6aa9429e838f0e54faa3d455bcbab5eef057+
+  ** a tag for a git tree +LIBFOO_VERSION = v0.1.2+
++
+.Note:
+Using a branch name as +FOO_VERSION+ is not supported, because it does
+not and can not work as people would expect it should:
++
+  1. due to local caching, Buildroot will not re-fetch the repository,
+     so people who expect to be able to follow the remote repository
+     would be quite surprised and disappointed;
+  2. because two builds can never be perfectly simultaneous, and because
+     the remote repository may get new commits on the branch anytime,
+     two users, using the same Buildroot tree and building the same
+     configuration, may get different source, thus rendering the build
+     non reproducible, and people would be quite surprised and
+     disappointed.
 
 * +LIBFOO_SOURCE+ may contain the name of the tarball of the package,
   which Buildroot will use to download the tarball from
@@ -263,7 +278,7 @@ information is (assuming the package name is +libfoo+) :
   the file using this URL. Otherwise, Buildroot will assume the file
   to be downloaded is located at +LIBFOO_SITE+. Buildroot will not do
   anything with those additional files, except download them: it will
-  be up to the package recipe to use them from +$(DL_DIR)+.
+  be up to the package recipe to use them from +$(LIBFOO_DL_DIR)+.
 
 * +LIBFOO_SITE_METHOD+ determines the method used to fetch or copy the
   package source code. In many cases, Buildroot guesses the method
@@ -346,6 +361,13 @@ information is (assuming the package name is +libfoo+) :
   installed before the configuration of the current package starts. In
   a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
   the current host package.
+
+* +LIBFOO_EXTRACT_DEPENDENCIES+ lists the dependencies (in terms of
+  package name) that are required for the current target package to be
+  extracted. These dependencies are guaranteed to be compiled and
+  installed before the extract step of the current package
+  starts. This is only used internally by the package infrastructure,
+  and should typically not be used directly by packages.
 
 * +LIBFOO_PATCH_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current package to be
@@ -453,6 +475,13 @@ information is (assuming the package name is +libfoo+) :
   FLAT binary format is only 4k bytes. If the application consumes more stack,
   append the required number here.
 
+* +LIBFOO_BIN_ARCH_EXCLUDE+ is a space-separated list of paths (relative
+  to the target directory) to ignore when checking that the package
+  installs correctly cross-compiled binaries. You seldom need to set this
+  variable, unless the package installs binary blobs outside the default
+  locations, `/lib/firmware`, `/usr/lib/firmware`, `/lib/modules`,
+  `/usr/lib/modules`, and `/usr/share`, which are automatically excluded.
+
 The recommended way to define these variables is to use the following
 syntax:
 
@@ -540,8 +569,8 @@ In the action definitions, you can use the following variables:
 * +$(@D)+, which contains the directory in which the package source
   code has been uncompressed.
 
-* +$(DL_DIR)+ contains the path to the directory where all the downloads made
-  by Buildroot are stored.
+* +$(LIBFOO_DL_DIR)+ contains the path to the directory where all the downloads
+  made by Buildroot for +libfoo+ are stored in.
 
 * +$(TARGET_CC)+, +$(TARGET_LD)+, etc. to get the target
   cross-compilation utilities

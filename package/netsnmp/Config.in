@@ -46,9 +46,9 @@ config BR2_PACKAGE_NETSNMP_ENABLE_DEBUGGING
 	bool "Enable debugging code"
 	help
 	  By default net-snmp is compiled without debugging support
-	  (--disable-debugging). Enable this options if you need debugging
-	  support, including the ability to log with DEBUGMSG(),
-	  DEBUGMSGTL() and companion macros.
+	  (--disable-debugging). Enable this options if you need
+	  debugging support, including the ability to log with
+	  DEBUGMSG(), DEBUGMSGTL() and companion macros.
 
 config BR2_PACKAGE_NETSNMP_OPENSSL_INTERNAL
 	bool "Enable minimal internal OpenSSL code"

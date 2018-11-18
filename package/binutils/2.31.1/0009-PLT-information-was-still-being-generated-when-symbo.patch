@@ -1,0 +1,37 @@
+From e4861c68067cb2166b4c2bb9c052abeb6ad9aaa1 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Fri, 2 Mar 2018 17:44:29 +0100
+Subject: [PATCH] PLT information was still being generated when symbol was
+ forced_local.
+
+A change upstream reveiled this issue, triggering an assert when linking glibc.
+
+bfd/
+2018-03-01  Cupertino Miranda <cmiranda@synopsys.com>
+
+	* elf32-arc.c (elf_arc_check_relocs): Changed.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+[Romain: rebase on top of 2.31]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ bfd/elf32-arc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 9b72c5b4f4f..b40b463d34d 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -2041,7 +2041,8 @@ elf_arc_check_relocs (bfd *			 abfd,
+ 	  if (h == NULL)
+ 	    continue;
+ 	  else
+-	    h->needs_plt = 1;
++	    if(h->forced_local == 0)
++	      h->needs_plt = 1;
+ 	}
+ 
+       /* Add info to the symbol got_entry_list.  */
+-- 
+2.14.4
+

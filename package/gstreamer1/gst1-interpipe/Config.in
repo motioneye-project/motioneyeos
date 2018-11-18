@@ -1,0 +1,10 @@
+config BR2_PACKAGE_GST1_INTERPIPE
+	bool "gst1-interpipe"
+	select BR2_PACKAGE_GSTREAMER1_CHECK
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	help
+	  GstInterpipe is a Gstreamer plug-in that allows communication
+	  between two independent pipelines.
+
+	  https://github.com/RidgeRun/gst-interpipe

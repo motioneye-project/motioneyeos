@@ -18,17 +18,18 @@ config BR2_PACKAGE_GST_FSL_PLUGINS
 	select BR2_PACKAGE_FREESCALE_IMX
 	help
 	  GStreamer plugins for hardware-accelerated audio and video
-	  parsers and codecs on i.MX platforms. It requires a kernel that
-	  includes the i.MX specific headers to be built.
+	  parsers and codecs on i.MX platforms. It requires a kernel
+	  that includes the i.MX specific headers to be built.
 
-	  To use the VPU, its firmware blob must be installed as well. This
-	  can be found in the firmware-imx package in the "Hardware handling"
-	  menu.
+	  To use the VPU, its firmware blob must be installed as
+	  well. This can be found in the firmware-imx package in the
+	  "Hardware handling" menu.
 
 	  This library is provided by Freescale as-is and doesn't have
 	  an upstream. Pengutronix maintains gst-fsl-plugins at
-	  git://git.pengutronix.de/git/imx/gst-plugins-fsl-vpu.git
-	  but it diverges heavily from Freescale's original implementation.
+	  git://git.pengutronix.de/git/imx/gst-plugins-fsl-vpu.git but
+	  it diverges heavily from Freescale's original
+	  implementation.
 
 if BR2_PACKAGE_GST_FSL_PLUGINS
 choice

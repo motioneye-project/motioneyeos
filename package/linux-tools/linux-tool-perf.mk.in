@@ -22,7 +22,6 @@ PERF_MAKE_FLAGS = \
 	prefix=/usr \
 	WERROR=0 \
 	NO_LIBAUDIT=1 \
-	NO_NEWT=1 \
 	NO_GTK2=1 \
 	NO_LIBPERL=1 \
 	NO_LIBPYTHON=1 \
@@ -59,10 +58,10 @@ ifeq ($(BR2_arc),y)
 PERF_MAKE_FLAGS += NO_BACKTRACE=1
 endif
 
-ifeq ($(BR2_PACKAGE_SLANG),y)
+ifeq ($(BR2_PACKAGE_LINUX_TOOLS_PERF_TUI),y)
 PERF_DEPENDENCIES += slang
 else
-PERF_MAKE_FLAGS += NO_SLANG=1
+PERF_MAKE_FLAGS += NO_NEWT=1 NO_SLANG=1
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
@@ -126,6 +125,13 @@ define PERF_BUILD_CMDS
 				echo "Either upgrade your kernel to >= 3.7, or enable the elfutils package." ; \
 				exit 1 ; \
 			fi \
+		fi \
+	fi
+	$(Q)if test "$(BR2_PACKAGE_LINUX_TOOLS_PERF_TUI)" = "y" ; then \
+		if ! grep -q NO_SLANG $(LINUX_DIR)/tools/perf/Makefile* ; then \
+			echo "The perf tool in your kernel cannot be build with the TUI." ; \
+			echo "Either upgrade your kernel to >= 3.10, or disable the TUI." ; \
+			exit 1 ; \
 		fi \
 	fi
 	$(TARGET_MAKE_ENV) $(MAKE1) $(PERF_MAKE_FLAGS) \

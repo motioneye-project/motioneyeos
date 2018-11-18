@@ -2,6 +2,6 @@ config BR2_PACKAGE_XLIB_LIBSM
 	bool "libSM"
 	select BR2_PACKAGE_XLIB_LIBICE
 	select BR2_PACKAGE_XLIB_XTRANS
-	select BR2_PACKAGE_XPROTO_XPROTO
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  X.Org SM library

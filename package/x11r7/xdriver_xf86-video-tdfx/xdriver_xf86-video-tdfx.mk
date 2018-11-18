@@ -12,13 +12,7 @@ XDRIVER_XF86_VIDEO_TDFX_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_TDFX_AUTORECONF = YES
 XDRIVER_XF86_VIDEO_TDFX_DEPENDENCIES = \
 	libdrm \
-	xproto_fontsproto \
-	xproto_randrproto \
-	xproto_renderproto \
-	xproto_videoproto \
-	xproto_xextproto \
-	xproto_xf86driproto \
-	xproto_xproto \
+	xorgproto \
 	xserver_xorg-server
 
 ifeq ($(BR2_PACKAGE_MESA3D_DRI_DRIVER),)

@@ -1,0 +1,33 @@
+Use system <sys/xattr.h>
+
+The one from attr is no longer installed with latest version.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+
+---
+Upstream status: alternate, more complex patch pending...
+
+diff -durN xorriso-1.4.6.orig/configure.ac xorriso-1.4.6/configure.ac
+--- xorriso-1.4.6.orig/configure.ac	2016-09-16 15:51:33.000000000 +0200
++++ xorriso-1.4.6/configure.ac	2018-05-06 23:45:38.377153069 +0200
+@@ -264,7 +264,7 @@
+ dnl Check whether there is the header for Linux xattr.
+ dnl If not, erase this macro which would enable use of listxattr and others
+         XATTR_DEF="-DLibisofs_with_aaip_xattR"
+-        AC_CHECK_HEADER(attr/xattr.h, AC_CHECK_LIB(c, listxattr, X= ,
++        AC_CHECK_HEADER(sys/xattr.h, AC_CHECK_LIB(c, listxattr, X= ,
+                                                    XATTR_DEF= ), XATTR_DEF= )
+     fi
+ elif test x"$LIBBURNIA_SUPP_FATTR" = xextattr
+diff -durN xorriso-1.4.6.orig/libisofs/aaip-os-linux.c xorriso-1.4.6/libisofs/aaip-os-linux.c
+--- xorriso-1.4.6.orig/libisofs/aaip-os-linux.c	2016-09-16 15:51:34.000000000 +0200
++++ xorriso-1.4.6/libisofs/aaip-os-linux.c	2018-05-06 23:47:25.764941583 +0200
+@@ -30,7 +30,7 @@
+ #endif
+ 
+ #ifdef Libisofs_with_aaip_xattR
+-#include <attr/xattr.h>
++#include <sys/xattr.h>
+ #endif
+ 
+ 

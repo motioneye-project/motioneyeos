@@ -1,0 +1,24 @@
+Fix pixel format report
+
+When fbgrab tells about the framebuffer pixel format, blue and green
+are accidentally swapped in 'length' and 'msb_right' columns. Let's
+order everything as RGB.
+
+Upstream-Status: Submitted [Gunnar Monell <gmo@linux.nu>]
+
+Signed-off-by: Timo Ketola <timo.ketola@exertus.fi>
+
+diff -u a/fbgrab.c b/fbgrab.c
+--- a/fbgrab.c	2018-03-07 11:42:04.739250433 +0200
++++ b/fbgrab.c	2018-03-07 11:43:26.128043877 +0200
+@@ -169,8 +169,8 @@
+         fprintf(stderr, "bits_per_pixel: %i\n", fb_varinfo_p->bits_per_pixel);
+         fprintf(stderr, "grayscale: %s\n", fb_varinfo_p->grayscale ? "true" : "false");
+         fprintf(stderr, "red:   offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->red.offset, fb_varinfo_p->red.length, fb_varinfo_p->red.msb_right);
+-        fprintf(stderr, "blue:  offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->blue.offset, fb_varinfo_p->green.length, fb_varinfo_p->green.msb_right);
+-        fprintf(stderr, "green: offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->green.offset, fb_varinfo_p->blue.length, fb_varinfo_p->blue.msb_right);
++        fprintf(stderr, "green: offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->green.offset, fb_varinfo_p->green.length, fb_varinfo_p->green.msb_right);
++        fprintf(stderr, "blue:  offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->blue.offset, fb_varinfo_p->blue.length, fb_varinfo_p->blue.msb_right);
+         fprintf(stderr, "alpha: offset: %i, length: %i, msb_right: %i\n", fb_varinfo_p->transp.offset, fb_varinfo_p->transp.length, fb_varinfo_p->transp.msb_right);
+         fprintf(stderr, "pixel format: %s\n", fb_varinfo_p->nonstd == 0 ? "standard" : "non-standard");
+     }

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TINYXML2_VERSION = 4.0.1
+TINYXML2_VERSION = 6.2.0
 TINYXML2_SITE = $(call github,leethomason,tinyxml2,$(TINYXML2_VERSION))
 TINYXML2_LICENSE = Zlib
 TINYXML2_LICENSE_FILES = readme.md

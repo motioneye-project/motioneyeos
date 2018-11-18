@@ -1,2 +1,5 @@
 # Locally calculated after checking PGP signature
 sha256	  742d79fc39824726c098e746bd3dc3484f983f5ee082c621c1e848b2c3725305	pam_radius-1.4.0.tar.gz
+
+# Hash for license file:
+sha256	  67f82e045cf7acfef853ea0f426575a8359161a0a325e19f02b529a87c4b6c34	LICENSE

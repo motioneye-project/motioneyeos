@@ -20,17 +20,11 @@ define LIBPLAYER_CONFIGURE_CMDS
 	./configure \
 		--prefix=/usr \
 		--cross-compile \
+		--disable-mplayer \
 		$(SHARED_STATIC_LIBS_OPTS) \
 		$(LIBPLAYER_CONF_OPTS) \
 	)
 endef
-
-ifeq ($(BR2_PACKAGE_LIBPLAYER_MPLAYER),y)
-LIBPLAYER_DEPENDENCIES += mplayer
-LIBPLAYER_CONF_OPTS += --enable-mplayer
-else
-LIBPLAYER_CONF_OPTS += --disable-mplayer
-endif
 
 ifeq ($(BR2_PACKAGE_LIBPLAYER_GSTREAMER),y)
 LIBPLAYER_DEPENDENCIES += gstreamer

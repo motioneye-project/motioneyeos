@@ -1,0 +1,8 @@
+config BR2_PACKAGE_FLATCC
+	bool "flatcc"
+	help
+	  flatcc is C language implementation of Google Flatbuffers. It
+	  consists of both a library for the target as well as a
+	  flatbuffer compiler tool for the host.
+
+	  https://github.com/dvidelabs/flatcc

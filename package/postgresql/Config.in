@@ -19,4 +19,5 @@ config BR2_PACKAGE_POSTGRESQL
 	  http://www.postgresql.org
 
 comment "postgresql needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS

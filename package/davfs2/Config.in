@@ -1,0 +1,18 @@
+comment "davfs2 needs a glibc or uClibc toolchain"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_USES_MUSL
+
+config BR2_PACKAGE_DAVFS2
+	bool "davfs2"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # error.h
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_NEON
+	select BR2_PACKAGE_NEON_XML
+	help
+	  davfs2 is a Linux file system driver that allows to
+	  mount a WebDAV resource. WebDAV is an extension to HTTP/1.1
+	  that allows remote collaborative authoring of Web resources.
+	  To use davfs2 via /etc/fstab, FEATURE_MOUNT_HELPERS
+	  must be selected in busybox configuration.
+
+	  http://savannah.nongnu.org/projects/davfs2

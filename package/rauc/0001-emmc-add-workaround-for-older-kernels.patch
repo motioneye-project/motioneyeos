@@ -1,0 +1,33 @@
+From 7c67c0ef267d470fcec950d2be49507255f39fc5 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sun, 13 May 2018 14:17:44 +0200
+Subject: [PATCH] emmc: add workaround for older kernels
+
+Kernels up to (and including 3.3) forgot to include types.h in their
+mmc/ioctl.h, and thus __u32 (and others) are not defined, causing
+compilation errors:
+
+    http://autobuild.buildroot.org/results/621/621587906bd2bb27c43b6fcbb051d75f20e32e7c/build-end.log
+
+Fix that by explicitly including types.h before mmc/ioctl.h.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ src/emmc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/emmc.c b/src/emmc.c
+index e8b0b05..2ce3373 100644
+--- a/src/emmc.c
++++ b/src/emmc.c
+@@ -4,6 +4,7 @@
+ #include <fcntl.h>
+ #include <glib/gstdio.h>
+ #include <linux/major.h>
++#include <linux/types.h> /* kernel < 3.4 forgot that in mmc/ioctl.h */
+ #include <linux/mmc/ioctl.h>
+ #include <string.h>
+ #include <sys/ioctl.h>
+-- 
+2.14.1
+

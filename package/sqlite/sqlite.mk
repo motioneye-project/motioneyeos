@@ -4,15 +4,19 @@
 #
 ################################################################################
 
-SQLITE_VERSION = 3210000
+SQLITE_VERSION = 3240000
 SQLITE_SOURCE = sqlite-autoconf-$(SQLITE_VERSION).tar.gz
-SQLITE_SITE = http://www.sqlite.org/2017
+SQLITE_SITE = http://www.sqlite.org/2018
 SQLITE_LICENSE = Public domain
 SQLITE_LICENSE_FILES = tea/license.terms
 SQLITE_INSTALL_STAGING = YES
 
 ifeq ($(BR2_PACKAGE_SQLITE_STAT3),y)
 SQLITE_CFLAGS += -DSQLITE_ENABLE_STAT3
+endif
+
+ifeq ($(BR2_PACKAGE_SQLITE_ENABLE_COLUMN_METADATA),y)
+SQLITE_CFLAGS += -DSQLITE_ENABLE_COLUMN_METADATA
 endif
 
 ifeq ($(BR2_PACKAGE_SQLITE_ENABLE_FTS3),y)
@@ -35,7 +39,10 @@ ifeq ($(BR2_PACKAGE_SQLITE_NO_SYNC),y)
 SQLITE_CFLAGS += -DSQLITE_NO_SYNC
 endif
 
-SQLITE_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) $(SQLITE_CFLAGS)"
+# fallback to standard -O3 when -Ofast is present to avoid -ffast-math
+SQLITE_CFLAGS += $(subst -Ofast,-O3,$(TARGET_CFLAGS))
+
+SQLITE_CONF_ENV = CFLAGS="$(SQLITE_CFLAGS)"
 
 ifeq ($(BR2_STATIC_LIBS),y)
 SQLITE_CONF_OPTS += --enable-dynamic-extensions=no

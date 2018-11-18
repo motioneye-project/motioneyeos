@@ -1,0 +1,60 @@
+From bdacf0101fea1dad2c89996b27cb4b9caee9109c Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 22 Apr 2018 22:28:09 +0200
+Subject: [PATCH] configure.ac: detect readline via pkg-config when possible
+
+pkg-config automatically handles static linking situations, where for
+example readline is linked against ncurses, and therefore -lncurses
+needs to be passed in addition to -lreadline.
+
+This proposal uses pkg-config when available. If pkg-config is not
+found, or readline is not found via pkg-config, we fallback to the
+existing AC_CHECK_LIB(). This AC_CHECK_LIB() test is modified to set
+READLINE_LIBS, like PKG_CHECK_MODULES() does. The Makefile.am
+consequently uses READLINE_LIBS instead of hardcoding -lreadline.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ configure.ac      | 14 ++++++++++++--
+ wrudf/Makefile.am |  2 +-
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 95fbba3..62b1caa 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -9,8 +9,18 @@ AC_PROG_CC
+ AC_DISABLE_SHARED
+ AM_PROG_LIBTOOL
+ 
+-dnl Checks for libraries.
+-AC_CHECK_LIB(readline, readline, [ ], AC_MSG_ERROR([cannot find -lreadline.]))
++PKG_PROG_PKG_CONFIG
++
++dnl Checks for libraries, by using pkg-config when available
++if test -n "${PKG_CONFIG}" ; then
++  PKG_CHECK_MODULES([READLINE], [readline], [readline_found=yes], [readline_found=no])
++fi
++
++if test "${readline_found}" != "yes" ; then
++  AC_CHECK_LIB(readline, readline,
++               [AC_SUBST([READLINE_LIBS], [-lreadline])],
++               AC_MSG_ERROR([cannot find -lreadline.]))
++fi
+ 
+ dnl Checks for header files.
+ AC_HEADER_STDC
+diff --git a/wrudf/Makefile.am b/wrudf/Makefile.am
+index fe1c269..e3ab85b 100644
+--- a/wrudf/Makefile.am
++++ b/wrudf/Makefile.am
+@@ -1,5 +1,5 @@
+ bin_PROGRAMS = wrudf
+-wrudf_LDADD = $(top_builddir)/libudffs/libudffs.la -lreadline
++wrudf_LDADD = $(top_builddir)/libudffs/libudffs.la $(READLINE_LIBS)
+ wrudf_SOURCES = wrudf.c wrudf-cmnd.c wrudf-desc.c wrudf-cdrw.c wrudf-cdr.c ide-pc.c wrudf.h ide-pc.h ../include/ecma_167.h ../include/osta_udf.h ../include/bswap.h
+ 
+ AM_CPPFLAGS = -I$(top_srcdir)/include -D_GNU_SOURCE -DDEBUG
+-- 
+2.14.3
+

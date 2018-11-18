@@ -1,2 +1,6 @@
 # Locally calculated after checking pgp signature
-sha256	cbd6ebc5aaf080ed60d0162d7f6aeae58211a1ee9ba9bb25623daa6cd942683b	sed-4.4.tar.xz
+# https://ftp.gnu.org/gnu/sed/sed-4.5.tar.xz.sig
+# with the key 155D3FC500C834486D1EEA677FD9FCCB000BEEEE
+sha256	7aad73c8839c2bdadca9476f884d2953cdace9567ecd0d90f9959f229d146b40	sed-4.5.tar.xz
+# Locally calculated
+sha256	e79e9c8a0c85d735ff98185918ec94ed7d175efc377012787aebcf3b80f0d90b	COPYING

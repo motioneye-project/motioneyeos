@@ -1,0 +1,114 @@
+From 9e5251151894aefdf8e9392a2371615222119ad8 Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@jakma.org>
+Date: Sat, 6 Jan 2018 22:31:52 +0000
+Subject: [PATCH] bgpd/security: debug print of received NOTIFY data can
+ over-read msg array
+
+Security issue: Quagga-2018-1550
+See: https://www.quagga.net/security/Quagga-2018-1550.txt
+
+* bgpd/bgp_debug.c: (struct message) Nearly every one of the NOTIFY
+  code/subcode message arrays has their corresponding size variables off
+  by one, as most have 1 as first index.
+
+  This means (bgp_notify_print) can cause mes_lookup to overread the (struct
+  message) by 1 pointer value if given an unknown index.
+
+  Fix the bgp_notify_..._msg_max variables to use the compiler to calculate
+  the correct sizes.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ bgpd/bgp_debug.c | 21 ++++++++++++---------
+ 1 file changed, 12 insertions(+), 9 deletions(-)
+
+diff --git a/bgpd/bgp_debug.c b/bgpd/bgp_debug.c
+index ba797228..43faee7c 100644
+--- a/bgpd/bgp_debug.c
++++ b/bgpd/bgp_debug.c
+@@ -29,6 +29,7 @@ Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA
+ #include "log.h"
+ #include "sockunion.h"
+ #include "filter.h"
++#include "memory.h"
+ 
+ #include "bgpd/bgpd.h"
+ #include "bgpd/bgp_aspath.h"
+@@ -73,7 +74,8 @@ const struct message bgp_status_msg[] =
+   { Clearing,    "Clearing"    },
+   { Deleted,     "Deleted"     },
+ };
+-const int bgp_status_msg_max = BGP_STATUS_MAX;
++#define BGP_DEBUG_MSG_MAX(msg) const int msg ## _max = array_size (msg)
++BGP_DEBUG_MSG_MAX (bgp_status_msg);
+ 
+ /* BGP message type string. */
+ const char *bgp_type_str[] =
+@@ -84,7 +86,8 @@ const char *bgp_type_str[] =
+   "NOTIFICATION",
+   "KEEPALIVE",
+   "ROUTE-REFRESH",
+-  "CAPABILITY"
++  "CAPABILITY",
++  NULL,
+ };
+ 
+ /* message for BGP-4 Notify */
+@@ -98,15 +101,15 @@ static const struct message bgp_notify_msg[] =
+   { BGP_NOTIFY_CEASE, "Cease"},
+   { BGP_NOTIFY_CAPABILITY_ERR, "CAPABILITY Message Error"},
+ };
+-static const int bgp_notify_msg_max = BGP_NOTIFY_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_msg);
+ 
+ static const struct message bgp_notify_head_msg[] = 
+ {
+   { BGP_NOTIFY_HEADER_NOT_SYNC, "/Connection Not Synchronized"},
+   { BGP_NOTIFY_HEADER_BAD_MESLEN, "/Bad Message Length"},
+-  { BGP_NOTIFY_HEADER_BAD_MESTYPE, "/Bad Message Type"}
++  { BGP_NOTIFY_HEADER_BAD_MESTYPE, "/Bad Message Type"},
+ };
+-static const int bgp_notify_head_msg_max = BGP_NOTIFY_HEADER_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_head_msg);
+ 
+ static const struct message bgp_notify_open_msg[] = 
+ {
+@@ -119,7 +122,7 @@ static const struct message bgp_notify_open_msg[] =
+   { BGP_NOTIFY_OPEN_UNACEP_HOLDTIME, "/Unacceptable Hold Time"}, 
+   { BGP_NOTIFY_OPEN_UNSUP_CAPBL, "/Unsupported Capability"},
+ };
+-static const int bgp_notify_open_msg_max = BGP_NOTIFY_OPEN_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_open_msg);
+ 
+ static const struct message bgp_notify_update_msg[] = 
+ {
+@@ -136,7 +139,7 @@ static const struct message bgp_notify_update_msg[] =
+   { BGP_NOTIFY_UPDATE_INVAL_NETWORK, "/Invalid Network Field"},
+   { BGP_NOTIFY_UPDATE_MAL_AS_PATH, "/Malformed AS_PATH"},
+ };
+-static const int bgp_notify_update_msg_max = BGP_NOTIFY_UPDATE_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_update_msg);
+ 
+ static const struct message bgp_notify_cease_msg[] =
+ {
+@@ -150,7 +153,7 @@ static const struct message bgp_notify_cease_msg[] =
+   { BGP_NOTIFY_CEASE_COLLISION_RESOLUTION, "/Connection collision resolution"},
+   { BGP_NOTIFY_CEASE_OUT_OF_RESOURCE, "/Out of Resource"},
+ };
+-static const int bgp_notify_cease_msg_max = BGP_NOTIFY_CEASE_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_cease_msg);
+ 
+ static const struct message bgp_notify_capability_msg[] = 
+ {
+@@ -159,7 +162,7 @@ static const struct message bgp_notify_capability_msg[] =
+   { BGP_NOTIFY_CAPABILITY_INVALID_LENGTH, "/Invalid Capability Length"},
+   { BGP_NOTIFY_CAPABILITY_MALFORMED_CODE, "/Malformed Capability Value"},
+ };
+-static const int bgp_notify_capability_msg_max = BGP_NOTIFY_CAPABILITY_MAX;
++BGP_DEBUG_MSG_MAX (bgp_notify_capability_msg);
+ 
+ /* Origin strings. */
+ const char *bgp_origin_str[] = {"i","e","?"};
+-- 
+2.11.0
+

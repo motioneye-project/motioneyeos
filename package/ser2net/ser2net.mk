@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SER2NET_VERSION = 3.4
+SER2NET_VERSION = 3.5
 SER2NET_SITE = http://downloads.sourceforge.net/project/ser2net/ser2net
 SER2NET_LICENSE = GPL-2.0+
 SER2NET_LICENSE_FILES = COPYING

@@ -1,0 +1,57 @@
+From cd7605723eb8e6d8231644f1cf62f1e80badf074 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 20 Aug 2018 15:57:22 +0200
+Subject: [PATCH] configure.in: tighten AIX test
+
+Depending on the configuration, the cpp output may contain the string 'yes'
+in a comment if built under a path containing 'yes', confusing the _AIX
+test:
+
+${CROSS}-cpp conftest.h
+\# 1 "conftest.h"
+\# 1 "<built-in>"
+\# 1 "<command-line>"
+\# 31 "<command-line>"
+\# 1 "/home/peko/source/buildroot/output-yes/host/x86_64-buildroot-linux-gnu/sysroot/usr/include/stdc-predef.h" 1 3 4
+\# 32 "<command-line>" 2
+\# 1 "conftest.txt"
+
+Fix it by only matching on 'yes' on a line by itself.
+
+Upstream-status: submitted to author
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+
+ autoconf/configure.in | 2 +-
+ configure             | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/autoconf/configure.in b/autoconf/configure.in
+index bd45004..487c42b 100644
+--- a/autoconf/configure.in
++++ b/autoconf/configure.in
+@@ -86,7 +86,7 @@ AC_PROG_MAKE_SET
+ 
+ dnl AIX needs -lc128
+ dnl
+-AC_EGREP_CPP([yes], [#ifdef _AIX
++AC_EGREP_CPP([^yes$], [#ifdef _AIX
+ yes
+ #endif
+ ], [LIBS="$LIBS -lc128"])
+diff --git a/configure b/configure
+index 7c11be0..59267b9 100755
+--- a/configure
++++ b/configure
+@@ -3377,7 +3377,7 @@ yes
+ 
+ _ACEOF
+ if (eval "$ac_cpp conftest.$ac_ext") 2>&5 |
+-  $EGREP "yes" >/dev/null 2>&1; then
++  $EGREP "^yes$" >/dev/null 2>&1; then
+   LIBS="$LIBS -lc128"
+ fi
+ rm -f conftest*
+-- 
+2.11.0
+

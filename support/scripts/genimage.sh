@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
 die() {
-  echo "Error: $@" >&2
+  cat <<EOF >&2
+Error: $@
+
+Usage: ${0} -c GENIMAGE_CONFIG_FILE
+EOF
   exit 1
 }
 

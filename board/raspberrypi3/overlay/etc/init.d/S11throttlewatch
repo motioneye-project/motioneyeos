@@ -21,7 +21,7 @@ get_throttled_since_boot() {
 watch_now() {
     while true; do
         t=$(get_throttled_now)
-        if [ -n "$t" ]; then
+        if [[ -n "$t" ]]; then
             logger -t throttlewatch -s "currently: $t"
         fi
 
@@ -32,7 +32,7 @@ watch_now() {
 watch_since_boot() {
     while true; do
         t=$(get_throttled_since_boot)
-        if [ -n "$t" ]; then
+        if [[ -n "$t" ]]; then
             logger -t throttlewatch -s "since boot: $t"
             break
         fi

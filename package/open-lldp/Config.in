@@ -1,0 +1,16 @@
+config BR2_PACKAGE_OPEN_LLDP
+	bool "open-lldp"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libnl
+	select BR2_PACKAGE_LIBCONFIG
+	select BR2_PACKAGE_LIBNL
+	select BR2_PACKAGE_READLINE
+	help
+	  This package contains the Linux user space daemon and
+	  configuration tool for Intel LLDP Agent with Enhanced Ethernet
+	  support for the Data Center.
+
+	  http://open-lldp.org/
+
+comment "open-lldp needs a toolchain w/ dynamic library, threads"
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS

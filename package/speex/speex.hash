@@ -1,2 +1,6 @@
-# From http://downloads.xiph.org/releases/speex/SHA256SUMS.txt
-sha256	342f30dc57bd4a6dad41398365baaa690429660b10d866b7d508e8f1179cb7a6	speex-1.2rc1.tar.gz
+# From https://downloads.xiph.org/releases/speex/SHA256SUMS.txt
+sha256 eaae8af0ac742dc7d542c9439ac72f1f385ce838392dc849cae4536af9210094  speex-1.2.0.tar.gz
+# From https://downloads.xiph.org/releases/speex/MD5SUMS
+md5 8ab7bb2589110dfaf0ed7fa7757dc49c  speex-1.2.0.tar.gz
+# Locally computed
+sha256 671bb5d8fd3c6b05a2e831d90f978ac27965c92bd8ea6d16b3df76e3440c0e9f  COPYING

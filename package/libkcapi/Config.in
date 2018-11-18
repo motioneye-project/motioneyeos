@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBKCAPI
 	bool "libkcapi"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	help
 	  Linux Kernel Crypto API userspace interface library
 
@@ -7,11 +8,21 @@ config BR2_PACKAGE_LIBKCAPI
 
 if BR2_PACKAGE_LIBKCAPI
 
-config BR2_PACKAGE_LIBKCAPI_APPS
-	bool "build test applications"
+config BR2_PACKAGE_LIBKCAPI_HASHER
+	bool "build hasher application"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+
+comment "hasher application needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+config BR2_PACKAGE_LIBKCAPI_RNGAPP
+	bool "build rng read application"
+
+config BR2_PACKAGE_LIBKCAPI_SPEED
+	bool "build speed-test program"
+
+config BR2_PACKAGE_LIBKCAPI_TEST
+	bool "build test program"
 	depends on BR2_USE_MMU # fork()
-	help
-	  Build additional test applications that can provide
-	  performance or algorithm tests.
 
 endif

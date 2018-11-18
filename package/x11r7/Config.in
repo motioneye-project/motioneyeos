@@ -229,36 +229,7 @@ if BR2_PACKAGE_XORG7
 	endmenu
 	menu "X11R7 X protocols"
 		source package/x11r7/xcb-proto/Config.in
-		source package/x11r7/xproto_applewmproto/Config.in
-		source package/x11r7/xproto_bigreqsproto/Config.in
-		source package/x11r7/xproto_compositeproto/Config.in
-		source package/x11r7/xproto_damageproto/Config.in
-		source package/x11r7/xproto_dmxproto/Config.in
-		source package/x11r7/xproto_dri2proto/Config.in
-		source package/x11r7/xproto_dri3proto/Config.in
-		source package/x11r7/xproto_fixesproto/Config.in
-		source package/x11r7/xproto_fontcacheproto/Config.in
-		source package/x11r7/xproto_fontsproto/Config.in
-		source package/x11r7/xproto_glproto/Config.in
-		source package/x11r7/xproto_inputproto/Config.in
-		source package/x11r7/xproto_kbproto/Config.in
-		source package/x11r7/xproto_presentproto/Config.in
-		source package/x11r7/xproto_randrproto/Config.in
-		source package/x11r7/xproto_recordproto/Config.in
-		source package/x11r7/xproto_renderproto/Config.in
-		source package/x11r7/xproto_resourceproto/Config.in
-		source package/x11r7/xproto_scrnsaverproto/Config.in
-		source package/x11r7/xproto_videoproto/Config.in
-		source package/x11r7/xproto_windowswmproto/Config.in
-		source package/x11r7/xproto_xcmiscproto/Config.in
-		source package/x11r7/xproto_xextproto/Config.in
-		source package/x11r7/xproto_xf86bigfontproto/Config.in
-		source package/x11r7/xproto_xf86dgaproto/Config.in
-		source package/x11r7/xproto_xf86driproto/Config.in
-		source package/x11r7/xproto_xf86vidmodeproto/Config.in
-		source package/x11r7/xproto_xineramaproto/Config.in
-		source package/x11r7/xproto_xproto/Config.in
-		source package/x11r7/xproto_xproxymanagementprotocol/Config.in
+		source package/x11r7/xorgproto/Config.in
 	endmenu
 	menu "X11R7 Utilities"
 		source package/x11r7/xutil_makedepend/Config.in

@@ -81,3 +81,19 @@ make busybox-rebuild all
 
 the root filesystem image in +output/images+ contains the updated
 BusyBox.
+
+Source trees for big projects often contain hundreds or thousands of
+files which are not needed for building, but will slow down the process
+of copying the sources with _rsync_. Optionally, it is possible define
++<pkg>_OVERRIDE_SRCDIR_RSYNC_EXCLUSIONS+ to skip syncing certain files
+from the source tree. For example, when working on the +webkitgtk+
+package, the following will exclude the tests and in-tree builds from
+a local WebKit source tree:
+
+------------------
+WEBKITGTK_OVERRIDE_SRCDIR = /home/bob/WebKit
+WEBKITGTK_OVERRIDE_SRCDIR_RSYNC_EXCLUSIONS = \
+	--exclude JSTests --exclude ManualTests --exclude PerformanceTests \
+	--exclude WebDriverTests --exclude WebKitBuild --exclude WebKitLibraries \
+	--exclude WebKit.xcworkspace --exclude Websites --exclude Examples
+------------------

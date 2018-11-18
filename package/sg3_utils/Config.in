@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SG3_UTILS
 	bool "sg3-utils"
-	depends on !BR2_bfin # symbol prefixing problems
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Low level utilities for devices that use a SCSI command set.
@@ -16,5 +15,4 @@ config BR2_PACKAGE_SG3_UTILS_PROGS
 endif
 
 comment "sg3-utils needs a toolchain w/ threads"
-	depends on !BR2_bfin
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

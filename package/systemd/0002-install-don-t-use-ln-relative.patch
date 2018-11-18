@@ -1,0 +1,80 @@
+From 7f4a12d25bbb5859d266f32f7a3d794bb62c354e Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Sun, 31 Dec 2017 12:46:04 -0500
+Subject: [PATCH] install: don't use ln --relative
+
+Oldish enterprise-class distributions have too old versions of
+coreutils, with ln not supporting --relative.
+
+So we fake it.
+
+ln --relative would create minimalist relative paths, but they are not
+trivial to generate. Instead, we always create paths relative to the
+root, i.e.:
+
+    ln -s --relative /usr/bin/foo /usr/sbin/foo
+
+would create:  /usr/sbin/foo -> ../bin/foo
+while we do :  /usr/sbin/foo -> ../../usr/bin/foo
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+[aduskett@gmail.com: Added meson.build section and dirname wrapper in add-wants]
+[aduskett@gmail.com: Update for systemd v237]
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+[tpiepho@impinj.com: Fix add-wants wrapper]
+Signed-off-by: Trent Piepho <tpiepho@impinj.com>
+---
+ meson.build                 | 2 +-
+ tools/meson-make-symlink.sh | 3 ++-
+ units/meson-add-wants.sh    | 6 ++++--
+ 3 files changed, 7 insertions(+), 4 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index 04331dd41..359042c04 100644
+--- a/meson.build
++++ b/meson.build
+@@ -559,7 +559,7 @@ endforeach
+ conf.set_quoted('TELINIT', get_option('telinit-path'))
+ 
+ if run_command('ln', '--relative', '--help').returncode() != 0
+-        error('ln does not support --relative (added in coreutils 8.16)')
++        message('ln does not support --relative (added in coreutils 8.16)')
+ endif
+ 
+ ############################################################
+diff --git a/tools/meson-make-symlink.sh b/tools/meson-make-symlink.sh
+index 501cd43d4..25e7f89fd 100755
+--- a/tools/meson-make-symlink.sh
++++ b/tools/meson-make-symlink.sh
+@@ -8,5 +8,6 @@ mkdir -vp "$(dirname "${DESTDIR:-}$2")"
+ if [ "$(dirname $1)" = . ]; then
+         ln -vfs -T "$1" "${DESTDIR:-}$2"
+ else
+-        ln -vfs -T --relative "${DESTDIR:-}$1" "${DESTDIR:-}$2"
++        dds="$( dirname "$2" |sed -r -e 's:/+[^/]+:../:g; s:/$::' )"
++        ln -vfs -T "${dds}$1" "${DESTDIR:-}$2"
+ fi
+diff --git a/units/meson-add-wants.sh b/units/meson-add-wants.sh
+index 70f7172ae..bb8155075 100755
+--- a/units/meson-add-wants.sh
++++ b/units/meson-add-wants.sh
+@@ -14,7 +14,7 @@ case "$target" in
+                 ;;
+ esac
+ 
+-unitpath="${DESTDIR:-}${unitdir}/${unit}"
++unitpath="${unitdir}/${unit}"
+ 
+ case "$target" in
+         */)
+@@ -25,4 +25,6 @@ case "$target" in
+                 ;;
+ esac
+ 
+-ln -vfs --relative "$unitpath" "$dir"
++[ ! -d "${dir}" ] && linkdir=`dirname "${dir}"` || linkdir="${dir}"
++dds="$(printf "%s" "${linkdir#${DESTDIR:-}}" |sed -r -e 's:/+[^/]+:../:g; s:/$::')"
++ln -vfs "$dds$unitpath" "$dir"
+-- 
+2.14.4
+

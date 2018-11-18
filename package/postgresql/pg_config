@@ -14,6 +14,9 @@ case "$1" in
   --libdir)
 	echo "$prefix/lib"
 	;;
+  --version)
+	echo "PostgreSQL @POSTGRESQL_VERSION@"
+	;;
   *)
-	echo "Usage: $0 {--includedir|--libdir}"
+	echo "Usage: $0 {--includedir|--libdir|--version}"
 esac

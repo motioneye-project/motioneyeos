@@ -1,0 +1,38 @@
+From c9f1a877f1b9e2602913600d769edb17ee41d15d Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 17 Jul 2018 13:18:09 +0300
+Subject: [PATCH] install.sh: don't clobber dangling symlinks
+
+Symlinks in a subdirectory that is to become target rootfs are sometimes
+dangling because they link to canonical file names that are not present
+on the host, but are present relative to the target rootfs root. Don't
+copy over dangling symlinks when noclobber is enabled
+
+The -e test treats dangling symlinks as non-existent files. Add -h test
+that returns true for all symlinks.
+
+Cc: Yann E. MORIN <yann.morin.1998@free.fr>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: 
+http://lists.busybox.net/pipermail/busybox/2018-July/086555.html
+
+ applets/install.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/applets/install.sh b/applets/install.sh
+index 9aede0f530e2..415896893e86 100755
+--- a/applets/install.sh
++++ b/applets/install.sh
+@@ -83,7 +83,7 @@ install -m 755 busybox "$prefix/bin/busybox" || exit 1
+ for i in $h; do
+ 	appdir=`dirname "$i"`
+ 	app=`basename "$i"`
+-	if [ x"$noclobber" = x"1" ] && [ -e "$prefix/$i" ]; then
++	if [ x"$noclobber" = x"1" ] && ([ -e "$prefix/$i" ] || [ -h "$prefix/$i" ]); then
+ 		echo "  $prefix/$i already exists"
+ 		continue
+ 	fi
+-- 
+2.18.0
+

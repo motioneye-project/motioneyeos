@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002211.html
-sha256	9f614e9427cd9641a4a801ed5055700afa410674c0b7aa186b86078f11b83e8d	appres-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002847.html
+md5 f544e701043249d2bb3deed48314bc55  appres-1.0.5.tar.bz2
+sha1 5e5dbffd0a125732bb8bb8a202e04555a9604089  appres-1.0.5.tar.bz2
+sha256 ffad893712c81943b919e3cbfe46fc65259cc0d9eb96d5e658670e3fbb265928  appres-1.0.5.tar.bz2
+sha512 70825563cd80f0f433c48ab2fdae888072939c1b22fb22340b70b9444c97916275ed92c9e5bf9a06bb76c32a5371b89ff7c0211a9a47a227c88311078c2c4137  appres-1.0.5.tar.bz2
+# Locally computed
+sha256 5969302729a9621fd526a7f9942a51a29b858e0b682ffd28eeda5fc4dfaddf55  COPYING

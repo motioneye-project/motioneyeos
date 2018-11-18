@@ -5,6 +5,7 @@ config BR2_PACKAGE_LINPHONE
 	depends on BR2_USE_MMU # libeXosip2
 	select BR2_PACKAGE_LIBEXOSIP2
 	select BR2_PACKAGE_SPEEX
+	select BR2_PACKAGE_SPEEXDSP
 	help
 	  Linphone is an internet phone or Voice Over IP phone (VoIP).
 

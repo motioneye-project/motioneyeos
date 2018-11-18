@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_YIELDFROM
+	bool "python-yieldfrom"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  A backport of the `yield from` semantic from Python 3.x to
+	  Python 2.7.
+
+	  https://github.com/Nurdok/yieldfrom/

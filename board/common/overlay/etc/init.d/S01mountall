@@ -6,7 +6,7 @@ mount_fs() {
     msg_begin "Mounting filesystems"
     /bin/mount -T /etc/fstab.disk -a &&
     /bin/mount -T /etc/fstab.extra -a &&
-    if [ -r /data/etc/fstab.user ]; then /bin/mount -T /data/etc/fstab.user -a; fi
+    if [[ -r /data/etc/fstab.user ]]; then /bin/mount -T /data/etc/fstab.user -a; fi
 
     test $? == 0 && msg_done || msg_fail
 }
@@ -29,6 +29,8 @@ mk_tty_login() {
 case "$1" in
     start)
         mount_fs
+
+        # we need to source conf again, now that /data is available
         test -n "$os_debug" || source /etc/init.d/conf
         test "$os_debug" == "true" && remount_rw
         mk_tty_login

@@ -4,6 +4,8 @@ Patch written by Michael Hope from Linaro, available at
 http://lists.xiph.org/pipermail/speex-dev/2010-November/008041.html.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Bernd: rebased for 1.2.0]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 
 diff --git a/libspeex/filters_arm4.h b/libspeex/filters_arm4.h
 index 7a74042..6ec1f75 100644
@@ -12,10 +14,10 @@ index 7a74042..6ec1f75 100644
 @@ -47,8 +47,10 @@ int normalize16(const spx_sig_t *x, spx_word16_t *y, spx_sig_t max_scale, int le
  
           "\tldr %4, [%0], #4 \n"
-          "\tcmps %4, %1 \n"
+          "\tcmp %4, %1 \n"
 +         "\tit gt \n"
           "\tmovgt %1, %4 \n"
-          "\tcmps %4, %3 \n"
+          "\tcmp %4, %3 \n"
 +         "\tit lt \n"
           "\tmovlt %3, %4 \n"
  

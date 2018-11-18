@@ -14,7 +14,7 @@ LIBSOIL_LICENSE_FILES = src/stb_image_aug.c src/image_helper.c
 LIBSOIL_MAKEFILE = ../projects/makefile/alternate_Makefile.txt
 
 define LIBSOIL_EXTRACT_CMDS
-	$(UNZIP) -d $(@D) $(DL_DIR)/$(LIBSOIL_SOURCE)
+	$(UNZIP) -d $(@D) $(LIBSOIL_DL_DIR)/$(LIBSOIL_SOURCE)
 	mv $(@D)/Simple\ OpenGL\ Image\ Library/* $(@D)
 endef
 

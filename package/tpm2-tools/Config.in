@@ -1,0 +1,26 @@
+config BR2_PACKAGE_TPM2_TOOLS
+	bool "tpm2-tools"
+	depends on BR2_INSTALL_LIBSTDCPP # tpm2-tss
+	depends on BR2_USE_MMU # dbus, libglib
+	depends on BR2_USE_WCHAR # libglib -> gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib
+	depends on !BR2_TOOLCHAIN_USES_MUSL # tpm2-abrmd
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_TPM2_ABRMD # run-time
+	select BR2_PACKAGE_TPM2_TSS
+	help
+	  TPM (Trusted Platform Module) 2.0 CLI tools based on system
+	  API of TPM2-TSS. These tools can be used to manage keys,
+	  perform encryption/decryption/signing/etc crypto operations,
+	  and manage non-volatile storage through a TPM2.0 HW
+	  implementation.
+
+	  https://github.com/tpm2-software/tpm2-tools
+
+comment "tpm2-tools needs a uClibc or glibc toolchain w/ C++, wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR \
+		|| !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL

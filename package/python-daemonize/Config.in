@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_DAEMONIZE
+	bool "python-daemonize"
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	help
+	  Library to enable your code run as a daemon process on
+	  Unix-like systems.
+
+	  https://pypi.python.org/pypi/daemonize

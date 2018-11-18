@@ -7,12 +7,11 @@ netwatch_interval=20
 
 test -f $watch_conf && source $watch_conf || exit 0
 
-if [ -z "$netwatch_host" ] || [ -z "$netwatch_port" ]; then
+if [[ -z "$netwatch_host" ]] || [[ -z "$netwatch_port" ]]; then
     exit 0
 fi
 
 test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
 test "$os_networkless" == "true" && exit 0
 
@@ -24,13 +23,13 @@ watch() {
         if nc -z -w $netwatch_timeout $netwatch_host $netwatch_port </dev/null >/dev/null 2>&1; then
             count=0
         else
-            if [ $count -lt $netwatch_retries ]; then
+            if [[ $count -lt $netwatch_retries ]]; then
                 logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port"
                 count=$(($count + 1))
                 continue
             else
-                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, rebooting"
-                reboot
+                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, calling panic action"
+                panic_action netwatch
             fi
         fi
     done

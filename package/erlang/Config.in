@@ -1,20 +1,29 @@
+config BR2_PACKAGE_HOST_ERLANG_ARCH_SUPPORTS
+	bool
+	default y if BR2_HOSTARCH = "x86_64"
+	default y if BR2_HOSTARCH = "x86"
+
 config BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
 	bool
 	# see HOWTO/INSTALL.md for Erlang's supported platforms
 	# when using its native atomic ops implementation
 	default y if BR2_i386 || BR2_x86_64 || BR2_powerpc || \
 		BR2_sparc_v9 || BR2_arm || BR2_aarch64 || BR2_mipsel
+	# erlang needs host-erlang
+	depends on BR2_PACKAGE_HOST_ERLANG_ARCH_SUPPORTS
 
-comment "erlang needs a toolchain w/ dynamic library"
+comment "erlang needs a toolchain w/ dynamic library, threads"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
-	depends on BR2_STATIC_LIBS
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_ERLANG
 	bool "erlang"
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_ERLANG_ARCH_SUPPORTS
+	select BR2_PACKAGE_ZLIB
 	help
 	  Erlang is a programming language used to build massively
 	  scalable soft real-time systems with requirements on high
@@ -26,16 +35,6 @@ config BR2_PACKAGE_ERLANG
 	  http://www.erlang.org
 
 if BR2_PACKAGE_ERLANG
-
-config BR2_PACKAGE_ERLANG_SMP
-	bool "enable SMP support"
-	help
-	  Erlang provides both a UP and an SMP emulator. The UP
-	  emulator is always built, and this option enables
-	  compilation of the SMP emulator. The choice of which
-	  emulator to use is made at runtime. If you do not need SMP
-	  support, turning this option off reduces compile time and
-	  the size of the Erlang installation.
 
 config BR2_PACKAGE_ERLANG_MEGACO
 	bool "install megaco application"

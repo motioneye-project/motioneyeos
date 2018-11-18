@@ -7,7 +7,6 @@ config BR2_PACKAGE_LINUX_TOOLS
 
 config BR2_PACKAGE_LINUX_TOOLS_CPUPOWER
 	bool "cpupower"
-	depends on !BR2_bfin # pciutils
 	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_PCIUTILS
 	help
@@ -48,11 +47,26 @@ config BR2_PACKAGE_LINUX_TOOLS_PERF
 	  code), single CPU or severals threads.
 
 	  This will build and install the userspace 'perf'
-	  command. It is up to the user to ensure that the kernel
-	  configuration has all the suitable options enabled to allow a
-	  proper operation of 'perf'.
+	  command.
+
+	  Your kernel must have CONFIG_PERF_EVENTS enabled to use perf
+	  profiling. Buildroot automatically enables this in the kernel
+	  configuration.
 
 	  https://perf.wiki.kernel.org/
+
+if BR2_PACKAGE_LINUX_TOOLS_PERF
+
+config BR2_PACKAGE_LINUX_TOOLS_PERF_TUI
+	bool "enable perf TUI"
+	depends on BR2_USE_MMU # slang
+	select BR2_PACKAGE_SLANG
+	help
+	  Enable the TUI interface for perf which requires a TTY and
+	  enables zooming into DSOs and threads as well as other
+	  features.
+
+endif
 
 config BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
 	bool"selftests"

@@ -48,7 +48,6 @@ config BR2_TARGET_SYSLINUX_EFI
 	help
 	  Install the 'efi' image, to boot from an EFI environment.
 
-
 if BR2_TARGET_SYSLINUX_LEGACY_BIOS
 
 config BR2_TARGET_SYSLINUX_C32

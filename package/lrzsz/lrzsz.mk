@@ -24,6 +24,10 @@ define LRZSZ_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(@D)/src/lsz $(TARGET_DIR)/usr/bin/sz
 	ln -sf rz $(TARGET_DIR)/usr/bin/lrz
 	ln -sf sz $(TARGET_DIR)/usr/bin/lsz
+	ln -sf rz $(TARGET_DIR)/usr/bin/rb
+	ln -sf sz $(TARGET_DIR)/usr/bin/sb
+	ln -sf rz $(TARGET_DIR)/usr/bin/rx
+	ln -sf sz $(TARGET_DIR)/usr/bin/sx
 endef
 
 $(eval $(autotools-package))

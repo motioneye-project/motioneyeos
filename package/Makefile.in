@@ -128,6 +128,9 @@ endif
 ifeq ($(BR2_OPTIMIZE_S),y)
 TARGET_OPTIMIZATION = -Os
 endif
+ifeq ($(BR2_OPTIMIZE_FAST),y)
+TARGET_OPTIMIZATION = -Ofast
+endif
 ifeq ($(BR2_DEBUG_1),y)
 TARGET_DEBUGGING = -g1
 endif
@@ -138,11 +141,37 @@ ifeq ($(BR2_DEBUG_3),y)
 TARGET_DEBUGGING = -g3
 endif
 
+TARGET_CFLAGS_RELRO = -Wl,-z,relro
+TARGET_CFLAGS_RELRO_FULL = -Wl,-z,now $(TARGET_CFLAGS_RELRO)
+
+TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
+
+ifeq ($(BR2_SSP_REGULAR),y)
+TARGET_CPPFLAGS += -fstack-protector
+else ifeq ($(BR2_SSP_STRONG),y)
+TARGET_CPPFLAGS += -fstack-protector-strong
+else ifeq ($(BR2_SSP_ALL),y)
+TARGET_CPPFLAGS += -fstack-protector-all
+endif
+
+ifeq ($(BR2_RELRO_PARTIAL),y)
+TARGET_CPPFLAGS += $(TARGET_CFLAGS_RELRO)
+TARGET_LDFLAGS += $(TARGET_CFLAGS_RELRO)
+else ifeq ($(BR2_RELRO_FULL),y)
+TARGET_CPPFLAGS += -fPIE $(TARGET_CFLAGS_RELRO_FULL)
+TARGET_LDFLAGS += -pie
+endif
+
+ifeq ($(BR2_FORTIFY_SOURCE_1),y)
+TARGET_CPPFLAGS += -D_FORTIFY_SOURCE=1
+else ifeq ($(BR2_FORTIFY_SOURCE_2),y)
+TARGET_CPPFLAGS += -D_FORTIFY_SOURCE=2
+endif
+
 TARGET_CPPFLAGS += -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64
 TARGET_CFLAGS = $(TARGET_CPPFLAGS) $(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
 TARGET_CXXFLAGS = $(TARGET_CFLAGS)
 TARGET_FCFLAGS = $(TARGET_ABI) $(TARGET_OPTIMIZATION) $(TARGET_DEBUGGING)
-TARGET_LDFLAGS = $(call qstrip,$(BR2_TARGET_LDFLAGS))
 
 ifeq ($(BR2_BINFMT_FLAT),y)
 TARGET_CFLAGS += $(if $($(PKG)_FLAT_STACKSIZE),-Wl$(comma)-elf2flt=-s$($(PKG)_FLAT_STACKSIZE),\
@@ -159,26 +188,6 @@ TARGET_LDFLAGS += -mid-shared-library -mshared-library-id=0
 TARGET_CFLAGS += -mid-shared-library -mshared-library-id=0
 TARGET_FCFLAGS += -mid-shared-library -mshared-library-id=0
 TARGET_CXXFLAGS += -mid-shared-library -mshared-library-id=0
-endif
-ifeq ($(BR2_BINFMT_FLAT_SEP_DATA),y)
-TARGET_LDFLAGS += -msep-data
-TARGET_CFLAGS += -msep-data
-TARGET_FCFLAGS += -msep-data
-TARGET_CXXFLAGS += -msep-data
-endif
-
-ifeq ($(BR2_SSP_REGULAR),y)
-TARGET_CFLAGS += -fstack-protector
-TARGET_CXXFLAGS += -fstack-protector
-TARGET_FCFLAGS += -fstack-protector
-else ifeq ($(BR2_SSP_STRONG),y)
-TARGET_CFLAGS += -fstack-protector-strong
-TARGET_CXXFLAGS += -fstack-protector-strong
-TARGET_FCFLAGS += -fstack-protector-strong
-else ifeq ($(BR2_SSP_ALL),y)
-TARGET_CFLAGS += -fstack-protector-all
-TARGET_CXXFLAGS += -fstack-protector-all
-TARGET_FCFLAGS += -fstack-protector-all
 endif
 
 ifeq ($(BR2_TOOLCHAIN_BUILDROOT),y)
@@ -210,8 +219,6 @@ TARGET_STRIP = /bin/true
 STRIPCMD = $(TARGET_STRIP)
 endif
 INSTALL := $(shell which install || type -p install)
-FLEX := $(shell which flex || type -p flex)
-BISON := $(shell which bison || type -p bison)
 UNZIP := $(shell which unzip || type -p unzip) -q
 
 APPLY_PATCHES = PATH=$(HOST_DIR)/bin:$$PATH support/scripts/apply-patches.sh $(if $(QUIET),-s)
@@ -230,7 +237,7 @@ HOST_LDFLAGS  += -L$(HOST_DIR)/lib -Wl,-rpath,$(HOST_DIR)/lib
 # Exit code chooses option. "$$TMP" is can be used as temporary file and
 # is automatically cleaned up.
 try-run = $(shell set -e;               \
-	TMP="$$(tempfile)";             \
+	TMP="$$(mktemp)";               \
 	if ($(1)) >/dev/null 2>&1;      \
 	then echo "$(2)";               \
 	else echo "$(3)";               \
@@ -397,8 +404,16 @@ else
 NLS_OPTS = --disable-nls
 endif
 
+# We need anything that is invalid. Traditionally, we'd have used 'false' (and
+# we did so in the past). However, that breaks libtool for packages that have
+# optional C++ support (e.g. gnutls), because libtool will *require* a *valid*
+# C++ preprocessor as long as CXX is not 'no'.
+# Now, whether we use 'no' or 'false' for CXX as the same side effect: it is an
+# invalid C++ compiler, and thus will cause detection of C++ to fail (which is
+# expected and what we want), while at the same time taming libtool into
+# silence.
 ifneq ($(BR2_INSTALL_LIBSTDCPP),y)
-TARGET_CONFIGURE_OPTS += CXX=false
+TARGET_CONFIGURE_OPTS += CXX=no
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -429,3 +444,5 @@ include package/pkg-kconfig.mk
 include package/pkg-rebar.mk
 include package/pkg-kernel-module.mk
 include package/pkg-waf.mk
+include package/pkg-golang.mk
+include package/pkg-meson.mk

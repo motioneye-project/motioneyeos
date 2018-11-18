@@ -1,0 +1,32 @@
+From bcde6e6f34c3cf78a254315c5caa530db91802fb Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Thu, 17 May 2018 23:41:03 +0200
+Subject: [PATCH] src/Makefile: disable -Werror
+
+gcc 8.x has enabled additional warnings that break the build due to
+-Werror, so let's drop -Werror for now. A set of patches has been
+submitted upstream (https://github.com/wolfcw/libfaketime/pull/161) to
+properly fix the gcc 8.x issues, but in the mean time, disabling
+-Werror is a simpler option.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index bbbd476..6b0d2cd 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -67,7 +67,7 @@ INSTALL ?= install
+ PREFIX ?= /usr/local
+ LIBDIRNAME ?= /lib/faketime
+ 
+-CFLAGS += -std=gnu99 -Wall -Wextra -Werror -Wno-nonnull-compare -DFAKE_STAT -DFAKE_SLEEP -DFAKE_TIMERS -DFAKE_INTERNAL_CALLS -fPIC -DPREFIX='"'$(PREFIX)'"' -DLIBDIRNAME='"'$(LIBDIRNAME)'"'
++CFLAGS += -std=gnu99 -Wall -Wextra -Wno-nonnull-compare -DFAKE_STAT -DFAKE_SLEEP -DFAKE_TIMERS -DFAKE_INTERNAL_CALLS -fPIC -DPREFIX='"'$(PREFIX)'"' -DLIBDIRNAME='"'$(LIBDIRNAME)'"'
+ LIB_LDFLAGS += -shared
+ LDFLAGS += -Wl,--version-script=libfaketime.map -lpthread
+ LDADD += -ldl -lm -lrt
+-- 
+2.14.3
+

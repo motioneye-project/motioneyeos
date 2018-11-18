@@ -1,0 +1,98 @@
+From 4e201b75928ff7d4894cd30ab0f5f67b9cd95f5c Mon Sep 17 00:00:00 2001
+From: Steve Dickson <steved@redhat.com>
+Date: Thu, 18 Jan 2018 17:33:56 +0000
+Subject: [PATCH] rpcbproc_callit_com: Stop freeing a static pointer
+
+commit 7ea36ee introduced a svc_freeargs() call
+that ended up freeing static pointer.
+
+It turns out the allocations for the rmt_args
+is not necessary . The xdr routines (xdr_bytes) will
+handle the memory management and the largest
+possible message size is UDPMSGSIZE (due to UDP only)
+which is smaller than RPC_BUF_MAX
+
+Signed-off-by: Steve Dickson <steved@redhat.com>
+(cherry picked from commit 7c7590ad536c0e24bef790cb1e65702fc54db566)
+Signed-off-by: Ed Blake <ed.blake@sondrel.com>
+---
+ src/rpcb_svc_com.c | 39 ++++++---------------------------------
+ 1 file changed, 6 insertions(+), 33 deletions(-)
+
+diff --git a/src/rpcb_svc_com.c b/src/rpcb_svc_com.c
+index 0432b6f..64f1104 100644
+--- a/src/rpcb_svc_com.c
++++ b/src/rpcb_svc_com.c
+@@ -616,9 +616,9 @@ rpcbproc_callit_com(struct svc_req *rqstp, SVCXPRT *transp,
+ 	struct netconfig *nconf;
+ 	struct netbuf *caller;
+ 	struct r_rmtcall_args a;
+-	char *buf_alloc = NULL, *outbufp;
++	char *outbufp;
+ 	char *outbuf_alloc = NULL;
+-	char buf[RPC_BUF_MAX], outbuf[RPC_BUF_MAX];
++	char  outbuf[RPC_BUF_MAX];
+ 	struct netbuf *na = (struct netbuf *) NULL;
+ 	struct rpc_msg call_msg;
+ 	int outlen;
+@@ -639,36 +639,10 @@ rpcbproc_callit_com(struct svc_req *rqstp, SVCXPRT *transp,
+ 	}
+ 	if (si.si_socktype != SOCK_DGRAM)
+ 		return;	/* Only datagram type accepted */
+-	sendsz = __rpc_get_t_size(si.si_af, si.si_proto, UDPMSGSIZE);
+-	if (sendsz == 0) {	/* data transfer not supported */
+-		if (reply_type == RPCBPROC_INDIRECT)
+-			svcerr_systemerr(transp);
+-		return;
+-	}
+-	/*
+-	 * Should be multiple of 4 for XDR.
+-	 */
+-	sendsz = ((sendsz + 3) / 4) * 4;
+-	if (sendsz > RPC_BUF_MAX) {
+-#ifdef	notyet
+-		buf_alloc = alloca(sendsz);		/* not in IDR2? */
+-#else
+-		buf_alloc = malloc(sendsz);
+-#endif	/* notyet */
+-		if (buf_alloc == NULL) {
+-			if (debugging)
+-				xlog(LOG_DEBUG,
+-					"rpcbproc_callit_com:  No Memory!\n");
+-			if (reply_type == RPCBPROC_INDIRECT)
+-				svcerr_systemerr(transp);
+-			return;
+-		}
+-		a.rmt_args.args = buf_alloc;
+-	} else {
+-		a.rmt_args.args = buf;
+-	}
++	sendsz = UDPMSGSIZE;
+ 
+ 	call_msg.rm_xid = 0;	/* For error checking purposes */
++	memset(&a, 0, sizeof(a)); /* Zero out the input buffer */
+ 	if (!svc_getargs(transp, (xdrproc_t) xdr_rmtcall_args, (char *) &a)) {
+ 		if (reply_type == RPCBPROC_INDIRECT)
+ 			svcerr_decode(transp);
+@@ -708,7 +682,8 @@ rpcbproc_callit_com(struct svc_req *rqstp, SVCXPRT *transp,
+ 	if (rbl == (rpcblist_ptr)NULL) {
+ #ifdef RPCBIND_DEBUG
+ 		if (debugging)
+-			xlog(LOG_DEBUG, "not found\n");
++			xlog(LOG_DEBUG, "prog %lu vers %lu: not found\n", 
++				a.rmt_prog, a.rmt_vers);
+ #endif
+ 		if (reply_type == RPCBPROC_INDIRECT)
+ 			svcerr_noprog(transp);
+@@ -941,8 +916,6 @@ out:
+ 	}
+ 	if (local_uaddr)
+ 		free(local_uaddr);
+-	if (buf_alloc)
+-		free(buf_alloc);
+ 	if (outbuf_alloc)
+ 		free(outbuf_alloc);
+ 	if (na) {
+-- 
+2.11.0
+

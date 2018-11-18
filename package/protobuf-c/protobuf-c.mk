@@ -16,5 +16,8 @@ PROTOBUF_C_LICENSE_FILES = LICENSE
 PROTOBUF_C_AUTORECONF = YES
 HOST_PROTOBUF_C_AUTORECONF = YES
 
+# host-protobuf needs c++11 (since 3.6.0)
+HOST_PROTOBUF_C_CONF_ENV += CXXFLAGS="$(HOST_CXXFLAGS) -std=c++11"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

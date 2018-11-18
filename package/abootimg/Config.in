@@ -1,0 +1,10 @@
+config BR2_PACKAGE_ABOOTIMG
+	bool "abootimg"
+	depends on BR2_USE_MMU	# libblkid
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	help
+	  Tool to manipulate Android Boot Images, either on files
+	  or directly on /dev block devices.
+
+	  https://github.com/ggrandou/abootimg

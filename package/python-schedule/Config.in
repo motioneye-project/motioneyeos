@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_SCHEDULE
+	bool "python-schedule"
+	help
+	  Job scheduling for humans.
+
+	  https://github.com/dbader/schedule

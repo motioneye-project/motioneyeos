@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2010-December/001563.html
-sha1	578afff7e4912192b524c25254cf7f54c16e57d8	xbitmaps-1.1.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002881.html
+md5 cedeef095918aca86da79a2934e03daf  xbitmaps-1.1.2.tar.bz2
+sha1 1cb0e485a66280e9a64b48426140b8a0de9cf169  xbitmaps-1.1.2.tar.bz2
+sha256 b9f0c71563125937776c8f1f25174ae9685314cbd130fb4c2efce811981e07ee  xbitmaps-1.1.2.tar.bz2
+sha512 eed5e2fce9fc6c532984e6ed1262e440591e311ca6c61a7fe7a5c877df84bfc2d7aff388fb9c894fc098785b8e5352f0bd7c918252247a040cf123874847450d  xbitmaps-1.1.2.tar.bz2
+# Locally computed
+sha256 e121ec6605558ee021674d33b1ab9306e16b9ea7d30453df42286556247be17a COPYING

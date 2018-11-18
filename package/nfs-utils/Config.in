@@ -11,7 +11,7 @@ config BR2_PACKAGE_NFS_UTILS
 	help
 	  The NFS Linux kernel server.
 
-	  http://sourceforge.net/projects/nfs
+	  http://linux-nfs.org/
 
 if BR2_PACKAGE_NFS_UTILS
 

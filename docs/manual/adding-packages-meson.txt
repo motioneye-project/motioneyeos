@@ -1,0 +1,96 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for Meson-based packages
+
+[[meson-package-tutorial]]
+
+==== +meson-package+ tutorial
+
+http://mesonbuild.com[Meson] is an open source build system meant to be both
+extremely fast, and, even more importantly, as user friendly as possible. It
+uses https://ninja-build.org[Ninja] as a companion tool to perform the actual
+build operations.
+
+Let's see how to write a +.mk+ file for a Meson-based package, with an example:
+
+------------------------------
+01: ################################################################################
+02: #
+03: # foo
+04: #
+05: ################################################################################
+06:
+07: FOO_VERSION = 1.0
+08: FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
+09: FOO_SITE = http://www.foosoftware.org/download
+10: FOO_LICENSE = GPL-3.0+
+11: FOO_LICENSE_FILES = COPYING
+12: FOO_INSTALL_STAGING = YES
+13:
+14: FOO_DEPENDENCIES = host-pkgconf bar
+15:
+16: ifeq ($(BR2_PACKAGE_BAZ),y)
+17: FOO_CONF_OPTS += -Dbaz=true
+18: FOO_DEPENDENCIES += baz
+19: else
+20: FOO_CONF_OPTS += -Dbaz=false
+21: endif
+22:
+23: $(eval $(meson-package))
+--------------------------------
+
+The Makefile starts with the definition of the standard variables for package
+declaration (lines 7 to 11).
+
+On line line 23, we invoke the +meson-package+ macro that generates all the
+Makefile rules that actually allows the package to be built.
+
+In the example, +host-pkgconf+ and +bar+ are declared as dependencies in
++FOO_DEPENDENCIES+ at line 14 because the Meson build file of +foo+ uses
+`pkg-config` to determine the compilation flags and libraries of package +bar+.
+
+Note that it is not necessary to add +host-meson+ in the +FOO_DEPENDENCIES+
+variable of a package, since this basic dependency is automatically added as
+needed by the Meson package infrastructure.
+
+If the "baz" package is selected, then support for the "baz" feature in "foo" is
+activated by adding +-Dbaz=true+ to +FOO_CONF_OPTS+ at line 17, as specified in
+the +meson_options.txt+ file in "foo" source tree. The "baz" package is also
+added to +FOO_DEPENDENCIES+. Note that the support for +baz+ is explicitly
+disabled at line 20, if the package is not selected.
+
+To sum it up, to add a new meson-based package, the Makefile example can be
+copied verbatim then edited to replace all occurences of +FOO+ with the
+uppercase name of the new package and update the values of the standard
+variables.
+
+[[meson-package-reference]]
+
+==== +meson-package+ reference
+
+The main macro of the Meson package infrastructure is +meson-package+. It is
+similar to the +generic-package+ macro. The ability to have target and host
+packages is also available, with the +host-meson-package+ macro.
+
+Just like the generic infrastructure, the Meson infrastructure works by defining
+a number of variables before calling the +meson-package+ macro.
+
+First, all the package metadata information variables that exist in the generic
+infrastructure also exist in the Meson infrastructure: +FOO_VERSION+,
++FOO_SOURCE+, +FOO_PATCH+, +FOO_SITE+, +FOO_SUBDIR+, +FOO_DEPENDENCIES+,
++FOO_INSTALL_STAGING+, +FOO_INSTALL_TARGET+.
+
+A few additional variables, specific to the Meson infrastructure, can also be
+defined. Many of them are only useful in very specific cases, typical packages
+will therefore only use a few of them.
+
+* +FOO_CONF_ENV+, to specify additional environment variables to pass to
+  +meson+ for the configuration step. By default, empty.
+
+* +FOO_CONF_OPTS+, to specify additional options to pass to +meson+ for the
+  configuration step. By default, empty.
+
+* +FOO_NINJA_ENV+, to specify additional environment variables to pass to
+  +ninja+, meson companion tool in charge of the build operations. By default,
+  empty.

@@ -95,8 +95,8 @@ else
 GVFS_CONF_OPTS += --disable-nfs
 endif
 
-ifeq ($(BR2_PACKAGE_LIBSOUP),y)
-GVFS_DEPENDENCIES += libsoup
+ifeq ($(BR2_PACKAGE_LIBSOUP)$(BR2_PACKAGE_LIBXML2),yy)
+GVFS_DEPENDENCIES += libsoup libxml2
 GVFS_CONF_OPTS += --enable-http
 else
 GVFS_CONF_OPTS += --disable-http

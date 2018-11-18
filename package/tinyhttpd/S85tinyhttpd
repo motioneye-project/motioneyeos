@@ -3,7 +3,6 @@
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 NAME=tinyhttpd
 
-test -x /usr/sbin/$NAME || exit 0
 mkdir -p /var/www
 
 case "$1" in

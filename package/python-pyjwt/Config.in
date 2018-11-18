@@ -1,7 +1,0 @@
-config BR2_PACKAGE_PYTHON_PYJWT
-	bool "python-pyjwt"
-	help
-	  PyJWT is a Python library which allows you to encode and decode JSON Web Tokens (JWT).
-	  JWT is an open, industry-standard (RFC 7519) for representing claims securely between two parties.
-
-	  https://pyjwt.readthedocs.io/en/latest/

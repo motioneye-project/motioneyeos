@@ -4,16 +4,23 @@
 #
 ################################################################################
 
-HWDATA_VERSION = 0.267
-HWDATA_SOURCE = hwdata_$(HWDATA_VERSION).orig.tar.gz
-HWDATA_PATCH = hwdata_$(HWDATA_VERSION)-1.diff.gz
-HWDATA_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/h/hwdata
-HWDATA_LICENSE = GPL-2.0+ or XFree86 1.0 license
+HWDATA_VERSION = v0.308
+HWDATA_SITE = $(call github,vcrhonek,hwdata,$(HWDATA_VERSION))
+HWDATA_LICENSE = GPL-2.0+, BSD-3-Clause, XFree86 1.0
 HWDATA_LICENSE_FILES = COPYING LICENSE
 
+HWDATA_FILES = \
+	$(if $(BR2_PACKAGE_HWDATA_IAB_OUI_TXT),iab.txt oui.txt) \
+	$(if $(BR2_PACKAGE_HWDATA_PCI_IDS),pci.ids) \
+	$(if $(BR2_PACKAGE_HWDATA_PNP_IDS),pnp.ids) \
+	$(if $(BR2_PACKAGE_HWDATA_USB_IDS),usb.ids)
+
+ifneq ($(strip $(HWDATA_FILES)),)
 define HWDATA_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 644 $(@D)/pci.ids $(TARGET_DIR)/usr/share/hwdata/pci.ids
-	$(INSTALL) -D -m 644 $(@D)/usb.ids $(TARGET_DIR)/usr/share/hwdata/usb.ids
+	$(INSTALL) -d -m 755 $(TARGET_DIR)/usr/share/hwdata
+	$(INSTALL) -m 644 -t $(TARGET_DIR)/usr/share/hwdata \
+		$(addprefix $(@D)/,$(HWDATA_FILES))
 endef
+endif
 
 $(eval $(generic-package))

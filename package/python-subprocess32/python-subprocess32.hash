@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/pypi/subprocess32/json
+sha256	1e450a4a4c53bf197ad6402c564b9f7a53539385918ef8f12bdf430a61036590  subprocess32-3.2.7.tar.gz
+# Locally computed sha256 checksums
+sha256	826b43437249d39422642f695154d064da64de92eb1476048a615f50bc1beb4a  LICENSE

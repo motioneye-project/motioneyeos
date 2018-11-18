@@ -1,0 +1,10 @@
+config BR2_PACKAGE_LUADBI
+	bool "luadbi"
+	help
+	  LuaDBI is a database interface library for Lua.
+	  It is designed to provide a RDBMS agnostic API for handling
+	  database operations. LuaDBI also provides support for
+	  prepared statement handles, placeholders and bind parameters
+	  for all database operations.
+
+	  https://github.com/mwild1/luadbi

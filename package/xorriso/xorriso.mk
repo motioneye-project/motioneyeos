@@ -8,6 +8,19 @@ XORRISO_VERSION = 1.4.6
 XORRISO_SITE = $(BR2_GNU_MIRROR)/xorriso
 XORRISO_LICENSE = GPL-3.0+
 XORRISO_LICENSE_FILES = COPYING COPYRIGHT
+
+# 0001-use-sys-xattr.h.patch
+XORRISO_DEPENDENCIES = host-pkgconf
+HOST_XORRISO_DEPENDENCIES = host-pkgconf
+XORRISO_AUTORECONF = YES
+
+# Make autoreconf happy
+define XORRISO_NEWS
+	touch $(@D)/NEWS
+endef
+XORRISO_POST_PATCH_HOOKS += XORRISO_NEWS
+HOST_XORRISO_POST_PATCH_HOOKS += XORRISO_NEWS
+
 # Disable everything until we actually need those features, and add the correct
 # host libraries
 HOST_XORRISO_CONF_OPTS = \

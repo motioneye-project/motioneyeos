@@ -3,7 +3,7 @@ config BR2_PACKAGE_WIRELESS_TOOLS
 	help
 	  A collection of tools to configure wireless lan cards.
 
-	  http://www.hpl.hp.com/personal/Jean_Tourrilhes/Linux/Tools.html
+	  https://hewlettpackard.github.io/wireless-tools/
 
 if BR2_PACKAGE_WIRELESS_TOOLS
 

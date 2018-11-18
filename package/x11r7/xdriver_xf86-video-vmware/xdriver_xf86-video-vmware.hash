@@ -1,2 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2016-November/002743.html
-sha256 e2f7f7101fba7f53b268e7a25908babbf155b3984fb5268b3d244eb6c11bf62b  xf86-video-vmware-13.2.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-May/002895.html
+md5 08d66d062055080ff699ab4869726ea2  xf86-video-vmware-13.3.0.tar.bz2
+sha1 f01335fe6bdb507e749571bfcd69163aed97312a  xf86-video-vmware-13.3.0.tar.bz2
+sha256 47971924659e51666a757269ad941a059ef5afe7a47b5101c174a6022ac4066c  xf86-video-vmware-13.3.0.tar.bz2
+sha512 c318de893cae7b2b11e11c1b389ee47478b7c8d1f52c27099dbe453efec28f3e9da449217307a8c2251999eada66312f766996be1a6ead413b8b6dedc42c68ca  xf86-video-vmware-13.3.0.tar.bz2
+# Locally computed
+sha256 7e59b8ca2a161855a60561f27ada8dfdbb678733eacdb23423fff6d21f9ad43b  COPYING

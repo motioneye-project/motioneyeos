@@ -8,7 +8,7 @@ govdir="/sys/devices/system/cpu/cpufreq/$gov"
 
 configure() {
     echo $gov > $cpufreqdir/scaling_governor
-    if [ $gov == "ondemand" ]; then
+    if [[ $gov == "ondemand" ]]; then
         echo 50 > $govdir/up_threshold
         echo 100000 > $govdir/sampling_rate
         echo 50 > $govdir/sampling_down_factor

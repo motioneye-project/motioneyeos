@@ -1,0 +1,64 @@
+From 7f8d9359dcf9edbb13bb447f70234397afa4fb05 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.ind.br>
+Date: Tue, 30 Jan 2018 11:21:14 -0200
+Subject: [PATCH] Fix build with LibreSSL
+
+OPENSSL_VERSION_NUMBER is used to test the version of OpenSSL but this
+test alone breaks the build with LibreSSL due to implicit declarations
+of functions 'RSA_set0_key' and 'HMAC_CTX_free'.
+
+Test if OpenSSL < 1.1.0 or LIBRESSL_VERSION_NUMBER is defined, instead.
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ lib/conversion.c | 2 +-
+ lib/tpm_kdfa.c   | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/lib/conversion.c b/lib/conversion.c
+index 1d0a0b7..df02de4 100644
+--- a/lib/conversion.c
++++ b/lib/conversion.c
+@@ -133,7 +133,7 @@ static bool tpm2_convert_pubkey_ssl(TPMT_PUBLIC *public, pubkey_format format, c
+         goto error;
+     }
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x1010000fL /* OpenSSL 1.1.0 */
++#if OPENSSL_VERSION_NUMBER < 0x1010000fL || defined(LIBRESSL_VERSION_NUMBER) /* OpenSSL 1.1.0 */
+     ssl_rsa_key->e = e;
+     ssl_rsa_key->n = n;
+ #else
+diff --git a/lib/tpm_kdfa.c b/lib/tpm_kdfa.c
+index ee3cf8a..e43bdeb 100644
+--- a/lib/tpm_kdfa.c
++++ b/lib/tpm_kdfa.c
+@@ -54,7 +54,7 @@ static const EVP_MD *tpm_algorithm_to_openssl_digest(TPMI_ALG_HASH algorithm) {
+ static HMAC_CTX *hmac_alloc()
+ {
+     HMAC_CTX *ctx;
+-#if OPENSSL_VERSION_NUMBER < 0x1010000fL /* OpenSSL 1.1.0 */
++#if OPENSSL_VERSION_NUMBER < 0x1010000fL || defined(LIBRESSL_VERSION_NUMBER) /* OpenSSL 1.1.0 */
+     ctx = malloc(sizeof(*ctx));
+ #else
+     ctx = HMAC_CTX_new();
+@@ -62,7 +62,7 @@ static HMAC_CTX *hmac_alloc()
+     if (!ctx)
+         return NULL;
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x1010000fL
++#if OPENSSL_VERSION_NUMBER < 0x1010000fL || defined(LIBRESSL_VERSION_NUMBER)
+     HMAC_CTX_init(ctx);
+ #endif
+ 
+@@ -71,7 +71,7 @@ static HMAC_CTX *hmac_alloc()
+ 
+ static void hmac_del(HMAC_CTX *ctx)
+ {
+-#if OPENSSL_VERSION_NUMBER < 0x1010000fL
++#if OPENSSL_VERSION_NUMBER < 0x1010000fL || defined(LIBRESSL_VERSION_NUMBER)
+     HMAC_CTX_cleanup(ctx);
+     free(ctx);
+ #else
+-- 
+2.14.3
+

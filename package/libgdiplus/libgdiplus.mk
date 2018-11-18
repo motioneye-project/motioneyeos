@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGDIPLUS_VERSION = 4.2
+LIBGDIPLUS_VERSION = 5.4
 LIBGDIPLUS_SITE = $(call github,mono,libgdiplus,$(LIBGDIPLUS_VERSION))
 
 # Although there is a LICENSE file thas specifies LGPL or MPL-1.1,
@@ -21,9 +21,12 @@ LIBGDIPLUS_AUTORECONF = YES
 
 LIBGDIPLUS_DEPENDENCIES = xlib_libXft libglib2 cairo libpng host-pkgconf
 
-# API changes in recent versions of libgif makes it incompatible with
-# this version of libgdiplus, so we are disabling it for now.
-LIBGDIPLUS_CONF_OPTS = --without-libgif
+ifeq ($(BR2_PACKAGE_GIFLIB),y)
+LIBGDIPLUS_CONF_OPTS += --with-libgif
+LIBGDIPLUS_DEPENDENCIES += giflib
+else
+LIBGDIPLUS_CONF_OPTS += --without-libgif
+endif
 
 # there is a bug in the configure script that enables pango support
 # when passing --without-pango, so let's just not use it

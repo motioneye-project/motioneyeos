@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_WEBSOCKET_CLIENT
+	bool "python-websocket-client"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_SSL if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON3_SSL if BR2_PACKAGE_PYTHON3 # runtime
+	help
+	  WebSocket client for python. hybi13 is supported.
+
+	  https://github.com/websocket-client/websocket-client.git

@@ -1,0 +1,35 @@
+From 732459ca3423799ae3386df3de3f5d6ea2af1b95 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@smile.fr>
+Date: Sun, 1 Apr 2018 15:18:51 +0200
+Subject: [PATCH] configure.in: Avoid path poisoning with libpcap
+
+Prevent usage of unsafe libpcap header path when cross compiling.
+
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+Cc: Sergio Prado <sergio.prado@e-labworks.com>
+---
+From http://patchwork.ozlabs.org/patch/860363/
+---
+ configure.in | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/configure.in b/configure.in
+index 4b3a5db..1e940b1 100644
+--- a/configure.in
++++ b/configure.in
+@@ -70,8 +70,10 @@ case "$host" in
+   *-linux*)
+     linux="yes"
+     AC_DEFINE([LINUX],[1],[Define if Linux])
+-    AC_SUBST(extra_incl)
+-    extra_incl="-I/usr/include/pcap"
++    if test -z "x$with_libpcap_includes"; then
++        AC_SUBST(extra_incl)
++        extra_incl="-I/usr/include/pcap"
++    fi
+     ;;
+   *-hpux10*|*-hpux11*)
+     AC_DEFINE([HPUX],[1],[Define if HP-UX 10 or 11])
+-- 
+2.14.3
+

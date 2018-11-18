@@ -1,0 +1,110 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Integration of Cargo-based packages
+
+Cargo is the package manager for the Rust programming language. It allows the
+user to build programs or libraries written in Rust, but it also downloads and
+manages their dependencies, to ensure repeatable builds. Cargo packages are
+called "crates".
+
+[[cargo-package-tutorial]]
+
+==== Cargo-based package's +Config.in+ file
+
+The +Config.in+ file of Cargo-based package 'foo' should contain:
+
+---------------------------
+01: config BR2_PACKAGE_FOO
+02: 	bool "foo"
+03: 	depends on BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
+04: 	select BR2_PACKAGE_HOST_CARGO
+05: 	help
+06: 	  This is a comment that explains what foo is.
+07:
+08: 	  http://foosoftware.org/foo/
+---------------------------
+
+==== Cargo-based package's +.mk+ file
+
+Buildroot does not (yet) provide a dedicated package infrastructure for
+Cargo-based packages. So, we will explain how to write a +.mk+ file for such a
+package. Let's start with an example:
+
+------------------------------
+01: ################################################################################
+02: #
+03: # foo
+04: #
+05: ################################################################################
+06:
+07: FOO_VERSION = 1.0
+08: FOO_SOURCE = foo-$(FOO_VERSION).tar.gz
+09: FOO_SITE = http://www.foosoftware.org/download
+10: FOO_LICENSE = GPL-3.0+
+11: FOO_LICENSE_FILES = COPYING
+12:
+13: FOO_DEPENDENCIES = host-cargo
+14:
+15: FOO_CARGO_ENV = CARGO_HOME=$(HOST_DIR)/share/cargo
+16: FOO_CARGO_MODE = $(if $(BR2_ENABLE_DEBUG),debug,release)
+17:
+18: FOO_BIN_DIR = target/$(RUSTC_TARGET_NAME)/$(FOO_CARGO_MODE)
+19:
+20: FOO_CARGO_OPTS = \
+21:   --$(FOO_CARGO_MODE) \
+22: 	--target=$(RUSTC_TARGET_NAME) \
+23: 	--manifest-path=$(@D)/Cargo.toml
+24:
+25: define FOO_BUILD_CMDS
+26: 	$(TARGET_MAKE_ENV) $(FOO_CARGO_ENV) \
+27: 		cargo build $(FOO_CARGO_OPTS)
+28: endef
+29:
+30: define FOO_INSTALL_TARGET_CMDS
+31: 	$(INSTALL) -D -m 0755 $(@D)/$(FOO_BIN_DIR)/foo \
+32: 		$(TARGET_DIR)/usr/bin/foo
+33: endef
+34:
+35: $(eval $(generic-package))
+--------------------------------
+
+The Makefile starts with the definition of the standard variables for package
+declaration (lines 7 to 11).
+
+As seen in line 35, it is based on the
+xref:generic-package-tutorial[+generic-package+ infrastructure]. So, it defines
+the variables required by this particular infrastructure, where Cargo is
+invoked:
+
+* +FOO_BUILD_CMDS+: Cargo is invoked to perform the build. The options required
+  to configure the cross-compilation of the package are passed via
+  +FOO_CONF_OPTS+.
+
+* +FOO_INSTALL_TARGET_CMDS+: The binary executable generated is installed on
+  the target.
+
+In order to have Cargo available for the build, +FOO_DEPENDENCIES+ needs to
+contain +host-cargo+.
+
+To sum it up, to add a new Cargo-based package, the Makefile example can be
+copied verbatim then edited to replace all occurences of +FOO+ with the
+uppercase name of the new package and update the values of the standard
+variables.
+
+==== About Dependencies Management
+
+A crate can depend on other libraries from crates.io or git repositories, listed
+in its Cargo.toml file. Before starting a build, Cargo usually downloads
+automatically them. This step can also be performed independently, via the
++cargo fetch+ command.
+
+Cargo maintains a local cache of the registry index and of git checkouts of the
+crates, whose location is given by +$CARGO_HOME+. As seen in the package
+Makefile example at line 15, this environment variable is set to
++$(HOST_DIR)/share/cargo+.
+
+This dependency download mechanism is not convenient when performing an offline
+build, as Cargo will fail to fetch the dependencies. In that case, it is advised
+to generate a tarball of the dependencies using the +cargo vendor+ and add it to
++FOO_EXTRA_DOWNLOADS+.

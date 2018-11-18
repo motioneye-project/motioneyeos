@@ -11,7 +11,7 @@ DEVMEM2_LICENSE = GPL-2.0+
 DEVMEM2_LICENSE_FILES = devmem2.c.license
 
 define DEVMEM2_EXTRACT_CMDS
-	cp $(DL_DIR)/$($(PKG)_SOURCE) $(@D)/
+	cp $(DEVMEM2_DL_DIR)/$($(PKG)_SOURCE) $(@D)/
 endef
 
 define DEVMEM2_EXTRACT_LICENSE

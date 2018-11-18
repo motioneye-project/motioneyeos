@@ -4,18 +4,22 @@ config BR2_PACKAGE_ZMQPP
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zeromq
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # exception_ptr
 	select BR2_PACKAGE_ZEROMQ
 	help
 	  C++ binding for zeromq (ZeroMQ, 0MQ, zmq).
 
-	  This C++ binding is a 'high-level' library that hides most of the
-	  C-style interface core zeromq provides.
+	  This C++ binding is a 'high-level' library that hides most
+	  of the C-style interface core zeromq provides.
 
 	  http://github.com/benjamg/zmqpp
 
 comment "zmqpp needs a toolchain w/ C++, threads, gcc >= 4.7"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
+
+comment "zmqpp needs exception_ptr"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735
 
 if BR2_PACKAGE_ZMQPP
 
@@ -27,8 +31,8 @@ config BR2_PACKAGE_ZMQPP_CLIENT
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
 	help
-	  Build and install the zmqpp client, a command line tool that can be
-	  used to listen or send to zeromq sockets.
+	  Build and install the zmqpp client, a command line tool that
+	  can be used to listen or send to zeromq sockets.
 
 comment "zmqpp client needs a toolchain w/ dynamic library, threads, wchar"
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS \

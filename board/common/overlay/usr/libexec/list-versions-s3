@@ -1,0 +1,48 @@
+#!/bin/bash
+
+# expected final S3 URL: 
+#    https://s3.amazonaws.com/${bucket}/${path}/${version}/${os_short_name}-${board}-${version}.img.xz
+
+if [ -z "$1" ]; then
+    echo "Usage: $0 <bucket/path>" 1>&2
+    exit -1
+fi
+
+bucket_path=$1
+bucket=$(echo ${bucket_path} | cut -d '/' -f 1)
+path=${bucket_path:${#bucket} + 1}
+
+opts="-s -S -f"
+test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
+url=https://s3.amazonaws.com/${bucket}
+
+xml_result=$(curl ${opts} ${url})
+keys=$(echo "${xml_result}" | grep -oE '<Key>[^<]+<\/Key>' | sed 's/<Key>\(.*\)<\/Key>/\1/')
+dates=$(echo "${xml_result}" | grep -oE '<LastModified>[^<]+<\/LastModified>' | sed 's/<LastModified>\(.*\)<\/LastModified>/\1/')
+dates=(${dates})
+files=$(echo "${keys}" | grep "^${path}/" | sed "s/^${path}\///" | sed '/^$/d')
+
+i=0
+for file in ${files}; do
+    version=$(echo ${file} | cut -d '/' -f 1)
+    fname=$(echo ${file} | cut -d '/' -f 2)
+    i=$((i + 1))
+    if [[ -z "${fname}" ]]; then
+        continue  # version folder
+    fi
+
+    prerelease=false
+    if [[ "${version}" =~ ^.*[ab][0-9]+$ ]]; then  # e.g. 0.4.1b2
+        prerelease=true
+    fi
+    if [[ "${version}" =~ ^dev.*$ ]]; then  # e.g. dev20180314
+        prerelease=true
+    fi
+    
+    final_url=${url}/${path}/${version}/${fname}
+    board=$(echo ${fname} | cut -d '-' -f 2)
+    date=$(echo ${dates[${i}]} | cut -d 'T' -f 1)
+    
+    echo "${version}|${prerelease}|${board}|${final_url}|${date}"
+done | sort -t '|' -k 5,3 -r
+

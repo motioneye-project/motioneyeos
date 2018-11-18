@@ -4,13 +4,14 @@ config BR2_PACKAGE_WAVEMON
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_LIBNL
 	help
-	  wavemon is a wireless device monitoring application that allows you
-	  to watch signal and noise levels, packet statistics, device
-	  configuration and network parameters of your wireless network
-	  hardware.
+	  wavemon is a wireless device monitoring application that
+	  allows you to watch signal and noise levels, packet
+	  statistics, device configuration and network parameters of
+	  your wireless network hardware.
 
-	  Note that you need a Linux Kernel configuration with wireless
-	  extensions or with wireless extensions compatibility enabled.
+	  Note that you need a Linux Kernel configuration with
+	  wireless extensions or with wireless extensions
+	  compatibility enabled.
 
 	  https://github.com/uoaerg/wavemon
 

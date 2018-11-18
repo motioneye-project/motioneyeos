@@ -1,7 +1,6 @@
 #!/bin/bash
 
 test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
 msg_info() {
     echo " # $1"

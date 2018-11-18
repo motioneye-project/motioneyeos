@@ -6,5 +6,12 @@ config BR2_PACKAGE_LIBUSB
 
 	  http://libusb.info/
 
+if BR2_PACKAGE_LIBUSB
+
+config BR2_PACKAGE_LIBUSB_EXAMPLES
+	bool "build libusb examples"
+
+endif
+
 comment "libusb needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS

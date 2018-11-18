@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2012-February/001820.html
-sha256	54f5fb85f5828705683f457e559fb18753332db15ae82da561b0ae5a63915091	oclock-1.0.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002856.html
+md5 973f6d25a6f0990720b98a15c9436b92  oclock-1.0.4.tar.bz2
+sha1 0bc8f3f44290950f60af894e20e0ceb0c5e8e862  oclock-1.0.4.tar.bz2
+sha256 cc20cfc1c0d5128d89e1eecd9ba52e58f111075be163e0aeda5690dbaafbaefe  oclock-1.0.4.tar.bz2
+sha512 6e0d36a84572a153226b2929f2253cb7adc3c9e5e3af168aeaf8c487ade2e43517b271a8e9cdb2a2c4a67ca56ed0b99c194ca63a4a822b68bfc72ca6518335e7  oclock-1.0.4.tar.bz2
+# Locally computed
+sha256 f6cae4b0c603ef5bd76da2df96b38aa43aa7547e482adb8cb8b83f09af35e4a2  COPYING

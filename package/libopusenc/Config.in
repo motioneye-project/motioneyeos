@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBOPUSENC
+	bool "libopusenc"
+	select BR2_PACKAGE_OPUS
+	help
+	  The libopusenc library provides a high-level API for
+	  encoding opus audio files and live streams.
+
+	  http://opus-codec.org

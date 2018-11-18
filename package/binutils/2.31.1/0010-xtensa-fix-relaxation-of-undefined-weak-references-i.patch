@@ -1,0 +1,48 @@
+From 5d3a462f05cba5b0c0c96de899b84fb84155c760 Mon Sep 17 00:00:00 2001
+From: Max Filippov <jcmvbkbc@gmail.com>
+Date: Sun, 22 Jul 2018 13:52:28 -0700
+Subject: [PATCH] xtensa: fix relaxation of undefined weak references in
+ shared objects
+
+The change c451bb34ae8b ("xtensa: don't emit dynamic relocation for weak
+undefined symbol") didn't properly handle shrinking of relocation
+sections due to coalescing of references to a dynamic undefined weak
+symbol in a shared object, which resulted in the following assertion
+failure in ld when linking uClibc-ng libthread_db for xtensa:
+
+  BFD (GNU Binutils) 2.31 internal error, aborting at elf32-xtensa.c:3269
+  in elf_xtensa_finish_dynamic_sections
+
+Shrink dynamic relocations section for dynamic undefined weak symbols
+when linking a shared object.
+
+bfd/
+2018-07-23  Max Filippov  <jcmvbkbc@gmail.com>
+
+	* elf32-xtensa.c (shrink_dynamic_reloc_sections): Shrink dynamic
+	relocations section for dynamic undefined weak symbols when
+	linking a shared object.
+
+Signed-off-by: Max Filippov <jcmvbkbc@gmail.com>
+Backported from: 5d3a462f05cba5b0c0c96de899b84fb84155c760
+---
+ bfd/elf32-xtensa.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-xtensa.c b/bfd/elf32-xtensa.c
+index f7f569d0c086..a4b046e445f1 100644
+--- a/bfd/elf32-xtensa.c
++++ b/bfd/elf32-xtensa.c
+@@ -10022,7 +10022,8 @@ shrink_dynamic_reloc_sections (struct bfd_link_info *info,
+   if ((r_type == R_XTENSA_32 || r_type == R_XTENSA_PLT)
+       && (input_section->flags & SEC_ALLOC) != 0
+       && (dynamic_symbol || bfd_link_pic (info))
+-      && (!h || h->root.type != bfd_link_hash_undefweak))
++      && (!h || h->root.type != bfd_link_hash_undefweak
++	  || (dynamic_symbol && bfd_link_dll (info))))
+     {
+       asection *srel;
+       bfd_boolean is_plt = FALSE;
+-- 
+2.11.0
+

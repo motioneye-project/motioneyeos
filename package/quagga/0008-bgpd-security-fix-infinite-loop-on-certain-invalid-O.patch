@@ -1,0 +1,43 @@
+From ce07207c50a3d1f05d6dd49b5294282e59749787 Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@jakma.org>
+Date: Sat, 6 Jan 2018 21:20:51 +0000
+Subject: [PATCH] bgpd/security: fix infinite loop on certain invalid OPEN
+ messages
+
+Security issue: Quagga-2018-1975
+See: https://www.quagga.net/security/Quagga-2018-1975.txt
+
+* bgpd/bgp_packet.c: (bgp_capability_msg_parse) capability parser can infinite
+  loop due to checks that issue 'continue' without bumping the input
+  pointer.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ bgpd/bgp_packet.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/bgpd/bgp_packet.c b/bgpd/bgp_packet.c
+index b3d601fc..f9338d8d 100644
+--- a/bgpd/bgp_packet.c
++++ b/bgpd/bgp_packet.c
+@@ -2328,7 +2328,8 @@ bgp_capability_msg_parse (struct peer *peer, u_char *pnt, bgp_size_t length)
+ 
+   end = pnt + length;
+ 
+-  while (pnt < end)
++  /* XXX: Streamify this */
++  for (; pnt < end; pnt += hdr->length + 3)
+     {      
+       /* We need at least action, capability code and capability length. */
+       if (pnt + 3 > end)
+@@ -2416,7 +2417,6 @@ bgp_capability_msg_parse (struct peer *peer, u_char *pnt, bgp_size_t length)
+           zlog_warn ("%s unrecognized capability code: %d - ignored",
+                      peer->host, hdr->code);
+         }
+-      pnt += hdr->length + 3;
+     }
+   return 0;
+ }
+-- 
+2.11.0
+

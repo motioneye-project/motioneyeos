@@ -1,0 +1,25 @@
+config BR2_PACKAGE_AT_SPI2_CORE
+	bool "at-spi2-core"
+	depends on BR2_PACKAGE_XORG7 # xlib-libxtst
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, glib2
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_XLIB_LIBXTST
+	help
+	  The At-Spi2 Core package is a part of the GNOME
+	  Accessibility Project. It provides a Service Provider
+	  Interface for the Assistive Technologies available on the
+	  GNOME platform and a library against which applications
+	  can be linked.
+
+	  https://wiki.gnome.org/Accessibility
+
+comment "at-spi2-core needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "at-spi2-core depends on X.org"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_XORG7

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MENU_CACHE_VERSION_MAJOR = 1.0
-MENU_CACHE_VERSION = $(MENU_CACHE_VERSION_MAJOR).1
+MENU_CACHE_VERSION_MAJOR = 1.1
+MENU_CACHE_VERSION = $(MENU_CACHE_VERSION_MAJOR).0
 MENU_CACHE_SOURCE = menu-cache-$(MENU_CACHE_VERSION).tar.xz
 MENU_CACHE_SITE = http://sourceforge.net/projects/lxde/files/menu-cache/$(MENU_CACHE_VERSION_MAJOR)
 MENU_CACHE_DEPENDENCIES = libfm-extra libglib2

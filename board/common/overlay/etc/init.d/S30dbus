@@ -13,6 +13,7 @@ test -n "$os_version" || source /etc/init.d/base
 
 start() {
     mkdir -p /tmp/dbus
+    mkdir -p /var/lib/dbus
 
     msg_begin "Starting dbus"
 

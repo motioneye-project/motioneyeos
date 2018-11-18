@@ -8,6 +8,10 @@ config BR2_LINUX_KERNEL
 
 if BR2_LINUX_KERNEL
 
+comment "Linux kernel in thumb mode may be broken with binutils >= 2.29"
+	depends on BR2_arm || BR2_armeb
+	depends on !BR2_BINUTILS_VERSION_2_28_X
+
 # Packages that need to have a kernel with support for loadable modules,
 # but do not use the kernel-modules infrastructure, should select that
 # option.
@@ -26,10 +30,10 @@ choice
 	prompt "Kernel version"
 
 config BR2_LINUX_KERNEL_LATEST_VERSION
-	bool "Latest version (4.13)"
+	bool "Latest version (4.17)"
 
 config BR2_LINUX_KERNEL_LATEST_CIP_VERSION
-	bool "Latest CIP SLTS version (v4.4.83-cip8)"
+	bool "Latest CIP SLTS version (v4.4.138-cip25)"
 	help
 	  CIP launched in the spring of 2016 to address the needs of
 	  organizations in industries such as power generation and
@@ -61,13 +65,13 @@ config BR2_LINUX_KERNEL_CUSTOM_VERSION
 config BR2_LINUX_KERNEL_CUSTOM_TARBALL
 	bool "Custom tarball"
 	help
-	  This option allows to specify a URL pointing to a kernel source
-	  tarball. This URL can use any protocol recognized by Buildroot,
-	  like http://, ftp://, file:// or scp://.
+	  This option allows to specify a URL pointing to a kernel
+	  source tarball. This URL can use any protocol recognized by
+	  Buildroot, like http://, ftp://, file:// or scp://.
 
-	  When pointing to a local tarball using file://, you may want to
-	  use a make variable like $(TOPDIR) to reference the root of the
-	  Buildroot tree.
+	  When pointing to a local tarball using file://, you may want
+	  to use a make variable like $(TOPDIR) to reference the root of
+	  the Buildroot tree.
 
 config BR2_LINUX_KERNEL_CUSTOM_GIT
 	bool "Custom Git repository"
@@ -109,15 +113,15 @@ config BR2_LINUX_KERNEL_CUSTOM_REPO_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION \
 		if BR2_LINUX_KERNEL_CUSTOM_GIT_VERSION != ""  # legacy
 	help
-	  Revision to use in the typical format used by Git/Mercurial/Subversion
-	  E.G. a sha id, a tag, branch, ..
+	  Revision to use in the typical format used by
+	  Git/Mercurial/Subversion E.G. a sha id, a tag, branch, ..
 
 endif
 
 config BR2_LINUX_KERNEL_VERSION
 	string
-	default "4.13.16" if BR2_LINUX_KERNEL_LATEST_VERSION
-	default "v4.4.83-cip8" if BR2_LINUX_KERNEL_LATEST_CIP_VERSION
+	default "4.17.19" if BR2_LINUX_KERNEL_LATEST_VERSION
+	default "v4.4.138-cip25" if BR2_LINUX_KERNEL_LATEST_CIP_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE \
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
 	default "custom" if BR2_LINUX_KERNEL_CUSTOM_TARBALL
@@ -175,7 +179,8 @@ config BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE
 	  Path to the kernel configuration file
 
 	  Note: this can be a defconfig file or a complete .config file,
-	  which can later be saved back with make linux-update-(def)config.
+	  which can later be saved back with make
+	  linux-update-(def)config.
 
 config BR2_LINUX_KERNEL_CONFIG_FRAGMENT_FILES
 	string "Additional configuration fragment files"
@@ -193,7 +198,7 @@ choice
 
 config BR2_LINUX_KERNEL_UIMAGE
 	bool "uImage"
-	depends on BR2_arc || BR2_arm || BR2_armeb || BR2_bfin || \
+	depends on BR2_arc || BR2_arm || BR2_armeb || \
 		   BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le || \
 		   BR2_sh || BR2_mips || BR2_mipsel || \
 		   BR2_mips64 || BR2_mips64el || BR2_xtensa
@@ -284,9 +289,9 @@ endchoice
 choice
 	prompt "Kernel compression format"
 	help
-	  This selection will just ensure that the correct host tools are build.
-	  The actual compression for the kernel should be selected in the
-	  kernel configuration menu.
+	  This selection will just ensure that the correct host tools
+	  are built. The actual compression for the kernel should be
+	  selected in the kernel configuration menu.
 
 config BR2_LINUX_KERNEL_GZIP
 	bool "gzip compression"
@@ -317,8 +322,9 @@ config BR2_LINUX_KERNEL_IMAGE_NAME
 	depends on BR2_LINUX_KERNEL_IMAGE_TARGET_CUSTOM
 	help
 	  The filename of the kernel image, if it is different from the
-	  make target (above). Only Xtensa uses a filename different from
-	  the make target. Defaults to BR2_LINUX_KERNEL_IMAGE_TARGET_NAME.
+	  make target (above). Only Xtensa uses a filename different
+	  from the make target. Defaults to
+	  BR2_LINUX_KERNEL_IMAGE_TARGET_NAME.
 
 	  If unsure, leave it empty.
 
@@ -327,18 +333,19 @@ config BR2_LINUX_KERNEL_UIMAGE_LOADADDR
 	depends on BR2_arm || BR2_armeb
 	depends on BR2_LINUX_KERNEL_UIMAGE || BR2_LINUX_KERNEL_APPENDED_UIMAGE
 	help
-	  If your ARM system's Linux kernel is configured with the new (3.7+)
-	  multi-architecture support (CONFIG_ARCH_MULTIPLATFORM=y in your
-	  kernel config), then it is necessary to specify a kernel load address
-	  when building the uImage. This should be a hexadecimal string
-	  beginning with 0x, for example: 0x00008000.
+	  If your ARM system's Linux kernel is configured with the new
+	  (3.7+) multi-architecture support (CONFIG_ARCH_MULTIPLATFORM=y
+	  in your kernel config), then it is necessary to specify a
+	  kernel load address when building the uImage. This should be a
+	  hexadecimal string beginning with 0x, for example: 0x00008000.
 
 	  If unsure, let this option empty.
 
 config BR2_LINUX_KERNEL_DTS_SUPPORT
 	bool "Build a Device Tree Blob (DTB)"
 	help
-	  Compile one or more device tree sources into device tree blobs.
+	  Compile one or more device tree sources into device tree
+	  blobs.
 	  Select the dts files to compile in the options below.
 
 if BR2_LINUX_KERNEL_DTS_SUPPORT
@@ -363,40 +370,19 @@ config BR2_LINUX_KERNEL_DTB_IS_SELF_BUILT
 config BR2_LINUX_KERNEL_APPENDED_DTB
 	bool
 
-choice
-	prompt "Device tree source"
-	default BR2_LINUX_KERNEL_USE_INTREE_DTS
-
-config BR2_LINUX_KERNEL_USE_INTREE_DTS
-	bool "Use a device tree present in the kernel"
-	help
-	  Use a device tree source distributed with
-	  the kernel sources. The dts files are located
-	  in the arch/<arch>/boot/dts folder.
-
-config BR2_LINUX_KERNEL_USE_CUSTOM_DTS
-	bool "Use a custom device tree file"
-	help
-	  Use a custom device tree file, i.e, a device
-	  tree file that does not belong to the kernel
-	  source tree.
-endchoice
-
 config BR2_LINUX_KERNEL_INTREE_DTS_NAME
-	string "Device Tree Source file names"
-	depends on BR2_LINUX_KERNEL_USE_INTREE_DTS
+	string "In-tree Device Tree Source file names"
 	help
-	  Name of the device tree source file, without
+	  Name of in-tree device tree source file, without
 	  the trailing .dts. You can provide a list of
 	  dts files to build, separated by spaces.
 
 config BR2_LINUX_KERNEL_CUSTOM_DTS_PATH
-	string "Device Tree Source file paths"
-	depends on BR2_LINUX_KERNEL_USE_CUSTOM_DTS
+	string "Out-of-tree Device Tree Source file paths"
 	help
-	  Path to the device tree source files. You can
-	  provide a list of dts paths to copy and build,
-	  separated by spaces.
+	  Path to to out-of-tree device tree source files.
+	  You can provide a list of dts paths to copy and
+	  build, separated by spaces.
 
 endif
 
@@ -411,6 +397,32 @@ config BR2_LINUX_KERNEL_INSTALL_TARGET
 	  Note that this option also installs the Device Tree Blobs to
 	  /boot if DTBs have been generated by the kernel build
 	  process.
+
+config BR2_LINUX_KERNEL_NEEDS_HOST_OPENSSL
+	bool "Needs host OpenSSL"
+	help
+	  Some Linux kernel configuration options (such as
+	  CONFIG_SYSTEM_TRUSTED_KEYRING) require building a host
+	  program called extract-cert, which itself needs
+	  OpenSSL. Enabling this option will ensure host-openssl gets
+	  built before the Linux kernel.
+
+	  Enable this option if you get a Linux kernel build failure
+	  such as "scripts/extract-cert.c:21:25: fatal error:
+	  openssl/bio.h: No such file or directory".
+
+config BR2_LINUX_KERNEL_NEEDS_HOST_LIBELF
+	bool "Needs host libelf"
+	help
+	  Some Linux kernel configuration options (such as
+	  CONFIG_UNWINDER_ORC) require building a host program that
+	  needs libelf. Enabling this option will ensure host-elfutils
+	  (which provides libelf) gets built before the Linux kernel.
+
+	  Enable this option if you get a Linux kernel build failure
+	  such as "Cannot generate ORC metadata for
+	  CONFIG_UNWINDER_ORC=y, please install libelf-dev,
+	  libelf-devel or elfutils-libelf-devel".
 
 # Linux extensions
 source "linux/Config.ext.in"

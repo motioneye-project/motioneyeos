@@ -5,6 +5,7 @@
 ################################################################################
 
 FSWEBCAM_VERSION = 20140113
+FSWEBCAM_SOURCE = fswebcam-$(FSWEBCAM_VERSION).tar.xz
 FSWEBCAM_SITE = http://www.firestorm.cx/fswebcam/files
 FSWEBCAM_LICENSE = GPL-2.0
 FSWEBCAM_LICENSE_FILES = LICENSE

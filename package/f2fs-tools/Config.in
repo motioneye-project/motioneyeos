@@ -6,7 +6,7 @@ config BR2_PACKAGE_F2FS_TOOLS
 	help
 	  Tools for Flash-Friendly File System (F2FS)
 
-	  http://sourceforge.net/projects/f2fs-tools/
+	  https://git.kernel.org/pub/scm/linux/kernel/git/jaegeuk/f2fs-tools.git
 
 comment "f2fs-tools needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR

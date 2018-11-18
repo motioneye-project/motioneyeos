@@ -12,11 +12,7 @@ XDRIVER_XF86_VIDEO_NOUVEAU_LICENSE_FILES = COPYING
 XDRIVER_XF86_VIDEO_NOUVEAU_DEPENDENCIES = \
 	host-pkgconf \
 	libdrm \
-	xproto_dri2proto \
-	xproto_randrproto \
-	xproto_renderproto \
-	xproto_videoproto \
-	xproto_xextproto \
+	xorgproto \
 	xserver_xorg-server
 
 # xdriver_xf86-video-nouveau requires O_CLOEXEC
