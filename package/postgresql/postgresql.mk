@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POSTGRESQL_VERSION = 9.6.6
+POSTGRESQL_VERSION = 10.5
 POSTGRESQL_SOURCE = postgresql-$(POSTGRESQL_VERSION).tar.bz2
 POSTGRESQL_SITE = http://ftp.postgresql.org/pub/source/v$(POSTGRESQL_VERSION)
 POSTGRESQL_LICENSE = PostgreSQL
@@ -56,6 +56,11 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 POSTGRESQL_DEPENDENCIES += openssl
 POSTGRESQL_CONF_OPTS += --with-openssl
+else
+# PostgreSQL checks for /dev/urandom and fails if it's being cross-compiled and
+# an SSL library isn't found. Since /dev/urandom is guaranteed to be provided
+# on Linux systems, explicitly tell the configure script it's available.
+POSTGRESQL_CONF_ENV += ac_cv_file__dev_urandom=yes
 endif
 
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
@@ -63,6 +68,14 @@ POSTGRESQL_DEPENDENCIES += openldap
 POSTGRESQL_CONF_OPTS += --with-ldap
 else
 POSTGRESQL_CONF_OPTS += --without-ldap
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+POSTGRESQL_DEPENDENCIES += libxml2
+POSTGRESQL_CONF_OPTS += --with-libxml
+POSTGRESQL_CONF_ENV += XML2_CONFIG=$(STAGING_DIR)/usr/bin/xml2-config
+else
+POSTGRESQL_CONF_OPTS += --without-libxml
 endif
 
 define POSTGRESQL_USERS
@@ -79,6 +92,7 @@ POSTGRESQL_POST_INSTALL_TARGET_HOOKS += POSTGRESQL_INSTALL_TARGET_FIXUP
 define POSTGRESQL_INSTALL_CUSTOM_PG_CONFIG
 	$(INSTALL) -m 0755 -D package/postgresql/pg_config \
 		$(STAGING_DIR)/usr/bin/pg_config
+	$(SED) "s|@POSTGRESQL_VERSION@|$(POSTGRESQL_VERSION)|g" $(STAGING_DIR)/usr/bin/pg_config
 endef
 
 POSTGRESQL_POST_INSTALL_STAGING_HOOKS += POSTGRESQL_INSTALL_CUSTOM_PG_CONFIG

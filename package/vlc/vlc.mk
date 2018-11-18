@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-VLC_VERSION = 2.2.6
-VLC_SITE = http://get.videolan.org/vlc/$(VLC_VERSION)
+VLC_VERSION = 2.2.8
+VLC_SITE = https://get.videolan.org/vlc/$(VLC_VERSION)
 VLC_SOURCE = vlc-$(VLC_VERSION).tar.xz
 VLC_LICENSE = GPL-2.0+, LGPL-2.1+
 VLC_LICENSE_FILES = COPYING COPYING.LIB
@@ -281,9 +281,9 @@ else
 VLC_CONF_OPTS += --disable-theora
 endif
 
-ifeq ($(BR2_PACKAGE_LIBUPNP),y)
+ifeq ($(BR2_PACKAGE_LIBUPNP)$(BR2_PACKAGE_LIBUPNP18),y)
 VLC_CONF_OPTS += --enable-upnp
-VLC_DEPENDENCIES += libupnp
+VLC_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBUPNP),libupnp,libupnp18)
 else
 VLC_CONF_OPTS += --disable-upnp
 endif
@@ -381,9 +381,9 @@ else
 VLC_CONF_OPTS += --disable-sdl-image
 endif
 
-ifeq ($(BR2_PACKAGE_SPEEX),y)
+ifeq ($(BR2_PACKAGE_SPEEX)$(BR2_PACKAGE_SPEEXDSP),yy)
 VLC_CONF_OPTS += --enable-speex
-VLC_DEPENDENCIES += speex
+VLC_DEPENDENCIES += speex speexdsp
 else
 VLC_CONF_OPTS += --disable-speex
 endif

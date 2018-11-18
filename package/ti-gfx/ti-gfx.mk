@@ -94,8 +94,8 @@ TI_GFX_HDR_DIRS = OGLES2/EGL OGLES2/EWS OGLES2/GLES2 OGLES2/KHR \
 	OGLES/GLES bufferclass_ti/ pvr2d/ wsegl/
 
 define TI_GFX_EXTRACT_CMDS
-	chmod +x $(DL_DIR)/$(TI_GFX_SOURCE)
-	printf "Y\nY\n qY\n\n" | $(DL_DIR)/$(TI_GFX_SOURCE) \
+	chmod +x $(TI_GFX_DL_DIR)/$(TI_GFX_SOURCE)
+	printf "Y\nY\n qY\n\n" | $(TI_GFX_DL_DIR)/$(TI_GFX_SOURCE) \
 		--prefix $(@D) \
 		--mode console
 endef

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBXSLT_VERSION = 1.1.29
+LIBXSLT_VERSION = 1.1.32
 LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
 LIBXSLT_INSTALL_STAGING = YES
 LIBXSLT_LICENSE = MIT
@@ -14,16 +14,9 @@ LIBXSLT_CONF_OPTS = \
 	--with-gnu-ld \
 	--without-debug \
 	--without-python \
-	--with-libxml-prefix=$(STAGING_DIR)/usr/ \
-	--with-libxml-libs-prefix=$(STAGING_DIR)/usr/lib
+	--with-libxml-prefix=$(STAGING_DIR)/usr
 LIBXSLT_CONFIG_SCRIPTS = xslt-config
-LIBXSLT_DEPENDENCIES = libxml2
-
-# GCC bug with Os/O2/O3, PR77311
-# error: unable to find a register to spill in class 'CCREGS'
-ifeq ($(BR2_bfin),y)
-LIBXSLT_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -O1"
-endif
+LIBXSLT_DEPENDENCIES = host-pkgconf libxml2
 
 # If we have enabled libgcrypt then use it, else disable crypto support.
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
@@ -35,7 +28,7 @@ endif
 
 HOST_LIBXSLT_CONF_OPTS = --without-debug --without-python --without-crypto
 
-HOST_LIBXSLT_DEPENDENCIES = host-libxml2
+HOST_LIBXSLT_DEPENDENCIES = host-pkgconf host-libxml2
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

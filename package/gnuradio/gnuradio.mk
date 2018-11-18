@@ -4,16 +4,17 @@
 #
 ################################################################################
 
-GNURADIO_VERSION = 3.7.11
+GNURADIO_VERSION = 3.7.13.3
 GNURADIO_SITE = http://gnuradio.org/releases/gnuradio
 GNURADIO_LICENSE = GPL-3.0+
 GNURADIO_LICENSE_FILES = COPYING
 
 GNURADIO_SUPPORTS_IN_SOURCE_BUILD = NO
 
-# host-python-cheetah is needed for volk to compile
+# host-python-mako and host-python-six are needed for volk to compile
 GNURADIO_DEPENDENCIES = \
-	host-python-cheetah \
+	host-python-mako \
+	host-python-six \
 	host-swig \
 	boost
 
@@ -142,6 +143,16 @@ ifeq ($(BR2_PACKAGE_GNURADIO_UTILS),y)
 GNURADIO_CONF_OPTS += -DENABLE_GR_UTILS=ON
 else
 GNURADIO_CONF_OPTS += -DENABLE_GR_UTILS=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_GNURADIO_ZEROMQ),y)
+GNURADIO_DEPENDENCIES += cppzmq
+ifeq ($(BR2_PACKAGE_GNURADIO_PYTHON),y)
+GNURADIO_DEPENDENCIES += python-pyzmq
+endif
+GNURADIO_CONF_OPTS += -DENABLE_GR_ZEROMQ=ON
+else
+GNURADIO_CONF_OPTS += -DENABLE_GR_ZEROMQ=OFF
 endif
 
 $(eval $(cmake-package))

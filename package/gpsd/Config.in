@@ -38,6 +38,8 @@ config BR2_PACKAGE_GPSD_PROFILING
 	bool "profiling support"
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on !BR2_aarch64
+	# Needs glibc for ARC arc-2018.03-eng007+ for correct __mcount linking
+	depends on !BR2_arc
 
 comment "profiling support not available with uClibc-based toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
@@ -151,6 +153,11 @@ config BR2_PACKAGE_GPSD_GPSCLOCK
 	bool "GPSClock"
 	help
 	  GPSClock support
+
+config BR2_PACKAGE_GPSD_ISYNC
+	bool "iSync"
+	help
+	  Spectratime iSync LNRClok/GRCLOK support
 
 config BR2_PACKAGE_GPSD_ITRAX
 	bool "iTrax"

@@ -7,9 +7,9 @@ config BR2_PACKAGE_KERNEL_MODULE_IMX_GPU_VIV
 	help
 	  Kernel loadable module for Vivante GPU.
 
-	  This package uses an exact copy of the GPU kernel driver source code
-	  of the same version as base and include fixes and improvements
-	  developed by FSL Community.
+	  This package uses an exact copy of the GPU kernel driver
+	  source code of the same version as base and include fixes
+	  and improvements developed by FSL Community.
 
 	  This module is only meant for NXP-based kernel up to 4.1.x.
 

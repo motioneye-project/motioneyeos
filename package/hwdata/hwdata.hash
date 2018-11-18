@@ -1,3 +1,4 @@
-# From http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/h/hwdata/hwdata_0.267-1.dsc
-sha256	d77f2b3f3d6e278be669141ffa5dac01b64cab02f7b2c744bbabc500a45263f4	hwdata_0.267.orig.tar.gz
-sha256	055d2f168de9333562a04f6a230c43dc19c4975882935d8b2f0ab17f64f57275	hwdata_0.267-1.diff.gz
+# Locally calculated
+sha256 986d919c20a0c7f8b669a63830f6d2f4cb5c4cddcfc944c5e2ae05c2e9e5ec9f  hwdata-v0.308.tar.gz
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
+sha256 21d0406f93e884a050426ebc21931839a45d56bfcbcbfdda7686d583f36f107f  LICENSE

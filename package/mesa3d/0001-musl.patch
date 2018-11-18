@@ -1,12 +1,29 @@
-Fix musl build
+From 25e20c2e288e1d482f479eca863bc4aaa374b782 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 22 Apr 2018 15:58:38 +0200
+Subject: [PATCH] Fix musl build
+
+Fix musl build when svga gallium driver is enabled.
+
+In file included from vmw_fence.c:34:0:
+vmw_screen.h:100:4: error: unknown type name ‘dev_t’
+    dev_t device;
+    ^~~~~
 
 Downloaded from
 http://git.alpinelinux.org/cgit/aports/plain/main/mesa/musl-fixes.patch
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Romain: rebase on 18.1]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/gallium/winsys/svga/drm/vmw_screen.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- ./src/gallium/winsys/svga/drm/vmw_screen.h.orig
-+++ ./src/gallium/winsys/svga/drm/vmw_screen.h
+diff --git a/src/gallium/winsys/svga/drm/vmw_screen.h b/src/gallium/winsys/svga/drm/vmw_screen.h
+index f21cabb51f..20d03f8b53 100644
+--- a/src/gallium/winsys/svga/drm/vmw_screen.h
++++ b/src/gallium/winsys/svga/drm/vmw_screen.h
 @@ -34,7 +34,7 @@
  #ifndef VMW_SCREEN_H_
  #define VMW_SCREEN_H_
@@ -16,3 +33,6 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
  #include "pipe/p_compiler.h"
  #include "pipe/p_state.h"
  
+-- 
+2.14.3
+

@@ -4,15 +4,11 @@
 #
 
 NAME=neard
-DAEMON=/usr/libexec/nfc/$NAME
-
-# Exit gracefully if the package has been removed
-[ -x $DAEMON ] || exit 0
 
 case "$1" in
   start)
     printf "Starting $NAME: "
-    start-stop-daemon -S -q -p /var/run/${NAME}.pid -x $DAEMON -- -d '*'
+    start-stop-daemon -S -q -p /var/run/${NAME}.pid -x /usr/libexec/nfc/neard -- -d '*'
     echo "OK"
     ;;
   stop)

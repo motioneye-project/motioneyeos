@@ -13,6 +13,8 @@ PHP_ICONV_H_PATH which, again, uses test and absolute paths.
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: convert to nice m4 instead of patching configure]
 [Gustavo: update for 5.6.10]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[aduskett@gmail.com: Update for 7.2.2]
 ---
  acinclude.m4        |  2 +-
  ext/iconv/config.m4 | 22 ----------------------
@@ -22,7 +24,7 @@ diff --git a/acinclude.m4 b/acinclude.m4
 index af4aa06..1bd2652 100644
 --- a/acinclude.m4
 +++ b/acinclude.m4
-@@ -2471,7 +2471,7 @@ AC_DEFUN([PHP_SETUP_ICONV], [
+@@ -2463,7 +2463,7 @@ AC_DEFUN([PHP_SETUP_ICONV], [
    dnl
    if test "$found_iconv" = "no"; then
  

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_NGHTTP2
+	bool "nghttp2"
+	help
+	  nghttp2 is an implementation of HTTP/2 and its header
+	  compression algorithm HPACK in C.
+
+	  https://nghttp2.org/

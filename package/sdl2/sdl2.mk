@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SDL2_VERSION = 2.0.7
+SDL2_VERSION = 2.0.8
 SDL2_SOURCE = SDL2-$(SDL2_VERSION).tar.gz
 SDL2_SITE = http://www.libsdl.org/release
 SDL2_LICENSE = Zlib
@@ -18,8 +18,7 @@ SDL2_CONF_OPTS += \
 	--disable-esd \
 	--disable-dbus \
 	--disable-pulseaudio \
-	--disable-video-wayland \
-	--disable-video-rpi
+	--disable-video-wayland
 
 # We must enable static build to get compilation successful.
 SDL2_CONF_OPTS += --enable-static
@@ -37,6 +36,13 @@ SDL2_CONF_OPTS += --enable-video-directfb
 SDL2_CONF_ENV = ac_cv_path_DIRECTFBCONFIG=$(STAGING_DIR)/usr/bin/directfb-config
 else
 SDL2_CONF_OPTS += --disable-video-directfb
+endif
+
+ifeq ($(BR2_PACKAGE_SDL2_OPENGLES)$(BR2_PACKAGE_RPI_USERLAND),yy)
+SDL2_DEPENDENCIES += rpi-userland
+SDL2_CONF_OPTS += --enable-video-rpi
+else
+SDL2_CONF_OPTS += --disable-video-rpi
 endif
 
 # x-includes and x-libraries must be set for cross-compiling

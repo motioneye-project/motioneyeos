@@ -2,3 +2,6 @@
 md5	1a6ac52e1080fd54f0f59372345f1e4e	libcuefile_r475.tar.gz
 # Calculated based on the hash above
 sha256	b681ca6772b3f64010d24de57361faecf426ee6182f5969fcf29b3f649133fe7	libcuefile_r475.tar.gz
+
+# Hash for license file:
+sha256	32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670	COPYING

@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_JSONMODELS
+	bool "python-jsonmodels"
+	select BR2_PACKAGE_PYTHON_DATEUTIL # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Models to make easier to deal with structures that are
+	  converted to, or read from JSON.
+
+	  https://github.com/beregond/jsonmodels

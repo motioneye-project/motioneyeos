@@ -3,5 +3,7 @@ config BR2_PACKAGE_XAPP_MKFONTSCALE
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_XLIB_LIBX11
 	select BR2_PACKAGE_XLIB_LIBFONTENC
+	select BR2_PACKAGE_XORGPROTO
+	select BR2_PACKAGE_ZLIB
 	help
 	  create an index of scalable font files for X

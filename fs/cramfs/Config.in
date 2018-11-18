@@ -3,4 +3,24 @@ config BR2_TARGET_ROOTFS_CRAMFS
 	help
 	  Build a cramfs root filesystem
 
-	  http://sourceforge.net/projects/cramfs/
+	  https://github.com/npitre/cramfs-tools
+
+if BR2_TARGET_ROOTFS_CRAMFS
+
+config BR2_TARGET_ROOTFS_CRAMFS_XIP
+	bool "Support XIP of all ELF files"
+	help
+	  For ELF files, uncompressed and properly aligned data blocks
+	  will be automatically be mapped directly into user space
+	  whenever possible providing eXecute-In-Place (XIP) from ROM
+	  of read-only segments. Data segments mapped read-write
+	  (hence they have to be copied to RAM) may still be
+	  compressed in the cramfs image in the same file along with
+	  non compressed read-only segments. Both MMU and no-MMU
+	  systems are supported. This is particularly handy for tiny
+	  embedded systems with very tight memory constraints.
+
+	  The CRAMFS_MTD Kconfig option must also be enabled in a
+	  4.15+ kernel.
+
+endif # BR2_TARGET_ROOTFS_CRAMFS

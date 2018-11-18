@@ -3,7 +3,7 @@ config BR2_PACKAGE_HOST_OMAP_U_BOOT_UTILS
 	depends on BR2_arm || BR2_armeb
 	help
 	  U-Boot Utilities for Texas Instrument's OMAP platforms.
-	  This is a set of tools to control U-Boot from scripts, generate
-	  OMAP-specific signed image files and more.
+	  This is a set of tools to control U-Boot from scripts,
+	  generate OMAP-specific signed image files and more.
 
 	  https://github.com/nmenon/omap-u-boot-utils

@@ -1,0 +1,26 @@
+config BR2_PACKAGE_LIBOSTREE
+	bool "libostree"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgpgme, libgpg-error
+	depends on !BR2_STATIC_LIBS # libfuse
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_WCHAR # libglib2
+	depends on BR2_USE_MMU # e2fsprogs, libfuse, libglib2, libgpgme
+	# doesn't build with musl due to lack of TEMP_FAILURE_RETRY()
+	depends on !BR2_TOOLCHAIN_USES_MUSL
+	select BR2_PACKAGE_E2FSPROGS
+	select BR2_PACKAGE_LIBFUSE
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBGPG_ERROR
+	select BR2_PACKAGE_LIBGPGME
+	select BR2_PACKAGE_XZ
+	help
+	  OSTree is an upgrade system for Linux-based operating
+	  systems.
+
+	  https://ostree.readthedocs.io/en/latest/
+
+comment "libostree needs a uClibc or glibc toolchain w/ threads, dynamic library, wchar"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
+		|| !BR2_USE_WCHAR || BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	depends on BR2_USE_MMU

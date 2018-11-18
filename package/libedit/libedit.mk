@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBEDIT_VERSION = 20150325-3.1
+LIBEDIT_VERSION = 20180525-3.1
 LIBEDIT_SITE = http://www.thrysoee.dk/editline
 LIBEDIT_INSTALL_STAGING = YES
 LIBEDIT_DEPENDENCIES = ncurses
@@ -13,15 +13,6 @@ LIBEDIT_LICENSE_FILES = COPYING
 
 # We're patching configure.ac
 LIBEDIT_AUTORECONF = YES
-
-# Needed for autoreconf to work properly
-define LIBEDIT_FIXUP_M4_DIR
-	mkdir $(@D)/m4
-endef
-LIBEDIT_POST_EXTRACT_HOOKS += LIBEDIT_FIXUP_M4_DIR
-
-# Doesn't really support !wchar, but support is disabled otherwise
-LIBEDIT_CONF_OPTS += --enable-widec
 
 # musl is ISO 10646 compliant but doesn't define __STDC_ISO_10646__,
 # so let's define it manually

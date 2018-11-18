@@ -1,0 +1,119 @@
+// -*- mode:doc; -*-
+// vim: set syntax=asciidoc:
+
+=== Infrastructure for Go packages
+
+This infrastructure applies to Go packages that use the standard
+build system and use bundled dependencies.
+
+[[golang-package-tutorial]]
+
+==== +golang-package+ tutorial
+
+First, let's see how to write a +.mk+ file for a go package,
+with an example :
+
+------------------------
+01: ################################################################################
+02: #
+03: # foo
+04: #
+05: ################################################################################
+06:
+07: FOO_VERSION = 1.0
+08: FOO_SITE = $(call github,bar,foo,$(FOO_VERSION))
+09: FOO_LICENSE = BSD-3-Clause
+10: FOO_LICENSE_FILES = LICENSE
+11:
+12: $(eval $(golang-package))
+------------------------
+
+On line 7, we declare the version of the package.
+
+On line 8, we declare the upstream location of the package, here
+fetched from Github, since a large number of Go packages are hosted on
+Github.
+
+On line 9 and 10, we give licensing details about the package.
+
+Finally, on line 12, we invoke the +golang-package+ macro that
+generates all the Makefile rules that actually allow the package to be
+built.
+
+[[golang-package-reference]]
+
+==== +golang-package+ reference
+
+In their +Config.in+ file, packages using the +golang-package+
+infrastructure should depend on +BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS+
+and +BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS+ because Buildroot will
+automatically add a dependency on +host-go+ to such packages.
+
+The main macro of the Go package infrastructure is
++golang-package+. It is similar to the +generic-package+ macro. Only
+target packages are supported with +golang-package+.
+
+Just like the generic infrastructure, the Go infrastructure works
+by defining a number of variables before calling the +golang-package+.
+
+All the package metadata information variables that exist in the
+xref:generic-package-reference[generic package infrastructure] also
+exist in the Go infrastructure: +FOO_VERSION+, +FOO_SOURCE+,
++FOO_PATCH+, +FOO_SITE+, +FOO_SUBDIR+, +FOO_DEPENDENCIES+,
++FOO_LICENSE+, +FOO_LICENSE_FILES+, +FOO_INSTALL_STAGING+, etc.
+
+Note that it is not necessary to add +host-go+ in the
++FOO_DEPENDENCIES+ variable of a package, since this basic dependency
+is automatically added as needed by the Go package infrastructure.
+
+A few additional variables, specific to the Go infrastructure, can
+optionally be defined, depending on the package's needs. Many of them
+are only useful in very specific cases, typical packages will
+therefore only use a few of them, or none.
+
+* If your package need a custom +GOPATH+ to be compiled in, you can
+  use the +FOO_WORKSPACE+ variable. The +GOPATH+ being used will be
+  +<package-srcdir>/<FOO_WORKSPACE>+. If +FOO_WORKSPACE+ is not
+  specified, it defaults to +_gopath+.
+
+* +FOO_SRC_SUBDIR+ is the sub-directory where your source will be
+  compiled relatively to the +GOPATH+. An example value is
+  +github.com/bar/foo+. If +FOO_SRC_SUBDIR+ is not specified, it
+  defaults to a value infered from the +FOO_SITE+ variable.
+
+* +FOO_LDFLAGS+ and +FOO_TAGS+ can be used to pass respectively the
+  +LDFLAGS+ or the +TAGS+ to the +go+ build command.
+
+* +FOO_BUILD_TARGETS+ can be used to pass the list of targets that
+  should be built. If +FOO_BUILD_TARGETS+ is not specified, it
+  defaults to +.+. We then have two cases:
+
+** +FOO_BUILD_TARGETS+ is +.+. In this case, we assume only one binary
+   will be produced, and that by default we name it after the package
+   name. If that is not appropriate, the name of the produced binary
+   can be overridden using +FOO_BIN_NAME+.
+
+** +FOO_BUILD_TARGETS+ is not +.+. In this case, we iterate over the
+   values to build each target, and for each produced a binary that is
+   the non-directory component of the target. For example if
+   +FOO_BUILD_TARGETS = cmd/docker cmd/dockerd+ the binaries produced
+   are +docker+ and +dockerd+.
+
+* +FOO_INSTALL_BINS+ can be used to pass the list of binaries that
+  should be installed in +/usr/bin+ on the target. If
+  +FOO_INSTALL_BINS+ is not specified, it defaults to the lower-case
+  name of package.
+
+With the Go infrastructure, all the steps required to build and
+install the packages are already defined, and they generally work well
+for most Go-based packages. However, when required, it is still
+possible to customize what is done in any particular step:
+
+* By adding a post-operation hook (after extract, patch, configure,
+  build or install). See xref:hooks[] for details.
+
+* By overriding one of the steps. For example, even if the Go
+  infrastructure is used, if the package +.mk+ file defines its own
+  +FOO_BUILD_CMDS+ variable, it will be used instead of the default Go
+  one. However, using this method should be restricted to very
+  specific cases. Do not use it in the general case.

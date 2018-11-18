@@ -1,4 +1,9 @@
-# From http://lists.nongnu.org/archive/html/help-libidn/2016-07/msg00009.html
-sha1	57872fdc665dcc585e16f4ac0bb35374b1103f7e	libidn-1.33.tar.gz
+# From http://lists.nongnu.org/archive/html/help-libidn/2018-03/msg00006.html
+sha1	8701e3d01df25431802ce483756ecad698156835	libidn-1.34.tar.gz
 # Calculated based on the hash above
-sha256	44a7aab635bb721ceef6beecc4d49dfd19478325e1b47f3196f7d2acc4930e19	libidn-1.33.tar.gz
+sha256	3719e2975f2fb28605df3479c380af2cf4ab4e919e1506527e4c7670afff6e3c	libidn-1.34.tar.gz
+
+# Hash for license files:
+sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYINGv2
+sha256	8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903	COPYINGv3
+sha256	da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768	COPYING.LESSERv3

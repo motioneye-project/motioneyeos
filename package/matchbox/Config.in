@@ -9,7 +9,8 @@ menuconfig BR2_PACKAGE_MATCHBOX
 	  Matchbox is an Open Source base environment for the X Window
 	  System running on non-desktop embedded platforms such as
 	  handhelds, set-top boxes, kiosks and anything else for which
-	  screen space, input mechanisms or system resources are limited.
+	  screen space, input mechanisms or system resources are
+	  limited.
 
 	  https://www.yoctoproject.org/tools-resources/projects/matchbox
 

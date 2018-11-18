@@ -1,0 +1,28 @@
+From 84157b11e8f27318f7291823c657f6313c3b60af Mon Sep 17 00:00:00 2001
+From: Jan Breuer <jan.breuer@jaybee.cz>
+Date: Tue, 12 Jul 2016 18:07:08 +0200
+Subject: [PATCH] Solve issue #25 - Removing type U64 from net-snmp related
+ code
+
+[Thomas: Backport to 2.3.1.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/dep/snmp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/dep/snmp.c b/src/dep/snmp.c
+index 5c08aaa..3086c86 100644
+--- a/src/dep/snmp.c
++++ b/src/dep/snmp.c
+@@ -221,7 +221,7 @@ snmpHeaderIndexBest(struct snmpHeaderIndex *idx)
+ 
+ #define SNMP_LOCAL_VARIABLES			\
+ 	static unsigned long long_ret;		\
+-	static U64 counter64_ret;		\
++	static struct counter64 counter64_ret;	\
+ 	static uint32_t ipaddr;			\
+ 	Integer64 bigint;			\
+ 	struct snmpHeaderIndex idx;		\
+-- 
+2.14.4
+

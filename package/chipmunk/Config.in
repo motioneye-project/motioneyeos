@@ -1,0 +1,12 @@
+
+comment "chipmunk needs an OpenGL backend"
+	depends on !BR2_PACKAGE_HAS_LIBGL
+
+config BR2_PACKAGE_CHIPMUNK
+	bool "chipmunk"
+	depends on BR2_PACKAGE_HAS_LIBGL
+	help
+	  Chipmunk2D is a simple, lightweight, fast and portable 2D
+	  rigid body physics library written in C.
+
+	  http://chipmunk-physics.net/

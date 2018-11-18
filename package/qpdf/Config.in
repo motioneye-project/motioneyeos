@@ -5,12 +5,12 @@ config BR2_PACKAGE_QPDF
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_JPEG
 	help
-	  QPDF is a command-line program that does structural, content-
-	  preserving transformations on PDF files. It could have been called
-	  something like pdf-to-pdf. It also provides many useful capabilities
-	  to developers of PDF-producing software or for people who just want
-	  to look at the innards of a PDF file to learn more about how they
-	  work.
+	  QPDF is a command-line program that does structural,
+	  content- preserving transformations on PDF files. It could
+	  have been called something like pdf-to-pdf. It also provides
+	  many useful capabilities to developers of PDF-producing
+	  software or for people who just want to look at the innards
+	  of a PDF file to learn more about how they work.
 
 	  http://qpdf.sourceforge.net/
 

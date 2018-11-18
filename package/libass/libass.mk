@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBASS_VERSION = 0.13.7
+LIBASS_VERSION = 0.14.0
 LIBASS_SOURCE = libass-$(LIBASS_VERSION).tar.xz
 # Do not use the github helper here, the generated tarball is *NOT*
 # the same as the one uploaded by upstream for the release.
@@ -18,10 +18,10 @@ LIBASS_DEPENDENCIES = \
 	libfribidi \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
-# configure: WARNING: Install yasm for a significantly faster libass build.
+# configure: WARNING: Install nasm for a significantly faster libass build.
 # only for Intel archs
 ifeq ($(BR2_i386)$(BR2_x86_64),y)
-LIBASS_DEPENDENCIES += host-yasm
+LIBASS_DEPENDENCIES += host-nasm
 endif
 
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)

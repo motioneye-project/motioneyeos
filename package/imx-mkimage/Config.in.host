@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_IMX_MKIMAGE
+	bool "host imx-mkimage"
+	help
+	  imx-mkimage is used to combine input images and generate
+	  final boot image with appropriate IVT set.
+
+	  https://source.codeaurora.org/external/imx/imx-mkimage

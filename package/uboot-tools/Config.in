@@ -63,8 +63,8 @@ config BR2_PACKAGE_UBOOT_TOOLS_MKENVIMAGE
 	  Install the mkenvimage tool on the target system
 
 	  The mkenvimage tool from Das U-Boot bootloader, which allows
-	  generation of a valid binary environment image from a text file
-	  describing the key=value pairs of the environment.
+	  generation of a valid binary environment image from a text
+	  file describing the key=value pairs of the environment.
 
 config BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
 	bool "fw_printenv"

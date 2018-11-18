@@ -1,4 +1,0 @@
-config BR2_PACKAGE_XPROTO_XF86VIDMODEPROTO
-	bool "xf86vidmodeproto"
-	help
-	  X.Org XF86VidMode protocol headers

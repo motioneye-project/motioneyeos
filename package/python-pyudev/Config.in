@@ -5,8 +5,9 @@ config BR2_PACKAGE_PYTHON_PYUDEV
 	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
 	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
-	  pyudev is a LGPL licenced, pure Python 2/3 binding to libudev,
-	  the device and hardware management and information library of Linux.
+	  pyudev is a LGPL licenced, pure Python 2/3 binding to
+	  libudev, the device and hardware management and information
+	  library of Linux.
 
 	  https://github.com/pyudev/pyudev
 

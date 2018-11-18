@@ -44,8 +44,9 @@ ifneq ($(SKELETON_INIT_COMMON_HOSTNAME),)
 define SKELETON_INIT_COMMON_SET_HOSTNAME
 	mkdir -p $(TARGET_DIR)/etc
 	echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
-	$(SED) '$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTNAME)' \
-		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts
+	test -f $(TARGET_DIR)/etc/hosts && $(SED) \
+		'$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTNAME)' \
+		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_HOSTNAME
 endif
@@ -70,7 +71,7 @@ else # !BR2_TARGET_ENABLE_ROOT_LOGIN
 SKELETON_INIT_COMMON_ROOT_PASSWORD = "*"
 endif
 define SKELETON_INIT_COMMON_SET_ROOT_PASSWD
-	$(SED) s,^root:[^:]*:,root:$(SKELETON_INIT_COMMON_ROOT_PASSWORD):, $(TARGET_DIR)/etc/shadow
+	test -f $(TARGET_DIR)/etc/shadow && $(SED) s,^root:[^:]*:,root:$(SKELETON_INIT_COMMON_ROOT_PASSWORD):, $(TARGET_DIR)/etc/shadow || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_ROOT_PASSWD
 
@@ -79,6 +80,13 @@ define SKELETON_INIT_COMMON_SET_BIN_SH
 	rm -f $(TARGET_DIR)/bin/sh
 endef
 else
+# Add /bin/sh to /etc/shells otherwise some login tools like dropbear
+# can reject the user connection. See man shells.
+define SKELETON_INIT_COMMON_ADD_SH_TO_SHELLS
+	grep -qsE '^/bin/sh$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/sh" >> $(TARGET_DIR)/etc/shells
+endef
+SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_ADD_SH_TO_SHELLS
 ifneq ($(SKELETON_INIT_COMMON_BIN_SH),)
 define SKELETON_INIT_COMMON_SET_BIN_SH
 	ln -sf $(SKELETON_INIT_COMMON_BIN_SH) $(TARGET_DIR)/bin/sh

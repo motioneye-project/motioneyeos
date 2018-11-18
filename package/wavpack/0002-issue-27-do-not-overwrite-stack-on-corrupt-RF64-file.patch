@@ -1,0 +1,118 @@
+From d5bf76b5a88d044a1be1d5656698e3ba737167e5 Mon Sep 17 00:00:00 2001
+From: David Bryant <david@wavpack.com>
+Date: Sun, 4 Feb 2018 11:28:15 -0800
+Subject: [PATCH] issue #27, do not overwrite stack on corrupt RF64 file
+
+Fixes CVE-2018-6767
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ cli/riff.c | 39 ++++++++++++++++++++++++++++++++-------
+ 1 file changed, 32 insertions(+), 7 deletions(-)
+
+diff --git a/cli/riff.c b/cli/riff.c
+index 8b1af45..de98c1e 100644
+--- a/cli/riff.c
++++ b/cli/riff.c
+@@ -42,6 +42,7 @@ typedef struct {
+ 
+ #pragma pack(pop)
+ 
++#define CS64ChunkFormat "4D"
+ #define DS64ChunkFormat "DDDL"
+ 
+ #define WAVPACK_NO_ERROR    0
+@@ -101,13 +102,13 @@ int ParseRiffHeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpack
+ 
+         if (!strncmp (chunk_header.ckID, "ds64", 4)) {
+             if (chunk_header.ckSize < sizeof (DS64Chunk) ||
+-                !DoReadFile (infile, &ds64_chunk, chunk_header.ckSize, &bcount) ||
+-                bcount != chunk_header.ckSize) {
++                !DoReadFile (infile, &ds64_chunk, sizeof (DS64Chunk), &bcount) ||
++                bcount != sizeof (DS64Chunk)) {
+                     error_line ("%s is not a valid .WAV file!", infilename);
+                     return WAVPACK_SOFT_ERROR;
+             }
+             else if (!(config->qmode & QMODE_NO_STORE_WRAPPER) &&
+-                !WavpackAddWrapper (wpc, &ds64_chunk, chunk_header.ckSize)) {
++                !WavpackAddWrapper (wpc, &ds64_chunk, sizeof (DS64Chunk))) {
+                     error_line ("%s", WavpackGetErrorMessage (wpc));
+                     return WAVPACK_SOFT_ERROR;
+             }
+@@ -315,10 +316,11 @@ int ParseRiffHeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpack
+ 
+ int WriteRiffHeader (FILE *outfile, WavpackContext *wpc, int64_t total_samples, int qmode)
+ {
+-    int do_rf64 = 0, write_junk = 1;
++    int do_rf64 = 0, write_junk = 1, table_length = 0;
+     ChunkHeader ds64hdr, datahdr, fmthdr;
+     RiffChunkHeader riffhdr;
+     DS64Chunk ds64_chunk;
++    CS64Chunk cs64_chunk;
+     JunkChunk junkchunk;
+     WaveHeader wavhdr;
+     uint32_t bcount;
+@@ -380,6 +382,7 @@ int WriteRiffHeader (FILE *outfile, WavpackContext *wpc, int64_t total_samples,
+     strncpy (riffhdr.formType, "WAVE", sizeof (riffhdr.formType));
+     total_riff_bytes = sizeof (riffhdr) + wavhdrsize + sizeof (datahdr) + ((total_data_bytes + 1) & ~(int64_t)1);
+     if (do_rf64) total_riff_bytes += sizeof (ds64hdr) + sizeof (ds64_chunk);
++    total_riff_bytes += table_length * sizeof (CS64Chunk);
+     if (write_junk) total_riff_bytes += sizeof (junkchunk);
+     strncpy (fmthdr.ckID, "fmt ", sizeof (fmthdr.ckID));
+     strncpy (datahdr.ckID, "data", sizeof (datahdr.ckID));
+@@ -394,11 +397,12 @@ int WriteRiffHeader (FILE *outfile, WavpackContext *wpc, int64_t total_samples,
+ 
+     if (do_rf64) {
+         strncpy (ds64hdr.ckID, "ds64", sizeof (ds64hdr.ckID));
+-        ds64hdr.ckSize = sizeof (ds64_chunk);
++        ds64hdr.ckSize = sizeof (ds64_chunk) + (table_length * sizeof (CS64Chunk));
+         CLEAR (ds64_chunk);
+         ds64_chunk.riffSize64 = total_riff_bytes;
+         ds64_chunk.dataSize64 = total_data_bytes;
+         ds64_chunk.sampleCount64 = total_samples;
++        ds64_chunk.tableLength = table_length;
+         riffhdr.ckSize = (uint32_t) -1;
+         datahdr.ckSize = (uint32_t) -1;
+         WavpackNativeToLittleEndian (&ds64hdr, ChunkHeaderFormat);
+@@ -409,6 +413,14 @@ int WriteRiffHeader (FILE *outfile, WavpackContext *wpc, int64_t total_samples,
+         datahdr.ckSize = (uint32_t) total_data_bytes;
+     }
+ 
++    // this "table" is just a dummy placeholder for testing (normally not written)
++
++    if (table_length) {
++        strncpy (cs64_chunk.ckID, "dmmy", sizeof (cs64_chunk.ckID));
++        cs64_chunk.chunkSize64 = 12345678;
++        WavpackNativeToLittleEndian (&cs64_chunk, CS64ChunkFormat);
++    }
++
+     // write the RIFF chunks up to just before the data starts
+ 
+     WavpackNativeToLittleEndian (&riffhdr, ChunkHeaderFormat);
+@@ -418,8 +430,21 @@ int WriteRiffHeader (FILE *outfile, WavpackContext *wpc, int64_t total_samples,
+ 
+     if (!DoWriteFile (outfile, &riffhdr, sizeof (riffhdr), &bcount) || bcount != sizeof (riffhdr) ||
+         (do_rf64 && (!DoWriteFile (outfile, &ds64hdr, sizeof (ds64hdr), &bcount) || bcount != sizeof (ds64hdr))) ||
+-        (do_rf64 && (!DoWriteFile (outfile, &ds64_chunk, sizeof (ds64_chunk), &bcount) || bcount != sizeof (ds64_chunk))) ||
+-        (write_junk && (!DoWriteFile (outfile, &junkchunk, sizeof (junkchunk), &bcount) || bcount != sizeof (junkchunk))) ||
++        (do_rf64 && (!DoWriteFile (outfile, &ds64_chunk, sizeof (ds64_chunk), &bcount) || bcount != sizeof (ds64_chunk)))) {
++            error_line ("can't write .WAV data, disk probably full!");
++            return FALSE;
++    }
++
++    // again, this is normally not written except for testing
++
++    while (table_length--)
++        if (!DoWriteFile (outfile, &cs64_chunk, sizeof (cs64_chunk), &bcount) || bcount != sizeof (cs64_chunk)) {
++            error_line ("can't write .WAV data, disk probably full!");
++            return FALSE;
++        }
++
++
++    if ((write_junk && (!DoWriteFile (outfile, &junkchunk, sizeof (junkchunk), &bcount) || bcount != sizeof (junkchunk))) ||
+         !DoWriteFile (outfile, &fmthdr, sizeof (fmthdr), &bcount) || bcount != sizeof (fmthdr) ||
+         !DoWriteFile (outfile, &wavhdr, wavhdrsize, &bcount) || bcount != wavhdrsize ||
+         !DoWriteFile (outfile, &datahdr, sizeof (datahdr), &bcount) || bcount != sizeof (datahdr)) {
+-- 
+2.11.0
+

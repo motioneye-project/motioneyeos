@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 1faa722cf475c8e4c43ddb393d6f1477f1a56c93be38a1c8e367c358db476b5f protobuf-python-3.4.1.tar.gz
+sha256 6b399412cd68c7efe64d31824ad0db44f803aed91d0c6a9ea94272682c3da2df  protobuf-python-3.6.0.tar.gz
+sha256 6e5e117324afd944dcf67f36cf329843bc1a92229a8cd9bb573d7a83130fea7d  LICENSE

@@ -1,0 +1,43 @@
+From 9d09ce14b4eef2b56f24660fd69a44acd45128b2 Mon Sep 17 00:00:00 2001
+From: Cupertino Miranda <cmiranda@synopsys.com>
+Date: Fri, 2 Mar 2018 17:38:14 +0100
+Subject: [PATCH] Make sure global symbol is not an indirect or warning.
+
+Problem identified in the context of glibc with latest upstream binutils.
+Dynamic symbol space was being reserved but, no actual information for the
+symbol was being set. Data for the symbol was kept initialized with -1.
+No easy test case was possible to be created.
+
+bfd/
+2018-03-01  Cupertino Miranda <cmiranda@synopsys.com>
+
+	* elf32-arc.c (elf_arc_check_relocs): Changed.
+
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+[Romain: rebase on top of 2.31]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ bfd/elf32-arc.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/bfd/elf32-arc.c b/bfd/elf32-arc.c
+index 33fc72cff6e..9b72c5b4f4f 100644
+--- a/bfd/elf32-arc.c
++++ b/bfd/elf32-arc.c
+@@ -1960,7 +1960,12 @@ elf_arc_check_relocs (bfd *			 abfd,
+       if (r_symndx < symtab_hdr->sh_info) /* Is a local symbol.  */
+ 	h = NULL;
+       else /* Global one.  */
+-	h = sym_hashes[r_symndx - symtab_hdr->sh_info];
++	{
++	  h = sym_hashes[r_symndx - symtab_hdr->sh_info];
++	  while (h->root.type == bfd_link_hash_indirect
++		 || h->root.type == bfd_link_hash_warning)
++	    h = (struct elf_link_hash_entry *) h->root.u.i.link;
++	}
+ 
+ 
+       switch (r_type)
+-- 
+2.14.4
+

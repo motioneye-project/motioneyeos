@@ -7,6 +7,7 @@ ar's rcv options get lost when AR is passed on
 the command line.
 
 Signed-off-by: Romain Naour <romain.naour@openwide.fr>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  blas/Makefile | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
@@ -18,14 +19,14 @@ index 895fd24..78cec9a 100644
 @@ -1,4 +1,4 @@
 -AR     = ar rcv
 +AR     = ar
- RANLIB = ranlib 
+ RANLIB = ranlib
  
  HEADERS = blas.h blasp.h
 @@ -8,7 +8,7 @@ CFLAGS = $(OPTFLAGS)
  FFLAGS = $(OPTFLAGS)
  
  blas: $(FILES) $(HEADERS)
--	$(AR) blas.a $(FILES)  
+-	$(AR) blas.a $(FILES)
 +	$(AR) rcv blas.a $(FILES)  
  	$(RANLIB) blas.a
  

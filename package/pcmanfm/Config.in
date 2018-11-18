@@ -11,9 +11,9 @@ config BR2_PACKAGE_PCMANFM
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBGTK2 if !BR2_PACKAGE_LIBGTK3_X11
 	help
-	  PCMan File Manager (PCManFM) is a file manager application developed
-	  by Hong Jen Yee from Taiwan which is meant to be a replacement for
-	  Nautilus, Konqueror and Thunar.
+	  PCMan File Manager (PCManFM) is a file manager application
+	  developed by Hong Jen Yee from Taiwan which is meant to be a
+	  replacement for Nautilus, Konqueror and Thunar.
 
 	  http://wiki.lxde.org/en/PCManFM
 

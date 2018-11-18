@@ -1,0 +1,58 @@
+From 5fec22461a6d8d1045c849e468436b00ec7f9616 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 1 Apr 2018 20:11:21 +0200
+Subject: [PATCH] build/CMakeLists.txt: don't install source and license
+
+The CMakeLists.txt has the interesting (weird?) idea of installing the
+license to /usr/LICENSE and the source code to /usr/src/, which is a
+bit annoying. Let's not install such things.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ build/CMakeLists.txt | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
+
+diff --git a/build/CMakeLists.txt b/build/CMakeLists.txt
+index a6736a0b..3de79f3e 100644
+--- a/build/CMakeLists.txt
++++ b/build/CMakeLists.txt
+@@ -473,36 +473,6 @@ if (WITH_BINARY)
+   endif ()
+ endif ()
+ 
+-install(FILES ../LICENSE
+-  DESTINATION .
+-  COMPONENT Runtime
+-  )
+-# Take a copy on Appveyor
+-install(FILES "C:/projects/openssl-$ENV{OPENSSL}/LICENSE"
+-  DESTINATION .
+-  COMPONENT Runtime
+-  RENAME LICENSE_OPENSSL
+-  OPTIONAL                      # for local builds only!
+-  )
+-
+-file(GLOB_RECURSE I2PD_SOURCES "../libi2pd/*.cpp" "../libi2pd_client/*.cpp" "../daemon/*.cpp" "../build" "../Win32" "../Makefile*")
+-install(FILES ${I2PD_SOURCES} DESTINATION src/ COMPONENT Source)
+-# install(DIRECTORY ../ DESTINATION src/
+-#   # OPTIONAL
+-#   COMPONENT Source FILES_MATCHING
+-#   PATTERN .git EXCLUDE
+-#   PATTERN "*.cpp"
+-#   )
+-
+-file(GLOB I2PD_HEADERS "../libi2pd/*.h" "../libi2pd_client/*.h" "../daemon/*.h")
+-install(FILES ${I2PD_HEADERS} DESTINATION src/ COMPONENT Headers)
+-# install(DIRECTORY ../ DESTINATION src/
+-#   # OPTIONAL
+-#   COMPONENT Headers FILES_MATCHING
+-#   PATTERN .git EXCLUDE
+-#   PATTERN "*.h"
+-#   )
+-
+ set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Purple I2P, a C++ I2P daemon")
+ set(CPACK_PACKAGE_VENDOR "Purple I2P")
+ set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_CURRENT_SOURCE_DIR}/../README.md")
+-- 
+2.14.3
+

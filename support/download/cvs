@@ -5,33 +5,41 @@ set -e
 
 # Download helper for cvs, to be called from the download wrapper script
 #
-# Call it as:
-#   .../cvs [-q] OUT_FILE CVS_URL REV PKG_NAME BASENAME
+# Options:
+#   -q          Be quiet
+#   -o FILE     Generate archive in FILE.
+#   -u URI      Checkout from repository at URI.
+#   -c REV      Use revision REV.
+#   -N RAWNAME  Use rawname (aka module name) RAWNAME.
+#   -n NAME     Use basename NAME.
 #
 # Environment:
 #   CVS      : the cvs command to call
 
 verbose=
-while getopts :q OPT; do
+while getopts "${BR_BACKEND_DL_GETOPTS}" OPT; do
     case "${OPT}" in
     q)  verbose=-Q;;
+    o)  output="${OPTARG}";;
+    u)  uri="${OPTARG#*://}";;
+    c)  rev="${OPTARG}";;
+    N)  rawname="${OPTARG}";;
+    n)  basename="${OPTARG}";;
+    :)  printf "option '%s' expects a mandatory argument\n" "${OPTARG}"; exit 1;;
     \?) printf "unknown option '%s'\n" "${OPTARG}" >&2; exit 1;;
     esac
 done
-shift $((OPTIND-1))
 
-output="${1}"
-repo="${2}"
-rev="${3}"
-rawname="${4}"
-basename="${5}"
-
-shift 5 # Get rid of our options
+shift $((OPTIND-1)) # Get rid of our options
 
 # Caller needs to single-quote its arguments to prevent them from
-# being expanded a second time (in case there are spaces in them)
+# being expanded a second time (in case there are spaces in them).
+# If the CVS server is deadlocked, the client will never return (cfr.
+# http://autobuild.buildroot.net/results/23d/23d1034b33d0354de15de2ec4a8ccd0603e8db78/build-end.log
+# ). Since nobody sane will put large code bases in CVS, a timeout of
+# 10 minutes should do the trick.
 _cvs() {
-    eval ${CVS} "${@}"
+    eval timeout 10m ${CVS} "${@}"
 }
 
 if [[ ${rev} =~ ^[0-9] ]]; then
@@ -42,14 +50,14 @@ else
     select="-r"
 fi
 
-# The absence of an initial : on ${repo} means access method undefined
-if [[ ! "${repo}" =~ ^: ]]; then
+# The absence of an initial : on ${uri} means access method undefined
+if [[ ! "${uri}" =~ ^: ]]; then
    # defaults to anonymous pserver
-   repo=":pserver:anonymous@${repo}"
+   uri=":pserver:anonymous@${uri}"
 fi
 
 export TZ=UTC
-_cvs ${verbose} -z3 -d"'${repo}'" \
+_cvs ${verbose} -z3 -d"'${uri}'" \
      co "${@}" -d "'${basename}'" ${select} "'${rev}'" -P "'${rawname}'"
 
 tar czf "${output}" "${basename}"

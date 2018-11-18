@@ -62,6 +62,14 @@ config BR2_HOST_GCC_AT_LEAST_7
 	default y if BR2_HOST_GCC_VERSION = "7"
 	select BR2_HOST_GCC_AT_LEAST_6
 
+config BR2_HOST_GCC_AT_LEAST_8
+	bool
+	default y if BR2_HOST_GCC_VERSION = "8"
+	select BR2_HOST_GCC_AT_LEAST_7
+
+# When adding new entries above, be sure to update
+# the HOSTCC_MAX_VERSION variable in the Makefile.
+
 # Hidden boolean selected by packages in need of Java in order to build
 # (example: kodi)
 config BR2_NEEDS_HOST_JAVA
@@ -175,8 +183,8 @@ config BR2_TAR_OPTIONS
 	default ""
 	help
 	  Options to pass to tar when extracting the sources.
-	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal files
-	  and to be verbose.
+	  E.g. " -v --exclude='*.svn*'" to exclude all .svn internal
+	  files and to be verbose.
 
 endmenu
 
@@ -200,6 +208,9 @@ config BR2_DL_DIR
 	  If the Linux shell environment has defined the BR2_DL_DIR
 	  environment variable, then this overrides this configuration
 	  item.
+	  The directory is organized with a subdirectory for each
+	  package. Each package has its own $(LIBFOO_DL_DIR) variable
+	  that can be used to find the correct path.
 
 	  The default is $(TOPDIR)/dl
 
@@ -332,6 +343,9 @@ config BR2_CCACHE_DIR
 	default "$(HOME)/.buildroot-ccache"
 	help
 	  Where ccache should store cached files.
+	  If the Linux shell environment has defined the BR2_CCACHE_DIR
+	  environment variable, then this overrides this configuration
+	  item.
 
 config BR2_CCACHE_INITIAL_SETUP
 	string "Compiler cache initial setup"
@@ -421,8 +435,8 @@ endif
 
 config BR2_STRIP_strip
 	bool "strip target binaries"
-	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	default y
+	depends on !BR2_PACKAGE_HOST_ELF2FLT
 	help
 	  Binaries and libraries in the target filesystem will be
 	  stripped using the normal 'strip' command. This allows to save
@@ -432,16 +446,16 @@ config BR2_STRIP_strip
 
 config BR2_STRIP_EXCLUDE_FILES
 	string "executables that should not be stripped"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of binaries and
 	  libraries here that should not be stripped on the target.
 
 config BR2_STRIP_EXCLUDE_DIRS
 	string "directories that should be skipped when stripping"
-	depends on BR2_STRIP_strip
 	default ""
+	depends on BR2_STRIP_strip
 	help
 	  You may specify a space-separated list of directories that
 	  should be skipped when stripping. Binaries and libraries in
@@ -458,7 +472,7 @@ choice
 config BR2_OPTIMIZE_0
 	bool "optimization level 0"
 	help
-	  Do not optimize. This is the default.
+	  Do not optimize.
 
 config BR2_OPTIMIZE_1
 	bool "optimization level 1"
@@ -525,12 +539,23 @@ config BR2_OPTIMIZE_S
 	  -falign-loops -falign-labels -freorder-blocks
 	  -freorder-blocks-and-partition -fprefetch-loop-arrays
 	  -ftree-vect-loop-version
+	  This is the default.
+
+config BR2_OPTIMIZE_FAST
+	bool "optimize for fast"
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_6
+	help
+	  Optimize for fast. Disregard strict standards
+	  compliance. -Ofast enables all -O3 optimizations. It also
+	  enables optimizations that are not valid for all
+	  standard-compliant programs. It turns on -ffast-math and the
+	  Fortran-specific -fstack-arrays, unless -fmax-stack-var-size
+	  is specified, and -fno-protect-parens.
 
 endchoice
 
 config BR2_GOOGLE_BREAKPAD_ENABLE
 	bool "Enable google-breakpad support"
-	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
@@ -538,6 +563,8 @@ config BR2_GOOGLE_BREAKPAD_ENABLE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on (BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC)
 	depends on BR2_PACKAGE_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GOOGLE_BREAKPAD_ARCH_SUPPORTS
+	select BR2_PACKAGE_GOOGLE_BREAKPAD
 	help
 	  This option will enable the use of google breakpad, a library
 	  and tool suite that allows you to distribute an application to
@@ -566,7 +593,119 @@ config BR2_GOOGLE_BREAKPAD_INCLUDE_FILES
 endif
 
 choice
-	bool "build code with Stack Smashing Protection"
+	bool "libraries"
+	default BR2_SHARED_LIBS if BR2_BINFMT_SUPPORTS_SHARED
+	default BR2_STATIC_LIBS if !BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Select the type of libraries you want to use on the target.
+
+	  The default is to build dynamic libraries and use those on the
+	  target filesystem, except when the architecture and/or the
+	  selected binary format does not support shared libraries.
+
+config BR2_STATIC_LIBS
+	bool "static only"
+	help
+	  Build and use only static libraries. No shared libraries will
+	  be installed on the target. This potentially increases your
+	  code size and should only be used if you know what you are
+	  doing. Note that some packages may not be available when this
+	  option is enabled, due to their need for dynamic library
+	  support.
+
+config BR2_SHARED_LIBS
+	bool "shared only"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build and use only shared libraries. This is the recommended
+	  solution as it saves space and build time.
+
+config BR2_SHARED_STATIC_LIBS
+	bool "both static and shared"
+	depends on BR2_BINFMT_SUPPORTS_SHARED
+	help
+	  Build both shared and static libraries, but link executables
+	  dynamically. While building both shared and static libraries
+	  take more time and more disk space, having static libraries
+	  may be useful to link some of the applications statically.
+
+endchoice
+
+config BR2_PACKAGE_OVERRIDE_FILE
+	string "location of a package override file"
+	default "$(CONFIG_DIR)/local.mk"
+	help
+	  A package override file is a short makefile that contains
+	  variable definitions of the form <pkg>_OVERRIDE_SRCDIR, which
+	  allows to tell Buildroot to use an existing directory as the
+	  source directory for a particular package. See the Buildroot
+	  documentation for more details on this feature.
+
+config BR2_GLOBAL_PATCH_DIR
+	string "global patch directories"
+	help
+	  You may specify a space separated list of one or more
+	  directories containing global package patches. For a specific
+	  version <packageversion> of a specific package <packagename>,
+	  patches are applied as follows:
+
+	  First, the default Buildroot patch set for the package is
+	  applied from the package's directory in Buildroot.
+
+	  Then for every directory - <global-patch-dir> - that exists in
+	  BR2_GLOBAL_PATCH_DIR, if the directory
+	  <global-patch-dir>/<packagename>/<packageversion>/ exists,
+	  then all *.patch files in this directory will be applied.
+
+	  Otherwise, if the directory <global-patch-dir>/<packagename>
+	  exists, then all *.patch files in the directory will be
+	  applied.
+
+menu "Advanced"
+
+config BR2_COMPILER_PARANOID_UNSAFE_PATH
+	bool "paranoid check of library/header paths"
+	default y
+	help
+	  By default, when this option is disabled, when the Buildroot
+	  cross-compiler will encounter an unsafe library or header path
+	  (such as /usr/include, or /usr/lib), the compiler will display
+	  a warning.
+
+	  By enabling this option, this warning is turned into an error,
+	  which will completely abort the build when such unsafe paths
+	  are encountered.
+
+	  Note that this mechanism is available for both the internal
+	  toolchain (through the toolchain wrapper and binutils patches)
+	  and external toolchain backends (through the toolchain
+	  wrapper).
+
+config BR2_REPRODUCIBLE
+	bool "Make the build reproducible (experimental)"
+	# SOURCE_DATE_EPOCH support in toolchain-wrapper requires GCC 4.4
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+	help
+	  This option will remove all sources of non-reproducibility
+	  from the build process. For a given Buildroot configuration,
+	  this allows to generate exactly identical binaries from one
+	  build to the other, including on different machines.
+
+	  The current implementation is restricted to builds with the
+	  same output directory. Many (absolute) paths are recorded in
+	  intermediary files, and it is very likely that some of these
+	  paths leak into the target rootfs. If you build with the
+	  same O=... path, however, the result is identical.
+
+	  This is labeled as an experimental feature, as not all
+	  packages behave properly to ensure reproducibility.
+
+endmenu
+
+comment "Security Hardening Options"
+
+choice
+	bool "Stack Smashing Protection"
 	default BR2_SSP_ALL if BR2_ENABLE_SSP # legacy
 	depends on BR2_TOOLCHAIN_HAS_SSP
 	help
@@ -621,115 +760,75 @@ comment "Stack Smashing Protection needs a toolchain w/ SSP"
 	depends on !BR2_TOOLCHAIN_HAS_SSP
 
 choice
-	bool "libraries"
-	default BR2_SHARED_LIBS if BR2_BINFMT_SUPPORTS_SHARED
-	default BR2_STATIC_LIBS if !BR2_BINFMT_SUPPORTS_SHARED
+	bool "RELRO Protection"
+	depends on BR2_SHARED_LIBS
 	help
-	  Select the type of libraries you want to use on the target.
+	  Enable a link-time protection know as RELRO (RELocation Read
+	  Only) which helps to protect from certain type of exploitation
+	  techniques altering the content of some ELF sections.
 
-	  The default is to build dynamic libraries and use those on the
-	  target filesystem, except when the architecture and/or the
-	  selected binary format does not support shared libraries.
-
-config BR2_STATIC_LIBS
-	bool "static only"
+config BR2_RELRO_NONE
+	bool "None"
 	help
-	  Build and use only static libraries. No shared libraries will
-	  be installed on the target. This potentially increases your
-	  code size and should only be used if you know what you are
-	  doing. Note that some packages may not be available when this
-	  option is enabled, due to their need for dynamic library
-	  support.
+	  Disables Relocation link-time protections.
 
-config BR2_SHARED_LIBS
-	bool "shared only"
-	depends on BR2_BINFMT_SUPPORTS_SHARED
+config BR2_RELRO_PARTIAL
+	bool "Partial"
 	help
-	  Build and use only shared libraries. This is the recommended
-	  solution as it saves space and build time.
+	  This option makes the dynamic section not writeable after
+	  initialization (with almost no performance penalty).
 
-config BR2_SHARED_STATIC_LIBS
-	bool "both static and shared"
-	depends on BR2_BINFMT_SUPPORTS_SHARED
+config BR2_RELRO_FULL
+	bool "Full"
 	help
-	  Build both shared and static libraries, but link executables
-	  dynamically. While building both shared and static libraries
-	  take more time and more disk space, having static libraries
-	  may be useful to link some of the applications statically.
+	  This option includes the partial configuration, but also marks
+	  the GOT as read-only at the cost of initialization time during
+	  program loading, i.e every time an executable is started.
 
 endchoice
 
+comment "RELocation Read Only (RELRO) needs shared libraries"
+	depends on !BR2_SHARED_LIBS
 
-config BR2_PACKAGE_OVERRIDE_FILE
-	string "location of a package override file"
-	default "$(CONFIG_DIR)/local.mk"
+choice
+	bool "Buffer-overflow Detection (FORTIFY_SOURCE)"
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_OPTIMIZE_0
 	help
-	  A package override file is a short makefile that contains
-	  variable definitions of the form <pkg>_OVERRIDE_SRCDIR, which
-	  allows to tell Buildroot to use an existing directory as the
-	  source directory for a particular package. See the Buildroot
-	  documentation for more details on this feature.
+	  Enable the _FORTIFY_SOURCE macro which introduces additional
+	  checks to detect buffer-overflows in the following standard
+	  library functions: memcpy, mempcpy, memmove, memset, strcpy,
+	  stpcpy, strncpy, strcat, strncat, sprintf, vsprintf, snprintf,
+	  vsnprintf, gets.
 
-config BR2_GLOBAL_PATCH_DIR
-	string "global patch directories"
+	  NOTE: This feature requires an optimization level of s/1/2/3/g
+
+	  Support for this feature has been present since GCC 4.x.
+
+config BR2_FORTIFY_SOURCE_NONE
+	bool "None"
 	help
-	  You may specify a space separated list of one or more
-	  directories containing global package patches. For a specific
-	  version <packageversion> of a specific package <packagename>,
-	  patches are applied as follows:
+	  Disables additional checks to detect buffer-overflows.
 
-	  First, the default Buildroot patch set for the package is
-	  applied from the package's directory in Buildroot.
-
-	  Then for every directory - <global-patch-dir> - that exists in
-	  BR2_GLOBAL_PATCH_DIR, if the directory
-	  <global-patch-dir>/<packagename>/<packageversion>/ exists,
-	  then all *.patch files in this directory will be applied.
-
-	  Otherwise, if the directory <global-patch-dir>/<packagename>
-	  exists, then all *.patch files in the directory will be
-	  applied.
-
-menu "Advanced"
-
-config BR2_COMPILER_PARANOID_UNSAFE_PATH
-	bool "paranoid check of library/header paths"
-	default y
+config BR2_FORTIFY_SOURCE_1
+	bool "Conservative"
 	help
-	  By default, when this option is disabled, when the Buildroot
-	  cross-compiler will encounter an unsafe library or header path
-	  (such as /usr/include, or /usr/lib), the compiler will display
-	  a warning.
+	  This option sets _FORTIFY_SOURCE to 1 and only introduces
+	  checks that shouldn't change the behavior of conforming
+	  programs.  Adds checks at compile-time only.
 
-	  By enabling this option, this warning is turned into an error,
-	  which will completely abort the build when such unsafe paths
-	  are encountered.
-
-	  Note that this mechanism is available for both the internal
-	  toolchain (through the toolchain wrapper and binutils patches)
-	  and external toolchain backends (through the toolchain wrapper).
-
-config BR2_REPRODUCIBLE
-	bool "Make the build reproducible (experimental)"
-	# SOURCE_DATE_EPOCH support in toolchain-wrapper requires GCC 4.4
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_4
+config BR2_FORTIFY_SOURCE_2
+	bool "Aggressive"
 	help
-	  This option will remove all sources of non-reproducibility
-	  from the build process. For a given Buildroot configuration,
-	  this allows to generate exactly identical binaries from one
-	  build to the other, including on different machines.
+	  This option sets _FORTIFY_SOURCES to 2 and some more
+	  checking is added, but some conforming programs might fail.
+	  Also adds checks at run-time (detected buffer overflow
+	  terminates the program)
 
-	  The current implementation is restricted to builds with the
-	  same output directory. Many (absolute) paths are recorded in
-	  intermediary files, and it is very likely that some of these
-	  paths leak into the target rootfs. If you build with the
-	  same O=... path, however, the result is identical.
+endchoice
 
-	  This is labeled as an experimental feature, as not all
-	  packages behave properly to ensure reproducibility.
-
-endmenu
-
+comment "Fortify Source needs a glibc toolchain and optimization"
+	depends on (!BR2_TOOLCHAIN_USES_GLIBC || BR2_OPTIMIZE_0)
 endmenu
 
 source "toolchain/Config.in"

@@ -5,8 +5,6 @@ config BR2_PACKAGE_LIBFREEIMAGE
 	depends on BR2_USE_WCHAR
 	# compiler issue: "Error: invalid register number `63'"
 	depends on !BR2_arc
-	# Numerous build issues
-	depends on !BR2_bfin
 	help
 	  FreeImage is an Open Source library project for developers who
 	  would like to support popular graphics image formats like PNG,
@@ -17,5 +15,4 @@ config BR2_PACKAGE_LIBFREEIMAGE
 
 comment "libfreeimage needs a toolchain w/ C++, dynamic library, wchar"
 	depends on !BR2_arc
-	depends on !BR2_bfin
 	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_JARACO_CLASSES
+	bool "python-jaraco-classes"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Utility functions for Python class constructs.
+
+	  https://github.com/jaraco/jaraco.classes

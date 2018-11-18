@@ -12,6 +12,7 @@ import py_compile
 import compileall
 import argparse
 
+
 def check_for_errors(comparison):
     '''Wrap comparison operator with code checking for PyCompileError.
     If PyCompileError was raised, re-raise it again to abort execution,
@@ -27,6 +28,7 @@ def check_for_errors(comparison):
         return comparison(self, other)
 
     return operator
+
 
 class ReportProblem(int):
     '''Class that pretends to be an int() object but implements all of its
@@ -54,6 +56,7 @@ class ReportProblem(int):
 
     def __ne__(self, other):
         return not self == other
+
 
 parser = argparse.ArgumentParser(description='Compile Python source files in a directory tree.')
 parser.add_argument("target", metavar='DIRECTORY',

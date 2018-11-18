@@ -1,0 +1,26 @@
+From 4ef42740538cefd3c1554aa4df5bcb1388ac927b Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Tue, 16 Jan 2018 22:28:32 -0200
+Subject: [PATCH] Change shell script interpreter from /bin/bash to /bin/sh
+
+This will make the script more portable, making it possible to run on
+systems that do not have bash.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ aoe-stat.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/aoe-stat.in b/aoe-stat.in
+index 50e6ac674169..0c1d6f5ebe1e 100755
+--- a/aoe-stat.in
++++ b/aoe-stat.in
+@@ -1,4 +1,4 @@
+-#! /bin/bash
++#! /bin/sh
+ # aoe-stat - collate and present information about AoE storage
+ # Copyright 2012, CORAID, Inc., and licensed under GPL v.2.
+ 
+-- 
+1.9.1
+

@@ -1,2 +1,3 @@
 # locally computed
-sha256  6fb92f6f5925e0af918ffbb90acf19b7b88706ebcd40fc186b7caa76609b6350  yaml-cpp-0.5.2.tar.gz
+sha256  e4d8560e163c3d875fd5d9e5542b5fd5bec810febdcba61481fe5fc4e6b1fd05  yaml-cpp-0.6.2.tar.gz
+sha256  aa6fcc27be034e41e21dd832f9175bfe694a48491d9e14ff0fa278e19ad14f1b  LICENSE

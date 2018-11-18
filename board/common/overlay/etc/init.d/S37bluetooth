@@ -4,10 +4,10 @@ sys_conf="/etc/bluetooth.conf"
 boot_conf="/boot/bluetooth.conf"
 conf="/data/etc/bluetooth.conf"
 
-if ! [ -f $conf ]; then
-    if [ -f $boot_conf ]; then
+if ! [[ -f $conf ]]; then
+    if [[ -f $boot_conf ]]; then
         cp $boot_conf $conf
-    elif [ -f $sys_conf ]; then
+    elif [[ -f $sys_conf ]]; then
         cp $sys_conf $conf
     fi
 fi
@@ -46,10 +46,10 @@ start() {
     while ! hciconfig $hci &>/dev/null; do
         sleep 1
         count=$(($count + 1))
-        if [ $count -ge 10 ]; then
+        if [[ $count -ge 10 ]]; then
             msg_fail "no device"
-            logger -t bluetooth -s "bluetooth device not available, rebooting"
-            reboot
+            logger -t bluetooth -s "bluetooth device not available, calling panic action"
+            panic_action bluetooth
             return 1
         fi
     done

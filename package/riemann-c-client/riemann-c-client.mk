@@ -16,9 +16,4 @@ RIEMANN_C_CLIENT_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_GNUTLS),gnutls) \
 	$(if $(BR2_PACKAGE_JSON_C),json-c)
 
-ifeq ($(BR2_bfin),y)
-# ld symbol versioning not working on bfin
-RIEMANN_C_CLIENT_CONF_ENV += ac_cv_prog_ld_version_script=no
-endif
-
 $(eval $(autotools-package))

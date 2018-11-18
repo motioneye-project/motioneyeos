@@ -1,0 +1,160 @@
+From 67e5187e96baac2e16d88ac01471c5ce7cdc3c53 Mon Sep 17 00:00:00 2001
+From: ilovezfs <ilovezfs@icloud.com>
+Date: Wed, 20 Jun 2018 08:08:53 -0700
+Subject: [PATCH] Fix build with protobuf 3.6.x
+
+Adapt to changes from https://github.com/google/protobuf/pull/4387.
+
+scoped_ptr and scoped_array were removed in favor of std::unique_ptr
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from: https://github.com/protobuf-c/protobuf-c/pull/328]
+---
+ protoc-c/c_field.cc     | 2 +-
+ protoc-c/c_field.h      | 2 +-
+ protoc-c/c_file.cc      | 8 ++++----
+ protoc-c/c_file.h       | 8 ++++----
+ protoc-c/c_generator.cc | 4 ++--
+ protoc-c/c_helpers.cc   | 2 +-
+ protoc-c/c_message.cc   | 6 +++---
+ protoc-c/c_message.h    | 6 +++---
+ 8 files changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/protoc-c/c_field.cc b/protoc-c/c_field.cc
+index 9fa56ef..eaa38d2 100644
+--- a/protoc-c/c_field.cc
++++ b/protoc-c/c_field.cc
+@@ -189,7 +189,7 @@ void FieldGenerator::GenerateDescriptorInitializerGeneric(io::Printer* printer,
+ FieldGeneratorMap::FieldGeneratorMap(const Descriptor* descriptor)
+   : descriptor_(descriptor),
+     field_generators_(
+-      new scoped_ptr<FieldGenerator>[descriptor->field_count()]) {
++      new std::unique_ptr<FieldGenerator>[descriptor->field_count()]) {
+   // Construct all the FieldGenerators.
+   for (int i = 0; i < descriptor->field_count(); i++) {
+     field_generators_[i].reset(MakeGenerator(descriptor->field(i)));
+diff --git a/protoc-c/c_field.h b/protoc-c/c_field.h
+index 91f1a03..efd5a29 100644
+--- a/protoc-c/c_field.h
++++ b/protoc-c/c_field.h
+@@ -117,7 +117,7 @@ class FieldGeneratorMap {
+ 
+  private:
+   const Descriptor* descriptor_;
+-  scoped_array<scoped_ptr<FieldGenerator> > field_generators_;
++  std::unique_ptr<std::unique_ptr<FieldGenerator>[] > field_generators_;
+ 
+   static FieldGenerator* MakeGenerator(const FieldDescriptor* field);
+ 
+diff --git a/protoc-c/c_file.cc b/protoc-c/c_file.cc
+index 9851768..6dae516 100644
+--- a/protoc-c/c_file.cc
++++ b/protoc-c/c_file.cc
+@@ -83,13 +83,13 @@ FileGenerator::FileGenerator(const FileDescriptor* file,
+                              const string& dllexport_decl)
+   : file_(file),
+     message_generators_(
+-      new scoped_ptr<MessageGenerator>[file->message_type_count()]),
++      new std::unique_ptr<MessageGenerator>[file->message_type_count()]),
+     enum_generators_(
+-      new scoped_ptr<EnumGenerator>[file->enum_type_count()]),
++      new std::unique_ptr<EnumGenerator>[file->enum_type_count()]),
+     service_generators_(
+-      new scoped_ptr<ServiceGenerator>[file->service_count()]),
++      new std::unique_ptr<ServiceGenerator>[file->service_count()]),
+     extension_generators_(
+-      new scoped_ptr<ExtensionGenerator>[file->extension_count()]) {
++      new std::unique_ptr<ExtensionGenerator>[file->extension_count()]) {
+ 
+   for (int i = 0; i < file->message_type_count(); i++) {
+     message_generators_[i].reset(
+diff --git a/protoc-c/c_file.h b/protoc-c/c_file.h
+index ed38ce4..e86cc44 100644
+--- a/protoc-c/c_file.h
++++ b/protoc-c/c_file.h
+@@ -98,10 +98,10 @@ class FileGenerator {
+  private:
+   const FileDescriptor* file_;
+ 
+-  scoped_array<scoped_ptr<MessageGenerator> > message_generators_;
+-  scoped_array<scoped_ptr<EnumGenerator> > enum_generators_;
+-  scoped_array<scoped_ptr<ServiceGenerator> > service_generators_;
+-  scoped_array<scoped_ptr<ExtensionGenerator> > extension_generators_;
++  std::unique_ptr<std::unique_ptr<MessageGenerator>[] > message_generators_;
++  std::unique_ptr<std::unique_ptr<EnumGenerator>[] > enum_generators_;
++  std::unique_ptr<std::unique_ptr<ServiceGenerator>[] > service_generators_;
++  std::unique_ptr<std::unique_ptr<ExtensionGenerator>[] > extension_generators_;
+ 
+   // E.g. if the package is foo.bar, package_parts_ is {"foo", "bar"}.
+   vector<string> package_parts_;
+diff --git a/protoc-c/c_generator.cc b/protoc-c/c_generator.cc
+index a0d0cb6..fe3ad26 100644
+--- a/protoc-c/c_generator.cc
++++ b/protoc-c/c_generator.cc
+@@ -149,7 +149,7 @@ bool CGenerator::Generate(const FileDescriptor* file,
+ 
+   // Generate header.
+   {
+-    scoped_ptr<io::ZeroCopyOutputStream> output(
++    std::unique_ptr<io::ZeroCopyOutputStream> output(
+       output_directory->Open(basename + ".h"));
+     io::Printer printer(output.get(), '$');
+     file_generator.GenerateHeader(&printer);
+@@ -157,7 +157,7 @@ bool CGenerator::Generate(const FileDescriptor* file,
+ 
+   // Generate cc file.
+   {
+-    scoped_ptr<io::ZeroCopyOutputStream> output(
++    std::unique_ptr<io::ZeroCopyOutputStream> output(
+       output_directory->Open(basename + ".c"));
+     io::Printer printer(output.get(), '$');
+     file_generator.GenerateSource(&printer);
+diff --git a/protoc-c/c_helpers.cc b/protoc-c/c_helpers.cc
+index b79b5b0..f2ab448 100644
+--- a/protoc-c/c_helpers.cc
++++ b/protoc-c/c_helpers.cc
+@@ -559,7 +559,7 @@ static int CEscapeInternal(const char* src, int src_len, char* dest,
+ }
+ string CEscape(const string& src) {
+   const int dest_length = src.size() * 4 + 1; // Maximum possible expansion
+-  scoped_array<char> dest(new char[dest_length]);
++  std::unique_ptr<char[]> dest(new char[dest_length]);
+   const int len = CEscapeInternal(src.data(), src.size(),
+                                   dest.get(), dest_length, false);
+   GOOGLE_DCHECK_GE(len, 0);
+diff --git a/protoc-c/c_message.cc b/protoc-c/c_message.cc
+index 6b22c71..85a946e 100755
+--- a/protoc-c/c_message.cc
++++ b/protoc-c/c_message.cc
+@@ -83,11 +83,11 @@ MessageGenerator::MessageGenerator(const Descriptor* descriptor,
+   : descriptor_(descriptor),
+     dllexport_decl_(dllexport_decl),
+     field_generators_(descriptor),
+-    nested_generators_(new scoped_ptr<MessageGenerator>[
++    nested_generators_(new std::unique_ptr<MessageGenerator>[
+       descriptor->nested_type_count()]),
+-    enum_generators_(new scoped_ptr<EnumGenerator>[
++    enum_generators_(new std::unique_ptr<EnumGenerator>[
+       descriptor->enum_type_count()]),
+-    extension_generators_(new scoped_ptr<ExtensionGenerator>[
++    extension_generators_(new std::unique_ptr<ExtensionGenerator>[
+       descriptor->extension_count()]) {
+ 
+   for (int i = 0; i < descriptor->nested_type_count(); i++) {
+diff --git a/protoc-c/c_message.h b/protoc-c/c_message.h
+index 8b115d1..63aa97a 100644
+--- a/protoc-c/c_message.h
++++ b/protoc-c/c_message.h
+@@ -126,9 +126,9 @@ class MessageGenerator {
+   const Descriptor* descriptor_;
+   string dllexport_decl_;
+   FieldGeneratorMap field_generators_;
+-  scoped_array<scoped_ptr<MessageGenerator> > nested_generators_;
+-  scoped_array<scoped_ptr<EnumGenerator> > enum_generators_;
+-  scoped_array<scoped_ptr<ExtensionGenerator> > extension_generators_;
++  std::unique_ptr<std::unique_ptr<MessageGenerator>[] > nested_generators_;
++  std::unique_ptr<std::unique_ptr<EnumGenerator>[] > enum_generators_;
++  std::unique_ptr<std::unique_ptr<ExtensionGenerator>[] > extension_generators_;
+ 
+   GOOGLE_DISALLOW_EVIL_CONSTRUCTORS(MessageGenerator);
+ };

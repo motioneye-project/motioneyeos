@@ -1,2 +1,4 @@
-# Locally calculated after checking pgp signature
-sha256	937185a5e5d721050306cf106507a006c3f1f86d86cd550024ea7be909071011  musl-1.1.16.tar.gz
+# Locally calculated after checking pgp signature from
+# http://www.musl-libc.org/releases/musl-1.1.19.tar.gz.asc
+sha256  db59a8578226b98373f5b27e61f0dd29ad2456f4aa9cec587ba8c24508e4c1d9  musl-1.1.19.tar.gz
+sha256  15d9afbf84041872b4d840ed7d165d3eee786ff3f97e703b10467c259ff4e7d9  COPYRIGHT

@@ -12,11 +12,10 @@ XLIB_LIBXI_LICENSE_FILES = COPYING
 XLIB_LIBXI_INSTALL_STAGING = YES
 XLIB_LIBXI_DEPENDENCIES = \
 	host-pkgconf \
-	xproto_inputproto \
-	xproto_xproto \
 	xlib_libX11 \
 	xlib_libXext \
-	xlib_libXfixes
+	xlib_libXfixes \
+	xorgproto
 
 XLIB_LIBXI_CONF_OPTS = --disable-malloc0returnsnull
 

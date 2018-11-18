@@ -4,26 +4,26 @@ _sys_conf="/etc/os.conf"
 _boot_conf="/boot/os.conf"
 _conf="/data/etc/os.conf"
 
-if ! [ -f $_conf ]; then
-    if [ -f $_boot_conf ]; then
+if ! [[ -d /data/etc ]]; then
+    # use boot/system variants if we don't have the data partition mounted
+    if [[ -f $_boot_conf ]]; then
+        source $_boot_conf
+    elif [[ -f $_sys_conf ]]; then
+        source $_sys_conf
+    fi
+
+    return
+fi
+
+if ! [[ -f $_conf ]]; then
+    if [[ -f $_boot_conf ]]; then
         cp $_boot_conf $_conf
-    elif [ -f $_sys_conf ]; then
+    elif [[ -f $_sys_conf ]]; then
         cp $_sys_conf $_conf
     fi
 fi
 
-source $_conf
-
-has_net_conn() {
-    test "$os_networkless" == "true" && return 1
-
-    addr_eth=$(ip addr show dev $os_eth 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
-    addr_wlan=$(ip addr show dev $os_wlan 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
-
-    if [ -n "$addr_eth" ] || [ -n "$addr_wlan" ]; then
-        return 0
-    else
-        return 1
-    fi
-}
+if [[ -f $_conf ]]; then
+    source $_conf
+fi
 

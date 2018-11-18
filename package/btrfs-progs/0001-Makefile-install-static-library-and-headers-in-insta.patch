@@ -16,6 +16,8 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Vincent: Rebase for btrfs-progs 4.10]
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[baruch: Rebase for btrfs-progs 4.16]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
 ---
  Makefile | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
@@ -39,8 +41,8 @@ index 67fbc48..d9e34be 100644
  	$(LN_S) -f btrfs.static $(DESTDIR)$(bindir)/btrfsck.static
 +	$(INSTALL) -m755 -d $(DESTDIR)$(libdir)
 +	$(INSTALL) $(libs_static) $(DESTDIR)$(libdir)
-+	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)
-+	$(INSTALL) -m644 $(headers) $(DESTDIR)$(incdir)
++	$(INSTALL) -m755 -d $(DESTDIR)$(incdir)/btrfs
++	$(INSTALL) -m644 $(libbtrfs_headers) $(DESTDIR)$(incdir)/btrfs
  
  $(INSTALLDIRS):
  	@echo "Making install in $(patsubst install-%,%,$@)"

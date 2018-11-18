@@ -1,0 +1,52 @@
+config BR2_TARGET_ROOTFS_UBI
+	bool "ubi image containing an ubifs root filesystem"
+	select BR2_TARGET_ROOTFS_UBIFS
+	help
+	  Build an ubi image from the ubifs one (with ubinize).
+
+if BR2_TARGET_ROOTFS_UBI
+
+config BR2_TARGET_ROOTFS_UBI_PEBSIZE
+	hex "physical eraseblock size"
+	default 0x20000
+	help
+	  Tells ubinize the physical eraseblock (PEB) size of the
+	  flash chip the ubi image is created for. The value provided
+	  here is passed to the -p/--peb-size option of ubinize.
+
+config BR2_TARGET_ROOTFS_UBI_SUBSIZE
+	int "sub-page size"
+	default 512
+	help
+	  Tells ubinize that the flash supports sub-pages and the
+	  sub-page size. Use 0 if sub-pages are not supported on flash
+	  chip.
+	  The value provided here is passed to the -s/--sub-page-size
+	  option of ubinize.
+
+config BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG
+	bool "Use custom config file"
+	help
+	  Select this option to use a custom ubinize configuration file,
+	  rather than the default configuration used by Buildroot (which
+	  defines a single dynamic volume marked as auto-resize).
+	  Passing a custom ubinize configuration file allows you to
+	  create several volumes, specify volume types, etc.
+
+	  As a convenience, buildroot replaces the string
+	  "BR2_ROOTFS_UBIFS_PATH" with the path to the built ubifs file.
+	  So the volume defined for the root filesystem can specify the
+	  image path as:  image=BR2_ROOTFS_UBIFS_PATH
+
+config BR2_TARGET_ROOTFS_UBI_CUSTOM_CONFIG_FILE
+	string "Configuration file path"
+	depends on BR2_TARGET_ROOTFS_UBI_USE_CUSTOM_CONFIG
+	help
+	  Path to the ubinize configuration file.
+
+config BR2_TARGET_ROOTFS_UBI_OPTS
+	string "Additional ubinize options"
+	help
+	  Any additional ubinize options you may want to include.
+
+endif # BR2_TARGET_ROOTFS_UBI

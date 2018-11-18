@@ -15,6 +15,6 @@ XLIB_LIBXTST_DEPENDENCIES = \
 	xlib_libX11 \
 	xlib_libXext \
 	xlib_libXi \
-	xproto_recordproto
+	xorgproto
 
 $(eval $(autotools-package))

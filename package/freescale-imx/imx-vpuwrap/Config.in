@@ -13,7 +13,8 @@ config BR2_PACKAGE_IMX_VPUWRAP
 	depends on BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 	select BR2_PACKAGE_IMX_VPU
 	help
-	  Wrapper library for the vpu library, giving it a different API.
+	  Wrapper library for the vpu library, giving it a different
+	  API.
 
 	  This library is provided by NXP as-is and doesn't have
 	  an upstream.

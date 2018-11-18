@@ -2,4 +2,5 @@ config BR2_PACKAGE_XAPP_XCMSDB
 	bool "xcmsdb"
 	select BR2_PACKAGE_XLIB_LIBX11
 	help
-	  Device Color Characterization utility for X Color Management System
+	  Device Color Characterization utility for X Color Management
+	  System

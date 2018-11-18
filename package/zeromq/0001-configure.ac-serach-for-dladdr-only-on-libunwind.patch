@@ -1,0 +1,45 @@
+From 194b3836c87f77aca34581656ff99da49813d8c3 Mon Sep 17 00:00:00 2001
+From: Asaf Kahlon <asafka7@gmail.com>
+Date: Fri, 13 Apr 2018 11:56:46 +0300
+Subject: [PATCH] configure.ac: search for dladdr only on libunwind
+
+The original configure.ac tries to check for dladdr, but it actually needs
+it only in case we have libunwind (which has a another section and checks for it
+too).
+This can fail the build on systems without dynamic linking support.
+Therefore, the dladdr check has to be performed only when checking libunwind.
+
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
+Upstream-status: https://github.com/zeromq/libzmq/commit/c971445025535b9f989ab0b78f5ddd1c026f1878
+---
+ configure.ac | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 216b2bc4..0858a6c1 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -174,11 +174,6 @@ case "${host_os}" in
+         AC_DEFINE(ZMQ_HAVE_LINUX, 1, [Have Linux OS])
+         libzmq_on_linux="yes"
+ 
+-        # dladdr/dlopen is in libdl on glibc
+-        AC_SEARCH_LIBS([dladdr], [dl dld], [], [
+-          AC_MSG_ERROR([unable to find the dladdr() function])
+-        ])
+-
+         if test "x$libzmq_tipc_support" = "xyes"; then
+             AC_DEFINE(ZMQ_HAVE_TIPC, 1, [Have TIPC support])
+         fi
+@@ -783,7 +778,7 @@ if test "x$enable_libunwind" != "xno"; then
+             AC_DEFINE(HAVE_LIBUNWIND, 1, [The libunwind library is to be used])
+             AC_SUBST([LIBUNWIND_CFLAGS])
+             AC_SUBST([LIBUNWIND_LIBS])
+-            AC_CHECK_LIB([dl], [dladdr])
++            AC_SEARCH_LIBS([dladdr], [dl dld])
+         ],
+         [
+             if test "x$enable_libunwind" = "xyes"; then
+-- 
+2.17.0
+

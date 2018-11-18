@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ANGULARJS_VERSION = 1.4.3
+ANGULARJS_VERSION = 1.6.7
 ANGULARJS_SOURCE = angular-$(ANGULARJS_VERSION).zip
 ANGULARJS_SITE = https://code.angularjs.org/$(ANGULARJS_VERSION)
 ANGULARJS_LICENSE = MIT
@@ -12,7 +12,7 @@ ANGULARJS_LICENSE = MIT
 ANGULARJS_LICENSE_FILES = angular.js
 
 define ANGULARJS_EXTRACT_CMDS
-	unzip $(DL_DIR)/$(ANGULARJS_SOURCE) -d $(@D)
+	unzip $(ANGULARJS_DL_DIR)/$(ANGULARJS_SOURCE) -d $(@D)
 	mv $(@D)/angular-$(ANGULARJS_VERSION)/* $(@D)
 	rmdir $(@D)/angular-$(ANGULARJS_VERSION)
 endef

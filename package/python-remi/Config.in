@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_REMI
+	bool "python-remi"
+	help
+	  Remi is a GUI library for Python applications which transpiles
+	  an application's interface into HTML to be rendered in a web
+	  browser. This removes platform-specific dependencies and lets
+	  you easily develop cross-platform applications in Python!
+
+	  https://github.com/dddomodossola/remi/tree/master

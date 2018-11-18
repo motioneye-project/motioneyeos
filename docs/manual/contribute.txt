@@ -264,6 +264,10 @@ yourself to the DEVELOPERS file. This should be done in the same patch
 creating or modifying the package. See xref:DEVELOPERS[the DEVELOPERS file]
 for more information.
 
+Buildroot provides a handy tool to check for common coding style
+mistakes on files you created or modified, called +check-package+ (see
+xref:check-package[] for more information).
+
 ==== Preparing a patch series
 
 Starting from the changes committed in your local git view, _rebase_

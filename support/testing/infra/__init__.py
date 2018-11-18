@@ -34,17 +34,17 @@ def download(dldir, filename):
         os.makedirs(dldir)
 
     tmpfile = tempfile.mktemp(dir=dldir)
-    print "Downloading to {}".format(tmpfile)
+    print("Downloading to {}".format(tmpfile))
 
     try:
         url_fh = urlopen(os.path.join(ARTIFACTS_URL, filename))
         with open(tmpfile, "w+") as tmpfile_fh:
             tmpfile_fh.write(url_fh.read())
-    except (HTTPError, URLError), err:
+    except (HTTPError, URLError) as err:
         os.unlink(tmpfile)
         raise err
 
-    print "Renaming from %s to %s" % (tmpfile, finalpath)
+    print("Renaming from {} to {}".format(tmpfile, finalpath))
     os.rename(tmpfile, finalpath)
     return finalpath
 

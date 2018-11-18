@@ -1,0 +1,33 @@
+From a7fe5e35025227e348eaef5a15fd55f591d77206 Mon Sep 17 00:00:00 2001
+From: John Safranek <john@wolfssl.com>
+Date: Tue, 6 Mar 2018 13:15:35 -0800
+Subject: [PATCH] Fix issue with the creation of dummy fips.h header.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ wolfssl/wolfcrypt/include.am | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/wolfssl/wolfcrypt/include.am b/wolfssl/wolfcrypt/include.am
+index c81bdd13..6e84ed9d 100644
+--- a/wolfssl/wolfcrypt/include.am
++++ b/wolfssl/wolfcrypt/include.am
+@@ -20,7 +20,6 @@ nobase_include_HEADERS+= \
+                          wolfssl/wolfcrypt/fe_operations.h \
+                          wolfssl/wolfcrypt/ge_operations.h \
+                          wolfssl/wolfcrypt/error-crypt.h \
+-                         wolfssl/wolfcrypt/fips.h \
+                          wolfssl/wolfcrypt/fips_test.h \
+                          wolfssl/wolfcrypt/hash.h \
+                          wolfssl/wolfcrypt/hc128.h \
+@@ -99,3 +98,7 @@ if BUILD_SELFTEST
+ nobase_include_HEADERS+= wolfssl/wolfcrypt/selftest.h
+ endif
+ 
++if BUILD_FIPS_V2
++nobase_include_HEADERS+= wolfssl/wolfcrypt/fips.h
++endif
++
+-- 
+2.11.0
+

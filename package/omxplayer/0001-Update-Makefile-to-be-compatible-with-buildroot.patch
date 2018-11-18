@@ -1,0 +1,39 @@
+From 40bf9c0960becaf0e592cac901466af93f24e52b Mon Sep 17 00:00:00 2001
+From: Julius Kriukas <julius@kriukas.lt>
+Date: Fri, 1 Dec 2017 18:29:24 +0200
+Subject: [PATCH] Update Makefile to be compatible with buildroot
+
+- Append to existing CFLAGS instead of overwriting.
+- Remove cross-compilation specific options from CFLAGS, they will be
+  set by buildroot.
+- Remove local ffmpeg_compiled include, buildroot will build ffmpeg
+  separately.
+- Remove hard-coded dbus, freetype, rpi-firmware include paths, they
+  will be added by buildroot.
+
+Signed-off-by: Julius Kriukas <julius@kriukas.lt>
+---
+ Makefile | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 5f4e414..53fa1bc 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,10 +1,10 @@
+-CFLAGS=-pipe -mfloat-abi=hard -mcpu=arm1176jzf-s -fomit-frame-pointer -mabi=aapcs-linux -mtune=arm1176jzf-s -mfpu=vfp -Wno-psabi -mno-apcs-stack-check -g -mstructure-size-boundary=32 -mno-sched-prolog
++CFLAGS+=-fomit-frame-pointer -Wno-psabi -mno-apcs-stack-check -g -mstructure-size-boundary=32 -mno-sched-prolog
+ CFLAGS+=-std=c++0x -D__STDC_CONSTANT_MACROS -D__STDC_LIMIT_MACROS -DTARGET_POSIX -DTARGET_LINUX -fPIC -DPIC -D_REENTRANT -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CMAKE_CONFIG -D__VIDEOCORE4__ -U_FORTIFY_SOURCE -Wall -DHAVE_OMXLIB -DUSE_EXTERNAL_FFMPEG  -DHAVE_LIBAVCODEC_AVCODEC_H -DHAVE_LIBAVUTIL_OPT_H -DHAVE_LIBAVUTIL_MEM_H -DHAVE_LIBAVUTIL_AVUTIL_H -DHAVE_LIBAVFORMAT_AVFORMAT_H -DHAVE_LIBAVFILTER_AVFILTER_H -DHAVE_LIBSWRESAMPLE_SWRESAMPLE_H -DOMX -DOMX_SKIP64BIT -ftree-vectorize -DUSE_EXTERNAL_OMX -DTARGET_RASPBERRY_PI -DUSE_EXTERNAL_LIBBCM_HOST
+ 
+ LDFLAGS=-L$(SDKSTAGE)/opt/vc/lib/
+-LDFLAGS+=-L./ -Lffmpeg_compiled/usr/local/lib/ -lc -lbrcmGLESv2 -lbrcmEGL -lbcm_host -lopenmaxil -lfreetype -lz -lasound
++LDFLAGS+=-L./ -lc -lbrcmGLESv2 -lbrcmEGL -lbcm_host -lopenmaxil -lfreetype -lz -lasound
+ 
+-INCLUDES+=-I./ -Ilinux -Iffmpeg_compiled/usr/local/include/ -I /usr/include/dbus-1.0 -I /usr/lib/arm-linux-gnueabihf/dbus-1.0/include -I/usr/include/freetype2 -isystem$(SDKSTAGE)/opt/vc/include -isystem$(SDKSTAGE)/opt/vc/include/interface/vcos/pthreads
++INCLUDES+=-I./ -Ilinux
+ 
+ DIST ?= omxplayer-dist
+ STRIP ?= strip
+-- 
+2.11.0
+

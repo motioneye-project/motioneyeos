@@ -1,0 +1,35 @@
+From f9a1dfe7a3d0f35474b3f4ded05e3d97be5017bf Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ville=20Skytt=C3=A4?= <ville.skytta@iki.fi>
+Date: Fri, 25 May 2018 17:38:59 +0200
+Subject: [PATCH] completions/Makefile.am: Use install-data-hook, not
+ install-data-local
+
+-hook is run after the main rule, while -local might end up before.
+https://www.gnu.org/software/automake/manual/html_node/Extending.html#index-hook-targets
+
+Closes #212
+
+[backported from ee6b37ad7ff5b309cbb9b886a871252abd9398fa]
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+ completions/Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/completions/Makefile.am b/completions/Makefile.am
+index e442a9e..5c49796 100644
+--- a/completions/Makefile.am
++++ b/completions/Makefile.am
+@@ -993,8 +993,8 @@ symlinks: $(targetdir) $(DATA)
+ all-local: targetdir = .
+ all-local: symlinks
+ 
+-install-data-local: targetdir = $(DESTDIR)$(bashcompdir)
+-install-data-local: symlinks
++install-data-hook: targetdir = $(DESTDIR)$(bashcompdir)
++install-data-hook: symlinks
+ 
+ check-local:
+ 	ret=0
+-- 
+2.7.4
+

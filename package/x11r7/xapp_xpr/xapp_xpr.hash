@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2012-March/001926.html
-sha256	fed98df31eb93d3dca4688cb535aabad06be572e70ace3b1685679c18dd86cb5	xpr-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002869.html
+md5 eaac255076ea351fd08d76025788d9f9  xpr-1.0.5.tar.bz2
+sha1 0632c7d8632ac9d23f285811aaea805a2956e155  xpr-1.0.5.tar.bz2
+sha256 b936e0f1f8d63f5ad097a0bbdce2e67c34f5d49b7263f32a832ff62d394d1e1f  xpr-1.0.5.tar.bz2
+sha512 d5dfb936ec4ad0067d02654dec8e862fe337ff6a2c2f974b2b3a612a829c2e728a0d51e7aba00ed2a94dc96dc50cc69f2c59f522e0635013f5f4f5bb3f4ab967  xpr-1.0.5.tar.bz2
+# Locally computed
+sha256 5e8ff9b5d3fc86b5d0bc5957c9ee0aa1a6d0fb9a6b116aae70762b628a0d5069 COPYING

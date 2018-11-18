@@ -1,0 +1,44 @@
+From ef96bac7cbbb11b98606864ead0f731dd5b71d5a Mon Sep 17 00:00:00 2001
+From: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Date: Thu, 17 Nov 2016 15:36:54 -0300
+Subject: [PATCH] configure.ac: invert order for wayland-scanner check
+
+When cross-compiling the .pc file might point to the wrong
+wayland-scanner binary (target rather than host) resulting in a
+non-executable and wrong scanner.
+Try searching the PATH first, and if that fails fall back into
+pkg-config.
+
+[Vincent: tweak patch for 17.1.1 version]
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+[Romain: rebase on 18.1]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ configure.ac | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index f1fbdcc6c7..dcf87e7dd6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1796,11 +1796,11 @@ for plat in $platforms; do
+         PKG_CHECK_MODULES([WAYLAND_PROTOCOLS], [wayland-protocols >= $WAYLAND_PROTOCOLS_REQUIRED])
+         WAYLAND_PROTOCOLS_DATADIR=`$PKG_CONFIG --variable=pkgdatadir wayland-protocols`
+ 
+-        PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
+-                          WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
+-                          WAYLAND_SCANNER='')
++        AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
+         if test "x$WAYLAND_SCANNER" = x; then
+-            AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
++		PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
++			WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
++			WAYLAND_SCANNER='')
+         fi
+ 
+         if test "x$WAYLAND_SCANNER" = "x:"; then
+-- 
+2.14.3
+

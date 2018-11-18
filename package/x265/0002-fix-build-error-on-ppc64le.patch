@@ -1,0 +1,23 @@
+# HG changeset patch
+# User Jayashree <jayashree.c@multicorewareinc.com>
+# Date 1527224165 -19800
+# Node ID 4504219210793536d921ee4e0b3058698c630bf4
+# Parent  cc2c5e46f3c87d27e3602af30b06ba6a0fbe2704
+Fix build error on on ppc64le
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+
+Upstream status: commit 450421921
+
+diff --git a/source/common/param.cpp b/source/common/param.cpp
+--- a/source/common/param.cpp
++++ b/source/common/param.cpp
+@@ -633,7 +633,7 @@
+         if (bValueWasNull)
+             p->cpuid = atobool(value);
+         else
+-            p->cpuid = parseCpuName(value, bError);
++            p->cpuid = parseCpuName(value, bError, false);
+ #endif
+     }
+     OPT("fps")

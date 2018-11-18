@@ -1,0 +1,26 @@
+Fix work_fork build when droproot is disabled
+
+The set_user_group_ids() depends on HAVE_DROPROOT. When HAVE_DROPROOT is not
+enabled, work_fork.c code causes a link failure:
+
+../libntp/libntp.a(work_fork.o): In function `send_blocking_req_internal':
+work_fork.c:(.text+0x498): undefined reference to `set_user_group_ids'
+
+Make the set_user_group_ids() call depend on HAVE_DROPROOT.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: http://bugs.ntp.org/show_bug.cgi?id=3539
+
+--- ntp-4.2.8p12.orig/libntp/work_fork.c	2018-08-14 14:51:06.000000000 +0300
++++ ntp-4.2.8p12/libntp/work_fork.c	2018-10-15 21:10:54.580917962 +0300
+@@ -594,7 +594,9 @@
+ 	init_logging("ntp_intres", 0, FALSE);
+ 	setup_logfile(NULL);
+ 
++#if defined(HAVE_DROPROOT)
+ 	(void) set_user_group_ids();
++#endif
+ 
+ 	/*
+ 	 * And now back to the portable code

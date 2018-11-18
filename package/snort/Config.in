@@ -1,0 +1,26 @@
+config BR2_PACKAGE_SNORT
+	bool "snort"
+	depends on BR2_USE_WCHAR
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # daq
+	depends on BR2_TOOLCHAIN_HAS_NATIVE_RPC || BR2_TOOLCHAIN_HAS_THREADS # libtirpc
+	select BR2_PACKAGE_LIBDNET
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_DAQ
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	help
+	  Snort is a free and open source network intrusion
+	  prevention system (IPS) and network intrusion detection
+	  system (IDS). It can perform protocol analysis, content
+	  searching/matching, and can be used to detect a variety
+	  of attacks and probes, such as buffer overflows, stealth
+	  port scans, CGI attacks, SMB probes, OS fingerprinting
+	  attempts, and much more.
+
+	  https://www.snort.org
+
+comment "snort needs a toolchain w/ wchar, threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS || \
+		!(BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_HAS_NATIVE_RPC)

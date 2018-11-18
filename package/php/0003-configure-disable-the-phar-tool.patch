@@ -10,15 +10,17 @@ on the target.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: update for autoreconf/configure.in]
+Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+[Aduskett: update for 7.2.2]
 ---
- configure.in | 9 ++-------
+ configure.ac | 9 ++-------
  1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/configure.in b/configure.in
-index 25c8abf..4dc8a09 100644
---- a/configure.in
-+++ b/configure.in
-@@ -1445,13 +1445,8 @@ CFLAGS="\$(CFLAGS_CLEAN) $standard_libtool_flag"
+diff --git a/configure.ac b/configure.ac
+index d20af76..7f02f1a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1420,13 +1420,8 @@ CFLAGS="\$(CFLAGS_CLEAN) $standard_libtool_flag"
  INLINE_CFLAGS="$INLINE_CFLAGS $standard_libtool_flag"
  CXXFLAGS="$CXXFLAGS $standard_libtool_flag \$(PROF_FLAGS)"
  
@@ -35,5 +37,5 @@ index 25c8abf..4dc8a09 100644
  all_targets="$lcov_target \$(OVERALL_TARGET) \$(PHP_MODULES) \$(PHP_ZEND_EX) \$(PHP_BINARIES) $pharcmd"
  install_targets="$install_sapi $install_modules $install_binaries install-build install-headers install-programs $install_pear $pharcmd_install"
 -- 
-2.7.4
+2.14.3
 

@@ -1,4 +1,5 @@
 # From http://dev.gentoo.org/~blueness/eudev/
-md5 66acef4c6094aab4aced7ae83b74b0d2  eudev-3.2.4.tar.gz
+md5 6ca08c0e14380f87df8e8aceac123671  eudev-3.2.5.tar.gz
 # Locally calculated
-sha256 dddcf4c89b21f5f3210f7e4d3888c92cbfc657ff734ac21b6bdd3f5bcb146fed  eudev-3.2.4.tar.gz
+sha256 49c2d04105cad2526302627e040fa24b1916a9a3e059539bc8bb919b973890af  eudev-3.2.5.tar.gz
+sha256 ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  COPYING

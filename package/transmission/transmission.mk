@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TRANSMISSION_VERSION = 2.92
+TRANSMISSION_VERSION = 2.94
 TRANSMISSION_SITE = https://github.com/transmission/transmission-releases/raw/master
 TRANSMISSION_SOURCE = transmission-$(TRANSMISSION_VERSION).tar.xz
 TRANSMISSION_DEPENDENCIES = \
@@ -16,7 +16,7 @@ TRANSMISSION_DEPENDENCIES = \
 	zlib
 TRANSMISSION_AUTORECONF = YES
 TRANSMISSION_CONF_OPTS = \
-	--disable-libnotify \
+	--without-inotify \
 	--enable-lightweight
 TRANSMISSION_LICENSE = GPL-2.0 or GPL-3.0 with OpenSSL exception
 TRANSMISSION_LICENSE_FILES = COPYING
@@ -49,9 +49,9 @@ TRANSMISSION_CONF_OPTS += --enable-daemon
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 TRANSMISSION_DEPENDENCIES += systemd
-TRANSMISSION_CONF_OPTS += --with-systemd-daemon
+TRANSMISSION_CONF_OPTS += --with-systemd
 else
-TRANSMISSION_CONF_OPTS += --without-systemd-daemon
+TRANSMISSION_CONF_OPTS += --without-systemd
 endif
 
 define TRANSMISSION_USERS
@@ -73,12 +73,6 @@ endef
 
 else
 TRANSMISSION_CONF_OPTS += --disable-daemon
-endif
-
-ifeq ($(BR2_PACKAGE_TRANSMISSION_REMOTE),y)
-TRANSMISSION_CONF_OPTS += --enable-remote
-else
-TRANSMISSION_CONF_OPTS += --disable-remote
 endif
 
 ifeq ($(BR2_PACKAGE_TRANSMISSION_GTK),y)

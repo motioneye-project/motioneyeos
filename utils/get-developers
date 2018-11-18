@@ -5,6 +5,7 @@ import getdeveloperlib
 import sys
 import os
 
+
 def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('patches', metavar='P', type=argparse.FileType('r'), nargs='*',
@@ -17,10 +18,15 @@ def parse_args():
                         help='find developers in charge of these files')
     parser.add_argument('-c', dest='check', action='store_const',
                         const=True, help='list files not handled by any developer')
+    parser.add_argument('-e', dest='email', action='store_const',
+                        const=True, help='only list affected developer email addresses')
     return parser.parse_args()
 
+
 def __main__():
-    devs = getdeveloperlib.parse_developers()
+    # DEVELOPERS is one level up from here
+    devs_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
+    devs = getdeveloperlib.parse_developers(devs_dir)
     if devs is None:
         sys.exit(1)
     args = parse_args()
@@ -46,7 +52,7 @@ def __main__():
 
     # Handle the check action
     if args.check:
-        files = getdeveloperlib.check_developers(devs)
+        files = getdeveloperlib.check_developers(devs, devs_dir)
         for f in files:
             print(f)
 
@@ -88,12 +94,16 @@ def __main__():
                 if i in dev.infras:
                     matching_devs.add(dev.name)
 
-        result = "--to buildroot@buildroot.org"
-        for dev in matching_devs:
-            result += " --cc \"%s\"" % dev
+        if args.email:
+            for dev in matching_devs:
+                print(dev)
+        else:
+            result = "--to buildroot@buildroot.org"
+            for dev in matching_devs:
+                result += " --cc \"%s\"" % dev
 
-        if result != "":
-            print("git send-email %s" % result)
+            if result != "":
+                print("git send-email %s" % result)
+
 
 __main__()
-

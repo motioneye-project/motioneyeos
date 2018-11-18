@@ -4,18 +4,17 @@
 #
 ################################################################################
 
-YMPD_VERSION = v1.2.3
+YMPD_VERSION = v1.3.0
 YMPD_SITE = $(call github,notandy,ympd,$(YMPD_VERSION))
 YMPD_LICENSE = GPL-2.0
 YMPD_LICENSE_FILES = LICENSE
 YMPD_DEPENDENCIES = libmpdclient
 
-define YMPD_MAKE_HOST_TOOL
-	$(HOSTCC) $(HOST_CFLAGS) $(@D)/htdocs/mkdata.c -o $(@D)/mkdata
-endef
-
-YMPD_PRE_BUILD_HOOKS += YMPD_MAKE_HOST_TOOL
-
-YMPD_CONF_OPTS += -DMKDATA_EXE=$(@D)/mkdata
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+YMPD_DEPENDENCIES += openssl
+YMPD_CONF_OPTS += -DWITH_SSL=ON
+else
+YMPD_CONF_OPTS += -DWITH_SSL=OFF
+endif
 
 $(eval $(cmake-package))

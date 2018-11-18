@@ -6,4 +6,4 @@ config BR2_PACKAGE_LIBCONFIG
 	  readable than XML. And unlike XML, it is type-aware, so it is
 	  not necessary to do string parsing in application code.
 
-	  http://www.hyperrealm.com/libconfig/
+	  https://hyperrealm.github.io/libconfig/

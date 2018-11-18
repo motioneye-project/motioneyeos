@@ -1,0 +1,37 @@
+From 8b0a8b2be8cf2e4a76c03d3bcdf99bff5025ba22 Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Sat, 31 Mar 2018 22:50:37 +0200
+Subject: [PATCH] Don't require a C++ compiler
+
+By default, CMake assumes that the project is using both C and C++.  By
+explicitly passing 'C' as argument of the project() macro, we tell CMake
+that only C is used, which prevents CMake from erroring out if a C++
+compiler doesn't exist.
+
+Upstream status: https://github.com/mossmann/hackrf/pull/469
+
+This patch differs from upstream because:
+- project name upstream has been changed into HackRF;
+- in Buildroot, we are only interested in host, not firmware.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ host/CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/host/CMakeLists.txt b/host/CMakeLists.txt
+index 874163f..d9cbe31 100644
+--- a/host/CMakeLists.txt
++++ b/host/CMakeLists.txt
+@@ -1,7 +1,7 @@
+ #top dir cmake project for libhackrf + tools
+ 
+ cmake_minimum_required(VERSION 2.8)
+-project (hackrf_all)
++project (hackrf_all C)
+ 
+ add_subdirectory(libhackrf)
+ add_subdirectory(hackrf-tools)
+-- 
+2.16.3
+

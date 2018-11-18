@@ -11,4 +11,8 @@ WMCTRL_LICENSE_FILES = COPYING
 
 WMCTRL_DEPENDENCIES = libglib2 xlib_libX11 xlib_libXmu
 
+WMCTRL_CONF_OPTS = \
+	--x-includes=$(STAGING_DIR)/usr/include \
+	--x-libraries=$(STAGING_DIR)/usr/lib
+
 $(eval $(autotools-package))

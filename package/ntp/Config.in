@@ -30,16 +30,16 @@ config BR2_PACKAGE_NTP_NTP_WAIT
 	depends on BR2_PACKAGE_PERL
 	help
 	  ntp-wait waits until the locally running ntpd is in state 4
-	  (synchronized). This could be useful at boot time, to delay the
-	  boot sequence until after "ntpd -g" has set the time.
+	  (synchronized). This could be useful at boot time, to delay
+	  the boot sequence until after "ntpd -g" has set the time.
 
 config BR2_PACKAGE_NTP_NTPD
 	bool "ntpd"
 	default y
 	help
 	  ntpd is the time synchronization daemon keeping your local
-	  system date and time in sync and optionally serving time and date
-	  information on the network via the NTP protocol.
+	  system date and time in sync and optionally serving time and
+	  date information on the network via the NTP protocol.
 
 config BR2_PACKAGE_NTP_NTPD_ATOM_PPS
 	bool "PPS support"
@@ -51,8 +51,8 @@ config BR2_PACKAGE_NTP_NTPD_ATOM_PPS
 config BR2_PACKAGE_NTP_NTPDATE
 	bool "ntpdate"
 	help
-	  The ntpdate utility program is used to set the local date and time
-	  from an NTP server given as an argument.
+	  The ntpdate utility program is used to set the local date
+	  and time from an NTP server given as an argument.
 
 config BR2_PACKAGE_NTP_NTPDC
 	bool "ntpdc"
@@ -63,8 +63,9 @@ config BR2_PACKAGE_NTP_NTPDC
 config BR2_PACKAGE_NTP_NTPQ
 	bool "ntpq"
 	help
-	  The ntpq utility program is used to query NTP servers requesting
-	  information about current state and/or changes in that state.
+	  The ntpq utility program is used to query NTP servers
+	  requesting information about current state and/or changes in
+	  that state.
 
 config BR2_PACKAGE_NTP_NTPSNMPD
 	bool "ntpsnmpd"
@@ -76,16 +77,16 @@ config BR2_PACKAGE_NTP_NTPSNMPD
 config BR2_PACKAGE_NTP_NTPTIME
 	bool "ntptime"
 	help
-	  The ntptime utility program is used to read and set kernel time
-	  variables.
+	  The ntptime utility program is used to read and set kernel
+	  time variables.
 
 config BR2_PACKAGE_NTP_NTPTRACE
 	bool "ntptrace"
 	depends on BR2_PACKAGE_PERL
 	help
-	  ntptrace is a perl script that uses the ntpq utility program to
-	  follow the chain of NTP servers from a given host back to the
-	  primary time source
+	  ntptrace is a perl script that uses the ntpq utility program
+	  to follow the chain of NTP servers from a given host back to
+	  the primary time source
 
 config BR2_PACKAGE_NTP_TICKADJ
 	bool "tickadj"

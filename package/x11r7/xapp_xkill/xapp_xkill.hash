@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-September/002313.html
-sha256	88ef2a304f32f24b255e879f03c1dcd3a2be3e71d5562205414f267d919f812e	xkill-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002864.html
+md5 938177e4472c346cf031c1aefd8934fc  xkill-1.0.5.tar.bz2
+sha1 c5ee06b33adb252a41e4f737be6bd47651ff582a  xkill-1.0.5.tar.bz2
+sha256 c5f0bb6a95e1ac7c4def8a657496d5d2f21ccd41eb47ef2c9ccb03fb6d6aff6b  xkill-1.0.5.tar.bz2
+sha512 4603a1794f114f5cea2c885020c9d073c8421d1e785c99ff6b936ae97139c8dac8020a187b5bbd0fa6d56ed6fab879441b42ba900cc5f2f5a534dafdc86b9249  xkill-1.0.5.tar.bz2
+# Locally computed
+sha256 13306c3890e4c8710bc468dee0eba7f9677cd94c7a67d2d81fa932d4f635b21f COPYING

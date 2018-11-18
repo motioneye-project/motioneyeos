@@ -1,0 +1,31 @@
+Fix revision number
+
+In 0002-shared-libs-for-lua.patch, revision number is used to set 
+library name:
+TO_SOLIB = liblua.so.$(R)
+
+However, library is built using PKG_VERSION which is passed only during
+build step:
+$(CC) -o $@.$(PKG_VERSION) -shared -Wl,-soname="$@.$(PKG_VERSION)" $?
+
+As a result, dynamic library is not installed in staging or target paths
+since bump to lua 5.3.5
+
+So, instead of replacing R by PKG_VERSION and passing this variable in
+all steps, simply update R to 5
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+Index: b/Makefile
+===================================================================
+--- a/Makefile
++++ b/Makefile
+@@ -47,6 +47,6 @@
+
+ # Lua version and release.
+ V= 5.3
+-R= $V.4
++R= $V.5
+
+ # Targets start here.
+ all:    $(PLAT)

@@ -1,2 +1,3 @@
 # locally computed
-sha256  c611259c0ab20fd76f79f48f4684843c18ea9c967eba78a45e8b3636315c18c4  xcb-util-0.3.9.tar.bz2
+sha256  46e49469cb3b594af1d33176cd7565def2be3fa8be4371d62271fabb5eae50e9  xcb-util-0.4.0.tar.bz2
+sha256  325b64f0b0284e08bbb7a78ae3e55c1edc2a7cd77f603225ae4b8ffc35423e37  COPYING

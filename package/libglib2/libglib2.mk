@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.54
-LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).2
+LIBGLIB2_VERSION_MAJOR = 2.56
+LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).1
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
-LIBGLIB2_LICENSE = LGPL-2.0+
+LIBGLIB2_LICENSE = LGPL-2.1+
 LIBGLIB2_LICENSE_FILES = COPYING
 # 0002-disable-tests.patch
 LIBGLIB2_AUTORECONF = YES
@@ -42,8 +42,6 @@ LIBGLIB2_CONF_ENV = \
 	jm_cv_func_nanosleep_works=yes \
 	gl_cv_func_working_utimes=yes \
 	ac_cv_func_utime_null=yes \
-	ac_cv_have_decl_strerror_r=yes \
-	ac_cv_func_strerror_r_char_p=no \
 	jm_cv_func_svid_putenv=yes \
 	ac_cv_func_getcwd_null=yes \
 	ac_cv_func_getdelim=yes \

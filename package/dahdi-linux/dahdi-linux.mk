@@ -56,7 +56,7 @@ DAHDI_LINUX_MODULE_MAKE_OPTS = \
 
 define DAHDI_LINUX_EXTRACT_FW
 	$(foreach f,$(DAHDI_LINUX_FW_FILES),\
-		cp $(BR2_DL_DIR)/$(f) $(@D)/drivers/dahdi/firmware/$(f)$(sep))
+		cp $(DAHDI_LINUX_DL_DIR)/$(f) $(@D)/drivers/dahdi/firmware/$(f)$(sep))
 endef
 DAHDI_LINUX_POST_EXTRACT_HOOKS += DAHDI_LINUX_EXTRACT_FW
 

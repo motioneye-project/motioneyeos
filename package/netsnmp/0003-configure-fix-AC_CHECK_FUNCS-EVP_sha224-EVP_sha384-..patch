@@ -1,0 +1,39 @@
+From 8e273c688aa235ed9c68570a700d31596bac14df Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@micronovasrl.com>
+Date: Mon, 15 Oct 2018 19:07:05 +0200
+Subject: [PATCH 1/2] configure: fix AC_CHECK_FUNCS(EVP_sha224 EVP_sha384 ...)
+ failure on static linking
+
+If building as static lib, AC_CHECK_FUNCS(EVP_sha224 EVP_sha384 ...)
+fails due to missing -lz in $LIBS.
+At the moment, $LIBS contains $LIBCRYPTO only discarding previous $LIBS
+content.
+
+Add $LIBS to:
+LIBS="$LIBCRYPTO"
+as:
+LIBS="$LIBCRYPTO $LIBS"
+This way $LIBS will contain -lz at the end of linking command that in
+static linking build is mandatory.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ configure.d/config_os_libs2 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.d/config_os_libs2 b/configure.d/config_os_libs2
+index 81788a209..93044000b 100644
+--- a/configure.d/config_os_libs2
++++ b/configure.d/config_os_libs2
+@@ -321,7 +321,7 @@ if test "x$tryopenssl" != "xno" -a "x$tryopenssl" != "xinternal"; then
+             AC_DEFINE(HAVE_LIBCRYPTO, 1,
+                 [Define to 1 if you have the OpenSSL library (-lcrypto or -leay32).])
+             netsnmp_save_LIBS="$LIBS"
+-            LIBS="$LIBCRYPTO"
++            LIBS="$LIBCRYPTO $LIBS"
+             AC_CHECK_FUNCS([AES_cfb128_encrypt]dnl
+                            [EVP_sha224        EVP_sha384        ]dnl
+                            [EVP_MD_CTX_create EVP_MD_CTX_destroy]dnl
+-- 
+2.17.1
+

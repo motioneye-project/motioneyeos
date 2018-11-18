@@ -1,0 +1,74 @@
+From 9462847f23a25524fdc2112cbc8de3f2c02a1669 Mon Sep 17 00:00:00 2001
+From: Jan Heylen <jan.heylen@nokia.com>
+Date: Fri, 22 Dec 2017 22:04:29 +0100
+Subject: [PATCH] CMake: make shared/static target a configurable option
+
+Signed-off-by: Jan Heylen <jan.heylen@nokia.com>
+---
+ CMakeLists.txt | 40 ++++++++++++++++++++++++++++------------
+ 1 file changed, 28 insertions(+), 12 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index aadf2f9..d03bd00 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -70,18 +70,36 @@ endif()
+ include_directories(include)
+ include_directories(SYSTEM 3rd_party/include)
+ 
++option(BUILD_SHARED_LIBS "Build as a shared library" ON)
++option(BUILD_STATIC_LIBS "Build as a static library" ON)
++
++if (NOT BUILD_SHARED_LIBS AND NOT BUILD_STATIC_LIBS)
++    message(FATAL_ERROR "One or both of BUILD_SHARED_LIBS or BUILD_STATIC_LIBS must be set to ON to build")
++endif()
++
+ set(SRCS src/propagation.cpp src/noop.cpp src/tracer.cpp)
+-add_library(opentracing SHARED ${SRCS})
+-target_include_directories(opentracing INTERFACE "$<INSTALL_INTERFACE:include/>")
+-set_target_properties(opentracing PROPERTIES VERSION ${OPENTRACING_VERSION_STRING}
++
++if (BUILD_SHARED_LIBS)
++  add_library(opentracing SHARED ${SRCS})
++  target_include_directories(opentracing INTERFACE "$<INSTALL_INTERFACE:include/>")
++  set_target_properties(opentracing PROPERTIES VERSION ${OPENTRACING_VERSION_STRING}
+                                              SOVERSION ${OPENTRACING_VERSION_MAJOR})
+-add_library(opentracing-static STATIC ${SRCS})
+-set_target_properties(opentracing-static PROPERTIES OUTPUT_NAME opentracing)
+-target_include_directories(opentracing-static INTERFACE "$<INSTALL_INTERFACE:include/>")
+-if (CLANG_TIDY_EXE)
+-  set_target_properties(opentracing PROPERTIES
++  install(TARGETS opentracing EXPORT OpenTracingTargets
++          LIBRARY DESTINATION lib
++          ARCHIVE DESTINATION lib)
++  if (CLANG_TIDY_EXE)
++    set_target_properties(opentracing PROPERTIES
+                                     CXX_CLANG_TIDY "${DO_CLANG_TIDY}")
+-endif()
++  endif()
++endif(BUILD_SHARED_LIBS)
++
++if (BUILD_STATIC_LIBS)
++  add_library(opentracing-static STATIC ${SRCS})
++  set_target_properties(opentracing-static PROPERTIES OUTPUT_NAME opentracing)
++  target_include_directories(opentracing-static INTERFACE "$<INSTALL_INTERFACE:include/>")
++  install(TARGETS opentracing-static EXPORT OpenTracingTargets
++          ARCHIVE DESTINATION lib)
++endif(BUILD_STATIC_LIBS)
+ 
+ 
+ install(DIRECTORY 3rd_party/include/opentracing DESTINATION include
+@@ -89,9 +107,7 @@ install(DIRECTORY 3rd_party/include/opentracing DESTINATION include
+                            PATTERN "*.h")
+ install(DIRECTORY include/opentracing DESTINATION include
+             FILES_MATCHING PATTERN "*.h")
+-install(TARGETS opentracing opentracing-static EXPORT OpenTracingTargets
+-        LIBRARY DESTINATION lib
+-        ARCHIVE DESTINATION lib)
++
+ 
+ # ==============================================================================
+ # Package configuration setup
+-- 
+2.7.4
+

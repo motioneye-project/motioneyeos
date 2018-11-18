@@ -8,18 +8,20 @@ config BR2_PACKAGE_SOFTETHER
 	select BR2_PACKAGE_OPENSSL_FORCE_LIBOPENSSL
 	select BR2_PACKAGE_READLINE
 	help
-	  The SoftEther Server is a fully integrated implementation of the SSTP,
-	  L2TP, L2TPv3, OpenVPN, and IPSec virtual private networking protocols
-	  on Linux and several other platforms. It is generally compatible with
-	  other implementations by Apple, Cisco, Juniper, Microsoft, et al.
+	  The SoftEther Server is a fully integrated implementation of
+	  the SSTP, L2TP, L2TPv3, OpenVPN, and IPSec virtual private
+	  networking protocols on Linux and several other
+	  platforms. It is generally compatible with other
+	  implementations by Apple, Cisco, Juniper, Microsoft, et al.
 
-	  Convenient Layer-2 and Layer-3 bridging capabilities can connect
-	  several branch offices into a single broadcast or routing domain, even
-	  behind a NAT or without a static IPv4 address.
+	  Convenient Layer-2 and Layer-3 bridging capabilities can
+	  connect several branch offices into a single broadcast or
+	  routing domain, even behind a NAT or without a static IPv4
+	  address.
 
-	  In addition to supporting most VPN protocols, the SoftEther Client can
-	  penetrate hardened firewalls and captured gateways through HTTPS, DNS,
-	  and ICMP exfiltration.
+	  In addition to supporting most VPN protocols, the SoftEther
+	  Client can penetrate hardened firewalls and captured
+	  gateways through HTTPS, DNS, and ICMP exfiltration.
 
 	  http://www.softether.org
 

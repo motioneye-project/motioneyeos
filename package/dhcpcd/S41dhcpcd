@@ -7,7 +7,6 @@ DAEMON=/sbin/dhcpcd
 CONFIG=/etc/dhcpcd.conf
 PIDFILE=/var/run/dhcpcd.pid
 
-[ -x $DAEMON ] || exit 0
 [ -f $CONFIG ] || exit 0
 
 case "$1" in

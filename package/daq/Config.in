@@ -1,0 +1,11 @@
+config BR2_PACKAGE_DAQ
+	bool "daq"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	help
+	  DAQ is a Data Acquisition library for packet I/O from the
+	  Snort project.
+
+	  https://www.snort.org
+
+comment "daq needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

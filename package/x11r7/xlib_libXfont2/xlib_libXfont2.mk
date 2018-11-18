@@ -14,16 +14,14 @@ XLIB_LIBXFONT2_DEPENDENCIES = \
 	freetype \
 	xlib_libfontenc \
 	xlib_xtrans \
-	xproto_fontsproto \
-	xproto_xproto \
+	xorgproto \
 	xfont_encodings
 
 HOST_XLIB_LIBXFONT2_DEPENDENCIES = \
 	host-freetype \
 	host-xlib_libfontenc \
 	host-xlib_xtrans \
-	host-xproto_fontsproto \
-	host-xproto_xproto \
+	host-xorgproto \
 	host-xfont_encodings
 
 XLIB_LIBXFONT2_CONF_OPTS = --disable-devel-docs

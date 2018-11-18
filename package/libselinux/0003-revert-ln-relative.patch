@@ -10,15 +10,15 @@ For the sake of Buildroot, revert the upstream patch.
 
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 
-diff -durN a/src/Makefile b/src/Makefile
---- a/src/Makefile
-+++ b/src/Makefile
-@@ -151,7 +151,7 @@
- 	install -m 755 $(LIBSO) $(SHLIBDIR)
- 	test -d $(LIBDIR)/pkgconfig || install -m 755 -d $(LIBDIR)/pkgconfig
- 	install -m 644 $(LIBPC) $(LIBDIR)/pkgconfig
--	ln -sf --relative $(SHLIBDIR)/$(LIBSO) $(LIBDIR)/$(TARGET)
-+	cd $(LIBDIR) && ln -sf ../../`basename $(SHLIBDIR)`/$(LIBSO) $(TARGET)
+diff -durNw libselinux-2.7.orig/src/Makefile libselinux-2.7/src/Makefile
+--- libselinux-2.7.orig/src/Makefile	2018-01-15 20:53:50.168525700 +0100
++++ libselinux-2.7/src/Makefile	2018-01-15 20:55:27.061858005 +0100
+@@ -181,7 +181,7 @@
+ 	install -m 755 $(LIBSO) $(LIBINSTALL)
+ 	test -d $(LIBINSTALL)/pkgconfig || install -m 755 -d $(LIBINSTALL)/pkgconfig
+ 	install -m 644 $(LIBPC) $(LIBINSTALL)/pkgconfig
+-	ln -sf --relative $(LIBINSTALL)/$(LIBSO) $(LIBINSTALL)/$(TARGET)
++	cd $(LIBINSTALL) && ln -sf $(LIBSO) $(TARGET)
  
  install-pywrap: pywrap
- 	test -d $(PYLIBDIR)/site-packages/selinux || install -m 755 -d $(PYLIBDIR)/site-packages/selinux
+ 	test -d $(PYSITEDIR)/selinux || install -m 755 -d $(PYSITEDIR)/selinux

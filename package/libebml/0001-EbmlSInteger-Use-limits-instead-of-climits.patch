@@ -1,0 +1,28 @@
+From e46906b80e7662fb78d305f576412f9fa4a22218 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Hugo=20Beauz=C3=A9e-Luyssen?= <hugo@beauzee.fr>
+Date: Mon, 23 Apr 2018 12:05:42 +0200
+Subject: [PATCH] EbmlSInteger: Use <limits> instead of <climits>
+
+The former is the proper header to use for std::numerical_limits
+
+Retrieved from:
+https://github.com/Matroska-Org/libebml/commit/e46906b80e7662fb78d305f576412f9fa4a22218
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/EbmlSInteger.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/EbmlSInteger.cpp b/src/EbmlSInteger.cpp
+index 33f3637..b930f7d 100644
+--- a/src/EbmlSInteger.cpp
++++ b/src/EbmlSInteger.cpp
+@@ -33,7 +33,7 @@
+   \author Moritz Bunkus <moritz @ bunkus.org>
+ */
+ #include <cassert>
+-#include <climits>
++#include <limits>
+ 
+ #include "ebml/EbmlSInteger.h"
+ 

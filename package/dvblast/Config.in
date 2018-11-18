@@ -1,6 +1,5 @@
 config BR2_PACKAGE_DVBLAST
 	bool "dvblast"
-	depends on !BR2_bfin  # libev
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # clock_nanosleep()
 	select BR2_PACKAGE_BITSTREAM
 	select BR2_PACKAGE_LIBEV
@@ -12,5 +11,4 @@ config BR2_PACKAGE_DVBLAST
 	  http://www.videolan.org/projects/dvblast.html
 
 comment "dvblast needs a toolchain w/ NPTL"
-	depends on !BR2_bfin  # libev
 	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL

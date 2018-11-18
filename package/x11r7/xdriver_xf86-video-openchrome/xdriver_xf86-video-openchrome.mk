@@ -16,12 +16,6 @@ XDRIVER_XF86_VIDEO_OPENCHROME_DEPENDENCIES = \
 	xlib_libX11 \
 	xlib_libXcomposite \
 	xlib_libXvMC \
-	xproto_fontsproto \
-	xproto_glproto \
-	xproto_randrproto \
-	xproto_renderproto \
-	xproto_xextproto \
-	xproto_xf86driproto \
-	xproto_xproto
+	xorgproto
 
 $(eval $(autotools-package))

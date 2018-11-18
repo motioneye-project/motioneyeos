@@ -1,0 +1,69 @@
+From cc2e6770697e343f4af534114ab7e633d5beabec Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@jakma.org>
+Date: Wed, 3 Jan 2018 23:57:33 +0000
+Subject: [PATCH] bgpd/security: invalid attr length sends NOTIFY with data
+ overrun
+
+Security issue: Quagga-2018-0543
+
+See: https://www.quagga.net/security/Quagga-2018-0543.txt
+
+* bgpd/bgp_attr.c: (bgp_attr_parse) An invalid attribute length is correctly
+  checked, and a NOTIFY prepared.  The NOTIFY can include the incorrect
+  received data with the NOTIFY, for debug purposes.  Commit
+  c69698704806a9ac5 modified the code to do that just, and also send the
+  malformed attr with the NOTIFY.  However, the invalid attribute length was
+  used as the length of the data to send back.
+
+  The result is a read past the end of data, which is then written to the
+  NOTIFY message and sent to the peer.
+
+  A configured BGP peer can use this bug to read up to 64 KiB of memory from
+  the bgpd process, or crash the process if the invalid read is caught by
+  some means (unmapped page and SEGV, or other mechanism) resulting in a DoS.
+
+  This bug _ought_ /not/ be exploitable by anything other than the connected
+  BGP peer, assuming the underlying TCP transport is secure.  For no BGP
+  peer should send on an UPDATE with this attribute.  Quagga will not, as
+  Quagga always validates the attr header length, regardless of type.
+
+  However, it is possible that there are BGP implementations that do not
+  check lengths on some attributes (e.g.  optional/transitive ones of a type
+  they do not recognise), and might pass such malformed attrs on.  If such
+  implementations exists and are common, then this bug might be triggerable
+  by BGP speakers further hops away.  Those peers will not receive the
+  NOTIFY (unless they sit on a shared medium), however they might then be
+  able to trigger a DoS.
+
+  Fix: use the valid bound to calculate the length.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ bgpd/bgp_attr.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/bgpd/bgp_attr.c b/bgpd/bgp_attr.c
+index ef58beb1..9564637e 100644
+--- a/bgpd/bgp_attr.c
++++ b/bgpd/bgp_attr.c
+@@ -2147,6 +2147,8 @@ bgp_attr_parse (struct peer *peer, struct attr *attr, bgp_size_t size,
+   memset (seen, 0, BGP_ATTR_BITMAP_SIZE);
+ 
+   /* End pointer of BGP attribute. */
++  assert (size <= stream_get_size (BGP_INPUT (peer)));
++  assert (size <= stream_get_endp (BGP_INPUT (peer)));
+   endp = BGP_INPUT_PNT (peer) + size;
+   
+   /* Get attributes to the end of attribute length. */
+@@ -2228,7 +2230,7 @@ bgp_attr_parse (struct peer *peer, struct attr *attr, bgp_size_t size,
+           bgp_notify_send_with_data (peer,
+                                      BGP_NOTIFY_UPDATE_ERR,
+                                      BGP_NOTIFY_UPDATE_ATTR_LENG_ERR,
+-                                     startp, attr_endp - startp);
++                                     startp, endp - startp);
+ 	  return BGP_ATTR_PARSE_ERROR;
+ 	}
+ 	
+-- 
+2.11.0
+

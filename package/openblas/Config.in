@@ -3,10 +3,10 @@ config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
 	default "P2"           if BR2_x86_pentium2
 	default "KATMAI"       if BR2_x86_pentium3
 	default "NORTHWOOD"    if BR2_x86_pentium4
-	default "PRESCOTT"     if BR2_x86_prescott
+	default "PRESCOTT"     if BR2_x86_prescott || BR2_x86_nocona
 	default "BANIAS"       if BR2_x86_pentium_m
 	default "CORE2"        if BR2_x86_core2
-	default "NEHALEM"      if BR2_x86_corei7
+	default "NEHALEM"      if BR2_x86_corei7 || BR2_x86_silvermont
 	default "SANDYBRIDGE"  if BR2_x86_corei7_avx
 	default "HASWELL"      if BR2_x86_core_avx2
 	default "ATOM"         if BR2_x86_atom
@@ -14,9 +14,9 @@ config BR2_PACKAGE_OPENBLAS_DEFAULT_TARGET
 	default "OPTERON"      if BR2_x86_opteron
 	default "OPTERON_SSE3" if BR2_x86_opteron_sse3
 	default "BARCELONA"    if BR2_x86_barcelona
+	default "JAGUAR"       if BR2_x86_jaguar
 	default "STEAMROLLER"  if BR2_x86_steamroller
 	default "VIAC3"        if BR2_x86_c3 || BR2_x86_c32
-	default "SSE_GENERIC"  if BR2_X86_CPU_HAS_SSE
 	default "POWER4"       if BR2_powerpc_power4
 	default "POWER5"       if BR2_powerpc_power5
 	default "POWER6"       if BR2_powerpc_power6

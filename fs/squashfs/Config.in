@@ -27,5 +27,8 @@ config BR2_TARGET_ROOTFS_SQUASHFS4_LZO
 config BR2_TARGET_ROOTFS_SQUASHFS4_XZ
 	bool "xz"
 
+config BR2_TARGET_ROOTFS_SQUASHFS4_ZSTD
+	bool "zstd"
+
 endchoice
 endif

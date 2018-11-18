@@ -1,0 +1,35 @@
+From 710e2b8ba2ecf51057a89de24e6f0d387614ea53 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sat, 25 Aug 2018 23:36:39 +0200
+Subject: [PATCH] stack/src/kernel/edrv/edrv-rawsock_linux.c: add missing
+ <sys/types.h> include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This is necessary to get the definition of the u_char type, otherwise
+the build fails with the musl C library with:
+
+stack/src/kernel/edrv/edrv-rawsock_linux.c:373:46: error: ‘u_char’ undeclared (first use in this function)
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream: https://github.com/OpenAutomationTechnologies/openPOWERLINK_V2/pull/371
+---
+ stack/src/kernel/edrv/edrv-rawsock_linux.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/stack/src/kernel/edrv/edrv-rawsock_linux.c b/stack/src/kernel/edrv/edrv-rawsock_linux.c
+index f8e0216f..e5230a52 100644
+--- a/stack/src/kernel/edrv/edrv-rawsock_linux.c
++++ b/stack/src/kernel/edrv/edrv-rawsock_linux.c
+@@ -59,6 +59,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ #include <arpa/inet.h>
+ #include <ifaddrs.h>
+ #include <linux/if_packet.h>
++#include <sys/types.h>
+ 
+ //============================================================================//
+ //            G L O B A L   D E F I N I T I O N S                             //
+-- 
+2.14.4
+

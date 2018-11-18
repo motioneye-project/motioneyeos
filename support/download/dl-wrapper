@@ -19,31 +19,50 @@
 # We want to catch any unexpected failure, and exit immediately.
 set -e
 
+export BR_BACKEND_DL_GETOPTS=":hc:d:o:n:N:H:ru:qf:e"
+
 main() {
     local OPT OPTARG
-    local backend output hfile recurse quiet
+    local backend output hfile recurse quiet rc
+    local -a uris
 
     # Parse our options; anything after '--' is for the backend
-    while getopts :hb:o:H:rq OPT; do
+    while getopts ":hc:d:D:o:n:N:H:rf:u:q" OPT; do
         case "${OPT}" in
         h)  help; exit 0;;
-        b)  backend="${OPTARG}";;
+        c)  cset="${OPTARG}";;
+        d)  dl_dir="${OPTARG}";;
+        D)  old_dl_dir="${OPTARG}";;
         o)  output="${OPTARG}";;
+        n)  raw_base_name="${OPTARG}";;
+        N)  base_name="${OPTARG}";;
         H)  hfile="${OPTARG}";;
         r)  recurse="-r";;
+        f)  filename="${OPTARG}";;
+        u)  uris+=( "${OPTARG}" );;
         q)  quiet="-q";;
         :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
         \?) error "unknown option '%s'\n" "${OPTARG}";;
         esac
     done
+
     # Forget our options, and keep only those for the backend
     shift $((OPTIND-1))
 
-    if [ -z "${backend}" ]; then
-        error "no backend specified, use -b\n"
-    fi
     if [ -z "${output}" ]; then
         error "no output specified, use -o\n"
+    fi
+
+    # Legacy handling: check if the file already exists in the global
+    # download directory. If it does, hard-link it. If it turns out it
+    # was an incorrect download, we'd still check it below anyway.
+    # If we can neither link nor copy, fallback to doing a download.
+    # NOTE! This is not atomic, is subject to TOCTTOU, but the whole
+    # dl-wrapper runs under an flock, so we're safe.
+    if [ ! -e "${output}" -a -e "${old_dl_dir}/${filename}" ]; then
+        ln "${old_dl_dir}/${filename}" "${output}" || \
+        cp "${old_dl_dir}/${filename}" "${output}" || \
+        true
     fi
 
     # If the output file already exists and:
@@ -64,36 +83,85 @@ main() {
         warn "Re-downloading '%s'...\n" "${output##*/}"
     fi
 
-    # tmpd is a temporary directory in which backends may store intermediate
-    # by-products of the download.
-    # tmpf is the file in which the backends should put the downloaded content.
-    # tmpd is located in $(BUILD_DIR), so as not to clutter the (precious)
-    # $(BR2_DL_DIR)
-    # We let the backends create tmpf, so they are able to set whatever
-    # permission bits they want (although we're only really interested in
-    # the executable bit.)
-    tmpd="$(mktemp -d "${BUILD_DIR}/.${output##*/}.XXXXXX")"
-    tmpf="${tmpd}/output"
+    # Look through all the uris that we were given to download the package
+    # source
+    download_and_check=0
+    rc=1
+    for uri in "${uris[@]}"; do
+        backend_urlencode="${uri%%+*}"
+        backend="${backend_urlencode%|*}"
+        case "${backend}" in
+            git|svn|cvs|bzr|file|scp|hg) ;;
+            *) backend="wget" ;;
+        esac
+        uri=${uri#*+}
 
-    # Helpers expect to run in a directory that is *really* trashable, so
-    # they are free to create whatever files and/or sub-dirs they might need.
-    # Doing the 'cd' here rather than in all backends is easier.
-    cd "${tmpd}"
+        urlencode=${backend#*|}
+        # urlencode must be "urlencode"
+        [ "${urlencode}" != "urlencode" ] && urlencode=""
 
-    # If the backend fails, we can just remove the temporary directory to
-    # remove all the cruft it may have left behind. Then we just exit in
-    # error too.
-    if ! "${OLDPWD}/support/download/${backend}" ${quiet} ${recurse} "${tmpf}" "${@}"; then
-        rm -rf "${tmpd}"
-        exit 1
-    fi
+        # tmpd is a temporary directory in which backends may store
+        # intermediate by-products of the download.
+        # tmpf is the file in which the backends should put the downloaded
+        # content.
+        # tmpd is located in $(BUILD_DIR), so as not to clutter the (precious)
+        # $(BR2_DL_DIR)
+        # We let the backends create tmpf, so they are able to set whatever
+        # permission bits they want (although we're only really interested in
+        # the executable bit.)
+        tmpd="$(mktemp -d "${BUILD_DIR}/.${output##*/}.XXXXXX")"
+        tmpf="${tmpd}/output"
 
-    # cd back to free the temp-dir, so we can remove it later
-    cd "${OLDPWD}"
+        # Helpers expect to run in a directory that is *really* trashable, so
+        # they are free to create whatever files and/or sub-dirs they might need.
+        # Doing the 'cd' here rather than in all backends is easier.
+        cd "${tmpd}"
 
-    # Check if the downloaded file is sane, and matches the stored hashes
-    # for that file
-    if ! support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
+        # If the backend fails, we can just remove the content of the temporary
+        # directory to remove all the cruft it may have left behind, and try
+        # the next URI until it succeeds. Once out of URI to try, we need to
+        # cleanup and exit.
+        if ! "${OLDPWD}/support/download/${backend}" \
+                $([ -n "${urlencode}" ] && printf %s '-e') \
+                -c "${cset}" \
+                -d "${dl_dir}" \
+                -n "${raw_base_name}" \
+                -N "${base_name}" \
+                -f "${filename}" \
+                -u "${uri}" \
+                -o "${tmpf}" \
+                ${quiet} ${recurse} -- "${@}"
+        then
+            # cd back to keep path coherence
+            cd "${OLDPWD}"
+            rm -rf "${tmpd}"
+            continue
+        fi
+
+        # cd back to free the temp-dir, so we can remove it later
+        cd "${OLDPWD}"
+
+        # Check if the downloaded file is sane, and matches the stored hashes
+        # for that file
+        if support/download/check-hash ${quiet} "${hfile}" "${tmpf}" "${output##*/}"; then
+            rc=0
+        else
+            if [ ${?} -ne 3 ]; then
+                rm -rf "${tmpd}"
+                continue
+            fi
+
+            # the hash file exists and there was no hash to check the file
+            # against
+            rc=1
+        fi
+        download_and_check=1
+        break
+    done
+
+    # We tried every URI possible, none seems to work or to check against the
+    # available hash. *ABORT MISSION*
+    if [ "${download_and_check}" -eq 0 ]; then
         rm -rf "${tmpd}"
         exit 1
     fi
@@ -141,6 +209,8 @@ main() {
         rm -f "${tmp_output}"
         exit 1
     fi
+
+    return ${rc}
 }
 
 help() {
@@ -159,16 +229,13 @@ DESCRIPTION
 
     -h  This help text.
 
-    -b BACKEND
-        Wrap the specified BACKEND. Known backends are:
-            bzr     Bazaar
-            cp      Local files
-            cvs     Concurrent Versions System
-            git     Git
-            hg      Mercurial
-            scp     Secure copy
-            svn     Subversion
-            wget    HTTP download
+    -u URIs
+        The URI to get the file from, the URI must respect the format given in
+        the example.
+        You may give as many '-u URI' as you want, the script will stop at the
+        frist successful download.
+
+        Example: backend+URI; git+http://example.com or http+http://example.com
 
     -o FILE
         Store the downloaded archive in FILE.

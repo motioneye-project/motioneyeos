@@ -1,0 +1,36 @@
+From 98c8f5f4429ac3bfc09eee235fee08b9aaff8c52 Mon Sep 17 00:00:00 2001
+From: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+Date: Tue, 30 Jan 2018 19:58:54 -0800
+Subject: [PATCH] Fix isync build when ublox not selected too.
+
+The isync support uses the ublox driver, but if the ublox support is
+disabled while isync is enabled, the build will fail.
+
+
+Upstream commit:
+http://git.savannah.gnu.org/cgit/gpsd.git/commit/?id=98c8f5f4429ac3bfc09eee235fee08b9aaff8c52
+
+Signed-off-by: Zoltan Gyarmati <mr.zoltan.gyarmati@gmail.com>
+---
+ SConstruct | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/SConstruct b/SConstruct
+index 1c1a215..c6a309e 100644
+--- a/SConstruct
++++ b/SConstruct
+@@ -334,6 +334,11 @@ for driver in ('ashtech',
+         env['nmea0183'] = True
+         break
+ 
++
++# iSync uses ublox underneath, so we force to enable it
++if env['isync']:
++    env['ublox'] = True
++
+ opts.Save('.scons-option-cache', env)
+ env.SConsignFile(".sconsign.dblite")
+ 
+-- 
+2.7.4
+

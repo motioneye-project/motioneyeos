@@ -1,4 +1,5 @@
 # From https://pngquant.org/releases.html
-sha1 30f54b0731b8913a8c8b3bd1fdf53e1c68b12262  pngquant-2.10.1-src.tar.gz
+sha1 f57ce0112e86ac966c55270ccf5971deff241d4f  pngquant-2.12.0-src.tar.gz
 # Locally computed
-sha256 e07a21fe37b6ae9fa5524f1e20a8e73b698566d42d2cc3edd469531745faa850  pngquant-2.10.1-src.tar.gz
+sha256 0e540c64bb58c05f2a05b4eaf1d3d165f0d3278500f15abfeac47f93f8fa8fa8  pngquant-2.12.0-src.tar.gz
+sha256 e4f467f7abf860b4e620f5f60fdd88bc3a63a0fdb98a481fb002b5e511c9b826  COPYRIGHT

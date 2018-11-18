@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-May/002213.html
-sha256	170d8550b96fb47b04db6181b947e6f6b8b97f4df5d691c351a278480cc931bf	xfontsel-1.0.5.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002861.html
+md5 13150ff98846bf6d9a14bee00697fa47  xfontsel-1.0.6.tar.bz2
+sha1 3fd8d78cc270030b41298170c3e5222065dd1cfd  xfontsel-1.0.6.tar.bz2
+sha256 25aa0b7c4262f5e99c07c2b96e00e4eb25b7e53f94fa803942af9d0e8da3001c  xfontsel-1.0.6.tar.bz2
+sha512 2f6bc51549a302404cdaf9a5a825add383953fcbb2a0c7076691cefd4dd7e4a3c772c047be74101c8486f75d03ce0bd3e65ede14e91732cf2a932810441c9099  xfontsel-1.0.6.tar.bz2
+# Locally computed
+sha256 a27097bcc5cdf4fa5d761dd4e5cea1f41911c51b0a7d9da6e3a48f69d9fd0c09 COPYING

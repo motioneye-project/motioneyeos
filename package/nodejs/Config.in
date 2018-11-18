@@ -31,7 +31,8 @@ config BR2_PACKAGE_NODEJS
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_ZLIB
 	help
-	  Event-driven I/O server-side JavaScript environment based on V8.
+	  Event-driven I/O server-side JavaScript environment based on
+	  V8.
 
 	  http://nodejs.org/
 
@@ -42,8 +43,8 @@ config BR2_PACKAGE_NODEJS_NPM
 	select BR2_PACKAGE_OPENSSL
 	help
 	  NPM is the package manager for the Node JavaScript platform.
-	  Note that enabling NPM on the target also selects OpenSSL for the
-	  target.
+	  Note that enabling NPM on the target also selects OpenSSL
+	  for the target.
 
 	  http://www.npmjs.org
 
@@ -58,20 +59,23 @@ config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL
 	  download and save tgz files or clone git repos for the
 	  components you care about.
 
-	  Example: serialport uglify-js@1.3.4 /my/module/mymodule.tgz git://github.com/someuser/somemodule.git#v1.2
+	  Example:
+	  serialport uglify-js@1.3.4 /my/module/mymodule.tgz \
+	    git://github.com/someuser/somemodule.git#v1.2
 
-	  This would install the serialport module (at the newest version),
-	  the uglify-js module at 1.3.4, a module from a filesystem path,
-	  and a module from a git repository.
+	  This would install the serialport module (at the newest
+	  version), the uglify-js module at 1.3.4, a module from a
+	  filesystem path, and a module from a git repository.
 
 config BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS
 	string "Additional module dependencies"
 	help
-	  List of space-separated buildroot recipes which must be built before
-	  your npms can be installed. For example, if in 'Additional modules'
-	  you specified 'node-curl' (see:
-	  https://github.com/jiangmiao/node-curl), you could then specify
-	  'libcurl' here, to ensure that buildroot builds the libcurl package,
-	  and does so before building your node modules.
+	  List of space-separated buildroot recipes which must be
+	  built before your npms can be installed. For example, if in
+	  'Additional modules' you specified 'node-curl' (see:
+	  https://github.com/jiangmiao/node-curl), you could then
+	  specify 'libcurl' here, to ensure that buildroot builds the
+	  libcurl package, and does so before building your node
+	  modules.
 
 endif

@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-ZSH_VERSION = 5.4.2
+ZSH_VERSION = 5.5
 ZSH_SITE = http://www.zsh.org/pub
+ZSH_SOURCE = zsh-$(ZSH_VERSION).tar.xz
 ZSH_DEPENDENCIES = ncurses
 ZSH_CONF_OPTS = --bindir=/bin
 ZSH_CONF_ENV = zsh_cv_sys_nis=no zsh_cv_sys_nis_plus=no
@@ -33,6 +34,14 @@ ZSH_DEPENDENCIES += pcre
 else
 ZSH_CONF_OPTS += --disable-pcre
 endif
+
+# Add /bin/zsh to /etc/shells otherwise some login tools like dropbear
+# can reject the user connection. See man shells.
+define ZSH_ADD_ZSH_TO_SHELLS
+	grep -qsE '^/bin/zsh$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/zsh" >> $(TARGET_DIR)/etc/shells
+endef
+ZSH_TARGET_FINALIZE_HOOKS += ZSH_ADD_ZSH_TO_SHELLS
 
 # Remove versioned zsh-x.y.z binary taking up space
 define ZSH_TARGET_INSTALL_FIXUPS

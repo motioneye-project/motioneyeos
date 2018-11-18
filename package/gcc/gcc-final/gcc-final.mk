@@ -8,6 +8,8 @@ GCC_FINAL_VERSION = $(GCC_VERSION)
 GCC_FINAL_SITE = $(GCC_SITE)
 GCC_FINAL_SOURCE = $(GCC_SOURCE)
 
+HOST_GCC_FINAL_DL_SUBDIR = gcc
+
 HOST_GCC_FINAL_DEPENDENCIES = \
 	$(HOST_GCC_COMMON_DEPENDENCIES) \
 	$(BR_LIBC)
@@ -74,12 +76,13 @@ HOST_GCC_FINAL_CONF_OPTS += "--with-multilib-list=m4a,m4a-nofpu"
 HOST_GCC_FINAL_GCC_LIB_DIR = $(HOST_DIR)/$(GNU_TARGET_NAME)/lib/!m4*
 endif
 
-ifeq ($(BR2_bfin),y)
-HOST_GCC_FINAL_CONF_OPTS += --disable-symvers
-endif
-
 # libcilkrts does not support v8
 ifeq ($(BR2_sparc),y)
+HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
+endif
+
+# Pthreads are required to build libcilkrts
+ifeq ($(BR2_PTHREADS_NONE),y)
 HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
 endif
 

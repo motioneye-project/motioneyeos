@@ -10,9 +10,6 @@
 # pidfile: /var/run/messagebus.pid
 #
 
-# Sanity checks.
-[ -x /usr/bin/dbus-daemon ] || exit 0
-
 # Create needed directories.
 [ -d /var/run/dbus ] || mkdir -p /var/run/dbus
 [ -d /var/lock/subsys ] || mkdir -p /var/lock/subsys

@@ -18,7 +18,7 @@ GSTREAMER_LICENSE_FILES = COPYING
 ifeq ($(BR2_arc)$(BR2_xtensa)$(BR2_microblaze)$(BR2_nios2)$(BR2_or1k),y)
 GSTREAMER_CONF_ENV = as_cv_unaligned_access=no
 endif
-ifeq ($(BR2_aarch64),y)
+ifeq ($(BR2_aarch64)$(BR2_aarch64_be),y)
 GSTREAMER_CONF_ENV = as_cv_unaligned_access=yes
 endif
 

@@ -1,4 +1,5 @@
 config BR2_PACKAGE_XUTIL_MAKEDEPEND
 	bool "makedepend"
+	select BR2_PACKAGE_XORGPROTO
 	help
 	  No description available

@@ -3,4 +3,4 @@ config BR2_PACKAGE_EDID_DECODE
 	help
 	  Decode EDID data in human-readable format.
 
-	  http://cgit.freedesktop.org/xorg/app/edid-decode/
+	  https://git.linuxtv.org/edid-decode.git/

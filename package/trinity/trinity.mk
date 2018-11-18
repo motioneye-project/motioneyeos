@@ -4,15 +4,11 @@
 #
 ################################################################################
 
-TRINITY_VERSION = 1.7
+TRINITY_VERSION = 1.8
 TRINITY_SITE = http://codemonkey.org.uk/projects/trinity
 TRINITY_SOURCE = trinity-$(TRINITY_VERSION).tar.xz
 TRINITY_LICENSE = GPL-2.0
 TRINITY_LICENSE_FILES = COPYING
-
-ifeq ($(BR2_PACKAGE_BTRFS_PROGS),y)
-TRINITY_DEPENDENCIES += btrfs-progs
-endif
 
 define TRINITY_CONFIGURE_CMDS
 	(cd $(@D); $(TARGET_CONFIGURE_OPTS) ./configure)

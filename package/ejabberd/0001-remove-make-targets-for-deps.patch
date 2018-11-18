@@ -9,10 +9,10 @@ using rebar at build time.
 Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
 
 diff --git a/Makefile.in b/Makefile.in
-index a0b4553d..4190a515 100644
+index df2abfdc..8c8fd714 100644
 --- a/Makefile.in
 +++ b/Makefile.in
-@@ -77,26 +77,11 @@ else
+@@ -86,27 +86,11 @@ else
    INIT_USER=$(INSTALLUSER)
  endif
 
@@ -24,6 +24,7 @@ index a0b4553d..4190a515 100644
 -deps/.got:
 -	rm -rf deps/.got
 -	rm -rf deps/.built
+-	mkdir -p deps
 -	$(REBAR) get-deps && :> deps/.got
 -
 -deps/.built: deps/.got

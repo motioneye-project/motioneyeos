@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PIMD
+	bool "pimd"
+	depends on BR2_USE_MMU # fork()
+	help
+	  pimd is a lightweight stand-alone PIM-SM v2 multicast routing
+	  daemon.
+
+	  http://troglobit.com/project/pimd/

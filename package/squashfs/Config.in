@@ -41,6 +41,12 @@ config BR2_PACKAGE_SQUASHFS_XZ
 	help
 	  Support XZ compression algorithm
 
+config BR2_PACKAGE_SQUASHFS_ZSTD
+	bool "zstd support"
+	select BR2_PACKAGE_ZSTD
+	help
+	  Support ZSTD compression algorithm
+
 endif
 
 comment "squashfs needs a toolchain w/ threads"

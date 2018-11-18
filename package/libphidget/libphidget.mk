@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBPHIDGET_VERSION = 2.1.8.20140319
+LIBPHIDGET_VERSION = 2.1.8.20170607
 LIBPHIDGET_SOURCE = libphidget_$(LIBPHIDGET_VERSION).tar.gz
 LIBPHIDGET_SITE = https://www.phidgets.com/downloads/phidget21/libraries/linux/libphidget
 LIBPHIDGET_DEPENDENCIES = libusb

@@ -4,10 +4,10 @@ sys_conf="/etc/firewall.sh"
 boot_conf="/boot/firewall.sh"
 conf="/data/etc/firewall.sh"
 
-if ! [ -f $conf ]; then
-    if [ -f $boot_conf ]; then
+if ! [[ -f $conf ]]; then
+    if [[ -f $boot_conf ]]; then
         cp $boot_conf $conf
-    elif [ -f $sys_conf ]; then
+    elif [[ -f $sys_conf ]]; then
         cp $sys_conf $conf
     fi
 fi

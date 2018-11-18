@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PYTHON_LIBUSB1
+	bool "python-libusb1"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	help
+	  Pure-python wrapper for libusb-1.0.
+
+	  http://github.com/vpelletier/python-libusb1
+
+comment "python-libusb1 needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

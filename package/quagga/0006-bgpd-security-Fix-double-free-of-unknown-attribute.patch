@@ -1,0 +1,112 @@
+From e69b535f92eafb599329bf725d9b4c6fd5d7fded Mon Sep 17 00:00:00 2001
+From: Paul Jakma <paul@jakma.org>
+Date: Sat, 6 Jan 2018 19:52:10 +0000
+Subject: [PATCH] bgpd/security: Fix double free of unknown attribute
+
+Security issue: Quagga-2018-1114
+See: https://www.quagga.net/security/Quagga-2018-1114.txt
+
+It is possible for bgpd to double-free an unknown attribute. This can happen
+via bgp_update_receive receiving an UPDATE with an invalid unknown attribute.
+bgp_update_receive then will call bgp_attr_unintern_sub and bgp_attr_flush,
+and the latter may try free an already freed unknown attr.
+
+* bgpd/bgp_attr.c: (transit_unintern) Take a pointer to the caller's storage
+  for the (struct transit *), so that transit_unintern can NULL out the
+  caller's reference if the (struct transit) is freed.
+  (cluster_unintern) By inspection, appears to have a similar issue.
+  (bgp_attr_unintern_sub) adjust for above.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ bgpd/bgp_attr.c | 33 +++++++++++++++++++--------------
+ bgpd/bgp_attr.h |  4 ++--
+ 2 files changed, 21 insertions(+), 16 deletions(-)
+
+diff --git a/bgpd/bgp_attr.c b/bgpd/bgp_attr.c
+index 9564637e..0c2806b5 100644
+--- a/bgpd/bgp_attr.c
++++ b/bgpd/bgp_attr.c
+@@ -199,15 +199,17 @@ cluster_intern (struct cluster_list *cluster)
+ }
+ 
+ void
+-cluster_unintern (struct cluster_list *cluster)
++cluster_unintern (struct cluster_list **cluster)
+ {
+-  if (cluster->refcnt)
+-    cluster->refcnt--;
++  struct cluster_list *c = *cluster;
++  if (c->refcnt)
++    c->refcnt--;
+ 
+-  if (cluster->refcnt == 0)
++  if (c->refcnt == 0)
+     {
+-      hash_release (cluster_hash, cluster);
+-      cluster_free (cluster);
++      hash_release (cluster_hash, c);
++      cluster_free (c);
++      *cluster = NULL;
+     }
+ }
+ 
+@@ -357,15 +359,18 @@ transit_intern (struct transit *transit)
+ }
+ 
+ void
+-transit_unintern (struct transit *transit)
++transit_unintern (struct transit **transit)
+ {
+-  if (transit->refcnt)
+-    transit->refcnt--;
++  struct transit *t = *transit;
++  
++  if (t->refcnt)
++    t->refcnt--;
+ 
+-  if (transit->refcnt == 0)
++  if (t->refcnt == 0)
+     {
+-      hash_release (transit_hash, transit);
+-      transit_free (transit);
++      hash_release (transit_hash, t);
++      transit_free (t);
++      *transit = NULL;
+     }
+ }
+ 
+@@ -820,11 +825,11 @@ bgp_attr_unintern_sub (struct attr *attr)
+       UNSET_FLAG(attr->flag, ATTR_FLAG_BIT (BGP_ATTR_LARGE_COMMUNITIES));
+       
+       if (attr->extra->cluster)
+-        cluster_unintern (attr->extra->cluster);
++        cluster_unintern (&attr->extra->cluster);
+       UNSET_FLAG(attr->flag, ATTR_FLAG_BIT (BGP_ATTR_CLUSTER_LIST));
+       
+       if (attr->extra->transit)
+-        transit_unintern (attr->extra->transit);
++        transit_unintern (&attr->extra->transit);
+     }
+ }
+ 
+diff --git a/bgpd/bgp_attr.h b/bgpd/bgp_attr.h
+index 9ff074b2..052acc7d 100644
+--- a/bgpd/bgp_attr.h
++++ b/bgpd/bgp_attr.h
+@@ -187,10 +187,10 @@ extern unsigned long int attr_unknown_count (void);
+ 
+ /* Cluster list prototypes. */
+ extern int cluster_loop_check (struct cluster_list *, struct in_addr);
+-extern void cluster_unintern (struct cluster_list *);
++extern void cluster_unintern (struct cluster_list **);
+ 
+ /* Transit attribute prototypes. */
+-void transit_unintern (struct transit *);
++void transit_unintern (struct transit **);
+ 
+ /* Below exported for unit-test purposes only */
+ struct bgp_attr_parser_args {
+-- 
+2.11.0
+

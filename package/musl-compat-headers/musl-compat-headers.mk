@@ -20,7 +20,7 @@ MUSL_COMPAT_HEADERS_INSTALL_STAGING = YES
 
 # Copying both headers so legal-info finds them (they are _LICENSE_FILES)
 define MUSL_COMPAT_HEADERS_EXTRACT_CMDS
-	$(INSTALL) -m 0644 -D $(DL_DIR)/$(notdir $(MUSL_COMPAT_HEADERS_QUEUE_H)) $(@D)/queue.h
+	$(INSTALL) -m 0644 -D $(MUSL_COMPAT_HEADERS_DL_DIR)/$(notdir $(MUSL_COMPAT_HEADERS_QUEUE_H)) $(@D)/queue.h
 	$(INSTALL) -m 0644 -D $(MUSL_COMPAT_HEADERS_PKGDIR)/cdefs.h $(@D)/cdefs.h
 endef
 

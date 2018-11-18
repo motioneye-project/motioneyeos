@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-PHYSFS_VERSION = be27dfd07d97336145e7f49d3fd200a6e902f85e
-PHYSFS_SITE = https://hg.icculus.org/icculus/physfs
-PHYSFS_SITE_METHOD = hg
+PHYSFS_VERSION = 3.0.1
+PHYSFS_SOURCE = physfs-$(PHYSFS_VERSION).tar.bz2
+PHYSFS_SITE = https://icculus.org/physfs/downloads
 
-PHYSFS_LICENSE = Zlib (physfs), LGPL with exceptions (lzma)
-PHYSFS_LICENSE_FILES = LICENSE.txt src/lzma/LGPL.txt
+PHYSFS_LICENSE = Zlib
+PHYSFS_LICENSE_FILES = LICENSE.txt
 
 PHYSFS_INSTALL_STAGING = YES
 

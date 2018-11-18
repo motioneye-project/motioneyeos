@@ -22,7 +22,8 @@ choice
 	prompt "python3 module format to install"
 	default BR2_PACKAGE_PYTHON3_PYC_ONLY
 	help
-	  Select Python module format to install on target (py, pyc or both)
+	  Select Python module format to install on target (py, pyc or
+	  both)
 
 config BR2_PACKAGE_PYTHON3_PY_ONLY
 	bool ".py sources only"
@@ -84,7 +85,8 @@ config BR2_PACKAGE_PYTHON3_UNICODEDATA
 	bool "unicodedata module"
 	default y
 	help
-	  Unicode character database (used by stringprep module) (large).
+	  Unicode character database (used by stringprep module)
+	  (large).
 
 config BR2_PACKAGE_PYTHON3_SQLITE
 	bool "sqlite module"

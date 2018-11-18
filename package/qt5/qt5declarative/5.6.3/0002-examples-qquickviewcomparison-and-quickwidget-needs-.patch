@@ -34,6 +34,12 @@ Fixes:
 
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
+
+Note:
+An equivalent patch is upstream for qt5declarative 5.10, but it is not suitable for
+backporting to this version due to license differences.
+
+---
  examples/quick/quick.pro | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
 

@@ -46,11 +46,6 @@ else
 PCIUTILS_MAKE_OPTS += SHARED=yes
 endif
 
-# Build after busybox since it's got a lightweight lspci
-ifeq ($(BR2_PACKAGE_BUSYBOX),y)
-PCIUTILS_DEPENDENCIES += busybox
-endif
-
 define PCIUTILS_CONFIGURE_CMDS
 	$(SED) 's/wget --no-timestamping/wget/' $(PCIUTILS_DIR)/update-pciids.sh
 	$(SED) 's/uname -s/echo Linux/' \

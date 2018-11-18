@@ -4,12 +4,21 @@
 #
 ################################################################################
 
-LIBRTLSDR_VERSION = v0.5.3
+LIBRTLSDR_VERSION = v0.5.4
 LIBRTLSDR_SITE = $(call github,steve-m,librtlsdr,$(LIBRTLSDR_VERSION))
 LIBRTLSDR_LICENSE = GPL-2.0+
 LIBRTLSDR_LICENSE_FILES = COPYING
 LIBRTLSDR_INSTALL_STAGING = YES
 LIBRTLSDR_DEPENDENCIES = libusb
+
+# BUILD_SHARED_LIBS is handled in pkg-cmake.mk as it is a generic cmake variable
+ifeq ($(BR2_STATIC_LIBS),y)
+LIBRTLSDR_CONF_OPTS += -DBUILD_STATIC_LIBS=ON
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+LIBRTLSDR_CONF_OPTS += -DBUILD_STATIC_LIBS=ON
+else ifeq ($(BR2_SHARED_LIBS),y)
+LIBRTLSDR_CONF_OPTS += -DBUILD_STATIC_LIBS=OFF
+endif
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 LIBRTLSDR_CONF_OPTS += -DINSTALL_UDEV_RULES=ON

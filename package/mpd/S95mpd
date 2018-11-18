@@ -1,7 +1,6 @@
 #!/bin/sh
 
 # Sanity checks
-test -f /usr/bin/mpd || exit 0
 test -f /etc/mpd.conf || exit 0
 
 start() {

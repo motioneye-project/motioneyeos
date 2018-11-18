@@ -1,0 +1,74 @@
+#!/bin/sh
+
+my_name="$0"
+
+check_required_files() {
+	[ -f "$1" ] || {
+		echo "$my_name: $1 is missing"
+		exit 1
+	}
+}
+
+check_device() {
+	ls -1 /dev/tpm[0-9]* > /dev/null 2>&1 || {
+		echo "device driver not loaded, skipping."
+		exit 0
+	}
+	chown tss:tss /dev/tpm[0-9]* && chmod 600 /dev/tpm*
+}
+
+rm_stale_pidfile() {
+	if [ -e "$1" ]; then
+		exe="/proc/$(cat "$1")/exe"
+		{ [ -s "$exe" ] && [ "$(readlink -f "$exe")" = "$2" ]; } || rm -f "$1"
+	fi
+}
+
+start() {
+	printf "Starting tpm2-abrmd: "
+	check_device
+	rm_stale_pidfile /var/run/tpm2-abrmd.pid /usr/sbin/tpm2-abrmd
+	start-stop-daemon -S -q -o -b -p /var/run/tpm2-abrmd.pid -c tss:tss -x /usr/sbin/tpm2-abrmd -- ${DAEMON_OPTS} || {
+		echo "FAIL"
+		exit 1
+	}
+	pidof /usr/sbin/tpm2-abrmd > /var/run/tpm2-abrmd.pid
+	echo "OK"
+}
+
+stop() {
+	printf "Stopping tpm2-abrmd: "
+	start-stop-daemon -K -q -o -p /var/run/tpm2-abrmd.pid -u tss -x /usr/sbin/tpm2-abrmd || {
+		echo "FAIL"
+		exit 1
+	}
+	rm_stale_pidfile /var/run/tpm2-abrmd.pid /usr/sbin/tpm2-abrmd
+	echo "OK"
+}
+
+check_required_files /etc/dbus-1/system.d/tpm2-abrmd.conf
+
+# defaults
+DAEMON_OPTS="--tcti=device --logger=syslog --max-connections=20 --max-transient-objects=20 --fail-on-loaded-trans"
+
+# Read configuration variable file if it is present
+[ -r /etc/default/tpm2-abrmd ] && . /etc/default/tpm2-abrmd
+
+case "$1" in
+	start)
+		start
+	       	;;
+	stop)
+	   	stop
+		;;
+	restart|reload)
+		stop
+		sleep 1
+		start
+		;;
+	*)
+		echo "Usage: tpm2-abrmd {start|stop|restart|reload}" >&2
+		exit 1
+esac
+
+exit 0

@@ -2,8 +2,6 @@
 
 set -e
 
-[ -x /usr/sbin/dmraid ] || exit 0
-
 # try to load module in case that hasn't been done yet
 modprobe dm-mod >/dev/null 2>&1
 

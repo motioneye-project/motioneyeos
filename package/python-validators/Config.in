@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_VALIDATORS
+	bool "python-validators"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_DECORATOR # runtime
+	help
+	  Python Data Validation for Humans.
+
+	  https://github.com/kvesteri/validators

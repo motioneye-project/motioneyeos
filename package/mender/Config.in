@@ -1,0 +1,19 @@
+config BR2_PACKAGE_MENDER
+	bool "mender"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_UBOOT_TOOLS # runtime
+	select BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV # runtime
+	help
+	  Mender is an open source over-the-air (OTA) software updater
+	  for embedded Linux devices. Mender comprises a client
+	  running at the embedded device, as well as a server that
+	  manages deployments across many devices.
+
+	  https://github.com/mendersoftware/mender
+
+comment "mender needs a toolchain w/ threads"
+	depends on BR2_PACKAGE_HOST_GO_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

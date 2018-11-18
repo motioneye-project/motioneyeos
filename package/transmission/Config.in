@@ -32,11 +32,6 @@ config BR2_PACKAGE_TRANSMISSION_DAEMON
 	help
 	  Install transmission daemon.
 
-config BR2_PACKAGE_TRANSMISSION_REMOTE
-	bool "transmission-remote"
-	help
-	  Install transmission remote management tool.
-
 config BR2_PACKAGE_TRANSMISSION_GTK
 	bool "transmission-gtk"
 	depends on BR2_PACKAGE_LIBGTK3 && BR2_SYSTEM_ENABLE_NLS

@@ -1,0 +1,32 @@
+From b077b4a5afbfde47288baed072152a6b7f318250 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sun, 1 Jul 2018 15:37:47 +0200
+Subject: [PATCH] Foundation/src/utils.h: backport double-conversion change for
+ AArch64 BE support
+
+This commit, identical to upstream double-conversion commit
+https://github.com/google/double-conversion/commit/cb2beeb6771025377c665d1c3ea08388bc6e619a
+allows Poco to build on AArch64 big-endian.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Upstream: https://github.com/pocoproject/poco/pull/2378
+---
+ Foundation/src/utils.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Foundation/src/utils.h b/Foundation/src/utils.h
+index a7bda0171..fd49e1768 100644
+--- a/Foundation/src/utils.h
++++ b/Foundation/src/utils.h
+@@ -62,7 +62,7 @@
+     defined(__sparc__) || defined(__sparc) || defined(__s390__) || \
+     defined(__SH4__) || defined(__alpha__) || \
+     defined(_MIPS_ARCH_MIPS32R2) || \
+-    defined(__AARCH64EL__) || \
++    defined(__AARCH64EL__) || defined(__aarch64__) || \
+     defined(nios2) || defined(__nios2) || defined(__nios2__)
+ #define DOUBLE_CONVERSION_CORRECT_DOUBLE_OPERATIONS 1
+ #elif defined(__mc68000__)
+-- 
+2.14.4
+

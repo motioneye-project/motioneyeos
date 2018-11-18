@@ -1,2 +1,4 @@
-# Locally computed hashes, not provided by upstream
-sha256 241aed1ef522f66ed672719ecf2205ec513fd0075ed80cda8e086a5b1a01d1bb  Linux-PAM-1.3.0.tar.bz2
+# Locally computed hashes after checking signature at
+# https://github.com/linux-pam/linux-pam/releases/download/v1.3.1/Linux-PAM-1.3.1.tar.xz.asc
+# signed with the key 8C6BFD92EE0F42EDF91A6A736D1A7F052E5924BB
+sha256 eff47a4ecd833fbf18de9686632a70ee8d0794b79aecb217ebd0ce11db4cd0db  Linux-PAM-1.3.1.tar.xz

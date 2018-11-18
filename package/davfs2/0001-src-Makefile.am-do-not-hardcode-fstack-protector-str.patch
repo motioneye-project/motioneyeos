@@ -1,0 +1,45 @@
+From d209ef650cf2f760ef8217748ab10716bd22d60d Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Sun, 24 Jun 2018 10:35:37 +0200
+Subject: [PATCH] src/Makefile.am: do not hardcode -fstack-protector-strong
+
+davfs2 does not truly require -fstack-protector-strong, so do not hardcode
+it.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/Makefile.am | 3 +--
+ src/Makefile.in | 3 +--
+ 2 files changed, 2 insertions(+), 4 deletions(-)
+
+diff --git a/src/Makefile.am b/src/Makefile.am
+index f083462..ed6b682 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -32,8 +32,7 @@ mount_davfs_SOURCES = cache.c dav_coda.c \
+         kernel_interface.h mount_davfs.h webdav.h
+ umount_davfs_SOURCES = umount_davfs.c defaults.h
+ 
+-AM_CFLAGS = -Wall -Werror=format-security \
+-        -fstack-protector-strong --param=ssp-buffer-size=4
++AM_CFLAGS = -Wall -Werror=format-security
+ DEFS = -DPROGRAM_NAME=\"mount.davfs\" \
+        -DDAV_SYS_CONF_DIR=\"$(pkgsysconfdir)\" \
+        -DDAV_LOCALSTATE_DIR=\"$(dav_localstatedir)\" \
+diff --git a/src/Makefile.in b/src/Makefile.in
+index 9fee542..e98758d 100644
+--- a/src/Makefile.in
++++ b/src/Makefile.in
+@@ -315,8 +315,7 @@ mount_davfs_SOURCES = cache.c dav_coda.c \
+         kernel_interface.h mount_davfs.h webdav.h
+ 
+ umount_davfs_SOURCES = umount_davfs.c defaults.h
+-AM_CFLAGS = -Wall -Werror=format-security \
+-        -fstack-protector-strong --param=ssp-buffer-size=4
++AM_CFLAGS = -Wall -Werror=format-security
+ 
+ all: all-am
+ 
+-- 
+2.11.0
+

@@ -3,7 +3,7 @@ comment "qt needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
 menuconfig BR2_PACKAGE_QT
-	bool "Qt"
+	bool "Qt (obsolete)"
 	depends on BR2_USE_MMU # fork
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -23,8 +23,8 @@ choice
 config BR2_PACKAGE_QT_EMBEDDED
 	bool "Qt embedded"
 	help
-	  The embedded Qt installation targets embedded systems without X.org.
-	  Provides backends for framebuffer.
+	  The embedded Qt installation targets embedded systems
+	  without X.org. Provides backends for framebuffer.
 	  If unsure, say Y.
 
 comment "Qt standard (X11) not available (need X.org)"
@@ -44,8 +44,8 @@ config BR2_PACKAGE_QT_X11
 	select BR2_PACKAGE_QT_SYSTEMFREETYPE
 	select BR2_PACKAGE_QT_GUI_MODULE
 	help
-	  The standard Qt installation provides X.org backend. If you don't want to
-	  use X.org, say N.
+	  The standard Qt installation provides X.org backend. If you
+	  don't want to use X.org, say N.
 
 endchoice
 
@@ -83,15 +83,16 @@ config BR2_PACKAGE_QT_SHARED
 	depends on !BR2_STATIC_LIBS
 	help
 	  Create and use shared Qt libraries.
-	  If you have multiple programs that depend on Qt or intend to use
-	  plugins, say Y.
+	  If you have multiple programs that depend on Qt or intend to
+	  use plugins, say Y.
 
 config BR2_PACKAGE_QT_STATIC
 	bool "Static Library"
 	help
 	  Create and use static Qt libraries.
-	  If you don't have multiple programs on the target that depends on
-	  Qt, then this will save you quite some of storage space.
+	  If you don't have multiple programs on the target that
+	  depends on Qt, then this will save you quite some of storage
+	  space.
 	  If unsure, say Y.
 
 endchoice
@@ -114,17 +115,17 @@ config BR2_PACKAGE_QT_QT3SUPPORT
 	depends on BR2_PACKAGE_QT_GUI_MODULE
 	select BR2_PACKAGE_QT_SQL_MODULE
 	help
-	  Turns on support for older Qt3. This will create an additional
-	  library with proxy code and increase the space required on target.
-	  If unsure say n.
+	  Turns on support for older Qt3. This will create an
+	  additional library with proxy code and increase the space
+	  required on target.  If unsure say n.
 
 config BR2_PACKAGE_QT_GUI_MODULE
 	bool "Gui Module"
 	default y
 	select BR2_PACKAGE_QT_NETWORK
 	help
-	  Turns on support for Gui applications. If your board doesn't have
-	  video output, or you don't require Qt GUI, say n.
+	  Turns on support for Gui applications. If your board doesn't
+	  have video output, or you don't require Qt GUI, say n.
 
 if BR2_PACKAGE_QT_GUI_MODULE
 

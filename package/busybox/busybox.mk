@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BUSYBOX_VERSION = 1.27.2
+BUSYBOX_VERSION = 1.29.2
 BUSYBOX_SITE = http://www.busybox.net/downloads
 BUSYBOX_SOURCE = busybox-$(BUSYBOX_VERSION).tar.bz2
 BUSYBOX_LICENSE = GPL-2.0
@@ -19,6 +19,57 @@ BUSYBOX_CFLAGS = \
 
 BUSYBOX_LDFLAGS = \
 	$(TARGET_LDFLAGS)
+
+# Packages that provide commands that may also be busybox applets:
+BUSYBOX_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_ATTR),attr) \
+	$(if $(BR2_PACKAGE_BASH),bash) \
+	$(if $(BR2_PACKAGE_BC),bc) \
+	$(if $(BR2_PACKAGE_BINUTILS),binutils) \
+	$(if $(BR2_PACKAGE_COREUTILS),coreutils) \
+	$(if $(BR2_PACKAGE_CPIO),cpio) \
+	$(if $(BR2_PACKAGE_DCRON),dcron) \
+	$(if $(BR2_PACKAGE_DEBIANUTILS),debianutils) \
+	$(if $(BR2_PACKAGE_DIFFUTILS),diffutils) \
+	$(if $(BR2_PACKAGE_DOS2UNIX),dos2unix) \
+	$(if $(BR2_PACKAGE_E2FSPROGS),e2fsprogs) \
+	$(if $(BR2_PACKAGE_FBSET),fbset) \
+	$(if $(BR2_PACKAGE_GAWK),gawk) \
+	$(if $(BR2_PACKAGE_GREP),grep) \
+	$(if $(BR2_PACKAGE_GZIP),gzip) \
+	$(if $(BR2_PACKAGE_I2C_TOOLS),i2c-tools) \
+	$(if $(BR2_PACKAGE_IFENSLAVE),ifenslave) \
+	$(if $(BR2_PACKAGE_IFPLUGD),ifplugd) \
+	$(if $(BR2_PACKAGE_IFUPDOWN),ifupdown) \
+	$(if $(BR2_PACKAGE_IPROUTE2),iproute2) \
+	$(if $(BR2_PACKAGE_IPUTILS),iputils) \
+	$(if $(BR2_PACKAGE_KMOD),kmod) \
+	$(if $(BR2_PACKAGE_LESS),less) \
+	$(if $(BR2_PACKAGE_LSOF),lsof) \
+	$(if $(BR2_PACKAGE_MTD),mtd) \
+	$(if $(BR2_PACKAGE_NET_TOOLS),net-tools) \
+	$(if $(BR2_PACKAGE_NETCAT),netcat) \
+	$(if $(BR2_PACKAGE_NETCAT_OPENSBSD),netcat-openbsd) \
+	$(if $(BR2_PACKAGE_NMAP),nmap) \
+	$(if $(BR2_PACKAGE_NTP),ntp) \
+	$(if $(BR2_PACKAGE_PCIUTILS),pciutils) \
+	$(if $(BR2_PACKAGE_PROCPS_NG),procps-ng) \
+	$(if $(BR2_PACKAGE_PSMISC),psmisc) \
+	$(if $(BR2_PACKAGE_RSYSLOGD),rsyslog) \
+	$(if $(BR2_PACKAGE_START_STOP_DAEMON),start-stop-daemon) \
+	$(if $(BR2_PACKAGE_SYSKLOGD),sysklogd) \
+	$(if $(BR2_PACKAGE_SYSLOG_NG),syslog-ng) \
+	$(if $(BR2_PACKAGE_SYSTEMD),systemd) \
+	$(if $(BR2_PACKAGE_SYSVINIT),sysvinit) \
+	$(if $(BR2_PACKAGE_TAR),tar) \
+	$(if $(BR2_PACKAGE_TFTPD),tftpd) \
+	$(if $(BR2_PACKAGE_TRACEROUTE),traceroute) \
+	$(if $(BR2_PACKAGE_UNZIP),unzip) \
+	$(if $(BR2_PACKAGE_USBUTILS),usbutils) \
+	$(if $(BR2_PACKAGE_UTIL_LINUX),util-linux) \
+	$(if $(BR2_PACKAGE_VIM),vim) \
+	$(if $(BR2_PACKAGE_WGET),wget) \
+	$(if $(BR2_PACKAGE_WHOIS),whois)
 
 # Link against libtirpc if available so that we can leverage its RPC
 # support for NFS mounting with BusyBox
@@ -65,7 +116,7 @@ define BUSYBOX_PERMISSIONS
 # Set permissions on all applets with BB_SUID_REQUIRE and BB_SUID_MAYBE.
 # 12 Applets are pulled from applets.h using grep command :
 #  grep -r -e "APPLET.*BB_SUID_REQUIRE\|APPLET.*BB_SUID_MAYBE" \
-#  $(@D)/include/applets.h 
+#  $(@D)/include/applets.h
 # These applets are added to the device table and the makedev file
 # ignores the files with type 'F' ( optional files).
 	/usr/bin/wall 			 F 4755 0  0 - - - - -
@@ -148,29 +199,6 @@ define BUSYBOX_PREFER_STATIC
 endef
 endif
 
-# Disable shadow passwords support if unsupported by the C library
-ifeq ($(BR2_TOOLCHAIN_HAS_SHADOW_PASSWORDS),)
-define BUSYBOX_INTERNAL_SHADOW_PASSWORDS
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_PWD_GRP,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_SHADOW,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
-# We also need to use internal shadow password functions when using
-# the musl C library, since some of them are not yet implemented by
-# musl.
-#
-# Do not use utmp/wmtp support. wmtp support is not available in musl,
-# and utmp support is not sufficient for Busybox.
-ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
-define BUSYBOX_MUSL_TWEAKS
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_PWD_GRP,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_ENABLE_OPT,CONFIG_USE_BB_SHADOW,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_DISABLE_OPT,CONFIG_FEATURE_UTMP,$(BUSYBOX_BUILD_CONFIG))
-	$(call KCONFIG_DISABLE_OPT,CONFIG_FEATURE_WTMP,$(BUSYBOX_BUILD_CONFIG))
-endef
-endif
-
 define BUSYBOX_INSTALL_UDHCPC_SCRIPT
 	if grep -q CONFIG_UDHCPC=y $(@D)/.config; then \
 		$(INSTALL) -m 0755 -D package/busybox/udhcpc.script \
@@ -217,11 +245,14 @@ define BUSYBOX_INSTALL_INDIVIDUAL_BINARIES
 endef
 endif
 
+# Only install our own if no other package already did.
 define BUSYBOX_INSTALL_LOGGING_SCRIPT
-	if grep -q CONFIG_SYSLOGD=y $(@D)/.config; then \
+	if grep -q CONFIG_SYSLOGD=y $(@D)/.config && \
+		[ ! -e $(TARGET_DIR)/etc/init.d/S01logging ]; \
+	then \
 		$(INSTALL) -m 0755 -D package/busybox/S01logging \
 			$(TARGET_DIR)/etc/init.d/S01logging; \
-	else rm -f $(TARGET_DIR)/etc/init.d/S01logging; fi
+	fi
 endef
 
 ifeq ($(BR2_INIT_BUSYBOX),y)
@@ -248,6 +279,10 @@ define BUSYBOX_LINUX_PAM
 	$(call KCONFIG_ENABLE_OPT,CONFIG_PAM,$(BUSYBOX_BUILD_CONFIG))
 endef
 BUSYBOX_DEPENDENCIES += linux-pam
+else
+define BUSYBOX_LINUX_PAM
+	$(call KCONFIG_DISABLE_OPT,CONFIG_PAM,$(BUSYBOX_BUILD_CONFIG))
+endef
 endif
 
 # Telnet support
@@ -258,11 +293,19 @@ define BUSYBOX_INSTALL_TELNET_SCRIPT
 	fi
 endef
 
-# Enable "noclobber" in install.sh, to prevent BusyBox from overwriting any
-# full-blown versions of apps installed by other packages with sym/hard links.
-define BUSYBOX_NOCLOBBER_INSTALL
-	$(SED) 's/^noclobber="0"$$/noclobber="1"/' $(@D)/applets/install.sh
+# Add /bin/{a,hu}sh to /etc/shells otherwise some login tools like dropbear
+# can reject the user connection. See man shells.
+define BUSYBOX_INSTALL_ADD_TO_SHELLS
+	if grep -q CONFIG_ASH=y $(@D)/.config; then \
+		grep -qsE '^/bin/ash$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/ash" >> $(TARGET_DIR)/etc/shells; \
+	fi
+	if grep -q CONFIG_HUSH=y $(@D)/.config; then \
+		grep -qsE '^/bin/hush$$' $(TARGET_DIR)/etc/shells \
+		|| echo "/bin/hush" >> $(TARGET_DIR)/etc/shells; \
+	fi
 endef
+BUSYBOX_TARGET_FINALIZE_HOOKS += BUSYBOX_INSTALL_ADD_TO_SHELLS
 
 define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_SET_MMU)
@@ -270,12 +313,10 @@ define BUSYBOX_KCONFIG_FIXUP_CMDS
 	$(BUSYBOX_SET_MDEV)
 	$(BUSYBOX_SET_CRYPT_SHA)
 	$(BUSYBOX_LINUX_PAM)
-	$(BUSYBOX_INTERNAL_SHADOW_PASSWORDS)
 	$(BUSYBOX_SET_INIT)
 	$(BUSYBOX_SET_WATCHDOG)
 	$(BUSYBOX_SET_SELINUX)
 	$(BUSYBOX_SET_INDIVIDUAL_BINARIES)
-	$(BUSYBOX_MUSL_TWEAKS)
 endef
 
 define BUSYBOX_CONFIGURE_CMDS
@@ -287,7 +328,9 @@ define BUSYBOX_BUILD_CMDS
 endef
 
 define BUSYBOX_INSTALL_TARGET_CMDS
-	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install
+	# Use the 'noclobber' install rule, to prevent BusyBox from overwriting
+	# any full-blown versions of apps installed by other packages.
+	$(BUSYBOX_MAKE_ENV) $(MAKE) $(BUSYBOX_MAKE_OPTS) -C $(@D) install-noclobber
 	$(BUSYBOX_INSTALL_INITTAB)
 	$(BUSYBOX_INSTALL_UDHCPC_SCRIPT)
 	$(BUSYBOX_INSTALL_MDEV_CONF)

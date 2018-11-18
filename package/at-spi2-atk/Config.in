@@ -1,0 +1,22 @@
+config BR2_PACKAGE_AT_SPI2_ATK
+	bool "at-spi2-atk"
+	depends on BR2_PACKAGE_XORG7 # at-spi2-core
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_MMU # glib2
+	depends on BR2_USE_WCHAR # glib2
+	select BR2_PACKAGE_ATK
+	select BR2_PACKAGE_AT_SPI2_CORE
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  The At-Spi2 Atk package contains a library that bridges
+	  ATK to At-Spi2 D-Bus service.
+
+	  https://www.freedesktop.org/wiki/Accessibility/AT-SPI2/
+
+comment "at-spi2-atk needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "at-spi2-atk depends on X.org"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_XORG7

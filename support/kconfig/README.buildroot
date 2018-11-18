@@ -15,6 +15,7 @@ Then verify the toplevel targets work:
 	config
 	defconfig
 	menuconfig
+	nconfig
 	xconfig
 	gconfig
 	oldconfig

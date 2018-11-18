@@ -5,4 +5,4 @@ config BR2_PACKAGE_CRAMFS
 	  cramfs is a compressed read-only filesystem. This package
 	  contains the tools to generate and check a cramfs filesystem.
 
-	  http://sourceforge.net/projects/cramfs/
+	  https://github.com/npitre/cramfs-tools

@@ -5,10 +5,11 @@ config BR2_PACKAGE_X265
 	depends on !BR2_STATIC_LIBS # dlfcn
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	help
-	  x265 is an open source free software and library for encoding video
-	  using the High Efficiency Video Coding (HEVC/H.265) standard. x265 is
-	  offered under either the GNU General Public License (GPL) 2 license or
-	  a commercial license, similar to the x264 project.
+	  x265 is an open source free software and library for
+	  encoding video using the High Efficiency Video Coding
+	  (HEVC/H.265) standard. x265 is offered under either the GNU
+	  General Public License (GPL) 2 license or a commercial
+	  license, similar to the x264 project.
 
 	  http://x265.org
 

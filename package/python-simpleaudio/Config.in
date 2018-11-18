@@ -4,8 +4,9 @@ config BR2_PACKAGE_PYTHON_SIMPLEAUDIO
 	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
 	select BR2_PACKAGE_ALSA_LIB
 	help
-	  The simplaudio package provides cross-platform, dependency-free
-	  audio playback capability for Python 3 on OSX, Windows, and Linux.
+	  The simplaudio package provides cross-platform,
+	  dependency-free audio playback capability for Python 3 on
+	  OSX, Windows, and Linux.
 
 	  https://github.com/hamiltron/py-simple-audio
 

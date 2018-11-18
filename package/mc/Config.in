@@ -7,10 +7,10 @@ config BR2_PACKAGE_MC
 	# mc prefers slang, but can use ncurses too
 	select BR2_PACKAGE_SLANG if !BR2_PACKAGE_NCURSES
 	help
-	  GNU Midnight Commander is a visual file manager, licensed under
-	  GNU General Public License. It can use either SLang (preferred)
-	  or ncurses for screen handling; if neither is enabled SLang
-	  will be automatically chosen.
+	  GNU Midnight Commander is a visual file manager, licensed
+	  under GNU General Public License. It can use either SLang
+	  (preferred) or ncurses for screen handling; if neither is
+	  enabled SLang will be automatically chosen.
 
 	  https://www.midnight-commander.org
 

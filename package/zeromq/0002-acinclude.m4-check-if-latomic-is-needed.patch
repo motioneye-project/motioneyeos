@@ -1,0 +1,71 @@
+From 9f4ca582555b208d065f730b5ce3b1901136b275 Mon Sep 17 00:00:00 2001
+From: Asaf Kahlon <asafka7@gmail.com>
+Date: Mon, 7 May 2018 23:19:09 +0300
+Subject: [PATCH] acinclude.m4: check if -latomic is needed
+
+On some cases, -latomic is needed for linking, and since the current
+acinclude.m4 checks only compilation we can sometimes miss the need for -latomic
+and the linking process will fail.
+Therefore, the AC_CHECK_IFELSE was replaced with AC_LINK_IFELSE. If the first
+try fails, we try to link again with -latomic and add LIBS="-latomic" in case we
+succeeded.
+
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update to use LIBS: https://github.com/zeromq/libzmq/pull/3250]
+---
+ acinclude.m4 | 31 +++++++++++++++++++++++++++----
+ 1 file changed, 27 insertions(+), 4 deletions(-)
+
+diff --git a/acinclude.m4 b/acinclude.m4
+index f648ed0f..aa35195f 100644
+--- a/acinclude.m4
++++ b/acinclude.m4
+@@ -668,7 +668,7 @@ dnl # Check if compiler supoorts __atomic_Xxx intrinsics
+ dnl ################################################################################
+ AC_DEFUN([LIBZMQ_CHECK_ATOMIC_INTRINSICS], [{
+     AC_MSG_CHECKING(whether compiler supports __atomic_Xxx intrinsics)
+-    AC_COMPILE_IFELSE([AC_LANG_SOURCE([
++    AC_LINK_IFELSE([AC_LANG_SOURCE([
+ /* atomic intrinsics test */
+ int v = 0;
+ int main (int, char **)
+@@ -677,9 +677,32 @@ int main (int, char **)
+     return t;
+ }
+     ])],
+-    [AC_MSG_RESULT(yes) ; libzmq_cv_has_atomic_instrisics="yes" ; $1],
+-    [AC_MSG_RESULT(no)  ; libzmq_cv_has_atomic_instrisics="no"  ; $2]
+-    )
++    [libzmq_cv_has_atomic_instrisics="yes"],
++    [libzmq_cv_has_atomic_instrisics="no"])
++
++    if test "x$libzmq_cv_has_atomic_instrisics" = "xno"; then
++        save_LIBS=$LIBS
++        LIBS="$LIBS -latomic"
++        AC_LINK_IFELSE([AC_LANG_SOURCE([
++        /* atomic intrinsics test */
++        int v = 0;
++        int main (int, char **)
++        {
++            int t = __atomic_add_fetch (&v, 1, __ATOMIC_ACQ_REL);
++            return t;
++        }
++        ])],
++        [libzmq_cv_has_atomic_instrisics="yes"],
++        [libzmq_cv_has_atomic_instrisics="no" LIBS=$save_LIBS])
++    fi
++
++    if test "x$libzmq_cv_has_atomic_instrisics" = "xyes"; then
++        AC_MSG_RESULT(yes)
++        $1
++    else
++        AC_MSG_RESULT(no)
++        $2
++    fi
+ }])
+ 
+ dnl ################################################################################
+-- 
+2.17.0
+

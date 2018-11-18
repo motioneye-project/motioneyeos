@@ -1,0 +1,83 @@
+From 3d91847322eba55e97adc76c5c95570382af7059 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 28 Jan 2018 11:57:11 +0100
+Subject: [PATCH] Fix uClibc build on 64bit platforms by including stdint.h
+
+Fixes an error detected by buildroot autobuilders:
+http://autobuild.buildroot.net/results/573/573e2268e205e10d1352fa81122d8f225fdb4575/build-end.log
+
+/home/rclinux/rc-buildroot-test/scripts/instance-1/output/host/mips64el-buildroot-linux-uclibc/sysroot/usr/include/stdint.h:122:27:
+error: conflicting types for 'uintptr_t'
+ typedef unsigned long int uintptr_t;
+                           ^
+In file included from ../lib/ldb/tests/ldb_msg.c:17:0:
+../third_party/cmocka/cmocka.h:126:28: note: previous declaration of 'uintptr_t' was here
+       typedef unsigned int uintptr_t;
+
+The define __WORDSIZE is missing when cmocka.h decides how to
+define uintptr_t, this patch includes stdint.h when needed.
+
+Patch sent upstream:
+https://lists.samba.org/archive/samba-technical/2018-January/125306.html
+
+[updated for samba-4.8.4, v2 sent upstream
+ https://lists.samba.org/archive/samba-technical/2018-August/129732.html]
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ lib/ldb/tests/ldb_mod_op_test.c   | 1 +
+ lib/ldb/tests/ldb_msg.c           | 1 +
+ libcli/auth/tests/ntlm_check.c    | 1 +
+ libcli/smb/test_smb1cli_session.c | 1 +
+ 4 files changed, 4 insertions(+)
+
+diff --git a/lib/ldb/tests/ldb_mod_op_test.c b/lib/ldb/tests/ldb_mod_op_test.c
+index c8b9c1aa9ff..4893dc3b38b 100644
+--- a/lib/ldb/tests/ldb_mod_op_test.c
++++ b/lib/ldb/tests/ldb_mod_op_test.c
+@@ -13,6 +13,7 @@
+  */
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+diff --git a/lib/ldb/tests/ldb_msg.c b/lib/ldb/tests/ldb_msg.c
+index f8de418e0dc..31786a9a318 100644
+--- a/lib/ldb/tests/ldb_msg.c
++++ b/lib/ldb/tests/ldb_msg.c
+@@ -13,6 +13,7 @@
+  */
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+diff --git a/libcli/auth/tests/ntlm_check.c b/libcli/auth/tests/ntlm_check.c
+index e87a0a276d4..65c7b086008 100644
+--- a/libcli/auth/tests/ntlm_check.c
++++ b/libcli/auth/tests/ntlm_check.c
+@@ -40,6 +40,7 @@
+  */
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+diff --git a/libcli/smb/test_smb1cli_session.c b/libcli/smb/test_smb1cli_session.c
+index d1e21d5431e..6a526c96b61 100644
+--- a/libcli/smb/test_smb1cli_session.c
++++ b/libcli/smb/test_smb1cli_session.c
+@@ -1,5 +1,6 @@
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+-- 
+2.18.0
+

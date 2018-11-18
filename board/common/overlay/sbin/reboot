@@ -1,7 +1,15 @@
 #!/bin/bash
 
+# carry on with the script in case of error
 set +e
+
+# write buffers to disk
 /bin/sync
-(sleep 10 && /usr/bin/killall -STOP watchdog) &
+
+# allow the shutdown script 20 seconds to shut down,
+# after which we stop feeding the watchdog
+(sleep 20 && /usr/bin/killall -STOP watchdog) &
+
+# actual reboot command
 /bin/busybox reboot
 

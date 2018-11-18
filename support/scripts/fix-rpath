@@ -56,6 +56,7 @@ EOF
 # ELF files should not be in these sub-directories
 HOST_EXCLUDEPATHS="/share/terminfo"
 STAGING_EXCLUDEPATHS="/usr/include /usr/share/terminfo"
+TARGET_EXCLUDEPATHS="/lib/firmware"
 
 main() {
     local rootdir
@@ -106,6 +107,11 @@ main() {
 
         target)
             rootdir="${TARGET_DIR}"
+
+            for excludepath in ${TARGET_EXCLUDEPATHS}; do
+                find_args+=( "-path" "${TARGET_DIR}""${excludepath}" "-prune" "-o" )
+            done
+
             # we don't want $ORIGIN-based rpaths but absolute paths without rootdir.
             # we also want to remove rpaths pointing to /lib or /usr/lib.
             sanitize_extra_args+=( "--no-standard-lib-dirs" )

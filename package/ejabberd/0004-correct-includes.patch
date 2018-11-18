@@ -1,0 +1,1919 @@
+From 0487178693143955ff57e3c9371fb6e7b164294c Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Thu, 11 Jan 2018 12:49:38 +0100
+Subject: [PATCH] correct includes
+
+Use include_lib() instead of include() for files from external
+libraries. See https://github.com/processone/ejabberd/pull/1446
+
+Note: Philipp Huebner has a similar patch in Debian's port of ejabberd
+but it was easier to redo this patch from scratch with the following sed
+command on ejabberd git repository than adapting Huebner's patch format:
+for f in src/*.erl include/*.hrl; do
+    sed -i -e 's,esip/include,s1_sip/include,g' \
+    -e 's,include("ns.hrl,include_lib("p1_xmpp/include/ns.hrl,g' \
+    -e 's,include("fxml.hrl,include_lib("p1_xml/include/fxml.hrl,g' \
+    -e 's,include("xmpp\.hrl,include_lib("p1_xmpp/include/xmpp.hrl,g' \
+    -e 's,include("jid\.hrl,include_lib("p1_xmpp/include/jid.hrl,g' \
+    "$f"
+done
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+---
+ include/jlib.hrl                  | 4 ++--
+ src/acl.erl                       | 2 +-
+ src/acme_challenge.erl            | 2 +-
+ src/ejabberd_acme.erl             | 2 +-
+ src/ejabberd_acme_comm.erl        | 2 +-
+ src/ejabberd_auth_anonymous.erl   | 2 +-
+ src/ejabberd_bosh.erl             | 2 +-
+ src/ejabberd_c2s.erl              | 2 +-
+ src/ejabberd_captcha.erl          | 2 +-
+ src/ejabberd_http.erl             | 2 +-
+ src/ejabberd_http_ws.erl          | 2 +-
+ src/ejabberd_iq.erl               | 2 +-
+ src/ejabberd_local.erl            | 2 +-
+ src/ejabberd_oauth.erl            | 2 +-
+ src/ejabberd_oauth_rest.erl       | 2 +-
+ src/ejabberd_oauth_sql.erl        | 2 +-
+ src/ejabberd_piefxis.erl          | 2 +-
+ src/ejabberd_router.erl           | 2 +-
+ src/ejabberd_router_multicast.erl | 2 +-
+ src/ejabberd_s2s.erl              | 2 +-
+ src/ejabberd_s2s_in.erl           | 2 +-
+ src/ejabberd_s2s_out.erl          | 2 +-
+ src/ejabberd_service.erl          | 2 +-
+ src/ejabberd_sm.erl               | 2 +-
+ src/ejabberd_socket.erl           | 2 +-
+ src/ejabberd_system_monitor.erl   | 2 +-
+ src/ejabberd_web.erl              | 2 +-
+ src/ejabberd_web_admin.erl        | 2 +-
+ src/ejabberd_websocket.erl        | 2 +-
+ src/ejabberd_xmlrpc.erl           | 2 +-
+ src/gen_iq_handler.erl            | 2 +-
+ src/gen_pubsub_node.erl           | 2 +-
+ src/gen_pubsub_nodetree.erl       | 2 +-
+ src/jd2ejd.erl                    | 2 +-
+ src/mod_adhoc.erl                 | 2 +-
+ src/mod_admin_extra.erl           | 2 +-
+ src/mod_admin_update_sql.erl      | 2 +-
+ src/mod_announce.erl              | 2 +-
+ src/mod_announce_mnesia.erl       | 2 +-
+ src/mod_announce_riak.erl         | 2 +-
+ src/mod_announce_sql.erl          | 2 +-
+ src/mod_avatar.erl                | 2 +-
+ src/mod_block_strangers.erl       | 2 +-
+ src/mod_blocking.erl              | 2 +-
+ src/mod_bosh.erl                  | 2 +-
+ src/mod_caps.erl                  | 2 +-
+ src/mod_carboncopy.erl            | 2 +-
+ src/mod_client_state.erl          | 2 +-
+ src/mod_configure.erl             | 2 +-
+ src/mod_delegation.erl            | 2 +-
+ src/mod_disco.erl                 | 2 +-
+ src/mod_echo.erl                  | 2 +-
+ src/mod_fail2ban.erl              | 2 +-
+ src/mod_http_api.erl              | 2 +-
+ src/mod_http_upload.erl           | 2 +-
+ src/mod_http_upload_quota.erl     | 2 +-
+ src/mod_irc.erl                   | 2 +-
+ src/mod_irc_connection.erl        | 2 +-
+ src/mod_irc_mnesia.erl            | 2 +-
+ src/mod_irc_riak.erl              | 2 +-
+ src/mod_irc_sql.erl               | 2 +-
+ src/mod_last.erl                  | 2 +-
+ src/mod_legacy_auth.erl           | 2 +-
+ src/mod_mam.erl                   | 2 +-
+ src/mod_mam_mnesia.erl            | 2 +-
+ src/mod_mam_sql.erl               | 2 +-
+ src/mod_metrics.erl               | 2 +-
+ src/mod_mix.erl                   | 2 +-
+ src/mod_muc.erl                   | 2 +-
+ src/mod_muc_admin.erl             | 2 +-
+ src/mod_muc_log.erl               | 2 +-
+ src/mod_muc_mnesia.erl            | 2 +-
+ src/mod_muc_riak.erl              | 2 +-
+ src/mod_muc_room.erl              | 2 +-
+ src/mod_muc_sql.erl               | 2 +-
+ src/mod_multicast.erl             | 2 +-
+ src/mod_offline.erl               | 2 +-
+ src/mod_offline_mnesia.erl        | 2 +-
+ src/mod_offline_riak.erl          | 2 +-
+ src/mod_offline_sql.erl           | 2 +-
+ src/mod_ping.erl                  | 2 +-
+ src/mod_pres_counter.erl          | 2 +-
+ src/mod_privacy.erl               | 2 +-
+ src/mod_privacy_mnesia.erl        | 2 +-
+ src/mod_privacy_riak.erl          | 2 +-
+ src/mod_privacy_sql.erl           | 2 +-
+ src/mod_private.erl               | 2 +-
+ src/mod_private_mnesia.erl        | 2 +-
+ src/mod_private_riak.erl          | 2 +-
+ src/mod_private_sql.erl           | 2 +-
+ src/mod_privilege.erl             | 2 +-
+ src/mod_proxy65_service.erl       | 2 +-
+ src/mod_pubsub.erl                | 2 +-
+ src/mod_push.erl                  | 2 +-
+ src/mod_push_keepalive.erl        | 2 +-
+ src/mod_push_mnesia.erl           | 2 +-
+ src/mod_push_sql.erl              | 2 +-
+ src/mod_register.erl              | 2 +-
+ src/mod_register_web.erl          | 2 +-
+ src/mod_roster.erl                | 2 +-
+ src/mod_s2s_dialback.erl          | 2 +-
+ src/mod_service_log.erl           | 2 +-
+ src/mod_shared_roster.erl         | 2 +-
+ src/mod_shared_roster_ldap.erl    | 2 +-
+ src/mod_shared_roster_mnesia.erl  | 2 +-
+ src/mod_shared_roster_riak.erl    | 2 +-
+ src/mod_shared_roster_sql.erl     | 2 +-
+ src/mod_sic.erl                   | 2 +-
+ src/mod_sip.erl                   | 2 +-
+ src/mod_sip_proxy.erl             | 2 +-
+ src/mod_sip_registrar.erl         | 2 +-
+ src/mod_stats.erl                 | 2 +-
+ src/mod_stream_mgmt.erl           | 2 +-
+ src/mod_time.erl                  | 2 +-
+ src/mod_vcard.erl                 | 2 +-
+ src/mod_vcard_ldap.erl            | 2 +-
+ src/mod_vcard_mnesia.erl          | 2 +-
+ src/mod_vcard_riak.erl            | 2 +-
+ src/mod_vcard_sql.erl             | 2 +-
+ src/mod_vcard_xupdate.erl         | 2 +-
+ src/mod_version.erl               | 2 +-
+ src/node_dag.erl                  | 2 +-
+ src/node_dispatch.erl             | 2 +-
+ src/node_flat.erl                 | 2 +-
+ src/node_flat_sql.erl             | 2 +-
+ src/node_online.erl               | 2 +-
+ src/nodetree_dag.erl              | 2 +-
+ src/nodetree_tree.erl             | 2 +-
+ src/nodetree_tree_sql.erl         | 2 +-
+ src/prosody2ejabberd.erl          | 2 +-
+ src/pubsub_subscription.erl       | 2 +-
+ src/pubsub_subscription_sql.erl   | 2 +-
+ src/xmpp_stream_in.erl            | 2 +-
+ src/xmpp_stream_out.erl           | 2 +-
+ src/xmpp_stream_pkix.erl          | 2 +-
+ 135 files changed, 136 insertions(+), 136 deletions(-)
+
+diff --git a/include/jlib.hrl b/include/jlib.hrl
+index cd5fedbf..293fcc0e 100644
+--- a/include/jlib.hrl
++++ b/include/jlib.hrl
+@@ -18,8 +18,8 @@
+ %%%
+ %%%----------------------------------------------------------------------
+ 
+--include("ns.hrl").
+--include("fxml.hrl").
++-include_lib("p1_xmpp/include/ns.hrl").
++-include_lib("p1_xml/include/fxml.hrl").
+ 
+ -define(STANZA_ERROR(Code, Type, Condition),
+ 	#xmlel{name = <<"error">>,
+diff --git a/src/acl.erl b/src/acl.erl
+index 2d848b99..88df4625 100644
+--- a/src/acl.erl
++++ b/src/acl.erl
+@@ -45,7 +45,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ 
+ -record(acl, {aclname, aclspec}).
+ -record(access, {name       :: aclname(),
+diff --git a/src/acme_challenge.erl b/src/acme_challenge.erl
+index f4fde4e7..45fc6d8f 100644
+--- a/src/acme_challenge.erl
++++ b/src/acme_challenge.erl
+@@ -16,7 +16,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_http.hrl").
+ -include("ejabberd_acme.hrl").
+ 
+diff --git a/src/ejabberd_acme.erl b/src/ejabberd_acme.erl
+index a5166b45..eee74092 100644
+--- a/src/ejabberd_acme.erl
++++ b/src/ejabberd_acme.erl
+@@ -21,7 +21,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_commands.hrl").
+ -include("ejabberd_acme.hrl").
+ -include_lib("public_key/include/public_key.hrl").
+diff --git a/src/ejabberd_acme_comm.erl b/src/ejabberd_acme_comm.erl
+index a5668d08..02acd1c4 100644
+--- a/src/ejabberd_acme_comm.erl
++++ b/src/ejabberd_acme_comm.erl
+@@ -24,7 +24,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_acme.hrl").
+ -include_lib("public_key/include/public_key.hrl").
+diff --git a/src/ejabberd_auth_anonymous.erl b/src/ejabberd_auth_anonymous.erl
+index a4f3ac1c..697b3e08 100644
+--- a/src/ejabberd_auth_anonymous.erl
++++ b/src/ejabberd_auth_anonymous.erl
+@@ -46,7 +46,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ 
+ start(Host) ->
+     ejabberd_hooks:add(sm_register_connection_hook, Host,
+diff --git a/src/ejabberd_bosh.erl b/src/ejabberd_bosh.erl
+index 1df6681f..e8cc5f9b 100644
+--- a/src/ejabberd_bosh.erl
++++ b/src/ejabberd_bosh.erl
+@@ -47,7 +47,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_c2s.erl b/src/ejabberd_c2s.erl
+index a94d065f..a56d9041 100644
+--- a/src/ejabberd_c2s.erl
++++ b/src/ejabberd_c2s.erl
+@@ -52,7 +52,7 @@
+ 	 host_up/1, host_down/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/ejabberd_captcha.erl b/src/ejabberd_captcha.erl
+index 76af5278..3a950786 100644
+--- a/src/ejabberd_captcha.erl
++++ b/src/ejabberd_captcha.erl
+@@ -43,7 +43,7 @@
+ 	 is_feature_available/0, create_captcha_x/5,
+ 	 opt_type/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_http.hrl").
+diff --git a/src/ejabberd_http.erl b/src/ejabberd_http.erl
+index 0bc0d8fc..d39a585d 100644
+--- a/src/ejabberd_http.erl
++++ b/src/ejabberd_http.erl
+@@ -39,7 +39,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_http_ws.erl b/src/ejabberd_http_ws.erl
+index f9f7b07e..5c0e6ea1 100644
+--- a/src/ejabberd_http_ws.erl
++++ b/src/ejabberd_http_ws.erl
+@@ -39,7 +39,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_iq.erl b/src/ejabberd_iq.erl
+index 7d2751dc..76a6b056 100644
+--- a/src/ejabberd_iq.erl
++++ b/src/ejabberd_iq.erl
+@@ -34,7 +34,7 @@
+ -export([init/1, handle_call/3, handle_cast/2, handle_info/2,
+ 	 terminate/2, code_change/3]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -record(state, {expire = infinity :: timeout()}).
+diff --git a/src/ejabberd_local.erl b/src/ejabberd_local.erl
+index cc1d6a2e..f72fd43b 100644
+--- a/src/ejabberd_local.erl
++++ b/src/ejabberd_local.erl
+@@ -50,7 +50,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ -include_lib("stdlib/include/ms_transform.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state, {}).
+ 
+diff --git a/src/ejabberd_oauth.erl b/src/ejabberd_oauth.erl
+index df4e4bc2..34bf24f8 100644
+--- a/src/ejabberd_oauth.erl
++++ b/src/ejabberd_oauth.erl
+@@ -52,7 +52,7 @@
+ 
+ -export([oauth_issue_token/3, oauth_list_tokens/0, oauth_revoke_token/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+diff --git a/src/ejabberd_oauth_rest.erl b/src/ejabberd_oauth_rest.erl
+index 206fab43..1a7287ee 100644
+--- a/src/ejabberd_oauth_rest.erl
++++ b/src/ejabberd_oauth_rest.erl
+@@ -37,7 +37,7 @@
+ -include("ejabberd.hrl").
+ -include("ejabberd_oauth.hrl").
+ -include("logger.hrl").
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ 
+ init() ->
+     rest:start(?MYNAME),
+diff --git a/src/ejabberd_oauth_sql.erl b/src/ejabberd_oauth_sql.erl
+index 14eaca6a..fcd105ba 100644
+--- a/src/ejabberd_oauth_sql.erl
++++ b/src/ejabberd_oauth_sql.erl
+@@ -36,7 +36,7 @@
+ -include("ejabberd_oauth.hrl").
+ -include("ejabberd.hrl").
+ -include("ejabberd_sql_pt.hrl").
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("logger.hrl").
+ 
+ init() ->
+diff --git a/src/ejabberd_piefxis.erl b/src/ejabberd_piefxis.erl
+index ecb4908a..7331f442 100644
+--- a/src/ejabberd_piefxis.erl
++++ b/src/ejabberd_piefxis.erl
+@@ -42,7 +42,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_privacy.hrl").
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/ejabberd_router.erl b/src/ejabberd_router.erl
+index e2901483..315505ec 100644
+--- a/src/ejabberd_router.erl
++++ b/src/ejabberd_router.erl
+@@ -71,7 +71,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_router.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -callback init() -> any().
+ -callback register_route(binary(), binary(), local_hint(),
+diff --git a/src/ejabberd_router_multicast.erl b/src/ejabberd_router_multicast.erl
+index 5d5acfca..3f206ef2 100644
+--- a/src/ejabberd_router_multicast.erl
++++ b/src/ejabberd_router_multicast.erl
+@@ -43,7 +43,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(route_multicast, {domain = <<"">> :: binary() | '_',
+ 			  pid = self() :: pid()}).
+diff --git a/src/ejabberd_s2s.erl b/src/ejabberd_s2s.erl
+index 0626d62f..e2fc34c9 100644
+--- a/src/ejabberd_s2s.erl
++++ b/src/ejabberd_s2s.erl
+@@ -57,7 +57,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_commands.hrl").
+ 
+diff --git a/src/ejabberd_s2s_in.erl b/src/ejabberd_s2s_in.erl
+index a949e83d..3d8e100e 100644
+--- a/src/ejabberd_s2s_in.erl
++++ b/src/ejabberd_s2s_in.erl
+@@ -45,7 +45,7 @@
+ 	 host_up/1, host_down/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -type state() :: map().
+diff --git a/src/ejabberd_s2s_out.erl b/src/ejabberd_s2s_out.erl
+index fea5d816..c035731f 100644
+--- a/src/ejabberd_s2s_out.erl
++++ b/src/ejabberd_s2s_out.erl
+@@ -43,7 +43,7 @@
+ 	 route/2, establish/1, update_state/2, host_up/1, host_down/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -type state() :: map().
+diff --git a/src/ejabberd_service.erl b/src/ejabberd_service.erl
+index 7b5f945d..895fed09 100644
+--- a/src/ejabberd_service.erl
++++ b/src/ejabberd_service.erl
+@@ -37,7 +37,7 @@
+ -export([send/2]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -type state() :: map().
+diff --git a/src/ejabberd_sm.erl b/src/ejabberd_sm.erl
+index 3df1d88e..e8087c48 100644
+--- a/src/ejabberd_sm.erl
++++ b/src/ejabberd_sm.erl
+@@ -89,7 +89,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_commands.hrl").
+ -include("ejabberd_sm.hrl").
+diff --git a/src/ejabberd_socket.erl b/src/ejabberd_socket.erl
+index 9953a76a..0dd1c4ff 100644
+--- a/src/ejabberd_socket.erl
++++ b/src/ejabberd_socket.erl
+@@ -52,7 +52,7 @@
+ 	 sockname/1, peername/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -type sockmod() :: ejabberd_bosh |
+diff --git a/src/ejabberd_system_monitor.erl b/src/ejabberd_system_monitor.erl
+index 773104f9..46e641b7 100644
+--- a/src/ejabberd_system_monitor.erl
++++ b/src/ejabberd_system_monitor.erl
+@@ -41,7 +41,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state, {}).
+ 
+diff --git a/src/ejabberd_web.erl b/src/ejabberd_web.erl
+index 7a40d2c7..aa1abc9b 100644
+--- a/src/ejabberd_web.erl
++++ b/src/ejabberd_web.erl
+@@ -34,7 +34,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_web_admin.erl b/src/ejabberd_web_admin.erl
+index b3d72c19..cdd951b6 100644
+--- a/src/ejabberd_web_admin.erl
++++ b/src/ejabberd_web_admin.erl
+@@ -38,7 +38,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_websocket.erl b/src/ejabberd_websocket.erl
+index 9926c20c..fabf2293 100644
+--- a/src/ejabberd_websocket.erl
++++ b/src/ejabberd_websocket.erl
+@@ -47,7 +47,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/ejabberd_xmlrpc.erl b/src/ejabberd_xmlrpc.erl
+index 213aef7a..f5b51894 100644
+--- a/src/ejabberd_xmlrpc.erl
++++ b/src/ejabberd_xmlrpc.erl
+@@ -42,7 +42,7 @@
+ -include("ejabberd_http.hrl").
+ -include("mod_roster.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state,
+ 	{access_commands = [] :: list(),
+diff --git a/src/gen_iq_handler.erl b/src/gen_iq_handler.erl
+index d34db358..ab04a252 100644
+--- a/src/gen_iq_handler.erl
++++ b/src/gen_iq_handler.erl
+@@ -45,7 +45,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state, {host, module, function}).
+ 
+diff --git a/src/gen_pubsub_node.erl b/src/gen_pubsub_node.erl
+index 4f516bd5..83de80a8 100644
+--- a/src/gen_pubsub_node.erl
++++ b/src/gen_pubsub_node.erl
+@@ -25,7 +25,7 @@
+ 
+ -module(gen_pubsub_node).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -type(host() :: mod_pubsub:host()).
+ -type(nodeId() :: mod_pubsub:nodeId()).
+diff --git a/src/gen_pubsub_nodetree.erl b/src/gen_pubsub_nodetree.erl
+index bf7140aa..4267b9a1 100644
+--- a/src/gen_pubsub_nodetree.erl
++++ b/src/gen_pubsub_nodetree.erl
+@@ -36,7 +36,7 @@
+ 	ServerHost :: binary(),
+ 	Opts :: [any()]) -> atom().
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -callback terminate(Host :: host(), ServerHost :: binary()) -> atom().
+ 
+diff --git a/src/jd2ejd.erl b/src/jd2ejd.erl
+index ae293698..bbe9bc6d 100644
+--- a/src/jd2ejd.erl
++++ b/src/jd2ejd.erl
+@@ -32,7 +32,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ %%%----------------------------------------------------------------------
+ %%% API
+diff --git a/src/mod_adhoc.erl b/src/mod_adhoc.erl
+index e6df3904..0f3ada11 100644
+--- a/src/mod_adhoc.erl
++++ b/src/mod_adhoc.erl
+@@ -39,7 +39,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/mod_admin_extra.erl b/src/mod_admin_extra.erl
+index 799f0079..9fd8531b 100644
+--- a/src/mod_admin_extra.erl
++++ b/src/mod_admin_extra.erl
+@@ -84,7 +84,7 @@
+ -include("mod_roster.hrl").
+ -include("mod_privacy.hrl").
+ -include("ejabberd_sm.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ %%%
+ %%% gen_mod
+diff --git a/src/mod_admin_update_sql.erl b/src/mod_admin_update_sql.erl
+index 2f105d97..cace1b94 100644
+--- a/src/mod_admin_update_sql.erl
++++ b/src/mod_admin_update_sql.erl
+@@ -38,7 +38,7 @@
+ -include("logger.hrl").
+ -include("ejabberd.hrl").
+ -include("ejabberd_commands.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ 
+ %%%
+diff --git a/src/mod_announce.erl b/src/mod_announce.erl
+index b259aced..146b6a35 100644
+--- a/src/mod_announce.erl
++++ b/src/mod_announce.erl
+@@ -52,7 +52,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_announce.hrl").
+ 
+ -callback init(binary(), gen_mod:opts()) -> any().
+diff --git a/src/mod_announce_mnesia.erl b/src/mod_announce_mnesia.erl
+index f2e5c1c4..cecd68cc 100644
+--- a/src/mod_announce_mnesia.erl
++++ b/src/mod_announce_mnesia.erl
+@@ -31,7 +31,7 @@
+ 	 get_motd/1, is_motd_user/2, set_motd_user/2, import/3]).
+ -export([need_transform/1, transform/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_announce.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_announce_riak.erl b/src/mod_announce_riak.erl
+index 04a29a68..a3dac3e9 100644
+--- a/src/mod_announce_riak.erl
++++ b/src/mod_announce_riak.erl
+@@ -30,7 +30,7 @@
+ -export([init/2, set_motd_users/2, set_motd/2, delete_motd/1,
+ 	 get_motd/1, is_motd_user/2, set_motd_user/2, import/3]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_announce.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_announce_sql.erl b/src/mod_announce_sql.erl
+index c5c9eb58..b243d05d 100644
+--- a/src/mod_announce_sql.erl
++++ b/src/mod_announce_sql.erl
+@@ -33,7 +33,7 @@
+ 	 get_motd/1, is_motd_user/2, set_motd_user/2, import/3,
+ 	 export/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_announce.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ -include("logger.hrl").
+diff --git a/src/mod_avatar.erl b/src/mod_avatar.erl
+index dde58abf..ffc31c94 100644
+--- a/src/mod_avatar.erl
++++ b/src/mod_avatar.erl
+@@ -28,7 +28,7 @@
+ %% Hooks
+ -export([pubsub_publish_item/6, vcard_iq_convert/1, vcard_iq_publish/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("pubsub.hrl").
+ 
+diff --git a/src/mod_block_strangers.erl b/src/mod_block_strangers.erl
+index b2c56f36..429c0ab2 100644
+--- a/src/mod_block_strangers.erl
++++ b/src/mod_block_strangers.erl
+@@ -34,7 +34,7 @@
+ 
+ -export([filter_packet/1, filter_offline_msg/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_blocking.erl b/src/mod_blocking.erl
+index 738c5e16..479b34ea 100644
+--- a/src/mod_blocking.erl
++++ b/src/mod_blocking.erl
+@@ -35,7 +35,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("mod_privacy.hrl").
+ 
+diff --git a/src/mod_bosh.erl b/src/mod_bosh.erl
+index 6ee58047..e49ab960 100644
+--- a/src/mod_bosh.erl
++++ b/src/mod_bosh.erl
+@@ -41,7 +41,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ -include_lib("stdlib/include/ms_transform.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_http.hrl").
+ -include("bosh.hrl").
+ 
+diff --git a/src/mod_caps.erl b/src/mod_caps.erl
+index edc93bbf..6ead4230 100644
+--- a/src/mod_caps.erl
++++ b/src/mod_caps.erl
+@@ -53,7 +53,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_caps.hrl").
+ 
+ -define(BAD_HASH_LIFETIME, 600).
+diff --git a/src/mod_carboncopy.erl b/src/mod_carboncopy.erl
+index 307d6154..c3a998d8 100644
+--- a/src/mod_carboncopy.erl
++++ b/src/mod_carboncopy.erl
+@@ -40,7 +40,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_carboncopy.hrl").
+ 
+ -type direction() :: sent | received.
+diff --git a/src/mod_client_state.erl b/src/mod_client_state.erl
+index f7adb1c6..09507b73 100644
+--- a/src/mod_client_state.erl
++++ b/src/mod_client_state.erl
+@@ -42,7 +42,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(CSI_QUEUE_MAX, 100).
+ 
+diff --git a/src/mod_configure.erl b/src/mod_configure.erl
+index 31f7a9c8..6ea5bd37 100644
+--- a/src/mod_configure.erl
++++ b/src/mod_configure.erl
+@@ -40,7 +40,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_sm.hrl").
+ -include_lib("stdlib/include/ms_transform.hrl").
+ 
+diff --git a/src/mod_delegation.erl b/src/mod_delegation.erl
+index 27e00768..c93912d6 100644
+--- a/src/mod_delegation.erl
++++ b/src/mod_delegation.erl
+@@ -42,7 +42,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -type disco_acc() :: {error, stanza_error()} | {result, [binary()]} | empty.
+ -record(state, {server_host = <<"">> :: binary(),
+diff --git a/src/mod_disco.erl b/src/mod_disco.erl
+index 76be408f..5bea1fb7 100644
+--- a/src/mod_disco.erl
++++ b/src/mod_disco.erl
+@@ -42,7 +42,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include_lib("stdlib/include/ms_transform.hrl").
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/mod_echo.erl b/src/mod_echo.erl
+index 79dd5996..38199d3c 100644
+--- a/src/mod_echo.erl
++++ b/src/mod_echo.erl
+@@ -41,7 +41,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state, {hosts = [] :: [binary()]}).
+ 
+diff --git a/src/mod_fail2ban.erl b/src/mod_fail2ban.erl
+index 5e931853..01bdfe2f 100644
+--- a/src/mod_fail2ban.erl
++++ b/src/mod_fail2ban.erl
+@@ -39,7 +39,7 @@
+ -include_lib("stdlib/include/ms_transform.hrl").
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(C2S_AUTH_BAN_LIFETIME, 3600). %% 1 hour
+ -define(C2S_MAX_AUTH_FAILURES, 20).
+diff --git a/src/mod_http_api.erl b/src/mod_http_api.erl
+index ef881d14..f7cd10bf 100644
+--- a/src/mod_http_api.erl
++++ b/src/mod_http_api.erl
+@@ -77,7 +77,7 @@
+ -export([start/2, stop/1, reload/3, process/2, mod_opt_type/1, depends/2]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/mod_http_upload.erl b/src/mod_http_upload.erl
+index c3c295f6..d3bd4e84 100644
+--- a/src/mod_http_upload.erl
++++ b/src/mod_http_upload.erl
+@@ -89,7 +89,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("ejabberd_http.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ -record(state,
+diff --git a/src/mod_http_upload_quota.erl b/src/mod_http_upload_quota.erl
+index 10243ac0..cda5c563 100644
+--- a/src/mod_http_upload_quota.erl
++++ b/src/mod_http_upload_quota.erl
+@@ -50,7 +50,7 @@
+ %% ejabberd_hooks callback.
+ -export([handle_slot_request/5]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("logger.hrl").
+ -include_lib("kernel/include/file.hrl").
+ 
+diff --git a/src/mod_irc.erl b/src/mod_irc.erl
+index 92093507..9b9becc8 100644
+--- a/src/mod_irc.erl
++++ b/src/mod_irc.erl
+@@ -43,7 +43,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_irc.hrl").
+ 
+ -define(DEFAULT_IRC_ENCODING, <<"iso8859-15">>).
+diff --git a/src/mod_irc_connection.erl b/src/mod_irc_connection.erl
+index 59336591..ca81358f 100644
+--- a/src/mod_irc_connection.erl
++++ b/src/mod_irc_connection.erl
+@@ -41,7 +41,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(SETS, gb_sets).
+ 
+diff --git a/src/mod_irc_mnesia.erl b/src/mod_irc_mnesia.erl
+index eb982e1f..510ce09d 100644
+--- a/src/mod_irc_mnesia.erl
++++ b/src/mod_irc_mnesia.erl
+@@ -30,7 +30,7 @@
+ -export([init/2, get_data/3, set_data/4, import/2]).
+ -export([need_transform/1, transform/1]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_irc.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_irc_riak.erl b/src/mod_irc_riak.erl
+index 23f2a2c3..d236bfa7 100644
+--- a/src/mod_irc_riak.erl
++++ b/src/mod_irc_riak.erl
+@@ -29,7 +29,7 @@
+ %% API
+ -export([init/2, get_data/3, set_data/4, import/2]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_irc.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_irc_sql.erl b/src/mod_irc_sql.erl
+index 1f8d7d16..5f784fdc 100644
+--- a/src/mod_irc_sql.erl
++++ b/src/mod_irc_sql.erl
+@@ -31,7 +31,7 @@
+ %% API
+ -export([init/2, get_data/3, set_data/4, import/1, import/2, export/1]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_irc.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ 
+diff --git a/src/mod_last.erl b/src/mod_last.erl
+index e97ef43f..34498e26 100644
+--- a/src/mod_last.erl
++++ b/src/mod_last.erl
+@@ -40,7 +40,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("mod_privacy.hrl").
+ -include("mod_last.hrl").
+diff --git a/src/mod_legacy_auth.erl b/src/mod_legacy_auth.erl
+index 722a0573..c6644386 100644
+--- a/src/mod_legacy_auth.erl
++++ b/src/mod_legacy_auth.erl
+@@ -29,7 +29,7 @@
+ %% hooks
+ -export([c2s_unauthenticated_packet/2, c2s_stream_features/2]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -type c2s_state() :: ejabberd_c2s:state().
+ 
+diff --git a/src/mod_mam.erl b/src/mod_mam.erl
+index eb839ea1..abc461db 100644
+--- a/src/mod_mam.erl
++++ b/src/mod_mam.erl
+@@ -41,7 +41,7 @@
+ 	 delete_old_messages/2, get_commands_spec/0, msg_to_el/4,
+ 	 get_room_config/4, set_room_option/3, offline_message/1, export/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("mod_muc_room.hrl").
+ -include("ejabberd_commands.hrl").
+diff --git a/src/mod_mam_mnesia.erl b/src/mod_mam_mnesia.erl
+index 71f1f701..a3a7eb5f 100644
+--- a/src/mod_mam_mnesia.erl
++++ b/src/mod_mam_mnesia.erl
+@@ -31,7 +31,7 @@
+ 	 extended_fields/0, store/8, write_prefs/4, get_prefs/2, select/6]).
+ 
+ -include_lib("stdlib/include/ms_transform.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("mod_mam.hrl").
+ 
+diff --git a/src/mod_mam_sql.erl b/src/mod_mam_sql.erl
+index 40aa9836..b4fab39b 100644
+--- a/src/mod_mam_sql.erl
++++ b/src/mod_mam_sql.erl
+@@ -33,7 +33,7 @@
+ 	 extended_fields/0, store/8, write_prefs/4, get_prefs/2, select/6, export/1]).
+ 
+ -include_lib("stdlib/include/ms_transform.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_mam.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_metrics.erl b/src/mod_metrics.erl
+index 73a68a8d..1b0d2e1b 100644
+--- a/src/mod_metrics.erl
++++ b/src/mod_metrics.erl
+@@ -30,7 +30,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([start/2, stop/1, mod_opt_type/1, depends/2, reload/3]).
+ 
+diff --git a/src/mod_mix.erl b/src/mod_mix.erl
+index 90507665..627363f3 100644
+--- a/src/mod_mix.erl
++++ b/src/mod_mix.erl
+@@ -37,7 +37,7 @@
+ 	 terminate/2, code_change/3]).
+ 
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(NODES, [?NS_MIX_NODES_MESSAGES,
+ 		?NS_MIX_NODES_PRESENCE,
+diff --git a/src/mod_muc.erl b/src/mod_muc.erl
+index f7d5303f..f01cde16 100644
+--- a/src/mod_muc.erl
++++ b/src/mod_muc.erl
+@@ -73,7 +73,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_muc.hrl").
+ 
+ -record(state,
+diff --git a/src/mod_muc_admin.erl b/src/mod_muc_admin.erl
+index e41f62b5..4d18d068 100644
+--- a/src/mod_muc_admin.erl
++++ b/src/mod_muc_admin.erl
+@@ -43,7 +43,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_muc.hrl").
+ -include("mod_muc_room.hrl").
+ -include("ejabberd_http.hrl").
+diff --git a/src/mod_muc_log.erl b/src/mod_muc_log.erl
+index f2685aaa..abb55c42 100644
+--- a/src/mod_muc_log.erl
++++ b/src/mod_muc_log.erl
+@@ -44,7 +44,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_muc_room.hrl").
+ 
+ -define(T(Text), translate:translate(Lang, Text)).
+diff --git a/src/mod_muc_mnesia.erl b/src/mod_muc_mnesia.erl
+index aa59038c..7334aca4 100644
+--- a/src/mod_muc_mnesia.erl
++++ b/src/mod_muc_mnesia.erl
+@@ -44,7 +44,7 @@
+ 
+ -include("mod_muc.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include_lib("stdlib/include/ms_transform.hrl").
+ 
+ -record(state, {}).
+diff --git a/src/mod_muc_riak.erl b/src/mod_muc_riak.erl
+index 57d9666b..4ebd2949 100644
+--- a/src/mod_muc_riak.erl
++++ b/src/mod_muc_riak.erl
+@@ -38,7 +38,7 @@
+ -export([set_affiliation/6, set_affiliations/4, get_affiliation/5,
+ 	 get_affiliations/3, search_affiliation/4]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_muc.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_muc_room.erl b/src/mod_muc_room.erl
+index bafa938d..d8b5e288 100644
+--- a/src/mod_muc_room.erl
++++ b/src/mod_muc_room.erl
+@@ -51,7 +51,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("mod_muc_room.hrl").
+ 
+diff --git a/src/mod_muc_sql.erl b/src/mod_muc_sql.erl
+index 8aa6071c..71d79b02 100644
+--- a/src/mod_muc_sql.erl
++++ b/src/mod_muc_sql.erl
+@@ -41,7 +41,7 @@
+ -export([set_affiliation/6, set_affiliations/4, get_affiliation/5,
+ 	 get_affiliations/3, search_affiliation/4]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_muc.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_multicast.erl b/src/mod_multicast.erl
+index 7b772521..7c1cab3b 100644
+--- a/src/mod_multicast.erl
++++ b/src/mod_multicast.erl
+@@ -45,7 +45,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state,
+ 	{lserver, lservice, access, service_limits}).
+diff --git a/src/mod_offline.erl b/src/mod_offline.erl
+index 5b95fe4b..8146ffdc 100644
+--- a/src/mod_offline.erl
++++ b/src/mod_offline.erl
+@@ -70,7 +70,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/mod_offline_mnesia.erl b/src/mod_offline_mnesia.erl
+index a725ab00..126fd1bb 100644
+--- a/src/mod_offline_mnesia.erl
++++ b/src/mod_offline_mnesia.erl
+@@ -32,7 +32,7 @@
+ 	 remove_all_messages/2, count_messages/2, import/1]).
+ -export([need_transform/1, transform/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_offline.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_offline_riak.erl b/src/mod_offline_riak.erl
+index 5d0fd1af..607a78ba 100644
+--- a/src/mod_offline_riak.erl
++++ b/src/mod_offline_riak.erl
+@@ -31,7 +31,7 @@
+ 	 read_message/3, remove_message/3, read_all_messages/2,
+ 	 remove_all_messages/2, count_messages/2, import/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_offline.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_offline_sql.erl b/src/mod_offline_sql.erl
+index 53a0d345..50fa83bc 100644
+--- a/src/mod_offline_sql.erl
++++ b/src/mod_offline_sql.erl
+@@ -33,7 +33,7 @@
+ 	 read_message/3, remove_message/3, read_all_messages/2,
+ 	 remove_all_messages/2, count_messages/2, import/1, export/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_offline.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_ping.erl b/src/mod_ping.erl
+index 02357181..7d51f4dc 100644
+--- a/src/mod_ping.erl
++++ b/src/mod_ping.erl
+@@ -36,7 +36,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(DEFAULT_SEND_PINGS, false).
+ 
+diff --git a/src/mod_pres_counter.erl b/src/mod_pres_counter.erl
+index 875aeef3..ffa95576 100644
+--- a/src/mod_pres_counter.erl
++++ b/src/mod_pres_counter.erl
+@@ -33,7 +33,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(pres_counter,
+ 	{dir, start, count, logged = false}).
+diff --git a/src/mod_privacy.erl b/src/mod_privacy.erl
+index 64ae9620..034a56e4 100644
+--- a/src/mod_privacy.erl
++++ b/src/mod_privacy.erl
+@@ -42,7 +42,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_privacy.hrl").
+ 
+ -define(PRIVACY_CACHE, privacy_cache).
+diff --git a/src/mod_privacy_mnesia.erl b/src/mod_privacy_mnesia.erl
+index 7449262b..201b92ec 100644
+--- a/src/mod_privacy_mnesia.erl
++++ b/src/mod_privacy_mnesia.erl
+@@ -32,7 +32,7 @@
+ 	 remove_list/3, use_cache/1, import/1]).
+ -export([need_transform/1, transform/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_privacy.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_privacy_riak.erl b/src/mod_privacy_riak.erl
+index 0cd39c11..88f294f8 100644
+--- a/src/mod_privacy_riak.erl
++++ b/src/mod_privacy_riak.erl
+@@ -33,7 +33,7 @@
+ 
+ -export([privacy_schema/0]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_privacy.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_privacy_sql.erl b/src/mod_privacy_sql.erl
+index 7939cbb2..6141feda 100644
+--- a/src/mod_privacy_sql.erl
++++ b/src/mod_privacy_sql.erl
+@@ -35,7 +35,7 @@
+ 
+ -export([item_to_raw/1, raw_to_item/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_privacy.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_private.erl b/src/mod_private.erl
+index cb167468..0b84d071 100644
+--- a/src/mod_private.erl
++++ b/src/mod_private.erl
+@@ -37,7 +37,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_private.hrl").
+ 
+ -define(PRIVATE_CACHE, private_cache).
+diff --git a/src/mod_private_mnesia.erl b/src/mod_private_mnesia.erl
+index 04c1a04a..6a9dee68 100644
+--- a/src/mod_private_mnesia.erl
++++ b/src/mod_private_mnesia.erl
+@@ -31,7 +31,7 @@
+ 	 use_cache/1, import/3]).
+ -export([need_transform/1, transform/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_private.hrl").
+ -include("logger.hrl").
+ 
+diff --git a/src/mod_private_riak.erl b/src/mod_private_riak.erl
+index be175f07..f97c2dd8 100644
+--- a/src/mod_private_riak.erl
++++ b/src/mod_private_riak.erl
+@@ -30,7 +30,7 @@
+ -export([init/2, set_data/3, get_data/3, get_all_data/2, del_data/2,
+ 	 import/3]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_private.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_private_sql.erl b/src/mod_private_sql.erl
+index 5ed584c3..da4974ce 100644
+--- a/src/mod_private_sql.erl
++++ b/src/mod_private_sql.erl
+@@ -30,7 +30,7 @@
+ -export([init/2, set_data/3, get_data/3, get_all_data/2, del_data/2,
+ 	 import/3, export/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_private.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ -include("logger.hrl").
+diff --git a/src/mod_privilege.erl b/src/mod_privilege.erl
+index dab7a619..695c8acf 100644
+--- a/src/mod_privilege.erl
++++ b/src/mod_privilege.erl
+@@ -41,7 +41,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -record(state, {server_host = <<"">> :: binary(),
+ 		permissions = dict:new() :: ?TDICT}).
+diff --git a/src/mod_proxy65_service.erl b/src/mod_proxy65_service.erl
+index fb34ba55..f42aa461 100644
+--- a/src/mod_proxy65_service.erl
++++ b/src/mod_proxy65_service.erl
+@@ -39,7 +39,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(PROCNAME, ejabberd_mod_proxy65_service).
+ 
+diff --git a/src/mod_pubsub.erl b/src/mod_pubsub.erl
+index d2e1f6c5..b7cd6644 100644
+--- a/src/mod_pubsub.erl
++++ b/src/mod_pubsub.erl
+@@ -41,7 +41,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("pubsub.hrl").
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/mod_push.erl b/src/mod_push.erl
+index 1eaec6ad..ac4ed89e 100644
+--- a/src/mod_push.erl
++++ b/src/mod_push.erl
+@@ -52,7 +52,7 @@
+ -include("ejabberd.hrl").
+ -include("ejabberd_commands.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(PUSH_CACHE, push_cache).
+ 
+diff --git a/src/mod_push_keepalive.erl b/src/mod_push_keepalive.erl
+index bcdc0c25..d979eaec 100644
+--- a/src/mod_push_keepalive.erl
++++ b/src/mod_push_keepalive.erl
+@@ -36,7 +36,7 @@
+ 	 c2s_handle_cast/2, c2s_handle_info/2, c2s_stanza/3]).
+ 
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(PUSH_BEFORE_TIMEOUT_SECS, 120).
+ 
+diff --git a/src/mod_push_mnesia.erl b/src/mod_push_mnesia.erl
+index ff12150f..866b5630 100644
+--- a/src/mod_push_mnesia.erl
++++ b/src/mod_push_mnesia.erl
+@@ -35,7 +35,7 @@
+ 
+ -include_lib("stdlib/include/ms_transform.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_push.hrl").
+ 
+ %%%-------------------------------------------------------------------
+diff --git a/src/mod_push_sql.erl b/src/mod_push_sql.erl
+index c82d9fc0..79fedba4 100644
+--- a/src/mod_push_sql.erl
++++ b/src/mod_push_sql.erl
+@@ -32,7 +32,7 @@
+ 	 lookup_sessions/3, lookup_sessions/2, lookup_sessions/1,
+ 	 delete_session/3, delete_old_sessions/2, export/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ -include("mod_push.hrl").
+diff --git a/src/mod_register.erl b/src/mod_register.erl
+index 77557ee0..8ad27fcf 100644
+--- a/src/mod_register.erl
++++ b/src/mod_register.erl
+@@ -41,7 +41,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/mod_register_web.erl b/src/mod_register_web.erl
+index b7bc2edc..a7bb83f5 100644
+--- a/src/mod_register_web.erl
++++ b/src/mod_register_web.erl
+@@ -60,7 +60,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("ejabberd_http.hrl").
+ 
+diff --git a/src/mod_roster.erl b/src/mod_roster.erl
+index a86b50d9..57f5fdce 100644
+--- a/src/mod_roster.erl
++++ b/src/mod_roster.erl
+@@ -54,7 +54,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/mod_s2s_dialback.erl b/src/mod_s2s_dialback.erl
+index b4c2ed9d..645ab37f 100644
+--- a/src/mod_s2s_dialback.erl
++++ b/src/mod_s2s_dialback.erl
+@@ -33,7 +33,7 @@
+ 	 s2s_in_features/2, s2s_out_init/2, s2s_out_closed/2]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_service_log.erl b/src/mod_service_log.erl
+index 1c6e5fe8..c295aa45 100644
+--- a/src/mod_service_log.erl
++++ b/src/mod_service_log.erl
+@@ -35,7 +35,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, _Opts) ->
+     ejabberd_hooks:add(user_send_packet, Host, ?MODULE,
+diff --git a/src/mod_shared_roster.erl b/src/mod_shared_roster.erl
+index 5f95266b..db641dbb 100644
+--- a/src/mod_shared_roster.erl
++++ b/src/mod_shared_roster.erl
+@@ -44,7 +44,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -include("mod_roster.hrl").
+ 
+diff --git a/src/mod_shared_roster_ldap.erl b/src/mod_shared_roster_ldap.erl
+index 66cbebd9..4b431fc4 100644
+--- a/src/mod_shared_roster_ldap.erl
++++ b/src/mod_shared_roster_ldap.erl
+@@ -46,7 +46,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_roster.hrl").
+ -include("eldap.hrl").
+ 
+diff --git a/src/mod_shared_roster_mnesia.erl b/src/mod_shared_roster_mnesia.erl
+index adfbac68..bdd87030 100644
+--- a/src/mod_shared_roster_mnesia.erl
++++ b/src/mod_shared_roster_mnesia.erl
+@@ -37,7 +37,7 @@
+ -include("mod_roster.hrl").
+ -include("mod_shared_roster.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ %%%===================================================================
+ %%% API
+diff --git a/src/mod_shared_roster_riak.erl b/src/mod_shared_roster_riak.erl
+index 441aafd0..d5545eb1 100644
+--- a/src/mod_shared_roster_riak.erl
++++ b/src/mod_shared_roster_riak.erl
+@@ -35,7 +35,7 @@
+ 
+ -include("mod_roster.hrl").
+ -include("mod_shared_roster.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ %%%===================================================================
+ %%% API
+diff --git a/src/mod_shared_roster_sql.erl b/src/mod_shared_roster_sql.erl
+index 488e0ec7..f952347a 100644
+--- a/src/mod_shared_roster_sql.erl
++++ b/src/mod_shared_roster_sql.erl
+@@ -36,7 +36,7 @@
+ 	 add_user_to_group/3, remove_user_from_group/3, import/3,
+ 	 export/1]).
+ 
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ -include("mod_roster.hrl").
+ -include("mod_shared_roster.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_sic.erl b/src/mod_sic.erl
+index a2b3256e..da61b2c2 100644
+--- a/src/mod_sic.erl
++++ b/src/mod_sic.erl
+@@ -36,7 +36,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/mod_sip.erl b/src/mod_sip.erl
+index 01327c77..70159d17 100644
+--- a/src/mod_sip.erl
++++ b/src/mod_sip.erl
+@@ -52,7 +52,7 @@ mod_opt_type(_) ->
+ 	 locate/1, mod_opt_type/1, depends/2]).
+ 
+ -include("ejabberd.hrl").
+--include_lib("esip/include/esip.hrl").
++-include_lib("s1_sip/include/esip.hrl").
+ 
+ %%%===================================================================
+ %%% API
+diff --git a/src/mod_sip_proxy.erl b/src/mod_sip_proxy.erl
+index d600da3d..c3dfe874 100644
+--- a/src/mod_sip_proxy.erl
++++ b/src/mod_sip_proxy.erl
+@@ -40,7 +40,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include_lib("esip/include/esip.hrl").
++-include_lib("s1_sip/include/esip.hrl").
+ 
+ -define(SIGN_LIFETIME, 300). %% in seconds.
+ 
+diff --git a/src/mod_sip_registrar.erl b/src/mod_sip_registrar.erl
+index a47de697..f89d3cab 100644
+--- a/src/mod_sip_registrar.erl
++++ b/src/mod_sip_registrar.erl
+@@ -42,7 +42,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include_lib("esip/include/esip.hrl").
++-include_lib("s1_sip/include/esip.hrl").
+ 
+ -define(CALL_TIMEOUT, timer:seconds(30)).
+ -define(DEFAULT_EXPIRES, 3600).
+diff --git a/src/mod_stats.erl b/src/mod_stats.erl
+index 2bdbdbd3..2969fbd2 100644
+--- a/src/mod_stats.erl
++++ b/src/mod_stats.erl
+@@ -35,7 +35,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/mod_stream_mgmt.erl b/src/mod_stream_mgmt.erl
+index 658bd504..46b00993 100644
+--- a/src/mod_stream_mgmt.erl
++++ b/src/mod_stream_mgmt.erl
+@@ -37,7 +37,7 @@
+ -export([get_resume_timeout/1, set_resume_timeout/2]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("p1_queue.hrl").
+ 
+diff --git a/src/mod_time.erl b/src/mod_time.erl
+index c54f3d27..20321d36 100644
+--- a/src/mod_time.erl
++++ b/src/mod_time.erl
+@@ -38,7 +38,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/mod_vcard.erl b/src/mod_vcard.erl
+index 378b9430..10618c96 100644
+--- a/src/mod_vcard.erl
++++ b/src/mod_vcard.erl
+@@ -44,7 +44,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_vcard.hrl").
+ 
+ -define(JUD_MATCHES, 30).
+diff --git a/src/mod_vcard_ldap.erl b/src/mod_vcard_ldap.erl
+index 88621fc0..e2c741c5 100644
+--- a/src/mod_vcard_ldap.erl
++++ b/src/mod_vcard_ldap.erl
+@@ -41,7 +41,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ -include("eldap.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("translate.hrl").
+ 
+ -define(PROCNAME, ejabberd_mod_vcard_ldap).
+diff --git a/src/mod_vcard_mnesia.erl b/src/mod_vcard_mnesia.erl
+index 3e742ec1..6e9e0e50 100644
+--- a/src/mod_vcard_mnesia.erl
++++ b/src/mod_vcard_mnesia.erl
+@@ -33,7 +33,7 @@
+ -export([need_transform/1, transform/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_vcard.hrl").
+ -include("logger.hrl").
+ -include("translate.hrl").
+diff --git a/src/mod_vcard_riak.erl b/src/mod_vcard_riak.erl
+index e5ad1b3d..5427ec7f 100644
+--- a/src/mod_vcard_riak.erl
++++ b/src/mod_vcard_riak.erl
+@@ -31,7 +31,7 @@
+ 	 search_fields/1, search_reported/1, import/3, stop/1]).
+ -export([is_search_supported/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_vcard.hrl").
+ 
+ %%%===================================================================
+diff --git a/src/mod_vcard_sql.erl b/src/mod_vcard_sql.erl
+index 07d90b69..1dc5d40f 100644
+--- a/src/mod_vcard_sql.erl
++++ b/src/mod_vcard_sql.erl
+@@ -33,7 +33,7 @@
+ 	 search_fields/1, search_reported/1, import/3, export/1]).
+ -export([is_search_supported/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("mod_vcard.hrl").
+ -include("logger.hrl").
+ -include("ejabberd_sql_pt.hrl").
+diff --git a/src/mod_vcard_xupdate.erl b/src/mod_vcard_xupdate.erl
+index 7643fed4..19148654 100644
+--- a/src/mod_vcard_xupdate.erl
++++ b/src/mod_vcard_xupdate.erl
+@@ -35,7 +35,7 @@
+ 
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(VCARD_XUPDATE_CACHE, vcard_xupdate_cache).
+ 
+diff --git a/src/mod_version.erl b/src/mod_version.erl
+index 5f613e02..23ac02cd 100644
+--- a/src/mod_version.erl
++++ b/src/mod_version.erl
+@@ -37,7 +37,7 @@
+ -include("ejabberd.hrl").
+ -include("logger.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ start(Host, Opts) ->
+     IQDisc = gen_mod:get_opt(iqdisc, Opts, gen_iq_handler:iqdisc(Host)),
+diff --git a/src/node_dag.erl b/src/node_dag.erl
+index 9829c27c..5f399357 100644
+--- a/src/node_dag.erl
++++ b/src/node_dag.erl
+@@ -28,7 +28,7 @@
+ -author('bjc@kublai.com').
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([init/3, terminate/2, options/0, features/0,
+     create_node_permission/6, create_node/2, delete_node/1,
+diff --git a/src/node_dispatch.erl b/src/node_dispatch.erl
+index 92a655b8..00eb55d9 100644
+--- a/src/node_dispatch.erl
++++ b/src/node_dispatch.erl
+@@ -34,7 +34,7 @@
+ -author('christophe.romain@process-one.net').
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([init/3, terminate/2, options/0, features/0,
+     create_node_permission/6, create_node/2, delete_node/1,
+diff --git a/src/node_flat.erl b/src/node_flat.erl
+index bc529e14..571b1b16 100644
+--- a/src/node_flat.erl
++++ b/src/node_flat.erl
+@@ -34,7 +34,7 @@
+ -author('christophe.romain@process-one.net').
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([init/3, terminate/2, options/0, features/0,
+     create_node_permission/6, create_node/2, delete_node/1,
+diff --git a/src/node_flat_sql.erl b/src/node_flat_sql.erl
+index afbc050a..ae279c4c 100644
+--- a/src/node_flat_sql.erl
++++ b/src/node_flat_sql.erl
+@@ -36,7 +36,7 @@
+ -compile([{parse_transform, ejabberd_sql_pt}]).
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ 
+ -export([init/3, terminate/2, options/0, features/0,
+diff --git a/src/node_online.erl b/src/node_online.erl
+index 39b08d99..ce71fdb0 100644
+--- a/src/node_online.erl
++++ b/src/node_online.erl
+@@ -28,7 +28,7 @@
+ -author('christophe.romain@process-one.net').
+ 
+ -include("pubsub.hrl").
+--include("jid.hrl").
++-include_lib("p1_xmpp/include/jid.hrl").
+ 
+ -export([init/3, terminate/2, options/0, features/0,
+     create_node_permission/6, create_node/2, delete_node/1,
+diff --git a/src/nodetree_dag.erl b/src/nodetree_dag.erl
+index a44e7155..0c5609c4 100644
+--- a/src/nodetree_dag.erl
++++ b/src/nodetree_dag.erl
+@@ -30,7 +30,7 @@
+ -include_lib("stdlib/include/qlc.hrl").
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([init/3, terminate/2, options/0, set_node/1,
+     get_node/3, get_node/2, get_node/1, get_nodes/2,
+diff --git a/src/nodetree_tree.erl b/src/nodetree_tree.erl
+index 31724036..0fe1f5e0 100644
+--- a/src/nodetree_tree.erl
++++ b/src/nodetree_tree.erl
+@@ -40,7 +40,7 @@
+ -include_lib("stdlib/include/qlc.hrl").
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -export([init/3, terminate/2, options/0, set_node/1,
+     get_node/3, get_node/2, get_node/1, get_nodes/2,
+diff --git a/src/nodetree_tree_sql.erl b/src/nodetree_tree_sql.erl
+index b310dd2d..19ff1786 100644
+--- a/src/nodetree_tree_sql.erl
++++ b/src/nodetree_tree_sql.erl
+@@ -40,7 +40,7 @@
+ -compile([{parse_transform, ejabberd_sql_pt}]).
+ 
+ -include("pubsub.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("ejabberd_sql_pt.hrl").
+ 
+ -export([init/3, terminate/2, options/0, set_node/1,
+diff --git a/src/prosody2ejabberd.erl b/src/prosody2ejabberd.erl
+index 2c7dabb4..b6ba864c 100644
+--- a/src/prosody2ejabberd.erl
++++ b/src/prosody2ejabberd.erl
+@@ -28,7 +28,7 @@
+ -export([from_dir/1]).
+ 
+ -include("ejabberd.hrl").
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include("logger.hrl").
+ -include("mod_roster.hrl").
+ -include("mod_offline.hrl").
+diff --git a/src/pubsub_subscription.erl b/src/pubsub_subscription.erl
+index 746e39e3..59ee734b 100644
+--- a/src/pubsub_subscription.erl
++++ b/src/pubsub_subscription.erl
+@@ -39,7 +39,7 @@
+ 
+ -include("pubsub.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(PUBSUB_DELIVER, <<"pubsub#deliver">>).
+ -define(PUBSUB_DIGEST, <<"pubsub#digest">>).
+diff --git a/src/pubsub_subscription_sql.erl b/src/pubsub_subscription_sql.erl
+index 3315748c..5700c100 100644
+--- a/src/pubsub_subscription_sql.erl
++++ b/src/pubsub_subscription_sql.erl
+@@ -35,7 +35,7 @@
+ 
+ -include("pubsub.hrl").
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ 
+ -define(PUBSUB_DELIVER, <<"pubsub#deliver">>).
+ -define(PUBSUB_DIGEST, <<"pubsub#digest">>).
+diff --git a/src/xmpp_stream_in.erl b/src/xmpp_stream_in.erl
+index 329ebad6..4ce8760c 100644
+--- a/src/xmpp_stream_in.erl
++++ b/src/xmpp_stream_in.erl
+@@ -42,7 +42,7 @@
+ -define(FSMOPTS, []).
+ -endif.
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -type state() :: map().
+ -type stop_reason() :: {stream, reset | {in | out, stream_error()}} |
+ 		       {tls, inet:posix() | atom() | binary()} |
+diff --git a/src/xmpp_stream_out.erl b/src/xmpp_stream_out.erl
+index 7ddc183b..8095bd86 100644
+--- a/src/xmpp_stream_out.erl
++++ b/src/xmpp_stream_out.erl
+@@ -44,7 +44,7 @@
+ 
+ -define(TCP_SEND_TIMEOUT, 15000).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include_lib("kernel/include/inet.hrl").
+ 
+ -type state() :: map().
+diff --git a/src/xmpp_stream_pkix.erl b/src/xmpp_stream_pkix.erl
+index 8361999f..a6fe728c 100644
+--- a/src/xmpp_stream_pkix.erl
++++ b/src/xmpp_stream_pkix.erl
+@@ -24,7 +24,7 @@
+ %% API
+ -export([authenticate/1, authenticate/2, get_cert_domains/1, format_error/1]).
+ 
+--include("xmpp.hrl").
++-include_lib("p1_xmpp/include/xmpp.hrl").
+ -include_lib("public_key/include/public_key.hrl").
+ -include("XmppAddr.hrl").
+ 
+-- 
+2.14.1
+

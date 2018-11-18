@@ -4,22 +4,25 @@ config BR2_PACKAGE_NETCAT_OPENBSD
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	select BR2_PACKAGE_LIBBSD
 	help
-	  A simple Unix utility which reads and writes data across network
-	  connections using TCP or UDP protocol. It is designed to be a
-	  reliable "back-end" tool that can be used directly or easily driven
-	  by other programs and scripts. At the same time it is a feature-rich
-	  network debugging and exploration tool, since it can create almost
-	  any kind of connection you would need and has several interesting
+	  A simple Unix utility which reads and writes data across
+	  network connections using TCP or UDP protocol. It is
+	  designed to be a reliable "back-end" tool that can be used
+	  directly or easily driven by other programs and scripts. At
+	  the same time it is a feature-rich network debugging and
+	  exploration tool, since it can create almost any kind of
+	  connection you would need and has several interesting
 	  built-in capabilities.
 
-	  This package contains the OpenBSD rewrite of netcat, including
-	  support for IPv6, proxies, and Unix sockets.
+	  This package contains the OpenBSD rewrite of netcat,
+	  including support for IPv6, proxies, and Unix sockets.
 
 	  https://packages.debian.org/sid/netcat-openbsd
 
-comment "netcat-openbsd needs a glibc toolchain w/ threads"
+comment "netcat-openbsd needs a glibc toolchain w/ threads, headers >= 3.12"
 	depends on BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC || \
+		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
 	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS

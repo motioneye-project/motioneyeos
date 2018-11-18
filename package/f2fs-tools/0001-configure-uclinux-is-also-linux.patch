@@ -1,0 +1,31 @@
+From 67629fd736a8a4295a9f2acb96563953be22a3ae Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Wed, 13 Jun 2018 20:39:04 +0300
+Subject: [PATCH] configure: uclinux is also linux
+
+Linux systems on no-MMU platforms identify as uclinux. They are
+otherwise identical to plain Linux.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: sent to linux-f2fs-devel@lists.sourceforge.net
+
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index a3ff12bf3de9..2b13be5b09f9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -166,7 +166,7 @@ build_mac=no
+ 
+ # Detect the target system
+ case "${host_os}" in
+-linux*)
++linux*|uclinux*)
+ 	build_linux=yes
+ 	;;
+ cygwin*|mingw*)
+-- 
+2.17.1
+

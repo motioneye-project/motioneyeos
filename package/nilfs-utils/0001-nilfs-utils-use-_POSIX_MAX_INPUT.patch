@@ -1,0 +1,32 @@
+From c6e5a79b130ac33093c36f972be49454f506be7e Mon Sep 17 00:00:00 2001
+From: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+Date: Thu, 28 Dec 2017 20:06:38 +0100
+Subject: [PATCH] nilfs-utils: use _POSIX_MAX_INPUT
+
+musl does provide _POSIX_MAX_INPUT, but no MAX_INPUT out of the box.
+This commit assigns _POSIX_MAX_INPUT to MAX_INPUT.
+
+Signed-off-by: Kurt Van Dijck <dev.kurt@vandijck-laurijssen.be>
+---
+ bin/rmcp.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/bin/rmcp.c b/bin/rmcp.c
+index 0140f56..6773912 100644
+--- a/bin/rmcp.c
++++ b/bin/rmcp.c
+@@ -47,6 +47,11 @@
+ #include <limits.h>
+ #endif	/* HAVE_LIMITS_H */
+ 
++/* define MAX_INPUT for musl */
++#ifndef MAX_INPUT
++#define MAX_INPUT _POSIX_MAX_INPUT
++#endif
++
+ #include <errno.h>
+ #include "nilfs.h"
+ #include "parser.h"
+-- 
+1.8.5.rc3
+

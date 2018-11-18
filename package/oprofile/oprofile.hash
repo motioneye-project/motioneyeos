@@ -1,3 +1,6 @@
-# From http://sourceforge.net/projects/oprofile/files/oprofile/oprofile-1.1.0/
-sha1	38c0d8812fe605f6ddd1cd183a482aa7605c0e81	oprofile-1.1.0.tar.gz
-md5	248c4c069f9476f427fa7195563f9867		oprofile-1.1.0.tar.gz
+# From http://sourceforge.net/projects/oprofile/files/oprofile/oprofile-1.2.0/
+sha1	7bf28b74953bd042ff23dc53c399be96d37f144c	oprofile-1.2.0.tar.gz
+md5	4fcd3920984dcb607314b2e225086c3a		oprofile-1.2.0.tar.gz
+
+# Hash for license file:
+sha256	32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670	COPYING

@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/archives/xorg-announce/2013-May/002225.html
-sha256	c97da36d2e56a2d7b6e4f896241785acc95e97eb9557465fd66ba2a155a7b201	libdmx-1.1.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-May/002894.html
+md5 d2f1f0ec68ac3932dd7f1d9aa0a7a11c  libdmx-1.1.4.tar.bz2
+sha1 499e2540ca0e94ca858037865243c3c60908fd94  libdmx-1.1.4.tar.bz2
+sha256 253f90005d134fa7a209fbcbc5a3024335367c930adf0f3203e754cf32747243  libdmx-1.1.4.tar.bz2
+sha512 77aba6cadfd17db0cc7e1bc26f14d908223a0fdb135d46f86c3be34e3bc7e2f843f08d4d0ef773357e83b17122bffe56a0442d12908378c05a22177b10ae10e9  libdmx-1.1.4.tar.bz2
+# Locally computed
+sha256 819e8dcd3dd2a44850c350331aa492230f86bccb0983dd739dec5ba36d7d2b8e  COPYING

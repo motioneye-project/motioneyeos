@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2013-January/002149.html
-sha256	ba215daaa78c415fce11b9e58c365d03bb602eaa5ea916578d76861a468cc3d9	xsetroot-1.1.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-March/002874.html
+md5 5fe769c8777a6e873ed1305e4ce2c353  xsetroot-1.1.2.tar.bz2
+sha1 42ab81761823b44974feab86477007c49dbace50  xsetroot-1.1.2.tar.bz2
+sha256 10c442ba23591fb5470cea477a0aa5f679371f4f879c8387a1d9d05637ae417c  xsetroot-1.1.2.tar.bz2
+sha512 0b9df1b72305e5c24f1e1664578aa4411a5ffcdc5d318458117594e641f01c34700205b0d16c08abf4a8106d36128ccdbe1ea1f1035fce9018d6b52801a8b72b  xsetroot-1.1.2.tar.bz2
+# Locally computed
+sha256 48e9c9572e0dc1c14b93b753542f780e7751dd7f035816374d8a8be0211a4520 COPYING

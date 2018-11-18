@@ -1,0 +1,18 @@
+config BR2_PACKAGE_LIBKRB5
+	bool "libkrb5"
+	# needs fork()
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	help
+	  Kerberos is a system for authenticating users and services
+	  on a network. Kerberos is a trusted third-party service.
+	  That means that there is a third party (the Kerberos server)
+	  that is trusted by all the entities on the network (users
+	  and services, usually called "principals"). This is the MIT
+	  reference implementation of Kerberos V5.
+
+	  https://web.mit.edu/kerberos/
+
+comment "libkrb5 needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS

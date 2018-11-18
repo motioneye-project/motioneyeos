@@ -1,0 +1,72 @@
+From 8e3fe45a7bac31d9a3b558ae0079e2d92a04799e Mon Sep 17 00:00:00 2001
+From: David Bryant <david@wavpack.com>
+Date: Sun, 11 Feb 2018 16:37:47 -0800
+Subject: [PATCH] issue #28, fix buffer overflows and bad allocs on corrupt CAF
+ files
+
+Fixes CVE-2018-7254
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ cli/caff.c | 30 +++++++++++++++++++++++-------
+ 1 file changed, 23 insertions(+), 7 deletions(-)
+
+diff --git a/cli/caff.c b/cli/caff.c
+index ae57c4b..6248a71 100644
+--- a/cli/caff.c
++++ b/cli/caff.c
+@@ -89,8 +89,8 @@ typedef struct
+ 
+ #define CAFChannelDescriptionFormat "LLLLL"
+ 
+-static const char TMH_full [] = { 1,2,3,13,9,10,5,6,12,14,15,16,17,9,4,18,7,8,19,20,21 };
+-static const char TMH_std [] = { 1,2,3,11,8,9,5,6,10,12,13,14,15,7,4,16 };
++static const char TMH_full [] = { 1,2,3,13,9,10,5,6,12,14,15,16,17,9,4,18,7,8,19,20,21,0 };
++static const char TMH_std [] = { 1,2,3,11,8,9,5,6,10,12,13,14,15,7,4,16,0 };
+ 
+ static struct {
+     uint32_t mChannelLayoutTag;     // Core Audio layout, 100 - 146 in high word, num channels in low word
+@@ -274,10 +274,19 @@ int ParseCaffHeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpack
+             }
+         }
+         else if (!strncmp (caf_chunk_header.mChunkType, "chan", 4)) {
+-            CAFChannelLayout *caf_channel_layout = malloc ((size_t) caf_chunk_header.mChunkSize);
++            CAFChannelLayout *caf_channel_layout;
+ 
+-            if (caf_chunk_header.mChunkSize < sizeof (CAFChannelLayout) ||
+-                !DoReadFile (infile, caf_channel_layout, (uint32_t) caf_chunk_header.mChunkSize, &bcount) ||
++            if (caf_chunk_header.mChunkSize < sizeof (CAFChannelLayout) || caf_chunk_header.mChunkSize > 1024) {
++                error_line ("this .CAF file has an invalid 'chan' chunk!");
++                return WAVPACK_SOFT_ERROR;
++            }
++
++            if (debug_logging_mode)
++                error_line ("'chan' chunk is %d bytes", (int) caf_chunk_header.mChunkSize);
++
++            caf_channel_layout = malloc ((size_t) caf_chunk_header.mChunkSize);
++
++            if (!DoReadFile (infile, caf_channel_layout, (uint32_t) caf_chunk_header.mChunkSize, &bcount) ||
+                 bcount != caf_chunk_header.mChunkSize) {
+                     error_line ("%s is not a valid .CAF file!", infilename);
+                     free (caf_channel_layout);
+@@ -495,8 +504,15 @@ int ParseCaffHeaderConfig (FILE *infile, char *infilename, char *fourcc, Wavpack
+         }
+         else {          // just copy unknown chunks to output file
+ 
+-            int bytes_to_copy = (uint32_t) caf_chunk_header.mChunkSize;
+-            char *buff = malloc (bytes_to_copy);
++            uint32_t bytes_to_copy = (uint32_t) caf_chunk_header.mChunkSize;
++            char *buff;
++
++            if (caf_chunk_header.mChunkSize < 0 || caf_chunk_header.mChunkSize > 1048576) {
++                error_line ("%s is not a valid .CAF file!", infilename);
++                return WAVPACK_SOFT_ERROR;
++            }
++
++            buff = malloc (bytes_to_copy);
+ 
+             if (debug_logging_mode)
+                 error_line ("extra unknown chunk \"%c%c%c%c\" of %d bytes",
+-- 
+2.11.0
+

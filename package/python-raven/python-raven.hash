@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/raven/json
+md5	ba514edaca361a0edb476f76c959d8af  raven-6.9.0.tar.gz
+sha256	3fd787d19ebb49919268f06f19310e8112d619ef364f7989246fc8753d469888  raven-6.9.0.tar.gz
+# Locally computed sha256 checksums
+sha256	5ce9459bc19ced99cc9eb135d4f559ed01e336354bdf16dd998be85aa688c233  LICENSE

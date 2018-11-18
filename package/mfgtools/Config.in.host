@@ -11,4 +11,4 @@ config BR2_PACKAGE_HOST_MFGTOOLS
 	  production. The communication is done over USB using the
 	  Freescale UTP protocol.
 
-	  https://github.com/NXPmicro/mfgtools
+	  https://github.com/codeauroraforum/mfgtools

@@ -3,14 +3,58 @@ config BR2_PACKAGE_NMAP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBLINEAR
 	select BR2_PACKAGE_LIBPCAP
-	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_NMAP_NMAP \
+	       if !BR2_PACKAGE_NMAP_NCAT && !BR2_PACKAGE_NMAP_NPING && !BR2_PACKAGE_NMAP_NDIFF
 	help
 	  Nmap ("Network Mapper") is a free and open source (license)
 	  utility for network discovery and security auditing.
 
 	  http://nmap.org
 
-comment "nmap needs a toolchain w/ C++, threads"
+if  BR2_PACKAGE_NMAP
+
+config BR2_PACKAGE_NMAP_NCAT
+	bool "install ncat"
+	depends on BR2_PACKAGE_BUSYBOX_SHOW_OTHERS
+	help
+	  Ncat is a feature-packed networking utility which reads and
+	  writes data across networks from the command line. Ncat was
+	  written for the Nmap Project as a much-improved
+	  reimplementation of the venerable Netcat.
+
+	  If symlink to "nc" is installed if neither netcat or
+	  netcat-openbsd is selected.
+
+comment "a symlink from ncat to 'nc' will be installed"
+	depends on BR2_PACKAGE_NMAP_NCAT
+	depends on !BR2_PACKAGE_NETCAT
+	depends on !BR2_PACKAGE_NETCAT_OPENBSD
+
+config BR2_PACKAGE_NMAP_NDIFF
+	bool "install ndiff"
+	# ndiff only works with python2.x
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  This option installs the 'ndiff' tool.
+
+comment "ndiff needs Python 2.x"
+	depends on !BR2_PACKAGE_PYTHON
+
+config BR2_PACKAGE_NMAP_NMAP
+	bool "install nmap"
+	select BR2_PACKAGE_PCRE
+	help
+	  This option installs 'nmap' itself.
+
+config BR2_PACKAGE_NMAP_NPING
+	bool "install nping"
+	help
+	  This option installs the 'nping' tool.
+
+endif
+
+comment "nmap-nmap needs a toolchain w/ C++, threads"
 	depends on BR2_USE_MMU
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_TOOLCHAIN_HAS_THREADS)

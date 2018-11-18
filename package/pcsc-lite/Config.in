@@ -6,7 +6,7 @@ config BR2_PACKAGE_PCSC_LITE
 	help
 	  Middleware to access smart card using SCard API (PC/SC).
 
-	  http://pcsclite.alioth.debian.org/
+	  https://muscle.apdu.fr/
 
 if BR2_PACKAGE_PCSC_LITE
 

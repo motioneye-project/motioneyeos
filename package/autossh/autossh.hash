@@ -1,2 +1,6 @@
-# From http://www.harding.motd.ca/autossh/autossh-1.4e.cksums
-sha256	9e8e10a59d7619176f4b986e256f776097a364d1be012781ea52e08d04679156	autossh-1.4e.tgz
+# From http://www.harding.motd.ca/autossh/autossh-1.4f.cksums
+sha256 0172e5e1bea40c642e0ef025334be3aadd4ff3b4d62c0b177ed88a8384e2f8f2  autossh-1.4f.tgz
+sha1 28189c42ab2e05448596a44adc9d62071172fe9b  autossh-1.4f.tgz
+md5 432ed721a71b8af4b5763b5c484f80df  autossh-1.4f.tgz
+# Locally computed
+sha256 b6938db718166520533b1d56b01e1eb5f0ad508624478e674938b8f507b66d98  autossh.c

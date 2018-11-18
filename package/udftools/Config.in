@@ -1,0 +1,12 @@
+config BR2_PACKAGE_UDFTOOLS
+	bool "udftools"
+	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_READLINE
+	help
+	  Tools for creating UDF filesystems
+	  Maintained fork of the 2004 Sourcforge package
+
+	  https://github.com/pali/udftools
+
+comment "udftools needs a toolchain w/ wchar"
+	depends on !BR2_USE_WCHAR

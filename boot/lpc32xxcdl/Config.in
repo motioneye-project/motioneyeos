@@ -1,6 +1,6 @@
 config BR2_TARGET_LPC32XXCDL
-	depends on BR2_arm926t
 	bool "LPC32XX CDL (kickstart and S1L)"
+	depends on BR2_arm926t
 
 if BR2_TARGET_LPC32XXCDL
 

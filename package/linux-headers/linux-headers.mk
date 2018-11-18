@@ -82,6 +82,9 @@ endif
 
 endif # ! BR2_KERNEL_HEADERS_AS_KERNEL
 
+# linux-headers really is the same as the linux package
+LINUX_HEADERS_DL_SUBDIR = linux
+
 LINUX_HEADERS_LICENSE = GPL-2.0
 LINUX_HEADERS_LICENSE_FILES = COPYING
 

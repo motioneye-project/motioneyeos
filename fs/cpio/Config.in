@@ -1,9 +1,9 @@
 config BR2_TARGET_ROOTFS_CPIO
 	bool "cpio the root filesystem (for use as an initial RAM filesystem)"
 	help
-	  Build a cpio archive of the root filesystem.  This is typically
-	  used for an initial RAM filesystem that is passed to the kernel
-	  by the bootloader.
+	  Build a cpio archive of the root filesystem. This is typically
+	  used for an initial RAM filesystem that is passed to the
+	  kernel by the bootloader.
 
 if BR2_TARGET_ROOTFS_CPIO
 
@@ -30,6 +30,11 @@ config BR2_TARGET_ROOTFS_CPIO_BZIP2
 	bool "bzip2"
 	help
 	  Do compress the cpio filesystem with bzip2.
+
+config BR2_TARGET_ROOTFS_CPIO_LZ4
+	bool "lz4"
+	help
+	  Do compress the cpio filesystem with lz4.
 
 config BR2_TARGET_ROOTFS_CPIO_LZMA
 	bool "lzma"

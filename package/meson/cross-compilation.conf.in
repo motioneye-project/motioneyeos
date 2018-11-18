@@ -1,0 +1,23 @@
+# Note: Buildroot's and Meson's terminologies differ about the meaning
+# of 'build', 'host' and 'target':
+# - Buildroot's 'host' is Meson's 'build'
+# - Buildroot's 'target' is Meson's 'host'
+
+[binaries]
+c = '@TARGET_CROSS@gcc'
+cpp = '@TARGET_CROSS@g++'
+ar = '@TARGET_CROSS@ar'
+strip = '@TARGET_CROSS@strip'
+pkgconfig = '@HOST_DIR@/usr/bin/pkg-config'
+
+[properties]
+c_args = [@TARGET_CFLAGS@]
+c_link_args = [@TARGET_LDFLAGS@]
+cpp_args = [@TARGET_CXXFLAGS@]
+cpp_link_args = [@TARGET_LDFLAGS@]
+
+[host_machine]
+system = 'linux'
+cpu_family ='@TARGET_ARCH@'
+cpu = '@TARGET_CPU@'
+endian = '@TARGET_ENDIAN@'

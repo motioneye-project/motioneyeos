@@ -5,7 +5,7 @@
 ################################################################################
 
 SQUID_VERSION_MAJOR = 3.5
-SQUID_VERSION = $(SQUID_VERSION_MAJOR).26
+SQUID_VERSION = $(SQUID_VERSION_MAJOR).27
 SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
 SQUID_SITE = http://www.squid-cache.org/Versions/v3/$(SQUID_VERSION_MAJOR)
 SQUID_LICENSE = GPL-2.0+
@@ -29,7 +29,6 @@ SQUID_CONF_OPTS = \
 	--enable-removal-policies="lru,heap" \
 	--with-filedescriptors=1024 \
 	--disable-ident-lookups \
-	--without-mit-krb5 \
 	--enable-auth-basic="fake getpwnam" \
 	--enable-auth-digest="file" \
 	--enable-auth-negotiate="wrapper" \
@@ -48,6 +47,13 @@ ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_4)$(BR2_TOOLCHAIN_HAS_SYNC_8),yy)
 SQUID_CONF_ENV += squid_cv_gnu_atomics=yes
 else
 SQUID_CONF_ENV += squid_cv_gnu_atomics=no
+endif
+
+ifeq ($(BR2_PACKAGE_LIBKRB5),y)
+SQUID_CONF_OPTS += --with-mit-krb5
+SQUID_DEPENDENCIES += libkrb5
+else
+SQUID_CONF_OPTS += --without-mit-krb5
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
