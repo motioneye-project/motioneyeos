@@ -6,7 +6,7 @@
 
 KEEPALIVED_VERSION = 1.4.2
 KEEPALIVED_SITE = http://www.keepalived.org/software
-KEEPALIVED_DEPENDENCIES = host-pkgconf openssl popt
+KEEPALIVED_DEPENDENCIES = host-pkgconf openssl
 KEEPALIVED_LICENSE = GPL-2.0+
 KEEPALIVED_LICENSE_FILES = COPYING
 # 0001-configure.ac-do-not-force-PIE.patch
