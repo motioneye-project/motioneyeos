@@ -31,10 +31,6 @@ GLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-bison host-gawk \
 	$(BR2_MAKE_HOST_DEPENDENCY)
 
-# glibc requires make >= 4.0 since 2.28 release.
-# https://www.sourceware.org/ml/libc-alpha/2018-08/msg00003.html
-GLIBC_MAKE = $(BR2_MAKE)
-
 GLIBC_SUBDIR = build
 
 GLIBC_INSTALL_STAGING = YES
@@ -81,6 +77,11 @@ GLIBC_CONF_ENV = \
 ifeq ($(BR2_riscv),y)
 GLIBC_CONF_ENV += libc_cv_slibdir=/lib64 libc_cv_rtlddir=/lib
 endif
+
+# glibc requires make >= 4.0 since 2.28 release.
+# https://www.sourceware.org/ml/libc-alpha/2018-08/msg00003.html
+GLIBC_MAKE = $(BR2_MAKE)
+GLIBC_CONF_ENV += ac_cv_prog_MAKE="$(BR2_MAKE)"
 
 # Even though we use the autotools-package infrastructure, we have to
 # override the default configure commands for several reasons:
