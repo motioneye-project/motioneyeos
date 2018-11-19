@@ -12,8 +12,8 @@ BR2_MAKE ?= $(call suitable-host-package,make,\
 	$(BR2_MAKE_VERSION_MIN) $(MAKE))
 
 ifeq ($(BR2_MAKE),)
-BR2_MAKE = $(HOST_DIR)/bin/make -j$(PARALLEL_JOBS)
-BR2_MAKE1 = $(HOST_DIR)/bin/make -j1
+BR2_MAKE = $(HOST_DIR)/bin/host-make -j$(PARALLEL_JOBS)
+BR2_MAKE1 = $(HOST_DIR)/bin/host-make -j1
 BR2_MAKE_HOST_DEPENDENCY = host-make
 else
 BR2_MAKE = $(MAKE)
