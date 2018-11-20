@@ -60,12 +60,6 @@ WESTON_CONF_OPTS += \
 	--disable-simple-egl-clients
 endif
 
-ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
-WESTON_DEPENDENCIES += libunwind
-else
-WESTON_CONF_OPTS += --disable-libunwind
-endif
-
 ifeq ($(BR2_PACKAGE_WESTON_RDP),y)
 WESTON_DEPENDENCIES += freerdp
 WESTON_CONF_OPTS += --enable-rdp-compositor
