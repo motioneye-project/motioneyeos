@@ -68,4 +68,13 @@ else
 LIBOSTREE_CONF_OPTS += --without-selinux
 endif
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+LIBOSTREE_CONF_OPTS += \
+	--with-libsystemd \
+	--with-systemdsystemunitdir=/usr/lib/systemd/system
+LIBOSTREE_DEPENDENCIES += systemd
+else
+LIBOSTREE_CONF_OPTS += --without-libsystemd
+endif
+
 $(eval $(autotools-package))
