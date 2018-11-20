@@ -11,6 +11,13 @@ MTD_LICENSE = GPL-2.0
 MTD_LICENSE_FILES = COPYING
 MTD_INSTALL_STAGING = YES
 
+# gcc on riscv doesn't define _REENTRANT when -pthread is passed while
+# it should. Compensate this deficiency here otherwise mtd configure
+# script doesn't find that thread support is enabled.
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS):$(BR2_riscv),y:y)
+MTD_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D_REENTRANT"
+endif
+
 ifeq ($(BR2_PACKAGE_MTD_JFFS_UTILS),y)
 MTD_DEPENDENCIES += zlib lzo host-pkgconf
 MTD_CONF_OPTS += --with-jffs
