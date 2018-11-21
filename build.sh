@@ -1,10 +1,11 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <board|all> [mkimage|mkrelease|clean-target|make-targets...]"
+    echo "Usage: $0 <board|all> [mkimage|mkrelease|clean-target|initramfs|make-targets...]"
     echo "    mkimage - creates the OS image (.img)"
     echo "    mkrelease - creates the compressed OS image (.img.gz, .img.xz)"
     echo "    clean-target - removes the target dir, preserving the package build dirs"
+    echo "    initramfs - builds the initramfs image; extra arguments will be passed internally to BuildRoot"
     echo ""
     echo "    for other make targets, see the BuildRoot manual"
     exit 1
@@ -116,6 +117,13 @@ elif [ "$target" == "clean-target" ]; then
     fi
 
     echo "target is clean"
+
+elif [[ "$target" == initramfs* ]]; then
+    extra_args=${target:10}
+    $0 ${board}_initramfs $extra_args
+    if [ -z "$extra_args" ] && [ -x $boarddir/cpinitramfs.sh ]; then
+        IMG_DIR=$basedir/output/${board}_initramfs/images/ BOARD_DIR=$boarddir $boarddir/cpinitramfs.sh
+    fi
 
 elif [ "$target" == "all" ]; then
     make O=$outputdir all
