@@ -40,18 +40,9 @@ SYSTEMD_CONF_OPTS += \
 	-Dsulogin-path=/usr/sbin/sulogin \
 	-Dmount-path=/usr/bin/mount \
 	-Dumount-path=/usr/bin/umount \
-	-Dnobody-group=nogroup
-
-# disable unsupported features for non-glibc toolchains
-ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
-SYSTEMD_CONF_OPTS += \
+	-Dnobody-group=nogroup \
 	-Didn=true \
 	-Dnss-systemd=true
-else
-SYSTEMD_CONF_OPTS += \
-	-Didn=false \
-	-Dnss-systemd=false
-endif
 
 ifeq ($(BR2_PACKAGE_ACL),y)
 SYSTEMD_DEPENDENCIES += acl
