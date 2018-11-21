@@ -23,7 +23,7 @@ ROOT=$IMG_DIR/.root
 ROOT_IMG=$IMG_DIR/root.img
 ROOT_SIZE="180" # MB
 
-DISK_SIZE="220" # MB
+DISK_SIZE=$((BOOT_SIZE + ROOT_SIZE + 10))
 
 COMMON_DIR=$(cd $IMG_DIR/../../../board/common; pwd)
 OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $os_short_name)
