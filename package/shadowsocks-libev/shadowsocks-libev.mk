@@ -14,4 +14,10 @@ SHADOWSOCKS_LIBEV_CONF_OPTS = \
 	--with-pcre=$(STAGING_DIR)/usr \
 	--disable-ssp
 
+# --disable option was broken in 3.2.1, it will be fixed in 3.2.2
+ifeq ($(BR2_PACKAGE_SHADOWSOCKS_LIBEV_CONNMARKTOS),y)
+SHADOWSOCKS_LIBEV_DEPENDENCIES += libnetfilter_conntrack
+SHADOWSOCKS_LIBEV_CONF_OPTS += --enable-connmarktos
+endif
+
 $(eval $(autotools-package))
