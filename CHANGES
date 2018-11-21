@@ -1,3 +1,41 @@
+2018.11-rc2, released November 21th, 2018
+
+	Fixes all over the tree.
+
+	fs: Drop intermediate tarball from the filesystem handling to
+	fix an issue with xattrs handling related to fakeroot. Ensure
+	tarball target includes xattrs.
+
+	download: Fix confusion in git submodule handling if dl/ is a
+	symlink.
+
+	genrandconfig: Fix missing newline in BR2_WGET handling,
+	causing the following line to be ignored. This would affect
+	BR2_ENABLE_DEBUG, BR2_INIT_BUSYBOX, BR2_INIT_SYSTEMD,
+	BR2_ROOTFS_DEVICE_CREATION_DYNAMIC_EUDEV, BR2_STATIC_LIBS or
+	BR2_PACKAGE_PYTHON_PY_ONLY depending on the randomization.
+
+	show-build-order: Also include the dependencies of
+	rootfs-common.
+
+	Fix a number of build issues in packages for the recently
+	merged RISC-V architecture support.
+
+	Updated/fixed packages: dt-utils, easydbus, elfutils,
+	flare-engine, flatcc, glibc, gstreamer, gstreamer1, imx-uuc,
+	libassuan, libcorrect, libiscsi, libkrb5, libmicrohttpd,
+	libnftnl, libnspr, libnss, libsemanage, libsigsegv, libv4l,
+	ltp-testsuite, luv, luvi, make, ncmpc, netplug, openocd,
+	prosody, qemu, rpm, sconeserver, shadowsocks-libev,
+	supertuxcart, syslinux, systemd, trace-cmd, uclibc,
+	uclibc-ng-test, vtun, webkitgtk, weston, wireshark, xen,
+	xlib_libfontenc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11086: download/git submodule breaks on symlinked dl folder
+	#11216: Capabilities not applied to filesystem
+
 2018.11-rc1, released November 9th, 2018
 
 	Fixes all over the tree and new features.
