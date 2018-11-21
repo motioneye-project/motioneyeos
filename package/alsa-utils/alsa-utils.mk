@@ -82,7 +82,8 @@ define ALSA_UTILS_INSTALL_TARGET_CMDS
 	fi
 endef
 
-ifeq ($(BR2_PACKAGE_ALSA_UTILS_ALSACTL),y)
+ifeq ($(BR2_PACKAGE_ALSA_UTILS_ALSACTL)$(BR2_INIT_SYSTEMD),yy)
+ALSA_UTILS_DEPENDENCIES += systemd
 define ALSA_UTILS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 $(@D)/alsactl/alsa-restore.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/alsa-restore.service
