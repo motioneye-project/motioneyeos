@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <board|all> [mkimage|mkrelease|clean-target|initramfs|make-targets...]"
+    echo "Usage: $0 <{board}|all|boards> [mkimage|mkrelease|clean-target|initramfs|make-targets...]"
     echo "    mkimage - creates the OS image (.img)"
     echo "    mkrelease - creates the compressed OS image (.img.gz, .img.xz)"
     echo "    clean-target - removes the target dir, preserving the package build dirs"
@@ -36,8 +36,17 @@ else
     osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 fi
 
-# when the special "all" keyword is used for board,
-# all boards are processed, in turn
+# when the special "boards" keyword is used for board, simply list all known boards
+if [ "$board" == "boards" ]; then
+    boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
+    for b in $boards; do
+        echo $b
+    done
+
+    exit 0
+fi
+
+# when the special "all" keyword is used for board, all boards are processed, in turn
 if [ "$board" == "all" ]; then
     boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
     for b in $boards; do
