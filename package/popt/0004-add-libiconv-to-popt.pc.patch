@@ -1,0 +1,19 @@
+Add LTLIBICONV to popt.pc.in
+
+Add ${LTLIBICONV} to popt.pc.in so applications such as shairport-sync
+will know that they must link with -liconv when building statically
+
+Fixes:
+ - http://autobuild.buildroot.org/results/c5b0d1d2867e49c022a2ad971dd9f358ff0f3865
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -Naurp popt-1.16-vanilla/popt.pc.in popt-1.16/popt.pc.in
+--- popt-1.16-vanilla/popt.pc.in	2018-11-22 20:26:55.735211662 +0100
++++ popt-1.16/popt.pc.in	2018-11-22 20:34:11.371303724 +0100
+@@ -7,4 +7,5 @@ Name: popt
+ Version: @VERSION@
+ Description: popt library.
+ Libs: @POPT_PKGCONFIG_LIBS@
++Libs.private: @LTLIBICONV@
+ Cflags: -I${includedir}
