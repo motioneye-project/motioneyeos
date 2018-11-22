@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LLDPD_VERSION = 0.9.4
+LLDPD_VERSION = 1.0.1
 LLDPD_SITE = http://media.luffy.cx/files/lldpd
 LLDPD_DEPENDENCIES = host-pkgconf libevent
 LLDPD_LICENSE = ISC
@@ -28,14 +28,15 @@ endif
 LLDPD_CONF_ENV = ac_cv_prog_cc_c99=-std=gnu99
 
 LLDPD_CONF_OPTS = \
-	--without-readline \
 	--without-embedded-libevent \
 	--without-snmp \
 	--without-xml \
 	--without-json \
 	--without-seccomp \
+	--without-libbsd \
 	--disable-hardening \
 	--disable-privsep \
+	$(if $(BR2_PACKAGE_READLINE),--with-readline,--without-readline) \
 	$(if $(BR2_PACKAGE_LLDPD_CDP),--enable-cdp,--disable-cdp) \
 	$(if $(BR2_PACKAGE_LLDPD_FDP),--enable-fdp,--disable-fdp) \
 	$(if $(BR2_PACKAGE_LLDPD_EDP),--enable-edp,--disable-edp) \
@@ -48,6 +49,12 @@ LLDPD_CONF_OPTS = \
 define LLDPD_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/lldpd/S60lldpd \
 		$(TARGET_DIR)/etc/init.d/S60lldpd
+endef
+
+define LLDPD_INSTALL_INIT_SYSTEMD
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/lldpd.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lldpd.service
 endef
 
 $(eval $(autotools-package))
