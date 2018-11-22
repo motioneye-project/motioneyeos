@@ -1,10 +1,11 @@
 #!/bin/bash
 
 if [ -z "$1" ]; then
-    echo "Usage: $0 <board|all> [mkimage|mkrelease|clean-target|make-targets...]"
+    echo "Usage: $0 <{board}|all|boards> [mkimage|mkrelease|clean-target|initramfs|make-targets...]"
     echo "    mkimage - creates the OS image (.img)"
     echo "    mkrelease - creates the compressed OS image (.img.gz, .img.xz)"
     echo "    clean-target - removes the target dir, preserving the package build dirs"
+    echo "    initramfs - builds the initramfs image; extra arguments will be passed internally to BuildRoot"
     echo ""
     echo "    for other make targets, see the BuildRoot manual"
     exit 1
@@ -35,8 +36,17 @@ else
     osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 fi
 
-# when the special "all" keyword is used for board,
-# all boards are processed, in turn
+# when the special "boards" keyword is used for board, simply list all known boards
+if [ "$board" == "boards" ]; then
+    boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
+    for b in $boards; do
+        echo $b
+    done
+
+    exit 0
+fi
+
+# when the special "all" keyword is used for board, all boards are processed, in turn
 if [ "$board" == "all" ]; then
     boards=$(ls $basedir/configs/*_defconfig | grep -v initramfs | grep -oE '\w+_defconfig$' | cut -d '_' -f 1)
     for b in $boards; do
@@ -116,6 +126,13 @@ elif [ "$target" == "clean-target" ]; then
     fi
 
     echo "target is clean"
+
+elif [[ "$target" == initramfs* ]]; then
+    extra_args=${target:10}
+    $0 ${board}_initramfs $extra_args
+    if [ -z "$extra_args" ] && [ -x $boarddir/cpinitramfs.sh ]; then
+        IMG_DIR=$basedir/output/${board}_initramfs/images/ BOARD_DIR=$boarddir $boarddir/cpinitramfs.sh
+    fi
 
 elif [ "$target" == "all" ]; then
     make O=$outputdir all
