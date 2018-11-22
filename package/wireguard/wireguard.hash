@@ -1,4 +1,4 @@
-# From https://lists.zx2c4.com/pipermail/wireguard/2018-October/003479.html
-sha256 af05824211b27cbeeea2b8d6b76be29552c0d80bfe716471215e4e43d259e327  WireGuard-0.0.20181018.tar.xz
+# From https://lists.zx2c4.com/pipermail/wireguard/2018-November/003572.html
+sha256 7d47f7996dd291069de4efb3097c42f769f60dc3ac6f850a4d5705f321e4406b  WireGuard-0.0.20181119.tar.xz
 # Locally calculated
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
