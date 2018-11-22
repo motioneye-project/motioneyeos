@@ -253,6 +253,10 @@ HOST_QEMU_OPTS += --enable-vde
 HOST_QEMU_DEPENDENCIES += host-vde2
 endif
 
+ifdef ($(BR2_PACKAGE_HOST_QEMU_VIRTFS),y)
+HOST_QEMU_OPTS += --enable-virtfs
+endif
+
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define HOST_QEMU_CONFIGURE_CMDS
