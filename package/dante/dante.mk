@@ -12,7 +12,14 @@ DANTE_LICENSE_FILES = LICENSE
 # Dante uses a *VERY* old configure.ac
 DANTE_LIBTOOL_PATCH = NO
 
-DANTE_CONF_OPTS += --disable-client --disable-preload --without-pam
+DANTE_CONF_OPTS += --disable-client --disable-preload
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+DANTE_DEPENDENCIES += linux-pam
+DANTE_CONF_OPTS += --with-pam
+else
+DANTE_CONF_OPTS += --without-pam
+endif
 
 define DANTE_INSTALL_CONFIG_FILE
 	$(INSTALL) -D -m 644 $(@D)/example/sockd.conf \
