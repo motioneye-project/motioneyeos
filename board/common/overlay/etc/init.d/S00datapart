@@ -23,8 +23,7 @@ case "$1" in
         test -b $data_dev && exit 0
 
         msg_begin "Creating data partition"
-        root_end=$(partx -s -g -o END $root_dev)
-        data_start=$(($root_end + 1))
+        data_start=$((512 * 2048)) # up to 512MB reserved for boot + root
         echo -e "n
             p
             3

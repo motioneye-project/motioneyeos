@@ -11,19 +11,21 @@ function msg() {
     echo " * $1"
 }
 
-PART_START=${PART_START:-2048} # 2048 sectors = 1MB
+BOOT_START=${BOOT_START:-2048} # 2048 sectors = 1MB
 
 BOOT_SRC=$IMG_DIR/boot
 BOOT=$IMG_DIR/.boot
 BOOT_IMG=$IMG_DIR/boot.img
-BOOT_SIZE="20" # MB
+BOOT_SIZE="20" # MB - reserved up to 50 MB
 
+ROOT_START=$((50 * 2048)) # 50 MB
 ROOT_SRC=$IMG_DIR/rootfs.tar
 ROOT=$IMG_DIR/.root
 ROOT_IMG=$IMG_DIR/root.img
 ROOT_SIZE="200" # MB
 
-DISK_SIZE=$((BOOT_SIZE + ROOT_SIZE + 10))
+GUARD_SIZE="10" # MB
+DISK_SIZE=$((BOOT_SIZE + ROOT_SIZE + GUARD_SIZE))
 
 COMMON_DIR=$(cd $IMG_DIR/../../../board/common; pwd)
 OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $os_short_name)
@@ -118,19 +120,18 @@ fi
 loop_dev=$(losetup -f --show $DISK_IMG)
 
 msg "partitioning disk"
-root_part_start=$(($PART_START + $BOOT_SIZE * 2048))
 set +e
 fdisk -u=sectors $loop_dev <<END
 o
 n
 p
 1
-${PART_START}
+${BOOT_START}
 +${BOOT_SIZE}M
 n
 p
 2
-${root_part_start}
+${ROOT_START}
 +${ROOT_SIZE}M
 
 t
