@@ -37,7 +37,6 @@ SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
 OS_CONF=/data/etc/os.conf
 
-BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
 ROOT_INFO_FILE=root_info
@@ -61,6 +60,21 @@ DD_LOG_FILE=dd.log
 DD_PID_FILE=dd.pid
 
 
+#### disk & partition devices ####
+
+BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
+ROOT_DEV=${BOOT_DEV:0:-1}2
+DISK_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
+if [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+    DISK_DEV=${BASH_REMATCH[1]}
+elif [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+    DISK_DEV=${BASH_REMATCH[1]}
+else
+    echo "cannot identify disk device from $ROOT_DEV" 1>&2
+    exit 1
+fi
+
+
 #### versions ####
 
 function show_versions() {
@@ -69,7 +83,7 @@ function show_versions() {
     show_json=$1
   
     # the /usr/libexec/list-versions-* helpers return a table with the following format:
-    #     <version>|<prerelease>|<board>|<url>
+    #     <version>|<prerelease>|<board>|<url>|<date>
     versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
                /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
 
@@ -216,6 +230,34 @@ function do_extract() {
 
     if [ "$?" != 0 ]; then
         cat $DECOMPRESS_LOG_FILE
+        exit 1
+    fi
+    
+    # verify available partition space
+    
+    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}1")
+    fw_boot_info=($fw_boot_info)
+    fw_boot_size=${fw_boot_info[3]}
+
+    fw_root_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}2")
+    fw_root_info=($fw_root_info)
+    fw_root_size=${fw_root_info[3]}
+    
+    disk_boot_info=$(fdisk --bytes -l -o device,start,end,size $DISK_DEV | grep $BOOT_DEV)
+    disk_boot_info=($disk_boot_info)
+    disk_boot_size=${disk_boot_info[3]}
+    
+    disk_root_info=$(fdisk --bytes -l -o device,start,end,size $DISK_DEV | grep $ROOT_DEV)
+    disk_root_info=($disk_root_info)
+    disk_root_size=${disk_root_info[3]}
+    
+    if [[ $disk_boot_size -lt $fw_boot_size ]]; then
+        echo "not enough space on boot partition ($fw_boot_size needed, $disk_boot_size available)" 1>&2
+        exit 1
+    fi
+
+    if [[ $disk_root_size -lt $fw_root_size ]]; then
+        echo "not enough space on root partition ($fw_root_size needed, $disk_root_size available)" 1>&2
         exit 1
     fi
 
