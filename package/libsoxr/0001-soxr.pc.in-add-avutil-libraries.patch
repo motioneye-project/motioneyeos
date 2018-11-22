@@ -1,0 +1,33 @@
+From 8c1edfc22f8b714062b149e3d80ab4357a1a4e49 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 22 Nov 2018 19:10:03 +0100
+Subject: [PATCH] soxr.pc.in: add avutil libraries
+
+Add ${AVUTIL_LIBRARIES} to soxr.pc.in so applications such as
+shairport-sync will know that they must link with -lavutil when
+building statically
+
+Fixes:
+ - http://autobuild.buildroot.org/results/839c0ce6475accc1de7e8a180d4358edb6750c64
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://sourceforge.net/p/soxr/code/merge-requests/2]
+[Thomas: move to Libs.private.]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/soxr.pc.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/soxr.pc.in b/src/soxr.pc.in
+index 69d225b..ed212a8 100644
+--- a/src/soxr.pc.in
++++ b/src/soxr.pc.in
+@@ -2,4 +2,5 @@ Name: ${PROJECT_NAME}
+ Description: ${DESCRIPTION_SUMMARY}
+ Version: ${PROJECT_VERSION}
+ Libs: -L${LIB_INSTALL_DIR} -l${PROJECT_NAME}
++Libs.private: ${AVUTIL_LIBRARIES}
+ Cflags: -I${INCLUDE_INSTALL_DIR}
+-- 
+2.19.1
+
