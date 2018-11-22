@@ -1,3 +1,4 @@
-# From ftp://ftp.netfilter.org/pub/iptables/iptables-1.6.2.tar.bz2.{md5sum,sha1sum}
-md5	7d2b7847e4aa8832a18437b8a4c1873d	iptables-1.6.2.tar.bz2
-sha1	6279effbf8f2c7ff53d19ae13308f8a6e6a60dd9	iptables-1.6.2.tar.bz2
+# From https://netfilter.org/projects/iptables/downloads.html
+sha256 a3778b50ed1a3256f9ca975de82c2204e508001fc2471238c8c97f3d1c4c12af  iptables-1.8.2.tar.bz2
+# Locally calculated
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
