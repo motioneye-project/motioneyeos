@@ -1,0 +1,56 @@
+From a5f32b9714613404e9f4699aaaad720f2bb033b4 Mon Sep 17 00:00:00 2001
+From: Vinson Lee <vlee@freedesktop.org>
+Date: Thu, 23 Aug 2018 22:28:49 +0000
+Subject: [PATCH] Check if VIDIOC_RESERVED is defined.
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+VIDIOC_RESERVED was removed in Linux 4.19.
+
+commit ea8532daee31bc72abfbc9ca7a43cbec0f6c05af
+Author: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+Date:   Wed May 30 11:07:05 2018 -0400
+
+    media: videodev2: get rid of VIDIOC_RESERVED
+
+    While this ioctl is there at least since Kernel 2.6.12-rc2, it
+    was never used by any upstream driver.
+
+    Get rid of it.
+
+    Signed-off-by: Mauro Carvalho Chehab <mchehab+samsung@kernel.org>
+
+This patch fixes this build error.
+
+  CC	ioctls/videodev2.o
+In file included from ioctls/videodev2.c:4:
+ioctls/videodev2.c:8:8: error: ‘VIDIOC_RESERVED’ undeclared here (not in a function); did you mean ‘VIDIOC_G_STD’?
+  IOCTL(VIDIOC_RESERVED),
+        ^~~~~~~~~~~~~~~
+include/ioctls.h:53:15: note: in definition of macro ‘IOCTL’
+  { .request = _request, .name = #_request, }
+               ^~~~~~~~
+
+Signed-off-by: Vinson Lee <vlee@freedesktop.org>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/kernelslacker/trinity/commit/a5f32b9714613404e9f4699aaaad720f2bb033b4]
+---
+ ioctls/videodev2.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ioctls/videodev2.c b/ioctls/videodev2.c
+index f7183f29..67089abf 100644
+--- a/ioctls/videodev2.c
++++ b/ioctls/videodev2.c
+@@ -5,7 +5,9 @@
+ 
+ static const struct ioctl videodev2_ioctls[] = {
+ 	IOCTL(VIDIOC_QUERYCAP),
++#ifdef VIDIOC_RESERVED
+ 	IOCTL(VIDIOC_RESERVED),
++#endif
+ 	IOCTL(VIDIOC_ENUM_FMT),
+ 	IOCTL(VIDIOC_G_FMT),
+ 	IOCTL(VIDIOC_S_FMT),
