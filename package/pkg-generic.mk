@@ -275,12 +275,13 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 	$(foreach hook,$($(PKG)_POST_INSTALL_STAGING_HOOKS),$(call $(hook))$(sep))
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(call MESSAGE,"Fixing package configuration files") ;\
-			$(SED)  "s,$(BASE_DIR),@BASE_DIR@,g" \
-				-e "s,$(STAGING_DIR),@STAGING_DIR@,g" \
+			$(SED)  "s,$(HOST_DIR),@HOST_DIR@,g" \
+				-e "s,$(BASE_DIR),@BASE_DIR@,g" \
 				-e "s,^\(exec_\)\?prefix=.*,\1prefix=@STAGING_DIR@/usr,g" \
 				-e "s,-I/usr/,-I@STAGING_DIR@/usr/,g" \
 				-e "s,-L/usr/,-L@STAGING_DIR@/usr/,g" \
-				-e "s,@STAGING_DIR@,$(STAGING_DIR),g" \
+				-e 's,@STAGING_DIR@,$$(dirname $$0)/../..,g' \
+				-e 's,@HOST_DIR@,$$(dirname $$0)/../../../..,g' \
 				-e "s,@BASE_DIR@,$(BASE_DIR),g" \
 				$(addprefix $(STAGING_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ;\
 	fi
