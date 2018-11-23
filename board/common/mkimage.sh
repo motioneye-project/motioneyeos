@@ -16,9 +16,9 @@ BOOT_START=${BOOT_START:-2048} # 2048 sectors = 1MB
 BOOT_SRC=$IMG_DIR/boot
 BOOT=$IMG_DIR/.boot
 BOOT_IMG=$IMG_DIR/boot.img
-BOOT_SIZE="20" # MB - reserved up to 50 MB
+BOOT_SIZE="30" # MB - reserved up to 100 MB
 
-ROOT_START=$((50 * 2048)) # 50 MB
+ROOT_START=$((100 * 2048)) # 100 MB
 ROOT_SRC=$IMG_DIR/rootfs.tar
 ROOT=$IMG_DIR/.root
 ROOT_IMG=$IMG_DIR/root.img
