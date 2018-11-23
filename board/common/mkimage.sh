@@ -11,21 +11,21 @@ function msg() {
     echo " * $1"
 }
 
-BOOT_START=${BOOT_START:-2048} # 2048 sectors = 1MB
+BOOT_START=${BOOT_START:-1}  # MB
 
 BOOT_SRC=$IMG_DIR/boot
 BOOT=$IMG_DIR/.boot
 BOOT_IMG=$IMG_DIR/boot.img
-BOOT_SIZE="30" # MB - reserved up to 100 MB
+BOOT_SIZE="30"  # MB - reserved up to 100 MB
 
-ROOT_START=$((100 * 2048)) # 100 MB
+ROOT_START="100"  # MB
 ROOT_SRC=$IMG_DIR/rootfs.tar
 ROOT=$IMG_DIR/.root
 ROOT_IMG=$IMG_DIR/root.img
-ROOT_SIZE="200" # MB
+ROOT_SIZE="200"  # MB
 
-GUARD_SIZE="10" # MB
-DISK_SIZE=$((BOOT_SIZE + ROOT_SIZE + GUARD_SIZE))
+GUARD_SIZE="10"  # MB
+DISK_SIZE=$((ROOT_START + ROOT_SIZE + GUARD_SIZE))
 
 COMMON_DIR=$(cd $IMG_DIR/../../../board/common; pwd)
 OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $os_short_name)
@@ -126,12 +126,12 @@ o
 n
 p
 1
-${BOOT_START}
+$((BOOT_START * 2048))
 +${BOOT_SIZE}M
 n
 p
 2
-${ROOT_START}
+$((ROOT_START * 2048))
 +${ROOT_SIZE}M
 
 t
