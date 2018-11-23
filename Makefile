@@ -572,10 +572,6 @@ $(foreach pkg,$(call UPPERCASE,$(PACKAGES)),\
 
 endif
 
-.PHONY: dirs
-dirs: $(BUILD_DIR) $(STAGING_DIR) $(BASE_TARGET_DIR) \
-	$(HOST_DIR) $(HOST_DIR_SYMLINK) $(BINARIES_DIR)
-
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BR2_CONFIG)
 	$(MAKE1) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" syncconfig
 
@@ -604,11 +600,6 @@ sdk: prepare-sdk $(BR2_TAR_HOST_DEPENDENCY)
 		--owner=0 --group=0 --numeric-owner \
 		--transform='s#^\.#$(BR2_SDK_PREFIX)#' \
 		-C $(HOST_DIR) "."
-
-# Populating the staging with the base directories is handled by the skeleton package
-$(STAGING_DIR):
-	@mkdir -p $(STAGING_DIR)
-	@ln -snf $(STAGING_DIR) $(BASE_DIR)/staging
 
 RSYNC_VCS_EXCLUSIONS = \
 	--exclude .svn --exclude .git --exclude .hg --exclude .bzr \
@@ -710,8 +701,14 @@ $(TARGETS_ROOTFS): target-finalize
 # Avoid the rootfs name leaking down the dependency chain
 target-finalize: ROOTFS=
 
+host-finalize: $(HOST_DIR_SYMLINK)
+
+.PHONY: staging-finalize
+staging-finalize:
+	@ln -snf $(STAGING_DIR) $(BASE_DIR)/staging
+
 .PHONY: target-finalize
-target-finalize: $(PACKAGES)
+target-finalize: $(PACKAGES) host-finalize
 	@$(call MESSAGE,"Finalizing target directory")
 	# Check files that are touched by more than one package
 	./support/scripts/check-uniq-files -t target $(BUILD_DIR)/packages-file-list.txt
@@ -782,7 +779,7 @@ endif
 	touch $(TARGET_DIR)/usr
 
 .PHONY: target-post-image
-target-post-image: $(TARGETS_ROOTFS) target-finalize
+target-post-image: $(TARGETS_ROOTFS) target-finalize staging-finalize
 	@rm -f $(ROOTFS_COMMON_TAR)
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
 		$(call MESSAGE,"Executing post-image script $(s)"); \
@@ -811,7 +808,7 @@ legal-info-prepare: $(LEGAL_INFO_DIR)
 	@cp $(BR2_CONFIG) $(LEGAL_INFO_DIR)/buildroot.config
 
 .PHONY: legal-info
-legal-info: dirs legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p)-all-legal-info) \
+legal-info: legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p)-all-legal-info) \
 		$(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST)
 	@cat support/legal-info/README.header >>$(LEGAL_REPORT)
 	@if [ -r $(LEGAL_WARNINGS) ]; then \
