@@ -1714,6 +1714,9 @@ F:	package/psplash/
 F:	package/sispmctl/
 F:	package/zsh/
 
+N:	Philipp Richter <richterphilipp.pops@gmail.com>
+F:	package/libtorrent-rasterbar/
+
 N:	Philippe Proulx <eeppeliteloop@gmail.com>
 F:	package/lttng-babeltrace/
 F:	package/lttng-libust/
