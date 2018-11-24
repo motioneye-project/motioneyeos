@@ -7,7 +7,7 @@ export BOARD=$(basename $BOARD_DIR)
 export IMG_DIR=$BOARD_DIR/../../output/$BOARD/images/
 export UBOOT_BIN=$IMG_DIR/u-boot-sunxi-with-spl.bin
 export UBOOT_SEEK=16
-export BOOT_START=40960
+export BOOT_START=20
 source $COMMON_DIR/mkimage.sh
 
 
