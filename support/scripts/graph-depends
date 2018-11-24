@@ -94,9 +94,10 @@ def get_all_depends(pkgs, get_depends_func):
 
 
 # The Graphviz "dot" utility doesn't like dashes in node names. So for
-# node names, we strip all dashes.
+# node names, we strip all dashes. Also, nodes can't start with a number,
+# so we prepend an underscore.
 def pkg_node_name(pkg):
-    return pkg.replace("-", "")
+    return "_" + pkg.replace("-", "")
 
 
 TARGET_EXCEPTIONS = [
