@@ -1,0 +1,23 @@
+#!/bin/sh
+
+case "$1" in
+	start)
+		printf "Starting fail2ban: "
+		start-stop-daemon -S -q -m -p /var/run/fail2ban.pid \
+			-b -x fail2ban-server -- -xf start
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	stop)
+		printf "Stopping fail2ban: "
+		start-stop-daemon -K -q -p /var/run/fail2ban.pid
+		[ $? = 0 ] && echo "OK" || echo "FAIL"
+		;;
+	restart)
+		"$0" stop
+		sleep 1
+		"$0" start
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		;;
+esac
