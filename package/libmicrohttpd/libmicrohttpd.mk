@@ -11,13 +11,6 @@ LIBMICROHTTPD_INSTALL_STAGING = YES
 LIBMICROHTTPD_CONF_OPTS = --disable-curl --disable-examples
 LIBMICROHTTPD_CFLAGS = $(TARGET_CFLAGS) -std=c99
 
-# gcc on arc doesn't define _REENTRANT when -pthread is passed while
-# it should. Compensate this deficiency here otherwise libmicrohttpd
-# configure script doesn't find that thread support is enabled.
-ifeq ($(BR2_arc),y)
-LIBMICROHTTPD_CFLAGS += -D_REENTRANT
-endif
-
 LIBMICROHTTPD_CONF_ENV += CFLAGS="$(LIBMICROHTTPD_CFLAGS)"
 
 ifeq ($(BR2_PACKAGE_LIBMICROHTTPD_SSL),y)
