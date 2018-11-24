@@ -38,15 +38,6 @@ SQUID_CONF_OPTS = \
 	--with-swapdir=/var/cache/squid/ \
 	--with-default-user=squid
 
-# Atomics in Squid use __sync built-ins on 4 and 8 bytes. However, the
-# configure script tests them using AC_TRY_RUN, so we have to give
-# some hints.
-ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_4)$(BR2_TOOLCHAIN_HAS_SYNC_8),yy)
-SQUID_CONF_ENV += squid_cv_gnu_atomics=yes
-else
-SQUID_CONF_ENV += squid_cv_gnu_atomics=no
-endif
-
 ifeq ($(BR2_PACKAGE_LIBKRB5),y)
 SQUID_CONF_OPTS += --with-mit-krb5
 SQUID_DEPENDENCIES += libkrb5
