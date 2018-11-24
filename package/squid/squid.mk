@@ -38,6 +38,10 @@ SQUID_CONF_OPTS = \
 	--with-swapdir=/var/cache/squid/ \
 	--with-default-user=squid
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+SQUID_CONF_ENV += LIBS=-latomic
+endif
+
 ifeq ($(BR2_PACKAGE_LIBKRB5),y)
 SQUID_CONF_OPTS += --with-mit-krb5
 SQUID_DEPENDENCIES += libkrb5
