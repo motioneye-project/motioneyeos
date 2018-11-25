@@ -81,6 +81,13 @@ else
 QEMU_OPTS += --disable-tools
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSECCOMP),y)
+QEMU_OPTS += --enable-seccomp
+QEMU_DEPENDENCIES += libseccomp
+else
+QEMU_OPTS += --disable-seccomp
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSSH2),y)
 QEMU_OPTS += --enable-libssh2
 QEMU_DEPENDENCIES += libssh2
@@ -121,7 +128,6 @@ define QEMU_CONFIGURE_CMDS
 			--disable-libiscsi \
 			--disable-usb-redir \
 			--disable-strip \
-			--disable-seccomp \
 			--disable-sparse \
 			--disable-mpath \
 			--disable-sanitizers \
