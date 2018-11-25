@@ -1,7 +1,7 @@
-# From https://webkitgtk.org/releases/webkitgtk-2.22.3.tar.xz.sums
-md5 6dae6837c884a25413fb1d4527c9894a webkitgtk-2.22.3.tar.xz
-sha1 c16129f4098b35597457255e63e60126ff3e6daa webkitgtk-2.22.3.tar.xz
-sha256 9dfd542902953be9af8ff32bd37fe662ca3d75f7348514ebac15c6252a6ccd72 webkitgtk-2.22.3.tar.xz
+# From https://webkitgtk.org/releases/webkitgtk-2.22.4.tar.xz.sums
+md5 9f08d09cfc21c761a431a545549f301a webkitgtk-2.22.4.tar.xz
+sha1 adf857c8a8b8fb79ba9b01bbe4b454956e633952 webkitgtk-2.22.4.tar.xz
+sha256 fab5be2883802352ae0e735dd1eff4bc18abaff7ac78689cec72eb2f611943b8 webkitgtk-2.22.4.tar.xz
 
 # Hashes for license files:
 sha256 0b5d3a7cc325942567373b0ecd757d07c132e0ebd7c97bfc63f7e1a76094edb4 Source/WebCore/LICENSE-APPLE
