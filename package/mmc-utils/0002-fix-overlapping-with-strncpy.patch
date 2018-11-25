@@ -1,7 +1,7 @@
 From 1c90a7534658056b884d71ef82dc7ca8bad4271b Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Cl=C3=A9ment=20P=C3=A9ron?= <peron.clem@gmail.com>
 Date: Wed, 24 Oct 2018 13:00:47 +0200
-Subject: [PATCH 1/1] mmc-utils: fix overlapping with strncpy
+Subject: [PATCH] mmc-utils: fix overlapping with strncpy
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
