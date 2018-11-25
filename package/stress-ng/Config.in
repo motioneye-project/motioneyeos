@@ -2,8 +2,7 @@ config BR2_PACKAGE_STRESS_NG
 	bool "stress-ng"
 	depends on BR2_USE_MMU # fork()
 	# disabled on musl: stress-malloc.c needs mallopt() and M_MMAP_THRESHOLD
-	# disabled on uClibc: stress-aio.c needs aio.h
-	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on !BR2_TOOLCHAIN_USES_MUSL
 	# perf.c needs PERF_COUNT_HW_REF_CPU_CYCLES
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3
 	depends on !BR2_microblaze # keyutils
@@ -21,8 +20,8 @@ config BR2_PACKAGE_STRESS_NG
 
 	  http://kernel.ubuntu.com/~cking/stress-ng/
 
-comment "stress-ng needs a glibc toolchain w/ dynamic library, headers >= 3.3"
+comment "stress-ng needs a glibc or uClibc toolchain w/ dynamic library, headers >= 3.3"
 	depends on !BR2_microblaze && !BR2_nios2 && !BR2_arc
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_3 \
-		|| !BR2_TOOLCHAIN_USES_GLIBC
+		|| BR2_TOOLCHAIN_USES_MUSL
