@@ -69,6 +69,11 @@ comment "Toolchain Generic Options"
 config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19615
 	bool
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=20006
+# Affect toolchains built with binutils 2.26 (fixed in binutils 2.26.1).
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_20006
+	bool
+
 # Atomic types can be:
 #  - never lock-free
 #  - sometimes lock-free
