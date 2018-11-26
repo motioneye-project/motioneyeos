@@ -1,0 +1,12 @@
+config BR2_PACKAGE_ERLANG_EIMP
+	bool "erlang-eimp"
+	select BR2_PACKAGE_ERLANG_P1_UTILS
+	select BR2_PACKAGE_GD
+	select BR2_PACKAGE_GD_WEBPNG
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_WEBP
+	help
+	  Erlang Image Manipulation Process
+
+	  https://github.com/processone/eimp
