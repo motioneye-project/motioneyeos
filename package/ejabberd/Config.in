@@ -2,6 +2,7 @@ config BR2_PACKAGE_EJABBERD
 	bool "ejabberd"
 	depends on BR2_PACKAGE_ERLANG
 	depends on BR2_INSTALL_LIBSTDCPP # jiffy, stringprep
+	select BR2_PACKAGE_ERLANG_EIMP
 	select BR2_PACKAGE_ERLANG_JIFFY
 	select BR2_PACKAGE_ERLANG_LAGER
 	select BR2_PACKAGE_ERLANG_P1_CACHE_TAB
