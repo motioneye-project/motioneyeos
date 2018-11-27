@@ -677,6 +677,18 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	  and external toolchain backends (through the toolchain
 	  wrapper).
 
+config BR2_FORCE_HOST_BUILD
+	bool "Force the building of host dependencies"
+	help
+	  Build all available host dependencies, even if they are
+	  already installed on the system.
+
+	  This option can be used to ensure that the download cache of
+	  source archives for packages remain consistent between
+	  different build hosts.
+
+	  This option will increase build time.
+
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
 	# SOURCE_DATE_EPOCH support in toolchain-wrapper requires GCC 4.4
