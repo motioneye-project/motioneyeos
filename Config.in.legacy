@@ -241,6 +241,15 @@ config BR2_PACKAGE_LIBNFTNL_XML
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
+config BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT
+	bool "docker-engine static client option renamed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_DOCKER_CLI_STATIC
+	help
+	  BR2_PACKAGE_DOCKER_ENGINE_STATIC_CLIENT has been renamed to
+	  BR2_PACKAGE_DOCKER_CLI_STATIC, following the package split of
+	  docker-engine and docker-cli.
+
 config BR2_PACKAGE_XSERVER_XORG_SERVER_V_1_19
 	bool "Modular X.org server was updated to version 1.20.0"
 	select BR2_LEGACY

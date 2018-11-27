@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	4716df117d867b82ddab2e82395cd40aa3d0925a689eedcec8919729e4c9f121	docker-engine-v17.05.0-ce.tar.gz
+sha256	b5278b3f2b460ea61f47833abd2a844f348b4518e73f309294ad178c205a48e1  docker-engine-v18.09.0.tar.gz
+sha256	2d81ea060825006fc8f3fe28aa5dc0ffeb80faf325b612c955229157b8c10dc0  LICENSE
