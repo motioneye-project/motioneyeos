@@ -280,8 +280,8 @@ $(BUILD_DIR)/%/.stamp_staging_installed:
 				-e "s,^\(exec_\)\?prefix=.*,\1prefix=@STAGING_DIR@/usr,g" \
 				-e "s,-I/usr/,-I@STAGING_DIR@/usr/,g" \
 				-e "s,-L/usr/,-L@STAGING_DIR@/usr/,g" \
-				-e 's,@STAGING_DIR@,$$(dirname $$0)/../..,g' \
-				-e 's,@HOST_DIR@,$$(dirname $$0)/../../../..,g' \
+				-e 's,@STAGING_DIR@,$$(dirname $$(realpath -e $$0))/../..,g' \
+				-e 's,@HOST_DIR@,$$(dirname $$(realpath -e $$0))/../../../..,g' \
 				-e "s,@BASE_DIR@,$(BASE_DIR),g" \
 				$(addprefix $(STAGING_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ;\
 	fi
