@@ -14,6 +14,8 @@ PYTHON_NUMPY_SETUP_TYPE = setuptools
 ifeq ($(BR2_PACKAGE_CLAPACK),y)
 PYTHON_NUMPY_DEPENDENCIES += clapack
 PYTHON_NUMPY_SITE_CFG_LIBS += blas lapack
+else
+PYTHON_NUMPY_ENV += BLAS=None LAPACK=None
 endif
 
 PYTHON_NUMPY_BUILD_OPTS = --fcompiler=None
