@@ -1,3 +1,21 @@
+2018.11-rc3, released November 30th, 2018
+
+	Fixes all over the tree.
+
+	Defconfigs: Fixes for Armadeus APF27, imx6sabre, Olimex A20
+	olinuxino lime legacy, Orangepi zero plus 2, PC, Riotboard.
+
+	graph-depends: Fix for package names starting with a non-alpha
+	character.
+
+	Updated/fixed packages: alsa-utils, botan, dante, domoticz,
+	dtc, freetype, gauche, gcc, gdb, ghostscript, glibc,
+	imx-usb-loader, libbsd, libid3tag, libkrb5, libmicrohttpd,
+	libopenssl, libsoxr, linux, motion, msgpack, mtd,
+	perl-net-ssleay, php, popt, python-numpy, qt5declarative,
+	samba4, shadowsocks-libev, stress-ng, systemd, usb_modeswitch,
+	webkitgtk, valgrind, weston, xfsprogs
+
 2018.11-rc2, released November 21th, 2018
 
 	Fixes all over the tree.
