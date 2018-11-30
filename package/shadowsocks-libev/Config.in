@@ -16,7 +16,7 @@ config BR2_PACKAGE_SHADOWSOCKS_LIBEV
 	  https://github.com/shadowsocks/shadowsocks-libev
 
 config BR2_PACKAGE_SHADOWSOCKS_LIBEV_CONNMARKTOS
-	bool "conmarktos support in ss-server"
+	bool "connmarktos support in ss-server"
 	depends on BR2_PACKAGE_SHADOWSOCKS_LIBEV
 	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
 	help
