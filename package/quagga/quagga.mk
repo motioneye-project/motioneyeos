@@ -16,8 +16,7 @@ QUAGGA_LICENSE_FILES = COPYING
 QUAGGA_CONF_OPTS = \
 	--program-transform-name='' \
 	--sysconfdir=/etc/quagga \
-	--localstatedir=/var/run/quagga \
-	--disable-nhrpd
+	--localstatedir=/var/run/quagga
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 QUAGGA_CONF_OPTS += --enable-capabilities
@@ -58,6 +57,13 @@ define QUAGGA_PERMISSIONS
 	/etc/quagga r 600 quagga quagga - - - - -
 	/etc/quagga d 755 quagga quagga - - - - -
 endef
+
+ifeq ($(BR2_PACKAGE_QUAGGA_NHRPD),y)
+QUAGGA_CONF_OPTS += --enable-nhrpd
+QUAGGA_DEPENDENCIES += c-ares
+else
+QUAGGA_CONF_OPTS += --disable-nhrpd
+endif
 
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_ENV += ac_cv_path_NETSNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
