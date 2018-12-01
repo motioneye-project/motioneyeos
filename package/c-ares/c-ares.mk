@@ -11,7 +11,6 @@ C_ARES_CONF_OPTS = --with-random=/dev/urandom
 # Rebuild configure to avoid XC_CHECK_USER_CFLAGS
 C_ARES_AUTORECONF = YES
 C_ARES_LICENSE = MIT
-# No standalone, use some source file
-C_ARES_LICENSE_FILES = ares_mkquery.c
+C_ARES_LICENSE_FILES = LICENSE.md
 
 $(eval $(autotools-package))
