@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QUAGGA_VERSION = 1.1.1
+QUAGGA_VERSION = 1.2.3
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk host-pkgconf
 QUAGGA_LICENSE = GPL-2.0+
@@ -16,10 +16,8 @@ QUAGGA_LICENSE_FILES = COPYING
 QUAGGA_CONF_OPTS = \
 	--program-transform-name='' \
 	--sysconfdir=/etc/quagga \
-	--localstatedir=/var/run/quagga
-
-# 0002-configure-fix-static-linking-with-readline.patch
-QUAGGA_AUTORECONF = YES
+	--localstatedir=/var/run/quagga \
+	--disable-nhrpd
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 QUAGGA_CONF_OPTS += --enable-capabilities
