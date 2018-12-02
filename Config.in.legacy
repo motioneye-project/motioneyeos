@@ -143,6 +143,15 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+comment "Legacy options removed in 2019.02"
+
+config BR2_PACKAGE_LUA_5_2
+	bool "Lua 5.2.x version removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LUA_5_3
+	help
+	  The Lua 5.2.x version was removed.
+
 comment "Legacy options removed in 2018.11"
 
 config BR2_TARGET_XLOADER

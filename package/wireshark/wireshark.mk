@@ -107,7 +107,7 @@ WIRESHARK_CONF_OPTS += --without-libxml2
 endif
 
 # no support for lua53 yet
-ifeq ($(BR2_PACKAGE_LUA_5_1)$(BR2_PACKAGE_LUA_5_2),y)
+ifeq ($(BR2_PACKAGE_LUA_5_1),y)
 WIRESHARK_CONF_OPTS += --with-lua
 WIRESHARK_DEPENDENCIES += lua
 else
