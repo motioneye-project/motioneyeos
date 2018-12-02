@@ -205,12 +205,12 @@ def check_circular_deps(deps):
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
-def remove_extra_deps(deps, transitive):
+def remove_extra_deps(deps, rootpkg, transitive):
     for pkg in list(deps.keys()):
-        if not pkg == 'all':
+        if not pkg == rootpkg:
             deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
-        if not transitive or pkg == 'all':
+        if not transitive or pkg == rootpkg:
             deps[pkg] = remove_transitive_deps(pkg, deps)
     return deps
 
@@ -401,7 +401,7 @@ def main():
     if check_only:
         sys.exit(0)
 
-    dict_deps = remove_extra_deps(dict_deps, args.transitive)
+    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive)
     dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
                                           if pkg != "all" and not pkg.startswith("root")])
 
