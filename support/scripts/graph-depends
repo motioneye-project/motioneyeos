@@ -170,10 +170,15 @@ def remove_transitive_deps(pkg, deps):
     return new_d
 
 
+# List of dependencies that all/many packages have, and that we want
+# to trim when generating the dependency graph.
+MANDATORY_DEPS = ['toolchain', 'skeleton']
+
+
 # This function removes the dependency on some 'mandatory' package, like the
 # 'toolchain' package, or the 'skeleton' package
 def remove_mandatory_deps(pkg, deps):
-    return [p for p in deps[pkg] if p not in ['toolchain', 'skeleton']]
+    return [p for p in deps[pkg] if p not in MANDATORY_DEPS]
 
 
 # This function will check that there is no loop in the dependency chain
