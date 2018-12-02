@@ -16,7 +16,7 @@ diff --git a/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker.pm b/cpan/ExtUtils-M
 index d579256e86..48642e98fa 100644
 --- a/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker.pm
 +++ b/cpan/ExtUtils-MakeMaker/lib/ExtUtils/MakeMaker.pm
-@@ -703,7 +703,7 @@ END
+@@ -702,7 +702,7 @@ END
          }
          if ($self->{PARENT}) {
              $self->{PARENT}->{CHILDREN}->{$newclass} = $self;

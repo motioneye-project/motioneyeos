@@ -487,9 +487,9 @@ use Digest::SHA qw(sha256_hex);
 use Text::Wrap;
 $Text::Wrap::columns = 62;
 
-# Below, 5.026 should be aligned with the version of perl actually
+# Below, 5.028 should be aligned with the version of perl actually
 # bundled in Buildroot:
-die <<"MSG" if $] < 5.026;
+die <<"MSG" if $] < 5.028;
 This script needs a host perl with the same major version as Buildroot target perl.
 
 Your current host perl is:
@@ -497,7 +497,7 @@ Your current host perl is:
     version $]
 
 You may install a local one by running:
-    perlbrew install perl-5.26.0
+    perlbrew install perl-5.28.0
 MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
@@ -812,7 +812,7 @@ utils/scancpan Try-Tiny Moo
 
 =head1 SYNOPSIS
 
-supports/scripts/scancpan [options] [distname ...]
+utils/scancpan [options] [distname ...]
 
  Options:
    -help
@@ -901,9 +901,9 @@ This script is a part of Buildroot.
 This script requires the module C<MetaCPAN::API::Tiny> (version 1.131730)
 which was included at the beginning of this file by the tool C<fatpack>.
 
-See L<http://search.cpan.org/~nperez/MetaCPAN-API-Tiny-1.131730/>.
+See L<https://metacpan.org/release/NPEREZ/MetaCPAN-API-Tiny-1.131730>.
 
-See L<http://search.cpan.org/search?query=App-FatPacker&mode=dist>.
+See L<https://metacpan.org/release/App-FatPacker>.
 
 These both libraries are free software and may be distributed under the same
 terms as perl itself.
