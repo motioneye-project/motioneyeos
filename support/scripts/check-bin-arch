@@ -20,6 +20,10 @@ declare -a IGNORES=(
 	# pru-software-support) legitimately install ELF binaries that
 	# are not for the target architecture
 	"/usr/share"
+
+	# Skip files in /lib/grub, since it is possible to have it
+	# for a different architecture (e.g. i386 grub on x86_64).
+	"/lib/grub"
 )
 
 while getopts p:l:r:a:i: OPT ; do

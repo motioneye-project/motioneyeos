@@ -6,7 +6,7 @@ config BR2_PACKAGE_HOST_LINUX_HEADERS
 choice
 	prompt "Kernel Headers"
 	default BR2_KERNEL_HEADERS_AS_KERNEL if BR2_LINUX_KERNEL
-	default BR2_KERNEL_HEADERS_4_18
+	default BR2_KERNEL_HEADERS_4_19
 	help
 	  Select the kernel version to get headers from.
 
@@ -59,6 +59,10 @@ config BR2_KERNEL_HEADERS_4_16
 config BR2_KERNEL_HEADERS_4_18
 	bool "Linux 4.18.x kernel headers"
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
+
+config BR2_KERNEL_HEADERS_4_19
+	bool "Linux 4.19.x kernel headers"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 
 config BR2_KERNEL_HEADERS_VERSION
 	bool "Manually specified Linux version"
@@ -124,6 +128,10 @@ choice
 
 	  This is used to hide/show some packages that have strict
 	  requirements on the version of kernel headers.
+
+config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19
+	bool "4.19.x"
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 
 config BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_18
 	bool "4.18.x"
@@ -295,6 +303,7 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "4.14.83"	if BR2_KERNEL_HEADERS_4_14
 	default "4.16.18"	if BR2_KERNEL_HEADERS_4_16
 	default "4.18.20"	if BR2_KERNEL_HEADERS_4_18
+	default "4.19.2"	if BR2_KERNEL_HEADERS_4_19
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
 	default "custom"	if BR2_KERNEL_HEADERS_CUSTOM_TARBALL
 	default BR2_KERNEL_HEADERS_CUSTOM_REPO_VERSION \

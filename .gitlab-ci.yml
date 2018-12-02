@@ -51,6 +51,7 @@ check-package:
     only:
         - triggers
         - tags
+        - /-defconfigs$/
     script: *defconfig_script
     artifacts:
         when: always
@@ -67,6 +68,7 @@ check-package:
     only:
         - triggers
         - tags
+        - /-runtime-tests$/
     # Keep build directories so the rootfs can be an artifact of the job. The
     # runner will clean up those files for us.
     # Multiply every emulator timeout by 10 to avoid sporadic failures in
@@ -79,6 +81,7 @@ check-package:
             - test-output/*.log
             - test-output/*/.config
             - test-output/*/images/*
+aarch64_efi_defconfig: *defconfig
 acmesystems_aria_g25_128mb_defconfig: *defconfig
 acmesystems_aria_g25_256mb_defconfig: *defconfig
 acmesystems_arietta_g25_128mb_defconfig: *defconfig
@@ -314,18 +317,48 @@ tests.package.test_ipython.TestIPythonPy2: *runtime_test
 tests.package.test_ipython.TestIPythonPy3: *runtime_test
 tests.package.test_python.TestPython2: *runtime_test
 tests.package.test_python.TestPython3: *runtime_test
+tests.package.test_python_argh.TestPythonPy2Argh: *runtime_test
+tests.package.test_python_argh.TestPythonPy3Argh: *runtime_test
+tests.package.test_python_attrs.TestPythonPy2Attrs: *runtime_test
+tests.package.test_python_attrs.TestPythonPy3Attrs: *runtime_test
 tests.package.test_python_autobahn.TestPythonPy2Autobahn: *runtime_test
 tests.package.test_python_autobahn.TestPythonPy3Autobahn: *runtime_test
+tests.package.test_python_automat.TestPythonPy2Automat: *runtime_test
+tests.package.test_python_automat.TestPythonPy3Automat: *runtime_test
+tests.package.test_python_bitstring.TestPythonPy2Bitstring: *runtime_test
+tests.package.test_python_bitstring.TestPythonPy3Bitstring: *runtime_test
+tests.package.test_python_cbor.TestPythonPy2Cbor: *runtime_test
+tests.package.test_python_cbor.TestPythonPy3Cbor: *runtime_test
+tests.package.test_python_click.TestPythonPy2Click: *runtime_test
+tests.package.test_python_click.TestPythonPy3Click: *runtime_test
+tests.package.test_python_constantly.TestPythonPy2Constantly: *runtime_test
+tests.package.test_python_constantly.TestPythonPy3Constantly: *runtime_test
+tests.package.test_python_crossbar.TestPythonPy3Crossbar: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy2Cryptography: *runtime_test
 tests.package.test_python_cryptography.TestPythonPy3Cryptography: *runtime_test
 tests.package.test_python_incremental.TestPythonPy2Incremental: *runtime_test
 tests.package.test_python_incremental.TestPythonPy3Incremental: *runtime_test
+tests.package.test_python_passlib.TestPythonPy2Passlib: *runtime_test
+tests.package.test_python_passlib.TestPythonPy3Passlib: *runtime_test
+tests.package.test_python_pexpect.TestPythonPy2Pexpect: *runtime_test
+tests.package.test_python_pexpect.TestPythonPy3Pexpect: *runtime_test
+tests.package.test_python_pynacl.TestPythonPy2Pynacl: *runtime_test
+tests.package.test_python_pynacl.TestPythonPy3Pynacl: *runtime_test
+tests.package.test_python_pyyaml.TestPythonPy2Pyyaml: *runtime_test
+tests.package.test_python_pyyaml.TestPythonPy3Pyyaml: *runtime_test
+tests.package.test_python_service_identity.TestPythonPy2ServiceIdentity: *runtime_test
+tests.package.test_python_service_identity.TestPythonPy3ServiceIdentity: *runtime_test
+tests.package.test_python_subprocess32.TestPythonPy2Subprocess32: *runtime_test
+tests.package.test_python_treq.TestPythonPy2Treq: *runtime_test
+tests.package.test_python_treq.TestPythonPy3Treq: *runtime_test
 tests.package.test_python_twisted.TestPythonPy2Twisted: *runtime_test
 tests.package.test_python_twisted.TestPythonPy3Twisted: *runtime_test
 tests.package.test_python_txaio.TestPythonPy2Txaio: *runtime_test
 tests.package.test_python_txaio.TestPythonPy3Txaio: *runtime_test
 tests.package.test_python_txtorcon.TestPythonPy2Txtorcon: *runtime_test
 tests.package.test_python_txtorcon.TestPythonPy3Txtorcon: *runtime_test
+tests.package.test_python_ubjson.TestPythonPy2Ubjson: *runtime_test
+tests.package.test_python_ubjson.TestPythonPy3Ubjson: *runtime_test
 tests.package.test_rust.TestRust: *runtime_test
 tests.package.test_rust.TestRustBin: *runtime_test
 tests.package.test_syslog_ng.TestSyslogNg: *runtime_test

@@ -98,6 +98,9 @@ F:	package/openpgm/
 N:	Alexander Mukhin <alexander.i.mukhin@gmail.com>
 F:	package/hostapd/
 
+N:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
+F:	package/mini-snmpd/
+
 N:	Alexander Varnin <fenixk19@mail.ru>
 F:	package/liblog4c-localtime/
 
@@ -146,6 +149,7 @@ F:	package/libunwind/
 
 N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
 F:	package/corkscrew/
+F:	package/fail2ban/
 F:	package/i2c-tools/
 F:	package/mender/
 F:	package/mono/
@@ -351,7 +355,6 @@ F:	package/perl-mime-base64/
 F:	package/perl-net-dns/
 F:	package/perl-net-http/
 F:	package/perl-netaddr-ip/
-F:	package/perl-time-hires/
 F:	package/perl-timedate/
 F:	package/perl-uri/
 F:	package/perl-www-robotrules/
@@ -402,6 +405,9 @@ F:	package/nginx-upload/
 N:	Bogdan Radulescu <bogdan@nimblex.net>
 F:	package/iftop/
 F:	package/ncdu/
+
+N:	Brandon Maier <brandon.maier@rockwellcollins.com>
+F:	package/vmtouch/
 
 N:	Brock Williams <brock@cottonwoodcomputer.com>
 F:	package/pdmenu/
@@ -984,8 +990,12 @@ F:	configs/pine64_defconfig
 F:	configs/pine64_sopine_defconfig
 
 N:	James Hilliard <james.hilliard1@gmail.com>
+F:	package/python-aiodns/
+F:	package/python-aiohttp/
 F:	package/python-async-timeout/
+F:	package/python-cchardet/
 F:	package/python-multidict/
+F:	package/python-pycares/
 F:	package/python-yarl/
 
 N:	James Knight <james.knight@rockwellcollins.com>
@@ -1066,6 +1076,7 @@ F:	package/python-libconfig/
 
 N:	Johan Oudinet <johan.oudinet@gmail.com>
 F:	package/ejabberd/
+F:	package/erlang-eimp/
 F:	package/erlang-goldrush/
 F:	package/erlang-jiffy/
 F:	package/erlang-lager/
@@ -1166,6 +1177,9 @@ F:	package/qt5/
 
 N:	Julien Floret <julien.floret@6wind.com>
 F:	package/lldpd/
+
+N:	Julien Grossholtz <julien.grossholtz@openest.io>
+F:	package/paho-mqtt-c
 
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/
@@ -1361,6 +1375,7 @@ F:	package/checkpolicy/
 F:	package/checksec/
 F:	package/cgroupfs-mount/
 F:	package/crda/
+F:	package/cunit/
 F:	package/devmem2/
 F:	package/dnsmasq/
 F:	package/dosfstools/
@@ -1660,6 +1675,7 @@ F:	package/ghostscript-fonts/
 F:	package/gstreamer1/gst1-interpipe/
 F:	package/gstreamer1/gst1-validate/
 F:	package/gstreamer1/gstreamer1-editing-services/
+F:	package/iwd/
 F:	package/libevdev/
 F:	package/log4cplus/
 F:	package/postgresql/
@@ -1697,6 +1713,9 @@ F:	package/libqrencode/
 F:	package/psplash/
 F:	package/sispmctl/
 F:	package/zsh/
+
+N:	Philipp Richter <richterphilipp.pops@gmail.com>
+F:	package/libtorrent-rasterbar/
 
 N:	Philippe Proulx <eeppeliteloop@gmail.com>
 F:	package/lttng-babeltrace/
@@ -1772,6 +1791,9 @@ F:	package/subversion/
 N:	RJ Ascani <rj.ascani@gmail.com>
 F:	package/azmq/
 
+N:	Robert Rose <robertroyrose@gmail.com>
+F:	package/grpc/
+
 N:	Rodrigo Rebello <rprebello@gmail.com>
 F:	package/chocolate-doom/
 F:	package/irssi/
@@ -1822,6 +1844,7 @@ F:	package/python-pysnmp/
 F:	package/python-pysnmp-apps/
 F:	package/python-pysnmp-mibs/
 F:	package/python-tornado/
+F:	package/websocketpp/
 
 N:	Ryan Coe <bluemrp9@gmail.com>
 F:	package/inadyn/

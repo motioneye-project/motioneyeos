@@ -366,10 +366,15 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_17
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "4.19" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 	default "4.18" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
 	default "4.17" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_17
 	default "4.16" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_16

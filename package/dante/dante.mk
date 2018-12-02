@@ -14,6 +14,13 @@ DANTE_AUTORECONF = YES
 
 DANTE_CONF_OPTS += --disable-client --disable-preload --without-pam
 
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+DANTE_DEPENDENCIES += linux-pam
+DANTE_CONF_OPTS += --with-pam
+else
+DANTE_CONF_OPTS += --without-pam
+endif
+
 define DANTE_INSTALL_CONFIG_FILE
 	$(INSTALL) -D -m 644 $(@D)/example/sockd.conf \
 		$(TARGET_DIR)/etc/sockd.conf

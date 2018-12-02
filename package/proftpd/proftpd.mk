@@ -20,6 +20,7 @@ PROFTPD_CONF_OPTS = \
 	--disable-ncurses \
 	--disable-facl \
 	--disable-dso \
+	--enable-sendfile \
 	--enable-shadow \
 	--with-gnu-ld
 
@@ -120,5 +121,9 @@ define PROFTPD_INSTALL_INIT_SYSTEMD
 	ln -sf ../../../../usr/lib/systemd/system/proftpd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/proftpd.service
 endef
+
+ifneq ($(BR2_PACKAGE_PROFTPD_BUFFER_SIZE),0)
+PROFTPD_CONF_OPTS += --enable-buffer-size=$(BR2_PACKAGE_PROFTPD_BUFFER_SIZE)
+endif
 
 $(eval $(autotools-package))

@@ -271,6 +271,13 @@ define QT5BASE_CONFIGURE_ARCH_CONFIG
 endef
 endif
 
+# This allows to use ccache when available
+define QT5BASE_CONFIGURE_HOSTCC
+	$(SED) 's,^QMAKE_COMPILER\s*=.*,QMAKE_COMPILER=$(HOSTCC),' $(@D)/mkspecs/common/g++-base.conf
+	$(SED) 's,^QMAKE_CC\s*=.*,QMAKE_CC=$(HOSTCC),' $(@D)/mkspecs/common/g++-base.conf
+	$(SED) 's,^QMAKE_CXX\s*=.*,QMAKE_CXX=$(HOSTCXX),' $(@D)/mkspecs/common/g++-base.conf
+endef
+
 define QT5BASE_CONFIGURE_CMDS
 	mkdir -p $(@D)/mkspecs/devices/linux-buildroot-g++/
 	sed 's/@EGLFS_DEVICE@/$(QT5BASE_EGLFS_DEVICE)/g' \
@@ -281,6 +288,7 @@ define QT5BASE_CONFIGURE_CMDS
 	$(QT5BASE_CONFIGURE_CONFIG_FILE)
 	touch $(QT5BASE_ARCH_CONFIG_FILE)
 	$(QT5BASE_CONFIGURE_ARCH_CONFIG)
+	$(QT5BASE_CONFIGURE_HOSTCC)
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \

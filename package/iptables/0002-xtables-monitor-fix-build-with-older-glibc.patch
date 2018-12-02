@@ -1,0 +1,77 @@
+From 7c8791edac3e74f6ce0bf21f98bc820db8e55e62 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 16 Nov 2018 07:23:32 +0200
+Subject: [PATCH] xtables-monitor: fix build with older glibc
+
+glibc older than 2.19 only expose BSD style fields of struct tcphdr when
+_BSD_SOURCE is define. Current glibc however, warn that _BSD_SOURCE is
+deprecated. Migrate to the GNU style of tcphdr fields to make the code
+compatible with any glibc version.
+
+Fix the following build failure:
+
+xtables-monitor.c: In function 'trace_print_packet':
+xtables-monitor.c:406:43: error: 'const struct tcphdr' has no member named 'th_sport'
+    printf("SPORT=%d DPORT=%d ", ntohs(tcph->th_sport), ntohs(tcph->th_dport));
+                                           ^
+xtables-monitor.c:406:66: error: 'const struct tcphdr' has no member named 'th_dport'
+    printf("SPORT=%d DPORT=%d ", ntohs(tcph->th_sport), ntohs(tcph->th_dport));
+                                                                  ^
+...
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+Upstream status: commit 7c8791edac3e74
+
+ iptables/xtables-monitor.c | 30 ++++++++++++++----------------
+ 1 file changed, 14 insertions(+), 16 deletions(-)
+
+diff --git a/iptables/xtables-monitor.c b/iptables/xtables-monitor.c
+index 3b1ca777a28a..5d1611122df5 100644
+--- a/iptables/xtables-monitor.c
++++ b/iptables/xtables-monitor.c
+@@ -403,26 +403,24 @@ static void trace_print_packet(const struct nftnl_trace *nlt, struct cb_arg *arg
+ 		case IPPROTO_UDP:
+ 			if (len < 4)
+ 				break;
+-			printf("SPORT=%d DPORT=%d ", ntohs(tcph->th_sport), ntohs(tcph->th_dport));
++			printf("SPORT=%d DPORT=%d ", ntohs(tcph->source), ntohs(tcph->dest));
+ 			break;
+ 		case IPPROTO_TCP:
+ 			if (len < sizeof(*tcph))
+ 				break;
+-			printf("SPORT=%d DPORT=%d ", ntohs(tcph->th_sport), ntohs(tcph->th_dport));
+-			if (tcph->th_flags & (TH_FIN|TH_SYN|TH_RST|TH_PUSH|TH_ACK|TH_URG)) {
+-				if (tcph->th_flags & TH_SYN)
+-					printf("SYN ");
+-				if (tcph->th_flags & TH_ACK)
+-					printf("ACK ");
+-				if (tcph->th_flags & TH_FIN)
+-					printf("FIN ");
+-				if (tcph->th_flags & TH_RST)
+-					printf("RST ");
+-				if (tcph->th_flags & TH_PUSH)
+-					printf("PSH ");
+-				if (tcph->th_flags & TH_URG)
+-					printf("URG ");
+-			}
++			printf("SPORT=%d DPORT=%d ", ntohs(tcph->source), ntohs(tcph->dest));
++			if (tcph->syn)
++				printf("SYN ");
++			if (tcph->ack)
++				printf("ACK ");
++			if (tcph->fin)
++				printf("FIN ");
++			if (tcph->rst)
++				printf("RST ");
++			if (tcph->psh)
++				printf("PSH ");
++			if (tcph->urg)
++				printf("URG ");
+ 			break;
+ 		default:
+ 			break;
+-- 
+2.19.1
+

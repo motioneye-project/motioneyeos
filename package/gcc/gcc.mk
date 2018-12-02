@@ -87,7 +87,7 @@ HOST_GCC_COMMON_DEPENDENCIES = \
 HOST_GCC_COMMON_CONF_OPTS = \
 	--target=$(GNU_TARGET_NAME) \
 	--with-sysroot=$(STAGING_DIR) \
-	--disable-__cxa_atexit \
+	--enable-__cxa_atexit \
 	--with-gnu-ld \
 	--disable-libssp \
 	--disable-multilib \

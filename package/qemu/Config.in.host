@@ -67,4 +67,10 @@ config BR2_PACKAGE_HOST_QEMU_VDE2
 	  Ethernet and can be used to create virtual switches to
 	  "plug" both physical and virtual machines in them.
 
+config BR2_PACKAGE_HOST_QEMU_VIRTFS
+	bool "Virtual filesystem support"
+	help
+	  Enables support for virtual filesystem in Qemu allowing
+	  shared filesystem between Qemu and its emulated target.
+
 endif

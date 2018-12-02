@@ -34,6 +34,15 @@ config BR2_PACKAGE_LINUX_TOOLS_IIO
 
 	  These tools are available only from kernel version 4.7.
 
+config BR2_PACKAGE_LINUX_TOOLS_PCI
+	bool "pci"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  pcitest is a tool for testing capabilities related to a
+	  PCI Endpoint (only works with specific Endpoints).
+
+	  These tools are available only from kernel version 4.20.
+
 config BR2_PACKAGE_LINUX_TOOLS_PERF
 	bool "perf"
 	select BR2_PACKAGE_LINUX_TOOLS

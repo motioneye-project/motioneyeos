@@ -65,4 +65,17 @@ config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_SQL
 	  Compile mod_quotatab with mod_quotatab_sql table.
 
 endif
+
+config BR2_PACKAGE_PROFTPD_BUFFER_SIZE
+	int "buffer size in bytes (0 for default)"
+	default "0"
+	help
+	  By increasing the buffer size above the default of 1K,
+	  proftpd reads and writes data in larger chunks, and makes
+	  fewer expensive system calls. Use of this option to set buffer
+	  sizes of 8K or more has been reported to drastically increase
+	  transfer speeds (depending on network configurations).
+
+	  0 uses the default size of 1024.
+
 endif

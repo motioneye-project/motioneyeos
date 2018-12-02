@@ -1,0 +1,62 @@
+From 124f6437c246b60f4254651d95b65140b8964ccc Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Fri, 2 Nov 2018 14:38:37 +0100
+Subject: [PATCH] Fix __iwd_backtrace_init() availability detection
+
+Check for HAVE_EXECINFO_H for all __iwd_backtrace_init usages (and
+remove unused backtrace.h usage from plugins/ofono.c).
+
+Fixes:
+
+  src/main.o: In function `main':
+  main.c:(.text.startup+0x798): undefined reference to `__iwd_backtrace_init'
+  collect2: error: ld returned 1 exit status
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ plugins/ofono.c | 1 -
+ src/backtrace.h | 2 +-
+ src/main.c      | 2 +-
+ 3 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/plugins/ofono.c b/plugins/ofono.c
+index 8c019ce..077045f 100644
+--- a/plugins/ofono.c
++++ b/plugins/ofono.c
+@@ -31,7 +31,6 @@
+ 
+ #include "src/dbus.h"
+ #include "src/simauth.h"
+-#include "src/backtrace.h"
+ 
+ /*
+  * This plugin takes care of all the communication with ofono in order to
+diff --git a/src/backtrace.h b/src/backtrace.h
+index bfdc858..829ba02 100644
+--- a/src/backtrace.h
++++ b/src/backtrace.h
+@@ -19,7 +19,7 @@
+  *  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+  *
+  */
+-#ifdef __GLIBC__
++#ifdef HAVE_EXECINFO_H
+ void __iwd_backtrace_init();
+ void __iwd_backtrace_print(unsigned int offset);
+ #endif
+diff --git a/src/main.c b/src/main.c
+index c1a2c42..8035fa0 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -445,7 +445,7 @@ int main(int argc, char *argv[])
+ 	if (debugopt)
+ 		l_debug_enable(debugopt);
+ 
+-#ifdef __GLIBC__
++#ifdef HAVE_EXECINFO_H
+ 	__iwd_backtrace_init();
+ #endif
+ 
+-- 
+2.19.1
+

@@ -51,6 +51,7 @@ check-package:
     only:
         - triggers
         - tags
+        - /-defconfigs$/
     script: *defconfig_script
     artifacts:
         when: always
@@ -67,6 +68,7 @@ check-package:
     only:
         - triggers
         - tags
+        - /-runtime-tests$/
     # Keep build directories so the rootfs can be an artifact of the job. The
     # runner will clean up those files for us.
     # Multiply every emulator timeout by 10 to avoid sporadic failures in

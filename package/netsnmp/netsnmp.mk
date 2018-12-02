@@ -106,12 +106,4 @@ define NETSNMP_INSTALL_INIT_SYSV
 endef
 endif
 
-define NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
-	$(SED)	"s,^includedir=.*,includedir=\'$(STAGING_DIR)/usr/include\',g" \
-		-e "s,^libdir=.*,libdir=\'$(STAGING_DIR)/usr/lib\',g" \
-		$(STAGING_DIR)/usr/bin/net-snmp-config
-endef
-
-NETSNMP_POST_INSTALL_STAGING_HOOKS += NETSNMP_STAGING_NETSNMP_CONFIG_FIXUP
-
 $(eval $(autotools-package))

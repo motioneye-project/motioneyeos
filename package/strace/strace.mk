@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STRACE_VERSION = 4.23
+STRACE_VERSION = 4.25
 STRACE_SOURCE = strace-$(STRACE_VERSION).tar.xz
 STRACE_SITE = https://strace.io/files/$(STRACE_VERSION)
 STRACE_LICENSE = BSD-3-Clause
@@ -34,10 +34,12 @@ else
 STRACE_CONF_OPTS += --without-libiberty
 endif
 
+ifeq ($(BR2_PACKAGE_PERL),)
 define STRACE_REMOVE_STRACE_GRAPH
 	rm -f $(TARGET_DIR)/usr/bin/strace-graph
 endef
 
 STRACE_POST_INSTALL_TARGET_HOOKS += STRACE_REMOVE_STRACE_GRAPH
+endif
 
 $(eval $(autotools-package))

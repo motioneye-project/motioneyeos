@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QUAGGA_VERSION = 1.1.1
+QUAGGA_VERSION = 1.2.3
 QUAGGA_SITE = http://download.savannah.gnu.org/releases/quagga
 QUAGGA_DEPENDENCIES = host-gawk host-pkgconf
 QUAGGA_LICENSE = GPL-2.0+
@@ -17,9 +17,6 @@ QUAGGA_CONF_OPTS = \
 	--program-transform-name='' \
 	--sysconfdir=/etc/quagga \
 	--localstatedir=/var/run/quagga
-
-# 0002-configure-fix-static-linking-with-readline.patch
-QUAGGA_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 QUAGGA_CONF_OPTS += --enable-capabilities
@@ -60,6 +57,13 @@ define QUAGGA_PERMISSIONS
 	/etc/quagga r 600 quagga quagga - - - - -
 	/etc/quagga d 755 quagga quagga - - - - -
 endef
+
+ifeq ($(BR2_PACKAGE_QUAGGA_NHRPD),y)
+QUAGGA_CONF_OPTS += --enable-nhrpd
+QUAGGA_DEPENDENCIES += c-ares
+else
+QUAGGA_CONF_OPTS += --disable-nhrpd
+endif
 
 ifeq ($(BR2_PACKAGE_QUAGGA_SNMP),y)
 QUAGGA_CONF_ENV += ac_cv_path_NETSNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config

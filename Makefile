@@ -105,22 +105,6 @@ ifneq ($(firstword $(sort $(RUNNING_MAKE_VERSION) $(MIN_MAKE_VERSION))),$(MIN_MA
 $(error You have make '$(RUNNING_MAKE_VERSION)' installed. GNU make >= $(MIN_MAKE_VERSION) is required)
 endif
 
-# Parallel execution of this Makefile is disabled because it changes
-# the packages building order, that can be a problem for two reasons:
-# - If a package has an unspecified optional dependency and that
-#   dependency is present when the package is built, it is used,
-#   otherwise it isn't (but compilation happily proceeds) so the end
-#   result will differ if the order is swapped due to parallel
-#   building.
-# - Also changing the building order can be a problem if two packages
-#   manipulate the same file in the target directory.
-#
-# Taking into account the above considerations, if you still want to execute
-# this top-level Makefile in parallel comment the ".NOTPARALLEL" line and
-# use the -j<jobs> option when building, e.g:
-#      make -j$((`getconf _NPROCESSORS_ONLN`+1))
-.NOTPARALLEL:
-
 # absolute path
 TOPDIR := $(CURDIR)
 CONFIG_CONFIG_IN = Config.in
@@ -245,6 +229,22 @@ BR2_CONFIG = $(CONFIG_DIR)/.config
 ifeq ($(filter $(noconfig_targets),$(MAKECMDGOALS)),)
 -include $(BR2_CONFIG)
 endif
+
+# Parallel execution of this Makefile is disabled because it changes
+# the packages building order, that can be a problem for two reasons:
+# - If a package has an unspecified optional dependency and that
+#   dependency is present when the package is built, it is used,
+#   otherwise it isn't (but compilation happily proceeds) so the end
+#   result will differ if the order is swapped due to parallel
+#   building.
+# - Also changing the building order can be a problem if two packages
+#   manipulate the same file in the target directory.
+#
+# Taking into account the above considerations, if you still want to execute
+# this top-level Makefile in parallel comment the ".NOTPARALLEL" line and
+# use the -j<jobs> option when building, e.g:
+#      make -j$((`getconf _NPROCESSORS_ONLN`+1))
+.NOTPARALLEL:
 
 # timezone and locale may affect build output
 ifeq ($(BR2_REPRODUCIBLE),y)
@@ -468,14 +468,14 @@ BR_PATH = "$(HOST_DIR)/bin:$(HOST_DIR)/sbin:$(PATH)"
 
 # Location of a file giving a big fat warning that output/target
 # should not be used as the root filesystem.
-TARGET_DIR_WARNING_FILE = $(BASE_TARGET_DIR)/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
+TARGET_DIR_WARNING_FILE = $(TARGET_DIR)/THIS_IS_NOT_YOUR_ROOT_FILESYSTEM
 
 ifeq ($(BR2_CCACHE),y)
-CCACHE := $(HOST_DIR)/bin/ccache
+CCACHE = $(HOST_DIR)/bin/ccache
 BR_CACHE_DIR ?= $(call qstrip,$(BR2_CCACHE_DIR))
 export BR_CACHE_DIR
-HOSTCC := $(CCACHE) $(HOSTCC)
-HOSTCXX := $(CCACHE) $(HOSTCXX)
+HOSTCC = $(CCACHE) $(HOSTCC_NOCCACHE)
+HOSTCXX = $(CCACHE) $(HOSTCXX_NOCCACHE)
 else
 export BR_NO_CCACHE
 endif
@@ -572,10 +572,6 @@ $(foreach pkg,$(call UPPERCASE,$(PACKAGES)),\
 
 endif
 
-.PHONY: dirs
-dirs: $(BUILD_DIR) $(STAGING_DIR) $(BASE_TARGET_DIR) \
-	$(HOST_DIR) $(HOST_DIR_SYMLINK) $(BINARIES_DIR)
-
 $(BUILD_DIR)/buildroot-config/auto.conf: $(BR2_CONFIG)
 	$(MAKE1) $(EXTRAMAKEARGS) HOSTCC="$(HOSTCC_NOCCACHE)" HOSTCXX="$(HOSTCXX_NOCCACHE)" syncconfig
 
@@ -604,11 +600,6 @@ sdk: prepare-sdk $(BR2_TAR_HOST_DEPENDENCY)
 		--owner=0 --group=0 --numeric-owner \
 		--transform='s#^\.#$(BR2_SDK_PREFIX)#' \
 		-C $(HOST_DIR) "."
-
-# Populating the staging with the base directories is handled by the skeleton package
-$(STAGING_DIR):
-	@mkdir -p $(STAGING_DIR)
-	@ln -snf $(STAGING_DIR) $(BASE_DIR)/staging
 
 RSYNC_VCS_EXCLUSIONS = \
 	--exclude .svn --exclude .git --exclude .hg --exclude .bzr \
@@ -710,8 +701,14 @@ $(TARGETS_ROOTFS): target-finalize
 # Avoid the rootfs name leaking down the dependency chain
 target-finalize: ROOTFS=
 
+host-finalize: $(HOST_DIR_SYMLINK)
+
+.PHONY: staging-finalize
+staging-finalize:
+	@ln -snf $(STAGING_DIR) $(BASE_DIR)/staging
+
 .PHONY: target-finalize
-target-finalize: $(PACKAGES)
+target-finalize: $(PACKAGES) host-finalize
 	@$(call MESSAGE,"Finalizing target directory")
 	# Check files that are touched by more than one package
 	./support/scripts/check-uniq-files -t target $(BUILD_DIR)/packages-file-list.txt
@@ -782,7 +779,7 @@ endif
 	touch $(TARGET_DIR)/usr
 
 .PHONY: target-post-image
-target-post-image: $(TARGETS_ROOTFS) target-finalize
+target-post-image: $(TARGETS_ROOTFS) target-finalize staging-finalize
 	@rm -f $(ROOTFS_COMMON_TAR)
 	@$(foreach s, $(call qstrip,$(BR2_ROOTFS_POST_IMAGE_SCRIPT)), \
 		$(call MESSAGE,"Executing post-image script $(s)"); \
@@ -811,7 +808,7 @@ legal-info-prepare: $(LEGAL_INFO_DIR)
 	@cp $(BR2_CONFIG) $(LEGAL_INFO_DIR)/buildroot.config
 
 .PHONY: legal-info
-legal-info: dirs legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p)-all-legal-info) \
+legal-info: legal-info-clean legal-info-prepare $(foreach p,$(PACKAGES),$(p)-all-legal-info) \
 		$(REDIST_SOURCES_DIR_TARGET) $(REDIST_SOURCES_DIR_HOST)
 	@cat support/legal-info/README.header >>$(LEGAL_REPORT)
 	@if [ -r $(LEGAL_WARNINGS) ]; then \

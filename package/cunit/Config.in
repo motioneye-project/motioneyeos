@@ -1,0 +1,6 @@
+config BR2_PACKAGE_CUNIT
+	bool "cunit"
+	help
+	  An automated testing framework in 'C'.
+
+	  http://cunit.sourceforge.net/

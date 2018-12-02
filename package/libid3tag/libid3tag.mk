@@ -15,4 +15,11 @@ LIBID3TAG_DEPENDENCIES = zlib
 # is able to properly behave in the face of a missing C++ compiler.
 LIBID3TAG_AUTORECONF = YES
 
+define LIBID3TAG_INSTALL_STAGING_PC
+	$(INSTALL) -D package/libid3tag/id3tag.pc \
+		$(STAGING_DIR)/usr/lib/pkgconfig/id3tag.pc
+endef
+
+LIBID3TAG_POST_INSTALL_STAGING_HOOKS += LIBID3TAG_INSTALL_STAGING_PC
+
 $(eval $(autotools-package))

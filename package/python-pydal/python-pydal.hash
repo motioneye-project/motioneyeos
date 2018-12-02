@@ -1,2 +1,3 @@
 # sha256 from https://pypi.org/project/pyDAL/#files
-sha256 59b28cbad92743c76134fc078b62f49d5c02b86c55cbdee527f75995d2681735  pyDAL-17.11.tar.gz
+sha256 763ed017f431fc3d9fa9243f6be2519ff49b8a260d15763c4733762d9c086904  python-pydal-v18.09.tar.gz
+sha256 ae7d7b6888bb72f26af2bcbee69ae6f8a49e12f66c99e78f2a8b806effc5219d  LICENSE

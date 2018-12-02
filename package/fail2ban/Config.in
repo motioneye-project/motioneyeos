@@ -1,0 +1,15 @@
+config BR2_PACKAGE_FAIL2BAN
+	bool "fail2ban"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Fail2ban scans log files (e.g. /var/log/apache/error_log) and
+	  bans IPs that show the malicious signs -- too many password
+	  failures, seeking for exploits, etc. Out of the box Fail2Ban
+	  comes with filters for various services (apache, courier,
+	  ssh, etc).
+
+	  Fail2Ban is able to reduce the rate of incorrect
+	  authentications attempts however it cannot eliminate the risk
+	  that weak authentication presents.
+
+	  https://www.fail2ban.org

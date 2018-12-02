@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiodns/json
+md5	80e0419b49bb4c540b4857ec142219b8  aiodns-1.1.1.tar.gz
+sha256	d8677adc679ce8d0ef706c14d9c3d2f27a0e0cc11d59730cdbaf218ad52dd9ea  aiodns-1.1.1.tar.gz
+# Locally computed sha256 checksums
+sha256	eb0455d35129425ed399883cd710923de3e246a510e2eb84d9f00032d0bbec97  LICENSE
