@@ -100,12 +100,6 @@ def pkg_node_name(pkg):
     return "_" + pkg.replace("-", "")
 
 
-TARGET_EXCEPTIONS = [
-    "target-finalize",
-    "target-post-image",
-]
-
-
 # Basic cache for the results of the is_dep() function, in order to
 # optimize the execution time. The cache is a dict of dict of boolean
 # values. The key to the primary dict is "pkg", and the key of the
@@ -384,9 +378,6 @@ def main():
         allpkgs.append('all')
         filtered_targets = []
         for tg in targets:
-            # Skip uninteresting targets
-            if tg in TARGET_EXCEPTIONS:
-                continue
             dependencies.append(('all', tg))
             filtered_targets.append(tg)
         deps = get_all_depends(filtered_targets, get_depends_func)
