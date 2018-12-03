@@ -413,9 +413,6 @@ F:	package/vmtouch/
 N:	Brock Williams <brock@cottonwoodcomputer.com>
 F:	package/pdmenu/
 
-N:	Bryan Brinsko <bryan.brinsko@rockwellcollins.com>
-F:	package/pps-tools/
-
 N:	Carlo Caione <carlo.caione@gmail.com>
 F:	package/sunxi-boards/
 
