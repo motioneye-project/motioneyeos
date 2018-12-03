@@ -472,6 +472,7 @@ F:	linux/linux-ext-aufs.mk
 F:	package/aufs/
 F:	package/aufs-util/
 F:	package/batman-adv/
+F:	package/docker-cli/
 F:	package/docker-containerd/
 F:	package/docker-engine/
 F:	package/docker-proxy/
