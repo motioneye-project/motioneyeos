@@ -853,7 +853,7 @@ F:	package/ucl/
 F:	package/upx/
 F:	package/zxing-cpp/
 
-N:	Gaël Portay <gael.portay@savoirfairelinux.com>
+N:	Gaël Portay <gael.portay@collabora.com>
 F:	package/qt5/qt5virtualkeyboard/
 F:	package/qt5/qt5webengine/
 F:	package/qt5/qt5webkit/
