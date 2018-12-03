@@ -31,6 +31,16 @@ config BR2_PACKAGE_PROFTPD_MOD_SQL
 	help
 	  Compile ProFTPD with mod_sql support.
 
+if BR2_PACKAGE_PROFTPD_MOD_SQL
+
+config BR2_PACKAGE_PROFTPD_MOD_SQL_SQLITE
+	bool "mod_sql_sqlite support"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Compile ProFTPD with mod_sql_sqlite support.
+
+endif
+
 config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
 	bool "mod_quotatab support"
 	help
