@@ -12,7 +12,6 @@ ATK_LICENSE = LGPL-2.0+
 ATK_LICENSE_FILES = COPYING
 ATK_INSTALL_STAGING = YES
 ATK_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
-ATK_CONF_OPTS = --disable-glibtest --enable-explicit-deps=no
 ATK_DEPENDENCIES = libglib2 host-pkgconf
 
 $(eval $(autotools-package))
