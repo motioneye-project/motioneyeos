@@ -8,8 +8,6 @@ gets mixed with distro python leading to build failures.
 
 Signed-off-by: Gustavo Zacarias <gustavo.zacarias@free-electrons.com>
 Signed-off-by: Adam Duskett <aduskett@codeblue.com>
-Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-[Update for version 2.58.1]
 ---
  Makefile.am      | 2 +-
  gio/Makefile.am  | 2 +-
@@ -24,9 +22,9 @@ index 008ad58..007332d 100644
  
  ACLOCAL_AMFLAGS = -I m4macros ${ACLOCAL_FLAGS}
  
--SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests subprojects
-+SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs subprojects
- DIST_SUBDIRS = $(SUBDIRS) build
+-SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs tests
++SUBDIRS = . m4macros glib gmodule gthread gobject gio po docs
+ DIST_SUBDIRS = $(SUBDIRS) build win32
  
  bin_SCRIPTS = glib-gettextize
 diff --git a/gio/Makefile.am b/gio/Makefile.am
