@@ -1,0 +1,37 @@
+From da124df864dd7555733d6690eacf856435d55b2d Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Mon, 3 Dec 2018 13:14:16 +0100
+Subject: [PATCH] mainbar: fix build without libsigrokdecode
+
+We must not include decodesignal.hpp if we're not using libsigrokdecode
+or the build will fail due to libsigrokdecode.hpp not being present in
+the system.
+
+Signed-off-by: Bartosz Golaszewski <brgl@bgdev.pl>
+---
+ pv/toolbars/mainbar.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/pv/toolbars/mainbar.cpp b/pv/toolbars/mainbar.cpp
+index e6beb2b..7c4d0fb 100644
+--- a/pv/toolbars/mainbar.cpp
++++ b/pv/toolbars/mainbar.cpp
+@@ -35,7 +35,6 @@
+ 
+ #include <boost/algorithm/string/join.hpp>
+ 
+-#include <pv/data/decodesignal.hpp>
+ #include <pv/devicemanager.hpp>
+ #include <pv/devices/hardwaredevice.hpp>
+ #include <pv/devices/inputfile.hpp>
+@@ -52,6 +51,7 @@
+ #include <pv/widgets/importmenu.hpp>
+ #ifdef ENABLE_DECODE
+ #include <pv/widgets/decodermenu.hpp>
++#include <pv/data/decodesignal.hpp>
+ #endif
+ 
+ #include <libsigrokcxx/libsigrokcxx.hpp>
+-- 
+2.19.1
+
