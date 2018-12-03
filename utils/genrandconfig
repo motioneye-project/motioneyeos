@@ -366,8 +366,8 @@ def gen_config(args):
         configlines.append("BR2_STATIC_LIBS=y\n")
     if randint(0, 20) == 0:
         configlines.append("BR2_PACKAGE_PYTHON_PY_ONLY=y\n")
-    if randint(0,5) == 0:
-	configlines.append("BR2_OPTIMIZE_2=y\n")
+    if randint(0, 5) == 0:
+        configlines.append("BR2_OPTIMIZE_2=y\n")
 
     # Write out the configuration file
     if not os.path.exists(args.outputdir):
