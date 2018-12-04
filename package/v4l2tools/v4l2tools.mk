@@ -1,0 +1,91 @@
+#############################################################
+#
+# v4l2tools
+#
+#############################################################
+
+V4L2TOOLS_VERSION = f149584
+V4L2TOOLS_SITE = https://github.com/mpromonet/v4l2tools.git
+V4L2TOOLS_SITE_METHOD = git
+V4L2TOOLS_GIT_SUBMODULES = YES
+V4L2TOOLS_LICENSE = UNLICENSE
+V4L2TOOLS_LICENSE_FILES = LICENSE
+V4L2TOOLS_INSTALL_TARGET = YES
+V4L2TOOLS_DEPENDENCIES = v4l2cpp log4cpp
+V4L2TOOLS_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
+V4L2TOOLS_DEPENDENCIES += rpi-userland
+ifeq ($(BR2_PACKAGE_RPI_USERLAND_HELLO),y)
+V4L2TOOLS_MAKE_OPTS += "HAVE_RPI=1"
+V4L2TOOLS_CFLAGS += -I$(STAGING_DIR)/usr/src/hello_pi/libs/ilclient
+endif
+endif # BR2_PACKAGE_RPI_USERLAND
+
+ifeq ($(BR2_PACKAGE_X264),y)
+V4L2TOOLS_DEPENDENCIES += x264
+V4L2TOOLS_MAKE_OPTS += "HAVE_X264=1"
+endif
+
+ifeq ($(BR2_PACKAGE_X265),y)
+V4L2TOOLS_DEPENDENCIES += x265
+V4L2TOOLS_MAKE_OPTS += "HAVE_X265=1"
+endif
+
+ifeq ($(BR2_PACKAGE_LIBVPX),y)
+V4L2TOOLS_DEPENDENCIES += libvpx
+V4L2TOOLS_MAKE_OPTS += "HAVE_LIBVPX=1"
+endif
+
+ifeq ($(BR2_PACKAGE_JPEG),y)
+V4L2TOOLS_DEPENDENCIES += jpeg
+V4L2TOOLS_MAKE_OPTS += "HAVE_LIBJPEG=1"
+endif
+
+ifeq ($(BR2_PACKAGE_LIBFUSE),y)
+V4L2TOOLS_DEPENDENCIES += libfuse
+V4L2TOOLS_MAKE_OPTS += "HAVE_LIBFUSE=1"
+endif
+
+ifndef ($(BR2_ENABLE_LOCALE),y)
+V4L2TOOLS_CFLAGS += -DLOCALE_NOT_USED
+endif
+
+define V4L2TOOLS_BUILD_CMDS
+	(cd $(@D)/libyuv && \
+	rm -f CMakeCache.txt && \
+	PATH=$(BR_PATH) \
+	$(V4L2TOOLS_CONF_ENV) $(BR2_CMAKE) \
+		-DCMAKE_TOOLCHAIN_FILE="$(HOST_DIR)/share/buildroot/toolchainfile.cmake" \
+		-DCMAKE_COLOR_MAKEFILE=OFF \
+		-DBUILD_DOC=OFF \
+		-DBUILD_DOCS=OFF \
+		-DBUILD_EXAMPLE=OFF \
+		-DBUILD_EXAMPLES=OFF \
+		-DBUILD_TEST=OFF \
+		-DBUILD_TESTS=OFF \
+		-DBUILD_TESTING=OFF \
+		-DBUILD_SHARED_LIBS=OFF \
+		$(V4L2TOOLS_CONF_OPTS) \
+	)
+	$(TARGET_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" CXXFLAGS="$(TARGET_CXXFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)" AR="$(TARGET_AR)" ARFLAGS="$(TARGET_ARFLAGS)" -C $(@D)/libyuv all
+	$(TARGET_MAKE_ENV) $(MAKE) CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" CFLAGS_EXTRA="$(V4L2TOOLS_CFLAGS)" LDFLAGS="$(TARGET_LDFLAGS)" AR="$(TARGET_AR)" ARFLAGS="$(TARGET_ARFLAGS)" $(V4L2TOOLS_MAKE_OPTS) -C $(@D) all
+endef
+
+define V4L2TOOLS_INSTALL_TARGET_CMDS
+	$(INSTALL) -D -m 0755 $(@D)/v4l2copy $(TARGET_DIR)/usr/sbin
+	$(INSTALL) -D -m 0755 $(@D)/v4l2convert_yuv $(TARGET_DIR)/usr/sbin
+	$(INSTALL) -D -m 0755 $(@D)/v4l2source_yuv $(TARGET_DIR)/usr/sbin
+	$(INSTALL) -D -m 0755 $(@D)/v4l2dump $(TARGET_DIR)/usr/sbin
+	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2grab_h264 $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2display_h264 $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_RPI_USERLAND_HELLO), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_omx $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_X264), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_h264 $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_X265), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_x265 $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_LIBVPX), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_vpx $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_JPEG), $(INSTALL) -D -m 0755 $(@D)/v4l2compress_jpeg $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_JPEG), $(INSTALL) -D -m 0755 $(@D)/v4l2uncompress_jpeg $(TARGET_DIR)/usr/sbin )
+	$(if $(BR2_PACKAGE_LIBFUSE), $(INSTALL) -D -m 0755 $(@D)/v4l2fuse $(TARGET_DIR)/usr/sbin )
+endef
+
+$(eval $(generic-package))

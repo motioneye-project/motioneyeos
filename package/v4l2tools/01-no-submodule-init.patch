@@ -1,0 +1,53 @@
+diff --git a/Makefile b/Makefile
+index 9241abc..83d2536 100644
+--- a/Makefile
++++ b/Makefile
+@@ -77,15 +77,11 @@ endif
+ all: $(ALL_PROGS)
+ 
+ libyuv.a:
+-	git submodule init libyuv
+-	git submodule update libyuv
+ 	cd libyuv && cmake . && make 
+ 	mv libyuv/libyuv.a .
+ 	make -C libyuv clean
+ 
+ libv4l2wrapper.a: 
+-	git submodule init v4l2wrapper
+-	git submodule update v4l2wrapper
+ 	make -C v4l2wrapper
+ 	mv v4l2wrapper/libv4l2wrapper.a .
+ 	make -C v4l2wrapper clean
+@@ -126,19 +122,16 @@ v4l2uncompress_jpeg: src/v4l2uncompress_jpeg.cpp libyuv.a  libv4l2wrapper.a
+ v4l2detect_yuv: src/v4l2detect_yuv.cpp libyuv.a  libv4l2wrapper.a
+ 	$(CXX) -o $@ $(CFLAGS) $^ $(LDFLAGS) -lopencv_core -lopencv_objdetect -lopencv_imgproc -I libyuv/include
+ 
+-# dump
+ h264bitstream/Makefile:
+-	git submodule update --init h264bitstream	
++	cd h264bitstream && autoreconf -i -f && ./configure --host $(shell $(CC) -dumpmachine)
+ 
+ h264bitstream/.libs/libh264bitstream.so: h264bitstream/Makefile
+-	cd h264bitstream && autoreconf -i -f && ./configure --host $(shell $(CC) -dumpmachine)
+ 	make -C h264bitstream 
+ 
+ hevcbitstream/Makefile:
+-	git submodule update --init hevcbitstream	
++	cd hevcbitstream && autoreconf -i -f && LDFLAGS=-lm ./configure --host $(shell $(CC) -dumpmachine)
+ 
+ hevcbitstream/.libs/libhevcbitstream.so: hevcbitstream/Makefile
+-	cd hevcbitstream && autoreconf -i -f && LDFLAGS=-lm ./configure --host $(shell $(CC) -dumpmachine)
+ 	make -C hevcbitstream 
+ 
+ v4l2dump: src/v4l2dump.cpp libv4l2wrapper.a h264bitstream/.libs/libh264bitstream.so  hevcbitstream/.libs/libhevcbitstream.so libyuv.a
+@@ -146,10 +139,6 @@ v4l2dump: src/v4l2dump.cpp libv4l2wrapper.a h264bitstream/.libs/libh264bitstream
+ 
+ v4l2fuse: src/v4l2fuse.c 
+ 	$(CC) -o $@ $(CFLAGS) $^ $(LDFLAGS) -D_FILE_OFFSET_BITS=64 -lfuse
+-
+-	
+-upgrade:
+-	git submodule foreach git pull origin master
+ 	
+ install: all
+ 	mkdir -p $(PREFIX)/bin
