@@ -578,7 +578,7 @@ sub find_license_files {
 
 sub want_test {
     my ($distname) = @_;
-    return 1 if $need_dlopen{$distname} && scalar @{$deps_runtime{$distname}} > 1;
+    return 1 if $need_dlopen{$distname} && scalar @{$deps_runtime{$distname}} > 0;
 }
 
 sub get_dependencies {
