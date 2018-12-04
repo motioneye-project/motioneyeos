@@ -6,14 +6,14 @@ class TestPerlClassLoad(TestPerlBase):
     package:
         Class-Load
     direct dependencies:
-        Data-OptList *
+        Data-OptList
         Module-Implementation
         Module-Runtime
         Package-Stash
         Try-Tiny
     indirect dependencies:
         Dist-CheckConflicts
-        Params-Util
+        Params-Util   XS
         Sub-Install
     """
 

@@ -7,7 +7,7 @@ class TestPerlX10(TestPerlBase):
         X10
     direct dependencies:
         Astro-SunTime
-        Device-SerialPort
+        Device-SerialPort   XS
         Time-ParseDate
     """
 

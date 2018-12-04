@@ -6,7 +6,7 @@ class TestPerlGDGraph(TestPerlBase):
     package:
         GDGraph
     direct dependencies:
-        GD
+        GD   XS
         GDTextUtil
     """
 

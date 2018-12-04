@@ -6,13 +6,13 @@ class TestPerlMailDKIM(TestPerlBase):
     package:
         Mail-DKIM
     direct dependencies:
-        Crypt-OpenSSL-RSA
+        Crypt-OpenSSL-RSA   XS
         MailTools
         Net-DNS
         Net-DNS-Resolver-Mock
-        YAML-LibYAML
+        YAML-LibYAML   XS
     indirect dependencies:
-        Crypt-OpenSSL-Random
+        Crypt-OpenSSL-Random   XS
         Digest-HMAC
         TimeDate
     """

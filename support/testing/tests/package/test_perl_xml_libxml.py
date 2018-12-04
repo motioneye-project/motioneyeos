@@ -4,7 +4,7 @@ from tests.package.test_perl import TestPerlBase
 class TestPerlXMLLibXML(TestPerlBase):
     """
     package:
-        XML-LibXML
+        XML-LibXML   XS
     direct dependencies:
         XML-NamespaceSupport
         XML-SAX

@@ -8,7 +8,7 @@ class TestPerllibwwwperl(TestPerlBase):
     direct dependencies:
         Encode-Locale
         File-Listing
-        HTML-Parser
+        HTML-Parser   XS
         HTTP-Cookies
         HTTP-Daemon
         HTTP-Date
