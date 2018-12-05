@@ -234,9 +234,11 @@ $(2)_REBAR = rebar
 $(2)_DEPENDENCIES += host-erlang-rebar
 endif
 
+$(2)_KEEP_DEPENDENCIES ?= NO
+
 # Remove dependencies listed in rebar.config unless the package says
 # otherwise
-ifeq ($$($(2)_KEEP_DEPENDENCIES),)
+ifeq ($$($(2)_KEEP_DEPENDENCIES),NO)
 $(2)_POST_PATCH_HOOKS += remove-rebar-config-dependencies
 endif
 
