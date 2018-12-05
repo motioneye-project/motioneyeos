@@ -56,6 +56,7 @@ endef
 
 define EJABBERD_PERMISSIONS
 	/etc/ejabberd r 750 root ejabberd - - - - -
+	/usr/sbin/ejabberdctl f 750 root ejabberd - - - - -
 endef
 
 define EJABBERD_INSTALL_INIT_SYSV
