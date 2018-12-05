@@ -1,0 +1,29 @@
+From b42e4b5bfca030965dcfca993a47a6ddaa941287 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sun, 25 Nov 2018 18:27:54 +0100
+Subject: [PATCH] avoid system perl dependencies
+
+this subroutine format is used for android target.
+with eval the load of HTML::Entities is deferred.
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ netsurf/utils/split-messages.pl | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/netsurf/utils/split-messages.pl b/netsurf/utils/split-messages.pl
+index 4b50dde..e47dded 100644
+--- a/netsurf/utils/split-messages.pl
++++ b/netsurf/utils/split-messages.pl
+@@ -311,7 +311,7 @@ TXT
+     sub footer { qq|</resources>| }
+     sub format
+     {
+-	use HTML::Entities qw(encode_entities);
++	eval q|use HTML::Entities qw(encode_entities);|;
+ 	my $escaped = encode_entities( $_[1], '<>&"' );
+ 	qq|  <string name="$_[0]">$escaped</string>\n|;
+     }
+-- 
+2.17.1
+
