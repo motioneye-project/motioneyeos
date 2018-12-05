@@ -96,7 +96,8 @@ endef
 
 # Remove the "deps" statement from a rebar.config file
 define remove-rebar-config-dependencies
-	$(SED) '/^{deps/,/}\.$$/d' $($(PKG)_DIR)/rebar.config
+	$(SED) '/^{deps.*}\.$$/d' -e '/^{deps/,/}\.$$/d' \
+		$($(PKG)_DIR)/rebar.config
 endef
 
 
