@@ -317,7 +317,11 @@ tests.package.test_ipython.TestIPythonPy2: *runtime_test
 tests.package.test_ipython.TestIPythonPy3: *runtime_test
 tests.package.test_perl.TestPerl: *runtime_test
 tests.package.test_perl_class_load.TestPerlClassLoad: *runtime_test
+tests.package.test_perl_dbd_mysql.TestPerlDBDmysql: *runtime_test
+tests.package.test_perl_encode_detect.TestPerlEncodeDetect: *runtime_test
 tests.package.test_perl_gdgraph.TestPerlGDGraph: *runtime_test
+tests.package.test_perl_io_socket_multicast.TestPerlIOSocketMulticast: *runtime_test
+tests.package.test_perl_io_socket_ssl.TestPerlIOSocketSSL: *runtime_test
 tests.package.test_perl_libwww_perl.TestPerllibwwwperl: *runtime_test
 tests.package.test_perl_mail_dkim.TestPerlMailDKIM: *runtime_test
 tests.package.test_perl_x10.TestPerlX10: *runtime_test
