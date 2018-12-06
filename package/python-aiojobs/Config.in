@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_AIOJOBS
+	bool "python-aiojobs"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_AIOHTTP # runtime
+	help
+	  Jobs scheduler for managing background task (asyncio).
+
+	  https://github.com/aio-libs/aiojobs
