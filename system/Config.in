@@ -68,16 +68,6 @@ choice
 
 	  Note: this is used at build-time, and *not* at runtime.
 
-config BR2_TARGET_GENERIC_PASSWD_MD5
-	bool "md5"
-	help
-	  Use MD5 to encode passwords.
-
-	  The default. Wildly available, and pretty good.
-	  Although pretty strong, MD5 is now an old hash function, and
-	  suffers from some weaknesses, which makes it susceptible to
-	  brute-force attacks.
-
 config BR2_TARGET_GENERIC_PASSWD_SHA256
 	bool "sha-256"
 	help

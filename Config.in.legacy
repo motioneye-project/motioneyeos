@@ -143,6 +143,7 @@ comment "----------------------------------------------------"
 endif
 
 ###############################################################################
+
 comment "Legacy options removed in 2019.02"
 
 config BR2_PACKAGE_LUA_5_2
@@ -151,6 +152,13 @@ config BR2_PACKAGE_LUA_5_2
 	select BR2_PACKAGE_LUA_5_3
 	help
 	  The Lua 5.2.x version was removed.
+
+config BR2_TARGET_GENERIC_PASSWD_MD5
+	bool "target passwd md5 format support has been removed"
+	select BR2_LEGACY
+	help
+	  The default has been moved to SHA256 and all C libraries
+	  now support that method by default
 
 comment "Legacy options removed in 2018.11"
 
