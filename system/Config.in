@@ -61,7 +61,7 @@ endif
 
 choice
 	bool "Passwords encoding"
-	default BR2_TARGET_GENERIC_PASSWD_MD5
+	default BR2_TARGET_GENERIC_PASSWD_SHA256
 	help
 	  Choose the password encoding scheme to use when Buildroot
 	  needs to encode a password (eg. the root password, below).
