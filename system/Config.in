@@ -81,20 +81,12 @@ config BR2_TARGET_GENERIC_PASSWD_MD5
 config BR2_TARGET_GENERIC_PASSWD_SHA256
 	bool "sha-256"
 	help
-	  Use SHA256 to encode passwords.
-
-	  Very strong, but not ubiquitous, although available in glibc
-	  for some time now. Choose only if you are sure your C library
-	  understands SHA256 passwords.
+	  Use SHA256 to encode passwords which is stronger than MD5.
 
 config BR2_TARGET_GENERIC_PASSWD_SHA512
 	bool "sha-512"
 	help
-	  Use SHA512 to encode passwords.
-
-	  Extremely strong, but not ubiquitous, although available in
-	  glibc for some time now. Choose only if you are sure your C
-	  library understands SHA512 passwords.
+	  Use SHA512 to encode passwords which is stronger than SHA256
 
 endchoice # Passwd encoding
 
