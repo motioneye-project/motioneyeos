@@ -93,7 +93,7 @@ main() {
         esac
         uri=${uri#*+}
 
-        urlencode=${backend#*|}
+        urlencode=${backend_urlencode#*|}
         # urlencode must be "urlencode"
         [ "${urlencode}" != "urlencode" ] && urlencode=""
 
