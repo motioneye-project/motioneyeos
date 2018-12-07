@@ -23,6 +23,12 @@ GRPC_CONF_OPTS = \
 	-DgRPC_ZLIB_PROVIDER=package \
 	-DgRPC_NATIVE_CPP_PLUGIN=$(HOST_DIR)/bin/grpc_cpp_plugin
 
+# grpc can use __atomic builtins, so we need to link with
+# libatomic when available
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+GRPC_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-latomic
+endif
+
 HOST_GRPC_CONF_OPTS = \
 	-D_gRPC_CARES_LIBRARIES=cares \
 	-DgRPC_CARES_PROVIDER=none \
