@@ -2202,6 +2202,9 @@ F:	toolchain/
 N:	Timo Ketola <timo.ketola@exertus.fi>
 F:	package/fbgrab/
 
+N:	Trent Piepho <tpiepho@impinj.com>
+F:	package/libp11/
+
 N:	Tzu-Jung Lee <roylee17@gmail.com>
 F:	package/dropwatch/
 F:	package/tstools/

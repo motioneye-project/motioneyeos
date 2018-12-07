@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBP11
+	bool "libp11"
+	depends on !BR2_STATIC_LIBS # dlopen
+	select BR2_PACKAGE_OPENSSL
+	help
+	  OpenSSL engine for PKCS#11 modules. Part of the OpenSC
+	  project.
+
+	  https://github.com/OpenSC/OpenSC/wiki
+
+comment "libp11 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
