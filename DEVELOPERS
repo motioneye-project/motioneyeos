@@ -1000,6 +1000,7 @@ F:	package/python-aiohttp-security/
 F:	package/python-aiohttp-session/
 F:	package/python-aiohttp-sse/
 F:	package/python-aiojobs/
+F:	package/python-aiorwlock/
 F:	package/python-async-timeout/
 F:	package/python-cchardet/
 F:	package/python-multidict/
