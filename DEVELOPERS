@@ -658,6 +658,8 @@ F:	package/pifmrds/
 F:	package/ympd/
 
 N:	Erico Nunes <nunes.erico@gmail.com>
+F:	board/aarch64-efi/
+F:	configs/aarch64_efi_defconfig
 F:	package/acpica/
 F:	package/acpitool/
 F:	package/efibootmgr/
