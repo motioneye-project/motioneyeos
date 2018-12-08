@@ -1,0 +1,24 @@
+From 4f946c01000fd97100e4a534b47f9c7ace0403df Mon Sep 17 00:00:00 2001
+From: QC <qball@gmpclient.org>
+Date: Thu, 9 Oct 2014 19:51:50 +0200
+Subject: [PATCH] Fix build on archlinux (missing include)
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/DaveDavenport/libmpd/commit/4f946c01000fd97100e4a534b47f9c7ace0403df]
+---
+ src/libmpd-internal.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/libmpd-internal.h b/src/libmpd-internal.h
+index c84c3a4..30cdc85 100644
+--- a/src/libmpd-internal.h
++++ b/src/libmpd-internal.h
+@@ -21,6 +21,7 @@
+ #define __MPD_INTERNAL_LIB_
+ 
+ #include "libmpdclient.h"
++#include <config.h>
+ struct _MpdData_real;
+ 
+ typedef struct _MpdData_real {
