@@ -8,6 +8,7 @@ is defined. Added the CPP_SPEC definition from gcc 8.1.0 to correct
 this.
 
 Signed-off-by: Mark Corbin <mark.corbin@embecosm.com>
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
  gcc/config/riscv/linux.h | 2 ++
  1 file changed, 2 insertions(+)

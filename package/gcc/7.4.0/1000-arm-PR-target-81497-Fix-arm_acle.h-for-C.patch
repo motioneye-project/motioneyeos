@@ -38,11 +38,11 @@ with the first arm-specific C++ tests (in that directory).
 	* g++.target/arm/arm.exp: New file.
 	* g++.target/arm/pr81497.C: Likewise.
 
-
 git-svn-id: svn+ssh://gcc.gnu.org/svn/gcc/trunk@261191 138bc75d-0d04-0410-961f-82ee72b054a4
 Upstream-Status: Merged (gcc-8-branch)
 Signed-off-by: Gaël PORTAY <gael.portay@savoirfairelinux.com>
 [gportay: drop gcc/{,testsuite/}ChangeLog changes]
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
 ---
  gcc/config/arm/arm-builtins.c          | 42 +++++++++++++---------
  gcc/config/arm/arm_acle.h              | 28 +++++++--------
@@ -56,7 +56,7 @@ diff --git a/gcc/config/arm/arm-builtins.c b/gcc/config/arm/arm-builtins.c
 index 7fde7a04672..183a7b907f6 100644
 --- a/gcc/config/arm/arm-builtins.c
 +++ b/gcc/config/arm/arm-builtins.c
-@@ -78,7 +78,11 @@ enum arm_type_qualifiers
+@@ -75,7 +75,11 @@ enum arm_type_qualifiers
    /* Lane indices - must be within range of previous argument = a vector.  */
    qualifier_lane_index = 0x200,
    /* Lane indices for single lane structure loads and stores.  */
@@ -69,7 +69,7 @@ index 7fde7a04672..183a7b907f6 100644
  };
  
  /*  The qualifier_internal allows generation of a unary builtin from
-@@ -202,7 +206,7 @@ arm_cdp_qualifiers[SIMD_MAX_BUILTIN_ARGS]
+@@ -185,7 +189,7 @@ arm_cdp_qualifiers[SIMD_MAX_BUILTIN_ARGS]
  static enum arm_type_qualifiers
  arm_ldc_qualifiers[SIMD_MAX_BUILTIN_ARGS]
    = { qualifier_void, qualifier_unsigned_immediate,
@@ -78,7 +78,7 @@ index 7fde7a04672..183a7b907f6 100644
  #define LDC_QUALIFIERS \
    (arm_ldc_qualifiers)
  
-@@ -210,7 +214,7 @@ arm_ldc_qualifiers[SIMD_MAX_BUILTIN_ARGS]
+@@ -193,7 +197,7 @@ arm_ldc_qualifiers[SIMD_MAX_BUILTIN_ARGS]
  static enum arm_type_qualifiers
  arm_stc_qualifiers[SIMD_MAX_BUILTIN_ARGS]
    = { qualifier_void, qualifier_unsigned_immediate,
@@ -87,7 +87,7 @@ index 7fde7a04672..183a7b907f6 100644
  #define STC_QUALIFIERS \
    (arm_stc_qualifiers)
  
-@@ -1095,19 +1099,25 @@ arm_init_builtin (unsigned int fcode, arm_builtin_datum *d,
+@@ -1079,19 +1083,25 @@ arm_init_builtin (unsigned int fcode, arm_builtin_datum *d,
        if (qualifiers & qualifier_pointer && VECTOR_MODE_P (op_mode))
  	op_mode = GET_MODE_INNER (op_mode);
  
