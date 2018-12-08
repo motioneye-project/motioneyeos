@@ -120,7 +120,6 @@ class TestPythonPackageBase(TestPythonBase):
             self.assertEqual(exit_code, 0)
 
     def test_run(self):
-        """Test a python package."""
         self.login()
         self.check_sample_scripts_exist()
         self.run_sample_scripts()
