@@ -29,12 +29,12 @@ config BR2_PACKAGE_PROFTPD_MOD_SFTP
 config BR2_PACKAGE_PROFTPD_MOD_SQL
 	bool "mod_sql support"
 	help
-	  Compile ProFTPD with mode_sql support.
+	  Compile ProFTPD with mod_sql support.
 
 config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
 	bool "mod_quotatab support"
 	help
-	  Compile ProFTPD with mode_quotatab support. This module
+	  Compile ProFTPD with mod_quotatab support. This module
 	  is required in order to support quota tables:
 	        1. mod_quotatab_file
 	        2. mod_quotatab_ldap
