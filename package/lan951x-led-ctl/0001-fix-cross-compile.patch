@@ -1,0 +1,23 @@
+diff -uNr lan951x-led-ctl-master/Makefile lan951x-led-ctl-fix/Makefile
+--- lan951x-led-ctl-master/Makefile	2017-02-11 22:50:52.000000000 +0200
++++ lan951x-led-ctl-fix/Makefile	2018-06-24 23:45:57.925879678 +0300
+@@ -1,12 +1,12 @@
+-ECHO	= /bin/echo -e
+-SHELL	= /bin/sh
+-RM	= /bin/rm -f
+-CC	= gcc
+-STRIP	= strip
++ECHO	?= /bin/echo -e
++SHELL	?= /bin/sh
++RM	?= /bin/rm -f
++CC	?= gcc
++STRIP	?= strip
+ 
+-CFLAGS	= -g -Os -std=c11 -I./include -Wall -Wstrict-prototypes -Wconversion
++CFLAGS	?= -g -Os -std=c11 -I./include -Wall -Wstrict-prototypes -Wconversion
+ CFLAGS	+= -Wmissing-prototypes -Wshadow -Wextra -Wunused
+-LDFLAGS	= -lusb-1.0
++LDFLAGS	+= -lusb-1.0
+ 
+ PROGS = lan951x-led-ctl
+ 

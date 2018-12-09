@@ -1,0 +1,3 @@
+config BR2_PACKAGE_LAN951X_LED_CTL
+	bool "lan951x-led-ctl"
+
