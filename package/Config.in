@@ -453,6 +453,7 @@ endmenu
 	source "package/irda-utils/Config.in"
 	source "package/iucode-tool/Config.in"
 	source "package/kbd/Config.in"
+	source "package/lan951x-led-ctl/Config.in"
 	source "package/lcdproc/Config.in"
 	source "package/libuio/Config.in"
 	source "package/libump/Config.in"
