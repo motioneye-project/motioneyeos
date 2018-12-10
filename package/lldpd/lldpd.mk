@@ -36,7 +36,6 @@ LLDPD_CONF_OPTS = \
 	--without-libbsd \
 	--disable-hardening \
 	--disable-privsep \
-	$(if $(BR2_PACKAGE_READLINE),--with-readline,--without-readline) \
 	$(if $(BR2_PACKAGE_LLDPD_CDP),--enable-cdp,--disable-cdp) \
 	$(if $(BR2_PACKAGE_LLDPD_FDP),--enable-fdp,--disable-fdp) \
 	$(if $(BR2_PACKAGE_LLDPD_EDP),--enable-edp,--disable-edp) \
@@ -45,6 +44,13 @@ LLDPD_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_LLDPD_DOT1),--enable-dot1,--disable-dot1) \
 	$(if $(BR2_PACKAGE_LLDPD_DOT3),--enable-dot3,--disable-dot3) \
 	$(if $(BR2_PACKAGE_LLDPD_CUSTOM_TLV),--enable-custom,--disable-custom)
+
+ifeq ($(BR2_PACKAGE_READLINE),y)
+LLDPD_CONF_OPTS += --with-readline
+LLDPD_DEPENDENCIES += readline
+else
+LLDPD_CONF_OPTS += --without-readline
+endif
 
 define LLDPD_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/lldpd/S60lldpd \
