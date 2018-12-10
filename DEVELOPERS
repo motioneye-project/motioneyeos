@@ -1153,6 +1153,7 @@ F:	package/llvm/
 F:	package/python-cython/
 F:	package/python-raven/
 F:	package/python-schedule/
+F:	package/python-sentry-sdk/
 F:	package/python-websockets/
 F:	package/python-xlib/
 
