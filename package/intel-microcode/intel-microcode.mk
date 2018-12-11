@@ -13,7 +13,8 @@ INTEL_MICROCODE_LICENSE_FILES = license
 INTEL_MICROCODE_REDISTRIBUTE = NO
 
 define INTEL_MICROCODE_INSTALL_TARGET_CMDS
-	$(INSTALL) -D -m 0644 -t $(TARGET_DIR)/lib/firmware/intel-ucode \
+	mkdir -p $(TARGET_DIR)/lib/firmware/intel-ucode
+	$(INSTALL) -m 0644 -t $(TARGET_DIR)/lib/firmware/intel-ucode \
 		$(@D)/intel-ucode/*
 endef
 
