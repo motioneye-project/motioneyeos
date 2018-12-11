@@ -25,7 +25,7 @@ endif
 endif
 
 ifeq ($(BR2_PACKAGE_NETSURF_SDL),y)
-NETSURF_DEPENDENCIES += sdl
+NETSURF_DEPENDENCIES += sdl host-libpng
 NETSURF_FRONTEND = framebuffer
 endif
 
