@@ -22,7 +22,7 @@ endef
 IWD_POST_PATCH_HOOKS += IWD_MKDIR_BUILD_AUX
 
 ifeq ($(BR2_PACKAGE_DBUS),y)
-IWD_CONF_OPTS += --enable-dbus-policy
+IWD_CONF_OPTS += --enable-dbus-policy --with-dbus-datadir=/usr/share
 IWD_DEPENDENCIES += dbus
 else
 IWD_CONF_OPTS += --disable-dbus-policy
