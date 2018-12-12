@@ -11,5 +11,6 @@ ACSCCID_LICENSE = LGPL-2.1+
 ACSCCID_LICENSE_FILES = COPYING
 ACSCCID_INSTALL_STAGING = YES
 ACSCCID_DEPENDENCIES = pcsc-lite host-flex host-pkgconf libusb
+ACSCCID_CONF_OPTS = --enable-usbdropdir=/usr/lib/pcsc/drivers
 
 $(eval $(autotools-package))
