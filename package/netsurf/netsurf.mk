@@ -9,7 +9,7 @@ NETSURF_SOURCE = netsurf-all-$(NETSURF_VERSION).tar.gz
 NETSURF_SITE = http://download.netsurf-browser.org/netsurf/releases/source-full
 NETSURF_LICENSE = GPL-2.0
 NETSURF_LICENSE_FILES = netsurf/COPYING
-NETSURF_DEPENDENCIES = expat jpeg libcurl libpng openssl \
+NETSURF_DEPENDENCIES = expat jpeg libpng \
 	host-bison host-flex host-gperf host-pkgconf
 
 ifeq ($(BR2_PACKAGE_NETSURF_GTK),y)
@@ -51,10 +51,20 @@ define NETSURF_ICONV_CONFIGURE_CMDS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+NETSURF_DEPENDENCIES += libcurl openssl
+else
+define NETSURF_CURL_CONFIGURE_CMDS
+	echo "override NETSURF_USE_CURL := NO"          >> $(@D)/netsurf/Makefile.config
+	echo "override NETSURF_USE_OPENSSL := NO"       >> $(@D)/netsurf/Makefile.config
+endef
+endif
+
 define NETSURF_CONFIGURE_CMDS
 	$(NETSURF_ICONV_CONFIGURE_CMDS)
 	$(NETSURF_SVG_CONFIGURE_CMDS)
 	$(NETSURF_FONTLIB_CONFIGURE_CMDS)
+	$(NETSURF_CURL_CONFIGURE_CMDS)
 endef
 
 NETSURF_MAKE_OPTS = \

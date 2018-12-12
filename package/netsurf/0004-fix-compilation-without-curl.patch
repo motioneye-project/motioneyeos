@@ -1,0 +1,27 @@
+From 7d7c59dbfc92fcbcd0eac2c84e0fb98662c4bd71 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sat, 8 Dec 2018 09:43:40 +0100
+Subject: [PATCH] fix compilation without curl
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ netsurf/content/fetch.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/netsurf/content/fetch.c b/netsurf/content/fetch.c
+index 7665029..0f41c49 100644
+--- a/netsurf/content/fetch.c
++++ b/netsurf/content/fetch.c
+@@ -54,7 +54,9 @@
+ #include "content/fetchers.h"
+ #include "content/fetchers/resource.h"
+ #include "content/fetchers/about.h"
++#ifdef WITH_CURL
+ #include "content/fetchers/curl.h"
++#endif
+ #include "content/fetchers/data.h"
+ #include "content/fetchers/file.h"
+ #include "javascript/fetcher.h"
+-- 
+2.17.1
+
