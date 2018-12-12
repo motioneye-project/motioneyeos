@@ -1,0 +1,30 @@
+From 2419ad79b25fcc1746178aba609fddbb0aa8c9e0 Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Sat, 1 Dec 2018 16:10:13 +0100
+Subject: [PATCH] build nsgenbind for the build machine
+
+The nsgenbind tool is meant to be executed on the build machine during
+the build, so it should not be built with the cross-compiler, but with
+the native compiler.
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index f279f01..5698c87 100644
+--- a/Makefile
++++ b/Makefile
+@@ -109,7 +109,7 @@ endef
+ 
+ # prefixed install macro for each host sub target
+ define do_build_prefix_install
+-	$(MAKE) install --directory=$1 HOST=$(BUILD) PREFIX=$(TMP_PREFIX) Q=$(Q) DESTDIR=
++	$(MAKE) install --directory=$1 HOST=$(BUILD) CC=$(BUILD_CC) PREFIX=$(TMP_PREFIX) Q=$(Q) DESTDIR=
+ 
+ endef
+ 
+-- 
+2.17.1
+
