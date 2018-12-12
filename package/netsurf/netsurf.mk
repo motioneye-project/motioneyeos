@@ -27,6 +27,12 @@ endif
 ifeq ($(BR2_PACKAGE_NETSURF_SDL),y)
 NETSURF_DEPENDENCIES += sdl host-libpng
 NETSURF_FRONTEND = framebuffer
+ifeq ($(BR2_PACKAGE_FREETYPE),y)
+NETSURF_DEPENDENCIES += freetype
+define NETSURF_FONTLIB_CONFIGURE_CMDS
+	echo "override NETSURF_FB_FONTLIB := freetype"  >> $(@D)/netsurf/Makefile.config
+endef
+endif
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
@@ -41,6 +47,7 @@ define NETSURF_CONFIGURE_CMDS
 	echo "override NETSURF_USE_DUKTAPE := NO"       >  $(@D)/netsurf/Makefile.config
 	$(NETSURF_ICONV_CONFIGURE_CMDS)
 	$(NETSURF_SVG_CONFIGURE_CMDS)
+	$(NETSURF_FONTLIB_CONFIGURE_CMDS)
 endef
 
 NETSURF_MAKE_OPTS = \
