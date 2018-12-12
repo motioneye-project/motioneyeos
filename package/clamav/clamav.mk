@@ -85,4 +85,11 @@ else
 CLAMAV_CONF_OPTS += --without-pcre
 endif
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+CLAMAV_CONF_OPTS += --with-systemdsystemunitdir=/usr/lib/systemd/system
+CLAMAV_DEPENDENCIES += systemd
+else
+CLAMAV_CONF_OPTS += --with-systemdsystemunitdir=no
+endif
+
 $(eval $(autotools-package))
