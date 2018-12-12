@@ -421,9 +421,11 @@ F:	package/aer-inject/
 F:	package/busybox/
 F:	package/gtest/
 F:	package/initscripts/
+F:	package/intel-microcode/
 F:	package/libpam-radius-auth/
 F:	package/libpam-tacplus/
 F:	package/modem-manager/
+F:	package/pcm-tools/
 F:	package/perl-file-util/
 F:	package/skeleton-custom/
 F:	package/skeleton-init-common/
