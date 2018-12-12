@@ -10,6 +10,6 @@ SDL2_NET_SITE = http://www.libsdl.org/projects/SDL_net/release
 SDL2_NET_LICENSE = Zlib
 SDL2_NET_LICENSE_FILES = COPYING.txt
 SDL2_NET_INSTALL_STAGING = YES
-SDL2_NET_DEPENDENCIES = sdl2
+SDL2_NET_DEPENDENCIES = sdl2 host-pkgconf
 
 $(eval $(autotools-package))
