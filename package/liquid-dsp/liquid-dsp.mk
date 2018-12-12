@@ -32,6 +32,7 @@ endif
 # use FFTW instead of built-in FFT
 ifeq ($(BR2_PACKAGE_FFTW_PRECISION_SINGLE),y)
 LIQUID_DSP_LDFLAGS += -lfftw3f
+LIQUID_DSP_DEPENDENCIES += fftw
 endif
 
 # disable altivec, it has build issues
@@ -41,10 +42,12 @@ endif
 
 ifeq ($(BR2_PACKAGE_FFTW_PRECISION_DOUBLE),y)
 LIQUID_DSP_LDFLAGS += -lfftw3
+LIQUID_DSP_DEPENDENCIES += fftw
 endif
 
 ifeq ($(BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE),y)
 LIQUID_DSP_LDFLAGS += -lfftw3l
+LIQUID_DSP_DEPENDENCIES += fftw
 endif
 
 LIQUID_DSP_CONF_OPTS += \
