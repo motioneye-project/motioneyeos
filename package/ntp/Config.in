@@ -12,7 +12,12 @@ if BR2_PACKAGE_NTP
 config BR2_PACKAGE_NTP_SNTP
 	bool "sntp"
 	help
-	  Simple network time protocol program
+	  Simple network time protocol program (a replacement
+	  for the ntpdate tool)
+
+	  A script is installed as S48sntp which will retrieve and
+	  step the time if there is a large difference before ntpd
+	  takes over the necessary slew adjustments in S49ntp.
 
 config BR2_PACKAGE_NTP_NTP_KEYGEN
 	bool "ntp-keygen"
