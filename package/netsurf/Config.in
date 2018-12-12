@@ -9,7 +9,7 @@ config BR2_PACKAGE_NETSURF
 	help
 	  NetSurf is a compact graphical web browser which aims for
 	  HTML5, CSS and JavaScript support.
-	  Frontends: GTK+ 2 (X11), SDL 1.2 (framebuffer)
+	  Frontends: GTK (X11), SDL 1.2 (framebuffer)
 
 	  http://www.netsurf-browser.org/
 
@@ -26,10 +26,16 @@ config BR2_PACKAGE_NETSURF_SDL
 	  Select SDL 1.2 frontend.
 
 config BR2_PACKAGE_NETSURF_GTK
-	bool "gtk frontend"
+	bool "gtk2 frontend"
 	depends on BR2_PACKAGE_LIBGTK2
 	help
-	  Select GTK frontend.
+	  Select GTK+ 2 frontend.
+
+config BR2_PACKAGE_NETSURF_GTK3
+	bool "gtk3 frontend"
+	depends on BR2_PACKAGE_LIBGTK3
+	help
+	  Select GTK+ 3 frontend.
 
 endchoice
 
