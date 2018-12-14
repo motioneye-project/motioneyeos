@@ -28,6 +28,10 @@ KMOD_CONF_OPTS = --disable-static --enable-shared
 KMOD_CONF_OPTS += --disable-manpages
 HOST_KMOD_CONF_OPTS = --disable-manpages
 
+ifeq ($(BR2_PACKAGE_BASH_COMPLETION),y)
+KMOD_CONF_OPTS += --with-bashcompletiondir=/usr/share/bash-completion/completions
+endif
+
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 KMOD_DEPENDENCIES += zlib
 KMOD_CONF_OPTS += --with-zlib
