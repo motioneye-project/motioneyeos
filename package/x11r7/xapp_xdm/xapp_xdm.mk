@@ -20,6 +20,7 @@ XAPP_XDM_DEPENDENCIES = \
 	xlib_libXt \
 	xorgproto
 XAPP_XDM_CONF_OPTS = \
+	--with-appdefaultdir=/usr/share/X11/app-defaults \
 	--with-utmp-file=/var/adm/utmpx \
 	--with-wtmp-file=/var/adm/wtmpx
 
