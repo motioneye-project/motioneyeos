@@ -16,6 +16,7 @@ PCM_TOOLS_EXE_FILES = \
 define PCM_TOOLS_BUILD_CMDS
 	touch $(@D)/daemon-binaries
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
+		CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11" \
 		UNAME=Linux HOST=_LINUX
 endef
 
