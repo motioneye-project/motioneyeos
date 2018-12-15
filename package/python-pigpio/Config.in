@@ -5,4 +5,4 @@ config BR2_PACKAGE_PYTHON_PIGPIO
 	  which talks to the pigpio daemon to allow control
 	  of the general purpose input outputs (GPIO).
 
-	  http://abyz.co.uk/rpi/pigpio/python.html
+	  http://abyz.me.uk/rpi/pigpio/python.html
