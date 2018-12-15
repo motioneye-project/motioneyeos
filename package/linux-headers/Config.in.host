@@ -28,7 +28,7 @@ config BR2_KERNEL_HEADERS_AS_KERNEL
 
 config BR2_KERNEL_HEADERS_3_2
 	bool "Linux 3.2.x kernel headers"
-	depends on !BR2_aarch64 && !BR2_arc && !BR2_nios2
+	depends on !BR2_aarch64 && !BR2_aarch64_be && !BR2_arc && !BR2_nios2
 	depends on !BR2_riscv
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
 
