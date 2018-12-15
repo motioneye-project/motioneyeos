@@ -1,0 +1,25 @@
+From 7e3f2c482bc16537a093e87a27f0d465804a88e4 Mon Sep 17 00:00:00 2001
+From: Julien Olivain <juju@cotds.org>
+Date: Tue, 11 Dec 2018 23:04:46 +0100
+Subject: [PATCH] csky: update cmdline for serial console and rootfs on sda1
+
+Signed-off-by: Julien Olivain <juju@cotds.org>
+---
+ arch/csky/boot/dts/gx6605s.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/csky/boot/dts/gx6605s.dts b/arch/csky/boot/dts/gx6605s.dts
+index ce56106af967..f5d60b21e6f9 100644
+--- a/arch/csky/boot/dts/gx6605s.dts
++++ b/arch/csky/boot/dts/gx6605s.dts
+@@ -155,6 +155,6 @@
+ 	};
+ 
+ 	chosen {
+-		bootargs = "console=tty0 init=/sbin/init root=/dev/sda2 rw rootwait";
++		bootargs = "console=ttyS0,115200 init=/sbin/init root=/dev/sda1 rw rootwait";
+ 	};
+ };
+-- 
+2.19.2
+
