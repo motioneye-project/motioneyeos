@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ARGPARSE_VERSION_UPSTREAM = 0.5.0
+ARGPARSE_VERSION_UPSTREAM = 0.6.0
 ARGPARSE_VERSION = $(ARGPARSE_VERSION_UPSTREAM)-1
 ARGPARSE_SUBDIR = argparse
 ARGPARSE_LICENSE = MIT
