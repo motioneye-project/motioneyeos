@@ -30,8 +30,8 @@ Upstream status: https://github.com/Lua-cURL/Lua-cURLv3/pull/136
 
 diff --git a/src/lcerr_easy.h b/src/lcerr_easy.h
 index 94ad143c3bfe..895c6d87d72f 100644
---- a/Lua-cURLv3-0.3.7/src/lcerr_easy.h
-+++ b/Lua-cURLv3-0.3.7/src/lcerr_easy.h
+--- a/Lua-cURLv3-0.3.8/src/lcerr_easy.h
++++ b/Lua-cURLv3-0.3.8/src/lcerr_easy.h
 @@ -62,7 +62,11 @@ ERR_ENTRY ( UNKNOWN_TELNET_OPTION    ) /* User specified an unknown option */
  #endif
  ERR_ENTRY ( TELNET_OPTION_SYNTAX     )
