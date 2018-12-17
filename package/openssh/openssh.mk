@@ -23,6 +23,10 @@ define OPENSSH_USERS
 	sshd -1 sshd -1 * - - - SSH drop priv user
 endef
 
+define OPENSSH_PERMISSIONS
+	/var/empty d 755 root root - - - - -
+endef
+
 ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
 OPENSSH_CONF_OPTS += --without-pie
 endif
