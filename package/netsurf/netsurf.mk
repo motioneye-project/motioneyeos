@@ -78,11 +78,12 @@ NETSURF_MAKE_OPTS = \
 	BUILD_CC="$(HOSTCC)" \
 	CC="$(TARGET_CC)" \
 	AR="$(TARGET_AR)" \
-	TMP_PREFIX=$(STAGING_DIR)/usr \
+	TMP_PREFIX=$(@D)/tmpusr \
 	NETSURF_CONFIG="$(NETSURF_CONFIG)" \
 	PREFIX=/usr
 
 define NETSURF_BUILD_CMDS
+	mkdir -p $(@D)/tmpusr
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(NETSURF_MAKE_OPTS) \
 		build
 endef
