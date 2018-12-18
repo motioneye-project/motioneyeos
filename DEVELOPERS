@@ -1423,6 +1423,7 @@ F:	package/kvm-unit-tests/
 F:	package/kvmtool/
 F:	package/libcsv/
 F:	package/libcurl/
+F:	package/libeastl/
 F:	package/libfcgi/
 F:	package/libopenssl/
 F:	package/libselinux/
