@@ -4,14 +4,11 @@
 #
 ################################################################################
 
-WESTON_VERSION = 4.0.0
+WESTON_VERSION = 5.0.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 WESTON_LICENSE = MIT
 WESTON_LICENSE_FILES = COPYING
-
-# 0002-rdp-compositor-fix-compilation-against-FreeRDP-2.0.0.patch
-WESTON_AUTORECONF = YES
 
 WESTON_DEPENDENCIES = host-pkgconf wayland wayland-protocols \
 	libxkbcommon pixman libpng jpeg udev cairo libinput libdrm \
