@@ -1,0 +1,14 @@
+config BR2_PACKAGE_EXEMPI
+	bool "exempi"
+	depends on !BR2_STATIC_LIBS # dlfcn.h
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_ZLIB
+	help
+	  Exempi is an implementation of XMP (Extensible Metadata
+	  Platform). Version 2.x is based on Adobe XMP SDK.
+
+	  http://libopenraw.freedesktop.org/wiki/Exempi
+
+comment "exempi needs a toolchain w/ C++, dynamic library"
+	depends on BR2_STATIC_LIBS || BR2_INSTALL_LIBSTDCPP
