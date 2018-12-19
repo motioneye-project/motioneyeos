@@ -1,3 +1,4 @@
-# Locally calculated
-sha256	e718ee36a17312108f266e8412f840db150afd89e8587d36e685673fff65f142  lua-coatpersistent-lsqlite3-0.2.2-1.src.rock
-sha256	5d36d6a8b413a2d56a466a45314291a0265c514a179e741b3fc95f4dd901abe6  lua-coatpersistent-luasql-0.2.2-1.src.rock
+# computed by luarocks/buildroot
+sha256 e718ee36a17312108f266e8412f840db150afd89e8587d36e685673fff65f142  lua-coatpersistent-lsqlite3-0.2.2-1.src.rock
+sha256 5d36d6a8b413a2d56a466a45314291a0265c514a179e741b3fc95f4dd901abe6  lua-coatpersistent-luasql-0.2.2-1.src.rock
+sha256 f8ed30644056ceff4315e694a1c1af4af4f08ec0adabae353ab8f3f5289ffbf3  lua-CoatPersistent-0.2.2/COPYRIGHT

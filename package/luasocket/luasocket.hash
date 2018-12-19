@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	453fc1d0e9b6a44bbada4290d565f840a5e96ba2d1b47562ba38bd9c7e82195a  luasocket-3.0rc1-1.src.rock
+# computed by luarocks/buildroot
+sha256 453fc1d0e9b6a44bbada4290d565f840a5e96ba2d1b47562ba38bd9c7e82195a  luasocket-3.0rc1-1.src.rock
+sha256 8e8c6314d9e78fe452ee355167f2c40cfbee8207e14dcb5ddd4a2655cb5c6aad  luasocket-3.0-rc1/LICENSE
