@@ -72,6 +72,12 @@ endif
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
 
+# Upgrade helper
+$(1)-upgrade: host-luarocks
+	$$(LUAROCKS_RUN_CMD) buildroot $$($(2)_NAME_UPSTREAM) $(1)
+
+.PHONY: $(1)-upgrade
+
 endef
 
 ################################################################################
