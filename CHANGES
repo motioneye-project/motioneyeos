@@ -1,3 +1,26 @@
+2018.11.1, Released December 20th, 2018
+
+	Important / security related fixes.
+
+	defconfigs: Fixes for bananapi m2 ultra, ci20
+
+	Download wrapper: Fix for urlencode handling
+
+	Updated/fixed packages: asterisk, docker-compose,
+	docker-engine, dt-utils, gnutls, go, grub, libbsd, libcurl,
+	libpgpme, libiscsi, liblo, libmpd, libopenssl, liboping,
+	libpam-tacplus, libpjsip, linux-firmware, liquid-dsp,
+	lua-cqueue, luvi, lxc, lynx, nginx, nodejs, openzwave, php,
+	pps-tools, proftpd, prosody, sdl2_net, squashfs, swupdate,
+	uclibc, vtu, webkitgtk, wine, xen
+
+	New packages: docker-cli
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11426: pps-tools bash dependency
+	#11536: dt-utils building fails with glibc 2.28
+
 2018.11, Released December 1st, 2018
 
 	Minor fixes.
