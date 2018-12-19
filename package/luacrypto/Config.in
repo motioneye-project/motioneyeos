@@ -8,4 +8,4 @@ config BR2_PACKAGE_LUACRYPTO
 	  (MD5, SHA-1, HMAC, and more) and crypto-grade random number
 	  generators communication.
 
-	  http://luacrypto.luaforge.net
+	  http://mkottman.github.com/luacrypto/
