@@ -386,6 +386,16 @@ comment "automatic network configuration via DHCP needs ifupdown or busybox or n
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
 
+config BR2_SYSTEM_DEFAULT_PATH
+	string "Set the system's default PATH"
+	default "/bin:/sbin:/usr/bin:/usr/sbin"
+	help
+	  Sets the system's default PATH. It is being used in
+	  /etc/profile in the skeleton-init-common package and by some
+	  daemons.
+
+	  The default should work in most cases.
+
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"
 	default y

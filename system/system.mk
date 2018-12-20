@@ -86,3 +86,7 @@ define SYSTEM_REMOUNT_ROOT_INITTAB
 	$(SED) '/^[^#].*-o remount,rw \/$$/s~^~#~' $(TARGET_DIR)/etc/inittab
 endef
 endif
+
+ifeq ($(BR_BUILDING)$(BR2_SYSTEM_DEFAULT_PATH),y"")
+$(error BR2_SYSTEM_DEFAULT_PATH can't be empty)
+endif
