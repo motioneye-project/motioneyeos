@@ -742,6 +742,23 @@
 	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is
 		enabled
 
+2018.02.9, Released December 20th, 2018
+
+	Important / security related fixes.
+
+	defconfigs: Fixes for ci20
+
+	Updated/fixed packages: c-ares, dante, freetype, ghostscript,
+	glibc, gnutls, go, libcurl, libgpgme, libid3tag, libiscsi,
+	libmpd, libopenssl, libpjsip, linux, liquid-dsp, luvi, lynx,
+	msgpack, nginx, nodejs, php, popt, pps-tools, python-numpy,
+	python-requests, samba4, sdl2_net, squashfs, swupdate, uclibc,
+	wine, webkitgtk, xfsprogs
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11426: pps-tools bash dependency
+
 2018.02.8, Released November 26th, 2018
 
 	Important / security related fixes.
