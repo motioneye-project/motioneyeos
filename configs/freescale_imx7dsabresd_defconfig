@@ -2,6 +2,9 @@
 BR2_arm=y
 BR2_cortex_a7=y
 
+# patches
+BR2_GLOBAL_PATCH_DIR="board/freescale/imx7dsdb/patches"
+
 # Linux headers same as kernel, a 4.9 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_9=y
 
