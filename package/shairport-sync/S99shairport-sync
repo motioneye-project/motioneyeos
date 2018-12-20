@@ -6,16 +6,18 @@ OPTIONS="-d"
 case "$1" in
     start)
 	printf "Starting shairport-sync: "
-	start-stop-daemon -S -q -p /var/run/shairport-sync.pid --exec /usr/bin/shairport-sync -- $OPTIONS
+	start-stop-daemon -S -q --exec /usr/bin/shairport-sync -- $OPTIONS
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     stop)
 	printf "Stopping shairport-sync: "
-	start-stop-daemon -K -q -p /var/run/shairport-sync.pid
+	start-stop-daemon -K -q --exec /usr/bin/shairport-sync \
+		-p /var/run/shairport-sync/shairport-sync.pid
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 	;;
     restart)
 	$0 stop
+	sleep 1
 	$0 start
 	;;
     *)
