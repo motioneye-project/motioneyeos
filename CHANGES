@@ -184,6 +184,26 @@
 	#11451: Can't find libmpfr.so.4 when using external toolchain on ubuntu..
 	#11481: Docs: Is external.desc required?
 
+2018.08.4, Released December 20th, 2018
+
+	Important / security related fixes.
+
+	Defconfigs: Fixes for ci20, orangepi zero plus 2
+
+	Download wrapper: Fix for urlencode handling
+
+	Updated/fixed packages: c-ares, dante, docker-compose,
+	domoticz, freetype, ghostscript, gnutls, libcurl, libgpgme,
+	libid3tag, libiscsi, libmpd, libopenssl, liboping, libpjsip,
+	linux-firmware, liquid-dsp, luvi, lynx, msgpack, nginx,
+	nodejs, php, popt, pps-tools, prosody, python-numpy,
+	python-requests, samba4, sdl2_net, squashfs, swupdate,
+	systemd, uclibc, vte, webkitgtk, wine, xfsprogs
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11426: pps-tools bash dependency
+
 2018.08.3, Released November 26th, 2018
 
 	Important / security related fixes.
