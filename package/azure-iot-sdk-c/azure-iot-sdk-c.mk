@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AZURE_IOT_SDK_C_VERSION = 2018-03-16
+AZURE_IOT_SDK_C_VERSION = 2018-12-13
 AZURE_IOT_SDK_C_SITE = https://github.com/Azure/azure-iot-sdk-c
 AZURE_IOT_SDK_C_SITE_METHOD = git
 AZURE_IOT_SDK_C_GIT_SUBMODULES = YES
@@ -13,6 +13,11 @@ AZURE_IOT_SDK_C_LICENSE_FILES = LICENSE
 AZURE_IOT_SDK_C_INSTALL_STAGING = YES
 AZURE_IOT_SDK_C_DEPENDENCIES = libxml2 openssl libcurl util-linux
 AZURE_IOT_SDK_C_CONF_OPTS = -Dskip_samples=ON
+
+# When cross-compiling, CMake doesn't internally pass any
+# CMAKE_SYSTEM_VERSION, so pass a dummy version to make the c-utility
+# WIN32 test happy.
+AZURE_IOT_SDK_C_CONF_OPTS += -DCMAKE_SYSTEM_VERSION=1.0
 
 # The project only supports building one kind of library.
 # Further the install target installs the wrong files, so we do it here:
