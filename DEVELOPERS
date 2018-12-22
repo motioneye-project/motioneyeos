@@ -2150,19 +2150,6 @@ F:	package/llvm/
 N:	Vanya Sergeev <vsergeev@gmail.com>
 F:	package/lua-periphery/
 
-N:	Vicente Olivert Riera <Vincent.Riera@imgtec.com>
-F:	arch/Config.in.mips
-F:	package/gnupg2/
-F:	package/hidapi/
-F:	package/libfm/
-F:	package/libfm-extra/
-F:	package/libksba/
-F:	package/menu-cache/
-F:	package/openblas/
-F:	package/openmpi/
-F:	package/pinentry/
-F:	package/trinity/
-
 N:	Vincent Prince <vincent.prince.fr@gmail.com>
 F:	package/nss-myhostname/
 
