@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MENDER_VERSION = 1.4.0
+MENDER_VERSION = 1.7.0
 MENDER_SITE = $(call github,mendersoftware,mender,$(MENDER_VERSION))
 MENDER_LICENSE = Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, MIT, OLDAP-2.8
 
