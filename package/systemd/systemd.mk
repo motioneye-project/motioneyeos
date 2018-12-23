@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 239
+SYSTEMD_VERSION = 240
 SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
@@ -34,7 +34,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dsystem-uid-max=999 \
 	-Dsystem-gid-max=999 \
 	-Dtelinit-path=$(TARGET_DIR)/sbin/telinit \
-	-Dkill-path=/usr/bin/kill \
 	-Dkmod-path=/usr/bin/kmod \
 	-Dkexec-path=/usr/sbin/kexec \
 	-Dsulogin-path=/usr/sbin/sulogin \
@@ -251,9 +250,9 @@ SYSTEMD_CONF_OPTS += -Dhostnamed=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_MYHOSTNAME),y)
-SYSTEMD_CONF_OPTS += -Dmyhostname=true
+SYSTEMD_CONF_OPTS += -Dnss-myhostname=true
 else
-SYSTEMD_CONF_OPTS += -Dmyhostname=false
+SYSTEMD_CONF_OPTS += -Dnss-myhostname=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMEDATED),y)
