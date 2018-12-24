@@ -1,5 +1,5 @@
-# From https://www.python.org/downloads/release/python-371/
-md5		0a57e9022c07fad3dadb2eef58568edb Python-3.7.1.tar.xz
+# From https://www.python.org/downloads/release/python-372/
+md5		df6ec36011808205beda239c72f947cb Python-3.7.2.tar.xz
 # Locally computed
-sha256 fa7e2b8e8c9402f192ad56dc4f814089d1c4466c97d780f5e5acc02c04243d6d Python-3.7.1.tar.xz
+sha256 d83fe8ce51b1bb48bbcf0550fd265b9a75cdfdfa93f916f9e700aef8444bf1bb Python-3.7.2.tar.xz
 sha256 b9a6d9320b8f2693e8d41e496ce56caadacaddcca9be2a64a61749278f425cf2 LICENSE
