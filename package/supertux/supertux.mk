@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUPERTUX_VERSION = 0.5.1
+SUPERTUX_VERSION = 0.6.0
 SUPERTUX_SITE = https://github.com/SuperTux/supertux/releases/download/v$(SUPERTUX_VERSION)
 SUPERTUX_SOURCE = SuperTux-v$(SUPERTUX_VERSION)-Source.tar.gz
 
@@ -15,8 +15,8 @@ SUPERTUX_LICENSE_FILES = LICENSE.txt data/AUTHORS
 
 # Use bundled squirrel, tinygettext sexp-cpp packages which are hardcoded in
 # the CMake build system.
-SUPERTUX_DEPENDENCIES = host-pkgconf boost libcurl libgl libglew libglu \
-	libogg libvorbis openal physfs sdl2 sdl2_image
+SUPERTUX_DEPENDENCIES = host-pkgconf boost freetype libcurl libgl libglew libglu \
+	libogg libpng libvorbis openal physfs sdl2 sdl2_image
 
 # ENABLE_BOOST_STATIC_LIBS=OFF: use boost shared libraries since supertux
 # depends on !BR2_STATIC_LIBS and boost provide only shared libraries with
@@ -26,6 +26,7 @@ SUPERTUX_DEPENDENCIES = host-pkgconf boost libcurl libgl libglew libglu \
 # Install the game directly in /usr/bin and game data in /usr/share/supertux2.
 # Force using physfs.so from staging since the check on PHYSFS_getPrefDir symbol
 # in physfs.h (CHECK_SYMBOL_EXISTS) doesn't work.
+# ENABLE_OPENGLES2=OFF: Disable opengles2 for now.
 SUPERTUX_CONF_OPTS += \
 	-DENABLE_BOOST_STATIC_LIBS=OFF \
 	-DBUILD_DOCUMENTATION=OFF \
@@ -33,7 +34,8 @@ SUPERTUX_CONF_OPTS += \
 	-DGLBINDING_ENABLED=OFF \
 	-DINSTALL_SUBDIR_BIN="bin" \
 	-DINSTALL_SUBDIR_SHARE="share/supertux2" \
-	-DUSE_SYSTEM_PHYSFS=ON
+	-DUSE_SYSTEM_PHYSFS=ON \
+	-DENABLE_OPENGLES2=OFF
 
 # Avoid incompatible posix_memalign declaration on x86 and x86_64 with
 # musl.
@@ -60,8 +62,6 @@ endif
 # [1] https://gcc.gnu.org/bugzilla/show_bug.cgi?id=58241#c3
 ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 define SUPERTUX_FIX_ALTIVEC_ISSUE
-	$(SED) 's%std=c++0x%std=gnu++0x%' $(@D)/CMakeLists.txt
-	$(SED) 's%std=c++11%std=gnu++11%' $(@D)/CMakeLists.txt
 	$(SED) 's%std=c++0x%std=gnu++0x%' $(@D)/external/tinygettext/CMakeLists.txt
 endef
 SUPERTUX_POST_PATCH_HOOKS += SUPERTUX_FIX_ALTIVEC_ISSUE
