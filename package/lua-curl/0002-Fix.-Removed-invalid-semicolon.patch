@@ -1,0 +1,28 @@
+From 39aeb8aa6f3a379918c58560d58f243fa7ec2b8b Mon Sep 17 00:00:00 2001
+From: Anderson Silva <anderson.silva@cujo.com>
+Date: Wed, 11 Jul 2018 11:59:33 -0700
+Subject: [PATCH] Fix. Removed invalid semicolon
+
+[Thomas: backported from upstream commit
+3f0489157d2f1e3a90a32f8fb31ade6e02296367]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/lceasy.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Lua-cURLv3-0.3.8/src/lceasy.h b/Lua-cURLv3-0.3.8/src/lceasy.h
+index d6ccefd..7c95668 100644
+--- a/Lua-cURLv3-0.3.8/src/lceasy.h
++++ b/Lua-cURLv3-0.3.8/src/lceasy.h
+@@ -47,7 +47,7 @@ struct lcurl_multi_tag;
+ #define lcurl_multi_t struct lcurl_multi_tag
+ #if LCURL_CURL_VER_GE(7,56,0)
+ struct lcurl_mime_tag;
+-#define lcurl_mime_t struct lcurl_mime_tag;
++#define lcurl_mime_t struct lcurl_mime_tag
+ #endif
+ #endif
+ 
+-- 
+2.20.1
+
