@@ -94,3 +94,6 @@ will therefore only use a few of them.
 * +FOO_NINJA_ENV+, to specify additional environment variables to pass to
   +ninja+, meson companion tool in charge of the build operations. By default,
   empty.
+
+* +FOO_NINJA_OPTS+, to specify a space-separated list of targets to build. By
+  default, empty, to build the default target(s).
