@@ -63,7 +63,7 @@ also be defined.
 * +LIBFOO_NEEDS_EXTERNAL_WAF+ can be set to +YES+ or +NO+ to tell
   Buildroot to use the bundled +waf+ executable. If set to +NO+, the
   default, then Buildroot will use the waf executable provided in the
-  package source tree; if set to +YES+, then Buidlroot will download,
+  package source tree; if set to +YES+, then Buildroot will download,
   install waf as a host tool and use it to build the package.
 
 * +LIBFOO_WAF_OPTS+, to specify additional options to pass to the
