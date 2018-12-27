@@ -112,9 +112,14 @@ HOST_LIBGLIB2_DEPENDENCIES = \
 	host-util-linux \
 	host-zlib
 
+# We explicitly specify a giomodule-dir to avoid having a value
+# containing ${libdir} in gio-2.0.pc. Indeed, a value depending on
+# ${libdir} would be prefixed by the sysroot by pkg-config, causing a
+# bogus installation path once combined with $(DESTDIR).
 LIBGLIB2_CONF_OPTS = \
 	--with-pcre=system \
-	--disable-compile-warnings
+	--disable-compile-warnings \
+	--with-gio-module-dir=/usr/lib/gio/modules
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
