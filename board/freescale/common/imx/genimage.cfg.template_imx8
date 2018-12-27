@@ -3,7 +3,7 @@
 # We mimic the .sdcard Freescale's image format:
 # * the SD card must have 33 kB free space at the beginning,
 # * U-Boot is integrated into imx8-boot-sd.bin and is dumped as is,
-# * a FAT partition at offset 32MB is containing Image and DTB files
+# * a FAT partition at offset 8MB is containing Image and DTB files
 # * a single root filesystem partition is required (ext2, ext3 or ext4)
 #
 
