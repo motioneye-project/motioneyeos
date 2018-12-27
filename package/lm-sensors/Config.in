@@ -25,12 +25,14 @@ config BR2_PACKAGE_LM_SENSORS_FANCONTROL
 
 config BR2_PACKAGE_LM_SENSORS_ISADUMP
 	bool "isadump"
+	depends on BR2_i386 || BR2_x86_64
 	help
 	  Isadump is a small helper program to examine registers
 	  visible through the ISA bus.
 
 config BR2_PACKAGE_LM_SENSORS_ISASET
 	bool "isaset"
+	depends on BR2_i386 || BR2_x86_64
 	help
 	  Isaset is a small helper program to set register visible
 	  through the ISA bus.
