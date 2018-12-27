@@ -59,13 +59,27 @@ Additionally, there are some other useful make targets:
 |===================================================
 | command/target    | Description
 
-| +show-depends+    | Displays the dependencies required to build the
+| +show-depends+    | Displays the first-order dependencies required to build the
 package
+
+| +show-recursive-depends+ | Recursively displays the dependencies
+  required to build the package
+
+| +show-rdepends+   | Displays the first-order reverse dependencies of
+  the package (i.e packages that directly depend on it)
+
+| +show-recursive-rdepends+ | Recursively displays the reverse
+  dependencies of the package (i.e the packages that depend on it,
+  directly or indirectly)
 
 | +graph-depends+   | Generate a dependency graph of the package, in the
 context of the current Buildroot configuration. See
 xref:graph-depends[this section] for more details about dependency
 graphs.
+
+| +graph-rdepends+  | Generate a graph of this package reverse
+  dependencies (i.e the packages that depend on it, directly or
+  indirectly)
 
 | +dirclean+        | Remove the whole package build directory
 
