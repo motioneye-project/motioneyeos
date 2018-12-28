@@ -39,4 +39,14 @@ else
 WGET_CONF_OPTS += --without-zlib
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE2),y)
+WGET_CONF_OPTS += --disable-pcre --enable-pcre2
+WGET_DEPENDENCIES += pcre2
+else ifeq ($(BR2_PACKAGE_PCRE),y)
+WGET_CONF_OPTS += --enable-pcre --disable-pcre2
+WGET_DEPENDENCIES += pcre
+else
+WGET_CONF_OPTS += --disable-pcre --disable-pcre2
+endif
+
 $(eval $(autotools-package))
