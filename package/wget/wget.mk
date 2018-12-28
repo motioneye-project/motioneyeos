@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WGET_VERSION = 1.19.5
+WGET_VERSION = 1.20.1
 WGET_SOURCE = wget-$(WGET_VERSION).tar.lz
 WGET_SITE = $(BR2_GNU_MIRROR)/wget
 WGET_DEPENDENCIES = host-pkgconf
