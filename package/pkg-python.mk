@@ -85,7 +85,9 @@ HOST_PKG_PYTHON_SETUPTOOLS_ENV = \
 	PYTHONNOUSERSITE=1
 
 HOST_PKG_PYTHON_SETUPTOOLS_INSTALL_OPTS = \
-	--prefix=$(HOST_DIR)
+	--prefix=$(HOST_DIR) \
+	--root=/ \
+	--single-version-externally-managed
 
 ################################################################################
 # inner-python-package -- defines how the configuration, compilation
