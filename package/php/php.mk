@@ -244,7 +244,7 @@ PHP_POST_CONFIGURE_HOOKS += PHP_DISABLE_VALGRIND
 
 ### Use external PCRE if it's available
 ifeq ($(BR2_PACKAGE_PCRE),y)
-PHP_CONF_OPTS += --with-pcre-regex=$(STAGING_DIR)/usr
+PHP_CONF_OPTS += --with-pcre-regex
 PHP_DEPENDENCIES += pcre
 else
 # The bundled pcre library is not configurable through ./configure options,
