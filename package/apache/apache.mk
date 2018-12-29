@@ -63,6 +63,15 @@ else
 APACHE_CONF_OPTS += --disable-lua
 endif
 
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+APACHE_CONF_OPTS += \
+	--enable-http2 \
+	--with-nghttp2=$(STAGING_DIR)/usr
+APACHE_DEPENDENCIES += nghttp2
+else
+APACHE_CONF_OPTS += --disable-http2
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 APACHE_DEPENDENCIES += openssl
 APACHE_CONF_OPTS += \
