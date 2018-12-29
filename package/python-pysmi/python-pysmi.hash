@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pysmi/json
-md5	8df6d5ebc5d71bffb09f47787d8c7b9e  pysmi-0.3.2.tar.gz
-sha256	309039ab9bd458cc721692ffff10b4ad2c4a8e731e6507c34866ca2727323353  pysmi-0.3.2.tar.gz
+md5	7ca6a849ea51929cfd44c4e5bc316b0e  pysmi-0.3.3.tar.gz
+sha256	4e35c2b935ba5a68e086d7781dae1b508c228a960279620d182e876448acf02f  pysmi-0.3.3.tar.gz
 # Locally computed sha256 checksums
-sha256	ac2f8f67cae76e36a25496fbdf3293dd14b3d6db63f1ce4242ae9dd4fb7b90fd  LICENSE.rst
+sha256	c43704eafcfa2bc33e56168f2b498c3c34a1d7865855626a52b5af411fc5837f  LICENSE.rst
