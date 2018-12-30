@@ -1904,13 +1904,6 @@ N:	Scott Fan <fancp2007@gmail.com>
 F:	package/libssh/
 F:	package/x11r7/xdriver_xf86-video-fbturbo/
 
-N:	Sebastien Bourdelin <sebastien.bourdelin@savoirfairelinux.com>
-F:	package/atf/
-F:	package/cppunit/
-F:	package/kyua/
-F:	package/lutok/
-F:	package/yaml-cpp/
-
 N:	Sébastien Szymanski <sebastien.szymanski@armadeus.com>
 F:	package/mmc-utils/
 F:	package/python-flask-jsonrpc/
