@@ -1,6 +1,5 @@
 config BR2_PACKAGE_LUA_MSGPACK_NATIVE
 	bool "lua-msgpack-native"
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER
 	depends on BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
 	help
 	  This is a native, C language implementation of msgpack
