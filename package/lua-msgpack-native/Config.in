@@ -7,6 +7,6 @@ config BR2_PACKAGE_LUA_MSGPACK_NATIVE
 
 	  https://github.com/kengonakajima/lua-msgpack-native
 
-comment "lua-msgpack-native needs a Lua 5.1 interpreter"
+comment "lua-msgpack-native needs Lua 5.1 or LuaJIT"
 	depends on !BR2_PACKAGE_LUA_5_1
 	depends on !BR2_PACKAGE_LUAJIT
