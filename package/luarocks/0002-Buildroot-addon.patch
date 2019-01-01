@@ -235,7 +235,7 @@ index 0000000..606b94c
 +      f:write(ucname .. '_LICENSE_FILES =')
 +      for i = 1, #licenses do
 +         local file = licenses[i]
-+         f:write(' \\\n    $(' .. ucname .. '_SUBDIR)/' .. file)
++         f:write(' \\\n\t$(' .. ucname .. '_SUBDIR)/' .. file)
 +      end
 +      f:write('\n')
 +   end
