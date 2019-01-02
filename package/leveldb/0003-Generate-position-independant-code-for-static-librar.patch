@@ -1,0 +1,52 @@
+From 6ed1b57ef6bcee0d497c181730710b2b0fafbfb3 Mon Sep 17 00:00:00 2001
+From: =?utf-8?q?Ga=C3=ABl=20PORTAY?= <gael.portay@savoirfairelinux.com>
+Date: Fri, 31 Aug 2018 12:23:46 -0400
+Subject: [PATCH] Generate position independant code for static library
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: 8bit
+
+Currently, only shared libraries are using the PIC flag.
+
+Generalize this flag for static libraries in order to let them linkable
+by dynamic libraries.
+
+Fixes:
+
+	/home/gportay/src/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/x86_64-amd-linux-gnu/6.2.0/../../../../x86_64-amd-linux-gnu/bin/ld: /home/gportay/src/buildroot/output/host/x86_64-buildroot-linux-gnu/sysroot/usr/lib/libmemenv.a(memenv.o): relocation R_X86_64_32S against `.rodata' can not be used when making a shared object; recompile with -fPIC
+	/home/gportay/src/buildroot/output/host/x86_64-buildroot-linux-gnu/sysroot/usr/lib/libmemenv.a: error adding symbols: Bad value
+	collect2: error: ld returned 1 exit status
+
+Upstream-Status: Inappropriate [upstream has migrated to cmake]
+Signed-off-by: Gaël PORTAY <gael.portay@savoirfairelinux.com>
+---
+ build_detect_platform | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/build_detect_platform b/build_detect_platform
+index d2a20ce..4839444 100755
+--- a/build_detect_platform
++++ b/build_detect_platform
+@@ -55,8 +55,8 @@ fi
+ 
+ COMMON_FLAGS=
+ CROSS_COMPILE=
+-PLATFORM_CCFLAGS=
+-PLATFORM_CXXFLAGS=
++PLATFORM_CCFLAGS="-fPIC"
++PLATFORM_CXXFLAGS="-fPIC"
+ PLATFORM_LDFLAGS=
+ PLATFORM_LIBS=
+ PLATFORM_SHARED_EXT="so"
+@@ -197,7 +197,7 @@ else
+ EOF
+     if [ "$?" = 0 ]; then
+         COMMON_FLAGS="$COMMON_FLAGS -DLEVELDB_PLATFORM_POSIX -DLEVELDB_ATOMIC_PRESENT"
+-        PLATFORM_CXXFLAGS="-std=c++0x"
++        PLATFORM_CXXFLAGS="$PLATFORM_CXXFLAGS -std=c++0x"
+     else
+         COMMON_FLAGS="$COMMON_FLAGS -DLEVELDB_PLATFORM_POSIX"
+     fi
+-- 
+2.18.0
+
