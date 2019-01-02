@@ -15,13 +15,6 @@ built-in microSD card slot *WILL NOT WORK*. The Internet says that you have to
 upload the first bootloader via UART. This manual does not cover these steps;
 only MicroSoMs without the eMMC are supported.
 
-Limitations
-===========
-
-There's no access to the SPI flash in this combination of kernel/uboot/dts.
-
-There is no support for the SFP.
-
 Build
 =====
 
@@ -49,7 +42,7 @@ command as root:
 
   dd if=output/images/sdcard.img of=/dev/<your-microsd-device> conv=fdatasync
 
-*** WARNING! The script will destroy all the card content. Use with care! ***
+*** WARNING! The dd command will destroy all the card content. Use with care! ***
 
 For details about the medium image layout, see the definition in
 board/solidrun/clearfog/genimage.cfg.
