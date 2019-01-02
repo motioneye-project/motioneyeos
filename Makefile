@@ -550,9 +550,16 @@ include $(BR2_EXTERNAL_MKS)
 #
 # Only trigger the check for default builds. If the user forces building
 # a package, even if not enabled in the configuration, we want to accept
-# it.
+# it. However; we also want to be able to force checking the dependencies
+# if the user so desires. Forcing a dependency check is useful in the case
+# of test-pkg, as we want to make sure during testing, that a package has
+# all the dependencies selected in the config file.
 #
 ifeq ($(MAKECMDGOALS),)
+BR_FORCE_CHECK_DEPENDENCIES = YES
+endif
+
+ifeq ($(BR_FORCE_CHECK_DEPENDENCIES),YES)
 
 define CHECK_ONE_DEPENDENCY
 ifeq ($$($(2)_TYPE),target)
