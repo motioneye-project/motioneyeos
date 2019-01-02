@@ -26,17 +26,6 @@ config BR2_KERNEL_HEADERS_AS_KERNEL
 	bool "Same as kernel being built"
 	depends on BR2_LINUX_KERNEL
 
-config BR2_KERNEL_HEADERS_3_2
-	bool "Linux 3.2.x kernel headers"
-	depends on !BR2_aarch64 && !BR2_aarch64_be && !BR2_arc && !BR2_nios2
-	depends on !BR2_riscv
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_2
-
-config BR2_KERNEL_HEADERS_4_1
-	bool "Linux 4.1.x kernel headers"
-	depends on !BR2_riscv
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_1
-
 config BR2_KERNEL_HEADERS_4_4
 	bool "Linux 4.4.x kernel headers"
 	depends on !BR2_riscv
@@ -51,14 +40,6 @@ config BR2_KERNEL_HEADERS_4_14
 	bool "Linux 4.14.x kernel headers"
 	depends on !BR2_riscv
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_14
-
-config BR2_KERNEL_HEADERS_4_16
-	bool "Linux 4.16.x kernel headers"
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_16
-
-config BR2_KERNEL_HEADERS_4_18
-	bool "Linux 4.18.x kernel headers"
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
 
 config BR2_KERNEL_HEADERS_4_19
 	bool "Linux 4.19.x kernel headers"
@@ -304,13 +285,9 @@ endchoice
 
 config BR2_DEFAULT_KERNEL_HEADERS
 	string
-	default "3.2.102"	if BR2_KERNEL_HEADERS_3_2
-	default "4.1.52"	if BR2_KERNEL_HEADERS_4_1
 	default "4.4.169"	if BR2_KERNEL_HEADERS_4_4
 	default "4.9.148"	if BR2_KERNEL_HEADERS_4_9
 	default "4.14.91"	if BR2_KERNEL_HEADERS_4_14
-	default "4.16.18"	if BR2_KERNEL_HEADERS_4_16
-	default "4.18.20"	if BR2_KERNEL_HEADERS_4_18
 	default "4.19.13"	if BR2_KERNEL_HEADERS_4_19
 	default "4.20"		if BR2_KERNEL_HEADERS_4_20
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION

@@ -255,6 +255,34 @@ config BR2_PACKAGE_LIBNFTNL_XML
 	help
 	  libnftnl removed integration with libmxml.
 
+config BR2_KERNEL_HEADERS_3_2
+	bool "kernel headers version 3.2.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 3.2.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_KERNEL_HEADERS_4_1
+	bool "kernel headers version 4.1.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 4.1.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_KERNEL_HEADERS_4_16
+	bool "kernel headers version 4.16.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 4.16.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
+config BR2_KERNEL_HEADERS_4_18
+	bool "kernel headers version 4.18.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 4.18.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
 ###############################################################################
 comment "Legacy options removed in 2018.08"
 
