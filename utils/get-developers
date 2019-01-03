@@ -24,9 +24,7 @@ def parse_args():
 
 
 def __main__():
-    # DEVELOPERS is one level up from here
-    devs_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), '..')
-    devs = getdeveloperlib.parse_developers(devs_dir)
+    devs = getdeveloperlib.parse_developers()
     if devs is None:
         sys.exit(1)
     args = parse_args()
@@ -52,7 +50,7 @@ def __main__():
 
     # Handle the check action
     if args.check:
-        files = getdeveloperlib.check_developers(devs, devs_dir)
+        files = getdeveloperlib.check_developers(devs)
         for f in files:
             print(f)
 
