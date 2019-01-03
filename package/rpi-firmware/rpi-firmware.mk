@@ -24,6 +24,12 @@ define RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
 		$(INSTALL) -D -m 0644 $${ovldtb} $(BINARIES_DIR)/rpi-firmware/overlays/$${ovldtb##*/} || exit 1; \
 	done
 endef
+else
+# Still create the directory, so a genimage.cfg can include it independently of
+# whether _INSTALL_DTB_OVERLAYS is selected or not.
+define RPI_FIRMWARE_INSTALL_DTB_OVERLAYS
+	$(INSTALL) -d $(BINARIES_DIR)/rpi-firmware/overlays
+endef
 endif
 
 ifeq ($(BR2_PACKAGE_RPI_FIRMWARE_INSTALL_VCDBG),y)
