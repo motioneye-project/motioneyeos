@@ -115,22 +115,22 @@ function do_download() {
     rm -rf $FW_DIR/*
     mkdir -p $FW_DIR
 
-	# Look for local file first
+    # Look for local file first
     if [ -f "$1" ]; then
         version="custom"
         FNAME=`basename $1`
         FILEEXT=${FNAME##*.}
-		DST_FNAME=""
+        DST_FNAME=""
         if [ "$FILEEXT" == "xz" ]; then
             DST_FNAME="$FW_DIR/$FW_FILE_XZ"
         elif [ "$FILEEXT" == "gz" ]; then
             DST_FNAME="$FW_DIR/$FW_FILE_GZ"
         fi
-		if [ -n "$DST_FNAME" ]; then
+        if [ -n "$DST_FNAME" ]; then
             cp -f $1 $DST_FNAME
-			echo $version > $FW_DIR/$VER_FILE
-			return
-		fi
+            echo $version > $FW_DIR/$VER_FILE
+            return
+        fi
     fi
 
     source $OS_CONF
