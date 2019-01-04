@@ -325,6 +325,7 @@ config BR2_PACKAGE_SYSTEMD_TMPFILES
 
 config BR2_PACKAGE_SYSTEMD_VCONSOLE
 	bool "enable vconsole tool"
+	default y
 	help
 	  systemd-vconsole-setup is an early boot service that
 	  configures the virtual console font and console keymap.
