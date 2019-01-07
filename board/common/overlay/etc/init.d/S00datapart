@@ -1,5 +1,7 @@
 #!/bin/bash
 
+backup_conf="/boot/motioneyeos_config.tar.gz"
+
 test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
@@ -56,6 +58,15 @@ case "$1" in
         # mount other partitions depending on data
         mount -T /etc/fstab.disk -a
         mount -T /etc/fstab.extra -a
+
+        # restore motionEyeOS config
+        if [[ -f $backup_conf ]]; then
+            tar -C /data/etc -xf $backup_conf
+            RO=$?
+            test $RO == 0 && mount -o remount,rw /boot
+            rm -f $backup_conf
+            test $RO == 0 && mount -o remount,ro /boot
+        fi
         ;;
 
     stop)

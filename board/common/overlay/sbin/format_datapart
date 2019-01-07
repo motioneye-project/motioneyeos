@@ -1,0 +1,50 @@
+#!/bin/bash
+
+backup_conf="/boot/motioneyeos_config.tar.gz"
+
+echo "Detecting disk device"
+root_dev=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
+if [[ "$root_dev" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+    disk_dev=${BASH_REMATCH[1]}
+    parts_to_rm=$(fdisk -l ${disk_dev} | grep -e "^${disk_dev}p[0-9]" | grep -v -e "${disk_dev}p[1|2]" | cut -d ' ' -f 1)
+elif [[ "$root_dev" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+    disk_dev=${BASH_REMATCH[1]}
+    parts_to_rm=$(fdisk -l ${disk_dev} | grep -e "^${disk_dev}[0-9]" | grep -v -e "${disk_dev}[1|2]" | cut -d ' ' -f 1)
+else
+    echo "unknown ($root_dev)"
+    exit 1
+fi
+echo "$disk_dev"
+
+if [[ -d /data/etc ]]; then
+    echo "Backing up motionEyeOS configuration ..."
+    RO=$?
+    test $RO == 0 && mount -o remount,rw /boot
+    tar -czf $backup_conf -C /data/etc .
+    if [ ! $? ]; then
+        echo "Failed"
+        exit 1
+    fi
+    test $RO == 0 && mount -o remount,ro /boot
+    echo "Done"
+else
+    echo "motionEyeOS configuration not found"
+fi
+
+fdisk_cmd=""
+for part in ${parts_to_rm}; do
+    echo "Deleting partition: $part"
+    if [[ "$part" =~ ^([/a-z0-9]+)([0-9])$ ]]; then
+        part_no=${BASH_REMATCH[2]}
+        fdisk_cmd="$fdisk_cmd d
+            $part_no
+            "
+        umount -lf $part
+    fi
+done
+if [ -n "$fdisk_cmd" ]; then
+    fdisk_cmd="$fdisk_cmd w"
+    echo "$fdisk_cmd" | /sbin/fdisk $disk_dev &>/dev/null
+    echo "Rebooting"
+    reboot
+fi
