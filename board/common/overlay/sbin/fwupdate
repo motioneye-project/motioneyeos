@@ -109,9 +109,6 @@ function show_current() {
 function do_download() {
     echo "downloading..."
 
-    rm -f $FW_DIR/$FW_FILE_GZ $FW_DIR/$FW_FILE_XZ
-    rm -f $FW_DIR/$FW_FILE_EXTR
-    rm -f $FW_DIR/$BOOT_READY_FILE
     rm -rf $FW_DIR/*
     mkdir -p $FW_DIR
 
