@@ -123,9 +123,26 @@ function show_current() {
 function do_download() {
     echo "downloading..."
 
-    rm -f $FW_DIR/$FW_FILE_GZ $FW_DIR/$FW_FILE_XZ
-    rm -f $FW_DIR/$FW_FILE_EXTR
-    rm -f $FW_DIR/$BOOT_READY_FILE
+    rm -rf $FW_DIR/*
+    mkdir -p $FW_DIR
+
+    # Look for local file first
+    if [ -f "$1" ]; then
+        version="custom"
+        FNAME=`basename $1`
+        FILEEXT=${FNAME##*.}
+        DST_FNAME=""
+        if [ "$FILEEXT" == "xz" ]; then
+            DST_FNAME="$FW_DIR/$FW_FILE_XZ"
+        elif [ "$FILEEXT" == "gz" ]; then
+            DST_FNAME="$FW_DIR/$FW_FILE_GZ"
+        fi
+        if [ -n "$DST_FNAME" ]; then
+            cp -f $1 $DST_FNAME
+            echo $version > $FW_DIR/$VER_FILE
+            return
+        fi
+    fi
 
     source $OS_CONF
     board=$(cat $SYS_BOARD_FILE)
@@ -155,8 +172,6 @@ function do_download() {
         outfile=$FW_DIR/$FW_FILE_XZ
     fi
 
-    rm -rf $FW_DIR/*
-    mkdir -p $FW_DIR
     echo $version > $FW_DIR/$VER_FILE
 
     curl_opts="-S -f -L"
