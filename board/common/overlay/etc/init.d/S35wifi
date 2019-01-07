@@ -22,10 +22,17 @@ fi
 
 source $watch_conf
 
+if [[ -f $boot_conf ]]; then
+    cp -f $boot_conf $conf
+    grep -E "/boot .*ro[\s,]" /proc/mounts
+    RO=$?
+    test $RO == 0 && mount -o remount,rw /boot
+    rm -f $boot_conf
+    test $RO == 0 && mount -o remount,ro /boot
+fi
+
 if ! [[ -f $conf ]]; then
-    if [[ -f $boot_conf ]]; then
-        cp $boot_conf $conf
-    elif [[ -f $sys_conf ]]; then
+    if [[ -f $sys_conf ]]; then
         cp $sys_conf $conf
     fi
 fi
