@@ -18,6 +18,7 @@ echo "$disk_dev"
 
 if [[ -d /data/etc ]]; then
     echo "Backing up motionEyeOS configuration ..."
+    grep -E "/boot .*ro[\s,]" /proc/mounts &>/dev/null
     RO=$?
     test $RO == 0 && mount -o remount,rw /boot
     tar -czf $backup_conf -C /data/etc .

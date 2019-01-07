@@ -62,6 +62,7 @@ case "$1" in
         # restore motionEyeOS config
         if [[ -f $backup_conf ]]; then
             tar -C /data/etc -xf $backup_conf
+            grep -E "/boot .*ro[\s,]" /proc/mounts
             RO=$?
             test $RO == 0 && mount -o remount,rw /boot
             rm -f $backup_conf
@@ -77,4 +78,3 @@ case "$1" in
         echo "Usage: $0 {start}"
         exit 1
 esac
-
