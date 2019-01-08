@@ -1,0 +1,49 @@
+From 1b657bf8e2f4bf6f80b969b220900003d7ecbce6 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 8 Jan 2019 18:28:37 +0200
+Subject: [PATCH] Fix build for no-MMU targets
+
+Commit 7488ce9e23f1 ("Check whether PTRACE_GET_SYSCALL_INFO is supported
+by the kernel") added a fork() call in test_ptrace_get_syscall_info()
+which is included in the main strace executable code. Although the
+test_ptrace_get_syscall_info() routine is not called on no-MMU targets,
+the compiler can't optimize it out because it is a global symbol. So
+build for no-MMU targets currently fails:
+
+strace-ptrace_syscall_info.o: In function `test_ptrace_get_syscall_info':
+ptrace_syscall_info.c:(.text+0x1c): undefined reference to `fork'
+
+Make the test_ptrace_get_syscall_info() definition depend on HAVE_FORK
+to fix that.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status:
+https://lists.strace.io/pipermail/strace-devel/2019-January/008596.html
+
+ ptrace_syscall_info.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ptrace_syscall_info.c b/ptrace_syscall_info.c
+index 55eafddf7f71..cc6ce149649e 100644
+--- a/ptrace_syscall_info.c
++++ b/ptrace_syscall_info.c
+@@ -40,6 +40,7 @@ static const unsigned int expected_seccomp_size =
+  * Test that PTRACE_GET_SYSCALL_INFO API is supported by the kernel, and
+  * that the semantics implemented in the kernel matches our expectations.
+  */
++#ifdef HAVE_FORK
+ bool
+ test_ptrace_get_syscall_info(void)
+ {
+@@ -255,6 +256,7 @@ done:
+ 
+ 	return ptrace_get_syscall_info_supported;
+ }
++#endif /* HAVE_FORK */
+ 
+ void
+ print_ptrace_syscall_info(struct tcb *tcp, kernel_ulong_t addr,
+-- 
+2.20.1
+
