@@ -2076,6 +2076,7 @@ F:	package/perl-net-snmp/
 F:	package/perl-net-ssh2/
 F:	package/perl-net-telnet/
 F:	package/pigz/
+F:	package/xenomai/
 F:	support/scripts/size-stats
 F:	utils/size-stats-compare
 F:	toolchain/
