@@ -29,8 +29,10 @@ config BR2_LINUX_NEEDS_MODULES
 choice
 	prompt "Kernel version"
 
+# We are intentionally staying at 4.19 for the next Buildroot LTS
+# release (2019.02)
 config BR2_LINUX_KERNEL_LATEST_VERSION
-	bool "Latest version (4.20)"
+	bool "Latest version (4.19)"
 
 config BR2_LINUX_KERNEL_LATEST_CIP_VERSION
 	bool "Latest CIP SLTS version (v4.4.154-cip28)"
@@ -120,7 +122,7 @@ endif
 
 config BR2_LINUX_KERNEL_VERSION
 	string
-	default "4.20.1" if BR2_LINUX_KERNEL_LATEST_VERSION
+	default "4.19.14" if BR2_LINUX_KERNEL_LATEST_VERSION
 	default "v4.4.154-cip28" if BR2_LINUX_KERNEL_LATEST_CIP_VERSION
 	default BR2_LINUX_KERNEL_CUSTOM_VERSION_VALUE \
 		if BR2_LINUX_KERNEL_CUSTOM_VERSION
