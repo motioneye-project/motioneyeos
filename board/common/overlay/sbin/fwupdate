@@ -4,14 +4,14 @@
 #### usage ####
 
 function exit_usage() {
-    echo "Usage: fwupdate versions [-j]             (lists available versions, optionally outputting json)"
-    echo "       fwupdate current                   (shows the current version"
-    echo "       fwupdate download <version|url>    (downloads a firmware version)"
-    echo "       fwupdate extract                   (extracts the downloaded firmware archive)"
-    echo "       fwupdate flashboot                 (flashes the boot partition from extracted image)"
-    echo "       fwupdate flashreboot               (prepares for reboot + root partititon flash)"
-    echo "       fwupdate status                    (shows the current firmware updating status; see below)"
-    echo "       fwupdate upgrade <version|url>     (performs all the operations necessary for upgrading)"
+    echo "Usage: fwupdate versions [-j]                 (lists available versions, optionally outputting json)"
+    echo "       fwupdate current                       (shows the current version"
+    echo "       fwupdate download <version|url|file>   (downloads a firmware version)"
+    echo "       fwupdate extract                       (extracts the downloaded firmware archive)"
+    echo "       fwupdate flashboot                     (flashes the boot partition from extracted image)"
+    echo "       fwupdate flashreboot                   (prepares for reboot + root partititon flash)"
+    echo "       fwupdate status                        (shows the current firmware updating status; see below)"
+    echo "       fwupdate upgrade <version|url|file>    (performs all the operations necessary for upgrading)"
     echo ""
     echo "Statuses:"
     echo "       idle"
