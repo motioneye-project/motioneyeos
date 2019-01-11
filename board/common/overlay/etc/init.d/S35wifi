@@ -12,35 +12,11 @@ sys_watch_conf="/etc/watch.conf"
 boot_watch_conf="/boot/watch.conf"
 watch_conf="/data/etc/watch.conf"
 
-if ! [[ -f $watch_conf ]]; then
-    if [[ -f $boot_watch_conf ]]; then
-        cp $boot_watch_conf $watch_conf
-    elif [[ -f $sys_watch_conf ]]; then
-        cp $sys_watch_conf $watch_conf
-    fi
-fi
-
+prepare_conf $watch_conf $sys_watch_conf $boot_watch_conf
 source $watch_conf
 
-if [[ -f $boot_conf ]]; then
-    cp -f $boot_conf $conf
-    grep -E "/boot .*ro[\s,]" /proc/mounts
-    RO=$?
-    test $RO == 0 && mount -o remount,rw /boot
-    rm -f $boot_conf
-    test $RO == 0 && mount -o remount,ro /boot
-fi
-
-if ! [[ -f $conf ]]; then
-    if [[ -f $sys_conf ]]; then
-        cp $sys_conf $conf
-    fi
-fi
-
+prepare_conf $conf $sys_conf $boot_conf
 test -f $conf || exit 0
-
-# we want only Unix newlines here
-sed -i 's/\r//g' $conf
 
 ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
