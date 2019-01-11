@@ -1,4 +1,3 @@
-#!/bin/bash
 
 source /etc/version
 board_sn=$(/etc/init.d/boardsn)
@@ -40,7 +39,7 @@ prepare_conf() {
     
     if [[ -n "$user_conf" && -e "$user_conf" ]]; then
         cp -rf "$user_conf" "$actual_conf"
-        grep -E "/boot .*ro[\s,]" /proc/mounts
+        grep -E "/boot .*ro[\s,]" /proc/mounts &>/dev/null
         RO=$?
         test $RO == 0 && mount -o remount,rw /boot
         rm -rf $user_conf

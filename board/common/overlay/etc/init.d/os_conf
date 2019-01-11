@@ -1,4 +1,3 @@
-#!/bin/bash
 
 _sys_conf="/etc/os.conf"
 _boot_conf="/boot/os.conf"

@@ -1,4 +1,3 @@
-#!/bin/bash
 
 _PANIC_COUNTER_FILE="/var/lib/panic_counter"
 _PANIC_REBOOT_DELAY_FACTOR=10
