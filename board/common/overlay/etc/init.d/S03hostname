@@ -10,13 +10,7 @@ case "$1" in
     start)
         msg_begin "Setting hostname"
 
-        if ! [[ -f $hostname_file ]]; then
-            if [[ -f $boot_hostname_file ]]; then
-                cp $boot_hostname_file $hostname_file
-            elif [[ -f $sys_hostname_file ]]; then
-                cp $sys_hostname_file $hostname_file
-            fi
-        fi
+        prepare_conf $hostname_file $sys_hostname_file $boot_hostname_file
 
         if [[ -f $hostname_file ]]; then
             hostname=$(cat $hostname_file)
