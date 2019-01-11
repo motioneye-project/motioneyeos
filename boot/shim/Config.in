@@ -1,0 +1,19 @@
+config BR2_TARGET_SHIM
+	bool "shim"
+	depends on BR2_PACKAGE_GNU_EFI_ARCH_SUPPORTS
+	# ARM32 build currently broken
+	depends on !BR2_ARM_CPU_HAS_ARM
+	select BR2_PACKAGE_GNU_EFI
+	help
+	  Boot loader to chain-load signed boot loaders under Secure
+	  Boot.
+
+	  This package provides a minimalist boot loader which allows
+	  verifying signatures of other UEFI binaries against either
+	  the Secure Boot DB/DBX or against a built-in signature
+	  database.  Its purpose is to allow a small,
+	  infrequently-changing binary to be signed by the UEFI CA,
+	  while allowing an OS distributor to revision their main
+	  bootloader independently of the CA.
+
+	  https://github.com/rhboot/shim
