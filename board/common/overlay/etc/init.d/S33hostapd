@@ -12,12 +12,14 @@ watch_conf="/data/etc/watch.conf"
 link_watch=yes
 link_watch_timeout=20
 
-test -f $watch_conf && source $watch_conf
+
+test -n "$os_version" || source /etc/init.d/base
 
 prepare_conf $conf $sys_conf $boot_conf
 test -f $conf || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
+test -f $watch_conf && source $watch_conf
+
 
 running() {
     killall -0 hostapd &> /dev/null

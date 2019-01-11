@@ -11,25 +11,13 @@ sys_ntp_conf="/etc/ntp.conf"
 boot_ntp_conf="/boot/ntp.conf"
 ntp_conf="/data/etc/ntp.conf"
 
-if ! [[ -f $conf ]]; then
-    if [[ -f $boot_conf ]]; then
-        cp $boot_conf $conf
-    elif [[ -f $sys_conf ]]; then
-        cp $sys_conf $conf
-    fi
-fi
-
-if ! [[ -f $ntp_conf ]]; then
-    if [[ -f $boot_ntp_conf ]]; then
-        cp $boot_ntp_conf $ntp_conf
-    elif [[ -f $sys_ntp_conf ]]; then
-        cp $sys_ntp_conf $ntp_conf
-    fi
-fi
-
-test -f $conf || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
+
+prepare_conf $conf $sys_conf $boot_conf
+prepare_conf $ntp_conf $sys_ntp_conf $boot_ntp_conf
+
+test -f $conf || exit 0
 
 test "$os_networkless" == "true" && exit 0
 

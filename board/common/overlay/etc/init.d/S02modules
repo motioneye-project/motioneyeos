@@ -4,6 +4,7 @@ sys_modules_file="/etc/modules"
 boot_modules_file="/boot/modules"
 modules_file="/data/etc/modules"
 
+
 test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in

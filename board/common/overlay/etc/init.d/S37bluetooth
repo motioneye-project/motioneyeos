@@ -4,6 +4,8 @@ sys_conf="/etc/bluetooth.conf"
 boot_conf="/boot/bluetooth.conf"
 conf="/data/etc/bluetooth.conf"
 
+test -n "$os_version" || source /etc/init.d/base
+
 prepare_conf $conf $sys_conf $boot_conf
 test -f $conf || exit 0
 
@@ -15,7 +17,6 @@ run_conf=/var/lib/bluetooth.conf
 
 test -x $bluetoothd || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
 
 configure() {
     mkdir -p $run_data_dir

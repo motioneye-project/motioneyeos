@@ -12,6 +12,9 @@ sys_watch_conf="/etc/watch.conf"
 boot_watch_conf="/boot/watch.conf"
 watch_conf="/data/etc/watch.conf"
 
+
+test -n "$os_version" || source /etc/init.d/base
+
 prepare_conf $watch_conf $sys_watch_conf $boot_watch_conf
 source $watch_conf
 
@@ -21,9 +24,9 @@ test -f $conf || exit 0
 ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
 
 test "$os_networkless" == "true" && exit 0
+
 
 connected() {
     ip link show dev $os_wlan 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1

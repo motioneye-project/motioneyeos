@@ -4,6 +4,7 @@ sys_hostname_file="/etc/hostname"
 boot_hostname_file="/boot/hostname"
 hostname_file="/data/etc/hostname"
 
+
 test -n "$os_version" || source /etc/init.d/base
 
 case "$1" in
