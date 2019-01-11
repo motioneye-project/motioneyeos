@@ -1,6 +1,7 @@
 #!/bin/bash
 
 sys_modules_file="/etc/modules"
+boot_modules_file="/boot/modules"
 modules_file="/data/etc/modules"
 
 test -n "$os_version" || source /etc/init.d/base
@@ -11,6 +12,10 @@ case "$1" in
 
         if [[ -r $sys_modules_file ]]; then
             cat $sys_modules_file | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
+        fi
+
+        if [[ -r $boot_modules_file ]]; then
+            cat $boot_modules_file | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
         fi
 
         if [[ -r $modules_file ]]; then
