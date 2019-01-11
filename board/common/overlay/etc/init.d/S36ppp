@@ -11,13 +11,7 @@ watch_conf="/data/etc/watch.conf"
 
 source $watch_conf
 
-if ! [[ -d $conf ]]; then
-    if [[ -d $boot_conf ]]; then
-        cp -r $boot_conf $conf
-    elif [[ -d $sys_conf ]]; then
-        cp -r $sys_conf $conf
-    fi
-fi
+prepare_conf $conf $sys_conf $boot_conf
 
 test -e $conf/modem || exit 0
 test -e $conf/apn || exit 0
