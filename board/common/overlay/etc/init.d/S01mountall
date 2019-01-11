@@ -31,7 +31,7 @@ case "$1" in
         mount_fs
 
         # we need to source conf again, now that /data is available
-        test -n "$os_debug" || source /etc/init.d/conf
+        test -n "$os_debug" || source /etc/init.d/os_conf
         test "$os_debug" == "true" && remount_rw
         mk_tty_login
         ;;

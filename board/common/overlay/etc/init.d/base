@@ -4,7 +4,7 @@ source /etc/version
 board_sn=$(/etc/init.d/boardsn)
 board_name=$(cat /etc/board)
 
-test -n "$os_debug" || source /etc/init.d/conf
+test -n "$os_debug" || source /etc/init.d/os_conf
 
 source /etc/init.d/panic
 

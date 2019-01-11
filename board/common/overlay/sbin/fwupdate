@@ -77,7 +77,7 @@ fi
 #### versions ####
 
 function show_versions() {
-    source /etc/init.d/conf  # we need this for the os_ vars
+    source /etc/init.d/os_conf  # we need this for the os_ vars
     
     board=$(cat $SYS_BOARD_FILE)
     show_json=$1
@@ -144,7 +144,7 @@ function do_download() {
         fi
     fi
 
-    source /etc/init.d/conf  # we need this for the os_ vars
+    source /etc/init.d/os_conf  # we need this for the os_ vars
     
     board=$(cat $SYS_BOARD_FILE)
     url=$1
