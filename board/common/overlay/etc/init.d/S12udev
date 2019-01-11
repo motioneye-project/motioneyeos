@@ -1,10 +1,13 @@
 #!/bin/bash
 
-test -f /etc/udev/udev.conf || exit 0
+CONF=/etc/udev/udev.conf
+
+
+test -f $CONF || exit 0
 
 test -n "$os_version" || source /etc/init.d/base
 
-source /etc/udev/udev.conf
+source $CONF
 
 start() {
     msg_begin "Starting eudev"

@@ -1,13 +1,14 @@
 #!/bin/bash
 
-sys_conf="/etc/bluetooth.conf"
-boot_conf="/boot/bluetooth.conf"
-conf="/data/etc/bluetooth.conf"
+SYS_CONF="/etc/bluetooth.conf"
+BOOT_CONF="/boot/bluetooth.conf"
+CONF="/data/etc/bluetooth.conf"
+
 
 test -n "$os_version" || source /etc/init.d/base
 
-prepare_conf $conf $sys_conf $boot_conf
-test -f $conf || exit 0
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
+test -f $CONF || exit 0
 
 hci=hci0
 bluetoothd=/usr/libexec/bluetooth/bluetoothd
@@ -21,7 +22,7 @@ test -x $bluetoothd || exit 0
 configure() {
     mkdir -p $run_data_dir
     ln -sf $run_data_dir $data_dir
-    cp $conf $run_conf
+    cp $CONF $run_conf
 
     # if no specific name configured, use hostname
     if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then

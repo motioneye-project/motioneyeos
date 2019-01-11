@@ -1,27 +1,27 @@
 #!/bin/bash
 
-sys_conf="/etc/wpa_supplicant.conf"
-boot_conf="/boot/wpa_supplicant.conf"
-conf="/data/etc/wpa_supplicant.conf"
+SYS_CONF="/etc/wpa_supplicant.conf"
+BOOT_CONF="/boot/wpa_supplicant.conf"
+CONF="/data/etc/wpa_supplicant.conf"
 
-log="/var/log/wpa_supplicant.log"
-prog="/usr/sbin/wpa_supplicant"
-driver=nl80211,wext
+LOG="/var/log/wpa_supplicant.log"
+PROG="/usr/sbin/wpa_supplicant"
+DRIVER=nl80211,wext
 
-sys_watch_conf="/etc/watch.conf"
-boot_watch_conf="/boot/watch.conf"
-watch_conf="/data/etc/watch.conf"
+SYS_WATCH_CONF="/etc/watch.conf"
+BOOT_WATCH_CONF="/boot/watch.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
 
 test -n "$os_version" || source /etc/init.d/base
 
-prepare_conf $watch_conf $sys_watch_conf $boot_watch_conf
-source $watch_conf
+prepare_conf $WATCH_CONF $SYS_WATCH_CONF $BOOT_WATCH_CONF
+source $WATCH_CONF
 
-prepare_conf $conf $sys_conf $boot_conf
-test -f $conf || exit 0
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
+test -f $CONF || exit 0
 
-ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+ssid=$(cat $CONF | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
 
 
@@ -70,7 +70,7 @@ start() {
 
     iwconfig $os_wlan power off &> /dev/null
     iw $os_wlan set power_save off &> /dev/null
-    $prog -i$os_wlan -c$conf -D$driver -B &> $log
+    $PROG -i$os_wlan -c$CONF -D$DRIVER -B &> $LOG
     count=0
     while true; do
         sleep 1

@@ -1,13 +1,13 @@
 #!/bin/bash
 
-sys_conf="/etc/hostapd.conf"
-boot_conf="/boot/hostapd.conf"
-conf="/data/etc/hostapd.conf"
+SYS_CONF="/etc/hostapd.conf"
+BOOT_CONF="/boot/hostapd.conf"
+CONF="/data/etc/hostapd.conf"
 
-log="/var/log/hostapd.log"
-prog="/usr/sbin/hostapd"
+LOG="/var/log/hostapd.log"
+PROG="/usr/sbin/hostapd"
 
-watch_conf="/data/etc/watch.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
 link_watch=yes
 link_watch_timeout=20
@@ -15,10 +15,10 @@ link_watch_timeout=20
 
 test -n "$os_version" || source /etc/init.d/base
 
-prepare_conf $conf $sys_conf $boot_conf
-test -f $conf || exit 0
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
+test -f $CONF || exit 0
 
-test -f $watch_conf && source $watch_conf
+test -f $WATCH_CONF && source $WATCH_CONF
 
 
 running() {
@@ -50,11 +50,11 @@ start() {
         fi
     done
 
-    iface=$(cat $conf | grep interface | cut -d '=' -f 2)
+    iface=$(cat $CONF | grep interface | cut -d '=' -f 2)
     module=$(basename $(readlink /sys/class/net/$iface/device/driver/module 2>/dev/null) 2>/dev/null)
 
     iwconfig $iface power off &> /dev/null
-    $prog $conf &> $log &
+    $PROG $CONF &> $LOG &
 
     if [[ "$link_watch" == "yes" ]]; then
         watch &

@@ -1,23 +1,23 @@
 #!/bin/bash
 
-sys_conf="/etc/ppp/default"
-boot_conf="/boot/ppp"
-conf="/data/etc/ppp"
+SYS_CONF="/etc/ppp/default"
+BOOT_CONF="/boot/ppp"
+CONF="/data/etc/ppp"
 
-prog="/usr/sbin/pppd"
-provider="mobile"
+PROG="/usr/sbin/pppd"
+PROVIDER="mobile"
 
-watch_conf="/data/etc/watch.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
 
 test -n "$os_version" || source /etc/init.d/base
 
-prepare_conf $conf $sys_conf $boot_conf
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
 
-test -e $conf/modem || exit 0
-test -e $conf/apn || exit 0
+test -e $CONF/modem || exit 0
+test -e $CONF/apn || exit 0
 
-source $watch_conf
+source $WATCH_CONF
 
 test "$os_networkless" == "true" && exit 0
 
@@ -51,15 +51,15 @@ udev_trigger_add() {
 }
 
 start() {
-    test -e $conf/auth || touch $conf/auth
-    test -e $conf/extra || touch $conf/extra
-    test -e $conf/pin || touch $conf/pin
+    test -e $CONF/auth || touch $CONF/auth
+    test -e $CONF/extra || touch $CONF/extra
+    test -e $CONF/pin || touch $CONF/pin
     mknod /dev/ppp c 108 0 &>/dev/null
 
     msg_begin "Starting pppd"
 
     # wait for modem
-    modem=$(head -n 1 $conf/modem)
+    modem=$(head -n 1 $CONF/modem)
     if ! [[ -e /dev/$modem ]]; then
         udev_trigger_add 4 &
     fi
@@ -79,7 +79,7 @@ start() {
         return
     fi
 
-    $prog call $provider
+    $PROG call $PROVIDER
     count=0
     while true; do
         sleep 1

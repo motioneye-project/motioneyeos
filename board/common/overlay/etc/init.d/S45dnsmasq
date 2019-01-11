@@ -1,28 +1,28 @@
 #!/bin/bash
 
-sys_conf="/etc/dnsmasq.conf"
-boot_conf="/boot/dnsmasq.conf"
-conf="/data/etc/dnsmasq.conf"
+SYS_CONF="/etc/dnsmasq.conf"
+BOOT_CONF="/boot/dnsmasq.conf"
+CONF="/data/etc/dnsmasq.conf"
 
-log="/var/log/dnsmasq.log"
-prog="/usr/sbin/dnsmasq"
+LOG="/var/log/dnsmasq.log"
+PROG="/usr/sbin/dnsmasq"
 
 
 test -n "$os_version" || source /etc/init.d/base
 
-prepare_conf $conf $sys_conf $boot_conf
-test -f $conf || exit 0
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
+test -f $CONF || exit 0
 
 
 start() {
     msg_begin "Starting dnsmasq"
     
-    iface=$(cat $conf | grep interface | cut -d '=' -f 2)
-    ip=$(cat $conf | grep range | cut -d '=' -f 2 | cut -d '.' -f 1,2,3).1
+    iface=$(cat $CONF | grep interface | cut -d '=' -f 2)
+    ip=$(cat $CONF | grep range | cut -d '=' -f 2 | cut -d '.' -f 1,2,3).1
     
     ifconfig $iface $ip
 
-    $prog -C $conf --log-facility=$log
+    $PROG -C $CONF --log-facility=$LOG
 
     test $? == 0 && msg_done || msg_fail
 }

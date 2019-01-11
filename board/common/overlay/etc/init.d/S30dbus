@@ -1,11 +1,12 @@
 #!/bin/bash
 
-sys_btconf="/etc/bluetooth.conf"
-boot_btconf="/boot/bluetooth.conf"
-btconf="/data/etc/bluetooth.conf"
+SYS_BTCONF="/etc/bluetooth.conf"
+BOOT_BTCONF="/boot/bluetooth.conf"
+BTCONF="/data/etc/bluetooth.conf"
+
 
 # dbus is currently only used by bluez
-test -f $btconf || test -f $boot_btconf || test -f $sys_btconf || exit 0
+test -f $BTCONF || test -f $BOOT_BTCONF || test -f $SYS_BTCONF || exit 0
 
 test -x /usr/bin/dbus-daemon || exit 0
 

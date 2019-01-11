@@ -1,17 +1,18 @@
 #!/bin/bash
 
+SYS_VERSION_FILE="/etc/version"
+VERSION_FILE="/data/etc/version"
+POST_UPGRADE_DIR="/usr/share/post-upgrade"
+
+
 test -n "$os_version" || source /etc/init.d/base
 
-sys_version_file="/etc/version"
-version_file="/data/etc/version"
-post_upgrade_dir="/usr/share/post-upgrade"
-
-hash=$(md5sum $version_file 2>/dev/null | cut -d ' ' -f 1)
-sys_hash=$(md5sum $sys_version_file 2>/dev/null | cut -d ' ' -f 1)
+hash=$(md5sum $VERSION_FILE 2>/dev/null | cut -d ' ' -f 1)
+sys_hash=$(md5sum $SYS_VERSION_FILE 2>/dev/null | cut -d ' ' -f 1)
 
 test "$hash" == "$sys_hash" && exit 0
 
-test -d $post_upgrade_dir || exit 0
+test -d $POST_UPGRADE_DIR || exit 0
 
 function version_gt() {
     if [[ "$1" != "$2" ]] && [[ $(echo -e "$2\n$1" | sort -t . | head -n 1) == "$2" ]]; then
@@ -22,14 +23,14 @@ function version_gt() {
 }
 
 function run_post_upgrade() {
-    version="$(source $version_file 2>/dev/null && echo $os_version)"
-    sys_version="$(source $sys_version_file 2>/dev/null && echo $os_version)"
+    version="$(source $VERSION_FILE 2>/dev/null && echo $os_version)"
+    sys_version="$(source $SYS_VERSION_FILE 2>/dev/null && echo $os_version)"
 
-    versions=$(ls -1 $post_upgrade_dir | cut -d '.' -f 1)
+    versions=$(ls -1 $POST_UPGRADE_DIR | cut -d '.' -f 1)
     for v in $versions; do
         if [[ -z "$version" ]] || version_gt $v $version; then
             msg_begin "Post-upgrading to version $v"
-            out=$($post_upgrade_dir/$v.sh 2>&1)
+            out=$($POST_UPGRADE_DIR/$v.sh 2>&1)
             test $? == 0 && msg_done || msg_fail
             echo "$out" | logger -t post-upgrade
         fi
@@ -39,7 +40,7 @@ function run_post_upgrade() {
 case "$1" in
     start)
         run_post_upgrade
-        cp $sys_version_file $version_file
+        cp $SYS_VERSION_FILE $VERSION_FILE
         ;;
 
     stop)
