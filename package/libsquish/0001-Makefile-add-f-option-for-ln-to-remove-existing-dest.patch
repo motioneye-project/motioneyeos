@@ -1,0 +1,32 @@
+From 1e541293ac19c49f886220b64de6006c5c700144 Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Sat, 12 Jan 2019 12:50:54 +0100
+Subject: [PATCH] Makefile: add -f option for ln to remove existing destination
+ files
+
+While reinstalling the library, all symlinks are present.
+Ask ln to remove them with -f.
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index fd7d6c8..2683819 100644
+--- a/Makefile
++++ b/Makefile
+@@ -25,8 +25,8 @@ install: $(LIB) $(LIBA) libsquish.pc
+ 	$(INSTALL_FILE) $(LIBA) $(INSTALL_DIR)/$(LIB_PATH)
+ ifneq ($(USE_SHARED),0)
+ 	$(INSTALL_FILE) $(LIB) $(INSTALL_DIR)/$(LIB_PATH)
+-	ln -s $(LIB) $(INSTALL_DIR)/$(LIB_PATH)/$(SOLIB)
+-	ln -s $(LIB) $(INSTALL_DIR)/$(LIB_PATH)/libsquish.so
++	ln -sf $(LIB) $(INSTALL_DIR)/$(LIB_PATH)/$(SOLIB)
++	ln -sf $(LIB) $(INSTALL_DIR)/$(LIB_PATH)/libsquish.so
+ 	$(INSTALL_DIRECTORY) $(INSTALL_DIR)/$(LIB_PATH)/pkgconfig
+ 	$(INSTALL_FILE) libsquish.pc $(INSTALL_DIR)/$(LIB_PATH)/pkgconfig
+ endif
+-- 
+2.14.5
+
