@@ -2,10 +2,10 @@
 
 test -f /etc/samba/smb.conf || exit 0
 
-test -n "$OS_VERSION" || source /etc/init.d/base
-test -n "$OS_DEBUG" || source /etc/init.d/conf
+test -n "${OS_VERSION}" || source /etc/init.d/base
+test -n "${OS_DEBUG}" || source /etc/init.d/conf
 
-test "$OS_NETWORKLESS" == "true" && exit 0
+test "${OS_NETWORKLESS}" == "true" && exit 0
 
 start() {
     mkdir -p /var/log/samba
