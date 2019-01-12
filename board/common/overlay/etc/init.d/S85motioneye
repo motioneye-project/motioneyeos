@@ -1,31 +1,26 @@
 #!/bin/bash
 
-sys_conf="/etc/motioneye.conf"
-boot_conf="/boot/motioneye.conf"
-conf="/data/etc/motioneye.conf"
-motion_conf="/data/etc/motion.conf"
-watch_conf="/data/etc/watch.conf"
+SYS_CONF="/etc/motioneye.conf"
+BOOT_CONF="/boot/motioneye.conf"
+CONF="/data/etc/motioneye.conf"
+MOTION_CONF="/data/etc/motion.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
-meyewatch_timeout=120
-meyewatch_disable="false"
-dev_v4l_by_id="/dev/v4l/by-id/"
-media_dir="/data/output"
+MEYEWATCH_TIMEOUT=120
+MEYEWATCH_DISABLE="false"
+DEV_V4L_BY_ID="/dev/v4l/by-id/"
+MEDIA_DIR="/data/output"
 
-if  ! [ -f $conf ]; then
-    if [ -f $boot_conf ]; then
-        cp $boor_conf $conf
-    elif [ -f $sys_conf ]; then
-        cp $sys_conf $conf
-    fi
-fi
+test -n "$OS_VERSION" || source /etc/init.d/base
 
-test -f "$conf" || exit 0
+prepare_conf $CONF $SYS_CONF $BOOT_CONF
 
-test -r $watch_conf && source $watch_conf
+test -f "$CONF" || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
+test -r $WATCH_CONF && source $WATCH_CONF
 
-opts=$(cat "$conf" | while read line; do echo "--$line"; done)
+
+opts=$(cat "$CONF" | while read line; do echo "--$line"; done)
 port=$(echo "$opts" | grep -oE 'port [[:digit:]]+' | cut -d ' ' -f 2)
 
 responsive() {
@@ -39,10 +34,10 @@ watch() {
         if responsive; then
             count=0
         else
-            if [ $count -lt $meyewatch_timeout ]; then
+            if [ $count -lt $MEYEWATCH_TIMEOUT ]; then
                 count=$(($count + 5))
             else
-                logger -t motioneye -s "not responding for $meyewatch_timeout seconds, rebooting"
+                logger -t motioneye -s "not responding for $MEYEWATCH_TIMEOUT seconds, rebooting"
                 reboot
             fi
         fi
@@ -52,12 +47,12 @@ watch() {
 find_persistent_device() {
     device=$1
 
-    if ! [ -d $dev_v4l_by_id ]; then
+    if ! [ -d $DEV_V4L_BY_ID ]; then
         echo $device
         return
     fi
 
-    for p in $dev_v4l_by_id/*; do
+    for p in $DEV_V4L_BY_ID/*; do
         if [ $(realpath "$p") == $device ]; then
             echo $p | sed 's#//*#/#g'
             return
@@ -116,8 +111,8 @@ add_v4l2_cameras() {
 start() {
     msg_begin "Starting motioneye"
 
-    mkdir -p $media_dir
-    meyectl startserver -b -c $conf -l
+    mkdir -p $MEDIA_DIR
+    meyectl startserver -b -c $CONF -l
 
     count=0
     while true; do
@@ -127,9 +122,9 @@ start() {
             break
         fi
 
-        if [ $count -gt $meyewatch_timeout ]; then
+        if [ $count -gt $MEYEWATCH_TIMEOUT ]; then
             msg_fail
-            test "$meyewatch_disable" == "false" && reboot
+            test "$MEYEWATCH_DISABLE" == "false" && reboot
             return 1
         fi
 
@@ -137,12 +132,12 @@ start() {
     done
 
     # add connected camera(s) with default settings
-    if responsive && ! [ -f $motion_conf ]; then
+    if responsive && ! [ -f $MOTION_CONF ]; then
         add_mmal_cameras || add_v4l2_cameras
         sync
     fi
 
-    if [ "$meyewatch_disable" == "false" ]; then
+    if [ "$MEYEWATCH_DISABLE" == "false" ]; then
         watch &
     fi
 
@@ -151,7 +146,7 @@ start() {
 
 stop() {
     msg_begin "Stopping motioneye"
-    meyectl stopserver -c $conf &>/dev/null
+    meyectl stopserver -c $CONF &>/dev/null
     test $? == 0 && msg_done || msg_fail
     ps | grep motioneye | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
 }
