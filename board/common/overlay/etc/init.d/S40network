@@ -76,10 +76,10 @@ start_wlan() {
         ip link set mtu $mtu dev $OS_WLAN
     fi
 
-    if [[ -n "$static_ip" ]]; then
-        msg_done $static_ip
-        ifconfig $OS_WLAN $static_ip up
-        static_ip="" # won't be used again
+    if [[ -n "$STATIC_IP" ]]; then
+        msg_done $STATIC_IP
+        ifconfig $OS_WLAN $STATIC_IP up
+        STATIC_IP="" # won't be used again
     else
         msg_done dhcp
         dhclient -cf "$DH_CONF" $OS_WLAN
@@ -136,10 +136,10 @@ start_eth() {
         ip link set mtu $mtu dev $OS_ETH
     fi
 
-    if [[ -n "$static_ip" ]]; then
-        msg_done $static_ip
-        ifconfig $OS_ETH $static_ip up
-        static_ip="" # won't be used again
+    if [[ -n "$STATIC_IP" ]]; then
+        msg_done $STATIC_IP
+        ifconfig $OS_ETH $STATIC_IP up
+        STATIC_IP="" # won't be used again
     else
         msg_done dhcp
         dhclient -cf "$DH_CONF" $OS_ETH
@@ -185,15 +185,15 @@ start() {
         fi
     fi
 
-    if [[ -n "$static_gw" ]]; then
-        msg_begin "Setting static gateway to $static_gw"
-        ip route add default via $static_gw
+    if [[ -n "$STATIC_GW" ]]; then
+        msg_begin "Setting static gateway to $STATIC_GW"
+        ip route add default via $STATIC_GW
         test $? == 0 && msg_done || msg_fail
     fi
 
-    if [[ -n "$static_dns" ]]; then
-        msg_begin "Setting static DNS server to $static_dns"
-        echo "nameserver $static_dns" > /etc/resolv.conf
+    if [[ -n "$STATIC_DNS" ]]; then
+        msg_begin "Setting static DNS server to $STATIC_DNS"
+        echo "nameserver $STATIC_DNS" > /etc/resolv.conf
         test $? == 0 && msg_done || msg_fail
     fi
 }
