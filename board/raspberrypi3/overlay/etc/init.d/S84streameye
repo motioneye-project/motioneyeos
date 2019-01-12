@@ -2,7 +2,7 @@
 
 motioneye_conf_dir="/data/etc/"
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 enabled() {
     test $(ls -1 $motioneye_conf_dir/thread-*.conf 2>/dev/null| wc -l) == 1 || return 1
