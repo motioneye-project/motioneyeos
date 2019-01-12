@@ -1,21 +1,21 @@
 
-sys_conf="/etc/os.conf"
-boot_conf="/boot/os.conf"
-data_conf="/data/etc/os.conf"
+SYS_CONF="/etc/os.conf"
+BOOT_CONF="/boot/os.conf"
+DATA_CONF="/data/etc/os.conf"
 
 
 # source in all conf files in order of precedence
-if [[ -f ${sys_conf} ]]; then
-    source ${sys_conf}
+if [[ -f ${SYS_CONF} ]]; then
+    source ${SYS_CONF}
 fi
 
-if [[ -f ${data_conf} ]]; then
-    source ${data_conf}
+if [[ -f ${DATA_CONF} ]]; then
+    source ${DATA_CONF}
 fi
 
-if [[ -f ${boot_conf} ]]; then
-    source ${boot_conf}
+if [[ -f ${BOOT_CONF} ]]; then
+    source ${BOOT_CONF}
 fi
 
-unset sys_conf boot_conf data_conf
+unset SYS_CONF BOOT_CONF DATA_CONF
 
