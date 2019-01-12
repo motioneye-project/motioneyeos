@@ -17,6 +17,10 @@ LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-werror \
 	$(if $(BR2_PACKAGE_BASH),,--disable-bash)
 
+ifeq ($(BR2_PACKAGE_BASH_COMPLETION),y)
+LXC_DEPENDENCIES += bash-completion
+endif
+
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
 LXC_CONF_OPTS += --enable-gnutls
 LXC_DEPENDENCIES += gnutls
