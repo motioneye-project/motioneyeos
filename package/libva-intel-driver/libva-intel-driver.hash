@@ -1,5 +1,5 @@
 # From https://github.com/intel/intel-vaapi-driver/releases
-sha1 0934f97ddcaf4e633f59d049226723239b645b33  intel-vaapi-driver-2.2.0.tar.bz2
+sha1 89096f99da753ac5858304e6c17f5dd9e7581d5b  intel-vaapi-driver-2.3.0.tar.bz2
 # Locally computed
-sha256 e8a5f54694eb76aad42653b591030b8a53b1513144c09a80defb3d8d8c875c18  intel-vaapi-driver-2.2.0.tar.bz2
+sha256 5c2e5deab024a0a6ae81dfe77ef455542a88d824eda7bfd07684337407ecdfe3  intel-vaapi-driver-2.3.0.tar.bz2
 sha256 c86a782ee845b52472dae9b9d79fb915d333628ac0efe49cdce63644814931de  COPYING
