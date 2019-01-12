@@ -1,6 +1,7 @@
 #!/bin/bash
 
-check_interval=30
+CHECK_INTERVAL=30
+
 
 test -n "$os_version" || source /etc/init.d/base
 
@@ -25,7 +26,7 @@ watch_now() {
             logger -t throttlewatch -s "currently: $t"
         fi
 
-        sleep $check_interval
+        sleep $CHECK_INTERVAL
     done
 }
 
@@ -37,7 +38,7 @@ watch_since_boot() {
             break
         fi
         
-        sleep $check_interval
+        sleep $CHECK_INTERVAL
     done
 }
 
