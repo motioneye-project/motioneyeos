@@ -8,21 +8,21 @@ LOG="/var/log/dnsmasq.log"
 PROG="/usr/sbin/dnsmasq"
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-prepare_conf $CONF $SYS_CONF $BOOT_CONF
-test -f $CONF || exit 0
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
 
 start() {
     msg_begin "Starting dnsmasq"
     
-    iface=$(cat $CONF | grep interface | cut -d '=' -f 2)
-    ip=$(cat $CONF | grep range | cut -d '=' -f 2 | cut -d '.' -f 1,2,3).1
+    iface=$(cat ${CONF} | grep interface | cut -d '=' -f 2)
+    ip=$(cat ${CONF} | grep range | cut -d '=' -f 2 | cut -d '.' -f 1,2,3).1
     
-    ifconfig $iface $ip
+    ifconfig ${iface} ${ip}
 
-    $PROG -C $CONF --log-facility=$LOG
+    ${PROG} -C ${CONF} --log-facility=${LOG}
 
     test $? == 0 && msg_done || msg_fail
 }

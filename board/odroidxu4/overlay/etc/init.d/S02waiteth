@@ -1,6 +1,6 @@
 #!/bin/bash
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 case "$1" in
     start)

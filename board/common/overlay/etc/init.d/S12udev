@@ -3,11 +3,11 @@
 CONF=/etc/udev/udev.conf
 
 
-test -f $CONF || exit 0
+test -f ${CONF} || exit 0
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-source $CONF
+source ${CONF}
 
 start() {
     msg_begin "Starting eudev"

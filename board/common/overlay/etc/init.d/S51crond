@@ -3,17 +3,17 @@
 SYS_CONF="/etc/crontabs"
 CONF="/data/etc/crontabs"
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 start() {
     msg_begin "Starting crond"
     
-    if [[ -d $SYS_CONF ]];  then
-        /usr/sbin/crond -c $SYS_CONF
+    if [[ -d ${SYS_CONF} ]];  then
+        /usr/sbin/crond -c ${SYS_CONF}
     fi
 
-    mkdir -p $CONF
-    /usr/sbin/crond -c $CONF
+    mkdir -p ${CONF}
+    /usr/sbin/crond -c ${CONF}
 
     test $? == 0 && msg_done || msg_fail
 }

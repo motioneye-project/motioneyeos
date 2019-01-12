@@ -6,13 +6,13 @@ if [ -z "$1" ]; then
 fi
 
 opts="-s -S -f"
-test -n "$FW_USERNAME" && opts+=" --user $FW_USERNAME:$FW_PASSWORD"
+test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
 url=https://api.github.com/repos/$1/releases
 
 jq_expr='.[] | {version: .name, prerelease: .prerelease | tostring} + 
          (.assets[] | {name: .name | split("-")[1], url: .browser_download_url}) + 
          ({date: .created_at | split("T")[0]}) | flatten | join("|")'
 
-curl $opts $url | jq --raw-output "$jq_expr"
+curl ${opts} ${url} | jq --raw-output "${jq_expr}"
 exit ${PIPESTATUS[0]}
 

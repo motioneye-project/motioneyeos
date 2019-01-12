@@ -5,16 +5,16 @@ data_conf="/data/etc/os.conf"
 
 
 # source in all conf files in order of precedence
-if [[ -f $sys_conf ]]; then
-    source $sys_conf
+if [[ -f ${sys_conf} ]]; then
+    source ${sys_conf}
 fi
 
-if [[ -f $data_conf ]]; then
-    source $data_conf
+if [[ -f ${data_conf} ]]; then
+    source ${data_conf}
 fi
 
-if [[ -f $boot_conf ]]; then
-    source $boot_conf
+if [[ -f ${boot_conf} ]]; then
+    source ${boot_conf}
 fi
 
 unset sys_conf boot_conf data_conf

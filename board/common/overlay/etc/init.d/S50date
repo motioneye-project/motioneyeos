@@ -12,42 +12,42 @@ BOOT_NTP_CONF="/boot/ntp.conf"
 NTP_CONF="/data/etc/ntp.conf"
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-prepare_conf $CONF $SYS_CONF $BOOT_CONF
-prepare_conf $NTP_CONF $SYS_NTP_CONF $BOOT_NTP_CONF
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+prepare_conf ${NTP_CONF} ${SYS_NTP_CONF} ${BOOT_NTP_CONF}
 
-test -f $CONF || exit 0
+test -f ${CONF} || exit 0
 
-test "$OS_NETWORKLESS" == "true" && exit 0
+test "${OS_NETWORKLESS}" == "true" && exit 0
 
 date_timeout=10
 date_method=http
 date_host="google.com"
 date_interval="900"
 
-source $CONF
+source ${CONF}
 
 
 set_current_date_http() {
-    date_str=$(curl -v -s -m $date_timeout -X GET http://$date_host 2>&1 | grep Date | sed -e 's/< Date: //')
-    test -z "$date_str" && return 1
-    $DATE_PROG -u -D "%a, %d %b %Y %H:%M:%S" -s "$date_str" > /dev/null
+    date_str=$(curl -v -s -m ${date_timeout} -X GET http://${date_host} 2>&1 | grep Date | sed -e 's/< Date: //')
+    test -z "${date_str}" && return 1
+    ${DATE_PROG} -u -D "%a, %d %b %Y %H:%M:%S" -s "${date_str}" > /dev/null
     return $?
 }
 
 set_current_date_ntp() {
-    cat $NTP_CONF | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ntpdate -t $date_timeout -s
+    cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ntpdate -t ${date_timeout} -s
 }
 
 start_http() {
     msg_begin "Setting current date using http"
     set_current_date_http || set_current_date_http
-    test $? == 0 && msg_done "$($DATE_PROG)" || msg_fail
+    test $? == 0 && msg_done "$(${DATE_PROG})" || msg_fail
     
     msg_begin "Starting http date updater"
     while true; do
-        sleep $date_interval
+        sleep ${date_interval}
         set_current_date_http
     done &
     msg_done
@@ -56,23 +56,23 @@ start_http() {
 start_ntp() {
     mkdir -p /var/lib/ntp
 
-    cat $NTP_CONF | grep -v iburst > ${NTP_CONF}.tmp
+    cat ${NTP_CONF} | grep -v iburst > ${NTP_CONF}.tmp
 
-    if [[ -n "$date_ntp_server" ]]; then
-        echo "server $date_ntp_server iburst" > $NTP_CONF
+    if [[ -n "${date_ntp_server}" ]]; then
+        echo "server ${date_ntp_server} iburst" > ${NTP_CONF}
     else
-        cat $SYS_NTP_CONF | grep iburst > $NTP_CONF
+        cat ${SYS_NTP_CONF} | grep iburst > ${NTP_CONF}
     fi
 
-    cat ${NTP_CONF}.tmp >> $NTP_CONF
+    cat ${NTP_CONF}.tmp >> ${NTP_CONF}
     rm ${NTP_CONF}.tmp
 
     msg_begin "Setting current date using ntp"
     set_current_date_ntp || set_current_date_ntp
-    test $? == 0 && msg_done "$($DATE_PROG)" || msg_fail
+    test $? == 0 && msg_done "$(${DATE_PROG})" || msg_fail
 
     msg_begin "Starting ntpd"
-    ntpd -g -c $NTP_CONF
+    ntpd -g -c ${NTP_CONF}
     test $? == 0 && msg_done || msg_fail
 }
 
@@ -89,17 +89,17 @@ stop_ntp() {
 }
 
 start() {
-    if [[ "$date_method" == "http" ]]; then
+    if [[ "${date_method}" == "http" ]]; then
         start_http
     else
         start_ntp
     fi
 
-    echo "system date is $($DATE_PROG '+%Y-%m-%d %H:%M:%S')" > /dev/kmsg
+    echo "system date is $(${DATE_PROG} '+%Y-%m-%d %H:%M:%S')" > /dev/kmsg
 }
 
 stop() {
-    if [[ "$date_method" == "http" ]]; then
+    if [[ "${date_method}" == "http" ]]; then
         stop_http
     else
         stop_ntp

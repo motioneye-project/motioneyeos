@@ -5,10 +5,10 @@ BOOT_CONF="/boot/bluetooth.conf"
 CONF="/data/etc/bluetooth.conf"
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-prepare_conf $CONF $SYS_CONF $BOOT_CONF
-test -f $CONF || exit 0
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
 hci=hci0
 bluetoothd=/usr/libexec/bluetooth/bluetoothd
@@ -16,21 +16,21 @@ data_dir=/var/lib/bluetooth
 run_data_dir=/data/bluetooth
 run_conf=/var/lib/bluetooth.conf
 
-test -x $bluetoothd || exit 0
+test -x ${bluetoothd} || exit 0
 
 
 configure() {
-    mkdir -p $run_data_dir
-    ln -sf $run_data_dir $data_dir
-    cp $CONF $run_conf
+    mkdir -p ${run_data_dir}
+    ln -sf ${run_data_dir} ${data_dir}
+    cp ${CONF} ${run_conf}
 
     # if no specific name configured, use hostname
-    if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then
-        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" $run_conf
+    if ! grep -E 'Name\s*=' ${run_conf} &>/dev/null; then
+        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" ${run_conf}
     fi
     
     # bring adapter up
-    hciconfig $hci up
+    hciconfig ${hci} up
 }
 
 start() {
@@ -38,10 +38,10 @@ start() {
 
     # wait up to 10 seconds for device
     count=0
-    while ! hciconfig $hci &>/dev/null; do
+    while ! hciconfig ${hci} &>/dev/null; do
         sleep 1
-        count=$(($count + 1))
-        if [[ $count -ge 10 ]]; then
+        count=$((${count} + 1))
+        if [[ ${count} -ge 10 ]]; then
             msg_fail "no device"
             logger -t bluetooth -s "bluetooth device not available, calling panic action"
             panic_action bluetooth
@@ -57,13 +57,13 @@ start() {
     fi
 
     msg_begin "Starting bluetoothd"
-    $bluetoothd &>/dev/null &
+    ${bluetoothd} &>/dev/null &
     msg_done
 
     # if DiscoverableTimeout is set to 0, make adapter discoverable from boot time
-    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+    if grep -E '^DiscoverableTimeout\s*=\s*0$' ${run_conf} &>/dev/null; then
         sleep 1
-        hciconfig $hci piscan
+        hciconfig ${hci} piscan
     fi
 }
 

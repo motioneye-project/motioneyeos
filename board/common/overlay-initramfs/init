@@ -25,20 +25,20 @@ fi
 msg "Waiting for sdcard"
 count=0
 while true; do
-    if [ $count -ge $DISK_TIMEOUT ]; then
+    if [ ${count} -ge ${DISK_TIMEOUT} ]; then
         break
     fi
-    if [ -b $ROOT_DEV ]; then
+    if [ -b ${ROOT_DEV} ]; then
         break
     fi
-    count=$(($count + 1))
+    count=$((${count} + 1))
     sleep 1
 done
 
-msg "Disk device is $DISK_DEV"
-msg "Boot device is $BOOT_DEV"
-msg "Root device is $ROOT_DEV"
-msg "Data device is $DATA_DEV"
+msg "Disk device is ${DISK_DEV}"
+msg "Boot device is ${BOOT_DEV}"
+msg "Root device is ${ROOT_DEV}"
+msg "Data device is ${DATA_DEV}"
 
 FW_DIR=/data/.fwupdate
 FW_FILE=firmware.img.gz
@@ -74,41 +74,41 @@ if [ -x /prepare_initramfs ]; then
 fi
 
 msg "Mounting boot partition"
-mount $BOOT_DEV /boot
+mount ${BOOT_DEV} /boot
 
 msg "Mounting data partition"
-mount $DATA_DEV /data
+mount ${DATA_DEV} /data
 
-if ! [ -r $FW_DIR/$FW_FILE_EXTR ]; then
-    if [ -r $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR ]; then
+if ! [ -r ${FW_DIR}/${FW_FILE_EXTR} ]; then
+    if [ -r ${LEGACY_FW_DIR}/${LEGACY_FW_FILE_EXTR} ]; then
         msg "Detected legacy firmware path"
-        mkdir -p $FW_DIR
-        mv $LEGACY_FW_DIR/$LEGACY_FW_FILE_EXTR $FW_DIR/$FW_FILE_EXTR
+        mkdir -p ${FW_DIR}
+        mv ${LEGACY_FW_DIR}/${LEGACY_FW_FILE_EXTR} ${FW_DIR}/${FW_FILE_EXTR}
         
         msg "Computing root partition info"
-        root_start=$(fdisk -l $FW_DIR/$FW_FILE_EXTR | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 4)
-        root_start=$(($root_start / 2048))
-        root_size=$(fdisk -l $FW_DIR/$FW_FILE_EXTR | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 6)
-        root_size=$(($root_size / 2048))
+        root_start=$(fdisk -l ${FW_DIR}/${FW_FILE_EXTR} | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 4)
+        root_start=$((${root_start} / 2048))
+        root_size=$(fdisk -l ${FW_DIR}/${FW_FILE_EXTR} | grep ${FW_FILE_EXTR}2 | tr -s ' ' | cut -d ' ' -f 6)
+        root_size=$((${root_size} / 2048))
         
-        echo $root_start $root_size > $FW_DIR/$ROOT_INFO_FILE
+        echo ${root_start} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
     else
         msg "No firmware found, aborting"
         exit 1
     fi
 fi
 
-if ! [ -r $FW_DIR/$ROOT_INFO_FILE ]; then
+if ! [ -r ${FW_DIR}/${ROOT_INFO_FILE} ]; then
     msg "No root partition info, aborting"
     exit 1
 fi
 
 msg "Copying root image"
-root_start=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 1)
-root_size=$(cat $FW_DIR/$ROOT_INFO_FILE | cut -d ' ' -f 2)
+root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
+root_size=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 2)
 
-dd if=$FW_DIR/$FW_FILE_EXTR skip=$root_start of=$ROOT_DEV bs=1048576 count=$root_size || exit 1
+dd if=${FW_DIR}/${FW_FILE_EXTR} skip=${root_start} of=${ROOT_DEV} bs=1048576 count=${root_size} || exit 1
 
 msg "Cleaning up"
-rm -rf $FW_DIR
+rm -rf ${FW_DIR}
 

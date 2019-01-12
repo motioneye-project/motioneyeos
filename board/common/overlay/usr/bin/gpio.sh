@@ -7,14 +7,14 @@ usage() {
     exit 1
 }
 
-test -z "$GPIO" && usage
-test -e /sys/class/gpio/gpio$GPIO || echo $GPIO > /sys/class/gpio/export
+test -z "${GPIO}" && usage
+test -e /sys/class/gpio/gpio${GPIO} || echo ${GPIO} > /sys/class/gpio/export
 
 if [ -n "$2" ]; then
-    echo out > /sys/class/gpio/gpio$GPIO/direction
-    echo $2 > /sys/class/gpio/gpio$GPIO/value
+    echo out > /sys/class/gpio/gpio${GPIO}/direction
+    echo $2 > /sys/class/gpio/gpio${GPIO}/value
 else
-    echo in > /sys/class/gpio/gpio$GPIO/direction
-    cat /sys/class/gpio/gpio$GPIO/value
+    echo in > /sys/class/gpio/gpio${GPIO}/direction
+    cat /sys/class/gpio/gpio${GPIO}/value
 fi
 
