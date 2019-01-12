@@ -1,27 +1,22 @@
 #!/bin/bash
 
-sys_hostname_file="/etc/hostname"
-boot_hostname_file="/boot/hostname"
-hostname_file="/data/etc/hostname"
+SYS_HOSTNAME_FILE="/etc/hostname"
+BOOT_HOSTNAME_FILE="/boot/hostname"
+HOSTNAME_FILE="/data/etc/hostname"
 
-test -n "$os_version" || source /etc/init.d/base
+
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 case "$1" in
     start)
         msg_begin "Setting hostname"
 
-        if ! [[ -f $hostname_file ]]; then
-            if [[ -f $boot_hostname_file ]]; then
-                cp $boot_hostname_file $hostname_file
-            elif [[ -f $sys_hostname_file ]]; then
-                cp $sys_hostname_file $hostname_file
-            fi
-        fi
+        prepare_conf $HOSTNAME_FILE $SYS_HOSTNAME_FILE $BOOT_HOSTNAME_FILE
 
-        if [[ -f $hostname_file ]]; then
-            hostname=$(cat $hostname_file)
+        if [[ -f $HOSTNAME_FILE ]]; then
+            hostname=$(cat $HOSTNAME_FILE)
         else
-            hostname="$os_prefix-$board_sn"
+            hostname="$OS_PREFIX-$BOARD_SN"
         fi
 
         /bin/hostname $hostname

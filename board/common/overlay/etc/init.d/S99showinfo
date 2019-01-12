@@ -1,6 +1,6 @@
 #!/bin/bash
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 msg_info() {
     echo " # $1"
@@ -24,9 +24,9 @@ show_dns() {
 
 case "$1" in
     start)
-        show_iface_ip_addr $os_eth
-        show_iface_ip_addr $os_wlan
-        show_iface_ip_addr $os_ppp
+        show_iface_ip_addr $OS_ETH
+        show_iface_ip_addr $OS_WLAN
+        show_iface_ip_addr $OS_PPP
         show_gateway
         show_dns
         ;;

@@ -3,5 +3,5 @@
 source /etc/init.d/panic
 
 # reset panic counter after a successful boot
-echo 0 > ${_PANIC_COUNTER_FILE}
+echo 0 > ${PANIC_COUNTER_FILE}
 
