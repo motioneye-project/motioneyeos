@@ -39,6 +39,14 @@ prepare_conf() {
     
     if [[ -n "$user_conf" && -e "$user_conf" ]]; then
         cp -rf "$user_conf" "$actual_conf"
+        
+        # we want only Unix newlines in conf files
+        if [[ -f "$actual_conf" ]]; then
+            sed -i 's/\r//g' "$actual_conf"
+        elif [[ -d "$actual_conf" ]]; then
+            find "$actual_conf" -type f | xargs -L1 sed -i 's/\r//g'
+        fi
+        
         grep -E "/boot .*ro[\s,]" /proc/mounts &>/dev/null
         RO=$?
         test $RO == 0 && mount -o remount,rw /boot
@@ -48,13 +56,6 @@ prepare_conf() {
 
     if [[ ! -e "$actual_conf" && -e "$system_conf" ]]; then
         cp "$system_conf" "$actual_conf"
-    fi
-
-    # we want only Unix newlines in conf files
-    if [[ -f "$actual_conf" ]]; then
-        sed -i 's/\r//g' "$actual_conf"
-    elif [[ -d "$actual_conf" ]]; then
-        find "$actual_conf" -type f | xargs -L1 sed -i 's/\r//g'
     fi
 }
 
