@@ -3,7 +3,7 @@
 CHECK_INTERVAL=30
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 get_throttled_now() {
     t=$(vcgencmd get_throttled | cut -d '=' -f 2)

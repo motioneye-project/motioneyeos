@@ -1,9 +1,9 @@
 
 source /etc/version
-board_sn=$(/etc/init.d/boardsn)
-board_name=$(cat /etc/board)
+BOARD_SN=$(/etc/init.d/boardsn)
+BOARD_NAME=$(cat /etc/board)
 
-test -n "$os_debug" || source /etc/init.d/os_conf
+test -n "$OS_DEBUG" || source /etc/init.d/os_conf
 
 source /etc/init.d/panic
 

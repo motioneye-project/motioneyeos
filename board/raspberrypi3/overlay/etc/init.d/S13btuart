@@ -9,7 +9,7 @@ test -f $CONF || test -f $BOOT_CONF || test -f $SYS_CONF || exit 0
 
 test -d "/proc/device-tree/soc/gpio@7e200000/uart0_pins" || exit 0  # no rpi bluetooth detected
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 function start() {
     if [[ "$(cat /proc/device-tree/aliases/uart0)" = "$(cat /proc/device-tree/aliases/serial1)" ]] ; then

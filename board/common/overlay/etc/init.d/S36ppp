@@ -10,7 +10,7 @@ PROVIDER="mobile"
 WATCH_CONF="/data/etc/watch.conf"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 prepare_conf $CONF $SYS_CONF $BOOT_CONF
 
@@ -19,11 +19,11 @@ test -e $CONF/apn || exit 0
 
 source $WATCH_CONF
 
-test "$os_networkless" == "true" && exit 0
+test "$OS_NETWORKLESS" == "true" && exit 0
 
 
 connected() {
-    ifconfig | grep $os_ppp &>/dev/null && return 0 || return 1
+    ifconfig | grep $OS_PPP &>/dev/null && return 0 || return 1
 }
 
 watch() {

@@ -13,7 +13,7 @@ BOOT_WATCH_CONF="/boot/watch.conf"
 WATCH_CONF="/data/etc/watch.conf"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 prepare_conf $WATCH_CONF $SYS_WATCH_CONF $BOOT_WATCH_CONF
 source $WATCH_CONF
@@ -25,11 +25,11 @@ ssid=$(cat $CONF | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "$ssid" || exit 0
 
 
-test "$os_networkless" == "true" && exit 0
+test "$OS_NETWORKLESS" == "true" && exit 0
 
 
 connected() {
-    ip link show dev $os_wlan 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
+    ip link show dev $OS_WLAN 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
 }
 
 watch() {
@@ -51,13 +51,13 @@ watch() {
 }
 
 start() {
-    test -n "$os_country" && iw reg set $os_country
+    test -n "$OS_COUNTRY" && iw reg set $OS_COUNTRY
 
     msg_begin "Starting wpa_supplicant"
 
     # wait up to 5 seconds for interface
     count=0
-    while ! ifconfig $os_wlan >/dev/null 2>&1; do
+    while ! ifconfig $OS_WLAN >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
         if [[ $count -ge 5 ]]; then
@@ -66,11 +66,11 @@ start() {
         fi
     done
     
-    module=$(basename $(readlink /sys/class/net/$os_wlan/device/driver/module 2>/dev/null) 2>/dev/null)
+    module=$(basename $(readlink /sys/class/net/$OS_WLAN/device/driver/module 2>/dev/null) 2>/dev/null)
 
-    iwconfig $os_wlan power off &> /dev/null
-    iw $os_wlan set power_save off &> /dev/null
-    $PROG -i$os_wlan -c$CONF -D$DRIVER -B &> $LOG
+    iwconfig $OS_WLAN power off &> /dev/null
+    iw $OS_WLAN set power_save off &> /dev/null
+    $PROG -i$OS_WLAN -c$CONF -D$DRIVER -B &> $LOG
     count=0
     while true; do
         sleep 1

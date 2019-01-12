@@ -6,7 +6,7 @@ pid_file=/tmp/rc.pid
 
 source /etc/init.d/base
 
-echo "---- booting $os_name $os_version ----" >> $tmp_boot_log
+echo "---- booting $OS_NAME $OS_VERSION ----" >> $tmp_boot_log
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.

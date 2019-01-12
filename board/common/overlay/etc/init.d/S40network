@@ -9,7 +9,7 @@ WATCH_CONF="/data/etc/watch.conf"
 LINK_NEGO_TIMEOUT=10
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 source $WATCH_CONF
 
@@ -23,7 +23,7 @@ watch_eth() {
     count=0
     while true; do
         sleep 5
-        if [[ "$(cat /sys/class/net/$os_eth/operstate 2>/dev/null)" == "up" ]]; then
+        if [[ "$(cat /sys/class/net/$OS_ETH/operstate 2>/dev/null)" == "up" ]]; then
             count=0
         else
             if [[ $count -lt $link_watch_timeout ]]; then
@@ -62,31 +62,31 @@ start_lo() {
 
 start_wlan() {
     msg_begin "Configuring wireless network"
-    if ! ifconfig $os_wlan &>/dev/null; then
+    if ! ifconfig $OS_WLAN &>/dev/null; then
         msg_fail "no device"
         return 1
     fi
 
-    if [[ "$(cat /sys/class/net/$os_wlan/carrier 2>/dev/null)" != "1" ]]; then
+    if [[ "$(cat /sys/class/net/$OS_WLAN/carrier 2>/dev/null)" != "1" ]]; then
         msg_fail "no link"
         return 1
     fi
 
     if [[ -n "$mtu" ]]; then
-        ip link set mtu $mtu dev $os_wlan
+        ip link set mtu $mtu dev $OS_WLAN
     fi
 
     if [[ -n "$static_ip" ]]; then
         msg_done $static_ip
-        ifconfig $os_wlan $static_ip up
+        ifconfig $OS_WLAN $static_ip up
         static_ip="" # won't be used again
     else
         msg_done dhcp
-        dhclient -cf "$DH_CONF" $os_wlan
+        dhclient -cf "$DH_CONF" $OS_WLAN
     fi
 
-    if [[ "$ip_watch" == "true" ]] && ip addr show dev $os_wlan | grep inet &>/dev/null; then
-        watch_ip $os_wlan &
+    if [[ "$ip_watch" == "true" ]] && ip addr show dev $OS_WLAN | grep inet &>/dev/null; then
+        watch_ip $OS_WLAN &
     fi
 }
 
@@ -96,7 +96,7 @@ start_eth() {
     # wait for driver
     w=3
     count=0
-    while ! ifconfig $os_eth >/dev/null 2>&1; do
+    while ! ifconfig $OS_ETH >/dev/null 2>&1; do
         sleep 1
         count=$(($count + 1))
         if [[ $count -ge $w ]]; then
@@ -106,12 +106,12 @@ start_eth() {
     done
 
     # bring it up
-    ifconfig $os_eth up
+    ifconfig $OS_ETH up
 
     # wait for operstate
     w=3
     count=0
-    while [[ "$(cat /sys/class/net/$os_eth/operstate 2>&1)" == "unknown" ]]; do
+    while [[ "$(cat /sys/class/net/$OS_ETH/operstate 2>&1)" == "unknown" ]]; do
         sleep 1
         count=$(($count + 1))
         if [[ $count -ge $w ]]; then
@@ -123,7 +123,7 @@ start_eth() {
     # wait for link
     test "$link_watch" == "true" || LINK_NEGO_TIMEOUT=5
     count=0
-    while [[ "$(cat /sys/class/net/$os_eth/carrier 2>&1)" != "1" ]]; do
+    while [[ "$(cat /sys/class/net/$OS_ETH/carrier 2>&1)" != "1" ]]; do
         sleep 1
         count=$(($count + 1))
         if [[ $count -ge $LINK_NEGO_TIMEOUT ]]; then
@@ -133,24 +133,24 @@ start_eth() {
     done
     
     if [[ -n "$mtu" ]]; then
-        ip link set mtu $mtu dev $os_eth
+        ip link set mtu $mtu dev $OS_ETH
     fi
 
     if [[ -n "$static_ip" ]]; then
         msg_done $static_ip
-        ifconfig $os_eth $static_ip up
+        ifconfig $OS_ETH $static_ip up
         static_ip="" # won't be used again
     else
         msg_done dhcp
-        dhclient -cf "$DH_CONF" $os_eth
+        dhclient -cf "$DH_CONF" $OS_ETH
     fi
 
     if [[ "$link_watch" == "true" ]]; then
         watch_eth &
     fi
 
-    if [[ "$ip_watch" == "true" ]] && ip addr show dev $os_eth | grep inet &>/dev/null; then
-        watch_ip $os_eth &
+    if [[ "$ip_watch" == "true" ]] && ip addr show dev $OS_ETH | grep inet &>/dev/null; then
+        watch_ip $OS_ETH &
     fi
 }
 
@@ -160,12 +160,12 @@ start() {
 
     start_lo
 
-    test "$os_networkless" == "true" && return 0
+    test "$OS_NETWORKLESS" == "true" && return 0
 
     ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
     test -n "$ssid" && start_wlan && wlan_ok="ok"
     
-    test -r /data/etc/ppp/modem && ifconfig | grep $os_ppp &>/dev/null && ppp_ok="ok"
+    test -r /data/etc/ppp/modem && ifconfig | grep $OS_PPP &>/dev/null && ppp_ok="ok"
     
     # if wifi or ppp link ok, start eth in background
     if [[ "$wlan_ok" == "ok" ]] || [[ "$ppp_ok" == "ok" ]]; then

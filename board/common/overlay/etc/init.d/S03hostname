@@ -5,7 +5,7 @@ BOOT_HOSTNAME_FILE="/boot/hostname"
 HOSTNAME_FILE="/data/etc/hostname"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 case "$1" in
     start)
@@ -16,7 +16,7 @@ case "$1" in
         if [[ -f $HOSTNAME_FILE ]]; then
             hostname=$(cat $HOSTNAME_FILE)
         else
-            hostname="$os_prefix-$board_sn"
+            hostname="$OS_PREFIX-$BOARD_SN"
         fi
 
         /bin/hostname $hostname

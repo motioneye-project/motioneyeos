@@ -12,9 +12,9 @@ if [[ -z "$netwatch_host" || -z "$netwatch_port" ]]; then
     exit 0
 fi
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
-test "$os_networkless" == "true" && exit 0
+test "$OS_NETWORKLESS" == "true" && exit 0
 
 
 watch() {

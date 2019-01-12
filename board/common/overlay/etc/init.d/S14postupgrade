@@ -5,7 +5,7 @@ VERSION_FILE="/data/etc/version"
 POST_UPGRADE_DIR="/usr/share/post-upgrade"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 hash=$(md5sum $VERSION_FILE 2>/dev/null | cut -d ' ' -f 1)
 sys_hash=$(md5sum $SYS_VERSION_FILE 2>/dev/null | cut -d ' ' -f 1)
@@ -23,8 +23,8 @@ function version_gt() {
 }
 
 function run_post_upgrade() {
-    version="$(source $VERSION_FILE 2>/dev/null && echo $os_version)"
-    sys_version="$(source $SYS_VERSION_FILE 2>/dev/null && echo $os_version)"
+    version="$(source $VERSION_FILE 2>/dev/null && echo $OS_VERSION)"
+    sys_version="$(source $SYS_VERSION_FILE 2>/dev/null && echo $OS_VERSION)"
 
     versions=$(ls -1 $POST_UPGRADE_DIR | cut -d '.' -f 1)
     for v in $versions; do

@@ -3,7 +3,7 @@
 SYS_CONF="/etc/crontabs"
 CONF="/data/etc/crontabs"
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 start() {
     msg_begin "Starting crond"

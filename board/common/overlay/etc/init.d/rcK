@@ -5,7 +5,7 @@ pid_file=/tmp/rc.pid
 
 source /etc/init.d/base
 
-echo "---- shutting down $os_name $os_version ----" >> $boot_log
+echo "---- shutting down $OS_NAME $OS_VERSION ----" >> $boot_log
 
 # stop all init scripts in /etc/init.d,
 # executing them in reverse numerical order.

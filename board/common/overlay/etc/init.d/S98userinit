@@ -5,7 +5,7 @@ USERINIT="/data/etc/userinit.sh"
 
 test -f $USERINIT || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 case "$1" in
     start)

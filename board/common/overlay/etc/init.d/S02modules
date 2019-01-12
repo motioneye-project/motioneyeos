@@ -5,7 +5,7 @@ BOOT_MODULES_FILE="/boot/modules"
 MODULES_FILE="/data/etc/modules"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 case "$1" in
     start)

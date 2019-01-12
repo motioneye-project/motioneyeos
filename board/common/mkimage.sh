@@ -28,7 +28,7 @@ GUARD_SIZE="10"  # MB
 DISK_SIZE=$((ROOT_START + ROOT_SIZE + GUARD_SIZE))
 
 COMMON_DIR=$(cd $IMG_DIR/../../../board/common; pwd)
-OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $os_short_name)
+OS_NAME=$(source $COMMON_DIR/overlay/etc/version && echo $OS_SHORT_NAME)
 
 # boot filesystem
 msg "creating boot loop device"
@@ -73,19 +73,19 @@ tar -xpsf $ROOT_SRC -C $ROOT
 if [ -f $ROOT/etc/version ]; then
     if [ -n "$THINGOS_NAME" ]; then
         msg "setting OS name to $THINGOS_NAME"
-        sed -ri "s/os_name=\".*\"/os_name=\"$THINGOS_NAME\"/" $ROOT/etc/version
+        sed -ri "s/OS_NAME=\".*\"/OS_NAME=\"$THINGOS_NAME\"/" $ROOT/etc/version
     fi
     if [ -n "$THINGOS_SHORT_NAME" ]; then
         msg "setting OS short name to $THINGOS_SHORT_NAME"
-        sed -ri "s/os_short_name=\".*\"/os_short_name=\"$THINGOS_SHORT_NAME\"/" $ROOT/etc/version
+        sed -ri "s/OS_SHORT_NAME=\".*\"/OS_SHORT_NAME=\"$THINGOS_SHORT_NAME\"/" $ROOT/etc/version
     fi
     if [ -n "$THINGOS_PREFIX" ]; then
         msg "setting OS prefix to $THINGOS_PREFIX"
-        sed -ri "s/os_prefix=\".*\"/os_prefix=\"$THINGOS_PREFIX\"/" $ROOT/etc/version
+        sed -ri "s/OS_PREFIX=\".*\"/OS_PREFIX=\"$THINGOS_PREFIX\"/" $ROOT/etc/version
     fi
     if [ -n "$THINGOS_VERSION" ]; then
         msg "setting OS version to $THINGOS_VERSION"
-        sed -ri "s/os_version=\".*\"/os_version=\"$THINGOS_VERSION\"/" $ROOT/etc/version
+        sed -ri "s/OS_VERSION=\".*\"/OS_VERSION=\"$THINGOS_VERSION\"/" $ROOT/etc/version
     fi
 fi
 

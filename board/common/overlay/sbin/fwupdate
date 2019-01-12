@@ -77,22 +77,22 @@ fi
 #### versions ####
 
 function show_versions() {
-    source /etc/init.d/os_conf  # we need this for the os_ vars
+    source /etc/init.d/os_conf  # we need this for the OS_ vars
     
     board=$(cat $SYS_BOARD_FILE)
     show_json=$1
   
     # the /usr/libexec/list-versions-* helpers return a table with the following format:
     #     <version>|<prerelease>|<board>|<url>|<date>
-    versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
-               /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
+    versions=$(FW_USERNAME=$OS_FIRMWARE_USERNAME FW_PASSWORD=$OS_FIRMWARE_PASSWORD \
+               /usr/libexec/list-versions-$OS_FIRMWARE_METHOD $OS_FIRMWARE_REPO)
 
     for version in ${versions[@]}; do
         OIFS=$IFS
         IFS="|"
         varr=($version)
         IFS=$OIFS
-        if [ "$os_prereleases" == "false" ] && [ "${varr[1]}" == "true" ]; then
+        if [ "$OS_PRERELEASES" == "false" ] && [ "${varr[1]}" == "true" ]; then
             continue  # skip prereleases
         fi
         if [ "$board" != "${varr[2]}" ]; then
@@ -114,7 +114,7 @@ function show_versions() {
 function show_current() {
     source $SYS_VERSION_FILE
     
-    echo $os_version
+    echo $OS_VERSION
 }
 
 
@@ -144,7 +144,7 @@ function do_download() {
         fi
     fi
 
-    source /etc/init.d/os_conf  # we need this for the os_ vars
+    source /etc/init.d/os_conf  # we need this for the OS_ vars
     
     board=$(cat $SYS_BOARD_FILE)
     url=$1
@@ -176,8 +176,8 @@ function do_download() {
     echo $version > $FW_DIR/$VER_FILE
 
     curl_opts="-S -f -L"
-    if [ -n "$os_firmware_username" ]; then
-        curl_opts+=" --user $os_firmware_username:$os_firmware_password"
+    if [ -n "$OS_FIRMWARE_USERNAME" ]; then
+        curl_opts+=" --user $OS_FIRMWARE_USERNAME:$OS_FIRMWARE_PASSWORD"
     fi
 
     curl $curl_opts -o $outfile "$url" &> $FW_DIR/$CURL_LOG_FILE &

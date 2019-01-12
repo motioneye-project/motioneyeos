@@ -13,7 +13,7 @@ link_watch=yes
 link_watch_timeout=20
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 prepare_conf $CONF $SYS_CONF $BOOT_CONF
 test -f $CONF || exit 0

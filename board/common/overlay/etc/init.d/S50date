@@ -12,14 +12,14 @@ BOOT_NTP_CONF="/boot/ntp.conf"
 NTP_CONF="/data/etc/ntp.conf"
 
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "$OS_VERSION" || source /etc/init.d/base
 
 prepare_conf $CONF $SYS_CONF $BOOT_CONF
 prepare_conf $NTP_CONF $SYS_NTP_CONF $BOOT_NTP_CONF
 
 test -f $CONF || exit 0
 
-test "$os_networkless" == "true" && exit 0
+test "$OS_NETWORKLESS" == "true" && exit 0
 
 date_timeout=10
 date_method=http
