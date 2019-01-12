@@ -44,6 +44,7 @@ config BR2_TARGET_SYSLINUX_MBR
 
 config BR2_TARGET_SYSLINUX_EFI
 	bool "install efi"
+	depends on BR2_PACKAGE_GNU_EFI_ARCH_SUPPORTS
 	select BR2_PACKAGE_GNU_EFI
 	help
 	  Install the 'efi' image, to boot from an EFI environment.
