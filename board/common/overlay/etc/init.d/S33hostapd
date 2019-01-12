@@ -13,12 +13,12 @@ link_watch=yes
 link_watch_timeout=20
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-prepare_conf $CONF $SYS_CONF $BOOT_CONF
-test -f $CONF || exit 0
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
-test -f $WATCH_CONF && source $WATCH_CONF
+test -f ${WATCH_CONF} && source ${WATCH_CONF}
 
 
 running() {
@@ -41,26 +41,26 @@ start() {
 
     # wait up to 5 seconds for interface
     count=0
-    while ! ifconfig $iface >/dev/null 2>&1; do
+    while ! ifconfig ${iface} >/dev/null 2>&1; do
         sleep 1
-        count=$(($count + 1))
-        if [[ $count -ge 5 ]]; then
+        count=$((${count} + 1))
+        if [[ ${count} -ge 5 ]]; then
             msg_fail "no device"
             return 1
         fi
     done
 
-    iface=$(cat $CONF | grep interface | cut -d '=' -f 2)
-    module=$(basename $(readlink /sys/class/net/$iface/device/driver/module 2>/dev/null) 2>/dev/null)
+    iface=$(cat ${CONF} | grep interface | cut -d '=' -f 2)
+    module=$(basename $(readlink /sys/class/net/${iface}/device/driver/module 2>/dev/null) 2>/dev/null)
 
-    iwconfig $iface power off &> /dev/null
-    $PROG $CONF &> $LOG &
+    iwconfig ${iface} power off &> /dev/null
+    ${PROG} ${CONF} &> ${LOG} &
 
-    if [[ "$LINK_WATCH" == "yes" ]]; then
+    if [[ "${LINK_WATCH}" == "yes" ]]; then
         watch &
     fi
 
-    test -n "$module" && msg_done "done ($module)"|| msg_done
+    test -n "${module}" && msg_done "done (${module})"|| msg_done
 }
 
 stop() {

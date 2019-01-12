@@ -5,15 +5,15 @@ BOOT_CONF="/boot/firewall.sh"
 CONF="/data/etc/firewall.sh"
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-prepare_conf $CONF $SYS_CONF $BOOT_CONF
-test -f $CONF || exit 0
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
 start() {
     msg_begin "Starting firewall"
 
-    bash $CONF  
+    bash ${CONF}  
 
     test $? == 0 && msg_done || msg_fail
 }

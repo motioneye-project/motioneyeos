@@ -6,5 +6,5 @@ if [ -z "$1" ]; then
 fi
 
 old_boot=$1
-cp $old_boot/config.txt /boot
+cp ${old_boot}/config.txt /boot
 

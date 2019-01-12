@@ -1,6 +1,6 @@
 #!/bin/bash
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 DMESG_LOG="/var/log/dmesg.log"
 
@@ -10,8 +10,8 @@ case "$1" in
         msg_begin "Starting syslogd"
         syslogd
         test $? == 0 && msg_done || msg_fail
-        echo "---- booting $OS_NAME $OS_VERSION ----" >> $DMESG_LOG
-        dmesg -T -w >> $DMESG_LOG &
+        echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${DMESG_LOG}
+        dmesg -T -w >> ${DMESG_LOG} &
         ;;
 
     stop)

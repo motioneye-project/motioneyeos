@@ -6,11 +6,11 @@ BTCONF="/data/etc/bluetooth.conf"
 
 
 # dbus is currently only used by bluez
-test -f $BTCONF || test -f $BOOT_BTCONF || test -f $SYS_BTCONF || exit 0
+test -f ${BTCONF} || test -f ${BOOT_BTCONF} || test -f ${SYS_BTCONF} || exit 0
 
 test -x /usr/bin/dbus-daemon || exit 0
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 start() {
     mkdir -p /tmp/dbus

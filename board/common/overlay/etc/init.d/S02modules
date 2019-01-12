@@ -5,22 +5,22 @@ BOOT_MODULES_FILE="/boot/modules"
 MODULES_FILE="/data/etc/modules"
 
 
-test -n "$OS_VERSION" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 case "$1" in
     start)
         msg_begin "Loading kernel modules"
 
-        if [[ -r $SYS_MODULES_FILE ]]; then
-            cat $SYS_MODULES_FILE | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
+        if [[ -r ${SYS_MODULES_FILE} ]]; then
+            cat ${SYS_MODULES_FILE} | while read line; do test -n "${line}" && /sbin/modprobe ${line} &>/dev/null; done
         fi
 
-        if [[ -r $BOOT_MODULES_FILE ]]; then
-            cat $BOOT_MODULES_FILE | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
+        if [[ -r ${BOOT_MODULES_FILE} ]]; then
+            cat ${BOOT_MODULES_FILE} | while read line; do test -n "${line}" && /sbin/modprobe ${line} &>/dev/null; done
         fi
 
-        if [[ -r $MODULES_FILE ]]; then
-            cat $MODULES_FILE | while read line; do test -n "$line" && /sbin/modprobe $line &>/dev/null; done
+        if [[ -r ${MODULES_FILE} ]]; then
+            cat ${MODULES_FILE} | while read line; do test -n "${line}" && /sbin/modprobe ${line} &>/dev/null; done
         fi
 
         msg_done

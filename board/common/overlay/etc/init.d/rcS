@@ -6,20 +6,20 @@ pid_file=/tmp/rc.pid
 
 source /etc/init.d/base
 
-echo "---- booting $OS_NAME $OS_VERSION ----" >> $tmp_boot_log
+echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${tmp_boot_log}
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
 (for i in /etc/init.d/S??* /etc/init.d/bootdone; do
-    if ! [[ -x "$i" ]]; then continue; fi
-    if [[ -f /data/etc/no_$(basename $i) ]]; then continue; fi
-    $i start || break
-done& echo $! > $pid_file) | tee -a $tmp_boot_log &
+    if ! [[ -x "${i}" ]]; then continue; fi
+    if [[ -f /data/etc/no_$(basename ${i}) ]]; then continue; fi
+    ${i} start || break
+done& echo $! > ${pid_file}) | tee -a ${tmp_boot_log} &
 
-pid=$(cat $pid_file)
-while kill -0 $pid 2>/dev/null; do
+pid=$(cat ${pid_file})
+while kill -0 ${pid} 2>/dev/null; do
     sleep 1
 done
 
-test -d $(dirname $boot_log) && cat $tmp_boot_log >> $boot_log
+test -d $(dirname ${boot_log}) && cat ${tmp_boot_log} >> ${boot_log}
 

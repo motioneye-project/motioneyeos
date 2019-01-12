@@ -7,22 +7,22 @@ fi
 
 function check_prerelease() {
     read line
-    if [[ "$line" =~ ^[0-9._]+\| ]]; then
-        echo "$line"
+    if [[ "${line}" =~ ^[0-9._]+\| ]]; then
+        echo "${line}"
     else
-        echo "$line" | sed 's/|false|/|true|/'
+        echo "${line}" | sed 's/|false|/|true|/'
     fi
 }
 
 extensions=".img.gz .img.xz .img"
 opts="-s -S -f"
-test -n "$FW_USERNAME" && opts+=" --user $FW_USERNAME:$FW_PASSWORD"
+test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
 url="https://api.bitbucket.org/2.0/repositories/$1/downloads?pagelen=100&_=$(date +%s)"
 
-rtrimstr=$(for e in $extensions; do echo -n " | rtrimstr(\"$e\")"; done)
+rtrimstr=$(for e in ${extensions}; do echo -n " | rtrimstr(\"${e}\")"; done)
 jq_expr=".values[] | [{a: .name | split(\"-\"), url: .links.self.href, date: .created_on | split(\"T\")[0]}] |
-         map((.a[2] $rtrimstr), \"false\", .a[1], .url, .date) | join(\"|\")"
+         map((.a[2] ${rtrimstr}), \"false\", .a[1], .url, .date) | join(\"|\")"
 
-curl $opts $url | jq --raw-output "$jq_expr" | while read line; do echo "$line" | check_prerelease; done
+curl ${opts} ${url} | jq --raw-output "${jq_expr}" | while read line; do echo "${line}" | check_prerelease; done
 exit ${PIPESTATUS[0]}
 
