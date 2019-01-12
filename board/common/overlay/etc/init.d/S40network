@@ -26,11 +26,11 @@ watch_eth() {
         if [[ "$(cat /sys/class/net/$OS_ETH/operstate 2>/dev/null)" == "up" ]]; then
             count=0
         else
-            if [[ $count -lt $link_watch_timeout ]]; then
+            if [[ $count -lt $LINK_WATCH_TIMEOUT ]]; then
                 count=$(($count + 5))
                 logger -t ethernet -s "disconnected"
             else
-                logger -t ethernet -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                logger -t ethernet -s "disconnected for $LINK_WATCH_TIMEOUT seconds, calling panic action"
                 panic_action network
             fi
         fi
@@ -45,11 +45,11 @@ watch_ip() {
         if ip addr show dev $iface | grep inet &>/dev/null; then
             count=0
         else
-            if [[ $count -lt $ip_watch_timeout ]]; then
+            if [[ $count -lt $IP_WATCH_TIMEOUT ]]; then
                 count=$(($count + 5))
                 logger -t network -s "$iface has no IP address"
             else
-                logger -t network -s "$iface had no IP address for $ip_watch_timeout seconds, calling panic action"
+                logger -t network -s "$iface had no IP address for $IP_WATCH_TIMEOUT seconds, calling panic action"
                 panic_action network
             fi
         fi
@@ -85,7 +85,7 @@ start_wlan() {
         dhclient -cf "$DH_CONF" $OS_WLAN
     fi
 
-    if [[ "$ip_watch" == "true" ]] && ip addr show dev $OS_WLAN | grep inet &>/dev/null; then
+    if [[ "$IP_WATCH" == "true" ]] && ip addr show dev $OS_WLAN | grep inet &>/dev/null; then
         watch_ip $OS_WLAN &
     fi
 }
@@ -121,7 +121,7 @@ start_eth() {
     done
 
     # wait for link
-    test "$link_watch" == "true" || LINK_NEGO_TIMEOUT=5
+    test "$LINK_WATCH" == "true" || LINK_NEGO_TIMEOUT=5
     count=0
     while [[ "$(cat /sys/class/net/$OS_ETH/carrier 2>&1)" != "1" ]]; do
         sleep 1
@@ -145,11 +145,11 @@ start_eth() {
         dhclient -cf "$DH_CONF" $OS_ETH
     fi
 
-    if [[ "$link_watch" == "true" ]]; then
+    if [[ "$LINK_WATCH" == "true" ]]; then
         watch_eth &
     fi
 
-    if [[ "$ip_watch" == "true" ]] && ip addr show dev $OS_ETH | grep inet &>/dev/null; then
+    if [[ "$IP_WATCH" == "true" ]] && ip addr show dev $OS_ETH | grep inet &>/dev/null; then
         watch_ip $OS_ETH &
     fi
 }
@@ -175,7 +175,7 @@ start() {
     fi
     
     if [[ "$eth_ok" != "ok" ]] && [[ "$wlan_ok" != "ok" ]] && [[ "$ppp_ok" != "ok" ]]; then
-        if [[ "$link_watch" == "true" ]]; then
+        if [[ "$LINK_WATCH" == "true" ]]; then
             logger -t network -s "no network connection available, calling panic action"
             panic_action network
             return 1

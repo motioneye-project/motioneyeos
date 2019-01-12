@@ -56,7 +56,7 @@ start() {
     iwconfig $iface power off &> /dev/null
     $PROG $CONF &> $LOG &
 
-    if [[ "$link_watch" == "yes" ]]; then
+    if [[ "$LINK_WATCH" == "yes" ]]; then
         watch &
     fi
 
