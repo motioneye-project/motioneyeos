@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HAPROXY_VERSION_MAJOR = 1.8
-HAPROXY_VERSION = $(HAPROXY_VERSION_MAJOR).14
+HAPROXY_VERSION_MAJOR = 1.9
+HAPROXY_VERSION = $(HAPROXY_VERSION_MAJOR).1
 HAPROXY_SITE = http://www.haproxy.org/download/$(HAPROXY_VERSION_MAJOR)/src
 HAPROXY_LICENSE = GPL-2.0+ and LGPL-2.1+ with exceptions
 HAPROXY_LICENSE_FILES = LICENSE doc/lgpl.txt doc/gpl.txt
@@ -48,12 +48,12 @@ endif
 ifeq ($(BR2_PACKAGE_PCRE2),y)
 HAPROXY_DEPENDENCIES += pcre2
 HAPROXY_MAKE_OPTS += \
-	PCRE_CONFIGDIR=$(STAGING_DIR)/usr/bin/ \
+	PCRE2_CONFIG=$(STAGING_DIR)/usr/bin/pcre2-config \
 	USE_PCRE2=1
 else ifeq ($(BR2_PACKAGE_PCRE),y)
 HAPROXY_DEPENDENCIES += pcre
 HAPROXY_MAKE_OPTS += \
-	PCRE_CONFIGDIR=$(STAGING_DIR)/usr/bin/ \
+	PCRE_CONFIG=$(STAGING_DIR)/usr/bin/pcre-config \
 	USE_PCRE=1
 endif
 
