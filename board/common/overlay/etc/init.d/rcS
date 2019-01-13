@@ -1,12 +1,13 @@
 #!/bin/sh
 
-boot_log=/var/log/boot.log
-tmp_boot_log=/tmp/_boot.log
-pid_file=/tmp/rc.pid
+BOOT_LOG=/var/log/boot.log
+TMP_BOOT_LOG=/tmp/_boot.log
+PID_FILE=/tmp/rc.pid
+
 
 source /etc/init.d/base
 
-echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${tmp_boot_log}
+echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${TMP_BOOT_LOG}
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
@@ -14,12 +15,12 @@ echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${tmp_boot_log}
     if ! [[ -x "${i}" ]]; then continue; fi
     if [[ -f /data/etc/no_$(basename ${i}) ]]; then continue; fi
     ${i} start || break
-done& echo $! > ${pid_file}) | tee -a ${tmp_boot_log} &
+done& echo $! > ${PID_FILE}) | tee -a ${TMP_BOOT_LOG} &
 
-pid=$(cat ${pid_file})
+pid=$(cat ${PID_FILE})
 while kill -0 ${pid} 2>/dev/null; do
     sleep 1
 done
 
-test -d $(dirname ${boot_log}) && cat ${tmp_boot_log} >> ${boot_log}
+test -d $(dirname ${BOOT_LOG}) && cat ${TMP_BOOT_LOG} >> ${BOOT_LOG}
 
