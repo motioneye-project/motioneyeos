@@ -1,0 +1,43 @@
+From 9c2873b1d9292bcf43c862b6777d41c40521424c Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sun, 13 Jan 2019 22:27:42 +0100
+Subject: [PATCH] libcdaudio: enable autoreconf
+
+Fixes the following two autoreconf errors (by simple removing of the
+two offending lines):
+
+  configure.ac:20: error: automatic de-ANSI-fication support has been removed
+
+  Makefile.am:2: error: automatic de-ANSI-fication support has been removed
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ Makefile.am  | 1 -
+ configure.ac | 1 -
+ 2 files changed, 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index f639dd8..a32cfe6 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1,5 +1,4 @@
+ ## Process this file with automake to produce Makefile.in
+-AUTOMAKE_OPTIONS = ansi2knr
+ SUBDIRS = src
+ 
+ bin_SCRIPTS = libcdaudio-config
+diff --git a/configure.ac b/configure.ac
+index bbdd42d..6699ceb 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -17,7 +17,6 @@ AM_CONFIG_HEADER(config.h)
+ AC_PROG_AWK
+ AC_PROG_CC
+ AC_PROG_CPP
+-AM_C_PROTOTYPES
+ AM_PROG_CC_STDC
+ AC_PROG_INSTALL
+ AC_PROG_LN_S
+-- 
+2.20.1
+

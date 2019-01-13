@@ -11,4 +11,7 @@ LIBCDAUDIO_CONFIG_SCRIPTS = libcdaudio-config
 LIBCDAUDIO_LICENSE = GPL-2.0+
 LIBCDAUDIO_LICENSE_FILES = COPYING
 
+# fix configure failure when the toolchain doesn't have C++ support
+LIBCDAUDIO_AUTORECONF = YES
+
 $(eval $(autotools-package))
