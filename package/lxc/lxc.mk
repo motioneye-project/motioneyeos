@@ -4,14 +4,12 @@
 #
 ################################################################################
 
-LXC_VERSION = 3.0.3
+LXC_VERSION = 3.1.0
 LXC_SITE = https://linuxcontainers.org/downloads/lxc
 LXC_LICENSE = LGPL-2.1+
 LXC_LICENSE_FILES = COPYING
 LXC_DEPENDENCIES = host-pkgconf
 LXC_INSTALL_STAGING = YES
-# We're patching configure.ac
-LXC_AUTORECONF = YES
 
 LXC_CONF_OPTS = --disable-apparmor --with-distro=buildroot \
 	--disable-werror \
