@@ -1,9 +1,12 @@
 # These are the architectures supported by FDK AAC
 config BR2_PACKAGE_FDK_AAC_ARCH_SUPPORTS
 	bool
-	default y if BR2_i386 || BR2_x86_64 || BR2_arm || BR2_armeb || \
-		BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el || \
-		BR2_powerpc || BR2_sh
+	default y if BR2_aarch64
+	default y if BR2_arm || BR2_armeb
+	default y if BR2_i386 || BR2_x86_64
+	default y if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	default y if BR2_powerpc
+	default y if BR2_sh
 
 config BR2_PACKAGE_FDK_AAC
 	bool "fdk-aac"
