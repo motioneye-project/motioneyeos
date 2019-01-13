@@ -27,7 +27,7 @@ def get_os_version():
     lines = [l.strip().split('=', 1) for l in lines]
     data = dict([(l[0], l[1].strip('"')) for l in lines])
     
-    return (data['os_name'], data['os_version'])
+    return (data['OS_NAME'], data['OS_VERSION'])
 
 
 def get_all_versions():

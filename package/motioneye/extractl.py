@@ -148,7 +148,7 @@ def _get_os_settings():
                 except:
                     continue
 
-                if name == 'os_prereleases':
+                if name == 'OS_PRERELEASES':
                     prereleases = value == 'true'
 
     s = {
@@ -184,11 +184,11 @@ def _set_os_settings(s):
             except:
                 continue
             
-            if name == 'os_prereleases':
-                lines[i] = 'os_prereleases="%s"' % str(s.pop('prereleases')).lower()
+            if name == 'OS_PRERELEASES':
+                lines[i] = 'OS_PRERELEASES="%s"' % str(s.pop('prereleases')).lower()
     
     if 'prereleases' in s:
-        lines.append('os_prereleases="%s"' % str(s.pop('prereleases')).lower())
+        lines.append('OS_PRERELEASES="%s"' % str(s.pop('prereleases')).lower())
 
     with open(OS_CONF, 'w') as f:
         for line in lines:
@@ -312,10 +312,10 @@ def _set_motioneye_settings(s):
 
     # also update debug in os.conf
     if debug:
-        cmd = "sed -i -r 's/os_debug=\"?false\"?/os_debug=\"true\"/'  %s" % OS_CONF
+        cmd = "sed -i -r 's/OS_DEBUG=\"?false\"?/OS_DEBUG=\"true\"/'  %s" % OS_CONF
         
     else:
-        cmd = "sed -i -r 's/os_debug=\"?true\"?/os_debug=\"false\"/'  %s" % OS_CONF
+        cmd = "sed -i -r 's/OS_DEBUG=\"?true\"?/OS_DEBUG=\"false\"/'  %s" % OS_CONF
 
     if os.system(cmd):
         logging.error('failed to set debug flag in os.conf')
