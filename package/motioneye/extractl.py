@@ -311,6 +311,13 @@ def _set_motioneye_settings(s):
             f.write(line)
 
     # also update debug in os.conf
+    cmd = 'grep -E "^OS_DEBUG" %s &>/dev/null' % OS_CONF
+    try:
+        subprocess.check_call(cmd, shell=True)
+       
+    except subprocess.CalledProcessError:  # OS_DEBUG not present
+        os.system('echo OS_DEBUG=\\"false\\" >> %s' % OS_CONF)
+    
     if debug:
         cmd = "sed -i -r 's/OS_DEBUG=\"?false\"?/OS_DEBUG=\"true\"/'  %s" % OS_CONF
         
