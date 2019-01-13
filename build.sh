@@ -17,8 +17,6 @@ board=$1
 target=${*:2}
 cd $(dirname $0)
 basedir=$(pwd)
-osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
-osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 gzip=$(which pigz 2> /dev/null || which gzip 2> /dev/null)
 
 # extra environment from local file
