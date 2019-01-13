@@ -279,11 +279,6 @@ config BR2_PACKAGE_BOOST_SERIALIZATION
 	help
 	  Serialization for persistence and marshalling.
 
-config BR2_PACKAGE_BOOST_SIGNALS
-	bool "boost-signals"
-	help
-	  Managed signals & slots callback implementation.
-
 config BR2_PACKAGE_BOOST_STACKTRACE
 	bool "boost-stacktrace"
 	depends on !BR2_STATIC_LIBS

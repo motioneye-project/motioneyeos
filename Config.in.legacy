@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2019.02"
 
+config BR2_PACKAGE_BOOST_SIGNALS
+	bool "Boost signals removed"
+	select BR2_LEGACY
+	help
+	  Its removal was announced in boost 1.68 and its deprecation
+	  was announced in 1.54. Users are encouraged to use Signals2
+	  instead.
+
 config BR2_PACKAGE_LUA_5_2
 	bool "Lua 5.2.x version removed"
 	select BR2_LEGACY
