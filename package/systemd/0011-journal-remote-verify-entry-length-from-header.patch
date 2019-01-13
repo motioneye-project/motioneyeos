@@ -1,0 +1,112 @@
+From 7fdb237f5473cb8fc2129e57e8a0039526dcb4fd Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Zbigniew=20J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>
+Date: Fri, 7 Dec 2018 12:47:14 +0100
+Subject: [PATCH] journal-remote: verify entry length from header
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Calling mhd_respond(), which ulimately calls MHD_queue_response() is
+ineffective at point, becuase MHD_queue_response() immediately returns
+MHD_NO signifying an error, because the connection is in state
+MHD_CONNECTION_CONTINUE_SENT.
+
+As Christian Grothoff kindly explained:
+> You are likely calling MHD_queue_repsonse() too late: once you are
+> receiving upload_data, HTTP forces you to process it all. At this time,
+> MHD has already sent "100 continue" and cannot take it back (hence you
+> get MHD_NO!).
+>
+> In your request handler, the first time when you are called for a
+> connection (and when hence *upload_data_size == 0 and upload_data ==
+> NULL) you must check the content-length header and react (with
+> MHD_queue_response) based on this (to prevent MHD from automatically
+> generating 100 continue).
+
+If we ever encounter this kind of error, print a warning and immediately
+abort the connection. (The alternative would be to keep reading the data,
+but ignore it, and return an error after we get to the end of data.
+That is possible, but of course puts additional load on both the
+sender and reciever, and doesn't seem important enough just to return
+a good error message.)
+
+Note that sending of the error does not work (the connection is always aborted
+when MHD_queue_response is used with MHD_RESPMEM_MUST_FREE, as in this case)
+with libµhttpd 0.59, but works with 0.61:
+https://src.fedoraproject.org/rpms/libmicrohttpd/pull-request/1
+
+[james.hilliard1@gmail.com: backport from upstream commit
+7fdb237f5473cb8fc2129e57e8a0039526dcb4fd]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ src/journal-remote/journal-remote-main.c | 34 ++++++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 10 deletions(-)
+
+diff --git a/src/journal-remote/journal-remote-main.c b/src/journal-remote/journal-remote-main.c
+index e1748cb..8543dba 100644
+--- a/src/journal-remote/journal-remote-main.c
++++ b/src/journal-remote/journal-remote-main.c
+@@ -221,16 +221,14 @@ static int process_http_upload(
+                                    journal_remote_server_global->seal);
+                 if (r == -EAGAIN)
+                         break;
+-                else if (r < 0) {
+-                        log_warning("Failed to process data for connection %p", connection);
++                if (r < 0) {
+                         if (r == -E2BIG)
+-                                return mhd_respondf(connection,
+-                                                    r, MHD_HTTP_PAYLOAD_TOO_LARGE,
+-                                                    "Entry is too large, maximum is " STRINGIFY(DATA_SIZE_MAX) " bytes.");
++                                log_warning_errno(r, "Entry is too above maximum of %u, aborting connection %p.",
++                                                  DATA_SIZE_MAX, connection);
+                         else
+-                                return mhd_respondf(connection,
+-                                                    r, MHD_HTTP_UNPROCESSABLE_ENTITY,
+-                                                    "Processing failed: %m.");
++                                log_warning_errno(r, "Failed to process data, aborting connection %p: %m",
++                                                  connection);
++                        return MHD_NO;
+                 }
+         }
+ 
+@@ -264,6 +262,7 @@ static int request_handler(
+         const char *header;
+         int r, code, fd;
+         _cleanup_free_ char *hostname = NULL;
++        size_t len;
+ 
+         assert(connection);
+         assert(connection_cls);
+@@ -283,12 +282,27 @@ static int request_handler(
+         if (!streq(url, "/upload"))
+                 return mhd_respond(connection, MHD_HTTP_NOT_FOUND, "Not found.");
+ 
+-        header = MHD_lookup_connection_value(connection,
+-                                             MHD_HEADER_KIND, "Content-Type");
++        header = MHD_lookup_connection_value(connection, MHD_HEADER_KIND, "Content-Type");
+         if (!header || !streq(header, "application/vnd.fdo.journal"))
+                 return mhd_respond(connection, MHD_HTTP_UNSUPPORTED_MEDIA_TYPE,
+                                    "Content-Type: application/vnd.fdo.journal is required.");
+ 
++        header = MHD_lookup_connection_value(connection, MHD_HEADER_KIND, "Content-Length");
++        if (!header)
++                return mhd_respond(connection, MHD_HTTP_LENGTH_REQUIRED,
++                                   "Content-Length header is required.");
++        r = safe_atozu(header, &len);
++        if (r < 0)
++                return mhd_respondf(connection, r, MHD_HTTP_LENGTH_REQUIRED,
++                                    "Content-Length: %s cannot be parsed: %m", header);
++
++        if (len > ENTRY_SIZE_MAX)
++                /* When serialized, an entry of maximum size might be slightly larger,
++                 * so this does not correspond exactly to the limit in journald. Oh well.
++                 */
++                return mhd_respondf(connection, 0, MHD_HTTP_PAYLOAD_TOO_LARGE,
++                                    "Payload larger than maximum size of %u bytes", ENTRY_SIZE_MAX);
++
+         {
+                 const union MHD_ConnectionInfo *ci;
+ 
+-- 
+2.7.4
+
