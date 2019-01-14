@@ -4,6 +4,8 @@
 #
 ################################################################################
 
+# Please keep in sync with
+# package/python3-setuptools/python3-setuptools.mk
 PYTHON_SETUPTOOLS_VERSION = 40.6.3
 PYTHON_SETUPTOOLS_SOURCE = setuptools-$(PYTHON_SETUPTOOLS_VERSION).zip
 PYTHON_SETUPTOOLS_SITE = https://files.pythonhosted.org/packages/37/1b/b25507861991beeade31473868463dad0e58b1978c209de27384ae541b0b
