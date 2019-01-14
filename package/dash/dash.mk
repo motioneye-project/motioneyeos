@@ -28,7 +28,7 @@ DASH_CONF_OPTS += --without-libedit
 endif
 
 define DASH_INSTALL_TARGET_CMDS
-	$(INSTALL) -m 0755 $(@D)/src/dash $(TARGET_DIR)/bin/dash
+	$(INSTALL) -m 0755 -D $(@D)/src/dash $(TARGET_DIR)/bin/dash
 endef
 
 # Add /bin/dash to /etc/shells otherwise some login tools like dropbear
