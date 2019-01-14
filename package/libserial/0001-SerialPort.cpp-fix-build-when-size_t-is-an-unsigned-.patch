@@ -1,0 +1,39 @@
+From 2e4cf095afdcf843e93d1bdea9dbd961558f09bd Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 13 Jan 2019 21:01:19 +0100
+Subject: [PATCH] SerialPort.cpp: fix build when size_t is an unsigned int
+
+size_t can be defined as an unsigned int instead of long unsigned int so
+replace 1UL to (size_t)1 when calling max function
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/crayzeewulf/libserial/pull/126]
+---
+ src/SerialPort.cpp | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/SerialPort.cpp b/src/SerialPort.cpp
+index e354fcb..75e762e 100644
+--- a/src/SerialPort.cpp
++++ b/src/SerialPort.cpp
+@@ -2208,7 +2208,7 @@ namespace LibSerial
+ 
+         // Local variables.
+         size_t number_of_bytes_read = 0 ;
+-        size_t number_of_bytes_remaining = std::max(numberOfBytes, 1UL) ;
++        size_t number_of_bytes_remaining = std::max(numberOfBytes, (size_t)1) ;
+         size_t maximum_number_of_bytes = dataBuffer.max_size() ;
+         
+         // Clear the data buffer and reserve enough space in the buffer to store the incoming data.
+@@ -2302,7 +2302,7 @@ namespace LibSerial
+ 
+         // Local variables.
+         size_t number_of_bytes_read = 0 ;
+-        size_t number_of_bytes_remaining = std::max(numberOfBytes, 1UL) ;
++        size_t number_of_bytes_remaining = std::max(numberOfBytes, (size_t)1) ;
+         size_t maximum_number_of_bytes = dataString.max_size() ;
+         
+         // Clear the data buffer and reserve enough space in the buffer to store the incoming data.
+-- 
+2.14.1
+

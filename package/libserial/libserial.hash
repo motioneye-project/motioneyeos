@@ -1,5 +1,3 @@
-# From http://sourceforge.net/projects/libserial/files/libserial/0.6.0rc2/
-sha1  e09113be3ba595135e95e853003ff96feea0da63  libserial-0.6.0rc2.tar.gz
-md5  7787679b22901e4810bc53ecccdf8266  libserial-0.6.0rc2.tar.gz
 # Locally calculated
-sha256 35ee29eb1369d52ffb8658237577692f991eb508320d0abbb71c53e6494a1c23 libserial-0.6.0rc2.tar.gz
+sha256 063142d6bfe08898316e9a6055f2ddeedef56de06f7cfc8dcdfecc6efabf4bdd libserial-v1.0.0.tar.gz
+sha256 c42fdfe17c192cfdb900e22d40ef246db1b473f99165e405eda62b41be27f4bf LICENSE.txt
