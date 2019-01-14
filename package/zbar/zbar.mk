@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-# github have some additional commits for compiling with recent kernel
-ZBAR_VERSION = 854a5d97059e395807091ac4d80c53f7968abb8f
-ZBAR_SITE = $(call github,ZBar,Zbar,$(ZBAR_VERSION))
+ZBAR_VERSION = 006b465a267ad3c6c754b88bbe77bb1c1f49f40b
+ZBAR_SITE = git://linuxtv.org/zbar.git
 ZBAR_LICENSE = LGPL-2.1+
 ZBAR_LICENSE_FILES = LICENSE
 ZBAR_INSTALL_STAGING = YES
@@ -15,10 +14,13 @@ ZBAR_DEPENDENCIES = libv4l jpeg
 # add host-gettext for AM_ICONV macro
 ZBAR_DEPENDENCIES += host-gettext
 ZBAR_CONF_OPTS = \
+	--disable-doc \
 	--without-imagemagick \
 	--without-qt \
+	--without-qt5 \
 	--without-gtk \
-	--without-python \
-	--without-x
+	--without-python2 \
+	--without-x \
+	--without-java
 
 $(eval $(autotools-package))

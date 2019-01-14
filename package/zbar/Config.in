@@ -9,7 +9,7 @@ config BR2_PACKAGE_ZBAR
 	help
 	  QR and barcode scanner
 
-	  http://zbar.sourceforge.net/
+	  https://git.linuxtv.org/zbar.git/about/
 
 comment "zbar needs a toolchain w/ threads, C++ and headers >= 3.0"
 	depends on BR2_USE_MMU
