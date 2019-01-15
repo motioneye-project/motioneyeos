@@ -143,6 +143,10 @@ ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_8),y)
 LINUX_MAKE_ENV += KCFLAGS=-Wno-attribute-alias
 endif
 
+ifeq ($(BR2_LINUX_KERNEL_DTB_OVERLAY_SUPPORT),y)
+LINUX_MAKE_ENV += DTC_FLAGS=-@
+endif
+
 # Get the real Linux version, which tells us where kernel modules are
 # going to be installed in the target filesystem.
 LINUX_VERSION_PROBED = `$(MAKE) $(LINUX_MAKE_FLAGS) -C $(LINUX_DIR) --no-print-directory -s kernelrelease 2>/dev/null`
