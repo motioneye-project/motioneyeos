@@ -11,10 +11,13 @@ TPM2_ABRMD_LICENSE_FILES = LICENSE
 TPM2_ABRMD_INSTALL_STAGING = YES
 TPM2_ABRMD_DEPENDENCIES = dbus libglib2 tpm2-tss host-pkgconf
 
-# -fstack-protector-all is used by default. Disable that so the
-# BR2_SSP_* options in the toolchain wrapper are used instead
+# -fstack-protector-all and FORTIFY_SOURCE=2 is used by
+# default. Disable that so the BR2_SSP_* / BR2_FORTIFY_SOURCE_* options
+# in the toolchain wrapper and CFLAGS are used instead
 TPM2_ABRMD_CONF_ENV = \
-	ax_cv_check_cflags___________Werror_______fstack_protector_all=no
+	ax_cv_check_cflags___________Werror_______fstack_protector_all=no \
+	ax_cv_check_ccppflags___________Werror_______U_FORTIFY_SOURCE=no \
+	ax_cv_check_ccppflags___________Werror_______D_FORTIFY_SOURCE_2=no
 
 TPM2_ABRMD_CONF_OPTS += \
 	--with-systemdsystemunitdir=$(if $(BR2_INIT_SYSTEMD),/usr/lib/systemd/system,no) \
