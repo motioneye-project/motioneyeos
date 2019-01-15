@@ -2130,6 +2130,7 @@ F:	package/python-serial/
 F:	package/qextserialport/
 F:	package/rpcbind/
 F:	package/rt-tests/
+F:	package/rtc-tools/
 F:	package/sam-ba/
 F:	package/scons/
 F:	package/squashfs/
