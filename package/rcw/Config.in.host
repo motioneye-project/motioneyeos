@@ -1,0 +1,12 @@
+config BR2_PACKAGE_HOST_RCW
+	bool "host rcw"
+	help
+	  This package provides an reset configuration word(RCW)
+	  compiler to build NXP QoriQ/LS PBL/RCW binary(s).
+
+	  The package installs example configurations and scripts
+	  for each devkit supported in the current release see
+	  $(HOST_DIR)/share/rcw. Either a SDK or post scripts can
+	  then use this toolset and examples.
+
+	  https://source.codeaurora.org/external/qoriq/qoriq-components/rcw/
