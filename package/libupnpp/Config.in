@@ -5,7 +5,7 @@ config BR2_PACKAGE_LIBUPNPP
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	select BR2_PACKAGE_EXPAT
 	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBUPNP
+	select BR2_PACKAGE_LIBUPNP18 if !BR2_PACKAGE_LIBUPNP
 	help
 	  The libupnpp C++ library wraps libupnp for easier use by
 	  upmpdcli and upplay.
