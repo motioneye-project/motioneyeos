@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-UPMPDCLI_VERSION = 1.2.16
+UPMPDCLI_VERSION = 1.4.0
 UPMPDCLI_SITE = http://www.lesbonscomptes.com/upmpdcli/downloads
-UPMPDCLI_LICENSE = GPL-2.0+
+UPMPDCLI_LICENSE = LGPL-2.1+
 UPMPDCLI_LICENSE_FILES = COPYING
 UPMPDCLI_DEPENDENCIES = host-pkgconf libmpdclient libupnpp libmicrohttpd jsoncpp
 
