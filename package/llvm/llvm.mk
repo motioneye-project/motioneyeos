@@ -57,6 +57,9 @@ endif
 # Use native llvm-tblgen from host-llvm (needed for cross-compilation)
 LLVM_CONF_OPTS += -DLLVM_TABLEGEN=$(HOST_DIR)/bin/llvm-tblgen
 
+# Use native llvm-config from host-llvm (needed for cross-compilation)
+LLVM_CONF_OPTS += -DLLVM_CONFIG_PATH=$(HOST_DIR)/bin/llvm-config
+
 # BUILD_SHARED_LIBS has a misleading name. It is in fact an option for
 # LLVM developers to build all LLVM libraries as separate shared libraries.
 # For normal use of LLVM, it is recommended to build a single
