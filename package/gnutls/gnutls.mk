@@ -27,6 +27,8 @@ GNUTLS_CONF_ENV = gl_cv_socket_ipv6=yes \
 	gt_cv_c_wint_t=$(if $(BR2_USE_WCHAR),yes,no) \
 	gl_cv_func_gettimeofday_clobber=no
 GNUTLS_INSTALL_STAGING = YES
+# We're patching configure.ac
+GNUTLS_AUTORECONF = YES
 
 # libpthread autodetection poison the linkpath
 GNUTLS_CONF_OPTS += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(STAGING_DIR)/usr)
