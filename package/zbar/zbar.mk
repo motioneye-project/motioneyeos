@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZBAR_VERSION = 006b465a267ad3c6c754b88bbe77bb1c1f49f40b
+ZBAR_VERSION = b3b4e32b55f570372fc3af473e51f0a13ee57869
 ZBAR_SITE = git://linuxtv.org/zbar.git
 ZBAR_LICENSE = LGPL-2.1+
 ZBAR_LICENSE_FILES = LICENSE
