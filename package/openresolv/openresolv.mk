@@ -10,8 +10,7 @@ OPENRESOLV_LICENSE = BSD-2-Clause
 OPENRESOLV_LICENSE_FILES = LICENSE
 
 define OPENRESOLV_CONFIGURE_CMDS
-	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure --prefix=/usr \
-		--sysconfdir=/etc
+	cd $(@D) && $(TARGET_CONFIGURE_OPTS) ./configure --sysconfdir=/etc
 endef
 
 define OPENRESOLV_BUILD_CMDS
