@@ -1,0 +1,31 @@
+Addresses https://github.com/raspberrypi/firmware/issues/1087
+---
+
+diff -rupEbBN ffmpeg-3.4.4.org/libavcodec/omx.c ffmpeg-3.4.4/libavcodec/omx.c
+--- ffmpeg-3.4.4.org/libavcodec/omx.c	2019-01-17 15:08:50.141300045 +1100
++++ ffmpeg-3.4.4/libavcodec/omx.c	2019-01-17 16:07:12.337292988 +1100
+@@ -735,6 +735,7 @@ static int omx_encode_frame(AVCodecConte
+     int ret = 0;
+     OMX_BUFFERHEADERTYPE* buffer;
+     OMX_ERRORTYPE err;
++    int had_partial = 0;
+ 
+     if (frame) {
+         uint8_t *dst[4];
+@@ -826,7 +827,7 @@ static int omx_encode_frame(AVCodecConte
+         // packet, or get EOS.
+         buffer = get_buffer(&s->output_mutex, &s->output_cond,
+                             &s->num_done_out_buffers, s->done_out_buffers,
+-                            !frame);
++                            !frame || had_partial);
+         if (!buffer)
+             break;
+ 
+@@ -861,6 +862,7 @@ static int omx_encode_frame(AVCodecConte
+                     s->output_buf = NULL;
+                     s->output_buf_size = 0;
+                 }
++                had_partial = 1;
+             } else {
+                 // End of frame, and the caller provided a preallocated frame
+                 if ((ret = ff_alloc_packet2(avctx, pkt, s->output_buf_size + buffer->nFilledLen, 0)) < 0) {
