@@ -97,6 +97,16 @@ define SYSLOG_NG_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S01syslog-ng
 endef
 
+# By default syslog-ng installs a .service that requires a config file at
+# /etc/default, so provide one with the default values.
+define SYSLOG_NG_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -m 0644 -D package/syslog-ng/syslog-ng@default \
+		$(TARGET_DIR)/etc/default/syslog-ng@default
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../usr/lib/systemd/system/syslog-ng@.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/syslog-ng@default.service
+endef
+
 # By default syslog-ng installs a number of sample configuration
 # files. Some of these rely on optional features being
 # enabled. Because of this buildroot uninstalls the shipped config
