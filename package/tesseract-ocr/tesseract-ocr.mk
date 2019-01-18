@@ -19,6 +19,7 @@ TESSERACT_OCR_AUTORECONF = YES
 TESSERACT_OCR_DEPENDENCIES = leptonica host-pkgconf
 TESSERACT_OCR_INSTALL_STAGING = YES
 TESSERACT_OCR_CONF_ENV = \
+	ac_cv_prog_have_asciidoc=false \
 	LIBLEPT_HEADERSDIR=$(STAGING_DIR)/usr/include/leptonica
 TESSERACT_OCR_CONF_OPTS = \
 	--disable-opencl
