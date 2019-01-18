@@ -1,0 +1,96 @@
+From 8ddc442d539ca775d80cdbc7af17a718634a743f Mon Sep 17 00:00:00 2001
+From: Hugo Lefeuvre <hle@owl.eu.com>
+Date: Mon, 24 Dec 2018 06:43:48 +0100
+Subject: [PATCH] a/ulaw: fix multiple buffer overflows (#432)
+
+i2ulaw_array() and i2alaw_array() fail to handle ptr [count] = INT_MIN
+properly, leading to buffer underflow. INT_MIN is a special value
+since - INT_MIN cannot be represented as int.
+
+In this case round - INT_MIN to INT_MAX and proceed as usual.
+
+f2ulaw_array() and f2alaw_array() fail to handle ptr [count] = NaN
+properly, leading to null pointer dereference.
+
+In this case, arbitrarily set the buffer value to 0.
+
+This commit fixes #429 (CVE-2018-19661 and CVE-2018-19662) and
+fixes #344 (CVE-2017-17456 and CVE-2017-17457).
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/alaw.c | 9 +++++++--
+ src/ulaw.c | 9 +++++++--
+ 2 files changed, 14 insertions(+), 4 deletions(-)
+
+diff --git a/src/alaw.c b/src/alaw.c
+index 063fd1a2..4220224c 100644
+--- a/src/alaw.c
++++ b/src/alaw.c
+@@ -19,6 +19,7 @@
+ #include	"sfconfig.h"
+ 
+ #include	<math.h>
++#include	<limits.h>
+ 
+ #include	"sndfile.h"
+ #include	"common.h"
+@@ -326,7 +327,9 @@ s2alaw_array (const short *ptr, int count, unsigned char *buffer)
+ static inline void
+ i2alaw_array (const int *ptr, int count, unsigned char *buffer)
+ {	while (--count >= 0)
+-	{	if (ptr [count] >= 0)
++	{	if (ptr [count] == INT_MIN)
++			buffer [count] = alaw_encode [INT_MAX >> (16 + 4)] ;
++		else if (ptr [count] >= 0)
+ 			buffer [count] = alaw_encode [ptr [count] >> (16 + 4)] ;
+ 		else
+ 			buffer [count] = 0x7F & alaw_encode [- ptr [count] >> (16 + 4)] ;
+@@ -346,7 +349,9 @@ f2alaw_array (const float *ptr, int count, unsigned char *buffer, float normfact
+ static inline void
+ d2alaw_array (const double *ptr, int count, unsigned char *buffer, double normfact)
+ {	while (--count >= 0)
+-	{	if (ptr [count] >= 0)
++	{	if (!isfinite (ptr [count]))
++			buffer [count] = 0 ;
++		else if (ptr [count] >= 0)
+ 			buffer [count] = alaw_encode [lrint (normfact * ptr [count])] ;
+ 		else
+ 			buffer [count] = 0x7F & alaw_encode [- lrint (normfact * ptr [count])] ;
+diff --git a/src/ulaw.c b/src/ulaw.c
+index e50b4cb5..b6070ade 100644
+--- a/src/ulaw.c
++++ b/src/ulaw.c
+@@ -19,6 +19,7 @@
+ #include	"sfconfig.h"
+ 
+ #include	<math.h>
++#include	<limits.h>
+ 
+ #include	"sndfile.h"
+ #include	"common.h"
+@@ -827,7 +828,9 @@ s2ulaw_array (const short *ptr, int count, unsigned char *buffer)
+ static inline void
+ i2ulaw_array (const int *ptr, int count, unsigned char *buffer)
+ {	while (--count >= 0)
+-	{	if (ptr [count] >= 0)
++	{	if (ptr [count] == INT_MIN)
++			buffer [count] = ulaw_encode [INT_MAX >> (16 + 2)] ;
++		else if (ptr [count] >= 0)
+ 			buffer [count] = ulaw_encode [ptr [count] >> (16 + 2)] ;
+ 		else
+ 			buffer [count] = 0x7F & ulaw_encode [-ptr [count] >> (16 + 2)] ;
+@@ -847,7 +850,9 @@ f2ulaw_array (const float *ptr, int count, unsigned char *buffer, float normfact
+ static inline void
+ d2ulaw_array (const double *ptr, int count, unsigned char *buffer, double normfact)
+ {	while (--count >= 0)
+-	{	if (ptr [count] >= 0)
++	{	if (!isfinite (ptr [count]))
++			buffer [count] = 0 ;
++		else if (ptr [count] >= 0)
+ 			buffer [count] = ulaw_encode [lrint (normfact * ptr [count])] ;
+ 		else
+ 			buffer [count] = 0x7F & ulaw_encode [- lrint (normfact * ptr [count])] ;
+-- 
+2.11.0
+
