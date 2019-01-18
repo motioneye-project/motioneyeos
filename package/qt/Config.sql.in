@@ -16,10 +16,14 @@ config BR2_PACKAGE_QT_MYSQL
 
 config BR2_PACKAGE_QT_ODBC
 	bool "ODBC Driver"
+	depends on !BR2_STATIC_LIBS # unixodbc
 	select BR2_PACKAGE_UNIXODBC
 	help
 	  Build ODBC driver
 	  If unsure, say n.
+
+comment "ODBC driver needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 config BR2_PACKAGE_QT_PSQL
 	bool "PostgreSQL Driver"
