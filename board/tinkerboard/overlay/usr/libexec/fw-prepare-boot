@@ -1,7 +1,4 @@
 #!/bin/bash
 
-#if [ -f /boot/boot-fwupdater.scr ]; then
-#    mv /boot/boot.scr /boot/boot-normal.scr
-#    mv /boot/boot-fwupdater.scr /boot/boot.scr
-#fi
+echo "    initrd /initrd.gz" >> /boot/extlinux/extlinux.conf
 
