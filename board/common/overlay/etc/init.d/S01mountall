@@ -1,6 +1,6 @@
 #!/bin/bash
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 mount_fs() {
     msg_begin "Mounting filesystems"
@@ -22,8 +22,8 @@ remount_rw() {
 }
 
 mk_tty_login() {
-    test -z "$os_tty_login" && os_tty_login=tty1
-    ln -sf /dev/$os_tty_login /dev/ttylogin
+    test -z "${OS_TTY_LOGIN}" && OS_TTY_LOGIN=tty1
+    ln -sf /dev/${OS_TTY_LOGIN} /dev/ttylogin
 }
 
 case "$1" in
@@ -31,8 +31,8 @@ case "$1" in
         mount_fs
 
         # we need to source conf again, now that /data is available
-        test -n "$os_debug" || source /etc/init.d/conf
-        test "$os_debug" == "true" && remount_rw
+        source /etc/init.d/os_conf
+        test "${OS_DEBUG}" == "true" && remount_rw
         mk_tty_login
         ;;
 

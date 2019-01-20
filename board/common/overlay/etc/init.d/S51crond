@@ -1,19 +1,19 @@
 #!/bin/bash
 
-sys_conf="/etc/crontabs"
-conf="/data/etc/crontabs"
+SYS_CONF="/etc/crontabs"
+CONF="/data/etc/crontabs"
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 start() {
     msg_begin "Starting crond"
     
-    if [[ -d $sys_conf ]];  then
-        /usr/sbin/crond -c $sys_conf
+    if [[ -d ${SYS_CONF} ]];  then
+        /usr/sbin/crond -c ${SYS_CONF}
     fi
 
-    mkdir -p $conf
-    /usr/sbin/crond -c $conf
+    mkdir -p ${CONF}
+    /usr/sbin/crond -c ${CONF}
 
     test $? == 0 && msg_done || msg_fail
 }

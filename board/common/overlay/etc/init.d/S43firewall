@@ -1,25 +1,19 @@
 #!/bin/bash
 
-sys_conf="/etc/firewall.sh"
-boot_conf="/boot/firewall.sh"
-conf="/data/etc/firewall.sh"
+SYS_CONF="/etc/firewall.sh"
+BOOT_CONF="/boot/firewall.sh"
+CONF="/data/etc/firewall.sh"
 
-if ! [[ -f $conf ]]; then
-    if [[ -f $boot_conf ]]; then
-        cp $boot_conf $conf
-    elif [[ -f $sys_conf ]]; then
-        cp $sys_conf $conf
-    fi
-fi
 
-test -f $conf || exit 0
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -n "$os_version" || source /etc/init.d/base
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
 start() {
     msg_begin "Starting firewall"
 
-    bash $conf  
+    bash ${CONF}  
 
     test $? == 0 && msg_done || msg_fail
 }

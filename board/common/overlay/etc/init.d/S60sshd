@@ -1,12 +1,12 @@
 #!/bin/bash
 
-conf="/etc/sshd_config"
+CONF="/etc/sshd_config"
 
-test -f $conf || exit 0
+test -f ${CONF} || exit 0
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test "$os_networkless" == "true" && exit 0
+test "${OS_NETWORKLESS}" == "true" && exit 0
 
 start() {
     msg_begin "Starting sshd"
@@ -19,10 +19,10 @@ start() {
 
     umask 077
     hostname=$(hostname)
-    echo "Welcome to $hostname!" > /var/cache/sshd_banner
+    echo "Welcome to ${hostname}!" > /var/cache/sshd_banner
     sync
 
-    /usr/sbin/sshd -f $conf
+    /usr/sbin/sshd -f ${CONF}
     test $? == 0 && msg_done || msg_fail
 }
 

@@ -1,34 +1,36 @@
 #!/bin/bash
 
-watch_conf="/data/etc/watch.conf"
-netwatch_retries=3
-netwatch_timeout=5
-netwatch_interval=20
+WATCH_CONF="/data/etc/watch.conf"
+NETWATCH_RETRIES=3
+NETWATCH_TIMEOUT=5
+NETWATCH_INTERVAL=20
 
-test -f $watch_conf && source $watch_conf || exit 0
 
-if [[ -z "$netwatch_host" ]] || [[ -z "$netwatch_port" ]]; then
+test -f ${WATCH_CONF} && source ${WATCH_CONF} || exit 0
+
+if [[ -z "${NETWATCH_HOST}" || -z "${NETWATCH_PORT}" ]]; then
     exit 0
 fi
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test "$os_networkless" == "true" && exit 0
+test "${OS_NETWORKLESS}" == "true" && exit 0
+
 
 watch() {
     count=0
-    netwatch_retries=$(($netwatch_retries - 1))
+    NETWATCH_RETRIES=$((${NETWATCH_RETRIES} - 1))
     while true; do
-        sleep $netwatch_interval
-        if nc -z -w $netwatch_timeout $netwatch_host $netwatch_port </dev/null >/dev/null 2>&1; then
+        sleep ${NETWATCH_INTERVAL}
+        if nc -z -w ${NETWATCH_TIMEOUT} ${NETWATCH_HOST} ${NETWATCH_PORT} </dev/null >/dev/null 2>&1; then
             count=0
         else
-            if [[ $count -lt $netwatch_retries ]]; then
-                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port"
-                count=$(($count + 1))
+            if [[ ${count} -lt ${NETWATCH_RETRIES} ]]; then
+                logger -t netwatch -s "cannot connect to ${NETWATCH_HOST}:${NETWATCH_PORT}"
+                count=$((${count} + 1))
                 continue
             else
-                logger -t netwatch -s "cannot connect to $netwatch_host:$netwatch_port, calling panic action"
+                logger -t netwatch -s "cannot connect to ${NETWATCH_HOST}:${NETWATCH_PORT}, calling panic action"
                 panic_action netwatch
             fi
         fi

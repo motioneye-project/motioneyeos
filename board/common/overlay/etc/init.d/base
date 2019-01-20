@@ -1,12 +1,12 @@
-#!/bin/bash
 
 source /etc/version
-board_sn=$(/etc/init.d/boardsn)
-board_name=$(cat /etc/board)
+BOARD_SN=$(/etc/init.d/boardsn)
+BOARD_NAME=$(cat /etc/board)
 
-test -n "$os_debug" || source /etc/init.d/conf
+test -n "${OS_DEBUG}" || source /etc/init.d/os_conf
 
 source /etc/init.d/panic
+
 
 msg_begin() {
     echo -n " * $1: "
@@ -22,5 +22,40 @@ msg_fail() {
 
 msg_background() {
     test -n "$1" && echo $1 || echo "pending"
+}
+
+prepare_conf() {
+    # $1 - actual config file
+    # $2 - system-provided config file
+    # $3 - user-provided config file
+    
+    # long story short:
+    #  * user conf file takes precedence, if present
+    #  * system conf file is used by default, if actual file absent
+    
+    actual_conf="$1"
+    system_conf="$2"
+    user_conf="$3"
+    
+    if [[ -n "${user_conf}" && -e "${user_conf}" ]]; then
+        cp -rf "${user_conf}" "${actual_conf}"
+        
+        # we want only Unix newlines in conf files
+        if [[ -f "${actual_conf}" ]]; then
+            sed -i 's/\r//g' "${actual_conf}"
+        elif [[ -d "${actual_conf}" ]]; then
+            find "${actual_conf}" -type f | xargs -L1 sed -i 's/\r//g'
+        fi
+        
+        grep -E "/boot .*ro[\s,]" /proc/mounts &>/dev/null
+        RO=$?
+        test ${RO} == 0 && mount -o remount,rw /boot
+        rm -rf ${user_conf}
+        test ${RO} == 0 && mount -o remount,ro /boot
+    fi
+
+    if [[ ! -e "${actual_conf}" && -e "${system_conf}" ]]; then
+        cp "${system_conf}" "${actual_conf}"
+    fi
 }
 

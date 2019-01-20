@@ -1,4 +1,4 @@
-os_name="thingOS"
-os_short_name="thingos"
-os_prefix="thing"
-os_version="unknown"
+OS_NAME="thingOS"
+OS_SHORT_NAME="thingos"
+OS_PREFIX="thing"
+OS_VERSION="unknown"
