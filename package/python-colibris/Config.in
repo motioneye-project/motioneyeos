@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_COLIBRIS
+	bool "python-colibris"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  A collection of libraries glued together to make writing RESTful microservices easier.
+
+	  https://gitlab.com/safefleet/colibris
