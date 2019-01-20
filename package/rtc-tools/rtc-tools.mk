@@ -9,7 +9,11 @@ RTC_TOOLS_SITE = git://git.kernel.org/pub/scm/linux/kernel/git/abelloni/rtc-tool
 RTC_TOOLS_LICENSE = GPL-2.0
 RTC_TOOLS_LICENSE_FILES = COPYING
 
-RTC_TOOLS_BINARIES = rtc rtc-sync rtc-range
+RTC_TOOLS_BINARIES = rtc rtc-range
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+RTC_TOOLS_BINARIES += rtc-sync
+endif
 
 define RTC_TOOLS_BUILD_CMDS
 	$(foreach bin,$(RTC_TOOLS_BINARIES),\
