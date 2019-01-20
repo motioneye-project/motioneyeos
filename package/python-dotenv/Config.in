@@ -1,5 +1,5 @@
 config BR2_PACKAGE_PYTHON_DOTENV
-	bool "python-pyjwt"
+	bool "python-dotenv"
 	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
 	help
 	  Add .env support to your django/flask apps in development and deployments.
