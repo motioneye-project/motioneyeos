@@ -1,5 +1,5 @@
 config BR2_PACKAGE_PYTHON_MARSHMALLOW_PEEWEE
-	bool "python-peewee"
+	bool "python-marshmallow-peewee"
 	depends on BR2_PACKAGE_PYTHON3
 	help
 	  Peewee integration with the marshmallow (de)serialization library.
