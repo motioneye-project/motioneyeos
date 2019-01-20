@@ -18,6 +18,12 @@ ifeq ($(BR2_PACKAGE_LUA_5_3),y)
 LUAROCKS_CFLAGS += -DLUA_COMPAT_5_2
 endif
 
+define LUAROCKS_ADDON_EXTRACT
+	mkdir $(@D)/src/luarocks/cmd/external
+	cp package/luarocks/buildroot.lua $(@D)/src/luarocks/cmd/external/buildroot.lua
+endef
+HOST_LUAROCKS_POST_EXTRACT_HOOKS += LUAROCKS_ADDON_EXTRACT
+
 HOST_LUAROCKS_CONF_OPTS = \
 	--prefix=$(HOST_DIR) \
 	--sysconfdir=$(LUAROCKS_CONFIG_DIR) \
