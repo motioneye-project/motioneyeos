@@ -11,8 +11,6 @@ LIBUPNPP_LICENSE_FILES = COPYING
 LIBUPNPP_INSTALL_STAGING = YES
 LIBUPNPP_DEPENDENCIES = expat libcurl \
 	$(if $(BR2_PACKAGE_LIBUPNP),libupnp,libupnp18)
-# We're patching configure.ac
-LIBUPNPP_AUTORECONF = YES
 
 # configure script fails to link against the dependencies of libupnp
 # and libcurl causing detection to fail when statically linking
