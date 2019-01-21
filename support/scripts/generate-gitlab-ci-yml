@@ -10,8 +10,8 @@ cat "${input}"
     cd configs
     LC_ALL=C ls -1 *_defconfig
 ) \
-    | sed 's/$/: *defconfig/'
+    | sed 's/$/: { extends: .defconfig }/'
 
 ./support/testing/run-tests -l 2>&1 \
-    | sed -r -e '/^test_run \((.*)\).*/!d; s//\1: *runtime_test/' \
+    | sed -r -e '/^test_run \((.*)\).*/!d; s//\1: { extends: .runtime_test }/' \
     | LC_ALL=C sort

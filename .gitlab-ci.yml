@@ -6,16 +6,17 @@
 
 image: buildroot/base:20180318.1724
 
-.defconfig_script: &defconfig_script
-    - echo 'Configure Buildroot'
-    - make ${CI_JOB_NAME}
-    - echo 'Build buildroot'
-    - |
-        make > >(tee build.log |grep '>>>') 2>&1 || {
-            echo 'Failed build last output'
-            tail -200 build.log
-            exit 1
-        }
+.defconfig_script:
+    script:
+        - echo 'Configure Buildroot'
+        - make ${CI_JOB_NAME}
+        - echo 'Build buildroot'
+        - |
+            make > >(tee build.log |grep '>>>') 2>&1 || {
+                echo 'Failed build last output'
+                tail -200 build.log
+                exit 1
+            }
 
 check-gitlab-ci.yml:
     script:
@@ -45,14 +46,14 @@ check-package:
     script:
         - make check-package
 
-.defconfig: &defconfig
+.defconfig:
+    extends: .defconfig_script
     # Running the defconfigs for every push is too much, so limit to
     # explicit triggers through the API.
     only:
         - triggers
         - tags
         - /-defconfigs$/
-    script: *defconfig_script
     artifacts:
         when: always
         expire_in: 2 weeks
@@ -64,7 +65,7 @@ check-package:
             - output/build/packages-file-list.txt
             - output/build/*/.config
 
-.runtime_test: &runtime_test
+.runtime_test:
     # Running the runtime tests for every push is too much, so limit to
     # explicit triggers through the API.
     only:
@@ -83,314 +84,314 @@ check-package:
             - test-output/*.log
             - test-output/*/.config
             - test-output/*/images/*
-aarch64_efi_defconfig: *defconfig
-acmesystems_aria_g25_128mb_defconfig: *defconfig
-acmesystems_aria_g25_256mb_defconfig: *defconfig
-acmesystems_arietta_g25_128mb_defconfig: *defconfig
-acmesystems_arietta_g25_256mb_defconfig: *defconfig
-amarula_a64_relic_defconfig: *defconfig
-amarula_vyasa_rk3288_defconfig: *defconfig
-arcturus_ucls1012a_defconfig: *defconfig
-arcturus_ucp1020_defconfig: *defconfig
-arm_foundationv8_defconfig: *defconfig
-arm_juno_defconfig: *defconfig
-armadeus_apf27_defconfig: *defconfig
-armadeus_apf28_defconfig: *defconfig
-armadeus_apf51_defconfig: *defconfig
-asus_tinker_rk3288_defconfig: *defconfig
-at91sam9260eknf_defconfig: *defconfig
-at91sam9g20dfc_defconfig: *defconfig
-at91sam9g45m10ek_defconfig: *defconfig
-at91sam9rlek_defconfig: *defconfig
-at91sam9x5ek_defconfig: *defconfig
-at91sam9x5ek_dev_defconfig: *defconfig
-at91sam9x5ek_mmc_defconfig: *defconfig
-at91sam9x5ek_mmc_dev_defconfig: *defconfig
-atmel_sama5d27_som1_ek_mmc_dev_defconfig: *defconfig
-atmel_sama5d2_xplained_mmc_defconfig: *defconfig
-atmel_sama5d2_xplained_mmc_dev_defconfig: *defconfig
-atmel_sama5d3_xplained_defconfig: *defconfig
-atmel_sama5d3_xplained_dev_defconfig: *defconfig
-atmel_sama5d3_xplained_mmc_defconfig: *defconfig
-atmel_sama5d3_xplained_mmc_dev_defconfig: *defconfig
-atmel_sama5d3xek_defconfig: *defconfig
-atmel_sama5d4_xplained_defconfig: *defconfig
-atmel_sama5d4_xplained_dev_defconfig: *defconfig
-atmel_sama5d4_xplained_mmc_defconfig: *defconfig
-atmel_sama5d4_xplained_mmc_dev_defconfig: *defconfig
-bananapi_m1_defconfig: *defconfig
-bananapi_m2_plus_defconfig: *defconfig
-bananapi_m2_ultra_defconfig: *defconfig
-bananapi_m64_defconfig: *defconfig
-bananapro_defconfig: *defconfig
-beagleboardx15_defconfig: *defconfig
-beaglebone_defconfig: *defconfig
-beaglebone_qt5_defconfig: *defconfig
-chromebook_snow_defconfig: *defconfig
-ci20_defconfig: *defconfig
-csky_gx6605s_defconfig: *defconfig
-cubieboard2_defconfig: *defconfig
-engicam_imx6qdl_icore_defconfig: *defconfig
-engicam_imx6qdl_icore_qt5_defconfig: *defconfig
-engicam_imx6qdl_icore_rqs_defconfig: *defconfig
-engicam_imx6ul_geam_defconfig: *defconfig
-engicam_imx6ul_isiot_defconfig: *defconfig
-freescale_imx28evk_defconfig: *defconfig
-freescale_imx6dlsabreauto_defconfig: *defconfig
-freescale_imx6dlsabresd_defconfig: *defconfig
-freescale_imx6qsabreauto_defconfig: *defconfig
-freescale_imx6qsabresd_defconfig: *defconfig
-freescale_imx6sxsabresd_defconfig: *defconfig
-freescale_imx7dsabresd_defconfig: *defconfig
-freescale_imx8mqevk_defconfig: *defconfig
-freescale_p1025twr_defconfig: *defconfig
-freescale_t1040d4rdb_defconfig: *defconfig
-friendlyarm_nanopi_a64_defconfig: *defconfig
-friendlyarm_nanopi_neo2_defconfig: *defconfig
-galileo_defconfig: *defconfig
-grinn_chiliboard_defconfig: *defconfig
-grinn_liteboard_defconfig: *defconfig
-imx23evk_defconfig: *defconfig
-imx6-sabreauto_defconfig: *defconfig
-imx6-sabresd_defconfig: *defconfig
-imx6-sabresd_qt5_defconfig: *defconfig
-imx6slevk_defconfig: *defconfig
-imx6sx-sdb_defconfig: *defconfig
-imx6ulevk_defconfig: *defconfig
-imx6ulpico_defconfig: *defconfig
-imx7d-sdb_defconfig: *defconfig
-imx7dpico_defconfig: *defconfig
-lego_ev3_defconfig: *defconfig
-linksprite_pcduino_defconfig: *defconfig
-minnowboard_max-graphical_defconfig: *defconfig
-minnowboard_max_defconfig: *defconfig
-mx25pdk_defconfig: *defconfig
-mx51evk_defconfig: *defconfig
-mx53loco_defconfig: *defconfig
-mx6cubox_defconfig: *defconfig
-mx6sx_udoo_neo_defconfig: *defconfig
-mx6udoo_defconfig: *defconfig
-nanopi_m1_defconfig: *defconfig
-nanopi_m1_plus_defconfig: *defconfig
-nanopi_neo_defconfig: *defconfig
-nexbox_a95x_defconfig: *defconfig
-nitrogen6sx_defconfig: *defconfig
-nitrogen6x_defconfig: *defconfig
-nitrogen7_defconfig: *defconfig
-nitrogen8m_defconfig: *defconfig
-odroidc2_defconfig: *defconfig
-odroidxu4_defconfig: *defconfig
-olimex_a10_olinuxino_lime_defconfig: *defconfig
-olimex_a13_olinuxino_defconfig: *defconfig
-olimex_a20_olinuxino_lime2_defconfig: *defconfig
-olimex_a20_olinuxino_lime_defconfig: *defconfig
-olimex_a20_olinuxino_lime_legacy_defconfig: *defconfig
-olimex_a20_olinuxino_micro_defconfig: *defconfig
-olimex_a64_olinuxino_defconfig: *defconfig
-olimex_imx233_olinuxino_defconfig: *defconfig
-openblocks_a6_defconfig: *defconfig
-orangepi_lite2_defconfig: *defconfig
-orangepi_lite_defconfig: *defconfig
-orangepi_one_defconfig: *defconfig
-orangepi_one_plus_defconfig: *defconfig
-orangepi_pc2_defconfig: *defconfig
-orangepi_pc_defconfig: *defconfig
-orangepi_pc_plus_defconfig: *defconfig
-orangepi_plus_defconfig: *defconfig
-orangepi_prime_defconfig: *defconfig
-orangepi_win_defconfig: *defconfig
-orangepi_zero_defconfig: *defconfig
-orangepi_zero_plus2_defconfig: *defconfig
-pandaboard_defconfig: *defconfig
-pc_x86_64_bios_defconfig: *defconfig
-pc_x86_64_efi_defconfig: *defconfig
-pine64_defconfig: *defconfig
-pine64_sopine_defconfig: *defconfig
-qemu_aarch64_virt_defconfig: *defconfig
-qemu_arm_versatile_defconfig: *defconfig
-qemu_arm_versatile_nommu_defconfig: *defconfig
-qemu_arm_vexpress_defconfig: *defconfig
-qemu_m68k_mcf5208_defconfig: *defconfig
-qemu_m68k_q800_defconfig: *defconfig
-qemu_microblazebe_mmu_defconfig: *defconfig
-qemu_microblazeel_mmu_defconfig: *defconfig
-qemu_mips32r2_malta_defconfig: *defconfig
-qemu_mips32r2el_malta_defconfig: *defconfig
-qemu_mips32r6_malta_defconfig: *defconfig
-qemu_mips32r6el_malta_defconfig: *defconfig
-qemu_mips64_malta_defconfig: *defconfig
-qemu_mips64el_malta_defconfig: *defconfig
-qemu_mips64r6_malta_defconfig: *defconfig
-qemu_mips64r6el_malta_defconfig: *defconfig
-qemu_nios2_10m50_defconfig: *defconfig
-qemu_or1k_defconfig: *defconfig
-qemu_ppc64_e5500_defconfig: *defconfig
-qemu_ppc64_pseries_defconfig: *defconfig
-qemu_ppc64le_pseries_defconfig: *defconfig
-qemu_ppc_g3beige_defconfig: *defconfig
-qemu_ppc_mpc8544ds_defconfig: *defconfig
-qemu_ppc_virtex_ml507_defconfig: *defconfig
-qemu_riscv32_virt_defconfig: *defconfig
-qemu_riscv64_virt_defconfig: *defconfig
-qemu_sh4_r2d_defconfig: *defconfig
-qemu_sh4eb_r2d_defconfig: *defconfig
-qemu_sparc64_sun4u_defconfig: *defconfig
-qemu_sparc_ss10_defconfig: *defconfig
-qemu_x86_64_defconfig: *defconfig
-qemu_x86_defconfig: *defconfig
-qemu_xtensa_lx60_defconfig: *defconfig
-qemu_xtensa_lx60_nommu_defconfig: *defconfig
-raspberrypi0_defconfig: *defconfig
-raspberrypi0w_defconfig: *defconfig
-raspberrypi2_defconfig: *defconfig
-raspberrypi3_64_defconfig: *defconfig
-raspberrypi3_defconfig: *defconfig
-raspberrypi3_qt5we_defconfig: *defconfig
-raspberrypi_defconfig: *defconfig
-riotboard_defconfig: *defconfig
-roseapplepi_defconfig: *defconfig
-s6lx9_microboard_defconfig: *defconfig
-sheevaplug_defconfig: *defconfig
-snps_aarch64_vdk_defconfig: *defconfig
-snps_arc700_axs101_defconfig: *defconfig
-snps_archs38_axs103_defconfig: *defconfig
-snps_archs38_haps_defconfig: *defconfig
-snps_archs38_hsdk_defconfig: *defconfig
-snps_archs38_vdk_defconfig: *defconfig
-socrates_cyclone5_defconfig: *defconfig
-solidrun_clearfog_defconfig: *defconfig
-solidrun_macchiatobin_mainline_defconfig: *defconfig
-solidrun_macchiatobin_marvell_defconfig: *defconfig
-stm32f429_disco_defconfig: *defconfig
-stm32f469_disco_defconfig: *defconfig
-toradex_apalis_imx6_defconfig: *defconfig
-ts4800_defconfig: *defconfig
-ts4900_defconfig: *defconfig
-ts5500_defconfig: *defconfig
-ts7680_defconfig: *defconfig
-wandboard_defconfig: *defconfig
-warp7_defconfig: *defconfig
-warpboard_defconfig: *defconfig
-zynq_microzed_defconfig: *defconfig
-zynq_zc706_defconfig: *defconfig
-zynq_zed_defconfig: *defconfig
-zynq_zybo_defconfig: *defconfig
-zynqmp_zcu106_defconfig: *defconfig
-tests.boot.test_atf.TestATFAllwinner: *runtime_test
-tests.boot.test_atf.TestATFMarvell: *runtime_test
-tests.boot.test_atf.TestATFVexpress: *runtime_test
-tests.core.test_file_capabilities.TestFileCapabilities: *runtime_test
-tests.core.test_hardening.TestFortifyConserv: *runtime_test
-tests.core.test_hardening.TestFortifyNone: *runtime_test
-tests.core.test_hardening.TestRelro: *runtime_test
-tests.core.test_hardening.TestRelroPartial: *runtime_test
-tests.core.test_hardening.TestSspNone: *runtime_test
-tests.core.test_hardening.TestSspStrong: *runtime_test
-tests.core.test_post_scripts.TestPostScripts: *runtime_test
-tests.core.test_rootfs_overlay.TestRootfsOverlay: *runtime_test
-tests.core.test_timezone.TestGlibcAllTimezone: *runtime_test
-tests.core.test_timezone.TestGlibcNonDefaultLimitedTimezone: *runtime_test
-tests.core.test_timezone.TestNoTimezone: *runtime_test
-tests.download.test_git.TestGitHash: *runtime_test
-tests.download.test_git.TestGitRefs: *runtime_test
-tests.fs.test_ext.TestExt2: *runtime_test
-tests.fs.test_ext.TestExt2r1: *runtime_test
-tests.fs.test_ext.TestExt3: *runtime_test
-tests.fs.test_ext.TestExt4: *runtime_test
-tests.fs.test_f2fs.TestF2FS: *runtime_test
-tests.fs.test_iso9660.TestIso9660Grub2External: *runtime_test
-tests.fs.test_iso9660.TestIso9660Grub2ExternalCompress: *runtime_test
-tests.fs.test_iso9660.TestIso9660Grub2Internal: *runtime_test
-tests.fs.test_iso9660.TestIso9660SyslinuxExternal: *runtime_test
-tests.fs.test_iso9660.TestIso9660SyslinuxExternalCompress: *runtime_test
-tests.fs.test_iso9660.TestIso9660SyslinuxInternal: *runtime_test
-tests.fs.test_jffs2.TestJffs2: *runtime_test
-tests.fs.test_squashfs.TestSquashfs: *runtime_test
-tests.fs.test_ubi.TestUbi: *runtime_test
-tests.fs.test_yaffs2.TestYaffs2: *runtime_test
-tests.init.test_busybox.TestInitSystemBusyboxRo: *runtime_test
-tests.init.test_busybox.TestInitSystemBusyboxRoNet: *runtime_test
-tests.init.test_busybox.TestInitSystemBusyboxRw: *runtime_test
-tests.init.test_busybox.TestInitSystemBusyboxRwNet: *runtime_test
-tests.init.test_none.TestInitSystemNone: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRoFull: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRoIfupdown: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRoNetworkd: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRwFull: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRwIfupdown: *runtime_test
-tests.init.test_systemd.TestInitSystemSystemdRwNetworkd: *runtime_test
-tests.package.test_atop.TestAtop: *runtime_test
-tests.package.test_docker_compose.TestDockerCompose: *runtime_test
-tests.package.test_dropbear.TestDropbear: *runtime_test
-tests.package.test_ipython.TestIPythonPy2: *runtime_test
-tests.package.test_ipython.TestIPythonPy3: *runtime_test
-tests.package.test_lua.TestLua: *runtime_test
-tests.package.test_lua.TestLuajit: *runtime_test
-tests.package.test_perl.TestPerl: *runtime_test
-tests.package.test_perl_class_load.TestPerlClassLoad: *runtime_test
-tests.package.test_perl_dbd_mysql.TestPerlDBDmysql: *runtime_test
-tests.package.test_perl_encode_detect.TestPerlEncodeDetect: *runtime_test
-tests.package.test_perl_gdgraph.TestPerlGDGraph: *runtime_test
-tests.package.test_perl_io_socket_multicast.TestPerlIOSocketMulticast: *runtime_test
-tests.package.test_perl_io_socket_ssl.TestPerlIOSocketSSL: *runtime_test
-tests.package.test_perl_libwww_perl.TestPerllibwwwperl: *runtime_test
-tests.package.test_perl_mail_dkim.TestPerlMailDKIM: *runtime_test
-tests.package.test_perl_x10.TestPerlX10: *runtime_test
-tests.package.test_perl_xml_libxml.TestPerlXMLLibXML: *runtime_test
-tests.package.test_prosody.TestProsodyLua51: *runtime_test
-tests.package.test_prosody.TestProsodyLuajit: *runtime_test
-tests.package.test_python.TestPython2: *runtime_test
-tests.package.test_python.TestPython3: *runtime_test
-tests.package.test_python_argh.TestPythonPy2Argh: *runtime_test
-tests.package.test_python_argh.TestPythonPy3Argh: *runtime_test
-tests.package.test_python_attrs.TestPythonPy2Attrs: *runtime_test
-tests.package.test_python_attrs.TestPythonPy3Attrs: *runtime_test
-tests.package.test_python_autobahn.TestPythonPy2Autobahn: *runtime_test
-tests.package.test_python_autobahn.TestPythonPy3Autobahn: *runtime_test
-tests.package.test_python_automat.TestPythonPy2Automat: *runtime_test
-tests.package.test_python_automat.TestPythonPy3Automat: *runtime_test
-tests.package.test_python_bitstring.TestPythonPy2Bitstring: *runtime_test
-tests.package.test_python_bitstring.TestPythonPy3Bitstring: *runtime_test
-tests.package.test_python_cbor.TestPythonPy2Cbor: *runtime_test
-tests.package.test_python_cbor.TestPythonPy3Cbor: *runtime_test
-tests.package.test_python_click.TestPythonPy2Click: *runtime_test
-tests.package.test_python_click.TestPythonPy3Click: *runtime_test
-tests.package.test_python_constantly.TestPythonPy2Constantly: *runtime_test
-tests.package.test_python_constantly.TestPythonPy3Constantly: *runtime_test
-tests.package.test_python_crossbar.TestPythonPy3Crossbar: *runtime_test
-tests.package.test_python_cryptography.TestPythonPy2Cryptography: *runtime_test
-tests.package.test_python_cryptography.TestPythonPy3Cryptography: *runtime_test
-tests.package.test_python_incremental.TestPythonPy2Incremental: *runtime_test
-tests.package.test_python_incremental.TestPythonPy3Incremental: *runtime_test
-tests.package.test_python_passlib.TestPythonPy2Passlib: *runtime_test
-tests.package.test_python_passlib.TestPythonPy3Passlib: *runtime_test
-tests.package.test_python_pexpect.TestPythonPy2Pexpect: *runtime_test
-tests.package.test_python_pexpect.TestPythonPy3Pexpect: *runtime_test
-tests.package.test_python_pynacl.TestPythonPy2Pynacl: *runtime_test
-tests.package.test_python_pynacl.TestPythonPy3Pynacl: *runtime_test
-tests.package.test_python_pyyaml.TestPythonPy2Pyyaml: *runtime_test
-tests.package.test_python_pyyaml.TestPythonPy3Pyyaml: *runtime_test
-tests.package.test_python_service_identity.TestPythonPy2ServiceIdentity: *runtime_test
-tests.package.test_python_service_identity.TestPythonPy3ServiceIdentity: *runtime_test
-tests.package.test_python_subprocess32.TestPythonPy2Subprocess32: *runtime_test
-tests.package.test_python_treq.TestPythonPy2Treq: *runtime_test
-tests.package.test_python_treq.TestPythonPy3Treq: *runtime_test
-tests.package.test_python_twisted.TestPythonPy2Twisted: *runtime_test
-tests.package.test_python_twisted.TestPythonPy3Twisted: *runtime_test
-tests.package.test_python_txaio.TestPythonPy2Txaio: *runtime_test
-tests.package.test_python_txaio.TestPythonPy3Txaio: *runtime_test
-tests.package.test_python_txtorcon.TestPythonPy2Txtorcon: *runtime_test
-tests.package.test_python_txtorcon.TestPythonPy3Txtorcon: *runtime_test
-tests.package.test_python_ubjson.TestPythonPy2Ubjson: *runtime_test
-tests.package.test_python_ubjson.TestPythonPy3Ubjson: *runtime_test
-tests.package.test_rust.TestRust: *runtime_test
-tests.package.test_rust.TestRustBin: *runtime_test
-tests.package.test_syslog_ng.TestSyslogNg: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainBuildrootMusl: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainBuildrootuClibc: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainCCache: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainCtngMusl: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainLinaroArm: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainSourceryArmv4: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainSourceryArmv5: *runtime_test
-tests.toolchain.test_external.TestExternalToolchainSourceryArmv7: *runtime_test
+aarch64_efi_defconfig: { extends: .defconfig }
+acmesystems_aria_g25_128mb_defconfig: { extends: .defconfig }
+acmesystems_aria_g25_256mb_defconfig: { extends: .defconfig }
+acmesystems_arietta_g25_128mb_defconfig: { extends: .defconfig }
+acmesystems_arietta_g25_256mb_defconfig: { extends: .defconfig }
+amarula_a64_relic_defconfig: { extends: .defconfig }
+amarula_vyasa_rk3288_defconfig: { extends: .defconfig }
+arcturus_ucls1012a_defconfig: { extends: .defconfig }
+arcturus_ucp1020_defconfig: { extends: .defconfig }
+arm_foundationv8_defconfig: { extends: .defconfig }
+arm_juno_defconfig: { extends: .defconfig }
+armadeus_apf27_defconfig: { extends: .defconfig }
+armadeus_apf28_defconfig: { extends: .defconfig }
+armadeus_apf51_defconfig: { extends: .defconfig }
+asus_tinker_rk3288_defconfig: { extends: .defconfig }
+at91sam9260eknf_defconfig: { extends: .defconfig }
+at91sam9g20dfc_defconfig: { extends: .defconfig }
+at91sam9g45m10ek_defconfig: { extends: .defconfig }
+at91sam9rlek_defconfig: { extends: .defconfig }
+at91sam9x5ek_defconfig: { extends: .defconfig }
+at91sam9x5ek_dev_defconfig: { extends: .defconfig }
+at91sam9x5ek_mmc_defconfig: { extends: .defconfig }
+at91sam9x5ek_mmc_dev_defconfig: { extends: .defconfig }
+atmel_sama5d27_som1_ek_mmc_dev_defconfig: { extends: .defconfig }
+atmel_sama5d2_xplained_mmc_defconfig: { extends: .defconfig }
+atmel_sama5d2_xplained_mmc_dev_defconfig: { extends: .defconfig }
+atmel_sama5d3_xplained_defconfig: { extends: .defconfig }
+atmel_sama5d3_xplained_dev_defconfig: { extends: .defconfig }
+atmel_sama5d3_xplained_mmc_defconfig: { extends: .defconfig }
+atmel_sama5d3_xplained_mmc_dev_defconfig: { extends: .defconfig }
+atmel_sama5d3xek_defconfig: { extends: .defconfig }
+atmel_sama5d4_xplained_defconfig: { extends: .defconfig }
+atmel_sama5d4_xplained_dev_defconfig: { extends: .defconfig }
+atmel_sama5d4_xplained_mmc_defconfig: { extends: .defconfig }
+atmel_sama5d4_xplained_mmc_dev_defconfig: { extends: .defconfig }
+bananapi_m1_defconfig: { extends: .defconfig }
+bananapi_m2_plus_defconfig: { extends: .defconfig }
+bananapi_m2_ultra_defconfig: { extends: .defconfig }
+bananapi_m64_defconfig: { extends: .defconfig }
+bananapro_defconfig: { extends: .defconfig }
+beagleboardx15_defconfig: { extends: .defconfig }
+beaglebone_defconfig: { extends: .defconfig }
+beaglebone_qt5_defconfig: { extends: .defconfig }
+chromebook_snow_defconfig: { extends: .defconfig }
+ci20_defconfig: { extends: .defconfig }
+csky_gx6605s_defconfig: { extends: .defconfig }
+cubieboard2_defconfig: { extends: .defconfig }
+engicam_imx6qdl_icore_defconfig: { extends: .defconfig }
+engicam_imx6qdl_icore_qt5_defconfig: { extends: .defconfig }
+engicam_imx6qdl_icore_rqs_defconfig: { extends: .defconfig }
+engicam_imx6ul_geam_defconfig: { extends: .defconfig }
+engicam_imx6ul_isiot_defconfig: { extends: .defconfig }
+freescale_imx28evk_defconfig: { extends: .defconfig }
+freescale_imx6dlsabreauto_defconfig: { extends: .defconfig }
+freescale_imx6dlsabresd_defconfig: { extends: .defconfig }
+freescale_imx6qsabreauto_defconfig: { extends: .defconfig }
+freescale_imx6qsabresd_defconfig: { extends: .defconfig }
+freescale_imx6sxsabresd_defconfig: { extends: .defconfig }
+freescale_imx7dsabresd_defconfig: { extends: .defconfig }
+freescale_imx8mqevk_defconfig: { extends: .defconfig }
+freescale_p1025twr_defconfig: { extends: .defconfig }
+freescale_t1040d4rdb_defconfig: { extends: .defconfig }
+friendlyarm_nanopi_a64_defconfig: { extends: .defconfig }
+friendlyarm_nanopi_neo2_defconfig: { extends: .defconfig }
+galileo_defconfig: { extends: .defconfig }
+grinn_chiliboard_defconfig: { extends: .defconfig }
+grinn_liteboard_defconfig: { extends: .defconfig }
+imx23evk_defconfig: { extends: .defconfig }
+imx6-sabreauto_defconfig: { extends: .defconfig }
+imx6-sabresd_defconfig: { extends: .defconfig }
+imx6-sabresd_qt5_defconfig: { extends: .defconfig }
+imx6slevk_defconfig: { extends: .defconfig }
+imx6sx-sdb_defconfig: { extends: .defconfig }
+imx6ulevk_defconfig: { extends: .defconfig }
+imx6ulpico_defconfig: { extends: .defconfig }
+imx7d-sdb_defconfig: { extends: .defconfig }
+imx7dpico_defconfig: { extends: .defconfig }
+lego_ev3_defconfig: { extends: .defconfig }
+linksprite_pcduino_defconfig: { extends: .defconfig }
+minnowboard_max-graphical_defconfig: { extends: .defconfig }
+minnowboard_max_defconfig: { extends: .defconfig }
+mx25pdk_defconfig: { extends: .defconfig }
+mx51evk_defconfig: { extends: .defconfig }
+mx53loco_defconfig: { extends: .defconfig }
+mx6cubox_defconfig: { extends: .defconfig }
+mx6sx_udoo_neo_defconfig: { extends: .defconfig }
+mx6udoo_defconfig: { extends: .defconfig }
+nanopi_m1_defconfig: { extends: .defconfig }
+nanopi_m1_plus_defconfig: { extends: .defconfig }
+nanopi_neo_defconfig: { extends: .defconfig }
+nexbox_a95x_defconfig: { extends: .defconfig }
+nitrogen6sx_defconfig: { extends: .defconfig }
+nitrogen6x_defconfig: { extends: .defconfig }
+nitrogen7_defconfig: { extends: .defconfig }
+nitrogen8m_defconfig: { extends: .defconfig }
+odroidc2_defconfig: { extends: .defconfig }
+odroidxu4_defconfig: { extends: .defconfig }
+olimex_a10_olinuxino_lime_defconfig: { extends: .defconfig }
+olimex_a13_olinuxino_defconfig: { extends: .defconfig }
+olimex_a20_olinuxino_lime2_defconfig: { extends: .defconfig }
+olimex_a20_olinuxino_lime_defconfig: { extends: .defconfig }
+olimex_a20_olinuxino_lime_legacy_defconfig: { extends: .defconfig }
+olimex_a20_olinuxino_micro_defconfig: { extends: .defconfig }
+olimex_a64_olinuxino_defconfig: { extends: .defconfig }
+olimex_imx233_olinuxino_defconfig: { extends: .defconfig }
+openblocks_a6_defconfig: { extends: .defconfig }
+orangepi_lite2_defconfig: { extends: .defconfig }
+orangepi_lite_defconfig: { extends: .defconfig }
+orangepi_one_defconfig: { extends: .defconfig }
+orangepi_one_plus_defconfig: { extends: .defconfig }
+orangepi_pc2_defconfig: { extends: .defconfig }
+orangepi_pc_defconfig: { extends: .defconfig }
+orangepi_pc_plus_defconfig: { extends: .defconfig }
+orangepi_plus_defconfig: { extends: .defconfig }
+orangepi_prime_defconfig: { extends: .defconfig }
+orangepi_win_defconfig: { extends: .defconfig }
+orangepi_zero_defconfig: { extends: .defconfig }
+orangepi_zero_plus2_defconfig: { extends: .defconfig }
+pandaboard_defconfig: { extends: .defconfig }
+pc_x86_64_bios_defconfig: { extends: .defconfig }
+pc_x86_64_efi_defconfig: { extends: .defconfig }
+pine64_defconfig: { extends: .defconfig }
+pine64_sopine_defconfig: { extends: .defconfig }
+qemu_aarch64_virt_defconfig: { extends: .defconfig }
+qemu_arm_versatile_defconfig: { extends: .defconfig }
+qemu_arm_versatile_nommu_defconfig: { extends: .defconfig }
+qemu_arm_vexpress_defconfig: { extends: .defconfig }
+qemu_m68k_mcf5208_defconfig: { extends: .defconfig }
+qemu_m68k_q800_defconfig: { extends: .defconfig }
+qemu_microblazebe_mmu_defconfig: { extends: .defconfig }
+qemu_microblazeel_mmu_defconfig: { extends: .defconfig }
+qemu_mips32r2_malta_defconfig: { extends: .defconfig }
+qemu_mips32r2el_malta_defconfig: { extends: .defconfig }
+qemu_mips32r6_malta_defconfig: { extends: .defconfig }
+qemu_mips32r6el_malta_defconfig: { extends: .defconfig }
+qemu_mips64_malta_defconfig: { extends: .defconfig }
+qemu_mips64el_malta_defconfig: { extends: .defconfig }
+qemu_mips64r6_malta_defconfig: { extends: .defconfig }
+qemu_mips64r6el_malta_defconfig: { extends: .defconfig }
+qemu_nios2_10m50_defconfig: { extends: .defconfig }
+qemu_or1k_defconfig: { extends: .defconfig }
+qemu_ppc64_e5500_defconfig: { extends: .defconfig }
+qemu_ppc64_pseries_defconfig: { extends: .defconfig }
+qemu_ppc64le_pseries_defconfig: { extends: .defconfig }
+qemu_ppc_g3beige_defconfig: { extends: .defconfig }
+qemu_ppc_mpc8544ds_defconfig: { extends: .defconfig }
+qemu_ppc_virtex_ml507_defconfig: { extends: .defconfig }
+qemu_riscv32_virt_defconfig: { extends: .defconfig }
+qemu_riscv64_virt_defconfig: { extends: .defconfig }
+qemu_sh4_r2d_defconfig: { extends: .defconfig }
+qemu_sh4eb_r2d_defconfig: { extends: .defconfig }
+qemu_sparc64_sun4u_defconfig: { extends: .defconfig }
+qemu_sparc_ss10_defconfig: { extends: .defconfig }
+qemu_x86_64_defconfig: { extends: .defconfig }
+qemu_x86_defconfig: { extends: .defconfig }
+qemu_xtensa_lx60_defconfig: { extends: .defconfig }
+qemu_xtensa_lx60_nommu_defconfig: { extends: .defconfig }
+raspberrypi0_defconfig: { extends: .defconfig }
+raspberrypi0w_defconfig: { extends: .defconfig }
+raspberrypi2_defconfig: { extends: .defconfig }
+raspberrypi3_64_defconfig: { extends: .defconfig }
+raspberrypi3_defconfig: { extends: .defconfig }
+raspberrypi3_qt5we_defconfig: { extends: .defconfig }
+raspberrypi_defconfig: { extends: .defconfig }
+riotboard_defconfig: { extends: .defconfig }
+roseapplepi_defconfig: { extends: .defconfig }
+s6lx9_microboard_defconfig: { extends: .defconfig }
+sheevaplug_defconfig: { extends: .defconfig }
+snps_aarch64_vdk_defconfig: { extends: .defconfig }
+snps_arc700_axs101_defconfig: { extends: .defconfig }
+snps_archs38_axs103_defconfig: { extends: .defconfig }
+snps_archs38_haps_defconfig: { extends: .defconfig }
+snps_archs38_hsdk_defconfig: { extends: .defconfig }
+snps_archs38_vdk_defconfig: { extends: .defconfig }
+socrates_cyclone5_defconfig: { extends: .defconfig }
+solidrun_clearfog_defconfig: { extends: .defconfig }
+solidrun_macchiatobin_mainline_defconfig: { extends: .defconfig }
+solidrun_macchiatobin_marvell_defconfig: { extends: .defconfig }
+stm32f429_disco_defconfig: { extends: .defconfig }
+stm32f469_disco_defconfig: { extends: .defconfig }
+toradex_apalis_imx6_defconfig: { extends: .defconfig }
+ts4800_defconfig: { extends: .defconfig }
+ts4900_defconfig: { extends: .defconfig }
+ts5500_defconfig: { extends: .defconfig }
+ts7680_defconfig: { extends: .defconfig }
+wandboard_defconfig: { extends: .defconfig }
+warp7_defconfig: { extends: .defconfig }
+warpboard_defconfig: { extends: .defconfig }
+zynq_microzed_defconfig: { extends: .defconfig }
+zynq_zc706_defconfig: { extends: .defconfig }
+zynq_zed_defconfig: { extends: .defconfig }
+zynq_zybo_defconfig: { extends: .defconfig }
+zynqmp_zcu106_defconfig: { extends: .defconfig }
+tests.boot.test_atf.TestATFAllwinner: { extends: .runtime_test }
+tests.boot.test_atf.TestATFMarvell: { extends: .runtime_test }
+tests.boot.test_atf.TestATFVexpress: { extends: .runtime_test }
+tests.core.test_file_capabilities.TestFileCapabilities: { extends: .runtime_test }
+tests.core.test_hardening.TestFortifyConserv: { extends: .runtime_test }
+tests.core.test_hardening.TestFortifyNone: { extends: .runtime_test }
+tests.core.test_hardening.TestRelro: { extends: .runtime_test }
+tests.core.test_hardening.TestRelroPartial: { extends: .runtime_test }
+tests.core.test_hardening.TestSspNone: { extends: .runtime_test }
+tests.core.test_hardening.TestSspStrong: { extends: .runtime_test }
+tests.core.test_post_scripts.TestPostScripts: { extends: .runtime_test }
+tests.core.test_rootfs_overlay.TestRootfsOverlay: { extends: .runtime_test }
+tests.core.test_timezone.TestGlibcAllTimezone: { extends: .runtime_test }
+tests.core.test_timezone.TestGlibcNonDefaultLimitedTimezone: { extends: .runtime_test }
+tests.core.test_timezone.TestNoTimezone: { extends: .runtime_test }
+tests.download.test_git.TestGitHash: { extends: .runtime_test }
+tests.download.test_git.TestGitRefs: { extends: .runtime_test }
+tests.fs.test_ext.TestExt2: { extends: .runtime_test }
+tests.fs.test_ext.TestExt2r1: { extends: .runtime_test }
+tests.fs.test_ext.TestExt3: { extends: .runtime_test }
+tests.fs.test_ext.TestExt4: { extends: .runtime_test }
+tests.fs.test_f2fs.TestF2FS: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660Grub2External: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660Grub2ExternalCompress: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660Grub2Internal: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660SyslinuxExternal: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660SyslinuxExternalCompress: { extends: .runtime_test }
+tests.fs.test_iso9660.TestIso9660SyslinuxInternal: { extends: .runtime_test }
+tests.fs.test_jffs2.TestJffs2: { extends: .runtime_test }
+tests.fs.test_squashfs.TestSquashfs: { extends: .runtime_test }
+tests.fs.test_ubi.TestUbi: { extends: .runtime_test }
+tests.fs.test_yaffs2.TestYaffs2: { extends: .runtime_test }
+tests.init.test_busybox.TestInitSystemBusyboxRo: { extends: .runtime_test }
+tests.init.test_busybox.TestInitSystemBusyboxRoNet: { extends: .runtime_test }
+tests.init.test_busybox.TestInitSystemBusyboxRw: { extends: .runtime_test }
+tests.init.test_busybox.TestInitSystemBusyboxRwNet: { extends: .runtime_test }
+tests.init.test_none.TestInitSystemNone: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRoFull: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRoIfupdown: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRoNetworkd: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRwFull: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRwIfupdown: { extends: .runtime_test }
+tests.init.test_systemd.TestInitSystemSystemdRwNetworkd: { extends: .runtime_test }
+tests.package.test_atop.TestAtop: { extends: .runtime_test }
+tests.package.test_docker_compose.TestDockerCompose: { extends: .runtime_test }
+tests.package.test_dropbear.TestDropbear: { extends: .runtime_test }
+tests.package.test_ipython.TestIPythonPy2: { extends: .runtime_test }
+tests.package.test_ipython.TestIPythonPy3: { extends: .runtime_test }
+tests.package.test_lua.TestLua: { extends: .runtime_test }
+tests.package.test_lua.TestLuajit: { extends: .runtime_test }
+tests.package.test_perl.TestPerl: { extends: .runtime_test }
+tests.package.test_perl_class_load.TestPerlClassLoad: { extends: .runtime_test }
+tests.package.test_perl_dbd_mysql.TestPerlDBDmysql: { extends: .runtime_test }
+tests.package.test_perl_encode_detect.TestPerlEncodeDetect: { extends: .runtime_test }
+tests.package.test_perl_gdgraph.TestPerlGDGraph: { extends: .runtime_test }
+tests.package.test_perl_io_socket_multicast.TestPerlIOSocketMulticast: { extends: .runtime_test }
+tests.package.test_perl_io_socket_ssl.TestPerlIOSocketSSL: { extends: .runtime_test }
+tests.package.test_perl_libwww_perl.TestPerllibwwwperl: { extends: .runtime_test }
+tests.package.test_perl_mail_dkim.TestPerlMailDKIM: { extends: .runtime_test }
+tests.package.test_perl_x10.TestPerlX10: { extends: .runtime_test }
+tests.package.test_perl_xml_libxml.TestPerlXMLLibXML: { extends: .runtime_test }
+tests.package.test_prosody.TestProsodyLua51: { extends: .runtime_test }
+tests.package.test_prosody.TestProsodyLuajit: { extends: .runtime_test }
+tests.package.test_python.TestPython2: { extends: .runtime_test }
+tests.package.test_python.TestPython3: { extends: .runtime_test }
+tests.package.test_python_argh.TestPythonPy2Argh: { extends: .runtime_test }
+tests.package.test_python_argh.TestPythonPy3Argh: { extends: .runtime_test }
+tests.package.test_python_attrs.TestPythonPy2Attrs: { extends: .runtime_test }
+tests.package.test_python_attrs.TestPythonPy3Attrs: { extends: .runtime_test }
+tests.package.test_python_autobahn.TestPythonPy2Autobahn: { extends: .runtime_test }
+tests.package.test_python_autobahn.TestPythonPy3Autobahn: { extends: .runtime_test }
+tests.package.test_python_automat.TestPythonPy2Automat: { extends: .runtime_test }
+tests.package.test_python_automat.TestPythonPy3Automat: { extends: .runtime_test }
+tests.package.test_python_bitstring.TestPythonPy2Bitstring: { extends: .runtime_test }
+tests.package.test_python_bitstring.TestPythonPy3Bitstring: { extends: .runtime_test }
+tests.package.test_python_cbor.TestPythonPy2Cbor: { extends: .runtime_test }
+tests.package.test_python_cbor.TestPythonPy3Cbor: { extends: .runtime_test }
+tests.package.test_python_click.TestPythonPy2Click: { extends: .runtime_test }
+tests.package.test_python_click.TestPythonPy3Click: { extends: .runtime_test }
+tests.package.test_python_constantly.TestPythonPy2Constantly: { extends: .runtime_test }
+tests.package.test_python_constantly.TestPythonPy3Constantly: { extends: .runtime_test }
+tests.package.test_python_crossbar.TestPythonPy3Crossbar: { extends: .runtime_test }
+tests.package.test_python_cryptography.TestPythonPy2Cryptography: { extends: .runtime_test }
+tests.package.test_python_cryptography.TestPythonPy3Cryptography: { extends: .runtime_test }
+tests.package.test_python_incremental.TestPythonPy2Incremental: { extends: .runtime_test }
+tests.package.test_python_incremental.TestPythonPy3Incremental: { extends: .runtime_test }
+tests.package.test_python_passlib.TestPythonPy2Passlib: { extends: .runtime_test }
+tests.package.test_python_passlib.TestPythonPy3Passlib: { extends: .runtime_test }
+tests.package.test_python_pexpect.TestPythonPy2Pexpect: { extends: .runtime_test }
+tests.package.test_python_pexpect.TestPythonPy3Pexpect: { extends: .runtime_test }
+tests.package.test_python_pynacl.TestPythonPy2Pynacl: { extends: .runtime_test }
+tests.package.test_python_pynacl.TestPythonPy3Pynacl: { extends: .runtime_test }
+tests.package.test_python_pyyaml.TestPythonPy2Pyyaml: { extends: .runtime_test }
+tests.package.test_python_pyyaml.TestPythonPy3Pyyaml: { extends: .runtime_test }
+tests.package.test_python_service_identity.TestPythonPy2ServiceIdentity: { extends: .runtime_test }
+tests.package.test_python_service_identity.TestPythonPy3ServiceIdentity: { extends: .runtime_test }
+tests.package.test_python_subprocess32.TestPythonPy2Subprocess32: { extends: .runtime_test }
+tests.package.test_python_treq.TestPythonPy2Treq: { extends: .runtime_test }
+tests.package.test_python_treq.TestPythonPy3Treq: { extends: .runtime_test }
+tests.package.test_python_twisted.TestPythonPy2Twisted: { extends: .runtime_test }
+tests.package.test_python_twisted.TestPythonPy3Twisted: { extends: .runtime_test }
+tests.package.test_python_txaio.TestPythonPy2Txaio: { extends: .runtime_test }
+tests.package.test_python_txaio.TestPythonPy3Txaio: { extends: .runtime_test }
+tests.package.test_python_txtorcon.TestPythonPy2Txtorcon: { extends: .runtime_test }
+tests.package.test_python_txtorcon.TestPythonPy3Txtorcon: { extends: .runtime_test }
+tests.package.test_python_ubjson.TestPythonPy2Ubjson: { extends: .runtime_test }
+tests.package.test_python_ubjson.TestPythonPy3Ubjson: { extends: .runtime_test }
+tests.package.test_rust.TestRust: { extends: .runtime_test }
+tests.package.test_rust.TestRustBin: { extends: .runtime_test }
+tests.package.test_syslog_ng.TestSyslogNg: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainBuildrootMusl: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainBuildrootuClibc: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainCCache: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainCtngMusl: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainLinaroArm: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv4: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv5: { extends: .runtime_test }
+tests.toolchain.test_external.TestExternalToolchainSourceryArmv7: { extends: .runtime_test }
