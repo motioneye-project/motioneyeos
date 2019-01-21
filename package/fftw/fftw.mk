@@ -14,6 +14,10 @@ ifeq ($(BR2_PACKAGE_FFTW_LONG_DOUBLE),y)
 FFTW_DEPENDENCIES += fftw-long-double
 endif
 
+ifeq ($(BR2_PACKAGE_FFTW_QUAD),y)
+FFTW_DEPENDENCIES += fftw-quad
+endif
+
 ifeq ($(BR2_PACKAGE_FFTW_SINGLE),y)
 FFTW_DEPENDENCIES += fftw-single
 endif
@@ -49,7 +53,7 @@ FFTW_CONF_OPTS += \
 	$(FFTW_COMMON_CONF_OPTS) \
 	--disable-single \
 	--disable-long-double \
-	$(if $(BR2_PACKAGE_FFTW_PRECISION_QUAD),--enable,--disable)-quad-precision \
+	--disable-quad-precision \
 	CFLAGS="$(FFTW_COMMON_CFLAGS)"
 
 $(eval $(autotools-package))

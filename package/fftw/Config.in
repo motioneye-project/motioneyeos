@@ -49,6 +49,7 @@ config BR2_PACKAGE_FFTW_PRECISION_QUAD
 	bool "quad"
 	# quad-precision needs to have a gcc with libquadmath
 	depends on (BR2_i386 || BR2_x86_64) && BR2_USE_WCHAR
+	select BR2_PACKAGE_FFTW_QUAD
 	help
 	  Compile fftw in quadruple precision, i.e. use '__float128' for
 	  floating point type.
@@ -57,6 +58,7 @@ endchoice
 
 source "package/fftw/fftw-single/Config.in"
 source "package/fftw/fftw-long-double/Config.in"
+source "package/fftw/fftw-quad/Config.in"
 
 config BR2_PACKAGE_FFTW_FAST
 	bool "optimise for speed over accuracy"
