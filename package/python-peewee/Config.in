@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PEEWEE
+	bool "python-peewee"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  A little ORM.
+
+	  https://github.com/coleifer/peewee

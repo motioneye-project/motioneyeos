@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_AIOHTTP_SWAGGER
+	bool "python-aiohttp-swagger"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Swagger API Documentation builder for aiohttp server
+
+	  https://github.com/cr0hn/aiohttp-swagger

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_ASYNC_TIMEOUT
+	bool "python-async-timeout"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  asyncio-compatible timeout context manager.
+
+	  https://github.com/aio-libs/async-timeout
