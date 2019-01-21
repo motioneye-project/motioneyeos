@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PYTHON_MOCK
 	bool "python-mock"
 	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON_PBR
 	help
 	  mock is a library for testing in Python. It allows you to replace parts of your system under test with mock objects and make assertions about how they have been used.
 
