@@ -160,6 +160,41 @@ config BR2_PACKAGE_BOOST_SIGNALS
 	  was announced in 1.54. Users are encouraged to use Signals2
 	  instead.
 
+config BR2_PACKAGE_FFTW_PRECISION_SINGLE
+	bool "single"
+	select BR2_LEGACY
+	select BR2_PACKAGE_FFTW_SINGLE
+	help
+	  This option has been removed in favor of
+	  BR2_PACKAGE_FFTW_SINGLE.
+
+config BR2_PACKAGE_FFTW_PRECISION_DOUBLE
+	bool "double"
+	select BR2_LEGACY
+	select BR2_PACKAGE_FFTW_DOUBLE
+	help
+	  This option has been removed in favor of
+	  BR2_PACKAGE_FFTW_DOUBLE.
+
+config BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE
+	bool "long double"
+	depends on !(BR2_TOOLCHAIN_BUILDROOT_UCLIBC && \
+		(BR2_arm || BR2_mips || BR2_mipsel))
+	select BR2_LEGACY
+	select BR2_PACKAGE_FFTW_LONG_DOUBLE
+	help
+	  This option has been removed in favor of
+	  BR2_PACKAGE_FFTW_LONG_DOUBLE.
+
+config BR2_PACKAGE_FFTW_PRECISION_QUAD
+	bool "quad"
+	depends on (BR2_i386 || BR2_x86_64) && BR2_USE_WCHAR
+	select BR2_LEGACY
+	select BR2_PACKAGE_FFTW_QUAD
+	help
+	  This option has been removed in favor of
+	  BR2_PACKAGE_FFTW_QUAD.
+
 config BR2_PACKAGE_LUA_5_2
 	bool "Lua 5.2.x version removed"
 	select BR2_LEGACY

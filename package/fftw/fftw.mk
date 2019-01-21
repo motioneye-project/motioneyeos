@@ -10,22 +10,6 @@ FFTW_INSTALL_STAGING = YES
 FFTW_LICENSE = GPL-2.0+
 FFTW_LICENSE_FILES = COPYING
 
-ifeq ($(BR2_PACKAGE_FFTW_DOUBLE),y)
-FFTW_DEPENDENCIES += fftw-double
-endif
-
-ifeq ($(BR2_PACKAGE_FFTW_LONG_DOUBLE),y)
-FFTW_DEPENDENCIES += fftw-long-double
-endif
-
-ifeq ($(BR2_PACKAGE_FFTW_QUAD),y)
-FFTW_DEPENDENCIES += fftw-quad
-endif
-
-ifeq ($(BR2_PACKAGE_FFTW_SINGLE),y)
-FFTW_DEPENDENCIES += fftw-single
-endif
-
 # fortran support only enables generation and installation of fortran sources
 ifeq ($(BR2_TOOLCHAIN_HAS_FORTRAN),y)
 FFTW_COMMON_CONF_OPTS += --enable-fortran
@@ -48,7 +32,5 @@ else
 FFTW_COMMON_CONF_OPTS += --disable-threads
 endif
 FFTW_COMMON_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--enable,--disable)-openmp
-
-$(eval $(generic-package))
 
 include $(sort $(wildcard package/fftw/*/*.mk))
