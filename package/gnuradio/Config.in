@@ -78,11 +78,6 @@ config BR2_PACKAGE_GNURADIO_ZEROMQ
 	help
 	  zeromq communication support
 
-comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager, -qtgui depends fftw's single precision"
-	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
-
-if BR2_PACKAGE_FFTW_PRECISION_SINGLE
-
 config BR2_PACKAGE_GNURADIO_ANALOG
 	bool "gr-analog support"
 	select BR2_PACKAGE_GNURADIO_FILTER
@@ -103,6 +98,8 @@ config BR2_PACKAGE_GNURADIO_DIGITAL
 
 config BR2_PACKAGE_GNURADIO_FFT
 	bool "gr-fft support"
+	select BR2_PACKAGE_FFTW
+	select BR2_PACKAGE_FFTW_SINGLE
 	select BR2_PACKAGE_GNURADIO_BLOCKS
 	help
 	  FFT signal processing blocks
@@ -135,5 +132,4 @@ config BR2_PACKAGE_GNURADIO_TRELLIS
 	help
 	  Trellis coded modulation blocks
 
-endif
 endif
