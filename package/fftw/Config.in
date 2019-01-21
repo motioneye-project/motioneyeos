@@ -12,13 +12,7 @@ config BR2_PACKAGE_FFTW
 
 if BR2_PACKAGE_FFTW
 
-config BR2_PACKAGE_FFTW_USE_SSE
-	bool
-
 config BR2_PACKAGE_FFTW_USE_SSE2
-	bool
-
-config BR2_PACKAGE_FFTW_USE_NEON
 	bool
 
 choice
@@ -29,9 +23,7 @@ choice
 
 config BR2_PACKAGE_FFTW_PRECISION_SINGLE
 	bool "single"
-	select BR2_PACKAGE_FFTW_USE_SSE if BR2_X86_CPU_HAS_SSE
-	select BR2_PACKAGE_FFTW_USE_SSE2 if BR2_X86_CPU_HAS_SSE2
-	select BR2_PACKAGE_FFTW_USE_NEON if BR2_ARM_CPU_HAS_NEON && !BR2_ARM_SOFT_FLOAT
+	select BR2_PACKAGE_FFTW_SINGLE
 	help
 	  Compile fftw in single precision, i.e. use 'float' for
 	  floating point type.
@@ -61,6 +53,8 @@ config BR2_PACKAGE_FFTW_PRECISION_QUAD
 	  floating point type.
 
 endchoice
+
+source "package/fftw/fftw-single/Config.in"
 
 config BR2_PACKAGE_FFTW_FAST
 	bool "optimise for speed over accuracy"
