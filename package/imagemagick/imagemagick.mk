@@ -113,11 +113,11 @@ else
 IMAGEMAGICK_CONF_OPTS += --without-lzma
 endif
 
-ifeq ($(BR2_PACKAGE_FFTW),y)
+ifeq ($(BR2_PACKAGE_FFTW_DOUBLE),y)
 # configure script misdetects these leading to build errors
 IMAGEMAGICK_CONF_ENV += ac_cv_func_creal=yes ac_cv_func_cimag=yes
 IMAGEMAGICK_CONF_OPTS += --with-fftw
-IMAGEMAGICK_DEPENDENCIES += fftw
+IMAGEMAGICK_DEPENDENCIES += fftw-double
 else
 IMAGEMAGICK_CONF_OPTS += --without-fftw
 endif
