@@ -10,6 +10,10 @@ FFTW_INSTALL_STAGING = YES
 FFTW_LICENSE = GPL-2.0+
 FFTW_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_FFTW_LONG_DOUBLE),y)
+FFTW_DEPENDENCIES += fftw-long-double
+endif
+
 ifeq ($(BR2_PACKAGE_FFTW_SINGLE),y)
 FFTW_DEPENDENCIES += fftw-single
 endif
@@ -44,7 +48,7 @@ FFTW_CONF_ENV = $(FFTW_COMMON_CONF_ENV)
 FFTW_CONF_OPTS += \
 	$(FFTW_COMMON_CONF_OPTS) \
 	--disable-single \
-	$(if $(BR2_PACKAGE_FFTW_PRECISION_LONG_DOUBLE),--enable,--disable)-long-double \
+	--disable-long-double \
 	$(if $(BR2_PACKAGE_FFTW_PRECISION_QUAD),--enable,--disable)-quad-precision \
 	CFLAGS="$(FFTW_COMMON_CFLAGS)"
 
