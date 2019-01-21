@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pyopenssl/json
-md5 c92e9c85b520b7e153fef0f7f3c5dda7  pyOpenSSL-18.0.0.tar.gz
-sha256 6488f1423b00f73b7ad5167885312bb0ce410d3312eb212393795b53c8caa580  pyOpenSSL-18.0.0.tar.gz
+md5 b9876625dc1d5a5a662d748689191537  pyOpenSSL-19.0.0.tar.gz
+sha256 aeca66338f6de19d1aa46ed634c3b9ae519a64b458f8468aec688e7e3c20f200  pyOpenSSL-19.0.0.tar.gz
 # Locally computed sha256
 sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
