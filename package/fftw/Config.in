@@ -12,9 +12,6 @@ config BR2_PACKAGE_FFTW
 
 if BR2_PACKAGE_FFTW
 
-config BR2_PACKAGE_FFTW_USE_SSE2
-	bool
-
 choice
 	prompt "fftw precision"
 	default BR2_PACKAGE_FFTW_PRECISION_DOUBLE
@@ -30,7 +27,7 @@ config BR2_PACKAGE_FFTW_PRECISION_SINGLE
 
 config BR2_PACKAGE_FFTW_PRECISION_DOUBLE
 	bool "double"
-	select BR2_PACKAGE_FFTW_USE_SSE2 if BR2_X86_CPU_HAS_SSE2
+	select BR2_PACKAGE_FFTW_DOUBLE
 	help
 	  Compile fftw in double precision (the default), i.e. use
 	  'double' for floating point type.
@@ -57,6 +54,7 @@ config BR2_PACKAGE_FFTW_PRECISION_QUAD
 endchoice
 
 source "package/fftw/fftw-single/Config.in"
+source "package/fftw/fftw-double/Config.in"
 source "package/fftw/fftw-long-double/Config.in"
 source "package/fftw/fftw-quad/Config.in"
 

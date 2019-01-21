@@ -10,6 +10,10 @@ FFTW_INSTALL_STAGING = YES
 FFTW_LICENSE = GPL-2.0+
 FFTW_LICENSE_FILES = COPYING
 
+ifeq ($(BR2_PACKAGE_FFTW_DOUBLE),y)
+FFTW_DEPENDENCIES += fftw-double
+endif
+
 ifeq ($(BR2_PACKAGE_FFTW_LONG_DOUBLE),y)
 FFTW_DEPENDENCIES += fftw-long-double
 endif
@@ -36,9 +40,6 @@ ifeq ($(BR2_PACKAGE_FFTW_FAST),y)
 FFTW_COMMON_CFLAGS += -O3 -ffast-math
 endif
 
-# x86 optimisations
-FFTW_COMMON_CONF_OPTS += $(if $(BR2_PACKAGE_FFTW_USE_SSE2),--enable,--disable)-sse2
-
 # Generic optimisations
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 FFTW_COMMON_CONF_OPTS += --enable-threads
@@ -48,14 +49,6 @@ FFTW_COMMON_CONF_OPTS += --disable-threads
 endif
 FFTW_COMMON_CONF_OPTS += $(if $(BR2_GCC_ENABLE_OPENMP),--enable,--disable)-openmp
 
-FFTW_CONF_ENV = $(FFTW_COMMON_CONF_ENV)
-FFTW_CONF_OPTS += \
-	$(FFTW_COMMON_CONF_OPTS) \
-	--disable-single \
-	--disable-long-double \
-	--disable-quad-precision \
-	CFLAGS="$(FFTW_COMMON_CFLAGS)"
-
-$(eval $(autotools-package))
+$(eval $(generic-package))
 
 include $(sort $(wildcard package/fftw/*/*.mk))
