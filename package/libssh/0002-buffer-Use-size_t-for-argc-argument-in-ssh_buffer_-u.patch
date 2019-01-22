@@ -1,0 +1,152 @@
+From 270d6aa2bb01f3430d07cce5f97b48b741e3df9c Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Fri, 7 Dec 2018 12:06:03 +0100
+Subject: [PATCH] buffer: Use size_t for argc argument in ssh_buffer_(un)pack()
+
+Signed-off-by: Andreas Schneider <asn@cryptomilk.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit c306a693f3fbe
+
+ include/libssh/buffer.h |  4 ++--
+ src/buffer.c            | 38 +++++++++++++++++++-------------------
+ 2 files changed, 21 insertions(+), 21 deletions(-)
+
+diff --git a/include/libssh/buffer.h b/include/libssh/buffer.h
+index 4721cbe06c20..1c375343ee14 100644
+--- a/include/libssh/buffer.h
++++ b/include/libssh/buffer.h
+@@ -40,11 +40,11 @@ void *ssh_buffer_allocate(struct ssh_buffer_struct *buffer, uint32_t len);
+ int ssh_buffer_allocate_size(struct ssh_buffer_struct *buffer, uint32_t len);
+ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+                        const char *format,
+-                       int argc,
++                       size_t argc,
+                        va_list ap);
+ int _ssh_buffer_pack(struct ssh_buffer_struct *buffer,
+                      const char *format,
+-                     int argc,
++                     size_t argc,
+                      ...);
+ #define ssh_buffer_pack(buffer, format, ...) \
+     _ssh_buffer_pack((buffer), (format), __VA_NARG__(__VA_ARGS__), __VA_ARGS__, SSH_BUFFER_PACK_END)
+diff --git a/src/buffer.c b/src/buffer.c
+index b029f202660f..99863747fc3c 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -809,7 +809,7 @@ ssh_buffer_get_ssh_string(struct ssh_buffer_struct *buffer)
+  */
+ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+                                        const char *format,
+-                                       int argc,
++                                       size_t argc,
+                                        va_list ap)
+ {
+     const char *p = NULL;
+@@ -817,12 +817,12 @@ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+     char *cstring = NULL;
+     size_t needed_size = 0;
+     size_t len;
+-    int count; /* int for size comparison with argc */
++    size_t count;
+     int rc = SSH_OK;
+ 
+     for (p = format, count = 0; *p != '\0'; p++, count++) {
+         /* Invalid number of arguments passed */
+-        if (argc != -1 && count > argc) {
++        if (count > argc) {
+             return SSH_ERROR;
+         }
+ 
+@@ -881,7 +881,7 @@ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+         }
+     }
+ 
+-    if (argc != -1 && argc != count) {
++    if (argc != count) {
+         return SSH_ERROR;
+     }
+ 
+@@ -891,11 +891,7 @@ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+          */
+         uint32_t canary = va_arg(ap, uint32_t);
+         if (canary != SSH_BUFFER_PACK_END) {
+-            if (argc == -1){
+-                return SSH_ERROR;
+-            } else {
+-                abort();
+-            }
++            abort();
+         }
+     }
+ 
+@@ -918,7 +914,7 @@ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+  */
+ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+                        const char *format,
+-                       int argc,
++                       size_t argc,
+                        va_list ap)
+ {
+     int rc = SSH_ERROR;
+@@ -934,11 +930,15 @@ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+     char *cstring;
+     bignum b;
+     size_t len;
+-    int count; /* int for size comparison with argc */
++    size_t count;
++
++    if (argc > 256) {
++        return SSH_ERROR;
++    }
+ 
+     for (p = format, count = 0; *p != '\0'; p++, count++) {
+         /* Invalid number of arguments passed */
+-        if (argc != -1 && count > argc) {
++        if (count > argc) {
+             return SSH_ERROR;
+         }
+ 
+@@ -1010,7 +1010,7 @@ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+         }
+     }
+ 
+-    if (argc != -1 && argc != count) {
++    if (argc != count) {
+         return SSH_ERROR;
+     }
+ 
+@@ -1018,11 +1018,7 @@ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+         /* Check if our canary is intact, if not somthing really bad happened */
+         uint32_t canary = va_arg(ap, uint32_t);
+         if (canary != SSH_BUFFER_PACK_END) {
+-            if (argc == -1){
+-                return SSH_ERROR;
+-            } else {
+-                abort();
+-            }
++            abort();
+         }
+     }
+     return rc;
+@@ -1050,12 +1046,16 @@ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+  */
+ int _ssh_buffer_pack(struct ssh_buffer_struct *buffer,
+                      const char *format,
+-                     int argc,
++                     size_t argc,
+                      ...)
+ {
+     va_list ap;
+     int rc;
+ 
++    if (argc > 256) {
++        return SSH_ERROR;
++    }
++
+     va_start(ap, argc);
+     rc = ssh_buffer_pack_allocate_va(buffer, format, argc, ap);
+     va_end(ap);
+-- 
+2.20.1
+

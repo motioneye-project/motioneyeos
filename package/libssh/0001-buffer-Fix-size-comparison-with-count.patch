@@ -1,0 +1,48 @@
+From 2aa8c46a853acd4198af16e417ebffd5b0e2c9f4 Mon Sep 17 00:00:00 2001
+From: Andreas Schneider <asn@cryptomilk.org>
+Date: Mon, 1 Oct 2018 20:58:47 +0200
+Subject: [PATCH] buffer: Fix size comparison with count
+
+Signed-off-by: Andreas Schneider <asn@cryptomilk.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 9c3ba94960cd5
+
+ src/buffer.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/buffer.c b/src/buffer.c
+index da6e587fc9e4..b029f202660f 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -816,8 +816,8 @@ static int ssh_buffer_pack_allocate_va(struct ssh_buffer_struct *buffer,
+     ssh_string string = NULL;
+     char *cstring = NULL;
+     size_t needed_size = 0;
+-    size_t count;
+     size_t len;
++    int count; /* int for size comparison with argc */
+     int rc = SSH_OK;
+ 
+     for (p = format, count = 0; *p != '\0'; p++, count++) {
+@@ -934,7 +934,7 @@ int ssh_buffer_pack_va(struct ssh_buffer_struct *buffer,
+     char *cstring;
+     bignum b;
+     size_t len;
+-    int count;
++    int count; /* int for size comparison with argc */
+ 
+     for (p = format, count = 0; *p != '\0'; p++, count++) {
+         /* Invalid number of arguments passed */
+@@ -1098,7 +1098,7 @@ int ssh_buffer_unpack_va(struct ssh_buffer_struct *buffer,
+     } o;
+     size_t len, rlen, max_len;
+     va_list ap_copy;
+-    int count;
++    int count; /* int for size comparison with argc */
+ 
+     max_len = ssh_buffer_get_len(buffer);
+ 
+-- 
+2.20.1
+
