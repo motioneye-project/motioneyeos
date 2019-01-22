@@ -12,3 +12,4 @@ PYTHON_PBR_LICENSE = Apache-2.0
 PYTHON_PBR_LICENSE_FILES = LICENSE.txt
 
 $(eval $(python-package))
+$(eval $(host-python-package))
