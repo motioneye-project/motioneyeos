@@ -5,4 +5,4 @@ config BR2_PACKAGE_OPENRESOLV
 	  manages resolv.conf. This tool provides a dns management
 	  framework to track currently available nameservers.
 
-	  https://github.com/rsmarples/openresolv
+	  https://roy.marples.name/projects/openresolv
