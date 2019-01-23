@@ -1,0 +1,54 @@
+From dcb02c1639c2ff05938c01eaa41286a2e2f8d698 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 20 Jan 2019 20:04:13 +0100
+Subject: [PATCH] apps/kcapi-hasher.c: fix build with gcc 8.2.x
+
+Fixes:
+ - http://autobuild.buildroot.org/results/8355bc42238e885f7f11ed3d9d37fc55ebdead2b
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/smuellerDD/libkcapi/pull/76]
+---
+ apps/kcapi-hasher.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/apps/kcapi-hasher.c b/apps/kcapi-hasher.c
+index d6be685..7172b12 100644
+--- a/apps/kcapi-hasher.c
++++ b/apps/kcapi-hasher.c
+@@ -357,16 +357,20 @@ out:
+ }
+ 
+ /*
+- * GCC v8.1.0 introduced -Wstringop-truncation but it is not smart enough to
+- * find that cursor string will be NULL-terminated after all paste() calls and
+- * warns with:
++ * GCC v8.1.0 introduced -Wstringop-truncation and GCC v8.2.0 introduced
++ * -Wstringop-overflow but it is not smart enough to find that cursor string
++ * will be NULL-terminated after all paste() calls and warns with:
+  * error: 'strncpy' destination unchanged after copying no bytes [-Werror=stringop-truncation]
+  * error: 'strncpy' output truncated before terminating nul copying 5 bytes from a string of the same length [-Werror=stringop-truncation]
++ * error: 'strncpy' specified bound depends on the length of the source argument [-Werror=stringop-overflow=]
+  */
+ #pragma GCC diagnostic push
+ #if GCC_VERSION >= 80100
+ #pragma GCC diagnostic ignored "-Wstringop-truncation"
+ #endif
++#if GCC_VERSION >= 80200
++#pragma GCC diagnostic ignored "-Wstringop-overflow"
++#endif
+ static char *paste(char *dst, const char *src, size_t size)
+ {
+ 	strncpy(dst, src, size);
+@@ -417,7 +421,7 @@ static char *get_hmac_file(const char *filename, const char *checkdir)
+ 	strncpy(cursor, "\0", 1);
+ 	return checkfile;
+ }
+-#pragma GCC diagnostic pop /* -Wstringop-truncation */
++#pragma GCC diagnostic pop /* -Wstringop-truncation -Wstringop-overflow */
+ 
+ static int hash_files(const struct hash_params *params,
+ 		      char *filenames[], uint32_t files,
+-- 
+2.14.1
+
