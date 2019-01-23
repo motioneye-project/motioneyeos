@@ -1,0 +1,4 @@
+# md5 from https://pypi.org/pypi/fastentrypoints/json, sha256 locally computed
+md5	390ad9a9229164a06156a5b1f0ef1b22  fastentrypoints-0.12.tar.gz
+sha256	ff284f1469bd65400599807d2c6284d5b251398e6e28811f5f77fd262292410b  fastentrypoints-0.12.tar.gz
+sha256	d1ce3f6a7bb1a7194c7d826a0ca318176b12e58616d9e3d8f366ad43802787c4  fastentrypoints.py
