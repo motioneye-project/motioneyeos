@@ -1,24 +1,28 @@
 #!/bin/bash
 
-test -n "${OS_VERSION}" || source /etc/init.d/base
+PROG="/sbin/syslogd"
+PROG_D="/bin/dmesg"
 
 DMESG_LOG="/var/log/dmesg.log"
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 
 case "$1" in
     start)
         msg_begin "Starting syslogd"
-        syslogd
+        ${PROG}
         test $? == 0 && msg_done || msg_fail
         echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${DMESG_LOG}
-        dmesg -T -w >> ${DMESG_LOG} &
+        ${PROG_D} -T -w >> ${DMESG_LOG} &
         ;;
 
     stop)
         msg_begin "Stopping syslogd"
-        killall syslogd &>/dev/null
+        killall -q $(basename ${PROG})
         test $? == 0 && msg_done || msg_fail
-        killall dmesg &>/dev/null
+        killall -q $(basename ${PROG_D})
         ;;
 
     *)

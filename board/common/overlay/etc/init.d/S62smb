@@ -1,0 +1,62 @@
+#!/bin/bash
+
+CONF="/etc/samba/smb.conf"
+
+PROG="/usr/sbin/smbd"
+PROG_N="/usr/sbin/nmbd"
+
+
+test -x ${PROG} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+test -n "${OS_DEBUG}" || source /etc/init.d/conf
+
+test -x ${CONF} || exit 0
+
+test "${OS_NETWORKLESS}" == "true" && exit 0
+
+
+start() {
+    mkdir -p /var/log/samba
+    mkdir -p /var/lib/samba/private
+
+    msg_begin "Starting smbd"
+    ${PROG} -D
+    test $? == 0 && msg_done || msg_fail
+
+    msg_begin "Starting nmbd"
+    ${PROG_N} -D
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping smbd"
+    killall -q $(basename ${PROG})
+    test $? == 0 && msg_done || msg_fail
+
+    msg_begin "Stopping nmbd"
+    killall -q $(basename ${PROG_N})
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?
+

@@ -13,6 +13,8 @@ BOOT_WATCH_CONF="/boot/watch.conf"
 WATCH_CONF="/data/etc/watch.conf"
 
 
+test -x ${PROG} || exit 0
+
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 prepare_conf ${WATCH_CONF} ${SYS_WATCH_CONF} ${BOOT_WATCH_CONF}
@@ -23,7 +25,6 @@ test -f ${CONF} || exit 0
 
 ssid=$(cat ${CONF} | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
 test -n "${ssid}" || exit 0
-
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 

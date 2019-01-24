@@ -1,16 +1,18 @@
 #!/bin/bash
 
-WATCH_CONF="/data/etc/watch.conf"
+CONF="/data/etc/watch.conf"
 NETWATCH_RETRIES=3
 NETWATCH_TIMEOUT=5
 NETWATCH_INTERVAL=20
 
 
-test -f ${WATCH_CONF} && source ${WATCH_CONF} || exit 0
+# watch configuration is already prepared by wifi init script
 
-if [[ -z "${NETWATCH_HOST}" || -z "${NETWATCH_PORT}" ]]; then
-    exit 0
-fi
+test -f ${CONF} || exit 0
+source ${CONF}
+
+test -z "${NETWATCH_HOST}" || exit 0
+test -z "${NETWATCH_PORT}" || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

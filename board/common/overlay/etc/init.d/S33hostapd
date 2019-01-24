@@ -9,9 +9,11 @@ PROG="/usr/sbin/hostapd"
 
 WATCH_CONF="/data/etc/watch.conf"
 
-link_watch=yes
-link_watch_timeout=20
+LINK_WATCH=yes
+LINK_WATCH_TIMEOUT=20
 
+
+test -x {$PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

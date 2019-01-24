@@ -1,14 +1,13 @@
 #!/bin/bash
 
-CONF="/etc/sshd_config"
-
-PROG="/usr/sbin/sshd"
-KGPROG="/usr/bin/ssh-keygen"
+CONF="/etc/proftpd.conf"
+PROG="/usr/sbin/proftpd"
 
 
 test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
+test -n "${OS_DEBUG}" || source /etc/init.d/conf
 
 test -x ${CONF} || exit 0
 
@@ -16,26 +15,16 @@ test "${OS_NETWORKLESS}" == "true" && exit 0
 
 
 start() {
-    msg_begin "Starting sshd"
-    
-    # create any missing keys
-    if ! ${KGPROG} -A >/dev/null; then
-        msg_fail
-        return 1
-    fi
-
-    umask 077
-    hostname=$(hostname)
-    echo "Welcome to ${hostname}!" > /var/cache/sshd_banner
-    sync
-
-    ${PROG} -f ${CONF}
+    msg_begin "Starting proftpd"
+    mkdir -p /var/run/proftpd
+    touch /var/log/wtmp
+    ${PROG} &>/dev/null
     test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    msg_begin "Stopping sshd"
-    killall -q $(basename ${PROG}) 
+    msg_begin "Stopping proftpd"
+    killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 }
 
@@ -47,7 +36,7 @@ case "$1" in
     stop)
         stop
         ;;
-
+    
     restart)
         stop
         start
@@ -56,5 +45,8 @@ case "$1" in
     *)
         echo "Usage: $0 {start|stop|restart}"
         exit 1
+        ;;
 esac
+
+exit 0
 
