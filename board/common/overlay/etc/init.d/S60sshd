@@ -3,14 +3,14 @@
 CONF="/etc/sshd_config"
 
 PROG="/usr/sbin/sshd"
-KGPROG="/usr/bin/ssh-keygen"
+PROG_KG="/usr/bin/ssh-keygen"
 
 
 test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -x ${CONF} || exit 0
+test -f ${CONF} || exit 0
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 
@@ -19,7 +19,7 @@ start() {
     msg_begin "Starting sshd"
     
     # create any missing keys
-    if ! ${KGPROG} -A >/dev/null; then
+    if ! ${PROG_KG} -A >/dev/null; then
         msg_fail
         return 1
     fi

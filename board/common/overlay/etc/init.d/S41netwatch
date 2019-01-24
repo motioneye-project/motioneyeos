@@ -11,8 +11,8 @@ NETWATCH_INTERVAL=20
 test -f ${CONF} || exit 0
 source ${CONF}
 
-test -z "${NETWATCH_HOST}" || exit 0
-test -z "${NETWATCH_PORT}" || exit 0
+test -n "${NETWATCH_HOST}" || exit 0
+test -n "${NETWATCH_PORT}" || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

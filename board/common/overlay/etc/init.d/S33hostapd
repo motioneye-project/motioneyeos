@@ -13,7 +13,7 @@ LINK_WATCH=yes
 LINK_WATCH_TIMEOUT=20
 
 
-test -x {$PROG} || exit 0
+test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

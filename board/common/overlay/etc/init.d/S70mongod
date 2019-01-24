@@ -7,7 +7,7 @@ CONF="/data/etc/mongodb.conf"
 PROG="/usr/bin/mongod"
 
 
-test -x {$PROG} || exit 0
+test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
