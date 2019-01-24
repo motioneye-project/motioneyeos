@@ -1,2 +1,4 @@
-# From http://ftp.gnome.org/pub/GNOME/sources/mobile-broadband-provider-info/20151214/mobile-broadband-provider-info-20151214.sha256sum
-sha256	8ae45d6f10fed9750e259935804c4f40a4372bb119f0504187e4221896b205a4	mobile-broadband-provider-info-20151214.tar.xz
+# http://ftp.acc.umu.se/pub/GNOME/sources/mobile-broadband-provider-info/20190116/mobile-broadband-provider-info-20190116.sha256sum
+sha256	2cba10f82b8e6aec46b871c1f7d20086ecc17e1168f18e588a6a37770fa3c59b  mobile-broadband-provider-info-20190116.tar.xz
+# Locally computed
+sha256	3d510b215a33087b9ceb9592da21575ea1f9f98bd4d983a38e65fe851a552174  COPYING
