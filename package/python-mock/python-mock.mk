@@ -10,5 +10,6 @@ PYTHON_MOCK_SITE = https://files.pythonhosted.org/packages/0c/53/014354fc93c591c
 PYTHON_MOCK_SETUP_TYPE = setuptools
 PYTHON_MOCK_LICENSE = Apache-2.0
 PYTHON_MOCK_LICENSE_FILES = LICENSE.txt
+PYTHON_MOCK_DEPENDENCIES = host-python-pbr
 
 $(eval $(python-package))
