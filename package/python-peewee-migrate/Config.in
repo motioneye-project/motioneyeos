@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PEEWEE_MIGRATE
+	bool "python-peewee-migrate"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Simple migration engine for Peewee.
+
+	  https://github.com/klen/peewee_migrate

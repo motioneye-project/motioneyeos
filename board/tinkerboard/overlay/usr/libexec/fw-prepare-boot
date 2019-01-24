@@ -1,0 +1,5 @@
+#!/bin/bash
+
+cat /boot/extlinux/extlinux.conf | grep -v 'initrd' > /boot/extlinux/extlinux.conf
+echo "    initrd /initrd.gz" >> /boot/extlinux/extlinux.conf
+

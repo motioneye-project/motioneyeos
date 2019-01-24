@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PBR
+	bool "python-pbr"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	help
+	  PBR is a library that injects some useful and sensible default behaviors into your setuptools run. It started off life as the chunks of code that were copied between all of the OpenStack projects. Around the time that OpenStack hit 18 different projects each with at least 3 active branches, it seemed like a good time to make that code into a proper reusable library.
+
+	  https://docs.openstack.org/pbr/latest/

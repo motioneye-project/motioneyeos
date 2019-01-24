@@ -364,8 +364,9 @@ add_one_user() {
     # If the user has a home, chown it
     # (Note: stdout goes to the fakeroot-script)
     if [ "${home}" != "-" ]; then
-        mkdir -p "${TARGET_DIR}/${home}"
-        printf "chown -h -R %d:%d '%s'\n" "${uid}" "${_gid}" "${TARGET_DIR}/${home}"
+        if mkdir -p "${TARGET_DIR}/${home}"; then
+            printf "chown -h -R %d:%d '%s'\n" "${uid}" "${_gid}" "${TARGET_DIR}/${home}"
+        fi
     fi
 }
 

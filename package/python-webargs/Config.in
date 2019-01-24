@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_WEBARGS
+	bool "python-webargs"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	help
+	  webargs is a Python library for parsing and validating HTTP request objects, with built-in support for popular web frameworks, including Flask, Django, Bottle, Tornado, Pyramid, webapp2, Falcon, and aiohttp.
+
+	  https://github.com/marshmallow-code/webargs
