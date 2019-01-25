@@ -8,7 +8,6 @@ config BR2_PACKAGE_TPM2_TOOLS
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_TPM2_ABRMD # run-time
 	select BR2_PACKAGE_TPM2_TSS
 	help
 	  TPM (Trusted Platform Module) 2.0 CLI tools based on system
@@ -16,6 +15,11 @@ config BR2_PACKAGE_TPM2_TOOLS
 	  perform encryption/decryption/signing/etc crypto operations,
 	  and manage non-volatile storage through a TPM2.0 HW
 	  implementation.
+
+	  Notice: An in-kernel resource manager is provided by the
+	  Linux kernel since 4.12. Depending on use cases and kernel
+	  version, the user space resource manager provided by
+	  tpm2-abrmd may be needed.
 
 	  https://github.com/tpm2-software/tpm2-tools
 
