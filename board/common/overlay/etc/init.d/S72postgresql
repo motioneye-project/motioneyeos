@@ -1,0 +1,69 @@
+#!/bin/bash
+
+BOOT_CONF="/boot/postgresql.conf"
+SYS_CONF="/etc/postgresql.conf"
+CONF="/data/etc/postgresql.conf"
+
+PROG="/usr/bin/pg_ctl"
+
+DB_DIR="/var/lib/postgresql"
+USER="postgres"
+LOG="/var/log/postgresql.log"
+
+
+function run_pg_ctl() {
+    su ${USER} -c "pg_ctl $*"
+}
+
+
+test -x ${PROG} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+
+
+start() {
+    mkdir -p ${DB_DIR}
+    chown -R ${USER} ${DB_DIR}
+    touch ${LOG}
+    chown ${USER} ${LOG}
+    
+    if [[ ! -f ${DB_DIR}/PG_VERSION ]]; then
+	    msg_begin "Initializing postgresql db"
+	    run_pg_ctl initdb -s -D ${DB_DIR} &>> ${LOG}
+	    test $? == 0 && msg_done || msg_fail
+	    
+        echo "include_if_exists = '/data/etc/postgresql.conf'" >> ${DB_DIR}/postgresql.conf
+    fi
+
+    msg_begin "Starting postgresql"
+    run_pg_ctl start -s -D ${DB_DIR} -l ${LOG}
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping postgresql"
+    run_pg_ctl stop -s -D ${DB_DIR} -m fast &>> ${LOG}
+    test $? == 0 && msg_done || msg_fail
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
