@@ -1,41 +1,37 @@
 #!/bin/bash
 
-sys_conf="/etc/bluetooth.conf"
-boot_conf="/boot/bluetooth.conf"
-conf="/data/etc/bluetooth.conf"
+SYS_CONF="/etc/bluetooth.conf"
+BOOT_CONF="/boot/bluetooth.conf"
+CONF="/data/etc/bluetooth.conf"
+RUN_CONF="/var/lib/bluetooth.conf"
 
-if ! [[ -f $conf ]]; then
-    if [[ -f $boot_conf ]]; then
-        cp $boot_conf $conf
-    elif [[ -f $sys_conf ]]; then
-        cp $sys_conf $conf
-    fi
-fi
+ADAPTER="hci0"
+PROG="/usr/libexec/bluetooth/bluetoothd"
+PROG_HC="/usr/bin/hciconfig"
+DATA_DIR="/var/lib/bluetooth"
+RUN_DATA_DIR="/data/bluetooth"
 
-test -f $conf || exit 0
 
-hci=hci0
-bluetoothd=/usr/libexec/bluetooth/bluetoothd
-data_dir=/var/lib/bluetooth
-run_data_dir=/data/bluetooth
-run_conf=/var/lib/bluetooth.conf
+test -x ${PROG} || exit 0
 
-test -x $bluetoothd || exit 0
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -n "$os_version" || source /etc/init.d/base
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
+
 
 configure() {
-    mkdir -p $run_data_dir
-    ln -sf $run_data_dir $data_dir
-    cp $conf $run_conf
+    mkdir -p ${RUN_DATA_DIR}
+    ln -sf ${RUN_DATA_DIR} ${DATA_DIR}
+    cp ${CONF} ${RUN_CONF}
 
     # if no specific name configured, use hostname
-    if ! grep -E 'Name\s*=' $run_conf &>/dev/null; then
-        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" $run_conf
+    if ! grep -E 'Name\s*=' ${RUN_CONF} &>/dev/null; then
+        sed -ri "s/(\[General\])/\1\nName = $(hostname)/" ${RUN_CONF}
     fi
     
     # bring adapter up
-    hciconfig $hci up
+    ${PROG_HC} ${ADAPTER} up
 }
 
 start() {
@@ -43,10 +39,10 @@ start() {
 
     # wait up to 10 seconds for device
     count=0
-    while ! hciconfig $hci &>/dev/null; do
+    while ! ${PROG_HC} ${ADAPTER} &>/dev/null; do
         sleep 1
-        count=$(($count + 1))
-        if [[ $count -ge 10 ]]; then
+        count=$((${count} + 1))
+        if [[ ${count} -ge 10 ]]; then
             msg_fail "no device"
             logger -t bluetooth -s "bluetooth device not available, calling panic action"
             panic_action bluetooth
@@ -62,19 +58,19 @@ start() {
     fi
 
     msg_begin "Starting bluetoothd"
-    $bluetoothd &>/dev/null &
+    ${PROG} &>/dev/null &
     msg_done
 
     # if DiscoverableTimeout is set to 0, make adapter discoverable from boot time
-    if grep -E '^DiscoverableTimeout\s*=\s*0$' $run_conf &>/dev/null; then
+    if grep -E '^DiscoverableTimeout\s*=\s*0$' ${RUN_CONF} &>/dev/null; then
         sleep 1
-        hciconfig $hci piscan
+        ${PROG_HC} ${ADAPTER} piscan
     fi
 }
 
 stop() {
     msg_begin "Stopping bluetoothd"
-    killall bluetoothd &>/dev/null
+    killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 }
 

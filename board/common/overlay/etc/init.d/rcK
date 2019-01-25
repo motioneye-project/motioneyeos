@@ -1,22 +1,22 @@
 #!/bin/sh
 
-boot_log=/var/log/boot.log
-pid_file=/tmp/rc.pid
+BOOT_LOG=/var/log/boot.log
+PID_FILE=/tmp/rc.pid
 
 source /etc/init.d/base
 
-echo "---- shutting down $os_name $os_version ----" >> $boot_log
+echo "---- shutting down ${OS_NAME} ${OS_VERSION} ----" >> ${BOOT_LOG}
 
 # stop all init scripts in /etc/init.d,
 # executing them in reverse numerical order.
 (for i in $(ls -r /etc/init.d/S??*); do
-    if ! [[ -x "$i" ]]; then continue; fi
-    if [[ -f /data/etc/no_$(basename $i) ]]; then continue; fi
-    $i stop
-done& echo $! > $pid_file) | tee -a $boot_log &
+    if ! [[ -x "${i}" ]]; then continue; fi
+    if [[ -f /data/etc/no_$(basename ${i}) ]]; then continue; fi
+    ${i} stop
+done& echo $! > ${PID_FILE}) | tee -a ${BOOT_LOG} &
 
-pid=$(cat $pid_file)
-while kill -0 $pid 2>/dev/null; do
+pid=$(cat ${PID_FILE})
+while kill -0 ${pid} 2>/dev/null; do
     sleep 1
 done
 

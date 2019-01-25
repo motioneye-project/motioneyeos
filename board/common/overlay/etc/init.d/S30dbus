@@ -1,15 +1,21 @@
 #!/bin/bash
 
-sys_btconf="/etc/bluetooth.conf"
-boot_btconf="/boot/bluetooth.conf"
-btconf="/data/etc/bluetooth.conf"
+SYS_BTCONF="/etc/bluetooth.conf"
+BOOT_BTCONF="/boot/bluetooth.conf"
+BTCONF="/data/etc/bluetooth.conf"
+
+PROG="/usr/bin/dbus-daemon"
+PROG_UG="/usr/bin/dbus-uuidgen"
+PROG_UA="/usr/bin/udevadm"
+
+
+test -x ${PROG} || exit 0
 
 # dbus is currently only used by bluez
-test -f $btconf || test -f $boot_btconf || test -f $sys_btconf || exit 0
+test -f ${BTCONF} || test -f ${BOOT_BTCONF} || test -f ${SYS_BTCONF} || exit 0
 
-test -x /usr/bin/dbus-daemon || exit 0
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -n "$os_version" || source /etc/init.d/base
 
 start() {
     mkdir -p /tmp/dbus
@@ -17,16 +23,16 @@ start() {
 
     msg_begin "Starting dbus"
 
-    dbus-uuidgen --ensure
-    dbus-daemon --system
+    ${PROG_UG} --ensure
+    ${PROG} --system
     
     test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
     msg_begin "Stopping dbus"
-    udevadm control --stop-exec-queue
-    killall dbus-daemon &>/dev/null
+    ${PROG_UA} control --stop-exec-queue
+    killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 
     rm -f /var/run/messagebus.pid

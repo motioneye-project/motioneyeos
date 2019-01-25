@@ -1,23 +1,30 @@
 #!/bin/bash
 
-test -f /etc/proftpd.conf || exit 0
+CONF="/etc/proftpd.conf"
+PROG="/usr/sbin/proftpd"
 
-test -n "$os_version" || source /etc/init.d/base
-test -n "$os_debug" || source /etc/init.d/conf
 
-test "$os_networkless" == "true" && exit 0
+test -x ${PROG} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+test -n "${OS_DEBUG}" || source /etc/init.d/conf
+
+test -f ${CONF} || exit 0
+
+test "${OS_NETWORKLESS}" == "true" && exit 0
+
 
 start() {
     msg_begin "Starting proftpd"
     mkdir -p /var/run/proftpd
     touch /var/log/wtmp
-    /usr/sbin/proftpd &>/dev/null
+    ${PROG} &>/dev/null
     test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
     msg_begin "Stopping proftpd"
-    killall proftpd &>/dev/null
+    killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 }
 

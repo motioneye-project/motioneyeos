@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_TYPING_EXTENSIONS
+	bool "python-typing-extensions"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	help
+	  Typing Extensions – Backported and Experimental Type Hints for Python
+
+	  https://github.com/python/typing/

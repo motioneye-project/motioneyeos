@@ -1,56 +1,36 @@
 #!/bin/bash
 
-sys_conf="/etc/wpa_supplicant.conf"
-boot_conf="/boot/wpa_supplicant.conf"
-conf="/data/etc/wpa_supplicant.conf"
+SYS_CONF="/etc/wpa_supplicant.conf"
+BOOT_CONF="/boot/wpa_supplicant.conf"
+CONF="/data/etc/wpa_supplicant.conf"
 
-log="/var/log/wpa_supplicant.log"
-prog="/usr/sbin/wpa_supplicant"
-driver=nl80211,wext
+LOG="/var/log/wpa_supplicant.log"
+PROG="/usr/sbin/wpa_supplicant"
+DRIVER=nl80211,wext
 
-sys_watch_conf="/etc/watch.conf"
-boot_watch_conf="/boot/watch.conf"
-watch_conf="/data/etc/watch.conf"
+SYS_WATCH_CONF="/etc/watch.conf"
+BOOT_WATCH_CONF="/boot/watch.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
-if ! [[ -f $watch_conf ]]; then
-    if [[ -f $boot_watch_conf ]]; then
-        cp $boot_watch_conf $watch_conf
-    elif [[ -f $sys_watch_conf ]]; then
-        cp $sys_watch_conf $watch_conf
-    fi
-fi
 
-source $watch_conf
+test -x ${PROG} || exit 0
 
-if [[ -f $boot_conf ]]; then
-    cp -f $boot_conf $conf
-    grep -E "/boot .*ro[\s,]" /proc/mounts
-    RO=$?
-    test $RO == 0 && mount -o remount,rw /boot
-    rm -f $boot_conf
-    test $RO == 0 && mount -o remount,ro /boot
-fi
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-if ! [[ -f $conf ]]; then
-    if [[ -f $sys_conf ]]; then
-        cp $sys_conf $conf
-    fi
-fi
+prepare_conf ${WATCH_CONF} ${SYS_WATCH_CONF} ${BOOT_WATCH_CONF}
+source ${WATCH_CONF}
 
-test -f $conf || exit 0
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
 
-# we want only Unix newlines here
-sed -i 's/\r//g' $conf
+ssid=$(cat ${CONF} | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
+test -n "${ssid}" || exit 0
 
-ssid=$(cat $conf | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
-test -n "$ssid" || exit 0
+test "${OS_NETWORKLESS}" == "true" && exit 0
 
-test -n "$os_version" || source /etc/init.d/base
-
-test "$os_networkless" == "true" && exit 0
 
 connected() {
-    ip link show dev $os_wlan 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
+    ip link show dev ${OS_WLAN} 2>&1 | grep LOWER_UP &> /dev/null && return 0 || return 1
 }
 
 watch() {
@@ -60,11 +40,11 @@ watch() {
         if connected; then
             count=0
         else
-            if [[ $count -lt $link_watch_timeout ]]; then
-                count=$(($count + 5))
+            if [[ ${count} -lt ${LINK_WATCH_TIMEOUT} ]]; then
+                count=$((${count} + 5))
                 logger -t wifi -s "disconnected"
             else
-                logger -t wifi -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                logger -t wifi -s "disconnected for ${LINK_WATCH_TIMEOUT} seconds, calling panic action"
                 panic_action wifi
             fi
         fi
@@ -72,26 +52,26 @@ watch() {
 }
 
 start() {
-    test -n "$os_country" && iw reg set $os_country
+    test -n "${OS_COUNTRY}" && iw reg set ${OS_COUNTRY}
 
     msg_begin "Starting wpa_supplicant"
 
     # wait up to 5 seconds for interface
     count=0
-    while ! ifconfig $os_wlan >/dev/null 2>&1; do
+    while ! ifconfig ${OS_WLAN} >/dev/null 2>&1; do
         sleep 1
-        count=$(($count + 1))
-        if [[ $count -ge 5 ]]; then
+        count=$((${count} + 1))
+        if [[ ${count} -ge 5 ]]; then
             msg_fail "no device"
             return 1
         fi
     done
     
-    module=$(basename $(readlink /sys/class/net/$os_wlan/device/driver/module 2>/dev/null) 2>/dev/null)
+    module=$(basename $(readlink /sys/class/net/${OS_WLAN}/device/driver/module 2>/dev/null) 2>/dev/null)
 
-    iwconfig $os_wlan power off &> /dev/null
-    iw $os_wlan set power_save off &> /dev/null
-    $prog -i$os_wlan -c$conf -D$driver -B &> $log
+    iwconfig ${OS_WLAN} power off &> /dev/null
+    iw ${OS_WLAN} set power_save off &> /dev/null
+    ${PROG} -i${OS_WLAN} -c${CONF} -D${DRIVER} -B &> ${LOG}
     count=0
     while true; do
         sleep 1
@@ -100,19 +80,19 @@ start() {
             break
         fi
 
-        if [[ $count -gt $link_watch_timeout ]] || ! pidof wpa_supplicant > /dev/null; then
-            test -n "$module" && msg_fail "failed ($module)"|| msg_fail
+        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof wpa_supplicant > /dev/null; then
+            test -n "${module}" && msg_fail "failed (${module})"|| msg_fail
             return 1
         fi
 
-        count=$(($count + 1))
+        count=$((${count} + 1))
     done
 
-    if [[ "$link_watch" == "true" ]]; then
+    if [[ "${LINK_WATCH}" == "true" ]]; then
         watch &
     fi
 
-    test -n "$module" && msg_done "done ($module)"|| msg_done
+    test -n "${module}" && msg_done "done (${module})"|| msg_done
 }
 
 stop() {

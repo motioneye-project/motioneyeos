@@ -1,26 +1,26 @@
 #!/bin/bash
 
-test -n "$os_version" || source /etc/init.d/base
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 case "$1" in
     start)
         msg_begin "Detecting disk device"
         root_dev=$(cat /proc/cmdline | grep -oE 'root=[/a-z0-9]+' | cut -d '=' -f 2)
-        if [[ "$root_dev" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+        if [[ "${root_dev}" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
             disk_dev=${BASH_REMATCH[1]}
             boot_dev=${disk_dev}p1
             data_dev=${disk_dev}p3
-        elif [[ "$root_dev" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+        elif [[ "${root_dev}" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
             disk_dev=${BASH_REMATCH[1]}
             boot_dev=${disk_dev}1
             data_dev=${disk_dev}3
         else
-            msg_fail "unknown ($root_dev)"
+            msg_fail "unknown (${root_dev})"
             exit 1
         fi
-        msg_done "$disk_dev"
+        msg_done "${disk_dev}"
 
-        test -b $data_dev && exit 0
+        test -b ${data_dev} && exit 0
 
         msg_begin "Creating data partition"
         data_start=$((1024 * 2048)) # up to 1024MB reserved for boot + root
@@ -29,12 +29,12 @@ case "$1" in
             3
             ${data_start}
             \n
-            w" | /sbin/fdisk $disk_dev &>/dev/null
-        partx -a $disk_dev &>/dev/null
-        test -b $data_dev && msg_done || msg_fail
+            w" | /sbin/fdisk ${disk_dev} &>/dev/null
+        partx -a ${disk_dev} &>/dev/null
+        test -b ${data_dev} && msg_done || msg_fail
 
         msg_begin "Formatting data partition"
-        mkfs.ext4 -q $data_dev
+        mkfs.ext4 -q ${data_dev}
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Mounting data partition"

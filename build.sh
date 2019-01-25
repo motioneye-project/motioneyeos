@@ -17,8 +17,6 @@ board=$1
 target=${*:2}
 cd $(dirname $0)
 basedir=$(pwd)
-osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
-osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
 gzip=$(which pigz 2> /dev/null || which gzip 2> /dev/null)
 
 # extra environment from local file
@@ -28,14 +26,14 @@ test -f $basedir/.build-env && source $basedir/.build-env
 if [ -n "$THINGOS_SHORT_NAME" ]; then
     osname=$THINGOS_SHORT_NAME
 else
-    osname=$(source $basedir/board/common/overlay/etc/version && echo $os_short_name)
+    osname=$(source $basedir/board/common/overlay/etc/version && echo $OS_SHORT_NAME)
 fi
 
 # OS version
 if [ -n "$THINGOS_VERSION" ]; then
     osversion=$THINGOS_VERSION
 else
-    osversion=$(source $basedir/board/common/overlay/etc/version && echo $os_version)
+    osversion=$(source $basedir/board/common/overlay/etc/version && echo $OS_VERSION)
 fi
 
 # when the special "boards" keyword is used for board, simply list all known boards
@@ -67,6 +65,13 @@ if ! [ -f $basedir/configs/${board}_defconfig ]; then
     echo "unknown board: $board"
     exit 1
 fi
+
+function prepare_target_dir() {
+    if [ -L $outputdir/target/var/lib ]; then
+        rm $outputdir/target/var/lib
+        mkdir $outputdir/target/var/lib
+    fi
+}
 
 mkdir -p $outputdir
 
@@ -137,9 +142,11 @@ elif [[ "$target" == initramfs* ]]; then
     fi
 
 elif [ "$target" == "all" ]; then
+    prepare_target_dir
     make O=$outputdir all
 
 elif [ -n "$target" ]; then
+    prepare_target_dir
     make O=$outputdir $target
 
 else  # if [ -z "$target ]

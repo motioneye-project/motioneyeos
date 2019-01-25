@@ -1,20 +1,19 @@
-#!/bin/bash
 
-_PANIC_COUNTER_FILE="/var/lib/panic_counter"
-_PANIC_REBOOT_DELAY_FACTOR=10
-_PANIC_REBOOT_DELAY_MAX=3600  # reboot at least once an hour in case of panic
+PANIC_COUNTER_FILE="/var/lib/panic_counter"
+PANIC_REBOOT_DELAY_FACTOR=10
+PANIC_REBOOT_DELAY_MAX=3600  # reboot at least once an hour in case of panic
 
 
 panic_action() {
     # read counter from file
-    panic_counter=$(cat ${_PANIC_COUNTER_FILE} 2>/dev/null || echo 0)
+    panic_counter=$(cat ${PANIC_COUNTER_FILE} 2>/dev/null || echo 0)
     
     # write increased counter back to file
-    echo $((panic_counter + 1)) > ${_PANIC_COUNTER_FILE}
+    echo $((panic_counter + 1)) > ${PANIC_COUNTER_FILE}
     
-    delay=$((_PANIC_REBOOT_DELAY_FACTOR * panic_counter))
-    if [[ "${delay}" -gt "${_PANIC_REBOOT_DELAY_MAX}" ]]; then
-        delay=${_PANIC_REBOOT_DELAY_MAX}
+    delay=$((PANIC_REBOOT_DELAY_FACTOR * panic_counter))
+    if [[ "${delay}" -gt "${PANIC_REBOOT_DELAY_MAX}" ]]; then
+        delay=${PANIC_REBOOT_DELAY_MAX}
     fi
     
     if [[ "${delay}" -gt 0 ]]; then

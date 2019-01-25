@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MARSHMALLOW
+	bool "python-marshmallow"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  A lightweight library for converting complex objects to and from simple Python datatypes.
+
+	  https://github.com/marshmallow-code/marshmallow

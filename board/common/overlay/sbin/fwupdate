@@ -35,7 +35,6 @@ fi
 
 SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
-OS_CONF=/data/etc/os.conf
 
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
@@ -65,12 +64,12 @@ DD_PID_FILE=dd.pid
 BOOT_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
 ROOT_DEV=${BOOT_DEV:0:-1}2
 DISK_DEV=$(mount | grep /boot | cut -d ' ' -f 1)
-if [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
+if [[ "${ROOT_DEV}" =~ ^([/a-z0-9]+)(p[0-9])$ ]]; then  # e.g. /dev/mmcblk0p2
     DISK_DEV=${BASH_REMATCH[1]}
-elif [[ "$ROOT_DEV" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
+elif [[ "${ROOT_DEV}" =~ ^([/a-z0-9]+)([0-9])$ ]]; then  # e.g. /dev/sdc2
     DISK_DEV=${BASH_REMATCH[1]}
 else
-    echo "cannot identify disk device from $ROOT_DEV" 1>&2
+    echo "cannot identify disk device from ${ROOT_DEV}" 1>&2
     exit 1
 fi
 
@@ -78,28 +77,29 @@ fi
 #### versions ####
 
 function show_versions() {
-    source $OS_CONF
-    board=$(cat $SYS_BOARD_FILE)
+    source /etc/init.d/os_conf  # we need this for the OS_ vars
+    
+    board=$(cat ${SYS_BOARD_FILE})
     show_json=$1
   
     # the /usr/libexec/list-versions-* helpers return a table with the following format:
     #     <version>|<prerelease>|<board>|<url>|<date>
-    versions=$(FW_USERNAME=$os_firmware_username FW_PASSWORD=$os_firmware_password \
-               /usr/libexec/list-versions-$os_firmware_method $os_firmware_repo)
+    versions=$(FW_USERNAME=${OS_FIRMWARE_USERNAME} FW_PASSWORD=${OS_FIRMWARE_PASSWORD} \
+               /usr/libexec/list-versions-${OS_FIRMWARE_METHOD} ${OS_FIRMWARE_REPO})
 
     for version in ${versions[@]}; do
-        OIFS=$IFS
+        OIFS=${IFS}
         IFS="|"
-        varr=($version)
-        IFS=$OIFS
-        if [ "$os_prereleases" == "false" ] && [ "${varr[1]}" == "true" ]; then
+        varr=(${version})
+        IFS=${OIFS}
+        if [ "${OS_PRERELEASES}" == "false" ] && [ "${varr[1]}" == "true" ]; then
             continue  # skip prereleases
         fi
-        if [ "$board" != "${varr[2]}" ]; then
+        if [ "${board}" != "${varr[2]}" ]; then
             continue  # skip other boards
         fi
 
-        if [ "$show_json" == "true" ]; then
+        if [ "${show_json}" == "true" ]; then
             echo "{\"version\": \"${varr[0]}\"," \
                   "\"url\": \"${varr[3]}\"," \
                   "\"board\": \"${varr[2]}\"," \
@@ -112,9 +112,9 @@ function show_versions() {
 }
 
 function show_current() {
-    source $SYS_VERSION_FILE
+    source ${SYS_VERSION_FILE}
     
-    echo $os_version
+    echo ${OS_VERSION}
 }
 
 
@@ -123,8 +123,8 @@ function show_current() {
 function do_download() {
     echo "downloading..."
 
-    rm -rf $FW_DIR/*
-    mkdir -p $FW_DIR
+    rm -rf ${FW_DIR}/*
+    mkdir -p ${FW_DIR}
 
     # Look for local file first
     if [ -f "$1" ]; then
@@ -132,74 +132,75 @@ function do_download() {
         FNAME=`basename $1`
         FILEEXT=${FNAME##*.}
         DST_FNAME=""
-        if [ "$FILEEXT" == "xz" ]; then
-            DST_FNAME="$FW_DIR/$FW_FILE_XZ"
-        elif [ "$FILEEXT" == "gz" ]; then
-            DST_FNAME="$FW_DIR/$FW_FILE_GZ"
+        if [ "${FILEEXT}" == "xz" ]; then
+            DST_FNAME="${FW_DIR}/${FW_FILE_XZ}"
+        elif [ "${FILEEXT}" == "gz" ]; then
+            DST_FNAME="${FW_DIR}/${FW_FILE_GZ}"
         fi
-        if [ -n "$DST_FNAME" ]; then
-            cp -f $1 $DST_FNAME
-            echo $version > $FW_DIR/$VER_FILE
+        if [ -n "${DST_FNAME}" ]; then
+            cp -f $1 ${DST_FNAME}
+            echo ${version} > ${FW_DIR}/${VER_FILE}
             return
         fi
     fi
 
-    source $OS_CONF
-    board=$(cat $SYS_BOARD_FILE)
+    source /etc/init.d/os_conf  # we need this for the OS_ vars
+    
+    board=$(cat ${SYS_BOARD_FILE})
     url=$1
     version=$1
 
-    if ! [[ "$url" == http* ]]; then  # a version was given
-        url=$(show_versions true | jq -r ". | select(.version==\"$version\") | .url")
+    if ! [[ "${url}" == http* ]]; then  # a version was given
+        url=$(show_versions true | jq -r ". | select(.version==\"${version}\") | .url")
     else
         version="custom"
     fi
 
-    if [ -z "$url" ]; then
+    if [ -z "${url}" ]; then
         echo "no such version" 1>&2
         exit 1
     fi
 
     free_disk=$(df /data | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4)
-    if [ "$free_disk" -lt $MIN_FREE_DISK ]; then
+    if [ "${free_disk}" -lt ${MIN_FREE_DISK} ]; then
         echo "not enough disk space" 1>&2
         exit 1
     fi
 
-    outfile=$FW_DIR/$FW_FILE_GZ
-    format=$(echo $url | sed -rn 's/.*\.img\.([a-z]+)$/\1/ p')
-    if [ "$format" == "xz" ]; then
-        outfile=$FW_DIR/$FW_FILE_XZ
+    outfile=${FW_DIR}/${FW_FILE_GZ}
+    format=$(echo ${url} | sed -rn 's/.*\.img\.([a-z]+)$/\1/ p')
+    if [ "${format}" == "xz" ]; then
+        outfile=${FW_DIR}/${FW_FILE_XZ}
     fi
 
-    echo $version > $FW_DIR/$VER_FILE
+    echo ${version} > ${FW_DIR}/${VER_FILE}
 
     curl_opts="-S -f -L"
-    if [ -n "$os_firmware_username" ]; then
-        curl_opts+=" --user $os_firmware_username:$os_firmware_password"
+    if [ -n "${OS_FIRMWARE_USERNAME}" ]; then
+        curl_opts+=" --user ${OS_FIRMWARE_USERNAME}:${OS_FIRMWARE_PASSWORD}"
     fi
 
-    curl $curl_opts -o $outfile "$url" &> $FW_DIR/$CURL_LOG_FILE &
+    curl ${curl_opts} -o ${outfile} "${url}" &> ${FW_DIR}/${CURL_LOG_FILE} &
     pid=$!
-    echo $pid > $FW_DIR/$CURL_PID_FILE
-    wait $pid
+    echo ${pid} > ${FW_DIR}/${CURL_PID_FILE}
+    wait ${pid}
     
     if [ "$?" != 0 ]; then
-        cat $FW_DIR/$CURL_LOG_FILE
+        cat ${FW_DIR}/${CURL_LOG_FILE}
         exit 1
     fi
 }
 
 function download_status() {
-    if [ -f $FW_DIR/$CURL_PID_FILE ]; then
-        pid=$(cat $FW_DIR/$CURL_PID_FILE)
-        if kill -0 $pid &>/dev/null; then
+    if [ -f ${FW_DIR}/${CURL_PID_FILE} ]; then
+        pid=$(cat ${FW_DIR}/${CURL_PID_FILE})
+        if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f $FW_DIR/$FW_FILE_GZ -o -f $FW_DIR/$FW_FILE_XZ ]; then
+    if [ -f ${FW_DIR}/${FW_FILE_GZ} -o -f ${FW_DIR}/${FW_FILE_XZ} ]; then
         echo "done"
     fi
 }
@@ -210,69 +211,69 @@ function download_status() {
 function do_extract() {
     echo "extracting..."
     
-    rm -f $FW_DIR/$FW_FILE_EXTR
-    rm -f $FW_DIR/$BOOT_READY_FILE
+    rm -f ${FW_DIR}/${FW_FILE_EXTR}
+    rm -f ${FW_DIR}/${BOOT_READY_FILE}
 
-    if ! [ -f $FW_DIR/$FW_FILE_GZ -o -f $FW_DIR/$FW_FILE_XZ ]; then
+    if ! [ -f ${FW_DIR}/${FW_FILE_GZ} -o -f ${FW_DIR}/${FW_FILE_XZ} ]; then
         echo "firmware file not downloaded" 1>&2
         exit 1
     fi
 
     format="gz"
-    if [ -f $FW_DIR/$FW_FILE_XZ ]; then
+    if [ -f ${FW_DIR}/${FW_FILE_XZ} ]; then
         format="xz"
     fi
 
-    rm -f $FW_DIR/$FW_FILE_EXTR
-    rm -f $FW_DIR/$GUNZIP_PID_FILE $FW_DIR/$XZCAT_PID_FILE
+    rm -f ${FW_DIR}/${FW_FILE_EXTR}
+    rm -f ${FW_DIR}/${GUNZIP_PID_FILE} ${FW_DIR}/${XZCAT_PID_FILE}
 
-    if [ "$format" == "xz" ]; then
-        DECOMPRESS_LOG_FILE=$FW_DIR/$XZCAT_LOG_FILE
-        DECOMPRESS_PID_FILE=$FW_DIR/$XZCAT_PID_FILE
-        xzcat $FW_DIR/$FW_FILE_XZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$XZCAT_LOG_FILE &
-    elif [ "$format" == "gz" ]; then
-        DECOMPRESS_LOG_FILE=$FW_DIR/$GUNZIP_LOG_FILE
-        DECOMPRESS_PID_FILE=$FW_DIR/$GUNZIP_PID_FILE
-        gunzip -k -c $FW_DIR/$FW_FILE_GZ > $FW_DIR/$FW_FILE_EXTR 2>$FW_DIR/$GUNZIP_LOG_FILE &
+    if [ "${format}" == "xz" ]; then
+        DECOMPRESS_LOG_FILE=${FW_DIR}/${XZCAT_LOG_FILE}
+        DECOMPRESS_PID_FILE=${FW_DIR}/${XZCAT_PID_FILE}
+        xzcat ${FW_DIR}/${FW_FILE_XZ} > ${FW_DIR}/${FW_FILE_EXTR} 2>${FW_DIR}/${XZCAT_LOG_FILE} &
+    elif [ "${format}" == "gz" ]; then
+        DECOMPRESS_LOG_FILE=${FW_DIR}/${GUNZIP_LOG_FILE}
+        DECOMPRESS_PID_FILE=${FW_DIR}/${GUNZIP_PID_FILE}
+        gunzip -k -c ${FW_DIR}/${FW_FILE_GZ} > ${FW_DIR}/${FW_FILE_EXTR} 2>${FW_DIR}/${GUNZIP_LOG_FILE} &
     else
-        echo "firmware compression format $format not supported" 1>&2
+        echo "firmware compression format ${format} not supported" 1>&2
         exit 1
     fi
     
     pid=$!
-    echo $pid > $DECOMPRESS_PID_FILE
-    wait $pid
+    echo ${pid} > ${DECOMPRESS_PID_FILE}
+    wait ${pid}
 
     if [ "$?" != 0 ]; then
-        cat $DECOMPRESS_LOG_FILE
+        cat ${DECOMPRESS_LOG_FILE}
         exit 1
     fi
     
     # verify available partition space
     
-    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}1")
-    fw_boot_info=($fw_boot_info)
+    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
+    fw_boot_info=(${fw_boot_info})
     fw_boot_size=${fw_boot_info[3]}
 
-    fw_root_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}2")
-    fw_root_info=($fw_root_info)
+    fw_root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
+    fw_root_info=(${fw_root_info})
     fw_root_size=${fw_root_info[3]}
     
-    disk_boot_info=$(fdisk --bytes -l -o device,start,end,size $DISK_DEV | grep $BOOT_DEV)
-    disk_boot_info=($disk_boot_info)
+    disk_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep ${BOOT_DEV})
+    disk_boot_info=(${disk_boot_info})
     disk_boot_size=${disk_boot_info[3]}
     
-    disk_root_info=$(fdisk --bytes -l -o device,start,end,size $DISK_DEV | grep $ROOT_DEV)
-    disk_root_info=($disk_root_info)
+    disk_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep ${ROOT_DEV})
+    disk_root_info=(${disk_root_info})
     disk_root_size=${disk_root_info[3]}
     
-    if [[ $disk_boot_size -lt $fw_boot_size ]]; then
-        echo "not enough space on boot partition ($fw_boot_size needed, $disk_boot_size available)" 1>&2
+    if [[ ${disk_boot_size} -lt ${fw_boot_size} ]]; then
+        echo "not enough space on boot partition (${fw_boot_size} needed, ${disk_boot_size} available)" 1>&2
         exit 1
     fi
 
-    if [[ $disk_root_size -lt $fw_root_size ]]; then
-        echo "not enough space on root partition ($fw_root_size needed, $disk_root_size available)" 1>&2
+    if [[ ${disk_root_size} -lt ${fw_root_size} ]]; then
+        echo "not enough space on root partition (${fw_root_size} needed, ${disk_root_size} available)" 1>&2
         exit 1
     fi
 
@@ -280,21 +281,21 @@ function do_extract() {
 }
 
 function extract_status() {
-    if [ -f $FW_DIR/$XZCAT_PID_FILE ]; then
-        pid=$(cat $FW_DIR/$XZCAT_PID_FILE)
-        if kill -0 $pid &>/dev/null; then
+    if [ -f ${FW_DIR}/${XZCAT_PID_FILE} ]; then
+        pid=$(cat ${FW_DIR}/${XZCAT_PID_FILE})
+        if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
-    elif [ -f $FW_DIR/$GUNZIP_PID_FILE ]; then
-        pid=$(cat $FW_DIR/$GUNZIP_PID_FILE)
-        if kill -0 $pid &>/dev/null; then
+    elif [ -f ${FW_DIR}/${GUNZIP_PID_FILE} ]; then
+        pid=$(cat ${FW_DIR}/${GUNZIP_PID_FILE})
+        if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f $FW_DIR/$FW_FILE_EXTR ]; then
+    if [ -f ${FW_DIR}/${FW_FILE_EXTR} ]; then
         echo "done"
     fi
 }
@@ -305,12 +306,12 @@ function extract_status() {
 function flash_boot() {
     echo "flashing boot..."
     
-    rm -f $FW_DIR/$BOOT_READY_FILE
+    rm -f ${FW_DIR}/${BOOT_READY_FILE}
 
     set +e
-    board=$(cat $SYS_BOARD_FILE)
+    board=$(cat ${SYS_BOARD_FILE})
 
-    cp -r /boot $FW_DIR/old_boot
+    cp -r /boot ${FW_DIR}/old_boot
     umount /boot
     trap flash_cleanup EXIT
 
@@ -318,22 +319,22 @@ function flash_boot() {
     mv /sbin/reboot /sbin/reboot.bak
     ln -s /bin/true /sbin/reboot
     
-    boot_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}1")
-    boot_info=($boot_info)
+    boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
+    boot_info=(${boot_info})
     boot_start=$((${boot_info[1]} / 2048))  # in MB
     boot_size=$((${boot_info[3]} / 1048576))  # in MB
 
-    root_info=$(fdisk --bytes -l -o device,start,end,size $FW_DIR/$FW_FILE_EXTR | grep "${FW_FILE_EXTR}2")
-    root_info=($root_info)
+    root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
+    root_info=(${root_info})
     root_start=$((${root_info[1]} / 2048))  # in MB
     root_size=$((${root_info[3]} / 1048576))  # in MB
     
-    echo $root_start $root_size > $FW_DIR/$ROOT_INFO_FILE
+    echo ${root_start} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
 
-    dd if=$FW_DIR/$FW_FILE_EXTR skip=$boot_start of=$BOOT_DEV bs=1048576 count=$boot_size &>$FW_DIR/$DD_LOG_FILE &
+    dd if=${FW_DIR}/${FW_FILE_EXTR} skip=${boot_start} of=${BOOT_DEV} bs=1048576 count=${boot_size} &>${FW_DIR}/${DD_LOG_FILE} &
     pid=$!
-    echo $pid > $FW_DIR/$DD_PID_FILE
-    wait $pid
+    echo ${pid} > ${FW_DIR}/${DD_PID_FILE}
+    wait ${pid}
 
     mount -T /etc/fstab.disk -o rw /boot
     
@@ -341,21 +342,21 @@ function flash_boot() {
     # and should restore any /boot configuration that needs to be preserved across updates
     # from the old boot dir to the current (new) /boot dir
     if [ -x /usr/libexec/fw-restore-boot-cfg ]; then
-        /usr/libexec/fw-restore-boot-cfg $FW_DIR/old_boot 2>/dev/null || true
+        /usr/libexec/fw-restore-boot-cfg ${FW_DIR}/old_boot 2>/dev/null || true
     fi
-    touch $FW_DIR/$BOOT_READY_FILE
+    touch ${FW_DIR}/${BOOT_READY_FILE}
 }
 
 function flash_boot_status() {
-    if [ -f $FW_DIR/$DD_PID_FILE ]; then
-        pid=$(cat $FW_DIR/$DD_PID_FILE)
-        if kill -0 $pid &>/dev/null; then
+    if [ -f ${FW_DIR}/${DD_PID_FILE} ]; then
+        pid=$(cat ${FW_DIR}/${DD_PID_FILE})
+        if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f $FW_DIR/$BOOT_READY_FILE ]; then
+    if [ -f ${FW_DIR}/${BOOT_READY_FILE} ]; then
         echo "done"
     fi
 }
@@ -375,7 +376,7 @@ function flash_cleanup() {
 function flash_reboot() {
     echo "preparing for reboot..."
 
-    board=$(cat $SYS_BOARD_FILE)
+    board=$(cat ${SYS_BOARD_FILE})
     
     # the /usr/libexec/fw-prepare-boot script should be present and should
     # make the necessary changes to the current boot configuration so that
@@ -398,28 +399,28 @@ function flash_reboot() {
 
 function show_status() {
     status=$(flash_boot_status)
-    if [ "$status" == "running" ]; then
+    if [ "${status}" == "running" ]; then
         echo "flashing boot $(new_version)"
         return
-    elif [ "$status" == "done" ]; then
+    elif [ "${status}" == "done" ]; then
         echo "boot ready $(new_version)"
         return
     fi
 
     status=$(extract_status)
-    if [ "$status" == "running" ]; then
+    if [ "${status}" == "running" ]; then
         echo "extracting $(new_version)"
         return
-    elif [ "$status" == "done" ]; then
+    elif [ "${status}" == "done" ]; then
         echo "extracted $(new_version)"
         return
     fi
     
     status=$(download_status)
-    if [ "$status" == "running" ]; then
+    if [ "${status}" == "running" ]; then
         echo "downloading $(new_version)"
         return
-    elif [ -n "$status" ]; then
+    elif [ -n "${status}" ]; then
         echo "downloaded $(new_version)"
         return
     fi
@@ -449,7 +450,7 @@ function do_upgrade() {
 
 
 function new_version() {
-    cat $FW_DIR/$VER_FILE
+    cat ${FW_DIR}/${VER_FILE}
 }
 
 
@@ -457,7 +458,7 @@ case "$1" in
     versions)
         show_json="false"
         test "$2" == "-j" && show_json="true"
-        show_versions $show_json
+        show_versions ${show_json}
         ;;
 
     current)

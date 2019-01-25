@@ -1,28 +1,35 @@
 #!/bin/bash
 
-test -f /etc/udev/udev.conf || exit 0
+CONF="/etc/udev/udev.conf"
+PROG="/sbin/udevd"
+PROG_UA="/sbin/udevadm"
 
-test -n "$os_version" || source /etc/init.d/base
 
-source /etc/udev/udev.conf
+test -f ${PROG} || exit 0
+test -f ${CONF} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+source ${CONF}
+
 
 start() {
     msg_begin "Starting eudev"
     echo '\000\000\000\000' > /proc/sys/kernel/hotplug
-    /sbin/udevd --daemon --resolve-names=never
+    ${PROG} --daemon --resolve-names=never
     test $? == 0 && msg_done || msg_fail
 
-    /sbin/udevadm trigger --type=subsystems --action=add
-    /sbin/udevadm trigger --type=devices --action=add
-    /sbin/udevadm settle --timeout=30
+    ${PROG_UA} trigger --type=subsystems --action=add
+    ${PROG_UA} trigger --type=devices --action=add
+    ${PROG_UA} settle --timeout=30
 
     return 0
 }
 
 stop() {
     msg_begin "Stopping eudev"
-    udevadm control --stop-exec-queue
-    killall udevd &>/dev/null
+    ${PROG_UA} control --stop-exec-queue
+    killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 }
 

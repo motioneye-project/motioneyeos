@@ -1,8 +1,9 @@
 #!/bin/bash
 
-check_interval=30
+CHECK_INTERVAL=30
 
-test -n "$os_version" || source /etc/init.d/base
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
 get_throttled_now() {
     t=$(vcgencmd get_throttled | cut -d '=' -f 2)
@@ -21,23 +22,23 @@ get_throttled_since_boot() {
 watch_now() {
     while true; do
         t=$(get_throttled_now)
-        if [[ -n "$t" ]]; then
-            logger -t throttlewatch -s "currently: $t"
+        if [[ -n "${t}" ]]; then
+            logger -t throttlewatch -s "currently: ${t}"
         fi
 
-        sleep $check_interval
+        sleep ${CHECK_INTERVAL}
     done
 }
 
 watch_since_boot() {
     while true; do
         t=$(get_throttled_since_boot)
-        if [[ -n "$t" ]]; then
-            logger -t throttlewatch -s "since boot: $t"
+        if [[ -n "${t}" ]]; then
+            logger -t throttlewatch -s "since boot: ${t}"
             break
         fi
         
-        sleep $check_interval
+        sleep ${CHECK_INTERVAL}
     done
 }
 

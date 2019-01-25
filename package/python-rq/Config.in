@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_RQ
+	bool "python-rq"
+	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	help
+	  Simple job queues for Python.
+
+	  https://python-rq.org/

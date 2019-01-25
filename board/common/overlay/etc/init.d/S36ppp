@@ -1,33 +1,31 @@
 #!/bin/bash
 
-sys_conf="/etc/ppp/default"
-boot_conf="/boot/ppp"
-conf="/data/etc/ppp"
+SYS_CONF="/etc/ppp/default"
+BOOT_CONF="/boot/ppp"
+CONF="/data/etc/ppp"
 
-prog="/usr/sbin/pppd"
-provider="mobile"
+PROG="/usr/sbin/pppd"
+PROVIDER="mobile"
 
-watch_conf="/data/etc/watch.conf"
+WATCH_CONF="/data/etc/watch.conf"
 
-source $watch_conf
 
-if ! [[ -d $conf ]]; then
-    if [[ -d $boot_conf ]]; then
-        cp -r $boot_conf $conf
-    elif [[ -d $sys_conf ]]; then
-        cp -r $sys_conf $conf
-    fi
-fi
+test -x ${PROG} || exit 0
 
-test -e $conf/modem || exit 0
-test -e $conf/apn || exit 0
+test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -n "$os_version" || source /etc/init.d/base
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
 
-test "$os_networkless" == "true" && exit 0
+test -e ${CONF}/modem || exit 0
+test -e ${CONF}/apn || exit 0
+
+source ${WATCH_CONF}
+
+test "${OS_NETWORKLESS}" == "true" && exit 0
+
 
 connected() {
-    ifconfig | grep $os_ppp &>/dev/null && return 0 || return 1
+    ifconfig | grep ${OS_PPP} &>/dev/null && return 0 || return 1
 }
 
 watch() {
@@ -37,11 +35,11 @@ watch() {
         if connected; then
             count=0
         else
-            if [[ $count -lt $link_watch_timeout ]]; then
-                count=$(($count + 5))
+            if [[ ${count} -lt ${LINK_WATCH_TIMEOUT} ]]; then
+                count=$((${count} + 5))
                 logger -t ppp -s "disconnected"
             else
-                logger -t ppp -s "disconnected for $link_watch_timeout seconds, calling panic action"
+                logger -t ppp -s "disconnected for ${LINK_WATCH_TIMEOUT} seconds, calling panic action"
                 panic_action ppp
             fi
         fi
@@ -55,35 +53,35 @@ udev_trigger_add() {
 }
 
 start() {
-    test -e $conf/auth || touch $conf/auth
-    test -e $conf/extra || touch $conf/extra
-    test -e $conf/pin || touch $conf/pin
+    test -e ${CONF}/auth || touch ${CONF}/auth
+    test -e ${CONF}/extra || touch ${CONF}/extra
+    test -e ${CONF}/pin || touch ${CONF}/pin
     mknod /dev/ppp c 108 0 &>/dev/null
 
     msg_begin "Starting pppd"
 
     # wait for modem
-    modem=$(head -n 1 $conf/modem)
-    if ! [[ -e /dev/$modem ]]; then
+    modem=$(head -n 1 ${CONF}/modem)
+    if ! [[ -e /dev/${modem} ]]; then
         udev_trigger_add 4 &
     fi
 
     count=0
     while true; do
-        if [[ -e /dev/$modem ]] || [[ $count -gt $link_watch_timeout ]]; then
+        if [[ -e /dev/${modem} ]] || [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]]; then
             break
         fi
 
-        count=$(($count + 1))
+        count=$((${count} + 1))
         sleep 1
     done
 
-    if ! [[ -e /dev/$modem ]]; then
-        msg_fail "modem /dev/$modem not present"
+    if ! [[ -e /dev/${modem} ]]; then
+        msg_fail "modem /dev/${modem} not present"
         return
     fi
 
-    $prog call $provider
+    ${PROG} call ${PROVIDER}
     count=0
     while true; do
         sleep 1
@@ -92,15 +90,15 @@ start() {
             break
         fi
 
-        if [[ $count -gt $link_watch_timeout ]] || ! pidof pppd > /dev/null; then
+        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof $(basename ${PROG}) > /dev/null; then
             msg_fail
             return
         fi
 
-        count=$(($count + 1))
+        count=$((${count} + 1))
     done
 
-    if [[ "$link_watch" == "true" ]]; then
+    if [[ "${LINK_WATCH}" == "true" ]]; then
         watch &
     fi
 
@@ -109,7 +107,7 @@ start() {
 
 stop() {
     msg_begin "Stopping pppd"
-    killall pppd &>/dev/null
+    killall -q $(basename ${PROG})
     ps | grep ppp | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     msg_done
 }
