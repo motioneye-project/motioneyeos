@@ -28,6 +28,7 @@ start() {
     chown -R ${USER} ${DB_DIR}
     touch ${LOG}
     chown ${USER} ${LOG}
+    cd ${DB_DIR}
     
     if [[ ! -f ${DB_DIR}/PG_VERSION ]]; then
 	    msg_begin "Initializing postgresql db"
