@@ -100,6 +100,19 @@ config BR2_TOOLCHAIN_SUPPORTS_ALWAYS_LOCKFREE_ATOMIC_INTS
 	depends on !BR2_sparc_v8
 	depends on !BR2_m68k_cf5208
 
+# GCC uses thunk functions to adjust the 'this' pointer when calling
+# C++ member functions in classes derived with multiple inheritance.
+# Generation of thunk functions requires support from the compiler
+# back end. In the absence of that support target-independent code
+# in the C++ front end is used to generate thunk functions, but it
+# does not support vararg functions.
+# or1k will support it in the gcc mainline starting with gcc-9.
+config BR2_TOOLCHAIN_SUPPORTS_VARIADIC_MI_THUNK
+	bool
+	default y
+	depends on !BR2_or1k
+	depends on !BR2_xtensa
+
 # Prior to gcc 7.x, exception_ptr, nested_exception and future from
 # libstdc++ would only be provided on architectures that support
 # always lock-free atomic ints. See
