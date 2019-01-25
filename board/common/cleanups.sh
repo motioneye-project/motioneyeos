@@ -170,9 +170,16 @@ rm -f ${TARGET}/usr/bin/wbinfo
 rm -f ${TARGET}/usr/sbin/winbindd
 rm -rf ${TARGET}/usr/share/ctdb
 
-# useless mongodb binaries
+# unused mongodb binaries
 rm -f ${TARGET}/usr/bin/mongos
 rm -f ${TARGET}/usr/bin/mongoperf
+
+# unused redis binaries
+rm -f $TARGET/usr/bin/redis-check-aof
+rm -f $TARGET/usr/bin/redis-check-rdb
+rm -f $TARGET/usr/bin/redis-benchmark
+rm -f $TARGET/usr/bin/redis-cli
+rm -f $TARGET/usr/bin/redis-sentinel
 
 # v4l-utils
 rm -f ${TARGET}/usr/bin/cec-compliance
@@ -201,6 +208,8 @@ rm -f ${TARGET}/etc/init.d/S20urandom
 rm -f ${TARGET}/etc/init.d/S49ntp
 rm -f ${TARGET}/etc/init.d/S50sshd
 rm -f ${TARGET}/etc/init.d/S50proftpd
+rm -f ${TARGET}/etc/init.d/S50postgresql
+rm -f ${TARGET}/etc/init.d/S50redis
 rm -f ${TARGET}/etc/init.d/S80dhcp-relay
 rm -f ${TARGET}/etc/init.d/S80dhcp-server
 rm -f ${TARGET}/etc/init.d/S80dnsmasq

@@ -66,6 +66,13 @@ if ! [ -f $basedir/configs/${board}_defconfig ]; then
     exit 1
 fi
 
+function prepare_target_dir() {
+    if [ -L $outputdir/target/var/lib ]; then
+        rm $outputdir/target/var/lib
+        mkdir $outputdir/target/var/lib
+    fi
+}
+
 mkdir -p $outputdir
 
 if ! [ -f $outputdir/.config ]; then
@@ -135,9 +142,11 @@ elif [[ "$target" == initramfs* ]]; then
     fi
 
 elif [ "$target" == "all" ]; then
+    prepare_target_dir
     make O=$outputdir all
 
 elif [ -n "$target" ]; then
+    prepare_target_dir
     make O=$outputdir $target
 
 else  # if [ -z "$target ]

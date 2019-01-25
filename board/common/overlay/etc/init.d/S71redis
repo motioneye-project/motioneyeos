@@ -1,31 +1,30 @@
 #!/bin/bash
 
-SYS_CONF="/etc/crontabs"
-CONF="/data/etc/crontabs"
+SYS_CONF="/etc/redis.conf"
+BOOT_CONF="/boot/redis.conf"
+CONF="/data/etc/redis.conf"
 
-PROG="/usr/sbin/crond"
+PROG="/usr/bin/redis-server"
 
 
 test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
+prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
+test -f ${CONF} || exit 0
+
 
 start() {
-    msg_begin "Starting crond"
-    
-    if [[ -d ${SYS_CONF} ]];  then
-        ${PROG} -c ${SYS_CONF}
-    fi
-
-    mkdir -p ${CONF}
-    ${PROG} -c ${CONF}
-
+    msg_begin "Starting redis"
+    db_dir=$(cat ${CONF} | grep -E '^dir' | cut -d ' ' -f 2)
+    mkdir -p ${db_dir}
+    ${PROG} ${CONF}
     test $? == 0 && msg_done || msg_fail
 }
 
 stop() {
-    msg_begin "Stopping crond"
+    msg_begin "Stopping redis"
     killall -q $(basename ${PROG})
     test $? == 0 && msg_done || msg_fail
 }
@@ -38,7 +37,7 @@ case "$1" in
     stop)
         stop
         ;;
-    
+
     restart)
         stop
         start
@@ -47,8 +46,5 @@ case "$1" in
     *)
         echo "Usage: $0 {start|stop|restart}"
         exit 1
-        ;;
 esac
-
-exit 0
 

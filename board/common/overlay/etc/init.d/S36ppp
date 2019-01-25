@@ -10,6 +10,8 @@ PROVIDER="mobile"
 WATCH_CONF="/data/etc/watch.conf"
 
 
+test -x ${PROG} || exit 0
+
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
@@ -88,7 +90,7 @@ start() {
             break
         fi
 
-        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof pppd > /dev/null; then
+        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof $(basename ${PROG}) > /dev/null; then
             msg_fail
             return
         fi
@@ -105,7 +107,7 @@ start() {
 
 stop() {
     msg_begin "Stopping pppd"
-    killall pppd &>/dev/null
+    killall -q $(basename ${PROG})
     ps | grep ppp | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     msg_done
 }

@@ -10,6 +10,7 @@ test -n "${OS_VERSION}" || source /etc/init.d/base
 prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
 test -f ${CONF} || exit 0
 
+
 start() {
     msg_begin "Starting firewall"
 
