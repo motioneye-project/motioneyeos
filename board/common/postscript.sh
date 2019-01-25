@@ -48,5 +48,7 @@ if [ -r ${BOARD_DIR}/os.conf ]; then
 fi
 
 # add admin user alias
-echo "admin:x:0:0:root:/root:/bin/sh" >> ${TARGET}/etc/passwd
+if ! grep -E '^admin:' ${TARGET}/etc/passwd &> /dev/null; then
+    echo "admin:x:0:0:root:/root:/bin/sh" >> ${TARGET}/etc/passwd
+fi
 
