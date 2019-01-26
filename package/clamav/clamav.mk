@@ -76,7 +76,10 @@ else
 CLAMAV_CONF_OPTS += --without-iconv
 endif
 
-ifeq ($(BR2_PACKAGE_PCRE),y)
+ifeq ($(BR2_PACKAGE_PCRE2),y)
+CLAMAV_CONF_OPTS += --with-pcre=$(STAGING_DIR)/usr
+CLAMAV_DEPENDENCIES += pcre2
+else ifeq ($(BR2_PACKAGE_PCRE),y)
 CLAMAV_CONF_OPTS += --with-pcre=$(STAGING_DIR)/usr
 CLAMAV_DEPENDENCIES += pcre
 else
