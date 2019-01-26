@@ -1,0 +1,36 @@
+#!/bin/bash
+
+SYS_CONF="/etc/sysctl.conf"
+BOOT_CONF="/boot/sysctl.conf"
+CONF="/data/etc/sysctl.conf"
+
+PROG="/sbin/sysctl"
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+if [[ ! -f ${CONF} && ! -f ${SYS_CONF} && ! -f ${BOOT_CONF} ]]; then
+    exit 0
+fi
+
+
+case "$1" in
+    start)
+        msg_begin "Applying sysctl parameters"
+        test -f ${SYS_CONF} && sysctl -q -p ${SYS_CONF}
+        test -f ${CONF} && sysctl -q -p ${CONF}
+        test -f ${BOOT_CONF} && sysctl -q -p ${BOOT_CONF}
+        msg_done
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
+
