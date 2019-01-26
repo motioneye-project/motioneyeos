@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CLAMAV_VERSION = 0.100.2
+CLAMAV_VERSION = 0.101.1
 CLAMAV_SITE = https://www.clamav.net/downloads/production
 CLAMAV_LICENSE = GPL-2.0
 CLAMAV_LICENSE_FILES = COPYING COPYING.bzip2 COPYING.file COPYING.getopt \
@@ -16,8 +16,6 @@ CLAMAV_DEPENDENCIES = \
 	openssl \
 	zlib \
 	$(TARGET_NLS_DEPENDENCIES)
-# 0003-m4-reorganization-libs-curl.m4-fix-curl-config-detec.patch
-CLAMAV_AUTORECONF = YES
 
 # mmap cannot be detected when cross-compiling, needed for mempool support
 CLAMAV_CONF_ENV = \
