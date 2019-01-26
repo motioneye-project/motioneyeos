@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2012-July/002012.html
-sha256	f8827e4c988f90cf5a677554b30d61f0a07eb86d872478751cdc94dc17452b9c	xf86-video-i128-1.3.6.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-December/002932.html
+md5  a980f1b8532ccfe81932580bc4e0f2a0  xf86-video-i128-1.4.0.tar.bz2
+sha1 56d5b897b2695222c13e59d2ade74620a99e1011  xf86-video-i128-1.4.0.tar.bz2
+sha256 8f2c0a6bf5a169dad3fc07c6dd4537b492d0e44489e4a1297311e617c3bed0ea  xf86-video-i128-1.4.0.tar.bz2
+sha512 d58baee3f20b3ad2ece6853da0ff20a6d54b984c6e3289bad2715cc003b277a0b44d20ded25cfc116400468df552390bdb5d80fbd3fb60861488ee5d027664b2  xf86-video-i128-1.4.0.tar.bz2
+# Locally computed
+sha256 7677424d79633dbf255a81bd4e05dd621931b89997af33c31522269ec2ed391e  COPYING
