@@ -4,6 +4,11 @@ BOOT_LOG=/var/log/boot.log
 TMP_BOOT_LOG=/tmp/_boot.log
 PID_FILE=/tmp/rc.pid
 
+set -a
+test -f /etc/environment && source /etc/environment
+test -f /data/etc/environment && source /data/etc/environment
+test -f /boot/etc/environment && source /boot/etc/environment
+set +a
 
 source /etc/init.d/base
 
