@@ -132,10 +132,14 @@ def check_file_using_lib(fname):
         f = open(fname, "r", errors="surrogateescape")
     else:
         f = open(fname, "r")
+    lastline = ""
     for lineno, text in enumerate(f.readlines()):
         nlines += 1
         for cf in objects:
+            if cf.disable.search(lastline):
+                continue
             nwarnings += print_warnings(cf.check_line(lineno + 1, text))
+        lastline = text
     f.close()
     for cf in objects:
         nwarnings += print_warnings(cf.after())
