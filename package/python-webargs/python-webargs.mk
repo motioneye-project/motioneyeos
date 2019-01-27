@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_WEBARGS_VERSION = 5.1.0
+PYTHON_WEBARGS_VERSION = 4.2.0
 PYTHON_WEBARGS_SOURCE = webargs-$(PYTHON_WEBARGS_VERSION).tar.gz
-PYTHON_WEBARGS_SITE = https://files.pythonhosted.org/packages/16/7b/68fded416d638bf1e5f41b28a49f045c0ef2abe344c7280d5e923e6cea1d
+PYTHON_WEBARGS_SITE = https://files.pythonhosted.org/packages/ce/55/23c0b271813793cce879908fdc319c79500d9adb0e4982f0d9fce2da2846
 PYTHON_WEBARGS_SETUP_TYPE = setuptools
 PYTHON_WEBARGS_LICENSE = Apache-2.0
 PYTHON_WEBARGS_LICENSE_FILES = LICENSE.txt
