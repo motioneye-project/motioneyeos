@@ -80,19 +80,19 @@ def _get_date_settings():
                 except:
                     continue
 
-                if name == 'date_method':
+                if name == 'DATE_METHOD':
                     date_method = value
 
-                elif name == 'date_host':
+                elif name == 'DATE_HOST':
                     date_host = value
                     
-                elif name == 'date_ntp_server':
+                elif name == 'DATE_NTP_SERVER':
                     date_ntp_server = value
 
-                elif name == 'date_timeout':
+                elif name == 'DATE_TIMEOUT':
                     date_timeout = int(value)
 
-                elif name == 'date_interval':
+                elif name == 'DATE_INTERVAL':
                     date_interval = int(value)
 
     s = {
@@ -119,11 +119,11 @@ def _set_date_settings(s):
             'method=%(dateMethod)s, host=%(dateHost)s, ntp_server=%(dateNtpServer)s, timeout=%(dateTimeout)s, interval=%(dateInterval)s' % s)
 
     with open(DATE_CONF, 'w') as f:
-        f.write('date_method=%s\n' % s['dateMethod'])
-        f.write('date_host=%s\n' % s['dateHost'])
-        f.write('date_ntp_server=%s\n' % s['dateNtpServer'])
-        f.write('date_timeout=%s\n' % s['dateTimeout'])
-        f.write('date_interval=%s\n' % s['dateInterval'])
+        f.write('DATE_METHOD=%s\n' % s['dateMethod'])
+        f.write('DATE_HOST=%s\n' % s['dateHost'])
+        f.write('DATE_NTP_SERVER=%s\n' % s['dateNtpServer'])
+        f.write('DATE_TIMEOUT=%s\n' % s['dateTimeout'])
+        f.write('DATE_INTERVAL=%s\n' % s['dateInterval'])
 
 
 def _get_os_settings():
