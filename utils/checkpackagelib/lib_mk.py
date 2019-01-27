@@ -12,10 +12,14 @@ from checkpackagelib.lib import EmptyLastLine          # noqa: F401
 from checkpackagelib.lib import NewlineAtEof           # noqa: F401
 from checkpackagelib.lib import TrailingSpace          # noqa: F401
 
+# used in more than one check
+start_conditional = ["ifdef", "ifeq", "ifndef", "ifneq"]
+end_conditional = ["endif"]
+
 
 class Indent(_CheckFunction):
     COMMENT = re.compile("^\s*#")
-    CONDITIONAL = re.compile("^\s*(ifeq|ifneq|endif)\s")
+    CONDITIONAL = re.compile("^\s*({})\s".format("|".join(start_conditional + end_conditional)))
     ENDS_WITH_BACKSLASH = re.compile(r"^[^#].*\\$")
     END_DEFINE = re.compile("^\s*endef\s")
     MAKEFILE_TARGET = re.compile("^[^# \t]+:\s")
@@ -222,8 +226,8 @@ class UselessFlag(_CheckFunction):
         "_INSTALL_REDISTRIBUTE\s*=\s*YES",
         "_INSTALL_STAGING\s*=\s*NO",
         "_INSTALL_TARGET\s*=\s*YES"])))
-    END_CONDITIONAL = re.compile("^\s*(endif)")
-    START_CONDITIONAL = re.compile("^\s*(ifeq|ifneq)")
+    END_CONDITIONAL = re.compile("^\s*({})".format("|".join(end_conditional)))
+    START_CONDITIONAL = re.compile("^\s*({})".format("|".join(start_conditional)))
 
     def before(self):
         self.conditional = 0
