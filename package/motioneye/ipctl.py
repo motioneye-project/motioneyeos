@@ -52,19 +52,19 @@ def _get_ip_settings():
                 if not line:
                     continue
     
-                match = re.match('^static_ip="(.*)/(.*)"$', line)
+                match = re.match('^STATIC_IP="(.*)/(.*)"$', line)
                 if match:
                     ip, cidr = match.groups()
                     ip_comment = comment
                     continue
     
-                match = re.match('^static_gw="(.*)"$', line)
+                match = re.match('^STATIC_GW="(.*)"$', line)
                 if match:
                     gw = match.group(1)
                     gw_comment = comment
                     continue
     
-                match = re.match('^static_dns="(.*)"$', line)
+                match = re.match('^STATIC_DNS="(.*)"$', line)
                 if match:
                     dns = match.group(1)
                     dns_comment = comment
@@ -138,9 +138,9 @@ def _set_ip_settings(s):
                     current_settings[key] = (value, True)
 
     enabled = type != 'dhcp'
-    current_settings['static_ip'] = ('"%s/%s"' % (ip, cidr), enabled)
-    current_settings['static_gw'] = ('"%s"' % gw, enabled)
-    current_settings['static_dns'] = ('"%s"' % dns, enabled)
+    current_settings['STATIC_IP'] = ('"%s/%s"' % (ip, cidr), enabled)
+    current_settings['STATIC_GW'] = ('"%s"' % gw, enabled)
+    current_settings['STATIC_DNS'] = ('"%s"' % dns, enabled)
 
     with open(STATIC_IP_CONF, 'w') as f:
         for key, value in current_settings.items():
