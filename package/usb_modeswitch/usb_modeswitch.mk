@@ -13,13 +13,13 @@ USB_MODESWITCH_LICENSE_FILES = COPYING
 # Package does not build in parallel due to improper make rules
 USB_MODESWITCH_MAKE = $(MAKE1)
 
-USB_MODESWITCH_BUILD_TARGETS = static
-USB_MODESWITCH_INSTALL_TARGETS = install-static
-
 ifeq ($(BR2_PACKAGE_TCL)$(BR2_PACKAGE_TCL_SHLIB_ONLY),y)
 USB_MODESWITCH_DEPENDENCIES += tcl
 USB_MODESWITCH_BUILD_TARGETS = script
 USB_MODESWITCH_INSTALL_TARGETS = install-script
+else
+USB_MODESWITCH_BUILD_TARGETS = static
+USB_MODESWITCH_INSTALL_TARGETS = install-static
 endif
 
 # build system of embedded jimtcl doesn't use autotools, but does use
