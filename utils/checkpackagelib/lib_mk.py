@@ -73,6 +73,66 @@ class Indent(_CheckFunction):
                         text]
 
 
+class OverriddenVariable(_CheckFunction):
+    CONCATENATING = re.compile("^([A-Z0-9_]+)\s*(\+|:|)=\s*\$\(\\1\)")
+    END_CONDITIONAL = re.compile("^\s*({})".format("|".join(end_conditional)))
+    OVERRIDING_ASSIGNMENTS = [':=', "="]
+    START_CONDITIONAL = re.compile("^\s*({})".format("|".join(start_conditional)))
+    VARIABLE = re.compile("^([A-Z0-9_]+)\s*((\+|:|)=)")
+    USUALLY_OVERRIDDEN = re.compile("^[A-Z0-9_]+({})".format("|".join([
+        "_ARCH\s*=\s*",
+        "_CPU\s*=\s*",
+        "_SITE\s*=\s*",
+        "_SOURCE\s*=\s*",
+        "_VERSION\s*=\s*"])))
+
+    def before(self):
+        self.conditional = 0
+        self.unconditionally_set = []
+        self.conditionally_set = []
+
+    def check_line(self, lineno, text):
+        if self.START_CONDITIONAL.search(text):
+            self.conditional += 1
+            return
+        if self.END_CONDITIONAL.search(text):
+            self.conditional -= 1
+            return
+
+        m = self.VARIABLE.search(text)
+        if m is None:
+            return
+        variable, assignment = m.group(1, 2)
+
+        if self.conditional == 0:
+            if variable in self.conditionally_set:
+                self.unconditionally_set.append(variable)
+                if assignment in self.OVERRIDING_ASSIGNMENTS:
+                    return ["{}:{}: unconditional override of variable {} previously conditionally set"
+                            .format(self.filename, lineno, variable),
+                            text]
+
+            if variable not in self.unconditionally_set:
+                self.unconditionally_set.append(variable)
+                return
+            if assignment in self.OVERRIDING_ASSIGNMENTS:
+                return ["{}:{}: unconditional override of variable {}"
+                        .format(self.filename, lineno, variable),
+                        text]
+        else:
+            if variable not in self.unconditionally_set:
+                self.conditionally_set.append(variable)
+                return
+            if self.CONCATENATING.search(text):
+                return
+            if self.USUALLY_OVERRIDDEN.search(text):
+                return
+            if assignment in self.OVERRIDING_ASSIGNMENTS:
+                return ["{}:{}: conditional override of variable {}"
+                        .format(self.filename, lineno, variable),
+                        text]
+
+
 class PackageHeader(_CheckFunction):
     def before(self):
         self.skip = False
