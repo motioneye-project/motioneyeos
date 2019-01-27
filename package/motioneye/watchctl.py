@@ -56,26 +56,26 @@ def _get_watch_settings():
                 except:
                     continue
 
-                if name == 'link_watch':
+                if name == 'LINK_WATCH':
                     watch_link = (value == 'true') and not comment
                 
-                elif name == 'link_watch_timeout':
+                elif name == 'LINK_WATCH_TIMEOUT':
                     watch_link_timeout = int(value)
 
-                elif name == 'netwatch_host':
+                elif name == 'NETWATCH_HOST':
                     watch_connect = not comment
                     watch_connect_host = value
 
-                elif name == 'netwatch_port':
+                elif name == 'NETWATCH_PORT':
                     watch_connect_port = int(value)
 
-                elif name == 'netwatch_timeout':
+                elif name == 'NETWATCH_TIMEOUT':
                     watch_connect_timeout = int(value)
 
-                elif name == 'netwatch_retries':
+                elif name == 'NETWATCH_RETRIES':
                     watch_connect_retries = int(value)
 
-                elif name == 'netwatch_interval':
+                elif name == 'NETWATCH_INTERVAL':
                     watch_connect_interval = int(value)
     
     s = {
@@ -115,17 +115,17 @@ def _set_watch_settings(s):
     
 
     with open(WATCH_CONF, 'w') as f:
-        f.write('link_watch=%s\n' % ['"false"', '"true"'][s['watchLink']])
-        f.write('link_watch_timeout=%s\n' % s['watchLinkTimeout'])
+        f.write('LINK_WATCH=%s\n' % ['"false"', '"true"'][s['watchLink']])
+        f.write('LINK_WATCH_TIMEOUT=%s\n' % s['watchLinkTimeout'])
         f.write('\n')
-        f.write('ip_watch=%s\n' % ['"false"', '"true"'][s['watchLink']])
-        f.write('ip_watch_timeout=%s\n' % s['watchLinkTimeout'])
+        f.write('IP_WATCH=%s\n' % ['"false"', '"true"'][s['watchLink']])
+        f.write('IP_WATCH_TIMEOUT=%s\n' % s['watchLinkTimeout'])
         f.write('\n')
-        f.write('%snetwatch_host=%s\n' % (('#' if not s['watchConnect'] else ''), s['watchConnectHost']))
-        f.write('netwatch_port=%s\n' % s['watchConnectPort'])
-        f.write('netwatch_retries=%s\n' % s['watchConnectRetries'])
-        f.write('netwatch_timeout=%s\n' % s['watchConnectTimeout'])
-        f.write('netwatch_interval=%s\n' % s['watchConnectInterval'])
+        f.write('%sNETWATCH_HOST=%s\n' % (('#' if not s['watchConnect'] else ''), s['watchConnectHost']))
+        f.write('NETWATCH_PORT=%s\n' % s['watchConnectPort'])
+        f.write('NETWATCH_RETRIES=%s\n' % s['watchConnectRetries'])
+        f.write('NETWATCH_TIMEOUT=%s\n' % s['watchConnectTimeout'])
+        f.write('NETWATCH_INTERVAL=%s\n' % s['watchConnectInterval'])
 
 
 @additional_section
