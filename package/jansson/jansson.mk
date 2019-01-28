@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JANSSON_VERSION = 2.11
+JANSSON_VERSION = 2.12
 JANSSON_SITE = http://www.digip.org/jansson/releases
 JANSSON_LICENSE = MIT
 JANSSON_LICENSE_FILES = LICENSE
