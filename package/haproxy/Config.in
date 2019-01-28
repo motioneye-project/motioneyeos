@@ -1,5 +1,7 @@
 config BR2_PACKAGE_HAPROXY
 	bool "haproxy"
+	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60040
+	depends on !(BR2_sh4 && !BR2_TOOLCHAIN_GCC_AT_LEAST_7)
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # __sync_*_4 intrisics
 	help
