@@ -38,13 +38,6 @@ else
 LIBPCAP_CONF_OPTS += --disable-dbus
 endif
 
-ifeq ($(BR2_PACKAGE_LIBUSB),y)
-LIBPCAP_CONF_OPTS += --enable-canusb
-LIBPCAP_DEPENDENCIES += libusb
-else
-LIBPCAP_CONF_OPTS += --disable-canusb
-endif
-
 ifeq ($(BR2_PACKAGE_LIBNL),y)
 LIBPCAP_DEPENDENCIES += libnl
 LIBPCAP_CFLAGS += "-I$(STAGING_DIR)/usr/include/libnl3"
