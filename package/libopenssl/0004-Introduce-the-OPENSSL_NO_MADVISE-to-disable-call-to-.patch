@@ -1,0 +1,27 @@
+From 1281ffc7959bd2070563e17a52ee4424196d885c Mon Sep 17 00:00:00 2001
+From: Patrick Havelange <patrick.havelange@essensium.com>
+Date: Wed, 23 Jan 2019 12:21:21 +0100
+Subject: [PATCH] Introduce the OPENSSL_NO_MADVISE to disable call to madvise()
+
+Upstream: https://github.com/openssl/openssl/pull/8089
+Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
+---
+ crypto/mem_sec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/crypto/mem_sec.c b/crypto/mem_sec.c
+index 9e0f670..32c7282 100644
+--- a/crypto/mem_sec.c
++++ b/crypto/mem_sec.c
+@@ -485,7 +485,7 @@ static int sh_init(size_t size, int minsize)
+     if (mlock(sh.arena, sh.arena_size) < 0)
+         ret = 2;
+ #endif
+-#ifdef MADV_DONTDUMP
++#if defined(MADV_DONTDUMP) && !defined(OPENSSL_NO_MADVISE)
+     if (madvise(sh.arena, sh.arena_size, MADV_DONTDUMP) < 0)
+         ret = 2;
+ #endif
+-- 
+2.17.1
+
