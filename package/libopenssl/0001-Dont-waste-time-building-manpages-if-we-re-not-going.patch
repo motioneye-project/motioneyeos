@@ -1,27 +1,31 @@
-From 389efb564fa1453a9da835393eec9006bfae2a52 Mon Sep 17 00:00:00 2001
+From d8f104bffb0c4acb8c5fcdf49628f7d02ed48f7f Mon Sep 17 00:00:00 2001
 From: Mike Frysinger <vapier@gentoo.org>
 Date: Sat, 16 May 2015 18:53:51 +0200
-Subject: Dont waste time building manpages if we're not going to use em.
+Subject: [PATCH] Dont waste time building manpages if we're not going to use
+ em.
 
 Signed-off-by: Ryan Barnett <ryanbarnett3@gmail.com>
 [Gustavo: update for parallel-build]
+
+[rebased on openssl-1.1.0h]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
- Makefile.org | 2 +-
+ Configurations/unix-Makefile.tmpl | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Makefile.org b/Makefile.org
-index 60f07cc..976ceaf 100644
---- a/Makefile.org
-+++ b/Makefile.org
-@@ -527,7 +527,7 @@ dist:
- dist_pem_h:
- 	(cd crypto/pem; $(MAKE) -e $(BUILDENV) pem.h; $(MAKE) clean)
+diff --git a/Configurations/unix-Makefile.tmpl b/Configurations/unix-Makefile.tmpl
+index 40cf2c3..777d9ca 100644
+--- a/Configurations/unix-Makefile.tmpl
++++ b/Configurations/unix-Makefile.tmpl
+@@ -268,7 +268,7 @@ list-tests:
+ 	@echo "Tests are not supported with your chosen Configure options"
+ 	@ : {- output_on() if !$disabled{tests}; "" -}
  
--install: install_docs install_sw
-+install: install_sw
+-install: install_sw install_ssldirs install_docs
++install: install_sw install_ssldirs
  
- install_sw:
- 	@$(PERL) $(TOP)/util/mkdir-p.pl $(INSTALL_PREFIX)$(INSTALLTOP)/bin \
+ uninstall: uninstall_docs uninstall_sw
+ 
 -- 
-1.9.1
+2.16.3
 
