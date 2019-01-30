@@ -76,7 +76,7 @@ steps = ['download', 'extract', 'patch', 'configure', 'build',
 default_colors = ['#8d02ff', '#e60004', '#009836', '#2e1d86', '#ffed00',
                   '#0068b5', '#f28e00', '#940084', '#97c000']
 
-alternate_colors = ['#ffbe0a', '#00e0e0', '#3f7f7f', '#ff0000', '#00c000',
+alternate_colors = ['#ffbe0a', '#96bdff', '#3f7f7f', '#ff0000', '#00c000',
                     '#0080ff', '#c000ff', '#00eeee', '#e0e000']
 
 
