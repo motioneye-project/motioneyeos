@@ -31,6 +31,13 @@ else
 AIRCRACK_NG_CONF_OPTS += --without-duma
 endif
 
+ifeq ($(BR2_PACKAGE_HWLOC),y)
+AIRCRACK_NG_DEPENDENCIES += hwloc
+AIRCRACK_NG_CONF_OPTS += --enable-hwloc
+else
+AIRCRACK_NG_CONF_OPTS += --disable-hwloc
+endif
+
 ifeq ($(BR2_PACKAGE_JEMALLOC),y)
 AIRCRACK_NG_DEPENDENCIES += jemalloc
 AIRCRACK_NG_CONF_OPTS += --with-jemalloc
