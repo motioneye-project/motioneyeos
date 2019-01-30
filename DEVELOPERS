@@ -683,6 +683,9 @@ F:	package/mxsldr/
 N:	Ernesto L. Williams Jr <realcontrols@gmail.com>
 F:	package/szip/
 
+N:	Etienne Carriere <etienne.carriere@linaro.org>
+F:	boot/optee-os/
+
 N:	Eugene Tarassov <eugene@largest.net>
 F:	package/tcf-agent/
 
