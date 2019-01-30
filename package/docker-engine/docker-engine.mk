@@ -73,6 +73,11 @@ define DOCKER_ENGINE_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/docker.service
 endef
 
+define DOCKER_ENGINE_INSTALL_INIT_SYSV
+	$(INSTALL) -D -m 755 package/docker-engine/S60dockerd \
+		$(TARGET_DIR)/etc/init.d/S60dockerd
+endef
+
 define DOCKER_ENGINE_USERS
 	- - docker -1 * - - - Docker Application Container Framework
 endef
