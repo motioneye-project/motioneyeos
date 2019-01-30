@@ -689,6 +689,7 @@ F:	package/szip/
 
 N:	Etienne Carriere <etienne.carriere@linaro.org>
 F:	boot/optee-os/
+F:	package/optee-client/
 
 N:	Eugene Tarassov <eugene@largest.net>
 F:	package/tcf-agent/
