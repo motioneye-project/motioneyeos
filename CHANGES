@@ -1,3 +1,40 @@
+2018.11.2, Released January 30th, 2019
+
+	Important / security related fixes.
+
+	Defconfigs: Fixes for imx6slevk, imx7dsabresd, imx8mqevk, Lego
+	EV3, QEMU AArch64-virt
+
+	Download: Fix scp download handling
+
+	check-package: fix Python 3 support
+
+	get-developers: Fix behaviour when called from elsewhere than
+	the toplevel directory.
+
+	kconfig: Fix for make linux-menuconfig / uboot-menuconfig from
+	a clean tree when ccache is enabled.
+
+	cmake: Also set CMAKE_SYSTEM_VERSION in toolchainfile.cmake
+
+	Updated/fixed packages: acpica, apache, apr, avrdude, cargo,
+	cc-tool, dash, dhcpdump, dmalloc, docker-containerd, efivar,
+	fwts, glibc, gnuchess, gnupg2, go, leveldb, libarchive,
+	libassuan, libftdi1, libgpg-error, libhttpparser, libkcapi,
+	libmad, libsndfile, libsquish, liburiparser, libwebsock,
+	libxml2, lighttpd, llvm, lm-sensors, lua-msgpack-native, lxc,
+	mariadb, mbedtls, meson, mosquitto, netatalk, nodejs, odhcp6c,
+	openresolv, openssh, pango, patchelf, php, python-django,
+	python-numpy, python-pyyaml, rauc, rp-pppoe, s6-networking,
+	samba4, sdl_sound, shairport-sync, sqlite, subversion,
+	sunxi-cedarx, swupdate, systemd, tcpreplay, tekui, tmp2-abrmd,
+	tpm2-tools, tpm2-tss, udisks, unixodbc, usb_modeswitch,
+	webkitgtk, wireshark, wolfssl, xapp_rgb, xenomai, xerces
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11576: Unable to start apache with event MPM on raspberry pi 3
+
 2018.11.1, Released December 20th, 2018
 
 	Important / security related fixes.
