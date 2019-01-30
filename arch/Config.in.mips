@@ -122,6 +122,13 @@ config BR2_mips_i6400
 	depends on BR2_ARCH_IS_64
 	select BR2_MIPS_CPU_MIPS64R6
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
+config BR2_mips_octeon2
+	bool "Octeon II"
+	depends on BR2_ARCH_IS_64
+	select BR2_MIPS_CPU_MIPS64R2
+	help
+	  Marvell (formerly Cavium Networks) Octeon II CN60XX
+	  processors.
 config BR2_mips_p6600
 	bool "P6600"
 	depends on BR2_ARCH_IS_64
@@ -241,6 +248,7 @@ config BR2_GCC_TARGET_ARCH
 	default "mips64r5"	if BR2_mips_64r5
 	default "mips64r6"	if BR2_mips_64r6
 	default "i6400"		if BR2_mips_i6400
+	default "octeon2"	if BR2_mips_octeon2
 	default "p6600"		if BR2_mips_p6600
 
 config BR2_MIPS_OABI32
