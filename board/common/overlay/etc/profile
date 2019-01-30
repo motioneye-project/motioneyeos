@@ -27,6 +27,11 @@ if [ "$PS1" ]; then
     export TERM=linux
 fi;
 
-if [ -f /data/etc/profile ]; then
-    source /data/etc/profile
-fi
+# custom local profile
+test -f /data/etc/profile && source /data/etc/profile
+
+# global environment variables
+test -f /etc/environment && source /etc/environment
+test -f /data/etc/environment && source /data/etc/environment
+test -f /boot/etc/environment && source /boot/etc/environment
+
