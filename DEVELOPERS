@@ -1262,6 +1262,9 @@ F:	package/ti-sgx-demos/
 F:	package/ti-sgx-km/
 F:	package/ti-sgx-um/
 
+N:	Louis-Paul Cordier <lpdev@cordier.org>
+F:	package/intel-gmmlib/
+
 N:	Luca Ceresoli <luca@lucaceresoli.net>
 F:	board/olimex/a20_olinuxino/
 F:	board/zynq/
