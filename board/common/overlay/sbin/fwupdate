@@ -4,14 +4,15 @@
 #### usage ####
 
 function exit_usage() {
-    echo "Usage: fwupdate versions [-j]                 (lists available versions, optionally outputting json)"
-    echo "       fwupdate current                       (shows the current version"
-    echo "       fwupdate download <version|url|file>   (downloads a firmware version)"
-    echo "       fwupdate extract                       (extracts the downloaded firmware archive)"
-    echo "       fwupdate flashboot                     (flashes the boot partition from extracted image)"
-    echo "       fwupdate flashreboot                   (prepares for reboot + root partititon flash)"
-    echo "       fwupdate status                        (shows the current firmware updating status; see below)"
-    echo "       fwupdate upgrade <version|url|file>    (performs all the operations necessary for upgrading)"
+    echo "Usage: fwupdate versions [-j]                     (lists available versions, optionally outputting json)"
+    echo "       fwupdate current                           (shows the current version"
+    echo "       fwupdate download <version|url|file>       (downloads a firmware version)"
+    echo "       fwupdate extract                           (extracts the downloaded firmware archive)"
+    echo "       fwupdate flashboot                         (flashes the boot partition from extracted image)"
+    echo "       fwupdate flashreboot                       (prepares for reboot + root partititon flash)"
+    echo "       fwupdate status                            (shows the current firmware updating status; see below)"
+    echo "       fwupdate upgrade <version|url|file>        (performs all the operations necessary for upgrading)"
+    echo "       fwupdate cleanupgrade <version|url|file>   (same as upgrade, but remove data partition, preserving config files)"
     echo ""
     echo "Statuses:"
     echo "       idle"
@@ -35,6 +36,7 @@ fi
 
 SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
+OS_CONF_FILE=/etc/init.d/os_conf
 
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
@@ -58,6 +60,9 @@ XZCAT_PID_FILE=xzcat.pid
 DD_LOG_FILE=dd.log
 DD_PID_FILE=dd.pid
 
+source ${OS_CONF_FILE}
+source ${SYS_VERSION_FILE}
+
 
 #### disk & partition devices ####
 
@@ -77,8 +82,6 @@ fi
 #### versions ####
 
 function show_versions() {
-    source /etc/init.d/os_conf  # we need this for the OS_ vars
-    
     board=$(cat ${SYS_BOARD_FILE})
     show_json=$1
   
@@ -112,8 +115,6 @@ function show_versions() {
 }
 
 function show_current() {
-    source ${SYS_VERSION_FILE}
-    
     echo ${OS_VERSION}
 }
 
@@ -144,8 +145,6 @@ function do_download() {
         fi
     fi
 
-    source /etc/init.d/os_conf  # we need this for the OS_ vars
-    
     board=$(cat ${SYS_BOARD_FILE})
     url=$1
     version=$1
@@ -303,7 +302,7 @@ function extract_status() {
 
 #### flash boot ####
 
-function flash_boot() {
+function do_flash_boot() {
     echo "flashing boot..."
     
     rm -f ${FW_DIR}/${BOOT_READY_FILE}
@@ -373,7 +372,7 @@ function flash_cleanup() {
 
 #### flash reboot ####
 
-function flash_reboot() {
+function do_flash_reboot() {
     echo "preparing for reboot..."
 
     board=$(cat ${SYS_BOARD_FILE})
@@ -396,6 +395,25 @@ function flash_reboot() {
 
 
 #### status ####
+
+function new_version() {
+    cat ${FW_DIR}/${VER_FILE}
+}
+
+function backup_conf() {
+    echo "backing up /data/etc..."
+    tar -acf /boot/backup-etc-${OS_VERSION}.tar.gz -C /data etc
+}
+
+function remove_data_part() {
+    echo "removing data partition..."
+    fdisk ${DISK_DEV} >/dev/null <<END
+d
+3
+w
+END
+    sync
+}
 
 function show_status() {
     status=$(flash_boot_status)
@@ -442,17 +460,34 @@ function do_upgrade() {
     do_extract
     show_status
     
-    flash_boot
+    do_flash_boot
     show_status
     
-    flash_reboot
+    do_flash_reboot
+}
+
+function do_clean_upgrade() {
+    echo "clean upgrading to $1"
+    
+    set -e
+
+    do_download "$1"
+    show_status
+
+    do_extract
+    show_status
+    
+    do_flash_boot
+    backup_conf
+    remove_data_part
+    show_status
+    
+    do_flash_reboot
 }
 
 
-function new_version() {
-    cat ${FW_DIR}/${VER_FILE}
-}
 
+#### main ####
 
 case "$1" in
     versions)
@@ -480,12 +515,12 @@ case "$1" in
         ;;
 
     flashboot)
-        flash_boot
+        do_flash_boot
         show_status
         ;;
 
     flashreboot)
-        flash_reboot
+        do_flash_reboot
         ;;
 
     status)
@@ -498,6 +533,14 @@ case "$1" in
         fi
 
         do_upgrade "$2"
+        ;;
+
+    cleanupgrade)
+        if [ -z "$2" ]; then
+            exit_usage
+        fi
+
+        do_clean_upgrade "$2"
         ;;
 
     *)

@@ -1,5 +1,8 @@
 #!/bin/bash
 
+DATA_OFFS="1024"  # up to 1024MB reserved for boot + root
+
+
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 case "$1" in
@@ -23,7 +26,7 @@ case "$1" in
         test -b ${data_dev} && exit 0
 
         msg_begin "Creating data partition"
-        data_start=$((1024 * 2048)) # up to 1024MB reserved for boot + root
+        data_start=$((DATA_OFFS * 2048))
         echo -e "n
             p
             3
