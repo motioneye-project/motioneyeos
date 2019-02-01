@@ -211,6 +211,34 @@ function download_status() {
 
 #### extract ####
 
+function run_pre_upgrade() {
+    which losetup &>/dev/null || return
+
+    root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
+    tmp_mnt="/tmp/fwupdate_root"
+    loop="/dev/loop4"
+    pre_upgrade="${tmp_mnt}/usr/share/pre-upgrade/*"
+    
+    mkdir -p ${tmp_mnt}
+    losetup -o $((root_start * 1024 * 1024)) ${loop} ${FW_DIR}/${FW_FILE_EXTR}
+    mount ${loop} ${tmp_mnt}
+    if [[ -d ${pre_upgrade} ]]; then
+        for script in ${pre_upgrade}/*.sh; do
+            echo "running pre-upgrade script $(basename ${script})"
+            if [[ -x ${script} ]] && ! ${script}; then
+                # non-zero exit status of pre-upgrade script indicates that
+                # the upgrade process must not be continued
+                
+                echo "aborted by pre-upgrade script"
+                return 1
+            fi
+        done
+    fi
+
+    umount ${tmp_mnt}
+    losetup -d ${loop}
+}
+
 function do_extract() {
     echo "extracting..."
     
@@ -281,6 +309,8 @@ function do_extract() {
     fi
 
     # TODO verify hash
+    
+    run_pre_upgrade
 }
 
 function extract_status() {
@@ -415,32 +445,6 @@ function flash_cleanup() {
 
 #### flash reboot ####
 
-function run_pre_upgrade() {
-    root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
-    tmp_mnt="/tmp/fwupdate_root"
-    loop="/dev/loop4"
-    pre_upgrade="${tmp_mnt}/usr/share/pre-upgrade/*"
-    
-    mkdir -p ${tmp_mnt}
-    losetup -o $((root_start * 1024 * 1024)) ${loop} ${FW_DIR}/${FW_FILE_EXTR}
-    mount ${loop} ${tmp_mnt}
-    if [[ -d ${pre_upgrade} ]]; then
-        for script in ${pre_upgrade}/*.sh; do
-            echo "running pre-upgrade script $(basename ${script})"
-            if [[ -x ${script} ]] && ! ${script}; then
-                # non-zero exit status of pre-upgrade script indicates that
-                # the upgrade process must not be continued
-                
-                echo "aborted by pre-upgrade script"
-                return 1
-            fi
-        done
-    fi
-
-    umount ${tmp_mnt}
-    losetup -d ${loop}
-}
-
 function reallocate_root_part() {
     root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
     root_info=(${root_info})
@@ -484,7 +488,6 @@ function do_flash_reboot() {
         return 1
     fi
     
-    run_pre_upgrade
     reallocate_root_part
 
     echo "preparing for reboot..."
