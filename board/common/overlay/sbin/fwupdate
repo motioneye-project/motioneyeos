@@ -280,34 +280,6 @@ function do_extract() {
         exit 1
     fi
     
-    # verify available partition space
-    
-    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
-    fw_boot_info=(${fw_boot_info})
-    fw_boot_size=${fw_boot_info[3]}
-
-    fw_root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
-    fw_root_info=(${fw_root_info})
-    fw_root_size=${fw_root_info[3]}
-    
-    disk_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep ${BOOT_DEV})
-    disk_boot_info=(${disk_boot_info})
-    disk_boot_size=${disk_boot_info[3]}
-    
-    disk_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep ${ROOT_DEV})
-    disk_root_info=(${disk_root_info})
-    disk_root_size=${disk_root_info[3]}
-    
-    if [[ ${disk_boot_size} -lt ${fw_boot_size} ]]; then
-        echo "not enough space on boot partition (${fw_boot_size} needed, ${disk_boot_size} available)" 1>&2
-        exit 1
-    fi
-
-    if [[ ${disk_root_size} -lt ${fw_root_size} ]]; then
-        echo "not enough space on root partition (${fw_root_size} needed, ${disk_root_size} available)" 1>&2
-        exit 1
-    fi
-
     # TODO verify hash
     
     run_pre_upgrade
