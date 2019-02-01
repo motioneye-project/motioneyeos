@@ -12,7 +12,6 @@ function exit_usage() {
     echo "       fwupdate flashreboot                       (prepares for reboot + root partititon flash)"
     echo "       fwupdate status                            (shows the current firmware updating status; see below)"
     echo "       fwupdate upgrade <version|url|file>        (performs all the operations necessary for upgrading)"
-    echo "       fwupdate cleanupgrade <version|url|file>   (same as upgrade, but remove data partition, preserving config files)"
     echo ""
     echo "Statuses:"
     echo "       idle"
@@ -212,7 +211,7 @@ function download_status() {
 #### extract ####
 
 function run_pre_upgrade() {
-    which losetup &>/dev/null || return
+    which losetup &>/dev/null || return 0
 
     root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
     tmp_mnt="/tmp/fwupdate_root"
@@ -494,16 +493,6 @@ function backup_conf() {
     tar -acf /boot/backup-etc-${OS_VERSION}.tar.gz -C /data etc
 }
 
-function remove_data_part() {
-    echo "removing data partition..."
-    fdisk ${DISK_DEV} >/dev/null <<END
-d
-3
-w
-END
-    sync
-}
-
 function show_status() {
     status=$(flash_boot_status)
     if [ "${status}" == "running" ]; then
@@ -553,24 +542,6 @@ function do_upgrade() {
     do_flash_reboot
 }
 
-function do_clean_upgrade() {
-    echo "clean upgrading to $1"
-    
-    do_download "$1"
-    show_status
-
-    do_extract
-    show_status
-    
-    do_flash_boot
-    backup_conf
-    remove_data_part
-    show_status
-    
-    do_flash_reboot
-}
-
-
 
 #### main ####
 
@@ -618,14 +589,6 @@ case "$1" in
         fi
 
         do_upgrade "$2"
-        ;;
-
-    cleanupgrade)
-        if [ -z "$2" ]; then
-            exit_usage
-        fi
-
-        do_clean_upgrade "$2"
         ;;
 
     *)
