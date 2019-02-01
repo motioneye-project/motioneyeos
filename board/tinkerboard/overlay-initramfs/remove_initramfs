@@ -1,4 +1,3 @@
 #!/bin/sh
 
-sed 's/\([ ]*\)\(initrd.*\)/\1#\2/g' /boot/extlinux/extlinux.conf
-
+sed -i 's/\([ ]*\)\(initrd.*\)/\1#\2/g' /boot/extlinux/extlinux.conf
