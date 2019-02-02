@@ -5,8 +5,8 @@
 
 function exit_usage() {
     echo "Usage: fwupdate versions [-j]                     (lists available versions, optionally outputting json)"
-    echo "       fwupdate current                           (shows the current version"
-    echo "       fwupdate download <version|url|file>       (downloads a firmware version)"
+    echo "       fwupdate current                           (shows the current version)"
+    echo "       fwupdate download <version|url|file>       (downloads a firmware OS image)"
     echo "       fwupdate extract                           (extracts the downloaded firmware archive)"
     echo "       fwupdate flashboot                         (flashes the boot partition from extracted image)"
     echo "       fwupdate flashreboot                       (prepares for reboot + root partititon flash)"
@@ -42,6 +42,7 @@ OS_CONF_FILE=/etc/init.d/os_conf
 
 MIN_FREE_DISK=$((500*1024))  # 500 MB
 VER_FILE=version
+BOOT_INFO_FILE=boot_info
 ROOT_INFO_FILE=root_info
 BOOT_READY_FILE=boot_flash_ready
 
@@ -49,6 +50,9 @@ FW_DIR=/data/.fwupdate
 FW_FILE_GZ=firmware.img.gz
 FW_FILE_XZ=firmware.img.xz
 FW_FILE_EXTR=firmware.img
+
+TMP_BOOT_DIR=/tmp/fwupdate_boot
+TMP_ROOT_DIR=/tmp/fwupdate_root
 
 CURL_LOG_FILE=curl.log
 CURL_PID_FILE=curl.pid
@@ -213,14 +217,19 @@ function download_status() {
 function run_pre_upgrade() {
     which losetup &>/dev/null || return 0
 
+    boot_start=$(cat ${FW_DIR}/${BOOT_INFO_FILE} | cut -d ' ' -f 1)
     root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
-    tmp_mnt="/tmp/fwupdate_root"
-    loop="/dev/loop4"
-    pre_upgrade="${tmp_mnt}/usr/share/pre-upgrade/*"
+    boot_loop="/dev/loop3"
+    root_loop="/dev/loop4"
+    pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade/*"
     
-    mkdir -p ${tmp_mnt}
-    losetup -o $((root_start * 1024 * 1024)) ${loop} ${FW_DIR}/${FW_FILE_EXTR}
-    mount ${loop} ${tmp_mnt}
+    mkdir -p ${TMP_BOOT_DIR}
+    mkdir -p ${TMP_ROOT_DIR}
+    losetup -o $((boot_start * 1024 * 1024)) ${boot_loop} ${FW_DIR}/${FW_FILE_EXTR}
+    losetup -o $((root_start * 1024 * 1024)) ${root_loop} ${FW_DIR}/${FW_FILE_EXTR}
+    mount ${boot_loop} ${TMP_BOOT_DIR}
+    mount ${root_loop} ${TMP_ROOT_DIR}
+    
     if [[ -d ${pre_upgrade} ]]; then
         for script in ${pre_upgrade}/*.sh; do
             echo "running pre-upgrade script $(basename ${script})"
@@ -234,8 +243,10 @@ function run_pre_upgrade() {
         done
     fi
 
-    umount ${tmp_mnt}
-    losetup -d ${loop}
+    umount ${TMP_BOOT_DIR}
+    umount ${TMP_ROOT_DIR}
+    losetup -d ${boot_loop}
+    losetup -d ${root_loop}
 }
 
 function do_extract() {
@@ -370,6 +381,7 @@ function do_flash_boot() {
     root_start=$((${root_info[1]} / 2048))  # in MB
     root_size=$((${root_info[3]} / 1048576))  # in MB
     
+    echo ${boot_start} ${boot_size} > ${FW_DIR}/${BOOT_INFO_FILE}
     echo ${root_start} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
     
     reallocate_boot_part
