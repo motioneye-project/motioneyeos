@@ -1,0 +1,47 @@
+#!/bin/bash
+
+BACKUPS_DIR="/boot"
+BACKUP_PATTERN="backup-*.tar.gz"
+DATA_DIR="/data"
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+
+case "$1" in
+    start)
+        if ! ls ${BACKUPS_DIR}/${BACKUP_PATTERN} &>/dev/null; then
+            exit;  # no backups
+        fi
+        
+        mount -o remount,rw /boot
+
+        for file in ${BACKUPS_DIR}/${BACKUP_PATTERN}; do
+            msg_begin "Restoring backup from $(basename ${file})"
+            tar -mxf ${file} -C ${DATA_DIR}
+            if [[ $? == 0 ]]; then
+                rm ${file}
+                msg_done
+            else
+                msg_fail
+            fi
+        done
+        
+        # source os_conf again, as it might have changed after restore
+        test -f /etc/init.d/os_conf && source /etc/init.d/os_conf
+        if [[ "${OS_DEBUG}" != "true" ]]; then
+            mount -o remount,ro /boot
+        fi
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+
