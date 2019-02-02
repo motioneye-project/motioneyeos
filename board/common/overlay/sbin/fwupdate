@@ -40,7 +40,7 @@ SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
 OS_CONF_FILE=/etc/init.d/os_conf
 
-MIN_FREE_DISK=$((500*1024))  # 500 MB
+MIN_FREE_DISK=$((500 * 1024))  # 500 MB
 VER_FILE=version
 BOOT_INFO_FILE=boot_info
 ROOT_INFO_FILE=root_info
@@ -217,16 +217,16 @@ function download_status() {
 function run_pre_upgrade() {
     which losetup &>/dev/null || return 0
 
-    boot_start=$(cat ${FW_DIR}/${BOOT_INFO_FILE} | cut -d ' ' -f 1)
-    root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
+    boot_info=($(cat ${FW_DIR}/${BOOT_INFO_FILE}))
+    root_info=($(cat ${FW_DIR}/${ROOT_INFO_FILE}))
     boot_loop="/dev/loop3"
     root_loop="/dev/loop4"
     pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade/*"
     
     mkdir -p ${TMP_BOOT_DIR}
     mkdir -p ${TMP_ROOT_DIR}
-    losetup -o $((boot_start * 1024 * 1024)) ${boot_loop} ${FW_DIR}/${FW_FILE_EXTR}
-    losetup -o $((root_start * 1024 * 1024)) ${root_loop} ${FW_DIR}/${FW_FILE_EXTR}
+    losetup -o $((boot_info[0] * 512)) ${boot_loop} ${FW_DIR}/${FW_FILE_EXTR}
+    losetup -o $((root_info[0] * 512)) ${root_loop} ${FW_DIR}/${FW_FILE_EXTR}
     mount ${boot_loop} ${TMP_BOOT_DIR}
     mount ${root_loop} ${TMP_ROOT_DIR}
     
@@ -292,17 +292,32 @@ function do_extract() {
     
     # TODO verify hash
     
+    boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
+    boot_info=(${boot_info})
+    boot_start=${boot_info[1]}
+    boot_end=${boot_info[2]}
+    boot_size=$((boot_info[3] / 512))
+
+    root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
+    root_info=(${root_info})
+    root_start=${root_info[1]}
+    root_end=${root_info[2]}
+    root_size=$((root_info[3] / 512))
+    
+    echo ${boot_start} ${boot_end} ${boot_size} > ${FW_DIR}/${BOOT_INFO_FILE}
+    echo ${root_start} ${root_end} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
+
     run_pre_upgrade
 }
 
 function extract_status() {
-    if [ -f ${FW_DIR}/${XZCAT_PID_FILE} ]; then
+    if [[ -f ${FW_DIR}/${XZCAT_PID_FILE} ]]; then
         pid=$(cat ${FW_DIR}/${XZCAT_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
-    elif [ -f ${FW_DIR}/${GUNZIP_PID_FILE} ]; then
+    elif [[ -f ${FW_DIR}/${GUNZIP_PID_FILE} ]]; then
         pid=$(cat ${FW_DIR}/${GUNZIP_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
@@ -310,7 +325,7 @@ function extract_status() {
         fi
     fi
 
-    if [ -f ${FW_DIR}/${FW_FILE_EXTR} ]; then
+    if [[ -f ${FW_DIR}/${FW_FILE_EXTR} && -f ${FW_DIR}/${ROOT_INFO_FILE} ]]; then
         echo "done"
     fi
 }
@@ -319,17 +334,16 @@ function extract_status() {
 #### flash boot ####
 
 function reallocate_boot_part() {
-    boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
-    boot_info=(${boot_info})
+    current_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
+    current_boot_info=(${current_boot_info})
 
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    root_info=(${root_info})
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${current_root_info})
 
-    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
-    fw_boot_info=(${fw_boot_info})
+    boot_info=($(cat ${FW_DIR}/${BOOT_INFO_FILE}))
 
-    if [[ ${boot_info[1]} == ${fw_boot_info[1]} ]] && 
-       [[ ${boot_info[2]} == ${fw_boot_info[2]} ]]; then
+    if [[ ${current_boot_info[0]} == ${boot_info[0]} ]] && 
+       [[ ${current_boot_info[1]} == ${boot_info[1]} ]]; then
 
         return  # all good
     fi
@@ -337,7 +351,7 @@ function reallocate_boot_part() {
     echo "reallocating boot partition..."
     
     # check overlapping with root partition
-    if [[ ${fw_boot_info[2]} -ge ${root_info[1]} ]]; then
+    if [[ ${boot_info[1]} -ge ${current_root_info[0]} ]]; then
         echo "cannot reallocate boot partition: will overlap with root"
         return 1
     fi
@@ -348,8 +362,8 @@ d
 n
 p
 1
-${fw_boot_info[1]}
-${fw_boot_info[2]}
+${boot_info[0]}
+${boot_info[1]}
 w
 END
     sync
@@ -371,22 +385,9 @@ function do_flash_boot() {
     mv /sbin/reboot /sbin/reboot.bak
     ln -s /bin/true /sbin/reboot
     
-    boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
-    boot_info=(${boot_info})
-    boot_start=$((${boot_info[1]} / 2048))  # in MB
-    boot_size=$((${boot_info[3]} / 1048576))  # in MB
-
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
-    root_info=(${root_info})
-    root_start=$((${root_info[1]} / 2048))  # in MB
-    root_size=$((${root_info[3]} / 1048576))  # in MB
-    
-    echo ${boot_start} ${boot_size} > ${FW_DIR}/${BOOT_INFO_FILE}
-    echo ${root_start} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
-    
     reallocate_boot_part
 
-    dd if=${FW_DIR}/${FW_FILE_EXTR} skip=${boot_start} of=${BOOT_DEV} bs=1048576 count=${boot_size} &>${FW_DIR}/${DD_LOG_FILE} &
+    dd if=${FW_DIR}/${FW_FILE_EXTR} skip=${boot_info[0]} of=${BOOT_DEV} bs=1048576 count=$((boot_info[2] / 2048)) &>${FW_DIR}/${DD_LOG_FILE} &
     pid=$!
     echo ${pid} > ${FW_DIR}/${DD_PID_FILE}
     wait ${pid}
@@ -429,17 +430,16 @@ function flash_cleanup() {
 #### flash reboot ####
 
 function reallocate_root_part() {
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    root_info=(${root_info})
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${root_info})
 
-    data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
-    data_info=(${data_info})
+    current_data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
+    current_data_info=(${data_info})
 
-    fw_root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
-    fw_root_info=(${fw_root_info})
+    root_info=($(cat ${FW_DIR}/${ROOT_INFO_FILE}))
 
-    if [[ ${root_info[1]} == ${fw_root_info[1]} ]] && 
-       [[ ${root_info[2]} == ${fw_root_info[2]} ]]; then
+    if [[ ${current_root_info[0]} == ${root_info[0]} ]] && 
+       [[ ${current_root_info[1]} == ${root_info[1]} ]]; then
 
         return  # all good
     fi
@@ -447,7 +447,7 @@ function reallocate_root_part() {
     echo "reallocating root partition..."
     
     # check overlapping with data partition
-    if [[ ${fw_root_info[2]} -ge ${data_info[1]} ]]; then
+    if [[ ${root_info[1]} -ge ${current_data_info[0]} ]]; then
         echo "cannot reallocate root partition: will overlap with data"
         return 1
     fi
@@ -458,8 +458,8 @@ d
 n
 p
 2
-${fw_root_info[1]}
-${fw_root_info[2]}
+${root_info[0]}
+${root_info[1]}
 w
 END
     sync
