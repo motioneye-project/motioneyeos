@@ -5,8 +5,8 @@
 
 function exit_usage() {
     echo "Usage: fwupdate versions [-j]                     (lists available versions, optionally outputting json)"
-    echo "       fwupdate current                           (shows the current version"
-    echo "       fwupdate download <version|url|file>       (downloads a firmware version)"
+    echo "       fwupdate current                           (shows the current version)"
+    echo "       fwupdate download <version|url|file>       (downloads a firmware OS image)"
     echo "       fwupdate extract                           (extracts the downloaded firmware archive)"
     echo "       fwupdate flashboot                         (flashes the boot partition from extracted image)"
     echo "       fwupdate flashreboot                       (prepares for reboot + root partititon flash)"
@@ -26,7 +26,7 @@ function exit_usage() {
     exit 1
 }
 
-if [ -z "$1" ]; then
+if [[ -z "$1" ]]; then
     exit_usage
 fi
 
@@ -40,30 +40,58 @@ SYS_VERSION_FILE=/etc/version
 SYS_BOARD_FILE=/etc/board
 OS_CONF_FILE=/etc/init.d/os_conf
 
-MIN_FREE_DISK=$((500*1024))  # 500 MB
-VER_FILE=version
-ROOT_INFO_FILE=root_info
-BOOT_READY_FILE=boot_flash_ready
-
+MIN_FREE_DISK=500  # MB
 FW_DIR=/data/.fwupdate
-FW_FILE_GZ=firmware.img.gz
-FW_FILE_XZ=firmware.img.xz
-FW_FILE_EXTR=firmware.img
 
-CURL_LOG_FILE=curl.log
-CURL_PID_FILE=curl.pid
+FW_FILE_GZ=${FW_DIR}/firmware.img.gz
+FW_FILE_XZ=${FW_DIR}/firmware.img.xz
+FW_FILE_EXTR=${FW_DIR}/firmware.img
 
-GUNZIP_LOG_FILE=gunzip.log
-GUNZIP_PID_FILE=gunzip.pid
+VER_FILE=${FW_DIR}/version
 
-XZCAT_LOG_FILE=xzcat.log
-XZCAT_PID_FILE=xzcat.pid
+BOOT_INFO_FILE=${FW_DIR}/boot_info
+ROOT_INFO_FILE=${FW_DIR}/root_info
+BOOT_READY_FILE=${FW_DIR}/boot_flash_ready
 
-DD_LOG_FILE=dd.log
-DD_PID_FILE=dd.pid
+TMP_BOOT_DIR=/tmp/fwupdate_boot
+TMP_ROOT_DIR=/tmp/fwupdate_root
+
+CURL_LOG_FILE=${FW_DIR}/curl.log
+CURL_PID_FILE=${FW_DIR}/curl.pid
+
+GUNZIP_LOG_FILE=${FW_DIR}/gunzip.log
+GUNZIP_PID_FILE=${FW_DIR}/gunzip.pid
+
+XZCAT_LOG_FILE=${FW_DIR}/xzcat.log
+XZCAT_PID_FILE=${FW_DIR}/xzcat.pid
+
+DD_LOG_FILE=${FW_DIR}/dd.log
+DD_PID_FILE=${FW_DIR}/dd.pid
+
+BOOT_LOOP="/dev/loop3"
+ROOT_LOOP="/dev/loop4"
 
 source ${OS_CONF_FILE}
 source ${SYS_VERSION_FILE}
+
+
+#### cleanup on exit ####
+
+function cleanup_on_exit() {
+    set +e
+
+    if [[ -f /sbin/reboot.bak ]]; then
+        rm -f /sbin/reboot
+        mv /sbin/reboot.bak /sbin/reboot
+    fi
+    
+    umount ${TMP_BOOT_DIR} 2>/dev/null
+    umount ${TMP_ROOT_DIR} 2>/dev/null
+    losetup -d ${BOOT_LOOP} 2>/dev/null
+    losetup -d ${ROOT_LOOP} 2>/dev/null
+
+    mount -T /etc/fstab.disk -o ro /boot 2>/dev/null
+}
 
 
 #### disk & partition devices ####
@@ -80,6 +108,84 @@ else
     echo "cannot identify disk device from ${ROOT_DEV}" 1>&2
     exit 1
 fi
+
+function reallocate_boot_part() {
+    current_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
+    current_boot_info=(${current_boot_info})
+
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${current_root_info})
+
+    boot_info=($(cat ${BOOT_INFO_FILE}))
+
+    if [[ ${current_boot_info[1]} == ${boot_info[0]} ]] && 
+       [[ ${current_boot_info[2]} == ${boot_info[1]} ]]; then
+
+        return  # all good
+    fi
+    
+    echo "reallocating boot partition..."
+    
+    # check overlapping with root partition
+    if [[ ${boot_info[1]} -ge ${current_root_info[1]} ]]; then
+        echo "cannot reallocate boot partition: will overlap with root"
+        return 1
+    fi
+
+    fdisk -w auto ${DISK_DEV} >/dev/null <<END
+d
+1
+n
+p
+1
+${boot_info[0]}
+${boot_info[1]}
+t
+1
+c
+w
+END
+    sync
+}
+
+function reallocate_root_part() {
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${current_root_info})
+
+    current_data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
+    current_data_info=(${current_data_info})
+
+    root_info=($(cat ${ROOT_INFO_FILE}))
+
+    if [[ ${current_root_info[1]} == ${root_info[0]} ]] && 
+       [[ ${current_root_info[2]} == ${root_info[1]} ]]; then
+
+        return  # all good
+    fi
+    
+    echo "reallocating root partition..."
+    
+    # check overlapping with data partition
+    if [[ ${root_info[1]} -ge ${current_data_info[1]} ]]; then
+        echo "cannot reallocate root partition: will overlap with data"
+        return 1
+    fi
+
+    fdisk -w auto ${DISK_DEV} >/dev/null <<END
+d
+2
+n
+p
+2
+${root_info[0]}
+${root_info[1]}
+t
+2
+83
+w
+END
+    sync
+}
 
 
 #### versions ####
@@ -98,14 +204,14 @@ function show_versions() {
         IFS="|"
         varr=(${version})
         IFS=${OIFS}
-        if [ "${OS_PRERELEASES}" == "false" ] && [ "${varr[1]}" == "true" ]; then
+        if [[ "${OS_PRERELEASES}" == "false" && "${varr[1]}" == "true" ]]; then
             continue  # skip prereleases
         fi
-        if [ "${board}" != "${varr[2]}" ]; then
+        if [[ "${board}" != "${varr[2]}" ]]; then
             continue  # skip other boards
         fi
 
-        if [ "${show_json}" == "true" ]; then
+        if [[ "${show_json}" == "true" ]]; then
             echo "{\"version\": \"${varr[0]}\"," \
                   "\"url\": \"${varr[3]}\"," \
                   "\"board\": \"${varr[2]}\"," \
@@ -131,23 +237,23 @@ function do_download() {
     mkdir -p ${FW_DIR}
 
     # Look for local file first
-    if [ -f "$1" ]; then
+    if [[ -f "$1" ]]; then
         version="custom"
         FNAME=`basename $1`
         FILEEXT=${FNAME##*.}
         DST_FNAME=""
-        if [ "${FILEEXT}" == "xz" ]; then
-            DST_FNAME="${FW_DIR}/${FW_FILE_XZ}"
-        elif [ "${FILEEXT}" == "gz" ]; then
-            DST_FNAME="${FW_DIR}/${FW_FILE_GZ}"
+        if [[ "${FILEEXT}" == "xz" ]]; then
+            DST_FNAME=${FW_FILE_XZ}
+        elif [[ "${FILEEXT}" == "gz" ]]; then
+            DST_FNAME=${FW_FILE_GZ}
         fi
-        if [ -n "${DST_FNAME}" ]; then
+        if [[ -n "${DST_FNAME}" ]]; then
             cp -f $1 ${DST_FNAME}
-            echo ${version} > ${FW_DIR}/${VER_FILE}
+            echo ${version} > ${VER_FILE}
             return
         fi
     fi
-
+    
     board=$(cat ${SYS_BOARD_FILE})
     url=$1
     version=$1
@@ -158,51 +264,51 @@ function do_download() {
         version="custom"
     fi
 
-    if [ -z "${url}" ]; then
+    if [[ -z "${url}" ]]; then
         echo "no such version" 1>&2
         exit 1
     fi
 
     free_disk=$(df /data | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4)
-    if [ "${free_disk}" -lt ${MIN_FREE_DISK} ]; then
+    if [[ "${free_disk}" -lt $((MIN_FREE_DISK * 1024)) ]]; then
         echo "not enough disk space" 1>&2
         exit 1
     fi
 
-    outfile=${FW_DIR}/${FW_FILE_GZ}
+    outfile=${FW_FILE_GZ}
     format=$(echo ${url} | sed -rn 's/.*\.img\.([a-z]+)$/\1/ p')
-    if [ "${format}" == "xz" ]; then
-        outfile=${FW_DIR}/${FW_FILE_XZ}
+    if [[ "${format}" == "xz" ]]; then
+        outfile=${FW_FILE_XZ}
     fi
 
-    echo ${version} > ${FW_DIR}/${VER_FILE}
+    echo ${version} > ${VER_FILE}
 
     curl_opts="-S -f -L"
-    if [ -n "${OS_FIRMWARE_USERNAME}" ]; then
+    if [[ -n "${OS_FIRMWARE_USERNAME}" ]]; then
         curl_opts+=" --user ${OS_FIRMWARE_USERNAME}:${OS_FIRMWARE_PASSWORD}"
     fi
 
-    curl ${curl_opts} -o ${outfile} "${url}" &> ${FW_DIR}/${CURL_LOG_FILE} &
+    curl ${curl_opts} -o ${outfile} "${url}" &> ${CURL_LOG_FILE} &
     pid=$!
-    echo ${pid} > ${FW_DIR}/${CURL_PID_FILE}
+    echo ${pid} > ${CURL_PID_FILE}
     wait ${pid}
     
-    if [ "$?" != 0 ]; then
-        cat ${FW_DIR}/${CURL_LOG_FILE}
+    if [[ "$?" != 0 ]]; then
+        cat ${CURL_LOG_FILE}
         exit 1
     fi
 }
 
 function download_status() {
-    if [ -f ${FW_DIR}/${CURL_PID_FILE} ]; then
-        pid=$(cat ${FW_DIR}/${CURL_PID_FILE})
+    if [[ -f ${CURL_PID_FILE} ]]; then
+        pid=$(cat ${CURL_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f ${FW_DIR}/${FW_FILE_GZ} -o -f ${FW_DIR}/${FW_FILE_XZ} ]; then
+    if [[ -f ${FW_FILE_GZ} || -f ${FW_FILE_XZ} ]]; then
         echo "done"
     fi
 }
@@ -213,14 +319,17 @@ function download_status() {
 function run_pre_upgrade() {
     which losetup &>/dev/null || return 0
 
-    root_start=$(cat ${FW_DIR}/${ROOT_INFO_FILE} | cut -d ' ' -f 1)
-    tmp_mnt="/tmp/fwupdate_root"
-    loop="/dev/loop4"
-    pre_upgrade="${tmp_mnt}/usr/share/pre-upgrade/*"
+    boot_info=($(cat ${BOOT_INFO_FILE}))
+    root_info=($(cat ${ROOT_INFO_FILE}))
+    pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade/*"
     
-    mkdir -p ${tmp_mnt}
-    losetup -o $((root_start * 1024 * 1024)) ${loop} ${FW_DIR}/${FW_FILE_EXTR}
-    mount ${loop} ${tmp_mnt}
+    mkdir -p ${TMP_BOOT_DIR}
+    mkdir -p ${TMP_ROOT_DIR}
+    losetup -o $((boot_info[0] * 512)) ${BOOT_LOOP} ${FW_FILE_EXTR}
+    losetup -o $((root_info[0] * 512)) ${ROOT_LOOP} ${FW_FILE_EXTR}
+    mount ${BOOT_LOOP} ${TMP_BOOT_DIR}
+    mount ${ROOT_LOOP} ${TMP_ROOT_DIR}
+    
     if [[ -d ${pre_upgrade} ]]; then
         for script in ${pre_upgrade}/*.sh; do
             echo "running pre-upgrade script $(basename ${script})"
@@ -234,37 +343,41 @@ function run_pre_upgrade() {
         done
     fi
 
-    umount ${tmp_mnt}
-    losetup -d ${loop}
+    umount ${TMP_BOOT_DIR}
+    umount ${TMP_ROOT_DIR}
+    losetup -d ${BOOT_LOOP}
+    losetup -d ${ROOT_LOOP}
 }
 
 function do_extract() {
-    echo "extracting..."
-    
-    rm -f ${FW_DIR}/${FW_FILE_EXTR}
-    rm -f ${FW_DIR}/${BOOT_READY_FILE}
-
-    if ! [ -f ${FW_DIR}/${FW_FILE_GZ} -o -f ${FW_DIR}/${FW_FILE_XZ} ]; then
+    if ! [[ -f ${FW_FILE_GZ} || -f ${FW_FILE_XZ} ]]; then
         echo "firmware file not downloaded" 1>&2
         exit 1
     fi
+    
+    rm -f ${FW_FILE_EXTR}
+    rm -f ${BOOT_READY_FILE}
+
+    echo "extracting..."
+    
+    trap cleanup_on_exit EXIT
 
     format="gz"
-    if [ -f ${FW_DIR}/${FW_FILE_XZ} ]; then
+    if [[ -f ${FW_FILE_XZ} ]]; then
         format="xz"
     fi
 
-    rm -f ${FW_DIR}/${FW_FILE_EXTR}
-    rm -f ${FW_DIR}/${GUNZIP_PID_FILE} ${FW_DIR}/${XZCAT_PID_FILE}
+    rm -f ${FW_FILE_EXTR}
+    rm -f ${GUNZIP_PID_FILE} ${XZCAT_PID_FILE}
 
-    if [ "${format}" == "xz" ]; then
-        DECOMPRESS_LOG_FILE=${FW_DIR}/${XZCAT_LOG_FILE}
-        DECOMPRESS_PID_FILE=${FW_DIR}/${XZCAT_PID_FILE}
-        xzcat ${FW_DIR}/${FW_FILE_XZ} > ${FW_DIR}/${FW_FILE_EXTR} 2>${FW_DIR}/${XZCAT_LOG_FILE} &
-    elif [ "${format}" == "gz" ]; then
-        DECOMPRESS_LOG_FILE=${FW_DIR}/${GUNZIP_LOG_FILE}
-        DECOMPRESS_PID_FILE=${FW_DIR}/${GUNZIP_PID_FILE}
-        gunzip -k -c ${FW_DIR}/${FW_FILE_GZ} > ${FW_DIR}/${FW_FILE_EXTR} 2>${FW_DIR}/${GUNZIP_LOG_FILE} &
+    if [[ "${format}" == "xz" ]]; then
+        DECOMPRESS_LOG_FILE=${XZCAT_LOG_FILE}
+        DECOMPRESS_PID_FILE=${XZCAT_PID_FILE}
+        xzcat ${FW_FILE_XZ} > ${FW_FILE_EXTR} 2>${XZCAT_LOG_FILE} &
+    elif [[ "${format}" == "gz" ]]; then
+        DECOMPRESS_LOG_FILE=${GUNZIP_LOG_FILE}
+        DECOMPRESS_PID_FILE=${GUNZIP_PID_FILE}
+        gunzip -k -c ${FW_FILE_GZ} > ${FW_FILE_EXTR} 2>${GUNZIP_LOG_FILE} &
     else
         echo "firmware compression format ${format} not supported" 1>&2
         exit 1
@@ -274,32 +387,47 @@ function do_extract() {
     echo ${pid} > ${DECOMPRESS_PID_FILE}
     wait ${pid}
 
-    if [ "$?" != 0 ]; then
+    if [[ "$?" != 0 ]]; then
         cat ${DECOMPRESS_LOG_FILE}
         exit 1
     fi
     
     # TODO verify hash
     
+    boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
+    boot_info=(${boot_info})
+    boot_start=${boot_info[1]}
+    boot_end=${boot_info[2]}
+    boot_size=$((boot_info[3] / 512))
+
+    root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
+    root_info=(${root_info})
+    root_start=${root_info[1]}
+    root_end=${root_info[2]}
+    root_size=$((root_info[3] / 512))
+    
+    echo ${boot_start} ${boot_end} ${boot_size} > ${BOOT_INFO_FILE}
+    echo ${root_start} ${root_end} ${root_size} > ${ROOT_INFO_FILE}
+
     run_pre_upgrade
 }
 
 function extract_status() {
-    if [ -f ${FW_DIR}/${XZCAT_PID_FILE} ]; then
-        pid=$(cat ${FW_DIR}/${XZCAT_PID_FILE})
+    if [[ -f ${XZCAT_PID_FILE} ]]; then
+        pid=$(cat ${XZCAT_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
-    elif [ -f ${FW_DIR}/${GUNZIP_PID_FILE} ]; then
-        pid=$(cat ${FW_DIR}/${GUNZIP_PID_FILE})
+    elif [[ -f ${GUNZIP_PID_FILE} ]]; then
+        pid=$(cat ${GUNZIP_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f ${FW_DIR}/${FW_FILE_EXTR} ]; then
+    if [[ -f ${FW_FILE_EXTR} && -f ${ROOT_INFO_FILE} ]]; then
         echo "done"
     fi
 }
@@ -307,76 +435,34 @@ function extract_status() {
 
 #### flash boot ####
 
-function reallocate_boot_part() {
-    boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
-    boot_info=(${boot_info})
-
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    root_info=(${root_info})
-
-    fw_boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
-    fw_boot_info=(${fw_boot_info})
-
-    if [[ ${boot_info[1]} == ${fw_boot_info[1]} ]] && 
-       [[ ${boot_info[2]} == ${fw_boot_info[2]} ]]; then
-
-        return  # all good
-    fi
-    
-    echo "reallocating boot partition..."
-    
-    # check overlapping with root partition
-    if [[ ${fw_boot_info[2]} -ge ${root_info[1]} ]]; then
-        echo "cannot reallocate boot partition: will overlap with root"
+function do_flash_boot() {
+    if [[ ! -f ${FW_FILE_EXTR} ]]; then
+        echo "extracted firmware not present"
         return 1
     fi
 
-    fdisk -w auto ${DISK_DEV} >/dev/null <<END
-d
-1
-n
-p
-1
-${fw_boot_info[1]}
-${fw_boot_info[2]}
-w
-END
-    sync
-}
-
-function do_flash_boot() {
     echo "flashing boot..."
     
-    rm -f ${FW_DIR}/${BOOT_READY_FILE}
+    trap cleanup_on_exit EXIT
+    
+    rm -f ${BOOT_READY_FILE}
 
     board=$(cat ${SYS_BOARD_FILE})
+    boot_info=($(cat ${BOOT_INFO_FILE}))
 
     cp -r /boot ${FW_DIR}/old_boot
     umount /boot
-    trap flash_cleanup EXIT
 
     # prevent unwanted reboots during upgrade
     mount -o remount,rw /
     mv /sbin/reboot /sbin/reboot.bak
     ln -s /bin/true /sbin/reboot
     
-    boot_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}1")
-    boot_info=(${boot_info})
-    boot_start=$((${boot_info[1]} / 2048))  # in MB
-    boot_size=$((${boot_info[3]} / 1048576))  # in MB
-
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
-    root_info=(${root_info})
-    root_start=$((${root_info[1]} / 2048))  # in MB
-    root_size=$((${root_info[3]} / 1048576))  # in MB
-    
-    echo ${root_start} ${root_size} > ${FW_DIR}/${ROOT_INFO_FILE}
-    
     reallocate_boot_part
 
-    dd if=${FW_DIR}/${FW_FILE_EXTR} skip=${boot_start} of=${BOOT_DEV} bs=1048576 count=${boot_size} &>${FW_DIR}/${DD_LOG_FILE} &
+    dd if=${FW_FILE_EXTR} skip=$((boot_info[0] / 2048)) of=${BOOT_DEV} bs=1048576 count=$((boot_info[2] / 2048)) &>${DD_LOG_FILE} &
     pid=$!
-    echo ${pid} > ${FW_DIR}/${DD_PID_FILE}
+    echo ${pid} > ${DD_PID_FILE}
     wait ${pid}
 
     mount -T /etc/fstab.disk -o rw /boot
@@ -384,84 +470,40 @@ function do_flash_boot() {
     # the /usr/libexec/fw-restore-boot-cfg script, if present, takes the old (backup) boot dir as argument
     # and should restore any /boot configuration that needs to be preserved across updates
     # from the old boot dir to the current (new) /boot dir
-    if [ -x /usr/libexec/fw-restore-boot-cfg ]; then
+    if [[ -x /usr/libexec/fw-restore-boot-cfg ]]; then
         /usr/libexec/fw-restore-boot-cfg ${FW_DIR}/old_boot 2>/dev/null || true
     fi
-    touch ${FW_DIR}/${BOOT_READY_FILE}
+    touch ${BOOT_READY_FILE}
 }
 
 function flash_boot_status() {
-    if [ -f ${FW_DIR}/${DD_PID_FILE} ]; then
-        pid=$(cat ${FW_DIR}/${DD_PID_FILE})
+    if [[ -f ${DD_PID_FILE} ]]; then
+        pid=$(cat ${DD_PID_FILE})
         if kill -0 ${pid} &>/dev/null; then
             echo "running"
             return
         fi
     fi
 
-    if [ -f ${FW_DIR}/${BOOT_READY_FILE} ]; then
+    if [[ -f ${BOOT_READY_FILE} ]]; then
         echo "done"
     fi
-}
-
-function flash_cleanup() {
-    if [ -f /sbin/reboot.bak ]; then
-        rm -f /sbin/reboot
-        mv /sbin/reboot.bak /sbin/reboot
-    fi
-    
-    mount /boot 2>/dev/null
 }
 
 
 #### flash reboot ####
 
-function reallocate_root_part() {
-    root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    root_info=(${root_info})
-
-    data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
-    data_info=(${data_info})
-
-    fw_root_info=$(fdisk --bytes -l -o device,start,end,size ${FW_DIR}/${FW_FILE_EXTR} | grep "${FW_FILE_EXTR}2")
-    fw_root_info=(${fw_root_info})
-
-    if [[ ${root_info[1]} == ${fw_root_info[1]} ]] && 
-       [[ ${root_info[2]} == ${fw_root_info[2]} ]]; then
-
-        return  # all good
-    fi
-    
-    echo "reallocating root partition..."
-    
-    # check overlapping with data partition
-    if [[ ${fw_root_info[2]} -ge ${data_info[1]} ]]; then
-        echo "cannot reallocate root partition: will overlap with data"
-        return 1
-    fi
-
-    fdisk -w auto ${DISK_DEV} >/dev/null <<END
-d
-2
-n
-p
-2
-${fw_root_info[1]}
-${fw_root_info[2]}
-w
-END
-    sync
-}
-
 function do_flash_reboot() {
-    if [[ ! -f ${FW_DIR}/${ROOT_INFO_FILE} ]]; then
-        echo "extracted firmware not present"
+    if [[ ! -f ${ROOT_INFO_FILE} ]]; then
+        echo "root partition info file not present"
         return 1
     fi
+    
+    echo "preparing for reboot..."
+    
+    trap cleanup_on_exit EXIT
     
     reallocate_root_part
-
-    echo "preparing for reboot..."
 
     board=$(cat ${SYS_BOARD_FILE})
     
@@ -469,7 +511,7 @@ function do_flash_reboot() {
     # make the necessary changes to the current boot configuration so that
     # the firmware update initramfs will be used by the next boot
     mount -o remount,rw /boot
-    if [ -x /usr/libexec/fw-prepare-boot ]; then
+    if [[ -x /usr/libexec/fw-prepare-boot ]]; then
         /usr/libexec/fw-prepare-boot
     fi
 
@@ -485,7 +527,7 @@ function do_flash_reboot() {
 #### status ####
 
 function new_version() {
-    cat ${FW_DIR}/${VER_FILE}
+    cat ${VER_FILE}
 }
 
 function backup_conf() {
@@ -495,28 +537,28 @@ function backup_conf() {
 
 function show_status() {
     status=$(flash_boot_status)
-    if [ "${status}" == "running" ]; then
+    if [[ "${status}" == "running" ]]; then
         echo "flashing boot $(new_version)"
         return
-    elif [ "${status}" == "done" ]; then
+    elif [[ "${status}" == "done" ]]; then
         echo "boot ready $(new_version)"
         return
     fi
 
     status=$(extract_status)
-    if [ "${status}" == "running" ]; then
+    if [[ "${status}" == "running" ]]; then
         echo "extracting $(new_version)"
         return
-    elif [ "${status}" == "done" ]; then
+    elif [[ "${status}" == "done" ]]; then
         echo "extracted $(new_version)"
         return
     fi
     
     status=$(download_status)
-    if [ "${status}" == "running" ]; then
+    if [[ "${status}" == "running" ]]; then
         echo "downloading $(new_version)"
         return
-    elif [ -n "${status}" ]; then
+    elif [[ -n "${status}" ]]; then
         echo "downloaded $(new_version)"
         return
     fi
@@ -557,7 +599,7 @@ case "$1" in
         ;;
 
     download)
-        if [ -z "$2" ]; then
+        if [[ -z "$2" ]]; then
             exit_usage
         fi
 
@@ -584,7 +626,7 @@ case "$1" in
         ;;
 
     upgrade)
-        if [ -z "$2" ]; then
+        if [[ -z "$2" ]]; then
             exit_usage
         fi
 

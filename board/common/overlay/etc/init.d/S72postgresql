@@ -35,7 +35,7 @@ start() {
 	    run_pg_ctl initdb -s -D ${DB_DIR} &>> ${LOG}
 	    test $? == 0 && msg_done || msg_fail
 	    
-        echo "include_if_exists = '/data/etc/postgresql.conf'" >> ${DB_DIR}/postgresql.conf
+        echo "include_if_exists = '${CONF}'" >> ${DB_DIR}/postgresql.conf
     fi
 
     msg_begin "Starting postgresql"
