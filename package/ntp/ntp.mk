@@ -102,9 +102,8 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_NTP_NTPD),y)
-define NTP_INSTALL_INIT_SYSV
+define NTP_INSTALL_INIT_SYSV_NTPD
 	$(INSTALL) -D -m 755 package/ntp/S49ntp $(TARGET_DIR)/etc/init.d/S49ntp
-	$(NTP_INSTALL_INIT_SYSV_SNTP)
 endef
 
 define NTP_INSTALL_INIT_SYSTEMD
@@ -114,5 +113,10 @@ define NTP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
 endef
 endif
+
+define NTP_INSTALL_INIT_SYSV
+	$(NTP_INSTALL_INIT_SYSV_NTPD)
+	$(NTP_INSTALL_INIT_SYSV_SNTP)
+endef
 
 $(eval $(autotools-package))
