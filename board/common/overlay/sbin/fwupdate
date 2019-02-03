@@ -9,7 +9,7 @@ function exit_usage() {
     echo "       fwupdate download <version|url|file>       (downloads a firmware OS image)"
     echo "       fwupdate extract                           (extracts the downloaded firmware archive)"
     echo "       fwupdate flashboot                         (flashes the boot partition from extracted image)"
-    echo "       fwupdate flashreboot                       (prepares for reboot + root partititon flash)"
+    echo "       fwupdate flashreboot                       (prepares for reboot + root partition flash)"
     echo "       fwupdate status                            (shows the current firmware updating status; see below)"
     echo "       fwupdate upgrade <version|url|file>        (performs all the operations necessary for upgrading)"
     echo ""
