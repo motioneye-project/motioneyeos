@@ -26,4 +26,11 @@ else
 LIBGEOTIFF_CONF_OPTS += --without-jpeg
 endif
 
+ifeq ($(BR2_PACKAGE_PROJ),y)
+LIBGEOTIFF_DEPENDENCIES += proj
+LIBGEOTIFF_CONF_OPTS += --with-proj=$(STAGING_DIR)/usr
+else
+LIBGEOTIFF_CONF_OPTS += --without-proj
+endif
+
 $(eval $(autotools-package))
