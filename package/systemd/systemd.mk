@@ -64,6 +64,13 @@ else
 SYSTEMD_CONF_OPTS += -Delfutils=false
 endif
 
+ifeq ($(BR2_PACKAGE_IPTABLES),y)
+SYSTEMD_DEPENDENCIES += iptables
+SYSTEMD_CONF_OPTS += -Dlibiptc=true
+else
+SYSTEMD_CONF_OPTS += -Dlibiptc=false
+endif
+
 # Both options can't be selected at the same time so prefer libidn2
 ifeq ($(BR2_PACKAGE_LIBIDN2),y)
 SYSTEMD_DEPENDENCIES += libidn2
