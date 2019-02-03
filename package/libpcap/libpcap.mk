@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBPCAP_VERSION = 1.8.1
+LIBPCAP_VERSION = 1.9.0
 LIBPCAP_SITE = http://www.tcpdump.org/release
 LIBPCAP_LICENSE = BSD-3-Clause
 LIBPCAP_LICENSE_FILES = LICENSE
@@ -15,7 +15,7 @@ LIBPCAP_CONF_ENV = \
 	ac_cv_header_linux_wireless_h=yes \
 	CFLAGS="$(LIBPCAP_CFLAGS)"
 LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
-LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux
+LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux --without-dag
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
 # Omit -rpath from pcap-config output
