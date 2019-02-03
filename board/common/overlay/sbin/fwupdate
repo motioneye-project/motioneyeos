@@ -350,17 +350,17 @@ function run_pre_upgrade() {
 }
 
 function do_extract() {
-    echo "extracting..."
-    
-    trap cleanup_on_exit EXIT
-    
-    rm -f ${FW_FILE_EXTR}
-    rm -f ${BOOT_READY_FILE}
-
     if ! [[ -f ${FW_FILE_GZ} || -f ${FW_FILE_XZ} ]]; then
         echo "firmware file not downloaded" 1>&2
         exit 1
     fi
+    
+    rm -f ${FW_FILE_EXTR}
+    rm -f ${BOOT_READY_FILE}
+
+    echo "extracting..."
+    
+    trap cleanup_on_exit EXIT
 
     format="gz"
     if [[ -f ${FW_FILE_XZ} ]]; then
