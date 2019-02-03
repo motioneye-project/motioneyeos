@@ -41,7 +41,6 @@ SYS_BOARD_FILE=/etc/board
 OS_CONF_FILE=/etc/init.d/os_conf
 
 MIN_FREE_DISK=500  # MB
-
 FW_DIR=/data/.fwupdate
 
 FW_FILE_GZ=${FW_DIR}/firmware.img.gz
@@ -69,8 +68,30 @@ XZCAT_PID_FILE=${FW_DIR}/xzcat.pid
 DD_LOG_FILE=${FW_DIR}/dd.log
 DD_PID_FILE=${FW_DIR}/dd.pid
 
+BOOT_LOOP="/dev/loop3"
+ROOT_LOOP="/dev/loop4"
+
 source ${OS_CONF_FILE}
 source ${SYS_VERSION_FILE}
+
+
+#### cleanup on exit ####
+
+function cleanup_on_exit() {
+    set +e
+
+    if [[ -f /sbin/reboot.bak ]]; then
+        rm -f /sbin/reboot
+        mv /sbin/reboot.bak /sbin/reboot
+    fi
+    
+    umount ${TMP_BOOT_DIR} 2>/dev/null
+    umount ${TMP_ROOT_DIR} 2>/dev/null
+    losetup -d ${BOOT_LOOP} 2>/dev/null
+    losetup -d ${ROOT_LOOP} 2>/dev/null
+
+    mount -T /etc/fstab.disk -o ro /boot 2>/dev/null
+}
 
 
 #### disk & partition devices ####
@@ -87,6 +108,84 @@ else
     echo "cannot identify disk device from ${ROOT_DEV}" 1>&2
     exit 1
 fi
+
+function reallocate_boot_part() {
+    current_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
+    current_boot_info=(${current_boot_info})
+
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${current_root_info})
+
+    boot_info=($(cat ${BOOT_INFO_FILE}))
+
+    if [[ ${current_boot_info[1]} == ${boot_info[0]} ]] && 
+       [[ ${current_boot_info[2]} == ${boot_info[1]} ]]; then
+
+        return  # all good
+    fi
+    
+    echo "reallocating boot partition..."
+    
+    # check overlapping with root partition
+    if [[ ${boot_info[1]} -ge ${current_root_info[1]} ]]; then
+        echo "cannot reallocate boot partition: will overlap with root"
+        return 1
+    fi
+
+    fdisk -w auto ${DISK_DEV} >/dev/null <<END
+d
+1
+n
+p
+1
+${boot_info[0]}
+${boot_info[1]}
+t
+1
+c
+w
+END
+    sync
+}
+
+function reallocate_root_part() {
+    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
+    current_root_info=(${current_root_info})
+
+    current_data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
+    current_data_info=(${current_data_info})
+
+    root_info=($(cat ${ROOT_INFO_FILE}))
+
+    if [[ ${current_root_info[1]} == ${root_info[0]} ]] && 
+       [[ ${current_root_info[2]} == ${root_info[1]} ]]; then
+
+        return  # all good
+    fi
+    
+    echo "reallocating root partition..."
+    
+    # check overlapping with data partition
+    if [[ ${root_info[1]} -ge ${current_data_info[1]} ]]; then
+        echo "cannot reallocate root partition: will overlap with data"
+        return 1
+    fi
+
+    fdisk -w auto ${DISK_DEV} >/dev/null <<END
+d
+2
+n
+p
+2
+${root_info[0]}
+${root_info[1]}
+t
+2
+83
+w
+END
+    sync
+}
 
 
 #### versions ####
@@ -222,16 +321,14 @@ function run_pre_upgrade() {
 
     boot_info=($(cat ${BOOT_INFO_FILE}))
     root_info=($(cat ${ROOT_INFO_FILE}))
-    boot_loop="/dev/loop3"
-    root_loop="/dev/loop4"
     pre_upgrade="${TMP_ROOT_DIR}/usr/share/pre-upgrade/*"
     
     mkdir -p ${TMP_BOOT_DIR}
     mkdir -p ${TMP_ROOT_DIR}
-    losetup -o $((boot_info[0] * 512)) ${boot_loop} ${FW_FILE_EXTR}
-    losetup -o $((root_info[0] * 512)) ${root_loop} ${FW_FILE_EXTR}
-    mount ${boot_loop} ${TMP_BOOT_DIR}
-    mount ${root_loop} ${TMP_ROOT_DIR}
+    losetup -o $((boot_info[0] * 512)) ${BOOT_LOOP} ${FW_FILE_EXTR}
+    losetup -o $((root_info[0] * 512)) ${ROOT_LOOP} ${FW_FILE_EXTR}
+    mount ${BOOT_LOOP} ${TMP_BOOT_DIR}
+    mount ${ROOT_LOOP} ${TMP_ROOT_DIR}
     
     if [[ -d ${pre_upgrade} ]]; then
         for script in ${pre_upgrade}/*.sh; do
@@ -248,12 +345,14 @@ function run_pre_upgrade() {
 
     umount ${TMP_BOOT_DIR}
     umount ${TMP_ROOT_DIR}
-    losetup -d ${boot_loop}
-    losetup -d ${root_loop}
+    losetup -d ${BOOT_LOOP}
+    losetup -d ${ROOT_LOOP}
 }
 
 function do_extract() {
     echo "extracting..."
+    
+    trap cleanup_on_exit EXIT
     
     rm -f ${FW_FILE_EXTR}
     rm -f ${BOOT_READY_FILE}
@@ -336,55 +435,23 @@ function extract_status() {
 
 #### flash boot ####
 
-function reallocate_boot_part() {
-    current_boot_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${BOOT_DEV}")
-    current_boot_info=(${current_boot_info})
-
-    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    current_root_info=(${current_root_info})
-
-    boot_info=($(cat ${BOOT_INFO_FILE}))
-
-    if [[ ${current_boot_info[1]} == ${boot_info[0]} ]] && 
-       [[ ${current_boot_info[2]} == ${boot_info[1]} ]]; then
-
-        return  # all good
-    fi
-    
-    echo "reallocating boot partition..."
-    
-    # check overlapping with root partition
-    if [[ ${boot_info[1]} -ge ${current_root_info[1]} ]]; then
-        echo "cannot reallocate boot partition: will overlap with root"
+function do_flash_boot() {
+    if [[ ! -f ${FW_FILE_EXTR} ]]; then
+        echo "extracted firmware not present"
         return 1
     fi
 
-    fdisk -w auto ${DISK_DEV} >/dev/null <<END
-d
-1
-n
-p
-1
-${boot_info[0]}
-${boot_info[1]}
-t
-1
-c
-w
-END
-    sync
-}
-
-function do_flash_boot() {
     echo "flashing boot..."
+    
+    trap cleanup_on_exit EXIT
     
     rm -f ${BOOT_READY_FILE}
 
     board=$(cat ${SYS_BOARD_FILE})
+    boot_info=($(cat ${BOOT_INFO_FILE}))
 
     cp -r /boot ${FW_DIR}/old_boot
     umount /boot
-    trap flash_cleanup EXIT
 
     # prevent unwanted reboots during upgrade
     mount -o remount,rw /
@@ -393,7 +460,7 @@ function do_flash_boot() {
     
     reallocate_boot_part
 
-    dd if=${FW_FILE_EXTR} skip=${boot_info[0]} of=${BOOT_DEV} bs=1048576 count=$((boot_info[2] / 2048)) &>${DD_LOG_FILE} &
+    dd if=${FW_FILE_EXTR} skip=$((boot_info[0] / 2048)) of=${BOOT_DEV} bs=1048576 count=$((boot_info[2] / 2048)) &>${DD_LOG_FILE} &
     pid=$!
     echo ${pid} > ${DD_PID_FILE}
     wait ${pid}
@@ -423,66 +490,20 @@ function flash_boot_status() {
     fi
 }
 
-function flash_cleanup() {
-    if [[ -f /sbin/reboot.bak ]]; then
-        rm -f /sbin/reboot
-        mv /sbin/reboot.bak /sbin/reboot
-    fi
-    
-    mount /boot 2>/dev/null
-}
-
 
 #### flash reboot ####
 
-function reallocate_root_part() {
-    current_root_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${ROOT_DEV}")
-    current_root_info=(${current_root_info})
-
-    current_data_info=$(fdisk --bytes -l -o device,start,end,size ${DISK_DEV} | grep "${DATA_DEV}")
-    current_data_info=(${current_data_info})
-
-    root_info=($(cat ${ROOT_INFO_FILE}))
-
-    if [[ ${current_root_info[1]} == ${root_info[0]} ]] && 
-       [[ ${current_root_info[2]} == ${root_info[1]} ]]; then
-
-        return  # all good
-    fi
-    
-    echo "reallocating root partition..."
-    
-    # check overlapping with data partition
-    if [[ ${root_info[1]} -ge ${current_data_info[1]} ]]; then
-        echo "cannot reallocate root partition: will overlap with data"
-        return 1
-    fi
-
-    fdisk -w auto ${DISK_DEV} >/dev/null <<END
-d
-2
-n
-p
-2
-${root_info[0]}
-${root_info[1]}
-t
-2
-83
-w
-END
-    sync
-}
-
 function do_flash_reboot() {
     if [[ ! -f ${ROOT_INFO_FILE} ]]; then
-        echo "extracted firmware not present"
+        echo "root partition info file not present"
         return 1
     fi
     
-    reallocate_root_part
-
     echo "preparing for reboot..."
+    
+    trap cleanup_on_exit EXIT
+    
+    reallocate_root_part
 
     board=$(cat ${SYS_BOARD_FILE})
     
