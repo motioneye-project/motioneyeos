@@ -11,7 +11,7 @@ function load_activity(feedurl, divid) {
         if (result==null) return;
         for (let i = 0; i < result.feed.entry.length; i++) {
             let entry = result.feed.entry[i];
-            if (entry.title.indexOf("git commit") != -1)
+            if (entry.title.indexOf("git commit") !== -1)
                 continue;
             loaded += 1;
             if (loaded > nb_display)
@@ -44,7 +44,7 @@ function google_analytics() {
     let ga = document.createElement('script');
     ga.type = 'text/javascript';
     ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    ga.src = ('https:' === document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
     let s = document.getElementsByTagName('script')[0];
     s.parentNode.insertBefore(ga, s);
 }
@@ -67,7 +67,7 @@ clipboard.on('success', function(e) {
 
 $(function() {
   $('a[href*=\\#]:not([href=\\#])').click(function() {
-    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+    if (location.pathname.replace(/^\//,'') === this.pathname.replace(/^\//,'') && location.hostname === this.hostname) {
         let target = $(this.hash);
       target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
       if (target.length) {
