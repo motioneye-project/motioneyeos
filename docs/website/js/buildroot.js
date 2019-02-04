@@ -19,7 +19,7 @@ function load_activity(feedurl, divid) {
             let div = document.createElement("p");
             let link = document.createElement("a");
             let d = new Date(entry.published);
-            let data = '[' + d.toLocaleDateString() + '] ' + entry.title
+            let data = '[' + d.toLocaleDateString() + '] ' + entry.title;
             let text = document.createTextNode(data);
             link.appendChild(text);
             link.title = entry.title;
@@ -58,7 +58,7 @@ let clipboard = new Clipboard('.btn');
 
 $(function () {
   $('[data-toggle="tooltip"]').tooltip()
-})
+});
 
 clipboard.on('success', function(e) {
     e.clearSelection();
@@ -83,7 +83,7 @@ $(function() {
 jQuery(document).ready(function($) {
     let url = window.location.href;
     // Get the basename of the URL
-    url = url.split(/[\\/]/).pop()
+    url = url.split(/[\\/]/).pop();
     $('.nav a[href="/' + url + '"]').parent().addClass('active');
 
     load_activity("http://buildroot-busybox.2317881.n4.nabble.com/Buildroot-busybox-ft2.xml", "mailing-list-activity");
