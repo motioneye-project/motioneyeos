@@ -23,7 +23,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dblkid=true \
 	-Dman=false \
 	-Dima=false \
-	-Dlibcryptsetup=false \
 	-Defi=false \
 	-Dgnu-efi=false \
 	-Dldconfig=false \
@@ -55,6 +54,13 @@ SYSTEMD_DEPENDENCIES += audit
 SYSTEMD_CONF_OPTS += -Daudit=true
 else
 SYSTEMD_CONF_OPTS += -Daudit=false
+endif
+
+ifeq ($(BR2_PACKAGE_CRYPTSETUP),y)
+SYSTEMD_DEPENDENCIES += cryptsetup
+SYSTEMD_CONF_OPTS += -Dlibcryptsetup=true
+else
+SYSTEMD_CONF_OPTS += -Dlibcryptsetup=false
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
