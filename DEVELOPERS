@@ -426,6 +426,7 @@ F:	package/intel-microcode/
 F:	package/libpam-radius-auth/
 F:	package/libpam-tacplus/
 F:	package/modem-manager/
+F:	package/pamtester/
 F:	package/pcm-tools/
 F:	package/perl-file-util/
 F:	package/skeleton-custom/
