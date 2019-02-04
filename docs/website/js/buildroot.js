@@ -1,17 +1,16 @@
 function load_activity(feedurl, divid) {
-    var yqlURL = "https://query.yahooapis.com/v1/public/yql";
-    var yqlQS = "?q=select%20entry%20from%20xml%20where%20url%20%3D%20'";
-    var yqlOPTS = "'%20limit%2010&format=json&callback=";
     var container = document.getElementById(divid);
-    var url = yqlURL + yqlQS + encodeURIComponent(feedurl) + yqlOPTS;
-
-    $.getJSON(url, function(data){
-        var result = data.query.results;
+    $.ajax({
+      url: "https://cors.io/?" + feedurl
+    })
+    .done(function(data){
+        var x2js = new X2JS();
+        var result = x2js.xml_str2json(data);
         var loaded = 0;
         var nb_display = 8;
         if (result==null) return;
-        for (var i = 0; i < result.feed.length; i++) {
-            var entry = result.feed[i].entry;
+        for (var i = 0; i < result.feed.entry.length; i++) {
+            var entry = result.feed.entry[i];
             if (entry.title.indexOf("git commit") != -1)
                 continue;
             loaded += 1;
@@ -24,7 +23,7 @@ function load_activity(feedurl, divid) {
             var text = document.createTextNode(data);
             link.appendChild(text);
             link.title = entry.title;
-            link.href = entry.link.href;
+            link.href = entry.link._href;
             div.appendChild(link);
             container.appendChild(div);
         }
