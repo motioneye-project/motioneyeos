@@ -26,8 +26,8 @@ class GitRemote(object):
         self.port = None
         self.logfile = infra.open_log_file(builddir, "gitremote", logtofile)
 
-        daemon_cmd = ["git", "daemon", "--reuseaddr", "--verbose", 
-                      "--listen=localhost", "--export-all", 
+        daemon_cmd = ["git", "daemon", "--reuseaddr", "--verbose",
+                      "--listen=localhost", "--export-all",
                       "--base-path={}".format(serveddir)]
         for port in range(GIT_REMOTE_PORT_INITIAL, GIT_REMOTE_PORT_LAST + 1):
             cmd = daemon_cmd + ["--port={port}".format(port=port)]
