@@ -83,6 +83,14 @@ else
 POSTGRESQL_CONF_OPTS += --without-libxml
 endif
 
+# required for postgresql.service Type=notify
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+POSTGRESQL_DEPENDENCIES += systemd
+POSTGRESQL_CONF_OPTS += --with-systemd
+else
+POSTGRESQL_CONF_OPTS += --without-systemd
+endif
+
 define POSTGRESQL_USERS
 	postgres -1 postgres -1 * /var/lib/pgsql /bin/sh - PostgreSQL Server
 endef
