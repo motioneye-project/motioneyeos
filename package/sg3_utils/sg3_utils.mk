@@ -51,3 +51,4 @@ SG3_UTILS_POST_INSTALL_TARGET_HOOKS += SG3_UTILS_REMOVE_PROGS
 endif
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
