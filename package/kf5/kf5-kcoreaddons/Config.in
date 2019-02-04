@@ -1,0 +1,14 @@
+config BR2_PACKAGE_KF5_KCOREADDONS
+	bool "kf5-kcoreaddons"
+	select BR2_PACKAGE_KF5_EXTRA_CMAKE_MODULES
+	select BR2_PACKAGE_QT5TOOLS
+	select BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS
+	help
+	  KF5 is a set of Qt framework addons, extending Qt in
+	  various ways, not only restricted in helping integration
+	  in KDE.
+
+	  This package contains KCoreAddons, a set of classes built
+	  on top of QtCore to perform various tasks.
+
+	  https://api.kde.org/frameworks/kcoreaddons/html/index.html
