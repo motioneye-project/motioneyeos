@@ -34,4 +34,7 @@ _scp() {
     eval ${SCP} "${@}"
 }
 
+# Remove any scheme prefix
+uri="${uri##scp://}"
+
 _scp ${verbose} "${@}" "'${uri}/${filename}'" "'${output}'"
