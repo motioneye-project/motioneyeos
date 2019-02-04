@@ -2159,6 +2159,7 @@ F:	package/lua-periphery/
 
 N:	Vincent Prince <vincent.prince.fr@gmail.com>
 F:	package/nss-myhostname/
+F:	package/utp_com/
 
 N:	Vincent Stehlé <vincent.stehle@laposte.net>
 F:	package/i7z/

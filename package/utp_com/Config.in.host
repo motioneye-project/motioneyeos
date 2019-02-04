@@ -1,0 +1,7 @@
+config BR2_PACKAGE_HOST_UTP_COM
+	bool "host utp_com"
+	help
+	  This package is used to send commands to hardware
+	  via Freescale's UTP protocol (similar to MFGTools)
+
+	  https://github.com/ixonos/utp_com
