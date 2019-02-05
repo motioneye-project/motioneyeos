@@ -10,6 +10,7 @@ class TestDropbear(infra.basetest.BRTest):
         BR2_TARGET_GENERIC_ROOT_PASSWD="{}"
         BR2_SYSTEM_DHCP="eth0"
         BR2_PACKAGE_DROPBEAR=y
+        BR2_PACKAGE_SSHPASS=y
         BR2_TARGET_ROOTFS_CPIO=y
         # BR2_TARGET_ROOTFS_TAR is not set
         """.format(passwd)
@@ -25,6 +26,7 @@ class TestDropbear(infra.basetest.BRTest):
         cmd = "netstat -ltn 2>/dev/null | grep 0.0.0.0:22"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
-        # Would be useful to try to login through SSH here, through
-        # localhost:2222, though it is not easy to pass the ssh
-        # password on the command line.
+
+        cmd = "sshpass -p {} ssh -y localhost /bin/true".format(self.passwd)
+        _, exit_code = self.emulator.run(cmd)
+        self.assertEqual(exit_code, 0)
