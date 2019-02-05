@@ -530,11 +530,6 @@ function new_version() {
     cat ${VER_FILE}
 }
 
-function backup_conf() {
-    echo "backing up /data/etc..."
-    tar -acf /boot/backup-etc-${OS_VERSION}.tar.gz -C /data etc
-}
-
 function show_status() {
     status=$(flash_boot_status)
     if [[ "${status}" == "running" ]]; then
