@@ -112,7 +112,7 @@ endif
 # Definitions of the list of libraries that should be copied to the target.
 #
 
-TOOLCHAIN_EXTERNAL_LIBS += ld*.so* libgcc_s.so.* libatomic.so.*
+TOOLCHAIN_EXTERNAL_LIBS += ld*.so.* libgcc_s.so.* libatomic.so.*
 
 ifneq ($(BR2_SSP_NONE),y)
 TOOLCHAIN_EXTERNAL_LIBS += libssp.so.*
