@@ -70,8 +70,8 @@ define MENDER_INSTALL_INIT_SYSTEMD
 endef
 
 define MENDER_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 755 package/mender/S04mender \
-		$(TARGET_DIR)/etc/init.d/S04mender
+	$(INSTALL) -D -m 755 package/mender/S42mender \
+		$(TARGET_DIR)/etc/init.d/S42mender
 endef
 
 $(eval $(golang-package))
