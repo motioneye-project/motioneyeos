@@ -22,4 +22,8 @@ endef
 
 PYTHON_PYZMQ_POST_PATCH_HOOKS += PYTHON_PYZMQ_PATCH_ZEROMQ_VERSION
 
+ifeq ($(BR2_PACKAGE_ZEROMQ_DRAFTS),y)
+PYTHON_PYZMQ_BUILD_OPTS += --enable-drafts
+endif
+
 $(eval $(python-package))
