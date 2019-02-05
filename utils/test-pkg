@@ -12,13 +12,13 @@ do_clean() {
 
 main() {
     local o O opts
-    local cfg dir pkg random toolchains_dir toolchain all number mode
+    local cfg dir pkg random toolchains_csv toolchain all number mode
     local ret nb nb_skip nb_fail nb_legal nb_tc build_dir
     local -a toolchains
     local pkg_br_name
 
     o='hac:d:n:p:r:t:'
-    O='help,config-snippet:build-dir:package:,random:,toolchains-dir:'
+    O='help,all,config-snippet:,build-dir:,number:,package:,random:,toolchains-csv:'
     opts="$(getopt -n "${my_name}" -o "${o}" -l "${O}" -- "${@}")"
     eval set -- "${opts}"
 
