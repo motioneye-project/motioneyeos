@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.02"
 
+config BR2_PACKAGE_LUACRYPTO
+	bool "luacrypto package removed"
+	select BR2_LEGACY
+	help
+	  The luacrypto package was removed. Consider luaossl instead.
+
 config BR2_PACKAGE_TN5250
 	bool "tn5250 package removed"
 	select BR2_LEGACY

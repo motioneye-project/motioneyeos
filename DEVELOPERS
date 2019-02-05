@@ -215,7 +215,6 @@ F:	package/ti-cgt-pru/
 N:	Assaf Inbal <shmuelzon@gmail.com>
 F:	package/lbase64/
 F:	package/luabitop/
-F:	package/luacrypto/
 F:	package/luaexpatutils/
 F:	package/luaposix/
 F:	package/luasec/
