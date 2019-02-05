@@ -1,0 +1,53 @@
+From 87c44b4ebc64c15f6324ed40852224b61fbe77a7 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Tue, 5 Feb 2019 06:10:16 -0600
+Subject: [PATCH] src/ssl/openssl: add libressl compatibility
+
+Similar to https://github.com/FreeRDP/FreeRDP/issues/5049
+libressl has `#define OPENSSL_VERSION_NUMBER ` defined the same as
+openssl 1.1.x which results in SSL_CTX_set_security_level() getting used.
+
+This patch prevents SSL_CTX_set_security_level() from being used with
+libressl.
+
+Upstream: https://github.com/apache/qpid-proton/pull/175
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ c/src/ssl/openssl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/proton-c/src/ssl/openssl.c b/proton-c/src/ssl/openssl.c
+index c2b5869..541d0ae 100644
+--- a/proton-c/src/ssl/openssl.c
++++ b/proton-c/src/ssl/openssl.c
+@@ -522,7 +522,7 @@ pn_ssl_domain_t *pn_ssl_domain( pn_ssl_mode_t mode )
+   // Mitigate the CRIME vulnerability
+   SSL_CTX_set_options(domain->ctx, SSL_OP_NO_COMPRESSION);
+ #endif
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000
++#if OPENSSL_VERSION_NUMBER >= 0x10100000 && !defined(LIBRESSL_VERSION_NUMBER)
+     domain->default_seclevel = SSL_CTX_get_security_level(domain->ctx);
+ #endif
+ 
+@@ -709,7 +709,7 @@ int pn_ssl_domain_set_peer_authentication(pn_ssl_domain_t *domain,
+    case PN_SSL_VERIFY_PEER:
+    case PN_SSL_VERIFY_PEER_NAME:
+ 
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000
++#if OPENSSL_VERSION_NUMBER >= 0x10100000 && !defined(LIBRESSL_VERSION_NUMBER)
+     SSL_CTX_set_security_level(domain->ctx, domain->default_seclevel);
+ #endif
+ 
+@@ -749,7 +749,7 @@ int pn_ssl_domain_set_peer_authentication(pn_ssl_domain_t *domain,
+     break;
+ 
+   case PN_SSL_ANONYMOUS_PEER:   // hippie free love mode... :)
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000
++#if OPENSSL_VERSION_NUMBER >= 0x10100000 && !defined(LIBRESSL_VERSION_NUMBER)
+     // Must use lowest OpenSSL security level to enable anonymous ciphers.
+     SSL_CTX_set_security_level(domain->ctx, 0);
+ #endif
+-- 
+1.9.1
+

@@ -1,0 +1,58 @@
+From c31ca95ac73d0da462f7e324e1c3a33b11c39f2c Mon Sep 17 00:00:00 2001
+From: Alan Conway <aconway@redhat.com>
+Date: Wed, 27 Sep 2017 18:37:24 -0400
+Subject: [PATCH] PROTON-1587: fix openssl error handling, causing spurious
+ errors
+
+From the SSL_get_error() man page:
+
+       In addition  to ssl and ret, SSL_get_error() inspects the current thread's OpenSSL error
+       queue.  Thus, SSL_get_error() must be used in the same thread that performed the TLS/SSL I/O
+       operation, and no other OpenSSL function calls should appear in between.  The current
+       thread's error queue must be empty before the TLS/SSL I/O operation is attempted, or
+       SSL_get_error() will not work reliably.
+
+Proton was not clearing the error queue, so the "shutdown-during-init"
+error (which was introduced recently in OpenSSL) was left dangling, and was
+reported incorrectly when the thread was used to serve another transport.
+
+Upstream: https://github.com/apache/qpid-proton/commit/c31ca95ac73d0da462f7e324e1c3a33b11c39f2c
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ proton-c/src/ssl/openssl.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/proton-c/src/ssl/openssl.c b/proton-c/src/ssl/openssl.c
+index 5c750b0..3a4e1a3 100644
+--- a/proton-c/src/ssl/openssl.c
++++ b/proton-c/src/ssl/openssl.c
+@@ -206,7 +206,7 @@ static int ssl_failed(pn_transport_t *transport)
+   // fake a shutdown so the i/o processing code will close properly
+   SSL_set_shutdown(ssl->ssl, SSL_SENT_SHUTDOWN|SSL_RECEIVED_SHUTDOWN);
+   // try to grab the first SSL error to add to the failure log
+-  char buf[128] = "Unknown error.";
++  char buf[256] = "Unknown error";
+   unsigned long ssl_err = ERR_get_error();
+   if (ssl_err) {
+     ERR_error_string_n( ssl_err, buf, sizeof(buf) );
+@@ -909,6 +909,7 @@ static ssize_t process_input_ssl( pn_transport_t *transport, unsigned int layer,
+ 
+   do {
+     work_pending = false;
++    ERR_clear_error();
+ 
+     // Write to network bio as much as possible, consuming bytes/available
+ 
+@@ -1058,6 +1059,8 @@ static ssize_t process_output_ssl( pn_transport_t *transport, unsigned int layer
+ 
+   do {
+     work_pending = false;
++    ERR_clear_error();
++
+     // first, get any pending application output, if possible
+ 
+     if (!ssl->app_output_closed && ssl->out_count < ssl->out_size) {
+-- 
+1.9.1
+
