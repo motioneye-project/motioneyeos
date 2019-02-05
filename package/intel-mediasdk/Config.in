@@ -1,0 +1,31 @@
+config BR2_PACKAGE_INTEL_MEDIASDK
+	bool "intel-mediasdk"
+	depends on BR2_x86_64
+	depends on !BR2_STATIC_LIBS # intel-mediadriver
+	depends on BR2_INSTALL_LIBSTDCPP # intel-mediadriver
+	depends on BR2_TOOLCHAIN_HAS_SYNC_1 # intel-mediadriver
+	depends on BR2_TOOLCHAIN_HAS_THREADS # intel-mediadriver
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # intel-mediadriver
+	depends on BR2_PACKAGE_XORG7  # intel-mediadriver
+	select BR2_PACKAGE_INTEL_MEDIADRIVER
+	select BR2_PACKAGE_LIBDRM_INTEL
+	help
+	  Intel(R) Media SDK provides an API to access
+	  hardware-accelerated video decode, encode and filtering on
+	  Intel® platforms with integrated graphics.
+
+	  Supported video encoders: HEVC, AVC, MPEG-2, JPEG
+	  Supported Video decoders: HEVC, AVC, VP8, MPEG-2, VC1, JPEG
+	  Supported video pre-processing filters: Color Conversion,
+	  Deinterlace, Denoise, Resize, Rotate, Composition
+
+	  http://mediasdk.intel.com/
+
+comment "intel-mediasdk needs X.org"
+	depends on BR2_x86_64 && BR2_TOOLCHAIN_HAS_SYNC_1
+	depends on !BR2_PACKAGE_XORG7
+
+comment "intel-mediasdk needs a toolchain w/ dynamic library, C++, NPTL"
+	depends on BR2_x86_64 && BR2_TOOLCHAIN_HAS_SYNC_1
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL
