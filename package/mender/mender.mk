@@ -50,6 +50,9 @@ define MENDER_INSTALL_CONFIG_FILES
 			$(TARGET_DIR)/usr/share/mender/inventory/mender-inventory-$(f)
 	)
 
+	$(INSTALL) -D -m 0755 package/mender/artifact_info \
+			$(TARGET_DIR)/etc/mender/artifact_info
+
 	ln -snf /var/run/mender $(TARGET_DIR)/var/lib/mender
 endef
 
