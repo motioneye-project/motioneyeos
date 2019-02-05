@@ -1,0 +1,27 @@
+comment "cog needs wpewebkit and a toolchain w/ threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_WPEWEBKIT || !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_COG
+	bool "cog"
+	depends on BR2_PACKAGE_WPEWEBKIT
+	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus
+	depends on BR2_USE_MMU # dbus
+	select BR2_PACKAGE_DBUS
+	help
+	  Single "window" launcher for the WebKit WPE port, and
+	  helper library for implementing WPE launcher. It does
+	  not provide any chrome, and is suitable to be used
+	  as a Web application container.
+
+if BR2_PACKAGE_COG
+
+config BR2_PACKAGE_COG_PROGRAMS_HOME_URI
+	string "home uri"
+	default "https://wpewebkit.org"
+	help
+	  Default URI to open when "cog" is launched. If an empty
+	  string is used, there is no default and the URI to open
+	  must be always specified in the command line.
+
+endif

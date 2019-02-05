@@ -67,6 +67,7 @@ F:	package/sngrep/
 
 N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/brotli/
+F:	package/cog/
 F:	package/libepoxy/
 F:	package/libwpe/
 F:	package/webkitgtk/
@@ -824,6 +825,7 @@ F:	configs/olimex_a20_olinuxino_*
 F:	package/4th/
 F:	package/botan/
 F:	package/chipmunk/
+F:	package/cog/
 F:	package/dado/
 F:	package/ficl/
 F:	package/gdbm/
