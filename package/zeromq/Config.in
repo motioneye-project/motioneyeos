@@ -52,4 +52,11 @@ config BR2_PACKAGE_ZEROMQ_PGM
 	  3208) implemented either over raw IP packets or UDP
 	  datagrams (encapsulated PGM).
 
+config BR2_PACKAGE_ZEROMQ_DRAFTS
+	bool "Draft APIs support"
+	help
+	  Enable unstable draft ZeroMQ APIs
+
+	  https://pyzmq.readthedocs.io/en/latest/draft.html
+
 endif

@@ -47,6 +47,12 @@ else
 ZEROMQ_CONF_OPTS += --without-pgm
 endif
 
+ifeq ($(BR2_PACKAGE_ZEROMQ_DRAFTS),y)
+ZEROMQ_CONF_OPTS += --enable-drafts
+else
+ZEROMQ_CONF_OPTS += --disable-drafts
+endif
+
 # ZeroMQ uses libsodium if it's available.
 ifeq ($(BR2_PACKAGE_LIBSODIUM),y)
 ZEROMQ_DEPENDENCIES += libsodium
