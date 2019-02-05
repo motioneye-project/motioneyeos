@@ -72,6 +72,7 @@ F:	package/libwpe/
 F:	package/webkitgtk/
 F:	package/woff2/
 F:	package/wpebackend-fdo/
+F:	package/wpewebkit/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
 F:	package/bird/
@@ -849,6 +850,7 @@ F:	package/sdl2_mixer/
 F:	package/sdl2_net/
 F:	package/tekui/
 F:	package/wpebackend-fdo/
+F:	package/wpewebkit/
 F:	package/wsapi-fcgi/
 F:	package/wsapi-xavante/
 F:	utils/scancpan
