@@ -71,6 +71,7 @@ F:	package/libepoxy/
 F:	package/libwpe/
 F:	package/webkitgtk/
 F:	package/woff2/
+F:	package/wpebackend-fdo/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
 F:	package/bird/
@@ -847,6 +848,7 @@ F:	package/qemu/
 F:	package/sdl2_mixer/
 F:	package/sdl2_net/
 F:	package/tekui/
+F:	package/wpebackend-fdo/
 F:	package/wsapi-fcgi/
 F:	package/wsapi-xavante/
 F:	utils/scancpan
