@@ -21,7 +21,7 @@ class TestDropbear(infra.basetest.BRTest):
                            kernel="builtin",
                            options=["-initrd", img,
                                     "-net", "nic",
-                                    "-net", "user,hostfwd=tcp::2222-:22"])
+                                    "-net", "user"])
         self.emulator.login(self.passwd)
         cmd = "netstat -ltn 2>/dev/null | grep 0.0.0.0:22"
         _, exit_code = self.emulator.run(cmd)
