@@ -419,6 +419,8 @@ unexport TERMINFO
 unexport MACHINE
 unexport O
 unexport GCC_COLORS
+unexport PLATFORM
+unexport OS
 
 GNU_HOST_NAME := $(shell support/gnuconfig/config.guess)
 
