@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.02"
 
+config BR2_PACKAGE_QT
+	bool "qt package removed"
+	select BR2_LEGACY
+	help
+	  The qt package was removed.
+
 config BR2_PACKAGE_QTUIO
 	bool "qtuio package removed"
 	select BR2_LEGACY
