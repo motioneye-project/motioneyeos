@@ -23,7 +23,8 @@ GPSD_SCONS_OPTS = \
 	prefix=/usr\
 	sysroot=$(STAGING_DIR)\
 	strip=no\
-	python=no
+	python=no \
+	qt=no
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 GPSD_DEPENDENCIES += ncurses
@@ -46,14 +47,6 @@ endif
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68485
 ifeq ($(BR2_microblaze),y)
 GPSD_CFLAGS += -O0
-endif
-
-# Enable or disable Qt binding
-ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
-GPSD_SCONS_ENV += QMAKE="$(QT_QMAKE)"
-GPSD_DEPENDENCIES += qt
-else
-GPSD_SCONS_OPTS += qt=no
 endif
 
 # If libusb is available build it before so the package can use it
