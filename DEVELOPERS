@@ -2015,7 +2015,6 @@ F:	package/cache-calibrator/
 F:	package/gtest/
 F:	package/mtdev/
 F:	package/mtdev2tuio/
-F:	package/qtuio/
 
 N:	Steve Calfee <stevecalfee@gmail.com>
 F:	package/python-pymysql/
