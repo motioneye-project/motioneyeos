@@ -1,0 +1,48 @@
+From 3da532754fb2bb7d379d4386a8c3339742edfb0b Mon Sep 17 00:00:00 2001
+From: Stephen Lombardo <sjlombardo@zetetic.net>
+Date: Wed, 10 Oct 2018 15:55:49 -0400
+Subject: [PATCH] correct compliation under openssl 1.1.x
+
+(cherry picked from commit 57ea35296ce7f2c1c93ce79194eea19a008b69ae)
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+
+Conflicts:
+	src/crypto_openssl.c
+---
+ src/crypto_openssl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/crypto_openssl.c b/src/crypto_openssl.c
+index 09bc2a2..57a1104 100644
+--- a/src/crypto_openssl.c
++++ b/src/crypto_openssl.c
+@@ -47,7 +47,7 @@ static unsigned int openssl_external_init = 0;
+ static unsigned int openssl_init_count = 0;
+ static sqlite3_mutex* openssl_rand_mutex = NULL;
+ 
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+ static HMAC_CTX *HMAC_CTX_new(void)
+ {
+   HMAC_CTX *ctx = OPENSSL_malloc(sizeof(*ctx));
+@@ -102,7 +102,7 @@ static int sqlcipher_openssl_activate(void *ctx) {
+ 
+   if(openssl_init_count == 0 && openssl_external_init == 0)  {
+     /* if the library was not externally initialized, then should be now */
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+     OpenSSL_add_all_algorithms();
+ #endif
+   } 
+@@ -133,7 +133,7 @@ static int sqlcipher_openssl_deactivate(void *ctx) {
+        Note: this code will only be reached if OpensSSL_add_all_algorithms()
+        is called by SQLCipher internally. This should prevent SQLCipher from 
+        "cleaning up" openssl when it was initialized externally by the program */
+-#if OPENSSL_VERSION_NUMBER < 0x10100000L
++#if (defined(OPENSSL_VERSION_NUMBER) && OPENSSL_VERSION_NUMBER < 0x10100000L) || (defined(LIBRESSL_VERSION_NUMBER) && LIBRESSL_VERSION_NUMBER < 0x20700000L)
+       EVP_cleanup();
+ #endif
+     }
+-- 
+1.9.1
+
