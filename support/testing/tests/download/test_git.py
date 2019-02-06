@@ -6,7 +6,7 @@ from gitremote import GitRemote
 import infra
 
 
-class GitTestBase(infra.basetest.BRTest):
+class GitTestBase(infra.basetest.BRConfigTest):
     config = \
         """
         BR2_BACKUP_SITE=""
