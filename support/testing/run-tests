@@ -5,7 +5,7 @@ import os
 import nose2
 import multiprocessing
 
-from infra.basetest import BRTest
+from infra.basetest import BRConfigTest
 
 
 def main():
@@ -38,7 +38,7 @@ def main():
     test_dir = os.path.dirname(script_path)
 
     if args.stdout:
-        BRTest.logtofile = False
+        BRConfigTest.logtofile = False
 
     if args.list:
         print("List of tests")
@@ -57,7 +57,7 @@ def main():
             parser.print_help()
             return 1
 
-    BRTest.downloaddir = os.path.abspath(args.download)
+    BRConfigTest.downloaddir = os.path.abspath(args.download)
 
     if args.output is None:
         print("Missing output directory, please use -o/--output")
@@ -68,7 +68,7 @@ def main():
     if not os.path.exists(args.output):
         os.mkdir(args.output)
 
-    BRTest.outputdir = os.path.abspath(args.output)
+    BRConfigTest.outputdir = os.path.abspath(args.output)
 
     if args.all is False and len(args.testname) == 0:
         print("No test selected")
@@ -76,7 +76,7 @@ def main():
         parser.print_help()
         return 1
 
-    BRTest.keepbuilds = args.keep
+    BRConfigTest.keepbuilds = args.keep
 
     if args.testcases != 1:
         if args.testcases < 1:
@@ -89,7 +89,7 @@ def main():
         each_testcase = br2_jlevel / args.testcases
         if each_testcase < 1:
             each_testcase = 1
-        BRTest.jlevel = each_testcase
+        BRConfigTest.jlevel = each_testcase
 
     if args.jlevel:
         if args.jlevel < 0:
@@ -98,14 +98,14 @@ def main():
             parser.print_help()
             return 1
         # the user can override the auto calculated value
-        BRTest.jlevel = args.jlevel
+        BRConfigTest.jlevel = args.jlevel
 
     if args.timeout_multiplier < 1:
         print("Invalid multiplier for timeout values")
         print("")
         parser.print_help()
         return 1
-    BRTest.timeout_multiplier = args.timeout_multiplier
+    BRConfigTest.timeout_multiplier = args.timeout_multiplier
 
     nose2_args = ["-v",
                   "-N", str(args.testcases),
