@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.02"
 
+config BR2_PACKAGE_PYTHON_PYQT
+	bool "python-pyqt package removed"
+	select BR2_LEGACY
+	help
+	  The python-pyqt package was removed. Consider python-pyqt5
+	  instead.
+
 config BR2_PACKAGE_GNURADIO_QTGUI
 	bool "gnuradio gr-qtgui option removed"
 	select BR2_LEGACY
