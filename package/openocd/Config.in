@@ -17,8 +17,8 @@ config BR2_PACKAGE_OPENOCD_CMSIS_DAP
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_HIDAPI
 	help
-          Enable support for CMSIS-DAP compliant debuggers (i.e
-          Atmel/Microchip EDBG, etc.)
+	  Enable support for CMSIS-DAP compliant debuggers (i.e
+	  Atmel/Microchip EDBG, etc.)
 
 config BR2_PACKAGE_OPENOCD_FTDI
 	bool "MPSSE mode of FTDI based devices"
