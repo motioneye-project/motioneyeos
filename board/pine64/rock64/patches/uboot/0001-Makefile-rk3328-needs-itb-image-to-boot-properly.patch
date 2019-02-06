@@ -1,0 +1,32 @@
+From 211bf049084e6e374dac253138fa813682910146 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Micha=C5=82=20=C5=81yszczek?= <michal.lyszczek@bofc.pl>
+Date: Tue, 5 Feb 2019 22:08:54 +0100
+Subject: [PATCH] Makefile: rk3328 needs itb image to boot properly
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Signed-off-by: Michał Łyszczek <michal.lyszczek@bofc.pl>
+---
+ Makefile | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 8086f3c93e..a6425b5b03 100644
+--- a/Makefile
++++ b/Makefile
+@@ -799,6 +799,11 @@ ifneq ($(BUILD_ROM),)
+ ALL-$(CONFIG_X86_RESET_VECTOR) += u-boot.rom
+ endif
+ 
++# rk3328 needs itb image to boot properly
++ifeq ($(CONFIG_ROCKCHIP_RK3328),y)
++ALL-y += u-boot.itb
++endif
++
+ # enable combined SPL/u-boot/dtb rules for tegra
+ ifeq ($(CONFIG_TEGRA)$(CONFIG_SPL),yy)
+ ALL-y += u-boot-tegra.bin u-boot-nodtb-tegra.bin
+-- 
+2.18.1
+
