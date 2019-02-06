@@ -311,15 +311,7 @@ def fixup_config(configfile):
         return False
     # The cs nios2 2017.02 toolchain is affected by binutils PR19405
     if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
-       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
-        return False
-    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
-    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
        'BR2_PACKAGE_FLANN=y\n' in configlines:
-        return False
-    # or1k affected by binutils PR21464
-    if 'BR2_or1k=y\n' in configlines and \
-       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
         return False
 
     with open(configfile, "w+") as configf:
