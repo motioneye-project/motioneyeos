@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.02"
 
+config BR2_PACKAGE_SDL_QTOPIA
+	bool "sdl qtopia video driver option removed"
+	select BR2_LEGACY
+	help
+	  The SDL QTopia video driver option was removed.
+
 config BR2_PACKAGE_PYTHON_PYQT
 	bool "python-pyqt package removed"
 	select BR2_LEGACY
