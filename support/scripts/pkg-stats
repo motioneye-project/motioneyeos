@@ -31,13 +31,14 @@ from urllib3 import HTTPSConnectionPool
 from urllib3.exceptions import HTTPError
 from multiprocessing import Pool
 
-INFRA_RE = re.compile("\$\(eval \$\(([a-z-]*)-package\)\)")
-URL_RE = re.compile("\s*https?://\S*\s*$")
+INFRA_RE = re.compile(r"\$\(eval \$\(([a-z-]*)-package\)\)")
+URL_RE = re.compile(r"\s*https?://\S*\s*$")
 
 RM_API_STATUS_ERROR = 1
 RM_API_STATUS_FOUND_BY_DISTRO = 2
 RM_API_STATUS_FOUND_BY_PATTERN = 3
 RM_API_STATUS_NOT_FOUND = 4
+
 
 class Package:
     all_licenses = list()
@@ -584,7 +585,8 @@ def dump_html_pkg(f, pkg):
         if pkg.latest_version[1] is None:
             latest_version_text = "<b>Found, but no version</b>"
         else:
-            latest_version_text = "<a href=\"https://release-monitoring.org/project/%s\"><b>%s</b></a>" % (pkg.latest_version[2], str(pkg.latest_version[1]))
+            latest_version_text = "<a href=\"https://release-monitoring.org/project/%s\"><b>%s</b></a>" % \
+                (pkg.latest_version[2], str(pkg.latest_version[1]))
 
         latest_version_text += "<br/>"
 
