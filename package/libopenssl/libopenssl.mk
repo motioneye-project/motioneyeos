@@ -16,9 +16,11 @@ LIBOPENSSL_TARGET_ARCH = generic32
 LIBOPENSSL_CFLAGS = $(TARGET_CFLAGS)
 LIBOPENSSL_PROVIDES = openssl
 
-# relocation truncated to fit: R_68K_GOT16O
 ifeq ($(BR2_m68k_cf),y)
+# relocation truncated to fit: R_68K_GOT16O
 LIBOPENSSL_CFLAGS += -mxgot
+# resolves an assembler "out of range error" with blake2 and sha512 algorithms
+LIBOPENSSL_CFLAGS += -DOPENSSL_SMALL_FOOTPRINT
 endif
 
 ifeq ($(BR2_USE_MMU),)
