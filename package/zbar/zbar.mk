@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ZBAR_VERSION = 57d601e82089f2f31de9e1683c3834f237421f5d
+ZBAR_VERSION = 681b0f305fb5c5bb0df8437f7d740b29a93a7889
 ZBAR_SITE = git://linuxtv.org/zbar.git
 ZBAR_LICENSE = LGPL-2.1+
 ZBAR_LICENSE_FILES = LICENSE
@@ -22,5 +22,12 @@ ZBAR_CONF_OPTS = \
 	--without-python2 \
 	--without-x \
 	--without-java
+
+ifeq ($(BR2_PACKAGE_DBUS),y)
+ZBAR_DEPENDENCIES += dbus
+ZBAR_CONF_OPTS += --with-dbus
+else
+ZBAR_CONF_OPTS += --without-dbus
+endif
 
 $(eval $(autotools-package))
