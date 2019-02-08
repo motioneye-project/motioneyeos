@@ -1,0 +1,64 @@
+From 8ff9d421372a7cb780fbafd8b1d556ee549bf109 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 8 Feb 2019 23:21:04 +0100
+Subject: [PATCH] src/main.c: fix build on SPARC
+
+On SPARC, the definitions of B2500000, B3000000, B3500000 and B4000000
+are not necessarily available, so use those values only if defined in
+the kernel headers.
+
+It fixes SPARC build failures such as:
+main.c:382:13: error: 'B2500000' undeclared here (not in a function)
+  { 2500000, B2500000 },
+             ^~~~~~~~
+main.c:383:13: error: 'B3000000' undeclared here (not in a function)
+  { 3000000, B3000000 },
+             ^~~~~~~~
+main.c:385:13: error: 'B3500000' undeclared here (not in a function)
+  { 3500000, B3500000 },
+             ^~~~~~~~
+main.c:386:13: error: 'B4000000' undeclared here (not in a function)
+  { 4000000, B4000000 }
+
+Fixes:
+ - http://autobuild.buildroot.org/results/f7012c08c935c3a6ccae50b84170190af5cd5cba
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/AsteroidOS/brcm-patchram-plus/pull/1]
+---
+ src/main.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
+
+diff --git a/src/main.c b/src/main.c
+index 040cfe1..17c5191 100644
+--- a/src/main.c
++++ b/src/main.c
+@@ -378,12 +378,20 @@ tBaudRates baud_rates[] = {
+ 	{ 1000000, B1000000 },
+ 	{ 1152000, B1152000 },
+ 	{ 1500000, B1500000 },
+-	{ 2000000, B2000000 },
+-	{ 2500000, B2500000 },
+-	{ 3000000, B3000000 },
++	{ 2000000, B2000000 }
++#ifdef B2500000
++	,{ 2500000, B2500000 }
++#endif
++#ifdef B3000000
++	,{ 3000000, B3000000 }
++#endif
+ #ifndef __CYGWIN__
+-	{ 3500000, B3500000 },
+-	{ 4000000, B4000000 }
++#ifdef B3500000
++	,{ 3500000, B3500000 }
++#endif
++#ifdef B4000000
++	,{ 4000000, B4000000 }
++#endif
+ #endif
+ };
+ 
+-- 
+2.14.1
+
