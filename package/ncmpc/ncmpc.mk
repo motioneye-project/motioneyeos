@@ -14,14 +14,20 @@ NCMPC_LICENSE_FILES = COPYING
 
 NCMPC_CONF_OPTS = \
 	-Dcurses=ncurses \
-	-Ddocumentation=disabled \
-	-Dregex=disabled
+	-Ddocumentation=disabled
 
 ifeq ($(BR2_PACKAGE_LIRC_TOOLS),y)
 NCMPC_DEPENDENCIES += lirc-tools
 NCMPC_CONF_OPTS += -Dlirc=enabled
 else
 NCMPC_CONF_OPTS += -Dlirc=disabled
+endif
+
+ifeq ($(BR2_PACKAGE_PCRE),y)
+NCMPC_DEPENDENCIES += pcre
+NCMPC_CONF_OPTS += -Dregex=enabled
+else
+NCMPC_CONF_OPTS += -Dregex=disabled
 endif
 
 $(eval $(meson-package))
