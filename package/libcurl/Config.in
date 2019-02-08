@@ -15,9 +15,35 @@ config BR2_PACKAGE_CURL
 	  Install curl binary as well
 
 config BR2_PACKAGE_LIBCURL_VERBOSE
-	bool "enable verbose strings"
+	bool "verbose strings"
 	help
 	  Enable verbose text strings
+
+config BR2_PACKAGE_LIBCURL_PROXY_SUPPORT
+	bool "proxy support"
+	default y
+	help
+	  Enable proxy support.
+
+config BR2_PACKAGE_LIBCURL_COOKIES_SUPPORT
+	bool "cookies support"
+	default y
+	help
+	  Enable support for cookies.
+
+config BR2_PACKAGE_LIBCURL_EXTRA_PROTOCOLS_FEATURES
+	bool "enable extra protocols and features"
+	default y
+	help
+	  Enable the following extra protocols and features:
+	  - LDAP / LDAPS
+	  - POP3 / IMAP / SMTP
+	  - Telnet
+	  - TFTP
+	  - RTSP
+	  - SMB / CIFS
+	  - DICT
+	  - Gopher
 
 config BR2_PACKAGE_LIBCURL_TLS_SUPPORT
 	bool

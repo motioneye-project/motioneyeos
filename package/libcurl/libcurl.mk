@@ -18,9 +18,11 @@ LIBCURL_INSTALL_STAGING = YES
 # on non-MMU platforms. Moreover, this authentication method is
 # probably almost never used. See
 # http://curl.haxx.se/docs/manpage.html#--ntlm.
+# Likewise, there is no compiler on the target, so libcurl-option (to
+# generate C code) isn't very useful
 LIBCURL_CONF_OPTS = --disable-manual --disable-ntlm-wb \
 	--enable-hidden-symbols --with-random=/dev/urandom --disable-curldebug \
-	--without-polarssl
+	--without-polarssl --disable-libcurl-option
 
 ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 LIBCURL_CONF_OPTS += --enable-threaded-resolver
@@ -106,6 +108,46 @@ LIBCURL_DEPENDENCIES += nghttp2
 LIBCURL_CONF_OPTS += --with-nghttp2
 else
 LIBCURL_CONF_OPTS += --without-nghttp2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_COOKIES_SUPPORT),y)
+LIBCURL_CONF_OPTS += --enable-cookies
+else
+LIBCURL_CONF_OPTS += --disable-cookies
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_PROXY_SUPPORT),y)
+LIBCURL_CONF_OPTS += --enable-proxy
+else
+LIBCURL_CONF_OPTS += --disable-proxy
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCURL_EXTRA_PROTOCOLS_FEATURES),y)
+LIBCURL_CONF_OPTS += \
+	--enable-dict \
+	--enable-gopher \
+	--enable-imap \
+	--enable-ldap \
+	--enable-ldaps \
+	--enable-pop3 \
+	--enable-rtsp \
+	--enable-smb \
+	--enable-smtp \
+	--enable-telnet \
+	--enable-tftp
+else
+LIBCURL_CONF_OPTS += \
+	--disable-dict \
+	--disable-gopher \
+	--disable-imap \
+	--disable-ldap \
+	--disable-ldaps \
+	--disable-pop3 \
+	--disable-rtsp \
+	--disable-smb \
+	--disable-smtp \
+	--disable-telnet \
+	--disable-tftp
 endif
 
 define LIBCURL_FIX_DOT_PC
