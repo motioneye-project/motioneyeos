@@ -12,9 +12,6 @@ config BR2_PACKAGE_MOSQUITTO
 
 	  http://mosquitto.org/
 
-comment "mosquitto needs a toolchain w/ dynamic library"
-	depends on BR2_STATIC_LIBS
-
 config BR2_PACKAGE_MOSQUITTO_BROKER
 	bool "install the mosquitto broker"
 	default y
@@ -24,4 +21,7 @@ config BR2_PACKAGE_MOSQUITTO_BROKER
 	  Build and install the mosquitto broker onto target.
 
 comment "mosquitto broker needs a system with MMU"
-	depends on !BR2_USE_MMU
+	depends on BR2_PACKAGE_MOSQUTTO && !BR2_USE_MMU
+
+comment "mosquitto needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
