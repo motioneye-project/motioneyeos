@@ -1,0 +1,35 @@
+From 04e89450c0aeb0e6fdff58aca3cffce10b29fb98 Mon Sep 17 00:00:00 2001
+From: "Roger A. Light" <roger@atchoo.org>
+Date: Sat, 9 Feb 2019 13:52:09 +0000
+Subject: [PATCH] Don't require C99 compiler.
+
+[Peter: drop ChangeLog.txt modification]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/persist.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/persist.c b/src/persist.c
+index 2f40086..13b34d2 100644
+--- a/src/persist.c
++++ b/src/persist.c
+@@ -720,6 +720,7 @@ static int persist__msg_store_chunk_restore(struct mosquitto_db *db, FILE *db_fp
+ 	struct mosquitto_msg_store *stored = NULL;
+ 	struct mosquitto_msg_store_load *load;
+ 	char *err;
++	int i;
+ 
+ 	payload.ptr = NULL;
+ 
+@@ -749,7 +750,7 @@ static int persist__msg_store_chunk_restore(struct mosquitto_db *db, FILE *db_fp
+ 		read_e(db_fptr, &i16temp, sizeof(uint16_t));
+ 		source_port = ntohs(i16temp);
+ 		if(source_port){
+-			for(int i=0; i<db->config->listener_count; i++){
++			for(i=0; i<db->config->listener_count; i++){
+ 				if(db->config->listeners[i].port == source_port){
+ 					source.listener = &db->config->listeners[i];
+ 					break;
+-- 
+2.11.0
+

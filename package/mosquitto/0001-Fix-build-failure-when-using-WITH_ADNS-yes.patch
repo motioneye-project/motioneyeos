@@ -1,0 +1,27 @@
+From 9378016b19521aa6c281f475267c5cb67ea967d1 Mon Sep 17 00:00:00 2001
+From: "Roger A. Light" <roger@atchoo.org>
+Date: Fri, 8 Feb 2019 21:34:08 +0000
+Subject: [PATCH] Fix build failure when using WITH_ADNS=yes
+
+[Peter: drop ChangeLog.txt modification]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/bridge.c  | 2 +-
+ 1 files changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/bridge.c b/src/bridge.c
+index 6e4b94f..d9611f0 100644
+--- a/src/bridge.c
++++ b/src/bridge.c
+@@ -228,7 +228,7 @@ int bridge__connect_step3(struct mosquitto_db *db, struct mosquitto *context)
+ {
+ 	int rc;
+ 
+-	rc = net__socket_connect_step3(context, context->bridge->addresses[context->bridge->cur_address].address, context->bridge->addresses[context->bridge->cur_address].port, NULL, false);
++	rc = net__socket_connect_step3(context, context->bridge->addresses[context->bridge->cur_address].address);
+ 	if(rc > 0){
+ 		if(rc == MOSQ_ERR_TLS){
+ 			net__socket_close(db, context);
+-- 
+2.11.0
+
