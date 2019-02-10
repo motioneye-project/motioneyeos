@@ -190,7 +190,7 @@ function start() {
 
             test-launch -p 554 -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
             sleep 10
-            gst-launch-1.0 rtspsrc location=rtsp://127.0.0.1:554/h264 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
+            gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:554/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
             sleep 5
         fi
 
