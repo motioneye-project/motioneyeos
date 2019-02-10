@@ -789,6 +789,7 @@ F:	package/libxslt/
 F:	package/mbedtls/
 F:	package/minissdpd/
 F:	package/minizip/
+F:	package/mongodb/
 F:	package/motion/
 F:	package/mutt/
 F:	package/ncmpc/
