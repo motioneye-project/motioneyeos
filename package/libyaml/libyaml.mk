@@ -12,3 +12,4 @@ LIBYAML_LICENSE = MIT
 LIBYAML_LICENSE_FILES = LICENSE
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
