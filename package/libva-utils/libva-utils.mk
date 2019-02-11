@@ -10,6 +10,7 @@ LIBVA_UTILS_SITE = https://github.com/intel/libva-utils/releases/download/$(LIBV
 LIBVA_UTILS_LICENSE = MIT
 LIBVA_UTILS_LICENSE_FILES = COPYING
 # 0001-check-ssp.patch
+# 0002-Fix-build-failure-when-x11-support-is-disabled.patch
 LIBVA_UTILS_AUTORECONF = YES
 LIBVA_UTILS_DEPENDENCIES = host-pkgconf libva
 
