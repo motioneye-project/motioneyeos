@@ -1,4 +1,4 @@
-From 57383dc900e76e65ce5e5dc95f776e086100344d Mon Sep 17 00:00:00 2001
+From 3656db7fd23d166238cb8816c0d097095911b3fc Mon Sep 17 00:00:00 2001
 From: Peter Seiderer <ps.report@gmx.net>
 Date: Sat, 12 Jan 2019 10:22:38 +0100
 Subject: [PATCH] meson.build: enable CPP include check only in case CPP
@@ -8,22 +8,27 @@ Drop hard meson C++/CPP dependency, only needed for the build-time
 header inclusion test, build the test only in case C++/CPP compiler
 is available.
 
+Upstream: https://gitlab.freedesktop.org/libinput/libinput/commit/4516ba977c1e22d01da4cc50a8ebffa5d11d73f1
+
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+[Rebased on 1.12.6, add upstream link]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
 ---
  meson.build | 16 +++++++++-------
  1 file changed, 9 insertions(+), 7 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index a9c7c185..8183822e 100644
+index 8127c674..86960d84 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -1,4 +1,4 @@
 -project('libinput', 'c', 'cpp',
 +project('libinput', 'c',
- 	version : '1.12.5',
+ 	version : '1.12.6',
  	license : 'MIT/Expat',
  	default_options : [ 'c_std=gnu99', 'warning_level=2' ],
-@@ -641,12 +641,14 @@ executable('test-build-linker',
+@@ -642,12 +642,14 @@ executable('test-build-linker',
  	   include_directories : [includes_src, includes_include],
  	   dependencies : [ dep_libinput, dep_libinput_util ],
  	   install : false)
