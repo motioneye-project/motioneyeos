@@ -1,0 +1,186 @@
+From f853123eda6b279a87be48e18bbea8dec82a94f2 Mon Sep 17 00:00:00 2001
+From: "djm@openbsd.org" <djm@openbsd.org>
+Date: Sat, 26 Jan 2019 22:41:28 +0000
+Subject: [PATCH] upstream: check in scp client that filenames sent during
+
+remote->local directory copies satisfy the wildcard specified by the user.
+
+This checking provides some protection against a malicious server
+sending unexpected filenames, but it comes at a risk of rejecting wanted
+files due to differences between client and server wildcard expansion rules.
+
+For this reason, this also adds a new -T flag to disable the check.
+
+reported by Harry Sintonen
+fix approach suggested by markus@;
+has been in snaps for ~1wk courtesy deraadt@
+
+OpenBSD-Commit-ID: 00f44b50d2be8e321973f3c6d014260f8f7a8eda
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status (openssh-portable): backported from commit 8976f1c4b2
+---
+ scp.1 | 12 +++++++++++-
+ scp.c | 37 +++++++++++++++++++++++++++++--------
+ 2 files changed, 40 insertions(+), 9 deletions(-)
+
+diff --git a/scp.1 b/scp.1
+index 0e5cc1b2d675..397e7709195a 100644
+--- a/scp.1
++++ b/scp.1
+@@ -18,7 +18,7 @@
+ .Nd secure copy (remote file copy program)
+ .Sh SYNOPSIS
+ .Nm scp
+-.Op Fl 346BCpqrv
++.Op Fl 346BCpqrTv
+ .Op Fl c Ar cipher
+ .Op Fl F Ar ssh_config
+ .Op Fl i Ar identity_file
+@@ -208,6 +208,16 @@ to use for the encrypted connection.
+ The program must understand
+ .Xr ssh 1
+ options.
++.It Fl T
++Disable strict filename checking.
++By default when copying files from a remote host to a local directory
++.Nm
++checks that the received filenames match those requested on the command-line
++to prevent the remote end from sending unexpected or unwanted files.
++Because of differences in how various operating systems and shells interpret
++filename wildcards, these checks may cause wanted files to be rejected.
++This option disables these checks at the expense of fully trusting that
++the server will not send unexpected filenames.
+ .It Fl v
+ Verbose mode.
+ Causes
+diff --git a/scp.c b/scp.c
+index 4a342a63873c..7b0a08efb274 100644
+--- a/scp.c
++++ b/scp.c
+@@ -94,6 +94,7 @@
+ #include <dirent.h>
+ #include <errno.h>
+ #include <fcntl.h>
++#include <fnmatch.h>
+ #include <limits.h>
+ #include <locale.h>
+ #include <pwd.h>
+@@ -375,14 +376,14 @@ void verifydir(char *);
+ struct passwd *pwd;
+ uid_t userid;
+ int errs, remin, remout;
+-int pflag, iamremote, iamrecursive, targetshouldbedirectory;
++int Tflag, pflag, iamremote, iamrecursive, targetshouldbedirectory;
+ 
+ #define	CMDNEEDS	64
+ char cmd[CMDNEEDS];		/* must hold "rcp -r -p -d\0" */
+ 
+ int response(void);
+ void rsource(char *, struct stat *);
+-void sink(int, char *[]);
++void sink(int, char *[], const char *);
+ void source(int, char *[]);
+ void tolocal(int, char *[]);
+ void toremote(int, char *[]);
+@@ -421,8 +422,9 @@ main(int argc, char **argv)
+ 	addargs(&args, "-oRemoteCommand=none");
+ 	addargs(&args, "-oRequestTTY=no");
+ 
+-	fflag = tflag = 0;
+-	while ((ch = getopt(argc, argv, "dfl:prtvBCc:i:P:q12346S:o:F:")) != -1)
++	fflag = Tflag = tflag = 0;
++	while ((ch = getopt(argc, argv,
++	    "dfl:prtTvBCc:i:P:q12346S:o:F:")) != -1) {
+ 		switch (ch) {
+ 		/* User-visible flags. */
+ 		case '1':
+@@ -501,9 +503,13 @@ main(int argc, char **argv)
+ 			setmode(0, O_BINARY);
+ #endif
+ 			break;
++		case 'T':
++			Tflag = 1;
++			break;
+ 		default:
+ 			usage();
+ 		}
++	}
+ 	argc -= optind;
+ 	argv += optind;
+ 
+@@ -534,7 +540,7 @@ main(int argc, char **argv)
+ 	}
+ 	if (tflag) {
+ 		/* Receive data. */
+-		sink(argc, argv);
++		sink(argc, argv, NULL);
+ 		exit(errs != 0);
+ 	}
+ 	if (argc < 2)
+@@ -792,7 +798,7 @@ tolocal(int argc, char **argv)
+ 			continue;
+ 		}
+ 		free(bp);
+-		sink(1, argv + argc - 1);
++		sink(1, argv + argc - 1, src);
+ 		(void) close(remin);
+ 		remin = remout = -1;
+ 	}
+@@ -968,7 +974,7 @@ rsource(char *name, struct stat *statp)
+ 	 (sizeof(type) != 4 && sizeof(type) != 8))
+ 
+ void
+-sink(int argc, char **argv)
++sink(int argc, char **argv, const char *src)
+ {
+ 	static BUF buffer;
+ 	struct stat stb;
+@@ -984,6 +990,7 @@ sink(int argc, char **argv)
+ 	unsigned long long ull;
+ 	int setimes, targisdir, wrerrno = 0;
+ 	char ch, *cp, *np, *targ, *why, *vect[1], buf[2048], visbuf[2048];
++	char *src_copy = NULL, *restrict_pattern = NULL;
+ 	struct timeval tv[2];
+ 
+ #define	atime	tv[0]
+@@ -1008,6 +1015,17 @@ sink(int argc, char **argv)
+ 	(void) atomicio(vwrite, remout, "", 1);
+ 	if (stat(targ, &stb) == 0 && S_ISDIR(stb.st_mode))
+ 		targisdir = 1;
++	if (src != NULL && !iamrecursive && !Tflag) {
++		/*
++		 * Prepare to try to restrict incoming filenames to match
++		 * the requested destination file glob.
++		 */
++		if ((src_copy = strdup(src)) == NULL)
++			fatal("strdup failed");
++		if ((restrict_pattern = strrchr(src_copy, '/')) != NULL) {
++			*restrict_pattern++ = '\0';
++		}
++	}
+ 	for (first = 1;; first = 0) {
+ 		cp = buf;
+ 		if (atomicio(read, remin, cp, 1) != 1)
+@@ -1112,6 +1130,9 @@ sink(int argc, char **argv)
+ 			run_err("error: unexpected filename: %s", cp);
+ 			exit(1);
+ 		}
++		if (restrict_pattern != NULL &&
++		    fnmatch(restrict_pattern, cp, 0) != 0)
++			SCREWUP("filename does not match request");
+ 		if (targisdir) {
+ 			static char *namebuf;
+ 			static size_t cursize;
+@@ -1149,7 +1170,7 @@ sink(int argc, char **argv)
+ 					goto bad;
+ 			}
+ 			vect[0] = xstrdup(np);
+-			sink(1, vect);
++			sink(1, vect, src);
+ 			if (setimes) {
+ 				setimes = 0;
+ 				if (utimes(vect[0], tv) < 0)
+-- 
+2.20.1
+
