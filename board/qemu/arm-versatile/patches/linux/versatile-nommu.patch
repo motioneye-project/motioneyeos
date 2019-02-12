@@ -1,10 +1,30 @@
-Signed-Off-by: Waldemar Brodkorb <wbx@openadk.org>
-From LKML.
+From 4ac4324dcdaf237aa34545b3795acb2e5c42d10e Mon Sep 17 00:00:00 2001
+From: Waldemar Brodkorb <wbx@openadk.org>
+Date: Fri, 1 Feb 2019 11:36:20 +0100
+Subject: [PATCH] arm-versatile-nommu: Linux patch
 
-diff -Nur linux-4.15.13.orig/arch/arm/Kconfig linux-4.15.13/arch/arm/Kconfig
---- linux-4.15.13.orig/arch/arm/Kconfig	2018-03-24 11:02:53.000000000 +0100
-+++ linux-4.15.13/arch/arm/Kconfig	2018-04-01 03:47:33.415078244 +0100
-@@ -355,6 +355,17 @@
+Originally made by Waldemar Brodkorb <wbx@openadk.org> from LKML.
+
+Signed-Off-by: Waldemar Brodkorb <wbx@openadk.org>
+[Gerome: reformated as a Git patch]
+Signed-off-by: Gerome Burlats <gerome.burlats@smile.fr>
+[Romain: fix Waldemar's authorship in Git patch]
+Signed-off-by: Romain Naour <romain.naour@smile.fr>
+---
+ arch/arm/Kconfig                       | 11 +++++++++++
+ arch/arm/Kconfig.debug                 |  3 ++-
+ arch/arm/include/asm/mach/map.h        |  1 +
+ arch/arm/mach-versatile/Kconfig        |  5 +++--
+ arch/arm/mach-versatile/Makefile.boot  |  3 +++
+ arch/arm/mach-versatile/versatile_dt.c |  4 ++++
+ 6 files changed, 24 insertions(+), 3 deletions(-)
+ create mode 100644 arch/arm/mach-versatile/Makefile.boot
+
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index e8cd55a5b04c..fc2dbff70394 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -353,6 +353,17 @@ config ARM_SINGLE_ARMV7M
  	select SPARSE_IRQ
  	select USE_OF
  
@@ -22,10 +42,11 @@ diff -Nur linux-4.15.13.orig/arch/arm/Kconfig linux-4.15.13/arch/arm/Kconfig
  config ARCH_EBSA110
  	bool "EBSA-110"
  	select ARCH_USES_GETTIMEOFFSET
-diff -Nur linux-4.15.13.orig/arch/arm/Kconfig.debug linux-4.15.13/arch/arm/Kconfig.debug
---- linux-4.15.13.orig/arch/arm/Kconfig.debug	2018-03-24 11:02:53.000000000 +0100
-+++ linux-4.15.13/arch/arm/Kconfig.debug	2018-04-01 03:47:33.416078232 +0100
-@@ -1795,7 +1795,8 @@
+diff --git a/arch/arm/Kconfig.debug b/arch/arm/Kconfig.debug
+index f6fcb8a79889..92fc637d3db8 100644
+--- a/arch/arm/Kconfig.debug
++++ b/arch/arm/Kconfig.debug
+@@ -1843,7 +1843,8 @@ config DEBUG_UNCOMPRESS
  config UNCOMPRESS_INCLUDE
  	string
  	default "debug/uncompress.h" if ARCH_MULTIPLATFORM || ARCH_MSM || \
@@ -35,10 +56,11 @@ diff -Nur linux-4.15.13.orig/arch/arm/Kconfig.debug linux-4.15.13/arch/arm/Kconf
  	default "mach/uncompress.h"
  
  config EARLY_PRINTK
-diff -Nur linux-4.15.13.orig/arch/arm/include/asm/mach/map.h linux-4.15.13/arch/arm/include/asm/mach/map.h
---- linux-4.15.13.orig/arch/arm/include/asm/mach/map.h	2018-03-24 11:02:53.000000000 +0100
-+++ linux-4.15.13/arch/arm/include/asm/mach/map.h	2018-04-01 03:47:17.587276119 +0100
-@@ -62,6 +62,7 @@
+diff --git a/arch/arm/include/asm/mach/map.h b/arch/arm/include/asm/mach/map.h
+index 9b7c328fb207..b1fe9c8b5c3e 100644
+--- a/arch/arm/include/asm/mach/map.h
++++ b/arch/arm/include/asm/mach/map.h
+@@ -62,6 +62,7 @@ extern int ioremap_page(unsigned long virt, unsigned long phys,
  #else
  #define iotable_init(map,num)	do { } while (0)
  #define vm_reserve_area_early(a,s,c)	do { } while (0)
@@ -46,9 +68,10 @@ diff -Nur linux-4.15.13.orig/arch/arm/include/asm/mach/map.h linux-4.15.13/arch/
  #endif
  
  #endif
-diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/Kconfig linux-4.15.13/arch/arm/mach-versatile/Kconfig
---- linux-4.15.13.orig/arch/arm/mach-versatile/Kconfig	2018-03-24 11:02:53.000000000 +0100
-+++ linux-4.15.13/arch/arm/mach-versatile/Kconfig	2018-04-01 03:47:33.417078219 +0100
+diff --git a/arch/arm/mach-versatile/Kconfig b/arch/arm/mach-versatile/Kconfig
+index f5c275434d6c..06ad999d5978 100644
+--- a/arch/arm/mach-versatile/Kconfig
++++ b/arch/arm/mach-versatile/Kconfig
 @@ -1,7 +1,8 @@
  # SPDX-License-Identifier: GPL-2.0
  config ARCH_VERSATILE
@@ -60,16 +83,19 @@ diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/Kconfig linux-4.15.13/arch/
  	select ARM_AMBA
  	select ARM_TIMER_SP804
  	select ARM_VIC
-diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/Makefile.boot linux-4.15.13/arch/arm/mach-versatile/Makefile.boot
---- linux-4.15.13.orig/arch/arm/mach-versatile/Makefile.boot	1970-01-01 01:00:00.000000000 +0100
-+++ linux-4.15.13/arch/arm/mach-versatile/Makefile.boot	2018-04-01 03:47:25.644175394 +0100
+diff --git a/arch/arm/mach-versatile/Makefile.boot b/arch/arm/mach-versatile/Makefile.boot
+new file mode 100644
+index 000000000000..eacfc3f5c33e
+--- /dev/null
++++ b/arch/arm/mach-versatile/Makefile.boot
 @@ -0,0 +1,3 @@
 +# Empty file waiting for deletion once Makefile.boot isn't needed any more.
 +# Patch waits for application at
 +# http://www.arm.linux.org.uk/developer/patches/viewpatch.php?id=7889/1 .
-diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/versatile_dt.c linux-4.15.13/arch/arm/mach-versatile/versatile_dt.c
---- linux-4.15.13.orig/arch/arm/mach-versatile/versatile_dt.c	2018-03-24 11:02:53.000000000 +0100
-+++ linux-4.15.13/arch/arm/mach-versatile/versatile_dt.c	2018-04-01 03:47:10.913359555 +0100
+diff --git a/arch/arm/mach-versatile/versatile_dt.c b/arch/arm/mach-versatile/versatile_dt.c
+index 3c8d39c12909..8cfa05a37295 100644
+--- a/arch/arm/mach-versatile/versatile_dt.c
++++ b/arch/arm/mach-versatile/versatile_dt.c
 @@ -37,7 +37,11 @@
  #include <asm/mach/map.h>
  
@@ -82,3 +108,6 @@ diff -Nur linux-4.15.13.orig/arch/arm/mach-versatile/versatile_dt.c linux-4.15.1
  #define __io_address(n)		((void __iomem __force *)IO_ADDRESS(n))
  
  /*
+-- 
+2.14.5
+
