@@ -1,0 +1,135 @@
+From b197ea0e528c20b7ee67785c50b4e06e0aa990f8 Mon Sep 17 00:00:00 2001
+From: Chris Liddell <chris.liddell@artifex.com>
+Date: Tue, 18 Dec 2018 10:42:10 +0000
+Subject: [PATCH] Harden some uses of .force* operators
+
+by adding a few immediate evalutions
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 59d8f4deef90
+
+ Resource/Init/gs_dps1.ps  |  4 ++--
+ Resource/Init/gs_fonts.ps | 20 ++++++++++----------
+ Resource/Init/gs_init.ps  |  6 +++---
+ 3 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/Resource/Init/gs_dps1.ps b/Resource/Init/gs_dps1.ps
+index 4fae2839940c..b75ea14e77a3 100644
+--- a/Resource/Init/gs_dps1.ps
++++ b/Resource/Init/gs_dps1.ps
+@@ -74,7 +74,7 @@ level2dict begin
+  } odef
+ % undefinefont has to take local/global VM into account.
+ /undefinefont		% <fontname> undefinefont -
+- { .FontDirectory 1 .argindex .forceundef	% FontDirectory is readonly
++ { //.FontDirectory 1 .argindex .forceundef	% FontDirectory is readonly
+    .currentglobal
+     {		% Current mode is global; delete from local directory too.
+       //systemdict /LocalFontDirectory .knownget
+@@ -85,7 +85,7 @@ level2dict begin
+                 % definition, copy it into the local directory.
+       //systemdict /SharedFontDirectory .knownget
+        { 1 index .knownget
+-          { .FontDirectory 2 index 3 -1 roll { put } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse } % readonly
++          { //.FontDirectory 2 index 3 -1 roll { put } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse } % readonly
+          if
+        }
+       if
+diff --git a/Resource/Init/gs_fonts.ps b/Resource/Init/gs_fonts.ps
+index 290da0cd6819..c13a2fcc2d43 100644
+--- a/Resource/Init/gs_fonts.ps
++++ b/Resource/Init/gs_fonts.ps
+@@ -516,7 +516,7 @@ buildfontdict 3 /.buildfont3 cvx put
+       if
+     }
+    if
+-   dup .FontDirectory 4 -2 roll { .growput } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse	% readonly
++   dup //.FontDirectory 4 -2 roll { .growput } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse	% readonly
+                 % If the font originated as a resource, register it.
+    currentfile .currentresourcefile eq { dup .registerfont } if
+    readonly
+@@ -943,7 +943,7 @@ $error /SubstituteFont { } put
+ % Try to find a font using only the present contents of Fontmap.
+ /.tryfindfont {         % <fontname> .tryfindfont <font> true
+                         % <fontname> .tryfindfont false
+-  .FontDirectory 1 index .fontknownget
++  //.FontDirectory 1 index .fontknownget
+     {                   % Already loaded
+       exch pop //true
+     }
+@@ -975,7 +975,7 @@ $error /SubstituteFont { } put
+                {                % Font with a procedural definition
+                  exec           % The procedure will load the font.
+                                 % Check to make sure this really happened.
+-                 .FontDirectory 1 index .knownget
++                 //.FontDirectory 1 index .knownget
+                   { exch pop //true exit }
+                  if
+                }
+@@ -1081,11 +1081,11 @@ $error /SubstituteFont { } put
+                 % because it's different depending on language level.
+            .currentglobal exch /.setglobal .systemvar exec
+                 % Remove the fake definition, if any.
+-           .FontDirectory 3 index .forceundef		% readonly
+-           1 index (r) file .loadfont .FontDirectory exch
++           //.FontDirectory 3 index .forceundef		% readonly
++           1 index (r) file .loadfont //.FontDirectory exch
+            /.setglobal .systemvar exec
+          } executeonly
+-         { .loadfont .FontDirectory
++         { .loadfont //.FontDirectory
+          }
+         ifelse
+                 % Stack: fontname fontfilename fontdirectory
+@@ -1119,8 +1119,8 @@ $error /SubstituteFont { } put
+                       % Stack: origfontname fontdirectory filefontname fontdict
+               3 -1 roll pop
+                       % Stack: origfontname filefontname fontdict
+-              dup /FontName get dup FontDirectory exch .forceundef
+-              GlobalFontDirectory exch .forceundef
++              dup /FontName get dup //.FontDirectory exch .forceundef
++              /GlobalFontDirectory .systemvar exch .forceundef
+               dup length dict .copydict dup 3 index /FontName exch put
+               2 index exch definefont
+               exch
+@@ -1176,10 +1176,10 @@ currentdict /.putgstringcopy .undef
+       {
+         {
+           pop dup type /stringtype eq { cvn } if
+-          .FontDirectory 1 index known not {
++          //.FontDirectory 1 index known not {
+             2 dict dup /FontName 3 index put
+             dup /FontType 1 put
+-            .FontDirectory 3 1 roll { put } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse   % readonly
++            //.FontDirectory 3 1 roll { put } systemdict /superexec known {//superexec}{1183615869 internaldict /superexec get exec} ifelse   % readonly
+           } {
+             pop
+           } ifelse
+diff --git a/Resource/Init/gs_init.ps b/Resource/Init/gs_init.ps
+index 56c0bd268b53..d9a0829f7f97 100644
+--- a/Resource/Init/gs_init.ps
++++ b/Resource/Init/gs_init.ps
+@@ -1168,8 +1168,8 @@ errordict /unknownerror .undef
+     }ifelse
+   }forall
+   noaccess pop
+-  systemdict /.setsafeerrors .forceundef
+-  systemdict /.SAFERERRORLIST .forceundef
++  //systemdict /.setsafeerrors .forceundef
++  //systemdict /.SAFERERRORLIST .forceundef
+ } bind executeonly odef
+ 
+ SAFERERRORS {.setsafererrors} if
+@@ -2114,7 +2114,7 @@ currentdict /tempfilepaths undef
+ 
+ /.locksafe {
+   .locksafe_userparams
+-  systemdict /getenv {pop //false} .forceput
++  //systemdict /getenv {pop //false} .forceput
+   % setpagedevice has the side effect of clearing the page, but
+   % we will just document that. Using setpagedevice keeps the device
+   % properties and pagedevice .LockSafetyParams in agreement even
+-- 
+2.20.1
+
