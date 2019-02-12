@@ -1,0 +1,62 @@
+From 8312eaa576014cd9b965012af51bc1f967b12423 Mon Sep 17 00:00:00 2001
+From: Daniel Axtens <dja@axtens.net>
+Date: Tue, 1 Jan 2019 17:10:49 +1100
+Subject: [PATCH] iso9660: Fail when expected Rockridge extensions is missing
+
+A corrupted or malicious ISO9660 image can cause read_CE() to loop
+forever.
+
+read_CE() calls parse_rockridge(), expecting a Rockridge extension
+to be read. However, parse_rockridge() is structured as a while
+loop starting with a sanity check, and if the sanity check fails
+before the loop has run, the function returns ARCHIVE_OK without
+advancing the position in the file. This causes read_CE() to retry
+indefinitely.
+
+Make parse_rockridge() return ARCHIVE_WARN if it didn't read an
+extension. As someone with no real knowledge of the format, this
+seems more apt than ARCHIVE_FATAL, but both the call-sites escalate
+it to a fatal error immediately anyway.
+
+Found with a combination of AFL, afl-rb (FairFuzz) and qsym.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 8312eaa57601
+
+ libarchive/archive_read_support_format_iso9660.c | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/libarchive/archive_read_support_format_iso9660.c b/libarchive/archive_read_support_format_iso9660.c
+index 28acfefbba8a..bad8f1dfef3a 100644
+--- a/libarchive/archive_read_support_format_iso9660.c
++++ b/libarchive/archive_read_support_format_iso9660.c
+@@ -2102,6 +2102,7 @@ parse_rockridge(struct archive_read *a, struct file_info *file,
+     const unsigned char *p, const unsigned char *end)
+ {
+ 	struct iso9660 *iso9660;
++	int entry_seen = 0;
+ 
+ 	iso9660 = (struct iso9660 *)(a->format->data);
+ 
+@@ -2257,8 +2258,16 @@ parse_rockridge(struct archive_read *a, struct file_info *file,
+ 		}
+ 
+ 		p += p[2];
++		entry_seen = 1;
++	}
++
++	if (entry_seen)
++		return (ARCHIVE_OK);
++	else {
++		archive_set_error(&a->archive, ARCHIVE_ERRNO_FILE_FORMAT,
++				  "Tried to parse Rockridge extensions, but none found");
++		return (ARCHIVE_WARN);
+ 	}
+-	return (ARCHIVE_OK);
+ }
+ 
+ static int
+-- 
+2.20.1
+
