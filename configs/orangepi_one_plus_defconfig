@@ -3,7 +3,7 @@ BR2_cortex_a53=y
 BR2_ARM_FPU_VFPV4=y
 
 # Linux headers same as kernel, a 4.18 series
-BR2_KERNEL_HEADERS_4_18=y
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_18=y
 
 # Firmware
 BR2_TARGET_ARM_TRUSTED_FIRMWARE=y
