@@ -1,4 +1,4 @@
-2019.02-rc1, not yet released
+2019.02-rc1, released February 13th, 2019
 
 	Fixes all over the tree and new features.
 
@@ -57,6 +57,9 @@
 	Luarocks: A Buildroot addon has been added to automate
 	creating a Buildroot package from luarocks, similar to
 	scancpan and scanpypi.
+
+	scanpypi: protect against zip-slip vulnerability in zip/tar
+	handling
 
 	check-package: fix Python 3 support
 
@@ -125,8 +128,25 @@
 	python-wtforms, python3-setuptools, rcw, rtc-tools, shim,
 	utp_com, vmtouch, websocketpp
 
-	Removed packages: fftw, lua 5.2.x, luacrypto, mongodb,
-	perl-time-hires, python-pyqt, qt, qtuio, tn5250
+	Removed packages: fftw, lua 5.2.x, luacrypto, perl-time-hires,
+	python-pyqt, qt, qtuio, tn5250
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10851: Patch to handle numpad Enter key properly
+	#11066: x11r7 X11 S40xorg leads to a black screen on QEMU x86..
+	#11126: Bash Shell Programming using Buildroot
+	#11426: pps-tools bash dependency
+	#11476: stdio2.h error invalid use of __builtin_va_arg_pack
+	#11536: dt-utils building fails with glibc 2.28
+	#11546: open-vm-tools with glibc 2.28
+	#11566: Fix init script
+	#11576: Unable to start apache with event MPM on raspberry pi 3
+	#11591: [pkgconf 1.5.3] xserver OpenGL support is missing
+	#11606: libjpeg has no Config.in
+	#11616: 2018.02.09 fails to build libzlib with full RELRO..
+	#11656: Custom device tree and u-boot boot.scr not integrated..
+	#11666: Touchscreen with (Py)Qt5 should use tslib instead of evdev
 
 2018.11.2, Released January 30th, 2019
 
