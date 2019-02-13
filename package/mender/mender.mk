@@ -5,7 +5,8 @@
 ################################################################################
 
 MENDER_VERSION = 1.7.0
-MENDER_SITE = $(call github,mendersoftware,mender,$(MENDER_VERSION))
+MENDER_SITE = https://github.com/mendersoftware/mender/archive
+MENDER_SOURCE = $(MENDER_VERSION).tar.gz
 MENDER_LICENSE = Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, MIT, OLDAP-2.8
 
 # Vendor license paths generated with:
