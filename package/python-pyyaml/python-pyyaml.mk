@@ -11,5 +11,7 @@ PYTHON_PYYAML_SETUP_TYPE = distutils
 PYTHON_PYYAML_LICENSE = MIT
 PYTHON_PYYAML_LICENSE_FILES = LICENSE
 PYTHON_PYYAML_DEPENDENCIES = libyaml
+HOST_PYTHON_PYYAML_DEPENDENCIES = host-libyaml
 
 $(eval $(python-package))
+$(eval $(host-python-package))

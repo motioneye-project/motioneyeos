@@ -207,12 +207,6 @@ config BR2_PACKAGE_GNURADIO_QTGUI
 	help
 	  The gr-qtgui option was removed.
 
-config BR2_PACKAGE_MONGODB
-	bool "mongodb package removed"
-	select BR2_LEGACY
-	help
-	  The mongodb package was removed.
-
 config BR2_PACKAGE_LUACRYPTO
 	bool "luacrypto package removed"
 	select BR2_LEGACY

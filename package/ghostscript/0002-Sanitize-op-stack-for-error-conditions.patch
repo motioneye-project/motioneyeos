@@ -1,0 +1,176 @@
+From a1de1e6ab51ab37a17975aad1193f2523e7e7e84 Mon Sep 17 00:00:00 2001
+From: Chris Liddell <chris.liddell@artifex.com>
+Date: Wed, 5 Dec 2018 12:22:13 +0000
+Subject: [PATCH] Sanitize op stack for error conditions
+
+We save the stacks to an array and store the array for the error handler to
+access.
+
+For SAFER, we traverse the array, and deep copy any op arrays (procedures). As
+we make these copies, we check for operators that do *not* exist in systemdict,
+when we find one, we replace the operator with a name object (of the form
+"/--opname--").
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 13b0a36f818
+
+ psi/int.mak  |  3 +-
+ psi/interp.c |  8 ++++++
+ psi/istack.c | 78 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ psi/istack.h |  3 ++
+ 4 files changed, 91 insertions(+), 1 deletion(-)
+
+diff --git a/psi/int.mak b/psi/int.mak
+index 6ab5bf0069dd..6b349cb042dd 100644
+--- a/psi/int.mak
++++ b/psi/int.mak
+@@ -204,7 +204,8 @@ $(PSOBJ)iparam.$(OBJ) : $(PSSRC)iparam.c $(GH)\
+ $(PSOBJ)istack.$(OBJ) : $(PSSRC)istack.c $(GH) $(memory__h)\
+  $(ierrors_h) $(gsstruct_h) $(gsutil_h)\
+  $(ialloc_h) $(istack_h) $(istkparm_h) $(istruct_h) $(iutil_h) $(ivmspace_h)\
+- $(store_h) $(INT_MAK) $(MAKEDIRS)
++ $(store_h) $(icstate_h) $(iname_h) $(dstack_h) $(idict_h) \
++ $(INT_MAK) $(MAKEDIRS)
+ 	$(PSCC) $(PSO_)istack.$(OBJ) $(C_) $(PSSRC)istack.c
+ 
+ $(PSOBJ)iutil.$(OBJ) : $(PSSRC)iutil.c $(GH) $(math__h) $(memory__h) $(string__h)\
+diff --git a/psi/interp.c b/psi/interp.c
+index 6dc0ddae1b3c..aa5779c51420 100644
+--- a/psi/interp.c
++++ b/psi/interp.c
+@@ -761,6 +761,7 @@ copy_stack(i_ctx_t *i_ctx_p, const ref_stack_t * pstack, int skip, ref * arr)
+     uint size = ref_stack_count(pstack) - skip;
+     uint save_space = ialloc_space(idmemory);
+     int code, i;
++    ref *safety, *safe;
+ 
+     if (size > 65535)
+         size = 65535;
+@@ -778,6 +779,13 @@ copy_stack(i_ctx_t *i_ctx_p, const ref_stack_t * pstack, int skip, ref * arr)
+                 make_null(&arr->value.refs[i]);
+         }
+     }
++    if (pstack == &o_stack && dict_find_string(systemdict, "SAFETY", &safety) > 0 &&
++        dict_find_string(safety, "safe", &safe) > 0 && r_has_type(safe, t_boolean) &&
++        safe->value.boolval == true) {
++        code = ref_stack_array_sanitize(i_ctx_p, arr, arr);
++        if (code < 0)
++            return code;
++    }
+     ialloc_set_space(idmemory, save_space);
+     return code;
+ }
+diff --git a/psi/istack.c b/psi/istack.c
+index 8fe151fa5628..f1a3e511534d 100644
+--- a/psi/istack.c
++++ b/psi/istack.c
+@@ -27,6 +27,10 @@
+ #include "iutil.h"
+ #include "ivmspace.h"		/* for local/global test */
+ #include "store.h"
++#include "icstate.h"
++#include "iname.h"
++#include "dstack.h"
++#include "idict.h"
+ 
+ /* Forward references */
+ static void init_block(ref_stack_t *pstack, const ref *pblock_array,
+@@ -294,6 +298,80 @@ ref_stack_store_check(const ref_stack_t *pstack, ref *parray, uint count,
+     return 0;
+ }
+ 
++int
++ref_stack_array_sanitize(i_ctx_t *i_ctx_p, ref *sarr, ref *darr)
++{
++    int i, code;
++    ref obj, arr2;
++    ref *pobj2;
++    gs_memory_t *mem = (gs_memory_t *)idmemory->current;
++
++    if (!r_is_array(sarr) || !r_has_type(darr, t_array))
++        return_error(gs_error_typecheck);
++
++    for (i = 0; i < r_size(sarr); i++) {
++        code = array_get(mem, sarr, i, &obj);
++        if (code < 0)
++            make_null(&obj);
++        switch(r_type(&obj)) {
++          case t_operator:
++          {
++            int index = op_index(&obj);
++
++            if (index > 0 && index < op_def_count) {
++                const byte *data = (const byte *)(op_index_def(index)->oname + 1);
++                if (dict_find_string(systemdict, (const char *)data, &pobj2) <= 0) {
++                    byte *s = gs_alloc_bytes(mem, strlen((char *)data) + 5, "ref_stack_array_sanitize");
++                    if (s) {
++                        s[0] =  '\0';
++                        strcpy((char *)s, "--");
++                        strcpy((char *)s + 2, (char *)data);
++                        strcpy((char *)s + strlen((char *)data) + 2, "--");
++                    }
++                    else {
++                        s = (byte *)data;
++                    }
++                    code = name_ref(imemory, s, strlen((char *)s), &obj, 1);
++                    if (code < 0) make_null(&obj);
++                    if (s != data)
++                        gs_free_object(mem, s, "ref_stack_array_sanitize");
++                }
++            }
++            else {
++                make_null(&obj);
++            }
++            ref_assign(darr->value.refs + i, &obj);
++            break;
++          }
++          case t_array:
++          case t_shortarray:
++          case t_mixedarray:
++          {
++            int attrs = r_type_attrs(&obj) & (a_write | a_read | a_execute | a_executable);
++            /* We only want to copy executable arrays */
++            if (attrs & (a_execute | a_executable)) {
++                code = ialloc_ref_array(&arr2, attrs, r_size(&obj), "ref_stack_array_sanitize");
++                if (code < 0) {
++                    make_null(&arr2);
++                }
++                else {
++                    code = ref_stack_array_sanitize(i_ctx_p, &obj, &arr2);
++                }
++                ref_assign(darr->value.refs + i, &arr2);
++            }
++            else {
++                ref_assign(darr->value.refs + i, &obj);
++            }
++            break;
++          }
++          default:
++            ref_assign(darr->value.refs + i, &obj);
++        }
++    }
++    return 0;
++}
++
++
+ /*
+  * Store the top 'count' elements of a stack, starting 'skip' elements below
+  * the top, into an array, with or without store/undo checking.  age=-1 for
+diff --git a/psi/istack.h b/psi/istack.h
+index 051dcbe216cf..54be405adfb3 100644
+--- a/psi/istack.h
++++ b/psi/istack.h
+@@ -129,6 +129,9 @@ int ref_stack_store(const ref_stack_t *pstack, ref *parray, uint count,
+                     uint skip, int age, bool check,
+                     gs_dual_memory_t *idmem, client_name_t cname);
+ 
++int
++ref_stack_array_sanitize(i_ctx_t *i_ctx_p, ref *sarr, ref *darr);
++
+ /*
+  * Pop the top N elements off a stack.
+  * The number must not exceed the number of elements in use.
+-- 
+2.20.1
+

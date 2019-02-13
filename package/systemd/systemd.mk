@@ -10,6 +10,7 @@ SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, s
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
 SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_BASH_COMPLETION),bash-completion) \
 	host-gperf \
 	host-intltool \
 	kmod \
@@ -23,7 +24,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dblkid=true \
 	-Dman=false \
 	-Dima=false \
-	-Dlibcryptsetup=false \
 	-Defi=false \
 	-Dgnu-efi=false \
 	-Dldconfig=false \
@@ -55,6 +55,13 @@ SYSTEMD_DEPENDENCIES += audit
 SYSTEMD_CONF_OPTS += -Daudit=true
 else
 SYSTEMD_CONF_OPTS += -Daudit=false
+endif
+
+ifeq ($(BR2_PACKAGE_CRYPTSETUP),y)
+SYSTEMD_DEPENDENCIES += cryptsetup
+SYSTEMD_CONF_OPTS += -Dlibcryptsetup=true
+else
+SYSTEMD_CONF_OPTS += -Dlibcryptsetup=false
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
@@ -115,6 +122,13 @@ SYSTEMD_DEPENDENCIES += linux-pam
 SYSTEMD_CONF_OPTS += -Dpam=true
 else
 SYSTEMD_CONF_OPTS += -Dpam=false
+endif
+
+ifeq ($(BR2_PACKAGE_VALGRIND),y)
+SYSTEMD_DEPENDENCIES += valgrind
+SYSTEMD_CONF_OPTS += -Dvalgrind=true
+else
+SYSTEMD_CONF_OPTS += -Dvalgrind=false
 endif
 
 ifeq ($(BR2_PACKAGE_XZ),y)

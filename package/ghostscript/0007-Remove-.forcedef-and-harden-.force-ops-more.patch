@@ -1,0 +1,345 @@
+From ba2336b3b1ca5cfe1e67dbe37a084c9644a65ac7 Mon Sep 17 00:00:00 2001
+From: Chris Liddell <chris.liddell@artifex.com>
+Date: Fri, 11 Jan 2019 13:36:36 +0000
+Subject: [PATCH] Remove .forcedef, and harden .force* ops more
+
+Remove .forcedef and replace all uses with a direct call to .forceput instead.
+
+Ensure every procedure (named and trasient) that calls .forceput is
+executeonly.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 49c8092da88e
+
+ Resource/Init/gs_dps1.ps  | 15 +++++++-----
+ Resource/Init/gs_init.ps  | 28 ++++++++-------------
+ Resource/Init/gs_lev2.ps  | 51 +++++++++++++++++++--------------------
+ Resource/Init/gs_ll3.ps   |  5 ++--
+ Resource/Init/gs_res.ps   | 29 +++++++++++-----------
+ Resource/Init/gs_statd.ps |  4 +--
+ 6 files changed, 63 insertions(+), 69 deletions(-)
+
+diff --git a/Resource/Init/gs_dps1.ps b/Resource/Init/gs_dps1.ps
+index 8700c8cb304b..3d2cf7a1ad01 100644
+--- a/Resource/Init/gs_dps1.ps
++++ b/Resource/Init/gs_dps1.ps
+@@ -33,14 +33,17 @@ systemdict begin
+ 
+ /SharedFontDirectory .FontDirectory .gcheck
+  { .currentglobal //false .setglobal
++   currentdict
+    /LocalFontDirectory .FontDirectory dup maxlength dict copy
+-   .forcedef	% LocalFontDirectory is local, systemdict is global
++   .forceput	% LocalFontDirectory is local, systemdict is global
+    .setglobal .FontDirectory
+- }
+- { /LocalFontDirectory .FontDirectory
+-   .forcedef	% LocalFontDirectory is local, systemdict is global
++ } executeonly
++ {
++   currentdict
++   /LocalFontDirectory .FontDirectory
++   .forceput	% LocalFontDirectory is local, systemdict is global
+    50 dict
+- }
++ }executeonly
+ ifelse def
+ 
+ end				% systemdict
+@@ -55,7 +58,7 @@ level2dict begin
+     { //SharedFontDirectory }
+     { /LocalFontDirectory .systemvar }	% can't embed ref to local VM
+    ifelse .forceput pop	% LocalFontDirectory is local, systemdict is global
+- } .bind odef
++ } .bind executeonly odef
+ % Don't just copy (load) the definition of .setglobal:
+ % it gets redefined for LL3.
+ /setshared { /.setglobal .systemvar exec } odef
+diff --git a/Resource/Init/gs_init.ps b/Resource/Init/gs_init.ps
+index d9a0829f7f97..45bebf479bae 100644
+--- a/Resource/Init/gs_init.ps
++++ b/Resource/Init/gs_init.ps
+@@ -54,7 +54,7 @@ systemdict exch
+    dup /userdict
+    currentdict dup 200 .setmaxlength		% userdict
+    .forceput			% userdict is local, systemdict is global
+- }
++ } executeonly
+ if begin
+ 
+ % Define dummy local/global operators if needed.
+@@ -299,13 +299,6 @@ QUIET not { printgreeting flush } if
+   1 index exch .makeoperator def
+ } .bind def
+ 
+-% Define a special version of def for storing local objects into global
+-% dictionaries.  Like .forceput, this exists only during initialization.
+-/.forcedef {		% <key> <value> .forcedef -
+-  1 .argindex pop	% check # of args
+-  currentdict 3 1 roll .forceput
+-} .bind odef
+-
+ % Define procedures for accessing variables in systemdict and userdict
+ % regardless of the contents of the dictionary stack.
+ /.systemvar {		% <name> .systemvar <value>
+@@ -347,7 +340,7 @@ DELAYBIND
+        }
+       ifelse
+     } .bind def
+-} if
++} executeonly if
+ 
+ %**************** BACKWARD COMPATIBILITY ****************
+ /hwsizedict mark /HWSize //null .dicttomark readonly def
+@@ -655,7 +648,7 @@ currentdict /.typenames .undef
+       /ifelse .systemvar
+     ] cvx executeonly
+   exch .setglobal
+-} odef
++} executeonly odef
+ systemdict /internaldict dup .makeinternaldict .makeoperator
+ .forceput		% proc is local, systemdict is global
+ 
+@@ -1093,7 +1086,7 @@ def
+ 
+ % Define $error.  This must be in local VM.
+ .currentglobal //false .setglobal
+-/$error 40 dict .forcedef	% $error is local, systemdict is global
++currentdict /$error 40 dict .forceput	% $error is local, systemdict is global
+                 % newerror, errorname, command, errorinfo,
+                 % ostack, estack, dstack, recordstacks,
+                 % binary, globalmode,
+@@ -1112,8 +1105,8 @@ end
+ % Define errordict similarly.  It has one entry per error name,
+ %   plus handleerror.  However, some astonishingly badly written PostScript
+ %   files require it to have at least one empty slot.
+-/errordict ErrorNames length 3 add dict
+-.forcedef		% errordict is local, systemdict is global
++currentdict /errordict ErrorNames length 3 add dict
++.forceput		% errordict is local, systemdict is global
+ .setglobal		% back to global VM
+ %  gserrordict contains all the default error handling methods, but unlike
+ %  errordict it is noaccess after creation (also it is in global VM).
+@@ -1273,8 +1266,9 @@ end
+ (END PROCS) VMDEBUG
+ 
+ % Define the font directory.
++currentdict
+ /FontDirectory //false .setglobal 100 dict //true .setglobal
+-.forcedef		% FontDirectory is local, systemdict is global
++.forceput		% FontDirectory is local, systemdict is global
+ 
+ % Define the encoding dictionary.
+ /EncodingDirectory 16 dict def	% enough for Level 2 + PDF standard encodings
+@@ -2333,7 +2327,6 @@ SAFER { .setsafeglobal } if
+   //systemdict /UndefinePostScriptOperators get exec
+   //systemdict /UndefinePDFOperators get exec
+   //systemdict /.forcecopynew .forceundef	% remove temptation
+-  //systemdict /.forcedef .forceundef		% ditto
+   //systemdict /.forceput .forceundef		% ditto
+   //systemdict /.undef .forceundef		    % ditto
+   //systemdict /.forceundef .forceundef		% ditto
+@@ -2368,9 +2361,9 @@ SAFER { .setsafeglobal } if
+         % (and, if implemented, context switching).
+   .currentglobal //false .setglobal
+      mark userparams { } forall .dicttomark readonly
+-     /userparams exch .forcedef		% systemdict is read-only
++     currentdict exch /userparams exch .forceput		% systemdict is read-only
+   .setglobal
+-} if
++} executeonly if
+ /.currentsystemparams where {
+   pop
+         % Remove real system params from pssystemparams.
+@@ -2458,7 +2451,6 @@ end
+ DELAYBIND not {
+   systemdict /.bindnow .undef       % We only need this for DELAYBIND
+   systemdict /.forcecopynew .undef	% remove temptation
+-  systemdict /.forcedef .undef		% ditto
+   systemdict /.forceput .undef		% ditto
+   systemdict /.forceundef .undef	% ditto
+ } if
+diff --git a/Resource/Init/gs_lev2.ps b/Resource/Init/gs_lev2.ps
+index 0f0d57331c23..9c0c3a6fc485 100644
+--- a/Resource/Init/gs_lev2.ps
++++ b/Resource/Init/gs_lev2.ps
+@@ -304,31 +304,30 @@ end
+     psuserparams exch /.checkFilePermitparams load put
+   .setglobal
+ 
+-pssystemparams begin
+-  /CurDisplayList 0 .forcedef
+-  /CurFormCache 0 .forcedef
+-  /CurInputDevice () .forcedef
+-  /CurOutlineCache 0 .forcedef
+-  /CurOutputDevice () .forcedef
+-  /CurPatternCache 0 .forcedef
+-  /CurUPathCache 0 .forcedef
+-  /CurScreenStorage 0 .forcedef
+-  /CurSourceList 0 .forcedef
+-  /DoPrintErrors //false .forcedef
+-  /JobTimeout 0 .forcedef
+-  /LicenseID (LN-001) .forcedef     % bogus
+-  /MaxDisplayList 140000 .forcedef
+-  /MaxFormCache 100000 .forcedef
+-  /MaxImageBuffer 524288 .forcedef
+-  /MaxOutlineCache 65000 .forcedef
+-  /MaxPatternCache 100000 .forcedef
+-  /MaxUPathCache 300000 .forcedef
+-  /MaxScreenStorage 84000 .forcedef
+-  /MaxSourceList 25000 .forcedef
+-  /PrinterName product .forcedef
+-  /RamSize 4194304 .forcedef
+-  /WaitTimeout 40 .forcedef
+-end
++pssystemparams
++dup /CurDisplayList 0 .forceput
++dup /CurFormCache 0 .forceput
++dup /CurInputDevice () .forceput
++dup /CurOutlineCache 0 .forceput
++dup /CurOutputDevice () .forceput
++dup /CurPatternCache 0 .forceput
++dup /CurUPathCache 0 .forceput
++dup /CurScreenStorage 0 .forceput
++dup /CurSourceList 0 .forceput
++dup /DoPrintErrors //false .forceput
++dup /JobTimeout 0 .forceput
++dup /LicenseID (LN-001) .forceput     % bogus
++dup /MaxDisplayList 140000 .forceput
++dup /MaxFormCache 100000 .forceput
++dup /MaxImageBuffer 524288 .forceput
++dup /MaxOutlineCache 65000 .forceput
++dup /MaxPatternCache 100000 .forceput
++dup /MaxUPathCache 300000 .forceput
++dup /MaxScreenStorage 84000 .forceput
++dup /MaxSourceList 25000 .forceput
++dup /PrinterName product .forceput
++dup /RamSize 4194304 .forceput
++    /WaitTimeout 40 .forceput
+ 
+ % Define the procedures for handling comment scanning.  The names
+ % %ProcessComment and %ProcessDSCComment are known to the interpreter.
+@@ -710,7 +709,7 @@ pop		% currentsystemparams
+ /statusdict currentdict def
+ 
+ currentdict end
+-/statusdict exch .forcedef	% statusdict is local, systemdict is global
++currentdict exch /statusdict exch .forceput	% statusdict is local, systemdict is global
+ 
+ % The following compatibility operators are in systemdict.  They are
+ % defined here, rather than in gs_init.ps, because they require the
+diff --git a/Resource/Init/gs_ll3.ps b/Resource/Init/gs_ll3.ps
+index c86721f39fc0..881af44e9fd2 100644
+--- a/Resource/Init/gs_ll3.ps
++++ b/Resource/Init/gs_ll3.ps
+@@ -521,9 +521,8 @@ end
+ % Define additional user and system parameters.
+ /HalftoneMode 0 .definepsuserparam
+ /MaxSuperScreen 1016 .definepsuserparam
+-pssystemparams begin		% read-only, so use .forcedef
+-  /MaxDisplayAndSourceList 160000 .forcedef
+-end
++% read-only, so use .forceput
++pssystemparams  /MaxDisplayAndSourceList 160000 .forceput
+ 
+ % Define the IdiomSet resource category.
+ { /IdiomSet } {
+diff --git a/Resource/Init/gs_res.ps b/Resource/Init/gs_res.ps
+index fd7eaf953ae9..0b4e0514b2a1 100644
+--- a/Resource/Init/gs_res.ps
++++ b/Resource/Init/gs_res.ps
+@@ -41,10 +41,10 @@ level2dict begin
+ % However, Ed Taft of Adobe says their interpreters don't implement this
+ % either, so we aren't going to worry about it for a while.
+ 
+-currentglobal //false setglobal systemdict begin
+-  /localinstancedict 5 dict
+-  .forcedef	% localinstancedict is local, systemdict is global
+-end //true setglobal
++currentglobal //false setglobal
++  systemdict /localinstancedict 5 dict
++  .forceput	% localinstancedict is local, systemdict is global
++//true setglobal
+ /.emptydict 0 dict readonly def
+ setglobal
+ 
+@@ -149,7 +149,7 @@ setglobal
+           dup [ exch 0 -1 ] exch
+           .Instances 4 2 roll put
+                 % Make the Category dictionary read-only.  We will have to
+-                % use .forceput / .forcedef later to replace the dummy,
++                % use .forceput / .forceput later to replace the dummy,
+                 % empty .Instances dictionary with the real one later.
+           readonly
+         }{
+@@ -304,7 +304,8 @@ systemdict begin
+      dup () ne {
+      .file_name_directory_separator concatstrings
+     } if
+-    2 index exch //false .file_name_combine not {
++    2 index exch //false
++    .file_name_combine not {
+       (Error: .default_resource_dir returned ) print exch print ( that can't combine with ) print =
+       /.default_resource_dir cvx /configurationerror signalerror
+     } if
+@@ -317,14 +318,14 @@ currentdict /pssystemparams known not {
+ pssystemparams begin
+   .default_resource_dir
+   /FontResourceDir (Font) .resource_dir_name
+-     readonly .forcedef	% pssys'params is r-o
++     readonly currentdict 3 1 roll .forceput	% pssys'params is r-o
+   /GenericResourceDir () .resource_dir_name
+-     readonly .forcedef	% pssys'params is r-o
++     readonly currentdict 3 1 roll .forceput	% pssys'params is r-o
+   pop % .default_resource_dir
+   /GenericResourcePathSep
+-        .file_name_separator readonly .forcedef		% pssys'params is r-o
+-  (%diskFontResourceDir) cvn (/Resource/Font/) readonly .forcedef	% pssys'params is r-o
+-  (%diskGenericResourceDir) cvn (/Resource/) readonly .forcedef	% pssys'params is r-o
++        .file_name_separator readonly currentdict 3 1 roll .forceput		% pssys'params is r-o
++  currentdict (%diskFontResourceDir) cvn (/Resource/Font/) readonly .forceput	% pssys'params is r-o
++  currentdict (%diskGenericResourceDir) cvn (/Resource/) readonly .forceput	% pssys'params is r-o
+ end
+ end
+ 
+@@ -422,8 +423,8 @@ status {
+                 .Instances dup //.emptydict eq {
+                   pop 3 dict
+                         % As noted above, Category dictionaries are read-only,
+-                        % so we have to use .forcedef here.
+-                  /.Instances 1 index .forcedef	% Category dict is read-only
++                        % so we have to use .forceput here.
++                  currentdict /.Instances 2 index .forceput	% Category dict is read-only
+                 } executeonly if
+               }
+               { .LocalInstances dup //.emptydict eq
+@@ -441,7 +442,7 @@ status {
+            { /defineresource cvx /typecheck signaloperror
+            }
+         ifelse
+-} .bind executeonly .makeoperator		% executeonly to prevent access to .forcedef
++} .bind executeonly .makeoperator		% executeonly to prevent access to .forceput
+ /UndefineResource
+         {  { dup 2 index .knownget
+               { dup 1 get 1 ge
+diff --git a/Resource/Init/gs_statd.ps b/Resource/Init/gs_statd.ps
+index 20d4c96c4f8f..b6a76590dd09 100644
+--- a/Resource/Init/gs_statd.ps
++++ b/Resource/Init/gs_statd.ps
+@@ -21,10 +21,10 @@ systemdict begin
+         % We make statusdict a little larger for Level 2 stuff.
+         % Note that it must be allocated in local VM.
+  .currentglobal //false .setglobal
+- /statusdict 91 dict .forcedef		% statusdict is local, sys'dict global
++ currentdict /statusdict 91 dict .forceput		% statusdict is local, sys'dict global
+         % To support the Level 2 job control features,
+         % serverdict must also be in local VM.
+- /serverdict 10 dict .forcedef		% serverdict is local, sys'dict global
++ currentdict /serverdict 10 dict .forceput		% serverdict is local, sys'dict global
+  .setglobal
+ end
+ 
+-- 
+2.20.1
+

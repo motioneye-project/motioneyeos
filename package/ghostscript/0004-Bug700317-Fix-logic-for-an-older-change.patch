@@ -1,0 +1,31 @@
+From af9a9dceb7be7df743d55c4d078a1ae846b6f556 Mon Sep 17 00:00:00 2001
+From: Chris Liddell <chris.liddell@artifex.com>
+Date: Sat, 15 Dec 2018 09:08:32 +0000
+Subject: [PATCH] Bug700317: Fix logic for an older change
+
+Unlike almost every other function in gs, dict_find_string() returns 1 on
+success 0 or <0 on failure. The logic for this case was wrong.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 99f13091a3
+
+ psi/interp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/psi/interp.c b/psi/interp.c
+index aa5779c51420..f6c45bbe24dc 100644
+--- a/psi/interp.c
++++ b/psi/interp.c
+@@ -703,7 +703,7 @@ again:
+                  * i.e. it's an internal operator we have hidden
+                  */
+                 code = dict_find_string(systemdict, (const char *)bufptr, &tobj);
+-                if (code < 0) {
++                if (code <= 0) {
+                     buf[0] = buf[1] = buf[rlen + 2] = buf[rlen + 3] = '-';
+                     rlen += 4;
+                     bufptr = buf;
+-- 
+2.20.1
+

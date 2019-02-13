@@ -1,0 +1,42 @@
+From 6b4dbecbcfe35d36fea264c04c41b338852d4e88 Mon Sep 17 00:00:00 2001
+From: Nick Parker <nparker@zetetic.net>
+Date: Wed, 1 Mar 2017 15:35:43 -0600
+Subject: [PATCH] Guard OpenSSL init and cleanup routines on versions less
+ than 1.1.0
+
+(cherry picked from commit 1c495b933cee3381f1ea6a70edcbcda1754d7409)
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+
+Conflicts:
+	src/crypto_openssl.c
+---
+ src/crypto_openssl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/crypto_openssl.c b/src/crypto_openssl.c
+index 6822325..09bc2a2 100644
+--- a/src/crypto_openssl.c
++++ b/src/crypto_openssl.c
+@@ -102,7 +102,9 @@ static int sqlcipher_openssl_activate(void *ctx) {
+ 
+   if(openssl_init_count == 0 && openssl_external_init == 0)  {
+     /* if the library was not externally initialized, then should be now */
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+     OpenSSL_add_all_algorithms();
++#endif
+   } 
+ 
+ #ifndef SQLCIPHER_OPENSSL_NO_MUTEX_RAND
+@@ -131,7 +133,9 @@ static int sqlcipher_openssl_deactivate(void *ctx) {
+        Note: this code will only be reached if OpensSSL_add_all_algorithms()
+        is called by SQLCipher internally. This should prevent SQLCipher from 
+        "cleaning up" openssl when it was initialized externally by the program */
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+       EVP_cleanup();
++#endif
+     }
+ #ifndef SQLCIPHER_OPENSSL_NO_MUTEX_RAND
+     sqlite3_mutex_free(openssl_rand_mutex);
+-- 
+1.9.1
+

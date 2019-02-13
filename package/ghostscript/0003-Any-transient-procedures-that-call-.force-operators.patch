@@ -1,0 +1,441 @@
+From f0397dbfbe5eea325613ff375b30eb0db5551ffe Mon Sep 17 00:00:00 2001
+From: Chris Liddell <chris.liddell@artifex.com>
+Date: Thu, 13 Dec 2018 15:28:34 +0000
+Subject: [PATCH] Any transient procedures that call .force* operators
+
+(i.e. for conditionals or loops) make them executeonly.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 2db98f9c661
+
+ Resource/Init/gs_diskn.ps |  2 +-
+ Resource/Init/gs_dps1.ps  |  4 ++--
+ Resource/Init/gs_fntem.ps |  4 ++--
+ Resource/Init/gs_fonts.ps | 12 ++++++------
+ Resource/Init/gs_init.ps  |  4 ++--
+ Resource/Init/gs_lev2.ps  | 11 ++++++-----
+ Resource/Init/gs_pdfwr.ps |  2 +-
+ Resource/Init/gs_res.ps   |  4 ++--
+ Resource/Init/gs_setpd.ps |  2 +-
+ Resource/Init/pdf_base.ps | 13 ++++++++-----
+ Resource/Init/pdf_draw.ps | 16 +++++++++-------
+ Resource/Init/pdf_font.ps |  6 +++---
+ Resource/Init/pdf_main.ps |  4 ++--
+ Resource/Init/pdf_ops.ps  |  7 ++++---
+ 14 files changed, 49 insertions(+), 42 deletions(-)
+
+diff --git a/Resource/Init/gs_diskn.ps b/Resource/Init/gs_diskn.ps
+index fd694bc44b5a..8bf20542040d 100644
+--- a/Resource/Init/gs_diskn.ps
++++ b/Resource/Init/gs_diskn.ps
+@@ -51,7 +51,7 @@ systemdict begin
+     mark 5 1 roll ] mark exch { { } forall } forall ]
+     //systemdict /.searchabledevs 2 index .forceput
+     exch .setglobal
+-  }
++  } executeonly
+   if
+ } .bind executeonly odef % must be bound and hidden for .forceput
+ 
+diff --git a/Resource/Init/gs_dps1.ps b/Resource/Init/gs_dps1.ps
+index ec5db61b9f03..4fae2839940c 100644
+--- a/Resource/Init/gs_dps1.ps
++++ b/Resource/Init/gs_dps1.ps
+@@ -78,7 +78,7 @@ level2dict begin
+    .currentglobal
+     {		% Current mode is global; delete from local directory too.
+       //systemdict /LocalFontDirectory .knownget
+-       { 1 index .forceundef }		% LocalFontDirectory is readonly
++       { 1 index .forceundef } executeonly		% LocalFontDirectory is readonly
+       if
+     }
+     {		% Current mode is local; if there was a shadowed global
+@@ -126,7 +126,7 @@ level2dict begin
+           }
+          ifelse
+        } forall
+-      pop counttomark 2 idiv { .forceundef } repeat pop		% readonly
++      pop counttomark 2 idiv { .forceundef } executeonly repeat pop		% readonly
+     }
+    if
+    //SharedFontDirectory exch .forcecopynew pop
+diff --git a/Resource/Init/gs_fntem.ps b/Resource/Init/gs_fntem.ps
+index c1f7651f18cc..6eb672a6840e 100644
+--- a/Resource/Init/gs_fntem.ps
++++ b/Resource/Init/gs_fntem.ps
+@@ -401,12 +401,12 @@ currentdict end def
+       .forceput % FontInfo can be read-only.
+       pop                                                        % bool <font>
+       exit
+-    } if
++    } executeonly if
+     dup /FontInfo get                                            % bool <font> <FI>
+     /GlyphNames2Unicode /Unicode /Decoding findresource
+     .forceput % FontInfo can be read-only.
+     exit
+-  } loop
++  } executeonly loop
+   exch setglobal
+ } .bind executeonly odef % must be bound and hidden for .forceput
+ 
+diff --git a/Resource/Init/gs_fonts.ps b/Resource/Init/gs_fonts.ps
+index 803faca4918d..290da0cd6819 100644
+--- a/Resource/Init/gs_fonts.ps
++++ b/Resource/Init/gs_fonts.ps
+@@ -374,7 +374,7 @@ FONTPATH length 0 eq { (%END FONTPATH) .skipeof } if
+ /.setnativefontmapbuilt { % set whether we've been run
+   dup type /booleantype eq {
+       systemdict exch /.nativefontmapbuilt exch .forceput
+-  }
++  } executeonly
+   {pop}
+   ifelse
+ } .bind executeonly odef
+@@ -1007,11 +1007,11 @@ $error /SubstituteFont { } put
+ { 2 index gcheck currentglobal
+   2 copy eq {
+     pop pop .forceput
+-  } {
++  } executeonly {
+     5 1 roll setglobal
+     dup length string copy
+     .forceput setglobal
+-  } ifelse
++  } executeonly ifelse
+ } .bind executeonly odef % must be bound and hidden for .forceput
+ 
+ % Attempt to load a font from a file.
+@@ -1084,7 +1084,7 @@ $error /SubstituteFont { } put
+            .FontDirectory 3 index .forceundef		% readonly
+            1 index (r) file .loadfont .FontDirectory exch
+            /.setglobal .systemvar exec
+-         }
++         } executeonly
+          { .loadfont .FontDirectory
+          }
+         ifelse
+@@ -1105,7 +1105,7 @@ $error /SubstituteFont { } put
+         dup 3 index .fontknownget
+          { dup /PathLoad 4 index .putgstringcopy
+            4 1 roll pop pop pop //true exit
+-         } if
++         } executeonly if
+ 
+                 % Maybe the file had a different FontName.
+                 % See if we can get a FontName from the file, and if so,
+@@ -1134,7 +1134,7 @@ $error /SubstituteFont { } put
+               ifelse  % Stack: origfontname fontdict
+               exch pop //true exit
+                       % Stack: fontdict
+-            }
++            } executeonly
+            if pop % Stack: origfontname fontdirectory path
+          }
+         if pop pop  % Stack: origfontname
+diff --git a/Resource/Init/gs_init.ps b/Resource/Init/gs_init.ps
+index d733124b96d1..56c0bd268b53 100644
+--- a/Resource/Init/gs_init.ps
++++ b/Resource/Init/gs_init.ps
+@@ -2357,7 +2357,7 @@ SAFER { .setsafeglobal } if
+         % Update the copy of the user parameters.
+   mark .currentuserparams counttomark 2 idiv {
+     userparams 3 1 roll .forceput	% userparams is read-only
+-  } repeat pop
++  } executeonly repeat pop
+         % Turn on idiom recognition, if available.
+   currentuserparams /IdiomRecognition known {
+     /IdiomRecognition //true .definepsuserparam
+@@ -2376,7 +2376,7 @@ SAFER { .setsafeglobal } if
+         % Remove real system params from pssystemparams.
+   mark .currentsystemparams counttomark 2 idiv {
+     pop pssystemparams exch .forceundef
+-  } repeat pop
++  } executeonly repeat pop
+ } if
+ 
+ % Set up AlignToPixels :
+diff --git a/Resource/Init/gs_lev2.ps b/Resource/Init/gs_lev2.ps
+index 44fe61956659..0f0d57331c23 100644
+--- a/Resource/Init/gs_lev2.ps
++++ b/Resource/Init/gs_lev2.ps
+@@ -154,7 +154,8 @@ end
+       % protect top level of parameters that we copied
+       dup type dup /arraytype eq exch /stringtype eq or { readonly } if
+       /userparams .systemvar 3 1 roll .forceput  % userparams is read-only
+-    } {
++    } executeonly
++    {
+       pop pop
+     } ifelse
+   } forall
+@@ -224,7 +225,7 @@ end
+          % protect top level parameters that we copied
+          dup type dup /arraytype eq exch /stringtype eq or { readonly } if
+          //pssystemparams 3 1 roll .forceput	% pssystemparams is read-only
+-       }
++       } executeonly
+        { pop pop
+        }
+       ifelse
+@@ -934,7 +935,7 @@ mark
+   dup /PaintProc get
+   1 index /Implementation known not {
+     1 index dup /Implementation //null .forceput readonly pop
+-  } if
++  } executeonly if
+   exec
+ }.bind odef
+ 
+@@ -958,7 +959,7 @@ mark
+   dup /PaintProc get
+   1 index /Implementation known not {
+     1 index dup /Implementation //null .forceput readonly pop
+-  } if
++  } executeonly if
+   /UNROLLFORMS where {/UNROLLFORMS get}{false}ifelse not
+   %% [CTM] <<Form>> PaintProc .beginform -
+   {
+@@ -1005,7 +1006,7 @@ mark
+         %% Form dictioanry using the /Implementation key).
+         1 dict dup /FormID 4 -1 roll put
+         1 index exch /Implementation exch .forceput readonly pop
+-      }
++      } executeonly
+       ifelse
+     }
+     {
+diff --git a/Resource/Init/gs_pdfwr.ps b/Resource/Init/gs_pdfwr.ps
+index 58e75d3a4831..b425103d1cf3 100644
+--- a/Resource/Init/gs_pdfwr.ps
++++ b/Resource/Init/gs_pdfwr.ps
+@@ -650,7 +650,7 @@ currentdict /.pdfmarkparams .undef
+             } ifelse
+           } bind .makeoperator .forceput
+           systemdict /.pdf_hooked_DSC_Creator //true .forceput
+-        } if
++        } executeonly if
+         pop
+       } if
+     } {
+diff --git a/Resource/Init/gs_res.ps b/Resource/Init/gs_res.ps
+index 8eb8bb0e5829..d9b34599e7c2 100644
+--- a/Resource/Init/gs_res.ps
++++ b/Resource/Init/gs_res.ps
+@@ -152,7 +152,7 @@ setglobal
+                 % use .forceput / .forcedef later to replace the dummy,
+                 % empty .Instances dictionary with the real one later.
+           readonly
+-        } {
++        }{
+           /defineresource cvx /typecheck signaloperror
+         } ifelse
+ } bind executeonly odef
+@@ -424,7 +424,7 @@ status {
+                         % As noted above, Category dictionaries are read-only,
+                         % so we have to use .forcedef here.
+                   /.Instances 1 index .forcedef	% Category dict is read-only
+-                } if
++                } executeonly if
+               }
+               { .LocalInstances dup //.emptydict eq
+                  { pop 3 dict localinstancedict Category 2 index put
+diff --git a/Resource/Init/gs_setpd.ps b/Resource/Init/gs_setpd.ps
+index e22597ebb5f3..7875d1f2f131 100644
+--- a/Resource/Init/gs_setpd.ps
++++ b/Resource/Init/gs_setpd.ps
+@@ -634,7 +634,7 @@ NOMEDIAATTRS {
+   SETPDDEBUG { (Rolling back.) = pstack flush } if
+   3 index 2 index 3 -1 roll .forceput
+   4 index 1 index .knownget
+-  { 4 index 3 1 roll .forceput }
++  { 4 index 3 1 roll .forceput } executeonly
+   { 3 index exch .undef }
+   ifelse
+ } bind executeonly odef
+diff --git a/Resource/Init/pdf_base.ps b/Resource/Init/pdf_base.ps
+index b45e9803165e..73127296c221 100644
+--- a/Resource/Init/pdf_base.ps
++++ b/Resource/Init/pdf_base.ps
+@@ -130,26 +130,29 @@ currentdict /num-chars-dict .undef
+ 
+ /.pdfexectoken {		% <count> <opdict> <exectoken> .pdfexectoken ?
+   PDFDEBUG {
+-    pdfdict /PDFSTEPcount known not { pdfdict /PDFSTEPcount 1 .forceput } if
++    pdfdict /PDFSTEPcount known not { pdfdict /PDFSTEPcount 1 .forceput } executeonly if
+     PDFSTEP {
+       pdfdict /PDFtokencount 2 copy .knownget { 1 add } { 1 } ifelse .forceput
+       PDFSTEPcount 1 gt {
+         pdfdict /PDFSTEPcount PDFSTEPcount 1 sub .forceput
+-      } {
++      } executeonly
++      {
+         dup ==only
+         (    step # ) print PDFtokencount =only
+         ( ? ) print flush 1 //false .outputpage
+         (%stdin) (r) file 255 string readline {
+           token {
+             exch pop pdfdict /PDFSTEPcount 3 -1 roll .forceput
+-          } {
++          } executeonly
++          {
+             pdfdict /PDFSTEPcount 1 .forceput
+-          } ifelse % token
++          } executeonly ifelse % token
+         } {
+           pop /PDFSTEP //false def	 % EOF on stdin
+         } ifelse % readline
+       } ifelse % PDFSTEPcount > 1
+-    } {
++    } executeonly
++    {
+       dup ==only () = flush
+     } ifelse % PDFSTEP
+   } if % PDFDEBUG
+diff --git a/Resource/Init/pdf_draw.ps b/Resource/Init/pdf_draw.ps
+index 6b0ba93e1e73..40c6ac80acce 100644
+--- a/Resource/Init/pdf_draw.ps
++++ b/Resource/Init/pdf_draw.ps
+@@ -1118,14 +1118,14 @@ currentdict end readonly def
+           pdfdict /.Qqwarning_issued //true .forceput
+           .setglobal
+           pdfformaterror
+-        } ifelse
++        } executeonly ifelse
+       }
+       {
+         currentglobal pdfdict gcheck .setglobal
+         pdfdict /.Qqwarning_issued //true .forceput
+         .setglobal
+         pdfformaterror
+-      } ifelse
++      } executeonly ifelse
+       end
+     } ifelse
+   } loop
+@@ -1141,14 +1141,14 @@ currentdict end readonly def
+         pdfdict /.Qqwarning_issued //true .forceput
+         .setglobal
+         pdfformaterror
+-      } ifelse
++      } executeonly ifelse
+     }
+     {
+       currentglobal pdfdict gcheck .setglobal
+       pdfdict /.Qqwarning_issued //true .forceput
+       .setglobal
+       pdfformaterror
+-    } ifelse
++    } executeonly ifelse
+   } if
+   pop
+ 
+@@ -2350,9 +2350,10 @@ currentdict /last-ditch-bpc-csp undef
+ /IncrementAppearanceNumber {
+   pdfdict /AppearanceNumber .knownget {
+     1 add pdfdict /AppearanceNumber 3 -1 roll .forceput
+-  }{
++  } executeonly
++  {
+     pdfdict /AppearanceNumber 0 .forceput
+-  } ifelse
++  } executeonly ifelse
+ }bind executeonly odef
+ 
+ /MakeAppearanceName {
+@@ -2510,7 +2511,8 @@ currentdict /last-ditch-bpc-csp undef
+     %% want to preserve it.
+     pdfdict /.PreservePDFForm false .forceput
+     /q cvx /execform cvx 5 -2 roll
+-  }{
++  } executeonly
++  {
+     /q cvx /PDFexecform cvx 5 -2 roll
+   } ifelse
+ 
+diff --git a/Resource/Init/pdf_font.ps b/Resource/Init/pdf_font.ps
+index bea9ea95ad1d..4cd62b9d9bb4 100644
+--- a/Resource/Init/pdf_font.ps
++++ b/Resource/Init/pdf_font.ps
+@@ -714,7 +714,7 @@ currentdict end readonly def
+     pop pop pop
+     currentdict /.stackdepth .forceundef
+     currentdict /.dstackdepth .forceundef
+-  }
++  } executeonly
+   {pop pop pop}
+   ifelse
+ 
+@@ -1232,7 +1232,7 @@ currentdict /eexec_pdf_param_dict .undef
+                 (\n   **** Warning: Type 3 glyph has unbalanced q/Q operators \(too many q's\)\n               Output may be incorrect.\n)
+                 pdfformatwarning
+                 pdfdict /.Qqwarning_issued //true .forceput
+-              } if
++              } executeonly if
+               Q
+             } repeat
+             Q
+@@ -2016,7 +2016,7 @@ currentdict /CMap_read_dict undef
+               /CIDFallBack /CIDFont findresource
+             } if
+             exit
+-          } if
++          } executeonly if
+         } if
+       } if
+ 
+diff --git a/Resource/Init/pdf_main.ps b/Resource/Init/pdf_main.ps
+index 00da47a48711..37e69b39ac98 100644
+--- a/Resource/Init/pdf_main.ps
++++ b/Resource/Init/pdf_main.ps
+@@ -2701,14 +2701,14 @@ currentdict /PDF2PS_matrix_key undef
+           pdfdict /.Qqwarning_issued //true .forceput
+           .setglobal
+           pdfformaterror
+-        } ifelse
++        } executeonly ifelse
+       }
+       {
+         currentglobal pdfdict gcheck .setglobal
+         pdfdict /.Qqwarning_issued //true .forceput
+         .setglobal
+         pdfformaterror
+-      } ifelse
++      } executeonly ifelse
+     } if
+   } if
+   pop
+diff --git a/Resource/Init/pdf_ops.ps b/Resource/Init/pdf_ops.ps
+index 8672d617f363..aa0964139a56 100644
+--- a/Resource/Init/pdf_ops.ps
++++ b/Resource/Init/pdf_ops.ps
+@@ -184,14 +184,14 @@ currentdict /gput_always_allow .undef
+         pdfdict /.Qqwarning_issued //true .forceput
+         .setglobal
+         pdfformaterror
+-      } ifelse
++      } executeonly ifelse
+     }
+     {
+       currentglobal pdfdict gcheck .setglobal
+       pdfdict /.Qqwarning_issued //true .forceput
+       .setglobal
+       pdfformaterror
+-    } ifelse
++    } executeonly ifelse
+   } if
+ } bind executeonly odef
+ 
+@@ -439,7 +439,8 @@ currentdict /gput_always_allow .undef
+   dup type /booleantype eq {
+     .currentSMask type /dicttype eq {
+       .currentSMask /Processed 2 index .forceput
+-    } {
++  } executeonly
++  {
+       .setSMask
+   }ifelse
+   }{
+-- 
+2.20.1
+
