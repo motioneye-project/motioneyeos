@@ -17,14 +17,17 @@ config BR2_PACKAGE_EFIVAR
 	# toolchains.
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	# needs __builtin_bswap16
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
 	help
 	  Tools and libraries to manipulate EFI variables
 
 	  https://github.com/rhboot/efivar
 
-comment "efivar needs a toolchain w/ dynamic library, headers >= 3.12, gcc >= 4.9"
+comment "efivar needs a toolchain w/ dynamic library, headers >= 3.12, gcc >= 4.9, host gcc >= 4.8"
 	depends on BR2_PACKAGE_EFIVAR_ARCH_SUPPORTS
 	depends on BR2_STATIC_LIBS || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || \
+		!BR2_HOST_GCC_AT_LEAST_4_8
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_MIPS
