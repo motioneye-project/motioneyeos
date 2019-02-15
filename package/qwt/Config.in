@@ -2,6 +2,7 @@ config BR2_PACKAGE_QWT
 	bool "qwt"
 	depends on BR2_PACKAGE_QT5
 	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_WIDGETS # printsupport
 	select BR2_PACKAGE_QT5BASE_CONCURRENT
 	help
