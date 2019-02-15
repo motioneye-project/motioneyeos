@@ -24,7 +24,7 @@ start() {
 	printf "Starting mender service: "
 	umask 077
 
-	start-stop-daemon -S -q -p /var/run/mender.pid \
+	start-stop-daemon -S -q -b -m -p /var/run/mender.pid \
 		--exec /usr/bin/mender -- -daemon
 	[ $? = 0 ] && echo "OK" || echo "FAIL"
 }
