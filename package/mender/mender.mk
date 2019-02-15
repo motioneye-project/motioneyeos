@@ -57,6 +57,7 @@ define MENDER_INSTALL_CONFIG_FILES
 	$(INSTALL) -D -m 0755 package/mender/device_type \
 			$(TARGET_DIR)/etc/mender/device_type
 
+	mkdir -p $(TARGET_DIR)/var/lib
 	ln -snf /var/run/mender $(TARGET_DIR)/var/lib/mender
 endef
 
