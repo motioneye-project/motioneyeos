@@ -22,6 +22,10 @@ CLAMAV_CONF_ENV = \
 	ac_cv_c_mmap_private=yes \
 	have_cv_ipv6=yes
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+CLAMAV_CONF_ENV += LIBS=-latomic
+endif
+
 # UCLIBC_HAS_FTS is disabled, therefore disable fanotify (missing fts.h)
 CLAMAV_CONF_OPTS = \
 	--with-dbdir=/var/lib/clamav \
