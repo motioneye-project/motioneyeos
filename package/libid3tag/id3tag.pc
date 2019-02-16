@@ -8,4 +8,5 @@ Description: ID3 tag reading library
 Version: 0.15.1b
 Requires:
 Libs: -L${libdir} -lid3tag
+Libs.private: -lz
 Cflags: -I${includedir}
