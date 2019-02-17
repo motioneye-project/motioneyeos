@@ -15,14 +15,13 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/base/third_party/xdg_mime/LICENSE \
 	src/3rdparty/chromium/base/third_party/xdg_user_dirs/LICENSE \
 	src/3rdparty/chromium/buildtools/LICENSE \
-	src/3rdparty/chromium/chrome/third_party/chromevox/LICENSE \
-	src/3rdparty/chromium/chrome/third_party/chromevox/third_party/closure-library/LICENSE \
 	src/3rdparty/chromium/LICENSE \
 	src/3rdparty/chromium/LICENSE.chromium_os \
 	src/3rdparty/chromium/mojo/public/LICENSE \
 	src/3rdparty/chromium/net/third_party/mozilla_security_manager/LICENSE \
 	src/3rdparty/chromium/net/third_party/nss/LICENSE \
 	src/3rdparty/chromium/ppapi/LICENSE \
+	src/3rdparty/chromium/third_party/abseil-cpp/LICENSE \
 	src/3rdparty/chromium/third_party/accessibility_test_framework/LICENSE \
 	src/3rdparty/chromium/third_party/angle/LICENSE \
 	src/3rdparty/chromium/third_party/angle/src/common/third_party/smhasher/LICENSE \
@@ -31,13 +30,34 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/apache-portable-runtime/LICENSE \
 	src/3rdparty/chromium/third_party/apk-patch-size-estimator/LICENSE \
 	src/3rdparty/chromium/third_party/apple_apsl/LICENSE \
+	src/3rdparty/chromium/third_party/arcore-android-sdk/LICENSE \
 	src/3rdparty/chromium/third_party/axe-core/LICENSE \
 	src/3rdparty/chromium/third_party/bazel/LICENSE \
 	src/3rdparty/chromium/third_party/blanketjs/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-APPLE \
+	src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-LGPL-2 \
+	src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-LGPL-2.1 \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/audits2/lighthouse/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/audits2_worker/lighthouse/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/cm/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/cm/LICENSE_python \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/cm_modes/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/formatter_worker/acorn/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/front_end/terminal/xterm.js/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/LICENSE \
+	src/3rdparty/chromium/third_party/blink/renderer/devtools/scripts/closure/COPYING \
+	src/3rdparty/chromium/third_party/blink/renderer/platform/testing/data/third_party/Roboto/LICENSE.txt \
+	src/3rdparty/chromium/third_party/blink/renderer/platform/wtf/dtoa/COPYING \
+	src/3rdparty/chromium/third_party/blink/renderer/platform/wtf/dtoa/LICENSE \
+	src/3rdparty/chromium/third_party/blink/tools/blinkpy/third_party/wpt/wpt/LICENSE.md \
+	src/3rdparty/chromium/third_party/blink/tools/blinkpy/third_party/wpt/wpt/tools/third_party/html5lib/LICENSE \
+	src/3rdparty/chromium/third_party/blink/tools/blinkpy/third_party/wpt/wpt/tools/third_party/six/LICENSE \
+	src/3rdparty/chromium/third_party/blink/tools/blinkpy/third_party/wpt/wpt/tools/wptserve/LICENSE \
 	src/3rdparty/chromium/third_party/boringssl/src/LICENSE \
 	src/3rdparty/chromium/third_party/boringssl/src/third_party/android-cmake/LICENSE \
 	src/3rdparty/chromium/third_party/boringssl/src/third_party/fiat/LICENSE \
 	src/3rdparty/chromium/third_party/boringssl/src/third_party/googletest/LICENSE \
+	src/3rdparty/chromium/third_party/boringssl/src/third_party/wycheproof_testvectors/LICENSE \
 	src/3rdparty/chromium/third_party/bouncycastle/LICENSE \
 	src/3rdparty/chromium/third_party/breakpad/breakpad/LICENSE \
 	src/3rdparty/chromium/third_party/breakpad/breakpad/src/third_party/curl/COPYING \
@@ -51,11 +71,14 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/chaijs/LICENSE \
 	src/3rdparty/chromium/third_party/checkstyle/LICENSE \
 	src/3rdparty/chromium/third_party/checkstyle/LICENSE.apache20 \
+	src/3rdparty/chromium/third_party/chromevox/LICENSE \
+	src/3rdparty/chromium/third_party/chromevox/third_party/closure-library/LICENSE \
+	src/3rdparty/chromium/third_party/chromevox/third_party/sre/LICENSE \
 	src/3rdparty/chromium/third_party/cld_3/LICENSE \
 	src/3rdparty/chromium/third_party/cld_3/src/LICENSE \
-	src/3rdparty/chromium/third_party/content_shell_fonts/LICENSE \
 	src/3rdparty/chromium/third_party/crashpad/crashpad/LICENSE \
 	src/3rdparty/chromium/third_party/crashpad/crashpad/third_party/apple_cf/APPLE_LICENSE \
+	src/3rdparty/chromium/third_party/crashpad/crashpad/third_party/cpp-httplib/cpp-httplib/LICENSE \
 	src/3rdparty/chromium/third_party/crashpad/crashpad/third_party/getopt/LICENSE \
 	src/3rdparty/chromium/third_party/crc32c/src/LICENSE \
 	src/3rdparty/chromium/third_party/cros_system_api/LICENSE \
@@ -193,6 +216,7 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/errorprone/LICENSE \
 	src/3rdparty/chromium/third_party/espresso/LICENSE \
 	src/3rdparty/chromium/third_party/expat/files/COPYING \
+	src/3rdparty/chromium/third_party/feed/LICENSE \
 	src/3rdparty/chromium/third_party/ffmpeg/chromium/scripts/license_texts/full_lgpl.txt \
 	src/3rdparty/chromium/third_party/ffmpeg/chromium/scripts/license_texts/jpeg.txt \
 	src/3rdparty/chromium/third_party/ffmpeg/chromium/scripts/license_texts/mips.txt \
@@ -213,7 +237,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/fontconfig/LICENSE \
 	src/3rdparty/chromium/third_party/fontconfig/src/COPYING \
 	src/3rdparty/chromium/third_party/freetype/src/docs/LICENSE.TXT \
-	src/3rdparty/chromium/third_party/gardiner_mod/LICENSE \
 	src/3rdparty/chromium/third_party/gestures/gestures/LICENSE \
 	src/3rdparty/chromium/third_party/gestures/LICENSE \
 	src/3rdparty/chromium/third_party/gif_player/LICENSE \
@@ -222,13 +245,15 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/googletest/src/googlemock/scripts/generator/LICENSE \
 	src/3rdparty/chromium/third_party/googletest/src/googletest/LICENSE \
 	src/3rdparty/chromium/third_party/googletest/src/LICENSE \
+	src/3rdparty/chromium/third_party/google-truth/LICENSE \
 	src/3rdparty/chromium/third_party/gson/LICENSE \
 	src/3rdparty/chromium/third_party/guava/LICENSE \
 	src/3rdparty/chromium/third_party/gvr-android-keyboard/LICENSE \
 	src/3rdparty/chromium/third_party/gvr-android-sdk/LICENSE \
 	src/3rdparty/chromium/third_party/haha/LICENSE \
 	src/3rdparty/chromium/third_party/hamcrest/LICENSE \
-	src/3rdparty/chromium/third_party/harfbuzz-ng/COPYING \
+	src/3rdparty/chromium/third_party/harfbuzz-ng/src/COPYING \
+	src/3rdparty/chromium/third_party/harfbuzz-ng/src/src/hb-ucdn/COPYING \
 	src/3rdparty/chromium/third_party/hunspell/COPYING \
 	src/3rdparty/chromium/third_party/hunspell/COPYING.LESSER \
 	src/3rdparty/chromium/third_party/hunspell/COPYING.MPL \
@@ -269,6 +294,7 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/libvpx/source/libvpx/LICENSE \
 	src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/googletest/src/LICENSE \
 	src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/libwebm/LICENSE.TXT \
+	src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/libyuv/LICENSE \
 	src/3rdparty/chromium/third_party/libvpx/source/libvpx/third_party/x86inc/LICENSE \
 	src/3rdparty/chromium/third_party/libwebm/source/LICENSE.TXT \
 	src/3rdparty/chromium/third_party/libwebp/LICENSE \
@@ -278,7 +304,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/libxslt/linux/COPYING \
 	src/3rdparty/chromium/third_party/libxslt/src/Copyright \
 	src/3rdparty/chromium/third_party/libyuv/LICENSE \
-	src/3rdparty/chromium/third_party/libyuv/LICENSE_THIRD_PARTY \
 	src/3rdparty/chromium/third_party/lzma_sdk/LICENSE \
 	src/3rdparty/chromium/third_party/mach_override/LICENSE \
 	src/3rdparty/chromium/third_party/markupsafe/LICENSE \
@@ -297,7 +322,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/molokocacao/LICENSE \
 	src/3rdparty/chromium/third_party/motemplate/LICENSE \
 	src/3rdparty/chromium/third_party/mozilla/LICENSE \
-	src/3rdparty/chromium/third_party/mt19937ar/LICENSE \
 	src/3rdparty/chromium/third_party/netty4/LICENSE \
 	src/3rdparty/chromium/third_party/netty-tcnative/LICENSE \
 	src/3rdparty/chromium/third_party/node/LICENSE \
@@ -316,6 +340,7 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/pexpect/LICENSE \
 	src/3rdparty/chromium/third_party/ply/LICENSE \
 	src/3rdparty/chromium/third_party/ply/license.patch \
+	src/3rdparty/chromium/third_party/polymer/v1_0/components-chromium/polymer2/LICENSE.txt \
 	src/3rdparty/chromium/third_party/polymer/v1_0/components-chromium/polymer/LICENSE.txt \
 	src/3rdparty/chromium/third_party/proguard/LICENSE \
 	src/3rdparty/chromium/third_party/protobuf/LICENSE \
@@ -323,15 +348,19 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/pyelftools/elftools/construct/LICENSE \
 	src/3rdparty/chromium/third_party/pyelftools/LICENSE \
 	src/3rdparty/chromium/third_party/pyftpdlib/src/LICENSE \
+	src/3rdparty/chromium/third_party/pyjson5/src/LICENSE \
 	src/3rdparty/chromium/third_party/pymock/LICENSE.txt \
 	src/3rdparty/chromium/third_party/pystache/LICENSE \
 	src/3rdparty/chromium/third_party/Python-Markdown/LICENSE.md \
 	src/3rdparty/chromium/third_party/pywebsocket/src/LICENSE \
 	src/3rdparty/chromium/third_party/qcms/src/COPYING \
+	src/3rdparty/chromium/third_party/quic_trace/src/LICENSE \
 	src/3rdparty/chromium/third_party/qunit/LICENSE \
+	src/3rdparty/chromium/third_party/r8/LICENSE \
 	src/3rdparty/chromium/third_party/re2/LICENSE \
 	src/3rdparty/chromium/third_party/re2/src/LICENSE \
 	src/3rdparty/chromium/third_party/requests/LICENSE \
+	src/3rdparty/chromium/third_party/rnnoise/COPYING \
 	src/3rdparty/chromium/third_party/robolectric/LICENSE \
 	src/3rdparty/chromium/third_party/robolectric/licenses/extreme.indiana.edu.license.txt \
 	src/3rdparty/chromium/third_party/robolectric/licenses/javolution.license.txt \
@@ -339,22 +368,22 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/s2cellid/LICENSE \
 	src/3rdparty/chromium/third_party/sfntly/COPYING.txt \
 	src/3rdparty/chromium/third_party/sfntly/src/cpp/COPYING.txt \
-	src/3rdparty/chromium/third_party/shaderc/LICENSE \
 	src/3rdparty/chromium/third_party/shaderc/src/LICENSE \
 	src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.glslang \
 	src/3rdparty/chromium/third_party/shaderc/src/third_party/LICENSE.spirv-tools \
 	src/3rdparty/chromium/third_party/simplejson/LICENSE.txt \
 	src/3rdparty/chromium/third_party/sinonjs/LICENSE \
 	src/3rdparty/chromium/third_party/skia/LICENSE \
-	src/3rdparty/chromium/third_party/skia/third_party/etc1/LICENSE \
 	src/3rdparty/chromium/third_party/skia/third_party/gif/LICENSE \
+	src/3rdparty/chromium/third_party/skia/third_party/skcms/LICENSE \
+	src/3rdparty/chromium/third_party/skia/third_party/vulkanmemoryallocator/include/LICENSE.txt \
+	src/3rdparty/chromium/third_party/skia/third_party/vulkanmemoryallocator/LICENSE \
 	src/3rdparty/chromium/third_party/smhasher/LICENSE \
 	src/3rdparty/chromium/third_party/snappy/src/COPYING \
 	src/3rdparty/chromium/third_party/SPIRV-Tools/LICENSE \
 	src/3rdparty/chromium/third_party/SPIRV-Tools/src/LICENSE \
 	src/3rdparty/chromium/third_party/sqlite4java/LICENSE \
 	src/3rdparty/chromium/third_party/sqlite/LICENSE \
-	src/3rdparty/chromium/third_party/sqlite/sqlite-src-3210000/autoconf/tea/license.terms \
 	src/3rdparty/chromium/third_party/sqlite/src/autoconf/tea/license.terms \
 	src/3rdparty/chromium/third_party/sudden_motion_sensor/LICENSE \
 	src/3rdparty/chromium/third_party/swiftshader/LICENSE.txt \
@@ -366,20 +395,19 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/swiftshader/third_party/LLVM/utils/unittest/googletest/LICENSE.TXT \
 	src/3rdparty/chromium/third_party/swiftshader/third_party/PowerVR_SDK/License.txt \
 	src/3rdparty/chromium/third_party/swiftshader/third_party/subzero/LICENSE.TXT \
+	src/3rdparty/chromium/third_party/tcmalloc/gperftools-2.0/vendor/COPYING \
 	src/3rdparty/chromium/third_party/tcmalloc/LICENSE \
 	src/3rdparty/chromium/third_party/tcmalloc/vendor/COPYING \
+	src/3rdparty/chromium/third_party/test_fonts/LICENSE \
 	src/3rdparty/chromium/third_party/tlslite/LICENSE \
-	src/3rdparty/chromium/third_party/typ/LICENSE \
 	src/3rdparty/chromium/third_party/ub-uiautomator/LICENSE \
+	src/3rdparty/chromium/third_party/unrar/LICENSE \
+	src/3rdparty/chromium/third_party/unrar/src/license.txt \
 	src/3rdparty/chromium/third_party/usb_ids/LICENSE \
 	src/3rdparty/chromium/third_party/usrsctp/LICENSE \
 	src/3rdparty/chromium/third_party/usrsctp/usrsctplib/LICENSE.md \
 	src/3rdparty/chromium/third_party/v4l-utils/COPYING.libv4l \
 	src/3rdparty/chromium/third_party/visualmetrics/src/LICENSE \
-	src/3rdparty/chromium/third_party/vulkan/LICENSE \
-	src/3rdparty/chromium/third_party/wayland/LICENSE \
-	src/3rdparty/chromium/third_party/wayland-protocols/LICENSE \
-	src/3rdparty/chromium/third_party/wayland-protocols/src/COPYING \
 	src/3rdparty/chromium/third_party/wds/LICENSE \
 	src/3rdparty/chromium/third_party/wds/src/COPYING \
 	src/3rdparty/chromium/third_party/web-animations-js/LICENSE \
@@ -387,25 +415,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/webdriver/COPYING \
 	src/3rdparty/chromium/third_party/webdriver/LICENSE \
 	src/3rdparty/chromium/third_party/WebKit/LICENSE_FOR_ABOUT_CREDITS \
-	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-APPLE \
-	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2 \
-	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2.1 \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2/lighthouse/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/audits2_worker/lighthouse/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm/LICENSE_python \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/cm_modes/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/formatter_worker/acorn/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/front_end/terminal/xterm.js/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/devtools/scripts/closure/COPYING \
-	src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/COPYING \
-	src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/mod_pywebsocket/COPYING \
-	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/LICENSE.md \
-	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/html5lib/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/six/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/wptserve/LICENSE \
 	src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE \
 	src/3rdparty/chromium/third_party/webrtc/examples/androidapp/third_party/autobanh/LICENSE.md \
 	src/3rdparty/chromium/third_party/webrtc/examples/objc/AppRTCMobile/third_party/SocketRocket/LICENSE \
@@ -432,6 +441,9 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/v8/src/third_party/utf8-decoder/LICENSE \
 	src/3rdparty/chromium/v8/src/third_party/valgrind/LICENSE \
 	src/3rdparty/chromium/v8/src/third_party/vtune/LICENSE \
+	src/3rdparty/chromium/v8/third_party/antlr4/LICENSE.txt \
 	src/3rdparty/chromium/v8/third_party/colorama/LICENSE \
 	src/3rdparty/chromium/v8/third_party/inspector_protocol/LICENSE \
+	src/3rdparty/gn/base/third_party/icu/LICENSE \
+	src/3rdparty/gn/LICENSE \
 	src/3rdparty/ninja/COPYING

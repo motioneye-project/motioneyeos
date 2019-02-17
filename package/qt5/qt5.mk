@@ -5,8 +5,8 @@
 ################################################################################
 
 ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
-QT5_VERSION_MAJOR = 5.11
-QT5_VERSION = $(QT5_VERSION_MAJOR).3
+QT5_VERSION_MAJOR = 5.12
+QT5_VERSION = $(QT5_VERSION_MAJOR).1
 QT5_SOURCE_TARBALL_PREFIX = everywhere-src
 else
 QT5_VERSION_MAJOR = 5.6
