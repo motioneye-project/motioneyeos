@@ -11,4 +11,8 @@ LOG4CPLUS_LICENSE = Apache-2.0, BSD-2-Clause, BSD-like (threadpool)
 LOG4CPLUS_LICENSE_FILES = LICENSE
 LOG4CPLUS_INSTALL_STAGING = YES
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+LOG4CPLUS_CONF_ENV += LIBS='-latomic'
+endif
+
 $(eval $(autotools-package))
