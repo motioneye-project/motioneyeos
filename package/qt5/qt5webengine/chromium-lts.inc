@@ -1,3 +1,9 @@
+# Generated with:
+# (echo "QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \\" ; \
+# 	find src/3rdparty/ -type f \
+#	     \( -iname 'license*' -o -iname 'copying*' -o -name 'APPLE_LICENSE' -o -name 'Copyright' -o -path '*/license_texts/*' -o -path '*/licenses/*' \)\
+#	     -a -not -name '*.cc' -not -name '*.py' -not -name '*.h' -not -name 'LICENSE.sha1' -not -name 'licensecheck.pl*' -not -name 'license.after' -not -name 'license.before' | \
+#	     sort | sed 's%^\(.*\)$%\t\1 \\%') > package/qt5/qt5webengine/chromium-lts.inc
 QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/base/third_party/dmg_fp/LICENSE \
 	src/3rdparty/chromium/base/third_party/dynamic_annotations/LICENSE \
@@ -112,8 +118,9 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/libvpx_new/source/libvpx/third_party/x86inc/LICENSE \
 	src/3rdparty/chromium/third_party/libwebm/source/LICENSE.TXT \
 	src/3rdparty/chromium/third_party/libwebp/LICENSE \
+	src/3rdparty/chromium/third_party/libxml/src/Copyright \
 	src/3rdparty/chromium/third_party/libXNVCtrl/LICENSE \
-	src/3rdparty/chromium/third_party/libxslt/linux/COPYING \
+	src/3rdparty/chromium/third_party/libxslt/Copyright \
 	src/3rdparty/chromium/third_party/libyuv/LICENSE \
 	src/3rdparty/chromium/third_party/libyuv/LICENSE_THIRD_PARTY \
 	src/3rdparty/chromium/third_party/libyuv/third_party/gflags/LICENSE \
@@ -124,7 +131,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/mesa/src/docs/COPYING \
 	src/3rdparty/chromium/third_party/mesa/src/docs/license.html \
 	src/3rdparty/chromium/third_party/mesa/src/src/gallium/drivers/radeon/LICENSE.TXT \
-	src/3rdparty/chromium/third_party/mesa/src/src/mapi/glapi/gen/license.py \
 	src/3rdparty/chromium/third_party/minigbm/LICENSE \
 	src/3rdparty/chromium/third_party/mocha/LICENSE \
 	src/3rdparty/chromium/third_party/mockito/LICENSE \
@@ -206,7 +212,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/webdriver/LICENSE \
 	src/3rdparty/chromium/third_party/WebKit/LICENSE \
 	src/3rdparty/chromium/third_party/WebKit/LICENSE_FOR_ABOUT_CREDITS \
-	src/3rdparty/chromium/third_party/WebKit/Source/build/scripts/license.py \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-APPLE \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2 \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2.1 \
