@@ -1,3 +1,8 @@
+# (echo "QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \\" ; \
+# 	find src/3rdparty/ -type f \
+#	\( -iname 'license*' -o -iname 'copying*' -o -name 'APPLE_LICENSE' -o -name 'Copyright' -o -path '*/license_texts/*' -o -path '*/licenses/*' \) \
+#	-a -not -name '*.cc' -not -name '*.py' -not -name '*.h' -not -name 'LICENSE.sha1' -not -name 'licensecheck.pl*' -not -name 'license.after' -not -name 'license.before' | \
+#	sort | sed 's%^\(.*\)$%\t\1 \\%') > package/qt5/qt5webengine/chromium-latest.inc
 QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/base/third_party/dmg_fp/LICENSE \
 	src/3rdparty/chromium/base/third_party/dynamic_annotations/LICENSE \
@@ -268,8 +273,10 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/libwebm/source/LICENSE.TXT \
 	src/3rdparty/chromium/third_party/libwebp/LICENSE \
 	src/3rdparty/chromium/third_party/libxml/src/COPYING \
+	src/3rdparty/chromium/third_party/libxml/src/Copyright \
 	src/3rdparty/chromium/third_party/libXNVCtrl/LICENSE \
 	src/3rdparty/chromium/third_party/libxslt/linux/COPYING \
+	src/3rdparty/chromium/third_party/libxslt/src/Copyright \
 	src/3rdparty/chromium/third_party/libyuv/LICENSE \
 	src/3rdparty/chromium/third_party/libyuv/LICENSE_THIRD_PARTY \
 	src/3rdparty/chromium/third_party/lzma_sdk/LICENSE \
@@ -380,7 +387,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/webdriver/COPYING \
 	src/3rdparty/chromium/third_party/webdriver/LICENSE \
 	src/3rdparty/chromium/third_party/WebKit/LICENSE_FOR_ABOUT_CREDITS \
-	src/3rdparty/chromium/third_party/WebKit/Source/build/scripts/license.py \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-APPLE \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2 \
 	src/3rdparty/chromium/third_party/WebKit/Source/core/LICENSE-LGPL-2.1 \
@@ -395,7 +401,6 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/WebKit/Source/devtools/scripts/closure/COPYING \
 	src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/COPYING \
 	src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/dtoa/LICENSE \
-	src/3rdparty/chromium/third_party/WebKit/Source/platform/wtf/NonCopyingSort.h \
 	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/mod_pywebsocket/COPYING \
 	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/LICENSE.md \
 	src/3rdparty/chromium/third_party/WebKit/Tools/Scripts/webkitpy/thirdparty/wpt/wpt/tools/html5lib/LICENSE \
@@ -406,6 +411,7 @@ QT5WEBENGINE_CHROMIUM_LICENSE_FILES = \
 	src/3rdparty/chromium/third_party/webrtc/examples/objc/AppRTCMobile/third_party/SocketRocket/LICENSE \
 	src/3rdparty/chromium/third_party/webrtc/LICENSE \
 	src/3rdparty/chromium/third_party/webrtc/license_template.txt \
+	src/3rdparty/chromium/third_party/webrtc/LICENSE_THIRD_PARTY \
 	src/3rdparty/chromium/third_party/woff2/LICENSE \
 	src/3rdparty/chromium/third_party/xdg-utils/LICENSE \
 	src/3rdparty/chromium/third_party/xstream/LICENSE \
