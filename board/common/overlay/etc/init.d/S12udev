@@ -30,7 +30,7 @@ stop() {
     msg_begin "Stopping eudev"
     ${PROG_UA} control --stop-exec-queue
     killall -q $(basename ${PROG})
-    test $? == 0 && msg_done || msg_fail
+    msg_done
 }
 
 case "$1" in
