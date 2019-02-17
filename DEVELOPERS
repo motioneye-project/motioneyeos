@@ -865,7 +865,7 @@ F:	package/qt5/qt5webengine/
 F:	package/qt5/qt5webkit/
 F:	package/qt5/qt5webkit-examples/
 
-N:	Gary Bisson <gary.bisson@boundarydevices.com>
+N:	Gary Bisson <bisson.gary@gmail.com>
 F:	board/boundarydevices/
 F:	configs/nitrogen*
 F:	package/freescale-imx/
