@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STM32FLASH_VERSION = 4ac0566f188f39eace0223d966d349cd2f2c5895
+STM32FLASH_VERSION = 1f934ae86babdeea47afdfae1d856d5fd5da6c53
 STM32FLASH_SITE = git://git.code.sf.net/p/stm32flash/code
 STM32FLASH_LICENSE = GPL-2.0+
 STM32FLASH_LICENSE_FILES = gpl-2.0.txt
