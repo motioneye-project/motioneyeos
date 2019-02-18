@@ -14,8 +14,6 @@ SYSLOG_NG_DEPENDENCIES = host-bison host-flex host-pkgconf \
 	eventlog libglib2 openssl pcre
 # We're patching configure.ac
 SYSLOG_NG_AUTORECONF = YES
-# rabbit-mq needs -lrt
-SYSLOG_NG_CONF_ENV = LIBS=-lrt
 SYSLOG_NG_CONF_OPTS = --disable-manpages --localstatedir=/var/run \
 	--disable-java --disable-java-modules --disable-mongodb
 
@@ -81,6 +79,13 @@ SYSLOG_NG_CONF_OPTS += --enable-http
 SYSLOG_NG_CONF_OPTS += --with-libcurl="$(STAGING_DIR)/usr"
 else
 SYSLOG_NG_CONF_OPTS += --disable-http
+endif
+
+ifeq ($(BR2_PACKAGE_RABBITMQ_C),y)
+SYSLOG_NG_DEPENDENCIES += rabbitmq-c
+SYSLOG_NG_CONF_OPTS += --enable-amqp
+else
+SYSLOG_NG_CONF_OPTS += --disable-amqp
 endif
 
 ifeq ($(BR2_INIT_SYSTEMD),y)
