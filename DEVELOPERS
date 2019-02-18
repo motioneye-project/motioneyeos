@@ -569,6 +569,9 @@ F:	package/libamcodec/
 F:	package/odroid-mali/
 F:	package/odroid-scripts/
 
+N:	Daniel J. Leach <dleach@belcan.com>
+F:	package/dacapo/
+
 N:	Damien Lanson <damien@kal-host.com>
 F:	package/libvdpau/
 F:	package/log4cpp/
