@@ -168,15 +168,10 @@ HOST_IMAGEMAGICK_CONF_OPTS = \
 	--without-x \
 	--without-bzlib \
 	--without-fftw \
-	--without-fontconfig \
-	--without-freetype \
 	--without-lcms \
 	--without-lzma \
-	--without-pango \
-	--without-rsvg \
 	--without-tiff \
 	--without-webp \
-	--without-xml \
 	--with-jpeg \
 	--with-png \
 	--with-zlib
@@ -186,6 +181,29 @@ HOST_IMAGEMAGICK_DEPENDENCIES = \
 	host-libpng \
 	host-pkgconf \
 	host-zlib
+
+ifeq ($(BR2_PACKAGE_HOST_IMAGEMAGICK_SVG),y)
+HOST_IMAGEMAGICK_DEPENDENCIES += \
+	host-fontconfig \
+	host-freetype \
+	host-librsvg \
+	host-libxml2 \
+	host-pango
+HOST_IMAGEMAGICK_CONF_ENV += ac_cv_path_xml2_config=$(HOST_DIR)/bin/xml2-config
+HOST_IMAGEMAGICK_CONF_OPTS += \
+	--with-fontconfig \
+	--with-freetype \
+	--with-pango \
+	--with-rsvg \
+	--with-xml
+else
+HOST_IMAGEMAGICK_CONF_OPTS += \
+	--without-fontconfig \
+	--without-freetype \
+	--without-pango \
+	--without-rsvg \
+	--without-xml
+endif
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))

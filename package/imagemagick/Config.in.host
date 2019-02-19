@@ -11,3 +11,16 @@ config BR2_PACKAGE_HOST_IMAGEMAGICK
 	  Bézier curves.
 
 	  http://www.imagemagick.org/
+
+if BR2_PACKAGE_HOST_IMAGEMAGICK
+
+config BR2_PACKAGE_HOST_IMAGEMAGICK_SVG
+	bool "SVG support"
+	help
+	  Say 'y' here is you need ImageMagick tools (like convert)
+	  to support SVG.
+
+	  This is not enabled by default, as it brings quite a few
+	  extra dependencies, and thus extra build time.
+
+endif
