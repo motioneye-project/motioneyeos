@@ -1,0 +1,34 @@
+From dc2f54097da3cd493b8f4d06a14ef40be484d24f Mon Sep 17 00:00:00 2001
+From: Sergio Prado <sergio.prado@e-labworks.com>
+Date: Thu, 21 Feb 2019 15:02:08 -0300
+Subject: [PATCH] Fix compile error when building against uclibc or musl
+
+The build fails when dereferencing the rpcent structure with uclibc or musl C libraries.
+
+../../../src/dynamic-preprocessors/appid/service_plugins/service_rpc.c:241:20:
+error: dereferencing pointer to incomplete type ‘struct rpcent’
+             if (rpc->r_name)
+
+That's because rpc.h should be included when using these C libraries.
+
+Signed-off-by: Sergio Prado <sergio.prado@e-labworks.com>
+---
+ src/dynamic-preprocessors/appid/service_plugins/service_rpc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/dynamic-preprocessors/appid/service_plugins/service_rpc.c b/src/dynamic-preprocessors/appid/service_plugins/service_rpc.c
+index 81bc8a5db8ab..2e45246083a8 100644
+--- a/src/dynamic-preprocessors/appid/service_plugins/service_rpc.c
++++ b/src/dynamic-preprocessors/appid/service_plugins/service_rpc.c
+@@ -32,7 +32,7 @@
+ #include "flow.h"
+ #include "service_api.h"
+ 
+-#if defined(FREEBSD) || defined(OPENBSD)
++#if defined(FREEBSD) || defined(OPENBSD) || (defined(LINUX) && defined(__UCLIBC__) && !defined(__UCLIBC_HAS_RPC__) || !defined(__GLIBC__))
+ #include "rpc/rpc.h"
+ #endif
+ 
+-- 
+2.7.4
+
