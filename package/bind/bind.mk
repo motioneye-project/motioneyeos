@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BIND_VERSION = 9.11.5
-BIND_SITE = http://ftp.isc.org/isc/bind9/$(BIND_VERSION)
+BIND_VERSION = 9.11.5-P4
+BIND_SITE = https://ftp.isc.org/isc/bind9/$(BIND_VERSION)
 # bind does not support parallel builds.
 BIND_MAKE = $(MAKE1)
 BIND_INSTALL_STAGING = YES
