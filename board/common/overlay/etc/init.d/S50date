@@ -2,7 +2,7 @@
 
 PROG_DATE="/bin/date"
 PROG_NTPD="/usr/sbin/ntpd"
-PROG_NTPDATE="/usr/sbin/ntpdate"
+PROG_NTPDATE="/usr/bin/ntpdate"
 
 SYS_CONF="/etc/date.conf"
 BOOT_CONF="/boot/date.conf"
