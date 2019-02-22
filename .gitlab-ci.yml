@@ -276,7 +276,6 @@ warpboard_defconfig: { extends: .defconfig }
 zynq_microzed_defconfig: { extends: .defconfig }
 zynq_zc706_defconfig: { extends: .defconfig }
 zynq_zed_defconfig: { extends: .defconfig }
-zynq_zybo_defconfig: { extends: .defconfig }
 zynqmp_zcu106_defconfig: { extends: .defconfig }
 tests.boot.test_atf.TestATFAllwinner: { extends: .runtime_test }
 tests.boot.test_atf.TestATFMarvell: { extends: .runtime_test }

@@ -1,5 +1,0 @@
-bootargs=root=/dev/mmcblk0p2 rootwait rw rootfstype=ext4
-fpga_image=system.bit
-fpgaboot=if fatload mmc 0 0x1000000 ${fpga_image}; then echo Booting FPGA from ${fpga_image}; fpga info 0 && fpga loadb 0 0x1000000 $filesize; else echo FPGA image ${fpga_image} was not found, skipping...; fi;
-kernel_image=uImage
-sdboot=echo Booting from SD...; run fpgaboot; fatload mmc 0 0x1000000 ${kernel_image} && fatload mmc 0 0x2000000 zynq-zybo.dtb && bootm 0x1000000 - 0x2000000

@@ -1925,10 +1925,6 @@ F:	package/python-flask-jsonrpc/
 F:	package/python-flask-login/
 F:	package/qt5/qt5charts/
 
-N:	Sebastien Van Cauwenberghe <svancau@gmail.com>
-F:	board/digilent/zybo/
-F:	configs/zynq_zybo_defconfig
-
 N:	Semyon Kolganov <semenak94@mail.ru>
 F:	package/fmt/
 F:	package/libbson/
