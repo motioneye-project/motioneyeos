@@ -1,0 +1,46 @@
+From 4c992673890f1d1ecb9aa46112b2ca80db016b67 Mon Sep 17 00:00:00 2001
+From: Richard Levitte <levitte@openssl.org>
+Date: Mon, 12 Nov 2018 18:16:27 +0100
+Subject: [PATCH] apps/ocsp.c Use the same HAVE_FORK / NO_FORK as in speed.c
+
+This allows the user to override our defaults if needed, and in a
+consistent manner.
+
+Partial fix for #7607
+
+Upstream: https://github.com/openssl/openssl/pull/7624
+Signed-off-by: Patrick Havelange <patrick.havelange@essensium.com>
+---
+ apps/ocsp.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/apps/ocsp.c b/apps/ocsp.c
+index 7fd78624bb..315b072932 100644
+--- a/apps/ocsp.c
++++ b/apps/ocsp.c
+@@ -36,7 +36,21 @@ NON_EMPTY_TRANSLATION_UNIT
+ # include <openssl/x509v3.h>
+ # include <openssl/rand.h>
+ 
+-# if defined(OPENSSL_SYS_UNIX) && !defined(OPENSSL_NO_SOCK) \
++#ifndef HAVE_FORK
++# if defined(OPENSSL_SYS_VMS) || defined(OPENSSL_SYS_WINDOWS)
++#  define HAVE_FORK 0
++# else
++#  define HAVE_FORK 1
++# endif
++#endif
++
++#if HAVE_FORK
++# undef NO_FORK
++#else
++# define NO_FORK
++#endif
++
++# if !defined(NO_FORK) && !defined(OPENSSL_NO_SOCK) \
+      && !defined(OPENSSL_NO_POSIX_IO)
+ #  define OCSP_DAEMON
+ #  include <sys/types.h>
+-- 
+2.17.1
+
