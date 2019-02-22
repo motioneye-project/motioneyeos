@@ -1,0 +1,426 @@
+From db860ea3dcf56a1993c66da22bd44460d7ac4914 Mon Sep 17 00:00:00 2001
+From: Matt Caswell <matt@openssl.org>
+Date: Tue, 4 Dec 2018 08:37:04 +0000
+Subject: [PATCH] Fix some SSL_export_keying_material() issues
+
+Fix some issues in tls13_hkdf_expand() which impact the above function
+for TLSv1.3. In particular test that we can use the maximum label length
+in TLSv1.3.
+
+Reviewed-by: Tim Hudson <tjh@openssl.org>
+(Merged from https://github.com/openssl/openssl/pull/7755)
+
+(cherry picked from commit 0fb2815b873304d145ed00283454fc9f3bd35e6b)
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ doc/man3/SSL_export_keying_material.pod |  3 +-
+ ssl/ssl_locl.h                          |  2 +-
+ ssl/statem/extensions.c                 |  2 +-
+ ssl/statem/statem_clnt.c                |  2 +-
+ ssl/statem/statem_srvr.c                |  2 +-
+ ssl/tls13_enc.c                         | 73 +++++++++++++++++--------
+ test/sslapitest.c                       | 48 ++++++++++++----
+ test/tls13secretstest.c                 |  2 +-
+ 8 files changed, 92 insertions(+), 42 deletions(-)
+
+diff --git a/doc/man3/SSL_export_keying_material.pod b/doc/man3/SSL_export_keying_material.pod
+index abebf911fc..4c81a60ffb 100644
+--- a/doc/man3/SSL_export_keying_material.pod
++++ b/doc/man3/SSL_export_keying_material.pod
+@@ -59,7 +59,8 @@ B<label> and should be B<llen> bytes long. Typically this will be a value from
+ the IANA Exporter Label Registry
+ (L<https://www.iana.org/assignments/tls-parameters/tls-parameters.xhtml#exporter-labels>).
+ Alternatively labels beginning with "EXPERIMENTAL" are permitted by the standard
+-to be used without registration.
++to be used without registration. TLSv1.3 imposes a maximum label length of
++249 bytes.
+ 
+ Note that this function is only defined for TLSv1.0 and above, and DTLSv1.0 and
+ above. Attempting to use it in SSLv3 will result in an error.
+diff --git a/ssl/ssl_locl.h b/ssl/ssl_locl.h
+index 70e5a1740f..307131de93 100644
+--- a/ssl/ssl_locl.h
++++ b/ssl/ssl_locl.h
+@@ -2461,7 +2461,7 @@ __owur int tls13_hkdf_expand(SSL *s, const EVP_MD *md,
+                              const unsigned char *secret,
+                              const unsigned char *label, size_t labellen,
+                              const unsigned char *data, size_t datalen,
+-                             unsigned char *out, size_t outlen);
++                             unsigned char *out, size_t outlen, int fatal);
+ __owur int tls13_derive_key(SSL *s, const EVP_MD *md,
+                             const unsigned char *secret, unsigned char *key,
+                             size_t keylen);
+diff --git a/ssl/statem/extensions.c b/ssl/statem/extensions.c
+index 63e61c6184..716d6d23e0 100644
+--- a/ssl/statem/extensions.c
++++ b/ssl/statem/extensions.c
+@@ -1506,7 +1506,7 @@ int tls_psk_do_binder(SSL *s, const EVP_MD *md, const unsigned char *msgstart,
+ 
+     /* Generate the binder key */
+     if (!tls13_hkdf_expand(s, md, early_secret, label, labelsize, hash,
+-                           hashsize, binderkey, hashsize)) {
++                           hashsize, binderkey, hashsize, 1)) {
+         /* SSLfatal() already called */
+         goto err;
+     }
+diff --git a/ssl/statem/statem_clnt.c b/ssl/statem/statem_clnt.c
+index 5a8f1163df..a0e495d8e8 100644
+--- a/ssl/statem/statem_clnt.c
++++ b/ssl/statem/statem_clnt.c
+@@ -2740,7 +2740,7 @@ MSG_PROCESS_RETURN tls_process_new_session_ticket(SSL *s, PACKET *pkt)
+                                PACKET_data(&nonce),
+                                PACKET_remaining(&nonce),
+                                s->session->master_key,
+-                               hashlen)) {
++                               hashlen, 1)) {
+             /* SSLfatal() already called */
+             goto err;
+         }
+diff --git a/ssl/statem/statem_srvr.c b/ssl/statem/statem_srvr.c
+index e7c11c4bea..a8e862ced5 100644
+--- a/ssl/statem/statem_srvr.c
++++ b/ssl/statem/statem_srvr.c
+@@ -4099,7 +4099,7 @@ int tls_construct_new_session_ticket(SSL *s, WPACKET *pkt)
+                                tick_nonce,
+                                TICKET_NONCE_SIZE,
+                                s->session->master_key,
+-                               hashlen)) {
++                               hashlen, 1)) {
+             /* SSLfatal() already called */
+             goto err;
+         }
+diff --git a/ssl/tls13_enc.c b/ssl/tls13_enc.c
+index f7ab0fa470..c3021d18aa 100644
+--- a/ssl/tls13_enc.c
++++ b/ssl/tls13_enc.c
+@@ -13,7 +13,7 @@
+ #include <openssl/evp.h>
+ #include <openssl/kdf.h>
+ 
+-#define TLS13_MAX_LABEL_LEN     246
++#define TLS13_MAX_LABEL_LEN     249
+ 
+ /* Always filled with zeros */
+ static const unsigned char default_zeros[EVP_MAX_MD_SIZE];
+@@ -22,30 +22,47 @@ static const unsigned char default_zeros[EVP_MAX_MD_SIZE];
+  * Given a |secret|; a |label| of length |labellen|; and |data| of length
+  * |datalen| (e.g. typically a hash of the handshake messages), derive a new
+  * secret |outlen| bytes long and store it in the location pointed to be |out|.
+- * The |data| value may be zero length. Returns 1 on success  0 on failure.
++ * The |data| value may be zero length. Any errors will be treated as fatal if
++ * |fatal| is set. Returns 1 on success  0 on failure.
+  */
+ int tls13_hkdf_expand(SSL *s, const EVP_MD *md, const unsigned char *secret,
+                              const unsigned char *label, size_t labellen,
+                              const unsigned char *data, size_t datalen,
+-                             unsigned char *out, size_t outlen)
++                             unsigned char *out, size_t outlen, int fatal)
+ {
+-    const unsigned char label_prefix[] = "tls13 ";
++    static const unsigned char label_prefix[] = "tls13 ";
+     EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_HKDF, NULL);
+     int ret;
+     size_t hkdflabellen;
+     size_t hashlen;
+     /*
+-     * 2 bytes for length of whole HkdfLabel + 1 byte for length of combined
+-     * prefix and label + bytes for the label itself + bytes for the hash
++     * 2 bytes for length of derived secret + 1 byte for length of combined
++     * prefix and label + bytes for the label itself + 1 byte length of hash
++     * + bytes for the hash itself
+      */
+     unsigned char hkdflabel[sizeof(uint16_t) + sizeof(uint8_t) +
+                             + sizeof(label_prefix) + TLS13_MAX_LABEL_LEN
+-                            + EVP_MAX_MD_SIZE];
++                            + 1 + EVP_MAX_MD_SIZE];
+     WPACKET pkt;
+ 
+     if (pctx == NULL)
+         return 0;
+ 
++    if (labellen > TLS13_MAX_LABEL_LEN) {
++        if (fatal) {
++            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS13_HKDF_EXPAND,
++                     ERR_R_INTERNAL_ERROR);
++        } else {
++            /*
++             * Probably we have been called from SSL_export_keying_material(),
++             * or SSL_export_keying_material_early().
++             */
++            SSLerr(SSL_F_TLS13_HKDF_EXPAND, SSL_R_TLS_ILLEGAL_EXPORTER_LABEL);
++        }
++        EVP_PKEY_CTX_free(pctx);
++        return 0;
++    }
++
+     hashlen = EVP_MD_size(md);
+ 
+     if (!WPACKET_init_static_len(&pkt, hkdflabel, sizeof(hkdflabel), 0)
+@@ -59,8 +76,11 @@ int tls13_hkdf_expand(SSL *s, const EVP_MD *md, const unsigned char *secret,
+             || !WPACKET_finish(&pkt)) {
+         EVP_PKEY_CTX_free(pctx);
+         WPACKET_cleanup(&pkt);
+-        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS13_HKDF_EXPAND,
+-                 ERR_R_INTERNAL_ERROR);
++        if (fatal)
++            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS13_HKDF_EXPAND,
++                     ERR_R_INTERNAL_ERROR);
++        else
++            SSLerr(SSL_F_TLS13_HKDF_EXPAND, ERR_R_INTERNAL_ERROR);
+         return 0;
+     }
+ 
+@@ -74,9 +94,13 @@ int tls13_hkdf_expand(SSL *s, const EVP_MD *md, const unsigned char *secret,
+ 
+     EVP_PKEY_CTX_free(pctx);
+ 
+-    if (ret != 0)
+-        SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS13_HKDF_EXPAND,
+-                 ERR_R_INTERNAL_ERROR);
++    if (ret != 0) {
++        if (fatal)
++            SSLfatal(s, SSL_AD_INTERNAL_ERROR, SSL_F_TLS13_HKDF_EXPAND,
++                     ERR_R_INTERNAL_ERROR);
++        else
++            SSLerr(SSL_F_TLS13_HKDF_EXPAND, ERR_R_INTERNAL_ERROR);
++    }
+ 
+     return ret == 0;
+ }
+@@ -91,7 +115,7 @@ int tls13_derive_key(SSL *s, const EVP_MD *md, const unsigned char *secret,
+     static const unsigned char keylabel[] = "key";
+ 
+     return tls13_hkdf_expand(s, md, secret, keylabel, sizeof(keylabel) - 1,
+-                             NULL, 0, key, keylen);
++                             NULL, 0, key, keylen, 1);
+ }
+ 
+ /*
+@@ -104,7 +128,7 @@ int tls13_derive_iv(SSL *s, const EVP_MD *md, const unsigned char *secret,
+     static const unsigned char ivlabel[] = "iv";
+ 
+     return tls13_hkdf_expand(s, md, secret, ivlabel, sizeof(ivlabel) - 1,
+-                             NULL, 0, iv, ivlen);
++                             NULL, 0, iv, ivlen, 1);
+ }
+ 
+ int tls13_derive_finishedkey(SSL *s, const EVP_MD *md,
+@@ -114,7 +138,7 @@ int tls13_derive_finishedkey(SSL *s, const EVP_MD *md,
+     static const unsigned char finishedlabel[] = "finished";
+ 
+     return tls13_hkdf_expand(s, md, secret, finishedlabel,
+-                             sizeof(finishedlabel) - 1, NULL, 0, fin, finlen);
++                             sizeof(finishedlabel) - 1, NULL, 0, fin, finlen, 1);
+ }
+ 
+ /*
+@@ -177,7 +201,7 @@ int tls13_generate_secret(SSL *s, const EVP_MD *md,
+         if (!tls13_hkdf_expand(s, md, prevsecret,
+                                (unsigned char *)derived_secret_label,
+                                sizeof(derived_secret_label) - 1, hash, mdlen,
+-                               preextractsec, mdlen)) {
++                               preextractsec, mdlen, 1)) {
+             /* SSLfatal() already called */
+             EVP_PKEY_CTX_free(pctx);
+             return 0;
+@@ -337,7 +361,7 @@ static int derive_secret_key_and_iv(SSL *s, int sending, const EVP_MD *md,
+     hashlen = (size_t)hashleni;
+ 
+     if (!tls13_hkdf_expand(s, md, insecret, label, labellen, hash, hashlen,
+-                           secret, hashlen)) {
++                           secret, hashlen, 1)) {
+         /* SSLfatal() already called */
+         goto err;
+     }
+@@ -517,7 +541,8 @@ int tls13_change_cipher_state(SSL *s, int which)
+                                    early_exporter_master_secret,
+                                    sizeof(early_exporter_master_secret) - 1,
+                                    hashval, hashlen,
+-                                   s->early_exporter_master_secret, hashlen)) {
++                                   s->early_exporter_master_secret, hashlen,
++                                   1)) {
+                 SSLfatal(s, SSL_AD_INTERNAL_ERROR,
+                          SSL_F_TLS13_CHANGE_CIPHER_STATE, ERR_R_INTERNAL_ERROR);
+                 goto err;
+@@ -604,7 +629,7 @@ int tls13_change_cipher_state(SSL *s, int which)
+                                resumption_master_secret,
+                                sizeof(resumption_master_secret) - 1,
+                                hashval, hashlen, s->resumption_master_secret,
+-                               hashlen)) {
++                               hashlen, 1)) {
+             /* SSLfatal() already called */
+             goto err;
+         }
+@@ -624,7 +649,7 @@ int tls13_change_cipher_state(SSL *s, int which)
+                                exporter_master_secret,
+                                sizeof(exporter_master_secret) - 1,
+                                hash, hashlen, s->exporter_master_secret,
+-                               hashlen)) {
++                               hashlen, 1)) {
+             /* SSLfatal() already called */
+             goto err;
+         }
+@@ -738,10 +763,10 @@ int tls13_export_keying_material(SSL *s, unsigned char *out, size_t olen,
+             || EVP_DigestFinal_ex(ctx, data, &datalen) <= 0
+             || !tls13_hkdf_expand(s, md, s->exporter_master_secret,
+                                   (const unsigned char *)label, llen,
+-                                  data, datalen, exportsecret, hashsize)
++                                  data, datalen, exportsecret, hashsize, 0)
+             || !tls13_hkdf_expand(s, md, exportsecret, exporterlabel,
+                                   sizeof(exporterlabel) - 1, hash, hashsize,
+-                                  out, olen))
++                                  out, olen, 0))
+         goto err;
+ 
+     ret = 1;
+@@ -797,10 +822,10 @@ int tls13_export_keying_material_early(SSL *s, unsigned char *out, size_t olen,
+             || EVP_DigestFinal_ex(ctx, data, &datalen) <= 0
+             || !tls13_hkdf_expand(s, md, s->early_exporter_master_secret,
+                                   (const unsigned char *)label, llen,
+-                                  data, datalen, exportsecret, hashsize)
++                                  data, datalen, exportsecret, hashsize, 0)
+             || !tls13_hkdf_expand(s, md, exportsecret, exporterlabel,
+                                   sizeof(exporterlabel) - 1, hash, hashsize,
+-                                  out, olen))
++                                  out, olen, 0))
+         goto err;
+ 
+     ret = 1;
+diff --git a/test/sslapitest.c b/test/sslapitest.c
+index 108d57e478..a4bbb4fead 100644
+--- a/test/sslapitest.c
++++ b/test/sslapitest.c
+@@ -4028,20 +4028,25 @@ static int test_serverinfo(int tst)
+  * no test vectors so all we do is test that both sides of the communication
+  * produce the same results for different protocol versions.
+  */
++#define SMALL_LABEL_LEN 10
++#define LONG_LABEL_LEN  249
+ static int test_export_key_mat(int tst)
+ {
+     int testresult = 0;
+     SSL_CTX *cctx = NULL, *sctx = NULL, *sctx2 = NULL;
+     SSL *clientssl = NULL, *serverssl = NULL;
+-    const char label[] = "test label";
++    const char label[LONG_LABEL_LEN + 1] = "test label";
+     const unsigned char context[] = "context";
+     const unsigned char *emptycontext = NULL;
+     unsigned char ckeymat1[80], ckeymat2[80], ckeymat3[80];
+     unsigned char skeymat1[80], skeymat2[80], skeymat3[80];
++    size_t labellen;
+     const int protocols[] = {
+         TLS1_VERSION,
+         TLS1_1_VERSION,
+         TLS1_2_VERSION,
++        TLS1_3_VERSION,
++        TLS1_3_VERSION,
+         TLS1_3_VERSION
+     };
+ 
+@@ -4058,7 +4063,7 @@ static int test_export_key_mat(int tst)
+         return 1;
+ #endif
+ #ifdef OPENSSL_NO_TLS1_3
+-    if (tst == 3)
++    if (tst >= 3)
+         return 1;
+ #endif
+     if (!TEST_true(create_ssl_ctx_pair(TLS_server_method(), TLS_client_method(),
+@@ -4076,33 +4081,52 @@ static int test_export_key_mat(int tst)
+                                                 SSL_ERROR_NONE)))
+         goto end;
+ 
++    if (tst == 5) {
++        /*
++         * TLSv1.3 imposes a maximum label len of 249 bytes. Check we fail if we
++         * go over that.
++         */
++        if (!TEST_int_le(SSL_export_keying_material(clientssl, ckeymat1,
++                                                    sizeof(ckeymat1), label,
++                                                    LONG_LABEL_LEN + 1, context,
++                                                    sizeof(context) - 1, 1), 0))
++            goto end;
++
++        testresult = 1;
++        goto end;
++    } else if (tst == 4) {
++        labellen = LONG_LABEL_LEN;
++    } else {
++        labellen = SMALL_LABEL_LEN;
++    }
++
+     if (!TEST_int_eq(SSL_export_keying_material(clientssl, ckeymat1,
+                                                 sizeof(ckeymat1), label,
+-                                                sizeof(label) - 1, context,
++                                                labellen, context,
+                                                 sizeof(context) - 1, 1), 1)
+             || !TEST_int_eq(SSL_export_keying_material(clientssl, ckeymat2,
+                                                        sizeof(ckeymat2), label,
+-                                                       sizeof(label) - 1,
++                                                       labellen,
+                                                        emptycontext,
+                                                        0, 1), 1)
+             || !TEST_int_eq(SSL_export_keying_material(clientssl, ckeymat3,
+                                                        sizeof(ckeymat3), label,
+-                                                       sizeof(label) - 1,
++                                                       labellen,
+                                                        NULL, 0, 0), 1)
+             || !TEST_int_eq(SSL_export_keying_material(serverssl, skeymat1,
+                                                        sizeof(skeymat1), label,
+-                                                       sizeof(label) - 1,
++                                                       labellen,
+                                                        context,
+                                                        sizeof(context) -1, 1),
+                             1)
+             || !TEST_int_eq(SSL_export_keying_material(serverssl, skeymat2,
+                                                        sizeof(skeymat2), label,
+-                                                       sizeof(label) - 1,
++                                                       labellen,
+                                                        emptycontext,
+                                                        0, 1), 1)
+             || !TEST_int_eq(SSL_export_keying_material(serverssl, skeymat3,
+                                                        sizeof(skeymat3), label,
+-                                                       sizeof(label) - 1,
++                                                       labellen,
+                                                        NULL, 0, 0), 1)
+                /*
+                 * Check that both sides created the same key material with the
+@@ -4131,10 +4155,10 @@ static int test_export_key_mat(int tst)
+      * Check that an empty context and no context produce different results in
+      * protocols less than TLSv1.3. In TLSv1.3 they should be the same.
+      */
+-    if ((tst != 3 && !TEST_mem_ne(ckeymat2, sizeof(ckeymat2), ckeymat3,
++    if ((tst < 3 && !TEST_mem_ne(ckeymat2, sizeof(ckeymat2), ckeymat3,
+                                   sizeof(ckeymat3)))
+-            || (tst ==3 && !TEST_mem_eq(ckeymat2, sizeof(ckeymat2), ckeymat3,
+-                                        sizeof(ckeymat3))))
++            || (tst >= 3 && !TEST_mem_eq(ckeymat2, sizeof(ckeymat2), ckeymat3,
++                                         sizeof(ckeymat3))))
+         goto end;
+ 
+     testresult = 1;
+@@ -5909,7 +5933,7 @@ int setup_tests(void)
+     ADD_ALL_TESTS(test_custom_exts, 3);
+ #endif
+     ADD_ALL_TESTS(test_serverinfo, 8);
+-    ADD_ALL_TESTS(test_export_key_mat, 4);
++    ADD_ALL_TESTS(test_export_key_mat, 6);
+ #ifndef OPENSSL_NO_TLS1_3
+     ADD_ALL_TESTS(test_export_key_mat_early, 3);
+ #endif
+diff --git a/test/tls13secretstest.c b/test/tls13secretstest.c
+index 724c170c56..66a0582887 100644
+--- a/test/tls13secretstest.c
++++ b/test/tls13secretstest.c
+@@ -236,7 +236,7 @@ static int test_secret(SSL *s, unsigned char *prk,
+     }
+ 
+     if (!tls13_hkdf_expand(s, md, prk, label, labellen, hash, hashsize,
+-                           gensecret, hashsize)) {
++                           gensecret, hashsize, 1)) {
+         TEST_error("Secret generation failed");
+         return 0;
+     }
+-- 
+2.20.1
+

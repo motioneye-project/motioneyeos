@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBOPENSSL_VERSION = 1.0.2p
-LIBOPENSSL_SITE = http://www.openssl.org/source
+LIBOPENSSL_VERSION = 1.1.1a
+LIBOPENSSL_SITE = https://www.openssl.org/source
 LIBOPENSSL_SOURCE = openssl-$(LIBOPENSSL_VERSION).tar.gz
 LIBOPENSSL_LICENSE = OpenSSL or SSLeay
 LIBOPENSSL_LICENSE_FILES = LICENSE
@@ -15,24 +15,38 @@ HOST_LIBOPENSSL_DEPENDENCIES = host-zlib
 LIBOPENSSL_TARGET_ARCH = generic32
 LIBOPENSSL_CFLAGS = $(TARGET_CFLAGS)
 LIBOPENSSL_PROVIDES = openssl
-LIBOPENSSL_PATCH = \
-	https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-libs/openssl/files/openssl-1.0.2d-parallel-build.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d \
-	https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-libs/openssl/files/openssl-1.0.2a-parallel-obj-headers.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d \
-	https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-libs/openssl/files/openssl-1.0.2a-parallel-install-dirs.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d \
-	https://gitweb.gentoo.org/repo/gentoo.git/plain/dev-libs/openssl/files/openssl-1.0.2a-parallel-symlinking.patch?id=c8abcbe8de5d3b6cdd68c162f398c011ff6e2d9d
 
-# relocation truncated to fit: R_68K_GOT16O
 ifeq ($(BR2_m68k_cf),y)
+# relocation truncated to fit: R_68K_GOT16O
 LIBOPENSSL_CFLAGS += -mxgot
+# resolves an assembler "out of range error" with blake2 and sha512 algorithms
+LIBOPENSSL_CFLAGS += -DOPENSSL_SMALL_FOOTPRINT
 endif
 
 ifeq ($(BR2_USE_MMU),)
-LIBOPENSSL_CFLAGS += -DHAVE_FORK=0
+LIBOPENSSL_CFLAGS += -DHAVE_FORK=0 -DOPENSSL_NO_MADVISE
 endif
 
 ifeq ($(BR2_PACKAGE_HAS_CRYPTODEV),y)
-LIBOPENSSL_CFLAGS += -DHAVE_CRYPTODEV -DUSE_CRYPTODEV_DIGESTS
 LIBOPENSSL_DEPENDENCIES += cryptodev
+endif
+
+# fixes the following build failures:
+#
+# - musl
+#   ./libcrypto.so: undefined reference to `getcontext'
+#   ./libcrypto.so: undefined reference to `setcontext'
+#   ./libcrypto.so: undefined reference to `makecontext'
+#
+# - uclibc:
+#   crypto/async/arch/../arch/async_posix.h:32:5: error: unknown type name ‘ucontext_t’
+#
+
+ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
+LIBOPENSSL_CFLAGS += -DOPENSSL_NO_ASYNC
+endif
+ifeq ($(BR2_TOOLCHAIN_HAS_UCONTEXT),)
+LIBOPENSSL_CFLAGS += -DOPENSSL_NO_ASYNC
 endif
 
 # Some architectures are optimized in OpenSSL
@@ -65,11 +79,13 @@ define HOST_LIBOPENSSL_CONFIGURE_CMDS
 		./config \
 		--prefix=$(HOST_DIR) \
 		--openssldir=$(HOST_DIR)/etc/ssl \
-		--libdir=/lib \
+		no-tests \
+		no-fuzz-libfuzzer \
+		no-fuzz-afl \
 		shared \
 		zlib-dynamic \
 	)
-	$(SED) "s#-O[0-9]#$(HOST_CFLAGS)#" $(@D)/Makefile
+	$(SED) "s#-O[0-9s]#$(HOST_CFLAGS)#" $(@D)/Makefile
 endef
 
 define LIBOPENSSL_CONFIGURE_CMDS
@@ -80,18 +96,21 @@ define LIBOPENSSL_CONFIGURE_CMDS
 			linux-$(LIBOPENSSL_TARGET_ARCH) \
 			--prefix=/usr \
 			--openssldir=/etc/ssl \
-			--libdir=/lib \
+			$(if $(BR2_TOOLCHAIN_HAS_LIBATOMIC),-latomic) \
 			$(if $(BR2_TOOLCHAIN_HAS_THREADS),threads,no-threads) \
 			$(if $(BR2_STATIC_LIBS),no-shared,shared) \
+			$(if $(BR2_PACKAGE_HAS_CRYPTODEV),enable-devcryptoeng) \
 			no-rc5 \
 			enable-camellia \
 			enable-mdc2 \
-			enable-tlsext \
+			no-tests \
+			no-fuzz-libfuzzer \
+			no-fuzz-afl \
 			$(if $(BR2_STATIC_LIBS),zlib,zlib-dynamic) \
 			$(if $(BR2_STATIC_LIBS),no-dso) \
 	)
 	$(SED) "s#-march=[-a-z0-9] ##" -e "s#-mcpu=[-a-z0-9] ##g" $(@D)/Makefile
-	$(SED) "s#-O[0-9]#$(LIBOPENSSL_CFLAGS)#" $(@D)/Makefile
+	$(SED) "s#-O[0-9s]#$(LIBOPENSSL_CFLAGS)#" $(@D)/Makefile
 	$(SED) "s# build_tests##" $(@D)/Makefile
 endef
 
@@ -112,7 +131,7 @@ define LIBOPENSSL_BUILD_CMDS
 endef
 
 define LIBOPENSSL_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) INSTALL_PREFIX=$(STAGING_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) install
 endef
 
 define HOST_LIBOPENSSL_INSTALL_CMDS
@@ -120,7 +139,7 @@ define HOST_LIBOPENSSL_INSTALL_CMDS
 endef
 
 define LIBOPENSSL_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) INSTALL_PREFIX=$(TARGET_DIR) install
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 	rm -rf $(TARGET_DIR)/usr/lib/ssl
 	rm -f $(TARGET_DIR)/usr/bin/c_rehash
 endef
@@ -133,16 +152,6 @@ define LIBOPENSSL_FIXUP_STATIC_PKGCONFIG
 	$(SED) 's#-ldl##' $(STAGING_DIR)/usr/lib/pkgconfig/openssl.pc
 endef
 LIBOPENSSL_POST_INSTALL_STAGING_HOOKS += LIBOPENSSL_FIXUP_STATIC_PKGCONFIG
-endif
-
-ifneq ($(BR2_STATIC_LIBS),y)
-# libraries gets installed read only, so strip fails
-define LIBOPENSSL_INSTALL_FIXUPS_SHARED
-	chmod +w $(TARGET_DIR)/usr/lib/engines/lib*.so
-	for i in $(addprefix $(TARGET_DIR)/usr/lib/,libcrypto.so.* libssl.so.*); \
-	do chmod +w $$i; done
-endef
-LIBOPENSSL_POST_INSTALL_TARGET_HOOKS += LIBOPENSSL_INSTALL_FIXUPS_SHARED
 endif
 
 ifeq ($(BR2_PACKAGE_PERL),)
@@ -162,7 +171,7 @@ endif
 
 ifneq ($(BR2_PACKAGE_LIBOPENSSL_ENGINES),y)
 define LIBOPENSSL_REMOVE_LIBOPENSSL_ENGINES
-	rm -rf $(TARGET_DIR)/usr/lib/engines
+	rm -rf $(TARGET_DIR)/usr/lib/engines-1.1
 endef
 LIBOPENSSL_POST_INSTALL_TARGET_HOOKS += LIBOPENSSL_REMOVE_LIBOPENSSL_ENGINES
 endif
