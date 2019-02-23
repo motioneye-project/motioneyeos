@@ -953,6 +953,28 @@
 	#10961: Grub2 fails to build for x86_64 when BR2_SSP_ALL is
 		enabled
 
+2018.02.11, Released February 23th, 2019
+
+	Important / security related fixes.
+
+	Ensure the PLATFORM and OS environment variables are not set,
+	as they cause build issues for some packages.
+
+	The package list infrastructure now correctly handles packages
+	installing files with old mtime.
+
+	Linux: Skip hash checks for user supplied downloadable
+	patches, as no hash checksums are available for those.
+
+	scanpypi: protect against zip-slip vulnerability in zip/tar
+	handling
+
+	Updated/fixed packages: bind, dhcpcd, dovecot, ghostscript,
+	gnuradio, imagemagick, jpeg-turbo, libarchive, libb64,
+	libcurl, libid3tag, madplay, mosquitto, openssh, php,
+	postgresql, proftpd, python, python-django, python3, qt5base,
+	sqlcipher, swupdate, systemd, unzip, webkitgtk
+
 2018.02.10, Released January 31th, 2019
 
 	Important / security related fixes.
