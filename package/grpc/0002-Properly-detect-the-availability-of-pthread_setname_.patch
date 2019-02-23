@@ -1,4 +1,4 @@
-From 0aeefca28104f86f14b511feee8d5711f2e8bcb5 Mon Sep 17 00:00:00 2001
+From 0dfb289a3b362b082ac3608d887e42f09dadc0d2 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Date: Mon, 31 Dec 2018 16:22:07 +0100
 Subject: [PATCH] Properly detect the availability of pthread_setname_np()
@@ -17,7 +17,7 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
  2 files changed, 8 insertions(+)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index fc76cf50da..8dd457fb1a 100644
+index 89e834b..c7bd2ad 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -94,6 +94,12 @@ endif()
@@ -30,11 +30,11 @@ index fc76cf50da..8dd457fb1a 100644
 +  add_definitions(-DHAVE_PTHREAD_SETNAME_NP)
 +endif ()
 +
- add_definitions(-DPB_FIELD_16BIT)
+ add_definitions(-DPB_FIELD_32BIT)
  
  if (MSVC)
 diff --git a/include/grpc/impl/codegen/port_platform.h b/include/grpc/impl/codegen/port_platform.h
-index b2028a6305..dc89e6ed57 100644
+index 031c0c3..a29a9dc 100644
 --- a/include/grpc/impl/codegen/port_platform.h
 +++ b/include/grpc/impl/codegen/port_platform.h
 @@ -173,7 +173,9 @@
@@ -48,5 +48,5 @@ index b2028a6305..dc89e6ed57 100644
  #else /* musl libc */
  #define GPR_MUSL_LIBC_COMPAT 1
 -- 
-2.20.1
+2.14.4
 
