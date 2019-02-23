@@ -618,6 +618,7 @@ N:	David Lechner <david@lechnology.com>
 F:	board/lego/ev3/
 F:	configs/lego_ev3_defconfig
 F:	linux/linux-ext-ev3dev-linux-drivers.mk
+F:	package/brickd/
 F:	package/ev3dev-linux-drivers/
 
 N:	Davide Viti <zinosat@tiscali.it>

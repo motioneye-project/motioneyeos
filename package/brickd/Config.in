@@ -1,0 +1,19 @@
+config BR2_PACKAGE_BRICKD
+	bool "brickd"
+	depends on BR2_PACKAGE_HAS_UDEV # gudev
+	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on BR2_USE_WCHAR # glib2
+	depends on BR2_USE_MMU # glib2, gudev
+	select BR2_PACKAGE_LIBGLIB2
+	select BR2_PACKAGE_LIBGUDEV
+	help
+	  Brick daemon for LEGO MINDSTORMS EV3 (and other LEGO-
+	  compatible devices). This performs tasks like battery
+	  management and controls device-specific hardware.
+
+	  https://github.com/ev3dev/brickd
+
+comment "brickd needs udev /dev management, a toolchain w/ threads, wchar"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_USE_WCHAR
