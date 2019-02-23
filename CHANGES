@@ -1,3 +1,27 @@
+2019.02-rc2, released February 23th, 2019
+
+	Fixes all over the tree.
+
+	Removed zynq_zybo defconfig, as it hasn't seen any update
+	since it was added in 2016, and uses a U-Boot version not
+	compatible with openssl-1.1.x.
+
+	Linux: Ignore user supplied downloadable hashes, as no hash
+	checksums are available for those.
+
+	Updated/fixed packages: bind, cryptopp, docker-containerd,
+	dtc, efivar, gdb, imagemagick, ipmiutil, libcpprestsdk,
+	libcurl, libgpiod, libid3tag, libv4l, log4cplus, luvi,
+	madplay, mender, mosquitto, poco, postgresql, proftpd,
+	pulseaudio, python-django, qemu, qt5base, qwt, rabbitmq-c,
+	reaver, safeclip, stress-ng, swupdate, syslog-ng, systemd,
+	tor, unzip, xenomai
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11501: compile sdl2 with enable wayland
+	#11681: .. unable to initialize decompress status for section..
+
 2019.02-rc1, released February 13th, 2019
 
 	Fixes all over the tree and new features.
