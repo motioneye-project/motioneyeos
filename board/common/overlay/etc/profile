@@ -31,7 +31,8 @@ fi;
 test -f /data/etc/profile && source /data/etc/profile
 
 # global environment variables
+set -a
 test -f /etc/environment && source /etc/environment
 test -f /data/etc/environment && source /data/etc/environment
 test -f /boot/etc/environment && source /boot/etc/environment
-
+set +a
