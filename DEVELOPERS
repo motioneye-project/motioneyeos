@@ -1033,6 +1033,7 @@ F:	package/lua-std-debug/
 F:	package/lua-std-normalize/
 F:	package/python-aiodns/
 F:	package/python-aiohttp/
+F:	package/python-aiohttp-cors/
 F:	package/python-aiohttp-jinja2/
 F:	package/python-aiohttp-remotes/
 F:	package/python-aiohttp-security/
