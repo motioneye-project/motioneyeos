@@ -97,6 +97,7 @@ def pkg_buildroot_name(pkg_name):
     pkg_name -- String to rename
     """
     name = re.sub('[^\w-]', '', pkg_name.lower())
+    name = name.replace('_', '-')
     prefix = 'python-'
     pattern = re.compile('^(?!' + prefix + ')(.+?)$')
     name = pattern.sub(r'python-\1', name)
@@ -299,6 +300,12 @@ class BuildrootPackage():
         sys.path.append(self.tmp_extract)
         s_file, s_path, s_desc = imp.find_module('setup', [self.tmp_extract])
         setup = imp.load_module('setup', s_file, s_path, s_desc)
+        if self.metadata_name in self.setup_args:
+            pass
+        elif self.metadata_name.replace('_', '-') in self.setup_args:
+            self.metadata_name = self.metadata_name.replace('_', '-')
+        elif self.metadata_name.replace('-', '_') in self.setup_args:
+            self.metadata_name = self.metadata_name.replace('-', '_')
         try:
             self.setup_metadata = self.setup_args[self.metadata_name]
         except KeyError:
