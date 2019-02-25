@@ -1,5 +1,5 @@
 From 291070801245da26e4841c321910b55016ca23c0 Mon Sep 17 00:00:00 2001
-From: Vadim Kochan <vadim.kochan@petcube.com>
+From: Vadim Kochan <vadim4j@gmail.com>
 Date: Tue, 1 Jan 2019 17:24:54 +0200
 Subject: [PATCH] test/test-bsd-wchar: Explicitly include stdio.h
 
