@@ -1,0 +1,33 @@
+From e75feef80b51c9060e3702390040495312648ad2 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Andr=C3=A9=20Hentschel?= <nerv@dawncrow.de>
+Date: Mon, 25 Feb 2019 22:15:55 +0100
+Subject: [PATCH] Add unused fake version
+
+The Makefile makes the assumption that the build process runs
+from a Git clone of the source code.
+We can safely add a fake version here, because the code to
+print it is broken anyway.
+
+Signed-off-by: André Hentschel <nerv@dawncrow.de>
+---
+ Makefile | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index ccf42e8..6041574 100644
+--- a/Makefile
++++ b/Makefile
+@@ -37,9 +37,7 @@ $(MKIMG): src/build_info.h $(SRCS)
+ bin: $(MKIMG)
+ 
+ src/build_info.h:
+-	@echo -n '#define MKIMAGE_COMMIT 0x' > src/build_info.h
+-	@git rev-parse --short=8 HEAD >> src/build_info.h
+-	@echo '' >> src/build_info.h
++	@echo '#define MKIMAGE_COMMIT 0xdeadbeef' > src/build_info.h
+ 
+ help:
+ 	@echo $(CURR_DIR)
+-- 
+2.17.1
+
