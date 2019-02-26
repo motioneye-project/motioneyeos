@@ -25,7 +25,8 @@ config BR2_PACKAGE_OPENJDK
 	select BR2_PACKAGE_ZLIB
 	# make sure at least one variant is enabled
 	select BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER \
-	       if !BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT
+	       if !BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT && !BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO && !BR2_powerpc
+	select BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO if BR2_powerpc
 	help
 	  OpenJDK is a free and open-source implementation of the
 	  Java Platform.
@@ -36,13 +37,24 @@ if BR2_PACKAGE_OPENJDK
 
 config BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT
 	bool "build client variant"
+	depends on !BR2_powerpc
 	help
 	  Quick loading, but slower run-time performance.
 
 config BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER
 	bool "build server variant"
+	depends on !BR2_powerpc
 	help
 	  Slower loading, but faster run-time performance.
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO
+	bool "build zero variant"
+	select BR2_PACKAGE_LIBFFI
+	help
+	  A non-assembler variant with wide arch support, however
+	  performance is less then client/server.
+
+	  http://openjdk.java.net/projects/zero
 
 endif
 
