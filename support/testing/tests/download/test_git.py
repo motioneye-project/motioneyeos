@@ -76,7 +76,6 @@ class TestGitRefs(GitTestBase):
         self.check_download("git-sha1-reachable-by-tag")
         self.check_download("git-sha1-tag-itself")
         self.check_download("git-sha1-tag-points-to")
-        self.check_download("git-special-ref")
         self.check_download("git-submodule-disabled")
         self.check_download("git-submodule-enabled")
         self.check_download("git-tag")
