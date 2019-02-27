@@ -13,6 +13,8 @@ ZBAR_AUTORECONF = YES
 ZBAR_DEPENDENCIES = libv4l jpeg
 # add host-gettext for AM_ICONV macro
 ZBAR_DEPENDENCIES += host-gettext
+# uses C99 features
+ZBAR_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -std=gnu99"
 ZBAR_CONF_OPTS = \
 	--disable-doc \
 	--without-imagemagick \
