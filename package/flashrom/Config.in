@@ -6,8 +6,6 @@ config BR2_PACKAGE_FLASHROM
 	select BR2_PACKAGE_LIBUSB
 	select BR2_PACKAGE_LIBUSB_COMPAT
 	select BR2_PACKAGE_LIBFTDI
-	# dmidecode is only a runtime dependency
-	select BR2_PACKAGE_DMIDECODE
 	help
 	  flashrom is a utility for identifying, reading, writing,
 	  verifying and erasing flash chips. It is designed to flash
