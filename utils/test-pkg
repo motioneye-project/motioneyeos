@@ -2,12 +2,20 @@
 set -e
 
 TOOLCHAINS_CSV='support/config-fragments/autobuild/toolchain-configs.csv'
+TEMP_CONF=""
+
+do_clean() {
+    if [ ! -z "${TEMP_CONF}" ]; then
+        rm -f "${TEMP_CONF}"
+    fi
+}
 
 main() {
     local o O opts
     local cfg dir pkg random toolchains_dir toolchain all number mode
     local ret nb nb_skip nb_fail nb_legal nb_tc build_dir
     local -a toolchains
+    local pkg_br_name
 
     o='hac:d:n:p:r:t:'
     O='help,config-snippet:build-dir:package:,random:,toolchains-dir:'
@@ -50,8 +58,15 @@ main() {
             ;;
         esac
     done
+
+    trap do_clean INT TERM HUP EXIT
+
     if [ -z "${cfg}" ]; then
-        printf "error: no config snippet specified\n" >&2; exit 1
+        pkg_br_name="${pkg//-/_}"
+        pkg_br_name="BR2_PACKAGE_${pkg_br_name^^}"
+        TEMP_CONF=$(mktemp /tmp/test-${pkg}-config.XXXXXX)
+        echo "${pkg_br_name}=y" > ${TEMP_CONF}
+        cfg="${TEMP_CONF}"
     fi
     if [ ! -e "${cfg}" ]; then
         printf "error: %s: no such file\n" "${cfg}" >&2; exit 1
