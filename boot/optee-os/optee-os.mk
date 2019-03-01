@@ -55,9 +55,11 @@ OPTEE_OS_MAKE_OPTS += $(call qstrip,$(BR2_TARGET_OPTEE_OS_ADDITIONAL_VARIABLES))
 OPTEE_OS_BUILDDIR_OUT = out
 ifeq ($(BR2_aarch64),y)
 OPTEE_OS_LOCAL_SDK = $(OPTEE_OS_BUILDDIR_OUT)/export-ta_arm64
+OPTEE_OS_SDK = $(STAGING_DIR)/lib/optee/export-ta_arm64
 endif
 ifeq ($(BR2_arm),y)
 OPTEE_OS_LOCAL_SDK = $(OPTEE_OS_BUILDDIR_OUT)/export-ta_arm32
+OPTEE_OS_SDK = $(STAGING_DIR)/lib/optee/export-ta_arm32
 endif
 
 ifeq ($(BR2_TARGET_OPTEE_OS_CORE),y)
@@ -86,8 +88,8 @@ define OPTEE_OS_BUILD_SDK
 		 $(TARGET_CONFIGURE_OPTS) $(OPTEE_OS_MAKE_OPTS) ta_dev_kit
 endef
 define OPTEE_OS_INSTALL_STAGING_CMDS
-	mkdir -p $(STAGING_DIR)/lib/optee
-	cp -ardpf $(@D)/$(OPTEE_OS_LOCAL_SDK) $(STAGING_DIR)/lib/optee
+	mkdir -p $(OPTEE_OS_SDK)
+	cp -ardpf $(@D)/$(OPTEE_OS_LOCAL_SDK)/* $(OPTEE_OS_SDK)
 endef
 endif # BR2_TARGET_OPTEE_OS_SDK
 
