@@ -99,4 +99,11 @@ config BR2_TARGET_OPTEE_OS_ADDITIONAL_VARIABLES
 	  Additional parameters for the OP-TEE OS build
 	  E.g. 'CFG_TEE_CORE_LOG_LEVEL=3 CFG_UNWIND=y'
 
+config BR2_TARGET_OPTEE_OS_CORE_IMAGES
+	string "Binary boot images"
+	default "tee.bin tee-*_v2.bin"
+	help
+	  Names of generated image files that are installed in the
+	  output images/ directory.
+
 endif # BR2_TARGET_OPTEE_OS
