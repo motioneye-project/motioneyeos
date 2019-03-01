@@ -52,8 +52,6 @@ else
 # option '-no-avx512' (available for latest only)
 endif
 
-QT5BASE_CONFIGURE_OPTS += $(call qstrip,$(BR2_PACKAGE_QT5BASE_CUSTOM_CONF_OPTS))
-
 ifeq ($(BR2_PACKAGE_LIBDRM),y)
 QT5BASE_CONFIGURE_OPTS += -kms
 QT5BASE_DEPENDENCIES += libdrm
@@ -295,6 +293,9 @@ define QT5BASE_CONFIGURE_HOSTCC
 	$(SED) 's,^QMAKE_CC\s*=.*,QMAKE_CC = $(HOSTCC),' $(@D)/mkspecs/common/g++-base.conf
 	$(SED) 's,^QMAKE_CXX\s*=.*,QMAKE_CXX = $(HOSTCXX),' $(@D)/mkspecs/common/g++-base.conf
 endef
+
+# Must be last so can override all options set by Buildroot
+QT5BASE_CONFIGURE_OPTS += $(call qstrip,$(BR2_PACKAGE_QT5BASE_CUSTOM_CONF_OPTS))
 
 define QT5BASE_CONFIGURE_CMDS
 	mkdir -p $(@D)/mkspecs/devices/linux-buildroot-g++/
