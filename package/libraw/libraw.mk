@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBRAW_VERSION = 0.18.11
+LIBRAW_VERSION = 0.19.2
 LIBRAW_SOURCE = LibRaw-$(LIBRAW_VERSION).tar.gz
 LIBRAW_SITE = http://www.libraw.org/data
 LIBRAW_INSTALL_STAGING = YES
@@ -14,7 +14,7 @@ LIBRAW_CONF_OPTS += \
 	--disable-demosaic-pack-gpl2 \
 	--disable-demosaic-pack-gpl3
 LIBRAW_LICENSE = LGPL-2.1 or CDDL-1.0
-LIBRAW_LICENSE_FILES = LICENSE.LGPL LICENSE.CDDL README
+LIBRAW_LICENSE_FILES = LICENSE.LGPL LICENSE.CDDL README.md
 LIBRAW_DEPENDENCIES = host-pkgconf
 LIBRAW_CXXFLAGS = $(TARGET_CXXFLAGS)
 LIBRAW_CONF_ENV = CXXFLAGS="$(LIBRAW_CXXFLAGS)"
