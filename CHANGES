@@ -1,3 +1,31 @@
+2019.02-rc3, released March 1st, 2019
+
+	Fixes all over the tree.
+
+	Openssl support dropped from Qt 5.6, as it isn't compatible
+	with openssl 1.1.x.
+
+	Toolchain: GCC 8.x updated to 8.3.0, fixing a number of
+	issues.
+
+	Dependencies: Require CMake 3.8 or newer to fix compilation
+	issue with certain packages. If not available, host-cmake will
+	instead be built.
+
+	Printvars: Fix performance regression since 2018.02
+
+	Scanypi: Correctly handle underscores in python package names.
+
+	Updated/fixed packages: botan, clamav, cryptopp, i2pd,
+	ibrcommon, iproute2, libcpprestsdk, libssh, lua-curl,
+	luaexpat, qt5base, runc, stress-ng, syslinux, systemd,
+	upmpdcli, zbar
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#9966: util-linux-2.30/.stamp_built' failed
+	#11696: possible typo in board/pc/post-build.sh
+
 2019.02-rc2, released February 23th, 2019
 
 	Fixes all over the tree.
