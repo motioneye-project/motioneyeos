@@ -1,0 +1,27 @@
+configure.ac: don't check for C++ compiler
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -durN beecrypt-4.2.1-orig/configure.ac beecrypt-4.2.1/configure.ac
+--- beecrypt-4.2.1-orig/configure.ac	2019-03-01 19:58:16.516117640 +0100
++++ beecrypt-4.2.1/configure.ac	2019-03-01 21:10:17.707391803 +0100
+@@ -119,9 +119,6 @@
+ 
+ # Checks for C compiler and preprocessor
+ AC_PROG_CC
+-AC_PROG_CPP
+-AC_PROG_CXX
+-AC_PROG_CXXCPP
+ AM_PROG_AS
+ AC_PROG_LD
+ AC_PROG_LN_S
+@@ -133,9 +130,6 @@
+ AC_LANG_PUSH(C)
+ AC_OPENMP
+ AC_LANG_POP(C)
+-AC_LANG_PUSH(C++)
+-AC_OPENMP
+-AC_LANG_POP(C++)
+ 
+ # Checks for compiler characteristics and flags
+ if test "$ac_enable_expert_mode" = no; then
