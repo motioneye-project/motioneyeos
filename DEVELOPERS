@@ -1047,6 +1047,7 @@ F:	package/python-async-timeout/
 F:	package/python-cchardet/
 F:	package/python-multidict/
 F:	package/python-pycares/
+F:	package/python-terminaltables/
 F:	package/python-yarl/
 
 N:	James Knight <james.knight@rockwellcollins.com>
