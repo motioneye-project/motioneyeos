@@ -1,0 +1,59 @@
+From 5c0a443ba336f10a8db6a99c769aa84ad37ed4d2 Mon Sep 17 00:00:00 2001
+From: Vadim Kochan <vadim4j@gmail.com>
+Date: Wed, 20 Feb 2019 02:48:43 +0200
+Subject: [PATCH] meminfo: Access to io memory via pointers
+
+The main reason for this is to be able compile with musl library,
+because there is no support of inx/outx functions for ARM platform.
+
+Signed-off-by: Vadim Kochan <vadim4j@gmail.com>
+---
+ meminfo.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/meminfo.c b/meminfo.c
+index 0b0ff23..7d9f10f 100644
+--- a/meminfo.c
++++ b/meminfo.c
+@@ -22,7 +22,6 @@
+ #include <sys/mman.h>
+ #include <stdint.h>
+ #include <errno.h>
+-#include <sys/io.h>
+ #include <stdbool.h>
+ 
+ #include "common.h"
+@@ -74,24 +73,26 @@ static enum sunxi_soc_version soc_version;
+ unsigned int
+ sunxi_io_read(void *base, int offset)
+ {
+-	return inl((unsigned long) (base + offset));
++	unsigned long port = (unsigned long) (base + offset);
++	return *((volatile unsigned long *) port);
+ }
+ 
+ void
+ sunxi_io_write(void *base, int offset, unsigned int value)
+ {
+-	outl(value, (unsigned long) (base + offset));
++	unsigned long port = (unsigned long) (base + offset);
++	*((volatile unsigned long *) port) = value;
+ }
+ 
+ void
+ sunxi_io_mask(void *base, int offset, unsigned int value, unsigned int mask)
+ {
+-	unsigned int tmp = inl((unsigned long) (base + offset));
++	unsigned int tmp = sunxi_io_read(base, offset);
+ 
+ 	tmp &= ~mask;
+ 	tmp |= value & mask;
+ 
+-	outl(tmp, (unsigned long) (base + offset));
++	sunxi_io_write(base, offset, tmp);
+ }
+ 
+ 
+-- 
+2.14.1
+
