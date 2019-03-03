@@ -311,6 +311,8 @@ def parse_args():
                         "'host' to stop on host packages.")
     parser.add_argument("--exclude", "-x", metavar="PACKAGE", dest="exclude_list", action="append",
                         help="Like --stop-on, but do not add PACKAGE to the graph.")
+    parser.add_argument("--exclude-mandatory", "-X", action="store_true",
+                        help="Like if -x was passed for all mandatory dependencies.")
     parser.add_argument("--colors", "-c", metavar="COLOR_LIST", dest="colors",
                         default="lightblue,grey,gainsboro",
                         help="Comma-separated list of the three colors to use" +
@@ -363,6 +365,9 @@ def main():
         exclude_list = []
     else:
         exclude_list = args.exclude_list
+
+    if args.exclude_mandatory:
+        exclude_list += MANDATORY_DEPS
 
     if args.direct:
         get_depends_func = brpkgutil.get_depends
