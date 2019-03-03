@@ -172,7 +172,7 @@ def remove_transitive_deps(pkg, deps):
 
 # List of dependencies that all/many packages have, and that we want
 # to trim when generating the dependency graph.
-MANDATORY_DEPS = ['toolchain', 'skeleton', 'host-skeleton']
+MANDATORY_DEPS = ['toolchain', 'skeleton', 'host-skeleton', 'host-tar']
 
 
 # This function removes the dependency on some 'mandatory' package, like the
