@@ -5,6 +5,7 @@ config BR2_PACKAGE_RUNC
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11 # O_TMPFILE
 	depends on !BR2_TOOLCHAIN_USES_UCLIBC # no fexecve
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM # glibc < 2.19
 	help
 	  runC is a CLI tool for spawning and running containers
 	  according to the OCP specification.
@@ -16,3 +17,4 @@ comment "runc needs a glibc or musl toolchain w/ threads, headers >= 3.11"
 		BR2_PACKAGE_HOST_GO_CGO_LINKING_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_11 || BR2_TOOLCHAN_USES_UCLIBC
+	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM
