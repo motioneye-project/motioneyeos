@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CCID_VERSION = 1.4.29
+CCID_VERSION = 1.4.30
 CCID_SOURCE = ccid-$(CCID_VERSION).tar.bz2
 CCID_SITE = https://ccid.apdu.fr/files
 CCID_LICENSE = LGPL-2.1+
