@@ -181,6 +181,12 @@ def remove_mandatory_deps(pkg, deps):
     return [p for p in deps[pkg] if p not in MANDATORY_DEPS]
 
 
+# This function returns all dependencies of pkg that are part of the
+# mandatory dependencies:
+def get_mandatory_deps(pkg, deps):
+    return [p for p in deps[pkg] if p in MANDATORY_DEPS]
+
+
 # This function will check that there is no loop in the dependency chain
 # As a side effect, it builds up the dependency cache.
 def check_circular_deps(deps):
@@ -213,6 +219,9 @@ def check_circular_deps(deps):
 def remove_extra_deps(deps, rootpkg, transitive):
     for pkg in list(deps.keys()):
         if not pkg == rootpkg:
+            for d in get_mandatory_deps(pkg, deps):
+                if d not in deps[rootpkg]:
+                    deps[rootpkg].append(d)
             deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
         if not transitive or pkg == rootpkg:
