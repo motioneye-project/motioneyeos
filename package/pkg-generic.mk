@@ -649,6 +649,18 @@ $(2)_FINAL_RECURSIVE_DEPENDENCIES = $$(sort \
 	) \
 	$$($(2)_FINAL_RECURSIVE_DEPENDENCIES__X))
 
+$(2)_FINAL_RECURSIVE_RDEPENDENCIES = $$(sort \
+	$$(if $$(filter undefined,$$(origin $(2)_FINAL_RECURSIVE_RDEPENDENCIES__X)), \
+		$$(eval $(2)_FINAL_RECURSIVE_RDEPENDENCIES__X := \
+			$$(foreach p, \
+				$$($(2)_RDEPENDENCIES), \
+				$$(p) \
+				$$($$(call UPPERCASE,$$(p))_FINAL_RECURSIVE_RDEPENDENCIES) \
+			) \
+		) \
+	) \
+	$$($(2)_FINAL_RECURSIVE_RDEPENDENCIES__X))
+
 $(2)_INSTALL_STAGING		?= NO
 $(2)_INSTALL_IMAGES		?= NO
 $(2)_INSTALL_TARGET		?= YES
@@ -826,15 +838,13 @@ $(1)-show-depends:
 			@echo $$($(2)_FINAL_ALL_DEPENDENCIES)
 
 $(1)-show-recursive-depends:
-			@cd "$$(CONFIG_DIR)" && \
-			$$(TOPDIR)/support/scripts/graph-depends -p $(1) -f -q
+			@echo $$($(2)_FINAL_RECURSIVE_DEPENDENCIES)
 
 $(1)-show-rdepends:
 			@echo $$($(2)_RDEPENDENCIES)
 
 $(1)-show-recursive-rdepends:
-			@cd "$$(CONFIG_DIR)" && \
-			$$(TOPDIR)/support/scripts/graph-depends -p $(1) --reverse -f -q
+			@echo $$($(2)_FINAL_RECURSIVE_RDEPENDENCIES)
 
 $(1)-show-build-order: $$(patsubst %,%-show-build-order,$$($(2)_FINAL_ALL_DEPENDENCIES))
 	@:
