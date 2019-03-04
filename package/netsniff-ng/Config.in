@@ -1,16 +1,12 @@
 config BR2_PACKAGE_NETSNIFF_NG
 	bool "netsniff-ng"
-	# Build with uClibc fails due to missing ceill()
-	depends on !BR2_TOOLCHAIN_USES_UCLIBC
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
 	select BR2_PACKAGE_LIBNL
 	select BR2_PACKAGE_LIBPCAP
-	select BR2_PACKAGE_LIBCLI
 	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
 	select BR2_PACKAGE_LIBURCU
-	select BR2_PACKAGE_LIBNET
 	help
 	  netsniff-ng is a free, performant Linux network analyzer and
 	  networking toolkit. If you will, the Swiss army knife for
@@ -18,7 +14,22 @@ config BR2_PACKAGE_NETSNIFF_NG
 
 	  http://netsniff-ng.org
 
-comment "netsniff-ng needs a glibc or musl toolchain w/ threads, headers >= 3.0"
+if BR2_PACKAGE_NETSNIFF_NG
+
+config BR2_PACKAGE_NETSNIFF_NG_MAUSEZAHN
+	bool "mausezahn"
+	default y
+	# Build with uClibc fails due to missing ceill()
+	depends on !BR2_TOOLCHAIN_USES_UCLIBC
+	select BR2_PACKAGE_LIBCLI
+	select BR2_PACKAGE_LIBNET
+
+comment "mausezahn needs glibc or musl toolchain"
+	depends on BR2_TOOLCHAIN_USES_UCLIBC
+
+endif
+
+comment "netsniff-ng needs a toolchain w/ threads, headers >= 3.0"
 	depends on BR2_PACKAGE_LIBURCU_ARCH_SUPPORTS
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_UCLIBC \
-		|| !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	depends on !BR2_TOOLCHAIN_HAS_THREADS  || \
+			!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
