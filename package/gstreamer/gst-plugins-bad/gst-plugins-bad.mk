@@ -12,7 +12,8 @@ GST_PLUGINS_BAD_LICENSE = LGPL-2.1+, GPL-2.0+
 GST_PLUGINS_BAD_LICENSE_FILES = COPYING.LIB COPYING
 
 GST_PLUGINS_BAD_CONF_OPTS = \
-	--disable-examples
+	--disable-examples \
+	--disable-spandsp
 
 GST_PLUGINS_BAD_DEPENDENCIES = gst-plugins-base gstreamer
 
