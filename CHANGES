@@ -1,3 +1,13 @@
+2019.02, released March 4th, 2019
+
+	Minor fixes.
+
+	Libressl support added for Qt 5.6 as a replacement for
+	openssl, as 5.6 is not compatible with openssl 1.1.x.
+
+	Updated/fixed packages: cutelyst, devmem2, gqrx,
+	gst-plugins-bad, libraw, libsoxr, qt5base, runc, systemd, tor
+
 2019.02-rc3, released March 1st, 2019
 
 	Fixes all over the tree.
