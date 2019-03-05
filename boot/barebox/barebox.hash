@@ -1,5 +1,5 @@
-# From https://www.barebox.org/download/barebox-2018.12.0.tar.bz2.md5
-md5 f84d7d3562055c80c3eedce0b14d4a0d barebox-2018.12.0.tar.bz2
+# From https://www.barebox.org/download/barebox-2019.02.0.tar.bz2.md5
+md5 b3c55967878c1e332c33502f39483ceb barebox-2019.02.0.tar.bz2
 
 # Locally calculated
-sha256 e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 barebox-2018.12.0.tar.bz2
+sha256 f4fc67d5a2410c9d568e5fc1279ac8999e80d3d91c26631df8f3af8636c04212 barebox-2019.02.0.tar.bz2

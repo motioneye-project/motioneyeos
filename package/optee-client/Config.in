@@ -1,0 +1,17 @@
+config BR2_PACKAGE_OPTEE_CLIENT
+	bool "optee-client"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Enable the OP-TEE client package that brings non-secure
+	  client application resources for OP-TEE support. OP-TEE
+	  client is a component delivered by the OP-TEE project.
+
+	  The client API library allows application to invoke trusted
+	  applications hosted in the OP-TEE OS secure world.  The
+	  supplicant provides services hosted by the non-secure world
+	  and invoked by the secure world.
+
+	  https://github.com/OP-TEE/optee_client
+
+comment "optee-client needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

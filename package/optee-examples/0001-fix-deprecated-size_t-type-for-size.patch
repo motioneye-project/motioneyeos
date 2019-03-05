@@ -1,0 +1,42 @@
+From 1a2713ac698410fb1a889941d52df12a7bd75f3b Mon Sep 17 00:00:00 2001
+From: Etienne Carriere <etienne.carriere@linaro.org>
+Date: Sun, 17 Feb 2019 22:17:21 +0100
+Subject: [PATCH] secure_storage: fix deprecated size_t type for size
+
+size_t types is an deprecated type used in GPD API v1.0.
+Update
+
+Error reported by GCC 7.3-2018.05:
+  secure_storage_ta.c:203:6: warning: passing argument 4 of 'TEE_ReadObjectData' from incompatible pointer type [-Wincompatible-pointer-types]
+      &read_bytes);
+
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+---
+ secure_storage/ta/secure_storage_ta.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/secure_storage/ta/secure_storage_ta.c b/secure_storage/ta/secure_storage_ta.c
+index d120e47..3ccc12d 100644
+--- a/secure_storage/ta/secure_storage_ta.c
++++ b/secure_storage/ta/secure_storage_ta.c
+@@ -146,7 +146,7 @@ static TEE_Result read_raw_object(uint32_t param_types, TEE_Param params[4])
+ 	TEE_ObjectHandle object;
+ 	TEE_ObjectInfo object_info;
+ 	TEE_Result res;
+-	size_t read_bytes;
++	uint32_t read_bytes;
+ 	char *obj_id;
+ 	size_t obj_id_sz;
+ 	char *data;
+@@ -202,7 +202,7 @@ static TEE_Result read_raw_object(uint32_t param_types, TEE_Param params[4])
+ 	res = TEE_ReadObjectData(object, data, object_info.dataSize,
+ 				 &read_bytes);
+ 	if (res != TEE_SUCCESS || read_bytes != object_info.dataSize) {
+-		EMSG("TEE_ReadObjectData failed 0x%08x, read %u over %u",
++		EMSG("TEE_ReadObjectData failed 0x%08x, read %" PRIu32 " over %u",
+ 				res, read_bytes, object_info.dataSize);
+ 		goto exit;
+ 	}
+-- 
+2.20.1
+

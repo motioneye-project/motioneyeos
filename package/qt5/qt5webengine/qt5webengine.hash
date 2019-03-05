@@ -1,5 +1,0 @@
-# Hash from https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtwebengine-opensource-src-5.6.3.tar.xz.mirrorlist
-sha256 009d69fb39f6c0e2b0cd89a7e9302cd0ae1872d02c787d3a37f2cacca5ddb7a7 qtwebengine-opensource-src-5.6.3.tar.xz
-
-# Hash from: https://download.qt.io/official_releases/qt/5.11/5.11.3/submodules/qtwebengine-everywhere-src-5.11.3.tar.xz.sha256
-sha256 5bb49ead71b851db4dc56f8fd97e0db72a268b22104129a06bac201d55d3b8fe qtwebengine-everywhere-src-5.11.3.tar.xz

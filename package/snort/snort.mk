@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SNORT_VERSION = 2.9.11.1
+SNORT_VERSION = 2.9.12
 SNORT_SITE = https://www.snort.org/downloads/snort
 SNORT_LICENSE = GPL-2.0
 SNORT_LICENSE_FILES = LICENSE COPYING
@@ -24,6 +24,15 @@ ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 SNORT_DEPENDENCIES += libtirpc host-pkgconf
 SNORT_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`
 SNORT_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`
+endif
+
+# luajit and openssl should be enabled to build with
+# OpenAppID support
+ifeq ($(BR2_PACKAGE_LUAJIT)$(BR2_PACKAGE_OPENSSL),yy)
+SNORT_DEPENDENCIES += luajit openssl
+SNORT_CONF_OPTS += --enable-open-appid
+else
+SNORT_CONF_OPTS += --disable-open-appid
 endif
 
 SNORT_CONF_ENV = \

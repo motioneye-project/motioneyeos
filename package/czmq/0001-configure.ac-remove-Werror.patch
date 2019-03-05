@@ -8,23 +8,25 @@ newer versions of the compiler or the C library, when new warnings
 are introduced.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Asaf: Modified for version 4.2.0]
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
 ---
  configure.ac | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index e92970a..2fd551a 100755
+index 6868a99b..9a941545 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -344,7 +344,7 @@ AC_C_BIGENDIAN
- 
- # These options are GNU compiler specific.
- if test "x$GCC" = "xyes"; then
--    CPPFLAGS="-pedantic -Werror -Wall -Wc++-compat ${CPPFLAGS}"
-+    CPPFLAGS="-pedantic -Wall -Wc++-compat ${CPPFLAGS}"
- fi
- 
- AM_CONDITIONAL(ENABLE_SHARED, test "x$enable_shared" = "xyes")
+@@ -952,7 +952,7 @@ AS_IF([test "x$enable_Werror" = "xyes" || test "x$enable_Werror" = "xauto"],
+         ])])
+      AS_IF([test -n "$CPP"],[AS_IF([$CPP --version 2>&1 | grep 'Free Software Foundation' > /dev/null && test "x$GCC" = "xyes"],
+         [AC_MSG_NOTICE([Enabling pedantic errors for GNU CPP preprocessor])
+-         CPPFLAGS="$CPPFLAGS -pedantic -Werror -Wall -Wc++-compat"
++         CPPFLAGS="$CPPFLAGS -pedantic -Wall -Wc++-compat"
+         ],
+         [AC_MSG_NOTICE([Not enabling pedantic errors: preprocessor not supported by this recipe (not GNU CPP)])
+          AS_IF([test "x$enable_Werror" = "xyes"], [AC_MSG_ERROR([--enable-Werror=yes was requested and can not be satisfied for CPP: $CPP])])
 -- 
-2.7.4
+2.19.1
 

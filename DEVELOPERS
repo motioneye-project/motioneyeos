@@ -51,6 +51,7 @@ F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/libwebsockets/
 F:	package/nginx-naxsi/
+F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/
 F:	package/python3/
@@ -70,9 +71,13 @@ F:	package/systemd/
 
 N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/brotli/
+F:	package/cog/
 F:	package/libepoxy/
+F:	package/libwpe/
 F:	package/webkitgtk/
 F:	package/woff2/
+F:	package/wpebackend-fdo/
+F:	package/wpewebkit/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
 F:	package/bird/
@@ -127,7 +132,10 @@ N:	Anders Darander <anders@chargestorm.se>
 F:	package/ktap/
 
 N:	André Hentschel <nerv@dawncrow.de>
+F:	board/freescale/imx8qxpmek/
+F:	configs/freescale_imx8qxpmek_defconfig
 F:	package/azure-iot-sdk-c/
+F:	package/freescale-imx/imx-sc-firmware/
 F:	package/libkrb5/
 F:	package/openal/
 F:	package/p7zip/
@@ -686,6 +694,13 @@ F:	package/mxsldr/
 N:	Ernesto L. Williams Jr <realcontrols@gmail.com>
 F:	package/szip/
 
+N:	Etienne Carriere <etienne.carriere@linaro.org>
+F:	boot/optee-os/
+F:	package/optee-benchmark/
+F:	package/optee-client/
+F:	package/optee-examples/
+F:	package/optee-test/
+
 N:	Eugene Tarassov <eugene@largest.net>
 F:	package/tcf-agent/
 
@@ -822,12 +837,14 @@ F:	configs/olimex_a20_olinuxino_*
 F:	package/4th/
 F:	package/botan/
 F:	package/chipmunk/
+F:	package/cog/
 F:	package/dado/
 F:	package/ficl/
 F:	package/gdbm/
 F:	package/libtomcrypt/
 F:	package/libtommath/
 F:	package/libump/
+F:	package/libwpe/
 F:	package/linenoise/
 F:	package/ljlinenoise/
 F:	package/lpeg/
@@ -846,6 +863,8 @@ F:	package/qemu/
 F:	package/sdl2_mixer/
 F:	package/sdl2_net/
 F:	package/tekui/
+F:	package/wpebackend-fdo/
+F:	package/wpewebkit/
 F:	package/wsapi-fcgi/
 F:	package/wsapi-xavante/
 F:	utils/scancpan

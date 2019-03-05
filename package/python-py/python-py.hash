@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/py/json
-md5	e53ac12db4286737837ef3ccb4158301  py-1.7.0.tar.gz
-sha256	bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694  py-1.7.0.tar.gz
+md5	d9e30436ce7e79f30847f9b30b62e149  py-1.8.0.tar.gz
+sha256	dc639b046a6e2cff5bbe40194ad65936d6ba360b52b3c3fe1d08a82dd50b5e53  py-1.8.0.tar.gz
 # Locally computed sha256 checksums
 sha256	2af680c39ef493fb82830356d1d3df1acb5a06033cba2dec7a19e21caa77a866  LICENSE

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CZMQ_VERSION = 4.1.1
+CZMQ_VERSION = 4.2.0
 CZMQ_SITE = https://github.com/zeromq/czmq/releases/download/v$(CZMQ_VERSION)
 
 # 0001-configure.ac-remove-Werror.patch touches configure.ac

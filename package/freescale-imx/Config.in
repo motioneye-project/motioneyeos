@@ -42,6 +42,9 @@ config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX7
 
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8M
 	bool "imx8m"
+
+config BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8X
+	bool "imx8x"
 endchoice
 
 config BR2_PACKAGE_FREESCALE_IMX_PLATFORM
@@ -87,6 +90,7 @@ source "package/freescale-imx/imx-vpu/Config.in"
 source "package/freescale-imx/imx-vpu-hantro/Config.in"
 source "package/freescale-imx/imx-vpuwrap/Config.in"
 source "package/freescale-imx/firmware-imx/Config.in"
+source "package/freescale-imx/imx-sc-firmware/Config.in"
 if (BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX51 || BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX53)
 source "package/freescale-imx/gpu-amd-bin-mx51/Config.in"
 source "package/freescale-imx/libz160/Config.in"
