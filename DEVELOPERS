@@ -1594,6 +1594,10 @@ F:	board/pine64/rock64
 F:	configs/rock64_defconfig
 F:	configs/socrates_cyclone5_defconfig
 
+N:	Michel Stempin <michel.stempin@wanadoo.fr>
+F:	board/licheepi/
+F:	configs/licheepi_zero_defconfig
+
 N:	Mike Harmony <mike.harmony@snapav.com>
 F:	board/sinovoip/m2-plus/
 F:	configs/bananapi_m2_plus_defconfig
