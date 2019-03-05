@@ -12,6 +12,7 @@ GST_PLUGINS_BAD_LICENSE = LGPL-2.1+, GPL-2.0+
 GST_PLUGINS_BAD_LICENSE_FILES = COPYING.LIB COPYING
 
 GST_PLUGINS_BAD_CONF_OPTS = \
+	--disable-apexsink \
 	--disable-examples \
 	--disable-spandsp
 
@@ -472,13 +473,6 @@ GST_PLUGINS_BAD_CONF_OPTS += --disable-y4m
 endif
 
 # plugins with deps
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_APEXSINK),y)
-GST_PLUGINS_BAD_CONF_OPTS += --enable-apexsink
-GST_PLUGINS_BAD_DEPENDENCIES += openssl
-else
-GST_PLUGINS_BAD_CONF_OPTS += --disable-apexsink
-endif
-
 ifeq ($(BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_BZ2),y)
 GST_PLUGINS_BAD_CONF_OPTS += --enable-bz2
 GST_PLUGINS_BAD_DEPENDENCIES += bzip2
