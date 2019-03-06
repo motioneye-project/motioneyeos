@@ -10,6 +10,7 @@ udhcp_get_option                                     231     248     +17
 (add/remove: 1/0 grow/shrink: 1/0 up/down: 44/0)               Total: 44 bytes
 
 Signed-off-by: Denys Vlasenko <vda.linux@googlemail.com>
+Signed-off-by: Jared Bents <jared.bents@rockwellcollins.com>
 ---
  networking/udhcp/common.c | 19 +++++++++++++++++++
  networking/udhcp/common.h |  4 ++++
