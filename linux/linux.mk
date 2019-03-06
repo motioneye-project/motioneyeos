@@ -37,15 +37,10 @@ else ifneq ($(findstring -rc,$(LINUX_VERSION)),)
 LINUX_SITE = https://git.kernel.org/torvalds/t
 else
 LINUX_SOURCE = linux-$(LINUX_VERSION).tar.xz
-# In X.Y.Z, get X and Y. We replace dots and dashes by spaces in order
-# to use the $(word) function. We support versions such as 4.0, 3.1,
-# 2.6.32, 2.6.32-rc1, 3.0-rc6, etc.
 ifeq ($(findstring x2.6.,x$(LINUX_VERSION)),x2.6.)
 LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v2.6
-else ifeq ($(findstring x3.,x$(LINUX_VERSION)),x3.)
-LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v3.x
-else ifeq ($(findstring x4.,x$(LINUX_VERSION)),x4.)
-LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v4.x
+else
+LINUX_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/v$(firstword $(subst ., ,$(LINUX_VERSION))).x
 endif
 endif
 
