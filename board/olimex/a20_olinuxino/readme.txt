@@ -16,14 +16,8 @@ The following defconfigs are available:
    for the A20-OLinuXino-MICRO board using mainline kernel
  - olimex_a20_olinuxino_lime_defconfig
    for the A20-OLinuXino-LIME board using mainline kernel
- - olimex_a20_olinuxino_lime_legacy_defconfig
-   for the A20-OLinuXino-LIME board using legacy linux-sunxi kernel
  - olimex_a20_olinuxino_lime2_defconfig
    for the A20-OLinuXino-LIME2 board using mainline kernel
-
-The legacy linux-sunxi kernels are based on the vendor code drops.
-They are only useful when accelerated 3D graphics and multimedia support
-is strictly necessary.
 
 The Mainline Kernel is already a much better choice for a headless server.
 And also the mainline kernel works fine even for a basic Linux desktop
@@ -51,7 +45,6 @@ After building, you should get a tree like this:
     output/images/
     +-- rootfs.ext2
     +-- rootfs.ext4 -> rootfs.ext2
-    +-- script.bin (lime_legacy)
     +-- sdcard.img
     +-- sun7i-a20-olinuxino-lime.dtb (lime, mainline)
     +-- sun7i-a20-olinuxino-lime2.dtb (lime2, mainline)
