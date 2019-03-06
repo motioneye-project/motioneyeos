@@ -843,7 +843,6 @@ F:	package/ficl/
 F:	package/gdbm/
 F:	package/libtomcrypt/
 F:	package/libtommath/
-F:	package/libump/
 F:	package/libwpe/
 F:	package/linenoise/
 F:	package/ljlinenoise/

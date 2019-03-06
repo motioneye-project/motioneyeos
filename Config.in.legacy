@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_PACKAGE_LIBUMP
+	bool "libump package removed"
+	select BR2_LEGACY
+	help
+	  The libump package was removed, it was only used as a
+	  dependency of sunxi-mali, which itself was removed.
+
 config BR2_PACKAGE_SUNXI_MALI
 	bool "sunxi-mali package removed"
 	select BR2_LEGACY
