@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_PACKAGE_SUNXI_MALI
+	bool "sunxi-mali package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SUNXI_MALI_MAINLINE
+	help
+	  The sunxi-mali package was removed, as the
+	  sunxi-mali-mainline package replaces it for mainline
+	  kernels on Allwinner platforms.
+
 config BR2_BINUTILS_VERSION_2_29_X
 	bool "binutils version 2.29 support removed"
 	select BR2_LEGACY

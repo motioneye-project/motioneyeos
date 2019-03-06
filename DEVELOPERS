@@ -2029,7 +2029,6 @@ F:	package/a10disp/
 F:	package/glmark2/
 F:	package/libvpx/
 F:	package/mesa3d-demos/
-F:	package/sunxi-mali/
 F:	package/ti-gfx/
 
 N:	Stefan Sørensen <stefan.sorensen@spectralink.com>
