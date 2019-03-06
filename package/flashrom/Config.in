@@ -1,5 +1,6 @@
 config BR2_PACKAGE_FLASHROM
 	bool "flashrom"
+	depends on !BR2_microblaze && !BR2_xtensa # platform.h
 	help
 	  flashrom is a utility for identifying, reading, writing,
 	  verifying and erasing flash chips. It is designed to flash
