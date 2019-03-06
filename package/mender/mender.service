@@ -12,7 +12,7 @@ if [ -L /var/lib/mender \
     if rm -f /var/lib/mender >/dev/null 2>&1; then \
         mkdir -p /var/lib/mender; \
     else \
-        echo "No persistent location to store mender data. Data will be lost\
+        echo "No persistent location to store mender data. Data will be lost" \
         echo "at reboot. Are you sure this is what you want to do?"; \
         mkdir -p "$(readlink /var/lib/mender)"; \
     fi; \
