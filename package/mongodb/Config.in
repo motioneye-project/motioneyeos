@@ -8,6 +8,7 @@ config BR2_PACKAGE_MONGODB_ARCH_SUPPORTS
 config BR2_PACKAGE_MONGODB
 	bool "mongodb"
 	depends on BR2_PACKAGE_MONGODB_ARCH_SUPPORTS
+	depends on !BR2_PACKAGE_PYTHON3
 	depends on BR2_TOOLCHAIN_USES_GLIBC # needs glibc malloc_usable_size
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
@@ -38,3 +39,4 @@ comment "mongodb needs a glibc toolchain w/ wchar, threads, C++, gcc >= 6"
 		!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_USES_GLIBC || \
 		!BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	depends on BR2_PACKAGE_MONGODB_ARCH_SUPPORTS
+	depends on !BR2_PACKAGE_PYTHON3
