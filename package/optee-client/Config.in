@@ -1,6 +1,5 @@
 config BR2_PACKAGE_OPTEE_CLIENT
 	bool "optee-client"
-	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Enable the OP-TEE client package that brings non-secure
@@ -14,5 +13,5 @@ config BR2_PACKAGE_OPTEE_CLIENT
 
 	  https://github.com/OP-TEE/optee_client
 
-comment "optee-client needs a toolchain w/ dynamic library and threads"
-	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+comment "optee-client needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
