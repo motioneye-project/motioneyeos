@@ -56,6 +56,12 @@ config BR2_PACKAGE_GNURADIO_FEC
 	help
 	  FEC signal processing blocks
 
+config BR2_PACKAGE_GNURADIO_LOG
+	bool "gr-log support"
+	select BR2_PACKAGE_LOG4CPP
+	help
+	  Enable logger component
+
 config BR2_PACKAGE_GNURADIO_PYTHON
 	bool "python support"
 	depends on BR2_PACKAGE_PYTHON
