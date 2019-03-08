@@ -16,8 +16,8 @@ config BR2_PACKAGE_TPM2_ABRMD
 
 	  The package also provides a client library for interacting
 	  with the daemon via TPM Command Transmission Interface (TCTI).
-	  It is intended for use with the SAPI library (libsapi) like
-	  any other TCTI.
+	  It is intended for use with the SAPI library (libtss2-sys)
+	  like any other TCTI.
 
 	  https://github.com/tpm2-software/tpm2-abrmd
 
