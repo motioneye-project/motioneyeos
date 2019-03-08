@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-CRYPTOPP_VERSION = 8.0.0
+CRYPTOPP_VERSION = 8.1.0
 CRYPTOPP_SOURCE = cryptopp$(subst .,,$(CRYPTOPP_VERSION)).zip
 CRYPTOPP_SITE = https://cryptopp.com
-CRYPTOPP_LICENSE = BSL-1.0
+CRYPTOPP_LICENSE = BSL-1.0, BSD-3-Clause (CRYPTOGAMS), Public domain (ChaCha SSE2 and AVX)
 CRYPTOPP_LICENSE_FILES = License.txt
 CRYPTOPP_INSTALL_STAGING = YES
 
