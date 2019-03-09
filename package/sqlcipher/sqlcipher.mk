@@ -33,4 +33,10 @@ else
 SQLCIPHER_CONF_OPTS += --disable-readline
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+SQLCIPHER_CONF_OPTS += --disable-load-extension
+else
+SQLCIPHER_CONF_OPTS += --enable-load-extension
+endif
+
 $(eval $(autotools-package))
