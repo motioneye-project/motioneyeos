@@ -57,7 +57,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 	--disable-gme \
 	--disable-vdpau \
 	--disable-schro \
-	--disable-zbar \
 	--disable-spandsp \
 	--disable-gtk3
 
@@ -717,6 +716,13 @@ GST1_PLUGINS_BAD_DEPENDENCIES += x265
 GST1_PLUGINS_BAD_HAS_GPL_LICENSE = y
 else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-x265
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_ZBAR),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-zbar
+GST1_PLUGINS_BAD_DEPENDENCIES += zbar
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-zbar
 endif
 
 # Add GPL license if GPL licensed plugins enabled.
