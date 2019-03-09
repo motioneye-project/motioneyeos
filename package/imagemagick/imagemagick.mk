@@ -40,6 +40,14 @@ IMAGEMAGICK_CONF_OPTS = \
 
 IMAGEMAGICK_DEPENDENCIES = host-pkgconf
 
+ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
+# Like postgreSQL, imagemagick does not build against uClibc with
+# locales enabled, due to an uClibc bug, see
+# http://lists.uclibc.org/pipermail/uclibc/2014-April/048326.html
+# so overwrite automatic detection and disable locale support
+IMAGEMAGICK_CONF_ENV += ac_cv_func_newlocale=no
+endif
+
 ifeq ($(BR2_PACKAGE_FONTCONFIG),y)
 IMAGEMAGICK_CONF_OPTS += --with-fontconfig
 IMAGEMAGICK_DEPENDENCIES += fontconfig
