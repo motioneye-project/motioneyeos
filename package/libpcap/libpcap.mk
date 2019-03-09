@@ -16,6 +16,8 @@ LIBPCAP_CONF_ENV = \
 	CFLAGS="$(LIBPCAP_CFLAGS)"
 LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
 LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux --without-dag
+# Disable dbus to break recursive dependencies
+LIBPCAP_CONF_OPTS += --disable-dbus
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
 # Omit -rpath from pcap-config output
@@ -30,13 +32,6 @@ else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 LIBPCAP_DEPENDENCIES += bluez5_utils
 else
 LIBPCAP_CONF_OPTS += --disable-bluetooth
-endif
-
-ifeq ($(BR2_PACKAGE_DBUS),y)
-LIBPCAP_CONF_OPTS += --enable-dbus
-LIBPCAP_DEPENDENCIES += dbus
-else
-LIBPCAP_CONF_OPTS += --disable-dbus
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
