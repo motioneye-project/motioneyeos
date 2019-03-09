@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-ZBAR_VERSION = 681b0f305fb5c5bb0df8437f7d740b29a93a7889
-ZBAR_SITE = git://linuxtv.org/zbar.git
+ZBAR_VERSION = 0.22
+ZBAR_SOURCE = zbar-$(ZBAR_VERSION).tar.bz2
+ZBAR_SITE = https://www.linuxtv.org/downloads/zbar
 ZBAR_LICENSE = LGPL-2.1+
 ZBAR_LICENSE_FILES = LICENSE
 ZBAR_INSTALL_STAGING = YES
-ZBAR_AUTORECONF = YES
 ZBAR_DEPENDENCIES = libv4l jpeg
 # add host-gettext for AM_ICONV macro
 ZBAR_DEPENDENCIES += host-gettext
