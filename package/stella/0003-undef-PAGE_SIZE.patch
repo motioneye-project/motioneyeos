@@ -1,0 +1,53 @@
+From d14065257b24a9e4a722d1fa1125f26f6599006d Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 9 Mar 2019 20:47:27 +0100
+Subject: [PATCH] undef PAGE_SIZE
+
+PAGE_SIZE is sometimes already defined by the toolchain so undef it:
+
+/home/naourr/work/instance-3/output/host/bin/x86_64-linux-g++ -MMD -MF "src/debugger/.deps/CpuDebug.d" -MQ "src/debugger/CpuDebug.o" -MP -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64  -Os   -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64  -x c++ -Wall -Wextra -Wno-unused-parameter -Wno-ignored-qualifiers -Wno-multichar -Wunused -fno-rtti -Woverloaded-virtual -Wnon-virtual-dtor -std=c++14 -fomit-frame-pointer -D_GLIBCXX_USE_CXX11_ABI=1 -DUNIX -DBSPF_UNIX -DWINDOWED_SUPPORT -DSOUND_SUPPORT -DDEBUGGER_SUPPORT -DJOYSTICK_SUPPORT -DCHEATCODE_SUPPORT  -Isrc/emucore -Isrc/common -Isrc/common/tv_filters -Isrc/gui -Isrc/emucore/tia -Isrc/emucore/tia/frame-manager -I/home/naourr/work/instance-3/output/host/x86_64-buildroot-linux-musl/sysroot/usr/bin/../../usr/include/SDL2 -D_REENTRANT -Isrc/unix -Isrc/debugger -Isrc/debugger/gui -Isrc/yacc -Isrc/cheat -c src/debugger/CpuDebug.cxx -o src/debugger/CpuDebug.o
+In file included from /home/naourr/work/instance-3/output/host/x86_64-buildroot-linux-musl/sysroot/usr/include/limits.h:8:0,
+                 from /home/naourr/work/instance-3/output/host/opt/ext-toolchain/x86_64-buildroot-linux-musl/include/c++/7.4.0/climits:42,
+                 from src/common/bspf.hxx:28,
+                 from src/debugger/CartDebug.cxx:18:
+src/emucore/System.hxx:64:29: error: expected unqualified-id before numeric constant
+     static constexpr uInt16 PAGE_SIZE = (1 << PAGE_SHIFT);
+
+Fixes:
+ - http://autobuild.buildroot.org/results/22a9b009749af2a0862750a1fb2b2dc7167cd589
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/emucore/MT24LC256.hxx | 2 ++
+ src/emucore/System.hxx    | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/src/emucore/MT24LC256.hxx b/src/emucore/MT24LC256.hxx
+index fc5d6a49..bb7468b4 100644
+--- a/src/emucore/MT24LC256.hxx
++++ b/src/emucore/MT24LC256.hxx
+@@ -23,6 +23,8 @@ class System;
+ #include "Control.hxx"
+ #include "bspf.hxx"
+ 
++#undef PAGE_SIZE
++
+ /**
+   Emulates a Microchip Technology Inc. 24LC256, a 32KB Serial Electrically
+   Erasable PROM accessed using the I2C protocol.  Thanks to J. Payson
+diff --git a/src/emucore/System.hxx b/src/emucore/System.hxx
+index e31202df..85a54f28 100644
+--- a/src/emucore/System.hxx
++++ b/src/emucore/System.hxx
+@@ -30,6 +30,8 @@ class NullDevice;
+ #include "Random.hxx"
+ #include "Serializable.hxx"
+ 
++#undef PAGE_SIZE
++
+ /**
+   This class represents a system consisting of a 6502 microprocessor
+   and a set of devices.  The devices are mapped into an addressing
+-- 
+2.20.1
+
