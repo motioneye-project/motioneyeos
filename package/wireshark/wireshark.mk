@@ -145,6 +145,13 @@ else
 WIRESHARK_CONF_OPTS += --without-snappy
 endif
 
+ifeq ($(BR2_PACKAGE_SPANDSP),y)
+WIRESHARK_CONF_OPTS += --with-spandsp
+WIRESHARK_DEPENDENCIES += spandsp
+else
+WIRESHARK_CONF_OPTS += --without-spandsp
+endif
+
 define WIRESHARK_REMOVE_DOCS
 	find $(TARGET_DIR)/usr/share/wireshark -name '*.txt' -print0 \
 		-o -name '*.html' -print0 | xargs -0 rm -f
