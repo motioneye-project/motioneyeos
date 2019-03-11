@@ -187,13 +187,13 @@ def _set_streameye_enabled(enabled):
         config._camera_ids_cache = []
         
         logging.debug('disabling all cameras in motion.conf')
-        cmd = 'sed -r -i "s/^thread (.*)/#thread \\1/" /data/etc/motion.conf &>/dev/null'
+        cmd = 'sed -r -i "s/^camera (.*)/#camera \\1/" /data/etc/motion.conf &>/dev/null'
         if os.system(cmd):
             logging.error('failed to disable cameras in motion.conf')
         
-        logging.debug('renaming thread files')
+        logging.debug('renaming camera files')
         for name in os.listdir(settings.CONF_PATH):
-            if re.match('^thread-\d+.conf$', name):
+            if re.match('^camera-\d+.conf$', name):
                 os.rename(os.path.join(settings.CONF_PATH, name), os.path.join(settings.CONF_PATH, name + '.bak'))
 
         logging.debug('adding simple mjpeg camera')
@@ -231,9 +231,9 @@ def _set_streameye_enabled(enabled):
             if camera_config.get('@proto') == 'mjpeg':
                 config.rem_camera(camera_id)
 
-        logging.debug('renaming thread files')
+        logging.debug('renaming camera files')
         for name in os.listdir(settings.CONF_PATH):
-            if re.match('^thread-\d+.conf.bak$', name):
+            if re.match('^camera-\d+.conf.bak$', name):
                 os.rename(os.path.join(settings.CONF_PATH, name), os.path.join(settings.CONF_PATH, name[:-4]))
         
         _streameye_enabled = False
