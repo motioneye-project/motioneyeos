@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CRACKLIB_VERSION = 2.9.6
-CRACKLIB_SITE = https://github.com/cracklib/cracklib/releases/download/cracklib-$(CRACKLIB_VERSION)
+CRACKLIB_VERSION = 2.9.7
+CRACKLIB_SITE = https://github.com/cracklib/cracklib/releases/download/v$(CRACKLIB_VERSION)
 CRACKLIB_LICENSE = LGPL-2.1
 CRACKLIB_LICENSE_FILES = COPYING.LIB
 CRACKLIB_INSTALL_STAGING = YES
