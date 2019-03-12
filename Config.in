@@ -746,14 +746,14 @@ config BR2_SSP_REGULAR
 
 config BR2_SSP_STRONG
 	bool "-fstack-protector-strong"
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	help
 	  Like -fstack-protector but includes additional functions to be
 	  protected - those that have local array definitions, or have
 	  references to local frame addresses.
 
-comment "Stack Smashing Protection strong needs a toolchain w/ gcc >= 4.9"
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	  -fstack-protector-strong officially appeared in gcc 4.9, but
+	  some vendors have backported -fstack-protector-strong to older
+	  versions of gcc.
 
 config BR2_SSP_ALL
 	bool "-fstack-protector-all"
