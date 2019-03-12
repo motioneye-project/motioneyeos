@@ -11,7 +11,7 @@ ifeq ($(BINUTILS_VERSION),)
 ifeq ($(BR2_arc),y)
 BINUTILS_VERSION = arc-2018.09-release
 else
-BINUTILS_VERSION = 2.29.1
+BINUTILS_VERSION = 2.31.1
 endif
 endif # BINUTILS_VERSION
 
