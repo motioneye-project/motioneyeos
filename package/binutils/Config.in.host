@@ -4,7 +4,6 @@ config BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
 	bool
 	default y
 	depends on !BR2_microblaze
-	depends on !(BR2_nios2 && (BR2_BINUTILS_VERSION_2_28_X || BR2_BINUTILS_VERSION_2_29_X))
 
 choice
 	prompt "Binutils Version"
@@ -12,10 +11,6 @@ choice
 	default BR2_BINUTILS_VERSION_ARC if BR2_arc
 	help
 	  Select the version of binutils you wish to use.
-
-config BR2_BINUTILS_VERSION_2_29_X
-	bool "binutils 2.29.1"
-	depends on !BR2_riscv
 
 config BR2_BINUTILS_VERSION_2_30_X
 	bool "binutils 2.30"
@@ -34,7 +29,6 @@ endchoice
 config BR2_BINUTILS_VERSION
 	string
 	default "arc-2018.09-release"	if BR2_BINUTILS_VERSION_ARC
-	default "2.29.1"	if BR2_BINUTILS_VERSION_2_29_X
 	default "2.30"		if BR2_BINUTILS_VERSION_2_30_X
 	default "2.31.1"	if BR2_BINUTILS_VERSION_2_31_X
 	default "2.32"		if BR2_BINUTILS_VERSION_2_32_X
