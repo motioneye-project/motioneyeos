@@ -367,7 +367,7 @@ int main(int argc, char **argv)
 		*cur++ = "-Wno-builtin-macro-redefined";
 	}
 
-#ifdef BR2_RELRO_FULL
+#ifdef BR2_PIC_PIE
 	/* Patterned after Fedora/Gentoo hardening approaches.
 	 * https://fedoraproject.org/wiki/Changes/Harden_All_Packages
 	 * https://wiki.gentoo.org/wiki/Hardened/Toolchain#Position_Independent_Executables_.28PIEs.29
