@@ -12,8 +12,8 @@ GLIBC_VERSION = 4e2943456e690d89f48e6e710757dd09404b0c9a
 GLIBC_SITE = $(call github,riscv,riscv-glibc,$(GLIBC_VERSION))
 else
 # Generate version string using:
-#   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master
-GLIBC_VERSION = glibc-2.28-69-g1e5c5303a522764d7e9d2302a60e4a32cdb902f1
+#   git describe --match 'glibc-*' --abbrev=40 origin/release/MAJOR.MINOR/master | cut -d '-' -f 2-
+GLIBC_VERSION = 2.29-6-g067fc32968b601493f4b247a3ac00caeea3f3d61
 # Upstream doesn't officially provide an https download link.
 # There is one (https://sourceware.org/git/glibc.git) but it's not reliable,
 # sometimes the connection times out. So use an unofficial github mirror.
@@ -32,7 +32,7 @@ GLIBC_ADD_TOOLCHAIN_DEPENDENCY = NO
 # Before glibc is configured, we must have the first stage
 # cross-compiler and the kernel headers
 GLIBC_DEPENDENCIES = host-gcc-initial linux-headers host-bison host-gawk \
-	$(BR2_MAKE_HOST_DEPENDENCY)
+	$(BR2_MAKE_HOST_DEPENDENCY) $(BR2_PYTHON3_HOST_DEPENDENCY)
 
 GLIBC_SUBDIR = build
 
