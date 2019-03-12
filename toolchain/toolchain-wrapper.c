@@ -98,15 +98,6 @@ static char *predef_args[] = {
 #if defined(BR_MIPS_TARGET_BIG_ENDIAN) || defined(BR_ARC_TARGET_BIG_ENDIAN)
 	"-EB",
 #endif
-#ifdef BR_SSP_REGULAR
-	"-fstack-protector",
-#endif
-#ifdef BR_SSP_STRONG
-	"-fstack-protector-strong",
-#endif
-#ifdef BR_SSP_ALL
-	"-fstack-protector-all",
-#endif
 #ifdef BR_ADDITIONAL_CFLAGS
 	BR_ADDITIONAL_CFLAGS
 #endif
