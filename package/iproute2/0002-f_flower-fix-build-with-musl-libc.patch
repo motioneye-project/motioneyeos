@@ -1,0 +1,31 @@
+From 28747146622a49c3e7b5c5b36dc02c6a64124770 Mon Sep 17 00:00:00 2001
+From: Hans Dedecker <dedeckeh@gmail.com>
+Date: Wed, 23 Jan 2019 22:02:31 +0100
+Subject: [PATCH] f_flower: fix build with musl libc
+
+XATTR_SIZE_MAX requires the usage of linux/limits.h; let's include it
+
+Signed-off-by: Hans Dedecker <dedeckeh@gmail.com>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 2874714662
+
+ tc/f_flower.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/tc/f_flower.c b/tc/f_flower.c
+index c563666702b5..9659e894dd1f 100644
+--- a/tc/f_flower.c
++++ b/tc/f_flower.c
+@@ -14,6 +14,7 @@
+ #include <unistd.h>
+ #include <string.h>
+ #include <net/if.h>
++#include <linux/limits.h>
+ #include <linux/if_arp.h>
+ #include <linux/if_ether.h>
+ #include <linux/ip.h>
+-- 
+2.20.1
+
