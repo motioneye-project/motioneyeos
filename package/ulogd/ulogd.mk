@@ -7,7 +7,7 @@
 ULOGD_VERSION = 2.0.5
 ULOGD_SOURCE = ulogd-$(ULOGD_VERSION).tar.bz2
 ULOGD_SITE = http://www.netfilter.org/projects/ulogd/files
-ULOGD_CONF_OPTS = --with-dbi=no --with-pgsql=no
+ULOGD_CONF_OPTS = --with-dbi=no
 ULOGD_DEPENDENCIES = host-pkgconf \
 	libmnl libnetfilter_acct libnetfilter_conntrack libnetfilter_log \
 	libnfnetlink
@@ -22,11 +22,17 @@ ULOGD_DEPENDENCIES += mysql
 else
 ULOGD_CONF_OPTS += --with-mysql=no
 endif
+ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
+ULOGD_CONF_OPTS += --with-pgsql
+ULOGD_DEPENDENCIES += postgresql
+else
+ULOGD_CONF_OPTS += --without-pgsql
+endif
 ifeq ($(BR2_PACKAGE_SQLITE),y)
 ULOGD_DEPENDENCIES += sqlite
 endif
 else
-ULOGD_CONF_OPTS += --with-mysql=no --without-sqlite
+ULOGD_CONF_OPTS += --with-mysql=no --without-pgsql --without-sqlite
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
