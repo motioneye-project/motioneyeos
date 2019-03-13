@@ -1,3 +1,7 @@
-# From ftp://ftp.netfilter.org/pub/ulogd/ulogd-2.0.5.tar.bz2.{md5sum,sha1sum}
-md5	f0f8fe1371fa28b5e06cb16aaa0111dd	ulogd-2.0.5.tar.bz2
-sha1	828db7849d6788674ecf36b178f107c20e9ac1f0	ulogd-2.0.5.tar.bz2
+# From ftp://ftp.netfilter.org/pub/ulogd/ulogd-2.0.7.tar.bz2.{md5sum,sha1sum}
+md5	2bb2868cf51acbb90c35763c9f995f31	ulogd-2.0.7.tar.bz2
+sha1	f2d90469e2842e2bfbe19c55cf6d56ac107aa4b9	ulogd-2.0.7.tar.bz2
+
+# Locally calculated
+sha256	990a05494d9c16029ba0a83f3b7294fc05c756546b8d60d1c1572dc25249a92b	ulogd-2.0.7.tar.bz2
+sha256	b8a2f73f743dc1a51aff23f1aacbca4b868564db52496fa3c0caba755bfd1eaf	COPYING
