@@ -933,6 +933,7 @@ F:	fs/f2fs/
 F:	package/bluez5_utils-headers/
 F:	package/f2fs-tools/
 F:	package/pigpio/
+F:	package/python-aioblescan/
 F:	package/python-falcon/
 F:	package/python-mimeparse/
 F:	package/python-pigpio/
