@@ -30,6 +30,7 @@ config BR2_PACKAGE_NODEJS
 	select BR2_PACKAGE_LIBHTTPPARSER
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_ZLIB
+	select BR2_PACKAGE_NGHTTP2
 	help
 	  Event-driven I/O server-side JavaScript environment based on
 	  V8.
