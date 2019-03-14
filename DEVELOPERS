@@ -650,6 +650,7 @@ F:	package/xxhash/
 
 N:	Eloi Bail <eloi.bail@savoirfairelinux.com>
 F:	package/bayer2rgb-neon/
+F:	package/gstreamer1/gst1-plugins-bayer2rgb-neon/
 
 N:	Eric Le Bihan <eric.le.bihan.dev@free.fr>
 F:	docs/manual/adding-packages-meson.txt
