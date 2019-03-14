@@ -648,6 +648,9 @@ F:	package/prosody/
 N:	Ed Swierk <eswierk@skyportsystems.com>
 F:	package/xxhash/
 
+N:	Eloi Bail <eloi.bail@savoirfairelinux.com>
+F:	package/bayer2rgb-neon/
+
 N:	Eric Le Bihan <eric.le.bihan.dev@free.fr>
 F:	docs/manual/adding-packages-meson.txt
 F:	package/adwaita-icon-theme/
