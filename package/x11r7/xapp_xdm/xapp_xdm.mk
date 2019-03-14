@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XAPP_XDM_VERSION = 1.1.11
+XAPP_XDM_VERSION = 1.1.12
 XAPP_XDM_SOURCE = xdm-$(XAPP_XDM_VERSION).tar.bz2
 XAPP_XDM_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XDM_LICENSE = MIT
