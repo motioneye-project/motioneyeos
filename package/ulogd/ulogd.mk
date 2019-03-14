@@ -20,7 +20,7 @@ ifeq ($(BR2_PACKAGE_MYSQL),y)
 ULOGD_CONF_OPTS += --with-mysql=$(STAGING_DIR)/usr
 ULOGD_DEPENDENCIES += mysql
 else
-ULOGD_CONF_OPTS += --with-mysql=no
+ULOGD_CONF_OPTS += --without-mysql
 endif
 ifeq ($(BR2_PACKAGE_POSTGRESQL),y)
 ULOGD_CONF_OPTS += --with-pgsql
@@ -32,7 +32,7 @@ ifeq ($(BR2_PACKAGE_SQLITE),y)
 ULOGD_DEPENDENCIES += sqlite
 endif
 else
-ULOGD_CONF_OPTS += --with-mysql=no --without-pgsql --without-sqlite
+ULOGD_CONF_OPTS += --without-mysql --without-pgsql --without-sqlite
 endif
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
