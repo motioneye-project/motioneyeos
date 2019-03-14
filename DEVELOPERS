@@ -798,6 +798,7 @@ F:	package/libgee/
 F:	package/libglib2/
 F:	package/libgtk2/
 F:	package/libgtk3/
+F:	package/libhtp/
 F:	package/libidn/
 F:	package/libidn2/
 F:	package/libjpeg/
