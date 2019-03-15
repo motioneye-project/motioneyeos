@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-January/002523.html
-sha256	2f73c7160c09dc32586ea07daa408ac897c0a16eaa98cad9f9e4ee98cd9057d8	xcalc-1.0.6.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002946.html
+md5 c0be45f8c26187474b763d634535d8d8  xcalc-1.0.7.tar.bz2
+sha1 f31c5a9789435b4c5a575d636f1e2ae4f96104c4  xcalc-1.0.7.tar.bz2
+sha256 70d271d1655f90ed0d4011f58022c441e1832f01eb3450c691799b131b557f21  xcalc-1.0.7.tar.bz2
+sha512 890cb9399e3c55816318ab5f0152ddba05ee141cbae6032759a3b762742ab54df8fcf0394dacc539299f93f27cbbb17aee5cbda5dde8b169a7099f20a1a38388  xcalc-1.0.7.tar.bz2
+# Locally computed
+sha256 8dd69dbec37866a41d3040c5c478aca46e0b50c30319f178064d5e2ed9d3f912  COPYING
