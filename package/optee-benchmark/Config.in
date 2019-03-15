@@ -1,5 +1,6 @@
 config BR2_PACKAGE_OPTEE_BENCHMARK
 	bool "optee-benchmark"
+	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS # optee-client
 	select BR2_PACKAGE_OPTEE_CLIENT
 	select BR2_PACKAGE_LIBYAML
@@ -12,4 +13,5 @@ config BR2_PACKAGE_OPTEE_BENCHMARK
 	  http://github.com/linaro-swg/optee_benchmark
 
 comment "optee-benchmark needs a toolchain w/ threads"
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
