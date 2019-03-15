@@ -85,6 +85,11 @@ OPENJDK_CONF_OPTS = \
 	--with-version-build="$(OPENJDK_VERSION_MAJOR)" \
 	--with-version-string="$(OPENJDK_VERSION_MAJOR)"
 
+# If building for AArch64, use the provided CPU port.
+ifeq ($(BR2_aarch64),y)
+OPENJDK_CONF_OPTS += --with-cpu-port=aarch64 --with-abi-profile=aarch64
+endif
+
 ifeq ($(BR2_CCACHE),y)
 OPENJDK_CONF_OPTS += \
 	--enable-ccache \
