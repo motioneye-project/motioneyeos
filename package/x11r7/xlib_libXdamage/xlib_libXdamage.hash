@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/archives/xorg/2013-January/055220.html
-sha256	7c3fe7c657e83547f4822bfde30a90d84524efb56365448768409b77f05355ad	libXdamage-1.1.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002973.html
+md5 e3f554267a7a04b042dc1f6352bd6d99  libXdamage-1.1.5.tar.bz2
+sha1 719ae6ab8c1b972c6386b654976c479255af5572  libXdamage-1.1.5.tar.bz2
+sha256 b734068643cac3b5f3d2c8279dd366b5bf28c7219d9e9d8717e1383995e0ea45  libXdamage-1.1.5.tar.bz2
+sha512 a3ca6cc33b1727f717a3e2aa5593f660508a81a47918a0aa949e9e8fba105e303fe5071983b48caac92feea0fe6e8e01620805e4d19b41f21f20d837b191c124  libXdamage-1.1.5.tar.bz2
+# Locally computed
+sha256 33effe928634be12e668465c3935c5570ff2787b970b15d9243d69df42302c57  COPYING
