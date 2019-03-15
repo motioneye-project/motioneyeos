@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVDPAU_VERSION = 1.1.1
+LIBVDPAU_VERSION = 1.2
 LIBVDPAU_SOURCE = libvdpau-$(LIBVDPAU_VERSION).tar.bz2
 LIBVDPAU_SITE = http://people.freedesktop.org/~aplattner/vdpau
 LIBVDPAU_LICENSE = MIT

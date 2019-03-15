@@ -1,4 +1,5 @@
-# From https://lists.freedesktop.org/archives/xorg-announce/2015-August/002630.html
-md5	2fa0b05a4f4d06791eec83bc9c854d14	libvdpau-1.1.1.tar.bz2
-sha1	86516e2a962fd34f65d49115d6ddf15fd912f579	libvdpau-1.1.1.tar.bz2
-sha256	857a01932609225b9a3a5bf222b85e39b55c08787d0ad427dbd9ec033d58d736	libvdpau-1.1.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002958.html
+sha256 6a499b186f524e1c16b4f5b57a6a2de70dfceb25c4ee546515f26073cd33fa06  libvdpau-1.2.tar.bz2
+sha512 86aa3f2a39cb73a597bf417da2eeef73ff01160ed9f54dff3725785ff5a289f47040496de44e2f5292d59657d4746e369b3fa307c4f83a32f7cc28e4cd8bce6f  libvdpau-1.2.tar.bz2
+# Locally computed
+sha256 ce4af7294872ff07f6e82ae5f1f5eba926215b1e2fb6d55d64759de082458d61  COPYING
