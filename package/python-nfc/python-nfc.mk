@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-PYTHON_NFC_VERSION = 212
-PYTHON_NFC_SITE = https://launchpad.net/nfcpy
-PYTHON_NFC_SITE_METHOD = bzr
+PYTHON_NFC_VERSION = 0.13.5
+PYTHON_NFC_SITE = $(call github,nfcpy,nfcpy,v$(PYTHON_NFC_VERSION))
 PYTHON_NFC_DEPENDENCIES = libusb libusb-compat
-PYTHON_NFC_SETUP_TYPE = distutils
+PYTHON_NFC_SETUP_TYPE = setuptools
 PYTHON_NFC_LICENSE = EUPL-1.1+
+PYTHON_NFC_LICENSE_FILES = LICENSE
 
 $(eval $(python-package))
