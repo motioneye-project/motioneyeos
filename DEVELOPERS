@@ -51,6 +51,7 @@ F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/libwebsockets/
 F:	package/nginx-naxsi/
+F:	package/openjdk/
 F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/

@@ -1,0 +1,60 @@
+config BR2_PACKAGE_HOST_OPENJDK_BIN_ARCH_SUPPORTS
+	bool
+	default y if BR2_HOSTARCH = "x86_64"
+
+config BR2_PACKAGE_OPENJDK
+	bool "openjdk"
+	depends on !BR2_SOFT_FLOAT
+	depends on !BR2_STATIC_LIBS # glibc
+	depends on BR2_INSTALL_LIBSTDCPP # cups
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib, cups, libusb
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	depends on BR2_USE_MMU # cups
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_CUPS
+	select BR2_PACKAGE_FONTCONFIG
+	select BR2_PACKAGE_GIFLIB
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LCMS2
+	select BR2_PACKAGE_LIBPNG
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_XLIB_LIBXRENDER
+	select BR2_PACKAGE_XLIB_LIBXT
+	select BR2_PACKAGE_XLIB_LIBXTST
+	select BR2_PACKAGE_ZLIB
+	# make sure at least one variant is enabled
+	select BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER \
+	       if !BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT
+	help
+	  OpenJDK is a free and open-source implementation of the
+	  Java Platform.
+
+	  http://openjdk.java.net/
+
+if BR2_PACKAGE_OPENJDK
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT
+	bool "build client variant"
+	help
+	  Quick loading, but slower run-time performance.
+
+config BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER
+	bool "build server variant"
+	help
+	  Slower loading, but faster run-time performance.
+
+endif
+
+comment "openjdk needs X.Org"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_XORG7
+
+comment "openjdk needs glibc, and a toolchain w/ wchar, dynamic library, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_USES_GLIBC
+
+comment "openjdk does not support soft float configurations"
+	depends on BR2_USE_MMU
+	depends on BR2_SOFT_FLOAT
