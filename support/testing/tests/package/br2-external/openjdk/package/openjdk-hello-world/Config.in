@@ -1,0 +1,5 @@
+config BR2_PACKAGE_OPENJDK_HELLO_WORLD
+	bool "openjdk hello world"
+	depends on BR2_PACKAGE_OPENJDK
+	help
+	  Simple class for testing openjdk
