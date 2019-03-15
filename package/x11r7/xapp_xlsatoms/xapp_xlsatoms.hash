@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002579.html
-sha256	47e5dc7c3dbda6db2cf8c00cedac1722835c1550aa21cfdbc9ba83906694dea4	xlsatoms-1.1.2.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-February/002951.html
+md5 61671fee12535347db24ec3a715032a7  xlsatoms-1.1.3.tar.bz2
+sha1 9fdb1e8df6bb08529a812ac90f63d500bf5174cc  xlsatoms-1.1.3.tar.bz2
+sha256 57868f958c263976727881f3078e55b86b4a109dc578d2b92f5c6d690850a382  xlsatoms-1.1.3.tar.bz2
+sha512 c267ccfdc5a83e834bfb5c3b144e22642badcadef4eb146eeec2df6fe6f85e9379500ae4219912c70fa2e535036a1a96cf496381f5d814e79af075e03c975f30  xlsatoms-1.1.3.tar.bz2
+# Locally computed
+sha256 f0a362fc1b8e788845b1c0ad7ba9ade58fdfb73da750c3b9780db5d70b947657  COPYING
