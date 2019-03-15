@@ -1,2 +1,7 @@
-# From http://lists.freedesktop.org/archives/xorg/2013-January/055221.html
-sha256	ede250cd207d8bee4a338265c3007d7a68d5aca791b6ac41af18e9a2aeb34178	libXcomposite-0.4.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002971.html
+md5 3fa0841ea89024719b20cd702a9b54e0  libXcomposite-0.4.5.tar.bz2
+sha1 902631efb55a798c81086e5ff90b60349839db40  libXcomposite-0.4.5.tar.bz2
+sha256 b3218a2c15bab8035d16810df5b8251ffc7132ff3aa70651a1fba0bfe9634e8f  libXcomposite-0.4.5.tar.bz2
+sha512 502fd51fd9097bb3ca72174ac5b25b9d3b1ff240d32c4765199df03d89337d94b4ddea49e90b177b370862430089d966ce9c38988337156352cfeae911c2d3d5  libXcomposite-0.4.5.tar.bz2
+# Locally computed
+sha256 efa0219ed8485ac555c1a3fb82daf34539b2e0dcf4dadc99c01f1e39c69a4a68  COPYING
