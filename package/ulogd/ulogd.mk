@@ -29,7 +29,10 @@ else
 ULOGD_CONF_OPTS += --without-pgsql
 endif
 ifeq ($(BR2_PACKAGE_SQLITE),y)
+ULOGD_CONF_OPTS += --with-sqlite
 ULOGD_DEPENDENCIES += sqlite
+else
+ULOGD_CONF_OPTS += --without-sqlite
 endif
 else
 ULOGD_CONF_OPTS += --without-mysql --without-pgsql --without-sqlite
