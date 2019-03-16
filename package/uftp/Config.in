@@ -1,0 +1,7 @@
+config BR2_PACKAGE_UFTP
+	bool "uftp"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Encrypted UDP based FTP with multicast.
+
+	  http://uftp-multicast.sourceforge.net/
