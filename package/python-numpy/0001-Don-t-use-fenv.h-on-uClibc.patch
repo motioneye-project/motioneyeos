@@ -1,0 +1,30 @@
+From 52b47439d17463304e5bd7974dec17ced0b0f24a Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 16 Mar 2019 10:38:27 +0100
+Subject: [PATCH] Don't use <fenv.h> on uClibc
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/numpy/numpy/pull/13137]
+---
+ numpy/core/src/npymath/ieee754.c.src | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/numpy/core/src/npymath/ieee754.c.src b/numpy/core/src/npymath/ieee754.c.src
+index d960838c8..f3f15f841 100644
+--- a/numpy/core/src/npymath/ieee754.c.src
++++ b/numpy/core/src/npymath/ieee754.c.src
+@@ -681,7 +681,8 @@ void npy_set_floatstatus_invalid(void)
+     fp_raise_xcp(FP_INVALID);
+ }
+ 
+-#elif defined(_MSC_VER) || (defined(__osf__) && defined(__alpha))
++#elif defined(_MSC_VER) || (defined(__osf__) && defined(__alpha)) || \
++      defined (__UCLIBC__)
+ 
+ /*
+  * By using a volatile floating point value,
+-- 
+2.14.1
+

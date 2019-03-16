@@ -1,0 +1,31 @@
+From 1125f1ee33324bc91b4e8dd9da49163af572d04a Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 16 Mar 2019 10:48:25 +0100
+Subject: [PATCH] FIX: no FPU exceptions bits on ARC glibc
+
+The FPU exceptions bits are missing in fenv.h in glibc for ARC
+architecture.
+
+Signed-off-by: Evgeniy Didin <Evgeniy.Didin@synopsys.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/numpy/numpy/pull/13137]
+---
+ numpy/core/src/npymath/ieee754.c.src | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/numpy/core/src/npymath/ieee754.c.src b/numpy/core/src/npymath/ieee754.c.src
+index f3f15f841..3f66b24a4 100644
+--- a/numpy/core/src/npymath/ieee754.c.src
++++ b/numpy/core/src/npymath/ieee754.c.src
+@@ -682,7 +682,7 @@ void npy_set_floatstatus_invalid(void)
+ }
+ 
+ #elif defined(_MSC_VER) || (defined(__osf__) && defined(__alpha)) || \
+-      defined (__UCLIBC__)
++      defined (__UCLIBC__) || (defined(__arc__) && defined(__GLIBC__))
+ 
+ /*
+  * By using a volatile floating point value,
+-- 
+2.14.1
+
