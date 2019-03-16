@@ -1685,16 +1685,6 @@ config BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_MAD
 	bool "mad (*.mp3 audio) removed"
 	select BR2_LEGACY
 
-config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC
-	bool "gst1-plugins-bad webrtc renamed to webrtcdsp"
-	select BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTCDSP
-	select BR2_LEGACY
-	help
-	  The WebRTC plugin in GStreamer 1.x has always been named
-	  webrtcdsp, but was wrongly introduced in Buildroot under the
-	  name webrtc. Therefore, we have renamed the option to match
-	  the actual name of the GStreamer plugin.
-
 config BR2_STRIP_none
 	bool "Strip command 'none' has been removed"
 	select BR2_LEGACY

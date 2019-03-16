@@ -558,6 +558,17 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBP
 	help
 	  Webp image format plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTC
+	bool "webrtc"
+	depends on !BR2_STATIC_LIBS # libnice -> gnutls
+	select BR2_PACKAGE_GST1_PLUGINS_BASE # libgstsdp
+	select BR2_PACKAGE_LIBNICE
+	help
+	  WebRTC plugins (webrtcbin - a bin for webrtc connections)
+
+comment "webrtc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WEBRTCDSP
 	bool "webrtcdsp"
 	# All depends from webrtc-audio-processing
