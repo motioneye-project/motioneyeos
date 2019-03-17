@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_REDIS
+	bool "python-redis"
+	help
+	  Python client for Redis key-value store.
+
+	  https://github.com/andymccurdy/redis-py
