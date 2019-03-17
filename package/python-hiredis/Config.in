@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_HIREDIS
+	bool "python-hiredis"
+	help
+	  Python wrapper for hiredis.
+
+	  https://github.com/redis/hiredis-py
