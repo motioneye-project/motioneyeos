@@ -1,3 +1,6 @@
-# md5 from https://pypi.python.org/pypi/pylibftdi/json, sha256 locally computed
-md5  eaee7fb3a67f33a35a164a9628daaafe pylibftdi-0.15.0.tar.gz
-sha256  51ef08ebcc4ec3eaec2366e9648d3f8fa1b737ea507a7f3a374ac58abf148e77 pylibftdi-0.15.0.tar.gz
+# md5, sha256 from https://pypi.python.org/pypi/pylibftdi/json
+md5  555713983cfb7a67b0c1a1418a065bbc pylibftdi-0.17.0.tar.gz
+sha256  dc615a5338c866cc1a316cabef2ea5862b75c81de9410b85a85f38a033214c8c pylibftdi-0.17.0.tar.gz
+
+# Hash for license file
+sha256  581b6a16b3aaf23c4f7caee5defa099af833a95916e57ef24d7c12f893a0c160 LICENSE.txt
