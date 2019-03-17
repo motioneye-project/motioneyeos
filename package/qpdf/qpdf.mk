@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QPDF_VERSION = 8.2.1
+QPDF_VERSION = 8.4.0
 QPDF_SITE = http://downloads.sourceforge.net/project/qpdf/qpdf/$(QPDF_VERSION)
 QPDF_INSTALL_STAGING = YES
 QPDF_LICENSE = Artistic-2.0
