@@ -130,4 +130,9 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	  Additional parameters for the ATF build
 	  E.G. 'DEBUG=1 LOG_LEVEL=20'
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_DEBUG
+	bool "Build in debug mode"
+	help
+	  Enable this option to build ATF with DEBUG=1.
+
 endif
