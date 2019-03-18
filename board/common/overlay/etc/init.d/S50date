@@ -33,24 +33,45 @@ source ${CONF}
 
 set_current_date_http() {
     date_str=$(curl -v -s -m ${DATE_TIMEOUT} -X GET http://${DATE_HOST} 2>&1 | grep Date | sed -e 's/< Date: //')
-    test -z "${date_str}" && return 1
-    ${PROG_DATE} -u -D "%a, %d %b %Y %H:%M:%S" -s "${date_str}" > /dev/null
-    return $?
+    if [[ -n "${date_str}" ]]; then
+        ${PROG_DATE} -u -D "%a, %d %b %Y %H:%M:%S" -s "${date_str}" > /dev/null
+        logger -t date -s "current system date/time set to $(date) via HTTP"
+        return 0
+    else
+        logger -t date -s "failed to set current system date/time via HTTP"
+        return 1
+    fi
 }
 
 set_current_date_ntp() {
     cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ${PROG_NTPDATE} -t ${DATE_TIMEOUT} -s
+    if [[ $? == 0 ]]; then
+        logger -t date -s "current system date/time set to $(date) via NTP"
+        return 0
+    else
+        logger -t date -s "failed to set current system date/time via NTP"
+        return 1
+    fi
 }
 
 start_http() {
     msg_begin "Setting current date using http"
-    set_current_date_http || set_current_date_http
-    test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
+    if set_current_date_http; then
+        sleep_interval=${DATE_INTERVAL}
+        msg_done "$(${PROG_DATE})"
+    else
+        sleep_interval=${DATE_TIMEOUT}
+        msg_fail
+    fi
     
     msg_begin "Starting http date updater"
     while true; do
-        sleep ${DATE_INTERVAL}
-        set_current_date_http
+        sleep ${sleep_interval}
+        if set_current_date_http; then
+            sleep_interval=${DATE_INTERVAL}
+        else
+            sleep_interval=${DATE_TIMEOUT}
+        fi
     done &
     msg_done
 }

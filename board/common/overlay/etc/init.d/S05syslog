@@ -15,7 +15,7 @@ case "$1" in
         ${PROG}
         test $? == 0 && msg_done || msg_fail
         echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${DMESG_LOG}
-        ${PROG_D} -T -w >> ${DMESG_LOG} &
+        ${PROG_D} -w >> ${DMESG_LOG} &
         ;;
 
     stop)
