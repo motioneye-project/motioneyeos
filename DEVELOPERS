@@ -55,7 +55,6 @@ F:	package/openjdk/
 F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/
-F:	package/prelink-cross/
 F:	package/python3/
 F:	package/python-flask-sqlalchemy/
 F:	package/python-mutagen/
