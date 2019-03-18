@@ -162,9 +162,9 @@ fi
 if [ -n "$IP" ] && [ -n "$GW" ] && [ -n "$DNS" ]; then
     msg "setting static IP configuration"
     conf=$BOOT/static_ip.conf
-    echo "static_ip=\"$IP\"" > $conf
-    echo "static_gw=\"$GW\"" >> $conf
-    echo "static_dns=\"$DNS\"" >> $conf
+    echo "STATIC_IP=\"$IP\"" > $conf
+    echo "STATIC_GW=\"$GW\"" >> $conf
+    echo "STATIC_DNS=\"$DNS\"" >> $conf
 fi
 
 msg "unmounting sdcard"
