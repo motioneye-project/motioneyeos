@@ -16,7 +16,7 @@ OPTEE_TEST_CONF_OPTS = -DOPTEE_TEST_SDK=$(OPTEE_OS_SDK)
 # Trusted Application are not built from CMake due to ta_dev_kit
 # dependencies. We must build and install them on target.
 define OPTEE_TEST_BUILD_TAS
-	$(foreach f,$(wildcard $(@D)/ta/*/Makefile), \
+	$(foreach f,$(wildcard $(@D)/ta/*_lib/Makefile) $(wildcard $(@D)/ta/*/Makefile), \
 		$(TARGET_CONFIGURE_OPTS) \
 		$(MAKE) CROSS_COMPILE=$(TARGET_CROSS) \
 			TA_DEV_KIT_DIR=$(OPTEE_OS_SDK) \
