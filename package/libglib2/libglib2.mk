@@ -137,6 +137,13 @@ LIBGLIB2_CONF_OPTS += --with-libiconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+LIBGLIB2_CONF_OPTS += --enable-selinux
+LIBGLIB2_DEPENDENCIES += libselinux
+else
+LIBGLIB2_CONF_OPTS += --disable-selinux
+endif
+
 # Purge gdb-related files
 ifneq ($(BR2_PACKAGE_GDB),y)
 define LIBGLIB2_REMOVE_GDB_FILES
