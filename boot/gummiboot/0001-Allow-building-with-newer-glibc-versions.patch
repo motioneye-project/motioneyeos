@@ -1,0 +1,31 @@
+From 40ab4167b5a45c772304a879c71b47d54de3b0e3 Mon Sep 17 00:00:00 2001
+From: Esben Haabendal <esben@haabendal.dk>
+Date: Wed, 20 Mar 2019 14:19:40 +0100
+Subject: [PATCH] Allow building with newer glibc versions
+
+Newer glibc versions does not include sys/sysmacros.h from sys/types.h
+anymore.  Including it unconditionally should be safe.
+
+See https://sourceware.org/ml/libc-alpha/2015-11/msg00253.html for why
+this was done.
+
+Signed-off-by: Esben Haabendal <esben@haabendal.dk>
+---
+ src/setup/setup.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/setup/setup.c b/src/setup/setup.c
+index 6a4275a2ae36..53429375a146 100644
+--- a/src/setup/setup.c
++++ b/src/setup/setup.c
+@@ -37,6 +37,7 @@
+ #include <ftw.h>
+ #include <stdbool.h>
+ #include <blkid.h>
++#include <sys/sysmacros.h>
+ 
+ #include "efivars.h"
+ 
+-- 
+2.21.0
+
