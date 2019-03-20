@@ -20,4 +20,52 @@ config BR2_PACKAGE_BIRD_CLIENT
 	help
 	  Enable the BIRD client
 
+comment "protocol support"
+
+config BR2_PACKAGE_BIRD_BABEL
+	bool "babel"
+	help
+	  Enable Babel protocol.
+
+config BR2_PACKAGE_BIRD_BFD
+	bool "bfd"
+	help
+	  Enable BFD protocol.
+
+config BR2_PACKAGE_BIRD_BGP
+	bool "bgp"
+	default y
+	help
+	  Enable BGP protocol.
+
+config BR2_PACKAGE_BIRD_MRT
+	bool "mrt"
+	help
+	  Enable MRT protocol.
+
+config BR2_PACKAGE_BIRD_OSPF
+	bool "ospf"
+	help
+	  Enable OSPFv2 and OSPFv3 protocol.
+
+config BR2_PACKAGE_BIRD_PERF
+	bool "perf"
+	help
+	  Enable Perf protocol.
+
+config BR2_PACKAGE_BIRD_PIPE
+	bool "pipe"
+	help
+	  Enable Pipe protocol.
+
+config BR2_PACKAGE_BIRD_RADV
+	bool "radv"
+	help
+	  Enable RAdv protocol.
+
+config BR2_PACKAGE_BIRD_STATIC
+	bool "static"
+	help
+	  Enable Static protocol.
+
 endif
