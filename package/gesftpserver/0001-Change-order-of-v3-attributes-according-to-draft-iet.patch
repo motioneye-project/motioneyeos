@@ -1,0 +1,30 @@
+From 4b5c7eb63894bd2b1fedeb2a8e9bd16bf3c8c555 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Bernd=20Holzm=C3=BCller?=
+ <bernd.holzmueller@tiggerswelt.net>
+Date: Mon, 11 Feb 2019 23:57:01 +0100
+Subject: [PATCH] Change order of v3-attributes according to
+ draft-ietf-secsh-filexfer-00/02
+
+[yann.morin.1998@free.fr: backport from upstream]
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+---
+ v3.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/v3.c b/v3.c
+index 57cc31e..1fd86ad 100644
+--- a/v3.c
++++ b/v3.c
+@@ -121,8 +121,8 @@ static void v3_sendattrs(struct sftpjob *job, const struct sftpattr *attrs) {
+       fatal("sending out-of-range mtime");
+     if(a != attrs->atime.seconds)
+       fatal("sending out-of-range mtime");
+-    sftp_send_uint32(job->worker, m);
+     sftp_send_uint32(job->worker, a);
++    sftp_send_uint32(job->worker, m);
+   }
+   /* Note that we just discard unknown bits rather than reporting errors. */
+ }
+-- 
+2.14.1
+
