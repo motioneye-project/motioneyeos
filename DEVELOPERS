@@ -697,6 +697,9 @@ F:	package/mxsldr/
 N:	Ernesto L. Williams Jr <realcontrols@gmail.com>
 F:	package/szip/
 
+N:	Esben Haabendal <esben@haabendal.dk>
+F:	boot/gummiboot/
+
 N:	Etienne Carriere <etienne.carriere@linaro.org>
 F:	boot/optee-os/
 F:	package/optee-benchmark/
