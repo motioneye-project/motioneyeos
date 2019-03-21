@@ -1,5 +1,5 @@
-# From https://www.openssl.org/source/openssl-1.1.1a.tar.gz.sha256
-sha256	fc20130f8b7cbd2fb918b2f14e2f429e109c31ddd0fb38fc5d71d9ffed3f9f41	openssl-1.1.1a.tar.gz
+# From https://www.openssl.org/source/openssl-1.1.1b.tar.gz.sha256
+sha256	5c557b023230413dfb0756f3137a13e6d726838ccd1430888ad15bfb2b43ea4b	openssl-1.1.1b.tar.gz
 
 # License files
-sha256	350c7817af2ef980d3f3922bc5e0bb6a9d9f6cc21e784a699bcd2a31c74a84b1	LICENSE
+sha256	c32913b33252e71190af2066f08115c69bc9fddadf3bf29296e20c835389841c	LICENSE
