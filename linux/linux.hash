@@ -1,3 +1,5 @@
+# From https://www.kernel.org/pub/linux/kernel/v5.x/sha256sums.asc
+sha256 43bfea3a6b24b4e5f63190409a199bee8cb93dbea01c52ad7f017078ebdf7c9b  linux-5.0.2.tar.xz
 # From https://www.kernel.org/pub/linux/kernel/v4.x/sha256sums.asc
 sha256 1cf544308195250805e0731c716691bea4c1ed29e03e6f9ae5be6dc16785a504  linux-4.20.12.tar.xz
 sha256 7ec71d90d6e96e6f741676d157ac06f30c75be4eaf1649143a3c8b7d4f919731  linux-4.19.25.tar.xz
