@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-OPENJDK_VERSION_MAJOR = 11.0.2
-OPENJDK_VERSION_MINOR = 9
+OPENJDK_VERSION_MAJOR = 12
+OPENJDK_VERSION_MINOR = 33
 OPENJDK_VERSION = jdk-$(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
-OPENJDK_SITE = $(call github,AdoptOpenJDK,openjdk-jdk11u,$(OPENJDK_VERSION))
+OPENJDK_SITE = $(call github,AdoptOpenJDK,openjdk-jdk12u,$(OPENJDK_VERSION))
 OPENJDK_LICENSE = GPL-2.0+ with exception
 OPENJDK_LICENSE_FILES = LICENSE
 
@@ -26,6 +26,7 @@ OPENJDK_DEPENDENCIES = \
 	lcms2 \
 	libpng \
 	libusb \
+	xlib_libXrandr \
 	xlib_libXrender \
 	xlib_libXt \
 	xlib_libXtst \
@@ -90,7 +91,7 @@ OPENJDK_CONF_OPTS = \
 
 # If building for AArch64, use the provided CPU port.
 ifeq ($(BR2_aarch64),y)
-OPENJDK_CONF_OPTS += --with-cpu-port=aarch64 --with-abi-profile=aarch64
+OPENJDK_CONF_OPTS += --with-abi-profile=aarch64
 endif
 
 ifeq ($(BR2_CCACHE),y)
