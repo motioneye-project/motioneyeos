@@ -216,13 +216,17 @@ def check_circular_deps(deps):
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
-def remove_extra_deps(deps, rootpkg, transitive):
-    for pkg in list(deps.keys()):
-        if not pkg == rootpkg:
-            for d in get_mandatory_deps(pkg, deps):
-                if d not in deps[rootpkg]:
-                    deps[rootpkg].append(d)
-            deps[pkg] = remove_mandatory_deps(pkg, deps)
+def remove_extra_deps(deps, rootpkg, transitive, arrow_dir):
+    # For the direct dependencies, find and eliminate mandatory
+    # deps, and add them to the root package. Don't do it for a
+    # reverse graph, because mandatory deps are only direct deps.
+    if arrow_dir == "forward":
+        for pkg in list(deps.keys()):
+            if not pkg == rootpkg:
+                for d in get_mandatory_deps(pkg, deps):
+                    if d not in deps[rootpkg]:
+                        deps[rootpkg].append(d)
+                deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
         if not transitive or pkg == rootpkg:
             deps[pkg] = remove_transitive_deps(pkg, deps)
@@ -420,7 +424,7 @@ def main():
     if check_only:
         sys.exit(0)
 
-    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive)
+    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive, arrow_dir)
     dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
                                           if pkg != "all" and not pkg.startswith("root")])
 
