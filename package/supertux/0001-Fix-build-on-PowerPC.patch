@@ -1,0 +1,81 @@
+From cfcd478fe69ca1b3923f388a349a4f67ac2c03aa Mon Sep 17 00:00:00 2001
+From: Shawn Anastasio <shawn@anastas.io>
+Date: Sun, 3 Feb 2019 13:22:57 -0600
+Subject: [PATCH] Fix build on PowerPC
+
+On PowerPC-based architectures, SDL includes the altivec.h header
+for SIMD intrinsics. Unfortunately, altivec.h defines some types which
+conflict with C++ types like bool and std::vector. This commit adds
+a wrapper for altivec.h which resolves these conflicts and allows
+supertux to build and run.
+
+Tested on a ppc64le workstation.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/SuperTux/supertux/pull/1056/commits/cfcd478fe69ca1b3923f388a349a4f67ac2c03aa]
+---
+ CMakeLists.txt    | 15 ++++++++++++++-
+ src/ppc/altivec.h |  6 ++++++
+ 2 files changed, 20 insertions(+), 1 deletion(-)
+ create mode 100644 src/ppc/altivec.h
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 70b9673b50..b9b6ea3ea6 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -376,6 +376,11 @@ endif()
+ 
+ include(ConfigureChecks)
+ 
++# Include altivec wrapper on ppc
++if(CMAKE_SYSTEM_PROCESSOR MATCHES "^ppc.*")
++  include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src/ppc)
++endif()
++
+ 
+ ## Also build external/squirrel
+ 
+@@ -420,6 +425,13 @@ if(NOT EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/external/tinygettext/CMakeLists.txt)
+   message(FATAL_ERROR "tinygettext submodule is not checked out or ${CMAKE_CURRENT_SOURCE_DIR}/external/tinygettext/CMakeLists.txt is missing")
+ endif()
+ 
++# Include altivec wrapper on ppc
++if(CMAKE_SYSTEM_PROCESSOR MATCHES "^ppc.*")
++  set(TINYGETTEXT_CXX_FLAGS "-isystem ${CMAKE_CURRENT_SOURCE_DIR}/src/ppc ${CMAKE_CXX_FLAGS}")
++else()
++  set(TINYGETTEXT_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
++endif()
++
+ set(TINYGETTEXT_PREFIX ${CMAKE_BINARY_DIR}/tinygettext/)
+ ExternalProject_Add(tinygettext
+   SOURCE_DIR "${CMAKE_SOURCE_DIR}/external/tinygettext/"
+@@ -428,7 +440,7 @@ ExternalProject_Add(tinygettext
+   -DCMAKE_C_COMPILER=${CMAKE_C_COMPILER}
+   -DCMAKE_C_FLAGS=${CMAKE_C_FLAGS}
+   -DCMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}
+-  -DCMAKE_CXX_FLAGS=${CMAKE_CXX_FLAGS}
++  -DCMAKE_CXX_FLAGS=${TINYGETTEXT_CXX_FLAGS}
+   -DBUILD_SHARED_LIBS=OFF
+   -DHAVE_SDL=ON
+   -DVCPKG_BUILD=${VCPKG_BUILD}
+@@ -443,6 +455,7 @@ set_target_properties(tinygettext_lib PROPERTIES IMPORTED_LOCATION "${TINYGETTEX
+ 
+ include_directories(SYSTEM ${TINYGETTEXT_PREFIX}/include)
+ 
++
+ ## external/SDL_ttf with patches
+ find_package(Freetype REQUIRED)
+ find_package(RAQM)
+diff --git a/src/ppc/altivec.h b/src/ppc/altivec.h
+new file mode 100644
+index 0000000000..7ede8246ed
+--- /dev/null
++++ b/src/ppc/altivec.h
+@@ -0,0 +1,6 @@
++#include_next <altivec.h>
++
++// The altivec headers redefine vector and bool which conflict
++// with C++'s bool type and std::vector. Undefine them here.
++#undef vector
++#undef bool
