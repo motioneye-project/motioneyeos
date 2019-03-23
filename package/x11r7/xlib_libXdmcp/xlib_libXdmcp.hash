@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-March/002554.html
-sha256	81fe09867918fff258296e1e1e159f0dc639cb30d201c53519f25ab73af4e4e2	libXdmcp-1.1.2.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002974.html
+md5 115c5c12ecce0e749cd91d999a5fd160  libXdmcp-1.1.3.tar.bz2
+sha1 0a8f8a274f829331efb1e8e2027c38631b204dd0  libXdmcp-1.1.3.tar.bz2
+sha256 20523b44aaa513e17c009e873ad7bbc301507a3224c232610ce2e099011c6529  libXdmcp-1.1.3.tar.bz2
+sha512 cb1d4650f97d66e73acd2465ec7d757b9b797cce2f85e301860a44997a461837eea845ec9bd5b639ec5ca34c804f8bdd870697a5ce3f4e270b687c9ef74f25ec  libXdmcp-1.1.3.tar.bz2
+# Locally computed
+sha256 8a3c3f35b0dbcb60a4e242b9e4394a352a65bb27deb2938ea1e2e62a626e16e9  COPYING
