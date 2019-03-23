@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_PACKAGE_FFMPEG_FFSERVER
+	bool "ffmpeg ffserver removed"
+	select BR2_LEGACY
+	help
+	  On July 10th, 2016, ffserver program has been dropped.
+
 config BR2_PACKAGE_LIBUMP
 	bool "libump package removed"
 	select BR2_LEGACY

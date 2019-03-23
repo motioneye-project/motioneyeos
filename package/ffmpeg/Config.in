@@ -63,12 +63,6 @@ config BR2_PACKAGE_FFMPEG_FFPLAY
 comment "ffplay needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
 
-config BR2_PACKAGE_FFMPEG_FFSERVER
-	bool "Build ffserver"
-	depends on BR2_USE_MMU # fork()
-	help
-	  FFserver is a streaming server for both audio and video.
-
 config BR2_PACKAGE_FFMPEG_FFPROBE
 	bool "Build ffprobe"
 	help
