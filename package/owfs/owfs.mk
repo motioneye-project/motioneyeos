@@ -42,6 +42,20 @@ else
 OWFS_CONF_OPTS += --disable-owfs
 endif
 
+ifeq ($(BR2_PACKAGE_LIBFTDI1),y)
+OWFS_CONF_OPTS += \
+	--enable-ftdi \
+	--with-libftdi-config=$(STAGING_DIR)/usr/bin/libftdi1-config
+OWFS_DEPENDENCIES += libftdi1
+else ifeq ($(BR2_PACKAGE_LIBFTDI),y)
+OWFS_CONF_OPTS += \
+	--enable-ftdi \
+	--with-libftdi-config=$(STAGING_DIR)/usr/bin/libftdi-config
+OWFS_DEPENDENCIES += libftdi
+else
+OWFS_CONF_OPTS += --disable-ftdi
+endif
+
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
 OWFS_CONF_OPTS += --enable-usb
 OWFS_DEPENDENCIES += libusb
