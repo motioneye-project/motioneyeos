@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-MOARVM_VERSION = 2017.05
+MOARVM_VERSION = 2019.03
 MOARVM_SITE = http://moarvm.com/releases
 MOARVM_SOURCE = MoarVM-$(MOARVM_VERSION).tar.gz
 MOARVM_LICENSE = Artistic-2.0
 MOARVM_LICENSE_FILES = Artistic2.txt
 MOARVM_INSTALL_STAGING = YES
-MOARVM_DEPENDENCIES = host-lua host-pkgconf libuv libtommath libatomic_ops
+MOARVM_DEPENDENCIES = host-pkgconf libuv libtommath libatomic_ops
 
 MOARVM_CONF_OPTS = \
 	--build=$(GNU_HOST_NAME) \
@@ -20,7 +20,6 @@ MOARVM_CONF_OPTS = \
 	--ld="$(TARGET_CC)" \
 	--prefix="/usr" \
 	--pkgconfig=$(PKG_CONFIG_HOST_BINARY) \
-	--lua=$(HOST_DIR)/bin/lua \
 	--has-libuv \
 	--has-libtommath \
 	--has-libatomic
