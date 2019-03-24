@@ -1,3 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2014-September/002481.html
-sha1	2d3ae1839d841f568bc481c6116af7d2a9f9ba59				xtrans-1.3.5.tar.bz2
-sha256	adbd3b36932ce4c062cd10f57d78a156ba98d618bdb6f50664da327502bc8301	xtrans-1.3.5.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002980.html
+md5 ce2fb8100c6647ee81451ebe388b17ad  xtrans-1.4.0.tar.bz2
+sha1 7c490026efb450798e02b040c05eba5212291c08  xtrans-1.4.0.tar.bz2
+sha256 377c4491593c417946efcd2c7600d1e62639f7a8bbca391887e2c4679807d773  xtrans-1.4.0.tar.bz2
+sha512 4fea89a3455c0e13321cbefa43340016dbb59bdd0dbdb5b796c1a6d2a6b1fd63cf1327b769ab426286b9c54b32ec764a50cd2b46228e4e43b841bda6b94de214  xtrans-1.4.0.tar.bz2
+# Locally computed
+sha256 a9c96c832e00774266b492d4d41556f12a64f039ba3ef645c4b8c6010fcb8f2a  COPYING
