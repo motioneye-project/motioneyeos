@@ -9,7 +9,7 @@ OWFS_SITE = http://downloads.sourceforge.net/project/owfs/owfs/$(OWFS_VERSION)
 OWFS_DEPENDENCIES = host-pkgconf
 OWFS_CONF_OPTS = --disable-owperl --without-perl5 --disable-owtcl --without-tcl
 
-# 0001-configure.ac-check-for-localtime_r.patch touches configure.ac
+# We're patching configure.ac
 OWFS_AUTORECONF = YES
 
 # owtcl license is declared in module/ownet/c/src/include/ow_functions.h
