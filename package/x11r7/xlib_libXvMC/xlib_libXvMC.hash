@@ -1,2 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2016-October/002728.html
-sha256 e501a079b5dfaef0897c56152770c77e05e362065cec58910289aa567277ee2e  libXvMC-1.0.10.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002981.html
+md5 707175185a2e0490b8173686c657324f  libXvMC-1.0.11.tar.bz2
+sha1 9dbcb89c8adc7709b8a70ea0cde168f69d06859f  libXvMC-1.0.11.tar.bz2
+sha256 4a2e34d444a683a7c010b01b23cefe2b8043a063ce4dc6a9b855836b5262622d  libXvMC-1.0.11.tar.bz2
+sha512 4fe49e956ac97a45d851292cbba7bf242706aaf3bd9eb7ea4d2fc50e40745115d857a4fe179d2b87bc7cb6f9ac93911e89a167f02f6d1ae25a59df9a517a2476  libXvMC-1.0.11.tar.bz2
+# Locally computed
+sha256 b7c709df281675a07eb60a71c5fa2599d1ef538eb79ae7ad6e774b10e4a804c4  COPYING
