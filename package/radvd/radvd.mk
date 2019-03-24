@@ -4,8 +4,7 @@
 #
 ################################################################################
 
-RADVD_VERSION = 2.12
-RADVD_SOURCE = radvd-$(RADVD_VERSION).tar.xz
+RADVD_VERSION = 2.18
 RADVD_SITE = http://www.litech.org/radvd/dist
 RADVD_DEPENDENCIES = host-bison flex host-flex host-pkgconf
 # We need to ignore <linux/if_arp.h>, because radvd already includes
