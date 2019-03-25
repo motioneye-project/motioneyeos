@@ -1,4 +1,4 @@
 # From https://www.kernel.org/pub/software/libs/libgpiod/sha256sums.asc
-sha256 736d8b511ad247c2acb01b592f2bbe5e757e14e1d8347b2d80683081ab4b31b8  libgpiod-1.2.1.tar.xz
+sha256 6ec837f23e8f2196e5976dec4ac81403170830075e7f33ede1394eaf67f2e962  libgpiod-1.3.tar.xz
 # Hash for license file
 sha256 ce64d5f7b49ea6d80fdb6d4cdee6839d1a94274f7493dc797c3b55b65ec8e9ed  COPYING
