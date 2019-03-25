@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ODHCP6C_VERSION = 7533a6243dc3ac5a747cf6ccbc4d0539dafd3e07
+ODHCP6C_VERSION = d2e247d8d87ecf8c60fcf0acdad05667bd379521
 ODHCP6C_SITE = $(call github,sbyx,odhcp6c,$(ODHCP6C_VERSION))
 ODHCP6C_LICENSE = GPL-2.0
 ODHCP6C_LICENSE_FILES = COPYING
