@@ -158,7 +158,16 @@ function start() {
 
         audio_opts=""
         if [ -n "${AUDIO_DEV}" ]; then
-            audio_opts="alsasrc device=${AUDIO_DEV} ! audioresample ! audio/x-raw,rate=16000,channels=2 ! queue ! voaacenc ! rtpmp4gpay pt=97 name=pay1"
+            audio_bitrate=$(grep -e ^audio_bitrate ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            audio_channels=$(grep -e ^audio_channels ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            audio_extras=""
+            if [ -n "${audio_bitrate}" ]; then
+                audio_extras="${audio_extras},rate=${audio_bitrate}"
+            fi
+            if [ -n "${audio_channels}" ]; then
+                audio_extras="${audio_extras},channels=${audio_channels}"
+            fi
+            audio_opts="alsasrc device=${AUDIO_DEV} ! audioresample ! audio/x-raw${audio_extras} ! queue ! voaacenc ! rtpmp4gpay pt=97 name=pay1"
         fi
         video_path="/dev/video0"
         if [ -n "${VIDEO_DEV}" ]; then
