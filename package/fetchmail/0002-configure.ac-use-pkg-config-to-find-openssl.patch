@@ -42,7 +42,7 @@ index 16b0fcba..3a75ec6e 100644
 -  if test "$i" = "" ; then i="(none)" ; fi
 -  AC_MSG_RESULT($i)
 -  dnl XXX FIXME: use pkg-config if available!
-+  PKG_CHECK_MODULES([SSL],[libssl],[LIBS="$LIBS $SSL_LIBS"],[
++  PKG_CHECK_MODULES([SSL],[libssl libcrypto],[LIBS="$LIBS $SSL_LIBS"],[
 +    LDFLAGS="$LDFLAGS -L$with_ssl/lib"
 +    LIBS="$LIBS -lssl -lcrypto"
 +    dnl check if -ldl is needed
