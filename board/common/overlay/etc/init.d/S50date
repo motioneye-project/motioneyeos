@@ -35,10 +35,10 @@ set_current_date_http() {
     date_str=$(curl -v -s -m ${DATE_TIMEOUT} -X GET http://${DATE_HOST} 2>&1 | grep Date | sed -e 's/< Date: //')
     if [[ -n "${date_str}" ]]; then
         ${PROG_DATE} -u -D "%a, %d %b %Y %H:%M:%S" -s "${date_str}" > /dev/null
-        logger -t date -s "current system date/time set to $(date) via HTTP"
+        logger -t date "current system date/time set to $(date) via HTTP"
         return 0
     else
-        logger -t date -s "failed to set current system date/time via HTTP"
+        logger -t date "failed to set current system date/time via HTTP"
         return 1
     fi
 }
@@ -46,10 +46,10 @@ set_current_date_http() {
 set_current_date_ntp() {
     cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ${PROG_NTPDATE} -t ${DATE_TIMEOUT} -s
     if [[ $? == 0 ]]; then
-        logger -t date -s "current system date/time set to $(date) via NTP"
+        logger -t date "current system date/time set to $(date) via NTP"
         return 0
     else
-        logger -t date -s "failed to set current system date/time via NTP"
+        logger -t date "failed to set current system date/time via NTP"
         return 1
     fi
 }

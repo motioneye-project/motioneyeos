@@ -31,7 +31,7 @@ watch() {
     while true; do
         sleep 5
         if ! running; then
-            logger -t hostapd -s "dead, calling panic action"
+            logger -t hostapd "dead, calling panic action"
             panic_action hostapd
             break
         fi
