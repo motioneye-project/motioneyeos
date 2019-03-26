@@ -17,6 +17,7 @@ config BR2_TOOLCHAIN_EXTERNAL_LINARO_ARM
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_10
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 	select BR2_TOOLCHAIN_HAS_FORTRAN
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
 	  Linaro toolchain for the ARM architecture. It uses Linaro
 	  GCC 2018.05 (based on gcc 7.3.1), Linaro GDB 2018.05 (based on

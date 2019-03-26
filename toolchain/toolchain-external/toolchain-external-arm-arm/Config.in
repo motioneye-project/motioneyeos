@@ -17,6 +17,7 @@ config BR2_TOOLCHAIN_EXTERNAL_ARM_ARM
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
 	select BR2_TOOLCHAIN_HAS_FORTRAN
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
 	  Arm toolchain for the ARM architecture. It uses GCC 8.2.1,
 	  GDB 8.1.1, glibc 2.28, Binutils 2.30. It generates code that
