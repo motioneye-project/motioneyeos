@@ -1,0 +1,64 @@
+From d6f79741803dd31b34960dbc59999eb2482df9c1 Mon Sep 17 00:00:00 2001
+From: Victor Chong <victor.chong@linaro.org>
+Date: Fri, 22 Mar 2019 06:37:13 +0000
+Subject: [PATCH] libteec: fix clang build errors
+
+external/optee_client/libteec/src/tee_client_api.c:488:11: error: fields must have a constant size: 'variable length array in structure' extension will never be supported
+                uint8_t data[sizeof(struct tee_ioctl_open_session_arg) + p_sz];
+                        ^
+external/optee_client/libteec/src/tee_client_api.c:566:11: error: fields must have a constant size: 'variable length array in structure' extension will never be supported
+                uint8_t data[sizeof(struct tee_ioctl_invoke_arg) + p_sz];
+                        ^
+
+Fixes: 9dbc61b3 ("libteec: fix build warnings")
+Fixes: https://github.com/OP-TEE/optee_client/issues/152
+
+Signed-off-by: Victor Chong <victor.chong@linaro.org>
+Reviewed-by: Jens Wiklander <jens.wiklander@linaro.org>
+
+Upstream: https://github.com/OP-TEE/optee_client/commit/16c8f548786c70df04d3a1e61bf89abce9b92389
+[fix conflict]
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+---
+ libteec/src/tee_client_api.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
+
+diff --git a/libteec/src/tee_client_api.c b/libteec/src/tee_client_api.c
+index cf0b1f7..4d7b134 100644
+--- a/libteec/src/tee_client_api.c
++++ b/libteec/src/tee_client_api.c
+@@ -481,11 +481,12 @@ TEEC_Result TEEC_OpenSession(TEEC_Context *ctx, TEEC_Session *session,
+ 			uint32_t connection_method, const void *connection_data,
+ 			TEEC_Operation *operation, uint32_t *ret_origin)
+ {
+-	size_t p_sz = TEEC_CONFIG_PAYLOAD_REF_COUNT *
+-		      sizeof(struct tee_ioctl_param);
++	const size_t arg_size = sizeof(struct tee_ioctl_open_session_arg) +
++				TEEC_CONFIG_PAYLOAD_REF_COUNT *
++					sizeof(struct tee_ioctl_param);
+ 	union {
+ 		struct tee_ioctl_open_session_arg arg;
+-		uint8_t data[sizeof(struct tee_ioctl_open_session_arg) + p_sz];
++		uint8_t data[arg_size];
+ 	} buf;
+ 	struct tee_ioctl_buf_data buf_data;
+ 	struct tee_ioctl_open_session_arg *arg;
+@@ -559,11 +560,12 @@ void TEEC_CloseSession(TEEC_Session *session)
+ TEEC_Result TEEC_InvokeCommand(TEEC_Session *session, uint32_t cmd_id,
+ 			TEEC_Operation *operation, uint32_t *error_origin)
+ {
+-	size_t p_sz = TEEC_CONFIG_PAYLOAD_REF_COUNT *
+-			sizeof(struct tee_ioctl_param);
++	const size_t arg_size = sizeof(struct tee_ioctl_invoke_arg) +
++				TEEC_CONFIG_PAYLOAD_REF_COUNT *
++					sizeof(struct tee_ioctl_param);
+ 	union {
+ 		struct tee_ioctl_invoke_arg arg;
+-		uint8_t data[sizeof(struct tee_ioctl_invoke_arg) + p_sz];
++		uint8_t data[arg_size];
+ 	} buf;
+ 	struct tee_ioctl_buf_data buf_data;
+ 	struct tee_ioctl_invoke_arg *arg;
+-- 
+2.17.1
+

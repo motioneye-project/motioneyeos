@@ -1,6 +1,6 @@
-From 857ed6a900e2f16035a88e73e47d79e9251f6544 Mon Sep 17 00:00:00 2001
+From e2d82d46b33b693305978dfe64d84148314aef46 Mon Sep 17 00:00:00 2001
 From: Etienne Carriere <etienne.carriere@linaro.org>
-Date: Fri, 1 Mar 2019 12:31:48 +0100
+Date: Wed, 6 Mar 2019 11:46:07 +0100
 Subject: [PATCH] cmake: support BUILD_STATIC_LIBS/BUILD_SHARED_LIBS
 
 CMake variables BUILD_STATIC_LIBS and BUILD_SHARED_LIBS
@@ -11,6 +11,7 @@ embedded files with the expected linkage configuration.
 
 Reported-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+Acked-by: Jerome Forissier <jerome.forissier@linaro.org>
 ---
  libteec/CMakeLists.txt        | 5 +++--
  tee-supplicant/CMakeLists.txt | 2 +-
@@ -47,5 +48,5 @@ index d2d3afd..e663be9 100644
 -install (TARGETS ${PROJECT_NAME} DESTINATION ${CMAKE_INSTALL_SBINDIR})
 +install (TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_SBINDIR})
 -- 
-1.9.1
+2.17.1
 
