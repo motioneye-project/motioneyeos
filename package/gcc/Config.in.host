@@ -127,6 +127,7 @@ config BR2_GCC_ENABLE_LTO
 config BR2_GCC_ENABLE_OPENMP
 	bool "Enable compiler OpenMP support"
 	depends on !BR2_PTHREADS_NONE && !BR2_arc && !BR2_microblaze
+	select BR2_TOOLCHAIN_HAS_OPENMP
 	help
 	  Enable OpenMP support for the compiler
 
