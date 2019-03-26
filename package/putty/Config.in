@@ -2,7 +2,6 @@ config BR2_PACKAGE_PUTTY
 	bool "putty"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR
-	depends on !BR2_STATIC_LIBS
 	help
 	  PuTTY is a free SSH and Telnet client. Without GTK2
 	  activated, only the commandline tools plink, pscp, psftp,
@@ -11,6 +10,6 @@ config BR2_PACKAGE_PUTTY
 
 	  http://www.chiark.greenend.org.uk/~sgtatham/putty/
 
-comment "putty needs a toolchain w/ wchar, dynamic library"
+comment "putty needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || BR2_STATIC_LIBS
+	depends on !BR2_USE_WCHAR
