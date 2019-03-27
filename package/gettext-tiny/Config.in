@@ -1,0 +1,18 @@
+config BR2_PACKAGE_GETTEXT_TINY
+	bool
+	select BR2_PACKAGE_HAS_GETTEXT
+	help
+	  Stub and/or lightweight replacements of the gnu gettext
+	  suite; because the GNU one takes ages to compile.
+
+	  https://github.com/sabotage-linux/gettext-tiny
+
+if BR2_PACKAGE_GETTEXT_TINY
+
+config BR2_PACKAGE_PROVIDES_GETTEXT
+	default "gettext-tiny"
+
+endif
+
+config BR2_PACKAGE_PROVIDES_HOST_GETTEXT
+	default "host-gettext-tiny" if !BR2_SYSTEM_ENABLE_NLS

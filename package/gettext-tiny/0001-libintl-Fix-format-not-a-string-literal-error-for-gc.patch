@@ -1,0 +1,55 @@
+From 34f631ce80700aa1eaadc032026f12f86584bd8a Mon Sep 17 00:00:00 2001
+From: Vadim Kochan <vadim4j@gmail.com>
+Date: Mon, 31 Dec 2018 00:40:29 +0200
+Subject: [PATCH] gettext-tiny: Fix format not a string literal error
+
+Add 'format_arg' attribute for the functions which may return string
+as formatted parameter, otherwise it fails to compile on high versions
+of gcc.
+
+Signed-off-by: Vadim Kochan <vadim4j@gmail.com>
+---
+ include/libintl.h | 27 +++++++++++++++++++++------
+ 1 file changed, 21 insertions(+), 6 deletions(-)
+
+diff --git a/include/libintl.h b/include/libintl.h
+index b1af2b4..1883e1b 100644
+--- a/include/libintl.h
++++ b/include/libintl.h
+@@ -4,12 +4,27 @@
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+-char *gettext(const char *msgid);
+-char *dgettext(const char *domainname, const char *msgid);
+-char *dcgettext(const char *domainname, const char *msgid, int category);
+-char *ngettext(const char *msgid1, const char *msgid2, unsigned long n);
+-char *dngettext(const char *domainname, const char *msgid1, const char *msgid2, unsigned long n);
+-char *dcngettext(const char *domainname, const char *msgid1, const char *msgid2, unsigned long n, int category);
++/* _INTL_MAY_RETURN_STRING_ARG(n) declares that the given function may return
++ *    its n-th argument literally.  This enables GCC to warn for example about
++ *       printf (gettext ("foo %y")).  */
++#if defined __GNUC__ && __GNUC__ >= 3 && !(defined __APPLE_CC__ && __APPLE_CC__ > 1 && defined __cplusplus)
++# define _INTL_MAY_RETURN_STRING_ARG(n) __attribute__ ((__format_arg__ (n)))
++#else
++# define _INTL_MAY_RETURN_STRING_ARG(n)
++#endif
++
++char *gettext(const char *msgid)
++	_INTL_MAY_RETURN_STRING_ARG(1);
++char *dgettext(const char *domainname, const char *msgid)
++	_INTL_MAY_RETURN_STRING_ARG(2);
++char *dcgettext(const char *domainname, const char *msgid, int category)
++	_INTL_MAY_RETURN_STRING_ARG(2);
++char *ngettext(const char *msgid1, const char *msgid2, unsigned long n)
++	_INTL_MAY_RETURN_STRING_ARG(1) _INTL_MAY_RETURN_STRING_ARG(2);
++char *dngettext(const char *domainname, const char *msgid1, const char *msgid2, unsigned long n)
++	_INTL_MAY_RETURN_STRING_ARG(2) _INTL_MAY_RETURN_STRING_ARG(3);
++char *dcngettext(const char *domainname, const char *msgid1, const char *msgid2, unsigned long n, int category)
++	_INTL_MAY_RETURN_STRING_ARG(2) _INTL_MAY_RETURN_STRING_ARG(3);
+ 
+ char *textdomain(const char *domainname);
+ char *bind_textdomain_codeset(const char *domainname, const char *codeset);
+-- 
+2.14.1
+

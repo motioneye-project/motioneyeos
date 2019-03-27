@@ -1,10 +1,7 @@
 config BR2_PACKAGE_GETTEXT
 	bool "gettext"
-	depends on BR2_USE_WCHAR
-	select BR2_PACKAGE_GETTEXT_GNU
-
-comment "gettext needs a toolchain w/ wchar"
-	depends on !BR2_USE_WCHAR
+	select BR2_PACKAGE_GETTEXT_GNU if BR2_SYSTEM_ENABLE_NLS
+	select BR2_PACKAGE_GETTEXT_TINY if !BR2_SYSTEM_ENABLE_NLS
 
 config BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL
 	bool

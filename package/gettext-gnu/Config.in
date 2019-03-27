@@ -21,4 +21,4 @@ config BR2_PACKAGE_PROVIDES_GETTEXT
 endif
 
 config BR2_PACKAGE_PROVIDES_HOST_GETTEXT
-	default "host-gettext-gnu"
+	default "host-gettext-gnu" if BR2_SYSTEM_ENABLE_NLS
