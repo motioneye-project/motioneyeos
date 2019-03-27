@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SQLITE_VERSION = 3250300
+SQLITE_VERSION = 3270200
 SQLITE_SOURCE = sqlite-autoconf-$(SQLITE_VERSION).tar.gz
-SQLITE_SITE = https://www.sqlite.org/2018
+SQLITE_SITE = https://www.sqlite.org/2019
 SQLITE_LICENSE = Public domain
 SQLITE_LICENSE_FILES = tea/license.terms
 SQLITE_INSTALL_STAGING = YES
