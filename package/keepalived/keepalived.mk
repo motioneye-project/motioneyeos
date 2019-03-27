@@ -46,4 +46,11 @@ else
 KEEPALIVED_CONF_OPTS += --disable-libiptc
 endif
 
+ifeq ($(BR2_PACKAGE_LIBNFTNL),y)
+KEEPALIVED_DEPENDENCIES += libnftnl
+KEEPALIVED_CONF_OPTS += --enable-nftables
+else
+KEEPALIVED_CONF_OPTS += --disable-nftables
+endif
+
 $(eval $(autotools-package))
