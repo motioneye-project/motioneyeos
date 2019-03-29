@@ -25,4 +25,5 @@ class TestPerlClassLoad(TestPerlBase):
 
     def test_run(self):
         self.login()
+        self.module_test("Params::Util")
         self.module_test("Class::Load")
