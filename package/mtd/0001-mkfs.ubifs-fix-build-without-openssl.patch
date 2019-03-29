@@ -1,0 +1,38 @@
+From 451b6fd8f6b619ae75d283df02edd835c8e3c627 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Fri, 29 Mar 2019 13:29:41 +0300
+Subject: [PATCH] mkfs.ubifs: fix build without openssl
+
+Exclude openssl headers when WITH_CRYPTO is not defined.
+
+Fixes this build failure:
+
+In file included from ubifs-utils/mkfs.ubifs/mkfs.ubifs.c:25:0:
+ubifs-utils/mkfs.ubifs/mkfs.ubifs.h:49:10: fatal error: openssl/rand.h: No such file or directory
+ #include <openssl/rand.h>
+          ^~~~~~~~~~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: http://lists.infradead.org/pipermail/linux-mtd/2019-March/088508.html
+
+ ubifs-utils/mkfs.ubifs/mkfs.ubifs.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/ubifs-utils/mkfs.ubifs/mkfs.ubifs.h b/ubifs-utils/mkfs.ubifs/mkfs.ubifs.h
+index aa032392155b..8f0186043079 100644
+--- a/ubifs-utils/mkfs.ubifs/mkfs.ubifs.h
++++ b/ubifs-utils/mkfs.ubifs/mkfs.ubifs.h
+@@ -46,7 +46,9 @@
+ #include <uuid.h>
+ #include <sys/file.h>
+ 
++#ifdef WITH_CRYPTO
+ #include <openssl/rand.h>
++#endif
+ 
+ #include <mtd/ubifs-media.h>
+ 
+-- 
+2.20.1
+
