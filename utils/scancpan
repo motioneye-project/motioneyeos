@@ -845,6 +845,14 @@ while (my ($distname, $dist) = each %dist) {
         say {$fh} qq{};
         say {$fh} qq{    def test_run(self):};
         say {$fh} qq{        self.login()};
+        foreach my $dep (sort grep { $is_xs{$_} } @indirect) {
+            $dep =~ s|-|::|g;
+            say {$fh} qq{        self.module_test("${dep}")};
+        }
+        foreach my $dep (sort grep { $is_xs{$_} } @{$deps_runtime{$distname}}) {
+            $dep =~ s|-|::|g;
+            say {$fh} qq{        self.module_test("${dep}")};
+        }
         say {$fh} qq{        self.module_test("${modname}")};
         close $fh;
     }
