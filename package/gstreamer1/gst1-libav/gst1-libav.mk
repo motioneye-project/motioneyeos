@@ -35,10 +35,14 @@ GST1_LIBAV_CONF_EXTRA_OPTS += --disable-bzlib
 endif
 
 # Generic CPU setup for bundled ffmpeg
-ifneq ($(call qstrip,$(BR2_GCC_TARGET_CPU)),)
-GST1_LIBAV_CONF_EXTRA_OPTS += --cpu=$(BR2_GCC_TARGET_CPU)
-else ifneq ($(call qstrip,$(BR2_GCC_TARGET_ARCH)),)
-GST1_LIBAV_CONF_EXTRA_OPTS += --cpu=$(BR2_GCC_TARGET_ARCH)
+# Default to --cpu=generic for MIPS architecture, in order to avoid a
+# build failure on mips64r6.
+ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
+GST1_LIBAV_CONF_EXTRA_OPTS += --cpu=generic
+else ifneq ($(GCC_TARGET_CPU),)
+GST1_LIBAV_CONF_EXTRA_OPTS += --cpu=$(GCC_TARGET_CPU)
+else ifneq ($(GCC_TARGET_ARCH),)
+GST1_LIBAV_CONF_EXTRA_OPTS += --cpu=$(GCC_TARGET_ARCH)
 endif
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
