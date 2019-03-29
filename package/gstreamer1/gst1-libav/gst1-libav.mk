@@ -83,7 +83,7 @@ else
 GST1_LIBAV_CONF_EXTRA_OPTS += --disable-vfp
 endif
 
-ifeq ($(BR2_POWERPC_CPU_HASH_ALTIVEC),y)
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),y)
 GST1_LIBAV_CONF_EXTRA_OPTS += --enable-altivec
 else
 GST1_LIBAV_CONF_EXTRA_OPTS += --disable-altivec
