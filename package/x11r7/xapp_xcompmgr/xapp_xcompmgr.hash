@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2015-April/002568.html
-sha256	c8049b1a2531313be7469ba9b198d334f0b91cc01efc2b20b9afcb117e4d6892	xcompmgr-1.1.7.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002989.html
+md5 ef8c7d4140c11efb8de4141b3968208c  xcompmgr-1.1.8.tar.bz2
+sha1 7bb28329b4bb687763df2d2c1723cb6ecb20945a  xcompmgr-1.1.8.tar.bz2
+sha256 0b89daf4f060fa3fa83cca862c45d531fef7121b5d06552c1d73d396ad9a7243  xcompmgr-1.1.8.tar.bz2
+sha512 ccf29426ffb0797a53653d1ce152de5eee0cec284811fed4b8e634ea0d948180531e4619d96f47e4f9594432c57322624fe0fdaee2c9200efac427fc0904953d  xcompmgr-1.1.8.tar.bz2
+# Locally computed
+sha256 c843545f72771b3ff95eb88defc2e3ed8f9a1802d9bb6c32c196bb5eec3d3a5d  COPYING
