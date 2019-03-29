@@ -21,6 +21,12 @@ endif
 ifeq ($(BR2_PACKAGE_MTD_UBIFS_UTILS),y)
 MTD_DEPENDENCIES += util-linux zlib lzo host-pkgconf
 MTD_CONF_OPTS += --with-ubifs
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+MTD_DEPENDENCIES += openssl
+MTD_CONF_OPTS += --with-crypto
+else
+MTD_CONF_OPTS += --without-crypto
+endif
 else
 MTD_CONF_OPTS += --without-ubifs
 endif
