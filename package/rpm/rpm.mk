@@ -25,7 +25,6 @@ RPM_CONF_OPTS = \
 	--disable-rpath \
 	--with-external-db \
 	--with-gnu-ld \
-	--without-cap \
 	--without-hackingdocs \
 	--without-lua
 
@@ -34,6 +33,13 @@ RPM_DEPENDENCIES += acl
 RPM_CONF_OPTS += --with-acl
 else
 RPM_CONF_OPTS += --without-acl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBCAP),y)
+RPM_DEPENDENCIES += libcap
+RPM_CONF_OPTS += --with-cap
+else
+RPM_CONF_OPTS += --without-cap
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNSS),y)
