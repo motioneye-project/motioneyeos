@@ -1,0 +1,42 @@
+From aaabed350ec51f7bb9a07290ffb3ce6e794c8f22 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Tue, 19 Mar 2019 23:01:50 +0100
+Subject: [PATCH] tools/Makefile: build host tools with -std=gnu99
+
+Parts of the code are using C99 constructs (such as variables declared
+inside loops), but also GNU extensions (such as typeof), so using
+-std=gnu99 is necessary to build with older versions of gcc that don't
+default to building with gnu99.
+
+It fixes the following build failure:
+
+./tools/../lib/crc16.c: In function "crc16_ccitt":
+./tools/../lib/crc16.c:70:2: error: "for" loop initial declarations are only allowed in C99 mode
+  for (int i = 0;  i < len;  i++)
+  ^
+./tools/../lib/crc16.c:70:2: note: use option -std=c99 or -std=gnu99 to compile your code
+
+when building the host tools with gcc 4.7.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ tools/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/tools/Makefile b/tools/Makefile
+index 081383d7a7..d377d85f74 100644
+--- a/tools/Makefile
++++ b/tools/Makefile
+@@ -254,7 +254,8 @@ HOST_EXTRACFLAGS += -include $(srctree)/include/compiler.h \
+ 		-I$(srctree)/tools \
+ 		-DUSE_HOSTCC \
+ 		-D__KERNEL_STRICT_NAMES \
+-		-D_GNU_SOURCE
++		-D_GNU_SOURCE \
++		-std=gnu99
+ 
+ __build:	$(LOGO-y)
+ 
+-- 
+2.20.1
+
