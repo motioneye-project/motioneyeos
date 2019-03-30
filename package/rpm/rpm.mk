@@ -35,6 +35,13 @@ else
 RPM_CONF_OPTS += --without-acl
 endif
 
+ifeq ($(BR2_PACKAGE_DBUS),y)
+RPM_DEPENDENCIES += dbus
+RPM_CONF_OPTS += --enable-plugins
+else
+RPM_CONF_OPTS += --disable-plugins
+endif
+
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 RPM_DEPENDENCIES += libcap
 RPM_CONF_OPTS += --with-cap
