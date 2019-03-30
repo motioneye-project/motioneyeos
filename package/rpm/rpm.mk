@@ -53,10 +53,13 @@ ifeq ($(BR2_PACKAGE_LIBNSS),y)
 RPM_DEPENDENCIES += libnss
 RPM_CONF_OPTS += --with-crypto=nss
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/nss -I$(STAGING_DIR)/usr/include/nspr
-else
+else ifeq ($(BR2_PACKAGE_BEECRYPT),y)
 RPM_DEPENDENCIES += beecrypt
 RPM_CONF_OPTS += --with-crypto=beecrypt
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/beecrypt
+else
+RPM_DEPENDENCIES += openssl
+RPM_CONF_OPTS += --with-crypto=openssl
 endif
 
 ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
