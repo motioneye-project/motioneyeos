@@ -92,6 +92,13 @@ ifeq ($(BR2_PACKAGE_BINUTILS),y)
 RPM_DEPENDENCIES += binutils
 endif
 
+ifeq ($(BR2_PACKAGE_ZSTD),y)
+RPM_DEPENDENCIES += zstd
+RPM_CONF_OPTS += --enable-zstd
+else
+RPM_CONF_OPTS += --disable-zstd
+endif
+
 # ac_cv_prog_cc_c99: RPM uses non-standard GCC extensions (ex. `asm`).
 RPM_CONF_ENV = \
 	ac_cv_prog_cc_c99='-std=gnu99' \
