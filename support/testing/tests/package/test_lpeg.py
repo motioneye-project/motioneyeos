@@ -10,7 +10,8 @@ class TestLuaLPeg(TestLuaBase):
 
     def test_run(self):
         self.login()
-        self.module_test("lpeg", script="print(require[[lpeg]].version())")
+        self.module_test("lpeg")
+        self.module_test("re")
 
 
 class TestLuajitLPeg(TestLuaBase):
@@ -22,4 +23,5 @@ class TestLuajitLPeg(TestLuaBase):
 
     def test_run(self):
         self.login()
-        self.module_test("lpeg", script="print(require[[lpeg]].version())")
+        self.module_test("lpeg")
+        self.module_test("re")

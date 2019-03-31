@@ -11,6 +11,7 @@ class TestLuaLuacURL(TestLuaBase):
     def test_run(self):
         self.login()
         self.module_test("cURL")
+        self.module_test("lcurl")
 
 
 class TestLuajitLuacURL(TestLuaBase):
@@ -23,3 +24,4 @@ class TestLuajitLuacURL(TestLuaBase):
     def test_run(self):
         self.login()
         self.module_test("cURL")
+        self.module_test("lcurl")

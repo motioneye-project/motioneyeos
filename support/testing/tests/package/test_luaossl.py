@@ -11,6 +11,7 @@ class TestLuaLuaossl(TestLuaBase):
     def test_run(self):
         self.login()
         self.module_test("openssl")
+        self.module_test("_openssl")
 
 
 class TestLuajitLuaossl(TestLuaBase):
@@ -23,3 +24,4 @@ class TestLuajitLuaossl(TestLuaBase):
     def test_run(self):
         self.login()
         self.module_test("openssl")
+        self.module_test("_openssl")

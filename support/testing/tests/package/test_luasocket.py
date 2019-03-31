@@ -10,6 +10,8 @@ class TestLuaLuaSocket(TestLuaBase):
 
     def test_run(self):
         self.login()
+        self.module_test("ltn12")
+        self.module_test("mime")
         self.module_test("socket")
 
 
@@ -22,4 +24,6 @@ class TestLuajitLuaSocket(TestLuaBase):
 
     def test_run(self):
         self.login()
+        self.module_test("ltn12")
+        self.module_test("mime")
         self.module_test("socket")
