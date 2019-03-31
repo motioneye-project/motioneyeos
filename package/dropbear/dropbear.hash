@@ -1,5 +1,5 @@
 # From https://matt.ucc.asn.au/dropbear/releases/SHA256SUM.asc
-sha256 d91f78ebe633be1d071fd1b7e5535b9693794048b019e9f4bea257e1992b458d dropbear-2019.77.tar.bz2
+sha256 525965971272270995364a0eb01f35180d793182e63dd0b0c3eb0292291644a4 dropbear-2019.78.tar.bz2
 
 # License file, locally computed
 sha256 cfa32d49e9022265375e533a4a5ef9e37d4aaa604119d612c46816aa1e59fe52 LICENSE
