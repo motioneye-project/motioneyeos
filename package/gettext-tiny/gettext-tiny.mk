@@ -9,7 +9,6 @@ GETTEXT_TINY_SITE = $(call github,sabotage-linux,gettext-tiny,$(GETTEXT_TINY_VER
 GETTEXT_TINY_LICENSE = MIT, GPL-3.0+ (extra gettext)
 GETTEXT_TINY_INSTALL_STAGING = YES
 GETTEXT_TINY_LICENSE_FILES = LICENSE extra/COPYING
-GETTEXT_TINY_OPTS = LIBINTL=NOOP
 
 GETTEXT_TINY_PROVIDES = gettext
 
@@ -56,7 +55,8 @@ endif
 define HOST_GETTEXT_TINY_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(HOST_CONFIGURE_OPTS) \
-		$(GETTEXT_TINY_OPTS)
+		CFLAGS="$(HOST_CFLAGS) -fPIC" \
+		LIBINTL=NOOP
 
 	cp $(@D)/extra/gettextize.in $(@D)/gettextize
 
