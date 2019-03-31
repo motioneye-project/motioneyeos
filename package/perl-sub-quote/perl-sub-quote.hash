@@ -1,6 +1,4 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    1b0f288ca8c60243f9bc29cfee4c4986 Sub-Quote-2.005001.tar.gz
-sha256 d6ab4f0775def015367a05e02024b403f991b2be11d774f3d235fe7e9bdbba07 Sub-Quote-2.005001.tar.gz
-
-# computed by scancpan
-sha256 8f7a1d60c718174b7752562007b2643d4a1c23f901cbeb7774015805efe0a817 README
+md5    ca8ed234f10b822d18b1bfb9734797a7 Sub-Quote-2.006003.tar.gz
+sha256 be1f3a6f773f351f203cdc8f614803ac492b77d15fd68d5b1f0cd3884be18176 Sub-Quote-2.006003.tar.gz
+sha256 de2ee5cbd65702755c9d0351cc2aa1850a25ae64fdbc6da2f01c24cdcb5b1b03 README
