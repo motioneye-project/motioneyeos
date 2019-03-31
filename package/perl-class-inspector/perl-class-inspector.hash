@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    db471d6ecf47fa054726553319b7c34f Class-Inspector-1.32.tar.gz
-sha256 cefadc8b5338e43e570bc43f583e7c98d535c17b196bcf9084bb41d561cc0535 Class-Inspector-1.32.tar.gz
+md5    657ec026aae1b28ee9368849fea8be75 Class-Inspector-1.34.tar.gz
+sha256 fe9a86dcb3ccc7a99d6865e6b674a14d20164f76bd84f2eb43aafcc6bf1cf0d8 Class-Inspector-1.34.tar.gz
 
 # computed by scancpan
-sha256 3ed0185f73a0570b72a2dc95c6bde500dc800c6f778ccbd688df4f88e6e65232 LICENSE
+sha256 401fe9c98bdb5707df71447fb93141f8cb2d85337d45505f5ae50a776a3f6666 LICENSE
