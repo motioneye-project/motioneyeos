@@ -16,4 +16,4 @@ HOST_SCONS_INSTALL_OPTS = \
 $(eval $(host-python-package))
 
 # variables used by other packages
-SCONS = $(HOST_DIR)/bin/python $(HOST_DIR)/bin/scons $(if $(QUIET),-s)
+SCONS = $(HOST_DIR)/bin/scons $(if $(QUIET),-s)

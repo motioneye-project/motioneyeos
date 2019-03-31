@@ -11,7 +11,7 @@ ALLJOYN_BASE_SITE = \
 # See https://allseenalliance.org/alliance/ip-policy
 ALLJOYN_BASE_LICENSE = ISC
 
-ALLJOYN_BASE_DEPENDENCIES = host-scons alljoyn openssl
+ALLJOYN_BASE_DEPENDENCIES = host-python host-scons alljoyn openssl
 ALLJOYN_BASE_INSTALL_STAGING = YES
 
 ALLJOYN_BASE_CRYPTO = openssl
@@ -68,7 +68,7 @@ endif
 
 define ALLJOYN_BASE_BUILD_CMDS
 	$(foreach target,$(ALLJOYN_BASE_TARGETS),\
-		cd $(@D)/$(target); $(SCONS) $(ALLJOYN_BASE_SCONS_OPTS)
+		cd $(@D)/$(target); $(HOST_DIR)/bin/python2 $(SCONS) $(ALLJOYN_BASE_SCONS_OPTS)
 	)
 endef
 

@@ -12,7 +12,7 @@ ALLJOYN_TCL_SITE = \
 # See https://allseenalliance.org/alliance/ip-policy
 ALLJOYN_TCL_LICENSE = ISC
 
-ALLJOYN_TCL_DEPENDENCIES = host-scons
+ALLJOYN_TCL_DEPENDENCIES = host-python host-scons
 ALLJOYN_TCL_INSTALL_STAGING = YES
 
 # AllJoyn Thin Core can be compiled in debug or release mode. By default,
@@ -27,7 +27,7 @@ ALLJOYN_TCL_SCONS_OPTS = \
 	CXX="$(TARGET_CXX)"
 
 define ALLJOYN_TCL_BUILD_CMDS
-	cd $(@D); $(SCONS) $(ALLJOYN_TCL_SCONS_OPTS)
+	cd $(@D); $(HOST_DIR)/bin/python2 $(SCONS) $(ALLJOYN_TCL_SCONS_OPTS)
 endef
 
 define ALLJOYN_TCL_INSTALL_STAGING_CMDS
