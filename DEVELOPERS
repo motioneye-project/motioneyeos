@@ -824,6 +824,7 @@ F:	package/mongodb/
 F:	package/motion/
 F:	package/mutt/
 F:	package/ncmpc/
+F:	package/oniguruma/
 F:	package/oprofile/
 F:	package/pcmanfm/
 F:	package/rygel/

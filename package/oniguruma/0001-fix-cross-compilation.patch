@@ -1,0 +1,61 @@
+From 39619b1c04640375b2fc2c29991137b741a47976 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 20 Mar 2019 20:33:11 +0100
+Subject: [PATCH] fix cross-compilation
+
+Don't add -I$(includedir) to CPPFLAGS or cross-compilation will fail on:
+
+libtool: compile: /home/fabrice/buildroot/output/host/bin/m68k-linux-gcc -DHAVE_CONFIG_H -I. -I.. -I/usr/include -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE
+-D_FILE_OFFSET_BITS=64 -Wall -D_LARGEFILE_SOURCE -D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -Os -fno-dwarf2-cfi-asm -Wl,-elf2flt -c regparse.c -o regparse.o
+m68k-linux-gcc: ERROR: unsafe header/library path used in cross-compilation: '-I/usr/include'
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/kkos/oniguruma/pull/137]
+---
+ sample/Makefile.am | 2 +-
+ src/Makefile.am    | 2 +-
+ test/Makefile.am   | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/sample/Makefile.am b/sample/Makefile.am
+index fd809fa..320afcf 100644
+--- a/sample/Makefile.am
++++ b/sample/Makefile.am
+@@ -4,7 +4,7 @@ lib_onig = ../src/libonig.la
+ LDADD  = $(lib_onig)
+ 
+ AM_LDFLAGS  = -L$(prefix)/lib
+-AM_CPPFLAGS = -I$(top_srcdir)/src -I$(includedir)
++AM_CPPFLAGS = -I$(top_srcdir)/src
+ 
+ TESTS = encode listcap names posix simple sql syntax user_property callout echo count bug_fix
+ 
+diff --git a/src/Makefile.am b/src/Makefile.am
+index ba7807a..1330620 100644
+--- a/src/Makefile.am
++++ b/src/Makefile.am
+@@ -2,7 +2,7 @@
+ libname = libonig.la
+ 
+ AM_CFLAGS = -Wall
+-AM_CPPFLAGS = -I$(top_srcdir) -I$(includedir)
++AM_CPPFLAGS = -I$(top_srcdir)
+ 
+ include_HEADERS = oniguruma.h oniggnu.h
+ 
+diff --git a/test/Makefile.am b/test/Makefile.am
+index c623aa3..67b5d1e 100644
+--- a/test/Makefile.am
++++ b/test/Makefile.am
+@@ -3,7 +3,7 @@ lib_onig = ../src/libonig.la
+ 
+ AM_LDFLAGS  = -L$(prefix)/lib
+ AM_CFLAGS = -Wall -Wno-invalid-source-encoding
+-AM_CPPFLAGS = -I$(top_srcdir)/src -I$(includedir)
++AM_CPPFLAGS = -I$(top_srcdir)/src
+ 
+ if ENABLE_POSIX_API
+ TESTS = test_utf8 testc testp testcu
+-- 
+2.14.1
+
