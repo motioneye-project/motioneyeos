@@ -16,7 +16,7 @@ define LUA_GD_BUILD_CMDS
 	$(MAKE) -C $(@D) gd.so \
 		GDLIBCONFIG="$(STAGING_DIR)/usr/bin/gdlib-config" \
 		CC=$(TARGET_CC) \
-		CFLAGS="$(TARGET_CFLAGS) -DVERSION=\\\"$(GD_VERSION)r3\\\"" \
+		CFLAGS="$(TARGET_CFLAGS) -fPIC -DVERSION=\\\"$(GD_VERSION)r3\\\"" \
 		LFLAGS="-shared -lgd"
 endef
 
