@@ -12,6 +12,7 @@ RPM_DEPENDENCIES = \
 	host-pkgconf \
 	berkeleydb \
 	$(if $(BR2_PACKAGE_BZIP2),bzip2) \
+	$(if $(BR2_PACKAGE_ELFUTILS),elfutils) \
 	file \
 	popt \
 	$(if $(BR2_PACKAGE_XZ),xz) \
@@ -80,16 +81,6 @@ RPM_DEPENDENCIES += libselinux
 RPM_CONF_OPTS += --with-selinux
 else
 RPM_CONF_OPTS += --without-selinux
-endif
-
-# For the elfutils and binutils dependencies, there are no
-# configuration options to explicitly enable/disable them.
-ifeq ($(BR2_PACKAGE_ELFUTILS),y)
-RPM_DEPENDENCIES += elfutils
-endif
-
-ifeq ($(BR2_PACKAGE_BINUTILS),y)
-RPM_DEPENDENCIES += binutils
 endif
 
 ifeq ($(BR2_PACKAGE_ZSTD),y)
