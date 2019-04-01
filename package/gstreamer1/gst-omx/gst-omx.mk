@@ -11,8 +11,6 @@ GST_OMX_SITE = https://gstreamer.freedesktop.org/src/gst-omx
 GST_OMX_LICENSE = LGPL-2.1
 GST_OMX_LICENSE_FILES = COPYING
 
-GST_OMX_VARIANT = generic
-
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 GST_OMX_VARIANT = rpi
 GST_OMX_CONF_ENV = \
@@ -20,9 +18,7 @@ GST_OMX_CONF_ENV = \
 		-I$(STAGING_DIR)/usr/include/IL \
 		-I$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
 		-I$(STAGING_DIR)/usr/include/interface/vmcs_host/linux"
-endif
-
-ifeq ($(BR2_PACKAGE_BELLAGIO),y)
+else ifeq ($(BR2_PACKAGE_BELLAGIO),y)
 GST_OMX_VARIANT = bellagio
 GST_OMX_CONF_ENV = \
 	CFLAGS="$(TARGET_CFLAGS) \
@@ -30,6 +26,8 @@ GST_OMX_CONF_ENV = \
 		-DOMX_VERSION_MINOR=1 \
 		-DOMX_VERSION_REVISION=2 \
 		-DOMX_VERSION_STEP=0"
+else
+GST_OMX_VARIANT = generic
 endif
 
 GST_OMX_CONF_OPTS += --with-omx-target=$(GST_OMX_VARIANT)
