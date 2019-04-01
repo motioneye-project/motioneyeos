@@ -11,9 +11,10 @@ GST_OMX_SITE = https://gstreamer.freedesktop.org/src/gst-omx
 GST_OMX_LICENSE = LGPL-2.1
 GST_OMX_LICENSE_FILES = COPYING
 
+GST_OMX_VARIANT = generic
+
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-GST_OMX_CONF_OPTS = \
-	--with-omx-target=rpi
+GST_OMX_VARIANT = rpi
 GST_OMX_CONF_ENV = \
 	CFLAGS="$(TARGET_CFLAGS) \
 		-I$(STAGING_DIR)/usr/include/IL \
@@ -22,8 +23,7 @@ GST_OMX_CONF_ENV = \
 endif
 
 ifeq ($(BR2_PACKAGE_BELLAGIO),y)
-GST_OMX_CONF_OPTS = \
-	--with-omx-target=bellagio
+GST_OMX_VARIANT = bellagio
 GST_OMX_CONF_ENV = \
 	CFLAGS="$(TARGET_CFLAGS) \
 		-DOMX_VERSION_MAJOR=1 \
@@ -31,6 +31,8 @@ GST_OMX_CONF_ENV = \
 		-DOMX_VERSION_REVISION=2 \
 		-DOMX_VERSION_STEP=0"
 endif
+
+GST_OMX_CONF_OPTS += --with-omx-target=$(GST_OMX_VARIANT)
 
 GST_OMX_DEPENDENCIES = gstreamer1 gst1-plugins-base libopenmax
 
