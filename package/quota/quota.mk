@@ -13,7 +13,7 @@ QUOTA_LIBS = $(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_DBUS)$(BR2_PACKAGE_LIBNL),yy)
 QUOTA_DEPENDENCIES += host-pkgconf dbus libnl
-QUOTA_CONF_OTS += --enable-netlink
+QUOTA_CONF_OPTS += --enable-netlink
 else
 QUOTA_CONF_OPTS += --disable-netlink
 endif
