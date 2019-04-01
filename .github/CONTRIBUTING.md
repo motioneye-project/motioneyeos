@@ -15,7 +15,6 @@ If your issue hasn't been reported yet, [report it yourself](https://github.com/
 If you're using motionEye on a Linux distro rather than motionEyeOS, please switch over to [motionEye's issue tracker](https://github.com/ccrisan/motioneye/issues/).
 
 ##### Version And Hardware
-
 Please clearly specify what OS version you are running and on what board. It is also important to know what types of cameras you have attached to your motionEyeOS system.
 
 ##### Attach Log Files
