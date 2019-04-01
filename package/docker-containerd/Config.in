@@ -14,7 +14,7 @@ config BR2_PACKAGE_DOCKER_CONTAINERD
 	help
 	  containerd is a daemon to control runC.
 
-	  https://github.com/docker/containerd
+	  https://containerd.io/
 
 if BR2_PACKAGE_DOCKER_CONTAINERD
 
