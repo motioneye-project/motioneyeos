@@ -29,6 +29,13 @@ ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 QUOTA_DEPENDENCIES += libtirpc host-pkgconf
 endif
 
+ifeq ($(BR2_PACKAGE_OPENLDAP):$(BR2_STATIC_LIBS),y:)
+QUOTA_DEPENDENCIES += openldap
+QUOTA_CONF_OPTS += --enable-ldapmail
+else
+QUOTA_CONF_OPTS += --disable-ldapmail
+endif
+
 QUOTA_CONF_ENV = LIBS="$(QUOTA_LIBS)"
 
 $(eval $(autotools-package))
