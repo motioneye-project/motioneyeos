@@ -1,5 +1,5 @@
 # Locally calculated after checking pgp signature
-sha256	5e84f81d8dd527ea74f39b6bc001c874c02bad6871d7a9b0c14efb57430eafe3	fuse-2.9.8.tar.gz
+sha256	d0e69d5d608cc22ff4843791ad097f554dd32540ddc9bed7638cc6fea7c1b4b5	fuse-2.9.9.tar.gz
 
 # Hash for license files:
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING
