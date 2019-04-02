@@ -138,6 +138,7 @@ menu "Debugging, profiling and benchmark"
 endmenu
 
 menu "Development tools"
+	source "package/bats-core/Config.in"
 	source "package/binutils/Config.in"
 	source "package/bsdiff/Config.in"
 	source "package/bustle/Config.in"

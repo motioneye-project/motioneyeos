@@ -1715,6 +1715,7 @@ F:	configs/orangepi_pc_defconfig
 F:	configs/pandaboard_defconfig
 F:	configs/roseapplepi_defconfig
 F:	configs/sheevaplug_defconfig
+F:	package/bats-core/
 F:	package/docker-compose/
 F:	package/dump1090/
 F:	package/flickcurl/
