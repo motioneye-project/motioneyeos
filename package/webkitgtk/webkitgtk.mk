@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-WEBKITGTK_VERSION = 2.22.6
-WEBKITGTK_SITE = http://www.webkitgtk.org/releases
+WEBKITGTK_VERSION = 2.22.7
+WEBKITGTK_SITE = https://www.webkitgtk.org/releases
 WEBKITGTK_SOURCE = webkitgtk-$(WEBKITGTK_VERSION).tar.xz
 WEBKITGTK_INSTALL_STAGING = YES
 WEBKITGTK_LICENSE = LGPL-2.1+, BSD-2-Clause
