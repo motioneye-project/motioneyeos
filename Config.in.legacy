@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_PACKAGE_LUNIT
+	bool "lunit package removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_LUA_LUNITX
+	help
+	  The lunit package was removed in favor of its fork lunitx,
+	  which supports all versions of Lua.
+
 config BR2_PACKAGE_FFMPEG_FFSERVER
 	bool "ffmpeg ffserver removed"
 	select BR2_LEGACY
