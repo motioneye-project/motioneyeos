@@ -863,7 +863,6 @@ F:	package/lpty/
 F:	package/lrandom/
 F:	package/lsqlite3/
 F:	package/lua*
-F:	package/lunit/
 F:	package/lzlib/
 F:	package/moarvm/
 F:	package/netsurf/
