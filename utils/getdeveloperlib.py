@@ -1,7 +1,9 @@
+from __future__ import print_function
 import os
 import re
 import glob
 import subprocess
+import sys
 
 #
 # Patch parsing functions
@@ -167,13 +169,15 @@ def parse_developers(basepath=None):
                 continue
             elif line.startswith("N:"):
                 if name is not None or len(files) != 0:
-                    print("Syntax error in DEVELOPERS file, line %d" % linen)
+                    print("Syntax error in DEVELOPERS file, line %d" % linen,
+                          file=sys.stderr)
                 name = line[2:].strip()
             elif line.startswith("F:"):
                 fname = line[2:].strip()
                 dev_files = glob.glob(os.path.join(basepath, fname))
                 if len(dev_files) == 0:
-                    print("WARNING: '%s' doesn't match any file" % fname)
+                    print("WARNING: '%s' doesn't match any file" % fname,
+                          file=sys.stderr)
                 files += dev_files
             elif line == "":
                 if not name:
@@ -182,7 +186,8 @@ def parse_developers(basepath=None):
                 files = []
                 name = None
             else:
-                print("Syntax error in DEVELOPERS file, line %d: '%s'" % (linen, line))
+                print("Syntax error in DEVELOPERS file, line %d: '%s'" % (linen, line),
+                      file=sys.stderr)
                 return None
             linen += 1
     # handle last developer
