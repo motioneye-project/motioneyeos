@@ -61,8 +61,6 @@ HOST_GUTENPRINT_CONF_OPTS = \
 	--disable-samples \
 	--without-gimp2 \
 	--without-doc \
-	--disable-nls \
-	--disable-nls-macos \
 	--without-foomatic \
 	--without-foomatic3 \
 	--disable-escputil \

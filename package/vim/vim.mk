@@ -86,8 +86,7 @@ HOST_VIM_CONF_OPTS = \
 	--without-x \
 	--disable-acl \
 	--disable-gpm \
-	--disable-selinux \
-	--disable-nls
+	--disable-selinux
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
