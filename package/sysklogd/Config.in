@@ -5,4 +5,4 @@ config BR2_PACKAGE_SYSKLOGD
 	help
 	  System log daemons syslogd and klogd.
 
-	  http://www.infodrom.org/projects/sysklogd/
+	  https://github.com/troglobit/sysklogd/
