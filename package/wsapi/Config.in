@@ -1,6 +1,6 @@
 config BR2_PACKAGE_WSAPI
 	bool "wsapi"
-	select BR2_PACKAGE_COXPCALL # runtime
+	select BR2_PACKAGE_COXPCALL if BR2_PACKAGE_LUA_5_1 # runtime
 	select BR2_PACKAGE_LUAFILESYSTEM # runtime
 	select BR2_PACKAGE_RINGS # runtime
 	help
