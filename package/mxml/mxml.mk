@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-MXML_VERSION = 2.10
-MXML_SITE = https://github.com/michaelrsweet/mxml/releases/download/release-$(MXML_VERSION)
-MXML_LICENSE = LGPL-2.0+ with exceptions
-MXML_LICENSE_FILES = COPYING
+MXML_VERSION = 3.0
+MXML_SITE = https://github.com/michaelrsweet/mxml/releases/download/v$(MXML_VERSION)
+MXML_LICENSE = Apache-2.0 with exceptions
+MXML_LICENSE_FILES = LICENSE NOTICE
 MXML_INSTALL_STAGING = YES
 
 MXML_INSTALL_STAGING_OPTS = DSTROOT=$(STAGING_DIR) install
