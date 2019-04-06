@@ -27,6 +27,14 @@ config BR2_PACKAGE_SQUEEZELITE_FFMPEG
 config BR2_PACKAGE_SQUEEZELITE_DSD
 	bool "Enable DSD decoding"
 
+config BR2_PACKAGE_SQUEEZELITE_LIRC
+	bool "Enable lirc support"
+	depends on BR2_INSTALL_LIBSTDCPP
+	select BR2_PACKAGE_LIRC_TOOLS
+
+comment "lirc support needs a toolchain with C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+
 config BR2_PACKAGE_SQUEEZELITE_RESAMPLE
 	bool "Enable resampling support"
 	select BR2_PACKAGE_LIBSOXR
