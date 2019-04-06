@@ -14,7 +14,7 @@ config BR2_PACKAGE_SQUEEZELITE
 	help
 	  Logitech Media Server client
 
-	  https://code.google.com/p/squeezelite/
+	  https://github.com/ralph-irving/squeezelite/
 
 if BR2_PACKAGE_SQUEEZELITE
 
