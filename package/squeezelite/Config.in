@@ -9,7 +9,6 @@ config BR2_PACKAGE_SQUEEZELITE
 	select BR2_PACKAGE_FLAC
 	select BR2_PACKAGE_LIBMAD
 	select BR2_PACKAGE_LIBVORBIS
-	select BR2_PACKAGE_FAAD2
 	select BR2_PACKAGE_MPG123
 	help
 	  Logitech Media Server client
