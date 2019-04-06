@@ -1,2 +1,5 @@
-# From http://www.sane-project.org/sane-md5sums.txt
-md5 f9ed5405b3c12f07c6ca51ee60225fe7  sane-backends-1.0.25.tar.gz
+# From https://gitlab.com/sane-project/backends/tags/RELEASE_1_0_27
+sha256 293747bf37275c424ebb2c833f8588601a60b2f9653945d5a3194875355e36c9  sane-backends-1.0.27.tar.gz
+
+# Hash for license file
+sha256 dcc100d4161cc0b7177545ab6e47216f84857cda3843847c792a25289852dcaa  COPYING
