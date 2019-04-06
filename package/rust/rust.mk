@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RUST_VERSION = 1.29.2
+RUST_VERSION = 1.33.0
 RUST_SOURCE = rustc-$(RUST_VERSION)-src.tar.xz
 RUST_SITE = https://static.rust-lang.org/dist
 RUST_LICENSE = Apache-2.0 or MIT
@@ -16,16 +16,9 @@ HOST_RUST_DEPENDENCIES = \
 	toolchain \
 	host-rust-bin \
 	host-cargo-bin \
+	host-openssl \
 	host-python \
 	$(BR2_CMAKE_HOST_DEPENDENCY)
-
-ifeq ($(BR2_PACKAGE_JEMALLOC),y)
-HOST_RUST_DEPENDENCIES += jemalloc
-HOST_RUST_JEMALLOC_ENABLED = true
-HOST_RUST_JEMALLOC_CONF = 'jemalloc = "$(STAGING_DIR)/usr/lib/libjemalloc_pic.a"'
-else
-HOST_RUST_JEMALLOC_ENABLED = false
-endif
 
 HOST_RUST_VERBOSITY = $(if $(VERBOSE),2,0)
 
@@ -60,7 +53,6 @@ define HOST_RUST_CONFIGURE_CMDS
 		echo '[install]'; \
 		echo 'prefix = "$(HOST_DIR)"'; \
 		echo '[rust]'; \
-		echo 'use-jemalloc = $(HOST_RUST_JEMALLOC_ENABLED)'; \
 		echo 'channel = "stable"'; \
 		echo '[target.$(RUSTC_TARGET_NAME)]'; \
 		echo 'cc = "$(TARGET_CROSS)gcc"'; \
