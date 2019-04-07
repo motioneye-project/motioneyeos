@@ -8,7 +8,7 @@ LLDPD_VERSION = 1.0.1
 LLDPD_SITE = http://media.luffy.cx/files/lldpd
 LLDPD_DEPENDENCIES = host-pkgconf libevent
 LLDPD_LICENSE = ISC
-LLDPD_LICENSE_FILES = README.md
+LLDPD_LICENSE_FILES = LICENSE
 # 0002-configure-do-not-check-for-libbsd.patch / 0003-configure-remove-check-on-CXX-compiler.patch
 LLDPD_AUTORECONF = YES
 
