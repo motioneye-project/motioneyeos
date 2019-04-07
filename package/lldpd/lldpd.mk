@@ -31,7 +31,6 @@ LLDPD_CONF_OPTS = \
 	--without-embedded-libevent \
 	--without-snmp \
 	--without-xml \
-	--without-json \
 	--without-seccomp \
 	--without-libbsd \
 	--disable-hardening \
