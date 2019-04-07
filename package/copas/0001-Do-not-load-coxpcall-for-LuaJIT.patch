@@ -1,0 +1,49 @@
+From 8d1b5a9b973a9891d676dabf31807eb825d7f262 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Fran=C3=A7ois=20Perrad?= <francois.perrad@gadz.org>
+Date: Wed, 6 Sep 2017 00:00:56 +0200
+Subject: [PATCH] Do not load coxpcall for LuaJIT
+
+* coxpcall is only required with PUC Lua 5.1, but not with LuaJIT
+
+use the same logic as in copas.lua.
+this fixes issue #63.
+
+Fetch from: https://github.com/keplerproject/copas/commit/8d1b5a9b973a9891d676dabf31807eb825d7f262
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ doc/us/index.html   | 5 +++++
+ src/copas/limit.lua | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/copas-2_0_2/doc/us/index.html b/doc/us/index.html
+index 1d008c2..c4d85ef 100644
+--- a/copas-2_0_2/doc/us/index.html
++++ b/copas-2_0_2/doc/us/index.html
+@@ -114,6 +114,11 @@ LuaSocket, <a href="http://keplerproject.github.io/coxpcall/">Coxpcall</a> (only
+ <h2><a name="history"></a>History</h2>
+ 
+ <dl class="history">
++    <dt><strong>Copas</strong> [unreleased]</dt>
++	<dd><ul>
++                <li>Fixed: coxpcall dependency in limit.lua #63 (Francois Perrad)</li>
++	</ul></dd>
++
+     <dt><strong>Copas 2.0.2</strong> [2017]</dt>
+ 	<dd><ul>
+ 		<li>Added: <code>copas.running</code> flag</li>
+diff --git a/copas-2_0_2/src/copas/limit.lua b/src/copas/limit.lua
+index ea178be..f0dfe17 100644
+--- a/copas-2_0_2/src/copas/limit.lua
++++ b/copas-2_0_2/src/copas/limit.lua
+@@ -10,7 +10,7 @@ local pack = table.pack or function(...) return {n=select('#',...),...} end
+ local unpack = function(t) return (table.unpack or unpack)(t, 1, t.n or #t) end
+ 
+ local pcall = pcall
+-if _VERSION=="Lua 5.1" then     -- obsolete: only for Lua 5.1 compatibility
++if _VERSION=="Lua 5.1" and not jit then     -- obsolete: only for Lua 5.1 compatibility
+   pcall = require("coxpcall").pcall
+ end
+ 
+-- 
+2.17.1
+
