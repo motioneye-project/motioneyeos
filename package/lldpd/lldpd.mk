@@ -29,7 +29,6 @@ LLDPD_CONF_ENV = ac_cv_prog_cc_c99=-std=gnu99
 
 LLDPD_CONF_OPTS = \
 	--without-embedded-libevent \
-	--without-snmp \
 	--without-xml \
 	--without-seccomp \
 	--without-libbsd \
@@ -43,6 +42,15 @@ LLDPD_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_LLDPD_DOT1),--enable-dot1,--disable-dot1) \
 	$(if $(BR2_PACKAGE_LLDPD_DOT3),--enable-dot3,--disable-dot3) \
 	$(if $(BR2_PACKAGE_LLDPD_CUSTOM_TLV),--enable-custom,--disable-custom)
+
+ifeq ($(BR2_PACKAGE_NETSNMP),y)
+LLDPD_CONF_OPTS += --with-snmp
+LLDPD_DEPENDENCIES += netsnmp
+LLDPD_CONF_ENV += \
+	ac_cv_path_NETSNMP_CONFIG=$(STAGING_DIR)/usr/bin/net-snmp-config
+else
+LLDPD_CONF_OPTS += --without-snmp
+endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
 LLDPD_CONF_OPTS += --with-readline
