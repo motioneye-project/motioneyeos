@@ -29,7 +29,6 @@ LLDPD_CONF_ENV = ac_cv_prog_cc_c99=-std=gnu99
 
 LLDPD_CONF_OPTS = \
 	--without-embedded-libevent \
-	--without-xml \
 	--without-seccomp \
 	--without-libbsd \
 	--disable-hardening \
@@ -42,6 +41,13 @@ LLDPD_CONF_OPTS = \
 	$(if $(BR2_PACKAGE_LLDPD_DOT1),--enable-dot1,--disable-dot1) \
 	$(if $(BR2_PACKAGE_LLDPD_DOT3),--enable-dot3,--disable-dot3) \
 	$(if $(BR2_PACKAGE_LLDPD_CUSTOM_TLV),--enable-custom,--disable-custom)
+
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+LLDPD_CONF_OPTS += --with-xml
+LLDPD_DEPENDENCIES += libxml2
+else
+LLDPD_CONF_OPTS += --without-xml
+endif
 
 ifeq ($(BR2_PACKAGE_NETSNMP),y)
 LLDPD_CONF_OPTS += --with-snmp
