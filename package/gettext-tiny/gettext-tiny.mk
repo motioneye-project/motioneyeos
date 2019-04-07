@@ -57,7 +57,7 @@ define HOST_GETTEXT_TINY_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(HOST_CONFIGURE_OPTS) \
 		CFLAGS="$(HOST_CFLAGS) -fPIC" \
-		LIBINTL=NOOP
+		LIBINTL=NONE
 
 	cp $(@D)/extra/gettextize.in $(@D)/gettextize
 
@@ -79,7 +79,8 @@ define HOST_GETTEXT_TINY_INSTALL_CMDS
 
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) \
 		$(HOST_CONFIGURE_OPTS) \
-		prefix=$(HOST_DIR) install
+		prefix=$(HOST_DIR) \
+		LIBINTL=NONE install
 
 	$(SED) '/read dummy/d' $(@D)/gettextize
 
