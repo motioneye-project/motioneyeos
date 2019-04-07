@@ -6,17 +6,14 @@
 
 LLDPD_VERSION = 1.0.3
 LLDPD_SITE = http://media.luffy.cx/files/lldpd
-LLDPD_DEPENDENCIES = host-pkgconf libevent
+LLDPD_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_CHECK),check) \
+	host-pkgconf \
+	$(if $(BR2_PACKAGE_LIBCAP),libcap) \
+	libevent \
+	$(if $(BR2_PACKAGE_VALGRIND),valgrind)
 LLDPD_LICENSE = ISC
 LLDPD_LICENSE_FILES = LICENSE
-
-ifeq ($(BR2_PACKAGE_CHECK),y)
-LLDPD_DEPENDENCIES += check
-endif
-
-ifeq ($(BR2_PACKAGE_VALGRIND),y)
-LLDPD_DEPENDENCIES += valgrind
-endif
 
 # Detection of c99 support in configure fails without WCHAR. To enable
 # automatic detection of c99 support by configure, we need to enable
