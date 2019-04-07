@@ -1,0 +1,39 @@
+From 254bcd6b23436fd929e18c935322410b541ca121 Mon Sep 17 00:00:00 2001
+From: Breno Leitao <leitao@debian.org>
+Date: Mon, 21 Jan 2019 07:03:24 -0500
+Subject: [PATCH] Fix CFLAGS parameter
+
+Currently nvme-cli 1.7 is not compiling on Debian because the Debian helper
+(compilation toolkit) does pass a CFLAGS variable, thus, avoiding the
+initial definition (CFLAGS ?= -O2 -g -Wall -Werror -I.)
+
+The problem is that -I should not be removed, otherwise the code does not
+compile, with the following bug:
+
+	cc -Wdate-time -D_FORTIFY_SOURCE=2 -D_GNU_SOURCE -D__CHECK_ENDIAN__ -g -O2 -fdebug-prefix-map=/home/breno/nvme/nvme-cli-1.7=. -fstack-protector-strong -Wformat -Werror=format-security -std=gnu99 -DLIBUUID -DNVME_VERSION='"1.7"' -o plugins/intel/intel-nvme.o -c plugins/intel/intel-nvme.c
+	plugins/intel/intel-nvme.c:10:18: fatal error: nvme.h: No such file or directory
+	compilation terminated.
+
+This patch just moves the -I parameter to part of the CFLAGS that is not
+replaced by dh's CFLAGS.
+
+Signed-off-by: Breno Leitao <leitao@debian.org>
+[Retrieved from:
+https://github.com/linux-nvme/nvme-cli/commit/254bcd6b23436fd929e18c935322410b541ca121]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 525616af..3a4e2239 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,5 +1,5 @@
+-CFLAGS ?= -O2 -g -Wall -Werror -I.
+-CFLAGS += -std=gnu99
++CFLAGS ?= -O2 -g -Wall -Werror
++CFLAGS += -std=gnu99 -I.
+ CPPFLAGS += -D_GNU_SOURCE -D__CHECK_ENDIAN__
+ LIBUUID = $(shell $(LD) -o /dev/null -luuid >/dev/null 2>&1; echo $$?)
+ NVME = nvme
