@@ -1,0 +1,60 @@
+From 1d39994398a886584c5fb14b3a646c4ae6b0d35c Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Mon, 8 Apr 2019 11:03:09 +0200
+Subject: [PATCH] src: fix format string warnings when building for 32bit
+ architectures
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Building currently gives the following warnings (which fails the build
+because of Werror) about format string mismatches:
+
+src/tpm2-totp.c:343:23: error: format ‘%ld’ expects argument of type ‘long int’, but argument 3 has type ‘uint64_t’ {aka ‘long long unsigned int’} [-Werror=format=]
+         printf("%s%06ld", timestr, totp);
+                   ~~~~^            ~~~~
+                   %06lld
+
+src/libtpm2-totp.c: In function ‘tpm2totp_generateKey’:
+src/libtpm2-totp.c:172:13: error: format ‘%li’ expects argument of type ‘long int’, but argument 3 has type ‘size_t’ {aka ‘unsigned int’} [-Werror=format=]
+         dbg("Calling Esys_GetRandom for %li bytes", SECRETLEN - *secret_size);
+                                         ~~^
+                                         %i
+
+Fix it by using PRIu64 from inttypes.h for uint64_t and %zu for size_t.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/libtpm2-totp.c | 2 +-
+ src/tpm2-totp.c    | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/libtpm2-totp.c b/src/libtpm2-totp.c
+index e740ab1..6942771 100644
+--- a/src/libtpm2-totp.c
++++ b/src/libtpm2-totp.c
+@@ -169,7 +169,7 @@ tpm2totp_generateKey(uint32_t pcrs, uint32_t banks, const char *password,
+     if (rc != TPM2_RC_INITIALIZE) chkrc(rc, goto error);
+ 
+     while (*secret_size < SECRETLEN) {
+-        dbg("Calling Esys_GetRandom for %li bytes", SECRETLEN - *secret_size);
++        dbg("Calling Esys_GetRandom for %zu bytes", SECRETLEN - *secret_size);
+         rc = Esys_GetRandom(ctx,
+                             ESYS_TR_NONE, ESYS_TR_NONE, ESYS_TR_NONE,
+                             SECRETLEN - *secret_size, &t);
+diff --git a/src/tpm2-totp.c b/src/tpm2-totp.c
+index 47b661a..d5dcdce 100644
+--- a/src/tpm2-totp.c
++++ b/src/tpm2-totp.c
+@@ -340,7 +340,7 @@ main(int argc, char **argv)
+                             localtime (&now));
+             chkrc(rc, exit(1));
+         }
+-        printf("%s%06ld", timestr, totp);
++        printf("%s%06" PRIu64, timestr, totp);
+         break;
+     case CMD_RESEAL:
+         rc = tpm2totp_loadKey_nv(opt.nvindex, &keyBlob, &keyBlob_size);
+-- 
+2.11.0
+

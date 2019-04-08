@@ -1751,6 +1751,7 @@ F:	package/python-validators/
 F:	package/python-webob/
 F:	package/python-websocket-client/
 F:	package/sedutil/
+F:	package/tpm2-totp/
 F:	package/triggerhappy/
 
 N:	Peter Seiderer <ps.report@gmx.net>
