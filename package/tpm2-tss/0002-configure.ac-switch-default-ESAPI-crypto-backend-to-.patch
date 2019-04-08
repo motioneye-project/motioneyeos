@@ -1,0 +1,32 @@
+From aa8d9b2bb2faeb0c6cc03548cc363d90d3414f15 Mon Sep 17 00:00:00 2001
+From: Tadeusz Struk <tadeusz.struk@intel.com>
+Date: Tue, 23 Oct 2018 16:04:25 -0700
+Subject: [PATCH] configure.ac: switch default ESAPI crypto backend to openSSL
+
+Switch the default ESAPI crypto backend to openSSL.
+This should also fix the problem with forcing applications to
+link against libgcrypt.
+
+Fixes: #1169
+
+Signed-off-by: Tadeusz Struk <tadeusz.struk@intel.com>
+[Peter: drop configure.ac hunk, only drop hard coded -lcrypt from .pc]
+(cherry picked from commit a5ff71abeda9a5aea269812de32afb79ef3fcb4d)
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ lib/tss2-esys.pc.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/tss2-esys.pc.in b/lib/tss2-esys.pc.in
+index 792f0191..ecb01bc1 100644
+--- a/lib/tss2-esys.pc.in
++++ b/lib/tss2-esys.pc.in
+@@ -4,4 +4,4 @@ URL: https://github.com/tpm2-software/tpm2-tss
+ Version: @VERSION@
+ Requires: tss2-mu tss2-sys
+ Cflags: -I@includedir@
+-Libs: -ltss2-esys -lgcrypt -L@libdir@
++Libs: -ltss2-esys -L@libdir@
+-- 
+2.11.0
+
