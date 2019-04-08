@@ -1,5 +1,5 @@
-# From https://github.com/TresysTechnology/refpolicy/wiki/DownloadRelease
-sha256 e826f7d7f899a548e538964487e9fc1bc67ca94756ebdce0bfb6532b4eb0d06b  refpolicy-2.20180114.tar.bz2
+# From https://github.com/SELinuxProject/refpolicy/releases
+sha256 ed620dc91c4e09eee6271b373f7c61a364a82ea57bd2dc86ca1f7075304e2843  refpolicy-2.20190201.tar.bz2
 
 # Locally computed
 sha256 204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994 COPYING
