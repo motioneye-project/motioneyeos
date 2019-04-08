@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SELINUX_PYTHON_VERSION = 2.8
-SELINUX_PYTHON_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524
+SELINUX_PYTHON_VERSION = 2.9
+SELINUX_PYTHON_SITE = https://github.com/SELinuxProject/selinux/releases/download/20190315
 SELINUX_PYTHON_LICENSE = GPL-2.0
 SELINUX_PYTHON_LICENSE_FILES = COPYING
 
