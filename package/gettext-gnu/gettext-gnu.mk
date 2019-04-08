@@ -42,7 +42,7 @@ HOST_GETTEXT_GNU_CONF_OPTS = \
 
 # Force the build of libintl, even if the C library provides a stub
 # gettext implementation
-ifeq ($(BR2_PACKAGE_GETTEXT_GNU_PROVIDES_LIBINTL),y)
+ifeq ($(BR2_PACKAGE_GETTEXT_PROVIDES_LIBINTL),y)
 GETTEXT_GNU_CONF_OPTS += --with-included-gettext
 else
 GETTEXT_GNU_CONF_OPTS += --without-included-gettext
