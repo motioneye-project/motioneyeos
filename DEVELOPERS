@@ -179,6 +179,7 @@ F:	package/sysdig/
 N:	Anisse Astier <anisse@astier.eu>
 F:	package/go/
 F:	package/nghttp2/
+F:	package/pkg-golang.mk
 
 N:	Anthony Viallard <viallard@syscom-instruments.com>
 F:	package/gnuplot/
