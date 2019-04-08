@@ -483,6 +483,7 @@ F:	package/docker-engine/
 F:	package/docker-proxy/
 F:	package/go/
 F:	package/mosh/
+F:	package/pkg-golang.mk
 F:	package/rtl8821au/
 F:	package/runc/
 F:	package/tini/
