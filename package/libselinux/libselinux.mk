@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSELINUX_VERSION = 2.8
-LIBSELINUX_SITE = https://raw.githubusercontent.com/wiki/SELinuxProject/selinux/files/releases/20180524
+LIBSELINUX_VERSION = 2.9
+LIBSELINUX_SITE = https://github.com/SELinuxProject/selinux/releases/download/20190315
 LIBSELINUX_LICENSE = Public Domain
 LIBSELINUX_LICENSE_FILES = LICENSE
 
@@ -37,6 +37,7 @@ LIBSELINUX_PYLIBVER = python$(PYTHON_VERSION_MAJOR)
 endif
 
 LIBSELINUX_MAKE_OPTS += \
+	PYTHON=$(LIBSELINUX_PYLIBVER) \
 	PYINC="$(LIBSELINUX_PYINC)" \
 	PYSITEDIR=$(TARGET_DIR)/usr/lib/$(LIBSELINUX_PYLIBVER)/site-packages \
 	SWIG_LIB="$(HOST_DIR)/share/swig/$(SWIG_VERSION)/"
@@ -88,6 +89,7 @@ endif
 
 HOST_LIBSELINUX_MAKE_OPTS = \
 	$(HOST_CONFIGURE_OPTS) \
+	PYTHON=$(HOST_LIBSELINUX_PYLIBVER) \
 	PREFIX=$(HOST_DIR) \
 	SHLIBDIR=$(HOST_DIR)/lib \
 	LDFLAGS="$(HOST_LDFLAGS) -lpcre -lpthread" \
