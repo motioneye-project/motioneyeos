@@ -95,9 +95,5 @@ endef
 
 HOST_GETTEXT_GNU_POST_INSTALL_HOOKS += HOST_GETTEXT_GNU_ADD_ABOUT_NLS
 
-ifeq ($(BR2_PACKAGE_GETTEXT_GNU),y)
-GETTEXTIZE = $(HOST_CONFIGURE_OPTS) AUTOM4TE=$(HOST_DIR)/bin/autom4te $(HOST_DIR)/bin/gettextize -f
-endif
-
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
