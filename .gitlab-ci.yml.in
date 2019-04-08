@@ -6,24 +6,6 @@
 
 image: buildroot/base:20180318.1724
 
-.defconfig_script:
-    script:
-        - echo 'Configure Buildroot'
-        - make ${CI_JOB_NAME}
-        - echo 'Build buildroot'
-        - |
-            make > >(tee build.log |grep '>>>') 2>&1 || {
-                echo 'Failed build last output'
-                tail -200 build.log
-                exit 1
-            }
-
-check-gitlab-ci.yml:
-    script:
-        - mv .gitlab-ci.yml .gitlab-ci.yml.orig
-        - make .gitlab-ci.yml
-        - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
-
 check-DEVELOPERS:
     # get-developers should print just "No action specified"; if it prints
     # anything else, it's a parse error.
@@ -42,9 +24,27 @@ check-flake8:
     after_script:
         - wc -l files.processed
 
+check-gitlab-ci.yml:
+    script:
+        - mv .gitlab-ci.yml .gitlab-ci.yml.orig
+        - make .gitlab-ci.yml
+        - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
+
 check-package:
     script:
         - make check-package
+
+.defconfig_script:
+    script:
+        - echo 'Configure Buildroot'
+        - make ${CI_JOB_NAME}
+        - echo 'Build buildroot'
+        - |
+            make > >(tee build.log |grep '>>>') 2>&1 || {
+                echo 'Failed build last output'
+                tail -200 build.log
+                exit 1
+            }
 
 .defconfig:
     extends: .defconfig_script
