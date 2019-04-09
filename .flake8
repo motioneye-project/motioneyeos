@@ -2,4 +2,4 @@
 exclude=
     # copied from the kernel sources
     utils/diffconfig
-max-line-length=132
+max-line-length=80
