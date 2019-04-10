@@ -295,6 +295,7 @@ F:	package/freeswitch/
 F:	package/freeswitch-mod-bcg729/
 F:	package/ghostscript/
 F:	package/giflib/
+F:	package/gli/
 F:	package/glmark2/
 F:	package/hdparm/
 F:	package/jsoncpp/
