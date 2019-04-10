@@ -47,6 +47,15 @@ config BR2_PACKAGE_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
 	  libcrypto, and possibly GPL/OpenSSL licensing
 	  incompatibility issues.
 
+config BR2_PACKAGE_UBOOT_TOOLS_FIT_CHECK_SIGN
+	bool "fit_check_sign"
+	depends on BR2_PACKAGE_UBOOT_TOOLS_FIT_SIGNATURE_SUPPORT
+	help
+	  Install the fit_check_sign tool on the target system
+
+	  The fit_check_sign tool from Das U-Boot bootloader, which
+	  allows FIT image signature validation on target system.
+
 endif
 
 config BR2_PACKAGE_UBOOT_TOOLS_MKIMAGE
