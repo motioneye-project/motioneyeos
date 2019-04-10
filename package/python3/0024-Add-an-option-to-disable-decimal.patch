@@ -20,7 +20,7 @@ diff --git a/configure.ac b/configure.ac
 index 2699e7ceb1..e2c3b6f25c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2956,13 +2956,20 @@ fi
+@@ -3020,13 +3020,20 @@ fi
  AC_SUBST(LIBFFI_INCLUDEDIR)
  
  # Check for use of the system libmpdec library
@@ -50,7 +50,7 @@ diff --git a/setup.py b/setup.py
 index d642825c1e..5b98255857 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2010,7 +2010,7 @@ class PyBuildExt(build_ext):
+@@ -2015,7 +2015,7 @@ class PyBuildExt(build_ext):
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []

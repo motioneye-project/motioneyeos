@@ -24,7 +24,7 @@ diff --git a/Lib/distutils/command/build_ext.py b/Lib/distutils/command/build_ex
 index 74de782d8a..d0c847b365 100644
 --- a/Lib/distutils/command/build_ext.py
 +++ b/Lib/distutils/command/build_ext.py
-@@ -233,7 +233,10 @@ class build_ext(Command):
+@@ -234,7 +234,10 @@ class build_ext(Command):
          if (sysconfig.get_config_var('Py_ENABLE_SHARED')):
              if not sysconfig.python_build:
                  # building third party extensions
