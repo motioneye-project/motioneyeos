@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SSLH_VERSION = v1.18
+SSLH_VERSION = v1.20
 SSLH_SITE = http://www.rutschle.net/tech/sslh
 SSLH_LICENSE = GPL-2.0+
 SSLH_LICENSE_FILES = COPYING
@@ -28,7 +28,7 @@ SSLH_MAKE_OPTS += USELIBPCRE=
 endif
 
 define SSLH_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE1) $(SSLH_MAKE_OPTS) -C $(@D)
+	$(TARGET_MAKE_ENV) $(MAKE) $(SSLH_MAKE_OPTS) -C $(@D)
 endef
 
 define SSLH_INSTALL_TARGET_CMDS
