@@ -1,0 +1,36 @@
+From 4e7ec8233cd185941eaa9e41785cfc53f92799b4 Mon Sep 17 00:00:00 2001
+From: Vincent Bernat <vincent@bernat.ch>
+Date: Tue, 8 Jan 2019 17:19:15 -0500
+Subject: [PATCH] build: fix compilation with `--enable-fdp --disable-cdp`
+
+Fix #315
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/vincentbernat/lldpd/commit/4e7ec8233cd185941eaa9e41785cfc53f92799b4]
+---
+ src/lldpd-structs.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/lldpd-structs.h b/src/lldpd-structs.h
+index c3ffa108..f6b03d7d 100644
+--- a/src/lldpd-structs.h
++++ b/src/lldpd-structs.h
+@@ -129,7 +129,7 @@ struct lldpd_dot3_power {
+ MARSHAL(lldpd_dot3_power);
+ #endif
+ 
+-#ifdef ENABLE_CDP
++#if defined (ENABLE_CDP) || defined (ENABLE_FDP)
+ struct cdpv2_power {
+ 	u_int16_t request_id;
+ 	u_int16_t management_id;
+@@ -273,7 +273,7 @@ struct lldpd_port {
+ 	struct lldpd_med_power	 p_med_power;
+ #endif
+ 
+-#ifdef ENABLE_CDP
++#if defined (ENABLE_CDP) || defined (ENABLE_FDP)
+ 	struct cdpv2_power p_cdp_power;
+ #endif
+ 
