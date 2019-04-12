@@ -46,10 +46,8 @@ endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 PURE_FTPD_CONF_OPTS += --with-tls
-PURE_FTPD_DEPENDENCIES += openssl
-ifeq ($(BR2_STATIC_LIBS),y)
-PURE_FTPD_CONF_ENV += LIBS='-lssl -lcrypto -lz'
-endif
+PURE_FTPD_DEPENDENCIES += host-pkgconf openssl
+PURE_FTPD_CONF_ENV += LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 else
 PURE_FTPD_CONF_OPTS += --without-tls
 endif
