@@ -31,7 +31,8 @@ def get_dependency_tree():
 
     cmd = ["make", "-s", "--no-print-directory", "show-dependency-tree"]
     with open(os.devnull, 'wb') as devnull:
-        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=devnull, universal_newlines=True)
+        p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=devnull,
+                             universal_newlines=True)
         output = p.communicate()[0]
 
     for l in output.splitlines():
