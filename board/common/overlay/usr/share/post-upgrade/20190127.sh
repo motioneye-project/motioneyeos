@@ -5,6 +5,10 @@
 function to_uppercase() {
     IFS='='
     while read line; do
+        if [[ -z "${line}" ]]; then
+            echo
+            continue
+        fi
         parts=(${line})
         echo $(tr 'a-z' 'A-Z' <<< ${parts[0]})=${parts[1]}
     done

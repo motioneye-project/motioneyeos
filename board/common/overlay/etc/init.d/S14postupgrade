@@ -23,7 +23,10 @@ function version_gt() {
 }
 
 function run_post_upgrade() {
-    version="$(source ${VERSION_FILE} 2>/dev/null && echo ${OS_VERSION})"
+    unset OS_VERSION
+    # ensure compatibility with previous lowercase os_version
+    version="$(source ${VERSION_FILE} 2>/dev/null && echo ${OS_VERSION}${os_version})"
+    
     sys_version="$(source ${SYS_VERSION_FILE} 2>/dev/null && echo ${OS_VERSION})"
 
     versions=$(ls -1 ${POST_UPGRADE_DIR} | cut -d '.' -f 1)
