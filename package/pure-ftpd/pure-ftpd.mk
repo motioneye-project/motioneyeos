@@ -30,6 +30,13 @@ ifeq ($(BR2_PACKAGE_LIBSODIUM),y)
 PURE_FTPD_DEPENDENCIES += libsodium
 endif
 
+ifeq ($(BR2_PACKAGE_MYSQL),y)
+PURE_FTPD_CONF_OPTS += --with-mysql=$(STAGING_DIR)/usr
+PURE_FTPD_DEPENDENCIES += mysql
+else
+PURE_FTPD_CONF_OPTS += --without-mysql
+endif
+
 ifeq ($(BR2_PACKAGE_OPENLDAP),y)
 PURE_FTPD_CONF_OPTS += --with-ldap
 PURE_FTPD_DEPENDENCIES += openldap
