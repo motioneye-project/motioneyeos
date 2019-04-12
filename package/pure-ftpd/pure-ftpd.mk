@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PURE_FTPD_VERSION = 1.0.47
+PURE_FTPD_VERSION = 1.0.49
 PURE_FTPD_SITE = https://download.pureftpd.org/pub/pure-ftpd/releases
 PURE_FTPD_SOURCE = pure-ftpd-$(PURE_FTPD_VERSION).tar.bz2
 PURE_FTPD_LICENSE = ISC
@@ -13,8 +13,7 @@ PURE_FTPD_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
 PURE_FTPD_CONF_OPTS = \
 	--with-altlog \
-	--with-puredb \
-	--with-rfc2640
+	--with-puredb
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
 PURE_FTPD_DEPENDENCIES += elfutils
