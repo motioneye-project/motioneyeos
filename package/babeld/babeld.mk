@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BABELD_VERSION = 1.7.1
+BABELD_VERSION = 1.8.4
 BABELD_SITE = http://www.pps.univ-paris-diderot.fr/~jch/software/files
 BABELD_LICENSE = MIT
 BABELD_LICENSE_FILES = LICENCE
