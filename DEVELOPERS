@@ -2113,6 +2113,9 @@ F:	package/libmms/
 F:	package/orc/
 F:	package/wampcc/
 
+N:	Sven Oliver Moll <svolli@svolli.de>
+F:	package/most/
+
 N:	Theo Debrouwere <t.debrouwere@televic.com>
 F:	package/pugixml/
 
