@@ -1,6 +1,6 @@
-# From http://www.squid-cache.org/Versions/v4/squid-4.4.tar.xz.asc
-md5 892504ca9700e1f139a53f84098613bd squid-4.4.tar.xz
-sha1 0ab6b133f65866d825bf72cbbe8cef209768b2fa squid-4.4.tar.xz
+# From http://www.squid-cache.org/Versions/v4/squid-4.6.tar.xz.asc
+md5 e25e7cc37754ad14d8aa368c0c210e54 squid-4.6.tar.xz
+sha1 0396fe8077049000407d13aca8efdd9228e69d98 squid-4.6.tar.xz
 # Locally calculated
-sha256 4905e6da7f5574d2583ba36f398bb062a12d51e70d67035078b6e85b09e9ee82 squid-4.4.tar.xz
+sha256 015bade5d3a4905142c4c605df5c4216471e3d8338079955e0e44b0ae0303d41 squid-4.6.tar.xz
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 COPYING
