@@ -105,8 +105,8 @@ endif
 
 # Try to use openssl if it's already available
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
-WPA_SUPPLICANT_DEPENDENCIES += libopenssl
-WPA_SUPPLICANT_LIBS += $(if $(BR2_STATIC_LIBS),-lcrypto -lz)
+WPA_SUPPLICANT_DEPENDENCIES += host-pkgconf libopenssl
+WPA_SUPPLICANT_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 WPA_SUPPLICANT_CONFIG_EDITS += 's/\#\(CONFIG_TLS=openssl\)/\1/'
 else
 WPA_SUPPLICANT_CONFIG_DISABLE += CONFIG_EAP_PWD
