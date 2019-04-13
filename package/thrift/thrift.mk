@@ -31,8 +31,6 @@ endif
 
 # thrift doesn't use the regular flags BUILD_{STATIC,SHARED}_LIBS
 ifeq ($(BR2_STATIC_LIBS),y)
-# openssl uses zlib, so we need to explicitly link with it when static
-THRIFT_CONF_ENV += LIBS=-lz
 THRIFT_CONF_OPTS += -DWITH_STATIC_LIB=ON -DWITH_BOOST_STATIC=ON -DWITH_SHARED_LIB=OFF
 else ifeq ($(BR2_SHARED_LIBS),y)
 THRIFT_CONF_OPTS += -DWITH_STATIC_LIB=OFF -DWITH_BOOST_STATIC=OFF -DWITH_SHARED_LIB=ON
