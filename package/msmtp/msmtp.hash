@@ -1,6 +1,6 @@
 # Locally calculated after checking signature
-# https://marlam.de/msmtp/releases/msmtp-1.8.0.tar.xz.sig
-sha256	bd730cbf000d1b8382849ea21d569a387e63f936be00dc07c569f67915e53ccd	msmtp-1.8.0.tar.xz
+# https://marlam.de/msmtp/releases/msmtp-1.8.3.tar.xz.sig
+sha256	3cb2eefd33d048f0f82de100ef39a494e44fd1485e376ead31f733d2f36b92b4	msmtp-1.8.3.tar.xz
 
 # Hash for license file:
 sha256	8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903	COPYING
