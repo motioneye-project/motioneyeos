@@ -11,6 +11,7 @@ MOST_LICENSE_FILES = COPYING COPYRIGHT
 MOST_DEPENDENCIES = slang
 
 MOST_CONF_OPTS = --with-slang=$(STAGING_DIR)/usr
+MOST_MAKE = $(MAKE1)
 
 define MOST_REMOVE_LOCAL_SLANG_CHECK
 	$(SED) 's/ slangversion / /g' $(@D)/src/Makefile.in
