@@ -1,5 +1,18 @@
+config BR2_PACKAGE_SYSTEMD_BOOTCHART_ARCH_SUPPORTS
+	bool
+	# see src/architecture.h
+	default y if BR2_aarch64 || BR2_aarch64_be
+	default y if BR2_arm || BR2_armeb
+	default y if BR2_i386 || BR2_x86_64
+	default y if BR2_m68k
+	default y if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	default y if BR2_sh
+	default y if BR2_sparc || BR2_sparc64
+
 config BR2_PACKAGE_SYSTEMD_BOOTCHART
 	bool "systemd-bootchart"
+	depends on BR2_PACKAGE_SYSTEMD_BOOTCHART_ARCH_SUPPORTS
 	depends on BR2_INIT_SYSTEMD
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 	help
@@ -22,5 +35,6 @@ config BR2_PACKAGE_SYSTEMD_BOOTCHART
 	  http://www.freedesktop.org/software/systemd/man/systemd-bootchart.html
 
 comment "systemd-bootchart needs a toolchain w/ headers >= 3.17"
+	depends on BR2_PACKAGE_SYSTEMD_BOOTCHART_ARCH_SUPPORTS
 	depends on BR2_INIT_SYSTEMD
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
