@@ -1,0 +1,32 @@
+From 963413a1adf6767ab17712097e288e1a346f63a7 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Fri, 4 Jan 2019 22:38:25 -0800
+Subject: [PATCH] ldattach: Check for value of _HAVE_STRUCT_TERMIOS_C_ISPEED
+
+in glibc 2.29+ checking for just existence of _HAVE_STRUCT_TERMIOS_C_ISPEED
+won't be enough, the value has to be checked
+
+see
+https://sourceware.org/git/?p=glibc.git;a=commit;h=e5a50db36eaa6e8c6427b3a971563240b633ca85
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/karelzak/util-linux/commit/963413a1adf6767ab17712097e288e1a346f63a7]
+---
+ sys-utils/ldattach.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/sys-utils/ldattach.c b/sys-utils/ldattach.c
+index d33d68535..fb50711eb 100644
+--- a/sys-utils/ldattach.c
++++ b/sys-utils/ldattach.c
+@@ -242,7 +242,7 @@ static int my_cfsetspeed(struct termios *ts, int speed)
+ 	 * -- we have to bypass glibc and set the speed manually (because glibc
+ 	 *    checks for speed and supports Bxxx bit rates only)...
+ 	 */
+-#ifdef _HAVE_STRUCT_TERMIOS_C_ISPEED
++#if _HAVE_STRUCT_TERMIOS_C_ISPEED
+ # define BOTHER 0010000		/* non standard rate */
+ 	dbg("using non-standard speeds");
+ 	ts->c_ospeed = ts->c_ispeed = speed;
