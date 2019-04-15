@@ -1,0 +1,22 @@
+config BR2_PACKAGE_SURICATA
+	bool "suricata"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_USE_WCHAR
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_LIBHTP
+	select BR2_PACKAGE_LIBPCAP
+	select BR2_PACKAGE_LIBYAML
+	select BR2_PACKAGE_PCRE
+	help
+	  Suricata is a free and open source, mature, fast and robust
+	  network threat detection engine.
+
+	  The Suricata engine is capable of real time intrusion
+	  detection (IDS), inline intrusion prevention (IPS), network
+	  security monitoring (NSM) and offline pcap processing.
+
+	  https://suricata-ids.org
+
+comment "suricata needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
