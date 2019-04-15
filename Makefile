@@ -903,6 +903,21 @@ check-dependencies:
 	@cd "$(CONFIG_DIR)"; \
 	$(TOPDIR)/support/scripts/graph-depends -C
 
+.PHONY: show-info
+show-info:
+	@:
+	$(info $(call clean-json, \
+			{ $(foreach p, \
+				$(sort $(foreach i,$(PACKAGES) $(TARGETS_ROOTFS), \
+						$(i) \
+						$($(call UPPERCASE,$(i))_FINAL_RECURSIVE_DEPENDENCIES) \
+					) \
+				), \
+				$(call json-info,$(call UPPERCASE,$(p)))$(comma) \
+			) } \
+		) \
+	)
+
 else # ifeq ($(BR2_HAVE_DOT_CONFIG),y)
 
 # Some subdirectories are also package names. To avoid that "make linux"
@@ -1128,6 +1143,7 @@ help:
 	@echo '  source                 - download all sources needed for offline-build'
 	@echo '  external-deps          - list external packages used'
 	@echo '  legal-info             - generate info about license compliance'
+	@echo '  show-info              - generate info about packages, as a JSON blurb'
 	@echo '  printvars              - dump internal variables selected with VARS=...'
 	@echo
 	@echo '  make V=0|1             - 0 => quiet build (default), 1 => verbose build'

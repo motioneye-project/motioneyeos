@@ -62,6 +62,70 @@ $$(error Package error: use $(2) instead of $(1). Please fix your .mk file)
 endif
 endef
 
+# json-info -- return package or filesystem metadata formatted as an entry
+#              of a JSON dictionnary
+# $(1): upper-case package or filesystem name
+define json-info
+	"$($(1)_NAME)": {
+		"type": "$($(1)_TYPE)",
+		$(if $(filter rootfs,$($(1)_TYPE)), \
+			$(call _json-info-fs,$(1)), \
+			$(call _json-info-pkg,$(1)), \
+		)
+	}
+endef
+
+# _json-info-pkg, _json-info-pkg-details, _json-info-fs: private helpers
+# for json-info, above
+define _json-info-pkg
+	$(if $($(1)_IS_VIRTUAL), \
+		"virtual": true$(comma),
+		"virtual": false$(comma)
+		$(call _json-info-pkg-details,$(1)) \
+	)
+	"dependencies": [
+		$(call make-comma-list,$(sort $($(1)_FINAL_ALL_DEPENDENCIES)))
+	],
+	"reverse_dependencies": [
+		$(call make-comma-list,$(sort $($(1)_RDEPENDENCIES)))
+	]
+endef
+
+define _json-info-pkg-details
+	"version": "$($(1)_DL_VERSION)",
+	"licenses": "$($(1)_LICENSE)",
+	"downloads": [
+	$(foreach dl,$(sort $($(1)_ALL_DOWNLOADS)),
+		{
+			"source": "$(notdir $(dl))",
+			"uris": [
+				$(call make-comma-list,
+					$(subst \|,|,
+						$(call DOWNLOAD_URIS,$(dl),$(1))
+					)
+				)
+			]
+		},
+	)
+	],
+endef
+
+define _json-info-fs
+	"dependencies": [
+		$(call make-comma-list,$(sort $($(1)_DEPENDENCIES)))
+	]
+endef
+
+# clean-json -- cleanup pseudo-json into clean json:
+#  - remove commas before closing ] and }
+#  - minify with $(strip)
+clean-json = $(strip \
+	$(subst $(comma)},}, $(subst $(comma)$(space)},$(space)}, \
+	$(subst $(comma)],], $(subst $(comma)$(space)],$(space)], \
+		$(strip $(1)) \
+	)))) \
+)
+
 #
 # legal-info helper functions
 #
