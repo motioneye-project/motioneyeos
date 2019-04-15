@@ -4,6 +4,7 @@ config BR2_PACKAGE_WIRESHARK
 	depends on BR2_USE_MMU # fork(), glib2
 	depends on BR2_USE_WCHAR # glib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # glib2
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBPCAP
 	select BR2_PACKAGE_LIBGCRYPT
 	select BR2_PACKAGE_LIBGLIB2
@@ -14,22 +15,32 @@ config BR2_PACKAGE_WIRESHARK
 
 if BR2_PACKAGE_WIRESHARK
 
-config BR2_PACKAGE_WIRESHARK_QT
-	bool
-	default y
-	depends on BR2_PACKAGE_QT5BASE_WIDGETS
-	depends on BR2_PACKAGE_QT5TOOLS
-	select BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS
-
 config BR2_PACKAGE_WIRESHARK_GUI
-	bool
-	default y if BR2_PACKAGE_LIBGTK2
-	default y if BR2_PACKAGE_LIBGTK3
-	default y if BR2_PACKAGE_WIRESHARK_QT
+	bool "Qt5 GUI"
+	default y
+	depends on BR2_INSTALL_LIBSTDCPP # qt5
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # qt5
+	depends on BR2_PACKAGE_HAS_UDEV # qt5 input
+	select BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE
+	select BR2_PACKAGE_QT5BASE_FONTCONFIG # runtime
+	select BR2_PACKAGE_QT5BASE_PNG # runtime
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5MULTIMEDIA
+	select BR2_PACKAGE_QT5SVG
+	select BR2_PACKAGE_QT5TOOLS
+	select BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS
+	help
+	  Enable Qt5 GUI
+
+comment "Qt5 GUI needs a udev /dev management and a toolchain w/ C++, NPTL"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
 endif # BR2_PACKAGE_WIRESHARK
 
-comment "wireshark needs a toolchain w/ wchar, threads"
+comment "wireshark needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS
