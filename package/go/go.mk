@@ -11,6 +11,13 @@ GO_SOURCE = go$(GO_VERSION).src.tar.gz
 GO_LICENSE = BSD-3-Clause
 GO_LICENSE_FILES = LICENSE
 
+HOST_GO_DEPENDENCIES = host-go-bootstrap
+HOST_GO_HOST_CACHE = $(HOST_DIR)/usr/share/host-go-cache
+HOST_GO_ROOT = $(HOST_DIR)/lib/go
+HOST_GO_TARGET_CACHE = $(HOST_DIR)/usr/share/go-cache
+
+ifeq ($(BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS),y)
+
 ifeq ($(BR2_arm),y)
 GO_GOARCH = arm
 ifeq ($(BR2_ARM_CPU_ARMV5),y)
@@ -36,11 +43,6 @@ else ifeq ($(BR2_mips64el),y)
 GO_GOARCH = mips64le
 endif
 
-HOST_GO_DEPENDENCIES = host-go-bootstrap
-HOST_GO_HOST_CACHE = $(HOST_DIR)/usr/share/host-go-cache
-HOST_GO_ROOT = $(HOST_DIR)/lib/go
-HOST_GO_TARGET_CACHE = $(HOST_DIR)/usr/share/go-cache
-
 # For the convienience of target packages.
 HOST_GO_TOOLDIR = $(HOST_GO_ROOT)/pkg/tool/linux_$(GO_GOARCH)
 HOST_GO_TARGET_ENV = \
@@ -62,6 +64,19 @@ else
 HOST_GO_CGO_ENABLED = 0
 endif
 
+HOST_GO_CROSS_ENV = \
+	CC_FOR_TARGET="$(TARGET_CC)" \
+	CXX_FOR_TARGET="$(TARGET_CXX)" \
+	GOARCH=$(GO_GOARCH) \
+	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
+	GO_ASSUME_CROSSCOMPILING=1
+
+else # !BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+# host-go can still be used to build packages for the host. No need to set all
+# the arch stuff since we will not be cross-compiling.
+HOST_GO_CGO_ENABLED = 1
+endif # BR2_PACKAGE_HOST_GO_TARGET_ARCH_SUPPORTS
+
 # The go build system is not compatible with ccache, so use
 # HOSTCC_NOCCACHE.  See https://github.com/golang/go/issues/11685.
 HOST_GO_MAKE_ENV = \
@@ -71,21 +86,15 @@ HOST_GO_MAKE_ENV = \
 	GOROOT_FINAL=$(HOST_GO_ROOT) \
 	GOROOT="$(@D)" \
 	GOBIN="$(@D)/bin" \
-	GOARCH=$(GO_GOARCH) \
-	$(if $(GO_GOARM),GOARM=$(GO_GOARM)) \
 	GOOS=linux \
 	CC=$(HOSTCC_NOCCACHE) \
 	CXX=$(HOSTCXX_NOCCACHE) \
-	GO_ASSUME_CROSSCOMPILING=1
-
-HOST_GO_TARGET_CC = \
-	CC_FOR_TARGET="$(TARGET_CC)" \
-	CXX_FOR_TARGET="$(TARGET_CXX)"
+	CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
+	$(HOST_GO_CROSS_ENV)
 
 define HOST_GO_BUILD_CMDS
 	cd $(@D)/src && \
-		$(HOST_GO_MAKE_ENV) $(HOST_GO_TARGET_CC) CGO_ENABLED=$(HOST_GO_CGO_ENABLED) \
-		./make.bash $(if $(VERBOSE),-v)
+		$(HOST_GO_MAKE_ENV) ./make.bash $(if $(VERBOSE),-v)
 endef
 
 define HOST_GO_INSTALL_CMDS
