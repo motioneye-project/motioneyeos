@@ -42,6 +42,8 @@ define ROOTFS_REPRODUCIBLE
 endef
 endif
 
+ROOTFS_COMMON_NAME = rootfs-common
+ROOTFS_COMMON_TYPE = rootfs
 ROOTFS_COMMON_DEPENDENCIES = \
 	host-fakeroot host-makedevs \
 	$(BR2_TAR_HOST_DEPENDENCY) \
@@ -77,6 +79,8 @@ rootfs-common-show-depends:
 # all variable references except the arguments must be $$-quoted.
 define inner-rootfs
 
+ROOTFS_$(2)_NAME = rootfs-$(1)
+ROOTFS_$(2)_TYPE = rootfs
 ROOTFS_$(2)_IMAGE_NAME ?= rootfs.$(1)
 ROOTFS_$(2)_FINAL_IMAGE_NAME = $$(strip $$(ROOTFS_$(2)_IMAGE_NAME))
 ROOTFS_$(2)_DIR = $$(FS_DIR)/$(1)
