@@ -18,8 +18,7 @@ WIRESHARK_MAKE_ENV = \
 WIRESHARK_CONF_OPTS = \
 	-DENABLE_PCAP=ON \
 	-DENABLE_SMI=OFF \
-	-DENABLE_STATIC=OFF \
-	-DBUILD_sdjournal=OFF
+	-DENABLE_STATIC=OFF
 
 # wireshark needs the host version of lemon during compilation.
 # This binrary is provided by sqlite-src (which is different from
@@ -139,6 +138,13 @@ WIRESHARK_CONF_OPTS += -DENABLE_SPANDSP=ON
 WIRESHARK_DEPENDENCIES += spandsp
 else
 WIRESHARK_CONF_OPTS += -DENABLE_SPANDSP=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+WIRESHARK_CONF_OPTS += -DBUILD_sdjournal=ON
+WIRESHARK_DEPENDENCIES += systemd
+else
+WIRESHARK_CONF_OPTS += -DBUILD_sdjournal=OFF
 endif
 
 define WIRESHARK_REMOVE_DOCS
