@@ -87,6 +87,11 @@ endif
 rootfs-common-show-depends:
 	@echo $(ROOTFS_COMMON_DEPENDENCIES)
 
+.PHONY: rootfs-common-show-info
+rootfs-common-show-info:
+	@:
+	$(info $(call clean-json,{ $(call json-info,ROOTFS_COMMON) }))
+
 # Since this function will be called from within an $(eval ...)
 # all variable references except the arguments must be $$-quoted.
 define inner-rootfs
@@ -184,9 +189,13 @@ endif
 rootfs-$(1)-show-depends:
 	@echo $$(ROOTFS_$(2)_DEPENDENCIES)
 
+rootfs-$(1)-show-info:
+	@:
+	$$(info $$(call clean-json,{ $$(call json-info,ROOTFS_$(2)) }))
+
 rootfs-$(1): $$(BINARIES_DIR)/$$(ROOTFS_$(2)_FINAL_IMAGE_NAME)
 
-.PHONY: rootfs-$(1) rootfs-$(1)-show-depends
+.PHONY: rootfs-$(1) rootfs-$(1)-show-depends rootfs-$(1)-show-info
 
 ifeq ($$(BR2_TARGET_ROOTFS_$(2)),y)
 TARGETS_ROOTFS += rootfs-$(1)
