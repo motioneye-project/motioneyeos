@@ -49,6 +49,18 @@ ROOTFS_COMMON_DEPENDENCIES = \
 	$(BR2_TAR_HOST_DEPENDENCY) \
 	$(if $(PACKAGES_USERS)$(ROOTFS_USERS_TABLES),host-mkpasswd)
 
+ROOTFS_COMMON_FINAL_RECURSIVE_DEPENDENCIES = $(sort \
+	$(if $(filter undefined,$(origin ROOTFS_COMMON_FINAL_RECURSIVE_DEPENDENCIES__X)), \
+		$(eval ROOTFS_COMMON_FINAL_RECURSIVE_DEPENDENCIES__X := \
+			$(foreach p, \
+				$(ROOTFS_COMMON_DEPENDENCIES), \
+				$(p) \
+				$($(call UPPERCASE,$(p))_FINAL_RECURSIVE_DEPENDENCIES) \
+			) \
+		) \
+	) \
+	$(ROOTFS_COMMON_FINAL_RECURSIVE_DEPENDENCIES__X))
+
 rootfs-common-show-dependency-tree: $(patsubst %,%-show-dependency-tree,$(ROOTFS_COMMON_DEPENDENCIES))
 	$(info rootfs-common: host)
 	$(info rootfs-common -> $(foreach d,$(ROOTFS_COMMON_DEPENDENCIES),$(d)))
@@ -87,6 +99,18 @@ ROOTFS_$(2)_DIR = $$(FS_DIR)/$(1)
 ROOTFS_$(2)_TARGET_DIR = $$(ROOTFS_$(2)_DIR)/target
 
 ROOTFS_$(2)_DEPENDENCIES += rootfs-common
+
+ROOTFS_$(2)_FINAL_RECURSIVE_DEPENDENCIES = $$(sort \
+	$$(if $$(filter undefined,$$(origin ROOTFS_$(2)_FINAL_RECURSIVE_DEPENDENCIES__X)), \
+		$$(eval ROOTFS_$(2)_FINAL_RECURSIVE_DEPENDENCIES__X := \
+			$$(foreach p, \
+				$$(ROOTFS_$(2)_DEPENDENCIES), \
+				$$(p) \
+				$$($$(call UPPERCASE,$$(p))_FINAL_RECURSIVE_DEPENDENCIES) \
+			) \
+		) \
+	) \
+	$$(ROOTFS_$(2)_FINAL_RECURSIVE_DEPENDENCIES__X))
 
 rootfs-$(1)-show-dependency-tree: $$(patsubst %,%-show-dependency-tree,$$(ROOTFS_$(2)_DEPENDENCIES))
 	$$(info rootfs-$(1): host)
