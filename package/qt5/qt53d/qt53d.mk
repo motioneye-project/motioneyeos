@@ -27,7 +27,6 @@ endef
 
 define QT53D_INSTALL_STAGING_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install
-	$(QT5_LA_PRL_FILES_FIXUP)
 endef
 
 ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
