@@ -93,23 +93,24 @@ endif
 # source from the list returned by DOWNLOAD_URIS.
 #
 # Argument 1 is the source location
+# Argument 2 is the upper-case package name
 #
 ################################################################################
 
 define DOWNLOAD
-	$(Q)mkdir -p $($(PKG)_DL_DIR)
-	$(Q)$(EXTRA_ENV) flock $($(PKG)_DL_DIR)/ $(DL_WRAPPER) \
-		-c '$($(PKG)_DL_VERSION)' \
-		-d '$($(PKG)_DL_DIR)' \
+	$(Q)mkdir -p $($(2)_DL_DIR)
+	$(Q)$(EXTRA_ENV) flock $($(2)_DL_DIR)/ $(DL_WRAPPER) \
+		-c '$($(2)_DL_VERSION)' \
+		-d '$($(2)_DL_DIR)' \
 		-D '$(DL_DIR)' \
 		-f '$(notdir $(1))' \
-		-H '$($(PKG)_HASH_FILE)' \
-		-n '$($(PKG)_BASENAME_RAW)' \
-		-N '$($(PKG)_RAWNAME)' \
-		-o '$($(PKG)_DL_DIR)/$(notdir $(1))' \
-		$(if $($(PKG)_GIT_SUBMODULES),-r) \
-		$(foreach uri,$(call DOWNLOAD_URIS,$(1),$(PKG)),-u $(uri)) \
+		-H '$($(2)_HASH_FILE)' \
+		-n '$($(2)_BASENAME_RAW)' \
+		-N '$($(2)_RAWNAME)' \
+		-o '$($(2)_DL_DIR)/$(notdir $(1))' \
+		$(if $($(2)_GIT_SUBMODULES),-r) \
+		$(foreach uri,$(call DOWNLOAD_URIS,$(1),$(2)),-u $(uri)) \
 		$(QUIET) \
 		-- \
-		$($(PKG)_DL_OPTS)
+		$($(2)_DL_OPTS)
 endef
