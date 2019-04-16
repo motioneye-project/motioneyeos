@@ -1667,6 +1667,9 @@ F:	package/trousers/
 N:	Norbert Lange <nolange79@gmail.com>
 F:	package/tcf-agent/
 
+N:	Nylon Chen <nylon7@andestech.com>
+F:	arch/Config.in.nds32
+
 N:	Olaf Rempel <razzor@kopf-tisch.de>
 F:	package/ctorrent/
 
