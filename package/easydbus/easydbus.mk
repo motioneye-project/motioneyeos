@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EASYDBUS_VERSION = 59c340f2cd2c92ded82f9d4436866847f295faab
+EASYDBUS_VERSION = b86721147b265dfefc9a857669408cb6eb3d6560
 EASYDBUS_SITE = $(call github,mniestroj,easydbus,$(EASYDBUS_VERSION))
 EASYDBUS_DEPENDENCIES = luainterpreter libglib2
 EASYDBUS_LICENSE = MIT
