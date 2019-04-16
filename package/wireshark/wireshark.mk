@@ -17,8 +17,7 @@ WIRESHARK_MAKE_ENV = \
 
 WIRESHARK_CONF_OPTS = \
 	-DENABLE_PCAP=ON \
-	-DENABLE_SMI=OFF \
-	-DENABLE_STATIC=OFF
+	-DENABLE_SMI=OFF
 
 # wireshark needs the host version of lemon during compilation.
 # This binrary is provided by sqlite-src (which is different from
@@ -145,6 +144,21 @@ WIRESHARK_CONF_OPTS += -DBUILD_sdjournal=ON
 WIRESHARK_DEPENDENCIES += systemd
 else
 WIRESHARK_CONF_OPTS += -DBUILD_sdjournal=OFF
+endif
+
+# Disable plugins as some of them (like l16mono) can't be built
+# statically. ENABLE_STATIC=ON actually means "disable shared library"
+# and ENABLE_STATIC=OFF means "enable shared library". So for the
+# BR2_SHARED_STATIC_LIBS=y case, we want ENABLE_STATIC=OFF even if
+# that sounds counter-intuitive.
+ifeq ($(BR2_STATIC_LIBS),y)
+WIRESHARK_CONF_OPTS += \
+	-DENABLE_PLUGINS=OFF \
+	-DENABLE_STATIC=ON
+else
+WIRESHARK_CONF_OPTS += \
+	-DENABLE_PLUGINS=ON \
+	-DENABLE_STATIC=OFF
 endif
 
 define WIRESHARK_REMOVE_DOCS

@@ -1,0 +1,39 @@
+From 388cd212f3f055600a37f550dd79b156193f3ce5 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 16 Apr 2019 11:19:13 +0200
+Subject: [PATCH] FindGLIB2.cmake: fix static build
+
+captype, editcap and capinfos needs glib2 and its depedencies such as
+pcre otherwise static build will fail on missing references
+
+Currenttly, FindGLIB2.cmake sets GLIB2_LIBRARIES to GLIB2_LIBRARY then
+it checks for pcre library only when CMAKE_FIND_LIBRARIES_SUFFIXES is
+equal to ".a". When it is equal to ".so;.a", pcre is not added even
+if pkg-config has only found a static library.
+
+To fix this error, update FindGLIB2.cmake to append GLIB_LIBRARY to the
+GLIB2_LIBRARIES. In the UNIX context, GLIB2_LIBRARIES will contain all
+the needed dependencies returned by pkg-config
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://code.wireshark.org/review/#/c/32869/]
+---
+ cmake/modules/FindGLIB2.cmake | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/cmake/modules/FindGLIB2.cmake b/cmake/modules/FindGLIB2.cmake
+index 2b55b742fe..46ad3c41a6 100644
+--- a/cmake/modules/FindGLIB2.cmake
++++ b/cmake/modules/FindGLIB2.cmake
+@@ -92,7 +92,7 @@ find_package_handle_standard_args( GLIB2
+ )
+ 
+ if( GLIB2_FOUND )
+-	set( GLIB2_LIBRARIES ${GLIB2_LIBRARY} )
++	list( APPEND GLIB2_LIBRARIES ${GLIB2_LIBRARY} )
+ 	# Include transitive dependencies for static linking.
+ 	if(UNIX AND CMAKE_FIND_LIBRARY_SUFFIXES STREQUAL ".a")
+ 		find_library(PCRE_LIBRARY pcre)
+-- 
+2.20.1
+

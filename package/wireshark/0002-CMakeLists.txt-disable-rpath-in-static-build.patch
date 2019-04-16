@@ -1,0 +1,42 @@
+From e4cbd1964bcb7e989acd97c4c17508160ec31c5a Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 16 Apr 2019 10:54:01 +0200
+Subject: [PATCH] CMakeLists.txt: disable rpath in static build
+
+Trying to set RPATH to a static binary results in a build failure:
+
+CMake Error at cmake_install.cmake:50 (file):
+  file RPATH_CHANGE could not write new RPATH:
+
+    /usr/lib
+
+  to the file:
+
+    /home/fabrice/br-test-pkg/br-arm-full-static/target/usr/bin/tshark
+
+  No valid ELF RPATH or RUNPATH entry exists in the file;
+
+To fix this error, do not set RPATH if ENABLE_STATIC is set by the user
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: will be sent after first patch is merged]
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 95822cd0a6..38ba2382bb 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -185,7 +185,7 @@ set(PROJECT_INSTALL_INCLUDEDIR "${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME}")
+ set(LIBRARY_INSTALL_RPATH "")
+ set(EXECUTABLE_INSTALL_RPATH "")
+ set(EXTCAP_INSTALL_RPATH "")
+-if(NOT (WIN32 OR APPLE))
++if(NOT (WIN32 OR APPLE OR ENABLE_STATIC))
+ 	# Try to set a RPATH for installed binaries if the library directory is
+ 	# not already included in the default search list.
+ 	list(FIND CMAKE_C_IMPLICIT_LINK_DIRECTORIES "${CMAKE_INSTALL_FULL_LIBDIR}" IS_SYSTEM_DIR)
+-- 
+2.20.1
+
