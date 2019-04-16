@@ -1,0 +1,28 @@
+From 90d52d180dcc5d1300dc352ca709eb6453894143 Mon Sep 17 00:00:00 2001
+From: Nylon Chen <nylon7@andestech.com>
+Date: Wed, 28 Nov 2018 16:26:46 +0800
+Subject: [PATCH] nds32: Fix boot messages garbled
+
+In order to display uart correctly we have to pass the correct setting of uart to kernel by bootarg.
+This patch will provide such settings to set the correct uart baud rate.
+
+Signed-off-by: Nylon Chen <nylon7@andestech.com>
+---
+ arch/nds32/boot/dts/ae3xx.dts | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/nds32/boot/dts/ae3xx.dts b/arch/nds32/boot/dts/ae3xx.dts
+index bb39749a6673..aefe2090926a 100644
+--- a/arch/nds32/boot/dts/ae3xx.dts
++++ b/arch/nds32/boot/dts/ae3xx.dts
+@@ -6,6 +6,7 @@
+ 	interrupt-parent = <&intc>;
+ 
+ 	chosen {
++		bootargs = "memblock=debug earlycon console=ttyS0,38400n8 debug loglevel=7";
+ 		stdout-path = &serial0;
+ 	};
+ 
+-- 
+2.18.0
+
