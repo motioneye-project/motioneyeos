@@ -34,16 +34,15 @@ OPENJDK_DEPENDENCIES = \
 
 # JVM variants
 ifeq ($(BR2_PACKAGE_OPENJDK_JVM_VARIANT_CLIENT),y)
-OPENJDK_JVM_VARIANTS += client
+OPENJDK_JVM_VARIANT = client
 endif
 ifeq ($(BR2_PACKAGE_OPENJDK_JVM_VARIANT_SERVER),y)
-OPENJDK_JVM_VARIANTS += server
+OPENJDK_JVM_VARIANT = server
 endif
 ifeq ($(BR2_PACKAGE_OPENJDK_JVM_VARIANT_ZERO),y)
-OPENJDK_JVM_VARIANTS += zero
+OPENJDK_JVM_VARIANT = zero
 OPENJDK_DEPENDENCIES += libffi
 endif
-OPENJDK_JVM_VARIANT_LIST = $(subst $(space),$(comma),$(OPENJDK_JVM_VARIANTS))
 
 # OpenJDK ignores some variables unless passed via the environment.
 # These variables are PATH, LD, CC, CXX, and CPP.
@@ -75,7 +74,7 @@ OPENJDK_CONF_OPTS = \
 	--with-extra-cxxflags="$(TARGET_CXXFLAGS)" \
 	--with-giflib=system \
 	--with-jobs=$(PARALLEL_JOBS) \
-	--with-jvm-variants=$(OPENJDK_JVM_VARIANT_LIST) \
+	--with-jvm-variants=$(OPENJDK_JVM_VARIANT) \
 	--with-lcms=system \
 	--with-libjpeg=system \
 	--with-libpng=system \
