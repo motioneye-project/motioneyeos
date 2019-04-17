@@ -1,6 +1,6 @@
 config BR2_PACKAGE_BINUTILS
 	bool "binutils"
-	depends on !BR2_nios2
+	depends on !BR2_nios2 && !BR2_nds32
 	depends on BR2_USE_WCHAR
 	help
 	  Install binutils on the target
@@ -21,5 +21,5 @@ config BR2_PACKAGE_BINUTILS_TARGET
 endif
 
 comment "binutils needs a toolchain w/ wchar"
-	depends on !BR2_nios2
+	depends on !BR2_nios2 && !BR2_nds32
 	depends on !BR2_USE_WCHAR
