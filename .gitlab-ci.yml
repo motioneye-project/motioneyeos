@@ -91,6 +91,7 @@ acmesystems_arietta_g25_128mb_defconfig: { extends: .defconfig }
 acmesystems_arietta_g25_256mb_defconfig: { extends: .defconfig }
 amarula_a64_relic_defconfig: { extends: .defconfig }
 amarula_vyasa_rk3288_defconfig: { extends: .defconfig }
+andes_ae3xx_defconfig: { extends: .defconfig }
 arcturus_ucls1012a_defconfig: { extends: .defconfig }
 arcturus_ucp1020_defconfig: { extends: .defconfig }
 arm_foundationv8_defconfig: { extends: .defconfig }
