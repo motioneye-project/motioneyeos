@@ -152,6 +152,10 @@ ifeq ($(BR2_TARGET_UBOOT_NEEDS_PYLIBFDT),y)
 UBOOT_DEPENDENCIES += host-python host-swig
 endif
 
+ifeq ($(BR2_TARGET_UBOOT_NEEDS_PYELFTOOLS),y)
+UBOOT_DEPENDENCIES += host-python-pyelftools
+endif
+
 ifeq ($(BR2_TARGET_UBOOT_NEEDS_OPENSSL),y)
 UBOOT_DEPENDENCIES += host-openssl
 endif

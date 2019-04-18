@@ -151,6 +151,14 @@ config BR2_TARGET_UBOOT_NEEDS_PYLIBFDT
 	  Select this option if your U-Boot board configuration
 	  requires the Python libfdt library to be available.
 
+config BR2_TARGET_UBOOT_NEEDS_PYELFTOOLS
+	bool "U-Boot needs pyelftools"
+	help
+	  Select this option if your U-Boot board configuration
+	  requires the Python pyelftools library to be available.
+	  This is used by some rockchip SOCs for elf parsing.
+	  For example: rk3399 soc boards.
+
 config BR2_TARGET_UBOOT_NEEDS_OPENSSL
 	bool "U-Boot needs OpenSSL"
 	help
