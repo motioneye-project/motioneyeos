@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NEARDAL_VERSION = 33b54a55032b047fd885a5eb3592c169c0056c49
+NEARDAL_VERSION = 4143d130ed39299bfc59d08d2c7c77dbc7f809e9
 NEARDAL_SITE = $(call github,connectivity,neardal,$(NEARDAL_VERSION))
 NEARDAL_INSTALL_STAGING = YES
 NEARDAL_LICENSE = GPL-2.0
