@@ -76,8 +76,8 @@ BOOST_DEPENDENCIES += python
 endif
 endif
 
-HOST_BOOST_OPTS += toolset=gcc threading=multi variant=release link=shared \
-	runtime-link=shared
+HOST_BOOST_OPTS += --no-cmake-config toolset=gcc threading=multi \
+	variant=release link=shared runtime-link=shared
 
 ifeq ($(BR2_MIPS_OABI32),y)
 BOOST_ABI = o32
@@ -87,7 +87,8 @@ else
 BOOST_ABI = sysv
 endif
 
-BOOST_OPTS += toolset=gcc \
+BOOST_OPTS += --no-cmake-config \
+	     toolset=gcc \
 	     threading=multi \
 	     abi=$(BOOST_ABI) \
 	     variant=$(if $(BR2_ENABLE_DEBUG),debug,release)
