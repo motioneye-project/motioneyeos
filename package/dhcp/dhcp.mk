@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-DHCP_VERSION = 4.3.6
+DHCP_VERSION = 4.4.1
 DHCP_SITE = http://ftp.isc.org/isc/dhcp/$(DHCP_VERSION)
 DHCP_INSTALL_STAGING = YES
-DHCP_LICENSE = ISC
+DHCP_LICENSE = MPL-2.0
 DHCP_LICENSE_FILES = LICENSE
 DHCP_CONF_ENV = \
 	CPPFLAGS='-D_PATH_DHCPD_CONF=\"/etc/dhcp/dhcpd.conf\" \
@@ -15,6 +15,7 @@ DHCP_CONF_ENV = \
 	CFLAGS='$(TARGET_CFLAGS) -DISC_CHECK_NONE=1'
 
 DHCP_CONF_OPTS = \
+	--with-bind-extra-config="$(DHCP_BIND_CONF_OPTS)" \
 	--with-randomdev=/dev/random \
 	--with-srv-lease-file=/var/lib/dhcp/dhcpd.leases \
 	--with-srv6-lease-file=/var/lib/dhcp/dhcpd6.leases \
@@ -26,17 +27,6 @@ DHCP_CONF_OPTS = \
 	--with-cli6-pid-file=/var/run/dhclient6.pid \
 	--with-relay-pid-file=/var/run/dhcrelay.pid \
 	--with-relay6-pid-file=/var/run/dhcrelay6.pid
-
-# The source for the bind libraries used by dhcp are embedded in the dhcp source
-# as a tar-ball. Extract the bind source to allow any patches to be applied
-# during the patch phase.
-define DHCP_EXTRACT_BIND
-	cd $(@D)/bind; tar -xvf bind.tar.gz
-endef
-DHCP_POST_EXTRACT_HOOKS += DHCP_EXTRACT_BIND
-
-# The patchset requires configure et.al. to be regenerated.
-DHCP_AUTORECONF = YES
 
 # bind does not support parallel builds.
 DHCP_MAKE = $(MAKE1)
@@ -52,6 +42,16 @@ DHCP_MAKE_ENV = \
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
 DHCP_CONF_OPTS += --enable-delayed-ack
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+DHCP_BIND_CONF_OPTS += --with-zlib
+else
+DHCP_BIND_CONF_OPTS += --without-zlib
+endif
+
+ifeq ($(BR2_STATIC_LIBS),y)
+DHCP_BIND_CONF_OPTS += --without-dlopen
 endif
 
 ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)
