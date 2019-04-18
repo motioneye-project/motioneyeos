@@ -12,3 +12,4 @@ PYTHON_PYELFTOOLS_LICENSE_FILES = LICENSE
 PYTHON_PYELFTOOLS_SETUP_TYPE = distutils
 
 $(eval $(python-package))
+$(eval $(host-python-package))
