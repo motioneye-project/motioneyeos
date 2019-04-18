@@ -1,0 +1,37 @@
+From bfc579e61f9c6dd69a024ef6e2f9287abb40603f Mon Sep 17 00:00:00 2001
+From: arvidn <arvid@libtorrent.org>
+Date: Sun, 20 Jan 2019 18:03:38 +0100
+Subject: [PATCH] add missing cstdarg include
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/arvidn/libtorrent/commit/bfc579e61f9c6dd69a024ef6e2f9287abb40603f]
+---
+ include/libtorrent/alert_types.hpp     | 1 +
+ include/libtorrent/stack_allocator.hpp | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/include/libtorrent/alert_types.hpp b/include/libtorrent/alert_types.hpp
+index 12d4091e75..090c48c8cd 100644
+--- a/include/libtorrent/alert_types.hpp
++++ b/include/libtorrent/alert_types.hpp
+@@ -60,6 +60,7 @@ POSSIBILITY OF SUCH DAMAGE.
+ #include "libtorrent/aux_/disable_warnings_pop.hpp"
+ 
+ #include <bitset>
++#include <cstdarg> // for va_list
+ 
+ #if TORRENT_ABI_VERSION == 1
+ #define PROGRESS_NOTIFICATION | alert::progress_notification
+diff --git a/include/libtorrent/stack_allocator.hpp b/include/libtorrent/stack_allocator.hpp
+index 9e83ac52e7..8fa7a98708 100644
+--- a/include/libtorrent/stack_allocator.hpp
++++ b/include/libtorrent/stack_allocator.hpp
+@@ -39,6 +39,7 @@ POSSIBILITY OF SUCH DAMAGE.
+ #include "libtorrent/aux_/vector.hpp"
+ #include "libtorrent/aux_/numeric_cast.hpp"
+ 
++#include <cstdarg> // for va_list
+ #include <cstdio> // for vsnprintf
+ #include <cstring>
+ 

@@ -1,0 +1,29 @@
+From a2c7f19ad414879d5354ef6ca98acf80a5005ab3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 18 Apr 2019 14:30:16 +0200
+Subject: [PATCH] buffer.hpp: fix build on uclibc
+
+malloc_usable_size is not available on uclibc
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: not sent yet]
+---
+ include/libtorrent/buffer.hpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/libtorrent/buffer.hpp b/include/libtorrent/buffer.hpp
+index 3af5ef24f..785e7cfd8 100644
+--- a/include/libtorrent/buffer.hpp
++++ b/include/libtorrent/buffer.hpp
+@@ -85,7 +85,7 @@ public:
+ 
+ 		// the actual allocation may be larger than we requested. If so, let the
+ 		// user take advantage of every single byte
+-#if defined __GLIBC__ || defined __FreeBSD__
++#if (defined __GLIBC__ && !defined __UCLIBC__) || defined __FreeBSD__
+ 		m_size = static_cast<difference_type>(::malloc_usable_size(m_begin));
+ #elif defined _MSC_VER
+ 		m_size = static_cast<difference_type>(::_msize(m_begin));
+-- 
+2.20.1
+
