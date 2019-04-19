@@ -1,0 +1,35 @@
+From 8ee2b03039cccf64402a72dea2185d7fe1972729 Mon Sep 17 00:00:00 2001
+From: Shyam Saini <shyam.saini@amarulasolutions.com>
+Date: Mon, 15 Apr 2019 16:16:16 +0530
+Subject: [PATCH] include: configs: Increase CONFIG_SYS_BOOTM_LEN to 16MB
+
+The default value of CONFIG_SYS_BOOTM_LEN is 0x800000 i.e, 8MB which
+causes board reset because of larger uImage size.
+
+Error log snippet:
+   Booting using the fdt blob at 0x1f00000
+   Loading Kernel Image ... Image too large: increase CONFIG_SYS_BOOTM_LEN
+Must RESET board to recover
+resetting ...
+
+Signed-off-by: Shyam Saini <shyam.saini@amarulasolutions.com>
+---
+ include/configs/rk3288_common.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/configs/rk3288_common.h b/include/configs/rk3288_common.h
+index 72a54bc0ab..eab7cf4d86 100644
+--- a/include/configs/rk3288_common.h
++++ b/include/configs/rk3288_common.h
+@@ -9,6 +9,8 @@
+ #include <asm/arch/hardware.h>
+ #include "rockchip-common.h"
+ 
++#define CONFIG_SYS_BOOTM_LEN (16 << 20) /* 16MB */
++
+ #define CONFIG_SKIP_LOWLEVEL_INIT_ONLY
+ #define CONFIG_SYS_MALLOC_LEN		(32 << 20)
+ #define CONFIG_SYS_CBSIZE		1024
+-- 
+2.11.0
+
