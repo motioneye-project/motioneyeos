@@ -834,6 +834,7 @@ F:	package/oniguruma/
 F:	package/oprofile/
 F:	package/pcmanfm/
 F:	package/python-backcall/
+F:	package/python-parso/
 F:	package/rygel/
 F:	package/safeclib/
 F:	package/tinycbor/
