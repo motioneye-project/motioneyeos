@@ -7,6 +7,7 @@ config BR2_PACKAGE_JEMALLOC_ARCH_SUPPORTS
 	default y if BR2_or1k
 	default y if BR2_sparc64
 	default y if BR2_powerpc
+	default y if BR2_riscv
 	default y if BR2_sh4 || BR2sh4eb || BR2_sh4a || BR2_sh4aeb
 
 config BR2_PACKAGE_JEMALLOC
