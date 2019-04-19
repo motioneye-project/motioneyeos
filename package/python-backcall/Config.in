@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_BACKCALL
+	bool "python-backcall"
+	help
+	  Specifications for callback functions passed in to an API.
+
+	  https://github.com/takluyver/backcall
