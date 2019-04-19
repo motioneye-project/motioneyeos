@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/jedi/json
+md5	46c12589de9df839ff6be79c5009766d  jedi-0.13.3.tar.gz
+sha256	2bb0603e3506f708e792c7f4ad8fc2a7a9d9c2d292a358fbbd58da531695595b  jedi-0.13.3.tar.gz
+# Locally computed sha256 checksums
+sha256	78e60cd0b8f28694f30195482c33d76908d846b0d15278deb7332aa22ba8e412  LICENSE.txt
+sha256	9c1e620a5cf8e74fe81c1fd4c55e9cc0b189fc04e677cfc7ef915de746c3f59e  docs/_themes/flask/LICENSE
