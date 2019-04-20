@@ -13,7 +13,6 @@ LINKNX_INSTALL_STAGING = YES
 LINKNX_AUTORECONF = YES
 LINKNX_CONF_OPTS = \
 	--without-cppunit \
-	--without-log4cpp \
 	--without-pth-test \
 	--with-pth=$(STAGING_DIR)/usr \
 	--disable-smtp
@@ -27,6 +26,13 @@ LINKNX_CONF_OPTS += --with-libcurl=$(STAGING_DIR)/usr
 LINKNX_DEPENDENCIES += libcurl
 else
 LINKNX_CONF_OPTS += --without-libcurl
+endif
+
+ifeq ($(BR2_PACKAGE_LOG4CPP),y)
+LINKNX_CONF_OPTS += --with-log4cpp
+LINKNX_DEPENDENCIES += host-pkgconf log4cpp
+else
+LINKNX_CONF_OPTS += --without-log4cpp
 endif
 
 ifeq ($(BR2_PACKAGE_LUA),y)
