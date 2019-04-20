@@ -1,0 +1,297 @@
+From 76c2794923c4c101ff715be11d794f7fefc6c524 Mon Sep 17 00:00:00 2001
+From: Arvid Norberg <arvid.norberg@gmail.com>
+Date: Fri, 19 Apr 2019 20:56:19 +0200
+Subject: [PATCH] fix build with boost-1.70 (#3788)
+
+fix build with boost 1.70.0 Fix #3683
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/arvidn/libtorrent/commit/76c2794923c4c101ff715be11d794f7fefc6c524]
+---
+ include/libtorrent/io_service.hpp      |  3 +++
+ include/libtorrent/io_service_fwd.hpp  | 13 +++++++++++--
+ include/libtorrent/proxy_base.hpp      |  2 +-
+ include/libtorrent/tracker_manager.hpp |  2 +-
+ include/libtorrent/udp_socket.hpp      |  2 +-
+ src/disk_io_thread_pool.cpp            |  2 +-
+ src/http_connection.cpp                | 18 +++++++++---------
+ src/kademlia/dht_tracker.cpp           |  2 +-
+ src/lsd.cpp                            |  4 ++--
+ src/natpmp.cpp                         |  6 +++---
+ src/udp_socket.cpp                     |  2 +-
+ src/upnp.cpp                           |  2 +-
+ test/test_fast_extension.cpp           |  2 +-
+ 13 files changed, 36 insertions(+), 24 deletions(-)
+
+diff --git a/include/libtorrent/io_service.hpp b/include/libtorrent/io_service.hpp
+index 123274019b..5f6be1a2ca 100644
+--- a/include/libtorrent/io_service.hpp
++++ b/include/libtorrent/io_service.hpp
+@@ -38,9 +38,12 @@ POSSIBILITY OF SUCH DAMAGE.
+ #else
+ #include "libtorrent/aux_/disable_warnings_push.hpp"
+ #include <boost/asio/io_service.hpp>
++#include <boost/version.hpp>
+ #include "libtorrent/aux_/disable_warnings_pop.hpp"
+ #endif // SIMULATOR
+ 
++#include "libtorrent/io_service_fwd.hpp"
++
+ namespace libtorrent {
+ 
+ #if defined TORRENT_BUILD_SIMULATOR
+diff --git a/include/libtorrent/io_service_fwd.hpp b/include/libtorrent/io_service_fwd.hpp
+index 1b22c3e58f..71b845d3f3 100644
+--- a/include/libtorrent/io_service_fwd.hpp
++++ b/include/libtorrent/io_service_fwd.hpp
+@@ -55,10 +55,19 @@ namespace boost { namespace asio {
+ namespace libtorrent {
+ 
+ #if defined TORRENT_BUILD_SIMULATOR
+-	typedef sim::asio::io_service io_service;
++	using io_service = sim::asio::io_service;
+ #else
+-	typedef boost::asio::io_service io_service;
++	using io_service = boost::asio::io_service;
+ #endif
++
++#if BOOST_VERSION >= 107000
++template <typename T>
++io_service& get_io_service(T& o) { return static_cast<io_service&>(o.get_executor().context()); }
++#else
++template <typename T>
++io_service& get_io_service(T& o) { return o.get_io_service(); }
++#endif
++
+ }
+ 
+ #endif
+diff --git a/include/libtorrent/proxy_base.hpp b/include/libtorrent/proxy_base.hpp
+index 344c230977..d7666545c6 100644
+--- a/include/libtorrent/proxy_base.hpp
++++ b/include/libtorrent/proxy_base.hpp
+@@ -246,7 +246,7 @@ class proxy_base
+ 
+ 	io_service& get_io_service()
+ 	{
+-		return m_sock.get_io_service();
++		return lt::get_io_service(m_sock);
+ 	}
+ 
+ 	lowest_layer_type& lowest_layer()
+diff --git a/include/libtorrent/tracker_manager.hpp b/include/libtorrent/tracker_manager.hpp
+index 86331adbca..1fc28e89ff 100644
+--- a/include/libtorrent/tracker_manager.hpp
++++ b/include/libtorrent/tracker_manager.hpp
+@@ -259,7 +259,7 @@ namespace libtorrent {
+ 		virtual void on_timeout(error_code const& ec) = 0;
+ 		virtual ~timeout_handler();
+ 
+-		io_service& get_io_service() { return m_timeout.get_io_service(); }
++		io_service& get_io_service() { return lt::get_io_service(m_timeout); }
+ 
+ 	private:
+ 
+diff --git a/include/libtorrent/udp_socket.hpp b/include/libtorrent/udp_socket.hpp
+index f4dcbeb248..c5c9aeba66 100644
+--- a/include/libtorrent/udp_socket.hpp
++++ b/include/libtorrent/udp_socket.hpp
+@@ -61,7 +61,7 @@ namespace libtorrent {
+ 		static constexpr udp_send_flags_t dont_fragment = 3_bit;
+ 
+ 		bool is_open() const { return m_abort == false; }
+-		io_service& get_io_service() { return m_socket.get_io_service(); }
++		io_service& get_io_service() { return lt::get_io_service(m_socket); }
+ 
+ 		template <typename Handler>
+ 		void async_read(Handler&& h)
+diff --git a/src/disk_io_thread_pool.cpp b/src/disk_io_thread_pool.cpp
+index 4d4b5ee678..123159a45d 100644
+--- a/src/disk_io_thread_pool.cpp
++++ b/src/disk_io_thread_pool.cpp
+@@ -173,7 +173,7 @@ namespace libtorrent {
+ 			// buffer pool won't exist anymore, and crash. This prevents that.
+ 			m_threads.emplace_back(&pool_thread_interface::thread_fun
+ 				, &m_thread_iface, std::ref(*this)
+-				, io_service::work(m_idle_timer.get_io_service()));
++				, io_service::work(get_io_service(m_idle_timer)));
+ 		}
+ 	}
+ 
+diff --git a/src/http_connection.cpp b/src/http_connection.cpp
+index e01e9ea1d5..81e5368a55 100644
+--- a/src/http_connection.cpp
++++ b/src/http_connection.cpp
+@@ -148,7 +148,7 @@ void http_connection::get(std::string const& url, time_duration timeout, int pri
+ 
+ 	if (ec)
+ 	{
+-		m_timer.get_io_service().post(std::bind(&http_connection::callback
++		lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 			, me, ec, span<char>{}));
+ 		return;
+ 	}
+@@ -160,7 +160,7 @@ void http_connection::get(std::string const& url, time_duration timeout, int pri
+ 		)
+ 	{
+ 		error_code err(errors::unsupported_url_protocol);
+-		m_timer.get_io_service().post(std::bind(&http_connection::callback
++		lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 			, me, err, span<char>{}));
+ 		return;
+ 	}
+@@ -258,7 +258,7 @@ void http_connection::start(std::string const& hostname, int port
+ 
+ 	if (ec)
+ 	{
+-		m_timer.get_io_service().post(std::bind(&http_connection::callback
++		lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 			, me, ec, span<char>{}));
+ 		return;
+ 	}
+@@ -297,7 +297,7 @@ void http_connection::start(std::string const& hostname, int port
+ #if TORRENT_USE_I2P
+ 			if (i2p_conn->proxy().type != settings_pack::i2p_proxy)
+ 			{
+-				m_timer.get_io_service().post(std::bind(&http_connection::callback
++				lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 					, me, error_code(errors::no_i2p_router), span<char>{}));
+ 				return;
+ 			}
+@@ -332,8 +332,8 @@ void http_connection::start(std::string const& hostname, int port
+ 					m_ssl_ctx->set_verify_mode(ssl::context::verify_none, ec);
+ 					if (ec)
+ 					{
+-						m_timer.get_io_service().post(std::bind(&http_connection::callback
+-								, me, ec, span<char>{}));
++						lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
++							, me, ec, span<char>{}));
+ 						return;
+ 					}
+ 				}
+@@ -344,7 +344,7 @@ void http_connection::start(std::string const& hostname, int port
+ 		// assume this is not a tracker connection. Tracker connections that
+ 		// shouldn't be subject to the proxy should pass in nullptr as the proxy
+ 		// pointer.
+-		instantiate_connection(m_timer.get_io_service()
++		instantiate_connection(lt::get_io_service(m_timer)
+ 			, proxy ? *proxy : null_proxy, m_sock, userdata, nullptr, false, false);
+ 
+ 		if (m_bind_addr)
+@@ -353,7 +353,7 @@ void http_connection::start(std::string const& hostname, int port
+ 			m_sock.bind(tcp::endpoint(*m_bind_addr, 0), ec);
+ 			if (ec)
+ 			{
+-				m_timer.get_io_service().post(std::bind(&http_connection::callback
++				lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 					, me, ec, span<char>{}));
+ 				return;
+ 			}
+@@ -362,7 +362,7 @@ void http_connection::start(std::string const& hostname, int port
+ 		setup_ssl_hostname(m_sock, hostname, ec);
+ 		if (ec)
+ 		{
+-			m_timer.get_io_service().post(std::bind(&http_connection::callback
++			lt::get_io_service(m_timer).post(std::bind(&http_connection::callback
+ 				, me, ec, span<char>{}));
+ 			return;
+ 		}
+diff --git a/src/kademlia/dht_tracker.cpp b/src/kademlia/dht_tracker.cpp
+index a840bcf991..f2b2b9e2a1 100644
+--- a/src/kademlia/dht_tracker.cpp
++++ b/src/kademlia/dht_tracker.cpp
+@@ -130,7 +130,7 @@ namespace libtorrent { namespace dht {
+ 		// must use piecewise construction because tracker_node::connection_timer
+ 		// is neither copyable nor movable
+ 		auto n = m_nodes.emplace(std::piecewise_construct_t(), std::forward_as_tuple(s)
+-			, std::forward_as_tuple(m_key_refresh_timer.get_io_service()
++			, std::forward_as_tuple(get_io_service(m_key_refresh_timer)
+ 			, s, this, m_settings, nid, m_log, m_counters
+ 			, std::bind(&dht_tracker::get_node, this, _1, _2)
+ 			, m_storage));
+diff --git a/src/lsd.cpp b/src/lsd.cpp
+index 99e21ead44..562f374c62 100644
+--- a/src/lsd.cpp
++++ b/src/lsd.cpp
+@@ -100,11 +100,11 @@ void lsd::debug_log(char const* fmt, ...) const
+ void lsd::start(error_code& ec)
+ {
+ 	m_socket.open(std::bind(&lsd::on_announce, self(), _1, _2)
+-		, m_broadcast_timer.get_io_service(), ec);
++		, lt::get_io_service(m_broadcast_timer), ec);
+ 	if (ec) return;
+ 
+ 	m_socket6.open(std::bind(&lsd::on_announce, self(), _1, _2)
+-		, m_broadcast_timer.get_io_service(), ec);
++		, lt::get_io_service(m_broadcast_timer), ec);
+ }
+ 
+ lsd::~lsd() = default;
+diff --git a/src/natpmp.cpp b/src/natpmp.cpp
+index 1226bcebac..5876683ea9 100644
+--- a/src/natpmp.cpp
++++ b/src/natpmp.cpp
+@@ -160,13 +160,13 @@ void natpmp::start(address local_address, std::string device)
+ 	// try to find one even if the listen socket isn't bound to a device
+ 	if (device.empty())
+ 	{
+-		device = device_for_address(local_address, m_socket.get_io_service(), ec);
++		device = device_for_address(local_address, get_io_service(m_socket), ec);
+ 		// if this fails fall back to using the first default gateway in the
+ 		// routing table
+ 		ec.clear();
+ 	}
+ 
+-	auto const route = get_default_route(m_socket.get_io_service()
++	auto const route = get_default_route(get_io_service(m_socket)
+ 		, device, local_address.is_v6(), ec);
+ 
+ 	if (!route)
+@@ -194,7 +194,7 @@ void natpmp::start(address local_address, std::string device)
+ 	if (local_address.is_unspecified())
+ 	{
+ 		std::vector<ip_interface> const net = enum_net_interfaces(
+-			m_socket.get_io_service(), ec);
++			get_io_service(m_socket), ec);
+ 
+ 		auto const it = std::find_if(net.begin(), net.end(), [&](ip_interface const& i)
+ 		{
+diff --git a/src/udp_socket.cpp b/src/udp_socket.cpp
+index 9ca38e5486..2459e4f1ca 100644
+--- a/src/udp_socket.cpp
++++ b/src/udp_socket.cpp
+@@ -492,7 +492,7 @@ void udp_socket::set_proxy_settings(aux::proxy_settings const& ps)
+ 	{
+ 		// connect to socks5 server and open up the UDP tunnel
+ 
+-		m_socks5_connection = std::make_shared<socks5>(m_socket.get_io_service());
++		m_socks5_connection = std::make_shared<socks5>(lt::get_io_service(m_socket));
+ 		m_socks5_connection->start(ps);
+ 	}
+ }
+diff --git a/src/upnp.cpp b/src/upnp.cpp
+index a300571e47..b1e8a5bb19 100644
+--- a/src/upnp.cpp
++++ b/src/upnp.cpp
+@@ -121,7 +121,7 @@ void upnp::start()
+ 
+ 	error_code ec;
+ 	m_socket.open(std::bind(&upnp::on_reply, self(), _1, _2)
+-		, m_refresh_timer.get_io_service(), ec);
++		, lt::get_io_service(m_refresh_timer), ec);
+ 
+ 	m_mappings.reserve(10);
+ }
+diff --git a/test/test_fast_extension.cpp b/test/test_fast_extension.cpp
+index 91256fa0c9..cddc508825 100644
+--- a/test/test_fast_extension.cpp
++++ b/test/test_fast_extension.cpp
+@@ -462,7 +462,7 @@ std::shared_ptr<torrent_info> setup_peer(tcp::socket& s, sha1_hash& ih
+ 	}
+ 	else
+ 	{
+-		tcp::acceptor l(s.get_io_service());
++		tcp::acceptor l(lt::get_io_service(s));
+ 		l.open(tcp::v4());
+ 		l.bind(tcp::endpoint(address_v4::from_string("127.0.0.1"), 0));
+ 		l.listen();
