@@ -26,6 +26,7 @@ endif
 
 # Cannot use multiple threads to build the reference policy
 REFPOLICY_MAKE = \
+	PYTHON=$(HOST_DIR)/usr/bin/python \
 	TEST_TOOLCHAIN=$(HOST_DIR) \
 	$(TARGET_MAKE_ENV) \
 	$(MAKE1)
