@@ -10,7 +10,7 @@ WESTON_SITE = https://source.codeaurora.org/external/imx/weston-imx
 WESTON_SITE_METHOD = git
 WESTON_AUTORECONF = YES
 else
-WESTON_VERSION = 5.0.0
+WESTON_VERSION = 6.0.0
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 endif
@@ -26,7 +26,8 @@ WESTON_CONF_OPTS = \
 	--disable-headless-compositor \
 	--disable-colord \
 	--disable-devdocs \
-	--disable-setuid-install
+	--disable-setuid-install \
+	--enable-autotools
 
 WESTON_MAKE_OPTS = \
 	WAYLAND_PROTOCOLS_DATADIR=$(STAGING_DIR)/usr/share/wayland-protocols
