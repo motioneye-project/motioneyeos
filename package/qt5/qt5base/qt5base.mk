@@ -324,7 +324,7 @@ define QT5BASE_CONFIGURE_CMDS
 	(cd $(@D); \
 		$(TARGET_MAKE_ENV) \
 		PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
-		MAKEFLAGS="$(MAKEFLAGS) -j$(PARALLEL_JOBS)" \
+		MAKEFLAGS="-j$(PARALLEL_JOBS) $(MAKEFLAGS)" \
 		./configure \
 		-v \
 		-prefix /usr \
