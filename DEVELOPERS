@@ -2207,6 +2207,9 @@ F:	support/scripts/size-stats
 F:	utils/size-stats-compare
 F:	toolchain/
 
+N:	Thomas Huth <huth@tuxfamily.org>
+F:	package/ascii-invaders/
+
 N:	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 F:	arch/Config.in.arm
 F:	boot/boot-wrapper-aarch64/
