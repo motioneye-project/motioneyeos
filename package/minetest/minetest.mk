@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MINETEST_VERSION = 5.0.0
+MINETEST_VERSION = 5.0.1
 MINETEST_SITE = $(call github,minetest,minetest,$(MINETEST_VERSION))
 MINETEST_LICENSE = LGPL-2.1+ (code), CC-BY-SA-3.0 (textures and sounds)
 MINETEST_LICENSE_FILES = LICENSE.txt
