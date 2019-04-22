@@ -21,8 +21,9 @@ LYNX_CONF_OPTS += --with-screen=slang
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-LYNX_DEPENDENCIES += openssl
-LYNX_CONF_OPTS += --with-ssl
+LYNX_DEPENDENCIES += host-pkgconf openssl
+LYNX_CONF_OPTS += --with-ssl=$(STAGING_DIR)/usr
+LYNX_CONF_ENV = LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 else ifeq ($(BR2_PACKAGE_GNUTLS),y)
 LYNX_DEPENDENCIES += gnutls
 LYNX_CONF_OPTS += --with-gnutls
