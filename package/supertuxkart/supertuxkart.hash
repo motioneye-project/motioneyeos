@@ -1,5 +1,5 @@
 # Locally computed
-sha256	d8014e7106ba84f98b5ec5f146249dcffc284fc4083f8f237ff420b9e2219cb0  supertuxkart-0.9.3-src.tar.xz
-# From https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/0.9.3/
-sha1	2650ba20976472f10122a8600cc239507a9b6f24  supertuxkart-0.9.3-src.tar.xz
-md5	8de5455b8fdbb92679e302b76c9041cf  supertuxkart-0.9.3-src.tar.xz
+sha256	6d88f43f0de5202766ba305c87e3d9843103e81d31b7193059286098d2a5d980  supertuxkart-1.0-src.tar.xz
+# From https://sourceforge.net/projects/supertuxkart/files/SuperTuxKart/1.0/
+sha1	cd270c851c5b15fb69c6e78e9824d87187c1f801  supertuxkart-1.0-src.tar.xz
+md5	3059ea9c146b50f40f2b59a606da0fc0  supertuxkart-1.0-src.tar.xz
