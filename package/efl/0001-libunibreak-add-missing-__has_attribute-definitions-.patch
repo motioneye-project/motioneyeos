@@ -1,0 +1,48 @@
+From c394fba4c4c820ea2b7200306ff033e4bbc12ead Mon Sep 17 00:00:00 2001
+From: Romain Naour <romain.naour@gmail.com>
+Date: Mon, 22 Apr 2019 19:26:09 +0200
+Subject: [PATCH] libunibreak: add missing __has_attribute definitions for old
+ compilers
+
+__has_attribute has been introduced with gcc 5 [1].
+
+[1] https://www.gnu.org/software/gcc/gcc-5/changes.html
+
+Fixes:
+http://autobuild.buildroot.net/results/64ab825048fac1654b0d0698740ddf857fcc0afa/build-end.log
+
+Upstream status:
+https://phab.enlightenment.org/T7818
+
+Signed-off-by: Romain Naour <romain.naour@gmail.com>
+---
+ src/static_libs/libunibreak/wordbreak.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/static_libs/libunibreak/wordbreak.c b/src/static_libs/libunibreak/wordbreak.c
+index 017e0fd091..50c830c7cc 100644
+--- a/src/static_libs/libunibreak/wordbreak.c
++++ b/src/static_libs/libunibreak/wordbreak.c
+@@ -209,6 +209,9 @@ static void set_wordbreaks(
+                 posLast = posCur;
+                 break;
+             }
++#ifndef __has_attribute
++# define __has_attribute(x) 0
++#endif
+ #if __has_attribute(fallthrough)
+            __attribute__((fallthrough));
+ #endif
+@@ -325,6 +328,9 @@ static void set_wordbreaks(
+                 wbcSeqStart = wbcCur;
+                 posLast = posCur;
+             }
++#ifndef __has_attribute
++# define __has_attribute(x) 0
++#endif
+ #if __has_attribute(fallthrough)
+            __attribute__((fallthrough));
+ #endif
+-- 
+2.14.5
+
