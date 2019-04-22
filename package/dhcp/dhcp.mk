@@ -45,6 +45,7 @@ DHCP_CONF_OPTS += --enable-delayed-ack
 endif
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
+DHCP_DEPENDENCIES += zlib
 DHCP_BIND_CONF_OPTS += --with-zlib
 else
 DHCP_BIND_CONF_OPTS += --without-zlib
