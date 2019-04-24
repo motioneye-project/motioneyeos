@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-JANUS_GATEWAY_VERSION = v0.5.0
+JANUS_GATEWAY_VERSION = v0.6.3
 JANUS_GATEWAY_SITE = $(call github,meetecho,janus-gateway,$(JANUS_GATEWAY_VERSION))
 JANUS_GATEWAY_LICENSE = GPL-3.0
 JANUS_GATEWAY_LICENSE_FILES = COPYING
 
 # ding-libs provides the ini_config library
 JANUS_GATEWAY_DEPENDENCIES = host-pkgconf jansson libnice \
-	libsrtp host-gengetopt libglib2 openssl
+	libsrtp host-gengetopt libglib2 openssl libconfig
 
 # Straight out of the repository, no ./configure, and we also patch
 # configure.ac.

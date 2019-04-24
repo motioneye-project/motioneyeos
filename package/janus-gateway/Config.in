@@ -5,6 +5,7 @@ menuconfig BR2_PACKAGE_JANUS_GATEWAY
 	depends on BR2_USE_MMU # libnice
 	depends on !BR2_STATIC_LIBS # dlopen
 	select BR2_PACKAGE_JANSSON
+	select BR2_PACKAGE_LIBCONFIG
 	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_LIBNICE
 	select BR2_PACKAGE_LIBSRTP

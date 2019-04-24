@@ -1,4 +1,7 @@
-Do not force SSP usage
+From 4b02c8207adb888d35951bbc1c5b3029594f44c6 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Wed, 24 Apr 2019 13:56:27 -0400
+Subject: [PATCH] Do not force SSP usage
 
 The toolchain may not support SSP, so do not enforce its usage, let
 the package user pass the appropriate CFLAGS to enable SSP if needed.
@@ -7,16 +10,24 @@ Signed-off-by: Gregory Dymarek <gregd72002@gmail.com>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 (rebased against v0.1.0)
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+(rebased against v0.6.3)
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ configure.ac | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff -rupN janus-gateway-master.orig/Makefile.am janus-gateway-master/Makefile.am
---- janus-gateway-master.orig/Makefile.am	2014-11-27 14:36:31.000000000 +0000
-+++ janus-gateway-master/Makefile.am	2014-12-01 16:39:50.551935028 +0000
-@@ -14,7 +14,7 @@ AM_CFLAGS += -Wredundant-decls  # sophia
- # some fairly big refactoring though, which can wait.
- # AM_CFLAGS += -Wshadow -Wstrict-aliasing=2
- 
--AM_CFLAGS += -fstack-protector-all -g -ggdb -fPIC -rdynamic -pthread
-+AM_CFLAGS += -g -ggdb -fPIC -rdynamic -pthread
- 
- # FIXME: make docs work with distcheck
- DISTCHECK_CONFIGURE_FLAGS = --disable-docs --enable-post-processing
+diff --git a/configure.ac b/configure.ac
+index 257ea8c..ca17a29 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -20,7 +20,6 @@ LT_INIT
+ # Common CFLAGS
+ CFLAGS="$CFLAGS \
+ 	-fPIC \
+-	-fstack-protector-all \
+ 	-fstrict-aliasing \
+ 	-ggdb3 \
+ 	-pthread \
+-- 
+2.20.1
+
