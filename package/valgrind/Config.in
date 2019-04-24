@@ -2,12 +2,7 @@ config BR2_PACKAGE_VALGRIND_ARCH_SUPPORTS
 	bool
 	default y if BR2_aarch64
 	default y if BR2_ARM_CPU_ARMV7A
-	# MIPS32 R6 is unsupported
-	default y if BR2_mips && !BR2_mips_32r6
-	default y if BR2_mipsel && !BR2_mips_32r6
-	# MIPS64 R6 is unsupported
-	default y if BR2_mips64 && !BR2_mips_64r6
-	default y if BR2_mips64el && !BR2_mips_64r6
+	default y if BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
 	default y if BR2_i386 || BR2_x86_64
 	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	depends on !BR2_MIPS_SOFT_FLOAT

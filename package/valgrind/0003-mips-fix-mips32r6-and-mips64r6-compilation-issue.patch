@@ -1,0 +1,51 @@
+From 50dd9600ab1ad8933704ee85289191d9c65ba444 Mon Sep 17 00:00:00 2001
+From: Petar Jovanovic <mips32r2@gmail.com>
+Date: Fri, 19 Apr 2019 14:04:26 +0000
+Subject: [PATCH] mips: fix mips32r6 and mips64r6 compilation issue
+
+Add missing variable declarations.
+Modify local_sys_write_stderr to use movn if available, and use
+seleqz/selnez instructions otherwise.
+
+Backported from upstream commit
+50dd9600ab1ad8933704ee85289191d9c65ba444.
+
+Signed-off-by: Stefan Maksimovic <stefan.maksimovic@rt-rk.com>
+---
+ VEX/priv/guest_mips_toIR.c | 1 +
+ coregrind/m_debuglog.c     | 6 ++++++
+ 2 files changed, 7 insertions(+)
+
+diff --git a/VEX/priv/guest_mips_toIR.c b/VEX/priv/guest_mips_toIR.c
+index eb437ec..6e91329 100755
+--- a/VEX/priv/guest_mips_toIR.c
++++ b/VEX/priv/guest_mips_toIR.c
+@@ -20241,6 +20241,7 @@ static UInt disInstr_MIPS_WRK_00(UInt cins, const VexArchInfo* archinfo,
+ #elif defined(__mips__) && ((defined(__mips_isa_rev) && __mips_isa_rev >= 6))
+ 
+       case 0x08: { /* BEQZALC, BEQC, BOVC */
++         IRTemp t1, t2, t3, t4;
+          if (rs == 0) { /* BEQZALC */
+             DIP("beqzalc r%u, %u", rt, imm);
+ 
+diff --git a/coregrind/m_debuglog.c b/coregrind/m_debuglog.c
+index 456a711..289f275 100644
+--- a/coregrind/m_debuglog.c
++++ b/coregrind/m_debuglog.c
+@@ -452,7 +452,13 @@ static UInt local_sys_write_stderr ( const HChar* buf, Int n )
+    __asm__ volatile (
+       "syscall            \n\t"
+       "addiu   $4, $0, -1 \n\t"
++      #if ((defined(__mips_isa_rev) && __mips_isa_rev >= 6))
++      "selnez  $4, $4, $7 \n\t"
++      "seleqz  $2, $2, $7 \n\t"
++      "or      $2, $2, $4 \n\t"
++      #else
+       "movn    $2, $4, $7 \n\t"
++      #endif
+      : "+d" (v0), "+d" (a0), "+d" (a1), "+d" (a2)
+      :
+      : "$1", "$3", "$7", "$8", "$9", "$10", "$11", "$12", "$13", "$14", "$15",
+-- 
+2.7.4
+
