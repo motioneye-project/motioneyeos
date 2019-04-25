@@ -20,6 +20,8 @@ RPM_DEPENDENCIES = \
 	$(TARGET_NLS_DEPENDENCIES)
 RPM_LICENSE = GPL-2.0 or LGPL-2.0 (library only)
 RPM_LICENSE_FILES = COPYING
+# We're patching Makefile.am
+RPM_AUTORECONF = YES
 
 RPM_CONF_OPTS = \
 	--disable-python \
