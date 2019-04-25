@@ -21,6 +21,7 @@ class TestOpenJdk(infra.basetest.BRTest):
         BR2_PACKAGE_XORG7=y
         BR2_PACKAGE_OPENJDK=y
         BR2_PACKAGE_OPENJDK_HELLO_WORLD=y
+        BR2_PACKAGE_OPENJDK_JNI_TEST=y
         """
 
     def login(self):
@@ -40,3 +41,8 @@ class TestOpenJdk(infra.basetest.BRTest):
         print(output)
         self.assertEqual(exit_code, 0)
         self.assertEqual(output, ["Hello, World"])
+
+        cmd = "java -cp /usr/bin JniTest"
+        output, exit_code = self.emulator.run(cmd, 120)
+        print(output)
+        self.assertEqual(exit_code, 0)
