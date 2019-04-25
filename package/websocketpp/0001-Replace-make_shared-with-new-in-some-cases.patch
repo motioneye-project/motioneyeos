@@ -1,0 +1,79 @@
+From c769c9238ad62178f506038178714a1c35aa2769 Mon Sep 17 00:00:00 2001
+From: Stefan Floeren <42731906+stefan-floeren@users.noreply.github.com>
+Date: Tue, 16 Apr 2019 08:38:01 +0200
+Subject: [PATCH] Replace make_shared with new in some cases
+
+Replace make_shared for asio types that take a lib::ref as a parameter.
+This should fix the ASIO change (boostorg/asio@59066d8) for 1.70,
+while keeping it backwards compatible to older boost versions.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/zaphoyd/websocketpp/pull/814/commits/c769c9238ad62178f506038178714a1c35aa2769]
+---
+ websocketpp/transport/asio/connection.hpp    | 7 ++++---
+ websocketpp/transport/asio/endpoint.hpp      | 3 +--
+ websocketpp/transport/asio/security/none.hpp | 3 +--
+ websocketpp/transport/asio/security/tls.hpp  | 3 +--
+ 4 files changed, 7 insertions(+), 9 deletions(-)
+
+diff --git a/websocketpp/transport/asio/connection.hpp b/websocketpp/transport/asio/connection.hpp
+index 60f88a79..1ccda8f3 100644
+--- a/websocketpp/transport/asio/connection.hpp
++++ b/websocketpp/transport/asio/connection.hpp
+@@ -311,9 +311,10 @@ class connection : public config::socket_type::socket_con_type {
+      * needed.
+      */
+     timer_ptr set_timer(long duration, timer_handler callback) {
+-        timer_ptr new_timer = lib::make_shared<lib::asio::steady_timer>(
+-            lib::ref(*m_io_service),
+-            lib::asio::milliseconds(duration)
++        timer_ptr new_timer(
++            new lib::asio::steady_timer(
++                *m_io_service,
++                lib::asio::milliseconds(duration))
+         );
+ 
+         if (config::enable_multithreading) {
+diff --git a/websocketpp/transport/asio/endpoint.hpp b/websocketpp/transport/asio/endpoint.hpp
+index ddab2c74..4b719a97 100644
+--- a/websocketpp/transport/asio/endpoint.hpp
++++ b/websocketpp/transport/asio/endpoint.hpp
+@@ -195,8 +195,7 @@ class endpoint : public config::socket_type {
+ 
+         m_io_service = ptr;
+         m_external_io_service = true;
+-        m_acceptor = lib::make_shared<lib::asio::ip::tcp::acceptor>(
+-            lib::ref(*m_io_service));
++        m_acceptor.reset(new lib::asio::ip::tcp::acceptor(*m_io_service));
+ 
+         m_state = READY;
+         ec = lib::error_code();
+diff --git a/websocketpp/transport/asio/security/none.hpp b/websocketpp/transport/asio/security/none.hpp
+index 5c8293db..6c7d3524 100644
+--- a/websocketpp/transport/asio/security/none.hpp
++++ b/websocketpp/transport/asio/security/none.hpp
+@@ -168,8 +168,7 @@ class connection : public lib::enable_shared_from_this<connection> {
+             return socket::make_error_code(socket::error::invalid_state);
+         }
+ 
+-        m_socket = lib::make_shared<lib::asio::ip::tcp::socket>(
+-            lib::ref(*service));
++        m_socket.reset(new lib::asio::ip::tcp::socket(*service));
+ 
+         if (m_socket_init_handler) {
+             m_socket_init_handler(m_hdl, *m_socket);
+diff --git a/websocketpp/transport/asio/security/tls.hpp b/websocketpp/transport/asio/security/tls.hpp
+index c76fd9aa..04ac3790 100644
+--- a/websocketpp/transport/asio/security/tls.hpp
++++ b/websocketpp/transport/asio/security/tls.hpp
+@@ -193,8 +193,7 @@ class connection : public lib::enable_shared_from_this<connection> {
+         if (!m_context) {
+             return socket::make_error_code(socket::error::invalid_tls_context);
+         }
+-        m_socket = lib::make_shared<socket_type>(
+-            _WEBSOCKETPP_REF(*service),lib::ref(*m_context));
++        m_socket.reset(new socket_type(*service, *m_context));
+ 
+         if (m_socket_init_handler) {
+             m_socket_init_handler(m_hdl, get_socket());
