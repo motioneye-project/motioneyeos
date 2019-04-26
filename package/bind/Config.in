@@ -28,7 +28,6 @@ if BR2_PACKAGE_BIND
 
 config BR2_PACKAGE_BIND_SERVER
 	bool "Install server components"
-	default y
 	help
 	  Install server components (named, lwresd)
 
