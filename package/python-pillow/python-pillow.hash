@@ -1,4 +1,4 @@
-# sha256 for python-pillow from https://pypi.org/project/Pillow/5.2.0/#files
+# sha256 for python-pillow from https://pypi.org/project/Pillow/
 # sha256 for LICENSE locally computed
-sha256 f8b3d413c5a8f84b12cd4c5df1d8e211777c9852c6be3ee9c094b626644d3eab  Pillow-5.2.0.tar.gz
-sha256 4960fc18becc286be839c8ff17bd70cd5222533f761129142153443718a25199  LICENSE
+sha256 809c0a2ce9032cbcd7b5313f71af4bdc5c8c771cb86eb7559afd954cab82ebb5  Pillow-6.0.0.tar.gz
+sha256 64ea4328ed56392b423ef968519a9ad427e3de9b985862c95ed2ed4d793d22ee  LICENSE
