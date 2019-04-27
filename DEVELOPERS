@@ -229,6 +229,7 @@ F:	package/stress/
 N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/libuv/
 F:	package/python*
+F:	package/spdlog/
 F:	package/uftp/
 F:	package/zeromq/
 
