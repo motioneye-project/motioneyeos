@@ -29,12 +29,12 @@ config BR2_PACKAGE_BIRD_BABEL
 
 config BR2_PACKAGE_BIRD_BFD
 	bool "bfd"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	help
 	  Enable BFD protocol.
 
-comment "BFD protocol needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
+comment "BFD protocol needs a toolchain w/ NPTL"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL
 
 config BR2_PACKAGE_BIRD_BGP
 	bool "bgp"
