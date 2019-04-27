@@ -1,6 +1,6 @@
-# From https://sourceforge.net/projects/libpng/files/libpng16/1.6.36/
-md5 df2be2d29c40937fe1f5349b16bc2826  libpng-1.6.36.tar.xz
-sha1 aec9548c8319104226cc4c31d1f5e524f1b55295  libpng-1.6.36.tar.xz
+# From https://sourceforge.net/projects/libpng/files/libpng16/1.6.37/
+md5 015e8e15db1eecde5f2eb9eb5b6e59e9  libpng-1.6.37.tar.xz
+sha1 3ab93fabbf4c27e1c4724371df408d9a1bd3f656  libpng-1.6.37.tar.xz
 # Locally computed:
-sha256 eceb924c1fa6b79172fdfd008d335f0e59172a86a66481e09d4089df872aa319  libpng-1.6.36.tar.xz
-sha256 142da07fb4b0cceb861b2e69fe7e5b602f25ec7adc85b0a426133d9ee0d2e116  LICENSE
+sha256 505e70834d35383537b6491e7ae8641f1a4bed1876dbfe361201fc80868d88ca  libpng-1.6.37.tar.xz
+sha256 bf5e22b9dce8464064ae17a48ea1133c3369ac9e1d80ef9e320e5219aa14ea9b  LICENSE
