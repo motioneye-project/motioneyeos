@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EXIV2_VERSION = 910f3507795e1930ae216c9febee0bf9a88e99c0
+EXIV2_VERSION = 0.27.1
 EXIV2_SITE = $(call github,Exiv2,exiv2,$(EXIV2_VERSION))
 EXIV2_INSTALL_STAGING = YES
 
