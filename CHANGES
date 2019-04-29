@@ -1,4 +1,4 @@
-2019.02.2, Not yet released
+2019.02.2, Released April 29th, 2019
 
 	Important / security related fixes.
 
@@ -24,17 +24,18 @@
 	busybox, civetweb, cjson, copas, davfs2, docker-cli,
 	docker-containerd, docker-engine, dovecot, dovecot-pigeonhole,
 	freerdp, gerbera, ghostscript, git, gnutls, go, gst-omx,
-	gst1-plugins-ugly, haproxy, hostapd, ipsec-tools, libfreefare,
-	libfuse, libkrb5, libpng, libxml2, libxslt, linknx, linux,
-	linux-firmware, linux-tools, live555, lldp, lrzsz, lynx,
-	madplay, make, minicom, mongodb, msmtp, musl, mutt, neon,
-	netsnmp, numactl, opus, perl, php, postgresql, pure-ftpd,
-	python-urllib3, python3, qt5base, rapidxml, rpm, rsyslog,
-	ruby, runc, samba4, sane-backends, softether, stunnel,
-	sysklogd, syslinux, syslog-ng, systemd-bootchart, thttpd,
-	thrift, tiff, tor, tpm2-tools, tpm2-tss, webkitgtk,
-	yaffs2utils, wget, wpa_supplicant, wsapi, xapp_xfd,
-	xlib_libXpm, xserver_xorg-server, xz, znc
+	gst1-plugins-base, gst1-plugins-ugly, haproxy, hostapd,
+	ipsec-tools, libfreefare, libfuse, libkrb5, libpng, libxml2,
+	libxslt, linknx, linux, linux-firmware, linux-tools, live555,
+	lldp, lrzsz, lynx, madplay, make, minicom, mongodb, msmtp,
+	musl, mutt, neon, netsnmp, numactl, opus, perl, php,
+	postgresql, pure-ftpd, python-urllib3, python3, qt5base,
+	rapidxml, rpm, rsyslog, ruby, runc, samba4, sane-backends,
+	softether, stunnel, sysklogd, syslinux, syslog-ng,
+	systemd-bootchart, thttpd, thrift, tiff, tor, tpm2-tools,
+	tpm2-tss, webkitgtk, yaffs2utils, wget, wpa_supplicant, wsapi,
+	xapp_xfd, xapp_xload, xlib_libXpm, xserver_xorg-server, xz,
+	znc
 
 	Issues resolved (http://bugs.uclibc.org):
 
