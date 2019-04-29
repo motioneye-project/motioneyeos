@@ -9,7 +9,14 @@ SUBVERSION_SOURCE = subversion-$(SUBVERSION_VERSION).tar.bz2
 SUBVERSION_SITE = http://mirror.catn.com/pub/apache/subversion
 SUBVERSION_LICENSE = Apache-2.0
 SUBVERSION_LICENSE_FILES = LICENSE
-SUBVERSION_DEPENDENCIES = host-pkgconf apr apr-util expat zlib sqlite
+SUBVERSION_DEPENDENCIES = \
+	host-pkgconf \
+	apr \
+	apr-util \
+	expat \
+	zlib \
+	sqlite \
+	$(TARGET_NLS_DEPENDENCIES)
 SUBVERSION_AUTORECONF = YES
 SUBVERSION_CONF_OPTS = \
 	--with-expat=$(STAGING_DIR)/usr/include:$(STAGING_DIR)/usr/lib: \
@@ -22,5 +29,6 @@ SUBVERSION_CONF_OPTS = \
 	--without-sasl \
 	--without-gnome-keyring \
 	--without-libmagic
+SUBVERSION_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
 
 $(eval $(autotools-package))
