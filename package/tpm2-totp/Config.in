@@ -1,5 +1,5 @@
 config BR2_PACKAGE_TPM2_TOTP
-	bool "tpm2-tools"
+	bool "tpm2-totp"
 	depends on !BR2_STATIC_LIBS # tpm2-tss
 	depends on !BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_ARM # glibc < 2.20
 	select BR2_PACKAGE_LIBQRENCODE
