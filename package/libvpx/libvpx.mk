@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBVPX_VERSION = v1.7.0
+LIBVPX_VERSION = v1.8.0
 LIBVPX_SITE = $(call github,webmproject,libvpx,$(LIBVPX_VERSION))
 LIBVPX_LICENSE = BSD-3-Clause
 LIBVPX_LICENSE_FILES = LICENSE PATENTS
