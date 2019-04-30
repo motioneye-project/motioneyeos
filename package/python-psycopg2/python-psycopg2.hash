@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/psycopg2/json
-md5	598e2f43c1b26361ae2d3a3254dae414  psycopg2-2.7.7.tar.gz
-sha256	f4526d078aedd5187d0508aa5f9a01eae6a48a470ed678406da94b4cd6524b7e  psycopg2-2.7.7.tar.gz
+md5	74cbe0f09a6ebafd107f89c858120bd5  psycopg2-2.8.2.tar.gz
+sha256	5cacf21b6f813c239f100ef78a4132056f93a5940219ec25d2ef833cbeb05588  psycopg2-2.8.2.tar.gz
 # Locally computed sha256 checksums
-sha256	3c2b037df24cb85ca1a48739dcab60a5037644b436f87173f6db0d101636b525  LICENSE
+sha256	9614b85dfc9a72c5b2ca33144c1d7e1ed3b1c297459d9fb28a6a5762c2e8d71b  LICENSE
