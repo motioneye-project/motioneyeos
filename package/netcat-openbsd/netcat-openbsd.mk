@@ -5,7 +5,8 @@
 ################################################################################
 
 NETCAT_OPENBSD_VERSION = debian/1.190-1
-NETCAT_OPENBSD_SITE = git://anonscm.debian.org/collab-maint/netcat-openbsd
+NETCAT_OPENBSD_SITE = https://salsa.debian.org/debian/netcat-openbsd.git
+NETCAT_OPENBSD_SITE_METHOD = git
 NETCAT_OPENBSD_LICENSE = BSD-3-Clause
 NETCAT_OPENBSD_LICENSE_FILES = debian/copyright
 NETCAT_OPENBSD_DEPENDENCIES = host-pkgconf libbsd
