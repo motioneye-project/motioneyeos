@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-PYTHON_MARKUPSAFE_VERSION = 1.0
+PYTHON_MARKUPSAFE_VERSION = 1.1.1
 PYTHON_MARKUPSAFE_SOURCE = MarkupSafe-$(PYTHON_MARKUPSAFE_VERSION).tar.gz
-PYTHON_MARKUPSAFE_SITE = https://pypi.python.org/packages/4d/de/32d741db316d8fdb7680822dd37001ef7a448255de9699ab4bfcbdf4172b
+PYTHON_MARKUPSAFE_SITE = https://files.pythonhosted.org/packages/b9/2e/64db92e53b86efccfaea71321f597fa2e1b2bd3853d8ce658568f7a13094
 PYTHON_MARKUPSAFE_SETUP_TYPE = setuptools
 PYTHON_MARKUPSAFE_LICENSE = BSD-3-Clause
-PYTHON_MARKUPSAFE_LICENSE_FILES = LICENSE
+PYTHON_MARKUPSAFE_LICENSE_FILES = LICENSE.rst
 
 $(eval $(python-package))
 $(eval $(host-python-package))
