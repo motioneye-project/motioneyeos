@@ -1,0 +1,31 @@
+From f672277509705c4034bc92a141eefee4524d15aa Mon Sep 17 00:00:00 2001
+From: Tobias Ronge <tobiasr@axis.com>
+Date: Thu, 14 Mar 2019 10:12:27 +0100
+Subject: [PATCH] gstrtspconnection: Security loophole making heap overflow
+
+The former code allowed an attacker to create a heap overflow by
+sending a longer than allowed session id in a response and including a
+semicolon to change the maximum length. With this change, the parser
+will never go beyond 512 bytes.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ gst-libs/gst/rtsp/gstrtspconnection.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gst-libs/gst/rtsp/gstrtspconnection.c b/gst-libs/gst/rtsp/gstrtspconnection.c
+index a6755bedd..c0429064a 100644
+--- a/gst-libs/gst/rtsp/gstrtspconnection.c
++++ b/gst-libs/gst/rtsp/gstrtspconnection.c
+@@ -2461,7 +2461,7 @@ build_next (GstRTSPBuilder * builder, GstRTSPMessage * message,
+           maxlen = sizeof (conn->session_id) - 1;
+           /* the sessionid can have attributes marked with ;
+            * Make sure we strip them */
+-          for (i = 0; session_id[i] != '\0'; i++) {
++          for (i = 0; i < maxlen && session_id[i] != '\0'; i++) {
+             if (session_id[i] == ';') {
+               maxlen = i;
+               /* parse timeout */
+-- 
+2.11.0
+
