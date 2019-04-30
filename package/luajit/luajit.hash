@@ -1,2 +1,5 @@
 # Hashes from: http://luajit.org/download.html
 md5 48353202cbcacab84ee41a5a70ea0a2c    LuaJIT-2.0.5.tar.gz
+
+# Locally calculated
+sha256 accb335aa3102f80d31caa2c2508fbcb795314106493519a367f13a87d0e87de  COPYRIGHT
