@@ -17,7 +17,7 @@ diff --git a/src/luarocks/deps.lua b/src/luarocks/deps.lua
 index 8403f12..c1c0220 100644
 --- a/src/luarocks/deps.lua
 +++ b/src/luarocks/deps.lua
-@@ -513,10 +513,8 @@ function deps.check_lua(vars)
+@@ -544,10 +544,8 @@ function deps.check_lua(vars)
        "lua-" .. cfg.lua_version,
        "lua-" .. shortv,
        "lua",
@@ -26,9 +26,9 @@ index 8403f12..c1c0220 100644
 -   if cfg.luajit_version then
 -      table.insert(libnames, 1, "luajit-" .. cfg.lua_version)
 -   end
+    local cache = {}
     for _, libname in ipairs(libnames) do
-       local ok = check_external_dependency("LUA", { library = libname }, vars, "build")
-       if ok then
+       local ok = check_external_dependency("LUA", { library = libname }, vars, "build", cache)
 -- 
 2.17.1
 
