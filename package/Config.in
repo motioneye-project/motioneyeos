@@ -2095,6 +2095,7 @@ endif
 	source "package/transmission/Config.in"
 	source "package/tunctl/Config.in"
 	source "package/tvheadend/Config.in"
+	source "package/uacme/Config.in"
 	source "package/udpcast/Config.in"
 	source "package/uftp/Config.in"
 	source "package/uhttpd/Config.in"
