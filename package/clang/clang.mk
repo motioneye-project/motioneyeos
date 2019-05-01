@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# LLVM and Clang should be version bumped together
 CLANG_VERSION = 8.0.0
 CLANG_SITE = http://llvm.org/releases/$(CLANG_VERSION)
 CLANG_SOURCE = cfe-$(CLANG_VERSION).src.tar.xz
