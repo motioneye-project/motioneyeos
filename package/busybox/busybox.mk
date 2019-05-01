@@ -260,6 +260,17 @@ define BUSYBOX_INSTALL_LOGGING_SCRIPT
 endef
 endif
 
+# Only install our sysctl scripts if no other package does it.
+ifeq ($(BR2_PACKAGE_PROCPS_NG),)
+define BUSYBOX_INSTALL_SYSCTL_SCRIPT
+	if grep -q CONFIG_BB_SYSCTL=y $(@D)/.config; \
+	then \
+		$(INSTALL) -m 0755 -D package/busybox/S02sysctl \
+			$(TARGET_DIR)/etc/init.d/S02sysctl ; \
+	fi
+endef
+endif
+
 ifeq ($(BR2_INIT_BUSYBOX),y)
 define BUSYBOX_INSTALL_INITTAB
 	$(INSTALL) -D -m 0644 package/busybox/inittab $(TARGET_DIR)/etc/inittab
@@ -341,6 +352,7 @@ define BUSYBOX_INSTALL_INIT_SYSV
 	$(BUSYBOX_INSTALL_MDEV_SCRIPT)
 	$(BUSYBOX_INSTALL_LOGGING_SCRIPT)
 	$(BUSYBOX_INSTALL_WATCHDOG_SCRIPT)
+	$(BUSYBOX_INSTALL_SYSCTL_SCRIPT)
 	$(BUSYBOX_INSTALL_TELNET_SCRIPT)
 	$(BUSYBOX_INSTALL_INDIVIDUAL_BINARIES)
 endef
