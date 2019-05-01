@@ -1,0 +1,29 @@
+From c6692a857262af7ef13a95feef8fe7633790458f Mon Sep 17 00:00:00 2001
+From: Nicolas Serafini <serafini.nicolas@gmail.com>
+Date: Wed, 1 May 2019 10:24:47 +0200
+Subject: [PATCH] Use exiv2 header that include all headers
+
+With latest exiv2 0.27.1 there is a build error
+exiv2_handler.cc:179:21: error: 'AnyError' in namespace 'Exiv2' does not name a type
+
+Signed-off-by: Nicolas Serafini <serafini.nicolas@gmail.com>
+[Arnout: retrieved from https://github.com/gerbera/gerbera/pull/457]
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ src/metadata/exiv2_handler.cc | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/metadata/exiv2_handler.cc b/src/metadata/exiv2_handler.cc
+index f3a35d48..7f8c89bd 100644
+--- a/src/metadata/exiv2_handler.cc
++++ b/src/metadata/exiv2_handler.cc
+@@ -31,8 +31,7 @@
+ /// \brief Implementeation of the Exiv2Handler class.
+ 
+ #ifdef HAVE_EXIV2
+-#include <exiv2/exif.hpp>
+-#include <exiv2/image.hpp>
++#include <exiv2/exiv2.hpp>
+ 
+ #include "config_manager.h"
+ #include "exiv2_handler.h"
