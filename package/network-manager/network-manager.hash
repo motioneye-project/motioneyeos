@@ -1,5 +1,5 @@
-# From http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/1.14/NetworkManager-1.14.6.sha256sum
-sha256 693bcdad15eec7f07a06cbc6e43ddb3b1c13b2d2d23ec165fbb5adf4c3323a5d  NetworkManager-1.14.6.tar.xz
+# From http://ftp.gnome.org/pub/GNOME/sources/NetworkManager/1.18/NetworkManager-1.18.0.sha256sum
+sha256 c6e8df25e5a3c7309bc17664be8971689314884cdd08afdd6b0847d29d2a8ba6  NetworkManager-1.18.0.tar.xz
 # Locally computed
 sha256 49d9659a4f9a09747c320d51d3cf9dfde210de67b70862acf849890f6477b00d  COPYING
 sha256 3a2968e3abb4fea464cd8dc1146d71996f9544af91a5f687bc4f3a2932df49b4  libnm-util/COPYING
