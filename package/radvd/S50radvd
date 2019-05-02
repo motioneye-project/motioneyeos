@@ -1,18 +1,59 @@
 #!/bin/sh
 
-RADVD=/usr/sbin/radvd
+DAEMON="radvd"
+PIDFILE="/var/run/$DAEMON.pid"
 
-echo "1" > /proc/sys/net/ipv6/conf/all/forwarding
+RADVD_ARGS="-m syslog"
 
-printf "Starting radvd: "
-if [ ! -x "${RADVD}" ]; then
-	echo "missing"
+# shellcheck source=/dev/null
+[ -r "/etc/default/$DAEMON" ] && . "/etc/default/$DAEMON"
+
+[ -f /etc/radvd.conf ] || exit 0
+
+[ -f /proc/sys/net/ipv6/conf/all/forwarding ] || {
+	echo "Error: radvd requires IPv6 forwarding support."
 	exit 1
-fi
+}
 
-if ${RADVD} ; then
-	echo "done"
-else
-	echo "failed"
-	exit 1
-fi
+start() {
+	printf 'Starting %s: ' "$DAEMON"
+	echo "1" > /proc/sys/net/ipv6/conf/all/forwarding
+	# shellcheck disable=SC2086 # we need the word splitting
+	start-stop-daemon -S -q -p "$PIDFILE" -x "/usr/sbin/$DAEMON" \
+		-- $RADVD_ARGS
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	printf 'Stopping %s: ' "$DAEMON"
+	start-stop-daemon -K -q -p "$PIDFILE" -x "/usr/sbin/$DAEMON"
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+case "$1" in
+	start|stop)
+		"$1";;
+	restart|reload)
+		restart;;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac
