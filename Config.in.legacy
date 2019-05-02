@@ -146,6 +146,43 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
+	bool "compositor moved to gst1-plugins-base"
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_COMPOSITOR
+	select BR2_LEGACY
+	help
+	  The gst1-plugins-bad compositor plugin has moved
+	  to gst1-plugins-base.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA
+	select BR2_LEGACY
+	bool "gst-plugins-bad IQA option was removed"
+	help
+	  The gst1-plugins-bad IQA option was removed.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_OPENCV
+	bool "gst-plugins-bad opencv option was removed"
+	select BR2_LEGACY
+	help
+	  The gst1-plugins-bad opencv option was removed because
+	  buildroot does not have the opencv_contrib package which
+	  is required for the bgsegm module which gst1-plugins-bad
+	  now requires along with opencv3.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_STEREO
+	bool "stereo was merged into audiofx in gst1-plugins-good"
+	select BR2_LEGACY
+	select BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_AUDIOFX
+	help
+	  The gst1-plugins-bad stereo plugin has merged with the
+	  gst1-plugins-base audiofx plugin.
+
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_VCD
+	bool "gst-plugins-bad vcd plugin was removed."
+	select BR2_LEGACY
+	help
+	  The gst1-plugins-bad vcd plugin was removed.
+
 config BR2_PACKAGE_LUNIT
 	bool "lunit package removed"
 	select BR2_LEGACY

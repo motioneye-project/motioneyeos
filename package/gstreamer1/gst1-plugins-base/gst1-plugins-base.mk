@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-GST1_PLUGINS_BASE_VERSION = 1.14.4
+GST1_PLUGINS_BASE_VERSION = 1.16.0
 GST1_PLUGINS_BASE_SOURCE = gst-plugins-base-$(GST1_PLUGINS_BASE_VERSION).tar.xz
 GST1_PLUGINS_BASE_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-base
 GST1_PLUGINS_BASE_INSTALL_STAGING = YES
-GST1_PLUGINS_BASE_LICENSE_FILES = COPYING.LIB
+GST1_PLUGINS_BASE_LICENSE_FILES = COPYING
 GST1_PLUGINS_BASE_LICENSE = LGPL-2.0+, LGPL-2.1+
 
 GST1_PLUGINS_BASE_CONF_OPTS = \
@@ -118,6 +118,12 @@ else
 GST1_PLUGINS_BASE_CONF_OPTS += --disable-audiotestsrc
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_COMPOSITOR),y)
+GST1_PLUGINS_BASE_CONF_OPTS += --enable-compositor
+else
+GST1_PLUGINS_BASE_CONF_OPTS += --disable-compositor
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ENCODING),y)
 GST1_PLUGINS_BASE_CONF_OPTS += --enable-encoding
 else
@@ -134,6 +140,12 @@ ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_GIO),y)
 GST1_PLUGINS_BASE_CONF_OPTS += --enable-gio
 else
 GST1_PLUGINS_BASE_CONF_OPTS += --disable-gio
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_OVERLAYCOMPOSITION),y)
+GST1_PLUGINS_BASE_CONF_OPTS += --enable-overlaycomposition
+else
+GST1_PLUGINS_BASE_CONF_OPTS += --disable-overlaycomposition
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_PLAYBACK),y)
