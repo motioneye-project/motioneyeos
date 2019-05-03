@@ -235,6 +235,7 @@ orangepi_pc_defconfig: { extends: .defconfig }
 orangepi_pc_plus_defconfig: { extends: .defconfig }
 orangepi_plus_defconfig: { extends: .defconfig }
 orangepi_prime_defconfig: { extends: .defconfig }
+orangepi_r1_defconfig: { extends: .defconfig }
 orangepi_win_defconfig: { extends: .defconfig }
 orangepi_zero_defconfig: { extends: .defconfig }
 orangepi_zero_plus2_defconfig: { extends: .defconfig }
