@@ -79,3 +79,6 @@ config BR2_ARC_PAGE_SIZE
 	default "4K" if BR2_ARC_PAGE_SIZE_4K
 	default "8K" if BR2_ARC_PAGE_SIZE_8K
 	default "16K" if BR2_ARC_PAGE_SIZE_16K
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

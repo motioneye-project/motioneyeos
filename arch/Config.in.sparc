@@ -32,3 +32,6 @@ config BR2_GCC_TARGET_CPU
 config BR2_READELF_ARCH_NAME
 	default "Sparc"		if BR2_sparc
 	default "Sparc v9"	if BR2_sparc64
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

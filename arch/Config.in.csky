@@ -46,3 +46,6 @@ config BR2_GCC_TARGET_CPU
 
 config BR2_READELF_ARCH_NAME
 	default "CSKY"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

@@ -125,3 +125,6 @@ config BR2_GCC_TARGET_ABI
 
 config BR2_READELF_ARCH_NAME
 	default "RISC-V"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-
