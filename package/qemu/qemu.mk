@@ -186,7 +186,6 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
 #       sh4eb           sh4eb
 #       sh4a            sh4
 #       sh4aeb          sh4eb
-#       sh64            not supported
 #       sparc           sparc
 #       sparc64         sparc64
 
