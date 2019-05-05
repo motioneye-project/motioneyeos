@@ -1,9 +1,8 @@
 config BR2_PACKAGE_QT5ENGINIO
 	bool "qt5enginio"
-	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_QT5BASE
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_NETWORK
+	select BR2_PACKAGE_OPENSSL
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
@@ -15,3 +14,10 @@ config BR2_PACKAGE_QT5ENGINIO
 	  5.6 and not recommended for new design.
 
 	  http://doc.qt.io/archives/qt-5.5/enginio-index.html
+
+# Forcibly selecting libressl is not possible because it is from a choice, and
+# depending on it is also not possible because we select openssl. So just a
+# a warning.
+comment "qt5enginio needs libressl for Qt5.6"
+	depends on BR2_PACKAGE_QT5_VERSION_5_6
+	depends on !BR2_PACKAGE_LIBRESSL
