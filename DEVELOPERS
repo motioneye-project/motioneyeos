@@ -1848,6 +1848,9 @@ F:	package/kf5/
 N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
 
+N:	Pierre-Jean Texier <pjtexier@koncepto.io>
+F:	package/libubootenv/
+
 N:	Pieter De Gendt <pieter.degendt@gmail.com>
 F:	package/libvips/
 
