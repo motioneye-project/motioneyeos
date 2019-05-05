@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENBLAS_VERSION = v0.2.20
+OPENBLAS_VERSION = v0.3.6
 OPENBLAS_SITE = $(call github,xianyi,OpenBLAS,$(OPENBLAS_VERSION))
 OPENBLAS_LICENSE = BSD-3-Clause
 OPENBLAS_LICENSE_FILES = LICENSE
