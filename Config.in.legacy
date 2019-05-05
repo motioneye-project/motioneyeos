@@ -155,8 +155,8 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
 	  to gst1-plugins-base.
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_IQA
-	select BR2_LEGACY
 	bool "gst-plugins-bad IQA option was removed"
+	select BR2_LEGACY
 	help
 	  The gst1-plugins-bad IQA option was removed.
 
