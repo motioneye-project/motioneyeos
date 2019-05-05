@@ -26,3 +26,7 @@ BR2_TARGET_GENERIC_GETTY_PORT="ttyS0"
 
 # use minimal busybox with hush and networking tools
 BR2_PACKAGE_BUSYBOX_CONFIG="package/busybox/busybox-minimal.config"
+
+# host-qemu for gitlab testing
+BR2_PACKAGE_HOST_QEMU=y
+BR2_PACKAGE_HOST_QEMU_SYSTEM_MODE=y
