@@ -5,13 +5,13 @@
 ################################################################################
 
 GUTENPRINT_VERSION_MAJOR = 5.2
-GUTENPRINT_VERSION = $(GUTENPRINT_VERSION_MAJOR).11
+GUTENPRINT_VERSION = $(GUTENPRINT_VERSION_MAJOR).14
 GUTENPRINT_SITE = http://downloads.sourceforge.net/project/gimp-print/gutenprint-$(GUTENPRINT_VERSION_MAJOR)/$(GUTENPRINT_VERSION)
 GUTENPRINT_SOURCE = gutenprint-$(GUTENPRINT_VERSION).tar.bz2
 GUTENPRINT_LICENSE = GPL-2.0+
 GUTENPRINT_LICENSE_FILES = COPYING
 
-# Needed, as we touch Makefile.am and configure.ac
+# Needed, as we touch Makefile.am
 GUTENPRINT_AUTORECONF = YES
 
 GUTENPRINT_DEPENDENCIES = \
@@ -33,8 +33,6 @@ GUTENPRINT_CONF_OPTS = \
 	--disable-samples \
 	--without-doc \
 	--without-gimp2 \
-	--without-foomatic \
-	--without-foomatic3 \
 	--disable-escputil \
 	--disable-test \
 	--disable-testpattern \
