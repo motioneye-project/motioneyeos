@@ -1807,19 +1807,10 @@ N:	Petr Kulhavy <brain@jikos.cz>
 F:	package/linuxptp/
 
 N:	Petr Vorel <petr.vorel@gmail.com>
-F:	package/connman/
-F:	package/feh/
-F:	package/imlib2/
 F:	package/iproute2/
 F:	package/iputils/
-F:	package/libmbim/
-F:	package/libqmi/
 F:	package/linux-backports/
 F:	package/ltp-testsuite/
-F:	package/modem-manager/
-F:	package/network-manager/
-F:	package/ofono/
-F:	package/python-networkmanager/
 F:	support/kconfig/
 
 N:	Phil Eichinger <phil.eichinger@gmail.com>
