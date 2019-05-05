@@ -177,6 +177,7 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
 #       mipsel          mipsel
 #       mips64          mips64
 #       mips64el        mips64el
+#       nios2           nios2
 #       powerpc         ppc
 #       powerpc64       ppc64
 #       powerpc64le     ppc64 (system) / ppc64le (usermode)
