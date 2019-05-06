@@ -55,7 +55,7 @@ COREUTILS_CONF_ENV = ac_cv_c_restrict=no \
 	MAKEINFO=true \
 	INSTALL_PROGRAM=$(INSTALL)
 
-COREUTILS_BIN_PROGS = cat chgrp chmod chown cp date dd df dir echo false \
+COREUTILS_BIN_PROGS = base64 cat chgrp chmod chown cp date dd df dir echo false \
 	kill link ln ls mkdir mknod mktemp mv nice printenv pwd rm rmdir \
 	vdir sleep stty sync touch true uname join
 
