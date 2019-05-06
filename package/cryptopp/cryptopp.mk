@@ -17,7 +17,7 @@ endef
 
 HOST_CRYPTOPP_CXXFLAGS = $(HOST_CFLAGS) -fPIC
 
-# _mm256_broadcastsi128_si256 has been added only in gcc 4.9
+# _mm256_broadcastsi128_si256 has been added only in gcc 4.9
 ifneq ($(BR2_HOST_GCC_AT_LEAST_4_9),y)
 HOST_CRYPTOPP_CXXFLAGS += -DCRYPTOPP_DISABLE_AVX2
 endif
