@@ -389,7 +389,7 @@ config BR2_PACKAGE_COLLECTD_POSTGRESQL
 	  Connects to and executes SQL statements on a PostgreSQL
 	  database. It then reads back the results and, depending on the
 	  configuration, the returned values are then converted into
-	  collectd “value lists”.
+	  collectd 'value lists'.
 
 comment "postgresql support needs a toolchain w/ wchar"
 	depends on !BR2_USE_WCHAR
