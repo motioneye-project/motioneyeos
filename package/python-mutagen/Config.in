@@ -6,7 +6,7 @@ config BR2_PACKAGE_PYTHON_MUTAGEN
 	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3 # runtime
 	help
 	  Mutagen is a Python module to handle audio metadata.  It
-	  supports ASF, FLAC, MP4, Monkey’s Audio, MP3, Musepack, Ogg
+	  supports ASF, FLAC, MP4, Monkey's Audio, MP3, Musepack, Ogg
 	  Opus, Ogg FLAC, Ogg Speex, Ogg Theora, Ogg Vorbis, True
 	  Audio, WavPack, OptimFROG, and AIFF audio files. All
 	  versions of ID3v2 are supported, and all standard ID3v2.4
