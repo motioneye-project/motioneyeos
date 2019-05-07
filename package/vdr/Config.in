@@ -4,7 +4,7 @@ config BR2_PACKAGE_VDR
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_9
-	depends on BR2_TOOLCHAIN_USES_GLIBC # execinfo.h
+	depends on BR2_TOOLCHAIN_USES_GLIBC # execinfo.h
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_FONTCONFIG
