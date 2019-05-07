@@ -15,7 +15,7 @@ VDE2_INSTALL_STAGING = YES
 VDE2_AUTORECONF = YES
 
 # Reasons for enabling/disabling stuff:
-# - tuntap is enabled in the hope we're using a recent-enough toolchain
+# - tuntap is enabled in the hope we're using a recent-enough toolchain
 #   that does have if_tun.h (virtually everything these days)
 # - kvde_switch is disabled because it requires a patched kernel
 # - cryptcab is disabled to not depend on openSSL
@@ -34,7 +34,7 @@ VDE2_CONF_OPTS = \
 	--disable-python \
 	--enable-tuntap
 
-# Package does not build in parallel due to improper make rules
+# Package does not build in parallel due to improper make rules
 VDE2_MAKE = $(MAKE1)
 
 HOST_VDE2_CONF_OPTS = \
