@@ -1,6 +1,7 @@
 # Copyright (C) 2010-2013 Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 # Copyright (C) 2019 Yann E. MORIN <yann.morin.1998@free.fr>
 
+import json
 import logging
 import os
 import subprocess
@@ -19,7 +20,7 @@ from collections import defaultdict
 def get_dependency_tree():
     logging.info("Getting dependency tree...")
 
-    deps = defaultdict(list)
+    deps = {}
     rdeps = defaultdict(list)
     types = {}
     versions = {}
@@ -29,23 +30,21 @@ def get_dependency_tree():
     types['all'] = 'target'
     versions['all'] = ''
 
-    cmd = ["make", "-s", "--no-print-directory", "show-dependency-tree"]
+    cmd = ["make", "-s", "--no-print-directory", "show-info"]
     with open(os.devnull, 'wb') as devnull:
         p = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=devnull,
                              universal_newlines=True)
-        output = p.communicate()[0]
+        pkg_list = json.loads(p.communicate()[0])
 
-    for l in output.splitlines():
-        if " -> " in l:
-            pkg = l.split(" -> ")[0]
-            deps[pkg] += l.split(" -> ")[1].split()
-            for p in l.split(" -> ")[1].split():
-                rdeps[p].append(pkg)
-        else:
-            pkg, type_version = l.split(": ", 1)
-            t, v = "{} -".format(type_version).split(None, 2)[:2]
-            deps['all'].append(pkg)
-            types[pkg] = t
-            versions[pkg] = v
+    for pkg in pkg_list:
+        deps['all'].append(pkg)
+        types[pkg] = pkg_list[pkg]["type"]
+        deps[pkg] = pkg_list[pkg].get("dependencies", [])
+        for p in deps[pkg]:
+            rdeps[p].append(pkg)
+        versions[pkg] = \
+            None if pkg_list[pkg]["type"] == "rootfs" \
+            else "virtual" if pkg_list[pkg]["virtual"] \
+            else pkg_list[pkg]["version"]
 
     return (deps, rdeps, types, versions)
