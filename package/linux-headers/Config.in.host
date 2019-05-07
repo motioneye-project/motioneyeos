@@ -45,10 +45,6 @@ config BR2_KERNEL_HEADERS_4_19
 	bool "Linux 4.19.x kernel headers"
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 
-config BR2_KERNEL_HEADERS_4_20
-	bool "Linux 4.20.x kernel headers"
-	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
-
 config BR2_KERNEL_HEADERS_5_0
 	bool "Linux 5.0.x kernel headers"
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_0
@@ -305,7 +301,6 @@ config BR2_DEFAULT_KERNEL_HEADERS
 	default "4.9.173"	if BR2_KERNEL_HEADERS_4_9
 	default "4.14.116"	if BR2_KERNEL_HEADERS_4_14
 	default "4.19.40"	if BR2_KERNEL_HEADERS_4_19
-	default "4.20.17"	if BR2_KERNEL_HEADERS_4_20
 	default "5.0.13"	if BR2_KERNEL_HEADERS_5_0
 	default "5.1"		if BR2_KERNEL_HEADERS_5_1
 	default BR2_DEFAULT_KERNEL_VERSION if BR2_KERNEL_HEADERS_VERSION
