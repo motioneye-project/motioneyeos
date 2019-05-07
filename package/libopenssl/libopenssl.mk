@@ -39,7 +39,7 @@ endif
 #   ./libcrypto.so: undefined reference to `makecontext'
 #
 # - uclibc:
-#   crypto/async/arch/../arch/async_posix.h:32:5: error: unknown type name ‘ucontext_t’
+#   crypto/async/arch/../arch/async_posix.h:32:5: error: unknown type name 'ucontext_t'
 #
 
 ifeq ($(BR2_TOOLCHAIN_USES_MUSL),y)
