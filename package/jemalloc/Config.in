@@ -1,6 +1,6 @@
 config BR2_PACKAGE_JEMALLOC_ARCH_SUPPORTS
 	bool
-	# see include/jemalloc/internal/quantum.h
+	# see include/jemalloc/internal/quantum.h
 	default y if BR2_arm || BR2_armeb
 	default y if BR2_aarch64 || BR2_aarch64_be
 	default y if BR2_i386 || BR2_x86_64
