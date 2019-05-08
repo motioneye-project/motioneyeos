@@ -1,2 +1,3 @@
 # Locally computed
-sha1 fc9e9f821dfd2f257b4a5c32b948ed60b4e31fd1 atftp-0.7.1.tar.gz
+sha256 1ad080674e9f974217b3a703e7356c6c8446dc5e7b2014d0d06e1bfaa11b5041  atftp-0.7.2.tar.gz
+sha256 32b1062f7da84967e7019d01ab805935caa7ab7321a7ced0e30ebe75e5df1670  LICENSE
