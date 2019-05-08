@@ -1,3 +1,65 @@
+2019.05-rc1, Released May 8th, 2019
+
+	Fixes all over the tree and new features.
+
+	Architecture: Andes 32-bit (nds32) support added.
+
+	Only build host-lzip / host-xz when really needed by packages,
+	not just when not available on the build host.
+
+	Toolchain: Glibc bumped to 2.29, musl bumped to 1.1.22,
+	binutils 2.32 added, 2.28/2.29 removed, default changed to
+	2.31.1.
+
+	fs: Set FAKEROOTDONTTRYCHOWN environment variable to not
+	forward {f,l,}chown calls to libc when running under fakeroot
+	to fix issues when building in restricted environments
+	(E.G. user namespace with bubblewrap).
+
+	Linux: Also build default make target to ensure extra files
+	like the gdb scripts enabled by CONFIG_GDB_SCRIPTS are also
+	built. Notice: This may mean that extra host utilities like
+	uboot-mkimage are needed.
+
+	Infrastructure: show-info and <pkg>-show-info make targets
+	added to output package metadata in JSON format for external
+	use.
+
+	pkg-generic: Only tweak .la files needing it to ensure they
+	are not included in subsequent package file lists.
+
+	test-pkg: Generate a basic package config if none is
+	specified.
+
+	Gettext-tiny package added as an lightweight replacement for
+	GNU gettext for situations where NLS support is not needed.
+
+	New defconfigs: Andes AE3XX, Freescale imx8mpico / imx8qxpmek
+	/ T2080 QDS RDB, Licheepi zero, Orangepi R1
+
+	Removed defconfigs: Olimx A20 Olinuxino Lime legacy
+
+	New packages: bats-core, bayer2rgb-neon, brickd, cog, dacapo,
+	enet, gettext-tiny, gli, gst1-plugins-bayer2rgb-neon,
+	imx-sc-firmware, intel-mediadriver, intel-mediasdk, libcamera,
+	libhtp, libp11, libwpe, lua-binaryheap, lua-gd, lua-lunitx,
+	mender-artifact, most, oniguruma, openjdk, openjdk-bin,
+	opensbi, optee-benchmark, optee-client, optee-examples,
+	optee-os, optee-test, paho-mqtt-cpp, python-aioblescan,
+	python-aioconsole, python-aiohttp-cors, python-aiomonitor,
+	python-backcall, python-jedi, python-parso, python-pyjwt,
+	python-terminaltables, suricata, tpm2-totp, uftp,
+	wpebackend-fdo, wpewebkit
+
+	Removed packages: libump, lunit, sunxi-mali
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11716: Typo on website, saying latest release is 2018.2.11
+	#11756: package/syslinux: MBR's don't fit because of binutils..
+	#11761: Building custom kernel 5.1-rc3 or later breaks on objtool
+	#11816: Only selected coreutils binaries are installed
+
 2019.02.2, Released April 29th, 2019
 
 	Important / security related fixes.
