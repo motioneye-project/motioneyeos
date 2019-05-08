@@ -26,17 +26,17 @@ Result of the build
 After building, you should get a tree like this:
 
   output/images/
-  ├── am57xx-beagle-x15.dtb
-  ├── am57xx-beagle-x15-revb1.dtb
-  ├── boot.vfat
-  ├── MLO
-  ├── rootfs.ext2
-  ├── rootfs.ext4
-  ├── rootfs.tar
-  ├── sdcard.img
-  ├── u-boot.img
-  ├── u-boot-spl.bin
-  └── zImage
+  +-- am57xx-beagle-x15.dtb
+  +-- am57xx-beagle-x15-revb1.dtb
+  +-- boot.vfat
+  +-- MLO
+  +--rootfs.ext2
+  +-- rootfs.ext4
+  +-- rootfs.tar
+  +-- sdcard.img
+  +-- u-boot.img
+  +-- u-boot-spl.bin
+  +-- zImage
 
 How to write the microSD card
 =============================
