@@ -23,14 +23,14 @@ When you are happy with the setup, run:
 The result of the build with the default settings should be these files:
 
   output/images
-  ├── MLO
-  ├── omap4-panda-a4.dtb
-  ├── omap4-panda.dtb
-  ├── omap4-panda-es.dtb
-  ├── rootfs.ext4
-  ├── sdcard.img
-  ├── u-boot.img
-  └── zImage
+  +-- MLO
+  +-- omap4-panda-a4.dtb
+  +-- omap4-panda.dtb
+  +-- omap4-panda-es.dtb
+  +-- rootfs.ext4
+  +-- sdcard.img
+  +-- u-boot.img
+  +-- zImage
 
 How to write the SD card
 ------------------------
