@@ -44,11 +44,11 @@ Result of the build
 When the build is finished, you will end up with:
 
     output/images/
-    ├── imx**-apfxxdev.dtb	[1]
-    ├── rootfs.tar
-    ├── rootfs.ubi
-    ├── rootfs.ubifs
-    └── uImage
+    +-- imx**-apfxxdev.dtb	[1]
+    +-- rootfs.tar
+    +-- rootfs.ubi
+    +-- rootfs.ubifs
+    +-- uImage
 
 [1] Only if the kernel version used uses a Device Tree.
 
