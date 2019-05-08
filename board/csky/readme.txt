@@ -41,9 +41,9 @@ Result of the build
 After building, you should obtain this tree:
 
     output/images/
-    ├── vmlinux
-    ├── rootfs.ext2
-    └── <board name>.dtb
+    +-- vmlinux
+    +-- rootfs.ext2
+    +-- <board name>.dtb
 
 How to run it
 =============
