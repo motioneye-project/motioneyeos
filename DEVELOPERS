@@ -1229,6 +1229,7 @@ F:	package/qt5/qt5wayland/
 
 N:	Jugurtha BELKALEM <jugurtha.belkalem@smile.fr>
 F:	package/python-cycler/
+F:	package/python-matplotlib/
 
 N:	Juha Rantanen <juha@codercoded.com>
 F:	package/acsccid/
