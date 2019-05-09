@@ -11,12 +11,13 @@ LIBUPNP18_CONF_ENV = ac_cv_lib_compat_ftime=no
 LIBUPNP18_INSTALL_STAGING = YES
 LIBUPNP18_LICENSE = BSD-3-Clause
 LIBUPNP18_LICENSE_FILES = COPYING
+LIBUPNP18_DEPENDENCIES = host-pkgconf
 # We're patching configure.ac
 LIBUPNP18_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBUPNP18_CONF_OPTS += --enable-open-ssl
-LIBUPNP18_DEPENDENCIES += host-pkgconf openssl
+LIBUPNP18_DEPENDENCIES += openssl
 else
 LIBUPNP18_CONF_OPTS += --disable-open-ssl
 endif
