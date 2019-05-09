@@ -344,6 +344,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-pnm
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PROXY),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-proxy
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-proxy
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RAWPARSE),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-rawparse
 else

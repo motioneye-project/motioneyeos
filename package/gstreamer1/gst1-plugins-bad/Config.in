@@ -212,6 +212,11 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PNM
 	help
 	  PNM plugin
 
+config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_PROXY
+	bool "proxy"
+	help
+	  Proxy plugin
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_RAWPARSE
 	bool "rawparse"
 	help
