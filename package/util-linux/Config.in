@@ -9,6 +9,9 @@ menuconfig BR2_PACKAGE_UTIL_LINUX
 
 if BR2_PACKAGE_UTIL_LINUX
 
+config BR2_PACKAGE_UTIL_LINUX_LIBS
+	bool
+
 config BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	bool "libblkid"
 	depends on BR2_USE_MMU # fork()
@@ -41,6 +44,9 @@ config BR2_PACKAGE_UTIL_LINUX_LIBUUID
 	help
 	  Install libuuid.
 
+config BR2_PACKAGE_UTIL_LINUX_PROGRAMS
+	bool
+
 config BR2_PACKAGE_UTIL_LINUX_BINARIES
 	bool "basic set"
 	depends on BR2_USE_MMU # fork()
@@ -49,6 +55,7 @@ config BR2_PACKAGE_UTIL_LINUX_BINARIES
 	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Install the basic set of util-linux binaries.
 
@@ -67,16 +74,19 @@ config BR2_PACKAGE_UTIL_LINUX_BINARIES
 config BR2_PACKAGE_UTIL_LINUX_AGETTY
 	bool "agetty"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Alternative linux getty
 
 config BR2_PACKAGE_UTIL_LINUX_BFS
 	bool "bfs"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  SCO bfs filesystem support
 
 config BR2_PACKAGE_UTIL_LINUX_CAL
 	bool "cal"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Display a calendar, or some part of it
 
@@ -87,6 +97,7 @@ config BR2_PACKAGE_UTIL_LINUX_CHFN_CHSH
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on BR2_USE_MMU # linux-pam
 	select BR2_PACKAGE_LINUX_PAM
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Change login shell, real user name and information
 
@@ -96,11 +107,13 @@ comment "chfn/chsh needs a uClibc or glibc toolchain w/ wchar, locale, dynamic l
 
 config BR2_PACKAGE_UTIL_LINUX_CHMEM
 	bool "chmem"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Sets a particular size or range of memory online or offline
 
 config BR2_PACKAGE_UTIL_LINUX_CRAMFS
 	bool "cramfs utilities"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	select BR2_PACKAGE_ZLIB
 	help
 	  Utilities for compressed ROM file system (fsck.cramfs,
@@ -112,16 +125,19 @@ config BR2_PACKAGE_UTIL_LINUX_EJECT
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Eject removable media
 
 config BR2_PACKAGE_UTIL_LINUX_FALLOCATE
 	bool "fallocate"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Preallocate space to a file
 
 config BR2_PACKAGE_UTIL_LINUX_FDFORMAT
 	bool "fdformat"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Low-level format a floppy disk
 
@@ -131,6 +147,7 @@ config BR2_PACKAGE_UTIL_LINUX_FSCK
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Check and repair a linux filesystem
 
@@ -141,36 +158,43 @@ config BR2_PACKAGE_UTIL_LINUX_HARDLINK
 
 config BR2_PACKAGE_UTIL_LINUX_HWCLOCK
 	bool "hwclock"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Query or set the hardware clock (RTC)
 
 config BR2_PACKAGE_UTIL_LINUX_IPCRM
 	bool "ipcrm"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Remove certain IPC resources
 
 config BR2_PACKAGE_UTIL_LINUX_IPCS
 	bool "ipcs"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Show information on IPC facilities
 
 config BR2_PACKAGE_UTIL_LINUX_KILL
 	bool "kill"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Send a signal to a process
 
 config BR2_PACKAGE_UTIL_LINUX_LAST
 	bool "last"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Show a listing of last logged in users
 
 config BR2_PACKAGE_UTIL_LINUX_LINE
 	bool "line"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Read one line
 
 config BR2_PACKAGE_UTIL_LINUX_LOGGER
 	bool "logger"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Enter messages into the system log
 
@@ -182,6 +206,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOGIN
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on BR2_USE_MMU # fork(), linux-pam
 	select BR2_PACKAGE_LINUX_PAM
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Begin a session on the system
 
@@ -193,6 +218,7 @@ config BR2_PACKAGE_UTIL_LINUX_LOSETUP
 	bool "losetup"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Set up and control loop devices
 
@@ -200,6 +226,7 @@ config BR2_PACKAGE_UTIL_LINUX_LSLOGINS
 	bool "lslogins"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Display information about known users in the system
 
@@ -207,17 +234,20 @@ config BR2_PACKAGE_UTIL_LINUX_LSMEM
 	bool "lsmem"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  List the ranges of available memory with their online status
 
 config BR2_PACKAGE_UTIL_LINUX_MESG
 	bool "mesg"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Control write access to your terminal
 
 config BR2_PACKAGE_UTIL_LINUX_MINIX
 	bool "minix"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Minix filesystem support
 
@@ -225,6 +255,7 @@ config BR2_PACKAGE_UTIL_LINUX_MORE
 	bool "more"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  File perusal filter for crt viewing
 
@@ -234,6 +265,7 @@ config BR2_PACKAGE_UTIL_LINUX_MOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Mount/unmount filesystems
 
@@ -243,16 +275,19 @@ config BR2_PACKAGE_UTIL_LINUX_MOUNTPOINT
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBMOUNT
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  See if a directory is a mountpoint
 
 config BR2_PACKAGE_UTIL_LINUX_NEWGRP
 	bool "newgrp"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Log in to a new group
 
 config BR2_PACKAGE_UTIL_LINUX_NOLOGIN
 	bool "nologin"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Politely refuse a login
 
@@ -260,6 +295,7 @@ config BR2_PACKAGE_UTIL_LINUX_NSENTER
 	bool "nsenter"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Enter the namespaces of another process
 
@@ -270,6 +306,7 @@ config BR2_PACKAGE_UTIL_LINUX_PG
 	bool "pg"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Browse pagewise through text files
 
@@ -279,21 +316,25 @@ config BR2_PACKAGE_UTIL_LINUX_PARTX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Partition utilities (addpart, delpart, partx)
 
 config BR2_PACKAGE_UTIL_LINUX_PIVOT_ROOT
 	bool "pivot_root"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Change the root filesystem
 
 config BR2_PACKAGE_UTIL_LINUX_RAW
 	bool "raw"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Build a linux raw character device
 
 config BR2_PACKAGE_UTIL_LINUX_RENAME
 	bool "rename"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Rename files
 
@@ -301,6 +342,7 @@ config BR2_PACKAGE_UTIL_LINUX_RFKILL
 	bool "rfkill"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Tool for enabling and disabling wireless devices. This new
 	  implementation is based upon, and backward compatible with,
@@ -313,6 +355,7 @@ config BR2_PACKAGE_UTIL_LINUX_RUNUSER
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on BR2_USE_MMU # fork(), linux-pam
 	select BR2_PACKAGE_LINUX_PAM
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Run a command with substitute user and group ID (does not need
 	  to ask for a password, because it may be executed by the root
@@ -324,18 +367,21 @@ comment "runuser needs a uClibc or glibc toolchain w/ wchar, locale, dynamic lib
 
 config BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS
 	bool "scheduling utilities"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Scheduling utilities (chrt, ionice, taskset)
 
 config BR2_PACKAGE_UTIL_LINUX_SETPRIV
 	bool "setpriv"
 	select BR2_PACKAGE_LIBCAP_NG
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Run a program with different Linux privilege settings
 
 config BR2_PACKAGE_UTIL_LINUX_SETTERM
 	bool "setterm"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Set terminal attributes
 
@@ -346,6 +392,7 @@ config BR2_PACKAGE_UTIL_LINUX_SU
 	depends on !BR2_TOOLCHAIN_USES_MUSL # linux-pam
 	depends on BR2_USE_MMU # fork(), linux-pam
 	select BR2_PACKAGE_LINUX_PAM
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Run a command with substitute user and group ID
 
@@ -356,35 +403,41 @@ comment "su needs a uClibc or glibc toolchain w/ wchar, locale, dynamic library"
 config BR2_PACKAGE_UTIL_LINUX_SULOGIN
 	bool "sulogin"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Single-user login
 
 config BR2_PACKAGE_UTIL_LINUX_SWITCH_ROOT
 	bool "switch_root"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Switch to another filesystem as the root of the mount tree
 
 config BR2_PACKAGE_UTIL_LINUX_TUNELP
 	bool "tunelp"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Set various parameters for the lp device
 
 config BR2_PACKAGE_UTIL_LINUX_UL
 	bool "ul"
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Do underlining
 
 config BR2_PACKAGE_UTIL_LINUX_UNSHARE
 	bool "unshare"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Run program with some namespaces unshared from parent
 
 config BR2_PACKAGE_UTIL_LINUX_UTMPDUMP
 	bool "utmpdump"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Dump UTMP and WTMP files in raw format
 
@@ -392,18 +445,21 @@ config BR2_PACKAGE_UTIL_LINUX_UUIDD
 	bool "uuidd"
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  UUID generation daemon
 
 config BR2_PACKAGE_UTIL_LINUX_VIPW
 	bool "vipw"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Edit the password, group, shadow-password or shadow-group file
 
 config BR2_PACKAGE_UTIL_LINUX_WALL
 	bool "wall"
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Send a message to everybody's terminal
 
@@ -411,11 +467,13 @@ config BR2_PACKAGE_UTIL_LINUX_WDCTL
 	bool "wdctl"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Shows hardware watchdog status
 
 config BR2_PACKAGE_UTIL_LINUX_WRITE
 	bool "write"
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Send a message to another user
 
@@ -423,6 +481,7 @@ config BR2_PACKAGE_UTIL_LINUX_ZRAMCTL
 	bool "zramctl"
 	depends on BR2_USE_MMU # libsmartcols
 	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	select BR2_PACKAGE_UTIL_LINUX_PROGRAMS
 	help
 	  Set up and control zram devices
 
