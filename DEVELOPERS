@@ -2221,6 +2221,9 @@ F:	toolchain/
 N:	Timo Ketola <timo.ketola@exertus.fi>
 F:	package/fbgrab/
 
+N:	Titouan Christophe <titouan.christophe@railnova.eu>
+F:	package/redis/
+
 N:	Trent Piepho <tpiepho@impinj.com>
 F:	package/libp11/
 
