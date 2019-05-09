@@ -132,6 +132,12 @@ else
 GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiofxbad
 endif
 
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOLATENCY),y)
+GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiolatency
+else
+GST1_PLUGINS_BAD_CONF_OPTS += --disable-audiolatency
+endif
+
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_AUDIOMIXMATRIX),y)
 GST1_PLUGINS_BAD_CONF_OPTS += --enable-audiomixmatrix
 else
