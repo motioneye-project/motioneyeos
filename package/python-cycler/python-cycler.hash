@@ -1,0 +1,4 @@
+# sha256 from https://pypi.org/project/cyclic/#files
+sha256	cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8  cycler-0.10.0.tar.gz
+# Locally computed sha256 checksums
+sha256	f1218143d766da3fea66f13396b7f15df46a83303f29bf96ba6e98eb4d42f408  LICENSE
