@@ -70,13 +70,18 @@ define NETSURF_CONFIGURE_CMDS
 	$(NETSURF_CURL_CONFIGURE_CMDS)
 endef
 
+NETSURF_MAKE_ENV = \
+	$(TARGET_MAKE_ENV) \
+	CFLAGS="$(TARGET_CFLAGS) -I$(@D)/tmpusr/include" \
+	LDFLAGS="$(TARGET_LDFLAGS) -L$(@D)/tmpusr/lib"
+
 NETSURF_MAKE_OPTS = \
 	TARGET=$(NETSURF_FRONTEND) \
 	BISON="$(HOST_DIR)/bin/bison" \
 	FLEX="$(HOST_DIR)/bin/flex" \
 	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
 	BUILD_CC="$(HOSTCC)" \
-	CC="$(TARGET_CC) -I$(@D)/tmpusr/include -L$(@D)/tmpusr/lib" \
+	CC="$(TARGET_CC)" \
 	AR="$(TARGET_AR)" \
 	TMP_PREFIX=$(@D)/tmpusr \
 	NETSURF_CONFIG="$(NETSURF_CONFIG)" \
@@ -84,7 +89,7 @@ NETSURF_MAKE_OPTS = \
 
 define NETSURF_BUILD_CMDS
 	mkdir -p $(@D)/tmpusr
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) $(NETSURF_MAKE_OPTS) \
+	$(NETSURF_MAKE_ENV) $(MAKE) -C $(@D) $(NETSURF_MAKE_OPTS) \
 		build
 endef
 
