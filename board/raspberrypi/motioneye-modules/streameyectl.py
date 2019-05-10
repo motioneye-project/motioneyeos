@@ -315,6 +315,7 @@ def _get_raspimjpeg_settings(camera_id):
         'hflip': False,
         'framerate': 15,
         'quality': 25,
+        'bitrate': 1000000,
         'zoomx': 0,
         'zoomy': 0,
         'zoomw': 100,
@@ -783,6 +784,28 @@ def seQuality():
         'ticks': '1|25|50|75|100',
         'decimals': 0,
         'unit': '%',
+        'section': 'device',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seBitrate():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Bitrate',
+        'description': 'sets the RTSP stream bitrate (higher values produce a better stream quality but require more storage space and bandwidth)',
+        'type': 'number',
+        'min': 0,
+        'max': 100000000,
+        'unit': 'bps',
         'section': 'device',
         'advanced': True,
         'camera': True,
