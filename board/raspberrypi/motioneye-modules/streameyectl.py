@@ -130,6 +130,11 @@ ROTATION_CHOICES = [
     ('270', '270&deg;')
 ]
 
+PROTO_CHOICES = [
+    ('mjpeg', 'MJPEG'),
+    ('rtsp', 'RTSP'),
+]
+
 AUTH_CHOICES = [
     ('disabled', 'Disabled'),
     ('basic', 'Basic'),
@@ -402,6 +407,7 @@ def _set_raspimjpeg_settings(camera_id, s):
 
 def _get_streameye_settings(camera_id):
     s = {
+        'seProto': 'mjpeg',
         'seAuthMode': 'disabled',
         'sePort': 8081,
     }
@@ -424,6 +430,10 @@ def _get_streameye_settings(camera_id):
                 if m:
                     s['seAuthMode'] = m[0]
 
+                m = re.findall('PROTO="?(\w+)"?', line)
+                if m:
+                    s['seProto'] = m[0]
+
     return s
 
 
@@ -440,6 +450,7 @@ def _set_streameye_settings(camera_id, s):
     logging.debug('writing streameye settings to %s' % STREAMEYE_CONF)
     
     lines = [
+        'PROTO="%s"' % s['seProto'],
         'PORT="%s"' % s['sePort'],
         'AUTH="%s"' % s['seAuthMode'],
         'CREDENTIALS="%s:%s:%s"' % (username, password, realm)
@@ -1126,6 +1137,26 @@ def seImxfx():
         'required': True,
         'get': _get_raspimjpeg_settings,
         'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seProto():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Streaming Protocol',
+        'description': 'the desired streaming protocol (keep in mind that RTSP is experimental)',
+        'type': 'choices',
+        'choices': PROTO_CHOICES,
+        'section': 'streaming',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'get': _get_streameye_settings,
+        'set': _set_streameye_settings,
         'get_set_dict': True
     }
 
