@@ -57,13 +57,7 @@ qemu-system-x86_64 \
 Emulation in qemu (UEFI)
 ========================
 
-1. Edit grub-efi.cfg
-
-  Since the driver will show up in the virtual machine as /dev/vda,
-  change board/pc/grub-efi.cfg to use root=/dev/vda2 instead of
-  root=/dev/sda2. Then rebuild grub2 and the image.
-
-2. Run the emulation with:
+Run the emulation with:
 
 qemu-system-x86_64 \
 	-M pc \
