@@ -231,6 +231,7 @@ if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BR2_CONFIG ; then
 		echo "libstdc++6:i386, and zlib1g:i386)."
 		echo "If you're running a RedHat/Fedora distribution, install the glibc.i686 and"
 		echo "zlib.i686 packages."
+		echo "If you're running an ArchLinux distribution, install lib32-glibc."
 		echo "For other distributions, refer to the documentation on how to install the 32 bits"
 		echo "compatibility libraries."
 		exit 1
