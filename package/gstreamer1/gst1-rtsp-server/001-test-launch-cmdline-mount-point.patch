@@ -1,0 +1,56 @@
+diff -rupEbBN gst1-rtsp-server-1.14.2.org/examples/test-launch.c gst1-rtsp-server-1.14.2/examples/test-launch.c
+--- gst1-rtsp-server-1.14.2.org/examples/test-launch.c	2019-01-02 10:35:38.025452322 +1100
++++ gst1-rtsp-server-1.14.2/examples/test-launch.c	2019-01-02 10:56:01.127536126 +1100
+@@ -22,12 +22,16 @@
+ #include <gst/rtsp-server/rtsp-server.h>
+ 
+ #define DEFAULT_RTSP_PORT "8554"
++#define DEFAULT_RTSP_MOUNT_POINT "stream"
+ 
+ static char *port = (char *) DEFAULT_RTSP_PORT;
++static char *mount_point = (char *) DEFAULT_RTSP_MOUNT_POINT;
+ 
+ static GOptionEntry entries[] = {
+   {"port", 'p', 0, G_OPTION_ARG_STRING, &port,
+       "Port to listen on (default: " DEFAULT_RTSP_PORT ")", "PORT"},
++  {"mount", 'm', 0, G_OPTION_ARG_STRING, &mount_point,
++      "Stream mount point (default: " DEFAULT_RTSP_MOUNT_POINT ")", "MOUNT"},
+   {NULL}
+ };
+ 
+@@ -53,6 +57,14 @@ main (int argc, char *argv[])
+   }
+   g_option_context_free (optctx);
+ 
++  char *mount_string = malloc(strlen(mount_point)+2);
++  if (!mount_string) {
++    g_printerr ("Error allocating memory\n");
++    return -1;
++  }
++  mount_string[0] = '/';
++  strcpy(mount_string+1, mount_point);
++
+   loop = g_main_loop_new (NULL, FALSE);
+ 
+   /* create a server instance */
+@@ -72,7 +84,7 @@ main (int argc, char *argv[])
+   gst_rtsp_media_factory_set_shared (factory, TRUE);
+ 
+   /* attach the test factory to the /test url */
+-  gst_rtsp_mount_points_add_factory (mounts, "/test", factory);
++  gst_rtsp_mount_points_add_factory (mounts, mount_string, factory);
+ 
+   /* don't need the ref to the mapper anymore */
+   g_object_unref (mounts);
+@@ -81,8 +93,10 @@ main (int argc, char *argv[])
+   gst_rtsp_server_attach (server, NULL);
+ 
+   /* start serving */
+-  g_print ("stream ready at rtsp://127.0.0.1:%s/test\n", port);
++  g_print ("stream ready at rtsp://127.0.0.1:%s%s\n", port, mount_string);
+   g_main_loop_run (loop);
+ 
++  free(mount_string);
++
+   return 0;
+ }
