@@ -8,20 +8,6 @@ from tests.package.test_python import TestPythonBase
 #              does, so this test ends up being a false-negative
 
 
-class TestIPythonPy2(TestPythonBase):
-    config = TestPythonBase.config + \
-        """
-        BR2_PACKAGE_PYTHON=y
-        BR2_PACKAGE_PYTHON_IPYTHON=y
-        """
-    interpreter = "ipython"
-
-    def test_run(self):
-        self.login()
-        self.math_floor_test(40)
-        self.libc_time_test(40)
-
-
 class TestIPythonPy3(TestPythonBase):
     config = TestPythonBase.config + \
         """
