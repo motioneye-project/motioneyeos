@@ -1,3 +1,6 @@
 # hashes from: $(CA_CERTIFICATES_SITE)/ca-certificates_$(CA_CERTIFICATES_VERSION).dsc :
-sha1   edf0ec04b02fcbc90cc65906ff83fb042894a3b7                         ca-certificates_20180409.tar.xz
-sha256 7af6f5bfc619fd29cbf0258c1d95107c38ce840ad6274e343e1e0d971fc72b51 ca-certificates_20180409.tar.xz
+sha1   47d4584eae85fc905e4994766eb3930a8a84e2e1                         ca-certificates_20190110.tar.xz
+sha256 ee4bf0f4c6398005f5b5ca4e0b87b82837ac5c3b0280a1cb3a63c47555c3a675 ca-certificates_20190110.tar.xz
+
+# Locally computed
+sha256 80fd11117df5543d5cf17bfd951b0ead213f7867d0b09f09c6d5a5eca3ff7422 debian/copyright
