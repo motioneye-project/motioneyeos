@@ -44,7 +44,7 @@ start() {
         count=$((${count} + 1))
         if [[ ${count} -ge 10 ]]; then
             msg_fail "no device"
-            logger -t bluetooth -s "bluetooth device not available, calling panic action"
+            logger -t bluetooth "bluetooth device not available, calling panic action"
             panic_action bluetooth
             return 1
         fi

@@ -42,9 +42,9 @@ watch() {
         else
             if [[ ${count} -lt ${LINK_WATCH_TIMEOUT} ]]; then
                 count=$((${count} + 5))
-                logger -t wifi -s "disconnected"
+                logger -t wifi "disconnected"
             else
-                logger -t wifi -s "disconnected for ${LINK_WATCH_TIMEOUT} seconds, calling panic action"
+                logger -t wifi "disconnected for ${LINK_WATCH_TIMEOUT} seconds, calling panic action"
                 panic_action wifi
             fi
         fi
@@ -71,7 +71,14 @@ start() {
 
     iwconfig ${OS_WLAN} power off &> /dev/null
     iw ${OS_WLAN} set power_save off &> /dev/null
-    ${PROG} -i${OS_WLAN} -c${CONF} -D${DRIVER} -B &> ${LOG}
+    
+    opts="-i${OS_WLAN} -c${CONF} -D${DRIVER} -B"
+    if [[ ${OS_DEBUG} == "true" ]]; then
+        opts+=" -dd"
+    fi
+    
+    ${PROG} ${opts} &>> ${LOG}
+    
     count=0
     while true; do
         sleep 1
@@ -80,7 +87,7 @@ start() {
             break
         fi
 
-        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof wpa_supplicant > /dev/null; then
+        if [[ ${count} -gt ${LINK_WATCH_TIMEOUT} ]] || ! pidof $(basename ${PROG}) > /dev/null; then
             test -n "${module}" && msg_fail "failed (${module})"|| msg_fail
             return 1
         fi
@@ -97,7 +104,7 @@ start() {
 
 stop() {
     msg_begin "Stopping wpa_supplicant"
-    killall wpa_supplicant &>/dev/null
+    killall -q $(basename ${PROG})
     ps | grep wifi | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     msg_done
 }

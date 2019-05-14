@@ -5,7 +5,7 @@ DEV="/dev/watchdog"
 PROG="/sbin/watchdog"
 
 
-test -c ${PROG} || exit 0
+test -x ${PROG} || exit 0
 test -c ${DEV} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
