@@ -4,4 +4,4 @@ config BR2_PACKAGE_PYTHON_AIOHTTP_SWAGGER
 	help
 	  Swagger API Documentation builder for aiohttp server
 
-	  https://github.com/cr0hn/aiohttp-swagger
+	  https://github.com/eLvErDe/aiohttp-swagger
