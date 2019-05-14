@@ -7,3 +7,6 @@ config BR2_PACKAGE_WOFF2
 	  typically used for Web fonts
 
 	  https://github.com/google/woff2
+
+comment "woff2 needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
