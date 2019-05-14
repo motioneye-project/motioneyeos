@@ -253,6 +253,13 @@ QT5BASE_CONFIGURE_OPTS += -no-gtk
 endif
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+QT5BASE_CONFIGURE_OPTS += -journald
+QT5BASE_DEPENDENCIES += systemd
+else
+QT5BASE_CONFIGURE_OPTS += -no-journald
+endif
+
 # Build the list of libraries to be installed on the target
 QT5BASE_INSTALL_LIBS_y                                 += Qt5Core
 QT5BASE_INSTALL_LIBS_$(BR2_PACKAGE_QT5BASE_XCB)        += Qt5XcbQpa
