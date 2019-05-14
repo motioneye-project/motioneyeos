@@ -1,0 +1,27 @@
+config BR2_PACKAGE_LIBEASTL_ARCH_SUPPORTS
+	bool
+	default y if BR2_i386
+	default y if BR2_x86_64
+	default y if BR2_aarch64
+	default y if BR2_powerpc
+	default y if BR2_powerpc64
+
+config BR2_PACKAGE_LIBEASTL
+	bool "libeastl"
+	depends on BR2_PACKAGE_LIBEASTL_ARCH_SUPPORTS
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 # C++14
+	help
+	  EASTL stands for Electronic Arts Standard Template
+	  Library. EASTL stands for Electronic Arts Standard Template
+	  Library. It is a C++ template library of containers,
+	  algorithms, and iterators useful for runtime and tool
+	  development across multiple platforms.  It is an extensive
+	  and robust implementation that has an emphasis on high
+	  performance.
+
+	  https://github.com/electronicarts/EASTL
+
+comment "libeastl needs a toolchain w/ C++, gcc >= 4.9"
+	depends on BR2_PACKAGE_LIBEASTL_ARCH_SUPPORTS
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 || !BR2_INSTALL_LIBSTDCPP

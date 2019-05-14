@@ -1,0 +1,49 @@
+From 21a752e827bc9e14de4b4c26aef4d0db7403a5b7 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 9 Oct 2018 15:22:46 +0300
+Subject: [PATCH] driver_greis: fix build with reconfigure disabled
+
+Unhide the definition of greis_parse_input and greis_event_hook since
+they are used unconditionally.
+
+Fixes the following build failure:
+
+driver_greis.c:969:25: error: 'greis_parse_input' undeclared here (not in a function); did you mean 'generic_parse_input'?
+     .parse_packet     = greis_parse_input,
+                         ^~~~~~~~~~~~~~~~~
+                         generic_parse_input
+driver_greis.c:973:25: error: 'greis_event_hook' undeclared here (not in a function)
+     .event_hook       = greis_event_hook,
+                         ^~~~~~~~~~~~~~~~
+
+Cc: Gregory Fong <gregory.fong@virginorbit.com>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: http://lists.nongnu.org/archive/html/gpsd-dev/2018-10/msg00012.html
+
+ driver_greis.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/driver_greis.c b/driver_greis.c
+index 9eb148fc76cd..222bd9daf020 100644
+--- a/driver_greis.c
++++ b/driver_greis.c
+@@ -797,7 +797,6 @@ static ssize_t greis_control_send(struct gps_device_t *session,
+ }
+ #endif /* CONTROLSEND_ENABLE */
+ 
+-#ifdef RECONFIGURE_ENABLE
+ static void greis_event_hook(struct gps_device_t *session, event_t event)
+ {
+     if (session->context->readonly)
+@@ -870,6 +869,7 @@ static gps_mask_t greis_parse_input(struct gps_device_t *session)
+ 	return 0;
+ }
+ 
++#ifdef RECONFIGURE_ENABLE
+ /**
+  * Set port operating mode, speed, parity, stopbits etc. here.
+  * Note: parity is passed as 'N'/'E'/'O', but you should program
+-- 
+2.19.1
+

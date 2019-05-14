@@ -12,7 +12,17 @@ class Builder(object):
         self.builddir = builddir
         self.logfile = infra.open_log_file(builddir, "build", logtofile)
 
-    def configure(self):
+    def configure(self, make_extra_opts=[], make_extra_env={}):
+        """Configure the build.
+
+        make_extra_opts: a list of arguments to be passed to the make
+        command.
+        e.g. make_extra_opts=["BR2_EXTERNAL=/path"]
+
+        make_extra_env: a dict of variables to be appended (or replaced)
+        in the environment that calls make.
+        e.g. make_extra_env={"BR2_DL_DIR": "/path"}
+        """
         if not os.path.isdir(self.builddir):
             os.makedirs(self.builddir)
 
@@ -25,17 +35,40 @@ class Builder(object):
         self.logfile.flush()
 
         env = {"PATH": os.environ["PATH"]}
+        env.update(make_extra_env)
+
         cmd = ["make",
-               "O={}".format(self.builddir),
-               "olddefconfig"]
+               "O={}".format(self.builddir)]
+        cmd += make_extra_opts
+        cmd += ["olddefconfig"]
+
         ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
                               env=env)
         if ret != 0:
             raise SystemError("Cannot olddefconfig")
 
-    def build(self):
+    def build(self, make_extra_opts=[], make_extra_env={}):
+        """Perform the build.
+
+        make_extra_opts: a list of arguments to be passed to the make
+        command. It can include a make target.
+        e.g. make_extra_opts=["foo-source"]
+
+        make_extra_env: a dict of variables to be appended (or replaced)
+        in the environment that calls make.
+        e.g. make_extra_env={"BR2_DL_DIR": "/path"}
+        """
         env = {"PATH": os.environ["PATH"]}
+        if "http_proxy" in os.environ:
+            self.logfile.write("Using system proxy: " +
+                               os.environ["http_proxy"] + "\n")
+            env['http_proxy'] = os.environ["http_proxy"]
+            env['https_proxy'] = os.environ["http_proxy"]
+        env.update(make_extra_env)
+
         cmd = ["make", "-C", self.builddir]
+        cmd += make_extra_opts
+
         ret = subprocess.call(cmd, stdout=self.logfile, stderr=self.logfile,
                               env=env)
         if ret != 0:

@@ -3,7 +3,7 @@ config BR2_PACKAGE_PERL_NET_SSLEAY
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_OPENSSL
 	help
-	  Perl extension for using OpenSSL
+	  Perl extension for using OpenSSL.
 
 	  https://metacpan.org/release/Net-SSLeay
 

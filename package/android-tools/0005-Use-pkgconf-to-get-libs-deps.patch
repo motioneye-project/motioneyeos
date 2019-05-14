@@ -1,0 +1,35 @@
+makefiles: use pkgconf to get libs deps
+
+LIBS lists library dependencies without taking into account static linking
+that need ordered listing and more libraries listed since differently from
+shared linking dependency is not transparent(i.e. -lcrypto could need
+-latomic etc.).
+
+Replace -lcrypto with `pkg-config --libs libcrypto` command to be sure all
+needed libraries are listed during linking.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+diff -urpN android-tools-4.2.2+git20130218.orig/debian/makefiles/adbd.mk android-tools-4.2.2+git20130218/debian/makefiles/adbd.mk
+--- android-tools-4.2.2+git20130218.orig/debian/makefiles/adbd.mk	2019-04-08 16:05:02.967710428 +0200
++++ android-tools-4.2.2+git20130218/debian/makefiles/adbd.mk	2019-04-08 16:30:42.463084426 +0200
+@@ -44,7 +44,7 @@ CPPFLAGS+= -DADBD_NON_ANDROID
+ CPPFLAGS+= -I$(SRCDIR)/core/adbd
+ CPPFLAGS+= -I$(SRCDIR)/core/include
+
+-LIBS+= -lc -lpthread -lz -lcrypto -lcrypt
++LIBS+= -lc -lpthread -lz `pkg-config --libs libcrypto` -lcrypt
+
+ OBJS= $(patsubst %, %.o, $(basename $(SRCS)))
+
+diff -urpN android-tools-4.2.2+git20130218.orig/debian/makefiles/adb.mk android-tools-4.2.2+git20130218/debian/makefiles/adb.mk
+--- android-tools-4.2.2+git20130218.orig/debian/makefiles/adb.mk	2019-04-08 16:05:02.959701400 +0200
++++ android-tools-4.2.2+git20130218/debian/makefiles/adb.mk	2019-04-08 16:31:06.529426250 +0200
+@@ -41,7 +41,7 @@ CPPFLAGS+= -DHAVE_TERMIO_H
+ CPPFLAGS+= -I$(SRCDIR)/core/adb
+ CPPFLAGS+= -I$(SRCDIR)/core/include
+
+-LIBS+= -lc -lpthread -lz -lcrypto
++LIBS+= -lc -lpthread -lz `pkg-config --libs libcrypto`
+
+ OBJS= $(SRCS:.c=.o)

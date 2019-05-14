@@ -1,0 +1,14 @@
+config BR2_PACKAGE_IWD
+	bool "iwd"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # ell
+	depends on !BR2_STATIC_LIBS # ell
+	depends on BR2_USE_WCHAR # ell
+	select BR2_PACKAGE_ELL
+	help
+	  iNet Wireless daemon (iwd)
+
+	  https://iwd.wiki.kernel.org/
+
+comment "iwd needs a toolchain w/ dynamic library, wchar"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # ell
+	depends on BR2_STATIC_LIBS || !BR2_USE_WCHAR

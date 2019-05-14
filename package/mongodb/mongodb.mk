@@ -4,21 +4,38 @@
 #
 ################################################################################
 
-MONGODB_VERSION_BASE = 3.3.4
+MONGODB_VERSION_BASE = 4.0.6
 MONGODB_VERSION = r$(MONGODB_VERSION_BASE)
 MONGODB_SITE = $(call github,mongodb,mongo,$(MONGODB_VERSION))
 
-MONGODB_LICENSE = AGPL-3.0, Apache-2.0
-MONGODB_LICENSE_FILES = GNU-AGPL-3.0.txt APACHE-2.0.txt
+MONGODB_LICENSE = Apache-2.0 (drivers), SSPL (database)
+MONGODB_LICENSE_FILES = APACHE-2.0.txt LICENSE-Community.txt
 
-MONGODB_DEPENDENCIES = host-scons
+MONGODB_DEPENDENCIES = \
+	boost \
+	host-python-cheetah \
+	host-python-pyyaml \
+	host-python-typing \
+	host-scons \
+	pcre \
+	snappy \
+	sqlite \
+	yaml-cpp \
+	zlib
 
 MONGODB_SCONS_TARGETS = mongod mongos
 
 MONGODB_SCONS_ENV = CC="$(TARGET_CC)" CXX="$(TARGET_CXX)" \
 	-j"$(PARALLEL_JOBS)"
 
-MONGODB_SCONS_OPTS = --disable-warnings-as-errors
+MONGODB_SCONS_OPTS = \
+	--disable-warnings-as-errors \
+	--use-system-boost \
+	--use-system-pcre \
+	--use-system-snappy \
+	--use-system-sqlite \
+	--use-system-yaml \
+	--use-system-zlib
 
 # need to pass mongo version when not building from git repo
 MONGODB_SCONS_OPTS += MONGO_VERSION=$(MONGODB_VERSION_BASE)-
@@ -41,9 +58,18 @@ else
 MONGODB_SCONS_OPTS += --js-engine=none --allocator=system
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL),y)
+MONGODB_DEPENDENCIES += libcurl
+MONGODB_SCONS_OPTS += --enable-free-mon=on
+else
+MONGODB_SCONS_OPTS += --enable-free-mon=off
+endif
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 MONGODB_DEPENDENCIES += openssl
-MONGODB_SCONS_OPTS += --ssl=SSL
+MONGODB_SCONS_OPTS += \
+	--ssl \
+	--ssl-provider=openssl
 endif
 
 define MONGODB_BUILD_CMDS

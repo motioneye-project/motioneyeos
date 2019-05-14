@@ -1,0 +1,32 @@
+From 85336f2404b9583267019650ea0112ebf1bb571a Mon Sep 17 00:00:00 2001
+From: Francois Perrad <francois.perrad@gadz.org>
+Date: Wed, 28 Nov 2018 17:59:44 +0100
+Subject: [PATCH] fix freetype detection
+
+Using freetype-config doesn't work well, because it's going to use the
+system freetype-config instead of the one installed in the
+cross-compilation sysroot. So, let's use pkg-config instead.
+
+Signed-off-by: Francois Perrad <francois.perrad@gadz.org>
+---
+ netsurf/frontends/framebuffer/Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/netsurf/frontends/framebuffer/Makefile b/netsurf/frontends/framebuffer/Makefile
+index bdedd90..249c7c4 100644
+--- a/netsurf/frontends/framebuffer/Makefile
++++ b/netsurf/frontends/framebuffer/Makefile
+@@ -35,8 +35,8 @@ LDFLAGS += -Wl,--no-whole-archive
+ 
+ # freetype is optional but does not use pkg-config
+ ifeq ($(NETSURF_FB_FONTLIB),freetype)
+-  CFLAGS += -DFB_USE_FREETYPE $(shell freetype-config --cflags)
+-  LDFLAGS += $(shell freetype-config --libs)
++  CFLAGS += -DFB_USE_FREETYPE $(shell $(PKG_CONFIG) --cflags freetype2)
++  LDFLAGS += $(shell $(PKG_CONFIG) --libs freetype2)
+ endif
+ 
+ 
+-- 
+2.17.1
+

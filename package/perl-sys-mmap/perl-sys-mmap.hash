@@ -1,0 +1,7 @@
+# retrieved by scancpan from http://cpan.metacpan.org/
+md5    990c9106a88dc843035f7bcb109e6c0e Sys-Mmap-0.19.tar.gz
+sha256 09295e25cc9b0599d9009d19b2be89fcecaecc62ce594f873d7f70d7c10900fa Sys-Mmap-0.19.tar.gz
+
+# computed by scancpan
+sha256 4ac2afe465736476a06e52edcc78c72cfa0fa4d625916e58ab4f2af6c598709c Artistic
+sha256 51c144e9a67644fa8eea0ea63dedb4e837587305b22f073eb5e279e39e7325a8 Copying

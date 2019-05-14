@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-OPUS_TOOLS_VERSION = 0.1.10
+OPUS_TOOLS_VERSION = 0.2
 OPUS_TOOLS_SITE = https://downloads.xiph.org/releases/opus
 OPUS_TOOLS_LICENSE = BSD-2-Clause, GPL-2.0 (opusinfo)
 OPUS_TOOLS_LICENSE_FILES = COPYING
 OPUS_TOOLS_CONF_OPTS = --disable-oggtest --disable-opustest
-OPUS_TOOLS_DEPENDENCIES = opus libogg host-pkgconf
+OPUS_TOOLS_DEPENDENCIES = libogg libopusenc opus opusfile host-pkgconf
 
 ifeq ($(BR2_PACKAGE_LIBPCAP),y)
 OPUS_TOOLS_DEPENDENCIES += libpcap

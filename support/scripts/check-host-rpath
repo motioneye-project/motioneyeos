@@ -39,6 +39,11 @@ is_elf() {
     |grep -E 'Requesting program interpreter:' >/dev/null 2>&1
 }
 
+# This function tells whether a given ELF executable (first argument)
+# needs a RPATH pointing to the host library directory or not. It
+# needs such an RPATH if at least of the libraries used by the ELF
+# executable is available in the host library directory. This function
+# returns 0 when a RPATH is needed, 1 otherwise.
 elf_needs_rpath() {
     local file="${1}"
     local hostdir="${2}"
@@ -54,6 +59,13 @@ elf_needs_rpath() {
     return 1
 }
 
+# This function checks whether at least one of the RPATH of the given
+# ELF executable (first argument) properly points to the host library
+# directory (second argument), either through an absolute RPATH or a
+# relative RPATH. Having such a RPATH will make sure the ELF
+# executable will find at runtime the shared libraries it depends
+# on. This function returns 0 when a proper RPATH was found, or 1
+# otherwise.
 check_elf_has_rpath() {
     local file="${1}"
     local hostdir="${2}"
@@ -63,7 +75,8 @@ check_elf_has_rpath() {
         for dir in ${rpath//:/ }; do
             # Remove duplicate and trailing '/' for proper match
             dir="$( sed -r -e 's:/+:/:g; s:/$::;' <<<"${dir}" )"
-            [ "${dir}" = "${hostdir}/lib" -o "${dir}" = "\$ORIGIN/../lib" ] && return 0
+            [ "${dir}" = "${hostdir}/lib" ] && return 0
+            [ "${dir}" = "\$ORIGIN/../lib" ] && return 0
         done
     done < <( readelf -d "${file}"                                              \
               |sed -r -e '/.* \(R(UN)?PATH\) +Library r(un)?path: \[(.+)\]$/!d' \

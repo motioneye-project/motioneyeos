@@ -1,0 +1,34 @@
+From badb5dafa9efc89384d9d2bea5648f7b017204d7 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 11 Jan 2019 17:30:32 +0100
+Subject: [PATCH] lockfile-util.c: fix build without F_OFD_SETLK
+
+systemd fails to build on kernel without F_OFD_SETLK since
+https://github.com/systemd/systemd/commit/9714c020fc4cda1823c2a77e3fd08aefa7d78b25
+
+So put include missing_fcntl.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/699c078aa078240c6741da4dbd0871450ceeca92
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/systemd/systemd/pull/11400]
+---
+ src/shared/lockfile-util.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/shared/lockfile-util.c b/src/shared/lockfile-util.c
+index 4bae23b24..260c2088d 100644
+--- a/src/shared/lockfile-util.c
++++ b/src/shared/lockfile-util.c
+@@ -12,6 +12,7 @@
+ #include "fs-util.h"
+ #include "lockfile-util.h"
+ #include "macro.h"
++#include "missing_fcntl.h"
+ #include "path-util.h"
+ 
+ int make_lock_file(const char *p, int operation, LockFile *ret) {
+-- 
+2.14.1
+

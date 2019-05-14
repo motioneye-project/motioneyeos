@@ -1,0 +1,61 @@
+From 822809d0afd0f984750a61b2391059411afa4333 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 11 Jan 2019 16:07:00 +0100
+Subject: [PATCH] capability: fix build without PR_CAP_AMBIENT
+
+systemd fails to build on kernel without PR_CAP_AMBIENT (< 4.3) since
+https://github.com/systemd/systemd/commit/2a03bb3e65327c73008f1db485ffc75c432dc6b2
+
+To fix this error, include missing_prctl.h in all files using
+PR_CAP_AMBIENT
+
+Fixes:
+ - http://autobuild.buildroot.org/results/699c078aa078240c6741da4dbd0871450ceeca92
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/systemd/systemd/pull/11400]
+---
+ src/basic/capability-util.c | 1 +
+ src/test/test-capability.c  | 1 +
+ src/test/test-execute.c     | 1 +
+ 3 files changed, 3 insertions(+)
+
+diff --git a/src/basic/capability-util.c b/src/basic/capability-util.c
+index a3f3ca9f5..b944ee6ea 100644
+--- a/src/basic/capability-util.c
++++ b/src/basic/capability-util.c
+@@ -13,6 +13,7 @@
+ #include "fileio.h"
+ #include "log.h"
+ #include "macro.h"
++#include "missing_prctl.h"
+ #include "parse-util.h"
+ #include "user-util.h"
+ #include "util.h"
+diff --git a/src/test/test-capability.c b/src/test/test-capability.c
+index dae85f2f9..3db05878a 100644
+--- a/src/test/test-capability.c
++++ b/src/test/test-capability.c
+@@ -13,6 +13,7 @@
+ #include "fd-util.h"
+ #include "fileio.h"
+ #include "macro.h"
++#include "missing_prctl.h"
+ #include "parse-util.h"
+ #include "tests.h"
+ #include "util.h"
+diff --git a/src/test/test-execute.c b/src/test/test-execute.c
+index 2115061ad..cea68b8cf 100644
+--- a/src/test/test-execute.c
++++ b/src/test/test-execute.c
+@@ -13,6 +13,7 @@
+ #include "fs-util.h"
+ #include "macro.h"
+ #include "manager.h"
++#include "missing_prctl.h"
+ #include "mkdir.h"
+ #include "path-util.h"
+ #include "rm-rf.h"
+-- 
+2.14.1
+

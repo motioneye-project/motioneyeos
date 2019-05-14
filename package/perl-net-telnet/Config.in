@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PERL_NET_TELNET
 	bool "perl-net-telnet"
 	help
-	  Interact with TELNET port or other TCP ports
+	  Interact with TELNET port or other TCP ports.
 
 	  https://metacpan.org/release/Net-Telnet

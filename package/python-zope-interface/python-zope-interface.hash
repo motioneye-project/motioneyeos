@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/zope.interface/json, sha256 locally computed
-md5	8700a4f527c1203b34b10c2b4e7a6912  zope.interface-4.4.3.tar.gz
-sha256	d6d26d5dfbfd60c65152938fcb82f949e8dada37c041f72916fef6621ba5c5ce  zope.interface-4.4.3.tar.gz
-sha256  3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c  LICENSE.txt
+# md5, sha256 from https://pypi.org/pypi/zope-interface/json
+md5	a3b24f9d079bae5e13dd7a88aa512112  zope.interface-4.6.0.tar.gz
+sha256	1b3d0dcabc7c90b470e59e38a9acaa361be43b3a6ea644c0063951964717f0e5  zope.interface-4.6.0.tar.gz
+# Locally computed sha256 checksums
+sha256	3e671db11df687516cc1db5b3d65e4aa383eaca3c20cea3faf53a0f7335d0a3c  LICENSE.txt

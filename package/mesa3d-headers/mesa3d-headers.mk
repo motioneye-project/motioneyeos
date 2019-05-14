@@ -12,7 +12,7 @@ endif
 
 # Not possible to directly refer to mesa3d variables, because of
 # first/second expansion trickery...
-MESA3D_HEADERS_VERSION = 18.1.5
+MESA3D_HEADERS_VERSION = 18.3.3
 MESA3D_HEADERS_SOURCE = mesa-$(MESA3D_HEADERS_VERSION).tar.xz
 MESA3D_HEADERS_SITE = https://mesa.freedesktop.org/archive
 MESA3D_HEADERS_DL_SUBDIR = mesa3d
@@ -61,6 +61,10 @@ endif
 
 ifeq ($(BR2_PACKAGE_HAS_LIBGLES),y)
 MESA3D_HEADERS_DIRS += GLES GLES2
+endif
+
+ifeq ($(BR2_PACKAGE_HAS_LIBOPENCL),y)
+MESA3D_HEADERS_DIRS += CL
 endif
 
 define MESA3D_HEADERS_BUILD_CMDS

@@ -1,0 +1,29 @@
+From 9458a8627ed73600488a6d8a0ce2ce1d123da583 Mon Sep 17 00:00:00 2001
+From: bkuhls <bkuhls@users.noreply.github.com>
+Date: Sun, 19 Aug 2018 11:23:48 +0200
+Subject: [PATCH] SecurityCertificateManager.cpp: include cstring (#267)
+
+Fixes build with gcc-8.2.0.
+
+Upstream: https://github.com/ibrdtn/ibrdtn/commit/122fa8ed49f896abf6a389505f3d0b66d49d1e77
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ src/security/SecurityCertificateManager.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/security/SecurityCertificateManager.cpp b/src/security/SecurityCertificateManager.cpp
+index 5fba703..f2bbb01 100644
+--- a/src/security/SecurityCertificateManager.cpp
++++ b/src/security/SecurityCertificateManager.cpp
+@@ -22,6 +22,7 @@
+ #include "security/SecurityCertificateManager.h"
+ #include "Configuration.h"
+ 
++#include <cstring>
+ #include <cstdlib>
+ 
+ #include <ibrcommon/Logger.h>
+-- 
+1.9.1
+

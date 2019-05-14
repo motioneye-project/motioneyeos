@@ -18,7 +18,9 @@ endif
 
 LCDPROC_DEPENDENCIES = freetype ncurses zlib
 
-LCDPROC_CONF_ENV += ac_cv_path_FT2_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
+LCDPROC_CONF_ENV += \
+	ac_cv_mtab_file=/etc/mtab \
+	ac_cv_path_FT2_CONFIG=$(STAGING_DIR)/usr/bin/freetype-config
 
 ifeq ($(BR2_PACKAGE_LIBPNG),y)
 LCDPROC_DEPENDENCIES += libpng

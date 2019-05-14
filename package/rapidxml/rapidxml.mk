@@ -21,7 +21,8 @@ define RAPIDXML_EXTRACT_CMDS
 endef
 
 define RAPIDXML_INSTALL_STAGING_CMDS
-	cp -dpfr $(@D)/*hpp $(STAGING_DIR)/usr/include
+	mkdir -p $(STAGING_DIR)/usr/include/rapidxml
+	cp -dpfr $(@D)/*hpp $(STAGING_DIR)/usr/include/rapidxml
 endef
 
 $(eval $(generic-package))

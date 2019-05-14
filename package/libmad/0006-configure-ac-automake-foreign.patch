@@ -1,0 +1,16 @@
+configure.ac: don't require GNU-specific files when running automake
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -ur libmad-0.15.1b-orig/configure.ac libmad-0.15.1b/configure.ac
+--- libmad-0.15.1b-orig/configure.ac	2019-01-17 21:24:52.259194527 +0100
++++ libmad-0.15.1b/configure.ac	2019-01-17 21:25:32.779481058 +0100
+@@ -26,7 +26,7 @@
+ 
+ AC_CONFIG_SRCDIR([decoder.h])
+ 
+-AM_INIT_AUTOMAKE
++AM_INIT_AUTOMAKE([foreign])
+ 
+ AM_CONFIG_HEADER([config.h])
+ 

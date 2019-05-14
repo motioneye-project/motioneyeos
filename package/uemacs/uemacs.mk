@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-UEMACS_VERSION = 31a16c0ccab9a4b69c79920244b9c623bee7bffe
+UEMACS_VERSION = 1cdcf9df88144049750116e36fe20c8c39fa2517
 UEMACS_SITE = https://git.kernel.org/pub/scm/editors/uemacs/uemacs.git
 UEMACS_SITE_METHOD = git
 UEMACS_DEPENDENCIES = ncurses

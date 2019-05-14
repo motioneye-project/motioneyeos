@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-AIRCRACK_NG_VERSION = 1.3
+AIRCRACK_NG_VERSION = 1.5.2
 AIRCRACK_NG_SITE = http://download.aircrack-ng.org
 AIRCRACK_NG_LICENSE = GPL-2.0+
 AIRCRACK_NG_LICENSE_FILES = LICENSE
 AIRCRACK_NG_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_CMOCKA),cmocka) \
 	$(if $(BR2_PACKAGE_LIBNL),libnl) \
 	$(if $(BR2_PACKAGE_OPENSSL),openssl) \
 	$(if $(BR2_PACKAGE_PCRE),pcre) \
@@ -29,6 +30,13 @@ AIRCRACK_NG_DEPENDENCIES += duma
 AIRCRACK_NG_CONF_OPTS += --with-duma
 else
 AIRCRACK_NG_CONF_OPTS += --without-duma
+endif
+
+ifeq ($(BR2_PACKAGE_HWLOC),y)
+AIRCRACK_NG_DEPENDENCIES += hwloc
+AIRCRACK_NG_CONF_OPTS += --enable-hwloc
+else
+AIRCRACK_NG_CONF_OPTS += --disable-hwloc
 endif
 
 ifeq ($(BR2_PACKAGE_JEMALLOC),y)

@@ -1,0 +1,39 @@
+From c1b9d07d39e33e40d2ad04be176367cf48271cfd Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 26 Mar 2019 20:00:45 +0200
+Subject: [PATCH] unix/uxpoll: need _XOPEN_SOURCE
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+The code needs _XOPEN_SOURCE for some poll() flags.
+
+Fix this build failure with uClibc:
+
+./../unix/uxpoll.c: In function ‘pollwrap_add_fd_rwx’:
+./../unix/uxpoll.c:75:32: error: ‘POLLRDNORM’ undeclared (first use in this function); did you mean ‘POLLNVAL’?
+ #define SELECT_R_IN (POLLIN  | POLLRDNORM | POLLRDBAND)
+                                ^
+./../unix/uxpoll.c:87:19: note: in expansion of macro ‘SELECT_R_IN’
+         events |= SELECT_R_IN;
+                   ^~~~~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: issue reported to upstream developers
+
+ unix/uxpoll.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/unix/uxpoll.c b/unix/uxpoll.c
+index bbc5490d125d..6fe6ac7ba0c1 100644
+--- a/unix/uxpoll.c
++++ b/unix/uxpoll.c
+@@ -1,3 +1,4 @@
++#define _XOPEN_SOURCE
+ #include <poll.h>
+ 
+ #include "putty.h"
+-- 
+2.20.1
+

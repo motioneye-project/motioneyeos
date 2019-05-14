@@ -7,7 +7,6 @@ menuconfig BR2_PACKAGE_PINENTRY
 	# At least one backend is needed to avoid build breakage
 	select BR2_PACKAGE_PINENTRY_NCURSES if \
 		!BR2_PACKAGE_PINENTRY_GTK2 && \
-		!BR2_PACKAGE_PINENTRY_QT4 && \
 		!BR2_PACKAGE_PINENTRY_QT5
 	help
 	  A collection of simple PIN or pass-phrase entry dialogs
@@ -42,28 +41,12 @@ comment "pinentry-gtk2 needs X and a toolchain w/ wchar, threads, C++"
 	depends on !BR2_PACKAGE_XORG7 || !BR2_USE_WCHAR || \
 		!BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
 
-config BR2_PACKAGE_PINENTRY_QT4
-	bool "pinentry-qt4"
-	depends on BR2_USE_MMU # fork
-	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_PACKAGE_QT
-	select BR2_PACKAGE_QT_GUI_MODULE
-	help
-	  The pinentry-qt4 tool
-
-comment "pinentry-qt4 needs a toolchain w/ C++, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
-
 config BR2_PACKAGE_PINENTRY_QT5
 	bool "pinentry-qt5"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on !BR2_STATIC_LIBS
-	depends on !BR2_PACKAGE_PINENTRY_QT4
-	depends on !BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT5
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_WIDGETS
@@ -71,7 +54,6 @@ config BR2_PACKAGE_PINENTRY_QT5
 	  The pinentry-qt5 tool
 
 comment "pinentry-qt5 needs a toolchain w/ wchar, NPTL, C++, dynamic library"
-	depends on !BR2_PACKAGE_PINENTRY_QT4
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || \
 		!BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
 

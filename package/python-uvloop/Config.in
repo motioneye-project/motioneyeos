@@ -1,0 +1,18 @@
+config BR2_PACKAGE_PYTHON_UVLOOP
+	bool "python-uvloop"
+	depends on BR2_PACKAGE_PYTHON3
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # libuv
+	depends on BR2_USE_MMU # libuv
+	depends on !BR2_STATIC_LIBS # libuv
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # libuv
+	select BR2_PACKAGE_LIBUV
+	select BR2_PACKAGE_PYTHON3_SSL
+	help
+	  Fast implementation of asyncio event loop on top of libuv.
+
+	  http://github.com/MagicStack/uvloop
+
+comment "python-uvloop needs a toolchain w/ NPTL, dynamic library"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on BR2_USE_MMU

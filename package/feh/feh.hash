@@ -1,2 +1,3 @@
 # Locally calculated after checking pgp signature
-sha256 b1d6bfdd79060d864b8eff05b916153be04801998148620125e3ac31f99f6c86  feh-2.26.tar.bz2
+sha256 6ec338f80c3f4c30d715f44780f1a09ebfbb99e92a1bb43316428744a839f383  feh-2.27.1.tar.bz2
+sha256 a289176a74d8e5d071456df5d4ee629aeb86f8eeeb6570076fe126f182c6b91d  COPYING

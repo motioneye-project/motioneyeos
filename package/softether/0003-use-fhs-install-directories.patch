@@ -15,20 +15,22 @@ https://github.com/dajhorn/SoftEtherVPN/commit/b9420c3bfc2a8b9d35d0c8e5f6849007c
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+
+[Updated for 4.28 build 9669 beta - src/Mayaqua/Encrypt.c dropped IsXRevoked()
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
 ---
  autotools/softether.am      |  1 +
  src/Cedar/Admin.c           |  2 +-
  src/Cedar/Command.c         |  6 +++++-
  src/Cedar/Logging.c         |  2 +-
  src/Cedar/Server.c          |  4 ++--
- src/Mayaqua/Encrypt.c       |  2 +-
  src/Mayaqua/FileIO.c        | 39 ++++++++++++++++++++++++++++++++++++---
  src/Mayaqua/FileIO.h        |  2 ++
  src/Mayaqua/Mayaqua.c       |  4 ++++
  src/Mayaqua/Table.c         |  6 +++++-
  src/Mayaqua/Unix.c          |  6 +++---
  src/bin/hamcore/Makefile.am |  8 ++++++--
- 12 files changed, 67 insertions(+), 15 deletions(-)
+ 11 files changed, 66 insertions(+), 14 deletions(-)
 
 Index: b/autotools/softether.am
 ===================================================================
@@ -115,19 +117,6 @@ Index: b/src/Cedar/Server.c
  	Format(dir_full_path, sizeof(dir_full_path), "%s/%s", exe_dir, dirname);
  
  	dir = EnumDir(dir_full_path);
-Index: b/src/Mayaqua/Encrypt.c
-===================================================================
---- a/src/Mayaqua/Encrypt.c
-+++ b/src/Mayaqua/Encrypt.c
-@@ -579,7 +579,7 @@
- 		return false;
- 	}
- 
--	GetExeDir(dirname, sizeof(dirname));
-+	GetStateDir(dirname, sizeof(dirname));
- 
- 	// Search the CRL file
- 	t = EnumDir(dirname);
 Index: b/src/Mayaqua/FileIO.c
 ===================================================================
 --- a/src/Mayaqua/FileIO.c

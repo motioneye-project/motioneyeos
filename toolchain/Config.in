@@ -15,10 +15,16 @@ config BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_TOOLCHAIN_HAS_UCONTEXT
 	select BR2_TOOLCHAIN_SUPPORTS_PIE
 
 config BR2_TOOLCHAIN_USES_UCLIBC
 	bool
+	# ucontext is only available for a subset of the supported
+	# architectures
+	select BR2_TOOLCHAIN_HAS_UCONTEXT if BR2_ARM_CPU_HAS_ARM || BR2_i386 \
+		|| BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el \
+		|| BR2_sparc || BR2_x86_64
 	select BR2_TOOLCHAIN_SUPPORTS_PIE if !BR2_m68k && !BR2_microblaze && !BR2_STATIC_LIBS
 
 config BR2_TOOLCHAIN_USES_MUSL
@@ -28,6 +34,7 @@ config BR2_TOOLCHAIN_USES_MUSL
 	select BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_TOOLCHAIN_HAS_THREADS_DEBUG
 	select BR2_TOOLCHAIN_HAS_THREADS_NPTL
+	select BR2_TOOLCHAIN_HAS_UCONTEXT
 	select BR2_TOOLCHAIN_SUPPORTS_PIE if !BR2_STATIC_LIBS
 
 choice
@@ -69,6 +76,11 @@ comment "Toolchain Generic Options"
 config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_19615
 	bool
 
+# https://sourceware.org/bugzilla/show_bug.cgi?id=20006
+# Affect toolchains built with binutils 2.26 (fixed in binutils 2.26.1).
+config BR2_TOOLCHAIN_HAS_BINUTILS_BUG_20006
+	bool
+
 # Atomic types can be:
 #  - never lock-free
 #  - sometimes lock-free
@@ -87,6 +99,19 @@ config BR2_TOOLCHAIN_SUPPORTS_ALWAYS_LOCKFREE_ATOMIC_INTS
 	depends on !BR2_ARM_CPU_ARMV5
 	depends on !BR2_sparc_v8
 	depends on !BR2_m68k_cf5208
+
+# GCC uses thunk functions to adjust the 'this' pointer when calling
+# C++ member functions in classes derived with multiple inheritance.
+# Generation of thunk functions requires support from the compiler
+# back end. In the absence of that support target-independent code
+# in the C++ front end is used to generate thunk functions, but it
+# does not support vararg functions.
+# or1k will support it in the gcc mainline starting with gcc-9.
+config BR2_TOOLCHAIN_SUPPORTS_VARIADIC_MI_THUNK
+	bool
+	default y
+	depends on !BR2_or1k
+	depends on !BR2_xtensa
 
 # Prior to gcc 7.x, exception_ptr, nested_exception and future from
 # libstdc++ would only be provided on architectures that support
@@ -138,6 +163,9 @@ config BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	bool
 
 config BR2_TOOLCHAIN_HAS_SSP
+	bool
+
+config BR2_TOOLCHAIN_HAS_UCONTEXT
 	bool
 
 config BR2_TOOLCHAIN_SUPPORTS_PIE
@@ -361,10 +389,20 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_17
 
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
+
+config BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
+	bool
+	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
+
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST
 	string
+	default "4.20" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_20
+	default "4.19" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_19
 	default "4.18" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_18
 	default "4.17" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_17
 	default "4.16" if BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_16

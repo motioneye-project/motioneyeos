@@ -1,4 +1,4 @@
-From 211b9f19a3a62826fadef55d2f89d6f66fbf4aa6 Mon Sep 17 00:00:00 2001
+From 7783d63c87f94797aa134786214b0a84c000be75 Mon Sep 17 00:00:00 2001
 From: Samuel Martin <s.martin49@gmail.com>
 Date: Thu, 29 May 2014 19:22:27 +0200
 Subject: [PATCH] auto/lib/libxslt/conf: use pkg-config
@@ -7,12 +7,14 @@ Change to using pkg-config to find the path to libxslt and its
 dependencies.
 
 Signed-off-by: Martin Bark <martin@barkynet.com>
+[Peter: updated for 1.15.6]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
- auto/lib/libxslt/conf | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ auto/lib/libxslt/conf | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
 diff --git a/auto/lib/libxslt/conf b/auto/lib/libxslt/conf
-index 3a0f37b..3c2a60e 100644
+index 3063ac7c..3209e364 100644
 --- a/auto/lib/libxslt/conf
 +++ b/auto/lib/libxslt/conf
 @@ -12,8 +12,9 @@
@@ -26,7 +28,7 @@ index 3a0f37b..3c2a60e 100644
 +    ngx_feature_libs="$(${PKG_CONFIG:=pkg-config} --libs libxslt)"
      ngx_feature_test="xmlParserCtxtPtr    ctxt = NULL;
                        xsltStylesheetPtr   sheet = NULL;
-                       xmlDocPtr           doc;
+                       xmlDocPtr           doc = NULL;
 -- 
-2.8.2
+2.11.0
 

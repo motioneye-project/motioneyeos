@@ -1,0 +1,1104 @@
+From 071fec7181255b9234add44865a435dfdefee520 Mon Sep 17 00:00:00 2001
+In-Reply-To: <20180528120513.560-1-cote2004-github@yahoo.com>
+References: <20180528120513.560-1-cote2004-github@yahoo.com>
+From: Eneas U de Queiroz <cote2004-github@yahoo.com>
+Date: Wed, 30 May 2018 15:42:20 -0300
+Subject: [PATCH] ipsec-tools: add openssl 1.1 support
+To: equeiroz@troianet.com.br
+
+This patch updates the calls to openssl 1.1 API, and adds a
+compatibility layer so it compiles with (at least) openssl 1.0.2, I
+haven't tested it with lower versions, but all that's needed is to edit
+the openssl_compat.* files and add the missing functions there--they're
+usually trivial.
+
+Signed-off-by: Eneas U de Queiroz <cote2004-github@yahoo.com>
+
+Downloaded from
+https://github.com/openwrt/packages/blob/master/net/ipsec-tools/patches/015-openssl-1.1.patch
+
+Patch was sent upstream:
+https://sourceforge.net/p/ipsec-tools/mailman/ipsec-tools-devel/thread/20180528120513.560-1-cote2004-github%40yahoo.com/#msg36327963
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/racoon/Makefile.am      |  10 +--
+ src/racoon/algorithm.c      |   6 +-
+ src/racoon/cfparse.y        |   2 +-
+ src/racoon/crypto_openssl.c | 197 +++++++++++++++++++++-------------------
+ src/racoon/crypto_openssl.h |   2 +-
+ src/racoon/eaytest.c        |   7 +-
+ src/racoon/ipsec_doi.c      |   2 +-
+ src/racoon/openssl_compat.c | 213 ++++++++++++++++++++++++++++++++++++++++++++
+ src/racoon/openssl_compat.h |  45 ++++++++++
+ src/racoon/plainrsa-gen.c   |  41 +++++----
+ src/racoon/prsa_par.y       |  28 ++++--
+ src/racoon/rsalist.c        |   5 +-
+ 12 files changed, 431 insertions(+), 127 deletions(-)
+ create mode 100644 src/racoon/openssl_compat.c
+ create mode 100644 src/racoon/openssl_compat.h
+
+diff --git a/src/racoon/Makefile.am b/src/racoon/Makefile.am
+index dbaded9..4c585f3 100644
+--- a/src/racoon/Makefile.am
++++ b/src/racoon/Makefile.am
+@@ -4,7 +4,7 @@ sbin_PROGRAMS = racoon racoonctl plainrsa-gen
+ noinst_PROGRAMS = eaytest
+ include_racoon_HEADERS = racoonctl.h var.h vmbuf.h misc.h gcmalloc.h admin.h \
+ 	schedule.h sockmisc.h isakmp_var.h isakmp.h isakmp_xauth.h \
+-	isakmp_cfg.h isakmp_unity.h ipsec_doi.h evt.h
++	isakmp_cfg.h isakmp_unity.h ipsec_doi.h evt.h openssl_compat.h
+ lib_LTLIBRARIES = libracoon.la
+ 
+ adminsockdir=${localstatedir}/racoon
+@@ -32,7 +32,7 @@ racoon_SOURCES = \
+ 	gssapi.c dnssec.c getcertsbyname.c privsep.c \
+ 	pfkey.c admin.c evt.c ipsec_doi.c oakley.c grabmyaddr.c vendorid.c \
+ 	policy.c localconf.c remoteconf.c crypto_openssl.c algorithm.c \
+-	proposal.c sainfo.c strnames.c \
++	openssl_compat.c proposal.c sainfo.c strnames.c \
+ 	plog.c logger.c schedule.c str2val.c \
+ 	safefile.c backupsa.c genlist.c rsalist.c \
+ 	cftoken.l cfparse.y prsa_tok.l prsa_par.y 
+@@ -51,12 +51,12 @@ libracoon_la_SOURCES = kmpstat.c vmbuf.c sockmisc.c misc.c
+ libracoon_la_CFLAGS = -DNOUSE_PRIVSEP $(AM_CFLAGS)
+ 
+ plainrsa_gen_SOURCES = plainrsa-gen.c plog.c \
+-	crypto_openssl.c logger.c 
++	crypto_openssl.c logger.c openssl_compat.c
+ EXTRA_plainrsa_gen_SOURCES = $(MISSING_ALGOS)
+ plainrsa_gen_LDADD = $(CRYPTOBJS) vmbuf.o misc.o
+ plainrsa_gen_DEPENDENCIES = $(CRYPTOBJS) vmbuf.o misc.o
+ 
+-eaytest_SOURCES = eaytest.c plog.c logger.c
++eaytest_SOURCES = eaytest.c plog.c logger.c openssl_compat.c
+ EXTRA_eaytest_SOURCES = missing/crypto/sha2/sha2.c
+ eaytest_LDADD =	crypto_openssl_test.o vmbuf.o str2val.o misc_noplog.o \
+ 	$(CRYPTOBJS)
+@@ -75,7 +75,7 @@ noinst_HEADERS = \
+ 	debugrm.h         isakmp.h      misc.h          sainfo.h \
+ 	dhgroup.h         isakmp_agg.h  netdb_dnssec.h  schedule.h \
+ 	isakmp_cfg.h      isakmp_xauth.h isakmp_unity.h isakmp_frag.h \
+-	throttle.h	  privsep.h \
++	throttle.h	  privsep.h     openssl_compat.h \
+ 	cfparse_proto.h	  cftoken_proto.h genlist.h     rsalist.h \
+ 	missing/crypto/sha2/sha2.h missing/crypto/rijndael/rijndael_local.h \
+ 	missing/crypto/rijndael/rijndael-api-fst.h \
+diff --git a/src/racoon/algorithm.c b/src/racoon/algorithm.c
+index 3fd50f6..66c874b 100644
+--- a/src/racoon/algorithm.c
++++ b/src/racoon/algorithm.c
+@@ -128,7 +128,7 @@ static struct enc_algorithm oakley_encdef[] = {
+ { "aes",	algtype_aes,	OAKLEY_ATTR_ENC_ALG_AES,	16,
+ 		eay_aes_encrypt,	eay_aes_decrypt,
+ 		eay_aes_weakkey,	eay_aes_keylen, },
+-#ifdef HAVE_OPENSSL_CAMELLIA_H
++#if defined(HAVE_OPENSSL_CAMELLIA_H) && ! defined(OPENSSL_NO_CAMELLIA)
+ { "camellia",	algtype_camellia,	OAKLEY_ATTR_ENC_ALG_CAMELLIA,	16,
+ 		eay_camellia_encrypt,	eay_camellia_decrypt,
+ 		eay_camellia_weakkey,	eay_camellia_keylen, },
+@@ -168,7 +168,7 @@ static struct enc_algorithm ipsec_encdef[] = {
+ { "twofish",	algtype_twofish,	IPSECDOI_ESP_TWOFISH,		16,
+ 		NULL,			NULL,
+ 		NULL,			eay_twofish_keylen, },
+-#ifdef HAVE_OPENSSL_IDEA_H
++#if defined(HAVE_OPENSSL_IDEA_H) && ! defined(OPENSSL_NO_IDEA)
+ { "3idea",	algtype_3idea,		IPSECDOI_ESP_3IDEA,		8,
+ 		NULL,			NULL,
+ 		NULL,			NULL, },
+@@ -179,7 +179,7 @@ static struct enc_algorithm ipsec_encdef[] = {
+ { "rc4",	algtype_rc4,		IPSECDOI_ESP_RC4,		8,
+ 		NULL,			NULL,
+ 		NULL,			NULL, },
+-#ifdef HAVE_OPENSSL_CAMELLIA_H
++#if defined(HAVE_OPENSSL_CAMELLIA_H) && ! defined(OPENSSL_NO_CAMELLIA)
+ { "camellia",	algtype_camellia,	IPSECDOI_ESP_CAMELLIA,		16,
+ 		NULL,			NULL,
+ 		NULL,			eay_camellia_keylen, },
+diff --git a/src/racoon/cfparse.y b/src/racoon/cfparse.y
+index 0d9bd67..8415752 100644
+--- a/src/racoon/cfparse.y
++++ b/src/racoon/cfparse.y
+@@ -2564,7 +2564,7 @@ set_isakmp_proposal(rmconf)
+ 		plog(LLV_DEBUG2, LOCATION, NULL,
+ 			"encklen=%d\n", s->encklen);
+ 
+-		memset(types, 0, ARRAYLEN(types));
++		memset(types, 0, sizeof types);
+ 		types[algclass_isakmp_enc] = s->algclass[algclass_isakmp_enc];
+ 		types[algclass_isakmp_hash] = s->algclass[algclass_isakmp_hash];
+ 		types[algclass_isakmp_dh] = s->algclass[algclass_isakmp_dh];
+diff --git a/src/racoon/crypto_openssl.c b/src/racoon/crypto_openssl.c
+index 55b076a..8fb358f 100644
+--- a/src/racoon/crypto_openssl.c
++++ b/src/racoon/crypto_openssl.c
+@@ -90,6 +90,7 @@
+ #endif
+ #endif
+ #include "plog.h"
++#include "openssl_compat.h"
+ 
+ #define USE_NEW_DES_API
+ 
+@@ -316,9 +317,12 @@ eay_cmp_asn1dn(n1, n2)
+ 			i = idx+1;
+ 			goto end;
+ 		}
+-		if ((ea->value->length == 1 && ea->value->data[0] == '*') ||
+-		    (eb->value->length == 1 && eb->value->data[0] == '*')) {
+-	    		if (OBJ_cmp(ea->object,eb->object)) {
++		ASN1_STRING *sa = X509_NAME_ENTRY_get_data(ea);
++		ASN1_STRING *sb = X509_NAME_ENTRY_get_data(eb);
++		if ((ASN1_STRING_length(sa) == 1 && ASN1_STRING_get0_data(sa)[0] == '*') ||
++		    (ASN1_STRING_length(sb) == 1 && ASN1_STRING_get0_data(sb)[0] == '*')) {
++	    		if (OBJ_cmp(X509_NAME_ENTRY_get_object(ea),
++				    X509_NAME_ENTRY_get_object(eb))) {
+ 				i = idx+1;
+ 				goto end;
+ 	    		}
+@@ -430,7 +434,7 @@ cb_check_cert_local(ok, ctx)
+ 
+ 	if (!ok) {
+ 		X509_NAME_oneline(
+-				X509_get_subject_name(ctx->current_cert),
++				X509_get_subject_name(X509_STORE_CTX_get_current_cert(ctx)),
+ 				buf,
+ 				256);
+ 		/*
+@@ -438,7 +442,8 @@ cb_check_cert_local(ok, ctx)
+ 		 * ok if they are self signed. But we should still warn
+ 		 * the user.
+  		 */
+-		switch (ctx->error) {
++		int ctx_error = X509_STORE_CTX_get_error(ctx);
++		switch (ctx_error) {
+ 		case X509_V_ERR_CERT_HAS_EXPIRED:
+ 		case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
+ 		case X509_V_ERR_INVALID_CA:
+@@ -453,9 +458,9 @@ cb_check_cert_local(ok, ctx)
+ 		}
+ 		plog(log_tag, LOCATION, NULL,
+ 			"%s(%d) at depth:%d SubjectName:%s\n",
+-			X509_verify_cert_error_string(ctx->error),
+-			ctx->error,
+-			ctx->error_depth,
++			X509_verify_cert_error_string(ctx_error),
++			ctx_error,
++			X509_STORE_CTX_get_error_depth(ctx),
+ 			buf);
+ 	}
+ 	ERR_clear_error();
+@@ -477,10 +482,11 @@ cb_check_cert_remote(ok, ctx)
+ 
+ 	if (!ok) {
+ 		X509_NAME_oneline(
+-				X509_get_subject_name(ctx->current_cert),
++				X509_get_subject_name(X509_STORE_CTX_get_current_cert(ctx)),
+ 				buf,
+ 				256);
+-		switch (ctx->error) {
++		int ctx_error=X509_STORE_CTX_get_error(ctx);
++		switch (ctx_error) {
+ 		case X509_V_ERR_UNABLE_TO_GET_CRL:
+ 			ok = 1;
+ 			log_tag = LLV_WARNING;
+@@ -490,9 +496,9 @@ cb_check_cert_remote(ok, ctx)
+ 		}
+ 		plog(log_tag, LOCATION, NULL,
+ 			"%s(%d) at depth:%d SubjectName:%s\n",
+-			X509_verify_cert_error_string(ctx->error),
+-			ctx->error,
+-			ctx->error_depth,
++			X509_verify_cert_error_string(ctx_error),
++			ctx_error,
++			X509_STORE_CTX_get_error_depth(ctx),
+ 			buf);
+ 	}
+ 	ERR_clear_error();
+@@ -516,14 +522,15 @@ eay_get_x509asn1subjectname(cert)
+ 	if (x509 == NULL)
+ 		goto error;
+ 
++	X509_NAME *subject_name = X509_get_subject_name(x509);
+ 	/* get the length of the name */
+-	len = i2d_X509_NAME(x509->cert_info->subject, NULL);
++	len = i2d_X509_NAME(subject_name, NULL);
+ 	name = vmalloc(len);
+ 	if (!name)
+ 		goto error;
+ 	/* get the name */
+ 	bp = (unsigned char *) name->v;
+-	len = i2d_X509_NAME(x509->cert_info->subject, &bp);
++	len = i2d_X509_NAME(subject_name, &bp);
+ 
+ 	X509_free(x509);
+ 
+@@ -661,15 +668,16 @@ eay_get_x509asn1issuername(cert)
+ 	if (x509 == NULL)
+ 		goto error;
+ 
++	X509_NAME *issuer_name = X509_get_issuer_name(x509);
+ 	/* get the length of the name */
+-	len = i2d_X509_NAME(x509->cert_info->issuer, NULL);
++	len = i2d_X509_NAME(issuer_name, NULL);
+ 	name = vmalloc(len);
+ 	if (name == NULL)
+ 		goto error;
+ 
+ 	/* get the name */
+ 	bp = (unsigned char *) name->v;
+-	len = i2d_X509_NAME(x509->cert_info->issuer, &bp);
++	len = i2d_X509_NAME(issuer_name, &bp);
+ 
+ 	X509_free(x509);
+ 
+@@ -850,7 +858,7 @@ eay_check_x509sign(source, sig, cert)
+ 		return -1;
+ 	}
+ 
+-	res = eay_rsa_verify(source, sig, evp->pkey.rsa);
++	res = eay_rsa_verify(source, sig, EVP_PKEY_get0_RSA(evp));
+ 
+ 	EVP_PKEY_free(evp);
+ 	X509_free(x509);
+@@ -992,7 +1000,7 @@ eay_get_x509sign(src, privkey)
+ 	if (evp == NULL)
+ 		return NULL;
+ 
+-	sig = eay_rsa_sign(src, evp->pkey.rsa);
++	sig = eay_rsa_sign(src, EVP_PKEY_get0_RSA(evp));
+ 
+ 	EVP_PKEY_free(evp);
+ 
+@@ -1079,7 +1087,11 @@ eay_strerror()
+ 	int line, flags;
+ 	unsigned long es;
+ 
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++	es = 0; /* even when allowed by OPENSSL_API_COMPAT, it is defined as 0 */
++#else
+ 	es = CRYPTO_thread_id();
++#endif
+ 
+ 	while ((l = ERR_get_error_line_data(&file, &line, &data, &flags)) != 0){
+ 		n = snprintf(ebuf + len, sizeof(ebuf) - len,
+@@ -1100,7 +1112,7 @@ vchar_t *
+ evp_crypt(vchar_t *data, vchar_t *key, vchar_t *iv, const EVP_CIPHER *e, int enc)
+ {
+ 	vchar_t *res;
+-	EVP_CIPHER_CTX ctx;
++	EVP_CIPHER_CTX *ctx;
+ 
+ 	if (!e)
+ 		return NULL;
+@@ -1111,7 +1123,7 @@ evp_crypt(vchar_t *data, vchar_t *key, vchar_t *iv, const EVP_CIPHER *e, int enc
+ 	if ((res = vmalloc(data->l)) == NULL)
+ 		return NULL;
+ 
+-	EVP_CIPHER_CTX_init(&ctx);
++	ctx = EVP_CIPHER_CTX_new();
+ 
+ 	switch(EVP_CIPHER_nid(e)){
+ 	case NID_bf_cbc:
+@@ -1125,54 +1137,41 @@ evp_crypt(vchar_t *data, vchar_t *key, vchar_t *iv, const EVP_CIPHER *e, int enc
+ 		/* XXX: can we do that also for algos with a fixed key size ?
+ 		 */
+ 		/* init context without key/iv
+-         */
+-        if (!EVP_CipherInit(&ctx, e, NULL, NULL, enc))
+-        {
+-            OpenSSL_BUG();
+-            vfree(res);
+-            return NULL;
+-        }
++                 */
++		if (!EVP_CipherInit(ctx, e, NULL, NULL, enc))
++			goto out;
+ 		
+-        /* update key size
+-         */
+-        if (!EVP_CIPHER_CTX_set_key_length(&ctx, key->l))
+-        {
+-            OpenSSL_BUG();
+-            vfree(res);
+-            return NULL;
+-        }
+-
+-        /* finalize context init with desired key size
+-         */
+-        if (!EVP_CipherInit(&ctx, NULL, (u_char *) key->v,
++		/* update key size
++		 */
++		if (!EVP_CIPHER_CTX_set_key_length(ctx, key->l))
++			goto out;
++
++		/* finalize context init with desired key size
++		 */
++		if (!EVP_CipherInit(ctx, NULL, (u_char *) key->v,
+ 							(u_char *) iv->v, enc))
+-        {
+-            OpenSSL_BUG();
+-            vfree(res);
+-            return NULL;
+-		}
++			goto out;
+ 		break;
+ 	default:
+-		if (!EVP_CipherInit(&ctx, e, (u_char *) key->v, 
+-							(u_char *) iv->v, enc)) {
+-			OpenSSL_BUG();
+-			vfree(res);
+-			return NULL;
+-		}
++		if (!EVP_CipherInit(ctx, e, (u_char *) key->v,
++							(u_char *) iv->v, enc))
++            		goto out;
+ 	}
+ 
+ 	/* disable openssl padding */
+-	EVP_CIPHER_CTX_set_padding(&ctx, 0); 
++	EVP_CIPHER_CTX_set_padding(ctx, 0);
+ 	
+-	if (!EVP_Cipher(&ctx, (u_char *) res->v, (u_char *) data->v, data->l)) {
+-		OpenSSL_BUG();
+-		vfree(res);
+-		return NULL;
+-	}
++	if (!EVP_Cipher(ctx, (u_char *) res->v, (u_char *) data->v, data->l))
++		goto out;
+ 
+-	EVP_CIPHER_CTX_cleanup(&ctx);
++	EVP_CIPHER_CTX_free(ctx);
+ 
+ 	return res;
++out:
++	EVP_CIPHER_CTX_free(ctx);
++	OpenSSL_BUG();
++	vfree(res);
++	return NULL;
+ }
+ 
+ int
+@@ -1230,7 +1229,7 @@ eay_des_keylen(len)
+ 	return evp_keylen(len, EVP_des_cbc());
+ }
+ 
+-#ifdef HAVE_OPENSSL_IDEA_H
++#if defined(HAVE_OPENSSL_IDEA_H) && ! defined(OPENSSL_NO_IDEA)
+ /*
+  * IDEA-CBC
+  */
+@@ -1587,7 +1586,7 @@ eay_aes_keylen(len)
+ 	return len;
+ }
+ 
+-#if defined(HAVE_OPENSSL_CAMELLIA_H)
++#if defined(HAVE_OPENSSL_CAMELLIA_H) && ! defined(OPENSSL_NO_CAMELLIA)
+ /*
+  * CAMELLIA-CBC
+  */
+@@ -1680,9 +1679,9 @@ eay_hmac_init(key, md)
+ 	vchar_t *key;
+ 	const EVP_MD *md;
+ {
+-	HMAC_CTX *c = racoon_malloc(sizeof(*c));
++	HMAC_CTX *c = HMAC_CTX_new();
+ 
+-	HMAC_Init(c, key->v, key->l, md);
++	HMAC_Init_ex(c, key->v, key->l, md, NULL);
+ 
+ 	return (caddr_t)c;
+ }
+@@ -1761,8 +1760,7 @@ eay_hmacsha2_512_final(c)
+ 
+ 	HMAC_Final((HMAC_CTX *)c, (unsigned char *) res->v, &l);
+ 	res->l = l;
+-	HMAC_cleanup((HMAC_CTX *)c);
+-	(void)racoon_free(c);
++	HMAC_CTX_free((HMAC_CTX *)c);
+ 
+ 	if (SHA512_DIGEST_LENGTH != res->l) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+@@ -1811,8 +1809,7 @@ eay_hmacsha2_384_final(c)
+ 
+ 	HMAC_Final((HMAC_CTX *)c, (unsigned char *) res->v, &l);
+ 	res->l = l;
+-	HMAC_cleanup((HMAC_CTX *)c);
+-	(void)racoon_free(c);
++	HMAC_CTX_free((HMAC_CTX *)c);
+ 
+ 	if (SHA384_DIGEST_LENGTH != res->l) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+@@ -1861,8 +1858,7 @@ eay_hmacsha2_256_final(c)
+ 
+ 	HMAC_Final((HMAC_CTX *)c, (unsigned char *) res->v, &l);
+ 	res->l = l;
+-	HMAC_cleanup((HMAC_CTX *)c);
+-	(void)racoon_free(c);
++	HMAC_CTX_free((HMAC_CTX *)c);
+ 
+ 	if (SHA256_DIGEST_LENGTH != res->l) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+@@ -1912,8 +1908,7 @@ eay_hmacsha1_final(c)
+ 
+ 	HMAC_Final((HMAC_CTX *)c, (unsigned char *) res->v, &l);
+ 	res->l = l;
+-	HMAC_cleanup((HMAC_CTX *)c);
+-	(void)racoon_free(c);
++	HMAC_CTX_free((HMAC_CTX *)c);
+ 
+ 	if (SHA_DIGEST_LENGTH != res->l) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+@@ -1962,8 +1957,7 @@ eay_hmacmd5_final(c)
+ 
+ 	HMAC_Final((HMAC_CTX *)c, (unsigned char *) res->v, &l);
+ 	res->l = l;
+-	HMAC_cleanup((HMAC_CTX *)c);
+-	(void)racoon_free(c);
++	HMAC_CTX_free((HMAC_CTX *)c);
+ 
+ 	if (MD5_DIGEST_LENGTH != res->l) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+@@ -2266,6 +2260,7 @@ eay_dh_generate(prime, g, publen, pub, priv)
+ 	u_int32_t g;
+ {
+ 	BIGNUM *p = NULL;
++	BIGNUM *BNg = NULL;
+ 	DH *dh = NULL;
+ 	int error = -1;
+ 
+@@ -2276,25 +2271,28 @@ eay_dh_generate(prime, g, publen, pub, priv)
+ 
+ 	if ((dh = DH_new()) == NULL)
+ 		goto end;
+-	dh->p = p;
+-	p = NULL;	/* p is now part of dh structure */
+-	dh->g = NULL;
+-	if ((dh->g = BN_new()) == NULL)
++	if ((BNg = BN_new()) == NULL)
+ 		goto end;
+-	if (!BN_set_word(dh->g, g))
++	if (!BN_set_word(BNg, g))
+ 		goto end;
++	if (! DH_set0_pqg(dh, p, NULL, BNg))
++		goto end;
++	BNg = NULL;
++	p = NULL;	/* p is now part of dh structure */
+ 
+ 	if (publen != 0)
+-		dh->length = publen;
++		DH_set_length(dh, publen);
+ 
+ 	/* generate public and private number */
+ 	if (!DH_generate_key(dh))
+ 		goto end;
+ 
+ 	/* copy results to buffers */
+-	if (eay_bn2v(pub, dh->pub_key) < 0)
++	BIGNUM *pub_key, *priv_key;
++	DH_get0_key(dh, (const BIGNUM**) &pub_key, (const BIGNUM**) &priv_key);
++	if (eay_bn2v(pub, pub_key) < 0)
+ 		goto end;
+-	if (eay_bn2v(priv, dh->priv_key) < 0) {
++	if (eay_bn2v(priv, priv_key) < 0) {
+ 		vfree(*pub);
+ 		goto end;
+ 	}
+@@ -2306,6 +2304,8 @@ end:
+ 		DH_free(dh);
+ 	if (p != 0)
+ 		BN_free(p);
++	if (BNg != 0)
++		BN_free(BNg);
+ 	return(error);
+ }
+ 
+@@ -2319,6 +2319,10 @@ eay_dh_compute(prime, g, pub, priv, pub2, key)
+ 	int l;
+ 	unsigned char *v = NULL;
+ 	int error = -1;
++	BIGNUM *p = BN_new();
++	BIGNUM *BNg = BN_new();
++	BIGNUM *pub_key = BN_new();
++	BIGNUM *priv_key = BN_new();
+ 
+ 	/* make public number to compute */
+ 	if (eay_v2bn(&dh_pub, pub2) < 0)
+@@ -2327,19 +2331,21 @@ eay_dh_compute(prime, g, pub, priv, pub2, key)
+ 	/* make DH structure */
+ 	if ((dh = DH_new()) == NULL)
+ 		goto end;
+-	if (eay_v2bn(&dh->p, prime) < 0)
++	if (p == NULL || BNg == NULL || pub_key == NULL || priv_key == NULL)
+ 		goto end;
+-	if (eay_v2bn(&dh->pub_key, pub) < 0)
++
++	if (eay_v2bn(&p, prime) < 0)
+ 		goto end;
+-	if (eay_v2bn(&dh->priv_key, priv) < 0)
++	if (eay_v2bn(&pub_key, pub) < 0)
+ 		goto end;
+-	dh->length = pub2->l * 8;
+-
+-	dh->g = NULL;
+-	if ((dh->g = BN_new()) == NULL)
++	if (eay_v2bn(&priv_key, priv) < 0)
+ 		goto end;
+-	if (!BN_set_word(dh->g, g))
++	if (!BN_set_word(BNg, g))
+ 		goto end;
++	DH_set0_key(dh, pub_key, priv_key);
++	DH_set_length(dh, pub2->l * 8);
++	DH_set0_pqg(dh, p, NULL, BNg);
++	pub_key = priv_key = p = BNg = NULL;
+ 
+ 	if ((v = racoon_calloc(prime->l, sizeof(u_char))) == NULL)
+ 		goto end;
+@@ -2350,6 +2356,14 @@ eay_dh_compute(prime, g, pub, priv, pub2, key)
+ 	error = 0;
+ 
+ end:
++	if (p != NULL)
++		BN_free(p);
++	if (BNg != NULL)
++		BN_free(BNg);
++	if (pub_key != NULL)
++		BN_free(pub_key);
++	if (priv_key != NULL)
++		BN_free(priv_key);
+ 	if (dh_pub != NULL)
+ 		BN_free(dh_pub);
+ 	if (dh != NULL)
+@@ -2400,12 +2414,14 @@ eay_bn2v(var, bn)
+ void
+ eay_init()
+ {
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
+ 	OpenSSL_add_all_algorithms();
+ 	ERR_load_crypto_strings();
+ #ifdef HAVE_OPENSSL_ENGINE_H
+ 	ENGINE_load_builtin_engines();
+ 	ENGINE_register_all_complete();
+ #endif
++#endif
+ }
+ 
+ vchar_t *
+@@ -2504,8 +2520,7 @@ binbuf_pubkey2rsa(vchar_t *binbuf)
+ 		goto out;
+ 	}
+ 	
+-	rsa_pub->n = mod;
+-	rsa_pub->e = exp;
++	RSA_set0_key(rsa_pub, mod, exp, NULL);
+ 
+ out:
+ 	return rsa_pub;
+@@ -2582,5 +2597,5 @@ eay_random()
+ const char *
+ eay_version()
+ {
+-	return SSLeay_version(SSLEAY_VERSION);
++	return OpenSSL_version(OPENSSL_VERSION);
+ }
+diff --git a/src/racoon/crypto_openssl.h b/src/racoon/crypto_openssl.h
+index 66fac73..ee5b765 100644
+--- a/src/racoon/crypto_openssl.h
++++ b/src/racoon/crypto_openssl.h
+@@ -124,7 +124,7 @@ extern vchar_t *eay_aes_decrypt __P((vchar_t *, vchar_t *, vchar_t *));
+ extern int eay_aes_weakkey __P((vchar_t *));
+ extern int eay_aes_keylen __P((int));
+ 
+-#if defined(HAVE_OPENSSL_CAMELLIA_H)
++#if defined(HAVE_OPENSSL_CAMELLIA_H) && ! defined(OPENSSL_NO_CAMELLIA)
+ /* Camellia */
+ extern vchar_t *eay_camellia_encrypt __P((vchar_t *, vchar_t *, vchar_t *));
+ extern vchar_t *eay_camellia_decrypt __P((vchar_t *, vchar_t *, vchar_t *));
+diff --git a/src/racoon/eaytest.c b/src/racoon/eaytest.c
+index 1474bdc..ae09db3 100644
+--- a/src/racoon/eaytest.c
++++ b/src/racoon/eaytest.c
+@@ -62,6 +62,7 @@
+ #include "dhgroup.h"
+ #include "crypto_openssl.h"
+ #include "gnuc.h"
++#include "openssl_compat.h"
+ 
+ #include "package_version.h"
+ 
+@@ -103,7 +104,7 @@ rsa_verify_with_pubkey(src, sig, pubkey_txt)
+ 		printf ("PEM_read_PUBKEY(): %s\n", eay_strerror());
+ 		return -1;
+ 	}
+-	error = eay_check_rsasign(src, sig, evp->pkey.rsa);
++	error = eay_check_rsasign(src, sig, EVP_PKEY_get0_RSA(evp));
+ 
+ 	return error;
+ }
+@@ -698,7 +699,7 @@ ciphertest(ac, av)
+ 			  eay_cast_encrypt, eay_cast_decrypt) < 0)
+ 	  return -1;
+ 	
+-#ifdef HAVE_OPENSSL_IDEA_H
++#if defined(HAVE_OPENSSL_IDEA_H) && ! defined(OPENSSL_NO_IDEA)
+ 	if (ciphertest_1 ("IDEA",
+ 			  &data, 8,
+ 			  &key, key.l,
+@@ -715,7 +716,7 @@ ciphertest(ac, av)
+ 			  eay_rc5_encrypt, eay_rc5_decrypt) < 0)
+ 	  return -1;
+ #endif
+-#if defined(HAVE_OPENSSL_CAMELLIA_H)
++#if defined(HAVE_OPENSSL_CAMELLIA_H) && ! defined(OPENSSL_NO_CAMELLIA)
+ 	if (ciphertest_1 ("CAMELLIA",
+ 			  &data, 16,
+ 			  &key, key.l,
+diff --git a/src/racoon/ipsec_doi.c b/src/racoon/ipsec_doi.c
+index 84a4c71..b52469f 100644
+--- a/src/racoon/ipsec_doi.c
++++ b/src/racoon/ipsec_doi.c
+@@ -715,7 +715,7 @@ out:
+ 	/* key length must not be specified on some algorithms */
+ 	if (keylen) {
+ 		if (sa->enctype == OAKLEY_ATTR_ENC_ALG_DES
+-#ifdef HAVE_OPENSSL_IDEA_H
++#if defined(HAVE_OPENSSL_IDEA_H) && ! defined(OPENSSL_NO_IDEA)
+ 		 || sa->enctype == OAKLEY_ATTR_ENC_ALG_IDEA
+ #endif
+ 		 || sa->enctype == OAKLEY_ATTR_ENC_ALG_3DES) {
+diff --git a/src/racoon/openssl_compat.c b/src/racoon/openssl_compat.c
+new file mode 100644
+index 0000000..864b5fb
+--- /dev/null
++++ b/src/racoon/openssl_compat.c
+@@ -0,0 +1,213 @@
++/*
++ * Copyright 2016 The OpenSSL Project Authors. All Rights Reserved.
++ *
++ * Licensed under the OpenSSL license (the "License").  You may not use
++ * this file except in compliance with the License.  You can obtain a copy
++ * in the file LICENSE in the source distribution or at
++ * https://www.openssl.org/source/license.html
++ */
++
++#include "openssl_compat.h"
++
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++
++#include <string.h>
++
++static void *OPENSSL_zalloc(size_t num)
++{
++    void *ret = OPENSSL_malloc(num);
++
++    if (ret != NULL)
++        memset(ret, 0, num);
++    return ret;
++}
++
++int RSA_set0_key(RSA *r, BIGNUM *n, BIGNUM *e, BIGNUM *d)
++{
++    /* If the fields n and e in r are NULL, the corresponding input
++     * parameters MUST be non-NULL for n and e.  d may be
++     * left NULL (in case only the public key is used).
++     */
++    if ((r->n == NULL && n == NULL)
++        || (r->e == NULL && e == NULL))
++        return 0;
++
++    if (n != NULL) {
++        BN_free(r->n);
++        r->n = n;
++    }
++    if (e != NULL) {
++        BN_free(r->e);
++        r->e = e;
++    }
++    if (d != NULL) {
++        BN_free(r->d);
++        r->d = d;
++    }
++
++    return 1;
++}
++
++int RSA_set0_factors(RSA *r, BIGNUM *p, BIGNUM *q)
++{
++    /* If the fields p and q in r are NULL, the corresponding input
++     * parameters MUST be non-NULL.
++     */
++    if ((r->p == NULL && p == NULL)
++        || (r->q == NULL && q == NULL))
++        return 0;
++
++    if (p != NULL) {
++        BN_free(r->p);
++        r->p = p;
++    }
++    if (q != NULL) {
++        BN_free(r->q);
++        r->q = q;
++    }
++
++    return 1;
++}
++
++int RSA_set0_crt_params(RSA *r, BIGNUM *dmp1, BIGNUM *dmq1, BIGNUM *iqmp)
++{
++    /* If the fields dmp1, dmq1 and iqmp in r are NULL, the corresponding input
++     * parameters MUST be non-NULL.
++     */
++    if ((r->dmp1 == NULL && dmp1 == NULL)
++        || (r->dmq1 == NULL && dmq1 == NULL)
++        || (r->iqmp == NULL && iqmp == NULL))
++        return 0;
++
++    if (dmp1 != NULL) {
++        BN_free(r->dmp1);
++        r->dmp1 = dmp1;
++    }
++    if (dmq1 != NULL) {
++        BN_free(r->dmq1);
++        r->dmq1 = dmq1;
++    }
++    if (iqmp != NULL) {
++        BN_free(r->iqmp);
++        r->iqmp = iqmp;
++    }
++
++    return 1;
++}
++
++void RSA_get0_key(const RSA *r,
++                  const BIGNUM **n, const BIGNUM **e, const BIGNUM **d)
++{
++    if (n != NULL)
++        *n = r->n;
++    if (e != NULL)
++        *e = r->e;
++    if (d != NULL)
++        *d = r->d;
++}
++
++void RSA_get0_factors(const RSA *r, const BIGNUM **p, const BIGNUM **q)
++{
++    if (p != NULL)
++        *p = r->p;
++    if (q != NULL)
++        *q = r->q;
++}
++
++void RSA_get0_crt_params(const RSA *r,
++                         const BIGNUM **dmp1, const BIGNUM **dmq1,
++                         const BIGNUM **iqmp)
++{
++    if (dmp1 != NULL)
++        *dmp1 = r->dmp1;
++    if (dmq1 != NULL)
++        *dmq1 = r->dmq1;
++    if (iqmp != NULL)
++        *iqmp = r->iqmp;
++}
++
++int DH_set0_pqg(DH *dh, BIGNUM *p, BIGNUM *q, BIGNUM *g)
++{
++    /* If the fields p and g in d are NULL, the corresponding input
++     * parameters MUST be non-NULL.  q may remain NULL.
++     */
++    if ((dh->p == NULL && p == NULL)
++        || (dh->g == NULL && g == NULL))
++        return 0;
++
++    if (p != NULL) {
++        BN_free(dh->p);
++        dh->p = p;
++    }
++    if (q != NULL) {
++        BN_free(dh->q);
++        dh->q = q;
++    }
++    if (g != NULL) {
++        BN_free(dh->g);
++        dh->g = g;
++    }
++
++    if (q != NULL) {
++        dh->length = BN_num_bits(q);
++    }
++
++    return 1;
++}
++
++void DH_get0_key(const DH *dh, const BIGNUM **pub_key, const BIGNUM **priv_key)
++{
++    if (pub_key != NULL)
++        *pub_key = dh->pub_key;
++    if (priv_key != NULL)
++        *priv_key = dh->priv_key;
++}
++
++int DH_set0_key(DH *dh, BIGNUM *pub_key, BIGNUM *priv_key)
++{
++    /* If the field pub_key in dh is NULL, the corresponding input
++     * parameters MUST be non-NULL.  The priv_key field may
++     * be left NULL.
++     */
++    if (dh->pub_key == NULL && pub_key == NULL)
++        return 0;
++
++    if (pub_key != NULL) {
++        BN_free(dh->pub_key);
++        dh->pub_key = pub_key;
++    }
++    if (priv_key != NULL) {
++        BN_free(dh->priv_key);
++        dh->priv_key = priv_key;
++    }
++
++    return 1;
++}
++
++int DH_set_length(DH *dh, long length)
++{
++    dh->length = length;
++    return 1;
++}
++
++HMAC_CTX *HMAC_CTX_new(void)
++{
++    return OPENSSL_zalloc(sizeof(HMAC_CTX));
++}
++
++void HMAC_CTX_free(HMAC_CTX *ctx)
++{
++    HMAC_CTX_cleanup(ctx);
++    OPENSSL_free(ctx);
++}
++
++RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey)
++{
++    if (pkey->type != EVP_PKEY_RSA) {
++        return NULL;
++    }
++    return pkey->pkey.rsa;
++}
++
++
++#endif /* OPENSSL_VERSION_NUMBER */
+diff --git a/src/racoon/openssl_compat.h b/src/racoon/openssl_compat.h
+new file mode 100644
+index 0000000..9e152c2
+--- /dev/null
++++ b/src/racoon/openssl_compat.h
+@@ -0,0 +1,45 @@
++#ifndef OPENSSL_COMPAT_H
++#define OPENSSL_COMPAT_H
++
++#include <openssl/opensslv.h>
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++
++#include <openssl/rsa.h>
++#include <openssl/dh.h>
++#include <openssl/evp.h>
++#include <openssl/hmac.h>
++
++int RSA_set0_key(RSA *r, BIGNUM *n, BIGNUM *e, BIGNUM *d);
++int RSA_set0_factors(RSA *r, BIGNUM *p, BIGNUM *q);
++int RSA_set0_crt_params(RSA *r, BIGNUM *dmp1, BIGNUM *dmq1, BIGNUM *iqmp);
++void RSA_get0_key(const RSA *r, const BIGNUM **n, const BIGNUM **e, const BIGNUM **d);
++void RSA_get0_factors(const RSA *r, const BIGNUM **p, const BIGNUM **q);
++void RSA_get0_crt_params(const RSA *r, const BIGNUM **dmp1, const BIGNUM **dmq1, const BIGNUM **iqmp);
++
++int DH_set0_pqg(DH *dh, BIGNUM *p, BIGNUM *q, BIGNUM *g);
++void DH_get0_key(const DH *dh, const BIGNUM **pub_key, const BIGNUM **priv_key);
++int DH_set0_key(DH *dh, BIGNUM *pub_key, BIGNUM *priv_key);
++int DH_set_length(DH *dh, long length);
++
++HMAC_CTX *HMAC_CTX_new(void);
++void HMAC_CTX_free(HMAC_CTX* ctx);
++
++RSA *EVP_PKEY_get0_RSA(EVP_PKEY *pkey);
++
++#define ASN1_STRING_length(s) s->length
++#define ASN1_STRING_get0_data(s) s->data
++
++#define X509_get_subject_name(x) x->cert_info->subject
++#define X509_get_issuer_name(x) x->cert_info->issuer
++#define X509_NAME_ENTRY_get_data(n) n->value
++#define X509_NAME_ENTRY_get_object(n) n->object
++#define X509_STORE_CTX_get_current_cert(ctx) ctx->current_cert
++#define X509_STORE_CTX_get_error(ctx) ctx->error
++#define X509_STORE_CTX_get_error_depth(ctx) ctx->error_depth
++
++#define OPENSSL_VERSION SSLEAY_VERSION
++#define OpenSSL_version SSLeay_version
++
++#endif /* OPENSSL_VERSION_NUMBER */
++
++#endif /* OPENSSL_COMPAT_H */
+diff --git a/src/racoon/plainrsa-gen.c b/src/racoon/plainrsa-gen.c
+index cad1861..b949b08 100644
+--- a/src/racoon/plainrsa-gen.c
++++ b/src/racoon/plainrsa-gen.c
+@@ -60,6 +60,7 @@
+ #include "vmbuf.h"
+ #include "plog.h"
+ #include "crypto_openssl.h"
++#include "openssl_compat.h"
+ 
+ #include "package_version.h"
+ 
+@@ -90,12 +91,14 @@ mix_b64_pubkey(const RSA *key)
+ 	char *binbuf;
+ 	long binlen, ret;
+ 	vchar_t *res;
+-	
+-	binlen = 1 + BN_num_bytes(key->e) + BN_num_bytes(key->n);
++	const BIGNUM *e, *n;
++
++	RSA_get0_key(key, &n, &e, NULL);
++	binlen = 1 + BN_num_bytes(e) + BN_num_bytes(n);
+ 	binbuf = malloc(binlen);
+ 	memset(binbuf, 0, binlen);
+-	binbuf[0] = BN_bn2bin(key->e, (unsigned char *) &binbuf[1]);
+-	ret = BN_bn2bin(key->n, (unsigned char *) (&binbuf[binbuf[0] + 1]));
++	binbuf[0] = BN_bn2bin(e, (unsigned char *) &binbuf[1]);
++	ret = BN_bn2bin(n, (unsigned char *) (&binbuf[binbuf[0] + 1]));
+ 	if (1 + binbuf[0] + ret != binlen) {
+ 		plog(LLV_ERROR, LOCATION, NULL,
+ 		     "Pubkey generation failed. This is really strange...\n");
+@@ -131,16 +134,20 @@ print_rsa_key(FILE *fp, const RSA *key)
+ 	
+ 	fprintf(fp, "# : PUB 0s%s\n", pubkey64->v);
+ 	fprintf(fp, ": RSA\t{\n");
+-	fprintf(fp, "\t# RSA %d bits\n", BN_num_bits(key->n));
++	const BIGNUM *n, *e, *d, *p, *q, *dmp1, *dmq1, *iqmp;
++	RSA_get0_key(key, &n, &e, &d);
++	RSA_get0_factors(key, &p, &q);
++	RSA_get0_crt_params(key, &dmp1, &dmq1, &iqmp);
++	fprintf(fp, "\t# RSA %d bits\n", BN_num_bits(n));
+ 	fprintf(fp, "\t# pubkey=0s%s\n", pubkey64->v);
+-	fprintf(fp, "\tModulus: 0x%s\n", lowercase(BN_bn2hex(key->n)));
+-	fprintf(fp, "\tPublicExponent: 0x%s\n", lowercase(BN_bn2hex(key->e)));
+-	fprintf(fp, "\tPrivateExponent: 0x%s\n", lowercase(BN_bn2hex(key->d)));
+-	fprintf(fp, "\tPrime1: 0x%s\n", lowercase(BN_bn2hex(key->p)));
+-	fprintf(fp, "\tPrime2: 0x%s\n", lowercase(BN_bn2hex(key->q)));
+-	fprintf(fp, "\tExponent1: 0x%s\n", lowercase(BN_bn2hex(key->dmp1)));
+-	fprintf(fp, "\tExponent2: 0x%s\n", lowercase(BN_bn2hex(key->dmq1)));
+-	fprintf(fp, "\tCoefficient: 0x%s\n", lowercase(BN_bn2hex(key->iqmp)));
++	fprintf(fp, "\tModulus: 0x%s\n", lowercase(BN_bn2hex(n)));
++	fprintf(fp, "\tPublicExponent: 0x%s\n", lowercase(BN_bn2hex(e)));
++	fprintf(fp, "\tPrivateExponent: 0x%s\n", lowercase(BN_bn2hex(d)));
++	fprintf(fp, "\tPrime1: 0x%s\n", lowercase(BN_bn2hex(p)));
++	fprintf(fp, "\tPrime2: 0x%s\n", lowercase(BN_bn2hex(q)));
++	fprintf(fp, "\tExponent1: 0x%s\n", lowercase(BN_bn2hex(dmp1)));
++	fprintf(fp, "\tExponent2: 0x%s\n", lowercase(BN_bn2hex(dmq1)));
++	fprintf(fp, "\tCoefficient: 0x%s\n", lowercase(BN_bn2hex(iqmp)));
+ 	fprintf(fp, "  }\n");
+ 
+ 	vfree(pubkey64);
+@@ -203,11 +210,13 @@ int
+ gen_rsa_key(FILE *fp, size_t bits, unsigned long exp)
+ {
+ 	int ret;
+-	RSA *key;
++	RSA *key = RSA_new();
++	BIGNUM *e = BN_new();
+ 
+-	key = RSA_generate_key(bits, exp, NULL, NULL);
+-	if (!key) {
++	BN_set_word(e, exp);
++	if (! RSA_generate_key_ex(key, bits, e, NULL)) {
+ 		fprintf(stderr, "RSA_generate_key(): %s\n", eay_strerror());
++		RSA_free(key);
+ 		return -1;
+ 	}
+ 	
+diff --git a/src/racoon/prsa_par.y b/src/racoon/prsa_par.y
+index 1987e4d..27ce4c6 100644
+--- a/src/racoon/prsa_par.y
++++ b/src/racoon/prsa_par.y
+@@ -68,6 +68,7 @@
+ #include "isakmp_var.h"
+ #include "handler.h"
+ #include "crypto_openssl.h"
++#include "openssl_compat.h"
+ #include "sockmisc.h"
+ #include "rsalist.h"
+ 
+@@ -85,7 +86,18 @@ char *prsa_cur_fname = NULL;
+ struct genlist *prsa_cur_list = NULL;
+ enum rsa_key_type prsa_cur_type = RSA_TYPE_ANY;
+ 
+-static RSA *rsa_cur;
++struct my_rsa_st {
++	BIGNUM *n;
++	BIGNUM *e;
++	BIGNUM *d;
++	BIGNUM *p;
++	BIGNUM *q;
++	BIGNUM *dmp1;
++	BIGNUM *dmq1;
++	BIGNUM *iqmp;
++};
++
++static struct my_rsa_st *rsa_cur;
+ 
+ void
+ prsaerror(const char *s, ...)
+@@ -201,8 +213,12 @@ rsa_statement:
+ 				rsa_cur->iqmp = NULL;
+ 			}
+ 		}
+-		$$ = rsa_cur;
+-		rsa_cur = RSA_new();
++		RSA * rsa_tmp = RSA_new();
++		RSA_set0_key(rsa_tmp, rsa_cur->n, rsa_cur->e, rsa_cur->d);
++		RSA_set0_factors(rsa_tmp, rsa_cur->p, rsa_cur->q);
++		RSA_set0_crt_params(rsa_tmp, rsa_cur->dmp1, rsa_cur->dmq1, rsa_cur->iqmp);
++		$$ = rsa_tmp;
++		memset(rsa_cur, 0, sizeof(struct my_rsa_st));
+ 	}
+ 	| TAG_PUB BASE64
+ 	{
+@@ -351,10 +367,12 @@ prsa_parse_file(struct genlist *list, char *fname, enum rsa_key_type type)
+ 	prsa_cur_fname = fname;
+ 	prsa_cur_list = list;
+ 	prsa_cur_type = type;
+-	rsa_cur = RSA_new();
++	rsa_cur = malloc(sizeof(struct my_rsa_st));
++	memset(rsa_cur, 0, sizeof(struct my_rsa_st));
+ 	ret = prsaparse();
+ 	if (rsa_cur) {
+-		RSA_free(rsa_cur);
++		memset(rsa_cur, 0, sizeof(struct my_rsa_st));
++		free(rsa_cur);
+ 		rsa_cur = NULL;
+ 	}
+ 	fclose (fp);
+diff --git a/src/racoon/rsalist.c b/src/racoon/rsalist.c
+index f152c82..96e8363 100644
+--- a/src/racoon/rsalist.c
++++ b/src/racoon/rsalist.c
+@@ -52,6 +52,7 @@
+ #include "genlist.h"
+ #include "remoteconf.h"
+ #include "crypto_openssl.h"
++#include "openssl_compat.h"
+ 
+ #ifndef LIST_FIRST
+ #define LIST_FIRST(head)        ((head)->lh_first)
+@@ -98,7 +99,9 @@ rsa_key_dup(struct rsa_key *key)
+ 		return NULL;
+ 
+ 	if (key->rsa) {
+-		new->rsa = key->rsa->d != NULL ? RSAPrivateKey_dup(key->rsa) : RSAPublicKey_dup(key->rsa);
++		const BIGNUM *d;
++		RSA_get0_key(key->rsa, NULL, NULL, &d);
++		new->rsa = (d != NULL ? RSAPrivateKey_dup(key->rsa) : RSAPublicKey_dup(key->rsa));
+ 		if (new->rsa == NULL)
+ 			goto dup_error;
+ 	}
+-- 
+2.16.1
+

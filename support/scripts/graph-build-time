@@ -69,14 +69,14 @@ import matplotlib.font_manager as fm  # noqa: E402
 import csv                            # noqa: E402
 import argparse                       # noqa: E402
 
-steps = ['extract', 'patch', 'configure', 'build',
+steps = ['download', 'extract', 'patch', 'configure', 'build',
          'install-target', 'install-staging', 'install-images',
          'install-host']
 
-default_colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
+default_colors = ['#8d02ff', '#e60004', '#009836', '#2e1d86', '#ffed00',
                   '#0068b5', '#f28e00', '#940084', '#97c000']
 
-alternate_colors = ['#00e0e0', '#3f7f7f', '#ff0000', '#00c000',
+alternate_colors = ['#ffbe0a', '#96bdff', '#3f7f7f', '#ff0000', '#00c000',
                     '#0080ff', '#c000ff', '#00eeee', '#e0e000']
 
 
@@ -260,7 +260,7 @@ def read_data(input_file):
         return None
 
     for row in reader:
-        time = int(row[0].strip())
+        time = float(row[0].strip())
         state = row[1].strip()
         step = row[2].strip()
         pkg = row[3].strip()

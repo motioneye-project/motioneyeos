@@ -3,6 +3,7 @@ config BR2_PACKAGE_PPPD
 	depends on !BR2_STATIC_LIBS
 	depends on !BR2_TOOLCHAIN_USES_MUSL # Use __P() macro all over the tree
 	depends on BR2_USE_MMU
+	select BR2_PACKAGE_OPENSSL
 	help
 	  An implementation of the Point-to-point protocol.
 

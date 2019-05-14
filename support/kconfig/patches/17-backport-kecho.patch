@@ -1,0 +1,26 @@
+This commit added kecho to scripts/Kbuild.include (and doc).
+Backported just Kbuild.include part to Makefile
+
+commit 5410ecc0def8955ab99810c5626cc7e156991896
+Author: Mike Frysinger <vapier@gentoo.org>
+Date:   Thu Nov 6 03:31:34 2008 -0500
+
+    kbuild: introduce $(kecho) convenience echo
+
+Index: kconfig/Makefile
+===================================================================
+--- kconfig.orig/Makefile
++++ kconfig/Makefile
+@@ -6,6 +6,12 @@
+ PHONY += xconfig gconfig menuconfig config syncconfig update-po-config \
+ 	localmodconfig localyesconfig
+ 
++# Easy method for doing a status message
++       kecho := :
++ quiet_kecho := echo
++silent_kecho := :
++kecho := $($(quiet)kecho)
++
+ ifdef KBUILD_KCONFIG
+ Kconfig := $(KBUILD_KCONFIG)
+ else

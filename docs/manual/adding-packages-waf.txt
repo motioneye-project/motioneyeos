@@ -60,10 +60,16 @@ the generic infrastructure also exist in the Waf infrastructure:
 An additional variable, specific to the Waf infrastructure, can
 also be defined.
 
+* +LIBFOO_SUBDIR+ may contain the name of a subdirectory inside the
+  package that contains the main wscript file. This is useful,
+  if for example, the main wscript file is not at the root of
+  the tree extracted by the tarball. If +HOST_LIBFOO_SUBDIR+ is not
+  specified, it defaults to +LIBFOO_SUBDIR+.
+
 * +LIBFOO_NEEDS_EXTERNAL_WAF+ can be set to +YES+ or +NO+ to tell
   Buildroot to use the bundled +waf+ executable. If set to +NO+, the
   default, then Buildroot will use the waf executable provided in the
-  package source tree; if set to +YES+, then Buidlroot will download,
+  package source tree; if set to +YES+, then Buildroot will download,
   install waf as a host tool and use it to build the package.
 
 * +LIBFOO_WAF_OPTS+, to specify additional options to pass to the

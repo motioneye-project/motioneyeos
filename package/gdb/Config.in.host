@@ -7,6 +7,7 @@ config BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 	depends on !BR2_microblaze
 	depends on !BR2_nios2
 	depends on !BR2_or1k
+	depends on !BR2_riscv
 
 comment "Host GDB Options"
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
@@ -45,7 +46,7 @@ config BR2_PACKAGE_HOST_GDB_SIM
 
 choice
 	prompt "GDB debugger Version"
-	default BR2_GDB_VERSION_8_0
+	default BR2_GDB_VERSION_8_1
 	depends on !BR2_arc
 	help
 	  Select the version of gdb you wish to use.
@@ -60,6 +61,11 @@ config BR2_GDB_VERSION_8_0
 
 config BR2_GDB_VERSION_8_1
 	bool "gdb 8.1.x"
+	# Needs a C++11 compiler
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+
+config BR2_GDB_VERSION_8_2
+	bool "gdb 8.2.x"
 	# Needs a C++11 compiler
 	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
@@ -82,13 +88,15 @@ config BR2_PACKAGE_GDB_NEEDS_CXX11
 	default y if !BR2_PACKAGE_HOST_GDB
 	default y if BR2_GDB_VERSION_8_0
 	default y if BR2_GDB_VERSION_8_1
+	default y if BR2_GDB_VERSION_8_2
 	default y if BR2_arc
 
 # If cross-gdb is not enabled, the latest working version is chosen.
 config BR2_GDB_VERSION
 	string
-	default "arc-2018.03-gdb" if BR2_arc
+	default "arc-2018.09-release-gdb" if BR2_arc
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
-	default "8.0.1"    if BR2_GDB_VERSION_8_0 || !BR2_PACKAGE_HOST_GDB
-	default "8.1.1"    if BR2_GDB_VERSION_8_1
+	default "8.0.1"    if BR2_GDB_VERSION_8_0
+	default "8.1.1"    if BR2_GDB_VERSION_8_1 || !BR2_PACKAGE_HOST_GDB
+	default "8.2.1"    if BR2_GDB_VERSION_8_2
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB

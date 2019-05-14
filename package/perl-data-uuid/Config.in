@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_DATA_UUID
+	bool "perl-data-uuid"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Globally/Universally Unique Identifiers (GUIDs/UUIDs).
+
+	  https://metacpan.org/release/Data-UUID
+
+comment "perl-data-uuid needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

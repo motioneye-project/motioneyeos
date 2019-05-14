@@ -1,4 +1,6 @@
-# From http://sourceforge.net/projects/ipmiutil/files/?source=navbar
-sha1	f423a77a374b6a37a16496844f1e6e363e7d63fe	ipmiutil-2.9.9.tar.gz
+# From https://sourceforge.net/projects/ipmiutil/files/
+md5 ee90387f8a14dea3f867167865c7c968  ipmiutil-3.1.2.tar.gz
+sha1 9453db110bffab3111d6ff4047243a34084e5878  ipmiutil-3.1.2.tar.gz
 # Locally computed
-sha256	beace08386a002c6a4bbbf894bda9899ea34fae4c2181c89f29fb1fa136925f6	ipmiutil-2.9.9.tar.gz
+sha256 768053b3e3adfe1bf656e2848b2805ede87e429c10d282929a7c4ceeebc24703  ipmiutil-3.1.2.tar.gz
+sha256 7e0ec8238aa1431e95a4950032a4483fe33fec3fac348eaade5856cdc5ae3e39  COPYING

@@ -1,3 +1,5 @@
 # From http://sourceforge.net/projects/libsquish/files
 sha1 51844b9a8bc815a27e2cc0ffbede5fee3ef75110 libsquish-1.15.tgz
 md5 c02645800131e55b519ff8dbe7284f93 libsquish-1.15.tgz
+# Locally calculated
+sha256 a6b8c383bf3ab28460d6507484d605dd722e03971606f0cd3032a3af682b63a5  LICENSE.txt

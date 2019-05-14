@@ -1,3 +1,6 @@
-# http://sourceforge.net/projects/trousers/files/trousers/0.3.13/
-sha1 d23f1a3df4febffc4174f5cca7d1c54230477bb2 trousers-0.3.13.tar.gz
-md5  ad508f97b406f6e48cd90e85d78e7ca8         trousers-0.3.13.tar.gz
+# http://sourceforge.net/projects/trousers/files/trousers/0.3.14/
+sha1 9ca2cc9e1179465f6c5d9055e2b855e25031b85a trousers-0.3.14.tar.gz
+md5  4a476b4f036dd20a764fb54fc24edbec         trousers-0.3.14.tar.gz
+# Locally computed
+sha256 ce50713a261d14b735ec9ccd97609f0ad5ce69540af560e8c3ce9eb5f2d28f47  trousers-0.3.14.tar.gz
+sha256 1ad596d12e7471549663c03e280b5b5d084a2e853fb86e4d766109818f9d7dae  LICENSE

@@ -6,9 +6,10 @@ config BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
 		BR2_armeb	|| BR2_i386		|| BR2_mips	|| \
 		BR2_mipsel	|| BR2_mips64		|| BR2_mips64el	|| \
 		BR2_m68k	|| BR2_nios2		|| BR2_powerpc	|| \
-		BR2_powerpc64 	|| BR2_powerpc64le 	|| BR2_sh4	|| \
-		BR2_sh4eb	|| BR2_sh4a		|| BR2_sh4aeb	|| \
-		BR2_sparc	|| BR2_sparc64		|| BR2_x86_64
+		BR2_powerpc64 	|| BR2_powerpc64le 	|| BR2_RISCV_64	|| \
+		BR2_sh4		|| BR2_sh4eb		|| BR2_sh4a	|| \
+		BR2_sh4aeb	|| BR2_sparc		|| BR2_sparc64	|| \
+		BR2_x86_64
 
 config BR2_PACKAGE_LIBGPG_ERROR
 	bool "libgpg-error"
@@ -39,11 +40,13 @@ config BR2_PACKAGE_LIBGPG_ERROR_SYSCFG
 		if BR2_powerpc
 	default "powerpc64-unknown-linux-gnu" \
 		if BR2_powerpc64 || BR2_powerpc64le
+	default "riscv64-unknown-linux-gnu" \
+		if BR2_RISCV_64
 	default "sh4-unknown-linux-gnu" \
 		if BR2_sh4 || BR2_sh4eb || BR2_sh4a || BR2_sh4aeb
 	default "sparc-unknown-linux-gnu" \
 		if BR2_sparc
 	default "sparc64-unknown-linux-gnu" \
 		if BR2_sparc64
-	default "x86_64-pc-linux-gnu" \
+	default "x86_64-unknown-linux-gnu" \
 		if BR2_x86_64

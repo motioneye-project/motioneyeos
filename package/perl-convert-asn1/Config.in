@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PERL_CONVERT_ASN1
 	bool "perl-convert-asn1"
 	help
-	  Convert between perl data structures and ASN.1 encoded packets
+	  Convert between perl data structures and ASN.1 encoded
+	  packets.
 
 	  https://metacpan.org/release/Convert-ASN1

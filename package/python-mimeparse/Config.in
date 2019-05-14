@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MIMEPARSE
+	bool "python-mimeparse"
+	help
+	  A module provides basic functions for parsing mime-type
+	  names and matching them against a list of media-ranges.
+
+	  https://github.com/dbtsai/python-mimeparse

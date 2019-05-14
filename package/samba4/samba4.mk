@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SAMBA4_VERSION = 4.8.4
+SAMBA4_VERSION = 4.9.6
 SAMBA4_SITE = https://download.samba.org/pub/samba/stable
 SAMBA4_SOURCE = samba-$(SAMBA4_VERSION).tar.gz
 SAMBA4_INSTALL_STAGING = YES
@@ -18,7 +18,7 @@ SAMBA4_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_READLINE),readline) \
 	$(TARGET_NLS_DEPENDENCIES)
 SAMBA4_CFLAGS = $(TARGET_CFLAGS)
-SAMBA4_LDFLAGS = $(TARGET_LDFLAGS)
+SAMBA4_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
 SAMBA4_CONF_ENV = \
 	CFLAGS="$(SAMBA4_CFLAGS)" \
 	LDFLAGS="$(SAMBA4_LDFLAGS)"
@@ -69,6 +69,13 @@ else
 SAMBA4_CONF_OPTS += --disable-gnutls
 endif
 
+ifeq ($(BR2_PACKAGE_LIBARCHIVE),y)
+SAMBA4_CONF_OPTS += --with-libarchive
+SAMBA4_DEPENDENCIES += libarchive
+else
+SAMBA4_CONF_OPTS += --without-libarchive
+endif
+
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 SAMBA4_CONF_ENV += NCURSES_CONFIG="$(STAGING_DIR)/usr/bin/$(NCURSES_CONFIG_SCRIPTS)"
 SAMBA4_DEPENDENCIES += ncurses
@@ -108,6 +115,8 @@ define SAMBA4_CONFIGURE_CMDS
 			--disable-iprint \
 			--without-pam \
 			--without-dmapi \
+			--without-gpgme \
+			--without-ldb-lmdb \
 			--disable-glusterfs \
 			--with-cluster-support \
 			--bundled-libraries='!asn1_compile,!compile_et' \
@@ -127,8 +136,10 @@ define SAMBA4_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) install
 endef
 
-ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),)
-SAMBA4_CONF_OPTS += --without-ad-dc
+ifeq ($(BR2_PACKAGE_SAMBA4_AD_DC),y)
+SAMBA4_DEPENDENCIES += jansson
+else
+SAMBA4_CONF_OPTS += --without-ad-dc --without-json-audit
 endif
 
 ifeq ($(BR2_PACKAGE_SAMBA4_ADS),y)
@@ -150,13 +161,12 @@ define SAMBA4_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S91smb
 endef
 
+ifeq ($(BR2_INIT_SYSTEMD),y)
+SAMBA4_CONF_OPTS += --systemd-install-services
+SAMBA4_DEPENDENCIES += systemd
+endif
+
 define SAMBA4_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/nmb.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/nmb.service
-	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/smb.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/smb.service
-	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/winbind.service \
-		$(TARGET_DIR)/usr/lib/systemd/system/winbind.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -sf ../../../../usr/lib/systemd/system/nmb.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/nmb.service

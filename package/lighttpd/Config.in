@@ -26,6 +26,13 @@ config BR2_PACKAGE_LIGHTTPD_OPENSSL
 	help
 	  Enable OpenSSL support for lighttpd.
 
+config BR2_PACKAGE_LIGHTTPD_PAM
+	bool "pam authentication support"
+	default y
+	depends on BR2_PACKAGE_LINUX_PAM
+	help
+	  Enable PAM authentication support for lighttpd.
+
 config BR2_PACKAGE_LIGHTTPD_ZLIB
 	bool "zlib support"
 	select BR2_PACKAGE_ZLIB

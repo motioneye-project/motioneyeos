@@ -1,3 +1,6 @@
-# From http://dev.yorhel.nl/download/ncdu-1.12.tar.gz.{md5,sha1}
-md5 7365ac46c420bc511621216b1747984f  ncdu-1.12.tar.gz
-sha1 b79b1c44784f334dca74d89a49f49274f14cfeef  ncdu-1.12.tar.gz
+# From http://dev.yorhel.nl/download/ncdu-1.13.tar.gz.{md5,sha1}
+md5 67239592ac41f42290f52ab89ff198be  ncdu-1.13.tar.gz
+sha1 3233c4185208d9989ac528a94817ed92dd59c773  ncdu-1.13.tar.gz
+
+# computed locally
+sha256 0ee47c3742a867ace26eb429cce593b54ab4ccb4c4a97d62e41363cbf80c8a24 COPYING

@@ -1,0 +1,59 @@
+From 4909cfbbe8dd512b8fc0892859549c26e1b14d30 Mon Sep 17 00:00:00 2001
+From: Mark Corbin <mark.corbin@embecosm.com>
+Date: Sun, 21 Oct 2018 10:38:18 +0100
+Subject: [PATCH] Fix RISC-V 32-bit build of riscv-glibc 2.26
+
+This patch fixes two build errors with the 32-bit version of
+glibc-2.26 from the riscv-glibc repository.
+
+A void reference to 'refsym' has been added to dl-runtime.c to avoid
+an 'unused variable' error when building with '-Werror'.
+
+Some data types were hard-coded for 64-bit in ldsodefs.h. These have
+been modified to allow 32-bit builds.
+
+This patch was provided by Fabrice Bellard as part of his RISC-V
+Buildroot development source.
+
+Signed-off-by: Mark Corbin <mark.corbin@embecosm.com>
+---
+ elf/dl-runtime.c         | 1 +
+ sysdeps/riscv/ldsodefs.h | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/elf/dl-runtime.c b/elf/dl-runtime.c
+index 51d3819d4a..e728e8907e 100644
+--- a/elf/dl-runtime.c
++++ b/elf/dl-runtime.c
+@@ -146,6 +146,7 @@ _dl_fixup (
+   if (__glibc_unlikely (GLRO(dl_bind_not)))
+     return value;
+ 
++  (void)refsym;
+   return elf_machine_fixup_plt (l, result, refsym, sym, reloc, rel_addr, value);
+ }
+ 
+diff --git a/sysdeps/riscv/ldsodefs.h b/sysdeps/riscv/ldsodefs.h
+index db993df80a..91e7a8c88f 100644
+--- a/sysdeps/riscv/ldsodefs.h
++++ b/sysdeps/riscv/ldsodefs.h
+@@ -25,14 +25,14 @@ struct La_riscv_regs;
+ struct La_riscv_retval;
+ 
+ #define ARCH_PLTENTER_MEMBERS						\
+-    Elf64_Addr (*riscv_gnu_pltenter) (Elf64_Sym *, unsigned int,	\
++    ElfW(Addr) (*riscv_gnu_pltenter) (ElfW(Sym) *, unsigned int,	\
+ 				      uintptr_t *, uintptr_t *,		\
+ 				      const struct La_riscv_regs *,	\
+ 				      unsigned int *, const char *name,	\
+ 				      long int *framesizep);
+ 
+ #define ARCH_PLTEXIT_MEMBERS						\
+-    unsigned int (*riscv_gnu_pltexit) (Elf64_Sym *, unsigned int,	\
++    unsigned int (*riscv_gnu_pltexit) (ElfW(Sym) *, unsigned int,	\
+ 				       uintptr_t *, uintptr_t *,	\
+ 				       const struct La_riscv_regs *,	\
+ 				       struct La_riscv_retval *,	\
+-- 
+2.17.1
+

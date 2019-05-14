@@ -1,0 +1,9 @@
+[Unit]
+Description=ACPI event daemon
+Documentation=man:acpid(8)
+
+[Service]
+ExecStart=/usr/sbin/acpid --foreground --netlink
+
+[Install]
+WantedBy=multi-user.target

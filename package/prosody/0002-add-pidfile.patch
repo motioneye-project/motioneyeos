@@ -11,9 +11,9 @@ diff --git a/prosody.cfg.lua.dist b/prosody.cfg.lua.dist
 index af3cc0e4..675db12f 100644
 --- a/prosody.cfg.lua.dist
 +++ b/prosody.cfg.lua.dist
-@@ -181,6 +181,9 @@ log = {
- -- Location of directory to find certificates in (relative to main config file):
- certificates = "certs"
+@@ -176,6 +176,9 @@ log = {
+ -- HTTPS currently only supports a single certificate, specify it here:
+ --https_certificate = "certs/localhost.crt"
  
 +-- This must match the PIDFILE used in S50prosody
 +pidfile = "/var/run/prosody/prosody.pid"

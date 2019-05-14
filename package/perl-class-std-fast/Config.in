@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_CLASS_STD_FAST
+	bool "perl-class-std-fast"
+	select BR2_PACKAGE_PERL_CLASS_STD # runtime
+	help
+	  faster but less secure than Class::Std.
+
+	  https://metacpan.org/release/Class-Std-Fast

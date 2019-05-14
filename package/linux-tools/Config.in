@@ -34,8 +34,18 @@ config BR2_PACKAGE_LINUX_TOOLS_IIO
 
 	  These tools are available only from kernel version 4.7.
 
+config BR2_PACKAGE_LINUX_TOOLS_PCI
+	bool "pci"
+	select BR2_PACKAGE_LINUX_TOOLS
+	help
+	  pcitest is a tool for testing capabilities related to a
+	  PCI Endpoint (only works with specific Endpoints).
+
+	  These tools are available only from kernel version 4.20.
+
 config BR2_PACKAGE_LINUX_TOOLS_PERF
 	bool "perf"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_LINUX_TOOLS
 	help
 	  perf (sometimes "Perf Events" or perf tools, originally
@@ -74,8 +84,14 @@ config BR2_PACKAGE_LINUX_TOOLS_SELFTESTS
 	depends on BR2_USE_MMU  # bash
 	select BR2_PACKAGE_LINUX_TOOLS
 	select BR2_PACKAGE_BASH # runtime
+	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_NCURSES_TARGET_PROGS # runtime (tput)
+	select BR2_PACKAGE_KMOD
+	select BR2_PACKAGE_KMOD_TOOLS # runtime (modprobe -n)
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_LIBCAP_NG
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_SCHEDUTILS # runtime (taskset)
 	help
 	  Build and install (to /usr/lib/kselftests) kernel selftests.
 

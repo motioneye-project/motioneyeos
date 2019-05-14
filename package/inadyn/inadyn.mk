@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-INADYN_VERSION = 2.3
+INADYN_VERSION = 2.5
 INADYN_SITE = https://github.com/troglobit/inadyn/releases/download/v$(INADYN_VERSION)
 INADYN_SOURCE = inadyn-$(INADYN_VERSION).tar.xz
 INADYN_LICENSE = GPL-2.0+

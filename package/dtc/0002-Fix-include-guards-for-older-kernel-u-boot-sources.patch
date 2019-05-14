@@ -1,0 +1,62 @@
+From 086283ed7f1886de05407bc75dd4c070c78a6f50 Mon Sep 17 00:00:00 2001
+From: Lothar Felten <lothar.felten@gmail.com>
+Date: Mon, 8 Oct 2018 13:29:44 +0200
+Subject: [PATCH] Fix include guards for older kernel/u-boot sources
+
+Linux kernels before 4.17 and U-Boot versions before 2018.07 use libfdt
+include guards with leading underscores.
+
+Those have been removed in dtc-1.4.7.
+
+This patch handles both include guard types and allows the compilation
+of older Linux kernel and u-boot sources.
+
+Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
+[ThomasDS: also update fdt.h which has the same issue, seen on U-Boot
+2011.03]
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+---
+ libfdt/fdt.h        | 4 ++++
+ libfdt/libfdt.h     | 4 ++++
+ libfdt/libfdt_env.h | 4 ++++
+ 3 files changed, 12 insertions(+)
+
+diff --git a/libfdt/fdt.h b/libfdt/fdt.h
+index 74961f9..2904f48 100644
+--- a/libfdt/fdt.h
++++ b/libfdt/fdt.h
+@@ -1,3 +1,7 @@
++#ifdef _FDT_H
++#warning "Please consider updating your kernel and/or u-boot version"
++#define FDT_H
++#endif
+ #ifndef FDT_H
+ #define FDT_H
+ /*
+diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
+index 830b77e..bef4566 100644
+--- a/libfdt/libfdt.h
++++ b/libfdt/libfdt.h
+@@ -1,3 +1,7 @@
++#ifdef _LIBFDT_H
++#warning "Please consider updating your kernel and/or u-boot version"
++#define LIBFDT_H
++#endif
+ #ifndef LIBFDT_H
+ #define LIBFDT_H
+ /*
+diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
+index eb20538..6a61e6a 100644
+--- a/libfdt/libfdt_env.h
++++ b/libfdt/libfdt_env.h
+@@ -1,3 +1,7 @@
++#ifdef _LIBFDT_ENV_H
++#warning "Please consider updating your kernel and/or u-boot version"
++#define LIBFDT_ENV_H
++#endif
+ #ifndef LIBFDT_ENV_H
+ #define LIBFDT_ENV_H
+ /*
+-- 
+2.19.2
+

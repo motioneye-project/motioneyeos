@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_FILESYS_NOTIFY_SIMPLE
+	bool "perl-filesys-notify-simple"
+	help
+	  Simple and dumb file system watcher.
+
+	  https://github.com/miyagawa/Filesys-Notify-Simple

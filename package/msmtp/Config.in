@@ -5,4 +5,4 @@ config BR2_PACKAGE_MSMTP
 	  mail to an SMTP server (for example at a free mail provider)
 	  which takes care of further delivery.
 
-	  http://msmtp.sourceforge.net/
+	  https://marlam.de/msmtp/

@@ -1,0 +1,34 @@
+From d045dd99acdd47be238642d4f9384dccacde2b42 Mon Sep 17 00:00:00 2001
+From: "Carsten Haitzler (Rasterman)" <raster@rasterman.com>
+Date: Sat, 15 Dec 2018 16:19:01 +0000
+Subject: [PATCH] evas gl - make GLintptr etc. also ndefed for GL_VERSION_1_5
+ fix typedef
+
+It seems that GL_VERSION_1_5 define == these provided by gl already. At
+least reading the mesa headers I do, so this should fix T7502
+
+Signed-off-by: Vadim Kochan <vadim4j@gmail.com>
+---
+ src/lib/evas/Evas_GL.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/src/lib/evas/Evas_GL.h b/src/lib/evas/Evas_GL.h
+index fa3e6f4..5524d82 100644
+--- a/src/lib/evas/Evas_GL.h
++++ b/src/lib/evas/Evas_GL.h
+@@ -4272,9 +4272,11 @@ typedef signed int       GLfixed;      // Changed khronos_int32_t
+ 
+ #ifndef GL_ES_VERSION_2_0
+ /* GL types for handling large vertex buffer objects */
+-#include <stddef.h>
++# ifndef GL_VERSION_1_5
++#  include <stddef.h>
+ typedef ptrdiff_t GLintptr;     // Changed khronos_intptr_t
+ typedef ptrdiff_t GLsizeiptr;   // Changed khronos_ssize_t
++# endif
+ #endif
+ 
+ /* Some definitions from GLES 3.0.
+-- 
+2.14.1
+

@@ -52,15 +52,10 @@ else
 PINENTRY_CONF_OPTS += --disable-pinentry-gtk2
 endif
 
-# pinentry-qt4/5 backend
-ifeq ($(BR2_PACKAGE_PINENTRY_QT4)$(BR2_PACKAGE_PINENTRY_QT5),y)
-ifeq ($(BR2_PACKAGE_PINENTRY_QT4),y)
-# -pthread needs to be passed for certain toolchains
-# http://autobuild.buildroot.net/results/6be/6be109ccedec603a67cebdb31b55865dcce0e128/
-PINENTRY_CONF_OPTS += LIBS=-pthread MOC=$(HOST_DIR)/bin/moc
-endif
+# pinentry-qt5 backend
+ifeq ($(BR2_PACKAGE_PINENTRY_QT5),y)
 PINENTRY_CONF_OPTS += --enable-pinentry-qt
-PINENTRY_DEPENDENCIES += $(if $(BR2_PACKAGE_PINENTRY_QT4),qt,qt5base)
+PINENTRY_DEPENDENCIES += qt5base
 else
 PINENTRY_CONF_OPTS += --disable-pinentry-qt
 endif

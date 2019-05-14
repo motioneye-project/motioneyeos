@@ -15,8 +15,11 @@ ifeq ($(BR2_STATIC_LIBS),y)
 DHCPDUMP_LIBS += `$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`
 endif
 
+# glibc, uclibc and musl have strsep()
+DHCPDUMP_CFLAGS = $(TARGET_CFLAGS) -DHAVE_STRSEP
+
 define DHCPDUMP_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) CC="$(TARGET_CC) $(TARGET_CFLAGS) \
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) CC="$(TARGET_CC) $(DHCPDUMP_CFLAGS) \
 		-D_GNU_SOURCE" LIBS="$(DHCPDUMP_LIBS)"
 endef
 

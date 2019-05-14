@@ -1,5 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    daaf39133bb89a31c093510169c228e1 Net-DNS-1.15.tar.gz
-sha256 1ad46ba6438b846a94b4f50d53ecfda55f504a17e11b94effb087ff9329e61d0 Net-DNS-1.15.tar.gz
-# Locally computed
-sha256 ab10a05c33f412e00f71a828aa7521288309cfac74b1f075daef8560e86a9b94  README
+md5    8a40402888487b853f861d21433f341a Net-DNS-1.19.tar.gz
+sha256 206278bdd9a538bec3e45b50e80cc5a9d7dc6e70ebf0889ef78254f0f710ccd7 Net-DNS-1.19.tar.gz
+
+# computed by scancpan
+sha256 afa7d288df3e3edbdb34790407ba4a9c7750c2746059d9355f4168bfb3212583 README

@@ -1,0 +1,150 @@
+From 3780bbb20bf35aa8f21ac672da3f0c5f408468e9 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Thu, 16 Aug 2018 12:27:40 +0200
+Subject: [PATCH] Add support for freerdp2
+
+Downloaded from
+https://gitweb.gentoo.org/repo/gentoo.git/tree/media-video/vlc/files/vlc-2.2.8-freerdp-2.patch
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac         |  2 +-
+ modules/access/rdp.c | 51 ++++++++++++++-------------------------------------
+ 2 files changed, 15 insertions(+), 38 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index bfe43512a2..4808b8becf 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1992,7 +1992,7 @@ PKG_ENABLE_MODULES_VLC([VNC], [vnc], [libvncclient >= 0.9.9], (VNC/rfb client su
+ 
+ dnl  RDP/Remote Desktop access module
+ dnl
+-PKG_ENABLE_MODULES_VLC([FREERDP], [rdp], [freerdp >= 1.0.1], (RDP/Remote Desktop client support) )
++PKG_ENABLE_MODULES_VLC([FREERDP], [rdp], [freerdp2 >= 1.0.1], (RDP/Remote Desktop client support) )
+ 
+ dnl
+ dnl  Real RTSP plugin
+diff --git a/modules/access/rdp.c b/modules/access/rdp.c
+index 2992090219..49986f5da9 100644
+--- a/modules/access/rdp.c
++++ b/modules/access/rdp.c
+@@ -45,18 +45,6 @@
+ # include <freerdp/version.h>
+ #endif
+ 
+-#if !defined(FREERDP_VERSION_MAJOR) || \
+-    (defined(FREERDP_VERSION_MAJOR) && !(FREERDP_VERSION_MAJOR > 1 || (FREERDP_VERSION_MAJOR == 1 && FREERDP_VERSION_MINOR >= 1)))
+-# define SoftwareGdi sw_gdi
+-# define Fullscreen fullscreen
+-# define ServerHostname hostname
+-# define Username username
+-# define Password password
+-# define ServerPort port
+-# define EncryptionMethods encryption
+-# define ContextSize context_size
+-#endif
+-
+ #include <errno.h>
+ #ifdef HAVE_POLL
+ # include <poll.h>
+@@ -144,6 +132,7 @@ static void desktopResizeHandler( rdpContext *p_context )
+     vlcrdp_context_t * p_vlccontext = (vlcrdp_context_t *) p_context;
+     demux_sys_t *p_sys = p_vlccontext->p_demux->p_sys;
+     rdpGdi *p_gdi = p_context->gdi;
++    unsigned bytesPerPixel;
+ 
+     if ( p_sys->es )
+     {
+@@ -153,17 +142,21 @@ static void desktopResizeHandler( rdpContext *p_context )
+ 
+     /* Now init and fill es format */
+     vlc_fourcc_t i_chroma;
+-    switch( p_gdi->bytesPerPixel )
++    switch( p_gdi->dstFormat )
+     {
+         default:
+-        case 16:
++            msg_Dbg( p_vlccontext->p_demux, "unhandled dstFormat %x bpp", p_gdi->dstFormat);
++        case PIXEL_FORMAT_BGR16:
+             i_chroma = VLC_CODEC_RGB16;
++            bytesPerPixel = 16;
+             break;
+-        case 24:
++        case PIXEL_FORMAT_BGR24:
+             i_chroma = VLC_CODEC_RGB24;
++            bytesPerPixel = 24;
+             break;
+-        case 32:
++        case PIXEL_FORMAT_BGRA32:
+             i_chroma = VLC_CODEC_RGB32;
++            bytesPerPixel = 32;
+             break;
+     }
+     es_format_t fmt;
+@@ -176,7 +169,7 @@ static void desktopResizeHandler( rdpContext *p_context )
+     fmt.video.i_height = p_gdi->height;
+     fmt.video.i_frame_rate_base = 1000;
+     fmt.video.i_frame_rate = 1000 * p_sys->f_fps;
+-    p_sys->i_framebuffersize = p_gdi->width * p_gdi->height * p_gdi->bytesPerPixel;
++    p_sys->i_framebuffersize = p_gdi->width * p_gdi->height * bytesPerPixel;
+ 
+     if ( p_sys->p_block )
+         p_sys->p_block = block_Realloc( p_sys->p_block, 0, p_sys->i_framebuffersize );
+@@ -237,28 +230,19 @@ static bool postConnectHandler( freerdp *p_instance )
+     vlcrdp_context_t * p_vlccontext = (vlcrdp_context_t *) p_instance->context;
+ 
+     msg_Dbg( p_vlccontext->p_demux, "connected to desktop %dx%d (%d bpp)",
+-#if defined(FREERDP_VERSION_MAJOR) && (FREERDP_VERSION_MAJOR > 1 || (FREERDP_VERSION_MAJOR == 1 && FREERDP_VERSION_MINOR >= 1))
+              p_instance->settings->DesktopWidth,
+              p_instance->settings->DesktopHeight,
+              p_instance->settings->ColorDepth
+-#else
+-             p_instance->settings->width,
+-             p_instance->settings->height,
+-             p_instance->settings->color_depth
+-#endif
+              );
+ 
+     p_instance->update->DesktopResize = desktopResizeHandler;
+     p_instance->update->BeginPaint = beginPaintHandler;
+     p_instance->update->EndPaint = endPaintHandler;
+ 
+-    gdi_init( p_instance,
+-                CLRBUF_16BPP |
+-#if defined(FREERDP_VERSION_MAJOR) && defined(FREERDP_VERSION_MINOR) && \
+-    !(FREERDP_VERSION_MAJOR > 1 || (FREERDP_VERSION_MAJOR == 1 && FREERDP_VERSION_MINOR >= 2))
+-                CLRBUF_24BPP |
+-#endif
+-                CLRBUF_32BPP, NULL );
++    if ( p_instance->settings->ColorDepth > 16 )
++        gdi_init( p_instance, PIXEL_FORMAT_XRGB32);
++    else
++        gdi_init( p_instance, PIXEL_FORMAT_RGB16);
+ 
+     desktopResizeHandler( p_instance->context );
+     return true;
+@@ -432,10 +416,6 @@ static int Open( vlc_object_t *p_this )
+     if ( p_sys->f_fps <= 0 ) p_sys->f_fps = 1.0;
+     p_sys->i_frame_interval = 1000000 / p_sys->f_fps;
+ 
+-#if FREERDP_VERSION_MAJOR == 1 && FREERDP_VERSION_MINOR < 2
+-    freerdp_channels_global_init();
+-#endif
+-
+     p_sys->p_instance = freerdp_new();
+     if ( !p_sys->p_instance )
+     {
+@@ -508,9 +488,6 @@ static void Close( vlc_object_t *p_this )
+ 
+     freerdp_disconnect( p_sys->p_instance );
+     freerdp_free( p_sys->p_instance );
+-#if FREERDP_VERSION_MAJOR == 1 && FREERDP_VERSION_MINOR < 2
+-    freerdp_channels_global_uninit();
+-#endif
+ 
+     if ( p_sys->p_block )
+         block_Release( p_sys->p_block );
+-- 
+2.14.4
+

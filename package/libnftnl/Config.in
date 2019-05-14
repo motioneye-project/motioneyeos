@@ -22,14 +22,4 @@ config BR2_PACKAGE_LIBNFTNL_JSON
 	help
 	  Enable JSON parsing support
 
-config BR2_PACKAGE_LIBNFTNL_XML
-	bool "enable XML support"
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_PACKAGE_MXML
-	help
-	  Enable XML parsing support
-
-comment "libnftnl XML parsing support needs a toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_HAS_THREADS
-
 endif

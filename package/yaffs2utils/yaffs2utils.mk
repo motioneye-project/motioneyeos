@@ -15,6 +15,7 @@ define HOST_YAFFS2UTILS_BUILD_CMDS
 endef
 
 define HOST_YAFFS2UTILS_INSTALL_CMDS
+	mkdir -p $(HOST_DIR)/bin
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) INSTALLDIR=$(HOST_DIR)/bin install
 endef
 

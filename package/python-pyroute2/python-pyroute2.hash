@@ -1,3 +1,7 @@
-# md5 from https://pypi.python.org/pypi/pyroute2/json, sha256 locally computed
-md5 ef4282b1401bcd07a9cf4ec0696aba24 pyroute2-0.4.13.tar.gz
-sha256 93f3d72f58b3627036427b5571f8e27c93dbb6d01372dc4c452707d6610c0a39 pyroute2-0.4.13.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pyroute2/json
+md5    62b24242940b5d73c6ec9c53169b8ef8  pyroute2-0.5.3.tar.gz
+sha256 79f7b4286be773c46914df0201dabaf92717a9c06e341e0c420603b2dd31c6bf  pyroute2-0.5.3.tar.gz
+# Locally computed sha256
+sha256 4739b32a2478e9c204bf010bad5d565d188e59ff905e3c8f71fe3398098b7093  LICENSE.Apache.v2
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  LICENSE.GPL.v2
+sha256 e329111754f1340de20b6084cae4d264b7b4fc8fb48964173f8ee0cb7440a51c  README.license.md

@@ -28,8 +28,9 @@ MINIMAL_CONFIG = \
     """
 
 
-class BRTest(unittest.TestCase):
+class BRConfigTest(unittest.TestCase):
     config = None
+    br2_external = list()
     downloaddir = None
     outputdir = None
     logtofile = True
@@ -38,10 +39,9 @@ class BRTest(unittest.TestCase):
     timeout_multiplier = 1
 
     def __init__(self, names):
-        super(BRTest, self).__init__(names)
+        super(BRConfigTest, self).__init__(names)
         self.testname = self.__class__.__name__
         self.builddir = self.outputdir and os.path.join(self.outputdir, self.testname)
-        self.emulator = None
         self.config += '\nBR2_DL_DIR="{}"\n'.format(self.downloaddir)
         self.config += "\nBR2_JLEVEL={}\n".format(self.jlevel)
 
@@ -57,8 +57,23 @@ class BRTest(unittest.TestCase):
             self.b.delete()
 
         if not self.b.is_finished():
+            self.b.configure(make_extra_opts=["BR2_EXTERNAL={}".format(":".join(self.br2_external))])
+
+    def tearDown(self):
+        self.show_msg("Cleaning up")
+        if self.b and not self.keepbuilds:
+            self.b.delete()
+
+
+class BRTest(BRConfigTest):
+    def __init__(self, names):
+        super(BRTest, self).__init__(names)
+        self.emulator = None
+
+    def setUp(self):
+        super(BRTest, self).setUp()
+        if not self.b.is_finished():
             self.show_msg("Building")
-            self.b.configure()
             self.b.build()
             self.show_msg("Building done")
 
@@ -66,8 +81,6 @@ class BRTest(unittest.TestCase):
                                  self.logtofile, self.timeout_multiplier)
 
     def tearDown(self):
-        self.show_msg("Cleaning up")
         if self.emulator:
             self.emulator.stop()
-        if self.b and not self.keepbuilds:
-            self.b.delete()
+        super(BRTest, self).tearDown()

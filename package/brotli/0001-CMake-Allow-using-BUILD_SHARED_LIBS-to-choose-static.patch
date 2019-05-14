@@ -1,4 +1,4 @@
-From b60b613e7c2c9bf7a142c3c486ac6e77ad93f5d1 Mon Sep 17 00:00:00 2001
+From 7289e5a378ba13801996a84d89d8fe95c3fc4c11 Mon Sep 17 00:00:00 2001
 From: Adrian Perez de Castro <aperez@igalia.com>
 Date: Mon, 26 Mar 2018 19:08:31 +0100
 Subject: [PATCH] CMake: Allow using BUILD_SHARED_LIBS to choose static/shared
@@ -27,7 +27,7 @@ Signed-off-by: Adrian Perez de Castro <aperez@igalia.com>
 Upstream-Status: Submitted [https://github.com/google/brotli/pull/655]
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
-index 99b9258..3867931 100644
+index fc45f80..3f87f13 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
 @@ -6,6 +6,8 @@ cmake_minimum_required(VERSION 2.8.6)
@@ -120,25 +120,25 @@ index 99b9258..3867931 100644
      DIRECTORY ${BROTLI_INCLUDE_DIRS}/brotli
      DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
 diff --git a/c/fuzz/test_fuzzer.sh b/c/fuzz/test_fuzzer.sh
-index 5c754e1..e85e12f 100755
+index 9985194..4b99947 100755
 --- a/c/fuzz/test_fuzzer.sh
 +++ b/c/fuzz/test_fuzzer.sh
-@@ -14,12 +14,12 @@ mkdir bin
+@@ -13,12 +13,12 @@ mkdir bin
  cd bin
  
- cmake $BROTLI -DCMAKE_C_COMPILER="$CC" -DCMAKE_CXX_COMPILER="$CXX" \
+ cmake $BROTLI -DCMAKE_C_COMPILER="$CC" \
 -    -DBUILD_TESTING=OFF -DENABLE_SANITIZER=address
 -make -j$(nproc) brotlidec-static
 +    -DBUILD_TESTING=OFF -DBUILD_SHARED_LIBS=OFF -DENABLE_SANITIZER=address
 +make -j$(nproc) brotlidec
  
- ${CXX} -o run_decode_fuzzer -std=c++11 -fsanitize=address -I$SRC/include \
-     $SRC/fuzz/decode_fuzzer.cc $SRC/fuzz/run_decode_fuzzer.cc \
+ ${CC} -o run_decode_fuzzer -std=c99 -fsanitize=address -I$SRC/include \
+     $SRC/fuzz/decode_fuzzer.c $SRC/fuzz/run_decode_fuzzer.c \
 -    ./libbrotlidec-static.a ./libbrotlicommon-static.a
 +    ./libbrotlidec.a ./libbrotlicommon.a
  
  mkdir decode_corpora
  unzip $BROTLI/java/org/brotli/integration/fuzz_data.zip -d decode_corpora
 -- 
-2.16.3
+2.19.1
 

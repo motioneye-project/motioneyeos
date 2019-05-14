@@ -1,4 +1,4 @@
-From 0b701c37d8a409904ea80fb6b74f096d1f28cc84 Mon Sep 17 00:00:00 2001
+From 7c2b3343a30ee53a1cded2ca5e712d8cd7d50f5f Mon Sep 17 00:00:00 2001
 From: Bernd Kuhls <bernd.kuhls@t-online.de>
 Date: Tue, 1 May 2018 22:27:21 +0200
 Subject: [PATCH] Disable building of statically linked vlc binary
@@ -10,10 +10,10 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
  2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.am b/Makefile.am
-index febdc63fe4..dca6354ec9 100644
+index 3ac82623ad..637504a3f5 100644
 --- a/Makefile.am
 +++ b/Makefile.am
-@@ -933,7 +933,7 @@ libvlc: libvlccore
+@@ -108,7 +108,7 @@ libvlc: libvlccore
  	cd lib && $(MAKE) $(AM_MAKEFLAGS) libvlc.la
  
  core: libvlc vlc$(EXEEXT)
@@ -23,18 +23,18 @@ index febdc63fe4..dca6354ec9 100644
  doc:
  	cd doc && $(MAKE) $(AM_MAKEFLAGS) doc
 diff --git a/bin/Makefile.am b/bin/Makefile.am
-index 869ac561dc..5e48b70d0a 100644
+index 2877e8b0ea..bef4160e8b 100644
 --- a/bin/Makefile.am
 +++ b/bin/Makefile.am
-@@ -1,7 +1,7 @@
- # Building vlc
- #
+@@ -6,7 +6,7 @@ bin_PROGRAMS = vlc-osx
+ noinst_PROGRAMS = vlc-osx-static
+ else
  bin_PROGRAMS = vlc
 -noinst_PROGRAMS = vlc-static
 +noinst_PROGRAMS =
- noinst_DATA =
- vlclib_PROGRAMS = vlc-cache-gen
- EXTRA_PROGRAMS = vlc-wrapper
+ endif
+ endif
+ EXTRA_DIST = vlc_win32_rc.rc.in
 -- 
-2.14.3
+2.14.4
 

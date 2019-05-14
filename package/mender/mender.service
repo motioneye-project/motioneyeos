@@ -6,7 +6,17 @@ After=systemd-resolved.service
 Type=idle
 User=root
 Group=root
-ExecStartPre=/bin/mkdir -p -m 0700 /data/mender
+ExecStartPre=/bin/sh -c '\
+if [ -L /var/lib/mender \
+     -a "$(readlink /var/lib/mender)" = "/var/run/mender" ]; then \
+    if rm -f /var/lib/mender >/dev/null 2>&1; then \
+        mkdir -p /var/lib/mender; \
+    else \
+        echo "No persistent location to store mender data. Data will be lost" \
+        echo "at reboot. Are you sure this is what you want to do?"; \
+        mkdir -p "$(readlink /var/lib/mender)"; \
+    fi; \
+fi'
 ExecStart=/usr/bin/mender -daemon
 Restart=on-abort
 

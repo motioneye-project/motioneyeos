@@ -42,7 +42,8 @@ $(2)_SITE		?= $$(call qstrip,$$(BR2_LUAROCKS_MIRROR))
 
 # Since we do not support host-luarocks-package, we know this is
 # a target package, and can just add the required dependencies
-$(2)_DEPENDENCIES	+= host-luarocks luainterpreter
+$(2)_DEPENDENCIES	+= luainterpreter
+$(2)_EXTRACT_DEPENDENCIES += host-luarocks
 
 #
 # Extract step. Extract into a temporary dir and move the relevant part to the
@@ -62,7 +63,7 @@ endif
 #
 ifndef $(2)_INSTALL_TARGET_CMDS
 define $(2)_INSTALL_TARGET_CMDS
-	cd $$($(2)_SRCDIR) && $$(LUAROCKS_RUN_ENV) flock $$(TARGET_DIR) \
+	cd $$($(2)_SRCDIR) && $$(LUAROCKS_RUN_ENV) \
 		$$(LUAROCKS_RUN_CMD) make --keep $$($(2)_ROCKSPEC) $$($(2)_BUILD_OPTS)
 endef
 endif
@@ -71,9 +72,11 @@ endif
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
 
-# $(2)_DEPENDENCIES are handled for configure step (too late)
-# but host-luarocks is required to do the extract
-$$($(2)_TARGET_EXTRACT): | host-luarocks
+# Upgrade helper
+$(1)-upgrade: host-luarocks
+	$$(LUAROCKS_RUN_CMD) buildroot $$($(2)_NAME_UPSTREAM) $(1)
+
+.PHONY: $(1)-upgrade
 
 endef
 

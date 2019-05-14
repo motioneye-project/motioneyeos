@@ -1,13 +1,12 @@
 config BR2_PACKAGE_LUA_COATPERSISTENT
 	bool "lua-coatpersistent"
 	depends on BR2_PACKAGE_LSQLITE3 || BR2_PACKAGE_LUASQL_SQLITE3
-	# run-time dependencies
-	select BR2_PACKAGE_DADO
-	select BR2_PACKAGE_LUA_COAT
+	select BR2_PACKAGE_DADO # runtime
+	select BR2_PACKAGE_LUA_COAT # runtime
 	help
 	  An ORM for lua-Coat.
 
-	  http://fperrad.github.io/lua-CoatPersistent/
+	  https://fperrad.frama.io/lua-CoatPersistent/
 
 comment "lua-coatpersistent needs lsqlite3 or luasql-sqlite3"
 	depends on !BR2_PACKAGE_LSQLITE3 && !BR2_PACKAGE_LUASQL_SQLITE3

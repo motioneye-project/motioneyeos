@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/python-mimeparse/json
+md5	a32ae1df93be1ddb581d1c0fa124bab4  python-mimeparse-1.6.0.tar.gz
+sha256	76e4b03d700a641fd7761d3cd4fdbbdcd787eade1ebfac43f877016328334f78  python-mimeparse-1.6.0.tar.gz
+# Locally computed sha256 checksums
+sha256	89807acf2309bd285f033404ee78581602f3cd9b819a16ac2f0e5f60ff4a473e  LICENSE

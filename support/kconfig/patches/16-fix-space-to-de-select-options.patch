@@ -26,10 +26,10 @@ Date:   Wed Nov 13 22:45:02 2013 +0100
     ---
     Note: I'll be running this upstream soonish.
 
-diff --git a/support/kconfig/lxdialog/menubox.c b/support/kconfig/lxdialog/menubox.c
-index 48d382e..6fc7e78 100644
---- a/lxdialog/menubox.c
-+++ b/lxdialog/menubox.c
+Index: kconfig/lxdialog/menubox.c
+===================================================================
+--- kconfig.orig/lxdialog/menubox.c
++++ kconfig/lxdialog/menubox.c
 @@ -285,7 +285,7 @@ do_resize:
  		if (key < 256 && isalpha(key))
  			key = tolower(key);

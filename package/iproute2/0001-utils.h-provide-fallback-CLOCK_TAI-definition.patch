@@ -1,0 +1,32 @@
+From 950bf78adc9a3290ed383eaeef01dee6543cfb97 Mon Sep 17 00:00:00 2001
+From: Peter Korsgaard <peter@korsgaard.com>
+Date: Sat, 27 Oct 2018 17:25:31 +0200
+Subject: [PATCH] utils.h: provide fallback CLOCK_TAI definition
+
+q_{etf,taprio}.c uses CLOCK_TAI, which isn't exposed by glibc < 2.21 or
+uClibc, breaking the build. Provide a fallback definition like it is done
+for IPPROTO_MPLS and others.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ include/utils.h | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/include/utils.h b/include/utils.h
+index 258d630e..685d2c1d 100644
+--- a/include/utils.h
++++ b/include/utils.h
+@@ -126,6 +126,10 @@ struct ipx_addr {
+ #define IPPROTO_MPLS	137
+ #endif
+ 
++#ifndef CLOCK_TAI
++# define CLOCK_TAI 11
++#endif
++
+ __u32 get_addr32(const char *name);
+ int get_addr_1(inet_prefix *dst, const char *arg, int family);
+ int get_prefix_1(inet_prefix *dst, char *arg, int family);
+-- 
+2.11.0
+

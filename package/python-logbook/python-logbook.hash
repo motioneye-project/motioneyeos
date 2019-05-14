@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/logbook/json, sha256 locally computed
-md5	22fea705e067c118925898f0c30b0508  Logbook-1.0.0.tar.gz
-sha256	87da2515a6b3db866283cb9d4e5a6ec44e52a1d556ebb2ea3b6e7e704b5f1872  Logbook-1.0.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/logbook/json
+md5	352d66684713fc323febe60c9244270e  Logbook-1.4.3.tar.gz
+sha256	a5a96792abd8172c80d61b7530e134524f20e2841981038031e602ed5920fef5  Logbook-1.4.3.tar.gz
+# Locally computed sha256 checksums
+sha256	2ca266337cc6947578654ab0dd6438de4d01fa78b2e6eb554b09757df1178f98  LICENSE

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_FFTW_LONG_DOUBLE
+	bool "fftw-long-double"
+	# long-double precision require long-double trigonometric routines
+	depends on !(BR2_TOOLCHAIN_USES_UCLIBC && \
+		(BR2_arm || BR2_mips || BR2_mipsel))
+	help
+	  Compile fftw in long double precision, i.e. use 'long double'
+	  for floating point type.

@@ -11,6 +11,11 @@ SDL_SOUND_LICENSE = LGPL-2.1+
 SDL_SOUND_LICENSE_FILES = COPYING
 SDL_SOUND_INSTALL_STAGING = YES
 SDL_SOUND_DEPENDENCIES = sdl
+SDL_SOUND_CONF_OPTS = \
+	--with-sdl-prefix=$(STAGING_DIR)/usr \
+	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
+	--disable-sdltest \
+	--enable-static
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 SDL_SOUND_DEPENDENCIES += libiconv
@@ -51,12 +56,6 @@ SDL_SOUND_DEPENDENCIES += physfs
 else
 SDL_SOUND_CONF_OPTS += --disable-physfs
 endif
-
-SDL_SOUND_CONF_OPTS = \
-	--with-sdl-prefix=$(STAGING_DIR)/usr \
-	--with-sdl-exec-prefix=$(STAGING_DIR)/usr \
-	--disable-sdltest \
-	--enable-static
 
 ifeq ($(BR2_X86_CPU_HAS_MMX),y)
 SDL_SOUND_CONF_OPTS += --enable-mmx

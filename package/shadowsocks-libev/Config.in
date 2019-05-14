@@ -15,6 +15,18 @@ config BR2_PACKAGE_SHADOWSOCKS_LIBEV
 
 	  https://github.com/shadowsocks/shadowsocks-libev
 
+config BR2_PACKAGE_SHADOWSOCKS_LIBEV_CONNMARKTOS
+	bool "connmarktos support in ss-server"
+	depends on BR2_PACKAGE_SHADOWSOCKS_LIBEV
+	select BR2_PACKAGE_LIBNETFILTER_CONNTRACK
+	help
+	  Build ss-server with the connmark to TOS feature.
+
+	  This feature requires advanced tc, iptables and conntrack
+	  rules to perform QoS on the server side.
+
+	  If unsure, don't enable this option
+
 comment "shadowsocks-libev needs a toolchain w/ threads"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_TOOLCHAIN_HAS_SYNC_8 || !BR2_ARCH_IS_64

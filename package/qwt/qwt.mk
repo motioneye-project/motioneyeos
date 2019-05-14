@@ -8,13 +8,7 @@ QWT_VERSION = 6.1.3
 QWT_SOURCE = qwt-$(QWT_VERSION).tar.bz2
 QWT_SITE = http://downloads.sourceforge.net/project/qwt/qwt/$(QWT_VERSION)
 QWT_INSTALL_STAGING = YES
-ifeq ($(BR2_PACKAGE_QT),y)
-QWT_DEPENDENCIES = qt
-QWT_QMAKE = $(QT_QMAKE)
-else ifeq ($(BR2_PACKAGE_QT5),y)
-QWT_DEPENDENCIES += qt5base
-QWT_QMAKE = $(QT5_QMAKE)
-endif
+QWT_DEPENDENCIES = qt5base
 
 QWT_LICENSE = LGPL-2.1 with exceptions
 QWT_LICENSE_FILES = COPYING
@@ -49,7 +43,7 @@ endif
 
 define QWT_CONFIGURE_CMDS
 	$(SED) $(QWT_CONFIG) $(@D)/qwtconfig.pri
-	(cd $(@D); $(TARGET_MAKE_ENV) $(QWT_QMAKE))
+	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5_QMAKE))
 endef
 
 define QWT_BUILD_CMDS

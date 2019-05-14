@@ -15,6 +15,8 @@ Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
 [Romain: rebase on 18.1]
 Signed-off-by: Romain Naour <romain.naour@gmail.com>
+[Bernd rebase on 18.3]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  configure.ac | 8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
@@ -23,22 +25,27 @@ diff --git a/configure.ac b/configure.ac
 index f1fbdcc6c7..dcf87e7dd6 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1796,11 +1796,11 @@ for plat in $platforms; do
-         PKG_CHECK_MODULES([WAYLAND_PROTOCOLS], [wayland-protocols >= $WAYLAND_PROTOCOLS_REQUIRED])
+@@ -1841,17 +1841,16 @@
+         fi
          WAYLAND_PROTOCOLS_DATADIR=`$PKG_CONFIG --variable=pkgdatadir wayland-protocols`
  
 -        PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
--                          WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
--                          WAYLAND_SCANNER='')
-+        AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner])
-         if test "x$WAYLAND_SCANNER" = x; then
--            AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
-+		PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
-+			WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
-+			WAYLAND_SCANNER='')
-         fi
++        AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
++        if test "x$WAYLAND_SCANNER" = x; then
++                PKG_CHECK_MODULES([WAYLAND_SCANNER], [wayland-scanner],
+                           WAYLAND_SCANNER=`$PKG_CONFIG --variable=wayland_scanner wayland-scanner`,
+                           WAYLAND_SCANNER='')
++        fi
+         PKG_CHECK_EXISTS([wayland-scanner >= 1.15],
+                           AC_SUBST(SCANNER_ARG, 'private-code'),
+                           AC_SUBST(SCANNER_ARG, 'code'))
  
+-        if test "x$WAYLAND_SCANNER" = x; then
+-            AC_PATH_PROG([WAYLAND_SCANNER], [wayland-scanner], [:])
+-        fi
+-
          if test "x$WAYLAND_SCANNER" = "x:"; then
+                 AC_MSG_ERROR([wayland-scanner is needed to compile the wayland platform])
+         fi
 -- 
 2.14.3
-

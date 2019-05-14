@@ -1,0 +1,33 @@
+From ad66d3c202eb72ac5808f13a0489ac836dc55aac Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Mon, 11 Feb 2019 20:31:42 +0100
+Subject: [PATCH] Fix build failure when x11 support is disabled
+
+Patch suggested on upstream bug tracker:
+https://github.com/intel/libva-utils/issues/150#issuecomment-462059528
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ Makefile.am | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.am b/Makefile.am
+index d28175a..12da79e 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -24,10 +24,10 @@ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
+ 
+ AUTOMAKE_OPTIONS = foreign
+ 
+-SUBDIRS = common decode encode vainfo videoprocess vendor/intel vendor/intel/sfcsample
++SUBDIRS = common decode encode vainfo videoprocess vendor/intel
+ 
+ if USE_X11
+-SUBDIRS += putsurface
++SUBDIRS += putsurface vendor/intel/sfcsample
+ else
+ if USE_WAYLAND
+ SUBDIRS += putsurface
+-- 
+2.20.1
+

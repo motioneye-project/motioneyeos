@@ -45,22 +45,6 @@ config BR2_PACKAGE_AMD_CATALYST_CMDLINE_TOOLS
 	help
 	  Build and install the AMD command line tools.
 
-comment "Catalyst Control Center needs Qt4 with X11 and PNG support"
-	depends on !BR2_PACKAGE_QT || !BR2_PACKAGE_QT_X11 \
-		|| BR2_PACKAGE_QT_NOPNG
-
-config BR2_PACKAGE_AMD_CATALYST_CCCLE
-	bool "Catalyst Control Center"
-	depends on BR2_PACKAGE_QT
-	depends on BR2_PACKAGE_QT_X11
-	depends on !BR2_PACKAGE_QT_NOPNG
-	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # procps-ng
-	select BR2_PACKAGE_PROCPS_NG # runtime
-	select BR2_PACKAGE_QT_ACCESSIBILITY
-	help
-	  Installs the Catalyst Control Center, a Qt graphical tool to
-	  control AMD graphics accelerators.
-
 endif
 
 comment "amd-catalyst kernel module needs a kernel to be built"

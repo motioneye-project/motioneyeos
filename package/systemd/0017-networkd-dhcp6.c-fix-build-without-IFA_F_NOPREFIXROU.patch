@@ -1,0 +1,33 @@
+From aeed8332afa88728ed914b2917ce758d9c2218a4 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 3 Feb 2019 18:38:10 +0100
+Subject: [PATCH] networkd-dhcp6.c: fix build without IFA_F_NOPREFIXROUTE
+
+systemd fails to build on kernel without IFA_F_NOPREFIXROUTE
+since 9714c02
+
+So put include missing_network.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/970b09e1d49b53dff12a07ca4ad424ef9dd29a69
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/network/networkd-dhcp6.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/networkd-dhcp6.c b/src/network/networkd-dhcp6.c
+index f9df26d75..c1fba03f9 100644
+--- a/src/network/networkd-dhcp6.c
++++ b/src/network/networkd-dhcp6.c
+@@ -11,6 +11,7 @@
+ 
+ #include "hashmap.h"
+ #include "hostname-util.h"
++#include "missing_network.h"
+ #include "network-internal.h"
+ #include "networkd-link.h"
+ #include "networkd-manager.h"
+-- 
+2.14.1
+

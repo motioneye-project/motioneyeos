@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LUA_STD_NORMALIZE
+	bool "lua-std-normalize"
+	select BR2_PACKAGE_LUA_STD_DEBUG # runtime
+	help
+	  This module can inject deterministic versions of core Lua
+	  functions that do not behave identically across all
+	  supported Lua implementations into your module's lexical
+	  environment.  Each function is as thin and fast a version as
+	  is possible in each Lua implementation, evaluating to the
+	  Lua C implementation with no overhead when semantics allow.
+
+	  https://lua-stdlib.github.io/normalize

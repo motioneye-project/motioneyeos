@@ -1,6 +1,6 @@
 # From http://www.aircrack-ng.org/downloads.html
-sha1 245464585dfd24622807a8f868d62d9d00f6a22c aircrack-ng-1.3.tar.gz
-md5 c7c5b076dee0c25ee580b0f56f455623 aircrack-ng-1.3.tar.gz
+sha1 7b63c7ce01cb65a4775833c6cadf7ddd82bf46d5 aircrack-ng-1.5.2.tar.gz
+md5 2648c192d206e953c67dca64967d2982 aircrack-ng-1.5.2.tar.gz
 
 # Hash for license file:
-sha256 e6d6a009505e345fe949e1310334fcb0747f28dae2856759de102ab66b722cb4 LICENSE
+sha256 fc51fd3a97223f2fd47b057202d4a6b0daaedf23b5a1f5ff8723c192fc1e021d LICENSE

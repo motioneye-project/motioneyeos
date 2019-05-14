@@ -1,0 +1,54 @@
+From https://ftp.gnu.org/gnu/bash/bash-4.4-patches/bash44-019
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	4.4
+Patch-ID:	bash44-019
+
+Bug-Reported-by:	Kieran Grant <kieran.thehacker.grant@gmail.com>
+Bug-Reference-ID:	<ec9071ae-efb1-9e09-5d03-e905daf2835c@gmail.com>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2018-02/msg00002.html
+
+Bug-Description:
+
+With certain values for PS1, especially those that wrap onto three or more
+lines, readline will miscalculate the number of invisible characters,
+leading to crashes and core dumps.
+
+Patch (apply with `patch -p0'):
+
+*** bash-4.4.18/lib/readline/display.c	2016-07-28 14:49:33.000000000 -0400
+--- b/lib/readline/display.c	2018-02-03 19:19:35.000000000 -0500
+***************
+*** 772,776 ****
+        wadjust = (newlines == 0)
+  		  ? prompt_invis_chars_first_line
+! 		  : ((newlines == prompt_lines_estimate) ? wrap_offset : prompt_invis_chars_first_line);
+  
+        /* fix from Darin Johnson <darin@acuson.com> for prompt string with
+--- b/788,794 ----
+        wadjust = (newlines == 0)
+  		  ? prompt_invis_chars_first_line
+! 		  : ((newlines == prompt_lines_estimate)
+! 		  	? (wrap_offset - prompt_invis_chars_first_line)
+! 		  	: 0);
+  
+        /* fix from Darin Johnson <darin@acuson.com> for prompt string with
+*** bash-4.4/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 18
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- b/26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 19
+  
+  #endif /* _PATCHLEVEL_H_ */

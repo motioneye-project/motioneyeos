@@ -28,7 +28,7 @@ start() {
 	printf "Starting tpm2-abrmd: "
 	check_device
 	rm_stale_pidfile /var/run/tpm2-abrmd.pid /usr/sbin/tpm2-abrmd
-	start-stop-daemon -S -q -o -b -p /var/run/tpm2-abrmd.pid -c tss:tss -x /usr/sbin/tpm2-abrmd -- ${DAEMON_OPTS} || {
+	start-stop-daemon -S -q -o -b -m -p /var/run/tpm2-abrmd.pid -c tss:tss -x /usr/sbin/tpm2-abrmd -- ${DAEMON_OPTS} || {
 		echo "FAIL"
 		exit 1
 	}
@@ -49,7 +49,7 @@ stop() {
 check_required_files /etc/dbus-1/system.d/tpm2-abrmd.conf
 
 # defaults
-DAEMON_OPTS="--tcti=device --logger=syslog --max-connections=20 --max-transient-objects=20 --fail-on-loaded-trans"
+DAEMON_OPTS="--tcti=device --logger=syslog --max-connections=20"
 
 # Read configuration variable file if it is present
 [ -r /etc/default/tpm2-abrmd ] && . /etc/default/tpm2-abrmd

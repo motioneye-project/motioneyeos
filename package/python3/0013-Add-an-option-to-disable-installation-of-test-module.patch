@@ -19,7 +19,7 @@ diff --git a/Makefile.pre.in b/Makefile.pre.in
 index 4ce917ab8d..4110fff4ac 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1194,8 +1194,28 @@ maninstall:	altmaninstall
+@@ -1259,8 +1259,28 @@ maninstall:	altmaninstall
  
  # Install the library
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -50,10 +50,14 @@ index 4ce917ab8d..4110fff4ac 100644
  		test/audiodata \
  		test/capath test/data \
  		test/cjkencodings test/decimaltestdata test/xmltestdata \
-@@ -1229,29 +1249,26 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
- 		test/test_importlib/namespace_pkgs/project3/parent/child \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package \
-                 test/test_importlib/namespace_pkgs/module_and_namespace_package/a_test \
+diff --git a/Makefile.pre.in b/Makefile.pre.in
+index 1ff2362..194dbfc 100644
+--- a/Makefile.pre.in
++++ b/Makefile.pre.in
+@@ -1334,26 +1334,24 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
+ 		test/test_importlib/source \
+ 		test/test_importlib/zipdata01 \
+ 		test/test_importlib/zipdata02 \
 -		asyncio \
  		test/test_asyncio \
 -		collections concurrent concurrent/futures encodings \
@@ -72,13 +76,10 @@ index 4ce917ab8d..4110fff4ac 100644
 -		ctypes ctypes/test ctypes/macholib \
 -		idlelib idlelib/Icons idlelib/idle_test \
 -		distutils distutils/command distutils/tests $(XMLLIBSUBDIRS) \
--		importlib test/test_importlib test/test_importlib/builtin \
 +		ctypes/test \
 +		idlelib/idle_test \
 +		distutils/tests \
 +		test/test_importlib test/test_importlib/builtin \
- 		test/test_importlib/extension test/test_importlib/frozen \
- 		test/test_importlib/import_ test/test_importlib/source \
  		test/test_tools test/test_warnings test/test_warnings/data \
 -		turtledemo \
 -		multiprocessing multiprocessing/dummy \
@@ -98,8 +99,8 @@ diff --git a/configure.ac b/configure.ac
 index d5ee2aedfb..f924937fe1 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3112,6 +3112,11 @@ if test "$posix_threads" = "yes"; then
-       AC_CHECK_FUNCS(pthread_atfork)
+@@ -3226,6 +3226,11 @@ if test "$posix_threads" = "yes"; then
+       AC_CHECK_FUNCS(pthread_getcpuclockid)
  fi
  
 +AC_SUBST(TEST_MODULES)

@@ -94,6 +94,13 @@ define install-rebar-deps
 		$(REBAR_$(2)_DEPS_DIR)/$($(PKG)_ERLANG_APP)
 endef
 
+# Remove the "deps" statement from a rebar.config file
+define remove-rebar-config-dependencies
+	$(SED) '/^{deps.*}\.$$/d' -e '/^{deps/,/}\.$$/d' \
+		$($(PKG)_DIR)/rebar.config
+endef
+
+
 ################################################################################
 # inner-rebar-package -- defines how the configuration, compilation
 # and installation of a rebar package should be done, implements a few
@@ -225,6 +232,14 @@ $(2)_REBAR = ./rebar
 else
 $(2)_REBAR = rebar
 $(2)_DEPENDENCIES += host-erlang-rebar
+endif
+
+$(2)_KEEP_DEPENDENCIES ?= NO
+
+# Remove dependencies listed in rebar.config unless the package says
+# otherwise
+ifeq ($$($(2)_KEEP_DEPENDENCIES),NO)
+$(2)_POST_PATCH_HOOKS += remove-rebar-config-dependencies
 endif
 
 # The package sub-infra to use

@@ -1,0 +1,36 @@
+From aaea680337267bfb6d2544da878890ee7f1c5077 Mon Sep 17 00:00:00 2001
+From: "Brett T. Warden" <brett.t.warden@intel.com>
+Date: Tue, 28 Aug 2018 12:01:17 -0700
+Subject: [PATCH] Check MAX_CHANNELS in sndfile-deinterleave
+
+Allocated buffer has space for only 16 channels. Verify that input file
+meets this limit.
+
+Fixes #397
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ programs/sndfile-deinterleave.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/programs/sndfile-deinterleave.c b/programs/sndfile-deinterleave.c
+index 53660310..225b4d54 100644
+--- a/programs/sndfile-deinterleave.c
++++ b/programs/sndfile-deinterleave.c
+@@ -89,6 +89,13 @@ main (int argc, char **argv)
+ 		exit (1) ;
+ 		} ;
+ 
++	if (sfinfo.channels > MAX_CHANNELS)
++	{	printf ("\nError : Input file '%s' has too many (%d) channels. Limit is %d.\n",
++			argv [1], sfinfo.channels, MAX_CHANNELS) ;
++		exit (1) ;
++		} ;
++
++
+ 	state.channels = sfinfo.channels ;
+ 	sfinfo.channels = 1 ;
+ 
+-- 
+2.11.0
+

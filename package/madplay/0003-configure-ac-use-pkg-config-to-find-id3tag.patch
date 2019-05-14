@@ -1,0 +1,23 @@
+configure.ac: use pkg-config to find id3tag
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -durN madplay-0.15.2b-orig/configure.ac madplay-0.15.2b/configure.ac
+--- madplay-0.15.2b-orig/configure.ac	2019-02-14 21:34:01.507212449 +0100
++++ madplay-0.15.2b/configure.ac	2019-02-15 23:24:00.079876087 +0100
+@@ -182,12 +182,13 @@
+ *** environment variable to specify its installed location, e.g. -L<dir>.])
+ ])
+ 
+-AC_CHECK_LIB(id3tag, id3_tag_parse, :, [
++PKG_CHECK_MODULES(ID3TAG, id3tag, [
++	CFLAGS="$CFLAGS $ID3TAG_CFLAGS" LIBS="$LIBS $ID3TAG_LIBS"], [
+ 	AC_MSG_ERROR([libid3tag was not found
+ *** You must first install libid3tag before you can build this package.
+ *** If libid3tag is already installed, you may need to use the LDFLAGS
+ *** environment variable to specify its installed location, e.g. -L<dir>.])
+-], [-lz])
++])
+ 
+ AC_FUNC_VPRINTF
+ AC_CHECK_FUNCS(madvise localeconv)

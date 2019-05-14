@@ -1,0 +1,35 @@
+From 9dd1989f5ae6cd3f2051732318e26bf742a4c89b Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Tue, 13 Nov 2018 22:24:03 +0100
+Subject: [PATCH] m4/stack-direction: RISC-V stack grows downward
+
+While commit 671b2528b55c57eda1a8fe5872ff1ef61014235f ("Improve
+support for Linux/RISC-V") adds some support for the RISC-V
+architecture, it doesn't update m4/stack-direction.m4 to properly
+support cross-compiling libsigsegv for a RISC-V architecture.
+
+According to
+https://riscv.org/wp-content/uploads/2015/01/riscv-calling.pdf: "In
+the standard RISC-V calling convention, the stack grows downward", so
+let's update m4/stack-direction.m4 accordingly.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ m4/stack-direction.m4 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/m4/stack-direction.m4 b/m4/stack-direction.m4
+index c373f1c..9504f88 100644
+--- a/m4/stack-direction.m4
++++ b/m4/stack-direction.m4
+@@ -43,6 +43,7 @@ AC_DEFUN([SV_STACK_DIRECTION],
+       pdp11 | \
+       pj* | \
+       powerpc* | rs6000 | \
++      riscv* | \
+       romp | \
+       s390* | \
+       sh* | \
+-- 
+2.19.1
+

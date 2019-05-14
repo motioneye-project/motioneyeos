@@ -1,0 +1,38 @@
+Fixes uninitialized C++ encoder and decoder _state variable bug.
+
+Fetched from: https://sources.debian.org/patches/libb64/1.2-5/
+
+initialize-coder-state.diff patch without modifications.
+
+Signed-off-by: Mikael Eliasson <mikael@robomagi.com>
+
+diff --git a/include/b64/decode.h b/include/b64/decode.h
+index 12b16ea..d3f7d60 100644
+--- a/include/b64/decode.h
++++ b/include/b64/decode.h
+@@ -24,7 +24,9 @@ namespace base64
+ 
+ 		decoder(int buffersize_in = BUFFERSIZE)
+ 		: _buffersize(buffersize_in)
+-		{}
++		{
++			base64_init_decodestate(&_state);
++		}
+ 
+ 		int decode(char value_in)
+ 		{
+diff --git a/include/b64/encode.h b/include/b64/encode.h
+index 5d807d9..49aafdc 100644
+--- a/include/b64/encode.h
++++ b/include/b64/encode.h
+@@ -24,7 +24,9 @@ namespace base64
+ 
+ 		encoder(int buffersize_in = BUFFERSIZE)
+ 		: _buffersize(buffersize_in)
+-		{}
++		{
++			base64_init_encodestate(&_state);
++		}
+ 
+ 		int encode(char value_in)
+ 		{

@@ -1,17 +1,14 @@
 comment "imx-vpu needs an i.MX platform with VPU support"
-	depends on BR2_arm
 	depends on !BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 
 config BR2_PACKAGE_IMX_VPU
 	bool "imx-vpu"
-	depends on BR2_arm # Only relevant for i.MX
 	depends on BR2_PACKAGE_FREESCALE_IMX_HAS_VPU
 	select BR2_PACKAGE_FIRMWARE_IMX
 	help
-	  Library of userspace helpers specific for the Freescale i.MX
-	  platform. It wraps the kernel interfaces for the i.MX platform
-	  Video Processing Unit (VPU) driver. It requires a kernel that
-	  includes the i.MX specific headers to be built.
+	  Library of userspace helpers specific for the NXP i.MX SoC
+	  integrating a Chips&Media CODA Video Processing Unit (VPU)
+	  such as the i.MX27/i.MX5x/i.MX6x.
 
-	  This library is provided by Freescale as-is and doesn't have
-	  an upstream.
+	  This library is provided by NXP as-is and doesn't have an
+	  upstream.

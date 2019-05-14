@@ -1,4 +1,4 @@
-From 8632287cf6863b580340f846ac14adf2609abdb0 Mon Sep 17 00:00:00 2001
+From 5d010fb06eae43b284e5ccc322f6de47eb42b751 Mon Sep 17 00:00:00 2001
 From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 Date: Sat, 2 Jun 2018 13:45:22 +0200
 Subject: [PATCH] remove static
@@ -14,16 +14,18 @@ and slighly updated to work with 2.3.3
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Peter: updated for v2.4.0 which adds scmp_api_level]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
- tools/Makefile.am | 2 --
- 1 file changed, 2 deletions(-)
+ tools/Makefile.am | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/tools/Makefile.am b/tools/Makefile.am
-index 70b4aed..ef74270 100644
+index f768365..5f9d571 100644
 --- a/tools/Makefile.am
 +++ b/tools/Makefile.am
-@@ -35,8 +35,6 @@ scmp_bpf_disasm_SOURCES = scmp_bpf_disasm.c bpf.h util.h
- scmp_bpf_sim_SOURCES = scmp_bpf_sim.c bpf.h util.h
+@@ -37,10 +37,7 @@ scmp_bpf_sim_SOURCES = scmp_bpf_sim.c bpf.h util.h
+ scmp_api_level_SOURCES = scmp_api_level.c
  
  scmp_sys_resolver_LDADD = ../src/libseccomp.la
 -scmp_sys_resolver_LDFLAGS = -static
@@ -31,6 +33,8 @@ index 70b4aed..ef74270 100644
 -scmp_arch_detect_LDFLAGS = -static
  scmp_bpf_disasm_LDADD = util.la
  scmp_bpf_sim_LDADD = util.la
+ scmp_api_level_LDADD = ../src/libseccomp.la
+-scmp_api_level_LDFLAGS = -static
 -- 
-2.14.1
+2.11.0
 

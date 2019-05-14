@@ -1,4 +1,4 @@
-From f563334a76e31442f7b8693d2d350e6981c51c46 Mon Sep 17 00:00:00 2001
+From 94d71c49eb1682a73465eb162b0a059561168bb2 Mon Sep 17 00:00:00 2001
 From: Marcin Niestroj <m.niestroj@grinn-global.com>
 Date: Fri, 20 Jul 2018 14:26:44 +0200
 Subject: [PATCH] configure: Introduce --enable-symvers option
@@ -27,7 +27,7 @@ library.
 Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
 ---
  configure                 | 32 ++++++++++++++++++++++++++++++--
- configure.in              | 28 +++++++++++++++++++++++++---
+ configure.ac              | 28 +++++++++++++++++++++++++---
  include/configure.h.in    |  3 +++
  lib/misc/lib.h            | 10 +++++-----
  libdm/datastruct/bitset.c |  5 +----
@@ -37,10 +37,10 @@ Signed-off-by: Marcin Niestroj <m.niestroj@grinn-global.com>
  8 files changed, 67 insertions(+), 17 deletions(-)
 
 diff --git a/configure b/configure
-index e1ae0e884..c5d11c1b6 100755
+index 7d945dfa8..94cd6b1ea 100755
 --- a/configure
 +++ b/configure
-@@ -985,6 +985,7 @@ enable_fsadm
+@@ -975,6 +975,7 @@ enable_fsadm
  enable_blkdeactivate
  enable_dmeventd
  enable_selinux
@@ -48,7 +48,7 @@ index e1ae0e884..c5d11c1b6 100755
  enable_nls
  with_localedir
  with_confdir
-@@ -1729,6 +1730,9 @@ Optional Features:
+@@ -1725,6 +1726,9 @@ Optional Features:
    --disable-blkdeactivate disable blkdeactivate
    --enable-dmeventd       enable the device-mapper event daemon
    --disable-selinux       disable selinux support
@@ -58,15 +58,15 @@ index e1ae0e884..c5d11c1b6 100755
    --enable-nls            enable Native Language Support
  
  Optional Packages:
-@@ -3169,7 +3173,6 @@ if test -z "$CFLAGS"; then :
+@@ -3156,7 +3160,6 @@ if test -z "$CFLAGS"; then :
  fi
  case "$host_os" in
  	linux*)
 -		CLDFLAGS="$CLDFLAGS -Wl,--version-script,.export.sym"
+ 		# equivalent to -rdynamic
  		ELDFLAGS="-Wl,--export-dynamic"
  		# FIXME Generate list and use --dynamic-list=.dlopen.sym
- 		CLDWHOLEARCHIVE="-Wl,-whole-archive"
-@@ -3190,7 +3193,6 @@ case "$host_os" in
+@@ -3178,7 +3181,6 @@ case "$host_os" in
  		;;
  	darwin*)
  		CFLAGS="$CFLAGS -no-cpp-precomp -fno-common"
@@ -74,7 +74,7 @@ index e1ae0e884..c5d11c1b6 100755
  		ELDFLAGS=
  		CLDWHOLEARCHIVE="-all_load"
  		CLDNOWHOLEARCHIVE=
-@@ -14609,6 +14611,32 @@ done
+@@ -14401,6 +14403,32 @@ done
  	LIBS=$lvm_saved_libs
  fi
  
@@ -107,15 +107,16 @@ index e1ae0e884..c5d11c1b6 100755
  ################################################################################
  { $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable internationalisation" >&5
  $as_echo_n "checking whether to enable internationalisation... " >&6; }
-diff --git a/configure.in b/configure.in
-index 2e5e015c8..09c390850 100644
---- a/configure.in
-+++ b/configure.in
-@@ -30,12 +30,10 @@ AC_CANONICAL_TARGET([])
+diff --git a/configure.ac b/configure.ac
+index e427708cd..2e8712f92 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -30,13 +30,11 @@ AC_CANONICAL_TARGET([])
  AS_IF([test -z "$CFLAGS"], [COPTIMISE_FLAG="-O2"])
  case "$host_os" in
  	linux*)
 -		CLDFLAGS="$CLDFLAGS -Wl,--version-script,.export.sym"
+ 		# equivalent to -rdynamic
  		ELDFLAGS="-Wl,--export-dynamic"
  		# FIXME Generate list and use --dynamic-list=.dlopen.sym
  		CLDWHOLEARCHIVE="-Wl,-whole-archive"
@@ -124,7 +125,7 @@ index 2e5e015c8..09c390850 100644
  		LIB_SUFFIX=so
  		DEVMAPPER=yes
  		BUILD_LVMETAD=no
-@@ -51,7 +49,6 @@ case "$host_os" in
+@@ -52,7 +50,6 @@ case "$host_os" in
  		;;
  	darwin*)
  		CFLAGS="$CFLAGS -no-cpp-precomp -fno-common"
@@ -132,7 +133,7 @@ index 2e5e015c8..09c390850 100644
  		ELDFLAGS=
  		CLDWHOLEARCHIVE="-all_load"
  		CLDNOWHOLEARCHIVE=
-@@ -1742,6 +1739,31 @@ package as well (which may be called readline-devel or something similar).])
+@@ -1656,6 +1653,31 @@ package as well (which may be called readline-devel or something similar).])
  	LIBS=$lvm_saved_libs
  fi
  
@@ -165,10 +166,10 @@ index 2e5e015c8..09c390850 100644
  dnl -- Internationalisation stuff
  AC_MSG_CHECKING(whether to enable internationalisation)
 diff --git a/include/configure.h.in b/include/configure.h.in
-index 51726506c..3fc181b1e 100644
+index 15fd150ed..7a07a10ef 100644
 --- a/include/configure.h.in
 +++ b/include/configure.h.in
-@@ -151,6 +151,9 @@
+@@ -147,6 +147,9 @@
  /* Path to fsadm binary. */
  #undef FSADM_PATH
  
@@ -179,10 +180,10 @@ index 51726506c..3fc181b1e 100644
  #undef HAVE_ALARM
  
 diff --git a/lib/misc/lib.h b/lib/misc/lib.h
-index 8ed06f81d..9b3ce8a03 100644
+index d7fa5c721..7cf98f932 100644
 --- a/lib/misc/lib.h
 +++ b/lib/misc/lib.h
-@@ -42,16 +42,16 @@
+@@ -41,16 +41,16 @@
   * macro DM_EXPORT_SYMBOL to export the function and bind it to the
   * specified version string.
   *
@@ -203,7 +204,7 @@ index 8ed06f81d..9b3ce8a03 100644
   *   // Backward compatible dm_foo() version 1.02.104
   *   int dm_foo_v1_02_104(void);
   *   int dm_foo_v1_02_104(void)
-@@ -68,7 +68,7 @@
+@@ -67,7 +67,7 @@
   * versions of library symbols prior to the introduction of symbol
   * versioning: it must never be used for new symbols.
   */
@@ -234,10 +235,10 @@ index b0826e1eb..2ec3f8f84 100644
 -
  #endif
 diff --git a/libdm/ioctl/libdm-iface.c b/libdm/ioctl/libdm-iface.c
-index c47e08467..b98afb15d 100644
+index 769b69c1b..28e2eadee 100644
 --- a/libdm/ioctl/libdm-iface.c
 +++ b/libdm/ioctl/libdm-iface.c
-@@ -2137,7 +2137,7 @@ void dm_lib_exit(void)
+@@ -2145,7 +2145,7 @@ void dm_lib_exit(void)
  	_version_checked = 0;
  }
  
@@ -247,10 +248,10 @@ index c47e08467..b98afb15d 100644
   * Maintain binary backward compatibility.
   * Version script mechanism works with 'gcc' compatible compilers only.
 diff --git a/libdm/libdm-deptree.c b/libdm/libdm-deptree.c
-index cf4fd62e7..474871da5 100644
+index ab0545659..00651c0b2 100644
 --- a/libdm/libdm-deptree.c
 +++ b/libdm/libdm-deptree.c
-@@ -4110,7 +4110,7 @@ void dm_tree_node_set_callback(struct dm_tree_node *dnode,
+@@ -3797,7 +3797,7 @@ void dm_tree_node_set_callback(struct dm_tree_node *dnode,
  	dnode->callback_data = data;
  }
  
@@ -260,10 +261,10 @@ index cf4fd62e7..474871da5 100644
   * Backward compatible implementations.
   *
 diff --git a/libdm/libdm-stats.c b/libdm/libdm-stats.c
-index bc498675f..d424928c7 100644
+index 94ad380e0..76efbbe35 100644
 --- a/libdm/libdm-stats.c
 +++ b/libdm/libdm-stats.c
-@@ -5064,7 +5064,7 @@ int dm_stats_start_filemapd(int fd, uint64_t group_id, const char *path,
+@@ -5065,7 +5065,7 @@ int dm_stats_start_filemapd(int fd, uint64_t group_id, const char *path,
   * current dm_stats_create_region() version.
   */
  

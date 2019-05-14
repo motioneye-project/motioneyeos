@@ -1,0 +1,39 @@
+From 6b4520e13c2ed7fca725d5f5c879854cd7c96c19 Mon Sep 17 00:00:00 2001
+From: Mark Corbin <mark.corbin@embecosm.com>
+Date: Mon, 4 Feb 2019 10:35:27 +0000
+Subject: [PATCH] Fix mcontext_t error that breaks RISC-V architecture
+ package builds
+
+The riscv-glibc repository version of glibc 2.26 will build for
+RISC-V 32bit, but when many packages are built against the resulting
+library an 'unknown type name mcontext_t' error is reported. The
+definition of mcontext_h in the ucontext.h header file needs to be
+moved outside of the '#ifdef __USE_MISC' structure to fix this
+issue.
+
+Signed-off-by: Mark Corbin <mark.corbin@embecosm.com>
+---
+ sysdeps/unix/sysv/linux/riscv/sys/ucontext.h | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h b/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h
+index 8f02f09106..b9dd04564a 100644
+--- a/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h
++++ b/sysdeps/unix/sysv/linux/riscv/sys/ucontext.h
+@@ -48,12 +48,11 @@ typedef greg_t gregset_t[NGREG];
+ 
+ /* Container for floating-point state.  */
+ typedef union __riscv_fp_state fpregset_t;
++#endif
+ 
+ /* Context to describe whole processor state.  */
+ typedef struct sigcontext mcontext_t;
+ 
+-#endif
+-
+ /* Userlevel context.  */
+ typedef struct ucontext
+   {
+-- 
+2.19.1
+

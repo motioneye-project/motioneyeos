@@ -1,0 +1,20 @@
+comment "imx-vpu-hantro needs an i.MX-specific Linux kernel to be built"
+	depends on !BR2_LINUX_KERNEL
+
+comment "imx-vpu-hantro needs an i.MX platform with Hantro VPU"
+	depends on BR2_LINUX_KERNEL
+	depends on !BR2_PACKAGE_FREESCALE_IMX_HAS_VPU_HANTRO
+
+config BR2_PACKAGE_IMX_VPU_HANTRO
+	bool "imx-vpu-hantro"
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_PACKAGE_FREESCALE_IMX_HAS_VPU_HANTRO
+	help
+	  Library of userspace helpers specific for the NXP i.MX SoC
+	  integrating a Hantro Video Processing Unit (VPU) such as the
+	  i.MX8MQ/i.MX8MM.
+	  It requires a kernel that includes the i.MX specific headers
+	  to be built.
+
+	  This library is provided by NXP as-is and doesn't have an
+	  upstream.

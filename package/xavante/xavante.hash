@@ -1,2 +1,3 @@
-# Locally calculated
+# computed by luarocks/buildroot
 sha256 67c738f981e7d65d18c717f3acac59a37f95d5139c00fb0de5d3167262025273  xavante-2.4.0-1.src.rock
+sha256 57b2c50f08bf500c969fe13500f217adb36582e4d8e75c9e2ed04191cb4a045c  xavante-2.4.0/doc/us/license.html

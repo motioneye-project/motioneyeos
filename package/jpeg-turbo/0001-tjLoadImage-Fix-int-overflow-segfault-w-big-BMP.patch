@@ -1,0 +1,51 @@
+From 3d9c64e9f8aa1ee954d1d0bb3390fc894bb84da3 Mon Sep 17 00:00:00 2001
+From: DRC <information@libjpeg-turbo.org>
+Date: Tue, 1 Jan 2019 18:57:36 -0600
+Subject: [PATCH] tjLoadImage(): Fix int overflow/segfault w/big BMP
+
+Fixes #304
+
+[baruch: drop the ChangeLog.md hunk]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 3d9c64e9f8aa
+
+ ChangeLog.md | 4 ++++
+ turbojpeg.c  | 9 ++++++---
+ 2 files changed, 10 insertions(+), 3 deletions(-)
+
+diff --git a/turbojpeg.c b/turbojpeg.c
+index 90a9ce6a0be8..3f7cd640677f 100644
+--- a/turbojpeg.c
++++ b/turbojpeg.c
+@@ -1,5 +1,5 @@
+ /*
+- * Copyright (C)2009-2018 D. R. Commander.  All Rights Reserved.
++ * Copyright (C)2009-2019 D. R. Commander.  All Rights Reserved.
+  *
+  * Redistribution and use in source and binary forms, with or without
+  * modification, are permitted provided that the following conditions are met:
+@@ -1960,7 +1960,8 @@ DLLEXPORT unsigned char *tjLoadImage(const char *filename, int *width,
+                                      int align, int *height, int *pixelFormat,
+                                      int flags)
+ {
+-  int retval = 0, tempc, pitch;
++  int retval = 0, tempc;
++  size_t pitch;
+   tjhandle handle = NULL;
+   tjinstance *this;
+   j_compress_ptr cinfo = NULL;
+@@ -2013,7 +2014,9 @@ DLLEXPORT unsigned char *tjLoadImage(const char *filename, int *width,
+   *pixelFormat = cs2pf[cinfo->in_color_space];
+ 
+   pitch = PAD((*width) * tjPixelSize[*pixelFormat], align);
+-  if ((dstBuf = (unsigned char *)malloc(pitch * (*height))) == NULL)
++  if ((unsigned long long)pitch * (unsigned long long)(*height) >
++      (unsigned long long)((size_t)-1) ||
++      (dstBuf = (unsigned char *)malloc(pitch * (*height))) == NULL)
+     _throwg("tjLoadImage(): Memory allocation failure");
+ 
+   if (setjmp(this->jerr.setjmp_buffer)) {
+-- 
+2.20.1
+

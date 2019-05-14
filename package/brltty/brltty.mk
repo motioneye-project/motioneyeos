@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-BRLTTY_VERSION = 5.5
+BRLTTY_VERSION = 5.6
 BRLTTY_SOURCE = brltty-$(BRLTTY_VERSION).tar.xz
 BRLTTY_SITE = http://brltty.com/archive
 BRLTTY_INSTALL_STAGING_OPTS = INSTALL_ROOT=$(STAGING_DIR) install
 BRLTTY_INSTALL_TARGET_OPTS = INSTALL_ROOT=$(TARGET_DIR) install
-BRLTTY_LICENSE = GPL-2.0+, LGPL-2.1+ (data, client side)
-BRLTTY_LICENSE_FILES = LICENSE-GPL LICENSE-LGPL README
+BRLTTY_LICENSE = LGPL-2.1+
+BRLTTY_LICENSE_FILES = LICENSE-LGPL README
 
 BRLTTY_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES) host-autoconf host-pkgconf \
 	$(if $(BR2_PACKAGE_AT_SPI2_CORE),at-spi2-core)

@@ -4,7 +4,7 @@ config BR2_PACKAGE_XERCES
 	help
 	  Xerces-C++ is a validating XML parser written in portable C++.
 
-	  http://xml.apache.org/xerces-c/
+	  http://xerces.apache.org/xerces-c/
 
 comment "xerces-c++ needs a toolchain w/ C++, wchar"
 	depends on !(BR2_INSTALL_LIBSTDCPP && BR2_USE_WCHAR)

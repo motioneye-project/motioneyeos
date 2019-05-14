@@ -12,8 +12,6 @@ config BR2_TARGET_AT91BOOTSTRAP3
 
 	  https://www.at91.com/linux4sam/bin/view/Linux4SAM/AT91Bootstrap
 
-	  https://www.at91.com/linux4sam/bin/view/Linux4SAM/AT91Bootstrap
-
 if BR2_TARGET_AT91BOOTSTRAP3
 
 choice

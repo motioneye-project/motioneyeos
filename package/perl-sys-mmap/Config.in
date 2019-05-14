@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_SYS_MMAP
+	bool "perl-sys-mmap"
+	depends on !BR2_STATIC_LIBS
+	help
+	  uses mmap to map in a file as a Perl variable.
+
+	  https://metacpan.org/release/Sys-Mmap
+
+comment "perl-sys-mmap needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

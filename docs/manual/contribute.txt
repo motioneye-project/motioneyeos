@@ -194,14 +194,29 @@ bisect+ to locate the origin of a problem.
 
 First of all, it is essential that the patch has a good commit
 message. The commit message should start with a separate line with a
-brief summary of the change, starting with the name of the affected
-package. The body of the commit message should describe _why_ this
+brief summary of the change, prefixed by the area touched by the
+patch. A few examples of good commit titles:
+
+* +package/linuxptp: bump version to 2.0+
+
+* +configs/imx23evk: bump Linux version to 4.19+
+
+* +package/pkg-generic: postpone evaluation of dependency conditions+
+
+* +boot/uboot: needs host-{flex,bison}+
+
+* +support/testing: add python-ubjson tests+
+
+The description that follows the prefix should start with a lower case
+letter (i.e "bump", "needs", "postpone", "add" in the above examples).
+
+Second, the body of the commit message should describe _why_ this
 change is needed, and if necessary also give details about _how_ it
 was done. When writing the commit message, think of how the reviewers
 will read it, but also think about how you will read it when you look
 at this change again a few years down the line.
 
-Second, the patch itself should do only one change, but do it
+Third, the patch itself should do only one change, but do it
 completely. Two unrelated or weakly related changes should usually be
 done in two separate patches. This usually means that a patch affects
 only a single package. If several changes are related, it is often
@@ -306,6 +321,28 @@ Use the output of +get-developers+ to send your patches:
 
 ---------------------
 $ git send-email --to buildroot@buildroot.org --cc bob --cc alice outgoing/*
+---------------------
+
+Alternatively, +get-developers -e+ can be used directly with the
++--cc-cmd+ argument to +git send-email+ to automatically CC the
+affected developers:
+
+---------------------
+$ git send-email --to buildroot@buildroot.org \
+      --cc-cmd './utils/get-developers -e' origin/master
+---------------------
+
++git+ can be configured to automatically do this out of the box with:
+
+---------------------
+$ git config sendemail.to buildroot@buildroot.org
+$ git config sendemail.ccCmd "$(pwd)/utils/get-developers -e"
+---------------------
+
+And then just do:
+
+---------------------
+$ git send-email origin/master
 ---------------------
 
 Note that +git+ should be configured to use your mail account.

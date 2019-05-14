@@ -1,0 +1,34 @@
+From 1a74985b2a404639b08882c57f3147229605dfd5 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Tue, 19 Apr 2016 06:50:31 -0400
+Subject: [PATCH] extlinux: pull in sys/sysmacros.h for major/minor/makedev
+
+These functions are defined in sys/sysmacros.h, so add the include to
+main.c.  This is already handled correctly in mountinfo.c.  Otherwise
+we get build failures like:
+
+main.o: In function 'find_device_sysfs':
+extlinux/main.c:1131: undefined reference to 'minor'
+
+Signed-off-by: Mike Frysinger <vapier@gentoo.org>
+Signed-off-by: Gene Cumm <gene.cumm@gmail.com>
+Signed-off-by: Alexander Sverdlin <alexader.sverdlin@gmail.com>
+---
+ extlinux/main.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/extlinux/main.c b/extlinux/main.c
+index a7ebd49..ebff7ea 100644
+--- a/extlinux/main.c
++++ b/extlinux/main.c
+@@ -38,6 +38,7 @@
+ #include <sysexits.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include <sys/types.h>
+ #include <sys/mount.h>
+ #include <sys/vfs.h>
+-- 
+2.10.5.GIT
+

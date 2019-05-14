@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_DATA_DUMP
+	bool "perl-data-dump"
+	help
+	  Pretty printing of data structures.
+
+	  https://metacpan.org/release/Data-Dump

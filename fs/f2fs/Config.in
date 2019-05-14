@@ -1,0 +1,59 @@
+config BR2_TARGET_ROOTFS_F2FS
+	bool "f2fs root filesystem"
+	select BR2_PACKAGE_HOST_F2FS_TOOLS
+	help
+	  Build a f2fs root filesystem. If you enable this option, you
+	  probably want to enable the f2fs-tools package too.
+
+if BR2_TARGET_ROOTFS_F2FS
+
+config BR2_TARGET_ROOTFS_F2FS_LABEL
+	string "filesystem label"
+
+config BR2_TARGET_ROOTFS_F2FS_SIZE
+	string "filesystem size"
+	default "100M"
+	help
+	  The size of the filesystem image in bytes.
+	  Suffix with K, M, G or T for power-of-two kilo-, mega-, giga-
+	  or terabytes.
+
+config BR2_TARGET_ROOTFS_F2FS_COLD_FILES
+	string "extension list for cold files"
+	help
+	  Specify a comma separated file extension list in order f2fs
+	  to treat them as cold files. The default list includes most
+	  of multimedia file extensions such as jpg, gif, mpeg, mkv,
+	  and so on.
+
+config BR2_TARGET_ROOTFS_F2FS_HOT_FILES
+	string "extension list for hot files"
+	help
+	  Specify a comma separated file extension list in order f2fs
+	  to treat them as hot files. The default list includes only
+	  a db extension.
+
+config BR2_TARGET_ROOTFS_F2FS_OVERPROVISION
+	int "overprovision ratio"
+	default 0
+	help
+	  The percentage over the volume size for overprovision
+	  area. This area is hidden to users, and utilized by F2FS
+	  cleaner.
+
+	  Leave at 0 for autocalculation according to the partition
+	  size.
+
+config BR2_TARGET_ROOTFS_F2FS_DISCARD
+	bool "discard policy"
+	default y
+	help
+	  Enable or disable discard policy.
+
+config BR2_TARGET_ROOTFS_F2FS_FEATURES
+	string "filesystem features"
+	help
+	  List of features that the F2FS filesystem should support
+	  (e.g "encrypt")
+
+endif # BR2_TARGET_ROOTFS_F2FS

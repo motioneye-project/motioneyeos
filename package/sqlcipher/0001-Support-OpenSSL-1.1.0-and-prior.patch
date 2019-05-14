@@ -1,0 +1,97 @@
+From 43f71fa7b4c6a20f4078b9098369abb8d38a5617 Mon Sep 17 00:00:00 2001
+From: Nick Parker <nparker@zetetic.net>
+Date: Fri, 9 Dec 2016 11:47:39 -0600
+Subject: [PATCH] Support OpenSSL 1.1.0 and prior
+
+(cherry picked from commit 939c83a007e4724436c3955ae2afd8b11b92d867)
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+---
+ src/crypto_openssl.c | 53 +++++++++++++++++++++++++++++++++++++---------------
+ 1 file changed, 38 insertions(+), 15 deletions(-)
+
+diff --git a/src/crypto_openssl.c b/src/crypto_openssl.c
+index 150ab92..6822325 100644
+--- a/src/crypto_openssl.c
++++ b/src/crypto_openssl.c
+@@ -47,6 +47,29 @@ static unsigned int openssl_external_init = 0;
+ static unsigned int openssl_init_count = 0;
+ static sqlite3_mutex* openssl_rand_mutex = NULL;
+ 
++#if OPENSSL_VERSION_NUMBER < 0x10100000L
++static HMAC_CTX *HMAC_CTX_new(void)
++{
++  HMAC_CTX *ctx = OPENSSL_malloc(sizeof(*ctx));
++  if (ctx != NULL) {
++    HMAC_CTX_init(ctx);
++  }
++  return ctx;
++}
++
++// Per 1.1.0 (https://wiki.openssl.org/index.php/1.1_API_Changes)
++// HMAC_CTX_free should call HMAC_CTX_cleanup, then EVP_MD_CTX_Cleanup.
++// HMAC_CTX_cleanup internally calls EVP_MD_CTX_cleanup so these
++// calls are not needed.
++static void HMAC_CTX_free(HMAC_CTX *ctx)
++{
++  if (ctx != NULL) {
++    HMAC_CTX_cleanup(ctx);
++    OPENSSL_free(ctx);
++  }
++}
++#endif
++
+ static int sqlcipher_openssl_add_random(void *ctx, void *buffer, int length) {
+ #ifndef SQLCIPHER_OPENSSL_NO_MUTEX_RAND
+   sqlite3_mutex_enter(openssl_rand_mutex);
+@@ -143,14 +166,14 @@ static int sqlcipher_openssl_random (void *ctx, void *buffer, int length) {
+ }
+ 
+ static int sqlcipher_openssl_hmac(void *ctx, unsigned char *hmac_key, int key_sz, unsigned char *in, int in_sz, unsigned char *in2, int in2_sz, unsigned char *out) {
+-  HMAC_CTX hctx;
+   unsigned int outlen;
+-  HMAC_CTX_init(&hctx);
+-  HMAC_Init_ex(&hctx, hmac_key, key_sz, EVP_sha1(), NULL);
+-  HMAC_Update(&hctx, in, in_sz);
+-  HMAC_Update(&hctx, in2, in2_sz);
+-  HMAC_Final(&hctx, out, &outlen);
+-  HMAC_CTX_cleanup(&hctx);
++  HMAC_CTX* hctx = HMAC_CTX_new();
++  if(hctx == NULL) return SQLITE_ERROR;
++  HMAC_Init_ex(hctx, hmac_key, key_sz, EVP_sha1(), NULL);
++  HMAC_Update(hctx, in, in_sz);
++  HMAC_Update(hctx, in2, in2_sz);
++  HMAC_Final(hctx, out, &outlen);
++  HMAC_CTX_free(hctx);
+   return SQLITE_OK; 
+ }
+ 
+@@ -160,18 +183,18 @@ static int sqlcipher_openssl_kdf(void *ctx, const unsigned char *pass, int pass_
+ }
+ 
+ static int sqlcipher_openssl_cipher(void *ctx, int mode, unsigned char *key, int key_sz, unsigned char *iv, unsigned char *in, int in_sz, unsigned char *out) {
+-  EVP_CIPHER_CTX ectx;
+   int tmp_csz, csz;
+- 
+-  EVP_CipherInit(&ectx, ((openssl_ctx *)ctx)->evp_cipher, NULL, NULL, mode);
+-  EVP_CIPHER_CTX_set_padding(&ectx, 0); // no padding
+-  EVP_CipherInit(&ectx, NULL, key, iv, mode);
+-  EVP_CipherUpdate(&ectx, out, &tmp_csz, in, in_sz);
++  EVP_CIPHER_CTX* ectx = EVP_CIPHER_CTX_new();
++  if(ectx == NULL) return SQLITE_ERROR;
++  EVP_CipherInit_ex(ectx, ((openssl_ctx *)ctx)->evp_cipher, NULL, NULL, NULL, mode);
++  EVP_CIPHER_CTX_set_padding(ectx, 0); // no padding
++  EVP_CipherInit_ex(ectx, NULL, NULL, key, iv, mode);
++  EVP_CipherUpdate(ectx, out, &tmp_csz, in, in_sz);
+   csz = tmp_csz;  
+   out += tmp_csz;
+-  EVP_CipherFinal(&ectx, out, &tmp_csz);
++  EVP_CipherFinal_ex(ectx, out, &tmp_csz);
+   csz += tmp_csz;
+-  EVP_CIPHER_CTX_cleanup(&ectx);
++  EVP_CIPHER_CTX_free(ectx);
+   assert(in_sz == csz);
+   return SQLITE_OK; 
+ }
+-- 
+1.9.1
+

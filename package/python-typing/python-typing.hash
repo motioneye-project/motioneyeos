@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/typing/json
+md5	64614206b4bdc0864fc0e0bccd69efc9  typing-3.6.6.tar.gz
+sha256	4027c5f6127a6267a435201981ba156de91ad0d1d98e9ddc2aa173453453492d  typing-3.6.6.tar.gz
+# Locally computed sha256 checksums
+sha256	ff17ce94e102024deb68773eb1cc74ca76da4e658f373531f0ac22d68a6bb1ad  LICENSE

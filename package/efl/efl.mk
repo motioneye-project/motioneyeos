@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFL_VERSION = 1.20.7
+EFL_VERSION = 1.21.1
 EFL_SOURCE = efl-$(EFL_VERSION).tar.xz
 EFL_SITE = http://download.enlightenment.org/rel/libs/efl
 EFL_LICENSE = BSD-2-Clause, LGPL-2.1+, GPL-2.0+, FTL, MIT
@@ -49,11 +49,6 @@ EFL_CONF_OPTS = \
 	--disable-vnc-server \
 	--enable-liblz4 \
 	--with-doxygen=no
-
-# Disable untested configuration warning.
-ifeq ($(BR2_PACKAGE_EFL_HAS_RECOMMENDED_CONFIG),)
-EFL_CONF_OPTS += --enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
-endif
 
 ifeq ($(BR2_PACKAGE_EFL_EOLIAN_CPP),y)
 EFL_CONF_OPTS += --enable-cxx-bindings \
@@ -345,7 +340,6 @@ HOST_EFL_DEPENDENCIES = \
 # --with-doxygen: disable doxygen documentation
 # --with-net-control=none: disable connman networkmanager.
 # --with-x11=none: remove dependency on X.org.
-#   Yes I really know what I am doing.
 HOST_EFL_CONF_OPTS += \
 	--disable-audio \
 	--disable-fontconfig \
@@ -372,8 +366,7 @@ HOST_EFL_CONF_OPTS += \
 	--with-glib=yes \
 	--with-net-control=none \
 	--with-opengl=none \
-	--with-x11=none \
-	--enable-i-really-know-what-i-am-doing-and-that-this-will-probably-break-things-and-i-will-fix-them-myself-and-send-patches-abb
+	--with-x11=none
 
 # Enable Eolian language bindings to provide eolian_cxx tool for the
 # host which is required to build Eolian language bindings for the

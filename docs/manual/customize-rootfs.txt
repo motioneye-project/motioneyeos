@@ -22,6 +22,12 @@ A filesystem overlay is a tree of files that is copied directly
   etc., files called +.empty+ and files ending in +~+ are excluded from
   the copy.
 +
+When +BR2_ROOTFS_MERGED_USR+ is enabled, then the overlay must not
+  contain the '/bin', '/lib' or '/sbin' directories, as Buildroot will
+  create them as symbolic links to the relevant folders in '/usr'.  In
+  such a situation, should the overlay have any programs or libraries,
+  they should be placed in '/usr/bin', '/usr/sbin' and '/usr/lib'.
++
 As shown in xref:customize-dir-structure[], the recommended path for
   this overlay is +board/<company>/<boardname>/rootfs-overlay+.
 
@@ -99,6 +105,15 @@ To enable this feature, enable config option
   to the path of your custom skeleton. Both options are available in the
   +System configuration+ menu. If you specify a relative path, it will
   be relative to the root of the Buildroot tree.
++
+Custom skeletons don't need to contain the '/bin', '/lib' or '/sbin'
+  directories, since they are created automatically during the build.
+  When +BR2_ROOTFS_MERGED_USR+ is enabled, then the custom skeleton must
+  not contain the '/bin', '/lib' or '/sbin' directories, as Buildroot
+  will create them as symbolic links to the relevant folders in '/usr'.
+  In such a situation, should the skeleton have any programs or
+  libraries, they should be placed in '/usr/bin', '/usr/sbin' and
+  '/usr/lib'.
 +
 This method is not recommended because it duplicates the entire
   skeleton, which prevents taking advantage of the fixes or improvements

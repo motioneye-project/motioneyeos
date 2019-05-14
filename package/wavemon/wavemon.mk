@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WAVEMON_VERSION = v0.8.2
+WAVEMON_VERSION = v0.9.0
 WAVEMON_SITE = $(call github,uoaerg,wavemon,$(WAVEMON_VERSION))
 WAVEMON_LICENSE = GPL-3.0+
 WAVEMON_LICENSE_FILES = COPYING

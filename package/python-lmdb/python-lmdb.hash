@@ -1,2 +1,5 @@
-# Locally calculated
-sha256	abd2b2ae9ecf2fd1e1bc55ef4e8463b5910722fcd70a1bbf34a3e669a74a41a4 python-lmdb-py-lmdb_0.89.tar.gz
+# md5, sha256 from https://pypi.org/pypi/lmdb/json
+md5	57216cb8fba7aed91ceba5a69d359939  lmdb-0.94.tar.gz
+sha256	9c2b7f05c26b2c95d6f3a566314feefe2dc64ecec6c50242a932703cf74303fe  lmdb-0.94.tar.gz
+# Locally computed sha256 checksums
+sha256	310fe25c858a9515fc8c8d7d1f24a67c9496f84a91e0a0e41ea9975b1371e569  LICENSE

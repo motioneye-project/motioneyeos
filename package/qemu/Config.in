@@ -54,8 +54,29 @@ config BR2_PACKAGE_QEMU_CUSTOM_TARGETS
 	    x86_64-softmmu        | sparc-bsd-user
 	    ...                   | ...
 
-config QEMU_FOO
-	bool # To break the indentation
+comment "Networking options"
+
+config BR2_PACKAGE_QEMU_SLIRP
+	bool "Enable user mode networking (SLIRP)"
+	help
+	  Enable user mode network stack, which is the default
+	  networking backend. It requires no administrator privileges
+	  and generally is the easiest to use but has some
+	  limitations:
+
+	  - there is a lot of overhead so the performance is poor;
+	  - in general ICMP does not work (can't ping from/to a guest)
+	  - on Linux hosts, ping does work from within the guest, but it
+	    needs initial setup by root (once per host)
+	  - the guest is not directly accessible from the host or the
+	    external network
+
+	  User Networking is implemented using "slirp", which provides a
+	  full TCP/IP stack within QEMU and uses that stack to implement
+	  a virtual NAT'd network.
+
+	  Notice that this option does not disable other networking
+	  modes.
 
 if BR2_PACKAGE_QEMU_CUSTOM_TARGETS = ""
 
@@ -97,10 +118,14 @@ comment "Frontends"
 
 config BR2_PACKAGE_QEMU_SDL
 	bool "Enable SDL frontend"
-	select BR2_PACKAGE_SDL
+	depends on !BR2_STATIC_LIBS # sdl2
+	select BR2_PACKAGE_SDL2
 	help
 	  Say 'y' to enable the SDL frontend, that is, a graphical
 	  window presenting the VM's display.
+
+comment "SDL frontend needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 comment "Misc. features"
 

@@ -1,0 +1,29 @@
+From 9164d21cc66c1f78de37c9383528c5d528cbdbeb Mon Sep 17 00:00:00 2001
+From: Asaf Kahlon <asafka7@gmail.com>
+Date: Wed, 26 Sep 2018 15:33:43 +0300
+Subject: [PATCH] Remove idna requirement.
+
+The latest version of idna is 2.7, but it seems like idna is not a direct
+dependency anymore (a short "git grep" shows it's only written in requirement
+and readme files).
+
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
+---
+ requirements-min.txt | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/requirements-min.txt b/requirements-min.txt
+index 92fb0f8f..13cdac87 100644
+--- a/requirements-min.txt
++++ b/requirements-min.txt
+@@ -6,7 +6,6 @@ click>=6.7
+ constantly>=15.1.0
+ cryptography>=1.9
+ h2>=3.0,<4.0
+-idna<2.6,>=2.5
+ incremental>=17.5.0
+ jinja2>=2.9.6
+ lmdb>=0.92
+-- 
+2.17.1
+

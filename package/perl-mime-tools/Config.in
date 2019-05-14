@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_MIME_TOOLS
+	bool "perl-mime-tools"
+	select BR2_PACKAGE_PERL_MAILTOOLS # runtime
+	help
+	  Tools to manipulate MIME messages.
+
+	  https://metacpan.org/release/MIME-tools

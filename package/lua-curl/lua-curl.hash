@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 4cc6389bf5d4a868cc1e6017733b9b6306f2fc8b5083aa928d66399195697f34  lua-curl-0.3.7-1.src.rock
+# computed by luarocks/buildroot
+sha256 ec761e800cec630ff0e78f100e1a61246c35823073014de65f1af0a85bfe1dc0  lua-curl-0.3.9-1.src.rock
+sha256 264807cb89f960808fed1ef9922aed9d9f8437764e836d8e594e66db7be9c54c  Lua-cURLv3-0.3.9/LICENSE

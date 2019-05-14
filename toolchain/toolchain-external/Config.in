@@ -11,17 +11,20 @@ comment "glibc toolchains only available with shared lib support"
 # Kept toolchains sorted by architecture in order to use some toolchain
 # as default choice
 
-# Aarch64 (use Linaro toolchain by default)
+# Aarch64 (use ARM toolchain by default)
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in"
 
 # Aarch64 big-endian
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64-be/Config.in"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config.in"
 
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in"
 
-# ARM (use Linaro toolchain by default)
+# ARM (use ARM toolchain by default)
+source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in"
 source "toolchain/toolchain-external/toolchain-external-linaro-arm/Config.in"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-arm/Config.in"
 
@@ -110,16 +113,19 @@ config BR2_TOOLCHAIN_EXTERNAL_PREFIX
 # BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL and BR2_TOOLCHAIN_EXTERNAL_PREFIX
 
 # Aarch64
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-aarch64/Config.in.options"
 
 # Aarch64 big-endian
+source "toolchain/toolchain-external/toolchain-external-arm-aarch64-be/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-linaro-aarch64-be/Config.in.options"
 
 # ARC
 source "toolchain/toolchain-external/toolchain-external-synopsys-arc/Config.in.options"
 
 # ARM
+source "toolchain/toolchain-external/toolchain-external-arm-arm/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-linaro-arm/Config.in.options"
 source "toolchain/toolchain-external/toolchain-external-codesourcery-arm/Config.in.options"
 

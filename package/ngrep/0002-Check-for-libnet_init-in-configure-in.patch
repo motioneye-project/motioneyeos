@@ -1,0 +1,28 @@
+From 0a51c8bc62c7b49b8d67a360daa6b1957256f4f5 Mon Sep 17 00:00:00 2001
+From: Romain Francoise <romain@rfr.io>
+Date: Mon, 1 Jan 2018 18:01:13 +0100
+Subject: [PATCH] Check for libnet_init in configure.in
+
+libnet_init_packet was the old libnet 1.0 function which is now long
+deprecated.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/jpr5/ngrep/commit/0a51c8bc62c7b49b8d67a360daa6b1957256f4f5]
+---
+ configure.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index 06c050a..dbef39b 100644
+--- a/configure.in
++++ b/configure.in
+@@ -174,7 +174,7 @@ dnl
+ AC_ARG_ENABLE(tcpkill,
+ [  --enable-tcpkill        enable connection killing support (default off)],
+ [
+-  AC_CHECK_LIB(net, libnet_init_packet,,echo !!! error: tcpkill feature enabled but no libnet found; exit)
++  AC_CHECK_LIB(net, libnet_init,,echo !!! error: tcpkill feature enabled but no libnet found; exit)
+   use_tcpkill="$enableval"
+ ],
+ [ use_tcpkill="no" ])

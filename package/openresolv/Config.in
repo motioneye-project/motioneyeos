@@ -1,0 +1,8 @@
+config BR2_PACKAGE_OPENRESOLV
+	bool "openresolv"
+	help
+	  openresolv is a resolvconf implementation which
+	  manages resolv.conf. This tool provides a dns management
+	  framework to track currently available nameservers.
+
+	  https://roy.marples.name/projects/openresolv

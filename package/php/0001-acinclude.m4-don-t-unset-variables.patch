@@ -8,7 +8,7 @@ Terminate them with extreme prejudice.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 Signed-off-by: Adam Duskett <aduskett@gmail.com>
-[aduskett@gmail.com: Update for 7.2.2]
+[aduskett@gmail.com: Update for 7.3.0]
 ---
  acinclude.m4 | 4 ----
  1 file changed, 4 deletions(-)
@@ -17,7 +17,7 @@ diff --git a/acinclude.m4 b/acinclude.m4
 index 28506b6..af4aa06 100644
 --- a/acinclude.m4
 +++ b/acinclude.m4
-@@ -1890,8 +1890,6 @@ define([phpshift],[ifelse(index([$@],[,]),-1,,[substr([$@],incr(index([$@],[,]))
+@@ -1921,8 +1921,6 @@ define([phpshift],[ifelse(index([$@],[,]),-1,,[substr([$@],incr(index([$@],[,]))
  dnl
  AC_DEFUN([PHP_CHECK_FUNC_LIB],[
    ifelse($2,,:,[
@@ -26,7 +26,7 @@ index 28506b6..af4aa06 100644
    unset found
    AC_CHECK_LIB($2, $1, [found=yes], [
      AC_CHECK_LIB($2, __$1, [found=yes], [found=no])
-@@ -1923,8 +1921,6 @@ dnl in the default libraries and as a fall back in the specified library.
+@@ -1954,8 +1952,6 @@ dnl in the default libraries and as a fall back in the specified library.
  dnl Defines HAVE_func and HAVE_library if found and adds the library to LIBS.
  dnl
  AC_DEFUN([PHP_CHECK_FUNC],[

@@ -1,0 +1,34 @@
+From b1ca50178b97b3b827b0420ec7bdf9cb1d6fec56 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 11 Jan 2019 16:36:06 +0100
+Subject: [PATCH] basic/tmpfile-util.c: fix build without O_TMPFILE
+
+systemd fails to build on kernel without O_TMPFILE (< 3.11) since
+https://github.com/systemd/systemd/commit/dea72eda9cdbfeedd24cbe8c734ad0639bf96cde
+
+To fix this error, include missing_fcntl.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/699c078aa078240c6741da4dbd0871450ceeca92
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/systemd/systemd/pull/11400]
+---
+ src/basic/tmpfile-util.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/basic/tmpfile-util.c b/src/basic/tmpfile-util.c
+index 669eb2666..bc92d6a6d 100644
+--- a/src/basic/tmpfile-util.c
++++ b/src/basic/tmpfile-util.c
+@@ -8,6 +8,7 @@
+ #include "hexdecoct.h"
+ #include "macro.h"
+ #include "memfd-util.h"
++#include "missing_fcntl.h"
+ #include "missing_syscall.h"
+ #include "path-util.h"
+ #include "process-util.h"
+-- 
+2.14.1
+

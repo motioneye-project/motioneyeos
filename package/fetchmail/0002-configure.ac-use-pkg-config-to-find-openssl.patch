@@ -1,0 +1,69 @@
+From 1ed0af7f1bbcaccbd7356bd90596f5c942b64720 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 22 Mar 2019 20:24:54 +0100
+Subject: [PATCH 1/1] configure.ac: use pkg-config to find openssl
+
+openssl can have multiples dependencies such as libatomic on sparcv8
+32 bits
+
+Fixes:
+ - http://autobuild.buildroot.org/results/58e5aa7c6ba8fe7474071d7a3cba6ed3a1b4cff4
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://gitlab.com/fetchmail/fetchmail/merge_requests/14]
+---
+ configure.ac | 37 +++++++++++++++++++------------------
+ 1 file changed, 19 insertions(+), 18 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 16b0fcba..3a75ec6e 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -778,24 +778,25 @@ then
+   else
+     AC_MSG_ERROR([SSL support enabled, but OpenSSL not found])
+   fi
+-  LDFLAGS="$LDFLAGS -L$with_ssl/lib"
+-  LIBS="$LIBS -lssl -lcrypto"
+-  dnl check if -ldl is needed
+-  AC_MSG_CHECKING([for additional library dependencies of SSL])
+-  found=0
+-  save_LIBS="$LIBS"
+-  for i in "" "-ldl" ; do
+-      LIBS="$LDFLAGS $save_LIBS $i"
+-      AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <openssl/ssl.h>],[SSL_library_init()])],[found=1; break])
+-  done
+-  if test $found = 0 ; then
+-      AC_MSG_RESULT([error])
+-      AC_MSG_ERROR([cannot link with SSL - check config.log])
+-  fi
+-  LIBS="$save_LIBS $i"
+-  if test "$i" = "" ; then i="(none)" ; fi
+-  AC_MSG_RESULT($i)
+-  dnl XXX FIXME: use pkg-config if available!
++  PKG_CHECK_MODULES([SSL],[libssl libcrypto],[LIBS="$LIBS $SSL_LIBS"],[
++    LDFLAGS="$LDFLAGS -L$with_ssl/lib"
++    LIBS="$LIBS -lssl -lcrypto"
++    dnl check if -ldl is needed
++    AC_MSG_CHECKING([for additional library dependencies of SSL])
++    found=0
++    save_LIBS="$LIBS"
++    for i in "" "-ldl" ; do
++        LIBS="$LDFLAGS $save_LIBS $i"
++        AC_LINK_IFELSE([AC_LANG_PROGRAM([#include <openssl/ssl.h>],[SSL_library_init()])],[found=1; break])
++    done
++    if test $found = 0 ; then
++        AC_MSG_RESULT([error])
++        AC_MSG_ERROR([cannot link with SSL - check config.log])
++    fi
++    LIBS="$save_LIBS $i"
++    if test "$i" = "" ; then i="(none)" ; fi
++    AC_MSG_RESULT($i)
++  ])
+   AC_DEFINE(SSL_ENABLE)
+ else
+   AC_MSG_WARN(Disabling SSL support.)
+-- 
+2.20.1
+

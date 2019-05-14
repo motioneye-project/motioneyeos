@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DEVMEM2_SITE = http://free-electrons.com/pub/mirror
+DEVMEM2_SITE = http://bootlin.com/pub/mirror
 DEVMEM2_SOURCE = devmem2.c
 DEVMEM2_VERSION = 1
 DEVMEM2_LICENSE = GPL-2.0+

@@ -136,10 +136,6 @@ config BR2_SCP
 	string "Secure copy (scp) command"
 	default "scp"
 
-config BR2_SSH
-	string "Secure shell (ssh) command"
-	default "ssh"
-
 config BR2_HG
 	string "Mercurial (hg) command"
 	default "hg"
@@ -681,6 +677,18 @@ config BR2_COMPILER_PARANOID_UNSAFE_PATH
 	  and external toolchain backends (through the toolchain
 	  wrapper).
 
+config BR2_FORCE_HOST_BUILD
+	bool "Force the building of host dependencies"
+	help
+	  Build all available host dependencies, even if they are
+	  already installed on the system.
+
+	  This option can be used to ensure that the download cache of
+	  source archives for packages remain consistent between
+	  different build hosts.
+
+	  This option will increase build time.
+
 config BR2_REPRODUCIBLE
 	bool "Make the build reproducible (experimental)"
 	# SOURCE_DATE_EPOCH support in toolchain-wrapper requires GCC 4.4
@@ -812,6 +820,8 @@ config BR2_FORTIFY_SOURCE_NONE
 
 config BR2_FORTIFY_SOURCE_1
 	bool "Conservative"
+	# gcc bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61164
+	depends on !BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	help
 	  This option sets _FORTIFY_SOURCE to 1 and only introduces
 	  checks that shouldn't change the behavior of conforming
@@ -819,6 +829,8 @@ config BR2_FORTIFY_SOURCE_1
 
 config BR2_FORTIFY_SOURCE_2
 	bool "Aggressive"
+	# gcc bug https://gcc.gnu.org/bugzilla/show_bug.cgi?id=61164
+	depends on !BR2_TOOLCHAIN_BUILDROOT || BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	help
 	  This option sets _FORTIFY_SOURCES to 2 and some more
 	  checking is added, but some conforming programs might fail.

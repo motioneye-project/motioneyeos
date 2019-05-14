@@ -1,0 +1,38 @@
+From ba10bac420398270a0b992e85d93383373d5fcac Mon Sep 17 00:00:00 2001
+From: Adam Duskett <aduskett@greenlots.com>
+Date: Thu, 16 Aug 2018 14:52:37 -0700
+Subject: [PATCH] fix building on older distributions
+
+Python > 3.6.3 calls os.replace in the update_file.py script, during the
+regen-importlib phase of the build process.
+
+According to Doc/whatsnew/3.3.rst line 1631, os.replace acts in the same
+way as os.rename, however, it is now cross-platform compatible for Windows.
+
+Because BuildRoot is guaranteed only to be built in  POSIX environment, it is
+safe to change os.replace back to os.rename.
+
+This change fixes building on older systems such as CentOS7, that only come
+with python 2.
+
+Signed-off-by: Adam Duskett <aduskett@greenlots.com>
+---
+ Tools/scripts/update_file.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Tools/scripts/update_file.py b/Tools/scripts/update_file.py
+index 224585c69b..ef458c0c63 100644
+--- a/Tools/scripts/update_file.py
++++ b/Tools/scripts/update_file.py
+@@ -16,7 +16,7 @@ def main(old_path, new_path):
+     with open(new_path, 'rb') as f:
+         new_contents = f.read()
+     if old_contents != new_contents:
+-        os.replace(new_path, old_path)
++        os.rename(new_path, old_path)
+     else:
+         os.unlink(new_path)
+ 
+-- 
+2.14.4
+

@@ -70,7 +70,7 @@ HOST_CARGO_SNAP_OPTS = \
 	$(if $(VERBOSE),--verbose)
 
 HOST_CARGO_ENV = \
-	RUSTFLAGS="-Clink-arg=-Wl,-rpath,$(HOST_DIR)/lib" \
+	RUSTFLAGS="$(addprefix -Clink-arg=,$(HOST_LDFLAGS))" \
 	CARGO_HOME=$(HOST_CARGO_HOME)
 
 define HOST_CARGO_BUILD_CMDS

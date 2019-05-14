@@ -1,0 +1,271 @@
+From 6ea688eff5157785267d2b671cf62d296288847f Mon Sep 17 00:00:00 2001
+From: Alex/AT <alex@alex-at.net>
+Date: Mon, 10 Dec 2018 06:02:27 +0300
+Subject: [PATCH] PHP 7.3 compatibility and bugfixes
+
+- Define new GC_ADDREF/DELREF/SET_REFCOUNT macros for older PHP versions and use them instead of direct GC reference counter access
+
+- Fixup all necessary 'long' type parameters to 'zend_long', PHP 7.3 makes it mandatory, also fixup some direct function implementations to accept the same
+
+- In php_zmq_recv(), zend_string_init() was wrongly called with third parameter as '1', marking new string with IS_STR_PERSISTENT, this caused heap corruption and/or segfaults with PHP 7.3 and could possibly cause other sorts of bugs under any 7.x version
+  With ZVAL_STRINGL macro, this last '1' parameter meant to copy the string and was seemingly erroneously moved to zend_string_init(). zend_string_init() copies string by default, and last parameter has totally different meaning here
+
+- In poll(), flag ZVAL separation on passed arrays (PHP 7.3 makes it mandatory)
+
+- Test 19 (exception on connect callback with forced reference parameter): skip on PHP 7.1 and higher, PHP >= 7.1 started to fallback to passing argument by value instead of failing
+
+- Test 21 (warning generation from callback): it is ok, but PHP 7.3 uses 'int' instead of 'integer' for constants, so allow any word in place of the word 'integer'
+
+[Frank: backport from upstream PR https://github.com/mkoppanen/php-zmq/pull/195]
+Signed-off-by: Frank Hunleth <fhunleth@troodon-software.com>
+---
+ php_zmq.h                               |  6 ++++
+ tests/019-callbackinvalidsignature.phpt |  3 +-
+ tests/021-callbackwarning.phpt          |  2 +-
+ zmq.c                                   | 40 ++++++++++++-------------
+ zmq_sockopt.c                           |  4 +--
+ 5 files changed, 30 insertions(+), 25 deletions(-)
+
+diff --git a/php_zmq.h b/php_zmq.h
+index ef50bfb..3833967 100644
+--- a/php_zmq.h
++++ b/php_zmq.h
+@@ -44,6 +44,12 @@
+ 
+ #include "php.h"
+ 
++#if PHP_VERSION_ID < 70300
++#define GC_ADDREF(p)              ++GC_REFCOUNT(p)
++#define GC_DELREF(p)              --GC_REFCOUNT(p)
++#define GC_SET_REFCOUNT(p, rc)    GC_REFCOUNT(p) = rc
++#endif
++
+ extern zend_module_entry zmq_module_entry;
+ #define phpext_zmq_ptr &zmq_module_entry
+ 
+diff --git a/tests/019-callbackinvalidsignature.phpt b/tests/019-callbackinvalidsignature.phpt
+index 753de31..b5bb20c 100644
+--- a/tests/019-callbackinvalidsignature.phpt
++++ b/tests/019-callbackinvalidsignature.phpt
+@@ -1,7 +1,8 @@
+ --TEST--
+ Test callback edge-cases
+ --SKIPIF--
+-<?php require_once(dirname(__FILE__) . '/skipif.inc'); ?>
++<?php require_once(dirname(__FILE__) . '/skipif.inc');
++if (PHP_VERSION_ID >= 70100) die("skip PHP 7.1 and higher fallback to passing argument by value even when forced to reference"); ?>
+ --FILE--
+ <?php
+ 
+diff --git a/tests/021-callbackwarning.phpt b/tests/021-callbackwarning.phpt
+index 435743e..eba2ecf 100644
+--- a/tests/021-callbackwarning.phpt
++++ b/tests/021-callbackwarning.phpt
+@@ -13,5 +13,5 @@ function generate_warning($a, $b)
+ $socket = new ZMQSocket(new ZMQContext(), ZMQ::SOCKET_REQ, 'persistent_socket', 'generate_warning');
+ 
+ --EXPECTF--
+-Warning: in_array() expects parameter 2 to be array, integer given in %s on line %d
++Warning: in_array() expects parameter 2 to be array, %s given in %s on line %d
+ 
+diff --git a/zmq.c b/zmq.c
+index 942e69b..57ebd11 100644
+--- a/zmq.c
++++ b/zmq.c
+@@ -235,7 +235,7 @@ php_zmq_context *php_zmq_context_get(zend_long io_threads, zend_bool is_persiste
+ 		le.type = php_zmq_context_list_entry();
+ 		le.ptr  = context;
+ 
+-		GC_REFCOUNT(&le) = 1;
++		GC_SET_REFCOUNT(&le, 1);
+ 
+ 		/* plist_key is not a persistent allocated key, thus we use str_update here */
+ 		if (zend_hash_str_update_mem(&EG(persistent_list), plist_key->val, plist_key->len, &le, sizeof(le)) == NULL) {
+@@ -369,7 +369,7 @@ PHP_METHOD(zmq, curvekeypair)
+ PHP_METHOD(zmqcontext, __construct)
+ {
+ 	php_zmq_context_object *intern;
+-	long io_threads = 1;
++	zend_long io_threads = 1;
+ 	zend_bool is_persistent = 1;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|lb", &io_threads, &is_persistent) == FAILURE) {
+@@ -495,7 +495,7 @@ PHP_METHOD(zmqcontext, getOpt)
+ 	Create a new zmq socket
+ */
+ static
+-php_zmq_socket *php_zmq_socket_new(php_zmq_context *context, int type, zend_bool is_persistent)
++php_zmq_socket *php_zmq_socket_new(php_zmq_context *context, zend_long type, zend_bool is_persistent)
+ {
+ 	php_zmq_socket *zmq_sock;
+ 
+@@ -503,7 +503,7 @@ php_zmq_socket *php_zmq_socket_new(php_zmq_context *context, int type, zend_bool
+ 	zmq_sock->z_socket    = zmq_socket(context->z_ctx, type);
+ 	zmq_sock->pid         = getpid();
+ 	zmq_sock->ctx         = context;
+-    zmq_sock->socket_type = type;
++	zmq_sock->socket_type = type;
+ 
+ 	if (!zmq_sock->z_socket) {
+ 		pefree(zmq_sock, is_persistent);
+@@ -535,7 +535,7 @@ void php_zmq_socket_store(php_zmq_socket *zmq_sock_p, zend_long type, zend_strin
+ 	le.type = php_zmq_socket_list_entry();
+ 	le.ptr  = zmq_sock_p;
+ 
+-	GC_REFCOUNT(&le) = 1;
++	GC_SET_REFCOUNT(&le, 1);
+ 
+ 	plist_key = php_zmq_socket_plist_key(type, persistent_id, use_shared_ctx);
+ 
+@@ -796,7 +796,7 @@ PHP_METHOD(zmqsocket, __construct)
+ 
+ /* {{{ static zend_bool php_zmq_send(php_zmq_socket_object *intern, char *message_param, long flags)
+ */
+-static zend_bool php_zmq_send(php_zmq_socket_object *intern, zend_string *message_param, long flags)
++static zend_bool php_zmq_send(php_zmq_socket_object *intern, zend_string *message_param, zend_long flags)
+ {
+ 	int rc, errno_;
+ 	zmq_msg_t message;
+@@ -828,7 +828,7 @@ static void php_zmq_sendmsg_impl(INTERNAL_FUNCTION_PARAMETERS)
+ {
+ 	php_zmq_socket_object *intern;
+ 	zend_string *message_param;
+-	long flags = 0;
++	zend_long flags = 0;
+ 	zend_bool ret;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "S|l", &message_param, &flags) == FAILURE) {
+@@ -890,7 +890,7 @@ PHP_METHOD(zmqsocket, sendmulti)
+ 	zval *messages;
+ 	php_zmq_socket_object *intern;
+ 	int to_send, ret = 0;
+-	long flags = 0;
++	zend_long flags = 0;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a|l", &messages, &flags) == FAILURE) {
+ 		return;
+@@ -910,7 +910,7 @@ PHP_METHOD(zmqsocket, sendmulti)
+ /* {{{ static zend_bool php_zmq_recv(php_zmq_socket_object *intern, long flags, zval *return_value)
+ */
+ static
+-zend_string *php_zmq_recv(php_zmq_socket_object *intern, long flags)
++zend_string *php_zmq_recv(php_zmq_socket_object *intern, zend_long flags)
+ {
+ 	int rc, errno_;
+ 	zmq_msg_t message;
+@@ -933,7 +933,7 @@ zend_string *php_zmq_recv(php_zmq_socket_object *intern, long flags)
+ 		return NULL;
+ 	}
+ 
+-	str = zend_string_init(zmq_msg_data(&message), zmq_msg_size(&message), 1);
++	str = zend_string_init(zmq_msg_data(&message), zmq_msg_size(&message), 0);
+ 	zmq_msg_close(&message);
+ 	return str;
+ }
+@@ -943,7 +943,7 @@ static void php_zmq_recvmsg_impl(INTERNAL_FUNCTION_PARAMETERS)
+ {
+ 	zend_string *str = NULL;
+ 	php_zmq_socket_object *intern;
+-	long flags = 0;
++	zend_long flags = 0;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "|l", &flags) == FAILURE) {
+ 		return;
+@@ -974,7 +974,7 @@ PHP_METHOD(zmqsocket, recvmulti)
+ {
+ 	php_zmq_socket_object *intern;
+ 	size_t value_len;
+-	long flags = 0;
++	zend_long flags = 0;
+ #if ZMQ_VERSION_MAJOR < 3
+ 	int64_t value;
+ #else
+@@ -1303,7 +1303,7 @@ PHP_METHOD(zmqpoll, add)
+ {
+ 	php_zmq_poll_object *intern;
+ 	zval *object;
+-	long events;
++	zend_long events;
+ 	int error;
+ 	zend_string *key;
+ 
+@@ -1423,10 +1423,10 @@ PHP_METHOD(zmqpoll, poll)
+ 	php_zmq_poll_object *intern;
+ 	zval *r_array, *w_array;
+ 
+-	long timeout = -1;
++	zend_long timeout = -1;
+ 	int rc;
+ 
+-	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a!a!|l", &r_array, &w_array, &timeout) == FAILURE) {
++	if (zend_parse_parameters(ZEND_NUM_ARGS(), "a!/a!/|l", &r_array, &w_array, &timeout) == FAILURE) {
+ 		return;
+ 	}
+ 
+@@ -1592,7 +1592,7 @@ void s_clear_device_callback (php_zmq_device_cb_t *cb)
+ }
+ 
+ static
+-void s_init_device_callback (php_zmq_device_cb_t *cb, zend_fcall_info *fci, zend_fcall_info_cache *fci_cache, long timeout, zval *user_data)
++void s_init_device_callback (php_zmq_device_cb_t *cb, zend_fcall_info *fci, zend_fcall_info_cache *fci_cache, zend_long timeout, zval *user_data)
+ {
+ 	memcpy (&cb->fci, fci, sizeof (zend_fcall_info));
+ 	memcpy (&cb->fci_cache, fci_cache, sizeof (zend_fcall_info_cache));
+@@ -1615,7 +1615,7 @@ void s_init_device_callback (php_zmq_device_cb_t *cb, zend_fcall_info *fci, zend
+ PHP_METHOD(zmqdevice, setidletimeout)
+ {
+ 	php_zmq_device_object *intern;
+-	long timeout;
++	zend_long timeout;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &timeout) == FAILURE) {
+ 		return;
+@@ -1644,7 +1644,7 @@ PHP_METHOD(zmqdevice, getidletimeout)
+ PHP_METHOD(zmqdevice, settimertimeout)
+ {
+ 	php_zmq_device_object *intern;
+-	long timeout;
++	zend_long timeout;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "l", &timeout) == FAILURE) {
+ 		return;
+@@ -1676,7 +1676,7 @@ PHP_METHOD(zmqdevice, setidlecallback)
+ 	zval *user_data = NULL;
+ 	zend_fcall_info fci;
+ 	zend_fcall_info_cache fci_cache;
+-	long timeout = 0;
++	zend_long timeout = 0;
+ 
+ 	if (ZEND_NUM_ARGS() == 2) {
+ 		php_error_docref(NULL, E_DEPRECATED, "The signature for setIdleCallback has changed, please update your code");
+@@ -1718,7 +1718,7 @@ PHP_METHOD(zmqdevice, settimercallback)
+ 	zval *user_data = NULL;
+ 	zend_fcall_info fci;
+ 	zend_fcall_info_cache fci_cache;
+-	long timeout;
++	zend_long timeout;
+ 
+ 	if (zend_parse_parameters(ZEND_NUM_ARGS(), "fl|z!", &fci, &fci_cache, &timeout, &user_data) == FAILURE) {
+ 		return;
+diff --git a/zmq_sockopt.c b/zmq_sockopt.c
+index 1357032..3a00421 100644
+--- a/zmq_sockopt.c
++++ b/zmq_sockopt.c
+@@ -1,5 +1,3 @@
+-
+-
+ /*
+ +-----------------------------------------------------------------------------------+
+ |  ZMQ extension for PHP                                                            |
+@@ -2033,7 +2031,7 @@ PHP_METHOD(zmqsocket, getsockopt)
+ PHP_METHOD(zmqsocket, setsockopt)
+ {
+     php_zmq_socket_object *intern;
+-    long key;
++    zend_long key;
+     zval *zv;
+ 
+     if (zend_parse_parameters(ZEND_NUM_ARGS() TSRMLS_CC, "lz/", &key, &zv) == FAILURE) {
+-- 
+2.17.1
+

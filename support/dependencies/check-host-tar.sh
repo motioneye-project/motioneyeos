@@ -20,10 +20,11 @@ major=`echo "$version" | cut -d. -f1`
 minor=`echo "$version" | cut -d. -f2`
 bugfix=`echo "$version" | cut -d. -f3`
 version_bsd=`$tar --version | grep 'bsdtar'`
-if [ ! -z "${version_bsd}" ] ; then 
-  # mark as invalid version - not all command line options are available
-  major=0
-  minor=0
+
+# BSD tar does not have all the command-line options
+if [ -n "${version_bsd}" ] ; then
+    # echo nothing: no suitable tar found
+    exit 1
 fi
 
 # Minimal version = 1.27 (previous versions do not correctly unpack archives

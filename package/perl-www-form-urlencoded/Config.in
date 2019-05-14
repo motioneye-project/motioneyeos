@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_WWW_FORM_URLENCODED
+	bool "perl-www-form-urlencoded"
+	help
+	  parser and builder for application/x-www-form-urlencoded.
+
+	  https://github.com/kazeburo/WWW-Form-UrlEncoded

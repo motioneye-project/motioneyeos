@@ -15,7 +15,6 @@ HOST_GCC_FINAL_DEPENDENCIES = \
 	$(BR_LIBC)
 
 HOST_GCC_FINAL_EXCLUDES = $(HOST_GCC_EXCLUDES)
-HOST_GCC_FINAL_POST_EXTRACT_HOOKS += HOST_GCC_FAKE_TESTSUITE
 
 ifneq ($(ARCH_XTENSA_OVERLAY_FILE),)
 HOST_GCC_FINAL_POST_EXTRACT_HOOKS += HOST_GCC_XTENSA_OVERLAY_EXTRACT
@@ -69,12 +68,16 @@ HOST_GCC_FINAL_GCC_LIB_DIR = $(HOST_DIR)/$(GNU_TARGET_NAME)/lib*
 # doesn't use floating point operations.
 ifeq ($(BR2_sh4)$(BR2_sh4eb),y)
 HOST_GCC_FINAL_CONF_OPTS += "--with-multilib-list=m4,m4-nofpu"
+# check-package OverriddenVariable
 HOST_GCC_FINAL_GCC_LIB_DIR = $(HOST_DIR)/$(GNU_TARGET_NAME)/lib/!m4*
 endif
 ifeq ($(BR2_sh4a)$(BR2_sh4aeb),y)
 HOST_GCC_FINAL_CONF_OPTS += "--with-multilib-list=m4a,m4a-nofpu"
+# check-package OverriddenVariable
 HOST_GCC_FINAL_GCC_LIB_DIR = $(HOST_DIR)/$(GNU_TARGET_NAME)/lib/!m4*
 endif
+
+ifeq ($(BR2_GCC_SUPPORTS_LIBCILKRTS),y)
 
 # libcilkrts does not support v8
 ifeq ($(BR2_sparc),y)
@@ -86,10 +89,16 @@ ifeq ($(BR2_PTHREADS_NONE),y)
 HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
 endif
 
-# Disable shared libs like libstdc++ if we do static since it confuses linking
-# In that case also disable libcilkrts as there is no static version
 ifeq ($(BR2_STATIC_LIBS),y)
-HOST_GCC_FINAL_CONF_OPTS += --disable-shared --disable-libcilkrts
+# disable libcilkrts as there is no static version
+HOST_GCC_FINAL_CONF_OPTS += --disable-libcilkrts
+endif
+
+endif # BR2_GCC_SUPPORTS_LIBCILKRTS
+
+# Disable shared libs like libstdc++ if we do static since it confuses linking
+ifeq ($(BR2_STATIC_LIBS),y)
+HOST_GCC_FINAL_CONF_OPTS += --disable-shared
 else
 HOST_GCC_FINAL_CONF_OPTS += --enable-shared
 endif

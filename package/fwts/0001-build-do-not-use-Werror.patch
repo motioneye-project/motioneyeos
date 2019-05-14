@@ -1,4 +1,4 @@
-From db480b9f3e3a5c6c12e9dd04e87c8dff9381b8e7 Mon Sep 17 00:00:00 2001
+From 4c202c0fd7e5bd3264c720d715f05573047d9cf5 Mon Sep 17 00:00:00 2001
 From: Erico Nunes <nunes.erico@gmail.com>
 Date: Fri, 12 Aug 2016 23:11:56 +0200
 Subject: [PATCH] fwts: do not use -Werror
@@ -18,7 +18,7 @@ Signed-off-by: Erico Nunes <nunes.erico@gmail.com>
  4 files changed, 4 insertions(+), 4 deletions(-)
 
 diff --git a/configure.ac b/configure.ac
-index e3e7512..64034fa 100644
+index 0109d644..3ca599e1 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -1,5 +1,5 @@
@@ -29,7 +29,7 @@ index e3e7512..64034fa 100644
  	  AC_CANONICAL_HOST
  	  AC_CONFIG_MACRO_DIR([m4])
 diff --git a/src/Makefile.am b/src/Makefile.am
-index bc23e8d..599765d 100644
+index 52c637dd..d9d73f1c 100644
 --- a/src/Makefile.am
 +++ b/src/Makefile.am
 @@ -14,7 +14,7 @@ AM_CPPFLAGS = \
@@ -42,10 +42,10 @@ index bc23e8d..599765d 100644
  bin_PROGRAMS = fwts
  
 diff --git a/src/lib/src/Makefile.am b/src/lib/src/Makefile.am
-index 1b8fd74..163c9ae 100644
+index 54de7f44..e129ed16 100644
 --- a/src/lib/src/Makefile.am
 +++ b/src/lib/src/Makefile.am
-@@ -6,7 +6,7 @@ AM_CPPFLAGS = \
+@@ -24,7 +24,7 @@ AM_CPPFLAGS = \
  	`pkg-config --silence-errors --cflags json-c`	\
  	`pkg-config --cflags glib-2.0 gio-2.0` 		\
  	-DDATAROOTDIR=\"$(datarootdir)\"		\
@@ -55,15 +55,18 @@ index 1b8fd74..163c9ae 100644
  pkglib_LTLIBRARIES = libfwts.la
  
 diff --git a/src/utilities/Makefile.am b/src/utilities/Makefile.am
-index 9a47980..14997df 100644
+index aa37de55..4d5297cc 100644
 --- a/src/utilities/Makefile.am
 +++ b/src/utilities/Makefile.am
-@@ -1,4 +1,4 @@
+@@ -16,7 +16,7 @@
+ # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+ #
+ 
 -AM_CPPFLAGS = -Wall -Werror -Wextra -DDATAROOTDIR=\"$(datarootdir)\" \
 +AM_CPPFLAGS = -Wall -Wextra -DDATAROOTDIR=\"$(datarootdir)\" \
  	`pkg-config --silence-errors --cflags json` \
  	`pkg-config --silence-errors --cflags json-c`
  
 -- 
-2.7.4
+2.17.1
 

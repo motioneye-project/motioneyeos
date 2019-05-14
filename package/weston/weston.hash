@@ -1,5 +1,7 @@
-# From https://lists.freedesktop.org/archives/wayland-devel/2018-April/037768.html
-md5 33709aa4d5916f89643fca0fc0064b39  weston-4.0.0.tar.xz
-sha1 df1da4a880920c515162e95b18f3709a46690be7  weston-4.0.0.tar.xz
-sha256 a0fc0ae7ef83dfbed12abfe9b8096a24a7dd00705e86fa0db1e619ded18b4b58  weston-4.0.0.tar.xz
-sha512 0af41016ff4eae85779f95b5c5e44b9683f4ef681a8e52256efeebfa38073082b83e039d0db3c94ac22f22f8d8314c9d6cd16611144b260b353fc5bfdd1ded19  weston-4.0.0.tar.xz
+# From https://lists.freedesktop.org/archives/wayland-devel/2018-August/039359.html
+md5 752a04ce3c65af4884cfac4e57231bdb  weston-5.0.0.tar.xz
+sha1 56b42b1fbea9e120a8127736328e4c71ac781a57  weston-5.0.0.tar.xz
+sha256 15a23423bcfa45e31e1dedc0cd524ba71e2930df174fde9c99b71a537c4e4caf  weston-5.0.0.tar.xz
+sha512 b6f97eca014ea47f3de0c5ddd89712f896cd66423d0eb499e1d88d35aab616cef1e735ebb8e0cefd8b60085314b6ec3d56b39d7c4776188bb56d58efc84a52cf  weston-5.0.0.tar.xz
+# locally computed
+sha256 0f0de7b7b1f65870139c95dde7abc19ed305631ae7c5d37c386db40cde108632  weston-rel_imx_4.9.51_8mq_ga.tar.gz

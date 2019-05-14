@@ -1,0 +1,44 @@
+From 90b0d3abfc0b4150b198eb17080d75acc5838a59 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sat, 17 Nov 2018 22:20:08 +0200
+Subject: [PATCH] xtables-monitor: fix build with musl libc
+
+Commit 7c8791edac3 ("xtables-monitor: fix build with older glibc")
+changed the code to use GNU style tcphdr fields. Unfortunately, musl
+libc requires _GNU_SOURCE definition to expose these fields.
+
+Fix the following build failure:
+
+xtables-monitor.c: In function ‘trace_print_packet’:
+xtables-monitor.c:406:43: error: ‘const struct tcphdr’ has no member named ‘source’
+    printf("SPORT=%d DPORT=%d ", ntohs(tcph->source), ntohs(tcph->dest));
+                                           ^~
+xtables-monitor.c:406:64: error: ‘const struct tcphdr’ has no member named ‘dest’
+    printf("SPORT=%d DPORT=%d ", ntohs(tcph->source), ntohs(tcph->dest));
+                                                                ^~
+...
+
+Cc: Florian Westphal <fw@strlen.de>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+---
+Upstream status: commit 90b0d3abfc0b
+
+ iptables/xtables-monitor.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/iptables/xtables-monitor.c b/iptables/xtables-monitor.c
+index 5d1611122df5..f835c5e503e0 100644
+--- a/iptables/xtables-monitor.c
++++ b/iptables/xtables-monitor.c
+@@ -9,6 +9,7 @@
+  * This software has been sponsored by Sophos Astaro <http://www.sophos.com>
+  */
+ 
++#define _GNU_SOURCE
+ #include <stdlib.h>
+ #include <time.h>
+ #include <string.h>
+-- 
+2.19.1
+

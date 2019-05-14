@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PAMTESTER
+	bool "pamtester"
+	depends on BR2_PACKAGE_LINUX_PAM
+	help
+	  A tiny utility for testing pluggable authentication modules
+	  (PAM) facility. While specifically designed to help PAM module
+	  authors to test their modules, that might also be handy for
+	  system administrators interested in building a centralised
+	  authentication system using common standards such as NIS, SASL
+	  and LDAP.
+
+	  http://pamtester.sourceforge.net/
+
+comment "pamtester depends on linux-pam"
+	depends on !BR2_PACKAGE_LINUX_PAM

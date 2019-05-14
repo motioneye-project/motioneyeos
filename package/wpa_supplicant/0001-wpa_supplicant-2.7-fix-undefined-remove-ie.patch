@@ -1,0 +1,43 @@
+From f2973fa39d6109f0f34969e91551a98dc340d537 Mon Sep 17 00:00:00 2001
+From: Jouni Malinen <j@w1.fi>
+Date: Mon, 3 Dec 2018 12:00:26 +0200
+Subject: FT: Fix CONFIG_IEEE80211X=y build without CONFIG_FILS=y
+
+remove_ie() was defined within an ifdef CONFIG_FILS block while it is
+now needed even without CONFIG_FILS=y. Remove the CONFIG_FILS condition
+there.
+
+Fixes 8c41734e5de1 ("FT: Fix Reassociation Request IEs during FT protocol")
+Signed-off-by: Jouni Malinen <j@w1.fi>
+
+Downloaded from upstream commit
+http://w1.fi/cgit/hostap/commit/?id=f2973fa39d6109f0f34969e91551a98dc340d537
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ wpa_supplicant/sme.c | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/wpa_supplicant/sme.c b/wpa_supplicant/sme.c
+index 39c8069..f77f751 100644
+--- a/wpa_supplicant/sme.c
++++ b/wpa_supplicant/sme.c
+@@ -1386,7 +1386,6 @@ void sme_event_auth(struct wpa_supplicant *wpa_s, union wpa_event_data *data)
+ }
+ 
+ 
+-#ifdef CONFIG_FILS
+ #ifdef CONFIG_IEEE80211R
+ static void remove_ie(u8 *buf, size_t *len, u8 eid)
+ {
+@@ -1401,7 +1400,6 @@ static void remove_ie(u8 *buf, size_t *len, u8 eid)
+ 	}
+ }
+ #endif /* CONFIG_IEEE80211R */
+-#endif /* CONFIG_FILS */
+ 
+ 
+ void sme_associate(struct wpa_supplicant *wpa_s, enum wpas_mode mode,
+-- 
+cgit v0.12
+

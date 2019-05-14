@@ -1,0 +1,29 @@
+From 748ac7e88833472211ccce82563beb5050528e00 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 4 Dec 2018 21:52:49 +0100
+Subject: [PATCH] stress-stackmmap: needs swapcontext
+
+Fixes:
+ - http://autobuild.buildroot.org/results/f2d3b06afa6e31527a71c03671c8f08eb3f46c36
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ stress-stackmmap.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/stress-stackmmap.c b/stress-stackmmap.c
+index c2f4c31d..eb31d084 100644
+--- a/stress-stackmmap.c
++++ b/stress-stackmmap.c
+@@ -24,7 +24,7 @@
+  */
+ #include "stress-ng.h"
+ 
+-#if defined(__linux__)
++#if defined(HAVE_SWAPCONTEXT)
+ 
+ #include <ucontext.h>
+ 
+-- 
+2.14.1
+

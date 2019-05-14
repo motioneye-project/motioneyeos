@@ -1,0 +1,27 @@
+################################################################################
+#
+# pci
+#
+################################################################################
+
+LINUX_TOOLS += pci
+
+PCI_MAKE_OPTS = $(LINUX_MAKE_FLAGS)
+
+define PCI_BUILD_CMDS
+	$(Q)if ! grep install $(LINUX_DIR)/tools/pci/Makefile >/dev/null 2>&1 ; then \
+		echo "Your kernel version is too old and does not have install section in the pci tools." ; \
+		echo "At least kernel 4.20 must be used." ; \
+		exit 1 ; \
+	fi
+
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(LINUX_DIR)/tools/pci \
+		$(PCI_MAKE_OPTS)
+endef
+
+define PCI_INSTALL_TARGET_CMDS
+	$(TARGET_MAKE_ENV) $(MAKE) -C $(LINUX_DIR)/tools/pci \
+		$(PCI_MAKE_OPTS) \
+		DESTDIR=$(TARGET_DIR) \
+		install
+endef

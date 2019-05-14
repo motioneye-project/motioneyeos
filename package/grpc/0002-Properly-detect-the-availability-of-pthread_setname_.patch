@@ -1,0 +1,52 @@
+From 0aeefca28104f86f14b511feee8d5711f2e8bcb5 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Mon, 31 Dec 2018 16:22:07 +0100
+Subject: [PATCH] Properly detect the availability of pthread_setname_np()
+
+This commit adds a CMake check for the availability of
+pthread_setname_np(), and only uses it on Linux when available.
+
+Indeed, some C libraries, such as uClibc, do not provide this
+non-POSIX function in all cases.
+
+Upstream: https://github.com/grpc/grpc/pull/17610
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ CMakeLists.txt                            | 6 ++++++
+ include/grpc/impl/codegen/port_platform.h | 2 ++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fc76cf50da..8dd457fb1a 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -94,6 +94,12 @@ endif()
+ 
+ set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
+ 
++include(CheckSymbolExists)
++check_symbol_exists(pthread_setname_np pthread.h HAVE_PTHREAD_SETNAME_NP)
++if (HAVE_PTHREAD_SETNAME_NP)
++  add_definitions(-DHAVE_PTHREAD_SETNAME_NP)
++endif ()
++
+ add_definitions(-DPB_FIELD_16BIT)
+ 
+ if (MSVC)
+diff --git a/include/grpc/impl/codegen/port_platform.h b/include/grpc/impl/codegen/port_platform.h
+index b2028a6305..dc89e6ed57 100644
+--- a/include/grpc/impl/codegen/port_platform.h
++++ b/include/grpc/impl/codegen/port_platform.h
+@@ -173,7 +173,9 @@
+ #endif /* _LP64 */
+ #ifdef __GLIBC__
+ #define GPR_POSIX_CRASH_HANDLER 1
++#if defined(HAVE_PTHREAD_SETNAME_NP)
+ #define GPR_LINUX_PTHREAD_NAME 1
++#endif /* HAVE_PTHREAD_SETNAME_NP */
+ #include <linux/version.h>
+ #else /* musl libc */
+ #define GPR_MUSL_LIBC_COMPAT 1
+-- 
+2.20.1
+

@@ -4,7 +4,9 @@
 11-use-mktemp-for-lxdialog.patch
 12-fix-glade-file-path.patch
 14-support-out-of-tree-config.patch
-15-fix-qconf-moc-rule.patch
 16-fix-space-to-de-select-options.patch
-17-kconfig-lxdialog-get-ncurses-CFLAGS-with-pkg-config.patch
-18-kconfig-nconfig-fix-multi-byte-UTF-handling.patch
+17-backport-kecho.patch
+18-merge-config.sh-create-temporary-files-in-tmp.patch
+19-merge_config.sh-add-br2-external-support.patch
+20-merge_config.sh-Allow-to-define-config-prefix.patch
+21-Avoid-false-positive-matches-from-comment-lines.patch

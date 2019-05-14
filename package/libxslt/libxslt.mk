@@ -5,7 +5,7 @@
 ################################################################################
 
 LIBXSLT_VERSION = 1.1.32
-LIBXSLT_SITE = ftp://xmlsoft.org/libxslt
+LIBXSLT_SITE = http://xmlsoft.org/sources
 LIBXSLT_INSTALL_STAGING = YES
 LIBXSLT_LICENSE = MIT
 LIBXSLT_LICENSE_FILES = COPYING

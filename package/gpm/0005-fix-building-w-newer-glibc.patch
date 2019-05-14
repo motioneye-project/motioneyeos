@@ -1,0 +1,32 @@
+From b350aee4ea5785a75cb6ad770f6b768c506ebb70 Mon Sep 17 00:00:00 2001
+From: Mike Frysinger <vapier@gentoo.org>
+Date: Mon, 14 Mar 2016 15:39:54 -0400
+Subject: [PATCH] fix building w/newer glibc
+
+Linux C libraries are looking to disentangle sysmacros.h from the
+sys/types.h include, so make sure we pull in the header when it is
+found.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ src/daemon/open_console.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/daemon/open_console.c b/src/daemon/open_console.c
+index 4d6c0af..6dd43e6 100644
+--- a/src/daemon/open_console.c
++++ b/src/daemon/open_console.c
+@@ -24,6 +24,10 @@
+ #include <sys/types.h>              /* major()           */
+ #include <sys/ioctl.h>              /* ioctl             */
+ 
++#ifdef HAVE_SYS_SYSMACROS_H
++#include <sys/sysmacros.h>          /* major() w/newer glibc */
++#endif
++
+ /* Linux specific (to be outsourced in gpm2 */
+ #include <linux/serial.h>           /* for serial console check */
+ #include <asm/ioctls.h>            /* for serial console check */
+-- 
+2.17.1
+

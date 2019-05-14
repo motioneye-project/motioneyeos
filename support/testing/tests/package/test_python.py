@@ -68,3 +68,58 @@ class TestPython3(TestPythonBase):
         self.math_floor_test()
         self.libc_time_test()
         self.zlib_test()
+
+
+class TestPythonPackageBase(TestPythonBase):
+    """Common class to test a python package.
+
+    Build an image containing the scripts listed in sample_scripts, start the
+    emulator, login to it and for each sample script in the image run the python
+    interpreter passing the name of the script and check the status code is 0.
+
+    Each test case that inherits from this class must have:
+    __test__ = True  - to let nose2 know that it is a test case
+    config           - defconfig fragment with the packages to run the test
+    It also can have:
+    sample_scripts   - list of scripts to add to the image and run on the target
+    timeout          - timeout to the script to run when the default from the
+                       test infra is not enough
+    When custom commands need be issued on the target the method
+    run_sample_scripts can be overridden.
+    """
+
+    __test__ = False
+    config_sample_scripts = \
+        """
+        BR2_ROOTFS_POST_BUILD_SCRIPT="{}"
+        BR2_ROOTFS_POST_SCRIPT_ARGS="{}"
+        """.format(infra.filepath("tests/package/copy-sample-script-to-target.sh"),
+                   "{sample_scripts}")
+    sample_scripts = None
+    timeout = -1
+
+    def __init__(self, names):
+        """Add the scripts to the target in build time."""
+        super(TestPythonPackageBase, self).__init__(names)
+        if self.sample_scripts:
+            scripts = [infra.filepath(s) for s in self.sample_scripts]
+            self.config += self.config_sample_scripts.format(sample_scripts=" ".join(scripts))
+
+    def check_sample_scripts_exist(self):
+        """Check the scripts were really added to the image."""
+        scripts = [os.path.basename(s) for s in self.sample_scripts]
+        cmd = "md5sum " + " ".join(scripts)
+        _, exit_code = self.emulator.run(cmd)
+        self.assertEqual(exit_code, 0)
+
+    def run_sample_scripts(self):
+        """Run each script previously added to the image."""
+        for script in self.sample_scripts:
+            cmd = self.interpreter + " " + os.path.basename(script)
+            _, exit_code = self.emulator.run(cmd, timeout=self.timeout)
+            self.assertEqual(exit_code, 0)
+
+    def test_run(self):
+        self.login()
+        self.check_sample_scripts_exist()
+        self.run_sample_scripts()

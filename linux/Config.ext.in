@@ -4,9 +4,11 @@ menu "Linux Kernel Extensions"
 # Xenomai
 config BR2_LINUX_KERNEL_EXT_XENOMAI
 	bool "Adeos/Xenomai Real-time patch"
-	depends on BR2_PACKAGE_XENOMAI_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_HAS_THREADS
-	depends on !BR2_TOOLCHAIN_USES_MUSL
+	depends on BR2_PACKAGE_XENOMAI_COBALT_ARCH_SUPPORTS
+	depends on BR2_USE_MMU # xenomai
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # xenomai
+	depends on BR2_TOOLCHAIN_HAS_THREADS # xenomai
+	depends on !BR2_TOOLCHAIN_USES_MUSL # xenomai
 	select BR2_PACKAGE_XENOMAI
 	help
 	  Xenomai is split in two parts: a kernel part and a userspace
@@ -34,7 +36,9 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
 	  and verify that your kernel version in buildroot matches.
 
 comment "xenomai needs a uClibc or glibc toolchain w/ threads"
-	depends on BR2_PACKAGE_XENOMAI_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_XENOMAI_COBALT_ARCH_SUPPORTS
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL
 
 #-------------------------------------------------------------------------------

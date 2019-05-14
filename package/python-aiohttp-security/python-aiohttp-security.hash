@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiohttp-security/json
+md5	1624f982d7a779e6ed396ef2ed20acc7  aiohttp-security-0.4.0.tar.gz
+sha256	40d4bb150454e392c2dfa3620f6eab28e140e94cf0c2d3b4bf43aef653ec9405  aiohttp-security-0.4.0.tar.gz
+# Locally computed sha256 checksums
+sha256	a1cc8ff7210897d55d2552fa0792340f8e59720e0160b6918699d40f9a782b1c  LICENSE

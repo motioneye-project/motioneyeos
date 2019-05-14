@@ -28,7 +28,7 @@ $(1)_SITE_METHOD = git
 else
 # Handle stable official Barebox versions
 $(1)_SOURCE = barebox-$$($(1)_VERSION).tar.bz2
-$(1)_SITE = http://www.barebox.org/download
+$(1)_SITE = https://www.barebox.org/download
 endif
 
 $(1)_DEPENDENCIES = host-lzop

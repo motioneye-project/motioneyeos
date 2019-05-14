@@ -19,7 +19,7 @@ SUNXI_CEDARX_BIN_DIR = $(@D)/libcedarv/linux-armel2
 endif
 
 define SUNXI_CEDARX_BUILD_AVHEAP
-	$(TARGET_CC) $(TARGET_CFLAGS) \
+	$(TARGET_CC) $(TARGET_CFLAGS) -fPIC \
 		-c $(SUNXI_CEDARX_BIN_DIR)/adapter/avheap/avheap.c \
 		-o $(SUNXI_CEDARX_BIN_DIR)/adapter/avheap/avheap.o \
 		-I $(SUNXI_CEDARX_BIN_DIR)/adapter/avheap \
