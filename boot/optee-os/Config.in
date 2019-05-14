@@ -70,16 +70,16 @@ config BR2_TARGET_OPTEE_OS_SDK
 	  installed in the staging directory /lib/optee.
 
 config BR2_TARGET_OPTEE_OS_SERVICES
-	bool "Build service TAs"
+	bool "Build service TAs and libs"
 	default y
 	select BR2_TARGET_OPTEE_OS_CORE
 	help
-	  This option installs the service trusted applications built
-	  from OP-TEE OS source tree. These are installed in the target
-	  /lib/optee_armtz directory as other trusted applications.
-	  At runtime OP-TEE OS can load trusted applications from this
-	  non-secure filesystem/directory into the secure world for
-	  execution.
+	  This option installs the service trusted applications and
+	  trusted shared libraries built from OP-TEE OS source tree.
+	  These are installed in target /lib/optee_armtz directory
+	  as other trusted applications. At runtime OP-TEE OS can
+	  load these from this non-secure filesystem/directory into
+	  the secure world for execution.
 
 config BR2_TARGET_OPTEE_OS_PLATFORM
 	string "Target platform (mandatory)"
