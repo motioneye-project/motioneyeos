@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 82c8eddee52069e5ae821b68cb9e295ab5767a47d07545a4ca36ac1e81066086  lpeg_patterns-0.4-0.src.rock
+# computed by luarocks/buildroot
+sha256 0e6d33543689e83911e2cb47965752e00412cbdfca888812ccbde9ec95259c56  lpeg_patterns-0.5-0.src.rock
+sha256 5b0346f2b2432e5f05e8e4ad31503cf84ddf802dacde9e8c3e529efaa4be3348  lpeg_patterns-0.5/LICENSE.md

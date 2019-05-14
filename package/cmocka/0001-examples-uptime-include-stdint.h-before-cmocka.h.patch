@@ -1,0 +1,35 @@
+From dd8449ae3ba7fd05ac172f0227cd93af7f37005e Mon Sep 17 00:00:00 2001
+From: Joel Carlson <joelsoncarl@gmail.com>
+Date: Mon, 1 Oct 2018 15:01:56 -0600
+Subject: [PATCH] examples: uptime: include stdint.h before cmocka.h
+
+Fixes a build error encountered on one MIPS64 toolchain about uintptr_t
+being declared twice, first by cmocka.h and then later by the toolchains
+stdint.h.
+
+Fixes #7
+
+Signed-off-by: Joel Carlson <JoelsonCarl@gmail.com>
+Reviewed-by: Andreas Schneider <asn@cryptomilk.org>
+---
+Fixes build error with br-mips64-n64-full
+Upstream commit: dd8449ae3ba7fd05ac172f0227cd93af7f37005e
+---
+ example/mock/uptime/test_uptime.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/example/mock/uptime/test_uptime.c b/example/mock/uptime/test_uptime.c
+index badfac9..183c276 100644
+--- a/example/mock/uptime/test_uptime.c
++++ b/example/mock/uptime/test_uptime.c
+@@ -16,6 +16,7 @@
+ 
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+-- 
+2.17.1
+

@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/autobahn/json, sha256 locally computed
-md5	f8c8d74bf73644719b751e6fb11dc4a3  autobahn-17.10.1.tar.gz
-sha256	8cf74132a18da149c5ea3dcbb5e055f6f4fe5a0238b33258d29e89bd276a8078  autobahn-17.10.1.tar.gz
-sha256  0387eefce570453daaa60633f28676003731eeca28b2d0a0071c628e3a0004ef  LICENSE
+# md5, sha256 from https://pypi.org/pypi/autobahn/json
+md5	b296b8ae0f42e7df8052b28d574ede82  autobahn-19.1.1.tar.gz
+sha256	aebbadb700c13792a2967c79002855d1153b9ec8f2949d169e908388699596ff  autobahn-19.1.1.tar.gz
+# Locally computed sha256 checksums
+sha256	0387eefce570453daaa60633f28676003731eeca28b2d0a0071c628e3a0004ef  LICENSE

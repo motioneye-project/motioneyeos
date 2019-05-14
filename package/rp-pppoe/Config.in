@@ -16,4 +16,4 @@ config BR2_PACKAGE_RP_PPPOE
 	  devices. Otherwise the normal client functionality already
 	  exists in the pppd package (and kernel).
 
-	  http://www.roaringpenguin.com/pppoe.html
+	  https://dianne.skoll.ca/projects/rp-pppoe/

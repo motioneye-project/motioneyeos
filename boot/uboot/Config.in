@@ -39,7 +39,7 @@ choice
 	  Select the specific U-Boot version you want to use
 
 config BR2_TARGET_UBOOT_LATEST_VERSION
-	bool "2018.07"
+	bool "2018.09"
 
 config BR2_TARGET_UBOOT_CUSTOM_VERSION
 	bool "Custom version"
@@ -87,7 +87,7 @@ endif
 
 config BR2_TARGET_UBOOT_VERSION
 	string
-	default "2018.07"	if BR2_TARGET_UBOOT_LATEST_VERSION
+	default "2018.09"	if BR2_TARGET_UBOOT_LATEST_VERSION
 	default BR2_TARGET_UBOOT_CUSTOM_VERSION_VALUE \
 		if BR2_TARGET_UBOOT_CUSTOM_VERSION
 	default "custom"	if BR2_TARGET_UBOOT_CUSTOM_TARBALL
@@ -159,6 +159,14 @@ config BR2_TARGET_UBOOT_NEEDS_OPENSSL
 	  typically the case when the board configuration has
 	  CONFIG_FIT_SIGNATURE enabled.
 
+config BR2_TARGET_UBOOT_NEEDS_LZOP
+	bool "U-Boot needs lzop"
+	help
+	  Select this option if your U-Boot board configuration
+	  requires lzop to be available on the host. This is typically
+	  the case when the board configuration has CONFIG_SPL_LZO
+	  enabled.
+
 config BR2_TARGET_UBOOT_NEEDS_ATF_BL31
 	bool "U-Boot needs ATF BL31"
 	depends on BR2_TARGET_ARM_TRUSTED_FIRMWARE
@@ -170,6 +178,19 @@ config BR2_TARGET_UBOOT_NEEDS_ATF_BL31
 	  makes sure ATF gets built prior to U-Boot, and that the BL31
 	  variable pointing to ATF's BL31 binary, is passed during the
 	  Buildroot build.
+
+choice
+	prompt "U-Boot ATF BL31 format"
+	default BR2_TARGET_UBOOT_NEEDS_ATF_BL31_BIN
+	depends on BR2_TARGET_UBOOT_NEEDS_ATF_BL31
+
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31_BIN
+	bool "bl31.bin"
+
+config BR2_TARGET_UBOOT_NEEDS_ATF_BL31_ELF
+	bool "bl31.elf"
+
+endchoice
 
 menu "U-Boot binary format"
 

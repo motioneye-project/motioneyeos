@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-TROUSERS_VERSION = 0.3.13
+TROUSERS_VERSION = 0.3.14
 TROUSERS_SITE = http://downloads.sourceforge.net/project/trousers/trousers/$(TROUSERS_VERSION)
 TROUSERS_LICENSE = BSD-3-Clause
 TROUSERS_LICENSE_FILES = LICENSE

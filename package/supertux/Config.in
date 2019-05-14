@@ -4,7 +4,7 @@ config BR2_PACKAGE_SUPERTUX
 	depends on BR2_PACKAGE_HAS_LIBGL # libglew
 	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_XORG7 # libglew, SDL2 OpenGL (GLX)
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11 gcc attributes noreturn
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_6 # C++14
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # openal
 	depends on BR2_USE_MMU # SDL2 OpenGL (GLX)
 	depends on !BR2_STATIC_LIBS # SDL2
@@ -12,11 +12,14 @@ config BR2_PACKAGE_SUPERTUX
 	select BR2_PACKAGE_BOOST
 	select BR2_PACKAGE_BOOST_DATE_TIME
 	select BR2_PACKAGE_BOOST_FILESYSTEM
+	select BR2_PACKAGE_BOOST_LOCALE
 	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBGLEW
 	select BR2_PACKAGE_LIBGLU # GL/glu.h
 	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_LIBPNG
 	select BR2_PACKAGE_LIBVORBIS
 	select BR2_PACKAGE_OPENAL
 	select BR2_PACKAGE_PHYSFS
@@ -30,10 +33,10 @@ config BR2_PACKAGE_SUPERTUX
 
 	  http://supertux.github.io/
 
-comment "supertux needs OpenGL and a toolchain w/ C++, gcc >= 4.8, NPTL, dynamic library, wchar"
+comment "supertux needs OpenGL and a toolchain w/ C++, gcc >= 6, NPTL, dynamic library, wchar"
 	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
 	depends on BR2_PACKAGE_XORG7
 	depends on BR2_USE_MMU
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_PACKAGE_HAS_LIBGL || \
-		!BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_6 || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || \
 		BR2_STATIC_LIBS || !BR2_USE_WCHAR

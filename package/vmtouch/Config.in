@@ -1,0 +1,11 @@
+config BR2_PACKAGE_VMTOUCH
+	bool "vmtouch"
+	depends on BR2_USE_MMU # fork()
+	help
+	  vmtouch is a tool for learning about and controlling
+	  the file system cache of unix and unix-like systems. It
+	  can discover which files the OS is caching, tell the OS
+	  to cache or evict some files or regions of files, lock
+	  files into memory so the OS won't evict them, and more.
+
+	  https://hoytech.com/vmtouch/

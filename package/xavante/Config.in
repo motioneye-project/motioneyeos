@@ -1,9 +1,8 @@
 config BR2_PACKAGE_XAVANTE
 	bool "xavante"
-	# Runtime dependency only
-	select BR2_PACKAGE_COPAS
-	select BR2_PACKAGE_LUAFILESYSTEM
-	select BR2_PACKAGE_LUASOCKET
+	select BR2_PACKAGE_COPAS # runtime
+	select BR2_PACKAGE_LUAFILESYSTEM # runtime
+	select BR2_PACKAGE_LUASOCKET # runtime
 	help
 	  Xavante is a Lua HTTP 1.1 Web server that uses a modular
 	  architecture based on URI mapped handlers. Xavante currently
@@ -11,4 +10,4 @@ config BR2_PACKAGE_XAVANTE
 	  Those are used for general files, URI remapping and WSAPI
 	  applications respectively.
 
-	  http://keplerproject.github.com/xavante/
+	  http://keplerproject.github.io/xavante

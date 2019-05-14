@@ -86,6 +86,12 @@ If the package bundles a _rebar_ utility, but can use the generic
 * +ERLANG_FOOBAR_REBAR_ENV+, to specify additional environment
   variables to pass to the _rebar_ utility.
 
+* +ERLANG_FOOBAR_KEEP_DEPENDENCIES+, to keep the dependencies
+  described in the rebar.config file. Valid values are +YES+ or +NO+
+  (the default). Unless this variable is set to +YES+, the _rebar_
+  infrastructure removes such dependencies in a post-patch hook to
+  ensure rebar does not download nor compile them.
+
 With the rebar infrastructure, all the steps required to build
 and install the packages are already defined, and they generally work
 well for most rebar-based packages. However, when required, it is

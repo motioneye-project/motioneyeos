@@ -1,0 +1,33 @@
+From da08587d9a57b45cc8a76cb31390c79c1199959b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 10 Jan 2019 10:13:03 +0100
+Subject: [PATCH] atk/meson.build: replace shared_library by library
+
+Use library instead of shared_library to allow the user to build a
+static libatk library
+
+Fixes:
+ - http://autobuild.buildroot.org/results/347a37dd2585974bdbf3bf99158e8ee9127d1202
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://gitlab.gnome.org/GNOME/atk/merge_requests/11]
+---
+ atk/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/atk/meson.build b/atk/meson.build
+index 69ba6c5..0ad67e5 100644
+--- a/atk/meson.build
++++ b/atk/meson.build
+@@ -122,7 +122,7 @@ endif
+ 
+ atk_inc = include_directories('.')
+ 
+-libatk = shared_library('atk-@0@'.format(atk_api_version),
++libatk = library('atk-@0@'.format(atk_api_version),
+                         sources: atk_sources + atk_enums + atk_marshals,
+                         soversion: atk_soversion,
+                         version: atk_libversion,
+-- 
+2.14.1
+

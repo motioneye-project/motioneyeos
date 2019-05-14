@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PERL_NET_DNS
 	bool "perl-net-dns"
-	select BR2_PACKAGE_PERL_DIGEST_HMAC
+	select BR2_PACKAGE_PERL_DIGEST_HMAC # runtime
 	help
-	  Perl Interface to the Domain Name System
+	  Perl Interface to the Domain Name System.
 
 	  https://metacpan.org/release/Net-DNS

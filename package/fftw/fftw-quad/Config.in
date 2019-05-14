@@ -1,0 +1,7 @@
+config BR2_PACKAGE_FFTW_QUAD
+	bool "fftw-quad"
+	# quad-precision needs to have a gcc with libquadmath
+	depends on BR2_TOOLCHAIN_HAS_LIBQUADMATH && BR2_USE_WCHAR
+	help
+	  Compile fftw in quadruple precision, i.e. use '__float128' for
+	  floating point type.

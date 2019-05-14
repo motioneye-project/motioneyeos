@@ -1,0 +1,140 @@
+From 145b88d0c1a71ba6f4d216768388e0c5853d3990 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Tue, 5 Feb 2019 10:34:55 -0600
+Subject: [PATCH] Support for libressl coexisting with openssl 1.1.x
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+libressl needs to not follow the 1.1.x path of APIs
+
+Resolves build failure like
+In file included from svc.c:28:0:
+pound.h:348:3: warning: data definition has no type or storage class
+   DEFINE_LHASH_OF(TABNODE);
+   ^~~~~~~~~~~~~~~
+pound.h:348:3: warning: type defaults to ‘int’ in declaration of ‘DEFINE_LHASH_OF’ [-Wimplicit-int]
+svc.c: In function ‘t_add’:
+svc.c:69:15: warning: implicit declaration of function ‘lh_TABNODE_insert’; did you mean ‘lh_OBJ_NAME_insert’? [-Wimplicit-function-declaration]
+     if((old = lh_TABNODE_insert(tab, t)) != NULL) {
+               ^~~~~~~~~~~~~~~~~
+               lh_OBJ_NAME_insert
+
+Upstream: Site was down when I tried (http://www.apsis.ch/pound)
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ config.c |  2 +-
+ svc.c    | 20 ++++++++++----------
+ 2 files changed, 11 insertions(+), 11 deletions(-)
+
+diff --git a/config.c b/config.c
+index 58b928e..3ad7fbb 100644
+--- a/config.c
++++ b/config.c
+@@ -574,7 +574,7 @@ parse_service(const char *svc_name)
+     pthread_mutex_init(&res->mut, NULL);
+     if(svc_name)
+         strncpy(res->name, svc_name, KEY_SIZE);
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     if((res->sessions = lh_TABNODE_new(t_hash, t_cmp)) == NULL)    
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     if((res->sessions = LHM_lh_new(TABNODE, t)) == NULL)
+diff --git a/svc.c b/svc.c
+index f125be4..8a2f62c 100644
+--- a/svc.c
++++ b/svc.c
+@@ -27,7 +27,7 @@
+ 
+ #include    "pound.h"
+ 
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+ # define TABNODE_GET_DOWN_LOAD(t) lh_TABNODE_get_down_load(t)
+ # define TABNODE_SET_DOWN_LOAD(t,n) lh_TABNODE_set_down_load(t,n)
+ #else
+@@ -65,7 +65,7 @@ t_add(LHASH_OF(TABNODE) *const tab, const char *key, const void *content, const
+     }
+     memcpy(t->content, content, cont_len);
+     t->last_acc = time(NULL);
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     if((old = lh_TABNODE_insert(tab, t)) != NULL) {
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     if((old = LHM_lh_insert(TABNODE, tab, t)) != NULL) {
+@@ -91,7 +91,7 @@ t_find(LHASH_OF(TABNODE) *const tab, char *const key)
+     TABNODE t, *res;
+ 
+     t.key = key;
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     if((res = lh_TABNODE_retrieve(tab, &t)) != NULL) {
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     if((res = (TABNODE *)LHM_lh_retrieve(TABNODE, tab, &t)) != NULL) {
+@@ -113,7 +113,7 @@ t_remove(LHASH_OF(TABNODE) *const tab, char *const key)
+     TABNODE t, *res;
+ 
+     t.key = key;
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     if((res = lh_TABNODE_delete(tab, &t)) != NULL) {    
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     if((res = LHM_lh_delete(TABNODE, tab, &t)) != NULL) {
+@@ -140,7 +140,7 @@ t_old_doall_arg(TABNODE *t, ALL_ARG *a)
+     TABNODE *res;
+ 
+     if(t->last_acc < a->lim)
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+         if((res = lh_TABNODE_delete(a->tab, t)) != NULL) {	    
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+         if((res = LHM_lh_delete(TABNODE, a->tab, t)) != NULL) {
+@@ -160,7 +160,7 @@ IMPLEMENT_LHASH_DOALL_ARG_FN(t_old, TABNODE, ALL_ARG)
+ IMPLEMENT_LHASH_DOALL_ARG_FN(t_old, TABNODE *, ALL_ARG *)
+ #endif
+ 
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+ IMPLEMENT_LHASH_DOALL_ARG(TABNODE,ALL_ARG);
+ #endif
+ 
+@@ -177,7 +177,7 @@ t_expire(LHASH_OF(TABNODE) *const tab, const time_t lim)
+     a.lim = lim;
+     down_load = TABNODE_GET_DOWN_LOAD(tab);
+     TABNODE_SET_DOWN_LOAD(tab, 0);
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     lh_TABNODE_doall_ALL_ARG(tab, t_old_doall_arg, &a);
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     LHM_lh_doall_arg(TABNODE, tab, LHASH_DOALL_ARG_FN(t_old), ALL_ARG, &a);
+@@ -194,7 +194,7 @@ t_cont_doall_arg(TABNODE *t, ALL_ARG *arg)
+     TABNODE *res;
+ 
+     if(memcmp(t->content, arg->content, arg->cont_len) == 0)
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+         if((res = lh_TABNODE_delete(arg->tab, t)) != NULL) {
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+         if((res = LHM_lh_delete(TABNODE, arg->tab, t)) != NULL) {
+@@ -228,7 +228,7 @@ t_clean(LHASH_OF(TABNODE) *const tab, void *const content, const size_t cont_len
+     a.cont_len = cont_len;
+     down_load = TABNODE_GET_DOWN_LOAD(tab);
+     TABNODE_SET_DOWN_LOAD(tab, 0);
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     lh_TABNODE_doall_ALL_ARG(tab, t_cont_doall_arg, &a);
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     LHM_lh_doall_arg(TABNODE, tab, LHASH_DOALL_ARG_FN(t_cont), ALL_ARG, &a);
+@@ -1514,7 +1514,7 @@ dump_sess(const int control_sock, LHASH_OF(TABNODE) *const sess, BACKEND *const
+ 
+     a.control_sock = control_sock;
+     a.backends = backends;
+-#if OPENSSL_VERSION_NUMBER >= 0x10100000L
++#if OPENSSL_VERSION_NUMBER >= 0x10100000L && !defined LIBRESSL_VERSION_NUMBER
+     lh_TABNODE_doall_DUMP_ARG(sess, t_dump_doall_arg, &a);
+ #elif OPENSSL_VERSION_NUMBER >= 0x10000000L
+     LHM_lh_doall_arg(TABNODE, sess, LHASH_DOALL_ARG_FN(t_dump), DUMP_ARG, &a);
+-- 
+1.9.1
+

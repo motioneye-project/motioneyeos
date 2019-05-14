@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_AIOHTTP_JINJA2
+	bool "python-aiohttp-jinja2"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_AIOHTTP # runtime
+	select BR2_PACKAGE_PYTHON_JINJA2 # runtime
+	help
+	  Jinja2 template renderer for aiohttp.web (http server for
+	  asyncio).
+
+	  https://github.com/aio-libs/aiohttp_jinja2/

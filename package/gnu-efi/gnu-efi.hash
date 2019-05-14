@@ -1,5 +1,6 @@
 # From http://sourceforge.net/projects/gnu-efi/files
-md5 46f633758a8a37db9fd6909fe270c26b gnu-efi-3.0.6.tar.bz2
-sha1 9f0f75b64c84423f3386da6f3200f5ed7471d9cb gnu-efi-3.0.6.tar.bz2
+md5 32af17b917545a693e549af2439c4a99 gnu-efi-3.0.9.tar.bz2
+sha1 9b39e06206e63eba56d59a648a7e4f20aead6962 gnu-efi-3.0.9.tar.bz2
 # Locally computed
-sha256 21515902d80fbea23328a61d70d3d51a47204abd1507ebfa27550a7b9bf22c91 gnu-efi-3.0.6.tar.bz2
+sha256 6715ea7eae1c7e4fc5041034bd3f107ec2911962ed284a081e491646b12277f0  gnu-efi-3.0.9.tar.bz2
+sha256 42d352e9c28dd446fd0209cd6f75588c8e41f0934540bb382bbd61c752360265  README.efilib

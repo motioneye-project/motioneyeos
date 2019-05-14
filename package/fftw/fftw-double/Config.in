@@ -1,0 +1,5 @@
+config BR2_PACKAGE_FFTW_DOUBLE
+	bool "fftw-double"
+	help
+	  Compile fftw in double precision (the default), i.e. use
+	  'double' for floating point type.

@@ -3,6 +3,7 @@ config BR2_PACKAGE_MOTION
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBMICROHTTPD
 	help
 	  Motion is a program that monitors the video signal from
 	  cameras. It is able to detect if a significant part of

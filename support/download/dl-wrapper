@@ -4,8 +4,6 @@
 # Its role is to ensure atomicity when saving downloaded files
 # back to BR2_DL_DIR, and not clutter BR2_DL_DIR with partial,
 # failed downloads.
-#
-# Call it with -h to see some help.
 
 # To avoid cluttering BR2_DL_DIR, we download to a trashable
 # location, namely in $(BUILD_DIR).
@@ -27,9 +25,8 @@ main() {
     local -a uris
 
     # Parse our options; anything after '--' is for the backend
-    while getopts ":hc:d:D:o:n:N:H:rf:u:q" OPT; do
+    while getopts ":c:d:D:o:n:N:H:rf:u:q" OPT; do
         case "${OPT}" in
-        h)  help; exit 0;;
         c)  cset="${OPTARG}";;
         d)  dl_dir="${OPTARG}";;
         D)  old_dl_dir="${OPTARG}";;
@@ -96,7 +93,7 @@ main() {
         esac
         uri=${uri#*+}
 
-        urlencode=${backend#*|}
+        urlencode=${backend_urlencode#*|}
         # urlencode must be "urlencode"
         [ "${urlencode}" != "urlencode" ] && urlencode=""
 
@@ -211,48 +208,6 @@ main() {
     fi
 
     return ${rc}
-}
-
-help() {
-    cat <<_EOF_
-NAME
-    ${my_name} - download wrapper for Buildroot
-
-SYNOPSIS
-    ${my_name} [OPTION]... -- [BACKEND OPTION]...
-
-DESCRIPTION
-    Wrapper script around different download mechanisms. Ensures that
-    concurrent downloads do not conflict, that partial downloads are
-    properly evicted without leaving temporary files, and that access
-    rights are maintained.
-
-    -h  This help text.
-
-    -u URIs
-        The URI to get the file from, the URI must respect the format given in
-        the example.
-        You may give as many '-u URI' as you want, the script will stop at the
-        frist successful download.
-
-        Example: backend+URI; git+http://example.com or http+http://example.com
-
-    -o FILE
-        Store the downloaded archive in FILE.
-
-    -H FILE
-        Use FILE to read hashes from, and check them against the downloaded
-        archive.
-
-  Exit status:
-    0   if OK
-    !0  in case of error
-
-ENVIRONMENT
-
-    BUILD_DIR
-        The path to Buildroot's build dir
-_EOF_
 }
 
 trace()  { local msg="${1}"; shift; printf "%s: ${msg}" "${my_name}" "${@}"; }

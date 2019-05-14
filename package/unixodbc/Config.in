@@ -1,8 +1,12 @@
 config BR2_PACKAGE_UNIXODBC
 	bool "unixodbc"
+	depends on !BR2_STATIC_LIBS # dlopen()
 	help
 	  The unixODBC Project goals are to develop and promote
 	  unixODBC to be the definitive standard for ODBC on non MS
 	  Windows platforms.
 
 	  http://www.unixodbc.org
+
+comment "unixodbc needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

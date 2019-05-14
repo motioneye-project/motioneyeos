@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2014-May/002438.html
-sha256	31c8910f54eb175a8a74a60e7662697467e21a8bf948220a6048a93924b3f66c	xcursorgen-1.0.6.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-January/002936.html
+md5 25cc7ca1ce5dcbb61c2b471c55e686b5  xcursorgen-1.0.7.tar.bz2
+sha1 109367eb23b0ad52cf5de15f50c02ebe872698ae  xcursorgen-1.0.7.tar.bz2
+sha256 35b6f844b24f1776e9006c880a745728800764dbe3b327a128772b4610d8eb3d  xcursorgen-1.0.7.tar.bz2
+sha512 bd13ad23691d3daa2d5dcdc5902cf62e3dcb97a0289aff362e6cd85866a1d8cafb64f98800a75bfb4cf1f3c76244ca20201847dff594543d136d0abaec7011d2  xcursorgen-1.0.7.tar.bz2
+# Locally computed
+sha256 8c773336b654442ac8018715a52be1a8254895c57c898d5387016e9488cc2009  COPYING

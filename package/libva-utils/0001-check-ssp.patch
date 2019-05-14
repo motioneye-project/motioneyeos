@@ -1,0 +1,145 @@
+From bdcf4d90f618f497311c348f984e005924cb3def Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 29 Jul 2018 20:58:06 +0200
+Subject: [PATCH] Check for -fstack-protector
+
+Not all toolchains provide support for -fstack-protector. This patch
+provides a configure check to avoid build errors like
+
+/home/buildroot/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/x86_64-buildroot-linux-uclibc/6.4.0/../../../../x86_64-buildroot-linux-uclibc/bin/ld: cannot find -lssp_nonshared
+/home/buildroot/buildroot/output/host/opt/ext-toolchain/bin/../lib/gcc/x86_64-buildroot-linux-uclibc/6.4.0/../../../../x86_64-buildroot-linux-uclibc/bin/ld: cannot find -lssp
+
+Patch sent upstream as PR 125.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac             | 16 ++++++++++++++++
+ decode/Makefile.am       |  5 ++++-
+ encode/Makefile.am       |  5 ++++-
+ putsurface/Makefile.am   |  5 ++++-
+ vainfo/Makefile.am       |  5 ++++-
+ videoprocess/Makefile.am |  5 ++++-
+ 6 files changed, 36 insertions(+), 5 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index be2e00d..cfa508a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -129,6 +129,22 @@ if test "$ac_cv_have_gnuc_visibility_attribute" = "yes"; then
+               [Defined to 1 if GCC visibility attribute is supported])
+ fi
+ 
++# Check for -fstack-protector
++ssp_cc=yes
++if test "X$CC-cc" != "X"; then
++    AC_MSG_CHECKING([whether ${CC-cc} accepts -fstack-protector])
++    ssp_old_cflags="$CFLAGS"
++    CFLAGS="$CFLAGS -fstack-protector"
++    AC_LINK_IFELSE([AC_LANG_PROGRAM([[]], [[alloca(100);]])], [], [ssp_cc=no])
++    AC_MSG_RESULT([$ssp_cc])
++    if test "X$ssp_cc" = "Xno"; then
++        CFLAGS="$ssp_old_cflags"
++    else
++        AC_DEFINE([ENABLE_SSP_CC], 1, [Define if SSP C support is enabled.])
++    fi
++fi
++AM_CONDITIONAL(USE_SSP, test "$ssp_cc" = "yes")
++
+ # Check for DRM (mandatory)
+ LIBDRM_VERSION=libdrm_version
+ PKG_CHECK_MODULES([DRM], [libdrm >= $LIBDRM_VERSION])
+diff --git a/decode/Makefile.am b/decode/Makefile.am
+index febc50d..8ea9252 100644
+--- a/decode/Makefile.am
++++ b/decode/Makefile.am
+@@ -24,11 +24,14 @@ bin_PROGRAMS = mpeg2vldemo loadjpeg
+ 
+ AM_CPPFLAGS = \
+ 	-Wall					\
+-	-fstack-protector			\
+ 	$(LIBVA_CFLAGS)				\
+ 	-I$(top_srcdir)/common			\
+ 	$(NULL)
+ 
++if USE_SSP
++AM_CPPFLAGS += -fstack-protector
++endif
++
+ TEST_LIBS = \
+ 	$(LIBVA_LIBS)				\
+ 	$(top_builddir)/common/libva-display.la	\
+diff --git a/encode/Makefile.am b/encode/Makefile.am
+index 8298b39..c107007 100644
+--- a/encode/Makefile.am
++++ b/encode/Makefile.am
+@@ -25,10 +25,13 @@ noinst_PROGRAMS = svctenc
+ 
+ AM_CPPFLAGS = \
+ 	-Wall				\
+-	-fstack-protector		\
+ 	$(LIBVA_CFLAGS) 		\
+ 	$(NULL)
+ 
++if USE_SSP
++AM_CPPFLAGS += -fstack-protector
++endif
++
+ h264encode_SOURCES	= h264encode.c
+ h264encode_CFLAGS	= -I$(top_srcdir)/common -g
+ h264encode_LDADD	= \
+diff --git a/putsurface/Makefile.am b/putsurface/Makefile.am
+index e7b62a1..10ae63e 100644
+--- a/putsurface/Makefile.am
++++ b/putsurface/Makefile.am
+@@ -26,9 +26,12 @@ TEST_CFLAGS = \
+ 	$(LIBVA_CFLAGS)			\
+ 	-I$(top_srcdir)/common		\
+ 	-Wall				\
+-	-fstack-protector		\
+ 	$(NULL)
+ 
++if USE_SSP
++TEST_CFLAGS += -fstack-protector
++endif
++
+ TEST_LIBS = \
+ 	$(LIBVA_LIBS)		\
+ 	$(top_builddir)/common/libva-display.la	\
+diff --git a/vainfo/Makefile.am b/vainfo/Makefile.am
+index aff201f..e59f466 100644
+--- a/vainfo/Makefile.am
++++ b/vainfo/Makefile.am
+@@ -27,9 +27,12 @@ vainfo_cflags = \
+ 	$(LIBVA_CFLAGS) \
+ 	-DLIBVA_VERSION_S="\"$(LIBVA_VERSION)\"" \
+ 	-Wall \
+-	-fstack-protector \
+ 	$(NULL)
+ 
++if USE_SSP
++vainfo_cflags += -fstack-protector
++endif
++
+ vainfo_libs = \
+        	$(LIBVA_LIBS) \
+ 	$(top_builddir)/common/libva-display.la	\
+diff --git a/videoprocess/Makefile.am b/videoprocess/Makefile.am
+index eb79bc3..448da7d 100644
+--- a/videoprocess/Makefile.am
++++ b/videoprocess/Makefile.am
+@@ -24,11 +24,14 @@ bin_PROGRAMS = vavpp
+ 
+ AM_CPPFLAGS = \
+ 	-Wall					\
+-	-fstack-protector			\
+ 	$(LIBVA_CFLAGS)				\
+ 	-I$(top_srcdir)/common			\
+ 	$(NULL)
+ 
++if USE_SSP
++AM_CPPFLAGS += -fstack-protector
++endif
++
+ TEST_LIBS = \
+ 	$(LIBVA_LIBS)				\
+ 	$(top_builddir)/common/libva-display.la	\

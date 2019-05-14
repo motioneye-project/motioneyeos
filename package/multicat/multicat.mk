@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MULTICAT_VERSION = 2.2
+MULTICAT_VERSION = 2.3
 MULTICAT_SOURCE = multicat-$(MULTICAT_VERSION).tar.bz2
 MULTICAT_SITE = https://get.videolan.org/multicat/$(MULTICAT_VERSION)
 MULTICAT_LICENSE = GPL-2.0+

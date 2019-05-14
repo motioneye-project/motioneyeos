@@ -46,7 +46,7 @@ LIRC_TOOLS_DEPENDENCIES += libftdi1
 endif
 
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
-LIRC_TOOLS_DEPENDENCIES += python3 host-python-setuptools
+LIRC_TOOLS_DEPENDENCIES += python3 host-python3-setuptools
 LIRC_TOOLS_MAKE_ENV += SETUPTOOLS_ENV="$(PKG_PYTHON_SETUPTOOLS_ENV)"
 endif
 

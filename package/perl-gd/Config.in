@@ -6,7 +6,7 @@ config BR2_PACKAGE_PERL_GD
 	select BR2_PACKAGE_FREETYPE
 	select BR2_PACKAGE_GD
 	help
-	  Perl interface to the gd2 graphics library
+	  Perl interface to the gd2 graphics library.
 
 	  https://metacpan.org/release/GD
 

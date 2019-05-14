@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MONOLITE_VERSION = 1051200002
+MONOLITE_VERSION = 1051400005
 MONOLITE_SITE = http://download.mono-project.com/monolite
 MONOLITE_SOURCE = monolite-linux-$(MONOLITE_VERSION)-latest.tar.gz
 MONOLITE_LICENSE = LGPL-2.0 or commercial

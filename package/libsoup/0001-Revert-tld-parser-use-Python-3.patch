@@ -1,0 +1,27 @@
+From 015926c80fa3e9704f05cbc1ad17f0a877f8de09 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sat, 1 Sep 2018 15:39:04 +0200
+Subject: [PATCH] Revert "tld-parser: use Python 3"
+
+This reverts commit 4b924e573da307436169d5ef7e04c0ab85b36ef9. The
+script runs just fine with Python 2.x, there is no reason to enforce
+using Python 3.x.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ libsoup/tld-parser.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libsoup/tld-parser.py b/libsoup/tld-parser.py
+index a743471a..5d9d2ba5 100755
+--- a/libsoup/tld-parser.py
++++ b/libsoup/tld-parser.py
+@@ -1,4 +1,4 @@
+-#!/usr/bin/env python3
++#!/usr/bin/env python
+ 
+ # Generate tld rules
+ # Copyright (C) 2012 Red Hat, Inc.
+-- 
+2.14.4
+

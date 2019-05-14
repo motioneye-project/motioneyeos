@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_DEVEL_STACKTRACE
+	bool "perl-devel-stacktrace"
+	help
+	  An object representing a stack trace.
+
+	  http://metacpan.org/release/Devel-StackTrace

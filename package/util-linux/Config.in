@@ -53,7 +53,7 @@ config BR2_PACKAGE_UTIL_LINUX_BINARIES
 	help
 	  Install the basic set of util-linux binaries.
 
-	  blkdiscard, blkid, blockdev, chcpu, col, colcrt, colrm,
+	  blkdiscard, blkid, blockdev, chcpu, choom, col, colcrt, colrm,
 	  column, ctrlaltdel, dmesg, fdisk, fincore, findfs, findmnt,
 	  flock, fsfreeze, fstrim, getopt, hexdump, ipcmk, isosize,
 	  ldattach, look, lsblk, lscpu, lsipc, lslocks, lsns, mcookie,

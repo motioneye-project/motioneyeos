@@ -10,6 +10,7 @@ PERL_NET_SSLEAY_SITE = $(BR2_CPAN_MIRROR)/authors/id/M/MI/MIKEM
 PERL_NET_SSLEAY_DEPENDENCIES = openssl
 PERL_NET_SSLEAY_LICENSE = OpenSSL
 PERL_NET_SSLEAY_LICENSE_FILES = LICENSE
+PERL_NET_SSLEAY_DISTNAME = Net-SSLeay
 
 # Try as hard as possible to remedy to the brain-damage their build-system
 # suffers from: don't search for openssl, they pick the host-system one.

@@ -1,0 +1,45 @@
+From 4ccef40918a539905a2951bfb81cf8dba4a245c6 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Wed, 2 Jan 2019 18:15:50 +0100
+Subject: [PATCH] Revert "main: assume --modversion insted of --version if
+ other flags or module names are provided"
+
+This reverts commit 12a0eb124cea85586e57f33c91a1e4c73459eef6, as it
+causes pkg-config to assume --modversion is used when something as
+simple as 'pkg-config --static --version' is used, leading to a
+failure instead of the expected behavior: the one of "pkg-config
+--version".
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ cli/main.c | 14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
+
+diff --git a/cli/main.c b/cli/main.c
+index b52cc85..c5acc10 100644
+--- a/cli/main.c
++++ b/cli/main.c
+@@ -955,18 +955,8 @@ main(int argc, char *argv[])
+ 
+ 	if ((want_flags & PKG_VERSION) == PKG_VERSION)
+ 	{
+-		if (argc > 2)
+-		{
+-			fprintf(stderr, "%s: --version specified with other options or module names, assuming --modversion.\n", argv[0]);
+-
+-			want_flags &= ~PKG_VERSION;
+-			want_flags |= PKG_MODVERSION;
+-		}
+-		else
+-		{
+-			version();
+-			return EXIT_SUCCESS;
+-		}
++		version();
++		return EXIT_SUCCESS;
+ 	}
+ 
+ 	if ((want_flags & PKG_HELP) == PKG_HELP)
+-- 
+2.20.1
+

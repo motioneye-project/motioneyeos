@@ -1,0 +1,43 @@
+From e3882a7d6c2e47731c0435d0faa3594041d58a2c Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sun, 12 Aug 2018 15:12:29 +0200
+Subject: [PATCH] Fix ffmpeg build for mips
+
+Backported from upstream master branch:
+https://github.com/xbmc/xbmc/commit/71e09dd1ac66059e31e6240352da7091d820ef83
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ tools/depends/target/ffmpeg/CMakeLists.txt | 2 +-
+ tools/depends/target/ffmpeg/Makefile       | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/depends/target/ffmpeg/CMakeLists.txt b/tools/depends/target/ffmpeg/CMakeLists.txt
+index 0a9e9d38ea..fda6b0cac4 100644
+--- a/tools/depends/target/ffmpeg/CMakeLists.txt
++++ b/tools/depends/target/ffmpeg/CMakeLists.txt
+@@ -63,7 +63,7 @@ endif()
+ if(CPU MATCHES arm OR CORE_SYSTEM_NAME STREQUAL rbpi)
+   list(APPEND ffmpeg_conf --enable-pic --disable-armv5te --disable-armv6t2)
+ elseif(CPU MATCHES mips)
+-  list(APPEND ffmpeg_conf --disable-mips32r2 --disable-mipsdspr1 --disable-mipsdspr2)
++  list(APPEND ffmpeg_conf --disable-mips32r2 --disable-mipsdsp --disable-mipsdspr2)
+ endif()
+ 
+ find_package(GnuTls)
+diff --git a/tools/depends/target/ffmpeg/Makefile b/tools/depends/target/ffmpeg/Makefile
+index ea1113d293..098f6c0c14 100644
+--- a/tools/depends/target/ffmpeg/Makefile
++++ b/tools/depends/target/ffmpeg/Makefile
+@@ -58,7 +58,7 @@ ifeq ($(findstring arm, $(CPU)), arm)
+   ffmpg_config += --enable-pic --disable-armv5te --disable-armv6t2
+ endif
+ ifeq ($(findstring mips, $(CPU)), mips)
+-  ffmpg_config += --disable-mips32r2 --disable-mipsdspr1 --disable-mipsdspr2
++  ffmpg_config += --disable-mips32r2 --disable-mipsdsp --disable-mipsdspr2
+ endif
+ ifeq ($(Configuration), Release)
+   ffmpg_config += --disable-debug
+-- 
+2.18.0
+

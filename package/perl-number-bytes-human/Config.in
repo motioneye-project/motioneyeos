@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_NUMBER_BYTES_HUMAN
+	bool "perl-number-bytes-human"
+	help
+	  Convert byte count to human readable format.
+
+	  https://metacpan.org/release/Number-Bytes-Human

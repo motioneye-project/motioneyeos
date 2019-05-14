@@ -1,0 +1,86 @@
+# Configuration for Gitlab-CI.
+# Builds appear on https://gitlab.com/buildroot.org/buildroot/pipelines
+# The .gitlab-ci.yml file is generated from .gitlab-ci.yml.in.
+# It needs to be regenerated every time a defconfig is added, using
+# "make .gitlab-ci.yml".
+
+image: buildroot/base:20180318.1724
+
+.defconfig_script:
+    script:
+        - echo 'Configure Buildroot'
+        - make ${CI_JOB_NAME}
+        - echo 'Build buildroot'
+        - |
+            make > >(tee build.log |grep '>>>') 2>&1 || {
+                echo 'Failed build last output'
+                tail -200 build.log
+                exit 1
+            }
+
+check-gitlab-ci.yml:
+    script:
+        - mv .gitlab-ci.yml .gitlab-ci.yml.orig
+        - make .gitlab-ci.yml
+        - diff -u .gitlab-ci.yml.orig .gitlab-ci.yml
+
+check-DEVELOPERS:
+    # get-developers should print just "No action specified"; if it prints
+    # anything else, it's a parse error.
+    # The initial ! is removed by YAML so we need to quote it.
+    script:
+        - "! utils/get-developers | grep -v 'No action specified'"
+
+check-flake8:
+    before_script:
+        # Help flake8 to find the Python files without .py extension.
+        - find * -type f -name '*.py' > files.txt
+        - find * -type f -print0 | xargs -0 file | grep 'Python script' | cut -d':' -f1 >> files.txt
+        - sort -u files.txt | tee files.processed
+    script:
+        - python -m flake8 --statistics --count $(cat files.processed)
+    after_script:
+        - wc -l files.processed
+
+check-package:
+    script:
+        - make check-package
+
+.defconfig:
+    extends: .defconfig_script
+    # Running the defconfigs for every push is too much, so limit to
+    # explicit triggers through the API.
+    only:
+        - triggers
+        - tags
+        - /-defconfigs$/
+    artifacts:
+        when: always
+        expire_in: 2 weeks
+        paths:
+            - .config
+            - build.log
+            - output/images/
+            - output/build/build-time.log
+            - output/build/packages-file-list.txt
+            - output/build/*/.config
+
+.runtime_test:
+    # Running the runtime tests for every push is too much, so limit to
+    # explicit triggers through the API.
+    only:
+        - triggers
+        - tags
+        - /-runtime-tests$/
+    # Keep build directories so the rootfs can be an artifact of the job. The
+    # runner will clean up those files for us.
+    # Multiply every emulator timeout by 10 to avoid sporadic failures in
+    # elastic runners.
+    script: ./support/testing/run-tests -o test-output/ -d test-dl/ -k --timeout-multiplier 10 ${CI_JOB_NAME}
+    artifacts:
+        when: always
+        expire_in: 2 weeks
+        paths:
+            - test-output/*.log
+            - test-output/*/.config
+            - test-output/*/images/*

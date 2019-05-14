@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-I2PD_VERSION = 2.19.0
+I2PD_VERSION = 2.22.0
 I2PD_SITE = $(call github,PurpleI2P,i2pd,$(I2PD_VERSION))
 I2PD_LICENSE = BSD-3-Clause
 I2PD_LICENSE_FILES = LICENSE
@@ -20,6 +20,10 @@ I2PD_CONF_OPTS += -DWITH_GUI=OFF
 # disable a try_run() call in the FindThreads tests, which caused a
 # build failure when cross-compiling.
 I2PD_CONF_OPTS += -DTHREADS_PTHREAD_ARG=OFF
+
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+I2PD_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -latomic"
+endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
 I2PD_CONF_OPTS += -DWITH_STATIC=ON

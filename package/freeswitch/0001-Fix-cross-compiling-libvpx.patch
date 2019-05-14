@@ -1,0 +1,29 @@
+Fix cross-compiling libvpx
+
+Freeswitch since version 1.6.7 only uses an in-tree-version of libvpx:
+https://freeswitch.org/fisheye/changelog/freeswitch?cs=febe0f8dacea2d2a31902b3dc469be757f8c3c4d
+
+It is not possible to use an external version of libvpx anymore.
+Unfortunately the freeswitch build system has no support for cross-
+compiling libvpx so we need to patch Makefile to pass CROSS from
+package/freeswitch/freeswitch.mk and add target=generic-gnu as
+configure parameter:
+https://freeswitch.org/stash/projects/FS/repos/freeswitch/browse/libs/libvpx/README#110
+
+And yes, autoreconf is also broken, so we patch Makefile.in instead
+of Makefile.am.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+
+diff -uNr freeswitch-1.6.7.org/Makefile.in freeswitch-1.6.7/Makefile.in
+--- freeswitch-1.6.7.org/Makefile.in	2016-04-01 18:09:54.000000000 +0200
++++ freeswitch-1.6.7/Makefile.in	2016-04-22 20:11:37.938961730 +0200
+@@ -4025,7 +4025,7 @@
+ 	cd libs/libzrtp && $(MAKE)
+ 
+ libs/libvpx/Makefile:
+-	cd libs/libvpx && CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --enable-pic --disable-docs --disable-examples --disable-install-bins --disable-install-srcs --disable-unit-tests --size-limit=16384x16384 --extra-cflags="$(VISIBILITY_FLAG)"
++	cd libs/libvpx && CROSS=$(CROSS) CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --target=generic-gnu --enable-pic --disable-docs --disable-examples --disable-install-bins --disable-install-srcs --disable-unit-tests --size-limit=16384x16384 --extra-cflags="$(VISIBILITY_FLAG)"
+ 
+ libs/libvpx/libvpx.a: libs/libvpx/Makefile
+ 	@cd libs/libvpx && $(MAKE)

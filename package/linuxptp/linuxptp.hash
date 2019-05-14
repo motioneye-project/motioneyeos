@@ -1,2 +1,9 @@
+# From https://sourceforge.net/projects/linuxptp/files/v2.0/
+sha1 592ca42c6146a79c1fcabed7c19fa7af4803d4f6  linuxptp-2.0.tgz
+md5 d8bb7374943bb747db7786ac26f17f11  linuxptp-2.0.tgz
+
 # Locally computed:
-sha256 d0ccc4591966e21819cdc248765ebbe02456bc8ca37845eb7c23c2d1ff9bcf6b  linuxptp-303b08cbf55096aba55bd08a314e0701e5c33482.tar.gz
+sha256 0a24d9401e87d4af023d201e234d91127d82c350daad93432106284aa9459c7d  linuxptp-2.0.tgz
+
+# Hash for license file:
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING

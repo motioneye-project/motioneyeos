@@ -102,6 +102,7 @@ define $(2)_CONFIGURE_CMDS
 			LD="$$(TARGET_CC)" \
 			LDDLFLAGS="-shared $$(TARGET_LDFLAGS)" \
 			LDFLAGS="$$(TARGET_LDFLAGS)" \
+			PERL_ARCHLIB=$$(STAGING_DIR)/usr/lib/perl5/$$(PERL_VERSION)/$$(PERL_ARCHNAME) \
 			DESTDIR=$$(TARGET_DIR) \
 			INSTALLDIRS=vendor \
 			INSTALLVENDORLIB=/usr/lib/perl5/site_perl/$$(PERL_VERSION) \
@@ -147,7 +148,6 @@ define $(2)_BUILD_CMDS
 		$$(PERL_RUN) Build $$($(2)_BUILD_OPTS) build; \
 	else \
 		$$(MAKE1) \
-			PERL_INC=$$(STAGING_DIR)/usr/lib/perl5/$$(PERL_VERSION)/$$(PERL_ARCHNAME)/CORE \
 			FIXIN=: \
 			$$($(2)_BUILD_OPTS) pure_all; \
 	fi
@@ -196,6 +196,14 @@ endif
 # Call the generic package infrastructure to generate the necessary
 # make targets
 $(call inner-generic-package,$(1),$(2),$(3),$(4))
+
+# Upgrade helper
+ifneq ($$($(3)_DISTNAME),)
+$(1)-upgrade:
+	utils/scancpan -force -$(4) $$($(3)_DISTNAME)
+
+.PHONY: $(1)-upgrade
+endif
 
 endef
 

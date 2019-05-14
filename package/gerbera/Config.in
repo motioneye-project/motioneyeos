@@ -1,0 +1,27 @@
+config BR2_PACKAGE_GERBERA
+	bool "gerbera"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_7 # C++17 optional
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_PACKAGE_LIBUPNP # libupnp18
+	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
+	select BR2_PACKAGE_LIBUPNP18
+	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_UTIL_LINUX
+	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_ZLIB
+	help
+	  A free media server.
+	  Stream your media to devices on your home network.
+
+	  https://gerbera.io
+
+comment "gerbera needs a toolchain w/ C++, threads, gcc >= 7"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_PACKAGE_LIBUPNP
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_TOOLCHAIN_GCC_AT_LEAST_7

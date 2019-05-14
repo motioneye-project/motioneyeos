@@ -1,5 +1,5 @@
-# From http://www.boost.org/users/history/version_1_67_0.html
-sha256 2684c972994ee57fc5632e03bf044746f6eb45d4920c343937a465fd67a5adba  boost_1_67_0.tar.bz2
+# From http://www.boost.org/users/history/version_1_69_0.html
+sha256 8f32d4617390d1c2d16f26a27ab60d97807b35440d45891fa340fc2648b04406  boost_1_69_0.tar.bz2
 
 # Locally computed
 sha256 c9bff75738922193e67fa726fa225535870d2aa1059f91452c411736284ad566  LICENSE_1_0.txt

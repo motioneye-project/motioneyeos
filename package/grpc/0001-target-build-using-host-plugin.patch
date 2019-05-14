@@ -1,0 +1,52 @@
+From aa18148e392ef28275a182db34397ccb66fb4617 Mon Sep 17 00:00:00 2001
+From: Robert Rose <robertroyrose@gmail.com>
+Date: Wed, 28 Nov 2018 09:41:52 -0800
+Subject: [PATCH] CMakeLists.txt: allow passing a pre-existing grpc_cpp_plugin
+
+The grpc_cpp_plugin is meant to be executed during the build process
+of grpc. As such, in cross-compilation contexts, this program needs to
+be built for the host machine and not the target machine. In order to
+allow this, this commit adds an option gRPC_NATIVE_CPP_PLUGIN that can
+be passed on the command line, with the path to an existing
+grpc_cpp_plugin binary. If not passed, grpc_cpp_plugin is built as
+usual.
+
+Signed-off-by: Robert Rose <robertroyrose@gmail.com>
+---
+ CMakeLists.txt | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index fc76cf5..7a22b08 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -13108,6 +13108,18 @@ target_link_libraries(grpc_cli
+ endif (gRPC_BUILD_TESTS)
+ if (gRPC_BUILD_CODEGEN)
+ 
++if (gRPC_NATIVE_CPP_PLUGIN)
++
++add_executable(grpc_cpp_plugin
++  IMPORTED
++)
++
++set_property(TARGET grpc_cpp_plugin
++  PROPERTY IMPORTED_LOCATION ${gRPC_NATIVE_CPP_PLUGIN}
++)
++
++else()
++
+ add_executable(grpc_cpp_plugin
+   src/compiler/cpp_plugin.cc
+ )
+@@ -13143,6 +13155,7 @@ if (gRPC_INSTALL)
+     ARCHIVE DESTINATION ${gRPC_INSTALL_LIBDIR}
+   )
+ endif()
++endif()
+ 
+ endif (gRPC_BUILD_CODEGEN)
+ if (gRPC_BUILD_CODEGEN)
+-- 
+2.20.0.rc0.387.gc7a69e6b6c-goog
+

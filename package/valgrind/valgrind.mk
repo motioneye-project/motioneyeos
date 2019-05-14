@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-VALGRIND_VERSION = 3.13.0
+VALGRIND_VERSION = 3.14.0
 VALGRIND_SITE = ftp://sourceware.org/pub/valgrind
 VALGRIND_SOURCE = valgrind-$(VALGRIND_VERSION).tar.bz2
 VALGRIND_LICENSE = GPL-2.0, GFDL-1.2
@@ -13,6 +13,9 @@ VALGRIND_CONF_OPTS = \
 	--disable-ubsan \
 	--without-mpicc
 VALGRIND_INSTALL_STAGING = YES
+# Patch 0003-configure.ac-disable-gcc-march-mips64r2-detection.patch
+# touches configure.ac
+VALGRIND_AUTORECONF = YES
 
 # Valgrind must be compiled with no stack protection, so forcefully
 # pass -fno-stack-protector to override what Buildroot may have in
@@ -31,10 +34,13 @@ VALGRIND_CFLAGS = \
 # and pass the right -march option, so they take precedence over
 # Valgrind's wrongfully detected value.
 ifeq ($(BR2_mips)$(BR2_mipsel)$(BR2_mips64)$(BR2_mips64el),y)
-VALGRIND_CFLAGS += -march=$(BR2_GCC_TARGET_ARCH)
+VALGRIND_CFLAGS += -march="$(GCC_TARGET_ARCH)"
 endif
 
 VALGRIND_CONF_ENV = CFLAGS="$(VALGRIND_CFLAGS)"
+
+# fix uclibc configure c99 support detection
+VALGRIND_CONF_ENV += ac_cv_prog_cc_c99='-std=gnu99'
 
 # On ARM, Valgrind only supports ARMv7, and uses the arch part of the
 # host tuple to determine whether it's being built for ARMv7 or
@@ -44,6 +50,12 @@ VALGRIND_CONF_ENV = CFLAGS="$(VALGRIND_CFLAGS)"
 ifeq ($(BR2_ARM_CPU_ARMV7A),y)
 VALGRIND_CONF_OPTS += \
 	--host=$(patsubst arm-%,armv7-%,$(GNU_TARGET_NAME))
+endif
+
+ifeq ($(BR2_GCC_ENABLE_LTO),y)
+VALGRIND_CONF_OPTS += --enable-lto
+else
+VALGRIND_CONF_OPTS += --disable-lto
 endif
 
 define VALGRIND_INSTALL_UCLIBC_SUPP

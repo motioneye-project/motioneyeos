@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_TIME_PARSEDATE
+	bool "perl-time-parsedate"
+	help
+	  Parse and format time values.
+
+	  https://metacpan.org/release/Time-ParseDate

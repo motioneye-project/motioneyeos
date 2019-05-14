@@ -1,0 +1,133 @@
+From ef49780d30d3ddc5735cfc32561b678a634fa72f Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Ond=C5=99ej=20Sur=C3=BD?= <ondrej@sury.org>
+Date: Wed, 17 Apr 2019 15:22:27 +0200
+Subject: [PATCH] Replace atomic operations in bin/named/client.c with
+ isc_refcount reference counting
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ bin/named/client.c                     | 18 +++++++-----------
+ bin/named/include/named/interfacemgr.h |  5 +++--
+ bin/named/interfacemgr.c               |  7 +++++--
+ 3 files changed, 15 insertions(+), 15 deletions(-)
+
+diff --git a/bin/named/client.c b/bin/named/client.c
+index 845326abc0..29fecadca8 100644
+--- a/bin/named/client.c
++++ b/bin/named/client.c
+@@ -402,12 +402,10 @@ tcpconn_detach(ns_client_t *client) {
+ static void
+ mark_tcp_active(ns_client_t *client, bool active) {
+ 	if (active && !client->tcpactive) {
+-		isc_atomic_xadd(&client->interface->ntcpactive, 1);
++		isc_refcount_increment0(&client->interface->ntcpactive, NULL);
+ 		client->tcpactive = active;
+ 	} else if (!active && client->tcpactive) {
+-		uint32_t old =
+-			isc_atomic_xadd(&client->interface->ntcpactive, -1);
+-		INSIST(old > 0);
++		isc_refcount_decrement(&client->interface->ntcpactive, NULL);
+ 		client->tcpactive = active;
+ 	}
+ }
+@@ -554,7 +552,7 @@ exit_check(ns_client_t *client) {
+ 		if (client->mortal && TCP_CLIENT(client) &&
+ 		    client->newstate != NS_CLIENTSTATE_FREED &&
+ 		    !ns_g_clienttest &&
+-		    isc_atomic_xadd(&client->interface->ntcpaccepting, 0) == 0)
++		    isc_refcount_current(&client->interface->ntcpaccepting) == 0)
+ 		{
+ 			/* Nobody else is accepting */
+ 			client->mortal = false;
+@@ -3328,7 +3326,6 @@ client_newconn(isc_task_t *task, isc_event_t *event) {
+ 	isc_result_t result;
+ 	ns_client_t *client = event->ev_arg;
+ 	isc_socket_newconnev_t *nevent = (isc_socket_newconnev_t *)event;
+-	uint32_t old;
+ 
+ 	REQUIRE(event->ev_type == ISC_SOCKEVENT_NEWCONN);
+ 	REQUIRE(NS_CLIENT_VALID(client));
+@@ -3348,8 +3345,7 @@ client_newconn(isc_task_t *task, isc_event_t *event) {
+ 	INSIST(client->naccepts == 1);
+ 	client->naccepts--;
+ 
+-	old = isc_atomic_xadd(&client->interface->ntcpaccepting, -1);
+-	INSIST(old > 0);
++	isc_refcount_decrement(&client->interface->ntcpaccepting, NULL);
+ 
+ 	/*
+ 	 * We must take ownership of the new socket before the exit
+@@ -3480,8 +3476,8 @@ client_accept(ns_client_t *client) {
+ 		 * quota is tcp-clients plus the number of listening
+ 		 * interfaces plus 1.)
+ 		 */
+-		exit = (isc_atomic_xadd(&client->interface->ntcpactive, 0) >
+-			(client->tcpactive ? 1 : 0));
++		exit = (isc_refcount_current(&client->interface->ntcpactive) >
++			(client->tcpactive ? 1U : 0U));
+ 		if (exit) {
+ 			client->newstate = NS_CLIENTSTATE_INACTIVE;
+ 			(void)exit_check(client);
+@@ -3539,7 +3535,7 @@ client_accept(ns_client_t *client) {
+ 	 * listening for connections itself to prevent the interface
+ 	 * going dead.
+ 	 */
+-	isc_atomic_xadd(&client->interface->ntcpaccepting, 1);
++	isc_refcount_increment0(&client->interface->ntcpaccepting, NULL);
+ }
+ 
+ static void
+diff --git a/bin/named/include/named/interfacemgr.h b/bin/named/include/named/interfacemgr.h
+index 3535ef22a8..6e10f210fd 100644
+--- a/bin/named/include/named/interfacemgr.h
++++ b/bin/named/include/named/interfacemgr.h
+@@ -45,6 +45,7 @@
+ #include <isc/magic.h>
+ #include <isc/mem.h>
+ #include <isc/socket.h>
++#include <isc/refcount.h>
+ 
+ #include <dns/result.h>
+ 
+@@ -75,11 +76,11 @@ struct ns_interface {
+ 						/*%< UDP dispatchers. */
+ 	isc_socket_t *		tcpsocket;	/*%< TCP socket. */
+ 	isc_dscp_t		dscp;		/*%< "listen-on" DSCP value */
+-	int32_t			ntcpaccepting;	/*%< Number of clients
++	isc_refcount_t		ntcpaccepting;	/*%< Number of clients
+ 						     ready to accept new
+ 						     TCP connections on this
+ 						     interface */
+-	int32_t			ntcpactive;	/*%< Number of clients
++	isc_refcount_t		ntcpactive;	/*%< Number of clients
+ 						     servicing TCP queries
+ 						     (whether accepting or
+ 						     connected) */
+diff --git a/bin/named/interfacemgr.c b/bin/named/interfacemgr.c
+index d9f6df5802..135533be6b 100644
+--- a/bin/named/interfacemgr.c
++++ b/bin/named/interfacemgr.c
+@@ -386,8 +386,8 @@ ns_interface_create(ns_interfacemgr_t *mgr, isc_sockaddr_t *addr,
+ 	 * connections will be handled in parallel even though there is
+ 	 * only one client initially.
+ 	 */
+-	ifp->ntcpaccepting = 0;
+-	ifp->ntcpactive = 0;
++	isc_refcount_init(&ifp->ntcpaccepting, 0);
++	isc_refcount_init(&ifp->ntcpactive, 0);
+ 
+ 	ifp->nudpdispatch = 0;
+ 
+@@ -618,6 +618,9 @@ ns_interface_destroy(ns_interface_t *ifp) {
+ 
+ 	ns_interfacemgr_detach(&ifp->mgr);
+ 
++	isc_refcount_destroy(&ifp->ntcpactive);
++	isc_refcount_destroy(&ifp->ntcpaccepting);
++
+ 	ifp->magic = 0;
+ 	isc_mem_put(mctx, ifp, sizeof(*ifp));
+ }
+-- 
+2.11.0
+

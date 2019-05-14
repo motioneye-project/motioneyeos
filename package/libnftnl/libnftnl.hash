@@ -1,6 +1,3 @@
 # From http://www.netfilter.org/projects/libnftnl/downloads.html
-sha1	90b70f52a26f88ab1106671e797faac21265fa6a	libnftnl-1.0.9.tar.bz2
-# Locally calculated after checking pgp signature
-# http://www.netfilter.org/projects/libnftnl/files/libnftnl-1.0.9.tar.bz2.sig
-sha256	fec1d824aee301e59a11aeaae2a2d429cb99ead81e6bafab791a4dd6569b3635	libnftnl-1.0.9.tar.bz2
+sha256	a5c7b7a6c13c9c5898b13fcb1126fefce2015d5a96d7c354b19aaa40b6aece5d 	libnftnl-1.1.2.tar.bz2
 sha256	98193898c663001eff2fdcfb676e210c13042bc1a05e8d570c363efa396f8e24	COPYING

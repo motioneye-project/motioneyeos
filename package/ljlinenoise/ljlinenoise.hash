@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	7a6c4142b0096106f498d7ee4bea5bf5086c076d1f071893441b8e5c0665fb47  ljlinenoise-0.1.3-1.src.rock
+# computed by luarocks/buildroot
+sha256 7a6c4142b0096106f498d7ee4bea5bf5086c076d1f071893441b8e5c0665fb47  ljlinenoise-0.1.3-1.src.rock
+sha256 9b17730cb34ea591fb39688e70bd2be9c13d11b9db1c813b4ae68e3da9b7093e  ljlinenoise-0.1.3/COPYRIGHT

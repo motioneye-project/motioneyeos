@@ -1,0 +1,28 @@
+From 985d15d636b4d2c7086dbd305369c02756cdbe19 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 11 Jan 2019 17:24:21 +0100
+Subject: [PATCH] missing_syscall.h: include errno.h
+
+This include is needed for errno and ENOSYS
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/systemd/systemd/pull/11400]
+---
+ src/basic/missing_syscall.h | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/basic/missing_syscall.h b/src/basic/missing_syscall.h
+index d5d4b26ac..d1aa32218 100644
+--- a/src/basic/missing_syscall.h
++++ b/src/basic/missing_syscall.h
+@@ -3,6 +3,7 @@
+ 
+ /* Missing glibc definitions to access certain kernel APIs */
+ 
++#include <errno.h>
+ #include <fcntl.h>
+ #include <sys/syscall.h>
+ #include <sys/types.h>
+-- 
+2.14.1
+

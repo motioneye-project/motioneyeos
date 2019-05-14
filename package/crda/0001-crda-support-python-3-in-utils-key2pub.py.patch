@@ -1,7 +1,7 @@
-From 797f2836c48f9ba2446629ae4b6867ca1a5ea512 Mon Sep 17 00:00:00 2001
+From 4c346aa9e816bddfedc8ac99809fd1ed91bfc8ee Mon Sep 17 00:00:00 2001
 From: Taahir Ahmed <ahmed.taahir@gmail.com>
 Date: Wed, 30 Mar 2016 11:23:54 -0300
-Subject: [PATCH 1/2] crda: support python 3 in utils/key2pub.py
+Subject: [PATCH] crda: support python 3 in utils/key2pub.py
 
 utils/key2pub.py can now be run under either python 2.7 or python 3.x.
 This required some minor syntactical changes as well as switching from
@@ -18,16 +18,18 @@ fixed:
 [Gustavo: don't call /utils/key2pub.py since that doesn't compute]
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Rebased against crda-4.14]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
 Status: submitted upstream by author but not (yet) accepted
 URL: http://www.spinics.net/lists/linux-wireless/msg138936.html
-
+---
  Makefile         |   2 +-
- utils/key2pub.py | 146 ++++++++++++++++++++++++++++---------------------------
+ utils/key2pub.py | 146 ++++++++++++++++++++++++-----------------------
  2 files changed, 75 insertions(+), 73 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 1f25509..523a96e 100644
+index a3ead30..8da38d0 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -112,7 +112,7 @@ $(REG_BIN):
@@ -40,7 +42,7 @@ index 1f25509..523a96e 100644
  $(LIBREG): regdb.h reglib.h reglib.c
  	$(NQ) '  CC  ' $@
 diff --git a/utils/key2pub.py b/utils/key2pub.py
-index 3e84cd2..c76cbbb 100755
+index 9bb04cd..9f92ebd 100755
 --- a/utils/key2pub.py
 +++ b/utils/key2pub.py
 @@ -1,126 +1,128 @@
@@ -223,7 +225,7 @@ index 3e84cd2..c76cbbb 100755
 +	.n = _n, .len_n = sizeof(_n), \\
  }
  
- static const struct key_params keys[] = {
+ static const struct key_params __attribute__ ((unused)) keys[] = {
  ''')
 -    for n in xrange(n + 1):
 -        output.write('	KEYS(e_%d, n_%d),\n' % (n, n))
@@ -267,5 +269,5 @@ index 3e84cd2..c76cbbb 100755
  
  modes[mode][1](output, idx - 1)
 -- 
-2.7.3
+2.18.0
 

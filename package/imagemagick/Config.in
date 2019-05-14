@@ -9,8 +9,8 @@ config BR2_PACKAGE_IMAGEMAGICK
 	  JPEG, JPEG-2000, PDF, PhotoCD, PNG, Postscript, SVG, and TIFF.
 	  Use ImageMagick to translate, flip, mirror, rotate, scale,
 	  shear and transform images, adjust image colors, apply various
-	  special effects, or draw text,
-	  lines, polygons, ellipses and Bézier curves.
+	  special effects, or draw text, lines, polygons, ellipses and
+	  Bézier curves.
 
 	  http://www.imagemagick.org/
 

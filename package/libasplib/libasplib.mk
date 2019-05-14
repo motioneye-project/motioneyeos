@@ -18,12 +18,4 @@ LIBASPLIB_CONF_OPTS = \
 	-DBUILD_SIGNALS=ON \
 	-DBUILD_TIMER=ON
 
-# Internal error, aborting at dw2gencfi.c:214 in emit_expr_encoded
-# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=79509
-ifeq ($(BR2_m68k_cf),y)
-LIBASPLIB_CXXFLAGS += -fno-dwarf2-cfi-asm
-endif
-
-LIBASPLIB_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) $(LIBASPLIB_CXXFLAGS)"
-
 $(eval $(cmake-package))

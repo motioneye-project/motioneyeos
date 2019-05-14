@@ -1,0 +1,33 @@
+From d909e4af6ac61f6777d429a0c84ab5b3d1907c6d Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 3 Feb 2019 18:28:16 +0100
+Subject: [PATCH] networkd-ndisc.c: fix build without IFA_F_NOPREFIXROUTE
+
+systemd fails to build on kernel without IFA_F_NOPREFIXROUTE
+since 9714c02
+
+So put include missing_network.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/970b09e1d49b53dff12a07ca4ad424ef9dd29a69
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/network/networkd-ndisc.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/networkd-ndisc.c b/src/network/networkd-ndisc.c
+index 80bfd2cba..e5b8d1155 100644
+--- a/src/network/networkd-ndisc.c
++++ b/src/network/networkd-ndisc.c
+@@ -8,6 +8,7 @@
+ 
+ #include "sd-ndisc.h"
+ 
++#include "missing_network.h"
+ #include "networkd-ndisc.h"
+ #include "networkd-route.h"
+ #include "strv.h"
+-- 
+2.14.1
+

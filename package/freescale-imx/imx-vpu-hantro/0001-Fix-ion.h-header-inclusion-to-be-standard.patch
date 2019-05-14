@@ -1,0 +1,44 @@
+From 872c82e7cbb9a0a0e761e8ac70fc28e19a55b4c3 Mon Sep 17 00:00:00 2001
+From: Gary Bisson <gary.bisson@boundarydevices.com>
+Date: Thu, 12 Jul 2018 11:38:28 +0200
+Subject: [PATCH] Fix ion.h header inclusion to be standard
+
+NXP "solution" was to manually copy the header to include/linux.
+Let's point the Makefile to the proper (mainline) location instead:
+https://elixir.bootlin.com/linux/v4.17/source/drivers/staging/android/uapi/ion.h
+
+Signed-off-by: Gary Bisson <gary.bisson@boundarydevices.com>
+---
+ Makefile                                  | 2 ++
+ decoder_sw/software/linux/dwl/dwl_linux.c | 2 +-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index b74e23a..a5ce22b 100755
+--- a/Makefile
++++ b/Makefile
+@@ -11,6 +11,8 @@ INCLUDE_HEADERS = -I./decoder_sw -I$(SOURCE_ROOT)/source/inc -I$(SOURCE_ROOT)/so
+ INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/memalloc
+ #INCLUDE_HEADERS += -I$(SOURCE_ROOT)/linux/ldriver
+ INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/include/uapi -I$(LINUX_KERNEL_ROOT)/include
++# ION header location
++INCLUDE_HEADERS += -I$(LINUX_KERNEL_ROOT)/drivers/staging/android/uapi
+ 
+ CFLAGS += -DDEC_MODULE_PATH=\"/dev/mxc_hantro\" -DUSE_FAKE_RFC_TABLE -DFIFO_DATATYPE=void* -DNDEBUG -DDOWN_SCALER \
+            -DUSE_EXTERNAL_BUFFER -DUSE_FAST_EC -DUSE_VP9_EC -DGET_FREE_BUFFER_NON_BLOCK \
+diff --git a/decoder_sw/software/linux/dwl/dwl_linux.c b/decoder_sw/software/linux/dwl/dwl_linux.c
+index 8183660..ed37d86 100644
+--- a/decoder_sw/software/linux/dwl/dwl_linux.c
++++ b/decoder_sw/software/linux/dwl/dwl_linux.c
+@@ -41,7 +41,7 @@
+ #include "dwl.h"
+ #include <linux/hantrodec.h>
+ #ifdef USE_ION
+-#include <linux/ion.h>
++#include <ion.h>
+ #ifdef ANDROID
+ #include <linux/mxc_ion.h>
+ #endif
+-- 
+2.18.0
+

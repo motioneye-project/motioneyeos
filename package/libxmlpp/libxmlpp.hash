@@ -1,2 +1,5 @@
-# From http://ftp.gnome.org/pub/GNOME/sources/libxml++/2.40/libxml++-2.40.1.sha256sum
-sha256	4ad4abdd3258874f61c2e2a41d08e9930677976d303653cd1670d3e9f35463e9	libxml++-2.40.1.tar.xz
+# From http://ftp.gnome.org/pub/GNOME/sources/libxml++/3.0/libxml++-3.0.1.sha256sum
+sha256	19dc8d21751806c015179bc0b83f978e65c878724501bfc0b6c1bcead29971a6	libxml++-3.0.1.tar.xz
+
+# Hash for license file
+sha256	a190dc9c8043755d90f8b0a75fa66b9e42d4af4c980bf5ddc633f0124db3cee7	COPYING

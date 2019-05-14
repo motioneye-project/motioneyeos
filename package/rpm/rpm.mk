@@ -4,17 +4,15 @@
 #
 ################################################################################
 
-RPM_VERSION_MAJOR = 4.13
-RPM_VERSION = $(RPM_VERSION_MAJOR).0.1
+RPM_VERSION_MAJOR = 4.14
+RPM_VERSION = $(RPM_VERSION_MAJOR).2.1
 RPM_SOURCE = rpm-$(RPM_VERSION).tar.bz2
 RPM_SITE = http://ftp.rpm.org/releases/rpm-$(RPM_VERSION_MAJOR).x
-RPM_DEPENDENCIES = host-pkgconf berkeleydb file popt zlib
+RPM_DEPENDENCIES = host-pkgconf berkeleydb file popt zlib \
+	$(TARGET_NLS_DEPENDENCIES)
 RPM_LICENSE = GPL-2.0 or LGPL-2.0 (library only)
 RPM_LICENSE_FILES = COPYING
-RPM_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
-
-# 0001-configure-ac-use-link-instead-of-compile-for-gcc-flags-test.patch
-# 0002-configure-ac-correct-stack-protector-check.patch
+# We're patching Makefile.am
 RPM_AUTORECONF = YES
 
 RPM_CONF_OPTS = \
@@ -35,11 +33,11 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBNSS),y)
 RPM_DEPENDENCIES += libnss
-RPM_CONF_OPTS += --without-beecrypt
+RPM_CONF_OPTS += --with-crypto=nss
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/nss -I$(STAGING_DIR)/usr/include/nspr
 else
 RPM_DEPENDENCIES += beecrypt
-RPM_CONF_OPTS += --with-beecrypt
+RPM_CONF_OPTS += --with-crypto=beecrypt
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/beecrypt
 endif
 

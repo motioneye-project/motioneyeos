@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_DBI
+	bool "perl-dbi"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Database independent interface for Perl.
+
+	  http://dbi.perl.org/
+
+comment "perl-dbi needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

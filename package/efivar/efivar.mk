@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EFIVAR_VERSION = 34
+EFIVAR_VERSION = 35
 EFIVAR_SITE = $(call github,rhboot,efivar,$(EFIVAR_VERSION))
 EFIVAR_LICENSE = LGPL-2.1
 EFIVAR_LICENSE_FILES = COPYING

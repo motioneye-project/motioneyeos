@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_SWIG
+	bool "host swig"
+	help
+	  swig is a software development tool that connects programs
+	  written in C and C++ with a variety of high-level
+	  programming languages.
+
+	  http://www.swig.org/

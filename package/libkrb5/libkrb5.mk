@@ -5,13 +5,13 @@
 ################################################################################
 
 LIBKRB5_VERSION_MAJOR = 1.16
-LIBKRB5_VERSION = $(LIBKRB5_VERSION_MAJOR).1
+LIBKRB5_VERSION = $(LIBKRB5_VERSION_MAJOR).2
 LIBKRB5_SITE = https://web.mit.edu/kerberos/dist/krb5/$(LIBKRB5_VERSION_MAJOR)
 LIBKRB5_SOURCE = krb5-$(LIBKRB5_VERSION).tar.gz
 LIBKRB5_SUBDIR = src
 LIBKRB5_LICENSE = MIT
 LIBKRB5_LICENSE_FILES = NOTICE
-LIBKRB5_DEPENDENCIES = host-bison
+LIBKRB5_DEPENDENCIES = host-bison $(TARGET_NLS_DEPENDENCIES)
 LIBKRB5_INSTALL_STAGING = YES
 
 # The configure script uses AC_TRY_RUN tests to check for those values,
@@ -20,7 +20,8 @@ LIBKRB5_INSTALL_STAGING = YES
 LIBKRB5_CONF_ENV = \
 	ac_cv_printf_positional=yes \
 	ac_cv_func_regcomp=yes \
-	krb5_cv_attr_constructor_destructor=yes,yes
+	krb5_cv_attr_constructor_destructor=yes,yes \
+	LIBS=$(TARGET_NLS_LIBS)
 
 # Never use the host packages
 LIBKRB5_CONF_OPTS = \

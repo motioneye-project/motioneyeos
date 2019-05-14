@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	1389c22daec77161ec93ff90c39ee70e0f8a656ff92f22f9cf5d7121999d5c53  flu-20150331-1.src.rock
+# computed by luarocks/buildroot
+sha256 1389c22daec77161ec93ff90c39ee70e0f8a656ff92f22f9cf5d7121999d5c53  flu-20150331-1.src.rock
+sha256 409f7c274eb26874a382241d675a360ba6b2659742c5941e680d71a41dd35913  doub-flu-a7daae986339/doc/LICENSE.txt

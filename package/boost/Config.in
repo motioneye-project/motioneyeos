@@ -83,7 +83,7 @@ config BR2_PACKAGE_BOOST_CONTEXT
 	bool "boost-context"
 	depends on BR2_PACKAGE_BOOST_CONTEXT_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735
-	select BR2_PACKAGE_BOOST_THREAD if !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	select BR2_PACKAGE_BOOST_THREAD if !BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	help
 	  C++11 context switching library.
 
@@ -278,11 +278,6 @@ config BR2_PACKAGE_BOOST_SERIALIZATION
 	bool "boost-serialization"
 	help
 	  Serialization for persistence and marshalling.
-
-config BR2_PACKAGE_BOOST_SIGNALS
-	bool "boost-signals"
-	help
-	  Managed signals & slots callback implementation.
 
 config BR2_PACKAGE_BOOST_STACKTRACE
 	bool "boost-stacktrace"

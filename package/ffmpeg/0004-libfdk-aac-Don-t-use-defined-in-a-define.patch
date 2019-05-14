@@ -1,0 +1,72 @@
+From 452746d80fdaaaf1b546860eb78449c6de3678d7 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20Storsj=C3=B6?= <martin@martin.st>
+Date: Wed, 12 Sep 2018 20:03:12 +0300
+Subject: [PATCH] libfdk-aac: Don't use defined() in a #define
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+libfdk-aac: Don't use defined() in a #define
+
+MSVC expands the preprocessor directives differently, making the
+version check fail in the previous form.
+
+Clang can warn about this with -Wexpansion-to-defined (not currently
+enabled by default):
+warning: macro expansion producing 'defined' has undefined behavior [-Wexpansion-to-defined]
+
+Downloaded from
+http://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=2a9e1c122eed66be1b26b747342b848300b226c7
+
+Signed-off-by: Martin Storsjö <martin@martin.st>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ libavcodec/libfdk-aacdec.c | 9 ++++++---
+ libavcodec/libfdk-aacenc.c | 9 ++++++---
+ 2 files changed, 12 insertions(+), 6 deletions(-)
+
+diff --git a/libavcodec/libfdk-aacdec.c b/libavcodec/libfdk-aacdec.c
+index ef51184ebd..0fbab36463 100644
+--- a/libavcodec/libfdk-aacdec.c
++++ b/libavcodec/libfdk-aacdec.c
+@@ -25,10 +25,13 @@
+ #include "avcodec.h"
+ #include "internal.h"
+ 
++#ifdef AACDECODER_LIB_VL0
+ #define FDKDEC_VER_AT_LEAST(vl0, vl1) \
+-    (defined(AACDECODER_LIB_VL0) && \
+-        ((AACDECODER_LIB_VL0 > vl0) || \
+-         (AACDECODER_LIB_VL0 == vl0 && AACDECODER_LIB_VL1 >= vl1)))
++    ((AACDECODER_LIB_VL0 > vl0) || \
++     (AACDECODER_LIB_VL0 == vl0 && AACDECODER_LIB_VL1 >= vl1))
++#else
++#define FDKDEC_VER_AT_LEAST(vl0, vl1) 0
++#endif
+ 
+ #if !FDKDEC_VER_AT_LEAST(2, 5) // < 2.5.10
+ #define AAC_PCM_MAX_OUTPUT_CHANNELS AAC_PCM_OUTPUT_CHANNELS
+diff --git a/libavcodec/libfdk-aacenc.c b/libavcodec/libfdk-aacenc.c
+index 91dcb5a1b9..8349e56dcb 100644
+--- a/libavcodec/libfdk-aacenc.c
++++ b/libavcodec/libfdk-aacenc.c
+@@ -26,10 +26,13 @@
+ #include "audio_frame_queue.h"
+ #include "internal.h"
+ 
++#ifdef AACENCODER_LIB_VL0
+ #define FDKENC_VER_AT_LEAST(vl0, vl1) \
+-    (defined(AACENCODER_LIB_VL0) && \
+-        ((AACENCODER_LIB_VL0 > vl0) || \
+-         (AACENCODER_LIB_VL0 == vl0 && AACENCODER_LIB_VL1 >= vl1)))
++    ((AACENCODER_LIB_VL0 > vl0) || \
++     (AACENCODER_LIB_VL0 == vl0 && AACENCODER_LIB_VL1 >= vl1))
++#else
++#define FDKENC_VER_AT_LEAST(vl0, vl1) 0
++#endif
+ 
+ typedef struct AACContext {
+     const AVClass *class;
+-- 
+2.20.1
+

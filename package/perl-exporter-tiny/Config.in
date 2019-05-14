@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_EXPORTER_TINY
+	bool "perl-exporter-tiny"
+	help
+	  an exporter with the features of Sub::Exporter but only core
+	  dependencies.
+
+	  https://metacpan.org/release/Exporter-Tiny

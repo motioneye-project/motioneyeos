@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_FALCON
+	bool "python-falcon"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	select BR2_PACKAGE_PYTHON_MIMEPARSE # runtime
+	help
+	  An unladen web framework for building APIs and app
+	  backends.
+
+	  http://falconframework.org

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBXMLPP_VERSION_MAJOR = 2.40
+LIBXMLPP_VERSION_MAJOR = 3.0
 LIBXMLPP_VERSION = $(LIBXMLPP_VERSION_MAJOR).1
 LIBXMLPP_LICENSE = LGPL-2.1 (library), LGPL-2.0+ (examples)
 LIBXMLPP_LICENSE_FILES = COPYING

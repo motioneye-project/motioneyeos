@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	627ac55d4a420fab766e6870fcd82cb39da12fb4ec8efddc7220b188a4ad4bc3  rings-1.3.0-1.src.rock
+# computed by luarocks/buildroot
+sha256 627ac55d4a420fab766e6870fcd82cb39da12fb4ec8efddc7220b188a4ad4bc3  rings-1.3.0-1.src.rock
+sha256 f582a0c43737391070827ef273df0145b594b095ad2f49595701368b729e024f  rings-v_1_3_0/doc/us/license.html

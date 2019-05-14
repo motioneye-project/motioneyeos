@@ -1,0 +1,23 @@
+configure.ac: call AM_MKINSTALLDIRS to substitute @MKINSTALLDIRS@
+
+MKINSTALLDIRS is obsolete and doesn't get automatically called.
+
+Force call AM_MKINSTALLDIRS() macro to substitute every @MKINSTALLDIRS@
+occurence in *.in files.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+
+diff -urpN madplay-0.15.2b.orig/configure.ac madplay-0.15.2b/configure.ac
+--- madplay-0.15.2b.orig/configure.ac	2019-04-16 12:06:03.781018755 +0200
++++ madplay-0.15.2b/configure.ac	2019-04-16 12:07:48.399162610 +0200
+@@ -146,6 +146,10 @@ ALL_LINGUAS="en es fr hr no"
+ AM_GNU_GETTEXT([use-libtool])
+ AM_GNU_GETTEXT_VERSION(0.14.1)
+ 
++dnl Substitute MKINSTALLDIRS
++
++AM_MKINSTALLDIRS()
++
+ dnl Checks for header files.
+ 
+ AC_HEADER_STDC

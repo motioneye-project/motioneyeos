@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SENTRY_SDK
+	bool "python-sentry-sdk"
+	select BR2_PACKAGE_PYTHON_URLLIB3 # runtime
+	select BR2_PACKAGE_PYTHON_CERTIFI # runtime
+	help
+	  Python client for Sentry (https://getsentry.com).
+
+	  https://github.com/getsentry/sentry-python

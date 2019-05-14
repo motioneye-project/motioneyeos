@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-LIBOSTREE_VERSION = 2018.7
+LIBOSTREE_VERSION_MAJOR = 2018.9
+LIBOSTREE_VERSION= $(LIBOSTREE_VERSION_MAJOR).1
 LIBOSTREE_SOURCE = libostree-$(LIBOSTREE_VERSION).tar.xz
-LIBOSTREE_SITE = https://github.com/ostreedev/ostree/releases/download/v$(LIBOSTREE_VERSION)
+LIBOSTREE_SITE = https://github.com/ostreedev/ostree/releases/download/v$(LIBOSTREE_VERSION_MAJOR)
 
 LIBOSTREE_LICENSE = LGPL-2.0+
 LIBOSTREE_LICENSE_FILES = COPYING
@@ -66,6 +67,15 @@ LIBOSTREE_CONF_OPTS += --with-selinux
 LIBOSTREE_DEPENDENCIES += libselinux
 else
 LIBOSTREE_CONF_OPTS += --without-selinux
+endif
+
+ifeq ($(BR2_INIT_SYSTEMD),y)
+LIBOSTREE_CONF_OPTS += \
+	--with-libsystemd \
+	--with-systemdsystemunitdir=/usr/lib/systemd/system
+LIBOSTREE_DEPENDENCIES += systemd
+else
+LIBOSTREE_CONF_OPTS += --without-libsystemd
 endif
 
 $(eval $(autotools-package))

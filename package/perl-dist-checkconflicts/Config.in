@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_DIST_CHECKCONFLICTS
+	bool "perl-dist-checkconflicts"
+	select BR2_PACKAGE_PERL_MODULE_RUNTIME # runtime
+	help
+	  declare version conflicts for your dist.
+
+	  http://metacpan.org/release/Dist-CheckConflicts

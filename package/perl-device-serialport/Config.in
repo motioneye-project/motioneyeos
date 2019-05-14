@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_DEVICE_SERIALPORT
+	bool "perl-device-serialport"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Linux/POSIX emulation of Win32::SerialPort functions.
+
+	  https://metacpan.org/release/Device-SerialPort
+
+comment "perl-device-serialport needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

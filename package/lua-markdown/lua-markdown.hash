@@ -1,2 +1,3 @@
-# Locally calculated
+# computed by luarocks/buildroot
 sha256 bed84231bb48322f8e614b4392181c52c36bc71340f9273e0c3bd72dc922bc07  markdown-0.33-1.src.rock
+sha256 c13c5634db49d16c87f164ce0b79fb7e1b313c8b66818ebf1c970747a429b39b  markdown/LICENSE

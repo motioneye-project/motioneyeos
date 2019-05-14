@@ -1,0 +1,20 @@
+Drop <sys/unistd.h> include
+
+<sys/unistd.h> does not exist in musl or uClibc, so including it
+causes a build failure. In glibc, it simply redirects to <unistd.h>,
+so we can safely drop the inclusion of <sys/unistd.h>
+
+Signed-off-by: Christopher McCrory <chrismcc@gmail.com>
+
+Index: b/CPU.xs
+===================================================================
+--- a/CPU.xs
++++ b/CPU.xs
+@@ -24,7 +24,6 @@
+  #include <winreg.h>
+ #else                /* other (try unix) */
+  #include <unistd.h>
+- #include <sys/unistd.h>
+ #endif
+ #if defined(__sun) || defined(__sun__) 
+  #include <sys/processor.h>

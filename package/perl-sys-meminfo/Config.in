@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PERL_SYS_MEMINFO
+	bool "perl-sys-meminfo"
+	depends on !BR2_STATIC_LIBS
+	help
+	  query the total free and used physical memory.
+
+	  https://metacpan.org/release/Sys-MemInfo
+
+comment "perl-sys-meminfo needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

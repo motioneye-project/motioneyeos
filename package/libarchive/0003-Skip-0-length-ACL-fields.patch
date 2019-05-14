@@ -1,0 +1,52 @@
+From 15bf44fd2c1ad0e3fd87048b3fcc90c4dcff1175 Mon Sep 17 00:00:00 2001
+From: Daniel Axtens <dja@axtens.net>
+Date: Tue, 4 Dec 2018 14:29:42 +1100
+Subject: [PATCH] Skip 0-length ACL fields
+
+Currently, it is possible to create an archive that crashes bsdtar
+with a malformed ACL:
+
+Program received signal SIGSEGV, Segmentation fault.
+archive_acl_from_text_l (acl=<optimised out>, text=0x7e2e92 "", want_type=<optimised out>, sc=<optimised out>) at libarchive/archive_acl.c:1726
+1726				switch (*s) {
+(gdb) p n
+$1 = 1
+(gdb) p field[n]
+$2 = {start = 0x0, end = 0x0}
+
+Stop this by checking that the length is not zero before beginning
+the switch statement.
+
+I am pretty sure this is the bug mentioned in the qsym paper [1],
+and I was able to replicate it with a qsym + AFL + afl-rb setup.
+
+[1] https://www.usenix.org/conference/usenixsecurity18/presentation/yun
+---
+ libarchive/archive_acl.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+[for import into Buildroot]
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: backport
+
+CVE-2018-1000879
+
+diff --git a/libarchive/archive_acl.c b/libarchive/archive_acl.c
+index 512beee1..7beeee86 100644
+--- a/libarchive/archive_acl.c
++++ b/libarchive/archive_acl.c
+@@ -1723,6 +1723,11 @@ archive_acl_from_text_l(struct archive_acl *acl, const char *text,
+ 			st = field[n].start + 1;
+ 			len = field[n].end - field[n].start;
+ 
++			if (len == 0) {
++				ret = ARCHIVE_WARN;
++				continue;
++			}
++
+ 			switch (*s) {
+ 			case 'u':
+ 				if (len == 1 || (len == 4
+-- 
+2.19.2
+

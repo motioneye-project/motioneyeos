@@ -94,15 +94,10 @@ def get_all_depends(pkgs, get_depends_func):
 
 
 # The Graphviz "dot" utility doesn't like dashes in node names. So for
-# node names, we strip all dashes.
+# node names, we strip all dashes. Also, nodes can't start with a number,
+# so we prepend an underscore.
 def pkg_node_name(pkg):
-    return pkg.replace("-", "")
-
-
-TARGET_EXCEPTIONS = [
-    "target-finalize",
-    "target-post-image",
-]
+    return "_" + pkg.replace("-", "")
 
 
 # Basic cache for the results of the is_dep() function, in order to
@@ -175,10 +170,15 @@ def remove_transitive_deps(pkg, deps):
     return new_d
 
 
+# List of dependencies that all/many packages have, and that we want
+# to trim when generating the dependency graph.
+MANDATORY_DEPS = ['toolchain', 'skeleton']
+
+
 # This function removes the dependency on some 'mandatory' package, like the
 # 'toolchain' package, or the 'skeleton' package
 def remove_mandatory_deps(pkg, deps):
-    return [p for p in deps[pkg] if p not in ['toolchain', 'skeleton']]
+    return [p for p in deps[pkg] if p not in MANDATORY_DEPS]
 
 
 # This function will check that there is no loop in the dependency chain
@@ -210,12 +210,12 @@ def check_circular_deps(deps):
 
 # This functions trims down the dependency list of all packages.
 # It applies in sequence all the dependency-elimination methods.
-def remove_extra_deps(deps, transitive):
+def remove_extra_deps(deps, rootpkg, transitive):
     for pkg in list(deps.keys()):
-        if not pkg == 'all':
+        if not pkg == rootpkg:
             deps[pkg] = remove_mandatory_deps(pkg, deps)
     for pkg in list(deps.keys()):
-        if not transitive or pkg == 'all':
+        if not transitive or pkg == rootpkg:
             deps[pkg] = remove_transitive_deps(pkg, deps)
     return deps
 
@@ -383,9 +383,6 @@ def main():
         allpkgs.append('all')
         filtered_targets = []
         for tg in targets:
-            # Skip uninteresting targets
-            if tg in TARGET_EXCEPTIONS:
-                continue
             dependencies.append(('all', tg))
             filtered_targets.append(tg)
         deps = get_all_depends(filtered_targets, get_depends_func)
@@ -409,7 +406,7 @@ def main():
     if check_only:
         sys.exit(0)
 
-    dict_deps = remove_extra_deps(dict_deps, args.transitive)
+    dict_deps = remove_extra_deps(dict_deps, rootpkg, args.transitive)
     dict_version = brpkgutil.get_version([pkg for pkg in allpkgs
                                           if pkg != "all" and not pkg.startswith("root")])
 

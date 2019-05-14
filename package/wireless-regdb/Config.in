@@ -3,7 +3,12 @@ config BR2_PACKAGE_WIRELESS_REGDB
 	help
 	  Wireless regulatory database.
 
-	  Wireless regulatory database for CRDA. The database lists the
+	  Wireless regulatory database. The database lists the
 	  allowed radio frequencies for each local jurisdiction.
+
+	  Since linux-4.15 the kernel supports loading the files
+	  regulatory.db/regulatory.db.p7s directly from the
+	  /lib/firmware directory, for earlier versions the crda helper
+	  application is needed.
 
 	  https://wireless.wiki.kernel.org/en/developers/regulatory/wireless-regdb

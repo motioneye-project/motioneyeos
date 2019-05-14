@@ -3,11 +3,11 @@ config BR2_PACKAGE_PERL_XML_LIBXML
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_LIBXML2
 	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_PERL_XML_NAMESPACESUPPORT
-	select BR2_PACKAGE_PERL_XML_SAX
-	select BR2_PACKAGE_PERL_XML_SAX_BASE
+	select BR2_PACKAGE_PERL_XML_NAMESPACESUPPORT # runtime
+	select BR2_PACKAGE_PERL_XML_SAX # runtime
+	select BR2_PACKAGE_PERL_XML_SAX_BASE # runtime
 	help
-	  Interface to Gnome libxml2 xml parsing and DOM library
+	  Interface to Gnome libxml2 xml parsing and DOM library.
 
 	  https://github.com/shlomif/perl-XML-LibXML
 

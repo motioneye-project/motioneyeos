@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ERLANG_P1_ICONV_VERSION = 1.0.6
+ERLANG_P1_ICONV_VERSION = 1.0.10
 ERLANG_P1_ICONV_SITE = $(call github,processone,iconv,$(ERLANG_P1_ICONV_VERSION))
 ERLANG_P1_ICONV_LICENSE = Apache-2.0
 ERLANG_P1_ICONV_LICENSE_FILES = LICENSE.txt

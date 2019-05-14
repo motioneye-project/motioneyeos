@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	aa7883a0d44f500e32ef306c04632546f97f33159fffa7bcdc3f451170f95896  luaexpat-1.3.0-1.src.rock
+# computed by luarocks/buildroot
+sha256 b55908fcd7df490a59aab25284460add8283f1c6b94ab584900fe3e49775172a  luaexpat-1.3.3-1.src.rock
+sha256 7f5cb0c1750babcbb09637b7f0ff34972d51cf23b7f413bef902b47aa65febcd  luaexpat-1.3.3/LICENSE

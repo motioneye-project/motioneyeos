@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PPS_TOOLS_VERSION = 47333f24af878f67ce48022e8af16419713aa1ac
+PPS_TOOLS_VERSION = e2b25049df9a4da28168b7378016f1650d0dfa6b
 PPS_TOOLS_SITE = $(call github,ago,pps-tools,$(PPS_TOOLS_VERSION))
 PPS_TOOLS_INSTALL_STAGING = YES
 PPS_TOOLS_LICENSE = GPL-2.0+

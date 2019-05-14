@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/fire/json
+md5	44c51c634b61acc7ed42a413a64de38a  fire-0.1.3.tar.gz
+sha256	c299d16064ff81cbb649b65988300d4a28b71ecfb789d1fb74d99ea98ae4d2eb  fire-0.1.3.tar.gz
+# Locally computed sha256 checksums
+sha256	a5de77b62266bca0bb97bf058992f0b0f308a83a8ca55ee10fbf6bd8ed8f7ed0  LICENSE

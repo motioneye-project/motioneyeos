@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi?:action=show_md5&digest=5997b46c854a68bc588f4527c987663a, sha256 locally computed.
-md5	5997b46c854a68bc588f4527c987663a  PyTrie-0.2.tar.gz
-sha256	b272021351efadc6757591aac03ed4794bdfd091122204a4673e94bfb66cc500  PyTrie-0.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pytrie/json
+md5	f7c7184124013abcc18a3e3b638d32ae  PyTrie-0.3.1.tar.gz
+sha256	3bb7d122a549d8006c9cba2feecac20bceda9f8c0e2a3fa99a5584cfe0dec523  PyTrie-0.3.1.tar.gz
+# Locally computed sha256
+sha256	153931d44112319a1e1653752c881fb7ef092f636db31f4c36b252666e95efbd  PKG-INFO

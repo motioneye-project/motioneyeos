@@ -1,0 +1,14 @@
+config BR2_PACKAGE_INTEL_GMMLIB
+	bool "intel-gmmlib"
+	depends on BR2_x86_64
+	depends on !BR2_STATIC_LIBS
+	help
+	  The Intel(R) Graphics Memory Management Library provides
+	  device specific and buffer management for the Intel(R)
+	  Graphics Compute Runtime for OpenCL(TM) and the Intel(R)
+	  Media Driver for VAAPI.
+
+	  https://github.com/intel/gmmlib
+
+comment "intel-gmmlib needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

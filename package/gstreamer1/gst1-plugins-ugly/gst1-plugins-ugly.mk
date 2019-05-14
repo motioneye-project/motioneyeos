@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GST1_PLUGINS_UGLY_VERSION = 1.14.2
+GST1_PLUGINS_UGLY_VERSION = 1.14.4
 GST1_PLUGINS_UGLY_SOURCE = gst-plugins-ugly-$(GST1_PLUGINS_UGLY_VERSION).tar.xz
 GST1_PLUGINS_UGLY_SITE = https://gstreamer.freedesktop.org/src/gst-plugins-ugly
 GST1_PLUGINS_UGLY_LICENSE_FILES = COPYING
@@ -46,7 +46,7 @@ else
 GST1_PLUGINS_UGLY_CONF_OPTS += --disable-dvdsub
 endif
 
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_UGL1_PLUGIN_XINGMUX),y)
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_UGLY_PLUGIN_XINGMUX),y)
 GST1_PLUGINS_UGLY_CONF_OPTS += --enable-xingmux
 else
 GST1_PLUGINS_UGLY_CONF_OPTS += --disable-xingmux

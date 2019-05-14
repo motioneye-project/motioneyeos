@@ -38,6 +38,12 @@ config BR2_PACKAGE_QUAGGA_ISISD
 	help
 	  Enable isisd support in quagga.
 
+config BR2_PACKAGE_QUAGGA_NHRPD
+	bool "NHRPD protocol"
+	select BR2_PACKAGE_C_ARES
+	help
+	  Build Next Hop Routing Protocol daemon.
+
 config BR2_PACKAGE_QUAGGA_OSPFD
 	bool "OSPFv2 protocol"
 	help

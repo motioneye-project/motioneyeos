@@ -19,7 +19,8 @@ endef
 
 define VDR_PLUGIN_VNSISERVER_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) $(TARGET_CONFIGURE_OPTS) -C $(@D) \
-		install DESTDIR=$(TARGET_DIR) LIBDIR=/usr/lib/vdr
+		install DESTDIR=$(TARGET_DIR) LIBDIR=/usr/lib/vdr \
+		LOCDIR=/usr/share/locale
 endef
 
 $(eval $(generic-package))

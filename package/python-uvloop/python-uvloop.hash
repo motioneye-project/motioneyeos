@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/uvloop/json
+md5	9584c5e372755f752e47c2ff8419efe1  uvloop-0.11.3.tar.gz
+sha256	fd5042d0a2ea07b92d0e2190f7711feb91cde31cf2bf1829e2e8c4c0fdd1f1aa  uvloop-0.11.3.tar.gz
+# Locally computed sha256 checksums
+sha256	2fdc436a67077941295c58647f521fbef8f50e46db0970552fa1a4dd8ae261c6  LICENSE-APACHE
+sha256	9185f3c77e9f6ef8859a6ba4c94128ac1329876be3e813aad32d7645e51ae409  LICENSE-MIT

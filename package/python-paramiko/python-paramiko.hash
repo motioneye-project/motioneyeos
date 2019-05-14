@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/paramiko/json, sha256 locally computed
-md5	d44932891b1ce4bfd3e9e9e06c90395d  paramiko-2.2.0.tar.gz
-sha256	24b6cdb42eedb50f3b9d994ab0ca63e74db57555346e97c6e4b8c2ab51cdfd81  paramiko-2.2.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/paramiko/json
+md5	a476ea106177fe22e797428d54811aed  paramiko-2.4.2.tar.gz
+sha256	a8975a7df3560c9f1e2b43dc54ebd40fd00a7017392ca5445ce7df409f900fcb  paramiko-2.4.2.tar.gz
+# Locally computed sha256 checksums
+sha256	5fa25bf5f395fd26e701c2e1de4ca7d162816986dc791c22f8f4226857ad1bb2  LICENSE

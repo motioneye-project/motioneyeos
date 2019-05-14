@@ -1,0 +1,49 @@
+From 57383dc900e76e65ce5e5dc95f776e086100344d Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Sat, 12 Jan 2019 10:22:38 +0100
+Subject: [PATCH] meson.build: enable CPP include check only in case CPP
+ compiler is available
+
+Drop hard meson C++/CPP dependency, only needed for the build-time
+header inclusion test, build the test only in case C++/CPP compiler
+is available.
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ meson.build | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/meson.build b/meson.build
+index a9c7c185..8183822e 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,4 @@
+-project('libinput', 'c', 'cpp',
++project('libinput', 'c',
+ 	version : '1.12.5',
+ 	license : 'MIT/Expat',
+ 	default_options : [ 'c_std=gnu99', 'warning_level=2' ],
+@@ -641,12 +641,14 @@ executable('test-build-linker',
+ 	   include_directories : [includes_src, includes_include],
+ 	   dependencies : [ dep_libinput, dep_libinput_util ],
+ 	   install : false)
+-# test including from C++
+-executable('test-build-cxx',
+-	   'test/build-cxx.cc',
+-	   dependencies : [dep_udev],
+-	   include_directories : [includes_src, includes_include],
+-	   install : false)
++# test including from C++ (in case CPP compiler is available)
++if add_languages('cpp', required: false)
++	executable('test-build-cxx',
++		   'test/build-cxx.cc',
++		   dependencies : [dep_udev],
++		   include_directories : [includes_src, includes_include],
++		   install : false)
++endif
+ 
+ # This is the test suite runner, we allow disabling that one because of
+ # dependencies
+-- 
+2.20.1
+

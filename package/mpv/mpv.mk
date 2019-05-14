@@ -132,7 +132,7 @@ endif
 
 # LUA support, only for lua51/lua52/luajit
 # This enables the controller (OSD) together with libass
-ifeq ($(BR2_PACKAGE_LUA_5_1)$(BR2_PACKAGE_LUA_5_2)$(BR2_PACKAGE_LUAJIT),y)
+ifeq ($(BR2_PACKAGE_LUA_5_1)$(BR2_PACKAGE_LUAJIT),y)
 MPV_CONF_OPTS += --enable-lua
 MPV_DEPENDENCIES += luainterpreter
 else

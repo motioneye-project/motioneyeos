@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/pycryptodomex/json
+md5	ae7083008139cf9372322dcd99e92db0  pycryptodomex-3.7.1.tar.gz
+sha256	4ba053bea752ddc89b94d1f9f87008ef296a644b8dec0201c021d9636c069322  pycryptodomex-3.7.1.tar.gz
+# Locally computed sha256 checksums
+sha256	d1af3fab2ef8cc53b6c7f48bdeb178ac874b04faf4ba0159a96b6109f1d393e2  LICENSE.rst
+sha256	8e563c767164faa0831a333b57d23d4311cf566eb1b15d93250f4606be4eb549  Doc/LEGAL/COPYRIGHT.pycrypto

@@ -1,0 +1,46 @@
+From 9c84b7426660c09c18cc349f6d70b5f8168b5680 Mon Sep 17 00:00:00 2001
+From: Daniel Axtens <dja@axtens.net>
+Date: Tue, 4 Dec 2018 16:33:42 +1100
+Subject: [PATCH] warc: consume data once read
+
+The warc decoder only used read ahead, it wouldn't actually consume
+data that had previously been printed. This means that if you specify
+an invalid content length, it will just reprint the same data over
+and over and over again until it hits the desired length.
+
+This means that a WARC resource with e.g.
+Content-Length: 666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666665
+but only a few hundred bytes of data, causes a quasi-infinite loop.
+
+Consume data in subsequent calls to _warc_read.
+
+Found with an AFL + afl-rb + qsym setup.
+---
+ libarchive/archive_read_support_format_warc.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+[for import into Buildroot]
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: backport
+
+CVE-2018-1000880
+
+diff --git a/libarchive/archive_read_support_format_warc.c b/libarchive/archive_read_support_format_warc.c
+index e8753853..e8fc8428 100644
+--- a/libarchive/archive_read_support_format_warc.c
++++ b/libarchive/archive_read_support_format_warc.c
+@@ -386,6 +386,11 @@ _warc_read(struct archive_read *a, const void **buf, size_t *bsz, int64_t *off)
+ 		return (ARCHIVE_EOF);
+ 	}
+ 
++	if (w->unconsumed) {
++		__archive_read_consume(a, w->unconsumed);
++		w->unconsumed = 0U;
++	}
++
+ 	rab = __archive_read_ahead(a, 1U, &nrd);
+ 	if (nrd < 0) {
+ 		*bsz = 0U;
+-- 
+2.19.2
+

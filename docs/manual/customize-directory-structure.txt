@@ -50,6 +50,7 @@ to you.
 |
 +-- Config.in (if using a br2-external tree)
 +-- external.mk (if using a br2-external tree)
++-- external.desc (if using a br2-external tree)
 ------
 
 Details on the files shown above are given further in this chapter.

@@ -242,10 +242,6 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_Y4M
 
 comment "plugins with external dependencies (there may be more available)"
 
-config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_APEXSINK
-	bool "apexsink"
-	select BR2_PACKAGE_OPENSSL
-
 config BR2_PACKAGE_GST_PLUGINS_BAD_PLUGIN_BZ2
 	bool "bz2"
 	select BR2_PACKAGE_BZIP2
@@ -324,14 +320,13 @@ config BR2_PACKAGE_GST_PLUGINS_BAD_ZBAR
 	bool "zbar"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # zbar-> libv4l
 	depends on BR2_USE_MMU # zbar-> libv4l
-	depends on !BR2_STATIC_LIBS # zbar-> libv4l
 	depends on BR2_INSTALL_LIBSTDCPP # zbar-> libv4l
-	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0 # zbar-> libv4l
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17 # zbar
 	select BR2_PACKAGE_ZBAR
 
-comment "zbar plugin needs a toolchain w/ threads, dynamic library, C++ and headers >= 3.0"
+comment "zbar plugin needs a toolchain w/ threads, C++ and headers >= 3.17"
 	depends on BR2_USE_MMU
-	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS \
-		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
+	depends on !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_17
 
 endif

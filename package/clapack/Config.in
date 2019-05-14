@@ -4,7 +4,6 @@ comment "clapack needs a glibc toolchain"
 
 config BR2_PACKAGE_CLAPACK
 	bool "cblas/clapack"
-	depends on !(BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el)
 	# _fpu_control is used on PowerPC, but not available with
 	# uClibc or musl
 	depends on !BR2_powerpc || BR2_TOOLCHAIN_USES_GLIBC

@@ -1,4 +1,10 @@
+# All host rust packages should depend on this option
 config BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
+	bool
+	default y if BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+
+# All target rust packages should depend on this option
+config BR2_PACKAGE_HOST_RUSTC_TARGET_ARCH_SUPPORTS
 	bool
 	# The pre-built Rust standard library is only available for the
 	# following architectures/ABIs, and is built against glibc.
@@ -12,7 +18,7 @@ config BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
 	default y if (BR2_mips64 || BR2_mips64el) && !BR2_MIPS_CPU_MIPS64R6 \
 		&& BR2_MIPS_NABI64
 	depends on BR2_TOOLCHAIN_USES_GLIBC
-	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
+	depends on BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS
 
 config BR2_PACKAGE_HOST_RUSTC_ARCH
 	string
@@ -66,9 +72,11 @@ config BR2_PACKAGE_HOST_RUST_BIN
 
 endchoice
 
+endif
+
 config BR2_PACKAGE_PROVIDES_HOST_RUSTC
 	string
 	default "host-rust" if BR2_PACKAGE_HOST_RUST
-	default "host-rust-bin" if BR2_PACKAGE_HOST_RUST_BIN
-
-endif
+	# Default to host-rust-bin as long as host arch supports it
+	default "host-rust-bin" if !BR2_PACKAGE_HOST_RUST
+	depends on BR2_PACKAGE_HOST_RUSTC_ARCH_SUPPORTS

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_LIBCORRECT
+	bool "libcorrect"
+	depends on !BR2_STATIC_LIBS
+	help
+	  A C library for Forward Error Correction, providing
+	  convolutional codes and Reed-Solomon codes. It is part
+	  of the Quiet Modem Project.
+
+	  https://github.com/quiet/libcorrect
+
+comment "libcorrect needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

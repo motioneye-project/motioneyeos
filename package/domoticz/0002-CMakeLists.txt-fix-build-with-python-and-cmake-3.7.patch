@@ -1,0 +1,40 @@
+From 4b77662232c806b8aba7680405144ad51ac3671b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 29 Nov 2018 00:36:00 +0100
+Subject: [PATCH] CMakeLists.txt: fix build with python and cmake <= 3.7
+
+domoticz will fail to build with python and older cmake
+Indeed, find_package(PythonLibs 3.4) will not recognize python 3.7 until
+cmake 3.7 and the following commit:
+https://github.com/Kitware/CMake/commit/c31573b9641e0f1bc7a34149506db51f3494323b
+
+To fix this, add a call to find_package(PythonInterp 3.4). Indeed, if
+FindPythonInterp has already found the major and minor version, that
+version will be inserted between the user supplied versions and the
+stock version list since cmake in version 3.1 and
+https://github.com/Kitware/CMake/commit/3816cd2dc7a7cc220e4f1b1e87fee986545b9cb3
+
+Fixes:
+ - http://autobuild.buildroot.org/results/8e82501a7b49da628ec026132ffca44c0c813040
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/domoticz/domoticz/pull/2889]
+---
+ CMakeLists.txt | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f4e38b88..41003a0c 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -125,6 +125,7 @@ ENDIF(USE_BUILTIN_SQLITE)
+ 
+ option(USE_PYTHON "Use Python for Plugins and Event-Scripts" YES)
+ IF(USE_PYTHON)
++  find_package(PythonInterp 3.4)
+   find_package(PythonLibs 3.4)
+   IF(PYTHONLIBS_FOUND)
+     MESSAGE(STATUS "Python3 includes found at: ${PYTHON_INCLUDE_PATH}")
+-- 
+2.14.1
+

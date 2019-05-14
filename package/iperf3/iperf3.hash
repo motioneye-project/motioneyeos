@@ -1,2 +1,4 @@
-# From http://software.es.net/iperf/news.html
-sha256 a4ef73406fe92250602b8da2ae89ec53211f805df97a1d1d629db5a14043734f  iperf-3.1.7.tar.gz
+# From https://downloads.es.net/pub/iperf/iperf-3.6.tar.gz.sha256
+sha256 de5d51e46dc460cc590fb4d44f95e7cad54b74fea1eba7d6ebd6f8887d75946e  iperf-3.6.tar.gz
+# Locally computed
+sha256 52c42914d7d79fe5e95d0d1b821556d9f06bf756ac910fe085a46d238a33e594  LICENSE

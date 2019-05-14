@@ -1,0 +1,23 @@
+comment "libtorrent-rasterbar needs a toolchain w/ C++, threads, wchar, gcc >= 4.8"
+	depends on BR2_TOOLCHAIN_SUPPORTS_VARIADIC_MI_THUNK
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		!BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
+config BR2_PACKAGE_LIBTORRENT_RASTERBAR
+	bool "libtorrent-rasterbar"
+	depends on BR2_INSTALL_LIBSTDCPP # boost
+	depends on BR2_HOST_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_TOOLCHAIN_HAS_THREADS # boost
+	depends on BR2_TOOLCHAIN_SUPPORTS_VARIADIC_MI_THUNK
+	depends on BR2_USE_WCHAR # boost
+	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_CHRONO
+	select BR2_PACKAGE_BOOST_SYSTEM
+	select BR2_PACKAGE_BOOST_RANDOM
+	select BR2_PACKAGE_OPENSSL
+	help
+	  libtorrent is a feature complete C++ bittorrent implementation
+	  focusing on efficiency and scalability.
+
+	  https://www.libtorrent.org/

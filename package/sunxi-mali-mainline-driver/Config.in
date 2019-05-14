@@ -14,7 +14,7 @@ config BR2_PACKAGE_SUNXI_MALI_MAINLINE_DRIVER
 	  Linux kernels (>= 4.4). Note that it should be installed
 	  together with the corresponding userspace OpenGL libraries,
 	  which are provided as binaries only at:
-	  https://github.com/free-electrons/mali-blobs
+	  https://github.com/bootlin/mali-blobs
 
 	  sunxi-mali-mainline-driver requires a Linux kernel >= 4.4
 	  with the following options enabled:

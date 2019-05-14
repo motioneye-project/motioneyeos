@@ -1,5 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
 md5    6da11a7db0e933b7684148e1fb32006a Net-HTTP-6.18.tar.gz
 sha256 7e42df2db7adce3e0eb4f78b88c450f453f5380f120fd5411232e03374ba951c Net-HTTP-6.18.tar.gz
-# Locally computed
-sha256 49fbcc80e17295888b909176a0029f275a8c17b6cbfaf8867fe571ebe9a9ca79  LICENSE
+
+# computed by scancpan
+sha256 49fbcc80e17295888b909176a0029f275a8c17b6cbfaf8867fe571ebe9a9ca79 LICENSE

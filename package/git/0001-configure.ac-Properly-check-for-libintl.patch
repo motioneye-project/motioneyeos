@@ -1,0 +1,49 @@
+From 01da08fd60a0bdb2994f85f943dba148d9321d4d Mon Sep 17 00:00:00 2001
+From: Vadim Kochan <vadim4j@gmail.com>
+Date: Wed, 17 Apr 2019 01:25:40 +0300
+Subject: [PATCH 1/1] configure.ac: Properly check for libintl
+
+Some libc implementations like uclibc or musl provides
+gettext stubs via libintl library but this case is not checked
+by AC_CHECK_LIBRARY(c, gettext ...) because gcc has gettext as builtin
+which passess the check.
+
+So check it with included libintl.h where gettext may unfold into
+libintl_gettext which will cause check to fail if libintl_gettext are
+needed to be linked with -lintl.
+
+Signed-off-by: Vadim Kochan <vadim4j@gmail.com>
+---
+ configure.ac | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7f84151..0b8e25f 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -762,9 +762,19 @@ AC_CHECK_LIB([c], [basename],
+ GIT_CONF_SUBST([NEEDS_LIBGEN])
+ test -n "$NEEDS_LIBGEN" && LIBS="$LIBS -lgen"
+ 
+-AC_CHECK_LIB([c], [gettext],
+-[LIBC_CONTAINS_LIBINTL=YesPlease],
+-[LIBC_CONTAINS_LIBINTL=])
++AC_DEFUN([LIBINTL_SRC], [
++AC_LANG_PROGRAM([[
++#include <libintl.h>
++]],[[
++char *msg = gettext("test");
++]])])
++
++AC_MSG_CHECKING([if libc contains libintl])
++AC_LINK_IFELSE([LIBINTL_SRC],
++	[AC_MSG_RESULT([yes])
++	LIBC_CONTAINS_LIBINTL=YesPlease],
++	[AC_MSG_RESULT([no])
++	LIBC_CONTAINS_LIBINTL=])
+ GIT_CONF_SUBST([LIBC_CONTAINS_LIBINTL])
+ 
+ #
+-- 
+2.14.1
+

@@ -28,7 +28,7 @@ endif
 
 KVM_UNIT_TESTS_CONF_OPTS =\
 	--arch="$(KVM_UNIT_TESTS_ARCH)" \
-	--processor="$(call qstrip,$(BR2_GCC_TARGET_CPU))" \
+	--processor="$(GCC_TARGET_CPU)" \
 	--endian="$(KVM_UNIT_TESTS_ENDIAN)"
 
 # For all architectures but x86-64, we use the target

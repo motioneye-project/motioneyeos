@@ -9,7 +9,6 @@ config BR2_PACKAGE_CC_TOOL
 	select BR2_PACKAGE_BOOST_SYSTEM
 	select BR2_PACKAGE_BOOST_REGEX
 	select BR2_PACKAGE_BOOST_FILESYSTEM
-	select BR2_PACKAGE_BOOST_SIGNALS
 	help
 	  cc-tool provides support for Texas Instruments CC Debugger
 	  for Linux OS in order to program 8051-based System-On-Chip

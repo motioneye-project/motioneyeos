@@ -1,0 +1,302 @@
+From a8835aab2c15e794fce13bd927295719e384ad2d Mon Sep 17 00:00:00 2001
+From: Remi Collet <remi@php.net>
+Date: Thu, 28 Jun 2018 07:10:35 +0200
+Subject: [PATCH] fix php_url fields usage for PHP 7.3
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/php/pecl-networking-ssh2/commit/a8835aab2c15e794fce13bd927295719e384ad2d]
+---
+ php_ssh2.h            |  8 +++++++
+ ssh2_fopen_wrappers.c | 55 +++++++++++++++++++++++++++----------------
+ ssh2_sftp.c           | 20 ++++++++--------
+ 3 files changed, 53 insertions(+), 30 deletions(-)
+
+diff --git a/php_ssh2.h b/php_ssh2.h
+index 734b795..d010ff9 100644
+--- a/php_ssh2.h
++++ b/php_ssh2.h
+@@ -166,6 +166,14 @@ extern php_stream_wrapper php_ssh2_sftp_wrapper;
+ extern int le_ssh2_session;
+ extern int le_ssh2_sftp;
+ 
++#if PHP_VERSION_ID < 70300
++#define SSH2_URL_STR(a) (a)
++#define SSH2_URL_LEN(a) strlen(a)
++#else
++#define SSH2_URL_STR(a) ZSTR_VAL(a)
++#define SSH2_URL_LEN(a) ZSTR_LEN(a)
++#endif
++
+ #endif	/* PHP_SSH2_H */
+ 
+ /*
+diff --git a/ssh2_fopen_wrappers.c b/ssh2_fopen_wrappers.c
+index 2f96ca4..f2f3475 100644
+--- a/ssh2_fopen_wrappers.c
++++ b/ssh2_fopen_wrappers.c
+@@ -215,7 +215,7 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 	php_url *resource;
+ 	zval *methods = NULL, *callbacks = NULL, zsession, *tmpzval;
+ 	zend_long resource_id;
+-	char *h, *s, *username = NULL, *password = NULL, *pubkey_file = NULL, *privkey_file = NULL;
++	char *h, *username = NULL, *password = NULL, *pubkey_file = NULL, *privkey_file = NULL;
+ 	int username_len = 0, password_len = 0;
+ 
+ 	h = strstr(path, "Resource id #");
+@@ -233,13 +233,13 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 		return NULL;
+ 	}
+ 
+-	if (strncmp(resource->scheme, "ssh2.", sizeof("ssh2.") - 1)) {
++	if (strncmp(SSH2_URL_STR(resource->scheme), "ssh2.", sizeof("ssh2.") - 1)) {
+ 		/* Not an ssh wrapper */
+ 		php_url_free(resource);
+ 		return NULL;
+ 	}
+ 
+-	if (strcmp(resource->scheme + sizeof("ssh2.") - 1, type)) {
++	if (strcmp(SSH2_URL_STR(resource->scheme) + sizeof("ssh2.") - 1, type)) {
+ 		/* Wrong ssh2. wrapper type */
+ 		php_url_free(resource);
+ 		return NULL;
+@@ -253,13 +253,27 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 		Find resource->path in the path string, then copy the entire string from the original path.
+ 		This includes ?query#fragment in the path string
+ 	*/
++// TODO copy seems uneeded
++#if PHP_VERSION_ID < 70300
++	{
++	char * s;
++
+ 	s = resource->path;
+ 	resource->path = estrdup(strstr(path, resource->path));
+ 	efree(s);
++	}
++#else
++	{
++	zend_string *tmp;
++
++	tmp = resource->path;
++	resource->path = zend_string_init(ZSTR_VAL(resource->path), ZSTR_LEN(resource->path), 0);
++	zend_string_release(tmp);
++	}
++#endif
+ 
+ 	/* Look for a resource ID to reuse a session */
+-	s = resource->host;
+-	if (is_numeric_string(s, strlen(s), &resource_id, NULL, 0) == IS_LONG) {
++	if (is_numeric_string(SSH2_URL_STR(resource->host), SSH2_URL_LEN(resource->host), &resource_id, NULL, 0) == IS_LONG) {
+ 		php_ssh2_sftp_data *sftp_data;
+ 		zval *zresource;
+ 
+@@ -309,7 +323,7 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 	}
+ 
+ 	/* Fallback on finding it in the context */
+-	if (resource->host[0] == 0 && context && psftp &&
++	if (SSH2_URL_STR(resource->host)[0] == 0 && context && psftp &&
+ 		(tmpzval = php_stream_context_get_option(context, "ssh2", "sftp")) != NULL &&
+ 		Z_TYPE_P(tmpzval) == IS_RESOURCE) {
+ 		php_ssh2_sftp_data *sftp_data;
+@@ -323,7 +337,7 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 			return resource;
+ 		}
+ 	}
+-	if (resource->host[0] == 0 && context &&
++	if (SSH2_URL_STR(resource->host)[0] == 0 && context &&
+ 		(tmpzval = php_stream_context_get_option(context, "ssh2", "session")) != NULL &&
+ 		Z_TYPE_P(tmpzval) == IS_RESOURCE) {
+ 		session = (LIBSSH2_SESSION *)zend_fetch_resource(Z_RES_P(tmpzval), PHP_SSH2_SESSION_RES_NAME, le_ssh2_session);
+@@ -399,19 +413,19 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 	}
+ 
+ 	if (resource->user) {
+-		int len = strlen(resource->user);
++		int len = SSH2_URL_LEN(resource->user);
+ 
+ 		if (len) {
+-			username = resource->user;
++			username = SSH2_URL_STR(resource->user);
+ 			username_len = len;
+ 		}
+ 	}
+ 
+ 	if (resource->pass) {
+-		int len = strlen(resource->pass);
++		int len = SSH2_URL_LEN(resource->pass);
+ 
+ 		if (len) {
+-			password = resource->pass;
++			password = SSH2_URL_STR(resource->pass);
+ 			password_len = len;
+ 		}
+ 	}
+@@ -422,7 +436,7 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 		return NULL;
+ 	}
+ 
+-	session = php_ssh2_session_connect(resource->host, resource->port, methods, callbacks);
++	session = php_ssh2_session_connect(SSH2_URL_STR(resource->host), resource->port, methods, callbacks);
+ 	if (!session) {
+ 		/* Unable to connect! */
+ 		php_url_free(resource);
+@@ -482,6 +496,7 @@ php_url *php_ssh2_fopen_wraper_parse_path(const char *path, char *type, php_stre
+ 		*psftp = sftp;
+ 	}
+ 
++	//TODO may be undefined
+ 	*presource_id = Z_LVAL(zsession);
+ 	*psession = session;
+ 
+@@ -527,7 +542,7 @@ static php_stream *php_ssh2_shell_open(LIBSSH2_SESSION *session, int resource_id
+ 					zval_copy_ctor(&copyval);
+ 					convert_to_string(&copyval);
+ 					if (libssh2_channel_setenv_ex(channel, key->val, key->len, Z_STRVAL(copyval), Z_STRLEN(copyval))) {
+-						php_error_docref(NULL, E_WARNING, "Failed setting %s=%s on remote end", key, Z_STRVAL(copyval));
++						php_error_docref(NULL, E_WARNING, "Failed setting %s=%s on remote end", ZSTR_VAL(key), Z_STRVAL(copyval));
+ 					}
+ 					zval_dtor(&copyval);
+ 				}
+@@ -631,7 +646,7 @@ static php_stream *php_ssh2_fopen_wrapper_shell(php_stream_wrapper *wrapper, con
+ 		zval_ptr_dtor(&copyval);
+ 	}
+ 
+-	s = resource->path ? resource->path : NULL;
++	s = resource->path ? SSH2_URL_STR(resource->path) : NULL;
+ 
+ 	if (s && s[0] == '/') {
+ 		/* Terminal type encoded into URL overrides context terminal type */
+@@ -766,7 +781,7 @@ static php_stream *php_ssh2_exec_command(LIBSSH2_SESSION *session, int resource_
+ 					zval_copy_ctor(&copyval);
+ 					convert_to_string(&copyval);
+ 					if (libssh2_channel_setenv_ex(channel, key->val, key->len, Z_STRVAL(copyval), Z_STRLEN(copyval))) {
+-						php_error_docref(NULL, E_WARNING, "Failed setting %s=%s on remote end", key, Z_STRVAL(copyval));
++						php_error_docref(NULL, E_WARNING, "Failed setting %s=%s on remote end", ZSTR_VAL(key), Z_STRVAL(copyval));
+ 					}
+ 					zval_dtor(&copyval);
+ 				}
+@@ -878,7 +893,7 @@ static php_stream *php_ssh2_fopen_wrapper_exec(php_stream_wrapper *wrapper, cons
+ 		zval_ptr_dtor(copyval);
+ 	}
+ 
+-	stream = php_ssh2_exec_command(session, resource_id, resource->path + 1, terminal, terminal_len, environment, width, height, type);
++	stream = php_ssh2_exec_command(session, resource_id, SSH2_URL_STR(resource->path) + 1, terminal, terminal_len, environment, width, height, type);
+ 	if (!stream) {
+ 		// TODO Sean-Der
+ 		//zend_list_delete(resource_id);
+@@ -1021,7 +1036,7 @@ static php_stream *php_ssh2_fopen_wrapper_scp(php_stream_wrapper *wrapper, const
+ 		return NULL;
+ 	}
+ 
+-	stream = php_ssh2_scp_xfer(session, resource_id, resource->path);
++	stream = php_ssh2_scp_xfer(session, resource_id, SSH2_URL_STR(resource->path));
+ 	if (!stream) {
+ 		//TODO Sean-Der
+ 		//zend_list_delete(resource_id);
+@@ -1147,7 +1162,7 @@ PHP_FUNCTION(ssh2_scp_send)
+ 		char *error_msg = NULL;
+ 
+ 		last_error = libssh2_session_last_error(session, &error_msg, NULL, 0);
+-		php_error_docref(NULL, E_WARNING, "Failure creating remote file: %s", error_msg);
++		php_error_docref(NULL, E_WARNING, "Failure creating remote file: %s (%d)", error_msg, last_error);
+ 		php_stream_close(local_file);
+ 		RETURN_FALSE;
+ 	}
+@@ -1262,10 +1277,10 @@ static php_stream *php_ssh2_fopen_wrapper_tunnel(php_stream_wrapper *wrapper, co
+ 		return NULL;
+ 	}
+ 
+-	if (resource->path && resource->path[0] == '/') {
++	if (resource->path && SSH2_URL_STR(resource->path)[0] == '/') {
+ 		char *colon;
+ 
+-		host = resource->path + 1;
++		host = SSH2_URL_STR(resource->path) + 1;
+ 		if (*host == '[') {
+ 			/* IPv6 Encapsulated Format */
+ 			host++;
+diff --git a/ssh2_sftp.c b/ssh2_sftp.c
+index 13f89f0..6332be8 100644
+--- a/ssh2_sftp.c
++++ b/ssh2_sftp.c
+@@ -238,7 +238,7 @@ static php_stream *php_ssh2_sftp_stream_opener(php_stream_wrapper *wrapper, cons
+ 
+ 	flags = php_ssh2_parse_fopen_modes((char *)mode);
+ 
+-	handle = libssh2_sftp_open(sftp, resource->path, flags, perms);
++	handle = libssh2_sftp_open(sftp, SSH2_URL_STR(resource->path), flags, perms);
+ 	if (!handle) {
+ 		php_error_docref(NULL, E_WARNING, "Unable to open %s on remote host", filename);
+ 		php_url_free(resource);
+@@ -341,7 +341,7 @@ static php_stream *php_ssh2_sftp_dirstream_opener(php_stream_wrapper *wrapper, c
+ 		return NULL;
+ 	}
+ 
+-	handle = libssh2_sftp_opendir(sftp, resource->path);
++	handle = libssh2_sftp_opendir(sftp, SSH2_URL_STR(resource->path));
+ 	if (!handle) {
+ 		php_error_docref(NULL, E_WARNING, "Unable to open %s on remote host", filename);
+ 		php_url_free(resource);
+@@ -386,7 +386,7 @@ static int php_ssh2_sftp_urlstat(php_stream_wrapper *wrapper, const char *url, i
+ 		return -1;
+ 	}
+ 
+-	if (libssh2_sftp_stat_ex(sftp, resource->path, strlen(resource->path),
++	if (libssh2_sftp_stat_ex(sftp, SSH2_URL_STR(resource->path), SSH2_URL_LEN(resource->path),
+ 		(flags & PHP_STREAM_URL_STAT_LINK) ? LIBSSH2_SFTP_LSTAT : LIBSSH2_SFTP_STAT, &attrs)) {
+ 		php_url_free(resource);
+ 		//zend_list_delete(sftp_rsrcid);
+@@ -420,7 +420,7 @@ static int php_ssh2_sftp_unlink(php_stream_wrapper *wrapper, const char *url, in
+ 		return 0;
+ 	}
+ 
+-	result = libssh2_sftp_unlink(sftp, resource->path);
++	result = libssh2_sftp_unlink(sftp, SSH2_URL_STR(resource->path));
+ 	php_url_free(resource);
+ 
+ 	//zend_list_delete(sftp_rsrcid);
+@@ -462,7 +462,7 @@ static int php_ssh2_sftp_rename(php_stream_wrapper *wrapper, const char *url_fro
+ 		return 0;
+ 	}
+ 
+-	result = libssh2_sftp_rename(sftp, resource->path, resource_to->path);
++	result = libssh2_sftp_rename(sftp, SSH2_URL_STR(resource->path), SSH2_URL_STR(resource_to->path));
+ 	php_url_free(resource);
+ 	php_url_free(resource_to);
+ 
+@@ -493,13 +493,13 @@ static int php_ssh2_sftp_mkdir(php_stream_wrapper *wrapper, const char *url, int
+ 
+ 	if (options & PHP_STREAM_MKDIR_RECURSIVE) {
+ 		/* Just attempt to make every directory, some will fail, but we only care about the last success/failure */
+-		char *p = resource->path;
++		char *p = SSH2_URL_STR(resource->path);
+ 		while ((p = strchr(p + 1, '/'))) {
+-			libssh2_sftp_mkdir_ex(sftp, resource->path, p - resource->path, mode);
++			libssh2_sftp_mkdir_ex(sftp, SSH2_URL_STR(resource->path), p - SSH2_URL_STR(resource->path), mode);
+ 		}
+ 	}
+ 
+-	result = libssh2_sftp_mkdir(sftp, resource->path, mode);
++	result = libssh2_sftp_mkdir(sftp, SSH2_URL_STR(resource->path), mode);
+ 	php_url_free(resource);
+ 
+ 	//zend_list_delete(sftp_rsrcid);
+@@ -527,7 +527,7 @@ static int php_ssh2_sftp_rmdir(php_stream_wrapper *wrapper, const char *url, int
+ 		return 0;
+ 	}
+ 
+-	result = libssh2_sftp_rmdir(sftp, resource->path);
++	result = libssh2_sftp_rmdir(sftp, SSH2_URL_STR(resource->path));
+ 	php_url_free(resource);
+ 
+ 	//zend_list_delete(sftp_rsrcid);
+@@ -836,7 +836,7 @@ PHP_FUNCTION(ssh2_sftp_readlink)
+ 	}
+ 
+ 	if ((targ_len = libssh2_sftp_symlink_ex(data->sftp, link->val, link->len, targ, 8192, LIBSSH2_SFTP_READLINK)) < 0) {
+-		php_error_docref(NULL, E_WARNING, "Unable to read link '%s'", link);
++		php_error_docref(NULL, E_WARNING, "Unable to read link '%s'", ZSTR_VAL(link));
+ 		RETURN_FALSE;
+ 	}
+ 

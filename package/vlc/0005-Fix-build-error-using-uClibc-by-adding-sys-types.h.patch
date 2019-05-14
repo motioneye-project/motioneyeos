@@ -1,0 +1,44 @@
+From bbb15b9cbf9353423619f2c40abdf95d861e66ba Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 2 Apr 2016 16:49:54 +0200
+Subject: [PATCH] Fix build error using uClibc by adding sys/types.h
+
+Fixes
+
+  CC       core.lo
+In file included from libvlc_internal.h:35:0,
+                 from core.c:28:
+../include/vlc/libvlc_media.h:313:18: error: expected declaration specifiers or '...' before '*' token
+ typedef ssize_t (*libvlc_media_read_cb)(void *opaque, unsigned char *buf,
+                  ^
+../include/vlc/libvlc_media.h:423:36: error: unknown type name 'libvlc_media_read_cb'
+                                    libvlc_media_read_cb read_cb,
+                                    ^
+Bug was reported to trac:
+https://trac.videolan.org/vlc/ticket/16768
+
+This patch was suggested by courmisch in the trac ticket.
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+[Patch sent upstream:
+ https://mailman.videolan.org/pipermail/vlc-devel/2016-April/106952.html]
+---
+ include/vlc/libvlc_media.h | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/include/vlc/libvlc_media.h b/include/vlc/libvlc_media.h
+index 383f366b69..1cbf00c3e3 100644
+--- a/include/vlc/libvlc_media.h
++++ b/include/vlc/libvlc_media.h
+@@ -26,6 +26,8 @@
+ #ifndef VLC_LIBVLC_MEDIA_H
+ #define VLC_LIBVLC_MEDIA_H 1
+ 
++#include <sys/types.h>  /* for ssize_t */
++
+ # ifdef __cplusplus
+ extern "C" {
+ # endif
+-- 
+2.14.4
+

@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-SYLPHEED_VERSION_MAJOR = 3.2
+SYLPHEED_VERSION_MAJOR = 3.7
 SYLPHEED_VERSION = $(SYLPHEED_VERSION_MAJOR).0
-SYLPHEED_SOURCE = sylpheed-$(SYLPHEED_VERSION).tar.bz2
+SYLPHEED_SOURCE = sylpheed-$(SYLPHEED_VERSION).tar.xz
 SYLPHEED_SITE = http://sylpheed.sraoss.jp/sylpheed/v$(SYLPHEED_VERSION_MAJOR)
 SYLPHEED_LICENSE = GPL-2.0+ (executables), LGPL-2.1+ (library, attachment plugin)
 SYLPHEED_LICENSE_FILES = COPYING COPYING.LIB

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_CLASS_INSPECTOR
+	bool "perl-class-inspector"
+	help
+	  Get information about a class and its structure.
+
+	  https://metacpan.org/pod/Class::Inspector

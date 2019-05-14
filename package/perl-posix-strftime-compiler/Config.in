@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_POSIX_STRFTIME_COMPILER
+	bool "perl-posix-strftime-compiler"
+	help
+	  GNU C library compatible strftime for loggers and servers.
+
+	  https://github.com/kazeburo/POSIX-strftime-Compiler

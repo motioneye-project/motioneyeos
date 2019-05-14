@@ -6,4 +6,4 @@ config BR2_PACKAGE_LUALOGGING
 	  supports, through the use of appenders, console, file, rolling
 	  file, email, socket and SQL outputs.
 
-	  http://www.keplerproject.org/lualogging/
+	  https://github.com/Neopallium/lualogging

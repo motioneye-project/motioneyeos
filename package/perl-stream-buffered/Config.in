@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_STREAM_BUFFERED
+	bool "perl-stream-buffered"
+	help
+	  temporary buffer to save bytes.
+
+	  https://github.com/plack/Stream-Buffered

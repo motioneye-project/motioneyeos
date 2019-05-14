@@ -8,7 +8,7 @@ config BR2_PACKAGE_LIBVA_UTILS
 	  Libva-utils is a collection of tests for VA-API (Video
 	  Acceleration API)
 
-	  https://01.org/linuxmedia/vaapi
+	  https://01.org/vaapi
 
 comment "libva-utils needs a toolchain w/ C++, threads, dynamic library"
 	depends on !BR2_INSTALL_LIBSTDCPP || \

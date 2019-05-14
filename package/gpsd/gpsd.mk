@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.17
+GPSD_VERSION = 3.18
 GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3-Clause
 GPSD_LICENSE_FILES = COPYING
@@ -19,10 +19,12 @@ GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
 
 GPSD_SCONS_OPTS = \
 	arch=$(ARCH)\
+	manbuild=no \
 	prefix=/usr\
 	sysroot=$(STAGING_DIR)\
 	strip=no\
-	python=no
+	python=no \
+	qt=no
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 GPSD_DEPENDENCIES += ncurses
@@ -45,14 +47,6 @@ endif
 # https://gcc.gnu.org/bugzilla/show_bug.cgi?id=68485
 ifeq ($(BR2_microblaze),y)
 GPSD_CFLAGS += -O0
-endif
-
-# Enable or disable Qt binding
-ifeq ($(BR2_PACKAGE_QT_NETWORK),y)
-GPSD_SCONS_ENV += QMAKE="$(QT_QMAKE)"
-GPSD_DEPENDENCIES += qt
-else
-GPSD_SCONS_OPTS += qt=no
 endif
 
 # If libusb is available build it before so the package can use it
@@ -110,6 +104,9 @@ GPSD_SCONS_OPTS += geostar=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_GPSCLOCK),y)
 GPSD_SCONS_OPTS += gpsclock=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_GREIS),y)
+GPSD_SCONS_OPTS += greis=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_ISYNC),y)
 GPSD_SCONS_OPTS += isync=no

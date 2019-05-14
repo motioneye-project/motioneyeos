@@ -31,10 +31,6 @@ config BR2_ROOTFS_SKELETON_CUSTOM_PATH
 	help
 	  Path to custom target skeleton.
 
-# dummy config so merged /usr workarounds can also be activated for
-# custom rootfs skeleton
-config BR2_ROOTFS_MERGED_USR
-
 endif
 
 if BR2_ROOTFS_SKELETON_DEFAULT
@@ -61,40 +57,22 @@ endif
 
 choice
 	bool "Passwords encoding"
-	default BR2_TARGET_GENERIC_PASSWD_MD5
+	default BR2_TARGET_GENERIC_PASSWD_SHA256
 	help
 	  Choose the password encoding scheme to use when Buildroot
 	  needs to encode a password (eg. the root password, below).
 
 	  Note: this is used at build-time, and *not* at runtime.
 
-config BR2_TARGET_GENERIC_PASSWD_MD5
-	bool "md5"
-	help
-	  Use MD5 to encode passwords.
-
-	  The default. Wildly available, and pretty good.
-	  Although pretty strong, MD5 is now an old hash function, and
-	  suffers from some weaknesses, which makes it susceptible to
-	  brute-force attacks.
-
 config BR2_TARGET_GENERIC_PASSWD_SHA256
 	bool "sha-256"
 	help
-	  Use SHA256 to encode passwords.
-
-	  Very strong, but not ubiquitous, although available in glibc
-	  for some time now. Choose only if you are sure your C library
-	  understands SHA256 passwords.
+	  Use SHA256 to encode passwords which is stronger than MD5.
 
 config BR2_TARGET_GENERIC_PASSWD_SHA512
 	bool "sha-512"
 	help
-	  Use SHA512 to encode passwords.
-
-	  Extremely strong, but not ubiquitous, although available in
-	  glibc for some time now. Choose only if you are sure your C
-	  library understands SHA512 passwords.
+	  Use SHA512 to encode passwords which is stronger than SHA256
 
 endchoice # Passwd encoding
 
@@ -127,9 +105,7 @@ config BR2_INIT_SYSV
 config BR2_INIT_SYSTEMD
 	bool "systemd"
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
-	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC
-	depends on BR2_USE_WCHAR
-	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 	depends on BR2_TOOLCHAIN_HAS_SSP
 	depends on BR2_USE_MMU
 	depends on !BR2_STATIC_LIBS
@@ -137,14 +113,11 @@ config BR2_INIT_SYSTEMD
 	select BR2_ROOTFS_MERGED_USR
 	select BR2_PACKAGE_SYSTEMD
 
-comment "systemd needs a glibc or uClibc toolchain w/ wchar, threads, SSP, dynamic library, headers >= 3.10"
+comment "systemd needs a glibc toolchain w/ SSP, headers >= 3.10"
 	depends on BR2_PACKAGE_SYSTEMD_ARCH_SUPPORTS
 	depends on BR2_USE_MMU
-	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_UCLIBC) || \
-		!BR2_USE_WCHAR || \
-		!BR2_TOOLCHAIN_HAS_THREADS || \
+	depends on !BR2_TOOLCHAIN_USES_GLIBC || \
 		!BR2_TOOLCHAIN_HAS_SSP || \
-		BR2_STATIC_LIBS || \
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 
 config BR2_INIT_NONE
@@ -215,8 +188,6 @@ config BR2_ROOTFS_DEVICE_TABLE_SUPPORTS_EXTENDED_ATTRIBUTES
 	help
 	  Support extended attributes handling in device tables
 
-if BR2_ROOTFS_SKELETON_DEFAULT
-
 config BR2_ROOTFS_MERGED_USR
 	bool "Use symlinks to /usr for /bin, /sbin and /lib"
 	help
@@ -228,6 +199,8 @@ config BR2_ROOTFS_MERGED_USR
 	  If you say 'y' here, then /bin, /sbin and /lib will be
 	  symlinks to their counterparts in /usr. In this case, /usr can
 	  not be a separate filesystem.
+
+if BR2_ROOTFS_SKELETON_DEFAULT
 
 config BR2_TARGET_ENABLE_ROOT_LOGIN
 	bool "Enable root login with password"
@@ -408,6 +381,16 @@ comment "automatic network configuration via DHCP needs ifupdown or busybox or n
 	depends on !(BR2_PACKAGE_BUSYBOX || BR2_PACKAGE_IFUPDOWN || BR2_PACKAGE_SYSTEMD_NETWORKD)
 
 endif # BR2_ROOTFS_SKELETON_DEFAULT
+
+config BR2_SYSTEM_DEFAULT_PATH
+	string "Set the system's default PATH"
+	default "/bin:/sbin:/usr/bin:/usr/sbin"
+	help
+	  Sets the system's default PATH. It is being used in
+	  /etc/profile in the skeleton-init-common package and by some
+	  daemons.
+
+	  The default should work in most cases.
 
 config BR2_ENABLE_LOCALE_PURGE
 	bool "Purge unwanted locales"

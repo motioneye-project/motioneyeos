@@ -1,0 +1,13 @@
+config BR2_PACKAGE_GST1_SHARK
+	bool "gst1-shark"
+	select BR2_PACKAGE_GSTREAMER1_CHECK
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	select BR2_PACKAGE_GSTREAMER1_GST_DEBUG # gst_debug_log_valist, GST_CAT_STATES
+	help
+	  GstShark leverages GStreamers newest instrumentation subsystem
+	  by installing a set of custom hooks to the trace points. A
+	  variety of data analytics are extracted and presented to the
+	  user in a graphical, friendly way.
+
+	  https://github.com/RidgeRun/gst-shark

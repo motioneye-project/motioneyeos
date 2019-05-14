@@ -1,0 +1,26 @@
+From 73c5a3cc748b853936319e6cdc94159a6974db52 Mon Sep 17 00:00:00 2001
+From: Christian Hesse <mail@eworm.de>
+Date: Wed, 7 Nov 2018 13:55:06 +0100
+Subject: [PATCH] agetty: fix output of escaped characters
+
+Signed-off-by: Christian Hesse <mail@eworm.de>
+---
+ term-utils/agetty.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/term-utils/agetty.c b/term-utils/agetty.c
+index 05a269abb..b9f08728e 100644
+--- a/term-utils/agetty.c
++++ b/term-utils/agetty.c
+@@ -2755,7 +2755,7 @@ static void output_special_char(struct issue *ie,
+ 		break;
+ 	}
+ 	default:
+-		putchar(c);
++		putc(c, ie->output);
+ 		break;
+ 	}
+ }
+-- 
+2.17.1
+

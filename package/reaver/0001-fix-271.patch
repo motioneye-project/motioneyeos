@@ -1,0 +1,32 @@
+From c7040da3a9ff98cd8063b9d5b5a7721374186391 Mon Sep 17 00:00:00 2001
+From: rofl0r <retnyg@gmx.net>
+Date: Fri, 22 Feb 2019 17:38:24 +0000
+Subject: [PATCH] fix #271
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/t6x/reaver-wps-fork-t6x/commit/c7040da3a9ff98cd8063b9d5b5a7721374186391]
+---
+ src/wps/wps_attr_parse.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/wps/wps_attr_parse.c b/src/wps/wps_attr_parse.c
+index 30b0e79..d681b70 100644
+--- a/src/wps/wps_attr_parse.c
++++ b/src/wps/wps_attr_parse.c
+@@ -443,12 +443,12 @@ int wps_parse_msg(const struct wpabuf *msg, struct wps_parse_attr *attr)
+ 			 * Mac OS X 10.6 seems to be adding 0x00 padding to the
+ 			 * end of M1. Skip those to avoid interop issues.
+ 			 */
+-			int i;
+-			for (i = 0; i < end - pos; i++) {
++			uintptr_t i, left = end - pos;
++			for (i = 0; i < left; i++) {
+ 				if (pos[i])
+ 					break;
+ 			}
+-			if (i == end - pos) {
++			if (i == left) {
+ 				wpa_printf(MSG_DEBUG, "WPS: Workaround - skip "
+ 					   "unexpected message padding");
+ 				break;

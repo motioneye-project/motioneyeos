@@ -1,0 +1,29 @@
+From 291070801245da26e4841c321910b55016ca23c0 Mon Sep 17 00:00:00 2001
+From: Vadim Kochan <vadim4j@gmail.com>
+Date: Tue, 1 Jan 2019 17:24:54 +0200
+Subject: [PATCH] test/test-bsd-wchar: Explicitly include stdio.h
+
+libbsd's wchar requires FILE for some it's functions, for some
+reason it is not included by wchar automatically and the test fails. So
+include it explicitly.
+
+Signed-off-by: Vadim Kochan <vadim4j@gmail.com>
+---
+ test/test-bsd-wchar.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/test/test-bsd-wchar.c b/test/test-bsd-wchar.c
+index 4f7c7ca..6125968 100644
+--- a/test/test-bsd-wchar.c
++++ b/test/test-bsd-wchar.c
+@@ -22,6 +22,7 @@
+  * functionality.
+  *
+  */
++#include <stdio.h>
+ #include <bsd/wchar.h>
+ 
+ int main(void)
+-- 
+2.14.1
+

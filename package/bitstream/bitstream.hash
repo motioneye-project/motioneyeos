@@ -1,4 +1,6 @@
-# From https://get.videolan.org/bitstream/1.2/bitstream-1.2.tar.bz2
-sha256 ccfbb438711606de1fad881b58c8f134e2d82b4d53a88ea48f2d1bcb49ca5ad2  bitstream-1.2.tar.bz2
-# From https://get.videolan.org/bitstream/1.2/bitstream-1.2.tar.bz2.md5
-md5 c4b2dbd84eb5799f1525eb9a4e01dc56  bitstream-1.2.tar.bz2
+# From https://get.videolan.org/bitstream/1.4/bitstream-1.4.tar.bz2.md5
+md5 dfb1449194250b2d364d54b5bbac858d  bitstream-1.4.tar.bz2
+# From https://get.videolan.org/bitstream/1.4/bitstream-1.4.tar.bz2.sha256
+sha256 b2484940d3b8733bec9dd1ec1731de428261dff31c9f95874264be9dc9ce786b  bitstream-1.4.tar.bz2
+# Locally computed
+sha256 9644a812f9a8377a59acb7092a36ce8882a39743425d9171a8fb84637e2f6e04  COPYING

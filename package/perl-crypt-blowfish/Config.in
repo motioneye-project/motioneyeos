@@ -2,7 +2,7 @@ config BR2_PACKAGE_PERL_CRYPT_BLOWFISH
 	bool "perl-crypt-blowfish"
 	depends on !BR2_STATIC_LIBS
 	help
-	  Perl Blowfish encryption module
+	  Perl Blowfish encryption module.
 
 	  https://metacpan.org/release/Crypt-Blowfish
 

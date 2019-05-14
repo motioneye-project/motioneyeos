@@ -20,4 +20,72 @@ config BR2_PACKAGE_PROFTPD_MOD_REDIS
 	  The mod_redis module enables ProFTPD support for caching
 	  data in Redis servers, using the hiredis client library.
 
+config BR2_PACKAGE_PROFTPD_MOD_SFTP
+	bool "mod_sftp support"
+	select BR2_PACKAGE_OPENSSL
+	help
+	  Compile ProFTPD with mod_sftp support
+
+config BR2_PACKAGE_PROFTPD_MOD_SQL
+	bool "mod_sql support"
+	help
+	  Compile ProFTPD with mod_sql support.
+
+if BR2_PACKAGE_PROFTPD_MOD_SQL
+
+config BR2_PACKAGE_PROFTPD_MOD_SQL_SQLITE
+	bool "mod_sql_sqlite support"
+	select BR2_PACKAGE_SQLITE
+	help
+	  Compile ProFTPD with mod_sql_sqlite support.
+
+endif
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
+	bool "mod_quotatab support"
+	help
+	  Compile ProFTPD with mod_quotatab support. This module
+	  is required in order to support quota tables:
+	        1. mod_quotatab_file
+	        2. mod_quotatab_ldap
+	        3. mod_quotatab_radius
+	        4. mod_quotatab_sql
+
+if BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_FILE
+	bool "mod_quotatab_file table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_file table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_LDAP
+	bool "mod_quotatab_ldap table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_ldap table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_RADIUS
+	bool "mod_quotatab_radius table support"
+	help
+	  Compile mod_quotatab with mod_quotatab_radius table.
+
+config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB_SQL
+	bool "mod_quotatab_sql table support"
+	select BR2_PACKAGE_PROFTPD_MOD_SQL
+	help
+	  Compile mod_quotatab with mod_quotatab_sql table.
+
+endif
+
+config BR2_PACKAGE_PROFTPD_BUFFER_SIZE
+	int "buffer size in bytes (0 for default)"
+	default "0"
+	help
+	  By increasing the buffer size above the default of 1K,
+	  proftpd reads and writes data in larger chunks, and makes
+	  fewer expensive system calls. Use of this option to set buffer
+	  sizes of 8K or more has been reported to drastically increase
+	  transfer speeds (depending on network configurations).
+
+	  0 uses the default size of 1024.
+
 endif

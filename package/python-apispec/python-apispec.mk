@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_APISPEC_VERSION = 0.39.0
+PYTHON_APISPEC_VERSION = 1.3.3
 PYTHON_APISPEC_SOURCE = apispec-$(PYTHON_APISPEC_VERSION).tar.gz
-PYTHON_APISPEC_SITE = https://files.pythonhosted.org/packages/e9/92/833b2715566b9fe4a34ea544f48f997b3468cbe4c2a2a70d8dd432830c24
+PYTHON_APISPEC_SITE = https://files.pythonhosted.org/packages/99/9e/c2af08f8ddbfbba13d48d26db58b905734bfc1f42d38471551769aa59726
 PYTHON_APISPEC_SETUP_TYPE = setuptools
 PYTHON_APISPEC_LICENSE = Apache-2.0
 PYTHON_APISPEC_LICENSE_FILES = LICENSE.txt

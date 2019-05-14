@@ -1,0 +1,38 @@
+From e4dd33f16fe56d09c8d59d1254a4ed1d8e9bb29c Mon Sep 17 00:00:00 2001
+From: Quentin Armitage <quentin@armitage.org.uk>
+Date: Thu, 6 Dec 2018 12:16:08 +0000
+Subject: [PATCH] Fix order of include files in configure COLLISION test
+
+Since Linux 4.4.11 (commit 1575c09) including linux/if.h after
+net/if.h works, whereas until glibc fix their headers including
+net/if.h after linux/if.h causes compiler redefinition errors.
+
+Unfortunately the test for the collision was done the wrong way
+round, as identified in issue #1079. The patch included in the
+issue report corrects the order of inclusion of the header files.
+
+What we should do is ensure that glibc header files are included
+before Linux header files, so that at least if kernel headers from
+4.4.11 onwards are used, the conflict will not occur.
+
+Signed-off-by: Quentin Armitage <quentin@armitage.org.uk>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from: https://github.com/acassen/keepalived/commit/e4dd33f16fe56d09c8d59d1254a4ed1d8e9bb29c]
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 7a2e8ce1..9badcc62 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1349,8 +1349,8 @@ AC_MSG_CHECKING([for linux/if.h and net/if.h namespace collision])
+ SAV_CPPFLAGS="$CPPFLAGS"
+ CPPFLAGS="$CPPFLAGS $kernelinc"
+ AC_COMPILE_IFELSE([AC_LANG_SOURCE([[
+-    #include <net/if.h>
+     #include <linux/if.h>
++    #include <net/if.h>
+   ]])],
+   [
+     AC_MSG_RESULT([no])

@@ -36,6 +36,11 @@ config BR2_PACKAGE_PROVIDES_LUAINTERPRETER
 config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
 	default "5.1"
 
+config BR2_PACKAGE_LUAJIT_COMPAT52
+	bool "Lua 5.2 compatibility"
+	help
+	  Compile with Lua 5.2 compatibility.
+
 endif
 
 comment "luajit needs a toolchain w/ dynamic library"

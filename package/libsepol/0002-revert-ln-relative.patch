@@ -1,0 +1,29 @@
+From 16b2b0e21e10727065042a1baabd1a887757c65c Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Adamduskett@outlook.com>
+Date: Mon, 9 Oct 2017 16:29:36 -0400
+Subject: [PATCH] Makefile: revert libsepol: use ln --relative to create .so symlinks
+
+This reverts 71393a181d63c9baae5fe8dcaeb9411d1f253998
+
+ln --relative is too recent to be available in all distributions,
+especially enterprise-grade distros that can stick around as long as
+they are maintained (up to 10 years in some cases?).
+
+For the sake of Buildroot, revert the upstream patch.
+
+Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Update for 2.8 (with assumption that SHLIBDIR=LIBDIR)]
+
+diff -durNw libsepol-2.7.orig/src/Makefile libsepol-2.7/src/Makefile
+--- libsepol-2.7.orig/src/Makefile	2018-01-15 21:37:12.821831315 +0100
++++ libsepol-2.7/src/Makefile	2018-01-15 21:38:03.838497434 +0100
+@@ -92,7 +92,7 @@
+ endif
+	test -d $(DESTDIR)$(LIBDIR)/pkgconfig || install -m 755 -d $(DESTDIR)$(LIBDIR)/pkgconfig
+	install -m 644 $(LIBPC) $(DESTDIR)$(LIBDIR)/pkgconfig
+-	$(LN) -sf --relative $(DESTDIR)$(SHLIBDIR)/$(LIBSO) $(DESTDIR)$(LIBDIR)/$(TARGET)
++	cd $(DESTDIR)$(LIBDIR) && ln -sf $(LIBSO) $(TARGET)
+ 
+ relabel:
+ 	/sbin/restorecon $(LIBINSTALL)/$(LIBSO)

@@ -1,0 +1,57 @@
+From 672eaebd131c789a528e3a9cd089b4b69a82012b Mon Sep 17 00:00:00 2001
+From: Guillem Jover <guillem@debian.org>
+Date: Fri, 28 Sep 2018 13:15:54 +0300
+Subject: [PATCH] Link against libgcc to avoid unresolved symbols
+
+We need to link agaisnt -lgcc, on at least hppa, PPC and ARC.
+That's because in some corner-cases like compilation with -Os
+on ARC and PPC so-called millicode (basically function prologue and
+epilogue) implemented in libgcc.a is used. So we end up with
+GLOBAL UNDEFINED symbol in libaio.so and then on linkage of the final
+applicaiton LD fails to proceed saying:
+--------------------------->8----------------------
+hidden symbol '__ld_r13_to_r15_ret' in .../libgcc.a(_millicodethunk_ret.o) is referenced by DSO
+--------------------------->8----------------------
+
+Also it looks like in general it is not the best idea to use either
+"-nostartfiles" or "-nostdlib" when linking shared libs because
+default construtor/destructor functions won't be executed, see
+"5.2. Library constructor and destructor functions" in [1]
+
+So let's stop passing "-nostdlib" and "-nostartfiles" and get required
+stuff built-in libaio.
+
+Initial patch taken from Debian [2].
+
+Fixes build failures in Buildroot like blktrace [3], lvm2 [4].
+
+Was submitted upstream via pull-request [5].
+
+[1] http://tldp.org/HOWTO/Program-Library-HOWTO/miscellaneous.html
+[2] https://sources.debian.org/patches/libaio/0.3.111-1/01_link_libs.patch/
+[3] http://autobuild.buildroot.net/results/17461209755038a30118d76acb4f43469a22a139/
+[4] http://autobuild.buildroot.net/results/a5dfc87f94b97135e5cc84f6a876114891ed9dd9/
+[5] https://pagure.io/libaio/pull-request/7
+
+Signed-off-by: Guillem Jover <guillem@debian.org>
+Signed-off-by: Alexey Brodkin <abrodkin@synopsys.com>
+---
+ src/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index eadb336b47e3..5911c810c766 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -3,7 +3,7 @@ includedir=$(prefix)/include
+ libdir=$(prefix)/lib
+ 
+ CFLAGS ?= -g -fomit-frame-pointer -O2
+-CFLAGS += -nostdlib -nostartfiles -Wall -I. -fPIC
++CFLAGS += -Wall -I. -fPIC
+ SO_CFLAGS=-shared $(CFLAGS)
+ L_CFLAGS=$(CFLAGS)
+ LINK_FLAGS=
+-- 
+2.17.1
+

@@ -1,2 +1,3 @@
 # locally computed hash
-sha256 29c35426a416bf454413c6fec24c24a0b633e26144a17e98351b6dffaa4a833b  leptonica-1.74.4.tar.gz
+sha256 dd7990ab6b6824b0cfed70920824d37b47184240f98db4085f7dbf1250cd4899  leptonica-1.77.0.tar.gz
+sha256 ca0ac11c7c0acad9599d54990942cc11c9f6d9b569f1a360d774a628819c3518  leptonica-license.txt

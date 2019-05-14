@@ -1,0 +1,7 @@
+config BR2_PACKAGE_BRCM_PATCHRAM_PLUS
+	bool "brcm-patchram-plus"
+	help
+	  Broadcom utility to flash Bluetooth firmwares, extended with
+	  per-device Low Power Mode configuration.
+
+	  https://github.com/AsteroidOS/brcm-patchram-plus

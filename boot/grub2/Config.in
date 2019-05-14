@@ -2,6 +2,9 @@ config BR2_TARGET_GRUB2_ARCH_SUPPORTS
 	bool
 	default y if BR2_i386
 	default y if BR2_x86_64
+	default y if BR2_arm
+	default y if BR2_aarch64
+	depends on BR2_USE_MMU
 
 config BR2_TARGET_GRUB2
 	bool "grub2"
@@ -29,12 +32,14 @@ choice
 
 config BR2_TARGET_GRUB2_I386_PC
 	bool "i386-pc"
+	depends on BR2_i386 || BR2_x86_64
 	help
 	  Select this option if the platform you're targetting is a
 	  x86 or x86-64 legacy BIOS based platform.
 
 config BR2_TARGET_GRUB2_I386_EFI
 	bool "i386-efi"
+	depends on BR2_i386 || BR2_x86_64
 	help
 	  Select this option if the platform you're targetting has a
 	  32 bits EFI BIOS. Note that some x86-64 platforms use a 32
@@ -42,14 +47,38 @@ config BR2_TARGET_GRUB2_I386_EFI
 
 config BR2_TARGET_GRUB2_X86_64_EFI
 	bool "x86-64-efi"
-	depends on BR2_ARCH_IS_64
+	depends on BR2_x86_64
 	help
 	  Select this option if the platform you're targetting has a
 	  64 bits EFI BIOS.
 
+config BR2_TARGET_GRUB2_ARM_UBOOT
+	bool "arm-uboot"
+	depends on BR2_arm
+	help
+	  Select this option if the platform you're targetting is an
+	  ARM u-boot platform, and you want to boot Grub 2 as an u-boot
+	  compatible image.
+
+config BR2_TARGET_GRUB2_ARM_EFI
+	bool "arm-efi"
+	depends on BR2_arm
+	help
+	  Select this option if the platform you're targetting is an
+	  ARM platform and you want to boot Grub 2 as an EFI
+	  application.
+
+config BR2_TARGET_GRUB2_ARM64_EFI
+	bool "arm64-efi"
+	depends on BR2_aarch64
+	help
+	  Select this option if the platform you're targetting is an
+	  Aarch64 platform and you want to boot Grub 2 as an EFI
+	  application.
+
 endchoice
 
-if BR2_TARGET_GRUB2_I386_PC
+if BR2_TARGET_GRUB2_I386_PC || BR2_TARGET_GRUB2_ARM_UBOOT
 
 config BR2_TARGET_GRUB2_BOOT_PARTITION
 	string "boot partition"
@@ -60,13 +89,15 @@ config BR2_TARGET_GRUB2_BOOT_PARTITION
 	  first disk if using a legacy partition table, or 'hd0,gpt1'
 	  if using GPT partition table.
 
-endif # BR2_TARGET_GRUB2_I386_PC
+endif # BR2_TARGET_GRUB2_I386_PC || BR2_TARGET_GRUB2_ARM_UBOOT
 
 config BR2_TARGET_GRUB2_BUILTIN_MODULES
 	string "builtin modules"
 	default "boot linux ext2 fat squash4 part_msdos part_gpt normal biosdisk" if BR2_TARGET_GRUB2_I386_PC
 	default "boot linux ext2 fat squash4 part_msdos part_gpt normal efi_gop" \
-		if BR2_TARGET_GRUB2_I386_EFI || BR2_TARGET_GRUB2_X86_64_EFI
+		if BR2_TARGET_GRUB2_I386_EFI || BR2_TARGET_GRUB2_X86_64_EFI || \
+		   BR2_TARGET_GRUB2_ARM_EFI  || BR2_TARGET_GRUB2_ARM64_EFI
+	default "linux ext2 fat part_msdos normal" if BR2_TARGET_GRUB2_ARM_UBOOT
 
 config BR2_TARGET_GRUB2_BUILTIN_CONFIG
 	string "builtin config"
@@ -75,6 +106,15 @@ config BR2_TARGET_GRUB2_BUILTIN_CONFIG
 	  into the Grub image itself. This allows to set the root
 	  device and other configuration parameters, but however menu
 	  entries cannot be described in this embedded configuration.
+
+config BR2_TARGET_GRUB2_INSTALL_TOOLS
+	bool "install tools"
+	help
+	  Install support tools to interact with GNU GRUB Multiboot
+	  boot loader.
+
+	  This will also install the Grub 2 loadable modules to the
+	  target.
 
 endif # BR2_TARGET_GRUB2
 

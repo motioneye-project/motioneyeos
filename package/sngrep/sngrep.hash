@@ -1,6 +1,6 @@
-# From https://github.com/irontec/sngrep/releases/download/v1.4.5/sngrep-1.4.5.tar.gz.md5sum
-md5 11f1cdb8e8f3a3c9ef02ecd12268322e  sngrep-1.4.5.tar.gz
+# From https://github.com/irontec/sngrep/releases/download/v1.4.6/sngrep-1.4.6.tar.gz.md5sum
+md5 094e76786b118258bac69e1514aac826  sngrep-1.4.6.tar.gz
 
 # Locally computed
-sha256 16f1566f4507ba560c7461cc7ff1c1653beb14b8baf7846269bbb4880564e57f sngrep-v1.4.5.tar.gz
+sha256 638d6557dc68db401b07d73b2e7f8276800281f021fe0c942992566d6b59a48a sngrep-v1.4.6.tar.gz
 sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903 LICENSE

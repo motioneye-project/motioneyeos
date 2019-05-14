@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_SUB_EXPORTER_PROGRESSIVE
+	bool "perl-sub-exporter-progressive"
+	help
+	  Only use Sub::Exporter if you need it.
+
+	  https://github.com/frioux/Sub-Exporter-Progressive

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GNU_EFI_VERSION = 3.0.6
+GNU_EFI_VERSION = 3.0.9
 GNU_EFI_SOURCE = gnu-efi-$(GNU_EFI_VERSION).tar.bz2
 GNU_EFI_SITE = http://downloads.sourceforge.net/project/gnu-efi
 GNU_EFI_INSTALL_STAGING = YES
@@ -26,17 +26,18 @@ else ifeq ($(BR2_aarch64)$(BR2_aarch64_be),y)
 GNU_EFI_PLATFORM = aarch64
 endif
 
+GNU_EFI_MAKE_OPTS = \
+	ARCH=$(GNU_EFI_PLATFORM) \
+	CROSS_COMPILE="$(TARGET_CROSS)" \
+	PREFIX=/usr
+
 define GNU_EFI_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		$(TARGET_CONFIGURE_OPTS) \
-		ARCH=$(GNU_EFI_PLATFORM)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) $(GNU_EFI_MAKE_OPTS)
 endef
 
 define GNU_EFI_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
-		$(TARGET_CONFIGURE_OPTS) \
-		INSTALLROOT=$(STAGING_DIR) \
-		PREFIX=/usr ARCH=$(GNU_EFI_PLATFORM) install
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) $(GNU_EFI_MAKE_OPTS) \
+		INSTALLROOT=$(STAGING_DIR) install
 endef
 
 $(eval $(generic-package))

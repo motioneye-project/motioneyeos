@@ -5,7 +5,7 @@
 ################################################################################
 
 RYGEL_VERSION_MAJOR = 0.36
-RYGEL_VERSION = $(RYGEL_VERSION_MAJOR).1
+RYGEL_VERSION = $(RYGEL_VERSION_MAJOR).2
 RYGEL_SOURCE = rygel-$(RYGEL_VERSION).tar.xz
 RYGEL_SITE = http://ftp.gnome.org/pub/gnome/sources/rygel/$(RYGEL_VERSION_MAJOR)
 RYGEL_LICENSE = LGPL-2.1+, CC-BY-SA-3.0 (logo)

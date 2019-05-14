@@ -198,6 +198,17 @@ config BR2_powerpc64le
 	  http://www.power.org/
 	  http://en.wikipedia.org/wiki/Powerpc
 
+config BR2_riscv
+	bool "RISCV"
+	select BR2_ARCH_HAS_MMU_MANDATORY
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_7
+	help
+	  RISC-V is an open, free Instruction Set Architecture created
+	  by the UC Berkeley Architecture Research group and supported
+	  and promoted by RISC-V Foundation.
+	  https://riscv.org/
+	  https://en.wikipedia.org/wiki/RISC-V
+
 config BR2_sh
 	bool "SuperH"
 	select BR2_ARCH_HAS_MMU_OPTIONAL
@@ -304,9 +315,6 @@ config BR2_GCC_TARGET_FP32_MODE
 	string
 
 config BR2_GCC_TARGET_CPU
-	string
-
-config BR2_GCC_TARGET_CPU_REVISION
 	string
 
 # The value of this option will be passed as --with-fpu=<value> when
@@ -421,6 +429,10 @@ endif
 
 if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 source "arch/Config.in.powerpc"
+endif
+
+if BR2_riscv
+source "arch/Config.in.riscv"
 endif
 
 if BR2_sh

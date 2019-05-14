@@ -20,4 +20,12 @@ ifeq ($(BR2_STATIC_LIBS),y)
 MAKE_CONF_OPTS += --disable-load
 endif
 
+HOST_MAKE_DEPENDENCIES = host-pkgconf
+HOST_MAKE_CONF_OPTS = --without-guile
+
+# Configure host-make binary to be 'host-make' to ensure it isn't
+# accidently used by packages when they invoke recursive / sub-make.
+HOST_MAKE_CONF_OPTS += --program-prefix=host-
+
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))

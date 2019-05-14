@@ -1,0 +1,34 @@
+From ca4325c6963e505d6fb628163abf2359427ea022 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 29 Nov 2018 21:43:28 +0100
+Subject: [PATCH] modlua.ini: include dlfcn.h
+
+dlfcn.h must be included to be able to use dlopen otherwise build will
+fail on:
+src/mod_lua.inl:2845:41: error: 'RTLD_LAZY' undeclared (first use in this function)
+  lib_handle_uuid = dlopen("libuuid.so", RTLD_LAZY);
+
+Fixes:
+ - http://autobuild.buildroot.org/results/7a189f49c5a8b6f7b3d4c57cda5982adc65dbc19
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/civetweb/civetweb/pull/706]
+---
+ src/mod_lua.inl | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/mod_lua.inl b/src/mod_lua.inl
+index 97a5de1e..ce7a4b2e 100644
+--- a/src/mod_lua.inl
++++ b/src/mod_lua.inl
+@@ -2,6 +2,7 @@
+  * See https://github.com/civetweb/civetweb/
+  */
+ 
++#include <dlfcn.h>
+ #include "civetweb_lua.h"
+ #include "civetweb_private_lua.h"
+ 
+-- 
+2.14.1
+

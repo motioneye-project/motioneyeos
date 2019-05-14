@@ -1,0 +1,17 @@
+config BR2_PACKAGE_TINI
+	bool "tini"
+	depends on BR2_USE_MMU # fork()
+	help
+	  tini is a simple but valid init binary to
+	  act as PID 1 for containers.
+
+	  https://github.com/krallin/tini
+
+if BR2_PACKAGE_TINI
+
+config BR2_PACKAGE_TINI_MINIMAL
+	bool "build minimal variant"
+	help
+	  Disables argument parsing and verbose output.
+
+endif
