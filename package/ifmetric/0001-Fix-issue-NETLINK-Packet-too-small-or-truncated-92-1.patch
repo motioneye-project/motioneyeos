@@ -1,0 +1,29 @@
+From 0c80f9ead3eb1d938b3e8e68165c91e62db72de3 Mon Sep 17 00:00:00 2001
+From: Damjan Georgievski <gdamjan@gmail.com>
+Date: Wed, 15 Aug 2012 00:54:38 +0200
+Subject: [PATCH] Fix issue: NETLINK: Packet too small or truncated!
+ 92!=16!=244
+
+As reported in http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=514197#22
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/nlrequest.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/nlrequest.c b/src/nlrequest.c
+index 99fd3d0..3a1f794 100644
+--- a/src/nlrequest.c
++++ b/src/nlrequest.c
+@@ -44,7 +44,7 @@ int netlink_request(int s, struct nlmsghdr *n, int (*callback) (struct nlmsghdr
+ 
+     for (;;) {
+         int bytes;
+-        char replybuf[2048];
++        char replybuf[4096];
+         struct nlmsghdr *p = (struct nlmsghdr *) replybuf;
+         
+         if ((bytes = recv(s, &replybuf, sizeof(replybuf), 0)) < 0) {
+-- 
+2.11.0
+
