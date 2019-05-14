@@ -1,5 +1,5 @@
-# From http://ftp.gnome.org/pub/gnome/sources/libepoxy/1.5/libepoxy-1.5.2.sha256sum
-sha256 a9562386519eb3fd7f03209f279f697a8cba520d3c155d6e253c3e138beca7d8  libepoxy-1.5.2.tar.xz
+# From http://ftp.gnome.org/pub/gnome/sources/libepoxy/1.5/libepoxy-1.5.3.sha256sum
+sha256 002958c5528321edd53440235d3c44e71b5b1e09b9177e8daf677450b6c4433d  libepoxy-1.5.3.tar.xz
 
 # Hashes for license files:
 sha256 8d5144666f9c4df9bbd69b8900086d5979259152a1060421cdcc0fb9061a1c12  COPYING
