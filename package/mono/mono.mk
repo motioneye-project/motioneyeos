@@ -40,7 +40,9 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 MONO_DEPENDENCIES += libiconv
 endif
 
-MONO_DEPENDENCIES += host-mono
+MONO_DEPENDENCIES += \
+	host-mono \
+	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind)
 
 ## Mono managed
 
