@@ -939,6 +939,7 @@ F:	package/webp/
 F:	package/xapian/
 
 N:	Giulio Benetti <giulio.benetti@micronovasrl.com>
+F:	package/minicom/
 F:	package/sunxi-mali-mainline/
 F:	package/sunxi-mali-mainline-driver/
 
