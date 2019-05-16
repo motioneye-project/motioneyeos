@@ -1,4 +1,4 @@
-From cfad2bcae8f572a9422ce5a6adb4caa7c0e521ad Mon Sep 17 00:00:00 2001
+From a4bbbf0c5f1f68298d5f4e2c2cd80de7e758763c Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:30:06 +0100
 Subject: [PATCH] Add an option to disable bsddb
@@ -9,16 +9,18 @@ the build/installation of this Python module.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  Makefile.pre.in |  8 ++++++--
  configure.ac    | 22 ++++++++++++++++++++++
  2 files changed, 28 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index e5d0dd7..2582574 100644
+index 8dee345539..a0473096c1 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1043,7 +1043,7 @@ LIBSUBDIRS=	site-packages \
+@@ -1053,7 +1053,7 @@ LIBSUBDIRS=	site-packages \
  		email email/mime \
  		ensurepip ensurepip/_bundled \
  		json \
@@ -27,7 +29,7 @@ index e5d0dd7..2582574 100644
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
  		distutils distutils/command \
-@@ -1059,7 +1059,6 @@ TESTSUBDIRS = test test/audiodata test/capath test/data \
+@@ -1070,7 +1070,6 @@ TESTSUBDIRS = test test/audiodata test/capath test/data \
  	test/tracedmodules \
  	email/test email/test/data \
  	json/tests \
@@ -35,7 +37,7 @@ index e5d0dd7..2582574 100644
  	ctypes/test \
  	idlelib/idle_test \
  	distutils/tests \
-@@ -1100,6 +1099,11 @@ ifeq (@EXPAT@,yes)
+@@ -1111,6 +1110,11 @@ ifeq (@EXPAT@,yes)
  LIBSUBDIRS += $(XMLLIBSUBDIRS)
  endif
  
@@ -48,10 +50,10 @@ index e5d0dd7..2582574 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index 09cb3de..524614c 100644
+index 4e430d82b8..361e8c120e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2834,6 +2834,28 @@ AC_ARG_ENABLE(nis,
+@@ -2863,6 +2863,28 @@ AC_ARG_ENABLE(nis,
      	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} nis"
    	  fi])
  
@@ -81,5 +83,5 @@ index 09cb3de..524614c 100644
  	AS_HELP_STRING([--disable-unicodedata], [disable unicodedata]),
  	[ if test "$enableval" = "no"; then
 -- 
-2.7.4
+2.11.0
 

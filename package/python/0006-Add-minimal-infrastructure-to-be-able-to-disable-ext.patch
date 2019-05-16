@@ -1,4 +1,4 @@
-From 977de9474c1fb46359ab6a487e153fbd91a2b568 Mon Sep 17 00:00:00 2001
+From 94ec96dd8827adfb5e272d28a4d76510e28657b3 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:21:28 +0100
 Subject: [PATCH] Add minimal infrastructure to be able to disable extensions
@@ -8,6 +8,8 @@ disable Python extensions. Follow-up commits actually add options to
 disable specific extensions.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  Makefile.pre.in | 6 +++++-
  configure.ac    | 2 ++
@@ -15,10 +17,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  3 files changed, 11 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 96fc718..33b994d 100644
+index 247d3c2902..c1c98ecc5a 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -161,6 +161,8 @@ FILEMODE=	644
+@@ -160,6 +160,8 @@ FILEMODE=	644
  # configure script arguments
  CONFIG_ARGS=	@CONFIG_ARGS@
  
@@ -27,7 +29,7 @@ index 96fc718..33b994d 100644
  
  # Subdirectories with code
  SRCDIRS= 	@SRCDIRS@
-@@ -548,6 +550,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
+@@ -528,6 +530,7 @@ sharedmods: $(BUILDPYTHON) pybuilddir.txt Modules/_math.o
  	esac; \
  	$(RUNSHARED) CC='$(CC)' LDSHARED='$(BLDSHARED)' OPT='$(OPT)' \
  		_TCLTK_INCLUDES='$(TCLTK_INCLUDES)' _TCLTK_LIBS='$(TCLTK_LIBS)' \
@@ -35,7 +37,7 @@ index 96fc718..33b994d 100644
  		$(PYTHON_FOR_BUILD) $(srcdir)/setup.py $$quiet build
  
  # Build static library
-@@ -1269,7 +1272,8 @@ libainstall:	all python-config
+@@ -1280,7 +1283,8 @@ libainstall:	@DEF_MAKE_RULE@ python-config
  # Install the dynamically loadable modules
  # This goes into $(exec_prefix)
  sharedinstall: sharedmods
@@ -46,10 +48,10 @@ index 96fc718..33b994d 100644
  		--install-scripts=$(BINDIR) \
  		--install-platlib=$(DESTSHARED) \
 diff --git a/configure.ac b/configure.ac
-index 63e6918..5d4232f 100644
+index 77ca6d86ca..13f90b3ddd 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2462,6 +2462,8 @@ LIBS="$withval $LIBS"
+@@ -2491,6 +2491,8 @@ LIBS="$withval $LIBS"
  
  PKG_PROG_PKG_CONFIG
  
@@ -59,7 +61,7 @@ index 63e6918..5d4232f 100644
  AC_MSG_CHECKING(for --with-system-expat)
  AC_ARG_WITH(system_expat,
 diff --git a/setup.py b/setup.py
-index 64001e2..3b51c0a 100644
+index 812d53d560..d426dd02ea 100644
 --- a/setup.py
 +++ b/setup.py
 @@ -33,7 +33,10 @@ host_platform = get_platform()
@@ -75,5 +77,5 @@ index 64001e2..3b51c0a 100644
  def add_dir_to_list(dirlist, dir):
      """Add the directory 'dir' to the list 'dirlist' (at the front) if
 -- 
-2.7.4
+2.11.0
 

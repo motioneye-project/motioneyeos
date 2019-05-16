@@ -1,18 +1,20 @@
-From 6b461f698bd33b3493207baf79f4ee02286be8e8 Mon Sep 17 00:00:00 2001
+From abea92958b073dfbf0c78bcb31ce9cfc709c20ca Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:33:55 +0100
 Subject: [PATCH] Add an option to disable readline module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  configure.ac | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 854724d..0a06497 100644
+index ddccc79c2c..dae266326e 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2846,6 +2846,12 @@ AC_ARG_ENABLE(hashlib,
+@@ -2875,6 +2875,12 @@ AC_ARG_ENABLE(hashlib,
  	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _hashlib"
  	  fi])
  
@@ -26,5 +28,5 @@ index 854724d..0a06497 100644
         AS_HELP_STRING([--disable-bz2], [disable BZIP2]),
         [ if test "$enableval" = "no"; then
 -- 
-2.7.4
+2.11.0
 

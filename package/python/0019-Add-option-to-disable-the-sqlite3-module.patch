@@ -1,20 +1,22 @@
-From 570e1e81484d9bcbd30a7719b07d02785a5cab24 Mon Sep 17 00:00:00 2001
+From 123ecc50932e3ad3f7a2d90d430b74822c9695d4 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:28:06 +0100
 Subject: [PATCH] Add option to disable the sqlite3 module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Samuel Martin <s.martin49@gmail.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  Makefile.pre.in | 7 +++++--
  configure.ac    | 9 +++++++++
  2 files changed, 14 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index b2a0490..974a052 100644
+index 0e15b6d6f4..a2e5ac6d41 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1043,7 +1043,6 @@ LIBSUBDIRS=	lib-tk site-packages \
+@@ -1053,7 +1053,6 @@ LIBSUBDIRS=	lib-tk site-packages \
  		email email/mime \
  		ensurepip ensurepip/_bundled \
  		json \
@@ -22,7 +24,7 @@ index b2a0490..974a052 100644
  		logging bsddb csv importlib wsgiref \
  		ctypes ctypes/macholib \
  		idlelib idlelib/Icons \
-@@ -1061,7 +1060,6 @@ TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
+@@ -1072,7 +1071,6 @@ TESTSUBDIRS = lib-tk/test lib-tk/test/test_tkinter \
  	test/tracedmodules \
  	email/test email/test/data \
  	json/tests \
@@ -30,7 +32,7 @@ index b2a0490..974a052 100644
  	bsddb/test \
  	ctypes/test \
  	idlelib/idle_test \
-@@ -1084,6 +1082,11 @@ TESTSUBDIRS += 	lib2to3/tests				\
+@@ -1095,6 +1093,11 @@ TESTSUBDIRS += 	lib2to3/tests				\
  		lib2to3/tests/data/fixers/myfixes
  endif
  
@@ -43,10 +45,10 @@ index b2a0490..974a052 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index 270f337..e9e1897 100644
+index a2810ab8ed..4ee3c60501 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2805,6 +2805,15 @@ if test "$posix_threads" = "yes"; then
+@@ -2834,6 +2834,15 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_atfork)
  fi
  
@@ -63,5 +65,5 @@ index 270f337..e9e1897 100644
  
  AC_ARG_ENABLE(pydoc,
 -- 
-2.7.4
+2.11.0
 

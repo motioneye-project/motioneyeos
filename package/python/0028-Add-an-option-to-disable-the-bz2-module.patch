@@ -1,19 +1,21 @@
-From 6b10788fa040442ace100c3a28cbfff29c9db471 Mon Sep 17 00:00:00 2001
+From d1236c6f4d8d893709fa36f751af47b8ad9055c1 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 22:30:33 +0100
 Subject: [PATCH] Add an option to disable the bz2 module
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Peter: update for 2.7.16]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  configure.ac | 6 ++++++
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 743707a..f1762e9 100644
+index 8fe47d8c37..85df7b1478 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2840,6 +2840,12 @@ AC_ARG_ENABLE(ssl,
-     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ssl"
+@@ -2869,6 +2869,12 @@ AC_ARG_ENABLE(ssl,
+     	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _ssl"
    	  fi])
  
 +AC_ARG_ENABLE(bz2,
@@ -26,5 +28,5 @@ index 743707a..f1762e9 100644
  	AS_HELP_STRING([--disable-dbm], [disable DBM]),
  	[ if test "$enableval" = "no"; then
 -- 
-2.7.4
+2.11.0
 
