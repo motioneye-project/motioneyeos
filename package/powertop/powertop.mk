@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-POWERTOP_VERSION = 2.9
-POWERTOP_SITE = https://01.org/sites/default/files/downloads/powertop
+POWERTOP_VERSION = 2.10
+POWERTOP_SITE = https://01.org/sites/default/files/downloads
 POWERTOP_SOURCE = powertop-v$(POWERTOP_VERSION).tar.gz
 POWERTOP_DEPENDENCIES = pciutils ncurses libnl host-pkgconf \
 	$(TARGET_NLS_DEPENDENCIES)
