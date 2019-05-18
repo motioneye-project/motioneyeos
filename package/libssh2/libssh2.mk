@@ -26,9 +26,12 @@ LIBSSH2_CONF_OPTS += --with-libgcrypt-prefix=$(STAGING_DIR)/usr \
 # linking
 LIBSSH2_CONF_ENV += LIBS="`$(STAGING_DIR)/usr/bin/libgcrypt-config --libs`"
 else ifeq ($(BR2_PACKAGE_LIBSSH2_OPENSSL),y)
-LIBSSH2_DEPENDENCIES += openssl
+LIBSSH2_DEPENDENCIES += host-pkgconf openssl
 LIBSSH2_CONF_OPTS += --with-libssl-prefix=$(STAGING_DIR)/usr \
 	--with-crypto=openssl
+# configure.ac forgets to link to dependent libraries of openssl breaking static
+# linking
+LIBSSH2_CONF_ENV += LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 endif
 
 # Add zlib support if enabled
