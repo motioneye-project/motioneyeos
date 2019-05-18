@@ -1,5 +1,7 @@
 config BR2_PACKAGE_OPENRC
 	bool "openrc"
+	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_NCURSES
 	help
 	  Init that works on top of pid 1 (for example
@@ -16,3 +18,7 @@ config BR2_PACKAGE_OPENRC
 	  use them.
 
 	  https://github.com/OpenRC/openrc
+
+comment "openrc needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
