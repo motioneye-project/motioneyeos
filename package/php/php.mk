@@ -16,6 +16,7 @@ PHP_LICENSE_FILES = LICENSE
 PHP_CONF_OPTS = \
 	--mandir=/usr/share/man \
 	--infodir=/usr/share/info \
+	--with-config-file-scan-dir=/etc/php.d \
 	--disable-all \
 	--without-pear \
 	--with-config-file-path=/etc \
