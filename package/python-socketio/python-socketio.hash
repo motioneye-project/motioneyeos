@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/python-socketio/json
-md5	44fd24e839dc3102920765f345740646  python-socketio-1.4.1.tar.gz
-# sha256 calculated by scanpypi
-sha256	ebd0984d831d602c8ec6d586ecde4466972cc7ed37dbbfe613192864e8263779  python-socketio-1.4.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/python-socketio/json
+md5	51d3820673710afa5caa442c17b08635  python-socketio-4.0.2.tar.gz
+sha256	7bb11f79981eaad08f33b98ffcd501590e5a2c645fdd7bb3fb0a5d9078e08bbc  python-socketio-4.0.2.tar.gz
+# Locally computed sha256 checksums
+sha256	c9e97d3dbc1fbbcdb4f7808b282cd646db887aff4f5313fe6bbe8d4c31405a9c  LICENSE
