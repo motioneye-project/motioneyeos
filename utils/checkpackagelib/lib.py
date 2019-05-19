@@ -53,6 +53,7 @@ class TrailingSpace(_CheckFunction):
                     .format(self.filename, lineno),
                     text]
 
+
 class Utf8Characters(_CheckFunction):
     def is_ascii(self, s):
         try:
