@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-INTEL_MICROCODE_VERSION = 20180807a
-INTEL_MICROCODE_SOURCE = microcode-$(INTEL_MICROCODE_VERSION).tgz
-INTEL_MICROCODE_SITE = https://downloadmirror.intel.com/28087/eng
-INTEL_MICROCODE_STRIP_COMPONENTS = 0
+INTEL_MICROCODE_VERSION = microcode-20190514a
+INTEL_MICROCODE_SITE = $(call github,intel,Intel-Linux-Processor-Microcode-Data-Files,$(INTEL_MICROCODE_VERSION))
 INTEL_MICROCODE_LICENSE = PROPRIETARY
 INTEL_MICROCODE_LICENSE_FILES = license
 INTEL_MICROCODE_REDISTRIBUTE = NO
