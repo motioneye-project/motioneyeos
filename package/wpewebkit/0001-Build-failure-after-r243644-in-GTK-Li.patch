@@ -1,0 +1,36 @@
+From a672bbd75f257dd65844ad53dd21fb37345999b5 Mon Sep 17 00:00:00 2001
+From: "aperez@igalia.com"
+ <aperez@igalia.com@268f45cc-cd09-0410-ab3c-d52691b4dbfc>
+Date: Mon, 20 May 2019 21:20:02 +0000
+Subject: [PATCH] Build failure after r243644 in GTK
+ Linux 64-bit stable builds https://bugs.webkit.org/show_bug.cgi?id=196440
+
+Patch by Pablo Saavedra <psaavedra@igalia.com> on 2019-04-01
+Reviewed by Philippe Normand.
+
+* platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp:
+(WebCore::MediaPlayerPrivateGStreamerBase::updateTextureMapperFlags):
+
+Signed-off-by: Adrian Perez de Castro <aperez@igalia.com>
+
+diff --git a/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp b/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
+index 608aee2e1b3..c614050972a 100644
+--- a/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
++++ b/Source/WebCore/platform/graphics/gstreamer/MediaPlayerPrivateGStreamerBase.cpp
+@@ -1000,11 +1000,13 @@ void MediaPlayerPrivateGStreamerBase::updateTextureMapperFlags()
+         break;
+     }
+ 
++#if USE(GSTREAMER_GL)
+     // When the imxvpudecoder is used, the texture sampling of the
+     // directviv-uploaded texture returns an RGB value, so there's no need to
+     // convert it.
+     if (m_videoDecoderPlatform != WebKitGstVideoDecoderPlatform::ImxVPU)
+         m_textureMapperFlags |= TEXTURE_MAPPER_COLOR_CONVERT_FLAG;
++#endif
+ }
+ #endif
+ 
+-- 
+2.21.0
+
