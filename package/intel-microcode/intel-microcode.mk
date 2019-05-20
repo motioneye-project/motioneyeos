@@ -17,10 +17,14 @@ define INTEL_MICROCODE_INSTALL_IMAGES_CMDS
 		$(@D)/intel-ucode/*
 endef
 
+ifeq ($(BR2_PACKAGE_INTEL_MICROCODE_INSTALL_TARGET),y)
 define INTEL_MICROCODE_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/lib/firmware/intel-ucode
 	$(INSTALL) -m 0644 -t $(TARGET_DIR)/lib/firmware/intel-ucode \
 		$(@D)/intel-ucode/*
 endef
+else
+INTEL_MICROCODE_INSTALL_TARGET = NO
+endif
 
 $(eval $(generic-package))
