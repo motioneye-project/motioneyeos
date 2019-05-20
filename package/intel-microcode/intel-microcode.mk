@@ -9,6 +9,13 @@ INTEL_MICROCODE_SITE = $(call github,intel,Intel-Linux-Processor-Microcode-Data-
 INTEL_MICROCODE_LICENSE = PROPRIETARY
 INTEL_MICROCODE_LICENSE_FILES = license
 INTEL_MICROCODE_REDISTRIBUTE = NO
+INTEL_MICROCODE_INSTALL_IMAGES = YES
+
+define INTEL_MICROCODE_INSTALL_IMAGES_CMDS
+	mkdir -p $(BINARIES_DIR)/intel-ucode
+	$(INSTALL) -m 0644 -t $(BINARIES_DIR)/intel-ucode \
+		$(@D)/intel-ucode/*
+endef
 
 define INTEL_MICROCODE_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/lib/firmware/intel-ucode
