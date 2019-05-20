@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-COG_VERSION = v0.2.0
+COG_VERSION = v0.3.0
 COG_SITE = $(call github,Igalia,cog,$(COG_VERSION))
 COG_INSTALL_STAGING = YES
 COG_DEPENDENCIES = dbus wpewebkit wpebackend-fdo
