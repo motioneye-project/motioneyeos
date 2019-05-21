@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OFONO_VERSION = 1.28
+OFONO_VERSION = 1.29
 OFONO_SOURCE = ofono-$(OFONO_VERSION).tar.xz
 OFONO_SITE = $(BR2_KERNEL_MIRROR)/linux/network/ofono
 OFONO_LICENSE = GPL-2.0
@@ -48,5 +48,8 @@ OFONO_DEPENDENCIES += bluez_utils
 else
 OFONO_CONF_OPTS += --disable-bluetooth
 endif
+
+# required by 0003-build-Add-check-for-explicit_bzero-support.patch
+OFONO_AUTORECONF = YES
 
 $(eval $(autotools-package))
