@@ -411,6 +411,7 @@ def _get_streameye_settings(camera_id):
         'seProto': 'mjpeg',
         'seAuthMode': 'disabled',
         'sePort': 8081,
+        'seRTSPPort': 554
     }
     
     if os.path.exists(STREAMEYE_CONF):
@@ -422,16 +423,21 @@ def _get_streameye_settings(camera_id):
                 if not line:
                     continue
 
-                m = re.findall('PORT="?(\d+)"?', line)
+                m = re.findall('^PORT="?(\d+)"?', line)
                 if m:
                     s['sePort'] = int(m[0])
                     continue
                     
-                m = re.findall('AUTH="?(\w+)"?', line)
+                m = re.findall('^RTSP_PORT="?(\d+)"?', line)
+                if m:
+                    s['seRTSPPort'] = int(m[0])
+                    continue
+
+                m = re.findall('^AUTH="?(\w+)"?', line)
                 if m:
                     s['seAuthMode'] = m[0]
 
-                m = re.findall('PROTO="?(\w+)"?', line)
+                m = re.findall('^PROTO="?(\w+)"?', line)
                 if m:
                     s['seProto'] = m[0]
 
@@ -441,6 +447,7 @@ def _get_streameye_settings(camera_id):
 def _set_streameye_settings(camera_id, s):
     s = dict(s)
     s.setdefault('sePort', 8081)
+    s.setdefault('seRTSPPort', 554)
     s.setdefault('seAuthMode', 'disabled')
     
     main_config = config.get_main()
@@ -453,6 +460,7 @@ def _set_streameye_settings(camera_id, s):
     lines = [
         'PROTO="%s"' % s['seProto'],
         'PORT="%s"' % s['sePort'],
+        'RTSP_PORT="%s"' % s['seRTSPPort'],
         'AUTH="%s"' % s['seAuthMode'],
         'CREDENTIALS="%s:%s:%s"' % (username, password, realm)
     ]
@@ -1193,12 +1201,35 @@ def sePort():
         'label': 'Streaming Port',
         'description': 'sets the TCP port on which the webcam streaming server listens',
         'type': 'number',
-        'min': 1024,
+        'min': 0,
         'max': 65535,
         'section': 'streaming',
         'advanced': True,
         'camera': True,
         'required': True,
+        'depends': ['seProto==mjpeg'],
+        'get': _get_streameye_settings,
+        'set': _set_streameye_settings,
+        'get_set_dict': True
+    }
+
+
+@additional_config
+def seRTSPPort():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'Streaming Port',
+        'description': 'sets the TCP port on which the webcam streaming server listens',
+        'type': 'number',
+        'min': 0,
+        'max': 65535,
+        'section': 'streaming',
+        'advanced': True,
+        'camera': True,
+        'required': True,
+        'depends': ['seProto==rtsp'],
         'get': _get_streameye_settings,
         'set': _set_streameye_settings,
         'get_set_dict': True
@@ -1219,6 +1250,7 @@ def seAuthMode():
         'advanced': True,
         'camera': True,
         'required': True,
+        'depends': ['seProto==mjpeg'],
         'get': _get_streameye_settings,
         'set': _set_streameye_settings,
         'get_set_dict': True
