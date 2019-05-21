@@ -8,6 +8,8 @@ RESOLV_CONF="/etc/resolv.conf"
 [ -e $RESOLV_CONF ] || touch $RESOLV_CONF
 [ -n "$broadcast" ] && BROADCAST="broadcast $broadcast"
 [ -n "$subnet" ] && NETMASK="netmask $subnet"
+# Handle stateful DHCPv6 like DHCPv4
+[ -n "$ipv6" ] && ip="$ipv6/128"
 
 case "$1" in
 	deconfig)
