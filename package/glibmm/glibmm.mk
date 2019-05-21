@@ -13,4 +13,12 @@ GLIBMM_SITE = http://ftp.gnome.org/pub/gnome/sources/glibmm/$(GLIBMM_VERSION_MAJ
 GLIBMM_INSTALL_STAGING = YES
 GLIBMM_DEPENDENCIES = libglib2 libsigc host-pkgconf
 
+GLIBMM_CXXFLAGS = $(TARGET_CXXFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+GLIBMM_CXXFLAGS += -O0
+endif
+
+GLIBMM_CONF_ENV += CXXFLAGS="$(TARGET_CXXFLAGS)"
+
 $(eval $(autotools-package))
