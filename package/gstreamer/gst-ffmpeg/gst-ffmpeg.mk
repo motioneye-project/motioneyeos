@@ -90,6 +90,14 @@ ifeq ($(BR2_STATIC_LIBS),)
 GST_FFMPEG_CONF_EXTRA_OPTS += --enable-pic
 endif
 
+GST_FFMPEG_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+GST_FFMPEG_CONF_EXTRA_OPTS += --disable-optimizations
+GST_FFMPEG_CFLAGS += -O0
+endif
+
+GST_FFMPEG_CONF_ENV += CFLAGS="$(GST_FFMPEG_CFLAGS)"
 GST_FFMPEG_CONF_OPTS += --with-ffmpeg-extra-configure="$(GST_FFMPEG_CONF_EXTRA_OPTS)"
 
 $(eval $(autotools-package))
