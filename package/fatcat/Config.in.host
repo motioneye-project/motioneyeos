@@ -1,0 +1,8 @@
+config BR2_PACKAGE_HOST_FATCAT
+	bool "host fatcat"
+	help
+	  Fatcat is designed to manipulate FAT filesystems, in order
+	  to explore, extract, repair, recover and forensic them. It
+	  currently supports FAT12, FAT16 and FAT32.
+
+	  https://github.com/Gregwar/fatcat
