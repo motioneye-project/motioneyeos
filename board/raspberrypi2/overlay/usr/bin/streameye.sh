@@ -11,7 +11,7 @@ STREAMEYE_LOG=/var/log/streameye.log
 test -r ${RASPIMJPEG_CONF} || exit 1
 test -r ${STREAMEYE_CONF} || exit 1
 
-watch() {
+function watch() {
     source ${STREAMEYE_CONF}
     count=0
     while true; do
@@ -133,7 +133,7 @@ function configure_v4l2_cam() {
     v4l2-ctl ${video_arg} --set-ctrl=video_bitrate=${video_bitrate} &>/dev/null
 }
 
-invalid_opt () {
+function invalid_opt() {
     local e match="$1"
     shift
     for e; do [[ "${e}" == "${match}" ]] && return 1; done
@@ -146,15 +146,17 @@ function start() {
     if [ -n "${CREDENTIALS}" ] && [ "${AUTH}" = "basic" ]; then
         streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
     fi
-
+    
     if [ "${PROTO}" = "rtsp" ]; then
         pid=$(ps | grep test-launch | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
         if [ -n "${pid}" ]; then
             return
         fi
+        
+        RTSP_PORT=${RTSP_PORT:-554}
 
-        iptables -A INPUT -p tcp -s localhost --dport 554 -j ACCEPT
-        iptables -A INPUT -p tcp --dport 554 -j DROP
+        iptables -A INPUT -p tcp -s localhost --dport ${RTSP_PORT} -j ACCEPT
+        iptables -A INPUT -p tcp --dport ${RTSP_PORT} -j DROP
 
         audio_opts=""
         if [ -n "${AUDIO_DEV}" ]; then
@@ -197,14 +199,14 @@ function start() {
                 streameye_opts="${streameye_opts} -d"
             fi
 
-            test-launch -p 554 -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
+            test-launch -p ${RTSP_PORT} -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
             sleep 10
-            gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:554/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
+            gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:${RTSP_PORT}/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
             sleep 5
         fi
 
-        iptables -D INPUT -p tcp --dport 554 -j DROP
-        iptables -D INPUT -p tcp -s localhost --dport 554 -j ACCEPT
+        iptables -D INPUT -p tcp --dport ${RTSP_PORT} -j DROP
+        iptables -D INPUT -p tcp -s localhost --dport ${RTSP_PORT} -j ACCEPT
 
     else
         pid=$(ps | grep raspimjpeg.py | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
