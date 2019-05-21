@@ -1,0 +1,28 @@
+From c1b9bd4214b78dc426bc6e6a07c23a8ab4ab50ea Mon Sep 17 00:00:00 2001
+From: Jordi Mas <jmas@softcatala.org>
+Date: Tue, 12 Mar 2019 12:24:19 +0100
+Subject: [PATCH] Fixes MONO_PROFILE_ENTER_LEAVE undeclared when compiling with
+ newer versions of Mono (#266)
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/mono/gtk-sharp/commit/c1b9bd4214b78dc426bc6e6a07c23a8ab4ab50ea]
+---
+ gtk/gui-thread-check/profiler/gui-thread-check.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/gtk/gui-thread-check/profiler/gui-thread-check.c b/gtk/gui-thread-check/profiler/gui-thread-check.c
+index 11838e3b0..9f45fe6b2 100644
+--- a/gtk/gui-thread-check/profiler/gui-thread-check.c
++++ b/gtk/gui-thread-check/profiler/gui-thread-check.c
+@@ -86,6 +86,10 @@ simple_method_enter (MonoProfiler *prof, MonoMethod *method)
+ 	}
+ }
+ 
++#ifndef MONO_PROFILE_ENTER_LEAVE
++#define MONO_PROFILE_ENTER_LEAVE (1 << 12)
++#endif
++
+ void
+ mono_profiler_startup (const char *desc)
+ {
