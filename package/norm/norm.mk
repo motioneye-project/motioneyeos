@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NORM_VERSION = 1.5r6
-NORM_SITE = http://downloads.pf.itd.nrl.navy.mil/norm/archive
+NORM_VERSION = 1.5.8
+NORM_SITE = http://downloads.pf.itd.nrl.navy.mil/norm
 NORM_SOURCE = src-norm-$(NORM_VERSION).tgz
 NORM_INSTALL_STAGING = YES
 NORM_LICENSE = NRL License
