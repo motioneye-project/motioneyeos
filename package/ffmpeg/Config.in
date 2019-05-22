@@ -7,8 +7,6 @@ config BR2_PACKAGE_FFMPEG_ARCH_SUPPORTS
 	depends on !BR2_nios2
 	# No support for ARMv7-M in the ARM assembly logic
 	depends on !BR2_ARM_CPU_ARMV7M
-	# Microblaze build affected by gcc PR71124 (infinite loop)
-	depends on !BR2_microblaze
 	# m68k coldfire causes a build failure, because the check for
 	# atomics (atomic_store) succeeds, which causes ffmpeg to
 	# think atomic intrinsics are available, while they are
