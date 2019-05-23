@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GCR_VERSION_MAJOR = 3.20
-GCR_VERSION = $(GCR_VERSION_MAJOR).0
+GCR_VERSION_MAJOR = 3.28
+GCR_VERSION = $(GCR_VERSION_MAJOR).1
 GCR_SITE = http://ftp.acc.umu.se/pub/gnome/sources/gcr/$(GCR_VERSION_MAJOR)
 GCR_SOURCE = gcr-$(GCR_VERSION).tar.xz
 GCR_DEPENDENCIES = host-intltool host-pkgconf libgcrypt libglib2 p11-kit
