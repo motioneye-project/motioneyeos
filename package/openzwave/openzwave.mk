@@ -9,6 +9,7 @@ OPENZWAVE_SITE = $(call github,OpenZWave,open-zwave,$(OPENZWAVE_VERSION))
 OPENZWAVE_LICENSE = LGPL-3.0+, GPL-3.0 (examples), Apache-2.0 (sh2ju.sh)
 OPENZWAVE_LICENSE_FILES = license/license.txt license/lgpl.txt \
 	license/gpl.txt license/Apache-License-2.0.txt
+OPENZWAVE_DEPENDENCIES = tinyxml
 
 OPENZWAVE_INSTALL_STAGING = YES
 
@@ -28,7 +29,8 @@ OPENZWAVE_MAKE_OPTS = \
 	instlibdir=/usr/lib \
 	pkgconfigdir=/usr/lib/pkgconfig \
 	sysconfdir=/etc/openzwave \
-	DOXYGEN=
+	DOXYGEN= \
+	USE_BI_TXML=0
 
 ifeq ($(BR2_PACKAGE_HAS_UDEV),y)
 OPENZWAVE_DEPENDENCIES += host-pkgconf udev

@@ -3,6 +3,7 @@ config BR2_PACKAGE_OPENZWAVE
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_USE_WCHAR
+	select BR2_PACKAGE_TINYXML
 	help
 	  Free software library that interfaces with selected Z-Wave
 	  PC controllers, allowing anyone to create applications that
