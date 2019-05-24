@@ -5,4 +5,4 @@ config BR2_PACKAGE_RUBIX
 	help
 	  A 3D rubiks cube game for X
 
-	  http://mirror.egtvedt.no/avr32linux.org/twiki/pub/Main/Rubix
+	  http://sed.free.fr/rubix
