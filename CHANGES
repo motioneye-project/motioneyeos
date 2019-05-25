@@ -1,3 +1,21 @@
+2019.05-rc3, released May 25th, 2019
+
+	Fixes all over the tree.
+
+	check-bin-arch: Ignore /usr/lib/grub, similar to how /lib/grub
+	is ignored.
+
+	check-package: Warn about utf-8 characters in .mk files
+
+	Linux: Default to 5.1.x series
+
+	Updated/fixed packages: assimp, atop, chocolate-doom, cjson,
+	ddrescue, dhcp, ffmpeg, gerbera, glibmm, gpsd, gst-ffmpeg,
+	intel-microcode, jasper, keepalived, kismet, libcpprestsdk,
+	libcurl, libssh2, libupnp18, luarocks, mono-gtksharp3, opus,
+	postgresql, pcsc-lite, python, tslib, webkitgtk,
+	wpebackend-fdo, wpewebkit
+
 2019.05-rc2, released May 15th, 2019
 
 	Fixes all over the tree.
