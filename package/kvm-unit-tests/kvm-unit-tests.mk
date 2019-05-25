@@ -37,6 +37,11 @@ KVM_UNIT_TESTS_CONF_OPTS =\
 # x86-64 cannot do.
 ifneq ($(BR2_x86_64),y)
 KVM_UNIT_TESTS_CONF_OPTS += --cross-prefix="$(TARGET_CROSS)"
+# Arch Linux adds -fstack-protector even when building with -ffreestanding, but
+# it doesn't link with the stack-protector library when -nostdlib is passed,
+# which leads to a link error. Therefore, disable it explicitly to work around
+# this bug in Arch Linux. https://bugs.archlinux.org/task/64270
+KVM_UNIT_TESTS_MAKE_OPTS += EXTRA_CFLAGS=-fno-stack-protector
 endif
 
 define KVM_UNIT_TESTS_CONFIGURE_CMDS
@@ -44,11 +49,12 @@ define KVM_UNIT_TESTS_CONFIGURE_CMDS
 endef
 
 define KVM_UNIT_TESTS_BUILD_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) standalone
+	$(TARGET_MAKE_ENV) $(MAKE) $(KVM_UNIT_TESTS_MAKE_OPTS) -C $(@D) \
+		standalone
 endef
 
 define KVM_UNIT_TESTS_INSTALL_TARGET_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
+	$(TARGET_MAKE_ENV) $(MAKE) $(KVM_UNIT_TESTS_MAKE_OPTS) -C $(@D) \
 		DESTDIR=$(TARGET_DIR)/usr/share/kvm-unit-tests/ \
 		install
 endef
