@@ -1,0 +1,42 @@
+From 194f41635367452a7a3c9a75ebbada531bf4c58d Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Sun, 26 May 2019 13:39:44 -0300
+Subject: [PATCH] src: fix compilation failure due to "variable may be used
+ uninitialized"
+
+Some inline declarations of strtok_r (specifically in Sourcery CodeBench
+Lite 2016.11-19) contain code where an '__s' local variable can be used
+uninitialized.
+
+When GCC expands that declaration in 'parse_pcrs', __s becomes an alias
+to the local variable 'saveptr', which in fact is not initialized, but
+this is not relevant, since the 'str' argument is knowingly not NULL
+when passed to strtok_r because it comes from 'optarg' in parse_opts.
+
+Anyway, initialize saveptr to NULL to prevent the compilation error.
+
+Fixes:
+  http://autobuild.buildroot.net/results/5693a35e4d6bc76a1f46fe0e217abc49f7188aad/
+
+Change-Id: I03ad3731774c56744f18154ec161c92ba002903d
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ src/tpm2-totp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/tpm2-totp.c b/src/tpm2-totp.c
+index 3f60b4a..f28a4d6 100644
+--- a/src/tpm2-totp.c
++++ b/src/tpm2-totp.c
+@@ -93,7 +93,7 @@ int
+ parse_pcrs(char *str, int *pcrs)
+ {
+     char *token;
+-    char *saveptr;
++    char *saveptr = NULL;
+     char *endptr;
+     long pcr;
+ 
+-- 
+2.20.1
+
