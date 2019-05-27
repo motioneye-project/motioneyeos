@@ -22,7 +22,7 @@ endif
 ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
 # CMakeLists.txt sets CMAKE_CXX_FLAGS_<BUILD_TYPE> depending on
 # BUILD_TYPE, and this comes after the generic CMAKE_CXX_FLAGS. 
-# Overrice CMAKE_BUILD_TYPE so no overrides are applied.
+# Override CMAKE_BUILD_TYPE so no overrides are applied.
 FLARE_ENGINE_CONF_OPTS += -DCMAKE_BUILD_TYPE=Buildroot
 FLARE_ENGINE_CONF_OPTS += -DCMAKE_CXX_FLAGS="$(TARGET_CXXFLAGS) -O0"
 endif
