@@ -8,6 +8,8 @@ SURICATA_VERSION = 4.1.3
 SURICATA_SITE = https://www.openinfosecfoundation.org/download
 SURICATA_LICENSE = GPL-2.0
 SURICATA_LICENSE_FILES = COPYING LICENSE
+# We're patching configure.ac
+SURICATA_AUTORECONF = YES
 
 SURICATA_DEPENDENCIES = \
 	host-pkgconf \
