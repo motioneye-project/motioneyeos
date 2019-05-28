@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETCAT_OPENBSD_VERSION = debian/1.190-1
+NETCAT_OPENBSD_VERSION = debian/1.195-2
 NETCAT_OPENBSD_SITE = https://salsa.debian.org/debian/netcat-openbsd.git
 NETCAT_OPENBSD_SITE_METHOD = git
 NETCAT_OPENBSD_LICENSE = BSD-3-Clause
