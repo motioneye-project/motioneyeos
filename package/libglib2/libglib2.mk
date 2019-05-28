@@ -4,86 +4,13 @@
 #
 ################################################################################
 
-LIBGLIB2_VERSION_MAJOR = 2.56
-LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).4
+LIBGLIB2_VERSION_MAJOR = 2.60
+LIBGLIB2_VERSION = $(LIBGLIB2_VERSION_MAJOR).3
 LIBGLIB2_SOURCE = glib-$(LIBGLIB2_VERSION).tar.xz
 LIBGLIB2_SITE = http://ftp.gnome.org/pub/gnome/sources/glib/$(LIBGLIB2_VERSION_MAJOR)
 LIBGLIB2_LICENSE = LGPL-2.1+
 LIBGLIB2_LICENSE_FILES = COPYING
-# 0002-disable-tests.patch
-LIBGLIB2_AUTORECONF = YES
-
 LIBGLIB2_INSTALL_STAGING = YES
-LIBGLIB2_INSTALL_STAGING_OPTS = DESTDIR=$(STAGING_DIR) LDFLAGS=-L$(STAGING_DIR)/usr/lib install
-
-LIBGLIB2_CONF_ENV = \
-	ac_cv_func_posix_getpwuid_r=yes \
-	glib_cv_stack_grows=no \
-	glib_cv_uscore=no \
-	ac_cv_func_strtod=yes \
-	ac_fsusage_space=yes \
-	fu_cv_sys_stat_statfs2_bsize=yes \
-	ac_cv_func_closedir_void=no \
-	ac_cv_func_getloadavg=no \
-	ac_cv_lib_util_getloadavg=no \
-	ac_cv_lib_getloadavg_getloadavg=no \
-	ac_cv_func_getgroups=yes \
-	ac_cv_func_getgroups_works=yes \
-	ac_cv_func_chown_works=yes \
-	ac_cv_have_decl_euidaccess=no \
-	ac_cv_func_euidaccess=no \
-	ac_cv_have_decl_strnlen=yes \
-	ac_cv_func_strnlen_working=yes \
-	ac_cv_func_lstat_dereferences_slashed_symlink=yes \
-	ac_cv_func_lstat_empty_string_bug=no \
-	ac_cv_func_stat_empty_string_bug=no \
-	vb_cv_func_rename_trailing_slash_bug=no \
-	ac_cv_have_decl_nanosleep=yes \
-	jm_cv_func_nanosleep_works=yes \
-	gl_cv_func_working_utimes=yes \
-	ac_cv_func_utime_null=yes \
-	jm_cv_func_svid_putenv=yes \
-	ac_cv_func_getcwd_null=yes \
-	ac_cv_func_getdelim=yes \
-	ac_cv_func_mkstemp=yes \
-	utils_cv_func_mkstemp_limitations=no \
-	utils_cv_func_mkdir_trailing_slash_bug=no \
-	jm_cv_func_gettimeofday_clobber=no \
-	gl_cv_func_working_readdir=yes \
-	jm_ac_cv_func_link_follows_symlink=no \
-	utils_cv_localtime_cache=no \
-	ac_cv_struct_st_mtim_nsec=no \
-	gl_cv_func_tzset_clobber=no \
-	gl_cv_func_getcwd_null=yes \
-	gl_cv_func_getcwd_path_max=yes \
-	ac_cv_func_fnmatch_gnu=yes \
-	am_getline_needs_run_time_check=no \
-	am_cv_func_working_getline=yes \
-	gl_cv_func_mkdir_trailing_slash_bug=no \
-	gl_cv_func_mkstemp_limitations=no \
-	ac_cv_func_working_mktime=yes \
-	jm_cv_func_working_re_compile_pattern=yes \
-	ac_use_included_regex=no \
-	gl_cv_c_restrict=no \
-	ac_cv_path_GLIB_GENMARSHAL=$(HOST_DIR)/bin/glib-genmarshal \
-	ac_cv_prog_F77=no \
-	ac_cv_func_posix_getgrgid_r=no \
-	glib_cv_long_long_format=ll \
-	ac_cv_func_printf_unix98=yes \
-	ac_cv_func_vsnprintf_c99=yes \
-	ac_cv_func_newlocale=no \
-	ac_cv_func_uselocale=no \
-	ac_cv_func_strtod_l=no \
-	ac_cv_func_strtoll_l=no \
-	ac_cv_func_strtoull_l=no \
-	gt_cv_c_wchar_t=$(if $(BR2_USE_WCHAR),yes,no)
-
-# old uClibc versions don't provide qsort_r
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_UCLIBC),y)
-LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=no
-else
-LIBGLIB2_CONF_ENV += glib_cv_have_qsort_r=yes
-endif
 
 # glib/valgrind.h contains inline asm not compatible with thumb1
 ifeq ($(BR2_ARM_INSTRUCTIONS_THUMB),y)
@@ -91,14 +18,14 @@ LIBGLIB2_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -marm"
 endif
 
 HOST_LIBGLIB2_CONF_OPTS = \
-	--disable-coverage \
-	--disable-dtrace \
-	--disable-fam \
-	--disable-libelf \
-	--disable-selinux \
-	--disable-systemtap \
-	--disable-xattr \
-	--with-pcre=system
+	-Ddtrace=false \
+	-Dfam=false \
+	-Dselinux=disabled \
+	-Dsystemtap=false \
+	-Dxattr=false \
+	-Dinternal_pcre=false \
+	-Dinstalled_tests=false \
+	-Dtests=false
 
 LIBGLIB2_DEPENDENCIES = \
 	host-pkgconf host-libglib2 \
@@ -117,31 +44,28 @@ HOST_LIBGLIB2_DEPENDENCIES = \
 # ${libdir} would be prefixed by the sysroot by pkg-config, causing a
 # bogus installation path once combined with $(DESTDIR).
 LIBGLIB2_CONF_OPTS = \
-	--with-pcre=system \
-	--disable-compile-warnings \
-	--with-gio-module-dir=/usr/lib/gio/modules
+	-Dinternal_pcre=false \
+	-Dgio_module_dir=/usr/lib/gio/modules \
+	-Dtests=false
 
 ifneq ($(BR2_ENABLE_LOCALE),y)
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS),y)
-LIBGLIB2_CONF_OPTS += --enable-libelf
 LIBGLIB2_DEPENDENCIES += elfutils
-else
-LIBGLIB2_CONF_OPTS += --disable-libelf
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
-LIBGLIB2_CONF_OPTS += --with-libiconv=gnu
+LIBGLIB2_CONF_OPTS += -Diconv=gnu
 LIBGLIB2_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
-LIBGLIB2_CONF_OPTS += --enable-selinux
+LIBGLIB2_CONF_OPTS += -Dselinux=enabled
 LIBGLIB2_DEPENDENCIES += libselinux
 else
-LIBGLIB2_CONF_OPTS += --disable-selinux
+LIBGLIB2_CONF_OPTS += -Dselinux=disabled
 endif
 
 # Purge gdb-related files
@@ -160,6 +84,16 @@ define LIBGLIB2_REMOVE_DEV_FILES
 endef
 
 LIBGLIB2_POST_INSTALL_TARGET_HOOKS += LIBGLIB2_REMOVE_DEV_FILES
+
+# Newer versions of libglib2 prefix glib-genmarshal, gobject-query, and
+# glib-mkenums with ${bindir}. Unfortunately, this will resolve to the host
+# systems /bin/ directory, which will cause compilation issues if the host does
+# not have these programs. By removing the ${bindir}/ prefix, these programs
+# are resolved in PATH instead.
+define LIBGLIB2_REMOVE_BINDIR_PREFIX_FROM_PC_FILE
+	$(SED) 's%$${bindir}/%%g' $(STAGING_DIR)/usr/lib/pkgconfig/glib-2.0.pc
+endef
+LIBGLIB2_POST_INSTALL_TARGET_HOOKS += LIBGLIB2_REMOVE_BINDIR_PREFIX_FROM_PC_FILE
 
 # Remove schema sources/DTDs, we use staging ones to compile them.
 # Do so at target finalization since other packages install additional
@@ -181,7 +115,7 @@ endef
 LIBGLIB2_TARGET_FINALIZE_HOOKS += LIBGLIB2_REMOVE_TARGET_SCHEMAS
 LIBGLIB2_TARGET_FINALIZE_HOOKS += LIBGLIB2_COMPILE_SCHEMAS
 
-$(eval $(autotools-package))
-$(eval $(host-autotools-package))
+$(eval $(meson-package))
+$(eval $(host-meson-package))
 
 LIBGLIB2_HOST_BINARY = $(HOST_DIR)/bin/glib-genmarshal

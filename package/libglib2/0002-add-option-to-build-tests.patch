@@ -1,0 +1,103 @@
+From 8de64376005b8630ce5e29f45d5502a56b121173 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Wed, 8 May 2019 13:08:43 -0400
+Subject: [PATCH] add option to build tests.
+
+Upstream won't build tests when cross-compiling. However; this means still
+building the tests during a host build. Building the tests causes build
+failures on older distributions such as CentOS 6 and Debian 7 because the
+command `objcopy --add-symbol` is used when building the test
+"test_resources2," which is not available with the older version of objcopy
+provided by the distributions.
+
+Instead, add the option 'tests' which when set to false, enforces not
+building any tests, even when building the host variant.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ gio/meson.build     | 4 +++-
+ glib/meson.build    | 5 +++--
+ gobject/meson.build | 5 +++--
+ meson.build         | 6 +++++-
+ meson_options.txt   | 5 +++++
+ 5 files changed, 19 insertions(+), 6 deletions(-)
+
+diff --git a/gio/meson.build b/gio/meson.build
+index 4e5e021..925563c 100644
+--- a/gio/meson.build
++++ b/gio/meson.build
+@@ -994,4 +994,6 @@ if enable_systemtap
+ endif
+ 
+ subdir('fam')
+-subdir('tests')
++if build_tests
++  subdir('tests')
++endif
+diff --git a/glib/meson.build b/glib/meson.build
+index 8350ea2..bc1a7c5 100644
+--- a/glib/meson.build
++++ b/glib/meson.build
+@@ -370,5 +370,6 @@ if enable_systemtap
+     install_dir : tapset_install_dir,
+     install : true)
+ endif
+-
+-subdir('tests')
++if build_tests
++  subdir('tests')
++endif
+diff --git a/gobject/meson.build b/gobject/meson.build
+index db8d3c4..094cb58 100644
+--- a/gobject/meson.build
++++ b/gobject/meson.build
+@@ -165,5 +165,6 @@ if enable_systemtap
+     install_dir : tapset_install_dir,
+     install : true)
+ endif
+-
+-subdir('tests')
++if build_tests
++  subdir('tests')
++endif
+diff --git a/meson.build b/meson.build
+index b57b2d6..d625a50 100644
+--- a/meson.build
++++ b/meson.build
+@@ -75,6 +75,8 @@ installed_tests_enabled = get_option('installed_tests')
+ installed_tests_template = files('template.test.in')
+ installed_tests_template_tap = files('template-tap.test.in')
+ 
++build_tests = get_option('tests')
++
+ add_project_arguments('-D_GNU_SOURCE', language: 'c')
+ 
+ # Disable strict aliasing;
+@@ -1994,8 +1996,10 @@ subdir('gthread')
+ subdir('gmodule')
+ subdir('gio')
+ subdir('fuzzing')
+-subdir('tests')
+ 
++if build_tests
++  subdir('tests')
++endif
+ # xgettext is optional (on Windows for instance)
+ if find_program('xgettext', required : get_option('nls')).found()
+   subdir('po')
+diff --git a/meson_options.txt b/meson_options.txt
+index 5c5b4df..7ffde0a 100644
+--- a/meson_options.txt
++++ b/meson_options.txt
+@@ -89,3 +89,8 @@ option('nls',
+        value : 'auto',
+        yield: true,
+        description : 'Enable native language support (translations)')
++
++option('tests',
++       type : 'boolean',
++       value : false,
++       description : 'Build tests')
+-- 
+2.21.0
+

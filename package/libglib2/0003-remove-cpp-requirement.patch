@@ -1,0 +1,96 @@
+From ee5ed1385bd6c36123ff970a8fff89a811798421 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Tue, 9 Apr 2019 12:59:36 -0400
+Subject: [PATCH] remove cpp requirement
+
+The c++ test is necessary to ensure libglib doesn't accidentally use C++
+reserved keywords in public headers. Because this is just a test, it isn't
+necessary to have a C++ compiler to build libglib2.
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+Upstream status: Denied (Buildroot specific)
+https://gitlab.gnome.org/GNOME/glib/issues/1748
+---
+ glib/glibconfig.h.in |  1 -
+ meson.build          | 18 +-----------------
+ tests/meson.build    |  5 -----
+ 3 files changed, 1 insertion(+), 23 deletions(-)
+
+diff --git a/glib/glibconfig.h.in b/glib/glibconfig.h.in
+index 2bf6c43..358867f 100644
+--- a/glib/glibconfig.h.in
++++ b/glib/glibconfig.h.in
+@@ -122,7 +122,6 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
+ @glib_vacopy@
+ 
+ @g_have_iso_c_varargs@
+-@g_have_iso_cxx_varargs@
+ 
+ /* gcc-2.95.x supports both gnu style and ISO varargs, but if -ansi
+  * is passed ISO vararg support is turned off, and there is no work
+diff --git a/meson.build b/meson.build
+index c96289a..b694bb7 100644
+--- a/meson.build
++++ b/meson.build
+@@ -1,4 +1,4 @@
+-project('glib', 'c', 'cpp',
++project('glib', 'c',
+   version : '2.60.3',
+   meson_version : '>= 0.48.0',
+   default_options : [
+@@ -9,7 +9,6 @@ project('glib', 'c', 'cpp',
+ )
+ 
+ cc = meson.get_compiler('c')
+-cxx = meson.get_compiler('cpp')
+ 
+ cc_can_run = not meson.is_cross_build() or meson.has_exe_wrapper()
+ 
+@@ -1440,20 +1439,6 @@ if g_have_iso_c_varargs
+ #endif''')
+ endif
+ 
+-g_have_iso_cxx_varargs = cxx.compiles('''
+-  void some_func (void) {
+-    int a(int p1, int p2, int p3);
+-    #define call_a(...) a(1,__VA_ARGS__)
+-    call_a(2,3);
+-  }''', name : 'ISO C99 varargs macros in C++')
+-
+-if g_have_iso_cxx_varargs
+-  glibconfig_conf.set('g_have_iso_cxx_varargs', '''
+-#ifdef __cplusplus
+-# define G_HAVE_ISO_VARARGS 1
+-#endif''')
+-endif
+-
+ g_have_gnuc_varargs = cc.compiles('''
+   void some_func (void) {
+     int a(int p1, int p2, int p3);
+@@ -1995,7 +1980,6 @@ subdir('gobject')
+ subdir('gthread')
+ subdir('gmodule')
+ subdir('gio')
+-subdir('fuzzing')
+
+ if build_tests
+   subdir('tests')
+diff --git a/tests/meson.build b/tests/meson.build
+index 11075dd..e052892 100644
+--- a/tests/meson.build
++++ b/tests/meson.build
+@@ -48,11 +48,6 @@ tests = {
+     'dependencies' : [libgmodule_dep],
+     'export_dynamic' : true,
+   },
+-  'cxx-test' : {
+-    'source' : 'cxx-test.cpp',
+-    'include_directories' : gmoduleinc,
+-    'dependencies' : [libgio_dep],
+-  },
+ }
+ 
+ test_extra_programs = {
+-- 
+2.20.1
+
