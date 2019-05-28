@@ -10,7 +10,7 @@ If for some reason your package does not use the autotools-package
 infrastructure, you can request the config.guess and/or config.sub
 files of your package to be updated by using:
 
-      $(call CONFIG_UPDATE,directory-of-your-package-sources)
+<pkg>_POST_PATCH_HOOKS += UPDATE_CONFIG_HOOK
 
 --- UPDATE ---
 GNU config is now managed in git, so to update:
