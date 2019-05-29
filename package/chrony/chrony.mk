@@ -13,7 +13,8 @@ CHRONY_CONF_OPTS = \
 	--host-system=Linux \
 	--host-machine=$(BR2_ARCH) \
 	--prefix=/usr \
-	--without-tomcrypt
+	--without-tomcrypt \
+	$(if $(BR2_PACKAGE_CHRONY_DEBUG_LOGGING),--enable-debug,--disable-debug)
 
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 CHRONY_DEPENDENCIES += libcap

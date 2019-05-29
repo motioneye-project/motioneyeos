@@ -6,3 +6,11 @@ config BR2_PACKAGE_CHRONY
 	  accuracy of the system clock.
 
 	  http://chrony.tuxfamily.org/
+
+config BR2_PACKAGE_CHRONY_DEBUG_LOGGING
+	bool "enable debug logging support"
+	depends on BR2_PACKAGE_CHRONY
+	help
+	  Enable support for debug logging output from Chrony when
+	  enabled at runtime. If disabled, code for debug logging will
+	  not be compiled in.
