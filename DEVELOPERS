@@ -1949,6 +1949,7 @@ F:	package/tk/
 F:	package/upower/
 F:	package/waffle/
 F:	package/xenomai/
+F:	package/zziplib/
 F:	toolchain/toolchain-external/toolchain-external-arm-aarch64/
 F:	toolchain/toolchain-external/toolchain-external-arm-aarch64-be/
 F:	toolchain/toolchain-external/toolchain-external-arm-arm/

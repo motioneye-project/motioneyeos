@@ -1189,6 +1189,7 @@ menu "Compression and decompression"
 	source "package/snappy/Config.in"
 	source "package/szip/Config.in"
 	source "package/zlib/Config.in"
+	source "package/zziplib/Config.in"
 endmenu
 
 menu "Crypto"
