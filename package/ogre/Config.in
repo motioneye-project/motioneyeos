@@ -1,0 +1,42 @@
+config BR2_PACKAGE_OGRE
+	bool "ogre"
+	depends on BR2_PACKAGE_HAS_LIBGL # libglu
+	depends on BR2_PACKAGE_XORG7
+	depends on BR2_INSTALL_LIBSTDCPP
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_USE_MMU
+	depends on BR2_USE_WCHAR # use wchar_t
+	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_LIBFREEIMAGE
+	select BR2_PACKAGE_LIBGLU # GL/glu.h
+	select BR2_PACKAGE_SDL2
+	select BR2_PACKAGE_SDL2_OPENGL
+	select BR2_PACKAGE_SDL2_X11 # use wmInfo.info.x11
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_XLIB_LIBXAW
+	select BR2_PACKAGE_XLIB_LIBXEXT
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+	select BR2_PACKAGE_ZZIPLIB
+	help
+	  OGRE is a scene-oriented, flexible 3D engine written in C++
+	  designed to make it easier and more intuitive for developers
+	  to produce games and demos utilising 3D hardware. The class
+	  library abstracts all the details of using the underlying
+	  system libraries like Direct3D and OpenGL and provides an
+	  interface based on world objects and other intuitive classes.
+
+	  https://ogrecave.github.io/ogre
+
+comment "ogre needs X11 and an OpenGL provider"
+	depends on !BR2_PACKAGE_HAS_LIBGL || !BR2_PACKAGE_XORG7
+	depends on BR2_TOOLCHAIN_HAS_THREADS && BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 \
+		&& BR2_INSTALL_LIBSTDCPP && !BR2_STATIC_LIBS && BR2_USE_WCHAR
+	depends on BR2_USE_MMU
+
+comment "ogre needs a toolchain w/ C++, dynamic library, gcc >= 4.8, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 \
+		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS \
+		|| !BR2_USE_WCHAR
+	depends on BR2_USE_MMU
