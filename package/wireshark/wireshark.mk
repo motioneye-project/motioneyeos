@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 3.0.1
+WIRESHARK_VERSION = 3.0.2
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.xz
 WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
@@ -154,11 +154,13 @@ endif
 ifeq ($(BR2_STATIC_LIBS),y)
 WIRESHARK_CONF_OPTS += \
 	-DENABLE_PLUGINS=OFF \
-	-DENABLE_STATIC=ON
+	-DENABLE_STATIC=ON \
+	-DUSE_STATIC=ON
 else
 WIRESHARK_CONF_OPTS += \
 	-DENABLE_PLUGINS=ON \
-	-DENABLE_STATIC=OFF
+	-DENABLE_STATIC=OFF \
+	-DUSE_STATIC=OFF
 endif
 
 define WIRESHARK_REMOVE_DOCS
