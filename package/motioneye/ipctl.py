@@ -154,8 +154,7 @@ def _set_ip_settings(s):
 def ipSeparator():
     return {
         'type': 'separator',
-        'section': 'network',
-        'advanced': True
+        'section': 'network'
     }
 
 
@@ -167,7 +166,6 @@ def ipConfigType():
         'type': 'choices',
         'choices': [('dhcp', 'Automatic (DHCP)'), ('static', 'Manual (Static IP)')],
         'section': 'network',
-        'advanced': True,
         'reboot': True,
         'get': _get_ip_settings,
         'set': _set_ip_settings,
@@ -183,7 +181,6 @@ def ipConfigStaticAddr():
         'type': 'str',
         'validate': '^[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?$',
         'section': 'network',
-        'advanced': True,
         'required': True,
         'depends': ['ipConfigType==static'],
         'reboot': True,
@@ -201,7 +198,6 @@ def ipConfigStaticMask():
         'type': 'str',
         'validate': '^[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?$',
         'section': 'network',
-        'advanced': True,
         'required': True,
         'depends': ['ipConfigType==static'],
         'reboot': True,
@@ -219,7 +215,6 @@ def ipConfigStaticGw():
         'type': 'str',
         'validate': '^[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?$',
         'section': 'network',
-        'advanced': True,
         'required': True,
         'depends': ['ipConfigType==static'],
         'reboot': True,
@@ -237,7 +232,6 @@ def ipConfigStaticDns():
         'type': 'str',
         'validate': '^[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?\.[0-9][0-9]?[0-9]?$',
         'section': 'network',
-        'advanced': True,
         'required': True,
         'depends': ['ipConfigType==static'],
         'reboot': True,

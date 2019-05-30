@@ -516,7 +516,6 @@ if _get_streameye_enabled():
         return {
             'type': 'html',
             'section': 'expertSettings',
-            'advanced': True,
             'get': lambda: '<a href="javascript:downloadFile(\'log/streameye/\');">streameye.log</a>',
         }
 
@@ -525,7 +524,6 @@ if _get_streameye_enabled():
         return {
             'type': 'html',
             'section': 'expertSettings',
-            'advanced': True,
             'get': lambda: '<a href="javascript:downloadFile(\'log/raspimjpeg/\');">raspimjpeg.log</a>',
         }
 
@@ -534,8 +532,7 @@ if _get_streameye_enabled():
 def streamEyeMainSeparator():
     return {
         'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
+        'section': 'expertSettings'
     }
 
 
@@ -547,7 +544,6 @@ def streamEye():
                 'disabling motion detection, media files and all other advanced features (works only with the CSI camera)',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_streameye_enabled,
         'set': _set_streameye_enabled_deferred,
@@ -559,8 +555,7 @@ def streamEyeCameraSeparator1():
     return {
         'type': 'separator',
         'section': 'device',
-        'camera': True,
-        'advanced': True
+        'camera': True
     }
 
  
@@ -580,7 +575,6 @@ def seBrightness():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -605,7 +599,6 @@ def seContrast():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -630,7 +623,6 @@ def seSaturation():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -655,7 +647,6 @@ def seSharpness():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -670,8 +661,7 @@ def streamEyeCameraSeparator2():
     return {
         'type': 'separator',
         'section': 'device',
-        'camera': True,
-        'advanced': True
+        'camera': True
     }
 
  
@@ -686,7 +676,6 @@ def seResolution():
         'type': 'choices',
         'choices': RESOLUTION_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -706,7 +695,6 @@ def seRotation():
         'type': 'choices',
         'choices': ROTATION_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -725,7 +713,6 @@ def seVflip():
         'description': 'enable this to flip the captured image vertically',
         'type': 'bool',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -744,7 +731,6 @@ def seHflip():
         'description': 'enable this to flip the captured image horizontally',
         'type': 'bool',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -768,7 +754,6 @@ def seFramerate():
         'ticks': "1|5|10|15|20|25|30",
         'decimals': 0,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -793,7 +778,6 @@ def seQuality():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -815,7 +799,6 @@ def seBitrate():
         'max': 100000000,
         'unit': 'bps',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -840,7 +823,6 @@ def seZoomx():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -865,7 +847,6 @@ def seZoomy():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -890,7 +871,6 @@ def seZoomw():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -915,7 +895,6 @@ def seZoomh():
         'decimals': 0,
         'unit': '%',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -934,7 +913,6 @@ def sePreview():
         'description': 'enable this if you want to see the preview on an HDMI-connected monitor',
         'type': 'bool',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'get': _get_raspimjpeg_settings,
         'set': _set_raspimjpeg_settings,
@@ -947,8 +925,7 @@ def streamEyeCameraSeparator3():
     return {
         'type': 'separator',
         'section': 'device',
-        'camera': True,
-        'advanced': True
+        'camera': True
     }
 
  
@@ -968,7 +945,6 @@ def seIso():
         'decimals': 0,
         'unit': '',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -990,7 +966,6 @@ def seShutter():
         'max': 6000000,
         'unit': 'microseconds',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1004,8 +979,7 @@ def streamEyeCameraSeparator4():
     return {
         'type': 'separator',
         'section': 'device',
-        'camera': True,
-        'advanced': True
+        'camera': True
     }
 
  
@@ -1020,7 +994,6 @@ def seExposure():
         'type': 'choices',
         'choices': EXPOSURE_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1045,7 +1018,6 @@ def seEv():
         'decimals': 0,
         'unit': '',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1065,7 +1037,6 @@ def seAwb():
         'type': 'choices',
         'choices': AWB_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1085,7 +1056,6 @@ def seMetering():
         'type': 'choices',
         'choices': METERING_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1105,7 +1075,6 @@ def seDrc():
         'type': 'choices',
         'choices': DRC_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1124,7 +1093,6 @@ def seVstab():
         'description': 'enables or disables video stabilization for this camera',
         'type': 'bool',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1143,7 +1111,6 @@ def seDenoise():
         'description': 'enables image denoising',
         'type': 'bool',
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1163,7 +1130,6 @@ def seImxfx():
         'type': 'choices',
         'choices': IMXFX_CHOICES,
         'section': 'device',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_raspimjpeg_settings,
@@ -1183,7 +1149,6 @@ def seProto():
         'type': 'choices',
         'choices': PROTO_CHOICES,
         'section': 'streaming',
-        'advanced': True,
         'camera': True,
         'required': True,
         'get': _get_streameye_settings,
@@ -1204,7 +1169,6 @@ def sePort():
         'min': 0,
         'max': 65535,
         'section': 'streaming',
-        'advanced': True,
         'camera': True,
         'required': True,
         'depends': ['seProto==mjpeg'],
@@ -1226,7 +1190,6 @@ def seRTSPPort():
         'min': 0,
         'max': 65535,
         'section': 'streaming',
-        'advanced': True,
         'camera': True,
         'required': True,
         'depends': ['seProto==rtsp'],
@@ -1247,7 +1210,6 @@ def seAuthMode():
         'type': 'choices',
         'choices': AUTH_CHOICES,
         'section': 'streaming',
-        'advanced': True,
         'camera': True,
         'required': True,
         'depends': ['seProto==mjpeg'],

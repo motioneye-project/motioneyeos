@@ -220,8 +220,7 @@ def _set_sys_mon(sys_mon):
 def boardSeparator():
     return {
         'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
+        'section': 'expertSettings'
     }
 
 
@@ -234,7 +233,6 @@ def gpuMem():
         'min': '16',
         'max': '944',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_board_settings,
         'set': _set_board_settings,
@@ -249,7 +247,6 @@ def cameraLed():
         'description': 'control the led on the CSI camera board',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_board_settings,
         'set': _set_board_settings,
@@ -271,7 +268,6 @@ def overclock():
             ('1000|500|600|6', 'turbo (1000/500/600/6)')
         ],
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_board_settings,
         'set': _set_board_settings,
@@ -286,7 +282,6 @@ def sysMon():
         'description': 'when this is enabled, system monitoring info will be overlaid on top of the first camera frame',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': False,
         'get': _get_sys_mon,
         'set': _set_sys_mon

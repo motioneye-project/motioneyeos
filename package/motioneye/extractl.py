@@ -355,7 +355,6 @@ def hostname():
         'description': 'sets a custom hostname for the device (leave blank for default)',
         'type': 'str',
         'section': 'general',
-        'advanced': True,
         'reboot': True,
         'required': False,
         'validate': '^[a-z0-9\-_.]{0,64}$',
@@ -368,8 +367,7 @@ def hostname():
 def extraDateSeparator():
     return {
         'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
+        'section': 'expertSettings'
     }
 
 
@@ -381,7 +379,6 @@ def dateMethod():
         'type': 'choices',
         'choices': [('http', 'HTTP'), ('ntp', 'NTP')],
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'get': _get_date_settings,
@@ -397,7 +394,6 @@ def dateHost():
         'description': 'sets the hostname or IP address to which the HTTP request will be made',
         'type': 'str',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['dateMethod==http'],
@@ -414,7 +410,6 @@ def dateNtpServer():
         'description': 'sets a custom NTP server (leave blank to use the default server)',
         'type': 'str',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': False,
         'depends': ['dateMethod==ntp'],
@@ -434,7 +429,6 @@ def dateTimeout():
         'max': 3600,
         'unit': 'seconds',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'get': _get_date_settings,
@@ -453,7 +447,6 @@ def dateInterval():
         'max': 86400,
         'unit': 'seconds',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['dateMethod==http'],
@@ -467,8 +460,7 @@ def dateInterval():
 def extraMotionEyeSeparator():
     return {
         'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
+        'section': 'expertSettings'
     }
 
 
@@ -481,7 +473,6 @@ def port():
         'min': 1,
         'max': 65535,
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'get': _get_motioneye_settings,
@@ -497,7 +488,6 @@ def motionBinary():
         'description': 'sets the path to the motion binary',
         'type': 'str',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'get': _get_motioneye_settings,
@@ -513,7 +503,6 @@ def motionKeepAlive():
         'description': 'enables continuous motion daemon hang detection (at the expense of a slightly higher CPU usage)',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'unit': 'seconds',
         'get': _get_motioneye_settings,
@@ -529,7 +518,6 @@ def debug():
         'description': 'turning debugging on will generate verbose log messages and will mount all the partitions in read-write mode',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_motioneye_settings,
         'set': _set_motioneye_settings,
@@ -544,7 +532,6 @@ def prereleases():
         'description': 'turning this option on will allow updating to prereleases (untested, possibly unstable versions)',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_os_settings,
         'set': _set_os_settings,
         'get_set_dict': True
@@ -555,8 +542,7 @@ def prereleases():
 def extraLogsSeparator():
     return {
         'type': 'separator',
-        'section': 'expertSettings',
-        'advanced': True
+        'section': 'expertSettings'
     }
 
 
@@ -567,7 +553,6 @@ def motionLog():
         'description': 'download the log files and include them with any issue you want to report',
         'type': 'html',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_motion_log,
     }
 
@@ -577,7 +562,6 @@ def motionEyeLog():
     return {
         'type': 'html',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_motion_eye_log,
     }
 
@@ -587,7 +571,6 @@ def messagesLog():
     return {
         'type': 'html',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_messages_log,
     }
 
@@ -597,7 +580,6 @@ def bootLog():
     return {
         'type': 'html',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_boot_log,
     }
 
@@ -607,7 +589,6 @@ def dmesgLog():
     return {
         'type': 'html',
         'section': 'expertSettings',
-        'advanced': True,
         'get': _get_dmesg_log,
     }
 

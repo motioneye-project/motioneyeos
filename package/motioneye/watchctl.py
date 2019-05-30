@@ -132,8 +132,7 @@ def _set_watch_settings(s):
 def expertSettings():
     return {
         'label': 'Expert Settings',
-        'description': 'system tweaks and board-specific options',
-        'advanced': True
+        'description': 'system tweaks and board-specific options'
     }
 
 
@@ -144,7 +143,6 @@ def watchLink():
         'description': 'enable this if you want the system to reboot upon detecting network link issues',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_watch_settings,
         'set': _set_watch_settings,
@@ -162,7 +160,6 @@ def watchLinkTimeout():
         'max': 3600,
         'unit': 'seconds',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchLink'],
@@ -179,7 +176,6 @@ def watchConnect():
         'description': 'enable this if you want the system to constantly try to connect to a certain host and reboot upon failure',
         'type': 'bool',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'get': _get_watch_settings,
         'set': _set_watch_settings,
@@ -194,7 +190,6 @@ def watchConnectHost():
         'description': 'sets the hostname or IP address to which a TCP connection will be opened',
         'type': 'str',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchConnect'],
@@ -213,7 +208,6 @@ def watchConnectPort():
         'min': 1,
         'max': 65535,
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchConnect'],
@@ -232,7 +226,6 @@ def watchConnectRetries():
         'min': 1,
         'max': 100,
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchConnect'],
@@ -252,7 +245,6 @@ def watchConnectTimeout():
         'max': 3600,
         'unit': 'seconds',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchConnect'],
@@ -272,7 +264,6 @@ def watchConnectInterval():
         'max': 3600,
         'unit': 'seconds',
         'section': 'expertSettings',
-        'advanced': True,
         'reboot': True,
         'required': True,
         'depends': ['watchConnect'],

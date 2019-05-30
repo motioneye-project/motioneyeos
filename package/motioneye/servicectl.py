@@ -182,8 +182,7 @@ def _set_service_settings(s):
 def services():
     return {
         'label': 'Services',
-        'description': 'configure extra services (such as FTP or SSH)',
-        'advanced': True
+        'description': 'configure extra services (such as FTP or SSH)'
     }
 
 
@@ -194,7 +193,6 @@ def ftpEnabled():
         'description': 'enable this if you want to access the files on your motionEyeOS system using FTP',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'get': _get_service_settings,
         'set': _set_service_settings,
@@ -209,7 +207,6 @@ def ftpAuth():
         'description': 'enable this if you want the FTP server to ask for credentials (i.e. to disable anonymous logins)',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'depends': ['ftpEnabled'],
         'get': _get_service_settings,
@@ -225,7 +222,6 @@ def ftpWritable():
         'description': 'enable this if you want to allow creating, editing or removing files/directories through FTP (i.e. to disable read-only mode)',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'depends': ['ftpAuth', 'ftpEnabled'],
         'get': _get_service_settings,
@@ -238,8 +234,7 @@ def ftpWritable():
 def ftpSeparator():
     return {
         'type': 'separator',
-        'section': 'services',
-        'advanced': True
+        'section': 'services'
     }
 
 
@@ -250,7 +245,6 @@ def smbEnabled():
         'description': 'enable this if you want files on your motionEyeOS system to be visible on the local network (using SMB protocol)',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'get': _get_service_settings,
         'set': _set_service_settings,
@@ -265,7 +259,6 @@ def smbAuth():
         'description': 'enable this if you want the Samba server to ask for credentials (i.e. to disable guest access)',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'depends': ['smbEnabled'],
         'get': _get_service_settings,
@@ -281,7 +274,6 @@ def smbWritable():
         'description': 'enable this if you want to allow creating, editing or removing files/directories on your motionEyeOS system from the local network',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'depends': ['smbAuth', 'smbEnabled'],
         'get': _get_service_settings,
@@ -294,8 +286,7 @@ def smbWritable():
 def smbSeparator():
     return {
         'type': 'separator',
-        'section': 'services',
-        'advanced': True
+        'section': 'services'
     }
 
 
@@ -306,7 +297,6 @@ def sshEnabled():
         'description': 'enable this if you want to login remotely on your motionEyeOS system using an SSH client (such as Putty)',
         'type': 'bool',
         'section': 'services',
-        'advanced': True,
         'reboot': True,
         'get': _get_service_settings,
         'set': _set_service_settings,
