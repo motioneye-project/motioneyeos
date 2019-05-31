@@ -12,7 +12,7 @@ LIBOPENSSL_LICENSE_FILES = LICENSE
 LIBOPENSSL_INSTALL_STAGING = YES
 LIBOPENSSL_DEPENDENCIES = zlib
 HOST_LIBOPENSSL_DEPENDENCIES = host-zlib
-LIBOPENSSL_TARGET_ARCH = generic32
+LIBOPENSSL_TARGET_ARCH = linux-generic32
 LIBOPENSSL_CFLAGS = $(TARGET_CFLAGS)
 LIBOPENSSL_PROVIDES = openssl
 
@@ -21,6 +21,10 @@ ifeq ($(BR2_m68k_cf),y)
 LIBOPENSSL_CFLAGS += -mxgot
 # resolves an assembler "out of range error" with blake2 and sha512 algorithms
 LIBOPENSSL_CFLAGS += -DOPENSSL_SMALL_FOOTPRINT
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+LIBOPENSSL_CFLAGS += -DOPENSSL_THREADS
 endif
 
 ifeq ($(BR2_USE_MMU),)
@@ -49,28 +53,33 @@ ifeq ($(BR2_TOOLCHAIN_HAS_UCONTEXT),)
 LIBOPENSSL_CFLAGS += -DOPENSSL_NO_ASYNC
 endif
 
+ifeq ($(BR2_STATIC_LIBS),y)
+# Use "gcc" minimalistic target to disable DSO
+LIBOPENSSL_TARGET_ARCH = gcc
+else
 # Some architectures are optimized in OpenSSL
 # Doesn't work for thumb-only (Cortex-M?)
 ifeq ($(BR2_ARM_CPU_HAS_ARM),y)
-LIBOPENSSL_TARGET_ARCH = armv4
+LIBOPENSSL_TARGET_ARCH = linux-armv4
 endif
 ifeq ($(ARCH),aarch64)
-LIBOPENSSL_TARGET_ARCH = aarch64
+LIBOPENSSL_TARGET_ARCH = linux-aarch64
 endif
 ifeq ($(ARCH),powerpc)
 # 4xx cores seem to have trouble with openssl's ASM optimizations
 ifeq ($(BR2_powerpc_401)$(BR2_powerpc_403)$(BR2_powerpc_405)$(BR2_powerpc_405fp)$(BR2_powerpc_440)$(BR2_powerpc_440fp),)
-LIBOPENSSL_TARGET_ARCH = ppc
+LIBOPENSSL_TARGET_ARCH = linux-ppc
 endif
 endif
 ifeq ($(ARCH),powerpc64)
-LIBOPENSSL_TARGET_ARCH = ppc64
+LIBOPENSSL_TARGET_ARCH = linux-ppc64
 endif
 ifeq ($(ARCH),powerpc64le)
-LIBOPENSSL_TARGET_ARCH = ppc64le
+LIBOPENSSL_TARGET_ARCH = linux-ppc64le
 endif
 ifeq ($(ARCH),x86_64)
-LIBOPENSSL_TARGET_ARCH = x86_64
+LIBOPENSSL_TARGET_ARCH = linux-x86_64
+endif
 endif
 
 define HOST_LIBOPENSSL_CONFIGURE_CMDS
@@ -93,11 +102,11 @@ define LIBOPENSSL_CONFIGURE_CMDS
 		$(TARGET_CONFIGURE_ARGS) \
 		$(TARGET_CONFIGURE_OPTS) \
 		./Configure \
-			linux-$(LIBOPENSSL_TARGET_ARCH) \
+			$(LIBOPENSSL_TARGET_ARCH) \
 			--prefix=/usr \
 			--openssldir=/etc/ssl \
 			$(if $(BR2_TOOLCHAIN_HAS_LIBATOMIC),-latomic) \
-			$(if $(BR2_TOOLCHAIN_HAS_THREADS),threads,no-threads) \
+			$(if $(BR2_TOOLCHAIN_HAS_THREADS),-lpthread threads, no-threads) \
 			$(if $(BR2_STATIC_LIBS),no-shared,shared) \
 			$(if $(BR2_PACKAGE_HAS_CRYPTODEV),enable-devcryptoeng) \
 			no-rc5 \
@@ -107,20 +116,11 @@ define LIBOPENSSL_CONFIGURE_CMDS
 			no-fuzz-libfuzzer \
 			no-fuzz-afl \
 			$(if $(BR2_STATIC_LIBS),zlib,zlib-dynamic) \
-			$(if $(BR2_STATIC_LIBS),no-dso) \
 	)
 	$(SED) "s#-march=[-a-z0-9] ##" -e "s#-mcpu=[-a-z0-9] ##g" $(@D)/Makefile
 	$(SED) "s#-O[0-9s]#$(LIBOPENSSL_CFLAGS)#" $(@D)/Makefile
 	$(SED) "s# build_tests##" $(@D)/Makefile
 endef
-
-# libdl is not available in a static build, and this is not implied by no-dso
-ifeq ($(BR2_STATIC_LIBS),y)
-define LIBOPENSSL_FIXUP_STATIC_MAKEFILE
-	$(SED) 's#-ldl##g' $(@D)/Makefile
-endef
-LIBOPENSSL_POST_CONFIGURE_HOOKS += LIBOPENSSL_FIXUP_STATIC_MAKEFILE
-endif
 
 define HOST_LIBOPENSSL_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D)
@@ -143,16 +143,6 @@ define LIBOPENSSL_INSTALL_TARGET_CMDS
 	rm -rf $(TARGET_DIR)/usr/lib/ssl
 	rm -f $(TARGET_DIR)/usr/bin/c_rehash
 endef
-
-# libdl has no business in a static build
-ifeq ($(BR2_STATIC_LIBS),y)
-define LIBOPENSSL_FIXUP_STATIC_PKGCONFIG
-	$(SED) 's#-ldl##' $(STAGING_DIR)/usr/lib/pkgconfig/libcrypto.pc
-	$(SED) 's#-ldl##' $(STAGING_DIR)/usr/lib/pkgconfig/libssl.pc
-	$(SED) 's#-ldl##' $(STAGING_DIR)/usr/lib/pkgconfig/openssl.pc
-endef
-LIBOPENSSL_POST_INSTALL_STAGING_HOOKS += LIBOPENSSL_FIXUP_STATIC_PKGCONFIG
-endif
 
 ifeq ($(BR2_PACKAGE_PERL),)
 define LIBOPENSSL_REMOVE_PERL_SCRIPTS
