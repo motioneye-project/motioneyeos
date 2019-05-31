@@ -17,4 +17,8 @@ ifeq ($(BR2_CSKY_FPU),y)
 GCC_TARGET_CPU := $(GCC_TARGET_CPU)f
 endif
 
+ifeq ($(BR2_CSKY_VDSP),y)
+GCC_TARGET_CPU := $(GCC_TARGET_CPU)v
+endif
+
 endif
