@@ -1633,6 +1633,7 @@ F:	package/shadowsocks-libev/
 
 N:	Mirza Krak <mirza.krak@northern.tech>
 F:	package/mender/
+F:	package/mender-artifact/
 
 N:	Morgan Delestre <m.delestre@sinters.fr>
 F:	package/monkey/
