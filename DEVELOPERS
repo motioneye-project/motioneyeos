@@ -1532,6 +1532,7 @@ F:	package/python-ipy/
 F:	package/python-posix-ipc/
 F:	package/python-pypcap/
 F:	package/python-pyrex/
+F:	package/python-tinyrpc/
 F:	package/raptor/
 F:	package/rcw/
 F:	package/rng-tools/
