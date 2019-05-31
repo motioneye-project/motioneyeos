@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/colorama/json
+md5	f927529cd1735f6f50ee2c61628e9c1f  colorama-0.4.1.tar.gz
+sha256	05eed71e2e327246ad6b38c540c4a3117230b19679b875190486ddd2d721422d  colorama-0.4.1.tar.gz
+# Locally computed sha256 checksums
+sha256	cac35c02686e5d04a5a7140bfb3b36e73aed496656e891102e428886d7930318  LICENSE.txt
