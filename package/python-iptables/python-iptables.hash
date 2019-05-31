@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/python-iptables/json
+md5	3761a77c28ca0adc69f4e0e11af2f321  python-iptables-0.13.0.tar.gz
+sha256	53b09257467681d7ea547cd3140eccd8c70effb3748af4b56ffed2f6011189e7  python-iptables-0.13.0.tar.gz
+# Locally calculated
+sha256  b827789c74144d9bb92595ed3bc568aef767a7e8d930fba61c2cdd9f6ec27599  NOTICE
