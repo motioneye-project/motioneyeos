@@ -1533,6 +1533,7 @@ F:	package/python-posix-ipc/
 F:	package/python-pypcap/
 F:	package/python-pyrex/
 F:	package/python-tinyrpc/
+F:	package/python-txdbus/
 F:	package/raptor/
 F:	package/rcw/
 F:	package/rng-tools/
