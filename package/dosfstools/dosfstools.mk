@@ -24,26 +24,36 @@ DOSFSTOOLS_CONF_OPTS += LIBS="-liconv"
 DOSFSTOOLS_DEPENDENCIES += libiconv
 endif
 
-ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FATLABEL),)
-define DOSFSTOOLS_REMOVE_FATLABEL
-	rm -f $(addprefix $(TARGET_DIR)/sbin/,dosfslabel fatlabel)
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FATLABEL),y)
+define DOSFSTOOLS_INSTALL_FATLABEL
+	$(INSTALL) -D -m 0755 $(@D)/src/fatlabel $(TARGET_DIR)/sbin/fatlabel
+	ln -sf fatlabel $(TARGET_DIR)/sbin/dosfslabel
 endef
-DOSFSTOOLS_POST_INSTALL_TARGET_HOOKS += DOSFSTOOLS_REMOVE_FATLABEL
 endif
 
-ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT),)
-define DOSFSTOOLS_REMOVE_FSCK_FAT
-	rm -f $(addprefix $(TARGET_DIR)/sbin/,fsck.fat dosfsck fsck.msdos fsck.vfat)
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_FSCK_FAT),y)
+define DOSFSTOOLS_INSTALL_FSCK_FAT
+	$(INSTALL) -D -m 0755 $(@D)/src/fsck.fat $(TARGET_DIR)/sbin/fsck.fat
+	ln -sf fsck.fat $(TARGET_DIR)/sbin/fsck.vfat
+	ln -sf fsck.fat $(TARGET_DIR)/sbin/fsck.msdos
+	ln -sf fsck.fat $(TARGET_DIR)/sbin/dosfsck
 endef
-DOSFSTOOLS_POST_INSTALL_TARGET_HOOKS += DOSFSTOOLS_REMOVE_FSCK_FAT
 endif
 
-ifeq ($(BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT),)
-define DOSFSTOOLS_REMOVE_MKFS_FAT
-	rm -f $(addprefix $(TARGET_DIR)/sbin/,mkfs.fat mkdosfs mkfs.msdos mkfs.vfat)
+ifeq ($(BR2_PACKAGE_DOSFSTOOLS_MKFS_FAT),y)
+define DOSFSTOOLS_INSTALL_MKFS_FAT
+	$(INSTALL) -D -m 0755 $(@D)/src/mkfs.fat $(TARGET_DIR)/sbin/mkfs.fat
+	ln -sf mkfs.fat $(TARGET_DIR)/sbin/mkdosfs
+	ln -sf mkfs.fat $(TARGET_DIR)/sbin/mkfs.msdos
+	ln -sf mkfs.fat $(TARGET_DIR)/sbin/mkfs.vfat
 endef
-DOSFSTOOLS_POST_INSTALL_TARGET_HOOKS += DOSFSTOOLS_REMOVE_MKFS_FAT
 endif
+
+define DOSFSTOOLS_INSTALL_TARGET_CMDS
+	$(call DOSFSTOOLS_INSTALL_FATLABEL)
+	$(call DOSFSTOOLS_INSTALL_FSCK_FAT)
+	$(call DOSFSTOOLS_INSTALL_MKFS_FAT)
+endef
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
