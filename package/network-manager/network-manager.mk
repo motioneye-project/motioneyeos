@@ -26,7 +26,6 @@ NETWORK_MANAGER_CONF_OPTS = \
 	--disable-tests \
 	--disable-qt \
 	--disable-more-warnings \
-	--without-docs \
 	--with-crypto=gnutls \
 	--with-iptables=/usr/sbin/iptables \
 	--disable-ifupdown
