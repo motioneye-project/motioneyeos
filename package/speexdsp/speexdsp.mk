@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SPEEXDSP_VERSION = 20ed3452074664ad07e380e51321b148acebdf20
+SPEEXDSP_VERSION = SpeexDSP-1.2.0
 SPEEXDSP_SITE = https://git.xiph.org/speexdsp.git
 SPEEXDSP_SITE_METHOD = git
 SPEEXDSP_LICENSE = BSD-3-Clause
