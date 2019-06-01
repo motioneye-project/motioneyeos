@@ -13,11 +13,10 @@ config BR2_PACKAGE_PYTHON_MATPLOTLIB
 	select BR2_PACKAGE_PYTHON3_ZLIB # runtime
 	select BR2_PACKAGE_ZLIB # runtime
 	help
-	  Matplotlib strives to produce publication
-	  quality 2D graphics for interactive graphing,
-	  scientific publishing, user interface
-	  development and web application servers targeting
-	  multiple user interfaces and hardcopy output
+	  Matplotlib strives to produce publication quality 2D
+	  graphics for interactive graphing, scientific publishing,
+	  user interface development and web application servers
+	  targeting multiple user interfaces and hardcopy output
 	  formats.
 
 	  https://matplotlib.org/
