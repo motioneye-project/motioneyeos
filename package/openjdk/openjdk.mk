@@ -14,6 +14,7 @@ OPENJDK_LICENSE_FILES = LICENSE
 # OpenJDK requires Alsa, cups, and X11 even for a headless build.
 # host-zip is needed for the zip executable.
 OPENJDK_DEPENDENCIES = \
+	host-gawk \
 	host-openjdk-bin \
 	host-pkgconf \
 	host-zip \
