@@ -29,8 +29,7 @@ NETWORK_MANAGER_CONF_OPTS = \
 	--without-docs \
 	--with-crypto=gnutls \
 	--with-iptables=/usr/sbin/iptables \
-	--disable-ifupdown \
-	--disable-ifnet
+	--disable-ifupdown
 
 ifeq ($(BR2_PACKAGE_OFONO),y)
 NETWORK_MANAGER_DEPENDENCIES += ofono
