@@ -1,7 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2018-March/002855.html
-md5 987c438e79f5ddb84a9c5726a1610819  mkfontscale-1.1.3.tar.bz2
-sha1 2fdbd7c6cc5b0678f2c5d10d2350a809d576e9e5  mkfontscale-1.1.3.tar.bz2
-sha256 1e98df69ee5f4542d711e140e1d93e2c3f2775407ccbb7849110d52b91782a6a  mkfontscale-1.1.3.tar.bz2
-sha512 509e2f9cd55cf87cc3968c8767bf3f2386016278db8b7be75b7df34bf61f52519dd2778f3b9881ffbe30cc2fe26089c0a5b2c33af46bc7727f46dad83f030a62  mkfontscale-1.1.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-March/002988.html
+md5 215940de158b1a3d8b3f8b442c606e2f  mkfontscale-1.2.1.tar.bz2
+sha1 fb9d0458a4476a237609b676f9cebcc64b0a8a85  mkfontscale-1.2.1.tar.bz2
+sha256 ca0495eb974a179dd742bfa6199d561bda1c8da4a0c5a667f21fd82aaab6bac7  mkfontscale-1.2.1.tar.bz2
+sha512 4d243160e1f7f8dfa6a8f53349c1a42a55fc99426455ebdef58352c5e951fce8b4f1fbd1061a76c9a148095b002eac372db1ae5e2647d2ccb4886635b317b18c  mkfontscale-1.2.1.tar.bz2
 # Locally computed
-sha256 90f0a1bfee2ed42c63473ded631c0463bf38b3d193733ccfc35394c713a0701d  COPYING
+sha256 80df6f5b759f7775042313e4586506db60f26fd15b98b532cf518bd8cf1e8488  COPYING
