@@ -1,0 +1,34 @@
+From be030314805137cd63b46ea6eaa702b608669910 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 2 Jun 2019 17:45:47 +0200
+Subject: [PATCH] wrap_memcpy.cc: add GPR_DISABLE_WRAPPED_MEMCPY
+
+Add GPR_DISABLE_WRAPPED_MEMCPY to allow the user to disable wrapped
+memcpy. This will fix build on x86_64 on musl/uclibc without changing
+the cpu behavior.
+
+Fixes:
+ - http://autobuild.buildroot.org/results/20d6f2489a4e291a53bd514da66105eb607e1014
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/grpc/grpc/pull/19207]
+---
+ src/core/lib/gpr/wrap_memcpy.cc | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/lib/gpr/wrap_memcpy.cc b/src/core/lib/gpr/wrap_memcpy.cc
+index 9b8608e056..38b76acf95 100644
+--- a/src/core/lib/gpr/wrap_memcpy.cc
++++ b/src/core/lib/gpr/wrap_memcpy.cc
+@@ -28,7 +28,7 @@
+ 
+ extern "C" {
+ #ifdef __linux__
+-#if defined(__x86_64__) && !defined(GPR_MUSL_LIBC_COMPAT)
++#if defined(__x86_64__) && !defined(GPR_MUSL_LIBC_COMPAT) && !defined(GPR_DISABLE_WRAPPED_MEMCPY)
+ __asm__(".symver memcpy,memcpy@GLIBC_2.2.5");
+ void* __wrap_memcpy(void* destination, const void* source, size_t num) {
+   return memcpy(destination, source, num);
+-- 
+2.20.1
+
