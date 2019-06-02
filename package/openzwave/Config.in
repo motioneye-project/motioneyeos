@@ -2,6 +2,7 @@ config BR2_PACKAGE_OPENZWAVE
 	bool "openzwave"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_INSTALL_LIBSTDCPP
+	depends on !BR2_STATIC_LIBS
 	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_TINYXML
 	help
@@ -12,6 +13,6 @@ config BR2_PACKAGE_OPENZWAVE
 
 	  http://www.openzwave.net
 
-comment "openzwave needs a toolchain w/ C++, threads, wchar"
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!BR2_USE_WCHAR
+comment "openzwave needs a toolchain w/ C++, dynamic library, threads, wchar"
+	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS || \
+		!BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
