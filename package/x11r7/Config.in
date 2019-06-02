@@ -69,7 +69,6 @@ if BR2_PACKAGE_XORG7
 		source package/x11r7/xapp_ico/Config.in
 		source package/x11r7/xapp_listres/Config.in
 		source package/x11r7/xapp_luit/Config.in
-		source package/x11r7/xapp_mkfontdir/Config.in
 		source package/x11r7/xapp_mkfontscale/Config.in
 		source package/x11r7/xapp_oclock/Config.in
 		source package/x11r7/xapp_rgb/Config.in

@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2019.08"
 
+config BR2_PACKAGE_XAPP_MKFONTDIR
+	bool "mkfontdir is now included in xapp_mkfontscale"
+	select BR2_PACKAGE_XAPP_MKFONTSCALE
+	select BR2_LEGACY
+	help
+	  xapp_mkfontscale now includes the mkfontdir script previously
+	  distributed separately for compatibility with older X11
+	  versions.
+
 config BR2_GDB_VERSION_8_0
 	bool "gdb 8.0.x has been removed"
 	select BR2_LEGACY
