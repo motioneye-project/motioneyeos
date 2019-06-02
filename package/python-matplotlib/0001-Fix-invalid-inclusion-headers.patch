@@ -1,0 +1,29 @@
+From b0232c3cf1051749dd1e2bd0ec7c5c0a3a008d2f Mon Sep 17 00:00:00 2001
+From: Jugurtha BELKALEM <jugurtha.belkalem@smile.fr>
+Date: Thu, 9 May 2019 15:06:36 +0200
+Subject: [PATCH] Fix invalid inclusion headers
+
+By default, matplotlib includes headers from host
+machine which breaks the build process.
+
+Signed-off-by: Jugurtha BELKALEM <jugurtha.belkalem@smile.fr>
+---
+ python-matplotlib-3.0.3/setupext.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/setupext.py b/setupext.py
+index fc82d5d..eb978d2 100644
+--- a/setupext.py
++++ b/setupext.py
+@@ -267,7 +267,7 @@ def get_base_dirs():
+         'gnu0': ['/usr'],
+         'aix5': ['/usr/local'],
+         }
+-    return basedir_map.get(sys.platform, ['/usr/local', '/usr'])
++    return basedir_map.get(sys.platform, [])
+ 
+ 
+ def get_include_dirs():
+-- 
+2.7.4
+

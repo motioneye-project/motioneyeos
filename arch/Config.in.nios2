@@ -6,3 +6,6 @@ config BR2_ENDIAN
 
 config BR2_READELF_ARCH_NAME
 	default "Altera Nios II"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

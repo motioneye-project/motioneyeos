@@ -1,0 +1,53 @@
+From ffca94e6f84956838a2d88824b37fcd3b0d0694b Mon Sep 17 00:00:00 2001
+From: Pierre-Jean Texier <pjtexier@koncepto.io>
+Date: Sun, 5 May 2019 21:42:48 +0200
+Subject: [PATCH] fw_printenv: remove declaration in for loop
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This commit fixes :
+
+src/fw_printenv.c:142:4: error: ‘for’ loop initial declarations are only allowed in C99 or C11 mode
+    for (int i = 0; i < argc; i++) {
+
+Signed-off-by: Pierre-Jean Texier <pjtexier@koncepto.io>
+[Upstream status: https://github.com/sbabic/libubootenv/commit/d63007652f1d9f9256a5eedbce6273b9848b653c]
+---
+ src/fw_printenv.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/src/fw_printenv.c b/src/fw_printenv.c
+index 361d150..4236eaa 100644
+--- a/src/fw_printenv.c
++++ b/src/fw_printenv.c
+@@ -59,7 +59,7 @@ int main (int argc, char **argv) {
+ 	char *cfgfname = NULL;
+ 	char *defenvfile = NULL;
+ 	char *scriptfile = NULL;
+-	int c;
++	int c, i;
+ 	int ret = 0;
+ 	void *tmp;
+ 	const char *name, *value;
+@@ -139,7 +139,7 @@ int main (int argc, char **argv) {
+ 				fprintf(stdout, "%s=%s\n", name, value);
+ 			}
+ 		} else {
+-			for (int i = 0; i < argc; i++) {
++			for (i = 0; i < argc; i++) {
+ 				value = libuboot_get_env(ctx, argv[i]);
+ 				if (noheader)
+ 					fprintf(stdout, "%s\n", value ? value : "");
+@@ -151,7 +151,7 @@ int main (int argc, char **argv) {
+ 		if (scriptfile)
+ 			libuboot_load_file(ctx, scriptfile);
+ 		else {
+-			for (int i = 0; i < argc; i += 2) {
++			for (i = 0; i < argc; i += 2) {
+ 				if (i + 1 == argc)
+ 					libuboot_set_env(ctx, argv[i], NULL);
+ 				else
+-- 
+2.7.4
+

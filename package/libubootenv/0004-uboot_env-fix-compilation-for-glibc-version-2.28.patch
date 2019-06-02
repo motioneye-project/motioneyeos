@@ -1,0 +1,40 @@
+From fa991d153a73e312683b751e9f65d8df6ac61732 Mon Sep 17 00:00:00 2001
+From: Pierre-Jean Texier <pjtexier@koncepto.io>
+Date: Tue, 21 May 2019 21:40:23 +0200
+Subject: [libubootenv][PATCH] uboot_env: fix compilation for glibc version
+ >= 2.28
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Starting with glibc 2.28, include file sys/stat.h will have a
+definition for struct statx, in which case include file linux/stat.h should be
+avoided, in order to prevent a duplicate definition.
+
+This commit fixes (if _GNU_SOURCE is defined):
+
+/usr/include/linux/stat.h:56:8: error: redefinition of ‘struct statx_timestamp’
+ struct statx_timestamp {
+        ^~~~~~~~~~~~~~~
+
+Signed-off-by: Pierre-Jean Texier <pjtexier@koncepto.io>
+[Upstream status: http://patchwork.ozlabs.org/patch/1103010/]
+---
+ src/uboot_env.c | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/uboot_env.c b/src/uboot_env.c
+index a0f977c..e8483bf 100644
+--- a/src/uboot_env.c
++++ b/src/uboot_env.c
+@@ -32,7 +32,6 @@
+ #include <sys/wait.h>
+ #include <sys/ioctl.h>
+ #include <zlib.h>
+-#include <linux/stat.h>
+ #include <mtd/mtd-user.h>
+ #include <mtd/ubi-user.h>
+ 
+-- 
+2.7.4
+

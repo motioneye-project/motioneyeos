@@ -208,3 +208,6 @@ config BR2_GCC_TARGET_CPU
 config BR2_READELF_ARCH_NAME
 	default "PowerPC"	if BR2_powerpc
 	default "PowerPC64"	if BR2_powerpc64 || BR2_powerpc64le
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

@@ -1,0 +1,63 @@
+From 5a83a50c47c46c54a443aa18ed6456416fa27a98 Mon Sep 17 00:00:00 2001
+From: Etienne Carriere <etienne.carriere@linaro.org>
+Date: Thu, 25 Apr 2019 10:19:05 +0200
+Subject: [PATCH] regression 41xx: prevent unsafe-loop-optimizations build
+ error
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Add -Wno-unsafe-loop-optimizations directive since regression_4100.c
+fails to build on some recent toolchains as GCC 7.3.0 and 7.4.0 with
+an error trace like below. Note building with GCC 8.2.1 does not
+reproduce the build issue.
+
+/path/to/optee_test/host/xtest/regression_4100.c: In function ‘convert_from_string’:
+/path/to/optee_test/host/xtest/regression_4100.c:448:8: error: missed loop optimization, the loop counter may overflow [-Werror=unsafe-loop-optimizations]
+  while (spos) {
+        ^
+/path/to/optee_test/host/xtest/regression_4100.c:455:6: error: missed loop optimization, the loop counter may overflow [-Werror=unsafe-loop-optimizations]
+   if (!spos)
+      ^
+
+The GNU Makefile build sequence defines -Wno-unsafe-loop-optimizations
+for the whole xtest sources while CMake build sequence defines it
+specifically for regression_4100.c among xtest source files.
+
+Signed-off-by: Etienne Carriere <etienne.carriere@linaro.org>
+Reviewed-by: Jerome Forissier <jerome.forissier@linaro.org>
+---
+ host/xtest/CMakeLists.txt | 4 ++++
+ host/xtest/Makefile       | 1 +
+ 2 files changed, 5 insertions(+)
+
+diff --git a/host/xtest/CMakeLists.txt b/host/xtest/CMakeLists.txt
+index 1f3a6f4..3868bcd 100644
+--- a/host/xtest/CMakeLists.txt
++++ b/host/xtest/CMakeLists.txt
+@@ -61,6 +61,10 @@ set (SRC
+ 	xtest_test.c
+ )
+ 
++set_source_files_properties(
++	regression_4100.c PROPERTIES COMPILE_FLAGS -Wno-unsafe-loop-optimizations
++)
++
+ if (CFG_GP_SOCKETS)
+ 	list (APPEND SRC
+ 		regression_2000.c
+diff --git a/host/xtest/Makefile b/host/xtest/Makefile
+index f226500..e930d9c 100644
+--- a/host/xtest/Makefile
++++ b/host/xtest/Makefile
+@@ -155,6 +155,7 @@ CFLAGS += -Wall -Wcast-align -Werror \
+ 	  -Wshadow -Wstrict-prototypes -Wswitch-default \
+ 	  -Wwrite-strings \
+ 	  -Wno-declaration-after-statement \
++	  -Wno-unsafe-loop-optimizations \
+ 	  -Wno-missing-field-initializers -Wno-format-zero-length
+ endif
+ 
+-- 
+2.17.1
+

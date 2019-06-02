@@ -3,6 +3,7 @@ comment "GCC Options"
 choice
 	prompt "GCC compiler Version"
 	default BR2_GCC_VERSION_ARC if BR2_arc
+	default BR2_GCC_VERSION_CSKY if BR2_csky
 	default BR2_GCC_VERSION_OR1K if BR2_or1k
 	default BR2_GCC_VERSION_7_X
 	help
@@ -13,6 +14,12 @@ config BR2_GCC_VERSION_ARC
 	# Only supported architecture
 	depends on BR2_arc
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
+
+config BR2_GCC_VERSION_CSKY
+	bool "gcc csky"
+	# Only supported architecture
+	depends on BR2_csky
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
 config BR2_GCC_VERSION_OR1K
 	bool "gcc or1k (5.x)"
@@ -25,6 +32,7 @@ config BR2_GCC_VERSION_4_9_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	# Broken or unsupported architectures
 	depends on !BR2_arc
+	depends on !BR2_csky
 	depends on !BR2_or1k
 	# musl on microblaze, ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
@@ -39,6 +47,7 @@ config BR2_GCC_VERSION_5_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	# Broken or unsupported architectures
 	depends on !BR2_arc
+	depends on !BR2_csky
 	depends on !BR2_or1k
 	# musl on ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
@@ -52,6 +61,7 @@ config BR2_GCC_VERSION_6_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	# Broken or unsupported architectures
 	depends on !BR2_arc
+	depends on !BR2_csky
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
@@ -59,12 +69,14 @@ config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	# Broken or unsupported architectures
+	depends on !BR2_csky
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
 config BR2_GCC_VERSION_8_X
 	bool "gcc 8.x"
 	# Broken or unsupported architectures
+	depends on !BR2_csky
 	depends on !BR2_or1k
 	# powerpc spe support has been deprecated since gcc 8.x.
 	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
@@ -86,8 +98,9 @@ config BR2_GCC_VERSION
 	default "6.5.0"     if BR2_GCC_VERSION_6_X
 	default "7.4.0"     if BR2_GCC_VERSION_7_X
 	default "8.3.0"     if BR2_GCC_VERSION_8_X
-	default "arc-2018.09-release" if BR2_GCC_VERSION_ARC
+	default "arc-2019.03-rc1" if BR2_GCC_VERSION_ARC
 	default "or1k-musl-5.4.0-20170218" if BR2_GCC_VERSION_OR1K
+	default "48152afb96c59733d5bc79e3399bb7b3d4b44266" if BR2_GCC_VERSION_CSKY
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS
 	string "Additional gcc options"

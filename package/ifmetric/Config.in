@@ -1,0 +1,10 @@
+config BR2_PACKAGE_IFMETRIC
+	bool "ifmetric"
+	help
+	  Ifmetric is a Linux tool for setting the metrics of all IPv4
+	  routes attached to a given network interface at once. This
+	  may be used to change the priority of routing IPv4 traffic
+	  over the interface. Lower metrics correlate with higher
+	  priorities.
+
+	  http://0pointer.de/lennart/projects/ifmetric/

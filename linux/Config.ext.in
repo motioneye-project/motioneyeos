@@ -22,18 +22,21 @@ config BR2_LINUX_KERNEL_EXT_XENOMAI
 
 	  However, it is recommended to use the latest version of the
 	  Adeos/Ipipe patch available at
-	  http://download.gna.org/adeos/patches
+	  https://xenomai.org/downloads/ipipe/
 
 	  Xenomai is know to support Blackfin, SH4, x86, ARM, NIOS2
 	  and PowerPC architectures.
 
 config BR2_LINUX_KERNEL_EXT_XENOMAI_ADEOS_PATCH
-	string "Path for Adeos patch file"
+	string "Path/URL for Adeos patch file"
 	depends on BR2_LINUX_KERNEL_EXT_XENOMAI
 	help
-	  Optionally, explicitly specify the Adeos patch to use.
-	  Download it at http://download.gna.org/adeos/patches
-	  and verify that your kernel version in buildroot matches.
+	  Optionally, explicitly specify where to find the Adeos
+	  patch to use.
+	  Examples:
+	  https://xenomai.org/downloads/ipipe/v4.x/arm/ipipe-core-4.19.33-arm-2.patch
+	  or /home/foo/ipipe-core-4.19.33-arm-2.patch
+	  Please verify that your kernel version in Buildroot matches.
 
 comment "xenomai needs a uClibc or glibc toolchain w/ threads"
 	depends on BR2_PACKAGE_XENOMAI_COBALT_ARCH_SUPPORTS

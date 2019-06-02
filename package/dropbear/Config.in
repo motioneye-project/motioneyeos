@@ -66,4 +66,11 @@ config BR2_PACKAGE_DROPBEAR_LEGACY_CRYPTO
 	    DSA public keys
 	    Diffie-Hellman Group1 key exchange
 
+config BR2_PACKAGE_DROPBEAR_LOCALOPTIONS_FILE
+	string "path to custom localoptions.h definitions file"
+	help
+	  Path to a file whose contents will be appended to Dropbear
+	  localoptions.h. It can be used to tweak the Dropbear
+	  configuration.
+
 endif

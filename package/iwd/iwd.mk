@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-IWD_VERSION = 0.13
+IWD_VERSION = 0.18
 IWD_SITE = https://git.kernel.org/pub/scm/network/wireless/iwd.git
 IWD_SITE_METHOD = git
 IWD_LICENSE = LGPL-2.1+

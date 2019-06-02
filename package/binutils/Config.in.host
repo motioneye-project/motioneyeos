@@ -7,28 +7,38 @@ config BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
 
 choice
 	prompt "Binutils Version"
-	default BR2_BINUTILS_VERSION_2_31_X if !BR2_arc
+	default BR2_BINUTILS_VERSION_2_31_X if !BR2_arc && !BR2_csky
 	default BR2_BINUTILS_VERSION_ARC if BR2_arc
+	default BR2_BINUTILS_VERSION_CSKY if BR2_csky
 	help
 	  Select the version of binutils you wish to use.
 
 config BR2_BINUTILS_VERSION_2_30_X
 	bool "binutils 2.30"
+	depends on !BR2_csky
 
 config BR2_BINUTILS_VERSION_2_31_X
 	bool "binutils 2.31.1"
+	depends on !BR2_csky
 
 config BR2_BINUTILS_VERSION_2_32_X
 	bool "binutils 2.32"
+	depends on !BR2_csky
 
 config BR2_BINUTILS_VERSION_ARC
 	bool "binutils arc (2.31)"
 	depends on BR2_arc
+
+config BR2_BINUTILS_VERSION_CSKY
+	bool "binutils csky"
+	depends on BR2_csky
+
 endchoice
 
 config BR2_BINUTILS_VERSION
 	string
-	default "arc-2018.09-release"	if BR2_BINUTILS_VERSION_ARC
+	default "arc-2019.03-rc1"	if BR2_BINUTILS_VERSION_ARC
+	default "c66d8bbcebfddf713b2b436e1b135e6b125a55a5" if BR2_BINUTILS_VERSION_CSKY
 	default "2.30"		if BR2_BINUTILS_VERSION_2_30_X
 	default "2.31.1"	if BR2_BINUTILS_VERSION_2_31_X
 	default "2.32"		if BR2_BINUTILS_VERSION_2_32_X

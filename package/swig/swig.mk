@@ -7,9 +7,9 @@
 SWIG_VERSION_MAJOR = 3.0
 SWIG_VERSION = $(SWIG_VERSION_MAJOR).12
 SWIG_SITE = http://downloads.sourceforge.net/project/swig/swig/swig-$(SWIG_VERSION)
-HOST_SWIG_DEPENDENCIES = host-bison
+HOST_SWIG_DEPENDENCIES = host-bison host-pcre
 HOST_SWIG_CONF_OPTS = \
-	--without-pcre \
+	--with-pcre \
 	--disable-ccache \
 	--without-octave
 SWIG_LICENSE = GPL-3.0+, BSD-2-Clause, BSD-3-Clause

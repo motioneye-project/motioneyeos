@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NANO_VERSION_MAJOR = 3
+NANO_VERSION_MAJOR = 4
 NANO_VERSION = $(NANO_VERSION_MAJOR).2
 NANO_SITE = https://www.nano-editor.org/dist/v$(NANO_VERSION_MAJOR)
 NANO_SOURCE = nano-$(NANO_VERSION).tar.xz
@@ -24,8 +24,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_FILE),y)
 NANO_DEPENDENCIES += file
+NANO_CONF_OPTS += --enable-libmagic
 else
-NANO_CONF_ENV += ac_cv_lib_magic_magic_open=no
+NANO_CONF_OPTS += --disable-libmagic
 endif
 
 ifeq ($(BR2_PACKAGE_NANO_TINY),y)

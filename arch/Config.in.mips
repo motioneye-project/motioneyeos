@@ -271,3 +271,6 @@ config BR2_GCC_TARGET_ABI
 
 config BR2_READELF_ARCH_NAME
 	default "MIPS R3000"
+
+# vim: ft=kconfig
+# -*- mode:kconfig; -*-

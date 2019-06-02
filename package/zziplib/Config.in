@@ -1,0 +1,11 @@
+config BR2_PACKAGE_ZZIPLIB
+	bool "zziplib"
+	select BR2_PACKAGE_ZLIB
+	help
+	  The zziplib provides read access to zipped files in a
+	  zip-archive, using compression based solely on free algorithms
+	  provided by zlib. It also provides a functionality to overlay
+	  the archive filesystem with the filesystem of the operating
+	  system environment.
+
+	  http://zziplib.sourceforge.net

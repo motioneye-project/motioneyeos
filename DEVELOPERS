@@ -1228,6 +1228,10 @@ F:	package/python-xlib/
 N:	Joshua Henderson <joshua.henderson@microchip.com>
 F:	package/qt5/qt5wayland/
 
+N:	Jugurtha BELKALEM <jugurtha.belkalem@smile.fr>
+F:	package/python-cycler/
+F:	package/python-matplotlib/
+
 N:	Juha Rantanen <juha@codercoded.com>
 F:	package/acsccid/
 
@@ -1387,6 +1391,7 @@ F:	package/easydbus/
 F:	package/lua-flu/
 F:	package/lua-stdlib/
 F:	package/luaossl/
+F:	package/murata-cyw-fw/
 F:	package/rs485conf/
 F:	package/turbolua/
 
@@ -1616,6 +1621,8 @@ F:	board/altera/socrates_cyclone5/
 F:	board/pine64/rock64
 F:	configs/rock64_defconfig
 F:	configs/socrates_cyclone5_defconfig
+F:	package/openrc/
+F:	package/skeleton-init-openrc/
 
 N:	Michel Stempin <michel.stempin@wanadoo.fr>
 F:	board/licheepi/
@@ -1746,8 +1753,10 @@ F:	configs/sheevaplug_defconfig
 F:	package/bats-core/
 F:	package/docker-compose/
 F:	package/dump1090/
+F:	package/fatcat/
 F:	package/flickcurl/
 F:	package/fscryptctl/
+F:	package/ifmetric/
 F:	package/jo/
 F:	package/jose/
 F:	package/libfastjson/
@@ -1841,6 +1850,9 @@ F:	package/kf5/
 
 N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
+
+N:	Pierre-Jean Texier <pjtexier@koncepto.io>
+F:	package/libubootenv/
 
 N:	Pieter De Gendt <pieter.degendt@gmail.com>
 F:	package/libvips/
@@ -1939,6 +1951,7 @@ F:	package/tk/
 F:	package/upower/
 F:	package/waffle/
 F:	package/xenomai/
+F:	package/zziplib/
 F:	toolchain/toolchain-external/toolchain-external-arm-aarch64/
 F:	toolchain/toolchain-external/toolchain-external-arm-aarch64-be/
 F:	toolchain/toolchain-external/toolchain-external-arm-arm/
@@ -2222,6 +2235,9 @@ F:	toolchain/
 
 N:	Timo Ketola <timo.ketola@exertus.fi>
 F:	package/fbgrab/
+
+N:	Titouan Christophe <titouan.christophe@railnova.eu>
+F:	package/redis/
 
 N:	Trent Piepho <tpiepho@impinj.com>
 F:	package/libp11/

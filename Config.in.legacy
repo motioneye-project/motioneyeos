@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2019.05"
 
+config BR2_CSKY_DSP
+	bool "C-SKY DSP support removed"
+	select BR2_LEGACY
+	help
+	  C-SKY DSP instruction support for ck810 / ck807 was removed,
+	  as it was no longer supported in C-SKY gcc. Perhaps the VDSP
+	  instructions should be used instead, using the BR2_CSKY_VDSP
+	  option.
+
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_COMPOSITOR
 	bool "compositor moved to gst1-plugins-base"
 	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_COMPOSITOR

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GPSD_VERSION = 3.18
+GPSD_VERSION = 3.18.1
 GPSD_SITE = http://download-mirror.savannah.gnu.org/releases/gpsd
 GPSD_LICENSE = BSD-3-Clause
 GPSD_LICENSE_FILES = COPYING
@@ -143,6 +143,9 @@ GPSD_SCONS_OPTS += rtcm104v3=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_SIRF),y)
 GPSD_SCONS_OPTS += sirf=no
+endif
+ifneq ($(BR2_PACKAGE_GPSD_SKYTRAQ),y)
+GPSD_SCONS_OPTS += skytraq=no
 endif
 ifneq ($(BR2_PACKAGE_GPSD_SUPERSTAR2),y)
 GPSD_SCONS_OPTS += superstar2=no

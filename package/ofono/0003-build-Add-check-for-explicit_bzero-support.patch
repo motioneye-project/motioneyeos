@@ -1,0 +1,28 @@
+From dff595671bf5a46f7c9231966a6cd7d2a0183076 Mon Sep 17 00:00:00 2001
+From: Marcel Holtmann <marcel@holtmann.org>
+Date: Wed, 15 May 2019 09:39:44 +0200
+Subject: [PATCH] build: Add check for explicit_bzero support
+
+Upstream: dff595671bf5a46f7c9231966a6cd7d2a0183076
+
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+---
+ configure.ac | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index bacb7ac5..cad35c5d 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -54,6 +54,8 @@ AC_ARG_ENABLE(pie, AC_HELP_STRING([--enable-pie],
+ 	fi
+ ])
+ 
++AC_CHECK_FUNCS(explicit_bzero)
++
+ AC_CHECK_FUNC(signalfd, dummy=yes,
+ 			AC_MSG_ERROR(signalfd support is required))
+ 
+-- 
+2.21.0
+

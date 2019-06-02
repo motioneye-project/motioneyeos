@@ -1,0 +1,31 @@
+From 113a4ea9ec48b9428b3abac21ecca7d8f11502fe Mon Sep 17 00:00:00 2001
+From: Pierre-Jean Texier <pjtexier@koncepto.io>
+Date: Tue, 21 May 2019 21:32:27 +0200
+Subject: [libubootenv][PATCH] uboot_env: fix build with musl libc
+
+Fixes the following compile failure when building with musl:
+
+ - http://autobuild.buildroot.net/results/206/206f1eba0dec39de1c02d760fa8f961d5a3879d0/
+
+Signed-off-by: Pierre-Jean Texier <pjtexier@koncepto.io>
+[Upstream status: http://patchwork.ozlabs.org/patch/1103009/]
+---
+ src/uboot_env.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/uboot_env.c b/src/uboot_env.c
+index 4c298d1..a0f977c 100644
+--- a/src/uboot_env.c
++++ b/src/uboot_env.c
+@@ -11,6 +11,8 @@
+  * @brief This is the implementation of libubootenv library
+  *
+  */
++ 
++#define _GNU_SOURCE
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+-- 
+2.7.4
+

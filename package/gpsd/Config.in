@@ -222,6 +222,11 @@ config BR2_PACKAGE_GPSD_SIRF
 	help
 	  SiRF binary support
 
+config BR2_PACKAGE_GPSD_SKYTRAQ
+	bool "Skytraq"
+	help
+	  Skytraq support
+
 config BR2_PACKAGE_GPSD_SUPERSTAR2
 	bool "SuperStarII"
 	help

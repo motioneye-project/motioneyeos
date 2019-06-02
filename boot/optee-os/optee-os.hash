@@ -1,0 +1,4 @@
+# From https://github.com/OP-TEE/optee_os/archive/3.5.0.tar.gz
+sha256 a02fe8e7fdee9653e9207059071735a839b1255fdaf311a2a6cfd185a4cee6a2  optee-os-3.5.0.tar.gz
+# Locally computed
+sha256 1247ee90858f4037b6cac63cbffddfed435d0d73c631b37d78c1e6e6ab3e5d1a  LICENSE
