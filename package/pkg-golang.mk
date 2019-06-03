@@ -35,6 +35,8 @@ GO_TARGET_ENV = \
 	$(GO_COMMON_ENV)
 
 GO_HOST_ENV = \
+	CGO_CFLAGS="$(HOST_CFLAGS)" \
+	CGO_LDFLAGS="$(HOST_LDFLAGS)" \
 	$(GO_COMMON_ENV)
 
 ################################################################################
