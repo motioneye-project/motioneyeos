@@ -2063,6 +2063,10 @@ F:	package/tunctl/
 F:	package/ubus/
 F:	package/wolfssl/
 
+N:	Shyam Saini <shyam.saini@amarulasolutions.com>
+F:	board/friendlyarm/nanopi-neo4/
+F:	configs/nanopi_neo4_defconfig
+
 N:	Simon Dawson <spdawson@gmail.com>
 F:	boot/at91bootstrap3/
 F:	package/cppzmq/
