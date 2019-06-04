@@ -2065,7 +2065,9 @@ F:	package/wolfssl/
 
 N:	Shyam Saini <shyam.saini@amarulasolutions.com>
 F:	board/friendlyarm/nanopi-neo4/
+F:	board/radxa/rock-pi4/
 F:	configs/nanopi_neo4_defconfig
+F:	configs/radxa_rock_pi4_defconfig
 
 N:	Simon Dawson <spdawson@gmail.com>
 F:	boot/at91bootstrap3/
