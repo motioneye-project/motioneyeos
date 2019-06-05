@@ -46,7 +46,7 @@ config BR2_PACKAGE_HOST_GDB_SIM
 
 choice
 	prompt "GDB debugger Version"
-	default BR2_GDB_VERSION_8_1
+	default BR2_GDB_VERSION_8_2
 	depends on !BR2_arc
 	depends on !BR2_csky
 	help
@@ -105,7 +105,7 @@ config BR2_GDB_VERSION
 	default "4ecb98fbc2f94dbe01b69384afbc515107de73df" if BR2_csky
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
 	default "8.0.1"    if BR2_GDB_VERSION_8_0
-	default "8.1.1"    if BR2_GDB_VERSION_8_1 || !BR2_PACKAGE_HOST_GDB
-	default "8.2.1"    if BR2_GDB_VERSION_8_2
+	default "8.1.1"    if BR2_GDB_VERSION_8_1
+	default "8.2.1"    if BR2_GDB_VERSION_8_2 || !BR2_PACKAGE_HOST_GDB
 	default "8.3"	   if BR2_GDB_VERSION_8_3
 	depends on BR2_PACKAGE_GDB || BR2_PACKAGE_HOST_GDB
