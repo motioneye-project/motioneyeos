@@ -55,11 +55,6 @@ choice
 config BR2_GDB_VERSION_7_12
 	bool "gdb 7.12.x"
 
-config BR2_GDB_VERSION_8_0
-	bool "gdb 8.0.x"
-	# Needs a C++11 compiler
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
-
 config BR2_GDB_VERSION_8_1
 	bool "gdb 8.1.x"
 	# Needs a C++11 compiler
@@ -92,7 +87,6 @@ endif
 config BR2_PACKAGE_GDB_NEEDS_CXX11
 	bool
 	default y if !BR2_PACKAGE_HOST_GDB
-	default y if BR2_GDB_VERSION_8_0
 	default y if BR2_GDB_VERSION_8_1
 	default y if BR2_GDB_VERSION_8_2
 	default y if BR2_GDB_VERSION_8_3
@@ -104,7 +98,6 @@ config BR2_GDB_VERSION
 	default "arc-2019.03-rc1-gdb" if BR2_arc
 	default "4ecb98fbc2f94dbe01b69384afbc515107de73df" if BR2_csky
 	default "7.12.1"   if BR2_GDB_VERSION_7_12
-	default "8.0.1"    if BR2_GDB_VERSION_8_0
 	default "8.1.1"    if BR2_GDB_VERSION_8_1
 	default "8.2.1"    if BR2_GDB_VERSION_8_2 || !BR2_PACKAGE_HOST_GDB
 	default "8.3"	   if BR2_GDB_VERSION_8_3
