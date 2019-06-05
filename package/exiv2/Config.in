@@ -16,23 +16,9 @@ config BR2_PACKAGE_EXIV2
 	  access to the Exif, IPTC and XMP metadata of images in
 	  various formats.
 
-	  Exiv2 is available under the GPLv2+ or under a commercial
-	  license.
-
 	  http://www.exiv2.org/
 
 if BR2_PACKAGE_EXIV2
-
-config BR2_PACKAGE_EXIV2_COMMERCIAL
-	bool "Enable commercial"
-	help
-	  Build the commercial version for closed source project.
-
-	  The Nikon lens name database and the NLS support is disabled
-	  for copyright reasons.
-
-	  A commercial license request is needed.
-	  http://www.exiv2.org/download.html#license
 
 config BR2_PACKAGE_EXIV2_PNG
 	bool "PNG image support"
@@ -48,11 +34,11 @@ config BR2_PACKAGE_EXIV2_XMP
 
 config BR2_PACKAGE_EXIV2_LENSDATA
 	bool "Nikon lens name database"
-	depends on !BR2_PACKAGE_EXIV2_COMMERCIAL
 	help
 	  Integrate Nikon lens name database.
 
-	  This database is integrated but comes from a thirdparty:
-	  http://www.rottmerhusen.com/objektives/lensid/thirdparty.html.
+	  This database comes from a thirdparty and is free to use in
+	  non-commercial, GPL or open source software only.
+	  For more informations src/nikonmn_int.cpp.
 
 endif
