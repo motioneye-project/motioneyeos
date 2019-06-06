@@ -51,7 +51,7 @@ mkfs.vfat -F16 ${loop_dev}
 
 msg "mounting boot loop device"
 mkdir -p ${BOOT}
-mount -o loop ${loop_dev} ${BOOT}
+mount ${loop_dev} ${BOOT}
 
 msg "copying boot filesystem contents"
 cp -r ${BOOT_SRC}/* ${BOOT}
@@ -75,7 +75,7 @@ tune2fs -O^has_journal ${loop_dev}
 
 msg "mounting root loop device"
 mkdir -p ${ROOT}
-mount -o loop ${loop_dev} ${ROOT}
+mount ${loop_dev} ${ROOT}
 
 msg "copying root filesystem contents"
 tar -xpsf ${ROOT_SRC} -C ${ROOT}
