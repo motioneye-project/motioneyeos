@@ -1,5 +1,5 @@
-# Copied from https://github.com/numpy/numpy/releases/tag/v1.16.3
-sha256	adf063a3f87ab89393f5eea0eb903293b112fa0a308e8c594a75ffa585d81d4f	numpy-1.16.3.tar.gz
+# Copied from https://github.com/numpy/numpy/releases/tag/v1.16.4
+sha256	a3bccb70ad94091a5b9e2469fabd41ac877c140a6828c2022e35560a2ec0346c	numpy-1.16.4.tar.gz
 # License files, locally calculated
 sha256	6b5086f61fe0c71564a79304ecbaa60f11fa3f3debf82f73d16a611cab102adc	LICENSE.txt
 sha256	426a5a484480f57a295db48c2c04f47bb3274752dd82a7fd6541dfa2cb90f641	doc/sphinxext/LICENSE.txt
