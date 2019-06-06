@@ -50,6 +50,7 @@ F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/libwebsockets/
+F:	package/mender-grubenv/
 F:	package/nginx-naxsi/
 F:	package/openjdk/
 F:	package/openjdk-bin/
