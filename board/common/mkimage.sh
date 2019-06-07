@@ -42,7 +42,7 @@ OS_NAME=$(source ${COMMON_DIR}/overlay/etc/version && echo ${OS_SHORT_NAME})
 LOOP_DEV=${THINGOS_LOOP_DEV:--f}
 
 # boot filesystem
-msg "creating boot loop device"
+msg "creating boot loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${BOOT_IMG} bs=1M count=${BOOT_SIZE}
 loop_dev=$(losetup --show ${LOOP_DEV} ${BOOT_IMG})
 
@@ -60,12 +60,12 @@ sync
 msg "unmounting boot filesystem"
 umount ${BOOT}
 
-msg "destroying boot loop device (${loop_dev})"
+msg "destroying boot loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 
 # root filesystem
-msg "creating root loop device"
+msg "creating root loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${ROOT_IMG} bs=1M count=${ROOT_SIZE}
 loop_dev=$(losetup --show ${LOOP_DEV} ${ROOT_IMG})
 
@@ -103,7 +103,7 @@ fi
 msg "unmounting root filesystem"
 umount ${ROOT}
 
-msg "destroying root loop device (${loop_dev})"
+msg "destroying root loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 
@@ -122,7 +122,7 @@ if ! [ -r ${ROOT_IMG} ]; then
 fi
 
 # disk image
-msg "creating disk loop device"
+msg "creating disk loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${DISK_IMG} bs=1M count=${DISK_SIZE}
 if [ -n "${UBOOT_BIN}" ] && [ -n "${UBOOT_SEEK}" ]; then
     msg "copying u-boot image"
@@ -180,7 +180,7 @@ msg "copying root image"
 dd if=${ROOT_IMG} of=${loop_dev}
 sync
 
-msg "destroying root loop device (${loop_dev})"
+msg "destroying root loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 
