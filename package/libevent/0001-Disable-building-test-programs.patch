@@ -1,7 +1,7 @@
 From 4b5a135fa681e85eb6988a379f59f3c7a41cc48c Mon Sep 17 00:00:00 2001
 From: Gilles Talis <gilles.talis@gmail.com>
 Date: Fri, 21 Jun 2013 15:25:11 -0700
-Subject: [PATCH 1/2] Disable building test programs
+Subject: [PATCH] Disable building test programs
 
 We are not really interested in building test programs.
 Moreover, these programs use fork() function that is
