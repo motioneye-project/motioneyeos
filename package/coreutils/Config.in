@@ -15,6 +15,24 @@ config BR2_PACKAGE_COREUTILS
 
 	  http://www.gnu.org/software/coreutils/
 
+if BR2_PACKAGE_COREUTILS
+
+config BR2_PACKAGE_COREUTILS_INDIVIDUAL_BINARIES
+	bool "Individual binaries"
+	depends on !BR2_STATIC_LIBS
+	help
+	  By default (i.e. with this option disabled), coreutils is
+	  installed as a single binary (Busybox style) called
+	  /usr/bin/coreutils, and all core utilities are symbolic
+	  links to this binary.
+
+	  With this option enabled, each utility is a separate binary.
+
+comment "coreutils individual binaries need a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
+
+endif
+
 comment "coreutils needs a toolchain w/ wchar"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR
