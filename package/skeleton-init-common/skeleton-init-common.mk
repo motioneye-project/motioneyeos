@@ -49,9 +49,11 @@ SKELETON_INIT_COMMON_HOSTS_LINE += $(SKELETON_INIT_COMMON_SHORT_HOSTNAME)
 endif
 define SKELETON_INIT_COMMON_SET_HOSTNAME
 	mkdir -p $(TARGET_DIR)/etc
-	echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname
-	$(SED) '$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTS_LINE)' \
-		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts
+	test -f $(TARGET_DIR)/etc/hostname && \
+	        echo "$(SKELETON_INIT_COMMON_HOSTNAME)" > $(TARGET_DIR)/etc/hostname || true
+	test -f $(TARGET_DIR)/etc/hosts && \
+		$(SED) '$$a \127.0.1.1\t$(SKELETON_INIT_COMMON_HOSTS_LINE)' \
+		-e '/^127.0.1.1/d' $(TARGET_DIR)/etc/hosts || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_HOSTNAME
 endif
@@ -59,7 +61,8 @@ endif
 ifneq ($(SKELETON_INIT_COMMON_ISSUE),)
 define SKELETON_INIT_COMMON_SET_ISSUE
 	mkdir -p $(TARGET_DIR)/etc
-	echo "$(SKELETON_INIT_COMMON_ISSUE)" > $(TARGET_DIR)/etc/issue
+	test -f $(TARGET_DIR)/etc/issue && \
+		echo "$(SKELETON_INIT_COMMON_ISSUE)" > $(TARGET_DIR)/etc/issue || true
 endef
 SKELETON_INIT_COMMON_TARGET_FINALIZE_HOOKS += SKELETON_INIT_COMMON_SET_ISSUE
 endif
