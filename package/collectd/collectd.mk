@@ -14,7 +14,7 @@ COLLECTD_LICENSE_FILES = COPYING libltdl/COPYING.LIB
 
 # These require unmet dependencies, are fringe, pointless or deprecated
 COLLECTD_PLUGINS_DISABLE = \
-	amqp apple_sensors aquaero ascent barometer dbi dpdkstat email \
+	apple_sensors aquaero ascent barometer dbi dpdkstat email \
 	gmond grpc hddtemp intel_rdt ipmi java libvirt lpar lua lvm \
 	madwifi mbmon mic multimeter netapp notify_desktop numa \
 	nut onewire oracle perl pf pinba powerdns python redis routeros \
@@ -45,6 +45,7 @@ COLLECTD_CONF_OPTS += \
 	--disable-werror \
 	$(foreach p, $(COLLECTD_PLUGINS_DISABLE), --disable-$(p)) \
 	$(if $(BR2_PACKAGE_COLLECTD_AGGREGATION),--enable-aggregation,--disable-aggregation) \
+	$(if $(BR2_PACKAGE_COLLECTD_AMQP),--enable-amqp,--disable-amqp) \
 	$(if $(BR2_PACKAGE_COLLECTD_APACHE),--enable-apache,--disable-apache) \
 	$(if $(BR2_PACKAGE_COLLECTD_APCUPS),--enable-apcups,--disable-apcups) \
 	$(if $(BR2_PACKAGE_COLLECTD_BATTERY),--enable-battery,--disable-battery) \
@@ -141,6 +142,7 @@ COLLECTD_CONF_OPTS += \
 
 COLLECTD_DEPENDENCIES = \
 	host-pkgconf \
+	$(if $(BR2_PACKAGE_COLLECTD_AMQP),rabbitmq-c) \
 	$(if $(BR2_PACKAGE_COLLECTD_APACHE),libcurl) \
 	$(if $(BR2_PACKAGE_COLLECTD_BIND),libcurl libxml2) \
 	$(if $(BR2_PACKAGE_COLLECTD_CEPH),yajl) \
