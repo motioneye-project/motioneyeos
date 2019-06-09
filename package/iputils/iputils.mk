@@ -24,9 +24,9 @@ else
 IPUTILS_CONF_OPTS += -DUSE_CAP=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
+ifeq ($(BR2_PACKAGE_LIBIDN2),y)
 IPUTILS_CONF_OPTS += -DUSE_IDN=true
-IPUTILS_DEPENDENCIES += libidn
+IPUTILS_DEPENDENCIES += libidn2
 else
 IPUTILS_CONF_OPTS += -DUSE_IDN=false
 endif
