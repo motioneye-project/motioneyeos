@@ -404,6 +404,12 @@ config BR2_PACKAGE_COLLECTD_PROTOCOLS
 	help
 	  Collects information about the network protocols.
 
+config BR2_PACKAGE_COLLECTD_REDIS
+	bool "redis"
+	select BR2_PACKAGE_HIREDIS
+	help
+	  Connects to one or more instances of Redis.
+
 config BR2_PACKAGE_COLLECTD_SENSORS
 	bool "sensors"
 	select BR2_PACKAGE_LM_SENSORS
