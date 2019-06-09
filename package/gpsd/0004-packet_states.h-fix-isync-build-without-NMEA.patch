@@ -1,0 +1,37 @@
+From a6561fbf2a53972e552b1619c8711092c72c2199 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 9 Jun 2019 11:52:55 +0200
+Subject: [PATCH] packet_states.h: fix isync build without NMEA
+
+Build fails if isync is enabled without nmea because NMEA_DOLLAR is not
+defined.
+
+Fix this build failure by always defining NMEA_DOLLAR
+
+Fixes:
+ - http://autobuild.buildroot.org/results/7757ff82623eb5db8cbd9cdf69baf308fd0b0666
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://gitlab.com/gpsd/gpsd/merge_requests/11]
+---
+ packet_states.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/packet_states.h b/packet_states.h
+index 4c3a3208..0adbeb1d 100644
+--- a/packet_states.h
++++ b/packet_states.h
+@@ -3,9 +3,9 @@
+ 
+    COMMENT_BODY,	/* pound comment for a test load */
+    COMMENT_RECOGNIZED,	/* comment recognized */
++   NMEA_DOLLAR,		/* we've seen first character of NMEA leader */
+ 
+ #ifdef NMEA0183_ENABLE
+-   NMEA_DOLLAR,		/* we've seen first character of NMEA leader */
+    NMEA_BANG,		/* we've seen first character of an AIS message '!' */
+    NMEA_PUB_LEAD,	/* seen second character of NMEA G leader */
+    NMEA_VENDOR_LEAD,	/* seen second character of NMEA P leader */
+-- 
+2.20.1
+
