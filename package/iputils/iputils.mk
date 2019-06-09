@@ -52,4 +52,12 @@ endif
 # XSL Stylesheets for DocBook 5 not packaged for buildroot
 IPUTILS_CONF_OPTS += -DBUILD_MANS=false -DBUILD_HTML_MANS=false
 
+# handle permissions ourselves
+IPUTILS_CONF_OPTS += -DNO_SETCAP_OR_SUID=true
+define IPUTILS_PERMISSIONS
+	/bin/arping      f 4755 0 0 - - - - -
+	/bin/clockdiff   f 4755 0 0 - - - - -
+	/bin/ping        f 4755 0 0 - - - - -
+endef
+
 $(eval $(meson-package))
