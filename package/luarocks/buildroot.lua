@@ -400,6 +400,8 @@ function buildroot.command(flags, rockname, fsname)
    generate_mk(rockspec, fsname:lower(), licenses)
    generate_hash(rockspec, fsname:lower(), rock_file, licenses, digest)
    if has_c_files(rockspec) then
+      ok, err = fs.make_dir('support/testing/tests/package')
+      if not ok then return nil, err end
       generate_test(rockspec, fsname:lower())
    end
 
