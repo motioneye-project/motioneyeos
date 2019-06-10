@@ -20,7 +20,8 @@ You will find in output/images/ the following files:
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
-  - u-boot.imx
+  - u-boot.img
+  - SPL
   - zImage
 
 Flash the eMMC
