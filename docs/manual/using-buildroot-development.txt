@@ -109,3 +109,13 @@ WEBKITGTK_OVERRIDE_SRCDIR_RSYNC_EXCLUSIONS = \
 	--exclude WebDriverTests --exclude WebKitBuild --exclude WebKitLibraries \
 	--exclude WebKit.xcworkspace --exclude Websites --exclude Examples
 ------------------
+
+By default, Buildroot skips syncing of VCS artifacts (e.g., the *.git* and
+*.svn* directories). Some packages prefer to have these VCS directories
+available during build, for example for automatically determining a precise
+commit reference for version information. To undo this built-in filtering at a
+cost of a slower speed, add these directories back:
+
+------------------
+LINUX_OVERRIDE_SRCDIR_RSYNC_EXCLUSIONS = --include .git
+------------------
