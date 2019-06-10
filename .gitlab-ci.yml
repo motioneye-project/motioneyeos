@@ -196,6 +196,7 @@ imx6ulevk_defconfig: { extends: .defconfig }
 imx6ulpico_defconfig: { extends: .defconfig }
 imx7d-sdb_defconfig: { extends: .defconfig }
 imx7dpico_defconfig: { extends: .defconfig }
+imx8mmpico_defconfig: { extends: .defconfig }
 imx8mpico_defconfig: { extends: .defconfig }
 lego_ev3_defconfig: { extends: .defconfig }
 licheepi_zero_defconfig: { extends: .defconfig }

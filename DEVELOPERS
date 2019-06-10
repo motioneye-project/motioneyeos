@@ -1260,7 +1260,9 @@ N:	Julien Grossholtz <julien.grossholtz@openest.io>
 F:	package/paho-mqtt-c
 
 N:	Julien Olivain <juju@cotds.org>
+F:	board/technexion/imx8mmpico/
 F:	board/technexion/imx8mpico/
+F:	configs/imx8mmpico_defconfig
 F:	configs/imx8mpico_defconfig
 
 N:	Julien Viard de Galbert <julien@vdg.name>
