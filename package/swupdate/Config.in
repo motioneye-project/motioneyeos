@@ -34,6 +34,10 @@ config BR2_PACKAGE_SWUPDATE
 	    support for setting the U-Boot environment.
 	  * Select BR2_PACKAGE_ZEROMQ to add support for using a
 	    remote handler.
+	  * Select BR2_PACKAGE_LIBRSYNC to add support for using
+	    rdiff handler.
+	  * Select BR2_PACKAGE_LIBUBOOTENV to add support for setting
+	    the U-Boot environment with the new API.
 
 	  https://sbabic.github.io/swupdate
 

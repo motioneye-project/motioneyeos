@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SWUPDATE_VERSION = 2018.11
+SWUPDATE_VERSION = 2019.04
 SWUPDATE_SITE = $(call github,sbabic,swupdate,$(SWUPDATE_VERSION))
 SWUPDATE_LICENSE = GPL-2.0+ with OpenSSL exception, LGPL-2.1+, MIT
 SWUPDATE_LICENSE_FILES = Licenses/Exceptions Licenses/gpl-2.0.txt \
@@ -77,6 +77,9 @@ endif
 ifeq ($(BR2_PACKAGE_UBOOT_TOOLS),y)
 SWUPDATE_DEPENDENCIES += uboot-tools
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=y
+else ifeq ($(BR2_PACKAGE_LIBUBOOTENV),y)
+SWUPDATE_DEPENDENCIES += libubootenv
+SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=y
 else
 SWUPDATE_MAKE_ENV += HAVE_LIBUBOOTENV=n
 endif
@@ -93,6 +96,10 @@ SWUPDATE_DEPENDENCIES += zlib
 SWUPDATE_MAKE_ENV += HAVE_ZLIB=y
 else
 SWUPDATE_MAKE_ENV += HAVE_ZLIB=n
+endif
+
+ifeq ($(BR2_PACKAGE_LIBRSYNC),y)
+SWUPDATE_DEPENDENCIES += librsync
 endif
 
 SWUPDATE_BUILD_CONFIG = $(@D)/.config
