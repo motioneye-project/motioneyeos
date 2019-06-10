@@ -18,13 +18,13 @@ index 2e6defc..28e9d29 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -42,6 +42,7 @@ else
+   error('libintl.h not found')
  endif
  conf.set('ENABLE_NLS', enable_nls)
++intl_dep = cc.find_library('intl', required: false)
  if enable_nls
-+  intl_dep = cc.find_library('intl', required: false)
    conf.set_quoted('GETTEXT_PACKAGE', meson.project_name())
    subdir('po')
- endif
 @@ -356,6 +357,7 @@ ncmpc = executable('ncmpc',
      boost_dep,
      pcre_dep,
