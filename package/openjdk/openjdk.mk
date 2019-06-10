@@ -109,7 +109,7 @@ endef
 # Make -jn is unsupported. Instead, set the "--with-jobs=" configure option,
 # and use $(MAKE1).
 define OPENJDK_BUILD_CMDS
-	$(MAKE1) -C $(@D) legacy-jre-image
+	$(TARGET_MAKE_ENV) $(MAKE1) -C $(@D) legacy-jre-image
 endef
 
 # Calling make install always builds and installs the JDK instead of the JRE,
