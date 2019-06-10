@@ -402,7 +402,7 @@ the problem is complex, it is OK to add more paragraphs. All paragraphs
 should be wrapped at 72 characters.
 
 A paragraph that explains the root cause of the problem. Again, more
-than on paragraph is OK.
+than one paragraph is OK.
 
 Finally, one or more paragraphs that explain how the problem is solved.
 Don't hesitate to explain complex solutions in detail.
