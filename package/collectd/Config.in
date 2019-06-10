@@ -289,6 +289,19 @@ config BR2_PACKAGE_COLLECTD_LOAD
 	help
 	  Collects the system load.
 
+config BR2_PACKAGE_COLLECTD_LVM
+	bool "lvm"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # lvm2 app library
+	select BR2_PACKAGE_LVM2
+	select BR2_PACKAGE_LVM2_APP_LIBRARY
+	help
+	  Collects the size of logical volumes (LV) and free space
+	  inside a volume group (VG) from Linux' Logical Volume Manager
+	  (LVM).
+
+comment "lvm needs a glibc or uClibc toolchain"
+	depends on BR2_TOOLCHAIN_USES_MUSL
+
 config BR2_PACKAGE_COLLECTD_MD
 	bool "md"
 	help
