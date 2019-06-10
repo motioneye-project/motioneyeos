@@ -549,6 +549,21 @@ config BR2_PACKAGE_COLLECTD_GRAPHITE
 	  Writes data collected to Carbon (Graphite's) storage API.
 	  http://graphite.wikidot.com/start
 
+config BR2_PACKAGE_COLLECTD_GRPC
+	bool "grpc"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_ATOMIC # grpc
+	depends on BR2_INSTALL_LIBSTDCPP # grpc -> protobuf
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS # grpc -> protobuf
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # grpc -> protobuf
+	select BR2_PACKAGE_GRPC
+	help
+	  Send/receive values using the gRPC protocol.
+
+comment "grpc needs a toolchain w/ C++, gcc >= 4.8"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 || BR2_TOOLCHAIN_HAS_ATOMIC
+	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+	depends on BR2_PACKAGE_PROTOBUF_ARCH_SUPPORTS
+
 config BR2_PACKAGE_COLLECTD_MQTT
 	bool "mqtt"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # mosquitto
