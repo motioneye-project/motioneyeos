@@ -359,6 +359,13 @@ config BR2_PACKAGE_COLLECTD_OLSRD
 	help
 	  Reads information about meshed networks from olsrd.
 
+config BR2_PACKAGE_COLLECTD_ONEWIRE
+	bool "onewire"
+	select BR2_PACKAGE_OWFS
+	help
+	  Collects temperature information from sensors connected over
+	  the OneWire bus.
+
 config BR2_PACKAGE_COLLECTD_OPENLDAP
 	bool "openldap"
 	depends on BR2_USE_WCHAR
