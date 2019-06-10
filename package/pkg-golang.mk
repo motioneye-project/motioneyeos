@@ -58,10 +58,6 @@ define inner-golang-package
 
 $(2)_WORKSPACE ?= _gopath
 
-ifeq ($(BR2_STATIC_LIBS),y)
-$(2)_LDFLAGS += -extldflags '-static'
-endif
-
 $(2)_BUILD_OPTS += \
 	-ldflags "$$($(2)_LDFLAGS)" \
 	-tags "$$($(2)_TAGS)" \
@@ -106,6 +102,11 @@ endif
 # file.
 ifndef $(2)_BUILD_CMDS
 ifeq ($(4),target)
+
+ifeq ($(BR2_STATIC_LIBS),y)
+$(2)_LDFLAGS += -extldflags '-static'
+endif
+
 # Build package for target
 define $(2)_BUILD_CMDS
 	$$(foreach d,$$($(2)_BUILD_TARGETS),\
