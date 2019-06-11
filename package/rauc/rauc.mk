@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RAUC_VERSION = 1.0
+RAUC_VERSION = 1.1
 RAUC_SITE = https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)
 RAUC_SOURCE = rauc-$(RAUC_VERSION).tar.xz
 RAUC_LICENSE = LGPL-2.1
