@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LUA_CQUEUES_VERSION = rel-20161215
-LUA_CQUEUES_SITE = $(call github,wahern,cqueues,$(LUA_CQUEUES_VERSION))
+LUA_CQUEUES_VERSION = 20161215
+LUA_CQUEUES_SITE = $(call github,wahern,cqueues,rel-$(LUA_CQUEUES_VERSION))
 LUA_CQUEUES_LICENSE = MIT
 LUA_CQUEUES_LICENSE_FILES = LICENSE
 LUA_CQUEUES_DEPENDENCIES = luainterpreter openssl host-m4
