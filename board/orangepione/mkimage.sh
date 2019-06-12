@@ -9,5 +9,3 @@ export UBOOT_BIN=${IMG_DIR}/u-boot-sunxi-with-spl.bin
 export UBOOT_SEEK=16
 export BOOT_START=20
 source ${COMMON_DIR}/mkimage.sh
-
-
