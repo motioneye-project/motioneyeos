@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-JQUERY_KEYBOARD_VERSION = v1.18.12
-JQUERY_KEYBOARD_SITE = $(call github,Mottie,Keyboard,$(JQUERY_KEYBOARD_VERSION))
+JQUERY_KEYBOARD_VERSION = 1.18.12
+JQUERY_KEYBOARD_SITE = $(call github,Mottie,Keyboard,v$(JQUERY_KEYBOARD_VERSION))
 JQUERY_KEYBOARD_LICENSE = MIT WTFPL
 JQUERY_KEYBOARD_LICENSE_FILES = README.markdown
 

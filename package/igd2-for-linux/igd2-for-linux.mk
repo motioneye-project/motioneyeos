@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IGD2_FOR_LINUX_VERSION = v1.2
-IGD2_FOR_LINUX_SITE = $(call github,ffontaine,igd2-for-linux,$(IGD2_FOR_LINUX_VERSION))
+IGD2_FOR_LINUX_VERSION = 1.2
+IGD2_FOR_LINUX_SITE = $(call github,ffontaine,igd2-for-linux,v$(IGD2_FOR_LINUX_VERSION))
 
 IGD2_FOR_LINUX_LICENSE = GPL-2.0
 IGD2_FOR_LINUX_LICENSE_FILES = linuxigd2/doc/LICENSE

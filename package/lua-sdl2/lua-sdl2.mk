@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LUA_SDL2_VERSION = v2.0.5-6.0
-LUA_SDL2_SITE = $(call github,Tangent128,luasdl2,$(LUA_SDL2_VERSION))
+LUA_SDL2_VERSION = 2.0.5-6.0
+LUA_SDL2_SITE = $(call github,Tangent128,luasdl2,v$(LUA_SDL2_VERSION))
 LUA_SDL2_LICENSE = ISC
 LUA_SDL2_LICENSE_FILES = LICENSE
 LUA_SDL2_DEPENDENCIES = luainterpreter sdl2

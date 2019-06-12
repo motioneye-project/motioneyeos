@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBDCADEC_VERSION = v0.2.0
-LIBDCADEC_SITE = $(call github,foo86,dcadec,$(LIBDCADEC_VERSION))
+LIBDCADEC_VERSION = 0.2.0
+LIBDCADEC_SITE = $(call github,foo86,dcadec,v$(LIBDCADEC_VERSION))
 LIBDCADEC_LICENSE = LGPL-2.1+
 LIBDCADEC_LICENSE_FILES = COPYING.LGPLv2.1
 LIBDCADEC_INSTALL_STAGING = YES

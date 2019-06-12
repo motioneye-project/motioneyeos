@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NILFS_UTILS_VERSION = v2.2.7
-NILFS_UTILS_SITE = $(call github,nilfs-dev,nilfs-utils,$(NILFS_UTILS_VERSION))
+NILFS_UTILS_VERSION = 2.2.7
+NILFS_UTILS_SITE = $(call github,nilfs-dev,nilfs-utils,v$(NILFS_UTILS_VERSION))
 NILFS_UTILS_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 NILFS_UTILS_LICENSE_FILES = COPYING
 

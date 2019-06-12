@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HWDATA_VERSION = v0.308
-HWDATA_SITE = $(call github,vcrhonek,hwdata,$(HWDATA_VERSION))
+HWDATA_VERSION = 0.308
+HWDATA_SITE = $(call github,vcrhonek,hwdata,v$(HWDATA_VERSION))
 HWDATA_LICENSE = GPL-2.0+, BSD-3-Clause, XFree86 1.0
 HWDATA_LICENSE_FILES = COPYING LICENSE
 

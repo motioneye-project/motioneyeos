@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBPAM_TACPLUS_VERSION = v1.5.0-beta.2
-LIBPAM_TACPLUS_SITE = $(call github,jeroennijhof,pam_tacplus,$(LIBPAM_TACPLUS_VERSION))
+LIBPAM_TACPLUS_VERSION = 1.5.0-beta.2
+LIBPAM_TACPLUS_SITE = $(call github,jeroennijhof,pam_tacplus,v$(LIBPAM_TACPLUS_VERSION))
 LIBPAM_TACPLUS_LICENSE = GPL-2.0+
 LIBPAM_TACPLUS_LICENSE_FILES = COPYING
 LIBPAM_TACPLUS_DEPENDENCIES = linux-pam

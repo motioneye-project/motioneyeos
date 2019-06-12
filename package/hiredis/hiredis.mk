@@ -5,8 +5,8 @@
 ################################################################################
 
 HIREDIS_VERSION_MAJOR = 0.14
-HIREDIS_VERSION = v$(HIREDIS_VERSION_MAJOR).0
-HIREDIS_SITE = $(call github,redis,hiredis,$(HIREDIS_VERSION))
+HIREDIS_VERSION = $(HIREDIS_VERSION_MAJOR).0
+HIREDIS_SITE = $(call github,redis,hiredis,v$(HIREDIS_VERSION))
 HIREDIS_LICENSE = BSD-3-Clause
 HIREDIS_LICENSE_FILES = COPYING
 HIREDIS_INSTALL_STAGING = YES

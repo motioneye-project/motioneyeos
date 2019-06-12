@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-WAFFLE_VERSION = v1.5.2
-WAFFLE_SITE = $(call github,waffle-gl,waffle,$(WAFFLE_VERSION))
+WAFFLE_VERSION = 1.5.2
+WAFFLE_SITE = $(call github,waffle-gl,waffle,v$(WAFFLE_VERSION))
 WAFFLE_INSTALL_STAGING = YES
 WAFFLE_LICENSE = BSD-2-Clause
 WAFFLE_LICENSE_FILES = LICENSE.txt

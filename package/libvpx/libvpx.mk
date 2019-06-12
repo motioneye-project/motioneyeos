@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBVPX_VERSION = v1.8.0
-LIBVPX_SITE = $(call github,webmproject,libvpx,$(LIBVPX_VERSION))
+LIBVPX_VERSION = 1.8.0
+LIBVPX_SITE = $(call github,webmproject,libvpx,v$(LIBVPX_VERSION))
 LIBVPX_LICENSE = BSD-3-Clause
 LIBVPX_LICENSE_FILES = LICENSE PATENTS
 LIBVPX_INSTALL_STAGING = YES

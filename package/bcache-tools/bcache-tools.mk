@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BCACHE_TOOLS_VERSION = v1.0.8
-BCACHE_TOOLS_SITE = $(call github,g2p,bcache-tools,$(BCACHE_TOOLS_VERSION))
+BCACHE_TOOLS_VERSION = 1.0.8
+BCACHE_TOOLS_SITE = $(call github,g2p,bcache-tools,v$(BCACHE_TOOLS_VERSION))
 BCACHE_TOOLS_LICENSE = GPL-2.0
 BCACHE_TOOLS_LICENSE_FILES = COPYING
 BCACHE_TOOLS_DEPENDENCIES = host-pkgconf util-linux

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ANGULAR_WEBSOCKET_VERSION = v2.0.0
-ANGULAR_WEBSOCKET_SITE = $(call github,AngularClass,angular-websocket,$(ANGULAR_WEBSOCKET_VERSION))
+ANGULAR_WEBSOCKET_VERSION = 2.0.0
+ANGULAR_WEBSOCKET_SITE = $(call github,AngularClass,angular-websocket,v$(ANGULAR_WEBSOCKET_VERSION))
 ANGULAR_WEBSOCKET_LICENSE = MIT
 ANGULAR_WEBSOCKET_LICENSE_FILES = LICENSE
 

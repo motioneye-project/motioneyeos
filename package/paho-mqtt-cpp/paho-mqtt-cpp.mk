@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PAHO_MQTT_CPP_VERSION = v1.0.0
-PAHO_MQTT_CPP_SITE = $(call github,eclipse,paho.mqtt.cpp,$(PAHO_MQTT_CPP_VERSION))
+PAHO_MQTT_CPP_VERSION = 1.0.0
+PAHO_MQTT_CPP_SITE = $(call github,eclipse,paho.mqtt.cpp,v$(PAHO_MQTT_CPP_VERSION))
 PAHO_MQTT_CPP_LICENSE = EPL-1.0 or BSD-3-Clause
 PAHO_MQTT_CPP_LICENSE_FILES = epl-v10 edl-v10
 PAHO_MQTT_CPP_INSTALL_STAGING = YES

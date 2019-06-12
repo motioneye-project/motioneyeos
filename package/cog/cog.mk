@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-COG_VERSION = v0.3.0
-COG_SITE = $(call github,Igalia,cog,$(COG_VERSION))
+COG_VERSION = 0.3.0
+COG_SITE = $(call github,Igalia,cog,v$(COG_VERSION))
 COG_INSTALL_STAGING = YES
 COG_DEPENDENCIES = dbus wpewebkit wpebackend-fdo
 COG_LICENSE = MIT

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GERBERA_VERSION = v1.3.1
-GERBERA_SITE = $(call github,gerbera,gerbera,$(GERBERA_VERSION))
+GERBERA_VERSION = 1.3.1
+GERBERA_SITE = $(call github,gerbera,gerbera,v$(GERBERA_VERSION))
 GERBERA_LICENSE = GPL-2.0
 GERBERA_LICENSE_FILES = LICENSE.md
 GERBERA_DEPENDENCIES = \

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-FAKETIME_VERSION = v0.9.6
-FAKETIME_SITE = $(call github,wolfcw,libfaketime,$(FAKETIME_VERSION))
+FAKETIME_VERSION = 0.9.6
+FAKETIME_SITE = $(call github,wolfcw,libfaketime,v$(FAKETIME_VERSION))
 FAKETIME_LICENSE = GPL-2.0
 FAKETIME_LICENSE_FILES = COPYING
 

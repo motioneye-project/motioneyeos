@@ -6,8 +6,8 @@
 
 # When upgrading the version, be sure to also upgrade python-rtslib-fb
 # and python-configshell-fb at the same time.
-TARGETCLI_FB_VERSION = v2.1.fb41
-TARGETCLI_FB_SITE = $(call github,open-iscsi,targetcli-fb,$(TARGETCLI_FB_VERSION))
+TARGETCLI_FB_VERSION = 2.1.fb41
+TARGETCLI_FB_SITE = $(call github,open-iscsi,targetcli-fb,v$(TARGETCLI_FB_VERSION))
 TARGETCLI_FB_LICENSE = Apache-2.0
 TARGETCLI_FB_LICENSE_FILES = COPYING
 TARGETCLI_FB_SETUP_TYPE = setuptools

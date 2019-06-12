@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-VDR_PLUGIN_VNSISERVER_VERSION = v1.8.0
-VDR_PLUGIN_VNSISERVER_SITE = $(call github,FernetMenta,vdr-plugin-vnsiserver,$(VDR_PLUGIN_VNSISERVER_VERSION))
+VDR_PLUGIN_VNSISERVER_VERSION = 1.8.0
+VDR_PLUGIN_VNSISERVER_SITE = $(call github,FernetMenta,vdr-plugin-vnsiserver,v$(VDR_PLUGIN_VNSISERVER_VERSION))
 VDR_PLUGIN_VNSISERVER_LICENSE = GPL-2.0+
 VDR_PLUGIN_VNSISERVER_LICENSE_FILES = COPYING
 VDR_PLUGIN_VNSISERVER_DEPENDENCIES = vdr

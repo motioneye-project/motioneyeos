@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-IRQBALANCE_VERSION = v1.5.0
-IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,$(IRQBALANCE_VERSION))
+IRQBALANCE_VERSION = 1.5.0
+IRQBALANCE_SITE = $(call github,irqbalance,irqbalance,v$(IRQBALANCE_VERSION))
 IRQBALANCE_LICENSE = GPL-2.0
 IRQBALANCE_LICENSE_FILES = COPYING
 IRQBALANCE_DEPENDENCIES = host-pkgconf libglib2

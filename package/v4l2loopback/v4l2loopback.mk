@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-V4L2LOOPBACK_VERSION = v0.12.2
-V4L2LOOPBACK_SITE = $(call github,umlaeute,v4l2loopback,$(V4L2LOOPBACK_VERSION))
+V4L2LOOPBACK_VERSION = 0.12.2
+V4L2LOOPBACK_SITE = $(call github,umlaeute,v4l2loopback,v$(V4L2LOOPBACK_VERSION))
 V4L2LOOPBACK_LICENSE = GPL-2.0+
 V4L2LOOPBACK_LICENSE_FILES = COPYING
 

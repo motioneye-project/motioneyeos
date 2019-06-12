@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-VMTOUCH_VERSION = v1.3.1
-VMTOUCH_SITE = $(call github,hoytech,vmtouch,$(VMTOUCH_VERSION))
+VMTOUCH_VERSION = 1.3.1
+VMTOUCH_SITE = $(call github,hoytech,vmtouch,v$(VMTOUCH_VERSION))
 VMTOUCH_LICENSE = BSD-3-Clause
 VMTOUCH_LICENSE_FILES = LICENSE
 

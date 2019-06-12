@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CPPZMQ_VERSION = v4.3.0
-CPPZMQ_SITE = $(call github,zeromq,cppzmq,$(CPPZMQ_VERSION))
+CPPZMQ_VERSION = 4.3.0
+CPPZMQ_SITE = $(call github,zeromq,cppzmq,v$(CPPZMQ_VERSION))
 CPPZMQ_INSTALL_STAGING = YES
 CPPZMQ_DEPENDENCIES = host-pkgconf zeromq
 CPPZMQ_LICENSE = MIT

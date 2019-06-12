@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SHELLINABOX_VERSION = v2.20
-SHELLINABOX_SITE = $(call github,shellinabox,shellinabox,$(SHELLINABOX_VERSION))
+SHELLINABOX_VERSION = 2.20
+SHELLINABOX_SITE = $(call github,shellinabox,shellinabox,v$(SHELLINABOX_VERSION))
 SHELLINABOX_LICENSE = GPL-2.0 with OpenSSL exception
 SHELLINABOX_LICENSE_FILES = COPYING GPL-2
 

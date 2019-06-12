@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PIGZ_VERSION = v2.4
-PIGZ_SITE = $(call github,madler,pigz,$(PIGZ_VERSION))
+PIGZ_VERSION = 2.4
+PIGZ_SITE = $(call github,madler,pigz,v$(PIGZ_VERSION))
 PIGZ_DEPENDENCIES = zlib
 PIGZ_LICENSE = Zlib
 PIGZ_LICENSE_FILES = README

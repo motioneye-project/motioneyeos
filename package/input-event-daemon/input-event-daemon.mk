@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-INPUT_EVENT_DAEMON_VERSION = v0.1.3
-INPUT_EVENT_DAEMON_SITE = $(call github,gandro,input-event-daemon,$(INPUT_EVENT_DAEMON_VERSION))
+INPUT_EVENT_DAEMON_VERSION = 0.1.3
+INPUT_EVENT_DAEMON_SITE = $(call github,gandro,input-event-daemon,v$(INPUT_EVENT_DAEMON_VERSION))
 INPUT_EVENT_DAEMON_LICENSE = input-event-daemon license
 INPUT_EVENT_DAEMON_LICENSE_FILES = README
 

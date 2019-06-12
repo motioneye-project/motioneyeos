@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LJSYSCALL_VERSION = v0.12
-LJSYSCALL_SITE = $(call github,justincormack,ljsyscall,$(LJSYSCALL_VERSION))
+LJSYSCALL_VERSION = 0.12
+LJSYSCALL_SITE = $(call github,justincormack,ljsyscall,v$(LJSYSCALL_VERSION))
 LJSYSCALL_LICENSE = MIT
 LJSYSCALL_LICENSE_FILES = COPYRIGHT
 

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LM_SENSORS_VERSION = V3-5-0
-LM_SENSORS_SITE = $(call github,lm-sensors,lm-sensors,$(LM_SENSORS_VERSION))
+LM_SENSORS_VERSION = 3-5-0
+LM_SENSORS_SITE = $(call github,lm-sensors,lm-sensors,V$(LM_SENSORS_VERSION))
 LM_SENSORS_INSTALL_STAGING = YES
 LM_SENSORS_DEPENDENCIES = host-bison host-flex
 LM_SENSORS_LICENSE = LGPL-2.1+ (libsensors), GPL-2.0+ (programs)

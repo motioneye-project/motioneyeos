@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LET_ME_CREATE_VERSION = v1.5.2
-LET_ME_CREATE_SITE = $(call github,CreatorDev,LetMeCreate,$(LET_ME_CREATE_VERSION))
+LET_ME_CREATE_VERSION = 1.5.2
+LET_ME_CREATE_SITE = $(call github,CreatorDev,LetMeCreate,v$(LET_ME_CREATE_VERSION))
 LET_ME_CREATE_INSTALL_STAGING = YES
 LET_ME_CREATE_LICENSE = BSD-3-Clause
 LET_ME_CREATE_LICENSE_FILES = LICENSE

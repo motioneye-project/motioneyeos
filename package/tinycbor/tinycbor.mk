@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-TINYCBOR_VERSION = v0.5.2
-TINYCBOR_SITE = $(call github,intel,tinycbor,$(TINYCBOR_VERSION))
+TINYCBOR_VERSION = 0.5.2
+TINYCBOR_SITE = $(call github,intel,tinycbor,v$(TINYCBOR_VERSION))
 TINYCBOR_LICENSE = MIT
 TINYCBOR_LICENSE_FILES = LICENSE
 

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-NINJA_VERSION = v1.9.0
-NINJA_SITE = $(call github,ninja-build,ninja,$(NINJA_VERSION))
+NINJA_VERSION = 1.9.0
+NINJA_SITE = $(call github,ninja-build,ninja,v$(NINJA_VERSION))
 NINJA_LICENSE = Apache-2.0
 NINJA_LICENSE_FILES = COPYING
 

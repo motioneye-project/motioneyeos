@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-VIM_VERSION = v8.1.0133
-VIM_SITE = $(call github,vim,vim,$(VIM_VERSION))
+VIM_VERSION = 8.1.0133
+VIM_SITE = $(call github,vim,vim,v$(VIM_VERSION))
 VIM_DEPENDENCIES = ncurses $(TARGET_NLS_DEPENDENCIES)
 VIM_SUBDIR = src
 VIM_CONF_ENV = \

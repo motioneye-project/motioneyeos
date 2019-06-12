@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GLOG_VERSION = v0.3.5
-GLOG_SITE = $(call github,google,glog,$(GLOG_VERSION))
+GLOG_VERSION = 0.3.5
+GLOG_SITE = $(call github,google,glog,v$(GLOG_VERSION))
 GLOG_INSTALL_STAGING = YES
 GLOG_LICENSE = BSD-3-Clause
 GLOG_LICENSE_FILES = COPYING

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBOPENH264_VERSION = v1.8.0
-LIBOPENH264_SITE = $(call github,cisco,openh264,$(LIBOPENH264_VERSION))
+LIBOPENH264_VERSION = 1.8.0
+LIBOPENH264_SITE = $(call github,cisco,openh264,v$(LIBOPENH264_VERSION))
 LIBOPENH264_LICENSE = BSD-2-Clause
 LIBOPENH264_LICENSE_FILES = LICENSE
 LIBOPENH264_INSTALL_STAGING = YES

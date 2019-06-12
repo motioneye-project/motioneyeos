@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XDOTOOL_VERSION = v3.20150503.1
-XDOTOOL_SITE = $(call github,jordansissel,xdotool,$(XDOTOOL_VERSION))
+XDOTOOL_VERSION = 3.20150503.1
+XDOTOOL_SITE = $(call github,jordansissel,xdotool,v$(XDOTOOL_VERSION))
 XDOTOOL_LICENSE = BSD-3-Clause
 XDOTOOL_LICENSE_FILES = COPYRIGHT
 XDOTOOL_DEPENDENCIES = xlib_libXtst xlib_libXinerama libxkbcommon xlib_libX11

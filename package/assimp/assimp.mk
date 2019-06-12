@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-ASSIMP_VERSION = v3.2
-ASSIMP_SITE = $(call github,assimp,assimp,$(ASSIMP_VERSION))
+ASSIMP_VERSION = 3.2
+ASSIMP_SITE = $(call github,assimp,assimp,v$(ASSIMP_VERSION))
 ASSIMP_LICENSE = BSD-3-Clause
 ASSIMP_LICENSE_FILES = LICENSE
 ASSIMP_DEPENDENCIES = zlib

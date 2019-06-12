@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-DUKTAPE_VERSION = v2.3.0
-DUKTAPE_SITE = $(call github,svaarala,duktape-releases,$(DUKTAPE_VERSION))
+DUKTAPE_VERSION = 2.3.0
+DUKTAPE_SITE = $(call github,svaarala,duktape-releases,v$(DUKTAPE_VERSION))
 DUKTAPE_LICENSE = MIT
 DUKTAPE_LICENSE_FILES = LICENSE.txt
 DUKTAPE_INSTALL_STAGING = YES

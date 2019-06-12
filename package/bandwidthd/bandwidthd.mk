@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BANDWIDTHD_VERSION = v2.0.1-auto-r11
-BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,$(BANDWIDTHD_VERSION))
+BANDWIDTHD_VERSION = 2.0.1-auto-r11
+BANDWIDTHD_SITE = $(call github,nroach44,bandwidthd,v$(BANDWIDTHD_VERSION))
 
 # Specified as "any version of the GPL that is current as of your
 # download" by upstream.

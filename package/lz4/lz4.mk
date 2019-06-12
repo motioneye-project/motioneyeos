@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LZ4_VERSION = v1.8.3
-LZ4_SITE = $(call github,lz4,lz4,$(LZ4_VERSION))
+LZ4_VERSION = 1.8.3
+LZ4_SITE = $(call github,lz4,lz4,v$(LZ4_VERSION))
 LZ4_INSTALL_STAGING = YES
 LZ4_LICENSE = BSD-2-Clause (library), GPL-2.0+ (programs)
 LZ4_LICENSE_FILES = lib/LICENSE programs/COPYING

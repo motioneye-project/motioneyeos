@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MINI_SNMPD_VERSION = v1.4
-MINI_SNMPD_SITE = $(call github,troglobit,mini-snmpd,$(MINI_SNMPD_VERSION))
+MINI_SNMPD_VERSION = 1.4
+MINI_SNMPD_SITE = $(call github,troglobit,mini-snmpd,v$(MINI_SNMPD_VERSION))
 MINI_SNMPD_LICENSE = GPL-2.0
 MINI_SNMPD_LICENSE_FILES = COPYING
 MINI_SNMPD_AUTORECONF = YES
