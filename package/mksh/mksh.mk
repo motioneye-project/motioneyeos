@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-MKSH_VERSION = R55
-MKSH_SOURCE = mksh-$(MKSH_VERSION).tgz
+MKSH_VERSION = 55
+MKSH_SOURCE = mksh-R$(MKSH_VERSION).tgz
 MKSH_SITE = https://www.mirbsd.org/MirOS/dist/mir/mksh
 # For MirOS License see https://www.mirbsd.org/TaC-mksh.txt
 MKSH_LICENSE = MirOS, ISC
