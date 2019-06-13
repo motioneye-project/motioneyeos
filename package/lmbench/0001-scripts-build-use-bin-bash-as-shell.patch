@@ -1,0 +1,28 @@
+From 02a538c2b4b54b41d23dbd7668714ea4d2016131 Mon Sep 17 00:00:00 2001
+From: Markus Mayer <mmayer@broadcom.com>
+Date: Thu, 13 Jun 2019 12:27:04 -0700
+Subject: [PATCH] scripts/build: use /bin/bash as shell
+
+scripts/build makes use of the "+=" operator which is not supported by
+/bin/sh. We switch to /bin/bash in order to avoid errors of the form
+
+    ../scripts/build: 21: ../scripts/build: LDLIBS+= -lm: not found
+
+Signed-off-by: Markus Mayer <mmayer@broadcom.com>
+---
+ scripts/build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/scripts/build b/scripts/build
+index 34a1371d0056..60b755cd2320 100755
+--- a/scripts/build
++++ b/scripts/build
+@@ -1,4 +1,4 @@
+-#!/bin/sh
++#!/bin/bash
+ 
+ CC=${CC-`../scripts/compiler`}
+ MAKE=${MAKE-`../scripts/make`}
+-- 
+2.17.1
+
