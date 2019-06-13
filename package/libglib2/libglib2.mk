@@ -85,13 +85,14 @@ endef
 
 LIBGLIB2_POST_INSTALL_TARGET_HOOKS += LIBGLIB2_REMOVE_DEV_FILES
 
-# Newer versions of libglib2 prefix glib-genmarshal, gobject-query, and
-# glib-mkenums with ${bindir}. Unfortunately, this will resolve to the host
-# systems /bin/ directory, which will cause compilation issues if the host does
-# not have these programs. By removing the ${bindir}/ prefix, these programs
-# are resolved in PATH instead.
+# Newer versions of libglib2 prefix glib-genmarshal, gobject-query,
+# glib-mkenums, glib_compile_schemas, glib_compile_resources and gdbus-codegen
+# with ${bindir}. Unfortunately, this will resolve to the host systems /bin/
+# directory, which will cause compilation issues if the host does not have these
+# programs. By removing the ${bindir}/ prefix, these programs are resolved in
+# PATH instead.
 define LIBGLIB2_REMOVE_BINDIR_PREFIX_FROM_PC_FILE
-	$(SED) 's%$${bindir}/%%g' $(STAGING_DIR)/usr/lib/pkgconfig/glib-2.0.pc
+	$(SED) 's%$${bindir}/%%g' $(addprefix $(STAGING_DIR)/usr/lib/pkgconfig/, glib-2.0.pc gio-2.0.pc)
 endef
 LIBGLIB2_POST_INSTALL_TARGET_HOOKS += LIBGLIB2_REMOVE_BINDIR_PREFIX_FROM_PC_FILE
 
