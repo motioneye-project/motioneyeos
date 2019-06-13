@@ -178,6 +178,12 @@ else
 SYSTEMD_CONF_OPTS += -Dmicrohttpd=false -Dqrencode=false
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD_JOURNAL_REMOTE),y)
+SYSTEMD_CONF_OPTS += -Dremote=true
+else
+SYSTEMD_CONF_OPTS += -Dremote=false
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
 SYSTEMD_DEPENDENCIES += libselinux
 SYSTEMD_CONF_OPTS += -Dselinux=true
