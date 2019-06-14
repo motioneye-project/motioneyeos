@@ -20,6 +20,10 @@ SNORT_CONF_OPTS = \
 	--with-libpcap-includes=$(STAGING_DIR)/usr/include/pcap \
 	--disable-static-daq
 
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+SNORT_CFLAGS += -O0
+endif
+
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 SNORT_DEPENDENCIES += libtirpc host-pkgconf
 SNORT_CFLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`
