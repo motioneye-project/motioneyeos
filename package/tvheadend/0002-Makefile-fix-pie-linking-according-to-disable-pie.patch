@@ -1,0 +1,34 @@
+From 5cbf08213222cb507d365e6cbda87277f0b8f31e Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@micronovasrl.com>
+Date: Fri, 14 Jun 2019 14:25:08 +0200
+Subject: [PATCH] Makefile: fix -pie linking according to --disable-pie
+
+Only compilation follows './configure --disable-pie', linking instead
+doesn't, because '-pie' flag is passed to LDFLAGS uncoditionally.
+
+So add '-pie' flag only if CONFIG_PIE=yes.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ Makefile | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 41783b546..4e5a947a3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -62,7 +62,10 @@ LDFLAGS += -ldl -lm
+ else
+ LDFLAGS += -ldl -lpthread -lm
+ endif
+-LDFLAGS += -pie -Wl,-z,now
++ifeq ($(CONFIG_PIE),yes)
++LDFLAGS += -pie
++endif
++LDFLAGS += -Wl,-z,now
+ ifeq ($(CONFIG_LIBICONV),yes)
+ LDFLAGS += -liconv
+ endif
+-- 
+2.17.1
+

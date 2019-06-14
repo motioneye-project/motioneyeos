@@ -94,6 +94,10 @@ else
 TVHEADEND_CONF_OPTS += --disable-pcre
 endif
 
+ifeq ($(BR2_TOOLCHAIN_SUPPORTS_PIE),)
+TVHEADEND_CONF_OPTS += --disable-pie
+endif
+
 TVHEADEND_DEPENDENCIES += dtv-scan-tables
 
 # The tvheadend build system expects the transponder data to be present inside
