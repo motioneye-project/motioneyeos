@@ -1,8 +1,6 @@
 config BR2_PACKAGE_HAPROXY_ARCH_SUPPORTS
 	bool
 	default y
-	# internal compiler error: in do_output_reload, at reload1.c:7978
-	depends on !BR2_microblaze
 	# src/proto_http.c:6330:1: internal compiler error: Segmentation fault
 	depends on !BR2_nios2
 	# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=60040
