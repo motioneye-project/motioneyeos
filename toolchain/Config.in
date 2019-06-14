@@ -145,6 +145,14 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_85862
 	default y if BR2_microblaze
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=90620
+# ICE: in do_output_reload, at reload1.c:7978 on microblaze.
+# It's been fixed on Gcc 8.x but reappeared on Gcc 9.x
+config BR2_TOOLCHAIN_HAS_GCC_BUG_90620
+	bool
+	default y if BR2_microblaze
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_8 || BR2_TOOLCHAIN_GCC_AT_LEAST_9
+
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
 
