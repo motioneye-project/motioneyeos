@@ -15,6 +15,7 @@ PUGIXML_INSTALL_STAGING = YES
 # force-enable this option to support older gcc versions. See also:
 # https://gcc.gnu.org/onlinedocs/gcc/Long-Long.html
 PUGIXML_BUILD_DEFINES += PUGIXML_HAS_LONG_LONG
+HOST_PUGIXML_BUILD_DEFINES += PUGIXML_HAS_LONG_LONG
 
 ifeq ($(BR2_PACKAGE_PUGIXML_XPATH_SUPPORT),)
 PUGIXML_BUILD_DEFINES += PUGIXML_NO_XPATH
@@ -30,4 +31,9 @@ ifdef PUGIXML_BUILD_DEFINES
 PUGIXML_CONF_OPTS += -DBUILD_DEFINES="$(subst $(space),;,$(PUGIXML_BUILD_DEFINES))"
 endif
 
+HOST_PUGIXML_CONF_OPTS += \
+	-DBUILD_PKGCONFIG=ON \
+	-DBUILD_DEFINES="$(subst $(space),;,$(HOST_PUGIXML_BUILD_DEFINES))"
+
 $(eval $(cmake-package))
+$(eval $(host-cmake-package))
