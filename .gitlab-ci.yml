@@ -300,6 +300,7 @@ snps_archs38_hsdk_defconfig: { extends: .defconfig }
 snps_archs38_vdk_defconfig: { extends: .defconfig }
 socrates_cyclone5_defconfig: { extends: .defconfig }
 solidrun_clearfog_defconfig: { extends: .defconfig }
+solidrun_clearfog_gt_8k_defconfig: { extends: .defconfig }
 solidrun_macchiatobin_mainline_defconfig: { extends: .defconfig }
 solidrun_macchiatobin_marvell_defconfig: { extends: .defconfig }
 stm32f429_disco_defconfig: { extends: .defconfig }
