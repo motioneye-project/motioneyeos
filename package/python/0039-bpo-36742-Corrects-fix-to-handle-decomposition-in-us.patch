@@ -1,0 +1,67 @@
+From f61599b050c621386a3fc6bc480359e2d3bb93de Mon Sep 17 00:00:00 2001
+From: Steve Dower <steve.dower@python.org>
+Date: Tue, 4 Jun 2019 09:40:16 -0700
+Subject: [PATCH] bpo-36742: Corrects fix to handle decomposition in usernames
+ (GH-13812)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Lib/test/test_urlparse.py | 13 +++++++------
+ Lib/urlparse.py           | 12 ++++++------
+ 2 files changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/Lib/test/test_urlparse.py b/Lib/test/test_urlparse.py
+index 6fd1071bf7..857ed96d92 100644
+--- a/Lib/test/test_urlparse.py
++++ b/Lib/test/test_urlparse.py
+@@ -648,12 +648,13 @@ class UrlParseTestCase(unittest.TestCase):
+             urlparse.urlsplit(u'http://\u30d5\u309a\ufe1380')
+ 
+         for scheme in [u"http", u"https", u"ftp"]:
+-            for c in denorm_chars:
+-                url = u"{}://netloc{}false.netloc/path".format(scheme, c)
+-                if test_support.verbose:
+-                    print "Checking %r" % url
+-                with self.assertRaises(ValueError):
+-                    urlparse.urlsplit(url)
++            for netloc in [u"netloc{}false.netloc", u"n{}user@netloc"]:
++                for c in denorm_chars:
++                    url = u"{}://{}/path".format(scheme, netloc.format(c))
++                    if test_support.verbose:
++                        print "Checking %r" % url
++                    with self.assertRaises(ValueError):
++                        urlparse.urlsplit(url)
+ 
+ def test_main():
+     test_support.run_unittest(UrlParseTestCase)
+diff --git a/Lib/urlparse.py b/Lib/urlparse.py
+index f08e0fe584..6834f3c179 100644
+--- a/Lib/urlparse.py
++++ b/Lib/urlparse.py
+@@ -171,17 +171,17 @@ def _checknetloc(netloc):
+     # looking for characters like \u2100 that expand to 'a/c'
+     # IDNA uses NFKC equivalence, so normalize for this check
+     import unicodedata
+-    n = netloc.rpartition('@')[2] # ignore anything to the left of '@'
+-    n = n.replace(':', '')        # ignore characters already included
+-    n = n.replace('#', '')        # but not the surrounding text
+-    n = n.replace('?', '')
++    n = netloc.replace(u'@', u'') # ignore characters already included
++    n = n.replace(u':', u'')      # but not the surrounding text
++    n = n.replace(u'#', u'')
++    n = n.replace(u'?', u'')
+     netloc2 = unicodedata.normalize('NFKC', n)
+     if n == netloc2:
+         return
+     for c in '/?#@:':
+         if c in netloc2:
+-            raise ValueError("netloc '" + netloc + "' contains invalid " +
+-                             "characters under NFKC normalization")
++            raise ValueError(u"netloc '" + netloc + u"' contains invalid " +
++                             u"characters under NFKC normalization")
+ 
+ def urlsplit(url, scheme='', allow_fragments=True):
+     """Parse a URL into 5 components:
+-- 
+2.11.0
+

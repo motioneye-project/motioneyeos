@@ -1,0 +1,66 @@
+From 98a4dcefbbc3bce5ab07e7c0830a183157250259 Mon Sep 17 00:00:00 2001
+From: Steve Dower <steve.dower@python.org>
+Date: Wed, 1 May 2019 15:00:27 +0000
+Subject: [PATCH] bpo-36742: Fixes handling of pre-normalization characters in
+ urlsplit() (GH-13017)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Lib/test/test_urlparse.py                                     |  6 ++++++
+ Lib/urlparse.py                                               | 11 +++++++----
+ .../next/Security/2019-04-29-15-34-59.bpo-36742.QCUY0i.rst    |  1 +
+ 3 files changed, 14 insertions(+), 4 deletions(-)
+ create mode 100644 Misc/NEWS.d/next/Security/2019-04-29-15-34-59.bpo-36742.QCUY0i.rst
+
+diff --git a/Lib/test/test_urlparse.py b/Lib/test/test_urlparse.py
+index 1830d0b286..6fd1071bf7 100644
+--- a/Lib/test/test_urlparse.py
++++ b/Lib/test/test_urlparse.py
+@@ -641,6 +641,12 @@ class UrlParseTestCase(unittest.TestCase):
+         self.assertIn(u'\u2100', denorm_chars)
+         self.assertIn(u'\uFF03', denorm_chars)
+ 
++        # bpo-36742: Verify port separators are ignored when they
++        # existed prior to decomposition
++        urlparse.urlsplit(u'http://\u30d5\u309a:80')
++        with self.assertRaises(ValueError):
++            urlparse.urlsplit(u'http://\u30d5\u309a\ufe1380')
++
+         for scheme in [u"http", u"https", u"ftp"]:
+             for c in denorm_chars:
+                 url = u"{}://netloc{}false.netloc/path".format(scheme, c)
+diff --git a/Lib/urlparse.py b/Lib/urlparse.py
+index 54eda08651..f08e0fe584 100644
+--- a/Lib/urlparse.py
++++ b/Lib/urlparse.py
+@@ -171,13 +171,16 @@ def _checknetloc(netloc):
+     # looking for characters like \u2100 that expand to 'a/c'
+     # IDNA uses NFKC equivalence, so normalize for this check
+     import unicodedata
+-    netloc2 = unicodedata.normalize('NFKC', netloc)
+-    if netloc == netloc2:
++    n = netloc.rpartition('@')[2] # ignore anything to the left of '@'
++    n = n.replace(':', '')        # ignore characters already included
++    n = n.replace('#', '')        # but not the surrounding text
++    n = n.replace('?', '')
++    netloc2 = unicodedata.normalize('NFKC', n)
++    if n == netloc2:
+         return
+-    _, _, netloc = netloc.rpartition('@') # anything to the left of '@' is okay
+     for c in '/?#@:':
+         if c in netloc2:
+-            raise ValueError("netloc '" + netloc2 + "' contains invalid " +
++            raise ValueError("netloc '" + netloc + "' contains invalid " +
+                              "characters under NFKC normalization")
+ 
+ def urlsplit(url, scheme='', allow_fragments=True):
+diff --git a/Misc/NEWS.d/next/Security/2019-04-29-15-34-59.bpo-36742.QCUY0i.rst b/Misc/NEWS.d/next/Security/2019-04-29-15-34-59.bpo-36742.QCUY0i.rst
+new file mode 100644
+index 0000000000..d729ed2f3c
+--- /dev/null
++++ b/Misc/NEWS.d/next/Security/2019-04-29-15-34-59.bpo-36742.QCUY0i.rst
+@@ -0,0 +1 @@
++Fixes mishandling of pre-normalization characters in urlsplit().
+-- 
+2.11.0
+

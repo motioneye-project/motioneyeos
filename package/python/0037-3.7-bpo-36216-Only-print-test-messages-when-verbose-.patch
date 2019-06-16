@@ -1,0 +1,28 @@
+From 507bd8cde60ced74d13a1ffa883bb9b0e73c38be Mon Sep 17 00:00:00 2001
+From: Steve Dower <steve.dower@microsoft.com>
+Date: Tue, 12 Mar 2019 13:51:58 -0700
+Subject: [PATCH] [3.7] bpo-36216: Only print test messages when verbose
+ (GH-12291)
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ Lib/test/test_urlparse.py | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/Lib/test/test_urlparse.py b/Lib/test/test_urlparse.py
+index 73b0228ea8..1830d0b286 100644
+--- a/Lib/test/test_urlparse.py
++++ b/Lib/test/test_urlparse.py
+@@ -644,7 +644,8 @@ class UrlParseTestCase(unittest.TestCase):
+         for scheme in [u"http", u"https", u"ftp"]:
+             for c in denorm_chars:
+                 url = u"{}://netloc{}false.netloc/path".format(scheme, c)
+-                print "Checking %r" % url
++                if test_support.verbose:
++                    print "Checking %r" % url
+                 with self.assertRaises(ValueError):
+                     urlparse.urlsplit(url)
+ 
+-- 
+2.11.0
+
