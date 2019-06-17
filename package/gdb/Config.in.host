@@ -8,6 +8,7 @@ config BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 	depends on !BR2_nios2
 	depends on !BR2_or1k
 	depends on !BR2_riscv
+	depends on !BR2_nds32
 
 comment "Host GDB Options"
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
