@@ -27,6 +27,13 @@ QT5BASE_CONFIGURE_OPTS += \
 	-no-pch \
 	-shared
 
+# starting from version 5.9.0, -optimize-debug is enabled by default
+# for debug builds and it overrides -O* with -Og which is not what we
+# want.
+ifeq ($(BR2_PACKAGE_QT5_VERSION_LATEST),y)
+QT5BASE_CONFIGURE_OPTS += -no-optimize-debug
+endif
+
 ifeq ($(BR2_PACKAGE_QT5_VERSION_5_6),y)
 QT5BASE_DEPENDENCIES += pcre
 else
