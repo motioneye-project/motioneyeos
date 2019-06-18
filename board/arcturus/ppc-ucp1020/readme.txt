@@ -38,6 +38,7 @@ You'll need to program the files created by buildroot into the NOR flash.
     B$ protect off 0xeff80000 +$filesize
     B$ erase 0xeff80000 +$filesize
     B$ cp.b $loadaddr 0xeff80000 $filesize
+    B$ protect on 0xeff80000 +$filesize
 
 2. Program the kernel
 
