@@ -4,7 +4,7 @@ BR2_cortex_a17=y
 BR2_ARM_FPU_NEON_VFPV4=y
 
 # Linux headers same as kernel, a 5.0 series
-BR2_KERNEL_HEADERS_5_0=y
+BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_0=y
 
 # Bootloader
 BR2_TARGET_UBOOT=y
