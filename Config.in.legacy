@@ -160,6 +160,13 @@ config BR2_KERNEL_HEADERS_4_20
 	  Version 4.20.x of the Linux kernel headers are no longer
 	  maintained upstream and are now removed.
 
+config BR2_KERNEL_HEADERS_5_0
+	bool "kernel headers version 5.0.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 5.0.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
 comment "Legacy options removed in 2019.05"
 
 config BR2_CSKY_DSP
