@@ -1,0 +1,66 @@
+From 15f62343916fcb3cae82e618da28eaa82bc8c007 Mon Sep 17 00:00:00 2001
+From: Alistair Francis <alistair.francis@wdc.com>
+Date: Tue, 16 Apr 2019 09:03:41 -0700
+Subject: [PATCH] Revert "riscv: Use latest system call ABI"
+
+This reverts commit d4c08b9776b392e20efc6198ebe1bc8ec1911d9b.
+
+The latest RISC-V 32bit glibc submission doesn't work with this patch,
+so let's revert it. This revert can be reverted when the glibc
+submission is updated to work on the 5.1 kernel.
+
+Signed-off-by: Alistair Francis <alistair.francis@wdc.com>
+---
+ arch/riscv/Kconfig                   | 1 +
+ arch/riscv/include/uapi/asm/unistd.h | 5 ++++-
+ arch/riscv/kernel/vdso/Makefile      | 2 --
+ 3 files changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index eb56c82d8aa1..43dd2680c696 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -11,6 +11,7 @@ config 32BIT
+ 
+ config RISCV
+ 	def_bool y
++	select ARCH_32BIT_OFF_T if !64BIT
+ 	# even on 32-bit, physical (and DMA) addresses are > 32-bits
+ 	select PHYS_ADDR_T_64BIT
+ 	select OF
+diff --git a/arch/riscv/include/uapi/asm/unistd.h b/arch/riscv/include/uapi/asm/unistd.h
+index 0e2eeeb1fd27..486a288b454c 100644
+--- a/arch/riscv/include/uapi/asm/unistd.h
++++ b/arch/riscv/include/uapi/asm/unistd.h
+@@ -17,8 +17,11 @@
+ 
+ #ifdef __LP64__
+ #define __ARCH_WANT_NEW_STAT
+-#define __ARCH_WANT_SET_GET_RLIMIT
+ #endif /* __LP64__ */
++#define __ARCH_WANT_SET_GET_RLIMIT
++#ifndef __LP64__
++#define __ARCH_WANT_TIME32_SYSCALLS
++#endif
+ 
+ #include <asm-generic/unistd.h>
+ 
+diff --git a/arch/riscv/kernel/vdso/Makefile b/arch/riscv/kernel/vdso/Makefile
+index fec62b24df89..eed1c137f618 100644
+--- a/arch/riscv/kernel/vdso/Makefile
++++ b/arch/riscv/kernel/vdso/Makefile
+@@ -2,11 +2,9 @@
+ 
+ # Symbols present in the vdso
+ vdso-syms  = rt_sigreturn
+-ifdef CONFIG_64BIT
+ vdso-syms += gettimeofday
+ vdso-syms += clock_gettime
+ vdso-syms += clock_getres
+-endif
+ vdso-syms += getcpu
+ vdso-syms += flush_icache
+ 
+-- 
+2.21.0
+
