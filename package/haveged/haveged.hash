@@ -1,2 +1,2 @@
-# From http://www.issihosts.com/haveged/verify/haveged-1.9.1.sha1
-sha1	ab7234b7f57dbb7d500a5ab3cbf0494715ce6499	haveged-1.9.1.tar.gz
+# Locally calculated
+sha256  c4959d3cb1fa6391d16a3aa1ba4d82cd3a0d497206ae4b87d638088c0664e5aa	haveged-1.9.4.tar.gz
