@@ -1,44 +1,51 @@
-From 8719555a530a8981214f1a35df4b17838dc5f3e8 Mon Sep 17 00:00:00 2001
+From 418d8bea5424d8a14a21fd7928747a233557618c Mon Sep 17 00:00:00 2001
 From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-Date: Sun, 9 Jun 2019 10:55:35 +0200
-Subject: [PATCH] meson.build: fix build with NLS
+Date: Sun, 9 Jun 2019 18:38:37 +0200
+Subject: [PATCH] build-sys: fix build with NLS
 
 With some toolchains, intl is needed for NLS support so search for this
-library and use if needed
+library and use if needed.
 
 Fixes:
  - http://autobuild.buildroot.org/results/0a8a3efe734ac7fb3a68ba505277681857dc0a3d
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
--[Upstream status: not sent yet]
+Upstream status: commit 418d8bea5424d8a14a21fd7928747a233557618c
 ---
  meson.build | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
 
 diff --git a/meson.build b/meson.build
-index 24bda0c..53a3995 100644
+index 3766edc..2b545b6 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -88,6 +88,9 @@ if opt == true
- 	subdir ('po')
+@@ -77,6 +77,8 @@ if opt != ''
+	conf.set_quoted('DEFAULT_DEVICE', opt, description : 'arping default device.')
  endif
  
 +# Some systems needs intl for gettext
-+intl_dep = cc.find_library('intl', required : false)
-+
- opt = get_option('USE_IDN')
++intl_dep = []
+ opt = get_option('USE_GETTEXT')
  if opt == true
- 	idn_dep = cc.find_library('idn2', required : false)
-@@ -244,7 +247,7 @@ libcommon = static_library(
+	prefix = get_option('prefix')
+@@ -86,6 +88,7 @@ if opt == true
+	conf.set('ENABLE_NLS', 1, description : 'If set enable I18N.')
+	conf.set_quoted('LOCALEDIR', join_paths(prefix, localedir))
+	subdir ('po')
++	intl_dep += cc.find_library('intl', required : false)
+ endif
+
+ opt = get_option('USE_IDN')
+@@ -243,7 +246,7 @@ libcommon = static_library(
  
  if build_ping == true
  	executable('ping', ['ping.c', 'ping_common.c', 'ping6_common.c', git_version_h],
--		dependencies : [m_dep, cap_dep, idn_dep, crypto_dep, gpg_error_dep, resolv_dep],
-+		dependencies : [m_dep, cap_dep, idn_dep, intl_dep, crypto_dep, gpg_error_dep, resolv_dep],
+-		dependencies : [m_dep, cap_dep, idn_dep, crypto_dep, resolv_dep],
++		dependencies : [m_dep, cap_dep, idn_dep, intl_dep, crypto_dep, resolv_dep],
  		link_with : [libcommon],
  		install: true)
  	meson.add_install_script('build-aux/setcap-setuid.sh',
-@@ -257,7 +260,7 @@ endif
+@@ -256,7 +259,7 @@ endif
  
  if build_tracepath == true
  	executable('tracepath', ['tracepath.c', git_version_h],
@@ -47,7 +54,7 @@ index 24bda0c..53a3995 100644
  		link_with : [libcommon],
  		install: true)
  endif
-@@ -277,7 +280,7 @@ endif
+@@ -276,7 +279,7 @@ endif
  
  if build_clockdiff == true
  	executable('clockdiff', ['clockdiff.c', git_version_h],
@@ -56,7 +63,7 @@ index 24bda0c..53a3995 100644
  		link_with : [libcommon],
  		install: true)
  	meson.add_install_script('build-aux/setcap-setuid.sh',
-@@ -307,7 +310,7 @@ endif
+@@ -306,7 +309,7 @@ endif
  
  if build_arping == true
  	executable('arping', ['arping.c', git_version_h],
@@ -66,5 +73,5 @@ index 24bda0c..53a3995 100644
  		install: true)
  	meson.add_install_script('build-aux/setcap-setuid.sh',
 -- 
-2.20.1
+2.21.0
 

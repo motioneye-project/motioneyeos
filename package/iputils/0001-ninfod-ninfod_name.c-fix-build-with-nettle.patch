@@ -15,7 +15,7 @@ Fixes:
  - http://autobuild.buildroot.org/results/e86555090e27b631ba35214ef100aa9331844684
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-[Upstream status: https://github.com/iputils/iputils/pull/181]
+Upstream status: commit f209ebb91e65980bcdddce8cc12b00ec11623f76
 ---
  ninfod/ninfod_name.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -34,5 +34,5 @@ index daf606d..525c93d 100644
  #elif defined(HAVE_GNUTLS_OPENSSL_H)
  # include <gnutls/openssl.h>
 -- 
-2.20.1
+2.21.0
 

@@ -8,9 +8,8 @@ setcap.path():
 
 meson.build:246:7: ERROR:  add_install_script args must be strings
 
-[Retrieved from:
-https://github.com/iputils/iputils/commit/473be6467f995865244e7e68b2fa587a4ee79551]
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Upstream status: commit 473be6467f995865244e7e68b2fa587a4ee79551
 ---
  meson.build | 11 +++++++----
  1 file changed, 7 insertions(+), 4 deletions(-)
