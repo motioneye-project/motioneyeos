@@ -1,5 +1,5 @@
 # Locally calculated (fetched from Github)
-sha256  8cd0fed7993c4e0b9ac8401fbe2a99bc11fe233d1e49957db5b766e973169221  glibc-arc-2019.03-rc1.tar.gz
+sha256  d8fd15462475f7e268147903cd7811705707b9bd9b29cd9dfe9a941ba48c7ea2  glibc-arc-2019.03-release.tar.gz
 
 # Hashes for license files
 sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
