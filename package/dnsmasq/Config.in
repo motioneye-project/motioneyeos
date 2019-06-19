@@ -29,7 +29,6 @@ config BR2_PACKAGE_DNSMASQ_DNSSEC
 
 config BR2_PACKAGE_DNSMASQ_IDN
 	bool "IDN support"
-	depends on BR2_USE_WCHAR
 	select BR2_PACKAGE_LIBIDN
 	help
 	  Enable IDN support in dnsmasq.
