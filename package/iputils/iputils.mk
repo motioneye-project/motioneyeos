@@ -49,6 +49,8 @@ IPUTILS_CONF_OPTS += -DUSE_CRYPTO=none
 IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
 endif
 
+IPUTILS_CONF_OPTS += -DBUILD_TRACEROUTE6=true
+
 # XSL Stylesheets for DocBook 5 not packaged for buildroot
 IPUTILS_CONF_OPTS += -DBUILD_MANS=false -DBUILD_HTML_MANS=false
 
@@ -69,6 +71,7 @@ define IPUTILS_PERMISSIONS
 	/usr/sbin/arping      f 4755 0 0 - - - - -
 	/usr/bin/clockdiff    f 4755 0 0 - - - - -
 	/bin/ping             f 4755 0 0 - - - - -
+	/usr/bin/traceroute6  f 4755 0 0 - - - - -
 endef
 
 $(eval $(meson-package))
