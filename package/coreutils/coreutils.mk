@@ -96,14 +96,14 @@ COREUTILS_DEPENDENCIES += openssl
 endif
 
 ifeq ($(BR2_ROOTFS_MERGED_USR),)
-define COREUTILS_CLEANUP_BIN
+define COREUTILS_FIX_BIN_LOCATION
 	# some things go in /bin rather than /usr/bin
 	$(foreach f,$(COREUTILS_BIN_PROGS), \
 		rm -f $(TARGET_DIR)/usr/bin/$(f) && \
 		ln -sf ../usr/bin/coreutils $(TARGET_DIR)/bin/$(f)
 	)
 endef
-COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP_BIN
+COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_FIX_BIN_LOCATION
 endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
