@@ -110,14 +110,17 @@ ifeq ($(BR2_STATIC_LIBS),y)
 COREUTILS_CONF_OPTS += --enable-no-install-program=stdbuf
 endif
 
-define COREUTILS_CLEANUP
-	# link for archaic shells
+# link for archaic shells
+define COREUTILS_CREATE_TEST_SYMLINK
 	ln -fs coreutils $(TARGET_DIR)/usr/bin/[
-	# gnu thinks chroot is in bin, debian thinks it's in sbin
+endef
+COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CREATE_TEST_SYMLINK
+
+# gnu thinks chroot is in bin, debian thinks it's in sbin
+define COREUTILS_FIX_CHROOT_LOCATION
 	rm -f $(TARGET_DIR)/usr/bin/chroot
 	ln -sf ../bin/coreutils $(TARGET_DIR)/usr/sbin/chroot
 endef
-
-COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CLEANUP
+COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_FIX_CHROOT_LOCATION
 
 $(eval $(autotools-package))
