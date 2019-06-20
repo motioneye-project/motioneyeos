@@ -29,7 +29,7 @@ config BR2_PACKAGE_DNSMASQ_DNSSEC
 
 config BR2_PACKAGE_DNSMASQ_IDN
 	bool "IDN support"
-	select BR2_PACKAGE_LIBIDN
+	select BR2_PACKAGE_LIBIDN2 if !BR2_PACKAGE_LIBIDN
 	help
 	  Enable IDN support in dnsmasq.
 	  This option is a big space taker since it pulls in many
