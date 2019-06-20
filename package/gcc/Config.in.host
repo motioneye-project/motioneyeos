@@ -83,6 +83,15 @@ config BR2_GCC_VERSION_8_X
 	depends on !BR2_powerpc_SPE
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
+config BR2_GCC_VERSION_9_X
+	bool "gcc 9.x"
+	# Broken or unsupported architectures
+	depends on !BR2_or1k
+	# powerpc spe support has been deprecated since gcc 8.x.
+	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
+	depends on !BR2_powerpc_SPE
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_9
+
 endchoice
 
 # libcilkrts was introduced in gcc 4.9 (oldest gcc version we
@@ -98,6 +107,7 @@ config BR2_GCC_VERSION
 	default "6.5.0"     if BR2_GCC_VERSION_6_X
 	default "7.4.0"     if BR2_GCC_VERSION_7_X
 	default "8.3.0"     if BR2_GCC_VERSION_8_X
+	default "9.1.0"     if BR2_GCC_VERSION_9_X
 	default "arc-2019.03-release" if BR2_GCC_VERSION_ARC
 	default "or1k-musl-5.4.0-20170218" if BR2_GCC_VERSION_OR1K
 	default "48152afb96c59733d5bc79e3399bb7b3d4b44266" if BR2_GCC_VERSION_CSKY
