@@ -1860,6 +1860,7 @@ F:	package/trace-cmd/
 
 N:	Pierre-Jean Texier <pjtexier@koncepto.io>
 F:	package/libubootenv/
+F:	package/python-periphery/
 
 N:	Pieter De Gendt <pieter.degendt@gmail.com>
 F:	package/libvips/
