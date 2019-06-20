@@ -391,21 +391,21 @@ config BR2_qdf24xx
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 config BR2_thunderx
-	bool "thunderx"
+	bool "thunderx (aka octeontx)"
 	depends on BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 config BR2_thunderxt81
-	bool "thunderxt81"
+	bool "thunderxt81 (aka octeontx81)"
 	depends on BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8A
 	select BR2_ARCH_HAS_MMU_OPTIONAL
 	select BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 config BR2_thunderxt83
-	bool "thunderxt83"
+	bool "thunderxt83 (aka octeontx83)"
 	depends on BR2_ARCH_IS_64
 	select BR2_ARM_CPU_HAS_FP_ARMV8
 	select BR2_ARM_CPU_ARMV8A
@@ -824,9 +824,12 @@ config BR2_GCC_TARGET_CPU
 	default "exynos-m1"	if BR2_exynos_m1
 	default "falkor"	if BR2_falkor
 	default "qdf24xx"	if BR2_qdf24xx
-	default "thunderx"	if BR2_thunderx
-	default "thunderxt81"	if BR2_thunderxt81
-	default "thunderxt83"	if BR2_thunderxt83
+	default "thunderx"	if BR2_thunderx && !BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	default "octeontx"	if BR2_thunderx && BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	default "thunderxt81"	if BR2_thunderxt81 && !BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	default "octeontx81"	if BR2_thunderxt81 && BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	default "thunderxt83"	if BR2_thunderxt83 && !BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	default "octeontx83"	if BR2_thunderxt83 && BR2_TOOLCHAIN_GCC_AT_LEAST_9
 	default "thunderxt88"	if BR2_thunderxt88
 	default "thunderxt88p1"	if BR2_thunderxt88p1
 	default "xgene1"	if BR2_xgene1
