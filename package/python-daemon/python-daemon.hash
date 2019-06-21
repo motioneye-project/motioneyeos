@@ -1,3 +1,6 @@
 # md5, sha256 https://pypi.org/pypi/python-daemon/json
 md5  3ab10a93472201214cd95c05f1923af6  python-daemon-2.2.3.tar.gz
 sha256  affeca9e5adfce2666a63890af9d6aff79f670f7511899edaddca7f96593cc25  python-daemon-2.2.3.tar.gz
+# Locally computed sha256
+sha256  cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE.ASF-2
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  LICENSE.GPL-3
