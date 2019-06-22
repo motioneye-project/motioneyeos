@@ -1,7 +1,7 @@
-# From https://ftp.postgresql.org/pub/source/v11.3/postgresql-11.3.tar.bz2.md5
-md5 c2a729b754b8de86a969c86ec25db076  postgresql-11.3.tar.bz2
-# From https://ftp.postgresql.org/pub/source/v11.3/postgresql-11.3.tar.bz2.sha256
-sha256 2a85e082fc225944821dfd23990e32dfcd2284c19060864b0ad4ca537d30522d  postgresql-11.3.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v11.4/postgresql-11.4.tar.bz2.md5
+md5 dab5eed8a5f9204bf2f03a209eead4c3  postgresql-11.4.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v11.4/postgresql-11.4.tar.bz2.sha256
+sha256 02802ddffd1590805beddd1e464dd28a46a41a5f1e1df04bab4f46663195cc8b  postgresql-11.4.tar.bz2
 
 # License file, Locally calculated
 sha256	c4c86d683970b22b9fab53320ee1b3a30ef4e8223122b4fb6be53ea62ecee8b3  COPYRIGHT
