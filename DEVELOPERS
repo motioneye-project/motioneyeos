@@ -1431,10 +1431,6 @@ F:	boot/riscv-pk/
 F:	configs/qemu_riscv32_virt_defconfig
 F:	configs/qemu_riscv64_virt_defconfig
 
-N:	Markos Chandras <markos.chandras@imgtec.com>
-F:	package/harfbuzz/
-F:	package/libsecret/
-
 N:	Martin Bark <martin@barkynet.com>
 F:	board/raspberrypi/
 F:	configs/raspberrypi3_defconfig
