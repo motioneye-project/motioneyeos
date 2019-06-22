@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-XORGPROTO_VERSION = 2018.4
+XORGPROTO_VERSION = 2019.1
 XORGPROTO_SOURCE = xorgproto-$(XORGPROTO_VERSION).tar.bz2
-XORGPROTO_SITE = http://xorg.freedesktop.org/releases/individual/proto
+XORGPROTO_SITE = https://xorg.freedesktop.org/archive/individual/proto
 XORGPROTO_LICENSE = MIT
 XORGPROTO_LICENSE_FILES = \
 	COPYING-applewmproto \
@@ -24,7 +24,6 @@ XORGPROTO_LICENSE_FILES = \
 	COPYING-inputproto \
 	COPYING-kbproto \
 	COPYING-lg3dproto \
-	COPYING-panoramixproto \
 	COPYING-pmproto \
 	COPYING-presentproto \
 	COPYING-printproto \
