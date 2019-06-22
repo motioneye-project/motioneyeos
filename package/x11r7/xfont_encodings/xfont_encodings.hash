@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2010-October/001466.html
-sha1	24ace2470403f85a0d393769204029bd8247992a	encodings-1.0.4.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-June/002998.html
+md5 bbae4f247b88ccde0e85ed6a403da22a  encodings-1.0.5.tar.bz2
+sha1 7ffec76dba1cfd5040c5b43ccfae930c83ddf92e  encodings-1.0.5.tar.bz2
+sha256 bd96e16143a044b19e87f217cf6a3763a70c561d1076aad6f6d862ec41774a31  encodings-1.0.5.tar.bz2
+sha512 920e49f0b3545f181a1574ca3280ac9adef1e68fe27566c195dd7013f728d355c0d759132789357fcf8fa7391fcbe1e17edf2bd85aa5611df5a4d99740011008  encodings-1.0.5.tar.bz2
+# Locally computed
+sha256 13b4a0f9431f0fdd6ee36ed386e0b7d1eb429c5cb88df73353896078cbb5a137  COPYING
