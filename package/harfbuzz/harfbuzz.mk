@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-HARFBUZZ_VERSION = 1.8.8
+HARFBUZZ_VERSION = 2.5.2
 HARFBUZZ_SITE = https://www.freedesktop.org/software/harfbuzz/release
-HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.bz2
+HARFBUZZ_SOURCE = harfbuzz-$(HARFBUZZ_VERSION).tar.xz
 HARFBUZZ_LICENSE = MIT, ISC (ucdn library)
-HARFBUZZ_LICENSE_FILES = COPYING src/hb-ucdn/COPYING
+HARFBUZZ_LICENSE_FILES = COPYING
 HARFBUZZ_INSTALL_STAGING = YES
 HARFBUZZ_CONF_OPTS = --with-coretext=no --with-uniscribe=no
 
