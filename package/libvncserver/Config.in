@@ -3,6 +3,7 @@ config BR2_PACKAGE_LIBVNCSERVER
 	depends on BR2_USE_MMU # VNCommand.c uses fork()
 	# binutils issue (bad expression)
 	depends on !BR2_nios2
+	select BR2_PACKAGE_LZO
 	help
 	  libvncserver is a VNC server/client library.
 
