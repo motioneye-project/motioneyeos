@@ -130,15 +130,9 @@ COREUTILS_CONF_OPTS += --enable-no-install-program=stdbuf
 endif
 
 # link for archaic shells
-ifeq ($(BR2_PACKAGE_COREUTILS_INDIVIDUAL_BINARIES),y)
 define COREUTILS_CREATE_TEST_SYMLINK
 	ln -fs test $(TARGET_DIR)/usr/bin/[
 endef
-else
-define COREUTILS_CREATE_TEST_SYMLINK
-	ln -fs coreutils $(TARGET_DIR)/usr/bin/[
-endef
-endif
 COREUTILS_POST_INSTALL_TARGET_HOOKS += COREUTILS_CREATE_TEST_SYMLINK
 
 # gnu thinks chroot is in bin, debian thinks it's in sbin
