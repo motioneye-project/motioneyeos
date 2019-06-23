@@ -47,6 +47,8 @@ XORGPROTO_LICENSE_FILES = \
 	COPYING-xineramaproto
 XORGPROTO_INSTALL_STAGING = YES
 XORGPROTO_INSTALL_TARGET = NO
+# xproxymngproto is needed by xfindproxy
+XORGPROTO_CONF_OPTS += --enable-legacy
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
