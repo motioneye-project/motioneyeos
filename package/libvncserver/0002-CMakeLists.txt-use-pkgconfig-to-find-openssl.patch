@@ -1,0 +1,34 @@
+From ab512233c88022fec67fabec1fb00a833c466c9e Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 23 Jun 2019 22:54:57 +0200
+Subject: [PATCH] CMakeLists.txt: use pkgconfig to find openssl
+
+find_package(openssl) fails to find openssl dependencies such as -lz so
+use pkgconfig to fix static build
+
+Fixes:
+ - http://autobuild.buildroot.org/results/c3f75480cb4b8b042cdf6a34cc5568ea13e51342
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/LibVNC/libvncserver/pull/318]
+---
+ CMakeLists.txt | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index ad609ae..11103d8 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -125,7 +125,8 @@ endif(WITH_GNUTLS)
+ 
+ 
+ if(WITH_OPENSSL)
+-  find_package(OpenSSL)
++  find_package(PkgConfig)
++  pkg_check_modules(OPENSSL "openssl")
+ endif(WITH_OPENSSL)
+ 
+ 
+-- 
+2.14.1
+
