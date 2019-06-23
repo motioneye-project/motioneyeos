@@ -70,10 +70,6 @@ else
 PYTHON3_CONF_OPTS += --with-expat=none
 endif
 
-ifeq ($(BR2_PACKAGE_PYTHON3_PYC_ONLY),y)
-PYTHON3_CONF_OPTS += --enable-old-stdlib-cache
-endif
-
 ifeq ($(BR2_PACKAGE_PYTHON3_SQLITE),y)
 PYTHON3_DEPENDENCIES += sqlite
 else
