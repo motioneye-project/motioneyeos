@@ -1,0 +1,57 @@
+From 0dad6d78a7fb5f6c5fb4a1d646040539db6cf865 Mon Sep 17 00:00:00 2001
+From: Chih-Wei Huang <cwhuang@linux.org.tw>
+Date: Tue, 26 Feb 2019 18:42:20 +0800
+Subject: [PATCH] Fix another error of -Werror=address-of-packed-member
+
+Android 9 clang complains:
+
+external/efivar/src/dp-message.c:367:24: error: taking address of packed member '' of class or structure 'efidp_infiniband' may result in an unaligned pointer value [-Werror,-Waddress-of-packed-member]
+                                    (efi_guid_t *)&dp->infiniband.ioc_guid);
+                                                   ^~~~~~~~~~~~~~~~~~~~~~~
+external/efivar/src/dp.h:76:19: note: expanded from macro 'format_guid'
+                memmove(&_guid, guid, sizeof(_guid));                   \
+                                ^~~~
+1 error generated.
+
+Since commit c3c553d the fifth parameter of format_guid() is treated as
+a const void *. The casting is unnecessary.
+
+Signed-off-by: Chih-Wei Huang <cwhuang@linux.org.tw>
+[james.hilliard1@gmail.com: backport from upstream commit
+0dad6d78a7fb5f6c5fb4a1d646040539db6cf865]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ src/dp-media.c   | 3 +--
+ src/dp-message.c | 2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/src/dp-media.c b/src/dp-media.c
+index 96a576f..be691c4 100644
+--- a/src/dp-media.c
++++ b/src/dp-media.c
+@@ -46,8 +46,7 @@ _format_media_dn(char *buf, size_t size, const_efidp dp)
+ 			break;
+ 		case EFIDP_HD_SIGNATURE_GUID:
+ 			format(buf, size, off, "HD", "GPT,");
+-			format_guid(buf, size, off, "HD",
+-				    (efi_guid_t *)dp->hd.signature);
++			format_guid(buf, size, off, "HD", dp->hd.signature);
+ 			format(buf, size, off, "HD",
+ 			       ",0x%"PRIx64",0x%"PRIx64")",
+ 			       dp->hd.start, dp->hd.size);
+diff --git a/src/dp-message.c b/src/dp-message.c
+index 9f96466..6b8e907 100644
+--- a/src/dp-message.c
++++ b/src/dp-message.c
+@@ -364,7 +364,7 @@ _format_message_dn(char *buf, size_t size, const_efidp dp)
+ 			       dp->infiniband.port_gid[1],
+ 			       dp->infiniband.port_gid[0]);
+ 			format_guid(buf, size, off, "Infiniband",
+-				    (efi_guid_t *)&dp->infiniband.ioc_guid);
++				    &dp->infiniband.ioc_guid);
+ 			format(buf, size, off, "Infiniband",
+ 			       ",%"PRIu64",%"PRIu64")",
+ 			       dp->infiniband.target_port_id,
+-- 
+2.20.1
+
