@@ -64,6 +64,12 @@ config BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 	  Enables the build of the user-land emulator, which allows to
 	  run user-space applications.
 
+	  Note that system calls made by the emulated user-land are
+	  serviced by the running host kernel. Therefore, if the
+	  kernel headers used by your target are more recent than
+	  the running host kernel, you may run into invalid system
+	  calls, which may yield surprising effects.
+
 config BR2_PACKAGE_HOST_QEMU_VDE2
 	bool "VDE2 support"
 	help
