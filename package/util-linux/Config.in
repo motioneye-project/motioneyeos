@@ -217,6 +217,7 @@ config BR2_PACKAGE_UTIL_LINUX_MESG
 
 config BR2_PACKAGE_UTIL_LINUX_MINIX
 	bool "minix"
+	depends on BR2_USE_MMU # fork()
 	help
 	  Minix filesystem support
 
