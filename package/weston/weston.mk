@@ -10,7 +10,7 @@ WESTON_SITE = https://source.codeaurora.org/external/imx/weston-imx
 WESTON_SITE_METHOD = git
 WESTON_AUTORECONF = YES
 else
-WESTON_VERSION = 6.0.0
+WESTON_VERSION = 6.0.1
 WESTON_SITE = http://wayland.freedesktop.org/releases
 WESTON_SOURCE = weston-$(WESTON_VERSION).tar.xz
 endif
