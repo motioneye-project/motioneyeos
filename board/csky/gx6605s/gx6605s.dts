@@ -1,0 +1,155 @@
+/dts-v1/;
+#include <dt-bindings/gpio/gpio.h>
+#include <dt-bindings/input/input.h>
+
+/ {
+	model = "C-SKY gx6605s";
+	compatible = "csky,gx6605s";
+	#address-cells = <1>;
+	#size-cells = <1>;
+
+	memory {
+		device_type = "memory";
+		reg = <0x10000000 0x04000000>;
+	};
+
+	soc {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "simple-bus";
+		ranges;
+
+		dummy_apb: apb-clock {
+			compatible = "fixed-clock";
+			clock-frequency = <27000000>;
+			clock-output-names = "dummy_apb";
+			#clock-cells = <0>;
+		};
+
+		intc: interrupt-controller@500000 {
+			compatible = "csky,gx6605s-intc";
+			reg = <0x00500000 0x400>;
+			interrupt-controller;
+			#interrupt-cells = <1>;
+		};
+
+		timer@20a000 {
+			compatible = "csky,gx6605s-timer";
+			reg = <0x0020a000 0x400>;
+			clocks = <&dummy_apb>;
+			interrupts = <10>;
+			interrupt-parent = <&intc>;
+		};
+
+		ehci-hcd@900000 {
+			compatible = "generic-ehci";
+			reg = <0x00900000 0x400>;
+			interrupt-parent = <&intc>;
+			interrupts = <59>;
+		};
+
+		ohci-hcd0@a00000 {
+			compatible = "generic-ohci";
+			reg = <0x00a00000 0x400>;
+			interrupt-parent = <&intc>;
+			interrupts = <58>;
+		};
+
+		ohci-hcd1@b00000 {
+			compatible = "generic-ohci";
+			reg = <0x00b00000 0x400>;
+			interrupt-parent = <&intc>;
+			interrupts = <57>;
+		};
+
+		serial@403000 {
+			compatible = "ns16550a";
+			reg = <0x00403000 0x400>;
+			interrupt-parent = <&intc>;
+			interrupts = <15>;
+			clock-frequency = <29491200>;
+			baud = <115200>;
+			reg-shift = <2>;
+			reg-io-width = <1>;
+		};
+
+		gpio0: gpio@305000 {
+			compatible = "wd,mbl-gpio";
+			reg-names = "dirout", "dat", "set", "clr";
+			reg = <0x305000 4>, <0x305004 4>, <0x305008 4>, <0x30500c 4>;
+			bgpio-base = <0>;
+			#gpio-cells = <2>;
+			gpio-controller;
+		};
+
+		gpio_buttons {
+			compatible = "gpio-keys-polled";
+			#address-cells = <1>;
+			#size-cells = <0>;
+			poll-interval = <100>;
+			autorepeat;
+
+			button0 {
+				label = "button8";
+				linux,code = <KEY_LEFT>;
+				gpios = <&gpio0 8 GPIO_ACTIVE_LOW>;
+			};
+
+			button1 {
+				label = "button6";
+				linux,code = <KEY_RIGHT>;
+				gpios = <&gpio0 6 GPIO_ACTIVE_LOW>;
+			};
+
+			button2 {
+				label = "button5";
+				linux,code = <KEY_UP>;
+				gpios = <&gpio0 5 GPIO_ACTIVE_LOW>;
+			};
+
+			button3 {
+				label = "button9";
+				linux,code = <KEY_DOWN>;
+				gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+			};
+
+			button4 {
+				label = "button7";
+				linux,code = <KEY_ENTER>;
+				gpios = <&gpio0 7 GPIO_ACTIVE_LOW>;
+			};
+		};
+
+		gpio_leds {
+			compatible = "gpio-leds";
+
+			led0 {
+				label = "led10";
+				gpios = <&gpio0 10 GPIO_ACTIVE_LOW>;
+				linux,default-trigger = "heartbeat";
+			};
+
+			led1 {
+				label = "led11";
+				gpios = <&gpio0 11 GPIO_ACTIVE_LOW>;
+				linux,default-trigger = "timer";
+			};
+
+			led2 {
+				label = "led12";
+				gpios = <&gpio0 12 GPIO_ACTIVE_LOW>;
+				linux,default-trigger = "default-on";
+			};
+
+			led3 {
+				label = "led13";
+				gpios = <&gpio0 13 GPIO_ACTIVE_LOW>;
+				linux,default-trigger = "default-on";
+			};
+		};
+	};
+
+	chosen {
+		bootargs = "console=ttyS0,115200 init=/sbin/init root=/dev/sda2 rw rootwait";
+	};
+};
