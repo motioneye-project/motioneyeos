@@ -97,6 +97,18 @@ will therefore only use a few of them.
 * +FOO_CONF_OPTS+, to specify additional options to pass to +meson+ for the
   configuration step. By default, empty.
 
+* +FOO_CFLAGS+, to specify compiler arguments added to the package specific
+  +cross-compile.conf+ file +c_args+ property. By default, the value of
+  +TARGET_CFLAGS+.
+
+* +FOO_CXXFLAGS+, to specify compiler arguments added to the package specific
+  +cross-compile.conf+ file +cpp_args+ property. By default, the value of
+  +TARGET_CXXFLAGS+.
+
+* +FOO_LDFLAGS+, to specify compiler arguments added to the package specific
+  +cross-compile.conf+ file +c_link_args+ and +cpp_link_args+ properties. By
+  default, the value of +TARGET_LDFLAGS+.
+
 * +FOO_NINJA_ENV+, to specify additional environment variables to pass to
   +ninja+, meson companion tool in charge of the build operations. By default,
   empty.
