@@ -1174,6 +1174,9 @@ F:	package/nginx-dav-ext/
 N:	John Stile <johns@msli.com>
 F:	package/dhcpcd/
 
+N:	John Faith <jfaith@impinj.com>
+F:	package/python-inflection/
+
 N:	Jonathan Ben Avraham <yba@tkos.co.il>
 F:	arch/Config.in.xtensa
 F:	package/autofs/

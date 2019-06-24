@@ -1,0 +1,12 @@
+config BR2_PACKAGE_PYTHON_INFLECTION
+	bool "python-inflection"
+	select BR2_PACKAGE_PYTHON_UNICODEDATA if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_UNICODEDATA if BR2_PACKAGE_PYTHON3
+	help
+	  A string transformation library that singularizes and
+	  pluralizes English words, and transforms strings from
+	  CamelCase to underscored string.
+
+	  Inflection is a port of Ruby on Rails' inflector to Python
+
+	  https://github.com/jpvanhal/inflection
