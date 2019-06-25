@@ -1,0 +1,35 @@
+From 00f6ac3c24f36fa07fa93f4a89ee873edf125098 Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Mon, 16 Jul 2018 23:01:40 +0200
+Subject: [PATCH] meson.build: fix intel atomics detection
+
+Use the stronger compiler.link() test (instead of the weaker
+compiler.compile()) to fix the intel atomics detection.
+
+Fixes false positive in case of sparc compile (buildroot toolchain).
+
+Upstream suggested: https://lists.freedesktop.org/archives/dri-devel/2018-July/183885.html
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ meson.build | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/meson.build b/meson.build
+index 9b443a5..3c8afb6 100644
+--- a/meson.build
++++ b/meson.build
+@@ -49,9 +49,10 @@ intel_atomics = false
+ lib_atomics = false
+
+ dep_atomic_ops = dependency('atomic_ops', required : false)
+-if cc.compiles('''
++if cc.links('''
+     int atomic_add(int *i) { return __sync_add_and_fetch (i, 1); }
+     int atomic_cmpxchg(int *i, int j, int k) { return __sync_val_compare_and_swap (i, j, k); }
++    int main() { }
+     ''',
+     name : 'Intel Atomics')
+   intel_atomics = true
+--
+2.18.0
+
