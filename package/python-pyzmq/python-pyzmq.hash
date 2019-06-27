@@ -1,3 +1,3 @@
 # md5, sha256 from https://pypi.org/pypi/pyzmq/json
-md5    81d643d1e9eb9238960a18b6b0989db2  pyzmq-18.0.0.tar.gz
-sha256 b30c339eb58355f51f4f54dd61d785f1ff58c86bca1c3a5916977631d121867b  pyzmq-18.0.0.tar.gz
+md5	1bcdc3a18c99875e01a24735dc168b8d  pyzmq-18.0.2.tar.gz
+sha256	31a11d37ac73107363b47e14c94547dbfc6a550029c3fe0530be443199026fc2  pyzmq-18.0.2.tar.gz

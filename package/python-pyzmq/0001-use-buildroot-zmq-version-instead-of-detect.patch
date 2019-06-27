@@ -15,7 +15,7 @@ dynamically, return the version of the buildroot environment.
 Written by Michael Rommel, modified for version 16.0.2 by Lionel
 Flandrin.
 
-Modified for version 17.1.2 by Asaf Kahlon.
+Modified for version 18.0.2 by Asaf Kahlon
 
 Signed-off-by: Lionel Flandrin <lionel@svkt.org>
 Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
@@ -24,16 +24,16 @@ Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
  1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/buildutils/detect.py b/buildutils/detect.py
-index cb14a8d..b33a3b5 100644
+index d1380fe..4a91351 100644
 --- a/buildutils/detect.py
 +++ b/buildutils/detect.py
-@@ -116,13 +116,15 @@ def detect_zmq(basedir, compiler=None, **compiler_attrs):
-     
+@@ -120,13 +120,15 @@ def detect_zmq(basedir, compiler=None, **compiler_attrs):
+ 
      cc = get_compiler(compiler=compiler, **compiler_attrs)
      efile = test_compilation(cfile, compiler=cc, **compiler_attrs)
 -    patch_lib_paths(efile, cc.library_dirs)
 +    #patch_lib_paths(efile, cc.library_dirs)
-     
+ 
 -    rc, so, se = get_output_error([efile])
 -    if rc:
 -        msg = "Error running version detection script:\n%s\n%s" % (so,se)
@@ -50,5 +50,5 @@ index cb14a8d..b33a3b5 100644
      handlers = {'vers':  lambda val: tuple(int(v) for v in val.split('.'))}
  
 -- 
-2.17.1
+2.20.1
 
