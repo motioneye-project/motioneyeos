@@ -2,7 +2,6 @@ config BR2_PACKAGE_SHAPELIB
 	bool "shapelib"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_PACKAGE_PROJ
 	help
 	  The Shapefile C Library provides the ability to write simple
 	  C programs for reading, writing and updating (to a limited
