@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-QUAZIP_VERSION = 0.7.6
-QUAZIP_SITE = $(call github,stachenov,quazip,$(QUAZIP_VERSION))
+QUAZIP_VERSION = 0.8.1
+QUAZIP_SITE = $(call github,stachenov,quazip,v$(QUAZIP_VERSION))
 QUAZIP_INSTALL_STAGING = YES
 QUAZIP_DEPENDENCIES = \
 	zlib \
