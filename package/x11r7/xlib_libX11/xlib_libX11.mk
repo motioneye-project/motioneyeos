@@ -30,7 +30,6 @@ HOST_XLIB_LIBX11_DEPENDENCIES = \
 
 XLIB_LIBX11_CONF_OPTS = \
 	--disable-malloc0returnsnull \
-	--with-xcb \
 	--disable-specs \
 	--without-perl
 
