@@ -1,0 +1,49 @@
+From 3da4873bcdcb7d8bd47e275b97bbb6f1c134b3b9 Mon Sep 17 00:00:00 2001
+From: Pierre-Jean Texier <pjtexier@koncepto.io>
+Date: Sat, 29 Jun 2019 21:19:08 +0200
+Subject: [PATCH] setup.py: require pytest-runner only when necessary
+
+This optimizes setup.py for cases when pytest-runner is not needed,
+using the approach that is suggested upstream:
+
+https://pypi.python.org/pypi/pytest-runner#conditional-requirement
+
+[Upstream status: https://github.com/hardbyte/python-can/pull/633]
+Signed-off-by: Pierre-Jean Texier <pjtexier@koncepto.io>
+---
+ setup.py | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/setup.py b/setup.py
+index 221c030..6e1778a 100644
+--- a/setup.py
++++ b/setup.py
+@@ -11,6 +11,7 @@ from os import listdir
+ from os.path import isfile, join
+ import re
+ import logging
++import sys
+ from setuptools import setup, find_packages
+ 
+ logging.basicConfig(level=logging.WARNING)
+@@ -40,6 +41,8 @@ tests_require = [
+ 
+ extras_require["test"] = tests_require
+ 
++needs_pytest = {'pytest', 'test', 'ptr'}.intersection(sys.argv)
++pytest_runner = ['pytest-runner'] if needs_pytest else []
+ 
+ setup(
+     # Description
+@@ -96,7 +99,7 @@ setup(
+         'windows-curses;platform_system=="Windows"',
+         "filelock",
+     ],
+-    setup_requires=["pytest-runner"],
++    setup_requires=pytest_runner,
+     extras_require=extras_require,
+     tests_require=tests_require,
+ )
+-- 
+2.7.4
+
