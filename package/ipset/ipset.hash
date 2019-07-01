@@ -1,6 +1,6 @@
-# From http://ipset.netfilter.org/ipset-7.1.tar.bz2.md5sum.txt
-md5 72b477d1ce076d681b0799f88280f2f3  ipset-7.1.tar.bz2
+# From http://ipset.netfilter.org/ipset-7.2.tar.bz2.md5sum.txt
+md5 9eef4a237f9ccec48744836ee1497dba  ipset-7.2.tar.bz2
 # Calculated based on the hash above
-sha256 7b5eb3b93205c20cdc39e3fc8b6e5f7bb214bf79a7c0c00729dd4a31ce16adc4  ipset-7.1.tar.bz2
+sha256 2e13384534669edc85ca6ab418c59429d5296132c5c27c44479d4c0a59434618  ipset-7.2.tar.bz2
 # Locally calculated
 sha256 231f7edcc7352d7734a96eef0b8030f77982678c516876fcb81e25b32d68564c  COPYING
