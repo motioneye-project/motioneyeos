@@ -1,0 +1,34 @@
+commit 530a3fc31b515fe1cdcbbd03ca884c84d72580b1
+Author: memeka <mihailescu2m@gmail.com>
+Date:   Thu Oct 19 13:23:34 2017 +1030
+
+    avcodec/v4l2: change number of buffers for MFC encoder
+    
+    Signed-off-by: memeka <mihailescu2m@gmail.com>
+
+diff --git a/libavcodec/v4l2_m2m_dec.c b/libavcodec/v4l2_m2m_dec.c
+index 2d96f13954..266caa7bac 100644
+--- a/libavcodec/v4l2_m2m_dec.c
++++ b/libavcodec/v4l2_m2m_dec.c
+@@ -288,7 +288,7 @@ static av_cold int v4l2_decode_init(AVCodecContext *avctx)
+ static const AVOption options[] = {
+     V4L_M2M_DEFAULT_OPTS,
+     { "num_capture_buffers", "Number of buffers in the capture context",
+-        OFFSET(capture.num_buffers), AV_OPT_TYPE_INT, {.i64 = 20}, 20, INT_MAX, FLAGS },
++        OFFSET(capture.num_buffers), AV_OPT_TYPE_INT, {.i64 = 16}, 16, INT_MAX, FLAGS },
+     { NULL},
+ };
+ 
+diff --git a/libavcodec/v4l2_m2m_enc.c b/libavcodec/v4l2_m2m_enc.c
+index 2c35f95847..ce4b45816e 100644
+--- a/libavcodec/v4l2_m2m_enc.c
++++ b/libavcodec/v4l2_m2m_enc.c
+@@ -325,7 +325,7 @@ static av_cold int v4l2_encode_init(AVCodecContext *avctx)
+ static const AVOption options[] = {
+     V4L_M2M_DEFAULT_OPTS,
+     { "num_capture_buffers", "Number of buffers in the capture context",
+-        OFFSET(capture.num_buffers), AV_OPT_TYPE_INT, {.i64 = 4 }, 4, INT_MAX, FLAGS },
++        OFFSET(capture.num_buffers), AV_OPT_TYPE_INT, {.i64 = 8}, 8, INT_MAX, FLAGS },
+     { NULL },
+ };
+ 

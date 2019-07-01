@@ -1,0 +1,63 @@
+commit 18d00a8264b42b9bf9c11b539557ea8e6186aa8e
+Author: Jorge Ramirez-Ortiz <jorge.ramirez-ortiz@linaro.org>
+Date:   Fri Oct 6 09:24:57 2017 +0200
+
+    avcodec/v4l2: fix segmentation fault on codec exit
+    
+    It occurs when the codec is closed while buffer references still
+    exist. This is a regression from the original patchset where support
+    for this use-case was implemented.
+    
+    Signed-off-by: memeka <mihailescu2m@gmail.com>
+
+diff --git a/libavcodec/v4l2_buffers.c b/libavcodec/v4l2_buffers.c
+index ba70c5d14b..109f611c8a 100644
+--- a/libavcodec/v4l2_buffers.c
++++ b/libavcodec/v4l2_buffers.c
+@@ -219,8 +219,17 @@ static void v4l2_free_buffer(void *opaque, uint8_t *unused)
+         return;
+     }
+ 
+-    if (!atomic_load(&s->refcount))
+-        ff_v4l2_m2m_codec_end(s->avctx);
++    if (!atomic_load(&s->refcount)) {
++
++        ff_v4l2_context_release(&s->capture);
++        sem_destroy(&s->refsync);
++
++        /* release the hardware */
++        if (close(s->fd) < 0 )
++            av_log(s->avctx, AV_LOG_ERROR, "failure closing %s (%s)\n", s->devname, av_err2str(AVERROR(errno)));
++
++        s->fd = -1;
++    }
+ }
+ 
+ static int v4l2_buf_to_bufref(V4L2Buffer *in, int plane, AVBufferRef **buf)
+diff --git a/libavcodec/v4l2_m2m.c b/libavcodec/v4l2_m2m.c
+index bd96a6d979..b78e0315f6 100644
+--- a/libavcodec/v4l2_m2m.c
++++ b/libavcodec/v4l2_m2m.c
+@@ -321,6 +321,9 @@ int ff_v4l2_m2m_codec_end(AVCodecContext *avctx)
+     V4L2m2mContext* s = avctx->priv_data;
+     int ret;
+ 
++    if (s->fd < 0)
++        return 0;
++
+     ret = ff_v4l2_context_set_status(&s->output, VIDIOC_STREAMOFF);
+     if (ret)
+             av_log(avctx, AV_LOG_ERROR, "VIDIOC_STREAMOFF %s\n", s->output.name);
+@@ -331,8 +334,10 @@ int ff_v4l2_m2m_codec_end(AVCodecContext *avctx)
+ 
+     ff_v4l2_context_release(&s->output);
+ 
+-    if (atomic_load(&s->refcount))
+-        av_log(avctx, AV_LOG_ERROR, "ff_v4l2m2m_codec_end leaving pending buffers\n");
++    if (atomic_load(&s->refcount)) {
++        av_log(avctx, AV_LOG_DEBUG, "ff_v4l2m2m_codec_end leaving pending buffers\n");
++        return 0;
++    }
+ 
+     ff_v4l2_context_release(&s->capture);
+     sem_destroy(&s->refsync);
