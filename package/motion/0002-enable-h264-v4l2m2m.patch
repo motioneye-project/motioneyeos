@@ -1,0 +1,14 @@
+diff -rupEbwBN -x.git motion-release-4.2.2.org/ffmpeg.c motion-release-4.2.2/ffmpeg.c
+--- motion-release-4.2.2.org/ffmpeg.c	2019-07-01 12:44:27.934954580 +1000
++++ motion-release-4.2.2/ffmpeg.c	2019-07-01 15:08:24.346954580 +1000
+@@ -555,7 +555,9 @@ static int ffmpeg_set_quality(struct ffm
+             ffmpeg->quality = 45; // default to 45% quality
+         av_dict_set(&ffmpeg->opts, "preset", "ultrafast", 0);
+         av_dict_set(&ffmpeg->opts, "tune", "zerolatency", 0);
+-        if ((strcmp(ffmpeg->codec->name, "h264_omx") == 0) || (strcmp(ffmpeg->codec->name, "mpeg4_omx") == 0)) {
++        if ((strcmp(ffmpeg->codec->name, "h264_omx") == 0) || 
++	    (strcmp(ffmpeg->codec->name, "mpeg4_omx") == 0) ||
++	    (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0)) {
+             // H264 OMX encoder quality can only be controlled via bit_rate
+             // bit_rate = ffmpeg->width * ffmpeg->height * ffmpeg->fps * quality_factor
+             ffmpeg->quality = (int)(((int64_t)ffmpeg->width * ffmpeg->height * ffmpeg->fps * ffmpeg->quality) >> 7);
