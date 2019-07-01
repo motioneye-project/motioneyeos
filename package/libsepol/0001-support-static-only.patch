@@ -1,5 +1,5 @@
 From 2140db697c7f1da2a0a3f7bbcb14c1a0dade84e5 Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Adamduskett@outlook.com>
+From: Adam Duskett <aduskett@gmail.com>
 Date: Mon, 9 Oct 2017 16:28:12 -0400
 Subject: [PATCH] Add support for static-only build
 
@@ -10,7 +10,7 @@ libraries. It allows to support cases where the target architecture
 does not have support for shared libraries.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 [Update for 2.8]
 ---

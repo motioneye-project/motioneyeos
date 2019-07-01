@@ -9,7 +9,7 @@ Upstream-Status: Merged
 See : https://gitlab.gnome.org/GNOME/glib/issues/1063
 
 Signed-off-by: Brendan Heading <brendanheading@gmail.com>
-Signed-off-by: Adam Duskett <aduskett@codeblue.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  glib/gthread-posix.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)

@@ -1,5 +1,5 @@
 From 7f4a12d25bbb5859d266f32f7a3d794bb62c354e Mon Sep 17 00:00:00 2001
-From: Adam Duskett <Adamduskett@outlook.com>
+From: Adam Duskett <aduskett@gmail.com>
 Date: Sun, 31 Dec 2017 12:46:04 -0500
 Subject: [PATCH] install: don't use ln --relative
 
@@ -20,7 +20,7 @@ while we do :  /usr/sbin/foo -> ../../usr/bin/foo
 Signed-off-by: "Yann E. MORIN" <yann.morin.1998@free.fr>
 [aduskett@gmail.com: Added meson.build section and dirname wrapper in add-wants]
 [aduskett@gmail.com: Update for systemd v237]
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 [tpiepho@impinj.com: Fix add-wants wrapper]
 Signed-off-by: Trent Piepho <tpiepho@impinj.com>
 ---

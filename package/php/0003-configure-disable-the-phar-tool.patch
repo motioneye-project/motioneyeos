@@ -10,7 +10,7 @@ on the target.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: update for autoreconf/configure.in]
-Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 [Aduskett: update for 7.3.0]
 ---
  configure.ac | 9 ++-------
