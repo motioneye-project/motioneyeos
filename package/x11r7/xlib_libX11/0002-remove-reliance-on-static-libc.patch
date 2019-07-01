@@ -1,0 +1,36 @@
+From fc3c35853429ac7b4b7a1d91f639b7c3b946e1b6 Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Mon, 1 Jul 2019 15:26:00 -0400
+Subject: [PATCH] remove reliance on static libc.
+
+As per commit: https://gitlab.freedesktop.org/xorg/lib/libx11/commit/4645e219133458781e3fb48eaea6a74cccb1b9aa
+
+"For Windows targets, libtool uses a wrapper executable, not a wrapper
+script (see [1]), which it compiles with the host compiler.  This
+doesn't work when cross-compiling."
+
+Because of this change, builds fail on Linux hosts without a static libc, this
+patch reverts this change.
+
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ src/util/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/util/Makefile.am b/src/util/Makefile.am
+index 3731437..a051567 100644
+--- a/src/util/Makefile.am
++++ b/src/util/Makefile.am
+@@ -10,7 +10,7 @@ AM_CPPFLAGS = \
+ CC = @CC_FOR_BUILD@
+ CPPFLAGS = @CPPFLAGS_FOR_BUILD@
+ CFLAGS = @CFLAGS_FOR_BUILD@
+-LDFLAGS = @LDFLAGS_FOR_BUILD@ -all-static
++LDFLAGS = @LDFLAGS_FOR_BUILD@
+ LIBS =
+ EXEEXT = @EXEEXT_FOR_BUILD@
+ 
+-- 
+2.21.0
+
