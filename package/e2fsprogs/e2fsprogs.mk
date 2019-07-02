@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-E2FSPROGS_VERSION = 1.44.5
+E2FSPROGS_VERSION = 1.45.2
 E2FSPROGS_SOURCE = e2fsprogs-$(E2FSPROGS_VERSION).tar.xz
 E2FSPROGS_SITE = $(BR2_KERNEL_MIRROR)/linux/kernel/people/tytso/e2fsprogs/v$(E2FSPROGS_VERSION)
 E2FSPROGS_LICENSE = GPL-2.0, MIT-like with advertising clause (libss and libet)
@@ -28,7 +28,8 @@ HOST_E2FSPROGS_CONF_OPTS = \
 	--disable-libuuid \
 	--disable-testio-debug \
 	--enable-symlink-install \
-	--enable-elf-shlibs
+	--enable-elf-shlibs \
+	--with-crond-dir=no
 
 # Set the binary directories to "/bin" and "/sbin", as busybox does,
 # so that we do not end up with two versions of e2fs tools.
