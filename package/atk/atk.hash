@@ -1,5 +1,5 @@
-# From http://ftp.gnome.org/pub/gnome/sources/atk/2.30/atk-2.30.0.sha256sum
-sha256 dd4d90d4217f2a0c1fee708a555596c2c19d26fef0952e1ead1938ab632c027b atk-2.30.0.tar.xz
+# From http://ftp.gnome.org/pub/gnome/sources/atk/2.33/atk-2.33.3.sha256sum
+sha256 532d1081e87b9f0a8d71733101e791818442fa1896531621d1aecc189e1a4ffe atk-2.33.3.tar.xz
 
 # Hash for license file
 sha256 d245807f90032872d1438d741ed21e2490e1175dc8aa3afa5ddb6c8e529b58e5 COPYING
