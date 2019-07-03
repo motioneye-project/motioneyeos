@@ -19,7 +19,10 @@ GUPNP_TOOLS_DEPENDENCIES = \
 	gssdp \
 	gupnp \
 	libsoup \
-	libgtk3
+	libgtk3 \
+	$(TARGET_NLS_DEPENDENCIES)
+
+GUPNP_TOOLS_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
 
 ifeq ($(BR2_PACKAGE_GUPNP_AV),y)
 GUPNP_TOOLS_CONF_OPTS += --with-av
