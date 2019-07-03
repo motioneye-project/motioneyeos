@@ -5,7 +5,7 @@
 ################################################################################
 
 GUPNP_AV_VERSION_MAJOR = 0.12
-GUPNP_AV_VERSION = $(GUPNP_AV_VERSION_MAJOR).10
+GUPNP_AV_VERSION = $(GUPNP_AV_VERSION_MAJOR).11
 GUPNP_AV_SOURCE = gupnp-av-$(GUPNP_AV_VERSION).tar.xz
 GUPNP_AV_SITE = http://ftp.gnome.org/pub/gnome/sources/gupnp-av/$(GUPNP_AV_VERSION_MAJOR)
 GUPNP_AV_LICENSE = LGPL-2.0+
