@@ -1,5 +1,7 @@
-# Locally generated
-sha256 755c68029bbd05a17784262e56021362740783d15868dab9402a125ef35eedaf  cog-0.3.0.tar.gz
+# From https://github.com/Igalia/cog/releases/tag/v0.3.1
+md5 65bb078aad576b8402f973234e86cc82 cog-0.3.1.tar.xz
+sha1 d73b060618f342accb12db71a7578940c2243d4c cog-0.3.1.tar.xz
+sha256 ca7eae333cc02b947ec3d657a2090f01a9b08f9fabb855a585472edafbd9e7eb cog-0.3.1.tar.xz
 
 # Hashes for license files:
 sha256 e6c42d93c68b292bcccf6d2ec3e13da85df90b718ba27c2c2a01053a9d009252  COPYING
