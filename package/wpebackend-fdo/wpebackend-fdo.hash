@@ -1,7 +1,7 @@
-# From https://wpewebkit.org/releases/wpebackend-fdo-1.2.0.tar.xz.sums
-md5 74e1b2fc2bc19933b17ff4f8435f67cd wpebackend-fdo-1.2.0.tar.xz
-sha1 60559697512fd483c1d918b708a3d1d130b74a0a wpebackend-fdo-1.2.0.tar.xz
-sha256 b1bb261273772af8f7d96d94989fc2ed0445ec06c7eb21f47a1b94e52422ddd5 wpebackend-fdo-1.2.0.tar.xz
+# From https://wpewebkit.org/releases/wpebackend-fdo-1.2.1.tar.xz.sums
+md5 fc76ac572ed03da8237d1e3e3991d0c3 wpebackend-fdo-1.2.1.tar.xz
+sha1 8c994a25839b9df214c148c8892ee2c6f88ebbde wpebackend-fdo-1.2.1.tar.xz
+sha256 6ef0852ecb9513a6789f8bbb9533083fcb165bb2d762eeb6d31e0b58c708cca0 wpebackend-fdo-1.2.1.tar.xz
 
 # Hashes for license files:
 sha256 c9f6803371047fad3e72200ec6cd226329a5ee08ac61104c8211c2761fb46825 COPYING
