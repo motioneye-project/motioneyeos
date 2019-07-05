@@ -12,7 +12,6 @@ GLIB_NETWORKING_INSTALL_STAGING = YES
 GLIB_NETWORKING_DEPENDENCIES = \
 	$(TARGET_NLS_DEPENDENCIES) \
 	host-pkgconf \
-	host-intltool \
 	libglib2 \
 	gnutls
 
