@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-FREESWITCH_VERSION = 1.8.6
+FREESWITCH_VERSION = 1.8.7
 FREESWITCH_SOURCE = freeswitch-$(FREESWITCH_VERSION).tar.xz
-FREESWITCH_SITE = http://files.freeswitch.org/freeswitch-releases
+FREESWITCH_SITE = https://files.freeswitch.org/freeswitch-releases
 # External modules need headers/libs from staging
 FREESWITCH_INSTALL_STAGING = YES
 FREESWITCH_LICENSE = MPL-1.1, \
