@@ -4,28 +4,18 @@
 #
 ################################################################################
 
-OPKG_VERSION = 0.3.6
+OPKG_VERSION = 0.4.1
 OPKG_SITE = http://downloads.yoctoproject.org/releases/opkg
 OPKG_DEPENDENCIES = host-pkgconf libarchive
 OPKG_LICENSE = GPL-2.0+
 OPKG_LICENSE_FILES = COPYING
 OPKG_INSTALL_STAGING = YES
 OPKG_CONF_OPTS = --disable-curl
-# Populate the conf/ directory
-OPKG_AUTORECONF = YES
 
 # Ensure directory for lockfile exists
 define OPKG_CREATE_LOCKDIR
 	mkdir -p $(TARGET_DIR)/usr/lib/opkg
 endef
-
-# The conf/ directory contains symlinks to host automake and libtool provided
-# scripts. Don't rely on them being present.
-define OPKG_REMOVE_AUTOTOOLS_SYMLINKS
-	rm $(@D)/conf/*
-endef
-
-OPKG_POST_EXTRACT_HOOKS += OPKG_REMOVE_AUTOTOOLS_SYMLINKS
 
 ifeq ($(BR2_PACKAGE_OPKG_GPG_SIGN),y)
 OPKG_CONF_OPTS += --enable-gpg
