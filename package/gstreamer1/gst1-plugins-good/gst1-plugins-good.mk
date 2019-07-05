@@ -25,8 +25,7 @@ GST1_PLUGINS_GOOD_CONF_OPTS = \
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_GOOD_CONF_OPTS += \
 	--disable-libdv \
-	--disable-dv1394 \
-	--disable-shout2
+	--disable-dv1394
 
 GST1_PLUGINS_GOOD_DEPENDENCIES = gstreamer1 gst1-plugins-base
 
@@ -341,6 +340,13 @@ GST1_PLUGINS_GOOD_DEPENDENCIES += qt5x11extras
 endif
 else
 GST1_PLUGINS_GOOD_CONF_OPTS += --disable-qt
+endif
+
+ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_SHOUT2),y)
+GST1_PLUGINS_GOOD_CONF_OPTS += --enable-shout2
+GST1_PLUGINS_GOOD_DEPENDENCIES += libshout
+else
+GST1_PLUGINS_GOOD_CONF_OPTS += --disable-shout2
 endif
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_V4L2),y)
