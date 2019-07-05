@@ -1,8 +1,6 @@
-# From https://lists.gnupg.org/pipermail/gnupg-announce/2018q4/000429.html
-sha1 6f1828fcd7de4366ca063e57f35e4ab24bc91baf  gpgme-1.12.0.tar.bz2
 # Locally calculated after checking pgp signature
-# https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.12.0.tar.bz2.sig
+# https://gnupg.org/ftp/gcrypt/gpgme/gpgme-1.13.1.tar.bz2.sig
 # using key D8692123C4065DEA5E0F3AB5249B39D24F25E3B6
-sha256 b4dc951c3743a60e2e120a77892e9e864fb936b2e58e7c77e8581f4d050e8cd8  gpgme-1.12.0.tar.bz2
+sha256 c4e30b227682374c23cddc7fdb9324a99694d907e79242a25a4deeedb393be46  gpgme-1.13.1.tar.bz2
 # Locally calculated
 sha256 ca0061fc1381a3ab242310e4b3f56389f28e3d460eb2fd822ed7a21c6f030532  COPYING.LESSER
