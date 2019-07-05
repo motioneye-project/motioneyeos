@@ -970,6 +970,7 @@ F:	package/f2fs-tools/
 F:	package/pigpio/
 F:	package/python-aioblescan/
 F:	package/python-falcon/
+F:	package/python-ifaddr/
 F:	package/python-mimeparse/
 F:	package/python-pigpio/
 F:	package/python-pyjwt/

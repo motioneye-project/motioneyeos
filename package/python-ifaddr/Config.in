@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_IFADDR
+	bool "python-ifaddr"
+	help
+	  Enumerates all IP addresses on all network adapters of the
+	  system.
+
+	  https://github.com/pydron/ifaddr
