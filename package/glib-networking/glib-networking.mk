@@ -16,7 +16,6 @@ GLIB_NETWORKING_DEPENDENCIES = \
 	gnutls
 
 GLIB_NETWORKING_CONF_OPTS = \
-	-Dca_certificates_path=/etc/ssl/certs/ca-certificates.crt \
 	-Dlibproxy_support=false \
 	-Dgnome_proxy_support=false \
 	-Dpkcs11_support=false
