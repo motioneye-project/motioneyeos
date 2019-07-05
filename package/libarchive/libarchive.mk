@@ -4,10 +4,10 @@
 #
 ################################################################################
 
-LIBARCHIVE_VERSION = 3.3.3
-LIBARCHIVE_SITE = http://www.libarchive.org/downloads
+LIBARCHIVE_VERSION = 3.4.0
+LIBARCHIVE_SITE = https://www.libarchive.de/downloads
 LIBARCHIVE_INSTALL_STAGING = YES
-LIBARCHIVE_LICENSE = BSD-2-Clause, BSD-3-Clause
+LIBARCHIVE_LICENSE = BSD-2-Clause, BSD-3-Clause, CC0-1.0, OpenSSL, Apache-2.0
 LIBARCHIVE_LICENSE_FILES = COPYING
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDTAR),y)
