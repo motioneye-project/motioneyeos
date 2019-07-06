@@ -1,0 +1,40 @@
+From 693e3a3fe281dd618dd244b245c9bb0a00c7d893 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 6 Jul 2019 08:36:11 +0200
+Subject: [PATCH] tvhcsa.c: include stdio.h
+
+Fixes uclibc build error:
+
+CC              src/descrambler/tvhcsa.o
+In file included from /home/buildroot/autobuild/instance-0/output/build/tvheadend-8f1de1621d78c91431238176bf4f6290870a031a/src/tvhlog.h:30:0,
+                 from src/descrambler/tvhcsa.h:30,
+                 from src/descrambler/tvhcsa.c:19:
+/home/buildroot/autobuild/instance-0/output/build/tvheadend-8f1de1621d78c91431238176bf4f6290870a031a/src/tvh_thread.h:163:25:
+ error: unknown type name '__do_not_use_pthread_mutex_t'
+ #define pthread_mutex_t __do_not_use_pthread_mutex_t
+
+detected by buildroot autobuilder:
+http://autobuild.buildroot.net/results/627/627e7080e655005d6724b9977670cc73059d6281/
+
+Patch sent upstream: https://github.com/tvheadend/tvheadend/pull/1285
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/descrambler/tvhcsa.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/descrambler/tvhcsa.c b/src/descrambler/tvhcsa.c
+index 1deefc50f..e97c14e99 100644
+--- a/src/descrambler/tvhcsa.c
++++ b/src/descrambler/tvhcsa.c
+@@ -16,6 +16,7 @@
+  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  */
+ 
++#include <stdio.h>
+ #include "tvhcsa.h"
+ #include "input.h"
+ #include "input/mpegts/tsdemux.h"
+-- 
+2.20.1
+
