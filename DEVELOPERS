@@ -296,6 +296,7 @@ F:	package/fetchmail/
 F:	package/ffmpeg/
 F:	package/freeswitch/
 F:	package/freeswitch-mod-bcg729/
+F:	package/freetype/
 F:	package/ghostscript/
 F:	package/giflib/
 F:	package/gli/
