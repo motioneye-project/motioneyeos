@@ -1,3 +1,28 @@
+2019.05.1, Released July 7th, 2019
+
+	Important / security related fixes.
+
+	arch: x86: Fix typo breaking 'core-avx2' variant
+
+	linux: Workaround -Werror related build failure on powerpc,
+	by forcing CONFIG_PPC_DISABLE_WERROR on.
+
+	support/testing: Emulate a machine with 256MB RAM to fix
+	issues with certain tests running out of memory.
+
+	test-pkg: Correct long option handling and clean output dir
+	after a successful build to save disk space.
+
+	Defconfigs: QEMU: use 'rootwait' kernel option to ensure root
+	partition is available before mounting.
+
+	Updated/fixed packages: barebox, busybox, bzip2, davfs2,
+	dialog, docker-cli, docker-engine, exim, expat, faad2,
+	haveged, irssi, libcamera, libcdaudio, libcurl, libglib2,
+	libressl, libsecret, lmbench, meson, monit, php, postgresql,
+	psplash, python-django, qt5base, tvheadend, webkitgtk,
+	xserver_xorg-server, znc
+
 2019.05, released June 2nd, 2019
 
 	Various fixes.
