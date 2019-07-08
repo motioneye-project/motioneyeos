@@ -20,7 +20,7 @@ You will find in output/images/ the following files:
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
-  - u-boot.imx
+  - u-boot-dtb.imx
   - zImage
 
 Flash the eMMC image
@@ -61,11 +61,11 @@ Connect a USB to serial adapter between the host PC and warp7 serial
 USB port, and also a USB cable between the OTG warp7 port and the host
 PC.
 
-Copy u-boot.imx to the imx_usb_loader folder.
+Copy u-boot-dtb.imx to the imx_usb_loader folder.
 
-Load u-boot.imx via USB:
+Load u-boot-dtb.imx via USB:
 
-$ sudo ./imx_usb u-boot.imx
+$ sudo ./imx_usb u-boot-dtb.imx
 
 Then U-Boot should start and its messages will appear in the console program.
 
@@ -75,6 +75,20 @@ Use the default environment variables:
 
 => env default -f -a
 => saveenv
+
+Run the DFU command:
+=> dfu 0 mmc 0
+
+Transfer u-boot-dtb.imx that will be flashed into the eMMC:
+
+$ sudo dfu-util -D u-boot-dtb.imx -a boot
+
+Then on the U-Boot prompt the following message should be seen after a
+successful upgrade:
+
+#DOWNLOAD ... OK
+Ctrl+C to exit ...
+
 => ums 0 mmc 0
 
 sudo dd if=output/images/sdcard.img of=/dev/<your-emmc-device>
