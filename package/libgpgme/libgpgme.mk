@@ -23,8 +23,8 @@ LIBGPGME_CONF_OPTS = \
 	--disable-gpg-test \
 	--enable-languages=$(LIBGPGME_LANGUAGE_BINDINGS)
 
-# C++ bindings require a C++11 capable gcc
-ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),yy)
+# C++ bindings require a C++11 capable gcc, and -Wsuggest-override support
+ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_TOOLCHAIN_GCC_AT_LEAST_5),yy)
 LIBGPGME_LANGUAGE_BINDINGS := $(LIBGPGME_LANGUAGE_BINDINGS),cpp
 endif
 
