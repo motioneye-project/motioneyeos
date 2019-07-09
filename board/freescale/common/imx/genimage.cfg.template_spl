@@ -26,9 +26,9 @@ image sdcard.img {
     offset = 1024
   }
 
-  partition u-boot-img {
+  partition u-boot {
     in-partition-table = "no"
-    image = "u-boot.img"
+    image = "%UBOOTBIN%"
     offset = 69K
   }
 
