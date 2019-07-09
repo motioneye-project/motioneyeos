@@ -20,9 +20,62 @@ You will find in output/images/ the following files:
   - rootfs.ext4
   - rootfs.tar
   - sdcard.img
-  - u-boot.img
+  - u-boot-dtb.img
   - SPL
   - zImage
+
+Flash U-Boot and SPL
+=====
+
+Note: This method is convenient for development purposes.
+If the eMMC has already a U-Boot flashed with DFU support then
+the user can go to step 2 below in order to update U-Boot.
+
+Put pico board in USB download mode (refer to the PICO-iMX7D Quick Start Guide
+page 3)
+
+Connect a USB to serial adapter between the host PC and pico.
+
+Connect a USB cable between the OTG pico port and the host PC.
+
+Note: Some computers may be a bit strict with USB current draw and will
+shut down their ports if the draw is too high. The solution for that is
+to use an externally powered USB hub between the board and the host computer.
+
+Open a terminal program such as minicom.
+
+Copy SPL and u-boot-dtb.img to the imx_usb_loader folder.
+
+Load the SPL binary via USB:
+
+$ sudo ./imx_usb SPL
+
+Load the u-boot-dtb.img binary via USB:
+
+$ sudo ./imx_usb u-boot-dtb.img
+
+Then U-Boot starts and its messages appear in the console program.
+
+Use the default environment variables:
+
+=> env default -f -a
+=> saveenv
+
+Run the DFU agent so we can flash the new images using dfu-util tool:
+
+=> dfu 0 mmc 0
+
+Flash SPL and u-boot-dtb.img into the eMMC running the following commands on a PC:
+
+$ sudo dfu-util -D SPL -a spl
+
+$ sudo dfu-util -D u-boot-dtb.img -a u-boot
+
+Remove power from the pico board.
+
+Put pico board into normal boot mode.
+
+Power up the board and the new updated U-Boot should boot from eMMC.
 
 Flash the eMMC
 ==============
