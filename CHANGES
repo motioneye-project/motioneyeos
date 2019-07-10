@@ -139,6 +139,37 @@
 	#11761: Building custom kernel 5.1-rc3 or later breaks on objtool
 	#11816: Only selected coreutils binaries are installed
 
+2019.02.4, Released July 10th, 2019
+
+	Important / security related fixes.
+
+	arch: x86: Fix typo breaking 'core-avx2' variant, add Westmere
+	variant.
+
+	linux: Workaround -Werror related build failure on powerpc,
+	by forcing CONFIG_PPC_DISABLE_WERROR on.
+
+	support/testing: Emulate a machine with 256MB RAM to fix
+	issues with certain tests running out of memory.
+
+	test-pkg: Correct long option handling and clean output dir
+	after a successful build to save disk space.
+
+	Ensure custom <pkg>_OVERRIDE_SRCDIR_RSYNC_EXCLUSIONS are
+	passed before the standard exclusions so they are not ignored
+	by rsync when using override-srcdir.
+
+	Defconfigs: QEMU: use 'rootwait' kernel option to ensure root
+	partition is available before mounting.
+
+	Updated/fixed packages: barebox, bzip2, davfs2, dbus, dialog,
+	docker-cli, docker-engine, expat, faad2, ffmpeg, freeswitch,
+	gerbera, haveged, irssi, libcdadio, libgit2, libglib2,
+	libsecret, libvncserver, lmbench, logrotate, mariadb, meson,
+	mongoose, monit, mpd, openblas, php, postgresql, psplash,
+	python, python-django, python3, qt5base, samba4, taglib,
+	tvheadend, vlc, webkitgtk, xserver_xorg-server, znc
+
 2019.02.3, Released June 7th, 2019
 
 	Important / security related fixes.
