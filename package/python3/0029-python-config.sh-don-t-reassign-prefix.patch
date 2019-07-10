@@ -39,7 +39,7 @@ index 9e259c0..8b249d9 100644
  exec_prefix=$(echo "$exec_prefix_build" | sed "s#^$exec_prefix_build#$prefix_real#")
  exec_prefix_real=${prefix_real}
  includedir=$(echo "@includedir@" | sed "s#^$prefix_build#$prefix_real#")
-@@ -49,7 +49,7 @@ LINKFORSHARED="@LINKFORSHARED@"
+@@ -48,7 +48,7 @@ LINKFORSHARED="@LINKFORSHARED@"
  OPT="@OPT@"
  PY_ENABLE_SHARED="@PY_ENABLE_SHARED@"
  LDVERSION="@LDVERSION@"

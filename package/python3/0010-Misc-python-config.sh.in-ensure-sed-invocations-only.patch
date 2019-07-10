@@ -53,7 +53,7 @@ index d1d3275..9e259c0 100644
  VERSION="@VERSION@"
  LIBM="@LIBM@"
  LIBC="@LIBC@"
-@@ -49,7 +50,7 @@ OPT="@OPT@"
+@@ -48,7 +49,7 @@ OPT="@OPT@"
  PY_ENABLE_SHARED="@PY_ENABLE_SHARED@"
  LDVERSION="@LDVERSION@"
  LIBDEST=${prefix_real}/lib/python${VERSION}

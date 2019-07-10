@@ -23,7 +23,7 @@ diff --git a/setup.py b/setup.py
 index 1a7085c5c4..f33d0b57b8 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1632,7 +1632,8 @@ class PyBuildExt(build_ext):
+@@ -1671,7 +1671,8 @@ class PyBuildExt(build_ext):
              missing.append('_tkinter')
  
          # Build the _uuid module if possible
