@@ -12,24 +12,27 @@ GSTREAMER1_LICENSE_FILES = COPYING
 GSTREAMER1_LICENSE = LGPL-2.0+, LGPL-2.1+
 
 GSTREAMER1_CONF_OPTS = \
-	--disable-examples \
-	--disable-tests \
-	--disable-failing-tests \
-	--disable-valgrind \
-	--disable-benchmarks \
-	--disable-introspection \
-	$(if $(BR2_PACKAGE_GSTREAMER1_CHECK),,--disable-check) \
-	$(if $(BR2_PACKAGE_GSTREAMER1_TRACE),,--disable-trace) \
-	$(if $(BR2_PACKAGE_GSTREAMER1_PARSE),,--disable-parse) \
-	$(if $(BR2_PACKAGE_GSTREAMER1_GST_DEBUG),,--disable-gst-debug) \
-	$(if $(BR2_PACKAGE_GSTREAMER1_PLUGIN_REGISTRY),,--disable-registry) \
-	$(if $(BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS),,--disable-tools)
+	-Dexamples=disabled \
+	-Dtests=disabled \
+	-Dbenchmarks=disabled \
+	-Dgtk_doc=disabled \
+	-Dintrospection=disabled \
+	-Dglib-asserts=disabled \
+	-Dglib-checks=disabled \
+	-Dgobject-cast-checks=disabled \
+	-Dcheck=$(if $(BR2_PACKAGE_GSTREAMER1_CHECK),enabled,disabled) \
+	-Dtracer_hooks=$(if $(BR2_PACKAGE_GSTREAMER1_TRACE),true,false) \
+	-Doption-parsing=$(if $(BR2_PACKAGE_GSTREAMER1_PARSE),true,false) \
+	-Dgst_debug=$(if $(BR2_PACKAGE_GSTREAMER1_GST_DEBUG),true,false) \
+	-Dregistry=$(if $(BR2_PACKAGE_GSTREAMER1_PLUGIN_REGISTRY),true,false) \
+	-Dtools=$(if $(BR2_PACKAGE_GSTREAMER1_INSTALL_TOOLS),enabled,disabled)
 
 GSTREAMER1_DEPENDENCIES = \
 	host-bison \
 	host-flex \
 	host-pkgconf \
 	libglib2 \
-	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind)
+	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind) \
+	$(if $(BR2_PACKAGE_VALGRIND),valgrind)
 
-$(eval $(autotools-package))
+$(eval $(meson-package))
