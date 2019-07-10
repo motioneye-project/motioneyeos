@@ -1,8 +1,8 @@
 # Hash from: https://download.qt.io/official_releases/qt/5.6/5.6.3/submodules/qtsensors-opensource-src-5.6.3.tar.xz.mirrorlist
 sha256 7502d4dc5571865a7eea2a4180c3be396dfb8ce22df4c4f3d7e9ff32ab334973 qtsensors-opensource-src-5.6.3.tar.xz
 
-# Hash from: https://download.qt.io/official_releases/qt/5.12/5.12.2/submodules/qtsensors-everywhere-src-5.12.2.tar.xz.sha256
-sha256 758a131ad86c4b8b8364e48d659a680ed12d03c091c5ab2958d06b7b0aa2e50c qtsensors-everywhere-src-5.12.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.12/5.12.4/submodules/qtsensors-everywhere-src-5.12.4.tar.xz.sha256
+sha256 95873c7ea5960008d6eb41368ca64d68fbd05594ca8c2cd848b1612fc4aec0a9 qtsensors-everywhere-src-5.12.4.tar.xz
 
 # Hashes for license files:
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643 LICENSE.GPL2

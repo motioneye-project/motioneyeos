@@ -1,5 +1,5 @@
-# Hash from: https://download.qt.io/official_releases/qt/5.12/5.12.2/submodules/qtwebengine-everywhere-src-5.12.2.tar.xz.sha256
-sha256 082b1d6e60c1be61881bc8533acc67d9688620d6b3a538417f62b27b34ead493 qtwebengine-everywhere-src-5.12.2.tar.xz
+# Hash from: https://download.qt.io/official_releases/qt/5.12/5.12.4/submodules/qtwebengine-everywhere-src-5.12.4.tar.xz.sha256
+sha256 fccf5c945412c19c3805323211b504ac8becbf191c638a2dc85ec91abfb1b331 qtwebengine-everywhere-src-5.12.4.tar.xz
 
 # Locally calculated
 sha256 f34787ef0342c614b667186a6ec2f5d6b9d650e30142a2788a589a89743e88e9  LICENSE.Chromium
@@ -41,6 +41,7 @@ sha256 584e795ba5833279c327245594d6dc216fc664144fa3626a0bdf136bc00af76c  src/3rd
 sha256 af175b9d96ee93c21a036152e1b905b0b95304d4ae8c2c921c7609100ba8df7e  src/3rdparty/chromium/third_party/axe-core/LICENSE
 sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  src/3rdparty/chromium/third_party/bazel/LICENSE
 sha256 0518cf49c09398259d54fcfff0b5fd36456162c6439886660e53627b3073ef22  src/3rdparty/chromium/third_party/blanketjs/LICENSE
+sha256 228eadfc94c664f3e31833d7eb2d682127038cb44a0d482b6d6c1026f3fce306  src/3rdparty/chromium/third_party/blink/renderer/build/scripts/license.pyc
 sha256 0b5d3a7cc325942567373b0ecd757d07c132e0ebd7c97bfc63f7e1a76094edb4  src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-APPLE
 sha256 7555fa34bc131a75ca56d65c40cc1ea8f9515d23e353d4c15d58573a042f7805  src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-LGPL-2
 sha256 f2b3bd09663381deb99721109d22b47af1213bb43007a8b56a06c6375c8050ce  src/3rdparty/chromium/third_party/blink/renderer/core/LICENSE-LGPL-2.1
