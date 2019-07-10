@@ -68,7 +68,7 @@ uboot_image()
 		echo "u-boot.imx"
 	elif grep -Eq "^BR2_TARGET_UBOOT_FORMAT_DTB_IMG=y$" ${BR2_CONFIG}; then
 	    echo "u-boot-dtb.img"
-	elif grep -Eq "^BR2_TARGET_UBOOT_FORMAT_DTB_IMG=y$" ${BR2_CONFIG}; then
+	elif grep -Eq "^BR2_TARGET_UBOOT_FORMAT_IMG=y$" ${BR2_CONFIG}; then
 	    echo "u-boot.img"
 	fi
 }
