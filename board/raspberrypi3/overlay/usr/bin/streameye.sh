@@ -143,8 +143,22 @@ function invalid_opt() {
 function start() {
     source ${STREAMEYE_CONF}
     streameye_opts="-p ${PORT}"
-    if [ -n "${CREDENTIALS}" ] && [ "${AUTH}" = "basic" ]; then
-        streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
+    rtsp_src_auth=""
+    rtsp_sink_auth=""
+    if [ -n "${CREDENTIALS}" ]; then
+        username=`echo "${CREDENTIALS}" | cut -d ':' -f 1`
+        password=`echo "${CREDENTIALS}" | cut -d ':' -f 2`
+        if [ "${AUTH}" = "basic" ]; then
+            streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
+            rtsp_sink_auth="${username}:${password}@"
+            rtsp_sink_auth="-A"
+            if [ -n "${username}" ]; then rtsp_src_auth="${rtsp_src_auth} -U ${username}"; fi
+            if [ -n "${password}" ]; then rtsp_src_auth="${rtsp_src_auth} -P ${password}"; fi
+        elif [ "${AUTH}" = "digest" ]; then
+            rtsp_sink_auth="${username}:${password}@"
+            if [ -n "${username}" ]; then rtsp_src_auth="-U ${username}"; fi
+            if [ -n "${password}" ]; then rtsp_src_auth="${rtsp_src_auth} -P ${password}"; fi
+        fi
     fi
     
     if [ "${PROTO}" = "rtsp" ]; then
@@ -199,9 +213,9 @@ function start() {
                 streameye_opts="${streameye_opts} -d"
             fi
 
-            test-launch -p ${RTSP_PORT} -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
+            test-launch -p ${RTSP_PORT} -m h264 ${rtsp_src_auth} "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
             sleep 10
-            gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:${RTSP_PORT}/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
+            gst-launch-1.0 -v rtspsrc location=rtsp://${rtsp_sink_auth}127.0.0.1:${RTSP_PORT}/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
             sleep 5
         fi
 

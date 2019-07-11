@@ -1,0 +1,87 @@
+diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rtsp-server-1.14.4/examples/test-launch.c
+--- gst1-rtsp-server-1.14.4.org/examples/test-launch.c	2019-07-11 23:28:16.637688100 +1000
++++ gst1-rtsp-server-1.14.4/examples/test-launch.c	2019-07-12 00:01:46.123301915 +1000
+@@ -26,12 +26,21 @@
+ 
+ static char *port = (char *) DEFAULT_RTSP_PORT;
+ static char *mount_point = (char *) DEFAULT_RTSP_MOUNT_POINT;
++static char *username = "";
++static char *password = "";
++static gboolean basic_auth_mode = FALSE;
+ 
+ static GOptionEntry entries[] = {
+   {"port", 'p', 0, G_OPTION_ARG_STRING, &port,
+       "Port to listen on (default: " DEFAULT_RTSP_PORT ")", "PORT"},
+   {"mount", 'm', 0, G_OPTION_ARG_STRING, &mount_point,
+       "Stream mount point (default: " DEFAULT_RTSP_MOUNT_POINT ")", "MOUNT"},
++  {"username", 'U', 0, G_OPTION_ARG_STRING, &username,
++      "Basic/Digest auth username", "USERNAME"},
++  {"password", 'P', 0, G_OPTION_ARG_STRING, &password,
++      "Basic/Digest auth password", "PASSWORD"},
++  {"basic-auth", 'A', 0, G_OPTION_ARG_NONE, &basic_auth_mode,
++      "Use basic auth mode (default: digest mode)", "BASIC-AUTH"},
+   {NULL}
+ };
+ 
+@@ -44,6 +53,9 @@ main (int argc, char *argv[])
+   GstRTSPMediaFactory *factory;
+   GOptionContext *optctx;
+   GError *error = NULL;
++  GstRTSPAuth *auth;
++  GstRTSPToken *token;
++  gchar *basic;
+ 
+   optctx = g_option_context_new ("<launch line> - Test RTSP Server, Launch\n\n"
+       "Example: \"( videotestsrc ! x264enc ! rtph264pay name=pay0 pt=96 )\"");
+@@ -86,9 +98,51 @@ main (int argc, char *argv[])
+   /* attach the test factory to the /test url */
+   gst_rtsp_mount_points_add_factory (mounts, mount_string, factory);
+ 
++  if (strlen(username) > 0) {
++    g_print("username:password = %s:%s\n", username, password);
++    gst_rtsp_media_factory_add_role (factory, username,
++      GST_RTSP_PERM_MEDIA_FACTORY_ACCESS, G_TYPE_BOOLEAN, TRUE,
++      GST_RTSP_PERM_MEDIA_FACTORY_CONSTRUCT, G_TYPE_BOOLEAN, TRUE, NULL);
++
++    gst_rtsp_media_factory_add_role (factory, "anonymous",
++        GST_RTSP_PERM_MEDIA_FACTORY_ACCESS, G_TYPE_BOOLEAN, TRUE,
++        GST_RTSP_PERM_MEDIA_FACTORY_CONSTRUCT, G_TYPE_BOOLEAN, FALSE, NULL);
++  }
++
+   /* don't need the ref to the mapper anymore */
+   g_object_unref (mounts);
+ 
++  if (strlen(username) > 0) {
++    /* make a new authentication manager */
++    auth = gst_rtsp_auth_new ();
++    if (!basic_auth_mode)
++      gst_rtsp_auth_set_supported_methods (auth, GST_RTSP_AUTH_DIGEST);
++
++    /* make default token, it has no permissions */
++    token =
++        gst_rtsp_token_new (GST_RTSP_TOKEN_MEDIA_FACTORY_ROLE, G_TYPE_STRING,
++        "anonymous", NULL);
++    gst_rtsp_auth_set_default_token (auth, token);
++    gst_rtsp_token_unref (token);
++
++    /* make "username" token */
++    token =
++        gst_rtsp_token_new (GST_RTSP_TOKEN_MEDIA_FACTORY_ROLE, G_TYPE_STRING,
++        username, NULL);
++    if (!basic_auth_mode)
++      gst_rtsp_auth_add_digest (auth, username, password, token);
++    else {
++      basic = gst_rtsp_auth_make_basic (username, password);
++      gst_rtsp_auth_add_basic (auth, basic, token);
++      g_free (basic);
++    }
++    gst_rtsp_token_unref (token);
++
++    /* set as the server authentication manager */
++    gst_rtsp_server_set_auth (server, auth);
++    g_object_unref (auth);
++  }
++
+   /* attach the server to the default maincontext */
+   gst_rtsp_server_attach (server, NULL);
+ 
