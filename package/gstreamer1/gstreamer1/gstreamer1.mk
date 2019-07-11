@@ -33,6 +33,9 @@ GSTREAMER1_DEPENDENCIES = \
 	host-pkgconf \
 	libglib2 \
 	$(if $(BR2_PACKAGE_LIBUNWIND),libunwind) \
-	$(if $(BR2_PACKAGE_VALGRIND),valgrind)
+	$(if $(BR2_PACKAGE_VALGRIND),valgrind) \
+	$(TARGET_NLS_DEPENDENCIES)
+
+GSTREAMER1_LDFLAGS = $(TARGET_LDFLAGS) $(TARGET_NLS_LIBS)
 
 $(eval $(meson-package))
