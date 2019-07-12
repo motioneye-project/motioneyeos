@@ -73,7 +73,7 @@ basically two things that can be done:
     In the commit message of a patch fixing an autobuild failure, add a
     reference to the build result directory, as follows:
 ---------------------
-Fixes http://autobuild.buildroot.org/results/51000a9d4656afe9e0ea6f07b9f8ed374c2e4069
+Fixes: http://autobuild.buildroot.org/results/51000a9d4656afe9e0ea6f07b9f8ed374c2e4069
 ---------------------
 
 === Reviewing and testing patches
