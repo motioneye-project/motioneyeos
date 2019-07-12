@@ -27,5 +27,13 @@ HOST_XLIB_LIBXFONT2_DEPENDENCIES = \
 XLIB_LIBXFONT2_CONF_OPTS = --disable-devel-docs
 HOST_XLIB_LIBXFONT2_CONF_OPTS = --disable-devel-docs
 
+XLIB_LIBXFONT2_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+XLIB_LIBXFONT2_CFLAGS += -O0
+endif
+
+XLIB_LIBXFONT2_CONF_ENV = CFLAGS="$(XLIB_LIBXFONT2_CFLAGS)"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
