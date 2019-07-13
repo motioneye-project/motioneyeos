@@ -1,0 +1,48 @@
+From 172e4bc2a694162c1a38a758874b647234081b4c Mon Sep 17 00:00:00 2001
+From: Adam Duskett <Aduskett@gmail.com>
+Date: Wed, 29 May 2019 13:29:51 -0400
+Subject: [PATCH] ext/hls/meson.build: fix dependency logic
+
+Currently, if one was to set -Dhls-crypto to either libgcrypt or openssl
+instead of auto, the following lines would fail because hls_crypto_dep is not
+yet set:
+
+if not hls_crypto_dep.found() and ['auto', 'libgcrypt'].contains(hls_crypto)
+if not hls_crypto_dep.found() and ['auto', 'openssl'].contains(hls_crypto)
+
+Instead, change "if not hls_crypto_dep.found()" to "if not have_hls_crypto"
+which fixes the error.
+
+Upstream status: Accepted
+https://gitlab.freedesktop.org/gstreamer/gst-plugins-bad/merge_requests/372
+
+Signed-off-by: Adam Duskett <Aduskett@gmail.com>
+---
+ ext/hls/meson.build | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/ext/hls/meson.build b/ext/hls/meson.build
+index fb5a7d4cc..0d33327ad 100644
+--- a/ext/hls/meson.build
++++ b/ext/hls/meson.build
+@@ -23,7 +23,7 @@ if not hls_option.disabled()
+     endif
+   endif
+ 
+-  if not hls_crypto_dep.found() and ['auto', 'libgcrypt'].contains(hls_crypto)
++  if not have_hls_crypto and ['auto', 'libgcrypt'].contains(hls_crypto)
+     hls_crypto_dep = cc.find_library('gcrypt', required : false)
+     if hls_crypto_dep.found()
+       have_hls_crypto = true
+@@ -31,7 +31,7 @@ if not hls_option.disabled()
+     endif
+   endif
+ 
+-  if not hls_crypto_dep.found() and ['auto', 'openssl'].contains(hls_crypto)
++  if not have_hls_crypto and ['auto', 'openssl'].contains(hls_crypto)
+     hls_crypto_dep = dependency('openssl', required : false)
+     if hls_crypto_dep.found()
+       have_hls_crypto = true
+-- 
+2.21.0
+
