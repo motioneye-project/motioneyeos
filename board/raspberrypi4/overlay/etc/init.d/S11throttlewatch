@@ -1,0 +1,65 @@
+#!/bin/bash
+
+CHECK_INTERVAL=30
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+get_throttled_now() {
+    t=$(vcgencmd get_throttled | cut -d '=' -f 2)
+    test $((t & 1)) -ne 0 && echo -n "under-voltage "
+    test $((t & 2)) -ne 0 && echo -n "arm-frequency-capped "
+    test $((t & 4)) -ne 0 && echo -n "throttled "
+}
+
+get_throttled_since_boot() {
+    t=$(vcgencmd get_throttled | cut -d '=' -f 2)
+    test $((t &  65536)) -ne 0 && echo -n "under-voltage "
+    test $((t & 131072)) -ne 0 && echo -n "arm-frequency-capped "
+    test $((t & 262144)) -ne 0 && echo -n "throttled "
+}
+
+watch_now() {
+    while true; do
+        t=$(get_throttled_now)
+        if [[ -n "${t}" ]]; then
+            logger -t throttlewatch -s "currently: ${t}"
+        fi
+
+        sleep ${CHECK_INTERVAL}
+    done
+}
+
+watch_since_boot() {
+    while true; do
+        t=$(get_throttled_since_boot)
+        if [[ -n "${t}" ]]; then
+            logger -t throttlewatch -s "since boot: ${t}"
+            break
+        fi
+        
+        sleep ${CHECK_INTERVAL}
+    done
+}
+
+case "$1" in
+    start)
+        msg_begin "Starting throttle watcher"
+        watch_now &
+        watch_since_boot &
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        msg_begin "Stopping throttle watcher"
+        ps | grep throttlewatch | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    *)
+        echo $"Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?
+
