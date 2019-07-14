@@ -28,7 +28,7 @@ case "$1" in
         done
         
         # source os_conf again, as it might have changed after restore
-        test -f /etc/init.d/os_conf && source /etc/init.d/os_conf
+        test -s /etc/init.d/os_conf && source /etc/init.d/os_conf
         if [[ "${OS_DEBUG}" != "true" ]]; then
             mount -o remount,ro /boot
         fi

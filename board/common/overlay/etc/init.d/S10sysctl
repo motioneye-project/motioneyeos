@@ -17,9 +17,9 @@ fi
 case "$1" in
     start)
         msg_begin "Applying sysctl parameters"
-        test -f ${SYS_CONF} && sysctl -q -p ${SYS_CONF}
-        test -f ${CONF} && sysctl -q -p ${CONF}
-        test -f ${BOOT_CONF} && sysctl -q -p ${BOOT_CONF}
+        test -s ${SYS_CONF} && sysctl -q -p ${SYS_CONF}
+        test -s ${CONF} && sysctl -q -p ${CONF}
+        test -s ${BOOT_CONF} && sysctl -q -p ${BOOT_CONF}
         msg_done
         ;;
 

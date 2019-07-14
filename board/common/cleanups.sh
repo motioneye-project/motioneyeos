@@ -205,6 +205,7 @@ rm -f ${TARGET}/etc/init.d/S01syslogd
 rm -f ${TARGET}/etc/init.d/S10udev
 rm -f ${TARGET}/etc/init.d/S15watchdog
 rm -f ${TARGET}/etc/init.d/S20urandom
+rm -f ${TARGET}/etc/init.d/S21rngd
 rm -f ${TARGET}/etc/init.d/S49ntp
 rm -f ${TARGET}/etc/init.d/S50sshd
 rm -f ${TARGET}/etc/init.d/S50proftpd

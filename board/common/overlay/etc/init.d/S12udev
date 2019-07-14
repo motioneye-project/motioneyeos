@@ -6,7 +6,7 @@ PROG_UA="/sbin/udevadm"
 
 
 test -f ${PROG} || exit 0
-test -f ${CONF} || exit 0
+test -s ${CONF} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
