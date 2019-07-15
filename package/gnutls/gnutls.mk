@@ -46,7 +46,7 @@ endif
 
 # Prerequisite for crywrap
 ifeq ($(BR2_PACKAGE_ARGP_STANDALONE),y)
-GNUTLS_CONF_ENV += LIBS="-largp"
+GNUTLS_LIBS += -largp
 GNUTLS_DEPENDENCIES += argp-standalone
 endif
 
@@ -85,5 +85,11 @@ GNUTLS_CONF_OPTS += --with-default-trust-store-pkcs11=pkcs11:model=p11-kit-trust
 else ifeq ($(BR2_PACKAGE_CA_CERTIFICATES),y)
 GNUTLS_CONF_OPTS += --with-default-trust-store-file=/etc/ssl/certs/ca-certificates.crt
 endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+GNUTLS_LIBS += -latomic
+endif
+
+GNUTLS_CONF_ENV += LIBS="$(GNUTLS_LIBS)"
 
 $(eval $(autotools-package))
