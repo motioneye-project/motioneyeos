@@ -1,0 +1,42 @@
+From 060fef075d6e614cc4dabb6d4fe62ce9b3e0f299 Mon Sep 17 00:00:00 2001
+From: Nirbheek Chauhan <nirbheek@centricular.com>
+Date: Mon, 13 May 2019 13:24:42 +0530
+Subject: [PATCH] meson: Link to objects instea of static helper library
+
+Otherwise the objects from that static helper library are not included
+in the gstreamer-1.0 static library. This was supposed to be fixed in
+Meson, but the pull request hasn't been merged yet:
+https://github.com/mesonbuild/meson/pull/3939
+
+Closes https://gitlab.freedesktop.org/gstreamer/gstreamer/issues/398
+
+Upstream: https://cgit.freedesktop.org/gstreamer/gstreamer/commit/?id=b19de413b94d228b1460b0899f9b41b2b5233943
+
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ gst/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gst/meson.build b/gst/meson.build
+index 145e97a89..c753ff5e3 100644
+--- a/gst/meson.build
++++ b/gst/meson.build
+@@ -237,6 +237,7 @@ gst_incdirs = [configinc]
+ gst_gen_sources = [gstenum_h]
+ libgst = library('gstreamer-1.0', gst_sources,
+   gstenum_h, gstenum_c, gst_parse_sources, gst_registry_sources,
++  objects : printf_lib.extract_all_objects(),
+   version : libversion,
+   soversion : soversion,
+   darwin_versions : osxversion,
+@@ -244,7 +245,6 @@ libgst = library('gstreamer-1.0', gst_sources,
+   include_directories : [configinc,
+     # HACK, change include paths in .y and .l in final version.
+     include_directories('parse')],
+-  link_with : printf_lib,
+   install : true,
+   dependencies : [gobject_dep, gmodule_dep, glib_dep, mathlib, dl_dep] + backtrace_deps
+                    + platform_deps,
+--
+2.22.0
+
