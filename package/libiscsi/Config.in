@@ -1,5 +1,6 @@
 config BR2_PACKAGE_LIBISCSI
 	bool "libiscsi"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
 	help
 	  Libiscsi is a client-side library to implement the iSCSI
 	  protocol that can be used to access resource of an iSCSI
@@ -10,3 +11,6 @@ config BR2_PACKAGE_LIBISCSI
 	  for simpler applications.
 
 	  https://github.com/sahlberg/libiscsi  (no proper homepage)
+
+comment "libiscsi needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
