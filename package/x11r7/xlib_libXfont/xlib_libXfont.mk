@@ -30,5 +30,13 @@ ifeq ($(BR2_microblaze),y)
 XLIB_LIBXFONT_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -D__ELF__"
 endif
 
+XLIB_LIBXFONT_CFLAGS = $(TARGET_CFLAGS)
+
+ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
+XLIB_LIBXFONT_CFLAGS += -O0
+endif
+
+XLIB_LIBXFONT_CONF_ENV += CFLAGS="$(XLIB_LIBXFONT_CFLAGS)"
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
