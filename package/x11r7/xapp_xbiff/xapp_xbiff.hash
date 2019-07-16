@@ -1,2 +1,7 @@
-# From http://lists.x.org/archives/xorg-announce/2011-January/001595.html
-sha1	17337a951264f0f96f6d03893f9dfd9cf8f12a5a	xbiff-1.0.3.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-July/003009.html
+md5 66dd3ebd6351b1911b831b89b2dba8ec  xbiff-1.0.4.tar.bz2
+sha1 193c0a2be1f7f374bb9d32217a198c92a63619e8  xbiff-1.0.4.tar.bz2
+sha256 e1e1a39628a5678585008ef7fb1ff2864edaaa0e062989c2331f8c74e0fec971  xbiff-1.0.4.tar.bz2
+sha512 0fb920a08640ec59f23d8a8a47bd244565dfbaff7a21c38a8a2abe1edb5eacabc970b5dbdc409163fc444fde5b75a2dc4e0114312938efec5b77228f3bf785ac  xbiff-1.0.4.tar.bz2
+# Locally computed
+sha256 9b840f2e1900889124cc999f3158da2b6b07bf6d0d77bdbb01ce65d2e702dc83  COPYING
