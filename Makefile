@@ -248,7 +248,6 @@ ifeq ($(BR2_REPRODUCIBLE),y)
 export TZ = UTC
 export LANG = C
 export LC_ALL = C
-export GZIP = -n
 endif
 
 # To put more focus on warnings, be less verbose as default
