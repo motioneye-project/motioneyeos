@@ -29,8 +29,15 @@ endif # BR2_ROOTFS_DEVICE_CREATION_STATIC
 
 ROOTFS_CPIO_PRE_GEN_HOOKS += ROOTFS_CPIO_ADD_INIT
 
+# --repoducible option was introduced in cpio v2.12, which may not be
+# available in some old distributions, so we build host-cpio
+ifeq ($(BR2_REPRODUCIBLE),y)
+ROOTFS_CPIO_DEPENDENCIES += host-cpio
+ROOTFS_CPIO_OPTS += --reproducible
+endif
+
 define ROOTFS_CPIO_CMD
-	cd $(TARGET_DIR) && find . | cpio --quiet -o -H newc > $@
+	cd $(TARGET_DIR) && find . | cpio $(ROOTFS_CPIO_OPTS) --quiet -o -H newc > $@
 endef
 
 ifeq ($(BR2_TARGET_ROOTFS_CPIO_UIMAGE),y)
