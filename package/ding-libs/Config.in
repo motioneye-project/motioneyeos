@@ -13,4 +13,4 @@ config BR2_PACKAGE_DING_LIBS
 	  initialization format (INI) into a library collection data
 	  structure (libini_config).
 
-	  https://git.fedorahosted.org/git/ding-libs.git
+	  https://pagure.io/SSSD/ding-libs
