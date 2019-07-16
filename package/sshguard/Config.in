@@ -1,0 +1,10 @@
+config BR2_PACKAGE_SSHGUARD
+	bool "sshguard"
+	select BR2_PACKAGE_IPTABLES # runtime
+	help
+	  sshguard protects hosts from brute-force attacks against SSH
+	  and other services. It aggregates system logs and blocks
+	  repeat offenders using one of several firewall backends,
+	  including iptables, ipfw, and pf.
+
+	  https://www.sshguard.net
