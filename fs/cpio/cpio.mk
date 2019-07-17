@@ -29,7 +29,7 @@ endif # BR2_ROOTFS_DEVICE_CREATION_STATIC
 
 ROOTFS_CPIO_PRE_GEN_HOOKS += ROOTFS_CPIO_ADD_INIT
 
-# --repoducible option was introduced in cpio v2.12, which may not be
+# --reproducible option was introduced in cpio v2.12, which may not be
 # available in some old distributions, so we build host-cpio
 ifeq ($(BR2_REPRODUCIBLE),y)
 ROOTFS_CPIO_DEPENDENCIES += host-cpio
