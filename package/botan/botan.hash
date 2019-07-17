@@ -1,4 +1,4 @@
 # From https://botan.randombit.net/releases/sha256sums.txt
-sha256 e7159b127e91e0c158245d61c638c50d443ec7b440b6b0161328c47b3aba3960  Botan-2.8.0.tgz
+sha256 f7874da2aeb8c018fd77df40b2137879bf90b66f5589490c991e83fb3e8094be  Botan-2.11.0.tar.xz
 # Locally computed
-sha256 40cfd35a9e34d18463806f57553c968fdbaf254a2e2a636d1d8e32ff6b698495  license.txt
+sha256 161011a9be56a6e825c06257005055a148056b5c756f75a0b99dae0883fcab7a  license.txt
