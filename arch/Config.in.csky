@@ -5,6 +5,8 @@ choice
 	  Specific CPU variant to use
 
 config BR2_ck610
+	# Not supported by upstream gcc <= 9, and handled as a special
+	# exception in package/gcc/Config.in.host
 	bool "ck610"
 
 config BR2_ck807

@@ -78,6 +78,9 @@ config BR2_aarch64_be
 config BR2_csky
 	bool "csky"
 	select BR2_ARCH_HAS_MMU_MANDATORY
+	# Most variants are supported by gcc-9+, except one that is
+	# handled as a special exception in package/gcc/Config.in.host
+	select BR2_ARCH_NEEDS_GCC_AT_LEAST_9
 	help
 	  csky is processor IP from china.
 	  http://www.c-sky.com/

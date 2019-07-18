@@ -89,6 +89,9 @@ config BR2_GCC_VERSION_9_X
 	# powerpc spe support has been deprecated since gcc 8.x.
 	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
 	depends on !BR2_powerpc_SPE
+	# C-SKY sk610 needs abiv1, which is not supported in
+	# upstream gcc
+	depends on !BR2_ck610
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_9
 
 endchoice
