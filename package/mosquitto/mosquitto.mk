@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOSQUITTO_VERSION = 1.5.8
+MOSQUITTO_VERSION = 1.6.3
 MOSQUITTO_SITE = https://mosquitto.org/files/source
 MOSQUITTO_LICENSE = EPL-1.0 or EDLv1.0
 MOSQUITTO_LICENSE_FILES = LICENSE.txt epl-v10 edl-v10
@@ -42,13 +42,6 @@ MOSQUITTO_DEPENDENCIES += c-ares
 MOSQUITTO_MAKE_OPTS += WITH_SRV=yes
 else
 MOSQUITTO_MAKE_OPTS += WITH_SRV=no
-endif
-
-ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBUUID),y)
-MOSQUITTO_DEPENDENCIES += util-linux
-MOSQUITTO_MAKE_OPTS += WITH_UUID=yes
-else
-MOSQUITTO_MAKE_OPTS += WITH_UUID=no
 endif
 
 ifeq ($(BR2_PACKAGE_LIBWEBSOCKETS),y)
