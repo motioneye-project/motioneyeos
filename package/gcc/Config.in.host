@@ -32,7 +32,6 @@ config BR2_GCC_VERSION_4_9_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
 	# Broken or unsupported architectures
 	depends on !BR2_arc
-	depends on !BR2_csky
 	depends on !BR2_or1k
 	# musl on microblaze, ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
@@ -47,7 +46,6 @@ config BR2_GCC_VERSION_5_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
 	# Broken or unsupported architectures
 	depends on !BR2_arc
-	depends on !BR2_csky
 	depends on !BR2_or1k
 	# musl on ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
@@ -61,7 +59,6 @@ config BR2_GCC_VERSION_6_X
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	# Broken or unsupported architectures
 	depends on !BR2_arc
-	depends on !BR2_csky
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 
@@ -69,7 +66,6 @@ config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
 	# Broken or unsupported architectures
-	depends on !BR2_csky
 	depends on !BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
 
@@ -77,7 +73,6 @@ config BR2_GCC_VERSION_8_X
 	bool "gcc 8.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_9
 	# Broken or unsupported architectures
-	depends on !BR2_csky
 	depends on !BR2_or1k
 	# powerpc spe support has been deprecated since gcc 8.x.
 	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
