@@ -49,6 +49,12 @@ IPUTILS_CONF_OPTS += -DUSE_CRYPTO=none
 IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
 endif
 
+ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)
+IPUTILS_CONF_OPTS += -DUSE_GETTEXT=true
+else
+IPUTILS_CONF_OPTS += -DUSE_GETTEXT=false
+endif
+
 IPUTILS_CONF_OPTS += -DBUILD_TRACEROUTE6=true
 
 # XSL Stylesheets for DocBook 5 not packaged for buildroot
