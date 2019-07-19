@@ -1,92 +1,60 @@
-From c89cc908ba7f9f41aba4f61f58103d0fc64fa19f Mon Sep 17 00:00:00 2001
-From: Gustavo Zacarias <gustavo@zacarias.com.ar>
-Date: Fri, 16 Jun 2017 08:50:03 +0200
+From 0ffad73a59d3c831dfab66d4d06f1ab25fce66f2 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 18 Jul 2019 22:58:07 +0200
 Subject: [PATCH] Fix for binutils 2.23.1
 
 libbfd from binutils 2.23.1+ requires PACKAGE* definitions from autoconf.
-Patch from https://fedorahosted.org/dropwatch/ticket/5
-Upstream status: new.
+So include config.h now that dropwatch uses autoconf
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Retrieved (and slightly updated) from:
+https://git.buildroot.net/buildroot/tree/package/dropwatch/0001-binutils-2.23.1.patch]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/nhorman/dropwatch/commit/0ffad73a59d3c831dfab66d4d06f1ab25fce66f2]
 ---
- src/lookup.c     | 2 +-
- src/lookup.h     | 3 +++
- src/lookup_bfd.c | 2 +-
- src/lookup_kas.c | 2 +-
- 4 files changed, 6 insertions(+), 3 deletions(-)
+ src/lookup.c     | 3 +++
+ src/lookup_bfd.c | 2 ++
+ src/lookup_kas.c | 2 ++
+ 3 files changed, 7 insertions(+)
 
 diff --git a/src/lookup.c b/src/lookup.c
-index ba54991..809981b 100644
+index ba54991..521e292 100644
 --- a/src/lookup.c
 +++ b/src/lookup.c
-@@ -27,13 +27,13 @@
+@@ -24,6 +24,9 @@
+  * 1) /usr/lib/debug/<kernel version> using libbfd
+  * 2) /proc/kallsyms
+  */
++
++#include "config.h"
++
  #include <stdlib.h>
  #include <stdio.h>
  #include <sys/utsname.h>
--#include <bfd.h>
- #include <string.h>
- #include <unistd.h>
- #include <sys/types.h>
- #include <sys/stat.h>
- 
- #include "lookup.h"
-+#include <bfd.h>
- 
- extern struct lookup_methods bfd_methods;
- extern struct lookup_methods kallsym_methods;
-diff --git a/src/lookup.h b/src/lookup.h
-index e6568d8..47a7b56 100644
---- a/src/lookup.h
-+++ b/src/lookup.h
-@@ -28,6 +28,9 @@
- #include <stdlib.h>
- #include <asm/types.h>
- 
-+// satisfy PR 14072 in bfd.h
-+#define PACKAGE 1
-+#define PACKAGE_VERSION 1
- 
- /*
-  * Initalization routine
 diff --git a/src/lookup_bfd.c b/src/lookup_bfd.c
-index cc7010b..271d426 100644
+index cc7010b..2c08e5e 100644
 --- a/src/lookup_bfd.c
 +++ b/src/lookup_bfd.c
-@@ -25,13 +25,13 @@
+@@ -22,6 +22,8 @@
+  * symbollic name using the bfd library
+  */
+ 
++#include "config.h"
++
  #include <stdlib.h>
  #include <stdio.h>
  #include <sys/utsname.h>
--#include <bfd.h>
- #include <string.h>
- #include <unistd.h>
- #include <sys/types.h>
- #include <sys/stat.h>
- 
- #include "lookup.h"
-+#include <bfd.h>
- 
- 
- static int lookup_bfd_init(void)
 diff --git a/src/lookup_kas.c b/src/lookup_kas.c
-index 16e639f..556cb62 100644
+index 5e05630..2300220 100644
 --- a/src/lookup_kas.c
 +++ b/src/lookup_kas.c
-@@ -25,7 +25,6 @@
+@@ -22,6 +22,8 @@
+  * symbolic name using /proc/kallsyms
+  */
+ 
++#include "config.h"
++
  #include <stdlib.h>
  #include <stdio.h>
- #include <sys/utsname.h>
--#include <bfd.h>
- #include <string.h>
- #include <unistd.h>
- #include <sys/types.h>
-@@ -33,6 +32,7 @@
- #include <sys/queue.h>
- 
- #include "lookup.h"
-+#include <bfd.h>
- 
- struct symbol_entry {
- 	char *sym_name;
--- 
-2.1.4
-
+ #include <stdint.h>
