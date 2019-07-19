@@ -221,70 +221,41 @@ def get_pkglist(npackages, package_list):
 
 
 def package_init_make_info():
-    # Licenses
-    o = subprocess.check_output(["make", "BR2_HAVE_DOT_CONFIG=y",
-                                 "-s", "printvars", "VARS=%_LICENSE"])
-    for l in o.splitlines():
-        # Get variable name and value
-        pkgvar, value = l.split("=")
-
-        # If present, strip HOST_ from variable name
-        if pkgvar.startswith("HOST_"):
-            pkgvar = pkgvar[5:]
-
-        # Strip _LICENSE
-        pkgvar = pkgvar[:-8]
-
-        # If value is "unknown", no license details available
-        if value == "unknown":
-            continue
-        Package.all_licenses.append(pkgvar)
-
-    # License files
-    o = subprocess.check_output(["make", "BR2_HAVE_DOT_CONFIG=y",
-                                 "-s", "printvars", "VARS=%_LICENSE_FILES"])
-    for l in o.splitlines():
-        # Get variable name and value
-        pkgvar, value = l.split("=")
-
-        # If present, strip HOST_ from variable name
-        if pkgvar.startswith("HOST_"):
-            pkgvar = pkgvar[5:]
-
-        if pkgvar.endswith("_MANIFEST_LICENSE_FILES"):
-            continue
-
-        # Strip _LICENSE_FILES
-        pkgvar = pkgvar[:-14]
-
-        Package.all_license_files.append(pkgvar)
-
-    # Version
-    o = subprocess.check_output(["make", "BR2_HAVE_DOT_CONFIG=y",
-                                 "-s", "printvars", "VARS=%_VERSION"])
+    # Fetch all variables at once
+    variables = subprocess.check_output(["make", "BR2_HAVE_DOT_CONFIG=y", "-s", "printvars",
+                                         "VARS=%_LICENSE %_LICENSE_FILES %_VERSION"])
+    variable_list = variables.splitlines()
 
     # We process first the host package VERSION, and then the target
     # package VERSION. This means that if a package exists in both
-    # target and host variants, with different version numbers
-    # (unlikely), we'll report the target version number.
-    version_list = o.splitlines()
-    version_list = [x for x in version_list if x.startswith("HOST_")] + \
-                   [x for x in version_list if not x.startswith("HOST_")]
-    for l in version_list:
+    # target and host variants, with different values (eg. version
+    # numbers (unlikely)), we'll report the target one.
+    variable_list = [x[5:] for x in variable_list if x.startswith("HOST_")] + \
+                    [x for x in variable_list if not x.startswith("HOST_")]
+
+    for l in variable_list:
         # Get variable name and value
         pkgvar, value = l.split("=")
 
-        # If present, strip HOST_ from variable name
-        if pkgvar.startswith("HOST_"):
-            pkgvar = pkgvar[5:]
+        # Strip the suffix according to the variable
+        if pkgvar.endswith("_LICENSE"):
+            # If value is "unknown", no license details available
+            if value == "unknown":
+                continue
+            pkgvar = pkgvar[:-8]
+            Package.all_licenses.append(pkgvar)
 
-        if pkgvar.endswith("_DL_VERSION"):
-            continue
+        elif pkgvar.endswith("_LICENSE_FILES") :
+            if pkgvar.endswith("_MANIFEST_LICENSE_FILES"):
+                continue
+            pkgvar = pkgvar[:-14]
+            Package.all_license_files.append(pkgvar)
 
-        # Strip _VERSION
-        pkgvar = pkgvar[:-8]
-
-        Package.all_versions[pkgvar] = value
+        elif pkgvar.endswith("_VERSION"):
+            if pkgvar.endswith("_DL_VERSION"):
+                continue
+            pkgvar = pkgvar[:-8]
+            Package.all_versions[pkgvar] = value
 
 
 def check_url_status_worker(url, url_status):
