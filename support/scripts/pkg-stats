@@ -695,16 +695,52 @@ def dump_html(packages, stats, output):
         f.write(html_footer)
 
 
+def dump_json(packages, stats, output):
+    # Format packages as a dictionnary instead of a list
+    # Exclude local field that does not contains real date
+    excluded_fields = ['url_worker', 'name']
+    pkgs = {
+        pkg.name: {
+            k: v
+            for k, v in pkg.__dict__.items()
+            if k not in excluded_fields
+        } for pkg in packages
+    }
+    # Aggregate infrastructures into a single dict entry
+    statistics = {
+        k: v
+        for k, v in stats.items()
+        if not k.startswith('infra-')
+    }
+    statistics['infra'] = {k[6:]: v for k, v in stats.items() if k.startswith('infra-')}
+    # The actual structure to dump, add commit and date to it
+    o = subprocess.check_output(["git", "log", "master", "-n", "1", "--pretty=format:%H"])
+    final = {'packages': pkgs,
+             'stats': statistics,
+             'commit': o.splitlines()[0],
+             'date': str(datetime.datetime.utcnow())}
+
+    with open(output, 'w') as f:
+        json.dump(final, f, indent=2, separators=(',', ': '))
+        f.write('\n')
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument('-o', dest='output', action='store', required=True,
+    output = parser.add_argument_group('output', 'Output file(s)')
+    output.add_argument('--html', dest='html', action='store',
                         help='HTML output file')
+    output.add_argument('--json', dest='json', action='store',
+                        help='JSON output file')
     packages = parser.add_mutually_exclusive_group()
     packages.add_argument('-n', dest='npackages', type=int, action='store',
                         help='Number of packages')
     packages.add_argument('-p', dest='packages', action='store',
                         help='List of packages (comma separated)')
-    return parser.parse_args()
+    args = parser.parse_args()
+    if not args.html and not args.json:
+        parser.error('at least one of --html or --json (or both) is required')
+    return args
 
 
 def __main__():
@@ -732,8 +768,12 @@ def __main__():
     check_package_latest_version(packages)
     print("Calculate stats")
     stats = calculate_stats(packages)
-    print("Write HTML")
-    dump_html(packages, stats, args.output)
+    if args.html:
+        print("Write HTML")
+        dump_html(packages, stats, args.html)
+    if args.json:
+        print("Write JSON")
+        dump_json(packages, stats, args.json)
 
 
 __main__()
