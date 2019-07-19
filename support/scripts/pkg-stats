@@ -23,7 +23,6 @@ import os
 from collections import defaultdict
 import re
 import subprocess
-import sys
 import requests  # URL checking
 import json
 import certifi
@@ -700,18 +699,16 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('-o', dest='output', action='store', required=True,
                         help='HTML output file')
-    parser.add_argument('-n', dest='npackages', type=int, action='store',
+    packages = parser.add_mutually_exclusive_group()
+    packages.add_argument('-n', dest='npackages', type=int, action='store',
                         help='Number of packages')
-    parser.add_argument('-p', dest='packages', action='store',
+    packages.add_argument('-p', dest='packages', action='store',
                         help='List of packages (comma separated)')
     return parser.parse_args()
 
 
 def __main__():
     args = parse_args()
-    if args.npackages and args.packages:
-        print("ERROR: -n and -p are mutually exclusive")
-        sys.exit(1)
     if args.packages:
         package_list = args.packages.split(",")
     else:
