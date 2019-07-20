@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NETSURF_VERSION = 3.8
+NETSURF_VERSION = 3.9
 NETSURF_SOURCE = netsurf-all-$(NETSURF_VERSION).tar.gz
 NETSURF_SITE = http://download.netsurf-browser.org/netsurf/releases/source-full
 NETSURF_LICENSE = GPL-2.0
