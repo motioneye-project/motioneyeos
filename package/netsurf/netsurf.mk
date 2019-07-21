@@ -64,11 +64,23 @@ define NETSURF_CURL_CONFIGURE_CMDS
 endef
 endif
 
+ifeq ($(BR2_PACKAGE_WEBP),y)
+NETSURF_DEPENDENCIES += webp
+define NETSURF_WEBP_CONFIGURE_CMDS
+	echo "override NETSURF_USE_WEBP := YES"         >> $(@D)/netsurf/Makefile.config
+endef
+else
+define NETSURF_WEBP_CONFIGURE_CMDS
+	echo "override NETSURF_USE_WEBP := NO"          >> $(@D)/netsurf/Makefile.config
+endef
+endif
+
 define NETSURF_CONFIGURE_CMDS
 	$(NETSURF_ICONV_CONFIGURE_CMDS)
 	$(NETSURF_SVG_CONFIGURE_CMDS)
 	$(NETSURF_FONTLIB_CONFIGURE_CMDS)
 	$(NETSURF_CURL_CONFIGURE_CMDS)
+	$(NETSURF_WEBP_CONFIGURE_CMDS)
 endef
 
 NETSURF_MAKE_ENV = \
