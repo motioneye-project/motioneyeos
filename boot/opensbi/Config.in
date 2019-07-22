@@ -22,4 +22,13 @@ config BR2_TARGET_OPENSBI_PLAT
 	  library libsbi.a is built. If a platform is specified then
 	  the platform specific static library libplatsbi.a and firmware
 	  examples are built.
+
+config BR2_TARGET_OPENSBI_LINUX_PAYLOAD
+	bool "Include Linux as OpenSBI Payload"
+	depends on BR2_TARGET_OPENSBI_PLAT != ""
+	depends on BR2_LINUX_KERNEL
+	depends on BR2_LINUX_KERNEL_IMAGE
+	help
+	  Build OpenSBI with the Linux kernel as a Payload.
+
 endif
