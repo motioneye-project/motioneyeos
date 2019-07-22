@@ -1,4 +1,4 @@
-From 5627ea3826a00c149ff3d49c40706217043a014d Mon Sep 17 00:00:00 2001
+From e3e9755989b158b2497d2c449db445cf7f93de56 Mon Sep 17 00:00:00 2001
 From: Bernd Kuhls <bernd.kuhls@t-online.de>
 Date: Sun, 28 Jan 2018 11:57:11 +0100
 Subject: [PATCH] Fix uClibc build on 64bit platforms by including stdint.h
@@ -22,23 +22,20 @@ https://lists.samba.org/archive/samba-technical/2018-January/125306.html
 
 [updated for samba-4.8.4, v2 sent upstream
  https://lists.samba.org/archive/samba-technical/2018-August/129732.html,
- updated for samba-4.9.1]
+ updated for samba-4.9.1 & 4.10.6]
 
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
- lib/ldb/tests/ldb_kv_ops_test.c   | 1 +
- lib/ldb/tests/ldb_mod_op_test.c   | 1 +
- lib/ldb/tests/ldb_msg.c           | 1 +
- lib/ldb/tests/ldb_tdb_test.c      | 1 +
- lib/ldb/tests/test_ldb_qsort.c    | 1 +
- lib/util/tests/test_ms_fnmatch.c  | 1 +
- libcli/auth/tests/ntlm_check.c    | 1 +
- libcli/smb/test_smb1cli_session.c | 1 +
- source3/lib/test_tldap.c          | 1 +
- 9 files changed, 9 insertions(+)
+ lib/ldb/tests/ldb_kv_ops_test.c  | 1 +
+ lib/ldb/tests/ldb_tdb_test.c     | 1 +
+ lib/ldb/tests/test_ldb_dn.c      | 1 +
+ lib/ldb/tests/test_ldb_qsort.c   | 1 +
+ lib/util/tests/test_ms_fnmatch.c | 1 +
+ source3/lib/test_tldap.c         | 1 +
+ 6 files changed, 6 insertions(+)
 
 diff --git a/lib/ldb/tests/ldb_kv_ops_test.c b/lib/ldb/tests/ldb_kv_ops_test.c
-index 30ce019fac8..3ac7763b307 100644
+index d6a4dc058e5..8b230200cba 100644
 --- a/lib/ldb/tests/ldb_kv_ops_test.c
 +++ b/lib/ldb/tests/ldb_kv_ops_test.c
 @@ -46,6 +46,7 @@
@@ -49,36 +46,24 @@ index 30ce019fac8..3ac7763b307 100644
  #include <setjmp.h>
  #include <cmocka.h>
  
-diff --git a/lib/ldb/tests/ldb_mod_op_test.c b/lib/ldb/tests/ldb_mod_op_test.c
-index 01667af3865..a1a20d38f28 100644
---- a/lib/ldb/tests/ldb_mod_op_test.c
-+++ b/lib/ldb/tests/ldb_mod_op_test.c
-@@ -13,6 +13,7 @@
-  */
- #include <stdarg.h>
- #include <stddef.h>
-+#include <stdint.h>
- #include <setjmp.h>
- #include <cmocka.h>
- 
-diff --git a/lib/ldb/tests/ldb_msg.c b/lib/ldb/tests/ldb_msg.c
-index f8de418e0dc..31786a9a318 100644
---- a/lib/ldb/tests/ldb_msg.c
-+++ b/lib/ldb/tests/ldb_msg.c
-@@ -13,6 +13,7 @@
-  */
- #include <stdarg.h>
- #include <stddef.h>
-+#include <stdint.h>
- #include <setjmp.h>
- #include <cmocka.h>
- 
 diff --git a/lib/ldb/tests/ldb_tdb_test.c b/lib/ldb/tests/ldb_tdb_test.c
-index 686a35104ea..2e312e60a3c 100644
+index 8418dbfd671..ef91ba54756 100644
 --- a/lib/ldb/tests/ldb_tdb_test.c
 +++ b/lib/ldb/tests/ldb_tdb_test.c
 @@ -40,6 +40,7 @@
   */
+ #include <stdarg.h>
+ #include <stddef.h>
++#include <stdint.h>
+ #include <setjmp.h>
+ #include <cmocka.h>
+ 
+diff --git a/lib/ldb/tests/test_ldb_dn.c b/lib/ldb/tests/test_ldb_dn.c
+index 4965dcef575..37eeedc1d70 100644
+--- a/lib/ldb/tests/test_ldb_dn.c
++++ b/lib/ldb/tests/test_ldb_dn.c
+@@ -19,6 +19,7 @@
+ 
  #include <stdarg.h>
  #include <stddef.h>
 +#include <stdint.h>
@@ -109,29 +94,6 @@ index 7fe8ed05e28..d11c7bed4be 100644
  #include <setjmp.h>
  #include <cmocka.h>
  
-diff --git a/libcli/auth/tests/ntlm_check.c b/libcli/auth/tests/ntlm_check.c
-index e87a0a276d4..65c7b086008 100644
---- a/libcli/auth/tests/ntlm_check.c
-+++ b/libcli/auth/tests/ntlm_check.c
-@@ -40,6 +40,7 @@
-  */
- #include <stdarg.h>
- #include <stddef.h>
-+#include <stdint.h>
- #include <setjmp.h>
- #include <cmocka.h>
- 
-diff --git a/libcli/smb/test_smb1cli_session.c b/libcli/smb/test_smb1cli_session.c
-index d1e21d5431e..6a526c96b61 100644
---- a/libcli/smb/test_smb1cli_session.c
-+++ b/libcli/smb/test_smb1cli_session.c
-@@ -1,5 +1,6 @@
- #include <stdarg.h>
- #include <stddef.h>
-+#include <stdint.h>
- #include <setjmp.h>
- #include <cmocka.h>
- 
 diff --git a/source3/lib/test_tldap.c b/source3/lib/test_tldap.c
 index a6c2f2117cb..659c5a7371a 100644
 --- a/source3/lib/test_tldap.c
@@ -145,5 +107,5 @@ index a6c2f2117cb..659c5a7371a 100644
  #include <cmocka.h>
  
 -- 
-2.19.0
+2.20.1
 
