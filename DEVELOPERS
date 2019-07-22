@@ -123,7 +123,9 @@ F:	package/kvazaar/
 F:	package/v4l2loopback/
 
 N:	Alistair Francis <alistair@alistair23.me>
+F:	board/sifive/
 F:	boot/opensbi/
+F:	configs/hifive_unleashed_defconfig
 F:	package/xen/
 
 N:	Alvaro G. M <alvaro.gamez@hazent.com>

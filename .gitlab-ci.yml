@@ -187,6 +187,7 @@ friendlyarm_nanopi_neo2_defconfig: { extends: .defconfig }
 galileo_defconfig: { extends: .defconfig }
 grinn_chiliboard_defconfig: { extends: .defconfig }
 grinn_liteboard_defconfig: { extends: .defconfig }
+hifive_unleashed_defconfig: { extends: .defconfig }
 imx23evk_defconfig: { extends: .defconfig }
 imx6-sabreauto_defconfig: { extends: .defconfig }
 imx6-sabresd_defconfig: { extends: .defconfig }
