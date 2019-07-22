@@ -1,2 +1,5 @@
-# Locally calculated
-sha256 c5a2a0030fcc728022fa2332bad85569084d1c3b9a59587b7ebe141b0532acad  heimdal-7.5.0.tar.gz
+# From https://github.com/heimdal/heimdal/releases
+sha1 5dd16703be7255f66a4d65440f0c622aeeca60d9  heimdal-7.7.0.tar.gz
+sha256 f02d3314d634cc55eb9cf04a1eae0d96b293e45a1f837de9d894e800161b7d1b  heimdal-7.7.0.tar.gz
+# Locally computed
+sha256 0c4b07bf5b98f7a1d01f8e60722d6c6747ef052c2aa6d2043daf690d4e1b0a7f  LICENSE
