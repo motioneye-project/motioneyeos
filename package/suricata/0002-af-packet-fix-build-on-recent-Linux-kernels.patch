@@ -1,0 +1,28 @@
+From b37554e0bc3cf383e6547c5c6a69c6f6849c09e3 Mon Sep 17 00:00:00 2001
+From: Eric Leblond <eric@regit.org>
+Date: Wed, 17 Jul 2019 12:35:12 +0200
+Subject: [PATCH] af-packet: fix build on recent Linux kernels
+
+Downloaded from upstream commit
+https://github.com/OISF/suricata/commit/b37554e0bc3cf383e6547c5c6a69c6f6849c09e3
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/source-af-packet.c | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/source-af-packet.c b/src/source-af-packet.c
+index 2c65ccbcf5..e117d36e5c 100644
+--- a/src/source-af-packet.c
++++ b/src/source-af-packet.c
+@@ -65,6 +65,10 @@
+ #include <sys/ioctl.h>
+ #endif
+ 
++#if HAVE_LINUX_SOCKIOS_H
++#include <linux/sockios.h>
++#endif
++
+ #ifdef HAVE_PACKET_EBPF
+ #include "util-ebpf.h"
+ #include <bpf/libbpf.h>
