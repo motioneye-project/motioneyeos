@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-DTC_VERSION = 1.4.7
+DTC_VERSION = 1.5.0
 DTC_SOURCE = dtc-$(DTC_VERSION).tar.xz
 DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPL-2.0+ or BSD-2-Clause (library)
 DTC_LICENSE_FILES = README.license GPL
 DTC_INSTALL_STAGING = YES
-DTC_DEPENDENCIES = host-bison host-flex
-HOST_DTC_DEPENDENCIES = host-bison host-flex
+DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
+HOST_DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
 
 DTC_MAKE_OPTS = \
 	PREFIX=/usr \
@@ -40,7 +40,7 @@ DTC_INSTALL_GOAL = install-lib
 endif # $(BR2_PACKAGE_DTC_PROGRAMS) != y
 
 define DTC_BUILD_CMDS
-	$(TARGET_CONFIGURE_OPTS) $(MAKE) CFLAGS="$(TARGET_CFLAGS) -fPIC" -C $(@D) $(DTC_MAKE_OPTS)
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) EXTRA_CFLAGS="$(TARGET_CFLAGS) -fPIC" -C $(@D) $(DTC_MAKE_OPTS)
 endef
 
 # For staging, only the library is needed
@@ -55,7 +55,7 @@ endef
 
 # host build
 define HOST_DTC_BUILD_CMDS
-	$(HOST_CONFIGURE_OPTS) $(MAKE) CFLAGS="$(HOST_CFLAGS) -fPIC" -C $(@D) $(HOST_DTC_MAKE_OPTS)
+	$(HOST_CONFIGURE_OPTS) $(MAKE) EXTRA_CFLAGS="$(HOST_CFLAGS) -fPIC" -C $(@D) $(HOST_DTC_MAKE_OPTS)
 endef
 
 define HOST_DTC_INSTALL_CMDS
