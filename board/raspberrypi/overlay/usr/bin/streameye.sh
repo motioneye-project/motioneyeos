@@ -18,12 +18,18 @@ function watch() {
         sleep 5
         if [ "${PROTO}" = "rtsp" ]; then
             if ! ps aux | grep test-launch | grep -v grep &>/dev/null; then
-                logger -t streameye -s "not running, respawning"
+                logger -t streameye -s "test-launch not running, respawning"
                 start
+            fi
+            if [ "${MJPEG_STREAM}" = "True" ]; then
+                if ! ps aux | grep gst-launch-1.0 | grep -v grep &>/dev/null; then
+                    logger -t streameye -s "gst-launch-1.0 not running, respawning"
+                    start
+                fi
             fi
         else
             if ! ps aux | grep raspimjpeg.py | grep -v grep &>/dev/null; then
-                logger -t streameye -s "not running, respawning"
+                logger -t streameye -s "raspimjpeg.py not running, respawning"
                 start
             fi
         fi
@@ -148,12 +154,19 @@ function start() {
     fi
     
     if [ "${PROTO}" = "rtsp" ]; then
-        pid=$(ps | grep test-launch | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
-        if [ -n "${pid}" ]; then
-            return
+        test_launch_pid=$(ps | grep test-launch | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
+        gst_launch_pid=$(ps | grep gst-launch-1.0 | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
+        if [ -n "${test_launch_pid}" ]; then
+            if [ -n "${gst_launch_pid}" ]; then
+                return
+            fi
         fi
         
         RTSP_PORT=${RTSP_PORT:-554}
+        MJPEG_STREAM=${MJPEG_STREAM:-True}
+        MJPEG_WIDTH=${MJPEG_WIDTH:-640}
+        MJPEG_HEIGHT=${MJPEG_HEIGHT:-480}
+        MJPEG_FRAMERATE=${MJPEG_FRAMERATE:-5}
 
         iptables -A INPUT -p tcp -s localhost --dport ${RTSP_PORT} -j ACCEPT
         iptables -A INPUT -p tcp --dport ${RTSP_PORT} -j DROP
@@ -199,10 +212,20 @@ function start() {
                 streameye_opts="${streameye_opts} -d"
             fi
 
-            test-launch -p ${RTSP_PORT} -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
-            sleep 10
-            gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:${RTSP_PORT}/h264 latency=0 drop-on-latency=1 ! rtph264depay ! h264parse ! omxh264dec ! videorate ! video/x-raw,framerate=5/1 ! jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
-            sleep 5
+            if [ -z "${test_launch_pid}" ]; then
+                test-launch -p ${RTSP_PORT} -m h264 "\"( ${video_opts} ${audio_opts} )\"" &>${GSTREAMER_LOG} &
+                sleep 10
+            fi
+            if [ "${MJPEG_STREAM}" = "True" ]; then
+                if [ -z "${gst_launch_pid}" ]; then
+                    gst-launch-1.0 -v rtspsrc location=rtsp://127.0.0.1:${RTSP_PORT}/h264 latency=0 drop-on-latency=1 ! \
+                        capsfilter caps="application/x-rtp, media=(string)video, payload=(int)96, encoding-name=(string)H264" ! \
+                        rtph264depay ! h264parse ! omxh264dec ! \
+                        videorate ! videoscale ! video/x-raw,framerate=${MJPEG_FRAMERATE}/1,width=${MJPEG_WIDTH},height=${MJPEG_HEIGHT} ! \
+                        jpegenc ! filesink location=/dev/stdout | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
+                    sleep 5
+                fi
+            fi
         fi
 
         iptables -D INPUT -p tcp --dport ${RTSP_PORT} -j DROP
@@ -244,42 +267,21 @@ function stop() {
     # stop the streameye background watch process
     ps | grep streameye.sh | grep -v $$ | grep -v S94streameye| grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
 
-    # stop the raspimjpeg process
-    raspimjpeg_pid=$(ps | grep raspimjpeg.py | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
-    # stop the gst-launch-1.0 process
-    gst_launch_pid=$(ps | grep gst-launch-1.0 | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
-    # stop the test-launch process
-    test_launch_pid=$(ps | grep test-launch | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
-
-    if [ -n "${raspimjpeg_pid}" ]; then
-        kill -HUP "${raspimjpeg_pid}" &>/dev/null
-        count=0
-        while kill -0 "${raspimjpeg_pid}" &>/dev/null && [ ${count} -lt 5 ]; do
-            sleep 1
-            count=$((${count} + 1))
-        done
-        kill -KILL "${raspimjpeg_pid}" &>/dev/null || true
-    fi
-    
-    if [ -n "${gst_launch_pid}" ]; then
-        kill -HUP "${gst_launch_pid}" &>/dev/null
-        count=0
-        while kill -0 "${gst_launch_pid}" &>/dev/null && [ ${count} -lt 5 ]; do
-            sleep 1
-            count=$((${count} + 1))
-        done
-        kill -KILL "${gst_launch_pid}" &>/dev/null || true
-    fi
-
-    if [ -n "${test_launch_pid}" ]; then
-        kill -HUP "${test_launch_pid}" &>/dev/null
-        count=0
-        while kill -0 "${test_launch_pid}" &>/dev/null && [ ${count} -lt 5 ]; do
-            sleep 1
-            count=$((${count} + 1))
-        done
-        kill -KILL "${test_launch_pid}" &>/dev/null || true
-    fi
+    # stop the running streaming process
+    processes=( "raspimjpeg.py" "gst-launch-1.0" "test-launch")
+    for i in "${processes[@]}"
+    do
+        pid=$(ps | grep $i | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1)
+        if [ -n "${pid}" ]; then
+            kill -HUP "${pid}" &>/dev/null
+            count=0
+            while kill -0 "${pid}" &>/dev/null && [ ${count} -lt 5 ]; do
+                sleep 1
+                count=$((${count} + 1))
+            done
+            kill -KILL "${pid}" &>/dev/null || true
+        fi
+    done
 }
 
 case "$1" in
