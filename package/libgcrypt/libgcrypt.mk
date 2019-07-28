@@ -13,8 +13,8 @@ LIBGCRYPT_INSTALL_STAGING = YES
 LIBGCRYPT_DEPENDENCIES = libgpg-error
 LIBGCRYPT_CONFIG_SCRIPTS = libgcrypt-config
 
-LIBGCRYPT_CONF_ENV = \
-	ac_cv_sys_symbol_underscore=no
+# Patching acinclude.m4 in 0001
+LIBGCRYPT_AUTORECONF = YES
 LIBGCRYPT_CONF_OPTS = \
 	--with-gpg-error-prefix=$(STAGING_DIR)/usr
 
