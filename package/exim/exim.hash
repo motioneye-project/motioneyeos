@@ -1,2 +1,3 @@
 # Locally calculated after checking pgp signature
-sha256 1a21322a10e2da9c0bd6a2a483b6e7ef8fa7f16efcab4c450fd73e7188f5fa94  exim-4.89.1.tar.xz
+sha256 2c64a871dd7ac464c14df8eb0dcf5cf766b46fff5af0316aaa4bf0268dde24b4  exim-4.92.1.tar.xz
+sha256 49240db527b7e55b312a46fc59794fde5dd006422e422257f4f057bfd27b3c8f  LICENCE

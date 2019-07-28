@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-EXIM_VERSION = 4.89.1
+EXIM_VERSION = 4.92.1
 EXIM_SOURCE = exim-$(EXIM_VERSION).tar.xz
-EXIM_SITE = ftp://ftp.exim.org/pub/exim/exim4
+EXIM_SITE = https://ftp.exim.org/pub/exim/exim4
 EXIM_LICENSE = GPL-2.0+
 EXIM_LICENSE_FILES = LICENCE
-EXIM_DEPENDENCIES = pcre berkeleydb host-pkgconf
+EXIM_DEPENDENCIES = host-berkeleydb host-pcre pcre berkeleydb host-pkgconf
 
 # Modify a variable value. It must already exist in the file, either
 # commented or not.
@@ -65,7 +65,7 @@ endef
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-EXIM_DEPENDENCIES += openssl
+EXIM_DEPENDENCIES += host-openssl openssl
 define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
 	$(call exim-config-change,SUPPORT_TLS,yes)
 	$(call exim-config-change,USE_OPENSSL_PC,openssl)
@@ -111,9 +111,17 @@ ifeq ($(BR2_STATIC_LIBS),y)
 EXIM_STATIC_FLAGS = LFLAGS="-pthread --static"
 endif
 
+# We need the host version of macro_predef during the build, before
+# building it we need to prepare the makefile.
 # "The -j (parallel) flag must not be used with make"
 # (http://www.exim.org/exim-html-current/doc/html/spec_html/ch04.html)
 define EXIM_BUILD_CMDS
+	$(TARGET_MAKE_ENV) build=br $(MAKE1) -C $(@D) makefile
+	$(HOST_MAKE_ENV) $(MAKE1) -C $(@D)/build-br macro_predef \
+		CC=$(HOSTCC) \
+		LNCC=$(HOSTCC) \
+		CFLAGS="$(HOST_CFLAGS)" \
+		LFLAGS="-fPIC $(HOST_LDFLAGS)"
 	$(TARGET_MAKE_ENV) build=br $(MAKE1) -C $(@D) $(EXIM_STATIC_FLAGS)
 endef
 
