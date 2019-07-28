@@ -9,8 +9,9 @@ NETSURF_SOURCE = netsurf-all-$(NETSURF_VERSION).tar.gz
 NETSURF_SITE = http://download.netsurf-browser.org/netsurf/releases/source-full
 NETSURF_LICENSE = GPL-2.0
 NETSURF_LICENSE_FILES = netsurf/COPYING
+# host-vim needed for the xxd utility
 NETSURF_DEPENDENCIES = expat jpeg libpng \
-	host-bison host-flex host-gperf host-pkgconf
+	host-bison host-flex host-gperf host-pkgconf host-vim
 
 ifeq ($(BR2_PACKAGE_NETSURF_GTK),y)
 NETSURF_DEPENDENCIES += libgtk2
