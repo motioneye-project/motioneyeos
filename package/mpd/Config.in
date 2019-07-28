@@ -34,6 +34,30 @@ config BR2_PACKAGE_MPD_SQLITE
 	  Enable sqlite database support.
 	  If you don't use sqlite it will use an ASCII database.
 
+comment "Commercial services"
+
+config BR2_PACKAGE_MPD_QOBUZ
+	bool "qobuz"
+	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS
+	select BR2_PACKAGE_MPD_CURL
+	select BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_YAJL
+	help
+	  Play songs from the commercial streaming service Qobuz.
+
+config BR2_PACKAGE_MPD_SOUNDCLOUD
+	bool "soundcloud"
+	select BR2_PACKAGE_YAJL
+	help
+	  Enable soundcloud.com playlist support.
+
+config BR2_PACKAGE_MPD_TIDAL
+	bool "tidal"
+	select BR2_PACKAGE_MPD_CURL
+	select BR2_PACKAGE_YAJL
+	help
+	  Play songs from the commercial streaming service TIDAL.
+
 comment "Converter plugins"
 
 config BR2_PACKAGE_MPD_LIBSAMPLERATE
@@ -216,12 +240,6 @@ config BR2_PACKAGE_MPD_LIBSMBCLIENT
 	select BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support.
-
-config BR2_PACKAGE_MPD_SOUNDCLOUD
-	bool "soundcloud"
-	select BR2_PACKAGE_YAJL
-	help
-	  Enable soundcloud.com playlist support.
 
 comment "Output plugins"
 
