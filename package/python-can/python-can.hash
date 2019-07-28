@@ -1,4 +1,4 @@
 # sha256 from https://pypi.org/pypi/python-can/json
-sha256	2a7e9f658b5db16319bbebb2cdd82b1fc0a390ca939b47829affd07c832357ec  python-can-3.3.0.tar.gz
+sha256	8dc9e0f926e880cd57a3badbaebc6393cde7adffdd3e1975a78a82c48d4e3bbe  python-can-3.3.1.tar.gz
 # Locally computed sha256 checksums
 sha256	da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768  LICENSE.txt
