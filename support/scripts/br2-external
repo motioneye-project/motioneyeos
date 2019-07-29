@@ -14,13 +14,11 @@ MANUAL_URL='https://buildroot.org/manual.html\#br2-external-converting'
 
 main() {
     local OPT OPTARG
-    local br2_ext ofile ofmt
+    local br2_ext outputdir
 
-    while getopts :kmo: OPT; do
+    while getopts :d: OPT; do
         case "${OPT}" in
-        o)  ofile="${OPTARG}";;
-        k)  ofmt="kconfig";;
-        m)  ofmt="mk";;
+        d)  outputdir="${OPTARG}";;
         :)  error "option '%s' expects a mandatory argument\n" "${OPTARG}";;
         \?) error "unknown option '%s'\n" "${OPTARG}";;
         esac
@@ -28,23 +26,18 @@ main() {
     # Forget options; keep only positional args
     shift $((OPTIND-1))
 
-    case "${ofmt}" in
-    mk|kconfig)
-        ;;
-    *)  error "no output format specified (-m/-k)\n";;
-    esac
-    if [ -z "${ofile}" ]; then
-        error "no output file specified (-o)\n"
+    if [ -z "${outputdir}" ]; then
+        error "no output directory specified (-d)\n"
     fi
-
-    exec >"${ofile}"
 
     # Trap any unexpected error to generate a meaningful error message
     trap "error 'unexpected error while generating ${ofile}\n'" ERR
 
     do_validate ${@//:/ }
 
-    do_${ofmt}
+    mkdir -p "${outputdir}"
+    do_mk >"${outputdir}/.br2-external.mk"
+    do_kconfig >"${outputdir}/.br2-external.in"
 }
 
 # Validates the br2-external trees passed as arguments. Makes each of
