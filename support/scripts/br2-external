@@ -158,6 +158,7 @@ do_kconfig() {
         paths
         menus
         toolchains
+        jpeg
     )
 
     for br2 in "${items[@]}"; do
@@ -205,6 +206,14 @@ do_kconfig() {
         else
             printf '# No toolchain from: %s\n\n' "${br2_desc}"
         fi >>"${outputdir}/.br2-external.in.toolchains"
+
+        if [ -f "${br2_ext}/provides/jpeg.in" ]; then
+            printf 'comment "jpeg from: %s"\n' "${br2_desc}"
+            printf 'source "%s/provides/jpeg.in"\n' "${br2_ext}"
+            printf '\n'
+        else
+            printf '# No jpeg from: %s\n\n' "${br2_desc}"
+        fi >>"${outputdir}/.br2-external.in.jpeg"
     done
 
     printf 'endmenu\n' >>"${outputdir}/.br2-external.in.menus"

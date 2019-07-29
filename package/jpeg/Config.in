@@ -38,6 +38,9 @@ config BR2_PACKAGE_JPEG_TURBO
 
 	  http://www.libjpeg-turbo.org
 
+# libjpeg from br2-external trees, if any
+source "$BR2_BASE_DIR/.br2-external.in.jpeg"
+
 endchoice
 
 config BR2_PACKAGE_HAS_JPEG
