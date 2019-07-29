@@ -65,8 +65,6 @@ information is (assuming the document name is +foo+) :
 
 * +FOO_DEPENDENCIES+, optional, the list of packages (most probably,
   host-packages) that must be built before building this document.
-  If a hook of your document needs to access the _Kconfig_ structure,
-  you may add +prepare-kconfig+ to the list of dependencies.
 
 There are also additional hooks (see xref:hooks[] for general information
 on hooks), that a document may set to define extra actions to be done at
