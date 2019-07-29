@@ -10,8 +10,8 @@ DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPL-2.0+ or BSD-2-Clause (library)
 DTC_LICENSE_FILES = README.license GPL
 DTC_INSTALL_STAGING = YES
-DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
-HOST_DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
+DTC_DEPENDENCIES = host-bison host-flex
+HOST_DTC_DEPENDENCIES = host-bison host-flex
 
 DTC_MAKE_OPTS = \
 	PREFIX=/usr \
@@ -19,7 +19,8 @@ DTC_MAKE_OPTS = \
 
 HOST_DTC_MAKE_OPTS = \
 	PREFIX=$(HOST_DIR) \
-	NO_PYTHON=1
+	NO_PYTHON=1 \
+	NO_YAML=1
 
 define DTC_POST_INSTALL_TARGET_RM_DTDIFF
 	rm -f $(TARGET_DIR)/usr/bin/dtdiff
@@ -31,6 +32,10 @@ DTC_LICENSE := $(DTC_LICENSE), GPL-2.0+ (programs)
 DTC_INSTALL_GOAL = install
 ifeq ($(BR2_PACKAGE_BASH),)
 DTC_POST_INSTALL_TARGET_HOOKS += DTC_POST_INSTALL_TARGET_RM_DTDIFF
+endif
+
+ifeq ($(BR2_PACKAGE_LIBYAML),y)
+DTC_DEPENDENCIES += host-pkgconf libyaml
 endif
 
 else # $(BR2_PACKAGE_DTC_PROGRAMS) != y
