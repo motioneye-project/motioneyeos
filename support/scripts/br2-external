@@ -119,7 +119,7 @@ do_validate_one() {
 # Generate the .mk snippet that defines makefile variables
 # for the br2-external tree
 do_mk() {
-    local br2_name br2_ext
+    local br2_name br2_desc br2_ext
 
     printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
     printf '\n'
@@ -155,7 +155,7 @@ do_mk() {
 
 # Generate the kconfig snippet for the br2-external tree.
 do_kconfig() {
-    local br2_name br2_ext
+    local br2_name br2_desc br2_ext
 
     printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
     printf '\n'
