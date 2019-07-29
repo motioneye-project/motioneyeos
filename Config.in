@@ -14,9 +14,9 @@ config BR2_HOSTARCH
 	string
 	option env="HOSTARCH"
 
-config BR2_BUILD_DIR
+config BR2_BASE_DIR
 	string
-	option env="BUILD_DIR"
+	option env="BASE_DIR"
 
 # Hidden config symbols for packages to check system gcc version
 config BR2_HOST_GCC_VERSION
@@ -865,4 +865,4 @@ source "package/Config.in.host"
 
 source "Config.in.legacy"
 
-source "$BR2_BUILD_DIR/.br2-external.in"
+source "$BR2_BASE_DIR/.br2-external.in"

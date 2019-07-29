@@ -934,7 +934,7 @@ HOSTCFLAGS = $(CFLAGS_FOR_BUILD)
 export HOSTCFLAGS
 
 .PHONY: prepare-kconfig
-prepare-kconfig: outputmakefile $(BUILD_DIR)/.br2-external.in
+prepare-kconfig: outputmakefile $(BASE_DIR)/.br2-external.in
 
 $(BUILD_DIR)/buildroot-config/%onf:
 	mkdir -p $(@D)/lxdialog
@@ -952,7 +952,7 @@ COMMON_CONFIG_ENV = \
 	KCONFIG_TRISTATE=$(BUILD_DIR)/buildroot-config/tristate.config \
 	BR2_CONFIG=$(BR2_CONFIG) \
 	HOST_GCC_VERSION="$(HOSTCC_VERSION)" \
-	BUILD_DIR=$(BUILD_DIR) \
+	BASE_DIR=$(BASE_DIR) \
 	SKIP_LEGACY=
 
 xconfig: $(BUILD_DIR)/buildroot-config/qconf prepare-kconfig
@@ -1034,8 +1034,8 @@ endif
 # Even though the target is a real file, we mark it as PHONY as we
 # want it to be re-generated each time make is invoked, in case the
 # value of BR2_EXTERNAL is changed.
-.PHONY: $(BUILD_DIR)/.br2-external.in
-$(BUILD_DIR)/.br2-external.in: $(BUILD_DIR)
+.PHONY: $(BASE_DIR)/.br2-external.in
+$(BASE_DIR)/.br2-external.in: $(BUILD_DIR)
 	$(Q)support/scripts/br2-external -k -o "$(@)" $(BR2_EXTERNAL)
 
 # printvars prints all the variables currently defined in our
@@ -1066,7 +1066,7 @@ ifeq ($(O),$(CURDIR)/output)
 	rm -rf $(O)
 endif
 	rm -rf $(TOPDIR)/dl $(BR2_CONFIG) $(CONFIG_DIR)/.config.old $(CONFIG_DIR)/..config.tmp \
-		$(CONFIG_DIR)/.auto.deps $(BR2_EXTERNAL_FILE)
+		$(CONFIG_DIR)/.auto.deps $(BR2_EXTERNAL_FILE) $(BASE_DIR)/.br2-external.in
 
 .PHONY: help
 help:
