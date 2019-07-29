@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENJDK_VERSION_MAJOR = 12.0.1
-OPENJDK_VERSION_MINOR = 12
+OPENJDK_VERSION_MAJOR = 12.0.2
+OPENJDK_VERSION_MINOR = 10
 OPENJDK_VERSION = $(OPENJDK_VERSION_MAJOR)+$(OPENJDK_VERSION_MINOR)
 OPENJDK_SITE = $(call github,AdoptOpenJDK,openjdk-jdk12u,jdk-$(OPENJDK_VERSION))
 OPENJDK_LICENSE = GPL-2.0+ with exception
