@@ -36,8 +36,8 @@ main() {
     do_validate ${@//:/ }
 
     mkdir -p "${outputdir}"
-    do_mk >"${outputdir}/.br2-external.mk"
-    do_kconfig >"${outputdir}/.br2-external.in"
+    do_mk "${outputdir}"
+    do_kconfig "${outputdir}"
 }
 
 # Validates the br2-external trees passed as arguments. Makes each of
@@ -111,73 +111,79 @@ do_validate_one() {
 # Generate the .mk snippet that defines makefile variables
 # for the br2-external tree
 do_mk() {
+    local outputdir="${1}"
     local br2_name br2_desc br2_ext
 
-    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
-    printf '\n'
-
-    printf 'BR2_EXTERNAL ?='
-    for br2_name in "${BR2_EXT_NAMES[@]}"; do
-        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
-        printf ' %s' "${br2_ext}"
-    done
-    printf '\n'
-
-    printf 'BR2_EXTERNAL_NAMES = \n'
-    printf 'BR2_EXTERNAL_DIRS = \n'
-    printf 'BR2_EXTERNAL_MKS = \n'
-
-    if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
+    {
+        printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
         printf '\n'
-        printf '# No br2-external tree defined.\n'
-        return
-    fi
 
-    for br2_name in "${BR2_EXT_NAMES[@]}"; do
-        eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
-        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+        printf 'BR2_EXTERNAL ?='
+        for br2_name in "${BR2_EXT_NAMES[@]}"; do
+            eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+            printf ' %s' "${br2_ext}"
+        done
         printf '\n'
-        printf 'BR2_EXTERNAL_NAMES += %s\n' "${br2_name}"
-        printf 'BR2_EXTERNAL_DIRS += %s\n' "${br2_ext}"
-        printf 'BR2_EXTERNAL_MKS += %s/external.mk\n' "${br2_ext}"
-        printf 'export BR2_EXTERNAL_%s_PATH = %s\n' "${br2_name}" "${br2_ext}"
-        printf 'export BR2_EXTERNAL_%s_DESC = %s\n' "${br2_name}" "${br2_desc}"
-    done
+
+        printf 'BR2_EXTERNAL_NAMES = \n'
+        printf 'BR2_EXTERNAL_DIRS = \n'
+        printf 'BR2_EXTERNAL_MKS = \n'
+
+        if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
+            printf '\n'
+            printf '# No br2-external tree defined.\n'
+            return
+        fi
+
+        for br2_name in "${BR2_EXT_NAMES[@]}"; do
+            eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
+            eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+            printf '\n'
+            printf 'BR2_EXTERNAL_NAMES += %s\n' "${br2_name}"
+            printf 'BR2_EXTERNAL_DIRS += %s\n' "${br2_ext}"
+            printf 'BR2_EXTERNAL_MKS += %s/external.mk\n' "${br2_ext}"
+            printf 'export BR2_EXTERNAL_%s_PATH = %s\n' "${br2_name}" "${br2_ext}"
+            printf 'export BR2_EXTERNAL_%s_DESC = %s\n' "${br2_name}" "${br2_desc}"
+        done
+    } >"${outputdir}/.br2-external.mk"
 }
 
 # Generate the kconfig snippet for the br2-external tree.
 do_kconfig() {
+    local outputdir="${1}"
     local br2_name br2_desc br2_ext
 
-    printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
-    printf '\n'
-
-    if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
-        printf '# No br2-external tree defined.\n'
-        return
-    fi
-
-    printf 'menu "External options"\n'
-    printf '\n'
-
-    for br2_name in "${BR2_EXT_NAMES[@]}"; do
-        eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
-        eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
-        if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
-            printf 'menu "%s"\n' "${br2_desc}"
-        fi
-        printf 'comment "%s (in %s)"\n' "${br2_desc}" "${br2_ext}"
-        printf 'config BR2_EXTERNAL_%s_PATH\n' "${br2_name}"
-        printf '\tstring\n'
-        printf '\tdefault "%s"\n' "${br2_ext}"
-        printf 'source "%s/Config.in"\n' "${br2_ext}"
-        if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
-            printf 'endmenu # %s\n' "${br2_name}"
-        fi
+    {
+        printf '#\n# Automatically generated file; DO NOT EDIT.\n#\n'
         printf '\n'
-    done
 
-    printf "endmenu # User-provided options\n"
+        if [ ${#BR2_EXT_NAMES[@]} -eq 0 ]; then
+            printf '# No br2-external tree defined.\n'
+            return
+        fi
+
+        printf 'menu "External options"\n'
+        printf '\n'
+
+        for br2_name in "${BR2_EXT_NAMES[@]}"; do
+            eval br2_desc="\"\${BR2_EXT_DESCS_${br2_name}}\""
+            eval br2_ext="\"\${BR2_EXT_PATHS_${br2_name}}\""
+            if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
+                printf 'menu "%s"\n' "${br2_desc}"
+            fi
+            printf 'comment "%s (in %s)"\n' "${br2_desc}" "${br2_ext}"
+            printf 'config BR2_EXTERNAL_%s_PATH\n' "${br2_name}"
+            printf '\tstring\n'
+            printf '\tdefault "%s"\n' "${br2_ext}"
+            printf 'source "%s/Config.in"\n' "${br2_ext}"
+            if [ ${#BR2_EXT_NAMES[@]} -gt 1 ]; then
+                printf 'endmenu # %s\n' "${br2_name}"
+            fi
+            printf '\n'
+        done
+
+        printf "endmenu # User-provided options\n"
+    } >"${outputdir}/.br2-external.in"
 }
 
 error() { local fmt="${1}"; shift; printf "BR2_EXTERNAL_ERROR = ${fmt}" "${@}"; exit 1; }
