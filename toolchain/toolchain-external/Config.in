@@ -47,8 +47,11 @@ source "toolchain/toolchain-external/toolchain-external-codesourcery-amd64/Confi
 
 # Kept last, so it remains the non-default choice, unless there isn't
 # any available toolchain profile for the currently selected
-# architecture.
+# architecture, but before toolchains from br2-external trees.
 source "toolchain/toolchain-external/toolchain-external-custom/Config.in"
+
+# Toolchains from br2-external trees, if any
+source "$BR2_BASE_DIR/.br2-external.in.toolchains"
 
 endchoice
 

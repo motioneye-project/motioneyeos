@@ -157,6 +157,7 @@ do_kconfig() {
     items=(
         paths
         menus
+        toolchains
     )
 
     for br2 in "${items[@]}"; do
@@ -196,6 +197,14 @@ do_kconfig() {
             fi
             printf '\n'
         } >>"${outputdir}/.br2-external.in.menus"
+
+        if [ -f "${br2_ext}/provides/toolchains.in" ]; then
+            printf 'comment "Toolchains from: %s"\n' "${br2_desc}"
+            printf 'source "%s/provides/toolchains.in"\n' "${br2_ext}"
+            printf '\n'
+        else
+            printf '# No toolchain from: %s\n\n' "${br2_desc}"
+        fi >>"${outputdir}/.br2-external.in.toolchains"
     done
 
     printf 'endmenu\n' >>"${outputdir}/.br2-external.in.menus"
