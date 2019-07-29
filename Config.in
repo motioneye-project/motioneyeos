@@ -18,6 +18,9 @@ config BR2_BASE_DIR
 	string
 	option env="BASE_DIR"
 
+# br2-external paths definitions
+source "$BR2_BASE_DIR/.br2-external.in.paths"
+
 # Hidden config symbols for packages to check system gcc version
 config BR2_HOST_GCC_VERSION
 	string
@@ -873,4 +876,5 @@ source "package/Config.in.host"
 
 source "Config.in.legacy"
 
-source "$BR2_BASE_DIR/.br2-external.in"
+# br2-external menus definitions
+source "$BR2_BASE_DIR/.br2-external.in.menus"
