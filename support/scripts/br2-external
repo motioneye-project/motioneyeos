@@ -16,9 +16,8 @@ main() {
     local OPT OPTARG
     local br2_ext ofile ofmt
 
-    while getopts :hkmo: OPT; do
+    while getopts :kmo: OPT; do
         case "${OPT}" in
-        h)  help; exit 0;;
         o)  ofile="${OPTARG}";;
         k)  ofmt="kconfig";;
         m)  ofmt="mk";;
@@ -186,36 +185,6 @@ do_kconfig() {
     done
 
     printf "endmenu # User-provided options\n"
-}
-
-help() {
-    cat <<-_EOF_
-	Usage:
-	    ${my_name} <-m|-k> -o FILE PATH
-
-	With -m, ${my_name} generates the makefile fragment that defines
-	variables related to the br2-external trees passed as positional
-	arguments.
-
-	With -k, ${my_name} generates the kconfig snippet to include the
-	configuration options specified in the br2-external trees passed
-	as positional arguments.
-
-	Using -k and -m together is not possible. The last one wins.
-
-	Options:
-	    -m  Generate the makefile fragment.
-
-	    -k  Generate the kconfig snippet.
-
-	    -o FILE
-	        FILE in which to generate the kconfig snippet or makefile
-	        fragment.
-
-	Returns:
-	    0   If no error
-	    !0  If any error
-	_EOF_
 }
 
 error() { local fmt="${1}"; shift; printf "BR2_EXTERNAL_ERROR = ${fmt}" "${@}"; exit 1; }
