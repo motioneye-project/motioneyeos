@@ -22,7 +22,7 @@ place project-specific customizations in two locations:
 One can tell Buildroot to use one or more br2-external trees by setting
 the +BR2_EXTERNAL+ make variable set to the path(s) of the br2-external
 tree(s) to use. It can be passed to any Buildroot +make+ invocation. It
-is automatically saved in the hidden +.br-external.mk+ file in the output
+is automatically saved in the hidden +.br2-external.mk+ file in the output
 directory. Thanks to this, there is no need to pass +BR2_EXTERNAL+ at
 every +make+ invocation. It can however be changed at any time by
 passing a new value, and can be removed by passing an empty value.

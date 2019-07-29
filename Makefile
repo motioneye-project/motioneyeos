@@ -179,7 +179,7 @@ $(if $(BASE_DIR),, $(error output directory "$(O)" does not exist))
 # still be overridden on the command line, therefore the file is re-created
 # every time make is run.
 
-BR2_EXTERNAL_FILE = $(BASE_DIR)/.br-external.mk
+BR2_EXTERNAL_FILE = $(BASE_DIR)/.br2-external.mk
 -include $(BR2_EXTERNAL_FILE)
 $(shell support/scripts/br2-external \
 	-m -o '$(BR2_EXTERNAL_FILE)' $(BR2_EXTERNAL))
