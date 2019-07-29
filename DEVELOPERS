@@ -1874,9 +1874,6 @@ F:	package/synergy/
 N:	Pranit Sirsat <Pranit.Sirsat@imgtec.com>
 F:	package/paho-mqtt-c/
 
-N:	Qais Yousef <Qais.Yousef@imgtec.com>
-F:	package/bellagio/
-
 N:	Rahul Bedarkar <rahulbedarkar89@gmail.com>
 F:	package/cxxtest/
 F:	package/gflags/
