@@ -1,12 +1,13 @@
 diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rtsp-server-1.14.4/examples/test-launch.c
---- gst1-rtsp-server-1.14.4.org/examples/test-launch.c	2019-07-11 23:28:16.637688100 +1000
-+++ gst1-rtsp-server-1.14.4/examples/test-launch.c	2019-07-12 00:01:46.123301915 +1000
-@@ -26,12 +26,21 @@
+--- gst1-rtsp-server-1.14.4.org/examples/test-launch.c	2019-07-28 01:31:44.204640165 +1000
++++ gst1-rtsp-server-1.14.4/examples/test-launch.c	2019-07-28 01:53:49.966087869 +1000
+@@ -26,12 +26,24 @@
  
  static char *port = (char *) DEFAULT_RTSP_PORT;
  static char *mount_point = (char *) DEFAULT_RTSP_MOUNT_POINT;
 +static char *username = "";
 +static char *password = "";
++static gchar *realm = NULL;
 +static gboolean basic_auth_mode = FALSE;
  
  static GOptionEntry entries[] = {
@@ -18,12 +19,14 @@ diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rt
 +      "Basic/Digest auth username", "USERNAME"},
 +  {"password", 'P', 0, G_OPTION_ARG_STRING, &password,
 +      "Basic/Digest auth password", "PASSWORD"},
++  {"realm", 'R', 0, G_OPTION_ARG_STRING, &realm,
++      "Authentication realm (default: None)", "REALM"},
 +  {"basic-auth", 'A', 0, G_OPTION_ARG_NONE, &basic_auth_mode,
 +      "Use basic auth mode (default: digest mode)", "BASIC-AUTH"},
    {NULL}
  };
  
-@@ -44,6 +53,9 @@ main (int argc, char *argv[])
+@@ -44,6 +56,9 @@ main (int argc, char *argv[])
    GstRTSPMediaFactory *factory;
    GOptionContext *optctx;
    GError *error = NULL;
@@ -33,7 +36,7 @@ diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rt
  
    optctx = g_option_context_new ("<launch line> - Test RTSP Server, Launch\n\n"
        "Example: \"( videotestsrc ! x264enc ! rtph264pay name=pay0 pt=96 )\"");
-@@ -86,9 +98,51 @@ main (int argc, char *argv[])
+@@ -86,9 +101,54 @@ main (int argc, char *argv[])
    /* attach the test factory to the /test url */
    gst_rtsp_mount_points_add_factory (mounts, mount_string, factory);
  
@@ -76,6 +79,9 @@ diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rt
 +      g_free (basic);
 +    }
 +    gst_rtsp_token_unref (token);
++
++    if (realm)
++      gst_rtsp_auth_set_realm (auth, realm);
 +
 +    /* set as the server authentication manager */
 +    gst_rtsp_server_set_auth (server, auth);

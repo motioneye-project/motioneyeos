@@ -148,15 +148,18 @@ function start() {
     if [ -n "${CREDENTIALS}" ]; then
         username=`echo "${CREDENTIALS}" | cut -d ':' -f 1`
         password=`echo "${CREDENTIALS}" | cut -d ':' -f 2`
+        realm=`echo "${CREDENTIALS}" | cut -d ':' -f 3`
         if [ "${AUTH}" = "basic" ]; then
             streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
             rtsp_sink_auth="${username}:${password}@"
-            rtsp_sink_auth="-A"
+            rtsp_src_auth="-A"
             if [ -n "${username}" ]; then rtsp_src_auth="${rtsp_src_auth} -U ${username}"; fi
+            if [ -n "${realm}" ]; then rtsp_src_auth="${rtsp_src_auth} -R ${realm}"; fi
             if [ -n "${password}" ]; then rtsp_src_auth="${rtsp_src_auth} -P ${password}"; fi
         elif [ "${AUTH}" = "digest" ]; then
             rtsp_sink_auth="${username}:${password}@"
             if [ -n "${username}" ]; then rtsp_src_auth="-U ${username}"; fi
+            if [ -n "${realm}" ]; then rtsp_src_auth="${rtsp_src_auth} -R ${realm}"; fi
             if [ -n "${password}" ]; then rtsp_src_auth="${rtsp_src_auth} -P ${password}"; fi
         fi
     fi
