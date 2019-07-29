@@ -68,6 +68,9 @@ config BR2_PACKAGE_LIBRESSL_BIN
 
 endif
 
+# openssl from br2-external trees, if any
+source "$BR2_BASE_DIR/.br2-external.in.openssl"
+
 endchoice
 
 config BR2_PACKAGE_HAS_OPENSSL

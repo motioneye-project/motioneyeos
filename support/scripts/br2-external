@@ -159,6 +159,7 @@ do_kconfig() {
         menus
         toolchains
         jpeg
+        openssl
     )
 
     for br2 in "${items[@]}"; do
@@ -214,6 +215,14 @@ do_kconfig() {
         else
             printf '# No jpeg from: %s\n\n' "${br2_desc}"
         fi >>"${outputdir}/.br2-external.in.jpeg"
+
+        if [ -f "${br2_ext}/provides/openssl.in" ]; then
+            printf 'comment "openssl from: %s"\n' "${br2_desc}"
+            printf 'source "%s/provides/openssl.in"\n' "${br2_ext}"
+            printf '\n'
+        else
+            printf '# No openssl from: %s\n\n' "${br2_desc}"
+        fi >>"${outputdir}/.br2-external.in.openssl"
     done
 
     printf 'endmenu\n' >>"${outputdir}/.br2-external.in.menus"
