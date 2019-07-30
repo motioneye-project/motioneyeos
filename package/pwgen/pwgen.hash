@@ -1,3 +1,5 @@
-# From http://sourceforge.net/projects/pwgen/files/pwgen/2.07/
-md5	910b1008cdd86445e9e01305d21ee4c5	pwgen-2.07.tar.gz
-sha1	51180f9cd5530d79eea18b2443780dec4ec5ea43	pwgen-2.07.tar.gz
+# From http://sourceforge.net/projects/pwgen/files/pwgen/2.08/
+md5	6cfba450ac6ff72d11e88a6b0b049165	pwgen-2.08.tar.gz
+sha1	6406deba61297784888c2ec0c14e3c735a85a2b6	pwgen-2.08.tar.gz
+# Locally computed:
+sha256 5d3e49e01ef782be5841d5d1f7fb64d290cd86459598a913818584a46a2f81a1 debian/copyright
