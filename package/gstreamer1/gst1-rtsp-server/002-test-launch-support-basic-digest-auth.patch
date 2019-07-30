@@ -80,8 +80,8 @@ diff -rupEbwBN -x.git gst1-rtsp-server-1.14.4.org/examples/test-launch.c gst1-rt
 +    }
 +    gst_rtsp_token_unref (token);
 +
-+    if (realm)
-+      gst_rtsp_auth_set_realm (auth, realm);
++    //if (realm) // requires gstreamer version 1.16
++    //  gst_rtsp_auth_set_realm (auth, realm);
 +
 +    /* set as the server authentication manager */
 +    gst_rtsp_server_set_auth (server, auth);
