@@ -1,0 +1,34 @@
+From 9be0b489a94b57419202c552022f25cb95bfac51 Mon Sep 17 00:00:00 2001
+From: Alexander Kanavin <alex.kanavin@gmail.com>
+Date: Wed, 17 Apr 2019 16:41:58 +0200
+Subject: [PATCH] Fix big-endian build
+
+Bug-report: https://unicode-org.atlassian.net/browse/ICU-20533
+Patch taken from: https://bugs.gentoo.org/682170
+
+Upstream-Status: Pending
+Signed-off-by: Alexander Kanavin <alex.kanavin@gmail.com>
+
+Downloaded from
+http://cgit.openembedded.org/openembedded-core/tree/meta/recipes-support/icu/icu/0001-Fix-big-endian-build.patch?h=master
+
+[Bernd: Fixed path]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ data/Makefile.in | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/source/data/Makefile.in b/source/data/Makefile.in
+index 778b6c7..67203e7 100644
+--- a/source/data/Makefile.in
++++ b/source/data/Makefile.in
+@@ -148,7 +148,8 @@ ICUDATA_ARCHIVE = $(firstword $(wildcard $(srcdir)/in/$(ICUDATA_BASENAME_VERSION
+ # and convert it to the current type.
+ ifneq ($(ICUDATA_ARCHIVE),)
+ ICUDATA_SOURCE_ARCHIVE = $(OUTDIR)/$(ICUDATA_PLATFORM_NAME).dat
+-$(ICUDATA_SOURCE_ARCHIVE): $(ICUDATA_ARCHIVE) $(OUTDIR)
++$(ICUDATA_SOURCE_ARCHIVE): $(ICUDATA_ARCHIVE)
++	$(MKINSTALLDIRS) $(OUTDIR)
+ 	$(INVOKE) $(TOOLBINDIR)/icupkg -t$(ICUDATA_CHAR) $(ICUDATA_ARCHIVE) $(ICUDATA_SOURCE_ARCHIVE)
+ endif
+ else
