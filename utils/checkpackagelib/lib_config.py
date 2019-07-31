@@ -72,6 +72,11 @@ class CommentsMenusPackagesOrder(_CheckFunction):
         return len(self.state.split('-')) - 1
 
     def check_line(self, lineno, text):
+        # We only want to force sorting for the top-level menus
+        if self.filename not in ["package/Config.in",
+                                 "package/Config.in.host"]:
+            return
+
         if text.startswith("comment") or text.startswith("if") or \
            text.startswith("menu"):
 
