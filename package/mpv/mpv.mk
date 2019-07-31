@@ -4,14 +4,14 @@
 #
 ################################################################################
 
-MPV_VERSION = 0.27.2
+MPV_VERSION = 0.29.1
 MPV_SITE = https://github.com/mpv-player/mpv/archive
 MPV_SOURCE = v$(MPV_VERSION).tar.gz
 MPV_DEPENDENCIES = \
 	host-pkgconf ffmpeg zlib \
 	$(if $(BR2_PACKAGE_LIBICONV),libiconv)
 MPV_LICENSE = GPL-2.0+
-MPV_LICENSE_FILES = LICENSE
+MPV_LICENSE_FILES = LICENSE.GPL
 
 MPV_NEEDS_EXTERNAL_WAF = YES
 
@@ -164,16 +164,12 @@ MPV_CONF_OPTS += --disable-libsmbclient
 endif
 
 # SDL support
-# Both can't be used at the same time, prefer newer API
-# It also requires 64-bit sync intrinsics
+# Sdl2 requires 64-bit sync intrinsics
 ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL2),yy)
-MPV_CONF_OPTS += --enable-sdl2 --disable-sdl1
+MPV_CONF_OPTS += --enable-sdl2
 MPV_DEPENDENCIES += sdl2
-else ifeq ($(BR2_TOOLCHAIN_HAS_SYNC_8)$(BR2_PACKAGE_SDL),yy)
-MPV_CONF_OPTS += --enable-sdl1 --disable-sdl2
-MPV_DEPENDENCIES += sdl
 else
-MPV_CONF_OPTS += --disable-sdl1 --disable-sdl2
+MPV_CONF_OPTS += --disable-sdl2
 endif
 
 # Raspberry Pi support
