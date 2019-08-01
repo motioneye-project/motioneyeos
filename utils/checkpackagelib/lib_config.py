@@ -77,8 +77,8 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                                  "package/Config.in.host"]:
             return
 
-        if text.startswith("comment") or text.startswith("if") or \
-           text.startswith("menu"):
+        if text.startswith("comment ") or text.startswith("if ") or \
+           text.startswith("menu "):
 
             if text.startswith("comment"):
                 if not self.state.endswith("-comment"):
