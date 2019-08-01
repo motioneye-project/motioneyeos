@@ -678,7 +678,7 @@ def dump_html_stats(f, stats):
     f.write("</table>\n")
 
 
-def dump_gen_info(f, date, commit):
+def dump_html_gen_info(f, date, commit):
     # Updated on Mon Feb 19 08:12:08 CET 2018, Git commit aa77030b8f5e41f1c53eb1c1ad664b8c814ba032
     f.write("<p><i>Updated on %s, git commit %s</i></p>\n" % (str(date), commit))
 
@@ -688,7 +688,7 @@ def dump_html(packages, stats, date, commit, output):
         f.write(html_header)
         dump_html_all_pkgs(f, packages)
         dump_html_stats(f, stats)
-        dump_gen_info(f, date, commit)
+        dump_html_gen_info(f, date, commit)
         f.write(html_footer)
 
 
