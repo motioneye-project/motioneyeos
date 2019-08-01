@@ -38,6 +38,10 @@ RM_API_STATUS_FOUND_BY_DISTRO = 2
 RM_API_STATUS_FOUND_BY_PATTERN = 3
 RM_API_STATUS_NOT_FOUND = 4
 
+# Used to make multiple requests to the same host. It is global
+# because it's used by sub-processes.
+http_pool = None
+
 
 class Package:
     all_licenses = list()
@@ -316,6 +320,15 @@ def release_monitoring_get_latest_version_by_guess(pool, name):
     return (RM_API_STATUS_NOT_FOUND, None, None)
 
 
+def check_package_latest_version_worker(name):
+    """Wrapper to try both by name then by guess"""
+    print(name)
+    res = release_monitoring_get_latest_version_by_distro(http_pool, name)
+    if res[0] == RM_API_STATUS_NOT_FOUND:
+        res = release_monitoring_get_latest_version_by_guess(http_pool, name)
+    return res
+
+
 def check_package_latest_version(packages):
     """
     Fills in the .latest_version field of all Package objects
@@ -331,18 +344,15 @@ def check_package_latest_version(packages):
     - id: string containing the id of the project corresponding to this
       package, as known by release-monitoring.org
     """
-    pool = HTTPSConnectionPool('release-monitoring.org', port=443,
-                               cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(),
-                               timeout=30)
-    count = 0
-    for pkg in packages:
-        v = release_monitoring_get_latest_version_by_distro(pool, pkg.name)
-        if v[0] == RM_API_STATUS_NOT_FOUND:
-            v = release_monitoring_get_latest_version_by_guess(pool, pkg.name)
-
-        pkg.latest_version = v
-        print("[%d/%d] Package %s" % (count, len(packages), pkg.name))
-        count += 1
+    global http_pool
+    http_pool = HTTPSConnectionPool('release-monitoring.org', port=443,
+                                    cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(),
+                                    timeout=30)
+    worker_pool = Pool(processes=64)
+    results = worker_pool.map(check_package_latest_version_worker, (pkg.name for pkg in packages))
+    for pkg, r in zip(packages, results):
+        pkg.latest_version = r
+    del http_pool
 
 
 def calculate_stats(packages):
