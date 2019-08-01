@@ -383,6 +383,8 @@ tests.package.test_luafilesystem.TestLuaLuaFileSystem: { extends: .runtime_test 
 tests.package.test_luafilesystem.TestLuajitLuaFileSystem: { extends: .runtime_test }
 tests.package.test_luaossl.TestLuaLuaossl: { extends: .runtime_test }
 tests.package.test_luaossl.TestLuajitLuaossl: { extends: .runtime_test }
+tests.package.test_luaposix.TestLuaLuaPosix: { extends: .runtime_test }
+tests.package.test_luaposix.TestLuajitLuaPosix: { extends: .runtime_test }
 tests.package.test_luasec.TestLuaLuaSec: { extends: .runtime_test }
 tests.package.test_luasec.TestLuajitLuaSec: { extends: .runtime_test }
 tests.package.test_luasocket.TestLuaLuaSocket: { extends: .runtime_test }
