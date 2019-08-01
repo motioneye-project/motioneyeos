@@ -39,6 +39,7 @@ class TestLuaLuaPosix(TestLuaBase):
         self.module_test("posix.time")
         self.module_test("posix.unistd")
         self.module_test("posix.utime")
+        self.module_test("posix")
 
 
 class TestLuajitLuaPosix(TestLuaBase):
@@ -79,3 +80,4 @@ class TestLuajitLuaPosix(TestLuaBase):
         self.module_test("posix.time")
         self.module_test("posix.unistd")
         self.module_test("posix.utime")
+        self.module_test("posix")
