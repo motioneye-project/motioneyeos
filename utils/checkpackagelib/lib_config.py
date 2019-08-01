@@ -61,9 +61,9 @@ class AttributesOrder(_CheckFunction):
 
 
 class CommentsMenusPackagesOrder(_CheckFunction):
-    print_package_warning = [True, True, True, True, True, True]
-    menu_of_packages = ["", "", "", "", "", ""]
-    package = ["", "", "", "", "", ""]
+    menu_of_packages = []
+    package = []
+    print_package_warning = []
 
     def before(self):
         self.state = ""
@@ -92,9 +92,15 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                     self.state += "-menu"
 
             level = self.get_level()
-            self.package[level] = ""
-            self.print_package_warning[level] = True
-            self.menu_of_packages[level] = text[:-1]
+
+            try:
+                self.menu_of_packages[level] = text[:-1]
+                self.package[level] = ""
+                self.print_package_warning[level] = True
+            except IndexError:
+                self.menu_of_packages.append(text[:-1])
+                self.package.append("")
+                self.print_package_warning.append(True)
 
         elif text.startswith("endif") or text.startswith("endmenu"):
             if self.state.endswith("comment"):
