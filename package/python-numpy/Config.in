@@ -16,6 +16,8 @@ config BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
 config BR2_PACKAGE_PYTHON_NUMPY
 	bool "python-numpy"
 	depends on BR2_PACKAGE_PYTHON_NUMPY_ARCH_SUPPORTS
+	# python-numpy needs fenv.h which is not provided by uclibc
+	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL
 	help
 	  NumPy is the fundamental package for scientific computing
 	  with Python.
@@ -24,3 +26,6 @@ config BR2_PACKAGE_PYTHON_NUMPY
 	  C library.
 
 	  http://www.numpy.org/
+
+comment "python-numpy needs glibc or musl"
+	depends on !(BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL)
