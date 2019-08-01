@@ -10,6 +10,7 @@ class TestLuaLuasyslog(TestLuaBase):
 
     def test_run(self):
         self.login()
+        self.module_test("lsyslog")
         self.module_test("logging.syslog")
 
 
@@ -22,4 +23,5 @@ class TestLuajitLuasyslog(TestLuaBase):
 
     def test_run(self):
         self.login()
+        self.module_test("lsyslog")
         self.module_test("logging.syslog")
