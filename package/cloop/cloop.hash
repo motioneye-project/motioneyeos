@@ -1,2 +1,6 @@
-# From http://debian-knoppix.alioth.debian.org/packages/sources/cloop/cloop_2.634-1.dsc
-sha256	d6d03e2368e19f9c6c3a313e9c34cf0620d129ce26132a8805580d953769dbbd	cloop_2.634-1.tar.gz
+# From http://snapshot.debian.org/archive/debian/20150503T155713Z/pool/main/c/cloop/cloop_3.14.1.2.dsc
+sha256	ac344225b3a5c4ddbb0d4b20cd4874798b51427b707b53e2ee9fbdada7497c95	cloop_3.14.1.2.tar.xz
+
+# Hash for license files
+sha256	91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad	advancecomp-1.15/COPYING
+sha256	1b1f89e94e131e259b9e334565c5c3500d4b8aa755b75c3f145ddcdff3b89124	README

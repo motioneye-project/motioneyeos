@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-CLOOP_VERSION = 2.634-1
-CLOOP_SOURCE = cloop_$(CLOOP_VERSION).tar.gz
-CLOOP_SITE = http://debian-knoppix.alioth.debian.org/packages/sources/cloop
+CLOOP_VERSION = 3.14.1.2
+CLOOP_SOURCE = cloop_$(CLOOP_VERSION).tar.xz
+CLOOP_SITE = http://snapshot.debian.org/archive/debian/20150503T155713Z/pool/main/c/cloop
 CLOOP_LICENSE = GPL-2.0 (module), GPL-2.0+ (advancecomp)
 CLOOP_LICENSE_FILES = README advancecomp-1.15/COPYING
 
