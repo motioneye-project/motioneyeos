@@ -154,22 +154,6 @@ config BR2_GCC_ENABLE_OPENMP
 	help
 	  Enable OpenMP support for the compiler
 
-config BR2_GCC_ENABLE_LIBMUDFLAP
-	bool "Enable libmudflap support"
-	# There are architectures, or specific configurations for
-	# which mudflap is not supported.
-	depends on !BR2_ARM_INSTRUCTIONS_THUMB && !BR2_powerpc_SPE
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-	help
-	  libmudflap is a gcc library used for the mudflap pointer
-	  debugging functionality. It is only needed if you intend to
-	  use the -fmudflap gcc flag.
-
-	  See http://gcc.gnu.org/wiki/Mudflap_Pointer_Debugging and
-	  the help of the gcc -fmudflap option for more details.
-
-	  If you're unsure, leave this option disabled.
-
 config BR2_GCC_ENABLE_GRAPHITE
 	bool "Enable graphite support"
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5

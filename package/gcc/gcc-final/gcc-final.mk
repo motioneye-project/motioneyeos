@@ -184,14 +184,6 @@ ifeq ($(BR2_GCC_ENABLE_OPENMP),y)
 HOST_GCC_FINAL_USR_LIBS += libgomp
 endif
 
-ifeq ($(BR2_GCC_ENABLE_LIBMUDFLAP),y)
-ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
-HOST_GCC_FINAL_USR_LIBS += libmudflapth
-else
-HOST_GCC_FINAL_USR_LIBS += libmudflap
-endif
-endif
-
 ifneq ($(HOST_GCC_FINAL_USR_LIBS),)
 define HOST_GCC_FINAL_INSTALL_STATIC_LIBS
 	for i in $(HOST_GCC_FINAL_USR_LIBS) ; do \
