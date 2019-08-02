@@ -49,6 +49,11 @@ IPUTILS_CONF_OPTS += -DUSE_CRYPTO=none
 IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
 endif
 
+# ninfod requires <pthread.h>
+ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
+endif
+
 ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)
 IPUTILS_CONF_OPTS += -DUSE_GETTEXT=true
 else
