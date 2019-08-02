@@ -40,14 +40,6 @@ config BR2_GCC_VERSION_5_X
 	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
-config BR2_GCC_VERSION_6_X
-	bool "gcc 6.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
-	# Broken or unsupported architectures
-	depends on !BR2_arc
-	depends on !BR2_or1k
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
-
 config BR2_GCC_VERSION_7_X
 	bool "gcc 7.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_8
@@ -85,7 +77,6 @@ config BR2_GCC_SUPPORTS_LIBCILKRTS
 config BR2_GCC_VERSION
 	string
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
-	default "6.5.0"     if BR2_GCC_VERSION_6_X
 	default "7.4.0"     if BR2_GCC_VERSION_7_X
 	default "8.3.0"     if BR2_GCC_VERSION_8_X
 	default "9.1.0"     if BR2_GCC_VERSION_9_X

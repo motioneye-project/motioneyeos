@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.08"
 
+config BR2_GCC_VERSION_6_X
+	bool "gcc 6.x support removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc version 6.x has been removed. The current
+	  default version (8.x or later) has been selected instead.
+
 config BR2_GCC_VERSION_4_9_X
 	bool "gcc 4.9.x support removed"
 	select BR2_LEGACY

@@ -1,7 +1,5 @@
 # From ftp://gcc.gnu.org/pub/gcc/releases/gcc-5.5.0/sha512.sum
 sha512  670ff52c2ae12c7852c12987e91798c5aa8bd6daf21f0d6e0cd57a4aa59cc4f06a837fe76426eaa1424cfddca937bed377680700eadc04d76b9180d462364fa1  gcc-5.5.0.tar.xz
-# From ftp://gcc.gnu.org/pub/gcc/releases/gcc-6.5.0/sha512.sum
-sha512  ce046f9a50050fd54b870aab764f7db187fe7ea92eb4aaffb7c3689ca623755604e231f2af97ef795f41c406bb80c797dd69957cfdd51dfa2ba60813f72b7eac  gcc-6.5.0.tar.xz
 # From ftp://gcc.gnu.org/pub/gcc/releases/gcc-7.4.0/sha512.sum
 sha512  8864d8e4b97c2e1a4f17422f6e68120172ebefeab97b1757734f7185ca68a6b9a89011c6833c03fa454c17b0ac35b15e1d284881e6971035948ac6100f3aa45e  gcc-7.4.0.tar.xz
 # From ftp://gcc.gnu.org/pub/gcc/releases/gcc-8.3.0/sha512.sum
