@@ -27,20 +27,6 @@ config BR2_GCC_VERSION_OR1K
 	depends on BR2_or1k
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
-config BR2_GCC_VERSION_4_9_X
-	bool "gcc 4.9.x"
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
-	# Broken or unsupported architectures
-	depends on !BR2_arc
-	depends on !BR2_or1k
-	# musl on microblaze, ppc64 and mips64 unsupported
-	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_microblazeel || BR2_microblazebe))
-	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
-	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
-	# glibc >= 2.29 needs gcc >= 5 on all architectures.
-	depends on !BR2_TOOLCHAIN_USES_GLIBC
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
-
 config BR2_GCC_VERSION_5_X
 	bool "gcc 5.x"
 	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_6
@@ -91,15 +77,13 @@ config BR2_GCC_VERSION_9_X
 
 endchoice
 
-# libcilkrts was introduced in gcc 4.9 (oldest gcc version we
-# support), and removed in gcc 8.x
+# libcilkrts was introduced in gcc 4.9 and removed in gcc 8.x
 config BR2_GCC_SUPPORTS_LIBCILKRTS
 	bool
 	default y if !BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
 config BR2_GCC_VERSION
 	string
-	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
 	default "6.5.0"     if BR2_GCC_VERSION_6_X
 	default "7.4.0"     if BR2_GCC_VERSION_7_X
