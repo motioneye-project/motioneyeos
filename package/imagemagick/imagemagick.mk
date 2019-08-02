@@ -176,6 +176,9 @@ HOST_IMAGEMAGICK_CONF_OPTS = \
 	--with-png \
 	--with-zlib
 
+# uses clock_gettime, which was provided by librt in glibc < 2.17
+HOST_IMAGEMAGICK_CONF_ENV = LIBS="-lrt"
+
 HOST_IMAGEMAGICK_DEPENDENCIES = \
 	host-libjpeg \
 	host-libpng \
