@@ -1,0 +1,30 @@
+From 0831f77e990e363f78e3f6a5c461084988824f7b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 2 Jul 2019 23:48:12 +0200
+Subject: [PATCH] src/meson.build: upload needs gupnp-av
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://gitlab.gnome.org/GNOME/gupnp-tools/merge_requests/3]
+---
+ src/meson.build | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/meson.build b/src/meson.build
+index 84b2ca2..6601f45 100644
+--- a/src/meson.build
++++ b/src/meson.build
+@@ -2,9 +2,9 @@ subdir('common')
+ 
+ if get_option('av-tools') and gupnp_av.found()
+     subdir('av-cp')
++    subdir('upload')
+ endif
+ 
+ subdir('discover')
+ subdir('network-light')
+ subdir('universal-cp')
+-subdir('upload')
+-- 
+2.20.1
+
