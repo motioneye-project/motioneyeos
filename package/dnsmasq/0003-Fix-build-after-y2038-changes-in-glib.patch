@@ -1,0 +1,29 @@
+From 3052ce208acf602f0163166dcefb7330d537cedb Mon Sep 17 00:00:00 2001
+From: Jiri Slaby <jslaby@suse.cz>
+Date: Wed, 24 Jul 2019 17:34:48 +0100
+Subject: [PATCH] Fix build after y2038 changes in glib.
+
+SIOCGSTAMP is defined in linux/sockios.h, not asm/sockios.h now.
+
+[Retrieved from:
+http://thekelleys.org.uk/gitweb/?p=dnsmasq.git;a=patch;h=3052ce208acf602f0163166dcefb7330d537cedb]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/dnsmasq.h |    1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/dnsmasq.h b/src/dnsmasq.h
+index ff3204a..3ef04ad 100644
+--- a/src/dnsmasq.h
++++ b/src/dnsmasq.h
+@@ -137,6 +137,7 @@ typedef unsigned long long u64;
+ #endif
+ 
+ #if defined(HAVE_LINUX_NETWORK)
++#include <linux/sockios.h>
+ #include <linux/capability.h>
+ /* There doesn't seem to be a universally-available 
+    userspace header for these. */
+-- 
+1.7.10.4
+
