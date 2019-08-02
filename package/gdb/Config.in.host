@@ -1,7 +1,7 @@
 config BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 	bool
 	default y
-	# The ARC version needs C++11, thus gcc >= 4.8, like gdb-8.0.x
+	# The ARC version needs C++11, thus gcc >= 4.8, like gdb >= 8.x
 	depends on BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_arc
 	depends on !((BR2_arm || BR2_armeb) && BR2_BINFMT_FLAT)
 	depends on !BR2_microblaze
@@ -53,9 +53,6 @@ choice
 	help
 	  Select the version of gdb you wish to use.
 
-config BR2_GDB_VERSION_7_12
-	bool "gdb 7.12.x"
-
 config BR2_GDB_VERSION_8_1
 	bool "gdb 8.1.x"
 	# Needs a C++11 compiler
@@ -75,30 +72,11 @@ endchoice
 
 endif
 
-# Tells whether the currently selected gdb version requires C++11
-# support in the toolchain. When host-gdb is not enabled, the target
-# gdb built is 8.0, which requires C++11 support, which is why
-# BR2_PACKAGE_GDB_NEEDS_CXX11 is 'y' when BR2_PACKAGE_HOST_GDB is not
-# enabled. When host-gdb is built, with the version set to 8.0 or 8.1
-# then C++11 support is needed in the toolchain to build gdb for the
-# target.
-#
-# Even though this option is related to target gdb dependencies, we
-# keep it next to the BR2_GDB_VERSION so that they are kept in sync.
-config BR2_PACKAGE_GDB_NEEDS_CXX11
-	bool
-	default y if !BR2_PACKAGE_HOST_GDB
-	default y if BR2_GDB_VERSION_8_1
-	default y if BR2_GDB_VERSION_8_2
-	default y if BR2_GDB_VERSION_8_3
-	default y if BR2_arc
-
 # If cross-gdb is not enabled, the latest working version is chosen.
 config BR2_GDB_VERSION
 	string
 	default "arc-2019.03-release-gdb" if BR2_arc
 	default "4ecb98fbc2f94dbe01b69384afbc515107de73df" if BR2_csky
-	default "7.12.1"   if BR2_GDB_VERSION_7_12
 	default "8.1.1"    if BR2_GDB_VERSION_8_1
 	default "8.2.1"    if BR2_GDB_VERSION_8_2 || !BR2_PACKAGE_HOST_GDB
 	default "8.3"	   if BR2_GDB_VERSION_8_3
