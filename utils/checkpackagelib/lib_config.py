@@ -61,9 +61,9 @@ class AttributesOrder(_CheckFunction):
 
 
 class CommentsMenusPackagesOrder(_CheckFunction):
-    menu_of_packages = []
-    package = []
-    print_package_warning = []
+    menu_of_packages = [""]
+    package = [""]
+    print_package_warning = [True]
 
     def before(self):
         self.state = ""
