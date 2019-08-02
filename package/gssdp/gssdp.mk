@@ -13,4 +13,11 @@ GSSDP_LICENSE_FILES = COPYING
 GSSDP_INSTALL_STAGING = YES
 GSSDP_DEPENDENCIES = host-pkgconf libglib2 libsoup
 
+ifeq ($(BR2_PACKAGE_LIBGTK3),y)
+GSSDP_DEPENDENCIES += libgtk3
+GSSDP_CONF_OPTS += --with-gtk
+else
+GSSDP_CONF_OPTS += --without-gtk
+endif
+
 $(eval $(autotools-package))
