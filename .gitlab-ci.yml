@@ -222,7 +222,6 @@ nitrogen6sx_defconfig: { extends: .defconfig }
 nitrogen6x_defconfig: { extends: .defconfig }
 nitrogen7_defconfig: { extends: .defconfig }
 nitrogen8m_defconfig: { extends: .defconfig }
-odroidc2_defconfig: { extends: .defconfig }
 odroidxu4_defconfig: { extends: .defconfig }
 olimex_a10_olinuxino_lime_defconfig: { extends: .defconfig }
 olimex_a13_olinuxino_defconfig: { extends: .defconfig }
