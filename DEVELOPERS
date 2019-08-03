@@ -2068,8 +2068,8 @@ F:	board/friendlyarm/nanopi-m4/
 F:	board/friendlyarm/nanopi-neo4/
 F:	board/friendlyarm/nanopc-t4/
 F:	board/olimex/a33_olinuxino/
-F:	board/radxa/rock-pi4/
 F:	board/pine64/rockpro64/
+F:	board/radxa/rock-pi4/
 F:	configs/nanopi_m4_defconfig
 F:	configs/nanopi_neo4_defconfig
 F:	configs/nanopc_t4_defconfig
