@@ -1,5 +1,5 @@
 # From https://www.kernel.org/pub/software/network/ethtool/sha256sums.asc
-sha256	b18a6c364e42c29cdac057cf183c9674163db96b30848adfa8c2a90450f6d0c8	ethtool-4.19.tar.xz
+sha256	665fd70841860d6cb974387e3ab97e0dde7745f95cb3ef35b98ef9aace137805	ethtool-5.2.tar.xz
 # Locally calculated
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING
 sha256	5d632934396f90c82dfebe3c9512648bbb6333b406113d0cd331b0e0aa2d34a1	LICENSE
