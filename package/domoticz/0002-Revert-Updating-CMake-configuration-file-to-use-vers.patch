@@ -1,0 +1,47 @@
+From 2cd95289939b4a7c2576176c7f6268028aa093b2 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 24 May 2019 21:50:16 +0200
+Subject: [PATCH] Revert "Updating CMake configuration file to use
+ version 3.14 as minimum and added boost dependency targets"
+
+This reverts commit 4e4ee999c4b323514c0ba81ab1ff3afb10d2f1cd to avoid
+bumping host-cmake requirement version from 3.8 to 3.14 in buildroot.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ CMakeLists.txt | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index c5b7832ff..a21f5b87b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,5 @@
+-#set to minimum version that supports clean build
+-cmake_minimum_required(VERSION 3.14.0)
++#set to minimum version that supports clean build on cygwin
++cmake_minimum_required(VERSION 2.8.4)
+ 
+ project(domoticz)
+ 
+@@ -583,6 +583,7 @@ set(Boost_USE_STATIC_LIBS ${USE_STATIC_BOOST})
+ set(Boost_USE_MULTITHREADED ON)
+ unset(Boost_INCLUDE_DIR CACHE)
+ unset(Boost_LIBRARY_DIRS CACHE)
++find_package(Boost REQUIRED COMPONENTS thread system)
+ 
+ if(USE_STATIC_BOOST)
+    message(STATUS "Linking against boost static libraries")
+@@ -590,9 +591,6 @@ else(USE_STATIC_BOOST)
+    message(STATUS "Linking against boost dynamic libraries")
+ endif(USE_STATIC_BOOST)
+ 
+-find_package(Boost REQUIRED COMPONENTS thread system)
+-target_link_libraries(domoticz Boost::thread Boost::system)
+-
+ # compare found vs required libBoost version
+ if(Boost_VERSION VERSION_LESS DOMO_MIN_LIBBOOST_VERSION)
+    message(FATAL_ERROR "Found libBoost version ${Boost_VERSION}, ${DOMO_MIN_LIBBOOST_VERSION} or newer required")
+-- 
+2.20.1
+
