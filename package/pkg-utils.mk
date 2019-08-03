@@ -99,6 +99,7 @@ endef
 define _json-info-pkg-details
 	"version": "$($(1)_DL_VERSION)",
 	"licenses": "$($(1)_LICENSE)",
+	"dl_dir": "$($(1)_DL_SUBDIR)",
 	"install_target": $(call yesno-to-bool,$($(1)_INSTALL_TARGET)),
 	"install_staging": $(call yesno-to-bool,$($(1)_INSTALL_STAGING)),
 	"install_images": $(call yesno-to-bool,$($(1)_INSTALL_IMAGES)),
