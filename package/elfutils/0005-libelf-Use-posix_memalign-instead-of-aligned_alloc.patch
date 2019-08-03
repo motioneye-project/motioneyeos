@@ -1,0 +1,58 @@
+From 6bd060a23f43a842fbc37dd1bb8d6d7964eda36e Mon Sep 17 00:00:00 2001
+From: Mark Wielaard <mark@klomp.org>
+Date: Thu, 7 Mar 2019 17:31:53 +0100
+Subject: [PATCH] libelf: Use posix_memalign instead of aligned_alloc.
+
+Older glibc might not have aligned_alloc (it is C11).
+Use posix_memalign instead. posix_memalign requires the alignment to
+be a multiple of sizeof (void *). So use malloc for smaller alignments.
+
+Signed-off-by: Mark Wielaard <mark@klomp.org>
+[Retrieved (and slighlty updated to remove ChangeLog update) from:
+https://sourceware.org/git/?p=elfutils.git;a=patch;h=6bd060a23f43a842fbc37dd1bb8d6d7964eda36e]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ libelf/elf32_updatefile.c | 20 +++++++++++++++++---
+ 2 files changed, 22 insertions(+), 3 deletions(-)
+
+diff --git a/libelf/elf32_updatefile.c b/libelf/elf32_updatefile.c
+index 457d18e..eea51a7 100644
+--- a/libelf/elf32_updatefile.c
++++ b/libelf/elf32_updatefile.c
+@@ -360,16 +360,30 @@ __elfw2(LIBELFBITS,updatemmap) (Elf *elf, int change_bo, size_t shnum)
+ 			else
+ 			  {
+ 			    /* We have to do the conversion on properly
+-			       aligned memory first.  */
++			       aligned memory first.  align is a power of 2,
++			       but posix_memalign only works for alignments
++			       which are a multiple of sizeof (void *).
++			       So use normal malloc for smaller alignments.  */
+ 			    size_t size = dl->data.d.d_size;
+-			    char *converted = aligned_alloc (align, size);
++			    void *converted;
++			    if (align < sizeof (void *))
++			      converted = malloc (size);
++			    else
++			      {
++				int res;
++				res = posix_memalign (&converted, align, size);
++				if (res != 0)
++				  converted = NULL;
++			      }
++
+ 			    if (converted == NULL)
+ 			      {
+ 				free (scns);
+ 				__libelf_seterrno (ELF_E_NOMEM);
+ 				return 1;
+ 			      }
+-                            (*fctp) (converted, dl->data.d.d_buf, size, 1);
++
++			    (*fctp) (converted, dl->data.d.d_buf, size, 1);
+ 
+ 			    /* And then write it to the mmapped file.  */
+ 			    memcpy (last_position, converted, size);
+-- 
+2.9.3
+

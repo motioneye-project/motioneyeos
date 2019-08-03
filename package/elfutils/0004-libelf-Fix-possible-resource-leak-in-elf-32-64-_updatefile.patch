@@ -1,0 +1,32 @@
+From 75e147d0ab85262d9bb2fff093db7ce67dbd4b62 Mon Sep 17 00:00:00 2001
+From: Mark Wielaard <mark@klomp.org>
+Date: Wed, 6 Mar 2019 19:56:54 +0100
+Subject: [PATCH] libelf: Fix possible resource leak in elf[32|64]_updatefile.
+
+When we cannot allocate enough memory to convert the data in
+updatemmap we should free the scns before returning an error.
+
+Signed-off-by: Mark Wielaard <mark@klomp.org>
+[Retrieved (and slightly updated to remove ChangeLog update) from:
+https://sourceware.org/git/?p=elfutils.git;a=patch;h=75e147d0ab85262d9bb2fff093db7ce67dbd4b62]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ libelf/elf32_updatefile.c | 1 +
+ 2 files changed, 6 insertions(+)
+
+ 	* gelf_xlate.c (__elf_xfctstof): Remove alias.
+diff --git a/libelf/elf32_updatefile.c b/libelf/elf32_updatefile.c
+index 2899c6f..457d18e 100644
+--- a/libelf/elf32_updatefile.c
++++ b/libelf/elf32_updatefile.c
+@@ -365,6 +365,7 @@ __elfw2(LIBELFBITS,updatemmap) (Elf *elf, int change_bo, size_t shnum)
+ 			    char *converted = aligned_alloc (align, size);
+ 			    if (converted == NULL)
+ 			      {
++				free (scns);
+ 				__libelf_seterrno (ELF_E_NOMEM);
+ 				return 1;
+ 			      }
+-- 
+2.9.3
+
