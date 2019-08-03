@@ -1,0 +1,33 @@
+config BR2_PACKAGE_JACK1
+	bool "jack1"
+	depends on BR2_USE_MMU # fork()
+	depends on BR2_TOOLCHAIN_HAS_THREADS # alsa-lib
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_PACKAGE_JACK2
+	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_HWDEP
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
+	select BR2_PACKAGE_BERKELEYDB
+	select BR2_PACKAGE_LIBSAMPLERATE
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  JACK Audio Connection Kit (JACK 1 implementation).
+
+	  JACK is a low-latency sound server, allowing multiple
+	  applications to connect to one audio device, and to share
+	  audio between themselves. This package contains the daemon
+	  jackd as well as some example clients.
+
+	  http://jackaudio.org/
+
+	  Another implementation (BR2_PACKAGE_JACK2) is also available,
+	  please consult the documentation to choose the right one:
+
+	  https://github.com/jackaudio/jackaudio.github.com/wiki/Q_difference_jack1_jack2
+
+comment "jack1 needs a toolchain w/ threads, dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

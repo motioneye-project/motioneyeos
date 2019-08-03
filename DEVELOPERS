@@ -71,6 +71,9 @@ F:	package/setools/
 F:	package/sngrep/
 F:	package/systemd/
 
+N:	Adam Heinrich <adam@adamh.cz>
+F:	package/jack1/
+
 N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/brotli/
 F:	package/cog/
