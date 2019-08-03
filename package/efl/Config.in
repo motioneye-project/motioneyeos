@@ -295,10 +295,15 @@ config BR2_PACKAGE_EFL_LIBRAW
 config BR2_PACKAGE_EFL_SVG
 	bool "SVG loader"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # librsvg -> pango -> harfbuzz
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # librsvg -> pango -> harfbuzz
 	select BR2_PACKAGE_LIBRSVG
 	select BR2_PACKAGE_CAIRO
 	help
 	  This option enables the Evas generic SVG loader
+
+comment "SVG loader needs a toolchain w/ gcc >= 4.8"
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 endif # BR2_PACKAGE_EFL
 
