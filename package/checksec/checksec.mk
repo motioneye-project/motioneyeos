@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHECKSEC_VERSION = cdefe53eb72e6e8f23308417d2fc6b68cba9dbac
+CHECKSEC_VERSION = 2.1.0
 CHECKSEC_SITE = $(call github,slimm609,checksec.sh,$(CHECKSEC_VERSION))
 CHECKSEC_LICENSE = BSD-3-Clause
 CHECKSEC_LICENSE_FILES = LICENSE.txt
