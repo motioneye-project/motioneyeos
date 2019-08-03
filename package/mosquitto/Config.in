@@ -1,6 +1,5 @@
 config BR2_PACKAGE_MOSQUITTO
 	bool "mosquitto"
-	depends on !BR2_STATIC_LIBS # builds .so
 	help
 	  Mosquitto is an open source message broker that implements
 	  the MQ Telemetry Transport protocol versions 3.1 and
@@ -16,12 +15,12 @@ config BR2_PACKAGE_MOSQUITTO_BROKER
 	bool "install the mosquitto broker"
 	default y
 	depends on BR2_USE_MMU # fork()
+	depends on !BR2_STATIC_LIBS # include <dlfcn.h>
 	depends on BR2_PACKAGE_MOSQUITTO
 	help
 	  Build and install the mosquitto broker onto target.
 
-comment "mosquitto broker needs a system with MMU"
-	depends on BR2_PACKAGE_MOSQUITTO && !BR2_USE_MMU
-
-comment "mosquitto needs a toolchain w/ dynamic library"
+comment "mosquitto broker needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS
+	depends on BR2_PACKAGE_MOSQUITTO
