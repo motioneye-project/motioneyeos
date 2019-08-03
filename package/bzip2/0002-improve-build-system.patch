@@ -70,15 +70,15 @@ Index: b/Makefile-libbz2_so
        huffman.o    \
 @@ -37,8 +36,11 @@
  all: $(OBJS)
- 	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.6 $(OBJS)
- 	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.6
+ 	$(CC) -shared -Wl,-soname -Wl,libbz2.so.1.0 -o libbz2.so.1.0.8 $(OBJS)
+ 	$(CC) $(CFLAGS) -o bzip2-shared bzip2.c libbz2.so.1.0.8
 -	rm -f libbz2.so.1.0
--	ln -s libbz2.so.1.0.6 libbz2.so.1.0
+-	ln -s libbz2.so.1.0.8 libbz2.so.1.0
 +
 +install:
-+	install -m 0755 -D libbz2.so.1.0.6 $(PREFIX)/lib/libbz2.so.1.0.6
-+	ln -sf libbz2.so.1.0.6 $(PREFIX)/lib/libbz2.so
-+	ln -sf libbz2.so.1.0.6 $(PREFIX)/lib/libbz2.so.1.0
++	install -m 0755 -D libbz2.so.1.0.8 $(PREFIX)/lib/libbz2.so.1.0.8
++	ln -sf libbz2.so.1.0.8 $(PREFIX)/lib/libbz2.so
++	ln -sf libbz2.so.1.0.8 $(PREFIX)/lib/libbz2.so.1.0
  
  clean: 
- 	rm -f $(OBJS) bzip2.o libbz2.so.1.0.6 libbz2.so.1.0 bzip2-shared
+ 	rm -f $(OBJS) bzip2.o libbz2.so.1.0.8 libbz2.so.1.0 bzip2-shared
