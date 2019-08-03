@@ -475,4 +475,4 @@ tests.toolchain.test_external.TestExternalToolchainLinaroArm: { extends: .runtim
 tests.toolchain.test_external.TestExternalToolchainSourceryArmv4: { extends: .runtime_test }
 tests.toolchain.test_external.TestExternalToolchainSourceryArmv5: { extends: .runtime_test }
 tests.toolchain.test_external.TestExternalToolchainSourceryArmv7: { extends: .runtime_test }
-tests.utils.test_check_package.TestCheckPackageBasicUsage: { extends: .runtime_test }
+tests.utils.test_check_package.TestCheckPackage: { extends: .runtime_test }
