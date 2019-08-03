@@ -29,6 +29,11 @@ else
 MOSQUITTO_MAKE_OPTS += WITH_SHARED_LIBRARIES=yes
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+MOSQUITTO_MAKE_OPTS += WITH_SYSTEMD=yes
+MOSQUITTO_DEPENDENCIES += systemd
+endif
+
 # adns uses getaddrinfo_a
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 MOSQUITTO_MAKE_OPTS += WITH_ADNS=yes
@@ -102,7 +107,7 @@ define MOSQUITTO_INSTALL_INIT_SYSV
 endef
 
 define MOSQUITTO_INSTALL_INIT_SYSTEMD
-	$(INSTALL) -D -m 644 package/mosquitto/mosquitto.service \
+	$(INSTALL) -D -m 644 $(@D)/service/systemd/mosquitto.service.notify \
 		$(TARGET_DIR)/usr/lib/systemd/system/mosquitto.service
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -fs ../../../../usr/lib/systemd/system/mosquitto.service \
