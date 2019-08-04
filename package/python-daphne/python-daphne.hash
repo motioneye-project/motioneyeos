@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/daphne/json
+md5	cac7352d0ebdde4f0cc245ae0b0682f8  daphne-2.3.0.tar.gz
+sha256	2329b7a74b5559f7ea012879c10ba945c3a53df7d8d2b5932a904e3b4c9abcc2  daphne-2.3.0.tar.gz
+# Locally computed sha256
+sha256 55d7d6117493d69de1c7c211b947b910a715030366f1b636d28cf6891dfc1f3d PKG-INFO
