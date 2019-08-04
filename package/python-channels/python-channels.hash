@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/channels/json
+md5	aec056cf4d0fa6444b3d83ccd5885fc5  channels-2.2.0.tar.gz
+sha256	af7cdba9efb3f55b939917d1b15defb5d40259936013e60660e5e9aff98db4c5  channels-2.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256	b846415d1b514e9c1dff14a22deb906d794bc546ca6129f950a18cd091e2a669  LICENSE

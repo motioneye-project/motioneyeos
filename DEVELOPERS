@@ -56,6 +56,7 @@ F:	package/policycoreutils/
 F:	package/python3/
 F:	package/python-aioredis/
 F:	package/python-asgiref/
+F:	package/python-channels/
 F:	package/python-daphne/
 F:	package/python-django-enumfields/
 F:	package/python-flask-sqlalchemy/
