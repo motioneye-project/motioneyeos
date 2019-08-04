@@ -60,7 +60,8 @@ endif # LINUX_HEADERS_CUSTOM_TARBALL
 # Apply any necessary patches if we are using the headers from a kernel
 # build.
 ifeq ($(BR2_KERNEL_HEADERS_AS_KERNEL),y)
-LINUX_HEADERS_PATCHES = $(call qstrip,$(BR2_LINUX_KERNEL_PATCH))
+LINUX_HEADERS_PATCHES = $(call qstrip,$(BR2_LINUX_KERNEL_PATCH)) \
+	$(wildcard $(addsuffix /linux,$(call qstrip,$(BR2_GLOBAL_PATCH_DIR))))
 
 # We rely on the generic package infrastructure to download and apply
 # remote patches (downloaded from ftp, http or https). For local
