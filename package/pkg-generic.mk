@@ -338,7 +338,8 @@ $(BUILD_DIR)/%/.stamp_target_installed:
 	$(if $(BR2_INIT_SYSV)$(BR2_INIT_BUSYBOX),\
 		$($(PKG)_INSTALL_INIT_SYSV))
 	$(if $(BR2_INIT_OPENRC), \
-		$($(PKG)_INSTALL_INIT_OPENRC))
+		$(or $($(PKG)_INSTALL_INIT_OPENRC), \
+			$($(PKG)_INSTALL_INIT_SYSV)))
 	$(foreach hook,$($(PKG)_POST_INSTALL_TARGET_HOOKS),$(call $(hook))$(sep))
 	$(Q)if test -n "$($(PKG)_CONFIG_SCRIPTS)" ; then \
 		$(RM) -f $(addprefix $(TARGET_DIR)/usr/bin/,$($(PKG)_CONFIG_SCRIPTS)) ; \

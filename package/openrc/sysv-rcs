@@ -1,0 +1,25 @@
+#!/sbin/openrc-run
+
+description="start or stop sysv rc[S,K] scripts"
+
+depend() {
+    after local
+}
+
+start() {
+    einfo "Starting sysv rc scripts"
+    for i in /etc/init.d/S??*; do
+        # Ignore dangling symlinks (if any).
+        [ -e "$i" ] || continue
+        $i start
+    done
+}
+
+stop() {
+    einfo "Stopping sysv rc scripts"
+    for i in $(ls -r /etc/init.d/S??*); do
+        # Ignore dangling symlinks (if any).
+        [ -e "$i" ] || continue
+        $i stop
+    done
+}
