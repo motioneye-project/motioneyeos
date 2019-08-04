@@ -198,7 +198,7 @@ def is_toolchain_usable(configfile, config):
     return True
 
 
-def fixup_config(configfile):
+def fixup_config(sysinfo, configfile):
     """Finalize the configuration and reject any problematic combinations
 
     This function returns 'True' when the configuration has been
@@ -207,7 +207,6 @@ def fixup_config(configfile):
     generated).
     """
 
-    sysinfo = SystemInfo()
     with open(configfile) as configf:
         configlines = configf.readlines()
 
@@ -331,6 +330,8 @@ def gen_config(args):
     packages.
     """
 
+    sysinfo = SystemInfo()
+
     # Select a random toolchain configuration
     configs = get_toolchain_configs(args.toolchains_csv, args.buildrootdir)
 
@@ -403,7 +404,7 @@ def gen_config(args):
                                "KCONFIG_PROBABILITY=%d" % randint(1, 30),
                                "randpackageconfig"])
 
-        if fixup_config(configfile):
+        if fixup_config(sysinfo, configfile):
             break
 
     subprocess.check_call(["make", "O=%s" % args.outputdir, "-C", args.buildrootdir,
