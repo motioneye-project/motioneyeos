@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aioredis/json
+md5	fd6c66e4d8efce553c369c0855c6fb49  aioredis-1.2.0.tar.gz
+sha256	84d62be729beb87118cf126c20b0e3f52d7a42bb7373dc5bcdd874f26f1f251a  aioredis-1.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256	a288b4f41b5531ff7e9e2df9cd3f17a1844badebc52d7a9205b131f8b8a50744  LICENSE

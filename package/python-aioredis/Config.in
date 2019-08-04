@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_AIOREDIS
+	bool "python-aioredis"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_ASYNC_TIMEOUT # runtime
+	select BR2_PACKAGE_PYTHON_HIREDIS # runtime
+	help
+	  Provides simple and clear interface to Redis based on asyncio.
+
+	  https://github.com/aio-libs/aioredis

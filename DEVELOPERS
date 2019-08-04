@@ -54,6 +54,7 @@ F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/
 F:	package/python3/
+F:	package/python-aioredis/
 F:	package/python-asgiref/
 F:	package/python-daphne/
 F:	package/python-django-enumfields/
