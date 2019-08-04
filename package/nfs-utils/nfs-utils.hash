@@ -1,2 +1,4 @@
-# From https://www.kernel.org/pub/linux/utils/nfs-utils/1.3.3/sha256sums.asc
-sha256 700d689c5622c87953c34102e5befafc4d3c811e676852238f0dd79c9c0c084d  nfs-utils-1.3.3.tar.xz
+# From https://www.kernel.org/pub/linux/utils/nfs-utils/1.3.4/sha256sums.asc
+sha256 b42a5bc0a8d80d04650030ceb9a11f08f4acfbcb1ee297f657fb94e339c45975  nfs-utils-1.3.4.tar.xz
+# Locally computed
+sha256 576540abf5e95029ad4ad90e32071385a5e95b2c30708c706116f3eb87b9a3de  COPYING
