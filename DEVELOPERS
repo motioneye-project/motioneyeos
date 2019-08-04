@@ -60,6 +60,7 @@ F:	package/python-mutagen/
 F:	package/python-pip/
 F:	package/python-psycopg2/
 F:	package/python-sqlalchemy/
+F:	package/python-sqlparse/
 F:	package/python-visitor/
 F:	package/restorecond/
 F:	package/refpolicy/

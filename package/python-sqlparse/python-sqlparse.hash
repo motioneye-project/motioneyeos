@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/sqlparse/json
+md5	2ce34181d6b7b234c9f3c0ecd1ffb93e  sqlparse-0.3.0.tar.gz
+sha256	7c3dca29c022744e95b547e867cee89f4fce4373f3549ccd8797d8eb52cdb873  sqlparse-0.3.0.tar.gz
+# Locally computed sha256 checksums
+sha256	c1938235b80d39e93138eae89edc3af67e18ecbc40d266529fa57b2dce426310  LICENSE
