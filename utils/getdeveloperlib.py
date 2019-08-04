@@ -120,6 +120,7 @@ class Developer:
         self.architectures = parse_developer_architectures(files)
         self.infras = parse_developer_infras(files)
         self.runtime_tests = parse_developer_runtime_tests(files)
+        self.defconfigs = parse_developer_defconfigs(files)
 
     def hasfile(self, f):
         f = os.path.abspath(f)
@@ -141,6 +142,8 @@ class Developer:
             things.append('{} infras'.format(len(self.infras)))
         if len(self.runtime_tests):
             things.append('{} tests'.format(len(self.runtime_tests)))
+        if len(self.defconfigs):
+            things.append('{} defconfigs'.format(len(self.defconfigs)))
         if things:
             return 'Developer <{} ({})>'.format(name, ', '.join(things))
         else:
@@ -201,6 +204,14 @@ def parse_developer_infras(fnames):
         if m:
             infras.add(m.group(1))
     return infras
+
+
+def parse_developer_defconfigs(fnames):
+    """Given a list of file names, returns the config names
+    corresponding to defconfigs."""
+    return {os.path.basename(fname[:-10])
+            for fname in fnames
+            if fname.endswith('_defconfig')}
 
 
 def parse_developer_runtime_tests(fnames):
