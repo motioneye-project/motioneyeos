@@ -1665,6 +1665,7 @@ F:	board/altera/socrates_cyclone5/
 F:	board/pine64/rock64
 F:	configs/rock64_defconfig
 F:	configs/socrates_cyclone5_defconfig
+F:	package/netifrc/
 F:	package/openrc/
 F:	package/skeleton-init-openrc/
 

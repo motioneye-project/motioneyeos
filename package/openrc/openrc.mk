@@ -37,6 +37,17 @@ define OPENRC_INSTALL_TARGET_CMDS
 	$(MAKE) $(OPENRC_MAKE_OPTS) DESTDIR=$(TARGET_DIR) -C $(@D) install
 endef
 
+ifeq ($(BR2_PACKAGE_NETIFRC),y)
+# netifrc replaces network, staticroute and loopback services which are
+# installed by openrc
+define OPENRC_NO_NET
+	$(RM) $(TARGET_DIR)/etc/runlevels/boot/{network,staticroute,loopback}
+	$(RM) $(TARGET_DIR)/etc/init.d/{network,staticroute,loopback}
+	$(RM) $(TARGET_DIR)/etc/conf.d/{network,staticroute,loopback}
+endef
+OPENRC_POST_TARGET_INSTALL_HOOKS += OPENRC_NO_NET
+endif
+
 define OPENRC_REMOVE_UNNEEDED
 	$(RM) -r $(TARGET_DIR)/usr/share/openrc
 endef

@@ -1,0 +1,12 @@
+config BR2_PACKAGE_NETIFRC
+	bool "netifrc"
+	depends on BR2_PACKAGE_OPENRC
+	help
+	  netifrc is a collection of modules created to configure and
+	  manage network interfaces via individual, per-interface
+	  scripts.
+
+	  https://wiki.gentoo.org/wiki/Netifrc
+
+comment "netifrc needs openrc as init system"
+	depends on !BR2_PACKAGE_OPENRC
