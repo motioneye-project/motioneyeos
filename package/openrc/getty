@@ -1,0 +1,24 @@
+#!/sbin/openrc-run
+# based on agetty service from OpenRC package
+
+description="start getty on terminal"
+supervisor=supervise-daemon
+port="${RC_SVCNAME#*.}"
+term_type="${term_type:-linux}"
+command=/sbin/getty
+command_args_foreground="${getty_options} ${baud} ${port} ${term_type}"
+pidfile="/run/${RC_SVCNAME}.pid"
+
+depend() {
+	# start getty at the very end of init
+	after *
+	keyword -prefix
+}
+
+start_pre() {
+	export EINFO_QUIET="${quiet:-yes}"
+}
+
+stop_pre() {
+	export EINFO_QUIET="${quiet:-yes}"
+}
