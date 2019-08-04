@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/django-enumfields/json
+md5	c9725a2c31ca2949d111815742335279  django-enumfields-1.0.0.tar.gz
+sha256	5b0e2dd5973337717ca6bd5a7d9e167e6ae01203c160d4761b88837c4678f219  django-enumfields-1.0.0.tar.gz
+# Locally computed sha256 checksums
+sha256	5548de8c163dc57bd0a4f5772f1509f2c04f1390251c98ebf060c9d52a223f57  LICENSE
