@@ -97,6 +97,22 @@ class Developer:
                 return True
         return False
 
+    def __repr__(self):
+        name = '\'' + self.name.split(' <')[0][:20] + '\''
+        things = []
+        if len(self.files):
+            things.append('{} files'.format(len(self.files)))
+        if len(self.packages):
+            things.append('{} pkgs'.format(len(self.packages)))
+        if len(self.architectures):
+            things.append('{} archs'.format(len(self.architectures)))
+        if len(self.infras):
+            things.append('{} infras'.format(len(self.infras)))
+        if things:
+            return 'Developer <{} ({})>'.format(name, ', '.join(things))
+        else:
+            return 'Developer <' + name + '>'
+
 
 def parse_developer_packages(fnames):
     """Given a list of file patterns, travel through the Buildroot source
