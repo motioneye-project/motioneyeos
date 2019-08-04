@@ -249,7 +249,7 @@ config BR2_TARGET_UBOOT_FORMAT_SD
 	  This is Freescale i.MX28 SB format, with a header for booting
 	  from an SD card.
 
-	  U-boot includes an mxsboot tool to generate this format,
+	  U-Boot includes an mxsboot tool to generate this format,
 	  starting from 2011.12.
 
 	  See doc/README.mxs (or doc/README.mx28_common before 2013.07)
@@ -261,7 +261,7 @@ config BR2_TARGET_UBOOT_FORMAT_NAND
 	  This is Freescale i.MX28 BootStream format (.sb), with a
 	  header for booting from a NAND flash.
 
-	  U-boot includes an mxsboot tool to generate this format,
+	  U-Boot includes an mxsboot tool to generate this format,
 	  starting from 2011.12.
 
 	  There are two possibilities when preparing an image writable
