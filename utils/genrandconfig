@@ -49,7 +49,7 @@ else:
 
 class SystemInfo:
     DEFAULT_NEEDED_PROGS = ["make", "git", "gcc", "timeout"]
-    DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar"]
+    DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar", "diffoscope"]
 
     def __init__(self):
         self.needed_progs = list(self.__class__.DEFAULT_NEEDED_PROGS)
@@ -369,7 +369,7 @@ def gen_config(args):
 
     # Randomly enable BR2_REPRODUCIBLE 10% of times
     # also enable tar filesystem images for testing
-    if randint(0, 10) == 0:
+    if sysinfo.has("diffoscope") and randint(0, 10) == 0:
         configlines.append("BR2_REPRODUCIBLE=y\n")
         configlines.append("BR2_TARGET_ROOTFS_TAR=y\n")
 
