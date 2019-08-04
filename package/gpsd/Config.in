@@ -18,7 +18,7 @@ menuconfig BR2_PACKAGE_GPSD
 
 	  The D-Bus interface is included if dbus-glib is enabled.
 
-	  http://www.catb.org/gpsd/
+	  https://gpsd.gitlab.io/gpsd
 
 if BR2_PACKAGE_GPSD
 
