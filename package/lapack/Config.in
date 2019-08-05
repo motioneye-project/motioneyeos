@@ -5,6 +5,7 @@ comment "lapack/blas needs a toolchain w/ fortran"
 config BR2_PACKAGE_LAPACK
 	bool "lapack/blas"
 	depends on BR2_TOOLCHAIN_HAS_FORTRAN
+	depends on !BR2_PACKAGE_CLAPACK
 	# _fpu_control is used on PowerPC, but not available with uClibc
 	depends on !(BR2_powerpc && BR2_TOOLCHAIN_USES_UCLIBC)
 	help
