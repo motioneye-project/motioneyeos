@@ -43,6 +43,12 @@ This snippet creates the following make targets:
   options that differ from the default values. It is not possible to
   use this target when fragment files are set.
 
+* +foo-diff-config+, which outputs the differences between the current
+  configuration and the one defined in the Buildroot configuration for
+  this kconfig package. The output is useful to identify the
+  configuration changes that may have to be propagated to
+  configuration fragments for example.
+
 and ensures that the source configuration file is copied to the build
 directory at the right moment.
 
