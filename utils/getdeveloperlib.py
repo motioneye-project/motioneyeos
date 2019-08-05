@@ -79,9 +79,9 @@ def analyze_patches(patches):
     return (allfiles, allinfras)
 
 
-# 
+#
 # Unit-test parsing functions
-# 
+#
 
 def get_all_test_cases(suite):
     """Generate all test-cases from a given test-suite.
@@ -107,6 +107,7 @@ def list_unittests(path):
 
 
 unittests = {}
+
 
 #
 # DEVELOPERS file parsing functions
