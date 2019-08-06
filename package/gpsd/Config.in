@@ -44,9 +44,6 @@ config BR2_PACKAGE_GPSD_PROFILING
 comment "profiling support not available with uClibc-based toolchain"
 	depends on !BR2_TOOLCHAIN_USES_GLIBC
 
-config BR2_PACKAGE_GPSD_NTP_SHM
-	bool "NTP time hinting support"
-
 config BR2_PACKAGE_GPSD_PPS
 	bool "PPS time syncing support"
 	select BR2_PACKAGE_GPSD_NTP_SHM

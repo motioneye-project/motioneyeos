@@ -24,7 +24,8 @@ GPSD_SCONS_OPTS = \
 	sysroot=$(STAGING_DIR) \
 	strip=no \
 	python=no \
-	qt=no
+	qt=no \
+	ntpshm=yes
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 GPSD_DEPENDENCIES += ncurses
@@ -161,9 +162,6 @@ GPSD_SCONS_OPTS += ublox=no
 endif
 
 # Features
-ifneq ($(BR2_PACKAGE_GPSD_NTP_SHM),y)
-GPSD_SCONS_OPTS += ntpshm=no
-endif
 ifneq ($(BR2_PACKAGE_GPSD_PPS),y)
 GPSD_SCONS_OPTS += pps=no
 endif
