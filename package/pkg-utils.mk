@@ -62,6 +62,11 @@ $$(error Package error: use $(2) instead of $(1). Please fix your .mk file)
 endif
 endef
 
+# $(1): YES or NO
+define yesno-to-bool
+	$(subst NO,false,$(subst YES,true,$(1)))
+endef
+
 # json-info -- return package or filesystem metadata formatted as an entry
 #              of a JSON dictionnary
 # $(1): upper-case package or filesystem name
@@ -94,6 +99,9 @@ endef
 define _json-info-pkg-details
 	"version": "$($(1)_DL_VERSION)",
 	"licenses": "$($(1)_LICENSE)",
+	"install_target": $(call yesno-to-bool,$($(1)_INSTALL_TARGET)),
+	"install_staging": $(call yesno-to-bool,$($(1)_INSTALL_STAGING)),
+	"install_images": $(call yesno-to-bool,$($(1)_INSTALL_IMAGES)),
 	"downloads": [
 	$(foreach dl,$(sort $($(1)_ALL_DOWNLOADS)),
 		{
