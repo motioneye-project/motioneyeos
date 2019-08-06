@@ -1,0 +1,23 @@
+config BR2_PACKAGE_STELLARIUM
+	bool "stellarium"
+	depends on BR2_PACKAGE_QT5
+	depends on BR2_PACKAGE_QT5_GL_AVAILABLE
+	depends on BR2_PACKAGE_HAS_LIBGL # does not support OpenGL ES
+	select BR2_PACKAGE_QT5BASE_CONCURRENT
+	select BR2_PACKAGE_QT5BASE_GUI
+	select BR2_PACKAGE_QT5BASE_NETWORK
+	select BR2_PACKAGE_QT5BASE_OPENGL
+	select BR2_PACKAGE_QT5BASE_PRINTSUPPORT
+	select BR2_PACKAGE_QT5BASE_WIDGETS
+	select BR2_PACKAGE_QT5LOCATION
+	select BR2_PACKAGE_QT5MULTIMEDIA
+	select BR2_PACKAGE_ZLIB
+	help
+	  Stellarium is a free open source planetarium for your
+	  computer. It shows a realistic sky in 3D, just like what
+	  you see with the naked eye, binoculars or a telescope.
+
+	  https://stellarium.org
+
+comment "stellarium needs Qt5 and an OpenGL provider"
+	depends on !BR2_PACKAGE_QT5 || !BR2_PACKAGE_HAS_LIBGL

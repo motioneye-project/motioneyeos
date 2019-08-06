@@ -1,0 +1,29 @@
+From 29336f899dec12d7583efb513e1477d4cfc9a621 Mon Sep 17 00:00:00 2001
+From: Alexander Wolf <alex.v.wolf@gmail.com>
+Date: Sun, 4 Aug 2019 22:51:52 +0700
+Subject: [PATCH] A tiny fix for previous commit
+
+Downloaded from upstream commit
+https://github.com/Stellarium/stellarium/commit/29336f899dec12d7583efb513e1477d4cfc9a621
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/core/StelLocationMgr.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/core/StelLocationMgr.cpp b/src/core/StelLocationMgr.cpp
+index 20eddc8a61..3c1b5fe4e4 100644
+--- a/src/core/StelLocationMgr.cpp
++++ b/src/core/StelLocationMgr.cpp
+@@ -168,7 +168,7 @@ void LibGPSLookupHelper::query()
+ 				// * Added sep (estimated spherical error, 3D)
+ 				// Details: https://github.com/Stellarium/stellarium/issues/733
+ 				#if GPSD_API_MAJOR_VERSION >= 8
+-				qDebug() << "Spherical Position Error (sep):" << newdata->sep;
++				qDebug() << "Spherical Position Error (sep):" << newdata->fix.sep;
+ 				#else
+ 				qDebug() << "Spherical Position Error (epe):" << newdata->epe;
+ 				#endif
+-- 
+2.20.1
+

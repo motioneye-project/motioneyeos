@@ -410,6 +410,7 @@ F:	package/samba4/
 F:	package/softether/
 F:	package/spandsp/
 F:	package/sqlite/
+F:	package/stellarium/
 F:	package/taglib/
 F:	package/tinyxml2/
 F:	package/tor/

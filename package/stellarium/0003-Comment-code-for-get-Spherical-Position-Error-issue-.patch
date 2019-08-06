@@ -1,0 +1,39 @@
+From 4b6c37bc4631244ecf4126d256d3c33e81bde656 Mon Sep 17 00:00:00 2001
+From: Alexander Wolf <alex.v.wolf@gmail.com>
+Date: Sun, 4 Aug 2019 23:19:54 +0700
+Subject: [PATCH] Comment code for get Spherical Position Error (issue
+ #733)
+
+Downloaded from upstream commit
+https://github.com/Stellarium/stellarium/commit/4b6c37bc4631244ecf4126d256d3c33e81bde656
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/core/StelLocationMgr.cpp | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/src/core/StelLocationMgr.cpp b/src/core/StelLocationMgr.cpp
+index 3c1b5fe4e4..72d27b897f 100644
+--- a/src/core/StelLocationMgr.cpp
++++ b/src/core/StelLocationMgr.cpp
+@@ -167,11 +167,12 @@ void LibGPSLookupHelper::query()
+ 				// * Remove epe from gps_data_t, it duplicates gps_fix_t eph
+ 				// * Added sep (estimated spherical error, 3D)
+ 				// Details: https://github.com/Stellarium/stellarium/issues/733
+-				#if GPSD_API_MAJOR_VERSION >= 8
+-				qDebug() << "Spherical Position Error (sep):" << newdata->fix.sep;
+-				#else
+-				qDebug() << "Spherical Position Error (epe):" << newdata->epe;
+-				#endif
++				// #if GPSD_API_MAJOR_VERSION >= 8
++				// qDebug() << "Spherical Position Error (sep):" << newdata->fix.sep;
++				// #else
++				// qDebug() << "Spherical Position Error (epe):" << newdata->epe;
++				// #endif
++
+ 			}
+ 			loc.longitude=newdata->fix.longitude;
+ 			loc.latitude=newdata->fix.latitude;
+-- 
+2.20.1
+
