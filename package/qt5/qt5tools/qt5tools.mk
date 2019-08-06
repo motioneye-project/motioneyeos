@@ -29,11 +29,13 @@ endif
 
 QT5TOOLS_BUILD_DIRS_$(BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS) += \
 	linguist/lconvert linguist/lrelease linguist/lupdate
-ifeq ($(BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS),y)
-# use install target to copy cmake module files
-define QT5TOOLS_INSTALL_STAGING_CMDS
-	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src/linguist install
-endef
+QT5TOOLS_INSTALL_STAGING_DIR_$(BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS) += \
+	linguist
+
+ifeq ($(BR2_PACKAGE_QT5TOOLS_QDOC_TOOL),y)
+QT5TOOLS_BUILD_DIRS_y += qdoc
+QT5TOOLS_INSTALL_STAGING_DIR_y += qdoc
+QT5TOOLS_DEPENDENCIES += $(if $(BR2_PACKAGE_QT5_VERSION_LATEST),host-clang)
 endif
 
 QT5TOOLS_BUILD_DIRS_$(BR2_PACKAGE_QT5TOOLS_PIXELTOOL) += pixeltool
@@ -56,6 +58,12 @@ define QT5TOOLS_BUILD_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) sub-src-qmake_all
 	$(foreach p,$(QT5TOOLS_BUILD_DIRS_y), \
 		$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src/$(p)$(sep))
+endef
+
+# use install target to copy cmake module files
+define QT5TOOLS_INSTALL_STAGING_CMDS
+	$(foreach p,$(QT5TOOLS_INSTALL_STAGING_DIR_y), \
+		$(TARGET_MAKE_ENV) $(MAKE) -C $(@D)/src/$(p) install$(sep))
 endef
 
 define QT5TOOLS_INSTALL_TARGET_CMDS
