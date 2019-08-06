@@ -308,6 +308,7 @@ F:	package/ghostscript/
 F:	package/giflib/
 F:	package/gli/
 F:	package/glmark2/
+F:	package/gpsd/
 F:	package/hdparm/
 F:	package/jsoncpp/
 F:	package/kodi*
