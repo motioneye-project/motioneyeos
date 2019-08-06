@@ -18,11 +18,11 @@ GPSD_CFLAGS = $(TARGET_CFLAGS)
 GPSD_SCONS_ENV = $(TARGET_CONFIGURE_OPTS)
 
 GPSD_SCONS_OPTS = \
-	arch=$(ARCH)\
+	arch=$(ARCH) \
 	manbuild=no \
-	prefix=/usr\
-	sysroot=$(STAGING_DIR)\
-	strip=no\
+	prefix=/usr \
+	sysroot=$(STAGING_DIR) \
+	strip=no \
 	python=no \
 	qt=no
 
