@@ -18,12 +18,12 @@ Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 diff -uNr freeswitch-1.6.7.org/Makefile.in freeswitch-1.6.7/Makefile.in
 --- freeswitch-1.6.7.org/Makefile.in	2016-04-01 18:09:54.000000000 +0200
 +++ freeswitch-1.6.7/Makefile.in	2016-04-22 20:11:37.938961730 +0200
-@@ -4025,7 +4025,7 @@
+@@ -4182,7 +4182,7 @@
  	cd libs/libzrtp && $(MAKE)
  
- libs/libvpx/Makefile:
+ libs/libvpx/Makefile: libs/libvpx/.update
 -	cd libs/libvpx && CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --enable-pic --disable-docs --disable-examples --disable-install-bins --disable-install-srcs --disable-unit-tests --size-limit=16384x16384 --extra-cflags="$(VISIBILITY_FLAG)"
 +	cd libs/libvpx && CROSS=$(CROSS) CC="$(CC)" CXX="$(CXX)" CFLAGS="$(CFLAGS)" CXXFLAGS="$(CXXFLAGS)" LDFLAGS="$(LDFLAGS)" ./configure --target=generic-gnu --enable-pic --disable-docs --disable-examples --disable-install-bins --disable-install-srcs --disable-unit-tests --size-limit=16384x16384 --extra-cflags="$(VISIBILITY_FLAG)"
  
- libs/libvpx/libvpx.a: libs/libvpx/Makefile
+ libs/libvpx/libvpx.a: libs/libvpx/Makefile libs/libvpx/.update
  	@cd libs/libvpx && $(MAKE)
