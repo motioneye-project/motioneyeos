@@ -1,0 +1,46 @@
+From e94589ed36c4a311355efc46ba3f76523c546057 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Wed, 7 Aug 2019 16:17:16 +0200
+Subject: [PATCH] Add RISC-V endian detection
+
+3rdparty/msgpack-c/include/msgpack/predef/other/endian.h (which comes
+from Boost) two ways of detecting the endianess:
+
+ (1) It includes <endian.h> if BOOST_LIB_C_GNU is defined, and then
+     use __BYTE_ORDER to decide the endianness.
+
+ (2) Otherwise, if (1) was not possible for some reason, it uses
+     architecture defines to decide the endianness.
+
+(1) works perfectly fine with glibc toolchains, because
+BOOST_LIB_C_GNU is defined, but it doesn't work with musl. Due to
+this, <endian.h> is not included, __BYTE_ORDER is not defined, and
+method (1) does not work, causing build failures on musl toolchains
+that don't have explicit handling by architecture name (method 2).
+
+So this commit fixes RISC-V musl build by adding support for the
+__riscv architecture define, to determine that the endianness is
+little endian.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ 3rdparty/msgpack-c/include/msgpack/predef/other/endian.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/3rdparty/msgpack-c/include/msgpack/predef/other/endian.h b/3rdparty/msgpack-c/include/msgpack/predef/other/endian.h
+index 3c609fa..63a5722 100644
+--- a/3rdparty/msgpack-c/include/msgpack/predef/other/endian.h
++++ b/3rdparty/msgpack-c/include/msgpack/predef/other/endian.h
+@@ -127,7 +127,8 @@ information and acquired knowledge:
+         defined(__AARCH64EL__) || \
+         defined(_MIPSEL) || \
+         defined(__MIPSEL) || \
+-        defined(__MIPSEL__)
++        defined(__MIPSEL__) || \
++        defined(__riscv)
+ #       undef MSGPACK_ENDIAN_LITTLE_BYTE
+ #       define MSGPACK_ENDIAN_LITTLE_BYTE MSGPACK_VERSION_NUMBER_AVAILABLE
+ #   endif
+-- 
+2.21.0
+
