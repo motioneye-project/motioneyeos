@@ -9,6 +9,6 @@ data = {
     }
 }
 serialized = cbor.dumps(data)
-print(serialized)
+print(serialized.decode(errors="ignore"))
 with open("/tmp/data.cbor", "wb") as f:
     f.write(serialized)
