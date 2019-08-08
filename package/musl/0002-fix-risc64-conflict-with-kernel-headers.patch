@@ -1,0 +1,61 @@
+From 8acc688548b27151c45ee8a80f3a0b75f4a761c0 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 6 Aug 2019 08:51:13 +0300
+Subject: [PATCH] fix risc64 conflict with kernel headers
+
+Rename user registers struct definitions to avoid conflict with the
+asm/ptrace.h kernel header that defines the same structs. Use the
+__riscv_mc prefix as glibc does.
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit 8acc688548b
+
+ arch/riscv64/bits/signal.h | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/arch/riscv64/bits/signal.h b/arch/riscv64/bits/signal.h
+index 4c94a8f02edc..76d7ad80c8cd 100644
+--- a/arch/riscv64/bits/signal.h
++++ b/arch/riscv64/bits/signal.h
+@@ -12,29 +12,29 @@
+ typedef unsigned long greg_t;
+ typedef unsigned long gregset_t[32];
+ 
+-struct __riscv_f_ext_state {
++struct __riscv_mc_f_ext_state {
+ 	unsigned int f[32];
+ 	unsigned int fcsr;
+ };
+ 
+-struct __riscv_d_ext_state {
++struct __riscv_mc_d_ext_state {
+ 	unsigned long long f[32];
+ 	unsigned int fcsr;
+ };
+ 
+-struct __riscv_q_ext_state {
++struct __riscv_mc_q_ext_state {
+ 	unsigned long long f[64] __attribute__((aligned(16)));
+ 	unsigned int fcsr;
+ 	unsigned int reserved[3];
+ };
+ 
+-union __riscv_fp_state {
+-	struct __riscv_f_ext_state f;
+-	struct __riscv_d_ext_state d;
+-	struct __riscv_q_ext_state q;
++union __riscv_mc_fp_state {
++	struct __riscv_mc_f_ext_state f;
++	struct __riscv_mc_d_ext_state d;
++	struct __riscv_mc_q_ext_state q;
+ };
+ 
+-typedef union __riscv_fp_state fpregset_t;
++typedef union __riscv_mc_fp_state fpregset_t;
+ 
+ typedef struct sigcontext {
+ 	gregset_t gregs;
+-- 
+2.20.1
+
