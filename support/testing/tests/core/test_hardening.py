@@ -1,5 +1,4 @@
 import os
-import subprocess
 import json
 
 import infra.basetest
@@ -30,10 +29,7 @@ class TestHardeningBase(infra.basetest.BRTest):
                "--file={}".format(filepath)]
         # Checksec is being used for elf file analysis only.  There are no
         # assumptions of target/run-time checks as part of this testing.
-        ret = subprocess.check_output(cmd,
-                                      stderr=open(os.devnull, "w"),
-                                      cwd=self.builddir,
-                                      env={"LANG": "C"})
+        ret = infra.run_cmd_on_host(self.builddir, cmd)
         return json.loads(ret)
 
 

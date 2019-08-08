@@ -1,5 +1,4 @@
 import os
-import subprocess
 
 import infra.basetest
 
@@ -15,10 +14,7 @@ CHECK_FS_TYPE_CMD = "mount | grep '/dev/root on / type {}'"
 
 def dumpe2fs_run(builddir, image):
     cmd = ["host/sbin/dumpe2fs", os.path.join("images", image)]
-    ret = subprocess.check_output(cmd,
-                                  stderr=open(os.devnull, "w"),
-                                  cwd=builddir,
-                                  env={"LANG": "C"})
+    ret = infra.run_cmd_on_host(builddir, cmd)
     return ret.strip().splitlines()
 
 
