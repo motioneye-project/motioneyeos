@@ -25,6 +25,7 @@ class TestUbi(infra.basetest.BRTest):
                                       cwd=self.builddir,
                                       env={"LANG": "C"})
         out = out.splitlines()
+        self.assertIn("UBI image, version 1", out[0])
 
         subprocess.call(["truncate", "-s 128M", img])
 
