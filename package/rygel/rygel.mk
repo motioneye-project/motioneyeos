@@ -14,11 +14,13 @@ RYGEL_DEPENDENCIES = \
 	gupnp-av \
 	libgee \
 	libmediaart \
-	sqlite
+	sqlite \
+	$(TARGET_NLS_DEPENDENCIES)
 RYGEL_INSTALL_STAGING = YES
 # We're patching configure.ac
 RYGEL_AUTORECONF = YES
 
+RYGEL_CONF_ENV = LIBS=$(TARGET_NLS_LIBS)
 RYGEL_CONF_OPTS += \
 	--disable-apidocs \
 	--disable-coverage \
