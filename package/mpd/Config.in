@@ -47,6 +47,7 @@ config BR2_PACKAGE_MPD_QOBUZ
 
 config BR2_PACKAGE_MPD_SOUNDCLOUD
 	bool "soundcloud"
+	select BR2_PACKAGE_MPD_CURL
 	select BR2_PACKAGE_YAJL
 	help
 	  Enable soundcloud.com playlist support.
