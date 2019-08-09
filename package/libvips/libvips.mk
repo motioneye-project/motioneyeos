@@ -4,14 +4,11 @@
 #
 ################################################################################
 
-LIBVIPS_VERSION_MAJOR = 7.42
-LIBVIPS_VERSION = $(LIBVIPS_VERSION_MAJOR).2
+LIBVIPS_VERSION = 8.8.1
 LIBVIPS_SOURCE = vips-$(LIBVIPS_VERSION).tar.gz
-LIBVIPS_SITE = http://www.vips.ecs.soton.ac.uk/supported/$(LIBVIPS_VERSION_MAJOR)
+LIBVIPS_SITE = https://github.com/libvips/libvips/releases/download/v$(LIBVIPS_VERSION)
 LIBVIPS_LICENSE = LGPL-2.1+
 LIBVIPS_LICENSE_FILES = COPYING
-# We're patching gtk-doc.make, so need to autoreconf
-LIBVIPS_AUTORECONF = YES
 
 # Sparc64 compile fails, for all optimization levels except -O0. To
 # fix the problem, use -O0 with no optimization instead. Bug reported
@@ -41,8 +38,8 @@ LIBVIPS_CONF_OPTS = \
 	--without-python
 LIBVIPS_INSTALL_STAGING = YES
 LIBVIPS_DEPENDENCIES = \
-	host-pkgconf libglib2 \
-	libxml2 $(TARGET_NLS_DEPENDENCIES)
+	host-pkgconf expat libglib2 \
+	$(TARGET_NLS_DEPENDENCIES)
 
 # --disable-cxx is broken upstream
 # https://github.com/jcupitt/libvips/issues/231
