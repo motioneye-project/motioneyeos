@@ -40,7 +40,15 @@ ifeq ($(BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK),y)
 DHCP_CONF_OPTS += --enable-delayed-ack
 endif
 
+define DHCP_INSTALL_LIBS
+	$(MAKE) -C $(@D)/common install-exec DESTDIR=$(TARGET_DIR)
+	$(MAKE) -C $(@D)/omapip install-exec DESTDIR=$(TARGET_DIR)
+endef
+
 ifeq ($(BR2_PACKAGE_DHCP_SERVER),y)
+define DHCP_INSTALL_CTL_LIBS
+	$(MAKE) -C $(@D)/dhcpctl install-exec DESTDIR=$(TARGET_DIR)
+endef
 define DHCP_INSTALL_SERVER
 	mkdir -p $(TARGET_DIR)/var/lib
 	(cd $(TARGET_DIR)/var/lib; ln -snf /tmp dhcp)
@@ -99,6 +107,8 @@ endef
 endif
 
 define DHCP_INSTALL_TARGET_CMDS
+	$(DHCP_INSTALL_LIBS)
+	$(DHCP_INSTALL_CTL_LIBS)
 	$(DHCP_INSTALL_RELAY)
 	$(DHCP_INSTALL_SERVER)
 	$(DHCP_INSTALL_CLIENT)
