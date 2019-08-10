@@ -579,7 +579,6 @@ F:	package/kvm-unit-tests
 
 N:	Dagg Stompler <daggs@gmx.com>
 F:	package/libamcodec/
-F:	package/odroid-scripts/
 
 N:	Daniel J. Leach <dleach@belcan.com>
 F:	package/dacapo/
