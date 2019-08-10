@@ -1,0 +1,36 @@
+From df8a2c4f18293cb2eafcf81e5dc169a06dccf304 Mon Sep 17 00:00:00 2001
+From: tsteven4 <13596209+tsteven4@users.noreply.github.com>
+Date: Tue, 9 Jul 2019 16:42:28 -0600
+Subject: [PATCH] fix qztest build error.
+
+If int is bigger than quint16 then you will get the following
+linker error:
+
+.obj/testquazip.o: In function `TestQuaZip::setOsCode()':
+testquazip.cpp:(.text+0x42bd): undefined reference to `bool QTest::qCompare<int, unsigned short>(int const&, unsigned short const&, char const*, char const*, char const*, int)'
+collect2: error: ld returned 1 exit status
+
+This error indicates the two parameters of QCOMPARE do not have the same type.
+
+This occurs because integral promotions can be applied to fi.versionCreated.
+
+[Retrieved from:
+https://github.com/stachenov/quazip/commit/df8a2c4f18293cb2eafcf81e5dc169a06dccf304]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ qztest/testquazip.cpp | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/qztest/testquazip.cpp b/qztest/testquazip.cpp
+index 70a64fc..86f6556 100644
+--- a/qztest/testquazip.cpp
++++ b/qztest/testquazip.cpp
+@@ -233,7 +233,7 @@ void TestQuaZip::setOsCode()
+     checkZip.goToFirstFile();
+     QuaZipFileInfo64 fi;
+     QVERIFY(checkZip.getCurrentFileInfo(&fi));
+-    QCOMPARE(fi.versionCreated >> 8, static_cast<quint16>(osCode));
++    QCOMPARE(static_cast<uint>(fi.versionCreated) >> 8, osCode);
+ }
+ 
+ void TestQuaZip::setDataDescriptorWritingEnabled()
