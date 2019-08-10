@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.08"
 
+config BR2_PACKAGE_LIBAMCODEC
+	bool "liamcodec package was removed"
+	select BR2_LEGACY
+	help
+	  Support for odroidc2 based systems was removed, making the
+	  libamcodec package useless.
+
 config BR2_PACKAGE_ODROID_SCRIPTS
 	bool "odroid-scripts package was removed"
 	select BR2_LEGACY

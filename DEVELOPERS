@@ -577,9 +577,6 @@ N:	Cyril Bur <cyrilbur@gmail.com>
 F:	arch/Config.in.powerpc
 F:	package/kvm-unit-tests
 
-N:	Dagg Stompler <daggs@gmx.com>
-F:	package/libamcodec/
-
 N:	Daniel J. Leach <dleach@belcan.com>
 F:	package/dacapo/
 
