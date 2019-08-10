@@ -18,13 +18,6 @@ comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, t
 config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 	bool
 
-config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
-	bool
-	default y
-	depends on BR2_PACKAGE_LIBAMCODEC
-	depends on BR2_PACKAGE_ODROID_MALI
-	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
-
 config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
 	bool
 	default y
@@ -201,10 +194,6 @@ config BR2_PACKAGE_KODI_NONFREE
 choice
 	prompt "platform"
 	default BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
-
-config BR2_PACKAGE_KODI_PLATFORM_AML
-	bool "AMLogic"
-	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
 
 config BR2_PACKAGE_KODI_PLATFORM_RBPI
 	bool "Raspberry Pi"

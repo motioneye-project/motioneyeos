@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.08"
 
+config BR2_PACKAGE_KODI_PLATFORM_AML
+	bool "Kodi AMLogic support was removed"
+	select BR2_LEGACY
+	help
+	  Support for AMLogic was removed due to the removal of the
+	  odroidc2 defconfig.
+
 config BR2_GCC_VERSION_6_X
 	bool "gcc 6.x support removed"
 	select BR2_LEGACY
