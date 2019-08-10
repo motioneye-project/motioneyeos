@@ -294,6 +294,7 @@ F:	package/bcg729/
 F:	package/bluez-tools/
 F:	package/boinc/
 F:	package/clamav/
+F:	package/dav1d/
 F:	package/dovecot/
 F:	package/dovecot-pigeonhole/
 F:	package/dtv-scan-tables/
