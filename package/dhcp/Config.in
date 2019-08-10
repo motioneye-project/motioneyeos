@@ -17,6 +17,10 @@ config BR2_PACKAGE_DHCP_SERVER
 	help
 	  DHCP server from the ISC DHCP distribution.
 
+	  This also installs omshell, an interactive tool to connect to,
+	  query, and possibly change, the server's state via the Object
+	  Management API (OMAPI).
+
 config BR2_PACKAGE_DHCP_SERVER_DELAYED_ACK
 	bool "Enable delayed ACK feature"
 	depends on BR2_PACKAGE_DHCP_SERVER
