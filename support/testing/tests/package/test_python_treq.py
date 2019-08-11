@@ -7,7 +7,8 @@ class TestPythonTreq(TestPythonPackageBase):
     def run_sample_scripts(self):
         cmd = self.interpreter + " sample_python_treq.py"
         output, exit_code = self.emulator.run(cmd, timeout=20)
-        self.assertIn("Connection refused", output[0])
+        refuse_msgs = [1 for l in output if "Connection refused" in l]
+        self.assertGreater(sum(refuse_msgs), 0)
         self.assertEqual(exit_code, 0)
 
 
