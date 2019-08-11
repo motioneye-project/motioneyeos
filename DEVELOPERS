@@ -1362,6 +1362,8 @@ N:	Julien Corjon <corjon.j@ecagroup.com>
 F:	package/qt5/
 
 N:	Julien Grossholtz <julien.grossholtz@openest.io>
+F:	board/technologic/ts7680/
+F:	configs/ts7680_defconfig
 F:	package/paho-mqtt-c
 
 N:	Julien Olivain <juju@cotds.org>
