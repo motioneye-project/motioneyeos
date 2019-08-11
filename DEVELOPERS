@@ -1949,12 +1949,15 @@ F:	package/vnstat/
 
 N:	Romain Naour <romain.naour@gmail.com>
 F:	package/aubio/
+F:	package/binutils/
 F:	package/bullet/
 F:	package/efl/
 F:	package/enet/
 F:	package/enlightenment/
 F:	package/flare-engine/
 F:	package/flare-game/
+F:	package/gcc/
+F:	package/glibc/
 F:	package/irrlicht/
 F:	package/liblinear/
 F:	package/lensfun/
