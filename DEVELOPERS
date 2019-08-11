@@ -2333,6 +2333,8 @@ N:	Sven Oliver Moll <svolli@svolli.de>
 F:	package/most/
 
 N:	Theo Debrouwere <t.debrouwere@televic.com>
+F:	board/beagleboardx15/
+F:	configs/beagleboardx15_defconfig
 F:	package/pugixml/
 
 N:	Thierry Bultel <tbultel@free.fr>
