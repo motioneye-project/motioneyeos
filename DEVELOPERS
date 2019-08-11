@@ -1566,6 +1566,10 @@ F:	package/tslib/
 F:	package/x11r7/xdriver_xf86-input-tslib/
 F:	package/x11vnc/
 
+N:	Masahiro Yamada <yamada.masahiro@socionext.com>
+F:	board/arm/foundation-v8/
+F:	configs/arm_foundationv8_defconfig
+
 N:	Mathieu Audat <mathieuaudat@gmail.com>
 F:	board/technologic/ts4900/
 F:	configs/ts4900_defconfig
