@@ -48,7 +48,8 @@ case $CPUTYPE in
 	devmem 0x48180900 w 0x2
 	devmem 0x48180920 w 0x2
 
-	ES_REVISION="$(devmem2 0x56000014 | sed -e s:0x00010205:6: -e s:0x00010201:3: -e s:0x00010003:2: | tail -n1 | awk -F': ' '{print $2}')"
+	ES_REVISION="$(devmem 0x56000014 | sed -e s:0x00010205:6: \
+		-e s:0x00010201:3: -e s:0x00010003:2:)"
 	;;
 *)
 	echo Unable to determine SGX hardware
