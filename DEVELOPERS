@@ -746,6 +746,7 @@ F:	package/rtl8723bs/
 F:	package/supertuxkart/
 
 N:	Fabio Estevam <festevam@gmail.com>
+F:	board/freescale/warpboard/
 F:	board/warp7/
 F:	configs/freescale_imx*
 F:	configs/imx23evk_defconfig
@@ -764,6 +765,7 @@ F:	configs/mx6sx_udoo_neo_defconfig
 F:	configs/mx6udoo_defconfig
 F:	configs/wandboard_defconfig
 F:	configs/warp7_defconfig
+F:	configs/warpboard_defconfig
 F:	package/atest/
 F:	package/kmscube/
 
