@@ -1787,6 +1787,10 @@ F:	package/libevdev/
 N:	Nicola Di Lieto <nicola.dilieto@gmail.com>
 F:	package/uacme/
 
+N:	Nicholas Sielicki <sielicki@yandex.com>
+F:	board/intel/galileo/
+F:	configs/galileo_defconfig
+
 N:	Nicolas Cavallari <nicolas.cavallari@green-communications.fr>
 F:	package/libgit2/
 
