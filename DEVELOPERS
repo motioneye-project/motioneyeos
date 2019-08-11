@@ -1377,7 +1377,9 @@ F:	board/olimex/a20_olinuxino/
 F:	board/zynq/
 F:	board/zynqmp/
 F:	configs/olimex_a20_olinuxino_*
+F:	configs/zynq_microzed_defconfig
 F:	configs/zynq_zed_defconfig
+F:	configs/zynq_zc706_defconfig
 F:	configs/zynqmp_zcu106_defconfig
 F:	package/agentpp/
 F:	package/exim/
