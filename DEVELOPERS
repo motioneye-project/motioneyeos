@@ -1913,6 +1913,10 @@ F:	package/synergy/
 N:	Pranit Sirsat <Pranit.Sirsat@imgtec.com>
 F:	package/paho-mqtt-c/
 
+N:	Rafal Susz <rafal.susz@gmail.com>
+F:	board/avnet/s6lx9_microboard/
+F:	configs/s6lx9_microboard_defconfig
+
 N:	Rahul Bedarkar <rahulbedarkar89@gmail.com>
 F:	package/cxxtest/
 F:	package/gflags/
