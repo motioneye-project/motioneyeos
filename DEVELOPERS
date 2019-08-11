@@ -1232,6 +1232,10 @@ F:	package/wmctrl/
 F:	package/x11r7/xdriver_xf86-video-imx/
 F:	package/x11r7/xdriver_xf86-video-imx-viv/
 
+N:	Joao Pinto <jpinto@synopsys.com>
+F:	board/synopsys/vdk/
+F:	configs/snps_aarch64_vdk_defconfig
+
 N:	Joel Carlson <JoelsonCarl@gmail.com>
 F:	package/c-capnproto/
 F:	package/capnproto/
