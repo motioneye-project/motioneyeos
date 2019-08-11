@@ -1830,7 +1830,7 @@ F:	package/triggerhappy/
 
 N:	Peter Seiderer <ps.report@gmx.net>
 F:	board/raspberrypi/
-F:	configs/raspberrypi3_defconfig
+F:	configs/raspberrypi*_defconfig
 F:	package/assimp/
 F:	package/bcm2835/
 F:	package/ddrescue/
