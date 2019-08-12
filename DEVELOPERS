@@ -1087,6 +1087,7 @@ F:	package/python-aiomonitor/
 F:	package/python-aiojobs/
 F:	package/python-aiorwlock/
 F:	package/python-async-timeout/
+F:	package/python-brotli/
 F:	package/python-cchardet/
 F:	package/python-multidict/
 F:	package/python-pycares/
