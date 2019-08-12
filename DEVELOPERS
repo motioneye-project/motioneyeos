@@ -1886,8 +1886,11 @@ N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
 
 N:	Pierre-Jean Texier <pjtexier@koncepto.io>
+F:	package/genimage/
+F:	package/libarchive/
 F:	package/libevent/
 F:	package/libubootenv/
+F:	package/libxml2/
 F:	package/python-periphery/
 F:	package/stunnel/
 
