@@ -6,8 +6,6 @@ config BR2_PACKAGE_LIBBSD_ARCH_SUPPORTS
 	depends on !BR2_arc
 	depends on !BR2_xtensa
 	depends on !BR2_nds32
-	# uClibc on noMMU doesn't provide __register_atfork()
-	depends on !(BR2_TOOLCHAIN_USES_UCLIBC && !BR2_USE_MMU)
 
 config BR2_PACKAGE_LIBBSD
 	bool "libbsd"
