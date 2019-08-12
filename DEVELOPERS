@@ -877,8 +877,11 @@ N:	Francois Perrad <francois.perrad@gadz.org>
 F:	board/olimex/a20_olinuxino
 F:	configs/olimex_a20_olinuxino_*
 F:	package/4th/
+F:	package/cgilua/
 F:	package/chipmunk/
 F:	package/cog/
+F:	package/copas/
+F:	package/coxpcall/
 F:	package/dado/
 F:	package/ficl/
 F:	package/libtomcrypt/
@@ -897,11 +900,14 @@ F:	package/netsurf/
 F:	package/perl*
 F:	package/pkg-perl.mk
 F:	package/pkg-luarocks.mk
+F:	package/rings/
 F:	package/tekui/
 F:	package/wpebackend-fdo/
 F:	package/wpewebkit/
+F:	package/wsapi/
 F:	package/wsapi-fcgi/
 F:	package/wsapi-xavante/
+F:	package/xavante/
 F:	utils/scancpan
 
 N:	Frank Hunleth <fhunleth@troodon-software.com>
