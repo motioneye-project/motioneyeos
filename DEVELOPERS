@@ -305,6 +305,7 @@ F:	package/eudev/
 F:	package/exim/
 F:	package/fetchmail/
 F:	package/ffmpeg/
+F:	package/flac/
 F:	package/freeswitch/
 F:	package/freeswitch-mod-bcg729/
 F:	package/freetype/
@@ -396,6 +397,7 @@ F:	package/perl-www-robotrules/
 F:	package/pixman/
 F:	package/pngquant/
 F:	package/pound/
+F:	package/pulseaudio/
 F:	package/pure-ftpd/
 F:	package/python-couchdb/
 F:	package/python-cssutils/
