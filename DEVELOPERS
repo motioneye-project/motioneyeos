@@ -2308,6 +2308,9 @@ F:	package/llvm/
 N:	Vanya Sergeev <vsergeev@gmail.com>
 F:	package/lua-periphery/
 
+N:	Victor Huesca <victor.huesca@bootlin.com>
+F:	support/testing/tests/core/test_root_password.py
+
 N:	Vincent Prince <vincent.prince.fr@gmail.com>
 F:	package/nss-myhostname/
 F:	package/utp_com/
