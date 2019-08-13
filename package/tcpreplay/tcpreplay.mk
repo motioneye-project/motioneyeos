@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-TCPREPLAY_VERSION = 4.3.1
+TCPREPLAY_VERSION = 4.3.2
 TCPREPLAY_SITE = https://github.com/appneta/tcpreplay/releases/download/v$(TCPREPLAY_VERSION)
-TCPREPLAY_SOURCE = tcpreplay-4.3.1.tar.xz
+TCPREPLAY_SOURCE = tcpreplay-$(TCPREPLAY_VERSION).tar.xz
 TCPREPLAY_LICENSE = GPL-3.0
 TCPREPLAY_LICENSE_FILES = docs/LICENSE
 TCPREPLAY_CONF_ENV = \
