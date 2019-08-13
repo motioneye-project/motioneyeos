@@ -1,0 +1,76 @@
+From acee9c0c46f71f1f4c33c2dadf69d19e24b90f27 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 13 Aug 2019 20:19:23 +0200
+Subject: [PATCH] configure.ac: fix --without-libdnet
+
+Allow the user to disable libdnet check through --without-libdnet.
+This option is useful to cross-compile tcpreplay to avoid build failures
+if libdnet is installed on host but not on target, see
+https://bugs.buildroot.org/show_bug.cgi?id=12096
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/appneta/tcpreplay/pull/567]
+---
+ configure.ac | 48 +++++++++++++++++++++++++-----------------------
+ 1 file changed, 25 insertions(+), 23 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 39ba58b7..5de3dcb5 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1464,30 +1464,32 @@ if test $have_cygwin = no ; then
+         AC_HELP_STRING([--with-libdnet=DIR], [Use libdnet in DIR]),
+         [trydnetdir=$withval])
+ 
+-    case "$build_os" in
+-    linux*)
+-        dnl # Debian/Ubuntu already have a package called libdnet
+-        dnl # so you the package you want to install libdumbnet-dev
+-        for testdir in $trydnetdir /usr/local /opt/local /usr ; do
+-            if test -x ${testdir}/bin/dumbnet-config -a $founddnet = no ; then
+-                LDNETINC="$($testdir/bin/dumbnet-config --cflags)"
+-                LDNETLIB="$($testdir/bin/dumbnet-config --libs)"
+-                libdnet_version="$($testdir/bin/dumbnet-config --version) (libdumbnet)"
+-                founddnet=$testdir
+-            fi
+-        done
+-        ;;
+-    esac
++    if test $trydnetdir != no; then
++        case "$build_os" in
++        linux*)
++            dnl # Debian/Ubuntu already have a package called libdnet
++            dnl # so you the package you want to install libdumbnet-dev
++            for testdir in $trydnetdir /usr/local /opt/local /usr ; do
++                if test -x ${testdir}/bin/dumbnet-config -a $founddnet = no ; then
++                    LDNETINC="$($testdir/bin/dumbnet-config --cflags)"
++                    LDNETLIB="$($testdir/bin/dumbnet-config --libs)"
++                    libdnet_version="$($testdir/bin/dumbnet-config --version) (libdumbnet)"
++                    founddnet=$testdir
++                fi
++            done
++            ;;
++        esac
+ 
+-    if test $founddnet = no ; then
+-        for testdir in $trydnetdir /usr/local /opt/local $MACOSX_SDK_PATH/usr /usr ; do
+-            if test -x ${testdir}/bin/dnet-config -a $founddnet = no ; then
+-                LDNETINC="$($testdir/bin/dnet-config --cflags)"
+-                LDNETLIB="$($testdir/bin/dnet-config --libs)"
+-                libdnet_version="$($testdir/bin/dnet-config --version)"
+-                founddnet=$testdir
+-            fi
+-        done
++        if test $founddnet = no ; then
++            for testdir in $trydnetdir /usr/local /opt/local $MACOSX_SDK_PATH/usr /usr ; do
++                if test -x ${testdir}/bin/dnet-config -a $founddnet = no ; then
++                    LDNETINC="$($testdir/bin/dnet-config --cflags)"
++                    LDNETLIB="$($testdir/bin/dnet-config --libs)"
++                    libdnet_version="$($testdir/bin/dnet-config --version)"
++                    founddnet=$testdir
++                fi
++            done
++        fi
+     fi
+ 
+     if test $founddnet = no ; then
