@@ -12,8 +12,5 @@ GUPNP_LICENSE = LGPL-2.0+
 GUPNP_LICENSE_FILES = COPYING
 GUPNP_INSTALL_STAGING = YES
 GUPNP_DEPENDENCIES = host-pkgconf libglib2 libxml2 gssdp util-linux
-GUPNP_CONF_OPTS = \
-	-Dexamples=false \
-	-Dintrospection=false
 
-$(eval $(meson-package))
+$(eval $(autotools-package))
