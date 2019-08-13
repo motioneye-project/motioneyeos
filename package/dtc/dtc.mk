@@ -24,6 +24,12 @@ HOST_DTC_MAKE_OPTS = \
 	NO_VALGRIND=1 \
 	NO_YAML=1
 
+ifeq ($(BR2_PACKAGE_LIBYAML),y)
+DTC_DEPENDENCIES += host-pkgconf libyaml
+else
+DTC_MAKE_OPTS += NO_YAML=1
+endif
+
 define DTC_POST_INSTALL_TARGET_RM_DTDIFF
 	rm -f $(TARGET_DIR)/usr/bin/dtdiff
 endef
@@ -34,10 +40,6 @@ DTC_LICENSE := $(DTC_LICENSE), GPL-2.0+ (programs)
 DTC_INSTALL_GOAL = install
 ifeq ($(BR2_PACKAGE_BASH),)
 DTC_POST_INSTALL_TARGET_HOOKS += DTC_POST_INSTALL_TARGET_RM_DTDIFF
-endif
-
-ifeq ($(BR2_PACKAGE_LIBYAML),y)
-DTC_DEPENDENCIES += host-pkgconf libyaml
 endif
 
 else # $(BR2_PACKAGE_DTC_PROGRAMS) != y
