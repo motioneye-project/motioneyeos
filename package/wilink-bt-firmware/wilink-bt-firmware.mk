@@ -4,14 +4,15 @@
 #
 ################################################################################
 
-WILINK_BT_FIRMWARE_VERSION = 169b2df5b968f0ede32ea9044859942fc220c435
-WILINK_BT_FIRMWARE_SITE = $(call github,TI-ECS,bt-firmware,$(WILINK_BT_FIRMWARE_VERSION))
+WILINK_BT_FIRMWARE_VERSION = 43fca73c6a98c63fcb98f82af5bf83761778e005
+WILINK_BT_FIRMWARE_SITE = git://git.ti.com/ti-bt/service-packs.git
+WILINK_BT_FIRMWARE_SITE_METHOD = git
 WILINK_BT_FIRMWARE_LICENSE = PROPRIETARY
-WILINK_BT_FIRMWARE_LICENSE_FILES = LICENCE
+WILINK_BT_FIRMWARE_LICENSE_FILES = LICENSE
 
 define WILINK_BT_FIRMWARE_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/lib/firmware/ti-connectivity
-	cp $(@D)/TIInit_*.bts $(TARGET_DIR)/lib/firmware/ti-connectivity
+	cp $(@D)/initscripts/TIInit_*.bts $(TARGET_DIR)/lib/firmware/ti-connectivity
 endef
 
 $(eval $(generic-package))
