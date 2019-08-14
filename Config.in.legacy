@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_DEVMEM2
+	bool "devmem2 package was removed"
+	select BR2_LEGACY
+	help
+	  Use the the Busybox devmem utility, instead, which provides
+	  the same functionality.
+
 config BR2_PACKAGE_USTR
 	bool "ustr package removed"
 	select BR2_LEGACY

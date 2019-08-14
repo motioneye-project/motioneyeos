@@ -1516,7 +1516,6 @@ F:	package/cgroupfs-mount/
 F:	package/crda/
 F:	package/cunit/
 F:	package/dacapo/
-F:	package/devmem2/
 F:	package/dnsmasq/
 F:	package/dosfstools/
 F:	package/eigen/
