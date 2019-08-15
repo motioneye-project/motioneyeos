@@ -165,9 +165,6 @@ F:	package/zstd/
 N:	Andrey Yurovsky <yurovsky@gmail.com>
 F:	package/rauc/
 
-N:	Andy Kennedy <andy.kennedy@adtran.com>
-F:	package/libunwind/
-
 N:	Angelo Compagnucci <angelo.compagnucci@gmail.com>
 F:	package/corkscrew/
 F:	package/fail2ban/
