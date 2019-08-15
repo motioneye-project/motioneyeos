@@ -16,6 +16,11 @@ config BR2_PACKAGE_GNUTLS
 
 if BR2_PACKAGE_GNUTLS
 
+config BR2_PACKAGE_GNUTLS_OPENSSL
+	bool "OpenSSL compatibility library"
+	help
+	  Install OpenSSL compatibility library.
+
 config BR2_PACKAGE_GNUTLS_TOOLS
 	bool "install tools"
 	select BR2_PACKAGE_ARGP_STANDALONE \
