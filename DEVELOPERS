@@ -1430,9 +1430,6 @@ F:	package/murata-cyw-fw/
 F:	package/rs485conf/
 F:	package/turbolua/
 
-N:	Marcin Nowakowski <marcin.nowakowski@imgtec.com>
-F:	package/libkcapi/
-
 N:	Marcus Folkesson <marcus.folkesson@gmail.com>
 F:	package/libostree/
 F:	package/libselinux/
