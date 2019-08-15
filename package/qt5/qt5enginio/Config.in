@@ -1,8 +1,8 @@
 config BR2_PACKAGE_QT5ENGINIO
 	bool "qt5enginio"
+	depends on BR2_PACKAGE_QT5BASE_OPENSSL
 	select BR2_PACKAGE_QT5BASE_GUI
 	select BR2_PACKAGE_QT5BASE_NETWORK
-	depends on BR2_PACKAGE_QT5BASE_OPENSSL
 	help
 	  Qt is a cross-platform application and UI framework for
 	  developers using C++.
