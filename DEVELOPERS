@@ -667,9 +667,6 @@ F:	package/unscd/
 N:	Dushara Jayasinghe <nidujay@gmail.com>
 F:	package/prosody/
 
-N:	Ed Swierk <eswierk@skyportsystems.com>
-F:	package/xxhash/
-
 N:	Eloi Bail <eloi.bail@savoirfairelinux.com>
 F:	package/bayer2rgb-neon/
 F:	package/gstreamer1/gst1-plugins-bayer2rgb-neon/
