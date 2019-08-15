@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOTION_VERSION = 4.2.1
+MOTION_VERSION = 4.2.2
 MOTION_SITE = $(call github,Motion-Project,motion,release-$(MOTION_VERSION))
 MOTION_LICENSE = GPL-2.0
 MOTION_LICENSE_FILES = COPYING
