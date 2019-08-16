@@ -11,11 +11,18 @@ AUTOFS_LICENSE = GPL-2.0+
 AUTOFS_LICENSE_FILES = COPYING COPYRIGHT
 AUTOFS_DEPENDENCIES = host-flex host-bison host-pkgconf host-nfs-utils
 
-# autofs looks on the build machine for the path of modprobe, so tell
-# it explicitly where it will be located on the target.
+# autofs looks on the build machine for the path of modprobe, mount,
+# umount and fsck programs so tell it explicitly where they will be
+# located on the target.
 AUTOFS_CONF_ENV = \
+	ac_cv_path_E2FSCK=/usr/sbin/fsck.ext2 \
+	ac_cv_path_E3FSCK=/usr/sbin/fsck.ext3 \
+	ac_cv_path_E4FSCK=/usr/sbin/fsck.ext4 \
 	ac_cv_path_KRB5_CONFIG=no \
 	ac_cv_path_MODPROBE=/sbin/modprobe \
+	ac_cv_path_MOUNT=/bin/mount \
+	ac_cv_path_MOUNT_NFS=/usr/sbin/mount.nfs \
+	ac_cv_path_UMOUNT=/bin/umount \
 	ac_cv_linux_procfs=yes
 
 # instead of looking in the PATH like any reasonable package, autofs
