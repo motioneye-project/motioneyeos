@@ -310,8 +310,8 @@ installed (+python-matplotlib+ on most distributions), and also the
 +argparse+ module if you're using a Python version older than 2.7
 (+python-argparse+ on most distributions).
 
-Just like for the duration graph, a +BR2_GRAPH_OUT+ environment is
-supported to adjust the output file format. See xref:graph-depends[]
+Just like for the duration graph, a +BR2_GRAPH_OUT+ environment variable
+is supported to adjust the output file format. See xref:graph-depends[]
 for details about this environment variable.
 
 .Note
