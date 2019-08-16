@@ -19,12 +19,6 @@ STRACE_CONF_OPTS += st_cv_m32_mpers=no \
 	st_cv_mx32_mpers=no
 endif
 
-# struct bpf_prog_info fields offset mismatch
-# https://lists.strace.io/pipermail/strace-devel/2019-May/thread.html#8750
-ifeq ($(BR2_m68k),y)
-STRACE_CONF_OPTS += ac_cv_header_linux_bpf_h=no
-endif
-
 ifeq ($(BR2_PACKAGE_LIBUNWIND),y)
 STRACE_DEPENDENCIES += libunwind
 STRACE_CONF_OPTS += --with-libunwind
