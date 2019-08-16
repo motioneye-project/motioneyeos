@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-SOCAT_VERSION = 1.7.3.2
+SOCAT_VERSION = 1.7.3.3
 SOCAT_SOURCE = socat-$(SOCAT_VERSION).tar.bz2
 SOCAT_SITE = http://www.dest-unreach.org/socat/download
 SOCAT_LICENSE = GPL-2.0 with OpenSSL exception
 SOCAT_LICENSE_FILES = README COPYING COPYING.OpenSSL
-
-SOCAT_CONF_ENV = sc_cv_termios_ispeed=no
 
 ifeq ($(BR2_powerpc)$(BR2_powerpc64)$(BR2_powerpc64le),y)
 SOCAT_CONF_ENV += \
