@@ -58,7 +58,8 @@ AWB_CHOICES = [
     ('fluorescent', 'Fluorescent'),
     ('incandescent', 'Incandescent'),
     ('flash', 'Flash'),
-    ('horizon', 'Horizon')
+    ('horizon', 'Horizon'),
+    ('greyworld', 'Greyworld')
 ]
 
 METERING_CHOICES = [
