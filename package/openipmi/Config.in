@@ -5,6 +5,7 @@ config BR2_PACKAGE_OPENIPMI
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	select BR2_PACKAGE_POPT
 	select BR2_PACKAGE_NCURSES
+	select BR2_PACKAGE_READLINE
 	help
 	  IPMI allows remote monitoring and remote management of
 	  devices. OpenIPMI provides a library and command line tools
