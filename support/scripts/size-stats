@@ -137,8 +137,9 @@ def draw_graph(pkgsize, outputf):
         else:
             labels.append("%s (%d kB)" % (p, sz / 1000.))
             values.append(sz)
-    labels.append("Other (%d kB)" % (other_value / 1000.))
-    values.append(other_value)
+    if other_value != 0:
+        labels.append("Other (%d kB)" % (other_value / 1000.))
+        values.append(other_value)
 
     plt.figure()
     patches, texts, autotexts = plt.pie(values, labels=labels,
