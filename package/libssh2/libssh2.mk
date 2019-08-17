@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBSSH2_VERSION = 1b3cbaff518f32e5b70650d4b7b52361b1410d37
-LIBSSH2_SITE = $(call github,libssh2,libssh2,$(LIBSSH2_VERSION))
+LIBSSH2_VERSION = 1.9.0
+LIBSSH2_SITE = $(call github,libssh2,libssh2,libssh2-$(LIBSSH2_VERSION))
 LIBSSH2_LICENSE = BSD
 LIBSSH2_LICENSE_FILES = COPYING
 LIBSSH2_INSTALL_STAGING = YES
