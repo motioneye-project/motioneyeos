@@ -1,0 +1,39 @@
+From cb190801706da046823c74f89472af83ff947ce1 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sat, 17 Aug 2019 22:25:06 +0200
+Subject: [PATCH] src/event/meson.build: add atomic dependency for sparc
+
+Linking with libatomic is needed on sparc otherwise build fails on:
+/usr/lfs/v0/rc-buildroot-test/scripts/instance-0/output/host/opt/ext-toolchain/bin/../lib/gcc/sparc-buildroot-linux-uclibc/7.4.0/../../../../sparc-buildroot-linux-uclibc/bin/ld: src/event/libevent.a(MaskMonitor.cxx.o): undefined reference to symbol '__atomic_fetch_or_4@@LIBATOMIC_1.0'
+
+Fixes:
+ - http://autobuild.buildroot.org/results/7a9fdb7e323892fb6ed85a2441054303e889c089
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: not sent (the same kind of patch for ncmpc was
+refused: https://github.com/MusicPlayerDaemon/ncmpc/pull/45)]
+---
+ src/event/meson.build | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/src/event/meson.build b/src/event/meson.build
+index bc13bbcd2..88370c03a 100644
+--- a/src/event/meson.build
++++ b/src/event/meson.build
+@@ -21,9 +21,13 @@ event = static_library(
+   ],
+ )
+ 
++# Needed on sparc
++atomic_dep = c_compiler.find_library('atomic', required: false)
++
+ event_dep = declare_dependency(
+   link_with: event,
+   dependencies: [
++    atomic_dep,
+     thread_dep,
+     system_dep,
+     boost_dep,
+-- 
+2.20.1
+
