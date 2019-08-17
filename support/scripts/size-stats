@@ -33,8 +33,11 @@ except ImportError:
     sys.stderr.write("You need python-matplotlib to generate the size graph\n")
     exit(1)
 
-colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
-          '#0068b5', '#f28e00', '#940084', '#97c000']
+
+class Config:
+    size_limit = 0.01
+    colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
+              '#0068b5', '#f28e00', '#940084', '#97c000']
 
 
 #
@@ -145,7 +148,7 @@ def draw_graph(pkgsize, outputf):
     other_value = 0
     unknown_value = 0
     for (p, sz) in sorted(pkgsize.items(), key=lambda x: x[1]):
-        if sz < (total * 0.01):
+        if sz < (total * Config.size_limit):
             other_value += sz
         elif p == "unknown":
             unknown_value = sz
@@ -162,7 +165,7 @@ def draw_graph(pkgsize, outputf):
     plt.figure()
     patches, texts, autotexts = plt.pie(values, labels=labels,
                                         autopct='%1.1f%%', shadow=True,
-                                        colors=colors)
+                                        colors=Config.colors)
     # Reduce text size
     proptease = fm.FontProperties()
     proptease.set_size('xx-small')
@@ -246,7 +249,15 @@ def main():
                         help="CSV output file with file size statistics")
     parser.add_argument("--package-size-csv", '-p', metavar="PKG_SIZE_CSV",
                         help="CSV output file with package size statistics")
+    parser.add_argument("--size-limit", "-l", type=float,
+                        help='Under this size ratio, files are accounted to ' +
+                             'the generic "Other" package. Default: 0.01 (1%%)')
     args = parser.parse_args()
+
+    if args.size_limit is not None:
+        if args.size_limit < 0.0 or args.size_limit > 1.0:
+            parser.error("--size-limit must be in [0.0..1.0]")
+        Config.size_limit = args.size_limit
 
     # Find out which package installed what files
     pkgdict = build_package_dict(args.builddir)

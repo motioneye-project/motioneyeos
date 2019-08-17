@@ -892,7 +892,8 @@ graph-size:
 	$(Q)$(TOPDIR)/support/scripts/size-stats --builddir $(BASE_DIR) \
 		--graph $(GRAPHS_DIR)/graph-size.$(BR_GRAPH_OUT) \
 		--file-size-csv $(GRAPHS_DIR)/file-size-stats.csv \
-		--package-size-csv $(GRAPHS_DIR)/package-size-stats.csv
+		--package-size-csv $(GRAPHS_DIR)/package-size-stats.csv \
+		$(BR2_GRAPH_SIZE_OPTS)
 
 .PHONY: check-dependencies
 check-dependencies:
