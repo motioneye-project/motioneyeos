@@ -216,27 +216,32 @@ def gen_packages_csv(pkgsizes, outputf):
             wr.writerow([pkg, size, "%.1f" % (float(size) / total * 100)])
 
 
-parser = argparse.ArgumentParser(description='Draw size statistics graphs')
+def main():
+    parser = argparse.ArgumentParser(description='Draw size statistics graphs')
 
-parser.add_argument("--builddir", '-i', metavar="BUILDDIR", required=True,
-                    help="Buildroot output directory")
-parser.add_argument("--graph", '-g', metavar="GRAPH",
-                    help="Graph output file (.pdf or .png extension)")
-parser.add_argument("--file-size-csv", '-f', metavar="FILE_SIZE_CSV",
-                    help="CSV output file with file size statistics")
-parser.add_argument("--package-size-csv", '-p', metavar="PKG_SIZE_CSV",
-                    help="CSV output file with package size statistics")
-args = parser.parse_args()
+    parser.add_argument("--builddir", '-i', metavar="BUILDDIR", required=True,
+                        help="Buildroot output directory")
+    parser.add_argument("--graph", '-g', metavar="GRAPH",
+                        help="Graph output file (.pdf or .png extension)")
+    parser.add_argument("--file-size-csv", '-f', metavar="FILE_SIZE_CSV",
+                        help="CSV output file with file size statistics")
+    parser.add_argument("--package-size-csv", '-p', metavar="PKG_SIZE_CSV",
+                        help="CSV output file with package size statistics")
+    args = parser.parse_args()
 
-# Find out which package installed what files
-pkgdict = build_package_dict(args.builddir)
+    # Find out which package installed what files
+    pkgdict = build_package_dict(args.builddir)
 
-# Collect the size installed by each package
-pkgsize = build_package_size(pkgdict, args.builddir)
+    # Collect the size installed by each package
+    pkgsize = build_package_size(pkgdict, args.builddir)
 
-if args.graph:
-    draw_graph(pkgsize, args.graph)
-if args.file_size_csv:
-    gen_files_csv(pkgdict, pkgsize, args.file_size_csv)
-if args.package_size_csv:
-    gen_packages_csv(pkgsize, args.package_size_csv)
+    if args.graph:
+        draw_graph(pkgsize, args.graph)
+    if args.file_size_csv:
+        gen_files_csv(pkgdict, pkgsize, args.file_size_csv)
+    if args.package_size_csv:
+        gen_packages_csv(pkgsize, args.package_size_csv)
+
+
+if __name__ == "__main__":
+    main()
