@@ -66,8 +66,8 @@ def add_file(filesdict, relpath, abspath, pkg):
 #
 def build_package_dict(builddir):
     filesdict = {}
-    with open(os.path.join(builddir, "build", "packages-file-list.txt")) as filelistf:
-        for l in filelistf.readlines():
+    with open(os.path.join(builddir, "build", "packages-file-list.txt")) as f:
+        for l in f.readlines():
             pkg, fpath = l.split(",", 1)
             # remove the initial './' in each file path
             fpath = fpath.strip()[2:]
@@ -151,7 +151,8 @@ def draw_graph(pkgsize, outputf):
     plt.setp(texts, fontproperties=proptease)
 
     plt.suptitle("Filesystem size per package", fontsize=18, y=.97)
-    plt.title("Total filesystem size: %d kB" % (total / 1000.), fontsize=10, y=.96)
+    plt.title("Total filesystem size: %d kB" % (total / 1000.), fontsize=10,
+              y=.96)
     plt.savefig(outputf)
 
 
@@ -209,7 +210,8 @@ def gen_packages_csv(pkgsizes, outputf):
     total = sum(pkgsizes.values())
     with open(outputf, 'w') as csvfile:
         wr = csv.writer(csvfile, delimiter=',', quoting=csv.QUOTE_MINIMAL)
-        wr.writerow(["Package name", "Package size", "Package size in system (%)"])
+        wr.writerow(["Package name", "Package size",
+                     "Package size in system (%)"])
         for (pkg, size) in pkgsizes.items():
             wr.writerow([pkg, size, "%.1f" % (float(size) / total * 100)])
 
