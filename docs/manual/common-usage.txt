@@ -329,6 +329,9 @@ to further control the generated graph. Accepted options are:
 * `--iec`, `--binary`, `--si`, `--decimal`, to use IEC (binary, powers
   of 1024) or SI (decimal, powers of 1000; the default) prefixes.
 
+* `--biggest-first`, to sort packages in decreasing size order, rather
+  than in increasing size order.
+
 .Note
 The collected filesystem size data is only meaningful after a complete
 clean rebuild. Be sure to run +make clean all+ before using +make

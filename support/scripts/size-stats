@@ -35,6 +35,7 @@ except ImportError:
 
 
 class Config:
+    biggest_first = False
     iec = False
     size_limit = 0.01
     colors = ['#e60004', '#009836', '#2e1d86', '#ffed00',
@@ -152,7 +153,8 @@ def draw_graph(pkgsize, outputf):
     values = []
     other_value = 0
     unknown_value = 0
-    for (p, sz) in sorted(pkgsize.items(), key=lambda x: x[1]):
+    for (p, sz) in sorted(pkgsize.items(), key=lambda x: x[1],
+                          reverse=Config.biggest_first):
         if sz < (total * Config.size_limit):
             other_value += sz
         elif p == "unknown":
@@ -269,6 +271,9 @@ def main():
                         help="CSV output file with file size statistics")
     parser.add_argument("--package-size-csv", '-p', metavar="PKG_SIZE_CSV",
                         help="CSV output file with package size statistics")
+    parser.add_argument("--biggest-first", action='store_true',
+                        help="Sort packages in decreasing size order, " +
+                             "rather than in increasing size order")
     parser.add_argument("--iec", "--binary", "--si", "--decimal",
                         action=PrefixAction,
                         help="Use IEC (binary, powers of 1024) or SI (decimal, "
@@ -278,6 +283,7 @@ def main():
                              'the generic "Other" package. Default: 0.01 (1%%)')
     args = parser.parse_args()
 
+    Config.biggest_first = args.biggest_first
     Config.iec = args.iec
     if args.size_limit is not None:
         if args.size_limit < 0.0 or args.size_limit > 1.0:
