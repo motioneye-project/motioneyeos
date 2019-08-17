@@ -22,6 +22,7 @@ import os.path
 import argparse
 import csv
 import collections
+import math
 
 try:
     import matplotlib
@@ -127,6 +128,17 @@ def build_package_size(filesdict, builddir):
 # outputf: output file for the graph
 #
 def draw_graph(pkgsize, outputf):
+    def size2string(sz):
+        divider = 1000.0
+        prefixes = ['', 'k', 'M', 'G', 'T']
+        while sz > divider and len(prefixes) > 1:
+            prefixes = prefixes[1:]
+            sz = sz/divider
+        # precision is made so that there are always at least three meaningful
+        # digits displayed (e.g. '3.14' and '10.4', not just '3' and '10')
+        precision = int(2-math.floor(math.log10(sz))) if sz < 1000 else 0
+        return '{:.{prec}f} {}B'.format(sz, prefixes[0], prec=precision)
+
     total = sum(pkgsize.values())
     labels = []
     values = []
@@ -138,13 +150,13 @@ def draw_graph(pkgsize, outputf):
         elif p == "unknown":
             unknown_value = sz
         else:
-            labels.append("%s (%d kB)" % (p, sz / 1000.))
+            labels.append("%s (%s)" % (p, size2string(sz)))
             values.append(sz)
     if unknown_value != 0:
-        labels.append("Unknown (%d kB)" % (unknown_value / 1000.))
+        labels.append("Unknown (%s)" % (size2string(unknown_value)))
         values.append(unknown_value)
     if other_value != 0:
-        labels.append("Other (%d kB)" % (other_value / 1000.))
+        labels.append("Other (%s)" % (size2string(other_value)))
         values.append(other_value)
 
     plt.figure()
@@ -158,7 +170,7 @@ def draw_graph(pkgsize, outputf):
     plt.setp(texts, fontproperties=proptease)
 
     plt.suptitle("Filesystem size per package", fontsize=18, y=.97)
-    plt.title("Total filesystem size: %d kB" % (total / 1000.), fontsize=10,
+    plt.title("Total filesystem size: %s" % (size2string(total)), fontsize=10,
               y=.96)
     plt.savefig(outputf)
 
