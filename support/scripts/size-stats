@@ -131,12 +131,18 @@ def draw_graph(pkgsize, outputf):
     labels = []
     values = []
     other_value = 0
+    unknown_value = 0
     for (p, sz) in sorted(pkgsize.items(), key=lambda x: x[1]):
         if sz < (total * 0.01):
             other_value += sz
+        elif p == "unknown":
+            unknown_value = sz
         else:
             labels.append("%s (%d kB)" % (p, sz / 1000.))
             values.append(sz)
+    if unknown_value != 0:
+        labels.append("Unknown (%d kB)" % (unknown_value / 1000.))
+        values.append(unknown_value)
     if other_value != 0:
         labels.append("Other (%d kB)" % (other_value / 1000.))
         values.append(other_value)
