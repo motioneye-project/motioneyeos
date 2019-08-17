@@ -326,6 +326,9 @@ to further control the generated graph. Accepted options are:
   contributing less than 1% are grouped under _Others_. Accepted values
   are in the range `[0.0..1.0]`.
 
+* `--iec`, `--binary`, `--si`, `--decimal`, to use IEC (binary, powers
+  of 1024) or SI (decimal, powers of 1000; the default) prefixes.
+
 .Note
 The collected filesystem size data is only meaningful after a complete
 clean rebuild. Be sure to run +make clean all+ before using +make
