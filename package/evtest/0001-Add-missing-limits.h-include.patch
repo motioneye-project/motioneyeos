@@ -1,0 +1,38 @@
+From 7d7c5a81b0e2f3321d269b7acc450d1eec7a910b Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Sun, 18 Aug 2019 09:57:23 +0300
+Subject: [PATCH] Add missing limits.h include
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fixes build with musl libc that does not include limits.h indirectly via
+other headers.
+
+evtest.c: In function ‘scan_devices’:
+evtest.c:886:14: error: ‘PATH_MAX’ undeclared (first use in this function); did you mean  INT8_MAX’?
+   char fname[PATH_MAX];
+              ^~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: sent to input-tools@lists.freedesktop.org (moderated)
+
+ evtest.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/evtest.c b/evtest.c
+index 37d4f8540333..548c203564d3 100644
+--- a/evtest.c
++++ b/evtest.c
+@@ -56,6 +56,7 @@
+ #include <getopt.h>
+ #include <ctype.h>
+ #include <signal.h>
++#include <limits.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+ #include <unistd.h>
+-- 
+2.23.0.rc1
+
