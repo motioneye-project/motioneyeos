@@ -10,8 +10,7 @@ Wi-Fi, microSD card, eMMC, NOR Flash, USB host port, CAN ports,
 relays and ADC/DAC. More details on the board here:
 https://wiki.embeddedarm.com/wiki/TS-7680
 
-The TS-7680 uses a 3.14.28 Linux kernel provided by
-Technologic Systems.
+The TS-7680 uses a 4.9 Linux kernel provided by Technologic Systems.
 
 To build the default configuration you only have to run:
 
