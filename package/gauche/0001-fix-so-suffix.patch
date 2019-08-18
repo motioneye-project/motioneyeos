@@ -1,31 +1,32 @@
+From cefd57f76f7faec4143bf1e42ed148cad973c1f4 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 12 Aug 2019 23:17:21 +0200
+Subject: [PATCH] configure.ac: fix so suffix
+
 With uclibc or musl configuration, $host does not match to '*-linux-gnu*'.
-I touch configure directly instead of configure.ac because autoreconf
-failed by version mismatch of autotools.
 
 Signed-off-by: Hiroshi Kawashima <kei-k@ca2.so-net.ne.jp>
+[Retrieved (and slightly updated) from:
+https://git.buildroot.net/buildroot/tree/package/gauche/0001-fix-so-suffix.patch]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/shirok/Gauche/pull/508]
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff -ur a/configure b/configure
---- a/configure	2014-07-20 15:15:05.000000000 +0900
-+++ b/configure	2015-10-20 21:52:32.791442291 +0900
-@@ -6843,7 +6843,7 @@
+diff --git a/configure.ac b/configure.ac
+index 15092a2d6..b82b762a9 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -641,7 +641,7 @@ AS_CASE([$host],
      SHLIB_MAIN_LDFLAGS=""
      SHLIB_OK=ok
-     ;;
--  *-linux-gnu*|*-*-gnu*|*freebsd*|*dragonfly*)
-+  *-linux-*|*-*-gnu*|*freebsd*|*dragonfly*)
+     ],
+-  [*-linux-gnu*|*-*-gnu*|*freebsd*|*dragonfly*], [
++  [*-linux-*|*-*-gnu*|*freebsd*|*dragonfly*], [
      SHLIB_SO_CFLAGS="-fPIC"
      SHLIB_SO_LDFLAGS="$rpath -shared -o"
      SHLIB_SO_SUFFIX="so"
+-- 
+2.20.1
 
-diff -ur a/configure.ac b/configure.ac
---- a/configure.ac	2015-10-21 21:33:17.370000200 +0900
-+++ b/configure.ac	2015-10-21 21:33:39.784110527 +0900
-@@ -572,7 +572,7 @@
-     SHLIB_MAIN_LDFLAGS=""
-     SHLIB_OK=ok
-     ;;
--  *-linux-gnu*|*-*-gnu*|*freebsd*|*dragonfly*)
-+  *-linux-*|*-*-gnu*|*freebsd*|*dragonfly*)
-     SHLIB_SO_CFLAGS="-fPIC"
-     SHLIB_SO_LDFLAGS="$rpath -shared -o"
-     SHLIB_SO_SUFFIX="so"
