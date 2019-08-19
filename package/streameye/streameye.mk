@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-STREAMEYE_VERSION = 6e4d9e3ad12ea8e5c0acef4d92f96bb0126ebcac
+STREAMEYE_VERSION = 502a63bb14f8105a3daa9f0940b237300fe76d6f
 STREAMEYE_SITE = $(call github,ccrisan,streameye,$(STREAMEYE_VERSION))
 STREAMEYE_LICENSE = GPLv3
 
