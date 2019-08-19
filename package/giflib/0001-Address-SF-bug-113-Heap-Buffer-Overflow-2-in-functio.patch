@@ -1,0 +1,31 @@
+From 08438a5098f3bb1de23a29334af55eba663f75bd Mon Sep 17 00:00:00 2001
+From: "Eric S. Raymond" <esr@thyrsus.com>
+Date: Sat, 9 Feb 2019 10:52:21 -0500
+Subject: [PATCH] Address SF bug #113: Heap Buffer Overflow-2 in function
+ DGifDecompressLine()...
+
+This was CVE-2018-11490
+
+[Retrieved from:
+https://sourceforge.net/p/giflib/code/ci/08438a5098f3bb1de23a29334af55eba663f75bd]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ lib/dgif_lib.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/lib/dgif_lib.c b/lib/dgif_lib.c
+index 15c1460..c4aee5f 100644
+--- a/lib/dgif_lib.c
++++ b/lib/dgif_lib.c
+@@ -930,7 +930,7 @@ DGifDecompressLine(GifFileType *GifFile, GifPixelType *Line, int LineLen)
+                 while (StackPtr != 0 && i < LineLen)
+                     Line[i++] = Stack[--StackPtr];
+             }
+-            if (LastCode != NO_SUCH_CODE && Prefix[Private->RunningCode - 2] == NO_SUCH_CODE) {
++            if (LastCode != NO_SUCH_CODE && Private->RunningCode - 2 < LZ_MAX_CODE && Prefix[Private->RunningCode - 2] == NO_SUCH_CODE) {
+                 Prefix[Private->RunningCode - 2] = LastCode;
+ 
+                 if (CrntCode == Private->RunningCode - 2) {
+-- 
+2.20.1
+
