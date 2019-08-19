@@ -1,0 +1,27 @@
+diff --git a/picamera/camera.py b/picamera/camera.py
+index 36b1202..a7da186 100644
+--- a/picamera/camera.py
++++ b/picamera/camera.py
+@@ -274,6 +274,7 @@ class PiCamera(object):
+         'incandescent':  mmal.MMAL_PARAM_AWBMODE_INCANDESCENT,
+         'flash':         mmal.MMAL_PARAM_AWBMODE_FLASH,
+         'horizon':       mmal.MMAL_PARAM_AWBMODE_HORIZON,
++        'greyworld':     mmal.MMAL_PARAM_AWBMODE_GREYWORLD,
+         }
+
+     IMAGE_EFFECTS = {
+diff --git a/picamera/mmal.py b/picamera/mmal.py
+index 81b059f..82b2b5f 100644
+--- a/picamera/mmal.py
++++ b/picamera/mmal.py
+@@ -692,7 +692,8 @@ MMAL_PARAM_AWBMODE_T = ct.c_uint32 # enum
+     MMAL_PARAM_AWBMODE_INCANDESCENT,
+     MMAL_PARAM_AWBMODE_FLASH,
+     MMAL_PARAM_AWBMODE_HORIZON,
+-) = range(10)
++    MMAL_PARAM_AWBMODE_GREYWORLD,
++) = range(11)
+ MMAL_PARAM_AWBMODE_MAX = 0x7fffffff
+
+ class MMAL_PARAMETER_AWBMODE_T(ct.Structure):
+
