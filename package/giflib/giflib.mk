@@ -4,27 +4,45 @@
 #
 ################################################################################
 
-GIFLIB_VERSION = 5.1.4
-GIFLIB_SOURCE = giflib-$(GIFLIB_VERSION).tar.bz2
+GIFLIB_VERSION = 5.2.1
 GIFLIB_SITE = http://downloads.sourceforge.net/project/giflib
 GIFLIB_INSTALL_STAGING = YES
 GIFLIB_LICENSE = MIT
 GIFLIB_LICENSE_FILES = COPYING
 
-GIFLIB_BINS = \
-	gif2epsn gif2ps gif2rgb gif2x11 gifasm gifbg gifbuild gifburst gifclip \
-	gifclrmp gifcolor gifcomb gifcompose gifecho giffiltr giffix gifflip \
-	gifhisto gifinfo gifinter gifinto gifovly gifpos gifrotat \
-	gifrsize gifspnge giftext giftool gifwedge icon2gif raw2gif rgb2gif \
-	text2gif
+ifeq ($(BR2_STATIC_LIBS),y)
+GIFLIB_BUILD_LIBS = static-lib
+GIFLIB_INSTALL_LIBS = install-static-lib
+else ifeq ($(BR2_SHARED_LIBS),y)
+GIFLIB_BUILD_LIBS = shared-lib
+GIFLIB_INSTALL_LIBS = install-shared-lib
+else
+GIFLIB_BUILD_LIBS = static-lib shared-lib
+GIFLIB_INSTALL_LIBS = install-lib
+endif
 
-GIFLIB_CONF_ENV = ac_cv_prog_have_xmlto=no
-
-define GIFLIB_BINS_CLEANUP
-	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,$(GIFLIB_BINS))
+define GIFLIB_BUILD_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) $(GIFLIB_BUILD_LIBS)
 endef
 
-GIFLIB_POST_INSTALL_TARGET_HOOKS += GIFLIB_BINS_CLEANUP
+define HOST_GIFLIB_BUILD_CMDS
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D)
+endef
 
-$(eval $(autotools-package))
-$(eval $(host-autotools-package))
+define GIFLIB_INSTALL_STAGING_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) DESTDIR=$(STAGING_DIR) \
+		PREFIX=/usr install-include $(GIFLIB_INSTALL_LIBS)
+endef
+
+define GIFLIB_INSTALL_TARGET_CMDS
+	$(TARGET_CONFIGURE_OPTS) $(MAKE) -C $(@D) DESTDIR=$(TARGET_DIR) \
+		PREFIX=/usr install-include $(GIFLIB_INSTALL_LIBS)
+endef
+
+define HOST_GIFLIB_INSTALL_CMDS
+	$(HOST_CONFIGURE_OPTS) $(MAKE) -C $(@D) DESTDIR=$(HOST_DIR) \
+		PREFIX=/usr install
+endef
+
+$(eval $(generic-package))
+$(eval $(host-generic-package))
