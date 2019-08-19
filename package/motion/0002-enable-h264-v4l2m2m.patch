@@ -1,14 +1,168 @@
-diff -rupEbwBN -x.git motion-release-4.2.2.org/ffmpeg.c motion-release-4.2.2/ffmpeg.c
---- motion-release-4.2.2.org/ffmpeg.c	2019-07-01 12:44:27.934954580 +1000
-+++ motion-release-4.2.2/ffmpeg.c	2019-07-01 15:08:24.346954580 +1000
-@@ -555,7 +555,9 @@ static int ffmpeg_set_quality(struct ffm
+commit cbf86207346d9f1bc36005c2a6342bacf4bcc3e4
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Mon Aug 19 16:33:08 2019 +1000
+
+    support h264_v4l2m2m encoder
+
+diff --git a/ffmpeg.c b/ffmpeg.c
+index 3f731ca..beb87b1 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -555,7 +555,9 @@ static int ffmpeg_set_quality(struct ffmpeg *ffmpeg){
              ffmpeg->quality = 45; // default to 45% quality
          av_dict_set(&ffmpeg->opts, "preset", "ultrafast", 0);
          av_dict_set(&ffmpeg->opts, "tune", "zerolatency", 0);
 -        if ((strcmp(ffmpeg->codec->name, "h264_omx") == 0) || (strcmp(ffmpeg->codec->name, "mpeg4_omx") == 0)) {
-+        if ((strcmp(ffmpeg->codec->name, "h264_omx") == 0) || 
-+	    (strcmp(ffmpeg->codec->name, "mpeg4_omx") == 0) ||
-+	    (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0)) {
++        if ((strcmp(ffmpeg->codec->name, "h264_omx") == 0) ||
++           (strcmp(ffmpeg->codec->name, "mpeg4_omx") == 0) ||
++           (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0)) {
              // H264 OMX encoder quality can only be controlled via bit_rate
              // bit_rate = ffmpeg->width * ffmpeg->height * ffmpeg->fps * quality_factor
              ffmpeg->quality = (int)(((int64_t)ffmpeg->width * ffmpeg->height * ffmpeg->fps * ffmpeg->quality) >> 7);
+@@ -596,6 +598,10 @@ static int ffmpeg_codec_is_blacklisted(const char *codec_name){
+          * More information: https://github.com/Motion-Project/motion/issues/433
+          */
+         "h264_omx",
++#if (LIBAVCODEC_VERSION_MAJOR < 57)
++        /* h264_v4l2m2m does not exist on old versions of ffmpeg. */
++        "h264_v4l2m2m",
++#endif
+     };
+     size_t i;
+ 
+@@ -702,7 +708,10 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
+     ffmpeg->ctx_codec->height        = ffmpeg->height;
+     ffmpeg->ctx_codec->time_base.num = 1;
+     ffmpeg->ctx_codec->time_base.den = ffmpeg->fps;
+-    ffmpeg->ctx_codec->pix_fmt       = MY_PIX_FMT_YUV420P;
++    if (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0)
++        ffmpeg->ctx_codec->pix_fmt   = AV_PIX_FMT_NV21;
++    else
++        ffmpeg->ctx_codec->pix_fmt   = MY_PIX_FMT_YUV420P;
+     ffmpeg->ctx_codec->max_b_frames  = 0;
+     if (strcmp(ffmpeg->codec_name, "ffv1") == 0){
+       ffmpeg->ctx_codec->strict_std_compliance = -2;
+@@ -768,6 +777,65 @@ static int ffmpeg_set_stream(struct ffmpeg *ffmpeg){
+ 
+ }
+ 
++
++static int alloc_video_buffer(AVFrame *frame, int align)
++{
++    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(frame->format);
++    int ret, i, padded_height;
++    int plane_padding = FFMAX(16 + 16/*STRIDE_ALIGN*/, align);
++
++    if (!desc)
++        return AVERROR(EINVAL);
++
++    if ((ret = av_image_check_size(frame->width, frame->height, 0, NULL)) < 0)
++        return ret;
++
++    if (!frame->linesize[0]) {
++        if (align <= 0)
++            align = 32; /* STRIDE_ALIGN. Should be av_cpu_max_align() */
++
++        for(i=1; i<=align; i+=i) {
++            ret = av_image_fill_linesizes(frame->linesize, frame->format,
++                                          FFALIGN(frame->width, i));
++            if (ret < 0)
++                return ret;
++            if (!(frame->linesize[0] & (align-1)))
++                break;
++        }
++
++        for (i = 0; i < 4 && frame->linesize[i]; i++)
++            frame->linesize[i] = FFALIGN(frame->linesize[i], align);
++    }
++
++    padded_height = FFALIGN(frame->height, 32);
++    if ((ret = av_image_fill_pointers(frame->data, frame->format, padded_height,
++                                      NULL, frame->linesize)) < 0)
++        return ret;
++
++    frame->buf[0] = av_buffer_alloc(ret + 4*plane_padding);
++    if (!frame->buf[0]) {
++        ret = AVERROR(ENOMEM);
++        goto fail;
++    }
++    frame->buf[1] = av_buffer_alloc(ret + 4*plane_padding);
++    if (!frame->buf[1]) {
++        ret = AVERROR(ENOMEM);
++        goto fail;
++    }
++
++    frame->data[0] = frame->buf[0]->data;
++    frame->data[1] = frame->buf[1]->data;
++    frame->data[2] = frame->data[1] + ((frame->width * padded_height) / 4);
++
++    frame->extended_data = frame->data;
++
++    return 0;
++fail:
++    av_frame_unref(frame);
++    return ret;
++}
++
++
+ static int ffmpeg_set_picture(struct ffmpeg *ffmpeg){
+ 
+     ffmpeg->picture = my_frame_alloc();
+@@ -789,6 +857,15 @@ static int ffmpeg_set_picture(struct ffmpeg *ffmpeg){
+     ffmpeg->picture->width  = ffmpeg->ctx_codec->width;
+     ffmpeg->picture->height = ffmpeg->ctx_codec->height;
+ 
++    // h264_v4l2m2m encoder expects video buffer to be allocated
++    if (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0) {
++        if (alloc_video_buffer(ffmpeg->picture, 32)) {
++            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, _("could not alloc buffers"));
++            ffmpeg_free_context(ffmpeg);
++            return -1;
++        }
++    }
++
+     return 0;
+ 
+ }
+@@ -1365,9 +1442,38 @@ int ffmpeg_put_image(struct ffmpeg *ffmpeg, struct image_data *img_data, const s
+         }
+ 
+         /* Setup pointers and line widths. */
+-        ffmpeg->picture->data[0] = image;
+-        ffmpeg->picture->data[1] = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
+-        ffmpeg->picture->data[2] = ffmpeg->picture->data[1] + ((ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height) / 4);
++        // Some encoders look for the image in ffmpeg->picture->buf
++        if (ffmpeg->picture->buf[0] == NULL)
++            ffmpeg->picture->data[0] = image;
++        else
++            memcpy(ffmpeg->picture->data[0], image, ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
++
++        if (ffmpeg->picture->buf[1] == NULL) {
++            // assume YUV420P format
++            ffmpeg->picture->data[1] = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
++            ffmpeg->picture->data[2] = ffmpeg->picture->data[1] + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height / 4);
++        } else {
++            int cr_len = ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height / 4;
++            int cb_len = cr_len;
++            unsigned char *imagecr = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
++            unsigned char *imagecb = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height) + cr_len;
++            if (ffmpeg->ctx_codec->pix_fmt == AV_PIX_FMT_NV21) {
++                int x;
++                int y;
++                for (y = 0; y < ffmpeg->ctx_codec->height; y++) {
++                    for (x = 0; x < ffmpeg->ctx_codec->width/4; x++) {
++                        ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2] = *imagecb;
++                        ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2 + 1] = *imagecr;
++                        imagecb++;
++                        imagecr++;
++                    }
++                }
++            } else {
++                // assume YUV420P format
++                memcpy(&ffmpeg->picture->data[1][0], imagecr, cr_len);
++                memcpy(&ffmpeg->picture->data[1][cr_len], imagecb, cb_len);
++            }
++        }
+ 
+         ffmpeg->gop_cnt ++;
+         if (ffmpeg->gop_cnt == ffmpeg->ctx_codec->gop_size ){
