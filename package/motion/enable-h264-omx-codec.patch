@@ -1,0 +1,13 @@
+diff --git a/ffmpeg.c b/ffmpeg.c
+index a729cda..798c017 100644
+--- a/ffmpeg.c
++++ b/ffmpeg.c
+@@ -513,7 +513,7 @@ static int ffmpeg_codec_is_blacklisted(const char *codec_name){
+          * - remove the "h264_omx" from this blacklist.
+          * More information: https://github.com/Motion-Project/motion/issues/433
+          */
+-        "h264_omx",
++        //"h264_omx",
+     };
+     size_t i;
+ 
