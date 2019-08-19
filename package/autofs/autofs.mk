@@ -15,9 +15,9 @@ AUTOFS_DEPENDENCIES = host-flex host-bison host-pkgconf host-nfs-utils
 # umount and fsck programs so tell it explicitly where they will be
 # located on the target.
 AUTOFS_CONF_ENV = \
-	ac_cv_path_E2FSCK=/usr/sbin/fsck.ext2 \
-	ac_cv_path_E3FSCK=/usr/sbin/fsck.ext3 \
-	ac_cv_path_E4FSCK=/usr/sbin/fsck.ext4 \
+	ac_cv_path_E2FSCK=/sbin/fsck \
+	ac_cv_path_E3FSCK=no \
+	ac_cv_path_E4FSCK=no \
 	ac_cv_path_KRB5_CONFIG=no \
 	ac_cv_path_MODPROBE=/sbin/modprobe \
 	ac_cv_path_MOUNT=/bin/mount \
