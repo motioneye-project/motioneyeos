@@ -19,17 +19,6 @@ index 3f731ca..beb87b1 100644
              // H264 OMX encoder quality can only be controlled via bit_rate
              // bit_rate = ffmpeg->width * ffmpeg->height * ffmpeg->fps * quality_factor
              ffmpeg->quality = (int)(((int64_t)ffmpeg->width * ffmpeg->height * ffmpeg->fps * ffmpeg->quality) >> 7);
-@@ -596,6 +598,10 @@ static int ffmpeg_codec_is_blacklisted(const char *codec_name){
-          * More information: https://github.com/Motion-Project/motion/issues/433
-          */
-         "h264_omx",
-+#if (LIBAVCODEC_VERSION_MAJOR < 57)
-+        /* h264_v4l2m2m does not exist on old versions of ffmpeg. */
-+        "h264_v4l2m2m",
-+#endif
-     };
-     size_t i;
- 
 @@ -702,7 +708,10 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
      ffmpeg->ctx_codec->height        = ffmpeg->height;
      ffmpeg->ctx_codec->time_base.num = 1;
