@@ -1,4 +1,4 @@
-2019.08-rc2, not yet released
+2019.08-rc2, released August 20th, 2019
 
 	Fixes all over the tree.
 
@@ -6,17 +6,17 @@
 
 	Updated/fixed packages: apache, autofs, batctl, batman-adv,
 	bind, collectd, cwiid, dahdi-linux, dahdi-tools, daq,
-	dehydrated, dhcp, dtc, efl, enlightenment, evtest, gnutls, go,
-	gst-plugins-bad, gst-plugins-base, gst1-plugins-bad,
-	gst1-plugins-base, gst1-rtsp-server, gtkmm3, gupnp, harfbuzz,
-	imagemagick, lftp, libbsd, libcpprestsdk, libdnet, libfm,
-	libgit2, libgtk2, libgtk3, libpri, librsvg, libss7, libssh2,
-	libwpe, lua-cqueues, metacity, micropython, mpd, mpg123, musl,
-	mpv, openblas, openbox, opencv, pango, pcmanfm, piglit,
-	pigpio, pinentry, postgresql, qemu, qt5base, qt5enginio,
-	qt5multimedia, qt5serialbus, quazip, rrdtool, rygel, samba4,
-	stellarium, tcpreplay, ti-gfx, vte, wampcc,
-	wilink-bt-firmware, wireless-regdb, wpebackend-fdo,
+	dehydrated, dhcp, dtc, efl, enlightenment, evtest, giflib,
+	gnutls, go, gst-plugins-bad, gst-plugins-base,
+	gst1-plugins-bad, gst1-plugins-base, gst1-rtsp-server, gtkmm3,
+	gupnp, harfbuzz, imagemagick, lftp, libbsd, libcpprestsdk,
+	libdnet, libfm, libgit2, libgtk2, libgtk3, libpri, librsvg,
+	libss7, libssh2, libwpe, lua-cqueues, metacity, micropython,
+	mpd, mpg123, musl, mpv, openblas, openbox, opencv, pango,
+	pcmanfm, piglit, pigpio, pinentry, postgresql, qemu, qt5base,
+	qt5enginio, qt5multimedia, qt5serialbus, quagga, quazip,
+	rrdtool, rygel, samba4, stellarium, tcpreplay, ti-gfx, vte,
+	wampcc, wilink-bt-firmware, wireless-regdb, wpebackend-fdo,
 	xscreensaver
 
 	Removed packages: libamcodec, odroid-mali, odroid-scripts
