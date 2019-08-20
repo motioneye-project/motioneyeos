@@ -4,13 +4,15 @@
 #
 ################################################################################
 
-SQUID_VERSION = 4.6
+SQUID_VERSION = 4.8
 SQUID_SOURCE = squid-$(SQUID_VERSION).tar.xz
 SQUID_SITE = http://www.squid-cache.org/Versions/v4
 SQUID_LICENSE = GPL-2.0+
 SQUID_LICENSE_FILES = COPYING
 SQUID_DEPENDENCIES = libcap host-libcap libxml2 host-pkgconf \
 	$(if $(BR2_PACKAGE_LIBNETFILTER_CONNTRACK),libnetfilter_conntrack)
+# We're patching acinclude/os-deps.m4 
+SQUID_AUTORECONF = YES
 SQUID_CONF_ENV = \
 	ac_cv_epoll_works=yes \
 	ac_cv_func_setresuid=yes \
