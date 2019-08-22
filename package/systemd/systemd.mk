@@ -9,14 +9,12 @@ SYSTEMD_SITE = $(call github,systemd,systemd,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README
 SYSTEMD_INSTALL_STAGING = YES
-
-# systemd requires only the util-linux libraries at build time
 SYSTEMD_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_BASH_COMPLETION),bash-completion) \
 	host-gperf \
 	kmod \
 	libcap \
-	util-linux-libs \
+	util-linux \
 	$(TARGET_NLS_DEPENDENCIES)
 
 SYSTEMD_PROVIDES = udev
