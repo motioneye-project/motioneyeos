@@ -1,2 +1,4 @@
 # Locally calculated after checking pgp signature
-sha256 e831b3a86091496cdba720411f9748de81507798f6130adeaef872d206e1b057  coreutils-8.30.tar.xz
+sha256 ff7a9c918edce6b4f4b2725e3f9b37b0c4d193531cac49a48b56c4d0d3a9e9fd  coreutils-8.31.tar.xz
+# Locally computed
+sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
