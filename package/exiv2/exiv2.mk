@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-EXIV2_VERSION = 0.27.1
-EXIV2_SITE = $(call github,Exiv2,exiv2,$(EXIV2_VERSION))
+EXIV2_VERSION = 0.27.2
+EXIV2_SITE = $(call github,Exiv2,exiv2,v$(EXIV2_VERSION))
 EXIV2_INSTALL_STAGING = YES
 EXIV2_LICENSE = GPL-2.0+, BSD-3-Clause
 EXIV2_LICENSE_FILES = COPYING COPYING-CMAKE-SCRIPTS
