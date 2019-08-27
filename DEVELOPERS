@@ -2451,6 +2451,8 @@ F:	utils/scanpypi
 N:	Zoltan Gyarmati <zgyarmati@zgyarmati.de>
 F:	package/crudini/
 F:	package/grantlee/
+F:	package/libusb/
+F:	package/libusb-compat/
 F:	package/proj/
 F:	package/python-configobj/
 F:	package/python-iniparse/
