@@ -18,13 +18,14 @@ define THTTPD_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/extras/syslogtocern $(TARGET_DIR)/usr/bin/syslogtocern
 	$(INSTALL) -D -m 0755 $(@D)/scripts/thttpd_wrapper $(TARGET_DIR)/usr/sbin/thttpd_wrapper
 	$(SED) 's:/usr/local/sbin:/usr/sbin:g' -e \
-		's:/usr/local/www:/var/www:g' $(TARGET_DIR)/usr/sbin/thttpd_wrapper
+		's:/usr/local/www/thttpd_config:/etc/thttpd.conf:g' \
+		$(TARGET_DIR)/usr/sbin/thttpd_wrapper
 	$(INSTALL) -d $(TARGET_DIR)/var/www/data
 	$(INSTALL) -d $(TARGET_DIR)/var/www/logs
-	echo "dir=/var/www/data" > $(TARGET_DIR)/var/www/thttpd_config
-	echo 'cgipat=**.cgi' >> $(TARGET_DIR)/var/www/thttpd_config
-	echo "logfile=/var/www/logs/thttpd_log" >> $(TARGET_DIR)/var/www/thttpd_config
-	echo "pidfile=/var/run/thttpd.pid" >> $(TARGET_DIR)/var/www/thttpd_config
+	echo "dir=/var/www/data" > $(TARGET_DIR)/etc/thttpd.conf
+	echo 'cgipat=**.cgi' >> $(TARGET_DIR)/etc/thttpd.conf
+	echo "logfile=/var/www/logs/thttpd_log" >> $(TARGET_DIR)/etc/thttpd.conf
+	echo "pidfile=/var/run/thttpd.pid" >> $(TARGET_DIR)/etc/thttpd.conf
 endef
 
 define THTTPD_INSTALL_INIT_SYSV
