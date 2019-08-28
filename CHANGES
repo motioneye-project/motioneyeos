@@ -1,3 +1,15 @@
+2019.08-rc3, released August 28th, 2019
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: clamav, dovecot, dovecot-pigeonhole,
+	gcc, intel-microcode, libmicrohttpd, libmodplug, mpg123,
+	nginx, openldap, python, qemu, samba4, squid, strace, vlc
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11686: fbdev_drv.so: undefined symbol: shadowUpdatePackedWeak,..
+
 2019.08-rc2, released August 20th, 2019
 
 	Fixes all over the tree.
