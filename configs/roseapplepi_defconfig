@@ -6,6 +6,8 @@ BR2_ARM_ENABLE_VFP=y
 BR2_GLOBAL_PATCH_DIR="board/roseapplepi/patches"
 # Linux headers same as kernel, a 3.10 series
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_10=y
+# kernel does not build with gcc 8.x
+BR2_GCC_VERSION_7_X=y
 BR2_ROOTFS_POST_IMAGE_SCRIPT="board/roseapplepi/post-image.sh"
 
 BR2_LINUX_KERNEL=y
