@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-XAPP_XRANDR_VERSION = 1.5.0
-XAPP_XRANDR_SOURCE = xrandr-$(XAPP_XRANDR_VERSION).tar.bz2
+XAPP_XRANDR_VERSION = 1.5.1
+XAPP_XRANDR_SOURCE = xrandr-$(XAPP_XRANDR_VERSION).tar.xz
 XAPP_XRANDR_SITE = http://xorg.freedesktop.org/releases/individual/app
 XAPP_XRANDR_LICENSE = MIT
 XAPP_XRANDR_LICENSE_FILES = COPYING
