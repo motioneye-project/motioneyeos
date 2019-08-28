@@ -15,7 +15,7 @@ index efcb0426e4..8f9420e28d 100644
       *  2. an input buffer is ready to be dequeued
       */
 -    avbuf = v4l2_dequeue_v4l2buf(ctx, -1);
-+    avbuf = v4l2_dequeue_v4l2buf(ctx, ctx_to_m2mctx(ctx)->draining ? -1 : 50);
++    avbuf = v4l2_dequeue_v4l2buf(ctx, ctx_to_m2mctx(ctx)->draining ? -1 : 0);
      if (!avbuf) {
          if (ctx->done)
              return AVERROR_EOF;
@@ -24,7 +24,7 @@ index efcb0426e4..8f9420e28d 100644
       *  2. an input buffer ready to be dequeued
       */
 -    avbuf = v4l2_dequeue_v4l2buf(ctx, -1);
-+    avbuf = v4l2_dequeue_v4l2buf(ctx, ctx_to_m2mctx(ctx)->draining ? -1 : 50);
++    avbuf = v4l2_dequeue_v4l2buf(ctx, ctx_to_m2mctx(ctx)->draining ? -1 : 0);
      if (!avbuf) {
          if (ctx->done)
              return AVERROR_EOF;
