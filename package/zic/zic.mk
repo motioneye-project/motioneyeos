@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-ZIC_VERSION = 2018e
+ZIC_VERSION = 2019b
 ZIC_SOURCE = tzcode$(ZIC_VERSION).tar.gz
-ZIC_SITE = http://www.iana.org/time-zones/repository/releases
+ZIC_SITE = https://www.iana.org/time-zones/repository/releases
 ZIC_STRIP_COMPONENTS = 0
 ZIC_LICENSE = Public domain
+ZIC_LICENSE_FILES = LICENSE
 
 define HOST_ZIC_BUILD_CMDS
 	$(HOST_MAKE_ENV) $(MAKE) -C $(@D) zic
