@@ -211,7 +211,6 @@ mx53loco_defconfig: { extends: .defconfig }
 mx6cubox_defconfig: { extends: .defconfig }
 mx6sx_udoo_neo_defconfig: { extends: .defconfig }
 mx6udoo_defconfig: { extends: .defconfig }
-nanopc_t4_defconfig: { extends: .defconfig }
 nanopi_m1_defconfig: { extends: .defconfig }
 nanopi_m1_plus_defconfig: { extends: .defconfig }
 nanopi_m4_defconfig: { extends: .defconfig }
