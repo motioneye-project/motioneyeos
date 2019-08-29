@@ -318,7 +318,6 @@ solidrun_macchiatobin_marvell_defconfig: { extends: .defconfig }
 stm32f429_disco_defconfig: { extends: .defconfig }
 stm32f469_disco_defconfig: { extends: .defconfig }
 toradex_apalis_imx6_defconfig: { extends: .defconfig }
-ts4800_defconfig: { extends: .defconfig }
 ts4900_defconfig: { extends: .defconfig }
 ts5500_defconfig: { extends: .defconfig }
 ts7680_defconfig: { extends: .defconfig }
