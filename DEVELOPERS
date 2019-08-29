@@ -2095,9 +2095,7 @@ F:	package/wolfssl/
 
 N:	Shyam Saini <shyam.saini@amarulasolutions.com>
 F:	board/olimex/a33_olinuxino/
-F:	board/radxa/rock-pi4/
 F:	configs/olimex_a33_olinuxino_defconfig
-F:	configs/radxa_rock_pi4_defconfig
 
 N:	Simon Dawson <spdawson@gmail.com>
 F:	boot/at91bootstrap3/

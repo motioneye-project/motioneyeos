@@ -286,7 +286,6 @@ qemu_x86_64_defconfig: { extends: .defconfig }
 qemu_x86_defconfig: { extends: .defconfig }
 qemu_xtensa_lx60_defconfig: { extends: .defconfig }
 qemu_xtensa_lx60_nommu_defconfig: { extends: .defconfig }
-radxa_rock_pi4_defconfig: { extends: .defconfig }
 raspberrypi0_defconfig: { extends: .defconfig }
 raspberrypi0w_defconfig: { extends: .defconfig }
 raspberrypi2_defconfig: { extends: .defconfig }
