@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2019.08"
 
+config BR2_TARGET_TS4800_MBRBOOT
+	bool "ts4800-mbrboot package was removed"
+	select BR2_LEGACY
+	help
+	  The defconfig for the TS4800 platform has been removed, so
+	  the ts4800-mbrboot package, containing the boot code for
+	  this specific platform has been removed as welL.
+
 config BR2_PACKAGE_LIBAMCODEC
 	bool "liamcodec package was removed"
 	select BR2_LEGACY
