@@ -2095,12 +2095,10 @@ F:	package/wolfssl/
 
 N:	Shyam Saini <shyam.saini@amarulasolutions.com>
 F:	board/friendlyarm/nanopi-m4/
-F:	board/friendlyarm/nanopi-neo4/
 F:	board/olimex/a33_olinuxino/
 F:	board/pine64/rockpro64/
 F:	board/radxa/rock-pi4/
 F:	configs/nanopi_m4_defconfig
-F:	configs/nanopi_neo4_defconfig
 F:	configs/olimex_a33_olinuxino_defconfig
 F:	configs/pine64_rockpro64_defconfig
 F:	configs/radxa_rock_pi4_defconfig
