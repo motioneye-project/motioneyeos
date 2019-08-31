@@ -1,5 +1,5 @@
-# From https://download.enlightenment.org/rel/libs/efl/efl-1.22.2.tar.xz.sha256
-sha256 1699891f825911622de0aa77fe1140eff7335aba619d2352485e54dcff6b1cd0 efl-1.22.2.tar.xz
+# From https://download.enlightenment.org/rel/libs/efl/efl-1.22.3.tar.xz.sha256
+sha256 7e7a4199b1e90d400dab2491db6032f8e0b26bab65ec19c9f8a97a82394331c8 efl-1.22.3.tar.xz
 
 sha256 d949e42ca8fd48d275c397c5fc2ac34c9b63ada715dcaf1a670e17bb62964341  COMPLIANCE
 sha256 1f0597d326e2fdb54aa2f0caec6d8bb0afb9941ef32475f017ed02ca214fcf37  COPYING
