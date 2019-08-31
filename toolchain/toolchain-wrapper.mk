@@ -23,6 +23,11 @@ TOOLCHAIN_WRAPPER_OPTS = \
 
 ifeq ($(BR2_REPRODUCIBLE),y)
 TOOLCHAIN_WRAPPER_OPTS += -Wl,--build-id=none
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_8),y)
+TOOLCHAIN_WRAPPER_OPTS += -ffile-prefix-map=$(BASE_DIR)=buildroot
+else
+TOOLCHAIN_WRAPPER_OPTS += -D__FILE__=\"\" -D__BASE_FILE__=\"\" -Wno-builtin-macro-redefined
+endif
 endif
 
 # We create a list like '"-mfoo", "-mbar", "-mbarfoo"' so that each flag is a
