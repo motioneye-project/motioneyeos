@@ -1,3 +1,21 @@
+2019.08, released September 1st, 2019
+
+	Various fixes.
+
+	Defconfigs: Removed nanopc t4, nanopi m4 and neo4, pine64
+	rockpro64 and raxda rock pi4 as they rely on a ARM32 toolchain
+	on the build host to build ATF. These defconfigs will be added
+	back once a package providing such toolchain is
+	available. Also dropped ts4800 defconfig as it does not build
+	with GCC >= 8.x.
+
+	Updated/fixed packages: libxcb, php, python-numpy, webkitgtk,
+	wpewebkit, xfont_font-util
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12156:	buildroot-2019.08-rc3 does not build for Pi Zero W
+
 2019.08-rc3, released August 28th, 2019
 
 	Fixes all over the tree.
