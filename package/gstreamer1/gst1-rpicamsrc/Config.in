@@ -1,0 +1,8 @@
+config BR2_PACKAGE_GST1_RPICAMSRC
+	bool "gst1-rpicamsrc"
+	depends on BR2_PACKAGE_HAS_LIBOPENMAX
+	select BR2_PACKAGE_GST1_PLUGINS_BASE
+	help
+	  GStreamer element for the Raspberry Pi camera module
+
+	  https://github.com/thaytan/gst-rpicamsrc
