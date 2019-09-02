@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PANTILTHAT
+	bool "python-pantilthat"
+    select BR2_PACKAGE_PYTHON_SPIDEV
+    select BR2_PACKAGE_PYTHON_RPI_GPIO
+	help
+	  Python library for driving Pimoroni PanTiltHAT!
+      
+	  https://github.com/pimoroni/pantilt-hat
