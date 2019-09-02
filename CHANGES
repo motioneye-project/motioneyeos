@@ -360,6 +360,8 @@
 	sqlite, subversion, supertux, systemd, tslib, uclibc,
 	v4l2loopback, webkitgtk, woff2
 
+	Issues resolved (http://bugs.uclibc.org):
+
 	#11816: Only selected coreutils binaries are installed
 	#11841: grub-efi.cfg not used when building EFI disk image
 	#11911: systemd v240 memory leak in systemd-journald
