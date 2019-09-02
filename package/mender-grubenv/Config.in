@@ -4,7 +4,7 @@ config BR2_PACKAGE_MENDER_GRUBENV
 	depends on BR2_PACKAGE_MENDER # runtime
 	# grubenv provides it's own fw_printenv.
 	depends on !BR2_PACKAGE_UBOOT_TOOLS_FWPRINTENV
-	depends on BR2_TARGET_GRUB2 # runtime
+	depends on BR2_TARGET_GRUB2
 	help
 	  Contains the boot scripts and tools used by Mender to
 	  integrate with the GRUB bootloader.

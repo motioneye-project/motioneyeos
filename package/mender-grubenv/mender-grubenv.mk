@@ -8,11 +8,15 @@ MENDER_GRUBENV_VERSION = 1.3.0
 MENDER_GRUBENV_SITE = $(call github,mendersoftware,grub-mender-grubenv,$(MENDER_GRUBENV_VERSION))
 MENDER_GRUBENV_LICENSE = Apache-2.0
 MENDER_GRUBENV_LICENSE_FILES = LICENSE
+# Grub2 must be built first so this package can overwrite the config files
+# provided by grub.
+MENDER_GRUBENV_DEPENDENCIES = grub2
+MENDER_GRUBENV_INSTALL_IMAGES = YES
 
 ifeq ($(BR2_TARGET_GRUB2_I386_PC)$(BR2_TARGET_GRUB2_ARM_UBOOT),y)
 MENDER_GRUBENV_ENV_DIR = /boot/grub
 else
-MENDER_GRUBENV_ENV_DIR = /boot/efi/EFI/BOOT
+MENDER_GRUBENV_ENV_DIR = /boot/EFI/BOOT
 endif
 
 MENDER_GRUBENV_MAKE_ENV = \
@@ -48,6 +52,14 @@ endef
 
 define MENDER_GRUBENV_INSTALL_TARGET_CMDS
 	$(MENDER_GRUBENV_MAKE_ENV) $(MAKE) DESTDIR=$(TARGET_DIR) -C $(@D) install
+endef
+
+# Overwrite the default grub2 config files with the ones in this package.
+define MENDER_GRUBENV_INSTALL_IMAGES_CMDS
+	mkdir -p $(BINARIES_DIR)/efi-part/EFI/BOOT
+	cp -dpfr $(TARGET_DIR)/boot/EFI/BOOT/grub.cfg \
+		$(TARGET_DIR)/boot/EFI/BOOT/mender_grubenv* \
+		$(BINARIES_DIR)/efi-part/EFI/BOOT
 endef
 
 $(eval $(generic-package))
