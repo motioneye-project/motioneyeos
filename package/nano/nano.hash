@@ -1,5 +1,5 @@
 # Locally calculated after checking pgp signature
-# https://www.nano-editor.org/dist/v4/nano-4.3.tar.xz.asc
+# https://www.nano-editor.org/dist/v4/nano-4.4.tar.xz.asc
 # using key BFD009061E535052AD0DF2150D28D4D2A0ACE884
-sha256 00d3ad1a287a85b4bf83e5f06cedd0a9f880413682bebd52b4b1e2af8cfc0d81  nano-4.3.tar.xz
+sha256 2af222e0354848ffaa3af31b5cd0a77917e9cb7742cd073d762f3c32f0f582c7  nano-4.4.tar.xz
 sha256 fc82ca8b6fdb18d4e3e85cfd8ab58d1bcd3f1b29abe782895abd91d64763f8e7  COPYING
