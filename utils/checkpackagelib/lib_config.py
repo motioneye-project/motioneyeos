@@ -68,6 +68,7 @@ class CommentsMenusPackagesOrder(_CheckFunction):
     def before(self):
         self.state = ""
         self.level = 0
+        self.new_package = ""
 
     def get_level(self):
         return len(self.state.split('-')) - 1
@@ -123,10 +124,10 @@ class CommentsMenusPackagesOrder(_CheckFunction):
             self.level = self.get_level()
 
         elif source_line:
-            new_package = source_line.group(1)
+            self.new_package = source_line.group(1)
 
             # We order _ before A, so replace it with .
-            new_package_ord = new_package.replace('_', '.')
+            new_package_ord = self.new_package.replace('_', '.')
 
             if self.package[self.level] != "" and \
                self.print_package_warning[self.level] and \
@@ -140,7 +141,7 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                         "{spaces}first incorrect package: {package}"
                         .format(prefix=prefix, spaces=spaces,
                                 menu=self.menu_of_packages[self.level],
-                                package=new_package),
+                                package=self.new_package),
                         text]
 
             self.package[self.level] = new_package_ord
