@@ -77,7 +77,8 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                                  "package/Config.in.host"]:
             return
 
-        m = re.match(r'^\s*source ".*/([^/]*)/Config.in(.host)?"', text)
+        source_line = re.match(r'^\s*source ".*/([^/]*)/Config.in(.host)?"', text)
+
         if text.startswith("comment ") or text.startswith("if ") or \
            text.startswith("menu "):
 
@@ -113,9 +114,9 @@ class CommentsMenusPackagesOrder(_CheckFunction):
             elif text.startswith("endmenu"):
                 self.state = self.state[:-5]
 
-        elif m:
+        elif source_line:
             level = self.get_level()
-            new_package = m.group(1)
+            new_package = source_line.group(1)
 
             # We order _ before A, so replace it with .
             new_package_ord = new_package.replace('_', '.')
