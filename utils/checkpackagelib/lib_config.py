@@ -72,6 +72,20 @@ class CommentsMenusPackagesOrder(_CheckFunction):
     def get_level(self):
         return len(self.state.split('-')) - 1
 
+    def initialize_package_level_elements(self, text):
+        try:
+            self.menu_of_packages[self.level] = text[:-1]
+            self.package[self.level] = ""
+            self.print_package_warning[self.level] = True
+        except IndexError:
+            self.menu_of_packages.append(text[:-1])
+            self.package.append("")
+            self.print_package_warning.append(True)
+
+    def initialize_level_elements(self, text):
+        self.level = self.get_level()
+        self.initialize_package_level_elements(text)
+
     def check_line(self, lineno, text):
         # We only want to force sorting for the top-level menus
         if self.filename not in ["package/Config.in",
@@ -94,16 +108,7 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                 elif text.startswith("menu"):
                     self.state += "-menu"
 
-            self.level = self.get_level()
-
-            try:
-                self.menu_of_packages[self.level] = text[:-1]
-                self.package[self.level] = ""
-                self.print_package_warning[self.level] = True
-            except IndexError:
-                self.menu_of_packages.append(text[:-1])
-                self.package.append("")
-                self.print_package_warning.append(True)
+            self.initialize_level_elements(text)
 
         elif text.startswith("endif") or text.startswith("endmenu"):
             if self.state.endswith("comment"):
