@@ -115,8 +115,9 @@ class CommentsMenusPackagesOrder(_CheckFunction):
             elif text.startswith("endmenu"):
                 self.state = self.state[:-5]
 
-        elif source_line:
             self.level = self.get_level()
+
+        elif source_line:
             new_package = source_line.group(1)
 
             # We order _ before A, so replace it with .
