@@ -1,15 +1,16 @@
-Add nds32 support
+Bug 1578364 - Add Nds32 support
 
-Signed-off-by:Nylon Chen <nylon7@andestech.com>
+Signed-off-by: Nylon Chen <nylon7@andestech.com>
+[Giulio: update for nspr 4.22]
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
 
-Index: b/nspr/pr/include/md/_linux.cfg
-===================================================================
---- a/nspr/pr/include/md/_linux.cfg
-+++ b/nspr/pr/include/md/_linux.cfg
-@@ -1207,6 +1207,51 @@
+diff -r ab7d5c504daf -r d212d80704a2 nspr/pr/include/md/_linux.cfg
+--- a/nspr/pr/include/md/_linux.cfg	Tue Sep 03 11:33:15 2019 +0200
++++ b/nspr/pr/include/md/_linux.cfg	Tue Sep 03 11:36:05 2019 +0200
+@@ -1252,6 +1252,51 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
-
+ 
 +#elif defined(__nds32__)
 +
 +#define IS_LITTLE_ENDIAN 1
@@ -56,17 +57,15 @@ Index: b/nspr/pr/include/md/_linux.cfg
 +#define PR_BYTES_PER_DWORD_LOG2  3
 +
  #else
-
+ 
  #error "Unknown CPU architecture"
-
-Index: b/nspr/pr/include/md/_linux.h
-===================================================================
---- a/nspr/pr/include/md/_linux.h
-+++ b/nspr/pr/include/md/_linux.h
-@@ -65,6 +65,8 @@
- #define _PR_SI_ARCHITECTURE "microblaze"
- #elif defined(__nios2__)
+diff -r ab7d5c504daf -r d212d80704a2 nspr/pr/include/md/_linux.h
+--- a/nspr/pr/include/md/_linux.h	Tue Sep 03 11:33:15 2019 +0200
++++ b/nspr/pr/include/md/_linux.h	Tue Sep 03 11:36:05 2019 +0200
+@@ -67,6 +67,8 @@
  #define _PR_SI_ARCHITECTURE "nios2"
+ #elif defined(__microblaze__)
+ #define _PR_SI_ARCHITECTURE "microblaze"
 +#elif defined(__nds32__)
 +#define _PR_SI_ARCHITECTURE "nds32"
  #else

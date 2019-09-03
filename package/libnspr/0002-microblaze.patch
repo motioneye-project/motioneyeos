@@ -1,15 +1,16 @@
-Add Microblaze support
+Bug 1578363 - Add Microblaze support
 
 [Gustavo: update for nspr 4.10.9]
 Signed-off-by: Spenser Gilliland <spenser@gillilanding.com>
 [Fabrice: update for nspr 4.20]
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Giulio: update for nspr 4.22]
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
 
-Index: b/nspr/pr/include/md/_linux.cfg
-===================================================================
---- a/nspr/pr/include/md/_linux.cfg
-+++ b/nspr/pr/include/md/_linux.cfg
-@@ -1157,6 +1157,56 @@
+diff -r 8487beb203e9 -r ab7d5c504daf nspr/pr/include/md/_linux.cfg
+--- a/nspr/pr/include/md/_linux.cfg	Tue Sep 03 11:25:11 2019 +0200
++++ b/nspr/pr/include/md/_linux.cfg	Tue Sep 03 11:33:15 2019 +0200
+@@ -1202,6 +1202,56 @@
  #define PR_BYTES_PER_WORD_LOG2   2
  #define PR_BYTES_PER_DWORD_LOG2  3
  
@@ -66,16 +67,15 @@ Index: b/nspr/pr/include/md/_linux.cfg
  #else
  
  #error "Unknown CPU architecture"
-Index: b/nspr/pr/include/md/_linux.h
-===================================================================
---- a/nspr/pr/include/md/_linux.h
-+++ b/nspr/pr/include/md/_linux.h
-@@ -57,6 +57,8 @@
- #define _PR_SI_ARCHITECTURE "riscv32"
- #elif defined(__riscv) && (__riscv_xlen == 64)
- #define _PR_SI_ARCHITECTURE "riscv64"
-+#elif defined(__microblaze__)
-+#define _PR_SI_ARCHITECTURE "microblaze"
+diff -r 8487beb203e9 -r ab7d5c504daf nspr/pr/include/md/_linux.h
+--- a/nspr/pr/include/md/_linux.h	Tue Sep 03 11:25:11 2019 +0200
++++ b/nspr/pr/include/md/_linux.h	Tue Sep 03 11:33:15 2019 +0200
+@@ -65,6 +65,8 @@
+ #define _PR_SI_ARCHITECTURE "arc"
  #elif defined(__nios2__)
  #define _PR_SI_ARCHITECTURE "nios2"
++#elif defined(__microblaze__)
++#define _PR_SI_ARCHITECTURE "microblaze"
  #else
+ #error "Unknown CPU architecture"
+ #endif
