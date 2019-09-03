@@ -959,6 +959,8 @@ F:	package/xapian/
 
 N:	Giulio Benetti <giulio.benetti@micronovasrl.com>
 F:	package/at/
+F:	package/libnspr/
+F:	package/libnss/
 F:	package/minicom/
 F:	package/sunxi-mali-mainline/
 F:	package/sunxi-mali-mainline-driver/
