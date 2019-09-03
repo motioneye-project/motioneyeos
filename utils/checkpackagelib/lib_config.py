@@ -67,6 +67,7 @@ class CommentsMenusPackagesOrder(_CheckFunction):
 
     def before(self):
         self.state = ""
+        self.level = 0
 
     def get_level(self):
         return len(self.state.split('-')) - 1
@@ -93,12 +94,12 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                 elif text.startswith("menu"):
                     self.state += "-menu"
 
-            level = self.get_level()
+            self.level = self.get_level()
 
             try:
-                self.menu_of_packages[level] = text[:-1]
-                self.package[level] = ""
-                self.print_package_warning[level] = True
+                self.menu_of_packages[self.level] = text[:-1]
+                self.package[self.level] = ""
+                self.print_package_warning[self.level] = True
             except IndexError:
                 self.menu_of_packages.append(text[:-1])
                 self.package.append("")
@@ -115,16 +116,16 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                 self.state = self.state[:-5]
 
         elif source_line:
-            level = self.get_level()
+            self.level = self.get_level()
             new_package = source_line.group(1)
 
             # We order _ before A, so replace it with .
             new_package_ord = new_package.replace('_', '.')
 
-            if self.package[level] != "" and \
-               self.print_package_warning[level] and \
-               new_package_ord < self.package[level]:
-                self.print_package_warning[level] = False
+            if self.package[self.level] != "" and \
+               self.print_package_warning[self.level] and \
+               new_package_ord < self.package[self.level]:
+                self.print_package_warning[self.level] = False
                 prefix = "{}:{}: ".format(self.filename, lineno)
                 spaces = " " * len(prefix)
                 return ["{prefix}Packages in: {menu},\n"
@@ -132,11 +133,11 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                         "{spaces}correct order: '-', '_', digits, capitals, lowercase;\n"
                         "{spaces}first incorrect package: {package}"
                         .format(prefix=prefix, spaces=spaces,
-                                menu=self.menu_of_packages[level],
+                                menu=self.menu_of_packages[self.level],
                                 package=new_package),
                         text]
 
-            self.package[level] = new_package_ord
+            self.package[self.level] = new_package_ord
 
 
 class HelpText(_CheckFunction):
