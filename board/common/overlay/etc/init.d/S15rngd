@@ -10,7 +10,7 @@ test -n "${OS_VERSION}" || source /etc/init.d/base
 
 start() {
     msg_begin "Starting rngd"
-    ${PROG}
+    ${PROG} &>/dev/null
     test $? == 0 && msg_done || msg_fail
 }
 
