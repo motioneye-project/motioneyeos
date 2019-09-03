@@ -1,2 +1,3 @@
 # Locally calculated after checking pgp signature
-sha256 f3dc8455cb0b2b66e0c6b816c00197a71bf6d1787078adeee0bcf2aea4b12706  less-487.tar.gz
+# using DSA key F153A7C833235259
+sha256 503f91ab0af4846f34f0444ab71c4b286123f0044a4964f1ae781486c617f2e2  less-530.tar.gz
