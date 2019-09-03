@@ -312,6 +312,7 @@ solidrun_macchiatobin_mainline_defconfig: { extends: .defconfig }
 solidrun_macchiatobin_marvell_defconfig: { extends: .defconfig }
 stm32f429_disco_defconfig: { extends: .defconfig }
 stm32f469_disco_defconfig: { extends: .defconfig }
+stm32mp157_dk_defconfig: { extends: .defconfig }
 toradex_apalis_imx6_defconfig: { extends: .defconfig }
 ts4900_defconfig: { extends: .defconfig }
 ts5500_defconfig: { extends: .defconfig }
@@ -334,6 +335,7 @@ tests.core.test_hardening.TestRelroPartial: { extends: .runtime_test }
 tests.core.test_hardening.TestSspNone: { extends: .runtime_test }
 tests.core.test_hardening.TestSspStrong: { extends: .runtime_test }
 tests.core.test_post_scripts.TestPostScripts: { extends: .runtime_test }
+tests.core.test_root_password.TestRootPassword: { extends: .runtime_test }
 tests.core.test_rootfs_overlay.TestRootfsOverlay: { extends: .runtime_test }
 tests.core.test_timezone.TestGlibcAllTimezone: { extends: .runtime_test }
 tests.core.test_timezone.TestGlibcNonDefaultLimitedTimezone: { extends: .runtime_test }

@@ -4,13 +4,14 @@
 #
 ################################################################################
 
-TZDATA_VERSION = 2018e
+TZDATA_VERSION = 2019b
 TZDATA_SOURCE = tzdata$(TZDATA_VERSION).tar.gz
-TZDATA_SITE = http://www.iana.org/time-zones/repository/releases
+TZDATA_SITE = https://www.iana.org/time-zones/repository/releases
 TZDATA_STRIP_COMPONENTS = 0
 TZDATA_DEPENDENCIES = host-tzdata
 HOST_TZDATA_DEPENDENCIES = host-zic
 TZDATA_LICENSE = Public domain
+HOST_TZDATA_LICENSE_FILES = LICENSE
 
 # Take care when re-ordering this list since this might break zone
 # dependencies

@@ -102,6 +102,8 @@ to +make+ or set in the environment:
   xref:graph-depends[] for the accepted options
 * +BR2_GRAPH_DOT_OPTS+ is passed verbatim as options to the +dot+ utility to
   draw the dependency graph.
+* +BR2_GRAPH_SIZE_OPTS+ to pass extra options to the size graph; see
+  xref:graph-size[] for the acepted options
 
 An example that uses config files located in the toplevel directory and
 in your $HOME:
@@ -278,6 +280,7 @@ only other format supported is PNG:
 BR2_GRAPH_OUT=png make graph-build
 ----------------
 
+[[graph-size]]
 === Graphing the filesystem size contribution of packages
 
 When your target system grows, it is sometimes useful to understand
@@ -313,6 +316,21 @@ installed (+python-matplotlib+ on most distributions), and also the
 Just like for the duration graph, a +BR2_GRAPH_OUT+ environment variable
 is supported to adjust the output file format. See xref:graph-depends[]
 for details about this environment variable.
+
+Additionally, one may set the environment variable +BR2_GRAPH_SIZE_OPTS+
+to further control the generated graph. Accepted options are:
+
+* `--size-limit X`, `-l X`, will group all packages which individual
+  contribution is below `X` percent, to a single entry labelled _Others_
+  in the graph. By default, `X=0.01`, which means packages each
+  contributing less than 1% are grouped under _Others_. Accepted values
+  are in the range `[0.0..1.0]`.
+
+* `--iec`, `--binary`, `--si`, `--decimal`, to use IEC (binary, powers
+  of 1024) or SI (decimal, powers of 1000; the default) prefixes.
+
+* `--biggest-first`, to sort packages in decreasing size order, rather
+  than in increasing size order.
 
 .Note
 The collected filesystem size data is only meaningful after a complete

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHIPMUNK_VERSION = 7.0.2
+CHIPMUNK_VERSION = 7.0.3
 CHIPMUNK_SITE = https://github.com/slembcke/Chipmunk2D/archive
 CHIPMUNK_SOURCE = Chipmunk-$(CHIPMUNK_VERSION).tar.gz
 CHIPMUNK_INSTALL_STAGING = YES

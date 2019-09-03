@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/xlrd/json
-md5	9a91b688cd4945477ac28187a54f9a3b  xlrd-1.0.0.tar.gz
-# sha256 calculated by scanpypi
-sha256	0ff87dd5d50425084f7219cb6f86bb3eb5aa29063f53d50bf270ed007e941069  xlrd-1.0.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/xlrd/json
+md5	e5d5b96924d791b22898b622eb3e918e  xlrd-1.2.0.tar.gz
+sha256	546eb36cee8db40c3eaa46c351e67ffee6eeb5fa2650b71bc4c758a29a1b29b2  xlrd-1.2.0.tar.gz
+# locally calculated
+sha256  b5a5dbce60265e305a815a6cb83ed07f24519d8ba644f2a307994488bced8815  LICENSE

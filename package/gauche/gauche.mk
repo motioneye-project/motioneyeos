@@ -4,15 +4,27 @@
 #
 ################################################################################
 
-GAUCHE_VERSION = 0.9.5
+GAUCHE_VERSION = 0.9.8
 GAUCHE_SOURCE = Gauche-$(GAUCHE_VERSION).tgz
 GAUCHE_SITE = http://downloads.sourceforge.net/project/gauche/Gauche
 GAUCHE_LICENSE = BSD-3-Clause, Boehm-gc, SRFI (srfi-11.scm), reload (reload.scm)
 GAUCHE_LICENSE_FILES = COPYING
 GAUCHE_DEPENDENCIES = host-gauche
+# We're patching configure.ac
+GAUCHE_AUTORECONF = YES
 
 HOST_GAUCHE_CONF_OPTS = --without-zlib
 GAUCHE_CONF_OPTS = --without-libatomic-ops
+
+# Enable embedded axTLS
+GAUCHE_TLS_LIBS = axtls
+
+ifeq ($(BR2_PACKAGE_MBEDTLS),y)
+GAUCHE_TLS_LIBS += mbedtls
+GAUCHE_DEPENDENCIES += mbedtls
+endif
+
+GAUCHE_CONF_OPTS += --with-tls="$(GAUCHE_TLS_LIBS)"
 
 ifeq ($(BR2_PACKAGE_ZLIB),y)
 GAUCHE_CONF_OPTS += --with-zlib=$(STAGING_DIR)

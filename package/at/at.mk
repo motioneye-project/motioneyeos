@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AT_VERSION = release/3.1.23
+AT_VERSION = 7c74fa1aece6bc6db351763dc012193d5d634b7e
 AT_SITE = https://salsa.debian.org/debian/at.git
 AT_SITE_METHOD = git
 # Tried to add missing deps for parsetime.l but still parallel build fails

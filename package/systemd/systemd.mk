@@ -12,10 +12,10 @@ SYSTEMD_INSTALL_STAGING = YES
 SYSTEMD_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_BASH_COMPLETION),bash-completion) \
 	host-gperf \
-	host-intltool \
 	kmod \
 	libcap \
-	util-linux
+	util-linux \
+	$(TARGET_NLS_DEPENDENCIES)
 
 SYSTEMD_PROVIDES = udev
 

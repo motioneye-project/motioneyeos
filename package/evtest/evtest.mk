@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-EVTEST_VERSION = 1.33
+EVTEST_VERSION = 1.34
 EVTEST_SITE = http://cgit.freedesktop.org/evtest/snapshot
 EVTEST_LICENSE = GPL-2.0+
 EVTEST_LICENSE_FILES = COPYING

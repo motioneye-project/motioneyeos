@@ -55,6 +55,15 @@ def download(dldir, filename):
     return finalpath
 
 
+def run_cmd_on_host(builddir, cmd):
+    """Call subprocess.check_output and return the text output."""
+    out = subprocess.check_output(cmd,
+                                  stderr=open(os.devnull, "w"),
+                                  cwd=builddir,
+                                  env={"LANG": "C"})
+    return out
+
+
 def get_elf_arch_tag(builddir, prefix, fpath, tag):
     """
     Runs the cross readelf on 'fpath', then extracts the value of tag 'tag'.
@@ -66,7 +75,7 @@ def get_elf_arch_tag(builddir, prefix, fpath, tag):
     """
     cmd = ["host/bin/{}-readelf".format(prefix),
            "-A", os.path.join("target", fpath)]
-    out = subprocess.check_output(cmd, cwd=builddir, env={"LANG": "C"})
+    out = run_cmd_on_host(builddir, cmd)
     regexp = re.compile("^  {}: (.*)$".format(tag))
     for line in out.splitlines():
         m = regexp.match(line)
@@ -93,7 +102,7 @@ def get_elf_prog_interpreter(builddir, prefix, fpath):
     """
     cmd = ["host/bin/{}-readelf".format(prefix),
            "-l", os.path.join("target", fpath)]
-    out = subprocess.check_output(cmd, cwd=builddir, env={"LANG": "C"})
+    out = run_cmd_on_host(builddir, cmd)
     regexp = re.compile("^ *\[Requesting program interpreter: (.*)\]$")
     for line in out.splitlines():
         m = regexp.match(line)

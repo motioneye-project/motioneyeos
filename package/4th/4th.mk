@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-4TH_VERSION = 3.62.4
+4TH_VERSION = 3.62.5
 4TH_SOURCE = 4th-$(4TH_VERSION)-unix.tar.gz
 4TH_SITE = http://downloads.sourceforge.net/project/forth-4th/4th-$(4TH_VERSION)
 4TH_LICENSE = GPL-3.0+, LGPL-3.0+

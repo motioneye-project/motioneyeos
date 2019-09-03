@@ -36,8 +36,8 @@ config BR2_GCC_VERSION_5_X
 	# musl on ppc64 and mips64 unsupported
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_powerpc64 || BR2_powerpc64le))
 	depends on !(BR2_TOOLCHAIN_USES_MUSL && (BR2_mips64 || BR2_mips64el))
-	# glibc >= 2.26 needs gcc >= 6.2
-	depends on !(BR2_TOOLCHAIN_USES_GLIBC && BR2_powerpc64le)
+	# glibc >= 2.30 needs gcc >= 6.2 on all architectures.
+	depends on !BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_TOOLCHAIN_GCC_AT_LEAST_5
 
 config BR2_GCC_VERSION_7_X
@@ -85,7 +85,7 @@ config BR2_GCC_VERSION
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
 	default "7.4.0"     if BR2_GCC_VERSION_7_X
 	default "8.3.0"     if BR2_GCC_VERSION_8_X
-	default "9.1.0"     if BR2_GCC_VERSION_9_X
+	default "9.2.0"     if BR2_GCC_VERSION_9_X
 	default "arc-2019.03-release" if BR2_GCC_VERSION_ARC
 	default "or1k-musl-5.4.0-20170218" if BR2_GCC_VERSION_OR1K
 	default "48152afb96c59733d5bc79e3399bb7b3d4b44266" if BR2_GCC_VERSION_CSKY

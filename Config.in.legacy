@@ -144,6 +144,21 @@ endif
 
 ###############################################################################
 
+comment "Legacy options removed in 2019.11"
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
+	bool "new dbus support option in wpa_supplicant was renamed"
+	select BR2_PACKAGE_WPA_SUPPLICANT_DBUS if BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_LEGACY
+	help
+	  The new dbus support option was renamed.
+
+config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_OLD
+	bool "old dbus support in wpa_supplicant was removed"
+	select BR2_LEGACY
+	help
+	  The old dbus support was removed.
+
 comment "Legacy options removed in 2019.08"
 
 config BR2_TARGET_TS4800_MBRBOOT
