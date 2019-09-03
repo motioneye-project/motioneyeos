@@ -41,10 +41,6 @@ LIBVIPS_DEPENDENCIES = \
 	host-pkgconf expat libglib2 \
 	$(TARGET_NLS_DEPENDENCIES)
 
-# --disable-cxx is broken upstream
-# https://github.com/jcupitt/libvips/issues/231
-LIBVIPS_CONF_OPTS += --enable-cxx
-
 ifeq ($(BR2_PACKAGE_JPEG),y)
 LIBVIPS_CONF_OPTS += --with-jpeg
 LIBVIPS_DEPENDENCIES += jpeg
