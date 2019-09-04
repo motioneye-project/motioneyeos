@@ -1895,6 +1895,7 @@ F:	package/libubootenv/
 F:	package/libxml2/
 F:	package/python-periphery/
 F:	package/stunnel/
+F:	package/tree/
 
 N:	Pieter De Gendt <pieter.degendt@gmail.com>
 F:	package/libvips/
