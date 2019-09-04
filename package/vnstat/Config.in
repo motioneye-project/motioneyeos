@@ -2,6 +2,7 @@ config BR2_PACKAGE_VNSTAT
 	bool "vnstat"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR # mbstowcs()
+	select BR2_PACKAGE_SQLITE
 	help
 	  vnStat is a console-based network traffic monitor that keeps a
 	  log of network traffic for the selected interface(s). It uses
