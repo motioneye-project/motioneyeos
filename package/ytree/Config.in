@@ -1,0 +1,7 @@
+config BR2_PACKAGE_YTREE
+	bool "ytree"
+	select BR2_PACKAGE_NCURSES
+	help
+	  Ytree - a (curses-based) file manager similar to DOS Xtree(tm)
+
+	  https://www.han.de/~werner/ytree.html

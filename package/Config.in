@@ -2180,6 +2180,7 @@ comment "Utilities"
 	source "package/which/Config.in"
 	source "package/xmlstarlet/Config.in"
 	source "package/xxhash/Config.in"
+	source "package/ytree/Config.in"
 endmenu
 
 menu "System tools"
