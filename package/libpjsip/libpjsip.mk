@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-LIBPJSIP_VERSION = 2.7.2
+LIBPJSIP_VERSION = 2.9
 LIBPJSIP_SOURCE = pjproject-$(LIBPJSIP_VERSION).tar.bz2
-LIBPJSIP_SITE = http://www.pjsip.org/release/$(LIBPJSIP_VERSION)
+LIBPJSIP_SITE = https://www.pjsip.org/release/$(LIBPJSIP_VERSION)
 LIBPJSIP_DEPENDENCIES = libsrtp
 LIBPJSIP_LICENSE = GPL-2.0+
 LIBPJSIP_LICENSE_FILES = COPYING
@@ -33,7 +33,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-ilbc-codec \
 	--disable-libwebrtc \
 	--disable-opus \
-	--disable-oss \
 	--disable-ext-sound \
 	--disable-g711-codec \
 	--disable-l16-codec \
@@ -66,6 +65,9 @@ endif
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
 LIBPJSIP_DEPENDENCIES += libopenssl
 LIBPJSIP_CONF_OPTS += --with-ssl=$(STAGING_DIR)/usr
+else ifeq ($(BR2_PACKAGE_GNUTLS),y)
+LIBPJSIP_DEPENDENCIES += gnutls
+LIBPJSIP_CONF_OPTS += --with-gnutls=$(STAGING_DIR)/usr
 else
 LIBPJSIP_CONF_OPTS += --disable-ssl
 endif

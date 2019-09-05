@@ -1,6 +1,6 @@
-# From http://www.pjsip.org/release/2.7.2/MD5SUM.TXT
-md5	fa3f0bc098c4bff48ddd92db1c016a7a  pjproject-2.7.2.tar.bz2
+# From https://www.pjsip.org/release/2.9/MD5SUM.TXT
+md5	66757078e7bd7cf316acb0425c2fdd6f  pjproject-2.9.tar.bz2
 
 # Locally computed
-sha256	9c2c828abab7626edf18e04b041ef274bfaa86f99adf2c25ff56f1509e813772	pjproject-2.7.2.tar.bz2
+sha256	d185ef7855c8ec07191dde92f54b65a7a4b7a6f7bf8c46f7af35ceeb1da2a636	pjproject-2.9.tar.bz2
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING
