@@ -1,0 +1,28 @@
+From 85b7aeef3c7765c5ba7e525c63a4c0f807f0bfc8 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Thu, 5 Sep 2019 10:24:31 +0200
+Subject: [PATCH] src/libcamera/meson.build: link with atomic when needed
+
+Fixes:
+ - http://autobuild.buildroot.org/results/1f0b8338f5f39aa86b9d432598dae2f53c5f7c84
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/libcamera/meson.build | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/libcamera/meson.build b/src/libcamera/meson.build
+index c5d8f11..0706a08 100644
+--- a/src/libcamera/meson.build
++++ b/src/libcamera/meson.build
+@@ -99,6 +99,7 @@ version_cpp = vcs_tag(command : [gen_version, meson.build_root()],
+ libcamera_sources += version_cpp
+ 
+ libcamera_deps = [
++    cc.find_library('atomic', required: false),
+     cc.find_library('dl'),
+     libudev,
+     dependency('threads'),
+-- 
+2.23.0.rc1
+
