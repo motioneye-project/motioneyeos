@@ -1,14 +1,49 @@
-commit cbf86207346d9f1bc36005c2a6342bacf4bcc3e4
-Author: Joo Aun Saw <jasaw@dius.com.au>
-Date:   Mon Aug 19 16:33:08 2019 +1000
-
-    support h264_v4l2m2m encoder
-
 diff --git a/ffmpeg.c b/ffmpeg.c
-index 3f731ca..beb87b1 100644
+index 3f731ca..7a42d24 100644
 --- a/ffmpeg.c
 +++ b/ffmpeg.c
-@@ -555,7 +555,9 @@ static int ffmpeg_set_quality(struct ffmpeg *ffmpeg){
+@@ -179,6 +179,14 @@ int my_copy_packet(AVPacket *dest_pkt, AVPacket *src_pkt){
+ #endif
+ }
+ /*********************************************/
++void my_free_nal_info(struct ffmpeg *ffmpeg){
++    if (ffmpeg->nal_info) {
++        free(ffmpeg->nal_info);
++        ffmpeg->nal_info = NULL;
++        ffmpeg->nal_info_len = 0;
++    }
++}
++/*********************************************/
+ 
+ /****************************************************************************
+  ****************************************************************************
+@@ -409,6 +417,25 @@ static int ffmpeg_encode_video(struct ffmpeg *ffmpeg){
+         return -1;
+     }
+ 
++    if (ffmpeg->nal_info_separated) {
++        // h264_v4l2m2m has NAL units separated from the first frame, which makes
++        // some players very unhappy.
++        if ((ffmpeg->pkt.pts == 0) && (!(ffmpeg->pkt.flags & AV_PKT_FLAG_KEY))) {
++            my_free_nal_info(ffmpeg);
++            ffmpeg->nal_info_len = ffmpeg->pkt.size;
++            ffmpeg->nal_info = malloc(ffmpeg->nal_info_len);
++            if (ffmpeg->nal_info)
++                memcpy(ffmpeg->nal_info, &ffmpeg->pkt.data[0], ffmpeg->nal_info_len);
++            else
++                ffmpeg->nal_info_len = 0;
++        } else if (ffmpeg->nal_info) {
++            int old_size = ffmpeg->pkt.size;
++            av_grow_packet(&ffmpeg->pkt, ffmpeg->nal_info_len);
++            memmove(&ffmpeg->pkt.data[ffmpeg->nal_info_len], &ffmpeg->pkt.data[0], old_size);
++            memcpy(&ffmpeg->pkt.data[0], ffmpeg->nal_info, ffmpeg->nal_info_len);
++            my_free_nal_info(ffmpeg);
++        }
++    }
+     return 0;
+ 
+ #elif (LIBAVFORMAT_VERSION_MAJOR >= 55) || ((LIBAVFORMAT_VERSION_MAJOR == 54) && (LIBAVFORMAT_VERSION_MINOR > 6))
+@@ -555,7 +582,9 @@ static int ffmpeg_set_quality(struct ffmpeg *ffmpeg){
              ffmpeg->quality = 45; // default to 45% quality
          av_dict_set(&ffmpeg->opts, "preset", "ultrafast", 0);
          av_dict_set(&ffmpeg->opts, "tune", "zerolatency", 0);
@@ -19,7 +54,7 @@ index 3f731ca..beb87b1 100644
              // H264 OMX encoder quality can only be controlled via bit_rate
              // bit_rate = ffmpeg->width * ffmpeg->height * ffmpeg->fps * quality_factor
              ffmpeg->quality = (int)(((int64_t)ffmpeg->width * ffmpeg->height * ffmpeg->fps * ffmpeg->quality) >> 7);
-@@ -702,7 +708,10 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
+@@ -702,13 +731,20 @@ static int ffmpeg_set_codec(struct ffmpeg *ffmpeg){
      ffmpeg->ctx_codec->height        = ffmpeg->height;
      ffmpeg->ctx_codec->time_base.num = 1;
      ffmpeg->ctx_codec->time_base.den = ffmpeg->fps;
@@ -31,12 +66,22 @@ index 3f731ca..beb87b1 100644
      ffmpeg->ctx_codec->max_b_frames  = 0;
      if (strcmp(ffmpeg->codec_name, "ffv1") == 0){
        ffmpeg->ctx_codec->strict_std_compliance = -2;
-@@ -768,6 +777,65 @@ static int ffmpeg_set_stream(struct ffmpeg *ffmpeg){
+       ffmpeg->ctx_codec->level = 3;
+     }
+     ffmpeg->ctx_codec->flags |= MY_CODEC_FLAG_GLOBAL_HEADER;
++    // h264_v4l2m2m has NAL units separated from the first frame. We need to deal
++    // with it appriopriately later
++    if (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0)
++        ffmpeg->nal_info_separated = 1;
+ 
+     retcd = ffmpeg_set_quality(ffmpeg);
+     if (retcd < 0){
+@@ -768,8 +804,69 @@ static int ffmpeg_set_stream(struct ffmpeg *ffmpeg){
  
  }
  
 +
-+static int alloc_video_buffer(AVFrame *frame, int align)
++static int ffmpeg_alloc_video_buffer(AVFrame *frame, int align)
 +{
 +    const AVPixFmtDescriptor *desc = av_pix_fmt_desc_get(frame->format);
 +    int ret, i, padded_height;
@@ -73,12 +118,14 @@ index 3f731ca..beb87b1 100644
 +    frame->buf[0] = av_buffer_alloc(ret + 4*plane_padding);
 +    if (!frame->buf[0]) {
 +        ret = AVERROR(ENOMEM);
-+        goto fail;
++        av_frame_unref(frame);
++        return ret;
 +    }
 +    frame->buf[1] = av_buffer_alloc(ret + 4*plane_padding);
 +    if (!frame->buf[1]) {
 +        ret = AVERROR(ENOMEM);
-+        goto fail;
++        av_frame_unref(frame);
++        return ret;
 +    }
 +
 +    frame->data[0] = frame->buf[0]->data;
@@ -88,23 +135,27 @@ index 3f731ca..beb87b1 100644
 +    frame->extended_data = frame->data;
 +
 +    return 0;
-+fail:
-+    av_frame_unref(frame);
-+    return ret;
 +}
 +
 +
  static int ffmpeg_set_picture(struct ffmpeg *ffmpeg){
  
++    int retcd;
++    char errstr[128];
++
      ffmpeg->picture = my_frame_alloc();
-@@ -789,6 +857,15 @@ static int ffmpeg_set_picture(struct ffmpeg *ffmpeg){
+     if (!ffmpeg->picture) {
+         MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, _("could not alloc frame"));
+@@ -789,6 +886,17 @@ static int ffmpeg_set_picture(struct ffmpeg *ffmpeg){
      ffmpeg->picture->width  = ffmpeg->ctx_codec->width;
      ffmpeg->picture->height = ffmpeg->ctx_codec->height;
  
 +    // h264_v4l2m2m encoder expects video buffer to be allocated
 +    if (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0) {
-+        if (alloc_video_buffer(ffmpeg->picture, 32)) {
-+            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, _("could not alloc buffers"));
++        retcd = ffmpeg_alloc_video_buffer(ffmpeg->picture, 32);
++        if (retcd) {
++            av_strerror(retcd, errstr, sizeof(errstr));
++            MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO, _("could not alloc buffers %s"), errstr);
 +            ffmpeg_free_context(ffmpeg);
 +            return -1;
 +        }
@@ -113,45 +164,70 @@ index 3f731ca..beb87b1 100644
      return 0;
  
  }
-@@ -1365,9 +1442,38 @@ int ffmpeg_put_image(struct ffmpeg *ffmpeg, struct image_data *img_data, const s
+@@ -891,6 +999,12 @@ static int ffmpeg_flush_codec(struct ffmpeg *ffmpeg){
+                     my_packet_unref(ffmpeg->pkt);
+                     return -1;
+                 }
++                // v4l2_m2m encoder uses pts 0 and size 0 to indicate AVERROR_EOF
++                if ((ffmpeg->pkt.pts == 0) || (ffmpeg->pkt.size == 0)) {
++                    recv_cd = AVERROR_EOF;
++                    my_packet_unref(ffmpeg->pkt);
++                    continue;
++                }
+                 retcd = av_write_frame(ffmpeg->oc, &ffmpeg->pkt);
+                 if (retcd < 0) {
+                     MOTION_LOG(ERR, TYPE_ENCODER, NO_ERRNO
+@@ -1339,6 +1453,7 @@ void ffmpeg_close(struct ffmpeg *ffmpeg){
+             }
+         }
+         ffmpeg_free_context(ffmpeg);
++        my_free_nal_info(ffmpeg);
+     }
+ 
+ #else
+@@ -1365,9 +1480,28 @@ int ffmpeg_put_image(struct ffmpeg *ffmpeg, struct image_data *img_data, const s
          }
  
          /* Setup pointers and line widths. */
 -        ffmpeg->picture->data[0] = image;
 -        ffmpeg->picture->data[1] = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
 -        ffmpeg->picture->data[2] = ffmpeg->picture->data[1] + ((ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height) / 4);
-+        // Some encoders look for the image in ffmpeg->picture->buf
-+        if (ffmpeg->picture->buf[0] == NULL)
-+            ffmpeg->picture->data[0] = image;
-+        else
-+            memcpy(ffmpeg->picture->data[0], image, ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
-+
-+        if (ffmpeg->picture->buf[1] == NULL) {
-+            // assume YUV420P format
-+            ffmpeg->picture->data[1] = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
-+            ffmpeg->picture->data[2] = ffmpeg->picture->data[1] + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height / 4);
-+        } else {
++        if (strcmp(ffmpeg->codec->name, "h264_v4l2m2m") == 0) {
++            // assume NV21 format
 +            int cr_len = ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height / 4;
-+            int cb_len = cr_len;
 +            unsigned char *imagecr = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
 +            unsigned char *imagecb = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height) + cr_len;
-+            if (ffmpeg->ctx_codec->pix_fmt == AV_PIX_FMT_NV21) {
-+                int x;
-+                int y;
-+                for (y = 0; y < ffmpeg->ctx_codec->height; y++) {
-+                    for (x = 0; x < ffmpeg->ctx_codec->width/4; x++) {
-+                        ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2] = *imagecb;
-+                        ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2 + 1] = *imagecr;
-+                        imagecb++;
-+                        imagecr++;
-+                    }
++            int x;
++            int y;
++            memcpy(ffmpeg->picture->data[0], image, ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
++            for (y = 0; y < ffmpeg->ctx_codec->height; y++) {
++                for (x = 0; x < ffmpeg->ctx_codec->width/4; x++) {
++                    ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2] = *imagecb;
++                    ffmpeg->picture->data[1][y*ffmpeg->ctx_codec->width/2 + x*2 + 1] = *imagecr;
++                    imagecb++;
++                    imagecr++;
 +                }
-+            } else {
-+                // assume YUV420P format
-+                memcpy(&ffmpeg->picture->data[1][0], imagecr, cr_len);
-+                memcpy(&ffmpeg->picture->data[1][cr_len], imagecb, cb_len);
 +            }
++        } else {
++            // assume YUV420P format
++            ffmpeg->picture->data[0] = image;
++            ffmpeg->picture->data[1] = image + (ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height);
++            ffmpeg->picture->data[2] = ffmpeg->picture->data[1] + ((ffmpeg->ctx_codec->width * ffmpeg->ctx_codec->height) / 4);
 +        }
  
          ffmpeg->gop_cnt ++;
          if (ffmpeg->gop_cnt == ffmpeg->ctx_codec->gop_size ){
+diff --git a/ffmpeg.h b/ffmpeg.h
+index ca77430..c4ae7bb 100644
+--- a/ffmpeg.h
++++ b/ffmpeg.h
+@@ -61,6 +61,9 @@ struct ffmpeg {
+     int            high_resolution;
+     int            motion_images;
+     int            passthrough;
++    int nal_info_separated;
++    char *nal_info;
++    int nal_info_len;
+ };
+ #else
+ struct ffmpeg {
