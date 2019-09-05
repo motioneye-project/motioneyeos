@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BITCOIN_VERSION = v0.16.3
-BITCOIN_SITE = $(call github,bitcoin,bitcoin,$(BITCOIN_VERSION))
+BITCOIN_VERSION = 0.16.3
+BITCOIN_SITE = $(call github,bitcoin,bitcoin,v$(BITCOIN_VERSION))
 BITCOIN_AUTORECONF = YES
 BITCOIN_LICENSE = MIT
 BITCOIN_LICENSE_FILES = COPYING
