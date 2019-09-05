@@ -11,6 +11,12 @@ LUV_LICENSE_FILES = LICENSE.txt
 LUV_DEPENDENCIES = libuv
 LUV_INSTALL_STAGING = YES
 
+# Archive 1.30.1-0 doesn't contain libluv.pc.in so install it in this hook
+define LUV_INSTALL_PC_IN
+	cp package/luv/libluv.pc.in $(@D)/
+endef
+LUV_POST_EXTRACT_HOOKS += LUV_INSTALL_PC_IN
+
 LUV_CONF_OPTS += \
 	-DBUILD_MODULE=OFF \
 	-DWITH_SHARED_LIBUV=ON \
