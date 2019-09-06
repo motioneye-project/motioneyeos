@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/enum/json, sha256 locally computed
-md5 173d468112cfa13a149b2c8af3e8fd52 enum-0.4.6.tar.gz
-sha256 54e78526b166982b36884613f35a76d9a6711c49810d3ec1a05b10c9b31f938e enum-0.4.6.tar.gz
+# md5, sha256 from https://pypi.org/pypi/enum/json
+md5 e7d170e3f84435b77058de625c96ef58 enum-0.4.7.tar.gz
+sha256 8c7cf3587eda51008bcc1eed99ea2c331ccd265c231dbaa95ec5258d3dc03100 enum-0.4.7.tar.gz
+# Locally computed sha256 checksums
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  LICENSE.GPL-3
