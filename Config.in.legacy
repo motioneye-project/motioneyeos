@@ -146,6 +146,16 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_HOSTAPD_DRIVER_RTW
+	bool "hostapd rtl871xdrv driver removed"
+	select BR2_LEGACY
+	help
+	  Since the update of hostapd to 2.9, the patch provided for
+	  the rtl871xdrv no longer works, although it
+	  applies. Moreover, AP support for Realtek chips is broken
+	  anyway in kernels > 4.9. Therefore, this option has been
+	  removed.
+
 config BR2_PACKAGE_WPA_SUPPLICANT_DBUS_NEW
 	bool "new dbus support option in wpa_supplicant was renamed"
 	select BR2_PACKAGE_WPA_SUPPLICANT_DBUS if BR2_TOOLCHAIN_HAS_THREADS
