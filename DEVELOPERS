@@ -1316,9 +1316,6 @@ F:	package/cpuload/
 F:	package/bwm-ng/
 F:	package/ramsmp/
 
-N:	Kevin Joly <kevin.joly@sensefly.com>
-F:	package/libgphoto2/
-
 N:	Kieran Bingham <kieran.bingham@ideasonboard.com>
 F:	package/libcamera/
 
