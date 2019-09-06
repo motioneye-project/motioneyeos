@@ -106,9 +106,6 @@ F:	package/putty/
 N:	Alexander Lukichev <alexander.lukichev@espotel.com>
 F:	package/openpgm/
 
-N:	Alexander Mukhin <alexander.i.mukhin@gmail.com>
-F:	package/hostapd/
-
 N:	Alexander Sverdlin <alexander.sverdlin@gmail.com>
 F:	package/mini-snmpd/
 
