@@ -12,10 +12,14 @@ PPPD_LICENSE_FILES = \
 	pppd/tdb.c pppd/plugins/pppoatm/COPYING \
 	pppdump/bsd-comp.c pppd/ccp.c pppd/plugins/passprompt.c
 
-PPPD_DEPENDENCIES = openssl
-PPPD_MAKE_OPTS = \
-	HAVE_INET6=y \
-	OPENSSL_INCLUDE_DIR=$(STAGING_DIR)/usr/include/openssl
+PPPD_MAKE_OPTS = HAVE_INET6=y
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
+PPPD_DEPENDENCIES += openssl
+PPPD_MAKE_OPTS += OPENSSL_INCLUDE_DIR=$(STAGING_DIR)/usr/include/openssl
+else
+PPPD_MAKE_OPTS += USE_CRYPT=y
+endif
+
 PPPD_INSTALL_STAGING = YES
 PPPD_TARGET_BINS = chat pppd pppdump pppstats
 PPPD_RADIUS_CONF = \
