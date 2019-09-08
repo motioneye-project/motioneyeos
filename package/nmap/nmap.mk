@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NMAP_VERSION = 7.70
+NMAP_VERSION = 7.80
 NMAP_SITE = https://nmap.org/dist
 NMAP_SOURCE = nmap-$(NMAP_VERSION).tar.bz2
 NMAP_DEPENDENCIES = liblinear libpcap

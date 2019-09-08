@@ -1,4 +1,5 @@
-# From https://nmap.org/dist/sigs/nmap-7.70.tar.bz2.digest.txt
-sha256 847b068955f792f4cc247593aca6dc3dc4aae12976169873247488de147a6e18  nmap-7.70.tar.bz2
+# From https://nmap.org/dist/sigs/nmap-7.80.tar.bz2.digest.txt (lowercase)
+sha256 fcfa5a0e42099e12e4bf7a68ebe6fde05553383a682e816a7ec9256ab4773faa  nmap-7.80.tar.bz2
+
 # Locally calculated
-sha256 e013006fbdb7a7923e456e72272b115a5d722a3c6a372f27b5e8fcd282104651  COPYING
+sha256 a6afaad36c803dc602734451d9421ed363b48d1ca0faadf0907fc2d91a000284  COPYING
