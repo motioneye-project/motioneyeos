@@ -1,2 +1,5 @@
 # From https://lists.x.org/archives/xorg-announce/2016-December/002752.html
 sha256 fd6a6de3da48de8d1bb738ab6be4ad67f7cb0986c39bd3f7d51dd24f7854bdec  libXpm-3.5.12.tar.bz2
+# Locally calculated
+sha256 ed3b06bb3b75a0954bd6837a96b41a4676f60dfeee647271613aadecc0fd596e COPYING
+sha256 cbe4ced0abc8a32bea471204ae01038c202758ce4e772d3d329a341ffa761e71 COPYRIGHT
