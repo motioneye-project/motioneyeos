@@ -2031,6 +2031,9 @@ N:	Sam Bobroff <sam.bobroff@au1.ibm.com>
 F:	arch/Config.in.powerpc
 F:	package/librtas/
 
+N:	Sam Lancia <sam@gpsm.co.uk>
+F:	package/lrzip/
+
 N:	Samuel Martin <s.martin49@gmail.com>
 F:	package/armadillo/
 F:	package/canfestival/
