@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-CAIRO_VERSION = 1.15.12
+CAIRO_VERSION = 1.16.0
 CAIRO_SOURCE = cairo-$(CAIRO_VERSION).tar.xz
 CAIRO_LICENSE = LGPL-2.1 or MPL-1.1 (library)
 CAIRO_LICENSE_FILES = COPYING COPYING-LGPL-2.1 COPYING-MPL-1.1
-CAIRO_SITE = http://cairographics.org/snapshots
+CAIRO_SITE = http://cairographics.org/releases
 CAIRO_INSTALL_STAGING = YES
 
 # relocation truncated to fit: R_68K_GOT16O
