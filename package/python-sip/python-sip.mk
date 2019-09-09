@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PYTHON_SIP_VERSION = 4.18
+PYTHON_SIP_VERSION = 4.19.13
 PYTHON_SIP_SOURCE = sip-$(PYTHON_SIP_VERSION).tar.gz
 PYTHON_SIP_SITE = http://downloads.sourceforge.net/project/pyqt/sip/sip-$(PYTHON_SIP_VERSION)
 PYTHON_SIP_LICENSE = SIP license or GPL-2.0 or GPL-3.0
