@@ -2422,6 +2422,7 @@ F:	package/bootstrap/
 F:	package/cannelloni/
 F:	package/can-utils/
 F:	package/circus/
+F:	package/dhcpcd/
 F:	package/feh/
 F:	package/giblib/
 F:	package/imlib2/
@@ -2438,6 +2439,7 @@ F:	package/libubox/
 F:	package/libuci/
 F:	package/linux-firmware/
 F:	package/modem-manager/
+F:	package/nftables/
 F:	package/nuttcp/
 F:	package/parted/
 F:	package/phytool/
