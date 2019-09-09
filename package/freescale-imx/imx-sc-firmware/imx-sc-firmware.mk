@@ -17,11 +17,18 @@ define IMX_SC_FIRMWARE_EXTRACT_CMDS
 endef
 
 IMX_SC_FIRMWARE_INSTALL_IMAGES = YES
+
+# SCFW firmware is needed when generating imx8-boot-sd.bin which is
+# done in post-image script.
+ifeq ($(BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8X),y)
 define IMX_SC_FIRMWARE_INSTALL_IMAGES_CMDS
-	# SCFW firmware is needed when generating imx8-boot-sd.bin which
-	# is done in post-image script.
 	cp $(@D)/mx8qx-mek-scfw-tcm.bin $(BINARIES_DIR)/mx8qx-mek-scfw-tcm.bin
 	cp $(@D)/mx8qx-val-scfw-tcm.bin $(BINARIES_DIR)/mx8qx-val-scfw-tcm.bin
 endef
+else ifeq ($(BR2_PACKAGE_FREESCALE_IMX_PLATFORM_IMX8),y)
+define IMX_SC_FIRMWARE_INSTALL_IMAGES_CMDS
+	cp $(@D)/mx8qm-*-scfw-tcm.bin $(BINARIES_DIR)/
+endef
+endif
 
 $(eval $(generic-package))
