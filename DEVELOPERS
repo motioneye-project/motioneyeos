@@ -103,6 +103,9 @@ F:	package/fastd/
 F:	package/libuecc/
 F:	package/putty/
 
+N:	Alexander Kurz <akurz@blala.de>
+F:	package/minimodem/
+
 N:	Alexander Lukichev <alexander.lukichev@espotel.com>
 F:	package/openpgm/
 
