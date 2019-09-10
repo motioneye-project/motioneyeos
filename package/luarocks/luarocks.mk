@@ -33,10 +33,17 @@ define HOST_LUAROCKS_CONFIGURE_CMDS
 	cd $(@D) && ./configure $(HOST_LUAROCKS_CONF_OPTS)
 endef
 
+ifeq ($(BR2_PACKAGE_LUAJIT),y)
+define LUAROCKS_CONFIGURE_INTERPRETER_LUAJIT
+	echo "lua_interpreter = [[luajit]]" >> $(LUAROCKS_CONFIG_FILE)
+endef
+endif
+
 define HOST_LUAROCKS_INSTALL_CMDS
 	rm -f $(LUAROCKS_CONFIG_FILE)
 	$(MAKE1) -C $(@D) install
 	cat $(HOST_LUAROCKS_PKGDIR)/luarocks-br-config.lua >> $(LUAROCKS_CONFIG_FILE)
+	$(LUAROCKS_CONFIGURE_INTERPRETER_LUAJIT)
 endef
 
 $(eval $(host-generic-package))
