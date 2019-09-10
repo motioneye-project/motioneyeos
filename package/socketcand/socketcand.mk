@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-SOCKETCAND_VERSION = df7fb4ff8a4439d7737fe2df3540e1ab7465721a
-SOCKETCAND_SITE = $(call github,dschanoeh,socketcand,$(SOCKETCAND_VERSION))
+SOCKETCAND_VERSION = 69e2201222f015a1abe7a58ecf61325012cd91b1
+SOCKETCAND_SITE = $(call github,linux-can,socketcand,$(SOCKETCAND_VERSION))
 SOCKETCAND_AUTORECONF = YES
 SOCKETCAND_LICENSE = BSD-3-Clause or GPL-2.0
 SOCKETCAND_LICENSE_FILES = socketcand.c
