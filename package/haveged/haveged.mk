@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HAVEGED_VERSION = 1.9.4
-HAVEGED_SITE = $(call github,jirka-h,haveged,$(HAVEGED_VERSION))
+HAVEGED_VERSION = 1.9.6
+HAVEGED_SITE = $(call github,jirka-h,haveged,v$(HAVEGED_VERSION))
 HAVEGED_LICENSE = GPL-3.0+
 HAVEGED_LICENSE_FILES = COPYING
 
