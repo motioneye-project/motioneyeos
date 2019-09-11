@@ -97,6 +97,13 @@ else
 QEMU_OPTS += --disable-libssh2
 endif
 
+ifeq ($(BR2_PACKAGE_NETTLE),y)
+QEMU_OPTS += --enable-nettle
+QEMU_DEPENDENCIES += nettle
+else
+QEMU_OPTS += --disable-nettle
+endif
+
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define QEMU_CONFIGURE_CMDS
