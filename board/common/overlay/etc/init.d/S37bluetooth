@@ -10,6 +10,7 @@ PROG="/usr/libexec/bluetooth/bluetoothd"
 PROG_HC="/usr/bin/hciconfig"
 DATA_DIR="/var/lib/bluetooth"
 RUN_DATA_DIR="/data/bluetooth"
+NO_ON_BOARD_BT="/tmp/.no_on_board_bt"  # used by RPi to explicitly indicate that no on-board BT was detected
 
 
 test -x ${PROG} || exit 0
@@ -40,14 +41,16 @@ start() {
     # wait up to 10 seconds for device
     count=0
     while ! ${PROG_HC} ${ADAPTER} &>/dev/null; do
-        sleep 1
-        count=$((${count} + 1))
-        if [[ ${count} -ge 10 ]]; then
+        # on RPi boards, the absence of an on-board BT can be detected earlier, preventing 10s timeout
+        
+        count=$((count + 1))
+        if [[ ${count} -ge 10 ]] || [[ -f "${NO_ON_BOARD_BT}" ]]; then
             msg_fail "no device"
-            logger -t bluetooth "bluetooth device not available, calling panic action"
-            panic_action bluetooth
-            return 1
+            logger -t bluetooth "bluetooth device not available"
+            return 0
         fi
+
+        sleep 1
     done
     
     if configure; then
