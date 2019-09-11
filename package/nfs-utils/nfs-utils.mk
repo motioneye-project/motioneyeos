@@ -10,7 +10,7 @@ NFS_UTILS_SITE = https://www.kernel.org/pub/linux/utils/nfs-utils/$(NFS_UTILS_VE
 NFS_UTILS_LICENSE = GPL-2.0+
 NFS_UTILS_LICENSE_FILES = COPYING
 NFS_UTILS_AUTORECONF = YES
-NFS_UTILS_DEPENDENCIES = host-pkgconf
+NFS_UTILS_DEPENDENCIES = host-pkgconf libtirpc
 
 NFS_UTILS_CONF_ENV = knfsd_cv_bsd_signals=no
 
@@ -19,7 +19,8 @@ NFS_UTILS_CONF_OPTS = \
 	--disable-nfsv41 \
 	--disable-gss \
 	--disable-uuid \
-	--disable-ipv6 \
+	--enable-tirpc \
+	--enable-ipv6 \
 	--without-tcp-wrappers \
 	--with-statedir=/run/nfs \
 	--with-rpcgen=internal
@@ -49,13 +50,6 @@ NFS_UTILS_CONF_OPTS += --enable-caps
 NFS_UTILS_DEPENDENCIES += libcap
 else
 NFS_UTILS_CONF_OPTS += --disable-caps
-endif
-
-ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
-NFS_UTILS_CONF_OPTS += --enable-tirpc
-NFS_UTILS_DEPENDENCIES += libtirpc
-else
-NFS_UTILS_CONF_OPTS += --disable-tirpc
 endif
 
 define NFS_UTILS_INSTALL_FIXUP
