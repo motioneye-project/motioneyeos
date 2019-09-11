@@ -1,0 +1,41 @@
+#!/bin/bash
+
+SYS_DTOVERLAYS_FILE="/etc/dtoverlays"
+BOOT_DTOVERLAYS_FILE="/boot/dtoverlays"
+DTOVERLAYS_FILE="/data/etc/dtoverlays"
+
+PROG="/usr/bin/dtoverlay"
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Loading device-tree overlays"
+
+        if [[ -r ${SYS_DTOVERLAYS_FILE} ]]; then
+            cat ${SYS_DTOVERLAYS_FILE} | while read line; do test -n "${line}" && ${PROG} ${line}; done
+        fi
+
+        if [[ -r ${BOOT_DTOVERLAYS_FILE} ]]; then
+            cat ${BOOT_DTOVERLAYS_FILE} | while read line; do test -n "${line}" && ${PROG} ${line}; done
+        fi
+
+        if [[ -r ${DTOVERLAYS_FILE} ]]; then
+            cat ${DTOVERLAYS_FILE} | while read line; do test -n "${line}" && ${PROG} ${line}; done
+        fi
+
+        msg_done
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+
