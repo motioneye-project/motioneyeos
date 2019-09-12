@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-JO_VERSION = 1.1
-JO_SITE = https://github.com/jpmens/jo/releases/download/v$(JO_VERSION)
+JO_VERSION = 1.2
+JO_SITE = https://github.com/jpmens/jo/releases/download/$(JO_VERSION)
 JO_LICENSE = MIT (json.[ch]), GPL-2.0+ (rest)
 JO_LICENSE_FILES = COPYING
 # don't build man pages
