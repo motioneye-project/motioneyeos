@@ -1,5 +1,5 @@
-# From https://nodejs.org/dist/v10.15.3/SHASUMS256.txt
-sha256 4e22d926f054150002055474e452ed6cbb85860aa7dc5422213a2002ed9791d5  node-v10.15.3.tar.xz
+# From https://nodejs.org/dist/v10.16.3/SHASUMS256.txt
+sha256 7bf1123d7415964775b8f81fe6ec6dd5c3c08abb42bb71dfe4409dbeeba26bbd  node-v10.16.3.tar.xz
 
 # Hash for license file
-sha256 7ab373b3671d57d91078f5345ea9486443c9ca498eb9f8cf87dee2641a6fa09d  LICENSE
+sha256 2b0fe00a83916d0290c8531db25a827e18d01e7c4bf000e9a0f2e826604ba41e  LICENSE
