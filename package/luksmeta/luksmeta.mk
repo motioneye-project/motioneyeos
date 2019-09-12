@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LUKSMETA_VERSION = 8
+LUKSMETA_VERSION = 9
 LUKSMETA_SOURCE = luksmeta-$(LUKSMETA_VERSION).tar.bz2
 LUKSMETA_SITE = https://github.com/latchset/luksmeta/releases/download/v$(LUKSMETA_VERSION)
 LUKSMETA_LICENSE = LGPL-2.1+
