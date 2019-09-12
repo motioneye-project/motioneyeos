@@ -727,8 +727,8 @@ def __main__():
     else:
         package_list = None
     date = datetime.datetime.utcnow()
-    commit = subprocess.check_output(['git', 'log', 'HEAD', '-n', '1',
-                                      '--pretty=format:%H']).splitlines()[0]
+    commit = subprocess.check_output(['git', 'rev-parse',
+                                      'HEAD']).splitlines()[0]
     print("Build package list ...")
     packages = get_pkglist(args.npackages, package_list)
     print("Getting package make info ...")
