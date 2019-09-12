@@ -5,7 +5,6 @@
 ################################################################################
 
 ASCII_INVADERS_VERSION = 1.0.1
-ASCII_INVADERS_SOURCE = $(ASCII_INVADERS_VERSION).tar.gz
 ASCII_INVADERS_SITE = $(call github,macdice,ascii-invaders,v$(ASCII_INVADERS_VERSION))
 ASCII_INVADERS_DEPENDENCIES = ncurses
 ASCII_INVADERS_LICENSE = GPL-2.0+
