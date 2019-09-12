@@ -13,6 +13,10 @@ if ! [ -d "/proc/device-tree/soc/gpio@7e200000/uart0_pins" ]; then
     exit 0  # no rpi bluetooth detected
 fi
 
+if [[ -f ${CONF} ]] && ! [[ -s ${CONF} ]]; then
+    exit 0  # bluetooth explicitly disabled by empty bluetooth.conf
+fi
+
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 function start() {
