@@ -2125,6 +2125,9 @@ N:	Refik Tuzakli <tuzakli.refik@gmail.com>
 F:	package/freescale-imx/
 F:	package/paho-mqtt-cpp/
 
+N:	Raphaël Mélotte <raphael.melotte@essensium.com>
+F:	package/jbig2dec/
+
 N:	Rémi Rérolle <remi.rerolle@gmail.com>
 F:	package/libfreeimage/
 
