@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-CCACHE_VERSION = 3.6
-CCACHE_SITE = https://www.samba.org/ftp/ccache
+CCACHE_VERSION = 3.7.4
+CCACHE_SITE = https://github.com/ccache/ccache/releases/download/v$(CCACHE_VERSION)
 CCACHE_SOURCE = ccache-$(CCACHE_VERSION).tar.xz
 CCACHE_LICENSE = GPL-3.0+, others
 CCACHE_LICENSE_FILES = LICENSE.adoc GPL-3.0.txt
