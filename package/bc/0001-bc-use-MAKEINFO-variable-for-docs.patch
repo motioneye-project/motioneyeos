@@ -1,0 +1,35 @@
+From 7dc22308b2974fd093b6a564b7b28ddc20ddf4a6 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Fri, 13 Sep 2019 13:45:02 -0500
+Subject: [PATCH] bc: use MAKEINFO variable for docs
+
+Use the appropiate MAKEINFO variable rather than the hardcoded makeinfo
+command directly, otherwise missing logic never works.
+
+Fixes:
+http://autobuild.buildroot.net/results/b0b/b0b9dced0014a5a8026fa972f95085e8bd16a07b/
+
+[Recreated for 1.0.7.1 by Matt W and applied to Makefile.am instead of
+ Makefile.in]
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ doc/Makefile.am | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/doc/Makefile.am b/doc/Makefile.am
+index 1bdc478..f873b6a 100644
+--- a/doc/Makefile.am
++++ b/doc/Makefile.am
+@@ -1,7 +1,7 @@
+ ## Process this file with automake to produce Makefile.in
+ 
+ info_TEXINFOS = bc.texi dc.texi
+-MAKEINFO = makeinfo --no-split
++MAKEINFO = @MAKEINFO@ --no-split
+ 
+ MAINTAINERCLEANFILES = Makefile.in
+ 
+-- 
+2.17.1
+

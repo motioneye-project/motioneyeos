@@ -1,27 +1,53 @@
-Description: notice read and write errors on input and output
- Quoting from the bug report:
-    +bc (1.06-19ubuntu1) dapper; urgency=low
-    +
-    +  * Make dc notice read and write errors on its input and output.
-    +    I grepped for mentions of the strings `putc', `print', `getc', `FILE',
-    +    `stdin', `stdout' and `stderr' and added calls to new error-checking
-    +    functions unless it was clear from the immediately-surrounding code
-    +    that the program was exiting nonzero, or would exit nonzero if the
-    +    call failed.  I ignored hits in lib/getopt*, which seems to
-    +    pervasively ignore write errors when printing usage messages, in the
-    +    hope that these were correct.  I _think_ I got them all.  -iwj.
-    +
-    + -- Ian Jackson <iwj@ubuntu.com>  Tue,  4 Apr 2006 17:21:02 +0100
+From af96fb92052c307818eefa4b687f964f1e3f542e Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Thu, 12 Sep 2019 15:04:35 -0500
+Subject: [PATCH] notice read and write errors on input and output
+
+Quoting from the bug report:
+   bc (1.06-19ubuntu1) dapper; urgency=low
+   * Make dc notice read and write errors on its input and output.
+     I grepped for mentions of the strings `putc', `print', `getc',
+     `FILE', `stdin', `stdout' and `stderr' and added calls to new
+     error-checking functions unless it was clear from the
+     immediately-surrounding code that the program was exiting
+     nonzero, or would exit nonzero if the call failed.  I ignored
+     hits in lib/getopt*, which seems to pervasively ignore write
+     errors when printing usage messages, in the hope that these
+     were correct.  I _think_ I got them all.  -iwj.
+     -- Ian Jackson <iwj@ubuntu.com>  Tue,  4 Apr 2006 17:21:02 +0100
+
+Upsteam:
+https://sources.debian.org/patches/bc/1.07.1-2/05_notice_read_write_errors.diff/
+
+[Reformatted to GIT for 1.0.7.1 by Matt W]
+Updated by Ryan Kavanagh <rak@debian.org> for 1.0.7.1 on 26 July 2017.
 Author: Ian Jackson <iwj@ubuntu.com>
 Origin: other
 Bug-Debian: http://bugs.debian.org/488735
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
 ---
-This patch header follows DEP-3: http://dep.debian.net/deps/dep3/
+ bc/execute.c | 10 +++++++++-
+ bc/main.c    |  3 +++
+ bc/sbc.y     |  2 ++
+ bc/scan.c    |  2 ++
+ bc/scan.l    |  3 +++
+ bc/util.c    | 15 ++++++++++++--
+ dc/dc.c      |  3 +++
+ dc/eval.c    | 55 +++++++++++++++++++++++++++++++++++++++-------------
+ dc/misc.c    |  1 +
+ dc/numeric.c |  9 +++++++++
+ dc/stack.c   | 11 ++++++++++-
+ dc/string.c  |  2 ++
+ h/number.h   | 11 +++++++----
+ lib/number.c | 24 +++++++++++++++++++++++
+ 14 files changed, 129 insertions(+), 22 deletions(-)
+
 diff --git a/bc/execute.c b/bc/execute.c
-index e4e8ef7..8787048 100644
+index 256e4b7..50eac49 100644
 --- a/bc/execute.c
 +++ b/bc/execute.c
-@@ -108,6 +108,7 @@ execute ()
+@@ -104,6 +104,7 @@ execute (void)
  	      }
  	    out_char ('\n');
  	  }
@@ -29,7 +55,7 @@ index e4e8ef7..8787048 100644
        }
  #endif
  
-@@ -222,6 +223,7 @@ execute ()
+@@ -224,6 +225,7 @@ execute (void)
  		}
  	    }
  	fflush (stdout);
@@ -37,7 +63,7 @@ index e4e8ef7..8787048 100644
  	break;
  
        case 'R' : /* Return from function */
-@@ -257,6 +259,7 @@ execute ()
+@@ -259,6 +261,7 @@ execute (void)
  	if (inst == 'W') out_char ('\n');
  	store_var (4);  /* Special variable "last". */
  	fflush (stdout);
@@ -45,7 +71,7 @@ index e4e8ef7..8787048 100644
  	pop ();
  	break;
  
-@@ -338,6 +341,7 @@ execute ()
+@@ -342,6 +345,7 @@ execute (void)
        case 'w' : /* Write a string to the output. */
  	while ((ch = byte(&pc)) != '"') out_schar (ch);
  	fflush (stdout);
@@ -53,7 +79,7 @@ index e4e8ef7..8787048 100644
  	break;
  		   
        case 'x' : /* Exchange Top of Stack with the one under the tos. */
-@@ -545,7 +549,10 @@ execute ()
+@@ -549,7 +553,10 @@ execute (void)
      {
        signal (SIGINT, use_quit);
        if (had_sigint)
@@ -65,7 +91,7 @@ index e4e8ef7..8787048 100644
      }
  }
  
-@@ -580,6 +587,7 @@ input_char ()
+@@ -584,6 +591,7 @@ input_char (void)
  	  out_col = 0;  /* Saw a new line */
  	}
      }
@@ -73,34 +99,22 @@ index e4e8ef7..8787048 100644
  
    /* Classify and preprocess the input character. */
    if (isdigit(in_ch))
-diff --git a/bc/load.c b/bc/load.c
-index 1035198..4039e86 100644
---- a/bc/load.c
-+++ b/bc/load.c
-@@ -217,6 +217,7 @@ load_code (code)
- 		if (label_no > 65535L)
- 		  {  /* Better message? */
- 		    fprintf (stderr,"Program too big.\n");
-+		    checkferror_output(stderr);
- 		    exit(1);
- 		  }
- 		addbyte ( (char) (label_no & 0xFF));
 diff --git a/bc/main.c b/bc/main.c
-index 9a2461e..3ae427d 100644
+index 012075c..c96207b 100644
 --- a/bc/main.c
 +++ b/bc/main.c
-@@ -358,6 +358,9 @@ use_quit (sig)
+@@ -353,6 +353,9 @@ use_quit (int sig)
    errno = save;
  #else
    write (1, "\n(interrupt) Exiting bc.\n", 26);
 +#ifdef READLINE
 +  rl_initialize (); /* Clear readline buffer */
 +#endif
- #if defined(LIBEDIT)
-   if (edit != NULL)
-     el_end(edit);
+   bc_exit(0);
+ #endif
+ }
 diff --git a/bc/sbc.y b/bc/sbc.y
-index 0ded29e..6fcc1fa 100644
+index 586686b..921ab1e 100644
 --- a/bc/sbc.y
 +++ b/bc/sbc.y
 @@ -86,7 +86,9 @@ program			: /* empty */
@@ -114,10 +128,10 @@ index 0ded29e..6fcc1fa 100644
  			    }
  			| program input_item
 diff --git a/bc/scan.c b/bc/scan.c
-index 1f78ec2..2b5eeb4 100644
+index b237f55..8dee4e9 100644
 --- a/bc/scan.c
 +++ b/bc/scan.c
-@@ -799,6 +799,7 @@ bcel_input (buf, result, max)
+@@ -791,6 +791,7 @@ bcel_input (char *buf, yy_size_t  *result, int max)
        if (bcel_len != 0)
  	history (hist, &histev, H_ENTER, bcel_line); 
        fflush (stdout);
@@ -125,7 +139,7 @@ index 1f78ec2..2b5eeb4 100644
      }
  
    if (bcel_len <= max)
-@@ -874,6 +875,7 @@ rl_input (buf, result, max)
+@@ -863,6 +864,7 @@ rl_input (char *buf, int *result, int max)
  	add_history (rl_line); 
        rl_line[rl_len-1] = '\n';
        fflush (stdout);
@@ -134,10 +148,10 @@ index 1f78ec2..2b5eeb4 100644
  
    if (rl_len <= max)
 diff --git a/bc/scan.l b/bc/scan.l
-index 841c3df..16cd62e 100644
+index eb2e2dd..79186bb 100644
 --- a/bc/scan.l
 +++ b/bc/scan.l
-@@ -111,6 +111,7 @@ bcel_input (buf, result, max)
+@@ -99,6 +99,7 @@ bcel_input (char *buf, yy_size_t  *result, int max)
        if (bcel_len != 0)
  	history (hist, &histev, H_ENTER, bcel_line); 
        fflush (stdout);
@@ -145,7 +159,7 @@ index 841c3df..16cd62e 100644
      }
  
    if (bcel_len <= max)
-@@ -186,6 +187,7 @@ rl_input (buf, result, max)
+@@ -171,6 +172,7 @@ rl_input (char *buf, int *result, int max)
  	add_history (rl_line); 
        rl_line[rl_len-1] = '\n';
        fflush (stdout);
@@ -153,7 +167,7 @@ index 841c3df..16cd62e 100644
      }
  
    if (rl_len <= max)
-@@ -310,6 +312,7 @@ limits return(Limits);
+@@ -295,6 +297,7 @@ limits return(Limits);
  	    if (c == EOF)
  	      {
  		fprintf (stderr,"EOF encountered in a comment.\n");
@@ -161,23 +175,11 @@ index 841c3df..16cd62e 100644
  		break;
  	      }
  	  }
-diff --git a/bc/storage.c b/bc/storage.c
-index 699729a..37b4c6c 100644
---- a/bc/storage.c
-+++ b/bc/storage.c
-@@ -99,6 +99,7 @@ more_functions (VOID)
-     {
-       f = &functions[indx];
-       f->f_defined = FALSE;
-+      f->f_void = FALSE;
-       f->f_body = (char *) bc_malloc (BC_START_SIZE);
-       f->f_body_size = BC_START_SIZE;
-       f->f_code_size = 0;
 diff --git a/bc/util.c b/bc/util.c
-index 30beaf9..669235f 100644
+index 8eba093..cacd796 100644
 --- a/bc/util.c
 +++ b/bc/util.c
-@@ -260,9 +260,10 @@ init_gen ()
+@@ -247,9 +247,10 @@ init_gen (void)
    continue_label = 0;
    next_label  = 1;
    out_count = 2;
@@ -190,7 +192,7 @@ index 30beaf9..669235f 100644
      init_load ();
    had_error = FALSE;
    did_gen = FALSE;
-@@ -286,6 +287,7 @@ generate (str)
+@@ -272,6 +273,7 @@ generate (const char *str)
  	  printf ("\n");
  	  out_count = 0;
  	}
@@ -198,7 +200,7 @@ index 30beaf9..669235f 100644
      }
    else
      load_code (str);
-@@ -303,6 +305,7 @@ run_code()
+@@ -289,6 +291,7 @@ run_code(void)
        if (compile_only)
  	{
  	  printf ("@r\n"); 
@@ -206,7 +208,7 @@ index 30beaf9..669235f 100644
  	  out_count = 0;
  	}
        else
-@@ -341,6 +344,7 @@ out_char (ch)
+@@ -326,6 +329,7 @@ out_char (int ch)
  	}
        putchar (ch);
      }
@@ -214,7 +216,7 @@ index 30beaf9..669235f 100644
  }
  
  /* Output routines: Write a character CH to the standard output.
-@@ -371,6 +375,7 @@ out_schar (ch)
+@@ -355,6 +359,7 @@ out_schar (int ch)
  	}
        putchar (ch);
      }
@@ -222,7 +224,7 @@ index 30beaf9..669235f 100644
  }
  
  
-@@ -657,6 +662,7 @@ limits()
+@@ -639,6 +644,7 @@ limits(void)
  #ifdef OLD_EQ_OP
    printf ("Old assignment operatiors are valid. (=-, =+, ...)\n");
  #endif 
@@ -230,7 +232,7 @@ index 30beaf9..669235f 100644
  }
  
  /* bc_malloc will check the return value so all other places do not
-@@ -721,6 +727,7 @@ yyerror (str, va_alist)
+@@ -703,6 +709,7 @@ yyerror (str, va_alist)
    fprintf (stderr,"%s %d: ",name,line_no);
    vfprintf (stderr, str, args);
    fprintf (stderr, "\n");
@@ -238,7 +240,7 @@ index 30beaf9..669235f 100644
    had_error = TRUE;
    va_end (args);
  }
-@@ -761,6 +768,7 @@ warn (mesg, va_alist)
+@@ -743,6 +750,7 @@ ct_warn (mesg, va_alist)
        fprintf (stderr,"%s %d: Error: ",name,line_no);
        vfprintf (stderr, mesg, args);
        fprintf (stderr, "\n");
@@ -246,7 +248,7 @@ index 30beaf9..669235f 100644
        had_error = TRUE;
      }
    else
-@@ -773,6 +781,7 @@ warn (mesg, va_alist)
+@@ -755,6 +763,7 @@ ct_warn (mesg, va_alist)
  	fprintf (stderr,"%s %d: (Warning) ",name,line_no);
  	vfprintf (stderr, mesg, args);
  	fprintf (stderr, "\n");
@@ -254,7 +256,7 @@ index 30beaf9..669235f 100644
        }
    va_end (args);
  }
-@@ -807,6 +816,7 @@ rt_error (mesg, va_alist)
+@@ -789,6 +798,7 @@ rt_error (mesg, va_alist)
    va_end (args);
    
    fprintf (stderr, "\n");
@@ -262,17 +264,19 @@ index 30beaf9..669235f 100644
    runtime_error = TRUE;
  }
  
-@@ -843,4 +853,5 @@ rt_warn (mesg, va_alist)
+@@ -823,6 +833,7 @@ rt_warn (const char *mesg)
    va_end (args);
  
    fprintf (stderr, "\n");
 +  checkferror_output(stderr);
  }
+ 
+ /* bc_exit: Make sure to reset the edit state. */
 diff --git a/dc/dc.c b/dc/dc.c
-index e03f094..0faf03a 100644
+index 6a2bb26..ccdb1c2 100644
 --- a/dc/dc.c
 +++ b/dc/dc.c
-@@ -61,6 +61,7 @@ static void
+@@ -59,6 +59,7 @@ static void
  bug_report_info DC_DECLVOID()
  {
  	printf("Email bug reports to:  bug-dc@gnu.org .\n");
@@ -280,7 +284,7 @@ index e03f094..0faf03a 100644
  }
  
  static void
-@@ -71,6 +72,7 @@ show_version DC_DECLVOID()
+@@ -69,6 +70,7 @@ show_version DC_DECLVOID()
  This is free software; see the source for copying conditions.  There is NO\n\
  warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE,\n\
  to the extent permitted by law.\n", DC_COPYRIGHT);
@@ -288,7 +292,7 @@ index e03f094..0faf03a 100644
  }
  
  /* your generic usage function */
-@@ -87,6 +89,7 @@ Usage: %s [OPTION] [file ...]\n\
+@@ -85,6 +87,7 @@ Usage: %s [OPTION] [file ...]\n\
  \n\
  ", progname);
  	bug_report_info();
@@ -297,14 +301,14 @@ index e03f094..0faf03a 100644
  
  /* returns a pointer to one past the last occurance of c in s,
 diff --git a/dc/eval.c b/dc/eval.c
-index 4af7200..153d331 100644
+index 05a3d9e..6c54e61 100644
 --- a/dc/eval.c
 +++ b/dc/eval.c
-@@ -94,12 +94,15 @@ static int input_pushback;
+@@ -97,12 +97,15 @@ static int input_pushback;
  static int
  input_fil DC_DECLVOID()
  {
-+        int c;
++		int c;
  	if (input_pushback != EOF){
 -		int c = input_pushback;
 +		c = input_pushback;
@@ -318,7 +322,7 @@ index 4af7200..153d331 100644
  }
  
  /* passed as an argument to dc_getnum */
-@@ -298,11 +301,13 @@ dc_func DC_DECLARG((c, peekc, negcmp))
+@@ -301,11 +304,13 @@ dc_func DC_DECLARG((c, peekc, negcmp))
  				tmpint = dc_num2int(datum.v.number, DC_TOSS);
  			if (2 <= tmpint  &&  tmpint <= DC_IBASE_MAX)
  				dc_ibase = tmpint;
@@ -333,7 +337,7 @@ index 4af7200..153d331 100644
  		}
  		break;
  	case 'k':	/* set scale to value on top of stack */
-@@ -310,11 +315,12 @@ between 2 and %d (inclusive)\n",
+@@ -313,11 +318,12 @@ between 2 and %d (inclusive)\n",
  			tmpint = -1;
  			if (datum.dc_type == DC_NUMBER)
  				tmpint = dc_num2int(datum.v.number, DC_TOSS);
@@ -348,7 +352,7 @@ index 4af7200..153d331 100644
  				dc_scale = tmpint;
  		}
  		break;
-@@ -338,11 +344,12 @@ between 2 and %d (inclusive)\n",
+@@ -341,11 +347,12 @@ between 2 and %d (inclusive)\n",
  			tmpint = 0;
  			if (datum.dc_type == DC_NUMBER)
  				tmpint = dc_num2int(datum.v.number, DC_TOSS);
@@ -363,7 +367,7 @@ index 4af7200..153d331 100644
  				dc_obase = tmpint;
  		}
  		break;
-@@ -383,6 +390,7 @@ between 2 and %d (inclusive)\n",
+@@ -378,6 +385,7 @@ between 2 and %d (inclusive)\n",
  				fprintf(stderr,
  						"%s: square root of nonnumeric attempted\n",
  						progname);
@@ -371,15 +375,23 @@ index 4af7200..153d331 100644
  			}else if (dc_sqrt(datum.v.number, dc_scale, &tmpnum) == DC_SUCCESS){
  				dc_free_num(&datum.v.number);
  				datum.v.number = tmpnum;
-@@ -444,6 +452,7 @@ between 2 and %d (inclusive)\n",
+@@ -424,6 +432,7 @@ between 2 and %d (inclusive)\n",
+ 				dc_garbage("at top of stack", -1);
+ 		}
+ 		fflush(stdout);
++		checkferror_output(stdout);
+ 		break;
+ 	case 'Q':	/* quit out of top-of-stack nested evals;
+ 				 * pops value from stack;
+@@ -440,6 +449,7 @@ between 2 and %d (inclusive)\n",
  			fprintf(stderr,
  					"%s: Q command requires a number >= 1\n",
  					progname);
 +			checkferror_output(stderr);
  		}
  		break;
- #if 0
-@@ -489,11 +498,12 @@ between 2 and %d (inclusive)\n",
+ 	case 'R':	/* pop a value off of the evaluation stack,;
+@@ -483,11 +493,12 @@ between 2 and %d (inclusive)\n",
  			if (datum.dc_type == DC_NUMBER)
  				tmpint = dc_num2int(datum.v.number, DC_TOSS);
  			if (dc_pop(&datum) == DC_SUCCESS){
@@ -394,7 +406,7 @@ index 4af7200..153d331 100644
  					dc_array_set(peekc, tmpint, datum);
  			}
  		}
-@@ -505,17 +515,19 @@ between 2 and %d (inclusive)\n",
+@@ -499,18 +510,21 @@ between 2 and %d (inclusive)\n",
  			tmpint = -1;
  			if (datum.dc_type == DC_NUMBER)
  				tmpint = dc_num2int(datum.v.number, DC_TOSS);
@@ -414,9 +426,11 @@ index 4af7200..153d331 100644
  		fprintf(stderr, "%s: ", progname);
 +		checkferror_output(stderr);
  		dc_show_id(stdout, c, " unimplemented\n");
++		checkferror_output(stdout);
  		break;
  	}
-@@ -544,6 +556,7 @@ dc_evalstr DC_DECLARG((string))
+ 	return DC_OKAY;
+@@ -538,6 +552,7 @@ evalstr DC_DECLARG((string))
  		fprintf(stderr,
  				"%s: eval called with non-string argument\n",
  				progname);
@@ -424,7 +438,7 @@ index 4af7200..153d331 100644
  		return DC_OKAY;
  	}
  	interrupt_seen = 0;
-@@ -640,6 +653,7 @@ dc_evalstr DC_DECLARG((string))
+@@ -635,6 +650,7 @@ evalstr DC_DECLARG((string))
  				return DC_FAIL;
  			}
  			fprintf(stderr, "%s: unexpected EOS\n", progname);
@@ -432,7 +446,7 @@ index 4af7200..153d331 100644
  			return DC_OKAY;
  		}
  	}
-@@ -665,6 +679,7 @@ dc_evalfile DC_DECLARG((fp))
+@@ -692,6 +708,7 @@ dc_evalfile DC_DECLARG((fp))
  	stdin_lookahead = EOF;
  	for (c=getc(fp); c!=EOF; c=peekc){
  		peekc = getc(fp);
@@ -440,15 +454,48 @@ index 4af7200..153d331 100644
  		/*
  		 * The following if() is the only place where ``stdin_lookahead''
  		 * might be set to other than EOF:
-@@ -716,6 +731,7 @@ dc_evalfile DC_DECLARG((fp))
- 							return DC_SUCCESS;
+@@ -717,24 +734,30 @@ dc_evalfile DC_DECLARG((fp))
+ 		signal(SIGINT, sigint_handler);
+ 		switch (dc_func(c, peekc, negcmp)){
+ 		case DC_OKAY:
+-			if (stdin_lookahead != peekc  &&  fp == stdin)
++			if (stdin_lookahead != peekc  &&  fp == stdin) {
+ 				peekc = getc(fp);
++				checkferror_input(stdin);
++			}
+ 			break;
+ 		case DC_EATONE:
+ 			peekc = getc(fp);
++			checkferror_input(fp);
+ 			break;
+ 		case DC_EVALREG:
+ 			/*commands which send us here shall guarantee that peekc!=EOF*/
+ 			c = peekc;
+ 			peekc = getc(fp);
++			checkferror_input(fp);
+ 			stdin_lookahead = peekc;
+ 			if (dc_register_get(c, &datum) != DC_SUCCESS)
+ 				break;
+ 			dc_push(datum);
+ 			/*@fallthrough@*/
+ 		case DC_EVALTOS:
+-			if (stdin_lookahead != peekc  &&  fp == stdin)
++			if (stdin_lookahead != peekc  &&  fp == stdin) {
+ 				peekc = getc(fp);
++				checkferror_input(stdin);
++			}
+ 			if (dc_pop(&datum) == DC_SUCCESS){
+ 				if (datum.dc_type == DC_NUMBER){
+ 					dc_push(datum);
+@@ -744,6 +767,7 @@ dc_evalfile DC_DECLARG((fp))
+ 							goto reset_and_exit_quit;
  						fprintf(stderr, "%s: Q command argument exceeded \
  string execution depth\n", progname);
 +						checkferror_output(stderr);
  					}
  				}else{
  					dc_garbage("at top of stack", -1);
-@@ -728,8 +744,11 @@ string execution depth\n", progname);
+@@ -756,8 +780,11 @@ string execution depth\n", progname);
  			fprintf(stderr,
  					"%s: Q command argument exceeded string execution depth\n",
  					progname);
@@ -461,19 +508,11 @@ index 4af7200..153d331 100644
  			break;
  
  		case DC_INT:
-@@ -771,6 +790,7 @@ string execution depth\n", progname);
- 			if (ferror(fp))
- 				goto error_fail;
- 			fprintf(stderr, "%s: unexpected EOF\n", progname);
-+			checkferror_output(stderr);
- 			return DC_FAIL;
- 		}
- 	}
 diff --git a/dc/misc.c b/dc/misc.c
-index f2388b0..1be56fe 100644
+index cd23602..cd910b8 100644
 --- a/dc/misc.c
 +++ b/dc/misc.c
-@@ -91,6 +91,7 @@ dc_show_id DC_DECLARG((fp, id, suffix))
+@@ -89,6 +89,7 @@ dc_show_id DC_DECLARG((fp, id, suffix))
  		fprintf(fp, "'%c' (%#o)%s", (unsigned int) id, id, suffix);
  	else
  		fprintf(fp, "%#o%s", (unsigned int) id, suffix);
@@ -482,10 +521,10 @@ index f2388b0..1be56fe 100644
  
  
 diff --git a/dc/numeric.c b/dc/numeric.c
-index 8e5e70f..c875eba 100644
+index 37759de..60cfb85 100644
 --- a/dc/numeric.c
 +++ b/dc/numeric.c
-@@ -134,6 +134,7 @@ dc_div DC_DECLARG((a, b, kscale, result))
+@@ -133,6 +133,7 @@ dc_div DC_DECLARG((a, b, kscale, result))
  	bc_init_num(CastNumPtr(result));
  	if (bc_divide(CastNum(a), CastNum(b), CastNumPtr(result), kscale)){
  		fprintf(stderr, "%s: divide by zero\n", progname);
@@ -493,7 +532,7 @@ index 8e5e70f..c875eba 100644
  		return DC_DOMAIN_ERROR;
  	}
  	return DC_SUCCESS;
-@@ -156,6 +157,7 @@ dc_divrem DC_DECLARG((a, b, kscale, quotient, remainder))
+@@ -155,6 +156,7 @@ dc_divrem DC_DECLARG((a, b, kscale, quotient, remainder))
  	if (bc_divmod(CastNum(a), CastNum(b),
  						CastNumPtr(quotient), CastNumPtr(remainder), kscale)){
  		fprintf(stderr, "%s: divide by zero\n", progname);
@@ -501,7 +540,7 @@ index 8e5e70f..c875eba 100644
  		return DC_DOMAIN_ERROR;
  	}
  	return DC_SUCCESS;
-@@ -174,6 +176,7 @@ dc_rem DC_DECLARG((a, b, kscale, result))
+@@ -173,6 +175,7 @@ dc_rem DC_DECLARG((a, b, kscale, result))
  	bc_init_num(CastNumPtr(result));
  	if (bc_modulo(CastNum(a), CastNum(b), CastNumPtr(result), kscale)){
  		fprintf(stderr, "%s: remainder by zero\n", progname);
@@ -509,7 +548,7 @@ index 8e5e70f..c875eba 100644
  		return DC_DOMAIN_ERROR;
  	}
  	return DC_SUCCESS;
-@@ -226,6 +229,7 @@ dc_sqrt DC_DECLARG((value, kscale, result))
+@@ -225,6 +228,7 @@ dc_sqrt DC_DECLARG((value, kscale, result))
  	tmp = bc_copy_num(CastNum(value));
  	if (!bc_sqrt(&tmp, kscale)){
  		fprintf(stderr, "%s: square root of negative number\n", progname);
@@ -517,19 +556,7 @@ index 8e5e70f..c875eba 100644
  		bc_free_num(&tmp);
  		return DC_DOMAIN_ERROR;
  	}
-@@ -429,8 +433,10 @@ dc_out_num DC_DECLARG((value, obase, newline_p, discard_p))
- {
- 	out_char('\0'); /* clear the column counter */
- 	bc_out_num(CastNum(value), obase, out_char, 0);
--	if (newline_p == DC_WITHNL)
-+	if (newline_p == DC_WITHNL) {
- 		putchar ('\n');
-+		checkferror_output(stdout);
-+	}
- 	if (discard_p == DC_TOSS)
- 		dc_free_num(&value);
- }
-@@ -475,6 +481,7 @@ dc_dump_num DC_DECLARG((dcvalue, discard_p))
+@@ -470,6 +474,7 @@ dc_dump_num DC_DECLARG((dcvalue, discard_p))
  
  	for (cur=top_of_stack; cur; cur=next) {
  		putchar(cur->digit);
@@ -537,15 +564,16 @@ index 8e5e70f..c875eba 100644
  		next = cur->link;
  		free(cur);
  	}
-@@ -592,6 +599,7 @@ out_char (ch)
+@@ -587,6 +592,8 @@ out_char (ch)
  			out_col = 1;
  		}
  		putchar(ch);
++                checkferror_output(stdout);
 +		checkferror_output(stderr);
  	}
  }
  
-@@ -631,6 +639,7 @@ rt_error (mesg, va_alist)
+@@ -626,6 +633,7 @@ rt_error (mesg, va_alist)
  	vfprintf (stderr, mesg, args);
  	va_end (args);
  	fprintf (stderr, "\n");
@@ -553,7 +581,7 @@ index 8e5e70f..c875eba 100644
  }
  
  
-@@ -664,6 +673,7 @@ rt_warn (mesg, va_alist)
+@@ -659,6 +667,7 @@ rt_warn (mesg, va_alist)
  	vfprintf (stderr, mesg, args);
  	va_end (args);
  	fprintf (stderr, "\n");
@@ -562,10 +590,10 @@ index 8e5e70f..c875eba 100644
  
  
 diff --git a/dc/stack.c b/dc/stack.c
-index 0730e9c..5db3975 100644
+index 49422df..174411d 100644
 --- a/dc/stack.c
 +++ b/dc/stack.c
-@@ -38,7 +38,10 @@
+@@ -35,7 +35,10 @@
  #include "dc-regdef.h"
  
  /* an oft-used error message: */
@@ -577,7 +605,7 @@ index 0730e9c..5db3975 100644
  
  
  /* simple linked-list implementation suffices: */
-@@ -94,6 +97,7 @@ dc_binop DC_DECLARG((op, kscale))
+@@ -91,6 +94,7 @@ dc_binop DC_DECLARG((op, kscale))
  	if (dc_stack->value.dc_type!=DC_NUMBER
  			|| dc_stack->link->value.dc_type!=DC_NUMBER){
  		fprintf(stderr, "%s: non-numeric value\n", progname);
@@ -585,7 +613,7 @@ index 0730e9c..5db3975 100644
  		return;
  	}
  	(void)dc_pop(&b);
-@@ -134,6 +138,7 @@ dc_binop2 DC_DECLARG((op, kscale))
+@@ -131,6 +135,7 @@ dc_binop2 DC_DECLARG((op, kscale))
  	if (dc_stack->value.dc_type!=DC_NUMBER
  			|| dc_stack->link->value.dc_type!=DC_NUMBER){
  		fprintf(stderr, "%s: non-numeric value\n", progname);
@@ -593,7 +621,7 @@ index 0730e9c..5db3975 100644
  		return;
  	}
  	(void)dc_pop(&b);
-@@ -172,6 +177,7 @@ dc_cmpop DC_DECLVOID()
+@@ -169,6 +174,7 @@ dc_cmpop DC_DECLVOID()
  	if (dc_stack->value.dc_type!=DC_NUMBER
  			|| dc_stack->link->value.dc_type!=DC_NUMBER){
  		fprintf(stderr, "%s: non-numeric value\n", progname);
@@ -601,7 +629,7 @@ index 0730e9c..5db3975 100644
  		return 0;
  	}
  	(void)dc_pop(&b);
-@@ -209,6 +215,7 @@ dc_triop DC_DECLARG((op, kscale))
+@@ -206,6 +212,7 @@ dc_triop DC_DECLARG((op, kscale))
  			|| dc_stack->link->value.dc_type!=DC_NUMBER
  			|| dc_stack->link->link->value.dc_type!=DC_NUMBER){
  		fprintf(stderr, "%s: non-numeric value\n", progname);
@@ -610,34 +638,34 @@ index 0730e9c..5db3975 100644
  	}
  	(void)dc_pop(&c);
 @@ -327,6 +334,7 @@ dc_register_get DC_DECLARG((regid, result))
- 	r = dc_register[regid];
- 	if (r==NULL || r->value.dc_type==DC_UNINITIALIZED){
- 		fprintf(stderr, "%s: register ", progname);
+ 		*result = dc_int2data(0);
+ 	}else if (r->value.dc_type==DC_UNINITIALIZED){
+ 		fprintf(stderr, "%s: BUG: register ", progname);
 +		checkferror_output(stderr);
- 		dc_show_id(stderr, regid, " is empty\n");
+ 		dc_show_id(stderr, regid, " exists but is uninitialized?\n");
  		return DC_FAIL;
- 	}
-@@ -401,6 +409,7 @@ dc_register_pop DC_DECLARG((stackid, result))
+ 	}else{
+@@ -402,6 +410,7 @@ dc_register_pop DC_DECLARG((stackid, result))
  	r = dc_register[stackid];
- 	if (r == NULL){
+ 	if (r==NULL || r->value.dc_type==DC_UNINITIALIZED){
  		fprintf(stderr, "%s: stack register ", progname);
 +		checkferror_output(stderr);
  		dc_show_id(stderr, stackid, " is empty\n");
  		return DC_FAIL;
  	}
 diff --git a/dc/string.c b/dc/string.c
-index ff1e7f1..e24092d 100644
+index dee9169..389d899 100644
 --- a/dc/string.c
 +++ b/dc/string.c
-@@ -101,6 +101,7 @@ dc_out_str DC_DECLARG((value, newline, discard_flag))
+@@ -94,6 +94,7 @@ dc_out_str DC_DECLARG((value, discard_flag))
+ 	dc_discard discard_flag DC_DECLEND
+ {
  	fwrite(value->s_ptr, value->s_len, sizeof *value->s_ptr, stdout);
- 	if (newline == DC_WITHNL)
- 		putchar('\n');
-+	checkferror_output(stdout);
++        checkferror_output(stdout);
  	if (discard_flag == DC_TOSS)
  		dc_free_str(&value);
  }
-@@ -176,6 +177,7 @@ dc_readstring DC_DECLARG((fp, ldelim, rdelim))
+@@ -169,6 +170,7 @@ dc_readstring DC_DECLARG((fp, ldelim, rdelim))
  		}
  		*p++ = c;
  	}
@@ -646,22 +674,37 @@ index ff1e7f1..e24092d 100644
  }
  
 diff --git a/h/number.h b/h/number.h
-index 9b034b6..3a00a92 100644
+index abf6332..1983ab4 100644
 --- a/h/number.h
 +++ b/h/number.h
-@@ -150,4 +150,7 @@ _PROTOTYPE(int bc_sqrt, (bc_num *num, int scale));
- _PROTOTYPE(void bc_out_num, (bc_num num, int o_base, void (* out_char)(int),
- 			     int leading_zero));
- 
-+_PROTOTYPE(void checkferror_input, (FILE*));
-+_PROTOTYPE(void checkferror_output, (FILE*));
+@@ -23,10 +23,10 @@
+     You may contact the author by:
+        e-mail:  philnelson@acm.org
+       us-mail:  Philip A. Nelson
+-                Computer Science Department, 9062
+-                Western Washington University
+-                Bellingham, WA 98226-9062
+-       
++		Computer Science Department, 9062
++		Western Washington University
++		Bellingham, WA 98226-9062
 +
+ *************************************************************************/
+ 
+ #ifndef _NUMBER_H_
+@@ -140,4 +140,7 @@ void bc_out_num (bc_num num, int o_base, void (* out_char)(int),
+ 			     int leading_zero);
+ 
+ void bc_out_long (long val, int size, int space, void (*out_char)(int));
++
++void checkferror_input (FILE*);
++void checkferror_output (FILE*);
  #endif
 diff --git a/lib/number.c b/lib/number.c
-index e211840..4d3ce46 100644
+index f394e92..80b33e3 100644
 --- a/lib/number.c
 +++ b/lib/number.c
-@@ -1776,6 +1776,7 @@ static void
+@@ -1713,6 +1713,7 @@ static void
  out_char (int c)
  {
    putchar(c);
@@ -669,7 +712,7 @@ index e211840..4d3ce46 100644
  }
  
  
-@@ -1785,6 +1786,7 @@ pn (num)
+@@ -1721,6 +1722,7 @@ pn (bc_num num)
  {
    bc_out_num (num, 10, out_char, 0);
    out_char ('\n');
@@ -677,7 +720,7 @@ index e211840..4d3ce46 100644
  }
  
  
-@@ -1799,6 +1801,28 @@ pv (name, num, len)
+@@ -1732,6 +1734,28 @@ pv (char *name, unsigned char *num, int len)
    printf ("%s=", name);
    for (i=0; i<len; i++) printf ("%c",BCD_CHAR(num[i]));
    printf ("\n");
@@ -706,3 +749,6 @@ index e211840..4d3ce46 100644
 +		exit(EXIT_FAILURE);
 +	}
 +}
+-- 
+2.17.1
+

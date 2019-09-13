@@ -1,2 +1,4 @@
 # Locally calculated
-sha256 7ee4abbcfac03d8a6e1a8a3440558a3d239d6b858585063e745c760957725ecc  bc-1.06.95.tar.bz2
+sha256	62adfca89b0a1c0164c2cdca59ca210c1d44c3ffc46daf9931cf4942664cb02a  bc-1.07.1.tar.gz
+sha256	8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
+sha256	a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c  COPYING.LIB
