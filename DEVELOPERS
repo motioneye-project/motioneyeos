@@ -1273,6 +1273,7 @@ F:	package/x11r7/xdriver_xf86-video-imx/
 F:	package/x11r7/xdriver_xf86-video-imx-viv/
 
 N:	Jianhui Zhao <zhaojh329@gmail.com>
+F:	package/libuwsc/
 F:	package/rtty/
 
 N:	Joao Pinto <jpinto@synopsys.com>
