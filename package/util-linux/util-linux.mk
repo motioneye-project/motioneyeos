@@ -236,9 +236,9 @@ endif
 # Install PAM configuration files
 ifeq ($(BR2_PACKAGE_UTIL_LINUX_SU)$(BR2_PACKAGE_LINUX_PAM),yy)
 define UTIL_LINUX_INSTALL_PAMFILES
-	$(INSTALL) -m 0644 package/util-linux/su.pam \
+	$(INSTALL) -D -m 0644 package/util-linux/su.pam \
 		$(TARGET_DIR)/etc/pam.d/su
-	$(INSTALL) -m 0644 package/util-linux/su.pam \
+	$(INSTALL) -D -m 0644 package/util-linux/su.pam \
 		$(TARGET_DIR)/etc/pam.d/su-l
 	$(UTIL_LINUX_SELINUX_PAMFILES_TWEAK)
 endef
