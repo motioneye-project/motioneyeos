@@ -1888,6 +1888,7 @@ N:	Pierre Floury <pierre.floury@gmail.com>
 F:	package/trace-cmd/
 
 N:	Pierre-Jean Texier <pjtexier@koncepto.io>
+F:	package/fping/
 F:	package/genimage/
 F:	package/haveged/
 F:	package/libarchive/
