@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FLATCC_VERSION = 0.5.2
+FLATCC_VERSION = 0.6.0
 FLATCC_SITE = $(call github,dvidelabs,flatcc,v$(FLATCC_VERSION))
 FLATCC_LICENSE = Apache-2.0
 FLATCC_LICENSE_FILES = LICENSE
