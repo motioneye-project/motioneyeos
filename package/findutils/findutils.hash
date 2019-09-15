@@ -1,2 +1,5 @@
 # Locally calculated after checking pgp signature
-sha256	ded4c9f73731cd48fec3b6bdaccce896473b6d8e337e9612e16cf1431bb1169d	findutils-4.6.0.tar.gz
+sha256	c5fefbdf9858f7e4feb86f036e1247a54c79fc2d8e4b7064d5aaa1f47dfa789a	findutils-4.7.0.tar.xz
+
+# Hash for license file
+sha256	3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986	COPYING
