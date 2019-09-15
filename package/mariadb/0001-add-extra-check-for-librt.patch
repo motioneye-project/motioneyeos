@@ -3,6 +3,8 @@ From: Ryan Coe <bluemrp9@gmail.com>
 Date: Thu, 27 Oct 2016 20:33:21 -0700
 Subject: [PATCH] add extra check for librt
 
+https://jira.mariadb.org/browse/MDEV-10841
+
 Signed-off-by: Ryan Coe <bluemrp9@gmail.com>
 ---
  configure.cmake | 3 +++
