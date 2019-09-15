@@ -28,8 +28,8 @@ define THTTPD_INSTALL_TARGET_CMDS
 endef
 
 define THTTPD_INSTALL_INIT_SYSV
-	$(INSTALL) -D -m 0755 $(@D)/scripts/thttpd.sh $(TARGET_DIR)/etc/init.d/S90thttpd
-	$(SED) 's:/usr/local/sbin:/usr/sbin:g' $(TARGET_DIR)/etc/init.d/S90thttpd
+	$(INSTALL) -D -m 0755 package/thttpd/S90thttpd \
+		$(TARGET_DIR)/etc/init.d/S90thttpd
 endef
 
 define THTTPD_INSTALL_INIT_SYSTEMD
