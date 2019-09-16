@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RPCBIND_VERSION = 0.2.3
+RPCBIND_VERSION = 1.2.5
 RPCBIND_SITE = http://downloads.sourceforge.net/project/rpcbind/rpcbind/$(RPCBIND_VERSION)
 RPCBIND_SOURCE = rpcbind-$(RPCBIND_VERSION).tar.bz2
 RPCBIND_LICENSE = BSD-3-Clause
