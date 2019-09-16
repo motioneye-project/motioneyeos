@@ -1228,6 +1228,7 @@ F:	package/supervisor/
 
 N:	Joris Offouga <offougajoris@gmail.com>
 F:	package/python-colorlog/
+F:	package/python-simplelogging/
 
 N:	Jörg Krause <joerg.krause@embedded.rocks>
 F:	board/lemaker/bananapro/

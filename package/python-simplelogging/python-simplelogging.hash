@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/simplelogging/json
+md5	e3f9da393098d8fd8ebd8349a00692f2  simplelogging-0.10.0.tar.gz
+sha256	c070e0d82b68eff6918076a0edbf0a48b2c9a263854bd35f48a12c6adbbe9d80  simplelogging-0.10.0.tar.gz
+# Locally computed sha256 checksums
+sha256	bd2a0fe3b3bab7092ffa7f58d46bb05d98f12f107b3a6be947c098f7c2ad1d1a  LICENSE
