@@ -1226,6 +1226,9 @@ N:	Jonathan Liu <net147@gmail.com>
 F:	package/python-meld3/
 F:	package/supervisor/
 
+N:	Joris Offouga <offougajoris@gmail.com>
+F:	package/python-colorlog/
+
 N:	Jörg Krause <joerg.krause@embedded.rocks>
 F:	board/lemaker/bananapro/
 F:	configs/bananapro_defconfig
