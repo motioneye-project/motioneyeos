@@ -1,6 +1,6 @@
-From 8de64376005b8630ce5e29f45d5502a56b121173 Mon Sep 17 00:00:00 2001
+From 3a137f52869fdbc7050d606bfba0e5b1e41bd8e6 Mon Sep 17 00:00:00 2001
 From: Adam Duskett <Aduskett@gmail.com>
-Date: Wed, 8 May 2019 13:08:43 -0400
+Date: Mon, 16 Sep 2019 10:08:52 -0700
 Subject: [PATCH] add option to build tests.
 
 Upstream won't build tests when cross-compiling. However; this means still
@@ -15,89 +15,65 @@ building any tests, even when building the host variant.
 
 Signed-off-by: Adam Duskett <Aduskett@gmail.com>
 ---
- gio/meson.build     | 4 +++-
- glib/meson.build    | 5 +++--
- gobject/meson.build | 5 +++--
- meson.build         | 6 +++++-
+ gio/meson.build     | 1 -
+ gobject/meson.build | 1 -
+ meson.build         | 2 +-
  meson_options.txt   | 5 +++++
- 5 files changed, 19 insertions(+), 6 deletions(-)
+ 4 files changed, 6 insertions(+), 3 deletions(-)
 
 diff --git a/gio/meson.build b/gio/meson.build
-index 4e5e021..925563c 100644
+index 9a9e621..6adc014 100644
 --- a/gio/meson.build
 +++ b/gio/meson.build
-@@ -994,4 +994,6 @@ if enable_systemtap
- endif
+@@ -1010,7 +1010,6 @@ endif
  
  subdir('fam')
--subdir('tests')
-+if build_tests
-+  subdir('tests')
-+endif
-diff --git a/glib/meson.build b/glib/meson.build
-index 8350ea2..bc1a7c5 100644
---- a/glib/meson.build
-+++ b/glib/meson.build
-@@ -370,5 +370,6 @@ if enable_systemtap
-     install_dir : tapset_install_dir,
-     install : true)
+ # Don’t build the tests unless we can run them (either natively or in an exe wrapper)
+-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper())
+ if build_tests
+     subdir('tests')
  endif
--
--subdir('tests')
-+if build_tests
-+  subdir('tests')
-+endif
 diff --git a/gobject/meson.build b/gobject/meson.build
-index db8d3c4..094cb58 100644
+index c7805c5..fb5874d 100644
 --- a/gobject/meson.build
 +++ b/gobject/meson.build
-@@ -165,5 +165,6 @@ if enable_systemtap
-     install_dir : tapset_install_dir,
-     install : true)
+@@ -166,7 +166,6 @@ if enable_systemtap
  endif
--
--subdir('tests')
-+if build_tests
-+  subdir('tests')
-+endif
+ 
+ # Don’t build the tests unless we can run them (either natively or in an exe wrapper)
+-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper())
+ if build_tests
+   subdir('tests')
+ endif
 diff --git a/meson.build b/meson.build
-index b57b2d6..d625a50 100644
+index 717d1bc..3124f28 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -75,6 +75,8 @@ installed_tests_enabled = get_option('installed_tests')
- installed_tests_template = files('template.test.in')
- installed_tests_template_tap = files('template-tap.test.in')
- 
-+build_tests = get_option('tests')
-+
- add_project_arguments('-D_GNU_SOURCE', language: 'c')
- 
- # Disable strict aliasing;
-@@ -1994,8 +1996,10 @@ subdir('gthread')
- subdir('gmodule')
+@@ -2098,7 +2098,7 @@ subdir('gmodule')
  subdir('gio')
  subdir('fuzzing')
--subdir('tests')
- 
-+if build_tests
-+  subdir('tests')
-+endif
- # xgettext is optional (on Windows for instance)
- if find_program('xgettext', required : get_option('nls')).found()
-   subdir('po')
+ # Don’t build the tests unless we can run them (either natively or in an exe wrapper)
+-build_tests = not meson.is_cross_build() or (meson.is_cross_build() and meson.has_exe_wrapper())
++build_tests = get_option('tests')
+ if build_tests
+   subdir('tests')
+ endif
 diff --git a/meson_options.txt b/meson_options.txt
-index 5c5b4df..7ffde0a 100644
+index 2c831e3..90468a7 100644
 --- a/meson_options.txt
 +++ b/meson_options.txt
-@@ -89,3 +89,8 @@ option('nls',
-        value : 'auto',
+@@ -90,6 +90,11 @@ option('nls',
         yield: true,
         description : 'Enable native language support (translations)')
-+
+ 
 +option('tests',
 +       type : 'boolean',
 +       value : false,
 +       description : 'Build tests')
++
+ option('oss_fuzz',
+        type : 'feature',
+        value : 'disabled',
 -- 
 2.21.0
 

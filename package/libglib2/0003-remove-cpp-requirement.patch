@@ -1,6 +1,6 @@
-From ee5ed1385bd6c36123ff970a8fff89a811798421 Mon Sep 17 00:00:00 2001
+From 2f168951df1feebeac549ada1ea44ea092484c54 Mon Sep 17 00:00:00 2001
 From: Adam Duskett <Aduskett@gmail.com>
-Date: Tue, 9 Apr 2019 12:59:36 -0400
+Date: Mon, 16 Sep 2019 10:12:38 -0700
 Subject: [PATCH] remove cpp requirement
 
 The c++ test is necessary to ensure libglib doesn't accidentally use C++
@@ -17,10 +17,10 @@ https://gitlab.gnome.org/GNOME/glib/issues/1748
  3 files changed, 1 insertion(+), 23 deletions(-)
 
 diff --git a/glib/glibconfig.h.in b/glib/glibconfig.h.in
-index 2bf6c43..358867f 100644
+index 7ef8c48..128e65d 100644
 --- a/glib/glibconfig.h.in
 +++ b/glib/glibconfig.h.in
-@@ -122,7 +122,6 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
+@@ -117,7 +117,6 @@ typedef unsigned @glib_intptr_type_define@ guintptr;
  @glib_vacopy@
  
  @g_have_iso_c_varargs@
@@ -29,16 +29,16 @@ index 2bf6c43..358867f 100644
  /* gcc-2.95.x supports both gnu style and ISO varargs, but if -ansi
   * is passed ISO vararg support is turned off, and there is no work
 diff --git a/meson.build b/meson.build
-index c96289a..b694bb7 100644
+index 3124f28..642afb8 100644
 --- a/meson.build
 +++ b/meson.build
 @@ -1,4 +1,4 @@
 -project('glib', 'c', 'cpp',
 +project('glib', 'c',
-   version : '2.60.7',
-   meson_version : '>= 0.48.0',
-   default_options : [
-@@ -9,7 +9,6 @@ project('glib', 'c', 'cpp',
+   version : '2.62.0',
+   # NOTE: We keep this pinned at 0.49 because that's what Debian 10 ships
+   meson_version : '>= 0.49.2',
+@@ -10,7 +10,6 @@ project('glib', 'c', 'cpp',
  )
  
  cc = meson.get_compiler('c')
@@ -46,7 +46,7 @@ index c96289a..b694bb7 100644
  
  cc_can_run = not meson.is_cross_build() or meson.has_exe_wrapper()
  
-@@ -1440,20 +1439,6 @@ if g_have_iso_c_varargs
+@@ -1487,20 +1486,6 @@ if g_have_iso_c_varargs
  #endif''')
  endif
  
@@ -67,16 +67,16 @@ index c96289a..b694bb7 100644
  g_have_gnuc_varargs = cc.compiles('''
    void some_func (void) {
      int a(int p1, int p2, int p3);
-@@ -1995,7 +1980,6 @@ subdir('gobject')
+@@ -2096,7 +2081,6 @@ subdir('gobject')
  subdir('gthread')
  subdir('gmodule')
  subdir('gio')
 -subdir('fuzzing')
-
+ # Don’t build the tests unless we can run them (either natively or in an exe wrapper)
+ build_tests = get_option('tests')
  if build_tests
-   subdir('tests')
 diff --git a/tests/meson.build b/tests/meson.build
-index 11075dd..e052892 100644
+index ce30442..2b31427 100644
 --- a/tests/meson.build
 +++ b/tests/meson.build
 @@ -48,11 +48,6 @@ tests = {
@@ -92,5 +92,5 @@ index 11075dd..e052892 100644
  
  test_extra_programs = {
 -- 
-2.20.1
+2.21.0
 
