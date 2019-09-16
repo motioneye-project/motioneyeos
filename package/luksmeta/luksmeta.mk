@@ -10,6 +10,7 @@ LUKSMETA_SITE = https://github.com/latchset/luksmeta/releases/download/v$(LUKSME
 LUKSMETA_LICENSE = LGPL-2.1+
 LUKSMETA_LICENSE_FILES = COPYING
 LUKSMETA_DEPENDENCIES = host-pkgconf cryptsetup
+LUKSMETA_CONF_ENV = ac_cv_prog_A2X=""
 LUKSMETA_INSTALL_STAGING = YES
 
 $(eval $(autotools-package))
