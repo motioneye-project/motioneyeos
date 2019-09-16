@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MXML_VERSION = 3.0
+MXML_VERSION = 3.1
 MXML_SITE = https://github.com/michaelrsweet/mxml/releases/download/v$(MXML_VERSION)
 MXML_LICENSE = Apache-2.0 with exceptions
 MXML_LICENSE_FILES = LICENSE NOTICE
