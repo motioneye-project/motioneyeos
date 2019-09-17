@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MODBUS_TK
+	bool "python-modbus-tk"
+	select BR2_PACKAGE_PYTHON_SERIAL # runtime
+	help
+	  Implementation of modbus protocol in python.
+
+	  https://github.com/ljean/modbus-tk/
