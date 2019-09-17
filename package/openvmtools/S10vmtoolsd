@@ -7,6 +7,8 @@ EXEC="/usr/bin/vmtoolsd"
 ARGS="-b"
 PID="/var/run/vmtoolsd.pid"
 
+[ -r /etc/default/vmtoolsd ] && . /etc/default/vmtoolsd
+
 case "$1" in
   start)
     printf "Starting vmtoolsd: "
