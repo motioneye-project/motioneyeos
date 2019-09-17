@@ -1,0 +1,77 @@
+From 8e9a7a8c72a9fe407d296ec0ffeb56b2cd271959 Mon Sep 17 00:00:00 2001
+From: Matt Weber <matthew.weber@rockwellcollins.com>
+Date: Mon, 16 Sep 2019 22:00:29 -0500
+Subject: [PATCH] Select TCP when lack of SYSV IPC
+
+Update to add a configure test to build and install the TCP IPC version
+when detecting SYSV IPC MsgQ support isn't available.
+
+The issue was initially discovered on Windows Services for Linux
+(WSL1.0). WSL does have some SysV IPC, but no message Q's, which is
+required by fakeroot/faked by default.
+
+Fixes:
+https://github.com/Microsoft/WSL/issues/2465
+
+Additional bug reports:
+https://bugs.busybox.net/show_bug.cgi?id=11366
+
+Upstream:
+https://salsa.debian.org/clint/fakeroot/merge_requests/2
+
+Signed-off-by: Jean-Francois Doyon <jfdoyon@gmail.com>
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ configure.ac | 36 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/configure.ac b/configure.ac
+index a9189e6..1650f77 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -25,6 +25,42 @@ AC_CACHE_CHECK([which IPC method to use],
+ 	       [ac_cv_use_ipc],
+ 	       [ac_cv_use_ipc=sysv])
+ 
++if test $ac_cv_use_ipc = "sysv"; then
++  AC_MSG_CHECKING([whether SysV IPC message queues are actually working on the host])
++
++  AC_LANG_PUSH(C)
++  AC_TRY_RUN([
++#include <stdlib.h>
++#include <sys/types.h>
++#include <sys/ipc.h>
++#include <sys/msg.h>
++#include <time.h>
++#include <unistd.h>
++
++int main() {
++
++  srandom(time(NULL)+getpid()*33151);
++  key_t msg_key = random();
++  int msg_get = msgget(msg_key, IPC_CREAT|0600);
++
++  if (msg_get==-1) {
++    return 1;
++  } else {
++    msgctl(msg_get, IPC_RMID, NULL);
++    return 0;
++  }
++
++}], [ac_cv_use_ipc=sysv], [ac_cv_use_ipc=tcp])
++
++  if test $ac_cv_use_ipc = "tcp"; then
++    AC_MSG_RESULT([No, using TCP])
++  else
++    AC_MSG_RESULT([Yes])
++  fi
++
++  AC_LANG_POP(C)
++fi
++
+ AC_ARG_WITH([dbformat],
+ 	    AS_HELP_STRING([--with-dbformat@<:@=DBFORMAT@:>@],
+ 			   [database format to use: either inode (default) or path]),
+-- 
+2.17.1
+
