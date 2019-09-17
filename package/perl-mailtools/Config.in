@@ -4,4 +4,4 @@ config BR2_PACKAGE_PERL_MAILTOOLS
 	help
 	  Various ancient e-mail related modules.
 
-	  https://metacpan.org/release/MailTools
+	  http://perl.overmeer.net/CPAN/
