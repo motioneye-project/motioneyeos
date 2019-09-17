@@ -722,6 +722,7 @@ F:	package/szip/
 
 N:	Esben Haabendal <esben@haabendal.dk>
 F:	boot/gummiboot/
+F:	package/python-kiwisolver/
 
 N:	Etienne Carriere <etienne.carriere@linaro.org>
 F:	boot/optee-os/
