@@ -87,7 +87,6 @@ else
 LIBGLIB2_CONF_OPTS += -Dlibmount=false
 endif
 
-
 # Purge useless binaries from target
 define LIBGLIB2_REMOVE_DEV_FILES
 	rm -rf $(TARGET_DIR)/usr/lib/glib-2.0
