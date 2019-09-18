@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GRUB2_VERSION = 2.02
+GRUB2_VERSION = 2.04
 GRUB2_SITE = http://ftp.gnu.org/gnu/grub
 GRUB2_SOURCE = grub-$(GRUB2_VERSION).tar.xz
 GRUB2_LICENSE = GPL-3.0+
