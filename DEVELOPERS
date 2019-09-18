@@ -878,6 +878,7 @@ F:	package/4th/
 F:	package/cgilua/
 F:	package/chipmunk/
 F:	package/cog/
+F:	package/collectl/
 F:	package/copas/
 F:	package/coxpcall/
 F:	package/dado/

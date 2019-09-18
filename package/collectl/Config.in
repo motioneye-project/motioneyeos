@@ -1,0 +1,12 @@
+config BR2_PACKAGE_COLLECTL
+	bool "collectl"
+	depends on BR2_USE_MMU # perl
+	select BR2_PACKAGE_PERL # runtime
+	help
+	  Collectl is a performance monitoring and benchmark tool that
+	  tries to do it all. You can choose to monitor any of a broad
+	  set of subsystems which currently include buddyinfo, cpu,
+	  disk, inodes, infiniband, lustre, memory, network, nfs,
+	  processes, quadrics, slabs, sockets and tcp.
+
+	  http://collectl.sourceforge.net/
