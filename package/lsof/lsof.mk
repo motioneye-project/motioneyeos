@@ -4,14 +4,16 @@
 #
 ################################################################################
 
-LSOF_VERSION = 4.91
-LSOF_SOURCE = lsof_$(LSOF_VERSION).tar.bz2
-# Use http mirror since master ftp site access is very draconian
-LSOF_SITE = http://www.mirrorservice.org/sites/lsof.itap.purdue.edu/pub/tools/unix/lsof
+LSOF_VERSION = 4.93.2
+LSOF_SITE = $(call github,lsof-org,lsof,$(LSOF_VERSION))
 LSOF_LICENSE = lsof license
 # License is repeated in each file, this is a relatively small one.
 # It is also defined in 00README, but that contains a lot of other cruft.
 LSOF_LICENSE_FILES = dialects/linux/dproto.h
+
+ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
+LSOF_DEPENDENCIES += libtirpc
+endif
 
 ifeq ($(BR2_USE_WCHAR),)
 define LSOF_CONFIGURE_WCHAR_FIXUPS
@@ -26,13 +28,6 @@ define LSOF_CONFIGURE_LOCALE_FIXUPS
 		$(@D)/machine.h
 endef
 endif
-
-# The .tar.bz2 contains another .tar, which contains the source code.
-define LSOF_EXTRACT_CMDS
-	$(call suitable-extractor,$(LSOF_SOURCE)) $(LSOF_DL_DIR)/$(LSOF_SOURCE) | \
-		$(TAR) -O $(TAR_OPTIONS) - lsof_$(LSOF_VERSION)/lsof_$(LSOF_VERSION)_src.tar | \
-	$(TAR) --strip-components=1 -C $(LSOF_DIR) $(TAR_OPTIONS) -
-endef
 
 define LSOF_CONFIGURE_CMDS
 	(cd $(@D) ; \
