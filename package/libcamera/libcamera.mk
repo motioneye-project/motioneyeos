@@ -5,10 +5,10 @@
 ################################################################################
 
 LIBCAMERA_SITE = https://git.linuxtv.org/libcamera.git
-LIBCAMERA_VERSION = caf25dc5cfd11b965316f02610d49ae3d886716b
+LIBCAMERA_VERSION = 448393f77ec9e37cb807e8e8d35c1a4877d253d4
 LIBCAMERA_SITE_METHOD = git
 LIBCAMERA_DEPENDENCIES = udev
-LIBCAMERA_CONF_OPTS = -Dtests=false -Ddocumentation=false
+LIBCAMERA_CONF_OPTS = -Dtest=false -Ddocumentation=false
 LIBCAMERA_INSTALL_STAGING = yes
 LIBCAMERA_LICENSE = LGPL-2.1+ (library), GPL-2.0+ (utils)
 LIBCAMERA_LICENSE_FILES = \
