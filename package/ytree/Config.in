@@ -1,5 +1,6 @@
 config BR2_PACKAGE_YTREE
 	bool "ytree"
+	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	help
 	  Ytree - a (curses-based) file manager similar to DOS Xtree(tm)
