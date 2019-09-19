@@ -1,8 +1,13 @@
 config BR2_PACKAGE_YTREE
 	bool "ytree"
+	depends on !BR2_TOOLCHAIN_USES_MUSL # re_comp/re_exec
 	depends on BR2_USE_MMU # fork()
 	select BR2_PACKAGE_NCURSES
 	help
 	  Ytree - a (curses-based) file manager similar to DOS Xtree(tm)
 
 	  https://www.han.de/~werner/ytree.html
+
+comment "ytree needs a glibc or uClibc toolchain"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_USES_MUSL
