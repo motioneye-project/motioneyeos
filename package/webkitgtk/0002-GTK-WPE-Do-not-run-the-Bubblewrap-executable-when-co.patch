@@ -1,0 +1,87 @@
+From a725f6fbe6630a980f5ac74d79fd3e18557190bc Mon Sep 17 00:00:00 2001
+From: "aperez@igalia.com"
+ <aperez@igalia.com@268f45cc-cd09-0410-ab3c-d52691b4dbfc>
+Date: Sun, 15 Sep 2019 13:30:01 +0000
+Subject: [PATCH xserver 2/2] [GTK][WPE] Do not run the Bubblewrap executable
+ when configuring for cross-compilation
+ https://bugs.webkit.org/show_bug.cgi?id=201340
+
+Reviewed by Konstantin Tokarev.
+
+* Source/cmake/BubblewrapSandboxChecks.cmake: Do not run the
+Bubblewrap executable when cross-compiling to guess its version.
+Emit a warning instead and trust that valid run-time paths will
+be set using the BWRAP_EXECUTABLE and DBUS_PROXY_EXECUTABLE
+variables. While at it, fix the regular expression used to match
+the version string in the Bubblewrap output when not cross-compiling.
+
+Fetch from: https://bugs.webkit.org/show_bug.cgi?id=201340
+Upstream-Status: Accepted
+Signed-off-by: Adrian Perez de Castro <aperez@igalia.com>
+
+---
+ ChangeLog                                  | 14 ++++++++
+ Source/cmake/BubblewrapSandboxChecks.cmake | 41 ++++++++++++++--------
+ 2 files changed, 41 insertions(+), 14 deletions(-)
+
+diff --git a/Source/cmake/BubblewrapSandboxChecks.cmake b/Source/cmake/BubblewrapSandboxChecks.cmake
+index ac8fbbf3c8e..73cf4ffed35 100644
+--- a/Source/cmake/BubblewrapSandboxChecks.cmake
++++ b/Source/cmake/BubblewrapSandboxChecks.cmake
+@@ -3,20 +3,6 @@ if (ENABLE_BUBBLEWRAP_SANDBOX)
+     if (NOT BWRAP_EXECUTABLE)
+         message(FATAL_ERROR "bwrap executable is needed for ENABLE_BUBBLEWRAP_SANDBOX")
+     endif ()
+-    add_definitions(-DBWRAP_EXECUTABLE="${BWRAP_EXECUTABLE}")
+-
+-    execute_process(
+-        COMMAND "${BWRAP_EXECUTABLE}" --version
+-        RESULT_VARIABLE BWRAP_RET
+-        OUTPUT_VARIABLE BWRAP_OUTPUT
+-    )
+-    if (BWRAP_RET)
+-        message(FATAL_ERROR "Failed to run ${BWRAP_EXECUTABLE}")
+-    endif ()
+-    string(REGEX MATCH "([0-9]+.[0-9]+.[0-9]+)" BWRAP_VERSION "${BWRAP_OUTPUT}")
+-    if (NOT "${BWRAP_VERSION}" VERSION_GREATER_EQUAL "0.3.1")
+-        message(FATAL_ERROR "bwrap must be >= 0.3.1 but ${BWRAP_VERSION} found")
+-    endif ()
+ 
+     find_package(Libseccomp)
+     if (NOT LIBSECCOMP_FOUND)
+@@ -27,5 +13,32 @@ if (ENABLE_BUBBLEWRAP_SANDBOX)
+     if (NOT DBUS_PROXY_EXECUTABLE)
+         message(FATAL_ERROR "xdg-dbus-proxy not found and is needed for ENABLE_BUBBLEWRAP_SANDBOX")
+     endif ()
++
++    if (NOT CMAKE_CROSSCOMPILING)
++        execute_process(
++            COMMAND "${BWRAP_EXECUTABLE}" --version
++            RESULT_VARIABLE BWRAP_RET
++            OUTPUT_VARIABLE BWRAP_OUTPUT
++        )
++        if (BWRAP_RET)
++            message(FATAL_ERROR "Failed to run ${BWRAP_EXECUTABLE}")
++        endif ()
++        string(REGEX MATCH "[0-9]+\\.[0-9]+\\.[0-9]+" BWRAP_VERSION "${BWRAP_OUTPUT}")
++        if (NOT "${BWRAP_VERSION}" VERSION_GREATER_EQUAL "0.3.1")
++            message(FATAL_ERROR "bwrap must be >= 0.3.1 but ${BWRAP_VERSION} found")
++        endif ()
++    elseif (NOT SILENCE_CROSS_COMPILATION_NOTICES)
++        message(NOTICE
++            "***--------------------------------------------------------***\n"
++            "***  Cannot check Bubblewrap version when cross-compiling. ***\n"
++            "***  The target system MUST have version 0.3.1 or newer.   ***\n"
++            "***  Use the BWRAP_EXECUTABLE and DBUS_PROXY_EXECUTABLE    ***\n"
++            "***  variables to set the run-time paths for the 'bwrap'   ***\n"
++            "***  and 'xdg-dbus-proxy' programs.                        ***\n"
++            "***--------------------------------------------------------***"
++        )
++    endif ()
++
++    add_definitions(-DBWRAP_EXECUTABLE="${BWRAP_EXECUTABLE}")
+     add_definitions(-DDBUS_PROXY_EXECUTABLE="${DBUS_PROXY_EXECUTABLE}")
+ endif ()
+-- 
+2.23.0
+
