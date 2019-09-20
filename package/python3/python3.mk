@@ -26,8 +26,7 @@ HOST_PYTHON3_CONF_OPTS += \
 	--enable-unicodedata \
 	--disable-test-modules \
 	--disable-idle3 \
-	--disable-ossaudiodev \
-	--disable-openssl
+	--disable-ossaudiodev
 
 # Make sure that LD_LIBRARY_PATH overrides -rpath.
 # This is needed because libpython may be installed at the same time that
@@ -41,6 +40,12 @@ HOST_PYTHON3_CONF_ENV += \
 PYTHON3_DEPENDENCIES = host-python3 libffi
 
 HOST_PYTHON3_DEPENDENCIES = host-expat host-zlib host-libffi
+
+ifeq ($(BR2_PACKAGE_HOST_PYTHON3_SSL),y)
+HOST_PYTHON3_DEPENDENCIES += host-openssl
+else
+HOST_PYTHON3_CONF_OPTS += --disable-openssl
+endif
 
 PYTHON3_INSTALL_STAGING = YES
 
