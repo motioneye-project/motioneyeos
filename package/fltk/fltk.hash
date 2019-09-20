@@ -1,4 +1,5 @@
-# From http://www.fltk.org/software.php?VERSION=1.3.4
-md5 d7fcd27ab928648e1a1366dd2e273970 fltk-1.3.4-1-source.tar.gz
+# From http://www.fltk.org/software.php?VERSION=1.3.5
+md5 e85017defd5a03ae82e634311db87bbf fltk-1.3.5-source.tar.gz
 # Locally generated
-sha256 7fb2c8882433ce694e6900c94fda505e8f4ed3fa9c7e597007098a33b85c53f4  fltk-1.3.4-1-source.tar.gz
+sha256 8729b2a055f38c1636ba20f749de0853384c1d3e9d1a6b8d4d1305143e115702  fltk-1.3.5-source.tar.gz
+sha256 57dd381e713fb309fb7dd85c3c38b274557ecb333475d0f1d65a5f06ad85c9a6  COPYING
