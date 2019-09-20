@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-WPEWEBKIT_VERSION = 2.24.3
+WPEWEBKIT_VERSION = 2.26.0
 WPEWEBKIT_SITE = http://www.wpewebkit.org/releases
 WPEWEBKIT_SOURCE = wpewebkit-$(WPEWEBKIT_VERSION).tar.xz
 WPEWEBKIT_INSTALL_STAGING = YES
@@ -18,7 +18,9 @@ WPEWEBKIT_DEPENDENCIES = host-gperf host-python host-ruby \
 
 WPEWEBKIT_CONF_OPTS = \
 	-DPORT=WPE \
+	-DENABLE_ACCESSIBILITY=OFF \
 	-DENABLE_API_TESTS=OFF \
+	-DENABLE_BUBBLEWRAP_SANDBOX=OFF \
 	-DENABLE_MINIBROWSER=OFF
 
 ifeq ($(BR2_PACKAGE_WPEWEBKIT_MULTIMEDIA),y)
