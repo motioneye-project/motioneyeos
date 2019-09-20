@@ -1,7 +1,7 @@
-# From https://github.com/Igalia/cog/releases/tag/v0.3.1
-md5 65bb078aad576b8402f973234e86cc82 cog-0.3.1.tar.xz
-sha1 d73b060618f342accb12db71a7578940c2243d4c cog-0.3.1.tar.xz
-sha256 ca7eae333cc02b947ec3d657a2090f01a9b08f9fabb855a585472edafbd9e7eb cog-0.3.1.tar.xz
+# From https://wpewebkit.org/releases/cog-0.4.0.tar.xz.sums
+md5 75a0838ee6c81bb8df1b254f525440a6 cog-0.4.0.tar.xz
+sha1 284d2a641e6269b296057918602c8c94eb831527 cog-0.4.0.tar.xz
+sha256 e9c13a51232434b7340a419b1e6f59c40c582cd80c8e60bd9ec7de16c904fc03 cog-0.4.0.tar.xz
 
 # Hashes for license files:
 sha256 e6c42d93c68b292bcccf6d2ec3e13da85df90b718ba27c2c2a01053a9d009252  COPYING
