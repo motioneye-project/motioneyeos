@@ -83,7 +83,6 @@ MESA3D_DEPENDENCIES += \
 	xorgproto \
 	libxcb
 MESA3D_CONF_OPTS += --enable-glx --disable-mangling
-# quote from mesa3d configure "Building xa requires at least one non swrast gallium driver."
 ifeq ($(BR2_PACKAGE_MESA3D_NEEDS_XA),y)
 MESA3D_CONF_OPTS += --enable-xa
 else
