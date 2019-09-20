@@ -1,0 +1,5 @@
+# From https://github.com/flatpak/xdg-dbus-proxy/releases/tag/0.1.2
+sha256 1749d6f9f46dcc9edc87725641cf56cf91dcad1b01707891ea0850c1000c520f xdg-dbus-proxy-0.1.2.tar.xz
+
+# Hash for license files:
+sha256 dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551 COPYING

@@ -91,6 +91,7 @@ F:	package/webkitgtk/
 F:	package/woff2/
 F:	package/wpebackend-fdo/
 F:	package/wpewebkit/
+F:	package/xdg-dbus-proxy/
 
 N:	Adrien Gallouët <adrien@gallouet.fr>
 F:	package/bird/

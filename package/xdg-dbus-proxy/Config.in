@@ -1,0 +1,14 @@
+config BR2_PACKAGE_XDG_DBUS_PROXY
+	bool "xdg-dbus-proxy"
+	depends on BR2_USE_WCHAR # libglib2 -> gettext
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
+	depends on BR2_USE_MMU # libglib2
+	select BR2_PACKAGE_LIBGLIB2
+	help
+	  Filtering proxy for D-Bus connections.
+
+	  https://github.com/flatpak/xdg-dbus-proxy
+
+comment "xdg-dbus-proxy needs a toolchain w/ wchar, threads"
+	depends on BR2_USE_MMU
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
