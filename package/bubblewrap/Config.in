@@ -1,0 +1,13 @@
+config BR2_PACKAGE_BUBBLEWRAP
+	bool "bubblewrap"
+	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # TEMP_FAILURE_RETRY
+	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_LIBCAP
+	help
+	  Unprivileged sandbox tool based on Linux namespaces.
+
+	  https://github.com/projectatomic/bubblewrap
+
+comment "bubblewrap needs a glibc or uclibc toolchain"
+	depends on !(BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC)
+	depends on BR2_USE_MMU

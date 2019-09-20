@@ -81,6 +81,7 @@ F:	package/jack1/
 
 N:	Adrian Perez de Castro <aperez@igalia.com>
 F:	package/brotli/
+F:	package/bubblewrap/
 F:	package/cog/
 F:	package/libepoxy/
 F:	package/libwpe/
