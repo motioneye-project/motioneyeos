@@ -356,6 +356,7 @@ endmenu
 
 menu "Virtual file systems"
 	source "package/kodi-vfs-rar/Config.in"
+	source "package/kodi-vfs-sftp/Config.in"
 endmenu
 
 menu "Visualisations"
