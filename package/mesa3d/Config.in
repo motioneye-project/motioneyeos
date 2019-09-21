@@ -78,8 +78,7 @@ config BR2_PACKAGE_MESA3D_NEEDS_XA
 	bool
 
 # Quote from mesa3d meson.build: "kmsro driver requires one or more
-# renderonly drivers (vc4, etnaviv, freedreno)". But only vc4 support
-# is available by using the (deprecated) autotools build system.
+# renderonly drivers (vc4, etnaviv, freedreno)".
 config BR2_PACKAGE_MESA3D_GALLIUM_KMSRO
 	bool
 
