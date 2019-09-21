@@ -1,0 +1,5 @@
+# Locally computed
+sha256 09a16bf0be13c7d9ed43c6608f662374cb3b8b35c05492ce1117f58270d8d005  kodi-vfs-rar-60f92ff28ee6c94211b628990696c60518bffcf6.tar.gz
+# License files
+sha256 e0c2f13c3a78c8d2b91cb846b8a13fb650fcc88c0630e38ce9c0b7c34631d1cc  lib/UnrarXLib/license.txt
+sha256 2ddada473db917f5d0ed191d8b571aa04af8926807f61398e602b971eaf5ccb7  src/RarManager.h

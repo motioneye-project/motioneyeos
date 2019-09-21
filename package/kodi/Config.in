@@ -354,6 +354,10 @@ menu "Skins"
 	source "package/kodi-skin-confluence/Config.in"
 endmenu
 
+menu "Virtual file systems"
+	source "package/kodi-vfs-rar/Config.in"
+endmenu
+
 menu "Visualisations"
 	source "package/kodi-visualisation-fishbmc/Config.in"
 	source "package/kodi-visualisation-goom/Config.in"
