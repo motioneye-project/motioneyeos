@@ -225,6 +225,7 @@ F:	package/sqlcipher/
 F:	package/stress/
 
 N:	Asaf Kahlon <asafka7@gmail.com>
+F:	package/collectd/
 F:	package/libuv/
 F:	package/python*
 F:	package/spdlog/
