@@ -305,6 +305,7 @@ F:	package/flac/
 F:	package/freeswitch/
 F:	package/freeswitch-mod-bcg729/
 F:	package/freetype/
+F:	package/fstrcmp/
 F:	package/ghostscript/
 F:	package/giflib/
 F:	package/gli/
