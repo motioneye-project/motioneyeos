@@ -1,6 +1,0 @@
-config BR2_PACKAGE_KODI_VISUALISATION_WAVEFORHUE
-	bool "kodi-visualisation-waveforhue"
-	help
-	  WaveForHue visualiser for Kodi
-
-	  https://github.com/notspiff/visualization.waveforhue
