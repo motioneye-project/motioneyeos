@@ -103,6 +103,13 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_KMSRO
 comment "Gallium KMSRO needs one or more renderonly drivers"
 	depends on !BR2_PACKAGE_MESA3D_GALLIUM_KMSRO
 
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_LIMA
+	bool "Gallium lima driver"
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_MESA3D_GALLIUM_KMSRO
+	help
+	  Mesa driver for ARM Mali Utgard GPUs.
+
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
 	bool "Gallium nouveau driver"
 	depends on BR2_i386 || BR2_x86_64
