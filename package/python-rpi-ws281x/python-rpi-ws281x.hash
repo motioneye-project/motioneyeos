@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/rpi_ws281x/json
+md5	7914013f6e0ee17ce23d51622d60761d  rpi_ws281x-4.2.2.tar.gz
+sha256	d06cd31217dec40d715a3a07ccb2b4b0b0719527c5aa020cbdd77d0c0b31d113  rpi_ws281x-4.2.2.tar.gz
+# Locally computed sha256 checksums
+sha256	7bbf6337c1eee7169579e6acd398f31ea274dfa3a1689ab7e654ca3585d5a8a9  LICENSE
+sha256	7bbf6337c1eee7169579e6acd398f31ea274dfa3a1689ab7e654ca3585d5a8a9  lib/LICENSE
