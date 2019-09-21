@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_KODI_SCREENSAVER_PLANESTATE
+	bool "kodi-screensaver-planestate package was removed"
+	select BR2_LEGACY
+	help
+	  This package is incompatible with Kodi 18.x.
+
 config BR2_PACKAGE_KODI_VISUALISATION_WAVEFORHUE
 	bool "kodi-visualisation-waveforhue package was removed"
 	select BR2_LEGACY
