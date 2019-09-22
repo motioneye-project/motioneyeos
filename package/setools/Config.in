@@ -1,6 +1,5 @@
 config BR2_PACKAGE_SETOOLS
 	bool "setools"
-	depends on !BR2_arc # arc: libselinux not available
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_WCHAR
@@ -22,6 +21,6 @@ config BR2_PACKAGE_SETOOLS
 	  https://github.com/TresysTechnology/setools
 
 comment "setools needs a toolchain w/ threads, C++, wchar, dynamic library"
-	depends on BR2_USE_MMU && !BR2_arc
+	depends on BR2_USE_MMU
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS || \
 		!BR2_USE_WCHAR || !BR2_INSTALL_LIBSTDCPP
