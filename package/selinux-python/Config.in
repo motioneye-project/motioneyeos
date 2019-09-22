@@ -19,7 +19,6 @@ config BR2_PACKAGE_SELINUX_PYTHON_AUDIT2ALLOW
 	depends on BR2_USE_MMU # sepolgen
 	depends on BR2_TOOLCHAIN_HAS_THREADS # sepolgen, checkpolicy
 	depends on !BR2_STATIC_LIBS # sepolgen
-	depends on BR2_TOOLCHAIN_USES_GLIBC # checkpolicy
 	depends on !BR2_arc # checkpolicy
 	select BR2_PACKAGE_CHECKPOLICY
 	select BR2_PACKAGE_SELINUX_PYTHON_SEPOLGEN
@@ -33,7 +32,7 @@ config BR2_PACKAGE_SELINUX_PYTHON_AUDIT2ALLOW
 	  audit2why - translates SELinux audit messages into a
 	  description of why the access was denied (audit2allow -w)
 
-comment "audit2allow needs a glibc toolchain w/ wchar, threads, dynamic library"
+comment "audit2allow needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on !BR2_arc
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
