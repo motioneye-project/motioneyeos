@@ -577,7 +577,6 @@ F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/policycoreutils/
-F:	package/ustr/
 
 N:	Corentin Guillevic <corentin.guillevic@smile.fr>
 F:	package/libloki/

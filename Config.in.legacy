@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_USTR
+	bool "ustr package removed"
+	select BR2_LEGACY
+	help
+	  The 'ustr' package was only used by SELinux libsemanage, but
+	  since SELinux 2.7, ustr is no longer used. Therefore, we
+	  removed this package from Buildroot.
+
 config BR2_PACKAGE_KODI_SCREENSAVER_PLANESTATE
 	bool "kodi-screensaver-planestate package was removed"
 	select BR2_LEGACY
