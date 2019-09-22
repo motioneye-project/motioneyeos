@@ -3,7 +3,6 @@ config BR2_PACKAGE_REFPOLICY
 	depends on BR2_TOOLCHAIN_HAS_THREADS # policycoreutils
 	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS # policycoreutils
 	depends on !BR2_STATIC_LIBS # policycoreutils
-	depends on !BR2_arc # policycoreutils
 	select BR2_PACKAGE_POLICYCOREUTILS
 	select BR2_PACKAGE_BUSYBOX_SELINUX if BR2_PACKAGE_BUSYBOX
 	help
@@ -28,7 +27,6 @@ config BR2_PACKAGE_REFPOLICY
 	  https://github.com/TresysTechnology/refpolicy
 
 comment "refpolicy needs a toolchain w/ threads, dynamic library"
-	depends on !BR2_arc
 	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
