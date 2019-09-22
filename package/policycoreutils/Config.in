@@ -1,5 +1,4 @@
 comment "policycoreutils needs a toolchain w/ threads, dynamic library"
-	depends on !BR2_arc
 	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
 
@@ -8,7 +7,6 @@ config BR2_PACKAGE_POLICYCOREUTILS
 	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS # libsemanage
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libsemanage
 	depends on !BR2_STATIC_LIBS #libsemanage
-	depends on !BR2_arc # libsemanage
 	select BR2_PACKAGE_LIBSEMANAGE
 	select BR2_PACKAGE_LIBCAP_NG
 	help
