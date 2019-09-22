@@ -1,6 +1,5 @@
 config BR2_PACKAGE_RESTORECOND
 	bool "restorecond"
-	depends on !BR2_arc
 	depends on BR2_USE_MMU # libglib2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib2
@@ -18,6 +17,5 @@ config BR2_PACKAGE_RESTORECOND
 
 comment "restorecond needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_arc
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
 		BR2_STATIC_LIBS
