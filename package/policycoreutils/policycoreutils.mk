@@ -64,15 +64,14 @@ HOST_POLICYCOREUTILS_DEPENDENCIES = host-libsemanage
 # Undefining _FILE_OFFSET_BITS here because of a "bug" with glibc fts.h
 # large file support.
 # See https://bugzilla.redhat.com/show_bug.cgi?id=574992 for more information
-# We need to pass DESTDIR at build time because it's used by
-# policycoreutils build system to find headers and libraries.
 # We also need to pass PREFIX because it defaults to $(DESTDIR)/usr
 HOST_POLICYCOREUTILS_MAKE_OPTS = \
 	$(HOST_CONFIGURE_OPTS) \
 	CFLAGS="$(HOST_CFLAGS) -U_FILE_OFFSET_BITS" \
 	CPPFLAGS="$(HOST_CPPFLAGS) -U_FILE_OFFSET_BITS" \
-	DESTDIR=$(HOST_DIR) \
-	PREFIX=$(HOST_DIR)
+	PREFIX=$(HOST_DIR) \
+	ETCDIR=$(HOST_DIR)/etc \
+	SBINDIR=$(HOST_DIR)/sbin
 
 # Note: We are only building the programs required by the refpolicy build
 HOST_POLICYCOREUTILS_MAKE_DIRS = \
