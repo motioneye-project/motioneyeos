@@ -8,6 +8,8 @@ AUDIT_VERSION = 2.8.5
 AUDIT_SITE = http://people.redhat.com/sgrubb/audit
 AUDIT_LICENSE = GPL-2.0+ (programs), LGPL-2.1+ (libraries)
 AUDIT_LICENSE_FILES = COPYING COPYING.LIB
+# 0002-Add-substitue-functions-for-strndupa-rawmemchr.patch
+AUDIT_AUTORECONF = YES
 
 AUDIT_INSTALL_STAGING = YES
 
