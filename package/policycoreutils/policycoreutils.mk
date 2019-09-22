@@ -60,8 +60,7 @@ define POLICYCOREUTILS_INSTALL_TARGET_CMDS
 	)
 endef
 
-HOST_POLICYCOREUTILS_DEPENDENCIES = \
-	host-libsemanage host-setools
+HOST_POLICYCOREUTILS_DEPENDENCIES = host-libsemanage
 
 # Undefining _FILE_OFFSET_BITS here because of a "bug" with glibc fts.h
 # large file support.
