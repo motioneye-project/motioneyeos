@@ -2304,6 +2304,7 @@ F:	package/monit/
 F:	package/mpdecimal/
 F:	package/msmtp/
 F:	package/musl/
+F:	package/musl-fts/
 F:	package/ne10/
 F:	package/pkg-python.mk
 F:	package/pkg-autotools.mk
