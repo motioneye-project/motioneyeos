@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ARGUS_VERSION = 3.0.8
+ARGUS_VERSION = 3.0.8.2
 ARGUS_SITE = http://qosient.com/argus/src
 ARGUS_DEPENDENCIES = libpcap
 ARGUS_CONF_ENV = arg_cv_sys_errlist=yes
