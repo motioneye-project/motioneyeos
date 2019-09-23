@@ -1309,9 +1309,6 @@ F:	package/python-pygame/
 N:	Julien Corjon <corjon.j@ecagroup.com>
 F:	package/qt5/
 
-N:	Julien Floret <julien.floret@6wind.com>
-F:	package/lldpd/
-
 N:	Julien Grossholtz <julien.grossholtz@openest.io>
 F:	package/paho-mqtt-c
 
