@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SDL2_GFX_VERSION = 1.0.1
+SDL2_GFX_VERSION = 1.0.4
 SDL2_GFX_SOURCE = SDL2_gfx-$(SDL2_GFX_VERSION).tar.gz
 SDL2_GFX_SITE = http://www.ferzkopp.net/Software/SDL2_gfx
 SDL2_GFX_LICENSE = Zlib
