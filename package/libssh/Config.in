@@ -3,8 +3,7 @@ config BR2_PACKAGE_LIBSSH
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	# Either OpenSSL or libgcrypt are mandatory
-	select BR2_PACKAGE_OPENSSL if !BR2_PACKAGE_LIBGCRYPT
+	select BR2_PACKAGE_OPENSSL if !(BR2_PACKAGE_MBEDTLS || BR2_PACKAGE_LIBGCRYPT)
 	help
 	  libssh is a multiplatform C library implementing the SSHv2
 	  and SSHv1 protocol on client and server side. With libssh,
@@ -19,6 +18,25 @@ config BR2_PACKAGE_LIBSSH_SERVER
 	bool "server"
 	help
 	  Enable libssh server support
+
+choice
+	prompt "Crypto Backend"
+	help
+	  Select crypto library to be used in libssh.
+
+config BR2_PACKAGE_LIBSSH_MBEDTLS
+	bool "mbedtls"
+	depends on BR2_PACKAGE_MBEDTLS
+
+config BR2_PACKAGE_LIBSSH_LIBGCRYPT
+	bool "gcrypt"
+	depends on BR2_PACKAGE_LIBGCRYPT
+
+config BR2_PACKAGE_LIBSSH_OPENSSL
+	bool "openssl"
+	depends on BR2_PACKAGE_OPENSSL
+
+endchoice
 
 endif
 
