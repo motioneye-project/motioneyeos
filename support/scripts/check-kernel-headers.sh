@@ -9,6 +9,15 @@ HDR_M="${HDR_VER%%.*}"
 HDR_V="${HDR_VER#*.}"
 HDR_m="${HDR_V%%.*}"
 
+# Exit on any error, so we don't try to run an unexisting program if the
+# compilation fails.
+set -e
+
+# Set the clean-up trap in advance to prevent a race condition in which we
+# create the file but get a SIGTERM before setting it. Notice that we don't
+# need to care about EXEC being empty, since 'rm -f ""' does nothing.
+trap 'rm -f "${EXEC}"' EXIT
+
 EXEC="$(mktemp -p "${BUILDDIR}" -t .check-headers.XXXXXX)"
 
 # We do not want to account for the patch-level, since headers are
@@ -37,6 +46,3 @@ int main(int argc __attribute__((unused)),
 _EOF_
 
 "${EXEC}"
-ret=${?}
-rm -f "${EXEC}"
-exit ${ret}
