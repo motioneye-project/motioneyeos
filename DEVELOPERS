@@ -2183,6 +2183,9 @@ F:	package/gtest/
 F:	package/mtdev/
 F:	package/mtdev2tuio/
 
+N:	Stephan Hoffmann <stephan.hoffmann@ext.grandcentrix.net>
+F:	package/libhttpserver/
+
 N:	Steve Calfee <stevecalfee@gmail.com>
 F:	package/python-pymysql/
 F:	package/python-pyratemp/
