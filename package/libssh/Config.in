@@ -13,6 +13,15 @@ config BR2_PACKAGE_LIBSSH
 
 	  http://www.libssh.org/
 
+if BR2_PACKAGE_LIBSSH
+
+config BR2_PACKAGE_LIBSSH_SERVER
+	bool "server"
+	help
+	  Enable libssh server support
+
+endif
+
 comment "libssh needs a toolchain w/ dynamic library, threads"
 	depends on BR2_USE_MMU
 	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
