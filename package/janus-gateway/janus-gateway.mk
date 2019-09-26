@@ -117,7 +117,4 @@ else
 JANUS_GATEWAY_CONF_OPTS += --disable-websockets
 endif
 
-# Parallel build broken
-JANUS_GATEWAY_MAKE = $(MAKE1)
-
 $(eval $(autotools-package))
