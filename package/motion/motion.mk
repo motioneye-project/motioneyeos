@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MOTION_VERSION = release-4.2.2
+MOTION_VERSION = be0838067d8d926b5ffaaf595085f0c5f147a302
 MOTION_SITE = $(call github,motion-project,motion,$(MOTION_VERSION))
 MOTION_AUTORECONF = YES
 MOTION_CONF_OPTS = --without-pgsql \
