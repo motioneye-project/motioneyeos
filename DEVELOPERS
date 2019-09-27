@@ -2438,6 +2438,8 @@ F:	package/zisofs-tools/
 F:	support/download/
 
 N:	Yegor Yefremov <yegorslists@googlemail.com>
+F:	configs/beaglebone_defconfig
+F:	configs/beaglebone_qt5_defconfig
 F:	package/acl/
 F:	package/attr/
 F:	package/bluez_utils/
