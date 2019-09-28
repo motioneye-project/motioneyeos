@@ -219,6 +219,12 @@ BR2_ROOTFS_OVERLAY=$(BR2_EXTERNAL_BAR_42_PATH)/board/<boardname>/overlay/
 BR2_LINUX_KERNEL_CUSTOM_CONFIG_FILE=$(BR2_EXTERNAL_BAR_42_PATH)/board/<boardname>/kernel.config
 ----
 
+===== Additional Linux kernel extensions
+
+Additional Linux kernel extensions (see xref:linux-kernel-ext[]) can
+be added by storing them in the `linux/` directory at the root of a
+br2-external tree.
+
 ===== Example layout
 
 Here is an example layout using all features of br2-external (the sample
@@ -314,6 +320,14 @@ illustration, of course):
   |     |TOOLCHAIN_EXTERNAL_MINE_SOURCE = my-toolchain.tar.gz
   |     |$(eval $(toolchain-external-package))
   |     `----
+  |
+  |- linux/Config.ext.in
+  |     |config BR2_LINUX_KERNEL_EXT_EXAMPLE_DRIVER
+  |     |    bool "example-external-driver"
+  |     |    help
+  |     |      Example external driver
+  |     |---
+  |- linux/linux-ext-example-driver.mk
   |
   |- configs/my-board_defconfig
   |     |BR2_GLOBAL_PATCH_DIR="$(BR2_EXTERNAL_BAR_42_PATH)/patches/"
