@@ -50,6 +50,13 @@ else
 BRLTTY_CONF_OPTS += --without-espeak
 endif
 
+ifeq ($(BR2_PACKAGE_EXPAT),y)
+BRLTTY_DEPENDENCIES += expat
+BRLTTY_CONF_OPTS += --enable-expat
+else
+BRLTTY_CONF_OPTS += --disable-expat
+endif
+
 ifeq ($(BR2_PACKAGE_FLITE),y)
 BRLTTY_DEPENDENCIES += flite
 BRLTTY_CONF_OPTS += --with-flite=$(STAGING_DIR)/usr
