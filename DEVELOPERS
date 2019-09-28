@@ -2118,7 +2118,9 @@ F:	configs/orangepi_zero_defconfig
 F:	configs/solidrun_macchiatobin_mainline_defconfig
 F:	configs/solidrun_macchiatobin_marvell_defconfig
 F:	package/armbian-firmware/
+F:	package/hostapd/
 F:	package/rtl8189fs/
+F:	package/wpa_supplicant/
 F:	package/xr819-xradio/
 
 N:	Sergio Prado <sergio.prado@e-labworks.com>
