@@ -11,6 +11,8 @@ solve this, we simply disable the PIE flags.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Signed-off-by: Olivier Schonken <olivier.schonken@gmail.com>
+[Fabrice: updated for 2.3.0]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  Makedefs.in | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
@@ -20,14 +22,14 @@ index 3afef0a..299b297 100644
 --- a/Makedefs.in
 +++ b/Makedefs.in
 @@ -148,7 +148,7 @@ IPPFIND_BIN	=	@IPPFIND_BIN@
- IPPFIND_MAN	=	@IPPFIND_MAN@
- LDFLAGS		=	-L../cgi-bin -L../cups -L../filter -L../ppdc \
- 			-L../scheduler @LDARCHFLAGS@ \
--			@LDFLAGS@ @RELROFLAGS@ @PIEFLAGS@ $(OPTIM)
-+			@LDFLAGS@ @RELROFLAGS@ $(OPTIM)
- LINKCUPS	=	@LINKCUPS@ $(LIBGSSAPI) $(DNSSDLIBS) $(SSLLIBS) $(LIBZ)
- LINKCUPSIMAGE	=	@LINKCUPSIMAGE@
- LIBS		=	$(LINKCUPS) $(COMMONLIBS)
+ 			$(ONDEMANDFLAGS) $(OPTIONS)
+ ALL_DSOFLAGS	=	-L../cups @ARCHFLAGS@ @RELROFLAGS@ $(DSOFLAGS) $(OPTIM)
+ ALL_LDFLAGS	=	-L../cups @LDARCHFLAGS@ @RELROFLAGS@ $(LDFLAGS)  \
+-			@PIEFLAGS@ $(OPTIM)
++			$(OPTIM)
+ ARCHFLAGS	=	@ARCHFLAGS@
+ ARFLAGS		=	@ARFLAGS@
+ BACKLIBS	=	@BACKLIBS@
 -- 
 2.7.4
 

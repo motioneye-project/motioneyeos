@@ -1,3 +1,4 @@
 # Locally calculated:
-sha256 0f61ab449e4748a24c6ab355b481ff7691247a140d327b2b7526fce34b7f9aa8  cups-2.2.12-source.tar.gz
-sha256 6e0e0ffbde118aae709f7ef65590de9071e8b2cd322f84fd645c6b64f3cc452c  LICENSE.txt
+sha256 acaf0229cf008ea8f06353ffd1bbd62d71dbe88990dd3330650ef87edb95a1a5  cups-2.3.0-source.tar.gz
+sha256 cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
+sha256 a5d616e6322a9cb1a971e18765025edfca4f3cd9c0eafc32d6d2eb4b8c8787b5  NOTICE
