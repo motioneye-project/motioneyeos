@@ -32,7 +32,9 @@ source ${CONF}
 
 
 set_current_date_http() {
-    date_str=$(curl -v -s -m ${DATE_TIMEOUT} -X GET http://${DATE_HOST} 2>&1 | grep Date | sed -e 's/< Date: //')
+    curl_args="-v -s -m ${DATE_TIMEOUT} -H \"Cache-Control: no-cache\" -X GET"
+    url="http://${DATE_HOST}?_=${RANDOM}"
+    date_str=$(curl ${curl_args} ${url} 2>&1 | grep Date | sed -e 's/< Date: //')
     if [[ -n "${date_str}" ]]; then
         ${PROG_DATE} -u -D "%a, %d %b %Y %H:%M:%S" -s "${date_str}" > /dev/null
         logger -t date "current system date/time set to $(date) via HTTP"
@@ -101,7 +103,7 @@ start_ntp() {
 
 stop_http() {
     msg_begin "Stopping date updater"
-    ps | grep S60date | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    ps | grep S50date | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     test $? == 0 && msg_done || msg_fail
 }
 
