@@ -2,7 +2,6 @@
 
 PROG_DATE="/bin/date"
 PROG_NTPD="/usr/sbin/ntpd"
-PROG_NTPDATE="/usr/bin/ntpdate"
 
 SYS_CONF="/etc/date.conf"
 BOOT_CONF="/boot/date.conf"
@@ -46,7 +45,7 @@ set_current_date_http() {
 }
 
 set_current_date_ntp() {
-    cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2 | xargs ${PROG_NTPDATE} -t ${DATE_TIMEOUT} -s
+    ${PROG_NTPD} -gq &>/dev/null
     if [[ $? == 0 ]]; then
         logger -t date "current system date/time set to $(date) via NTP"
         return 0
