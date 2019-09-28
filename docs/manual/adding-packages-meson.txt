@@ -109,6 +109,13 @@ will therefore only use a few of them.
   +cross-compile.conf+ file +c_link_args+ and +cpp_link_args+ properties. By
   default, the value of +TARGET_LDFLAGS+.
 
+* +FOO_MESON_EXTRA_BINARIES+, to specify a space-separated list of programs
+  to add to the `[binaries]` section of the meson `cross-compilation.conf`
+  configuration file. The format is `program-name='/path/to/program'`, with
+  no space around the +=+ sign, and with the path of the program between
+  single quotes. By default, empty. Note that Buildroot already sets the
+  correct values for +c+, +cpp+, +ar+, +strip+, and +pkgconfig+.
+
 * +FOO_NINJA_ENV+, to specify additional environment variables to pass to
   +ninja+, meson companion tool in charge of the build operations. By default,
   empty.

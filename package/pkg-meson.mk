@@ -79,6 +79,9 @@ define $(2)_CONFIGURE_CMDS
 	    -e "s%@TARGET_LDFLAGS@%$$($(2)_MESON_SED_LDFLAGS)%g" \
 	    -e "s%@TARGET_CXXFLAGS@%$$($(2)_MESON_SED_CXXFLAGS)%g" \
 	    -e "s%@HOST_DIR@%$$(HOST_DIR)%g" \
+	    $$(foreach x,$$($(2)_MESON_EXTRA_BINARIES), \
+	        -e "/\(\[binaries\]\)/s:$$$$:\n$$(x):" \
+	    ) \
 	    package/meson/cross-compilation.conf.in \
 	    > $$($$(PKG)_SRCDIR)/build/cross-compilation.conf
 	PATH=$$(BR_PATH) $$($$(PKG)_CONF_ENV) $$(MESON) \
