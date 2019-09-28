@@ -194,6 +194,15 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_SWRAST
 comment "Gallium swrast: Only one swrast provider can be built"
 	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER_SWRAST
 
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_TEGRA
+	bool "Gallium tegra driver"
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_NOUVEAU
+	select BR2_PACKAGE_LIBDRM_NOUVEAU
+	select BR2_PACKAGE_MESA3D_NEEDS_XA
+	help
+	  Adds support for Nvidia Tegra GPUs, requires nouveau.
+
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4
 	bool "Gallium vc4 driver"
 	depends on BR2_arm || BR2_aarch64
