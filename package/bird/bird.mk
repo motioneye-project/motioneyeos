@@ -17,9 +17,7 @@ else
 BIRD_CONF_OPTS += --disable-client
 endif
 
-# BUG: RIP is mandatory for now
 BIRD_PROTOCOLS = \
-	rip \
 	$(if $(BR2_PACKAGE_BIRD_BFD),bfd) \
 	$(if $(BR2_PACKAGE_BIRD_BABEL),babel) \
 	$(if $(BR2_PACKAGE_BIRD_BGP),bgp) \

@@ -67,6 +67,11 @@ config BR2_PACKAGE_BIRD_RADV
 	help
 	  Enable RAdv protocol.
 
+config BR2_PACKAGE_BIRD_RIP
+	bool "rip"
+	help
+	  Enable RIP protocol.
+
 config BR2_PACKAGE_BIRD_STATIC
 	bool "static"
 	help
