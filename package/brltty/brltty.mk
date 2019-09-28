@@ -78,6 +78,16 @@ else
 BRLTTY_CONF_OPTS += --without-curses
 endif
 
+ifeq ($(BR2_PACKAGE_PCRE2_32),y)
+BRLTTY_DEPENDENCIES += pcre2
+BRLTTY_CONF_OPTS += --with-rgx-package
+else ifeq ($(BR2_PACKAGE_PCRE_32),y)
+BRLTTY_DEPENDENCIES += pcre
+BRLTTY_CONF_OPTS += --with-rgx-package
+else
+BRLTTY_CONF_OPTS += --without-rgx-package
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 BRLTTY_DEPENDENCIES += systemd
 BRLTTY_CONF_OPTS += --with-service-package
