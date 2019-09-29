@@ -1,4 +1,4 @@
-From 02ef4599179ead87cc6d154a32acaa6627cbfca2 Mon Sep 17 00:00:00 2001
+From ca69c0d48e65acadccfe65e3adf16c34a744627b Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
 Date: Tue, 10 Oct 2017 19:51:34 +0200
 Subject: [PATCH] Make linker use dummy file when testing libs
@@ -18,10 +18,10 @@ Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/configure b/configure
-index 8348b1f..62e5981 100755
+index 54d755b..64a061a 100755
 --- a/configure
 +++ b/configure
-@@ -227,7 +227,7 @@ trylibs () {
+@@ -230,7 +230,7 @@ trylibs () {
    echo "Checking whether system has $2..." >&3
    shift 2
    if $CC_AUTO $CPPFLAGS_AUTO $CPPFLAGS $CPPFLAGS_POST $CFLAGS_AUTO $CFLAGS $CFLAGS_POST -c -o try$name.o src/sysdeps/try$name.c 2>/dev/null ; then
@@ -30,7 +30,7 @@ index 8348b1f..62e5981 100755
        if test -z "$*" ; then
          rm -f try$name.o
          echo
-@@ -243,7 +243,7 @@ trylibs () {
+@@ -246,7 +246,7 @@ trylibs () {
      else
        echo "  ... yes, with$args" >&3
      fi
@@ -40,5 +40,5 @@ index 8348b1f..62e5981 100755
    else
      echo
 -- 
-2.13.6
+2.17.2
 
