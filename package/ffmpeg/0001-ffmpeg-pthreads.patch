@@ -27,8 +27,8 @@ index c86e578..76523c8 100755
  qsvdec_select="qsv"
  qsvenc_select="qsv"
  vaapi_encode_deps="vaapi"
--v4l2_m2m_deps_any="linux_videodev2_h"
-+v4l2_m2m_deps="linux_videodev2_h pthreads"
+-v4l2_m2m_deps="linux_videodev2_h sem_timedwait"
++v4l2_m2m_deps="linux_videodev2_h sem_timedwait pthreads"
  
  hwupload_cuda_filter_deps="cuda"
  scale_npp_filter_deps="cuda libnpp"
