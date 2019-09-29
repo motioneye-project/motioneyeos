@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XDOTOOL_VERSION = 3.20150503.1
+XDOTOOL_VERSION = 3.20160805.1
 XDOTOOL_SITE = $(call github,jordansissel,xdotool,v$(XDOTOOL_VERSION))
 XDOTOOL_LICENSE = BSD-3-Clause
 XDOTOOL_LICENSE_FILES = COPYRIGHT
