@@ -1,0 +1,23 @@
+build/ac-macros/macosx.m4: workaround AC_RUN_IFELSE
+
+The SVN_LIB_MACHO_ITERATE macro contains an AC_RUN_IFELSE test that
+doesn't work when cross-compiling. However, this macro is related to
+testing Mac OS X APIs, so in the context of Buildroot, we don't care,
+and the test program is not even going to build. So we simply
+workaround this by turning the test into an AC_COMPILE_IFELSE.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+
+Index: b/build/ac-macros/macosx.m4
+===================================================================
+--- a/build/ac-macros/macosx.m4
++++ b/build/ac-macros/macosx.m4
+@@ -24,7 +24,7 @@
+ AC_DEFUN(SVN_LIB_MACHO_ITERATE,
+ [
+   AC_MSG_CHECKING([for Mach-O dynamic module iteration functions])
+-  AC_RUN_IFELSE([AC_LANG_PROGRAM([[
++  AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
+     #include <mach-o/dyld.h>
+     #include <mach-o/loader.h>
+   ]],[[
