@@ -1,3 +1,5 @@
+# From https://bitbucket.org/multicoreware/x265/wiki/Home
+md5 374e6359a00d17fd82195c02c341c861  x265_3.2.tar.gz
 # Locally generated
-sha256 6f785f1c9a42e00a56402da88463bb861c49d9af108be53eb3ef10295f2a59aa  x265_3.1.2.tar.gz
+sha256 364d79bcd56116a9e070fdeb1d9d2aaef1a786b4970163fb56ff0991a183133b  x265_3.2.tar.gz
 sha256 d8afb1bcc7a2cfc603683b168d6987ef0a48e59e0da3693bf55c5d33b67e2b49  COPYING
