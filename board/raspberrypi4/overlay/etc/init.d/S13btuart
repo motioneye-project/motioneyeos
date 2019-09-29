@@ -3,44 +3,50 @@
 SYS_CONF="/etc/bluetooth.conf"
 BOOT_CONF="/boot/bluetooth.conf"
 CONF="/data/etc/bluetooth.conf"
+NO_ON_BOARD_BT="/tmp/.no_on_board_bt"  # used by RPi to explicitly indicate that no on-board BT was detected
 
 
 test -f ${CONF} || test -f ${BOOT_CONF} || test -f ${SYS_CONF} || exit 0
 
-test -d "/proc/device-tree/soc/gpio@7e200000/uart0_pins" || exit 0  # no rpi bluetooth detected
+if ! [ -d "/proc/device-tree/soc/gpio@7e200000/uart0_pins" ]; then
+    touch ${NO_ON_BOARD_BT}
+    exit 0  # no rpi bluetooth detected
+fi
+
+if [[ -f ${CONF} ]] && ! [[ -s ${CONF} ]]; then
+    exit 0  # bluetooth explicitly disabled by empty bluetooth.conf
+fi
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 function start() {
     if [[ "$(cat /proc/device-tree/aliases/uart0)" = "$(cat /proc/device-tree/aliases/serial1)" ]] ; then
-        if [[ "$(wc -c /proc/device-tree/soc/gpio@7e200000/uart0_pins/brcm\,pins | cut -f 1 -d ' ')" = " 16" ]] ; then
-	        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 3000000 flow - &>/dev/null
+        if [[ "$(wc -c /proc/device-tree/soc/gpio@7e200000/uart0_pins/brcm\,pins | cut -f 1 -d ' ')" = "16" ]]; then
+            /usr/bin/hciattach -t 10 /dev/serial1 bcm43xx 3000000 flow - &>/dev/null
         else
-	        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 921600 noflow - &>/dev/null
+            /usr/bin/hciattach -t 10 /dev/serial1 bcm43xx 921600 noflow - &>/dev/null
         fi
     else
-        /usr/bin/hciattach -t5 /dev/serial1 bcm43xx 460800 noflow - &>/dev/null
+        /usr/bin/hciattach -t 10 /dev/serial1 bcm43xx 460800 noflow - &>/dev/null
     fi
 }
 
 case "$1" in
     start)
-        msg_begin "Attaching UART bluetooth modem"
-        # for some reason, sometimes the hciattach command needs to be run twice
-        (start || start) &>/dev/null &
+        msg_begin "Attaching UART bluetooth device"
+        start &>/dev/null &
         msg_background
         ;;
 
     stop)
-        msg_begin "Detaching UART bluetooth modem"
+        msg_begin "Detaching UART bluetooth device"
         killall hciattach &>/dev/null
         test $? == 0 && msg_done || msg_fail
         ;;
 
     *)
-        echo $"Usage: $0 {start}"
+        echo $"Usage: $0 {start|stop}"
         exit 1
 esac
 
 exit $?
-

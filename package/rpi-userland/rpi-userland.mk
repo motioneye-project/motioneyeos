@@ -14,6 +14,13 @@ RPI_USERLAND_CONF_OPTS = -DVMCS_INSTALL_PREFIX=/usr \
 
 RPI_USERLAND_PROVIDES = libegl libgles libopenmax libopenvg
 
+define RPI_USERLAND_INSTALL_LIBFDT_TARGET
+	$(INSTALL) -m 0644 -D \
+		$(@D)/build/lib/libfdt.so \
+		$(TARGET_DIR)/usr/lib/libfdt.so
+endef
+RPI_USERLAND_POST_INSTALL_TARGET_HOOKS += RPI_USERLAND_INSTALL_LIBFDT_TARGET
+
 ifeq ($(BR2_PACKAGE_RPI_USERLAND_HELLO),y)
 
 RPI_USERLAND_CONF_OPTS += -DALL_APPS=ON
@@ -22,9 +29,6 @@ define RPI_USERLAND_EXTRA_LIBS_TARGET
 	$(INSTALL) -m 0644 -D \
 		$(@D)/build/lib/libilclient.so \
 		$(TARGET_DIR)/usr/lib/libilclient.so
-	$(INSTALL) -m 0644 -D \
-		$(@D)/build/lib/libfdt.so \
-		$(TARGET_DIR)/usr/lib/libfdt.so
 endef
 RPI_USERLAND_POST_INSTALL_TARGET_HOOKS += RPI_USERLAND_EXTRA_LIBS_TARGET
 
