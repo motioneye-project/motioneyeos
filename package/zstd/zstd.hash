@@ -1,5 +1,5 @@
 # Locally computed
-sha256 7a6e1dad34054b35e2e847eb3289be8820a5d378228802239852f913c6dcf6a7 zstd-1.4.2.tar.gz
+sha256 5eda3502ecc285c3c92ee0cc8cd002234dee39d539b3f692997a0e80de1d33de zstd-1.4.3.tar.gz
 
 # License files (locally computed as well)
 sha256 2c1a7fa704df8f3a606f6fc010b8b5aaebf403f3aeec339a12048f1ba7331a0b LICENSE
