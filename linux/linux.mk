@@ -525,7 +525,7 @@ include $(sort $(wildcard linux/linux-ext-*.mk))
 
 # Import linux-kernel-extensions from br2-externals
 include $(sort $(wildcard $(foreach ext,$(BR2_EXTERNAL_DIRS), \
-       $(ext)/linux/linux-ext-*.mk)))
+	$(ext)/linux/linux-ext-*.mk)))
 
 LINUX_PATCH_DEPENDENCIES += $(foreach ext,$(LINUX_EXTENSIONS),\
 	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),$(ext)))
