@@ -2,8 +2,7 @@ config BR2_PACKAGE_LJLINENOISE
 	bool "ljlinenoise"
 	# ljsyscall is specifically for LuaJIT, not Lua.
 	depends on BR2_PACKAGE_LUAJIT
-	# run-time dependency only
-	select BR2_PACKAGE_LJSYSCALL
+	select BR2_PACKAGE_LJSYSCALL # runtime
 	help
 	  ljlinenoise is a pure LuaJIT port of linenoise,
 	  a small alternative to readline and libedit.

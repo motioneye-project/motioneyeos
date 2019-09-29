@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SCAPY
+	bool "python-scapy"
+	select BR2_PACKAGE_PYTHON_ZLIB if BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON3_ZLIB if BR2_PACKAGE_PYTHON3
+	help
+	  Scapy: interactive packet manipulation tool.
+
+	  http://www.secdev.org/projects/scapy

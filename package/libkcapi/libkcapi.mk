@@ -4,13 +4,17 @@
 #
 ################################################################################
 
-LIBKCAPI_VERSION = 1.1.3
+LIBKCAPI_VERSION = 1.1.4
 LIBKCAPI_SOURCE = libkcapi-$(LIBKCAPI_VERSION).tar.xz
 LIBKCAPI_SITE = http://www.chronox.de/libkcapi
 LIBKCAPI_AUTORECONF = YES
 LIBKCAPI_INSTALL_STAGING = YES
 LIBKCAPI_LICENSE = BSD-3-Clause (library), BSD-3-Clause or GPL-2.0 (programs)
 LIBKCAPI_LICENSE_FILES = COPYING COPYING.gplv2 COPYING.bsd
+LIBKCAPI_CONF_ENV = \
+	ac_cv_path_DB2PDF="" \
+	ac_cv_path_DB2PS="" \
+	ac_cv_path_XMLTO=""
 
 ifeq ($(BR2_PACKAGE_LIBKCAPI_HASHER),y)
 LIBKCAPI_CONF_OPTS += --enable-kcapi-hasher

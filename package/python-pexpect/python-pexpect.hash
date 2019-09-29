@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pexpect/json, sha256 locally computed
-md5	3694410001a99dff83f0b500a1ca1c95  pexpect-4.2.1.tar.gz
-sha256	3d132465a75b57aa818341c6521392a06cc660feb3988d7f1074f39bd23c9a92  pexpect-4.2.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pexpect/json
+md5	d4f3372965a996238d57d19b95d2e03a  pexpect-4.6.0.tar.gz
+sha256	2a8e88259839571d1251d278476f3eec5db26deb73a70be5ed5dc5435e418aba  pexpect-4.6.0.tar.gz
+# Locally computed sha256 checksums
+sha256	4a483ae1c4dc738a6c8b73feb49074e1835da02ab5aa686f2675029906fa364d  LICENSE

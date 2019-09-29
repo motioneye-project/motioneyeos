@@ -4,4 +4,4 @@ config BR2_PACKAGE_PYTHON_DATEUTIL
 	help
 	  Extensions to the standard Python datetime module.
 
-	  https://dateutil.readthedocs.org
+	  https://dateutil.readthedocs.io

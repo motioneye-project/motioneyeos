@@ -311,15 +311,7 @@ def fixup_config(configfile):
         return False
     # The cs nios2 2017.02 toolchain is affected by binutils PR19405
     if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
-       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
-        return False
-    # The cs nios2 2017.02 toolchain is affected by binutils PR19405
-    if 'BR2_TOOLCHAIN_EXTERNAL_CODESOURCERY_NIOSII=y\n' in configlines and \
        'BR2_PACKAGE_FLANN=y\n' in configlines:
-        return False
-    # or1k affected by binutils PR21464
-    if 'BR2_or1k=y\n' in configlines and \
-       'BR2_PACKAGE_QT_GUI_MODULE=y\n' in configlines:
         return False
 
     with open(configfile, "w+") as configf:
@@ -351,7 +343,7 @@ def gen_config(args):
         configlines += minimalf.readlines()
 
     # Allow hosts with old certificates to download over https
-    configlines.append("BR2_WGET=\"wget --passive-ftp -nd -t 3 --no-check-certificate\"")
+    configlines.append("BR2_WGET=\"wget --passive-ftp -nd -t 3 --no-check-certificate\"\n")
 
     # Amend the configuration with a few things.
     if randint(0, 20) == 0:
@@ -366,6 +358,8 @@ def gen_config(args):
         configlines.append("BR2_STATIC_LIBS=y\n")
     if randint(0, 20) == 0:
         configlines.append("BR2_PACKAGE_PYTHON_PY_ONLY=y\n")
+    if randint(0, 5) == 0:
+        configlines.append("BR2_OPTIMIZE_2=y\n")
 
     # Write out the configuration file
     if not os.path.exists(args.outputdir):

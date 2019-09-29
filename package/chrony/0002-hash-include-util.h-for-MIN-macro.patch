@@ -1,0 +1,28 @@
+From 948ecf84314f78da82e0e2b07b6570ca9cff86c8 Mon Sep 17 00:00:00 2001
+From: Miroslav Lichvar <mlichvar@redhat.com>
+Date: Thu, 20 Sep 2018 15:01:16 +0200
+Subject: [PATCH] hash: include util.h for MIN macro
+
+The hash_intmd5.c file inadvertently relied on the system headers to
+provide the MIN macro, but it is missing with some libc implementations.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@micronovasrl.com>
+---
+ hash_intmd5.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hash_intmd5.c b/hash_intmd5.c
+index 0b60f9b..49da1cf 100644
+--- a/hash_intmd5.c
++++ b/hash_intmd5.c
+@@ -29,6 +29,7 @@
+ #include "sysincl.h"
+ #include "hash.h"
+ #include "memory.h"
++#include "util.h"
+ 
+ #include "md5.c"
+ 
+-- 
+2.17.1
+

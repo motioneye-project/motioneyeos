@@ -1,4 +1,4 @@
-From 7663c856db10274d8dfbf7fb4299d3f76e5847a8 Mon Sep 17 00:00:00 2001
+From 54e7e0bda02099ae9d1c42abed1932ffa8d354e8 Mon Sep 17 00:00:00 2001
 From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
 Date: Tue, 1 May 2018 22:28:52 +0200
 Subject: [PATCH] automake: add subdir-objects option
@@ -15,7 +15,7 @@ Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index b3841ea77b..9a37656ddd 100644
+index 206690b468..dfb4c1c329 100644
 --- a/configure.ac
 +++ b/configure.ac
 @@ -24,7 +24,7 @@ AC_CANONICAL_BUILD
@@ -26,7 +26,7 @@ index b3841ea77b..9a37656ddd 100644
 +AM_INIT_AUTOMAKE(tar-ustar color-tests foreign subdir-objects)
  AC_CONFIG_HEADERS([config.h])
  
- # Disable with "./configure --disable-silent-rules" or "make V=1"
+ AM_SILENT_RULES([yes])
 -- 
-2.14.3
+2.14.4
 

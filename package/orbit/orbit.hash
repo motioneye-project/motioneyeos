@@ -1,2 +1,4 @@
-# Locally calculated
+# computed by luarocks/buildroot
 sha256 91e3c514d5b86918db83666c8889635bb2d50c71d1ab3aeb69c6469c9424089b  orbit-2.2.4-1.src.rock
+sha256 dd7d37caed0f4ee994e9e64ea4ab292dce549bb609412c84fc47ed079275ae98  orbit/doc/us/license.html
+sha256 140134369c1f041abf7d8cd39a5b0c42f8b5e827695ce7c1ef5ca8f0911a0246  orbit/doc/us/license.md

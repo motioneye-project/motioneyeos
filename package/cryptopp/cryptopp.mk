@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-CRYPTOPP_VERSION = 7.0.0
+CRYPTOPP_VERSION = 8.0.0
 CRYPTOPP_SOURCE = cryptopp$(subst .,,$(CRYPTOPP_VERSION)).zip
-CRYPTOPP_SITE = http://cryptopp.com/
+CRYPTOPP_SITE = https://cryptopp.com
 CRYPTOPP_LICENSE = BSL-1.0
 CRYPTOPP_LICENSE_FILES = License.txt
 CRYPTOPP_INSTALL_STAGING = YES

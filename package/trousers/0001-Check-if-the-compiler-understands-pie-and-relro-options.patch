@@ -1,0 +1,214 @@
+From 9abda1bb380bdbef1affaec381742ced394ca118 Mon Sep 17 00:00:00 2001
+From: Lada Trimasova <ltrimas@synopsys.com>
+Date: Mon, 18 Jan 2016 15:58:19 +0300
+Subject: [PATCH] Check if the compiler understands pie and relro options
+
+-pie and -fpie enable the building of position-independent
+executables, and -Wl,-z,relro turns on read-only relocation support in gcc.
+Add checks to ensure that the compiler and linker understand these options.
+
+Signed-off-by: Lada Trimasova <ltrimas@synopsys.com>
+[Bernd: Rebased for version 0.3.14]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac                |  5 +++
+ m4/ax_check_compile_flag.m4 | 72 ++++++++++++++++++++++++++++++++++++
+ m4/ax_check_link_flag.m4    | 71 +++++++++++++++++++++++++++++++++++
+ src/tcsd/Makefile.am        |  4 +-
+ 4 files changed, 150 insertions(+), 2 deletions(-)
+ create mode 100644 m4/ax_check_compile_flag.m4
+ create mode 100644 m4/ax_check_link_flag.m4
+
+diff --git a/configure.in b/configure.in
+index add23dc..9603353 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -12,6 +12,7 @@ TSS_VER_MINOR=3
+ # compute $target
+ AC_CANONICAL_TARGET
+ AM_INIT_AUTOMAKE([foreign subdir-objects 1.6])
++AC_CONFIG_MACRO_DIR([m4])
+ 
+ # Debugging support
+ AC_ARG_ENABLE([debug],
+@@ -383,6 +384,10 @@ elif test x"${prefix}" = x"NONE"; then
+ 	localstatedir="/usr/local/var"
+ fi
+ 
++AX_CHECK_COMPILE_FLAG([-fPIE -DPIE], [PIE_CFLAGS="-fPIE -DPIE"])
++AX_CHECK_LINK_FLAG([-pie], [PIE_LDFLAGS="$PIE_LDFLAGS -pie"])
++AX_CHECK_LINK_FLAG([-Wl,-z,relro], [LDFLAGS="$LDFLAGS -Wl,-z,relro"])
++
+ AC_OUTPUT(dist/tcsd.conf \
+ 	  dist/fedora/trousers.spec \
+ 	  dist/trousers.spec \
+diff --git a/m4/ax_check_compile_flag.m4 b/m4/ax_check_compile_flag.m4
+new file mode 100644
+index 0000000..c3a8d69
+--- /dev/null
++++ b/m4/ax_check_compile_flag.m4
+@@ -0,0 +1,72 @@
++# ===========================================================================
++#   http://www.gnu.org/software/autoconf-archive/ax_check_compile_flag.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_CHECK_COMPILE_FLAG(FLAG, [ACTION-SUCCESS], [ACTION-FAILURE], [EXTRA-FLAGS])
++#
++# DESCRIPTION
++#
++#   Check whether the given FLAG works with the current language's compiler
++#   or gives an error.  (Warnings, however, are ignored)
++#
++#   ACTION-SUCCESS/ACTION-FAILURE are shell commands to execute on
++#   success/failure.
++#
++#   If EXTRA-FLAGS is defined, it is added to the current language's default
++#   flags (e.g. CFLAGS) when the check is done.  The check is thus made with
++#   the flags: "CFLAGS EXTRA-FLAGS FLAG".  This can for example be used to
++#   force the compiler to issue an error when a bad flag is given.
++#
++#   NOTE: Implementation based on AX_CFLAGS_GCC_OPTION. Please keep this
++#   macro in sync with AX_CHECK_{PREPROC,LINK}_FLAG.
++#
++# LICENSE
++#
++#   Copyright (c) 2008 Guido U. Draheim <guidod@gmx.de>
++#   Copyright (c) 2011 Maarten Bosmans <mkbosmans@gmail.com>
++#
++#   This program is free software: you can redistribute it and/or modify it
++#   under the terms of the GNU General Public License as published by the
++#   Free Software Foundation, either version 3 of the License, or (at your
++#   option) any later version.
++#
++#   This program is distributed in the hope that it will be useful, but
++#   WITHOUT ANY WARRANTY; without even the implied warranty of
++#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
++#   Public License for more details.
++#
++#   You should have received a copy of the GNU General Public License along
++#   with this program. If not, see <http://www.gnu.org/licenses/>.
++#
++#   As a special exception, the respective Autoconf Macro's copyright owner
++#   gives unlimited permission to copy, distribute and modify the configure
++#   scripts that are the output of Autoconf when processing the Macro. You
++#   need not follow the terms of the GNU General Public License when using
++#   or distributing such scripts, even though portions of the text of the
++#   Macro appear in them. The GNU General Public License (GPL) does govern
++#   all other use of the material that constitutes the Autoconf Macro.
++#
++#   This special exception to the GPL applies to versions of the Autoconf
++#   Macro released by the Autoconf Archive. When you make and distribute a
++#   modified version of the Autoconf Macro, you may extend this special
++#   exception to the GPL to apply to your modified version as well.
++
++#serial 2
++
++AC_DEFUN([AX_CHECK_COMPILE_FLAG],
++[AC_PREREQ(2.59)dnl for _AC_LANG_PREFIX
++AS_VAR_PUSHDEF([CACHEVAR],[ax_cv_check_[]_AC_LANG_ABBREV[]flags_$4_$1])dnl
++AC_CACHE_CHECK([whether _AC_LANG compiler accepts $1], CACHEVAR, [
++  ax_check_save_flags=$[]_AC_LANG_PREFIX[]FLAGS
++  _AC_LANG_PREFIX[]FLAGS="$[]_AC_LANG_PREFIX[]FLAGS $4 $1"
++  AC_COMPILE_IFELSE([AC_LANG_PROGRAM()],
++    [AS_VAR_SET(CACHEVAR,[yes])],
++    [AS_VAR_SET(CACHEVAR,[no])])
++  _AC_LANG_PREFIX[]FLAGS=$ax_check_save_flags])
++AS_IF([test x"AS_VAR_GET(CACHEVAR)" = xyes],
++  [m4_default([$2], :)],
++  [m4_default([$3], :)])
++AS_VAR_POPDEF([CACHEVAR])dnl
++])dnl AX_CHECK_COMPILE_FLAGS
+diff --git a/m4/ax_check_link_flag.m4 b/m4/ax_check_link_flag.m4
+new file mode 100644
+index 0000000..e2d0d36
+--- /dev/null
++++ b/m4/ax_check_link_flag.m4
+@@ -0,0 +1,71 @@
++# ===========================================================================
++#    http://www.gnu.org/software/autoconf-archive/ax_check_link_flag.html
++# ===========================================================================
++#
++# SYNOPSIS
++#
++#   AX_CHECK_LINK_FLAG(FLAG, [ACTION-SUCCESS], [ACTION-FAILURE], [EXTRA-FLAGS])
++#
++# DESCRIPTION
++#
++#   Check whether the given FLAG works with the linker or gives an error.
++#   (Warnings, however, are ignored)
++#
++#   ACTION-SUCCESS/ACTION-FAILURE are shell commands to execute on
++#   success/failure.
++#
++#   If EXTRA-FLAGS is defined, it is added to the linker's default flags
++#   when the check is done.  The check is thus made with the flags: "LDFLAGS
++#   EXTRA-FLAGS FLAG".  This can for example be used to force the linker to
++#   issue an error when a bad flag is given.
++#
++#   NOTE: Implementation based on AX_CFLAGS_GCC_OPTION. Please keep this
++#   macro in sync with AX_CHECK_{PREPROC,COMPILE}_FLAG.
++#
++# LICENSE
++#
++#   Copyright (c) 2008 Guido U. Draheim <guidod@gmx.de>
++#   Copyright (c) 2011 Maarten Bosmans <mkbosmans@gmail.com>
++#
++#   This program is free software: you can redistribute it and/or modify it
++#   under the terms of the GNU General Public License as published by the
++#   Free Software Foundation, either version 3 of the License, or (at your
++#   option) any later version.
++#
++#   This program is distributed in the hope that it will be useful, but
++#   WITHOUT ANY WARRANTY; without even the implied warranty of
++#   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General
++#   Public License for more details.
++#
++#   You should have received a copy of the GNU General Public License along
++#   with this program. If not, see <http://www.gnu.org/licenses/>.
++#
++#   As a special exception, the respective Autoconf Macro's copyright owner
++#   gives unlimited permission to copy, distribute and modify the configure
++#   scripts that are the output of Autoconf when processing the Macro. You
++#   need not follow the terms of the GNU General Public License when using
++#   or distributing such scripts, even though portions of the text of the
++#   Macro appear in them. The GNU General Public License (GPL) does govern
++#   all other use of the material that constitutes the Autoconf Macro.
++#
++#   This special exception to the GPL applies to versions of the Autoconf
++#   Macro released by the Autoconf Archive. When you make and distribute a
++#   modified version of the Autoconf Macro, you may extend this special
++#   exception to the GPL to apply to your modified version as well.
++
++#serial 2
++
++AC_DEFUN([AX_CHECK_LINK_FLAG],
++[AS_VAR_PUSHDEF([CACHEVAR],[ax_cv_check_ldflags_$4_$1])dnl
++AC_CACHE_CHECK([whether the linker accepts $1], CACHEVAR, [
++  ax_check_save_flags=$LDFLAGS
++  LDFLAGS="$LDFLAGS $4 $1"
++  AC_LINK_IFELSE([AC_LANG_PROGRAM()],
++    [AS_VAR_SET(CACHEVAR,[yes])],
++    [AS_VAR_SET(CACHEVAR,[no])])
++  LDFLAGS=$ax_check_save_flags])
++AS_IF([test x"AS_VAR_GET(CACHEVAR)" = xyes],
++  [m4_default([$2], :)],
++  [m4_default([$3], :)])
++AS_VAR_POPDEF([CACHEVAR])dnl
++])dnl AX_CHECK_LINK_FLAGS
+diff --git a/src/tcsd/Makefile.am b/src/tcsd/Makefile.am
+index 2210734..6640ab2 100644
+--- a/src/tcsd/Makefile.am
++++ b/src/tcsd/Makefile.am
+@@ -1,8 +1,8 @@
+ sbin_PROGRAMS=tcsd
+ 
+-tcsd_CFLAGS=-DAPPID=\"TCSD\" -DVAR_PREFIX=\"@localstatedir@\" -DETC_PREFIX=\"@sysconfdir@\" -I${top_srcdir}/src/include -fPIE -DPIE
++tcsd_CFLAGS=-DAPPID=\"TCSD\" -DVAR_PREFIX=\"@localstatedir@\" -DETC_PREFIX=\"@sysconfdir@\" -I${top_srcdir}/src/include $(PIE_CFLAGS)
+ tcsd_LDADD=${top_builddir}/src/tcs/libtcs.a ${top_builddir}/src/tddl/libtddl.a -lpthread @CRYPTOLIB@
+-tcsd_LDFLAGS=@TCSD_LDFLAGS@
++tcsd_LDFLAGS=$(PIE_LDFLAGS) $(RELRO_LDFLAGS)
+ tcsd_SOURCES=svrside.c tcsd_conf.c tcsd_threads.c platform.c
+ 
+ if TSS_BUILD_PS

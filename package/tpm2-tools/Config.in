@@ -1,15 +1,8 @@
 config BR2_PACKAGE_TPM2_TOOLS
 	bool "tpm2-tools"
-	depends on BR2_INSTALL_LIBSTDCPP # tpm2-tss
-	depends on BR2_USE_MMU # dbus, libglib
-	depends on BR2_USE_WCHAR # libglib -> gettext
-	depends on BR2_TOOLCHAIN_HAS_THREADS # libglib
-	depends on !BR2_TOOLCHAIN_USES_MUSL # tpm2-abrmd
-	select BR2_PACKAGE_DBUS
+	depends on !BR2_STATIC_LIBS # tpm2-tss
 	select BR2_PACKAGE_LIBCURL
-	select BR2_PACKAGE_LIBGLIB2
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_TPM2_ABRMD # run-time
 	select BR2_PACKAGE_TPM2_TSS
 	help
 	  TPM (Trusted Platform Module) 2.0 CLI tools based on system
@@ -18,9 +11,12 @@ config BR2_PACKAGE_TPM2_TOOLS
 	  and manage non-volatile storage through a TPM2.0 HW
 	  implementation.
 
+	  Notice: An in-kernel resource manager is provided by the
+	  Linux kernel since 4.12. Depending on use cases and kernel
+	  version, the user space resource manager provided by
+	  tpm2-abrmd may be needed.
+
 	  https://github.com/tpm2-software/tpm2-tools
 
-comment "tpm2-tools needs a uClibc or glibc toolchain w/ C++, wchar, threads"
-	depends on BR2_USE_MMU
-	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR \
-		|| !BR2_TOOLCHAIN_HAS_THREADS || BR2_TOOLCHAIN_USES_MUSL
+comment "tpm2-tools needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

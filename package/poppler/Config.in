@@ -13,14 +13,6 @@ config BR2_PACKAGE_POPPLER
 
 if BR2_PACKAGE_POPPLER
 
-config BR2_PACKAGE_POPPLER_QT
-	bool "Qt support"
-	depends on BR2_PACKAGE_QT
-	select BR2_PACKAGE_QT_GUI_MODULE
-	select BR2_PACKAGE_QT_XML
-	help
-	  Build Qt support into the Poppler library
-
 config BR2_PACKAGE_POPPLER_QT5
 	bool "Qt5 support"
 	depends on BR2_PACKAGE_QT5

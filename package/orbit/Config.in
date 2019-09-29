@@ -1,10 +1,9 @@
 config BR2_PACKAGE_ORBIT
 	bool "orbit"
 	depends on BR2_PACKAGE_LUA_5_1 || BR2_PACKAGE_LUAJIT
-	# These are runtime dependencies
-	select BR2_PACKAGE_LPEG
-	select BR2_PACKAGE_LUAFILESYSTEM
-	select BR2_PACKAGE_WSAPI_XAVANTE
+	select BR2_PACKAGE_LPEG # runtime
+	select BR2_PACKAGE_LUAFILESYSTEM # runtime
+	select BR2_PACKAGE_WSAPI_XAVANTE # runtime
 	help
 	  An MVC web framework for Lua. The design is inspired by
 	  lightweight Ruby frameworks such as Camping

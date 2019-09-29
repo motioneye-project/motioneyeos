@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-STRACE_VERSION = 4.23
+STRACE_VERSION = 4.26
 STRACE_SOURCE = strace-$(STRACE_VERSION).tar.xz
 STRACE_SITE = https://strace.io/files/$(STRACE_VERSION)
-STRACE_LICENSE = BSD-3-Clause
-STRACE_LICENSE_FILES = COPYING
+STRACE_LICENSE = LGPL-2.1+
+STRACE_LICENSE_FILES = COPYING LGPL-2.1-or-later
 STRACE_CONF_OPTS = --enable-mpers=check
 
 # strace bundle some kernel headers to build libmpers, this mixes userspace
@@ -34,10 +34,12 @@ else
 STRACE_CONF_OPTS += --without-libiberty
 endif
 
+ifeq ($(BR2_PACKAGE_PERL),)
 define STRACE_REMOVE_STRACE_GRAPH
 	rm -f $(TARGET_DIR)/usr/bin/strace-graph
 endef
 
 STRACE_POST_INSTALL_TARGET_HOOKS += STRACE_REMOVE_STRACE_GRAPH
+endif
 
 $(eval $(autotools-package))

@@ -23,8 +23,9 @@ with an example :
 10: PERL_FOO_BAR_DEPENDENCIES = perl-strictures
 11: PERL_FOO_BAR_LICENSE = Artistic or GPL-1.0+
 12: PERL_FOO_BAR_LICENSE_FILES = LICENSE
-13:
-14: $(eval $(perl-package))
+13: PERL_FOO_BAR_DISTNAME = Foo-Bar
+14:
+15: $(eval $(perl-package))
 ------------------------
 
 On line 7, we declare the version of the package.
@@ -40,7 +41,10 @@ On line 11 and 12, we give licensing details about the package (its
 license on line 11, and the file containing the license text on line
 12).
 
-Finally, on line 14, we invoke the +perl-package+ macro that
+On line 13, the name of the distribution as needed by the script
++utils/scancpan+ (in order to regenerate/upgrade these package files).
+
+Finally, on line 15, we invoke the +perl-package+ macro that
 generates all the Makefile rules that actually allow the package to be
 built.
 

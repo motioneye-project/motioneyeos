@@ -1,2 +1,4 @@
-# Locally calculated after checking pgp signature
-sha256 6c5472401d06527e87adcb53dd270f3c9b1fb688703b04dd7a7cfb86289efe52  Botan-1.10.16.tgz
+# From https://botan.randombit.net/releases/sha256sums.txt
+sha256 e7159b127e91e0c158245d61c638c50d443ec7b440b6b0161328c47b3aba3960  Botan-2.8.0.tgz
+# Locally computed
+sha256 40cfd35a9e34d18463806f57553c968fdbaf254a2e2a636d1d8e32ff6b698495  license.txt

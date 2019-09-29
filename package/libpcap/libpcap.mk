@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBPCAP_VERSION = 1.8.1
+LIBPCAP_VERSION = 1.9.0
 LIBPCAP_SITE = http://www.tcpdump.org/release
 LIBPCAP_LICENSE = BSD-3-Clause
 LIBPCAP_LICENSE_FILES = LICENSE
@@ -15,7 +15,9 @@ LIBPCAP_CONF_ENV = \
 	ac_cv_header_linux_wireless_h=yes \
 	CFLAGS="$(LIBPCAP_CFLAGS)"
 LIBPCAP_CFLAGS = $(TARGET_CFLAGS)
-LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux
+LIBPCAP_CONF_OPTS = --disable-yydebug --with-pcap=linux --without-dag
+# Disable dbus to break recursive dependencies
+LIBPCAP_CONF_OPTS += --disable-dbus
 LIBPCAP_CONFIG_SCRIPTS = pcap-config
 
 # Omit -rpath from pcap-config output
@@ -24,25 +26,10 @@ define LIBPCAP_CONFIG_REMOVE_RPATH
 endef
 LIBPCAP_POST_BUILD_HOOKS = LIBPCAP_CONFIG_REMOVE_RPATH
 
-# On purpose, not compatible with bluez5
-ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
-LIBPCAP_DEPENDENCIES += bluez_utils
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS_HEADERS),y)
+LIBPCAP_DEPENDENCIES += bluez5_utils-headers
 else
 LIBPCAP_CONF_OPTS += --disable-bluetooth
-endif
-
-ifeq ($(BR2_PACKAGE_DBUS),y)
-LIBPCAP_CONF_OPTS += --enable-dbus
-LIBPCAP_DEPENDENCIES += dbus
-else
-LIBPCAP_CONF_OPTS += --disable-dbus
-endif
-
-ifeq ($(BR2_PACKAGE_LIBUSB),y)
-LIBPCAP_CONF_OPTS += --enable-canusb
-LIBPCAP_DEPENDENCIES += libusb
-else
-LIBPCAP_CONF_OPTS += --disable-canusb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)

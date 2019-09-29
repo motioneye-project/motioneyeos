@@ -13,17 +13,15 @@ LIBMAD_LICENSE_FILES = COPYING
 LIBMAD_PATCH = \
 	https://sources.debian.net/data/main/libm/libmad/0.15.1b-8/debian/patches/frame_length.diff
 
-define LIBMAD_PREVENT_AUTOMAKE
-	# Prevent automake from running.
-	(cd $(@D); touch -c config* aclocal.m4 Makefile*);
-endef
+# Force autoreconf to be able to use a more recent libtool script, that
+# is able to properly behave in the face of a missing C++ compiler.
+LIBMAD_AUTORECONF = YES
 
 define LIBMAD_INSTALL_STAGING_PC
 	$(INSTALL) -D package/libmad/mad.pc \
 		$(STAGING_DIR)/usr/lib/pkgconfig/mad.pc
 endef
 
-LIBMAD_POST_PATCH_HOOKS += LIBMAD_PREVENT_AUTOMAKE
 LIBMAD_POST_INSTALL_STAGING_HOOKS += LIBMAD_INSTALL_STAGING_PC
 
 LIBMAD_CONF_OPTS = \

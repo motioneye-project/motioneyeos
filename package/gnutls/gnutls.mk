@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GNUTLS_VERSION_MAJOR = 3.5
-GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).19
+GNUTLS_VERSION_MAJOR = 3.6
+GNUTLS_VERSION = $(GNUTLS_VERSION_MAJOR).7.1
 GNUTLS_SOURCE = gnutls-$(GNUTLS_VERSION).tar.xz
 GNUTLS_SITE = https://www.gnupg.org/ftp/gcrypt/gnutls/v$(GNUTLS_VERSION_MAJOR)
 GNUTLS_LICENSE = LGPL-2.1+ (core library), GPL-3.0+ (gnutls-openssl library)
@@ -18,7 +18,6 @@ GNUTLS_CONF_OPTS = \
 	--disable-rpath \
 	--enable-local-libopts \
 	--enable-openssl-compatibility \
-	--with-libnettle-prefix=$(STAGING_DIR)/usr \
 	--with-librt-prefix=$(STAGING_DIR) \
 	--without-tpm \
 	$(if $(BR2_PACKAGE_GNUTLS_TOOLS),--enable-tools,--disable-tools)
@@ -29,9 +28,8 @@ GNUTLS_CONF_ENV = gl_cv_socket_ipv6=yes \
 	gl_cv_func_gettimeofday_clobber=no
 GNUTLS_INSTALL_STAGING = YES
 
-# libpthread and libz autodetection poison the linkpath
+# libpthread autodetection poison the linkpath
 GNUTLS_CONF_OPTS += $(if $(BR2_TOOLCHAIN_HAS_THREADS),--with-libpthread-prefix=$(STAGING_DIR)/usr)
-GNUTLS_CONF_OPTS += $(if $(BR2_PACKAGE_ZLIB),--with-libz-prefix=$(STAGING_DIR)/usr)
 
 # gnutls needs libregex, but pcre can be used too
 # The check isn't cross-compile friendly
@@ -60,18 +58,11 @@ GNUTLS_CONF_OPTS += --enable-cryptodev
 GNUTLS_DEPENDENCIES += cryptodev-linux
 endif
 
-ifeq ($(BR2_PACKAGE_LIBIDN),y)
-GNUTLS_CONF_OPTS += --with-idn
-GNUTLS_DEPENDENCIES += libidn
-else
-GNUTLS_CONF_OPTS += --without-idn
-endif
-
 ifeq ($(BR2_PACKAGE_LIBIDN2),y)
-GNUTLS_CONF_OPTS += --with-libidn2
+GNUTLS_CONF_OPTS += --with-idn
 GNUTLS_DEPENDENCIES += libidn2
 else
-GNUTLS_CONF_OPTS += --without-libidn2
+GNUTLS_CONF_OPTS += --without-idn
 endif
 
 ifeq ($(BR2_PACKAGE_P11_KIT),y)
@@ -88,11 +79,11 @@ else
 GNUTLS_CONF_OPTS += --with-included-unistring
 endif
 
-ifeq ($(BR2_PACKAGE_ZLIB),y)
-GNUTLS_CONF_OPTS += --with-zlib
-GNUTLS_DEPENDENCIES += zlib
-else
-GNUTLS_CONF_OPTS += --without-zlib
+# Provide a default CA cert location
+ifeq ($(BR2_PACKAGE_P11_KIT),y)
+GNUTLS_CONF_OPTS += --with-default-trust-store-pkcs11=pkcs11:model=p11-kit-trust
+else ifeq ($(BR2_PACKAGE_CA_CERTIFICATES),y)
+GNUTLS_CONF_OPTS += --with-default-trust-store-file=/etc/ssl/certs/ca-certificates.crt
 endif
 
 $(eval $(autotools-package))

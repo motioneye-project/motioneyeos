@@ -3,7 +3,7 @@
 USERINIT="/data/etc/userinit.sh"
 
 
-test -f ${USERINIT} || exit 0
+test -s ${USERINIT} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

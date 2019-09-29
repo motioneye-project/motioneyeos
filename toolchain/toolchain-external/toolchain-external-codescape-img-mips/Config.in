@@ -1,19 +1,19 @@
 config BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS
-	bool "Codescape IMG GNU Linux Toolchain 2016.05"
+	bool "Codescape IMG GNU Linux Toolchain 2018.09"
 	depends on BR2_mips || BR2_mipsel || BR2_mips64 || BR2_mips64el
-	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_5
+	depends on !BR2_ARCH_NEEDS_GCC_AT_LEAST_7
 	depends on BR2_HOSTARCH = "x86_64" || BR2_HOSTARCH = "x86"
 	depends on BR2_MIPS_CPU_MIPS32R6 || (BR2_MIPS_CPU_MIPS64R6 && !BR2_MIPS_SOFT_FLOAT)
 	select BR2_TOOLCHAIN_EXTERNAL_GLIBC
 	select BR2_INSTALL_LIBSTDCPP
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_7
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_6
 	select BR2_TOOLCHAIN_HAS_FORTRAN
 	help
-	  Codescape IMG GNU Linux Toolchain 2016.05 for the MIPS
-	  architecture, from Imagination Technologies. It uses gcc
-	  4.9.2, binutils 2.24.90, glibc 2.20, gdb 7.9.1 and kernel
-	  headers 4.7. It has support for the following variants:
+	  Codescape IMG GNU Linux Toolchain 2018.09 for the MIPS
+	  architecture, from MIPS Tech LLC. It uses gcc 6.3.0,
+	  binutils 2.28.51, glibc 2.20, gdb 7.9.1 and kernel headers
+	  4.7. It has support for the following variants:
 	    - MIPS32r6 - Big-Endian, Hard-Float, 2008 NaN, o32 ABI
 	      Select 'MIPS (big endian)' Target Architecture
 	      Select 'mips 32r6' Target Architecture Variant

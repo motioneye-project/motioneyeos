@@ -16,7 +16,7 @@ diff --git a/Makefile.pre.in b/Makefile.pre.in
 index dc1e917cc3..6a6bc082cd 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1213,8 +1213,7 @@ LIBSUBDIRS=	site-packages \
+@@ -1278,8 +1278,7 @@ LIBSUBDIRS=	site-packages \
  		turtledemo \
  		multiprocessing multiprocessing/dummy \
  		unittest \
@@ -26,7 +26,7 @@ index dc1e917cc3..6a6bc082cd 100644
  
  TESTSUBDIRS=	test \
  		test/audiodata \
-@@ -1268,6 +1267,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
+@@ -1351,6 +1350,10 @@ TESTSUBDIRS += tkinter/test tkinter/test/test_tkinter \
  	tkinter/test/test_ttk
  endif
  
@@ -41,7 +41,7 @@ diff --git a/configure.ac b/configure.ac
 index 6a56a5b0c1..5896b39ff9 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3130,6 +3130,15 @@ if test "$TK" = "no"; then
+@@ -3244,6 +3244,15 @@ if test "$TK" = "no"; then
     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} _tkinter"
  fi
  

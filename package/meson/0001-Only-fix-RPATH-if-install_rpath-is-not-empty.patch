@@ -1,32 +1,36 @@
-From 53e4920038d5562b7b672fec8b9469fc02eef4ad Mon Sep 17 00:00:00 2001
+From 4db4fd79d9bb2b98cea1117f22b6c97942ab2ecd Mon Sep 17 00:00:00 2001
 From: Eric Le Bihan <eric.le.bihan.dev@free.fr>
-Date: Thu, 10 May 2018 21:57:49 +0200
+Date: Sat, 14 Jul 2018 11:18:45 +0200
 Subject: [PATCH] Only fix RPATH if install_rpath is not empty
 
 Signed-off-by: Eric Le Bihan <eric.le.bihan.dev@free.fr>
+[Fix: remove leftover from original/unconditional code]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
- mesonbuild/scripts/meson_install.py | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ mesonbuild/minstall.py | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/mesonbuild/scripts/meson_install.py b/mesonbuild/scripts/meson_install.py
-index 013f2a00..f7ff1dcc 100644
---- a/mesonbuild/scripts/meson_install.py
-+++ b/mesonbuild/scripts/meson_install.py
-@@ -368,7 +368,13 @@ def install_targets(d):
-                     printed_symlink_error = True
-         if os.path.isfile(outname):
-             try:
--                depfixer.fix_rpath(outname, install_rpath, False)
-+                # Buildroot check-host-rpath script expects RPATH
-+                # But if install_rpath is empty, it will stripped.
-+                # So, preserve it in this case
-+                if install_rpath:
-+                    depfixer.fix_rpath(outname, install_rpath, False)
-+                else:
-+                    print("Skipping RPATH fixing")
-             except SystemExit as e:
-                 if isinstance(e.code, int) and e.code == 0:
-                     pass
+diff --git a/mesonbuild/minstall.py b/mesonbuild/minstall.py
+index 8ac6aab1..7ef04116 100644
+--- a/mesonbuild/minstall.py
++++ b/mesonbuild/minstall.py
+@@ -478,8 +478,14 @@ class Installer:
+                         printed_symlink_error = True
+             if os.path.isfile(outname):
+                 try:
+-                    depfixer.fix_rpath(outname, install_rpath, final_path,
+-                                       install_name_mappings, verbose=False)
++                    # Buildroot check-host-rpath script expects RPATH
++                    # But if install_rpath is empty, it will stripped.
++                    # So, preserve it in this case
++                    if install_rpath:
++                        depfixer.fix_rpath(outname, install_rpath, final_path,
++                                           install_name_mappings, verbose=False)
++                    else:
++                        print("Skipping RPATH fixing")
+                 except SystemExit as e:
+                     if isinstance(e.code, int) and e.code == 0:
+                         pass
 -- 
-2.14.3
+2.20.1
 

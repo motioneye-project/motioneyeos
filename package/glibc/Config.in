@@ -4,6 +4,7 @@ config BR2_PACKAGE_GLIBC
 	bool
 	default y
 	select BR2_PACKAGE_LINUX_HEADERS
-	select BR2_TOOLCHAIN_HAS_SSP
-
+	select BR2_TOOLCHAIN_HAS_SSP if BR2_PACKAGE_HOST_BINUTILS_SUPPORTS_CFI
+	help
+	  https://www.gnu.org/software/libc/
 endif

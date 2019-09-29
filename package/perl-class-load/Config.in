@@ -1,0 +1,15 @@
+config BR2_PACKAGE_PERL_CLASS_LOAD
+	bool "perl-class-load"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_DATA_OPTLIST # runtime
+	select BR2_PACKAGE_PERL_MODULE_IMPLEMENTATION # runtime
+	select BR2_PACKAGE_PERL_MODULE_RUNTIME # runtime
+	select BR2_PACKAGE_PERL_PACKAGE_STASH # runtime
+	select BR2_PACKAGE_PERL_TRY_TINY # runtime
+	help
+	  A working (require "Class::Name") and more.
+
+	  https://github.com/moose/Class-Load
+
+comment "perl-class-load needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

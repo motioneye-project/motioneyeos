@@ -1,0 +1,54 @@
+From c99179777d8f4cf69c51378b91ae580c49cb57a2 Mon Sep 17 00:00:00 2001
+From: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Date: Mon, 5 Oct 2015 00:40:25 +0100
+Subject: [PATCH] Fix cross compilation, based on OpenWRT patch.
+
+[Vincent: tweak the patch for version 0.13.6]
+[Bernd: tweak the patch for version 0.13.7]
+
+Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+Signed-off-by: Vicente Olivert Riera <Vincent.Riera@imgtec.com>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ scripts/checks.m4 | 2 +-
+ scripts/common.m4 | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/scripts/checks.m4 b/scripts/checks.m4
+index 8d77fc5e..c446995b 100644
+--- a/scripts/checks.m4
++++ b/scripts/checks.m4
+@@ -96,7 +96,7 @@ AC_DEFUN([TORRENT_CHECK_KQUEUE], [
+ AC_DEFUN([TORRENT_CHECK_KQUEUE_SOCKET_ONLY], [
+   AC_MSG_CHECKING(whether kqueue supports pipes and ptys)
+ 
+-  AC_RUN_IFELSE([AC_LANG_SOURCE([
++  AC_LINK_IFELSE([AC_LANG_SOURCE([
+       #include <fcntl.h>
+       #include <stdlib.h>
+       #include <unistd.h>
+diff --git a/scripts/common.m4 b/scripts/common.m4
+index ff023928..932b205c 100644
+--- a/scripts/common.m4
++++ b/scripts/common.m4
+@@ -153,7 +153,7 @@ dnl   Need to fix this so that it uses the stuff defined by the system.
+ AC_DEFUN([TORRENT_CHECK_EXECINFO], [
+   AC_MSG_CHECKING(for execinfo.h)
+ 
+-  AC_RUN_IFELSE([AC_LANG_SOURCE([
++  AC_LINK_IFELSE([AC_LANG_SOURCE([
+       #include <execinfo.h>
+       int main() { backtrace((void**)0, 0); backtrace_symbols((char**)0, 0); return 0;}
+       ])],
+@@ -168,7 +168,7 @@ AC_DEFUN([TORRENT_CHECK_EXECINFO], [
+ AC_DEFUN([TORRENT_CHECK_ALIGNED], [
+   AC_MSG_CHECKING(the byte alignment)
+ 
+-  AC_RUN_IFELSE([AC_LANG_SOURCE([
++  AC_LINK_IFELSE([AC_LANG_SOURCE([
+       #include <inttypes.h>
+       int main() {
+         char buf@<:@8@:>@ = { 0, 0, 0, 0, 1, 0, 0, 0 };
+-- 
+2.14.4
+

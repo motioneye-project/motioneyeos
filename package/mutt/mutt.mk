@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-MUTT_VERSION = 1.10.1
+MUTT_VERSION = 1.11.2
 MUTT_SITE = https://bitbucket.org/mutt/mutt/downloads
 MUTT_LICENSE = GPL-2.0+
 MUTT_LICENSE_FILES = GPL
-MUTT_DEPENDENCIES = host-pkgconf ncurses
+MUTT_DEPENDENCIES = ncurses
 MUTT_CONF_OPTS = --disable-doc --disable-smtp
 # We're patching configure.ac
 MUTT_AUTORECONF = YES

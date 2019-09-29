@@ -4,12 +4,9 @@
 #
 ################################################################################
 
-ED_VERSION = 1.14.2
+ED_VERSION = 1.15
 ED_SITE = $(BR2_GNU_MIRROR)/ed
 ED_SOURCE = ed-$(ED_VERSION).tar.lz
-ED_CONF_OPTS = \
-	CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)" \
-	LDFLAGS="$(TARGET_LDFLAGS)"
 ED_LICENSE = GPL-3.0+
 ED_LICENSE_FILES = COPYING
 

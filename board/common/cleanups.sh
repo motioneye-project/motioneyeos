@@ -201,10 +201,11 @@ rm -rf ${TARGET}/usr/lib/python2.7/config/
 rm -rf ${TARGET}/usr/lib/python2.7/unittest/
 
 # buildroot default startup scripts
-rm -f ${TARGET}/etc/init.d/S01logging
+rm -f ${TARGET}/etc/init.d/S01syslogd
 rm -f ${TARGET}/etc/init.d/S10udev
 rm -f ${TARGET}/etc/init.d/S15watchdog
 rm -f ${TARGET}/etc/init.d/S20urandom
+rm -f ${TARGET}/etc/init.d/S21rngd
 rm -f ${TARGET}/etc/init.d/S49ntp
 rm -f ${TARGET}/etc/init.d/S50sshd
 rm -f ${TARGET}/etc/init.d/S50proftpd
@@ -219,4 +220,3 @@ rm -f ${TARGET}/etc/init.d/S91smb
 rm -rf ${TARGET}/data/*
 rm -rf ${TARGET}/run
 rm -rf ${TARGET}/etc/profile.d
-

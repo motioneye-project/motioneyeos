@@ -1,0 +1,34 @@
+From 7bd188b1e628d11011cc6c98456e2e4ed72c645b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 3 Feb 2019 17:32:46 +0100
+Subject: [PATCH] networkd-brvlan.c: fix build without
+ BRIDGE_VLAN_INFO_RANGE_END
+
+systemd fails to build on kernel without BRIDGE_VLAN_INFO_RANGE_END
+since 9714c02
+
+So put include missing_if_bridge.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/970b09e1d49b53dff12a07ca4ad424ef9dd29a69
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/network/networkd-brvlan.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/networkd-brvlan.c b/src/network/networkd-brvlan.c
+index 8f9103f14..8377623da 100644
+--- a/src/network/networkd-brvlan.c
++++ b/src/network/networkd-brvlan.c
+@@ -9,6 +9,7 @@
+ 
+ #include "alloc-util.h"
+ #include "conf-parser.h"
++#include "missing_if_bridge.h"
+ #include "netlink-util.h"
+ #include "networkd-brvlan.h"
+ #include "networkd-link.h"
+-- 
+2.14.1
+

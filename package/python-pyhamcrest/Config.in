@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_PYHAMCREST
+	bool "python-pyhamcrest"
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  Hamcrest framework for matcher objects.
+
+	  https://github.com/hamcrest/PyHamcrest

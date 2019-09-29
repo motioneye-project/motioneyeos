@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_SUB_INSTALL
+	bool "perl-sub-install"
+	help
+	  install subroutines into packages easily.
+
+	  https://github.com/rjbs/Sub-Install

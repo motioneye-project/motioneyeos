@@ -1,0 +1,31 @@
+From 9b4aebc840f444e5aa83633838e3890cec523017 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 18 Jan 2019 21:05:34 +0100
+Subject: [PATCH] configure.ac: fix static build with netfilter_conntrack
+
+Fixes:
+ - http://autobuild.buildroot.org/results/22a28e8fd8182e1c908541dbc5b0ee087c3803e6
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status:
+https://github.com/shadowsocks/shadowsocks-libev/pull/2270]
+---
+ configure.ac | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index a706591..c6dab8b 100755
+--- a/configure.ac
++++ b/configure.ac
+@@ -256,7 +256,7 @@ if test x"$enable_connmarktos" = "xyes" ; then
+ 	        if test x"$enable_connmarktos" = "xyes"; then
+ 	            AC_MSG_ERROR([--enable-connmarktos specified but libnetfilter-conntrack library not found])
+ 	        fi
+-	        with_netfilter_conntrack=no])
++	        with_netfilter_conntrack=no], [-lnfnetlink])
+ 	    AC_CHECK_HEADERS([libnetfilter_conntrack/libnetfilter_conntrack.h \
+ 	        libnetfilter_conntrack/libnetfilter_conntrack_tcp.h],,[
+ 	        if test x"$enable_connmarktos" = "xyes"; then
+-- 
+2.14.1
+

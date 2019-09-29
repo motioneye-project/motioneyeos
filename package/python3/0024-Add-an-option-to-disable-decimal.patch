@@ -9,6 +9,8 @@ Python whether we want to use the system libmpdec (already installed),
 the libmpdec builtin the Python sources, or no libmpdec at all.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[aduskett@gmail.com: Update for python 3.7.0]
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
 ---
  configure.ac | 17 ++++++++++++-----
  setup.py     |  2 +-
@@ -18,8 +20,8 @@ diff --git a/configure.ac b/configure.ac
 index 2699e7ceb1..e2c3b6f25c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -2862,13 +2862,20 @@ AC_SUBST(LIBFFI_INCLUDEDIR)
- AC_MSG_RESULT($with_system_ffi)
+@@ -3020,13 +3020,20 @@ fi
+ AC_SUBST(LIBFFI_INCLUDEDIR)
  
  # Check for use of the system libmpdec library
 -AC_MSG_CHECKING(for --with-system-libmpdec)
@@ -48,7 +50,7 @@ diff --git a/setup.py b/setup.py
 index d642825c1e..5b98255857 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2058,7 +2058,7 @@ class PyBuildExt(build_ext):
+@@ -2015,7 +2015,7 @@ class PyBuildExt(build_ext):
      def _decimal_ext(self):
          extra_compile_args = []
          undef_macros = []

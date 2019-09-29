@@ -24,8 +24,20 @@ from collections import defaultdict
 import re
 import subprocess
 import sys
+import requests  # URL checking
+import json
+import certifi
+from urllib3 import HTTPSConnectionPool
+from urllib3.exceptions import HTTPError
+from multiprocessing import Pool
 
-INFRA_RE = re.compile("\$\(eval \$\(([a-z-]*)-package\)\)")
+INFRA_RE = re.compile(r"\$\(eval \$\(([a-z-]*)-package\)\)")
+URL_RE = re.compile(r"\s*https?://\S*\s*$")
+
+RM_API_STATUS_ERROR = 1
+RM_API_STATUS_FOUND_BY_DISTRO = 2
+RM_API_STATUS_FOUND_BY_PATTERN = 3
+RM_API_STATUS_NOT_FOUND = 4
 
 
 class Package:
@@ -43,9 +55,30 @@ class Package:
         self.patch_count = 0
         self.warnings = 0
         self.current_version = None
+        self.url = None
+        self.url_status = None
+        self.url_worker = None
+        self.latest_version = (RM_API_STATUS_ERROR, None, None)
 
     def pkgvar(self):
         return self.name.upper().replace("-", "_")
+
+    def set_url(self):
+        """
+        Fills in the .url field
+        """
+        self.url_status = "No Config.in"
+        for filename in os.listdir(os.path.dirname(self.path)):
+            if fnmatch.fnmatch(filename, 'Config.*'):
+                fp = open(os.path.join(os.path.dirname(self.path), filename), "r")
+                for config_line in fp:
+                    if URL_RE.match(config_line):
+                        self.url = config_line.strip()
+                        self.url_status = "Found"
+                        fp.close()
+                        return
+                self.url_status = "Missing"
+                fp.close()
 
     def set_infra(self):
         """
@@ -255,6 +288,93 @@ def package_init_make_info():
         Package.all_versions[pkgvar] = value
 
 
+def check_url_status_worker(url, url_status):
+    if url_status != "Missing" and url_status != "No Config.in":
+        try:
+            url_status_code = requests.head(url, timeout=30).status_code
+            if url_status_code >= 400:
+                return "Invalid(%s)" % str(url_status_code)
+        except requests.exceptions.RequestException:
+            return "Invalid(Err)"
+        return "Ok"
+    return url_status
+
+
+def check_package_urls(packages):
+    Package.pool = Pool(processes=64)
+    for pkg in packages:
+        pkg.url_worker = pkg.pool.apply_async(check_url_status_worker, (pkg.url, pkg.url_status))
+    for pkg in packages:
+        pkg.url_status = pkg.url_worker.get(timeout=3600)
+
+
+def release_monitoring_get_latest_version_by_distro(pool, name):
+    try:
+        req = pool.request('GET', "/api/project/Buildroot/%s" % name)
+    except HTTPError:
+        return (RM_API_STATUS_ERROR, None, None)
+
+    if req.status != 200:
+        return (RM_API_STATUS_NOT_FOUND, None, None)
+
+    data = json.loads(req.data)
+
+    if 'version' in data:
+        return (RM_API_STATUS_FOUND_BY_DISTRO, data['version'], data['id'])
+    else:
+        return (RM_API_STATUS_FOUND_BY_DISTRO, None, data['id'])
+
+
+def release_monitoring_get_latest_version_by_guess(pool, name):
+    try:
+        req = pool.request('GET', "/api/projects/?pattern=%s" % name)
+    except HTTPError:
+        return (RM_API_STATUS_ERROR, None, None)
+
+    if req.status != 200:
+        return (RM_API_STATUS_NOT_FOUND, None, None)
+
+    data = json.loads(req.data)
+
+    projects = data['projects']
+    projects.sort(key=lambda x: x['id'])
+
+    for p in projects:
+        if p['name'] == name and 'version' in p:
+            return (RM_API_STATUS_FOUND_BY_PATTERN, p['version'], p['id'])
+
+    return (RM_API_STATUS_NOT_FOUND, None, None)
+
+
+def check_package_latest_version(packages):
+    """
+    Fills in the .latest_version field of all Package objects
+
+    This field has a special format:
+      (status, version, id)
+    with:
+    - status: one of RM_API_STATUS_ERROR,
+      RM_API_STATUS_FOUND_BY_DISTRO, RM_API_STATUS_FOUND_BY_PATTERN,
+      RM_API_STATUS_NOT_FOUND
+    - version: string containing the latest version known by
+      release-monitoring.org for this package
+    - id: string containing the id of the project corresponding to this
+      package, as known by release-monitoring.org
+    """
+    pool = HTTPSConnectionPool('release-monitoring.org', port=443,
+                               cert_reqs='CERT_REQUIRED', ca_certs=certifi.where(),
+                               timeout=30)
+    count = 0
+    for pkg in packages:
+        v = release_monitoring_get_latest_version_by_distro(pool, pkg.name)
+        if v[0] == RM_API_STATUS_NOT_FOUND:
+            v = release_monitoring_get_latest_version_by_guess(pool, pkg.name)
+
+        pkg.latest_version = v
+        print("[%d/%d] Package %s" % (count, len(packages), pkg.name))
+        count += 1
+
+
 def calculate_stats(packages):
     stats = defaultdict(int)
     for pkg in packages:
@@ -279,6 +399,16 @@ def calculate_stats(packages):
             stats["hash"] += 1
         else:
             stats["no-hash"] += 1
+        if pkg.latest_version[0] == RM_API_STATUS_FOUND_BY_DISTRO:
+            stats["rmo-mapping"] += 1
+        else:
+            stats["rmo-no-mapping"] += 1
+        if not pkg.latest_version[1]:
+            stats["version-unknown"] += 1
+        elif pkg.latest_version[1] == pkg.current_version:
+            stats["version-uptodate"] += 1
+        else:
+            stats["version-not-uptodate"] += 1
         stats["patches"] += pkg.patch_count
     return stats
 
@@ -311,6 +441,30 @@ td.somepatches {
 td.lotsofpatches {
   background: #ff9a69;
 }
+
+td.good_url {
+  background: #d2ffc4;
+}
+td.missing_url {
+  background: #ffd870;
+}
+td.invalid_url {
+  background: #ff9a69;
+}
+
+td.version-good {
+  background: #d2ffc4;
+}
+td.version-needs-update {
+  background: #ff9a69;
+}
+td.version-unknown {
+ background: #ffd870;
+}
+td.version-error {
+ background: #ccc;
+}
+
 </style>
 <title>Statistics of Buildroot packages</title>
 </head>
@@ -413,6 +567,37 @@ def dump_html_pkg(f, pkg):
         current_version = pkg.current_version
     f.write("  <td class=\"centered\">%s</td>\n" % current_version)
 
+    # Latest version
+    if pkg.latest_version[0] == RM_API_STATUS_ERROR:
+        td_class.append("version-error")
+    if pkg.latest_version[1] is None:
+        td_class.append("version-unknown")
+    elif pkg.latest_version[1] != pkg.current_version:
+        td_class.append("version-needs-update")
+    else:
+        td_class.append("version-good")
+
+    if pkg.latest_version[0] == RM_API_STATUS_ERROR:
+        latest_version_text = "<b>Error</b>"
+    elif pkg.latest_version[0] == RM_API_STATUS_NOT_FOUND:
+        latest_version_text = "<b>Not found</b>"
+    else:
+        if pkg.latest_version[1] is None:
+            latest_version_text = "<b>Found, but no version</b>"
+        else:
+            latest_version_text = "<a href=\"https://release-monitoring.org/project/%s\"><b>%s</b></a>" % \
+                (pkg.latest_version[2], str(pkg.latest_version[1]))
+
+        latest_version_text += "<br/>"
+
+        if pkg.latest_version[0] == RM_API_STATUS_FOUND_BY_DISTRO:
+            latest_version_text += "found by <a href=\"https://release-monitoring.org/distro/Buildroot/\">distro</a>"
+        else:
+            latest_version_text += "found by guess"
+
+    f.write("  <td class=\"%s\">%s</td>\n" %
+            (" ".join(td_class), latest_version_text))
+
     # Warnings
     td_class = ["centered"]
     if pkg.warnings == 0:
@@ -421,6 +606,20 @@ def dump_html_pkg(f, pkg):
         td_class.append("wrong")
     f.write("  <td class=\"%s\">%d</td>\n" %
             (" ".join(td_class), pkg.warnings))
+
+    # URL status
+    td_class = ["centered"]
+    url_str = pkg.url_status
+    if pkg.url_status == "Missing" or pkg.url_status == "No Config.in":
+        td_class.append("missing_url")
+    elif pkg.url_status.startswith("Invalid"):
+        td_class.append("invalid_url")
+        url_str = "<a href=%s>%s</a>" % (pkg.url, pkg.url_status)
+    else:
+        td_class.append("good_url")
+        url_str = "<a href=%s>Link</a>" % pkg.url
+    f.write("  <td class=\"%s\">%s</td>\n" %
+            (" ".join(td_class), url_str))
 
     f.write(" </tr>\n")
 
@@ -436,7 +635,9 @@ def dump_html_all_pkgs(f, packages):
 <td class=\"centered\">License files</td>
 <td class=\"centered\">Hash file</td>
 <td class=\"centered\">Current version</td>
+<td class=\"centered\">Latest version</td>
 <td class=\"centered\">Warnings</td>
+<td class=\"centered\">Upstream URL</td>
 </tr>
 """)
     for pkg in sorted(packages):
@@ -465,6 +666,16 @@ def dump_html_stats(f, stats):
             stats["no-hash"])
     f.write(" <tr><td>Total number of patches</td><td>%s</td></tr>\n" %
             stats["patches"])
+    f.write("<tr><td>Packages having a mapping on <i>release-monitoring.org</i></td><td>%s</td></tr>\n" %
+            stats["rmo-mapping"])
+    f.write("<tr><td>Packages lacking a mapping on <i>release-monitoring.org</i></td><td>%s</td></tr>\n" %
+            stats["rmo-no-mapping"])
+    f.write("<tr><td>Packages that are up-to-date</td><td>%s</td></tr>\n" %
+            stats["version-uptodate"])
+    f.write("<tr><td>Packages that are not up-to-date</td><td>%s</td></tr>\n" %
+            stats["version-not-uptodate"])
+    f.write("<tr><td>Packages with no known upstream version</td><td>%s</td></tr>\n" %
+            stats["version-unknown"])
     f.write("</table>\n")
 
 
@@ -517,6 +728,11 @@ def __main__():
         pkg.set_patch_count()
         pkg.set_check_package_warnings()
         pkg.set_current_version()
+        pkg.set_url()
+    print("Checking URL status")
+    check_package_urls(packages)
+    print("Getting latest versions ...")
+    check_package_latest_version(packages)
     print("Calculate stats")
     stats = calculate_stats(packages)
     print("Write HTML")

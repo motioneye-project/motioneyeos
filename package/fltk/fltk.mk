@@ -54,4 +54,11 @@ else
 FLTK_CONF_OPTS += --disable-xinerama
 endif
 
+ifeq ($(BR2_PACKAGE_XLIB_LIBXRENDER),y)
+FLTK_DEPENDENCIES += xlib_libXrender
+FLTK_CONF_OPTS += --enable-xrender
+else
+FLTK_CONF_OPTS += --disable-xrender
+endif
+
 $(eval $(autotools-package))

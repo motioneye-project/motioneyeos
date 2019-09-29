@@ -26,7 +26,7 @@ endchoice
 
 config BR2_TARGET_BINARIES_MARVELL_IMAGE
 	string
-	default "mrvl_scp_bl2_8040.img" if BR2_TARGET_BINARIES_MARVELL_8040
-	default "mrvl_scp_bl2_7040.img" if BR2_TARGET_BINARIES_MARVELL_7040
+	default "mrvl_scp_bl2_mss_ap_cp1_a8040.img" if BR2_TARGET_BINARIES_MARVELL_8040
+	default "mrvl_scp_bl2_mss_ap_cp1_a7040.img" if BR2_TARGET_BINARIES_MARVELL_7040
 
 endif

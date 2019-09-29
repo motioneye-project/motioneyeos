@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PERL_DBD_MYSQL
+	bool "perl-dbd-mysql"
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_INSTALL_LIBSTDCPP # mysql
+	depends on BR2_USE_MMU # mysql
+	depends on BR2_TOOLCHAIN_HAS_THREADS # mysql
+	select BR2_PACKAGE_MYSQL
+	select BR2_PACKAGE_PERL_DBI # runtime
+	help
+	  A MySQL driver for the Perl5 Database Interface (DBI).
+
+	  http://dbi.perl.org/
+
+comment "perl-dbd-mysql needs a toolchain w/ dynamic library, C++, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP || \
+		!BR2_TOOLCHAIN_HAS_THREADS

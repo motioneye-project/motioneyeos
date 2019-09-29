@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_ASTRO_SUNTIME
+	bool "perl-astro-suntime"
+	help
+	  A functional module for calculating sunrise/sunset times.
+
+	  https://metacpan.org/release/Astro-SunTime

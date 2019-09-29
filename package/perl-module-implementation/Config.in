@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PERL_MODULE_IMPLEMENTATION
+	bool "perl-module-implementation"
+	select BR2_PACKAGE_PERL_MODULE_RUNTIME # runtime
+	select BR2_PACKAGE_PERL_TRY_TINY # runtime
+	help
+	  Loads one of several alternate underlying implementations for
+	  a module.
+
+	  http://metacpan.org/release/Module-Implementation

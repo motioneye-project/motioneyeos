@@ -2,12 +2,24 @@ config BR2_PACKAGE_CIVETWEB
 	bool "civetweb"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on BR2_USE_MMU # fork()
+	select BR2_PACKAGE_CIVETWEB_SERVER if !BR2_PACKAGE_CIVETWEB_LIB
 	help
 	  Full featured embedded web server with Lua support.
 
 	  https://sourceforge.net/projects/civetweb
 
 if BR2_PACKAGE_CIVETWEB
+
+config BR2_PACKAGE_CIVETWEB_SERVER
+	bool "enable the web server application"
+	help
+	  Include the web server and its config files.
+
+config BR2_PACKAGE_CIVETWEB_LIB
+	bool "enable library for embedding"
+	help
+	  Enable the civetweb library for embedding in another
+	  application.
 
 config BR2_PACKAGE_CIVETWEB_WITH_LUA
 	bool "enable Lua support"

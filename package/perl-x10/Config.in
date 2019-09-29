@@ -1,0 +1,13 @@
+config BR2_PACKAGE_PERL_X10
+	bool "perl-x10"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PERL_ASTRO_SUNTIME # runtime
+	select BR2_PACKAGE_PERL_DEVICE_SERIALPORT # runtime
+	select BR2_PACKAGE_PERL_TIME_PARSEDATE # runtime
+	help
+	  creates a server used to receive events from an x10 client.
+
+	  https://metacpan.org/release/X10
+
+comment "perl-x10 needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS

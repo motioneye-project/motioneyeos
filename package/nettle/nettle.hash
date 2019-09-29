@@ -1,6 +1,6 @@
 # Locally calculated after checking pgp signature
-# https://ftp.gnu.org/gnu/nettle/nettle-3.4.tar.gz.sig
-sha256	ae7a42df026550b85daca8389b6a60ba6313b0567f374392e54918588a411e94	nettle-3.4.tar.gz
+# https://ftp.gnu.org/gnu/nettle/nettle-3.4.1.tar.gz.sig
+sha256	f941cf1535cd5d1819be5ccae5babef01f6db611f9b5a777bae9c7604b8a92ad	nettle-3.4.1.tar.gz
 # Locally calculated
 sha256	a853c2ffec17057872340eee242ae4d96cbf2b520ae27d903e1b2fef1a5f9d1c	COPYING.LESSERv3
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYINGv2

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-FREERDP_VERSION = 2.0.0-rc2
+FREERDP_VERSION = 2.0.0-rc4
 FREERDP_SITE = $(call github,FreeRDP,FreeRDP,$(FREERDP_VERSION))
 FREERDP_DEPENDENCIES = libglib2 openssl zlib
 FREERDP_LICENSE = Apache-2.0
@@ -77,7 +77,7 @@ FREERDP_CONF_OPTS += -DWITH_SSE2=OFF
 endif
 
 ifeq ($(BR2_arm)$(BR2_armeb),y)
-FREERDP_CONF_OPTS += -DARM_FP_ABI=$(call qstrip,$(BR2_GCC_TARGET_FLOAT_ABI))
+FREERDP_CONF_OPTS += -DARM_FP_ABI=$(GCC_TARGET_FLOAT_ABI)
 endif
 
 #---------------------------------------

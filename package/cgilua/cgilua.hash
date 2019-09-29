@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 7d4883e6a89b3463a1d35b8084a6e2afbbb584af7aca1169380e92af0f848413  cgilua-5.2.1-1.src.rock
+# computed by luarocks/buildroot
+sha256 8e9ef583f8e1c5b600ebc6bb04924a61f72320130410191a9c56d7295fb02be1  cgilua-5.1.4-2.src.rock
+sha256 e612df003d24aeaf6d3cc09a1e9255493c691866158b5962dc4c68fff8a56a8b  cgilua-5.1.4/doc/us/license.html

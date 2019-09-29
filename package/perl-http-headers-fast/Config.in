@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_HTTP_HEADERS_FAST
+	bool "perl-http-headers-fast"
+	select BR2_PACKAGE_PERL_HTTP_DATE # runtime
+	help
+	  faster implementation of HTTP::Headers.
+
+	  https://github.com/tokuhirom/HTTP-Headers-Fast

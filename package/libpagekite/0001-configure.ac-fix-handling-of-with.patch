@@ -1,0 +1,76 @@
+From dbb7ea56148949412b18770967022455f3e5cb63 Mon Sep 17 00:00:00 2001
+From: "Arnout Vandecappelle (Essensium/Mind)" <arnout@mind.be>
+Date: Fri, 16 Feb 2018 11:45:21 +0100
+Subject: [PATCH] configure.ac: fix handling of --with-*
+
+The 'action-if-given' argument of AC_ARG_WITH is executed whenever the
+--with- or --without- option is given. Setting e.g. with_tests=yes in
+that branch causes the argument '--without-tests' to *enable* the tests
+instead of disabling them.
+
+In most cases, the third and fourth argument can simply be skipped
+since they are optional. We only need them in the cases where we use a
+different variable than with_foo, or where we want to default to yes
+instead of defaulting to empty.
+
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+
+Upstream status: pull request sent:
+  https://github.com/pagekite/libpagekite/pull/49
+---
+ configure.ac | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index aa4eb9c..130752a 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -34,18 +34,15 @@ AC_ARG_WITH(openssl,[  --with-openssl=DIR    Use optional openssl libs and inclu
+ 
+ AC_ARG_WITH(tests,
+ 	[AS_HELP_STRING([--with-tests],
+-		[Compile libpagekite unit tests])],
+-		[with_tests=yes], [])
++		[Compile libpagekite unit tests])])
+ 
+ AC_ARG_WITH(debug-traces,
+ 	[AS_HELP_STRING([--with-debug-traces],
+-		[Compile libpagekite debug function traces])],
+-		[with_debug_traces=yes], [])
++		[Compile libpagekite debug function traces])])
+ 
+ AC_ARG_WITH(debug-canaries,
+ 	[AS_HELP_STRING([--with-debug-canaries],
+-		[Compile libpagekite debug memory canaries])],
+-		[with_debug_canaries=yes], [])
++		[Compile libpagekite debug memory canaries])])
+ 
+ AC_ARG_WITH(lua,
+ 	[AS_HELP_STRING([--without-lua],
+@@ -55,7 +52,7 @@ AC_ARG_WITH(lua,
+ AC_ARG_WITH(os-libev,
+ 	[AS_HELP_STRING([--without-os-libev],
+ 		[Use embedded libev, not the OS-provided library])],
+-		[use_libev=no], [])
++		[use_libev="$withval"], [])
+ 
+ AC_ARG_WITH(ipv6,
+ 	[AS_HELP_STRING([--without-ipv6],
+@@ -70,12 +67,12 @@ AC_ARG_WITH(java,
+ AC_ARG_WITH(agpl-relay,
+ 	[AS_HELP_STRING([--with-agpl-relay],
+ 		[Compile libpagekite relay support (AGPLv3 code)])],
+-		[with_relay=yes], [with_relay=no])
++		[with_relay="$withval"], [with_relay=no])
+ 
+ AC_ARG_WITH(ds-logfmt,
+ 	[AS_HELP_STRING([--with-ds-logfmt],
+ 		[Compile libpagekite with DigitalSTROM log format.])],
+-		[with_ds_logfmt=yes], [with_ds_logfmt=no])
++		[with_ds_logfmt="$withval"], [with_ds_logfmt=no])
+ 
+ 
+ # Checks for programs.
+-- 
+2.15.1
+

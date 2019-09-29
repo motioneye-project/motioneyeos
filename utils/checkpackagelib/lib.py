@@ -1,6 +1,6 @@
 # See utils/checkpackagelib/readme.txt before editing this file.
 
-from base import _CheckFunction
+from checkpackagelib.base import _CheckFunction
 
 
 class ConsecutiveEmptyLines(_CheckFunction):

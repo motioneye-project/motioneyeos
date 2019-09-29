@@ -12,7 +12,7 @@ PROG_UA="/usr/bin/udevadm"
 test -x ${PROG} || exit 0
 
 # dbus is currently only used by bluez
-test -f ${BTCONF} || test -f ${BOOT_BTCONF} || test -f ${SYS_BTCONF} || exit 0
+test -s ${BTCONF} || test -s ${BOOT_BTCONF} || test -s ${SYS_BTCONF} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 

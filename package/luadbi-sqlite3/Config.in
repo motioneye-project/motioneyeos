@@ -1,7 +1,7 @@
 config BR2_PACKAGE_LUADBI_SQLITE3
 	bool "luadbi-sqlite3"
-	select BR2_PACKAGE_LUADBI # runtime dependency
 	select BR2_PACKAGE_SQLITE
+	select BR2_PACKAGE_LUADBI # runtime
 	help
 	  LuaDBI is a database interface library for Lua.
 	  And this is the SQLite3 backend.

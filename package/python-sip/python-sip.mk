@@ -10,11 +10,7 @@ PYTHON_SIP_SITE = http://downloads.sourceforge.net/project/pyqt/sip/sip-$(PYTHON
 PYTHON_SIP_LICENSE = SIP license or GPL-2.0 or GPL-3.0
 PYTHON_SIP_LICENSE_FILES = LICENSE LICENSE-GPL2 LICENSE-GPL3
 
-ifeq ($(BR2_PACKAGE_QT5),y)
 PYTHON_SIP_DEPENDENCIES = qt5base
-else
-PYTHON_SIP_DEPENDENCIES = qt
-endif
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 PYTHON_SIP_DEPENDENCIES += python

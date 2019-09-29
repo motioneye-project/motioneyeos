@@ -2,7 +2,6 @@ config BR2_PACKAGE_BTRFS_PROGS
 	bool "btrfs-progs"
 	depends on BR2_USE_MMU # util-linux
 	depends on BR2_TOOLCHAIN_HAS_THREADS
-	select BR2_PACKAGE_E2FSPROGS
 	select BR2_PACKAGE_LZO
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID

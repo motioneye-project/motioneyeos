@@ -1,0 +1,16 @@
+configure.ac: don't require GNU-specific files when running automake
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+diff -durN madplay-0.15.2b-orig/configure.ac madplay-0.15.2b/configure.ac
+--- madplay-0.15.2b-orig/configure.ac	2019-02-14 21:34:01.507212449 +0100
++++ madplay-0.15.2b/configure.ac	2019-02-14 21:34:23.439336353 +0100
+@@ -26,7 +26,7 @@
+ 
+ AC_CONFIG_SRCDIR([madplay.c])
+ 
+-AM_INIT_AUTOMAKE
++AM_INIT_AUTOMAKE([foreign])
+ 
+ AM_CONFIG_HEADER([config.h])
+ 

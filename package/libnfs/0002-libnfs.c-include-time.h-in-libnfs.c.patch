@@ -1,0 +1,35 @@
+From b56bd3d99f67a3273fec3c0c5d9560413465a1db Mon Sep 17 00:00:00 2001
+From: Anna Lyons <Anna.Lyons@data61.csiro.au>
+Date: Thu, 12 Jul 2018 17:45:23 +1000
+Subject: [PATCH] libnfs.c: include <time.h> in libnfs.c
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+time() is used in this file, which is from time.h. Fixes a warning.
+
+Note, that building with musl breaks otherwise, as it is more strict regarding
+missing header inclusions.
+
+Backported from: 794a29f01f8e5961adc5c79d5ba5ac1062877e6c
+
+Signed-off-by: Jörg Krause <joerg.krause@embedded.rocks>
+---
+ lib/libnfs.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/libnfs.c b/lib/libnfs.c
+index d89d84d..43c17b9 100755
+--- a/lib/libnfs.c
++++ b/lib/libnfs.c
+@@ -70,6 +70,7 @@
+ #include <stdarg.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <time.h>
+ #include "slist.h"
+ #include "libnfs.h"
+ #include "libnfs-raw.h"
+-- 
+2.19.1
+

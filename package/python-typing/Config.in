@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_TYPING
+	bool "python-typing"
+	depends on BR2_PACKAGE_PYTHON
+	help
+	  Type Hints for Python. This is a backport of the standard
+	  library typing module to Python versions older than 3.5.
+
+	  https://docs.python.org/3/library/typing.html

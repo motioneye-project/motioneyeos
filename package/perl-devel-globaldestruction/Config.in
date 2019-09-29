@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_DEVEL_GLOBALDESTRUCTION
+	bool "perl-devel-globaldestruction"
+	select BR2_PACKAGE_PERL_SUB_EXPORTER_PROGRESSIVE # runtime
+	help
+	  Provides function returning the equivalent of
+	  ${^GLOBAL_PHASE} eq 'DESTRUCT' for older perls.
+
+	  https://metacpan.org/release/Devel-GlobalDestruction

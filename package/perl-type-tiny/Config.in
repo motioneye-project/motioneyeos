@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_TYPE_TINY
+	bool "perl-type-tiny"
+	select BR2_PACKAGE_PERL_EXPORTER_TINY # runtime
+	help
+	  tiny, yet Moo(se)-compatible type constraint.
+
+	  https://metacpan.org/release/Type-Tiny

@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-PYTHON_PYCURL_VERSION = 7.43.0.1
+PYTHON_PYCURL_VERSION = 7.43.0.2
 PYTHON_PYCURL_SOURCE = pycurl-$(PYTHON_PYCURL_VERSION).tar.gz
-PYTHON_PYCURL_SITE = https://pypi.python.org/packages/77/d9/d272b38e6e25d2686e22f6058820298dadead69340b1c57ff84c87ef81f0
+PYTHON_PYCURL_SITE = https://files.pythonhosted.org/packages/e8/e4/0dbb8735407189f00b33d84122b9be52c790c7c3b25286826f4e1bdb7bde
 PYTHON_PYCURL_SETUP_TYPE = distutils
-PYTHON_PYCURL_BUILD_OPTS = --curl-config=$(STAGING_DIR)/usr/bin/curl-config --with-ssl
-PYTHON_PYCURL_ENV = PATH=$(STAGING_DIR)/usr/bin
+PYTHON_PYCURL_BUILD_OPTS = --curl-config=$(STAGING_DIR)/usr/bin/curl-config --with-openssl
+PYTHON_PYCURL_INSTALL_TARGET_OPTS = --curl-config=$(STAGING_DIR)/usr/bin/curl-config --with-openssl
+PYTHON_PYCURL_ENV = PATH=$(PATH):$(STAGING_DIR)/usr/bin
 
 $(eval $(python-package))

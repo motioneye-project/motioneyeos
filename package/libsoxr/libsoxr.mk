@@ -18,4 +18,8 @@ else
 LIBSOXR_CONF_OPTS += -DHAVE_WORDS_BIGENDIAN=0
 endif
 
+ifeq ($(BR2_PACKAGE_FFMPEG),y)
+LIBSOXR_DEPENDENCIES += ffmpeg
+endif
+
 $(eval $(cmake-package))

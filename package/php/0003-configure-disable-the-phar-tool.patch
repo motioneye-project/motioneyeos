@@ -11,7 +11,7 @@ on the target.
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
 [Gustavo: update for autoreconf/configure.in]
 Signed-off-by: Adam Duskett <Adamduskett@outlook.com>
-[Aduskett: update for 7.2.2]
+[Aduskett: update for 7.3.0]
 ---
  configure.ac | 9 ++-------
  1 file changed, 2 insertions(+), 7 deletions(-)
@@ -20,7 +20,7 @@ diff --git a/configure.ac b/configure.ac
 index d20af76..7f02f1a 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -1420,13 +1420,8 @@ CFLAGS="\$(CFLAGS_CLEAN) $standard_libtool_flag"
+@@ -1472,13 +1472,8 @@ CFLAGS="\$(CFLAGS_CLEAN) $standard_libtool_flag"
  INLINE_CFLAGS="$INLINE_CFLAGS $standard_libtool_flag"
  CXXFLAGS="$CXXFLAGS $standard_libtool_flag \$(PROF_FLAGS)"
  

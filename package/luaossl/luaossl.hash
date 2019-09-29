@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 f9c94c97579efddf8abad1e373e0fe0ecc93d00cd9d1bd49f48c5716c281a08b  luaossl-20171028-0.src.rock
+# computed by luarocks/buildroot
+sha256 b0af04a5ad83c12badaf0e988dbeddc98ad6d2cd9fc06baaf0c801290ae1a5bd  luaossl-20181207-0.src.rock
+sha256 7c397b120b8356805c17ba10fdea13d4319b1ee244703813d0de4cbb22720c74  luaossl-rel-20181207/LICENSE

@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENMPI_VERSION_MAJOR = 1.10
-OPENMPI_VERSION = $(OPENMPI_VERSION_MAJOR).7
+OPENMPI_VERSION_MAJOR = 4.0
+OPENMPI_VERSION = $(OPENMPI_VERSION_MAJOR).0
 OPENMPI_SITE = https://www.open-mpi.org/software/ompi/v$(OPENMPI_VERSION_MAJOR)/downloads
 OPENMPI_SOURCE = openmpi-$(OPENMPI_VERSION).tar.bz2
 OPENMPI_LICENSE = BSD-3-Clause

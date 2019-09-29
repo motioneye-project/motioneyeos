@@ -82,20 +82,6 @@ comment "gtk3 support needs libgtk3"
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on !BR2_PACKAGE_LIBGTK3
 
-config BR2_PACKAGE_OPENCV3_WITH_QT
-	bool "qt4"
-	depends on BR2_PACKAGE_QT
-	select BR2_PACKAGE_QT_STL
-	select BR2_PACKAGE_QT_GUI_MODULE
-	select BR2_PACKAGE_QT_TEST
-	help
-	  Use Qt4 with QtTest and QtGui modules and STL support, as
-	  GUI toolkit.
-
-comment "qt4 support needs qt"
-	depends on BR2_USE_MMU # qt
-	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
-
 config BR2_PACKAGE_OPENCV3_WITH_QT5
 	bool "qt5"
 	depends on BR2_PACKAGE_QT5
@@ -108,7 +94,7 @@ config BR2_PACKAGE_OPENCV3_WITH_QT5
 	  components, as GUI toolkit.
 
 comment "qt5 support needs qt5"
-	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
+	depends on !BR2_PACKAGE_QT5
 
 endchoice
 

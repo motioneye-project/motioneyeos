@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/msgpack-python/json, sha256 locally computed.
-md5	dcd854fb41ee7584ebbf35e049e6be98  msgpack-python-0.4.8.tar.gz
-sha256	1a2b19df0f03519ec7f19f826afb935b202d8979b0856c6fb3dc28955799f886  msgpack-python-0.4.8.tar.gz
+# md5, sha256 from https://pypi.org/pypi/msgpack/json
+md5	1b96537be6f5186fed0d131aaa59ef26  msgpack-0.6.1.tar.gz
+sha256	4008c72f5ef2b7936447dcb83db41d97e9791c83221be13d5e19db0796df1972  msgpack-0.6.1.tar.gz
+# Locally computed sha256
+sha256  492dedba85da5872f78e6091bcd1fea474d660d35acb4dee964b8aab3f007427  COPYING

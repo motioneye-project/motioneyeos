@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-IMX_USB_LOADER_VERSION = e5394615dd413c3823d5bd1de340933e16a8c07c
+IMX_USB_LOADER_VERSION = 4aa9809099dcece9a9225776321f3b4b5b896d78
+
 IMX_USB_LOADER_SITE = $(call github,boundarydevices,imx_usb_loader,$(IMX_USB_LOADER_VERSION))
 IMX_USB_LOADER_LICENSE = LGPL-2.1+
 IMX_USB_LOADER_LICENSE_FILES = COPYING

@@ -1,0 +1,43 @@
+#!/bin/bash
+
+PROG="/usr/sbin/rngd"
+
+
+test -f ${PROG} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+
+start() {
+    msg_begin "Starting rngd"
+    ${PROG} &>/dev/null
+    test $? == 0 && msg_done || msg_fail
+}
+
+stop() {
+    msg_begin "Stopping rngd"
+    killall -q $(basename ${PROG})
+    msg_done
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+
+    stop)
+        stop
+        ;;
+    
+    restart)
+        stop
+        start
+        ;;
+
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
+
+exit $?

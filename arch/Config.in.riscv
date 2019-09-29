@@ -1,0 +1,127 @@
+# RISC-V CPU ISA extensions.
+
+config BR2_RISCV_ISA_RVI
+	bool
+
+config BR2_RISCV_ISA_RVM
+	bool
+
+config BR2_RISCV_ISA_RVA
+	bool
+
+config BR2_RISCV_ISA_RVF
+	bool
+
+config BR2_RISCV_ISA_RVD
+	bool
+
+config BR2_RISCV_ISA_RVC
+	bool
+
+choice
+	prompt "Target Architecture Variant"
+	default BR2_riscv_g
+
+config BR2_riscv_g
+	bool "General purpose (G)"
+	select BR2_RISCV_ISA_RVI
+	select BR2_RISCV_ISA_RVM
+	select BR2_RISCV_ISA_RVA
+	select BR2_RISCV_ISA_RVF
+	select BR2_RISCV_ISA_RVD
+	help
+	  General purpose (G) is equivalent to IMAFD.
+
+config BR2_riscv_custom
+	bool "Custom architecture"
+	select BR2_RISCV_ISA_RVI
+	select BR2_RISCV_ISA_CUSTOM_RVA
+
+endchoice
+
+if BR2_riscv_custom
+
+comment "Instruction Set Extensions"
+
+config BR2_RISCV_ISA_CUSTOM_RVM
+	bool "Integer Multiplication and Division (M)"
+	select BR2_RISCV_ISA_RVM
+
+config BR2_RISCV_ISA_CUSTOM_RVA
+	bool "Atomic Instructions (A)"
+	select BR2_RISCV_ISA_RVA
+
+config BR2_RISCV_ISA_CUSTOM_RVF
+	bool "Single-precision Floating-point (F)"
+	select BR2_RISCV_ISA_RVF
+
+config BR2_RISCV_ISA_CUSTOM_RVD
+	bool "Double-precision Floating-point (D)"
+	depends on BR2_RISCV_ISA_RVF
+	select BR2_RISCV_ISA_RVD
+
+config BR2_RISCV_ISA_CUSTOM_RVC
+	bool "Compressed Instructions (C)"
+	select BR2_RISCV_ISA_RVC
+endif
+
+choice
+	prompt "Target Architecture Size"
+	default BR2_RISCV_64
+
+config BR2_RISCV_32
+	bool "32-bit"
+
+config BR2_RISCV_64
+	bool "64-bit"
+	select BR2_ARCH_IS_64
+
+endchoice
+
+choice
+	prompt "Target ABI"
+	default BR2_RISCV_ABI_ILP32 if !BR2_ARCH_IS_64
+	default BR2_RISCV_ABI_LP64 if BR2_ARCH_IS_64
+
+config BR2_RISCV_ABI_ILP32
+	bool "ilp32"
+	depends on !BR2_ARCH_IS_64
+
+config BR2_RISCV_ABI_ILP32F
+	bool "ilp32f"
+	depends on !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVF
+
+config BR2_RISCV_ABI_ILP32D
+	bool "ilp32d"
+	depends on !BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVD
+
+config BR2_RISCV_ABI_LP64
+	bool "lp64"
+	depends on BR2_ARCH_IS_64
+
+config BR2_RISCV_ABI_LP64F
+	bool "lp64f"
+	depends on BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVF
+
+config BR2_RISCV_ABI_LP64D
+	bool "lp64d"
+	depends on BR2_ARCH_IS_64 && BR2_RISCV_ISA_RVD
+endchoice
+
+config BR2_ARCH
+	default "riscv32" if !BR2_ARCH_IS_64
+	default "riscv64" if BR2_ARCH_IS_64
+
+config BR2_ENDIAN
+	default "LITTLE"
+
+config BR2_GCC_TARGET_ABI
+	default "ilp32" if BR2_RISCV_ABI_ILP32
+	default "ilp32f" if BR2_RISCV_ABI_ILP32F
+	default "ilp32d" if BR2_RISCV_ABI_ILP32D
+	default "lp64" if BR2_RISCV_ABI_LP64
+	default "lp64f" if BR2_RISCV_ABI_LP64F
+	default "lp64d" if BR2_RISCV_ABI_LP64D
+
+config BR2_READELF_ARCH_NAME
+	default "RISC-V"

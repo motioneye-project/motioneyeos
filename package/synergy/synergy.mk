@@ -4,11 +4,15 @@
 #
 ################################################################################
 
-SYNERGY_VERSION = v1.8.8-stable
-SYNERGY_SITE = $(call github,symless,synergy,$(SYNERGY_VERSION))
+SYNERGY_VERSION = v2.0.12-beta
+SYNERGY_SITE = $(call github,symless,synergy-core,$(SYNERGY_VERSION))
 SYNERGY_LICENSE = GPL-2.0
 SYNERGY_LICENSE_FILES = LICENSE
-SYNERGY_DEPENDENCIES = libcurl openssl xlib_libX11 xlib_libXtst
+SYNERGY_DEPENDENCIES = xlib_libX11 xlib_libXtst
+
+# Avoid using buildroot commit hash inside cmake/Version.cmake
+# by setting SYNERGY_VERSION_STAGE != snapshot
+SYNERGY_CONF_ENV += SYNERGY_VERSION_STAGE="beta"
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBXEXT),y)
 SYNERGY_DEPENDENCIES += xlib_libXext

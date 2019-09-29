@@ -1,0 +1,38 @@
+From 9b4070944578336506cd0a76de6f733c72d0ca74 Mon Sep 17 00:00:00 2001
+From: "Yann E. MORIN" <yann.morin.1998@free.fr>
+Date: Sat, 13 Oct 2018 11:11:15 +0200
+Subject: [PATCH] configure: fix detection of re-entrant resolver functions
+
+Fixes https://issues.asterisk.org/jira/browse/ASTERISK-21795
+
+uClibc does not provide res_nsearch:
+asterisk-16.0.0/main/dns.c:506: undefined reference to `res_nsearch'
+
+Patch coded by Yann E. MORIN:
+http://lists.busybox.net/pipermail/buildroot/2018-October/232630.html
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ configure.ac | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index dd0c8edd13..ee1ca9ceb6 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1388,7 +1388,11 @@ AC_LINK_IFELSE(
+ 			#include <arpa/nameser.h>
+ 			#endif
+ 			#include <resolv.h>],
+-			[int foo = res_ninit(NULL);])],
++			[
++				int foo;
++				foo = res_ninit(NULL);
++				foo = res_nsearch(NULL, NULL, 0, 0, NULL, 0);
++			])],
+ 	AC_MSG_RESULT(yes)
+ 	AC_DEFINE([HAVE_RES_NINIT], 1, [Define to 1 if your system has the re-entrant resolver functions.])
+ 	AC_SEARCH_LIBS(res_9_ndestroy, resolv)
+-- 
+2.19.1
+

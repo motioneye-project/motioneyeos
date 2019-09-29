@@ -1,0 +1,33 @@
+From 081aea25022a987d349394ada2d6a959bf3ce4cd Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 3 Feb 2019 18:33:39 +0100
+Subject: [PATCH] networkd-address.c: fix build without IFA_F_NOPREFIXROUTE
+
+systemd fails to build on kernel without IFA_F_NOPREFIXROUTE
+since 9714c02
+
+So put include missing_network.h
+
+Fixes:
+ - http://autobuild.buildroot.org/results/970b09e1d49b53dff12a07ca4ad424ef9dd29a69
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/network/networkd-address.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/network/networkd-address.c b/src/network/networkd-address.c
+index fa7f9b8d7..3cdbd9e37 100644
+--- a/src/network/networkd-address.c
++++ b/src/network/networkd-address.c
+@@ -5,6 +5,7 @@
+ #include "alloc-util.h"
+ #include "conf-parser.h"
+ #include "firewall-util.h"
++#include "missing_network.h"
+ #include "netlink-util.h"
+ #include "networkd-address.h"
+ #include "networkd-manager.h"
+-- 
+2.14.1
+

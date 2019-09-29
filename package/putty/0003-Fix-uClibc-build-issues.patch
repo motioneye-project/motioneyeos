@@ -1,0 +1,93 @@
+From 0554cfbb926a2ba26efda08865b270af8536e0bb Mon Sep 17 00:00:00 2001
+From: Simon Tatham <anakin@pobox.com>
+Date: Tue, 26 Mar 2019 20:03:09 +0200
+Subject: [PATCH] Fix uClibc build issues
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix two uClibc build failures.
+
+Missing sys/auxv.h header:
+
+./../unix/uxutils.c:5:10: fatal error: sys/auxv.h: No such file or directory
+ #include <sys/auxv.h>
+          ^~~~~~~~~~~~
+
+Missing futimes() implementation:
+
+./../unix/uxsftpserver.c: In function ‘uss_fsetstat’:
+./../unix/uxsftpserver.c:441:25: warning: implicit declaration of function ‘futimes’; did you mean ‘lutimes’? [-Wimplicit-function-declaration]
+ #define FD_PREFIX(func) f ## func
+                         ^
+./../unix/uxsftpserver.c:435:17: note: in expansion of macro ‘FD_PREFIX’
+             if (api_prefix(utimes)(api_arg, tv) < 0)                    \
+                 ^~~~~~~~~~
+./../unix/uxsftpserver.c:470:5: note: in expansion of macro ‘SETSTAT_GUTS’
+     SETSTAT_GUTS(FD_PREFIX, fd, attrs, success);
+     ^~~~~~~~~~~~
+
+unix/uxsftpserver.o: In function `uss_fsetstat':
+uxsftpserver.c:(.text+0x1058): undefined reference to `futimes'
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: patch suggested by upstream developer Simon Tatham
+
+ configure.ac        |  3 ++-
+ unix/uxsftpserver.c | 10 ++++++++++
+ unix/uxutils.c      |  3 ++-
+ 3 files changed, 14 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 35552ed24dbe..1949ef62f219 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -173,8 +173,9 @@ AC_CHECK_LIB(X11, XOpenDisplay,
+              [GTK_LIBS="-lX11 $GTK_LIBS"
+               AC_DEFINE([HAVE_LIBX11],[],[Define if libX11.a is available])])
+ 
+-AC_CHECK_FUNCS([getaddrinfo posix_openpt ptsname setresuid strsignal updwtmpx fstatat dirfd])
++AC_CHECK_FUNCS([getaddrinfo posix_openpt ptsname setresuid strsignal updwtmpx fstatat dirfd futimes])
+ AC_CHECK_DECLS([CLOCK_MONOTONIC], [], [], [[#include <time.h>]])
++AC_CHECK_HEADERS([sys/auxv.h asm/hwcap.h])
+ AC_SEARCH_LIBS([clock_gettime], [rt], [AC_DEFINE([HAVE_CLOCK_GETTIME],[],[Define if clock_gettime() is available])])
+ 
+ AC_CACHE_CHECK([for SO_PEERCRED and dependencies], [x_cv_linux_so_peercred], [
+diff --git a/unix/uxsftpserver.c b/unix/uxsftpserver.c
+index 6fab0ba090d6..a90344e04219 100644
+--- a/unix/uxsftpserver.c
++++ b/unix/uxsftpserver.c
+@@ -412,6 +412,16 @@ static void uss_fstat(SftpServer *srv, SftpReplyBuilder *reply,
+     }
+ }
+ 
++#if !HAVE_FUTIMES
++static inline int futimes(int fd, const struct timeval tv[2])
++{
++    /* If the OS doesn't support futimes(3) then we have to pretend it
++     * always returns failure */
++    errno = EINVAL;
++    return -1;
++}
++#endif
++
+ /*
+  * The guts of setstat and fsetstat, macroised so that they can call
+  * fchown(fd,...) or chown(path,...) depending on parameters.
+diff --git a/unix/uxutils.c b/unix/uxutils.c
+index fcbcc4d422c1..f01bc2c14a2d 100644
+--- a/unix/uxutils.c
++++ b/unix/uxutils.c
+@@ -1,6 +1,7 @@
+ #include "ssh.h"
+ 
+-#if defined __linux__ && (defined __arm__ || defined __aarch64__)
++#if defined __linux__ && (defined __arm__ || defined __aarch64__) && \
++    HAVE_SYS_AUXV_H && HAVE_ASM_HWCAP_H
+ 
+ #include <sys/auxv.h>
+ #include <asm/hwcap.h>
+-- 
+2.20.1
+

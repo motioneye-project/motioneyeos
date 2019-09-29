@@ -1,0 +1,24 @@
+From 005d92c2cebbde5c8623daa29725f7a62b18df7c Mon Sep 17 00:00:00 2001
+From: Siana Gearz <siana.sg@live.de>
+Date: Sat, 8 Sep 2012 22:44:35 +0200
+Subject: [PATCH] Fix strndup
+
+[Retrieved from:
+https://github.com/siana/dmalloc/commit/005d92c2cebbde5c8623daa29725f7a62b18df7c]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ dmalloc.h.3 | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/dmalloc.h.3 b/dmalloc.h.3
+index 8bda997..fb538a8 100644
+--- a/dmalloc.h.3
++++ b/dmalloc.h.3
+@@ -429,6 +429,7 @@ char	*strdup(const char *string);
+  *
+  * len -> Length of the string to duplicate.
+  */
++#undef strndup
+ extern
+ char	*strndup(const char *string, const DMALLOC_SIZE len);
+ 

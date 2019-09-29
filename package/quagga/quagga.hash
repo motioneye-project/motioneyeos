@@ -1,2 +1,5 @@
 # Locally calculated after checking pgp signature
-sha256	b5a94e5bdad3062e04595a5692b8cc435f0a85102f75dfdca0a06d093b4ef63f	quagga-1.1.1.tar.gz
+sha256	ee2c0907a106902abbdcaf63b4f28c67241c4f3396989ed54da7b4976eecad31	quagga-1.2.3.tar.gz
+
+# Hash for license file
+sha256	b39c1bad4e51e2a3389cd25fc4addebe41a3ae7c11100795683f9330de1536e5	COPYING

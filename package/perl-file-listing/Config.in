@@ -1,7 +1,7 @@
 config BR2_PACKAGE_PERL_FILE_LISTING
 	bool "perl-file-listing"
-	select BR2_PACKAGE_PERL_HTTP_DATE
+	select BR2_PACKAGE_PERL_HTTP_DATE # runtime
 	help
-	  Module to parse directoy listings
+	  parse directory listing.
 
-	  https://github.com/gisle/file-listing
+	  https://metacpan.org/release/File-Listing

@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_SERIAL_ASYNCIO
+	bool "python-serial-asyncio"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_SERIAL
+	help
+	  asyncio extension package for pyserial.
+
+	  https://github.com/pyserial/pyserial-asyncio

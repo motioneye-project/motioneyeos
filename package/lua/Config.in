@@ -21,9 +21,6 @@ choice
 config BR2_PACKAGE_LUA_5_1
 	bool "Lua 5.1.x"
 
-config BR2_PACKAGE_LUA_5_2
-	bool "Lua 5.2.x"
-
 config BR2_PACKAGE_LUA_5_3
 	bool "Lua 5.3.x"
 
@@ -31,7 +28,6 @@ endchoice
 
 config BR2_PACKAGE_LUAINTERPRETER_ABI_VERSION
 	default "5.1"	if BR2_PACKAGE_LUA_5_1
-	default "5.2"	if BR2_PACKAGE_LUA_5_2
 	default "5.3"	if BR2_PACKAGE_LUA_5_3
 
 if BR2_PACKAGE_LUA_5_3

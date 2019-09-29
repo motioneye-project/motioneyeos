@@ -56,6 +56,12 @@ config BR2_PACKAGE_GNURADIO_FEC
 	help
 	  FEC signal processing blocks
 
+config BR2_PACKAGE_GNURADIO_LOG
+	bool "gr-log support"
+	select BR2_PACKAGE_LOG4CPP
+	help
+	  Enable logger component
+
 config BR2_PACKAGE_GNURADIO_PYTHON
 	bool "python support"
 	depends on BR2_PACKAGE_PYTHON
@@ -78,11 +84,6 @@ config BR2_PACKAGE_GNURADIO_ZEROMQ
 	help
 	  zeromq communication support
 
-comment "gr-fft, -filter, -analog, -channels, -digital, -trellis, -pager, -qtgui depends fftw's single precision"
-	depends on !BR2_PACKAGE_FFTW_PRECISION_SINGLE
-
-if BR2_PACKAGE_FFTW_PRECISION_SINGLE
-
 config BR2_PACKAGE_GNURADIO_ANALOG
 	bool "gr-analog support"
 	select BR2_PACKAGE_GNURADIO_FILTER
@@ -103,6 +104,8 @@ config BR2_PACKAGE_GNURADIO_DIGITAL
 
 config BR2_PACKAGE_GNURADIO_FFT
 	bool "gr-fft support"
+	select BR2_PACKAGE_FFTW
+	select BR2_PACKAGE_FFTW_SINGLE
 	select BR2_PACKAGE_GNURADIO_BLOCKS
 	help
 	  FFT signal processing blocks
@@ -119,21 +122,10 @@ config BR2_PACKAGE_GNURADIO_PAGER
 	help
 	  FLEX pager decoder implementation blocks
 
-config BR2_PACKAGE_GNURADIO_QTGUI
-	bool "gr-qtgui"
-	depends on BR2_PACKAGE_PYTHON_PYQT
-	depends on BR2_PACKAGE_QWT
-	depends on BR2_PACKAGE_QT_STL
-	select BR2_PACKAGE_GNURADIO_FFT
-	select BR2_PACKAGE_GNURADIO_FILTER
-	help
-	  GNU Radio Qt scopes
-
 config BR2_PACKAGE_GNURADIO_TRELLIS
 	bool "gr-trellis support"
 	select BR2_PACKAGE_GNURADIO_DIGITAL
 	help
 	  Trellis coded modulation blocks
 
-endif
 endif

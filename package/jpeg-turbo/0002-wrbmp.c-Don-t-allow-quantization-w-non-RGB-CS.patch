@@ -1,0 +1,39 @@
+From f8cca819a4fb42aafa5f70df43c45e8c416d716f Mon Sep 17 00:00:00 2001
+From: DRC <information@libjpeg-turbo.org>
+Date: Tue, 1 Jan 2019 20:32:40 -0600
+Subject: [PATCH] wrbmp.c: Don't allow quantization w/ non-RGB CS
+
+If cinfo->quantize_colors == 1, then jpeg_calc_output_dimensions() will
+set cinfo->output_components to 1, and if cinfo->out_color_space is not
+RGB (or extended RGB), hilarity will ensue.
+
+Fixes #305
+
+[baruch: drop the ChangeLog.md hunk]
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: commit f8cca819a4
+
+ ChangeLog.md | 4 ++++
+ wrbmp.c      | 5 +++--
+ 2 files changed, 7 insertions(+), 2 deletions(-)
+
+diff --git a/wrbmp.c b/wrbmp.c
+index 4bf81426b0ef..239f64eb3c3f 100644
+--- a/wrbmp.c
++++ b/wrbmp.c
+@@ -502,8 +502,9 @@ jinit_write_bmp(j_decompress_ptr cinfo, boolean is_os2,
+       dest->pub.put_pixel_rows = put_gray_rows;
+     else
+       dest->pub.put_pixel_rows = put_pixel_rows;
+-  } else if (cinfo->out_color_space == JCS_RGB565 ||
+-             cinfo->out_color_space == JCS_CMYK) {
++  } else if (!cinfo->quantize_colors &&
++             (cinfo->out_color_space == JCS_RGB565 ||
++              cinfo->out_color_space == JCS_CMYK)) {
+     dest->pub.put_pixel_rows = put_pixel_rows;
+   } else {
+     ERREXIT(cinfo, JERR_BMP_COLORSPACE);
+-- 
+2.20.1
+

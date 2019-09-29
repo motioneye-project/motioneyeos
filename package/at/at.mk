@@ -4,10 +4,11 @@
 #
 ################################################################################
 
-AT_VERSION = 3.1.16
-AT_SOURCE = at_$(AT_VERSION).orig.tar.gz
-AT_SITE = http://snapshot.debian.org/archive/debian/20141023T043132Z/pool/main/a/at
-# missing deps for parsetime.l
+AT_VERSION = release/3.1.23
+AT_SITE = https://salsa.debian.org/debian/at.git
+AT_SITE_METHOD = git
+# Tried to add missing deps for parsetime.l but still parallel build fails
+# in some case, so at the moment let's keep MAKE1
 AT_MAKE = $(MAKE1)
 AT_AUTORECONF = YES
 AT_DEPENDENCIES = $(if $(BR2_PACKAGE_FLEX),flex) host-bison host-flex

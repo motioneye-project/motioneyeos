@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pathlib2/json, sha256 locally computed
-md5 6c75bfde898b6c88627621a48ee8de14 pathlib2-2.2.1.tar.gz
-sha256 ce9007df617ef6b7bd8a31cd2089ed0c1fed1f7c23cf2bf1ba140b3dd563175d pathlib2-2.2.1.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pathlib2/json
+md5	f9ede5c162ea6fc6a3b1d26db53bb6a2  pathlib2-2.3.3.tar.gz
+sha256	25199318e8cc3c25dcb45cbe084cc061051336d5a9ea2a12448d3d8cb748f742  pathlib2-2.3.3.tar.gz
+# Locally computed sha256 checksums
+sha256	f8e02f1a07e4c6fc59a4bee831ddde26b97064105c423b9e24340f35aaa80262  LICENSE.rst

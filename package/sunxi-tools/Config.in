@@ -1,9 +1,69 @@
 config BR2_PACKAGE_SUNXI_TOOLS
-	bool "sunxi nand-part"
+	bool "sunxi-tools"
 	depends on BR2_arm
 	help
-	  nand-part is part of sunxi-tools for Allwinner A10 (aka
-	  sun4i) and A13 (aka sun5i) based devices. It is a tool to
-	  repartition the internal NAND on sunxi devices.
+	  Tools for Allwinner A10 (aka sun4i) and A13 (aka sun5i)
+	  based devices.
 
 	  http://linux-sunxi.org/Sunxi-tools
+
+if BR2_PACKAGE_SUNXI_TOOLS
+
+config BR2_PACKAGE_SUNXI_TOOLS_FEXC
+	bool "sunxi-fexc (fex2bin & bin2fex)"
+	help
+	  Convert between .fex board definition files and binary
+	  format. These tools are specific for the linux-sunxi kernel
+	  and do not apply to the mainline Linux kernel version.
+
+config BR2_PACKAGE_SUNXI_TOOLS_BOOTINFO
+	bool "sunxi-bootinfo"
+	help
+	  Displays information about sunxi boot code.
+
+config BR2_PACKAGE_SUNXI_TOOLS_FEL
+	bool "sunxi-fel"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	select BR2_PACKAGE_LIBUSB
+	help
+	  The sunxi-fel command can interact with a sunxi device in
+	  fel mode. This allows do download code to memory and execute
+	  it.
+
+comment "sunxi-fel needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
+
+config BR2_PACKAGE_SUNXI_TOOLS_NAND_PART
+	bool "sunxi-nand-part"
+	default y
+	help
+	  The sunxi-nand-part command allows to repartition the internal
+	  NAND on sunxi devices.
+
+config BR2_PACKAGE_SUNXI_TOOLS_PIO
+	bool "sunxi-pio"
+	help
+	  GPIO manipulation tool for sunxi boards.
+
+config BR2_PACKAGE_SUNXI_TOOLS_MEMINFO
+	bool "sunxi-meminfo"
+	help
+	  Utility to retrieve DRAM information from registers on
+	  Allwinner SoCs. Specific for the linux-sunxi kernel - does
+	  not apply to the mainline Linux kernel version.
+
+config BR2_PACKAGE_SUNXI_TOOLS_PHOENIX_INFO
+	bool "phoenix_info"
+	help
+	  Display information about self-installing SD card images
+	  (created with Phoenix Card).
+
+	  https://linux-sunxi.org/PhoenixCard
+
+config BR2_PACKAGE_SUNXI_TOOLS_NAND_IMAGE_BUILDER
+	bool "sunxi-nand-image-builder"
+	help
+	  Creates a raw NAND image that can be read by the sunxi NAND
+	  controller.
+
+endif # BR2_PACKAGE_SUNXI_TOOLS

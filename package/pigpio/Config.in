@@ -1,0 +1,14 @@
+config BR2_PACKAGE_PIGPIO
+	bool "pigpio"
+	depends on BR2_aarch64 || BR2_arm
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_STATIC_LIBS
+	help
+	  Pigpio is a library for the Raspberry Pi which allows
+	  control of the General Purpose Input Outputs (GPIO).
+
+	  http://abyz.me.uk/rpi/pigpio/
+
+comment "pigpio needs a toolchain w/ threads, dynamic library"
+	depends on BR2_aarch64 || BR2_arm
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS

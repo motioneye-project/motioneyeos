@@ -1,0 +1,78 @@
+From 1fad008e1adba5cb596da6f9ec6a244d49a585cf Mon Sep 17 00:00:00 2001
+From: Davide Beatrici <davidebeatrici@gmail.com>
+Date: Mon, 9 Apr 2018 22:02:34 +0200
+Subject: [PATCH] Encrypt: set default RSA key size to 1024 everywhere, using
+ the RSA_KEY_SIZE macro
+
+This commit also fixes the problem described in #31, which was caused by the test key generated in RsaCheck() being too small for newer OpenSSL versions.
+
+Failure looks like
+-- Alert: RsaCheck() --
+OpenSSL Library Init Failed. (too old?)
+Please install the latest version of OpenSSL.
+
+Upstream: https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/commit/1fad008e1adba5cb596da6f9ec6a244d49a585cf
+(Currently still on an active pull request https://github.com/SoftEtherVPN/SoftEtherVPN_Stable/pull/1)
+
+Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+---
+ src/Mayaqua/Encrypt.c | 8 ++++----
+ src/Mayaqua/Encrypt.h | 2 +-
+ 2 files changed, 5 insertions(+), 5 deletions(-)
+
+diff --git a/src/Mayaqua/Encrypt.c b/src/Mayaqua/Encrypt.c
+index 381d1c5..a557052 100644
+--- a/src/Mayaqua/Encrypt.c
++++ b/src/Mayaqua/Encrypt.c
+@@ -2194,7 +2194,7 @@ bool RsaVerifyEx(void *data, UINT data_size, void *sign, K *k, UINT bits)
+ 	}
+ 	if (bits == 0)
+ 	{
+-		bits = 1024;
++		bits = RSA_KEY_SIZE;
+ 	}
+ 
+ 	// Hash the data
+@@ -2233,7 +2233,7 @@ bool RsaSignEx(void *dst, void *src, UINT size, K *k, UINT bits)
+ 	}
+ 	if (bits == 0)
+ 	{
+-		bits = 1024;
++		bits = RSA_KEY_SIZE;
+ 	}
+ 
+ 	Zero(dst, bits / 8);
+@@ -2302,7 +2302,7 @@ bool RsaCheck()
+ 	BIO *bio;
+ 	char errbuf[MAX_SIZE];
+ 	UINT size = 0;
+-	UINT bit = 32;
++	UINT bit = RSA_KEY_SIZE;
+ 	// Validate arguments
+ 
+ 	// Key generation
+@@ -2372,7 +2372,7 @@ bool RsaGen(K **priv, K **pub, UINT bit)
+ 	}
+ 	if (bit == 0)
+ 	{
+-		bit = 1024;
++		bit = RSA_KEY_SIZE;
+ 	}
+ 
+ 	// Key generation
+diff --git a/src/Mayaqua/Encrypt.h b/src/Mayaqua/Encrypt.h
+index d795d2d..0c48161 100644
+--- a/src/Mayaqua/Encrypt.h
++++ b/src/Mayaqua/Encrypt.h
+@@ -128,7 +128,7 @@ void RAND_Free_For_SoftEther();
+ #define	DES_IV_SIZE					8			// DES IV size
+ #define DES_BLOCK_SIZE				8			// DES block size
+ #define DES3_KEY_SIZE				(8 * 3)		// 3DES key size
+-#define RSA_KEY_SIZE				128			// RSA key size
++#define RSA_KEY_SIZE				1024		// RSA key size
+ #define DH_KEY_SIZE					128			// DH key size
+ #define	RSA_MIN_SIGN_HASH_SIZE		(15 + SHA1_HASH_SIZE)	// Minimum RSA hash size
+ #define	RSA_SIGN_HASH_SIZE			(RSA_MIN_SIGN_HASH_SIZE)	// RSA hash size
+-- 
+1.9.1
+

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PERL_HASH_MULTIVALUE
+	bool "perl-hash-multivalue"
+	help
+	  Store multiple values per key.
+
+	  https://github.com/miyagawa/Hash-MultiValue

@@ -1,14 +1,13 @@
 config BR2_PACKAGE_SUNXI_MALI_MAINLINE
 	bool "sunxi-mali-mainline"
-	depends on BR2_arm
-	depends on BR2_ARM_EABIHF
+	depends on BR2_aarch64 || (BR2_ARM_EABIHF && BR2_arm)
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	help
 	  Install userspace Allwinner OpenGL libraries.
 
-	  https://github.com/free-electrons/mali-blobs
+	  https://github.com/bootlin/mali-blobs
 
 if BR2_PACKAGE_SUNXI_MALI_MAINLINE
 
@@ -26,12 +25,15 @@ choice
 
 config BR2_PACKAGE_SUNXI_MALI_MAINLINE_R6P2
 	bool "r6p2"
+config BR2_PACKAGE_SUNXI_MALI_MAINLINE_R8P1
+	bool "r8p1"
 
 endchoice
 
 config BR2_PACKAGE_SUNXI_MALI_MAINLINE_REVISION
 	string
 	default "r6p2"	if BR2_PACKAGE_SUNXI_MALI_MAINLINE_R6P2
+	default "r8p1"	if BR2_PACKAGE_SUNXI_MALI_MAINLINE_R8P1
 
 endif
 

@@ -30,7 +30,7 @@ index 3c553240a..fd5ad9456 100644
  # option to preserve environment (-p), followed by '--' for safety, and then
  # the entered username.
 -ExecStart=-/sbin/agetty -o '-p -- \\u' --noclear --keep-baud console 115200,38400,9600 $TERM
-+ExecStart=-/sbin/getty -L %I 115200 vt100
++ExecStart=-/sbin/getty -L console 115200 vt100
  Type=idle
  Restart=always
  UtmpIdentifier=cons

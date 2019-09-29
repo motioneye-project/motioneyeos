@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_PYMONGO_VERSION = 3.4.0
+PYTHON_PYMONGO_VERSION = 3.8.0
 PYTHON_PYMONGO_SOURCE = pymongo-$(PYTHON_PYMONGO_VERSION).tar.gz
-PYTHON_PYMONGO_SITE = https://pypi.python.org/packages/82/26/f45f95841de5164c48e2e03aff7f0702e22cef2336238d212d8f93e91ea8
+PYTHON_PYMONGO_SITE = https://files.pythonhosted.org/packages/19/77/da358f5729ff046ceaf6c6a86755f9d8285719f93df6da15bb2440367d7e
 PYTHON_PYMONGO_SETUP_TYPE = setuptools
 
 $(eval $(python-package))

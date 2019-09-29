@@ -1,0 +1,55 @@
+#!/bin/sh
+
+DAEMON="sntp"
+# sntp uses all the IPs resolved for the hostname (i.e. pool.ntp.org has 4).
+# It will try each until they either all timeout or time has been set. Thus
+# default to only providing one NTP pool host.
+SNTP_SERVERS="pool.ntp.org"
+# Step if time delta is greater then 128ms, otherwise slew
+SNTP_ARGS="-Ss -M 128"
+SNTP_KEY_CACHE="/tmp/kod"
+
+# shellcheck source=/dev/null
+[ -r "/etc/default/$DAEMON" ] && . "/etc/default/$DAEMON"
+
+start() {
+	printf 'Starting %s: ' "$DAEMON"
+	# Create key cache file to prevents warning that file is missing
+	touch $SNTP_KEY_CACHE
+	# shellcheck disable=SC2086 # we need the word splitting
+	/usr/bin/$DAEMON $SNTP_ARGS -K $SNTP_KEY_CACHE $SNTP_SERVERS
+	# sntp behavior
+	# - Does not background
+	# - Does not infinitely block
+	# - Time-out w/o network = ~2 sec
+	# - Time-out w/ network = ~5sec * # of servers
+	status=$?
+	if [ "$status" -eq 0 ]; then
+		echo "OK"
+	else
+		echo "FAIL"
+	fi
+	return "$status"
+}
+
+stop() {
+	echo "Nothing to do, $DAEMON is not a daemon."
+}
+
+restart() {
+	stop
+	sleep 1
+	start
+}
+
+reload() {
+	echo "Nothing to do, $DAEMON does not support reload."
+}
+
+case "$1" in
+	start|stop|restart|reload)
+		"$1";;
+	*)
+		echo "Usage: $0 {start|stop|restart|reload}"
+		exit 1
+esac

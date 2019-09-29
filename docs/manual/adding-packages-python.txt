@@ -113,6 +113,12 @@ optionally be defined, depending on the package's needs. Many of them
 are only useful in very specific cases, typical packages will
 therefore only use a few of them, or none.
 
+* +PYTHON_FOO_SUBDIR+ may contain the name of a subdirectory inside the
+  package that contains the main +setup.py+ file. This is useful,
+  if for example, the main +setup.py+ file is not at the root of
+  the tree extracted by the tarball. If +HOST_PYTHON_FOO_SUBDIR+ is not
+  specified, it defaults to +PYTHON_FOO_SUBDIR+.
+
 * +PYTHON_FOO_ENV+, to specify additional environment variables to
   pass to the Python +setup.py+ script (for both the build and install
   steps). Note that the infrastructure is automatically passing

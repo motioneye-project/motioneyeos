@@ -23,4 +23,11 @@ config BR2_PACKAGE_HOST_ANDROID_TOOLS_ADB
 	  host, which can be used to interact with target devices
 	  implementing the ADB protocol.
 
+config BR2_PACKAGE_HOST_ANDROID_TOOLS_EXT4_UTILS
+	bool "ext4 utils"
+	help
+	  This option will build and install the ext4 utils for the
+	  host, i.e. make_ext4fs, ext4fixup, ext2simg, img2simg,
+	  simg2img and simg2simg.
+
 endif

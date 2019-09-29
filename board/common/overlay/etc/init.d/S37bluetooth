@@ -17,7 +17,7 @@ test -x ${PROG} || exit 0
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
 prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
-test -f ${CONF} || exit 0
+test -s ${CONF} || exit 0
 
 
 configure() {
@@ -26,7 +26,7 @@ configure() {
     cp ${CONF} ${RUN_CONF}
 
     # if no specific name configured, use hostname
-    if ! grep -E 'Name\s*=' ${RUN_CONF} &>/dev/null; then
+    if ! grep -E 'Name\s*=' ${RUN_CONF} &>/dev/null; then   
         sed -ri "s/(\[General\])/\1\nName = $(hostname)/" ${RUN_CONF}
     fi
     

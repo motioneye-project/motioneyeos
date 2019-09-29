@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo >> /boot/config.txt
+echo "initramfs initrd.gz" >> /boot/config.txt
+

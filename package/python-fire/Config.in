@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_FIRE
+	bool "python-fire"
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  A library for automatically generating command line
+	  interfaces.
+
+	  https://github.com/google/python-fire

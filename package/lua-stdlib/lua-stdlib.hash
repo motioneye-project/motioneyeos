@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 b7302ecc8ea3992d3bad96c0c4d56272e38d786d16cc1ad5964fefa73fd7c10b  stdlib-41.2.1-1.src.rock
+# computed by luarocks/buildroot
+sha256 67eadaccbb2b6037ea70129f9616da49eaeeaf1477652a8e2cc77740286531cf  stdlib-41.2.2-1.src.rock
+sha256 d3177e0cd97e6ef7c459aa2c6a85f53d9b4ff091f7f296d4ed8bfaf713b6fea2  lua-stdlib-release-v41.2.2/COPYING

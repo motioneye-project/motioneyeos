@@ -18,7 +18,7 @@ test -n "${OS_VERSION}" || source /etc/init.d/base
 prepare_conf ${CONF} ${SYS_CONF} ${BOOT_CONF}
 prepare_conf ${NTP_CONF} ${SYS_NTP_CONF} ${BOOT_NTP_CONF}
 
-test -f ${CONF} || exit 0
+test -s ${CONF} || exit 0
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 

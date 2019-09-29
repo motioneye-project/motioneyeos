@@ -1,5 +1,13 @@
 #!/bin/bash -e
 
+# env vars:
+#  THINGOS_LOOP_DEV=/dev/loop0
+#  THINGOS_NAME=thingOS
+#  THINGOS_SHORT_NAME=thingos
+#  THINGOS_PREFIX=thing
+#  THINGOS_VERSION=3.14.15
+
+
 if [ -z "${IMG_DIR}" ] || [ -z "${BOARD}" ]; then
     echo "this script must be invoked from board specific mkimage.sh"
     exit 1
@@ -30,17 +38,20 @@ DISK_SIZE=$((ROOT_START + ROOT_SIZE + GUARD_SIZE))
 COMMON_DIR=$(cd ${IMG_DIR}/../../../board/common; pwd)
 OS_NAME=$(source ${COMMON_DIR}/overlay/etc/version && echo ${OS_SHORT_NAME})
 
+# "-f", unless a /dev/loopX is specified
+LOOP_DEV=${THINGOS_LOOP_DEV:--f}
+
 # boot filesystem
-msg "creating boot loop device"
+msg "creating boot loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${BOOT_IMG} bs=1M count=${BOOT_SIZE}
-loop_dev=$(losetup -f --show ${BOOT_IMG})
+loop_dev=$(losetup --show ${LOOP_DEV} ${BOOT_IMG})
 
 msg "creating boot filesystem"
 mkfs.vfat -F16 ${loop_dev}
 
 msg "mounting boot loop device"
 mkdir -p ${BOOT}
-mount -o loop ${loop_dev} ${BOOT}
+mount ${loop_dev} ${BOOT}
 
 msg "copying boot filesystem contents"
 cp -r ${BOOT_SRC}/* ${BOOT}
@@ -49,14 +60,14 @@ sync
 msg "unmounting boot filesystem"
 umount ${BOOT}
 
-msg "destroying boot loop device (${loop_dev})"
+msg "destroying boot loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 
 # root filesystem
-msg "creating root loop device"
+msg "creating root loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${ROOT_IMG} bs=1M count=${ROOT_SIZE}
-loop_dev=$(losetup -f --show ${ROOT_IMG})
+loop_dev=$(losetup --show ${LOOP_DEV} ${ROOT_IMG})
 
 msg "creating root filesystem"
 mkfs.ext4 ${loop_dev}
@@ -64,7 +75,7 @@ tune2fs -O^has_journal ${loop_dev}
 
 msg "mounting root loop device"
 mkdir -p ${ROOT}
-mount -o loop ${loop_dev} ${ROOT}
+mount ${loop_dev} ${ROOT}
 
 msg "copying root filesystem contents"
 tar -xpsf ${ROOT_SRC} -C ${ROOT}
@@ -92,7 +103,7 @@ fi
 msg "unmounting root filesystem"
 umount ${ROOT}
 
-msg "destroying root loop device (${loop_dev})"
+msg "destroying root loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 
@@ -111,13 +122,13 @@ if ! [ -r ${ROOT_IMG} ]; then
 fi
 
 # disk image
-msg "creating disk loop device"
+msg "creating disk loop device ${LOOP_DEV}"
 dd if=/dev/zero of=${DISK_IMG} bs=1M count=${DISK_SIZE}
 if [ -n "${UBOOT_BIN}" ] && [ -n "${UBOOT_SEEK}" ]; then
     msg "copying u-boot image"
     dd conv=notrunc if=${UBOOT_BIN} of=${DISK_IMG} bs=512 seek=${UBOOT_SEEK}
 fi
-loop_dev=$(losetup -f --show ${DISK_IMG})
+loop_dev=$(losetup --show ${LOOP_DEV} ${DISK_IMG})
 
 msg "partitioning disk"
 set +e
@@ -152,7 +163,7 @@ msg "destroying disk loop device (${loop_dev})"
 losetup -d ${loop_dev}
 
 msg "creating boot loop device"
-loop_dev=$(losetup -f --show -o $((${boot_offs} * 512)) ${DISK_IMG})
+loop_dev=$(losetup --show -o $((${boot_offs} * 512)) ${LOOP_DEV} ${DISK_IMG})
 
 msg "copying boot image"
 dd if=${BOOT_IMG} of=${loop_dev}
@@ -162,14 +173,14 @@ msg "destroying boot loop device (${loop_dev})"
 losetup -d ${loop_dev}
 
 msg "creating root loop device"
-loop_dev=$(losetup -f --show -o $((${root_offs} * 512)) ${DISK_IMG})
+loop_dev=$(losetup --show -o $((${root_offs} * 512)) ${LOOP_DEV} ${DISK_IMG})
 sync
 
 msg "copying root image"
 dd if=${ROOT_IMG} of=${loop_dev}
 sync
 
-msg "destroying root loop device (${loop_dev})"
+msg "destroying root loop device ${loop_dev}"
 losetup -d ${loop_dev}
 sync
 

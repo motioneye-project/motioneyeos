@@ -49,8 +49,12 @@ static char _date_[sizeof("-D__DATE__=\"MMM DD YYYY\"")];
  * 	-D__TIME__=
  * 	-D__DATE__=
  * 	-Wno-builtin-macro-redefined
+ * 	-Wl,-z,now
+ * 	-Wl,-z,relro
+ * 	-fPIE
+ * 	-pie
  */
-#define EXCLUSIVE_ARGS	6
+#define EXCLUSIVE_ARGS	10
 
 static char *predef_args[] = {
 #ifdef BR_CCACHE
@@ -93,6 +97,15 @@ static char *predef_args[] = {
 #endif
 #if defined(BR_MIPS_TARGET_BIG_ENDIAN) || defined(BR_ARC_TARGET_BIG_ENDIAN)
 	"-EB",
+#endif
+#ifdef BR_SSP_REGULAR
+	"-fstack-protector",
+#endif
+#ifdef BR_SSP_STRONG
+	"-fstack-protector-strong",
+#endif
+#ifdef BR_SSP_ALL
+	"-fstack-protector-all",
 #endif
 #ifdef BR_ADDITIONAL_CFLAGS
 	BR_ADDITIONAL_CFLAGS
@@ -236,7 +249,7 @@ int main(int argc, char **argv)
 	char *env_debug;
 	char *paranoid_wrapper;
 	int paranoid;
-	int ret, i, count = 0, debug;
+	int ret, i, count = 0, debug, found_shared = 0;
 
 	/* Calculate the relative paths */
 	basename = strrchr(progpath, '/');
@@ -361,6 +374,80 @@ int main(int argc, char **argv)
 		*cur++ = _date_;
 		/* This has existed since gcc-4.4.0. */
 		*cur++ = "-Wno-builtin-macro-redefined";
+	}
+
+#ifdef BR2_RELRO_FULL
+	/* Patterned after Fedora/Gentoo hardening approaches.
+	 * https://fedoraproject.org/wiki/Changes/Harden_All_Packages
+	 * https://wiki.gentoo.org/wiki/Hardened/Toolchain#Position_Independent_Executables_.28PIEs.29
+	 *
+	 * A few checks are added to allow disabling of PIE
+	 * 1) -fno-pie and -no-pie are used by other distros to disable PIE in
+	 *    cases where the compiler enables it by default. The logic below
+	 *    maintains that behavior.
+	 *         Ref: https://wiki.ubuntu.com/SecurityTeam/PIE
+	 * 2) A check for -fno-PIE has been used in older Linux Kernel builds
+	 *    in a similar way to -fno-pie or -no-pie.
+	 * 3) A check is added for Kernel and U-boot defines
+	 *    (-D__KERNEL__ and -D__UBOOT__).
+	 */
+	for (i = 1; i < argc; i++) {
+		/* Apply all incompatible link flag and disable checks first */
+		if (!strcmp(argv[i], "-r") ||
+		    !strcmp(argv[i], "-Wl,-r") ||
+		    !strcmp(argv[i], "-static") ||
+		    !strcmp(argv[i], "-D__KERNEL__") ||
+		    !strcmp(argv[i], "-D__UBOOT__") ||
+		    !strcmp(argv[i], "-fno-pie") ||
+		    !strcmp(argv[i], "-fno-PIE") ||
+		    !strcmp(argv[i], "-no-pie"))
+			break;
+		/* Record that shared was present which disables -pie but don't
+		 * break out of loop as a check needs to occur that possibly
+		 * still allows -fPIE to be set
+		 */
+		if (!strcmp(argv[i], "-shared"))
+			found_shared = 1;
+	}
+
+	if (i == argc) {
+		/* Compile and link condition checking have been kept split
+		 * between these two loops, as there maybe already are valid
+		 * compile flags set for position independence. In that case
+		 * the wrapper just adds the -pie for link.
+		 */
+		for (i = 1; i < argc; i++) {
+			if (!strcmp(argv[i], "-fpie") ||
+			    !strcmp(argv[i], "-fPIE") ||
+			    !strcmp(argv[i], "-fpic") ||
+			    !strcmp(argv[i], "-fPIC"))
+				break;
+		}
+		/* Both args below can be set at compile/link time
+		 * and are ignored correctly when not used
+		 */
+		if(i == argc)
+			*cur++ = "-fPIE";
+
+		if (!found_shared)
+			*cur++ = "-pie";
+	}
+#endif
+	/* Are we building the Linux Kernel or U-Boot? */
+	for (i = 1; i < argc; i++) {
+		if (!strcmp(argv[i], "-D__KERNEL__") ||
+		    !strcmp(argv[i], "-D__UBOOT__"))
+			break;
+	}
+	if (i == argc) {
+		/* https://wiki.gentoo.org/wiki/Hardened/Toolchain#Mark_Read-Only_Appropriate_Sections */
+#ifdef BR2_RELRO_PARTIAL
+		*cur++ = "-Wl,-z,relro";
+#endif
+#ifdef BR2_RELRO_FULL
+		*cur++ = "-Wl,-z,now";
+		*cur++ = "-Wl,-z,relro";
+#endif
 	}
 
 	paranoid_wrapper = getenv("BR_COMPILER_PARANOID_UNSAFE_PATH");

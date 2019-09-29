@@ -1,0 +1,43 @@
+From b48a2dfae26fa3b4af8e65fb5953b3caf62c137b Mon Sep 17 00:00:00 2001
+From: Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
+Date: Mon, 21 May 2018 14:34:23 -0500
+Subject: [PATCH] checksec: Fixed issue with relative path
+
+Before this patch, the checksec script was not able to find existing
+directories when the user passed a relative path with --dir/-d,
+the script aborted with a "No such file or directory". The same error
+was reported when the script was executed through a relative path.
+
+https://github.com/slimm609/checksec.sh/issues/54
+
+Signed-off-by: Paresh Chaudhary <paresh.chaudhary@rockwellcollins.com>
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+---
+ checksec | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/checksec b/checksec
+index 24b521f..baf8d63 100755
+--- a/checksec
++++ b/checksec
+@@ -1193,7 +1193,7 @@ do
+     echo_message "RELRO           STACK CANARY      NX            PIE             RPATH      RUNPATH      FORTIFY Checked         Total   Filename\n" '' "<dir name='$tempdir'>\n" "{ \"dir\": { \"name\":\"$tempdir\" },"
+     fdircount=0
+     fdirtotal=0
+-    for N in $(find $tempdir -type f); do
++    for N in $(find . -type f); do
+       if [[ "$N" != "[A-Za-z1-0]*" ]]; then
+         out=$(file "$N")
+         if [[  $out =~ ELF ]] ; then
+@@ -1201,7 +1201,7 @@ do
+         fi
+       fi
+     done
+-    for N in $(find $tempdir -type f); do
++    for N in $(find . -type f); do
+       if [[ "$N" != "[A-Za-z1-0]*" ]]; then
+     # read permissions?
+     if [[ ! -r "$N" ]]; then
+-- 
+1.9.1
+

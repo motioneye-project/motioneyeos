@@ -9,10 +9,10 @@ choice
 	  Select the version of gcc you wish to use.
 
 config BR2_GCC_VERSION_ARC
-	bool "gcc arc (7.x)"
+	bool "gcc arc (8.x)"
 	# Only supported architecture
 	depends on BR2_arc
-	select BR2_TOOLCHAIN_GCC_AT_LEAST_7
+	select BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
 config BR2_GCC_VERSION_OR1K
 	bool "gcc or1k (5.x)"
@@ -72,18 +72,20 @@ config BR2_GCC_VERSION_8_X
 
 endchoice
 
-config BR2_GCC_SUPPORTS_FINEGRAINEDMTUNE
+# libcilkrts was introduced in gcc 4.9 (oldest gcc version we
+# support), and removed in gcc 8.x
+config BR2_GCC_SUPPORTS_LIBCILKRTS
 	bool
-	default y
+	default y if !BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
 config BR2_GCC_VERSION
 	string
 	default "4.9.4"     if BR2_GCC_VERSION_4_9_X
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
-	default "6.4.0"     if BR2_GCC_VERSION_6_X
-	default "7.3.0"     if BR2_GCC_VERSION_7_X
-	default "8.2.0"     if BR2_GCC_VERSION_8_X
-	default "arc-2018.03" if BR2_GCC_VERSION_ARC
+	default "6.5.0"     if BR2_GCC_VERSION_6_X
+	default "7.4.0"     if BR2_GCC_VERSION_7_X
+	default "8.3.0"     if BR2_GCC_VERSION_8_X
+	default "arc-2018.09-release" if BR2_GCC_VERSION_ARC
 	default "or1k-musl-5.4.0-20170218" if BR2_GCC_VERSION_OR1K
 
 config BR2_EXTRA_GCC_CONFIG_OPTIONS

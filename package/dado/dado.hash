@@ -1,2 +1,3 @@
-# Locally calculated
+# computed by luarocks/buildroot
 sha256 5a10ed7ff7be34ac004d10d6ea62ee8efc2b594c50ffc93e840e7fb7a2e6b4d0  dado-1.8.3-1.src.rock
+sha256 141953aa7714e3145a6adfd71d6acbbe377e07ab920bc8ec4039394774da8a6e  dado-1.8.3/doc/license.html

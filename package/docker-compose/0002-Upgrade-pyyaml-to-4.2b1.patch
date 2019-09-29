@@ -1,0 +1,27 @@
+From 8419a670aed3364c39b86a0608782aaeae3ce5df Mon Sep 17 00:00:00 2001
+From: Quentin Brunet <hello@quentinbrunet.com>
+Date: Tue, 8 Jan 2019 14:04:54 +0100
+Subject: [PATCH] Upgrade pyyaml to 4.2b1
+
+Signed-off-by: Quentin Brunet <hello@quentinbrunet.com>
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ setup.py         | 2 +-
+ 1 file changed, 1 insertions(+), 1 deletions(-)
+
+diff --git a/setup.py b/setup.py
+index 4c49bab7..8b5f9d99 100644
+--- a/setup.py
++++ b/setup.py
+@@ -32,7 +32,7 @@ def find_version(*file_paths):
+ install_requires = [
+     'cached-property >= 1.2.0, < 2',
+     'docopt >= 0.6.1, < 0.7',
+-    'PyYAML >= 3.10, < 4',
++    'PyYAML >= 3.10, < 4.3',
+     'requests >= 2.6.1, != 2.11.0, != 2.12.2, != 2.18.0, < 3.0',
+     'texttable >= 0.9.0, < 0.10',
+     'websocket-client >= 0.32.0, < 1.0',
+-- 
+2.11.0
+

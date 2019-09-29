@@ -185,7 +185,7 @@ fi
 # the state of the remote server. It also would generate large tarballs
 # (gigabytes for some linux trees) when a full clone took place.
 find . -not -type d \
-	-and -not -path "./.git/*" >"${output}.list"
+       -and -not -path "./.git/*" >"${output}.list"
 LC_ALL=C sort <"${output}.list" >"${output}.list.sorted"
 
 # Create GNU-format tarballs, since that's the format of the tarballs on

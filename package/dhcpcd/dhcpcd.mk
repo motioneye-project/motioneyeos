@@ -36,6 +36,10 @@ define DHCPCD_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) install DESTDIR=$(TARGET_DIR)
 endef
 
+# When network-manager is enabled together with dhcpcd, it will use
+# dhcpcd as a DHCP client, and will be in charge of running, so we
+# don't want the init script or service file to be installed.
+ifeq ($(BR2_PACKAGE_NETWORK_MANAGER),)
 define DHCPCD_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/dhcpcd/S41dhcpcd \
 		$(TARGET_DIR)/etc/init.d/S41dhcpcd
@@ -48,6 +52,7 @@ define DHCPCD_INSTALL_INIT_SYSTEMD
 	ln -sf ../../../../usr/lib/systemd/system/dhcpcd.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dhcpcd.service
 endef
+endif
 
 # NOTE: Even though this package has a configure script, it is not generated
 # using the autotools, so we have to use the generic package infrastructure.

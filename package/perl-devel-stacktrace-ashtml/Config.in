@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_DEVEL_STACKTRACE_ASHTML
+	bool "perl-devel-stacktrace-ashtml"
+	select BR2_PACKAGE_PERL_DEVEL_STACKTRACE # runtime
+	help
+	  Displays stack trace in HTML.
+
+	  https://github.com/miyagawa/Devel-StackTrace-AsHTML

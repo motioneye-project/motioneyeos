@@ -1,5 +1,5 @@
-# From https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.44.2/sha256sums.asc
-sha256 8324cf0b6e81805a741d94087b00e99f7e16144f1ee5a413709a1fa6948b126c  e2fsprogs-1.44.2.tar.xz
+# From https://www.kernel.org/pub/linux/kernel/people/tytso/e2fsprogs/v1.44.5/sha256sums.asc
+sha256 ba5eb3069d69160d96818bb9700de9ab5a8458d9add1fd85d427c0000d34c5b9  e2fsprogs-1.44.5.tar.xz
 # Locally calculated
 sha256 5da5ef153e559c1d990d4c3eedbedd4442db892d37eae1f35fff069de8ec9020  NOTICE
 sha256 032989b508f1a72ebee5b3417e55d06d473f9ee203e45ab11864a7e49cdec63d  lib/ss/mit-sipb-copyright.h

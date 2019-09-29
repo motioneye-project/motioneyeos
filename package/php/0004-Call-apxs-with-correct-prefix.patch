@@ -1,0 +1,51 @@
+From 4342bdea7a1a21430ce0d051fa4387441166c473 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fabrice.fontaine@orange.com>
+Date: Sun, 11 Dec 2016 23:12:46 +0100
+Subject: [PATCH] Call apxs with correct prefix
+
+php uses apache's apxs script from staging directory to install libphp
+dynamic library and update /etc/apache2/httpd.conf in the staging and target
+directories. Here is the full command line:
+"apxs -S LIBEXECDIR='$(INSTALL_ROOT)/usr/modules'
+ -S SYSCONFDIR='$(INSTALL_ROOT)/etc/apache2' -i -a -n php7"
+This does not work for target directory as apxs sets the full path of the
+library and not the relative one. Indeed, apxs is smart enough to substitute
+away the prefix specified in $(STAGING_DIR)/usr/build/config_vars.mk so
+httpd.conf will only be correct in the staging directory.
+To fix this, add -S PREFIX='$(INSTALL_ROOT)/usr' to apxs call in configure
+
+Signed-off-by: Fabrice Fontaine <fabrice.fontaine@orange.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+[aduskett@gmail.com: Update for 7.3.0]
+---
+ sapi/apache2handler/config.m4 | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/sapi/apache2handler/config.m4 b/sapi/apache2handler/config.m4
+index 2e64b21..f5bf002 100644
+--- a/sapi/apache2handler/config.m4
++++ b/sapi/apache2handler/config.m4
+@@ -64,10 +64,12 @@ if test "$PHP_APXS2" != "no"; then
+     AC_MSG_ERROR([Please note that Apache version >= 2.0.44 is required])
+   fi
+ 
++  APXS_PREFIX='$(INSTALL_ROOT)'/usr
+   APXS_LIBEXECDIR='$(INSTALL_ROOT)'`$APXS -q LIBEXECDIR`
+   if test -z `$APXS -q SYSCONFDIR`; then
+     INSTALL_IT="\$(mkinstalldirs) '$APXS_LIBEXECDIR' && \
+                  $APXS -S LIBEXECDIR='$APXS_LIBEXECDIR' \
++                       -S PREFIX='$APXS_PREFIX' \
+                        -i -n php7"
+   else
+     APXS_SYSCONFDIR='$(INSTALL_ROOT)'`$APXS -q SYSCONFDIR`
+@@ -75,6 +77,7 @@ if test "$PHP_APXS2" != "no"; then
+                 \$(mkinstalldirs) '$APXS_SYSCONFDIR' && \
+                  $APXS -S LIBEXECDIR='$APXS_LIBEXECDIR' \
+                        -S SYSCONFDIR='$APXS_SYSCONFDIR' \
++                       -S PREFIX='$APXS_PREFIX' \
+                        -i -a -n php7"
+   fi
+ 
+-- 
+2.5.0
+

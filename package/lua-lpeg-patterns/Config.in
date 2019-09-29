@@ -1,7 +1,6 @@
 config BR2_PACKAGE_LUA_LPEG_PATTERNS
 	bool "lua-lpeg-patterns"
-	# These are runtime dependencies
-	select BR2_PACKAGE_LPEG
+	select BR2_PACKAGE_LPEG # runtime
 	help
 	  a collection of LPEG patterns.
 

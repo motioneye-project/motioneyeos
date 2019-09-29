@@ -1,2 +1,3 @@
-# Locally calculated
-sha256 fd0117156f59d1cb3824d5cca63be84c72cb5519b714377545433be3bb31afdf  compat53-0.5-1.src.rock
+# computed by luarocks/buildroot
+sha256 cb5fdca362780a30405c4134310ea78627a092b0ee8445a52456f2fceeeaea4e  compat53-0.7-1.src.rock
+sha256 1b24f475812c979684fb3469f6faccbdc7c33c9d39421728aa0d78deda5a89a5  lua-compat-5.3-0.7/LICENSE

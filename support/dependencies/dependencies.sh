@@ -181,6 +181,14 @@ if test "${missing_progs}" = "yes" ; then
 	exit 1
 fi
 
+# Check that the python version is at least 2.7
+PYTHON_VERSION=$(python -V 2>&1 |awk '{ split($2, v, "."); print v[1] v[2] }')
+if [ $PYTHON_VERSION -lt 27 ]; then
+	echo
+	echo "You have '$(python -V 2>&1)' installed.  Python >= 2.7 is required"
+	exit 1;
+fi
+
 if grep ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG > /dev/null; then
 	if ! which locale > /dev/null ; then
 		echo

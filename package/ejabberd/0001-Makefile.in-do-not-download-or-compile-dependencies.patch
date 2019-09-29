@@ -1,0 +1,35 @@
+From 277103e886c9b3ddfede8b3f5b92d3e94736f404 Mon Sep 17 00:00:00 2001
+From: Johan Oudinet <johan.oudinet@gmail.com>
+Date: Fri, 23 Nov 2018 16:13:21 +0100
+Subject: [PATCH] Makefile.in: do not download or compile dependencies
+
+Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
+---
+ Makefile.in | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile.in b/Makefile.in
+index 48dca7d8..d2324dae 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -94,7 +94,7 @@ ifneq ($(INSTALLGROUP),)
+   G_USER=-g $(INSTALLGROUP)
+ endif
+ 
+-all: deps src
++all: src
+ 
+ deps: deps/.got
+ 
+@@ -108,7 +108,7 @@ deps/.built: deps/.got
+ 	$(REBAR) configure-deps
+ 	$(REBAR) compile && :> deps/.built
+ 
+-src: deps/.built
++src:
+ 	$(REBAR) skip_deps=true compile
+ 
+ update:
+-- 
+2.17.1
+

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_PIP
+	bool "python-pip"
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS # runtime
+	help
+	  The PyPA recommended tool for installing Python packages.
+
+	  https://pip.pypa.io/

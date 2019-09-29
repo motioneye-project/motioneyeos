@@ -1,5 +1,7 @@
 # From https://github.com/zeromq/libzmq/releases
-md5  a1c95b34384257e986842f4d006957b8  zeromq-4.2.5.tar.gz
-sha1 1132f839d703486c4ee1cf22f056585dfbb329c2  zeromq-4.2.5.tar.gz
+md5  64cbf3577afdbfda30358bc757a6ac83  zeromq-4.3.1.tar.gz
+sha1 6cce22d830eaf95feff7cab00744df13ad7ab7f3  zeromq-4.3.1.tar.gz
 # Locally computed
-sha256 cc9090ba35713d59bb2f7d7965f877036c49c5558ea0c290b0dcc6f2a17e489f  zeromq-4.2.5.tar.gz
+sha256 bcbabe1e2c7d0eec4ed612e10b94b112dd5f06fcefa994a0c79a45d835cd21eb  zeromq-4.3.1.tar.gz
+sha256 4fd86507c9b486764343065a9e035222869a27b5789efeb4fd93edc85412d7a3  COPYING
+sha256 83f32abe61ee58ffb1b007412c08415168c052501dbf56d7a47aaaac52b03ef6  COPYING.LESSER

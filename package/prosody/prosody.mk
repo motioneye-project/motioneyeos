@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PROSODY_VERSION = 0.10.0
+PROSODY_VERSION = 0.11.2
 PROSODY_SITE = https://prosody.im/downloads/source
 PROSODY_LICENSE = MIT
 PROSODY_LICENSE_FILES = COPYING
@@ -14,7 +14,7 @@ PROSODY_CFLAGS = $(TARGET_CFLAGS) -fPIC -std=c99 \
 	$(if BR2_TOOLCHAIN_USES_MUSL,-DWITHOUT_MALLINFO)
 
 PROSODY_CONF_OPTS = \
-	--with-lua-bin=$(HOST_DIR)/usr/bin \
+	--with-lua-bin=$(HOST_DIR)/bin \
 	--with-lua=$(STAGING_DIR)/usr \
 	--lua-version=$(LUAINTERPRETER_ABIVER) \
 	--c-compiler=$(TARGET_CC) \

@@ -1,0 +1,25 @@
+From b8b1e9751e1d074af0dd77c2554c1b25fd8f7abe Mon Sep 17 00:00:00 2001
+From: Romain Francoise <romain@rfr.io>
+Date: Mon, 1 Jan 2018 18:00:34 +0100
+Subject: [PATCH] Fix typo in configure.in when testing for use_pcre
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved from:
+https://github.com/jpr5/ngrep/commit/b8b1e9751e1d074af0dd77c2554c1b25fd8f7abe]
+---
+ configure.in | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/configure.in b/configure.in
+index cff37e9..06c050a 100644
+--- a/configure.in
++++ b/configure.in
+@@ -146,7 +146,7 @@ AC_ARG_ENABLE(pcre,
+ [ use_pcre="$enableval" ],
+ [ use_pcre="no" ])
+ 
+-if test use_pcre = yes; then
++if test $use_pcre = yes; then
+   USE_PCRE="1"
+   EXTRA_LIBS="$EXTRA_LIBS -lpcre"
+ else

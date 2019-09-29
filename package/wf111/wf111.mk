@@ -4,14 +4,19 @@
 #
 ################################################################################
 
+ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_ARM_CPU_ARMV5),y)
+WF111_VERSION = 5.2.2-r4
+else
 WF111_VERSION = 5-2-2-r3
+endif
+
 WF111_SITE = https://www.silabs.com/documents/login/software
 WF111_DEPENDENCIES = linux
 
 ifeq ($(BR2_ARM_CPU_ARMV7A),y)
-WF111_SOURCE = wf111-linux-driver-$(WF111_VERSION)-armv7-a.tar.gz
+WF111_SOURCE = wf111-linux-driver_$(WF111_VERSION)_armv7-a.tar.gz
 else ifeq ($(BR2_ARM_CPU_ARMV5),y)
-WF111_SOURCE = wf111-linux-driver-$(WF111_VERSION)-armv5te.tar.gz
+WF111_SOURCE = wf111-linux-driver_$(WF111_VERSION)_armv5te.tar.gz
 else ifeq ($(BR2_i386),y)
 WF111_SOURCE = wf111-linux-driver-$(WF111_VERSION)-x86.tar.gz
 endif

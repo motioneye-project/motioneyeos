@@ -9,6 +9,17 @@ if BR2_PACKAGE_OPENOCD
 
 comment "Adapters"
 
+config BR2_PACKAGE_OPENOCD_CMSIS_DAP
+	bool "CMSIS-DAP compliant debuggers"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb
+	depends on BR2_PACKAGE_HAS_UDEV # hidapi
+	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL # hidapi
+	select BR2_PACKAGE_LIBUSB
+	select BR2_PACKAGE_HIDAPI
+	help
+	  Enable support for CMSIS-DAP compliant debuggers (i.e
+	  Atmel/Microchip EDBG, etc.)
+
 config BR2_PACKAGE_OPENOCD_FTDI
 	bool "MPSSE mode of FTDI based devices"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libusb

@@ -1,10 +1,10 @@
 config BR2_PACKAGE_PERL_GDGRAPH
 	bool "perl-gdgraph"
 	depends on !BR2_STATIC_LIBS
-	select BR2_PACKAGE_PERL_GD
-	select BR2_PACKAGE_PERL_GDTEXTUTIL
+	select BR2_PACKAGE_PERL_GD # runtime
+	select BR2_PACKAGE_PERL_GDTEXTUTIL # runtime
 	help
-	  Produces charts with GD
+	  Produces charts with GD.
 
 	  https://metacpan.org/release/GDGraph
 

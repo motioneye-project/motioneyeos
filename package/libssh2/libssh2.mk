@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBSSH2_VERSION = 616fd4d1b3e4a55de67c48819fefca83132126b5
+LIBSSH2_VERSION = 1b3cbaff518f32e5b70650d4b7b52361b1410d37
 LIBSSH2_SITE = $(call github,libssh2,libssh2,$(LIBSSH2_VERSION))
 LIBSSH2_LICENSE = BSD
 LIBSSH2_LICENSE_FILES = COPYING
@@ -42,7 +42,7 @@ endif
 
 HOST_LIBSSH2_DEPENDENCIES += host-openssl
 HOST_LIBSSH2_CONF_OPTS += --with-openssl \
-	--with-libssl-prefix=$(HOST_DIR)/usr \
+	--with-libssl-prefix=$(HOST_DIR) \
 	--without-libgcrypt
 
 $(eval $(autotools-package))

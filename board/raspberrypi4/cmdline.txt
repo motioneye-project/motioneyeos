@@ -1,0 +1,1 @@
+dwc_otg.fiq_fix_enable=1 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 rootwait ro rootflags=noload panic=10 quiet loglevel=1 ipv6.disable=1

@@ -1,0 +1,99 @@
+From 48be4c81e0ad081edab65e133e6e1bdec7de3b55 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Martin=20Storsj=C3=B6?= <martin@martin.st>
+Date: Tue, 4 Sep 2018 08:29:37 +0300
+Subject: [PATCH] libfdk-aac: Consistently use a proper version check macro for
+ detecting features
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+libfdk-aac: Consistently use a proper version check macro for detecting features
+
+The previous version checks checked explicitly for the version
+where the version define was added to the installed headers,
+making an "#ifdef AACDECODER_LIB_VL0" enough. Now that we have
+a need for more diverse version checks than this, convert all checks
+to such checks.
+
+Downloaded from
+http://git.videolan.org/?p=ffmpeg.git;a=commitdiff;h=ffb9b7a6bab6c6bfd3dd9a7c32e3724209824999
+
+Signed-off-by: Martin Storsjö <martin@martin.st>
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ libavcodec/libfdk-aacdec.c | 13 ++++++++-----
+ libavcodec/libfdk-aacenc.c |  6 +++---
+ 2 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/libavcodec/libfdk-aacdec.c b/libavcodec/libfdk-aacdec.c
+index 2857b9453f..ef51184ebd 100644
+--- a/libavcodec/libfdk-aacdec.c
++++ b/libavcodec/libfdk-aacdec.c
+@@ -25,9 +25,12 @@
+ #include "avcodec.h"
+ #include "internal.h"
+ 
+-/* The version macro is introduced the same time as the setting enum was
+- * changed, so this check should suffice. */
+-#ifndef AACDECODER_LIB_VL0
++#define FDKDEC_VER_AT_LEAST(vl0, vl1) \
++    (defined(AACDECODER_LIB_VL0) && \
++        ((AACDECODER_LIB_VL0 > vl0) || \
++         (AACDECODER_LIB_VL0 == vl0 && AACDECODER_LIB_VL1 >= vl1)))
++
++#if !FDKDEC_VER_AT_LEAST(2, 5) // < 2.5.10
+ #define AAC_PCM_MAX_OUTPUT_CHANNELS AAC_PCM_OUTPUT_CHANNELS
+ #endif
+ 
+@@ -72,7 +75,7 @@ static const AVOption fdk_aac_dec_options[] = {
+                      OFFSET(drc_level),      AV_OPT_TYPE_INT,   { .i64 = -1},  -1, 127, AD, NULL    },
+     { "drc_heavy", "Dynamic Range Control: heavy compression, where [1] is on (RF mode) and [0] is off",
+                      OFFSET(drc_heavy),      AV_OPT_TYPE_INT,   { .i64 = -1},  -1, 1,   AD, NULL    },
+-#ifdef AACDECODER_LIB_VL0
++#if FDKDEC_VER_AT_LEAST(2, 5) // 2.5.10
+     { "level_limit", "Signal level limiting", OFFSET(level_limit), AV_OPT_TYPE_INT, { .i64 = 0 }, -1, 1, AD },
+ #endif
+     { NULL }
+@@ -293,7 +296,7 @@ static av_cold int fdk_aac_decode_init(AVCodecContext *avctx)
+         }
+     }
+ 
+-#ifdef AACDECODER_LIB_VL0
++#if FDKDEC_VER_AT_LEAST(2, 5) // 2.5.10
+     if (aacDecoder_SetParam(s->handle, AAC_PCM_LIMITER_ENABLE, s->level_limit) != AAC_DEC_OK) {
+         av_log(avctx, AV_LOG_ERROR, "Unable to set in signal level limiting in the decoder\n");
+         return AVERROR_UNKNOWN;
+diff --git a/libavcodec/libfdk-aacenc.c b/libavcodec/libfdk-aacenc.c
+index f5adb407ed..91dcb5a1b9 100644
+--- a/libavcodec/libfdk-aacenc.c
++++ b/libavcodec/libfdk-aacenc.c
+@@ -156,7 +156,7 @@ static av_cold int aac_encode_init(AVCodecContext *avctx)
+     case 6: mode = MODE_1_2_2_1; sce = 2; cpe = 2; break;
+ /* The version macro is introduced the same time as the 7.1 support, so this
+    should suffice. */
+-#ifdef AACENCODER_LIB_VL0
++#if FDKENC_VER_AT_LEAST(3, 4) // 3.4.12
+     case 8:
+         sce = 2;
+         cpe = 3;
+@@ -291,7 +291,7 @@ static av_cold int aac_encode_init(AVCodecContext *avctx)
+     }
+ 
+     avctx->frame_size = info.frameLength;
+-#if FDKENC_VER_AT_LEAST(4, 0)
++#if FDKENC_VER_AT_LEAST(4, 0) // 4.0.0
+     avctx->initial_padding = info.nDelay;
+ #else
+     avctx->initial_padding = info.encoderDelay;
+@@ -412,7 +412,7 @@ static const uint64_t aac_channel_layout[] = {
+     AV_CH_LAYOUT_4POINT0,
+     AV_CH_LAYOUT_5POINT0_BACK,
+     AV_CH_LAYOUT_5POINT1_BACK,
+-#ifdef AACENCODER_LIB_VL0
++#if FDKENC_VER_AT_LEAST(3, 4) // 3.4.12
+     AV_CH_LAYOUT_7POINT1_WIDE_BACK,
+     AV_CH_LAYOUT_7POINT1,
+ #endif
+-- 
+2.20.1
+

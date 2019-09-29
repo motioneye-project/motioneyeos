@@ -15,21 +15,35 @@ comment "kodi needs python w/ .py modules, a uClibc or glibc toolchain w/ C++, t
 		|| !BR2_PACKAGE_PYTHON \
 		|| BR2_PACKAGE_PYTHON_PYC_ONLY
 
-config BR2_PACKAGE_KODI_EGL_GLES
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
+	bool
+
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
 	bool
 	default y
-	depends on BR2_PACKAGE_HAS_LIBEGL
-	depends on BR2_PACKAGE_HAS_LIBGLES
-	depends on !BR2_PACKAGE_KODI_GL_EGL # prefer GL if available
+	depends on BR2_PACKAGE_LIBAMCODEC
+	depends on BR2_PACKAGE_ODROID_MALI
+	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 
-config BR2_PACKAGE_KODI_GL_EGL
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
+	bool
+	default y
+	# List of valid CPUs can be found here:
+	# https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L12
+	depends on BR2_arm1176jzf_s || BR2_cortex_a7 || BR2_cortex_a53
+	depends on BR2_PACKAGE_RPI_USERLAND
+	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
+
+config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_X11_OPENGL
 	bool
 	default y
 	depends on BR2_PACKAGE_HAS_LIBEGL
 	depends on BR2_PACKAGE_HAS_LIBGL
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 
-comment "kodi needs an OpenGL EGL with either an openGL or an OpenGL ES backend"
-	depends on !BR2_PACKAGE_KODI_GL_EGL && !BR2_PACKAGE_KODI_EGL_GLES
+comment "kodi needs an OpenGL EGL backend with OpenGL support"
+	depends on !BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 
 menuconfig BR2_PACKAGE_KODI
 	bool "kodi"
@@ -38,27 +52,23 @@ menuconfig BR2_PACKAGE_KODI
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	depends on !BR2_TOOLCHAIN_USES_MUSL
-	depends on BR2_PACKAGE_KODI_EGL_GLES || BR2_PACKAGE_KODI_GL_EGL
 	depends on BR2_USE_WCHAR
-	depends on !BR2_STATIC_LIBS # python and others
+	depends on !BR2_STATIC_LIBS # gnutls, python and others
 	depends on BR2_PACKAGE_KODI_ARCH_SUPPORTS
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_PACKAGE_PYTHON_PYC_ONLY
 	select BR2_NEEDS_HOST_JAVA
 	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_EXPAT
-	select BR2_PACKAGE_FFMPEG
-	select BR2_PACKAGE_FFMPEG_GPL
-	select BR2_PACKAGE_FFMPEG_POSTPROC # postproc depends on GPL
-	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_GNUTLS
 	select BR2_PACKAGE_LIBASS
 	select BR2_PACKAGE_LIBCDIO
 	select BR2_PACKAGE_LIBCROSSGUID
 	select BR2_PACKAGE_LIBCURL
 	select BR2_PACKAGE_LIBFRIBIDI
-	select BR2_PACKAGE_LIBGLU if BR2_PACKAGE_KODI_GL_EGL
 	select BR2_PACKAGE_LIBICONV if !BR2_ENABLE_LOCALE
 	select BR2_PACKAGE_LIBPLIST
 	select BR2_PACKAGE_LIBSAMPLERATE
@@ -80,8 +90,6 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_TAGLIB
 	select BR2_PACKAGE_TINYXML
-	select BR2_PACKAGE_LIBDRM if BR2_PACKAGE_KODI_GL_EGL
-	select BR2_PACKAGE_XLIB_LIBXRANDR if BR2_PACKAGE_KODI_GL_EGL
 	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC # runtime UTF conversion support
@@ -190,6 +198,27 @@ config BR2_PACKAGE_KODI_NONFREE
 	  Enable components with non-free licenses. This option
 	  currently only controls support for RAR archives.
 
+choice
+	prompt "platform"
+	default BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
+
+config BR2_PACKAGE_KODI_PLATFORM_AML
+	bool "AMLogic"
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_AML
+
+config BR2_PACKAGE_KODI_PLATFORM_RBPI
+	bool "Raspberry Pi"
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
+
+config BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
+	bool "X11/OpenGL"
+	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_X11_OPENGL
+	select BR2_PACKAGE_LIBDRM
+	select BR2_PACKAGE_LIBGLU
+	select BR2_PACKAGE_XLIB_LIBXRANDR
+
+endchoice
+
 config BR2_PACKAGE_KODI_PULSEAUDIO
 	bool "pulseaudio"
 	depends on BR2_PACKAGE_PULSEAUDIO_HAS_ATOMIC
@@ -240,25 +269,23 @@ config BR2_PACKAGE_KODI_LIBUSB
 
 config BR2_PACKAGE_KODI_LIBVA
 	bool "va"
-	depends on BR2_PACKAGE_KODI_GL_EGL
-	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 	select BR2_PACKAGE_LIBVA
 	help
 	  Enable libva support.
 
-comment "libva support needs X.org with an openGL backend"
-	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_GL_EGL
+comment "libva support needs platform 'X11/OpenGL'"
+	depends on !BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 
 config BR2_PACKAGE_KODI_LIBVDPAU
 	bool "vdpau"
-	depends on BR2_PACKAGE_KODI_GL_EGL
-	depends on BR2_PACKAGE_XORG7
+	depends on BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 	select BR2_PACKAGE_LIBVDPAU
 	help
 	  Enable libvdpau support.
 
-comment "libvdpau support needs X.org with an openGL backend"
-	depends on !BR2_PACKAGE_XORG7 || !BR2_PACKAGE_KODI_GL_EGL
+comment "libvdpau support needs platform 'X11/OpenGL'"
+	depends on !BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 
 config BR2_PACKAGE_KODI_UPNP
 	bool "upnp"

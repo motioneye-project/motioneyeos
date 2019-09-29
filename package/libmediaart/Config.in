@@ -32,12 +32,11 @@ config BR2_PACKAGE_LIBMEDIAART_BACKEND_GDK_PIXBUF
 
 config BR2_PACKAGE_LIBMEDIAART_BACKEND_QT
 	bool "Qt"
-	depends on BR2_PACKAGE_QT || BR2_PACKAGE_QT5
-	select BR2_PACKAGE_QT_GUI_MODULE if BR2_PACKAGE_QT
-	select BR2_PACKAGE_QT5BASE_GUI if BR2_PACKAGE_QT5
+	depends on BR2_PACKAGE_QT5
+	select BR2_PACKAGE_QT5BASE_GUI
 
-comment "Qt backend depends on Qt or Qt5"
-	depends on !BR2_PACKAGE_QT && !BR2_PACKAGE_QT5
+comment "Qt backend depends on Qt5"
+	depends on !BR2_PACKAGE_QT5
 
 endchoice
 

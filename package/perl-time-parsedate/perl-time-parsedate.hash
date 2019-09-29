@@ -1,0 +1,7 @@
+# retrieved by scancpan from http://cpan.metacpan.org/
+md5    9143d075278857d21c77467d26f1603b Time-ParseDate-2015.103.tar.gz
+sha256 2c1a06235bf811813caac9eaa9daa71af758667cdf7b082cb59863220fcaeed1 Time-ParseDate-2015.103.tar.gz
+
+# locally calculated
+sha256 6d8de888d0662f75cfa3bf21b261741d5634ac9cdd8604d6173850546a3d40a9 lib/Time/JulianDay.pm
+sha256 9ae411fbaf87add414e7357417032dfedce652c393643bc5cb5b7698041a1dca lib/Time/Timezone.pm

@@ -4,27 +4,21 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 2.2.17
-WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.bz2
+WIRESHARK_VERSION = 2.6.7
+WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.xz
 WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
-WIRESHARK_DEPENDENCIES = host-pkgconf libpcap libglib2
+WIRESHARK_DEPENDENCIES = host-pkgconf libgcrypt libpcap libglib2
 WIRESHARK_CONF_ENV = \
+	LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
 	PCAP_CONFIG=$(STAGING_DIR)/usr/bin/pcap-config
 
-# patch touching configure.ac
-WIRESHARK_AUTORECONF = YES
-
-# wireshark adds -I$includedir to CFLAGS, causing host/target headers mixup.
-# Work around it by pointing includedir at staging
 WIRESHARK_CONF_OPTS = \
-	--without-krb5 \
+	--disable-guides \
 	--enable-static=no \
 	--with-libsmi=no \
-	--with-lua=no \
-	--with-pcap=$(STAGING_DIR)/usr \
-	--includedir=$(STAGING_DIR)/usr/include
+	--with-pcap=yes
 
 # wireshark GUI options
 ifeq ($(BR2_PACKAGE_LIBGTK3),y)
@@ -56,18 +50,18 @@ ifeq ($(BR2_PACKAGE_WIRESHARK_GUI),)
 WIRESHARK_CONF_OPTS += --disable-wireshark
 endif
 
+ifeq ($(BR2_PACKAGE_BCG729),y)
+WIRESHARK_CONF_OPTS += --with-bcg729=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += bcg729
+else
+WIRESHARK_CONF_OPTS += --without-bcg729
+endif
+
 ifeq ($(BR2_PACKAGE_C_ARES),y)
 WIRESHARK_CONF_OPTS += --with-c-ares=$(STAGING_DIR)/usr
 WIRESHARK_DEPENDENCIES += c-ares
 else
 WIRESHARK_CONF_OPTS += --without-c-ares
-endif
-
-ifeq ($(BR2_PACKAGE_GEOIP),y)
-WIRESHARK_CONF_OPTS += --with-geoip=$(STAGING_DIR)/usr
-WIRESHARK_DEPENDENCIES += geoip
-else
-WIRESHARK_CONF_OPTS += --without-geoip
 endif
 
 ifeq ($(BR2_PACKAGE_GNUTLS),y)
@@ -77,12 +71,18 @@ else
 WIRESHARK_CONF_OPTS += --with-gnutls=no
 endif
 
-ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
-WIRESHARK_CONF_ENV += LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config
-WIRESHARK_CONF_OPTS += --with-gcrypt=yes
-WIRESHARK_DEPENDENCIES += libgcrypt
+ifeq ($(BR2_PACKAGE_LIBKRB5),y)
+WIRESHARK_CONF_OPTS += --with-krb5=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libkrb5
 else
-WIRESHARK_CONF_OPTS += --with-gcrypt=no
+WIRESHARK_CONF_OPTS += --without-krb5
+endif
+
+ifeq ($(BR2_PACKAGE_LIBMAXMINDDB),y)
+WIRESHARK_CONF_OPTS += --with-maxminddb=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libmaxminddb
+else
+WIRESHARK_CONF_OPTS += --without-maxminddb
 endif
 
 ifeq ($(BR2_PACKAGE_LIBNL),y)
@@ -92,11 +92,64 @@ else
 WIRESHARK_CONF_OPTS += --without-libnl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSSH),y)
+WIRESHARK_CONF_OPTS += --with-libssh=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += libssh
+else
+WIRESHARK_CONF_OPTS += --without-libssh
+endif
+
+ifeq ($(BR2_PACKAGE_LIBXML2),y)
+WIRESHARK_CONF_OPTS += --with-libxml2
+WIRESHARK_DEPENDENCIES += libxml2
+else
+WIRESHARK_CONF_OPTS += --without-libxml2
+endif
+
+# no support for lua53 yet
+ifeq ($(BR2_PACKAGE_LUA_5_1),y)
+WIRESHARK_CONF_OPTS += --with-lua
+WIRESHARK_DEPENDENCIES += lua
+else
+WIRESHARK_CONF_OPTS += --without-lua
+endif
+
+ifeq ($(BR2_PACKAGE_LZ4),y)
+WIRESHARK_CONF_OPTS += --with-lz4=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += lz4
+else
+WIRESHARK_CONF_OPTS += --without-lz4
+endif
+
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+WIRESHARK_CONF_OPTS += --with-nghttp2=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += nghttp2
+else
+WIRESHARK_CONF_OPTS += --without-nghttp2
+endif
+
 ifeq ($(BR2_PACKAGE_SBC),y)
 WIRESHARK_CONF_OPTS += --with-sbc=yes
 WIRESHARK_DEPENDENCIES += sbc
 else
 WIRESHARK_CONF_OPTS += --with-sbc=no
+endif
+
+ifeq ($(BR2_PACKAGE_SNAPPY),y)
+WIRESHARK_CONF_OPTS += --with-snappy=$(STAGING_DIR)/usr
+WIRESHARK_DEPENDENCIES += snappy
+ifeq ($(BR2_STATIC_LIBS),y)
+WIRESHARK_CONF_ENV += LIBS=-lstdc++
+endif
+else
+WIRESHARK_CONF_OPTS += --without-snappy
+endif
+
+ifeq ($(BR2_PACKAGE_SPANDSP),y)
+WIRESHARK_CONF_OPTS += --with-spandsp
+WIRESHARK_DEPENDENCIES += spandsp
+else
+WIRESHARK_CONF_OPTS += --without-spandsp
 endif
 
 define WIRESHARK_REMOVE_DOCS

@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# Starts mender service.
+#
+
+start() {
+	# If /var/lib/mender is a symlink to /var/run/mender, and
+	#   - the filesystem is RO (i.e. we can not rm the symlink),
+	#     create the directory pointed to by the symlink.
+	#   - the filesystem is RW (i.e. we can rm the symlink),
+	#     replace the symlink with an actual directory
+	if [ -L /var/lib/mender \
+	     -a "$(readlink /var/lib/mender)" = "/var/run/mender" ]
+	then
+		if rm -f /var/lib/mender >/dev/null 2>&1; then
+			mkdir -p /var/lib/mender
+		else
+			echo "No persistent location to store mender data. Data will be lost"
+			echo "at reboot. Are you sure this is what you want to do?"
+			mkdir -p "$(readlink /var/lib/mender)"
+		fi
+	fi
+
+	printf "Starting mender service: "
+	umask 077
+
+	start-stop-daemon -S -q -b -m -p /var/run/mender.pid \
+		--exec /usr/bin/mender -- -daemon
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+stop() {
+	printf "Stopping mender service: "
+	start-stop-daemon -K -q -p /var/run/mender.pid
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+restart() {
+	stop
+	start
+}
+
+case "$1" in
+	start)
+		start
+		;;
+	stop)
+		stop
+		;;
+	restart|reload)
+		restart
+		;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+		exit 1
+esac
+
+exit $?

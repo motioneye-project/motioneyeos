@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENJPEG_VERSION = 2.3.0
-OPENJPEG_SITE = $(call github,uclouvain,openjpeg,v$(OPENJPEG_VERSION))
+OPENJPEG_VERSION = 51f097e6d5754ddae93e716276fe8176b44ec548
+OPENJPEG_SITE = $(call github,uclouvain,openjpeg,$(OPENJPEG_VERSION))
 OPENJPEG_LICENSE = BSD-2-Clause
 OPENJPEG_LICENSE_FILES = LICENSE
 OPENJPEG_INSTALL_STAGING = YES

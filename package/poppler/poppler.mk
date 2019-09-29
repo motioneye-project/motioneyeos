@@ -12,7 +12,7 @@ POPPLER_LICENSE = GPL-2.0+
 POPPLER_LICENSE_FILES = COPYING
 POPPLER_INSTALL_STAGING = YES
 POPPLER_CONF_OPTS = --with-font-configuration=fontconfig \
-	--enable-xpdf-headers
+	--enable-xpdf-headers --disable-poppler-qt4
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 POPPLER_CONF_ENV += LDFLAGS="$(TARGET_LDFLAGS) -latomic"
@@ -82,13 +82,6 @@ POPPLER_CONF_OPTS += --with-x
 POPPLER_DEPENDENCIES += xlib_libX11 xlib_libXext
 else
 POPPLER_CONF_OPTS += --without-x
-endif
-
-ifeq ($(BR2_PACKAGE_POPPLER_QT),y)
-POPPLER_DEPENDENCIES += qt
-POPPLER_CONF_OPTS += --enable-poppler-qt4
-else
-POPPLER_CONF_OPTS += --disable-poppler-qt4
 endif
 
 ifeq ($(BR2_PACKAGE_POPPLER_QT5),y)

@@ -4,27 +4,26 @@
 #
 ################################################################################
 
-XERCES_VERSION = 3.1.4
+XERCES_VERSION = 3.2.2
 XERCES_SOURCE = xerces-c-$(XERCES_VERSION).tar.xz
 XERCES_SITE = http://archive.apache.org/dist/xerces/c/3/sources
 XERCES_LICENSE = Apache-2.0
 XERCES_LICENSE_FILES = LICENSE
 XERCES_INSTALL_STAGING = YES
-XERCES_CONF_OPTS = \
-	--disable-threads \
-	--with-gnu-ld
 
 define XERCES_DISABLE_SAMPLES
-	$(SED) 's/ samples//' $(@D)/Makefile.in
+	$(SED) 's/add_subdirectory(samples)//' $(@D)/CMakeLists.txt
 endef
 
 XERCES_POST_PATCH_HOOKS += XERCES_DISABLE_SAMPLES
 
+# Before CMake 3.10, passing THREADS_PTHREAD_ARG=OFF was needed to
+# disable a try_run() call in the FindThreads tests, which caused a
+# build failure when cross-compiling.
+XERCES_CONF_OPTS += -DTHREADS_PTHREAD_ARG=OFF
+
 ifeq ($(BR2_PACKAGE_ICU),y)
-XERCES_CONF_OPTS += --with-icu=$(STAGING_DIR)/usr
 XERCES_DEPENDENCIES += icu
-else
-XERCES_CONF_OPTS += --without-icu
 endif
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
@@ -33,10 +32,16 @@ XERCES_DEPENDENCIES += libiconv
 endif
 
 ifeq ($(BR2_PACKAGE_LIBCURL),y)
-XERCES_CONF_OPTS += --enable-netaccessor-curl --with-curl=$(STAGING_DIR)/usr/lib
+XERCES_CONF_OPTS += -Dnetwork-accessor=curl
 XERCES_DEPENDENCIES += libcurl
 else
-XERCES_CONF_OPTS += --disable-network
+XERCES_CONF_OPTS += -Dnetwork-accessor=socket
 endif
 
-$(eval $(autotools-package))
+ifeq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+XERCES_CONF_OPTS += -Dthreads=ON
+else
+XERCES_CONF_OPTS += -Dthreads=OFF
+endif
+
+$(eval $(cmake-package))

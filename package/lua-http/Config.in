@@ -1,16 +1,16 @@
 config BR2_PACKAGE_LUA_HTTP
 	bool "lua-http"
 	depends on BR2_TOOLCHAIN_HAS_THREADS    # luaossl & lua-cqueues
-	# These are runtime dependencies
-	select BR2_PACKAGE_LUA_BASEXX
-	select BR2_PACKAGE_LUA_COMPAT53 if !BR2_PACKAGE_LUA_5_3
-	select BR2_PACKAGE_LUA_CQUEUES
-	select BR2_PACKAGE_LUA_FIFO
-	select BR2_PACKAGE_LUA_LPEG_PATTERNS
-	select BR2_PACKAGE_LUABITOP if BR2_PACKAGE_LUA_5_1
-	select BR2_PACKAGE_LUAOSSL
+	select BR2_PACKAGE_LPEG # runtime
+	select BR2_PACKAGE_LUA_BASEXX # runtime
+	select BR2_PACKAGE_LUA_COMPAT53 if !BR2_PACKAGE_LUA_5_3 # runtime
+	select BR2_PACKAGE_LUA_CQUEUES # runtime
+	select BR2_PACKAGE_LUA_FIFO # runtime
+	select BR2_PACKAGE_LUA_LPEG_PATTERNS # runtime
+	select BR2_PACKAGE_LUABITOP if BR2_PACKAGE_LUA_5_1 # runtime
+	select BR2_PACKAGE_LUAOSSL # runtime
 	help
-	  HTTP library for Lua
+	  HTTP library for Lua.
 
 	  https://daurnimator.github.io/lua-http/
 

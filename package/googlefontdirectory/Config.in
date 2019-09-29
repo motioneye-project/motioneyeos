@@ -1,16 +1,19 @@
 config BR2_PACKAGE_GOOGLEFONTDIRECTORY
 	bool "Google font directory"
 	help
-	  Google font directory
+	  Font files available from Google Fonts
 
-	  http://code.google.com/p/googlefontdirectory/
+	  https://github.com/google/fonts
 
 if BR2_PACKAGE_GOOGLEFONTDIRECTORY
 
 config BR2_PACKAGE_GOOGLEFONTDIRECTORY_FONTS
 	string "List of fonts to install"
-	default "droid"
+	default "ufl/ubuntu"
 	help
-	  Specify a space-separated list of fonts to install
+	  Specify a space-separated list of fonts to install. They
+	  correspond to the path of the font directory within Google
+	  Font directory code base. For example: ufl/ubuntu,
+	  apache/kranky or ofl/gleego.
 
 endif

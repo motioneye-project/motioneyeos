@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-LM_SENSORS_VERSION = 3.4.0
-LM_SENSORS_SOURCE = lm-sensors_$(LM_SENSORS_VERSION).orig.tar.bz2
-LM_SENSORS_SITE = http://snapshot.debian.org/archive/debian/20170208T211941Z/pool/main/l/lm-sensors
+LM_SENSORS_VERSION = V3-5-0
+LM_SENSORS_SITE = $(call github,lm-sensors,lm-sensors,$(LM_SENSORS_VERSION))
 LM_SENSORS_INSTALL_STAGING = YES
 LM_SENSORS_DEPENDENCIES = host-bison host-flex
 LM_SENSORS_LICENSE = LGPL-2.1+ (libsensors), GPL-2.0+ (programs)
@@ -21,7 +20,6 @@ LM_SENSORS_BINS_$(BR2_PACKAGE_LM_SENSORS_PWMCONFIG) += sbin/pwmconfig
 LM_SENSORS_BINS_$(BR2_PACKAGE_LM_SENSORS_SENSORS_DETECT) += sbin/sensors-detect
 
 LM_SENSORS_MAKE_OPTS = \
-	BUILD_STATIC_LIB=1 \
 	MACHINE=$(KERNEL_ARCH) \
 	PREFIX=/usr
 

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-APACHE_VERSION = 2.4.35
+APACHE_VERSION = 2.4.39
 APACHE_SOURCE = httpd-$(APACHE_VERSION).tar.bz2
 APACHE_SITE = http://archive.apache.org/dist/httpd
 APACHE_LICENSE = Apache-2.0
@@ -61,6 +61,15 @@ APACHE_CONF_OPTS += --enable-lua
 APACHE_DEPENDENCIES += lua
 else
 APACHE_CONF_OPTS += --disable-lua
+endif
+
+ifeq ($(BR2_PACKAGE_NGHTTP2),y)
+APACHE_CONF_OPTS += \
+	--enable-http2 \
+	--with-nghttp2=$(STAGING_DIR)/usr
+APACHE_DEPENDENCIES += nghttp2
+else
+APACHE_CONF_OPTS += --disable-http2
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)

@@ -1,0 +1,81 @@
+From bfcfe6f04ed20db2504db8a254d1f40a1d84eb28 Mon Sep 17 00:00:00 2001
+From: Daniel Axtens <dja@axtens.net>
+Date: Tue, 4 Dec 2018 00:55:22 +1100
+Subject: [PATCH] rar: file split across multi-part archives must match
+
+Fuzzing uncovered some UAF and memory overrun bugs where a file in a
+single file archive reported that it was split across multiple
+volumes. This was caused by ppmd7 operations calling
+rar_br_fillup. This would invoke rar_read_ahead, which would in some
+situations invoke archive_read_format_rar_read_header.  That would
+check the new file name against the old file name, and if they didn't
+match up it would free the ppmd7 buffer and allocate a new
+one. However, because the ppmd7 decoder wasn't actually done with the
+buffer, it would continue to used the freed buffer. Both reads and
+writes to the freed region can be observed.
+
+This is quite tricky to solve: once the buffer has been freed it is
+too late, as the ppmd7 decoder functions almost universally assume
+success - there's no way for ppmd_read to signal error, nor are there
+good ways for functions like Range_Normalise to propagate them. So we
+can't detect after the fact that we're in an invalid state - e.g. by
+checking rar->cursor, we have to prevent ourselves from ever ending up
+there. So, when we are in the dangerous part or rar_read_ahead that
+assumes a valid split, we set a flag force read_header to either go
+down the path for split files or bail. This means that the ppmd7
+decoder keeps a valid buffer and just runs out of data.
+
+Found with a combination of AFL, afl-rb and qsym.
+---
+ libarchive/archive_read_support_format_rar.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+[for import into Buildroot]
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: backport
+
+CVE-2018-1000878
+
+diff --git a/libarchive/archive_read_support_format_rar.c b/libarchive/archive_read_support_format_rar.c
+index 6f419c27..a8cc5c94 100644
+--- a/libarchive/archive_read_support_format_rar.c
++++ b/libarchive/archive_read_support_format_rar.c
+@@ -258,6 +258,7 @@ struct rar
+   struct data_block_offsets *dbo;
+   unsigned int cursor;
+   unsigned int nodes;
++  char filename_must_match;
+ 
+   /* LZSS members */
+   struct huffman_code maincode;
+@@ -1560,6 +1561,12 @@ read_header(struct archive_read *a, struct archive_entry *entry,
+     }
+     return ret;
+   }
++  else if (rar->filename_must_match)
++  {
++    archive_set_error(&a->archive, ARCHIVE_ERRNO_FILE_FORMAT,
++      "Mismatch of file parts split across multi-volume archive");
++    return (ARCHIVE_FATAL);
++  }
+ 
+   rar->filename_save = (char*)realloc(rar->filename_save,
+                                       filename_size + 1);
+@@ -2933,12 +2940,14 @@ rar_read_ahead(struct archive_read *a, size_t min, ssize_t *avail)
+     else if (*avail == 0 && rar->main_flags & MHD_VOLUME &&
+       rar->file_flags & FHD_SPLIT_AFTER)
+     {
++      rar->filename_must_match = 1;
+       ret = archive_read_format_rar_read_header(a, a->entry);
+       if (ret == (ARCHIVE_EOF))
+       {
+         rar->has_endarc_header = 1;
+         ret = archive_read_format_rar_read_header(a, a->entry);
+       }
++      rar->filename_must_match = 0;
+       if (ret != (ARCHIVE_OK))
+         return NULL;
+       return rar_read_ahead(a, min, avail);
+-- 
+2.19.2
+

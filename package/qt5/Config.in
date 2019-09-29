@@ -12,7 +12,6 @@ config BR2_PACKAGE_QT5_JSCORE_AVAILABLE
 	depends on !BR2_ARM_CPU_ARMV4
 
 comment "Qt5 needs a toolchain w/ wchar, NPTL, C++, dynamic library"
-	depends on !BR2_PACKAGE_QT
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS_NPTL || BR2_STATIC_LIBS
 
 menuconfig BR2_PACKAGE_QT5
@@ -21,7 +20,6 @@ menuconfig BR2_PACKAGE_QT5
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS_NPTL
 	depends on !BR2_STATIC_LIBS
-	depends on !BR2_PACKAGE_QT
 	select BR2_PACKAGE_QT5BASE
 	help
 	  This option enables the Qt5 framework. Sub-options allow to

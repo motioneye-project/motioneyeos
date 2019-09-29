@@ -1,0 +1,12 @@
+prefix=/usr
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include
+
+Name: id3tag
+Description: ID3 tag reading library
+Version: 0.15.1b
+Requires:
+Libs: -L${libdir} -lid3tag
+Libs.private: -lz
+Cflags: -I${includedir}

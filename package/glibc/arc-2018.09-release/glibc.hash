@@ -1,0 +1,7 @@
+# Locally calculated (fetched from Github)
+sha256  cc2aa6b16641ebcf1492bf6245897d8c263c96b6e30375d09351306a12b6d529  glibc-arc-2018.09-release.tar.gz
+
+# Hashes for license files
+sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
+sha256  dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551  COPYING.LIB
+sha256  35bdb41dc0bcb10702ddacbd51ec4c0fe6fb3129f734e8c85fc02e4d3eb0ce3f  LICENSES

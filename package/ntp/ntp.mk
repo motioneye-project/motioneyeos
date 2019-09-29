@@ -5,7 +5,7 @@
 ################################################################################
 
 NTP_VERSION_MAJOR = 4.2
-NTP_VERSION = $(NTP_VERSION_MAJOR).8p12
+NTP_VERSION = $(NTP_VERSION_MAJOR).8p13
 NTP_SITE = https://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-$(NTP_VERSION_MAJOR)
 NTP_DEPENDENCIES = host-pkgconf libevent
 NTP_LICENSE = NTP
@@ -93,8 +93,16 @@ define NTP_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 644 package/ntp/ntpd.etc.conf $(TARGET_DIR)/etc/ntp.conf
 endef
 
+# This script will step the time if there is a large difference
+# before ntpd takes over the necessary slew adjustments
+ifeq ($(BR2_PACKAGE_NTP_SNTP),y)
+define NTP_INSTALL_INIT_SYSV_SNTP
+	$(INSTALL) -D -m 755 package/ntp/S48sntp $(TARGET_DIR)/etc/init.d/S48sntp
+endef
+endif
+
 ifeq ($(BR2_PACKAGE_NTP_NTPD),y)
-define NTP_INSTALL_INIT_SYSV
+define NTP_INSTALL_INIT_SYSV_NTPD
 	$(INSTALL) -D -m 755 package/ntp/S49ntp $(TARGET_DIR)/etc/init.d/S49ntp
 endef
 
@@ -105,5 +113,10 @@ define NTP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ntpd.service
 endef
 endif
+
+define NTP_INSTALL_INIT_SYSV
+	$(NTP_INSTALL_INIT_SYSV_NTPD)
+	$(NTP_INSTALL_INIT_SYSV_SNTP)
+endef
 
 $(eval $(autotools-package))

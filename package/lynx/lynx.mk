@@ -4,13 +4,13 @@
 #
 ################################################################################
 
-LYNX_VERSION = 2.8.9dev.16
+LYNX_VERSION = 2.8.9rel.1
 LYNX_SOURCE = lynx$(LYNX_VERSION).tar.bz2
 LYNX_SITE = ftp://ftp.invisible-island.net/lynx/tarballs
 LYNX_LICENSE = GPL-2.0
 LYNX_LICENSE_FILES = COPYING
 
-LYNX_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES)
+LYNX_DEPENDENCIES = host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 
 ifeq ($(BR2_PACKAGE_NCURSES),y)
 LYNX_DEPENDENCIES += ncurses
@@ -21,8 +21,9 @@ LYNX_CONF_OPTS += --with-screen=slang
 endif
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
-LYNX_DEPENDENCIES += openssl
-LYNX_CONF_OPTS += --with-ssl
+LYNX_DEPENDENCIES += host-pkgconf openssl
+LYNX_CONF_OPTS += --with-ssl=$(STAGING_DIR)/usr
+LYNX_CONF_ENV = LIBS=`$(PKG_CONFIG_HOST_BINARY) --libs openssl`
 else ifeq ($(BR2_PACKAGE_GNUTLS),y)
 LYNX_DEPENDENCIES += gnutls
 LYNX_CONF_OPTS += --with-gnutls

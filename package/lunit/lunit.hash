@@ -1,2 +1,3 @@
-# Locally calculated
-sha256	b19854c685337ddcec2fe9c22113d2cd14715d52ccd2676abe2fa49b61a2ec4d  lunit-0.5-2.src.rock
+# computed by luarocks/buildroot
+sha256 b19854c685337ddcec2fe9c22113d2cd14715d52ccd2676abe2fa49b61a2ec4d  lunit-0.5-2.src.rock
+sha256 316317e9e9b7eac811e1be56738e2434fb4a0c39ecd660f3b34dad739bfb3707  lunit-0.5/LICENSE

@@ -1,0 +1,46 @@
+From 53b6161d2413406778fa222274069c82846f0297 Mon Sep 17 00:00:00 2001
+From: Carlos Santos <casantos@datacom.com.br>
+Date: Thu, 6 Dec 2018 21:17:02 -0200
+Subject: [PATCH] Look for pcm-core at the default path
+
+On Buildroot, pcm-core.x is installed as /usr/bin/pcm-core. Remove the
+platform test, since we know that it's neither CigWin nor Windows, and
+use the default path.
+
+It's not nice to have a Buildroot specific patch but let's use one while
+we look for a solution that is acceptable upstream.
+
+Signed-off-by: Carlos Santos <casantos@datacom.ind.br>
+---
+ pmu-query.py | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/pmu-query.py b/pmu-query.py
+index 4c596c7..dc39df6 100755
+--- a/pmu-query.py
++++ b/pmu-query.py
+@@ -3,7 +3,6 @@ import urllib2
+ import json, csv
+ import subprocess
+ import sys
+-import platform
+ import getopt
+ 
+ all_flag = False
+@@ -38,12 +37,7 @@ if filename == None:
+         except StopIteration:
+             break
+ 
+-    if platform.system() == 'CYGWIN_NT-6.1':
+-        p = subprocess.Popen(['./pcm-core.exe -c'],stdout=subprocess.PIPE,shell=True) 
+-    elif platform.system() == 'Windows':
+-        p = subprocess.Popen(['pcm-core.exe -c'],stdout=subprocess.PIPE,shell=True)
+-    else:
+-        p = subprocess.Popen(['./pcm-core.x -c'],stdout=subprocess.PIPE,shell=True)
++    p = subprocess.Popen(['/usr/bin/pcm-core -c'],stdout=subprocess.PIPE,shell=True)
+ 
+     (output, err) = p.communicate()
+     p_status = p.wait()
+-- 
+2.19.2
+

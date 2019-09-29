@@ -1,0 +1,122 @@
+From 7656b1be8dc5425d5af03ffa6af711599fc07e80 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Tue, 22 Jan 2019 08:16:50 +0200
+Subject: [PATCH] buffer: Convert argc to size_t in ssh_buffer_unpack() as well
+
+Commit c306a693f3fb ("buffer: Use size_t for argc argument in
+ssh_buffer_(un)pack()") mentioned unpack in the commit log, but it only
+touches the pack variants. Extend the conversion to unpack.
+
+Pre-initialize the p pointer to avoid possible use before
+initialization in case of early argc check failure.
+
+This fixes build failure:
+
+.../libssh-0.8.6/src/buffer.c: In function 'ssh_buffer_unpack_va':
+.../libssh-0.8.6/src/buffer.c:1229:16: error: assuming signed overflow does not occur when simplifying conditional to constant [-Werror=strict-overflow]
+             if (argc == -1){
+		^
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://www.libssh.org/archive/libssh/2019-01/0000032.html
+
+ include/libssh/buffer.h |  4 ++--
+ src/buffer.c            | 25 +++++++++++++------------
+ 2 files changed, 15 insertions(+), 14 deletions(-)
+
+diff --git a/include/libssh/buffer.h b/include/libssh/buffer.h
+index 1c375343ee14..cd2dea6a7ecc 100644
+--- a/include/libssh/buffer.h
++++ b/include/libssh/buffer.h
+@@ -50,11 +50,11 @@ int _ssh_buffer_pack(struct ssh_buffer_struct *buffer,
+     _ssh_buffer_pack((buffer), (format), __VA_NARG__(__VA_ARGS__), __VA_ARGS__, SSH_BUFFER_PACK_END)
+ 
+ int ssh_buffer_unpack_va(struct ssh_buffer_struct *buffer,
+-                         const char *format, int argc,
++                         const char *format, size_t argc,
+                          va_list ap);
+ int _ssh_buffer_unpack(struct ssh_buffer_struct *buffer,
+                        const char *format,
+-                       int argc,
++                       size_t argc,
+                        ...);
+ #define ssh_buffer_unpack(buffer, format, ...) \
+     _ssh_buffer_unpack((buffer), (format), __VA_NARG__(__VA_ARGS__), __VA_ARGS__, SSH_BUFFER_PACK_END)
+diff --git a/src/buffer.c b/src/buffer.c
+index 99863747fc3c..c8ad20f24e43 100644
+--- a/src/buffer.c
++++ b/src/buffer.c
+@@ -1082,11 +1082,11 @@ int _ssh_buffer_pack(struct ssh_buffer_struct *buffer,
+  */
+ int ssh_buffer_unpack_va(struct ssh_buffer_struct *buffer,
+                          const char *format,
+-                         int argc,
++                         size_t argc,
+                          va_list ap)
+ {
+     int rc = SSH_ERROR;
+-    const char *p, *last;
++    const char *p = format, *last;
+     union {
+         uint8_t *byte;
+         uint16_t *word;
+@@ -1098,16 +1098,21 @@ int ssh_buffer_unpack_va(struct ssh_buffer_struct *buffer,
+     } o;
+     size_t len, rlen, max_len;
+     va_list ap_copy;
+-    int count; /* int for size comparison with argc */
++    size_t count;
+ 
+     max_len = ssh_buffer_get_len(buffer);
+ 
+     /* copy the argument list in case a rollback is needed */
+     va_copy(ap_copy, ap);
+ 
+-    for (p = format, count = 0; *p != '\0'; p++, count++) {
++    if (argc > 256) {
++        rc = SSH_ERROR;
++        goto cleanup;
++    }
++
++    for (count = 0; *p != '\0'; p++, count++) {
+         /* Invalid number of arguments passed */
+-        if (argc != -1 && count > argc) {
++        if (count > argc) {
+             rc = SSH_ERROR;
+             goto cleanup;
+         }
+@@ -1217,7 +1222,7 @@ int ssh_buffer_unpack_va(struct ssh_buffer_struct *buffer,
+         }
+     }
+ 
+-    if (argc != -1 && argc != count) {
++    if (argc != count) {
+         rc = SSH_ERROR;
+     }
+ 
+@@ -1226,11 +1231,7 @@ cleanup:
+         /* Check if our canary is intact, if not something really bad happened */
+         uint32_t canary = va_arg(ap, uint32_t);
+         if (canary != SSH_BUFFER_PACK_END){
+-            if (argc == -1){
+-                rc = SSH_ERROR;
+-            } else {
+-                abort();
+-            }
++            abort();
+         }
+     }
+ 
+@@ -1320,7 +1321,7 @@ cleanup:
+  */
+ int _ssh_buffer_unpack(struct ssh_buffer_struct *buffer,
+                        const char *format,
+-                       int argc,
++                       size_t argc,
+                        ...)
+ {
+     va_list ap;
+-- 
+2.20.1
+

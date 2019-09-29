@@ -11,7 +11,7 @@ test -x ${PROG} || exit 0
 test -n "${OS_VERSION}" || source /etc/init.d/base
 test -n "${OS_DEBUG}" || source /etc/init.d/conf
 
-test -f ${CONF} || exit 0
+test -s ${CONF} || exit 0
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 

@@ -8,6 +8,7 @@ menuconfig BR2_PACKAGE_KF5
 
 if BR2_PACKAGE_KF5
 source "package/kf5/kf5-extra-cmake-modules/Config.in"
+source "package/kf5/kf5-kcoreaddons/Config.in"
 source "package/kf5/kf5-modemmanager-qt/Config.in"
 source "package/kf5/kf5-networkmanager-qt/Config.in"
 endif

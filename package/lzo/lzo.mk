@@ -23,5 +23,7 @@ else
 LZO_CONF_OPTS += -DENABLE_STATIC=OFF
 endif
 
+HOST_LZO_CONF_OPTS += -DENABLE_SHARED=ON -DENABLE_STATIC=OFF
+
 $(eval $(cmake-package))
 $(eval $(host-cmake-package))

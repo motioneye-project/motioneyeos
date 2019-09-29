@@ -1,2 +1,7 @@
-# From https://get.videolan.org/dvblast/3.1/dvblast-3.1.tar.bz2
-sha256 3159e8666a3b1822aeccd01684bdcad712a0da88d758bef6b7e2c396f27fd3e0  dvblast-3.1.tar.bz2
+# From https://get.videolan.org/dvblast/3.4/dvblast-3.4.tar.bz2.md5
+md5 148a26e1207e111f905461cfb1cd106a  dvblast-3.4.tar.bz2
+# From https://get.videolan.org/dvblast/3.4/dvblast-3.4.tar.bz2.sha256
+sha256 7abd45aff738544017350af87ec7ebad00fcfb4e4effd04f35023d504d9b6f44  dvblast-3.4.tar.bz2
+# Locally computed
+sha256 94f68aec169fb6c9937eade757251714d38a56812be5dbfc3973914a71ad8d2d  COPYING
+sha256 2c1bea2f338d46ee6f2712f2c2bf05b874327ca0bec5eb0b7b4fbe208a23677f  COPYING.WTFPL

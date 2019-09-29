@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-HIREDIS_VERSION_MAJOR = 0.13
-HIREDIS_VERSION = v$(HIREDIS_VERSION_MAJOR).3
+HIREDIS_VERSION_MAJOR = 0.14
+HIREDIS_VERSION = v$(HIREDIS_VERSION_MAJOR).0
 HIREDIS_SITE = $(call github,redis,hiredis,$(HIREDIS_VERSION))
 HIREDIS_LICENSE = BSD-3-Clause
 HIREDIS_LICENSE_FILES = COPYING

@@ -9,4 +9,3 @@ config BR2_PACKAGE_LUTOK
 
 comment "lutok needs a toolchain w/ C++ and full Lua"
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_PACKAGE_LUAJIT
-	depends on BR2_PACKAGE_HAS_LUAINTERPRETER

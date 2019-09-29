@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_PACKAGE_STASH
+	bool "perl-package-stash"
+	select BR2_PACKAGE_PERL_DIST_CHECKCONFLICTS # runtime
+	select BR2_PACKAGE_PERL_MODULE_IMPLEMENTATION # runtime
+	help
+	  routines for manipulating stashes.
+
+	  http://metacpan.org/release/Package-Stash

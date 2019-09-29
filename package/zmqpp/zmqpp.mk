@@ -19,6 +19,7 @@ ZMQPP_CONFIG = $(if $(BR2_ENABLE_DEBUG),debug,release)
 # By setting CONFIG to empty, all optimizations such as -funroll-loops
 # -ffast-math -finline-functions -fomit-frame-pointer are disabled
 ifeq ($(BR2_or1k):$(BR2_TOOLCHAIN_GCC_AT_LEAST_6),y:)
+# check-package OverriddenVariable
 ZMQPP_CONFIG =
 endif
 

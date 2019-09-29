@@ -1,0 +1,40 @@
+From 021efa522ad729ff0f5806c4ce53e4a6cc1daa31 Mon Sep 17 00:00:00 2001
+From: Daniel Axtens <dja@axtens.net>
+Date: Tue, 20 Nov 2018 17:56:29 +1100
+Subject: [PATCH] Avoid a double-free when a window size of 0 is specified
+
+new_size can be 0 with a malicious or corrupted RAR archive.
+
+realloc(area, 0) is equivalent to free(area), so the region would
+be free()d here and the free()d again in the cleanup function.
+
+Found with a setup running AFL, afl-rb, and qsym.
+---
+ libarchive/archive_read_support_format_rar.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+[for import into Buildroot]
+Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+Upstream-status: backport
+
+CVE-2018-1000877
+
+diff --git a/libarchive/archive_read_support_format_rar.c b/libarchive/archive_read_support_format_rar.c
+index 23452222..6f419c27 100644
+--- a/libarchive/archive_read_support_format_rar.c
++++ b/libarchive/archive_read_support_format_rar.c
+@@ -2300,6 +2300,11 @@ parse_codes(struct archive_read *a)
+       new_size = DICTIONARY_MAX_SIZE;
+     else
+       new_size = rar_fls((unsigned int)rar->unp_size) << 1;
++    if (new_size == 0) {
++      archive_set_error(&a->archive, ARCHIVE_ERRNO_FILE_FORMAT,
++                        "Zero window size is invalid.");
++      return (ARCHIVE_FATAL);
++    }
+     new_window = realloc(rar->lzss.window, new_size);
+     if (new_window == NULL) {
+       archive_set_error(&a->archive, ENOMEM,
+-- 
+2.19.2
+

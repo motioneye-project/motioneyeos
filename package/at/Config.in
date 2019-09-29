@@ -8,3 +8,5 @@ config BR2_PACKAGE_AT
 
 	  at    - run the job at a specified time
 	  batch - run the job when system load levels permit
+
+	  https://salsa.debian.org/debian/at

@@ -4,24 +4,17 @@
 #
 ################################################################################
 
-QUAZIP_VERSION = 0.7.5
+QUAZIP_VERSION = 0.7.6
 QUAZIP_SITE = $(call github,stachenov,quazip,$(QUAZIP_VERSION))
 QUAZIP_INSTALL_STAGING = YES
 QUAZIP_DEPENDENCIES = \
 	zlib \
-	$(if $(BR2_PACKAGE_QT),qt) \
-	$(if $(BR2_PACKAGE_QT5),qt5base)
+	qt5base
 QUAZIP_LICENSE = LGPL-2.1
 QUAZIP_LICENSE_FILES = COPYING
 
-ifeq ($(BR2_PACKAGE_QT5),y)
-QUAZIP_QMAKE = $(QT5_QMAKE)
-else
-QUAZIP_QMAKE = $(QT_QMAKE)
-endif
-
 define QUAZIP_CONFIGURE_CMDS
-	(cd $(@D); $(TARGET_MAKE_ENV) $(QUAZIP_QMAKE) PREFIX=/usr)
+	(cd $(@D); $(TARGET_MAKE_ENV) $(QT5_QMAKE) PREFIX=/usr)
 endef
 
 define QUAZIP_BUILD_CMDS

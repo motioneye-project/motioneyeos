@@ -8,6 +8,7 @@ config BR2_PACKAGE_CRYPTSETUP
 	select BR2_PACKAGE_LVM2
 	select BR2_PACKAGE_UTIL_LINUX
 	select BR2_PACKAGE_UTIL_LINUX_LIBUUID
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
 	select BR2_PACKAGE_JSON_C
 	help
 	  This tool helps manipulate dm-crypt and luks partitions for

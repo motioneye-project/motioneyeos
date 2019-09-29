@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PERL_APPCONFIG
+	bool "perl-appconfig"
+	help
+	  AppConfig is a bundle of Perl5 modules for reading
+	  configuration files and parsing command line
+	  arguments.
+
+	  https://metacpan.org/release/AppConfig

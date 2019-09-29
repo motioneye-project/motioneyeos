@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_JSON_MAYBEXS
+	bool "perl-json-maybexs"
+	help
+	  Use Cpanel::JSON::XS with a fallback to JSON::XS and
+	  JSON::PP.
+
+	  https://metacpan.org/release/JSON-MaybeXS

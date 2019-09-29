@@ -1,0 +1,51 @@
+From c70d326f3ae88aa2dca903fb17a1f18d3b45a2ca Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Fri, 8 Feb 2019 16:45:32 +0100
+Subject: [PATCH] configure.ac: fix build with openssl
+
+- Add a call to PKG_CHECK_MODULES to get openssl libraries and its
+  dependencies if openssl support is enabled
+- Add OPENSSL_LIBS to libupnp.pc.in so that applications linking with
+  pupnp (such as mpd) will be able to retrieve openssl libraries
+
+Fixes:
+ - http://autobuild.buildroot.org/results/a4148e516070b79816769f3443fc24d6d8192073
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/mrjimenez/pupnp/pull/105]
+---
+ configure.ac  | 5 +++++
+ libupnp.pc.in | 2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 670d363..190b30c 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -722,6 +722,11 @@ AC_COMPILE_IFELSE(
+ 			AC_MSG_ERROR([pthread_rwlock_t not available])])])
+ echo "-------------------------------------------------------------------------------"
+ 
++if test "x$enable_open_ssl" = xyes ; then
++	PKG_CHECK_MODULES(OPENSSL, libssl,
++		[LIBS="$LIBS $OPENSSL_LIBS" CFLAGS="$CFLAGS $OPENSSL_CFLAGS"],
++		[AC_MSG_ERROR([openssl not found])])
++fi
+ 
+ AC_CONFIG_FILES([
+ 	Makefile
+diff --git a/libupnp.pc.in b/libupnp.pc.in
+index bd2d7b3..54cba90 100644
+--- a/libupnp.pc.in
++++ b/libupnp.pc.in
+@@ -6,6 +6,6 @@ includedir=@includedir@
+ Name: libupnp
+ Description: Linux SDK for UPnP Devices
+ Version: @VERSION@
+-Libs: @PTHREAD_CFLAGS@ @PTHREAD_LIBS@ -L${libdir} -lupnp -lixml
++Libs: @PTHREAD_CFLAGS@ @PTHREAD_LIBS@ -L${libdir} -lupnp -lixml @OPENSSL_LIBS@
+ Cflags: @PTHREAD_CFLAGS@ -I${includedir}/upnp
+ 
+-- 
+2.14.1
+

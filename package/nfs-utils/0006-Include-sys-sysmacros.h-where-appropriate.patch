@@ -1,0 +1,50 @@
+From e3918d70b0b4a1d0f5421318e542ec807833da3f Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Fri, 2 Nov 2018 10:45:21 +0100
+Subject: [PATCH] Include <sys/sysmacros.h> where appropriate
+
+Since glibc 2.28, the major() and minor() macros need to explicitly
+include <sys/sysmacros.h>.
+
+Patch initially contributed by
+Timothy Pearson <tpearson@raptorengineering.com>.
+
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ support/nfs/nfsexport.c | 4 ++++
+ utils/mountd/cache.c    | 4 ++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/support/nfs/nfsexport.c b/support/nfs/nfsexport.c
+index afd7c90..a7cbc14 100644
+--- a/support/nfs/nfsexport.c
++++ b/support/nfs/nfsexport.c
+@@ -17,6 +17,10 @@
+ #include <unistd.h>
+ #include <fcntl.h>
+ 
++#ifdef __GLIBC__
++#include <sys/sysmacros.h>
++#endif
++
+ #include "nfslib.h"
+ #include "misc.h"
+ 
+diff --git a/utils/mountd/cache.c b/utils/mountd/cache.c
+index 179ea18..61f9b14 100644
+--- a/utils/mountd/cache.c
++++ b/utils/mountd/cache.c
+@@ -36,6 +36,10 @@
+ #include "blkid/blkid.h"
+ #endif
+ 
++#ifdef __GLIBC__
++#include <sys/sysmacros.h>
++#endif
++
+ /*
+  * Invoked by RPC service loop
+  */
+-- 
+2.14.4
+

@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_FILE_SLURP
+	bool "perl-file-slurp"
+	help
+	  Simple and Efficient Reading/Writing/Modifying of Complete
+	  Files.
+
+	  https://metacpan.org/release/File-Slurp
