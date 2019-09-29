@@ -1,0 +1,36 @@
+From 14a0713389fbfef59225d027ea466ebb478a8c6b Mon Sep 17 00:00:00 2001
+From: Peter Seiderer <ps.report@gmx.net>
+Date: Thu, 19 Sep 2019 21:18:04 +0200
+Subject: [PATCH] configure.ac: check for sys/auxv.h before defining FLAC__CPU_PPC
+
+Upstream: https://github.com/xiph/flac/pull/142
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+---
+ configure.ac | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure.ac b/configure.ac
+index 0228a12..64cb3f2 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -144,7 +144,7 @@ case "$host_cpu" in
+ 	powerpc64|powerpc64le)
+ 		cpu_ppc64=true
+ 		cpu_ppc=true
+-		AC_DEFINE(FLAC__CPU_PPC)
++		AC_CHECK_HEADER(sys/auxv.h, AC_DEFINE(FLAC__CPU_PPC))
+ 		AH_TEMPLATE(FLAC__CPU_PPC, [define if building for PowerPC])
+ 		AC_DEFINE(FLAC__CPU_PPC64)
+ 		AH_TEMPLATE(FLAC__CPU_PPC64, [define if building for PowerPC64])
+@@ -152,7 +152,7 @@ case "$host_cpu" in
+ 		;;
+ 	powerpc|powerpcle)
+ 		cpu_ppc=true
+-		AC_DEFINE(FLAC__CPU_PPC)
++		AC_CHECK_HEADER(sys/auxv.h, AC_DEFINE(FLAC__CPU_PPC))
+ 		AH_TEMPLATE(FLAC__CPU_PPC, [define if building for PowerPC])
+ 		asm_optimisation=$asm_opt
+ 		;;
+--
+2.23.0
+

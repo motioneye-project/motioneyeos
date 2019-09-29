@@ -11,6 +11,10 @@ FLAC_INSTALL_STAGING = YES
 FLAC_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 FLAC_LICENSE = Xiph BSD-like (libFLAC), GPL-2.0+ (tools), LGPL-2.1+ (other libraries)
 FLAC_LICENSE_FILES = COPYING.Xiph COPYING.GPL COPYING.LGPL
+
+# patch touching configure.ac
+FLAC_AUTORECONF = YES
+
 FLAC_CONF_OPTS = \
 	--disable-cpplibs \
 	--disable-xmms-plugin \
