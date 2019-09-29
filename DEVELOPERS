@@ -428,6 +428,7 @@ F:	package/tor/
 F:	package/transmission/
 F:	package/tvheadend/
 F:	package/unixodbc/
+F:	package/utf8proc/
 F:	package/vdr/
 F:	package/vdr-plugin-vnsiserver/
 F:	package/vlc/
