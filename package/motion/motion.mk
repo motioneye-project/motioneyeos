@@ -4,24 +4,21 @@
 #
 ################################################################################
 
-MOTION_VERSION = release-4.2.2
-MOTION_SITE = $(call github,motion-project,motion,$(MOTION_VERSION))
+MOTION_VERSION = 5c8ac5282b3e980270555c1d2c6f710829a2856e
+MOTION_SITE = $(call github,Motion-Project,motion,$(MOTION_VERSION))
 MOTION_AUTORECONF = YES
 MOTION_CONF_OPTS = --without-pgsql \
-                   --without-sdl \
                    --without-sqlite3 \
                    --without-mysql \
-                   --with-ffmpeg=$(STAGING_DIR)/usr/lib \
-                   --with-ffmpeg-headers=$(STAGING_DIR)/usr/include
+                   --without-mariadb \
+                   --with-ffmpeg=$(STAGING_DIR)/usr/lib
 
 define MOTION_INSTALL_TARGET_CMDS
-    cp $(@D)/motion $(TARGET_DIR)/usr/bin/motion
+    cp $(@D)/src/motion $(TARGET_DIR)/usr/bin/motion
 endef
 
 ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
 MOTION_DEPENDENCIES += rpi-userland
-MOTION_CONF_OPTS += --with-mmal-include=$(STAGING_DIR)/usr/include \
-                    --with-mmal-lib=$(STAGING_DIR)/lib
 endif
 
 $(eval $(autotools-package))

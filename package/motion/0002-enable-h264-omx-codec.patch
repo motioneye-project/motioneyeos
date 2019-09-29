@@ -1,0 +1,17 @@
+Author: jasaw
+
+
+diff --git a/src/ffmpeg.c b/src/ffmpeg.c
+index 3af961a..d59f0e1 100644
+--- a/src/ffmpeg.c
++++ b/src/ffmpeg.c
+@@ -680,7 +680,7 @@ static const char *ffmpeg_codec_is_blacklisted(const char *codec_name){
+          * - remove the "h264_omx" from this blacklist.
+          * More information: https://github.com/Motion-Project/motion/issues/433
+          */
+-        {"h264_omx", "Codec causes lock up on your FFMpeg version"},
++        //{"h264_omx", "Codec causes lock up on your FFMpeg version"},
+ #endif
+ #if (LIBAVFORMAT_VERSION_MAJOR < 57) || ((LIBAVFORMAT_VERSION_MAJOR == 57) && (LIBAVFORMAT_VERSION_MINOR < 41))
+         {"h264_v4l2m2m", "FFMpeg version is too old"},
+
