@@ -1,2 +1,6 @@
-# From https://lists.freedesktop.org/archives/openchrome-devel/2016-July/002890.html
-sha1 9c7ad349de6dd350252ccda8da56fa1e2a6afa32  xf86-video-openchrome-0.5.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2017-March/002781.html
+md5 c87f164739729b00f7e1a9934420c22d  xf86-video-openchrome-0.6.0.tar.bz2
+sha1 2077181ded4d86e9cbe6d3e9b1245339692e848d  xf86-video-openchrome-0.6.0.tar.bz2
+sha256 da2975c6379358de52c1257710c67eb59139a7f0a1cd28d00cc64cc3e1c02f75  xf86-video-openchrome-0.6.0.tar.bz2
+# Locally computed
+sha256 1fde58bce5cff8c32e9a0a80bfa3e60213a2767954e30a367127d5afa2884ca2  COPYING
