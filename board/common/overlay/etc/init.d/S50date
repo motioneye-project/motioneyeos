@@ -24,7 +24,7 @@ test -s ${CONF} || exit 0
 test "${OS_NETWORKLESS}" == "true" && exit 0
 
 DATE_TIMEOUT=10
-DATE_METHOD=http
+DATE_METHOD=sntp
 DATE_HOST="google.com"
 DATE_INTERVAL="900"
 DATE_NTP_SERVER=""
