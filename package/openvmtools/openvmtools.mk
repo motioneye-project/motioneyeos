@@ -37,13 +37,6 @@ else
 OPENVMTOOLS_CONF_OPTS += --without-ssl
 endif
 
-ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PROCPS),y)
-OPENVMTOOLS_CONF_OPTS += --with-procps
-OPENVMTOOLS_DEPENDENCIES += procps-ng
-else
-OPENVMTOOLS_CONF_OPTS += --without-procps
-endif
-
 ifeq ($(BR2_PACKAGE_OPENVMTOOLS_PAM),y)
 OPENVMTOOLS_CONF_OPTS += --with-pam
 OPENVMTOOLS_DEPENDENCIES += linux-pam
