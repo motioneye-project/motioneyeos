@@ -386,6 +386,8 @@ tests.package.test_lua_cqueues.TestLuaLuaCqueues: { extends: .runtime_test }
 tests.package.test_lua_cqueues.TestLuajitLuaCqueues: { extends: .runtime_test }
 tests.package.test_lua_curl.TestLuaLuacURL: { extends: .runtime_test }
 tests.package.test_lua_curl.TestLuajitLuacURL: { extends: .runtime_test }
+tests.package.test_lua_gd.TestLuaLuaGD: { extends: .runtime_test }
+tests.package.test_lua_gd.TestLuajitLuaGD: { extends: .runtime_test }
 tests.package.test_lua_http.TestLuaHttp: { extends: .runtime_test }
 tests.package.test_lua_http.TestLuajitHttp: { extends: .runtime_test }
 tests.package.test_lua_utf8.TestLuaUtf8: { extends: .runtime_test }
