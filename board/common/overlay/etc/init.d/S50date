@@ -2,6 +2,8 @@
 
 PROG_DATE="/bin/date"
 PROG_NTPD="/usr/sbin/ntpd"
+PROG_SNTP="/usr/bin/sntp"
+LOG_SNTP="/var/log/sntp.log"
 
 SYS_CONF="/etc/date.conf"
 BOOT_CONF="/boot/date.conf"
@@ -55,8 +57,22 @@ set_current_date_ntp() {
     fi
 }
 
+set_current_date_sntp() {
+    sntp_args="-t ${DATE_TIMEOUT} -K /var/lib/ntp/kod -Ss"
+    server=$(cat ${NTP_CONF} | grep server | head -n 1 | cut -d ' ' -f 2)
+    ${PROG_SNTP} ${sntp_args} ${server} &>${LOG_SNTP}
+    if [[ $? == 0 ]]; then
+        logger -t date "current system date/time set to $(date) via SNTP"
+        return 0
+    else
+        logger -t date "failed to set current system date/time via SNTP"
+        return 1
+    fi
+}
+
+
 start_http() {
-    msg_begin "Setting current date using http"
+    msg_begin "Setting current date using HTTP"
     if set_current_date_http; then
         sleep_interval=${DATE_INTERVAL}
         msg_done "$(${PROG_DATE})"
@@ -79,6 +95,7 @@ start_http() {
 
 start_ntp() {
     mkdir -p /var/lib/ntp
+    touch /var/lib/ntp/kod
 
     cat ${NTP_CONF} | grep -v iburst > ${NTP_CONF}.tmp
 
@@ -91,9 +108,15 @@ start_ntp() {
     cat ${NTP_CONF}.tmp >> ${NTP_CONF}
     rm ${NTP_CONF}.tmp
 
-    msg_begin "Setting current date using ntp"
-    set_current_date_ntp || set_current_date_ntp
-    test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
+    if [[ "${DATE_METHOD}" == "sntp" ]]; then
+        msg_begin "Setting current date using SNTP"
+        set_current_date_sntp
+        test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
+    else # assuming ntp
+        msg_begin "Setting current date using NTP"
+        set_current_date_ntp || set_current_date_ntp
+        test $? == 0 && msg_done "$(${PROG_DATE})" || msg_fail
+    fi
 
     msg_begin "Starting ntpd"
     ${PROG_NTPD} -g -c ${NTP_CONF}
@@ -115,7 +138,7 @@ stop_ntp() {
 start() {
     if [[ "${DATE_METHOD}" == "http" ]]; then
         start_http
-    else
+    else # ntp or sntp
         start_ntp
     fi
 
@@ -125,7 +148,7 @@ start() {
 stop() {
     if [[ "${DATE_METHOD}" == "http" ]]; then
         stop_http
-    else
+    else # ntp or sntp
         stop_ntp
     fi        
 }
@@ -150,4 +173,3 @@ case "$1" in
 esac
 
 exit $?
-
