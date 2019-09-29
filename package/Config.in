@@ -479,6 +479,7 @@ endmenu
 	source "package/lvm2/Config.in"
 	source "package/mali-t76x/Config.in"
 	source "package/mdadm/Config.in"
+	source "package/mdevd/Config.in"
 	source "package/memtest86/Config.in"
 	source "package/memtester/Config.in"
 	source "package/memtool/Config.in"
