@@ -1,2 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2016-November/002744.html
-sha256 afba3289d7a40217a19d90db98ce181772f9ca6d77e1898727b0afcf02073b5a  xf86-input-synaptics-1.9.0.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2018-May/002899.html
+md5 cfb79d3c975151f9bbf30b727c260cb9  xf86-input-synaptics-1.9.1.tar.bz2
+sha1 07eeef716820105cae959bbc3aa103e2fcfd0084  xf86-input-synaptics-1.9.1.tar.bz2
+sha256 7af83526eff1c76e8b9e1553b34245c203d029028d8044dd9dcf71eef1001576  xf86-input-synaptics-1.9.1.tar.bz2
+sha512 978eddd456aa7361047bc3d72e5127b24b13de29b0dddb6a0acc9f9da93931baa2b22fb5d1e6be164f629a11e5d97d753b835426435396b45b1af5eb8d546c3f  xf86-input-synaptics-1.9.1.tar.bz2
+# Locally computed
+sha256 e14dc9a27158cadaeea8bcc2c70069762f05adb29030a444336bfde268751dc7  COPYING
