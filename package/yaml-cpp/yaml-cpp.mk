@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-YAML_CPP_VERSION = 0.6.2
+YAML_CPP_VERSION = 0.6.3
 YAML_CPP_SITE = $(call github,jbeder,yaml-cpp,yaml-cpp-$(YAML_CPP_VERSION))
 YAML_CPP_INSTALL_STAGING = YES
 YAML_CPP_LICENSE = MIT
