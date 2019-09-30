@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PYTHON_LXML_VERSION = 4.4.0
-PYTHON_LXML_SITE = https://files.pythonhosted.org/packages/e1/f5/5eb3b491958dcfdcfa5daae3c655ab59276bc216ca015e44743c9c220e9e
+PYTHON_LXML_VERSION = 4.4.1
+PYTHON_LXML_SITE = https://files.pythonhosted.org/packages/c4/43/3f1e7d742e2a7925be180b6af5e0f67d38de2f37560365ac1a0b9a04c015
 PYTHON_LXML_SOURCE = lxml-$(PYTHON_LXML_VERSION).tar.gz
 
 # Not including the GPL, because it is used only for the test scripts.

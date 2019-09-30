@@ -1,5 +1,5 @@
 # Locally computed
-sha256  3b57dc5ed7b6a7d852c961f2389ca99404c2b59fd2088baec6fbaca02f688be4  lxml-4.4.0.tar.gz
+sha256  c81cb40bff373ab7a7446d6bbca0190bccc5be3448b47b51d729e37799bb5692  lxml-4.4.1.tar.gz
 sha256  41d49dd406aa0e1548a6d5f21a30d6bf638b3cd96eb7289dd348d83ed2e40392  LICENSES.txt
 sha256  69edb445c1335a8312d4c09271847e9956d84f0d9f724d125340cc3fad767b2a  doc/licenses/BSD.txt
 sha256  0497ae8138811ef4466ede653bab7a59feb3d3c14f9ed50fc33a00aeb5bec32e  doc/licenses/elementtree.txt
