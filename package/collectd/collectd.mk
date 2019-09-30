@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-COLLECTD_VERSION = 5.9.0
-COLLECTD_SITE = http://collectd.org/files
-COLLECTD_SOURCE = collectd-$(COLLECTD_VERSION).tar.bz2
+COLLECTD_VERSION = 5.9.1
+COLLECTD_SITE = $(call github,collectd,collectd,collectd-$(COLLECTD_VERSION))
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
 COLLECTD_LICENSE = MIT (daemon, plugins), GPL-2.0 (plugins), LGPL-2.1 (plugins)

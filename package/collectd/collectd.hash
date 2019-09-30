@@ -1,9 +1,5 @@
-# From https://collectd.org/files/SHA512SUM
-sha512 f2bf9896dd8fa116834418ea46aabdb160002da7f2600b7d5120d40eb7a956ccc845299696c854c2335946903374c84bbaeb28667319bf07b7a54ea465cccd54  collectd-5.9.0.tar.bz2
-# From https://collectd.org/files/SHA256SUM
-sha256 7b220f8898a061f6e7f29a8c16697d1a198277f813da69474a67911097c0626b  collectd-5.9.0.tar.bz2
-# From https://collectd.org/files/SHA1SUM
-sha1 58cd22ef8130f17c714e9609053cf45d311ac6c7  collectd-5.9.0.tar.bz2
-
-# Hash for license files
+# Locally computed checksums
+sha512	424ef12a3ba6997a71e6eda1a62d73fec588c9c4d90542c2381c1f9f4e118b2c02e18c71507e8984e20fb255b69b7f42afe83085b3df5e225c576d1eee1655fb	collectd-5.9.1.tar.gz
+sha256	51fb72f51489cb33fa4ddd65b757d81d77c13a33b36f031d6ce2835a2eec9adb	collectd-5.9.1.tar.gz
+sha1	30abba37e049e05dc7d00b205a61338da37ee8a6	collectd-5.9.1.tar.gz
 sha256	ed0409b2b1c30566dab5fcdaf46ee70e140c99788e22f0267645a9357b476ae4	COPYING
