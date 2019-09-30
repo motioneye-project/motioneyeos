@@ -230,7 +230,7 @@ else
 MESA3D_CONF_OPTS += -Dlibunwind=false
 endif
 
-ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
+ifeq ($(BR2_PACKAGE_MESA3D_VDPAU),y)
 MESA3D_DEPENDENCIES += libvdpau
 MESA3D_CONF_OPTS += -Dgallium-vdpau=true
 else
