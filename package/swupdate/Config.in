@@ -22,7 +22,7 @@ config BR2_PACKAGE_SWUPDATE
 
 	  * Select BR2_PACKAGE_LUA or BR2_PACKAGE_LUAJIT if you want
 	    want to have Lua support.
-	  * Select BR2_LIBCURL if you want to use the download
+	  * Select BR2_PACKAGE_LIBCURL if you want to use the download
 	    feature.
 	  * Select BR2_PACKAGE_OPENSSL is you want to add encryption
 	    support.
