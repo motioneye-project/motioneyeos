@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/bcrypt/json
-md5	4d8ab82e5e0c86b15f4ba5aff2bec6b5  bcrypt-3.1.6.tar.gz
-sha256	44636759d222baa62806bbceb20e96f75a015a6381690d1bc2eda91c01ec02ea  bcrypt-3.1.6.tar.gz
+md5	5d6f93b575ce52470af37a8e7dce76fe  bcrypt-3.1.7.tar.gz
+sha256	0b0069c752ec14172c5f78208f1863d7ad6755a6fae6fe76ec2c80d13be41e42  bcrypt-3.1.7.tar.gz
 # Locally computed sha256 checksums
 sha256	8173d5c29b4f956d532781d2b86e4e30f83e6b7878dce18c919451d6ba707c90  LICENSE
