@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-PYTHON_BOTTLE_VERSION = 0.12.13
+PYTHON_BOTTLE_VERSION = 0.12.17
 PYTHON_BOTTLE_SOURCE = bottle-$(PYTHON_BOTTLE_VERSION).tar.gz
-PYTHON_BOTTLE_SITE = https://pypi.python.org/packages/bd/99/04dc59ced52a8261ee0f965a8968717a255ea84a36013e527944dbf3468c
+PYTHON_BOTTLE_SITE = https://files.pythonhosted.org/packages/c4/a5/6bf41779860e9b526772e1b3b31a65a22bd97535572988d16028c5ab617d
 PYTHON_BOTTLE_LICENSE = MIT
-# README.rst refers to the file "LICENSE" but it's not included
+PYTHON_BOTTLE_LICENSE_FILES = LICENSE
 PYTHON_BOTTLE_SETUP_TYPE = setuptools
 
 $(eval $(python-package))
