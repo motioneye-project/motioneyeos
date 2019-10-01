@@ -11,13 +11,6 @@ STRACE_LICENSE = LGPL-2.1+
 STRACE_LICENSE_FILES = COPYING LGPL-2.1-or-later
 STRACE_CONF_OPTS = --enable-mpers=check
 
-# Regenerate v4l2_pix_fmts.h since we patch v4l2_pix_fmts.in
-define STRACE_GEN_V4L2_PIX_FMT
-	$(@D)/xlat/gen.sh $(@D)/xlat/v4l2_pix_fmts.in $(@D)/xlat/v4l2_pix_fmts.h
-endef
-
-STRACE_POST_PATCH_HOOKS += STRACE_GEN_V4L2_PIX_FMT
-
 # strace bundle some kernel headers to build libmpers, this mixes userspace
 # headers and kernel headers which break the build with musl.
 # The stddef.h from gcc is used instead of the one from musl.
