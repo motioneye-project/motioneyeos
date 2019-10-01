@@ -150,7 +150,6 @@ F:	package/ktap/
 N:	André Hentschel <nerv@dawncrow.de>
 F:	board/freescale/imx8qxpmek/
 F:	configs/freescale_imx8qxpmek_defconfig
-F:	package/azure-iot-sdk-c/
 F:	package/freescale-imx/imx-sc-firmware/
 F:	package/libkrb5/
 F:	package/openal/
