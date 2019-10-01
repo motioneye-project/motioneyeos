@@ -20,7 +20,7 @@ xml_result=$(curl ${opts} ${url})
 keys=$(echo "${xml_result}" | grep -oE '<Key>[^<]+<\/Key>' | sed 's/<Key>\(.*\)<\/Key>/\1/')
 dates=$(echo "${xml_result}" | grep -oE '<LastModified>[^<]+<\/LastModified>' | sed 's/<LastModified>\(.*\)<\/LastModified>/\1/')
 dates=(${dates})
-files=$(echo "${keys}" | grep "^${path}/" | sed "s/^${path}\///" | sed '/^$/d')
+files=$(echo "${keys}" | grep "^${path}/" | sed "s,^${path}\/,," | sed '/^$/d')
 
 i=0
 for file in ${files}; do
