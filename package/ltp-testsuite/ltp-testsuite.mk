@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-LTP_TESTSUITE_VERSION = 20190517
+LTP_TESTSUITE_VERSION = 20190930
 LTP_TESTSUITE_SOURCE = ltp-full-$(LTP_TESTSUITE_VERSION).tar.xz
 LTP_TESTSUITE_SITE = https://github.com/linux-test-project/ltp/releases/download/$(LTP_TESTSUITE_VERSION)
 LTP_TESTSUITE_LICENSE = GPL-2.0, GPL-2.0+
 LTP_TESTSUITE_LICENSE_FILES = COPYING
-# We're patching configure.ac
-LTP_TESTSUITE_AUTORECONF = YES
 
 LTP_TESTSUITE_CONF_OPTS += \
 	--with-realtime-testsuite --with-open-posix-testsuite

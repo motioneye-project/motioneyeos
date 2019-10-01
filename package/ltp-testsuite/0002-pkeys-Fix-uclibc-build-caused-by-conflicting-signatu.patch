@@ -1,0 +1,67 @@
+From 69341008e0a34b81a498ce02ab1cba4679096bb1 Mon Sep 17 00:00:00 2001
+From: Petr Vorel <petr.vorel@gmail.com>
+Date: Tue, 1 Oct 2019 14:46:22 +0200
+Subject: [PATCH] pkeys: Fix uclibc build caused by conflicting signature
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Removing static fixes the problem.
+
+uClibc defines pkey_{alloc,free,mprotect} signatures in
+<bits/mman-shared.h>, which is included by <bits/mman-linux.h>.  Because
+it does not implement them, our implementation signature conflicts, as
+it uses static.
+
+Fixed build error:
+In file included from pkey01.c:32:0:
+pkey.h:18:19: error: static declaration of ‘pkey_mprotect’ follows non-static declaration
+ static inline int pkey_mprotect(void *addr, size_t len, int prot, int pkey)
+                   ^
+In file included from /opt/br-test-pkg/br-arm-full/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include/bits/mman-linux.h:115:0,
+                 from /opt/br-test-pkg/br-arm-full/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include/bits/mman.h:40,
+                 from /opt/br-test-pkg/br-arm-full/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include/sys/mman.h:41,
+                 from pkey01.c:29:
+/opt/br-test-pkg/br-arm-full/host/arm-buildroot-linux-uclibcgnueabi/sysroot/usr/include/bits/mman-shared.h:73:5: note: previous declaration of ‘pkey_mprotect’ was here
+ int pkey_mprotect (void *__addr, size_t __len, int __prot, int __pkey) __THROW;
+     ^
+In file included from pkey01.c:32:0:
+
+Found with test-pkg tool from Buildroot distribution.
+
+Fixes: 90c2dc89f ("pkey: add test for memory protection keys")
+
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+[Upstream status: https://patchwork.ozlabs.org/patch/1170133/]
+---
+ testcases/kernel/syscalls/pkeys/pkey.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/pkeys/pkey.h b/testcases/kernel/syscalls/pkeys/pkey.h
+index d623244eb..19c8447eb 100644
+--- a/testcases/kernel/syscalls/pkeys/pkey.h
++++ b/testcases/kernel/syscalls/pkeys/pkey.h
+@@ -15,17 +15,17 @@
+ #endif
+ 
+ #ifndef HAVE_PKEY_MPROTECT
+-static inline int pkey_mprotect(void *addr, size_t len, int prot, int pkey)
++inline int pkey_mprotect(void *addr, size_t len, int prot, int pkey)
+ {
+ 	return tst_syscall(__NR_pkey_mprotect, addr, len, prot, pkey);
+ }
+ 
+-static inline int pkey_alloc(unsigned int flags, unsigned int access_rights)
++inline int pkey_alloc(unsigned int flags, unsigned int access_rights)
+ {
+ 	return tst_syscall(__NR_pkey_alloc, flags, access_rights);
+ }
+ 
+-static inline int pkey_free(int pkey)
++inline int pkey_free(int pkey)
+ {
+ 	return tst_syscall(__NR_pkey_free, pkey);
+ }
+-- 
+2.23.0
+
