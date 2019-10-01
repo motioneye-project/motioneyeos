@@ -5,6 +5,7 @@ config BR2_PACKAGE_FASTD
 	depends on !BR2_STATIC_LIBS # libuecc
 	select BR2_PACKAGE_LIBUECC
 	select BR2_PACKAGE_LIBSODIUM
+	select BR2_PACKAGE_LIBSODIUM_FULL
 	select BR2_PACKAGE_LIBCAP
 	help
 	  Fast and Secure Tunneling Daemon
