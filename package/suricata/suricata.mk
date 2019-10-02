@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SURICATA_VERSION = 4.1.3
+SURICATA_VERSION = 4.1.5
 SURICATA_SITE = https://www.openinfosecfoundation.org/download
 SURICATA_LICENSE = GPL-2.0
 SURICATA_LICENSE_FILES = COPYING LICENSE
@@ -23,6 +23,8 @@ SURICATA_DEPENDENCIES = \
 	$(if $(BR2_PACKAGE_LZ4),lz4) \
 	$(if $(BR2_PACKAGE_LZMA),lzma) \
 	pcre
+
+SURICATA_CONF_ENV = ac_cv_path_HAVE_SPHINXBUILD=no
 
 SURICATA_CONF_OPTS = \
 	--disable-gccprotect \
@@ -44,9 +46,19 @@ else
 SURICATA_CONF_OPTS += --disable-libmagic
 endif
 
-ifeq ($(BR2_PACKAGE_GEOIP),y)
+# --disable-libgeoip disables libgeoip when --enable-geoip is requested.
+# This allows libmaxminddb to be picked up instead of libgeoip when both are
+# installed on the system.
+ifeq ($(BR2_PACKAGE_LIBMAXMINDDB),y)
+SURICATA_DEPENDENCIES += libmaxminddb
+SURICATA_CONF_OPTS += \
+	--enable-geoip \
+	--disable-libgeoip
+else ifeq ($(BR2_PACKAGE_GEOIP),y)
 SURICATA_DEPENDENCIES += geoip
-SURICATA_CONF_OPTS += --enable-geoip
+SURICATA_CONF_OPTS += \
+	--enable-geoip \
+	--enable-libgeoip
 else
 SURICATA_CONF_OPTS += --disable-geoip
 endif
