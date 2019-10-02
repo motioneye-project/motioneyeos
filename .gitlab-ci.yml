@@ -466,6 +466,7 @@ tests.package.test_rings.TestLuajitRings: { extends: .runtime_test }
 tests.package.test_rust.TestRust: { extends: .runtime_test }
 tests.package.test_rust.TestRustBin: { extends: .runtime_test }
 tests.package.test_syslog_ng.TestSyslogNg: { extends: .runtime_test }
+tests.package.test_turbolua.TestLuajitTurbolua: { extends: .runtime_test }
 tests.toolchain.test_external.TestExternalToolchainBuildrootMusl: { extends: .runtime_test }
 tests.toolchain.test_external.TestExternalToolchainBuildrootuClibc: { extends: .runtime_test }
 tests.toolchain.test_external.TestExternalToolchainCCache: { extends: .runtime_test }
