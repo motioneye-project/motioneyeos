@@ -1,7 +1,7 @@
 config BR2_PACKAGE_UACME
 	bool "uacme"
 	depends on BR2_USE_MMU # fork()
-	select BR2_PACKAGE_MBEDTLS if !BR2_PACKAGE_GNUTLS
+	select BR2_PACKAGE_OPENSSL if !(BR2_PACKAGE_GNUTLS || BR2_PACKAGE_MBEDTLS)
 	select BR2_PACKAGE_LIBCURL
 	help
 	  uacme is a client for the ACMEv2 protocol described in
