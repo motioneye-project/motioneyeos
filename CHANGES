@@ -1,3 +1,38 @@
+2019.08.1, released October 3rd, 2019
+
+	Important / security related fixes.
+
+	Defconfigs: AArch64-efi: Fix grub configuration, Beaglebone:
+	Use default console settings
+
+	Dependencies: Ensure host has JSON::PP perl module installed
+	if webkitgtk/wpewebkit packages are enabled as it is needed
+	during their build process.
+
+	Toolchain: Generate check-headers program under BUILD_DIR
+	rather than /tmp to fix issues with distributions mounting
+	/tmp noexec.
+
+	Updated/fixed packages: asterisk, augeas, axel, bind, bwm-ng,
+	cups, cups-filters, docker-cli, docker-engine, docker-proxy,
+	e2fsprogs, eudev, exim, expat, gcc, go, haveged, ifplugd, joe,
+	kf5-extra-cmake-modules, kf5-modemmanager-qt,
+	kf5-networkmanager-qt, libcamera, libcurl, libgcrypt,
+	libglib2, libgpg-error, libnspr, libnss, libopenssl,
+	logrotate, luksmeta, mariadb, mbedtls, mongodb, mosquitto,
+	ncurses, nfs-utils, nghttp2, nodejs, openvmtools, php,
+	protobuf, putty, qemu, samba4, snort, swupdate,
+	systemd-bootchart, thttpd, uclibc, unzip, util-linux,
+	wireshark
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10806: Allow nfs-utils to use ipv6
+	#11781: mariadb build error
+	#12031: Build of cups-filters fails while linking, apparently due..
+	#12141: eudev package is missing "render" and "kvm" groups
+	#12241: Permission denied while running "make"
+
 2019.08, released September 1st, 2019
 
 	Various fixes.
