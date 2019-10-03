@@ -2085,6 +2085,9 @@ F:	package/urg/
 F:	package/ussp-push/
 F:	support/misc/toolchainfile.cmake.in
 
+N:	Sam Voss <sam.voss@gmail.com>
+F:	package/ripgrep/
+
 N:	Santosh Multhalli <santosh.multhalli@rockwellcollins.com>
 F:	package/valijson/
 
