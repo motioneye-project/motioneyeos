@@ -410,6 +410,41 @@
 	#11761: Building custom kernel 5.1-rc3 or later breaks on objtool
 	#11816: Only selected coreutils binaries are installed
 
+2019.02.6, Released October 3rd, 2019
+
+	Important / security related fixes.
+
+	Defconfigs: AArch64-efi: Fix grub configuration, Beaglebone:
+	Use default console settings
+
+	Dependencies: Ensure host has JSON::PP perl module installed
+	if webkitgtk/wpewebkit packages are enabled as it is needed
+	during their build process.
+
+	Toolchain: Generate check-headers program under BUILD_DIR
+	rather than /tmp to fix issues with distributions mounting
+	/tmp noexec.
+
+	Updated/fixed packages: asterisk, augeas, bind, bwm-ng, cups,
+	cups-filters, docker-cli, docker-engine, docker-proxy,
+	dropbear, e2fsprogs, eudev, exim, expat, gcc, go, ifplugd,
+	haveged, iptables, joe, kf5-extra-cmake-modules,
+	kf5-modemmanager-qt, kf5-networkmanager-qt, libcurl,
+	libgcrypt, libgpg-error, libnftl, libnspr, libnss, libopenssl,
+	luksmeta, mariadb, mbedtls, mongodb, mosquitto, ncurses,
+	nfs-utils, nghttp2, nodejs, openvmtools, php, protobuf, putty,
+	qemu, qt5base, samba4, swupdate, systemd-bootchart, thttpd,
+	uclibc, unzip, util-linux, wireshark
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#10806: Allow nfs-utils to use ipv6
+	#11781: mariadb build error
+	#12031: Build of cups-filters fails while linking, apparently due..
+	#12141: eudev package is missing "render" and "kvm" groups
+	#12181: dropbear: norootlogin (-w) no longer works when PAM is enabled
+	#12241: Permission denied while running "make"
+
 2019.02.5, Released September 2nd, 2019
 
 	Important / security related fixes.
