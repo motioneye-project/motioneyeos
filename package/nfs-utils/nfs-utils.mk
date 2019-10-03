@@ -93,7 +93,7 @@ define NFS_UTILS_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/etc/systemd/system/remote-fs.target.wants/nfs-client.target
 
 	$(INSTALL) -D -m 0755 package/nfs-utils/nfs-utils_env.sh \
-		$(TARGET_DIR)/usr/lib/systemd/scripts/nfs-utils_env.sh
+		$(TARGET_DIR)/usr/libexec/nfs-utils/nfs-utils_env.sh
 
 	$(INSTALL) -D -m 0644 package/nfs-utils/nfs-utils_tmpfiles.conf \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/nfs-utils.conf
