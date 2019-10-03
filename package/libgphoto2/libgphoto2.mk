@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBGPHOTO2_VERSION = 2.5.17
+LIBGPHOTO2_VERSION = 2.5.23
 LIBGPHOTO2_SOURCE = libgphoto2-$(LIBGPHOTO2_VERSION).tar.bz2
 # Project is maintained on github but github tarball doesn't have
 # configure, so use tarballs from SourceForge
