@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-COLLECTD_VERSION = 5.9.1
+COLLECTD_VERSION = 5.9.2
 COLLECTD_SITE = $(call github,collectd,collectd,collectd-$(COLLECTD_VERSION))
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
