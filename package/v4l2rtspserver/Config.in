@@ -2,6 +2,5 @@ config BR2_PACKAGE_V4L2RTSPSERVER
 	bool "v4l2rtspserver"
 	select BR2_PACKAGE_V4L2CPP
 	select BR2_PACKAGE_LIVE555
-	select BR2_PACKAGE_LOG4CPP
 	help
 	  Provides a streaming RTSP server for the target.
