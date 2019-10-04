@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/mbstrdecoder/json, sha256 locally computed
-md5 f528c26e537fe5c6987d5c5ccf6ab6e0 mbstrdecoder-0.2.2.tar.gz
-sha256 fe6412d8f796fc86c90a5d394a2c93adc05a3e4225986494665a43c65dcc9312 mbstrdecoder-0.2.2.tar.gz
+# md5, sha256 from https://pypi.org/pypi/mbstrdecoder/json
+md5	6dd814b20e7c68c2da2afe5bf72a5e9d  mbstrdecoder-0.8.1.tar.gz
+sha256	dabfae008a6b3b78f09847c2a73e9e866f97dcd9b52f7ccadf3b05a10a3656e6  mbstrdecoder-0.8.1.tar.gz
+# Locally computed sha256 checksums
+sha256	7fcef461a93fea587224132a865d1285969c9bec15baf59caeb7a8c7638a8744  LICENSE
