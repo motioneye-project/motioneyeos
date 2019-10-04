@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pickleshare/json, sha256 locally computed
-md5 6a9e5dd8dfc023031f6b7b3f824cab12 pickleshare-0.7.4.tar.gz
-sha256 84a9257227dfdd6fe1b4be1319096c20eb85ff1e82c7932f36efccfe1b09737b pickleshare-0.7.4.tar.gz
+# md5, sha256 from https://pypi.org/pypi/pickleshare/json
+md5	44ab782615894a812ab96669a122a634  pickleshare-0.7.5.tar.gz
+sha256	87683d47965c1da65cdacaf31c8441d12b8044cdec9aca500cd78fc2c683afca  pickleshare-0.7.5.tar.gz
+# Locally computed sha256 checksums
+sha256	db1fefc1789444409514c0cae0bfab7f8e374ff9b78e092cecb1e0aeb6a36d90  LICENSE
