@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/tornado/json
-md5	63a26fdd0bf1154d4a5e9144b7028dd0  tornado-6.0.1.tar.gz
-sha256	de274c65f45f6656c375cdf1759dbf0bc52902a1e999d12a35eb13020a641a53  tornado-6.0.1.tar.gz
+md5	cab4b11480f6d032e46465586192d343  tornado-6.0.3.tar.gz
+sha256	c845db36ba616912074c5b1ee897f8e0124df269468f25e4fe21fe72f6edd7a9  tornado-6.0.3.tar.gz
 # Locally computed sha256 checksums
 sha256	cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30  LICENSE
