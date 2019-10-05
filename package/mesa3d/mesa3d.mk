@@ -217,7 +217,7 @@ MESA3D_CONF_OPTS += -Dgles1=false -Dgles2=false
 endif
 
 ifeq ($(BR2_PACKAGE_MESA3D_XVMC),y)
-MESA3D_DEPENDENCIES += xlib_libXvMC
+MESA3D_DEPENDENCIES += xlib_libXv xlib_libXvMC
 MESA3D_CONF_OPTS += -Dgallium-xvmc=true
 else
 MESA3D_CONF_OPTS += -Dgallium-xvmc=false
