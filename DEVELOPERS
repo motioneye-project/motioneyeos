@@ -350,6 +350,7 @@ F:	package/libilbc/
 F:	package/libldns/
 F:	package/libmicrohttpd/
 F:	package/libminiupnpc/
+F:	package/libmspack/
 F:	package/libnatpmp/
 F:	package/libnpth/
 F:	package/libogg/
