@@ -10,4 +10,4 @@ PYTHON_SETUPNOVERNORMALIZE_SITE = https://files.pythonhosted.org/packages/1d/52/
 PYTHON_SETUPNOVERNORMALIZE_SETUP_TYPE = setuptools
 PYTHON_SETUPNOVERNORMALIZE_LICENSE = UNLICENSE
 
-$(eval $(python-package))
+$(eval $(host-python-package))
