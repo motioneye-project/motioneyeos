@@ -1,0 +1,6 @@
+config BR2_PACKAGE_HOST_PYTHON_SETUPNOVERNORMALIZE
+	bool "host python-setupnovernormalize"
+	help
+	  Prevent version normalization when packaging Python projects with setuptools. For more details, see https://github.com/pypa/setuptools/issues/308.
+
+	  https://github.com/ccrisan/setup-no-ver-normalize
