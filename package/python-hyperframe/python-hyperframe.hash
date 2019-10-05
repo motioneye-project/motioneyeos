@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/hyperframe/json, sha256 locally computed
-md5	c2aa71dd091836e72d2c6784d1dd1591  hyperframe-5.1.0.tar.gz
-sha256	a25944539db36d6a2e47689e7915dcee562b3f8d10c6cdfa0d53c91ed692fb04  hyperframe-5.1.0.tar.gz
+# md5, sha256 from https://pypi.org/pypi/hyperframe/json
+md5	6919183242feb26d8bce3b4cba81defd  hyperframe-5.2.0.tar.gz
+sha256	a9f5c17f2cc3c719b917c4f33ed1c61bd1f8dfac4b1bd23b7c80b3400971b41f  hyperframe-5.2.0.tar.gz
+# Locally computed sha256 checksums
+sha256	763a9342a04df62046c9dc748a5287934eb0a5331c6863b3ca0aee20e18cb4ed  LICENSE
