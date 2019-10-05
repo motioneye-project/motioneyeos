@@ -1,0 +1,71 @@
+From 6f6fb88077bce7f9dd9d21a286eeec700acff04e Mon Sep 17 00:00:00 2001
+From: Carlos Santos <unixmania@gmail.com>
+Date: Mon, 16 Sep 2019 22:22:37 -0300
+Subject: [PATCH] Build system:: add missing ln-srf script
+
+It is missing in the 1.25.6 release tarball.
+
+Signed-off-by: Carlos Santos <unixmania@gmail.com>
+---
+ ln-srf | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100755 ln-srf
+
+diff --git a/ln-srf b/ln-srf
+new file mode 100755
+index 00000000..f395a760
+--- /dev/null
++++ b/ln-srf
+@@ -0,0 +1,49 @@
++#!/bin/sh
++#
++# Author: Carlos Santos <unixmania@gmail.com>
++# This file is in public domain.
++#
++
++error() {
++	echo "$@" 1>&2
++	exit 1
++}
++
++src="$1"
++dst="$2"
++
++check_path() {
++	case "$2" in
++		*/../*|*/./*|*/.|*/..) error "$1 path '$2' must be absolute";;
++		*/) error "$1 path '$2' must not end with '/'";;
++		/?*) ;;
++		*) error "$1 path '$2' must start with '/'";;
++	esac
++}
++
++check_path "source" "$src"
++check_path "destination" "$dst"
++
++# strip leading '/'
++src=${src#/*}
++tmp=${dst#/*}
++
++s_prefix=${src%%/*}
++d_prefix=${tmp%%/*}
++
++# strip leading common
++while [ "$s_prefix" = "$d_prefix" ]; do
++	src="${src#$s_prefix/}"
++	tmp="${tmp#$d_prefix/}"
++	s_prefix=${src%%/*}
++	d_prefix=${tmp%%/*}
++done
++
++s_prefix="../"
++while [ -n "$d_prefix" ] && [ "$tmp" != "$d_prefix" ]; do
++	s_prefix="../$s_prefix"
++	tmp="${tmp#$d_prefix/}"
++	d_prefix=${tmp%%/*}
++done
++
++ln -s -f "$s_prefix$src" "$dst"
+-- 
+2.18.1
+
