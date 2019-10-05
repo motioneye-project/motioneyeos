@@ -2000,6 +2000,8 @@ N:	Romain Naour <romain.naour@gmail.com>
 F:	package/aubio/
 F:	package/binutils/
 F:	package/bullet/
+F:	package/clang/
+F:	package/clinfo/
 F:	package/efl/
 F:	package/enet/
 F:	package/enlightenment/
@@ -2010,9 +2012,11 @@ F:	package/glibc/
 F:	package/irrlicht/
 F:	package/liblinear/
 F:	package/lensfun/
+F:	package/libclc/
 F:	package/libgta/
 F:	package/libspatialindex/
 F:	package/linux-syscall-support/
+F:	package/llvm/
 F:	package/lugaru/
 F:	package/mcelog/
 F:	package/mesa3d/
