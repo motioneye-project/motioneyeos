@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBOSTREE_VERSION_MAJOR = 2018.9
-LIBOSTREE_VERSION= $(LIBOSTREE_VERSION_MAJOR).1
+LIBOSTREE_VERSION_MAJOR = 2019.4
+LIBOSTREE_VERSION= $(LIBOSTREE_VERSION_MAJOR)
 LIBOSTREE_SOURCE = libostree-$(LIBOSTREE_VERSION).tar.xz
 LIBOSTREE_SITE = https://github.com/ostreedev/ostree/releases/download/v$(LIBOSTREE_VERSION_MAJOR)
 
