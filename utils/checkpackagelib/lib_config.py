@@ -115,7 +115,7 @@ class CommentsMenusPackagesOrder(_CheckFunction):
             self.initialize_level_elements(text)
 
         elif text.startswith("endif") or text.startswith("endmenu"):
-            if self.state.endswith("comment"):
+            if self.state.endswith("-comment"):
                 self.state = self.state[:-8]
 
             if text.startswith("endif"):
