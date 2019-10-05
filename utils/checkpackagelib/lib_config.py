@@ -63,7 +63,7 @@ class AttributesOrder(_CheckFunction):
 class CommentsMenusPackagesOrder(_CheckFunction):
     def before(self):
         self.level = 0
-        self.menu_of_packages = [""]
+        self.menu_of_packages = ["The top level menu"]
         self.new_package = ""
         self.package = [""]
         self.print_package_warning = [True]
