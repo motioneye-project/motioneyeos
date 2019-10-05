@@ -107,6 +107,9 @@ class CommentsMenusPackagesOrder(_CheckFunction):
                     self.state += "-if"
 
                 elif text.startswith("menu"):
+                    if self.state.endswith("-comment"):
+                        self.state = self.state[:-8]
+
                     self.state += "-menu"
 
             self.initialize_level_elements(text)
