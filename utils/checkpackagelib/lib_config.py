@@ -61,14 +61,13 @@ class AttributesOrder(_CheckFunction):
 
 
 class CommentsMenusPackagesOrder(_CheckFunction):
-    menu_of_packages = [""]
-    package = [""]
-    print_package_warning = [True]
-
     def before(self):
-        self.state = ""
         self.level = 0
+        self.menu_of_packages = [""]
         self.new_package = ""
+        self.package = [""]
+        self.print_package_warning = [True]
+        self.state = ""
 
     def get_level(self):
         return len(self.state.split('-')) - 1
