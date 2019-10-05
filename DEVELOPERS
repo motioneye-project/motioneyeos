@@ -459,6 +459,8 @@ F:	package/sunxi-boards/
 
 N:	Carlos Santos <unixmania@gmail.com>
 F:	package/busybox/
+F:	package/cups/
+F:	package/cups-filters/
 F:	package/gtest/
 F:	package/initscripts/
 F:	package/intel-microcode/
