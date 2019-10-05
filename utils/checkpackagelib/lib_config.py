@@ -95,22 +95,22 @@ class CommentsMenusPackagesOrder(_CheckFunction):
 
         source_line = re.match(r'^\s*source ".*/([^/]*)/Config.in(.host)?"', text)
 
-        if text.startswith("comment ") or text.startswith("if ") or \
-           text.startswith("menu "):
+        if text.startswith("comment "):
+            if not self.state.endswith("-comment"):
+                self.state += "-comment"
 
-            if text.startswith("comment"):
-                if not self.state.endswith("-comment"):
-                    self.state += "-comment"
+            self.initialize_level_elements(text)
 
-            elif text.startswith("if") or text.startswith("menu"):
-                if text.startswith("if"):
-                    self.state += "-if"
+        elif text.startswith("if "):
+            self.state += "-if"
 
-                elif text.startswith("menu"):
-                    if self.state.endswith("-comment"):
-                        self.state = self.state[:-8]
+            self.initialize_level_elements(text)
 
-                    self.state += "-menu"
+        elif text.startswith("menu "):
+            if self.state.endswith("-comment"):
+                self.state = self.state[:-8]
+
+            self.state += "-menu"
 
             self.initialize_level_elements(text)
 
