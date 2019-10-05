@@ -35,6 +35,19 @@ config BR2_PACKAGE_LLVM_AMDGPU
 	  Build AMDGPU target. Select this option if you are going
 	  to install mesa3d with llvm and use Gallium Radeon driver.
 
+config BR2_PACKAGE_LLVM_RTTI
+	bool "enable rtti"
+	help
+	  Build LLVM with run-time type information. LLVM can be built
+	  without rtti, but turning it off changes the ABI of C++
+	  programs.
+
+	  This features is needed to build the Gallium Nouveau driver
+	  or the Clover OpenCL state tracker when llvm support is
+	  enabled.
+
+	  https://llvm.org/docs/HowToSetUpLLVMStyleRTTI.html
+
 endif
 
 comment "llvm needs a toolchain w/ wchar, threads, C++, gcc >= 4.8, host gcc >= 4.8, dynamic library"
