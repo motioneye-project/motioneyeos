@@ -32,13 +32,12 @@ for file in ${files}; do
     fi
 
     prerelease=false
-    if [[ "${version}" =~ ^.*[ab][0-9]+$ ]]; then  # e.g. 0.4.1b2
+    if [[ "${version}" =~ ^.*[abc]\.?[0-9]+$ ]] || # e.g. 0.4.1b2, 0.4.1b.2, 0.4.1-b.2
+       [[ "${version}" =~ ^.*(alpha|beta|rc)\.?[0-9]+$ ]] || # e.g. 0.4.1beta2, 0.4.1beta.2, 0.4.1-beta.2
+       [[ "${version}" =~ ^(dev|nightly).*$ ]]; then # e.g. dev20180314, nightly20180314
         prerelease=true
     fi
-    if [[ "${version}" =~ ^dev.*$ ]]; then  # e.g. dev20180314
-        prerelease=true
-    fi
-    
+
     final_url=${url}/${path}/${version}/${fname}
     board=$(echo ${fname} | cut -d '-' -f 2)
     date=$(echo ${dates[${i}]} | cut -d 'T' -f 1)
