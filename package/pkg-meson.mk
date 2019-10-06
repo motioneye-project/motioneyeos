@@ -80,7 +80,7 @@ define $(2)_CONFIGURE_CMDS
 	    -e "s%@TARGET_CXXFLAGS@%$$($(2)_MESON_SED_CXXFLAGS)%g" \
 	    -e "s%@HOST_DIR@%$$(HOST_DIR)%g" \
 	    $$(foreach x,$$($(2)_MESON_EXTRA_BINARIES), \
-	        -e "/\(\[binaries\]\)/s:$$$$:\n$$(x):" \
+	        -e "/^\[binaries\]$$$$/s:$$$$:\n$$(x):" \
 	    ) \
 	    package/meson/cross-compilation.conf.in \
 	    > $$($$(PKG)_SRCDIR)/build/cross-compilation.conf
