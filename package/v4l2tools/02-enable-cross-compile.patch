@@ -1,5 +1,5 @@
 diff --git a/Makefile b/Makefile
-index e69de29..60dfdbb 100644
+index e69de29..f337374 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -0,0 +1,148 @@
@@ -139,7 +139,7 @@ index e69de29..60dfdbb 100644
 +	$(CXX) -o $@ $(CXXFLAGS) -I$(PREFIX)/include/h264bitstream -I$(PREFIX)/include/hevcbitstream -I$(PREFIX)/include/libyuv $^ $(LDFLAGS) -lh264bitstream -lhevcbitstream -lyuv -ljpeg
 +
 +v4l2fuse: src/v4l2fuse.c
-+	$(CC) -o $@ $(CXXFLAGS) $^ $(LDFLAGS) -D_FILE_OFFSET_BITS=64 -lfuse
++	$(CC) -o $@ $(CFLAGS) $^ $(LDFLAGS) -D_FILE_OFFSET_BITS=64 -lfuse
 +
 +
 +upgrade:
