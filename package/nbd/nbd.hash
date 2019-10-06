@@ -1,7 +1,7 @@
-# From http://sourceforge.net/projects/nbd/files/nbd/3.19/
-md5	162da84302abb5b9be06143c7943a642	nbd-3.19.tar.xz
-sha1	97edd98f7323a2fcd0dcf441f307d348cdbbb807	nbd-3.19.tar.xz
+# From http://sourceforge.net/projects/nbd/files/nbd/3.20/
+md5	910fe6c152f8c30ad8608388e6a4ce89	nbd-3.20.tar.xz
+sha1	9240430266ff4bfb2316ef6d880056a9974a59fd	nbd-3.20.tar.xz
 
 # Locally calculated
-sha256	b4466412f13e057659f25d35e1e8e181afd62c7179bff22a6add81445ecb8690	nbd-3.19.tar.xz
+sha256	e0e1b3538ab7ae5accf56180afd1a9887d415b98d21223b8ad42592b4af7d6cd	nbd-3.20.tar.xz
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING
