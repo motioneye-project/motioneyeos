@@ -1,6 +1,7 @@
 config BR2_PACKAGE_PROJ
 	bool "proj"
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_SQLITE
 	help
 	  proj.4 is a standard UNIX filter function which converts
 	  geographic longitude and latitude coordinates into cartesian

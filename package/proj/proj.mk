@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-PROJ_VERSION = 5.0.1
+PROJ_VERSION = 6.2.0
 PROJ_SITE = http://download.osgeo.org/proj
 PROJ_LICENSE = MIT
 PROJ_LICENSE_FILES = COPYING
 PROJ_INSTALL_STAGING = YES
+PROJ_DEPENDENCIES = sqlite
 
 PROJ_CFLAGS = $(TARGET_CFLAGS)
 
