@@ -253,6 +253,7 @@ F:	package/orbit/
 
 N:	Bartosz Bilas <b.bilas@grinn-global.com>
 F:	package/qt5/qt5scxml/
+F:	package/qt5/qt5webview/
 
 N:	Bartosz Golaszewski <brgl@bgdev.pl>
 F:	package/autoconf-archive/
