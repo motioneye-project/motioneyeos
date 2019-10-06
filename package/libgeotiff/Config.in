@@ -1,8 +1,13 @@
 config BR2_PACKAGE_LIBGEOTIFF
 	bool "libgeotiff"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # proj
+	select BR2_PACKAGE_PROJ
 	select BR2_PACKAGE_TIFF
 	help
 	  Libgeotiff is an open source library normally hosted on top of
 	  libtiff for reading, and writing GeoTIFF information tags.
 
-	  http://geotiff.osgeo.org
+	  https://github.com/OSGeo/libgeotiff
+
+comment "libgeotiff needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS
