@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_SQLITE_STAT3
+	bool "sqlite stat3 support was removed"
+	select BR2_LEGACY
+	help
+	  Upstream removed the support for stat3.
+
 config BR2_KERNEL_HEADERS_5_1
 	bool "kernel headers version 5.1.x are no longer supported"
 	select BR2_LEGACY
