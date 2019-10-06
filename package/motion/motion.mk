@@ -7,6 +7,7 @@
 MOTION_VERSION = release-4.2.2
 MOTION_SITE = $(call github,motion-project,motion,$(MOTION_VERSION))
 MOTION_AUTORECONF = YES
+MOTION_DEPENDENCIES = ffmpeg jpeg libmicrohttpd
 MOTION_CONF_OPTS = --without-pgsql \
                    --without-sdl \
                    --without-sqlite3 \
