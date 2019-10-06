@@ -2,6 +2,8 @@ config BR2_PACKAGE_MOTION
 	bool "motion"
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	select BR2_PACKAGE_FFMPEG
+	select BR2_PACKAGE_FFMPEG_SWSCALE
 	select BR2_PACKAGE_JPEG
 	select BR2_PACKAGE_LIBMICROHTTPD
 	help
