@@ -1,0 +1,59 @@
+diff --git a/Makefile b/Makefile
+index e69de29..fb3f2bf 100644
+--- a/Makefile
++++ b/Makefile
+@@ -0,0 +1,54 @@
++ifneq ($(SRC),)
++VPATH=$(SRC)
++endif
++
++ALL_PROGS = v4l2rtspserver
++PREFIX?=/usr
++DESTDIR?=$(PREFIX)/bin
++CC?=$(CROSS)gcc
++CXX?=$(CROSS)g++
++CXXFLAGS += -I$(SRC) -W -Wall -std=c++11 -g -O3 -D_POSIX_C_SOURCE=2
++CXXFLAGS += -Iinc -I$(PREFIX)/include -I$(PREFIX)/include/BasicUsageEnvironment -I$(PREFIX)/include/UsageEnvironment -I$(PREFIX)/include/liveMedia -I$(PREFIX)/include/groupsock
++CXXFLAGS += $(EXTRA_CXXFLAGS)
++LDFLAGS += -pthread -L$(PREFIX)/lib -lBasicUsageEnvironment -lUsageEnvironment -lliveMedia -lgroupsock -lv4l2wrapper
++RM = rm -rf
++
++RTSPSERVER_OBJS = \
++	src/DeviceSource.o \
++	src/H264_V4l2DeviceSource.o \
++	src/HTTPServer.o \
++	src/main.o \
++	src/MemoryBufferSink.o \
++	src/MJPEGVideoSource.o \
++	src/MulticastServerMediaSubsession.o \
++	src/ServerMediaSubsession.o \
++	src/TSServerMediaSubsession.o \
++	src/UnicastServerMediaSubsession.o \
++
++
++# v4l2wrapper
++CXXFLAGS += -I$(PREFIX)/include/libv4l2cpp
++
++# ALSA
++ifneq ($(HAVE_ALSA),)
++CXXFLAGS += -DHAVE_ALSA
++RTSPSERVER_OBJS += src/ALSACapture.o
++LDFLAGS += -lasound
++endif
++
++
++.DEFAULT_GOAL := all
++
++all: $(ALL_PROGS)
++
++v4l2rtspserver: $(RTSPSERVER_OBJS)
++	$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS)
++
++src/%.o : src/%.cpp
++	$(CXX) $(CXXFLAGS) -c $< -o $@
++
++clean:
++	$(RM) src/*.o v4l2rtspserver
++
++install: v4l2rtspserver
++	install -D -m 0777 v4l2rtspserver $(DESTDIR)

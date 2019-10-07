@@ -1,0 +1,39 @@
+diff --git a/Makefile b/Makefile
+index a51b316..7291248 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,16 +5,12 @@ CXX ?= $(CROSS)g++
+ AR ?= $(CROSS)ar
+ PREFIX?=/usr
+ 
+-ifneq ($(wildcard $(SYSROOT)$(PREFIX)/include/log4cpp/Category.hh),)
+-CXXFLAGS += -DHAVE_LOG4CPP -I $(SYSROOT)$(PREFIX)/include
+-endif
+-
+ V4L2WRAPPER_CPP:=$(wildcard src/*.cpp)
+ V4L2WRAPPER_OBJ:=$(V4L2WRAPPER_CPP:%.cpp=%.o)
+ 
+ .DEFAULT_GOAL := all
+ 
+-all: libv4l2wrapper.a
++all: libv4l2wrapper.a libv4l2wrapper.so
+ 
+ %.o: %.cpp
+ 	$(CXX) -c -o $@ $< $(CXXFLAGS)
+@@ -22,12 +18,14 @@ all: libv4l2wrapper.a
+ libv4l2wrapper.a: $(V4L2WRAPPER_OBJ)
+ 	$(AR) rcs $@ $^
+ 
++libv4l2wrapper.so: $(V4L2WRAPPER_OBJ)
++	$(CXX) -shared -fPIC $(CXXFLAGS) -o $@ $^
+ 
+ clean:
+-	-@$(RM) *.a $(V4L2WRAPPER_OBJ)
++	-@$(RM) *.a *.so $(V4L2WRAPPER_OBJ)
+ 
+ install:
+ 	mkdir -p $(PREFIX)/include/libv4l2cpp/
+ 	install -D -m 0755 inc/*.h $(PREFIX)/include/libv4l2cpp/
+ 	install -D -m 0755 *.a $(PREFIX)/lib
+-
++	install -D -m 0755 *.so $(PREFIX)/lib

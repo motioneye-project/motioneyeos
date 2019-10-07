@@ -1,0 +1,15 @@
+diff --git a/Makefile b/Makefile
+index a51b316..60b801b 100644
+--- a/Makefile
++++ b/Makefile
+@@ -5,10 +5,6 @@ CXX ?= $(CROSS)g++
+ AR ?= $(CROSS)ar
+ PREFIX?=/usr
+ 
+-ifneq ($(wildcard $(SYSROOT)$(PREFIX)/include/log4cpp/Category.hh),)
+-CXXFLAGS += -DHAVE_LOG4CPP -I $(SYSROOT)$(PREFIX)/include
+-endif
+-
+ V4L2WRAPPER_CPP:=$(wildcard src/*.cpp)
+ V4L2WRAPPER_OBJ:=$(V4L2WRAPPER_CPP:%.cpp=%.o)
+ 

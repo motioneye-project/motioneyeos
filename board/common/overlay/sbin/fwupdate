@@ -291,12 +291,16 @@ function do_download() {
     curl ${curl_opts} -o ${outfile} "${url}" &> ${CURL_LOG_FILE} &
     pid=$!
     echo ${pid} > ${CURL_PID_FILE}
+
+    set +e  # don't exit on error just yet
     wait ${pid}
     
     if [[ "$?" != 0 ]]; then
         cat ${CURL_LOG_FILE}
         exit 1
     fi
+    
+    set -e
 }
 
 function download_status() {
