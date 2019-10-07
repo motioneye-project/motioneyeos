@@ -1,6 +1,6 @@
 config BR2_PACKAGE_CIRCUS
 	bool "circus"
-	depends on BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_PYTHON3 # python-tornado
 	depends on BR2_INSTALL_LIBSTDCPP # pyzmq -> zeromq
 	depends on BR2_TOOLCHAIN_HAS_THREADS # pyzmq -> zeromq
 	select BR2_PACKAGE_PYTHON_IOWAIT # runtime
@@ -14,6 +14,6 @@ config BR2_PACKAGE_CIRCUS
 
 	  https://circus.readthedocs.org/en/latest/
 
-comment "circus needs Python and a toolchain w/ C++, threads"
+comment "circus needs Python 3 and a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS || \
-		!(BR2_PACKAGE_PYTHON || BR2_PACKAGE_PYTHON3)
+		!BR2_PACKAGE_PYTHON3
