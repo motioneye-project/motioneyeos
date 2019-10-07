@@ -88,7 +88,9 @@ function start() {
         # hardcode to 90 for now
         vidid=90
         video_path="/dev/video${vidid}"
-        rmmod v4l2loopback
+        if lsmod | grep v4l2loopback &> /dev/null ; then
+            rmmod v4l2loopback
+        fi
         modprobe v4l2loopback video_nr=${vidid}
         if [ -e "${video_path}" ]; then
             valid_opts=("analoggain" "awb" "awbgains" "bitrate" "brightness" "colfx" "contrast" "denoise" "digitalgain" "drc" "ev" "exposure" "flicker" "framerate" "height" "hflip" "imxfx" "intra" "irefresh" "level" "metering" "profile" "roi" "rotation" "saturation" "sharpness" "shutter" "vflip" "vstab" "width" "mjpegbitrate" "mjpegframerate" "mjpegwidth" "mjpegheight")
@@ -119,13 +121,17 @@ function start() {
 
             rtspserver_opts="${rtspserver_opts} -P ${RTSP_PORT} -u h264"
             video_framerate=$(grep -e ^framerate ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            video_intra=$(grep -e ^intra ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
             if [ -n "${video_framerate}" ]; then
                 rtspserver_opts="${rtspserver_opts} -F ${video_framerate}"
+                if [ -z "${video_intra}" ]; then
+                    let "video_intra=$((video_framerate))*2"
+                    raspimjpeg_opts="${raspimjpeg_opts} --intra ${video_intra}"
+                fi
             fi
 
             mjpeg_opts="--mjpegbitrate ${MJPEG_BITRATE} --mjpegwidth ${MJPEG_WIDTH} --mjpegheight ${MJPEG_HEIGHT} --mjpegframerate ${MJPEG_FRAMERATE}"
-            let "GOP=$((video_framerate))*2"
-            raspimjpeg_opts="${raspimjpeg_opts} --intra $GOP ${mjpeg_opts}"
+            raspimjpeg_opts="${raspimjpeg_opts} ${mjpeg_opts}"
 
             if [ -z "${v4l2multi_stream_mmal_pid}" ]; then
                 v4l2multi_stream_mmal -v ${raspimjpeg_opts} -o - 2>${RTSPSERVER_LOG} | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
@@ -191,7 +197,9 @@ function stop() {
     done
 
     # stop the loopback device
-    rmmod v4l2loopback
+    if lsmod | grep v4l2loopback &> /dev/null ; then
+        rmmod v4l2loopback
+    fi
 }
 
 case "$1" in
