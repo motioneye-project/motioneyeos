@@ -124,7 +124,8 @@ function start() {
             fi
 
             mjpeg_opts="--mjpegbitrate ${MJPEG_BITRATE} --mjpegwidth ${MJPEG_WIDTH} --mjpegheight ${MJPEG_HEIGHT} --mjpegframerate ${MJPEG_FRAMERATE}"
-            raspimjpeg_opts="${raspimjpeg_opts} --intra 50 ${mjpeg_opts}"
+            let "GOP=$((video_framerate))*2"
+            raspimjpeg_opts="${raspimjpeg_opts} --intra $GOP ${mjpeg_opts}"
 
             if [ -z "${v4l2multi_stream_mmal_pid}" ]; then
                 v4l2multi_stream_mmal -v ${raspimjpeg_opts} -o - 2>${RTSPSERVER_LOG} | streameye ${streameye_opts} &>${STREAMEYE_LOG} &
