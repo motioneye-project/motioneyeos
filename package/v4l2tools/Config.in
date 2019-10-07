@@ -1,0 +1,8 @@
+config BR2_PACKAGE_V4L2TOOLS
+	bool "v4l2tools"
+	select BR2_PACKAGE_V4L2CPP
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBFUSE
+	help
+	  Build the V4L2 tools based on libv4l2cpp.
+	  Optional dependencies: libvpx, x264, x265.

@@ -1,0 +1,91 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 7cf9f3c..3f967b3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -1,5 +1,7 @@
+ cmake_minimum_required(VERSION 3.0)
+ 
++set(CMAKE_VERBOSE_MAKEFILE ON)
++
+ project(v4l2rtspserver)
+ 
+ option(COVERAGE "Coverage" OFF)
+@@ -39,7 +41,7 @@ message(STATUS "CMAKE_CXX_COMPILER=${CMAKE_CXX_COMPILER}")
+ 
+ #pthread
+ find_package (Threads)
+-target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT}) 
++target_link_libraries (${PROJECT_NAME} ${CMAKE_THREAD_LIBS_INIT})
+ 
+ #ALSA
+ if (ALSA)
+@@ -47,9 +49,9 @@ find_package(ALSA QUIET)
+ if (ALSA_LIBRARY)
+ 	message(STATUS "Alsa available")
+ 	add_definitions(-DHAVE_ALSA)
+-        target_link_libraries (${PROJECT_NAME} ${ALSA_LIBRARY}) 
+-	
+-	SET(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS}libasound2-dev,)	
++        target_link_libraries (${PROJECT_NAME} ${ALSA_LIBRARY})
++
++	SET(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS}libasound2-dev,)
+ endif (ALSA_LIBRARY)
+ endif()
+ 
+@@ -59,16 +61,25 @@ if (LOG4CPP_LIBRARY)
+         message(STATUS "Log4Cpp available")
+ 	add_definitions(-DHAVE_LOG4CPP)
+ 	target_link_libraries(${PROJECT_NAME} "${LOG4CPP_LIBRARY}")
+-	
++
+ 	SET(CPACK_DEBIAN_PACKAGE_DEPENDS ${CPACK_DEBIAN_PACKAGE_DEPENDS}liblog4cpp5-dev,)
+ endif ()
+ 
+ # v4l2wrapper
+-EXEC_PROGRAM("git submodule update --init")
+-aux_source_directory(v4l2wrapper/src LIBSRC_FILES)
+-include_directories("v4l2wrapper/inc")
+-add_library(v4l2wrapper STATIC ${LIBSRC_FILES})
+-target_link_libraries (${PROJECT_NAME} v4l2wrapper) 
++#set(V4L2WRAPPER_LIBRARY ${CMAKE_SOURCE_DIR}/libv4l2wrapper.a)
++target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/libv4l2wrapper.a)
++#find_library(V4L2WRAPPER_LIBRARY v4l2wrapper REQUIRED)
++#find_package(v4l2cpp REQUIRED)
++#if (V4L2CPP_LIBRARY)
++#        message(STATUS "v4l2wrapper available")
++#	target_link_libraries(${PROJECT_NAME} "${V4L2CPP_LIBRARY}")
++#endif ()
++
++# EXEC_PROGRAM("git submodule update --init")
++# aux_source_directory(v4l2wrapper/src LIBSRC_FILES)
++# include_directories("v4l2wrapper/inc")
++# add_library(v4l2wrapper STATIC ${LIBSRC_FILES})
++# target_link_libraries (${PROJECT_NAME} v4l2wrapper)
+ 
+ # live555
+ set(LIVE ${CMAKE_BINARY_DIR}/live)
+@@ -97,7 +108,7 @@ if (SYSTEMD_FOUND)
+ 	execute_process(COMMAND ${PKG_CONFIG_EXECUTABLE} --variable=systemdsystemunitdir systemd OUTPUT_VARIABLE SYSTEMD_SERVICES_INSTALL_DIR)
+ 	string(REGEX REPLACE "[ \t\n]+" "" SYSTEMD_SERVICES_INSTALL_DIR "${SYSTEMD_SERVICES_INSTALL_DIR}")
+ 	message(STATUS "SystemD directory '${SYSTEMD_SERVICES_INSTALL_DIR}'")
+-	
++
+ 	configure_file(v4l2rtspserver.service.in ${CMAKE_CURRENT_BINARY_DIR}/v4l2rtspserver.service @ONLY)
+         install(FILES ${CMAKE_CURRENT_BINARY_DIR}/v4l2rtspserver.service DESTINATION ${SYSTEMD_SERVICES_INSTALL_DIR})
+ endif (SYSTEMD_FOUND)
+@@ -108,8 +119,8 @@ install (FILES index.html DESTINATION share/${PROJECT_NAME}/)
+ install (FILES hls.js/dist/hls.light.min.js DESTINATION share/${PROJECT_NAME}/hls.js/dist/)
+ 
+ SET(CPACK_GENERATOR "DEB")
+-SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Michel Promonet") 
+-SET(CPACK_PACKAGE_CONTACT "michel.promonet@free.fr") 
++SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "Michel Promonet")
++SET(CPACK_PACKAGE_CONTACT "michel.promonet@free.fr")
+ SET(CPACK_SYSTEM_NAME ${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR})
+ STRING(REGEX REPLACE ",$" "" CPACK_DEBIAN_PACKAGE_DEPENDS "${CPACK_DEBIAN_PACKAGE_DEPENDS}")
+ SET(CPACK_PACKAGING_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+@@ -117,4 +128,3 @@ if(VERSION)
+     SET(CPACK_PACKAGE_VERSION "${VERSION}")
+ endif()
+ INCLUDE(CPack)
+-

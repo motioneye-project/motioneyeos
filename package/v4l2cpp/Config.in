@@ -1,0 +1,4 @@
+config BR2_PACKAGE_V4L2CPP
+	bool "v4l2cpp"
+	help
+	  Build the V4L2 C++ Wrapper for target use.
