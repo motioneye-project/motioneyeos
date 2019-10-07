@@ -61,8 +61,8 @@ function start() {
         RTSP_PORT=${RTSP_PORT:-554}
         MJPEG_WIDTH=${MJPEG_WIDTH:-640}
         MJPEG_HEIGHT=${MJPEG_HEIGHT:-480}
-        MJPEG_FRAMERATE=${MJPEG_FRAMERATE:-2}
-        MJPEG_BITRATE=${MJPEG_BITRATE:-2000000}
+        MJPEG_FRAMERATE=${MJPEG_FRAMERATE:-5}
+        MJPEG_BITRATE=${MJPEG_BITRATE:-800000}
 
         audio_path=""
         audio_opts=""

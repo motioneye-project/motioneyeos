@@ -416,7 +416,7 @@ def _get_streameye_settings(camera_id):
         'seMJPEGWidth': 640,
         'seMJPEGHeight': 480,
         'seMJPEGFramerate': 5,
-        'seMJPEGBitrate': 1000000
+        'seMJPEGBitrate': 800000
     }
 
     if os.path.exists(STREAMEYE_CONF):
@@ -478,7 +478,7 @@ def _set_streameye_settings(camera_id, s):
     s.setdefault('seMJPEGWidth', 640)
     s.setdefault('seMJPEGHeight', 480)
     s.setdefault('seMJPEGFramerate', 5)
-    s.setdefault('seMJPEGBitrate', 2000000)
+    s.setdefault('seMJPEGBitrate', 800000)
 
     main_config = config.get_main()
     username = main_config['@normal_username']
@@ -1283,9 +1283,9 @@ def seMJPEGBitrate():
 
     return {
         'label': 'MJPEG Bitrate',
-        'description': 'the MJPEG Bitrate fed to the frontend and used for motion detection on remote machines when streaming RTSP; for motion detection, 2000000 works good',
+        'description': 'the MJPEG Bitrate fed to the frontend and used for motion detection on remote machines when streaming RTSP; for motion detection, 800000 works good',
         'type': 'number',
-        'min': 1000000,
+        'min': 0,
         'max': 25000000,
         'section': 'streaming',
         'camera': True,
