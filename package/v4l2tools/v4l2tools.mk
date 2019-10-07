@@ -4,7 +4,7 @@
 #
 #############################################################
 
-V4L2TOOLS_VERSION = 794afdb
+V4L2TOOLS_VERSION = ab94cf8
 V4L2TOOLS_SITE = https://github.com/jasaw/v4l2tools.git
 V4L2TOOLS_SITE_METHOD = git
 V4L2TOOLS_LICENSE = UNLICENSE
