@@ -1237,10 +1237,6 @@ F:	package/phidgetwebservice/
 F:	package/rapidxml/
 F:	package/sphinxbase/
 
-N:	Jonathan Liu <net147@gmail.com>
-F:	package/python-meld3/
-F:	package/supervisor/
-
 N:	Joris Offouga <offougajoris@gmail.com>
 F:	package/python-colorlog/
 F:	package/python-simplelogging/
