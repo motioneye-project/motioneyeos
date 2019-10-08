@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/pytz/json
-md5	8c21963449c3a793aa61ef122e171516  pytz-2019.2.tar.gz
-sha256	26c0b32e437e54a18161324a2fca3c4b9846b74a8dccddd843113109e1116b32  pytz-2019.2.tar.gz
+md5	c3d84a465fc56a4edd52cca8873ac0df  pytz-2019.3.tar.gz
+sha256	b02c06db6cf09c12dd25137e563b31700d3b80fcc4ad23abb7a315f2789819be  pytz-2019.3.tar.gz
 # Locally computed sha256 checksums
 sha256	39f07c72a1bfda349cbd27bac9bcb1e6f8c5b4e5cc3fadf56900406e8cc0b792  LICENSE.txt
