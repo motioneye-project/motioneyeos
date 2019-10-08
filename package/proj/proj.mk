@@ -9,7 +9,7 @@ PROJ_SITE = http://download.osgeo.org/proj
 PROJ_LICENSE = MIT
 PROJ_LICENSE_FILES = COPYING
 PROJ_INSTALL_STAGING = YES
-PROJ_DEPENDENCIES = host-pkgconf sqlite
+PROJ_DEPENDENCIES = host-pkgconf host-sqlite sqlite
 
 PROJ_CFLAGS = $(TARGET_CFLAGS)
 
