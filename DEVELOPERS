@@ -1692,9 +1692,6 @@ N:	Mirza Krak <mirza.krak@northern.tech>
 F:	package/mender/
 F:	package/mender-artifact/
 
-N:	Morgan Delestre <m.delestre@sinters.fr>
-F:	package/monkey/
-
 N:	Murat Demirten <mdemirten@yh.com.tr>
 F:	package/jpeg-turbo/
 F:	package/libgeotiff/
