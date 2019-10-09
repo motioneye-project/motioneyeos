@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_PYTHON_PYSNMP_APPS
+	bool "python-pysnmp-apps was removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_SNMPCLITOOLS
+	help
+	  Following upstream changes, the python-pysnmp-apps package
+	  has been removed, and snmpclitools should be used as a
+	  replacement.
+
 config BR2_KERNEL_HEADERS_5_2
 	bool "kernel headers version 5.2.x are no longer supported"
 	select BR2_LEGACY
