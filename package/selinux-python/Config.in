@@ -9,6 +9,7 @@ menuconfig BR2_PACKAGE_SELINUX_PYTHON
 	  A set of SELinux tools written in python that help with
 	  managing a system with SELinux enabled. If no packages are
 	  selected nothing will actually be built.
+
 	  https://github.com/SELinuxProject/selinux/wiki
 
 if BR2_PACKAGE_SELINUX_PYTHON
