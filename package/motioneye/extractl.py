@@ -375,9 +375,9 @@ def extraDateSeparator():
 def dateMethod():
     return {
         'label': 'Date Method',
-        'description': 'decides whether NTP or HTTP is used for setting and updating the system date',
+        'description': 'decides whether (S)NTP or HTTP is used for setting and updating the system date',
         'type': 'choices',
-        'choices': [('http', 'HTTP'), ('ntp', 'NTP')],
+        'choices': [('sntp', 'SNTP (recommended)'), ('ntp', 'NTP'), ('http', 'HTTP')],
         'section': 'expertSettings',
         'reboot': True,
         'required': True,
@@ -412,7 +412,7 @@ def dateNtpServer():
         'section': 'expertSettings',
         'reboot': True,
         'required': False,
-        'depends': ['dateMethod==ntp'],
+        'depends': ['dateMethod==(ntp|sntp)'],
         'get': _get_date_settings,
         'set': _set_date_settings,
         'get_set_dict': True
