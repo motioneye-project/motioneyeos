@@ -1,4 +1,4 @@
-menuconfig BR2_PACKAGE_SELINUX_PYTHON
+config BR2_PACKAGE_SELINUX_PYTHON
 	bool "selinux-python"
 	depends on BR2_USE_MMU
 	depends on BR2_USE_WCHAR
