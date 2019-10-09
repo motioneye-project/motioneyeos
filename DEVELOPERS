@@ -235,6 +235,7 @@ N:	Asaf Kahlon <asafka7@gmail.com>
 F:	package/collectd/
 F:	package/libuv/
 F:	package/python*
+F:	package/snmpclitools/
 F:	package/spdlog/
 F:	package/uftp/
 F:	package/zeromq/
