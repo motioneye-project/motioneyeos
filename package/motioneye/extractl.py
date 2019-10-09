@@ -449,7 +449,7 @@ def dateInterval():
         'section': 'expertSettings',
         'reboot': True,
         'required': True,
-        'depends': ['dateMethod==(http'],
+        'depends': ['dateMethod==http'],
         'get': _get_date_settings,
         'set': _set_date_settings,
         'get_set_dict': True
