@@ -1,0 +1,37 @@
+From 33937e2861fda87dc314378bf87db2c766c37a6b Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 9 Oct 2019 15:11:34 +0200
+Subject: [PATCH] configure.ac: use pkg-config to find proj dependency
+
+Use pkg-config to retrieve proj and its static dependencies such as
+-lstdc++
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/OSGeo/libgeotiff/pull/24]
+---
+ libgeotiff/configure.ac | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
+
+diff --git a/configure.ac b/libgeotiff/configure.ac
+index c3395d5..f7a8f28 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -246,9 +246,12 @@ if test "x$with_proj" = "xno" ; then
+ else
+ 
+   if test "x$with_proj" = "xyes" -o "x$with_proj" = "x"; then
+-    ORIG_LIBS="$LIBS"
+-    LIBS="-lproj $ORIG_LIBS"
+-    AC_CHECK_LIB(proj,proj_create_from_wkt,PROJ_FOUND=yes,PROJ_FOUND=no,)
++    PKG_CHECK_MODULES(PROJ, proj, [LIBS="$LIBS $PROJ_LIBS" PROJ_FOUND=yes], [PROJ_FOUND=no])
++    if test "$PROJ_FOUND" = "no"; then
++        ORIG_LIBS="$LIBS"
++        LIBS="-lproj $ORIG_LIBS"
++        AC_CHECK_LIB(proj,proj_create_from_wkt,PROJ_FOUND=yes,PROJ_FOUND=no,)
++    fi
+     if test "$PROJ_FOUND" = "no"; then
+         AC_CHECK_LIB(proj,internal_proj_create_from_wkt,PROJ_FOUND=yes,PROJ_FOUND=no,)
+         if test "$PROJ_FOUND" = "yes"; then
+-- 
+2.23.0
+
