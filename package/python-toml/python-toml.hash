@@ -1,2 +1,5 @@
-# Locally computed
-sha256	633a90ecb1f5665b58f0c94153fcf519313ef53e1de0eac90929cd6b6a014235  python-toml-0.9.3.tar.gz
+# md5, sha256 from https://pypi.org/pypi/toml/json
+md5	63fffbe2d632865ec29cd69bfdf36682  toml-0.10.0.tar.gz
+sha256	229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c  toml-0.10.0.tar.gz
+# Locally computed sha256 checksums
+sha256	a879cc43c06aca11ada36f71c8db7257449ff4451874a0903f129920c66fcf2d  LICENSE
