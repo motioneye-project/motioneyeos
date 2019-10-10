@@ -138,6 +138,8 @@ main() {
 
     printf "%d builds, %d skipped, %d build failed, %d legal-info failed\n" \
         ${nb} ${nb_skip} ${nb_fail} ${nb_legal}
+
+    return $((nb_fail + nb_legal))
 }
 
 build_one() {
