@@ -44,9 +44,30 @@ function start() {
     source ${STREAMEYE_CONF}
     streameye_opts="-p ${PORT}"
     rtspserver_opts=""
-    if [ -n "${CREDENTIALS}" ] && [ "${AUTH}" = "basic" ]; then
-        streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
-        # TODO: Add RTSP Auth
+    if [ -n "${CREDENTIALS}" ]; then
+        username=`echo "${CREDENTIALS}" | cut -d ':' -f 1`
+        password=`echo "${CREDENTIALS}" | cut -d ':' -f 2`
+        realm=`echo "${CREDENTIALS}" | cut -d ':' -f 3`
+        if [ "${AUTH}" = "digest" ]; then
+            if [ -n "${realm}" ]; then
+                if [ -n "${username}" ]; then
+                    passmd5=`echo -n ${username}:${realm}:${password} | md5sum | cut -d- -f1`
+                    rtspserver_opts="${rtspserver_opts} -U ${username}:${passmd5} -R ${realm}";
+                    # streameye does not support digest authentication yet, assume basic auth
+                    streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
+                fi
+            else
+                # Selected digest auth but realm not provided. Fall back to basic auth
+                AUTH="basic"
+            fi
+        fi
+        if [ "${AUTH}" = "basic" ]; then
+            if [ -n "${username}" ]; then
+                rtspserver_opts="${rtspserver_opts} -U ${username}:${password}";
+                # streameye does not support digest authentication yet, assume basic auth
+                streameye_opts="${streameye_opts} -a basic -c ${CREDENTIALS}"
+            fi
+        fi
     fi
 
     if [ "${PROTO}" = "rtsp" ]; then
