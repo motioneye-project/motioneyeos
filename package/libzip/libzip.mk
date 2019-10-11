@@ -33,5 +33,10 @@ else
 LIBZIP_CONF_OPTS += -DENABLE_OPENSSL=OFF
 endif
 
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),)
+LIBZIP_DEPENDENCIES += musl-fts
+LIBZIP_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-lfts
+endif
+
 $(eval $(cmake-package))
 $(eval $(host-cmake-package))
