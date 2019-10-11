@@ -25,7 +25,7 @@ GST1_PLUGINS_GOOD_CONF_OPTS = \
 # Options which require currently unpackaged libraries
 GST1_PLUGINS_GOOD_CONF_OPTS += \
 	-Ddv=disabled \
-	-Ddv1394=disabled \
+	-Ddv1394=disabled
 
 GST1_PLUGINS_GOOD_DEPENDENCIES = gstreamer1 gst1-plugins-base
 
