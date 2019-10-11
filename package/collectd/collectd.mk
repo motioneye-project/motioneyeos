@@ -5,7 +5,9 @@
 ################################################################################
 
 COLLECTD_VERSION = 5.9.2
-COLLECTD_SITE = $(call github,collectd,collectd,collectd-$(COLLECTD_VERSION))
+COLLECTD_SITE = \
+	https://github.com/collectd/collectd/releases/download/collectd-$(COLLECTD_VERSION)
+COLLECTD_SOURCE = collectd-$(COLLECTD_VERSION).tar.bz2
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
 COLLECTD_LICENSE = MIT (daemon, plugins), GPL-2.0 (plugins), LGPL-2.1 (plugins)
@@ -143,10 +145,7 @@ COLLECTD_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_COLLECTD_WRITETSDB),--enable-write_tsdb,--disable-write_tsdb) \
 	$(if $(BR2_PACKAGE_COLLECTD_ZOOKEEPER),--enable-zookeeper,--disable-zookeeper)
 
-# since 5.9.1 the file src/liboconfig/parser.c is missing from the tar
-# download file, triggering the need for host-bison
 COLLECTD_DEPENDENCIES = \
-	host-bison \
 	host-pkgconf \
 	$(if $(BR2_PACKAGE_COLLECTD_AMQP),rabbitmq-c) \
 	$(if $(BR2_PACKAGE_COLLECTD_APACHE),libcurl) \
