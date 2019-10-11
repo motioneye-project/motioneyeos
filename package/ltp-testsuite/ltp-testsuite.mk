@@ -51,13 +51,18 @@ LTP_TESTSUITE_CFLAGS += "`$(PKG_CONFIG_HOST_BINARY) --cflags libtirpc`"
 LTP_TESTSUITE_LIBS += "`$(PKG_CONFIG_HOST_BINARY) --libs libtirpc`"
 endif
 
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),)
+LTP_TESTSUITE_DEPENDENCIES += musl-fts
+LTP_TESTSUITE_LIBS += -lfts
+endif
+
 LTP_TESTSUITE_CONF_ENV += \
 	CFLAGS="$(LTP_TESTSUITE_CFLAGS)" \
 	CPPFLAGS="$(LTP_TESTSUITE_CPPFLAGS)" \
 	LIBS="$(LTP_TESTSUITE_LIBS)" \
 	SYSROOT="$(STAGING_DIR)"
 
-# Requires uClibc fts and bessel support, normally not enabled
+# Requires uClibc bessel support, normally not enabled
 ifeq ($(BR2_TOOLCHAIN_USES_UCLIBC),y)
 define LTP_TESTSUITE_REMOVE_UNSUPPORTED
 	rm -rf $(@D)/testcases/misc/math/float/bessel/
