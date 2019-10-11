@@ -1042,6 +1042,9 @@ F:	package/python-markdown/
 F:	package/python-remi/
 F:	package/python-sip/
 
+N:	Heiko Thiery <heiko.thiery@gmail.com>
+F:	package/libyang/
+
 N:	Henrique Camargo <henrique@henriquecamargo.com>
 F:	package/json-glib/
 

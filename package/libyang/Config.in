@@ -1,0 +1,13 @@
+config BR2_PACKAGE_LIBYANG
+	bool "libyang"
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_PCRE
+	select BR2_PACKAGE_PCRE_UCP
+	help
+	  Libyang is YANG data modeling language parser and toolkit
+	  written (and providing API) in C.
+
+	  https://github.com/CESNET/libyang
+
+comment "libyang needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
