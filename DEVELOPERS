@@ -185,6 +185,7 @@ F:	package/python-pillow/
 F:	package/python-pydal/
 F:	package/python-web2py/
 F:	package/sshguard/
+F:	package/sunwait/
 F:	package/sysdig/
 
 N:	Anisse Astier <anisse@astier.eu>
