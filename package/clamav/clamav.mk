@@ -25,10 +25,16 @@ CLAMAV_CONF_ENV = \
 	have_cv_ipv6=yes
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
-CLAMAV_CONF_ENV += LIBS=-latomic
+CLAMAV_LIBS += -latomic
 endif
 
-# UCLIBC_HAS_FTS is disabled, therefore disable fanotify (missing fts.h)
+ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),)
+CLAMAV_DEPENDENCIES += musl-fts
+CLAMAV_LIBS += -lfts
+endif
+
+CLAMAV_CONF_ENV += LIBS="$(CLAMAV_LIBS)"
+
 CLAMAV_CONF_OPTS = \
 	--with-dbdir=/var/lib/clamav \
 	--with-ltdl-include=$(STAGING_DIR)/usr/include \
@@ -40,7 +46,6 @@ CLAMAV_CONF_OPTS = \
 	--disable-zlib-vcheck \
 	--disable-rpath \
 	--disable-clamav \
-	--disable-fanotify \
 	--disable-milter \
 	--disable-llvm \
 	--disable-clamdtop \
