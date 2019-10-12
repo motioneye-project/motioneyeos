@@ -1,7 +1,7 @@
-# From https://lists.x.org/archives/xorg-announce/2019-June/002997.html
-md5 c5fa5a86a20e3591bed6c046498d4b8f  libX11-1.6.8.tar.bz2
-sha1 f1ea96fe472a981d378b4f2eec90dcd063f9a407  libX11-1.6.8.tar.bz2
-sha256 b289a845c189e251e0e884cc0f9269bbe97c238df3741e854ec4c17c21e473d5  libX11-1.6.8.tar.bz2
-sha512 1de8e0ec466308bc48946d1ce7a7dc6bd3120b1b365cd01afd1bd51dd7369e3d1870dd379b0b7c5b07699095d59761bd23e2e02ab60929de32c39b6885016e76  libX11-1.6.8.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-October/003025.html
+md5 55adbfb6d4370ecac5e70598c4e7eed2  libX11-1.6.9.tar.bz2
+sha1 62456536411f2540fbd4a3f59ed8af94967124c2  libX11-1.6.9.tar.bz2
+sha256 9cc7e8d000d6193fa5af580d50d689380b8287052270f5bb26a5fb6b58b2bed1  libX11-1.6.9.tar.bz2
+sha512 fc18f0dc17ade1fc37402179f52e1f2b9c7b7d3a1a9590fea13046eb0c5193b4796289431cd99388eac01e8e59de77db45d2c9675d4f05ef8cf3ba6382c3dd31  libX11-1.6.9.tar.bz2
 # Locally computed
 sha256 2daec087a88e7c9b8082557cdeebad5bbb8155a4137472f0b22e269cd99d0c1e  COPYING
