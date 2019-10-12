@@ -20,8 +20,8 @@ LIBVA_CONF_OPTS = \
 ifeq ($(BR2_PACKAGE_XORG7),y)
 LIBVA_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXfixes
 LIBVA_CONF_OPTS += --enable-x11
-ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_GLX),y)
-LIBVA_DEPENDENCIES += mesa3d
+ifeq ($(BR2_PACKAGE_HAS_LIBGL),y)
+LIBVA_DEPENDENCIES += libgl
 LIBVA_CONF_OPTS += --enable-glx
 endif
 else
