@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MINETEST_GAME_VERSION = 5.0.1
+MINETEST_GAME_VERSION = 5.1.0
 MINETEST_GAME_SITE = $(call github,minetest,minetest_game,$(MINETEST_GAME_VERSION))
 MINETEST_GAME_LICENSE = LGPL-2.1+ (code), CC-BY-SA-2.0, CC-BY-SA-3.0, \
 	CC-BY-SA-4.0, MIT, CC0 1.0, CC-BY-2.0 (mods)
@@ -21,8 +21,10 @@ MINETEST_GAME_LICENSE_FILES = LICENSE.txt \
 	mods/doors/license.txt \
 	mods/dungeon_loot/license.txt \
 	mods/dye/license.txt \
+	mods/env_sounds/license.txt \
 	mods/farming/license.txt \
 	mods/fire/license.txt \
+	mods/fireflies/license.txt \
 	mods/flowers/license.txt \
 	mods/game_commands/license.txt \
 	mods/give_initial_stuff/license.txt \
@@ -31,6 +33,7 @@ MINETEST_GAME_LICENSE_FILES = LICENSE.txt \
 	mods/screwdriver/license.txt \
 	mods/sethome/license.txt \
 	mods/sfinv/license.txt \
+	mods/spawn/license.txt \
 	mods/stairs/license.txt \
 	mods/tnt/license.txt \
 	mods/vessels/license.txt \
