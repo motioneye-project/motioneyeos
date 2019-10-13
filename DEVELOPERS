@@ -1914,6 +1914,7 @@ F:	package/libarchive/
 F:	package/libevent/
 F:	package/libubootenv/
 F:	package/libxml2/
+F:	package/mongoose/
 F:	package/mxml/
 F:	package/python-periphery/
 F:	package/stunnel/
