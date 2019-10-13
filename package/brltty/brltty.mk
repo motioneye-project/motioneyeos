@@ -51,7 +51,8 @@ BRLTTY_CONF_OPTS += --without-espeak
 endif
 
 ifeq ($(BR2_PACKAGE_EXPAT),y)
-BRLTTY_DEPENDENCIES += expat
+# host-expat is needed by tbl2hex's host program
+BRLTTY_DEPENDENCIES += host-expat expat
 BRLTTY_CONF_OPTS += --enable-expat
 else
 BRLTTY_CONF_OPTS += --disable-expat

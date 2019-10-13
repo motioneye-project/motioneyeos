@@ -1,0 +1,53 @@
+From 0414ad2b4e8978a14343d920a5a1f11da892eaf3 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Sat, 26 Oct 2019 14:28:51 +0200
+Subject: [PATCH] mk4build: change how the _FOR_BUILD variables are passed to
+ sub-configure
+
+The logic that eval's for *_FOR_BUILD variables to set them to their
+equivalent without _FOR_BUILD before calling the sub-configure for the
+host machine doesn't work: the variables are not exported, and
+therefore they are not seen by the ./configure script, which runs as a
+separate process.
+
+So instead, keep things simple and pass them explicitly in the
+environment of the ./configure script.
+
+This patch was written in the context of the Buildroot build system,
+which does cross-compilation, through which we discovered that the
+*_FOR_BUILD variables are not properly passed down to the
+sub-configure.
+
+Upstream: https://github.com/brltty/brltty/pull/183
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ mk4build | 13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
+
+diff --git a/mk4build b/mk4build
+index 3fb9d8917..3c64963b7 100755
+--- a/mk4build
++++ b/mk4build
+@@ -67,13 +67,12 @@ then
+ 
+    needTemporaryDirectory
+ 
+-   for variable in CC CFLAGS CXX CXXFLAGS LDFLAGS LDLIBS
+-   do
+-      unset "${variable}"
+-      variableForBuild="${variable}_FOR_BUILD"
+-      eval test '"${'"${variableForBuild}"'+set}"' != "set" || eval "${variable}"'="${'"${variableForBuild}"'}"'
+-   done
+-
++   CC=${CC_FOR_BUILD} \
++   CFLAGS=${CFLAGS_FOR_BUILD} \
++   CXX=${CXX_FOR_BUILD} \
++   CXXFLAGS=${CXXFLAGS_FOR_BUILD} \
++   LDFLAGS=${LDFLAGS_FOR_BUILD} \
++   LDLIBS=${LDLIBS_FOR_BUILD} \
+    "${sourceRoot}/configure" \
+       --disable-api \
+       --disable-gpm \
+-- 
+2.21.0
+
