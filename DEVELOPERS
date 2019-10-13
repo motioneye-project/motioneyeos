@@ -968,6 +968,7 @@ F:	package/fdk-aac/
 F:	package/httping/
 F:	package/iozone/
 F:	package/leptonica/
+F:	package/libolm/
 F:	package/ocrad/
 F:	package/restclient-cpp/
 F:	package/tesseract-ocr/
