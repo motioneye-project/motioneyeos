@@ -8,7 +8,9 @@ BR2_GLOBAL_PATCH_DIR="board/roseapplepi/patches"
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_3_10=y
 # kernel does not build with gcc 8.x
 BR2_GCC_VERSION_7_X=y
-BR2_ROOTFS_POST_IMAGE_SCRIPT="board/roseapplepi/post-image.sh"
+BR2_ROOTFS_POST_BUILD_SCRIPT="board/roseapplepi/post-build.sh"
+BR2_ROOTFS_POST_IMAGE_SCRIPT="support/scripts/genimage.sh"
+BR2_ROOTFS_POST_SCRIPT_ARGS="-c board/roseapplepi/genimage.cfg"
 
 BR2_LINUX_KERNEL=y
 BR2_LINUX_KERNEL_CUSTOM_TARBALL=y
