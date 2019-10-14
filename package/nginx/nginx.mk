@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NGINX_VERSION = 1.16.1
+NGINX_VERSION = 1.17.4
 NGINX_SITE = http://nginx.org/download
 NGINX_LICENSE = BSD-2-Clause
 NGINX_LICENSE_FILES = LICENSE
