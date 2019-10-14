@@ -22,7 +22,8 @@ CLAMAV_DEPENDENCIES = \
 # mmap cannot be detected when cross-compiling, needed for mempool support
 CLAMAV_CONF_ENV = \
 	ac_cv_c_mmap_private=yes \
-	have_cv_ipv6=yes
+	have_cv_ipv6=yes \
+	OBJC=$(TARGET_CC)
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 CLAMAV_LIBS += -latomic
