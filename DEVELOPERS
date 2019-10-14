@@ -1248,6 +1248,7 @@ F:	board/lemaker/bananapro/
 F:	configs/bananapro_defconfig
 F:	package/augeas/
 F:	package/bluez-alsa/
+F:	package/caps/
 F:	package/freescale-imx/imx-alsa-plugins/
 F:	package/libopusenc/
 F:	package/libupnpp/
