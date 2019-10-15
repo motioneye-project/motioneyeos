@@ -1840,6 +1840,7 @@ F:	package/python-websocket-client/
 F:	package/sedutil/
 F:	package/tpm2-totp/
 F:	package/triggerhappy/
+F:	package/wireguard/
 
 N:	Peter Seiderer <ps.report@gmx.net>
 F:	board/raspberrypi/
