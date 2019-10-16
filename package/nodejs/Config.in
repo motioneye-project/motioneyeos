@@ -27,7 +27,6 @@ config BR2_PACKAGE_NODEJS
 	# linking, but that's too much of a corner case to support it.
 	depends on !BR2_STATIC_LIBS
 	select BR2_PACKAGE_C_ARES
-	select BR2_PACKAGE_LIBHTTPPARSER
 	select BR2_PACKAGE_LIBUV
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_NGHTTP2

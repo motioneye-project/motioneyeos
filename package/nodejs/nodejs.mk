@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-NODEJS_VERSION = 10.16.3
+NODEJS_VERSION = 12.12.0
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs c-ares \
-	libhttpparser libuv zlib nghttp2 \
+	libuv zlib nghttp2 \
 	$(call qstrip,$(BR2_PACKAGE_NODEJS_MODULES_ADDITIONAL_DEPS))
 HOST_NODEJS_DEPENDENCIES = host-libopenssl host-python host-zlib host-patchelf
 NODEJS_LICENSE = MIT (core code); MIT, Apache and BSD family licenses (Bundled components)
@@ -18,11 +18,11 @@ NODEJS_CONF_OPTS = \
 	--without-snapshot \
 	--shared-zlib \
 	--shared-cares \
-	--shared-http-parser \
 	--shared-libuv \
 	--shared-nghttp2 \
 	--without-dtrace \
 	--without-etw \
+	--cross-compiling \
 	--dest-os=linux
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
@@ -64,9 +64,17 @@ define HOST_NODEJS_CONFIGURE_CMDS
 		--shared-openssl-includes=$(HOST_DIR)/include/openssl \
 		--shared-openssl-libpath=$(HOST_DIR)/lib \
 		--shared-zlib \
-		--with-intl=none \
+		--no-cross-compiling \
+		--with-intl=small-icu \
 	)
 endef
+
+NODEJS_HOST_TOOLS_V8 = \
+        torque \
+        gen-regexp-special-case \
+        bytecode_builtins_list_generator
+NODEJS_HOST_TOOLS_NODE = mkcodecache
+NODEJS_HOST_TOOLS = $(NODEJS_HOST_TOOLS_V8) $(NODEJS_HOST_TOOLS_NODE)
 
 define HOST_NODEJS_BUILD_CMDS
 	$(HOST_MAKE_ENV) PYTHON=$(HOST_DIR)/bin/python2 \
@@ -75,7 +83,9 @@ define HOST_NODEJS_BUILD_CMDS
 		NO_LOAD=cctest.target.mk \
 		PATH=$(@D)/bin:$(BR_PATH)
 
-	$(HOST_DIR)/bin/patchelf --set-rpath $(HOST_DIR)/lib $(@D)/out/Release/torque
+	$(foreach f,$(NODEJS_HOST_TOOLS), \
+		$(HOST_DIR)/bin/patchelf --set-rpath $(HOST_DIR)/lib $(@D)/out/Release/$(f)
+	)
 endef
 
 define HOST_NODEJS_INSTALL_CMDS
@@ -85,7 +95,9 @@ define HOST_NODEJS_INSTALL_CMDS
 		NO_LOAD=cctest.target.mk \
 		PATH=$(@D)/bin:$(BR_PATH)
 
-	$(INSTALL) -m755 -D $(@D)/out/Release/torque $(HOST_DIR)/bin/torque
+	$(foreach f,$(NODEJS_HOST_TOOLS), \
+		$(INSTALL) -m755 -D $(@D)/out/Release/$(f) $(HOST_DIR)/bin/$(f)
+	)
 endef
 
 ifeq ($(BR2_i386),y)
@@ -141,9 +153,14 @@ define NODEJS_CONFIGURE_CMDS
 		$(NODEJS_CONF_OPTS) \
 	)
 
-	# use host version of torque
-	sed "s#<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)torque<(EXECUTABLE_SUFFIX)#$(HOST_DIR)/bin/torque#" \
-		-i $(@D)/deps/v8/gypfiles/v8.gyp
+	$(foreach f,$(NODEJS_HOST_TOOLS_V8), \
+		$(SED) "s#<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)$(f)<(EXECUTABLE_SUFFIX)#$(HOST_DIR)/bin/$(f)#" \
+			$(@D)/tools/v8_gypfiles/v8.gyp
+	)
+	$(foreach f,$(NODEJS_HOST_TOOLS_NODE), \
+		$(SED) "s#<(PRODUCT_DIR)/<(EXECUTABLE_PREFIX)$(f)<(EXECUTABLE_SUFFIX)#$(HOST_DIR)/bin/$(f)#" \
+			-i $(@D)/node.gyp
+	)
 endef
 
 define NODEJS_BUILD_CMDS
