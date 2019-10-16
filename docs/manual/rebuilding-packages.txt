@@ -99,16 +99,20 @@ re-configure, re-compile and re-install this package from scratch. You
 can ask buildroot to do this with the +make <package>-dirclean+ command.
 
 On the other hand, if you only want to restart the build process of a
-package from its compilation step, you can run +make
-<package>-rebuild+, followed by +make+ or +make <package>+. It will
-restart the compilation and installation of the package, but not from
-scratch: it basically re-executes +make+ and +make install+
-inside the package, so it will only rebuild files that changed.
+package from its compilation step, you can run +make <package>-rebuild+. It
+will restart the compilation and installation of the package, but not from
+scratch: it basically re-executes +make+ and +make install+ inside the package,
+so it will only rebuild files that changed.
 
-If you want to restart the build process of a package from its
-configuration step, you can run +make <package>-reconfigure+, followed
-by +make+ or +make <package>+. It will restart the configuration,
-compilation and installation of the package.
+If you want to restart the build process of a package from its configuration
+step, you can run +make <package>-reconfigure+. It will restart the
+configuration, compilation and installation of the package.
+
+While +<package>-rebuild+ implies +<package>-reinstall+ and
++<package>-reconfigure+ implies +<package>-rebuild+, these targets as well
+as +<package>+ only act on the said package, and do not trigger re-creating
+the root filesystem image. If re-creating the root filesystem in necessary,
+one should in addition run +make+ or +make all+.
 
 Internally, Buildroot creates so-called _stamp files_ to keep track of
 which build steps have been completed for each package. They are
