@@ -7,7 +7,7 @@
 CAPS_VERSION = 0.9.26
 CAPS_SOURCE = caps_$(CAPS_VERSION).tar.bz2
 CAPS_SITE = http://quitte.de/dsp
-CAPS_LICENSE = GPLv3
+CAPS_LICENSE = GPL-3.0+
 CAPS_LICENSE_FILES = COPYING
 
 # Need to pass TARGET_CONFIGURE_OPTS in the environment to not
