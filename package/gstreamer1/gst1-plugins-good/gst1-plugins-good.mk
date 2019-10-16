@@ -27,7 +27,10 @@ GST1_PLUGINS_GOOD_CONF_OPTS += \
 	-Ddv=disabled \
 	-Ddv1394=disabled
 
-GST1_PLUGINS_GOOD_DEPENDENCIES = gstreamer1 gst1-plugins-base
+GST1_PLUGINS_GOOD_DEPENDENCIES = \
+	gstreamer1 \
+	gst1-plugins-base \
+	$(TARGET_NLS_DEPENDENCIES)
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_GOOD_PLUGIN_JACK),y)
 GST1_PLUGINS_GOOD_CONF_OPTS += -Djack=enabled
