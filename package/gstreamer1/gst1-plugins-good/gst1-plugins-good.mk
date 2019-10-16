@@ -366,10 +366,15 @@ endif
 
 ifeq ($(BR2_PACKAGE_XORG7),y)
 GST1_PLUGINS_GOOD_DEPENDENCIES += xlib_libX11 xlib_libXext xlib_libXv
-GST1_PLUGINS_GOOD_CONF_OPTS += \
-	-Dximagesrc=enabled \
-	$(if $(BR2_PACKAGE_XLIB_LIBXFIXES),-Dximagesrc-xfixes=enabled) \
-	$(if $(BR2_PACKAGE_XLIB_LIBXDAMAGE),-Dximagesrc-xdamage=enabled)
+GST1_PLUGINS_GOOD_CONF_OPTS += -Dximagesrc=enabled
+ifeq ($(BR2_PACKAGE_XLIB_LIBXFIXES),y)
+GST1_PLUGINS_GOOD_DEPENDENCIES += xlib_libXfixes
+GST1_PLUGINS_GOOD_CONF_OPTS += -Dximagesrc-xfixes=enabled
+endif
+ifeq ($(BR2_PACKAGE_XLIB_LIBXDAMAGE),y)
+GST1_PLUGINS_GOOD_DEPENDENCIES += xlib_libXdamage
+GST1_PLUGINS_GOOD_CONF_OPTS += -Dximagesrc-xdamage=enabled
+endif
 else
 GST1_PLUGINS_GOOD_CONF_OPTS += \
 	-Dximagesrc=disabled \
