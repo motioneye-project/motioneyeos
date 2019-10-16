@@ -358,9 +358,11 @@ not and can not work as people would expect it should:
 * +LIBFOO_DEPENDENCIES+ lists the dependencies (in terms of package
   name) that are required for the current target package to
   compile. These dependencies are guaranteed to be compiled and
-  installed before the configuration of the current package starts. In
-  a similar way, +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for
-  the current host package.
+  installed before the configuration of the current package starts.
+  However, modifications to configuration of these dependencies will
+  not force a rebuild of the current package. In a similar way,
+  +HOST_LIBFOO_DEPENDENCIES+ lists the dependencies for the current
+  host package.
 
 * +LIBFOO_EXTRACT_DEPENDENCIES+ lists the dependencies (in terms of
   package name) that are required for the current target package to be
