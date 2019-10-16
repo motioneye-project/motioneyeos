@@ -19,18 +19,20 @@ class TestSyslogNg(infra.basetest.BRTest):
                            options=["-initrd", cpio_file])
         self.emulator.login()
 
-        cmd = "grep syslog-ng /var/log/messages | grep starting"
+        cmd = "grep 'syslog-ng starting' /var/log/messages"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
-        cmd = "logger my-message;"
-        cmd += "sleep 1;"
+        cmd = "logger my-message && "
+        cmd += "sleep 1 && "
         cmd += "grep my-message /var/log/messages"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 0)
 
-        cmd = "syslog-ng-ctl reload;"
-        cmd += "sleep 1;"
-        cmd += "grep syslog-ng /var/log/messages | grep -i warning"
+        cmd = "syslog-ng-ctl reload && "
+        cmd += "sleep 1"
+        _, exit_code = self.emulator.run(cmd)
+        self.assertEqual(exit_code, 0)
+        cmd = "grep -i 'syslog-ng.*warning' /var/log/messages"
         _, exit_code = self.emulator.run(cmd)
         self.assertEqual(exit_code, 1)
