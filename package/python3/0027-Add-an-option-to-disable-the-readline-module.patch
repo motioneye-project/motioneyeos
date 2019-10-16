@@ -1,4 +1,4 @@
-From d35deaa5c65c29f2a56a29fd5fc1dadadd485eaf Mon Sep 17 00:00:00 2001
+From 6e3923f90497ba7230b62fdd3f2dca1cb79852bf Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 23:29:05 +0100
 Subject: [PATCH] Add an option to disable the readline module
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 6 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 28bcdabd67..484f6ebaca 100644
+index 6b09bafda4..b64518eed5 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3280,6 +3280,12 @@ AC_ARG_ENABLE(openssl,
+@@ -3267,6 +3267,12 @@ AC_ARG_ENABLE(openssl,
  	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} ssl _ssl _hashlib"
  	  fi])
  
@@ -26,5 +26,5 @@ index 28bcdabd67..484f6ebaca 100644
  AC_ARG_ENABLE(tk,
  	AS_HELP_STRING([--disable-tk], [disable tk]),
 -- 
-2.13.5
+2.20.1
 

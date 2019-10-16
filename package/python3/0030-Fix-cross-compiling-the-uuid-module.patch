@@ -1,4 +1,4 @@
-From ad4537a75c798341824ab18bd1dc622f8dc2bc3a Mon Sep 17 00:00:00 2001
+From 28008e1e4f0349241d22aace3c54f7e9425c6c1f Mon Sep 17 00:00:00 2001
 From: Adam Duskett <aduskett@gmail.com>
 Date: Fri, 20 Jul 2018 10:17:39 -0400
 Subject: [PATCH] Fix cross compiling the uuid module
@@ -20,19 +20,19 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
  1 file changed, 2 insertions(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index 1a7085c5c4..f33d0b57b8 100644
+index a7f2e23d87..b0274a3f67 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -1671,7 +1671,8 @@ class PyBuildExt(build_ext):
-             missing.append('_tkinter')
+@@ -1674,7 +1674,8 @@ class PyBuildExt(build_ext):
  
+     def detect_uuid(self):
          # Build the _uuid module if possible
--        uuid_incs = find_file("uuid.h", inc_dirs, ["/usr/include/uuid"])
-+        uuid_incs = find_file("uuid.h", inc_dirs,
-+                              [os.path.join(inc_dir, 'uuid') for inc_dir in inc_dirs])
+-        uuid_incs = find_file("uuid.h", self.inc_dirs, ["/usr/include/uuid"])
++        uuid_incs = find_file("uuid.h", self.inc_dirs,
++                              [os.path.join(inc_dir, 'uuid') for inc_dir in self.inc_dirs])
          if uuid_incs is not None:
-             if self.compiler.find_library_file(lib_dirs, 'uuid'):
+             if self.compiler.find_library_file(self.lib_dirs, 'uuid'):
                  uuid_libs = ['uuid']
 -- 
-2.14.4
+2.20.1
 

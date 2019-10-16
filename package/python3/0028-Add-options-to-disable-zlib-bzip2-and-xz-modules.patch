@@ -1,4 +1,4 @@
-From 9e95f88906f850caa789977dab4b0f256b575254 Mon Sep 17 00:00:00 2001
+From e6f44f93db96ed7f3b2baa0e09ea32a32c78c638 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Tue, 7 Mar 2017 23:31:11 +0100
 Subject: [PATCH] Add options to disable zlib, bzip2 and xz modules
@@ -9,10 +9,10 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 18 insertions(+)
 
 diff --git a/configure.ac b/configure.ac
-index 484f6ebaca..79538df0cf 100644
+index b64518eed5..d07e371c57 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3286,6 +3286,24 @@ AC_ARG_ENABLE(readline,
+@@ -3273,6 +3273,24 @@ AC_ARG_ENABLE(readline,
  	     DISABLED_EXTENSIONS="${DISABLED_EXTENSIONS} readline"
  	  fi])
  
@@ -38,5 +38,5 @@ index 484f6ebaca..79538df0cf 100644
  AC_ARG_ENABLE(tk,
  	AS_HELP_STRING([--disable-tk], [disable tk]),
 -- 
-2.13.5
+2.20.1
 

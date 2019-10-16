@@ -1,4 +1,4 @@
-From bba0896a05e6406076893dd2f4c3b330e41082a6 Mon Sep 17 00:00:00 2001
+From 5ee3e5ad62919c431b1f7b5ff91ddf606582df0e Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 22 Feb 2017 17:01:18 -0800
 Subject: [PATCH] Add an option to disable installation of test modules
@@ -11,15 +11,15 @@ Signed-off-by: Samuel Martin <s.martin49@gmail.com>
 [ Andrey Smirnov: ported to Python 3.6 ]
 Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
 ---
- Makefile.pre.in | 55 ++++++++++++++++++++++++++++++++++++-------------------
+ Makefile.pre.in | 54 ++++++++++++++++++++++++++++++++-----------------
  configure.ac    |  5 +++++
- 2 files changed, 41 insertions(+), 19 deletions(-)
+ 2 files changed, 41 insertions(+), 18 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 4ce917ab8d..4110fff4ac 100644
+index e8a6bd5c03..3abee36f49 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1261,8 +1261,28 @@ maninstall:	altmaninstall
+@@ -1317,8 +1317,28 @@ maninstall:	altmaninstall
  
  # Install the library
  XMLLIBSUBDIRS=  xml xml/dom xml/etree xml/parsers xml/sax
@@ -49,15 +49,11 @@ index 4ce917ab8d..4110fff4ac 100644
 +		tkinter/test/test_ttk test \
  		test/audiodata \
  		test/capath test/data \
- 		test/cjkencodings test/decimaltestdata test/xmltestdata \
-diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 1ff2362..194dbfc 100644
---- a/Makefile.pre.in
-+++ b/Makefile.pre.in
-@@ -1336,26 +1336,24 @@ TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
- 		test/test_importlib/source \
+ 		test/cjkencodings test/decimaltestdata \
+@@ -1376,26 +1396,24 @@ LIBSUBDIRS=	tkinter tkinter/test tkinter/test/test_tkinter \
  		test/test_importlib/zipdata01 \
  		test/test_importlib/zipdata02 \
+ 		test/ziptestdata \
 -		asyncio \
  		test/test_asyncio \
 -		collections concurrent concurrent/futures encodings \
@@ -96,10 +92,10 @@ index 1ff2362..194dbfc 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index d5ee2aedfb..f924937fe1 100644
+index 7872b4dfee..b820d18c7c 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3226,6 +3226,11 @@ if test "$posix_threads" = "yes"; then
+@@ -3213,6 +3213,11 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_getcpuclockid)
  fi
  
@@ -112,5 +108,5 @@ index d5ee2aedfb..f924937fe1 100644
  # Check for enable-ipv6
  AH_TEMPLATE(ENABLE_IPV6, [Define if --enable-ipv6 is specified])
 -- 
-2.13.5
+2.20.1
 

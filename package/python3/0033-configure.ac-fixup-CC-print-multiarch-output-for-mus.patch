@@ -1,4 +1,4 @@
-From e1a2c27bcb9091f851ef7a9c7d59822a125a0b8e Mon Sep 17 00:00:00 2001
+From 5932fedd9d1d43a230fa353df434f253e9d2b5a0 Mon Sep 17 00:00:00 2001
 From: Peter Korsgaard <peter@korsgaard.com>
 Date: Fri, 2 Aug 2019 15:53:16 +0200
 Subject: [PATCH] configure.ac: fixup $CC --print-multiarch output for
@@ -29,10 +29,10 @@ Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
  1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/configure.ac b/configure.ac
-index e5fb7e7b0b..9c64f960d6 100644
+index 55ab6c3c26..4a6d0662ac 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -724,7 +724,9 @@ then
+@@ -700,7 +700,9 @@ then
  fi
  
  
@@ -44,5 +44,5 @@ index e5fb7e7b0b..9c64f960d6 100644
  
  AC_MSG_CHECKING([for the platform triplet based on compiler characteristics])
 -- 
-2.11.0
+2.20.1
 

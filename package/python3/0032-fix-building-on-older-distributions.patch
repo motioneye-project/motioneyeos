@@ -1,4 +1,4 @@
-From ba10bac420398270a0b992e85d93383373d5fcac Mon Sep 17 00:00:00 2001
+From 3ddda00652f809a3bd8b4e3f7b0a3a4270b280a6 Mon Sep 17 00:00:00 2001
 From: Adam Duskett <aduskett@gmail.com>
 Date: Thu, 16 Aug 2018 14:52:37 -0700
 Subject: [PATCH] fix building on older distributions
@@ -34,5 +34,5 @@ index 224585c69b..ef458c0c63 100644
          os.unlink(new_path)
  
 -- 
-2.14.4
+2.20.1
 

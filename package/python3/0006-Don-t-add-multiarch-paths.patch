@@ -1,4 +1,4 @@
-From 9055171433d5f6beae90815e8c075dc1e0938936 Mon Sep 17 00:00:00 2001
+From b878b174e12a5cb2e1943f1f79d94033c1ee80d7 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 23 Dec 2015 11:36:27 +0100
 Subject: [PATCH] Don't add multiarch paths
@@ -17,21 +17,21 @@ Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/setup.py b/setup.py
-index cd00fbdbda..c956fa08d1 100644
+index 5d504d7638..282a592dc6 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -591,10 +591,10 @@ class PyBuildExt(build_ext):
-         if not cross_compiling:
+@@ -654,10 +654,10 @@ class PyBuildExt(build_ext):
+         if not CROSS_COMPILING:
              add_dir_to_list(self.compiler.library_dirs, '/usr/local/lib')
              add_dir_to_list(self.compiler.include_dirs, '/usr/local/include')
 +            self.add_multiarch_paths()
          # only change this for cross builds for 3.3, issues on Mageia
-         if cross_compiling:
-             self.add_gcc_paths()
+         if CROSS_COMPILING:
+             self.add_cross_compiling_paths()
 -        self.add_multiarch_paths()
+         self.add_ldflags_cppflags()
  
-         # Add paths specified in the environment variables LDFLAGS and
-         # CPPFLAGS for header and library files.
+     def init_inc_lib_dirs(self):
 -- 
-2.13.5
+2.20.1
 

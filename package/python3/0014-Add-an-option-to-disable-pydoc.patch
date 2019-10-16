@@ -1,4 +1,4 @@
-From 18a754e930e03d143d9392e49174cc370b334cdd Mon Sep 17 00:00:00 2001
+From 13a8be57e79f2657c75391bfa524dc1ba4993b02 Mon Sep 17 00:00:00 2001
 From: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
 Date: Wed, 22 Feb 2017 17:07:56 -0800
 Subject: [PATCH] Add an option to disable pydoc
@@ -17,10 +17,10 @@ Signed-off-by: Andrey Smirnov <andrew.smirnov@gmail.com>
  3 files changed, 20 insertions(+), 3 deletions(-)
 
 diff --git a/Makefile.pre.in b/Makefile.pre.in
-index 4110fff4ac..badb2af35d 100644
+index 3abee36f49..6fa0549a56 100644
 --- a/Makefile.pre.in
 +++ b/Makefile.pre.in
-@@ -1231,7 +1231,9 @@ bininstall: altbininstall
+@@ -1289,7 +1289,9 @@ bininstall: altbininstall
  	-rm -f $(DESTDIR)$(BINDIR)/idle3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s idle$(VERSION) idle3)
  	-rm -f $(DESTDIR)$(BINDIR)/pydoc3
@@ -29,8 +29,8 @@ index 4110fff4ac..badb2af35d 100644
 +endif
  	-rm -f $(DESTDIR)$(BINDIR)/2to3
  	(cd $(DESTDIR)$(BINDIR); $(LN) -s 2to3-$(VERSION) 2to3)
- 	-rm -f $(DESTDIR)$(BINDIR)/pyvenv
-@@ -1279,7 +1281,7 @@ LIBSUBDIRS=	tkinter site-packages \
+ 	if test "x$(LIPO_32BIT_FLAGS)" != "x" ; then \
+@@ -1335,7 +1337,7 @@ LIBSUBDIRS=	tkinter site-packages \
  		multiprocessing multiprocessing/dummy \
  		unittest \
  		venv venv/scripts venv/scripts/common venv/scripts/posix \
@@ -39,7 +39,7 @@ index 4110fff4ac..badb2af35d 100644
  
  TESTSUBDIRS=	tkinter/test tkinter/test/test_tkinter \
  		tkinter/test/test_ttk test \
-@@ -1354,6 +1356,10 @@ ifeq (@TEST_MODULES@,yes)
+@@ -1414,6 +1416,10 @@ ifeq (@TEST_MODULES@,yes)
  LIBSUBDIRS += $(TESTSUBDIRS)
  endif
  
@@ -51,10 +51,10 @@ index 4110fff4ac..badb2af35d 100644
  	@for i in $(SCRIPTDIR) $(LIBDEST); \
  	do \
 diff --git a/configure.ac b/configure.ac
-index f924937fe1..1621fa1611 100644
+index b820d18c7c..f53cc86d89 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -3226,6 +3226,12 @@ if test "$posix_threads" = "yes"; then
+@@ -3213,6 +3213,12 @@ if test "$posix_threads" = "yes"; then
        AC_CHECK_FUNCS(pthread_getcpuclockid)
  fi
  
@@ -68,10 +68,10 @@ index f924937fe1..1621fa1611 100644
  
  AC_ARG_ENABLE(test-modules,
 diff --git a/setup.py b/setup.py
-index 29bfd174d2..94dd337fef 100644
+index bb7eb44213..748c269960 100644
 --- a/setup.py
 +++ b/setup.py
-@@ -2376,6 +2376,12 @@ def main():
+@@ -2401,6 +2401,12 @@ def main():
      # turn off warnings when deprecated modules are imported
      import warnings
      warnings.filterwarnings("ignore",category=DeprecationWarning)
@@ -84,16 +84,16 @@ index 29bfd174d2..94dd337fef 100644
      setup(# PyPI Metadata (PEP 301)
            name = "Python",
            version = sys.version.split()[0],
-@@ -2400,8 +2406,7 @@ def main():
+@@ -2425,8 +2431,7 @@ def main():
            # If you change the scripts installed here, you also need to
            # check the PyBuildScripts command above, and change the links
            # created by the bininstall target in Makefile.pre.in
 -          scripts = ["Tools/scripts/pydoc3", "Tools/scripts/idle3",
--                     "Tools/scripts/2to3", "Tools/scripts/pyvenv"]
+-                     "Tools/scripts/2to3"]
 +          scripts = scripts
          )
  
  # --install-platlib
 -- 
-2.13.5
+2.20.1
 
