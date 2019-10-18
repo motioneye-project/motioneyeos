@@ -1,3 +1,5 @@
-# md5, sha256 from https://pypi.python.org/pypi/pyyaml/json
-md5 a842bc7391e145bbe4e7fd0d32da1132 PyYAML-4.2b4.tar.gz
-sha256 3c17fb92c8ba2f525e4b5f7941d850e7a48c3a59b32d331e2502a3cdc6648e76 PyYAML-4.2b4.tar.gz
+# md5, sha256 from https://pypi.org/pypi/PyYAML/json
+md5	20f87ab421b0271dbf371dc5c1cddb5c  PyYAML-5.1.2.tar.gz
+sha256	01adf0b6c6f61bd11af6e10ca52b7d4057dd0be0343eb9283c878cf3af56aee4  PyYAML-5.1.2.tar.gz
+# Locally computed sha256 checksums
+sha256	a2adb9c959b797494a0ef80bdf60e22db2749ee3e0c0908556e3eb548f967c56  LICENSE
