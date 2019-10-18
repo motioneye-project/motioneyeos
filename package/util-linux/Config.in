@@ -407,6 +407,17 @@ config BR2_PACKAGE_UTIL_LINUX_WALL
 	help
 	  Send a message to everybody's terminal
 
+config BR2_PACKAGE_UTIL_LINUX_WIPEFS
+	bool "wipefs"
+	select BR2_PACKAGE_UTIL_LINUX_LIBBLKID
+	select BR2_PACKAGE_UTIL_LINUX_LIBSMARTCOLS
+	help
+	  wipefs can erase filesystem, raid or partition-table
+	  signatures (magic strings) from the specified device
+	  to make the signatures invisible for libblkid. wipefs
+	  does not erase the filesystem itself nor any other data
+	  from the device.
+
 config BR2_PACKAGE_UTIL_LINUX_WDCTL
 	bool "wdctl"
 	depends on BR2_USE_MMU # libsmartcols
