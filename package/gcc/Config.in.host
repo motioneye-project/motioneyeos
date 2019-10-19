@@ -62,9 +62,6 @@ config BR2_GCC_VERSION_9_X
 	# or1k needs binutils >= 2.32
 	depends on !(BR2_or1k && \
 		(BR2_BINUTILS_VERSION_2_30_X || BR2_BINUTILS_VERSION_2_31_X))
-	# uClibc doesn't build with upstream or1k gcc
-	# https://mailman.uclibc-ng.org/pipermail/devel/2019-August/001885.html
-	depends on !(BR2_or1k && BR2_TOOLCHAIN_USES_UCLIBC)
 	# powerpc spe support has been deprecated since gcc 8.x.
 	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
 	depends on !BR2_powerpc_SPE
