@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_PYTABLEWRITER
 	bool "python-pytablewriter"
+	depends on BR2_PACKAGE_PYTHON3 # python-pathpy
 	select BR2_PACKAGE_PYTHON_DATAPROPERTY # runtime
 	select BR2_PACKAGE_PYTHON_DOMINATE # runtime
 	select BR2_PACKAGE_PYTHON_LOGBOOK # runtime
