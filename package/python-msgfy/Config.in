@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_MSGFY
+	bool "python-msgfy"
+	help
+	  msgfy is a Python library for convert Exception instance to
+	  a human-readable error message.
+
+	  https://github.com/thombashi/msgfy
