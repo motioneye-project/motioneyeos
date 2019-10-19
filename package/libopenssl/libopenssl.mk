@@ -12,7 +12,9 @@ LIBOPENSSL_LICENSE_FILES = LICENSE
 LIBOPENSSL_INSTALL_STAGING = YES
 LIBOPENSSL_DEPENDENCIES = zlib
 HOST_LIBOPENSSL_DEPENDENCIES = host-zlib
-LIBOPENSSL_TARGET_ARCH = linux-generic32
+# no-asm is needed with generic architectures such as linux-generic32, see
+# https://github.com/openssl/openssl/issues/9839
+LIBOPENSSL_TARGET_ARCH = linux-generic32 no-asm
 LIBOPENSSL_CFLAGS = $(TARGET_CFLAGS)
 LIBOPENSSL_PROVIDES = openssl
 
@@ -55,7 +57,9 @@ endif
 
 ifeq ($(BR2_STATIC_LIBS),y)
 # Use "gcc" minimalistic target to disable DSO
-LIBOPENSSL_TARGET_ARCH = gcc
+# no-asm is needed with generic architectures such as gcc, see
+# https://github.com/openssl/openssl/issues/9839
+LIBOPENSSL_TARGET_ARCH = gcc no-asm
 else
 # Some architectures are optimized in OpenSSL
 # Doesn't work for thumb-only (Cortex-M?)
