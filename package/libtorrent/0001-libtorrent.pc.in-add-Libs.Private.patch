@@ -1,0 +1,30 @@
+From a86219e725441eb87321fa3e24531dafa54ee674 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Sun, 20 Oct 2019 20:23:19 +0200
+Subject: [PATCH] libtorrent.pc.in: add Libs.Private
+
+Add Libs.Private: -lz so applications that want to link statically with
+libtorrent (such as rtorrent) will know that they must link with -lz
+
+Fixes:
+ - http://autobuild.buildroot.org/results/075598e1699c2ac20a4dfbcb5695bbb7343f9a86
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/rakshasa/libtorrent/pull/202]
+---
+ libtorrent.pc.in | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libtorrent.pc.in b/libtorrent.pc.in
+index cf6612bc..6108f7e9 100644
+--- a/libtorrent.pc.in
++++ b/libtorrent.pc.in
+@@ -7,4 +7,5 @@ Name: libtorrent
+ Description: A BitTorrent library
+ Version: @VERSION@
+ Libs: -L${libdir} -ltorrent
++Libs.Private: -lz
+ Cflags: -I${includedir}
+-- 
+2.23.0
+
