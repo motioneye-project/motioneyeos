@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_WEBPY
 	bool "python-webpy"
-	select BR2_PACKAGE_PYTHON_HASHLIB if BR2_PACKAGE_PYTHON
+	depends on BR2_PACKAGE_PYTHON3 # python-cheroot
 	select BR2_PACKAGE_PYTHON_CHEROOT # runtime
 	select BR2_PACKAGE_PYTHON_MARKDOWN # runtime
 	help
