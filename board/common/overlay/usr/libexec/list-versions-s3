@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # expected final S3 URL: 
-#    https://s3.amazonaws.com/${bucket}/${path}/${version}/${os_short_name}-${board}-${version}.img.xz
+#    https://{bucket}.s3.amazonaws.com/${path}/${version}/${os_short_name}-${board}-${version}.img.xz
 
 if [ -z "$1" ]; then
     echo "Usage: $0 <bucket/path>" 1>&2
@@ -14,21 +14,21 @@ path=${bucket_path:${#bucket} + 1}
 
 opts="-s -S -f"
 test -n "${FW_USERNAME}" && opts+=" --user ${FW_USERNAME}:${FW_PASSWORD}"
-url=https://s3.amazonaws.com/${bucket}
+url="https://${bucket}.s3.amazonaws.com"
 
-xml_result=$(curl ${opts} ${url})
+xml_result=$(curl ${opts} "${url}?list-type=2&prefix=${path}")
 keys=$(echo "${xml_result}" | grep -oE '<Key>[^<]+<\/Key>' | sed 's/<Key>\(.*\)<\/Key>/\1/')
 dates=$(echo "${xml_result}" | grep -oE '<LastModified>[^<]+<\/LastModified>' | sed 's/<LastModified>\(.*\)<\/LastModified>/\1/')
 dates=(${dates})
-files=$(echo "${keys}" | grep "^${path}/" | sed "s,^${path}\/,," | sed '/^$/d')
+files=(${keys})
 
 i=0
-for file in ${files}; do
-    version=$(echo ${file} | cut -d '/' -f 1)
-    fname=$(echo ${file} | cut -d '/' -f 2)
+for file in ${files[*]}; do
+    version=$(echo ${file:${#path} + 1} | cut -d '/' -f 1)
+    fname=$(basename ${file})
     i=$((i + 1))
     if [[ -z "${fname}" ]]; then
-        continue  # version folder
+        continue
     fi
 
     prerelease=false
@@ -44,4 +44,3 @@ for file in ${files}; do
     
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
 done | sort -t '|' -k 5,3 -r
-
