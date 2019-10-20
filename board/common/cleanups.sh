@@ -25,6 +25,7 @@ rm -f ${TARGET}/etc/udev/hwdb.d/20-pci-vendor-model.hwdb
 rm -f ${TARGET}/etc/hostname
 rm -f ${TARGET}/etc/os-release
 rm -f ${TARGET}/etc/hostapd.conf
+rm -f ${TARGET}/etc/timezone
 
 # /usr/share stuff
 rm -rf ${TARGET}/usr/share/bash-completion/
