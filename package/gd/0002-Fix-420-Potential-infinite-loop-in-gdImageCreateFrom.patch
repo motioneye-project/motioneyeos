@@ -1,0 +1,61 @@
+From a11f47475e6443b7f32d21f2271f28f417e2ac04 Mon Sep 17 00:00:00 2001
+From: "Christoph M. Becker" <cmbecker69@gmx.de>
+Date: Wed, 29 Nov 2017 19:37:38 +0100
+Subject: [PATCH] Fix #420: Potential infinite loop in gdImageCreateFromGifCtx
+
+Due to a signedness confusion in `GetCode_` a corrupt GIF file can
+trigger an infinite loop.  Furthermore we make sure that a GIF without
+any palette entries is treated as invalid *after* open palette entries
+have been removed.
+
+CVE-2018-5711
+
+See also https://bugs.php.net/bug.php?id=75571.
+
+[Peter: drop tests]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ src/gd_gif_in.c             |  12 ++++++------
+ 1 files changed, 38 insertions(+), 6 deletions(-)
+
+diff --git a/src/gd_gif_in.c b/src/gd_gif_in.c
+index daf26e7..0a8bd71 100644
+--- a/src/gd_gif_in.c
++++ b/src/gd_gif_in.c
+@@ -335,11 +335,6 @@ terminated:
+ 		return 0;
+ 	}
+ 
+-	if(!im->colorsTotal) {
+-		gdImageDestroy(im);
+-		return 0;
+-	}
+-
+ 	/* Check for open colors at the end, so
+ 	 * we can reduce colorsTotal and ultimately
+ 	 * BitsPerPixel */
+@@ -351,6 +346,11 @@ terminated:
+ 		}
+ 	}
+ 
++	if(!im->colorsTotal) {
++		gdImageDestroy(im);
++		return 0;
++	}
++
+ 	return im;
+ }
+ 
+@@ -447,7 +447,7 @@ static int
+ GetCode_(gdIOCtx *fd, CODE_STATIC_DATA *scd, int code_size, int flag, int *ZeroDataBlockP)
+ {
+ 	int i, j, ret;
+-	unsigned char count;
++	int count;
+ 
+ 	if(flag) {
+ 		scd->curbit = 0;
+
+-- 
+2.20.1
+
