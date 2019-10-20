@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GNURADIO_VERSION = 3.7.13.3
-GNURADIO_SITE = http://gnuradio.org/releases/gnuradio
+GNURADIO_VERSION = 3.7.13.5
+GNURADIO_SITE = https://gnuradio.org/releases/gnuradio
 GNURADIO_LICENSE = GPL-3.0+
 GNURADIO_LICENSE_FILES = COPYING
 
