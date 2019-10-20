@@ -24,23 +24,25 @@ This patch allows to fix the
 incorrectly added to the header paths.
 
 Signed-off-by: Thomas Petazzoni <thomas.petazzoni@free-electrons.com>
+[Asaf: update for 2.7.17]
+Signed-off-by: Asaf Kahlon <asafka7@gmail.com>
 ---
  Lib/distutils/sysconfig.py | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/Lib/distutils/sysconfig.py b/Lib/distutils/sysconfig.py
-index de7da1d..d72b6e5 100644
+index 1a4b792644..14c7d81c48 100644
 --- a/Lib/distutils/sysconfig.py
 +++ b/Lib/distutils/sysconfig.py
-@@ -79,7 +79,7 @@ def get_python_inc(plat_specific=0, prefix=None):
- 
+@@ -85,7 +85,7 @@ def get_python_inc(plat_specific=0, prefix=None):
      if os.name == "posix":
          if python_build:
--            buildir = os.path.dirname(sys.executable)
-+            buildir = project_base
-             if plat_specific:
-                 # python.h is located in the buildir
-                 inc_dir = buildir
+             if sys.executable:
+-                buildir = os.path.dirname(sys.executable)
++                buildir = project_base
+             else:
+                 # sys.executable can be empty if argv[0] has been changed
+                 # and Python is unable to retrieve the real program name
 -- 
-2.7.4
+2.20.1
 
