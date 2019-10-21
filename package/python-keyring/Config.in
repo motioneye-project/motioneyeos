@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_KEYRING
 	bool "python-keyring"
-	depends BR2_PACKAGE_PYTHON3 # python-secretstorage
+	depends on BR2_PACKAGE_PYTHON3 # python-secretstorage
 	depends on BR2_INSTALL_LIBSTDCPP # python-secretstorage
 	select BR2_PACKAGE_PYTHON_SECRETSTORAGE # runtime
 	help
