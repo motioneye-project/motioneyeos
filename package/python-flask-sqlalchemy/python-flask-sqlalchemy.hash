@@ -1,4 +1,5 @@
-# md5 from https://pypi.python.org/pypi/Flask-SQLAlchemy/json, sha256 locally computed
-md5    01e943d6a8b492c2bc6031c024cd10be  Flask-SQLAlchemy-2.4.0.tar.gz
-sha256 0c9609b0d72871c540a7945ea559c8fdf5455192d2db67219509aed680a3d45a  Flask-SQLAlchemy-2.4.0.tar.gz
-sha256 5de187ec76e2d9dfc829fccad94ac0e5e810ddeccf8c8b50784918e4f12f14c4  PKG-INFO
+# md5, sha256 from https://pypi.org/pypi/flask-sqlalchemy/json
+md5	1f5781cf3e1a2b1aabda47a5b20d2073  Flask-SQLAlchemy-2.4.1.tar.gz
+sha256	6974785d913666587949f7c2946f7001e4fa2cb2d19f4e69ead02e4b8f50b33d  Flask-SQLAlchemy-2.4.1.tar.gz
+# Locally computed sha256 checksums
+sha256	489a8e1108509ed98a37bb983e11e0f7e1d31f0bd8f99a79c8448e7ff37d07ea  LICENSE.rst
