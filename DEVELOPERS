@@ -295,7 +295,6 @@ F:	package/alsa-utils/
 F:	package/apache/
 F:	package/apr/
 F:	package/apr-util/
-F:	package/asterisk/
 F:	package/bcg729/
 F:	package/bluez-tools/
 F:	package/boinc/
