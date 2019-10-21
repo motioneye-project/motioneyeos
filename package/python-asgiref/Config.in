@@ -1,6 +1,6 @@
 config BR2_PACKAGE_PYTHON_ASGIREF
-	depends on BR2_PACKAGE_PYTHON3
 	bool "python-asgiref"
+	depends on BR2_PACKAGE_PYTHON3
 	help
 	  ASGI is a standard for Python asynchronous web apps and
 	  servers to communicate with each other, and positioned as
