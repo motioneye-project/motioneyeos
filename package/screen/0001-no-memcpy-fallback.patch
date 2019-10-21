@@ -14,6 +14,8 @@ option should not break any systems.
 Signed-off-by: Maarten ter Huurne <maarten@treewalker.org>
 [Ricardo: rebase on top of 4.3.1]
 Signed-off-by: Ricardo Martincoski <ricardo.martincoski@gmail.com>
+[Bernd: rebase on top of 4.7.0]
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
 ---
  acconfig.h   |  3 +--
  configure.ac | 18 +-----------------
@@ -73,7 +75,7 @@ index 27690a6..b8e3bec 100644
 -  if (strncmp(buf, "cdedef", 6))
 -    exit(1);
 -  exit(0); /* libc version works properly.  */
--}], AC_DEFINE(USEMEMCPY))
+-}], AC_DEFINE(USEMEMCPY),,:)
 -
  AC_SYS_LONG_FILE_NAMES
  
