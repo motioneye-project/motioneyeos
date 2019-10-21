@@ -183,6 +183,7 @@ F:	package/monolite/
 F:	package/python-can/
 F:	package/python-pillow/
 F:	package/python-pydal/
+F:	package/python-spidev/
 F:	package/python-web2py/
 F:	package/sshguard/
 F:	package/sunwait/
