@@ -1191,6 +1191,7 @@ menu "External python modules"
 	source "package/python-xmltodict/Config.in"
 	source "package/python-yarl/Config.in"
 	source "package/python-yieldfrom/Config.in"
+	source "package/python-zc-lockfile/Config.in"
 	source "package/python-zeroconf/Config.in"
 	source "package/python-zope-interface/Config.in"
 endmenu
