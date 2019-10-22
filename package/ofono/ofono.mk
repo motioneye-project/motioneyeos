@@ -49,5 +49,4 @@ else
 OFONO_CONF_OPTS += --disable-bluetooth
 endif
 
-
 $(eval $(autotools-package))
