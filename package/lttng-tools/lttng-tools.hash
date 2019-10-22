@@ -1,5 +1,5 @@
-# From https://lttng.org/files/lttng-tools/lttng-tools-2.10.8.tar.bz2.sha256
-sha256 664a1145f9fd7a574da18aa3dfbbe97983985a471ca2992d6b272f1cebe6b30d  lttng-tools-2.10.8.tar.bz2
+# From https://lttng.org/files/lttng-tools/lttng-tools-2.11.0.tar.bz2.sha256
+sha256 dce493c82db673c96049b5fad155a760fa449fab3d92467a69fcb0ddaf3f0fbc  lttng-tools-2.11.0.tar.bz2
 # Locally computed
 sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  gpl-2.0.txt
 sha256 051be1f11b508ef7bb839994f6b58be19a827c56bd9bddfe36d77d3d4be55abe  lgpl-2.1.txt
