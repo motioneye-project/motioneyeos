@@ -4,10 +4,17 @@
 #
 ################################################################################
 
-RNG_TOOLS_VERSION = 5
-RNG_TOOLS_SITE = http://downloads.sourceforge.net/project/gkernel/rng-tools/$(RNG_TOOLS_VERSION)
+RNG_TOOLS_VERSION = 6.7
+RNG_TOOLS_SITE = $(call github,nhorman,$(RNG_TOOLS_NAME),v$(RNG_TOOLS_VERSION))
 RNG_TOOLS_LICENSE = GPL-2.0
 RNG_TOOLS_LICENSE_FILES = COPYING
+RNG_TOOLS_DEPENDENCIES = libsysfs jitterentropy-library host-pkgconf
+
+RNG_TOOLS_AUTORECONF = YES
+
+RNG_TOOLS_CONF_OPTS = \
+	--without-nistbeacon \
+	--without-pkcs11
 
 # Work around for uClibc or musl toolchains which lack argp_*()
 # functions.
