@@ -2250,6 +2250,7 @@ F:	package/x265/
 
 N:	Thomas Claveirole <thomas.claveirole@green-communications.fr>
 F:	package/fcgiwrap/
+F:	package/openlayers/
 
 N:	Thomas Davis <sunsetbrew@sunsetbrew.com>
 F:	package/civetweb/
