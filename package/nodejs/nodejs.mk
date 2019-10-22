@@ -70,9 +70,9 @@ define HOST_NODEJS_CONFIGURE_CMDS
 endef
 
 NODEJS_HOST_TOOLS_V8 = \
-        torque \
-        gen-regexp-special-case \
-        bytecode_builtins_list_generator
+	torque \
+	gen-regexp-special-case \
+	bytecode_builtins_list_generator
 NODEJS_HOST_TOOLS_NODE = mkcodecache
 NODEJS_HOST_TOOLS = $(NODEJS_HOST_TOOLS_V8) $(NODEJS_HOST_TOOLS_NODE)
 
