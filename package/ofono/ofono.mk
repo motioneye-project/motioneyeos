@@ -49,7 +49,5 @@ else
 OFONO_CONF_OPTS += --disable-bluetooth
 endif
 
-# required by 0003-build-Add-check-for-explicit_bzero-support.patch
-OFONO_AUTORECONF = YES
 
 $(eval $(autotools-package))
