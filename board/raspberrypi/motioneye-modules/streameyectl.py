@@ -1310,7 +1310,6 @@ def seAuthMode():
         'section': 'streaming',
         'camera': True,
         'required': True,
-        'depends': ['seProto==mjpeg'],
         'get': _get_streameye_settings,
         'set': _set_streameye_settings,
         'get_set_dict': True
