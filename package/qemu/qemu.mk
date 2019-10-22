@@ -104,6 +104,13 @@ else
 QEMU_OPTS += --disable-nettle
 endif
 
+ifeq ($(BR2_PACKAGE_NUMACTL),y)
+QEMU_OPTS += --enable-numa
+QEMU_DEPENDENCIES += numactl
+else
+QEMU_OPTS += --disable-numa
+endif
+
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define QEMU_CONFIGURE_CMDS
