@@ -1,0 +1,11 @@
+diff -rupEbwBN linux-custom.org/drivers/media/platform/s5p-mfc/s5p_mfc_enc.c linux-custom/drivers/media/platform/s5p-mfc/s5p_mfc_enc.c
+--- linux-custom.org/drivers/media/platform/s5p-mfc/s5p_mfc_enc.c	2019-06-19 03:22:19.000000000 +1000
++++ linux-custom/drivers/media/platform/s5p-mfc/s5p_mfc_enc.c	2019-10-22 10:51:38.006560436 +1100
+@@ -1067,7 +1066,6 @@ static int vidioc_try_fmt(struct file *f
+ 	} else if (f->type == V4L2_BUF_TYPE_VIDEO_OUTPUT_MPLANE) {
+ 		fmt = find_format(f, MFC_FMT_RAW);
+ 		if (!fmt) {
+-			mfc_err("failed to try output format\n");
+ 			return -EINVAL;
+ 		}
+ 		if ((dev->variant->version_bit & fmt->versions) == 0) {
