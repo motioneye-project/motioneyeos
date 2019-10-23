@@ -2059,7 +2059,6 @@ F:	package/miraclecast/
 F:	package/python-pyasn/
 F:	package/python-pycrypto/
 F:	package/python-pysnmp/
-F:	package/python-pysnmp-apps/
 F:	package/python-pysnmp-mibs/
 F:	package/python-tornado/
 F:	package/websocketpp/
