@@ -77,6 +77,19 @@ config BR2_GCC_SUPPORTS_LIBCILKRTS
 	bool
 	default y if !BR2_TOOLCHAIN_GCC_AT_LEAST_8
 
+config BR2_GCC_SUPPORTS_DLANG
+	bool
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	depends on BR2_TOOLCHAIN_USES_GLIBC
+	default y if BR2_aarch64
+	default y if BR2_arm
+	default y if BR2_i386
+	default y if BR2_mips || BR2_mipsel
+	default y if BR2_mips64 || BR2_mips64el
+	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
+	default y if BR2_x86_64
+	default y if BR2_riscv && !BR2_RISCV_64
+
 config BR2_GCC_VERSION
 	string
 	default "5.5.0"     if BR2_GCC_VERSION_5_X
@@ -117,6 +130,15 @@ config BR2_TOOLCHAIN_BUILDROOT_FORTRAN
 	  Enable this option if you want your toolchain to support the
 	  Fortran language and you want Fortran libraries to be
 	  installed on your target system.
+
+config BR2_TOOLCHAIN_BUILDROOT_DLANG
+	bool "Enable D language support"
+	depends on BR2_GCC_SUPPORTS_DLANG
+	select BR2_TOOLCHAIN_HAS_DLANG
+	help
+	  Enable this option if you want your toolchain to support the
+	  D language and you want D libraries to be installed on your
+	  target system.
 
 config BR2_GCC_ENABLE_LTO
 	bool "Enable compiler link-time-optimization support"
