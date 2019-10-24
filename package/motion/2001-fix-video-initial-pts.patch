@@ -1,0 +1,19 @@
+commit 54030816e03a31b8af3c53132636bb9bb97b0673
+Author: Joo Aun Saw <jasaw@dius.com.au>
+Date:   Wed Oct 23 00:55:31 2019 +1100
+
+    use current frame timestamp as movie initial PTS reference point
+
+diff --git a/src/motion.c b/src/motion.c
+index e394c19..9d3cd24 100644
+--- a/src/motion.c
++++ b/src/motion.c
+@@ -536,7 +536,7 @@ static void motion_detected(struct context *cnt, int dev, struct image_data *img
+ 
+             /* EVENT_FIRSTMOTION triggers on_event_start_command and event_ffmpeg_newfile */
+             event(cnt, EVENT_FIRSTMOTION, img, NULL, NULL,
+-                &cnt->imgs.image_ring[cnt->imgs.image_ring_out].timestamp_tv);
++                &img->timestamp_tv);
+ 
+             MOTION_LOG(NTC, TYPE_ALL, NO_ERRNO, _("Motion detected - starting event %d"),
+                        cnt->event_nr);
