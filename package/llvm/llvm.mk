@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-# LLVM and Clang should be version bumped together
+# LLVM, Clang and lld should be version bumped together
 LLVM_VERSION = 9.0.0
 LLVM_SITE = http://llvm.org/releases/$(LLVM_VERSION)
 LLVM_SOURCE = llvm-$(LLVM_VERSION).src.tar.xz

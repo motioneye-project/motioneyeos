@@ -4,6 +4,7 @@
 #
 ################################################################################
 
+# LLVM, Clang and lld should be version bumped together
 LLD_VERSION = 9.0.0
 LLD_SITE = https://llvm.org/releases/$(LLD_VERSION)
 LLD_SOURCE = lld-$(LLD_VERSION).src.tar.xz
