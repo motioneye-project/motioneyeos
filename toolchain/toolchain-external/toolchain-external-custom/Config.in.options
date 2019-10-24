@@ -415,6 +415,13 @@ config BR2_TOOLCHAIN_EXTERNAL_CXX
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
 
+config BR2_TOOLCHAIN_EXTERNAL_DLANG
+	bool "Toolchain has D support?"
+	select BR2_TOOLCHAIN_HAS_DLANG
+	help
+	  Select this option if your external toolchain has D
+	  support.
+
 config BR2_TOOLCHAIN_EXTERNAL_FORTRAN
 	bool "Toolchain has Fortran support?"
 	select BR2_TOOLCHAIN_HAS_FORTRAN

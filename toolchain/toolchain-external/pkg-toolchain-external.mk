@@ -152,6 +152,10 @@ ifeq ($(BR2_TOOLCHAIN_HAS_OPENMP),y)
 TOOLCHAIN_EXTERNAL_LIBS += libgomp.so.*
 endif
 
+ifeq ($(BR2_TOOLCHAIN_HAS_DLANG),y)
+TOOLCHAIN_EXTERNAL_LIBS += libgdruntime.so* libgphobos.so*
+endif
+
 TOOLCHAIN_EXTERNAL_LIBS += $(call qstrip,$(BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS))
 
 
