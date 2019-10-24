@@ -171,6 +171,9 @@ config BR2_ENABLE_LOCALE
 config BR2_INSTALL_LIBSTDCPP
 	bool
 
+config BR2_TOOLCHAIN_HAS_DLANG
+	bool
+
 config BR2_TOOLCHAIN_HAS_FORTRAN
 	bool
 
