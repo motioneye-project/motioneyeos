@@ -14,6 +14,7 @@ HOST_LLD_DEPENDENCIES = host-llvm
 
 # GCC looks for tools in a different path from LLD's default installation path
 define HOST_LLD_CREATE_SYMLINKS
+	mkdir -p $(HOST_DIR)/$(GNU_TARGET_NAME)/bin
 	ln -sf $(HOST_DIR)/bin/lld $(HOST_DIR)/$(GNU_TARGET_NAME)/bin/lld
 	ln -sf $(HOST_DIR)/bin/lld $(HOST_DIR)/$(GNU_TARGET_NAME)/bin/ld.lld
 endef
