@@ -17,8 +17,8 @@ define OPENLAYERS_EXTRACT_CMDS
 endef
 
 define OPENLAYERS_INSTALL_TARGET_CMDS
-	$(INSTALL) -m 0644 -D -t $(TARGET_DIR)/var/www/ \
-		$(@D)/ol.css $(@D)/ol.js
+	$(INSTALL) -D -m 0644 $(@D)/ol.css $(TARGET_DIR)/var/www/ol.css
+	$(INSTALL) -D -m 0644 $(@D)/ol.js $(TARGET_DIR)/var/www/ol.js
 endef
 
 $(eval $(generic-package))
