@@ -1,24 +1,26 @@
-From 83b1d46ae48eed576cf3dff0ffd7e772c8e638e4 Mon Sep 17 00:00:00 2001
+From 060b9b4147f6e5ff386a8b017796118d783e59fa Mon Sep 17 00:00:00 2001
 From: Matt Weber <matthew.weber@rockwellcollins.com>
-Date: Mon, 9 Sep 2019 20:42:14 -0500
-Subject: [PATCH] Makefile: cleanup install
+Date: Tue, 22 Oct 2019 12:44:30 -0500
+Subject: [PATCH] Makefile: cleanup install for rebuilds
 
 Support the ability to rebuild and redeploy without a clean. This
-required some force linking and forced man archive creation.
+required some force linking and man archive creation.
 
 Provide the ability to override the stripping of the shared lib for
 cases where a embedded target build may want to control stripping
 or provide cross arch tools.
 
-Upstream: https://github.com/smuellerDD/jitterentropy-library/pull/10
-
 Signed-off-by: Matthew Weber <matthew.weber@rockwellcollins.com>
+Signed-off-by: Stephan Mueller <smueller@chronox.de>
+[Retrieved from:
+https://github.com/smuellerDD/jitterentropy-library/commit/060b9b4147f6e5ff386a8b017796118d783e59fa]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
- Makefile | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ Makefile | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 5e31276..a575f32 100644
+index 4ff069b..2e78607 100644
 --- a/Makefile
 +++ b/Makefile
 @@ -14,6 +14,8 @@ LIBDIR := lib
@@ -30,7 +32,7 @@ index 5e31276..a575f32 100644
  NAME := jitterentropy
  LIBMAJOR=$(shell cat jitterentropy-base.c | grep define | grep MAJVERSION | awk '{print $$3}')
  LIBMINOR=$(shell cat jitterentropy-base.c | grep define | grep MINVERSION | awk '{print $$3}')
-@@ -49,14 +51,15 @@ scan:	$(OBJS)
+@@ -58,15 +60,15 @@ cppcheck:
  install:
  	install -d -m 0755 $(DESTDIR)$(PREFIX)/share/man/man3
  	install -m 644 doc/$(NAME).3 $(DESTDIR)$(PREFIX)/share/man/man3/
@@ -39,7 +41,7 @@ index 5e31276..a575f32 100644
  	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(LIBDIR)
 -	install -m 0755 -s lib$(NAME).so.$(LIBVERSION) $(DESTDIR)$(PREFIX)/$(LIBDIR)/
 +	$(INSTALL_STRIP) -m 0755 lib$(NAME).so.$(LIBVERSION) $(DESTDIR)$(PREFIX)/$(LIBDIR)/
-+	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(INCDIR)
+ 	install -d -m 0755 $(DESTDIR)$(PREFIX)/$(INCDIR)
  	install -m 0644 jitterentropy.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
  	install -m 0644 jitterentropy-base-user.h $(DESTDIR)$(PREFIX)/$(INCDIR)/
  	$(RM) $(DESTDIR)$(PREFIX)/$(LIBDIR)/lib$(NAME).so.$(LIBMAJOR)
@@ -50,6 +52,3 @@ index 5e31276..a575f32 100644
  
  clean:
  	@- $(RM) $(NAME)
--- 
-2.17.1
-
