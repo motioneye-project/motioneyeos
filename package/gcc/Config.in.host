@@ -79,8 +79,6 @@ config BR2_GCC_SUPPORTS_LIBCILKRTS
 
 config BR2_GCC_SUPPORTS_DLANG
 	bool
-	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_9
-	depends on BR2_TOOLCHAIN_USES_GLIBC
 	default y if BR2_aarch64
 	default y if BR2_arm
 	default y if BR2_i386
@@ -89,6 +87,8 @@ config BR2_GCC_SUPPORTS_DLANG
 	default y if BR2_powerpc || BR2_powerpc64 || BR2_powerpc64le
 	default y if BR2_x86_64
 	default y if BR2_riscv && !BR2_RISCV_64
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_9
+	depends on BR2_TOOLCHAIN_USES_GLIBC
 
 config BR2_GCC_VERSION
 	string
