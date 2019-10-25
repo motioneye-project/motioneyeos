@@ -97,6 +97,13 @@ else
 QEMU_OPTS += --disable-libssh2
 endif
 
+ifeq ($(BR2_PACKAGE_LIBUSB),y)
+QEMU_OPTS += --enable-libusb
+QEMU_DEPENDENCIES += libusb
+else
+QEMU_OPTS += --disable-libusb
+endif
+
 ifeq ($(BR2_PACKAGE_NETTLE),y)
 QEMU_OPTS += --enable-nettle
 QEMU_DEPENDENCIES += nettle
