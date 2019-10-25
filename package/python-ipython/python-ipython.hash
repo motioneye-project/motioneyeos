@@ -1,6 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/ipython/json
-md5	4cf3010770ce20f3227c38f117c4b311  ipython-7.8.0.tar.gz
-sha256	dd76831f065f17bddd7eaa5c781f5ea32de5ef217592cf019e34043b56895aa1  ipython-7.8.0.tar.gz
+md5	68542bca2ebf39af7d9d0557e7fb5708  ipython-7.9.0.tar.gz
+sha256	dfd303b270b7b5232b3d08bd30ec6fd685d8a58cabd54055e3d69d8f029f7280  ipython-7.9.0.tar.gz
 # Locally computed sha256 checksums
 sha256	341afcbd729887b7046fe7b98fc4f4edff3aed8d38f06eefd9b30670f043df17 COPYING.rst
 sha256	e0e390748ed440ab893ca1f135a88a920aaf5409dbb90a5b427c75c5e51268fb  LICENSE
