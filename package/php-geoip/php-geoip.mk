@@ -16,8 +16,8 @@ PHP_GEOIP_LICENSE_FILES = geoip.c
 
 define PHP_GEOIP_PHPIZE
 	(cd $(@D); \
-		PHP_AUTOCONF=$(HOST_DIR)/bin/autoconf \
-		PHP_AUTOHEADER=$(HOST_DIR)/bin/autoheader \
+		PHP_AUTOCONF=$(AUTOCONF) \
+		PHP_AUTOHEADER=$(AUTOHEADER) \
 		$(STAGING_DIR)/usr/bin/phpize)
 endef
 

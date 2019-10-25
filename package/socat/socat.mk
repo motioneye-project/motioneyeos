@@ -37,7 +37,7 @@ SOCAT_CONF_OPTS += --disable-openssl
 endif
 
 define SOCAT_RUN_AUTOCONF
-	(cd $(@D); $(HOST_DIR)/bin/autoconf)
+	(cd $(@D); $(AUTOCONF))
 endef
 
 SOCAT_PRE_CONFIGURE_HOOKS += SOCAT_RUN_AUTOCONF

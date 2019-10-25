@@ -16,8 +16,8 @@ PHP_SSH2_LICENSE_FILES = LICENSE
 
 define PHP_SSH2_PHPIZE
 	(cd $(@D); \
-		PHP_AUTOCONF=$(HOST_DIR)/bin/autoconf \
-		PHP_AUTOHEADER=$(HOST_DIR)/bin/autoheader \
+		PHP_AUTOCONF=$(AUTOCONF) \
+		PHP_AUTOHEADER=$(AUTOHEADER) \
 		$(STAGING_DIR)/usr/bin/phpize)
 endef
 
