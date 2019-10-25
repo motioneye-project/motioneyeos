@@ -8,16 +8,14 @@ SOX_VERSION = 14.4.2
 SOX_SITE = http://downloads.sourceforge.net/project/sox/sox/$(SOX_VERSION)
 SOX_SOURCE = sox-$(SOX_VERSION).tar.bz2
 SOX_DEPENDENCIES = host-pkgconf
-SOX_CONF_OPTS = --with-distro="Buildroot" --without-ffmpeg --disable-gomp \
-	$(if $(BR2_TOOLCHAIN_HAS_SSP),,--disable-stack-protector)
 SOX_LICENSE = GPL-2.0+ (sox binary), LGPL-2.1+ (libraries)
 SOX_LICENSE_FILES = LICENSE.GPL LICENSE.LGPL
 
-# MIPS Codescape toolchains don't support stack-smashing protection
-# despite of using glibc.
-ifeq ($(BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_IMG_MIPS)$(BR2_TOOLCHAIN_EXTERNAL_CODESCAPE_MTI_MIPS),y)
-SOX_CONF_OPTS += --disable-stack-protector
-endif
+SOX_CONF_OPTS = \
+	--with-distro="Buildroot" \
+	--without-ffmpeg \
+	--disable-gomp \
+	--disable-stack-protector
 
 ifeq ($(BR2_PACKAGE_ALSA_LIB_PCM),y)
 SOX_DEPENDENCIES += alsa-lib
