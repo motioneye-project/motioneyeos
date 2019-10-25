@@ -1,0 +1,47 @@
+From 0d4da8093bc2ef92b7c6f7fd1f4804f6ebc6cb56 Mon Sep 17 00:00:00 2001
+From: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+Date: Fri, 25 Oct 2019 13:37:14 +0200
+Subject: [PATCH] Do not use PYCEXT, and rely on the installed file name
+
+PYCEXT is computed by asking the Python intrepreter what is the
+file extension used for native Python modules.
+
+Unfortunately, when cross-compiling, the host Python doesn't give the
+proper result: it gives the result matching the build machine, and not
+the target machine. Due to this, the symlink has an incorrect name,
+and doesn't point to the .so file that was actually built/installed.
+
+To address this and keep things simple, this patch just changes the ln
+invocation to rely on the name of the _selinux*.so Python module that
+was installed.
+
+[Upstream: https://github.com/SELinuxProject/selinux/pull/184]
+Signed-off-by: Thomas Petazzoni <thomas.petazzoni@bootlin.com>
+---
+ src/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/Makefile b/src/Makefile
+index 799df2b0..95684ed7 100644
+--- a/src/Makefile
++++ b/src/Makefile
+@@ -15,7 +15,6 @@ INCLUDEDIR ?= $(PREFIX)/include
+ PYINC ?= $(shell $(PKG_CONFIG) --cflags $(PYPREFIX))
+ PYLIBS ?= $(shell $(PKG_CONFIG) --libs $(PYPREFIX))
+ PYTHONLIBDIR ?= $(shell $(PYTHON) -c "from distutils.sysconfig import *; print(get_python_lib(plat_specific=1, prefix='$(PREFIX)'))")
+-PYCEXT ?= $(shell $(PYTHON) -c 'import imp;print([s for s,m,t in imp.get_suffixes() if t == imp.C_EXTENSION][0])')
+ RUBYINC ?= $(shell $(RUBY) -e 'puts "-I" + RbConfig::CONFIG["rubyarchhdrdir"] + " -I" + RbConfig::CONFIG["rubyhdrdir"]')
+ RUBYLIBS ?= $(shell $(RUBY) -e 'puts "-L" + RbConfig::CONFIG["libdir"] + " -L" + RbConfig::CONFIG["archlibdir"] + " " + RbConfig::CONFIG["LIBRUBYARG_SHARED"]')
+ RUBYINSTALL ?= $(shell $(RUBY) -e 'puts RbConfig::CONFIG["vendorarchdir"]')
+@@ -175,7 +174,7 @@ install: all
+ install-pywrap: pywrap
+ 	$(PYTHON) setup.py install --prefix=$(PREFIX) `test -n "$(DESTDIR)" && echo --root $(DESTDIR)`
+ 	install -m 644 $(SWIGPYOUT) $(DESTDIR)$(PYTHONLIBDIR)/selinux/__init__.py
+-	cd $(DESTDIR)$(PYTHONLIBDIR) && ln -sf selinux/_selinux$(PYCEXT) _selinux$(PYCEXT)
++	cd $(DESTDIR)$(PYTHONLIBDIR) && ln -sf selinux/_selinux*.so .
+ 
+ install-rubywrap: rubywrap
+ 	test -d $(DESTDIR)$(RUBYINSTALL) || install -m 755 -d $(DESTDIR)$(RUBYINSTALL) 
+-- 
+2.21.0
+
