@@ -83,4 +83,9 @@ config BR2_PACKAGE_HOST_QEMU_VIRTFS
 	  Enables support for virtual filesystem in Qemu allowing
 	  shared filesystem between Qemu and its emulated target.
 
+config BR2_PACKAGE_HOST_QEMU_USB
+	bool "USB passthrough support"
+	help
+	  Enables USB passthrough support from guest to host.
+
 endif

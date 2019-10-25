@@ -264,6 +264,13 @@ else
 HOST_QEMU_OPTS += --disable-virtfs
 endif
 
+ifeq ($(BR2_PACKAGE_HOST_QEMU_USB),y)
+HOST_QEMU_OPTS += --enable-libusb
+HOST_QEMU_DEPENDENCIES += host-libusb
+else
+HOST_QEMU_OPTS += --disable-libusb
+endif
+
 # Override CPP, as it expects to be able to call it like it'd
 # call the compiler.
 define HOST_QEMU_CONFIGURE_CMDS
