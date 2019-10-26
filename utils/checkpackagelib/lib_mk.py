@@ -126,7 +126,9 @@ class OverriddenVariable(_CheckFunction):
                 self.conditionally_set.append(variable)
                 return
             if self.CONCATENATING.search(text):
-                return
+                return ["{}:{}: immediate assignment to append to variable {}"
+                        .format(self.filename, lineno, variable),
+                        text]
             if self.USUALLY_OVERRIDDEN.search(text):
                 return
             if assignment in self.OVERRIDING_ASSIGNMENTS:
