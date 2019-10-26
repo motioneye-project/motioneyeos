@@ -32,6 +32,12 @@ index a65afbf..83b2425 100644
 +    # Used by port/port.h.
 +    ${LEVELDB_PLATFORM_NAME}=1
 +)
++if (NOT HAVE_CXX17_HAS_INCLUDE)
++  target_compile_definitions(memenv
++    PRIVATE
++      LEVELDB_HAS_PORT_CONFIG_H=1
++  )
++endif(NOT HAVE_CXX17_HAS_INCLUDE)
 +target_include_directories(memenv
 +  PUBLIC
 +    $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
