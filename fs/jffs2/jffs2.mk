@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-JFFS2_OPTS := -e $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE)
-SUMTOOL_OPTS := $(JFFS2_OPTS)
+JFFS2_OPTS = -e $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE)
+SUMTOOL_OPTS = -e $(BR2_TARGET_ROOTFS_JFFS2_EBSIZE)
 
 ifeq ($(BR2_TARGET_ROOTFS_JFFS2_PAD),y)
 ifneq ($(strip $(BR2_TARGET_ROOTFS_JFFS2_PADSIZE)),0x0)
