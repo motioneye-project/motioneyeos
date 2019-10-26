@@ -4,6 +4,7 @@ config BR2_PACKAGE_DOCKER_COMPOSE
 	depends on BR2_USE_WCHAR # python
 	depends on BR2_TOOLCHAIN_HAS_THREADS # python
 	depends on !BR2_STATIC_LIBS # python
+	depends on BR2_INSTALL_LIBSTDCPP # python-paramiko -> python-cryptography
 	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_BACKPORTS_SSL_MATCH_HOSTNAME \
 	       if BR2_PACKAGE_PYTHON # runtime
@@ -11,6 +12,7 @@ config BR2_PACKAGE_DOCKER_COMPOSE
 	select BR2_PACKAGE_PYTHON_IPADDRESS if BR2_PACKAGE_PYTHON # runtime
 	select BR2_PACKAGE_PYTHON_CACHED_PROPERTY # runtime
 	select BR2_PACKAGE_PYTHON_DOCOPT # runtime
+	select BR2_PACKAGE_PYTHON_PARAMIKO # runtime
 	select BR2_PACKAGE_PYTHON_PYYAML # runtime
 	select BR2_PACKAGE_PYTHON_REQUESTS # runtime
 	select BR2_PACKAGE_PYTHON_TEXTTABLE # runtime
@@ -24,6 +26,7 @@ config BR2_PACKAGE_DOCKER_COMPOSE
 
 	  https://www.docker.com/
 
-comment "docker-compose needs a toolchain w/ wchar, threads, dynamic library"
+comment "docker-compose needs a toolchain w/ C++, wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || !BR2_INSTALL_LIBSTDCPP
