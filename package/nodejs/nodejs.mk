@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-NODEJS_VERSION = 12.12.0
+NODEJS_VERSION = 12.13.0
 NODEJS_SOURCE = node-v$(NODEJS_VERSION).tar.xz
 NODEJS_SITE = http://nodejs.org/dist/v$(NODEJS_VERSION)
 NODEJS_DEPENDENCIES = host-python host-nodejs c-ares \
