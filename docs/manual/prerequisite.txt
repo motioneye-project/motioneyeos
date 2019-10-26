@@ -32,7 +32,6 @@ between distributions).
 ** +perl+ (version 5.8.7 or any later)
 ** +tar+
 ** +cpio+
-** +python+ (version 2.7 or any later)
 ** +unzip+
 ** +rsync+
 ** +file+ (must be in +/usr/bin/file+)
@@ -44,6 +43,14 @@ between distributions).
 [[requirement-optional]]
 
 === Optional packages
+
+* Recommended dependencies:
++
+Some features or utilities in Buildroot, like the legal-info, or the
+graph generation tools, have additional dependencies. Although they
+are not mandatory for a simple build, they are still highly recommended:
++
+** +python+ (version 2.7 or any later)
 
 * Configuration interface dependencies:
 +
