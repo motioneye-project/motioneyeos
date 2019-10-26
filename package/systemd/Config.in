@@ -161,6 +161,16 @@ config BR2_PACKAGE_SYSTEMD_COREDUMP
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-coredump.html
 
+config BR2_PACKAGE_SYSTEMD_PSTORE
+	bool "enable pstore support"
+	default y
+	help
+	  When this features is enabled, additional tools and services
+	  are built to support archiving contents of the persistent
+	  storage filesytem.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-pstore.html
+
 config BR2_PACKAGE_SYSTEMD_FIRSTBOOT
 	bool "enable firstboot support"
 	help
