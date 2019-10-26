@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BISON_VERSION = 3.4.1
+BISON_VERSION = 3.4.2
 BISON_SOURCE = bison-$(BISON_VERSION).tar.xz
 BISON_SITE = $(BR2_GNU_MIRROR)/bison
 BISON_LICENSE = GPL-3.0+
