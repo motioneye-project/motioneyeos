@@ -4,13 +4,11 @@
 #
 ################################################################################
 
-ARP_SCAN_VERSION = 1.9.5
+ARP_SCAN_VERSION = 1.9.6
 ARP_SCAN_SITE = $(call github,royhills,arp-scan,$(ARP_SCAN_VERSION))
 ARP_SCAN_LICENSE = GPL-3.0+
 ARP_SCAN_LICENSE_FILES = COPYING
 ARP_SCAN_DEPENDENCIES = libpcap
-
-# 0001-configure-try-linking-to-detect-stack-protector-supp.patch touches acinclude.m4
 ARP_SCAN_AUTORECONF = YES
 
 ifeq ($(BR2_STATIC_LIBS),y)
