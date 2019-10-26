@@ -16,15 +16,11 @@ if BR2_PACKAGE_HOST_IMAGEMAGICK
 
 config BR2_PACKAGE_HOST_IMAGEMAGICK_SVG
 	bool "SVG support"
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # host-librsvg -> host-pango -> host-harfbuzz
 	help
 	  Say 'y' here is you need ImageMagick tools (like convert)
 	  to support SVG.
 
 	  This is not enabled by default, as it brings quite a few
 	  extra dependencies, and thus extra build time.
-
-comment "SVG support needs host gcc >= 4.8"
-	depends on !BR2_HOST_GCC_AT_LEAST_4_8
 
 endif

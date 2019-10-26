@@ -1,7 +1,6 @@
 config BR2_PACKAGE_EFL
 	bool "efl"
 	 # g++ issue with 4.4.5, tested with g++ 4.7.2
-	depends on BR2_HOST_GCC_AT_LEAST_4_7
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_7
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS # luajit
@@ -144,15 +143,14 @@ comment "Warning: one of the recommended option for EFL is not enabled"
 
 config BR2_PACKAGE_EFL_EOLIAN_CPP
 	bool "Enable Eolian C++ bindings"
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # Eolian (host) needs C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # Eolian needs C++11
 	help
 	  Eolian is an EO object parser and code generator.
 	  With this option enabled Eolian will handle automatic
 	  generation of EFL bindings for the C++11 language.
 
-comment "Eolian needs host and target gcc >= 4.8"
-	depends on !BR2_HOST_GCC_AT_LEAST_4_8 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+comment "Eolian needs gcc >= 4.8"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 
 comment "libecore video support"
 
@@ -309,7 +307,7 @@ endif # BR2_PACKAGE_EFL
 
 comment "efl needs a toolchain w/ C++, dynamic library, gcc >= 4.7, threads, wchar"
 	depends on !BR2_INSTALL_LIBSTDCPP \
-		|| !BR2_HOST_GCC_AT_LEAST_4_7 || !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
+		|| !BR2_TOOLCHAIN_GCC_AT_LEAST_4_7 \
 		|| BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR
 	depends on BR2_PACKAGE_LUAJIT_ARCH_SUPPORTS
 	depends on BR2_USE_MMU

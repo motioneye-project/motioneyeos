@@ -1,7 +1,6 @@
 config BR2_PACKAGE_HOST_LLD
 	bool "host lld"
 	depends on BR2_PACKAGE_LLVM_ARCH_SUPPORTS # llvm
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # llvm
 	help
 	  LLD is a linker from the LLVM project that is a drop-in
 	  replacement for system linkers, and runs much faster than
@@ -9,7 +8,3 @@ config BR2_PACKAGE_HOST_LLD
 	  toolchain developers.
 
 	  https://lld.llvm.org/
-
-comment "lld needs a toolchain w/ host gcc >= 4.8"
-	depends on BR2_PACKAGE_LLVM_ARCH_SUPPORTS
-	depends on !BR2_HOST_GCC_AT_LEAST_4_8

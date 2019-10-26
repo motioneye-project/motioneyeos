@@ -35,7 +35,6 @@ choice
 config BR2_PACKAGE_QT5_VERSION_LATEST
 	bool "Latest (5.12)"
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on !BR2_ARM_CPU_ARMV4 # needs ARMv5+
 	# no built-in double-conversion support
 	depends on !BR2_arc && !BR2_nios2 && !BR2_xtensa
@@ -43,8 +42,8 @@ config BR2_PACKAGE_QT5_VERSION_LATEST
 	  This option builds Qt 5.12, which is licensed under
 	  (L)GPL-3.0+.
 
-comment "Latest Qt version needs host/toolchain w/ gcc >= 4.8"
-	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 || !BR2_HOST_GCC_AT_LEAST_4_8
+comment "Latest Qt version needs a toolchain w/ gcc >= 4.8"
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
 	depends on !BR2_ARM_CPU_ARMV4
 	depends on !BR2_arc && !BR2_nios2 && !BR2_xtensa
 

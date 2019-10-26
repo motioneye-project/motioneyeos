@@ -26,29 +26,9 @@ config BR2_HOST_GCC_VERSION
 	string
 	option env="HOST_GCC_VERSION"
 
-config BR2_HOST_GCC_AT_LEAST_4_5
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 5"
-
-config BR2_HOST_GCC_AT_LEAST_4_6
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 6"
-	select BR2_HOST_GCC_AT_LEAST_4_5
-
-config BR2_HOST_GCC_AT_LEAST_4_7
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 7"
-	select BR2_HOST_GCC_AT_LEAST_4_6
-
-config BR2_HOST_GCC_AT_LEAST_4_8
-	bool
-	default y if BR2_HOST_GCC_VERSION = "4 8"
-	select BR2_HOST_GCC_AT_LEAST_4_7
-
 config BR2_HOST_GCC_AT_LEAST_4_9
 	bool
 	default y if BR2_HOST_GCC_VERSION = "4 9"
-	select BR2_HOST_GCC_AT_LEAST_4_8
 
 config BR2_HOST_GCC_AT_LEAST_5
 	bool
@@ -556,7 +536,6 @@ endchoice
 config BR2_GOOGLE_BREAKPAD_ENABLE
 	bool "Enable google-breakpad support"
 	depends on BR2_INSTALL_LIBSTDCPP
-	depends on BR2_HOST_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # C++11
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS

@@ -49,7 +49,6 @@ choice
 
 config BR2_PACKAGE_HOST_RUST
 	bool "host rust"
-	depends on BR2_HOST_GCC_AT_LEAST_4_7 # required by LLVM
 	# triggers ICE on trunc_int_for_mode, at explow.c:56
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_5 || !BR2_aarch64
 	help
@@ -60,9 +59,6 @@ config BR2_PACKAGE_HOST_RUST
 comment "host-rust needs a toolchain w/ gcc >= 5"
 	depends on BR2_aarch64
 	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_5
-
-comment "host-rust needs host gcc >= 4.7"
-	depends on !BR2_HOST_GCC_AT_LEAST_4_7
 
 config BR2_PACKAGE_HOST_RUST_BIN
 	bool "host rust (pre-built)"

@@ -12,14 +12,8 @@ comment "Host GDB Options"
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
 	depends on BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
 
-comment "host gdb needs a host gcc >= 4.8"
-	depends on BR2_PACKAGE_HOST_GDB_ARCH_SUPPORTS
-	depends on !BR2_HOST_GCC_AT_LEAST_4_8
-
 config BR2_PACKAGE_HOST_GDB
 	bool "Build cross gdb for the host"
-	# gdb >= 8.x needs C++11
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
 	# When the external toolchain gdbserver is used, we shouldn't
 	# allow to build a cross-gdb, as the one of the external
 	# toolchain should be used.
@@ -59,18 +53,12 @@ choice
 
 config BR2_GDB_VERSION_8_1
 	bool "gdb 8.1.x"
-	# Needs a C++11 compiler
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
 config BR2_GDB_VERSION_8_2
 	bool "gdb 8.2.x"
-	# Needs a C++11 compiler
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
 config BR2_GDB_VERSION_8_3
 	bool "gdb 8.3.x"
-	# Needs a C++11 compiler
-	depends on BR2_HOST_GCC_AT_LEAST_4_8
 
 endchoice
 
