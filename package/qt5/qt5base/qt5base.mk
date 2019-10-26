@@ -101,7 +101,7 @@ QT5BASE_LICENSE = GPL-3.0 or LGPL-2.1 with exception or LGPL-3.0, GFDL-1.3 (docs
 QT5BASE_LICENSE_FILES = LICENSE.GPLv3 LICENSE.LGPLv21 LGPL_EXCEPTION.txt LICENSE.LGPLv3 LICENSE.FDL
 endif
 ifeq ($(BR2_PACKAGE_QT5BASE_EXAMPLES),y)
-QT5BASE_LICENSE := $(QT5BASE_LICENSE), BSD-3-Clause (examples)
+QT5BASE_LICENSE += , BSD-3-Clause (examples)
 QT5BASE_LICENSE_FILES += header.BSD
 endif
 
@@ -153,7 +153,7 @@ QT5BASE_DEPENDENCIES += harfbuzz
 else
 # qt harfbuzz otherwise (using QAtomic instead)
 QT5BASE_CONFIGURE_OPTS += -qt-harfbuzz
-QT5BASE_LICENSE := $(QT5BASE_LICENSE), MIT (harfbuzz)
+QT5BASE_LICENSE += , MIT (harfbuzz)
 QT5BASE_LICENSE_FILES += src/3rdparty/harfbuzz-ng/COPYING
 endif
 else

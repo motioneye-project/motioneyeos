@@ -32,7 +32,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_READLINE),y)
 # iwd client depends on readline (GPL-3.0+)
-IWD_LICENSE := $(IWD_LICENSE), GPL-3.0+ (client)
+IWD_LICENSE += , GPL-3.0+ (client)
 IWD_CONF_OPTS += --enable-client
 IWD_DEPENDENCIES += readline
 else

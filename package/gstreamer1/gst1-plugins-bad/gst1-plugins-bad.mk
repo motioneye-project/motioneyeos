@@ -724,18 +724,18 @@ endif
 
 # Add GPL license if GPL licensed plugins enabled.
 ifeq ($(GST1_PLUGINS_BAD_HAS_GPL_LICENSE),y)
-GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), GPL-2.0+
+GST1_PLUGINS_BAD_LICENSE += , GPL-2.0+
 GST1_PLUGINS_BAD_LICENSE_FILES += COPYING
 endif
 
 # Add BSD license if BSD licensed plugins enabled.
 ifeq ($(GST1_PLUGINS_BAD_HAS_BSD2C_LICENSE),y)
-GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), BSD-2-Clause
+GST1_PLUGINS_BAD_LICENSE += , BSD-2-Clause
 endif
 
 # Add Unknown license if Unknown licensed plugins enabled.
 ifeq ($(GST1_PLUGINS_BAD_HAS_UNKNOWN_LICENSE),y)
-GST1_PLUGINS_BAD_LICENSE := $(GST1_PLUGINS_BAD_LICENSE), UNKNOWN
+GST1_PLUGINS_BAD_LICENSE += , UNKNOWN
 endif
 
 # Use the following command to extract license info for plugins.

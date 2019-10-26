@@ -24,7 +24,7 @@ define LIBIDN2_REMOVE_BINARY
 endef
 LIBIDN2_POST_INSTALL_TARGET_HOOKS += LIBIDN2_REMOVE_BINARY
 else
-LIBIDN2_LICENSE := $(LIBIDN2_LICENSE), GPL-3.0+ (program)
+LIBIDN2_LICENSE += , GPL-3.0+ (program)
 endif
 
 $(eval $(autotools-package))

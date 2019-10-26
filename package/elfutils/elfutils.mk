@@ -72,7 +72,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_ELFUTILS_PROGS),y)
 ELFUTILS_CONF_OPTS += --enable-progs
-ELFUTILS_LICENSE := $(ELFUTILS_LICENSE), GPL-3.0+ (programs)
+ELFUTILS_LICENSE += , GPL-3.0+ (programs)
 ELFUTILS_LICENSE_FILES += COPYING
 else
 ELFUTILS_CONF_OPTS += --disable-progs
