@@ -239,6 +239,7 @@ F:	package/python*
 F:	package/snmpclitools/
 F:	package/spdlog/
 F:	package/uftp/
+F:	package/uvw/
 F:	package/zeromq/
 
 N:	Ash Charles <ashcharles@gmail.com>
