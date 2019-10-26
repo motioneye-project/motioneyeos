@@ -160,7 +160,7 @@ fi
 
 # Check that a few mandatory programs are installed
 missing_progs="no"
-for prog in patch perl tar wget cpio python unzip rsync bc ${DL_TOOLS} ; do
+for prog in patch perl tar wget cpio unzip rsync bc ${DL_TOOLS} ; do
 	if ! which $prog > /dev/null ; then
 		echo "You must install '$prog' on your build machine";
 		missing_progs="yes"
@@ -178,14 +178,6 @@ done
 
 if test "${missing_progs}" = "yes" ; then
 	exit 1
-fi
-
-# Check that the python version is at least 2.7
-PYTHON_VERSION=$(python -V 2>&1 |awk '{ split($2, v, "."); print v[1] v[2] }')
-if [ $PYTHON_VERSION -lt 27 ]; then
-	echo
-	echo "You have '$(python -V 2>&1)' installed.  Python >= 2.7 is required"
-	exit 1;
 fi
 
 if grep ^BR2_NEEDS_HOST_UTF8_LOCALE=y $BR2_CONFIG > /dev/null; then
@@ -291,10 +283,5 @@ if [ -n "$missing_perl_modules" ] ; then
 		printf "\t $pm\n"
 	done
 	echo
-	exit 1
-fi
-
-if ! python -c "import argparse" > /dev/null 2>&1 ; then
-	echo "Your Python installation is not complete enough: argparse module is missing"
 	exit 1
 fi
