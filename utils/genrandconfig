@@ -366,7 +366,7 @@ def gen_config(args):
         configlines.append("BR2_OPTIMIZE_2=y\n")
     if randint(0, 4) == 0:
         configlines.append("BR2_SYSTEM_ENABLE_NLS=y\n")
-    if randInt(0, 4) == 0:
+    if randint(0, 4) == 0:
         configlines.append("BR2_PIC_PIE=y\n")
 
     # Randomly enable BR2_REPRODUCIBLE 10% of times
