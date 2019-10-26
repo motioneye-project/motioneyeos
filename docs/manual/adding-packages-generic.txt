@@ -429,13 +429,17 @@ not and can not work as people would expect it should:
   the +license+ field of the manifest file for this package. +
   The expected format for this variable must comply with the following rules:
   ** If different parts of the package are released under different
-  licenses, then +comma+ separate licenses (e.g. +`LIBFOO_LICENSE =
-  GPL-2.0+, LGPL-2.1+`+). If there is clear distinction between which
-  component is licensed under what license, then annotate the license
-  with that component, between parenthesis (e.g. +`LIBFOO_LICENSE =
-  GPL-2.0+ (programs), LGPL-2.1+ (libraries)`+).
+     licenses, then +comma+ separate licenses (e.g. +`LIBFOO_LICENSE =
+     GPL-2.0+, LGPL-2.1+`+). If there is clear distinction between which
+     component is licensed under what license, then annotate the license
+     with that component, between parenthesis (e.g. +`LIBFOO_LICENSE =
+     GPL-2.0+ (programs), LGPL-2.1+ (libraries)`+).
+  ** If some licenses are conditioned on a sub-option being enabled, append
+     the conditional licenses with a comma (e.g.: `FOO_LICENSE += , GPL-2.0+
+     (programs)`); the infrastructure will internally remove the space before
+     the comma.
   ** If the package is dual licensed, then separate licenses with the
-  +or+ keyword (e.g. +`LIBFOO_LICENSE = AFL-2.1 or GPL-2.0+`+).
+     +or+ keyword (e.g. +`LIBFOO_LICENSE = AFL-2.1 or GPL-2.0+`+).
 
 * +LIBFOO_LICENSE_FILES+ is a space-separated list of files in the package
   tarball that contain the license(s) under which the package is released.
