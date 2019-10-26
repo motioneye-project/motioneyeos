@@ -370,6 +370,8 @@ def gen_config(args):
         configlines.append("BR2_PIC_PIE=y\n")
     if randint(0, 4) == 0:
         configlines.append("BR2_RELRO_FULL=y\n")
+    if randint(0, 4) == 0:
+        configlines.append("BR2_SSP_ALL=y\n")
 
     # Randomly enable BR2_REPRODUCIBLE 10% of times
     # also enable tar filesystem images for testing
