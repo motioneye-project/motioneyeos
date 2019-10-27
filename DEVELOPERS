@@ -595,6 +595,10 @@ F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/policycoreutils/
 
+N:	Clément Péron <peron.clem@gmail.com>
+F:	board/beelink/gs1/
+F:	configs/beelink_gs1_defconfig
+
 N:	Corentin Guillevic <corentin.guillevic@smile.fr>
 F:	package/libloki/
 
