@@ -1,0 +1,31 @@
+Use print as a function in SConstruct build file for Py3 compatibility.
+This allow to run SCons on Python 3
+
+[Upstream status: https://github.com/codehero/benejson/pull/12]
+
+Signed-off-by: Titouan Christophe <titouan.christophe@railnova.eu>
+---
+ benejson/SConscript | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/benejson/SConscript b/benejson/SConscript
+index b7c5d10..80b4875 100644
+--- a/benejson/SConscript
++++ b/benejson/SConscript
+@@ -9,11 +9,11 @@ lib_env = lib_env.Clone()
+ conf = Configure(lib_env)
+ 
+ if not conf.CheckFunc("stpcpy"):
+-	print "Did not find stpcpy(), using bnj local version"
++	print("Did not find stpcpy(), using bnj local version")
+ 	conf.env.Append(CPPDEFINES = ["-Dstpcpy=bnj_local_stpcpy"])
+ 
+ if not conf.CheckFunc("stpncpy"):
+-	print "Did not find stpncpy(), using bnj local version"
++	print("Did not find stpncpy(), using bnj local version")
+ 	conf.env.Append(CPPDEFINES = ["-Dstpncpy=bnj_local_stpncpy"])
+ lib_env = conf.Finish()
+ 
+-- 
+2.21.0
+
