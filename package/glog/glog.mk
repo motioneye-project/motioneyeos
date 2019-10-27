@@ -4,11 +4,14 @@
 #
 ################################################################################
 
-GLOG_VERSION = 0.3.5
+GLOG_VERSION = 0.4.0
 GLOG_SITE = $(call github,google,glog,v$(GLOG_VERSION))
 GLOG_INSTALL_STAGING = YES
 GLOG_LICENSE = BSD-3-Clause
 GLOG_LICENSE_FILES = COPYING
+
+# No configure script provided, so we need autoreconf
+GLOG_AUTORECONF = YES
 
 ifeq ($(BR2_PACKAGE_GFLAGS),y)
 GLOG_DEPENDENCIES = gflags
