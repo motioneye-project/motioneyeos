@@ -1,9 +1,9 @@
-STM32MP157 Discovery Kit
+STM32MP157C Discovery Kit v2
 
 Intro
 =====
 
-This configuration supports the STM32MP157 Discovery Kit 2 (DK2)
+This configuration supports the STM32MP157C Discovery Kit 2 (DK2)
 platform:
 
   https://www.st.com/en/evaluation-tools/stm32mp157c-dk2.html
@@ -11,7 +11,7 @@ platform:
 How to build
 ============
 
- $ make stm32mp157_dk_defconfig
+ $ make stm32mp157c_dk2_defconfig
  $ make
 
 How to write the microSD card
