@@ -59,7 +59,7 @@ data, which in many distributions are packaged separately. The
 development packages typically have a _-dev_ or _-devel_ suffix.
 +
 ** +ncurses5+ to use the 'menuconfig' interface
-** +qt4+ to use the 'xconfig' interface
+** +qt5+ to use the 'xconfig' interface
 ** +glib2+, +gtk2+ and +glade2+ to use the 'gconfig' interface
 
 * Source fetching tools:
