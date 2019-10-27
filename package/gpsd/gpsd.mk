@@ -10,7 +10,7 @@ GPSD_LICENSE = BSD-2-Clause
 GPSD_LICENSE_FILES = COPYING
 GPSD_INSTALL_STAGING = YES
 
-GPSD_DEPENDENCIES = host-python host-scons host-pkgconf
+GPSD_DEPENDENCIES = host-python3 host-scons host-pkgconf
 
 GPSD_LDFLAGS = $(TARGET_LDFLAGS)
 GPSD_CFLAGS = $(TARGET_CFLAGS)
@@ -205,7 +205,7 @@ GPSD_SCONS_ENV += LDFLAGS="$(GPSD_LDFLAGS)" CFLAGS="$(GPSD_CFLAGS)"
 define GPSD_BUILD_CMDS
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \
-		$(HOST_DIR)/bin/python2 $(SCONS) \
+		$(HOST_DIR)/bin/python3 $(SCONS) \
 		$(GPSD_SCONS_OPTS))
 endef
 
@@ -213,7 +213,7 @@ define GPSD_INSTALL_TARGET_CMDS
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \
 		DESTDIR=$(TARGET_DIR) \
-		$(HOST_DIR)/bin/python2 $(SCONS) \
+		$(HOST_DIR)/bin/python3 $(SCONS) \
 		$(GPSD_SCONS_OPTS) \
 		$(if $(BR2_PACKAGE_HAS_UDEV),udev-install,install))
 endef
@@ -235,7 +235,7 @@ define GPSD_INSTALL_STAGING_CMDS
 	(cd $(@D); \
 		$(GPSD_SCONS_ENV) \
 		DESTDIR=$(STAGING_DIR) \
-		$(HOST_DIR)/bin/python2 $(SCONS) \
+		$(HOST_DIR)/bin/python3 $(SCONS) \
 		$(GPSD_SCONS_OPTS) \
 		install)
 endef
