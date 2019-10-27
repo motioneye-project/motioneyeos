@@ -10,10 +10,7 @@ DBUS_PYTHON_INSTALL_STAGING = YES
 DBUS_PYTHON_LICENSE = MIT
 DBUS_PYTHON_LICENSE_FILES = COPYING
 DBUS_PYTHON_DEPENDENCIES = dbus-glib
-DBUS_PYTHON_CONF_OPTS = --disable-html-docs --disable-api-docs
-
 HOST_DBUS_PYTHON_DEPENDENCIES = host-dbus-glib
-HOST_DBUS_PYTHON_CONF_OPTS = --disable-html-docs --disable-api-docs
 
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 DBUS_PYTHON_DEPENDENCIES += python host-python
