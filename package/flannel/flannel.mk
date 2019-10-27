@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-FLANNEL_VERSION = v0.5.5
+FLANNEL_VERSION = 0.5.5
 FLANNEL_SITE = https://github.com/coreos/flannel/archive
-FLANNEL_SOURCE = $(FLANNEL_VERSION).tar.gz
+FLANNEL_SOURCE = v$(FLANNEL_VERSION).tar.gz
 
 FLANNEL_LICENSE = Apache-2.0
 FLANNEL_LICENSE_FILES = LICENSE
