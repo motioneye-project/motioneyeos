@@ -1,7 +1,7 @@
 import os
 import shutil
 
-from gitremote import GitRemote
+from tests.download.gitremote import GitRemote
 
 import infra
 

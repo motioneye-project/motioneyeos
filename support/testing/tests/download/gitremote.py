@@ -32,7 +32,8 @@ class GitRemote(object):
         for port in range(GIT_REMOTE_PORT_INITIAL, GIT_REMOTE_PORT_LAST + 1):
             cmd = daemon_cmd + ["--port={port}".format(port=port)]
             self.logfile.write("> starting git remote with '{}'\n".format(" ".join(cmd)))
-            self.daemon = pexpect.spawn(cmd[0], cmd[1:], logfile=self.logfile)
+            self.daemon = pexpect.spawn(cmd[0], cmd[1:], logfile=self.logfile,
+                                        encoding='utf-8')
             ret = self.daemon.expect(["Ready to rumble",
                                       "Address already in use"])
             if ret == 0:

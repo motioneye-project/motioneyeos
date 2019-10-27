@@ -3,7 +3,8 @@ import re
 import sys
 import tempfile
 import subprocess
-from urllib2 import urlopen, HTTPError, URLError
+from urllib.request import urlopen
+from urllib.error import HTTPError, URLError
 
 ARTIFACTS_URL = "http://autobuild.buildroot.net/artefacts/"
 BASE_DIR = os.path.realpath(os.path.join(os.path.dirname(__file__), "../../.."))
@@ -44,7 +45,7 @@ def download(dldir, filename):
 
     try:
         url_fh = urlopen(os.path.join(ARTIFACTS_URL, filename))
-        with open(tmpfile, "w+") as tmpfile_fh:
+        with open(tmpfile, "w+b") as tmpfile_fh:
             tmpfile_fh.write(url_fh.read())
     except (HTTPError, URLError) as err:
         os.unlink(tmpfile)
@@ -60,7 +61,8 @@ def run_cmd_on_host(builddir, cmd):
     out = subprocess.check_output(cmd,
                                   stderr=open(os.devnull, "w"),
                                   cwd=builddir,
-                                  env={"LANG": "C"})
+                                  env={"LANG": "C"},
+                                  universal_newlines=True)
     return out
 
 

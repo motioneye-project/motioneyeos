@@ -16,7 +16,8 @@ import infra
 def call_script(args, env, cwd):
     """Call a script and return stdout and stderr as lists."""
     out, err = subprocess.Popen(args, cwd=cwd, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, env=env).communicate()
+                                stderr=subprocess.PIPE, env=env,
+                                universal_newlines=True).communicate()
     return out.splitlines(), err.splitlines()
 
 
