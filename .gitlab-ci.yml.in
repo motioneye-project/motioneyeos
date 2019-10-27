@@ -4,7 +4,7 @@
 # It needs to be regenerated every time a defconfig is added, using
 # "make .gitlab-ci.yml".
 
-image: buildroot/base:20180318.1724
+image: buildroot/base:20191027.2027
 
 .check_base:
     except:
