@@ -487,8 +487,6 @@ menuconfig BR2_TARGET_UBOOT_ENVIMAGE
 
 	  The environment image will be called uboot-env.bin.
 
-	  Leave empty to generate image from compiled-in env.
-
 if BR2_TARGET_UBOOT_ENVIMAGE
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SOURCE
@@ -499,6 +497,8 @@ config BR2_TARGET_UBOOT_ENVIMAGE_SOURCE
 	  lines starting with a # are ignored.
 
 	  Multiple source files are concatenated in the order listed.
+
+	  Leave empty to generate image from compiled-in env.
 
 config BR2_TARGET_UBOOT_ENVIMAGE_SIZE
 	string "Size of environment"
