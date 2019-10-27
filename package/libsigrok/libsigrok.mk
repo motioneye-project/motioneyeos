@@ -10,27 +10,27 @@ LIBSIGROK_LICENSE = GPL-3.0+
 LIBSIGROK_LICENSE_FILES = COPYING
 LIBSIGROK_INSTALL_STAGING = YES
 LIBSIGROK_DEPENDENCIES = libglib2 libzip host-pkgconf
-LIBSIGROK_CONF_OPTS = --disable-glibtest --disable-java --disable-python
+LIBSIGROK_CONF_OPTS = --disable-java --disable-python
 
 ifeq ($(BR2_PACKAGE_LIBSERIALPORT),y)
-LIBSIGROK_CONF_OPTS += --enable-libserialport
+LIBSIGROK_CONF_OPTS += --with-libserialport
 LIBSIGROK_DEPENDENCIES += libserialport
 else
-LIBSIGROK_CONF_OPTS += --disable-libserialport
+LIBSIGROK_CONF_OPTS += --without-libserialport
 endif
 
 ifeq ($(BR2_PACKAGE_LIBFTDI),y)
-LIBSIGROK_CONF_OPTS += --enable-libftdi
+LIBSIGROK_CONF_OPTS += --with-libftdi
 LIBSIGROK_DEPENDENCIES += libftdi
 else
-LIBSIGROK_CONF_OPTS += --disable-libftdi
+LIBSIGROK_CONF_OPTS += --without-libftdi
 endif
 
 ifeq ($(BR2_PACKAGE_LIBUSB),y)
-LIBSIGROK_CONF_OPTS += --enable-libusb
+LIBSIGROK_CONF_OPTS += --with-libusb
 LIBSIGROK_DEPENDENCIES += libusb
 else
-LIBSIGROK_CONF_OPTS += --disable-libusb
+LIBSIGROK_CONF_OPTS += --without-libusb
 endif
 
 ifeq ($(BR2_PACKAGE_GLIBMM),y)
