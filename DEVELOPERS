@@ -694,6 +694,8 @@ F:	package/brickd/
 F:	package/ev3dev-linux-drivers/
 
 N:	Davide Viti <zinosat@tiscali.it>
+F:	board/friendlyarm/nanopi-r1/
+F:	configs/nanopi_r1_defconfig
 F:	package/flann/
 F:	package/python-paho-mqtt/
 F:	package/qhull/
