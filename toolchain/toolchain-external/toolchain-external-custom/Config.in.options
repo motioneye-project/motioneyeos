@@ -438,12 +438,4 @@ config BR2_TOOLCHAIN_EXTERNAL_OPENMP
 	  support. If you don't know, leave the default value,
 	  Buildroot will tell you if it's correct or not.
 
-config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
-	string "Extra toolchain libraries to be copied to target"
-	help
-	  If your external toolchain provides extra libraries that
-	  need to be copied to the target filesystem, enter them
-	  here, separated by spaces. They will be copied to the
-	  target's /lib directory.
-
 endif

@@ -221,6 +221,20 @@ config BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_LIST
 
 	  Note: the full set of gconv libs are ~8MiB (on ARM).
 
+config BR2_TOOLCHAIN_EXTRA_LIBS
+	string "Extra toolchain libraries to be copied to target"
+	default BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS if BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS != "" # legacy
+	depends on !BR2_STATIC_LIBS
+	help
+	  If your toolchain provides extra libraries that need to be
+	  copied to the target filesystem, enter them here, separated
+	  by spaces. The library should not include a suffix or any
+	  type of pre/post wildcard.
+
+	  Examples where this can be useful is for adding debug
+	  libraries to the target like the GCC libsanitizer.
+	  e.g. "libasan liblsan libtsan libubsan"
+
 # This boolean is true if the toolchain provides a built-in full
 # featured gettext implementation (glibc), and false if only a stub
 # gettext implementation is provided (uclibc, musl)
