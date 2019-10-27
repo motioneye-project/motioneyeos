@@ -697,9 +697,14 @@ comment "Security Hardening Options"
 config BR2_PIC_PIE
 	bool "Build code with PIC/PIE"
 	depends on BR2_SHARED_LIBS
+	depends on BR2_TOOLCHAIN_SUPPORTS_PIE
 	help
 	  Generate Position-Independent Code (PIC) and link
 	  Position-Independent Executables (PIE).
+
+comment "PIC/PIE needs a toolchain w/ PIE"
+	depends on BR2_SHARED_LIBS
+	depends on !BR2_TOOLCHAIN_SUPPORTS_PIE
 
 choice
 	bool "Stack Smashing Protection"
@@ -783,11 +788,15 @@ config BR2_RELRO_PARTIAL
 
 config BR2_RELRO_FULL
 	bool "Full"
+	depends on BR2_TOOLCHAIN_SUPPORTS_PIE
 	select BR2_PIC_PIE
 	help
 	  This option includes the partial configuration, but also marks
 	  the GOT as read-only at the cost of initialization time during
 	  program loading, i.e every time an executable is started.
+
+comment "RELRO Full needs a toolchain w/ PIE"
+	depends on !BR2_TOOLCHAIN_SUPPORTS_PIE
 
 endchoice
 
