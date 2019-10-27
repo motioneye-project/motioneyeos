@@ -254,6 +254,7 @@ qemu_aarch64_virt_defconfig: { extends: .defconfig }
 qemu_arm_versatile_defconfig: { extends: .defconfig }
 qemu_arm_versatile_nommu_defconfig: { extends: .defconfig }
 qemu_arm_vexpress_defconfig: { extends: .defconfig }
+qemu_arm_vexpress_tz_defconfig: { extends: .defconfig }
 qemu_csky610_virt_defconfig: { extends: .defconfig }
 qemu_csky807_virt_defconfig: { extends: .defconfig }
 qemu_csky810_virt_defconfig: { extends: .defconfig }
