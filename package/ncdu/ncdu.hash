@@ -1,6 +1,5 @@
-# From http://dev.yorhel.nl/download/ncdu-1.14.tar.gz.{md5,sha1}
-md5 d26c0aa57728c19969c3c5036fa272a0  ncdu-1.14.tar.gz
-sha1 28c7003ad23d2e3a2d22d2c349bb0c7170752396  ncdu-1.14.tar.gz
+# From https://dev.yorhel.nl/download/ncdu-1.14.1.tar.gz.sha256
+sha256 be31e0e8c13a0189f2a186936f7e298c6390ebdc573bb4a1330bc1fcbf56e13e ncdu-1.14.1.tar.gz
 
 # computed locally
 sha256 a05f1fd38432052dc8588da66b8bf3e9e103e29a82c0b5d72c65d4d9fc830f2e COPYING
