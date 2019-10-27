@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CHECK_VERSION = 0.12.0
+CHECK_VERSION = 0.13.0
 CHECK_SITE = https://github.com/libcheck/check/releases/download/$(CHECK_VERSION)
 CHECK_INSTALL_STAGING = YES
 CHECK_DEPENDENCIES = host-pkgconf
