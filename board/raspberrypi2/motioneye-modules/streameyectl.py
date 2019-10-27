@@ -124,6 +124,27 @@ RESOLUTION_CHOICES = [
     ('3280x2464', '3280x2464')
 ]
 
+RTSP_RESOLUTION_CHOICES = [
+    ('320x200', '320x200'),
+    ('320x240', '320x240'),
+    ('640x480', '640x480'),
+    ('800x480', '800x480'),
+    ('800x600', '800x600'),
+    ('1024x576', '1024x576'),
+    ('1024x768', '1024x768'),
+    ('1280x720', '1280x720'),
+    ('1280x800', '1280x800'),
+    ('1280x960', '1280x960'),
+    ('1280x1024', '1280x1024'),
+    ('1296x972', '1296x972'),
+    ('1440x960', '1440x960'),
+    ('1440x1024', '1440x1024'),
+    ('1600x1200', '1600x1200'),
+    ('1640x922', '1640x922'),
+    ('1640x1232', '1640x1232'),
+    ('1920x1080', '1920x1080')
+]
+
 ROTATION_CHOICES = [
     ('0', '0&deg;'),
     ('90', '90&deg;'),
@@ -311,6 +332,8 @@ def _get_raspimjpeg_settings(camera_id):
         'imxfx': 'none',
         'width': 640,
         'height': 480,
+        'rtspWidth': 640,
+        'rtspHeight': 480,
         'rotation': 0,
         'vflip': False,
         'hflip': False,
@@ -372,6 +395,7 @@ def _get_raspimjpeg_settings(camera_id):
     s['sharpness'] = (s['sharpness'] + 100) / 2
     
     s['resolution'] = '%sx%s' % (s.pop('width'), s.pop('height'))
+    s['rtspResolution'] = '%sx%s' % (s.pop('rtspWidth'), s.pop('rtspHeight'))
     
     s = dict(('se' + n[0].upper() + n[1:], v) for (n, v) in s.items())
 
@@ -383,6 +407,8 @@ def _set_raspimjpeg_settings(camera_id, s):
     
     s['width'] = int(s['resolution'].split('x')[0])
     s['height'] = int(s.pop('resolution').split('x')[1])
+    s['rtspWidth'] = int(s['rtspResolution'].split('x')[0])
+    s['rtspHeight'] = int(s.pop('rtspResolution').split('x')[1])
     
     s['zoom'] = '%.2f,%.2f,%.2f,%.2f' % (
             s.pop('zoomx') / 100.0, s.pop('zoomy') / 100.0,
@@ -705,13 +731,33 @@ def seResolution():
         return None
 
     return {
-        'label': 'Video Resolution',
+        'label': 'MJPEG Video Resolution',
         'description': 'the video resolution (larger values produce better quality but require more CPU power, larger storage space and bandwidth)',
         'type': 'choices',
         'choices': RESOLUTION_CHOICES,
         'section': 'device',
         'camera': True,
         'required': True,
+        'depends': ['seProto==mjpeg'],
+        'get': _get_raspimjpeg_settings,
+        'set': _set_raspimjpeg_settings,
+        'get_set_dict': True
+    }
+
+@additional_config
+def seRtspResolution():
+    if not _get_streameye_enabled():
+        return None
+
+    return {
+        'label': 'RTSP Video Resolution',
+        'description': 'the video resolution (larger values produce better quality but require more CPU power, larger storage space and bandwidth)',
+        'type': 'choices',
+        'choices': RTSP_RESOLUTION_CHOICES,
+        'section': 'device',
+        'camera': True,
+        'required': True,
+        'depends': ['seProto==rtsp'],
         'get': _get_raspimjpeg_settings,
         'set': _set_raspimjpeg_settings,
         'get_set_dict': True
