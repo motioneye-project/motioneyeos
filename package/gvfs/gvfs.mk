@@ -13,12 +13,13 @@ GVFS_DEPENDENCIES = host-pkgconf host-libglib2 libglib2 dbus shared-mime-info \
 	$(TARGET_NLS_DEPENDENCIES)
 GVFS_LICENSE = LGPL-2.0+
 GVFS_LICENSE_FILES = COPYING
+GVFS_LIBS = $(TARGET_NLS_LIBS)
 
 # Export ac_cv_path_LIBGCRYPT_CONFIG unconditionally to prevent
 # build system from searching the host paths.
 GVFS_CONF_ENV = \
 	ac_cv_path_LIBGCRYPT_CONFIG=$(STAGING_DIR)/usr/bin/libgcrypt-config \
-	LIBS=$(TARGET_NLS_LIBS)
+	LIBS="$(GVFS_LIBS)"
 
 # Most of these are missing library support
 GVFS_CONF_OPTS = \
@@ -60,6 +61,7 @@ GVFS_CONF_OPTS += \
 	--enable-archive \
 	--with-archive-includes=$(STAGING_DIR)/usr \
 	--with-archive-libs=$(STAGING_DIR)/usr
+GVFS_LIBS += `$(PKG_CONFIG_HOST_BINARY) --libs libarchive`
 else
 GVFS_CONF_OPTS += --disable-archive
 endif
