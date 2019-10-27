@@ -11,6 +11,7 @@ TOOLCHAIN_DEPENDENCIES += toolchain-external
 endif
 
 TOOLCHAIN_ADD_TOOLCHAIN_DEPENDENCY = NO
+TOOLCHAIN_INSTALL_STAGING = YES
 
 # Apply a hack that Rick Felker suggested[1] to avoid conflicts between libc
 # headers and kernel headers. This is needed for kernel headers older than
@@ -34,7 +35,6 @@ define TOOLCHAIN_MUSL_KERNEL_HEADERS_COMPATIBILITY_HACK
 		$(STAGING_DIR)/usr/include/linux/libc-compat.h
 endef
 TOOLCHAIN_POST_INSTALL_STAGING_HOOKS += TOOLCHAIN_MUSL_KERNEL_HEADERS_COMPATIBILITY_HACK
-TOOLCHAIN_INSTALL_STAGING = YES
 endif
 
 # Install default nsswitch.conf file if the skeleton doesn't provide it
