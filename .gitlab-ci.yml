@@ -315,7 +315,7 @@ solidrun_macchiatobin_mainline_defconfig: { extends: .defconfig }
 solidrun_macchiatobin_marvell_defconfig: { extends: .defconfig }
 stm32f429_disco_defconfig: { extends: .defconfig }
 stm32f469_disco_defconfig: { extends: .defconfig }
-stm32mp157_dk_defconfig: { extends: .defconfig }
+stm32mp157c_dk2_defconfig: { extends: .defconfig }
 toradex_apalis_imx6_defconfig: { extends: .defconfig }
 ts4900_defconfig: { extends: .defconfig }
 ts5500_defconfig: { extends: .defconfig }

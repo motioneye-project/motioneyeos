@@ -2291,11 +2291,11 @@ F:	package/ascii-invaders/
 
 N:	Thomas Petazzoni <thomas.petazzoni@bootlin.com>
 F:	arch/Config.in.arm
-F:	board/stmicroelectronics/stm32mp157-dk/
+F:	board/stmicroelectronics/stm32mp157c-dk2/
 F:	boot/boot-wrapper-aarch64/
 F:	boot/grub2/
 F:	boot/gummiboot/
-F:	configs/stm32mp157_dk_defconfig
+F:	configs/stm32mp157c_dk2_defconfig
 F:	package/android-tools/
 F:	package/b43-firmware/
 F:	package/b43-fwcutter/
