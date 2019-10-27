@@ -130,6 +130,14 @@ function start() {
                 raspimjpeg_opts="${raspimjpeg_opts} --${line}"
             done < ${RASPIMJPEG_CONF}
 
+            video_height=$(grep -e ^rtsp_height ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            if [ -n "${video_height}" ]; then
+                raspimjpeg_opts="${raspimjpeg_opts} --height ${video_height}"
+            fi
+            video_width=$(grep -e ^rtsp_width ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            if [ -n "${video_width}" ]; then
+                raspimjpeg_opts="${raspimjpeg_opts} --width ${video_width}"
+            fi
             video_iso=$(grep -e ^iso ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
             if [ -n "${video_iso}" ]; then
                 raspimjpeg_opts="${raspimjpeg_opts} --ISO ${video_iso}"
