@@ -43,6 +43,8 @@ config BR2_PACKAGE_LIBOPENSSL_ENGINES
 	help
 	  Install additional encryption engine libraries.
 
+source "package/libopenssl/Config.in"
+
 endif
 
 config BR2_PACKAGE_LIBRESSL
