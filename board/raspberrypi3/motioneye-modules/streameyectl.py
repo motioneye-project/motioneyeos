@@ -332,8 +332,8 @@ def _get_raspimjpeg_settings(camera_id):
         'imxfx': 'none',
         'width': 640,
         'height': 480,
-        'rtsp_width': 640,
-        'rtsp_height': 480,
+        'rtspWidth': 640,
+        'rtspHeight': 480,
         'rotation': 0,
         'vflip': False,
         'hflip': False,
@@ -395,7 +395,7 @@ def _get_raspimjpeg_settings(camera_id):
     s['sharpness'] = (s['sharpness'] + 100) / 2
     
     s['resolution'] = '%sx%s' % (s.pop('width'), s.pop('height'))
-    s['rtspResolution'] = '%sx%s' % (s.pop('rtsp_width'), s.pop('rtsp_height'))
+    s['rtspResolution'] = '%sx%s' % (s.pop('rtspWidth'), s.pop('rtspHeight'))
     
     s = dict(('se' + n[0].upper() + n[1:], v) for (n, v) in s.items())
 
@@ -407,8 +407,8 @@ def _set_raspimjpeg_settings(camera_id, s):
     
     s['width'] = int(s['resolution'].split('x')[0])
     s['height'] = int(s.pop('resolution').split('x')[1])
-    s['rtsp_width'] = int(s['rtspResolution'].split('x')[0])
-    s['rtsp_height'] = int(s.pop('rtspResolution').split('x')[1])
+    s['rtspWidth'] = int(s['rtspResolution'].split('x')[0])
+    s['rtspHeight'] = int(s.pop('rtspResolution').split('x')[1])
     
     s['zoom'] = '%.2f,%.2f,%.2f,%.2f' % (
             s.pop('zoomx') / 100.0, s.pop('zoomy') / 100.0,
