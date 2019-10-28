@@ -14,9 +14,13 @@ GST1_VALIDATE_DEPENDENCIES = \
 	gstreamer1 \
 	gst1-plugins-base \
 	json-glib \
-	host-python \
-	python \
 	$(if $(BR2_PACKAGE_CAIRO),cairo)
+
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+GST1_VALIDATE_DEPENDENCIES += host-python3 python3
+else
+GST1_VALIDATE_DEPENDENCIES += host-python python
+endif
 
 GST1_VALIDATE_CONF_OPTS += --disable-sphinx-doc
 
