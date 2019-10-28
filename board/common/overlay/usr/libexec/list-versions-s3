@@ -24,12 +24,9 @@ files=(${keys})
 
 i=0
 for file in ${files[*]}; do
-    version=$(echo ${file:${#path} + 1} | cut -d '/' -f 1)
-    fname=$(basename ${file})
-    i=$((i + 1))
-    if [[ -z "${fname}" ]]; then
-        continue
-    fi
+    [[ "${file}" =~ ^${path}/(.+)/(.+)$ ]] || continue
+    version="${BASH_REMATCH[1]}"
+    fname="${BASH_REMATCH[2]}"
 
     prerelease=false
     if [[ "${version}" =~ ^.*[abc]\.?[0-9]+$ ]] || # e.g. 0.4.1b2, 0.4.1b.2, 0.4.1-b.2
@@ -38,9 +35,11 @@ for file in ${files[*]}; do
         prerelease=true
     fi
 
-    final_url=${url}/${path}/${version}/${fname}
-    board=$(echo ${fname} | cut -d '-' -f 2)
-    date=$(echo ${dates[${i}]} | cut -d 'T' -f 1)
-    
+    [[ "${fname}" =~ ^([^-]+)-([^-]+)-(.+)$ ]] || continue
+    board="${BASH_REMATCH[2]}"
+    final_url="${url}/${path}/${version}/${fname}"
+    date="${dates[${i}]:0:10}"
+
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
+    i=$((i + 1))
 done | sort -t '|' -k 5,3 -r
