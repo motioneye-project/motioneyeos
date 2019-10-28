@@ -19,9 +19,9 @@ else
 LIBSIGROK_CONF_OPTS += --without-libserialport
 endif
 
-ifeq ($(BR2_PACKAGE_LIBFTDI),y)
+ifeq ($(BR2_PACKAGE_LIBFTDI1),y)
 LIBSIGROK_CONF_OPTS += --with-libftdi
-LIBSIGROK_DEPENDENCIES += libftdi
+LIBSIGROK_DEPENDENCIES += libftdi1
 else
 LIBSIGROK_CONF_OPTS += --without-libftdi
 endif
