@@ -18,7 +18,7 @@ COLLECTD_AUTORECONF = YES
 # These require unmet dependencies, are fringe, pointless or deprecated
 COLLECTD_PLUGINS_DISABLE = \
 	apple_sensors aquaero ascent barometer dbi dpdkstat email \
-	gmond hddtemp intel_rdt ipmi java lpar lua \
+	gmond hddtemp intel_rdt ipmi java lpar \
 	madwifi mbmon mic multimeter netapp notify_desktop numa \
 	nut oracle perl pf pinba powerdns python routeros \
 	rrdcached sigrok tape target_v5upgrade teamspeak2 ted \
@@ -211,6 +211,13 @@ COLLECTD_DEPENDENCIES += libgcrypt
 COLLECTD_CONF_OPTS += --with-libgcrypt=$(STAGING_DIR)/usr/bin/libgcrypt-config
 else
 COLLECTD_CONF_OPTS += --with-libgcrypt=no
+endif
+
+ifeq ($(BR2_PACKAGE_LUA),y)
+COLLECTD_DEPENDENCIES += lua
+COLLECTD_CONF_OPTS += --enable-lua
+else
+COLLECTD_CONF_OPTS += --disable-lua
 endif
 
 define COLLECTD_INSTALL_TARGET_CMDS
