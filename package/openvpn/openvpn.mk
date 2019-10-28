@@ -38,6 +38,13 @@ else
 OPENVPN_CONF_OPTS += --disable-lzo
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+OPENVPN_DEPENDENCIES += systemd
+OPENVPN_CONF_OPTS += --enable-systemd
+else
+OPENVPN_CONF_OPTS += --disable-systemd
+endif
+
 define OPENVPN_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 755 $(@D)/src/openvpn/openvpn \
 		$(TARGET_DIR)/usr/sbin/openvpn
