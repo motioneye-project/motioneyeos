@@ -18,6 +18,7 @@ config BR2_PACKAGE_HOST_QEMU_ARCH_SUPPORTS
 	default y if BR2_sh
 	default y if BR2_sparc
 	default y if BR2_sparc64
+	default y if BR2_xtensa
 	default y if BR2_x86_64
 	depends on !BR2_powerpc_620 && !BR2_powerpc_630 && !BR2_powerpc_970
 

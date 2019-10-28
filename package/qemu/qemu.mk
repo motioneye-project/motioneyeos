@@ -209,6 +209,7 @@ HOST_QEMU_DEPENDENCIES = host-pkgconf host-zlib host-libglib2 host-pixman
 #       sh4aeb          sh4eb
 #       sparc           sparc
 #       sparc64         sparc64
+#       xtensa          xtensa
 
 HOST_QEMU_ARCH = $(ARCH)
 ifeq ($(HOST_QEMU_ARCH),i486)
