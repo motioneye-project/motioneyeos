@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-MENDER_VERSION = 2.0.1
+MENDER_VERSION = 2.1.1
 MENDER_SITE = https://github.com/mendersoftware/mender/archive
 MENDER_SOURCE = $(MENDER_VERSION).tar.gz
 MENDER_LICENSE = Apache-2.0, BSD-2-Clause, BSD-3-Clause, ISC, MIT, OLDAP-2.8
@@ -16,23 +16,23 @@ MENDER_LICENSE_FILES = \
 	LIC_FILES_CHKSUM.sha256 \
 	vendor/github.com/mendersoftware/mendertesting/LICENSE \
 	vendor/github.com/mendersoftware/log/LICENSE \
-	vendor/github.com/mendersoftware/log/COPYING \
 	vendor/github.com/mendersoftware/scopestack/LICENSE \
-	vendor/github.com/mendersoftware/scopestack/COPYING \
 	vendor/github.com/mendersoftware/mender-artifact/LICENSE \
 	vendor/github.com/pkg/errors/LICENSE \
 	vendor/github.com/pmezard/go-difflib/LICENSE \
+	vendor/golang.org/x/crypto/LICENSE \
 	vendor/golang.org/x/sys/LICENSE \
 	vendor/golang.org/x/net/LICENSE \
 	vendor/github.com/bmatsuo/lmdb-go/LICENSE.md \
 	vendor/golang.org/x/text/LICENSE \
-	vendor/github.com/mendersoftware/go-liblzma/LICENSE \
+	vendor/github.com/remyoudompheng/go-liblzma/LICENSE \
 	vendor/github.com/davecgh/go-spew/LICENSE \
-	vendor/github.com/Sirupsen/logrus/LICENSE \
+	vendor/github.com/sirupsen/logrus/LICENSE \
 	vendor/github.com/stretchr/testify/LICENSE \
 	vendor/github.com/stretchr/testify/LICENCE.txt \
 	vendor/github.com/stretchr/objx/LICENSE.md \
 	vendor/github.com/ungerik/go-sysfs/LICENSE \
+	vendor/github.com/konsorten/go-windows-terminal-sequences/LICENSE \
 	vendor/github.com/bmatsuo/lmdb-go/LICENSE.mdb.md
 
 MENDER_DEPENDENCIES = xz
