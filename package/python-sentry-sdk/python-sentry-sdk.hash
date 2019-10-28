@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/sentry-sdk/json
-md5	6851b91d8e55e87d4bf9dd6aecffa5d3  sentry-sdk-0.13.0.tar.gz
-sha256	ff14935cc3053de0650128f124c36f34a4be120b8cc522c149f5cba342c1fd05  sentry-sdk-0.13.0.tar.gz
+md5	1b22a7cb91e1f9b83acbd61709d5e71d  sentry-sdk-0.13.1.tar.gz
+sha256	f6e850f304382d87c5c52c01db8c0004d2ced6a0b073df2f2257168cf31b31aa  sentry-sdk-0.13.1.tar.gz
 # Locally computed sha256 checksums
 sha256	59404d4c854e579097d41bfccd5006afde9d6d70e646cf55074cdbfead5ecf1c  LICENSE
