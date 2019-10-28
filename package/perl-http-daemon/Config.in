@@ -4,6 +4,6 @@ config BR2_PACKAGE_PERL_HTTP_DAEMON
 	select BR2_PACKAGE_PERL_HTTP_MESSAGE # runtime
 	select BR2_PACKAGE_PERL_LWP_MEDIATYPES # runtime
 	help
-	  a simple http server class.
+	  A simple http server class.
 
-	  https://metacpan.org/release/HTTP-Daemon
+	  https://github.com/libwww-perl/HTTP-Daemon
