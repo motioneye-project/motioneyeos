@@ -38,6 +38,13 @@ else
 OPENVPN_CONF_OPTS += --disable-lzo
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+OPENVPN_DEPENDENCIES += libselinux
+OPENVPN_CONF_OPTS += --enable-selinux
+else
+OPENVPN_CONF_OPTS += --disable-selinux
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 OPENVPN_DEPENDENCIES += systemd
 OPENVPN_CONF_OPTS += --enable-systemd
