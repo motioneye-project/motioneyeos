@@ -1892,6 +1892,7 @@ N:	Petr Kulhavy <brain@jikos.cz>
 F:	package/linuxptp/
 
 N:	Petr Vorel <petr.vorel@gmail.com>
+F:	package/ima-evm-utils/
 F:	package/iproute2/
 F:	package/iputils/
 F:	package/linux-backports/
