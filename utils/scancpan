@@ -567,7 +567,7 @@ sub find_license_files {
     foreach (split /\n/, $manifest) {
         next if m|/|;
         s|\s+.*$||;
-        push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE)/i;
+        push @license_files, $_ if m/(ARTISTIC|COPYING|COPYRIGHT|LICENSE|LICENCE)/i;
     }
     if (scalar @license_files == 0 && $manifest =~ m/(README)[\n\s]/i) {
         @license_files = ($1);
