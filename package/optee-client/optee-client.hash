@@ -1,4 +1,4 @@
-# From https://github.com/OP-TEE/optee_client/archive/3.5.0.tar.gz
-sha256 b7f6f8ac57c0c9b0cc59c34a2622b9ff3ae85676d2da10176fb2eaaa10716083  optee-client-3.5.0.tar.gz
+# From https://github.com/OP-TEE/optee_client/archive/3.7.0.tar.gz
+sha256 7a31076a3a77398c6db2b5d3e0a6ac297923bee126ff83430e8f1ebc2a060faa  optee-client-3.7.0.tar.gz
 # Locally computed
 sha256 fda8385993f112d7ca61b88b54ba5b4cbeec7e43a0f9b317d5186703c1985e8f  LICENSE
