@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-SAFECLIB_VERSION = 03032018
-SAFECLIB_SITE = $(call github,rurban,safeclib,v$(SAFECLIB_VERSION))
+SAFECLIB_VERSION = 17102019
+SAFECLIB_SITE = \
+	https://github.com/rurban/safeclib/releases/download/v$(SAFECLIB_VERSION)
+SAFECLIB_SOURCE = libsafec-$(SAFECLIB_VERSION).0-g5d92be.tar.bz2
 SAFECLIB_LICENSE = MIT
 SAFECLIB_LICENSE_FILES = COPYING
 SAFECLIB_INSTALL_STAGING = YES
-# From git
-SAFECLIB_AUTORECONF = YES
 
 $(eval $(autotools-package))

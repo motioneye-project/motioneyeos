@@ -1,3 +1,5 @@
-# Locally computed:
-sha256	51f66832853322a4fbe677e196ab4c68317261829edb5e56725ed96a07ea50e6	safeclib-03032018.tar.gz
+# From https://github.com/rurban/safeclib/releases/tag/v17102019
+sha256	b8824429f4281a1fe8cf74ba020e26f4551005c8907f0b6f1e639fee68326159	libsafec-17102019.0-g5d92be.tar.bz2
+
+# Hash for license file
 sha256	c33e77efd5781e3d59a2bb648c82d2a615035ef0d24cf58880380e3af906510b	COPYING
