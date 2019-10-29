@@ -1,0 +1,48 @@
+From 04052336f84a84811dd03bfed4cfcb4fe7b424cc Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 29 Oct 2019 11:21:47 +0100
+Subject: [PATCH] test/nptl/tst-mqueue4.c: fix build with latest glibc
+
+Fix the following error with latest glibc:
+
+In file included from /home/fabrice/buildroot/output/host/riscv32-buildroot-linux-gnu/sysroot/usr/include/mqueue.h:93:0,
+                 from tst-mqueue4.c:22:
+In function 'mq_open',
+    inlined from 'do_test' at tst-mqueue4.c:174:6:
+/home/fabrice/buildroot/output/host/riscv32-buildroot-linux-gnu/sysroot/usr/include/bits/mqueue2.h:41:5: error: call to '__mq_open_wrong_number_of_args' declared with attribute error: mq_open can be called either with 2 or 4 arguments
+     __mq_open_wrong_number_of_args ();
+     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Fixes:
+ - http://autobuild.buildroot.net/results/f370abcc8dc12975d96a46c34db978554f8c21db
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/wbx-github/uclibc-ng-test/pull/1]
+---
+ test/nptl/tst-mqueue4.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/test/nptl/tst-mqueue4.c b/test/nptl/tst-mqueue4.c
+index 87ef0c3..1fbecc5 100644
+--- a/test/nptl/tst-mqueue4.c
++++ b/test/nptl/tst-mqueue4.c
+@@ -171,14 +171,14 @@ do_test (void)
+       result = 1;
+     }
+ 
+-  q2 = mq_open (name, O_RDONLY, 0600);
++  q2 = mq_open (name, O_RDONLY, 0600, &attr);
+   if (q2 == (mqd_t) -1)
+     {
+       printf ("mq_open without O_CREAT failed with %m\n");
+       result = 1;
+     }
+ 
+-  mqd_t q3 = mq_open (name, O_RDONLY, 0600);
++  mqd_t q3 = mq_open (name, O_RDONLY, 0600, &attr);
+   if (q3 == (mqd_t) -1)
+     {
+       printf ("mq_open without O_CREAT failed with %m\n");
+-- 
+2.23.0
+
