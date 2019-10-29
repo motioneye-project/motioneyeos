@@ -99,7 +99,7 @@ From a first shell:
 	-S
 
 From a second shell:
-  ./output/host/bin/arm-linux-gnueabihf-gdb
+  ./output/host/bin/arm-linux-gdb
   GNU gdb (GNU Toolchain for the A-profile Architecture 8.2-2018-08 (arm-rel-8.23)) 8.1.1.20180704-git
   Copyright (C) 2018 Free Software Foundation, Inc.
   ...
@@ -111,7 +111,7 @@ From this GDB console, connect to the target, load the OP-TEE core symbols,
 set a breakpoint to its entry point (__text_start) and start emulation:
 
   (gdb) target remote 127.0.0.1:1234
-  (gdb) symbol-file ../build/optee_os-<reference>/out/arm/core/tee.elf
+  (gdb) symbol-file ./output/build/optee-os-<reference>/out/arm/core/tee.elf
   (gdb) hbreak __text_start
   Hardware assisted breakpoint 1 at 0xe100000: file core/arch/arm/kernel/generic_entry_a32.S, line 246.
   (gdb) cont
