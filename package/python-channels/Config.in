@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_CHANNELS
 	bool "python-channels"
+	depends on BR2_INSTALL_LIBSTDCPP # python-daphne -> python-autobahn -> python-cryptography
 	depends on BR2_PACKAGE_PYTHON3 # python-daphne
 	select BR2_PACKAGE_PYTHON_ASGIREF # runtime
 	select BR2_PACKAGE_PYTHON_DAPHNE # runtime
@@ -13,3 +14,7 @@ config BR2_PACKAGE_PYTHON_CHANNELS
 	  own protocols and needs.
 
 	  http://github.com/django/channels
+
+comment "python-channels needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3

@@ -1,5 +1,6 @@
 config BR2_PACKAGE_PYTHON_DAPHNE
 	bool "python-daphne"
+	depends on BR2_INSTALL_LIBSTDCPP # python-autobahn -> python-cryptography
 	depends on BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_PYTHON_ASGIREF # runtime
 	select BR2_PACKAGE_PYTHON_AUTOBAHN # runtime
@@ -12,3 +13,7 @@ config BR2_PACKAGE_PYTHON_DAPHNE
 	  versus HTTP endpoints.
 
 	  https://github.com/django/daphne
+
+comment "python-daphne needs a toolchain w/ C++"
+	depends on !BR2_INSTALL_LIBSTDCPP
+	depends on BR2_PACKAGE_PYTHON3
