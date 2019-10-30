@@ -51,6 +51,13 @@ else
 OPENVPN_CONF_OPTS += --disable-plugin-auth-pam
 endif
 
+ifeq ($(BR2_PACKAGE_PKCS11_HELPER),y)
+OPENVPN_DEPENDENCIES += pkcs11-helper
+OPENVPN_CONF_OPTS += --enable-pkcs11
+else
+OPENVPN_CONF_OPTS += --disable-pkcs11
+endif
+
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
 OPENVPN_DEPENDENCIES += systemd
 OPENVPN_CONF_OPTS += --enable-systemd
