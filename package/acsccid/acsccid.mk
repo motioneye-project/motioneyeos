@@ -13,4 +13,8 @@ ACSCCID_INSTALL_STAGING = YES
 ACSCCID_DEPENDENCIES = pcsc-lite host-flex host-pkgconf libusb
 ACSCCID_CONF_OPTS = --enable-usbdropdir=/usr/lib/pcsc/drivers
 
+ifeq ($(BR2_PACKAGE_LIBICONV),y)
+ACSCCID_DEPENDENCIES += libiconv
+endif
+
 $(eval $(autotools-package))
