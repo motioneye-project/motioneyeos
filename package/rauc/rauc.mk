@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-RAUC_VERSION = 1.1
+RAUC_VERSION = 1.2
 RAUC_SITE = https://github.com/rauc/rauc/releases/download/v$(RAUC_VERSION)
 RAUC_SOURCE = rauc-$(RAUC_VERSION).tar.xz
 RAUC_LICENSE = LGPL-2.1
 RAUC_LICENSE_FILES = COPYING
-RAUC_DEPENDENCIES = host-pkgconf openssl libglib2
+RAUC_DEPENDENCIES = host-pkgconf openssl libglib2 dbus
 
 ifeq ($(BR2_PACKAGE_RAUC_NETWORK),y)
 RAUC_CONF_OPTS += --enable-network
