@@ -11,7 +11,6 @@ OPENVPN_DEPENDENCIES = host-pkgconf openssl
 OPENVPN_LICENSE = GPL-2.0
 OPENVPN_LICENSE_FILES = COPYRIGHT.GPL
 OPENVPN_CONF_OPTS = \
-	--disable-plugin-auth-pam \
 	--enable-iproute2 \
 	--with-crypto-library=openssl \
 	$(if $(BR2_STATIC_LIBS),--disable-plugins)
@@ -43,6 +42,13 @@ OPENVPN_DEPENDENCIES += libselinux
 OPENVPN_CONF_OPTS += --enable-selinux
 else
 OPENVPN_CONF_OPTS += --disable-selinux
+endif
+
+ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
+OPENVPN_DEPENDENCIES += linux-pam
+OPENVPN_CONF_OPTS += --enable-plugin-auth-pam
+else
+OPENVPN_CONF_OPTS += --disable-plugin-auth-pam
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD),y)
