@@ -54,6 +54,7 @@ F:	package/nginx-naxsi/
 F:	package/openjdk/
 F:	package/openjdk-bin/
 F:	package/php/
+F:	package/pkcs11-helper/
 F:	package/policycoreutils/
 F:	package/prelink-cross/
 F:	package/polkit/
