@@ -1,3 +1,3 @@
 # computed by luarocks/buildroot
-sha256 3c993af8a392511380bf75f68525b5d1f2c6ecdddd17e72d0b51b39c710fa127  luasec-0.8-1.src.rock
-sha256 93b708a114eb0b1028b0549116361da1d24131b042a2bd434c683c7a504877b8  luasec-luasec-0.8/LICENSE
+sha256 b87c7d3bc5f07f5ad6fcf90f32f182d9a4a3f5f6b07e19221a86e89179ebd702  luasec-0.9-1.src.rock
+sha256 4e1b2e7a46c756febf3ea76440fb5456c17e6c0312fd0135bd4649f4a2cd0d41  luasec/LICENSE
