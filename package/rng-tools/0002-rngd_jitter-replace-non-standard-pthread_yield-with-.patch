@@ -1,0 +1,33 @@
+From 96f1f4d5d718834c1fde610cbed89cfa9a2206f1 Mon Sep 17 00:00:00 2001
+From: Nicola Lunghi <25422924+nicola-lunghi@users.noreply.github.com>
+Date: Wed, 5 Jun 2019 16:38:21 +0100
+Subject: [PATCH] rngd_jitter: replace non standard pthread_yield with
+ sched_yield
+
+Upsteam commit:
+https://github.com/nhorman/rng-tools/commit/96f1f4d5d718834c1fde610cbed89cfa9a2206f1
+
+[Original was Nicola's but it does not include a Signed-off-by]
+Signed-off-by: Matt Weber <matthew.weber@rockwellcollins.com>
+
+
+---
+ rngd_jitter.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rngd_jitter.c b/rngd_jitter.c
+index 979e613..54070ae 100644
+--- a/rngd_jitter.c
++++ b/rngd_jitter.c
+@@ -168,7 +168,7 @@ try_again:
+ 		} else if (request < need) {
+ 			if (request == -1) {
+ 				message(LOG_DAEMON|LOG_DEBUG, "failed read: %s\n", strerror(errno));
+-				pthread_yield();
++				sched_yield();
+ 			} else
+ 				message(LOG_DAEMON|LOG_DEBUG, "request of random data returns %ld less than need %ld\n",
+ 					request, need);
+-- 
+2.17.1
+
