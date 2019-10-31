@@ -29,6 +29,10 @@ SYSREPO_CONF_OPTS = \
 # build .. https://github.com/sysrepo/sysrepo/issues/947
 SYSREPO_CONF_OPTS += -DUSE_SR_MEM_MGMT=OFF
 
+ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
+SYSREPO_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-latomic
+endif
+
 define SYSREPO_INSTALL_INIT_SYSV
 	$(INSTALL) -m 755 -D package/sysrepo/S50sysrepod \
 		$(TARGET_DIR)/etc/init.d/S50sysrepod
