@@ -1563,10 +1563,6 @@ endmenu
 
 menu "Networking"
 	source "package/agentpp/Config.in"
-	source "package/alljoyn/Config.in"
-	source "package/alljoyn-base/Config.in"
-	source "package/alljoyn-tcl/Config.in"
-	source "package/alljoyn-tcl-base/Config.in"
 	source "package/azmq/Config.in"
 	source "package/azure-iot-sdk-c/Config.in"
 	source "package/batman-adv/Config.in"

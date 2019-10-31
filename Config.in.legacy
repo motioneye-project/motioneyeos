@@ -146,6 +146,48 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_ALLJOYN
+	bool "alljoyn was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_BASE
+	bool "alljoyn-base was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_BASE_CONTROLPANEL
+	bool "alljoyn-base control panel was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_BASE_NOTIFICATION
+	bool "alljoyn-base notification was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_BASE_ONBOARDING
+	bool "alljoyn-base onboarding was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_TCL_BASE
+	bool "alljoyn-tcl-base was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
+config BR2_PACKAGE_ALLJOYN_TCL
+	bool "alljoyn-tcl was removed"
+	select BR2_LEGACY
+	help
+	  The alljoyn framework is dead
+
 config BR2_TOOLCHAIN_EXTRA_EXTERNAL_LIBS
 	string "toolchain-external extra libs option has been renamed"
 	help

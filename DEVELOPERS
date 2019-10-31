@@ -803,10 +803,6 @@ F:	package/libmaxminddb/
 F:	package/openzwave/
 
 N:	Fabrice Fontaine <fontaine.fabrice@gmail.com>
-F:	package/alljoyn/
-F:	package/alljoyn-base/
-F:	package/alljoyn-tcl/
-F:	package/alljoyn-tcl-base/
 F:	package/boinc/
 F:	package/cairo/
 F:	package/duktape/
