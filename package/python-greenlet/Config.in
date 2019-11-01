@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_GREENLET
+	bool "python-greenlet"
+	help
+	  Lightweight in-process concurrent programming.
+
+	  https://github.com/python-greenlet/greenlet
