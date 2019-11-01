@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PYTHON_ENGINEIO_VERSION = 3.9.3
-PYTHON_ENGINEIO_SITE = https://files.pythonhosted.org/packages/f4/e4/d46daeb6010781d56f3468d0ad4e11e2d44aafc4ec521327a19d80f536f2
+PYTHON_ENGINEIO_VERSION = 3.10.0
+PYTHON_ENGINEIO_SITE = https://files.pythonhosted.org/packages/78/8e/c58cf2725fd17d65b9fe818b70aff4ccce4903b47aaee6f4321727a8b8bb
 PYTHON_ENGINEIO_SETUP_TYPE = setuptools
 PYTHON_ENGINEIO_LICENSE = MIT
 PYTHON_ENGINEIO_LICENSE_FILES = LICENSE
