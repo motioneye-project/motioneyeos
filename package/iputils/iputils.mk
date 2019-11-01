@@ -31,6 +31,8 @@ else
 IPUTILS_CONF_OPTS += -DUSE_IDN=false
 endif
 
+IPUTILS_NINFOD = y
+
 ifeq ($(BR2_PACKAGE_NETTLE),y)
 IPUTILS_CONF_OPTS += -DUSE_CRYPTO=nettle
 IPUTILS_DEPENDENCIES += nettle
@@ -46,11 +48,22 @@ IPUTILS_DEPENDENCIES += linux-headers
 else
 IPUTILS_CONF_OPTS += -DUSE_CRYPTO=none
 # BUILD_NINFOD=true and USE_CRYPTO=none cannot be combined
-IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
+IPUTILS_NINFOD = n
 endif
 
 # ninfod requires <pthread.h>
 ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
+IPUTILS_NINFOD = n
+endif
+
+ifeq ($(IPUTILS_NINFOD),y)
+IPUTILS_CONF_OPTS += -DBUILD_NINFOD=true
+define IPUTILS_INSTALL_SERVICE_NINFOD
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../lib/systemd/system/ninfod.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ninfod.service
+endef
+else
 IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
 endif
 
@@ -102,5 +115,16 @@ define IPUTILS_PERMISSIONS
 	/usr/bin/traceroute6  f 4755 0 0 - - - - -
 endef
 endif
+
+define IPUTILS_INSTALL_SERVICE_RDISC
+	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
+	ln -sf ../../../../lib/systemd/system/rdisc.service \
+		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/rdisc.service
+endef
+
+define IPUTILS_INSTALL_INIT_SYSTEMD
+	$(IPUTILS_INSTALL_SERVICE_NINFOD)
+	$(IPUTILS_INSTALL_SERVICE_RDISC)
+endef
 
 $(eval $(meson-package))
