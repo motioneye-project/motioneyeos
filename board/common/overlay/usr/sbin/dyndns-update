@@ -8,3 +8,4 @@ fi
 
 logger -t dyndns "updating dynamic DNS"
 bash "${SCRIPT}" 2>&1 | logger -t dyndns
+exit ${PIPESTATUS[0]}

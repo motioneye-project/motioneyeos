@@ -1,0 +1,27 @@
+#!/bin/bash
+
+PROG="/usr/sbin/dyndns-update"
+SCRIPT="/data/etc/dyndns-update.sh"
+
+
+test -s ${SCRIPT} || exit 0
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+case "$1" in
+    start)
+        msg_begin "Updating dynamic DNS"
+        ${PROG} &>/dev/null
+        test $? == 0 && msg_done || msg_fail
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
