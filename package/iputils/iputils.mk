@@ -31,8 +31,6 @@ else
 IPUTILS_CONF_OPTS += -DUSE_IDN=false
 endif
 
-IPUTILS_NINFOD = y
-
 ifeq ($(BR2_PACKAGE_NETTLE),y)
 IPUTILS_CONF_OPTS += -DUSE_CRYPTO=nettle
 IPUTILS_DEPENDENCIES += nettle
@@ -56,15 +54,15 @@ ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 IPUTILS_NINFOD = n
 endif
 
-ifeq ($(IPUTILS_NINFOD),y)
+ifeq ($(IPUTILS_NINFOD),n)
+IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
+else
 IPUTILS_CONF_OPTS += -DBUILD_NINFOD=true
 define IPUTILS_INSTALL_SERVICE_NINFOD
 	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
 	ln -sf ../../../../lib/systemd/system/ninfod.service \
 		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ninfod.service
 endef
-else
-IPUTILS_CONF_OPTS += -DBUILD_NINFOD=false
 endif
 
 ifeq ($(BR2_SYSTEM_ENABLE_NLS),y)
