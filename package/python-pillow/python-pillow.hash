@@ -1,4 +1,5 @@
-# sha256 for python-pillow from https://pypi.org/project/Pillow/
-# sha256 for LICENSE locally computed
-sha256 4548236844327a718ce3bb182ab32a16fa2050c61e334e959f554cac052fb0df  Pillow-6.2.0.tar.gz
-sha256 64ea4328ed56392b423ef968519a9ad427e3de9b985862c95ed2ed4d793d22ee  LICENSE
+# md5, sha256 from https://pypi.org/pypi/pillow/json
+md5	13acde283ece6ac69f62609fa108d316  Pillow-6.2.1.tar.gz
+sha256	bf4e972a88f8841d8fdc6db1a75e0f8d763e66e3754b03006cbc3854d89f1cb1  Pillow-6.2.1.tar.gz
+# Locally computed sha256 checksums
+sha256	64ea4328ed56392b423ef968519a9ad427e3de9b985862c95ed2ed4d793d22ee  LICENSE
