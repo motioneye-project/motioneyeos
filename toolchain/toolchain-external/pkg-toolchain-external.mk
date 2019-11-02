@@ -93,6 +93,7 @@ TOOLCHAIN_EXTERNAL_SUFFIX = \
 TOOLCHAIN_EXTERNAL_CROSS = $(TOOLCHAIN_EXTERNAL_BIN)/$(TOOLCHAIN_EXTERNAL_PREFIX)-
 TOOLCHAIN_EXTERNAL_CC = $(TOOLCHAIN_EXTERNAL_CROSS)gcc$(TOOLCHAIN_EXTERNAL_SUFFIX)
 TOOLCHAIN_EXTERNAL_CXX = $(TOOLCHAIN_EXTERNAL_CROSS)g++$(TOOLCHAIN_EXTERNAL_SUFFIX)
+TOOLCHAIN_EXTERNAL_GDC = $(TOOLCHAIN_EXTERNAL_CROSS)gdc$(TOOLCHAIN_EXTERNAL_SUFFIX)
 TOOLCHAIN_EXTERNAL_FC = $(TOOLCHAIN_EXTERNAL_CROSS)gfortran$(TOOLCHAIN_EXTERNAL_SUFFIX)
 TOOLCHAIN_EXTERNAL_READELF = $(TOOLCHAIN_EXTERNAL_CROSS)readelf
 
@@ -266,7 +267,7 @@ define TOOLCHAIN_EXTERNAL_INSTALL_WRAPPER
 		*-ar|*-ranlib|*-nm) \
 			ln -sf $$(echo $$i | sed 's%^$(HOST_DIR)%..%') .; \
 			;; \
-		*cc|*cc-*|*++|*++-*|*cpp|*-gfortran) \
+		*cc|*cc-*|*++|*++-*|*cpp|*-gfortran|*-gdc) \
 			ln -sf toolchain-wrapper $$base; \
 			;; \
 		*gdb|*gdbtui) \
@@ -550,6 +551,9 @@ define $(2)_CONFIGURE_CMDS
 	fi ; \
 	if test "$$(BR2_INSTALL_LIBSTDCPP)" = "y" ; then \
 		$$(call check_cplusplus,$$(TOOLCHAIN_EXTERNAL_CXX)) ; \
+	fi ; \
+	if test "$$(BR2_TOOLCHAIN_HAS_DLANG)" = "y" ; then \
+		$$(call check_dlang,$$(TOOLCHAIN_EXTERNAL_GDC)) ; \
 	fi ; \
 	if test "$$(BR2_TOOLCHAIN_HAS_FORTRAN)" = "y" ; then \
 		$$(call check_fortran,$$(TOOLCHAIN_EXTERNAL_FC)) ; \

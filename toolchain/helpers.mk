@@ -342,6 +342,24 @@ check_cplusplus = \
 
 #
 #
+# Check that the external toolchain supports D language
+#
+# $1: cross-gdc path
+#
+check_dlang = \
+	__CROSS_GDC=$(strip $1) ; \
+	__o=$(BUILD_DIR)/.br-toolchain-test-dlang.tmp ; \
+	printf 'import std.stdio;\nvoid main() { writeln("Hello World!"); }\n' | \
+	$${__CROSS_GDC} -x d -o $${__o} - ; \
+	if test $$? -ne 0 ; then \
+		rm -f $${__o}* ; \
+		echo "D language support is selected but is not available in external toolchain" ; \
+		exit 1 ; \
+	fi ; \
+	rm -f $${__o}* \
+
+#
+#
 # Check that the external toolchain supports Fortran
 #
 # $1: cross-gfortran path
