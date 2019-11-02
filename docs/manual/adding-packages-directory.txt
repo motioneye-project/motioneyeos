@@ -322,6 +322,10 @@ use in the comment.
 ** Dependency symbol: +BR2_INSTALL_LIBSTDCPP+
 ** Comment string: `C++`
 
+* D support
+** Dependency symbol: +BR2_TOOLCHAIN_HAS_DLANG+
+** Comment string: `Dlang`
+
 * Fortran support
 ** Dependency symbol: +BR2_TOOLCHAIN_HAS_FORTRAN+
 ** Comment string: `fortran`
