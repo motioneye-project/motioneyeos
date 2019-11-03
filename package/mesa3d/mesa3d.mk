@@ -10,9 +10,6 @@ MESA3D_SOURCE = mesa-$(MESA3D_VERSION).tar.xz
 MESA3D_SITE = https://mesa.freedesktop.org/archive
 MESA3D_LICENSE = MIT, SGI, Khronos
 MESA3D_LICENSE_FILES = docs/license.html
-# 0002-configure.ac-invert-order-for-wayland-scanner-check.patch
-# 0003-set-LIBCLC_INCLUDEDIR.patch
-MESA3D_AUTORECONF = YES
 
 MESA3D_INSTALL_STAGING = YES
 
