@@ -1,0 +1,12 @@
+#!/bin/bash
+
+PROG="/usr/sbin/dehydrated-wrapper"
+SSL_DIR="/data/etc/ssl"
+
+if ! [[ -d "${SSL_DIR}" ]]; then
+    exit 0
+fi
+
+logger -t dehydrated "updating SSL certificates"
+${PROG} -c 2>&1 | logger -t dehydrated
+exit ${PIPESTATUS[0]}

@@ -13,4 +13,4 @@ mkdir -p "${BASE_DIR}"
 mkdir -p "${TMP_DIR}"
 
 logger -t dehydrated "checking for certificate renewal"
-dehydrated -c
+dehydrated "$@"
