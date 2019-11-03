@@ -70,4 +70,13 @@ define SUDO_REMOVE_DIST_EXAMPLES
 endef
 SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_REMOVE_DIST_EXAMPLES
 
+define SUDO_USERS
+	- - sudo -1 - - - -
+endef
+
+define SUDO_ENABLE_SUDO_GROUP_RULE
+	$(SED) '/^# \%sudo\tALL=(ALL) ALL/s/^# //' $(TARGET_DIR)/etc/sudoers
+endef
+SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_ENABLE_SUDO_GROUP_RULE
+
 $(eval $(autotools-package))
