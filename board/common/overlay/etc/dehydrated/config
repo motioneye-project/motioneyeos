@@ -1,0 +1,6 @@
+BASEDIR="/var/lib/dehydrated"
+DOMAINS_TXT="/data/etc/ssl/domain"
+WELLKNOWN="/tmp/dehydrated"
+HOOK="/usr/libexec/dehydrated-hook"
+CONTACT_EMAIL="$(</data/etc/ssl/email)"
+AUTO_CLEANUP="yes"
