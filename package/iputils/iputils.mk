@@ -49,6 +49,10 @@ IPUTILS_CONF_OPTS += -DUSE_CRYPTO=none
 IPUTILS_NINFOD = n
 endif
 
+ifeq ($(BR2_PACKAGE_SYSTEMD),y)
+IPUTILS_DEPENDENCIES += systemd
+endif
+
 # ninfod requires <pthread.h>
 ifneq ($(BR2_TOOLCHAIN_HAS_THREADS),y)
 IPUTILS_NINFOD = n
