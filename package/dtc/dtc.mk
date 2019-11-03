@@ -18,8 +18,11 @@ DTC_MAKE_OPTS = \
 	NO_PYTHON=1 \
 	NO_VALGRIND=1
 
+# For the host, we install headers in a special subdirectory to avoid
+# conflicts with the in-kernel libfdt copy.
 HOST_DTC_MAKE_OPTS = \
 	PREFIX=$(HOST_DIR) \
+	INCLUDEDIR=$(HOST_DIR)/include/libfdt \
 	NO_PYTHON=1 \
 	NO_VALGRIND=1 \
 	NO_YAML=1
