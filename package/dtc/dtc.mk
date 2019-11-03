@@ -10,8 +10,8 @@ DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPL-2.0+ or BSD-2-Clause (library)
 DTC_LICENSE_FILES = README.license GPL
 DTC_INSTALL_STAGING = YES
-DTC_DEPENDENCIES = host-bison host-flex
-HOST_DTC_DEPENDENCIES = host-bison host-flex
+DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
+HOST_DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
 
 DTC_MAKE_OPTS = \
 	PREFIX=/usr \
@@ -25,7 +25,7 @@ HOST_DTC_MAKE_OPTS = \
 	NO_YAML=1
 
 ifeq ($(BR2_PACKAGE_LIBYAML),y)
-DTC_DEPENDENCIES += host-pkgconf libyaml
+DTC_DEPENDENCIES += libyaml
 else
 DTC_MAKE_OPTS += NO_YAML=1
 endif
