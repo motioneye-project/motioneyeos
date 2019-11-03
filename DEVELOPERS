@@ -1388,6 +1388,10 @@ F:	package/ti-sgx-demos/
 F:	package/ti-sgx-km/
 F:	package/ti-sgx-um/
 
+N:	Louis Aussedat <aussedat.louis@gmail.com>
+F:	board/friendlyarm/nanopi-neo-plus2/
+F:	configs/friendlyarm_nanopi_neo_plus2_defconfig
+
 N:	Louis-Paul Cordier <lpdev@cordier.org>
 F:	package/intel-gmmlib/
 F:	package/intel-mediadriver/
@@ -2528,7 +2532,3 @@ F:	package/qjson/
 F:	package/quazip/
 F:	package/shapelib/
 F:	package/tinc/
-
-N:  Aussedat Louis <aussedat.louis@gmail.com>
-F:	board/friendlyarm/nanopi-neo-plus2/
-F:	configs/friendlyarm_nanopi_neo_plus2_defconfig
