@@ -183,7 +183,7 @@ MESA3D_DEPENDENCIES += wayland wayland-protocols
 MESA3D_PLATFORMS += wayland
 MESA3D_CONF_OPTS += -Dwayland-scanner-path=$(HOST_DIR)/bin/wayland-scanner
 endif
-ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_GLX),y)
+ifeq ($(BR2_PACKAGE_MESA3D_NEEDS_X11),y)
 MESA3D_DEPENDENCIES += \
 	xlib_libX11 \
 	xlib_libXext \
