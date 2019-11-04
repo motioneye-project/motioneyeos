@@ -1,2 +1,4 @@
 # From http://www.bytereef.org/mpdecimal/download.html
-sha256 da74d3cfab559971a4fbd4fb506e1b4498636eb77d0fd09e44f8e546d18ac068 mpdecimal-2.4.1.tar.gz
+sha256 83c628b90f009470981cf084c5418329c88b19835d8af3691b930afccb7d79c7 mpdecimal-2.4.2.tar.gz
+# Locally computed
+sha256 e384413a13f061a50f6fadceefc0f326c22d83c13ae94978e1f86d0468332c19 LICENSE.txt
