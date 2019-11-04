@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LXC_VERSION = 3.1.0
+LXC_VERSION = 3.2.1
 LXC_SITE = https://linuxcontainers.org/downloads/lxc
 LXC_LICENSE = LGPL-2.1+
 LXC_LICENSE_FILES = COPYING
