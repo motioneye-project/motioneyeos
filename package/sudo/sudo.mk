@@ -64,4 +64,10 @@ define SUDO_PERMISSIONS
 	/usr/bin/sudo f 4755 0 0 - - - - -
 endef
 
+define SUDO_REMOVE_DIST_EXAMPLES
+	$(RM) $(TARGET_DIR)/etc/sudoers.dist
+	rmdir $(TARGET_DIR)/etc/sudoers.d
+endef
+SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_REMOVE_DIST_EXAMPLES
+
 $(eval $(autotools-package))
