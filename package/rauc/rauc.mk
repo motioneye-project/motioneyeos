@@ -36,7 +36,11 @@ HOST_RAUC_DEPENDENCIES = \
 	host-libglib2 \
 	host-squashfs \
 	$(if $(BR2_PACKAGE_HOST_LIBP11),host-libp11)
-HOST_RAUC_CONF_OPTS += --disable-network --disable-json --disable-service
+HOST_RAUC_CONF_OPTS += \
+	--disable-network \
+	--disable-json \
+	--disable-service \
+	--without-dbuspolicydir
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
