@@ -60,10 +60,10 @@ To start the build process, simply run:
  $ make
 --------------------
 
-You *should never* use +make -jN+ with Buildroot: top-level parallel
-make is currently not supported. Instead, use the +BR2_JLEVEL+ option
-to tell Buildroot to run the compilation of each individual package
-with +make -jN+.
+By default, Buildroot does not support top-level parallel build, so
+running +make -jN+ is not necessary. There is however experimental
+support for top-level parallel build, see
+xref:top-level-parallel-build[].
 
 The `make` command will generally perform the following steps:
 

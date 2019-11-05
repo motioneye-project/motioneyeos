@@ -347,6 +347,53 @@ Refer to the help text of this script for more details:
 utils/size-stats-compare -h
 ----------------
 
+[[top-level-parallel-build]]
+=== Top-level parallel build
+
+.Note
+This section deals with a very experimental feature, which is known to
+break even in some non-unusual situations. Use at your own risk.
+
+Buildroot has always been capable of using parallel build on a per
+package basis: each package is built by Buildroot using +make -jN+ (or
+the equivalent invocation for non-make-based build systems). The level
+of parallelism is by default number of CPUs + 1, but it can be
+adjusted using the +BR2_JLEVEL+ configuration option.
+
+Until 2020.02, Buildroot was however building packages in a serial
+fashion: each package was built one after the other, without
+parallelization of the build between packages. As of 2020.02,
+Buildroot has experimental support for *top-level parallel build*,
+which allows some signicant build time savings by building packages
+that have no dependency relationship in parallel. This feature is
+however marked as experimental and is known not to work in some cases.
+
+In order to use top-level parallel build, one must:
+
+. Enable the option +BR2_PER_PACKAGE_DIRECTORIES+ in the Buildroot
+configuration
+
+. Use +make -jN+ when starting the Buildroot build
+
+Internally, the +BR2_PER_PACKAGE_DIRECTORIES+ will enable a mechanism
+called *per-package directories*, which will have the following
+effects:
+
+* Instead of a global _target_ directory and a global _host_ directory
+  common to all packages, per-package _target_ and _host_ directories
+  will be used, in +$(O)/per-package/<pkg>/target/+ and
+  +$(O)/per-package/<pkg>/host/+ respectively. Those folders will be
+  populated from the corresponding folders of the package dependencies
+  at the beginning of +<pkg>+ build. The compiler and all other tools
+  will therefore only be able to see and access files installed by
+  dependencies explicitly listed by +<pkg>+.
+
+* At the end of the build, the global _target_ and _host_ directories
+  will be populated, located in +$(O)/target+ and +$(O)/host+
+  respectively. This means that during the build, those folders will
+  be empty and it's only at the very end of the build that they will
+  be populated.
+
 include::eclipse-integration.txt[]
 
 include::advanced.txt[]
