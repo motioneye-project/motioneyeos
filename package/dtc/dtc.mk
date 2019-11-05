@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DTC_VERSION = 1.5.1
+DTC_VERSION = 1.5.0
 DTC_SOURCE = dtc-$(DTC_VERSION).tar.xz
 DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPL-2.0+ or BSD-2-Clause (library)

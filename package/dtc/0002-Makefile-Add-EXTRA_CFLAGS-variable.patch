@@ -1,0 +1,37 @@
+From f7c659d7daff5dbf4a0be959a544f15eab7fc49c Mon Sep 17 00:00:00 2001
+From: Joel Stanley <joel@jms.id.au>
+Date: Mon, 22 Jul 2019 12:21:49 +0930
+Subject: [PATCH] Makefile: Add EXTRA_CFLAGS variable
+
+Distributions packaging dtc may need to set extra flags. Currently when
+they do that it overrides the ones set by the makefile. This is
+particularly problematic when compiling without yaml, as the yaml
+detection is ignored.
+
+ ld: dtc.o: in function `main':
+ dtc.c:(.text.startup+0x718): undefined reference to `dt_to_yaml'
+
+This patch provides a EXTRA_CFLAGS variable that is added to the list of
+CFLAGS, and can be set on the command line when packaging.
+
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index e6b32cf1cbf5..6807669569b3 100644
+--- a/Makefile
++++ b/Makefile
+@@ -18,7 +18,7 @@ CONFIG_LOCALVERSION =
+ CPPFLAGS = -I libfdt -I .
+ WARNINGS = -Wall -Wpointer-arith -Wcast-qual -Wnested-externs \
+ 	-Wstrict-prototypes -Wmissing-prototypes -Wredundant-decls -Wshadow
+-CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS)
++CFLAGS = -g -Os $(SHAREDLIB_CFLAGS) -Werror $(WARNINGS) $(EXTRA_CFLAGS)
+ 
+ BISON = bison
+ LEX = flex
+-- 
+2.20.1
+
