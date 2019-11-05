@@ -690,6 +690,24 @@ config BR2_REPRODUCIBLE
 	  This is labeled as an experimental feature, as not all
 	  packages behave properly to ensure reproducibility.
 
+config BR2_PER_PACKAGE_DIRECTORIES
+	bool "Use per-package directories (experimental)"
+	help
+	  This option will change the build process of Buildroot
+	  package to use per-package target and host directories.
+
+	  This is useful for two related purposes:
+
+	    - Cleanly isolate the build of each package, so that a
+	      given package only "sees" the dependencies it has
+	      explicitly expressed, and not other packages that may
+	      have by chance been built before.
+
+	    - Enable top-level parallel build.
+
+	  This is labeled as an experimental feature, as not all
+	  packages behave properly with per-package directories.
+
 endmenu
 
 comment "Security Hardening Options"
