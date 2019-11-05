@@ -51,6 +51,7 @@ config BR2_PACKAGE_LIBCURL_TLS_SUPPORT
 	default y if BR2_PACKAGE_GNUTLS
 	default y if BR2_PACKAGE_LIBNSS
 	default y if BR2_PACKAGE_MBEDTLS
+	default y if BR2_PACKAGE_WOLFSSL
 
 choice
 	prompt "SSL/TLS library to use"
@@ -71,6 +72,10 @@ config BR2_PACKAGE_LIBCURL_LIBNSS
 config BR2_PACKAGE_LIBCURL_MBEDTLS
 	bool "mbed TLS"
 	depends on BR2_PACKAGE_MBEDTLS
+
+config BR2_PACKAGE_LIBCURL_WOLFSSL
+	bool "WolfSSL"
+	depends on BR2_PACKAGE_WOLFSSL
 
 endchoice
 

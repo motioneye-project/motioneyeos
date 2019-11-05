@@ -74,6 +74,13 @@ else
 LIBCURL_CONF_OPTS += --without-mbedtls
 endif
 
+ifeq ($(BR2_PACKAGE_LIBCURL_WOLFSSL),y)
+LIBCURL_CONF_OPTS += --with-wolfssl=$(STAGING_DIR)/usr
+LIBCURL_DEPENDENCIES += wolfssl
+else
+LIBCURL_CONF_OPTS += --without-wolfssl
+endif
+
 ifeq ($(BR2_PACKAGE_C_ARES),y)
 LIBCURL_DEPENDENCIES += c-ares
 LIBCURL_CONF_OPTS += --enable-ares
