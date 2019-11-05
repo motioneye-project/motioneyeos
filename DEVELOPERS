@@ -2504,6 +2504,7 @@ F:	package/libsocketcan/
 F:	package/libubox/
 F:	package/libuci/
 F:	package/linux-firmware/
+F:	package/linux-serial-test/
 F:	package/modem-manager/
 F:	package/nftables/
 F:	package/nuttcp/
