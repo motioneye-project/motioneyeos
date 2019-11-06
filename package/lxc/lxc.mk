@@ -19,13 +19,6 @@ ifeq ($(BR2_PACKAGE_BASH_COMPLETION),y)
 LXC_DEPENDENCIES += bash-completion
 endif
 
-ifeq ($(BR2_PACKAGE_GNUTLS),y)
-LXC_CONF_OPTS += --enable-gnutls
-LXC_DEPENDENCIES += gnutls
-else
-LXC_CONF_OPTS += --disable-gnutls
-endif
-
 ifeq ($(BR2_PACKAGE_LIBCAP),y)
 LXC_CONF_OPTS += --enable-capabilities
 LXC_DEPENDENCIES += libcap
@@ -45,6 +38,13 @@ LXC_CONF_OPTS += --enable-selinux
 LXC_DEPENDENCIES += libselinux
 else
 LXC_CONF_OPTS += --disable-selinux
+endif
+
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+LXC_CONF_OPTS += --enable-openssl
+LXC_DEPENDENCIES += openssl
+else
+LXC_CONF_OPTS += --disable-openssl
 endif
 
 $(eval $(autotools-package))
