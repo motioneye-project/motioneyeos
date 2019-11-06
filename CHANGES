@@ -26,9 +26,9 @@
 	Libre Computer "La Frite", QEMU Armv7-A with trustzone/OP-TEE,
 	STM32MP157 Discovery Kit
 
-	Arch: Default to a sensible floating point ABI based on the
-	selected ISA extensions rather than always defaulting to
-	ILP32/64
+	Arch: RISC-V: Default to a sensible floating point ABI based
+	on the selected ISA extensions rather than always defaulting
+	to ILP32/64
 
 	Graph-size: Package sizes are now shown in human readable form
 	(Kib/Mib/Gib) rather than always in Kib. Binary (KB/MB/GB)
@@ -63,9 +63,9 @@
 
 	New packages: caps, collectl, dav1d, fstrcmp, ima-evm-utils,
 	jitterentropy-library, kodi-vfs-rar, kodi-vfs-sftp, libavl,
-	libhttpserver, libmspack, libnetconf2, libolm, libyang, lrzip,
-	mdevd, minimodem, musl-fts, netifrc, ogre, openlayers,
-	python-aioredis, python-asgiref,
+	libhttpserver, libmspack, libnetconf2, libolm, libyang,
+	linux-serial-test, lrzip, mdevd, minimodem, musl-fts, netifrc,
+	ogre, openlayers, python-aioredis, python-asgiref,
 	python-backports-functools-lru-cache, python-bluezero,
 	python-brotli, python-channels, python-channels-redis,
 	python-colorlog, python-daphne, python-django-enumfields,
