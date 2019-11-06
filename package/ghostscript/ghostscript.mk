@@ -28,7 +28,8 @@ GHOSTSCRIPT_DEPENDENCIES = \
 # http://www.linuxfromscratch.org/blfs/view/svn/pst/gs.html
 define GHOSTSCRIPT_REMOVE_LIBS
 	rm -rf $(@D)/freetype $(@D)/ijs $(@D)/jbig2dec $(@D)/jpeg \
-		$(@D)/lcms2mt $(@D)/libpng $(@D)/tiff $(@D)/zlib
+		$(@D)/lcms2mt $(@D)/libpng $(@D)/openjpeg $(@D)/tiff \
+		$(@D)/zlib
 endef
 GHOSTSCRIPT_POST_PATCH_HOOKS += GHOSTSCRIPT_REMOVE_LIBS
 
@@ -58,6 +59,13 @@ GHOSTSCRIPT_DEPENDENCIES += libidn
 GHOSTSCRIPT_CONF_OPTS += --with-libidn
 else
 GHOSTSCRIPT_CONF_OPTS += --without-libidn
+endif
+
+ifeq ($(BR2_PACKAGE_OPENJPEG),y)
+GHOSTSCRIPT_DEPENDENCIES += openjpeg
+GHOSTSCRIPT_CONF_OPTS += --enable-openjpeg
+else
+GHOSTSCRIPT_CONF_OPTS += --disable-openjpeg
 endif
 
 ifeq ($(BR2_PACKAGE_XLIB_LIBX11),y)
