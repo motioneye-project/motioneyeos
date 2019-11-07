@@ -256,6 +256,7 @@ F:	package/lua-ev/
 F:	package/orbit/
 
 N:	Bartosz Bilas <b.bilas@grinn-global.com>
+F:	package/python-esptool/
 F:	package/python-pyaes/
 F:	package/qt5/qt5scxml/
 F:	package/qt5/qt5webview/
