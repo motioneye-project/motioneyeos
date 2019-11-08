@@ -66,7 +66,7 @@ endef
 
 define SUDO_REMOVE_DIST_EXAMPLES
 	$(RM) $(TARGET_DIR)/etc/sudoers.dist
-	rmdir $(TARGET_DIR)/etc/sudoers.d
+	rmdir --ignore-fail-on-non-empty $(TARGET_DIR)/etc/sudoers.d
 endef
 SUDO_POST_INSTALL_TARGET_HOOKS += SUDO_REMOVE_DIST_EXAMPLES
 
