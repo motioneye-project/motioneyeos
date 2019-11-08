@@ -70,6 +70,12 @@ config BR2_PACKAGE_PHP_EXT_HASH
 	help
 	  HASH message digest framework
 
+config BR2_PACKAGE_PHP_EXT_LIBSODIUM
+	bool "libsodium"
+	select BR2_PACKAGE_LIBSODIUM
+	help
+	  libsodium support
+
 config BR2_PACKAGE_PHP_EXT_MCRYPT
 	bool "mcrypt"
 	select BR2_PACKAGE_LIBMCRYPT
