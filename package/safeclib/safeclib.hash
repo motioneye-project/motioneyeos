@@ -1,5 +1,5 @@
-# From https://github.com/rurban/safeclib/releases/tag/v17102019
-sha256	b8824429f4281a1fe8cf74ba020e26f4551005c8907f0b6f1e639fee68326159	libsafec-17102019.0-g5d92be.tar.bz2
+# From https://github.com/rurban/safeclib/releases/tag/v08112019
+sha256	bc2f25875522c50a3a5901981020d906db0b6a7d365619b8d72412c126be3923	libsafec-08112019.0-gad76c7.tar.bz2
 
 # Hash for license file
 sha256	c33e77efd5781e3d59a2bb648c82d2a615035ef0d24cf58880380e3af906510b	COPYING
