@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_JSONPOINTER
+	bool "python-jsonpointer"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Resolve JSON Pointers in Python.
+
+	  https://github.com/stefankoegl/python-json-pointer
