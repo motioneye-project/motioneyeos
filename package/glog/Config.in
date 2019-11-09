@@ -1,5 +1,7 @@
 config BR2_PACKAGE_GLOG
 	bool "glog"
+	# __ELF__ not defined on Microblaze
+	depends on !BR2_microblaze
 	depends on BR2_INSTALL_LIBSTDCPP
 	help
 	  C++ implementation of the Google logging module
@@ -7,4 +9,5 @@ config BR2_PACKAGE_GLOG
 	  https://github.com/google/glog
 
 comment "glog needs a toolchain w/ C++"
+	depends on !BR2_microblaze
 	depends on !BR2_INSTALL_LIBSTDCPP
