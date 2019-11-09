@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_RPI_USERLAND_START_VCFILED
+	bool "rpi-userland start vcfiled was removed"
+	select BR2_LEGACY
+	help
+	  The vcfiled support was removed upstream.
+
 config BR2_PACKAGE_ALLJOYN
 	bool "alljoyn was removed"
 	select BR2_LEGACY
