@@ -16,6 +16,7 @@ if BR2_PACKAGE_JAILHOUSE
 config BR2_PACKAGE_JAILHOUSE_HELPER_SCRIPTS
 	bool "Jailhouse helper scripts"
 	depends on BR2_PACKAGE_PYTHON
+	select BR2_PACKAGE_PYTHON_MAKO # runtime
 	help
 	  Python-based helpers for the Jailhouse Hypervisor.
 
