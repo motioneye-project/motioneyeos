@@ -1,0 +1,5 @@
+# Generated locally, after checking https://github.com/Hjdskes/cage/releases/download/v0.1.1/cage-0.1.1.tar.gz.sig
+sha256 63efbe96cf307381f2bedf9b80153343e255970a70d612515da7dc325dd49478  cage-0.1.1.tar.gz
+
+# Hashes for license files:
+sha256 1fd28695090b961ed2846627365489228d84f784bff60a90e933febcedaeb65d  LICENSE
