@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2019.11"
 
+config BR2_PACKAGE_OPENVMTOOLS_PROCPS
+	bool "oenvmtools' procps support was removed"
+	select BR2_LEGACY
+	help
+	  Upstream stopped supporting this option a while ago.
+
 config BR2_PACKAGE_ALLJOYN
 	bool "alljoyn was removed"
 	select BR2_LEGACY
