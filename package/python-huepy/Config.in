@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_HUEPY
+	bool "python-huepy"
+	help
+	  Hue will help you to print awesomely in terminals.
+
+	  https://github.com/s0md3v/hue
