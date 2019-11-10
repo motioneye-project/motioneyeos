@@ -1,5 +1,6 @@
 config BR2_PACKAGE_BIRD
 	bool "bird"
+	depends on !BR2_nios2 # relocations don't fit
 	depends on BR2_USE_MMU # fork()
 	help
 	  BIRD Internet Routing Daemon
