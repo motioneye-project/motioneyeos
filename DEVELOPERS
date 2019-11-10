@@ -99,6 +99,7 @@ F:	package/cog/
 F:	package/libepoxy/
 F:	package/libwpe/
 F:	package/webkitgtk/
+F:	package/wlroots/
 F:	package/woff2/
 F:	package/wpebackend-fdo/
 F:	package/wpewebkit/
