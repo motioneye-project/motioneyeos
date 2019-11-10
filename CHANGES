@@ -550,6 +550,42 @@
 	#11761: Building custom kernel 5.1-rc3 or later breaks on objtool
 	#11816: Only selected coreutils binaries are installed
 
+2019.02.7, Released November 10th, 2019
+
+	Important / security related fixes.
+
+	support/testing: use a kernel with HW_RANDOM_VIRTIO to work
+	around issues with lack of entrophy
+
+	Toolchain: Also copy libssp.so for external toolchains if SSP
+	is enabled to handle toolchains providing SSP support in
+	libssp rather than in the C library
+
+	Download: Also use the package download method for extra
+	downloads from the same site, so it does not get confused by
+	URLs containing '+'
+
+	Fakeroot now works correctly under Microsoft Windows 10
+	Services for Linux, which does not provide SYSV IPC support
+
+	utils/test-pkg: ensure to exit with an error upon failure
+
+	Updated/fixed packages: asterisk, azmq, cups-filters,
+	domoticz, duma, elf2flt, eudev, exfat, exfat-utils, fakeroot,
+	file, freerdp, gd, ghostscript, go, gvfs, intel-microcode,
+	kvm-unit-tests, libarchive, libnspr, libnss, libopenssl,
+	libpcap, libpciaccess, librsvg, libseccomp, libsigrok,
+	libtorrent, libunwind, linux-tools, lua-sdl2, lxc, minizip,
+	mjpegtools, mongoose, php, python, python-pysnmp-apps,
+	python3, qemu, qt5base, ruby, safeclib, samba4, sdl_mixer,
+	sox, sudo, systemd, tcpdump, unscd, util-lkinux, vtun, xvisor,
+	yaffs2utils
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11366: [2018.08] SysV IPC not available for fakeroot on WSL
+	#12261: sudo versions prior to 1.8.28 are affected
+
 2019.02.6, Released October 3rd, 2019
 
 	Important / security related fixes.
