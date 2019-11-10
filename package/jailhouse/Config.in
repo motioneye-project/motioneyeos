@@ -1,5 +1,5 @@
 config BR2_PACKAGE_JAILHOUSE
-	bool "Jailhouse"
+	bool "jailhouse"
 	depends on BR2_aarch64 || BR2_x86_64
 	depends on BR2_LINUX_KERNEL
 	help
@@ -7,14 +7,10 @@ config BR2_PACKAGE_JAILHOUSE
 
 	  https://github.com/siemens/jailhouse
 
-comment "Jailhouse needs a Linux kernel to be built"
-	depends on BR2_aarch64 || BR2_x86_64
-	depends on !BR2_LINUX_KERNEL
-
 if BR2_PACKAGE_JAILHOUSE
 
 config BR2_PACKAGE_JAILHOUSE_HELPER_SCRIPTS
-	bool "Jailhouse helper scripts"
+	bool "helper scripts"
 	depends on BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_PYTHON_MAKO # runtime
 	help
@@ -22,7 +18,11 @@ config BR2_PACKAGE_JAILHOUSE_HELPER_SCRIPTS
 
 	  https://github.com/siemens/jailhouse
 
-comment "Jailhouse helper scripts require Python"
+comment "helper scripts require Python"
 	depends on !BR2_PACKAGE_PYTHON
 
 endif
+
+comment "jailhouse needs a Linux kernel to be built"
+	depends on BR2_aarch64 || BR2_x86_64
+	depends on !BR2_LINUX_KERNEL
