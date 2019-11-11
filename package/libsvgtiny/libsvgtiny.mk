@@ -12,6 +12,8 @@ LIBSVGTINY_DEPENDENCIES = \
 	libxml2 host-gperf host-pkgconf host-netsurf-buildsystem
 LIBSVGTINY_LICENSE = MIT
 LIBSVGTINY_LICENSE_FILES = README
+# Package does not build in parallel due to improper make rules
+LIBSVGTINY_MAKE = $(MAKE1)
 
 # The libsvgtiny build system cannot build both the shared and static
 # libraries. So when the Buildroot configuration requests to build
