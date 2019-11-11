@@ -26,6 +26,7 @@ SYSTEMD_CONF_OPTS += \
 	-Dima=false \
 	-Dldconfig=false \
 	-Ddefault-dnssec=no \
+	-Ddefault-hierarchy=hybrid \
 	-Dtests=false \
 	-Dsplit-bin=true \
 	-Dsplit-usr=false \
