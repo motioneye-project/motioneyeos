@@ -1949,6 +1949,7 @@ F:	package/libxml2/
 F:	package/mongoose/
 F:	package/mxml/
 F:	package/python-periphery/
+F:	package/raspi-gpio/
 F:	package/sbc/
 F:	package/stunnel/
 F:	package/tree/
