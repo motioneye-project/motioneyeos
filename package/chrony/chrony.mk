@@ -13,6 +13,7 @@ CHRONY_CONF_OPTS = \
 	--host-system=Linux \
 	--host-machine=$(BR2_ARCH) \
 	--prefix=/usr \
+	--without-readline \
 	--without-tomcrypt \
 	$(if $(BR2_PACKAGE_CHRONY_DEBUG_LOGGING),--enable-debug,--disable-debug)
 
@@ -35,10 +36,10 @@ else
 CHRONY_CONF_OPTS += --without-seccomp
 endif
 
-ifeq ($(BR2_PACKAGE_READLINE),y)
-CHRONY_DEPENDENCIES += readline
+ifeq ($(BR2_PACKAGE_LIBEDIT),y)
+CHRONY_DEPENDENCIES += libedit
 else
-CHRONY_CONF_OPTS += --disable-readline
+CHRONY_CONF_OPTS += --without-editline --disable-readline
 endif
 
 # If pps-tools is available, build it before so the package can use it
