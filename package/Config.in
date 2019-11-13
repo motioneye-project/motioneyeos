@@ -551,6 +551,7 @@ endmenu
 	source "package/udev/Config.in"
 	source "package/udisks/Config.in"
 	source "package/uhubctl/Config.in"
+	source "package/umtprd/Config.in"
 	source "package/upower/Config.in"
 	source "package/usb_modeswitch/Config.in"
 	source "package/usb_modeswitch_data/Config.in"
