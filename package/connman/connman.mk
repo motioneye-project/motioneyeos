@@ -39,6 +39,7 @@ define CONNMAN_INSTALL_INIT_SYSTEMD
 endef
 
 ifeq ($(BR2_PACKAGE_CONNMAN_CLIENT),y)
+CONNMAN_LICENSE += , GPL-2.0+ (client)
 CONNMAN_CONF_OPTS += --enable-client
 CONNMAN_DEPENDENCIES += readline
 
