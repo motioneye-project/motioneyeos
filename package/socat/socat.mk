@@ -27,17 +27,13 @@ endif
 # automake, so we can't use the normal autoreconf logic.
 
 SOCAT_DEPENDENCIES = host-autoconf
+# incompatibile license (GPL-3.0+)
+SOCAT_CONF_OPTS = --disable-readline
 
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 SOCAT_DEPENDENCIES += openssl
 else
 SOCAT_CONF_OPTS += --disable-openssl
-endif
-
-ifeq ($(BR2_PACKAGE_READLINE),y)
-SOCAT_DEPENDENCIES += readline
-else
-SOCAT_CONF_OPTS += --disable-readline
 endif
 
 define SOCAT_RUN_AUTOCONF
