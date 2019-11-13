@@ -37,7 +37,6 @@ comment "mariadb needs a toolchain w/ dynamic library"
 config BR2_PACKAGE_ORACLE_MYSQL
 	bool "oracle mysql"
 	select BR2_PACKAGE_NCURSES
-	select BR2_PACKAGE_READLINE
 	select BR2_PACKAGE_HAS_MYSQL
 	help
 	  The MySQL Open Source Database System
