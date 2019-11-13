@@ -7,6 +7,8 @@
 IPSEC_TOOLS_VERSION = 0.8.2
 IPSEC_TOOLS_SOURCE = ipsec-tools-$(IPSEC_TOOLS_VERSION).tar.bz2
 IPSEC_TOOLS_SITE = http://sourceforge.net/projects/ipsec-tools/files/ipsec-tools/$(IPSEC_TOOLS_VERSION)
+IPSEC_TOOLS_LICENSE = BSD-3-Clause
+IPSEC_TOOLS_LICENSE_FILES = src/setkey/setkey.c
 IPSEC_TOOLS_INSTALL_STAGING = YES
 IPSEC_TOOLS_MAKE = $(MAKE1)
 IPSEC_TOOLS_DEPENDENCIES = openssl flex host-pkgconf host-flex host-bison
