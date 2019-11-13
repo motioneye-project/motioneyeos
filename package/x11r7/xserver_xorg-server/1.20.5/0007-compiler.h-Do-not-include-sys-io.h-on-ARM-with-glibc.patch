@@ -1,0 +1,62 @@
+From fe4cd0e7f5c58fa94db36326aadc1bd4e6d73eba Mon Sep 17 00:00:00 2001
+From: Olivier Fourdan <ofourdan@redhat.com>
+Date: Mon, 1 Jul 2019 13:20:39 +0200
+Subject: [PATCH] compiler.h: Do not include sys/io.h on ARM with glibc
+
+<sys/io.h> on ARM hasn't worked for a long, long time, so it was removed
+it from glibc upstream.
+
+Remove the include to avoid a compilation failure on ARM with glibc.
+
+Signed-off-by: Olivier Fourdan <ofourdan@redhat.com>
+Closes: https://gitlab.freedesktop.org/xorg/xserver/issues/840
+[Upstream: https://gitlab.freedesktop.org/xorg/xserver/commit/fe4cd0e7f5c58fa94db36326aadc1bd4e6d73eba.patch]
+Signed-off-by: Thomas Preston <thomas.preston@codethink.co.uk>
+---
+ hw/xfree86/common/compiler.h | 30 ------------------------------
+ 1 file changed, 30 deletions(-)
+
+diff --git a/hw/xfree86/common/compiler.h b/hw/xfree86/common/compiler.h
+index fb53ced80..2b2008b3f 100644
+--- a/hw/xfree86/common/compiler.h
++++ b/hw/xfree86/common/compiler.h
+@@ -758,36 +758,6 @@ inl(unsigned short port)
+     return xf86ReadMmio32Le((void *) ioBase, port);
+ }
+ 
+-#elif defined(__arm__) && defined(__GLIBC__)
+-
+-/* for glibc on ARM, we use the LIBC inx/outx routines */
+-/* note that the appropriate setup via "ioperm" needs to be done */
+-/*  *before* any inx/outx is done. */
+-
+-#include <sys/io.h>
+-
+-static __inline__ void
+-xf_outb(unsigned short port, unsigned char val)
+-{
+-    outb(val, port);
+-}
+-
+-static __inline__ void
+-xf_outw(unsigned short port, unsigned short val)
+-{
+-    outw(val, port);
+-}
+-
+-static __inline__ void
+-xf_outl(unsigned short port, unsigned int val)
+-{
+-    outl(val, port);
+-}
+-
+-#define outb xf_outb
+-#define outw xf_outw
+-#define outl xf_outl
+-
+ #elif defined(__nds32__)
+ 
+ /*
+-- 
+2.23.0
+
