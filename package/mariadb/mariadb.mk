@@ -19,8 +19,10 @@ MARIADB_DEPENDENCIES = \
 	openssl \
 	zlib \
 	libaio \
-	libxml2 \
-	readline
+	libxml2
+
+# use bundled GPL-2.0+ licensed readline as package/readline is GPL-3.0+
+MARIADB_CONF_OPTS += -DWITH_READLINE=ON
 
 # We won't need unit tests
 MARIADB_CONF_OPTS += -DWITH_UNIT_TESTS=0
