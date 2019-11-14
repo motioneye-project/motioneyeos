@@ -19,6 +19,6 @@ done
 case ${#} in
     (0)   printf "missing arguments\n" >&2; return 1;;
     (1)   printf "%s" "${1}";;
-    (2)   shift; printf "%s" "${2}";;
+    (2)   printf "%s" "${2}";;
     (*)   printf "too many arguments\n" >&2; return 1;;
 esac
