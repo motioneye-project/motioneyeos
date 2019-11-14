@@ -19,6 +19,7 @@ KODI_DEPENDENCIES = \
 	freetype \
 	gnutls \
 	host-gawk \
+	host-gettext \
 	host-gperf \
 	host-kodi-jsonschemabuilder \
 	host-kodi-texturepacker \
