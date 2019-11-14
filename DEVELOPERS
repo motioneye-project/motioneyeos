@@ -1172,6 +1172,9 @@ F:	package/quota/
 N:	Jason Pruitt <jrspruitt@gmail.com>
 F:	package/librtlsdr/
 
+N:	Jens Kleintje <scooby22@web.de>
+F:	package/gcnano-binaries/
+
 N:	Jens Rosenboom <j.rosenboom@x-ion.de>
 F:	package/sl/
 
