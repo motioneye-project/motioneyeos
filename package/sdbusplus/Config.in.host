@@ -4,7 +4,7 @@ config BR2_PACKAGE_HOST_SDBUSPLUS
 	help
 	  A C++ library for sd-bus with a bindings and doc generator.
 
-	  This will build the Python host side generation tool for bindings
-	  and documentation.
+	  This will build the Python host side generation tool for
+	  bindings and documentation.
 
 	  https://github.com/openbmc/sdbusplus
