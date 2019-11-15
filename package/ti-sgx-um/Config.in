@@ -1,13 +1,15 @@
 comment "ti-sgx-um needs the ti-sgx-km driver"
 	depends on !BR2_PACKAGE_TI_SGX_KM
 
-comment "ti-sgx-um needs a glibc toolchain w/ threads"
-	depends on !BR2_TOOLCHAIN_USES_GLIBC || !BR2_TOOLCHAIN_HAS_THREADS
+comment "ti-sgx-um needs udev and a glibc toolchain w/ threads"
+	depends on !BR2_PACKAGE_HAS_UDEV || !BR2_TOOLCHAIN_USES_GLIBC \
+		|| !BR2_TOOLCHAIN_HAS_THREADS
 
 config BR2_PACKAGE_TI_SGX_UM
 	bool "ti-sgx-um"
 	depends on BR2_PACKAGE_TI_SGX_KM
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libdrm
+	depends on BR2_PACKAGE_HAS_UDEV # ti-sgx-libgbm
 	# pre-built binaries
 	depends on BR2_TOOLCHAIN_USES_GLIBC
 	select BR2_PACKAGE_LIBDRM
@@ -15,12 +17,15 @@ config BR2_PACKAGE_TI_SGX_UM
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBGLES
 	select BR2_PACKAGE_HAS_POWERVR
+	select BR2_PACKAGE_TI_SGX_LIBGBM
+	select BR2_PACKAGE_LIBFFI
+	select BR2_PACKAGE_WAYLAND
 	help
 	  Graphics libraries for TI CPUs with SGX5xx GPU.
 	  This package supports AM335x, AM437x, AM4430 and AM5430.
 	  For older CPUs or kernels use the ti-gfx package.
 
-	  http://git.ti.com/graphics/omap5-sgx-ddk-um-linux
+	  https://git.ti.com/cgit/graphics/omap5-sgx-ddk-um-linux
 
 if BR2_PACKAGE_TI_SGX_UM
 
