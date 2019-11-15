@@ -135,4 +135,11 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_DEBUG
 	help
 	  Enable this option to build ATF with DEBUG=1.
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_IMAGES
+	string "Binary boot images"
+	default "*.bin"
+	help
+	  Names of generated image files that are installed in the
+	  output images/ directory.
+
 endif
