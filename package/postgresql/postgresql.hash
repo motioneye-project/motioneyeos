@@ -1,7 +1,7 @@
-# From https://ftp.postgresql.org/pub/source/v12.0/postgresql-12.0.tar.bz2.md5
-md5 87545416ef021eee8621d31a93fcc899  postgresql-12.0.tar.bz2
-# From https://ftp.postgresql.org/pub/source/v12.0/postgresql-12.0.tar.bz2.sha256
-sha256 cda2397215f758b793f741c86be05468257b0e6bcb1a6113882ab5d0df0855c6  postgresql-12.0.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v12.1/postgresql-12.1.tar.bz2.md5
+md5 2ee1bd4ec5f49363a3f456f07e599b41  postgresql-12.1.tar.bz2
+# From https://ftp.postgresql.org/pub/source/v12.1/postgresql-12.1.tar.bz2.sha256
+sha256 a09bf3abbaf6763980d0f8acbb943b7629a8b20073de18d867aecdb7988483ed  postgresql-12.1.tar.bz2
 
 # License file, Locally calculated
 sha256	c4c86d683970b22b9fab53320ee1b3a30ef4e8223122b4fb6be53ea62ecee8b3  COPYRIGHT
