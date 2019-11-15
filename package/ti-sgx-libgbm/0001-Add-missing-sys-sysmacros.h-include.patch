@@ -1,0 +1,25 @@
+From e3a3f3655956265eb4f3b866d445a9d19e613594 Mon Sep 17 00:00:00 2001
+From: Lothar Felten <lothar.felten@gmail.com>
+Date: Thu, 14 Nov 2019 23:37:07 -0300
+Subject: [PATCH] Add missing sys/sysmacros.h include
+
+Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
+---
+ gbm.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/gbm.c b/gbm.c
+index 7bc5880..e360da7 100644
+--- a/gbm.c
++++ b/gbm.c
+@@ -36,6 +36,7 @@
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#include <sys/sysmacros.h>
+ #include <unistd.h>
+ #include <errno.h>
+ 
+-- 
+2.18.1
+
