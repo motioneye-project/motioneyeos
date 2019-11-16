@@ -1,3 +1,27 @@
+2019.11-rc2, released November 16th, 2019
+
+	Fixes all over the tree.
+
+	Toolchain: ARC tools bumped to arc-2019.09-rc1, ensure
+	external toolchain kernel headers version check correctly stop
+	the build on mismatch
+
+	Meson: Fix generation of global cross-compilation.conf
+
+	Download: Also use the package download method for extra
+	downloads from the same site, so it does not get confused by
+	URLs containing '+'
+
+	Defconfigs: Fix boot issue for beaglebone
+
+	Updated/fixed packages: bird, chrony, connman, dhcp, domoticz,
+	dropwatch, dtc, elf2flt, gettext-tiny, glog, intel-microcode,
+	ipsec-tools, jailhouse, kodi, libfribi, libmbim, libressl,
+	libsigrokdecode, libsvgtiny, linux-serial-test, ltp-testsuite,
+	lvm2, lxc, mariadb, mesa3d, minizip, ndisc6, neardal, ninja,
+	ofono, openvmtools, oracle-mysql, qt5wayland, safeclib, socat,
+	sudo, systemd, wpewebkit, xserver_xorg-server
+
 2019.11-rc1, released November 5th, 2019
 
 	Fixes all over the tree and new features.
