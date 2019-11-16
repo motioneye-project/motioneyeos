@@ -42,4 +42,4 @@ for file in ${files[*]}; do
 
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
     i=$((i + 1))
-done | sort -t '|' -k 5,3 -r
+done | sort -t. -k 1,1n -k 2,2n -k 3,3n -k 4,4n -k 5,5n
