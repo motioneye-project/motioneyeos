@@ -1,0 +1,61 @@
+From 399bb8193f0e09f00d83602bda0c175f2e2b0958 Mon Sep 17 00:00:00 2001
+From: Petr Vorel <petr.vorel@gmail.com>
+Date: Mon, 4 Nov 2019 22:14:26 +0100
+Subject: [PATCH 1/3] fanotify: Move __kernel_fsid_t definition to correct
+ place
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This fixes errors:
+
+fanotify.h:149:55: error: unknown type name ‘__kernel_fsid_t’
+ static inline void fanotify_get_fid(const char *path, __kernel_fsid_t *fsid,
+                                                       ^~~~~~~~~~~~~~~
+fanotify13.c:47:2: error: unknown type name ‘__kernel_fsid_t’
+  __kernel_fsid_t fsid;
+
+Remove #ifdef HAVE_NAME_TO_HANDLE_AT wrap of __kernel_fsid_t fallback
+definition to simplify preprocessor checks.
+
+Fixes: b8aebc835 ("fanotify: Fix missing __kernel_fsid_t definition")
+
+Acked-by: Cyril Hrubis <chrubis@suse.cz>
+Acked-by: Jan Stancek <jstancek@redhat.com>
+Signed-off-by: Petr Vorel <petr.vorel@gmail.com>
+[Upstream status: 399bb8193f0e09f00d83602bda0c175f2e2b0958]
+---
+ testcases/kernel/syscalls/fanotify/fanotify.h | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
+
+diff --git a/testcases/kernel/syscalls/fanotify/fanotify.h b/testcases/kernel/syscalls/fanotify/fanotify.h
+index 1c7623d3b..573ed5f59 100644
+--- a/testcases/kernel/syscalls/fanotify/fanotify.h
++++ b/testcases/kernel/syscalls/fanotify/fanotify.h
+@@ -116,6 +116,13 @@ struct fanotify_mark_type {
+	const char * name;
+ };
+
++#ifndef __kernel_fsid_t
++typedef struct {
++	int	val[2];
++} lapi_fsid_t;
++#define __kernel_fsid_t lapi_fsid_t
++#endif /* __kernel_fsid_t */
++
+ #ifndef FAN_REPORT_FID
+ #define FAN_REPORT_FID		0x00000200
+
+@@ -131,8 +138,8 @@ struct fanotify_event_info_fid {
+	__kernel_fsid_t fsid;
+	unsigned char handle[0];
+ };
+-#endif
+-#endif
++#endif /* HAVE_NAME_TO_HANDLE_AT */
++#endif /* ! FAN_REPORT_FID */
+
+ #ifdef HAVE_NAME_TO_HANDLE_AT
+ /*
+--
+2.24.0

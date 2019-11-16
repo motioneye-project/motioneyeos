@@ -117,4 +117,8 @@ endef
 LTP_TESTSUITE_POST_PATCH_HOOKS += LTP_TESTSUITE_REMOVE_LDD
 endif
 
+# 0005-fanotify-Rework-checks-for-fallback-definitions.patch
+# 0006-fanotify-Detect-val-vs.-__val-fanotify_event_info_fi.patch
+LTP_TESTSUITE_AUTORECONF = YES
+
 $(eval $(autotools-package))
