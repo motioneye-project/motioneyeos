@@ -494,6 +494,8 @@ config BR2_TARGET_LOCALTIME
 	    Pacific/Wallis
 	    ...
 
+	  Set to empty to not install a default time zone.
+
 endif # BR2_TARGET_TZ_INFO
 
 config BR2_ROOTFS_USERS_TABLES
