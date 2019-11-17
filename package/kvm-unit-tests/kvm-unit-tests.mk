@@ -35,13 +35,14 @@ KVM_UNIT_TESTS_CONF_OPTS =\
 # compiler. However, for x86-64, we use the host compiler, as
 # kvm-unit-tests builds 32 bit code, which Buildroot toolchains for
 # x86-64 cannot do.
-ifneq ($(BR2_x86_64),y)
-KVM_UNIT_TESTS_CONF_OPTS += --cross-prefix="$(TARGET_CROSS)"
+ifeq ($(BR2_x86_64),y)
 # Arch Linux adds -fstack-protector even when building with -ffreestanding, but
 # it doesn't link with the stack-protector library when -nostdlib is passed,
 # which leads to a link error. Therefore, disable it explicitly to work around
 # this bug in Arch Linux. https://bugs.archlinux.org/task/64270
 KVM_UNIT_TESTS_MAKE_OPTS += EXTRA_CFLAGS=-fno-stack-protector
+else
+KVM_UNIT_TESTS_CONF_OPTS += --cross-prefix="$(TARGET_CROSS)"
 endif
 
 define KVM_UNIT_TESTS_CONFIGURE_CMDS
