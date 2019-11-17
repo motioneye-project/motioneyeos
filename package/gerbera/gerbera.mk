@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GERBERA_VERSION = 1.3.2
+GERBERA_VERSION = 1.3.4
 GERBERA_SITE = $(call github,gerbera,gerbera,v$(GERBERA_VERSION))
 GERBERA_LICENSE = GPL-2.0
 GERBERA_LICENSE_FILES = LICENSE.md
