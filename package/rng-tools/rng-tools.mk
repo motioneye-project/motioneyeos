@@ -9,6 +9,8 @@ RNG_TOOLS_SITE = $(call github,nhorman,$(RNG_TOOLS_NAME),v$(RNG_TOOLS_VERSION))
 RNG_TOOLS_LICENSE = GPL-2.0
 RNG_TOOLS_LICENSE_FILES = COPYING
 RNG_TOOLS_DEPENDENCIES = libsysfs jitterentropy-library host-pkgconf
+# From git
+RNG_TOOLS_AUTORECONF = YES
 
 RNG_TOOLS_CONF_OPTS = \
 	--without-nistbeacon \
