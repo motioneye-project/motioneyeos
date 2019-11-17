@@ -289,12 +289,14 @@ function do_download() {
 
     if [[ -z "${url}" ]]; then
         echo "no such version" 1>&2
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
     free_disk=$(df /data | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4)
     if [[ "${free_disk}" -lt $((MIN_FREE_DISK * 1024)) ]]; then
         echo "not enough disk space" 1>&2
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
@@ -320,6 +322,7 @@ function do_download() {
 
     if [[ "$?" != 0 ]]; then
         cat ${CURL_LOG_FILE}
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
