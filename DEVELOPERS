@@ -1007,6 +1007,7 @@ F:	package/f2fs-tools/
 F:	package/pigpio/
 F:	package/python-aioblescan/
 F:	package/python-bluezero/
+F:	package/python-crontab/
 F:	package/python-falcon/
 F:	package/python-ifaddr/
 F:	package/python-hiredis/
