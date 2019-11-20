@@ -13,7 +13,7 @@ Fixes:
  - http://autobuild.buildroot.org/results/9155326e1ff7c2bb2218122c453872c2fc76f65e
 
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
-[Upstream status: https://github.com/linux-test-project/ltp/pull/616]
+[Upstream status: 22f510de8072c5cacce5b2a4ca2ff97d1a6fa3ca]
 ---
  testcases/kernel/controllers/cpuset/Makefile.inc        | 2 +-
  testcases/kernel/controllers/cpuset/cpuset_lib/Makefile | 2 +-
