@@ -276,6 +276,7 @@ N:	Baruch Siach <baruch@tkos.co.il>
 F:	board/solidrun/clearfog_gt_8k/
 F:	configs/solidrun_clearfog_gt_8k_defconfig
 F:	package/18xx-ti-utils/
+F:	package/cpuburn-arm/
 F:	package/daemon/
 F:	package/dropbear/
 F:	package/ebtables/
