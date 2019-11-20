@@ -1,6 +1,6 @@
-# From https://lists.freedesktop.org/archives/mesa-announce/2019-November/000555.html
-sha256 09000a0f7dbbd82e193b81a8f1bf0c118eab7ca975c0329181968596e548e30f  mesa-19.2.4.tar.xz
-sha512 e8a0e90460f3153d730f8fb13f2c912a9826c05d2af9e22dc575bcd8885bf6a33c0af1c6659e81701ff097a132df88eead208e89dceb552b9da809ab543fa479  mesa-19.2.4.tar.xz
+# From https://lists.freedesktop.org/archives/mesa-announce/2019-November/000557.html
+sha256 3d010a366b28d10bdd71e32091d8684baf1522e6466c5c5703667091b2108c8b  mesa-19.2.5.tar.xz
+sha512 881735c4fec07fb6557d01c2d5bb7971e2d4b2bedbb52fd1025dfb0222f8b1cbca080b6f849efe19ff514da8e6310fc6f0cde5b59fcc1c6a10e593876bcd6a38  mesa-19.2.5.tar.xz
 
 # License
 sha256 d8d662974fc86e2e640362015e42de3fcc161d435a9f2111ecd8561412feca73  docs/license.html
