@@ -143,10 +143,17 @@ ifeq ($(BR2_PACKAGE_GDB),y)
 GLIBC_LIBS_LIB += libthread_db.so.*
 endif
 
+ifeq ($(BR2_PACKAGE_GLIBC_UTILS),y)
+GLIBC_TARGET_UTILS_BIN = posix/getconf elf/ldconfig elf/ldd
+endif
+
 define GLIBC_INSTALL_TARGET_CMDS
 	for libpattern in $(GLIBC_LIBS_LIB); do \
 		$(call copy_toolchain_lib_root,$$libpattern) ; \
 	done
+	$(foreach util,$(GLIBC_TARGET_UTILS_BIN), \
+		$(INSTALL) -D -m 0755 $(@D)/build/$(util) $(TARGET_DIR)/bin/$(notdir $(util))
+	)
 endef
 
 $(eval $(autotools-package))
