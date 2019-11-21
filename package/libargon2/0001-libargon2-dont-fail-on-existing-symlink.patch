@@ -1,0 +1,23 @@
+From b997b9e7d4744020409223afddc7299a771eb52d Mon Sep 17 00:00:00 2001
+From: Pascal de Bruijn <pmjdebruijn@pcode.nl>
+Date: Thu, 7 Nov 2019 09:55:32 +0100
+Subject: [PATCH] Don't fail on existing symlink
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 837e7f7..7c116c9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -238,7 +238,7 @@ install: $(RUN) libs
+ 	$(INSTALL) -d $(INST_LIBRARY)
+ 	$(INSTALL) -m 0644 $(LIBRARIES) $(INST_LIBRARY)
+ ifdef LINKED_LIB_SH
+-	cd $(INST_LIBRARY) && ln -s $(notdir $(LIB_SH) $(LINKED_LIB_SH))
++	cd $(INST_LIBRARY) && ln -sf $(notdir $(LIB_SH) $(LINKED_LIB_SH))
+ endif
+ 	$(INSTALL) -d $(INST_BINARY)
+ 	$(INSTALL) $(RUN) $(INST_BINARY)

@@ -1806,6 +1806,9 @@ F:	package/checksec/
 N:	Parnell Springmeyer <parnell@digitalmentat.com>
 F:	package/scrypt/
 
+N:	Pascal de Bruijn <p.debruijn@unilogic.nl>
+F:	package/libargon2/
+
 N:	Pascal Huerst <pascal.huerst@gmail.com>
 F:	package/google-breakpad/
 
