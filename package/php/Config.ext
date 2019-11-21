@@ -70,6 +70,12 @@ config BR2_PACKAGE_PHP_EXT_HASH
 	help
 	  HASH message digest framework
 
+config BR2_PACKAGE_PHP_EXT_LIBARGON2
+	bool "libargon2"
+	select BR2_PACKAGE_LIBARGON2
+	help
+	  libargon2 support
+
 config BR2_PACKAGE_PHP_EXT_LIBSODIUM
 	bool "libsodium"
 	select BR2_PACKAGE_LIBSODIUM
