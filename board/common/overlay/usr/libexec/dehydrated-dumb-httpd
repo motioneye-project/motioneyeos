@@ -3,25 +3,24 @@
 CHALLENGE="$1"
 PORT=80
 LIFETIME=10
+TMP_RESPONSE="/tmp/dehydrated-response"
+LOG="/var/log/dehydrated-dumb-httpd.log"
 
 if [[ -z "${CHALLENGE}" ]]; then
     echo "Usage $0 <challenge>"
     exit 1
 fi
 
-function make_response() {
+{
     echo -en "HTTP/1.1 200 OK\r\n"
     echo -en "Content-Length: ${#CHALLENGE}\r\n"
     echo -en "Content-Type: text/plain\r\n"
     echo -en "Connection: close\r\n\r\n${CHALLENGE}"
-}
+} > "${TMP_RESPONSE}"
 
-start_time=$(date +%s)
-echo "Dumb httpd started"
-while true; do
-    make_response | nc -l -w "${LIFETIME}" -p ${PORT} >/dev/null
-    if (( $(date +%s) - ${start_time} > ${LIFETIME} )); then
-        break
-    fi
-done
-echo "Dumb httpd exit"
+echo "Dumb httpd started" > ${LOG}
+socat -d TCP4-LISTEN:80,reuseaddr,fork EXEC:"/bin/cat ${TMP_RESPONSE}" &>>${LOG} &
+pid=$!
+sleep ${LIFETIME}
+kill ${pid}
+echo "Dumb httpd exit" >> ${LOG}
