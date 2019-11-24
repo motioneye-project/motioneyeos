@@ -6,7 +6,7 @@
 
 LIBFTDI_VERSION = 0.20
 LIBFTDI_SITE = http://www.intra2net.com/en/developer/libftdi/download
-LIBFTDI_LICENSE = LGPL-2.1 (libftdi), MIT (libftdi)
+LIBFTDI_LICENSE = LGPL-2.1 (libftdi)
 LIBFTDI_LICENSE_FILES = LICENSE COPYING.LIB
 LIBFTDI_DEPENDENCIES = libusb-compat libusb
 HOST_LIBFTDI_DEPENDENCIES = host-libusb-compat host-libusb
