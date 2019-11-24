@@ -1,3 +1,13 @@
+2019.11-rc3, released November 24th, 2019
+
+	Fixes all over the tree.
+
+	Updated/fixed packages: asterisk, clamav, domoticz, faifa,
+	gerbera, kmod, kvm-unit-tests, libupnp18, linux-serial-test,
+	lsof, ltp-testsuite, lxc, mesa3d, mesa3d-headers, perl, php,
+	postgresql, qemu, rauc, redis, rpcbind, spice, spice-protocol,
+	systemd, tftpd, waylandpp, webkitgtk, zip
+
 2019.11-rc2, released November 16th, 2019
 
 	Fixes all over the tree.
