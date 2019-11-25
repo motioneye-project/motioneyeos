@@ -161,6 +161,7 @@ beagleboardx15_defconfig: { extends: .defconfig }
 beaglebone_defconfig: { extends: .defconfig }
 beaglebone_qt5_defconfig: { extends: .defconfig }
 beagleboneai_defconfig: { extends: .defconfig }
+beelink_gs1_defconfig: { extends: .defconfig }
 chromebook_snow_defconfig: { extends: .defconfig }
 ci20_defconfig: { extends: .defconfig }
 csky_gx6605s_defconfig: { extends: .defconfig }
