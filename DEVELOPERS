@@ -73,6 +73,7 @@ F:	package/selinux-python/
 F:	package/semodule-utils/
 F:	package/setools/
 F:	package/sngrep/
+F:	package/spidermonkey/
 F:	package/systemd/
 
 N:	Adam Heinrich <adam@adamh.cz>

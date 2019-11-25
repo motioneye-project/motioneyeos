@@ -1490,6 +1490,7 @@ endif
 	source "package/jsmin/Config.in"
 	source "package/json-javascript/Config.in"
 	source "package/openlayers/Config.in"
+	source "package/spidermonkey/Config.in"
 endmenu
 
 menu "JSON/XML"

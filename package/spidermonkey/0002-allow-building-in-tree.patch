@@ -1,0 +1,47 @@
+From 07d40f72e1ed1d84a5ddd98ae8490d41a2e19c46 Mon Sep 17 00:00:00 2001
+From: Arjan van de Ven <arjan@linux.intel.com>
+Date: Wed, 5 Sep 2018 11:39:01 +0000
+Subject: [PATCH] allow building in tree
+
+By default, spidermonkey must be configured and built out-of-tree,
+otherwise the following error occurs:
+
+FATAL ERROR PROCESSING MOZBUILD FILE
+==============================
+
+The error occurred while processing the following file or one of the files it
+includes:
+    js/src/shell/moz.build
+
+The error occurred when validating the result of the execution. The reported
+error is:
+    Path specified in LOCAL_INCLUDES is not allowed: 
+    .. (resolved to js/src)
+
+Remove this check, as spidermonkey builds without issue in-tree.
+
+Signed-off-by: Arjan van de Ven <arjan@linux.intel.com>
+Signed-off-by: Adam Duskett <aduskett@gmail.com>
+---
+ python/mozbuild/mozbuild/frontend/emitter.py | 5 -----
+ 1 file changed, 5 deletions(-)
+
+diff --git a/python/mozbuild/mozbuild/frontend/emitter.py b/python/mozbuild/mozbuild/frontend/emitter.py
+index 642b381c..c37fbf5d 100644
+--- a/python/mozbuild/mozbuild/frontend/emitter.py
++++ b/python/mozbuild/mozbuild/frontend/emitter.py
+@@ -1127,11 +1127,6 @@ class TreeMetadataEmitter(LoggingMixin):
+                 raise SandboxValidationError('Path specified in LOCAL_INCLUDES '
+                     'does not exist: %s (resolved to %s)' % (local_include,
+                     full_path), context)
+-            if (full_path == context.config.topsrcdir or
+-                    full_path == context.config.topobjdir):
+-                raise SandboxValidationError('Path specified in LOCAL_INCLUDES '
+-                    'is not allowed: %s (resolved to %s)' % (local_include,
+-                    full_path), context)
+             include_obj = LocalInclude(context, local_include)
+             local_includes.append(include_obj.path.full_path)
+             yield include_obj
+--
+2.23.0
+
