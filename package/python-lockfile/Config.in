@@ -1,0 +1,17 @@
+config BR2_PACKAGE_PYTHON_LOCKFILE
+	bool "python-lockfile"
+	help
+	  The lockfile package exports a LockFile class which provides a
+	  simple API for locking files. Unlike the Windows
+	  msvcrt.locking function, the fcntl.lockf and flock functions,
+	  and the deprecated posixfile module, the API is identical
+	  across both Unix (including Linux and Mac) and Windows
+	  platforms.
+
+	  The lock mechanism relies on the atomic nature of the link
+	  (on Unix) and mkdir (on Windows) system calls. An
+	  implementation based on SQLite is also provided, more as a
+	  demonstration of the possibilities it provides than as
+	  production-quality code.
+
+	  https://pypi.org/project/lockfile/
