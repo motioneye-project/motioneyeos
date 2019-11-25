@@ -1,0 +1,6 @@
+# md5, sha256 from https://pypi.org/pypi/pbr/json
+md5	477d2aa285ad97250a172b199f4060b7  pbr-5.4.3.tar.gz
+sha256	2c8e420cd4ed4cec4e7999ee47409e876af575d4c35a45840d59e8b5f3155ab8  pbr-5.4.3.tar.gz
+# Locally computed sha256 checksums
+sha256	5df2a0d87d6c562f0ea11c688ac52532aa28d744cabc7994ff0537f64b3b3320  LICENSE
+sha256	eb4a8c8791f6caab1cf36df26db2b6f4e2ddda52657b060ff7f02abc63910aef  pbr/tests/testpackage/LICENSE.txt
