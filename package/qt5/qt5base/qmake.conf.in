@@ -15,10 +15,15 @@ QMAKE_CXX               = $${CROSS_COMPILE}g++
 # modifications to gcc-base.conf
 QMAKE_CFLAGS           += $${BR_COMPILER_CFLAGS}
 QMAKE_CXXFLAGS         += $${BR_COMPILER_CXXFLAGS}
+# Remove all optimisation flags, we really only want our own.
 QMAKE_CFLAGS_OPTIMIZE       =
 QMAKE_CFLAGS_OPTIMIZE_DEBUG =
 QMAKE_CFLAGS_OPTIMIZE_FULL  =
 QMAKE_CFLAGS_OPTIMIZE_SIZE  =
+QMAKE_CFLAGS_DEBUG =
+QMAKE_CXXFLAGS_DEBUG =
+QMAKE_CFLAGS_RELEASE =
+QMAKE_CXXFLAGS_RELEASE =
 CONFIG                 += nostrip
 
 QMAKE_LIBS             += -lrt -lpthread -ldl
