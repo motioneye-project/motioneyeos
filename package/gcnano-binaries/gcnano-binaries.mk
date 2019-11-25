@@ -48,6 +48,8 @@ GCNANO_BINARIES_LIBRARIES = \
 
 GCNANO_BINARIES_USERLAND_SUBDIR = gcnano-userland-multi-$(GCNANO_BINARIES_USERLAND_VERSION)
 
+GCNANO_BINARIES_PKG_CONFIGS = egl gbm glesv1_cm glesv2 vg
+
 define GCNANO_BINARIES_INSTALL
 	$(foreach lib,$(GCNANO_BINARIES_LIBRARIES), \
 		$(INSTALL) -D -m 0755 $(@D)/$(GCNANO_BINARIES_USERLAND_SUBDIR)/usr/lib/$(lib).$(GCNANO_BINARIES_LIB_VERSION).multi.release.so \
@@ -55,6 +57,10 @@ define GCNANO_BINARIES_INSTALL
 		cp -a $(@D)/$(GCNANO_BINARIES_USERLAND_SUBDIR)/usr/lib/$(lib).so* $(1)/usr/lib
 	)
 	cp -a $(@D)/$(GCNANO_BINARIES_USERLAND_SUBDIR)/usr/include/* $(1)/usr/include/
+	$(foreach pkgconfig,$(GCNANO_BINARIES_PKG_CONFIGS), \
+		$(INSTALL) -D -m 0644 $(@D)/$(GCNANO_BINARIES_USERLAND_SUBDIR)/usr/lib/pkgconfig/$(pkgconfig).pc \
+			$(1)/usr/lib/pkgconfig/$(pkgconfig).pc
+	)
 endef
 
 define GCNANO_BINARIES_INSTALL_TARGET_CMDS
