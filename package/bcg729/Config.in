@@ -4,4 +4,4 @@ config BR2_PACKAGE_BCG729
 	  Bcg729 is an opensource implementation of both encoder and
 	  decoder of the ITU G729 Annex A/B speech codec.
 
-	  http://www.linphone.org/technical-corner/bcg729/overview
+	  https://www.linphone.org/technical-corner/bcg729
