@@ -1,5 +1,5 @@
-# From https://www.stunnel.org/downloads/stunnel-5.55.tar.gz.sha256
-sha256	90de69f41c58342549e74c82503555a6426961b29af3ed92f878192727074c62	stunnel-5.55.tar.gz
+# From https://www.stunnel.org/downloads/stunnel-5.56.tar.gz.sha256
+sha256	7384bfb356b9a89ddfee70b5ca494d187605bb516b4fff597e167f97e2236b22	stunnel-5.56.tar.gz
 # Locally calculated
-sha256	81d0b7244f44ef81dd0b299cf681037c5a42d468b8533e53aff6d1ac84c97dc8	COPYING
-sha256	1ee2b290e92c211b08df10e9fcaf32596cdb22b8eae731b18c2c074a4a83eebe	COPYRIGHT.GPL
+sha256	f46e2613769e23e23348b6eb667dc85309da2252c8cc2016db92ad93d743aea4	COPYING.md
+sha256	62f171d4d8b6726df61f18a6bbc0a70f79c4bc2134d837d35c81fc6289a2d84d	COPYRIGHT.md
