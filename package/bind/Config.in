@@ -22,7 +22,7 @@ config BR2_PACKAGE_BIND
 	  intended to be linked with applications requiring name
 	  service.
 
-	  http://www.isc.org/sw/bind/
+	  https://www.isc.org/bind/
 
 if BR2_PACKAGE_BIND
 
