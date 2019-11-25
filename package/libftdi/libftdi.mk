@@ -19,7 +19,7 @@ LIBFTDI_CONF_OPTS = --without-examples
 # configure detect it automaticaly so we need to force it
 ifeq ($(BR2_PACKAGE_LIBFTDI_CPP),y)
 LIBFTDI_LICENSE += , GPL-2.0 with exception (ftdipp)
-LIBFTDI_LICENSE_FILES = COPYING.GPL
+LIBFTDI_LICENSE_FILES += COPYING.GPL
 LIBFTDI_DEPENDENCIES += boost
 LIBFTDI_CONF_OPTS += --enable-libftdipp
 else
