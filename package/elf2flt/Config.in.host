@@ -9,3 +9,5 @@ config BR2_PACKAGE_HOST_ELF2FLT
 
 	  This option compiles the required tools and makes the required
 	  modifications on your toolchain (linker).
+
+	  https://github.com/uclinux-dev/elf2flt
