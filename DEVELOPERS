@@ -1684,6 +1684,8 @@ F:	package/wireless_tools/
 F:	package/xen/
 F:	support/testing/tests/package/br2-external/openjdk/
 F:	support/testing/tests/package/test_openjdk.py
+F:	support/testing/tests/package/test_opkg/
+F:	support/testing/tests/package/test_opkg.py
 
 N:	Mauro Condarelli <mc5686@mclink.it>
 F:	package/mc/
