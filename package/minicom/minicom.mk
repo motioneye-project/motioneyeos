@@ -22,4 +22,8 @@ define MINICOM_MKDIR_M4
 endef
 MINICOM_POST_PATCH_HOOKS += MINICOM_MKDIR_M4
 
+MINICOM_CONF_OPTS = \
+	--enable-dfl-port=/dev/ttyS1 \
+	--enable-lock-dir=/var/lock
+
 $(eval $(autotools-package))
