@@ -10,7 +10,7 @@ config BR2_PACKAGE_FASTD
 	help
 	  Fast and Secure Tunneling Daemon
 
-	  https://projects.universe-factory.net/projects/fastd/wiki
+	  https://github.com/NeoRaider/fastd/wiki
 
 if BR2_PACKAGE_FASTD
 
