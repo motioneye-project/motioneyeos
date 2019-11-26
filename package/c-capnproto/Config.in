@@ -12,6 +12,8 @@ config BR2_PACKAGE_C_CAPNPROTO
 	  plugin for C. Requires regular Cap'n Proto and only
 	  provides serialization (no RPC).
 
+	  https://github.com/opensourcerouting/c-capnproto
+
 comment "c-capnproto needs host and target gcc >= 5 w/ C++14, threads, atomic"
 	depends on BR2_USE_MMU
 	depends on!BR2_HOST_GCC_AT_LEAST_5 || \
