@@ -5,6 +5,8 @@ config BR2_PACKAGE_GR_OSMOSDR
 	help
 	  GNU Radio block for interfacing with various radio hardware
 
+	  http://osmocom.org/projects/osmosdr
+
 if BR2_PACKAGE_GR_OSMOSDR
 
 config BR2_PACKAGE_GR_OSMOSDR_PYTHON
