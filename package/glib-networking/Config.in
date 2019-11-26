@@ -9,6 +9,8 @@ config BR2_PACKAGE_GLIB_NETWORKING
 	help
 	  Network-related GIO modules for glib.
 
+	  https://gitlab.gnome.org/GNOME/glib-networking
+
 comment "glib-networking needs a toolchain w/ wchar, threads, dynamic library"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
