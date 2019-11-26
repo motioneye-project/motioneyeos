@@ -14,6 +14,8 @@ config BR2_PACKAGE_COG
 	  not provide any chrome, and is suitable to be used
 	  as a Web application container.
 
+	  https://github.com/Igalia/cog
+
 if BR2_PACKAGE_COG
 
 config BR2_PACKAGE_COG_PROGRAMS_HOME_URI
