@@ -14,7 +14,7 @@ config BR2_PACKAGE_GLIBC_UTILS
 	depends on BR2_PACKAGE_BASH
 	help
 	  Enabling this option will compile and install the getconf,
-	  ldconfig and ldd glibc utilities for the target.
+	  ldconfig, ldd and locale glibc utilities for the target.
 
 comment "glibc utilities need bash"
 	depends on !BR2_PACKAGE_BASH
