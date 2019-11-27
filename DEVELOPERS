@@ -1956,6 +1956,7 @@ N:	Pierre-Jean Texier <pjtexier@koncepto.io>
 F:	package/fping/
 F:	package/genimage/
 F:	package/haveged/
+F:	package/ipset/
 F:	package/libarchive/
 F:	package/libevent/
 F:	package/libubootenv/
