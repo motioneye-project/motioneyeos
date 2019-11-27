@@ -1683,6 +1683,9 @@ F:	package/python-pyzmq/
 N:	Michael Trimarchi <michael@amarulasolutions.com>
 F:	package/python-spidev/
 
+N:	Michael Vetter <jubalh@iodoru.org>
+F:	package/jasper/
+
 N:	Michael Walle <michael@walle.cc>
 F:	package/libavl/
 
