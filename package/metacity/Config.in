@@ -14,3 +14,5 @@ config BR2_PACKAGE_METACITY
 	select BR2_PACKAGE_XLIB_LIBXFT
 	help
 	  Metacity is a window manager for the X Window System.
+
+	  https://wiki.gnome.org/Projects/Metacity
