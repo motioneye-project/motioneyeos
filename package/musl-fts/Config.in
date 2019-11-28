@@ -5,3 +5,5 @@ config BR2_PACKAGE_MUSL_FTS
 	  The musl-fts package implements the fts(3) functions
 	  fts_open, fts_read, fts_children, fts_set and fts_close,
 	  which are missing in musl and uClibc-ng C libraries.
+
+	  https://github.com/void-linux/musl-fts
