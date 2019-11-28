@@ -2,5 +2,6 @@
 md5    38c6a188519e6272e9b2b722b315c3d8 GDGraph-1.54.tar.gz
 sha256 b96f5c10b656c17d16ab65a1777c908297b028d3b6815f6d54b2337f006bfa4f GDGraph-1.54.tar.gz
 
-# computed by scancpan
+# Hash for license files
 sha256 710484e3a1196664bbe8a5ad5d53c528e01226eb20e2885a4e1131eb6c6565cd Dustismo.LICENSE
+sha256 f44630ad9101e40a101d906a07908c975a9b0742273cfb0c00a51d73afb53e7d README
