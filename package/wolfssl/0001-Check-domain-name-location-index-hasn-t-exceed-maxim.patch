@@ -1,0 +1,84 @@
+From 52f28bd5149360f8e3bf8ca13d3fb9a77283df7c Mon Sep 17 00:00:00 2001
+From: Sean Parkinson <sean@wolfssl.com>
+Date: Wed, 6 Nov 2019 08:28:09 +1000
+Subject: [PATCH] Check domain name location index hasn't exceed maximum before
+ setting
+
+[CVE-2019–18840]
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ wolfcrypt/src/asn.c | 30 ++++++++++++++++++++----------
+ 1 file changed, 20 insertions(+), 10 deletions(-)
+
+diff --git a/wolfcrypt/src/asn.c b/wolfcrypt/src/asn.c
+index 637f4c355..d3793b7b3 100644
+--- a/wolfcrypt/src/asn.c
++++ b/wolfcrypt/src/asn.c
+@@ -5117,8 +5117,10 @@ static int GetName(DecodedCert* cert, int nameType)
+                 XMEMCPY(&full[idx], &cert->source[cert->srcIdx], strLen);
+                 idx += strLen;
+             #if defined(OPENSSL_EXTRA)
+-                /* store order that DN was parsed */
+-                dName->loc[count++] = id;
++                if (count < DOMAIN_COMPONENT_MAX) {
++                    /* store order that DN was parsed */
++                    dName->loc[count++] = id;
++                }
+             #endif
+             }
+ 
+@@ -5191,8 +5193,10 @@ static int GetName(DecodedCert* cert, int nameType)
+                 XMEMCPY(&full[idx], &cert->source[cert->srcIdx], strLen);
+                 idx += strLen;
+             #if defined(OPENSSL_EXTRA)
+-                /* store order that DN was parsed */
+-                dName->loc[count++] = id;
++                if (count < DOMAIN_COMPONENT_MAX) {
++                    /* store order that DN was parsed */
++                    dName->loc[count++] = id;
++                }
+             #endif
+             }
+ 
+@@ -5276,8 +5280,10 @@ static int GetName(DecodedCert* cert, int nameType)
+                     XMEMCPY(&full[idx], &cert->source[cert->srcIdx], adv);
+                     idx += adv;
+                 #if defined(OPENSSL_EXTRA)
+-                    /* store order that DN was parsed */
+-                    dName->loc[count++] = ASN_EMAIL_NAME;
++                    if (count < DOMAIN_COMPONENT_MAX) {
++                        /* store order that DN was parsed */
++                        dName->loc[count++] = ASN_EMAIL_NAME;
++                    }
+                 #endif
+                 }
+             }
+@@ -5298,8 +5304,10 @@ static int GetName(DecodedCert* cert, int nameType)
+                             dName->uidLen = adv;
+ 
+                             #ifdef OPENSSL_EXTRA
+-                            /* store order that DN was parsed */
+-                            dName->loc[count++] = ASN_USER_ID;
++                            if (count < DOMAIN_COMPONENT_MAX) {
++                                /* store order that DN was parsed */
++                                dName->loc[count++] = ASN_USER_ID;
++                            }
+                             #endif
+                         #endif /* OPENSSL_EXTRA */
+                             break;
+@@ -5315,8 +5323,10 @@ static int GetName(DecodedCert* cert, int nameType)
+                             dcnum++;
+ 
+                             #ifdef OPENSSL_EXTRA
+-                            /* store order that DN was parsed */
+-                            dName->loc[count++] = ASN_DOMAIN_COMPONENT;
++                            if (count < DOMAIN_COMPONENT_MAX) {
++                                /* store order that DN was parsed */
++                                dName->loc[count++] = ASN_DOMAIN_COMPONENT;
++                            }
+                             #endif
+                         #endif /* OPENSSL_EXTRA */
+                             break;
+-- 
+2.20.1
+
