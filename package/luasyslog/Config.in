@@ -4,4 +4,4 @@ config BR2_PACKAGE_LUASYSLOG
 	help
 	  Syslog logging for Lua.
 
-	  http://lua.net-core.org/sputnik.lua?p=Telesto:About
+	  https://luarocks.org/modules/luarocks/luasyslog
