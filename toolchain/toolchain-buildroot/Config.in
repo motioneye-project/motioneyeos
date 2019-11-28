@@ -94,6 +94,8 @@ config BR2_TOOLCHAIN_BUILDROOT_MUSL
 	  This option selects musl as the C library for the
 	  cross-compilation toolchain.
 
+	  https://www.musl-libc.org/
+
 endchoice
 
 config BR2_TOOLCHAIN_BUILDROOT_LIBC
