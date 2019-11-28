@@ -6,7 +6,7 @@ config BR2_PACKAGE_LIBHID
 	help
 	  Userspace library for accessing USB HID devices
 
-	  http://libhid.alioth.debian.org
+	  https://directory.fsf.org/wiki/Libhid
 
 comment "libhid needs a toolchain w/ threads"
 	depends on !BR2_TOOLCHAIN_HAS_THREADS
