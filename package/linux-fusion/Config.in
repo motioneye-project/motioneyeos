@@ -8,3 +8,5 @@ config BR2_PACKAGE_LINUX_FUSION
 	help
 	  DirectFB Communication Layer allowing multiple DirectFB
 	  applications to run concurrently
+
+	  https://github.com/deniskropp/linux-fusion
