@@ -5,6 +5,8 @@ config BR2_PACKAGE_LIBERATION
 	  three most commonly used fonts on Microsoft systems:
 	  Times New Roman, Arial, and Courier New.
 
+	  https://github.com/liberationfonts/liberation-fonts
+
 if BR2_PACKAGE_LIBERATION
 
 config BR2_PACKAGE_LIBERATION_MONO
