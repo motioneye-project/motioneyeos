@@ -64,14 +64,6 @@ GST1_PLUGINS_BAD_CONF_OPTS += \
 
 GST1_PLUGINS_BAD_DEPENDENCIES = gst1-plugins-base gstreamer1
 
-ifeq ($(BR2_PACKAGE_RPI_USERLAND),y)
-# RPI has odd locations for several required headers.
-GST1_PLUGINS_BAD_CFLAGS=$(TARGET_CPPFLAGS) \
-	$(STAGING_DIR)/usr/include/IL \
-	$(STAGING_DIR)/usr/include/interface/vcos/pthreads \
-	$(STAGING_DIR)/usr/include/interface/vmcs_host/linux
-endif
-
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),y)
 GST1_PLUGINS_BAD_CONF_OPTS += -Dwayland=enabled
 GST1_PLUGINS_BAD_DEPENDENCIES += wayland wayland-protocols
