@@ -11,7 +11,7 @@ config BR2_PACKAGE_MEDIASTREAMER
 	  and sending of multimedia streams in linphone, including
 	  voice/video capture, encoding and decoding, and rendering.
 
-	  http://www.linphone.org/eng/documentation/dev/mediastreamer2.html
+	  http://www.linphone.org/technical-corner/mediastreamer2
 
 comment "mediastreamer needs a toolchain w/ threads, C++"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
