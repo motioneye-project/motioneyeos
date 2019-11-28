@@ -343,7 +343,7 @@ endef
 define PHP_INSTALL_FPM_CONF
 	$(INSTALL) -D -m 0644 package/php/php-fpm.conf \
 		$(TARGET_DIR)/etc/php-fpm.conf
-	rm -f $(TARGET_DIR)/etc/php-fpm.conf.default
+	rm -f $(TARGET_DIR)/etc/php-fpm.d/www.conf.default
 	# remove unused sample status page /usr/php/php/fpm/status.html
 	rm -rf $(TARGET_DIR)/usr/php
 endef
