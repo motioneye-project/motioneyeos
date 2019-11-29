@@ -463,6 +463,8 @@ tests.package.test_python_pyyaml.TestPythonPy2Pyyaml: { extends: .runtime_test }
 tests.package.test_python_pyyaml.TestPythonPy3Pyyaml: { extends: .runtime_test }
 tests.package.test_python_service_identity.TestPythonPy2ServiceIdentity: { extends: .runtime_test }
 tests.package.test_python_service_identity.TestPythonPy3ServiceIdentity: { extends: .runtime_test }
+tests.package.test_python_smmap2.TestPythonPy2Smmap2: { extends: .runtime_test }
+tests.package.test_python_smmap2.TestPythonPy3Smmap2: { extends: .runtime_test }
 tests.package.test_python_subprocess32.TestPythonPy2Subprocess32: { extends: .runtime_test }
 tests.package.test_python_treq.TestPythonPy2Treq: { extends: .runtime_test }
 tests.package.test_python_treq.TestPythonPy3Treq: { extends: .runtime_test }
