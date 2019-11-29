@@ -69,6 +69,11 @@ config BR2_PACKAGE_LINUX_FIRMWARE_AR3011
 	help
 	  Firmware files for Atheros bluetooth chipset AR3011.
 
+config BR2_PACKAGE_LINUX_FIRMWARE_AR3012_USB
+	bool "Qualcomm Atheros 3012 (USB)"
+	help
+	  Firmware files for Atheros bluetooth chipset AR3012 on USB.
+
 config BR2_PACKAGE_LINUX_FIRMWARE_TI_CC2560
 	bool "TI CC2560"
 	help
