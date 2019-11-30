@@ -25,6 +25,10 @@ config BR2_BINUTILS_VERSION_2_32_X
 	bool "binutils 2.32"
 	depends on !BR2_csky
 
+config BR2_BINUTILS_VERSION_2_33_X
+	bool "binutils 2.33.1"
+	depends on !BR2_csky
+
 config BR2_BINUTILS_VERSION_ARC
 	bool "binutils arc (2.31)"
 	depends on BR2_arc
@@ -42,6 +46,7 @@ config BR2_BINUTILS_VERSION
 	default "2.30"		if BR2_BINUTILS_VERSION_2_30_X
 	default "2.31.1"	if BR2_BINUTILS_VERSION_2_31_X
 	default "2.32"		if BR2_BINUTILS_VERSION_2_32_X
+	default "2.33.1"	if BR2_BINUTILS_VERSION_2_33_X
 
 config BR2_BINUTILS_ENABLE_LTO
 	bool
