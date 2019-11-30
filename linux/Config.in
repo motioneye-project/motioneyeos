@@ -9,11 +9,6 @@ config BR2_LINUX_KERNEL
 
 if BR2_LINUX_KERNEL
 
-# https://sourceware.org/bugzilla/show_bug.cgi?id=21458
-comment "Linux kernel in thumb mode may be broken with binutils 2.30"
-	depends on BR2_arm || BR2_armeb
-	depends on BR2_BINUTILS_VERSION_2_30_X
-
 # Packages that need to have a kernel with support for loadable modules,
 # but do not use the kernel-modules infrastructure, should select that
 # option.

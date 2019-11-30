@@ -60,8 +60,7 @@ config BR2_GCC_VERSION_8_X
 config BR2_GCC_VERSION_9_X
 	bool "gcc 9.x"
 	# or1k needs binutils >= 2.32
-	depends on !(BR2_or1k && \
-		(BR2_BINUTILS_VERSION_2_30_X || BR2_BINUTILS_VERSION_2_31_X))
+	depends on !(BR2_or1k && BR2_BINUTILS_VERSION_2_31_X)
 	# powerpc spe support has been deprecated since gcc 8.x.
 	# https://gcc.gnu.org/ml/gcc/2018-04/msg00102.html
 	depends on !BR2_powerpc_SPE
