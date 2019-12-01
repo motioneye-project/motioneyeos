@@ -114,7 +114,7 @@ function start() {
         fi
         modprobe v4l2loopback video_nr=${vidid}
         if [ -e "${video_path}" ]; then
-            valid_opts=("analoggain" "awb" "awbgains" "bitrate" "brightness" "colfx" "contrast" "denoise" "digitalgain" "drc" "ev" "exposure" "flicker" "framerate" "height" "hflip" "imxfx" "intra" "irefresh" "level" "metering" "profile" "roi" "rotation" "saturation" "sharpness" "shutter" "vflip" "vstab" "width" "mjpegbitrate" "mjpegframerate" "mjpegwidth" "mjpegheight")
+            valid_opts=("analoggain" "awb" "awbgains" "bitrate" "brightness" "colfx" "contrast" "denoise" "digitalgain" "drc" "ev" "exposure" "flicker" "framerate" "hflip" "imxfx" "intra" "irefresh" "level" "metering" "profile" "roi" "rotation" "saturation" "sharpness" "shutter" "vflip" "vstab" "mjpegbitrate" "mjpegframerate" "mjpegwidth" "mjpegheight")
             raspimjpeg_opts="--videoout ${video_path}"
             while read line; do
                 key=$(echo ${line} | cut -d ' ' -f 1)
@@ -130,6 +130,14 @@ function start() {
                 raspimjpeg_opts="${raspimjpeg_opts} --${line}"
             done < ${RASPIMJPEG_CONF}
 
+            video_height=$(grep -e ^rtspHeight ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            if [ -n "${video_height}" ]; then
+                raspimjpeg_opts="${raspimjpeg_opts} --height ${video_height}"
+            fi
+            video_width=$(grep -e ^rtspWidth ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
+            if [ -n "${video_width}" ]; then
+                raspimjpeg_opts="${raspimjpeg_opts} --width ${video_width}"
+            fi
             video_iso=$(grep -e ^iso ${RASPIMJPEG_CONF} | cut -d ' ' -f 2)
             if [ -n "${video_iso}" ]; then
                 raspimjpeg_opts="${raspimjpeg_opts} --ISO ${video_iso}"
