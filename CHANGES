@@ -1,3 +1,35 @@
+2019.11, released December 1st, 2019
+
+	Various fixes.
+
+	Infrastructure: Make HOST_<pkg>_DL_OPTS inherit from
+	<pkg>_DL_OPTS by default, just like it is done for a number of
+	other package variables.
+
+	Add <pkg>_KEEP_PY_FILES to exclude specific python .py files
+	from the removal done by BR2_PACKAGE_PYTHON{,3}_PYC_ONLY for
+	the (rare) case where the .py files are needed at runtime
+	rather than .pyc.
+
+	Updated/fixed packages: am33x-cm3, bind, collectd, go, gob2,
+	gst1-plugins-bad, haproxy, jasper, jpeg-turbo, libdrm,
+	libftdi, libftdi1, libnss, libselinux, libstrophe, lzma,
+	minicom, network-manager, nodejs, oniguruma, opencv3,
+	openvmtools, perl-gdgraph, perl-gdtextutil, prosody,
+	python-cchardet, systemd, tiff, wolfssl,
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#11416: check-uniq-files staging issue
+	#12146: Oprofile runtime issue
+	#12166: Compiling nodejs for SAMA5D3 always crash with illegal inst..
+	#12171: Python-opencv needs config.py and config-3.7.py to run..
+	#12196: duma package
+	#12211: host-nodejs 10.15.3 package fail to build
+	#12316: tzdata fails to install with empty "default local time"
+	#12326: network-manager build fails with missing glib error
+	#12366: Gstreamer1 gst1-plugins-bad do not compile with RPI-Userland
+
 2019.11-rc3, released November 24th, 2019
 
 	Fixes all over the tree.
