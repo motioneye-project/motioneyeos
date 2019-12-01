@@ -1,0 +1,11 @@
+#!/bin/bash
+
+SCRIPT="/data/etc/dyndns-update.sh"
+
+if ! [[ -f "${SCRIPT}" ]]; then
+    exit 0
+fi
+
+logger -t dyndns "updating dynamic DNS"
+bash "${SCRIPT}" 2>&1 | logger -t dyndns
+exit ${PIPESTATUS[0]}

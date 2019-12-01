@@ -1,0 +1,2 @@
+config BR2_PACKAGE_SEMVER_SORT
+	bool "semver-sort"

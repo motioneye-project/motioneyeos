@@ -1,0 +1,15 @@
+#!/bin/bash
+
+SSL_DIR="/data/etc/ssl"
+CERT_FILE="${SSL_DIR}/cert.pem"
+KEY_FILE="${SSL_DIR}/privkey.pem"
+
+if [[ "$1" == "deploy_challenge" ]]; then
+    /usr/libexec/dehydrated-dumb-httpd "$4" &
+elif [[ "$1" == "deploy_cert" ]]; then
+    logger -t dehydrated "deploying certificate & rebooting"
+    mkdir -p "${SSL_DIR}"
+    cp "$3" "${KEY_FILE}"
+    cp "$4" "${CERT_FILE}"
+    reboot
+fi

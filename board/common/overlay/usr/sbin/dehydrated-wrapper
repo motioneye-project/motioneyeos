@@ -1,0 +1,16 @@
+#!/bin/bash
+
+PROG="/usr/bin/dehydrated"
+BASE_DIR="/var/lib/dehydrated"
+TMP_DIR="/tmp/dehydrated"
+SSL_DIR="/data/etc/ssl"
+
+if ! [[ -x "${PROG}" && -r "${SSL_DIR}/domain" && -r "${SSL_DIR}/email" ]]; then
+    exit 0  # not installed or not configured
+fi
+
+mkdir -p "${BASE_DIR}"
+mkdir -p "${TMP_DIR}"
+
+logger -t dehydrated "checking for certificate renewal"
+dehydrated "$@"

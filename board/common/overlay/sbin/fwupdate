@@ -60,6 +60,7 @@ EXTRACT_DONE_FILE=${FW_DIR}/extract_done
 FLASH_BOOT_STARTED_FILE=${FW_DIR}/flash_boot_started
 FLASH_BOOT_DONE_FILE=${FW_DIR}/flash_boot_done
 FLASH_REBOOT_STARTED_FILE=${FW_DIR}/flash_reboot_started
+ERROR_FILE=${FW_DIR}/error
 
 TMP_BOOT_DIR=/tmp/fwupdate_boot
 TMP_ROOT_DIR=/tmp/fwupdate_root
@@ -255,6 +256,7 @@ function do_download() {
     rm -f ${FLASH_BOOT_STARTED_FILE}
     rm -f ${FLASH_BOOT_DONE_FILE}
     rm -f ${FLASH_REBOOT_STARTED_FILE}
+    rm -f ${ERROR_FILE}
     touch ${DOWNLOAD_STARTED_FILE}
 
     echo "downloading..."
@@ -288,13 +290,15 @@ function do_download() {
     fi
 
     if [[ -z "${url}" ]]; then
-        echo "no such version" 1>&2
+        echo "no such version" | tee 1>&2 ${ERROR_FILE}
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
     free_disk=$(df /data | tail -n 1 | tr -s ' ' | cut -d ' ' -f 4)
     if [[ "${free_disk}" -lt $((MIN_FREE_DISK * 1024)) ]]; then
-        echo "not enough disk space" 1>&2
+        echo "not enough disk space" | tee 1>&2 ${ERROR_FILE}
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
@@ -319,7 +323,8 @@ function do_download() {
     wait ${pid}
 
     if [[ "$?" != 0 ]]; then
-        cat ${CURL_LOG_FILE}
+        echo "download failed" | tee 1>&2 ${ERROR_FILE}
+        rm ${DOWNLOAD_STARTED_FILE}
         exit 1
     fi
 
@@ -351,7 +356,7 @@ function run_pre_upgrade() {
                 # non-zero exit status of pre-upgrade script indicates that
                 # the upgrade process must not be continued
 
-                echo "aborted by pre-upgrade script"
+                echo "aborted by pre-upgrade script" | tee 1>&2 ${ERROR_FILE}
                 return 1
             fi
         done
@@ -365,7 +370,7 @@ function run_pre_upgrade() {
 
 function do_extract() {
     if ! [[ -f ${FW_FILE_GZ} || -f ${FW_FILE_XZ} ]] || ! [[ -f ${DOWNLOAD_DONE_FILE} ]]; then
-        echo "firmware file not downloaded" 1>&2
+        echo "firmware file not downloaded" | tee 1>&2 ${ERROR_FILE}
         exit 1
     fi
 
@@ -373,6 +378,7 @@ function do_extract() {
     rm -f ${FLASH_BOOT_STARTED_FILE}
     rm -f ${FLASH_BOOT_DONE_FILE}
     rm -f ${FLASH_REBOOT_STARTED_FILE}
+    rm -f ${ERROR_FILE}
     rm -f ${FW_FILE_EXTR}
     touch ${EXTRACT_STARTED_FILE}
 
@@ -397,7 +403,7 @@ function do_extract() {
         DECOMPRESS_PID_FILE=${GUNZIP_PID_FILE}
         gunzip -k -c ${FW_FILE_GZ} > ${FW_FILE_EXTR} 2>${GUNZIP_LOG_FILE} &
     else
-        echo "firmware compression format ${format} not supported" 1>&2
+        echo "firmware compression format ${format} not supported" 1>&2 | tee 1>&2 ${ERROR_FILE}
         exit 1
     fi
 
@@ -437,12 +443,13 @@ function do_extract() {
 
 function do_flash_boot() {
     if ! [[ -f ${FW_FILE_EXTR} ]] || ! [[ -f ${EXTRACT_DONE_FILE} ]]; then
-        echo "extracted firmware not present"
+        echo "extracted firmware not present" | tee 1>&2 ${ERROR_FILE}
         return 1
     fi
 
     rm -f ${FLASH_BOOT_DONE_FILE}
     rm -f ${FLASH_REBOOT_STARTED_FILE}
+    rm -f ${ERROR_FILE}
     touch ${FLASH_BOOT_STARTED_FILE}
 
     echo "flashing boot..."
@@ -487,10 +494,11 @@ function do_flash_boot() {
 
 function do_flash_reboot() {
     if ! [[ -f ${ROOT_INFO_FILE} ]] || ! [[ -f ${FLASH_BOOT_DONE_FILE} ]]; then
-        echo "root partition info file not present"
+        echo "root partition info file not present" | tee 1>&2 ${ERROR_FILE}
         return 1
     fi
 
+    rm -f ${ERROR_FILE}
     touch ${FLASH_REBOOT_STARTED_FILE}
 
     echo "preparing for reboot..."
@@ -525,7 +533,10 @@ function show_status() {
         new_version=$(cat ${VER_FILE})
     fi
 
-    if [[ -f ${FLASH_REBOOT_STARTED_FILE} ]]; then
+    if [[ -f ${ERROR_FILE} ]]; then
+        echo -n "error: "
+        cat ${ERROR_FILE}
+    elif [[ -f ${FLASH_REBOOT_STARTED_FILE} ]]; then
         echo "rebooting [${new_version}]"
     elif [[ -f ${FLASH_BOOT_DONE_FILE} ]]; then
         echo "boot flashed [${new_version}]"
