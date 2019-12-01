@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-OPENPGM_VERSION = release-5-2-122
-OPENPGM_SITE = $(call github,steve-o,openpgm,$(OPENPGM_VERSION))
+OPENPGM_VERSION = 5-2-122
+OPENPGM_SITE = $(call github,steve-o,openpgm,release-$(OPENPGM_VERSION))
 OPENPGM_LICENSE = LGPL-2.1+
 OPENPGM_LICENSE_FILES = openpgm/pgm/LICENSE
 OPENPGM_INSTALL_STAGING = YES
