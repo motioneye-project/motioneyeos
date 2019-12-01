@@ -1,0 +1,1 @@
+import gobject  # noqa
