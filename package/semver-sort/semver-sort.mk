@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SEMVER_SORT_VERSION = 7cf3c5c783aeea6c2b8673c92b76cc51a1ec7ad5
+SEMVER_SORT_VERSION = a4de79b7691945e1db9b21ffc5b39b751477dc4e
 SEMVER_SORT_SITE = $(call github,ccrisan,semver-sort,$(SEMVER_SORT_VERSION))
 SEMVER_SORT_LICENSE = MIT
 

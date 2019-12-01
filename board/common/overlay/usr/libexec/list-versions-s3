@@ -42,4 +42,4 @@ for file in ${files[*]}; do
 
     echo "${version}|${prerelease}|${board}|${final_url}|${date}"
     i=$((i + 1))
-done | sort -t. -k 1,1rn -k 2,2rn -k 3,3rn -k 4,4rn -k 5,5rn
+done | semver-sort -r -t '|' -k 1
