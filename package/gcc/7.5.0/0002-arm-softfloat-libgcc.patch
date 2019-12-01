@@ -1,4 +1,4 @@
-From 420a304ac0daa29d66da6ed5b0b49fc4c482d522 Mon Sep 17 00:00:00 2001
+From 1d0a47a72a1357e4a298d611bd2499e1b72c6f86 Mon Sep 17 00:00:00 2001
 From: Romain Naour <romain.naour@gmail.com>
 Date: Tue, 2 May 2017 22:46:18 +0200
 Subject: [PATCH] arm softfloat libgcc
@@ -11,7 +11,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  2 files changed, 7 insertions(+), 2 deletions(-)
 
 diff --git a/gcc/config/arm/linux-elf.h b/gcc/config/arm/linux-elf.h
-index 3d62367..dad0b97 100644
+index 3d62367ae68..dad0b97d39f 100644
 --- a/gcc/config/arm/linux-elf.h
 +++ b/gcc/config/arm/linux-elf.h
 @@ -58,7 +58,7 @@
@@ -24,7 +24,7 @@ index 3d62367..dad0b97 100644
  #define GLIBC_DYNAMIC_LINKER "/lib/ld-linux.so.2"
  
 diff --git a/libgcc/config/arm/t-linux b/libgcc/config/arm/t-linux
-index 3d520de..e7bc042 100644
+index 3d520decafb..e7bc042d4e4 100644
 --- a/libgcc/config/arm/t-linux
 +++ b/libgcc/config/arm/t-linux
 @@ -1,6 +1,11 @@
@@ -41,5 +41,5 @@ index 3d520de..e7bc042 100644
  # Just for these, we omit the frame pointer since it makes such a big
  # difference.
 -- 
-2.9.3
+2.21.0
 

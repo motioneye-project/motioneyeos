@@ -1,4 +1,4 @@
-From 6ea832d09415cd82b744d0cf168cdd728c43df47 Mon Sep 17 00:00:00 2001
+From 1d78555bfc753039546ce5ca655dece67732e7bd Mon Sep 17 00:00:00 2001
 From: Mark Corbin <mark.corbin@embecosm.com>
 Date: Thu, 22 Nov 2018 12:19:11 +0000
 Subject: [PATCH] gcc: define _REENTRANT for RISC-V when -pthread is passed
@@ -27,5 +27,5 @@ index 4b2f7b6e1fd..b00d23ddfa0 100644
  -melf" XLEN_SPEC "lriscv \
  %{shared} \
 -- 
-2.19.1
+2.21.0
 

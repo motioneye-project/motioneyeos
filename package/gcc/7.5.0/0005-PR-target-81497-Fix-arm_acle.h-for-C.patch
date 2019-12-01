@@ -1,9 +1,9 @@
-From 1a259ac3e39bf87e6e6a5eface8b0ebc6b2a0dfe Mon Sep 17 00:00:00 2001
+From f1c05207166a16d0a6242f2fa642adc439f835a8 Mon Sep 17 00:00:00 2001
 From: ktkachov <ktkachov@138bc75d-0d04-0410-961f-82ee72b054a4>
 Date: Tue, 5 Jun 2018 09:50:16 +0000
-Subject: [PATCH] [arm] PR target/81497: Fix arm_acle.h for C++
+Subject: [PATCH] PR target/81497: Fix arm_acle.h for C++
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 When trying to compile something with arm_acle.h using G++ we get a number of nasty errors:
@@ -23,7 +23,6 @@ const-qualified versions and uses that in the specification of these intrinsics.
 
 This gives us the opportunity of creating an arm subdirectory in g++.dg and inaugurates it
 with the first arm-specific C++ tests (in that directory).
-
 
 	PR target/81497
 	* config/arm/arm-builtins.c (arm_type_qualifiers): Add
@@ -53,7 +52,7 @@ Signed-off-by: Romain Naour <romain.naour@gmail.com>
  create mode 100644 gcc/testsuite/g++.target/arm/pr81497.C
 
 diff --git a/gcc/config/arm/arm-builtins.c b/gcc/config/arm/arm-builtins.c
-index 7fde7a04672..183a7b907f6 100644
+index d3b67184362..dd56f13251f 100644
 --- a/gcc/config/arm/arm-builtins.c
 +++ b/gcc/config/arm/arm-builtins.c
 @@ -75,7 +75,11 @@ enum arm_type_qualifiers
@@ -127,7 +126,7 @@ index 7fde7a04672..183a7b907f6 100644
  	 return type.  Otherwise, we are still processing
  	 arguments.  */
 diff --git a/gcc/config/arm/arm_acle.h b/gcc/config/arm/arm_acle.h
-index 9a2f0ba30dc..c0f6ea2d156 100644
+index 972e28edb86..69c29df4313 100644
 --- a/gcc/config/arm/arm_acle.h
 +++ b/gcc/config/arm/arm_acle.h
 @@ -38,35 +38,35 @@ __arm_cdp (const unsigned int __coproc, const unsigned int __opc1,
@@ -320,5 +319,5 @@ index 00000000000..0519a3a3045
 +  return 0;
 +}
 -- 
-2.17.1
+2.21.0
 
