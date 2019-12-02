@@ -4,8 +4,9 @@
 #
 ################################################################################
 
-NSS_MDNS_VERSION = 0.10
-NSS_MDNS_SITE = http://0pointer.de/lennart/projects/nss-mdns
+NSS_MDNS_VERSION = 0.14.1
+NSS_MDNS_SITE = \
+	https://github.com/lathiat/nss-mdns/releases/download/v$(NSS_MDNS_VERSION)
 NSS_MDNS_LICENSE = LGPL-2.1+
 NSS_MDNS_LICENSE_FILES = LICENSE
 
