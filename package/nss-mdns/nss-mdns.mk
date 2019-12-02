@@ -9,6 +9,7 @@ NSS_MDNS_SITE = \
 	https://github.com/lathiat/nss-mdns/releases/download/v$(NSS_MDNS_VERSION)
 NSS_MDNS_LICENSE = LGPL-2.1+
 NSS_MDNS_LICENSE_FILES = LICENSE
+NSS_MDNS_CONF_OPTS = --disable-tests
 
 # add mdns4_minimal / mdns around the dns provider if missing
 define NSS_MDNS_INSTALL_CONFIG
