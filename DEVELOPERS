@@ -73,6 +73,7 @@ F:	package/selinux-python/
 F:	package/semodule-utils/
 F:	package/setools/
 F:	package/sngrep/
+F:	package/spidermonkey/
 F:	package/systemd/
 
 N:	Adam Heinrich <adam@adamh.cz>
@@ -256,6 +257,8 @@ F:	package/lua-ev/
 F:	package/orbit/
 
 N:	Bartosz Bilas <b.bilas@grinn-global.com>
+F:	package/python-esptool/
+F:	package/python-pyaes/
 F:	package/qt5/qt5scxml/
 F:	package/qt5/qt5webview/
 
@@ -274,6 +277,7 @@ N:	Baruch Siach <baruch@tkos.co.il>
 F:	board/solidrun/clearfog_gt_8k/
 F:	configs/solidrun_clearfog_gt_8k_defconfig
 F:	package/18xx-ti-utils/
+F:	package/cpuburn-arm/
 F:	package/daemon/
 F:	package/dropbear/
 F:	package/ebtables/
@@ -592,6 +596,10 @@ F:	package/libselinux/
 F:	package/libsemanage/
 F:	package/libsepol/
 F:	package/policycoreutils/
+
+N:	Clément Péron <peron.clem@gmail.com>
+F:	board/beelink/gs1/
+F:	configs/beelink_gs1_defconfig
 
 N:	Corentin Guillevic <corentin.guillevic@smile.fr>
 F:	package/libloki/
@@ -1003,6 +1011,7 @@ F:	package/f2fs-tools/
 F:	package/pigpio/
 F:	package/python-aioblescan/
 F:	package/python-bluezero/
+F:	package/python-crontab/
 F:	package/python-falcon/
 F:	package/python-ifaddr/
 F:	package/python-hiredis/
@@ -1173,6 +1182,9 @@ F:	package/quota/
 N:	Jason Pruitt <jrspruitt@gmail.com>
 F:	package/librtlsdr/
 
+N:	Jens Kleintje <scooby22@web.de>
+F:	package/gcnano-binaries/
+
 N:	Jens Rosenboom <j.rosenboom@x-ion.de>
 F:	package/sl/
 
@@ -1238,6 +1250,7 @@ F:	package/dhcpcd/
 
 N:	John Faith <jfaith@impinj.com>
 F:	package/python-inflection/
+F:	package/sdbusplus/
 
 N:	Jonathan Ben Avraham <yba@tkos.co.il>
 F:	arch/Config.in.xtensa
@@ -1394,6 +1407,9 @@ F:	package/ti-sgx-um/
 N:	Louis Aussedat <aussedat.louis@gmail.com>
 F:	board/friendlyarm/nanopi-neo-plus2/
 F:	configs/friendlyarm_nanopi_neo_plus2_defconfig
+F:	package/python-dnspython/
+F:	package/python-future/
+F:	package/python-huepy/
 F:	package/python-tqdm/
 
 N:	Louis-Paul Cordier <lpdev@cordier.org>
@@ -1585,6 +1601,7 @@ F:	package/policycoreutils/
 F:	package/proftpd/
 F:	package/protobuf-c/
 F:	package/protobuf/
+F:	package/python-bunch/
 F:	package/python-colorama/
 F:	package/python-flask-cors/
 F:	package/python-iptables/
@@ -1795,15 +1812,23 @@ F:	package/checksec/
 N:	Parnell Springmeyer <parnell@digitalmentat.com>
 F:	package/scrypt/
 
+N:	Pascal de Bruijn <p.debruijn@unilogic.nl>
+F:	package/libargon2/
+
 N:	Pascal Huerst <pascal.huerst@gmail.com>
 F:	package/google-breakpad/
 
 N:	Patrick Gerber <kpa_info@yahoo.fr>
 F:	package/yavta/
 
+N:	Patrick Havelange <patrick.havelange@essensium.com>
+F:	support/testing/tests/package/test_lxc.py
+F:	support/testing/tests/package/test_lxc/
+
 N:	Paul Cercueil <paul@crapouillou.net>
 F:	package/libiio/
 F:	package/lightning/
+F:	package/umtprd/
 
 N:	Pedro Aguilar <paguilar@paguilar.org>
 F:	package/libunistring/
@@ -1937,6 +1962,7 @@ N:	Pierre-Jean Texier <pjtexier@koncepto.io>
 F:	package/fping/
 F:	package/genimage/
 F:	package/haveged/
+F:	package/ipset/
 F:	package/libarchive/
 F:	package/libevent/
 F:	package/libubootenv/
@@ -1944,6 +1970,7 @@ F:	package/libxml2/
 F:	package/mongoose/
 F:	package/mxml/
 F:	package/python-periphery/
+F:	package/raspi-gpio/
 F:	package/sbc/
 F:	package/stunnel/
 F:	package/tree/

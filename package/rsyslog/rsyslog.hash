@@ -1,5 +1,5 @@
 # From http://www.rsyslog.com/downloads/download-v8-stable/
-sha256	0219ee692f31a39743acb62aaf4196b644ce94edf386df4605fd6a11a4fe0c93	rsyslog-8.1910.0.tar.gz
+sha256	e1f4776b1c62ad7220f4d624a89a96b0c3d4738006899356eaaef0f1f91ee104	rsyslog-8.1911.0.tar.gz
 
 # Locally calculated
 sha256	054b3a047d9232376a46b87356b19b0c0c2924cb5e6911ab96a01fc4b515f083	COPYING

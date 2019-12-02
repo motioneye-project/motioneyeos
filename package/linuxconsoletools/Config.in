@@ -28,9 +28,13 @@ config BR2_PACKAGE_LINUXCONSOLETOOLS_JOYSTICK
 
 config BR2_PACKAGE_LINUXCONSOLETOOLS_FORCEFEEDBACK
 	bool "force-feedback utilities"
-	select BR2_PACKAGE_SDL
+	depends on !BR2_STATIC_LIBS
+	select BR2_PACKAGE_SDL2
 	help
 	  Build force-feedback driver utilities (fftest,
 	  ffmvforce, ffset, ffcfstress).
+
+comment "force-feedback utilities need a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
 
 endif

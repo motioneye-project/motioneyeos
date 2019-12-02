@@ -124,6 +124,17 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
 	  gets built before ATF, and that the appropriate BL33
 	  variable pointing to u-boot.bin is passed when building ATF.
 
+if BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_AS_BL33
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_BL33_IMAGE
+	string "U-Boot BL33 image name"
+	default "u-boot.bin"
+	help
+	  Name of the U-Boot BL33 image to include in ATF, it must
+	  have been installed to BINARIES_DIR by the U-Boot package.
+
+endif
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	string "Additional ATF build variables"
 	help
@@ -134,5 +145,12 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_DEBUG
 	bool "Build in debug mode"
 	help
 	  Enable this option to build ATF with DEBUG=1.
+
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_IMAGES
+	string "Binary boot images"
+	default "*.bin"
+	help
+	  Names of generated image files that are installed in the
+	  output images/ directory.
 
 endif

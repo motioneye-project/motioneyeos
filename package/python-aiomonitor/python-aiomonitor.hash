@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/aiomonitor/json
-md5	38028c80adf5708ad5f7adadf0fdf404  aiomonitor-0.4.4.tar.gz
-sha256	c3e0d79cb637baa06ce50db8070e8db0798e16ea626606b703d9d0e3ca5b30ff  aiomonitor-0.4.4.tar.gz
+md5	5f184e4b97ea161fc2d690aef604f997  aiomonitor-0.4.5.tar.gz
+sha256	6232c1ab14bf06cd7217845801c27340032f74e283bdaf32d01cdd3b7c673d0e  aiomonitor-0.4.5.tar.gz
 # Locally computed sha256 checksums
 sha256	9b42fe3a288996988c552e387e7877be7525a1649e62086aedd6b32d3cb56365  LICENSE

@@ -135,6 +135,32 @@ clean-json = $(strip \
 	)))) \
 )
 
+ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),y)
+# rsync the contents of per-package directories
+# $1: space-separated list of packages to rsync from
+# $2: 'host' or 'target'
+# $3: destination directory
+define per-package-rsync
+	mkdir -p $(3)
+	$(foreach pkg,$(1),\
+		rsync -a --link-dest=$(PER_PACKAGE_DIR)/$(pkg)/$(2)/ \
+		$(PER_PACKAGE_DIR)/$(pkg)/$(2)/ \
+		$(3)$(sep))
+endef
+
+# prepares the per-package HOST_DIR and TARGET_DIR of the current
+# package, by rsync the host and target directories of the
+# dependencies of this package. The list of dependencies is passed as
+# argument, so that this function can be used to prepare with
+# different set of dependencies (download, extract, configure, etc.)
+#
+# $1: space-separated list of packages to rsync from
+define prepare-per-package-directory
+	$(call per-package-rsync,$(1),host,$(HOST_DIR))
+	$(call per-package-rsync,$(1),target,$(TARGET_DIR))
+endef
+endif
+
 #
 # legal-info helper functions
 #

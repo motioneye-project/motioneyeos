@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-XR819_XRADIO_VERSION = 33f4b1c25eff0d9db7cbac19f36b130da9857f37
+XR819_XRADIO_VERSION = aa01ba77b9360dd734b50f5b937960a50c5a0825
 XR819_XRADIO_SITE = $(call github,fifteenhex,xradio,$(XR819_XRADIO_VERSION))
 XR819_XRADIO_LICENSE = GPL-2.0
 XR819_XRADIO_LICENSE_FILES = LICENSE

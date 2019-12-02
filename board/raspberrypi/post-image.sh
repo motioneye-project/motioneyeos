@@ -30,15 +30,6 @@ __EOF__
 arm_64bit=1
 __EOF__
 		fi
-
-		# Enable uart console
-		if ! grep -qE '^enable_uart=1' "${BINARIES_DIR}/rpi-firmware/config.txt"; then
-			cat << __EOF__ >> "${BINARIES_DIR}/rpi-firmware/config.txt"
-
-# enable rpi3 ttyS0 serial console
-enable_uart=1
-__EOF__
-		fi
 		;;
 		--gpu_mem_256=*|--gpu_mem_512=*|--gpu_mem_1024=*)
 		# Set GPU memory

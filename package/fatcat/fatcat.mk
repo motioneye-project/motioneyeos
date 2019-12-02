@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-FATCAT_VERSION = 1.0.6
-FATCAT_SITE = $(call github,Gregwar,fatcat,$(FATCAT_VERSION))
+FATCAT_VERSION = 1.1.0
+FATCAT_SITE = $(call github,Gregwar,fatcat,v$(FATCAT_VERSION))
 FATCAT_LICENSE = MIT
 FATCAT_LICENSE_FILES = LICENSE
 

@@ -1,4 +1,4 @@
 # From: https://www.kernel.org/pub/software/scm/git/sha256sums.asc
-sha256 159e4b599f8af4612e70b666600a3139541f8bacc18124daf2cbe8d1b934f29f  git-2.22.0.tar.xz
+sha256 9f71d61973626d8b28c4cdf8e2484b4bf13870ed643fed982d68b2cfd754371b  git-2.24.0.tar.xz
 sha256 5b2198d1645f767585e8a88ac0499b04472164c0d2da22e75ecf97ef443ab32e  COPYING
 sha256 1922f45d2c49e390032c9c0ba6d7cac904087f7cec51af30c2b2ad022ce0e76a  LGPL-2.1

@@ -84,3 +84,9 @@ class BRTest(BRConfigTest):
         if self.emulator:
             self.emulator.stop()
         super(BRTest, self).tearDown()
+
+    # Run the given 'cmd' with a 'timeout' on the target and
+    # assert that the command succeeded
+    def assertRunOk(self, cmd, timeout=-1):
+        _, exit_code = self.emulator.run(cmd, timeout)
+        self.assertEqual(exit_code, 0)

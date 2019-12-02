@@ -4,11 +4,11 @@
 #
 ################################################################################
 
-DTC_VERSION = 1.5.0
+DTC_VERSION = 1.5.1
 DTC_SOURCE = dtc-$(DTC_VERSION).tar.xz
 DTC_SITE = https://www.kernel.org/pub/software/utils/dtc
 DTC_LICENSE = GPL-2.0+ or BSD-2-Clause (library)
-DTC_LICENSE_FILES = README.license GPL
+DTC_LICENSE_FILES = README.license GPL BSD-2-Clause
 DTC_INSTALL_STAGING = YES
 DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
 HOST_DTC_DEPENDENCIES = host-bison host-flex host-pkgconf
@@ -18,8 +18,11 @@ DTC_MAKE_OPTS = \
 	NO_PYTHON=1 \
 	NO_VALGRIND=1
 
+# For the host, we install headers in a special subdirectory to avoid
+# conflicts with the in-kernel libfdt copy.
 HOST_DTC_MAKE_OPTS = \
 	PREFIX=$(HOST_DIR) \
+	INCLUDEDIR=$(HOST_DIR)/include/libfdt \
 	NO_PYTHON=1 \
 	NO_VALGRIND=1 \
 	NO_YAML=1

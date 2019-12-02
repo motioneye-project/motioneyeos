@@ -15,6 +15,8 @@ Signed-off-by: Lothar Felten <lothar.felten@gmail.com>
 [ThomasDS: also update fdt.h which has the same issue, seen on U-Boot
 2011.03]
 Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
+[SB: Updated to match context change in v1.5.1]
+Signed-off-by: Sam Bobroff <sbobroff@linux.ibm.com>
 ---
  libfdt/fdt.h        | 4 ++++
  libfdt/libfdt.h     | 4 ++++
@@ -22,10 +24,11 @@ Signed-off-by: Thomas De Schampheleire <thomas.de_schampheleire@nokia.com>
  3 files changed, 12 insertions(+)
 
 diff --git a/libfdt/fdt.h b/libfdt/fdt.h
-index 74961f9..2904f48 100644
+index f2e6880..0f1dc4d 100644
 --- a/libfdt/fdt.h
 +++ b/libfdt/fdt.h
-@@ -1,3 +1,7 @@
+@@ -1,4 +1,8 @@
+ /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
 +#ifdef _FDT_H
 +#warning "Please consider updating your kernel and/or u-boot version"
 +#define FDT_H
@@ -34,10 +37,11 @@ index 74961f9..2904f48 100644
  #define FDT_H
  /*
 diff --git a/libfdt/libfdt.h b/libfdt/libfdt.h
-index 830b77e..bef4566 100644
+index 8037f39..7668432 100644
 --- a/libfdt/libfdt.h
 +++ b/libfdt/libfdt.h
-@@ -1,3 +1,7 @@
+@@ -1,4 +1,8 @@
+ /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
 +#ifdef _LIBFDT_H
 +#warning "Please consider updating your kernel and/or u-boot version"
 +#define LIBFDT_H
@@ -46,10 +50,11 @@ index 830b77e..bef4566 100644
  #define LIBFDT_H
  /*
 diff --git a/libfdt/libfdt_env.h b/libfdt/libfdt_env.h
-index eb20538..6a61e6a 100644
+index 73b6d40..b95a287 100644
 --- a/libfdt/libfdt_env.h
 +++ b/libfdt/libfdt_env.h
-@@ -1,3 +1,7 @@
+@@ -1,4 +1,8 @@
+ /* SPDX-License-Identifier: (GPL-2.0-or-later OR BSD-2-Clause) */
 +#ifdef _LIBFDT_ENV_H
 +#warning "Please consider updating your kernel and/or u-boot version"
 +#define LIBFDT_ENV_H
@@ -58,5 +63,5 @@ index eb20538..6a61e6a 100644
  #define LIBFDT_ENV_H
  /*
 -- 
-2.19.2
+2.22.0.216.g00a2a96fc9
 

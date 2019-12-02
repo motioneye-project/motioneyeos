@@ -1,4 +1,4 @@
-From 8275a380658070336df0c404f0ff585d27681836 Mon Sep 17 00:00:00 2001
+From cc9ac86bcff79697d354cc51d3a984fd0f362868 Mon Sep 17 00:00:00 2001
 From: Peter Seiderer <ps.report@gmx.net>
 Date: Thu, 22 Sep 2016 22:59:11 +0200
 Subject: [PATCH] Disable Werror everywhere
@@ -15,6 +15,9 @@ Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 
 [Rebased for rpi-userland-8f0abfb07b96e7ee85f46e59d895014ec5e25f5e]
 Signed-off-by: Peter Seiderer <ps.report@gmx.net>
+
+[Rebased for rpi-userland-5070cb7fc150fc98f1ed64a7739c3356970d9f76]
+Signed-off-by: Peter Seiderer <ps.report@gmx.net>
 ---
  host_applications/android/apps/vidtex/CMakeLists.txt | 2 +-
  host_applications/linux/apps/gencmd/CMakeLists.txt   | 2 +-
@@ -26,8 +29,7 @@ Signed-off-by: Peter Seiderer <ps.report@gmx.net>
  interface/vcos/CMakeLists.txt                        | 2 +-
  interface/vcos/pthreads/CMakeLists.txt               | 2 +-
  interface/vmcs_host/CMakeLists.txt                   | 2 +-
- interface/vmcs_host/linux/vcfiled/CMakeLists.txt     | 2 +-
- 11 files changed, 11 insertions(+), 11 deletions(-)
+ 10 files changed, 10 insertions(+), 10 deletions(-)
 
 diff --git a/host_applications/android/apps/vidtex/CMakeLists.txt b/host_applications/android/apps/vidtex/CMakeLists.txt
 index 6d66d69..06a3192 100644
@@ -55,7 +57,7 @@ index f95d1a1..034bf20 100644
  
  include_directories( ../../../.. 
 diff --git a/host_applications/linux/apps/raspicam/CMakeLists.txt b/host_applications/linux/apps/raspicam/CMakeLists.txt
-index 42636e8..d778f09 100644
+index f7db21e..b94bdc3 100644
 --- a/host_applications/linux/apps/raspicam/CMakeLists.txt
 +++ b/host_applications/linux/apps/raspicam/CMakeLists.txt
 @@ -1,7 +1,7 @@
@@ -107,7 +109,7 @@ index 5ce5aca..02aea7c 100644
  
  include_directories( ../../../..
 diff --git a/interface/mmal/CMakeLists.txt b/interface/mmal/CMakeLists.txt
-index 37ae757..78b24a9 100644
+index 46f149d..06273dc 100644
 --- a/interface/mmal/CMakeLists.txt
 +++ b/interface/mmal/CMakeLists.txt
 @@ -3,7 +3,7 @@ if (NOT DEFINED LIBRARY_TYPE)
@@ -146,7 +148,7 @@ index 1d81ca3..b35cd8e 100644
  endif ()
  
 diff --git a/interface/vmcs_host/CMakeLists.txt b/interface/vmcs_host/CMakeLists.txt
-index fde18da..802c158 100755
+index a157db1..dc384ca 100755
 --- a/interface/vmcs_host/CMakeLists.txt
 +++ b/interface/vmcs_host/CMakeLists.txt
 @@ -2,7 +2,7 @@
@@ -158,17 +160,6 @@ index fde18da..802c158 100755
  
  # vc_vchi_gencmd.c has a type-punning problem in vc_gencmd_read_response
  add_definitions(-fno-strict-aliasing)
-diff --git a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
-index aed0e83..d834b3f 100644
---- a/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
-+++ b/interface/vmcs_host/linux/vcfiled/CMakeLists.txt
-@@ -1,5 +1,5 @@
- 
--add_definitions(-Werror)
-+add_definitions()
- 
- # vcfiled - serves files to videocore. used for media handlers from
- # OpenMAX/IL and loading VLLs.
 -- 
-2.19.0
+2.23.0
 

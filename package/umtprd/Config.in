@@ -1,0 +1,11 @@
+config BR2_PACKAGE_UMTPRD
+	bool "umtprd"
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15
+	help
+	  Lightweight USB MTP responder daemon for GNU/Linux
+
+	  https://github.com/viveris/uMTP-Responder
+
+comment "umtprd needs a toolchain w/ threads, headers >= 3.15"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_15

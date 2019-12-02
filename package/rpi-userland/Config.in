@@ -32,13 +32,6 @@ config BR2_PACKAGE_PROVIDES_LIBOPENVG
 config BR2_PACKAGE_PROVIDES_LIBOPENMAX
 	default "rpi-userland"
 
-config BR2_PACKAGE_RPI_USERLAND_START_VCFILED
-	bool "Start vcfiled"
-	depends on BR2_INIT_SYSV || BR2_INIT_BUSYBOX
-	help
-	  vcfiled is a daemon serving files to VideoCore from the host
-	  file system.
-
 config BR2_PACKAGE_RPI_USERLAND_HELLO
 	bool "hello_pi examples"
 	help

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-LIBFFI_VERSION = 3.3-rc0
+LIBFFI_VERSION = 3.3
 LIBFFI_SITE = $(call github,libffi,libffi,v$(LIBFFI_VERSION))
 LIBFFI_LICENSE = MIT
 LIBFFI_LICENSE_FILES = LICENSE

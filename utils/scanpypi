@@ -612,6 +612,7 @@ class BuildrootPackage():
         bool_line = '\tbool "{name}"\n'.format(name=self.buildroot_name)
         lines.append(bool_line)
         if self.pkg_req:
+            self.pkg_req.sort()
             for dep in self.pkg_req:
                 dep_line = '\tselect BR2_PACKAGE_{req} # runtime\n'.format(
                     req=dep.upper().replace('-', '_'))
