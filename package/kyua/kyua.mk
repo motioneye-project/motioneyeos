@@ -4,12 +4,12 @@
 #
 ################################################################################
 
-KYUA_VERSION = 0.11
+KYUA_VERSION = 0.13
 KYUA_SITE = https://github.com/jmmv/kyua/releases/download/kyua-$(KYUA_VERSION)
 KYUA_DEPENDENCIES = host-pkgconf atf lutok sqlite
 KYUA_CONF_OPTS = --without-doxygen --without-atf
 KYUA_LICENSE = BSD-3-Clause
-KYUA_LICENSE_FILES = COPYING
+KYUA_LICENSE_FILES = LICENSE
 KYUA_CONF_ENV = \
 	kyua_cv_attribute_noreturn=yes \
 	kyua_cv_getcwd_dyn=yes \
