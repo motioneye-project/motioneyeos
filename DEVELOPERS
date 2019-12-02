@@ -1702,6 +1702,7 @@ F:	package/python-spidev/
 
 N:	Michael Vetter <jubalh@iodoru.org>
 F:	package/jasper/
+F:	package/libstrophe/
 
 N:	Michael Walle <michael@walle.cc>
 F:	package/libavl/
