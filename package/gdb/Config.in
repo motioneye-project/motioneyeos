@@ -49,6 +49,11 @@ config BR2_PACKAGE_GDB_SERVER
 	bool "gdbserver"
 	depends on !BR2_TOOLCHAIN_EXTERNAL_GDB_SERVER_COPY
 	depends on !BR2_riscv
+	# Simultaneous build of gdbserver and full gdb is not possible
+	# with arc-2019.09. This bug comes from upstream GDB. So
+	# simultaneous usage of full gdb and gdbserver is temporaly
+	# disabled for ARC until a fix becomes available.
+	depends on !(BR2_arc && BR2_PACKAGE_GDB_DEBUGGER)
 	help
 	  Build the gdbserver stub to run on the target.
 	  A full gdb is needed to debug the progam.
