@@ -39,14 +39,6 @@ def urlopen_closing(uri):
     return contextlib.closing(_urllib.urlopen(uri))
 
 
-if sys.hexversion >= 0x3000000:
-    def decode_byte_list(bl):
-        return [b.decode() for b in bl]
-else:
-    def decode_byte_list(e):
-        return e
-
-
 class SystemInfo:
     DEFAULT_NEEDED_PROGS = ["make", "git", "gcc", "timeout"]
     DEFAULT_OPTIONAL_PROGS = ["bzr", "java", "javac", "jar", "diffoscope"]
@@ -128,7 +120,7 @@ def get_toolchain_configs(toolchains_csv, buildrootdir):
     with open(toolchains_csv) as r:
         # filter empty lines and comments
         lines = [t for t in r.readlines() if len(t.strip()) > 0 and t[0] != '#']
-        toolchains = decode_byte_list(lines)
+        toolchains = lines
     configs = []
 
     (_, _, _, _, hostarch) = os.uname()
