@@ -28,6 +28,10 @@ else
 BOOT_WRAPPER_AARCH64_CONF_OPTS += --disable-psci
 endif
 
+ifeq ($(BR2_TARGET_BOOT_WRAPPER_AARCH64_GICV3),y)
+BOOT_WRAPPER_AARCH64_CONF_OPTS += --enable-gicv3
+endif
+
 # We need to convince the configure script that the Linux kernel tree
 # exists, as well as the DTB and the kernel Image. Even though those
 # are available on the build machine, the configure script uses
