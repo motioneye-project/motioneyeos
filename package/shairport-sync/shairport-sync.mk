@@ -66,6 +66,11 @@ SHAIRPORT_SYNC_DEPENDENCIES += libsoxr
 SHAIRPORT_SYNC_CONF_OPTS += --with-soxr
 endif
 
+ifeq ($(BR2_PACKAGE_SHAIRPORT_SYNC_MQTT),y)
+SHAIRPORT_SYNC_DEPENDENCIES += avahi dbus mosquitto
+SHAIRPORT_SYNC_CONF_OPTS += --with-mqtt-client
+endif
+
 define SHAIRPORT_SYNC_INSTALL_TARGET_CMDS
 	$(INSTALL) -D -m 0755 $(@D)/shairport-sync \
 		$(TARGET_DIR)/usr/bin/shairport-sync

@@ -52,6 +52,23 @@ config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 	  can be heard in some circumstances. Libsoxr allows this
 	  interpolation to be done much more smoothly and subtly.
 
+config BR2_PACKAGE_SHAIRPORT_SYNC_MQTT
+	bool "mqtt support"
+	depends on BR2_USE_MMU # avahi
+	depends on BR2_TOOLCHAIN_HAS_THREADS # avahi
+	depends on !BR2_STATIC_LIBS # avahi
+	select BR2_PACKAGE_AVAHI
+	select BR2_PACKAGE_AVAHI_DAEMON
+	select BR2_PACKAGE_DBUS
+	select BR2_PACKAGE_MOSQUITTO
+	help
+	  Enable support for the MQTT, the Message Queuing Telemetry
+	  Transport protocol.
+
+comment "shairport-sync mqtt support needs a toolchain w/ dynamic library, threads"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
+
 endif
 
 comment "shairport-sync needs a toolchain w/ C++, NPTL"
