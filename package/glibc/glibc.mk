@@ -74,9 +74,18 @@ endef
 endif
 
 GLIBC_CONF_ENV = \
-	ac_cv_path_BASH_SHELL=/bin/bash \
+	ac_cv_path_BASH_SHELL=/bin/$(if $(BR2_PACKAGE_BASH),bash,sh) \
 	libc_cv_forced_unwind=yes \
 	libc_cv_ssp=no
+
+# POSIX shell does not support localization, so remove the corresponding
+# syntax from ldd if bash is not selected.
+ifeq ($(BR2_PACKAGE_BASH),)
+define GLIBC_LDD_NO_BASH
+	$(SED) 's/$$"/"/g' $(@D)/elf/ldd.bash.in
+endef
+GLIBC_POST_PATCH_HOOKS += GLIBC_LDD_NO_BASH
+endif
 
 # Override the default library locations of /lib64/<abi> and
 # /usr/lib64/<abi>/ for RISC-V.
