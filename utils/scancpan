@@ -488,9 +488,9 @@ use Digest::SHA qw(sha256_hex);
 use Text::Wrap;
 $Text::Wrap::columns = 62;
 
-# Below, 5.028 should be aligned with the version of perl actually
+# Below, 5.030 should be aligned with the version of perl actually
 # bundled in Buildroot:
-die <<"MSG" if $] < 5.028;
+die <<"MSG" if $] < 5.030;
 This script needs a host perl with the same major version as Buildroot target perl.
 
 Your current host perl is:
@@ -498,7 +498,7 @@ Your current host perl is:
     version $]
 
 You may install a local one by running:
-    perlbrew install perl-5.28.0
+    perlbrew install perl-5.30.0
 MSG
 
 my ($help, $man, $quiet, $force, $recommend, $test, $host);
@@ -961,7 +961,7 @@ in order to work with the right CoreList data.
 
 =head1 LICENSE
 
-Copyright (C) 2013-2018 by Francois Perrad <francois.perrad@gadz.org>
+Copyright (C) 2013-2019 by Francois Perrad <francois.perrad@gadz.org>
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
