@@ -56,6 +56,11 @@ SHAIRPORT_SYNC_DEPENDENCIES += libsndfile
 SHAIRPORT_SYNC_CONF_OPTS += --with-convolution
 endif
 
+ifeq ($(BR2_PACKAGE_SHAIRPORT_SYNC_DBUS),y)
+SHAIRPORT_SYNC_DEPENDENCIES += libglib2
+SHAIRPORT_SYNC_CONF_OPTS += --with-dbus-interface --with-mpris-interface
+endif
+
 ifeq ($(BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR),y)
 SHAIRPORT_SYNC_DEPENDENCIES += libsoxr
 SHAIRPORT_SYNC_CONF_OPTS += --with-soxr
