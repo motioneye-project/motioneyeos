@@ -85,6 +85,11 @@ UBOOT_BINS += u-boot.img
 UBOOT_MAKE_TARGET += u-boot.img
 endif
 
+ifeq ($(BR2_TARGET_UBOOT_FORMAT_ITB),y)
+UBOOT_BINS += u-boot.itb
+UBOOT_MAKE_TARGET += u-boot.itb
+endif
+
 ifeq ($(BR2_TARGET_UBOOT_FORMAT_IMX),y)
 UBOOT_BINS += u-boot.imx
 UBOOT_MAKE_TARGET += u-boot.imx

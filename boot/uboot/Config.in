@@ -225,6 +225,9 @@ config BR2_TARGET_UBOOT_FORMAT_DTB_IMX
 config BR2_TARGET_UBOOT_FORMAT_IMG
 	bool "u-boot.img"
 
+config BR2_TARGET_UBOOT_FORMAT_ITB
+	bool "u-boot.itb"
+
 config BR2_TARGET_UBOOT_FORMAT_IMX
 	bool "u-boot.imx"
 
