@@ -341,6 +341,10 @@ def gen_config(args):
     # Allow hosts with old certificates to download over https
     configlines.append("BR2_WGET=\"wget --passive-ftp -nd -t 3 --no-check-certificate\"\n")
 
+    # Per-package folder
+    if randint(0, 15) == 0:
+        configlines.append("BR2_PER_PACKAGE_DIRECTORIES=y\n")
+
     # Amend the configuration with a few things.
     if randint(0, 20) == 0:
         configlines.append("BR2_ENABLE_DEBUG=y\n")
