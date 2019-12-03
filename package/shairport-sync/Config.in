@@ -20,6 +20,12 @@ config BR2_PACKAGE_SHAIRPORT_SYNC
 
 if BR2_PACKAGE_SHAIRPORT_SYNC
 
+config BR2_PACKAGE_SHAIRPORT_SYNC_CONVOLUTION
+	bool "convolution support"
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  Enable audio DSP convolution support.
+
 config BR2_PACKAGE_SHAIRPORT_SYNC_LIBSOXR
 	bool "libsoxr support"
 	select BR2_PACKAGE_LIBSOXR
