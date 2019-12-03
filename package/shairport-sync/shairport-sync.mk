@@ -9,7 +9,7 @@ SHAIRPORT_SYNC_SITE = $(call github,mikebrady,shairport-sync,$(SHAIRPORT_SYNC_VE
 
 SHAIRPORT_SYNC_LICENSE = MIT, BSD-3-Clause
 SHAIRPORT_SYNC_LICENSE_FILES = LICENSES
-SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libconfig libdaemon popt host-pkgconf
+SHAIRPORT_SYNC_DEPENDENCIES = alsa-lib libconfig popt host-pkgconf
 
 # git clone, no configure
 SHAIRPORT_SYNC_AUTORECONF = YES
@@ -31,6 +31,11 @@ SHAIRPORT_SYNC_DEPENDENCIES += avahi
 SHAIRPORT_SYNC_CONF_OPTS += --with-avahi
 else
 SHAIRPORT_SYNC_CONF_OPTS += --with-tinysvcmdns
+endif
+
+ifeq ($(BR2_PACKAGE_LIBDAEMON),y)
+SHAIRPORT_SYNC_DEPENDENCIES += libdaemon
+SHAIRPORT_SYNC_CONF_OPTS += --with-libdaemon
 endif
 
 # OpenSSL or mbedTLS
