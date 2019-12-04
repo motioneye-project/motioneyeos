@@ -70,8 +70,14 @@ config BR2_PACKAGE_PHP_EXT_HASH
 	help
 	  HASH message digest framework
 
+comment "libargon2 needs a toolchain w/ dynamic library"
+	depends on BR2_USE_MMU
+	depends on BR2_STATIC_LIBS
+
 config BR2_PACKAGE_PHP_EXT_LIBARGON2
 	bool "libargon2"
+	depends on BR2_USE_MMU # libargon2
+	depends on !BR2_STATIC_LIBS # libargon2
 	select BR2_PACKAGE_LIBARGON2
 	help
 	  libargon2 support
