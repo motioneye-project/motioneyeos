@@ -297,6 +297,7 @@ raspberrypi2_defconfig: { extends: .defconfig }
 raspberrypi3_64_defconfig: { extends: .defconfig }
 raspberrypi3_defconfig: { extends: .defconfig }
 raspberrypi3_qt5we_defconfig: { extends: .defconfig }
+raspberrypi4_64_defconfig: { extends: .defconfig }
 raspberrypi4_defconfig: { extends: .defconfig }
 raspberrypi_defconfig: { extends: .defconfig }
 riotboard_defconfig: { extends: .defconfig }
