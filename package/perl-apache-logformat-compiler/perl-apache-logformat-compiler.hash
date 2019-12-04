@@ -1,6 +1,6 @@
 # retrieved by scancpan from http://cpan.metacpan.org/
-md5    cbb0bf041ade8a39f65eadbdf8a346c1 Apache-LogFormat-Compiler-0.35.tar.gz
-sha256 1654c0000a042a8af052616e30b91c1f0b95a720c8048b59168a8bd99b07271a Apache-LogFormat-Compiler-0.35.tar.gz
+md5    a0cdfcd875cb2ee4dc9a2c24381eb55b Apache-LogFormat-Compiler-0.36.tar.gz
+sha256 94509503ee74ea820183d070c11630ee5bc0fd8c12cb74fae953ed62e4a1ac17 Apache-LogFormat-Compiler-0.36.tar.gz
 
 # computed by scancpan
 sha256 ab941cfc4794afa2113795b167177d1b25cbc77ebadd016e5727effc2cadd96b LICENSE
