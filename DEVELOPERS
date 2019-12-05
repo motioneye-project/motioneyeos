@@ -2398,6 +2398,9 @@ F:	package/redis/
 N:	Trent Piepho <tpiepho@impinj.com>
 F:	package/libp11/
 
+N:	Tudor Holton <buildroot@tudorholton.com>
+F:	package/openjdk/
+
 N:	Tzu-Jung Lee <roylee17@gmail.com>
 F:	package/dropwatch/
 F:	package/tstools/
