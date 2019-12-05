@@ -33,7 +33,7 @@ diff --git a/meson.build b/meson.build
 index e5ceb1e169..9d3c746da4 100644
 --- a/meson.build
 +++ b/meson.build
-@@ -580,7 +580,7 @@ endforeach
+@@ -591,7 +591,7 @@ endforeach
  conf.set_quoted('TELINIT', get_option('telinit-path'))
  
  if run_command('ln', '--relative', '--help').returncode() != 0
