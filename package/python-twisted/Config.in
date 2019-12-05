@@ -15,6 +15,11 @@ config BR2_PACKAGE_PYTHON_TWISTED
 
 if BR2_PACKAGE_PYTHON_TWISTED
 
+config BR2_PACKAGE_PYTHON_TWISTED_HTTP2
+	bool "HTTP2 support"
+	select BR2_PACKAGE_PYTHON_H2 # runtime
+	select BR2_PACKAGE_PYTHON_PRIORITY # runtime
+
 config BR2_PACKAGE_PYTHON_TWISTED_TLS
 	bool "TLS support"
 	depends on BR2_INSTALL_LIBSTDCPP # python-{pyopenssl,service-identity}
