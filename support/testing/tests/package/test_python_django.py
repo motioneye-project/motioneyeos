@@ -22,6 +22,7 @@ class TestPythonDjango(TestPythonPackageBase):
         cmd = "netstat -ltn 2>/dev/null | grep 0.0.0.0:1234"
         self.assertRunOk(cmd)
 
+
 class TestPythonPy3Django(TestPythonDjango):
     __test__ = True
     config = TestPythonDjango.config + \
