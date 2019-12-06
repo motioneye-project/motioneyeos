@@ -620,9 +620,6 @@ F:	package/log4cpp/
 N:	Daniel Nicoletti <dantti12@gmail.com>
 F:	package/cutelyst/
 
-N:	Daniel Nyström <daniel.nystrom@timeterminal.se>
-F:	package/e2tools/
-
 N:	Daniel Price <daniel.price@gmail.com>
 F:	package/nodejs/
 F:	package/redis/
