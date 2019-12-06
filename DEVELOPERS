@@ -53,6 +53,7 @@ F:	package/openjdk/
 F:	package/openjdk-bin/
 F:	package/php/
 F:	package/policycoreutils/
+F:	package/polkit/
 F:	package/python3/
 F:	package/python-aioredis/
 F:	package/python-asgiref/
