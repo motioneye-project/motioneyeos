@@ -1,7 +1,7 @@
 Kernel modesettings support also depends on dri2, see
 http://cgit.freedesktop.org/xorg/xserver/tree/hw/xfree86/drivers/modesetting/Makefile.am#n46
 
-Patch sent upstream: https://bugs.freedesktop.org/show_bug.cgi?id=91584
+Patch sent upstream: https://gitlab.freedesktop.org/xorg/xserver/issues/479
 
 [rebased for version 1.20.0]
 Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
