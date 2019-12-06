@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GRPC_VERSION = 1.23.0
+GRPC_VERSION = 1.25.0
 GRPC_SITE = $(call github,grpc,grpc,v$(GRPC_VERSION))
 GRPC_LICENSE = Apache-2.0
 GRPC_LICENSE_FILES = LICENSE
@@ -46,6 +46,14 @@ endif
 ifeq ($(BR2_TOOLCHAIN_HAS_GCC_BUG_85180),y)
 GRPC_CFLAGS += -O0
 GRPC_CXXFLAGS += -O0
+endif
+
+# Toolchains older than gcc5 will fail to compile with -0s due to:
+# error: failure memory model cannot be stronger than success memory model for
+# '__atomic_compare_exchange', so we use -O2 in these cases
+ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_5):$(BR2_OPTIMIZE_S),:y)
+GRPC_CFLAGS += -O2
+GRPC_CXXFLAGS += -O2
 endif
 
 GRPC_CONF_OPTS += \

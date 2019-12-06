@@ -20,7 +20,7 @@ diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 89e834b..c7bd2ad 100644
 --- a/CMakeLists.txt
 +++ b/CMakeLists.txt
-@@ -94,6 +94,12 @@ endif()
+@@ -97,6 +97,12 @@ endif()
  
  set(CMAKE_POSITION_INDEPENDENT_CODE TRUE)
  
@@ -30,14 +30,14 @@ index 89e834b..c7bd2ad 100644
 +  add_definitions(-DHAVE_PTHREAD_SETNAME_NP)
 +endif ()
 +
- add_definitions(-DPB_FIELD_32BIT)
- 
  if (MSVC)
+   include(cmake/msvc_static_runtime.cmake)
+   add_definitions(-D_WIN32_WINNT=0x600 -D_SCL_SECURE_NO_WARNINGS -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS)
 diff --git a/include/grpc/impl/codegen/port_platform.h b/include/grpc/impl/codegen/port_platform.h
 index 031c0c3..a29a9dc 100644
 --- a/include/grpc/impl/codegen/port_platform.h
 +++ b/include/grpc/impl/codegen/port_platform.h
-@@ -173,7 +173,9 @@
+@@ -181,7 +181,9 @@
  #endif /* _LP64 */
  #ifdef __GLIBC__
  #define GPR_POSIX_CRASH_HANDLER 1
