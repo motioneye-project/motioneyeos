@@ -35,7 +35,7 @@ ALSA_UTILS_CONF_OPTS += --disable-alsaloop
 endif
 
 ifneq ($(BR2_PACKAGE_ALSA_UTILS_ALSAMIXER),y)
-ALSA_UTILS_CONF_OPTS += --disable-alsamixer --disable-alsatest
+ALSA_UTILS_CONF_OPTS += --disable-alsamixer
 endif
 
 ifeq ($(BR2_PACKAGE_ALSA_UTILS_BAT),y)
