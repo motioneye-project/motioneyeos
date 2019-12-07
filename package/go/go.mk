@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GO_VERSION = 1.13.4
+GO_VERSION = 1.13.5
 GO_SITE = https://storage.googleapis.com/golang
 GO_SOURCE = go$(GO_VERSION).src.tar.gz
 
