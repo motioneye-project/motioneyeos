@@ -1,5 +1,5 @@
-# From https://arthurdejong.org/nss-pam-ldapd/nss-pam-ldapd-0.9.8.tar.gz.md5
-md5 8c99fdc54f4bf9aca8c5f53fdb1403ff  nss-pam-ldapd-0.9.8.tar.gz
+# From https://arthurdejong.org/nss-pam-ldapd/nss-pam-ldapd-0.9.11.tar.gz.md5
+md5 91df9d46a548aa7aa95d0e7c672215d0  nss-pam-ldapd-0.9.8.tar.gz
 # Locally computed:
-sha256 ef7362e7f2003da8c7beb7bcc03c30494acf712625aaac8badc6e7eb16f3453f  nss-pam-ldapd-0.9.8.tar.gz
+sha256 d0d71be06d1a90940b7566ce00cef1a465aae7171d5d062785506a83411ecab6  nss-pam-ldapd-0.9.11.tar.gz
 sha256 5df07007198989c622f5d41de8d703e7bef3d0e79d62e24332ee739a452af62a  COPYING
