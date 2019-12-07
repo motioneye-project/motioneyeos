@@ -1,3 +1,3 @@
 # computed by luarocks/buildroot
-sha256 c548d2fc5891b8eda16ea056426584474532fc22dabe4d35b459770ffb340413  lua-curl-0.3.10-1.src.rock
-sha256 3049265c5c05a5e2a40eb28dbf3fe46a51cd03e5f62cc1a419e352130e278e02  Lua-cURLv3-0.3.10/LICENSE
+sha256 01578439ba90338abba86ec77641a4998450dbc42c06cff41eeefa119a6962bc  lua-curl-0.3.11-1.src.rock
+sha256 3049265c5c05a5e2a40eb28dbf3fe46a51cd03e5f62cc1a419e352130e278e02  Lua-cURLv3-0.3.11/LICENSE
