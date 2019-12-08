@@ -15,7 +15,8 @@ BITCOIN_CONF_OPTS = \
 	--disable-wallet \
 	--disable-tests \
 	--with-boost-libdir=$(STAGING_DIR)/usr/lib/ \
-	--disable-hardening
+	--disable-hardening \
+	--without-gui
 
 ifeq ($(BR2_PACKAGE_LIBMINIUPNPC),y)
 BITCOIN_DEPENDENCIES += libminiupnpc
