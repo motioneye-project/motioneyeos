@@ -1,6 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/cython/json
-md5	f8109a2a86cded40b3896ee7a63bc5a5  Cython-0.29.13.tar.gz
-sha256	c29d069a4a30f472482343c866f7486731ad638ef9af92bfe5fca9c7323d638e  Cython-0.29.13.tar.gz
+md5	6e2f139e30bb08d68366f9370d87964c  Cython-0.29.14.tar.gz
+sha256	e4d6bb8703d0319eb04b7319b12ea41580df44fd84d83ccda13ea463c6801414  Cython-0.29.14.tar.gz
 # Locally computed sha256 checksums
 sha256 a6cba85bc92e0cff7a450b1d873c0eaa2e9fc96bf472df0247a26bec77bf3ff9  LICENSE.txt
 sha256 e1eb1c49a8508e8173dac30157e4a6439a44ad8846194746c424fbc3fc2b95d7  COPYING.txt
