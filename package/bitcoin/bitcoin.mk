@@ -17,4 +17,11 @@ BITCOIN_CONF_OPTS = \
 	--with-boost-libdir=$(STAGING_DIR)/usr/lib/ \
 	--disable-hardening
 
+ifeq ($(BR2_PACKAGE_LIBMINIUPNPC),y)
+BITCOIN_DEPENDENCIES += libminiupnpc
+BITCOIN_CONF_OPTS += --with-miniupnpc
+else
+BITCOIN_CONF_OPTS += --without-miniupnpc
+endif
+
 $(eval $(autotools-package))
