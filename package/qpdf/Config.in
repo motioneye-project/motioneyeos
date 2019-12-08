@@ -1,7 +1,6 @@
 config BR2_PACKAGE_QPDF
 	bool "qpdf"
 	depends on BR2_INSTALL_LIBSTDCPP
-	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_JPEG
 	help
