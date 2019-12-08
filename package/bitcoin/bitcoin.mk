@@ -25,4 +25,11 @@ else
 BITCOIN_CONF_OPTS += --without-miniupnpc
 endif
 
+ifeq ($(BR2_PACKAGE_ZEROMQ),y)
+BITCOIN_DEPENDENCIES += zeromq
+BITCOIN_CONF_OPTS += --with-zmq
+else
+BITCOIN_CONF_OPTS += --without-zmq
+endif
+
 $(eval $(autotools-package))
