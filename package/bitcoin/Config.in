@@ -1,6 +1,6 @@
 config BR2_PACKAGE_BITCOIN_ARCH_SUPPORTS
 	bool
-	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	default y if BR2_TOOLCHAIN_HAS_ATOMIC
 	# bitcoin uses 8-byte __atomic intrinsics, which are not
 	# available on ARM noMMU platforms that we
 	# support. BR2_TOOLCHAIN_HAS_ATOMIC does not provide a
