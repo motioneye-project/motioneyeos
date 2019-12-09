@@ -12,7 +12,7 @@ DANTE_LICENSE_FILES = LICENSE
 # 0002-compiler.m4-do-not-remove-g-flag.patch touches a m4 file
 DANTE_AUTORECONF = YES
 
-DANTE_CONF_OPTS += --disable-client --disable-preload --without-pam
+DANTE_CONF_OPTS += --disable-client --disable-preload
 
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 DANTE_DEPENDENCIES += linux-pam
