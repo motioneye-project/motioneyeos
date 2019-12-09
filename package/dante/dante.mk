@@ -14,6 +14,13 @@ DANTE_AUTORECONF = YES
 
 DANTE_CONF_OPTS += --disable-client --disable-preload
 
+ifeq ($(BR2_PACKAGE_LIBMINIUPNPC),y)
+DANTE_DEPENDENCIES += libminiupnpc
+DANTE_CONF_OPTS += --with-upnp
+else
+DANTE_CONF_OPTS += --without-upnp
+endif
+
 ifeq ($(BR2_PACKAGE_LINUX_PAM),y)
 DANTE_DEPENDENCIES += linux-pam
 DANTE_CONF_OPTS += --with-pam
