@@ -35,6 +35,13 @@ else
 SDL_MIXER_CONF_OPTS += --disable-music-mp3-mad-gpl
 endif
 
+ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
+SDL_MIXER_CONF_OPTS += --enable-music-mod-modplug
+SDL_MIXER_DEPENDENCIES += libmodplug
+else
+SDL_MIXER_CONF_OPTS += --disable-music-mod-modplug
+endif
+
 ifeq ($(BR2_PACKAGE_LIBVORBIS),y)
 SDL_MIXER_CONF_OPTS += --enable-music-ogg
 SDL_MIXER_DEPENDENCIES += libvorbis
