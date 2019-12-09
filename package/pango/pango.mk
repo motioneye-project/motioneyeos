@@ -19,6 +19,7 @@ PANGO_DEPENDENCIES = \
 	$(TARGET_NLS_DEPENDENCIES) \
 	host-pkgconf \
 	libglib2 \
+	libfribidi \
 	cairo \
 	harfbuzz \
 	fontconfig \
@@ -26,6 +27,7 @@ PANGO_DEPENDENCIES = \
 HOST_PANGO_DEPENDENCIES = \
 	host-pkgconf \
 	host-libglib2 \
+	host-libfribidi \
 	host-cairo \
 	host-harfbuzz \
 	host-fontconfig \
