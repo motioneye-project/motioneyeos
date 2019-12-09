@@ -13,3 +13,4 @@ LIBFRIBIDI_INSTALL_STAGING = YES
 LIBFRIBIDI_DEPENDENCIES = host-pkgconf
 
 $(eval $(autotools-package))
+$(eval $(host-autotools-package))
