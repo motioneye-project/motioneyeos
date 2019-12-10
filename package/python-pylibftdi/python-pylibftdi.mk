@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-PYTHON_PYLIBFTDI_VERSION = 0.18.0
+PYTHON_PYLIBFTDI_VERSION = 0.18.1
 PYTHON_PYLIBFTDI_SOURCE = pylibftdi-$(PYTHON_PYLIBFTDI_VERSION).tar.gz
-PYTHON_PYLIBFTDI_SITE = https://files.pythonhosted.org/packages/e6/2c/22d38c873f7c83a7b48df25744763d94e638ba2ee158d40a176748e21b60
+PYTHON_PYLIBFTDI_SITE = https://files.pythonhosted.org/packages/50/9b/1e1cdb9715bacfb83e5eaf5e69f4e2fbd92d61f43c5e185cc3935ec01b28
 PYTHON_PYLIBFTDI_LICENSE = MIT
 PYTHON_PYLIBFTDI_LICENSE_FILES = LICENSE.txt
 PYTHON_PYLIBFTDI_DEPENDENCIES = libftdi
