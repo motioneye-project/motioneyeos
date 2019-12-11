@@ -1,0 +1,10 @@
+config BR2_PACKAGE_PYTHON_AIOHTTP_MAKO
+	bool "python-aiohttp-mako"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_AIOHTTP # runtime
+	select BR2_PACKAGE_PYTHON_MAKO # runtime
+	help
+	  mako template renderer for aiohttp.web (http server for
+	  asyncio).
+
+	  https://github.com/aio-libs/aiohttp-mako/
