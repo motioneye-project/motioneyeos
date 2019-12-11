@@ -1,0 +1,8 @@
+config BR2_PACKAGE_PYTHON_AIOSIGNAL
+	bool "python-aiosignal"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_FROZENLIST # runtime
+	help
+	  aiosignal: a list of registered asynchronous callbacks.
+
+	  https://github.com/aio-libs/aiosignal
