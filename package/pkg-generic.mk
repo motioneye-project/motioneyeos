@@ -145,7 +145,7 @@ endif
 ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),y)
 define fixup-libtool-files
 	$(Q)find $(2)/usr/lib* -name "*.la" | xargs --no-run-if-empty \
-		$(SED) "s:$(PER_PACKAGE_DIR)/[^/]+/:$(PER_PACKAGE_DIR)/$(1)/:g"
+		$(SED) "s:$(PER_PACKAGE_DIR)/[^/]\+/:$(PER_PACKAGE_DIR)/$(1)/:g"
 endef
 endif
 
