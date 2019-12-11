@@ -1142,6 +1142,7 @@ F:	package/python-aiorwlock/
 F:	package/python-async-timeout/
 F:	package/python-brotli/
 F:	package/python-cchardet/
+F:	package/python-logstash/
 F:	package/python-multidict/
 F:	package/python-pycares/
 F:	package/python-terminaltables/
