@@ -1147,6 +1147,7 @@ F:	package/python-cchardet/
 F:	package/python-logstash/
 F:	package/python-multidict/
 F:	package/python-pycares/
+F:	package/python-sockjs/
 F:	package/python-terminaltables/
 F:	package/python-yarl/
 
