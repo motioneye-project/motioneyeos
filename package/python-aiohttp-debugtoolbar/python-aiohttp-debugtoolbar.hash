@@ -1,0 +1,5 @@
+# md5, sha256 from https://pypi.org/pypi/aiohttp_debugtoolbar/json
+md5	26b26163f3fbeb16ac67197902330942  aiohttp-debugtoolbar-0.5.0.tar.gz
+sha256	697c9cfac4017d532e26a8c05f14c1a43b3b147f53460daacb0ed144401df441  aiohttp-debugtoolbar-0.5.0.tar.gz
+# Locally computed sha256 checksums
+sha256	94d638be2cb4f186cc62bb567455837757547c15f1b350863aaf05a38843b542  LICENSE

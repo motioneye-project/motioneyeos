@@ -1132,6 +1132,7 @@ F:	package/python-aioconsole/
 F:	package/python-aiodns/
 F:	package/python-aiohttp/
 F:	package/python-aiohttp-cors/
+F:	package/python-aiohttp-debugtoolbar/
 F:	package/python-aiohttp-jinja2/
 F:	package/python-aiohttp-remotes/
 F:	package/python-aiohttp-security/
