@@ -122,14 +122,14 @@ _git fetch origin -t
 # below, if there is an issue anyway. Since most of the cset we're gonna
 # have to clone are not such special refs, consign the output to oblivion
 # so as not to alarm unsuspecting users, but still trace it as a warning.
-if ! _git fetch origin "'${cset}:buildroot-${cset}'" >/dev/null 2>&1; then
+if ! _git fetch origin "'${cset}:${cset}'" >/dev/null 2>&1; then
     printf "Could not fetch special ref '%s'; assuming it is not special.\n" "${cset}"
 fi
 
 # Check that the changeset does exist. If it does not, re-cloning from
 # scratch won't help, so we don't want to trash the repository for a
 # missing commit. We just exit without going through the ERR trap.
-if ! _git rev-parse --quiet --verify "'buildroot-${cset}^{commit}'" >/dev/null 2>&1; then
+if ! _git rev-parse --quiet --verify "'${cset}^{commit}'" >/dev/null 2>&1; then
     printf "Commit '%s' does not exist in this repository.\n" "${cset}"
     exit 1
 fi
@@ -162,7 +162,7 @@ _git submodule --quiet foreach "'${cmd}'"
 
 # Checkout the required changeset, so that we can update the required
 # submodules.
-_git checkout -f -q "'buildroot-${cset}'"
+_git checkout -f -q "'${cset}'"
 
 # Get rid of now-untracked directories (in case a git operation was
 # interrupted in a previous run, or to get rid of empty directories
