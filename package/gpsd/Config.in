@@ -46,7 +46,6 @@ comment "profiling support not available with uClibc-based toolchain"
 
 config BR2_PACKAGE_GPSD_PPS
 	bool "PPS time syncing support"
-	select BR2_PACKAGE_GPSD_NTP_SHM
 
 config BR2_PACKAGE_GPSD_USER
 	bool "GPSD privilege revocation user"
