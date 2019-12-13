@@ -18,6 +18,8 @@ else ifeq ($(BR2_powerpc),y)
 LJSYSCALL_ARCH = ppc
 else ifeq ($(BR2_arm)$(BR2_armeb),y)
 LJSYSCALL_ARCH = arm
+else ifeq ($(BR2_aarch64),y)
+LJSYSCALL_ARCH = arm64
 else ifeq ($(BR2_mips)$(BR2_mipsel),y)
 LJSYSCALL_ARCH = mips
 else
