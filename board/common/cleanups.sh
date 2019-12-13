@@ -19,6 +19,7 @@ rm -rf ${TARGET}/etc/ssl/man
 rm -rf ${TARGET}/etc/ssl/misc
 rm -rf ${TARGET}/etc/ssl/private
 rm -rf ${TARGET}/etc/logrotate.d
+rm -rf ${TARGET}/etc/fstab
 
 rm -f ${TARGET}/etc/rc_maps.cfg
 rm -f ${TARGET}/etc/udev/hwdb.d/20-pci-vendor-model.hwdb

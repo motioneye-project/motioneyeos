@@ -27,6 +27,8 @@ if [ "$PS1" ]; then
     export TERM=linux
 fi;
 
+export HISTFILE=/data/.bash_history
+
 # custom local profile
 test -f /data/etc/profile && source /data/etc/profile
 
