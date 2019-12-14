@@ -20,7 +20,7 @@ ifeq ($(BR2_PACKAGE_P11_KIT),y)
 LIBP11_CONF_OPTS += --with-pkcs11-module=/usr/lib/p11-kit-proxy.so
 endif
 
-HOST_LIBP11_DEPENDENCIES = host-openssl
+HOST_LIBP11_DEPENDENCIES = host-pkgconf host-openssl
 
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
