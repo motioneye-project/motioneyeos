@@ -41,7 +41,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBEDIT),y)
 LIBKRB5_CONF_OPTS += --with-libedit
-LIBKRB5_DEPENDENCIES += libedit
+LIBKRB5_DEPENDENCIES += host-pkgconf libedit
 else
 LIBKRB5_CONF_OPTS += --without-libedit
 endif
