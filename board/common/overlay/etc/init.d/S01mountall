@@ -6,9 +6,18 @@ mount_fs() {
     msg_begin "Mounting filesystems"
     /bin/mount -T /etc/fstab.disk -a &&
     /bin/mount -T /etc/fstab.extra -a &&
-    if grep -qw overlay /proc/filesystems; then /bin/mount -T /data/etc/fstab.overlay -a; fi &&
     if [[ -r /data/etc/fstab.user ]]; then /bin/mount -T /data/etc/fstab.user -a; fi
 
+    test $? == 0 && msg_done || msg_fail
+}
+
+mount_overlay() {
+    modprobe overlay &>/dev/null
+    grep -qw overlay /proc/filesystems || return
+
+    msg_begin "Mounting overlay filesystems"
+    grep -oE '/data/.overlay-[^ ]+' /etc/fstab.overlay | xargs mkdir -p
+    /bin/mount -T /etc/fstab.overlay -a
     test $? == 0 && msg_done || msg_fail
 }
 
@@ -30,6 +39,7 @@ mk_tty_login() {
 case "$1" in
     start)
         mount_fs
+        mount_overlay
 
         # we need to source conf again, now that /data is available
         source /etc/init.d/os_conf
