@@ -13,6 +13,9 @@ POLKIT_INSTALL_STAGING = YES
 
 POLKIT_DEPENDENCIES = libglib2 host-intltool expat spidermonkey
 
+# spidermonkey needs C++11
+POLKIT_CONF_ENV = CXXFLAGS="$(TARGET_CXXFLAGS) -std=c++11"
+
 POLKIT_CONF_OPTS = \
 	--with-os-type=unknown \
 	--disable-man-pages \
