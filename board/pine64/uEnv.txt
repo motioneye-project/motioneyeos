@@ -1,7 +1,7 @@
 console=tty1
 selinux=permissive
 enforcing=0
-optargs=no_console_suspend panic=10 quiet loglevel=1 ipv6.disable=1
+optargs=no_console_suspend panic=10 quiet loglevel=1
 kernel_filename=kernel.img
 #initrd_filename=ramdisk.img
 #recovery_initrd_filename=ramdisk-recovery.img
