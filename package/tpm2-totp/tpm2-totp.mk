@@ -9,11 +9,15 @@ TPM2_TOTP_SITE = https://github.com/tpm2-software/tpm2-totp/releases/download/v$
 TPM2_TOTP_LICENSE = BSD-3-Clause
 TPM2_TOTP_LICENSE_FILES = LICENSE
 TPM2_TOTP_DEPENDENCIES = libqrencode tpm2-tss host-pkgconf
+TPM2_TOTP_CONF_OPTS = \
+	--disable-defaultflags \
+	--disable-doxygen-doc \
+	--disable-plymouth \
+	--without-initramfstoolsdir \
+	--without-mkinitcpiodir
 
-# -fstack-protector-all is used by default. Disable that so the BR2_SSP_* options
-# in the toolchain wrapper and CFLAGS are used instead
-TPM2_TOTP_CONF_ENV += \
-	ax_cv_check_cflags___________Wall__Werror_______fstack_protector_all=no
+# uses C99 code but forgets to pass -std=c99 when --disable-defaultflags is used
+TPM2_TOTP_CONF_ENV += CFLAGS="$(TARGET_CFLAGS) -std=c99"
 
 # do not build man pages
 TPM2_TOTP_CONF_ENV += ac_cv_path_PANDOC=''
