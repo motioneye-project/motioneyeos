@@ -31,10 +31,9 @@ SAMBA4_PYTHON = \
 	PYTHON_CONFIG="$(STAGING_DIR)/usr/bin/python3-config"
 SAMBA4_DEPENDENCIES += host-python3 python3
 else
-SAMBA4_PYTHON = \
-	PYTHON="$(HOST_DIR)/bin/python2" \
-	PYTHON_CONFIG="$(STAGING_DIR)/usr/bin/python-config"
-SAMBA4_DEPENDENCIES += host-python python
+SAMBA4_PYTHON = PYTHON="$(HOST_DIR)/bin/python2" 
+SAMBA4_DEPENDENCIES += host-python
+SAMBA4_CONF_OPTS += --disable-python
 endif
 
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
