@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BOOST_VERSION = 1.71.0
+BOOST_VERSION = 1.72.0
 BOOST_SOURCE = boost_$(subst .,_,$(BOOST_VERSION)).tar.bz2
 BOOST_SITE = https://dl.bintray.com/boostorg/release/$(BOOST_VERSION)/source
 BOOST_INSTALL_STAGING = YES
