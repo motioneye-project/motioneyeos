@@ -7,7 +7,8 @@ msg_info() {
 }
 
 show_iface_ip_addr() {
-    addr=$(ip addr show dev $1 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | cut -d ' ' -f 2)
+    addr=$(ip addr show dev $1 2>/dev/null | grep inet | tr -s ' ' | sed -r 's/^\s+//' | \
+           cut -d ' ' -f 2 | grep -iv fe80 | sed 'N;s/\n/, /')
     test -n "${addr}" && msg_info "Interface $1 has IP address ${addr}"
 }
 

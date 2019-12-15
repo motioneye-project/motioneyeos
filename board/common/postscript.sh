@@ -23,7 +23,9 @@ fi
 
 # transform /var contents as needed
 rm -rf ${TARGET}/var/cache
+rm -rf ${TARGET}/var/lib
 rm -rf ${TARGET}/var/lock
+rm -rf ${TARGET}/var/log
 rm -rf ${TARGET}/var/run
 rm -rf ${TARGET}/var/spool
 rm -rf ${TARGET}/var/tmp
@@ -34,6 +36,8 @@ ln -s /tmp ${TARGET}/var/run
 ln -s /tmp ${TARGET}/var/spool
 ln -s /tmp ${TARGET}/var/tmp
 ln -s /tmp ${TARGET}/run
+mkdir -p ${TARGET}/var/lib
+mkdir -p ${TARGET}/var/log
 
 # board-specific os.conf
 if [ -r ${BOARD_DIR}/os.conf ]; then
