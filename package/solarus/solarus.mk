@@ -20,7 +20,9 @@ SOLARUS_DEPENDENCIES = libgl libmodplug libogg libvorbis openal physfs sdl2 \
 	sdl2_image sdl2_ttf
 
 # Disable launcher GUI (requires Qt5)
-SOLARUS_CONF_OPTS = -DSOLARUS_GUI=OFF
+SOLARUS_CONF_OPTS = \
+	-DSOLARUS_GUI=OFF \
+	-DSOLARUS_TESTS=OFF
 
 ifeq ($(BR2_PACKAGE_LUAJIT),y)
 SOLARUS_CONF_OPTS += -DSOLARUS_USE_LUAJIT=ON
