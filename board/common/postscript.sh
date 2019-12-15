@@ -23,17 +23,13 @@ fi
 
 # transform /var contents as needed
 rm -rf ${TARGET}/var/cache
-rm -rf ${TARGET}/var/lib
 rm -rf ${TARGET}/var/lock
-rm -rf ${TARGET}/var/log
 rm -rf ${TARGET}/var/run
 rm -rf ${TARGET}/var/spool
 rm -rf ${TARGET}/var/tmp
 
 ln -s /tmp ${TARGET}/var/cache
-ln -s /data/varlib ${TARGET}/var/lib
 ln -s /tmp ${TARGET}/var/lock
-ln -s /data/log ${TARGET}/var/log
 ln -s /tmp ${TARGET}/var/run
 ln -s /tmp ${TARGET}/var/spool
 ln -s /tmp ${TARGET}/var/tmp
@@ -51,4 +47,3 @@ fi
 if ! grep -E '^admin:' ${TARGET}/etc/passwd &> /dev/null; then
     echo "admin:x:0:0:root:/root:/bin/sh" >> ${TARGET}/etc/passwd
 fi
-
