@@ -61,6 +61,7 @@ config BR2_PACKAGE_WEBKITGTK_SANDBOX
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12 # libseccomp
 	select BR2_PACKAGE_BUBBLEWRAP # runtime
 	select BR2_PACKAGE_XDG_DBUS_PROXY # runtime
+	select BR2_PACKAGE_LIBSECCOMP
 	help
 	  Enable sandboxing of the processes used for network operation,
 	  disk access, and Web content rendering.
