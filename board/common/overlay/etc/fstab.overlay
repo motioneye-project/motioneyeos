@@ -1,2 +1,4 @@
-# <file system> <mount pt>            <type>   <options>                                                        <dump> <pass>
-overlay         /usr                  overlay  lowerdir=/usr,upperdir=/data/usr,workdir=/data/.overlay-usr      0 0
+# <file system> <mount pt>            <type>   <options>                                                                <dump> <pass>
+overlay         /usr                  overlay  lowerdir=/usr,upperdir=/data/usr,workdir=/data/.overlay-usr              0 0
+overlay         /var/log              overlay  lowerdir=/var/log,upperdir=/data/log,workdir=/data/.overlay-log          0 0
+overlay         /var/lib              overlay  lowerdir=/var/lib,upperdir=/data/varlib,workdir=/data/.overlay-varlib    0 0
