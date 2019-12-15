@@ -5,8 +5,7 @@
 ################################################################################
 
 OPENAL_VERSION = 1.19.1
-OPENAL_SOURCE = openal-soft-$(OPENAL_VERSION).tar.bz2
-OPENAL_SITE = http://kcat.strangesoft.net/openal-releases
+OPENAL_SITE = $(call github,kcat,openal-soft,openal-soft-$(OPENAL_VERSION))
 OPENAL_LICENSE = LGPL-2.0+
 OPENAL_LICENSE_FILES = COPYING
 OPENAL_INSTALL_STAGING = YES
