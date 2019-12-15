@@ -11,6 +11,16 @@ mount_fs() {
     test $? == 0 && msg_done || msg_fail
 }
 
+mount_overlay() {
+    modprobe overlay &>/dev/null
+    grep -qw overlay /proc/filesystems || return
+
+    msg_begin "Mounting overlay filesystems"
+    grep -oE '/data/.overlay-[^ ]+' /etc/fstab.overlay | xargs mkdir -p
+    /bin/mount -T /etc/fstab.overlay -a
+    test $? == 0 && msg_done || msg_fail
+}
+
 remount_rw() {
     msg_begin "Remounting boot partition read-write"
     mount -o remount,rw /boot
@@ -29,6 +39,7 @@ mk_tty_login() {
 case "$1" in
     start)
         mount_fs
+        mount_overlay
 
         # we need to source conf again, now that /data is available
         source /etc/init.d/os_conf

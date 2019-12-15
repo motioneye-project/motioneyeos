@@ -1,0 +1,2 @@
+# <file system> <mount pt>            <type>   <options>                                                        <dump> <pass>
+overlay         /usr                  overlay  lowerdir=/usr,upperdir=/data/usr,workdir=/data/.overlay-usr      0 0
