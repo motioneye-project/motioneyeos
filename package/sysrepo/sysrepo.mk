@@ -41,14 +41,6 @@ define SYSREPO_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S51sysrepo-plugind
 endef
 
-define SYSREPO_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/sysrepod.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/sysrepo-plugind.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-endef
-
 HOST_SYSREPO_CONF_OPTS = \
 	-DGEN_PYTHON2_TESTS=OFF \
 	-DENABLE_TESTS=OFF \

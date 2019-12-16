@@ -65,10 +65,4 @@ define LLDPD_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S60lldpd
 endef
 
-define LLDPD_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/lldpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/lldpd.service
-endef
-
 $(eval $(autotools-package))

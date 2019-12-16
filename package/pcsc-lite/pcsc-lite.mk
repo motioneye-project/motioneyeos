@@ -44,10 +44,4 @@ ifeq ($(PACKAGE_PCSC_LITE_EMBEDDED),y)
 PCSC_LITE_CONF_OPTS += --enable-embedded
 endif
 
-define PCSC_LITE_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sockets.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/pcscd.socket \
-		$(TARGET_DIR)/etc/systemd/system/sockets.target.wants/pcscd.socket
-endef
-
 $(eval $(autotools-package))

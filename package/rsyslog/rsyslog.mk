@@ -85,20 +85,6 @@ define RSYSLOG_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S01rsyslogd
 endef
 
-# The rsyslog.service is installed by rsyslog, but the link is not created
-# so the service is not enabled.
-# We need to create another link which is due to the fact that the
-# rsyslog.service contains an Alias=
-# If we were to use systemctl enable to enable the service, it would
-# create both, so we mimic that.
-define RSYSLOG_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/rsyslog.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/rsyslog.service
-	ln -sf ../../../usr/lib/systemd/system/rsyslog.service \
-		$(TARGET_DIR)/etc/systemd/system/syslog.service
-endef
-
 define RSYSLOG_INSTALL_CONF
 	$(INSTALL) -m 0644 -D $(@D)/platform/redhat/rsyslog.conf \
 		$(TARGET_DIR)/etc/rsyslog.conf

@@ -16,10 +16,4 @@ SYSTEMD_BOOTCHART_DEPENDENCIES = systemd
 
 SYSTEMD_BOOTCHART_CONF_OPTS = --disable-man
 
-define SYSTEMD_BOOTCHART_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sysinit.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-bootchart.service \
-		$(TARGET_DIR)/etc/systemd/system/sysinit.target.wants/systemd-bootchart.service
-endef
-
 $(eval $(autotools-package))

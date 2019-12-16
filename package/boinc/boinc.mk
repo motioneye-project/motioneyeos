@@ -53,10 +53,4 @@ define BOINC_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S99boinc-client
 endef
 
-define BOINC_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/boinc-client.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/boinc-client.service
-endef
-
 $(eval $(autotools-package))

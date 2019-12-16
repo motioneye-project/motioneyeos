@@ -25,9 +25,6 @@ endef
 define FAIL2BAN_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 $(@D)/files/fail2ban.service.in \
 		$(TARGET_DIR)/usr/lib/systemd/system/fail2ban.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib//systemd/system/fail2ban.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/fail2ban.service
 	$(SED) 's,@BINDIR@,/usr/bin,g' $(TARGET_DIR)/usr/lib/systemd/system/fail2ban.service
 	$(SED) '/^PIDFile/c\PIDFile=/run/fail2ban.pid' $(TARGET_DIR)/usr/lib/systemd/system/fail2ban.service
 endef

@@ -174,13 +174,6 @@ SAMBA4_DEPENDENCIES += systemd
 endif
 
 define SAMBA4_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/nmb.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/nmb.service
-	ln -sf ../../../../usr/lib/systemd/system/smb.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/smb.service
-	ln -sf ../../../../usr/lib/systemd/system/winbind.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/winbind.service
 	$(INSTALL) -D -m 644 $(@D)/packaging/systemd/samba.conf.tmp \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/samba.conf
 	printf "d /var/log/samba  755 root root\n" >>$(TARGET_DIR)/usr/lib/tmpfiles.d/samba.conf
