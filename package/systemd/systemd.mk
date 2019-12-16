@@ -550,4 +550,92 @@ endef
 SYSTEMD_CONF_ENV = $(HOST_UTF8_LOCALE_ENV)
 SYSTEMD_NINJA_ENV = $(HOST_UTF8_LOCALE_ENV)
 
+# We need a very minimal host variant, so we disable as much as possible.
+HOST_SYSTEMD_CONF_OPTS = \
+	-Dsplit-bin=true \
+	-Dsplit-usr=false \
+	--prefix=/usr \
+	--libdir=lib \
+	--sysconfdir=/etc \
+	--localstatedir=/var \
+	-Dutmp=false \
+	-Dhibernate=false \
+	-Dldconfig=false \
+	-Dresolve=false \
+	-Defi=false \
+	-Dtpm=false \
+	-Denvironment-d=false \
+	-Dbinfmt=false \
+	-Dcoredump=false \
+	-Dpstore=false \
+	-Dlogind=false \
+	-Dhostnamed=false \
+	-Dlocaled=false \
+	-Dmachined=false \
+	-Dportabled=false \
+	-Dnetworkd=false \
+	-Dtimedated=false \
+	-Dtimesyncd=false \
+	-Dremote=false \
+	-Dcreate-log-dirs=false \
+	-Dnss-myhostname=false \
+	-Dnss-mymachines=false \
+	-Dnss-resolve=false \
+	-Dnss-systemd=false \
+	-Dfirstboot=false \
+	-Drandomseed=false \
+	-Dbacklight=false \
+	-Dvconsole=false \
+	-Dquotacheck=false \
+	-Dsysusers=false \
+	-Dtmpfiles=false \
+	-Dimportd=false \
+	-Dhwdb=false \
+	-Drfkill=false \
+	-Dman=false \
+	-Dhtml=false \
+	-Dsmack=false \
+	-Dpolkit=false \
+	-Dblkid=false \
+	-Didn=false \
+	-Dadm-group=false \
+	-Dwheel-group=false \
+	-Dzlib=false \
+	-Dgshadow=false \
+	-Dima=false \
+	-Dtests=false \
+	-Dglib=false \
+	-Dacl=false \
+	-Dsysvinit-path=''
+
+HOST_SYSTEMD_DEPENDENCIES = \
+	host-util-linux \
+	host-patchelf \
+	host-libcap \
+	host-gperf
+
+# Fix RPATH After installation
+# * systemd provides a install_rpath instruction to meson because the binaries
+#   need to link with libsystemd which is not in a standard path
+# * meson can only replace the RPATH, not append to it
+# * the original rpath is thus lost.
+# * the original path had been tweaked by buildroot via LDFLAGS to add
+#   $(HOST_DIR)/lib
+# * thus re-tweak rpath after the installation for all binaries that need it
+HOST_SYSTEMD_HOST_TOOLS = \
+	systemd-analyze \
+	systemd-mount \
+	systemctl \
+	udevadm
+
+HOST_SYSTEMD_NINJA_ENV = DESTDIR=$(HOST_DIR)
+
+define HOST_SYSTEMD_FIX_RPATH
+	$(foreach f,$(HOST_SYSTEMD_HOST_TOOLS), \
+		$(HOST_DIR)/bin/patchelf --set-rpath $(HOST_DIR)/lib:$(HOST_DIR)/lib/systemd $(HOST_DIR)/bin/$(f)
+	)
+endef
+HOST_SYSTEMD_POST_INSTALL_HOOKS += HOST_SYSTEMD_FIX_RPATH
+
 $(eval $(meson-package))
+$(eval $(host-meson-package))
