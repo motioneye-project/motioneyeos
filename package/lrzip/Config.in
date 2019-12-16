@@ -3,6 +3,7 @@ config BR2_PACKAGE_LRZIP
 	depends on BR2_USE_MMU # fork()
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_INSTALL_LIBSTDCPP
 	select BR2_PACKAGE_ZLIB
 	select BR2_PACKAGE_LZO
 	select BR2_PACKAGE_BZIP2
@@ -17,6 +18,7 @@ config BR2_PACKAGE_LRZIP
 
 	  https://github.com/ckolivas/lrzip
 
-comment "lrzip needs a toolchain w/ wchar, threads"
+comment "lrzip needs a toolchain w/ wchar, threads, C++"
 	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_INSTALL_LIBSTDCPP
