@@ -550,6 +550,10 @@ different steps of the build process.
   is when openrc is chosen as init system and +LIBFOO_INSTALL_INIT_OPENRC+
   has not been set, in such situation +LIBFOO_INSTALL_INIT_SYSV+ will
   be called, since openrc supports sysv init scripts.
+  When systemd is used as the init system, buildroot will automatically enable
+  all services using the +systemctl preset-all+ command in the final phase of
+  image building. You can add preset files to prevent a particular unit from
+  being automatically enabled by buildroot.
 
 * +LIBFOO_HELP_CMDS+ lists the actions to print the package help, which
   is included to the main +make help+ output. These commands can print

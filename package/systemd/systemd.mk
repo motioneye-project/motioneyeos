@@ -52,12 +52,6 @@ endif
 ifeq ($(BR2_PACKAGE_AUDIT),y)
 SYSTEMD_DEPENDENCIES += audit
 SYSTEMD_CONF_OPTS += -Daudit=true
-define SYSTEMD_INSTALL_SERVICE_AUDIT
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/auditd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/auditd.service
-endef
-
 else
 SYSTEMD_CONF_OPTS += -Daudit=false
 endif
@@ -65,11 +59,6 @@ endif
 ifeq ($(BR2_PACKAGE_CRYPTSETUP),y)
 SYSTEMD_DEPENDENCIES += cryptsetup
 SYSTEMD_CONF_OPTS += -Dlibcryptsetup=true
-define SYSTEMD_INSTALL_TARGET_CRYPTSETUP
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/remote-cryptsetup.target \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/remote-cryptsetup.target
-endef
 else
 SYSTEMD_CONF_OPTS += -Dlibcryptsetup=false
 endif
@@ -204,6 +193,14 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HWDB),y)
 SYSTEMD_CONF_OPTS += -Dhwdb=true
+define SYSTEMD_BUILD_HWDB
+	$(HOST_DIR)/bin/udevadm hwdb --update --root $(TARGET_DIR)
+endef
+SYSTEMD_TARGET_FINALIZE_HOOKS += SYSTEMD_BUILD_HWDB
+define SYSTEMD_RM_HWDB_SRV
+	rm -rf $(TARGET_DIR)/$(HOST_EUDEV_SYSCONFDIR)/udev/hwdb.d/
+endef
+SYSTEMD_ROOTFS_PRE_CMD_HOOKS += SYSTEMD_RM_HWDB_SRV
 else
 SYSTEMD_CONF_OPTS += -Dhwdb=false
 endif
@@ -270,11 +267,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_MACHINED),y)
 SYSTEMD_CONF_OPTS += -Dmachined=true
-define SYSTEMD_INSTALL_TARGET_MACHINED
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../lib/systemd/system/machines.target \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/machines.target
-endef
 else
 SYSTEMD_CONF_OPTS += -Dmachined=false
 endif
@@ -318,11 +310,6 @@ endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_PSTORE),y)
 SYSTEMD_CONF_OPTS += -Dpstore=true
-define SYSTEMD_INSTALL_SERVICE_PSTORE
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/systemd-remount-fs.service.wants
-	ln -sf ../../../../lib/systemd/system/systemd-pstore.service \
-		$(TARGET_DIR)/etc/systemd/system/systemd-remount-fs.service.wants/systemd-pstore.service
-endef
 else
 SYSTEMD_CONF_OPTS += -Dpstore=false
 endif
@@ -337,29 +324,11 @@ endif
 ifeq ($(BR2_PACKAGE_SYSTEMD_NETWORKD),y)
 SYSTEMD_CONF_OPTS += -Dnetworkd=true
 SYSTEMD_NETWORKD_USER = systemd-network -1 systemd-network -1 * - - - Network Manager
-define SYSTEMD_INSTALL_SOCKET_NETWORKD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sockets.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-networkd.socket \
-		$(TARGET_DIR)/etc/systemd/system/sockets.target.wants/systemd-networkd.socket
-endef
-define SYSTEMD_INSTALL_SERVICE_NETWORKD
-	ln -sf ../../../lib/systemd/system/systemd-networkd.service \
-		$(TARGET_DIR)/etc/systemd/system/dbus-org.freedesktop.network1.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-networkd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/systemd-networkd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/network-online.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-networkd-wait-online.service \
-		$(TARGET_DIR)/etc/systemd/system/network-online.target.wants/systemd-networkd-wait-online.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/network-pre.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-network-generator.service \
-		$(TARGET_DIR)/etc/systemd/system/network-pre.target.wants/systemd-network-generator.service
-endef
 SYSTEMD_NETWORKD_DHCP_IFACE = $(call qstrip,$(BR2_SYSTEM_DHCP))
 ifneq ($(SYSTEMD_NETWORKD_DHCP_IFACE),)
 define SYSTEMD_INSTALL_NETWORK_CONFS
 	sed s/SYSTEMD_NETWORKD_DHCP_IFACE/$(SYSTEMD_NETWORKD_DHCP_IFACE)/ \
-		package/systemd/dhcp.network > \
+		$(SYSTEMD_PKGDIR)/dhcp.network > \
 		$(TARGET_DIR)/etc/systemd/network/dhcp.network
 endef
 endif
@@ -374,13 +343,6 @@ define SYSTEMD_INSTALL_RESOLVCONF_HOOK
 endef
 SYSTEMD_CONF_OPTS += -Dresolve=true
 SYSTEMD_RESOLVED_USER = systemd-resolve -1 systemd-resolve -1 * - - - Network Name Resolution Manager
-define SYSTEMD_INSTALL_SERVICE_RESOLVED
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../lib/systemd/system/systemd-resolved.service \
-		$(TARGET_DIR)/etc/systemd/system/dbus-org.freedesktop.resolve1.service
-	ln -sf ../../../../lib/systemd/system/systemd-resolved.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/systemd-resolved.service
-endef
 else
 SYSTEMD_CONF_OPTS += -Dresolve=false
 endif
@@ -388,15 +350,6 @@ endif
 ifeq ($(BR2_PACKAGE_SYSTEMD_TIMESYNCD),y)
 SYSTEMD_CONF_OPTS += -Dtimesyncd=true
 SYSTEMD_TIMESYNCD_USER = systemd-timesync -1 systemd-timesync -1 * - - - Network Time Synchronization
-define SYSTEMD_INSTALL_SERVICE_TIMESYNCD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sysinit.target.wants
-	ln -sf ../../../../lib/systemd/system/systemd-timesyncd.service \
-		$(TARGET_DIR)/etc/systemd/system/sysinit.target.wants/systemd-timesyncd.service
-	ln -sf ../../../../lib/systemd/system/systemd-time-wait-sync.service \
-		$(TARGET_DIR)/etc/systemd/system/sysinit.target.wants/systemd-time-wait-sync.service
-	ln -sf ../../../lib/systemd/system/systemd-timesyncd.service \
-		$(TARGET_DIR)/etc/systemd/system/dbus-org.freedesktop.timesync1.service
-endef
 else
 SYSTEMD_CONF_OPTS += -Dtimesyncd=false
 endif
@@ -447,18 +400,8 @@ SYSTEMD_CONF_OPTS += -Dfallback-hostname=$(SYSTEMD_FALLBACK_HOSTNAME)
 endif
 
 define SYSTEMD_INSTALL_INIT_HOOK
-	ln -fs ../lib/systemd/systemd $(TARGET_DIR)/sbin/init
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/halt
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/poweroff
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/reboot
-	ln -fs ../bin/systemctl $(TARGET_DIR)/sbin/shutdown
-	ln -fs ../../../lib/systemd/system/multi-user.target \
-		$(TARGET_DIR)/etc/systemd/system/default.target
-	ln -fs ../../../lib/systemd/system/reboot.target \
-		$(TARGET_DIR)/etc/systemd/system/ctrl-alt-del.target
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../lib/systemd/system/remote-fs.target \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/remote-fs.target
+	ln -fs multi-user.target \
+		$(TARGET_DIR)/usr/lib/systemd/system/default.target
 endef
 
 define SYSTEMD_INSTALL_MACHINEID_HOOK
@@ -466,9 +409,6 @@ define SYSTEMD_INSTALL_MACHINEID_HOOK
 endef
 
 SYSTEMD_POST_INSTALL_TARGET_HOOKS += \
-	SYSTEMD_INSTALL_TARGET_CRYPTSETUP \
-	SYSTEMD_INSTALL_TARGET_MACHINED \
-	SYSTEMD_INSTALL_SOCKET_NETWORKD \
 	SYSTEMD_INSTALL_INIT_HOOK \
 	SYSTEMD_INSTALL_MACHINEID_HOOK \
 	SYSTEMD_INSTALL_RESOLVCONF_HOOK
@@ -490,10 +430,6 @@ define SYSTEMD_USERS
 	$(SYSTEMD_NETWORKD_USER)
 	$(SYSTEMD_RESOLVED_USER)
 	$(SYSTEMD_TIMESYNCD_USER)
-endef
-
-define SYSTEMD_DISABLE_SERVICE_TTY1
-	rm -f $(TARGET_DIR)/etc/systemd/system/getty.target.wants/getty@tty1.service
 endef
 
 ifneq ($(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)),)
@@ -523,29 +459,20 @@ define SYSTEMD_INSTALL_SERVICE_TTY
 endef
 endif
 
-define SYSTEMD_INSTALL_SERVICE_AUTOVT
-	ln -sf ../../../lib/systemd/system/getty@.service \
-		$(TARGET_DIR)/lib/systemd/system/autovt@.service
-endef
-
-define SYSTEMD_INSTALL_SERVICE_BOOT_CHECK
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/boot-complete.target.requires
-	ln -sf ../../../../lib/systemd/system/systemd-boot-check-no-failures.service \
-		$(TARGET_DIR)/etc/systemd/system/boot-complete.target.requires/systemd-boot-check-no-failures.service
+define SYSTEMD_INSTALL_PRESET
+	$(INSTALL) -D -m 644 $(SYSTEMD_PKGDIR)/80-buildroot.preset $(TARGET_DIR)/usr/lib/systemd/system-preset/80-buildroot.preset
 endef
 
 define SYSTEMD_INSTALL_INIT_SYSTEMD
-	$(SYSTEMD_DISABLE_SERVICE_TTY1)
+	$(SYSTEMD_INSTALL_PRESET)
 	$(SYSTEMD_INSTALL_SERVICE_TTY)
-	$(SYSTEMD_INSTALL_SERVICE_AUTOVT)
-	$(SYSTEMD_INSTALL_SERVICE_RESOLVED)
-	$(SYSTEMD_INSTALL_SERVICE_TIMESYNCD)
 	$(SYSTEMD_INSTALL_NETWORK_CONFS)
-	$(SYSTEMD_INSTALL_SERVICE_PSTORE)
-	$(SYSTEMD_INSTALL_SERVICE_NETWORKD)
-	$(SYSTEMD_INSTALL_SERVICE_AUDIT)
-	$(SYSTEMD_INSTALL_SERVICE_BOOT_CHECK)
 endef
+
+define SYSTEMD_PRESET_ALL
+	$(HOST_DIR)/bin/systemctl --root=$(TARGET_DIR) preset-all
+endef
+SYSTEMD_TARGET_FINALIZE_HOOKS += SYSTEMD_PRESET_ALL
 
 SYSTEMD_CONF_ENV = $(HOST_UTF8_LOCALE_ENV)
 SYSTEMD_NINJA_ENV = $(HOST_UTF8_LOCALE_ENV)

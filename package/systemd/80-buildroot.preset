@@ -1,0 +1,5 @@
+# Higher priority than systemd presets
+
+# by default systemd enables a getty on tty1
+# we don't want that because tty1 may not exist
+disable getty@.service
