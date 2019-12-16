@@ -644,7 +644,9 @@ $(2)_EXTRACT_DEPENDENCIES += $$(BR2_TAR_HOST_DEPENDENCY)
 endif
 
 ifeq ($$(filter host-tar host-skeleton host-xz host-lzip host-fakedate,$(1)),)
-$(2)_EXTRACT_DEPENDENCIES += $$(call extractor-pkg-dependency,$$($(2)_SOURCE))
+$(2)_EXTRACT_DEPENDENCIES += \
+	$$(foreach dl,$$($(2)_ALL_DOWNLOADS),\
+		$$(call extractor-pkg-dependency,$$(notdir $$(dl))))
 endif
 
 ifeq ($$(BR2_CCACHE),y)
