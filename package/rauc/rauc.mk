@@ -31,9 +31,9 @@ RAUC_DEPENDENCIES += systemd
 endif
 
 define RAUC_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../lib/systemd/system/rauc.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/rauc.service
+	mkdir $(TARGET_DIR)/usr/lib/systemd/system/rauc.service.d
+	printf '[Install]\nWantedBy=multi-user.target\n' \
+		>$(TARGET_DIR)/usr/lib/systemd/system/rauc.service.d/buildroot-enable.conf
 endef
 
 HOST_RAUC_DEPENDENCIES = \
