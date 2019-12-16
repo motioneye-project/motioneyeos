@@ -62,8 +62,8 @@ extractor-pkg-dependency = $(EXTRACTOR_PKG_DEPENDENCY$(suffix $(1)))
 # $(firstword) is used here because the extractor can have arguments,
 # like ZCAT="gzip -d -c", and to check for the dependency we only want
 # 'gzip'.
-extractor-system-dependency = $(firstword $(INFLATE$(filter-out \
-	$(EXTRACTOR_DEPENDENCY_PRECHECKED_EXTENSIONS),$(suffix $(1)))))
+extractor-system-dependency = $(if $(EXTRACTOR_PKG_DEPENDENCY$(suffix $(1))),,\
+	$(firstword $(INFLATE$(suffix $(1)))))
 
 # check-deprecated-variable -- throw an error on deprecated variables
 # example:
