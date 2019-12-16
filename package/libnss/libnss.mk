@@ -56,12 +56,6 @@ LIBNSS_BUILD_VARS = \
 	OS_TEST="$(LIBNSS_ARCH)" \
 	NSS_ENABLE_WERROR=0
 
-# #pragma usage needs gcc >= 4.8
-# See https://bugzilla.mozilla.org/show_bug.cgi?id=1226179
-ifeq ($(BR2_TOOLCHAIN_GCC_AT_LEAST_4_8),)
-LIBNSS_BUILD_VARS += NSS_ENABLE_WERROR=0
-endif
-
 ifeq ($(BR2_ARCH_IS_64),y)
 # MIPS64 n32 is treated as a 32-bit architecture by libnss.
 # See: https://bugzilla.mozilla.org/show_bug.cgi?id=1010730
