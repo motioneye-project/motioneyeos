@@ -132,9 +132,6 @@ endef
 define SURICATA_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/suricata/suricata.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/suricata.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/suricata.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/suricata.service
 endef
 
 $(eval $(autotools-package))

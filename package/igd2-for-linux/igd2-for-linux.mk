@@ -40,9 +40,6 @@ endef
 define IGD2_FOR_LINUX_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/igd2-for-linux/upnpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/upnpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/upnpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/upnpd.service
 endef
 
 $(eval $(generic-package))

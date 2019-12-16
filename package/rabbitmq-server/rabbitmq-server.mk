@@ -36,11 +36,6 @@ endef
 define RABBITMQ_SERVER_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/rabbitmq-server/rabbitmq-server.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/rabbitmq-server.service
-
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-
-	ln -fs ../../../../usr/lib/systemd/system/rabbitmq-server.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/rabbitmq-server.service
 endef
 
 define RABBITMQ_SERVER_INSTALL_INIT_SYSV

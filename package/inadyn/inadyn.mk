@@ -34,9 +34,6 @@ endef
 define INADYN_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/inadyn/inadyn.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/inadyn.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/inadyn.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/inadyn.service
 endef
 
 $(eval $(autotools-package))

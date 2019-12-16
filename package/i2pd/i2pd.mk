@@ -59,9 +59,6 @@ endef
 define I2PD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/i2pd/i2pd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/i2pd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/i2pd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/i2pd.service
 endef
 
 $(eval $(cmake-package))

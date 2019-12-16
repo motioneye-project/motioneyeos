@@ -71,9 +71,6 @@ endef
 define MOTION_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/motion/motion.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/motion.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/motion.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/motion.service
 endef
 
 $(eval $(autotools-package))

@@ -21,9 +21,6 @@ endef
 define HAVEGED_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/haveged/haveged.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/haveged.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs /usr/lib/systemd/system/haveged.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/haveged.service
 endef
 
 $(eval $(autotools-package))

@@ -111,11 +111,6 @@ endef
 define BIND_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(BIND_PKGDIR)/named.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/named.service
-
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-
-	ln -sf /usr/lib/systemd/system/named.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/named.service
 endef
 else
 BIND_POST_INSTALL_TARGET_HOOKS += BIND_TARGET_REMOVE_SERVER

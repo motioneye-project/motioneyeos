@@ -68,9 +68,6 @@ endef
 define RYGEL_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/rygel/rygel.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/rygel.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/rygel.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/rygel.service
 endef
 
 $(eval $(autotools-package))

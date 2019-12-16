@@ -120,9 +120,6 @@ endef
 define MARIADB_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/mariadb/mysqld.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/mysqld.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/mysqld.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mysqld.service
 endef
 endif
 

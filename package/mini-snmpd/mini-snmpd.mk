@@ -13,9 +13,6 @@ MINI_SNMPD_AUTORECONF = YES
 define MINI_SNMPD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/mini-snmpd/mini-snmpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/mini-snmpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/mini-snmpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/mini-snmpd.service
 endef
 
 $(eval $(autotools-package))

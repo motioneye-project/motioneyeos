@@ -33,9 +33,6 @@ endef
 define IMX_UUC_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/freescale-imx/imx-uuc/imx-uuc.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/imx-uuc.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/
-	ln -fs ../../../../usr/lib/systemd/system/imx-uuc.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/imx-uuc.service
 endef
 
 $(eval $(generic-package))

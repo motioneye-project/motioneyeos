@@ -32,9 +32,6 @@ endef
 define MINISSDPD_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/minissdpd/minissdpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/minissdpd.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/minissdpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/minissdpd.service
 endef
 
 $(eval $(generic-package))

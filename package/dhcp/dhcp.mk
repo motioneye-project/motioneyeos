@@ -100,11 +100,6 @@ define DHCP_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/dhcp/dhcpd.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/dhcpd.service
 
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-
-	ln -sf ../../../../usr/lib/systemd/system/dhcpd.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/dhcpd.service
-
 	mkdir -p $(TARGET_DIR)/usr/lib/tmpfiles.d
 	echo "d /var/lib/dhcp 0755 - - - -" > \
 		$(TARGET_DIR)/usr/lib/tmpfiles.d/dhcpd.conf

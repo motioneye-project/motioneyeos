@@ -32,9 +32,6 @@ endef
 define PTPD2_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/ptpd2/ptpd2.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/ptpd2.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/ptpd2.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/ptpd2.service
 endef
 
 $(eval $(autotools-package))

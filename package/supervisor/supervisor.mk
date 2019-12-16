@@ -26,9 +26,6 @@ endef
 define SUPERVISOR_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 package/supervisor/supervisord.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/supervisord.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/supervisord.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/supervisord.service
 endef
 
 $(eval $(python-package))

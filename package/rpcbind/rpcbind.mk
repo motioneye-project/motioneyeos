@@ -27,9 +27,6 @@ define RPCBIND_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.service
 	$(INSTALL) -m 0644 -D package/rpcbind/rpcbind.socket \
 		$(TARGET_DIR)/usr/lib/systemd/system/rpcbind.socket
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sockets.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/rpcbind.socket \
-		$(TARGET_DIR)/etc/systemd/system/sockets.target.wants/rpcbind.socket
 endef
 
 define RPCBIND_INSTALL_INIT_SYSV

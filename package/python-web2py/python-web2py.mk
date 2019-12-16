@@ -57,9 +57,6 @@ endef
 define PYTHON_WEB2PY_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 0644 package/python-web2py/web2py.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/web2py.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib//systemd/system/web2py.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/web2py.service
 endef
 
 # www-data user and group are used for web2py. Because these user and group

@@ -48,9 +48,6 @@ endef
 define IFUPDOWN_SCRIPTS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(IFUPDOWN_SCRIPTS_PKGDIR)/network.service \
 		$(TARGET_DIR)/etc/systemd/system/network.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../network.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/network.service
 endef
 
 $(eval $(generic-package))
