@@ -1,0 +1,4 @@
+disable wpa_supplicant@.service
+disable wpa_supplicant-nl80211@.service
+disable wpa_supplicant-wired@.service
+
