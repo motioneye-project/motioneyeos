@@ -90,11 +90,12 @@ define ALSA_UTILS_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/systemd/system/alsa-restore.service
 	$(INSTALL) -D -m 0644 $(@D)/alsactl/alsa-state.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/alsa-state.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/sound.target.wants
-	ln -sf ../../../../lib/systemd/system/alsa-restore.service \
-		$(TARGET_DIR)/etc/systemd/system/sound.target.wants/alsa-restore.service
-	ln -sf ../../../../lib/systemd/system/alsa-state.service \
-		$(TARGET_DIR)/etc/systemd/system/sound.target.wants/alsa-state.service
+	mkdir $(TARGET_DIR)/usr/lib/systemd/system/alsa-restore.service.d
+	printf '[Install]\nWantedBy=multi-user.target\n' \
+		>$(TARGET_DIR)/usr/lib/systemd/system/alsa-restore.service.d/buildroot-enable.conf
+	mkdir $(TARGET_DIR)/usr/lib/systemd/system/alsa-state.service.d
+	printf '[Install]\nWantedBy=multi-user.target\n' \
+		>$(TARGET_DIR)/usr/lib/systemd/system/alsa-state.service.d/buildroot-enable.conf;
 endef
 endif
 
