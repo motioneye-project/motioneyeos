@@ -46,11 +46,15 @@ INFLATE.tar  = cat
 # suitable-extractor(filename): returns extractor based on suffix
 suitable-extractor = $(INFLATE$(suffix $(1)))
 
-# extractor-dependency(filename): returns extractor for 'filename' if the
-# extractor is a dependency. If we build the extractor return nothing.
-# $(firstword) is used here because the extractor can have arguments, like
-# ZCAT="gzip -d -c", and to check for the dependency we only want 'gzip'.
-extractor-dependency = $(firstword $(INFLATE$(filter-out \
+# extractor-system-dependency(filename): returns the name of the tool
+# needed to extract 'filename', and is meant to be used with
+# DL_TOOLS_DEPENDENCIES, in order to check that the necesary tool is
+# provided by the system Buildroot runs on.
+#
+# $(firstword) is used here because the extractor can have arguments,
+# like ZCAT="gzip -d -c", and to check for the dependency we only want
+# 'gzip'.
+extractor-system-dependency = $(firstword $(INFLATE$(filter-out \
 	$(EXTRACTOR_DEPENDENCY_PRECHECKED_EXTENSIONS),$(suffix $(1)))))
 
 # check-deprecated-variable -- throw an error on deprecated variables
