@@ -42,9 +42,6 @@ define LINUXPTP_INSTALL_INIT_SYSTEMD
 		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp.service
 	$(INSTALL) -D -m 644 $(LINUXPTP_PKGDIR)/linuxptp-system-clock.service \
 		$(TARGET_DIR)/usr/lib/systemd/system/linuxptp-system-clock.service
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -sf ../../../../usr/lib/systemd/system/linuxptp.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/linuxptp.service
 endef
 
 $(eval $(generic-package))
