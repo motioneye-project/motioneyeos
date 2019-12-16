@@ -32,12 +32,6 @@ define CONNMAN_INSTALL_INIT_SYSV
 	$(INSTALL) -m 0755 -D package/connman/S45connman $(TARGET_DIR)/etc/init.d/S45connman
 endef
 
-define CONNMAN_INSTALL_INIT_SYSTEMD
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/multi-user.target.wants
-	ln -fs ../../../../usr/lib/systemd/system/connman.service \
-		$(TARGET_DIR)/etc/systemd/system/multi-user.target.wants/connman.service
-endef
-
 ifeq ($(BR2_PACKAGE_CONNMAN_CLIENT),y)
 CONNMAN_LICENSE += , GPL-2.0+ (client)
 CONNMAN_CONF_OPTS += --enable-client
