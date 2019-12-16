@@ -436,22 +436,39 @@ ifneq ($(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)),)
 # systemd needs getty.service for VTs and serial-getty.service for serial ttys
 # note that console-getty.service should be used on /dev/console as it should not have dependencies
 # also patch the file to use the correct baud-rate, the default baudrate is 115200 so look for that
+#
+# systemd defaults to only have getty@tty.service enabled
+# * DefaultInstance=tty1 in getty@service
+# * no DefaultInstance in serial-getty@.service
+# * WantedBy=getty.target in console-getty.service
+# * console-getty is not enabled because of 90-systemd.preset
+# We want "systemctl preset-all" to do the right thing, even when run on the target after boot
+# * remove the default instance of getty@.service via a drop-in in /usr/lib
+# * set a new DefaultInstance for getty@.service instead, if needed
+# * set a new DefaultInstance for serial-getty@.service, if needed
+# * override the systemd-provided preset for console-getty.service if needed
 define SYSTEMD_INSTALL_SERVICE_TTY
+	mkdir $(TARGET_DIR)/usr/lib/systemd/system/getty@.service.d; \
+	printf '[Install]\nDefaultInstance=\n' \
+		>$(TARGET_DIR)/usr/lib/systemd/system/getty@.service.d/buildroot-console.conf; \
 	if [ $(BR2_TARGET_GENERIC_GETTY_PORT) = "console" ]; \
 	then \
 		TARGET="console-getty.service"; \
-		LINK_NAME="console-getty.service"; \
+		printf 'enable console-getty.service\n' \
+			>$(TARGET_DIR)/usr/lib/systemd/system-preset/81-buildroot-tty.preset; \
 	elif echo $(BR2_TARGET_GENERIC_GETTY_PORT) | egrep -q 'tty[0-9]*$$'; \
 	then \
 		TARGET="getty@.service"; \
-		LINK_NAME="getty@$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)).service"; \
+		printf '[Install]\nDefaultInstance=%s\n' \
+			$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)) \
+			>$(TARGET_DIR)/usr/lib/systemd/system/getty@.service.d/buildroot-console.conf; \
 	else \
 		TARGET="serial-getty@.service"; \
-		LINK_NAME="serial-getty@$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)).service"; \
+		mkdir $(TARGET_DIR)/usr/lib/systemd/system/serial-getty@.service.d;\
+		printf '[Install]\nDefaultInstance=%s\n' \
+			$(call qstrip,$(BR2_TARGET_GENERIC_GETTY_PORT)) \
+			>$(TARGET_DIR)/usr/lib/systemd/system/serial-getty@.service.d/buildroot-console.conf;\
 	fi; \
-	mkdir -p $(TARGET_DIR)/etc/systemd/system/getty.target.wants/; \
-	ln -fs ../../../../lib/systemd/system/$${TARGET} \
-		$(TARGET_DIR)/etc/systemd/system/getty.target.wants/$${LINK_NAME}; \
 	if [ $(call qstrip,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE)) -gt 0 ] ; \
 	then \
 		$(SED) 's,115200,$(BR2_TARGET_GENERIC_GETTY_BAUDRATE),' $(TARGET_DIR)/lib/systemd/system/$${TARGET}; \
