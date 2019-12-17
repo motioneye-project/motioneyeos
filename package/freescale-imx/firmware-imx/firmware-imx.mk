@@ -50,7 +50,7 @@ FIRMWARE_IMX_INSTALL_IMAGES = YES
 define FIRMWARE_IMX_INSTALL_IMAGES_CMDS
 	# SECO firmware is needed when generating imx8-boot-sd.bin which
 	# is done in post-image script.
-	cp $(@D)/firmware/seco/ahab-container.img \
+	cp $(@D)/firmware/seco/mx8qx-ahab-container.img \
 		$(BINARIES_DIR)/ahab-container.img
 endef
 else
