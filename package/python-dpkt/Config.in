@@ -6,4 +6,4 @@ config BR2_PACKAGE_PYTHON_DPKT
 	  Fast, simple packet creation / parsing, with definitions
 	  for the basic TCP/IP protocols.
 
-	  http://code.google.com/p/dpkt/
+	  https://github.com/kbandla/dpkt
