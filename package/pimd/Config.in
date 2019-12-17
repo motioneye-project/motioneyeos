@@ -5,4 +5,4 @@ config BR2_PACKAGE_PIMD
 	  pimd is a lightweight stand-alone PIM-SM v2 multicast routing
 	  daemon.
 
-	  http://troglobit.com/project/pimd/
+	  http://troglobit.com/projects/pimd/
