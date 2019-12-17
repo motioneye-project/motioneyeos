@@ -8,7 +8,7 @@ config BR2_PACKAGE_PYTHON_COHERENCE
 	help
 	  A DLNA/UPnP Media Server and Framework for the Digital Living.
 
-	  http://coherence-project.org/
+	  https://github.com/coherence-project/Coherence
 
 comment "python-coherence needs a toolchain w/ C++"
 	depends on BR2_PACKAGE_PYTHON
