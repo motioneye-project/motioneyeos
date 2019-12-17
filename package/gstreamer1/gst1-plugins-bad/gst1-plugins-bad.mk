@@ -66,7 +66,7 @@ GST1_PLUGINS_BAD_DEPENDENCIES = gst1-plugins-base gstreamer1
 
 ifeq ($(BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_WAYLAND),y)
 GST1_PLUGINS_BAD_CONF_OPTS += -Dwayland=enabled
-GST1_PLUGINS_BAD_DEPENDENCIES += wayland wayland-protocols
+GST1_PLUGINS_BAD_DEPENDENCIES += libdrm wayland wayland-protocols
 else
 GST1_PLUGINS_BAD_CONF_OPTS += -Dwayland=disabled
 endif
