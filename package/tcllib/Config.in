@@ -8,4 +8,4 @@ config BR2_PACKAGE_TCLLIB
 	  is to collect commonly used function into a single library,
 	  which users can rely on to be available and stable
 
-	  http://tcl.activestate.com/software/tcllib/
+	  https://www.tcl.tk/software/tcllib/
