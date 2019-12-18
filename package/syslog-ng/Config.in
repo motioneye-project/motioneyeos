@@ -12,7 +12,7 @@ config BR2_PACKAGE_SYSLOG_NG
 	  of input and output methods: syslog, unstructured text,
 	  queueing, SQL & NoSQL
 
-	  https://syslog-ng.org/
+	  https://www.syslog-ng.com/products/open-source-log-management/
 
 comment "syslog-ng needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
