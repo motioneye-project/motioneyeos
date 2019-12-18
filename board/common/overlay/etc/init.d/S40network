@@ -63,7 +63,7 @@ watch_ip() {
 
 start_lo() {
     if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface lo" ${INTERFACES_CONF}; then
-        ifup lo 2>&1 | logger -t network
+        ifup -i ${INTERFACES_CONF} lo 2>&1 | logger -t network
     else
         ifconfig lo up
     fi
@@ -86,7 +86,7 @@ start_wlan() {
     fi
 
     if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface ${OS_WLAN}" ${INTERFACES_CONF}; then
-        ifup ${OS_WLAN} 2>&1 | logger -t network
+        ifup -i ${INTERFACES_CONF} ${OS_WLAN} 2>&1 | logger -t network
         test ${PIPESTATUS[0]} == 0 && msg_done || msg_fail
     else
         if [[ -n "${STATIC_IP}" ]]; then
@@ -150,7 +150,7 @@ start_eth() {
     fi
 
     if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface ${OS_ETH}" ${INTERFACES_CONF}; then
-        ifup ${OS_ETH} 2>&1 | logger -t network
+        ifup -i ${INTERFACES_CONF} ${OS_ETH} 2>&1 | logger -t network
         test ${PIPESTATUS[0]} == 0 && msg_done || msg_fail
     else
         if [[ -n "${STATIC_IP}" ]]; then
@@ -200,7 +200,7 @@ start() {
 
     if [[ -r ${INTERFACES_CONF} ]]; then
         # ifup doesn't set the DNS server, so we have to set it manually
-        STATIC_DNS=$(cat /etc/network/interfaces | grep dns-nameserver | tr -s ' ' | cut -d ' ' -f 3 | head -n 11)
+        STATIC_DNS=$(cat ${INTERFACES_CONF} | grep dns-nameserver | tr -s ' ' | cut -d ' ' -f 3 | head -n 11)
         if [[ -n "${STATIC_DNS}" ]]; then
             msg_begin "Setting static DNS server to ${STATIC_DNS}"
             echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
@@ -223,7 +223,9 @@ start() {
 
 stop() {
     msg_begin "Stopping network"
-    ifdown -a 2>&1 | logger -t network
+    if [[ -r ${INTERFACES_CONF} ]]; then
+        ifdown -i ${INTERFACES_CONF} -a 2>&1 | logger -t network
+    fi
     ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
     killall dhclient &>/dev/null
     msg_done
