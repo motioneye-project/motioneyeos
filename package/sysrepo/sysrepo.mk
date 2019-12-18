@@ -24,7 +24,7 @@ SYSREPO_CONF_OPTS = \
 	-DCALL_SYSREPOCFG_BIN=$(HOST_DIR)/bin/sysrepocfg \
 	-DBUILD_EXAMPLES=$(if $(BR2_PACKAGE_SYSREPO_EXAMPLES),ON,OFF) \
 	$(if $(BR2_INIT_SYSTEMD),-DWITH_SYSTEMD=ON) \
-	$(if $(BR2_INIT_SYSTEMD),-DSYSTEMD_UNIT_DIR=usr/lib/systemd/system)
+	$(if $(BR2_INIT_SYSTEMD),-DSYSTEMD_UNIT_DIR=/usr/lib/systemd/system)
 
 # On ARM, this is needed to prevent unaligned memory access with an optimized
 # build .. https://github.com/sysrepo/sysrepo/issues/947
