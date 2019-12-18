@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/yieldfrom/json
-md5	98182ff0e861458e9e3dfaa0d47a47af  yieldfrom-1.0.4.tar.gz
-sha256	09c4e32402ec1c098e66ef5e25e036134f0e84f72ff5817641728707a168f5b3  yieldfrom-1.0.4.tar.gz
+md5	fd94120625ac1e69bb5946d5e63182da  yieldfrom-1.0.5.tar.gz
+sha256	eb75e58641410f06083f85013a438f28bceaabfe5af9c3206d5049362c37aca0  yieldfrom-1.0.5.tar.gz
 # Locally computed sha256 checksums
 sha256	b3092d61cce29e25f3799285495095d220e5e015b88c1c70e1e72dae052f21e8  LICENSE
