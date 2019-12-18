@@ -1,0 +1,11 @@
+config BR2_PACKAGE_PERL_MATH_PRIME_UTIL
+	bool "perl-math-prime-util"
+	depends on !BR2_STATIC_LIBS
+	help
+	  Utilities related to prime numbers, including fast sieves and
+	  factoring.
+
+	  https://github.com/danaj/Math-Prime-Util
+
+comment "perl-math-prime-util needs a toolchain w/ dynamic library"
+	depends on BR2_STATIC_LIBS
