@@ -29,4 +29,14 @@ else
 POLKIT_CONF_OPTS += --with-authfw=shadow
 endif
 
+define POLKIT_USERS
+	polkitd -1 polkitd -1 * - - - Polkit Daemon
+endef
+
+define POLKIT_PERMISSIONS
+	/etc/polkit-1 r 750 root polkitd - - - - -
+	/usr/share/polkit-1 r 750 root polkitd - - - - -
+	/usr/bin/pkexec f 4755 root root - - - - -
+endef
+
 $(eval $(autotools-package))
