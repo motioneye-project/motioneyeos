@@ -1,4 +1,4 @@
-menuconfig BR2_PACKAGE_PIPEWIRE
+config BR2_PACKAGE_PIPEWIRE
 	bool "pipewire"
 	depends on BR2_PACKAGE_HAS_UDEV # libudev
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib
