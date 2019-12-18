@@ -7,7 +7,7 @@ config BR2_PACKAGE_USBMOUNT
 	  devices when they are plugged in, and unmounts them when
 	  they are removed.
 
-	  http://usbmount.alioth.debian.org/
+	  https://wiki.debian.org/usbmount
 
 comment "usbmount requires udev to be enabled"
 	depends on !BR2_PACKAGE_HAS_UDEV
