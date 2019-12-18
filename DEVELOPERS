@@ -2332,6 +2332,7 @@ F:	package/opkg-utils/
 F:	package/perl-convert-asn1/
 F:	package/perl-crypt-blowfish/
 F:	package/perl-crypt-cbc/
+F:	package/perl-crypt-openssl-aes/
 F:	package/perl-digest-md5/
 F:	package/perl-mime-base64-urlsafe/
 F:	package/perl-mojolicious-plugin-authentication/
