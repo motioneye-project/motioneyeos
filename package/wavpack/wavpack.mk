@@ -17,6 +17,13 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 WAVPACK_CONF_OPTS += LIBS=-liconv
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+WAVPACK_DEPENDENCIES += openssl
+WAVPACK_CONF_OPTS += --enable-libcrypto
+else
+WAVPACK_CONF_OPTS += --disable-libcrypto
+endif
+
 # WavPack "autodetects" CPU type to enable ASM code. However, the assembly code
 # for ARM is written for ARMv7 only and building WavPack for an ARM-non-v7
 # architecture will fail. We explicitly enable ASM for the supported
