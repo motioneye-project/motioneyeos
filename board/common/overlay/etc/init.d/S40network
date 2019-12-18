@@ -206,6 +206,9 @@ start() {
             echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
             test $? == 0 && msg_done || msg_fail
         fi
+        
+        # Make sure all auto interfaces are brought up
+        ifup -i ${INTERFACES_CONF} -a >/dev/null
     else
         if [[ -n "${STATIC_GW}" ]]; then
             msg_begin "Setting static gateway to ${STATIC_GW}"
