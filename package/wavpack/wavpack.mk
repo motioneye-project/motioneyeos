@@ -4,9 +4,10 @@
 #
 ################################################################################
 
-WAVPACK_VERSION = 5.1.0
-WAVPACK_SITE = http://www.wavpack.com
-WAVPACK_SOURCE = wavpack-$(WAVPACK_VERSION).tar.bz2
+WAVPACK_VERSION = 5.2.0
+WAVPACK_SITE = \
+	https://github.com/dbry/WavPack/releases/download/$(WAVPACK_VERSION)
+WAVPACK_SOURCE = wavpack-$(WAVPACK_VERSION).tar.xz
 WAVPACK_INSTALL_STAGING = YES
 WAVPACK_DEPENDENCIES = $(if $(BR2_ENABLE_LOCALE),,libiconv)
 WAVPACK_LICENSE = BSD-3-Clause
