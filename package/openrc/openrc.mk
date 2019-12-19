@@ -35,6 +35,8 @@ endef
 
 define OPENRC_INSTALL_TARGET_CMDS
 	$(MAKE) $(OPENRC_MAKE_OPTS) DESTDIR=$(TARGET_DIR) -C $(@D) install
+	$(INSTALL) -D -m 0755 $(OPENRC_PKGDIR)/sysv-rcs \
+		$(TARGET_DIR)/etc/init.d/sysv-rcs
 endef
 
 ifeq ($(BR2_PACKAGE_NETIFRC),y)
