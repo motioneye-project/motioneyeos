@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-DUKTAPE_VERSION = 2.4.0
+DUKTAPE_VERSION = 2.5.0
 DUKTAPE_SITE = $(call github,svaarala,duktape-releases,v$(DUKTAPE_VERSION))
 DUKTAPE_LICENSE = MIT
 DUKTAPE_LICENSE_FILES = LICENSE.txt
