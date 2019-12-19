@@ -15,6 +15,10 @@ ifeq ($(BR2_PACKAGE_FFMPEG),y)
 PIPEWIRE_DEPENDENCIES += ffmpeg
 endif
 
+ifeq ($(BR2_PACKAGE_LIBVA),y)
+PIPEWIRE_DEPENDENCIES += libva
+endif
+
 ifeq ($(BR2_PACKAGE_SBC),y)
 PIPEWIRE_DEPENDENCIES += sbc
 endif
