@@ -1,10 +1,15 @@
 #!/bin/bash
 
 DH_CONF="/var/cache/dhclient.conf"
+WATCH_CONF="/data/etc/watch.conf"
+
 SYS_STATIC_CONF="/etc/static_ip.conf"
 BOOT_STATIC_CONF="/boot/static_ip.conf"
 STATIC_CONF="/data/etc/static_ip.conf"
-WATCH_CONF="/data/etc/watch.conf"
+
+SYS_INTERFACES_CONF="/etc/network/interfaces"
+BOOT_INTERFACES_CONF="/boot/network/interfaces"
+INTERFACES_CONF="/data/etc/network/interfaces"
 
 LINK_NEGO_TIMEOUT=10
 
@@ -15,6 +20,8 @@ source ${WATCH_CONF}
 
 prepare_conf ${STATIC_CONF} ${SYS_STATIC_CONF} ${BOOT_STATIC_CONF}
 test -r ${STATIC_CONF} && source ${STATIC_CONF}
+
+prepare_conf ${INTERFACES_CONF} ${SYS_INTERFACES_CONF} ${BOOT_INTERFACES_CONF}
 
 mkdir -p /var/lib/dhcp
 
@@ -57,7 +64,11 @@ watch_ip() {
 }
 
 start_lo() {
-    ifconfig lo up
+    if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface lo" ${INTERFACES_CONF}; then
+        ifup -i ${INTERFACES_CONF} lo 2>&1 | logger -t network
+    else
+        ifconfig lo up
+    fi
 }
 
 start_wlan() {
@@ -76,13 +87,18 @@ start_wlan() {
         ip link set mtu ${mtu} dev ${OS_WLAN}
     fi
 
-    if [[ -n "${STATIC_IP}" ]]; then
-        msg_done ${STATIC_IP}
-        ifconfig ${OS_WLAN} ${STATIC_IP} up
-        STATIC_IP="" # won't be used again
+    if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface ${OS_WLAN}" ${INTERFACES_CONF}; then
+        ifup -i ${INTERFACES_CONF} ${OS_WLAN} 2>&1 | logger -t network
+        test ${PIPESTATUS[0]} == 0 && msg_done || msg_fail
     else
-        msg_done dhcp
-        dhclient -cf "${DH_CONF}" ${OS_WLAN}
+        if [[ -n "${STATIC_IP}" ]]; then
+            msg_done ${STATIC_IP}
+            ifconfig ${OS_WLAN} ${STATIC_IP} up
+            STATIC_IP="" # won't be used again
+        else
+            msg_done dhcp
+            dhclient -cf "${DH_CONF}" ${OS_WLAN}
+        fi
     fi
 
     if [[ "${IP_WATCH}" == "true" ]] && ip addr show dev ${OS_WLAN} | grep inet &>/dev/null; then
@@ -136,13 +152,18 @@ start_eth() {
         ip link set mtu ${mtu} dev ${OS_ETH}
     fi
 
-    if [[ -n "${STATIC_IP}" ]]; then
-        msg_done ${STATIC_IP}
-        ifconfig ${OS_ETH} ${STATIC_IP} up
-        STATIC_IP="" # won't be used again
+    if [[ -r ${INTERFACES_CONF} ]] && grep -q "^iface ${OS_ETH}" ${INTERFACES_CONF}; then
+        ifup -i ${INTERFACES_CONF} ${OS_ETH} 2>&1 | logger -t network
+        test ${PIPESTATUS[0]} == 0 && msg_done || msg_fail
     else
-        msg_done dhcp
-        dhclient -cf "${DH_CONF}" ${OS_ETH}
+        if [[ -n "${STATIC_IP}" ]]; then
+            msg_done ${STATIC_IP}
+            ifconfig ${OS_ETH} ${STATIC_IP} up
+            STATIC_IP="" # won't be used again
+        else
+            msg_done dhcp
+            dhclient -cf "${DH_CONF}" ${OS_ETH}
+        fi
     fi
 
     if [[ "${LINK_WATCH}" == "true" ]]; then
@@ -163,15 +184,17 @@ start() {
     test "${OS_NETWORKLESS}" == "true" && return 0
 
     ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
-    test -n "${ssid}" && start_wlan && wlan_ok="ok"
+    test -n "${OS_WLAN}" -a -n "${ssid}" && start_wlan && wlan_ok="ok"
     
-    test -r /data/etc/ppp/modem && ifconfig | grep ${OS_PPP} &>/dev/null && ppp_ok="ok"
+    test -n "${OS_PPP}" -a -r /data/etc/ppp/modem && ifconfig | grep ${OS_PPP} &>/dev/null && ppp_ok="ok"
     
-    # if wifi or ppp link ok, start eth in background
-    if [[ "${wlan_ok}" == "ok" ]] || [[ "${ppp_ok}" == "ok" ]]; then
-        start_eth &>/dev/null &
-    else
-        start_eth && eth_ok="ok"
+    if [[ -n "${OS_ETH}" ]]; then
+            # if wifi or ppp link ok, start eth in background
+        if [[ "${wlan_ok}" == "ok" ]] || [[ "${ppp_ok}" == "ok" ]]; then
+            start_eth &>/dev/null &
+        else
+            start_eth && eth_ok="ok"
+        fi
     fi
     
     if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]]; then
@@ -185,23 +208,39 @@ start() {
         fi
     fi
 
-    if [[ -n "${STATIC_GW}" ]]; then
-        msg_begin "Setting static gateway to ${STATIC_GW}"
-        ip route add default via ${STATIC_GW}
-        test $? == 0 && msg_done || msg_fail
-    fi
+    if [[ -r ${INTERFACES_CONF} ]]; then
+        # ifup doesn't set the DNS server, so we have to set it manually
+        STATIC_DNS=$(cat ${INTERFACES_CONF} | grep dns-nameserver | tr -s ' ' | cut -d ' ' -f 3 | head -n 11)
+        if [[ -n "${STATIC_DNS}" ]]; then
+            msg_begin "Setting static DNS server to ${STATIC_DNS}"
+            echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
+            test $? == 0 && msg_done || msg_fail
+        fi
+        
+        # Make sure all auto interfaces are brought up
+        ifup -i ${INTERFACES_CONF} -a >/dev/null
+    else
+        if [[ -n "${STATIC_GW}" ]]; then
+            msg_begin "Setting static gateway to ${STATIC_GW}"
+            ip route add default via ${STATIC_GW}
+            test $? == 0 && msg_done || msg_fail
+        fi
 
-    if [[ -n "${STATIC_DNS}" ]]; then
-        msg_begin "Setting static DNS server to ${STATIC_DNS}"
-        echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
-        test $? == 0 && msg_done || msg_fail
+        if [[ -n "${STATIC_DNS}" ]]; then
+            msg_begin "Setting static DNS server to ${STATIC_DNS}"
+            echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
+            test $? == 0 && msg_done || msg_fail
+        fi
     fi
 }
 
 stop() {
     msg_begin "Stopping network"
-    killall dhclient &>/dev/null
+    if [[ -r ${INTERFACES_CONF} ]]; then
+        ifdown -i ${INTERFACES_CONF} -a 2>&1 | logger -t network
+    fi
     ps | grep S40network | grep -v $$ | grep -v grep | tr -s ' ' | sed -e 's/^\s//' | cut -d ' ' -f 1 | xargs -r kill
+    killall dhclient &>/dev/null
     msg_done
 }
 
