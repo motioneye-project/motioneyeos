@@ -7,4 +7,4 @@ config BR2_PACKAGE_WSAPI_XAVANTE
 	  applications. This is the rock that contains the Xavante
 	  adapter and launcher.
 
-	  http://www.keplerproject.org/wsapi
+	  https://keplerproject.github.io/wsapi/
