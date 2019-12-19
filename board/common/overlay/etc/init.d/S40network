@@ -11,6 +11,8 @@ SYS_INTERFACES_CONF="/etc/network/interfaces"
 BOOT_INTERFACES_CONF="/boot/network/interfaces"
 INTERFACES_CONF="/data/etc/network/interfaces"
 
+LINK_NEGO_TIMEOUT=10
+
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
@@ -135,11 +137,12 @@ start_eth() {
     done
 
     # wait for link
+    test "${LINK_WATCH}" == "true" || LINK_NEGO_TIMEOUT=5
     count=0
     while [[ "$(cat /sys/class/net/${OS_ETH}/carrier 2>&1)" != "1" ]]; do
         sleep 1
         count=$((${count} + 1))
-        if [[ ${count} -ge 1 ]]; then
+        if [[ ${count} -ge ${LINK_NEGO_TIMEOUT} ]]; then
             msg_done "no link"
             return 1
         fi
@@ -185,7 +188,14 @@ start() {
     
     test -n "${OS_PPP}" -a -r /data/etc/ppp/modem && ifconfig | grep ${OS_PPP} &>/dev/null && ppp_ok="ok"
     
-    test -n "${OS_ETH}" && start_eth && eth_ok="ok"
+    if [[ -n "${OS_ETH}" ]]; then
+            # if wifi or ppp link ok, start eth in background
+        if [[ "${wlan_ok}" == "ok" ]] || [[ "${ppp_ok}" == "ok" ]]; then
+            start_eth &>/dev/null &
+        else
+            start_eth && eth_ok="ok"
+        fi
+    fi
     
     if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]]; then
         if [[ "${LINK_WATCH}" == "true" ]]; then
