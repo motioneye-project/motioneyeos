@@ -5,7 +5,8 @@ PID_FILE=/tmp/rc.pid
 
 source /etc/init.d/base
 
-echo "---- shutting down ${OS_NAME} ${OS_VERSION} ----" >> ${BOOT_LOG}
+echo
+echo "---- shutting down ${OS_NAME} ${OS_VERSION} ----" | tee -a ${BOOT_LOG}
 
 # stop all init scripts in /etc/init.d,
 # executing them in reverse numerical order.
@@ -19,4 +20,3 @@ pid=$(cat ${PID_FILE})
 while kill -0 ${pid} 2>/dev/null; do
     sleep 1
 done
-
