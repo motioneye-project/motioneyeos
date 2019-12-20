@@ -12,7 +12,7 @@ set +a
 
 source /etc/init.d/base
 
-echo "---- booting ${OS_NAME} ${OS_VERSION} ----" >> ${TMP_BOOT_LOG}
+echo "---- booting ${OS_NAME} ${OS_VERSION} ----" | tee -a ${TMP_BOOT_LOG}
 
 # start all init scripts in /etc/init.d,
 # executing them in numerical order.
@@ -28,4 +28,3 @@ while kill -0 ${pid} 2>/dev/null; do
 done
 
 test -d $(dirname ${BOOT_LOG}) && cat ${TMP_BOOT_LOG} >> ${BOOT_LOG}
-
