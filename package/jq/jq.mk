@@ -4,11 +4,14 @@
 #
 ################################################################################
 
-JQ_VERSION = 1.6
-JQ_SITE = https://github.com/stedolan/jq/releases/download/jq-$(JQ_VERSION)
+JQ_VERSION = a97638713ad30653d424f136018098c4b0e5c71b
+JQ_SITE = $(call github,stedolan,jq,$(JQ_VERSION))
 JQ_LICENSE = MIT (code), CC-BY-3.0 (documentation)
 JQ_LICENSE_FILES = COPYING
 JQ_INSTALL_STAGING = YES
+
+# currently using git version directly
+JQ_AUTORECONF = YES
 
 # uses c99 specific features
 # _GNU_SOURCE added to fix gcc6+ host compilation
