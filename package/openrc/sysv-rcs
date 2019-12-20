@@ -7,19 +7,21 @@ depend() {
 }
 
 start() {
-    einfo "Starting sysv rc scripts"
     for i in /etc/init.d/S??*; do
         # Ignore dangling symlinks (if any).
         [ -e "$i" ] || continue
-        $i start
+        einfo "Starting $i"
+        $i start > /dev/null
+        eend $?
     done
 }
 
 stop() {
-    einfo "Stopping sysv rc scripts"
     for i in $(ls -r /etc/init.d/S??*); do
         # Ignore dangling symlinks (if any).
         [ -e "$i" ] || continue
-        $i stop
+        einfo "Stopping $i"
+        $i stop > /dev/null
+        eend $?
     done
 }
