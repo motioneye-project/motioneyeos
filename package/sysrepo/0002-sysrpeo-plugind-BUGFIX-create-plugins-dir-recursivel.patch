@@ -1,0 +1,65 @@
+From 353faffe13852c4204f158b5d4301405bd222c44 Mon Sep 17 00:00:00 2001
+From: Michal Vasko <mvasko@cesnet.cz>
+Date: Fri, 20 Dec 2019 13:40:35 +0100
+Subject: [PATCH 9/9] sysrpeo-plugind BUGFIX create plugins dir recursively
+
+Refs #1719
+
+[Patch from https://github.com/sysrepo/sysrepo/commit/353faffe13852c4204f158b5d4301405bd222c44]
+
+Signed-off-by: Heiko Thiery <heiko.thiery@kontron.com>
+---
+ src/executables/sysrepo-plugind.c | 30 +++++++++++++++++++++++++++++-
+ 1 file changed, 29 insertions(+), 1 deletion(-)
+
+diff --git a/src/executables/sysrepo-plugind.c b/src/executables/sysrepo-plugind.c
+index ddb41c26..ca22140e 100644
+--- a/src/executables/sysrepo-plugind.c
++++ b/src/executables/sysrepo-plugind.c
+@@ -206,6 +206,34 @@ daemon_init(int debug, sr_log_level_t log_level)
+     sr_log_syslog("sysrepo-plugind", log_level);
+ }
+ 
++/* from src/common.c */
++int
++sr_mkpath(const char *path, mode_t mode)
++{
++    char *p, *dup;
++
++    dup = strdup(path);
++    for (p = strchr(dup + 1, '/'); p; p = strchr(p + 1, '/')) {
++        *p = '\0';
++        if (mkdir(dup, mode) == -1) {
++            if (errno != EEXIST) {
++                *p = '/';
++                return -1;
++            }
++        }
++        *p = '/';
++    }
++    free(dup);
++
++    if (mkdir(path, mode) == -1) {
++        if (errno != EEXIST) {
++            return -1;
++        }
++    }
++
++    return 0;
++}
++
+ static int
+ load_plugins(struct srpd_plugin_s **plugins, int *plugin_count)
+ {
+@@ -231,7 +259,7 @@ load_plugins(struct srpd_plugin_s **plugins, int *plugin_count)
+             error_print(0, "Checking plugins dir existence failed (%s).", strerror(errno));
+             return -1;
+         }
+-        if (mkdir(plugins_dir, 00777) == -1) {
++        if (sr_mkpath(plugins_dir, 00777) == -1) {
+             error_print(0, "Creating plugins dir \"%s\" failed (%s).", plugins_dir, strerror(errno));
+             return -1;
+         }
+-- 
+2.20.1
+
