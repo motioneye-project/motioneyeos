@@ -56,6 +56,7 @@ endef
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_SVR_PASSWORD_AUTH
 endif
 
+ifneq ($(BR2_PACKAGE_DROPBEAR_LEGACY_CRYPTO),y)
 define DROPBEAR_DISABLE_LEGACY_CRYPTO
 	echo '#define DROPBEAR_3DES 0'                  >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_ENABLE_CBC_MODE 0'       >> $(@D)/localoptions.h
@@ -63,28 +64,32 @@ define DROPBEAR_DISABLE_LEGACY_CRYPTO
 	echo '#define DROPBEAR_DSS 0'                   >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_DH_GROUP1 0'             >> $(@D)/localoptions.h
 endef
-ifneq ($(BR2_PACKAGE_DROPBEAR_LEGACY_CRYPTO),y)
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_LEGACY_CRYPTO
 endif
 
+ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),)
 define DROPBEAR_ENABLE_REVERSE_DNS
 	echo '#define DO_HOST_LOOKUP 1'                 >> $(@D)/localoptions.h
 endef
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_ENABLE_REVERSE_DNS
+endif
 
+ifeq ($(BR2_PACKAGE_DROPBEAR_SMALL),y)
+DROPBEAR_CONF_OPTS += --disable-zlib --enable-bundled-libtom
+else
 define DROPBEAR_BUILD_FEATURED
 	echo '#define DROPBEAR_SMALL_CODE 0'            >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_TWOFISH128 1'            >> $(@D)/localoptions.h
 	echo '#define DROPBEAR_TWOFISH256 1'            >> $(@D)/localoptions.h
 endef
-
-define DROPBEAR_DISABLE_STANDALONE
-	echo '#define NON_INETD_MODE 0'                 >> $(@D)/localoptions.h
-endef
+DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_FEATURED
+DROPBEAR_DEPENDENCIES += zlib libtomcrypt
+DROPBEAR_CONF_OPTS += --disable-bundled-libtom
+endif
 
 define DROPBEAR_CUSTOM_PATH
 	echo '#define DEFAULT_PATH $(BR2_SYSTEM_DEFAULT_PATH)' >>$(@D)/localoptions.h
 endef
-
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_CUSTOM_PATH
 
 define DROPBEAR_INSTALL_INIT_SYSTEMD
@@ -98,19 +103,10 @@ define DROPBEAR_INSTALL_INIT_SYSV
 		$(TARGET_DIR)/etc/init.d/S50dropbear
 endef
 else
+define DROPBEAR_DISABLE_STANDALONE
+	echo '#define NON_INETD_MODE 0'                 >> $(@D)/localoptions.h
+endef
 DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_DISABLE_STANDALONE
-endif
-
-ifeq ($(BR2_PACKAGE_DROPBEAR_DISABLE_REVERSEDNS),)
-DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_ENABLE_REVERSE_DNS
-endif
-
-ifeq ($(BR2_PACKAGE_DROPBEAR_SMALL),y)
-DROPBEAR_CONF_OPTS += --disable-zlib --enable-bundled-libtom
-else
-DROPBEAR_POST_EXTRACT_HOOKS += DROPBEAR_BUILD_FEATURED
-DROPBEAR_DEPENDENCIES += zlib libtomcrypt
-DROPBEAR_CONF_OPTS += --disable-bundled-libtom
 endif
 
 ifneq ($(BR2_PACKAGE_DROPBEAR_WTMP),y)
