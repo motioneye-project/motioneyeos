@@ -1,5 +1,5 @@
 # From sourceforge's info on download page:
-sha1 d85717035cb9bd6c45557a1eb1351d3af9a69ff7  libtirpc-1.1.4.tar.bz2
+sha1 ab80619b214d93e5cfbf22a0d01e1ee06d434326  libtirpc-1.2.5.tar.bz2
 # Locally computed
-sha256 2ca529f02292e10c158562295a1ffd95d2ce8af97820e3534fe1b0e3aec7561d  libtirpc-1.1.4.tar.bz2
+sha256 f3b6350c7e9c3cd9c58fc7a5e5f8e6be469cc571bb5eb31eb9790b3e675186ca  libtirpc-1.2.5.tar.bz2
 sha256 17cf6098f95bdbb269f0bbc68e76c88fe20487ca7ec53f454923ab4256ecd2e7  COPYING
