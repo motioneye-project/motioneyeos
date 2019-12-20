@@ -1428,6 +1428,7 @@ F:	package/ti-sgx-um/
 N:	Louis Aussedat <aussedat.louis@gmail.com>
 F:	board/friendlyarm/nanopi-neo-plus2/
 F:	configs/friendlyarm_nanopi_neo_plus2_defconfig
+F:	package/mfoc
 F:	package/python-dnspython/
 F:	package/python-future/
 F:	package/python-huepy/
