@@ -16,7 +16,9 @@ mount_overlay() {
     grep -qw overlay /proc/filesystems || return
 
     msg_begin "Mounting overlay filesystems"
-    grep -oE '/data/.overlay-[^ ]+' /etc/fstab.overlay | xargs mkdir -p
+    grep -oE 'lowerdir=[^,]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
+    grep -oE 'upperdir=[^,]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
+    grep -oE 'workdir=[^ ]+' /etc/fstab.overlay | cut -d '=' -f 2 | xargs -r mkdir -p
     /bin/mount -T /etc/fstab.overlay -a
     test $? == 0 && msg_done || msg_fail
 }
