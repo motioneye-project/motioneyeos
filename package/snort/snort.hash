@@ -1,5 +1,5 @@
 # Locally computed:
-sha256 2472989da3aace000d1ea5931ece68f8e5cc0c511e272d65182113a2481e822d  snort-2.9.14.1.tar.gz
+sha256 bfb437746446ef72a03c501db13cd6da5edd2b41f55c80c437ba288be6da7dba  snort-2.9.15.tar.gz
 
 # Hash for license files:
 sha256 f98260a6d3e5ef4ede8a2a6b698e5ac91d64c09243f7171e1c5b17b920a835c7  LICENSE
