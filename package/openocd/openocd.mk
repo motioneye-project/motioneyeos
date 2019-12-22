@@ -97,12 +97,12 @@ HOST_OPENOCD_CONF_OPTS = \
 	--oldincludedir=$(HOST_DIR)/include \
 	--includedir=$(HOST_DIR)/include \
 	--disable-doxygen-html \
-	--with-jim-shared=no \
+	--disable-internal-jimtcl \
 	--disable-shared \
 	--enable-dummy \
 	--disable-werror
 
-HOST_OPENOCD_DEPENDENCIES = host-libftdi host-libusb host-libusb-compat
+HOST_OPENOCD_DEPENDENCIES = host-jimtcl host-libftdi host-libusb host-libusb-compat
 
 # Avoid documentation rebuild. On PowerPC64(le), we patch the
 # configure script. Due to this, the version.texi files gets
