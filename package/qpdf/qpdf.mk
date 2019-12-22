@@ -13,4 +13,11 @@ QPDF_DEPENDENCIES = host-pkgconf zlib jpeg
 
 QPDF_CONF_OPTS = --without-random
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+QPDF_CONF_OPTS += --enable-crypto-gnutls
+QPDF_DEPENDENCIES += gnutls
+else
+QPDF_CONF_OPTS += --disable-crypto-gnutls
+endif
+
 $(eval $(autotools-package))
