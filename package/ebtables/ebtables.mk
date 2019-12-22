@@ -23,10 +23,10 @@ define EBTABLES_INSTALL_TARGET_CMDS
 endef
 else
 define EBTABLES_INSTALL_TARGET_CMDS
-	for so in $(@D)/*.so $(@D)/extensions/*.so; do \
-		$(INSTALL) -m 0755 -D $${so} \
-			$(TARGET_DIR)/lib/ebtables/`basename $${so}` || exit 1; \
-	done
+	$(foreach so,$(wildcard $(@D)/*.so $(@D)/extensions/*.so), \
+		$(INSTALL) -m 0755 -D $(so) \
+			$(TARGET_DIR)/lib/ebtables/$(notdir $(so))
+	)
 	$(INSTALL) -m 0755 -D $(@D)/ebtables $(TARGET_DIR)/sbin/ebtables
 	$(INSTALL) -m 0644 -D $(@D)/ethertypes $(TARGET_DIR)/etc/ethertypes
 endef
