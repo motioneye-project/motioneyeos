@@ -7,15 +7,15 @@ config BR2_PACKAGE_SYSDIG
 	depends on !BR2_STATIC_LIBS # luajit, elfutils
 	depends on BR2_USE_WCHAR # elfutils
 	depends on BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_GLIBC # elfutils
-	select BR2_PACKAGE_ZLIB
-	select BR2_PACKAGE_LUAJIT
+	select BR2_PACKAGE_ELFUTILS
+	select BR2_PACKAGE_JQ
 	select BR2_PACKAGE_JSONCPP
+	select BR2_PACKAGE_LIBB64
 	select BR2_PACKAGE_LIBCURL
+	select BR2_PACKAGE_LUAJIT
 	select BR2_PACKAGE_NCURSES
 	select BR2_PACKAGE_OPENSSL
-	select BR2_PACKAGE_JQ
-	select BR2_PACKAGE_LIBB64
-	select BR2_PACKAGE_ELFUTILS
+	select BR2_PACKAGE_ZLIB
 	help
 	  Sysdig is open source, system-level exploration:
 	  capture system state and activity from a running Linux
