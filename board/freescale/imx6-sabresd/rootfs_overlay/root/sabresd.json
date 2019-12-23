@@ -4,11 +4,11 @@
   "pbuffers": true,
   "outputs": [
     {
-      "name": "HDMI-1",
+      "name": "HDMI1",
       "mode": "off"
     },
     {
-      "name": "LVDS-1",
+      "name": "LVDS1",
       "mode": "1024x768"
     }
   ]
