@@ -1,0 +1,20 @@
+config BR2_PACKAGE_PYTHON_AVRO
+	bool "python-avro"
+	depends on BR2_PACKAGE_PYTHON3
+	help
+	  Select this option to install the Avro Python3 language
+	  bindings, and the `avro` command line tool
+
+	  Apache Avro is a data serialization system.
+	  Avro provides:
+	  - Rich data structures.
+	  - A compact, fast, binary data format.
+	  - A container file, to store persistent data.
+	  - Remote procedure call (RPC).
+	  - Simple integration with dynamic languages.
+	  - Code generation is not required to read or write data
+	    files nor to use or implement RPC protocols.
+	  - Code generation as an optional optimization,
+	    only worth implementing for statically typed languages.
+
+	  http://avro.apache.org/

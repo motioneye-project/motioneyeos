@@ -2425,6 +2425,7 @@ F:	package/fbgrab/
 N:	Titouan Christophe <titouan.christophe@railnova.eu>
 F:	package/avro-c/
 F:	package/mosquitto/
+F:	package/python-avro/
 F:	package/redis/
 
 N:	Trent Piepho <tpiepho@impinj.com>
