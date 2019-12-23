@@ -31,7 +31,7 @@ SAMBA4_PYTHON = \
 	PYTHON_CONFIG="$(STAGING_DIR)/usr/bin/python3-config"
 SAMBA4_DEPENDENCIES += host-python3 python3
 else
-SAMBA4_PYTHON = PYTHON="$(HOST_DIR)/bin/python2" 
+SAMBA4_PYTHON = PYTHON="$(HOST_DIR)/bin/python2"
 SAMBA4_DEPENDENCIES += host-python
 SAMBA4_CONF_OPTS += --disable-python
 endif
