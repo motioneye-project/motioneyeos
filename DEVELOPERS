@@ -2423,6 +2423,7 @@ N:	Timo Ketola <timo.ketola@exertus.fi>
 F:	package/fbgrab/
 
 N:	Titouan Christophe <titouan.christophe@railnova.eu>
+F:	package/avro-c/
 F:	package/mosquitto/
 F:	package/redis/
 
