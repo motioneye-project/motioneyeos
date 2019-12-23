@@ -56,9 +56,18 @@ define SYSTEM_RSYNC
 endef
 
 # Make a symlink lib32->lib or lib64->lib as appropriate.
-# MIPS64/n32 requires lib32 even though it's a 64-bit arch.
+# MIPS64/n32 requires lib32 even though it's a 64-bit arch. However, since gcc
+# 5.1.0 internal compiler paths in sysroot are relative to lib64, so we must
+# create both.
 # $(1): base dir (either staging or target)
-ifeq ($(BR2_ARCH_IS_64)$(BR2_MIPS_NABI32),y)
+ifeq ($(BR2_MIPS_NABI32),y)
+define SYSTEM_LIB_SYMLINK
+	ln -snf lib $(1)/lib64
+	ln -snf lib $(1)/usr/lib64
+	ln -snf lib $(1)/lib32
+	ln -snf lib $(1)/usr/lib32
+endef
+else ifeq ($(BR2_ARCH_IS_64),y)
 define SYSTEM_LIB_SYMLINK
 	ln -snf lib $(1)/lib64
 	ln -snf lib $(1)/usr/lib64
