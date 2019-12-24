@@ -23,6 +23,8 @@ config BR2_PACKAGE_FLUIDSYNTH_ALSA_LIB
 	default y
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ALSA_LIB
+	select BR2_PACKAGE_ALSA_LIB_RAWMIDI
+	select BR2_PACKAGE_ALSA_LIB_SEQ
 	help
 	  Enable alsa support.
 
