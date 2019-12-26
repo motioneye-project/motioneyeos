@@ -4,18 +4,20 @@
 #
 ################################################################################
 
-WIRESHARK_VERSION = 3.0.5
+WIRESHARK_VERSION = 3.2.0
 WIRESHARK_SOURCE = wireshark-$(WIRESHARK_VERSION).tar.xz
 WIRESHARK_SITE = https://www.wireshark.org/download/src/all-versions
 WIRESHARK_LICENSE = wireshark license
 WIRESHARK_LICENSE_FILES = COPYING
-WIRESHARK_DEPENDENCIES = host-pkgconf host-python3 libgcrypt libpcap libglib2
+WIRESHARK_DEPENDENCIES = host-pkgconf host-python3 libgcrypt libpcap libglib2 \
+	speexdsp
 
 WIRESHARK_MAKE_ENV = \
 	$(TARGET_MAKE_ENV) \
 	PATH="$(@D)/bin:$(BR_PATH)"
 
 WIRESHARK_CONF_OPTS = \
+	-DDISABLE_WERROR=ON \
 	-DENABLE_PCAP=ON \
 	-DENABLE_SMI=OFF
 
@@ -45,6 +47,13 @@ WIRESHARK_CONF_OPTS += -DENABLE_BCG729=ON
 WIRESHARK_DEPENDENCIES += bcg729
 else
 WIRESHARK_CONF_OPTS += -DENABLE_BCG729=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_BROTLI),y)
+WIRESHARK_CONF_OPTS += -DENABLE_BROTLI=ON
+WIRESHARK_DEPENDENCIES += brotli
+else
+WIRESHARK_CONF_OPTS += -DENABLE_BROTLI=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_C_ARES),y)
