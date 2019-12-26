@@ -79,5 +79,11 @@ endef
 GNUPG_POST_INSTALL_TARGET_HOOKS += GNUPG_REMOVE_GPGSPLIT
 endif
 
+define GNUPG_FIXUP_GPG_ZIP
+	test -f $(TARGET_DIR)/usr/bin/gpg-zip && \
+		$(SED) 's%^TAR=.*%TAR=/bin/tar%' $(TARGET_DIR)/usr/bin/gpg-zip
+endef
+GNUPG_POST_INSTALL_TARGET_HOOKS += GNUPG_FIXUP_GPG_ZIP
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
