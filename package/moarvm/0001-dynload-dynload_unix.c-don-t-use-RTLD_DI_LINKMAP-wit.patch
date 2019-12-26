@@ -1,0 +1,38 @@
+From a83f1fd053aadd2e849df80f67b69ba7298341f3 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Wed, 25 Dec 2019 20:37:57 +0100
+Subject: [PATCH] dynload/dynload_unix.c: don't use RTLD_DI_LINKMAP with uclibc
+
+RTLD_DI_LINKMAP is not defined on uclibc so check that __UCLIBC__ is not
+defined before using it otherwise build fails on:
+
+dynload_unix.c:93:19: error: 'RTLD_DI_LINKMAP' undeclared (first use in this function); did you mean 'RTLD_BINDING_MASK'?
+   if(dlinfo(pLib, RTLD_DI_LINKMAP, &p) == 0) {
+                   ^~~~~~~~~~~~~~~
+                   RTLD_BINDING_MASK
+
+Fixes:
+ - http://autobuild.buildroot.org/results/b88e55dde1acab967023ae49bb1722eadb9cc6ab
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/MoarVM/dyncall/pull/6]
+---
+ dynload/dynload_unix.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/3rdparty/dyncall/dynload/dynload_unix.c b/3rdparty/dyncall/dynload/dynload_unix.c
+index adfd351..129a1e5 100644
+--- a/3rdparty/dyncall/dynload/dynload_unix.c
++++ b/3rdparty/dyncall/dynload/dynload_unix.c
+@@ -82,7 +82,7 @@ void dlFreeLibrary(DLLib* pLib)
+ /* that: check for RTLD_DI_LINKMAP (#define for dlinfo()), or if GNU C Lib */
+ /* is used (where RTLD_DI_LINKMAP is an enum), or by OS (dlinfo comes from */
+ /* Solaris), etc. */
+-#if defined(RTLD_DI_LINKMAP) || defined(OS_SunOS) || defined(__GLIBC__) /* @@@ dlinfo() was introduced in glibc 2.3.3 (in 2003), somehow check for that, also */
++#if defined(RTLD_DI_LINKMAP) || defined(OS_SunOS) || (defined(__GLIBC__) && !defined(__UCLIBC__)) /* @@@ dlinfo() was introduced in glibc 2.3.3 (in 2003), somehow check for that, also */
+ 
+ #include <link.h>
+ 
+-- 
+2.24.0
+
