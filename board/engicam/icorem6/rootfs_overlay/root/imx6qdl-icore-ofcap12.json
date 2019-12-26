@@ -4,7 +4,7 @@
   "pbuffers": true,
   "outputs": [
     {
-      "name": "LVDS-1",
+      "name": "LVDS1",
       "mode": "1280x480"
     }
   ]
