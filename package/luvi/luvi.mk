@@ -20,6 +20,8 @@ else ifeq ($(BR2_powerpc),y)
 LUVI_TARGET_ARCH = ppc
 else ifeq ($(BR2_arm)$(BR2_armeb),y)
 LUVI_TARGET_ARCH = arm
+else ifeq ($(BR2_aarch64),y)
+LUVI_TARGET_ARCH = arm64
 else ifeq ($(BR2_mips),y)
 LUVI_TARGET_ARCH = mips
 else ifeq ($(BR2_mipsel),y)
