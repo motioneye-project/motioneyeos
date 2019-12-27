@@ -3,6 +3,8 @@ config BR2_TARGET_UBOOT
 	help
 	  Build "Das U-Boot" Boot Monitor
 
+	  https://www.denx.de/wiki/U-Boot
+
 if BR2_TARGET_UBOOT
 choice
 	prompt "Build system"
