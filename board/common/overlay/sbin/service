@@ -1,0 +1,24 @@
+#!/bin/bash
+
+function show_usage() {
+    echo "Usage: service <service_name> [command]"
+    echo "Usual commands include: start, stop, restart"
+    echo "Type 'service <service_name>' without command for service-specific usage"
+}
+
+if [[ -z "$1" ]]; then
+    show_usage 1>&2
+    exit 1
+fi
+
+SERVICE=$1
+
+shift  # Remove $1
+SCRIPT=(/etc/init.d/S*${SERVICE})
+
+if ! [[ -x "${SCRIPT}" ]]; then
+    echo "No such service: ${SERVICE}"
+    exit 1
+fi
+
+source ${SCRIPT} "$@"
