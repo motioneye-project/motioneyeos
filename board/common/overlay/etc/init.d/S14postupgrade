@@ -4,6 +4,8 @@ SYS_VERSION_FILE="/etc/version"
 VERSION_FILE="/data/etc/version"
 POST_UPGRADE_DIR="/usr/share/post-upgrade"
 
+LOG="/var/log/post-upgrade.log"
+
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
@@ -26,15 +28,26 @@ function run_post_upgrade() {
     version="$(source ${VERSION_FILE} 2>/dev/null && echo ${OS_VERSION})"
     sys_version="$(source ${SYS_VERSION_FILE} 2>/dev/null && echo ${OS_VERSION})"
 
+    echo "---- post-upgrade from ${version} to ${sys_version} ----" >> ${LOG}
+
     versions=$(ls -1 ${POST_UPGRADE_DIR} | cut -d '.' -f 1)
     for v in ${versions}; do
+        if [[ ${v} == "post-upgrade" ]]; then
+            continue
+        fi
+    
         if [[ -z "${version}" ]] || version_gt ${v} ${version}; then
             msg_begin "Post-upgrading to version ${v}"
-            out=$(${POST_UPGRADE_DIR}/${v}.sh 2>&1)
+            ${POST_UPGRADE_DIR}/${v}.sh >> ${LOG} 2>&1
             test $? == 0 && msg_done || msg_fail
-            echo "${out}" | logger -t post-upgrade
         fi
     done
+    
+    if [[ -x "${POST_UPGRADE_DIR}/post-upgrade.sh" ]]; then
+        msg_begin "Running common post-upgrade script"
+        ${POST_UPGRADE_DIR}/post-upgrade.sh >> ${LOG} 2>&1
+        test $? == 0 && msg_done || msg_fail
+    fi
 }
 
 case "$1" in
