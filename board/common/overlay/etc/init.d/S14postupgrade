@@ -17,7 +17,7 @@ test "${hash}" == "${sys_hash}" && exit 0
 test -d ${POST_UPGRADE_DIR} || exit 0
 
 function version_gt() {
-    if [[ "$1" != "$2" ]] && [[ $(echo -e "$2\n$1" | sort -t . | head -n 1) == "$2" ]]; then
+    if [[ "$1" != "$2" ]] && [[ $(echo -e "$2\n$1" | semver-sort | head -n 1) == "$2" ]]; then
         return 0
     else
         return 1
