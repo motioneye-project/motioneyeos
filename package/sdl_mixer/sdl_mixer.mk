@@ -37,7 +37,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
 SDL_MIXER_CONF_OPTS += --enable-music-mod-modplug
-SDL_MIXER_DEPENDENCIES += libmodplug
+SDL_MIXER_DEPENDENCIES += host-pkgconf libmodplug
 else
 SDL_MIXER_CONF_OPTS += --disable-music-mod-modplug
 endif
