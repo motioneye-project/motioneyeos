@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-I2PD_VERSION = 2.24.0
+I2PD_VERSION = 2.29.0
 I2PD_SITE = $(call github,PurpleI2P,i2pd,$(I2PD_VERSION))
 I2PD_LICENSE = BSD-3-Clause
 I2PD_LICENSE_FILES = LICENSE
