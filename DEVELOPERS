@@ -2072,6 +2072,7 @@ F:	package/lirc-tools/
 
 N:	Ricardo Martincoski <ricardo.martincoski@datacom.com.br>
 F:	package/atop/
+F:	package/thermald/
 
 N:	Ricardo Martincoski <ricardo.martincoski@gmail.com>
 F:	support/testing/infra/
