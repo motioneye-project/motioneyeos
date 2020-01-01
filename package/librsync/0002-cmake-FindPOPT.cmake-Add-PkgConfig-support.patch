@@ -1,0 +1,67 @@
+From f5a131ab66fec23d0c79b55fc3907603b094deb9 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Tue, 31 Dec 2019 18:13:29 +0100
+Subject: [PATCH] cmake/FindPOPT.cmake: Add PkgConfig support
+
+Add PkgConfig support to retrieve popt dependencies otherwise static
+build can fail if popt has been linked with iconv:
+
+[100%] Linking C executable rdiff
+/home/buildroot/autobuild/instance-2/output-1/per-package/librsync/host/opt/ext-toolchain/bin/../lib/gcc/powerpc-buildroot-linux-uclibc/8.3.0/../../../../powerpc-buildroot-linux-uclibc/bin/ld: /home/buildroot/autobuild/instance-2/output-1/per-package/librsync/host/powerpc-buildroot-linux-uclibc/sysroot/usr/lib/libpopt.a(poptint.o): in function `POPT_fprintf':
+poptint.c:(.text+0x34c): undefined reference to `libiconv_open
+
+Fixes:
+ - http://autobuild.buildroot.org/results/896e8e3efbedad90d66ae8c4e1e50f16206cab49
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/librsync/librsync/pull/186]
+---
+ cmake/FindPOPT.cmake | 29 ++++++++++++++++++-----------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
+
+diff --git a/cmake/FindPOPT.cmake b/cmake/FindPOPT.cmake
+index 1ca452a..87b3e95 100644
+--- a/cmake/FindPOPT.cmake
++++ b/cmake/FindPOPT.cmake
+@@ -42,20 +42,27 @@ if (NOT POPT_FOUND)
+   endif (NOT POPT_ROOT_DIR)
+ 
+   ##_____________________________________________________________________________
+-  ## Check for the header files
++  ## Check with PkgConfig (to retrieve static dependencies such as iconv)
++  find_package(PkgConfig QUIET)
++  pkg_search_module (POPT QUIET popt)
++  if (NOT POPT_FOUND)
+ 
+-  find_path (POPT_INCLUDE_DIRS popt.h
+-    HINTS ${POPT_ROOT_DIR} ${CMAKE_INSTALL_PREFIX} $ENV{programfiles}\\GnuWin32 $ENV{programfiles32}\\GnuWin32
+-    PATH_SUFFIXES include
+-    )
++    ##_____________________________________________________________________________
++    ## Check for the header files
+ 
+-  ##_____________________________________________________________________________
+-  ## Check for the library
++    find_path (POPT_INCLUDE_DIRS popt.h
++      HINTS ${POPT_ROOT_DIR} ${CMAKE_INSTALL_PREFIX} $ENV{programfiles}\\GnuWin32 $ENV{programfiles32}\\GnuWin32
++      PATH_SUFFIXES include
++      )
+ 
+-  find_library (POPT_LIBRARIES popt
+-    HINTS ${POPT_ROOT_DIR} ${CMAKE_INSTALL_PREFIX} $ENV{programfiles}\\GnuWin32 $ENV{programfiles32}\\GnuWin32
+-    PATH_SUFFIXES lib
+-    )
++    ##_____________________________________________________________________________
++    ## Check for the library
++
++    find_library (POPT_LIBRARIES popt
++      HINTS ${POPT_ROOT_DIR} ${CMAKE_INSTALL_PREFIX} $ENV{programfiles}\\GnuWin32 $ENV{programfiles32}\\GnuWin32
++      PATH_SUFFIXES lib
++      )
++  endif (POPT_FOUND)
+ 
+   ##_____________________________________________________________________________
+   ## Actions taken when all components have been found
+-- 
+2.24.0
+
