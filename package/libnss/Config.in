@@ -15,6 +15,18 @@ config BR2_PACKAGE_LIBNSS
 
 	  http://www.mozilla.org/projects/security/pki/nss/
 
+if BR2_PACKAGE_LIBNSS
+
+config BR2_PACKAGE_LIBNSS_ARCH
+	string
+	default "aarch64" if BR2_aarch64_be
+	default "ppc"     if BR2_powerpc
+	default "ppc64"   if BR2_powerpc64
+	default "ppc64le" if BR2_powerpc64le
+	default BR2_ARCH
+
+endif
+
 comment "libnss needs a toolchain w/ threads, dynamic library"
 	depends on BR2_PACKAGE_LIBNSPR_ARCH_SUPPORT
 	depends on !BR2_TOOLCHAIN_HAS_THREADS || BR2_STATIC_LIBS
