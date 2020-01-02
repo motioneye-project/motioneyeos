@@ -65,7 +65,7 @@ can help you understand how to work with Buildroot:
    there is no need for a full rebuild: a simple +make+ invocation
    will take the changes into account.
 
- * When a pacjage listed in +FOO_DEPENDENCIES+ is rebuilt or removed,
+ * When a package listed in +FOO_DEPENDENCIES+ is rebuilt or removed,
    the package +foo+ is not automatically rebuilt. For example, if a
    package +bar+ is listed in +FOO_DEPENDENCIES+ with +FOO_DEPENDENCIES
    = bar+ and the configuration of the +bar+ package is changed, the
