@@ -343,6 +343,7 @@ wandboard_defconfig: { extends: .defconfig }
 warp7_defconfig: { extends: .defconfig }
 warpboard_defconfig: { extends: .defconfig }
 zynq_microzed_defconfig: { extends: .defconfig }
+zynq_qmtech_defconfig: { extends: .defconfig }
 zynq_zc706_defconfig: { extends: .defconfig }
 zynq_zed_defconfig: { extends: .defconfig }
 zynqmp_zcu106_defconfig: { extends: .defconfig }
