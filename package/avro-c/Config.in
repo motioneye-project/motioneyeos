@@ -1,9 +1,11 @@
 comment "avro-c needs a toolchain w/ dynamic library"
 	depends on BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 
 config BR2_PACKAGE_AVRO_C
 	bool "avro-c"
 	depends on !BR2_STATIC_LIBS  # Avro unconditionally compiles shared libs
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	select BR2_PACKAGE_JANSSON
 	help
 	  Select this option to install the Avro C language bindings,
