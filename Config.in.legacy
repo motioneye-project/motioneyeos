@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_GCC_VERSION_OR1K
+	bool "gcc 5.x fork for or1k has been removed"
+	select BR2_LEGACY
+	help
+	  Support for gcc 5.x for or1k has been removed. The current
+	  default version (9.x or later) has been selected instead.
+
 config BR2_PACKAGE_BLUEZ_UTILS
 	bool "bluez-utils was removed"
 	select BR2_LEGACY
