@@ -1861,6 +1861,9 @@ F:	package/scrypt/
 
 N:	Pascal de Bruijn <p.debruijn@unilogic.nl>
 F:	package/libargon2/
+F:	package/linux-tools/S10hyperv
+F:	package/linux-tools/hyperv*.service
+F:	package/linux-tools/linux-tool-hv.mk.in
 
 N:	Pascal Huerst <pascal.huerst@gmail.com>
 F:	package/google-breakpad/

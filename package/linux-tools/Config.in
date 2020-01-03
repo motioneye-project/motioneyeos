@@ -116,4 +116,42 @@ config BR2_PACKAGE_LINUX_TOOLS_TMON
 	  tmon is a terminal-based tool (using curses) that allows the
 	  user to access thermal information about the system.
 
+config BR2_PACKAGE_LINUX_TOOLS_HV
+	bool "hv"
+	depends on BR2_i386 || BR2_x86_64
+	select BR2_PACKAGE_LINUX_TOOLS
+	select BR2_PACKAGE_LINUX_TOOLS_HV_KVP_DAEMON if !BR2_PACKAGE_LINUX_TOOLS_HV_HAS_ONE
+	help
+	  Microsoft HyperV integration services
+
+	  Relevant kernel configuration options: CONFIG_HYPERV,
+	  CONFIG_HYPERV_UTILS.
+
+if BR2_PACKAGE_LINUX_TOOLS_HV
+
+config BR2_PACKAGE_LINUX_TOOLS_HV_HAS_ONE
+	bool
+
+config BR2_PACKAGE_LINUX_TOOLS_HV_KVP_DAEMON
+	bool "hypervkvpd (hv_kvp_daemon)"
+	help
+	  HyperV uses hypervkvpd (Key/Value Pair daemon) to retrieve
+	  status information from your virtualized guest OS
+
+config BR2_PACKAGE_LINUX_TOOLS_HV_FCOPY_DAEMON
+	bool "hypervfcopyd (hv_fcopy_daemon)"
+	select BR2_PACKAGE_LINUX_TOOLS_HV_HAS_ONE
+	help
+	  HyperV uses hypervfcopyd (File Copy daemon) to easily transfer
+	  files to and from your virtualized guest OS
+
+config BR2_PACKAGE_LINUX_TOOLS_HV_VSS_DAEMON
+	bool "hypervvssd (hv_vss_daemon)"
+	select BR2_PACKAGE_LINUX_TOOLS_HV_HAS_ONE
+	help
+	  HyperV uses hypervvssd (Volume Snapshot Service daemon) to
+	  freeze your filesystems during snapshots and backups
+
+endif # BR2_PACKAGE_LINUX_TOOLS_HV
+
 endmenu
