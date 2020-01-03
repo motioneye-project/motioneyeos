@@ -1,0 +1,6 @@
+# from https://sourceforge.net/projects/ibmswtpm2/files
+sha1  a2a5335024a2edc1739f08b99e716fa355be627d  ibmtpm1563.tar.gz
+md5  13013612b3a13dc935fefe1a5684179c  ibmtpm1563.tar.gz
+# Locally computed:
+sha256  fc3a17f8315c1f47670764f2384943afc0d3ba1e9a0422dacb08d455733bd1e9  ibmtpm1563.tar.gz
+sha256  dd2d31b560011ea673e197251e710e52669d911367d83cd3cfd018f8ed58bde9  LICENSE

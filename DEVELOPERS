@@ -2092,6 +2092,9 @@ F:	package/lttng-tools/
 F:	package/python-ipython/
 F:	package/liburcu/
 
+N:	Philippe Reynes <philippe.reynes@softathome.com>
+F:	package/ibm-sw-tpm2/
+
 N:	Pierre Crokaert <pct@crookies.net>
 F:	board/hardkernel/odroidxu4/
 F:	configs/odroidxu4_defconfig
