@@ -1,5 +1,5 @@
-# From https://gstreamer.freedesktop.org/src/orc/orc-0.4.27.tar.xz.sha256sum
-sha256 4f8901f9144b5ec17dffdb33548b5f4c7f8049b0d1023be3462cdd64ec5a3ab2  orc-0.4.29.tar.xz
+# From https://gstreamer.freedesktop.org/src/orc/orc-0.4.31.tar.xz.sha256sum
+sha256 a0ab5f10a6a9ae7c3a6b4218246564c3bf00d657cbdf587e6d34ec3ef0616075  orc-0.4.31.tar.xz
 
 # Locally calculated
 sha256 4f5dabb1b44bb6fc5cd53820b1f103147ad61b395a57903991325bd1b85d97bf  COPYING
