@@ -1,0 +1,44 @@
+From 896e82ab14e7e4e361ffa7c81def787907c1bf4c Mon Sep 17 00:00:00 2001
+From: Bartosz Bilas <b.bilas@grinn-global.com>
+Date: Sun, 19 May 2019 21:04:35 +0200
+Subject: [PATCH] arch/arm/boot/dts/sun7i-a20-bananapro.dts: disable 00B
+ IRQ for brcm wifi module
+
+	BugLink: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=908438
+
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Bartosz Bilas <b.bilas@grinn-global.com>
+---
+ arch/arm/boot/dts/sun7i-a20-bananapro.dts | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/arch/arm/boot/dts/sun7i-a20-bananapro.dts b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+index 0176e9de0..93b3340f5 100644
+--- a/arch/arm/boot/dts/sun7i-a20-bananapro.dts
++++ b/arch/arm/boot/dts/sun7i-a20-bananapro.dts
+@@ -160,9 +160,19 @@
+ 	brcmf: wifi@1 {
+ 		reg = <1>;
+ 		compatible = "brcm,bcm4329-fmac";
+-		interrupt-parent = <&pio>;
+-		interrupts = <7 15 IRQ_TYPE_LEVEL_LOW>;
+-		interrupt-names = "host-wake";
++		/*
++		 * OOB interrupt support is broken ATM, often the first irq
++		 * does not get seen resulting in the drv probe failing with:
++		 *
++		 * brcmfmac: brcmf_sdio_bus_rxctl: resumed on timeout
++		 * brcmfmac: brcmf_bus_started: failed: -110
++		 * brcmfmac: brcmf_attach: dongle is not responding: err=-110
++		 * brcmfmac: brcmf_sdio_firmware_callback: brcmf_attach failed
++		 *
++		 * interrupt-parent = <&pio>;
++		 * interrupts = <7 15 IRQ_TYPE_LEVEL_LOW>;
++		 * interrupt-names = "host-wake";
++		 */
+ 	};
+ };
+ 
+-- 
+2.21.0
+
