@@ -74,13 +74,13 @@ index 0ff6dad2f55..f77c177442f 100644
  check_system_heimdal_lib("com_err", "com_right_r com_err", "com_err.h")
  
  if check_system_heimdal_lib("roken", "rk_socket_set_reuseaddr", "roken.h"):
-@@ -94,6 +86,3 @@ finally:
- # With the proper checks in place we should be able to build against the system libtommath.
+@@ -88,7 +88,4 @@
  #if conf.CHECK_BUNDLED_SYSTEM('tommath', checkfunctions='mp_init', headers='tommath.h'):
  #    conf.define('USING_SYSTEM_TOMMATH', 1)
--
+ 
 -check_system_heimdal_binary("compile_et")
 -check_system_heimdal_binary("asn1_compile")
+-
+ conf.define('USING_SYSTEM_KRB5', 1)
 -- 
 2.20.1
-
