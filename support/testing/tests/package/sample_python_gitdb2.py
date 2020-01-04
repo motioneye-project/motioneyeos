@@ -1,1 +1,1 @@
-from gitdb import *  # NOQA: F401 F403
+from gitdb import *  # noqa
