@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-EXIM_VERSION = 4.92.3
+EXIM_VERSION = 4.93.0.3
 EXIM_SOURCE = exim-$(EXIM_VERSION).tar.xz
-EXIM_SITE = https://ftp.exim.org/pub/exim/exim4
+EXIM_SITE = https://ftp.exim.org/pub/exim/exim4/fixes
 EXIM_LICENSE = GPL-2.0+
 EXIM_LICENSE_FILES = LICENCE
 EXIM_DEPENDENCIES = host-berkeleydb host-pcre pcre berkeleydb host-pkgconf
@@ -48,6 +48,7 @@ define EXIM_USE_DEFAULT_CONFIG_FILE
 	$(call exim-config-unset,EXIM_MONITOR)
 	$(call exim-config-change,AUTH_PLAINTEXT,yes)
 	$(call exim-config-change,AUTH_CRAM_MD5,yes)
+	$(call exim-config-unset,SUPPORT_DANE)
 endef
 
 ifeq ($(BR2_PACKAGE_DOVECOT),y)
@@ -67,8 +68,12 @@ endif
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 EXIM_DEPENDENCIES += host-openssl openssl
 define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
-	$(call exim-config-change,SUPPORT_TLS,yes)
+	$(call exim-config-change,USE_OPENSSL,yes)
 	$(call exim-config-change,USE_OPENSSL_PC,openssl)
+endef
+else
+define EXIM_USE_DEFAULT_CONFIG_FILE_OPENSSL
+	$(call exim-config-change,DISABLE_TLS,yes)
 endef
 endif
 

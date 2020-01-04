@@ -1,3 +1,6 @@
-# Locally calculated after checking pgp signature
-sha256 c4453bb5ec8e16c4c3353769700466eb9aa48c1b2fcf7f3b0e08954dd727d2fd  exim-4.92.3.tar.xz
+# From https://ftp.exim.org/pub/exim/exim4/fixes/00-sha256sums.txt
+sha256 8156bbe67fa72c0a297207ca0c3bb99f230df08d38d95df91f1c284b0a12983f  exim-4.93.0.3.tar.xz
+# From https://ftp.exim.org/pub/exim/exim4/fixes/00-sha512sums.txt
+sha512 8afece1059e4ada85f6ecef8197cf2ac5b56274f8c2e1bdd785e0470d37bb1e8b4fe225650ac03302824e3a7fe0a6db1641c6218edc8394a70adcc48af46a1d5  exim-4.93.0.3.tar.xz
+# Locally calculated
 sha256 49240db527b7e55b312a46fc59794fde5dd006422e422257f4f057bfd27b3c8f  LICENCE
