@@ -1,0 +1,30 @@
+From 40851dc3471809cabe8cc3f9b71980f8d82344ae Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 4 Jan 2020 14:39:39 +0100
+Subject: [PATCH] lib-ssl-iostream: Do not build static test-iostream-ssl
+
+Fixes broken static build:
+https://dovecot.org/pipermail/dovecot/2019-October/117326.html
+
+Patch sent upstream: https://github.com/dovecot/core/pull/111
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/lib-ssl-iostream/Makefile.am | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/src/lib-ssl-iostream/Makefile.am b/src/lib-ssl-iostream/Makefile.am
+index 94ead5cec..5aaea5d51 100644
+--- a/src/lib-ssl-iostream/Makefile.am
++++ b/src/lib-ssl-iostream/Makefile.am
+@@ -46,7 +46,6 @@ test_libs = \
+ 	../lib/liblib.la
+ 
+ test_iostream_ssl_SOURCES = test-iostream-ssl.c
+-test_iostream_ssl_LDFLAGS = -static
+ test_iostream_ssl_LDADD = $(test_libs) $(SSL_LIBS) $(DLLIB)
+ test_iostream_ssl_DEPENDENCIES = $(test_libs)
+ 
+-- 
+2.20.1
+
