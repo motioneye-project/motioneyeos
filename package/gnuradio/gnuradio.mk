@@ -18,10 +18,6 @@ GNURADIO_DEPENDENCIES = \
 	host-swig \
 	boost
 
-ifeq ($(BR2_PACKAGE_ORC),y)
-GNURADIO_DEPENDENCIES += orc
-endif
-
 GNURADIO_CONF_OPTS = \
 	-DENABLE_DEFAULT=OFF \
 	-DENABLE_VOLK=ON \
@@ -51,6 +47,13 @@ endif
 # mean we have NEON support in our CPU.
 ifeq ($(BR2_ARM_CPU_HAS_NEON),)
 GNURADIO_CONF_OPTS += -Dhave_mfpu_neon=0
+endif
+
+ifeq ($(BR2_PACKAGE_ORC),y)
+GNURADIO_DEPENDENCIES += orc
+GNURADIO_CONF_OPTS += -DENABLE_ORC=ON
+else
+GNURADIO_CONF_OPTS += -DENABLE_ORC=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_ANALOG),y)
