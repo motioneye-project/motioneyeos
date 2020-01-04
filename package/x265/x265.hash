@@ -1,5 +1,5 @@
-# From https://bitbucket.org/multicoreware/x265/wiki/Home
-md5 374e6359a00d17fd82195c02c341c861  x265_3.2.tar.gz
+# From https://mailman.videolan.org/pipermail/x265-devel/2019-October/012721.html
+md5 94808045a34d88a857e5eaf3f68f4bca  x265_3.2.1.tar.gz
 # Locally generated
-sha256 364d79bcd56116a9e070fdeb1d9d2aaef1a786b4970163fb56ff0991a183133b  x265_3.2.tar.gz
+sha256 fb9badcf92364fd3567f8b5aa0e5e952aeea7a39a2b864387cec31e3b58cbbcc  x265_3.2.1.tar.gz
 sha256 d8afb1bcc7a2cfc603683b168d6987ef0a48e59e0da3693bf55c5d33b67e2b49  COPYING
