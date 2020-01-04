@@ -1,5 +1,8 @@
-# From https://lists.x.org/archives/xorg-announce/2016-December/002752.html
-sha256 fd6a6de3da48de8d1bb738ab6be4ad67f7cb0986c39bd3f7d51dd24f7854bdec  libXpm-3.5.12.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2019-December/003034.html
+md5 6f0ecf8d103d528cfc803aa475137afa  libXpm-3.5.13.tar.bz2
+sha1 38b1a2728adb49f4e255aba1530f51789815ffc4  libXpm-3.5.13.tar.bz2
+sha256 9cd1da57588b6cb71450eff2273ef6b657537a9ac4d02d0014228845b935ac25  libXpm-3.5.13.tar.bz2
+sha512 3b8f6e926272f39b1d95135c2274c00f5aaee1f9fb2ef79f71628df5edeb7ba20158819ef6a778101cc4092493a3b5b613c53634fdccadcc0fc85f0605e5e9a5  libXpm-3.5.13.tar.bz2
 # Locally calculated
 sha256 ed3b06bb3b75a0954bd6837a96b41a4676f60dfeee647271613aadecc0fd596e COPYING
 sha256 cbe4ced0abc8a32bea471204ae01038c202758ce4e772d3d329a341ffa761e71 COPYRIGHT
