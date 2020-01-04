@@ -4,7 +4,8 @@
 #
 ################################################################################
 
-CPIO_VERSION = 2.12
+CPIO_VERSION = 2.13
+CPIO_SOURCE = cpio-$(CPIO_VERSION).tar.bz2
 CPIO_SITE = $(BR2_GNU_MIRROR)/cpio
 CPIO_CONF_OPTS = --bindir=/bin
 CPIO_LICENSE = GPL-3.0+
