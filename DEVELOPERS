@@ -1447,6 +1447,7 @@ F:	package/fluid-soundfont/
 F:	package/fluidsynth/
 F:	package/glslsandbox-player/
 F:	package/ptm2human/
+F:	package/python-pyalsa/
 
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/
