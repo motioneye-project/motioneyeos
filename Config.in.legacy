@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_KERNEL_HEADERS_5_3
+	bool "kernel headers version 5.3.x are no longer supported"
+	select BR2_LEGACY
+	help
+	  Version 5.3.x of the Linux kernel headers are no longer
+	  maintained upstream and are now removed.
+
 config BR2_PACKAGE_PYTHON_SCAPY3K
 	bool "python-scapy3k is replaced by python-scapy"
 	select BR2_LEGACY
