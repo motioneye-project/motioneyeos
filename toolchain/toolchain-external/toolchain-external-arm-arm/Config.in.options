@@ -1,7 +1,7 @@
 if BR2_TOOLCHAIN_EXTERNAL_ARM_ARM
 
 config BR2_TOOLCHAIN_EXTERNAL_PREFIX
-	default "arm-linux-gnueabihf"
+	default "arm-none-linux-gnueabihf"
 
 config BR2_PACKAGE_PROVIDES_TOOLCHAIN_EXTERNAL
 	default "toolchain-external-arm-arm"
