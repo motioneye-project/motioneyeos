@@ -1,0 +1,37 @@
+################################################################################
+#
+# alure
+#
+################################################################################
+
+ALURE_VERSION = 14beed2a86d5a36030e907b21c46614d505f07cd
+ALURE_SITE = $(call github,kcat,alure,$(ALURE_VERSION))
+ALURE_LICENSE = Zlib, Public Domain (src/decoders/dr_flac.h)
+ALURE_LICENSE_FILES = LICENSE
+ALURE_INSTALL_STAGING = YES
+
+ALURE_DEPENDENCIES = openal
+
+# Disabling alure examples remove the dependecies on physfs and dump libraries.
+# Enable at least one built-in decoder (wave).
+ALURE_CONF_OPTS = -DALURE_INSTALL=ON \
+	-DALURE_BUILD_EXAMPLES=OFF \
+	-DALURE_ENABLE_FLAC=OFF \
+	-DALURE_ENABLE_MINIMP3=OFF \
+	-DALURE_ENABLE_OPUS=OFF \
+	-DALURE_ENABLE_SNDFILE=OFF \
+	-DALURE_ENABLE_VORBIS=OFF \
+	-DALURE_ENABLE_WAVE=ON
+
+ifeq ($(BR2_STATIC_LIBS),y)
+ALURE_CONF_OPTS += -DALURE_BUILD_SHARED=OFF \
+	-DALURE_BUILD_STATIC=ON
+else ifeq ($(BR2_SHARED_STATIC_LIBS),y)
+ALURE_CONF_OPTS += -DALURE_BUILD_SHARED=ON \
+	-DALURE_BUILD_STATIC=ON
+else
+ALURE_CONF_OPTS += -DALURE_BUILD_SHARED=ON \
+	-DALURE_BUILD_STATIC=OFF
+endif
+
+$(eval $(cmake-package))

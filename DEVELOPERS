@@ -2106,6 +2106,7 @@ F:	package/irssi/
 F:	package/vnstat/
 
 N:	Romain Naour <romain.naour@gmail.com>
+F:	package/alure/
 F:	package/aubio/
 F:	package/binutils/
 F:	package/bullet/
