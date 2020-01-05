@@ -23,6 +23,13 @@ config BR2_PACKAGE_ALURE_FLAC_DECODER
 	help
 	  Enables the built-in FLAC decoder.
 
+config BR2_PACKAGE_ALURE_OPUS_DECODER
+	bool "opus decoder"
+	select BR2_PACKAGE_LIBOGG
+	select BR2_PACKAGE_OPUS
+	help
+	  Enables the built-in libopusfile decoder.
+
 endif
 
 comment "alure needs a toolchain w/ C++, gcc >= 4.9, NPTL, wchar"
