@@ -23,6 +23,11 @@ config BR2_PACKAGE_ALURE_FLAC_DECODER
 	help
 	  Enables the built-in FLAC decoder.
 
+config BR2_PACKAGE_ALURE_MINIMP3_DECODER
+	bool "minimp3 decoder"
+	help
+	  Enables the built-in minimp3 decoder.
+
 config BR2_PACKAGE_ALURE_OPUS_DECODER
 	bool "opus decoder"
 	select BR2_PACKAGE_LIBOGG
