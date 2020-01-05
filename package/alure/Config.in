@@ -30,6 +30,12 @@ config BR2_PACKAGE_ALURE_OPUS_DECODER
 	help
 	  Enables the built-in libopusfile decoder.
 
+config BR2_PACKAGE_ALURE_SNDFILE_DECODER
+	bool "sndfile decoder"
+	select BR2_PACKAGE_LIBSNDFILE
+	help
+	  Enables the built-in libsndfile decoder.
+
 config BR2_PACKAGE_ALURE_VORBIS_DECODER
 	bool "vorbis decoder"
 	select BR2_PACKAGE_LIBOGG
