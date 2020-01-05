@@ -16,6 +16,15 @@ config BR2_PACKAGE_ALURE
 
 	  https://kcat.strangesoft.net/alure.html
 
+if BR2_PACKAGE_ALURE
+
+config BR2_PACKAGE_ALURE_FLAC_DECODER
+	bool "flac decoder"
+	help
+	  Enables the built-in FLAC decoder.
+
+endif
+
 comment "alure needs a toolchain w/ C++, gcc >= 4.9, NPTL, wchar"
 	depends on BR2_PACKAGE_OPENAL_ARCH_SUPPORTS
 	depends on !BR2_INSTALL_LIBSTDCPP \
