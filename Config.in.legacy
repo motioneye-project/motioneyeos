@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_ERLANG_P1_ICONV
+	bool "erlang-p1-iconv has been removed"
+	select BR2_LEGACY
+	help
+	  The erlang-p1-iconv package was no longer used by ejabberd,
+	  and was no longer maintained upstream, so it was removed.
+
 config BR2_KERNEL_HEADERS_5_3
 	bool "kernel headers version 5.3.x are no longer supported"
 	select BR2_LEGACY
