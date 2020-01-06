@@ -37,6 +37,13 @@ else
 TOR_CONF_OPTS += --disable-lzma
 endif
 
+ifeq ($(BR2_PACKAGE_ZSTD),y)
+TOR_CONF_OPTS += --enable-zstd
+TOR_DEPENDENCIES += host-pkgconf zstd
+else
+TOR_CONF_OPTS += --disable-zstd
+endif
+
 ifeq ($(BR2_arm)$(BR2_armeb)$(BR2_i386)$(BR2_x86_64)$(BR2_PACKAGE_LIBSECCOMP),yy)
 TOR_CONF_OPTS += --enable-seccomp
 TOR_DEPENDENCIES += libseccomp
