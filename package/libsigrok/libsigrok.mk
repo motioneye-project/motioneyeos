@@ -12,6 +12,16 @@ LIBSIGROK_INSTALL_STAGING = YES
 LIBSIGROK_DEPENDENCIES = libglib2 libzip host-pkgconf
 LIBSIGROK_CONF_OPTS = --disable-java --disable-python
 
+ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
+LIBSIGROK_CONF_OPTS += --with-libbluez
+LIBSIGROK_DEPENDENCIES += bluez_utils
+else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
+LIBSIGROK_CONF_OPTS += --with-libbluez
+LIBSIGROK_DEPENDENCIES += bluez_utils5
+else
+LIBSIGROK_CONF_OPTS += --without-libbluez
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSERIALPORT),y)
 LIBSIGROK_CONF_OPTS += --with-libserialport
 LIBSIGROK_DEPENDENCIES += libserialport
