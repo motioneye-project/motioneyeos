@@ -1,32 +1,28 @@
-From 168d5840dc2a541ec16385e666c1932cf02907e9 Mon Sep 17 00:00:00 2001
+From 4283f675f21d3923e200092cec6418014a03ad52 Mon Sep 17 00:00:00 2001
 From: Johan Oudinet <johan.oudinet@gmail.com>
-Date: Wed, 10 Jan 2018 15:00:07 +0100
+Date: Thu, 26 Dec 2019 17:06:34 +0100
 Subject: [PATCH] fix ejabberdctl
 
 Change default values so ejabberdctl run commands as ejabberd user.
-Also add a way for the user to change default values.
 
 Signed-off-by: Johan Oudinet <johan.oudinet@gmail.com>
 ---
- ejabberdctl.template | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ ejabberdctl.template | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/ejabberdctl.template b/ejabberdctl.template
-index 83637766..5a8a8795 100755
+index a940c3df7..5166e5a27 100755
 --- a/ejabberdctl.template
 +++ b/ejabberdctl.template
-@@ -15,7 +15,10 @@ SCRIPT_DIR=$(cd "${0%/*}" && pwd)
+@@ -15,7 +15,7 @@ SCRIPT_DIR=$(cd "${0%/*}" && pwd)
  ERL="{{erl}}"
  IEX="{{bindir}}/iex"
  EPMD="{{epmd}}"
 -INSTALLUSER="{{installuser}}"
 +INSTALLUSER=ejabberd
-+
-+# Read default configuration file if present
-+[ ! -r /etc/default/ejabberd ] || . /etc/default/ejabberd
  
  # check the proper system user is used
  case $(id -un) in
 -- 
-2.14.1
+2.20.1
 
