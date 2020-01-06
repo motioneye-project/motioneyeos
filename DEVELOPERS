@@ -1259,6 +1259,7 @@ F:	package/erlang-base64url/
 F:	package/erlang-eimp/
 F:	package/erlang-goldrush/
 F:	package/erlang-jiffy/
+F:	package/erlang-jose/
 F:	package/erlang-lager/
 F:	package/erlang-p1-cache-tab/
 F:	package/erlang-p1-iconv/
