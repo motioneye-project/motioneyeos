@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SUPERTUXKART_VERSION = 1.0
+SUPERTUXKART_VERSION = 1.1
 SUPERTUXKART_SOURCE = supertuxkart-$(SUPERTUXKART_VERSION)-src.tar.xz
 SUPERTUXKART_SITE = http://downloads.sourceforge.net/project/supertuxkart/SuperTuxKart/$(SUPERTUXKART_VERSION)
 
@@ -18,8 +18,10 @@ SUPERTUXKART_DEPENDENCIES = \
 	host-pkgconf \
 	freetype \
 	enet \
+	harfbuzz \
 	jpeg \
 	libcurl \
+	libfribidi \
 	libgl \
 	libglew \
 	libglu \
@@ -27,7 +29,6 @@ SUPERTUXKART_DEPENDENCIES = \
 	libpng \
 	libsquish \
 	libvorbis \
-	nettle \
 	openal \
 	xlib_libXrandr \
 	zlib
@@ -38,14 +39,8 @@ SUPERTUXKART_DEPENDENCIES = \
 SUPERTUXKART_CONF_OPTS = -DBUILD_SHARED_LIBS=OFF \
 	-DBUILD_RECORDER=OFF \
 	-DUSE_SYSTEM_GLEW=ON \
-	-DUSE_SYSTEM_ENET=ON
-
-ifeq ($(BR2_PACKAGE_LIBFRIBIDI),y)
-SUPERTUXKART_DEPENDENCIES += libfribidi
-SUPERTUXKART_CONF_OPTS += -DUSE_FRIBIDI=ON
-else
-SUPERTUXKART_CONF_OPTS += -DUSE_FRIBIDI=OFF
-endif
+	-DUSE_SYSTEM_ENET=ON \
+	-DUSE_SYSTEM_SQUISH=ON
 
 ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 SUPERTUXKART_DEPENDENCIES += bluez5_utils
@@ -53,6 +48,22 @@ SUPERTUXKART_CONF_OPTS += -DUSE_WIIUSE=ON -DUSE_SYSTEM_WIIUSE=ON
 else
 # Wiimote support relies on bluez5.
 SUPERTUXKART_CONF_OPTS += -DUSE_WIIUSE=OFF
+endif
+
+# Prefer openssl (the default) over nettle.
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SUPERTUXKART_DEPENDENCIES += openssl
+SUPERTUXKART_CONF_OPTS += -DUSE_CRYPTO_OPENSSL=ON
+else
+SUPERTUXKART_DEPENDENCIES += nettle
+SUPERTUXKART_CONF_OPTS += -DUSE_CRYPTO_OPENSSL=OFF
+endif
+
+ifeq ($(BR2_PACKAGE_SQLITE),y)
+SUPERTUXKART_DEPENDENCIES += sqlite
+SUPERTUXKART_CONF_OPTS += -DUSE_SQLITE3=ON
+else
+SUPERTUXKART_CONF_OPTS += -DUSE_SQLITE3=OFF
 endif
 
 $(eval $(cmake-package))
