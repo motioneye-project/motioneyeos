@@ -1262,6 +1262,7 @@ F:	package/erlang-idna/
 F:	package/erlang-jiffy/
 F:	package/erlang-jose/
 F:	package/erlang-lager/
+F:	package/erlang-p1-acme/
 F:	package/erlang-p1-cache-tab/
 F:	package/erlang-p1-iconv/
 F:	package/erlang-p1-mqtree/
