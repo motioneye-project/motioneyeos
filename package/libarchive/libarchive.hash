@@ -1,4 +1,4 @@
-# From https://www.libarchive.de/downloads/libarchive-3.4.0.tar.gz.sums.txt
-sha256  8643d50ed40c759f5412a3af4e353cffbce4fdf3b5cf321cb72cacf06b2d825e  libarchive-3.4.0.tar.gz
+# From https://www.libarchive.de/downloads/sha256sums
+sha256  fcf87f3ad8db2e4f74f32526dee62dd1fb9894782b0a503a89c9d7a70a235191  libarchive-3.4.1.tar.gz
 # Locally computed:
 sha256  e1e3d4ba9d0b0ccba333b5f5539f7c6c9a3ef3d57a96cd165d2c45eaa1cd026d  COPYING
