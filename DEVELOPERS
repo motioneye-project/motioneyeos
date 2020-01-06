@@ -1266,6 +1266,7 @@ F:	package/erlang-p1-cache-tab/
 F:	package/erlang-p1-iconv/
 F:	package/erlang-p1-mqtree/
 F:	package/erlang-p1-oauth2/
+F:	package/erlang-p1-pkix/
 F:	package/erlang-p1-sip/
 F:	package/erlang-p1-stringprep/
 F:	package/erlang-p1-stun/
