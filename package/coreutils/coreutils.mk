@@ -10,10 +10,6 @@ COREUTILS_SOURCE = coreutils-$(COREUTILS_VERSION).tar.xz
 COREUTILS_LICENSE = GPL-3.0+
 COREUTILS_LICENSE_FILES = COPYING
 
-# coreutils-01-fix-for-dummy-man-usage.patch triggers autoreconf on build
-COREUTILS_AUTORECONF = YES
-COREUTILS_GETTEXTIZE = YES
-
 COREUTILS_CONF_OPTS = --disable-rpath \
 	$(if $(BR2_TOOLCHAIN_USES_MUSL),--with-included-regex)
 
