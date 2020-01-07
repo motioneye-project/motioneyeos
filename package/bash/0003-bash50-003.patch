@@ -1,0 +1,243 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-003
+
+Signed-off-by: Pascal de Bruijn <p.debruijn@unilogic.nl>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-003
+
+Bug-Reported-by:	Andrew Church <achurch+bash@achurch.org>
+Bug-Reference-ID:	<5c534aa2.04371@msgid.achurch.org>
+Bug-Reference-URL:	http://lists.gnu.org/archive/html/bug-bash/2019-01/msg00276.html
+
+Bug-Description:
+
+There are several incompatibilities in how bash-5.0 processes pathname
+expansion (globbing) of filename arguments that have backslashes in the
+directory portion.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/lib/glob/glob_loop.c	2019-01-16 16:13:21.000000000 -0500
+--- b/lib/glob/glob_loop.c	2019-02-01 09:45:11.000000000 -0500
+***************
+*** 27,34 ****
+    register const GCHAR *p;
+    register GCHAR c;
+!   int bopen;
+  
+    p = pattern;
+!   bopen = 0;
+  
+    while ((c = *p++) != L('\0'))
+--- 27,34 ----
+    register const GCHAR *p;
+    register GCHAR c;
+!   int bopen, bsquote;
+  
+    p = pattern;
+!   bopen = bsquote = 0;
+  
+    while ((c = *p++) != L('\0'))
+***************
+*** 56,66 ****
+        case L('\\'):
+  	/* Don't let the pattern end in a backslash (GMATCH returns no match
+! 	   if the pattern ends in a backslash anyway), but otherwise return 1,
+! 	   since the matching engine uses backslash as an escape character
+! 	   and it can be removed. */
+! 	return (*p != L('\0'));
+        }
+  
+!   return 0;
+  }
+  
+--- 56,75 ----
+        case L('\\'):
+  	/* Don't let the pattern end in a backslash (GMATCH returns no match
+! 	   if the pattern ends in a backslash anyway), but otherwise note that 
+! 	   we have seen this, since the matching engine uses backslash as an
+! 	   escape character and it can be removed. We return 2 later if we
+! 	   have seen only backslash-escaped characters, so interested callers
+! 	   know they can shortcut and just dequote the pathname. */
+! 	if (*p != L('\0'))
+! 	  {
+! 	    p++;
+! 	    bsquote = 1;
+! 	    continue;
+! 	  }
+! 	else 	/* (*p == L('\0')) */
+! 	  return 0;
+        }
+  
+!   return bsquote ? 2 : 0;
+  }
+  
+*** ../bash-5.0-patched/lib/glob/glob.h	2013-10-28 14:46:12.000000000 -0400
+--- b/lib/glob/glob.h	2019-03-07 11:06:47.000000000 -0500
+***************
+*** 31,34 ****
+--- 31,35 ----
+  #define GX_ADDCURDIR	0x200	/* internal -- add passed directory name */
+  #define GX_GLOBSTAR	0x400	/* turn on special handling of ** */
++ #define GX_RECURSE	0x800	/* internal -- glob_filename called recursively */
+  
+  extern int glob_pattern_p __P((const char *));
+*** ../bash-5.0-patched/lib/glob/glob.c	2018-09-20 10:53:23.000000000 -0400
+--- b/lib/glob/glob.c	2019-03-07 14:23:43.000000000 -0500
+***************
+*** 1062,1066 ****
+    unsigned int directory_len;
+    int free_dirname;			/* flag */
+!   int dflags;
+  
+    result = (char **) malloc (sizeof (char *));
+--- 1078,1082 ----
+    unsigned int directory_len;
+    int free_dirname;			/* flag */
+!   int dflags, hasglob;
+  
+    result = (char **) malloc (sizeof (char *));
+***************
+*** 1111,1117 ****
+      }
+  
+    /* If directory_name contains globbing characters, then we
+!      have to expand the previous levels.  Just recurse. */
+!   if (directory_len > 0 && glob_pattern_p (directory_name))
+      {
+        char **directories, *d, *p;
+--- 1127,1136 ----
+      }
+  
++   hasglob = 0;
+    /* If directory_name contains globbing characters, then we
+!      have to expand the previous levels.  Just recurse.
+!      If glob_pattern_p returns != [0,1] we have a pattern that has backslash
+!      quotes but no unquoted glob pattern characters. We dequote it below. */
+!   if (directory_len > 0 && (hasglob = glob_pattern_p (directory_name)) == 1)
+      {
+        char **directories, *d, *p;
+***************
+*** 1176,1180 ****
+  	d[directory_len - 1] = '\0';
+  
+!       directories = glob_filename (d, dflags);
+  
+        if (free_dirname)
+--- 1195,1199 ----
+  	d[directory_len - 1] = '\0';
+  
+!       directories = glob_filename (d, dflags|GX_RECURSE);
+  
+        if (free_dirname)
+***************
+*** 1333,1336 ****
+--- 1352,1369 ----
+  	  return (NULL);
+  	}
++       /* If we have a directory name with quoted characters, and we are
++ 	 being called recursively to glob the directory portion of a pathname,
++ 	 we need to dequote the directory name before returning it so the
++ 	 caller can read the directory */
++       if (directory_len > 0 && hasglob == 2 && (flags & GX_RECURSE) != 0)
++ 	{
++ 	  dequote_pathname (directory_name);
++ 	  directory_len = strlen (directory_name);
++ 	}
++ 
++       /* We could check whether or not the dequoted directory_name is a
++ 	 directory and return it here, returning the original directory_name
++ 	 if not, but we don't do that yet. I'm not sure it matters. */
++ 
+        /* Handle GX_MARKDIRS here. */
+        result[0] = (char *) malloc (directory_len + 1);
+*** ../bash-5.0-patched/pathexp.c	2018-04-29 17:44:48.000000000 -0400
+--- b/pathexp.c	2019-01-31 20:19:41.000000000 -0500
+***************
+*** 66,74 ****
+    register int c;
+    char *send;
+!   int open;
+  
+    DECLARE_MBSTATE;
+  
+!   open = 0;
+    send = string + strlen (string);
+  
+--- 66,74 ----
+    register int c;
+    char *send;
+!   int open, bsquote;
+  
+    DECLARE_MBSTATE;
+  
+!   open = bsquote = 0;
+    send = string + strlen (string);
+  
+***************
+*** 101,105 ****
+  	   globbing. */
+  	case '\\':
+! 	  return (*string != 0);
+  	 	  
+  	case CTLESC:
+--- 101,112 ----
+  	   globbing. */
+  	case '\\':
+! 	  if (*string != '\0' && *string != '/')
+! 	    {
+! 	      bsquote = 1;
+! 	      string++;
+! 	      continue;
+! 	    }
+! 	  else if (*string == 0)
+! 	    return (0);
+  	 	  
+  	case CTLESC:
+***************
+*** 118,122 ****
+  #endif
+      }
+!   return (0);
+  }
+  
+--- 125,130 ----
+  #endif
+      }
+! 
+!   return (bsquote ? 2 : 0);
+  }
+  
+*** ../bash-5.0-patched/bashline.c	2019-01-16 16:13:21.000000000 -0500
+--- b/bashline.c	2019-02-22 09:29:08.000000000 -0500
+***************
+*** 3753,3757 ****
+  
+  	case '\\':
+! 	  if (*string == 0)
+  	    return (0);	 	  
+  	}
+--- 3766,3770 ----
+  
+  	case '\\':
+! 	  if (*string++ == 0)
+  	    return (0);	 	  
+  	}
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 2
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 3
+  
+  #endif /* _PATCHLEVEL_H_ */
