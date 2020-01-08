@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_PERL_NET_PING
+	bool "perl-net-ping was removed"
+	select BR2_LEGACY
+	help
+	  Net::Ping is a Perl core module (ie. bundled with perl).
+
 config BR2_PACKAGE_PERL_MIME_BASE64
 	bool "perl-mime-base64 was removed"
 	select BR2_LEGACY
