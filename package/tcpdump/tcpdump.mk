@@ -16,7 +16,7 @@ TCPDUMP_CONF_OPTS = \
 	--without-crypto \
 	--with-system-libpcap \
 	$(if $(BR2_PACKAGE_TCPDUMP_SMB),--enable-smb,--disable-smb)
-TCPDUMP_DEPENDENCIES = zlib libpcap
+TCPDUMP_DEPENDENCIES = libpcap
 
 ifeq ($(BR2_STATIC_LIBS),y)
 TCPDUMP_CONF_OPTS += LIBS="`$(STAGING_DIR)/usr/bin/pcap-config --static --additional-libs`"
