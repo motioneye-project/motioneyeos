@@ -1,6 +1,0 @@
-config BR2_PACKAGE_PERL_MATH_BIGINT
-	bool "perl-math-bigint"
-	help
-	  Pure Perl module to test Math::BigInt with scalars.
-
-	  https://metacpan.org/release/Math-BigInt
