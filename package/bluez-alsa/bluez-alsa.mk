@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BLUEZ_ALSA_VERSION = 1.4.0
+BLUEZ_ALSA_VERSION = 2.0.0
 BLUEZ_ALSA_SITE = $(call github,Arkq,bluez-alsa,v$(BLUEZ_ALSA_VERSION))
 BLUEZ_ALSA_LICENSE = MIT
 BLUEZ_ALSA_LICENSE_FILES = LICENSE
@@ -30,6 +30,20 @@ BLUEZ_ALSA_DEPENDENCIES += fdk-aac
 BLUEZ_ALSA_CONF_OPTS += --enable-aac
 else
 BLUEZ_ALSA_CONF_OPTS += --disable-aac
+endif
+
+ifeq ($(BR2_PACKAGE_LAME),y)
+BLUEZ_ALSA_DEPENDENCIES += lame
+BLUEZ_ALSA_CONF_OPTS += --enable-mp3lame
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-mp3lame
+endif
+
+ifeq ($(BR2_PACKAGE_MPG123),y)
+BLUEZ_ALSA_DEPENDENCIES += mpg123
+BLUEZ_ALSA_CONF_OPTS += --enable-mpg123
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-mpg123
 endif
 
 # no build dependency, disables internal HFP in favor of oFonos HFP profile
