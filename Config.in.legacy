@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_PERL_DIGEST_MD5
+	bool "perl-digest-md5 was removed"
+	select BR2_LEGACY
+	help
+	  Digest::MD5 is a Perl core module (ie. bundled with perl).
+
 config BR2_PACKAGE_ERLANG_P1_ICONV
 	bool "erlang-p1-iconv has been removed"
 	select BR2_LEGACY
