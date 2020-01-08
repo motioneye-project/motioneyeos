@@ -611,6 +611,9 @@ sub fetch {
     unless ($dist{$name} && !$top) {
         say qq{fetch ${name}} unless $quiet;
         my $result = $mcpan->release( distribution => $name );
+        my $main_module = $result->{main_module};
+        push @info, qq{[$name] $main_module is a core module}
+            if $top && Module::CoreList::is_core( $main_module, undef, $] );
         $dist{$name} = $result;
         $license_files{$name} = {};
         eval {
