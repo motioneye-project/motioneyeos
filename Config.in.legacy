@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_PERL_MIME_BASE64
+	bool "perl-mime-base64 was removed"
+	select BR2_LEGACY
+	help
+	  MIME::Base64 is a Perl core module (ie. bundled with perl).
+
 config BR2_PACKAGE_PERL_DIGEST_MD5
 	bool "perl-digest-md5 was removed"
 	select BR2_LEGACY
