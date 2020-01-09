@@ -1,0 +1,6 @@
+config BR2_PACKAGE_LUA_SILVA
+	bool "lua-silva"
+	help
+	  your string matcher expert.
+
+	  https://fperrad.frama.io/lua-Silva
