@@ -13,6 +13,9 @@ LIBUPNP18_LICENSE = BSD-3-Clause
 LIBUPNP18_LICENSE_FILES = COPYING
 LIBUPNP18_DEPENDENCIES = host-pkgconf
 
+# Bind the internal miniserver socket with reuseaddr to allow clean restarts.
+LIBUPNP18_CONF_OPTS += --enable-reuseaddr
+
 ifeq ($(BR2_PACKAGE_OPENSSL),y)
 LIBUPNP18_CONF_OPTS += --enable-open-ssl
 LIBUPNP18_DEPENDENCIES += openssl
