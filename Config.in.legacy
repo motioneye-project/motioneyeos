@@ -150,10 +150,12 @@ config BR2_PACKAGE_WIREGUARD
 	bool "wireguard package renamed"
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 	select BR2_LEGACY
+	select BR2_PACKAGE_WIREGUARD_LINUX_COMPAT if BR2_LINUX_KERNEL
 	select BR2_PACKAGE_WIREGUARD_TOOLS
 	help
-	  The wireguard package has been renamed to wireguard-tools to
-	  match upstream.
+	  The wireguard package has been renamed to wireguard-tools
+	  for the userspace tooling and wireguard-linux-compat for the
+	  kernel side for legacy (<5.6) kernels to match upstream.
 
 config BR2_PACKAGE_PERL_NET_PING
 	bool "perl-net-ping was removed"
