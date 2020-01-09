@@ -15,4 +15,7 @@ ifeq ($(BR2_PACKAGE_LIBICONV),y)
 ZXING_CPP_DEPENDENCIES += libiconv
 endif
 
+# build all targets except testrunner (needs c++11 support)
+ZXING_CPP_MAKE_OPTS = libzxing zxing
+
 $(eval $(cmake-package))
