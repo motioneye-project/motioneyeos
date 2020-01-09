@@ -10,12 +10,10 @@ ZXING_CPP_LICENSE = Apache-2.0
 ZXING_CPP_LICENSE_FILES = COPYING
 ZXING_CPP_INSTALL_STAGING = YES
 ZXING_CPP_SUPPORTS_IN_SOURCE_BUILD = NO
+ZXING_CPP_CONF_OPTS = -DBUILD_TESTING=OFF
 
 ifeq ($(BR2_PACKAGE_LIBICONV),y)
 ZXING_CPP_DEPENDENCIES += libiconv
 endif
-
-# build all targets except testrunner (needs c++11 support)
-ZXING_CPP_MAKE_OPTS = libzxing zxing
 
 $(eval $(cmake-package))
