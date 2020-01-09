@@ -15,6 +15,19 @@ menuconfig BR2_PACKAGE_PINENTRY
 
 if BR2_PACKAGE_PINENTRY
 
+config BR2_PACKAGE_PINENTRY_FLTK
+	bool "pinentry-fltk"
+	depends on BR2_USE_MMU # fltk
+	depends on BR2_INSTALL_LIBSTDCPP # fltk
+	depends on BR2_PACKAGE_XORG7 # fltk
+	select BR2_PACKAGE_FLTK
+	help
+	  The pinentry-fltk tool
+
+comment "pinentry-fltk needs X and a toolchain w/ C++"
+	depends on BR2_USE_MMU
+	depends on !BR2_PACKAGE_XORG7 || !BR2_INSTALL_LIBSTDCPP
+
 config BR2_PACKAGE_PINENTRY_NCURSES
 	bool "pinentry-ncurses"
 	select BR2_PACKAGE_NCURSES
