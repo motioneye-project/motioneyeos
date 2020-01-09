@@ -1,0 +1,4 @@
+# https://lists.zx2c4.com/pipermail/wireguard/2020-January/004819.html
+sha256 547cd1c2f8dca904faac9e8d3964f1ef956c24bb12e3498da88dde95243c7f08  wireguard-tools-1.0.20200102.tar.xz
+# Locally calculated
+sha256 8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING

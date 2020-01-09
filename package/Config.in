@@ -2176,7 +2176,7 @@ endif
 	source "package/wavemon/Config.in"
 	source "package/wget/Config.in"
 	source "package/whois/Config.in"
-	source "package/wireguard/Config.in"
+	source "package/wireguard-tools/Config.in"
 	source "package/wireless-regdb/Config.in"
 	source "package/wireless_tools/Config.in"
 	source "package/wireshark/Config.in"

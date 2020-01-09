@@ -1945,7 +1945,7 @@ F:	package/python-websocket-client/
 F:	package/sedutil/
 F:	package/tpm2-totp/
 F:	package/triggerhappy/
-F:	package/wireguard/
+F:	package/wireguard-tools/
 F:	support/testing/tests/package/test_docker_compose.py
 
 N:	Peter Seiderer <ps.report@gmx.net>

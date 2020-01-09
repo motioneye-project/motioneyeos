@@ -146,6 +146,15 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_WIREGUARD
+	bool "wireguard package renamed"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
+	select BR2_LEGACY
+	select BR2_PACKAGE_WIREGUARD_TOOLS
+	help
+	  The wireguard package has been renamed to wireguard-tools to
+	  match upstream.
+
 config BR2_PACKAGE_PERL_NET_PING
 	bool "perl-net-ping was removed"
 	select BR2_LEGACY

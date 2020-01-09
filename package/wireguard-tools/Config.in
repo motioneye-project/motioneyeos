@@ -1,5 +1,5 @@
-config BR2_PACKAGE_WIREGUARD
-	bool "wireguard"
+config BR2_PACKAGE_WIREGUARD_TOOLS
+	bool "wireguard tools"
 	# kernel module requires 3.10+, userspace makes no sense without it
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
 	select BR2_PACKAGE_LIBMNL
@@ -11,13 +11,12 @@ config BR2_PACKAGE_WIREGUARD
 	  more performant than OpenVPN. WireGuard is designed as a
 	  general purpose VPN for running on embedded interfaces and
 	  super computers alike, fit for many different
-	  circumstances. Initially released for the Linux kernel, it
-	  plans to be cross-platform and widely deployable. It is
-	  currently under heavy development, but already it might be
-	  regarded as the most secure, easiest to use, and simplest
-	  VPN solution in the industry.
+	  circumstances.
+
+	  This package provides the userspace tooling to configure
+	  WireGuard tunnels.
 
 	  https://www.wireguard.com
 
-comment "wireguard needs a toolchain w/ headers >= 3.10"
+comment "wireguard-tools needs a toolchain w/ headers >= 3.10"
 	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
