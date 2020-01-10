@@ -55,7 +55,6 @@ VLC_CONF_OPTS += \
 	--disable-dsm \
 	--disable-dv1394 \
 	--disable-fluidlite \
-	--disable-fluidsynth \
 	--disable-gme \
 	--disable-goom \
 	--disable-jack \
@@ -162,6 +161,13 @@ VLC_CONF_OPTS += --enable-flac
 VLC_DEPENDENCIES += flac
 else
 VLC_CONF_OPTS += --disable-flac
+endif
+
+ifeq ($(BR2_PACKAGE_FLUIDSYNTH),y)
+VLC_CONF_OPTS += --enable-fluidsynth
+VLC_DEPENDENCIES += fluidsynth
+else
+VLC_CONF_OPTS += --disable-fluidsynth
 endif
 
 ifeq ($(BR2_PACKAGE_FREERDP),y)
