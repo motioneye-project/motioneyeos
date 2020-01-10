@@ -12,15 +12,20 @@ SDL2_MIXER_LICENSE_FILES = COPYING.txt
 SDL2_MIXER_INSTALL_STAGING = YES
 SDL2_MIXER_DEPENDENCIES = sdl2 host-pkgconf
 
-SDL2_MIXER_CONF_OPTS = \
-	--disable-music-midi-fluidsynth \
-	--disable-music-mp3
+SDL2_MIXER_CONF_OPTS = --disable-music-mp3
 
 ifeq ($(BR2_PACKAGE_FLAC),y)
 SDL2_MIXER_CONF_OPTS += --enable-music-flac
 SDL2_MIXER_DEPENDENCIES += flac
 else
 SDL2_MIXER_CONF_OPTS += --disable-music-flac
+endif
+
+ifeq ($(BR2_PACKAGE_FLUIDSYNTH),y)
+SDL2_MIXER_CONF_OPTS += --enable-music-midi-fluidsynth
+SDL2_MIXER_DEPENDENCIES += fluidsynth
+else
+SDL2_MIXER_CONF_OPTS += --disable-music-midi-fluidsynth
 endif
 
 ifeq ($(BR2_PACKAGE_LIBMODPLUG),y)
