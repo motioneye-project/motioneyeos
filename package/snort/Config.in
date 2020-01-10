@@ -9,6 +9,7 @@ config BR2_PACKAGE_SNORT
 	select BR2_PACKAGE_DAQ
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_LIBTIRPC if !BR2_TOOLCHAIN_HAS_NATIVE_RPC
+	select BR2_PACKAGE_ZLIB
 	help
 	  Snort is a free and open source network intrusion
 	  prevention system (IPS) and network intrusion detection

@@ -9,7 +9,7 @@ SNORT_SITE = https://www.snort.org/downloads/snort
 SNORT_LICENSE = GPL-2.0
 SNORT_LICENSE_FILES = LICENSE COPYING
 
-SNORT_DEPENDENCIES = libpcap libdnet daq pcre host-pkgconf
+SNORT_DEPENDENCIES = libpcap libdnet daq pcre zlib host-pkgconf
 
 # patching configure.in
 SNORT_AUTORECONF = YES
