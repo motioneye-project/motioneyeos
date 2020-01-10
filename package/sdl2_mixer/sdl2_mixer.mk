@@ -13,7 +13,7 @@ SDL2_MIXER_INSTALL_STAGING = YES
 SDL2_MIXER_DEPENDENCIES = sdl2 host-pkgconf
 
 SDL2_MIXER_CONF_OPTS = \
-	--disable-fluidsynth \
+	--disable-music-midi-fluidsynth \
 	--disable-music-mp3
 
 ifeq ($(BR2_PACKAGE_FLAC),y)
