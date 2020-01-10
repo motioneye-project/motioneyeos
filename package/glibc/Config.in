@@ -1,5 +1,7 @@
 if BR2_TOOLCHAIN_BUILDROOT_GLIBC
 
+comment "Glibc Options"
+
 config BR2_PACKAGE_GLIBC
 	bool
 	default y
