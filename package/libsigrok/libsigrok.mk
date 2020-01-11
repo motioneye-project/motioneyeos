@@ -17,7 +17,7 @@ LIBSIGROK_CONF_OPTS += --with-libbluez
 LIBSIGROK_DEPENDENCIES += bluez_utils
 else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 LIBSIGROK_CONF_OPTS += --with-libbluez
-LIBSIGROK_DEPENDENCIES += bluez_utils5
+LIBSIGROK_DEPENDENCIES += bluez5_utils
 else
 LIBSIGROK_CONF_OPTS += --without-libbluez
 endif
