@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-POPPLER_VERSION = 0.77.0
+POPPLER_VERSION = 0.84.0
 POPPLER_SOURCE = poppler-$(POPPLER_VERSION).tar.xz
 POPPLER_SITE = http://poppler.freedesktop.org
 POPPLER_DEPENDENCIES = fontconfig host-pkgconf
@@ -108,9 +108,9 @@ POPPLER_CONF_OPTS += -DWITH_NSS3=OFF
 endif
 
 ifeq ($(BR2_SOFT_FLOAT),y)
-POPPLER_CONF_OPTS += -USE_FIXEDPOINT=ON -DUSE_FLOAT=OFF
+POPPLER_CONF_OPTS += -DUSE_FLOAT=OFF
 else
-POPPLER_CONF_OPTS += -USE_FIXEDPOINT=OFF -DUSE_FLOAT=ON
+POPPLER_CONF_OPTS += -DUSE_FLOAT=ON
 endif
 
 $(eval $(cmake-package))
