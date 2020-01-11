@@ -22,6 +22,13 @@ else
 LIBSIGROK_CONF_OPTS += --without-libbluez
 endif
 
+ifeq ($(BR2_PACKAGE_HIDAPI),y)
+LIBSIGROK_CONF_OPTS += --with-libhidapi
+LIBSIGROK_DEPENDENCIES += hidapi
+else
+LIBSIGROK_CONF_OPTS += --without-libhidapi
+endif
+
 ifeq ($(BR2_PACKAGE_LIBSERIALPORT),y)
 LIBSIGROK_CONF_OPTS += --with-libserialport
 LIBSIGROK_DEPENDENCIES += libserialport
