@@ -41,6 +41,9 @@ endif
 ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
 OFONO_CONF_OPTS += --enable-bluetooth
 OFONO_DEPENDENCIES += bluez_utils
+else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
+OFONO_CONF_OPTS += --enable-bluetooth
+OFONO_DEPENDENCIES += bluez5_utils
 else
 OFONO_CONF_OPTS += --disable-bluetooth
 endif
