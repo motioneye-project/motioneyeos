@@ -4,9 +4,8 @@
 #
 ################################################################################
 
-PPPD_VERSION = 2.4.7
-PPPD_SOURCE = ppp-$(PPPD_VERSION).tar.gz
-PPPD_SITE = https://download.samba.org/pub/ppp
+PPPD_VERSION = 2.4.8
+PPPD_SITE = $(call github,paulusmack,ppp,ppp-$(PPPD_VERSION))
 PPPD_LICENSE = LGPL-2.0+, LGPL, BSD-4-Clause, BSD-3-Clause, GPL-2.0+
 PPPD_LICENSE_FILES = \
 	pppd/tdb.c pppd/plugins/pppoatm/COPYING \
@@ -15,7 +14,6 @@ PPPD_LICENSE_FILES = \
 PPPD_MAKE_OPTS = HAVE_INET6=y
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 PPPD_DEPENDENCIES += openssl
-PPPD_MAKE_OPTS += OPENSSL_INCLUDE_DIR=$(STAGING_DIR)/usr/include/openssl
 else
 PPPD_MAKE_OPTS += USE_CRYPT=y
 endif
