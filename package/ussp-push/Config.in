@@ -1,11 +1,11 @@
 config BR2_PACKAGE_USSP_PUSH
 	bool "ussp-push"
-	depends on !BR2_STATIC_LIBS # bluez_utils
+	depends on !BR2_STATIC_LIBS # bluez5_utils
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, alsa-lib, libglib2
 	depends on BR2_USE_MMU # dbus
 	select BR2_PACKAGE_OPENOBEX
-	select BR2_PACKAGE_BLUEZ_UTILS
+	select BR2_PACKAGE_BLUEZ5_UTILS
 	help
 	  ussp-push is an OBEX object pusher for Linux, using the BlueZ
 	  BlueTooth stack.

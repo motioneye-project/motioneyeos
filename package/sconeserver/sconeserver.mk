@@ -62,7 +62,7 @@ SCONESERVER_CONF_OPTS += --without-mysql
 endif
 
 ifeq ($(BR2_PACKAGE_SCONESERVER_BLUETOOTH),y)
-SCONESERVER_DEPENDENCIES += bluez_utils
+SCONESERVER_DEPENDENCIES += bluez5_utils
 SCONESERVER_CONF_OPTS += --with-bluetooth
 else
 SCONESERVER_CONF_OPTS += --without-bluetooth

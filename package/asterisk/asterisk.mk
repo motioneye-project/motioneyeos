@@ -136,10 +136,7 @@ else
 ASTERISK_CONF_OPTS += --without-asound
 endif
 
-ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
-ASTERISK_DEPENDENCIES += bluez_utils
-ASTERISK_CONF_OPTS += --with-bluetooth
-else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 ASTERISK_DEPENDENCIES += bluez5_utils
 ASTERISK_CONF_OPTS += --with-bluetooth
 else

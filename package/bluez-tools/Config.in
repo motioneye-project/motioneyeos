@@ -1,6 +1,6 @@
 config BR2_PACKAGE_BLUEZ_TOOLS
 	bool "bluez-tools"
-	depends on BR2_PACKAGE_BLUEZ_UTILS || BR2_PACKAGE_BLUEZ5_UTILS
+	depends on BR2_PACKAGE_BLUEZ5_UTILS
 	depends on BR2_USE_MMU # dbus, libglib2
 	depends on BR2_USE_WCHAR # libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # dbus, libglib2
@@ -14,6 +14,6 @@ config BR2_PACKAGE_BLUEZ_TOOLS
 	  https://github.com/khvzak/bluez-tools
 
 comment "bluez-tools needs a toolchain w/ wchar, threads"
-	depends on BR2_PACKAGE_BLUEZ_UTILS || BR2_PACKAGE_BLUEZ5_UTILS
+	depends on BR2_PACKAGE_BLUEZ5_UTILS
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS

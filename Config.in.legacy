@@ -146,6 +146,16 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_BLUEZ_UTILS
+	bool "bluez-utils was removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_BLUEZ5_UTILS
+	help
+	  The bluez-utils (BlueZ 4.x) package was removed as it is
+	  deprecated since a long time. As an alternative, the
+	  bluez5-utils (BlueZ 5.x) has been automatically selected in
+	  your configuration.
+
 config BR2_PACKAGE_GADGETFS_TEST
 	bool "gadgetfs-test was removed"
 	select BR2_LEGACY

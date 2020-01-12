@@ -56,9 +56,7 @@ GPSD_SCONS_OPTS += usb=no
 endif
 
 # If bluetooth is available build it before so the package can use it
-ifeq ($(BR2_PACKAGE_BLUEZ_UTILS),y)
-GPSD_DEPENDENCIES += bluez_utils
-else ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
+ifeq ($(BR2_PACKAGE_BLUEZ5_UTILS),y)
 GPSD_DEPENDENCIES += bluez5_utils
 else
 GPSD_SCONS_OPTS += bluez=no

@@ -132,7 +132,6 @@ config BR2_PACKAGE_KODI_AVAHI
 config BR2_PACKAGE_KODI_BLUEZ
 	bool "bluetooth"
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5_utils
-	depends on !BR2_PACKAGE_BLUEZ_UTILS # bluez5_utils
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5_utils
 	select BR2_PACKAGE_BLUEZ5_UTILS
 	help

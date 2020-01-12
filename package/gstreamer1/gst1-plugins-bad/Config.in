@@ -314,7 +314,6 @@ config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BLUEZ
 	depends on BR2_TOOLCHAIN_HAS_THREADS # bluez5_utils -> dbus, libglib2
 	depends on BR2_USE_MMU # bluez5_utils -> dbus
 	depends on !BR2_STATIC_LIBS # bluez5_utils -> uses dlfcn
-	depends on !BR2_PACKAGE_BLUEZ_UTILS # bluez5_utils -> conflicts with 4.x version
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 # bluez5_utils
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # bluez5_utils
 	select BR2_PACKAGE_BLUEZ5_UTILS
@@ -326,9 +325,6 @@ comment "bluez plugin needs a toolchain w/ wchar, threads, headers >= 3.4, dynam
 		!BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 || BR2_STATIC_LIBS
 	depends on BR2_TOOLCHAIN_HAS_SYNC_4
 	depends on BR2_USE_MMU
-
-comment "bluez plugin conflicts with older bluez-utils version"
-	depends on BR2_PACKAGE_BLUEZ_UTILS
 
 config BR2_PACKAGE_GST1_PLUGINS_BAD_PLUGIN_BZ2
 	bool "bz2"

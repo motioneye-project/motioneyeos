@@ -2583,7 +2583,6 @@ F:	configs/beaglebone_defconfig
 F:	configs/beaglebone_qt5_defconfig
 F:	package/acl/
 F:	package/attr/
-F:	package/bluez_utils/
 F:	package/boost/
 F:	package/bootstrap/
 F:	package/cannelloni/
