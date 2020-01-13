@@ -1,7 +1,7 @@
 # Locally calculated after verifying signature
-# ftp://ftp.astron.com/pub/file/file-5.37.tar.gz.asc
+# ftp://ftp.astron.com/pub/file/file-5.38.tar.gz.asc
 # using key BE04995BA8F90ED0C0C176C471112AB16CB33B3A
-sha256 e9c13967f7dd339a3c241b7710ba093560b9a33013491318e88e6b8b57bae07f  file-5.37.tar.gz
+sha256 593c2ffc2ab349c5aea0f55fedfe4d681737b6b62376a9b3ad1e77b2cc19fa34  file-5.38.tar.gz
 sha256 0bfa856a9930bddadbef95d1be1cf4e163c0be618e76ea3275caaf255283e274  COPYING
 sha256 4ccb60d623884ef637af4a5bc16b2cb350163e2135e967655837336019a64462  src/mygetopt.h
-sha256 7ac061e1a1c840c4dfa0573aec6f3497676c9295b5ec4190d3576646eb1646bf  src/vasprintf.c
+sha256 58b5932aca6c10f2194290a3b26088ec9ba07ef6b52cc9bb2dd638cc634db6f1  src/vasprintf.c
