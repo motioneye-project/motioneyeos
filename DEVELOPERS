@@ -2337,13 +2337,6 @@ N:	Sven Haardiek <sven.haardiek@iotec-gmbh.de>
 F:	package/lcdproc/
 F:	package/python-influxdb/
 
-N:	Sven Neumann <neumann@teufel.de>
-F:	package/glib-networking/
-F:	package/gstreamer1/gst1-libav/
-F:	package/libmms/
-F:	package/orc/
-F:	package/wampcc/
-
 N:	Sven Oliver Moll <svolli@svolli.de>
 F:	package/most/
 
