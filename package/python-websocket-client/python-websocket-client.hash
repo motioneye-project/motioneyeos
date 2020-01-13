@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/websocket-client/json
-md5	89484bd5dac71123ae6a09b2f90fe62c  websocket_client-0.56.0.tar.gz
-sha256	1fd5520878b68b84b5748bb30e592b10d0a91529d5383f74f4964e72b297fd3a  websocket_client-0.56.0.tar.gz
+md5	8061820da5e1de26a6a1a6996d4eebd5  websocket_client-0.57.0.tar.gz
+sha256	d735b91d6d1692a6a181f2a8c9e0238e5f6373356f561bb9dc4c7af36f452010  websocket_client-0.57.0.tar.gz
 # Locally computed sha256 checksums
 sha256	a47b06717e8a3cf01d1307141287b1b4fa17fe4bb8785633d2fc6f57cb71d05e  LICENSE
