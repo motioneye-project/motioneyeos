@@ -1,0 +1,46 @@
+From fb4fdb83be36ff5e71426d2bdea81d035cdbd0b8 Mon Sep 17 00:00:00 2001
+From: Baruch Siach <baruch@tkos.co.il>
+Date: Mon, 13 Jan 2020 14:54:15 +0200
+Subject: [PATCH] filter_seccomp: fix no-MMU build
+
+Move the declaration of filter_generators out of HAVE_FORK ifdef to fix
+build for no-MMU targets:
+
+filter_seccomp.c: In function ‘check_seccomp_filter_properties’:
+filter_seccomp.c:608:42: error: ‘filter_generators’ undeclared (first use in this function); did you mean ‘linear_filter_generator’?
+  for (unsigned int i = 0; i < ARRAY_SIZE(filter_generators); ++i) {
+                                          ^~~~~~~~~~~~~~~~~
+
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+---
+Upstream status: https://lists.strace.io/pipermail/strace-devel/2020-January/thread.html
+
+
+ filter_seccomp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/filter_seccomp.c b/filter_seccomp.c
+index 91f6bc42bce3..da1abc713dfc 100644
+--- a/filter_seccomp.c
++++ b/filter_seccomp.c
+@@ -68,8 +68,6 @@ static const struct audit_arch_t audit_arch_vec[SUPPORTED_PERSONALITIES] = {
+ # endif
+ };
+ 
+-# ifdef HAVE_FORK
+-
+ typedef unsigned short (*filter_generator_t)(struct sock_filter *,
+ 					     bool *overflow);
+ static unsigned short linear_filter_generator(struct sock_filter *,
+@@ -92,6 +90,8 @@ static struct sock_fprog bpf_prog = {
+ 	.filter = NULL,
+ };
+ 
++# ifdef HAVE_FORK
++
+ static void ATTRIBUTE_NORETURN
+ check_seccomp_order_do_child(void)
+ {
+-- 
+2.24.1
+
