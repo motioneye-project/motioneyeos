@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-RPM_VERSION_MAJOR = 4.14
-RPM_VERSION = $(RPM_VERSION_MAJOR).2.1
+RPM_VERSION_MAJOR = 4.15
+RPM_VERSION = $(RPM_VERSION_MAJOR).1
 RPM_SOURCE = rpm-$(RPM_VERSION).tar.bz2
 RPM_SITE = http://ftp.rpm.org/releases/rpm-$(RPM_VERSION_MAJOR).x
 RPM_DEPENDENCIES = \
@@ -20,6 +20,8 @@ RPM_DEPENDENCIES = \
 	$(TARGET_NLS_DEPENDENCIES)
 RPM_LICENSE = GPL-2.0 or LGPL-2.0 (library only)
 RPM_LICENSE_FILES = COPYING
+# We're patching configure.ac
+RPM_AUTORECONF = YES
 
 RPM_CONF_OPTS = \
 	--disable-python \
@@ -50,7 +52,10 @@ else
 RPM_CONF_OPTS += --without-cap
 endif
 
-ifeq ($(BR2_PACKAGE_LIBNSS),y)
+ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
+RPM_DEPENDENCIES += libgcrypt
+RPM_CONF_OPTS += --with-crypto=libgcrypt
+else ifeq ($(BR2_PACKAGE_LIBNSS),y)
 RPM_DEPENDENCIES += libnss
 RPM_CONF_OPTS += --with-crypto=nss
 RPM_CFLAGS += -I$(STAGING_DIR)/usr/include/nss -I$(STAGING_DIR)/usr/include/nspr
@@ -88,6 +93,12 @@ RPM_DEPENDENCIES += zstd
 RPM_CONF_OPTS += --enable-zstd
 else
 RPM_CONF_OPTS += --disable-zstd
+endif
+
+ifeq ($(BR2_TOOLCHAIN_HAS_OPENMP),y)
+RPM_CONF_OPTS += --enable-openmp
+else
+RPM_CONF_OPTS += --disable-openmp
 endif
 
 # ac_cv_prog_cc_c99: RPM uses non-standard GCC extensions (ex. `asm`).
