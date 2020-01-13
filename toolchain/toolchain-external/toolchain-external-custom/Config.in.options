@@ -92,6 +92,9 @@ config BR2_TOOLCHAIN_EXTERNAL_GCC_OLD
 
 endchoice
 
+comment "GCC older than 4.8 is not tested by Buildroot. Use at your own risk."
+	depends on !BR2_TOOLCHAIN_GCC_AT_LEAST_4_8
+
 choice
 	bool "External toolchain kernel headers series"
 	default BR2_TOOLCHAIN_EXTERNAL_HEADERS_REALLY_OLD
@@ -297,6 +300,9 @@ config BR2_TOOLCHAIN_EXTERNAL_HEADERS_REALLY_OLD
 	bool "2.6.x"
 
 endchoice
+
+comment "Kernel headers older than 3.13 is not tested by Buildroot. Use at your own risk."
+	depends on !BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_13
 
 choice
 	prompt "External toolchain C library"
