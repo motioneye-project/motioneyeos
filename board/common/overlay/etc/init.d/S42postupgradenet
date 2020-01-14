@@ -1,0 +1,36 @@
+#!/bin/bash
+
+POST_UPGRADE_NET_SCHEDULED="/data/.post-upgrade-net-scheduled"
+
+LOG="/var/log/post-upgrade.log"
+
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+test -s ${POST_UPGRADE_NET_SCHEDULED} || exit 0
+
+function run_post_upgrade() {
+    for script in $(cat ${POST_UPGRADE_NET_SCHEDULED}); do
+        msg_begin "Running post-upgrade script ${script}"
+        ${script} >> ${LOG} 2>&1
+        test $? == 0 && msg_done || msg_fail
+    done
+}
+
+case "$1" in
+    start)
+        run_post_upgrade
+        rm ${POST_UPGRADE_NET_SCHEDULED}
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?
+
