@@ -1,0 +1,310 @@
+From acd49f242c867583856973fd8644a45e53f56489 Mon Sep 17 00:00:00 2001
+From: Kevin McCarthy <kevin@8t8.us>
+Date: Wed, 8 Jan 2020 19:09:33 -0800
+Subject: [PATCH] Convert hcachever.sh.in to hcachever.pl.
+
+Use Digest::MD5 to remove build-time dependency on mutt_md5, for
+cross-compilation support.
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Retrieved (and slightly updated to remove .gitignore) from:
+https://gitlab.com/muttmua/mutt/commit/acd49f242c867583856973fd8644a45e53f56489]
+---
+ .gitignore      |   2 -
+ Makefile.am     |  14 +++---
+ configure.ac    |   7 +--
+ hcachever.pl    | 112 ++++++++++++++++++++++++++++++++++++++++++++++++
+ hcachever.sh.in |  89 --------------------------------------
+ 5 files changed, 118 insertions(+), 106 deletions(-)
+ create mode 100644 hcachever.pl
+ delete mode 100755 hcachever.sh.in
+
+diff --git a/Makefile.am b/Makefile.am
+index cede1adb..e46f6544 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -3,7 +3,7 @@
+ include $(top_srcdir)/flymake.am
+ 
+ AUTOMAKE_OPTIONS = 1.6 foreign
+-EXTRA_PROGRAMS = mutt_dotlock mutt_pgpring pgpewrap mutt_md5
++EXTRA_PROGRAMS = mutt_dotlock mutt_pgpring pgpewrap
+ 
+ if BUILD_IMAP
+ IMAP_SUBDIR = imap
+@@ -80,7 +80,7 @@ EXTRA_DIST = COPYRIGHT GPL OPS OPS.PGP OPS.CRYPT OPS.SMIME TODO UPDATING \
+ 	README.SSL smime.h group.h mutt_zstrm.h \
+ 	muttbug pgppacket.h depcomp ascii.h BEWARE PATCHES patchlist.sh \
+ 	ChangeLog mkchangelog.sh mkreldate.sh mutt_idna.h sidebar.h OPS.SIDEBAR \
+-	snprintf.c regex.c crypt-gpgme.h hcachever.sh.in \
++	snprintf.c regex.c crypt-gpgme.h hcachever.pl \
+ 	txt2c.c txt2c.sh version.sh check_sec.sh
+ 
+ EXTRA_SCRIPTS = smime_keys
+@@ -93,14 +93,10 @@ mutt_pgpring_SOURCES = pgppubring.c pgplib.c lib.c extlib.c sha1.c md5.c pgppack
+ mutt_pgpring_LDADD = $(LIBOBJS) $(INTLLIBS)
+ mutt_pgpring_DEPENDENCIES = $(LIBOBJS) $(INTLDEPS)
+ 
+-mutt_md5_SOURCES = md5.c
+-mutt_md5_CFLAGS = -DMD5UTIL
+-mutt_md5_LDADD =
+-
+ txt2c_SOURCES = txt2c.c
+ txt2c_LDADD =
+ 
+-noinst_PROGRAMS = $(MUTT_MD5) txt2c
++noinst_PROGRAMS = txt2c
+ 
+ mutt_dotlock.c: dotlock.c
+ 	cp $(srcdir)/dotlock.c mutt_dotlock.c
+@@ -166,9 +162,9 @@ reldate.h: $(srcdir)/mkreldate.sh $(srcdir)/ChangeLog
+ # If configured with --with-included-gettext this means that intl will
+ # not have generated libintl.h yet, and mutt.h -> lib.h will generate
+ # an error.
+-hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h hcachever.sh $(MUTT_MD5)
++hcversion.h: $(srcdir)/mutt.h $(srcdir)/rfc822.h config.h $(srcdir)/hcachever.pl
+ 	( echo '#include "config.h"'; echo '#undef ENABLE_NLS'; echo '#include "mutt.h"'; ) \
+-	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | sh ./hcachever.sh hcversion.h
++	| $(CPP) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) - | perl $(srcdir)/hcachever.pl > hcversion.h
+ 
+ patchlist.c: $(srcdir)/PATCHES $(srcdir)/patchlist.sh
+ 	$(srcdir)/patchlist.sh < $(srcdir)/PATCHES > patchlist.c
+diff --git a/configure.ac b/configure.ac
+index 7fe55402..7906ce35 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -1283,11 +1283,6 @@ then
+   MUTT_LIB_OBJECTS="$MUTT_LIB_OBJECTS md5.o"
+ fi
+ 
+-if test x$db_found != xno ; then
+-  MUTT_MD5="mutt_md5$EXEEXT"
+-fi
+-AC_SUBST(MUTT_MD5)
+-
+ AC_SUBST(MUTTLIBS)
+ AC_SUBST(MUTT_LIB_OBJECTS)
+ AC_SUBST(LIBIMAP)
+@@ -1677,5 +1672,5 @@ fi
+ 
+ AC_CONFIG_FILES(Makefile contrib/Makefile doc/Makefile imap/Makefile
+         intl/Makefile m4/Makefile po/Makefile.in autocrypt/Makefile
+-        hcachever.sh doc/instdoc.sh)
++        doc/instdoc.sh)
+ AC_OUTPUT
+diff --git a/hcachever.pl b/hcachever.pl
+new file mode 100644
+index 00000000..be630a82
+--- /dev/null
++++ b/hcachever.pl
+@@ -0,0 +1,112 @@
++#!/usr/bin/perl -w
++#
++# Copyright (C) 2020 Kevin J. McCarthy <kevin@8t8.us>
++#
++#     This program is free software; you can redistribute it and/or modify
++#     it under the terms of the GNU General Public License as published by
++#     the Free Software Foundation; either version 2 of the License, or
++#     (at your option) any later version.
++#
++#     This program is distributed in the hope that it will be useful,
++#     but WITHOUT ANY WARRANTY; without even the implied warranty of
++#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++#     GNU General Public License for more details.
++#
++#     You should have received a copy of the GNU General Public License
++#     along with this program; if not, write to the Free Software
++#     Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
++
++# This file is a rewrite of hcachever.sh.in in perl.
++# The rewrite removes the dependency on mutt_md5, in order to
++# improve cross-compilation support.
++
++use strict;
++use warnings;
++# note Digest::MD5 is standard in perl since 5.8.0 (July 18, 2002)
++use Digest::MD5;
++
++
++sub read_line() {
++  my $line;
++
++  while (1) {
++    $line = <STDIN>;
++    return "" if (!$line);
++
++    chomp($line);
++    $line =~ s/^\s+//;
++    $line =~ s/\s+$//;
++    $line =~ s/\s{2,}//g;
++
++    return $line if ($line ne "");
++  }
++}
++
++
++sub process_struct($$) {
++  my ($line, $md5) = @_;
++  my $struct = "";
++  my @body;
++  my $bodytxt;
++  my $inbody = 0;
++
++  return if $line =~ /;$/;
++  if ($line =~ /{$/) {
++    $inbody = 1;
++  }
++
++  while (($line = read_line()) ne "") {
++      if (!$inbody) {
++      return if $line =~ /;$/;
++      if ($line =~ /{$/) {
++        $inbody = 1;
++      }
++    }
++
++    if ($line =~ /^} (.*);$/) {
++      $struct = $1;
++      last;
++    }
++    elsif ($line =~ /^}/) {
++      $struct = read_line();
++      if ($struct ne "") {
++        $struct =~ s/;$//;
++      }
++      last;
++    }
++    elsif (($line !~ /^#/) && ($line !~ /^{/)) {
++      if ($inbody) {
++        push @body, $line;
++      }
++    }
++  }
++
++  if ($struct =~ /^(ADDRESS|LIST|BUFFER|PARAMETER|BODY|ENVELOPE|HEADER)$/) {
++    $bodytxt = join(" ", @body);
++    print " * ${struct}: ${bodytxt}\n";
++
++    $md5->add(" ${struct} {${bodytxt}}");
++  }
++}
++
++
++my $md5;
++my $line;
++my $BASEVERSION = "2";
++
++$md5 = Digest::MD5->new;
++
++$md5->add($BASEVERSION);
++print "/* base version: $BASEVERSION\n";
++
++while (($line = read_line()) ne "") {
++  if ($line =~ /^typedef struct/) {
++    process_struct($line, $md5);
++  }
++}
++
++$md5->add("\n");
++my $digest = substr($md5->hexdigest, 0, 8);
++
++print " */\n";
++print "#define HCACHEVER 0x${digest}\n";
+diff --git a/hcachever.sh.in b/hcachever.sh.in
+deleted file mode 100755
+index 730ca76b..00000000
+--- a/hcachever.sh.in
++++ /dev/null
+@@ -1,89 +0,0 @@
+-#!/bin/sh
+-
+-BASEVERSION=2
+-
+-cleanstruct () {
+-  echo "$1" | sed -e 's/} *//' -e 's/;$//'
+-}
+-
+-cleanbody () {
+-  echo "$1" | sed -e 's/{ *//'
+-}
+-
+-getstruct () {
+-  STRUCT=""
+-  BODY=''
+-  inbody=0
+-  case "$1" in
+-    *'{') inbody=1 ;;
+-    *';') return ;;
+-  esac
+-
+-  while read line
+-  do
+-    if test $inbody -eq 0
+-    then
+-      case "$line" in
+-        '{'*) inbody=1 ;;
+-        *';') return ;;
+-      esac
+-    fi
+-
+-    case "$line" in
+-      '} '*)
+-        STRUCT=`cleanstruct "$line"`
+-        break
+-      ;;
+-      '}')
+-        read line
+-        STRUCT=`cleanstruct "$line"`
+-        break
+-      ;;
+-      '#'*) continue ;;
+-      *)
+-        if test $inbody -ne 0
+-        then
+-          BODY="$BODY $line"
+-        fi
+-      ;;
+-    esac
+-  done
+-
+-  case $STRUCT in
+-    ADDRESS|LIST|BUFFER|PARAMETER|BODY|ENVELOPE|HEADER)
+-      BODY=`cleanbody "$BODY"`
+-      echo "$STRUCT: $BODY"
+-    ;;
+-  esac
+-  return
+-}
+-
+-DEST="$1"
+-TMPD="$DEST.tmp"
+-
+-TEXT="$BASEVERSION"
+-
+-echo "/* base version: $BASEVERSION" > $TMPD
+-while read line
+-do
+-  case "$line" in
+-    'typedef struct'*)
+-       STRUCT=`getstruct "$line"`
+-       if test -n "$STRUCT"
+-       then
+-	 NAME=`echo $STRUCT | cut -d: -f1`
+-	 BODY=`echo $STRUCT | cut -d' ' -f2-`
+-         echo " * $NAME:" $BODY >> $TMPD
+-         TEXT="$TEXT $NAME {$BODY}"
+-       fi
+-    ;;
+-  esac
+-done
+-echo " */" >> $TMPD
+-
+-MD5TEXT=`echo "$TEXT" | ./mutt_md5`
+-echo "#define HCACHEVER 0x"`echo $MD5TEXT | cut -c-8` >> $TMPD
+-
+-# TODO: validate we have all structs
+-
+-mv $TMPD $DEST
+-- 
+2.24.1
+
