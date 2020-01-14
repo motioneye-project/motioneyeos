@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LUA_LIVR_EXTRA
+	bool "lua-livr-extra"
+	select BR2_PACKAGE_LUA_LIVR # runtime
+	help
+	  more LIVR rules.
+
+	  https://fperrad.frama.io/lua-LIVR-extra
