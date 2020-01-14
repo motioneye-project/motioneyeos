@@ -3,6 +3,7 @@
 SYS_VERSION_FILE="/etc/version"
 VERSION_FILE="/data/etc/version"
 POST_UPGRADE_DIR="/usr/share/post-upgrade"
+POST_UPGRADE_NET_SCHEDULED="/data/.post-upgrade-net-scheduled"
 
 LOG="/var/log/post-upgrade.log"
 
@@ -30,9 +31,16 @@ function run_post_upgrade() {
 
     echo "---- post-upgrade from ${version} to ${sys_version} ----" >> ${LOG}
 
-    versions=$(ls -1 ${POST_UPGRADE_DIR} | cut -d '.' -f 1)
+    echo -n > ${POST_UPGRADE_NET_SCHEDULED}
+    
+    versions=$(ls -1 ${POST_UPGRADE_DIR} | rev | cut -d '.' -f 2-100 | rev)
     for v in ${versions}; do
         if [[ ${v} == "post-upgrade" ]]; then
+            continue
+        fi
+
+        if [[ ${v} == *-net ]]; then  # scripts that require network
+            echo "${POST_UPGRADE_DIR}/${v}.sh" >> ${POST_UPGRADE_NET_SCHEDULED}
             continue
         fi
     
@@ -66,4 +74,3 @@ case "$1" in
 esac
 
 exit $?
-
