@@ -309,6 +309,39 @@ FREESWITCH_CONF_OPTS += --enable-libvpx --enable-libyuv
 FREESWITCH_DEPENDENCIES += host-yasm ffmpeg
 FREESWITCH_ENABLED_MODULES += applications/mod_av applications/mod_fsv
 FREESWITCH_MAKE_ENV += CROSS=$(TARGET_CROSS)
+
+# Freeswitch's buildsystem forgets to pass important environment
+# variables and config options when it configures libvpx, so
+# pre-build libvpx manually, so Freeswitch does not attempt to run
+# its flawed commands...
+# Freeswitch only ever uses the static libtrary, that's hard-coded,
+# we can't do anything about that...
+# From package/libvpx/libvpx.mk:
+# - this is not a true autotools package.  It is based on the ffmpeg
+#   build system.
+# - ld is being used with cc options. therefore, pretend ld is cc.
+define FREESWITCH_BUILD_LIBVPX
+	cd $(@D)/libs/libvpx && \
+	$(TARGET_CONFIGURE_OPTS) \
+	$(TARGET_CONFIGURE_ARGS) \
+	LD="$(TARGET_CC)" \
+	CROSS=$(GNU_TARGET_NAME) \
+	./configure \
+		--target=generic-gnu \
+		--enable-pic \
+		--prefix=/usr \
+		--disable-shared --enable-static \
+		--disable-examples \
+		--disable-docs \
+		--disable-unit-tests && \
+	$(TARGET_MAKE_ENV) \
+	$(LIBVPX_MAKE_ENV) \
+	$(MAKE) \
+		-C $(@D)/libs/libvpx \
+		all
+endef
+FREESWITCH_PRE_BUILD_HOOKS += FREESWITCH_BUILD_LIBVPX
+
 else
 FREESWITCH_CONF_OPTS += --disable-libvpx --disable-libyuv
 endif
