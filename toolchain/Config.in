@@ -457,6 +457,14 @@ config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
 config BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_4
 	bool
 	select BR2_TOOLCHAIN_HEADERS_AT_LEAST_5_3
+	select BR2_TOOLCHAIN_HEADERS_LATEST
+
+# This should be selected by the latest version, above, to indicate that
+# Buildroot does not know of more recent headers than the ones selected.
+# This allows using toolchains with headers more recent than Buildroot
+# knows about, while still enforcing strict check for older headers.
+config BR2_TOOLCHAIN_HEADERS_LATEST
+	bool
 
 # This order guarantees that the highest version is set, as kconfig
 # stops affecting a value on the first matching default.
