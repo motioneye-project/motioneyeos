@@ -185,19 +185,22 @@ start() {
 
     ssid=$(cat /data/etc/wpa_supplicant.conf 2>&1 | grep ssid | grep -v scan_ssid | cut -d '"' -f 2)
     test -n "${OS_WLAN}" -a -n "${ssid}" && start_wlan && wlan_ok="ok"
-    
     test -n "${OS_PPP}" -a -r /data/etc/ppp/modem && ifconfig | grep ${OS_PPP} &>/dev/null && ppp_ok="ok"
+    def_route_ok=$(ip route get 1.1.1.1 &>/dev/null && echo "ok")
     
     if [[ -n "${OS_ETH}" ]]; then
-            # if wifi or ppp link ok, start eth in background
-        if [[ "${wlan_ok}" == "ok" ]] || [[ "${ppp_ok}" == "ok" ]]; then
+        # if wifi or ppp link ok, start eth in background
+        if [[ "${wlan_ok}" == "ok" ]] || [[ "${ppp_ok}" == "ok" ]] && [[ "${def_route_ok}" == "ok" ]]; then
             start_eth &>/dev/null &
         else
             start_eth && eth_ok="ok"
         fi
     fi
+
+    # re-evalutate default route, as it might have changed with start_eth    
+    def_route_ok=$(ip route get 1.1.1.1 &>/dev/null && echo "ok")
     
-    if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]]; then
+    if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]] || [[ "${def_route_ok}" != "ok" ]]; then
         if [[ "${LINK_WATCH}" == "true" ]]; then
             logger -t network "no network connection available, calling panic action"
             panic_action network
