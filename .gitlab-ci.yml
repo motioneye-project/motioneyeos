@@ -441,6 +441,8 @@ tests.package.test_python_automat.TestPythonPy3Automat: { extends: .runtime_test
 tests.package.test_python_avro.TestPythonAvro: { extends: .runtime_test }
 tests.package.test_python_bitstring.TestPythonPy2Bitstring: { extends: .runtime_test }
 tests.package.test_python_bitstring.TestPythonPy3Bitstring: { extends: .runtime_test }
+tests.package.test_python_can.TestPythonPy2Can: { extends: .runtime_test }
+tests.package.test_python_can.TestPythonPy3Can: { extends: .runtime_test }
 tests.package.test_python_cbor.TestPythonPy2Cbor: { extends: .runtime_test }
 tests.package.test_python_cbor.TestPythonPy3Cbor: { extends: .runtime_test }
 tests.package.test_python_click.TestPythonPy2Click: { extends: .runtime_test }

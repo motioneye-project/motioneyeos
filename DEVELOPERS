@@ -2617,6 +2617,7 @@ F:	package/ti-utils/
 F:	package/x11r7/xapp_xconsole/
 F:	package/x11r7/xapp_xinput-calibrator/
 F:	package/zlog/
+F:	support/testing/tests/package/test_python_can.py
 F:	utils/scanpypi
 
 N:	Zoltan Gyarmati <zgyarmati@zgyarmati.de>
