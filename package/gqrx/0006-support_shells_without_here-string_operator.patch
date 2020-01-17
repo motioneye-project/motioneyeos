@@ -1,0 +1,27 @@
+From 3203dd9d0e852b1c5c79f410f9de65fb89eef76b Mon Sep 17 00:00:00 2001
+From: Alexander Fasching <fasching.a91@gmail.com>
+Date: Mon, 28 Oct 2019 12:19:22 +0100
+Subject: [PATCH] Support shells without here-string operator
+
+Signed-off-by: Gwenhael Goavec-Merou <gwenhael.goavec-merou@trabucayre.com>
+---
+ gqrx.pro | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/gqrx.pro b/gqrx.pro
+index ea187798..f40b98a2 100644
+--- a/gqrx.pro
++++ b/gqrx.pro
+@@ -266,9 +266,9 @@ PKGCONFIG += gnuradio-analog \
+ # Detect GNU Radio version and link against log4cpp for 3.8
+ GNURADIO_VERSION = $$system(pkg-config --modversion gnuradio-runtime)
+ 
+-GNURADIO_VERSION_MAJOR = $$system(cut -d '.' -f1 <<< $$GNURADIO_VERSION)
+-GNURADIO_VERSION_MINOR = $$system(cut -d '.' -f2 <<< $$GNURADIO_VERSION)
+-GNURADIO_VERSION_PATCH = $$system(cut -d '.' -f3 <<< $$GNURADIO_VERSION)
++GNURADIO_VERSION_MAJOR = $$system(echo $$GNURADIO_VERSION | cut -d '.' -f1 -)
++GNURADIO_VERSION_MINOR = $$system(echo $$GNURADIO_VERSION | cut -d '.' -f2 -)
++GNURADIO_VERSION_PATCH = $$system(echo $$GNURADIO_VERSION | cut -d '.' -f3 -)
+ 
+ GNURADIO_HEX_VERSION = $$system(            \
+   "echo $((                                 \
