@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-GR_OSMOSDR_VERSION = 0.1.5
-GR_OSMOSDR_SITE = $(call github,osmocom,gr-osmosdr,v$(GR_OSMOSDR_VERSION))
+GR_OSMOSDR_VERSION = 46698a67e7e06419eefaf45c95129c0c12669045
+GR_OSMOSDR_SITE = $(call github,osmocom,gr-osmosdr,$(GR_OSMOSDR_VERSION))
 GR_OSMOSDR_LICENSE = GPL-3.0+
 GR_OSMOSDR_LICENSE_FILES = COPYING
 
