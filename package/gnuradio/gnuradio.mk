@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GNURADIO_VERSION = 3.7.13.5
+GNURADIO_VERSION = 3.8.0.0
 GNURADIO_SITE = https://gnuradio.org/releases/gnuradio
 GNURADIO_LICENSE = GPL-3.0+
 GNURADIO_LICENSE_FILES = COPYING
@@ -16,12 +16,16 @@ GNURADIO_DEPENDENCIES = \
 	host-python-mako \
 	host-python-six \
 	host-swig \
-	boost
+	boost \
+	log4cpp \
+	gmp
 
 GNURADIO_CONF_OPTS = \
+	-DPYTHON_EXECUTABLE=$(HOST_DIR)/bin/python \
 	-DENABLE_DEFAULT=OFF \
 	-DENABLE_VOLK=ON \
 	-DENABLE_GNURADIO_RUNTIME=ON \
+	-DENABLE_TESTING=OFF \
 	-DENABLE_GR_QTGUI=OFF \
 	-DXMLTO_EXECUTABLE=NOTFOUND
 
@@ -31,22 +35,6 @@ GNURADIO_INSTALL_STAGING = YES
 
 ifeq ($(BR2_TOOLCHAIN_HAS_LIBATOMIC),y)
 GNURADIO_CONF_OPTS += -DCMAKE_EXE_LINKER_FLAGS=-latomic
-endif
-
-# Yes, this is silly, because -march is already known by the compiler
-# with the internal toolchain, and passed by the external wrapper for
-# external toolchains. Nonetheless, gnuradio does some matching on the
-# CFLAGS to decide whether to build the NEON functions or not, and
-# wants to see the string 'armv7' in the CFLAGS.
-ifeq ($(BR2_ARM_CPU_ARMV7A)$(BR2_ARM_CPU_HAS_NEON),yy)
-GNURADIO_CONF_OPTS += -DCMAKE_C_FLAGS="$(TARGET_CFLAGS) -march=armv7-a"
-endif
-
-# As soon as -mfpu=neon is supported by the compiler, gnuradio will try
-# to use it. But having NEON support in the compiler doesn't necessarily
-# mean we have NEON support in our CPU.
-ifeq ($(BR2_ARM_CPU_HAS_NEON),)
-GNURADIO_CONF_OPTS += -Dhave_mfpu_neon=0
 endif
 
 ifeq ($(BR2_PACKAGE_ORC),y)
@@ -116,13 +104,6 @@ ifeq ($(BR2_PACKAGE_GNURADIO_FILTER),y)
 GNURADIO_CONF_OPTS += -DENABLE_GR_FILTER=ON
 else
 GNURADIO_CONF_OPTS += -DENABLE_GR_FILTER=OFF
-endif
-
-ifeq ($(BR2_PACKAGE_GNURADIO_LOG),y)
-GNURADIO_DEPENDENCIES += log4cpp
-GNURADIO_CONF_OPTS += -DENABLE_GR_LOG=ON
-else
-GNURADIO_CONF_OPTS += -DENABLE_GR_LOG=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_PYTHON),y)

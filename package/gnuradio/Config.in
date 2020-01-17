@@ -17,12 +17,15 @@ config BR2_PACKAGE_GNURADIO
 	depends on !BR2_PACKAGE_PYTHON3
 	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # boost-thread
 	select BR2_PACKAGE_BOOST
+	select BR2_PACKAGE_BOOST_ATOMIC
 	select BR2_PACKAGE_BOOST_DATE_TIME
 	select BR2_PACKAGE_BOOST_FILESYSTEM
 	select BR2_PACKAGE_BOOST_PROGRAM_OPTIONS
 	select BR2_PACKAGE_BOOST_REGEX
 	select BR2_PACKAGE_BOOST_SYSTEM
 	select BR2_PACKAGE_BOOST_THREAD
+	select BR2_PACKAGE_LOG4CPP
+	select BR2_PACKAGE_GMP
 	help
 	  GNU Radio is a free & open-source software development
 	  toolkit that provides signal processing blocks to implement
@@ -60,12 +63,6 @@ config BR2_PACKAGE_GNURADIO_FEC
 	help
 	  FEC signal processing blocks
 
-config BR2_PACKAGE_GNURADIO_LOG
-	bool "gr-log support"
-	select BR2_PACKAGE_LOG4CPP
-	help
-	  Enable logger component
-
 config BR2_PACKAGE_GNURADIO_PYTHON
 	bool "python support"
 	depends on BR2_PACKAGE_PYTHON
@@ -73,6 +70,7 @@ config BR2_PACKAGE_GNURADIO_PYTHON
 	depends on BR2_TOOLCHAIN_USES_GLIBC || BR2_TOOLCHAIN_USES_MUSL # python-numpy
 	select BR2_PACKAGE_BOOST_PYTHON
 	select BR2_PACKAGE_PYTHON_NUMPY # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
 	help
 	  Enable python component
 
