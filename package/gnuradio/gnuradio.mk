@@ -13,6 +13,7 @@ GNURADIO_SUPPORTS_IN_SOURCE_BUILD = NO
 
 # host-python-mako and host-python-six are needed for volk to compile
 GNURADIO_DEPENDENCIES = \
+	$(if $(BR2_PACKAGE_PYTHON3),host-python3,host-python) \
 	host-python-mako \
 	host-python-six \
 	host-swig \
@@ -107,7 +108,7 @@ GNURADIO_CONF_OPTS += -DENABLE_GR_FILTER=OFF
 endif
 
 ifeq ($(BR2_PACKAGE_GNURADIO_PYTHON),y)
-GNURADIO_DEPENDENCIES += python
+GNURADIO_DEPENDENCIES += $(if $(BR2_PACKAGE_PYTHON3),python3,python)
 GNURADIO_CONF_OPTS += -DENABLE_PYTHON=ON
 else
 GNURADIO_CONF_OPTS += -DENABLE_PYTHON=OFF
