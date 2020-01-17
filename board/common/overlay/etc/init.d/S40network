@@ -197,10 +197,7 @@ start() {
         fi
     fi
 
-    # re-evalutate default route, as it might have changed with start_eth    
-    def_route_ok=$(ip route get 1.1.1.1 &>/dev/null && echo "ok")
-    
-    if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]] || [[ "${def_route_ok}" != "ok" ]]; then
+    if [[ "${eth_ok}" != "ok" ]] && [[ "${wlan_ok}" != "ok" ]] && [[ "${ppp_ok}" != "ok" ]]; then
         if [[ "${LINK_WATCH}" == "true" ]]; then
             logger -t network "no network connection available, calling panic action"
             panic_action network
@@ -233,6 +230,19 @@ start() {
             msg_begin "Setting static DNS server to ${STATIC_DNS}"
             echo "nameserver ${STATIC_DNS}" > /etc/resolv.conf
             test $? == 0 && msg_done || msg_fail
+        fi
+    fi
+
+    # re-evalutate default route, as it might have changed with start_eth or static IP
+    def_route_ok=$(ip route get 1.1.1.1 &>/dev/null && echo "ok")
+    if [[ "${def_route_ok}" != "ok" ]]; then
+        if [[ "${IP_WATCH}" == "true" ]]; then
+            logger -t network "no default route, calling panic action"
+            panic_action network
+            return 1
+        else
+            logger -t network "no default route"
+            return 0
         fi
     fi
 }
