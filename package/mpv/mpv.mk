@@ -30,7 +30,6 @@ MPV_CONF_OPTS = \
 	--disable-uchardet \
 	--disable-vapoursynth \
 	--disable-vapoursynth-lazy \
-	--disable-vdpau \
 	--disable-mali-fbdev
 
 # ALSA support requires pcm+mixer
@@ -128,6 +127,14 @@ MPV_CONF_OPTS += --enable-drm
 MPV_DEPENDENCIES += libdrm
 else
 MPV_CONF_OPTS += --disable-drm
+endif
+
+# libvdpau
+ifeq ($(BR2_PACKAGE_LIBVDPAU),y)
+MPV_CONF_OPTS += --enable-vdpau
+MPV_DEPENDENCIES += libvdpau
+else
+MPV_CONF_OPTS += --disable-vdpau
 endif
 
 # LUA support, only for lua51/lua52/luajit
