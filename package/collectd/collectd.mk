@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-COLLECTD_VERSION = 5.9.2
+COLLECTD_VERSION = 5.10.0
 COLLECTD_SITE = \
-	https://github.com/collectd/collectd/releases/download/collectd-$(COLLECTD_VERSION)
+	https://github.com/collectd/collectd/releases/download/$(COLLECTD_VERSION)
 COLLECTD_SOURCE = collectd-$(COLLECTD_VERSION).tar.bz2
 COLLECTD_CONF_ENV = ac_cv_lib_yajl_yajl_alloc=yes
 COLLECTD_INSTALL_STAGING = YES
