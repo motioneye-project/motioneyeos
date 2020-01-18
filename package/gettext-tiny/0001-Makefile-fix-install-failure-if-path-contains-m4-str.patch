@@ -1,0 +1,31 @@
+From 2ad9d66d733396b655f05b477a5e91592378fb21 Mon Sep 17 00:00:00 2001
+From: Giulio Benetti <giulio.benetti@benettiengineering.com>
+Date: Fri, 17 Jan 2020 18:34:42 +0100
+Subject: [PATCH] Makefile: fix install failure if path contains "m4/" string
+
+Actually Makefile install recipe substitutes every occurence of "m4/" in
+file name of the target of the rule($@), in an absolute path there could
+more than one "m4/" occurence, so install will fail. Let's change
+$(subst ...) with $(patsubst ...) substituting only last occurence of
+"m4/" pattern.
+
+Signed-off-by: Giulio Benetti <giulio.benetti@benettiengineering.com>
+---
+ Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 4a3c3f6..2e13403 100644
+--- a/Makefile
++++ b/Makefile
+@@ -88,6 +88,6 @@ $(DESTDIR)$(datadir)/%: %
+ 	$(INSTALL) -D -m 644 $< $@
+ 
+ $(DESTDIR)$(acdir)/%: %
+-	$(INSTALL) -D -l ../$(subst $(datarootdir)/,,$(datadir))/$< $(subst m4/,,$@)
++	$(INSTALL) -D -l ../$(subst $(datarootdir)/,,$(datadir))/$< $(patsubst %m4/,%,$(dir $@))/$(notdir $@)
+ 
+ .PHONY: all clean install
+-- 
+2.20.1
+
