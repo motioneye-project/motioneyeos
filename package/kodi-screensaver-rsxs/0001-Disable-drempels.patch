@@ -1,0 +1,40 @@
+From 28c01686ba0d67d317e058776f01efba5e6471bd Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 13 Jul 2019 14:18:12 +0200
+Subject: [PATCH] Disable drempels
+
+Does not build with ImageMagick 7.x:
+
+src/drempels/TexMgr.cpp:31:10: fatal error: magick/api.h:
+ No such file or directory
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ CMakeLists.txt | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index a86ccd0..b5ca03f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -40,8 +40,7 @@ include_directories(${KODI_INCLUDE_DIR}/.. # Hack way with "/..", need bigger Ko
+ if(ImageMagick_FOUND AND NOT ${OWN_IMAGE_MAGICK})
+   message(STATUS "ImageMagick found in the system and is used")
+ else()
+-  message(STATUS "ImageMagick not found or forced and add custom created")
+-  add_subdirectory(lib/ImageMagick)
++  message(STATUS "ImageMagick not found")
+ endif()
+ add_subdirectory(lib/kodi/gui/gl)
+ add_subdirectory(lib/Implicit)
+@@ -70,7 +69,6 @@ include(src/biof/CMakeLists.txt)
+ include(src/busyspheres/CMakeLists.txt)
+ include(src/colorfire/CMakeLists.txt)
+ include(src/cyclone/CMakeLists.txt)
+-include(src/drempels/CMakeLists.txt)
+ include(src/euphoria/CMakeLists.txt)
+ include(src/feedback/CMakeLists.txt)
+ include(src/fieldlines/CMakeLists.txt)
+-- 
+2.20.1
+
