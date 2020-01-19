@@ -5,7 +5,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_CPBLOBS
 	help
 	  CpBlobs screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.cpblobs
+	  https://github.com/xbmc/screensaver.cpblobs
 
 comment "kodi-screensaver-cpblobs needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

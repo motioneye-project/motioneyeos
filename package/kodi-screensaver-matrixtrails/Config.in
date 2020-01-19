@@ -5,7 +5,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_MATRIXTRAILS
 	help
 	  Matrix trails screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.matrixtrails
+	  https://github.com/xbmc/screensaver.matrixtrails
 
 comment "kodi-screensaver-matrixtrails needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

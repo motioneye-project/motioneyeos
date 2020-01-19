@@ -4,7 +4,7 @@ config BR2_PACKAGE_KODI_SCREENSAVER_STARS
 	help
 	  Starfield screensaver for Kodi
 
-	  https://github.com/notspiff/screensaver.stars
+	  https://github.com/xbmc/screensaver.stars
 
 comment "kodi-screensaver-stars needs OpenGL"
 	depends on !BR2_PACKAGE_HAS_LIBGL

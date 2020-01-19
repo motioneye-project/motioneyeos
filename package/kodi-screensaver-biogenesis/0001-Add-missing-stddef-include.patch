@@ -1,0 +1,25 @@
+From 86da3bfecf8ddd2f8c2c3eed6e1cb8850883f4b2 Mon Sep 17 00:00:00 2001
+From: Rechi <Rechi@users.noreply.github.com>
+Date: Sun, 24 Mar 2019 10:53:31 +0100
+Subject: [PATCH] [fix] add missing stddef.h include for offsetof macro
+
+Downloaded from upstream commit:
+https://github.com/xbmc/screensaver.biogenesis/commit/86da3bfecf8ddd2f8c2c3eed6e1cb8850883f4b2
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ src/Life.cpp | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/src/Life.cpp b/src/Life.cpp
+index 762ad7d..68be133 100644
+--- a/src/Life.cpp
++++ b/src/Life.cpp
+@@ -24,6 +24,7 @@
+ 
+ #include "types.h"
+ #include <memory.h>
++#include <stddef.h>
+ #ifdef WIN32
+ #include <d3d11.h>
+ #else
