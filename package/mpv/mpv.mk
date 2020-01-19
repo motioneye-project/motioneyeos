@@ -23,7 +23,6 @@ MPV_CONF_OPTS = \
 	--disable-cocoa \
 	--disable-coreaudio \
 	--disable-cuda-hwaccel \
-	--disable-libv4l2 \
 	--disable-opensles \
 	--disable-rsound \
 	--disable-rubberband \
@@ -127,6 +126,16 @@ MPV_CONF_OPTS += --enable-drm
 MPV_DEPENDENCIES += libdrm
 else
 MPV_CONF_OPTS += --disable-drm
+endif
+
+# libv4l
+ifeq ($(BR2_PACKAGE_LIBV4L),y)
+MPV_CONF_OPTS += \
+	--enable-libv4l2 \
+	--enable-tv
+MPV_DEPENDENCIES += libv4l
+else
+MPV_CONF_OPTS += --disable-libv4l2
 endif
 
 # libvdpau
