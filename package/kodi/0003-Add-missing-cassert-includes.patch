@@ -1,0 +1,50 @@
+From 711845d533f9f6b5fe68b7cbcc8f369ce7efe445 Mon Sep 17 00:00:00 2001
+From: Craig Andrews <candrews@integralblue.com>
+Date: Thu, 5 Dec 2019 14:49:50 -0500
+Subject: [PATCH] Add missing cassert includes
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Without these includes, ‘assert’ was not declared in this scope errors
+occur.
+
+Backport of https://github.com/xbmc/xbmc/pull/17000
+
+Patch sent upstream: https://github.com/xbmc/xbmc/pull/17213
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp | 2 ++
+ xbmc/windowing/GraphicContext.cpp                  | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp b/xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp
+index 222d1fa2c8..070ea0ae46 100644
+--- a/xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp
++++ b/xbmc/profiles/dialogs/GUIDialogProfileSettings.cpp
+@@ -33,6 +33,8 @@
+ #include "utils/Variant.h"
+ #include "ServiceBroker.h"
+ 
++#include <cassert>
++
+ #define SETTING_PROFILE_NAME          "profile.name"
+ #define SETTING_PROFILE_IMAGE         "profile.image"
+ #define SETTING_PROFILE_DIRECTORY     "profile.directory"
+diff --git a/xbmc/windowing/GraphicContext.cpp b/xbmc/windowing/GraphicContext.cpp
+index 1ced49671b..0ddbe64c9f 100644
+--- a/xbmc/windowing/GraphicContext.cpp
++++ b/xbmc/windowing/GraphicContext.cpp
+@@ -24,6 +24,8 @@
+ #include "guilib/GUIWindowManager.h"
+ #include "guilib/TextureManager.h"
+ 
++#include <cassert>
++
+ using namespace KODI::MESSAGING;
+ 
+ CGraphicContext::CGraphicContext(void) = default;
+-- 
+2.20.1
+

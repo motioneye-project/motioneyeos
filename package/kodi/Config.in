@@ -23,7 +23,9 @@ config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
 	# List of valid CPUs can be found here:
 	# https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L12
 	depends on BR2_arm1176jzf_s || BR2_cortex_a7 || BR2_cortex_a53
+	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_RPI_USERLAND
+	depends on BR2_PACKAGE_HAS_UDEV # libinput
 	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS
 
 config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_X11_OPENGL
@@ -50,10 +52,12 @@ menuconfig BR2_PACKAGE_KODI
 	depends on BR2_PACKAGE_PYTHON
 	depends on !BR2_PACKAGE_PYTHON_PYC_ONLY
 	select BR2_NEEDS_HOST_JAVA
-	select BR2_PACKAGE_BZIP2
 	select BR2_PACKAGE_EXPAT
+	select BR2_PACKAGE_FLATBUFFERS
+	select BR2_PACKAGE_FMT
 	select BR2_PACKAGE_FONTCONFIG
 	select BR2_PACKAGE_FREETYPE
+	select BR2_PACKAGE_FSTRCMP
 	select BR2_PACKAGE_GNUTLS
 	select BR2_PACKAGE_LIBASS
 	select BR2_PACKAGE_LIBCDIO
@@ -69,17 +73,16 @@ menuconfig BR2_PACKAGE_KODI
 	select BR2_PACKAGE_PCRE
 	select BR2_PACKAGE_PCRE_UCP
 	select BR2_PACKAGE_PYTHON_BSDDB
-	select BR2_PACKAGE_PYTHON_BZIP2
 	select BR2_PACKAGE_PYTHON_CURSES
 	select BR2_PACKAGE_PYTHON_PYEXPAT
 	select BR2_PACKAGE_PYTHON_SQLITE
 	select BR2_PACKAGE_PYTHON_SSL
 	select BR2_PACKAGE_PYTHON_UNICODEDATA
 	select BR2_PACKAGE_PYTHON_ZLIB
+	select BR2_PACKAGE_RAPIDJSON
 	select BR2_PACKAGE_SQLITE
 	select BR2_PACKAGE_TAGLIB
 	select BR2_PACKAGE_TINYXML
-	select BR2_PACKAGE_YAJL
 	select BR2_PACKAGE_ZLIB
 	select BR2_TOOLCHAIN_GLIBC_GCONV_LIBS_COPY if BR2_TOOLCHAIN_USES_GLIBC # runtime UTF conversion support
 	help
@@ -152,11 +155,6 @@ config BR2_PACKAGE_KODI_LCMS2
 	help
 	  Enable color management support.
 
-config BR2_PACKAGE_KODI_LIRC
-	bool "lirc"
-	help
-	  Enable lirc support
-
 config BR2_PACKAGE_KODI_LIBMICROHTTPD
 	bool "web server"
 	depends on BR2_PACKAGE_LIBGPG_ERROR_ARCH_SUPPORTS # libgcrypt, libmicrohttpd
@@ -181,12 +179,6 @@ config BR2_PACKAGE_KODI_MYSQL
 	help
 	  Enable MySQL support
 
-config BR2_PACKAGE_KODI_NONFREE
-	bool "nonfree components"
-	help
-	  Enable components with non-free licenses. This option
-	  currently only controls support for RAR archives.
-
 choice
 	prompt "platform"
 	default BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
@@ -194,6 +186,8 @@ choice
 config BR2_PACKAGE_KODI_PLATFORM_RBPI
 	bool "Raspberry Pi"
 	depends on BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
+	select BR2_PACKAGE_LIBINPUT
+	select BR2_PACKAGE_LIBXKBCOMMON
 
 config BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL
 	bool "X11/OpenGL"
@@ -228,12 +222,6 @@ config BR2_PACKAGE_KODI_LIBSMBCLIENT
 	depends on BR2_PACKAGE_SAMBA4
 	help
 	  Enable Samba support
-
-config BR2_PACKAGE_KODI_LIBSSH
-	bool "ssh"
-	select BR2_PACKAGE_LIBSSH
-	help
-	  Enable sftp virtual filesystem using libssh.
 
 config BR2_PACKAGE_KODI_LIBTHEORA
 	bool "theora"

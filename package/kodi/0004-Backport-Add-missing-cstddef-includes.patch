@@ -1,0 +1,44 @@
+From d1b2a27d2d2795fe82c103b49faef74b55df22c7 Mon Sep 17 00:00:00 2001
+From: Bernd Kuhls <bernd.kuhls@t-online.de>
+Date: Sat, 18 Jan 2020 14:49:16 +0100
+Subject: [PATCH] [Backport] Add missing cstddef includes
+
+Backport of https://github.com/xbmc/xbmc/pull/17214
+
+Patch sent upstream: https://github.com/xbmc/xbmc/pull/17215
+
+Signed-off-by: Bernd Kuhls <bernd.kuhls@t-online.de>
+---
+ .../rendering/VideoRenderers/RPRendererGuiTexture.cpp           | 2 ++
+ xbmc/pictures/SlideShowPicture.cpp                              | 2 ++
+ 2 files changed, 4 insertions(+)
+
+diff --git a/xbmc/cores/RetroPlayer/rendering/VideoRenderers/RPRendererGuiTexture.cpp b/xbmc/cores/RetroPlayer/rendering/VideoRenderers/RPRendererGuiTexture.cpp
+index 5485358cad..ad2bf1b984 100644
+--- a/xbmc/cores/RetroPlayer/rendering/VideoRenderers/RPRendererGuiTexture.cpp
++++ b/xbmc/cores/RetroPlayer/rendering/VideoRenderers/RPRendererGuiTexture.cpp
+@@ -17,6 +17,8 @@
+ using namespace DirectX;
+ #endif
+ 
++#include <cstddef>
++
+ using namespace KODI;
+ using namespace RETRO;
+ 
+diff --git a/xbmc/pictures/SlideShowPicture.cpp b/xbmc/pictures/SlideShowPicture.cpp
+index 05848191d2..08fc754471 100644
+--- a/xbmc/pictures/SlideShowPicture.cpp
++++ b/xbmc/pictures/SlideShowPicture.cpp
+@@ -32,6 +32,8 @@ using namespace DirectX;
+ using namespace Microsoft::WRL;
+ #endif
+ 
++#include <cstddef>
++
+ #define IMMEDIATE_TRANSITION_TIME          20
+ 
+ #define PICTURE_MOVE_AMOUNT              0.02f
+-- 
+2.20.1
+
