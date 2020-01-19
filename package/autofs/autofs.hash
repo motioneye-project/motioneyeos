@@ -1,5 +1,5 @@
 # From https://www.kernel.org/pub/linux/daemons/autofs/v5/sha256sums.asc
-sha256 23afdad9e2fd6d41b1900be8cfecfd5aae0ad174c7708ff685ec27e280f9c0da  autofs-5.1.5.tar.xz
+sha256 dddee3d9b7388ce6cb7432832dfade25b07ef68ad48dcce01cf247b26a10caef  autofs-5.1.6.tar.xz
 
 # Hash for license files
 sha256 dcc100d4161cc0b7177545ab6e47216f84857cda3843847c792a25289852dcaa  COPYING
