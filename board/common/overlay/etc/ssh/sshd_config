@@ -2,9 +2,8 @@ ListenAddress 0.0.0.0
 
 PermitRootLogin yes
 PermitEmptyPasswords yes
-AuthorizedKeysFile /data/etc/ssh_authorized_keys
 UseDNS no
-Banner /var/cache/sshd_banner
+Banner /var/run/ssh/sshd_banner
 
 Subsystem sftp /usr/libexec/sftp-server
 IPQoS cs0 cs0
