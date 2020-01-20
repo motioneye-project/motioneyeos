@@ -1,6 +1,8 @@
 #!/bin/bash
 
-CONF="/etc/sshd_config"
+SYS_CONF="/etc/sshd_config"
+USER_CONF="/data/etc/sshd_config"
+CONF="/var/run/sshd_config"
 
 PROG="/usr/sbin/sshd"
 PROG_KG="/usr/bin/ssh-keygen"
@@ -10,7 +12,7 @@ test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -s ${CONF} || exit 0
+test -s ${SYS_CONF} || exit 0
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 
@@ -18,6 +20,13 @@ test "${OS_NETWORKLESS}" == "true" && exit 0
 start() {
     msg_begin "Starting sshd"
     
+    # merge user and sys conf files; options in first file take precedence
+    if [[ -s ${USER_CONF} ]]; then
+        cat ${USER_CONF} ${SYS_CONF} > ${CONF}
+    else
+        cp ${SYS_CONF} ${CONF}
+    fi
+
     # create any missing keys
     if ! ${PROG_KG} -A >/dev/null; then
         msg_fail
@@ -57,4 +66,3 @@ case "$1" in
         echo "Usage: $0 {start|stop|restart}"
         exit 1
 esac
-
