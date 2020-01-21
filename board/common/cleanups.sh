@@ -10,7 +10,6 @@ find ${TARGET} -name '.empty' | xargs -r rm
 # /etc stuff
 rm -rf ${TARGET}/etc/network/
 rm -rf ${TARGET}/etc/dhcp/
-rm -rf ${TARGET}/etc/ssh/
 rm -rf ${TARGET}/etc/rc_keymaps/
 rm -rf ${TARGET}/etc/default/
 rm -rf ${TARGET}/etc/ctdb/
