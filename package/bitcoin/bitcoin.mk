@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-BITCOIN_VERSION = 0.16.3
-BITCOIN_SITE = $(call github,bitcoin,bitcoin,v$(BITCOIN_VERSION))
+BITCOIN_VERSION = 0.19.0.1
+BITCOIN_SITE = https://bitcoincore.org/bin/bitcoin-core-$(BITCOIN_VERSION)
 BITCOIN_AUTORECONF = YES
 BITCOIN_LICENSE = MIT
 BITCOIN_LICENSE_FILES = COPYING
