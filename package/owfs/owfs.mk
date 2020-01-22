@@ -4,13 +4,10 @@
 #
 ################################################################################
 
-OWFS_VERSION = 3.2p2
-OWFS_SITE = http://downloads.sourceforge.net/project/owfs/owfs/$(OWFS_VERSION)
+OWFS_VERSION = 3.2p3
+OWFS_SITE = https://github.com/owfs/owfs/releases/download/v$(OWFS_VERSION)
 OWFS_DEPENDENCIES = host-pkgconf
 OWFS_CONF_OPTS = --disable-owperl --without-perl5 --disable-owtcl --without-tcl
-
-# We're patching configure.ac
-OWFS_AUTORECONF = YES
 
 # owtcl license is declared in module/ownet/c/src/include/ow_functions.h
 OWFS_LICENSE = GPL-2.0+, LGPL-2.0 (owtcl)
