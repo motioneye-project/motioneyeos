@@ -36,7 +36,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-g711-codec \
 	--disable-l16-codec \
 	--disable-g722-codec \
-	--disable-libsamplerate \
 	--disable-sdl \
 	--disable-ffmpeg \
 	--disable-v4l2 \
@@ -69,6 +68,13 @@ LIBPJSIP_DEPENDENCIES += gnutls
 LIBPJSIP_CONF_OPTS += --with-gnutls=$(STAGING_DIR)/usr
 else
 LIBPJSIP_CONF_OPTS += --disable-ssl
+endif
+
+ifeq ($(BR2_PACKAGE_LIBSAMPLERATE),y)
+LIBPJSIP_DEPENDENCIES += libsamplerate
+LIBPJSIP_CONF_OPTS += --enable-libsamplerate
+else
+LIBPJSIP_CONF_OPTS += --disable-libsamplerate
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
