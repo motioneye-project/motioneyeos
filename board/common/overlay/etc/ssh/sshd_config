@@ -1,0 +1,9 @@
+ListenAddress 0.0.0.0
+
+PermitRootLogin yes
+PermitEmptyPasswords yes
+UseDNS no
+Banner /var/run/ssh/sshd_banner
+
+Subsystem sftp /usr/libexec/sftp-server
+IPQoS cs0 cs0

@@ -1,6 +1,12 @@
 #!/bin/bash
 
-CONF="/etc/sshd_config"
+SYS_DIR=/etc/ssh
+USER_DIR=/data/etc/ssh
+RUN_DIR=/var/run/ssh
+
+SYS_CONF="${SYS_DIR}/sshd_config"
+USER_CONF="${USER_DIR}/sshd_config"
+CONF="${RUN_DIR}/sshd_config"
 
 PROG="/usr/sbin/sshd"
 PROG_KG="/usr/bin/ssh-keygen"
@@ -10,23 +16,38 @@ test -x ${PROG} || exit 0
 
 test -n "${OS_VERSION}" || source /etc/init.d/base
 
-test -s ${CONF} || exit 0
+test -s ${SYS_CONF} || exit 0
 
 test "${OS_NETWORKLESS}" == "true" && exit 0
 
 
 start() {
-    msg_begin "Starting sshd"
-    
-    # create any missing keys
-    if ! ${PROG_KG} -A >/dev/null; then
-        msg_fail
-        return 1
+    # merge user and sys conf files; options in first file take precedence
+    mkdir -p $(dirname ${CONF})
+    if [[ -s ${USER_CONF} ]]; then
+        cat ${USER_CONF} ${SYS_CONF} > ${CONF}
+    else
+        cp ${SYS_CONF} ${CONF}
     fi
 
+    # ensure various dirs existence
+    mkdir -p ${USER_DIR}
+    mkdir -p ${RUN_DIR}
+
+    # create any missing keys
+    if ! [[ -s ${USER_DIR}/ssh_host_rsa_key ]]; then
+        msg_begin "Generating ssh host keys"
+        for type in rsa dsa ecdsa ed25519; do
+            ssh-keygen -f ${USER_DIR}/ssh_host_${type}_key -N '' -t ${type} >/dev/null
+        done
+        test $? == 0 && msg_done || msg_fail
+    fi
+
+    msg_begin "Starting sshd"
+    
     umask 077
     hostname=$(hostname)
-    echo "Welcome to ${hostname}!" > /var/cache/sshd_banner
+    echo "Welcome to ${hostname}!" > ${RUN_DIR}/sshd_banner
     sync
 
     ${PROG} -f ${CONF}
@@ -57,4 +78,3 @@ case "$1" in
         echo "Usage: $0 {start|stop|restart}"
         exit 1
 esac
-
