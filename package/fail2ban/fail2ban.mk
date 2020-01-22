@@ -10,6 +10,14 @@ FAIL2BAN_LICENSE = GPL-2.0+
 FAIL2BAN_LICENSE_FILES = COPYING
 FAIL2BAN_SETUP_TYPE = distutils
 
+ifeq ($(BR2_PACKAGE_PYTHON3),y)
+define FAIL2BAN_PYTHON_2TO3
+	$(HOST_DIR)/bin/2to3 --write --nobackups --no-diffs $(@D)/bin/* $(@D)/fail2ban
+endef
+FAIL2BAN_DEPENDENCIES += host-python3
+FAIL2BAN_POST_PATCH_HOOKS += FAIL2BAN_PYTHON_2TO3
+endif
+
 define FAIL2BAN_FIX_DEFAULT_CONFIG
 	$(SED) '/^socket/c\socket = /run/fail2ban.sock' $(TARGET_DIR)/etc/fail2ban/fail2ban.conf
 	$(SED) '/^pidfile/c\pidfile = /run/fail2ban.pid' $(TARGET_DIR)/etc/fail2ban/fail2ban.conf
