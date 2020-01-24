@@ -527,18 +527,23 @@ endef
 #
 # Note: our package infrastructure uses the full-path of the last-scanned
 # Makefile to determine what package we're currently defining, using the
-# last directory component in the path. As such, including other Makefiles,
-# like below, before we call one of the *-package macros usually doesn't
-# work.
-# However, since the files we include here are in the same directory as
-# the current Makefile, we are OK. But this is a hard requirement: files
-# included here *must* either be in this same directory OR within a
-# another directory with the name "linux" (in the BR2_EXTERNAL case).
-include $(sort $(wildcard linux/linux-ext-*.mk))
-
-# Import linux-kernel-extensions from br2-externals
+# last directory component in the path. Additionally, the full path of
+# the package directory is also stored in _PKGDIR (e.g. to find patches)
+#
+# As such, including other Makefiles, like below, before we call one of
+# the *-package macros usually doesn't work.
+#
+# However, by including the in-tree extensions after the ones from the
+# br2-external trees, we're back to the situation where the last Makefile
+# scanned *is* included from the correct directory.
+#
+# NOTE: this is very fragile, and extra care must be taken to ensure that
+# we always end up with an in-tree included file. That's mostly OK, because
+# we do have in-tree linux-extensions.
+#
 include $(sort $(wildcard $(foreach ext,$(BR2_EXTERNAL_DIRS), \
 	$(ext)/linux/linux-ext-*.mk)))
+include $(sort $(wildcard linux/linux-ext-*.mk))
 
 LINUX_PATCH_DEPENDENCIES += $(foreach ext,$(LINUX_EXTENSIONS),\
 	$(if $(BR2_LINUX_KERNEL_EXT_$(call UPPERCASE,$(ext))),$(ext)))
