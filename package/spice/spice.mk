@@ -32,13 +32,6 @@ SPICE_CONF_OPTS = \
 
 SPICE_DEPENDENCIES += host-pkgconf
 
-ifeq ($(BR2_PACKAGE_CELT051),y)
-SPICE_CONF_OPTS += --enable-celt051
-SPICE_DEPENDENCIES += celt051
-else
-SPICE_CONF_OPTS += --disable-celt051
-endif
-
 ifeq ($(BR2_PACKAGE_LZ4),y)
 SPICE_CONF_OPTS += --enable-lz4
 SPICE_DEPENDENCIES += lz4

@@ -2535,7 +2535,6 @@ F:	configs/nanopi_neo_defconfig
 F:	fs/squashfs/
 F:	package/asterisk/
 F:	package/cegui06/
-F:	package/celt051/
 F:	package/dahdi-linux/
 F:	package/dahdi-tools/
 F:	package/dtc/

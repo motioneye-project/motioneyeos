@@ -146,6 +146,16 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_CELT051
+	bool "celt051 package was removed"
+	select BR2_LEGACY
+	select BR2_PACKAGE_OPUS
+	help
+	  The celt051 package was removed as it is now obsolete since
+	  the CELT codec has been merged into the IETF Opus codec. As
+	  a result, the opus package has been automatically selected
+	  in your configuration.
+
 config BR2_PACKAGE_WIREGUARD
 	bool "wireguard package renamed"
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
