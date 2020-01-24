@@ -1385,6 +1385,7 @@ F:	configs/imx8mmpico_defconfig
 F:	configs/imx8mpico_defconfig
 F:	package/fluid-soundfont/
 F:	package/fluidsynth/
+F:	package/ptm2human/
 
 N:	Julien Viard de Galbert <julien@vdg.name>
 F:	package/dieharder/

@@ -1,0 +1,29 @@
+From 57b32b3785da1e48bd77c4f13ef41125a6abb83d Mon Sep 17 00:00:00 2001
+From: Julien Olivain <juju@cotds.org>
+Date: Fri, 24 Jan 2020 19:12:37 +0100
+Subject: [PATCH] configure.ac: remove unneeded check for c++ compiler
+
+If the c++ compiler is not present, the build configuration
+will fail. This patch remove the check for the c++ compiler
+because all the ptm2human code is written in C.
+
+Signed-off-by: Julien Olivain <juju@cotds.org>
+---
+ configure.ac | 1 -
+ 1 file changed, 1 deletion(-)
+
+diff --git a/configure.ac b/configure.ac
+index 3b1f337..924dc77 100644
+--- a/configure.ac
++++ b/configure.ac
+@@ -7,7 +7,6 @@ AM_INIT_AUTOMAKE([foreign -Wall])
+ AC_CONFIG_HEADERS([config.h])
+ 
+ # Checks for programs.
+-AC_PROG_CXX
+ AC_PROG_CC
+ 
+ # Checks for libraries.
+-- 
+2.24.1
+
