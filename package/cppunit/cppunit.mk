@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-CPPUNIT_VERSION = 1.14.0
+CPPUNIT_VERSION = 1.15.1
 CPPUNIT_SITE = http://dev-www.libreoffice.org/src
 CPPUNIT_INSTALL_STAGING = YES
 CPPUNIT_LICENSE = LGPL-2.1
