@@ -1,0 +1,27 @@
+From 2e1a982ed0eef1188ad15995e177e7d40746685f Mon Sep 17 00:00:00 2001
+From: Corey Minyard <cminyard@mvista.com>
+Date: Tue, 7 Jan 2020 11:34:33 -0600
+Subject: [PATCH] Fix an issue compiling with pthreads disabled
+
+Define PTHREAD_MUTEX_INITIALIZER in this case.
+
+Signed-off-by: Corey Minyard <cminyard@mvista.com>
+[Retrieved from:
+https://github.com/cminyard/gensio/commit/2e1a982ed0eef1188ad15995e177e7d40746685f]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ lib/gensio_selector.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/lib/gensio_selector.c b/lib/gensio_selector.c
+index c050df0..66ada01 100644
+--- a/lib/gensio_selector.c
++++ b/lib/gensio_selector.c
+@@ -30,6 +30,7 @@
+ #define pthread_mutex_unlock(l) do { } while (0)
+ #define pthread_mutex_init(l, n) do { } while (0)
+ #define pthread_mutex_destroy(l, n) do { } while (0)
++#define PTHREAD_MUTEX_INITIALIZER 0
+ #endif
+ 
+ #include <gensio/gensio_selector.h>
