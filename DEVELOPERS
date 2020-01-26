@@ -2177,10 +2177,6 @@ F:	package/mariadb/
 N:	Ryan Wilkins <ryan@deadfrog.net>
 F:	package/biosdevname/
 
-N:	Sam Bobroff <sam.bobroff@au1.ibm.com>
-F:	arch/Config.in.powerpc
-F:	package/librtas/
-
 N:	Sam Lancia <sam@gpsm.co.uk>
 F:	package/lrzip/
 
