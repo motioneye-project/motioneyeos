@@ -2096,10 +2096,6 @@ N:	Richard Braun <rbraun@sceen.net>
 F:	package/curlftpfs/
 F:	package/tzdata/
 
-N:	Rico Bachmann <bachmann@tofwerk.com>
-F:	package/apr-util/
-F:	package/subversion/
-
 N:	RJ Ascani <rj.ascani@gmail.com>
 F:	package/azmq/
 
