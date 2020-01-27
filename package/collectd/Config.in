@@ -63,6 +63,13 @@ config BR2_PACKAGE_COLLECTD_LOGSTASH
 	help
 	  Writes log messages formatted as logstash JSON events.
 
+config BR2_PACKAGE_COLLECTD_LUA
+	bool "lua"
+	select BR2_PACKAGE_LUA
+	help
+	  Embeds a Lua interpreter into collectd and provides an
+	  interface to collectd's plugin system.
+
 config BR2_PACKAGE_COLLECTD_NOTIFY_EMAIL
 	bool "notify_email"
 	depends on !BR2_STATIC_LIBS # libesmtp
