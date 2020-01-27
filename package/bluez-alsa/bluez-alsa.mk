@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-BLUEZ_ALSA_VERSION = 2.0.0
+BLUEZ_ALSA_VERSION = 2.1.0
 BLUEZ_ALSA_SITE = $(call github,Arkq,bluez-alsa,v$(BLUEZ_ALSA_VERSION))
 BLUEZ_ALSA_LICENSE = MIT
 BLUEZ_ALSA_LICENSE_FILES = LICENSE
@@ -51,6 +51,13 @@ ifeq ($(BR2_PACKAGE_OFONO),y)
 BLUEZ_ALSA_CONF_OPTS += --enable-ofono
 else
 BLUEZ_ALSA_CONF_OPTS += --disable-ofono
+endif
+
+# no build dependency, enables integration with UPower D-Bus service
+ifeq ($(BR2_PACKAGE_UPOWER),y)
+BLUEZ_ALSA_CONF_OPTS += --enable-upower
+else
+BLUEZ_ALSA_CONF_OPTS += --disable-upower
 endif
 
 ifeq ($(BR2_PACKAGE_BLUEZ_ALSA_HCITOP),y)
