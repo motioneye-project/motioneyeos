@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-PIGPIO_VERSION = 72
-PIGPIO_SITE = $(call github,joan2937,pigpio,V$(PIGPIO_VERSION))
+PIGPIO_VERSION = 7301
+PIGPIO_SITE = $(call github,joan2937,pigpio,v$(PIGPIO_VERSION))
 PIGPIO_LICENSE = Unlicense
 PIGPIO_LICENSE_FILES = UNLICENCE
 PIGPIO_INSTALL_STAGING = YES
