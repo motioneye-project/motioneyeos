@@ -1,3 +1,3 @@
 # md5, sha256 from https://pypi.org/pypi/pigpio/json
-md5	17c1a662f43b17a0c7e671a0a351d468  pigpio-1.44.tar.gz
-sha256	df5e430e5c026c95f575cb50ccd18eb37d41be4e0bbbde070ab332dae27fdf58  pigpio-1.44.tar.gz
+md5	a6817d953549c19522bae2d4f36251f4  pigpio-1.45.tar.gz
+sha256	a6a8dbc19e827046bde02b4c34ab725d55093490ed7bc1e7c80277adfadc16ac  pigpio-1.45.tar.gz
