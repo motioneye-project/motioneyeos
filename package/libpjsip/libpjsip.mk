@@ -28,7 +28,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-sound \
 	--disable-resample \
 	--disable-video \
-	--disable-opencore-amr \
 	--disable-g7221-codec \
 	--disable-ilbc-codec \
 	--disable-libwebrtc \
@@ -75,6 +74,13 @@ LIBPJSIP_DEPENDENCIES += libsamplerate
 LIBPJSIP_CONF_OPTS += --enable-libsamplerate
 else
 LIBPJSIP_CONF_OPTS += --disable-libsamplerate
+endif
+
+ifeq ($(BR2_PACKAGE_OPENCORE_AMR),y)
+LIBPJSIP_DEPENDENCIES += opencore-amr
+LIBPJSIP_CONF_OPTS += --with-opencore-amr=$(STAGING_DIR)/usr
+else
+LIBPJSIP_CONF_OPTS += --disable-opencore-amr
 endif
 
 ifeq ($(BR2_PACKAGE_OPUS),y)
