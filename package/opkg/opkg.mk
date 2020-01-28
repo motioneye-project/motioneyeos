@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPKG_VERSION = 0.4.1
+OPKG_VERSION = 0.4.2
 OPKG_SITE = http://downloads.yoctoproject.org/releases/opkg
 OPKG_DEPENDENCIES = host-pkgconf libarchive
 OPKG_LICENSE = GPL-2.0+
