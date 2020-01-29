@@ -25,7 +25,6 @@ LIBPJSIP_CONF_ENV = \
 	CFLAGS="$(LIBPJSIP_CFLAGS)"
 
 LIBPJSIP_CONF_OPTS = \
-	--disable-sound \
 	--disable-resample \
 	--disable-video \
 	--disable-g7221-codec \
@@ -48,6 +47,13 @@ LIBPJSIP_CONF_OPTS = \
 # both enable it. But that's OK, epoll is better than the alternative,
 # so we want to use it.
 LIBPJSIP_CONF_OPTS += --enable-epoll
+
+ifeq ($(BR2_PACKAGE_ALSA_LIB_MIXER),y)
+LIBPJSIP_DEPENDENCIES += alsa-lib
+LIBPJSIP_CONF_OPTS += --enable-sound
+else
+LIBPJSIP_CONF_OPTS += --disable-sound
+endif
 
 ifeq ($(BR2_PACKAGE_BCG729),y)
 LIBPJSIP_DEPENDENCIES += bcg729
