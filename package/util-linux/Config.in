@@ -57,9 +57,9 @@ config BR2_PACKAGE_UTIL_LINUX_BINARIES
 	  flock, fsfreeze, fstrim, getopt, hexdump, ipcmk, isosize,
 	  ldattach, look, lsblk, lscpu, lsipc, lslocks, lsns, mcookie,
 	  mkfs, mkswap, namei, prlimit, readprofile, renice, rev,
-	  rtcwake, script, scriptreplay, setarch, setsid, sfdisk,
-	  swaplabel, swapoff, swapon, uuidgen, uuidparse, whereis,
-	  wipefs
+	  rtcwake, script, scriptlive, scriptreplay, setarch, setsid,
+	  sfdisk, swaplabel, swapoff, swapon, uuidgen, uuidparse,
+	  whereis, wipefs
 
 	  The setarch utility also installs architecture-specific
 	  symlinks like linux32, linux64, uname26, i386 and x86_64.

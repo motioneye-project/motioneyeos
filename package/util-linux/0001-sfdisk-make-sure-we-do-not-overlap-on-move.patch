@@ -1,0 +1,71 @@
+From 2b26438c4bf90b7836111cc49d847ee89e49bfa8 Mon Sep 17 00:00:00 2001
+From: Karel Zak <kzak@redhat.com>
+Date: Thu, 23 Jan 2020 12:44:58 +0100
+Subject: [PATCH] sfdisk: make sure we do not overlap on --move
+
+The area we need to move does not have to be aligned to optimal I/O
+size (step size) -- we need to be sure we do not move data
+after/before the area.
+
+Addresses: https://github.com/karelzak/util-linux/issues/938
+Signed-off-by: Karel Zak <kzak@redhat.com>
+---
+ disk-utils/sfdisk.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
+
+diff --git a/disk-utils/sfdisk.c b/disk-utils/sfdisk.c
+index 0601c3bcf..8f2edb87f 100644
+--- a/disk-utils/sfdisk.c
++++ b/disk-utils/sfdisk.c
+@@ -374,7 +374,7 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
+ 	int ok = 0, fd, backward = 0;
+ 	fdisk_sector_t nsectors, from, to, step, i, prev;
+ 	size_t io, ss, step_bytes, cc;
+-	uintmax_t src, dst;
++	uintmax_t src, dst, nbytes;
+ 	int errsv, progress = 0;
+ 	struct timeval prev_time;
+ 	uint64_t bytes_per_sec = 0;
+@@ -409,6 +409,7 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
+ 	from = fdisk_partition_get_start(orig_pa);
+ 	to = fdisk_partition_get_start(pa);
+ 
++
+ 	if ((to >= from && from + nsectors >= to) ||
+ 	    (from >= to && to + nsectors >= from)) {
+ 		/* source and target overlay, check if we need to copy
+@@ -434,6 +435,8 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
+ 	while (nsectors % step)
+ 		step--;
+ 
++	nbytes = nsectors * ss;
++
+ 	DBG(MISC, ul_debug(" step: %ju (%zu bytes)", (uintmax_t)step, step_bytes));
+ 
+ #if defined(POSIX_FADV_SEQUENTIAL) && defined(HAVE_POSIX_FADVISE)
+@@ -504,7 +507,7 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
+ 	gettimeofday(&prev_time, NULL);
+ 	prev = 0;
+ 
+-	for (cc = 1, i = 0; i < nsectors; i += step, cc++) {
++	for (cc = 1, i = 0; i < nsectors && nbytes > 0; i += step, cc++) {
+ 		ssize_t rc;
+ 
+ 		if (backward)
+@@ -512,6 +515,13 @@ static int move_partition_data(struct sfdisk *sf, size_t partno, struct fdisk_pa
+ 
+ 		DBG(MISC, ul_debug("#%05zu: src=%ju dst=%ju", cc, src, dst));
+ 
++		if (nbytes < step_bytes) {
++			DBG(MISC, ul_debug(" aligning step from %ju to %ju",
++						step_bytes, nbytes));
++			step_bytes = nbytes;
++		}
++		nbytes -= step_bytes;
++
+ 		if (!sf->noact) {
+ 			/* read source */
+ 			if (lseek(fd, src, SEEK_SET) == (off_t) -1)
+-- 
+2.18.2
+
