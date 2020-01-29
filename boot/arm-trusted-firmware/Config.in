@@ -135,6 +135,13 @@ config BR2_TARGET_ARM_TRUSTED_FIRMWARE_UBOOT_BL33_IMAGE
 
 endif
 
+config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_TARGETS
+	string "Additional ATF make targets"
+	help
+	  Additional targets for the ATF build
+	  E.G. When using the QorIQ custom ATF repository from NXP,
+	  the target 'pbl' can be used to build the pbl binary.
+
 config BR2_TARGET_ARM_TRUSTED_FIRMWARE_ADDITIONAL_VARIABLES
 	string "Additional ATF build variables"
 	help
