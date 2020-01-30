@@ -957,6 +957,7 @@ F:	package/zxing-cpp/
 
 N:	Frank Vanbever <frank.vanbever@essensium.com>
 F:	package/libmodsecurity/
+F:	package/nginx-modsecurity/
 
 N:	Gaël Portay <gael.portay@collabora.com>
 F:	package/qt5/qt5virtualkeyboard/

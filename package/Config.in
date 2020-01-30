@@ -2077,6 +2077,7 @@ menu "Networking applications"
 if BR2_PACKAGE_NGINX
 menu "External nginx modules"
 	source "package/nginx-dav-ext/Config.in"
+	source "package/nginx-modsecurity/Config.in"
 	source "package/nginx-naxsi/Config.in"
 	source "package/nginx-upload/Config.in"
 endmenu

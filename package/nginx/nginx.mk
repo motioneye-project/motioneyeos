@@ -250,6 +250,11 @@ NGINX_DEPENDENCIES += nginx-naxsi
 NGINX_CONF_OPTS += --add-module=$(NGINX_NAXSI_DIR)/naxsi_src
 endif
 
+ifeq ($(BR2_PACKAGE_NGINX_MODSECURITY),y)
+NGINX_DEPENDENCIES += nginx-modsecurity
+NGINX_CONF_OPTS += --add-module=$(NGINX_MODSECURITY_DIR)
+endif
+
 # Debug logging
 NGINX_CONF_OPTS += $(if $(BR2_PACKAGE_NGINX_DEBUG),--with-debug)
 
