@@ -955,6 +955,9 @@ F:	package/ucl/
 F:	package/upx/
 F:	package/zxing-cpp/
 
+N:	Frank Vanbever <frank.vanbever@essensium.com>
+F:	package/libmodsecurity/
+
 N:	Gaël Portay <gael.portay@collabora.com>
 F:	package/qt5/qt5virtualkeyboard/
 F:	package/qt5/qt5webengine/
