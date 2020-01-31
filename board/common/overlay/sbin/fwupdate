@@ -275,6 +275,7 @@ function do_download() {
         if [[ -n "${DST_FNAME}" ]]; then
             cp -f $1 ${DST_FNAME}
             echo ${version} > ${VER_FILE}
+            touch ${DOWNLOAD_DONE_FILE}
             return
         fi
     fi
