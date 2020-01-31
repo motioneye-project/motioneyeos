@@ -21,5 +21,12 @@ else
 FILE_CONF_OPTS += --disable-libseccomp
 endif
 
+ifeq ($(BR2_PACKAGE_XZ),y)
+FILE_CONF_OPTS += --enable-xzlib
+FILE_DEPENDENCIES += xz
+else
+FILE_CONF_OPTS += --disable-xzlib
+endif
+
 $(eval $(autotools-package))
 $(eval $(host-autotools-package))
