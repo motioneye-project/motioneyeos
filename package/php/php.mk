@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-PHP_VERSION = 7.3.14
+PHP_VERSION = 7.4.2
 PHP_SITE = http://www.php.net/distributions
 PHP_SOURCE = php-$(PHP_VERSION).tar.xz
 PHP_INSTALL_STAGING = YES
@@ -119,7 +119,6 @@ PHP_CONF_OPTS += \
 	$(if $(BR2_PACKAGE_PHP_EXT_CALENDAR),--enable-calendar) \
 	$(if $(BR2_PACKAGE_PHP_EXT_FILEINFO),--enable-fileinfo) \
 	$(if $(BR2_PACKAGE_PHP_EXT_BCMATH),--enable-bcmath) \
-	$(if $(BR2_PACKAGE_PHP_EXT_MBSTRING),--enable-mbstring) \
 	$(if $(BR2_PACKAGE_PHP_EXT_PHAR),--enable-phar)
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBARGON2),y)
@@ -130,6 +129,11 @@ endif
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBSODIUM),y)
 PHP_CONF_OPTS += --with-sodium=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += libsodium
+endif
+
+ifeq ($(BR2_PACKAGE_PHP_EXT_MBSTRING),y)
+PHP_CONF_OPTS += --enable-mbstring
+PHP_DEPENDENCIES += oniguruma
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_MCRYPT),y)
@@ -147,7 +151,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_LIBXML2),y)
 PHP_CONF_ENV += php_cv_libxml_build_works=yes
-PHP_CONF_OPTS += --enable-libxml --with-libxml-dir=$(STAGING_DIR)/usr
+PHP_CONF_OPTS += --with-libxml --with-libxml-dir=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += libxml2
 endif
 

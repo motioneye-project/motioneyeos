@@ -240,6 +240,7 @@ comment "intl support needs a toolchain w/ C++, wchar, threads, dynamic library,
 
 config BR2_PACKAGE_PHP_EXT_MBSTRING
 	bool "mbstring"
+	select BR2_PACKAGE_ONIGURUMA
 	help
 	  multibyte string support
 
