@@ -26,7 +26,6 @@ LIBPJSIP_CONF_ENV = \
 
 LIBPJSIP_CONF_OPTS = \
 	--disable-resample \
-	--disable-video \
 	--disable-g7221-codec \
 	--disable-ilbc-codec \
 	--disable-libwebrtc \
@@ -36,7 +35,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-g722-codec \
 	--disable-sdl \
 	--disable-ffmpeg \
-	--disable-v4l2 \
 	--disable-openh264 \
 	--disable-libyuv \
 	--disable-ipp \
@@ -87,6 +85,13 @@ LIBPJSIP_DEPENDENCIES += libsamplerate
 LIBPJSIP_CONF_OPTS += --enable-libsamplerate
 else
 LIBPJSIP_CONF_OPTS += --disable-libsamplerate
+endif
+
+ifeq ($(BR2_PACKAGE_LIBV4L),y)
+# --enable-v4l2 is broken (check for libv4l2 will be omitted)
+LIBPJSIP_DEPENDENCIES += libv4l
+else
+LIBPJSIP_CONF_OPTS += --disable-v4l2
 endif
 
 ifeq ($(BR2_PACKAGE_OPENCORE_AMR),y)
