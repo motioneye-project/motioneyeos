@@ -18,6 +18,7 @@ LIBMODSECURITY_CONF_ENV = \
 
 LIBMODSECURITY_DEPENDENCIES = pcre
 LIBMODSECURITY_CONF_OPTS = \
+	--with-pcre="$(STAGING_DIR)/usr/bin/pcre-config" \
 	--disable-examples \
 	--without-lmdb \
 	--without-ssdeep \
