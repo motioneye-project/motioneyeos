@@ -60,8 +60,12 @@ BR_NO_CHECK_HASH_FOR += $(notdir $(LINUX_PATCHES))
 # be directories in the patch list (unlike for other packages).
 LINUX_PATCH = $(filter ftp://% http://% https://%,$(LINUX_PATCHES))
 
+# while the kernel is built for the target, the build may need various
+# host libraries depending on config (and version), so use
+# HOST_MAKE_ENV here. In particular, this ensures that our
+# host-pkgconf will look for host libraries and not target ones.
 LINUX_MAKE_ENV = \
-	$(TARGET_MAKE_ENV) \
+	$(HOST_MAKE_ENV) \
 	BR_BINARIES_DIR=$(BINARIES_DIR)
 
 LINUX_INSTALL_IMAGES = YES
@@ -102,12 +106,6 @@ endif
 
 ifeq ($(BR2_LINUX_KERNEL_NEEDS_HOST_LIBELF),y)
 LINUX_DEPENDENCIES += host-elfutils host-pkgconf
-LINUX_MAKE_ENV += \
-	PKG_CONFIG="$(PKG_CONFIG_HOST_BINARY)" \
-	PKG_CONFIG_SYSROOT_DIR="/" \
-	PKG_CONFIG_ALLOW_SYSTEM_CFLAGS=1 \
-	PKG_CONFIG_ALLOW_SYSTEM_LIBS=1 \
-	PKG_CONFIG_LIBDIR="$(HOST_DIR)/lib/pkgconfig:$(HOST_DIR)/share/pkgconfig"
 endif
 
 # If host-uboot-tools is selected by the user, assume it is needed to
