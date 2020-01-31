@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-ARP_SCAN_VERSION = 1.9.6
+ARP_SCAN_VERSION = 1.9.7
 ARP_SCAN_SITE = $(call github,royhills,arp-scan,$(ARP_SCAN_VERSION))
 ARP_SCAN_LICENSE = GPL-3.0+
 ARP_SCAN_LICENSE_FILES = COPYING
