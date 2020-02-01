@@ -6,7 +6,7 @@
 
 FILE_VERSION = 5.38
 FILE_SITE = ftp://ftp.astron.com/pub/file
-FILE_DEPENDENCIES = host-file zlib
+FILE_DEPENDENCIES = host-file
 HOST_FILE_DEPENDENCIES = host-zlib
 FILE_CONF_ENV = ac_cv_prog_cc_c99='-std=gnu99'
 FILE_INSTALL_STAGING = YES
@@ -35,6 +35,13 @@ FILE_CONF_OPTS += --enable-xzlib
 FILE_DEPENDENCIES += xz
 else
 FILE_CONF_OPTS += --disable-xzlib
+endif
+
+ifeq ($(BR2_PACKAGE_ZLIB),y)
+FILE_CONF_OPTS += --enable-zlib
+FILE_DEPENDENCIES += zlib
+else
+FILE_CONF_OPTS += --disable-zlib
 endif
 
 $(eval $(autotools-package))
