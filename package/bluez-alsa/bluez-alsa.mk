@@ -17,7 +17,7 @@ BLUEZ_ALSA_CONF_OPTS = \
 	--enable-aplay \
 	--disable-debug-time \
 	--with-alsaplugindir=/usr/lib/alsa-lib \
-	--with-alsaconfdir=/usr/share/alsa
+	--with-alsaconfdir=/etc/alsa/conf.d
 
 ifeq ($(BR2_PACKAGE_FDK_AAC),y)
 BLUEZ_ALSA_DEPENDENCIES += fdk-aac
