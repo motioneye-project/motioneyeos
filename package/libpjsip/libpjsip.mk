@@ -33,7 +33,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-g711-codec \
 	--disable-l16-codec \
 	--disable-g722-codec \
-	--disable-ffmpeg \
 	--disable-ipp \
 	--disable-silk \
 	--with-external-srtp
@@ -55,6 +54,13 @@ LIBPJSIP_DEPENDENCIES += bcg729
 LIBPJSIP_CONF_OPTS += --with-bcg729=$(STAGING_DIR)/usr
 else
 LIBPJSIP_CONF_OPTS += --disable-bcg729
+endif
+
+ifeq ($(BR2_PACKAGE_FFMPEG),y)
+LIBPJSIP_DEPENDENCIES += ffmpeg
+LIBPJSIP_CONF_OPTS += --with-ffmpeg=$(STAGING_DIR)/usr
+else
+LIBPJSIP_CONF_OPTS += --disable-ffmpeg
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGSM),y)
