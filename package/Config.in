@@ -342,6 +342,7 @@ comment "QT libraries and helper libraries"
 endif
 	source "package/tekui/Config.in"
 	source "package/weston/Config.in"
+	source "package/weston-imx/Config.in"
 	source "package/x11r7/Config.in"
 
 comment "X applications"
