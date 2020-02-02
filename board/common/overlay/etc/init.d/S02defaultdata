@@ -1,0 +1,45 @@
+#!/bin/bash
+
+test -n "${OS_VERSION}" || source /etc/init.d/base
+
+
+set_empty_root_passwd() {
+    msg_begin "Setting empty root password"
+    PASSWORD="" adminpasswd
+    sync
+    msg_done
+}
+
+copy_version() {
+    msg_begin "Copying version file"
+    cp /etc/version /data/etc/version
+    sync
+    msg_done
+}
+
+set_utc_timezone() {
+    msg_begin "Setting UTC timezone"
+    ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
+    touch /data/etc/adjtime
+    sync
+    msg_done
+}
+
+
+case "$1" in
+    start)
+        test -s /data/etc/shadow || set_empty_root_passwd
+        test -s /data/etc/version || copy_version
+        test -s /data/etc/localtime || set_utc_timezone
+        ;;
+
+    stop)
+        true
+        ;;
+
+    *)
+        echo "Usage: $0 {start}"
+        exit 1
+esac
+
+exit $?

@@ -41,24 +41,12 @@ case "$1" in
         test $? == 0 && msg_done || msg_fail
 
         msg_begin "Mounting data partition"
-        mount -T /etc/fstab.disk /data
-        test $? == 0 && msg_done || msg_fail
+        mount -T /etc/fstab.disk /data && msg_done || msg_fail
 
-        msg_begin "Creating required data files"
+        msg_begin "Copying data skeleton"
         cp -pur /usr/share/dataskel/* /data
-        cp /etc/version /data/etc/version
-        ln -s /usr/share/zoneinfo/UTC /data/etc/localtime
-        touch /data/etc/adjtime
         sync
         msg_done
-        
-        msg_begin "Setting empty root password"
-        PASSWORD="" adminpasswd
-        msg_done
-
-        # mount other partitions depending on data
-        mount -T /etc/fstab.disk -a
-        mount -T /etc/fstab.extra -a
         ;;
 
     stop)
