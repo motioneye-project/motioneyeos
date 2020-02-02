@@ -16,4 +16,11 @@ else
 SMARTMONTOOLS_CONF_OPTS += --without-libcap-ng
 endif
 
+ifeq ($(BR2_PACKAGE_LIBSELINUX),y)
+SMARTMONTOOLS_CONF_OPTS += --with-selinux
+SMARTMONTOOLS_DEPENDENCIES += libselinux
+else
+SMARTMONTOOLS_CONF_OPTS += --without-selinux
+endif
+
 $(eval $(autotools-package))
