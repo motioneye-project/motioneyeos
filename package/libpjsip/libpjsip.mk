@@ -35,7 +35,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-g722-codec \
 	--disable-sdl \
 	--disable-ffmpeg \
-	--disable-openh264 \
 	--disable-ipp \
 	--disable-silk \
 	--with-external-srtp
@@ -67,6 +66,13 @@ LIBPJSIP_DEPENDENCIES += libgsm
 else
 LIBPJSIP_CONF_OPTS += \
 	--disable-gsm-codec
+endif
+
+ifeq ($(BR2_PACKAGE_LIBOPENH264),y)
+LIBPJSIP_DEPENDENCIES += libopenh264
+LIBPJSIP_CONF_OPTS += --with-openh264=$(STAGING_DIR)/usr
+else
+LIBPJSIP_CONF_OPTS += --disable-openh264
 endif
 
 ifeq ($(BR2_PACKAGE_LIBOPENSSL),y)
