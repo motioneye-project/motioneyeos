@@ -884,6 +884,7 @@ F:	package/pcmanfm/
 F:	package/python-backcall/
 F:	package/python-jedi/
 F:	package/python-parso/
+F:	package/rocksdb/
 F:	package/rygel/
 F:	package/safeclib/
 F:	package/suricata/
