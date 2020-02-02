@@ -1,3 +1,6 @@
 # From http://sourceforge.net/projects/sdlgfx/files/
 md5	fcc3c4f2d1b4943409bf7e67dd65d03a	SDL_gfx-2.0.23.tar.gz
 sha1	aae60e7fed539f3f8a0a0bd6da3bbcf625642596	SDL_gfx-2.0.23.tar.gz
+# Locally computed
+sha256  4f5df842266c59b2d7e6ef35b53d7f37b13795d93baf3ed211f502c216f7bc89  COPYING
+sha256  5f3bc98e0bd2de83279bd62868d4bc0c2b4f811ab828b036d36a4a6d1cd5672d  LICENSE

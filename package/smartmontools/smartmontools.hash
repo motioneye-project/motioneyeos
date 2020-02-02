@@ -1,3 +1,5 @@
 # From http://sourceforge.net/projects/smartmontools/files/smartmontools/6.5/
 md5	093aeec3f8f39fa9a37593c4012d3156	smartmontools-6.5.tar.gz
 sha1	7e788b429534a4ae627858fbcc826b93402cee7e	smartmontools-6.5.tar.gz
+# Locally computed
+sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING

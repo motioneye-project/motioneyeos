@@ -1,2 +1,3 @@
 # Locally calculated
-sha256 5a24f62a610249d744cbd8d28ee399d8905db7222bf3bdbc8a8b4a76e597695f  SDL2_mixer-2.0.1.tar.gz
+sha256  5a24f62a610249d744cbd8d28ee399d8905db7222bf3bdbc8a8b4a76e597695f  SDL2_mixer-2.0.1.tar.gz
+sha256  4fc74d216e009c7cc5d939b688fc122b329787dcd24f69ae2a08ce052c826b39  COPYING.txt

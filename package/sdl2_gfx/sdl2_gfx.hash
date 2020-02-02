@@ -1,2 +1,4 @@
 # Locally calculated
-sha256 63e0e01addedc9df2f85b93a248f06e8a04affa014a835c2ea34bfe34e576262  SDL2_gfx-1.0.4.tar.gz
+sha256  63e0e01addedc9df2f85b93a248f06e8a04affa014a835c2ea34bfe34e576262  SDL2_gfx-1.0.4.tar.gz
+sha256  ec9036525fe1adde787041cce6c4b7fbb262863c238bb9051037e29a57e27bfc  COPYING
+sha256  18e6fad60b809b0e30bd2576a0d33c179ca2ac694504a849d05b6579e3c481dd  SDL2_framerate.h

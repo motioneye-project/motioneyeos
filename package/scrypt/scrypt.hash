@@ -1,2 +1,4 @@
 # From http://www.tarsnap.com/scrypt/scrypt-sigs-1.2.0.asc
-sha256 1754bc89405277c8ac14220377a4c240ddc34b1ce70882aa92cd01bfdc8569d4  scrypt-1.2.0.tgz
+sha256  1754bc89405277c8ac14220377a4c240ddc34b1ce70882aa92cd01bfdc8569d4  scrypt-1.2.0.tgz
+# Locally computed
+sha256  e9d3ce691acc974c05d54bdea919fa03018fcdb5abd82eab5cdb78f07c451e0a  main.c
