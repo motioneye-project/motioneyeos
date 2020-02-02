@@ -174,6 +174,22 @@ KODI_CONF_OPTS += -DCORE_PLATFORM_NAME=rbpi
 KODI_DEPENDENCIES += libinput libxkbcommon rpi-userland
 endif
 
+ifeq ($(BR2_PACKAGE_KODI_PLATFORM_WAYLAND_GL),y)
+KODI_CONF_OPTS += \
+	-DCORE_PLATFORM_NAME=wayland \
+	-DWAYLAND_RENDER_SYSTEM=gl
+KODI_DEPENDENCIES += libegl libgl libglu libxkbcommon waylandpp
+endif
+
+ifeq ($(BR2_PACKAGE_KODI_PLATFORM_WAYLAND_GLES),y)
+KODI_CONF_OPTS += \
+	-DCORE_PLATFORM_NAME=wayland \
+	-DWAYLAND_RENDER_SYSTEM=gles
+KODI_C_FLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags egl`
+KODI_CXX_FLAGS += `$(PKG_CONFIG_HOST_BINARY) --cflags egl`
+KODI_DEPENDENCIES += libegl libgles libxkbcommon waylandpp
+endif
+
 ifeq ($(BR2_PACKAGE_KODI_PLATFORM_X11_OPENGL),y)
 KODI_CONF_OPTS += -DCORE_PLATFORM_NAME=x11
 KODI_DEPENDENCIES += libegl libglu libgl xlib_libX11 xlib_libXext \
