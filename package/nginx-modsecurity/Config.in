@@ -1,5 +1,6 @@
 config BR2_PACKAGE_NGINX_MODSECURITY
 	bool "nginx-modsecurity"
+	depends on BR2_PACKAGE_NGINX_HTTP
 	depends on BR2_INSTALL_LIBSTDCPP # libmodsecurity
 	depends on !BR2_STATIC_LIBS # libmodsecurity
 	select BR2_PACKAGE_PCRE # libmodsecurity
@@ -12,4 +13,5 @@ config BR2_PACKAGE_NGINX_MODSECURITY
 	  https://github.com/SpiderLabs/ModSecurity-nginx
 
 comment "nginx-modsecurity needs a toolchain w/ C++, dynamic library"
+	depends on BR2_PACKAGE_NGINX_HTTP
 	depends on !BR2_INSTALL_LIBSTDCPP || BR2_STATIC_LIBS
