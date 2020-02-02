@@ -23,7 +23,6 @@ config BR2_PACKAGE_KODI_PLATFORM_SUPPORTS_RBPI
 	# List of valid CPUs can be found here:
 	# https://github.com/xbmc/xbmc/blob/Krypton/project/cmake/scripts/rbpi/ArchSetup.cmake#L12
 	depends on BR2_arm1176jzf_s || BR2_cortex_a7 || BR2_cortex_a53
-	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_RPI_USERLAND
 	depends on BR2_PACKAGE_HAS_UDEV # libinput
 	select BR2_PACKAGE_KODI_PLATFORM_SUPPORTS

@@ -15,7 +15,6 @@ config BR2_PACKAGE_WESTON_IMX
 	depends on !BR2_STATIC_LIBS # wayland
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_0
-	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on BR2_PACKAGE_IMX_GPU_VIV_OUTPUT_WL
 	depends on !BR2_PACKAGE_WESTON

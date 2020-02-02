@@ -5,7 +5,6 @@ comment "weston needs udev and a toolchain w/ locale, threads, dynamic library, 
 
 config BR2_PACKAGE_WESTON
 	bool "weston"
-	depends on BR2_ENABLE_LOCALE # libinput
 	depends on BR2_PACKAGE_HAS_UDEV
 	depends on !BR2_STATIC_LIBS # wayland
 	depends on BR2_TOOLCHAIN_HAS_THREADS # wayland
