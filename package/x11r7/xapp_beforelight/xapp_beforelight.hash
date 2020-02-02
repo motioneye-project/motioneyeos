@@ -1,2 +1,4 @@
 # From http://lists.x.org/archives/xorg-announce/2013-January/002131.html
-sha256	8fcab6f15148ca680c0d3da8de7dcb41f8e6a076f442cf8bdcf272be9e348166	beforelight-1.0.5.tar.bz2
+sha256  8fcab6f15148ca680c0d3da8de7dcb41f8e6a076f442cf8bdcf272be9e348166  beforelight-1.0.5.tar.bz2
+# Locally computed
+sha256  27d8cbdcde7a0bd062ce49cdf8c672201452a64e3e6823f09b1beffe2c4b8eff  COPYING
