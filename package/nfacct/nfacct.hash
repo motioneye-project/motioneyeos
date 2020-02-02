@@ -1,3 +1,5 @@
 # From ftp://ftp.netfilter.org/pub/nfacct/nfacct-1.0.2.tar.bz2.{md5sum,sha1sum}
 md5	94faafdaaed85ca9220c5692be8a408e	nfacct-1.0.2.tar.bz2
 sha1	17d6576778227ea93c62600d9b18ff4932963c6a	nfacct-1.0.2.tar.bz2
+# Locally computed
+sha256  91df39d1816bfb17a4dda2d3d2c83b1f6f2d38d53e53e41e8f97ad5ac46a0cad  COPYING

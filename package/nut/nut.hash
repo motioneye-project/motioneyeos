@@ -1,2 +1,6 @@
 # From http://www.networkupstools.org/source/2.7/nut-2.7.2.tar.gz.sha256
 sha256  980e82918c52d364605c0703a5dcf01f74ad2ef06e3d365949e43b7d406d25a7  nut-2.7.4.tar.gz
+# Locally computed
+sha256  9f562d0e6be5108a06684dd249686d378abe1653df14b1944e971e084f6751f0  COPYING
+sha256  ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6  LICENSE-GPL2
+sha256  fc82ca8b6fdb18d4e3e85cfd8ab58d1bcd3f1b29abe782895abd91d64763f8e7  LICENSE-GPL3
