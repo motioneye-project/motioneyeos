@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/enum34/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/enum34/json
 md5 5f13a0841a61f7fc295c514490d120d0 enum34-1.1.6.tar.gz
-sha256 8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1 enum34-1.1.6.tar.gz
+# Locally computed
+sha256  8ad8c4783bf61ded74527bffb48ed9b54166685e4230386a9ed9b1279e2df5b1  enum34-1.1.6.tar.gz
+sha256  88ec6a6c8eafa3b9757e745783938bef3f5e4d5e3c76b1db576aa3ab520e5e1d  enum/LICENSE

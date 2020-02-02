@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/hpack/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/hpack/json
 md5	556b0ae66180f54c2ce8029a0952088b  hpack-3.0.0.tar.gz
+# Locally computed
 sha256	8eec9c1f4bfae3408a3f30500261f7e6a65912dc138526ea054f9ad98892e9d2  hpack-3.0.0.tar.gz
+sha256  763a9342a04df62046c9dc748a5287934eb0a5331c6863b3ca0aee20e18cb4ed  LICENSE

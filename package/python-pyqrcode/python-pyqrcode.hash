@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pyqrcode/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/pyqrcode/json
 md5	371f29f4b03bd2830c6e0319258b1259  PyQRCode-1.2.1.tar.gz
+# Locally computed
 sha256	fdbf7634733e56b72e27f9bce46e4550b75a3a2c420414035cae9d9d26b234d5  PyQRCode-1.2.1.tar.gz
+sha256  bef0c3595451da5132dea99e288fb5dafcbc469e0643f993a4ba0a69980f5ec9  setup.py

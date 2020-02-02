@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pyro/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/pyro/json
 md5 59d4d3f4a8786776c9d7f9051b8f1a69 Pyro-3.16.tar.gz
+# Locally computed
 sha256 1bed508453ef7a7556b51424a58101af2349b662baab7e7331c5cb85dbe7e578 Pyro-3.16.tar.gz
+sha256  7c14017a2f543384bfcde86043758b68d023b47bf09700a7df6dacbae9c82103  LICENSE

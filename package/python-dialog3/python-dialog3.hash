@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/pythondialog/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/pythondialog/json
 md5	3d5ebc33e85f6313964f5eef720dab19  pythondialog-3.4.0.tar.bz2
+# Locally computed
 sha256  019cdbffe3f61d32d6fb158ce48a767478af2aac2f31fb40460b39aefae604fe  pythondialog-3.4.0.tar.bz2
+sha256  a9bdde5616ecdd1e980b44f360600ee8783b1f99b8cc83a2beb163a0a390e861  COPYING

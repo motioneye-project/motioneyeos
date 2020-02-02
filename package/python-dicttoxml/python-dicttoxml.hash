@@ -1,3 +1,5 @@
-# md5 from https://pypi.python.org/pypi/dicttoxml/json, sha256 locally computed
+# md5 from https://pypi.python.org/pypi/dicttoxml/json
 md5	ec5643a048cf32dad3c28db236b923e4  dicttoxml-1.7.4.tar.gz
+# Locally computed
 sha256	ea44cc4ec6c0f85098c57a431a1ee891b3549347b07b7414c8a24611ecf37e45  dicttoxml-1.7.4.tar.gz
+sha256  4514114bd9da0b2fbf8c4fa264c0e6cc80fd41e6ac7f09d7a39a215662951c7c  LICENCE.txt
