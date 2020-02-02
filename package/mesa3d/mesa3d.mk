@@ -200,10 +200,17 @@ endif
 MESA3D_CONF_OPTS += \
 	-Dplatforms=$(subst $(space),$(comma),$(MESA3D_PLATFORMS))
 
+ifeq ($(BR2_PACKAGE_MESA3D_GBM),y)
+MESA3D_CONF_OPTS += \
+	-Dgbm=true
+else
+MESA3D_CONF_OPTS += \
+	-Dgbm=false
+endif
+
 ifeq ($(BR2_PACKAGE_MESA3D_OPENGL_EGL),y)
 MESA3D_PROVIDES += libegl
 MESA3D_CONF_OPTS += \
-	-Dgbm=true \
 	-Degl=true
 else
 MESA3D_CONF_OPTS += \

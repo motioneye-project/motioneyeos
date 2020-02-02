@@ -355,6 +355,11 @@ if BR2_PACKAGE_MESA3D_DRIVER
 
 comment "OpenGL API Support"
 
+config BR2_PACKAGE_MESA3D_GBM
+	bool "gbm"
+	help
+	  Enable Generic Buffer Management (gbm)
+
 config BR2_PACKAGE_MESA3D_OPENGL_GLX
 	bool "OpenGL GLX"
 	depends on BR2_PACKAGE_XORG7
@@ -370,6 +375,7 @@ config BR2_PACKAGE_MESA3D_OPENGL_EGL
 	bool "OpenGL EGL"
 	select BR2_PACKAGE_HAS_LIBEGL
 	select BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+	select BR2_PACKAGE_MESA3D_GBM
 	help
 	  Use the Khronos EGL APIs. EGL is a window manager for OpenGL
 	  applications similar to GLX, for X, and WGL, for Windows.
