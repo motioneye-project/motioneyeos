@@ -36,7 +36,6 @@ LIBPJSIP_CONF_OPTS = \
 	--disable-sdl \
 	--disable-ffmpeg \
 	--disable-openh264 \
-	--disable-libyuv \
 	--disable-ipp \
 	--disable-silk \
 	--with-external-srtp
@@ -92,6 +91,15 @@ ifeq ($(BR2_PACKAGE_LIBV4L),y)
 LIBPJSIP_DEPENDENCIES += libv4l
 else
 LIBPJSIP_CONF_OPTS += --disable-v4l2
+endif
+
+ifeq ($(BR2_PACKAGE_LIBYUV),y)
+LIBPJSIP_DEPENDENCIES += libyuv
+LIBPJSIP_CONF_OPTS += \
+	--enable-libyuv \
+	--with-external-yuv
+else
+LIBPJSIP_CONF_OPTS += --disable-libyuv
 endif
 
 ifeq ($(BR2_PACKAGE_OPENCORE_AMR),y)
