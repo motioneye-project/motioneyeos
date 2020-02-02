@@ -1,2 +1,3 @@
 # Locally computed
 sha256 db39f1f4a892fede45a5bffadd760962b5f02ab62e095a35dc37298cf548013d  kodi-audiodecoder-snesapu-2.0.1-Leia.tar.gz
+sha256 44d53bc17eb40ff1bdce9418be001334a99af9f41cf36e917f766e44604f63f8  src/SPCCodec.cpp
