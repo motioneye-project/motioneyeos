@@ -1,0 +1,42 @@
+From f43c98b23e0d7731cd8d7a9b4510c359f3df7930 Mon Sep 17 00:00:00 2001
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Sat, 1 Feb 2020 23:32:29 -0700
+Subject: [PATCH] add missing defines for pre-v3.17 kernels
+
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+[Upstream status:
+https://gitlab.freedesktop.org/wayland/weston/merge_requests/369]
+---
+ shared/os-compatibility.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/shared/os-compatibility.c b/shared/os-compatibility.c
+index ddc37807..26c39e67 100644
+--- a/shared/os-compatibility.c
++++ b/shared/os-compatibility.c
+@@ -39,6 +39,22 @@
+ 
+ #include "os-compatibility.h"
+ 
++#ifndef F_GET_SEALS
++#define F_GET_SEALS	(1034)
++#endif
++
++#ifndef F_SEAL_SHRINK
++#define F_SEAL_SHRINK	0x0002
++#endif
++
++#ifndef F_SEAL_GROW
++#define F_SEAL_GROW	0x0004
++#endif
++
++#ifndef F_SEAL_WRITE
++#define F_SEAL_WRITE	0x0008
++#endif
++
+ #define READONLY_SEALS (F_SEAL_SHRINK | F_SEAL_GROW | F_SEAL_WRITE)
+ 
+ int
+-- 
+2.20.1
+

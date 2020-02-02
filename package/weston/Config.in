@@ -33,6 +33,26 @@ config BR2_PACKAGE_WESTON
 
 if BR2_PACKAGE_WESTON
 
+choice
+	prompt "Backend default"
+	depends on BR2_PACKAGE_WESTON_FBDEV || \
+		BR2_PACKAGE_WESTON_DRM || \
+		BR2_PACKAGE_WESTON_X11
+
+config BR2_PACKAGE_WESTON_DEFAULT_BACKEND_FBDEV
+	bool "fbdev"
+	depends on BR2_PACKAGE_WESTON_FBDEV
+
+config BR2_PACKAGE_WESTON_DEFAULT_BACKEND_DRM
+	bool "drm"
+	depends on BR2_PACKAGE_WESTON_DRM
+
+config BR2_PACKAGE_WESTON_DEFAULT_BACKEND_X11
+	bool "X11"
+	depends on BR2_PACKAGE_WESTON_X11
+
+endchoice
+
 # Helper to make sure at least one compositor is selected.
 config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	bool
@@ -100,7 +120,22 @@ comment "XWayland support needs libepoxy and X.org enabled"
 
 config BR2_PACKAGE_WESTON_DEMO_CLIENTS
 	bool "demo clients"
+	depends on BR2_USE_MMU # pango
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # pango
+	depends on BR2_TOOLCHAIN_HAS_THREADS # pango
+	depends on BR2_INSTALL_LIBSTDCPP # pango
+	depends on BR2_USE_WCHAR # pango
+	depends on BR2_PACKAGE_HAS_LIBGLES
+	depends on BR2_PACKAGE_HAS_LIBEGL_WAYLAND
+	select BR2_PACKAGE_PANGO
 	help
 	  This enables the installation of Weston's demo clients.
+
+comment "demo clients needs an OpenGL ES provider, an OpenEGL-capable Wayland backend and a toolchain w/ wchar, threads, C++"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
+		!BR2_INSTALL_LIBSTDCPP || !BR2_PACKAGE_HAS_LIBGLES || \
+		!BR2_PACKAGE_HAS_LIBEGL_WAYLAND
 
 endif
