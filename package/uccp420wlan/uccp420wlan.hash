@@ -1,2 +1,4 @@
 # locally computed hash
-sha256 1d4de62fc842dbab739708cf0d9ebce270fcdf63c1c13ac676cbc253acdaa3bb uccp420wlan-6.9.1.tar.gz
+sha256  1d4de62fc842dbab739708cf0d9ebce270fcdf63c1c13ac676cbc253acdaa3bb  uccp420wlan-6.9.1.tar.gz
+sha256  af8067302947c01fd9eee72befa54c7e3ef8a48fecde7fd71277f2290b2bf0f7  COPYING
+sha256  9ac431585fddfe624b08cf7464876a5e96061047ff26a9e926da3d89d21a2a73  firmware/LICENSE.imagination
