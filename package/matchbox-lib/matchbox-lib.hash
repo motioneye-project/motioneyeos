@@ -1,2 +1,4 @@
 # From http://downloads.yoctoproject.org/releases/matchbox/libmatchbox/1.9/libmatchbox-1.9.tar.bz2.md5
 md5	9f73e7515cc4679171a5db180dc1343b	libmatchbox-1.9.tar.bz2
+# Locally computed
+sha256  a190dc9c8043755d90f8b0a75fa66b9e42d4af4c980bf5ddc633f0124db3cee7  COPYING

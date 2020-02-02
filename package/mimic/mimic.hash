@@ -1,2 +1,3 @@
 # Locally calculated
-sha256	725003c9972d5b67c49d5ea6a89cb26b63414ff2c7adbbaf9200cf9eb55f80eb  mimic-1.1.0.tar.gz
+sha256  725003c9972d5b67c49d5ea6a89cb26b63414ff2c7adbbaf9200cf9eb55f80eb  mimic-1.1.0.tar.gz
+sha256  c423c1c6d260091d80ee4c00f386a10fea39963a3f1530f2c245f15dd20324ee  COPYING
