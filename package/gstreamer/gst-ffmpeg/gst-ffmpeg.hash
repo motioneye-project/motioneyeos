@@ -1,2 +1,6 @@
 # From http://gstreamer.freedesktop.org/src/gst-ffmpeg/gst-ffmpeg-0.10.13.tar.bz2.md5
 md5	7f5beacaf1312db2db30a026b36888c4	gst-ffmpeg-0.10.13.tar.bz2
+# Locally computed
+sha256  94b03f1a60a7fd5007149530626a895a6ef5a8b9342abfd56860c5f3956f5d23  COPYING.LIB
+sha256  03fe7ca91cc28e99b4003d5b3bd4ce3b084d4c475fdf9975cf0e7fdf4dc739cd  gst-libs/ext/libav/COPYING.LGPLv2.1
+sha256  da7eabb7bafdf7d3ae5e9f223aa5bdc1eece45ac569dc21b3b037520b4464768  gst-libs/ext/libav/COPYING.LGPLv3
