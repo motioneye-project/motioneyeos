@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-JANUS_GATEWAY_VERSION = 0.7.3
+JANUS_GATEWAY_VERSION = 0.8.1
 JANUS_GATEWAY_SITE = $(call github,meetecho,janus-gateway,v$(JANUS_GATEWAY_VERSION))
-JANUS_GATEWAY_LICENSE = GPL-3.0
+JANUS_GATEWAY_LICENSE = GPL-3.0 with OpenSSL exception
 JANUS_GATEWAY_LICENSE_FILES = COPYING
 
 # ding-libs provides the ini_config library
