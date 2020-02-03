@@ -86,7 +86,7 @@ add_mmal_cameras() {
 
 add_v4l2_cameras() {
     index=1
-    for device in $(ls /dev/video* 2>/dev/null); do
+    for device in $(ls /dev/video? 2>/dev/null); do
         # filter out devices that don't look like cameras
         if ! v4l2-ctl -d ${device} --list-formats-ext 2>/dev/null | grep -oE '[[:digit:]]+x[[:digit:]]+' &>/dev/null; then
             continue
