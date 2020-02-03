@@ -1,7 +1,6 @@
 config BR2_PACKAGE_REFPOLICY
 	bool "refpolicy"
 	depends on BR2_TOOLCHAIN_HAS_THREADS # libsepol
-	select BR2_PACKAGE_BUSYBOX_SELINUX if BR2_PACKAGE_BUSYBOX
 	# Even though libsepol is not necessary for building, we get
 	# the policy version from libsepol, so we select it, and treat
 	# it like a runtime dependency.
