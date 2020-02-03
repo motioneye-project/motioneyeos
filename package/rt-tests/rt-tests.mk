@@ -25,7 +25,7 @@ define RT_TESTS_INSTALL_TARGET_CMDS
 	$(TARGET_MAKE_ENV) $(MAKE) -C $(@D) \
 		DESTDIR="$(TARGET_DIR)" \
 		prefix=/usr \
-		$(if $(BR2_PACKAGE_PYTHON3),PYLIB=/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages/,PYLIB="") \
+		PYLIB="$(if $(BR2_PACKAGE_PYTHON3),/usr/lib/python$(PYTHON3_VERSION_MAJOR)/site-packages/)" \
 		install
 endef
 
