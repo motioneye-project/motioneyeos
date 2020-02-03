@@ -1,6 +1,11 @@
 config BR2_PACKAGE_REFPOLICY
 	bool "refpolicy"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libsepol
 	select BR2_PACKAGE_BUSYBOX_SELINUX if BR2_PACKAGE_BUSYBOX
+	# Even though libsepol is not necessary for building, we get
+	# the policy version from libsepol, so we select it, and treat
+	# it like a runtime dependency.
+	select BR2_PACKAGE_LIBSEPOL
 	help
 	  The SELinux Reference Policy project (refpolicy) is a
 	  complete SELinux policy that can be used as the system
@@ -23,10 +28,6 @@ config BR2_PACKAGE_REFPOLICY
 	  https://github.com/TresysTechnology/refpolicy
 
 if BR2_PACKAGE_REFPOLICY
-
-config BR2_PACKAGE_REFPOLICY_POLICY_VERSION
-	string "Policy version"
-	default "30"
 
 choice
 	prompt "SELinux default state"
@@ -55,3 +56,6 @@ config BR2_PACKAGE_REFPOLICY_POLICY_STATE
 	default "disabled" if BR2_PACKAGE_REFPOLICY_POLICY_STATE_DISABLED
 
 endif
+
+comment "refpolicy needs a toolchain w/ threads"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS

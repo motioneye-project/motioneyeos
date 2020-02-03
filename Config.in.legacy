@@ -160,6 +160,17 @@ config BR2_PACKAGE_FIS
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_REFPOLICY_POLICY_VERSION
+	string "refpolicy policy version"
+	help
+	  The refpolicy policy version option has been moved to the
+	  libsepol package.
+
+config BR2_PACKAGE_REFPOLICY_POLICY_VERSION_WRAP
+	bool
+	default y if BR2_PACKAGE_REFPOLICY_POLICY_VERSION != ""
+	select BR2_LEGACY
+
 config BR2_PACKAGE_CELT051
 	bool "celt051 package was removed"
 	select BR2_LEGACY
