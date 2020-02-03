@@ -60,7 +60,7 @@ HOST_PYTHON_DEPENDENCIES = host-expat host-zlib
 ifeq ($(BR2_PACKAGE_HOST_PYTHON_SSL),y)
 HOST_PYTHON_DEPENDENCIES += host-openssl
 else
-HOST_PYTHON_CONF_OPTS += --disable-ssl --disable-hashlib
+HOST_PYTHON_CONF_OPTS += --disable-ssl
 endif
 
 PYTHON_INSTALL_STAGING = YES
