@@ -2102,6 +2102,7 @@ F:	package/uhttpd/
 F:	package/ustream-ssl/
 
 N:	Refik Tuzakli <tuzakli.refik@gmail.com>
+F:	package/freescale-imx/
 F:	package/paho-mqtt-cpp/
 
 N:	Rémi Rérolle <remi.rerolle@gmail.com>
