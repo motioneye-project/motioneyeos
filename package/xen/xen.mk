@@ -4,10 +4,8 @@
 #
 ################################################################################
 
-XEN_VERSION = 4.12.2
+XEN_VERSION = 4.13.0
 XEN_SITE = https://downloads.xenproject.org/release/xen/$(XEN_VERSION)
-XEN_PATCH = \
-	https://xenbits.xenproject.org/xsa/xsa312.patch
 XEN_LICENSE = GPL-2.0
 XEN_LICENSE_FILES = COPYING
 XEN_DEPENDENCIES = host-acpica host-python
