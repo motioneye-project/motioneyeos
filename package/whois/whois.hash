@@ -1,5 +1,5 @@
-# From http://snapshot.debian.org/archive/debian/20191118T030126Z/pool/main/w/whois/whois_5.5.3.dsc
-sha256	55c33f9c2a01c0cf1d6449ece63b0c26ef45aab63cf5f01c18459df0e341ab46	whois_5.5.3.tar.xz
+# From http://snapshot.debian.org/archive/debian/20200123T155144Z/pool/main/w/whois/whois_5.5.5.dsc
+sha256	c30e8a444482eadac157be42649833ef77c5ea9fb5cbcbabb6ee3f2254e5530d	whois_5.5.5.tar.xz
 
 # Hash for license file:
 sha256	8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643	COPYING
