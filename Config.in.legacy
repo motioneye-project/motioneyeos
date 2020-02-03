@@ -144,6 +144,8 @@ endif
 
 ###############################################################################
 
+comment "Legacy options removed in 2020.02"
+
 config BR2_PACKAGE_GADGETFS_TEST
 	bool "gadgetfs-test was removed"
 	select BR2_LEGACY
@@ -157,8 +159,6 @@ config BR2_PACKAGE_FIS
 	select BR2_LEGACY
 	help
 	  The fis package was removed.
-
-comment "Legacy options removed in 2020.02"
 
 config BR2_PACKAGE_REFPOLICY_POLICY_VERSION
 	string "refpolicy policy version"
