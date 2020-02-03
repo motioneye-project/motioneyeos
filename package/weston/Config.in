@@ -20,8 +20,6 @@ config BR2_PACKAGE_WESTON
 	select BR2_PACKAGE_LIBDRM
 	# Runtime dependency
 	select BR2_PACKAGE_XKEYBOARD_CONFIG
-	# Make sure at least one compositor is selected.
-	select BR2_PACKAGE_WESTON_FBDEV if !BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
 	  Weston is the reference implementation of a Wayland
 	  compositor, and a useful compositor in its own right.
@@ -32,14 +30,40 @@ config BR2_PACKAGE_WESTON
 
 if BR2_PACKAGE_WESTON
 
-# Helper to make sure at least one compositor is selected.
-config BR2_PACKAGE_WESTON_HAS_COMPOSITOR
-	bool
+choice
+	prompt "default compositor"
+
+config BR2_PACKAGE_WESTON_DEFAULT_FBDEV
+	bool "fbdev"
+	select BR2_PACKAGE_WESTON_FBDEV
+
+config BR2_PACKAGE_WESTON_DEFAULT_DRM
+	bool "drm"
+	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
+	select BR2_PACKAGE_WESTON_DRM
+
+comment "drm backend needs mesa3d w/ EGL driver"
+	depends on !BR2_PACKAGE_MESA3D_OPENGL_EGL
+
+config BR2_PACKAGE_WESTON_DEFAULT_X11
+	bool "X11"
+	depends on BR2_PACKAGE_XORG7
+	select BR2_PACKAGE_WESTON_X11
+
+comment "X11 backend needs X.org"
+	depends on !BR2_PACKAGE_XORG7
+
+endchoice
+
+config BR2_PACKAGE_WESTON_DEFAULT_COMPOSITOR
+	string
+	default "fbdev" if BR2_PACKAGE_WESTON_DEFAULT_FBDEV
+	default "drm"   if BR2_PACKAGE_WESTON_DEFAULT_DRM
+	default "x11"   if BR2_PACKAGE_WESTON_DEFAULT_X11
 
 config BR2_PACKAGE_WESTON_DRM
 	bool "DRM compositor"
 	depends on BR2_PACKAGE_MESA3D_OPENGL_EGL
-	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 
 # Uses libgbm from mesa3d
 comment "DRM compositor needs an OpenGL EGL backend provided by mesa3d"
@@ -56,7 +80,6 @@ config BR2_PACKAGE_WESTON_RDP
 	depends on BR2_USE_WCHAR # freerdp
 	depends on BR2_INSTALL_LIBSTDCPP # freerdp
 	select BR2_PACKAGE_FREERDP
-	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 	help
 	  This enables the RDP backend, which allows accessing weston
 	  through the network with any RDP-compliant client.
@@ -80,7 +103,6 @@ config BR2_PACKAGE_WESTON_X11
 	depends on BR2_PACKAGE_XORG7
 	select BR2_PACKAGE_LIBXCB
 	select BR2_PACKAGE_XLIB_LIBX11
-	select BR2_PACKAGE_WESTON_HAS_COMPOSITOR
 
 comment "X11 compositor needs X.org enabled"
 	depends on !BR2_PACKAGE_XORG7
