@@ -144,6 +144,12 @@ endif
 
 ###############################################################################
 
+config BR2_PACKAGE_FIS
+	bool "fis was removed"
+	select BR2_LEGACY
+	help
+	  The fis package was removed.
+
 comment "Legacy options removed in 2020.02"
 
 config BR2_PACKAGE_CELT051

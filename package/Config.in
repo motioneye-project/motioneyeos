@@ -448,7 +448,6 @@ endmenu
 	source "package/fan-ctrl/Config.in"
 	source "package/fbtft/Config.in"
 	source "package/fconfig/Config.in"
-	source "package/fis/Config.in"
 	source "package/flashrom/Config.in"
 	source "package/fmtools/Config.in"
 	source "package/freescale-imx/Config.in"
