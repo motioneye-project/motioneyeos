@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/aioblescan/json
-md5	b662f44828a99430d4ed42c843ddb89c  aioblescan-0.2.4.tar.gz
-sha256	d613f24ffdb3dae48d6157443f76708f0c791034036330d00272af6b408b2c6c  aioblescan-0.2.4.tar.gz
+md5	9ad3f04ea7ad4c81a53f8e1316985527  aioblescan-0.2.6.tar.gz
+sha256	2e45c325e070a0ee4e952a7d0c56e95ad230643e1057fb5f3e95ea5c99081436  aioblescan-0.2.6.tar.gz
 # Locally computed sha256 checksums
 sha256	c2066cd44079e0c706234001af18cb6ad4b62fc68d0d08d29fdc7319916647e0  LICENSE.txt
