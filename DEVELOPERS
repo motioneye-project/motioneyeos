@@ -2452,6 +2452,7 @@ F:	package/avro-c/
 F:	package/mosquitto/
 F:	package/python-avro/
 F:	package/redis/
+F:	package/waf/
 
 N:	Trent Piepho <tpiepho@impinj.com>
 F:	package/libp11/
