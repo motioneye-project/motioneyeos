@@ -127,6 +127,13 @@ else
 LIBPJSIP_CONF_OPTS += --disable-opus
 endif
 
+ifeq ($(BR2_PACKAGE_PORTAUDIO),y)
+LIBPJSIP_DEPENDENCIES += portaudio
+LIBPJSIP_CONF_OPTS += --with-external-pa
+else
+LIBPJSIP_CONF_OPTS += --without-external-pa
+endif
+
 ifeq ($(BR2_PACKAGE_SDL2),y)
 LIBPJSIP_DEPENDENCIES += sdl2
 LIBPJSIP_CONF_OPTS += --with-sdl=$(STAGING_DIR)/usr
