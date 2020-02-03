@@ -144,6 +144,14 @@ endif
 
 ###############################################################################
 
+config BR2_PACKAGE_GADGETFS_TEST
+	bool "gadgetfs-test was removed"
+	select BR2_LEGACY
+	help
+	  The gadgetfs-test package was removed. Gadgetfs has been
+	  deprecated in favour of functionfs. Consider using
+	  gadget-tool (gt) instead.
+
 config BR2_PACKAGE_FIS
 	bool "fis was removed"
 	select BR2_LEGACY
