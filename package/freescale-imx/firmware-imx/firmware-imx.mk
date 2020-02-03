@@ -53,6 +53,12 @@ define FIRMWARE_IMX_INSTALL_IMAGES_CMDS
 	cp $(@D)/firmware/seco/mx8qx-ahab-container.img \
 		$(BINARIES_DIR)/ahab-container.img
 endef
+define FIRMWARE_IMX_INSTALL_TARGET_CMDS
+	$(INSTALL) -D -m 0644 $(@D)/firmware/vpu/vpu_fw_imx8_dec.bin \
+		$(TARGET_DIR)/lib/firmware/vpu/vpu_fw_imx8_dec.bin
+	$(INSTALL) -D -m 0644 $(@D)/firmware/vpu/vpu_fw_imx8_enc.bin \
+		$(TARGET_DIR)/lib/firmware/vpu/vpu_fw_imx8_enc.bin
+endef
 else
 define FIRMWARE_IMX_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/lib/firmware/imx
