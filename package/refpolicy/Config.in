@@ -1,9 +1,5 @@
 config BR2_PACKAGE_REFPOLICY
 	bool "refpolicy"
-	depends on BR2_TOOLCHAIN_HAS_THREADS # policycoreutils
-	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS # policycoreutils
-	depends on !BR2_STATIC_LIBS # policycoreutils
-	select BR2_PACKAGE_POLICYCOREUTILS
 	select BR2_PACKAGE_BUSYBOX_SELINUX if BR2_PACKAGE_BUSYBOX
 	help
 	  The SELinux Reference Policy project (refpolicy) is a
@@ -25,10 +21,6 @@ config BR2_PACKAGE_REFPOLICY
 	  be tweaked to get everything functioning properly.
 
 	  https://github.com/TresysTechnology/refpolicy
-
-comment "refpolicy needs a toolchain w/ threads, dynamic library"
-	depends on BR2_PACKAGE_AUDIT_ARCH_SUPPORTS
-	depends on BR2_STATIC_LIBS || !BR2_TOOLCHAIN_HAS_THREADS
 
 if BR2_PACKAGE_REFPOLICY
 

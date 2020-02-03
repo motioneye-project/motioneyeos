@@ -15,8 +15,7 @@ REFPOLICY_DEPENDENCIES = \
 	host-checkpolicy \
 	host-policycoreutils \
 	host-setools \
-	host-gawk \
-	policycoreutils
+	host-gawk
 
 ifeq ($(BR2_PACKAGE_PYTHON3),y)
 REFPOLICY_DEPENDENCIES += host-python3
