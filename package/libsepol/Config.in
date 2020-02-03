@@ -10,9 +10,8 @@ config BR2_PACKAGE_LIBSEPOL
 if BR2_PACKAGE_LIBSEPOL
 
 config BR2_PACKAGE_LIBSEPOL_POLICY_VERSION
-	string "Policy version"
-	default BR2_PACKAGE_REFPOLICY_POLICY_VERSION if BR2_PACKAGE_REFPOLICY_POLICY_VERSION != ""
-	default "30"
+	int "Policy version"
+	default 30
 
 endif
 
