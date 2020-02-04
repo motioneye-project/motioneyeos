@@ -18,7 +18,9 @@ ifeq ($(BR2_INSTALL_LIBSTDCPP)$(BR2_USE_WCHAR),yy)
 IMAGEMAGICK_CONFIG_SCRIPTS += Magick++-config
 endif
 
-IMAGEMAGICK_CONF_ENV = ac_cv_sys_file_offset_bits=64
+IMAGEMAGICK_CONF_ENV = \
+	ac_cv_sys_file_offset_bits=64 \
+	ax_cv_check_cl_libcl=no
 
 IMAGEMAGICK_CONF_OPTS = \
 	--program-transform-name='s,,,' \
@@ -179,7 +181,9 @@ HOST_IMAGEMAGICK_CONF_OPTS = \
 	--with-zlib
 
 # uses clock_gettime, which was provided by librt in glibc < 2.17
-HOST_IMAGEMAGICK_CONF_ENV = LIBS="-lrt"
+HOST_IMAGEMAGICK_CONF_ENV = \
+	LIBS="-lrt" \
+	ax_cv_check_cl_libcl=no
 
 HOST_IMAGEMAGICK_DEPENDENCIES = \
 	host-libjpeg \
