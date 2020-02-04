@@ -16,12 +16,6 @@ MINICOM_DEPENDENCIES = ncurses $(if $(BR2_ENABLE_LOCALE),,libiconv) \
 # add host-gettext for AM_ICONV macro
 MINICOM_DEPENDENCIES += host-gettext
 
-# Autoreconf requires an existing m4 directory
-define MINICOM_MKDIR_M4
-	mkdir -p $(@D)/m4
-endef
-MINICOM_POST_PATCH_HOOKS += MINICOM_MKDIR_M4
-
 MINICOM_CONF_OPTS = \
 	--enable-dfl-port=/dev/ttyS1 \
 	--enable-lock-dir=/var/lock

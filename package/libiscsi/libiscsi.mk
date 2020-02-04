@@ -14,10 +14,4 @@ LIBISCSI_AUTORECONF = YES
 LIBISCSI_CONF_OPTS = --disable-examples --disable-werror --disable-manpages \
 	--disable-test-tool --disable-tests
 
-# We need to create the m4 directory to make autoreconf work properly.
-define LIBISCSI_CREATE_M4_DIR
-	mkdir -p $(@D)/m4
-endef
-LIBISCSI_POST_PATCH_HOOKS += LIBISCSI_CREATE_M4_DIR
-
 $(eval $(autotools-package))

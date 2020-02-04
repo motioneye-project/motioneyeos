@@ -19,10 +19,4 @@ LIBPAM_NFC_CONF_OPTS = \
 # libpam breaks with parallel build, but is very fast to build.
 LIBPAM_NFC_MAKE = $(MAKE1)
 
-# Autoreconf requires an existing m4 directory
-define LIBPAM_NFC_MKDIR_M4
-	mkdir -p $(@D)/m4
-endef
-LIBPAM_NFC_PRE_CONFIGURE_HOOKS += LIBPAM_NFC_MKDIR_M4
-
 $(eval $(autotools-package))

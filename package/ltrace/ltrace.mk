@@ -12,11 +12,6 @@ LTRACE_LICENSE = GPL-2.0
 LTRACE_LICENSE_FILES = COPYING
 LTRACE_AUTORECONF = YES
 
-define LTRACE_CREATE_CONFIG_M4
-	mkdir -p $(@D)/config/m4
-endef
-LTRACE_POST_PATCH_HOOKS += LTRACE_CREATE_CONFIG_M4
-
 # ltrace can use libunwind only if libc has backtrace() support
 # We don't normally do so for uClibc and we can't know if it's external
 # Also ltrace with libunwind support is broken for MIPS so we disable it

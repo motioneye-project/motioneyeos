@@ -24,11 +24,4 @@ ifeq ($(BR2_arm),y)
 JAMVM_CONF_ENV = CFLAGS="$(TARGET_CFLAGS) -marm"
 endif
 
-# Needed for autoreconf
-define JAMVM_CREATE_M4_DIR
-	mkdir -p $(@D)/m4
-endef
-
-JAMVM_POST_PATCH_HOOKS += JAMVM_CREATE_M4_DIR
-
 $(eval $(autotools-package))

@@ -13,10 +13,4 @@ MFOC_DEPENDENCIES = libnfc
 MFOC_AUTORECONF = YES
 MFOC_INSTALL_STAGING = YES
 
-# Autoreconf requires an existing m4 directory
-define MFOC_MKDIR_M4
-	mkdir -p $(@D)/m4
-endef
-MFOC_PRE_CONFIGURE_HOOKS += MFOC_MKDIR_M4
-
 $(eval $(autotools-package))

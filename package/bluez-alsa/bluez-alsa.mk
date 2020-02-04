@@ -13,12 +13,6 @@ BLUEZ_ALSA_DEPENDENCIES = alsa-lib bluez5_utils libglib2 sbc host-pkgconf
 # git repo, no configure
 BLUEZ_ALSA_AUTORECONF = YES
 
-# Autoreconf requires an existing m4 directory
-define BLUEZ_ALSA_MKDIR_M4
-	mkdir -p $(@D)/m4
-endef
-BLUEZ_ALSA_POST_PATCH_HOOKS += BLUEZ_ALSA_MKDIR_M4
-
 BLUEZ_ALSA_CONF_OPTS = \
 	--enable-aplay \
 	--disable-debug-time \

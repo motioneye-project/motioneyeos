@@ -40,13 +40,6 @@ else
 IRQBALANCE_CONF_OPTS += --without-systemd
 endif
 
-# This would be done by the package's autogen.sh script
-define IRQBALANCE_PRECONFIGURE
-	mkdir -p $(@D)/m4
-endef
-
-IRQBALANCE_PRE_CONFIGURE_HOOKS += IRQBALANCE_PRECONFIGURE
-
 define IRQBALANCE_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/irqbalance/S13irqbalance \
 		$(TARGET_DIR)/etc/init.d/S13irqbalance

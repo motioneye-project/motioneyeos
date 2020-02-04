@@ -37,11 +37,4 @@ else
 GST_FSL_PLUGINS_CONF_OPTS += --disable-x11
 endif
 
-# Autoreconf requires an m4 directory to exist
-define GST_FSL_PLUGINS_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-
-GST_FSL_PLUGINS_POST_PATCH_HOOKS += GST_FSL_PLUGINS_PATCH_M4
-
 $(eval $(autotools-package))

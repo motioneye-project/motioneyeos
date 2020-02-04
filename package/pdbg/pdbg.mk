@@ -13,9 +13,4 @@ PDBG_DEPENDENCIES = host-dtc
 
 PDBG_MAKE_OPTS = "GIT_SHA1=\"v$(PDBG_VERSION)\""
 
-define PDBG_PATCH_M4
-	mkdir -p $(@D)/m4
-endef
-PDBG_POST_PATCH_HOOKS += PDBG_PATCH_M4
-
 $(eval $(autotools-package))

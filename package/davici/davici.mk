@@ -12,9 +12,4 @@ DAVICI_DEPENDENCIES = strongswan
 DAVICI_INSTALL_STAGING = YES
 DAVICI_AUTORECONF = YES
 
-define DAVICI_CREATE_M4
-	mkdir -p $(@D)/m4
-endef
-DAVICI_POST_PATCH_HOOKS += DAVICI_CREATE_M4
-
 $(eval $(autotools-package))

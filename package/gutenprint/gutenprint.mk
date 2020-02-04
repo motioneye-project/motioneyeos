@@ -66,13 +66,6 @@ HOST_GUTENPRINT_CONF_OPTS = \
 	--disable-testpattern \
 	--without-cups
 
-# Needed by autoreconf
-define GUTENPRINT_CREATE_M4_DIR
-	mkdir -p $(@D)/m4local
-endef
-GUTENPRINT_POST_PATCH_HOOKS += GUTENPRINT_CREATE_M4_DIR
-HOST_GUTENPRINT_POST_PATCH_HOOKS += GUTENPRINT_CREATE_M4_DIR
-
 define HOST_GUTENPRINT_POST_BUILD_INSTAL_TMP_HEADER
 	cp $(@D)/src/xml/xmli18n-tmp.h $(HOST_DIR)/include
 endef

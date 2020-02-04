@@ -13,10 +13,4 @@ SPEEXDSP_INSTALL_STAGING = YES
 SPEEXDSP_DEPENDENCIES = host-pkgconf
 SPEEXDSP_AUTORECONF = YES
 
-# Autoreconf step fails due to missing m4 directory
-define SPEEXDSP_CREATE_M4_DIR
-	mkdir -p $(@D)/m4
-endef
-SPEEXDSP_PRE_CONFIGURE_HOOKS += SPEEXDSP_CREATE_M4_DIR
-
 $(eval $(autotools-package))

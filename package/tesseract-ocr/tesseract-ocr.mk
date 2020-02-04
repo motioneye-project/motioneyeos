@@ -53,13 +53,6 @@ TESSERACT_OCR_EXTRA_DOWNLOADS = \
 	$(addprefix https://github.com/tesseract-ocr/tessdata/raw/$(TESSERACT_OCR_DATA_VERSION)/,\
 		$(TESSERACT_OCR_DATA_FILES))
 
-define TESSERACT_OCR_PRECONFIGURE
-	# Autoreconf step fails due to missing m4 directory
-	mkdir -p $(@D)/m4
-endef
-
-TESSERACT_OCR_PRE_CONFIGURE_HOOKS += TESSERACT_OCR_PRECONFIGURE
-
 # Language data files installation
 define TESSERACT_OCR_INSTALL_LANG_DATA
 	$(foreach langfile,$(TESSERACT_OCR_DATA_FILES), \
