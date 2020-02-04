@@ -27,12 +27,13 @@ start() {
 	# if mysql lib directory doesn't exist
 	if [ `ls -1 $MYSQL_LIB 2> /dev/null | wc -l` = 0 ] ; then
 		printf "Creating mysql system tables ... "
-		$MYSQL_BIN/mysql_install_db --basedir=/usr --user=mysql \
+		$MYSQL_BIN/mysql_install_db --basedir=/usr \
 			--datadir=$MYSQL_LIB > /dev/null 2>&1
 		if [ $? != 0 ]; then
 			echo "FAIL"
 			exit 1
 		fi
+		chown -R mysql:mysql $MYSQL_LIB
 		echo "OK"
 	fi
 
