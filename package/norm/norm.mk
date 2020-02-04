@@ -5,8 +5,8 @@
 ################################################################################
 
 NORM_VERSION = 1.5.8
-NORM_SITE = http://downloads.pf.itd.nrl.navy.mil/norm
-NORM_SOURCE = src-norm-$(NORM_VERSION).tgz
+NORM_SITE = https://github.com/USNavalResearchLaboratory/norm/releases/download/v$(NORM_VERSION)
+NORM_SOURCE = src-norm-with-protolib-$(NORM_VERSION).tgz
 NORM_INSTALL_STAGING = YES
 NORM_LICENSE = NRL License
 NORM_LICENSE_FILES = LICENSE.TXT
