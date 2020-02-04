@@ -225,6 +225,7 @@ class TypoInPackageVariable(_CheckFunction):
     ALLOWED = re.compile("|".join([
         "ACLOCAL_DIR",
         "ACLOCAL_HOST_DIR",
+        "ACLOCAL_PATH",
         "BR_CCACHE_INITIAL_SETUP",
         "BR_LIBC",
         "BR_NO_CHECK_HASH_FOR",
