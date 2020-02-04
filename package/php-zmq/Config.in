@@ -3,7 +3,6 @@ comment "php-zmq needs a toolchain w/ C++, threads"
 
 config BR2_PACKAGE_PHP_ZMQ
 	bool "php-zmq"
-	depends on BR2_PACKAGE_PHP
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
 	select BR2_PACKAGE_ZEROMQ
