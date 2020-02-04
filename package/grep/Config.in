@@ -5,6 +5,8 @@ config BR2_PACKAGE_GREP
 	help
 	  The GNU regular expression matcher.
 
+	  egrep/fgrep aliases need /bin/sh to be available.
+
 	  http://www.gnu.org/software/grep/grep.html
 
 comment "grep needs a toolchain w/ wchar"
