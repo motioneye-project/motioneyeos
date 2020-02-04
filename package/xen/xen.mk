@@ -8,7 +8,7 @@ XEN_VERSION = 4.13.0
 XEN_SITE = https://downloads.xenproject.org/release/xen/$(XEN_VERSION)
 XEN_LICENSE = GPL-2.0
 XEN_LICENSE_FILES = COPYING
-XEN_DEPENDENCIES = host-acpica host-python
+XEN_DEPENDENCIES = host-acpica host-python3
 
 # Calculate XEN_ARCH
 ifeq ($(ARCH),aarch64)
@@ -21,7 +21,7 @@ XEN_CONF_OPTS = \
 	--disable-ocamltools \
 	--with-initddir=/etc/init.d
 
-XEN_CONF_ENV = PYTHON=$(HOST_DIR)/bin/python2
+XEN_CONF_ENV = PYTHON=$(HOST_DIR)/bin/python3
 XEN_MAKE_ENV = \
 	XEN_TARGET_ARCH=$(XEN_ARCH) \
 	CROSS_COMPILE=$(TARGET_CROSS) \
