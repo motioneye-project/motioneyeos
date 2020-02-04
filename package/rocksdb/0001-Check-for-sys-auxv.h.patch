@@ -1,4 +1,4 @@
-From 763fee1544c5e5f7dffcee678c98804f80c67249 Mon Sep 17 00:00:00 2001
+From ad4cb0403c58430bf34a15e72f2edcf0f4317977 Mon Sep 17 00:00:00 2001
 From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 Date: Sat, 1 Feb 2020 23:38:11 +0100
 Subject: [PATCH] Check for sys/auxv.h
@@ -9,10 +9,11 @@ always available (for example on uclibc)
 Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 [Upstream status: https://github.com/facebook/rocksdb/pull/6359]
 ---
- CMakeLists.txt       | 5 +++++
- util/crc32c.cc       | 4 +++-
- util/crc32c_arm64.cc | 6 ++++++
- 3 files changed, 14 insertions(+), 1 deletion(-)
+ CMakeLists.txt                    |  5 +++++
+ build_tools/build_detect_platform | 14 ++++++++++++++
+ util/crc32c.cc                    |  4 +++-
+ util/crc32c_arm64.cc              |  6 ++++++
+ 4 files changed, 28 insertions(+), 1 deletion(-)
 
 diff --git a/CMakeLists.txt b/CMakeLists.txt
 index 017fe8675..32fc5cb30 100644
@@ -30,6 +31,31 @@ index 017fe8675..32fc5cb30 100644
  include_directories(${PROJECT_SOURCE_DIR})
  include_directories(${PROJECT_SOURCE_DIR}/include)
  include_directories(SYSTEM ${PROJECT_SOURCE_DIR}/third-party/gtest-1.8.1/fused-src)
+diff --git a/build_tools/build_detect_platform b/build_tools/build_detect_platform
+index 36a013f6f..2535d8124 100755
+--- a/build_tools/build_detect_platform
++++ b/build_tools/build_detect_platform
+@@ -506,6 +506,20 @@ EOF
+         fi
+     fi
+ 
++    if ! test $ROCKSDB_DISABLE_AUXV_GETAUXVAL; then
++        # Test whether getauxval is supported
++        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++          #include <sys/auxv.h>
++          int main() {
++            uint64_t auxv = getauxval(AT_HWCAP);
++            (void)auxv;
++          }
++EOF
++        if [ "$?" = 0 ]; then
++            COMMON_FLAGS="$COMMON_FLAGS -DROCKSDB_AUXV_GETAUXVAL_PRESENT"
++        fi
++    fi
++
+     if ! test $ROCKSDB_DISABLE_ALIGNED_NEW; then
+         # Test whether c++17 aligned-new is supported
+         $CXX $PLATFORM_CXXFLAGS -faligned-new -x c++ - -o /dev/null 2>/dev/null <<EOF
 diff --git a/util/crc32c.cc b/util/crc32c.cc
 index 9e838b830..3063884db 100644
 --- a/util/crc32c.cc
