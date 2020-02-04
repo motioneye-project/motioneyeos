@@ -224,6 +224,21 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_TEGRA
 	help
 	  Adds support for Nvidia Tegra GPUs, requires nouveau.
 
+config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_V3D
+	bool "Gallium v3d driver"
+	depends on BR2_arm || BR2_aarch64
+	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
+	select BR2_PACKAGE_MESA3D_GALLIUM_KMSRO
+	select BR2_PACKAGE_LIBDRM_VC4
+	select BR2_PACKAGE_MESA3D_OPENGL_EGL
+	help
+	  Driver for Broadcom VC6 (rpi4) GPUs (needs kmsro and vc4).
+
+	  It requires a kernel 4.18+ with DRM V3D support enabled:
+
+	  - CONFIG_DRM_V3D
+	  - CONFIG_DRM_VC4
+
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_VC4
 	bool "Gallium vc4 driver"
 	depends on BR2_arm || BR2_aarch64
