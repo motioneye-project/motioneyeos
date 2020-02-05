@@ -11,6 +11,44 @@ NCURSES_DEPENDENCIES = host-ncurses
 NCURSES_LICENSE = MIT with advertising clause
 NCURSES_LICENSE_FILES = COPYING
 NCURSES_CONFIG_SCRIPTS = ncurses$(NCURSES_LIB_SUFFIX)6-config
+NCURSES_PATCH = \
+	$(addprefix https://invisible-mirror.net/archives/ncurses/$(NCURSES_VERSION)/, \
+		ncurses-6.1-20190609-patch.sh.bz2 \
+		ncurses-6.1-20190615.patch.gz \
+		ncurses-6.1-20190623.patch.gz \
+		ncurses-6.1-20190630.patch.gz \
+		ncurses-6.1-20190706.patch.gz \
+		ncurses-6.1-20190713.patch.gz \
+		ncurses-6.1-20190720.patch.gz \
+		ncurses-6.1-20190727.patch.gz \
+		ncurses-6.1-20190728.patch.gz \
+		ncurses-6.1-20190803.patch.gz \
+		ncurses-6.1-20190810.patch.gz \
+		ncurses-6.1-20190817.patch.gz \
+		ncurses-6.1-20190824.patch.gz \
+		ncurses-6.1-20190831.patch.gz \
+		ncurses-6.1-20190907.patch.gz \
+		ncurses-6.1-20190914.patch.gz \
+		ncurses-6.1-20190921.patch.gz \
+		ncurses-6.1-20190928.patch.gz \
+		ncurses-6.1-20191005.patch.gz \
+		ncurses-6.1-20191012.patch.gz \
+		ncurses-6.1-20191015.patch.gz \
+		ncurses-6.1-20191019.patch.gz \
+		ncurses-6.1-20191026.patch.gz \
+		ncurses-6.1-20191102.patch.gz \
+		ncurses-6.1-20191109.patch.gz \
+		ncurses-6.1-20191116.patch.gz \
+		ncurses-6.1-20191123.patch.gz \
+		ncurses-6.1-20191130.patch.gz \
+		ncurses-6.1-20191207.patch.gz \
+		ncurses-6.1-20191214.patch.gz \
+		ncurses-6.1-20191221.patch.gz \
+		ncurses-6.1-20191228.patch.gz \
+		ncurses-6.1-20200104.patch.gz \
+		ncurses-6.1-20200111.patch.gz \
+		ncurses-6.1-20200118.patch.gz \
+	)
 
 NCURSES_CONF_OPTS = \
 	--without-cxx \
