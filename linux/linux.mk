@@ -6,7 +6,12 @@
 
 LINUX_VERSION = $(call qstrip,$(BR2_LINUX_KERNEL_VERSION))
 LINUX_LICENSE = GPL-2.0
-LINUX_LICENSE_FILES = COPYING
+ifeq ($(BR2_LINUX_KERNEL_LATEST_VERSION),y)
+LINUX_LICENSE_FILES = \
+	COPYING \
+	LICENSES/preferred/GPL-2.0 \
+	LICENSES/exceptions/Linux-syscall-note
+endif
 
 define LINUX_HELP_CMDS
 	@echo '  linux-menuconfig       - Run Linux kernel menuconfig'
