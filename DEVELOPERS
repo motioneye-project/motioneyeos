@@ -2460,6 +2460,7 @@ F:	package/mosquitto/
 F:	package/python-avro/
 F:	package/redis/
 F:	package/waf/
+F:	support/testing/tests/package/test_crudini.py
 
 N:	Trent Piepho <tpiepho@impinj.com>
 F:	package/libp11/
