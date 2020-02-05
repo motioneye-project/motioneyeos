@@ -45,10 +45,6 @@ else
 HOST_MESON_TARGET_CPU_FAMILY = $(ARCH)
 endif
 
-HOST_MESON_SED_CFLAGS = $(if $(strip $(TARGET_CFLAGS)),`printf '"%s"$(comma) ' $(TARGET_CFLAGS)`)
-HOST_MESON_SED_LDFLAGS = $(if $(strip $(TARGET_LDFLAGS)),`printf '"%s"$(comma) ' $(TARGET_LDFLAGS)`)
-HOST_MESON_SED_CXXFLAGS = $(if $(strip $(TARGET_CXXFLAGS)),`printf '"%s"$(comma) ' $(TARGET_CXXFLAGS)`)
-
 # Avoid interpreter shebang longer than 128 chars
 define HOST_MESON_SET_INTERPRETER
 	$(SED) '1s:.*:#!/usr/bin/env python3:' $(HOST_DIR)/bin/meson
