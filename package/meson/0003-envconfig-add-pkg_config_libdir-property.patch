@@ -1,0 +1,102 @@
+From 3af920cb4a9c272b9b75a4f3eea9da9000520949 Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?St=C3=A9phane=20Cerveau?= <scerveau@collabora.com>
+Date: Tue, 14 Jan 2020 11:11:52 +0100
+Subject: [PATCH] envconfig: add pkg_config_libdir property
+
+In order to unify the use of sysroot in the cross-file,
+the pkg_config_libdir can now be passed directly in the file.
+
+Upstream: 958df63dac810246e84c2b8eaa32d22d19ace0ef
+[Arnout: remove documentation changes: we don't extract docs/]
+Signed-off-by: Arnout Vandecappelle (Essensium/Mind) <arnout@mind.be>
+---
+ mesonbuild/dependencies/base.py |  6 ++++++
+ mesonbuild/envconfig.py         |  6 ++++++
+ run_unittests.py                | 30 +++++++++++++++++++++++++++++-
+ 3 files changed, 41 insertions(+), 1 deletion(-)
+
+diff --git a/mesonbuild/dependencies/base.py b/mesonbuild/dependencies/base.py
+index 40e304c7..282c314b 100644
+--- a/mesonbuild/dependencies/base.py
++++ b/mesonbuild/dependencies/base.py
+@@ -697,6 +697,12 @@ class PkgConfigDependency(ExternalDependency):
+         mlog.debug('PKG_CONFIG_PATH: ' + new_pkg_config_path)
+         env['PKG_CONFIG_PATH'] = new_pkg_config_path
+ 
++        pkg_config_libdir_prop = self.env.properties[self.for_machine].get_pkg_config_libdir()
++        if pkg_config_libdir_prop:
++            new_pkg_config_libdir = ':'.join([p for p in pkg_config_libdir_prop])
++            env['PKG_CONFIG_LIBDIR'] = new_pkg_config_libdir
++            mlog.debug('PKG_CONFIG_LIBDIR: ' + new_pkg_config_libdir)
++
+         fenv = frozenset(env.items())
+         targs = tuple(args)
+         cache = PkgConfigDependency.pkgbin_cache
+diff --git a/mesonbuild/envconfig.py b/mesonbuild/envconfig.py
+index c8a37f4c..3e5e44b8 100644
+--- a/mesonbuild/envconfig.py
++++ b/mesonbuild/envconfig.py
+@@ -143,6 +143,12 @@ class Properties(HasEnvVarFallback):
+     def get_sys_root(self) -> T.Optional[T.Union[str, T.List[str]]]:
+         return self.properties.get('sys_root', None)
+ 
++    def get_pkg_config_libdir(self) -> T.Optional[T.List[str]]:
++        p = self.properties.get('pkg_config_libdir', None)
++        if p is None:
++            return p
++        return mesonlib.listify(p)
++
+     def __eq__(self, other: T.Any) -> 'T.Union[bool, NotImplemented]':
+         if isinstance(other, type(self)):
+             return self.properties == other.properties
+diff --git a/run_unittests.py b/run_unittests.py
+index 676604f4..382c0964 100755
+--- a/run_unittests.py
++++ b/run_unittests.py
+@@ -3621,6 +3621,34 @@ recommended as it is not supported on some platforms''')
+         self.wipe()
+         self.init(testdir, extra_args=['-Dstart_native=true'], override_envvars=env)
+ 
++    @skipIfNoPkgconfig
++    @unittest.skipIf(is_windows(), 'Help needed with fixing this test on windows')
++    def test_pkg_config_libdir(self):
++        testdir = os.path.join(self.unit_test_dir,
++                               '46 native dep pkgconfig var')
++        with tempfile.NamedTemporaryFile(mode='w', delete=False) as crossfile:
++            crossfile.write(textwrap.dedent(
++                '''[binaries]
++                pkgconfig = 'pkg-config'
++
++                [properties]
++                pkg_config_libdir = [r'{0}']
++
++                [host_machine]
++                system = 'linux'
++                cpu_family = 'arm'
++                cpu = 'armv7'
++                endian = 'little'
++                '''.format(os.path.join(testdir, 'cross_pkgconfig'))))
++            crossfile.flush()
++            self.meson_cross_file = crossfile.name
++
++        env = {'PKG_CONFIG_LIBDIR':  os.path.join(testdir,
++                                                  'native_pkgconfig')}
++        self.init(testdir, extra_args=['-Dstart_native=false'], override_envvars=env)
++        self.wipe()
++        self.init(testdir, extra_args=['-Dstart_native=true'], override_envvars=env)
++
+     def __reconfigure(self, change_minor=False):
+         # Set an older version to force a reconfigure from scratch
+         filename = os.path.join(self.privatedir, 'coredata.dat')
+@@ -6847,7 +6875,7 @@ class NativeFileTests(BasePlatformTests):
+ 
+ class CrossFileTests(BasePlatformTests):
+ 
+-    """Tests for cross file functioality not directly related to
++    """Tests for cross file functionality not directly related to
+     cross compiling.
+ 
+     This is mainly aimed to testing overrides from cross files.
+-- 
+2.24.1
+
