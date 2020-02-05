@@ -2,6 +2,8 @@ config BR2_PACKAGE_GR_OSMOSDR
 	bool "gr-osmosdr"
 	depends on BR2_PACKAGE_GNURADIO
 	select BR2_PACKAGE_GNURADIO_BLOCKS
+	select BR2_PACKAGE_GNURADIO_FFT
+	select BR2_PACKAGE_GNURADIO_FILTER
 	help
 	  GNU Radio block for interfacing with various radio hardware
 
