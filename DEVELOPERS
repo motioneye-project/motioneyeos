@@ -2601,6 +2601,7 @@ F:	package/imlib2/
 F:	package/jquery-datetimepicker/
 F:	package/jquery-sidebar/
 F:	package/kmod/
+F:	package/libftdi1/
 F:	package/libical/
 F:	package/libmbim/
 F:	package/libndp/
@@ -2620,6 +2621,7 @@ F:	package/poco/
 F:	package/python*
 F:	package/ser2net/
 F:	package/socketcand/
+F:	package/swig/
 F:	package/qt5/qt5serialbus/
 F:	package/sdparm/
 F:	package/ti-utils/
