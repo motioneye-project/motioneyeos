@@ -2,7 +2,6 @@ config BR2_PACKAGE_WIREGUARD_TOOLS
 	bool "wireguard tools"
 	# kernel module requires 3.10+, userspace makes no sense without it
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_10
-	select BR2_PACKAGE_LIBMNL
 	help
 	  WireGuard is an extremely simple yet fast and modern VPN
 	  that utilizes state-of-the-art cryptography. It aims to be
