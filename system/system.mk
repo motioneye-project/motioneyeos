@@ -96,19 +96,6 @@ define SYSTEM_REMOUNT_ROOT_INITTAB
 endef
 endif
 
-define SYSTEM_UPDATE_SWAPON_SWAPOFF_INITTAB
-	if [ -x $(TARGET_DIR)/sbin/swapon ]; then \
-		$(SED) '\%:/sbin/swapon%s/^#*//' $(TARGET_DIR)/etc/inittab ; \
-	else \
-		$(SED) '\%:/sbin/swapon%s/^#*/#/' $(TARGET_DIR)/etc/inittab ; \
-	fi
-	if [ -x $(TARGET_DIR)/sbin/swapoff ]; then \
-		$(SED) '\%:/sbin/swapoff%s/^#*//' $(TARGET_DIR)/etc/inittab ; \
-	else \
-		$(SED) '\%:/sbin/swapoff%s/^#*/#/' $(TARGET_DIR)/etc/inittab ; \
-	fi
-endef
-
 ifeq ($(BR_BUILDING)$(BR2_SYSTEM_DEFAULT_PATH),y"")
 $(error BR2_SYSTEM_DEFAULT_PATH can't be empty)
 endif
