@@ -195,43 +195,20 @@ config BR2_PACKAGE_OPENCV_WITH_FFMPEG
 	help
 	  Use ffmpeg from the target system.
 
-choice
-	prompt "gstreamer support"
-	help
-	  OpenCV prefers gstreamer-1 over gstreamer-0.10.
-
-config BR2_PACKAGE_OPENCV_WITHOUT_GSTREAMER
-	bool "none"
-
-config BR2_PACKAGE_OPENCV_WITH_GSTREAMER
-	bool "gstreamer-0.10"
-	depends on BR2_USE_MMU # gstreamer -> libglib2
-	depends on BR2_USE_WCHAR # gstreamer -> libglib2
-	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer -> libglib2
-	depends on !BR2_STATIC_LIBS # gstreamer
-	select BR2_PACKAGE_GSTREAMER
-	select BR2_PACKAGE_GST_PLUGINS_BASE
-	select BR2_PACKAGE_GST_PLUGINS_BASE_PLUGIN_APP
-
-comment "gstreamer-0.10 support needs a toolchain w/ wchar, threads, dynamic library"
-	depends on BR2_USE_MMU
-	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS || \
-		BR2_STATIC_LIBS
-
 config BR2_PACKAGE_OPENCV_WITH_GSTREAMER1
-	bool "gstreamer-1.x"
+	bool "gstreamer support"
 	depends on BR2_USE_MMU # gstreamer1 -> libglib2
 	depends on BR2_USE_WCHAR # gstreamer1 -> libglib2
 	depends on BR2_TOOLCHAIN_HAS_THREADS # gstreamer1 -> libglib2
 	select BR2_PACKAGE_GSTREAMER1
 	select BR2_PACKAGE_GST1_PLUGINS_BASE
 	select BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_APP
+	help
+	  Enable gstreamer support.
 
-comment "gstreamer-1.x support needs a toolchain w/ wchar, threads"
+comment "gstreamer support needs a toolchain w/ wchar, threads"
 	depends on BR2_USE_MMU
 	depends on !BR2_USE_WCHAR || !BR2_TOOLCHAIN_HAS_THREADS
-
-endchoice
 
 config BR2_PACKAGE_OPENCV_WITH_GTK
 	bool "gtk support"
