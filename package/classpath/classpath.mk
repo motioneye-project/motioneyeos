@@ -12,6 +12,7 @@ CLASSPATH_CONF_OPTS = \
 	--disable-Werror \
 	--disable-gconf-peer \
 	--disable-gjdoc \
+	--disable-gstreamer-peer \
 	--enable-tools
 
 # classpath assumes qt runs on top of X11, but we
@@ -40,16 +41,8 @@ endif
 ifeq ($(BR2_PACKAGE_LIBGTK2)$(BR2_PACKAGE_XORG7),yy)
 CLASSPATH_CONF_OPTS += --enable-gtk-peer
 CLASSPATH_DEPENDENCIES += libgtk2
-
-ifeq ($(BR2_PACKAGE_GST_PLUGINS_BASE),y)
-CLASSPATH_CONF_OPTS += --enable-gstreamer-peer
-CLASSPATH_DEPENDENCIES += gst-plugins-base
 else
-CLASSPATH_CONF_OPTS += --disable-gstreamer-peer
-endif
-
-else
-CLASSPATH_CONF_OPTS += --disable-gtk-peer --disable-gstreamer-peer
+CLASSPATH_CONF_OPTS += --disable-gtk-peer
 endif
 
 ifeq ($(BR2_PACKAGE_LIBXML2)$(BR2_PACKAGE_LIBXSLT)$(BR2_TOOLCHAIN_HAS_THREADS),yyy)
