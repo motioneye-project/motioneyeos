@@ -146,6 +146,20 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
+	bool "nvidia-tegra23 binaries gstreamer 0.10.x support removed"
+	select BR2_LEGACY
+	help
+	  Gstreamer 0.10.x is no longer available in Buildroot, so
+	  neither is the support in nvidia-tegra23 binaries.
+
+config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_NV_SAMPLE_APPS
+	bool "nvidia-tegra23 binaries sample apps removed"
+	select BR2_LEGACY
+	help
+	  Gstreamer 0.10.x is no longer available in Buildroot, so
+	  neither is the support in nvidia-tegra23 binaries.
+
 config BR2_PACKAGE_FREERDP_GSTREAMER
 	bool "freerdp gstreamer 0.10.x support removed"
 	select BR2_LEGACY
