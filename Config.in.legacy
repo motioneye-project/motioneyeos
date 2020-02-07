@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_FREERDP_GSTREAMER
+	bool "freerdp gstreamer 0.10.x support removed"
+	select BR2_LEGACY
+	help
+	  Gstreamer 0.10.x is no longer available in Buildroot, so
+	  neither is the support in freerdp.
+
 config BR2_PACKAGE_OPENCV3_WITH_GSTREAMER
 	bool "opencv3 gstreamer 0.10.x support removed"
 	select BR2_LEGACY
