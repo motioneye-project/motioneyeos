@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_LIBPLAYER
+	bool "libplayer package was removed"
+	select BR2_LEGACY
+	help
+	  The libplayer package was removed. The latest release is
+	  from 2010 and none of the backends are available in
+	  Buildroot any more.
+
 config BR2_GCC_VERSION_OR1K
 	bool "gcc 5.x fork for or1k has been removed"
 	select BR2_LEGACY
