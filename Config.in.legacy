@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_GSTREAMER
+	bool "gstreamer-0.10 removed"
+	select BR2_LEGACY
+	help
+	  Gstreamer-0.10 package was removed. It has been deprecated
+	  upstream since 2012, and is missing a lot of features and
+	  fixes compared to gstreamer-1.x.
+
 config BR2_PACKAGE_NVIDIA_TEGRA23_BINARIES_GSTREAMER_PLUGINS
 	bool "nvidia-tegra23 binaries gstreamer 0.10.x support removed"
 	select BR2_LEGACY
