@@ -115,8 +115,8 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_FREEDRENO
 
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_IRIS
 	bool "Gallium iris driver"
+	depends on BR2_i386 || BR2_x86_64
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
-	select BR2_PACKAGE_MESA3D_GALLIUM_KMSRO
 	help
 	  Mesa driver for iris-based Intel GPUs.
 
