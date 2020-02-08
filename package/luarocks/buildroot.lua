@@ -319,7 +319,7 @@ function buildroot.command(args)
    local rockname = assert(args.rockname)
    local fsname = args.brname or rockname
 
-   local query = queries.new(rockname:lower(), nil, false, 'src')
+   local query = queries.new(rockname:lower(), nil, nil, false, 'src')
    local url, err = search.find_suitable_rock(query)
    if not url then
       return nil, "Could not find a result named " .. tostring(query) .. ": " .. err
