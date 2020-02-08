@@ -1,4 +1,4 @@
-From 888dd1ae6a0261230b2bc47079d7b20df8c05e68 Mon Sep 17 00:00:00 2001
+From 7b36f171d09354a2d3a48db0ae2d34d66aa4f1ae Mon Sep 17 00:00:00 2001
 From: James Hilliard <james.hilliard1@gmail.com>
 Date: Sat, 1 Feb 2020 20:02:29 -0700
 Subject: [PATCH] unconditionally include sys/mman.h in os-compatibility.c
@@ -13,20 +13,21 @@ Fixes:
                          LOCK_READ
 
 Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
-[Upstream status:
-https://gitlab.freedesktop.org/wayland/weston/merge_requests/368]
+[james.hilliard1@gmail.com: backport from upstream commit
+7b36f171d09354a2d3a48db0ae2d34d66aa4f1ae]
 ---
- shared/os-compatibility.c | 2 --
- 1 file changed, 2 deletions(-)
+ shared/os-compatibility.c | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/shared/os-compatibility.c b/shared/os-compatibility.c
-index 5e1ce479..ddc37807 100644
+index 5e1ce479..041c929f 100644
 --- a/shared/os-compatibility.c
 +++ b/shared/os-compatibility.c
-@@ -35,9 +35,7 @@
+@@ -34,10 +34,7 @@
+ #include <string.h>
  #include <stdlib.h>
  #include <libweston/zalloc.h>
- 
+-
 -#ifdef HAVE_MEMFD_CREATE
  #include <sys/mman.h>
 -#endif
