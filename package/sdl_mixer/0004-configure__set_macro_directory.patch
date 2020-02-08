@@ -1,0 +1,34 @@
+# HG changeset patch
+# User "Yann E. MORIN" <yann.morin.1998@free.fr>
+# Date 1581183281 -3600
+#      Sat Feb 08 18:34:41 2020 +0100
+# Node ID 753a1f394620056c35790a571ff5f7c248445943
+# Parent  eb5f08bf9994bf5164ca68015f2e030c2c9dddcd
+configure: set macro directory
+
+Setting the macro directory in configure.in, rather than specifying it
+on the command line, ensures that it is properly searched in the correct
+order, and that autoreconf properly updates our macros with the newer
+system ones, if any.
+
+Fixes:
+    http://autobuild.buildroot.org/results/63a/63ae0bddb3c4436efe967c318e299047f496c5a5/build-end.log
+
+    libtool: Version mismatch error.  This is libtool 2.4.6, but the
+    libtool: definition of this LT_INIT comes from libtool 2.2.6.
+    libtool: You should recreate aclocal.m4 with macros from libtool 2.4.6
+    libtool: and run autoconf again.
+
+Signed-off-by: Yann E. MORIN <yann.morin.1998@free.fr>
+
+diff --git a/configure.in b/configure.in
+--- a/configure.in
++++ b/configure.in
+@@ -1,6 +1,7 @@
+ dnl Process this file with autoconf to produce a configure script.
+ AC_INIT(README)
+ AC_CONFIG_AUX_DIR(build-scripts)
++AC_CONFIG_MACRO_DIR([acinclude])
+ 
+ dnl Set various version strings - taken gratefully from the GTk sources
+ 

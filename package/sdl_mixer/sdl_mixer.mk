@@ -18,7 +18,6 @@ SDL_MIXER_DEPENDENCIES = sdl
 
 # We're patching configure.in, so we need to autoreconf
 SDL_MIXER_AUTORECONF = YES
-SDL_MIXER_AUTORECONF_OPTS = -Iacinclude
 
 SDL_MIXER_CONF_OPTS = \
 	--without-x \
