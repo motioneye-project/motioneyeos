@@ -434,7 +434,7 @@ int main(int argc, char **argv)
 		/* Both args below can be set at compile/link time
 		 * and are ignored correctly when not used
 		 */
-		if(i == argc)
+		if (i == argc)
 			*cur++ = "-fPIE";
 
 		if (!found_shared)
