@@ -50,6 +50,11 @@ LIBNSS_BUILD_VARS = \
 	OS_TEST=$(BR2_PACKAGE_LIBNSS_ARCH) \
 	NSS_ENABLE_WERROR=0
 
+ifeq ($(BR2_POWERPC_CPU_HAS_ALTIVEC),)
+# Disable Altivec if not supported
+LIBNSS_BUILD_VARS += NSS_DISABLE_ALTIVEC=1
+endif
+
 ifeq ($(BR2_ARCH_IS_64),y)
 # MIPS64 n32 is treated as a 32-bit architecture by libnss.
 # See: https://bugzilla.mozilla.org/show_bug.cgi?id=1010730
