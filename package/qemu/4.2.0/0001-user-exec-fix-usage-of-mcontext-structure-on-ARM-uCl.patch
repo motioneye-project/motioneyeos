@@ -21,7 +21,7 @@ diff --git a/accel/tcg/user-exec.c b/accel/tcg/user-exec.c
 index 6db0758..2b3d116 100644
 --- a/accel/tcg/user-exec.c
 +++ b/accel/tcg/user-exec.c
-@@ -463,7 +463,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
+@@ -506,7 +506,7 @@ int cpu_signal_handler(int host_signum, void *pinfo,
  
  #if defined(__NetBSD__)
      pc = uc->uc_mcontext.__gregs[_REG_R15];
