@@ -1,0 +1,65 @@
+From 41bd04234b104312f54d25822f68738ba8d7133d Mon Sep 17 00:00:00 2001
+From: Marcus Meissner <marcus@jet.franken.de>
+Date: Tue, 25 Jul 2017 23:44:44 +0200
+Subject: [PATCH] fixes some (not all) buffer overreads during decoding pentax
+ makernote entries.
+
+This should fix:
+https://sourceforge.net/p/libexif/bugs/125/ CVE-2016-6328
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libexif/pentax/mnote-pentax-entry.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/libexif/pentax/mnote-pentax-entry.c b/libexif/pentax/mnote-pentax-entry.c
+index d03d159..ea0429a 100644
+--- a/libexif/pentax/mnote-pentax-entry.c
++++ b/libexif/pentax/mnote-pentax-entry.c
+@@ -425,24 +425,34 @@ mnote_pentax_entry_get_value (MnotePentaxEntry *entry,
+ 		case EXIF_FORMAT_SHORT:
+ 		  {
+ 			const unsigned char *data = entry->data;
+-		  	size_t k, len = strlen(val);
++		  	size_t k, len = strlen(val), sizeleft;
++
++			sizeleft = entry->size;
+ 		  	for(k=0; k<entry->components; k++) {
++				if (sizeleft < 2)
++					break;
+ 				vs = exif_get_short (data, entry->order);
+ 				snprintf (val+len, maxlen-len, "%i ", vs);
+ 				len = strlen(val);
+ 				data += 2;
++				sizeleft -= 2;
+ 			}
+ 		  }
+ 		  break;
+ 		case EXIF_FORMAT_LONG:
+ 		  {
+ 			const unsigned char *data = entry->data;
+-		  	size_t k, len = strlen(val);
++		  	size_t k, len = strlen(val), sizeleft;
++
++			sizeleft = entry->size;
+ 		  	for(k=0; k<entry->components; k++) {
++				if (sizeleft < 4)
++					break;
+ 				vl = exif_get_long (data, entry->order);
+ 				snprintf (val+len, maxlen-len, "%li", (long int) vl);
+ 				len = strlen(val);
+ 				data += 4;
++				sizeleft -= 4;
+ 			}
+ 		  }
+ 		  break;
+@@ -455,5 +465,5 @@ mnote_pentax_entry_get_value (MnotePentaxEntry *entry,
+ 		break;
+ 	}
+ 
+-	return (val);
++	return val;
+ }
+-- 
+2.20.1
+

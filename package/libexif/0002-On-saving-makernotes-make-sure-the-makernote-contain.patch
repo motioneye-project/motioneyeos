@@ -1,0 +1,41 @@
+From c39acd1692023b26290778a02a9232c873f9d71a Mon Sep 17 00:00:00 2001
+From: Marcus Meissner <marcus@jet.franken.de>
+Date: Tue, 25 Jul 2017 23:38:56 +0200
+Subject: [PATCH] On saving makernotes, make sure the makernote container tags
+ has a type with 1 byte components.
+
+Fixes (at least):
+	https://sourceforge.net/p/libexif/bugs/130
+	https://sourceforge.net/p/libexif/bugs/129
+
+CVE-2017-7544: libexif through 0.6.21 is vulnerable to out-of-bounds heap
+read vulnerability in exif_data_save_data_entry function in
+libexif/exif-data.c caused by improper length computation of the allocated
+data of an ExifMnote entry which can cause denial-of-service or possibly
+information disclosure.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libexif/exif-data.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/libexif/exif-data.c b/libexif/exif-data.c
+index 67df4db..91f4c33 100644
+--- a/libexif/exif-data.c
++++ b/libexif/exif-data.c
+@@ -255,6 +255,12 @@ exif_data_save_data_entry (ExifData *data, ExifEntry *e,
+ 			exif_mnote_data_set_offset (data->priv->md, *ds - 6);
+ 			exif_mnote_data_save (data->priv->md, &e->data, &e->size);
+ 			e->components = e->size;
++			if (exif_format_get_size (e->format) != 1) {
++				/* e->format is taken from input code,
++				 * but we need to make sure it is a 1 byte
++				 * entity due to the multiplication below. */
++				e->format = EXIF_FORMAT_UNDEFINED;
++			}
+ 		}
+ 	}
+ 
+-- 
+2.20.1
+

@@ -1,0 +1,30 @@
+From 5d28011c40ec86cf52cffad541093d37c263898a Mon Sep 17 00:00:00 2001
+From: Dan Fandrich <dan@coneharvesters.com>
+Date: Fri, 20 Apr 2018 18:05:19 +0200
+Subject: [PATCH] Reduce maximum recursion depth in exif_data_load_data_content
+
+This only needs to be a small, single digit integer for normal files,
+and reducing the maximum closer to this reduces the time and space
+needed to detect pathological cases.
+
+Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
+---
+ libexif/exif-data.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/libexif/exif-data.c b/libexif/exif-data.c
+index 91f4c33..04cdda2 100644
+--- a/libexif/exif-data.c
++++ b/libexif/exif-data.c
+@@ -378,7 +378,7 @@ exif_data_load_data_content (ExifData *data, ExifIfd ifd,
+ 	if ((((int)ifd) < 0) || ( ((int)ifd) >= EXIF_IFD_COUNT))
+ 	  return;
+ 
+-	if (recursion_depth > 30) {
++	if (recursion_depth > 12) {
+ 		exif_log (data->priv->log, EXIF_LOG_CODE_CORRUPT_DATA, "ExifData",
+ 			  "Deep recursion detected!");
+ 		return;
+-- 
+2.20.1
+
