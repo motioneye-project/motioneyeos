@@ -16,8 +16,8 @@ PHP_AMQP_LICENSE_FILES = LICENSE
 
 define PHP_AMQP_PHPIZE
 	(cd $(@D); \
-		PHP_AUTOCONF=$(AUTOCONF) \
-		PHP_AUTOHEADER=$(AUTOHEADER) \
+		PHP_AUTOCONF=$(HOST_DIR)/bin/autoconf \
+		PHP_AUTOHEADER=$(HOST_DIR)/bin/autoheader \
 		$(STAGING_DIR)/usr/bin/phpize)
 endef
 
