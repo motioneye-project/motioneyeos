@@ -207,7 +207,8 @@ config BR2_GCC_VERSION_OR1K
 config BR2_PACKAGE_BLUEZ_UTILS
 	bool "bluez-utils was removed"
 	select BR2_LEGACY
-	select BR2_PACKAGE_BLUEZ5_UTILS
+	select BR2_PACKAGE_BLUEZ5_UTILS if BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_4 \
+		&& BR2_TOOLCHAIN_HAS_SYNC_4
 	help
 	  The bluez-utils (BlueZ 4.x) package was removed as it is
 	  deprecated since a long time. As an alternative, the
