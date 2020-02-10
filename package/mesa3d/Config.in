@@ -169,7 +169,11 @@ config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_PANFROST
 config BR2_PACKAGE_MESA3D_GALLIUM_DRIVER_R300
 	bool "Gallium Radeon R300 driver"
 	depends on BR2_i386 || BR2_x86_64
-	depends on BR2_PACKAGE_LIBDRM_HAS_ATOMIC # libdrm's radeon
+	# lbdrm's radeon option depends on LIBDRM_HAS_ATOMIC. Propagating
+	# that dependency here causes a circular dependency that Kconfig
+	# can't see is just spurious. However, that dependency is about
+	# the toolchain having sync4 primitives, which is always a given
+	# for x86.
 	select BR2_PACKAGE_MESA3D_GALLIUM_DRIVER
 	select BR2_PACKAGE_LIBDRM_RADEON
 	help
