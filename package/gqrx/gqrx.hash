@@ -1,4 +1,4 @@
 # Locally calculated:
-sha256 5a15d8eb863f68a8590d27ebb2f50e735e814b1651de86952a7e425a68476d9d  gqrx-2.11.5.tar.gz
-sha256 8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
-sha256 7cc22ce5ee61df62e427ec43b8130de149edee3cafb5af4f18d59b6dc3958faf  LICENSE-CTK
+sha256  7c626db9f22c3edbe30299a08f7f549b4f30dd83c883595468029a27c3e8fda9  gqrx-2.12.1.tar.gz
+sha256  8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903  COPYING
+sha256  7cc22ce5ee61df62e427ec43b8130de149edee3cafb5af4f18d59b6dc3958faf  LICENSE-CTK

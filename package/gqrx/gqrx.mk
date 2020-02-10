@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-GQRX_VERSION = 2.11.5
+GQRX_VERSION = 2.12.1
 GQRX_SITE = $(call github,csete,gqrx,v$(GQRX_VERSION))
 GQRX_LICENSE = GPL-3.0+, Apache-2.0
 GQRX_LICENSE_FILES = COPYING LICENSE-CTK
