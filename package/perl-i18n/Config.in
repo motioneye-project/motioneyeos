@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PERL_I18N
+	bool "perl-i18n"
+	select BR2_PACKAGE_PERL_LOCALE_MAKETEXT_LEXICON # runtime
+	help
+	  Perl Internationalization Pragma.
+
+	  https://metacpan.org/release/i18n
