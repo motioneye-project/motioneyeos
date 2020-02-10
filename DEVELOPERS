@@ -463,6 +463,7 @@ F:	package/x264/
 F:	package/x265/
 F:	package/ytree/
 F:	package/znc/
+F:	support/testing/tests/package/test_perl_html_parser.py
 
 N:	Biagio Montaruli <biagio.hkr@gmail.com>
 F:	board/acmesystems/
