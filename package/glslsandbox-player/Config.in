@@ -41,7 +41,7 @@ config BR2_PACKAGE_GLSLSANDBOX_PLAYER_SCRIPTS
 	select BR2_PACKAGE_BASH # runtime
 	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS if BR2_PACKAGE_BUSYBOX # bash
 	select BR2_PACKAGE_COREUTILS # runtime (timeout)
-	select BR2_PACKAGE_CURL # runtime
+	select BR2_PACKAGE_LIBCURL_CURL # runtime
 	select BR2_PACKAGE_IMAGEMAGICK # runtime
 	select BR2_PACKAGE_JPEG # runtime
 	select BR2_PACKAGE_LIBCURL # runtime

@@ -146,6 +146,14 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_CURL
+	bool "BR2_PACKAGE_CURL was renamed"
+	select BR2_PACKAGE_LIBCURL_CURL
+	select BR2_LEGACY
+	help
+	  The BR2_PACKAGE_CURL config symbol was renamed to
+	  BR2_PACKAGE_LIBCURL_CURL.
+
 config BR2_PACKAGE_GSTREAMER
 	bool "gstreamer-0.10 removed"
 	select BR2_LEGACY
