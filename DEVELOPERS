@@ -2410,6 +2410,7 @@ F:	package/perl-mojolicious-plugin-authorization/
 F:	package/perl-mojolicious-plugin-cspheader/
 F:	package/perl-mojolicious-plugin-i18n/
 F:	package/perl-mojolicious-plugin-securityheader/
+F:	package/perl-mozilla-ca/
 F:	package/perl-net-snmp/
 F:	package/perl-net-ssh2/
 F:	package/perl-net-telnet/
