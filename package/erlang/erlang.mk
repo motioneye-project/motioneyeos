@@ -14,6 +14,13 @@ ERLANG_LICENSE = Apache-2.0
 ERLANG_LICENSE_FILES = LICENSE.txt
 ERLANG_INSTALL_STAGING = YES
 
+# Remove the leftover deps directory from the ssl app
+# See https://bugs.erlang.org/browse/ERL-1168
+define ERLANG_REMOVE_SSL_DEPS
+	rm -rf $(@D)/lib/ssl/src/deps
+endef
+ERLANG_POST_PATCH_HOOKS += ERLANG_REMOVE_SSL_DEPS
+
 # Patched erts/aclocal.m4
 define ERLANG_RUN_AUTOCONF
 	cd $(@D) && PATH=$(BR_PATH) ./otp_build autoconf
