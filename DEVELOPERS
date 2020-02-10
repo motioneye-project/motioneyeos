@@ -2403,6 +2403,7 @@ F:	package/perl-crypt-cbc/
 F:	package/perl-crypt-openssl-aes/
 F:	package/perl-i18n/
 F:	package/perl-locale-maketext-lexicon/
+F:	package/perl-lwp-protocol-https/
 F:	package/perl-math-prime-util/
 F:	package/perl-mime-base64-urlsafe/
 F:	package/perl-mojolicious-plugin-authentication/
@@ -2417,6 +2418,7 @@ F:	package/perl-net-telnet/
 F:	package/pigz/
 F:	package/xenomai/
 F:	support/scripts/size-stats
+F:	support/testing/tests/package/test_perl_lwp_protocol_https.py
 F:	utils/size-stats-compare
 F:	toolchain/
 
