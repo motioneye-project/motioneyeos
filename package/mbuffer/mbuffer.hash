@@ -1,0 +1,5 @@
+# From http://www.maier-komor.de/mbuffer.html
+md5 e4acaa1e6a9a879e7394f04e02e1ae83  mbuffer-20191016.tgz
+
+# Locally computed after checking signature upstream
+sha256 8dc210454765c18901074bc16e126c655135a486e73d69855caf74a157ddbe17  mbuffer-20191016.tgz
