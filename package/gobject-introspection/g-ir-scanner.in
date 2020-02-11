@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+export GI_SCANNER_DISABLE_CACHE=1
+${HOST_DIR}/bin/g-ir-scanner \
+--lib-dirs-envvar=GIR_EXTRA_LIBS_PATH \
+--use-binary-wrapper=$(dirname $0)/g-ir-scanner-qemuwrapper \
+--use-ldd-wrapper=$(dirname $0)/g-ir-scanner-lddwrapper \
+--add-include-path=$(dirname $0)/../share/gir-1.0 "$@"
