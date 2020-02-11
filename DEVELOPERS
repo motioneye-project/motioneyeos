@@ -2555,6 +2555,7 @@ F:	package/keyutils/
 F:	package/libbsd/
 F:	package/libedit/
 F:	package/libgsm/
+F:	package/libiberty/
 F:	package/libinput/
 F:	package/libiscsi/
 F:	package/libpri/
