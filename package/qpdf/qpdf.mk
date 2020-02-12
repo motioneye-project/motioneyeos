@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-QPDF_VERSION = 9.1.0
+QPDF_VERSION = 9.1.1
 QPDF_SITE = http://downloads.sourceforge.net/project/qpdf/qpdf/$(QPDF_VERSION)
 QPDF_INSTALL_STAGING = YES
 QPDF_LICENSE = Apache-2.0 or Artistic-2.0
