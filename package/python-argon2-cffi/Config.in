@@ -1,0 +1,9 @@
+config BR2_PACKAGE_PYTHON_ARGON2_CFFI
+	bool "python-argon2-cffi"
+	select BR2_PACKAGE_PYTHON_CFFI # runtime
+	select BR2_PACKAGE_PYTHON_ENUM34 if BR2_PACKAGE_PYTHON # runtime
+	select BR2_PACKAGE_PYTHON_SIX # runtime
+	help
+	  The secure Argon2 password hashing algorithm.
+
+	  https://argon2-cffi.readthedocs.io/
