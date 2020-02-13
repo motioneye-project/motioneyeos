@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 import argparse
-import sys
-import os
-import nose2
 import multiprocessing
+import os
+import sys
+
+import nose2
 
 from infra.basetest import BRConfigTest
 
