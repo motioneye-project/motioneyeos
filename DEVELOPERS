@@ -2120,6 +2120,8 @@ F:	package/irssi/
 F:	package/vnstat/
 
 N:	Romain Naour <romain.naour@gmail.com>
+F:	board/qemu/
+F:	configs/qemu_*
 F:	package/alure/
 F:	package/aubio/
 F:	package/binutils/
