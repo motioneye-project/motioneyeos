@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/ecdsa/json
-md5	b1b33f7fe171eb1278de6f93eefc34f8  ecdsa-0.13.3.tar.gz
-sha256	163c80b064a763ea733870feb96f9dd9b92216cfcacd374837af18e4e8ec3d4d  ecdsa-0.13.3.tar.gz
+md5	821d543047941dd26f543f62912230d4  ecdsa-0.15.tar.gz
+sha256	8f12ac317f8a1318efa75757ef0a651abe12e51fc1af8838fb91079445227277  ecdsa-0.15.tar.gz
 # Locally computed sha256 checksums
 sha256	3eca9845773d2e5b8cc9d8c119d345f00a4806e4bd660d4a3d6cdf9c0e9d8bb2  LICENSE
