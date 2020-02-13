@@ -1,5 +1,5 @@
 # md5, sha256 from https://pypi.org/pypi/asn1crypto/json
-md5	fc3815cdd4812505e3ee297740c5f5d3  asn1crypto-1.2.0.tar.gz
-sha256	87620880a477123e01177a1f73d0f327210b43a3cdbd714efcd2fa49a8d7b384  asn1crypto-1.2.0.tar.gz
+md5	daad112940181917e3ff169b47b9bd9a  asn1crypto-1.3.0.tar.gz
+sha256	5a215cb8dc12f892244e3a113fe05397ee23c5c4ca7a69cd6e69811755efc42d  asn1crypto-1.3.0.tar.gz
 # Locally computed sha256 checksums
 sha256	a88480656ec98943fb04344f6a477ee74062896f3ddb1a6f99e5f05f0109a286  LICENSE
