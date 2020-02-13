@@ -1,6 +1,6 @@
 # md5, sha256 from https://pypi.org/pypi/cryptography/json
-md5	7dfe1035cae43569e571318f000462a4  cryptography-2.7.tar.gz
-sha256	e6347742ac8f35ded4a46ff835c60e68c22a536a8ae5c4422966d06946b6d4c6  cryptography-2.7.tar.gz
+md5	77730058b556c6d9838679a94c6229ce  cryptography-2.8.tar.gz
+sha256	3cda1f0ed8747339bbdf71b9f38ca74c7b592f24f65cdb3ab3765e4b02871651  cryptography-2.8.tar.gz
 # Locally computed sha256 checksums
 sha256	35452b557fab0efb1e80d7edb9c4e5118b9384082adaa051dde342102cb9de8d  LICENSE
 sha256	aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe  LICENSE.APACHE
