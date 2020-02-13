@@ -1193,6 +1193,7 @@ F:	package/python-argon2-cffi/
 F:	package/python-async-lru/
 F:	package/python-async-timeout/
 F:	package/python-brotli/
+F:	package/python-cbor2/
 F:	package/python-cchardet/
 F:	package/python-flatbuffers/
 F:	package/python-frozenlist/
