@@ -1,4 +1,4 @@
-# https://lists.zx2c4.com/pipermail/wireguard/2020-February/004962.html
-sha256  9669e165fc7252cab7f908ba57f160f6d57539b7cc81180f260cb675d2fd362b  wireguard-linux-compat-0.0.20200205.tar.xz
+# https://lists.zx2c4.com/pipermail/wireguard/2020-February/005013.html
+sha256  6aaed62beb23803a456b7875a56e9462125a589c9dfb6d0b672c1a8f9f3f45ab  wireguard-linux-compat-0.0.20200214.tar.xz
 # Locally calculated
 sha256  8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643  COPYING
