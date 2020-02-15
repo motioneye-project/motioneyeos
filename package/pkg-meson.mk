@@ -76,6 +76,7 @@ define $(2)_CONFIGURE_CMDS
 	    -e 's%@TARGET_CXXFLAGS@%$$(call make-comma-list,$$($(2)_CXXFLAGS))%g' \
 	    -e 's%@HOST_DIR@%$$(HOST_DIR)%g' \
 	    -e 's%@STAGING_DIR@%$$(STAGING_DIR)%g' \
+	    -e 's%@STATIC@%$$(if $$(BR2_STATIC_LIBS),true,false)%g' \
 	    -e "/^\[binaries\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_BINARIES),\n$$(x)):" \
 	    -e "/^\[properties\]$$$$/s:$$$$:$$(foreach x,$$($(2)_MESON_EXTRA_PROPERTIES),\n$$(x)):" \
 	    package/meson/cross-compilation.conf.in \
@@ -193,6 +194,7 @@ define PKG_MESON_INSTALL_CROSS_CONF
 	    -e 's%@TARGET_CXXFLAGS@%$(call make-comma-list,$(TARGET_CXXFLAGS))@PKG_TARGET_CFLAGS@%g' \
 	    -e 's%@HOST_DIR@%$(HOST_DIR)%g' \
 	    -e 's%@STAGING_DIR@%$(STAGING_DIR)%g' \
+	    -e 's%@STATIC@%$$(if $$(BR2_STATIC_LIBS),true,false)%g' \
 	    $(HOST_MESON_PKGDIR)/cross-compilation.conf.in \
 	    > $(HOST_DIR)/etc/meson/cross-compilation.conf.in
 	sed -e 's%@PKG_TARGET_CFLAGS@%%g' \

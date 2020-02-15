@@ -18,6 +18,7 @@ cpp_args = [@TARGET_CXXFLAGS@]
 cpp_link_args = [@TARGET_LDFLAGS@]
 sys_root = '@STAGING_DIR@'
 pkg_config_libdir = '@STAGING_DIR@/usr/lib/pkgconfig:@STAGING_DIR@/usr/share/pkgconfig'
+pkg_config_static = '@STATIC@'
 
 [host_machine]
 system = 'linux'
