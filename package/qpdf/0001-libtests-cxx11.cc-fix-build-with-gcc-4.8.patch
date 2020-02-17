@@ -1,0 +1,38 @@
+From e70c2605a11d12a8eeee3e7eec46077956e11e1f Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 17 Feb 2020 22:36:08 +0100
+Subject: [PATCH] libtests/cxx11.cc: fix build with gcc 4.8
+
+Build fails on gcc 4.8 since version 9.1.1 and commit
+752416554086d5d34323bc14164d5084db83cfbd:
+
+libtests/cxx11.cc: In function 'void do_regex()':
+libtests/cxx11.cc:347:42: error: 'strlen' is not a member of 'std'
+     std::cregex_iterator m3(str7, str7 + std::strlen(str7), expr4);
+                                          ^
+
+To fix the build failure, add missing include on cstring
+
+Fixes:
+ - http://autobuild.buildroot.org/results/ad7fb68ae87850a85509eed80fd0cae8721b10c5
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+[Upstream status: https://github.com/qpdf/qpdf/pull/400]
+---
+ libtests/cxx11.cc | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/libtests/cxx11.cc b/libtests/cxx11.cc
+index fa1dc6b..91ed7b1 100644
+--- a/libtests/cxx11.cc
++++ b/libtests/cxx11.cc
+@@ -1,5 +1,6 @@
+ #include <iostream>
+ #include <cassert>
++#include <cstring>
+ #include <functional>
+ #include <type_traits>
+ #include <cstdint>
+-- 
+2.24.1
+
