@@ -87,6 +87,16 @@ OWFS_DEPENDENCIES += python host-swig
 # Patching owfs to do the right thing is not trivial, it's much easier to
 # override the PYSITEDIR variable in make.
 OWFS_EXTRA_MAKE_OPTS += PYSITEDIR=/usr/lib/python$(PYTHON_VERSION_MAJOR)/site-packages
+
+ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),y)
+define OWFS_FIXUP_PYTHON_SYSCONFIGDATA
+	find $(HOST_DIR)/lib/python* $(STAGING_DIR)/usr/lib/python* \
+		-name "_sysconfigdata*.py" | xargs --no-run-if-empty \
+		$(SED) "s:$(PER_PACKAGE_DIR)/[^/]\+/:$(PER_PACKAGE_DIR)/owfs/:g"
+endef
+OWFS_PRE_CONFIGURE_HOOKS += OWFS_FIXUP_PYTHON_SYSCONFIGDATA
+endif
+
 else
 OWFS_CONF_OPTS += --disable-owpython --without-python
 endif
