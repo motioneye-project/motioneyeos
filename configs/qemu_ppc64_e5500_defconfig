@@ -5,6 +5,10 @@ BR2_powerpc_e5500=y
 # Serial port config
 BR2_TARGET_GENERIC_GETTY_PORT="ttyS0"
 
+# Image
+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/qemu/post-image.sh"
+BR2_ROOTFS_POST_SCRIPT_ARGS="$(BR2_DEFCONFIG)"
+
 # Linux headers same as the kernel
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_4_19=y
 

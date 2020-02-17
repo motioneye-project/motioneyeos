@@ -5,6 +5,10 @@ BR2_ck610=y
 # System
 BR2_TARGET_ROOTFS_INITRAMFS=y
 
+# Image
+BR2_ROOTFS_POST_IMAGE_SCRIPT="board/qemu/post-image.sh"
+BR2_ROOTFS_POST_SCRIPT_ARGS="$(BR2_DEFCONFIG)"
+
 # linux kernel header, the same version with linux kernel
 BR2_PACKAGE_HOST_LINUX_HEADERS_CUSTOM_5_0=y
 
