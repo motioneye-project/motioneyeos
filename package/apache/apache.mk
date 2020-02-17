@@ -16,6 +16,14 @@ APACHE_INSTALL_STAGING = YES
 APACHE_AUTORECONF = YES
 APACHE_DEPENDENCIES = apr apr-util pcre
 
+ifeq ($(BR2_PER_PACKAGE_DIRECTORIES),y)
+define APACHE_FIXUP_APR_LIBTOOL
+	$(SED) "s@$(PER_PACKAGE_DIR)/[^/]\+/@$(PER_PACKAGE_DIR)/apache/@g" \
+		$(STAGING_DIR)/usr/build-1/libtool
+endef
+APACHE_POST_CONFIGURE_HOOKS += APACHE_FIXUP_APR_LIBTOOL
+endif
+
 APACHE_CONF_ENV= \
 	ap_cv_void_ptr_lt_long=no \
 	PCRE_CONFIG=$(STAGING_DIR)/usr/bin/pcre-config
