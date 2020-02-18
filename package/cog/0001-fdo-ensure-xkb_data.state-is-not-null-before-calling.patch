@@ -1,0 +1,30 @@
+From 9f1f1e64b65e6680d5cdedf5a3b753ef85fc01f4 Mon Sep 17 00:00:00 2001
+From: James Hilliard <james.hilliard1@gmail.com>
+Date: Tue, 18 Feb 2020 01:20:50 -0700
+Subject: [PATCH] fdo: ensure xkb_data.state is not null before calling
+ xkb_state_update_mask (#180)
+
+[james.hilliard1@gmail.com: backport from upstream commit
+9f1f1e64b65e6680d5cdedf5a3b753ef85fc01f4]
+Signed-off-by: James Hilliard <james.hilliard1@gmail.com>
+---
+ platform/cog-platform-fdo.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/platform/cog-platform-fdo.c b/platform/cog-platform-fdo.c
+index 36177fc..e6f1cb5 100644
+--- a/platform/cog-platform-fdo.c
++++ b/platform/cog-platform-fdo.c
+@@ -894,6 +894,9 @@ keyboard_on_modifiers (void *data,
+                        uint32_t mods_locked,
+                        uint32_t group)
+ {
++    if (xkb_data.state == NULL)
++        return;
++
+     xkb_state_update_mask (xkb_data.state,
+                            mods_depressed,
+                            mods_latched,
+-- 
+2.20.1
+
