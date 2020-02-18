@@ -9,6 +9,10 @@ LIBXML2_SITE = http://xmlsoft.org/sources
 LIBXML2_INSTALL_STAGING = YES
 LIBXML2_LICENSE = MIT
 LIBXML2_LICENSE_FILES = COPYING
+# 0001-Fix-infinite-loop-in-xmlStringLenDecodeEntities.patch
+LIBXML2_IGNORE_CVES += CVE-2020-7595
+# 0002-Fix-memory-leak-in-xmlSchemaValidateStream.patch
+LIBXML2_IGNORE_CVES += CVE-2019-20388
 LIBXML2_CONFIG_SCRIPTS = xml2-config
 
 # relocation truncated to fit: R_68K_GOT16O
