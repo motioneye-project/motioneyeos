@@ -455,7 +455,7 @@ endif
 ifneq ($(HOST_DIR),$(BASE_DIR)/host)
 HOST_DIR_SYMLINK = $(BASE_DIR)/host
 $(HOST_DIR_SYMLINK): $(BASE_DIR)
-	ln -snf $(HOST_DIR) $(BASE_DIR)/host
+	ln -snf $(HOST_DIR) $(HOST_DIR_SYMLINK)
 endif
 
 # Quotes are needed for spaces and all in the original PATH content.
