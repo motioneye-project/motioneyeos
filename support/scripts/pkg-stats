@@ -260,6 +260,9 @@ class CVE:
         True if the Buildroot Package object passed as argument is affected
         by this CVE.
         """
+        if br_pkg.is_cve_ignored(self.identifier):
+            return False
+
         for product in self.each_product():
             if product['product_name'] != br_pkg.name:
                 continue
