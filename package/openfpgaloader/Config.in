@@ -1,0 +1,18 @@
+config BR2_PACKAGE_OPENFPGALOADER
+	bool "openfpgaloader"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # libftdi1
+	depends on BR2_PACKAGE_HAS_UDEV
+	depends on BR2_INSTALL_LIBSTDCPP # libftdipp1
+	depends on BR2_USE_WCHAR # libftdipp1
+	select BR2_PACKAGE_ARGP_STANDALONE \
+	       if BR2_TOOLCHAIN_USES_UCLIBC || BR2_TOOLCHAIN_USES_MUSL # argp
+	select BR2_PACKAGE_LIBFTDI1
+	select BR2_PACKAGE_LIBFTDI1_LIBFTDIPP1
+	help
+	  Universal utility for programming FPGA
+
+	  https://github.com/trabucayre/openFPGALoader/
+
+comment "openfpgaloader needs udev, a toolchain w/ threads, wchar, C++"
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || !BR2_USE_WCHAR || \
+		!BR2_INSTALL_LIBSTDCPP || !BR2_PACKAGE_HAS_UDEV

@@ -1216,6 +1216,9 @@ F:	package/quota/
 N:	Jason Pruitt <jrspruitt@gmail.com>
 F:	package/librtlsdr/
 
+N:	Jean Burgat <jeanburgat33@gmail.com>
+F:	package/openfpgaloader/
+
 N:	Jens Kleintje <scooby22@web.de>
 F:	package/gcnano-binaries/
 
