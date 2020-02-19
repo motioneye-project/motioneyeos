@@ -15,6 +15,11 @@ IPSEC_TOOLS_DEPENDENCIES = openssl flex host-pkgconf host-flex host-bison
 # we patch configure.ac
 IPSEC_TOOLS_AUTORECONF = YES
 
+# 0004-CVE-2015-4047.patch
+IPSEC_TOOLS_IGNORE_CVES += CVE-2015-4047
+# 0005-CVE-2016-10396.patch
+IPSEC_TOOLS_IGNORE_CVES += CVE-2016-10396
+
 # configure hardcodes -Werror, so override CFLAGS on make invocation
 IPSEC_TOOLS_MAKE_OPTS = CFLAGS='$(TARGET_CFLAGS)'
 
