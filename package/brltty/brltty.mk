@@ -15,6 +15,9 @@ BRLTTY_LICENSE_FILES = LICENSE-LGPL README
 BRLTTY_DEPENDENCIES = $(TARGET_NLS_DEPENDENCIES) host-autoconf host-pkgconf \
 	$(if $(BR2_PACKAGE_AT_SPI2_CORE),at-spi2-core)
 
+BRLTTY_CONF_ENV = \
+	PKG_CONFIG_FOR_BUILD=$(HOST_DIR)/bin/pkgconf
+
 BRLTTY_CONF_OPTS = \
 	--disable-java-bindings \
 	--disable-lisp-bindings \
