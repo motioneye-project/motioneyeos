@@ -404,8 +404,14 @@ comment "OpenGL API Support"
 
 config BR2_PACKAGE_MESA3D_GBM
 	bool "gbm"
+	depends on BR2_PACKAGE_MESA3D_DRI_DRIVER \
+		|| (BR2_PACKAGE_MESA3D_GALLIUM_DRIVER && BR2_PACKAGE_MESA3D_OPENGL_EGL)
 	help
 	  Enable Generic Buffer Management (gbm)
+
+comment "gbm support needs a dri driver or a gallium driver w/ EGL support."
+	depends on !BR2_PACKAGE_MESA3D_DRI_DRIVER \
+		&& !(BR2_PACKAGE_MESA3D_GALLIUM_DRIVER && BR2_PACKAGE_MESA3D_OPENGL_EGL)
 
 config BR2_PACKAGE_MESA3D_OPENGL_GLX
 	bool "OpenGL GLX"
