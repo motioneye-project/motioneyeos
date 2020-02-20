@@ -410,6 +410,18 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	  leave the default value, Buildroot will tell you if it's
 	  correct or not.
 
+config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP_STRONG
+	bool "Toolchain has SSP strong support?"
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 && BR2_TOOLCHAIN_EXTERNAL_GLIBC
+	default y if BR2_TOOLCHAIN_GCC_AT_LEAST_4_9 && BR2_TOOLCHAIN_EXTERNAL_MUSL
+	depends on BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
+	select BR2_TOOLCHAIN_HAS_SSP_STRONG
+	help
+	  Selection this option if your external toolchain has strong
+	  Stack Smashing Protection support enabled. If you don't
+	  know, leave the default value, Buildroot will tell you if
+	  it's correct or not.
+
 config BR2_TOOLCHAIN_EXTERNAL_INET_RPC
 	bool "Toolchain has RPC support?"
 	default y if BR2_TOOLCHAIN_EXTERNAL_GLIBC
