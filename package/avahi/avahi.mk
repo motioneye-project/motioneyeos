@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-AVAHI_VERSION = 0.7
+AVAHI_VERSION = 0.8
 AVAHI_SITE = https://github.com/lathiat/avahi/releases/download/v$(AVAHI_VERSION)
 AVAHI_LICENSE = LGPL-2.1+
 AVAHI_LICENSE_FILES = LICENSE
@@ -25,6 +25,7 @@ AVAHI_CONF_ENV = DATADIRNAME=share
 AVAHI_CONF_OPTS = \
 	--disable-qt3 \
 	--disable-qt4 \
+	--disable-qt5 \
 	--disable-gtk \
 	--disable-gtk3 \
 	--disable-gdbm \
@@ -40,9 +41,7 @@ AVAHI_CONF_OPTS = \
 	--with-autoipd-user=avahi \
 	--with-autoipd-group=avahi
 
-AVAHI_DEPENDENCIES = \
-	host-intltool host-pkgconf \
-	$(TARGET_NLS_DEPENDENCIES)
+AVAHI_DEPENDENCIES = host-pkgconf $(TARGET_NLS_DEPENDENCIES)
 
 AVAHI_CFLAGS = $(TARGET_CFLAGS)
 
@@ -79,6 +78,12 @@ AVAHI_DEPENDENCIES += dbus
 AVAHI_CONF_OPTS += --with-dbus-sys=/usr/share/dbus-1/system.d
 else
 AVAHI_CONF_OPTS += --disable-dbus
+endif
+
+ifeq ($(BR2_PACKAGE_LIBEVENT),y)
+AVAHI_DEPENDENCIES += libevent
+else
+AVAHI_CONF_OPTS += --disable-libevent
 endif
 
 ifeq ($(BR2_PACKAGE_LIBGLIB2),y)
