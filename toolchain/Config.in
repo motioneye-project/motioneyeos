@@ -159,6 +159,13 @@ config BR2_TOOLCHAIN_HAS_GCC_BUG_90620
 	bool
 	default y if BR2_microblaze
 
+# https://gcc.gnu.org/bugzilla/show_bug.cgi?id=93847
+# ICE: compiler error: Segmentation fault on Nios II. This bug
+# no longer exists in gcc 9.x.
+config BR2_TOOLCHAIN_HAS_GCC_BUG_93847
+	bool
+	default y if BR2_nios2 && !BR2_TOOLCHAIN_GCC_AT_LEAST_9
+
 config BR2_TOOLCHAIN_HAS_NATIVE_RPC
 	bool
 
