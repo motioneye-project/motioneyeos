@@ -405,7 +405,7 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	default y if BR2_TOOLCHAIN_EXTERNAL_MUSL
 	select BR2_TOOLCHAIN_HAS_SSP
 	help
-	  Selection this option if your external toolchain has Stack
+	  Select this option if your external toolchain has Stack
 	  Smashing Protection support enabled. If you don't know,
 	  leave the default value, Buildroot will tell you if it's
 	  correct or not.
@@ -417,7 +417,7 @@ config BR2_TOOLCHAIN_EXTERNAL_HAS_SSP_STRONG
 	depends on BR2_TOOLCHAIN_EXTERNAL_HAS_SSP
 	select BR2_TOOLCHAIN_HAS_SSP_STRONG
 	help
-	  Selection this option if your external toolchain has strong
+	  Select this option if your external toolchain has strong
 	  Stack Smashing Protection support enabled. If you don't
 	  know, leave the default value, Buildroot will tell you if
 	  it's correct or not.
