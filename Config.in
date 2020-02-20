@@ -758,6 +758,7 @@ config BR2_SSP_REGULAR
 
 config BR2_SSP_STRONG
 	bool "-fstack-protector-strong"
+	depends on BR2_TOOLCHAIN_HAS_SSP_STRONG
 	help
 	  Like -fstack-protector but includes additional functions to be
 	  protected - those that have local array definitions, or have
