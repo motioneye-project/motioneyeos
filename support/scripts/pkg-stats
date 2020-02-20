@@ -25,6 +25,7 @@ import re
 import subprocess
 import requests  # URL checking
 import json
+import ijson
 import certifi
 import distutils.version
 import time
@@ -231,11 +232,11 @@ class CVE:
         for year in range(NVD_START_YEAR, datetime.datetime.now().year + 1):
             filename = CVE.download_nvd_year(nvd_dir, year)
             try:
-                content = json.load(gzip.GzipFile(filename))
+                content = ijson.items(gzip.GzipFile(filename), 'CVE_Items.item')
             except:
                 print("ERROR: cannot read %s. Please remove the file then rerun this script" % filename)
                 raise
-            for cve in content["CVE_Items"]:
+            for cve in content:
                 yield cls(cve['cve'])
 
     def each_product(self):
