@@ -13,6 +13,7 @@ RCW_LICENSE_FILES = LICENSE
 RCW_FILES = $(call qstrip,$(BR2_PACKAGE_HOST_RCW_CUSTOM_PATH))
 
 ifneq ($(RCW_FILES),)
+RCW_INCLUDES = $(filter-out %.rcw,$(RCW_FILES))
 # Get the name of the custom rcw file from the custom list
 RCW_PROJECT = $(notdir $(filter %.rcw,$(RCW_FILES)))
 
@@ -23,9 +24,16 @@ $(error BR2_PACKAGE_HOST_RCW_CUSTOM_PATH must have exactly one .rcw file)
 endif
 endif
 
+ifneq ($(RCW_INCLUDES),)
+define HOST_RCW_ADD_CUSTOM_RCW_INCLUDES
+	mkdir -p $(@D)/custom_board
+	cp -f $(RCW_INCLUDES) $(@D)/custom_board
+endef
+HOST_RCW_POST_PATCH_HOOKS += HOST_RCW_ADD_CUSTOM_RCW_INCLUDES
+endif
+
 define HOST_RCW_ADD_CUSTOM_RCW_FILES
 	mkdir -p $(@D)/custom_board/rcw
-	cp -f $(filter-out %.rcw,$(RCW_FILES)) $(@D)/custom_board
 	cp -f $(filter %.rcw,$(RCW_FILES)) $(@D)/custom_board/rcw
 endef
 HOST_RCW_POST_PATCH_HOOKS += HOST_RCW_ADD_CUSTOM_RCW_FILES
