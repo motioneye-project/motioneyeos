@@ -39,6 +39,11 @@ menu "core python modules"
 
 comment "The following modules are unusual or require extra libraries"
 
+config BR2_PACKAGE_PYTHON_2TO3
+	bool "2to3 module"
+	help
+	  code translation from python 2 to 3
+
 config BR2_PACKAGE_PYTHON_BZIP2
 	bool "bzip2 module"
 	select BR2_PACKAGE_BZIP2
