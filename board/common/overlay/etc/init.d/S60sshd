@@ -18,8 +18,6 @@ test -n "${OS_VERSION}" || source /etc/init.d/base
 
 test -s ${SYS_CONF} || exit 0
 
-test "${OS_NETWORKLESS}" == "true" && exit 0
-
 
 start() {
     # merge user and sys conf files; options in first file take precedence
