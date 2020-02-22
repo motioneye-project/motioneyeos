@@ -11,8 +11,6 @@ test -n "${OS_DEBUG}" || source /etc/init.d/conf
 
 test -s ${CONF} || exit 0
 
-test "${OS_NETWORKLESS}" == "true" && exit 0
-
 
 start() {
     msg_begin "Starting proftpd"
