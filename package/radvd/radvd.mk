@@ -17,6 +17,12 @@ RADVD_AUTORECONF = YES
 RADVD_LICENSE = BSD-4-Clause-like
 RADVD_LICENSE_FILES = COPYRIGHT
 
+# We don't provide /etc/radvd.conf, so disable the service by default.
+define RADVD_INSTALL_INIT_SYSTEMD
+	$(INSTALL) -D -m 0644 package/radvd/50-radvd.preset \
+		$(TARGET_DIR)/usr/lib/systemd/system-preset/50-radvd.preset
+endef
+
 define RADVD_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 package/radvd/S50radvd $(TARGET_DIR)/etc/init.d/S50radvd
 endef
