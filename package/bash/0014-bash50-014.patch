@@ -1,0 +1,56 @@
+From https://ftp.gnu.org/gnu/bash/bash-5.0-patches/bash50-014
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+
+			     BASH PATCH REPORT
+			     =================
+
+Bash-Release:	5.0
+Patch-ID:	bash50-014
+
+Bug-Reported-by:	Johannes Hielscher <jhielscher@posteo.de>
+Bug-Reference-ID:	<20190208205048.77c25a83@hordevm>
+Bug-Reference-URL:	https://lists.gnu.org/archive/html/bug-bash/2019-02/msg00032.html
+
+Bug-Description:
+
+If the current line is empty, using the emacs C-xC-e binding to enter the
+editor will edit the previous command instead of the current (empty) one.
+
+Patch (apply with `patch -p0'):
+
+*** ../bash-5.0-patched/bashline.c	2019-01-16 16:13:21.000000000 -0500
+--- b/bashline.c	2019-02-11 11:18:57.000000000 -0500
+***************
+*** 962,970 ****
+  	 finished with the command, so we should not ignore the last command */
+        using_history ();
+!       if (rl_line_buffer[0])
+! 	{
+! 	  current_command_line_count++;	/* for rl_newline above */
+! 	  bash_add_history (rl_line_buffer);
+! 	}
+        current_command_line_count = 0;	/* for dummy history entry */
+        bash_add_history ("");
+--- 965,970 ----
+  	 finished with the command, so we should not ignore the last command */
+        using_history ();
+!       current_command_line_count++;	/* for rl_newline above */
+!       bash_add_history (rl_line_buffer);
+        current_command_line_count = 0;	/* for dummy history entry */
+        bash_add_history ("");
+*** ../bash-5.0/patchlevel.h	2016-06-22 14:51:03.000000000 -0400
+--- b/patchlevel.h	2016-10-01 11:01:28.000000000 -0400
+***************
+*** 26,30 ****
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 13
+  
+  #endif /* _PATCHLEVEL_H_ */
+--- 26,30 ----
+     looks for to find the patch level (for the sccs version string). */
+  
+! #define PATCHLEVEL 14
+  
+  #endif /* _PATCHLEVEL_H_ */
