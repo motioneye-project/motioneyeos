@@ -31,6 +31,16 @@ else
 JPEG_TURBO_CONF_OPTS += -DWITH_SIMD=OFF
 endif
 
+# Ensure that jpeg-turbo is compiled with -fPIC to allow linking the static
+# libraries with dynamically linked programs. This is not a requirement
+# for most architectures but is mandatory for ARM.
+# This allow to avoid link issues with BR2_SSP_ALL:
+# jsimd_none.c.o: relocation R_AARCH64_ADR_PREL_PG_HI21 against external symbol `__stack_chk_guard@@GLIBC_2.17'
+# can not be used when making a shared object; recompile with -fPIC
+ifeq ($(BR2_STATIC_LIBS),)
+JPEG_TURBO_CONF_OPTS += -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+endif
+
 define JPEG_TURBO_REMOVE_USELESS_TOOLS
 	rm -f $(addprefix $(TARGET_DIR)/usr/bin/,cjpeg djpeg jpegtran rdjpgcom tjbench wrjpgcom)
 endef
