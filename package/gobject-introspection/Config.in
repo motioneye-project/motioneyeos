@@ -9,11 +9,18 @@ config BR2_PACKAGE_GOBJECT_INTROSPECTION
 	# can be verified.
 	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_9
 	depends on BR2_TOOLCHAIN_USES_GLIBC
+	# gobject-introspection does not require python3 to run on the
+	# target; however, because the tools run in a qemu wrapper, a
+	# cross-compiled python3 must be installed to staging. As there
+	# is no current mechanism to tell Buildroot only to install
+	# python to staging, then python must also be installed
+	# unconditionally to the target when building
+	# gobject-introspection.
+	depends on BR2_PACKAGE_PYTHON3
 	select BR2_PACKAGE_HOST_QEMU
 	select BR2_PACKAGE_HOST_QEMU_LINUX_USER_MODE
 	select BR2_PACKAGE_LIBFFI
 	select BR2_PACKAGE_LIBGLIB2
-	select BR2_PACKAGE_PYTHON3 if !BR2_PACKAGE_PYTHON
 	select BR2_PACKAGE_ZLIB
 	help
 	  GObject introspection is a middleware layer between C
@@ -24,6 +31,9 @@ config BR2_PACKAGE_GOBJECT_INTROSPECTION
 	  provide bindings to call into the C library.
 
 	  https://wiki.gnome.org/action/show/Projects/GObjectIntrospection
+
+comment "gobject-introspection needs python3"
+	depends on !BR2_PACKAGE_PYTHON3
 
 comment "gobject-introspection needs a glibc toolchain, gcc >= 4.9"
 	depends on BR2_USE_MMU
