@@ -17,8 +17,14 @@ OPENVMTOOLS_CONF_OPTS = --with-dnet \
 	--without-icu --without-x --without-gtk2 \
 	--without-gtkmm --without-kernel-modules \
 	--disable-deploypkg --without-xerces
-OPENVMTOOLS_CONF_ENV += CUSTOM_DNET_CPPFLAGS=" "
-OPENVMTOOLS_DEPENDENCIES = host-nfs-utils libglib2 libdnet
+OPENVMTOOLS_CONF_ENV += \
+	CUSTOM_DNET_CPPFLAGS=" " \
+	LIBS=$(TARGET_NLS_LIBS)
+OPENVMTOOLS_DEPENDENCIES = \
+	host-nfs-utils \
+	libglib2 \
+	libdnet \
+	$(TARGET_NLS_DEPENDENCIES)
 
 ifeq ($(BR2_PACKAGE_LIBTIRPC),y)
 OPENVMTOOLS_DEPENDENCIES += libtirpc
