@@ -5,7 +5,7 @@
 ################################################################################
 
 # When updating the version, please also update mesa3d-headers
-MESA3D_VERSION = 19.3.4
+MESA3D_VERSION = 20.0.0
 MESA3D_SOURCE = mesa-$(MESA3D_VERSION).tar.xz
 MESA3D_SITE = https://mesa.freedesktop.org/archive
 MESA3D_LICENSE = MIT, SGI, Khronos
@@ -255,6 +255,13 @@ MESA3D_CONF_OPTS += -Dlmsensors=true
 MESA3D_DEPENDENCIES += lm-sensors
 else
 MESA3D_CONF_OPTS += -Dlmsensors=false
+endif
+
+ifeq ($(BR2_PACKAGE_ZSTD),y)
+MESA3D_CONF_OPTS += -Dzstd=true
+MESA3D_DEPENDENCIES += zstd
+else
+MESA3D_CONF_OPTS += -Dzstd=false
 endif
 
 $(eval $(meson-package))
