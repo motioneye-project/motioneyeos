@@ -1,0 +1,279 @@
+From 23739c6f9694d7fc436967439f170173dbb4c6b4 Mon Sep 17 00:00:00 2001
+From: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+Date: Mon, 24 Feb 2020 10:22:13 +0100
+Subject: [PATCH] build_tools/build_detect_platform: fix C++ tests
+
+Replace -o /dev/null by -o test.o when testing for C++ features such as
+-faligned-new otherwise tests will fail with some bugged binutils
+(https://sourceware.org/bugzilla/show_bug.cgi?id=19526):
+
+output/host/bin/xtensa-buildroot-linux-uclibc-g++ -faligned-new -x c++ - -o /dev/null <<EOF
+            struct alignas(1024) t {int a;};
+            int main() {}
+EOF
+/home/fabrice/buildroot/output/host/lib/gcc/xtensa-buildroot-linux-uclibc/8.3.0/../../../../xtensa-buildroot-linux-uclibc/bin/ld: final link failed: file truncated
+
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ build_tools/build_detect_platform | 58 +++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 29 deletions(-)
+
+diff --git a/build_tools/build_detect_platform b/build_tools/build_detect_platform
+index 2535d8124..64a0ae76c 100755
+--- a/build_tools/build_detect_platform
++++ b/build_tools/build_detect_platform
+@@ -245,7 +245,7 @@ if [ "$CROSS_COMPILE" = "true" -o "$FBCODE_BUILD" = "true" ]; then
+ else
+     if ! test $ROCKSDB_DISABLE_FALLOCATE; then
+         # Test whether fallocate is available
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <fcntl.h>
+           #include <linux/falloc.h>
+           int main() {
+@@ -261,7 +261,7 @@ EOF
+     if ! test $ROCKSDB_DISABLE_SNAPPY; then
+         # Test whether Snappy library is installed
+         # http://code.google.com/p/snappy/
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <snappy.h>
+           int main() {}
+ EOF
+@@ -276,7 +276,7 @@ EOF
+         # Test whether gflags library is installed
+         # http://gflags.github.io/gflags/
+         # check if the namespace is gflags
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null << EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null << EOF
+           #include <gflags/gflags.h>
+           int main() {}
+ EOF
+@@ -285,7 +285,7 @@ EOF
+             PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -lgflags"
+         else
+           # check if namespace is google
+-          $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null << EOF
++          $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null << EOF
+             #include <gflags/gflags.h>
+             using namespace google;
+             int main() {}
+@@ -299,7 +299,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_ZLIB; then
+         # Test whether zlib library is installed
+-        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <zlib.h>
+           int main() {}
+ EOF
+@@ -312,7 +312,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_BZIP; then
+         # Test whether bzip library is installed
+-        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <bzlib.h>
+           int main() {}
+ EOF
+@@ -325,7 +325,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_LZ4; then
+         # Test whether lz4 library is installed
+-        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <lz4.h>
+           #include <lz4hc.h>
+           int main() {}
+@@ -339,7 +339,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_ZSTD; then
+         # Test whether zstd library is installed
+-        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <zstd.h>
+           int main() {}
+ EOF
+@@ -352,7 +352,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_NUMA; then
+         # Test whether numa is available
+-        $CXX $CFLAGS -x c++ - -o /dev/null -lnuma 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o -lnuma 2>/dev/null  <<EOF
+           #include <numa.h>
+           #include <numaif.h>
+           int main() {}
+@@ -366,7 +366,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_TBB; then
+         # Test whether tbb is available
+-        $CXX $CFLAGS $LDFLAGS -x c++ - -o /dev/null -ltbb 2>/dev/null  <<EOF
++        $CXX $CFLAGS $LDFLAGS -x c++ - -o test.o -ltbb 2>/dev/null  <<EOF
+           #include <tbb/tbb.h>
+           int main() {}
+ EOF
+@@ -379,7 +379,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_JEMALLOC; then
+         # Test whether jemalloc is available
+-        if echo 'int main() {}' | $CXX $CFLAGS -x c++ - -o /dev/null -ljemalloc \
++        if echo 'int main() {}' | $CXX $CFLAGS -x c++ - -o test.o -ljemalloc \
+           2>/dev/null; then
+             # This will enable some preprocessor identifiers in the Makefile
+             JEMALLOC=1
+@@ -400,7 +400,7 @@ EOF
+     fi
+     if ! test $JEMALLOC && ! test $ROCKSDB_DISABLE_TCMALLOC; then
+         # jemalloc is not available. Let's try tcmalloc
+-        if echo 'int main() {}' | $CXX $CFLAGS -x c++ - -o /dev/null \
++        if echo 'int main() {}' | $CXX $CFLAGS -x c++ - -o test.o \
+           -ltcmalloc 2>/dev/null; then
+             PLATFORM_LDFLAGS="$PLATFORM_LDFLAGS -ltcmalloc"
+             JAVA_LDFLAGS="$JAVA_LDFLAGS -ltcmalloc"
+@@ -409,7 +409,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_MALLOC_USABLE_SIZE; then
+         # Test whether malloc_usable_size is available
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <malloc.h>
+           int main() {
+             size_t res = malloc_usable_size(0);
+@@ -424,7 +424,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_PTHREAD_MUTEX_ADAPTIVE_NP; then
+         # Test whether PTHREAD_MUTEX_ADAPTIVE_NP mutex type is available
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <pthread.h>
+           int main() {
+             int x = PTHREAD_MUTEX_ADAPTIVE_NP;
+@@ -439,7 +439,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_BACKTRACE; then
+         # Test whether backtrace is available
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <execinfo.h>
+           int main() {
+             void* frames[1];
+@@ -451,7 +451,7 @@ EOF
+             COMMON_FLAGS="$COMMON_FLAGS -DROCKSDB_BACKTRACE"
+         else
+             # Test whether execinfo library is installed
+-            $CXX $CFLAGS -lexecinfo -x c++ - -o /dev/null 2>/dev/null  <<EOF
++            $CXX $CFLAGS -lexecinfo -x c++ - -o test.o 2>/dev/null  <<EOF
+               #include <execinfo.h>
+               int main() {
+                 void* frames[1];
+@@ -468,7 +468,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_PG; then
+         # Test if -pg is supported
+-        $CXX $CFLAGS -pg -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -pg -x c++ - -o test.o 2>/dev/null  <<EOF
+           int main() {
+             return 0;
+           }
+@@ -480,7 +480,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_SYNC_FILE_RANGE; then
+         # Test whether sync_file_range is supported for compatibility with an old glibc
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <fcntl.h>
+           int main() {
+             int fd = open("/dev/null", 0);
+@@ -494,7 +494,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_SCHED_GETCPU; then
+         # Test whether sched_getcpu is supported
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <sched.h>
+           int main() {
+             int cpuid = sched_getcpu();
+@@ -508,7 +508,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_AUXV_GETAUXVAL; then
+         # Test whether getauxval is supported
+-        $CXX $CFLAGS -x c++ - -o /dev/null 2>/dev/null  <<EOF
++        $CXX $CFLAGS -x c++ - -o test.o 2>/dev/null  <<EOF
+           #include <sys/auxv.h>
+           int main() {
+             uint64_t auxv = getauxval(AT_HWCAP);
+@@ -522,7 +522,7 @@ EOF
+ 
+     if ! test $ROCKSDB_DISABLE_ALIGNED_NEW; then
+         # Test whether c++17 aligned-new is supported
+-        $CXX $PLATFORM_CXXFLAGS -faligned-new -x c++ - -o /dev/null 2>/dev/null <<EOF
++        $CXX $PLATFORM_CXXFLAGS -faligned-new -x c++ - -o test.o 2>/dev/null <<EOF
+             struct alignas(1024) t {int a;};
+             int main() {}
+ EOF
+@@ -536,7 +536,7 @@ fi
+ # -Wshorten-64-to-32 breaks compilation on FreeBSD i386
+ if ! [ "$TARGET_OS" = FreeBSD -a "$TARGET_ARCHITECTURE" = i386 ]; then
+   # Test whether -Wshorten-64-to-32 is available
+-  $CXX $CFLAGS -x c++ - -o /dev/null -Wshorten-64-to-32 2>/dev/null  <<EOF
++  $CXX $CFLAGS -x c++ - -o test.o -Wshorten-64-to-32 2>/dev/null  <<EOF
+     int main() {}
+ EOF
+   if [ "$?" = 0 ]; then
+@@ -603,7 +603,7 @@ if test "$TRY_SSE_ETC"; then
+   TRY_AVX2="-mavx2"
+ fi
+ 
+-$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_SSE42 -x c++ - -o /dev/null 2>/dev/null <<EOF
++$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_SSE42 -x c++ - -o test.o 2>/dev/null <<EOF
+   #include <cstdint>
+   #include <nmmintrin.h>
+   int main() {
+@@ -617,7 +617,7 @@ elif test "$USE_SSE"; then
+   echo "warning: USE_SSE specified but compiler could not use SSE intrinsics, disabling" >&2
+ fi
+ 
+-$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_PCLMUL -x c++ - -o /dev/null 2>/dev/null <<EOF
++$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_PCLMUL -x c++ - -o test.o 2>/dev/null <<EOF
+   #include <cstdint>
+   #include <wmmintrin.h>
+   int main() {
+@@ -634,7 +634,7 @@ elif test "$USE_SSE"; then
+   echo "warning: USE_SSE specified but compiler could not use PCLMUL intrinsics, disabling" >&2
+ fi
+ 
+-$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_AVX2 -x c++ - -o /dev/null 2>/dev/null <<EOF
++$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS $TRY_AVX2 -x c++ - -o test.o 2>/dev/null <<EOF
+   #include <cstdint>
+   #include <immintrin.h>
+   int main() {
+@@ -649,7 +649,7 @@ elif test "$USE_SSE"; then
+   echo "warning: USE_SSE specified but compiler could not use AVX2 intrinsics, disabling" >&2
+ fi
+ 
+-$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null <<EOF
++$CXX $PLATFORM_CXXFLAGS $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null <<EOF
+   #include <cstdint>
+   int main() {
+     uint64_t a = 0xffffFFFFffffFFFF;
+@@ -666,7 +666,7 @@ fi
+ # succeed because the cross-compiler flags are added by the Makefile, not this
+ # script.
+ if [ "$PLATFORM" != IOS ]; then
+-  $CXX $COMMON_FLAGS -x c++ - -o /dev/null 2>/dev/null <<EOF
++  $CXX $COMMON_FLAGS -x c++ - -o test.o 2>/dev/null <<EOF
+   #if defined(_MSC_VER) && !defined(__thread)
+   #define __thread __declspec(thread)
+   #endif
+@@ -685,7 +685,7 @@ if [ "$FBCODE_BUILD" != "true" -a "$PLATFORM" = OS_LINUX ]; then
+   void dummy_func() {}
+ EOF
+   if [ "$?" = 0 ]; then
+-    $CXX $COMMON_FLAGS $PLATFORM_SHARED_LDFLAGS test_dl.o -o /dev/null 2>/dev/null
++    $CXX $COMMON_FLAGS $PLATFORM_SHARED_LDFLAGS test_dl.o -o test.o 2>/dev/null
+     if [ "$?" = 0 ]; then
+       EXEC_LDFLAGS+="-ldl"
+       rm -f test_dl.o
+-- 
+2.25.0
+
