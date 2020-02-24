@@ -1167,6 +1167,7 @@ F:	package/python-async-lru/
 F:	package/python-async-timeout/
 F:	package/python-brotli/
 F:	package/python-cchardet/
+F:	package/python-flatbuffers/
 F:	package/python-frozenlist/
 F:	package/python-janus/
 F:	package/python-logstash/
