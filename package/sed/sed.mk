@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SED_VERSION = 4.7
+SED_VERSION = 4.8
 SED_SOURCE = sed-$(SED_VERSION).tar.xz
 SED_SITE = $(BR2_GNU_MIRROR)/sed
 SED_LICENSE = GPL-3.0
