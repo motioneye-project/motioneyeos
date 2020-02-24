@@ -568,12 +568,12 @@ class BuildrootPackage():
             hash_header = '# md5, sha256 from {url}\n'.format(
                 url=self.metadata_url)
             lines.append(hash_header)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='md5',
                 digest=self.used_url['digests']['md5'],
                 filename=self.filename)
             lines.append(hash_line)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='sha256',
                 digest=self.used_url['digests']['sha256'],
                 filename=self.filename)
@@ -589,7 +589,7 @@ class BuildrootPackage():
                     if not data:
                         break
                     sha256.update(data)
-            hash_line = '{method}\t{digest}  {filename}\n'.format(
+            hash_line = '{method}  {digest}  {filename}\n'.format(
                 method='sha256',
                 digest=sha256.hexdigest(),
                 filename=license_file.replace(self.tmp_extract, '')[1:])
