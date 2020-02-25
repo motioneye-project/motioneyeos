@@ -7,6 +7,8 @@ Kill ABI compatibility bits, we don't need them.
 Fixes build failures on non-ELF targets.
 
 Signed-off-by: Gustavo Zacarias <gustavo@zacarias.com.ar>
+[Fabrice: update for 8.44]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
 ---
  pcrecpp.cc | 16 ----------------
  1 file changed, 16 deletions(-)
@@ -15,7 +17,7 @@ diff --git a/pcrecpp.cc b/pcrecpp.cc
 index d09c9ab..6910db0 100644
 --- a/pcrecpp.cc
 +++ b/pcrecpp.cc
-@@ -58,22 +58,6 @@ static const int kVecSize = (1 + kMaxArgs) * 3;  // results + PCRE workspace
+@@ -58,23 +58,6 @@ static const int kVecSize = (1 + kMaxArgs) * 3;  // results + PCRE workspace
  // Special object that stands-in for no argument
  Arg RE::no_arg((void*)NULL);
  
@@ -27,7 +29,8 @@ index d09c9ab..6910db0 100644
 -// inclusive test if we ever needed it.  (Note that not only the
 -// __attribute__ syntax, but also __USER_LABEL_PREFIX__, are
 -// gnu-specific.)
--#if defined(__GNUC__) && __GNUC__ >= 3 && defined(__ELF__) && !defined(__INTEL_COMPILER)
+-#if defined(__GNUC__) && __GNUC__ >= 3 && defined(__ELF__) \
+-       && !defined(__INTEL_COMPILER) && !defined(__LCC__)
 -# define ULP_AS_STRING(x)            ULP_AS_STRING_INTERNAL(x)
 -# define ULP_AS_STRING_INTERNAL(x)   #x
 -# define USER_LABEL_PREFIX_STR       ULP_AS_STRING(__USER_LABEL_PREFIX__)
