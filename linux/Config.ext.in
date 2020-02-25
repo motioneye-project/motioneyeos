@@ -102,7 +102,8 @@ choice
 	help
 	  Select the major series of this version. This must match the
 	  major version of your kernel (e.g. for kernels 3.x, select
-	  aufs3.x; for kernels 4.x, select aufs4.x).
+	  aufs3.x; for kernels 4.x, select aufs4.x; for kernels 5.x,
+	  select aufs5.x ).
 
 	  Note: neither aufs1.x nor aufs2.x (both for kernels older than
 	  3.x) are supported.
@@ -113,12 +114,16 @@ config BR2_LINUX_KERNEL_EXT_AUFS_SERIES_3
 config BR2_LINUX_KERNEL_EXT_AUFS_SERIES_4
 	bool "aufs4.x"
 
+config BR2_LINUX_KERNEL_EXT_AUFS_SERIES_5
+	bool "aufs5.x"
+
 endchoice
 
 config BR2_LINUX_KERNEL_EXT_AUFS_SERIES
 	int
 	default 3 if BR2_LINUX_KERNEL_EXT_AUFS_SERIES_3
 	default 4 if BR2_LINUX_KERNEL_EXT_AUFS_SERIES_4
+	default 5 if BR2_LINUX_KERNEL_EXT_AUFS_SERIES_5
 
 config BR2_LINUX_KERNEL_EXT_AUFS_VERSION
 	string "aufs-standalone version"
@@ -135,6 +140,8 @@ config BR2_LINUX_KERNEL_EXT_AUFS_VERSION
 	  https://sourceforge.net/p/aufs/aufs3-standalone/ref/master/branches/
 	  For aufs4.x:
 	  https://github.com/sfjro/aufs4-standalone/branches/all
+	  For aufs5.x:
+	  https://github.com/sfjro/aufs5-standalone/branches/all
 
 endif # aufs
 
