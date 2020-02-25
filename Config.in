@@ -50,6 +50,11 @@ config BR2_HOST_GCC_AT_LEAST_8
 	default y if BR2_HOST_GCC_VERSION = "8"
 	select BR2_HOST_GCC_AT_LEAST_7
 
+config BR2_HOST_GCC_AT_LEAST_9
+	bool
+	default y if BR2_HOST_GCC_VERSION = "9"
+	select BR2_HOST_GCC_AT_LEAST_8
+
 # When adding new entries above, be sure to update
 # the HOSTCC_MAX_VERSION variable in the Makefile.
 
