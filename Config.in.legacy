@@ -146,6 +146,13 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_QT5_VERSION_5_6
+	bool "qt 5.6 support removed"
+	select BR2_LEGACY
+	help
+	  Support for Qt 5.6 is EOL and has been removed. The current
+	  version (5.12 or later) has been selected instead.
+
 config BR2_PACKAGE_CURL
 	bool "BR2_PACKAGE_CURL was renamed"
 	select BR2_PACKAGE_LIBCURL_CURL
