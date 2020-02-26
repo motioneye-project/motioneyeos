@@ -30,7 +30,7 @@ diff --git a/mesonbuild/compilers/mixins/clike.py b/mesonbuild/compilers/mixins/
 index 5d50b7d..8f5f1c6 100644
 --- a/mesonbuild/compilers/mixins/clike.py
 +++ b/mesonbuild/compilers/mixins/clike.py
-@@ -858,6 +858,9 @@ class CLikeCompiler:
+@@ -857,6 +857,9 @@ class CLikeCompiler:
          elif env.machines[self.for_machine].is_cygwin():
              shlibext = ['dll', 'dll.a']
              prefixes = ['cyg'] + prefixes
