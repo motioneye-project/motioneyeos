@@ -15,7 +15,9 @@ define FAIL2BAN_PYTHON_2TO3
 	$(HOST_DIR)/bin/2to3 --write --nobackups --no-diffs $(@D)/bin/* $(@D)/fail2ban
 endef
 FAIL2BAN_DEPENDENCIES += host-python3
-FAIL2BAN_POST_PATCH_HOOKS += FAIL2BAN_PYTHON_2TO3
+# We can't use _POST_PATCH_HOOKS because dependencies are not guaranteed
+# to build and install before _POST_PATCH_HOOKS run.
+FAIL2BAN_PRE_CONFIGURE_HOOKS += FAIL2BAN_PYTHON_2TO3
 endif
 
 define FAIL2BAN_FIX_DEFAULT_CONFIG
