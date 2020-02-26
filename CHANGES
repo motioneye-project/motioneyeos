@@ -1,3 +1,26 @@
+2020.02-rc2, released February 26th, 2020
+
+	Fixes all over the tree.
+
+	Toolchain: Ensure strong SSP can only be enabled if the
+	(external) toolchain supports it.
+
+	Fix a race condition related to creating the output/staging
+	symlink on systems with coreutils < 8.27.
+
+	Drop support for the (end of life) Qt 5.6 variant.
+
+	Updated/fixed packages: at, armadillo, audiofile, bash,
+	busybox, erlang, fail2ban, fluidsynth, ipsec-tools, jpeg-turbo,
+	kvm-unit-tests, libftdi1, libinput, libsvgtiny, libtomcrypt,
+	libupnpp, libxml2, linux-tools, luv, mbedtls, mesa3d, minicom,
+	openvmtools, php, qt5, qt5webengine, qwt, radvd, rcw,
+	sdbusplus, systemd, tpm2-tss, vorbis-tools
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12581: 2020.02-rc1 glibc failing to build on fedora 31
+
 2020.02-rc1, released February 18th, 2020
 
 	Fixes all over the tree and new features.
