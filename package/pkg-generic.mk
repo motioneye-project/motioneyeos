@@ -57,50 +57,45 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_time
 
 # Hooks to collect statistics about installed files
 
-# Helper function to create the file list -- also used from target-finalize
-# $(1): base directory to search in
-# $(2): suffix of file  (optional)
-define step_pkg_size_file_list
-	cd $(1); \
-	LC_ALL=C find . \( -type f -o -type l \) -printf '%T@:%i:%#m:%y:%s,%p\n' \
-		| LC_ALL=C sort > $(BUILD_DIR)/.files-list$(2).new
-endef
-
-# Helper function to mark the latest file list as the reference for next
-# iteration -- also used from target-finalize
-# $(1): suffix of file  (optional)
-define step_pkg_size_finalize
-	mv $(BUILD_DIR)/.files-list$(1).new \
-		$(BUILD_DIR)/.files-list$(1).stat
-endef
-
-# The suffix is typically empty for the target variant, for legacy backward
-# compatibility.
 # $(1): package name
 # $(2): base directory to search in
-# $(3): suffix of file  (optional)
-define step_pkg_size_inner
-	@touch $(BUILD_DIR)/.files-list$(3).stat
-	@touch $(BUILD_DIR)/packages-file-list$(3).txt
-	$(SED) '/^$(1),/d' $(BUILD_DIR)/packages-file-list$(3).txt
-	$(call step_pkg_size_file_list,$(2),$(3))
+# $(3): suffix of file (optional)
+define step_pkg_size_before
+	cd $(2); \
+	LC_ALL=C find . \( -type f -o -type l \) -printf '%T@:%i:%#m:%y:%s,%p\n' \
+		| LC_ALL=C sort > $($(PKG)_BUILDDIR)/.files-list$(3).before
+endef
+
+# $(1): package name
+# $(2): base directory to search in
+# $(3): suffix of file (optional)
+define step_pkg_size_after
+	cd $(2); \
+	LC_ALL=C find . \( -type f -o -type l \) -printf '%T@:%i:%#m:%y:%s,%p\n' \
+		| LC_ALL=C sort > $($(PKG)_BUILDDIR)/.files-list$(3).after
 	LC_ALL=C comm -13 \
-		$(BUILD_DIR)/.files-list$(3).stat \
-		$(BUILD_DIR)/.files-list$(3).new \
+		$($(PKG)_BUILDDIR)/.files-list$(3).before \
+		$($(PKG)_BUILDDIR)/.files-list$(3).after \
+		| sed -r -e 's/^[^,]+/$(1)/' \
 		> $($(PKG)_BUILDDIR)/.files-list$(3).txt
-	sed -r -e 's/^[^,]+/$(1)/' \
-		$($(PKG)_BUILDDIR)/.files-list$(3).txt \
-		>> $(BUILD_DIR)/packages-file-list$(3).txt
-	$(call step_pkg_size_finalize,$(3))
+	rm -f $($(PKG)_BUILDDIR)/.files-list$(3).before
+	rm -f $($(PKG)_BUILDDIR)/.files-list$(3).after
 endef
 
 define step_pkg_size
+	$(if $(filter start-install-target,$(1)-$(2)),\
+		$(call step_pkg_size_before,$(3),$(TARGET_DIR)))
+	$(if $(filter start-install-staging,$(1)-$(2)),\
+		$(call step_pkg_size_before,$(3),$(STAGING_DIR),-staging))
+	$(if $(filter start-install-host,$(1)-$(2)),\
+		$(call step_pkg_size_before,$(3),$(HOST_DIR),-host))
+
 	$(if $(filter end-install-target,$(1)-$(2)),\
-		$(call step_pkg_size_inner,$(3),$(TARGET_DIR)))
+		$(call step_pkg_size_after,$(3),$(TARGET_DIR)))
 	$(if $(filter end-install-staging,$(1)-$(2)),\
-		$(call step_pkg_size_inner,$(3),$(STAGING_DIR),-staging))
+		$(call step_pkg_size_after,$(3),$(STAGING_DIR),-staging))
 	$(if $(filter end-install-host,$(1)-$(2)),\
-		$(call step_pkg_size_inner,$(3),$(HOST_DIR),-host))
+		$(call step_pkg_size_after,$(3),$(HOST_DIR),-host))
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 
@@ -108,7 +103,7 @@ GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 define check_bin_arch
 	$(if $(filter end-install-target,$(1)-$(2)),\
 		support/scripts/check-bin-arch -p $(3) \
-			-l $(BUILD_DIR)/packages-file-list.txt \
+			-l $($(PKG)_BUILDDIR)/.files-list.txt \
 			$(foreach i,$($(PKG)_BIN_ARCH_EXCLUDE),-i "$(i)") \
 			-r $(TARGET_READELF) \
 			-a $(BR2_READELF_ARCH_NAME))

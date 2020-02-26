@@ -804,15 +804,12 @@ endif # merged /usr
 
 	touch $(TARGET_DIR)/usr
 
-# AFTER ALL FILE-CHANGING ACTIONS:
-# Update timestamps in internal file list to fix attribution of files
-# to packages on subsequent builds
-	@$(call step_pkg_size_file_list,$(TARGET_DIR))
-	@$(call step_pkg_size_finalize)
-	@$(call step_pkg_size_file_list,$(STAGING_DIR),-staging)
-	@$(call step_pkg_size_finalize,-staging)
-	@$(call step_pkg_size_file_list,$(HOST_DIR),-host)
-	@$(call step_pkg_size_finalize,-host)
+	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list.txt)) > \
+		$(BUILD_DIR)/packages-file-list.txt
+	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list-host.txt)) > \
+		$(BUILD_DIR)/packages-file-list-host.txt
+	cat $(sort $(wildcard $(BUILD_DIR)/*/.files-list-staging.txt)) > \
+		$(BUILD_DIR)/packages-file-list-staging.txt
 
 .PHONY: target-post-image
 target-post-image: $(TARGETS_ROOTFS) target-finalize staging-finalize
