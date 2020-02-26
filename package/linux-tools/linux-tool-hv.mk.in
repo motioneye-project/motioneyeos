@@ -16,7 +16,7 @@ HV_hv_kvp_daemon = hypervkvpd
 HV_hv_fcopy_daemon = hypervfcopyd
 HV_hv_vss_daemon = hypervvssd
 
-HV_MAKE_OPTS = CC="$(TARGET_CC)" CFLAGS="$(TARGET_CFLAGS)"
+HV_MAKE_OPTS = CC="$(TARGET_CC)" CFLAGS="$(filter-out -g%,$(TARGET_CFLAGS))"
 
 define HV_BUILD_CMDS
 	$(Q)for prog in $(HV_PROGS_y); do \
