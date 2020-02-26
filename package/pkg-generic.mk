@@ -95,12 +95,12 @@ define step_pkg_size_inner
 endef
 
 define step_pkg_size
-	$(if $(filter install-target,$(2)),\
-		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(TARGET_DIR))))
-	$(if $(filter install-staging,$(2)),\
-		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(STAGING_DIR),-staging)))
-	$(if $(filter install-host,$(2)),\
-		$(if $(filter end,$(1)),$(call step_pkg_size_inner,$(3),$(HOST_DIR),-host)))
+	$(if $(filter end-install-target,$(1)-$(2)),\
+		$(call step_pkg_size_inner,$(3),$(TARGET_DIR)))
+	$(if $(filter end-install-staging,$(1)-$(2)),\
+		$(call step_pkg_size_inner,$(3),$(STAGING_DIR),-staging))
+	$(if $(filter end-install-host,$(1)-$(2)),\
+		$(call step_pkg_size_inner,$(3),$(HOST_DIR),-host))
 endef
 GLOBAL_INSTRUMENTATION_HOOKS += step_pkg_size
 
