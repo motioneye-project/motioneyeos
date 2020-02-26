@@ -6,6 +6,7 @@ Subject: [PATCH] support PyYAML up to 5.1 version
 Signed-off-by: Sergey Fursov <geyser85@gmail.com>
 [Upstream: https://github.com/docker/compose/pull/6623]
 (cherry picked from commit d2ca096f46a56cd4db494c593ed84e5c255dc15d)
+[Peter: allow all 5.x]
 Signed-off-by: Peter Korsgaard <peter@korsgaard.com>
 ---
  requirements.txt | 2 +-
@@ -34,7 +35,7 @@ index c9e4729d..17ab678e 100644
      'cached-property >= 1.2.0, < 2',
      'docopt >= 0.6.1, < 1',
 -    'PyYAML >= 3.10, < 5',
-+    'PyYAML >= 3.10, < 5.2',
++    'PyYAML >= 3.10, < 6',
      'requests >= 2.20.0, < 3',
      'texttable >= 0.9.0, < 2',
      'websocket-client >= 0.32.0, < 1',
