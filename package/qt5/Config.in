@@ -37,10 +37,6 @@ menuconfig BR2_PACKAGE_QT5
 
 if BR2_PACKAGE_QT5
 
-config BR2_PACKAGE_QT5_VERSION_LATEST
-	bool
-	default y
-
 source "package/qt5/qt53d/Config.in"
 source "package/qt5/qt5base/Config.in"
 source "package/qt5/qt5canvas3d/Config.in"
