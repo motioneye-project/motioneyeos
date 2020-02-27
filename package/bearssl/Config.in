@@ -1,0 +1,7 @@
+config BR2_PACKAGE_BEARSSL
+	bool "bearssl"
+	help
+	  BearSSL is an implementation of the SSL/TLS protocol
+	  (RFC 5246) written in C.
+
+	  https://bearssl.org
