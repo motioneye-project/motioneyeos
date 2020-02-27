@@ -556,6 +556,7 @@ endmenu
 	source "package/ubus/Config.in"
 	source "package/uccp420wlan/Config.in"
 	source "package/udev/Config.in"
+	source "package/udev-gentoo-scripts/Config.in"
 	source "package/udisks/Config.in"
 	source "package/uhubctl/Config.in"
 	source "package/umtprd/Config.in"

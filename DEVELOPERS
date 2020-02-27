@@ -505,6 +505,7 @@ F:	package/skeleton-init-systemd/
 F:	package/skeleton-init-sysv/
 F:	package/skeleton/
 F:	package/sysvinit/
+F:	package/udev-gentoo-scripts/
 F:	package/util-linux/
 F:	package/tpm2-abrmd/
 F:	package/tpm2-tools/
