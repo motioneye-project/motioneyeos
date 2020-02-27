@@ -36,6 +36,14 @@ else
 CONNMAN_CONF_OPTS += --disable-ethernet
 endif
 
+ifeq ($(BR2_PACKAGE_CONNMAN_IPTABLES),y)
+CONNMAN_CONF_OPTS += --with-firewall=iptables
+CONNMAN_DEPENDENCIES += iptables
+else ifeq ($(BR2_PACKAGE_CONNMAN_NFTABLES),y)
+CONNMAN_CONF_OPTS += --with-firewall=nftables
+CONNMAN_DEPENDENCIES += nftables
+endif
+
 ifeq ($(BR2_PACKAGE_CONNMAN_LOOPBACK),y)
 CONNMAN_CONF_OPTS += --enable-loopback
 else
