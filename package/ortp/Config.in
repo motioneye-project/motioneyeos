@@ -2,6 +2,7 @@ config BR2_PACKAGE_ORTP
 	bool "oRTP"
 	depends on BR2_INSTALL_LIBSTDCPP
 	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # bctoolbox
 	select BR2_PACKAGE_BCTOOLBOX
 	help
 	  oRTP, a Real-time Transport Protocol (RTP,RFC3550) library
@@ -10,3 +11,6 @@ config BR2_PACKAGE_ORTP
 
 comment "ortp needs a toolchain w/ C++, threads"
 	depends on !BR2_INSTALL_LIBSTDCPP || !BR2_TOOLCHAIN_HAS_THREADS
+
+comment "ortp needs a toolchain not affected by GCC bug 64735"
+	depends on BR2_TOOLCHAIN_HAS_GCC_BUG_64735
