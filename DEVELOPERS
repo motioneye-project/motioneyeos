@@ -827,6 +827,7 @@ F:	package/openzwave/
 
 N:	Fabrice Fontaine <fontaine.fabrice@gmail.com>
 F:	package/bearssl/
+F:	package/belle-sip/
 F:	package/boinc/
 F:	package/cairo/
 F:	package/duktape/
