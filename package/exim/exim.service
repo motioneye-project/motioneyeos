@@ -3,7 +3,7 @@ Description=Exim MTA
 After=syslog.target network.target
 
 [Service]
-ExecStart=/usr/bin/exim -bdf
+ExecStart=/usr/sbin/exim -bdf
 Restart=always
 
 [Install]
