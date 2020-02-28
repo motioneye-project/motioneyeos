@@ -19,6 +19,16 @@ config BR2_PACKAGE_QT5TOOLS_LINGUIST_TOOLS
 
 config BR2_PACKAGE_QT5TOOLS_QDOC_TOOL
 	bool "qdoc host tool"
+	# Needs llvm-config and libclang for the host, which is not
+	# currently supported in Buildroot, unless the target is
+	# already supported by llvm.
+	depends on BR2_PACKAGE_LLVM_ARCH_SUPPORTS # llvm, clang
+	depends on BR2_TOOLCHAIN_GCC_AT_LEAST_4_8 # llvm, clang
+	depends on BR2_TOOLCHAIN_HAS_THREADS # llvm, clang
+	depends on BR2_INSTALL_LIBSTDCPP # llvm, clang
+	depends on !BR2_TOOLCHAIN_HAS_GCC_BUG_64735 # llvm, clang
+	depends on !BR2_STATIC_LIBS # llvm, clang
+	depends on BR2_USE_WCHAR # llvm, clang
 	help
 	  This option enables the qdoc host tool.
 
