@@ -48,6 +48,12 @@ endif
 ifeq ($(BR2_PACKAGE_BERKELEYDB),y)
 RUBY_DEPENDENCIES += berkeleydb
 endif
+ifeq ($(BR2_PACKAGE_LIBFFI),y)
+RUBY_DEPENDENCIES += libffi
+else
+# Disable fiddle to avoid a build failure with bundled-libffi on MIPS
+RUBY_CONF_OPTS += --with-out-ext=fiddle
+endif
 ifeq ($(BR2_PACKAGE_GDBM),y)
 RUBY_DEPENDENCIES += gdbm
 endif
