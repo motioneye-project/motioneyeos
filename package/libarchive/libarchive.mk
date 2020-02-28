@@ -4,11 +4,12 @@
 #
 ################################################################################
 
-LIBARCHIVE_VERSION = 3.4.1
+LIBARCHIVE_VERSION = 3.4.2
 LIBARCHIVE_SITE = https://www.libarchive.de/downloads
 LIBARCHIVE_INSTALL_STAGING = YES
 LIBARCHIVE_LICENSE = BSD-2-Clause, BSD-3-Clause, CC0-1.0, OpenSSL, Apache-2.0
 LIBARCHIVE_LICENSE_FILES = COPYING
+LIBARCHIVE_CONF_OPTS = --without-mbedtls
 
 ifeq ($(BR2_PACKAGE_LIBARCHIVE_BSDTAR),y)
 ifeq ($(BR2_STATIC_LIBS),y)
@@ -86,6 +87,7 @@ endif
 
 ifeq ($(BR2_PACKAGE_NETTLE),y)
 LIBARCHIVE_DEPENDENCIES += nettle
+LIBARCHIVE_CONF_OPTS += --with-nettle
 else
 LIBARCHIVE_CONF_OPTS += --without-nettle
 endif
@@ -123,6 +125,7 @@ HOST_LIBARCHIVE_CONF_OPTS = \
 	--without-libiconv-prefix \
 	--without-xml2 \
 	--without-lzo2 \
+	--without-mbedtls \
 	--without-nettle \
 	--without-openssl \
 	--without-lzma
