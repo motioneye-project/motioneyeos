@@ -47,6 +47,13 @@ config BR2_PACKAGE_PROFTPD_MOD_SQL_SQLITE
 
 endif
 
+config BR2_PACKAGE_PROFTPD_MOD_SFTP_SQL
+	bool "mod_sftp_sql support"
+	select BR2_PACKAGE_PROFTPD_MOD_SQL
+	select BR2_PACKAGE_PROFTPD_MOD_SFTP
+	help
+	  Compile ProFTPD with mod_sftp_sql support
+
 config BR2_PACKAGE_PROFTPD_MOD_QUOTATAB
 	bool "mod_quotatab support"
 	help

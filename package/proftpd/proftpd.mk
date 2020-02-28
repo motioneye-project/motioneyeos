@@ -60,6 +60,10 @@ PROFTPD_MODULES += mod_sql_sqlite
 PROFTPD_DEPENDENCIES += sqlite
 endif
 
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_SFTP_SQL),y)
+PROFTPD_MODULES += mod_sftp_sql
+endif
+
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_QUOTATAB),y)
 PROFTPD_MODULES += mod_quotatab
 endif
