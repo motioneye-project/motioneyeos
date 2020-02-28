@@ -3,6 +3,9 @@ config BR2_PACKAGE_OPENRC
 	depends on BR2_USE_MMU # fork()
 	depends on !BR2_STATIC_LIBS
 	depends on BR2_INIT_OPENRC
+	select BR2_PACKAGE_BUSYBOX_SHOW_OTHERS # kmod tools
+	select BR2_PACKAGE_KMOD # runtime
+	select BR2_PACKAGE_KMOD_TOOLS # runtime
 	select BR2_PACKAGE_NCURSES
 	help
 	  Init that works on top of pid 1 (for example
