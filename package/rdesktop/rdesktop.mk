@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-RDESKTOP_VERSION = 1.8.4
+RDESKTOP_VERSION = 1.8.6
 RDESKTOP_SITE = $(call github,rdesktop,rdesktop,v$(RDESKTOP_VERSION))
 RDESKTOP_DEPENDENCIES = host-pkgconf openssl xlib_libX11 xlib_libXt \
 	$(if $(BR2_PACKAGE_ALSA_LIB_PCM),alsa-lib) \
