@@ -11,6 +11,9 @@ PURE_FTPD_LICENSE = ISC
 PURE_FTPD_LICENSE_FILES = COPYING
 PURE_FTPD_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 
+# 0001-listdir-reuse-a-single-buffer-to-store-every-file-name-to-display.patch
+PURE_FTPD_IGNORE_CVES += CVE-2019-20176
+
 PURE_FTPD_CONF_OPTS = \
 	--with-altlog \
 	--with-puredb
