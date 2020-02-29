@@ -20,7 +20,7 @@ HOST_PYTHON_JINJA2_DEPENDENCIES = host-python-markupsafe
 # Hence remove both files after package extraction.
 ifeq ($(BR2_PACKAGE_PYTHON),y)
 define PYTHON_JINJA2_REMOVE_ASYNC_SUPPORT
-	rm $(@D)/jinja2/asyncsupport.py $(@D)/jinja2/asyncfilters.py
+	rm $(@D)/src/jinja2/asyncsupport.py $(@D)/src/jinja2/asyncfilters.py
 endef
 
 PYTHON_JINJA2_POST_EXTRACT_HOOKS = PYTHON_JINJA2_REMOVE_ASYNC_SUPPORT
