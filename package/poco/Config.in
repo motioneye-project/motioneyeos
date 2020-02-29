@@ -54,6 +54,9 @@ config BR2_PACKAGE_POCO_CPP_PARSER
 
 config BR2_PACKAGE_POCO_PDF
 	bool "pdf"
+	select BR2_PACKAGE_POCO_JSON
+	select BR2_PACKAGE_POCO_UTIL
+	select BR2_PACKAGE_POCO_XML
 
 config BR2_PACKAGE_POCO_REDIS
 	bool "redis"
