@@ -12,6 +12,9 @@ LIBCGROUP_LICENSE_FILES = COPYING
 LIBCGROUP_DEPENDENCIES = host-bison host-flex
 LIBCGROUP_INSTALL_STAGING = YES
 
+# 0001-cgrulesengd-remove-umask-0.patch
+LIBCGROUP_IGNORE_CVES += CVE-2018-14348
+
 # Undefining _FILE_OFFSET_BITS here because of a "bug" with glibc fts.h
 # large file support. See https://bugzilla.redhat.com/show_bug.cgi?id=574992
 # for more information.
