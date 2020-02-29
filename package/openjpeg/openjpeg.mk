@@ -14,6 +14,9 @@ OPENJPEG_INSTALL_STAGING = YES
 # 0005-bmp_read_rle4_data-avoid-potential-infinite-loop.patch
 OPENJPEG_IGNORE_CVES += CVE-2019-12973
 
+# 0006-opj_j2k_update_image_dimensions-reject-images-whose-coordinates.patch
+OPENJPEG_IGNORE_CVES += CVE-2020-6851
+
 OPENJPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_ZLIB),zlib)
 OPENJPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_LIBPNG),libpng)
 OPENJPEG_DEPENDENCIES += $(if $(BR2_PACKAGE_TIFF),tiff)
