@@ -14,6 +14,9 @@ PURE_FTPD_DEPENDENCIES = $(if $(BR2_PACKAGE_LIBICONV),libiconv)
 # 0001-listdir-reuse-a-single-buffer-to-store-every-file-name-to-display.patch
 PURE_FTPD_IGNORE_CVES += CVE-2019-20176
 
+# 0002-pure_strcmp-len-s2-can-be-len-s1.patch
+PURE_FTPD_IGNORE_CVES += CVE-2020-9365
+
 PURE_FTPD_CONF_OPTS = \
 	--with-altlog \
 	--with-puredb
