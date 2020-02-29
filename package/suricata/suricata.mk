@@ -11,6 +11,9 @@ SURICATA_LICENSE_FILES = COPYING LICENSE
 # We're patching configure.ac
 SURICATA_AUTORECONF = YES
 
+# 0004-stream-reject-broken-ACK-packets.patch
+SURICATA_IGNORE_CVES += CVE-2019-18792
+
 SURICATA_DEPENDENCIES = \
 	host-pkgconf \
 	$(if $(BR2_PACKAGE_JANSSON),jansson) \

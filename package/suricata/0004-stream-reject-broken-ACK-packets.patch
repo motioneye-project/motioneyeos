@@ -1,0 +1,40 @@
+From 1c63d3905852f746ccde7e2585600b2199cefb4b Mon Sep 17 00:00:00 2001
+From: Victor Julien <victor@inliniac.net>
+Date: Thu, 21 Nov 2019 16:10:21 +0100
+Subject: [PATCH] stream: reject broken ACK packets
+
+Fix evasion posibility by rejecting packets with a broken ACK field.
+These packets have a non-0 ACK field, but do not have a ACK flag set.
+
+Bug #3324.
+
+Reported-by: Nicolas Adba
+(cherry picked from commit fa692df37a796c3330c81988d15ef1a219afc006)
+[Retrieved from:
+https://github.com/OISF/suricata/commit/1c63d3905852f746ccde7e2585600b2199cefb4b]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/stream-tcp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/src/stream-tcp.c b/src/stream-tcp.c
+index 35e489acba..8653d670c6 100644
+--- a/src/stream-tcp.c
++++ b/src/stream-tcp.c
+@@ -4759,6 +4759,7 @@ int StreamTcpPacket (ThreadVars *tv, Packet *p, StreamTcpThread *stt,
+     /* broken TCP http://ask.wireshark.org/questions/3183/acknowledgment-number-broken-tcp-the-acknowledge-field-is-nonzero-while-the-ack-flag-is-not-set */
+     if (!(p->tcph->th_flags & TH_ACK) && TCP_GET_ACK(p) != 0) {
+         StreamTcpSetEvent(p, STREAM_PKT_BROKEN_ACK);
++        goto error;
+     }
+ 
+     /* If we are on IPS mode, and got a drop action triggered from
+@@ -6883,7 +6884,7 @@ static int StreamTcpTest10 (void)
+ 
+     tcph.th_win = htons(5480);
+     tcph.th_seq = htonl(10);
+-    tcph.th_ack = htonl(11);
++    tcph.th_ack = 0;
+     tcph.th_flags = TH_SYN;
+     p->tcph = &tcph;
+ 
