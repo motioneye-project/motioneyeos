@@ -571,6 +571,7 @@ HOST_SYSTEMD_DEPENDENCIES = \
 HOST_SYSTEMD_HOST_TOOLS = \
 	systemd-analyze \
 	systemd-mount \
+	systemd-nspawn \
 	systemctl \
 	udevadm
 
