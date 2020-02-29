@@ -47,7 +47,7 @@ define OPENRC_NO_NET
 	$(RM) $(TARGET_DIR)/etc/init.d/{network,staticroute,loopback}
 	$(RM) $(TARGET_DIR)/etc/conf.d/{network,staticroute,loopback}
 endef
-OPENRC_POST_TARGET_INSTALL_HOOKS += OPENRC_NO_NET
+OPENRC_POST_INSTALL_TARGET_HOOKS += OPENRC_NO_NET
 endif
 
 define OPENRC_REMOVE_UNNEEDED
