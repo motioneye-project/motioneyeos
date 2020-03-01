@@ -157,7 +157,7 @@ class Package:
         o = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE).communicate()[1]
         lines = o.splitlines()
         for line in lines:
-            m = re.match("^([0-9]*) warnings generated", line)
+            m = re.match("^([0-9]*) warnings generated", line.decode())
             if m:
                 self.warnings = int(m.group(1))
                 return
@@ -351,7 +351,7 @@ def package_init_make_info():
     # Fetch all variables at once
     variables = subprocess.check_output(["make", "BR2_HAVE_DOT_CONFIG=y", "-s", "printvars",
                                          "VARS=%_LICENSE %_LICENSE_FILES %_VERSION %_IGNORE_CVES"])
-    variable_list = variables.splitlines()
+    variable_list = variables.decode().splitlines()
 
     # We process first the host package VERSION, and then the target
     # package VERSION. This means that if a package exists in both
@@ -886,7 +886,7 @@ def __main__():
         package_list = None
     date = datetime.datetime.utcnow()
     commit = subprocess.check_output(['git', 'rev-parse',
-                                      'HEAD']).splitlines()[0]
+                                      'HEAD']).splitlines()[0].decode()
     print("Build package list ...")
     packages = get_pkglist(args.npackages, package_list)
     print("Getting package make info ...")
