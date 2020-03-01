@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-OPENRC_VERSION = 0.41.2
+OPENRC_VERSION = 0.42.1
 OPENRC_SITE = $(call github,OpenRC,openrc,$(OPENRC_VERSION))
 OPENRC_LICENSE = BSD-2-Clause
 OPENRC_LICENSE_FILES = LICENSE
