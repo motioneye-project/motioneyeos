@@ -402,11 +402,13 @@ def check_url_status_worker(url, url_status):
 
 
 def check_package_urls(packages):
-    Package.pool = Pool(processes=64)
+    pool = Pool(processes=64)
     for pkg in packages:
-        pkg.url_worker = pkg.pool.apply_async(check_url_status_worker, (pkg.url, pkg.url_status))
+        pkg.url_worker = pool.apply_async(check_url_status_worker, (pkg.url, pkg.url_status))
     for pkg in packages:
         pkg.url_status = pkg.url_worker.get(timeout=3600)
+        del pkg.url_worker
+    pool.terminate()
 
 
 def release_monitoring_get_latest_version_by_distro(pool, name):
@@ -479,6 +481,7 @@ def check_package_latest_version(packages):
     results = worker_pool.map(check_package_latest_version_worker, (pkg.name for pkg in packages))
     for pkg, r in zip(packages, results):
         pkg.latest_version = r
+    worker_pool.terminate()
     del http_pool
 
 
