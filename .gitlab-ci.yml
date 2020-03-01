@@ -369,6 +369,8 @@ tests.init.test_busybox.TestInitSystemBusyboxRoNet: { extends: .runtime_test }
 tests.init.test_busybox.TestInitSystemBusyboxRw: { extends: .runtime_test }
 tests.init.test_busybox.TestInitSystemBusyboxRwNet: { extends: .runtime_test }
 tests.init.test_none.TestInitSystemNone: { extends: .runtime_test }
+tests.init.test_openrc.TestInitSystemOpenrcRoFull: { extends: .runtime_test }
+tests.init.test_openrc.TestInitSystemOpenrcRwFull: { extends: .runtime_test }
 tests.init.test_systemd.TestInitSystemSystemdRoFull: { extends: .runtime_test }
 tests.init.test_systemd.TestInitSystemSystemdRoIfupdown: { extends: .runtime_test }
 tests.init.test_systemd.TestInitSystemSystemdRoNetworkd: { extends: .runtime_test }
