@@ -570,6 +570,7 @@ HOST_SYSTEMD_DEPENDENCIES = \
 # * thus re-tweak rpath after the installation for all binaries that need it
 HOST_SYSTEMD_HOST_TOOLS = \
 	systemd-analyze \
+	systemd-machine-id-setup \
 	systemd-mount \
 	systemd-nspawn \
 	systemctl \
