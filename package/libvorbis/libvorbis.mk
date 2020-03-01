@@ -13,4 +13,7 @@ LIBVORBIS_DEPENDENCIES = host-pkgconf libogg
 LIBVORBIS_LICENSE = BSD-3-Clause
 LIBVORBIS_LICENSE_FILES = COPYING
 
+# 0002-Sanity-check-number-of-channels-in-setup.patch
+LIBVORBIS_IGNORE_CVES += CVE-2018-10392
+
 $(eval $(autotools-package))
