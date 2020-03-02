@@ -1,3 +1,26 @@
+2020.02-rc3, released March 2nd, 2020
+
+	Fixes all over the tree.
+
+	Infrastructure: Rework file list handling to fix race
+	conditions when building with per-package target and host
+	directories and top-level parallel builds.
+
+	Updated/fixed packages: aufs, binutils, blktrace, brltty,
+	cairo, dnsmasq, docker-compose, elf2flt, exim, exiv2, git,
+	kodi-inputstream-adaptive, libarchive, libcgroup, libgdiplus,
+	libssh2, libvncserver, libvorbis, linknx, linux-firmware, lxc,
+	lz4, mosquitto, openjpeg, openrc, poco, proftpd, pure-ftpd,
+	python3, python-multidict, python-setuptools-scm-git-archive,
+	qpdf, qt5tools, rdesktop, rocksdb, shellinabox, squid,
+	suricata, swig, systemd, taglib, util-linux, wireshark, zsh
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12571: ltp-testsuite : Build failure
+	#12576: 2020.02-RC1: error while loading shared libraries: ...
+	#12581: 2020.02-rc1 glibc failing to build on fedora 31
+
 2020.02-rc2, released February 26th, 2020
 
 	Fixes all over the tree.
