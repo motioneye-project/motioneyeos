@@ -3,7 +3,6 @@ config BR2_PACKAGE_INADYN
 	depends on BR2_USE_MMU # Uses fork()
 	depends on !BR2_STATIC_LIBS # dlopen()
 	select BR2_PACKAGE_LIBCONFUSE
-	select BR2_PACKAGE_LIBITE
 	help
 	  INADYN is a free DynDNS client. It gives the possibility
 	  to have your own fixed hostname registered on the internet,
