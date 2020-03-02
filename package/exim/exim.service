@@ -3,6 +3,10 @@ Description=Exim MTA
 After=syslog.target network.target
 
 [Service]
+User=exim
+Group=mail
+LogsDirectory=exim
+RuntimeDirectory=exim
 ExecStart=/usr/sbin/exim -bdf
 Restart=always
 
