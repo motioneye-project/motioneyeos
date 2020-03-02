@@ -10,14 +10,13 @@ LIBEVDEV_SOURCE = libevdev-$(LIBEVDEV_VERSION).tar.xz
 LIBEVDEV_LICENSE = X11
 LIBEVDEV_LICENSE_FILES = COPYING
 
-# patch touches configure.ac
-LIBEVDEV_AUTORECONF = YES
-
-# Uses PKG_CHECK_MODULES() in configure.ac
-LIBEVDEV_DEPENDENCIES = host-pkgconf host-python
+LIBEVDEV_DEPENDENCIES = $(BR2_PYTHON3_HOST_DEPENDENCY)
 
 LIBEVDEV_INSTALL_STAGING = YES
 
-LIBEVDEV_CONF_OPTS += --disable-runtime-tests
+LIBEVDEV_CONF_OPTS += \
+	-Dtests=disabled \
+	-Ddocumentation=disabled \
+	-Dcoverity=false
 
-$(eval $(autotools-package))
+$(eval $(meson-package))
