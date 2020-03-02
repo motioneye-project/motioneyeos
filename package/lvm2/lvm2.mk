@@ -60,6 +60,12 @@ else
 LVM2_CONF_OPTS += --disable-applib
 endif
 
+ifeq ($(BR2_PACKAGE_LVM2_LVMETAD),y)
+LVM2_CONF_OPTS += --enable-lvmetad
+else
+LVM2_CONF_OPTS += --disable-lvmetad
+endif
+
 ifeq ($(BR2_INIT_SYSTEMD),y)
 LVM2_INSTALL_TARGET_OPTS += install_systemd_units install_systemd_generators
 endif
