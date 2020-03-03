@@ -15,6 +15,9 @@ ZZIPLIB_INSTALL_STAGING = YES
 # 0003-One-more-free-to-avoid-memory-leak.patch
 ZZIPLIB_IGNORE_CVES += CVE-2018-16548
 
+# 0004-Fix-issue-62-Remove-any-components-from-pathnames-of-extracte.patch
+ZZIPLIB_IGNORE_CVES += CVE-2018-17828
+
 ZZIPLIB_DEPENDENCIES = host-pkgconf host-python zlib
 
 # zziplib is not python3 friendly, so force the python interpreter
