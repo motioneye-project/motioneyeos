@@ -10,6 +10,9 @@ PATCH_SITE = $(BR2_GNU_MIRROR)/patch
 PATCH_LICENSE = GPL-3.0+
 PATCH_LICENSE_FILES = COPYING
 
+# 0001-Fix-segfault-with-mangled-rename-patch.patch
+PATCH_IGNORE_CVES += CVE-2018-6951
+
 ifeq ($(BR2_PACKAGE_ATTR),y)
 PATCH_CONF_OPTS += --enable-xattr
 PATCH_DEPENDENCIES += attr
