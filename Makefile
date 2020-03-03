@@ -736,7 +736,6 @@ staging-finalize: $(STAGING_DIR_SYMLINK)
 target-finalize: $(PACKAGES) $(TARGET_DIR) host-finalize
 	@$(call MESSAGE,"Finalizing target directory")
 	$(call per-package-rsync,$(sort $(PACKAGES)),target,$(TARGET_DIR))
-	# Check files that are touched by more than one package
 	$(foreach hook,$(TARGET_FINALIZE_HOOKS),$($(hook))$(sep))
 	rm -rf $(TARGET_DIR)/usr/include $(TARGET_DIR)/usr/share/aclocal \
 		$(TARGET_DIR)/usr/lib/pkgconfig $(TARGET_DIR)/usr/share/pkgconfig \
