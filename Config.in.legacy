@@ -146,6 +146,12 @@ endif
 
 comment "Legacy options removed in 2020.02"
 
+config BR2_PACKAGE_JAMVM
+	bool "jamvm removed"
+	select BR2_LEGACY
+	help
+	  JamVM has not had a release since 2014 and is unmaintained.
+
 config BR2_PACKAGE_QT5_VERSION_5_6
 	bool "qt 5.6 support removed"
 	select BR2_LEGACY
