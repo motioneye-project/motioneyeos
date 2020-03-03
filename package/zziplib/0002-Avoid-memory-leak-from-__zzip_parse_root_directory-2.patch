@@ -1,0 +1,53 @@
+From d2e5d5c53212e54a97ad64b793a4389193fec687 Mon Sep 17 00:00:00 2001
+From: jmoellers <josef.moellers@suse.com>
+Date: Fri, 7 Sep 2018 11:49:28 +0200
+Subject: [PATCH] Avoid memory leak from __zzip_parse_root_directory().
+
+[Retrieved from:
+https://github.com/gdraheim/zziplib/commit/d2e5d5c53212e54a97ad64b793a4389193fec687]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ zzip/zip.c | 25 ++-----------------------
+ 1 file changed, 2 insertions(+), 23 deletions(-)
+
+diff --git a/zzip/zip.c b/zzip/zip.c
+index a685280..51a1a4d 100644
+--- a/zzip/zip.c
++++ b/zzip/zip.c
+@@ -587,34 +587,13 @@ __zzip_parse_root_directory(int fd,
+ 	{
+ 	    /* If it is not assigned to *hdr_return, it will never be free()'d */
+ 	    free(hdr0);
+-	    /* Make sure we don't free it again in case of error */
+-	    hdr0 = NULL;
+ 	}
+     }                           /* else zero (sane) entries */
+ #  ifndef ZZIP_ALLOW_MODULO_ENTRIES
+-    if (entries != zz_entries)
+-    {
+-	/* If it was assigned to *hdr_return, undo assignment */
+-	if (p_reclen && hdr_return)
+-	    *hdr_return = NULL;
+-	/* Free it, if it was not already free()'d */
+-	if (hdr0 != NULL)
+-	    free(hdr0);
+-	return ZZIP_CORRUPTED;
+-    }
++    return (entries != zz_entries) ? ZZIP_CORRUPTED : 0;
+ #  else
+-    if (((entries & (unsigned)0xFFFF) != zz_entries)
+-    {
+-	/* If it was assigned to *hdr_return, undo assignment */
+-	if (p_reclen && hdr_return)
+-	    *hdr_return = NULL;
+-	/* Free it, if it was not already free()'d */
+-	if (hdr0 != NULL)
+-	    free(hdr0);
+-	return ZZIP_CORRUPTED;
+-    }
++    return ((entries & (unsigned)0xFFFF) != zz_entries) ? ZZIP_CORRUPTED : 0;
+ #  endif
+-    return 0;
+ }
+ 
+ /* ------------------------- high-level interface ------------------------- */

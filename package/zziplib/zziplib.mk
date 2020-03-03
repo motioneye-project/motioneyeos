@@ -10,6 +10,11 @@ ZZIPLIB_LICENSE = LGPL-2.0+ or MPL-1.1
 ZZIPLIB_LICENSE_FILES = docs/COPYING.LIB docs/COPYING.MPL docs/copying.htm
 ZZIPLIB_INSTALL_STAGING = YES
 
+# 0001-Avoid-memory-leak-from-__zzip_parse_root_directory.patch
+# 0002-Avoid-memory-leak-from-__zzip_parse_root_directory-2.patch
+# 0003-One-more-free-to-avoid-memory-leak.patch
+ZZIPLIB_IGNORE_CVES += CVE-2018-16548
+
 ZZIPLIB_DEPENDENCIES = host-pkgconf host-python zlib
 
 # zziplib is not python3 friendly, so force the python interpreter
