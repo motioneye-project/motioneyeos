@@ -17,7 +17,7 @@ PATCH_IGNORE_CVES += CVE-2018-6951
 PATCH_IGNORE_CVES += CVE-2018-1000156
 
 # 0004-Invoke-ed-directly-instead-of-using-the-shell.patch
-PATCH_IGNORE_CVES += CVE-2018-20969
+PATCH_IGNORE_CVES += CVE-2018-20969 CVE-2019-13638
 
 # 0005-Don-t-follow-symlinks-unless--follow-symlinks-is-given.patch
 PATCH_IGNORE_CVES += CVE-2019-13636
