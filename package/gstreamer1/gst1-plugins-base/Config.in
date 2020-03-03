@@ -10,6 +10,12 @@ menuconfig BR2_PACKAGE_GST1_PLUGINS_BASE
 
 if BR2_PACKAGE_GST1_PLUGINS_BASE
 
+config BR2_PACKAGE_GST1_PLUGINS_BASE_INSTALL_TOOLS
+	bool "install tools"
+	help
+	  Install the gst-discoverer, gst-device-monitor and gst-play
+	  tools.
+
 comment "dependency-less plugins"
 
 config BR2_PACKAGE_GST1_PLUGINS_BASE_PLUGIN_ADDER
