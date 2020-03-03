@@ -204,14 +204,6 @@ if grep -q ^BR2_NEEDS_HOST_JAVA=y $BR2_CONFIG ; then
 	fi
 fi
 
-if grep -q ^BR2_NEEDS_HOST_JAVAC=y $BR2_CONFIG ; then
-	check_prog_host "javac"
-fi
-
-if grep -q ^BR2_NEEDS_HOST_JAR=y $BR2_CONFIG ; then
-	check_prog_host "jar"
-fi
-
 if grep -q ^BR2_HOSTARCH_NEEDS_IA32_LIBS=y $BR2_CONFIG ; then
 	if test ! -f /lib/ld-linux.so.2 ; then
 		echo
