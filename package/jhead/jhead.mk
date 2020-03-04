@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-JHEAD_VERSION = 3.03
+JHEAD_VERSION = 3.04
 JHEAD_SITE = http://www.sentex.net/~mwandel/jhead
 JHEAD_LICENSE = Public Domain
 JHEAD_LICENSE_FILES = readme.txt
