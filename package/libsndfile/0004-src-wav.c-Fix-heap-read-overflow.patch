@@ -1,0 +1,35 @@
+From 42132c543358cee9f7c3e9e9b15bb6c1063a608e Mon Sep 17 00:00:00 2001
+From: Erik de Castro Lopo <erikd@mega-nerd.com>
+Date: Tue, 1 Jan 2019 20:11:46 +1100
+Subject: [PATCH] src/wav.c: Fix heap read overflow
+
+This is CVE-2018-19758.
+
+Closes: https://github.com/erikd/libsndfile/issues/435
+[Retrieved (and backported) from:
+https://github.com/erikd/libsndfile/commit/42132c543358cee9f7c3e9e9b15bb6c1063a608e]
+Signed-off-by: Fabrice Fontaine <fontaine.fabrice@gmail.com>
+---
+ src/wav.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/wav.c b/src/wav.c
+index 9d71aadb..5c825f2a 100644
+--- a/src/wav.c
++++ b/src/wav.c
+@@ -1,5 +1,5 @@
+ /*
+-** Copyright (C) 1999-2016 Erik de Castro Lopo <erikd@mega-nerd.com>
++** Copyright (C) 1999-2019 Erik de Castro Lopo <erikd@mega-nerd.com>
+ ** Copyright (C) 2004-2005 David Viens <davidv@plogue.com>
+ **
+ ** This program is free software; you can redistribute it and/or modify
+@@ -1146,6 +1146,8 @@ wav_write_header (SF_PRIVATE *psf, int calc_length)
+ 		psf_binheader_writef (psf, "44", BHW4 (0), BHW4 (0)) ; /* SMTPE format */
+ 		psf_binheader_writef (psf, "44", BHW4 (psf->instrument->loop_count), BHW4 (0)) ;
+ 
++		/* Loop count is signed 16 bit number so we limit it range to something sensible. */
++		psf->instrument->loop_count &= 0x7fff ;
+ 		for (tmp = 0 ; tmp < psf->instrument->loop_count ; tmp++)
+ 		{	int type ;
+ 

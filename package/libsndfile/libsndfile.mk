@@ -20,6 +20,8 @@ LIBSNDFILE_IGNORE_CVES += \
 	CVE-2018-19661 CVE-2018-19662
 # disputed, https://github.com/erikd/libsndfile/issues/398
 LIBSNDFILE_IGNORE_CVES += CVE-2018-13419
+# 0004-src-wav.c-Fix-heap-read-overflow.patch
+LIBSNDFILE_IGNORE_CVES += CVE-2018-19758
 
 LIBSNDFILE_CONF_OPTS = \
 	--disable-sqlite \
