@@ -609,12 +609,18 @@ endif
 # automatically by its copy-firmware.sh script during the installation, which
 # parses the WHENCE file where symlinks are described. We follow the same logic
 # here, adding symlink only for firmwares installed in the target directory.
-# The grep/sed parsing is taken from the script mentioned before.
+#
+# For testing the presence of firmwares in the target directory we first make
+# sure we canonicalize the pointed-to file, to cover the symlinks of the form
+# a/foo -> ../b/foo  where a/ (the directory where to put the symlink) does
+# not yet exist.
 define LINUX_FIRMWARE_CREATE_SYMLINKS
+	cd $(TARGET_DIR)/lib/firmware/ ; \
 	sed -r -e '/^Link: (.+) -> (.+)$$/!d; s//\1 \2/' $(@D)/WHENCE | \
 	while read f d; do \
-		if test -f $(TARGET_DIR)/lib/firmware/$$d; then \
-			ln -sf $$d $(TARGET_DIR)/lib/firmware/$$f || exit 1; \
+		if test -f $$(readlink -m $$(dirname $$f)/$$d); then \
+			mkdir -p $$(dirname $$f) || exit 1; \
+			ln -sf $$d $$f || exit 1; \
 		fi ; \
 	done
 endef
