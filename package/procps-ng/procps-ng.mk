@@ -44,6 +44,11 @@ ifeq ($(BR2_STATIC_LIBS),y)
 PROCPS_NG_CONF_OPTS += --disable-numa
 endif
 
+# Avoid installing S02sysctl, since openrc provides /etc/init.d/sysctl.
+define PROCPS_NG_INSTALL_INIT_OPENRC
+	@:
+endef
+
 define PROCPS_NG_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/procps-ng/S02sysctl \
 		$(TARGET_DIR)/etc/init.d/S02sysctl
