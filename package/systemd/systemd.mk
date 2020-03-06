@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-SYSTEMD_VERSION = 244.1
+SYSTEMD_VERSION = 245
 SYSTEMD_SITE = $(call github,systemd,systemd-stable,v$(SYSTEMD_VERSION))
 SYSTEMD_LICENSE = LGPL-2.1+, GPL-2.0+ (udev), Public Domain (few source files, see README), BSD-3-Clause (tools/chromiumos)
 SYSTEMD_LICENSE_FILES = LICENSE.GPL2 LICENSE.LGPL2.1 README tools/chromiumos/LICENSE
@@ -41,6 +41,9 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
+	-Drepart=false \
+	-Duserdb=false \
+	-Dhomed=false \
 	-Dnss-systemd=true
 
 ifeq ($(BR2_PACKAGE_ACL),y)
@@ -511,6 +514,7 @@ HOST_SYSTEMD_CONF_OPTS = \
 	-Dtpm=false \
 	-Denvironment-d=false \
 	-Dbinfmt=false \
+	-Drepart=false \
 	-Dcoredump=false \
 	-Dpstore=false \
 	-Dlogind=false \
@@ -518,6 +522,8 @@ HOST_SYSTEMD_CONF_OPTS = \
 	-Dlocaled=false \
 	-Dmachined=false \
 	-Dportabled=false \
+	-Duserdb=false \
+	-Dhomed=false \
 	-Dnetworkd=false \
 	-Dtimedated=false \
 	-Dtimesyncd=false \
