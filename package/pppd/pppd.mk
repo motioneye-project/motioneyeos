@@ -11,6 +11,9 @@ PPPD_LICENSE_FILES = \
 	pppd/tdb.c pppd/plugins/pppoatm/COPYING \
 	pppdump/bsd-comp.c pppd/ccp.c pppd/plugins/passprompt.c
 
+# 0001-pppd-Fix-bounds-check.patch
+PPPD_IGNORE_CVES += CVE-2020-8597
+
 PPPD_MAKE_OPTS = HAVE_INET6=y
 ifeq ($(BR2_TOOLCHAIN_USES_GLIBC),y)
 PPPD_DEPENDENCIES += openssl
