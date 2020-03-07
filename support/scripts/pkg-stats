@@ -64,7 +64,7 @@ class Package:
         self.has_license = False
         self.has_license_files = False
         self.has_hash = False
-        self.patch_count = 0
+        self.patch_files = []
         self.warnings = 0
         self.current_version = None
         self.url = None
@@ -92,6 +92,10 @@ class Package:
                         return
                 self.url_status = "Missing"
                 fp.close()
+
+    @property
+    def patch_count(self):
+        return len(self.patch_files)
 
     def set_infra(self):
         """
@@ -131,10 +135,9 @@ class Package:
         """
         Fills in the .patch_count field
         """
-        self.patch_count = 0
         pkgdir = os.path.dirname(self.path)
         for subdir, _, _ in os.walk(pkgdir):
-            self.patch_count += len(fnmatch.filter(os.listdir(subdir), '*.patch'))
+            self.patch_files = fnmatch.filter(os.listdir(subdir), '*.patch')
 
     def set_current_version(self):
         """
