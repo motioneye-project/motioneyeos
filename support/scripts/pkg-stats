@@ -989,12 +989,16 @@ def dump_json(packages, defconfigs, stats, date, commit, output):
         f.write('\n')
 
 
+def resolvepath(path):
+        return os.path.abspath(os.path.expanduser(path))
+
+
 def parse_args():
     parser = argparse.ArgumentParser()
     output = parser.add_argument_group('output', 'Output file(s)')
-    output.add_argument('--html', dest='html', action='store',
+    output.add_argument('--html', dest='html', type=resolvepath,
                         help='HTML output file')
-    output.add_argument('--json', dest='json', action='store',
+    output.add_argument('--json', dest='json', type=resolvepath,
                         help='JSON output file')
     packages = parser.add_mutually_exclusive_group()
     packages.add_argument('-n', dest='npackages', type=int, action='store',
@@ -1002,7 +1006,7 @@ def parse_args():
     packages.add_argument('-p', dest='packages', action='store',
                           help='List of packages (comma separated)')
     parser.add_argument('--nvd-path', dest='nvd_path',
-                        help='Path to the local NVD database')
+                        help='Path to the local NVD database', type=resolvepath)
     args = parser.parse_args()
     if not args.html and not args.json:
         parser.error('at least one of --html or --json (or both) is required')
