@@ -25,6 +25,13 @@ PROFTPD_CONF_OPTS = \
 	--with-gnu-ld \
 	--without-openssl-cmdline
 
+ifeq ($(BR2_PACKAGE_PROFTPD_MOD_CAP),y)
+PROFTPD_CONF_OPTS += --enable-cap
+PROFTPD_DEPENDENCIES += libcap
+else
+PROFTPD_CONF_OPTS += --disable-cap
+endif
+
 ifeq ($(BR2_PACKAGE_PROFTPD_MOD_REWRITE),y)
 PROFTPD_MODULES += mod_rewrite
 endif
@@ -84,12 +91,6 @@ define PROFTPD_USE_LLU
 	$(SED) 's/HAVE_LU/HAVE_LLU/' $(@D)/configure
 endef
 PROFTPD_PRE_CONFIGURE_HOOKS += PROFTPD_USE_LLU
-
-define PROFTPD_MAKENAMES
-	$(MAKE1) CC="$(HOSTCC)" CFLAGS="" LDFLAGS="" -C $(@D)/lib/libcap _makenames
-endef
-
-PROFTPD_POST_CONFIGURE_HOOKS = PROFTPD_MAKENAMES
 
 PROFTPD_MAKE = $(MAKE1)
 

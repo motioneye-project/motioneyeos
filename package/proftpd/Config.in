@@ -8,6 +8,12 @@ config BR2_PACKAGE_PROFTPD
 
 if BR2_PACKAGE_PROFTPD
 
+config BR2_PACKAGE_PROFTPD_MOD_CAP
+	bool "mod_cap support"
+	select BR2_PACKAGE_LIBCAP
+	help
+	  Compile ProFTPD with mod_cap support
+
 config BR2_PACKAGE_PROFTPD_MOD_REWRITE
 	bool "mod_rewrite support"
 	help
