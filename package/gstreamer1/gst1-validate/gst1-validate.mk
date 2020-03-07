@@ -22,6 +22,8 @@ else
 GST1_VALIDATE_DEPENDENCIES += host-python python
 endif
 
-GST1_VALIDATE_CONF_OPTS += --disable-sphinx-doc
+GST1_VALIDATE_CONF_OPTS = \
+	--disable-introspection \
+	--disable-sphinx-doc
 
 $(eval $(autotools-package))
