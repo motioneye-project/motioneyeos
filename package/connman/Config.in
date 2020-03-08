@@ -52,6 +52,10 @@ config BR2_PACKAGE_CONNMAN_WIFI
 	  setup). ConnMan detects the start of wpa_supplicant
 	  automatically.
 
+config BR2_PACKAGE_CONNMAN_WIREGUARD
+	bool "enable wireguard support"
+	select BR2_PACKAGE_LIBMNL
+
 config BR2_PACKAGE_CONNMAN_WISPR
 	bool "enable WISPr support"
 	depends on !BR2_STATIC_LIBS # gnutls

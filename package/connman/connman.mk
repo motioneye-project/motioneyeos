@@ -70,6 +70,13 @@ else
 CONNMAN_CONF_OPTS += --disable-wifi
 endif
 
+ifeq ($(BR2_PACKAGE_CONNMAN_WIREGUARD),y)
+CONNMAN_CONF_OPTS += --enable-wireguard
+CONNMAN_DEPENDENCIES += libmnl
+else
+CONNMAN_CONF_OPTS += --disable-wireguard
+endif
+
 ifeq ($(BR2_PACKAGE_CONNMAN_WISPR),y)
 CONNMAN_CONF_OPTS += --enable-wispr
 CONNMAN_DEPENDENCIES += gnutls
