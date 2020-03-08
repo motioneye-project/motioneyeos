@@ -403,6 +403,18 @@ config BR2_PACKAGE_SYSTEMD_TMPFILES
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-tmpfiles.html
 
+config BR2_PACKAGE_SYSTEMD_USERDB
+	bool "enable userdb daemon"
+	help
+	  systemd-userdbd is a system service that multiplexes
+	  user/group lookups to all local services that provide JSON
+	  user/group record definitions to the system. In addition it
+	  synthesizes JSON user/group records from classic UNIX/glibc
+	  NSS user/group records in order to provide full backwards
+	  compatibility.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-userdbd.service.html
+
 config BR2_PACKAGE_SYSTEMD_VCONSOLE
 	bool "enable vconsole tool"
 	default y

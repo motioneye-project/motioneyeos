@@ -41,7 +41,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
-	-Duserdb=false \
 	-Dhomed=false \
 	-Dnss-systemd=true
 
@@ -309,6 +308,12 @@ SYSTEMD_CONF_OPTS += -Drepart=true
 SYSTEMD_DEPENDENCIES += openssl
 else
 SYSTEMD_CONF_OPTS += -Drepart=false
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_USERDB),y)
+SYSTEMD_CONF_OPTS += -Duserdb=true
+else
+SYSTEMD_CONF_OPTS += -Duserdb=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COREDUMP),y)
