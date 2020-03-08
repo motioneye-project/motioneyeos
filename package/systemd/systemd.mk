@@ -158,6 +158,13 @@ else
 SYSTEMD_CONF_OPTS += -Ddefault-dnssec=no -Dgcrypt=false
 endif
 
+ifeq ($(BR2_PACKAGE_P11_KIT),y)
+SYSTEMD_DEPENDENCIES += p11-kit
+SYSTEMD_CONF_OPTS += -Dp11kit=true
+else
+SYSTEMD_CONF_OPTS += -Dp11kit=false
+endif
+
 ifeq ($(BR2_PACKAGE_PCRE2),y)
 SYSTEMD_DEPENDENCIES += pcre2
 SYSTEMD_CONF_OPTS += -Dpcre2=true
