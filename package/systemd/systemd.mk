@@ -266,9 +266,9 @@ SYSTEMD_CONF_OPTS += -Dlogind=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_MACHINED),y)
-SYSTEMD_CONF_OPTS += -Dmachined=true
+SYSTEMD_CONF_OPTS += -Dmachined=true -Dnss-mymachines=true
 else
-SYSTEMD_CONF_OPTS += -Dmachined=false
+SYSTEMD_CONF_OPTS += -Dmachined=false -Dnss-mymachines=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_IMPORTD),y)
