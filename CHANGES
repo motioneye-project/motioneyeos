@@ -1,3 +1,21 @@
+2020.02, not yet released
+
+	Various fixes.
+
+	br2-external: Fix compatibility with make 4.3+
+
+	Updated/fixed packages: bash, bcm2835, cups, erlang-p1-acme,
+	fbgrab, gst1-plugins-base, gst1-validate, gstreamer1, guile,
+	jhead, libdrm, libevdev, libinput, libsndfile, libvncserver,
+	linux-firmware, mesa3d, nodejs, patch, piglit, python-django,
+	ruby, swupdate, thrift, zziplib
+
+	Removed packages: classpath, jamvm
+
+	Issues resolved (http://bugs.uclibc.org):
+
+	#12606: fbgrab location has changed
+
 2020.02-rc3, released March 2nd, 2020
 
 	Fixes all over the tree.
