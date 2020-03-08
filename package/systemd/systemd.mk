@@ -165,6 +165,13 @@ else
 SYSTEMD_CONF_OPTS += -Dp11kit=false
 endif
 
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SYSTEMD_DEPENDENCIES += openssl
+SYSTEMD_CONF_OPTS += -Dopenssl=true
+else
+SYSTEMD_CONF_OPTS += -Dopenssl=false
+endif
+
 ifeq ($(BR2_PACKAGE_PCRE2),y)
 SYSTEMD_DEPENDENCIES += pcre2
 SYSTEMD_CONF_OPTS += -Dpcre2=true
