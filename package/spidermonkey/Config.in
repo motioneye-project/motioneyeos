@@ -37,6 +37,17 @@ config BR2_PACKAGE_SPIDERMONKEY
 
 	  https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey
 
+if BR2_PACKAGE_SPIDERMONKEY
+
+config BR2_PACKAGE_SPIDERMONKEY_JS_SHELL
+	bool "JS shell"
+	help
+	  Build the JavaScript shell.
+
+	  WARNING: increases target image size by around 24 MiB.
+
+endif
+
 comment "spidermonkey needs a glibc or musl toolchain with C++, wchar, dynamic library, NPTL, gcc >= 4.9"
 	depends on BR2_USE_MMU
 	depends on BR2_PACKAGE_SPIDERMONKEY_ARCH_SUPPORTS

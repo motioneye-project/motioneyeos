@@ -41,6 +41,12 @@ else
 SPIDERMONKEY_CONF_OPTS += --disable-ion
 endif
 
+ifeq ($(BR2_PACKAGE_SPIDERMONKEY_JS_SHELL),y)
+SPIDERMONKEY_CONF_OPTS += --enable-js-shell
+else
+SPIDERMONKEY_CONF_OPTS += --disable-js-shell
+endif
+
 ifeq ($(BR2_PACKAGE_READLINE),y)
 SPIDERMONKEY_CONF_OPTS += --enable-readline
 SPIDERMONKEY_DEPENDENCIES += readline
