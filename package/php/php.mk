@@ -174,6 +174,8 @@ endif
 ifneq ($(BR2_PACKAGE_PHP_EXT_ZLIB)$(BR2_PACKAGE_PHP_EXT_ZIP),)
 PHP_CONF_OPTS += --with-zlib=$(STAGING_DIR)/usr
 PHP_DEPENDENCIES += zlib
+else
+PHP_CONF_OPTS += --disable-mysqlnd_compression_support
 endif
 
 ifeq ($(BR2_PACKAGE_PHP_EXT_GETTEXT),y)
