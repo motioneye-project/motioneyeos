@@ -193,6 +193,28 @@ config BR2_PACKAGE_SYSTEMD_HIBERNATE
 
 	  http://www.freedesktop.org/software/systemd/man/systemd-sleep.html
 
+config BR2_PACKAGE_SYSTEMD_HOMED
+	bool "enable home daemon"
+	depends on BR2_TOOLCHAIN_HAS_THREADS # cryptsetup -> lvm2
+	depends on BR2_USE_MMU # cryptsetup -> lvm2
+	depends on !BR2_STATIC_LIBS # cryptsetup -> lvm2
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4 # cryptsetup -> json-c
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12 # fscrypt_key
+	select BR2_PACKAGE_CRYPTSETUP
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_UTIL_LINUX_LIBFDISK
+	help
+	  systemd-homed is a system service that may be used to create,
+	  remove, change or inspect home directories.
+
+	  https://www.freedesktop.org/software/systemd/man/systemd-homed.service.html
+
+comment "homed support needs a toolchain w/ threads, dynamic library, kernel headers >= 4.12"
+	depends on BR2_USE_MMU
+	depends on BR2_TOOLCHAIN_HAS_SYNC_4
+	depends on !BR2_TOOLCHAIN_HAS_THREADS || \
+		BR2_STATIC_LIBS || BR2_TOOLCHAIN_HEADERS_AT_LEAST_4_12
+
 config BR2_PACKAGE_SYSTEMD_HOSTNAMED
 	bool "enable hostname daemon"
 	default y

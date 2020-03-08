@@ -41,7 +41,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
-	-Dhomed=false \
 	-Dnss-systemd=true
 
 ifeq ($(BR2_PACKAGE_ACL),y)
@@ -277,6 +276,13 @@ ifeq ($(BR2_PACKAGE_SYSTEMD_IMPORTD),y)
 SYSTEMD_CONF_OPTS += -Dimportd=true
 else
 SYSTEMD_CONF_OPTS += -Dimportd=false
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_HOMED),y)
+SYSTEMD_CONF_OPTS += -Dhomed=true
+SYSTEMD_DEPENDENCIES += cryptsetup openssl
+else
+SYSTEMD_CONF_OPTS += -Dhomed=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_HOSTNAMED),y)
