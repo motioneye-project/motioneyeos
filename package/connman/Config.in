@@ -33,6 +33,7 @@ config BR2_PACKAGE_CONNMAN_NFTABLES
 	bool "nftables"
 	depends on BR2_USE_WCHAR
 	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_12
+	select BR2_PACKAGE_LIBMNL
 	select BR2_PACKAGE_NFTABLES
 	help
 	  Use nftables as firewall.

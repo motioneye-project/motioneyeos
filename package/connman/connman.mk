@@ -41,7 +41,7 @@ CONNMAN_CONF_OPTS += --with-firewall=iptables
 CONNMAN_DEPENDENCIES += iptables
 else ifeq ($(BR2_PACKAGE_CONNMAN_NFTABLES),y)
 CONNMAN_CONF_OPTS += --with-firewall=nftables
-CONNMAN_DEPENDENCIES += nftables
+CONNMAN_DEPENDENCIES += libmnl nftables
 endif
 
 ifeq ($(BR2_PACKAGE_CONNMAN_LOOPBACK),y)
