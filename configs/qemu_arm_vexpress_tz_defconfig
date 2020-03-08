@@ -38,6 +38,13 @@ BR2_PACKAGE_OPTEE_BENCHMARK=y
 BR2_PACKAGE_OPTEE_EXAMPLES=y
 BR2_PACKAGE_OPTEE_TEST=y
 
+# OP-TEE components needs host-python3 interpreter and its modules
+BR2_PACKAGE_HOST_PYTHON3=y
+# Select python3 on the target to make sure Buildroot builds host-python using
+# python3 and builds all host-python modules for python3.
+BR2_TOOLCHAIN_BUILDROOT_WCHAR=y
+BR2_PACKAGE_PYTHON3=y
+
 # U-boot for booting the dear Linux kernel
 BR2_TARGET_UBOOT=y
 BR2_TARGET_UBOOT_BUILD_SYSTEM_KCONFIG=y
