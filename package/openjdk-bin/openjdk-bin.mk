@@ -18,7 +18,9 @@ HOST_OPENJDK_BIN_LICENSE_FILES = legal/java.prefs/LICENSE legal/java.prefs/ASSEM
 # Because unpack200 is a deprecated tool, removing it to fix this
 # issue is safe.
 define HOST_OPENJDK_BIN_INSTALL_CMDS
+	mkdir -p $(HOST_DIR)/bin
 	cp -dpfr $(@D)/bin/* $(HOST_DIR)/bin/
+	mkdir -p $(HOST_DIR)/lib
 	cp -dpfr $(@D)/lib/* $(HOST_DIR)/lib/
 	$(RM) -f $(HOST_DIR)/bin/unpack200
 endef
