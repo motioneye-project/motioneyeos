@@ -70,6 +70,13 @@ else
 SYSTEMD_CONF_OPTS += -Delfutils=false
 endif
 
+ifeq ($(BR2_PACKAGE_GNUTLS),y)
+SYSTEMD_DEPENDENCIES += gnutls
+SYSTEMD_CONF_OPTS += -Dgnutls=true
+else
+SYSTEMD_CONF_OPTS += -Dgnutls=false
+endif
+
 ifeq ($(BR2_PACKAGE_IPTABLES),y)
 SYSTEMD_DEPENDENCIES += iptables
 SYSTEMD_CONF_OPTS += -Dlibiptc=true
