@@ -14,7 +14,9 @@ GR_OSMOSDR_SUPPORTS_IN_SOURCE_BUILD = NO
 
 GR_OSMOSDR_DEPENDENCIES = gnuradio host-python-cheetah
 
-GR_OSMOSDR_CONF_OPTS = -DENABLE_DEFAULT=OFF
+GR_OSMOSDR_CONF_OPTS = \
+	-DENABLE_DEFAULT=OFF \
+	-DENABLE_DOXYGEN=OFF
 
 # For third-party blocks, the gr-osmosdr libraries are mandatory at
 # compile time.
