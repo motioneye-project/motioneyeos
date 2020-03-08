@@ -26,7 +26,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dman=false \
 	-Dima=false \
 	-Dldconfig=false \
-	-Ddefault-dnssec=no \
 	-Ddefault-hierarchy=hybrid \
 	-Dtests=false \
 	-Dsplit-bin=true \
@@ -154,9 +153,9 @@ endif
 
 ifeq ($(BR2_PACKAGE_LIBGCRYPT),y)
 SYSTEMD_DEPENDENCIES += libgcrypt
-SYSTEMD_CONF_OPTS += -Dgcrypt=true
+SYSTEMD_CONF_OPTS += -Ddefault-dnssec=allow-downgrade -Dgcrypt=true
 else
-SYSTEMD_CONF_OPTS += -Dgcrypt=false
+SYSTEMD_CONF_OPTS += -Ddefault-dnssec=no -Dgcrypt=false
 endif
 
 ifeq ($(BR2_PACKAGE_PCRE2),y)
