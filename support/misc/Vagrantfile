@@ -5,7 +5,7 @@
 ################################################################################
 
 # Buildroot version to use
-RELEASE='2019.11'
+RELEASE='2020.02'
 
 ### Change here for more memory/cores ###
 VM_MEMORY=2048

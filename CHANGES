@@ -1,14 +1,16 @@
-2020.02, not yet released
+2020.02, released March 8th, 2020
 
 	Various fixes.
 
 	br2-external: Fix compatibility with make 4.3+
 
-	Updated/fixed packages: bash, bcm2835, cups, erlang-p1-acme,
-	fbgrab, gst1-plugins-base, gst1-validate, gstreamer1, guile,
-	jhead, libdrm, libevdev, libinput, libsndfile, libvncserver,
-	linux-firmware, mesa3d, nodejs, patch, piglit, python-django,
-	ruby, swupdate, thrift, zziplib
+	Updated/fixed packages: bash, bcm2835, binutils, cups,
+	erlang-p1-acme, fbgrab, gr-osmosdr, gst1-plugins-base,
+	gst1-validate, gstreamer1, guile, jhead, libdrm, libevdev,
+	libinput, libnss, libsndfile, libvncserver, linux-firmware,
+	mesa3d, nodejs, openjdk-bin, openvmtools, optee-test, patch,
+	php, piglit, pppd, python-django, qemu, qt5base, ruby,
+	ser2net, swupdate, thrift, zziplib
 
 	Removed packages: classpath, jamvm
 
