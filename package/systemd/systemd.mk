@@ -41,7 +41,6 @@ SYSTEMD_CONF_OPTS += \
 	-Dumount-path=/usr/bin/umount \
 	-Dnobody-group=nogroup \
 	-Didn=true \
-	-Drepart=false \
 	-Duserdb=false \
 	-Dhomed=false \
 	-Dnss-systemd=true
@@ -303,6 +302,13 @@ ifeq ($(BR2_PACKAGE_SYSTEMD_LOCALED),y)
 SYSTEMD_CONF_OPTS += -Dlocaled=true
 else
 SYSTEMD_CONF_OPTS += -Dlocaled=false
+endif
+
+ifeq ($(BR2_PACKAGE_SYSTEMD_REPART),y)
+SYSTEMD_CONF_OPTS += -Drepart=true
+SYSTEMD_DEPENDENCIES += openssl
+else
+SYSTEMD_CONF_OPTS += -Drepart=false
 endif
 
 ifeq ($(BR2_PACKAGE_SYSTEMD_COREDUMP),y)
