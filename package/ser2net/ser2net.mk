@@ -16,6 +16,11 @@ else
 SER2NET_CONF_OPTS += --without-pthreads
 endif
 
+# fix gensio detection with openssl enabled
+ifeq ($(BR2_PACKAGE_OPENSSL),y)
+SER2NET_CONF_ENV += LIBS="`$(PKG_CONFIG_HOST_BINARY) --libs openssl`"
+endif
+
 define SER2NET_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 755 package/ser2net/S50ser2net \
 		$(TARGET_DIR)/etc/init.d/S50ser2net
