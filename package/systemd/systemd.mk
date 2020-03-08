@@ -130,6 +130,12 @@ else
 SYSTEMD_CONF_OPTS += -Dpam=false
 endif
 
+ifeq ($(BR2_PACKAGE_UTIL_LINUX_LIBFDISK),y)
+SYSTEMD_CONF_OPTS += -Dfdisk=true
+else
+SYSTEMD_CONF_OPTS += -Dfdisk=false
+endif
+
 ifeq ($(BR2_PACKAGE_VALGRIND),y)
 SYSTEMD_DEPENDENCIES += valgrind
 SYSTEMD_CONF_OPTS += -Dvalgrind=true
