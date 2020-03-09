@@ -4,9 +4,9 @@
 #
 ################################################################################
 
-WINE_VERSION = 4.0.3
+WINE_VERSION = 5.0
 WINE_SOURCE = wine-$(WINE_VERSION).tar.xz
-WINE_SITE = https://dl.winehq.org/wine/source/4.0
+WINE_SITE = https://dl.winehq.org/wine/source/5.0
 WINE_LICENSE = LGPL-2.1+
 WINE_LICENSE_FILES = COPYING.LIB LICENSE
 WINE_DEPENDENCIES = host-bison host-flex host-wine
@@ -19,6 +19,7 @@ WINE_CONF_OPTS = \
 	--disable-win64 \
 	--without-capi \
 	--without-coreaudio \
+	--without-faudio \
 	--without-gettext \
 	--without-gettextpo \
 	--without-gphoto \
@@ -357,6 +358,7 @@ HOST_WINE_CONF_OPTS += \
 	--without-capi \
 	--without-cms \
 	--without-coreaudio \
+	--without-faudio \
 	--without-cups \
 	--without-curses \
 	--without-dbus \
