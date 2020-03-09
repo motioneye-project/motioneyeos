@@ -40,7 +40,9 @@ $(2)_MAKE_OPTS			?=
 $(2)_INSTALL_STAGING_OPTS	?= install
 $(2)_INSTALL_TARGET_OPTS	?= $$($(2)_INSTALL_STAGING_OPTS)
 
+ifneq ($(1),qt5base)
 $(2)_DEPENDENCIES 		+= qt5base
+endif
 
 #
 # Configure step. Only define it if not already defined by the package
