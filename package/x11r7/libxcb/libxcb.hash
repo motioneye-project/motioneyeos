@@ -1,6 +1,5 @@
-# From https://lists.x.org/archives/xorg/2018-September/059469.html
-md5 f33cdfc67346f7217a9326c0d8679975  libxcb-1.13.1.tar.bz2
-sha1 2ab17a1bb2a44e0a9cb0b26bcf899689ba1bbb3b  libxcb-1.13.1.tar.bz2
-sha256 a89fb7af7a11f43d2ce84a844a4b38df688c092bf4b67683aef179cdf2a647c4  libxcb-1.13.1.tar.bz2
+# From https://lists.x.org/archives/xorg-announce/2020-February/003039.html
+sha256 a55ed6db98d43469801262d81dc2572ed124edc3db31059d4e9916eb9f844c34  libxcb-1.14.tar.xz
+sha512 b90a23204b0d2c29d8b115577edb01df0465e02d6a8876550fecd62375d24a5d5f872ddd5946772ddba077cadce75b12c7a6d218469dc30b5b92bc82188e8bc6  libxcb-1.14.tar.xz
 # Locally computed
 sha256 c5ffbfeaa501071ceeb97b7de2c0d703fdaa35de01c0fb6cbac1c28453a3e9fd  COPYING

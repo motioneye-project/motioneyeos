@@ -4,8 +4,8 @@
 #
 ################################################################################
 
-LIBXCB_VERSION = 1.13.1
-LIBXCB_SOURCE = libxcb-$(LIBXCB_VERSION).tar.bz2
+LIBXCB_VERSION = 1.14
+LIBXCB_SOURCE = libxcb-$(LIBXCB_VERSION).tar.xz
 LIBXCB_SITE = http://xcb.freedesktop.org/dist
 LIBXCB_LICENSE = MIT
 LIBXCB_LICENSE_FILES = COPYING
@@ -13,10 +13,10 @@ LIBXCB_LICENSE_FILES = COPYING
 LIBXCB_INSTALL_STAGING = YES
 
 LIBXCB_DEPENDENCIES = \
-	host-libxslt libpthread-stubs xcb-proto xlib_libXdmcp xlib_libXau \
+	host-libxslt xcb-proto xlib_libXdmcp xlib_libXau \
 	host-xcb-proto host-python host-pkgconf
 HOST_LIBXCB_DEPENDENCIES = \
-	host-libxslt host-libpthread-stubs host-xcb-proto host-xlib_libXdmcp \
+	host-libxslt host-xcb-proto host-xlib_libXdmcp \
 	host-xlib_libXau host-python host-pkgconf
 
 LIBXCB_CONF_OPTS = --with-doxygen=no
