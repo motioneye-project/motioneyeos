@@ -25,13 +25,12 @@ define IFUPDOWN_SCRIPTS_DHCP
 		echo "  wait-delay 15"; \
 		echo "  hostname \$$(hostname)"; \
 	) >> $(TARGET_DIR)/etc/network/interfaces
-	$(INSTALL) -m 0755 -D $(IFUPDOWN_SCRIPTS_PKGDIR)/nfs_check \
-		$(TARGET_DIR)/etc/network/nfs_check
 endef
 endif
 
 define IFUPDOWN_SCRIPTS_INSTALL_TARGET_CMDS
-	mkdir -p $(TARGET_DIR)/etc/network
+	$(INSTALL) -m 0755 -D $(IFUPDOWN_SCRIPTS_PKGDIR)/nfs_check \
+		$(TARGET_DIR)/etc/network/nfs_check
 	$(call SYSTEM_RSYNC,$(IFUPDOWN_SCRIPTS_PKGDIR)/network,$(TARGET_DIR)/etc/network)
 	$(IFUPDOWN_SCRIPTS_LOCALHOST)
 	$(IFUPDOWN_SCRIPTS_DHCP)
