@@ -32,13 +32,13 @@ define IFUPDOWN_SCRIPTS_INSTALL_TARGET_CMDS
 	$(INSTALL) -m 0755 -D $(IFUPDOWN_SCRIPTS_PKGDIR)/nfs_check \
 		$(TARGET_DIR)/etc/network/nfs_check
 	$(call SYSTEM_RSYNC,$(IFUPDOWN_SCRIPTS_PKGDIR)/network,$(TARGET_DIR)/etc/network)
-	$(IFUPDOWN_SCRIPTS_LOCALHOST)
-	$(IFUPDOWN_SCRIPTS_DHCP)
 endef
 
 define IFUPDOWN_SCRIPTS_INSTALL_INIT_SYSV
 	$(INSTALL) -D -m 0755 $(IFUPDOWN_SCRIPTS_PKGDIR)/S40network \
 		$(TARGET_DIR)/etc/init.d/S40network
+	$(IFUPDOWN_SCRIPTS_LOCALHOST)
+	$(IFUPDOWN_SCRIPTS_DHCP)
 endef
 
 # ifupdown-scripts can not be selected when systemd-networkd is
@@ -47,6 +47,8 @@ endef
 define IFUPDOWN_SCRIPTS_INSTALL_INIT_SYSTEMD
 	$(INSTALL) -D -m 644 $(IFUPDOWN_SCRIPTS_PKGDIR)/network.service \
 		$(TARGET_DIR)/etc/systemd/system/network.service
+	$(IFUPDOWN_SCRIPTS_LOCALHOST)
+	$(IFUPDOWN_SCRIPTS_DHCP)
 endef
 
 $(eval $(generic-package))
